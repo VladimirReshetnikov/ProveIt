@@ -1,0 +1,208 @@
+\label{sec:integer12}
+
+The preceding positive-domain constructions and the following
+integer-domain constructions are separate points in the comparison.
+Here all twelve unknowns range over $\Z$.  We give two polynomial
+coordinate changes of the pinned repository's current scalar-carrier
+equations.  The transformations preserve the entire integer zero sets
+bijectively and improve their degree--cost tradeoffs.  Centering is already
+used elsewhere in the repository; the contribution here is its application
+to the present scalar four-root carrier, with complete circuits and attained
+degree certificates.
+
+\subsection{Fixed coefficients and complete equations}
+
+The ordered unknowns are
+\[
+ (j,C,z,h,r,v,w,T,c,n,t,s)\in\Z^{12}.
+\]
+Use the coherent \texttt{mixed-parity-unrounded-1064921} tuple, independently
+of the compact44 tuple used by the positive-domain constructions:
+\[
+ \beta=2^{1064921}-1,\qquad
+ \kappa_1=2^{1113},\qquad \kappa_2=2^{666104}.
+\]
+The remaining fixed integers $K_0,M_C,M_F$ are the exact source34 values
+in the included coefficient payloads.  The complete finite recipe,
+literal machine seed, and all 943 tiles are included; the verifier rebuilds
+every coefficient and compares all bytes.  In particular $M_F$ is already
+shifted by $\beta$.  The six coefficients are never mixed with another
+tuple.
+
+Define the following polynomial abbreviations; none is an additional
+unknown:
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+ X&=qW,&Y&=(2v+1)q^3,&E&=XY,\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ F&=(K_0+W)C-z(q-1),&&&
+\end{align*}
+\begin{align*}
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+hE,\qquad \eta=c-Yk,\qquad \zeta=k-\eta,\\
+ G&=(\kappa_1F)(\kappa_2C)-(q-\kappa_1F-\kappa_2C)^2,\\
+ \Pi&=G\eta\zeta-(t^2-G-\eta\zeta+1)^2,\\
+ D_g&=(3\Pi-4)s^2+1,\qquad I=src^2,\\
+ D_f&=1+\Delta I^2,\qquad Q=\Delta^2I^2,\qquad\delta=Q-1,\\
+ V&=D_f(c-R+4IT)-c,\qquad C_y=QV^2-1,\\
+ \ell&=XY^2,\qquad D_t=1+\ell(\ell+1)k^2,\\
+ K&=X(X+2ac)-1,\qquad S=IH^5,\qquad z_c=HT+K,\\
+ A_c&=(z_c^2+3H^2)(z_c^3-19H^3).
+\end{align*}
+Set
+\[
+ r_a=9S^2D_f,\qquad r_b=81S^2D_t,\qquad r_e=729S^2D_g.
+\]
+Let $\mathcal F_{16}(Z;u_1,u_2,u_3,u_4)$ be the product of
+$Z-\sum_{i=1}^4\epsilon_i\sqrt{u_i}$ over the sixteen choices
+$\epsilon\in\{-1,1\}^4$.  Sign invariance makes this an integer
+polynomial in its five arguments; every radicand has exponent at most
+eight.  Our two equations are
+\begin{align}
+ P_R&=\delta^8\mathcal F_{16}
+ \left(S(n+V)-A_c; r_a,r_b,r_e,\frac{S^2C_y}{\delta}\right)=0,
+ \label{eq:s12-rational}\\
+ P_I&=\mathcal F_{16}
+ \left(S(n+\delta V)-A_c; r_a,r_b,r_e,S^2\delta C_y\right)=0.
+ \label{eq:s12-integral}
+\end{align}
+The first formula means its symbolic polynomial after denominator
+clearing, not numerical evaluation by division.  Both literal JSON
+circuits contain only fixed integers, addition, subtraction, and
+multiplication.
+
+For completeness, the following polynomial recursion removes every
+radical from the notation.  For a center $Z$, put $d=\delta$ and
+$c_n=S^2C_y$ in~\eqref{eq:s12-rational}, or $d=1$ and
+$c_n=S^2\delta C_y$ in~\eqref{eq:s12-integral}.  Define
+\begin{align*}
+ t_0&=Z^2+r_e,& t_1&=-2Z,& b_0&=r_a+r_b,\\
+ q_0&=d(t_0-b_0)-c_n,&q_1&=dt_1,\\
+ T_0&=d^2r_ar_b,&R_0&=dc_n,\\
+ v_0&=q_0^2+r_eq_1^2-4(T_0+R_0b_0),&v_1&=2q_0q_1,\\
+ z_{64}&=64T_0R_0,&&\\
+ n_0&=v_0^2+r_ev_1^2-z_{64}t_0,&
+ n_1&=2v_0v_1-z_{64}t_1.
+\end{align*}
+Then the polynomial output is $n_0^2-r_en_1^2$.  The independent oracle
+checks all 495 coefficients against the sixteen-conjugate product.
+
+\subsection{Unconditional integer zero-set bijections}
+
+Write $P_R^{\rm old}$ and $P_I^{\rm old}$ for the pinned parent equations
+with the same prefix and center $Sn-A_c$.  Every other abbreviation is
+independent of $n$.  The maps
+\[
+ T_R:\ n_{\rm old}=n+V,\qquad
+ T_I:\ n_{\rm old}=n+\delta V
+\]
+fix eleven coordinates.  Their inverse maps subtract $V$ and $\delta V$,
+respectively.  These are mutually inverse polynomial maps of $\Z^{12}$,
+without sign, nonzero, divisibility, or zero-equation hypotheses.
+Direct substitution gives the identities
+\[
+ P_R=P_R^{\rm old}\circ T_R,\qquad
+ P_I=P_I^{\rm old}\circ T_I.
+\]
+Consequently each pair has bijective complete integer zero sets, including
+all exceptional branches as formal polynomials.  Composing these elementary
+identities with the unchanged ordinary parent calibration gives, in the
+same formalizability sense,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\forall x\in\Z^{12}\ P_R(x)\ne0\bigr)
+ \leftrightarrow\operatorname{Con}(\mathrm{ZFC}),
+\]
+and the identical statement with $P_I$.  This composition introduces no
+new native compiler claim.  The retained parent proof and its dependencies
+remain part of the evidence; this section does not claim a new
+machine-checked object-ZFC derivation.
+
+\subsection{Exact degree certificates}
+
+Only quantified coordinates contribute to total degree.  The prefix gives
+\[
+ \deg S=34,\quad\deg V=25,\quad\deg\delta=32,\quad
+ \deg r_a=88,\quad\deg r_b=102,\quad\deg r_e=114,\quad
+ \deg A_c=45.
+\]
+Put $z_0=Sn-A_c$, of degree 45.  For $P_R$, the relation
+$C_y=(\delta+1)V^2-1$ gives the exact cancellation
+\[
+ \delta(SV+z_0)^2-S^2C_y
+   =\delta z_0^2+2\delta SVz_0-S^2(V^2-1).
+\]
+The right side has degree at most 136.  Thus the norm register $q_0$ has
+unique highest part $\delta_0(r_e)_0$ of degree 146, while
+$(q_1)_0=-2\delta_0S_0V_0$ has degree 91.  Subsequent strict degree
+comparisons give
+\[
+\begin{array}{c|rrrrrrrrr}
+ &q_0&q_1&T_0&R_0&v_0&v_1&n_0&n_1&P_R\\\hline
+ \deg&146&91&254&182&296&237&592&533&1184.
+\end{array}
+\]
+Here and below a subscript zero on a polynomial denotes its highest
+homogeneous component, independently of the temporary norm-register
+names.  The full top form is
+\[
+ (P_R)_0=2^8 3^{24}S_0^{16}\delta_0^8V_0^8(D_g)_0^4.
+\]
+For $P_I$, the analogous identity is
+\[
+ (S\delta V+z_0)^2-S^2\delta C_y
+ =z_0^2+2S\delta Vz_0-S^2\delta V^2+S^2\delta.
+\]
+Its unique highest term is $-S_0^2\delta_0V_0^2$, of degree 150.  The
+remaining induction gives
+\[
+\begin{array}{c|rrrrrrrrr}
+ &q_0&q_1&T_0&R_0&v_0&v_1&n_0&n_1&P_I\\\hline
+ \deg&150&91&190&182&300&241&600&541&1200,
+\end{array}
+\]
+and $(P_I)_0=S_0^{16}\delta_0^8V_0^{16}$.
+
+These bounds are attained on the actual fixed tuple, not merely on generic
+symbolic ports.  Selecting the largest $T$ power in each top form gives
+\begin{align*}
+ [j^{624}w^{144}v^{160}s^{64}r^{56}c^{112}h^{16}T^8]P_R
+   &=2^{1256}3^{796}\beta^{624}>0,\\
+ [j^{576}w^{144}v^{144}s^{80}r^{80}c^{160}T^{16}]P_I
+   &=2^{1200}3^{720}\beta^{576}>0.
+\end{align*}
+The exponent sums are 1184 and 1200.  These are distinguished top-degree
+monomials, not assertions that the full homogeneous components contain
+only one term.  In particular the top part of $V$ contains
+$4I_0T-R_0$, whose two summands both have degree five.  The exact checker
+keeps the graded-lex leading term with $T$ first and confirms every
+coefficient induction after the displayed cancellation.
+
+\subsection{Cost and what the computations certify}
+
+Under the same fully charged binary-operation convention as the parent,
+the literal counts are
+\begin{center}
+\begin{tabular}{lrrrrr}
+Equation&Multiplications&Additions&Subtractions&Total&Degree\\\hline
+Old rational&93&26&26&145&1200\\
+New $P_R$&93&27&26&146&1184\\
+Old integral&89&26&26&141&1456\\
+New $P_I$&90&27&26&143&1200
+\end{tabular}
+\end{center}
+Thus $P_I$ reaches the old rational degree with two fewer operations,
+while $P_R$ supplies a lower-degree option within this historical
+comparison.  The saturated $123/1084$ equation of
+Section~\ref{sec:integer12-saturated} improves both metrics of every row.
+
+The standard-library verifier imports no new producer.  It proves the
+whole-output substitution identities by a common expression DAG, checks
+both integer inverse maps, binds all prefix formulas by independent
+free-ring cuts, verifies every generic norm coefficient, and performs
+the exact leading induction.  It also reconstructs all fixed coefficients
+from the finite recipe and checks the live operation counts.  Normal and
+optimized Python runs pass, and corrupted center and norm signs are
+rejected.  These checks establish exact polynomial algebra and
+transcription; the semantic conclusion uses the unbounded bijection proof
+and the named ordinary parent theorem.

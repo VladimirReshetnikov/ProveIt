@@ -1,0 +1,57 @@
+{
+  "status": "PASS",
+  "python_optimization": 1,
+  "checks": [
+    {
+      "command": [
+        "ten_positive/build.py",
+        "--check"
+      ],
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "ten_positive/build_integer.py",
+        "--check"
+      ],
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "ten_positive/check.py"
+      ],
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "ten_positive/rebuild_coefficients.py"
+      ],
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "ten_positive/review/ten_saturation_review.py",
+        "--equation",
+        "ten_positive/equation.json",
+        "--output",
+        "ten_positive/review/ten_saturation_review_optimized.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "direct/independent_source_check.py",
+        "--output",
+        "INDEPENDENT_SOURCE_OPTIMIZED.json"
+      ],
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "direct/check.py"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "scope": "Exact finite artifacts, coefficients and integer restorations; ordinary unbounded source proofs and inherited calibrations are separate."
+}

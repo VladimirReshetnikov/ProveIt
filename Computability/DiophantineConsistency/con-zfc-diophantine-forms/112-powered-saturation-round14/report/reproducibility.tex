@@ -1,0 +1,44 @@
+\section{Exact artifacts and reproducibility}\label{sec:replay}
+\subsection{The literal equation formats}
+The canonical norm file is \texttt{norm/equation.json}. Its \texttt{nodes} form a topologically ordered directed acyclic graph. A leaf is an integer, one of the twelve named variables, or one of six fixed coefficient ports. An arithmetic node records an operator and two earlier node indices. The output index defines the single polynomial. The adjacent coefficient binding identifies every compressed payload by raw SHA256, exact bit length, and byte length; $M_F$ is already shifted. The companion \texttt{equation\_reduced.json} is polynomial-identical.
+
+For a quartic, the canonical \texttt{equation.json} lists variables in order and every quadratic residual. A residual term $[c,[i_1,\ldots,i_k]]$ means $c\prod_{j=1}^kz_{i_j}$, with zero-based variable indices, repeated indices for powers, and the empty list for the constant monomial. The equation is exactly
+\[
+ P(z)=\sum_{r\in\mathrm{residuals}}\left(\sum_{(c,m)\in r}c\prod_{i\in m}z_i\right)^2=0.
+\]
+The matching \texttt{expanded\_polynomial.json} collects all equal sorted monomials and removes zero coefficients. These are finite complete definitions, not recipes with unnamed coefficients. The primary direct endpoint is \path{direct/integer519_centered}; the integer companion is \path{direct/derived16_centered_shell}; the natural endpoint is \path{architecture/derived16_cantor/natural}.
+
+\subsection{What the replay checks}
+The top-level \texttt{verify.py} uses explicit exception checks, including under Python's optimized mode. It copies the packet to a fresh temporary directory before running any builder or checker, so the delivered files are not mutated. It checks the release manifest, regenerates the four nontrivial source34 coefficient ports from the frozen machine/tile recipe, verifies all six actual payloads, rebuilds both norm graphs, verifies the generic norm identity and exact degree certificate, and independently re-expands every principal quartic.
+
+For the direct endpoints it replays the raw arithmetic export, ordered sign closure, redundant-guard proof, exact Horn factorization, monic elimination, and integral translations. For the natural endpoint it checks every nonnegative restoration certificate, including rational weighted-square identities. It reconstructs all three principal endpoints from their bundled sources and compares generated files byte for byte. Both normal and optimized runs are included. It also rechecks seven literal baselines, three live-DAG baseline counts, modular arithmetic regressions, and deliberate negative controls.
+
+These finite checks do not prove the unbounded Pell or logical-calibration theorems, prove consistency, or search for a full zero. The archive distinguishes producer reproduction, independent algebraic audits, mathematical review, and inherited proof-assistant obligations.
+
+\subsection{Offline commands and dependencies}
+The arithmetic replay requires Python 3.10 or later and SymPy for the independent resultant calculation. The remaining direct, architecture, payload, and polynomial checks use only Python's standard library. SymPy is an environment dependency, not a vendored component. Once that dependency is available, no network access or original workspace is needed. From the extracted archive root, run
+\begin{Verbatim}[fontsize=\small,breaklines=true]
+python verify.py --report /tmp/round14-replay.json
+python -O verify.py --mode optimized --report /tmp/round14-replay-O.json
+\end{Verbatim}
+The first command itself tests both normal and optimized child processes. The second also verifies that the top-level checks remain active under optimization. The retained legacy coefficient recipe explicitly rejects optimized mode, so the wrapper always invokes that one checked recipe normally and independently compares its output bytes. This restriction is not hidden.
+
+Build from \texttt{report/main.tex} with pdfLaTeX; repeat until references stabilize:
+\begin{Verbatim}[fontsize=\small,breaklines=true]
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+\end{Verbatim}
+TeX rendering is not part of the arithmetic proof. The final rendered PDF and its editable TeX sources are both included. Receipts give the actual command counts, file hashes, and exact byte comparisons; the manifest pins the final shipped files.
+
+\subsection{Attribution and source map}
+The new proof texts and code identify which transformations are new and which files were inherited. Existing licenses and attribution notices remain alongside the imported code, including ProveIt, Mathlib, and Wade-related source notices where applicable. The retained source34 machine is coefficient provenance, not an executed search for consistency. The direct branch's C222 route is separate.
+
+Primary public references, all pinned to the reviewed commit, are:
+\begin{itemize}
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/PROPOSAL_REVIEW_LATEST.md}{The active Diophantine consistency proposal review}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/candidates/scalar-carrier12}{The scalar-carrier12 source and its inherited proof bundle}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md}{The determinant and small-variable low-degree tradeoffs}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/research/factorial-radius-output-sign-profile}{The public direct factorial-radius sign-profile family}.
+\end{itemize}
+The supplied Prime Power 375/553, Square Shell Reciprocal 660, and Compact Proof Certificates Round 13 packets are retained only to the extent needed for runtime reconstruction, proof boundaries, literal baseline verification, and attribution. Exploratory outputs, intake archives, upload helpers, and redundant binaries are excluded.

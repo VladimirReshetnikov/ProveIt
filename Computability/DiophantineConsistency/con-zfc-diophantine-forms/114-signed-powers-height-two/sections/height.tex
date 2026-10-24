@@ -1,0 +1,112 @@
+\section{A quartic whose coefficients have absolute value at most two}\label{sec:height}
+\subsection{A different objective}
+
+The quotient-radius equations reduce the number of variables in the direct family. They still have coefficients inherited from elimination. A separate construction gives a particularly simple coefficient alphabet by retaining more intermediate variables.
+
+For this purpose the slightly smaller input is the squared-output 66-predicate parent, not the quotient-radius parent. Both have 1,457 coordinates and 1,243 rows; the latter's different frame row produces a slightly larger unit construction. We retain the better coefficient-height point, with 3,564 variables, rather than force all improvements into a single branch.
+
+Write the old coordinates as \(x_0,\ldots,x_{1456}\), add product coordinates \(p_0,\ldots,p_{164}\), and add unit coordinates \(u_0,\ldots,u_{1941}\). Every coordinate ranges over \(\Z\). Define
+\[
+U_0=u_0-1,\qquad U_j=u_j-u_{j-1}^2\quad(1\le j\le1941),
+\]
+and
+\[
+T_h=p_h-x_{a_h}x_{b_h}\quad(0\le h\le164).
+\]
+The 165 pairs \((a_h,b_h)\) are fixed entries of the supplied certificate. Let \(R_i\), \(0\le i\le1242\), be the transformed source rows described below and supplied in full. The equation is
+\begin{equation}\label{eq:unitpolynomial}
+\boxed{Q_{3564}=U_0^2+\sum_{j=1}^{1941}U_j^2+
+\sum_{h=0}^{164}T_h^2+\sum_{i=0}^{1242}R_i^2=0.}
+\end{equation}
+These are fixed finite sums. In particular the unit recurrence is a fixed list of quadratic equations, not a variable-length condition.
+
+The variable count is
+\[
+1457+165+1942=3564,
+\]
+and the residual count is
+\[
+1243+165+1942=3350.
+\]
+The normative expanded polynomial has 14,518 monomials and constant coefficient one.
+
+\subsection{Why small row coefficients do not suffice}
+
+A residual such as \(z-x-y\) has coefficients only \(1,-1\). But a sum of many such residual squares can have a large coefficient of \(x^2\), because every use of \(x\) contributes another copy. Small local coefficients therefore do not imply a small height for the collected final polynomial.
+
+Assign distinct private units to distinct linear occurrences. For example, replace
+\[
+z-x-y\quad\text{by}\quad z-xu_i-yu_j.
+\]
+At a zero of \eqref{eq:unitpolynomial}, the unit rows force all \(u_j=1\), so the intended equation is unchanged. Its square, however, contains \(x^2u_i^2\) and \(y^2u_j^2\). These are distinct monomials from those produced by other uses of \(x\) or \(y\).
+
+A larger coefficient is split into separate marked occurrences. For example,
+\[
+-4x\quad\text{becomes}\quad-xu_a-xu_b-xu_c-xu_d,
+\]
+with four distinct private units. A constant occurrence is represented by a private unit alone. Thus a constant \(-2\) becomes \(-u_e-u_f\). This pays explicitly for each occurrence and prevents coefficient accumulation after collection.
+
+An original triangular gate output may remain unmarked in its unique defining row. A further linear term can remain unmarked when its variable has no other unmarked linear occurrence. If its row also retains a pure quadratic monomial \(xy\), the unmarked coordinate \(z\) is required to have an index larger than both product inputs. This makes \(z\) distinguishable in the resulting cubic cross term. There are 152 additional safe unmarked occurrences in the preferred construction, saving 152 units and residuals relative to its simpler 3,716-variable predecessor.
+
+\subsection{Keeping degree four}
+
+Multiplying a quadratic occurrence \(xy\) by a unit would make a cubic residual and could raise the final degree to six. Instead, reuse a product coordinate or introduce one. If an original row is literally \(z-xy=0\), it can supply the product coordinate. There are 383 distinct canonical original product definitions in this instance. For any other product that must be replaced, introduce one shared row \(p-xy=0\); 165 new product coordinates suffice.
+
+Every transformed source row retains at most one pure quadratic monomial. The construction ensures that a given raw quadratic monomial is retained at most twice across all transformed and new-product rows. Other occurrences use its product coordinate, with a private unit where required. Every row still has degree at most two.
+
+This sharing requires a precise proof. An old product coordinate does not equal its intended product at an arbitrary off-zero tuple. Its identity is available because the literal defining row is retained. For each transformed source row the independent verifier checks an identity of the form
+\begin{equation}\label{eq:pullback}
+R_i\big|_{u=1,\ p=\text{products}}
+=A_i+\sum_{(x_ax_b\rightsquigarrow z)}c_{i,a,b}(z-x_ax_b),
+\end{equation}
+where \(A_i\) is the original residual and every correction term is a genuine canonical original product definition. No pointwise substitution of an unconstrained old wire is assumed.
+
+\subsection{Complete coefficient collision argument}
+
+The following elementary conditions are checked for the entire instance: each private unit belongs to exactly one source term; each unmarked linear coordinate occurs at most once; each row has at most one unmarked linear term and at most one pure quadratic; every such raw product occurs at most twice; and every unmarked linear/pure-product cross term has its linear coordinate strictly larger than the product inputs.
+
+\begin{proposition}\label{prop:heighttwo}
+Under those conditions, the coefficient alphabet of \eqref{eq:unitpolynomial} is contained in \(\{-2,0,1,2\}\).
+\end{proposition}
+\begin{proof}
+The signal coordinates and unit coordinates have disjoint index ranges. Consider the possible monomials after squaring.
+
+The unit seed contributes \(u_0^2-2u_0+1\). A later unit row contributes \(u_j^2+u_{j-1}^4-2u_ju_{j-1}^2\). These monomials do not coincide with one another. A private constant occurrence may contribute one further \(u_j^2\), giving coefficient two. Each unit has at most one such occurrence. The seed unit has no source occurrence.
+
+An unmarked linear signal contributes its square once. A retained pure quadratic \(xy\) contributes \(x^2y^2\) once or twice, according to its global multiplicity. There is no cross product between two pure quadratics in one row. Thus the purely signal quartics have coefficients one or two.
+
+The purely signal cubic cross terms have the form \(\pm2zxy\), with \(z>\max(x,y)\). The largest index identifies the unique unmarked linear occurrence, so different rows cannot produce the same such cross term. New-product outputs satisfy the same property because they follow all source coordinates.
+
+A squared marked term has a squared private-unit factor, distinguishing it from cross terms. A cross term involving two marked occurrences is distinguished by its pair of private unit indices. A cross term with one marked occurrence is distinguished by its unit, and its other factor is the unique unmarked linear term or unique retained pure quadratic in that row. The different degrees distinguish these cases. If two marked occurrences are constants, their cross term has two distinct units; it cannot equal a unit-chain square or cubic. All cross-term coefficients are \(2\) or \(-2\).
+
+These cases exhaust every term in every residual square. No coefficient can accumulate to absolute value greater than two.
+\end{proof}
+
+The supplied equation attains each of \(-2,1,2\). Its coefficient of \(u_0^4\) is exactly one, from \(U_1^2\), so its degree is exactly four. Only \(U_0\) has a literal constant term, so the polynomial's constant coefficient is exactly one. The complete independently collected histogram is
+\[
+\#(-2)=4470,\qquad\#(1)=7280,\qquad\#(2)=2768.
+\]
+
+\subsection{A genuine bijection of zero sets}
+
+\begin{theorem}\label{thm:unitbijection}
+Coordinate projection gives a bijection from the integer zero set of \(Q_{3564}\) to the integer zero set of its supplied 1,457-variable squared-output source. Its inverse is a fixed polynomial map: set all units to one and set each new product coordinate to its designated product of source coordinates.
+\end{theorem}
+\begin{proof}
+At an original source zero, the canonical old product rows give their intended products. The proposed extension makes every unit and new-product residual zero. Identity~\eqref{eq:pullback} then makes each transformed source residual zero.
+
+Conversely, a zero of the integer sum of squares makes every residual zero. The seed and unit chain force all units to one. The new product rows fix all new product coordinates. The canonical original product rows have been preserved and fix their old product coordinates. Apply \eqref{eq:pullback} to recover every original residual. Each additional coordinate is uniquely determined, proving bijectivity.
+\end{proof}
+
+Unlike the change of Pell radius, this coefficient transformation does give a polynomial bijection of zero sets. The distinction matters: the radius change rebuilds private number-theoretic witnesses, whereas the unit construction only attaches deterministic arithmetic coordinates.
+
+\subsection{A general construction beyond this instance}
+
+The private-unit construction works for any finite quadratic integer system. A simple version first introduces a product coordinate for every distinct quadratic monomial and then marks every original linear or constant occurrence. It needs no special triangular outputs. If the source has \(n\) variables, \(r\) rows, \(D\) distinct quadratic monomials and total coefficient absolute-value sum \(L\), this version uses at most
+\[
+n+D+L+1\quad\text{variables},\qquad
+r+D+L+1\quad\text{quadratic residuals}.
+\]
+Its final quartic has coefficients in \(\{-2,0,1,2\}\) and the same projected integer zero set. The delivered construction improves these coarse counts by reusing original product definitions and safe unmarked terms.
+
+This general observation does not imply a universal small bound on the number of variables, because \(D\) and \(L\) depend on the source. Its usefulness here comes from the direct C222 arithmetic source having a moderate explicit row list and small local coefficients.

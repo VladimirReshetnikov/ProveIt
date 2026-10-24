@@ -1,0 +1,94 @@
+\section{Comparison with the pinned frontier}
+The comparison is frozen at public repository commit
+\texttt{84e16e43092614bae262ca59651cb9d77e31a255}
+(24 October 2026).  The active research is substantially ahead of the
+archival manuscript-collection README.  We also include the previously
+supplied prime-power and square-shell/reciprocal packages, which are not
+yet incorporated in that public snapshot.
+
+Let $\mathbb N=\{0,1,\ldots\}$.  The following complete direct polynomials
+are quartics.  Here $r$ is the number of quadratic residuals, $s$ the
+number of collected monomials, and $h$ the maximum absolute coefficient
+after expanding the single sum of squares.  A residual is not an
+arithmetic operation.
+\begin{center}
+\small
+\begin{tabular}{llrrrr}
+Construction & Domain & Variables & $r$ & $s$ & $h$\\
+\hline
+Prime-power & $\mathbb N$ &375&294&7907&$h_N$\\
+Prime-power & $\mathbb Z$ &553&348&7911&$h_Z$\\
+Reciprocal, old syntax & $\mathbb N$ &363&291&6674&83842716\\
+Reciprocal, shell syntax & $\mathbb N$ &364&292&6613&7002666\\
+Signed shell & $\mathbb Z$ &660&386&6408&3877579\\
+Public75, default & $\mathbb Z$ &604&372&9676&2445790974704\\
+Public75, affine16 & $\mathbb Z$ &609&377&8823&964213
+\end{tabular}
+\end{center}
+Here
+\[
+h_N=4951760157141530951222074278254,\qquad
+h_Z=534790096971332833190424347930.
+\]
+Every entry in this table was independently recomputed from the literal
+JSON residuals and compared coefficient by coefficient with the supplied
+expanded polynomial.  The data-only check executes no inherited script.
+It checks algebra and metrics, not the unbounded semantic calibration.
+
+The363-variable natural equation dominates the375-variable natural
+equation in all displayed measures.  The364-variable shell alternative
+uses one more variable but has fewer monomials and much smaller height.
+Over integers,553 variables trades against99-bit coefficient height.
+The public609-variable equation improves on660 variables and its
+coefficient height, but has more monomials,8823 versus6408.  Accordingly
+there is no single record independent of the chosen objective.
+
+Nor are these the smallest-variable quartics without qualification:
+the calibrated native-compiler route already has a37-integer quartic,
+a31-integer sextic and a26-integer octic, using very large fixed
+coefficient payloads.  Payload byte length and expanded coefficient
+height are different quantities.
+
+For orientation, selected complete arithmetic-circuit points are
+\[
+\begin{array}{c|r|r|r}
+\text{domain}&\text{unknowns}&\text{operations}&\text{degree}\\ \hline
+\mathbb Z_{>0}&9&405&1191570\\
+\mathbb Z_{>0}&10&99&368\\
+\mathbb Z_{>0}&10&105&340\\
+\mathbb Z_{>0}&11&111&211\\
+\mathbb Z_{>0}&12&96&70\\
+\mathbb Z&10&471&1245324\\
+\mathbb Z&12&145&1200\\
+\mathbb Z&12&141&1456\\
+\mathbb Z&13&135&536\\
+\mathbb Z&14&117&312
+\end{array}
+\]
+All live binary additions, subtractions and multiplications, including
+squares and fixed scalar products, are charged.  The145,141 and105
+operation counts were independently recounted here; the stated exact
+degrees use the cited source proofs.  No comparable expanded height is
+claimed for these circuit forms.  In particular the scalar12 tuple's
+1064921-bit $\beta$ is not the compact44 tuple's590069-bit $\beta$.
+
+\paragraph{Proof boundary.}
+Ordinary mathematical proofs, finite algebra checks, and a newly
+kernel-checked or encoded object-language ZFC derivation must not be
+conflated.  The cited constructions inherit named Pell, compiler and
+syntactic-calibration results; current internal formalization remains
+open.  The scalar12 pre-projection rank proof was checked against its
+retained signed-quadratic and interpolation sources: absolute main-Pell
+classification, rank bounds and the whole-product bound precede recovery
+of $\gamma=(d-X-ac)/H$.  No circular use of that projection was found in
+this prefix.  This does not replace an audit of every transitive
+calibration dependency.
+
+\paragraph{Rejected shortcut.}
+The shared-projection83 proposal is refuted for its original inherited
+compiler recipe by positive zeros at unbounded ordinary inputs for a
+genuine fixed empty-language program.  It is not a valid baseline.
+The established universal operation point is84 operations, degree187
+and18 positive witnesses;92 operations, degree325 and17 witnesses is a
+different valid tradeoff.  This rejection does not rule out all possible
+83-operation constructions or other coefficient recipes.

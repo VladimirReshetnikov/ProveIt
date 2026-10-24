@@ -1,0 +1,216 @@
+\section{Independent exact-degree certificates for upper centering}
+\label{sec:upper-centered-degrees}
+
+This section concerns the fixed-blank, ten-positive-variable circuit with
+$X=wq$, $q=\beta J+1$, and the unchanged compact44 coefficient tuple.
+The coefficient ports are constants when polynomial degree is measured.
+Write $A=\mathrm{Am1}+1$, $H=4A-5$, $P_1=q^3(q-1)$ and
+$M=P_1\mu^2H$.  The registers retained from the source satisfy
+\begin{align*}
+ D_p&=A^2-1,&D_f&=D_p I^2+1,&Q&=D_p^2I^2,&\delta&=Q-1,\\
+ V&=D_f(c(T+\alpha)-R)-c,&D_{\rm num}&=QV^2-1,\\
+ C_f&=(A+1)I,&C_t&=(V_0+1)k,&
+ D_\tau&=V_0(V_0+1)k^2+1.
+\end{align*}
+Let $L=k(T+\alpha)$ and
+\[
+ E=n-LB_t+\frac{K_{\rm pos}}H
+   +\frac{(q-1)Y-q^3B_t}{P_1}-\frac e{\mu^2}.
+\]
+The strong-center circuit has $Z_{\rm num}=MZ$ with
+$Z=V+C_f+E$.  The two-center circuit instead uses
+$Z=V+C_f+3C_t+E$.  These are rational identities between literal
+register expressions; $Z_{\rm num}$ itself is a polynomial because the
+displayed denominators are cleared by $M$.
+
+\paragraph{Theorem D.1.}
+The strong-center polynomial has exact total degree $358$.  The
+two-center polynomial has exact total degree $354$.  Their top
+homogeneous forms are, respectively,
+\begin{align*}
+ [N_f]_{358}
+   &=-9\,2^{22}(\beta J)^{188}w^{36}Y^{74}i^{18}
+       (\eta+\zeta)^{38}(\beta J-F)^4,\\
+ [N_{ft}]_{354}
+   &=3\,2^{23}(\beta J)^{183}w^{35}Y^{74}i^{19}
+       (\eta+\zeta)^{39}(\beta J-F)^4.
+\end{align*}
+In particular these forms are nonzero for every fixed $\beta>0$.
+Neither equality is inferred from a syntactic maximum-degree propagation,
+which overlooks the cancellation in the final norm.
+
+\paragraph{Formal setup.}
+Replace each of the ten witnesses by $t$ times a separate indeterminate,
+and work in the Laurent-series field $\mathcal K((t^{-1}))$, where
+$\mathcal K$ is the rational function field in those ten indeterminates.
+The fixed integer coefficient ports are in the coefficient field.
+For a nonzero Laurent series, ``degree'' means its largest exponent of
+$t$.  For polynomials this agrees with the ordinary total degree before
+the scaling.  A rational function with square leading coefficient has a
+formal square root after choosing its sign; here all three needed leading
+coefficients are explicit squares.  The usual binomial series proves
+existence, because each relative correction has strictly negative degree.
+No analytic convergence or assertion about positive solution values is
+used.
+
+Choose formal roots
+\[
+ f^2=D_f,\qquad \tau^2=D_\tau,\qquad
+ g^2=D_{\rm num}/\delta
+\]
+with $f$ near $AI$, $\tau$ near $C_t$, and $g$ near $V$.
+The following exact identities control all cancellations:
+\begin{align*}
+ (AI-f)(AI+f)&=I^2-1,\\
+ (C_t-\tau)(C_t+\tau)&=kC_t-1,\\
+ (g-V)(g+V)&=(V^2-1)/\delta.
+\end{align*}
+Thus $\deg(AI-f)=0$, $\deg(C_t-\tau)=1$, and
+$\deg(g-V)=-6$.  In particular
+$C_f-f=I+(AI-f)$ has degree $5$, with top form equal to that of $I$.
+
+For completeness, the register degrees relevant to this argument are
+\[
+\begin{array}{c|rrrrrrrrrrrr}
+\text{register}&A&I&R&V&C_f&C_t&\delta&M&E&f&\tau&g\\\hline
+\text{degree}&5&5&4&24&10&9&30&13&\leq4&10&9&24.
+\end{array}
+\]
+The bound on $E$ follows directly from $\deg(LB_t)=4$,
+$\deg(K_{\rm pos}/H)\leq-1$,
+$\deg(((q-1)Y-q^3B_t)/P_1)\leq1$, and
+$\deg(e/\mu^2)\leq0$.  The term $c(T+\alpha)$ has degree $3$ whereas
+$R$ has degree $4$, so the leading form of $V$ is $-[D_f]_{20}[R]_4$.
+
+\paragraph{Norm factorization.}
+The literal final circuit computes
+\[
+ \bigl((s+c_0-a-b)^2-4(sc_0+ab)\bigr)^2-64sc_0ab,
+\]
+where
+$s=\delta Z_{\rm num}^2$, $c_0=M^2D_{\rm num}$,
+$a=9\delta M^2D_\tau$, and $b=\delta M^2D_f$.
+Successive multiplication of conjugate pairs gives the exact identity
+\[
+ N=\delta^4M^8
+       \prod_{\sigma,\rho,\epsilon\in\{-1,1\}}
+           (Z+\sigma g+3\rho\tau+\epsilon f).
+\]
+This is an algebraic identity; the formal choices of signs of the three
+square roots merely permute its eight factors.
+
+Put $q_0=\beta J$, $k_0=\eta+\zeta$, and abbreviate the following
+nonzero homogeneous forms:
+\begin{align*}
+ a_0&=q_0^3wY,&j_0&=ik_0^2Y^2,&
+ r_0&=q_0^3(q_0-F),\\
+ t_0&=q_0^5wY^2k_0,&f_0&=a_0j_0,&
+ v_0&=-a_0^2j_0^2r_0,\\
+ d_0&=a_0^4j_0^2,&m_0&=4q_0^8a_0.
+\end{align*}
+They are the top forms of $A,I,R,\tau,f,V,\delta,M$, in the
+corresponding order.  The four factors with $\sigma=1$ all have degree
+$24$ and top form $2v_0$.  Among the factors with $\sigma=-1$, those
+with $\epsilon=1$ both have degree $10$ and top form $2f_0$.
+
+For strong centering, the last two factors have degree $9$ and top forms
+$3t_0$ and $-3t_0$.  The total degree is therefore
+\[
+ 4(30)+8(13)+4(24)+2(10)+2(9)=358,
+\]
+and the product of top forms is
+$-576d_0^4m_0^8v_0^4f_0^2t_0^2$.
+Substitution of the displayed abbreviations gives the first formula in
+the theorem.
+
+For two-center centering, the last two factors instead have degrees
+$9$ and $5$, with top forms $6t_0$ and $j_0$.  The latter conclusion
+uses $\deg(C_f-f)=5$, while the other three terms $E$,
+$3(C_t-\tau)$, and $V-g$ have degrees at most $4,1,-6$.
+Thus
+\[
+ 4(30)+8(13)+4(24)+2(10)+9+5=354,
+\]
+and the top-form product is
+$384d_0^4m_0^8v_0^4f_0^2t_0j_0$.
+This gives the second formula.  Each displayed top form is a nonzero
+polynomial, so the argument proves both the upper degree bound and its
+attainment. \hfill$\square$
+
+\paragraph{Independent exact ray check.}
+The accompanying standard-library Python program independently rebuilds
+both transformations from the pinned source.  It evaluates every circuit
+gate as a univariate integer polynomial after putting every witness
+equal to $t$ and setting $(\beta,K_0,M_C,M_F)=(2,3,5,7)$.
+The resulting leading terms are exactly
+$-9\,2^{248}t^{358}$ and $3\,2^{245}t^{354}$.
+These finite computations check the formulas on one exact ray; the
+Laurent-series argument above supplies the global bounds and proves
+nonvanishing for the actual fixed coefficient tuple.
+
+The identity $C_f=(A+1)I$, $S=(A-1)C_f=(A^2-1)I$ also permits the
+shared evaluation $D_f=SI+1$, $Q=S^2$.  Deleting the old separate
+$D_p$ and $I^2$ gates saves one operation without changing any
+polynomial, and therefore does not change either degree certificate.
+
+\subsection{The direct-$X$ siblings}
+
+For the direct source, $X=q+x$, the carrier is
+$B=(qK_0+X)C-qF$, and
+$P_1=q^4(q-1)$.  In particular its extra factor of $q$ must be retained
+when computing the degree of the norm prefactor.  Here $M=P_1\mu^2H$
+still has degree $13$, while $\delta$ has degree $26$.
+The centered rational identity uses
+\[
+ E=n-LB+\frac{K_{\rm pos}}H+\frac{Y}{q^3}
+       -\frac{B}{q(q-1)}-\frac{X}{q^4}-\frac e{\mu^2}.
+\]
+Its degree is at most $4$.  The relevant degrees become
+\[
+\begin{array}{c|rrrrrrrrrrrr}
+\text{register}&A&I&R&V&C_f&C_t&\delta&M&E&f&\tau&g\\\hline
+\text{degree}&4&5&4&22&9&8&26&13&\leq4&9&8&22.
+\end{array}
+\]
+The same exact root identities now give degrees $1,1,-4$ for
+$AI-f$, $C_t-\tau$, and $g-V$, respectively.  The decisive small
+two-center factor still has degree $5$ with leading form $[I]_5$.
+
+\paragraph{Theorem D.2.}
+The direct strong-center polynomial has exact degree $330$, and the
+direct two-center polynomial has exact degree $327$.  With
+$q_0=\beta J$ and $x_0=q_0+x$, their top forms are
+\begin{align*}
+ [N_f^{\rm dir}]_{330}
+   &=-9\,2^{22}q_0^{160}x_0^{36}Y^{74}i^{18}
+       (\eta+\zeta)^{38}(q_0-F)^4,\\
+ [N_{ft}^{\rm dir}]_{327}
+   &=3\,2^{23}q_0^{156}x_0^{35}Y^{74}i^{19}
+       (\eta+\zeta)^{39}(q_0-F)^4.
+\end{align*}
+
+\paragraph{Proof.}
+Use the same norm factorization and leading-factor classification.
+The prefactor contributes $4(26)+8(13)=208$.
+The four large factors contribute $4(22)=88$ and the two next factors
+contribute $2(9)=18$.  Strong centering leaves two factors of degree $8$,
+whereas two-center centering leaves degrees $8$ and $5$.  This gives
+$208+88+18+16=330$ and $208+88+18+8+5=327$.
+
+For the top-form calculation replace the earlier abbreviations by
+\[
+ a_0=q_0^2x_0Y,\quad
+ t_0=x_0q_0^4Y^2k_0,\quad m_0=4q_0^9a_0,
+\]
+retaining $j_0=ik_0^2Y^2$, $r_0=q_0^3(q_0-F)$,
+$f_0=a_0j_0$, $v_0=-a_0^2j_0^2r_0$ and
+$d_0=a_0^4j_0^2$.  The products
+$-576d_0^4m_0^8v_0^4f_0^2t_0^2$ and
+$384d_0^4m_0^8v_0^4f_0^2t_0j_0$ give exactly the two displayed
+nonzero homogeneous forms. \hfill$\square$
+
+The independent exact ray with all ten witnesses equal to $t$ and
+$(\beta,K_0,M_C,M_F)=(2,3,5,7)$ has leading terms
+$-9\,2^{220}3^{36}t^{330}$ and
+$2^{218}3^{36}t^{327}$.  Both were checked on the supplied literal
+104-operation and 106-operation graphs after shared-$C_f$ evaluation.

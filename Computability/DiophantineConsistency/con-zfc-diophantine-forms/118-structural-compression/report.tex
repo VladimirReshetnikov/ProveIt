@@ -1,0 +1,453 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,enumitem,fancyhdr,needspace}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black]{hyperref}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single,
+ rulecolor=\color{black!15},backgroundcolor=\color{black!2},showstringspaces=false}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}(\mathrm{ZFC})}
+\newcommand{\sha}{\texttt{84e16e43092614bae262ca59651cb9d77e31a255}}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Diophantine consistency equations}
+\fancyhead[R]{\small 24 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\hypersetup{pdftitle={Removing Redundancy from Diophantine Consistency Equations},
+ pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov},
+ pdfsubject={Explicit equations, proofs, and exact computational verification}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.3in}
+{\small\scshape Research for the ProveIt project\par}
+\vspace{0.35in}
+{\huge\bfseries\raggedright Removing Redundancy from\\
+Diophantine Consistency Equations\par}
+\vspace{0.25in}
+{\Large Unweighted Pell radicals, stronger transport bounds,\\
+shared integer guards, and exact norm identities\par}
+\vspace{0.4in}
+{\large Prepared for Vladimir Reshetnikov\\24 October 2026\par}
+\vspace{0.3in}
+\begin{abstract}
+We construct and verify several improvements to explicit polynomial equations
+whose unsolvability is equivalent to syntactic consistency of ZFC.
+A direct quartic over the unrestricted integers is reduced from 604 to
+589 unknowns and from 9,676 to 8,156 monomials, at unchanged coefficient
+height. A square-gap theorem removes an asymmetric radical weight, and an
+auxiliary Pell index bound eliminates a separate transport majorant.
+Together they give a ten-positive-variable equation with 96 arithmetic
+operations and exact degree 360, and a direct-base companion with
+102 operations and exact degree 332.
+Exact norm identities give pointwise-identical integer evaluators with
+126 operations in thirteen variables, and 138 or 137 in twelve variables.
+
+Complete equations, fixed coefficient payloads, source pins, builders and
+exact checkers accompany the report. All comparisons use one frozen
+repository snapshot. These results improve specific complexity measures;
+they do not establish global minimality or reduce the repository's best
+variable count. The arithmetic-to-refutation calibration is inherited.
+No new end-to-end Lean, Rocq or object-language ZFC derivation is claimed.
+\end{abstract}
+\vfill
+{\small AI-assisted research. Unbounded mathematical arguments are stated
+separately from exact algebraic and finite-specification checks.}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\begingroup
+\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+
+\section{Results, domains and the meaning of simplicity}
+
+The objective is a fixed polynomial $P$ with integer coefficients and a
+precisely stated domain $D$ for which ordinary mathematics establishes
+\[
+ \mathrm{ZFC}\vdash
+ \left[(\forall\boldsymbol{x}\in D^n)\,
+        P(\boldsymbol{x})\ne0\right]\ \longleftrightarrow\ \Con.
+ \tag{1}
+\]
+Here $\Con$ means that the specified syntactic ZFC calculus has no finite
+derivation of falsity. We neither assume nor prove $\Con$.
+A proof of the biconditional is different from a proof of its left side.
+
+There is no established scalar measure of the \emph{simplest} Diophantine
+equation. Variable count, degree, arithmetic operations, coefficient height
+and expanded support measure different costs. We preserve the domain and
+compare those quantities separately. Ten positive variables are not ten
+unrestricted integer variables.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Domain and construction & Variables & Old degree & New degree & Operations\\
+\midrule
+Positive, scaled base &10&368&\textbf{360}&99 $\to$ \textbf{96}\\
+Positive, direct base &10&340&\textbf{332}&105 $\to$ \textbf{102}\\
+Integers, quadratic trace &13&536&536&135 $\to$ \textbf{126}\\
+Integers, rational carrier &12&1,200&1,200&145 $\to$ \textbf{138}\\
+Integers, integral carrier &12&1,456&1,456&141 $\to$ \textbf{137}\\
+\bottomrule
+\end{tabular}
+\caption{Exact circuit comparisons. Each live binary addition, subtraction
+or multiplication costs one operation, including multiplication by a
+constant. Constant leaves and register reuse are free.}
+\label{tab:circuits}
+\end{table}
+
+The direct quartic gives a different improvement:
+\[
+\begin{array}{c|rr}
+ &\text{parent}&\text{new}\\ \hline
+\text{unrestricted integer variables}&604&589\\
+\text{quadratic residuals}&372&371\\
+\text{total degree}&4&4\\
+\text{collected monomials}&9,676&8,156\\
+\text{maximum absolute coefficient}&
+2,445,790,974,704&2,445,790,974,704
+\end{array}
+\tag{2}
+\]
+The saving is fifteen actual variables after projection, and 1,520
+monomials, approximately $15.71\%$ of the parent's support.
+All 8,156 coefficients are supplied explicitly.
+
+The comparison repository is \texttt{VladimirReshetnikov/ProveIt}.
+The frozen commit is
+\begin{center}\small\sha.\end{center}
+Its active research is newer than its placed manuscript
+collection. The 99/368 and 105/340 positive endpoints, thirteen-integer
+trace, two twelve-integer carriers, and 75-predicate quartic family are
+the actual parents used here \cite{zero,direct,trace,scalar,quartic75}.
+
+\subsection{Different kinds of equivalence}
+
+The integer norm rewrites are \emph{identities of polynomials}: values and
+zero sets agree at every assignment, including degenerate ones.
+Removing the radical weight and simplifying the transport carrier changes
+the positive polynomial; we prove equivalence of \emph{positive zero
+existence}, not equality of zero sets at unchanged inputs.
+The quartic transformations change certificate variables and reconstruct
+every old sign condition before invoking the source interpretation.
+
+The contributions are new improvements relative to the inspected
+snapshot. We do not claim worldwide priority for a generic norm identity
+or an elementary sign lemma. The finite repository audit is not an
+exhaustive historical search.
+
+\subsection{Inherited consistency calibration}
+
+The positive equations and the small integer norm equations inherit the
+repository's ordinary native-compiler/K215/refutation calibration.
+The direct quartic uses its separate C222 proof-certificate route and
+does not depend on K215 or the Jones nine-variable compression.
+The two routes are not identified.
+
+The new finite algebraic transformations and ordinary witness-existence
+arguments are formalizable in ZFC. Composing them with their pinned
+source theorems gives (1). Exact checkers do not replace the inherited
+unbounded calibration proof, and this report does not supply the complete
+encoded derivation in the project's object-language ZFC calculus.
+
+Small-variable universal constructions are separate substantial results;
+Sun's ten-integer theorem illustrates the distinction between reducing
+variable count and simplifying a particular evaluator \cite{sun}.
+The present packet does not improve that general bound or the repository's
+nine-positive-variable endpoint.
+
+\section{Exact four-root norm identities and smaller integer evaluators}
+\label{sec:norm}
+
+For formal radicands $a,b,c,d$, define
+\[
+F_{16}(x;a,b,c,d)=
+\prod_{\epsilon\in\{-1,1\}^4}
+\bigl(x-\epsilon_1\sqrt a-\epsilon_2\sqrt b
+        -\epsilon_3\sqrt c-\epsilon_4\sqrt d\bigr).
+\tag{3}
+\]
+Changing the sign of a root permutes the factors. The product is therefore
+an integer polynomial, even in $x$. Write
+$N_4(z;a,b,c,d)=F_{16}(x;a,b,c,d)$ when $z=x^2$.
+
+\subsection{A symmetric identity}
+
+Compute
+\[
+\begin{aligned}
+p&=a+b,&q&=c+d,&u&=ab,&v&=cd,\\
+e_1&=p+q,&e_2&=u+v+pq,&e_3&=uq+vp,&e_4&=uv,
+\end{aligned}
+\]
+\[
+s=z-e_1,\qquad t=s^2-4e_2,\qquad
+C=t^2+64(e_4-ze_3),\qquad L=t-4zs.
+\tag{4}
+\]
+
+\begin{theorem}
+The following is an identity of integer polynomials:
+\[
+\boxed{N_4(z;a,b,c,d)=C^2-256e_4L^2.}
+\tag{5}
+\]
+The displayed schedule uses 29 binary operations when $z$ is supplied.
+\end{theorem}
+
+\begin{proof}
+For algebraically independent $r_1,r_2,r_3,r_4$, put $a_i=r_i^2$ and
+$x=r_1+r_2+r_3+r_4$. Let $p_2,p_3,p_4$ be the elementary symmetric
+expressions in the $r_i$. Direct expansion gives
+\[
+2p_2=x^2-e_1=s,\quad e_2=p_2^2-2xp_3+2p_4,\quad
+e_3=p_3^2-2p_2p_4,\quad e_4=p_4^2.
+\]
+Consequently $t+8p_4=8xp_3$ and $p_3^2=e_3+sp_4$. Squaring and
+substituting yields
+\[
+t^2+64(e_4-x^2e_3)+16p_4(t-4x^2s)=0.
+\]
+Thus $C+16p_4L=0$; eliminating $p_4$ proves that (5) vanishes at
+$x=\sum r_i$. The calculation applies to all sixteen sign choices.
+Those roots are distinct over the generic rational-function field.
+Both expressions are monic of degree sixteen in $x$, so they are equal.
+Polynomial specialization covers zero radicands and coincident roots;
+no division by a specialized quantity occurs.
+
+The four elementary symmetric expressions cost twelve operations.
+The remaining schedule costs $1+3+5+3+5=17$, giving 29.
+\end{proof}
+
+\subsection{The preferred 28-operation schedule}
+
+During review, a retained source proof was found to contain a 28-operation
+schedule for the same norm. It is explicitly credited and pinned in the
+packet. It gives the preferred final counts, one operation below the
+symmetric variants:
+\[
+\begin{aligned}
+\sigma_1&=a+b+c,&\sigma_2&=ab+(a+b)c,&\sigma_3&=abc,\\
+U&=z+d,&P&=U-\sigma_1,&
+E&=P^2+4(zd-\sigma_2),\\
+G_{\rm e}&=E^2+16(zdP^2-4\sigma_3U),&
+G_{\rm o}&=EP-16\sigma_3,\\
+N_4(z;a,b,c,d)&=G_{\rm e}^2-64zdG_{\rm o}^2.
+\end{aligned}
+\tag{6}
+\]
+The cost is 28 with shared intermediates. Pair the two choices of the
+fourth root in the octic three-root norm to derive (6), or compare all
+coefficients with (3). The delivered checker uses the latter independent
+method, obtaining all 495 coefficients.
+
+The main computational improvement is to clear a rational radicand
+\emph{before} applying either compact norm schedule:
+\[
+\boxed{
+\delta^8F_{16}(Z;A,B,E,C_{\rm n}/\delta)
+=N_4(\delta Z^2;\delta A,\delta B,\delta E,C_{\rm n}).
+}
+\tag{7}
+\]
+The left side means its cleared polynomial. Homogeneity proves equality
+for nonzero $\delta$, and polynomial identity extends it to $\delta=0$.
+No actual division is required in the evaluator.
+
+If $A=U^2D_f$, $B=U^2D_t$, $E=U^2A_g$, and $C_{\rm n}=U^2C_y$,
+form $D=\delta U^2$ once and evaluate
+\[
+N_4(\delta Z^2;DD_f,DD_t,DA_g,U^2C_y).
+\tag{8}
+\]
+The shared scale saves two additional multiplications. With (6), the
+whole thirteen-integer evaluator drops from 135 to 126 operations.
+The alternative symmetric evaluator, with the elementary identity (5),
+has 127 operations and is also retained.
+
+\subsection{A complete thirteen-integer equation}
+
+The variables are
+\[
+j,C,z,h,r,v,w,T,c,n,t,p_2,p_3\in\Z.
+\tag{9}
+\]
+The six fixed coefficients
+$\beta,K_0,M_C,M_F,A_{\rm cone},B_{\rm cone}$ are the entire pinned
+mixed-parity tuple in \texttt{integer/coefficients/}. In particular,
+\[
+\beta=2^{1064921}-1,\qquad A_{\rm cone}=2^{1113},\qquad
+B_{\rm cone}=2^{666104}.
+\]
+The other three numerals are supplied as complete, authenticated
+little-endian byte strings. These are fixed coefficients, not quantified
+inputs. This tuple differs from the BFS tuple of Appendix~\ref{app:constants}.
+The supplied $M_F$ already includes its single shift by $\beta$.
+
+Define
+\[
+\begin{aligned}
+J&=6j+1,\quad q=\beta J+1,\quad W=12w+4,\quad X=qW,\\
+Y&=qv,\quad E_0=XY,\quad a=E_0+Y,\quad H=4a+3,\\
+\Delta&=a^2+H,\qquad F=(K_0+W)C-z(q-1),\\
+R&=[q(q-F)-C](q^2-1)+(M_C+qM_F)J,\\
+k&=R+1+hE_0,\quad\eta=c-Yk,\quad\zeta=k-\eta,\\
+i&=2r+1,\quad I=ic^2,\quad D_f=1+\Delta I^2,\quad Q=\Delta^2I^2,\\
+\delta&=Q-1,\quad V=D_f(cT-R)-c,\quad C_y=QV^2-1,\\
+\ell&=XY^2,\quad L_0=\ell k,\quad D_t=1+L_0(L_0+k).
+\end{aligned}
+\tag{10}
+\]
+The remaining expressions are
+\[
+\begin{aligned}
+G&=(A_{\rm cone}F)(B_{\rm cone}C)
+ -(q-A_{\rm cone}F-B_{\rm cone}C)^2,\\
+\Pi&=G\eta\zeta-(t^2-G-\eta\zeta+1)^2,\\
+A_g&=\Pi-1-p_2^2-p_3(p_3+1),\\
+M&=2q^2,\quad U=MH,\quad K=X(X+2ac)-1,\\
+Z&=U(n+V)+MK+H(v-q^2),\qquad D=\delta U^2.
+\end{aligned}
+\tag{11}
+\]
+The equation is (8) equal to zero, with the explicit norm (6).
+It is an ordinary polynomial in precisely the thirteen variables (9).
+Identity (7) proves equality with the entire parent polynomial.
+Its exact degree is 536; for example the attained-degree coefficient is
+\[
+[j^{240}w^{80}v^{96}h^{16}r^{32}c^{64}z^8]P
+=2^{488}3^{320}\beta^{240}>0.
+\tag{12}
+\]
+The exponents sum to 536. Universal polynomial equality is why this
+coefficient, the degree, and every integer zero transfer.
+
+\subsection{Twelve-integer companions}
+
+The two companions use $j,C,z,h,r,v,w,T,c,n,t,s\in\Z$ and the same
+six coefficients. Their complete prefixes are unchanged from the pinned
+scalar-carrier sources. In the source notation, their new tails are
+\[
+N_4(\delta Z^2;
+9\delta S^2D_f,\ 81\delta S^2D_t,\ 729\delta S^2D_g,\ S^2C_y)
+\tag{13}
+\]
+and
+\[
+N_4(Z^2;9S^2D_f,\ 81S^2D_t,\ 729S^2D_g,\ S^2\delta C_y).
+\tag{14}
+\]
+With (6) they have 138 operations at degree 1,200 and 137 at degree 1,456.
+The symmetric schedule (5) costs one additional operation in each case.
+The complete definitions of $S,Z,D_g$ and every other front abbreviation
+are literal in the delivered JSON circuits and copied source proofs.
+These are exactly the original polynomials, with smaller evaluators.
+
+\section{The new ten-positive-variable equation}
+\label{sec:positive}
+
+The only unknowns are
+\[
+J,F,\alpha,i,T,w,Y,n,\eta,\zeta\in\Pos.
+\tag{15}
+\]
+Use the four BFS coefficients $\beta,K_0,M_C,M_F$ defined entirely in
+Appendix~\ref{app:constants}. All other symbols below are polynomial
+abbreviations.
+\[
+\begin{aligned}
+q&=\beta J+1,&C&=q-F-\alpha,&X&=wq,\\
+k&=\eta+\zeta,&c&=kY+\eta,&\mu&=q^2+1,\\
+t&=\mu Y,&A&=t(X+1)+1,&\Delta&=A^2-1,\\
+H&=4A-5,&v_0&=Xt^2,&I&=ic^2.
+\end{aligned}
+\tag{16}
+\]
+Set
+\[
+\begin{aligned}
+D_\tau&=1+v_0(v_0+1)k^2,&D_f&=1+\Delta I^2,\\
+Q&=\Delta^2I^2,&\delta&=Q-1,\\
+R&=[(q-1)(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+e&=k-R-1,&B_t&=(K_0+w)C-F,\\
+b&=c(T+\alpha)-R,&V&=D_fb-c,\\
+D_{\rm n}&=QV^2-1,&K_{\rm pos}&=X(3c-2X)+2,\\
+W&=1+(q-1)b,&P_0&=q^3(q-1),\qquad M=P_0\mu^2H.
+\end{aligned}
+\tag{17}
+\]
+Form
+\[
+\begin{split}
+Z={}&P_0\mu^2[H(n+V)+K_{\rm pos}]\\
+&+H[\mu^2((q-1)Y-q^3WB_t)-P_0e],
+\end{split}
+\tag{18}
+\]
+\[
+S=\delta Z^2,\quad B_\tau=\delta M^2D_\tau,\quad
+B_f=\delta M^2D_f,\quad B_y=M^2D_{\rm n},
+\tag{19}
+\]
+\[
+E=(S+B_y-B_\tau-B_f)^2-4(SB_y+B_\tau B_f).
+\tag{20}
+\]
+The single equation is
+\[
+\boxed{\qquad P_{96}=E^2-64SB_yB_\tau B_f=0.\qquad}
+\tag{21}
+\]
+It has exact degree 360 and a 96-operation evaluator.
+There is no square root, division, variable exponent, hidden coefficient,
+or additional quantified variable in (16)--(21).
+The circuit evaluates $D_\tau$ as $(v_0k)(v_0k+k)+1$ and shares
+$A-1=(\mu Y)(X+1)$.
+
+Relative to the pinned 99/368 parent, two changes are made:
+the factor 9 on $B_\tau$ is removed, and the transport factor
+$1+(q-1)(HI+b)$ is replaced by $1+(q-1)b$.
+The first requires separation of three radicals; the second requires a
+stronger transport bound. Neither change is justified by an identity of
+the complete old and new polynomials.
+
+The arithmetic argument is uniform for coherent tuples satisfying
+\[
+\beta\text{ odd},\quad\beta\ge31,\quad K_0>0,\quad
+0<M_C<\beta<M_F<2\beta.
+\tag{22}
+\]
+These inequalities are not themselves a consistency calibration.
+All four actual constants must be the complete calibrated tuple, as they
+are in the appendix and the reconstructed coefficient files.
+
+\input{positive_proofs.tex}
+\input{quartic_and_appendices.tex}
+\end{document}
+

@@ -1,0 +1,78 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=24mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array,microtype}
+\usepackage{xcolor,enumitem,fancyvrb,fvextra}
+\usepackage[hidelinks,breaklinks]{hyperref}
+\usepackage{bookmark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\vp}{v_p}
+\newcommand{\Pair}{\operatorname{Pair}}\newcommand{\Kred}{K_{\mathrm{red}}}
+\newcommand{\FNorm}{\mathcal F_{16}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\hypersetup{pdftitle={Diophantine consistency equations with powered saturation and factorial carriers},pdfauthor={Research contribution prepared for Vladimir Reshetnikov}}
+\title{Diophantine consistency equations with powered saturation and factorial carriers\\[8pt]\large Round 14 research report and reproducible artifacts}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt repository}
+\date{24 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This iteration improves two explicitly calibrated approaches to an integer polynomial whose unsolvability is equivalent in ZFC to $\Con(\mathrm{ZFC})$. The principal small-variable equation has twelve unrestricted integer unknowns, exact degree $768$, and $141$ live binary arithmetic operations. Its new ingredients are fifth-power divisibility saturation, full supported-modulus Pell interpolation, and cancellation-aware integral centering of a four-root norm. A separate direct proof-certificate equation has $519$ unrestricted integer unknowns, degree four, $6253$ collected monomials, and coefficient height $411060$. A shared-factorial architecture yields a quartic in $349$ nonnegative integers; a signed companion has $517$ integer variables at a larger height. These are measured tradeoffs, not global optimality claims. All new unbounded arguments are proved below; inherited native and logical calibration boundaries are identified rather than presented as newly kernel-checked theorems. Exact equations, actual coefficient payloads, source pins, generators, independent checkers, and clean-replay instructions accompany this report.
+\end{abstract}
+\tableofcontents
+\clearpage
+\section{Results and precise interpretation}
+\subsection{The selected equations}
+Throughout, $\N=\{0,1,2,\ldots\}$; ``positive'' means strictly greater than zero. A named arithmetic register is an abbreviation, not an additional quantified variable. Coefficient height is the maximum absolute value of a fully expanded polynomial's integer coefficients. Arithmetic operations count live binary addition, subtraction, and multiplication, including squares and multiplication by a fixed scalar; register reuse and fixed leaves cost zero.
+\begin{center}\small
+\begin{tabular}{@{}lrrrrr@{}}\toprule
+Endpoint and domain & Variables & Degree & Rows & Terms & Height\\\midrule
+Centered norm, $\Z$ &12&768&---&not expanded&not measured\\
+Direct centered, $\Z$ &519&4&321&6253&411060\\
+Derived centered, $\Z$ &517&4&310&6774&3904267\\
+Derived labels, $\N$ &349&4&268&12768&86915503\\\bottomrule
+\end{tabular}\end{center}
+The norm uses $141$ operations: $88$ multiplications, $26$ additions, and $27$ subtractions. Its $149$-operation reduced graph is the same polynomial, not merely an equivalent zero-existence condition. The norm keeps all six authentic fixed coefficients from the pinned source and is not a small-literal-coefficient construction. By contrast every coefficient of the direct $519$-variable quartic has absolute value at most $411060<2^{19}$. Its residual count is not an operation count.
+
+For each endpoint $P$ over its stated domain $D$, the intended statement is
+\begin{equation}\label{eq:logical}
+ \mathrm{ZFC}\vdash
+ \bigl[\forall x\in D^n\;P(x)\ne0\bigr]
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+\end{equation}
+The ordinary mathematical proof factors through
+\[
+ (\exists x\in D^n\;P(x)=0)
+ \quad\longleftrightarrow\quad
+ \text{there is a finite syntactic ZFC refutation}.
+\]
+This is an equivalence, not a proof of consistency. No consistency assumption is used. This report supplies ordinary proofs and finite exact algebraic verification, not a newly completed Lean or Rocq development or a separately encoded object-language derivation in ZFC. The inherited formalizability and native-calibration boundary remains explicit.
+
+\subsection{What genuinely changed}
+The norm replaces full carrier divisibility by fifth-power divisibility. A quantitative separation bound from the authentic large base forces the same exact main projection. A stronger $p$-adic interpolation theorem removes a redundant positivity-witness factor from the strong Pell scale. Finally, an integral shear cancels the highest norm terms.
+
+The direct branch uses reciprocal prime-power CRT with a small self-bounding factorial, a carrier-derived amplification exponent, an exact signed factorization of the Horn certificate, and certified integral projections and coordinate translations. The natural branch uses the same factorial both to separate formula labels and to supply CRT moduli; a derived polynomial range eliminates an extra local slack. This direct route uses neither a Jones universal equation nor K215. The norm retains the source34 tuple and its own inherited computational provenance; these routes must not be conflated.
+
+\subsection{Pinned sources and proof boundaries}\label{sec:boundaries}
+The public comparison snapshot is ProveIt commit
+\begin{center}\small\texttt{84e16e43092614bae262ca59651cb9d77e31a255}.\end{center}
+The supplied prime-power and reciprocal-shell packets retain logical calibration at commit \texttt{08200eb10fde2db408c69dffd840d6920a569b1f}; some direct developments are ahead of public main. The norm keeps the source34 six-port tuple, whose binding was recorded at \texttt{2605669a532342f153b13eb6b4a0af4b54f5fa37}. Source pins and hashes are included.
+
+For the direct branch, the named calculus boundary is
+\texttt{KEndpoint.c222\_iff\_zf\_refutation}, followed by
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+Source-rule syntax, the original Horn interface, simultaneous Pell powers, binomial digit graphs, and nonnegative contraction are retained from supplied proofs. For the norm, the inherited interfaces are scalar-parent radical separation, adjacent-coefficient descent, signed folding, pre-projection ranks, canonical witnesses, and source34 calibration. Their proof texts are bundled. The new saturation argument does not assume a main projection before recovering it.
+
+The known shared83 and weakened86 counterexamples concern different weakened arithmetic interfaces, not the retained source34 calibration. The former loses required carrier divisibility; the latter loses a strict positivity slack. Neither refutes the modified75 compiler itself. Here the full signed kernel is restored before invoking its inherited ordinary calibration, and the strict determinant guard remains. The targeted source review is included in the archive.
+
+\input{norm_proof.tex}
+\input{direct_arithmetic.tex}
+\input{direct_signed.tex}
+\input{comparison.tex}
+\input{reproducibility.tex}
+\end{document}

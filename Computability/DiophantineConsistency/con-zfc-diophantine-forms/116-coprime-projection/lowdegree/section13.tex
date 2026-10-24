@@ -1,0 +1,64 @@
+\section{A triple-centered companion: thirteen integers, degree 274}
+\label{sec:triple-carrier}
+A third endpoint removes the auxiliary coordinate $y$ as well as $f$.
+It has \textbf{13 unrestricted integer variables, exact degree274 and129
+live operations}, improving both degree and evaluator cost over the inspected
+13-variable degree536/135-gate equation.
+
+Keep the shared definitions with $D_f=1+\Delta I^2$, $Q=\Delta(D_f-1)$,
+$V=D_f(cT-R)-c$, and $Z=Un+MK_*+H(v-q^2)$.  Set
+\begin{align*}
+ D_\tau&=1+L(L+k),&D_a&=(Q-1)(QV^2-1),\\
+ A&=2L+k,&B&=6(a+2)I,&C_*&=9(2Q-1)V,\\
+ Z_*&=Z+U(A+B+C_*),\\
+ s&=Z_*^2,&u&=4U^2D_\tau,&v_*&=36U^2D_f,&w_*&=324U^2D_a,\\
+ N&=[(s+w_*-u-v_*)^2-4(sw_*+uv_*)]^2-64sw_*uv_*.
+\end{align*}
+With $G=B_{\rm sign}-P_{\rm pos}$, the complete equation is
+\[
+ \boxed{P_{13}=N+G^2+NG^2=0.}
+\]
+The unit-product identity $(1+N)(1+G^2)=1$ proves $N=G=0$ without any
+assumption about the sign of $N$.
+
+\paragraph{Root recovery and complete maps.}
+The norm is monic in the rational total center $Z_*/U$, so integer-root
+monicity again licenses CRT before root extraction.  Unconditionally,
+\[
+ D_\tau\equiv D_f\equiv D_a\equiv1\pmod3.
+\]
+The root weights $2,6,18$ therefore have distinct three-adic orders.
+In any nonrational squareclass, the least-order term cannot cancel the
+others modulo3; independence of squareclasses forces all three roots to be
+integers.  If $e^2=D_a$, the rational adjacent-Pell root
+$e/(Q-1)$ is integral by the ordinary denominator-descent lemma, explicitly
+proved in the component proof.  Restoring
+\[
+ f_{15}=\sqrt{D_f},\quad
+ y_{15}=e/(Q-1)-V,\quad
+ n_{15}=\sqrt{D_\tau}-L-K_*/H-(v-q^2)/M
+\]
+gives a literal15-variable zero.  Conversely every15-variable zero gives
+an integral $e=(Q-1)(V+y)$ and an integral shift of $n$ making a norm factor
+zero.  No new canonical-choice or strong-index tuning is required.
+
+\paragraph{Why triple centering matters.}
+The root-center defects are
+\[
+ 4D_\tau-A^2=4-k^2,\quad
+ 36D_f-B^2=36(1-I^2),\quad
+ 324D_a-C_*^2=81(4-4Q-V^2).
+\]
+They expose cancellations hidden by the compact direct evaluator.  The
+independent generic expansion has568 terms and exact weighted leading
+monomial $128ZU^7A^2BC_*^4$, of degree242.  Hence the signed norm itself
+has degree242 and the unit-product finalizer has degree274.  The actual
+fixed-coefficient leading witness is
+\[
+ [j^{124}w^{41}v^{47}h^6z^4r^{17}c^{34}n]P_{13}
+ =2^{265}3^{174}\beta^{124}>0.
+\]
+The129-gate direct evaluator has76 multiplications,31 additions and22
+subtractions.  The longer Horner evaluator is retained solely as an exact
+identity/degree comparison.  Full formulas, ordinary maps and independent
+checks are under \texttt{lowdegree/thirteen/}.

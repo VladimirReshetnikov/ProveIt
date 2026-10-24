@@ -1,0 +1,161 @@
+{
+  "bfs_variants": {
+    "all_four_complete_payloads_authenticated": true,
+    "circuits": {
+      "equation102.json": {
+        "exact_degree": 332,
+        "operations": 102,
+        "same_arithmetic_graph_as_checked_original": true,
+        "sha256": "57f5212c4f3d2ecbec942062269f8f601ab68023c908a65b30f1655f346f9a8d"
+      },
+      "equation104.json": {
+        "exact_degree": 340,
+        "operations": 104,
+        "same_arithmetic_graph_as_checked_original": true,
+        "sha256": "cfab2067dc19804d61af4997cc4943ae0eed6a07de803ad45bfac608eecd4c88"
+      },
+      "equation96.json": {
+        "exact_degree": 360,
+        "operations": 96,
+        "same_arithmetic_graph_as_checked_original": true,
+        "sha256": "17afb383013cd162c5db84ab49e95b0ecfc58ee761569368bc6e85beefaf99dd"
+      },
+      "equation98.json": {
+        "exact_degree": 368,
+        "operations": 98,
+        "same_arithmetic_graph_as_checked_original": true,
+        "sha256": "bf3f9a4a1bd4e2628d9f4093db24802307c3ec33b62e6ac85fc89c8e431dbf88"
+      }
+    },
+    "whole_printed_recipe_reconstructed": true
+  },
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "build.py",
+        "--check"
+      ],
+      "directory": "positive",
+      "exit_code": 0,
+      "label": "positive_build",
+      "output_sha256": "aba6f573f325de5fcb6a186171902e05506b25e082170e90929bba6ae536d468"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "verify.py",
+        "--check"
+      ],
+      "directory": "positive",
+      "exit_code": 0,
+      "label": "positive_algebra",
+      "output_sha256": "98c3c9dc4ea71e2555e9e1d9f71034c7b45243c3f4154b87d8678eb8366bfb11"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "verify_symmetric_norms.py"
+      ],
+      "directory": "integer",
+      "exit_code": 0,
+      "label": "integer_norms",
+      "output_sha256": "e67f787d81bca62157cec1034118755ccca19a22bd1de3e667d00082c0af89dc"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "check_pair_guards.py"
+      ],
+      "directory": "quartic",
+      "exit_code": 0,
+      "label": "quartic_pairs",
+      "output_sha256": "772cd209578311445fc68a257add317c3adbf738128809d269654b885a5c461e"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "check_fused68.py"
+      ],
+      "directory": "quartic",
+      "exit_code": 0,
+      "label": "quartic_final",
+      "output_sha256": "f9a08ada32c1a6ce76a15080fe5e9f6b221ae45f74933ca933e876f6980b097e"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "reconstruct_constants.py"
+      ],
+      "directory": ".",
+      "exit_code": 0,
+      "label": "bfs_constants",
+      "output_sha256": "836a058dc6c4b71b43891baa8b9386694e7024715fb9167fc02c9427da65367c"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "export_quartic_text.py",
+        "--check"
+      ],
+      "directory": ".",
+      "exit_code": 0,
+      "label": "quartic_plaintext",
+      "output_sha256": "9c7ee0191a5641c62dd599ec41fbe963c05458691dbb9099fa949672c4edc185"
+    }
+  ],
+  "positive_proof_files_authenticated": 14,
+  "principal_claims": {
+    "direct_quartic": {
+      "domain": "unrestricted integers",
+      "exact_degree": 4,
+      "height": 2445790974704,
+      "monomials": 8156,
+      "variables": 589
+    },
+    "integer_scalar_integral": {
+      "exact_degree": 1456,
+      "operations": 137,
+      "variables": 12
+    },
+    "integer_scalar_rational": {
+      "exact_degree": 1200,
+      "operations": 138,
+      "variables": 12
+    },
+    "integer_trace": {
+      "exact_degree": 536,
+      "operations": 126,
+      "variables": 13
+    },
+    "positive_direct": {
+      "domain": "strictly positive integers",
+      "exact_degree": 332,
+      "operations": 102,
+      "variables": 10
+    },
+    "positive_scaled": {
+      "domain": "strictly positive integers",
+      "exact_degree": 360,
+      "operations": 96,
+      "variables": 10
+    }
+  },
+  "receipt_sha256": {
+    "integer/VERIFICATION.json": "b9457e74e95033f69244904dc3c4835854b783d1082c2e36e8da342a28ea1af7",
+    "positive/CHECKS.json": "8655ce9e8c81b92a7fbccd43e7c3f7893645cc3d8cbc9603500a81f6ed9486e9",
+    "positive/coefficients_bfs/RECONSTRUCTION.json": "836a058dc6c4b71b43891baa8b9386694e7024715fb9167fc02c9427da65367c",
+    "quartic/CHECK_FUSED68.json": "8301d4d17176e774b1cac2afc456911864302896482711b92e41261f5ab02341",
+    "quartic/CHECK_PAIR_GUARDS.json": "80f40029e4d1f64a035b8b940b22c821c60e386cb358a6224197338221de9006"
+  },
+  "scope": "Exact identities, source hashes, complete finite specifications, degree/count certificates, and integral projection restoration. Unbounded equivalence is proved in the supplied ordinary mathematics, with the explicitly inherited source/refutation calibration. No new Lean/Rocq build or object-ZFC derivation is asserted.",
+  "source_commit": "84e16e43092614bae262ca59651cb9d77e31a255",
+  "status": "PASS"
+}

@@ -1,0 +1,980 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+ pdftitle={Weaker congruences and even Pell indices},pdfauthor={OpenAI ChatGPT; research note for Vladimir Reshetnikov}}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=4pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Explicit Diophantine consistency equations}
+\fancyhead[R]{\small 24 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\NN}{\mathcal N_4}\newcommand{\PP}{\mathcal P}
+\newcommand{\ord}{\operatorname{ord}}\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Pair}{\operatorname{Pair}}\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\allowdisplaybreaks
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Weaker congruences and even Pell indices}\\[7pt]
+{\Large Smaller explicit equations for $\Con(\ZFC)$}\\[10pt]
+{\normalsize A research package for Vladimir Reshetnikov's ProveIt project}\\[3pt]
+{\normalsize 24 October 2026}
+\end{center}
+\begin{abstract}
+We give two concrete improvements to the explicit Diophantine consistency
+equations in a pinned ProveIt snapshot. First, we weaken a divisibility
+carrier, use the actual coefficient size to resolve its fifth-power
+congruence, and combine two congruences in one homogeneous intersective
+polynomial. The resulting equations have twelve unrestricted integer
+unknowns and exact degrees $768,784,800,816,1040$, with respectively
+$161,154,147,144,140$ binary arithmetic operations. The prior comparable
+points had degrees $1200$ and $1456$ with $145$ and $141$ operations.
+Second, in the direct C222 construction, we combine signs for repeated
+bounded intervals and replace power requests $m=n^k$ by $m^2=n^{2k}$.
+Even Pell indices eliminate twelve index-sign predicates. The complete
+result is a quartic in $566$ unrestricted integers, with $6431$ monomials
+and coefficient height $2445790974704$, compared with $604$ variables and
+$9676$ monomials at the same height in the pinned parent. Every equation,
+constant payload, projection certificate and verification program is
+supplied. The new reductions have ordinary unbounded proofs; their
+consistency interpretation composes with the explicitly cited existing
+source/calculus calibration. No new Lean or Rocq end-to-end proof,
+unconditional consistency assertion, global optimum, or literature-wide
+priority claim is made.
+\end{abstract}
+
+\section{What is constructed, and what is improved}
+
+For each final polynomial $P$ in this package, the reductions below and
+the cited source calibration give
+\begin{equation}\label{eq:target}
+ \ZFC\vdash
+ \left(\neg\exists\mathbf x\in\Z^n\;P(\mathbf x)=0\right)
+ \ \longleftrightarrow\ \Con(\ZFC).
+\end{equation}
+Here consistency is the usual arithmetic assertion that there is no finite
+syntactic proof of a contradiction in the fixed calculus. We prove
+equivalence of \emph{existence} of polynomial zeros to finite refutability.
+We do not prove that the displayed polynomials have no zeros.
+
+The comparison is to ProveIt commit
+\file{84e16e43092614bae262ca59651cb9d77e31a255}, including its active research
+and incoming reports, rather than only the older collection README
+\cite{repo,latest}. ``Simplest'' is not a total order: variable count,
+degree, operation count, coefficient size and proof complexity can conflict.
+The following are actual, fully materialized points.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Construction & Integer variables & Degree & Operations & Status\\
+\midrule
+Prior scalar carrier, rational &12&1200&145& inherited\\
+Prior scalar carrier, integral &12&1456&141& inherited\\
+Weak carrier, integral &12&1040&140& new\\
+Weak carrier, rational &12&816&144& new\\
+Centered weak carrier &12&800&147& new\\
+Mixed-modulus carrier, integral &12&784&154& new\\
+Mixed-modulus carrier, rational &12&768&161& new\\
+\bottomrule
+\end{tabular}
+\end{center}
+Operations count every live binary addition, subtraction and multiplication,
+including squares and scalar products. Named polynomial values add no
+unknowns. All six large coefficient values are unchanged in these comparisons.
+The $140/1040$ and $144/816$ points improve both degree and operations
+relative to the corresponding old points. The lower-degree points make
+explicit cost/degree tradeoffs.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Direct quartic & Variables & Quadratic rows & Monomials & Height\\
+\midrule
+Pinned parent &604&372&9676&$2445790974704$\\
+Seven sign combinations &589&371&8157&$2445790974704$\\
+Even-index compiler &566&372&6431&$2445790974704$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last reduction removes $38$ variables and $3245$ monomials from the
+matched direct parent, approximately $6.29\%$ and $33.54\%$, respectively.
+The direct branch uses C222, not K215 or Jones's universal polynomial.
+The twelve-variable branch retains the repository's existing native source.
+
+Ten-integer high-degree constructions already exist in the same repository;
+Sun's general ten-integer theorem is also a relevant benchmark
+\cite{sun}. The present twelve-variable equations do not improve the
+least known variable count. Their concrete gain is the degree/cost frontier
+within a completely instantiated family.
+
+\section{The complete twelve-variable equation}
+\label{sec:equation}
+
+The only quantified unknowns are
+\[
+ (j,C,z,h,r,v,w,T,c,n,t,s)\in\Z^{12}.
+\]
+All other symbols below are polynomial abbreviations. The six fixed
+constants are $\beta,K_0,M_C,M_F,A_c,B_c$ and are specified in Section~\ref{sec:constants}.
+Define the source front by
+\begin{align}
+ J&=6j+1,& q&=\beta J+1,& W&=12w+4,\\
+ X&=qW,&Y&=qv,& a&=(X+1)Y,\\
+ H&=4a+3,& \Delta&=a^2+H=(a+2)^2-1,\label{eq:base}\\
+ F&=(K_0+W)C-z(q-1),\nonumber\\
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\label{eq:R}\\
+ k&=R+1+hXY,& \eta&=c-Yk,&\zeta&=k-\eta.
+\end{align}
+The strict source guards are encoded through
+\begin{align}
+ G&=(A_cF)(B_cC)-(q-A_cF-B_cC)^2,\\
+ E&=\eta\zeta,\\
+ B_0&=GE-(t^2-G-E+1)^2,\\
+ D_g&=(3B_0-4)s^2+1.\label{eq:guard}
+\end{align}
+The Pell registers are
+\begin{align}
+ I&=src^2,& D_f&=1+\Delta I^2,& Q&=\Delta^2I^2,\\
+ \delta&=Q-1,&V&=D_f(c-R+4IT)-c,& C_y&=QV^2-1,\\
+ \ell&=XY^2,&D_\tau&=1+\ell(\ell+1)k^2.
+\end{align}
+Finally define the new carrier:
+\begin{align}
+ K_*&=X(2X-3c)-2,& M&=2q^2,&D&=MH,\\
+ C_*&=MK_*+H(v-q^2),& z_*&=DT+C_*,\\
+ A_*&=(z_*^2+3D^2)(z_*^3-19D^3),& S&=srM^5H.\label{eq:carrier}
+\end{align}
+
+\begin{definition}[Four-root norm]
+Let
+\begin{equation}\label{eq:norm}
+ \NN(x;a,b,e,d)=
+ \prod_{\varepsilon\in\{\pm1\}^4}
+ \bigl(x-\varepsilon_1\sqrt a-\varepsilon_2\sqrt b
+          -\varepsilon_3\sqrt e-\varepsilon_4\sqrt d\bigr).
+\end{equation}
+This is an ordinary integer polynomial in $x,a,b,e,d$: changing the sign
+of any formal square root permutes the factors. Its degree in $x$ is $16$,
+and its degree in each radicand is $8$.
+\end{definition}
+
+Our main equation is
+\begin{equation}\label{eq:768}
+\boxed{\begin{aligned}
+ P_{768}={}&\delta^8\NN\bigl(S(n+V)-A_*;\\
+ &9S^2D_f,\;81S^2D_\tau,\;729S^2D_g,\;S^2C_y/\delta\bigr)=0.
+\end{aligned}}
+\end{equation}
+The division in this display is only a compact presentation. Expanding
+the polynomial norm and multiplying by $\delta^8$ clears every denominator.
+The supplied $161$-operation DAG contains no division, radical, exponent
+with a variable exponent, or existential subroutine. Appendix~\ref{app:norm}
+gives a division-free evaluator.
+
+The companion equation is
+\begin{equation}\label{eq:784}
+\boxed{\begin{aligned}
+ P_{784}={}&\NN\bigl(S(n+\delta V)-A_*;\\
+ &9S^2D_f,\;81S^2D_\tau,\;729S^2D_g,\;S^2\delta C_y\bigr)=0.
+\end{aligned}}
+\end{equation}
+It has $154$ operations and degree $784$. Both domains are unrestricted
+integers. The file names \file{rational.json} and \file{integral.json}
+refer to their auxiliary presentations, not to the domains of the solutions.
+
+\section{Fixed constants and the inherited logical endpoint}
+\label{sec:constants}
+
+The six constants are the complete source34 tuple authenticated in the
+pinned scalar-carrier packet \cite{scalar}. Three have short closed forms:
+\[
+ \beta=2^{1064921}-1,\qquad A_c=2^{1113},\qquad B_c=2^{666104}.
+\]
+The other three are supplied as complete, minimally encoded little-endian
+nonnegative integers in the compressed payloads. Their bit lengths are
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Constant & Bit length & Role\\\midrule
+$\beta$&1064921&source base minus one\\
+$K_0$&1065043&fixed source stencil\\
+$M_C$&1064921&source mask\\
+$M_F$&1064922&already shifted source mask\\
+$A_c$&1114&determinant scale\\
+$B_c$&666105&determinant scale\\\bottomrule
+\end{tabular}
+\end{center}
+The authoritative binding file gives their byte counts and SHA-256 digests;
+the verifier decompresses and authenticates every byte. These are fixed
+numerals, not extra variables or consistency-dependent choices. No port
+from a different, smaller coefficient tuple is substituted.
+
+The inherited endpoint is the signed native/Pell source theorem for this
+exact tuple. Its completed ordinary argument identifies source witnesses
+with finite refutations, through the pinned native compiler and controller
+calibration. The local proofs retained here are
+\file{PRIME_TWELVE.md}, \file{INTERPOLATION12.md},
+\file{signed-quadratic-proof.md}, \file{RESIDUE_AND_DETERMINANT.md}, and the
+scalar-parent proof \cite{scalar,prime,interpolation}. The source theorem
+is used as an explicit earlier theorem, just as a construction might use
+a published Diophantine representation theorem. The current work does
+not replace its ordinary proof by a new proof-assistant derivation.
+
+The new contribution must therefore be read precisely: the equations are
+fully instantiated, and the new unbounded reductions are proved below;
+the logical interpretation composes those reductions with the cited
+existing calibration. Finite circuit tests alone do not certify that
+calibration and do not establish \eqref{eq:target} on their own.
+
+\section{Why a weaker carrier is sufficient}
+
+The old scalar carrier was designed to force $H\mid K$ directly. But its
+later use is to show that a certain explicit integer $B$ vanishes by
+combining divisibility with a size estimate. That last step admits a
+weaker hypothesis.
+
+\begin{lemma}[Power congruence with a height bound]\label{lem:heightbasic}
+For nonzero integers $H$ and positive integers $d$, if
+$H\mid B^d$ and $|B|^d<|H|$, then $B=0$.
+\end{lemma}
+\begin{proof}
+The integer $B^d/H$ has absolute value less than one, so is zero.
+\end{proof}
+The lemma is elementary. Its useful role here is to change what the
+upstream carrier must certify, while retaining the final exact conclusion.
+This is a reduction in the equation, not an approximate replacement of a
+logical condition.
+
+Put
+\begin{equation}\label{eq:pi}
+ \pi(u)=(u^2+3)(u^3-19),\qquad
+ \Phi_D(z)=D^5\pi(z/D)
+ =z^5+3D^2z^3-19D^3z^2-57D^5.
+\end{equation}
+The retained intersectivity proof establishes a root of $\pi$ modulo every
+positive integer, including powers of $2,3,19$. The polynomial has no
+rational root: $u^2+3>0$ over the reals and $19$ is not a rational cube.
+
+\begin{lemma}[Two congruences in one carrier]\label{lem:carrier}
+Let $M,H$ be nonzero coprime integers, $D=MH$, and
+\[
+ C_*=MK_*+HL,\qquad z_*=DT+C_*.
+\]
+If $M^5H\mid\Phi_D(z_*)$, then $M\mid L$ and $H\mid K_*^5$.
+\end{lemma}
+\begin{proof}
+For $p^e\Vert M$, suppose $b=v_p(z_*)<e$. In \eqref{eq:pi}, the leading
+term has valuation $5b$. All other terms have valuations at least
+$2e+3b$, $3e+2b$, and $5e$, strictly larger. Thus the sum has valuation
+$5b<5e$, contradicting $M^5\mid\Phi_D(z_*)$. Hence $M\mid z_*$ and,
+by coprimality, $M\mid L$. Reducing the carrier modulo $H$ gives
+$H\mid(MK_*)^5$, and coprimality cancels $M$.
+\end{proof}
+
+The difference in strength is intentional: the $M$ part is recovered
+exactly, while only a fifth-power congruence is required at $H$. This
+allows the inexpensive source scale $Y=qv$ in \eqref{eq:base}; its
+original cubic restriction is recovered from $M\mid v-q^2$.
+
+\section{Soundness, with all exceptional branches in order}
+\label{sec:soundness}
+
+\subsection{Uniform arithmetic facts}
+The actual $\beta$ is odd and is $1$ modulo $3$. Thus $q$ is even,
+$q\equiv2\pmod3$, and $q\ne0$. Also $W\equiv4\pmod{12}$, so
+\begin{equation}\label{eq:xlarge}
+ |X|\ge4(\beta-1)>2^{36},\qquad X\equiv-1\pmod3.
+\end{equation}
+If $v=0$, then $a=0,H=\Delta=3$. Otherwise
+$|a|=|qv(X+1)|>1000$. Therefore $\Delta\ge3$, $H$ is nonzero and odd,
+and $Q$ is either zero or at least $9$. In particular $\delta$ never
+vanishes. Since $a$ is divisible by $q$,
+\[
+ H\equiv3\pmod q,\qquad \gcd(H,M)=\gcd(H,2q^2)=1.
+\]
+Modulo $3$ one has
+\begin{equation}\label{eq:mod3}
+ a=H=\Delta=0,\quad D_f=D_\tau=1,\quad
+ Q=0,\quad\delta=C_y=-1.
+\end{equation}
+For the first Pell radicand, $\ell=XY^2$ is $0$ or $-1$ modulo $3$.
+Uniformly $D_f,D_\tau\ge1$, since $\ell(\ell+1)\ge0$ for every integer
+$\ell$. No sign of $Y$ or $\ell$ has been assumed.
+
+\subsection{Nonzero scale, square extraction and the strict guard}
+If $S=0$, then $sr=0$ and hence $I=0$. Every scaled radicand vanishes;
+both equations reduce to $A_*^{16}$. But
+\[
+ A_*=D^5\pi(T+C_*/D)\ne0
+\]
+because $D\ne0$ and the argument is rational. Thus every zero has
+$s\ne0$ and $r\ne0$.
+
+Divide a vanishing conjugate factor by $S$. For $P_{768}$ the four root
+terms are
+\[
+ \sqrt{C_y/\delta},\quad3\sqrt{D_f},\quad9\sqrt{D_\tau},
+ \quad27\sqrt{D_g}.
+\]
+For $P_{784}$ the first term is $\sqrt{\delta C_y}$. Their squared
+$3$-adic orders are $0,2,4,6+v_3(D_g)$, omitting a zero guard term.
+Within any nonempty signed subset of two or more terms there is a unique
+least order, and it is even. Grouping by rational squareclass proves that
+a rational signed sum forces every term rational: within a squareclass,
+the unique least valuation cannot cancel. This is the retained
+prime-order separation lemma, now applied before any positivity of $D_g$
+is known. In particular $D_g$ is a nonnegative integer square.
+
+Since $s\ne0$, $B_0\le0$ would give $D_g\le-3$. Therefore $B_0>0$.
+The elementary joint-positivity lemma for
+$xy-(t^2-x-y+1)^2$ gives
+\begin{equation}\label{eq:strict}
+ G>0,\qquad\eta\zeta>0.
+\end{equation}
+If $c=0$, then
+$\eta\zeta=-Y(Y+1)k^2\le0$, a contradiction. Thus $c\ne0$, $I\ne0$,
+and now $Q>1$. Adjacent-coefficient Pell descent makes the rational
+auxiliary ordinate integral in
+\begin{equation}\label{eq:aux}
+ QV^2-(Q-1)y^2=1.
+\end{equation}
+In the integral presentation one first puts
+$y=\sqrt{\delta C_y}/\delta$. The other three extracted roots are
+integers $f,\tau,g$. This order handles the $c=0$ and $Q=0$ branches
+without prematurely invoking a descent theorem that requires $Q>1$.
+
+\subsection{Recover the original scale before the source bounds}
+The integral signed norm relation gives $S\mid A_*$. Applying
+Lemma~\ref{lem:carrier} with $L=v-q^2$ yields
+\[
+ 2q^2\mid v-q^2,\qquad H\mid K_*^5.
+\]
+There is consequently an integer $u$ with
+\begin{equation}\label{eq:recoverY}
+ v=q^2(2u+1),\qquad Y=q^3(2u+1).
+\end{equation}
+The full original large-scale source front is restored here, before its
+signed Pell estimates, rank extraction or native decoding is used. This
+also excludes $v=0$ by an actual argument.
+
+Let $K=X(X+2ac)-1$. The exact identity
+\begin{equation}\label{eq:shortprojection}
+ K_*=2K-HXc
+\end{equation}
+and oddness of $H$ give $H\mid K^5$. The short projector itself is
+already present in the repository's positive-domain work; the new use
+is its signed transfer into this weaker mixed-modulus carrier.
+
+\subsection{Fold the main Pell root, then use the stronger height}
+The retained signed main-folding argument uses the strong equation
+$f^2-\Delta I^2=1$, the auxiliary equation \eqref{eq:aux}, the bound
+$|c|\le|I|$ and $V\equiv-c\pmod f$. It gives
+$|c|=\psi_{|a+2|}(p)$. The $c^2\mid I$ rank argument and the two
+auxiliary residues then give $p=R$. These steps precede any main
+projection. Their existing ratio bound supplies
+\begin{equation}\label{eq:ratio}
+ R=2r_0+1,\quad r_0\ge24,\quad x=|X|,\quad
+ m=|Y|>\frac{(x-3)^{r_0}}2-1.
+\end{equation}
+With $\sigma=\sgn(c)$, the same projection identity gives
+\[
+ 2^R K\equiv
+ B:=(\sigma X-2^R)(2^R\sigma X+1)\pmod H.
+\]
+Thus $H\mid B^5$.
+
+\begin{lemma}[Height at the actual coefficient tuple]\label{lem:height}
+Under \eqref{eq:xlarge} and \eqref{eq:ratio}, $|B|^5<|H|$.
+\end{lemma}
+\begin{proof}
+Each factor of $B$ has absolute value at most $2^{R+1}x$, whence
+$|B|^5\le2^{20r_0+20}x^{10}$. Put $L=(x-3)^{r_0}$. Since $L\ge4$,
+$m>L/4$, and
+\[
+ |H|\ge4(x-1)m-3>(x-1)L-3
+ \ge\frac x2L\ge\left(\frac x2\right)^{r_0+1}.
+\]
+Finally
+$x^{r_0-9}\ge2^{36r_0-324}>2^{21r_0+21}$ for $r_0\ge24$.
+This is exactly the remaining comparison.
+\end{proof}
+Lemma~\ref{lem:heightbasic} gives $B=0$. Its second factor is odd and
+nonzero, so $\sigma X=2^R$. The ordinary main projection and native
+decoding now recover a finite refutation. This proves soundness. The
+stronger estimate depends on the actual large $\beta$; it is not a
+claim valid under only the earlier generic bound $x\ge64$.
+
+\section{Completeness and the order of the witnesses}
+
+Begin with a finite refutation and its canonical source data. Write the
+old cubic-scale parameter as $u$, and set $v=q^2(2u+1)$. All quantities
+depending on $Y$ are then unchanged. The canonical projection gives
+$H\mid K$, hence $H\mid K_*$. Since $M\mid v-q^2$,
+\[
+ \kappa=C_*/D=K_*/H+(v-q^2)/M
+\]
+is an integer.
+
+Choose the joint guard witness $t$ and its nonzero Pell witness $s$.
+The retained full-residue interpolation theorem then chooses one strong
+pair $I,f$ with $4sc^2\mid I$. Put $r=I/(sc^2)$. \emph{Fix this pair
+before choosing the residue of $T$.} Intersectivity gives a root $u_0$
+of $\pi$ modulo $I$. Request $T\equiv u_0-\kappa\pmod I$; interpolation
+supplies such an auxiliary witness without changing $I$. Then
+\begin{equation}\label{eq:completequotient}
+ A_*=D^5\pi(T+\kappa),\qquad
+ \frac{A_*}{S}=\frac{c^2H^4\pi(T+\kappa)}I\in\Z.
+\end{equation}
+For \eqref{eq:768} take
+\[
+ n=A_*/S+3f+9\tau+27g+y-V.
+\]
+For \eqref{eq:784} replace $y-V$ by $\delta(y-V)$. A conjugate norm
+factor vanishes. Every coordinate is integral; $n$ has no positivity
+restriction. The witness order is outer data, $t,s$, $I,f$, an intersective
+residue, $T$, then $n$. In particular there is no circular choice of a
+modulus constrained by a later residue.
+
+\begin{theorem}\label{thm:12}
+The two equations \eqref{eq:768} and \eqref{eq:784} have integer zeros
+exactly when the pinned source has a finite refutation. Composing with
+the existing source/calculus calibration proves \eqref{eq:target} for
+both equations. Their exact degrees are $768$ and $784$.
+\end{theorem}
+
+\section{Centering, degree certificates, and the cheaper variants}
+
+For $P_{768}$ let $U=Sn-A_*$, $P=SV$, $L=\delta P$, and
+$N=S^2-P^2$. Pairing the two signs of the auxiliary radical gives
+\begin{equation}\label{eq:rationalpair}
+ \delta W_1^2+2LW_1+N,\qquad
+ W_1=U-3Sf-9S\tau-27Sg.
+\end{equation}
+Taking the remaining three-root norm is exactly the cleared original
+norm. For $P_{784}$ put $L=S\delta V$ and
+$N=S^2\delta-L(SV)$; the paired expression is
+\begin{equation}\label{eq:integralpair}
+ W_1^2+2LW_1+N.
+\end{equation}
+These are universal ring identities. They remove the high terms before
+degree propagation and correspond to the integral coordinate changes
+$n\mapsto n+V$ or $n\mapsto n+\delta V$.
+
+The relevant degrees are
+\[
+ \deg H=4,\ \deg M=2,\ \deg D=6,\ \deg I=4,
+ \ \deg\delta=24,\ \deg V=21,\ \deg S=16,\ \deg A_*=35.
+\]
+In \eqref{eq:rationalpair}, $2LU$ has degree $96$, above the competing
+$94$ and $74$. Its eight conjugates give degree $768$. In
+\eqref{eq:integralpair}, $N$ has degree $98$, above the degree-$96$
+mixed term, giving $784$. The exact nonzero coefficients
+\begin{align}
+ [j^{352}w^{96}v^{96}s^{48}r^{48}c^{80}T^{48}]P_{768}
+ &=2^{744}3^{448}\beta^{352},\label{eq:leading768}\\
+ [j^{320}w^{80}v^{80}s^{80}r^{80}c^{128}T^{16}]P_{784}
+ &=2^{624}3^{400}\beta^{320}\label{eq:leading784}
+\end{align}
+prove attainment at the actual coefficients. The checker independently
+derives the leading term at every live gate over all six formal ports;
+the coefficients in \eqref{eq:leading768}--\eqref{eq:leading784} are
+strictly positive after specialization.
+
+For the cheaper variants, retain the original
+$Y=(2v+1)q^3$, use $D=H$, $z_*=HT+K_*$ and $S=srH$, and use the same
+$\Phi_H$. The guard-first $c\ne0$ argument is unchanged. The carrier
+forces $H\mid K^5$, and Lemma~\ref{lem:height} resolves it. Without the
+mixed-modulus circuitry, the integral and rational forms have respectively
+degrees $1040,816$ in $140,144$ operations. Centering the integral form
+reduces its degree to $800$ in $147$ operations. Its attained coefficient is
+\[
+ [j^{384}w^{96}v^{96}s^{48}r^{48}c^{80}T^{48}]P_{800}
+ =2^{792}3^{480}\beta^{384}>0.
+\]
+Their complete proofs, graphs and checks are in \file{height12/};
+the mixed-modulus forms are in \file{crt12/}.
+
+\section{A second construction: combine signs of bounded intervals}
+
+The direct branch starts from the pinned $75$-predicate raw C222 system
+\cite{direct}. Its body has $1259$ coordinates and $1177$ quadratic
+residuals. The first $594$ rows form a front encoding CRT, factorial,
+binomial and flow data. Power requests in that front are certified by
+shared Pell witnesses. The frozen source has an ordinary proof of its
+finite-refutation equivalence, independent of K215 and the native tuple.
+
+The direct logical endpoint is precise. The inherited
+\file{KEndpoint.c222_iff_zf_refutation} theorem identifies
+$C_{222}(1)$ with a finite proof of contradiction from ZF. The inherited
+\file{ConstructibleChoice.zf_refutation_iff_zfc_refutation} theorem
+identifies that with a finite ZFC refutation. The latter is the ordinary
+constructible-universe equiconsistency theorem, without an added
+consistency assumption. \file{Bridge.lean} defines \file{ConZFC} as the
+negation of that exact ZFC proof predicate. These unconditional
+calibration theorems, their original pins and the intervening ordinary
+arithmetic proofs are included in \file{inherited/direct/} and the
+immutable incoming archive. Their Lean import closure has not been
+recompiled in this work. The later machine-specific endpoint in the
+same upstream file is not needed by the direct construction.
+
+\begin{lemma}[Shared signs]\label{lem:sign}
+If $r+s=a+b$ and $a,b\ge0$, then
+\[
+ (r\ge0\ \wedge\ s\ge0)\quad\longleftrightarrow\quad rs\ge0.
+\]
+\end{lemma}
+\begin{proof}
+If $r<0$, then $s\ge-r>0$, so $rs<0$; interchange $r,s$ for the
+other case. The forward implication is immediate. This includes zeros.
+\end{proof}
+For an integer $x$, Legendre's three-square theorem gives
+\begin{equation}\label{eq:signrep}
+ x\ge0\quad\longleftrightarrow\quad
+ \exists a,b,c\in\Z\quad x=a^2+b^2+c(c+1).
+\end{equation}
+Indeed $4x+1$ is representable by three squares; modulo four exactly one
+root is odd. Conversely $c(c+1)\ge0$ for every integer $c$. This is also
+the explicit sign representation recorded in \cite{sun}.
+
+Replacing two scalar sign conditions by one product condition therefore
+uses one quadratic row and three auxiliary integers instead of two rows
+and six. The actual seven replacements are shown below. Indices are
+zero-based in the unchanged raw body. Each listed three-row range sums
+exactly to $Q-r-s-1$.
+
+\begin{center}\small
+\begin{tabular}{llll}
+\toprule
+Product & Nonnegative anchor pair & Common $Q$ & Product / anchor rows\\
+\midrule
+$x_{562}x_{563}$ &$(x_{549},x_{550})$&$x_{547}$&537--539 / 526--528\\
+$x_{585}x_{586}$ &$(x_{576},x_{577})$&$x_{574}$&553--555 / 547--549\\
+$x_{593}x_{594}$ &$(x_{576},x_{577})$&$x_{574}$&559--561 / 547--549\\
+$x_{601}x_{602}$ &$(x_{576},x_{577})$&$x_{574}$&565--567 / 547--549\\
+$x_{619}x_{620}$ &$(x_{610},x_{611})$&$x_{608}$&578--580 / 572--574\\
+$x_{637}x_{638}$ &$(x_{628},x_{629})$&$x_{626}$&591--593 / 585--587\\
+$x_{123}x_{564}$ &$(x_{91},x_{537})$&$x_{530}$&540--542 / 518--520\\
+\bottomrule
+\end{tabular}\end{center}
+The first six anchors retain both scalar guards. For the last,
+rows $83$--$85$ give $x_{91}=x_{94}+x_{95}+1$, with $x_{94},x_{95},x_{537}$
+still guarded. All fourteen deleted signs are thus recovered \emph{before}
+any Pell, power or CRT semantics is invoked. The parent body assignment
+is unchanged in both directions; only private sign witnesses are replaced.
+
+This yields $68$ predicates. After complete integral monic projection it
+gives $589$ variables, $371$ quadratic rows and $8157$ collected quartic
+terms. The projected gain is $15$ variables, not the raw $21$-witness
+saving: six product constraints prevent six formerly available coordinate
+eliminations. This is why actual generated polynomials, rather than
+subtraction of guard counts, are used for every size claim.
+
+\section{Even indices remove the remaining small-ordinate guards}
+\label{sec:even}
+
+The next change is structural. Instead of certifying $m=n^k$, certify
+\begin{equation}\label{eq:double}
+ m^2=n^{2k}.
+\end{equation}
+The front already supplies $m\ge0$, $n\ge1$, and $k\ge1$, so \eqref{eq:double}
+is equivalent to the original equality. Squaring an output in its
+quadratic congruence row preserves degree two; doubling an index changes
+only a scalar coefficient. The benefit is that every requested Pell
+index is now even.
+
+\subsection{Pell notation and a residue lemma}
+For $a\ge2$ write
+\[
+ (a+\sqrt{a^2-1})^j=\chi_a(j)+\psi_a(j)\sqrt{a^2-1}.
+\]
+Both sequences are integral, $\chi_a$ is strictly increasing on
+nonnegative indices, and $\psi_a(j)\ge j$. Standard reduction by the
+fundamental norm-one unit $a+\sqrt{a^2-1}>1$ classifies every integral Pell solution,
+up to independent signs, by these sequences. For a signed base $B$,
+define $\chi_B,\psi_B$ by the same integer-polynomial recurrences.
+For $b>0$ they satisfy $\chi_{-b}(j)=(-1)^j\chi_b(j)$ and
+$\psi_{-b}(j)=(-1)^{j-1}\psi_b(j)$ for $j\ge1$.
+
+\begin{lemma}[Abscissa residues]\label{lem:abscissa}
+If $1\le i\le h$ and
+$\chi_a(j)\equiv\pm\chi_a(i)\pmod{\chi_a(h)}$, then
+$j\equiv\pm i\pmod{2h}$. In particular
+$\chi_a(j)\equiv\pm a\pmod{\chi_a(h)}$ forces $j$ odd.
+\end{lemma}
+\begin{proof}
+The doubling formulas give
+$(a+\sqrt{a^2-1})^{2h}\equiv-1\pmod{\chi_a(h)}$ in the quadratic
+ring. Reducing an index modulo $2h$ and reflecting about $h$ reduces
+its abscissa to $\pm\chi_a(r)$ with $0\le r\le h$.
+For $h\ge2$, the recurrence implies
+$2\chi_a(h-1)<\chi_a(h)$. Two abscissae with indices below $h$
+cannot sum to the modulus, so congruence up to sign forces equality,
+hence $r=i$. If $i=h$, only the endpoint has zero residue. The case
+$h=1$ is immediate. Taking $i=1$ proves the final assertion.
+\end{proof}
+
+\subsection{The new shared frame}
+There are $21$ calls and $15$ distinct seed indices. Let $\mathcal O$
+be the $21$ output coordinates and $\mathcal F$ the frozen set of $43$
+distinct frame arguments. Define
+\begin{equation}\label{eq:frame}
+ W=4+2\sum_{v\in\mathcal F\setminus\mathcal O}v
+       +2\sum_{m\in\mathcal O}m^2.
+\end{equation}
+Every summand is nonnegative before power interpretation. Consequently
+$W\ge4$, and every call has $n<W$, $2k<W$, and $m^2<W$.
+The unchanged frame equation is
+\[
+ A^2-W^3(W+2)Z^2=1.
+\]
+The retained first modulus guard forces $A\ge2$, hence $Z\ne0$.
+Classifying this equation at base $W+1$, and reducing its ordinate
+modulo $W$, shows the frame index is a positive multiple of $W$.
+Thus
+\begin{equation}\label{eq:framebound}
+ A\ge(W+1)^W>W^W>W^2.
+\end{equation}
+For every base $n\ge1$, the unchanged modulus
+$T_n=2An-n^2-1$ satisfies $T_n>A$.
+
+\subsection{The parity argument, including arbitrary signs}
+The common pair satisfies
+\begin{equation}\label{eq:common}
+ U^2-(A^2-1)V^2=1,\quad V\ge1,\quad
+ V=\Bigl(\prod_{i=1}^{15}Y_i^2\Bigr)(v_0+1),\quad
+ B=1+4V(q_0+1),\quad B\equiv A\pmod U.
+\end{equation}
+Here $v_0,q_0$ are the common-certificate coordinates, distinct from the
+twelve-variable branch's notation. Every $Y_i$ is nonzero and $Y_i^2\mid V$
+by the literal product identity. The odd $B$ cannot equal $\pm1$:
+with $|U|=\chi_A(h)$, the residue $B\equiv A\pmod U$ excludes both
+possibilities by size, including $h=1$.
+
+For a seed with requested even index $K=2k$, retain
+\begin{align}
+ X^2-(A^2-1)Y^2&=1,& S_0^2-(B^2-1)R_0^2&=1,\\
+ S_0&\equiv X\pmod U,&R_0&\equiv K\pmod{4Y}.
+\end{align}
+If $|Y|=1$, then $X=\pm A$. Writing the auxiliary solution with
+arbitrary signs and transferring the base modulo $U$ gives
+$\chi_A(j)\equiv\pm A\pmod{\chi_A(h)}$. Lemma~\ref{lem:abscissa}
+forces $j$ odd. Since $B$ is odd, $\psi_B(j)\equiv j\pmod2$, so $R_0$
+is odd. But its residue modulo $4Y$ forces it even. This contradiction
+excludes $|Y|=1$.
+
+Therefore the main index is at least two, and
+\begin{equation}\label{eq:automaticbound}
+ |Y|\ge\psi_A(2)=2A>K.
+\end{equation}
+The old index-slack nonnegativity guards are no longer needed to obtain
+this strict bound. The argument allows negative $U,B,X,Y,S_0,R_0$.
+
+\subsection{The index is exactly the requested one}
+Suppose $|X|=\chi_A(i)$, $|Y|=\psi_A(i)$ and
+$V=\psi_A(h)$. The elementary squared-divisibility identity says
+\[
+ \psi_A(i)^2\mid\psi_A(h)\quad\Longrightarrow\quad
+ i\le h\ \text{ and }\ \psi_A(i)\mid h.
+\]
+For completeness, write $h=qi+r$ with $0\le r<i$. Reduction modulo
+$\psi_A(i)$ and strict monotonicity give $r=0$; binomial expansion
+modulo $\psi_A(i)^2$ then gives $\psi_A(i)\mid q$, hence the claim.
+
+The abscissa residue gives $j\equiv\pm i\pmod{2h}$. Since
+$B\equiv1\pmod{4|Y|}$, the ordinate residue gives
+$j\equiv\pm K\pmod{4|Y|}$. As $|Y|\mid h$, these imply
+$i\equiv\pm K\pmod{2|Y|}$. With
+$1\le i\le|Y|$ and $1\le K<|Y|$, only $i=K$ is possible.
+
+\subsection{Orient seed pairs before allowing base one}
+There are designated supporting calls for all fifteen seeds, with
+indices
+\[
+ 0,1,5,7,9,10,12,13,14,15,16,17,18,19,20.
+\]
+Their bases are already at least two from the front, before any factorial
+or power meaning is used. This qualification matters: the base
+$x_{112}=1+x_{107}x_4^2$ of another call can initially be one.
+
+For a supporting call put $e=2k$, $N=n^e$, $M_0=m^2$, and
+$x=\chi_A(e),y=\psi_A(e)$. With
+$H_0=x-(A-n)y$, $J_0=x+(A-n)y$, the recurrence gives
+\[
+ H_0\equiv N\pmod{T_n},\qquad
+ H_0J_0=1+T_ny^2.
+\]
+The four possible signs of $(X,Y)$ in the modified power congruence
+give respectively
+\begin{center}
+\begin{tabular}{ll}\toprule
+Signs & Consequence\\\midrule
+$(+,+)$ &$M_0\equiv N\pmod{T_n}$\\
+$(-,-)$ &$T_n\mid M_0+N$\\
+$(+,-)$ &$T_n\mid M_0N-1$\\
+$(-,+)$ &$T_n\mid M_0N+1$\\\bottomrule
+\end{tabular}\end{center}
+The frame gives $M_0N<W^W<A<T_n$ and
+$M_0+N<W+W^{W-1}<W^W$. The last three cases are impossible; in
+particular $M_0N=1$ is impossible because $n\ge2,e\ge2$. Thus every
+seed pair is positively oriented and $M_0=N$. Nonnegativity gives
+$m=n^k$. After this orientation, the remaining calls, including those
+with base one, use the positive pair and the simple bounded congruence;
+no inverse-residue sign ambiguity remains.
+
+\subsection{One derived pair needs two steps}
+The old $t+1$ pair was computed by one Pell step from the $t$ seed.
+After doubling, the seed index is $2t$ and the target is $2(t+1)$.
+Thus two steps are essential. With stored coordinates for $AX$,
+$(A^2-1)Y$ and $A^2$, the replacements are
+\begin{align}
+ X_{+2}&=2A\bigl(AX+(A^2-1)Y\bigr)-X,\\
+ Y_{+2}&=2AX+(2A^2-1)Y.
+\end{align}
+They are quadratic in the stored coordinates, so no higher-degree
+residual is introduced. Omitting this change would invalidate the compiler.
+
+\section{Completeness and the literal quartic}
+
+Given true front arithmetic data, compute the new $W$. Choose
+\[
+ A=\chi_{W+1}(W),\qquad Z=\psi_{W+1}(W)/W.
+\]
+The latter is integral by the recurrence modulo $W$. Choose positive main
+pairs at every $2k$ and the derived pair by two steps. Let
+$P=\prod_{i=1}^{15}Y_i^2$ and use the finite ring
+\[
+ (\Z/4P\Z)[u]/(u^2-(A^2-1)).
+\]
+The unit $A+u$ has finite multiplicative order. A positive multiple of
+that order gives a common pair with $U\equiv1\pmod{4P}$ and
+$V\equiv0\pmod{4P}$, so $V>0$, $P\mid V$ and $U$ is odd.
+As $\gcd(U,4V)=1$, CRT gives $B\equiv A\pmod U$ and
+$B\equiv1\pmod{4V}$. Choose $B>\max(A,1+4V)$ in that progression; monotonicity and the
+recurrences give nonnegative comparison quotients. Choose the auxiliary
+pairs at the same $2k$.
+Polynomial dependence on the base gives both required congruences.
+
+The power quotient is supplied by the exact recurrence identity
+\begin{multline}
+ \chi_A(e)-(A-n)\psi_A(e)-n^e\\
+ =(2An-n^2-1)\sum_{j=0}^{e-1}n^{e-1-j}\psi_A(j).
+\end{multline}
+Thus all twenty-one modified power rows hold. This is a simultaneous
+construction with the explicit order front, frame, main pairs, common
+pair, CRT base, auxiliary pairs, quotients. No incompatible preselected
+auxiliary witnesses are reused.
+
+From a new zero, the preceding soundness proof recovers the original
+twenty-one equalities at the same front tuple. Build a \emph{fresh old}
+frame and certificate at indices $k$, using one step for its derived
+$t+1$ pair, to obtain a zero of the pinned parent. Conversely, old
+soundness supplies true front data, from which the new completeness
+construction produces a zero. The maps concern zero existence, not
+pointwise equality of old and new auxiliary coordinates.
+
+The exact source edits consist of fifteen doubled seed residues,
+twenty-one squared outputs, twenty-one squared frame contributions,
+two derived-pair rows, and the doubled frame endpoint. Eleven scalar
+index guards and one paired-index guard are deleted, leaving $56$
+predicates after sign sharing. The complete source edit ledger and all
+projection restorations are supplied in \file{direct566/}.
+
+Let $q_1,\ldots,q_{372}$ be the literal quadratic residuals in its
+\file{equation.json}, in the stated order of $566$ integer coordinates.
+The second principal equation of this paper is
+\begin{equation}\label{eq:566}
+ \boxed{Q_{566}(x_0,\ldots,x_{565})=
+              \sum_{i=1}^{372}q_i(x_0,\ldots,x_{565})^2=0.}
+\end{equation}
+The accompanying sparse coefficient file lists every one of the $6431$
+nonzero monomials. All fixed coefficients are literal integers, and no
+runtime call to a proof predicate or to a universal polynomial remains.
+An integer zero of \eqref{eq:566} is exactly a common zero of those rows.
+
+\begin{theorem}
+The complete polynomial $Q_{566}$ has degree four, $566$ unrestricted
+integer variables, $6431$ monomials, and coefficient height
+$2445790974704$. Its integer-zero existence is equivalent to that of
+the pinned direct parent and hence, using the existing direct
+C222/calculus calibration, to finite ZFC refutability.
+\end{theorem}
+
+\section{Verification, limitations, and further research}
+
+\subsection{What the checks establish}
+The package includes independent checkers, ordinary proofs and full input
+data. Verification is deliberately split into mathematical and finite
+algebraic claims:
+\begin{itemize}
+\item The twelve-variable checkers authenticate all six payloads, prove
+every named register by exact free-ring identities, verify the complete
+$495$-term four-root norm and centered cuts, check acyclicity and liveness,
+and derive attained leading coefficients through the actual DAGs.
+\item The direct checkers bind the seven sign replacements to literal
+source-row identities, bind every changed power/index/frame row, verify
+the two-step correction and the actual fifteen-factor common product,
+restore every projected coordinate by an integral polynomial, and expand
+the entire final sum of squares independently.
+\item Normal and optimized Python execute the same checks. Deliberately
+changed projectors, carrier operations, source products, restorations
+and coefficients are rejected. No mathematical acceptance depends on
+Python assertions that disappear under optimization.
+\item The degree and coefficient counts are exact. Finite Pell examples
+and the negative control are supplementary diagnostics; the unbounded
+proofs above establish the equivalences.
+\end{itemize}
+
+The supplied odd-index negative control shows why merely deleting the
+index guards is invalid. It gives a genuine frame and a single generic
+power certificate with $n=4,k=5,m=2$, $|Y|=1$, satisfying the squared-output
+condition while $m\ne n^k$. The doubled-index residue rejects it. This
+is a counterexample to a generic shortcut, not a root of the ZFC equation.
+
+\subsection{Precise boundaries}
+The words ``ZFC-provable'' describe an ordinary mathematical proof that
+can be formalized inside ZFC, composed with the explicitly cited source
+theorems. They do not claim that this package emits a new Lean/Rocq proof
+of the entire native or direct compiler chain. The inherited calibration
+and the new local algebraic certificates have different scopes and remain
+separately identified. None of the work assumes ZFC consistency, and no
+root search can establish the desired absence of roots.
+
+The elementary ingredients are classical. The claimed progress is the
+specific changes to the fully instantiated constructions at the pinned
+snapshot, with exact new equations and verified comparisons. We do not
+claim these are globally simplest, nor that the local lemmas have no
+precedent anywhere in the literature.
+
+\subsection{Further research questions}
+\begin{enumerate}
+\item Can more of the actual coefficient-size margin be exchanged for
+weaker carrier divisibility, while preserving both directions of the
+source reconstruction?
+\item Can the $M^5$ condition be shortened by a proved restriction on the
+prime factors of a canonical strong modulus? Generic modular roots do
+not suffice: primes dividing the mandatory $c$ and $s$ must be covered.
+\item The scale $Y=qv$ retains the uniform coprimality
+$\gcd(H,2q^2)=1$. Dropping the last factor $q$ would reduce degree
+further but breaks that uniform fact. Can a different carrier repair it
+without a new variable or a circular coprimality assumption?
+\item Can the even-index compiler be applied before the current raw
+arithmetic expansion, so its source frame and shared certificates can be
+redesigned together rather than locally rewritten?
+\item Can integral changes of coordinates recover the six eliminations
+lost when two scalar guards become a product guard? Can a larger row
+basis expose additional independently oriented sign pairs?
+\item Can the new transformations be formalized once as reusable
+theorems, then applied to an authenticated complete native or direct
+source theorem? The proof order around zero scale, base one, derived
+indices and common periods should be explicit in such a formalization.
+\end{enumerate}
+
+\appendix
+\section{A division-free norm evaluator}\label{app:norm}
+This appendix makes explicit that the displayed norm is an ordinary
+polynomial. Let the desired cleared norm be
+\[
+ d^8\NN(x;a,b,e,c/d).
+\]
+For the integral norm set $d=1$. Calculate in the quadratic algebra with
+a formal symbol $u$ satisfying $u^2=e$. Put
+\begin{align*}
+ t_{20}&=x^2+e,&t_{21}&=-2x,&A&=a+b,\\
+ q_0&=d(t_{20}-A)-c,&q_1&=dt_{21},\\
+ T&=d^2ab,&R&=dc,\\
+ v_0&=q_0^2+e q_1^2-4(T+RA),&v_1&=2q_0q_1,\\
+ Z&=64TR,\\
+ n_0&=v_0^2+e v_1^2-Zt_{20},&n_1&=2v_0v_1-Zt_{21}.
+\end{align*}
+The result is $n_0^2-e n_1^2$. Every operation is in the integer
+polynomial ring. Expanding the product of all sixteen conjugates verifies
+the identity with $495$ nonzero formal coefficients.
+
+For the centered rational form, use $x=U+P$, $L=dP$,
+$N=S^2-P^2$, and $c=dP^2-N$. Replace the expression for $q_0$ by
+\[
+ q_0=U(dU+2L)+N+d(e-a-b).
+\]
+For the centered integral form, use $x=U+L$, $c=L^2-N$, $d=1$, and
+\[
+ q_0=U(U+2L)+N+e-a-b.
+\]
+These local identities are checked separately before the full norm
+identity is used. They explain the lower attained degrees without any
+assumption that a residual has already vanished.
+
+\section{Package map and reproduction}
+The main deliverables are this PDF and its complete LaTeX source, together
+with the following directories:
+\begin{center}\small
+\begin{tabular}{p{0.22\textwidth}p{0.69\textwidth}}
+\toprule
+Path & Contents\\\midrule
+\file{crt12/}&Degrees $768/784$ literal DAGs, builder, independent checker,
+complete coefficient payloads and full carrier proof.\\
+\file{height12/}&Degrees $800/816/1040$ graphs and ordinary height/centering
+proofs, with independent exact checks.\\
+\file{direct566/}&Complete even-index quartic, quadratic residuals,
+expanded monomials, source edits, projection and independent checks.\\
+\file{direct589/}&The separately verified seven-sign-combination
+intermediate and lower-height alternatives.\\
+\file{peer/}&Independent mathematical and exact circuit reviews,
+with the generic negative control in \file{direct566/}.\\
+\file{inherited/}&Pinned ordinary proof dependencies, baseline review and
+the original direct calibration archive.\\
+\file{verify_all.py}&One entry point for all new checks and
+deterministic circuit reproduction.\\
+\file{SOURCE_LEDGER.json}&Pinned upstream identities, source locations,
+and clear inherited-versus-new proof scope.\\
+\bottomrule
+\end{tabular}
+\end{center}
+From the extracted package root run
+\begin{verbatim}
+python3 verify_all.py
+python3 -O verify_all.py
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The numerical verifiers use Python's standard library. The parent
+coefficient recipes and full logical calibration are pinned to upstream;
+the actual coefficients and all new final polynomials are included here.
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, snapshot
+\file{84e16e43092614bae262ca59651cb9d77e31a255}, 24 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/commit/84e16e43092614bae262ca59651cb9d77e31a255}.
+\bibitem{latest} ProveIt, \emph{Later arrivals and current size reductions},
+\file{Computability/DiophantineConsistency/PROPOSAL_REVIEW_LATEST.md},
+at the preceding snapshot. This is the baseline for the comparison table.
+\bibitem{scalar} ProveIt, \emph{Scalar intersective carrier after signed
+main-root recovery}, \file{Computability/DiophantineConsistency/candidates/scalar-carrier12/PROOF.md},
+same snapshot; complete coefficient binding and graphs in that directory.
+\bibitem{prime} ProveIt, \file{candidates/scalar-carrier12/source/PRIME_TWELVE.md},
+within \file{Computability/DiophantineConsistency}, same snapshot.
+\bibitem{interpolation} ProveIt,
+\file{candidates/scalar-carrier12/source/INTERPOLATION12.md}, same snapshot.
+\bibitem{direct} ProveIt,
+\file{research/factorial-radius-output-sign-profile/raw/parent.json} and
+\file{raw/domain.json}, within \file{Computability/DiophantineConsistency},
+same snapshot; associated ordinary proofs and the active review identify
+the direct C222, shared-CRT and Pell calibration.
+\bibitem{compiler} ProveIt incoming package,
+\file{ConZFC_407_888_Quartics_2026-10-24.zip}, same snapshot.
+The unchanged terminal-elimination engine is used as a producer;
+independent checkers validate its complete integral restoration certificates.
+\bibitem{sun} Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem
+over the integers}, arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/abs/2609.01594v2}.
+\end{thebibliography}
+\end{document}

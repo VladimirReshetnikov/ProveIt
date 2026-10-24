@@ -1,0 +1,317 @@
+\label{sec:integer12-saturated}
+
+The polynomial in \path{integer12_saturated/rational.json} has twelve
+unrestricted integer unknowns,
+123 binary arithmetic operations, and exact total degree 1084.  It
+strictly improves both operation count and degree over the pinned
+scalar-carrier parents, which have metrics $145/1200$ and $141/1456$
+\cite{scalar12}.
+The construction combines coprime Pell saturation with the scalar
+intersective carrier.  Its completeness requires a rescaling of the
+auxiliary coordinate and the full arbitrary-residue interpolation theorem.
+The new rescaling and its compatibility with that retained theorem
+are proved below.
+
+\subsection{Complete twelve-integer polynomial}
+
+The independent coordinates are
+\[
+ (j,C,z,h,r,v,w,T,c,n,t,s)\in\Z^{12}.
+\]
+Use the exact source34 \texttt{mixed-parity-unrounded-1064921} coefficient
+tuple, separately from the compact44 tuple of the positive-domain forms:
+\[
+ \beta=2^{1064921}-1,\qquad
+ \kappa_1=2^{1113},\qquad \kappa_2=2^{666104}.
+\]
+The remaining fixed integers $K_0,M_C,M_F$ are fully specified by the
+included six payloads and the finite source34 recipe, complete tile table,
+and exact machine seed.  The supplied $M_F$ is already shifted.  Every
+coefficient is reconstructed and compared byte for byte by the checker.
+No free coefficient parameter remains.
+
+Define the following ordinary polynomial abbreviations; none is another
+unknown.  In this section $E$ denotes the first Pell radicand.
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+ X&=qW,&Y&=(2v+1)q^3,&a&=(X+1)Y,\\
+ H&=4a+3,&\Delta&=a^2+H,&F&=(K_0+W)C-z(q-1).
+\end{align*}
+\begin{align*}
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+hXY,\qquad \eta=c-Yk,\qquad\zeta=k-\eta,\\
+ G&=(\kappa_1F)(\kappa_2C)-(q-\kappa_1F-\kappa_2C)^2,\\
+ \Pi&=G\eta\zeta-(t^2-G-\eta\zeta+1)^2,\qquad
+ D_g=(3\Pi-4)s^2+1,\\
+ \ell&=XY^2,\qquad E=1+\ell(\ell+1)k^2,\qquad U=src^2,\\
+ D_f&=1+\Delta U^2E,\qquad Q=\Delta^2U^2E,\qquad\delta=Q-1,\\
+ b&=c-R+4UET,\qquad V=D_fb-c,\qquad C_y=QV^2-1,\\
+ K&=X(X+2ac)-1,\qquad S=UH^5,\qquad z_c=HT+K,\\
+ A_c&=(z_c^2+3H^2)(z_c^3-19H^3),\qquad Z=S(n+V)-A_c.
+\end{align*}
+Put
+\begin{align*}
+ f_s&=\delta Z^2,& f_a&=9\delta S^2ED_f,\\
+ f_b&=81\delta S^2D_g,& f_c&=S^2C_y,\\
+ P_e&=(f_s+f_c-f_a-f_b)^2-4(f_sf_c+f_af_b).
+\end{align*}
+The entire requested equation over $\Z^{12}$ is
+\begin{equation}
+ \boxed{\quad P=P_e^2-64f_sf_cf_af_b=0.\quad}
+ \label{eq:saturated-integer12}
+\end{equation}
+Every operation is polynomial arithmetic.  The literal circuit evaluates
+$81D_g$ directly as $(243\Pi-324)s^2+81$, saving one multiplication.
+Fixed powers in the display are implemented by counted binary
+multiplications.
+
+For interpretation, let $\mathcal F_8(Z;A,B,C)$ be the product of
+$Z-\epsilon_1\sqrt A-\epsilon_2\sqrt B-\epsilon_3\sqrt C$ over the eight
+sign choices.  Sign invariance makes this an integer polynomial.  Then
+\begin{equation}
+ P=\delta^4\mathcal F_8\left(
+ Z;9S^2ED_f,81S^2D_g,\frac{S^2C_y}{\delta}\right).
+ \label{eq:saturated-integer12-norm}
+\end{equation}
+This is only a norm interpretation of the division-free
+definition~\eqref{eq:saturated-integer12}.  The denominator is cleared
+symbolically, and $\delta$ will be shown never to vanish on integer inputs.
+
+\subsection{Signed bootstrap, separation, and source restoration}
+
+\begin{theorem}[Twelve-integer saturated carrier]
+Under the same ordinary native, compiler, and refutation calibration as the
+pinned scalar-carrier parent,
+\[
+ \ZFC\vdash\left(
+   \forall x\in\Z^{12}\;P(x)\ne0
+ \right)\longleftrightarrow\Con(\ZFC).
+\]
+The new arithmetic equivalence is proved below and is formalizable in
+ZFC.  This statement does not claim a new encoded object-ZFC derivation
+or proof-assistant endpoint for the entire inherited calibration.
+\end{theorem}
+
+\begin{proof}[Soundness]
+The fixed parity and residue choices give, unconditionally,
+\[
+ |q|\ge16,\quad |X|\ge64,\quad |Y|\ge4096,\quad
+ H\ne0,\quad\Delta=(a+2)^2-1>1.
+\]
+Also $E\ge1$, since $\ell(\ell+1)\ge0$ for integer $\ell$.
+If $U=0$, then $Q=0$; otherwise $Q\ge\Delta^2>1$.  Thus $\delta\ne0$
+for every integer assignment.
+
+Write $\pi(x)=(x^2+3)(x^3-19)$.  If $U=0$, then $S=0$ and
+the final polynomial becomes $A_c^8$.  But
+$A_c=H^5\pi(T+K/H)\ne0$: the quadratic has no real zero and the cubic
+has no rational zero.  Hence a zero of $P$ has $U\ne0$, so $s,r,c$
+are nonzero and $|U|\ge c^2$.  We obtain
+$D_f>|c|+1$.  Since $b$ is integral, either $b=0$ and $|V|=|c|\ge1$,
+or $|V|\ge D_f-|c|>1$.  Consequently $C_y>0$ and $Q>1$ before any
+guard or projection is assumed.
+
+Divide a vanishing conjugate factor of~\eqref{eq:saturated-integer12-norm}
+by $S$.  If $D_g<0$, its summand is the only nonzero imaginary term,
+an impossibility.  Thus $D_g\ge0$.  Since $s\ne0$, the inequality
+$\Pi\le0$ would force $D_g\le-3$; hence $\Pi>0$.  This implies both
+$G>0$ and $\eta\zeta>0$.  Indeed their product is positive; if they
+were both negative, their absolute values $A,B>0$ would give
+$\Pi=AB-(t^2+A+B+1)^2<0$.
+
+Modulo 3, $X=-1$ and $a=H=\Delta=0$.  The value $\ell=XY^2$ is
+0 or $-1$, so $E=D_f=1$ and $\delta=C_y=-1$ modulo 3.  The three
+normalized roots have squared 3-adic orders
+\[
+ \sqrt{C_y/\delta}:0,\qquad
+ 3\sqrt{ED_f}:2,\qquad
+ 9\sqrt{D_g}:4+v_3(D_g).
+\]
+Omit a zero guard term.  In a rational sum of square roots of positive
+rationals, each nontrivial square class must cancel internally.  Within
+such a class the ratios are rational, and the displayed valuations
+give a unique term of minimum 3-adic order, making cancellation
+impossible.  Therefore all three roots are rational.
+
+The integer $ED_f$ is thus a square.  Since
+$D_f=1+\Delta U^2E$, we have $\gcd(E,D_f)=1$; positivity and unique
+factorization give
+\[
+ E=\tau^2,\qquad D_f=f^2,\qquad I=U\tau,
+ \qquad \tau,f\in\Z_{>0}.
+\]
+This includes $E=1$.  We have $c^2\mid I$, $I\ne0$,
+$f^2=1+\Delta I^2$, and $Q=(\Delta I)^2$.
+The rational auxiliary root $y$ satisfies
+\begin{equation}
+ QV^2-(Q-1)y^2=1.
+ \label{eq:sat12-aux}
+\end{equation}
+The adjacent-coefficient descent from the retained parent makes $y$
+integral.  Explicitly, if $|y|=a/b$ in lowest terms then $b^2\mid Q-1$;
+the norm-preserving map
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad y'=(2Q-1)y-2QV
+\]
+preserves the reduced denominator and strictly decreases $|V|$ until
+$|V|=1$, where $|y|=1$.  Signs are reflected during the descent.
+The guard root is integral as well.
+
+The vanishing factor now gives
+\[
+ S(n+V)-A_c=S(\pm3\tau f\pm9g\pm y),
+\]
+so $S\mid A_c$ and $H^5\mid A_c$.  Expanding
+\[
+ \Phi_H(z)=z^5+3H^2z^3-19H^3z^2-57H^5,
+\]
+if $p^e\Vert H$ and $v_p(z)=b<e$, its leading term has valuation
+$5b$ and every other term has larger valuation.  Thus
+$H^5\mid\Phi_H(z)$ implies $H\mid z$.  Applying this to $z=HT+K$
+recovers $H\mid K$, with no sign assumption on $H$.
+
+The exact source coordinates are
+\begin{equation}
+ r_{\rm old}=r\tau,\qquad T_{\rm old}=\tau T,
+ \qquad I=sr_{\rm old}c^2.
+ \label{eq:sat12-restoration}
+\end{equation}
+They give
+\[
+ 4IT_{\rm old}=4UE T,\qquad
+ V=f^2(c-R+4IT_{\rm old})-c.
+\]
+All strict guards, the first and strong norm squares,
+the auxiliary norm~\eqref{eq:sat12-aux}, $c^2\mid I$, and $H\mid K$
+are now exactly the hypotheses of the pinned signed scalar-carrier
+restoration theorem.  That theorem permits arbitrary nonzero strong
+multipliers, including even ones.
+
+For precision, it uses absolute Pell folding and Lucas multiplication
+to recover $|c|=\psi_{|a+2|}(R)$; the auxiliary residues and strict
+index bounds identify the index.  Its whole-product estimate, using
+$H\mid K$, then yields $\operatorname{sign}(c)X=2^R$ and restores
+the missing main root and generalized signed native kernel.  These
+unchanged lemmas are retained in \path{integer12_saturated/parent/PROOF.md}
+and its pinned signed proof sources.  The named native/refutation
+calibration therefore supplies a finite syntactic ZFC refutation.
+The claim is restoration of that kernel, not a pointwise substitution
+in the old scalar polynomial, whose carrier uses $T_{\rm old}$.
+\end{proof}
+
+\subsection{Completeness with a fixed strong witness}
+
+Start with the canonical native witness of a finite ZFC refutation.
+Its relevant conditions are
+\[
+ A_0=a+2>1\text{ even},\quad R\equiv3\pmod4,\quad
+ c=\psi_{A_0}(R)>0,\quad c\equiv R\pmod4,
+ \quad E=\tau^2,\quad\tau>0.
+\]
+Choose $t$ for the joint strict guard, then a positive $s$ with
+$D_g=g^2$, as in the parent.  When $\Pi=1$ one can use $s=1,g=0$;
+otherwise ordinary Pell existence supplies the guard witness.
+
+The full-residue interpolation theorem in the retained
+\path{integer12_saturated/parent/source/INTERPOLATION12.md}, Section 6, says that for
+\emph{every} prescribed positive $N$, there is one fixed strong pair
+$I,f$ with $4Nc^2\mid I$, such that \emph{every} residue class modulo
+that same $I$ is attained by an auxiliary $T_{\rm old}$ satisfying the
+norm.  Its strong pair is chosen before the residue request, and its
+squared-modulus period is $4mf$, where $m$ is the strong Pell index.
+
+Apply this theorem with $N=s\tau$, obtaining
+\[
+ 4s\tau c^2\mid I,\qquad U=I/\tau,
+ \qquad r=I/(s\tau c^2).
+\]
+Thus $U=src^2$ is integral.  The canonical main projection gives
+$H\mid K$; put $\kappa=K/H$.  The retained intersectivity theorem for
+$\pi(x)=(x^2+3)(x^3-19)$ provides a residue $a_*$ modulo $U$ with
+\[
+ \pi(a_*+\kappa)\equiv0\pmod U.
+\]
+Now request the old auxiliary residue
+\[
+ T_{\rm old}\equiv\tau a_*\pmod I.
+\]
+Since $I=\tau U$, this ensures $\tau\mid T_{\rm old}$ and, on setting
+$T=T_{\rm old}/\tau$, gives exactly $T\equiv a_*\pmod U$.
+The new auxiliary expression is therefore the required source
+expression, and
+\[
+ \frac{A_c}{S}=\frac{\pi(T+\kappa)}{U}\in\Z.
+\]
+Finally choose
+\[
+ n=\frac{A_c}{S}+3\tau f+9g+y-V\in\Z.
+\]
+This makes a conjugate factor vanish and proves completeness.
+No positivity of $n$, coprimality of $\tau$ and $U$, or change of strong
+pair after the residue choice is needed.  The factor $E$ in $4UET$ is
+essential to this exact quotient-coordinate argument.
+
+\subsection{Attained degree and reproducible cost}
+
+All fixed coefficients have degree zero.  The relevant total degrees are
+\[
+\begin{array}{c|rrrrrrrrrr}
+ &U&E&\Delta&D_f&\delta&b&V&C_y&S&A_c\\\hline
+ \deg&4&34&12&54&66&39&93&252&34&45.
+\end{array}
+\]
+Put $z_0=Sn-A_c$, of degree 45, and $\omega=f_s-f_c$.
+The defining relation $C_y=(\delta+1)V^2-1$ gives the exact cancellation
+\[
+ \omega=\delta z_0^2+2\delta SVz_0-S^2(V^2-1).
+\]
+Its unique top term is $-S_0^2V_0^2$, of degree 254; competing degrees
+are 156, 238, and 68.  The four squared arguments have degrees
+\[
+ \deg f_a=222,\qquad\deg f_b=180,\qquad
+ \deg f_c=\deg f_s=320.
+\]
+The identity
+\[
+ P_e=\omega^2-2(f_a+f_b)(2f_c+\omega)+(f_a-f_b)^2
+\]
+has unique top term $-4(f_a)_0(f_c)_0$, of degree 542; every competitor
+has degree at most 508.  The correction $64f_sf_cf_af_b$ has degree
+1042, so the final degree is $2\cdot542=1084$, provided the top form
+does not vanish at the fixed tuple.
+
+It does not.  With subscript zero denoting highest homogeneous part,
+\begin{align*}
+ q_0&=6\beta j,&X_0&=12q_0w,&Y_0&=2q_0^3v,\\
+ a_0&=X_0Y_0,&U_0&=src^2,&E_0&=h^2X_0^4Y_0^6,\\
+ S_0&=2^{10}a_0^5U_0,&\delta_0&=a_0^4U_0^2E_0,
+   &(D_f)_0&=a_0^2U_0^2E_0,\\
+ V_0&=4a_0^2U_0^3E_0^2T.&&&&
+\end{align*}
+The term $4UET$ uniquely dominates $R$ in $b$, so these are single
+monomials.  The entire degree-1084 homogeneous part is
+\begin{equation}
+ P_0=2^{1144}3^{760}\beta^{624}
+ j^{624}w^{132}v^{164}h^{32}s^{32}r^{32}c^{64}T^4\ne0.
+ \label{eq:sat12-top}
+\end{equation}
+The exponents sum to 1084 and the actual fixed $\beta$ is positive.
+Thus the degree is proved for the complete polynomial, independently
+of finite line tests.
+
+The literal operation count is 75 multiplications, 25 additions, and
+23 subtractions: 123 in total, including scalar multiplications.  Every
+arithmetic node is live.  The 13-operation final norm follows a
+110-operation prefix and carrier.  An included integral control has the
+same operation count and degree 1280; it is dominated by this candidate.
+
+The independent standard-library checker imports no producer.  It
+verifies every prefix by free-ring identities, all 35 coefficients of
+the eight-conjugate norm, the centered cancellation and restoration
+identities, exact leading induction, complete coefficient bytes and
+recipe, and operation counts.  Normal and optimized runs pass; corrupted
+auxiliary, strong, guard, carrier, and final expressions are rejected.
+These computations certify the literal polynomial and its algebraic
+metrics.  The signed semantic argument and interpolation proof are
+ordinary mathematical proofs using the explicitly retained source
+interfaces, independently reviewed in the accompanying audit.

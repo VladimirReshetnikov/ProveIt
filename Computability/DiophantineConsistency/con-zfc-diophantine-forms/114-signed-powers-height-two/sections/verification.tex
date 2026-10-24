@@ -1,0 +1,45 @@
+\section{Verification, reproducibility, and proof status}
+\subsection{What has been checked exactly}
+
+The finite checks complement the unbounded proofs. They establish that the supplied literal equations implement the stated transformations; they do not search for a ZFC contradiction or prove an infinite arithmetic theorem by testing examples.
+
+The independent source reviewer imports no builder or optimizer. It checks the frozen original rows, exactly one changed body row, all 66 predicates and their private coordinates, 575 original prefix-row deduction identities, and 118 complete polynomial combinations of original rows. It independently reconstructs 605 usable prefix signs and confirms all 34 unsigned frame atoms. It binds the nine selected power calls to their actual exponents, retained index slacks and common base. It also checks all 19 division/remainder identities used to recover the omitted signs, including the radix identity required to bound the CRT modulus.
+
+A separately authored projection verifier uses its own sparse-polynomial addition, multiplication and substitution routines. It replays every monic elimination over \(\Z\), checks that no unconstrained coordinate was dropped, verifies the full retained-coordinate and retained-row partitions, and compares every surviving quadratic residual. It then expands the entire sum of squares and compares every coefficient of each of the four projected polynomials. Thus their variable counts, exact degrees, supports and coefficient heights are measured from complete literal equations.
+
+For the height-two construction, a third independent checker verifies all 1,243 source-row pullback identities, 383 canonical old product definitions, 165 new products, 1,942 unit equations, all coefficient-collision conditions, and the entire 14,518-term polynomial. It verifies that all 3,564 coordinates occur, the constant term is one, and the degree is exactly four.
+
+Focused corruption controls alter an inverse coefficient, a collected polynomial coefficient, the unit seed and recurrence, a product reconstruction, a source identity and a transformed row sign. They are rejected. The relevant source and coefficient checks also pass with Python optimization enabled, so their validation does not depend on disabled \code{assert} statements. Small numerical controls illustrate the signed-power inequalities and the essential base-one counterexample; the lemmas in the report supply the unbounded proofs.
+
+\subsection{Rebuilding the package}
+
+The supported numerical tools use Python 3 and its standard library. From the extracted package root, run
+\begin{quote}\ttfamily\small
+python3 verify\_all.py
+\end{quote}
+This authenticates the pinned source, checks both radius variants with the independent source reviewer, verifies all four projections and all their coefficients, and checks the preferred height-two equation. Verification receipts are written under a temporary directory unless an explicit output location is requested.
+
+For a deterministic rebuild of the two projected families, the builders support \code{--check}, which regenerates and compares their complete artifacts. The height-two builder can generate an independent output directory from its supplied source; the resulting normative files are byte-identical. Exact invocation examples are in the package README. Rebuilding the PDF additionally requires a standard LaTeX installation with the listed common packages.
+
+The final appendix prints every residual of the principal 577-variable equation. The JSON coefficient lists remain authoritative for byte-level reproduction and include all four projected alternatives and the height-two polynomial. Each term \code{[c,[i,j,...]]} means \(c\,x_ix_j\cdots\); an empty index list means the constant monomial. All indices are zero-based.
+
+\subsection{Certification levels are separate}
+
+\begin{center}\small
+\begin{tabular}{p{0.36\linewidth}p{0.56\linewidth}}
+\toprule
+Claim & Evidence delivered\\
+\midrule
+The displayed files are fixed ordinary quartics & Complete residual and coefficient lists; exact expansion checks.\\
+The projected zeros lift over all integers & Complete monic inverse certificates, checked in every row.\\
+The omitted sign conditions are redundant after the radius change & Unbounded signed-power, magnitude and reconstruction proofs; independently checked source interfaces.\\
+The coefficient-two equation has the same source zeros & Exact polynomial pullbacks and unique extension; full collision proof and coefficient collection.\\
+The semantic source represents ZFC refutations & Identified inherited arithmetic proofs and C222/ZF/ZFC calibration, with pinned immediate source files.\\
+The entire new endpoint has a proof-assistant proof & Not claimed. No new full Lean or encoded object-ZFC proof was completed.\\
+The equations have no integer solutions & Not asserted independently of \(\Con(\mathrm{ZFC})\).\\
+Global simplicity or historical optimality & Not established.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The folder \code{quotient_frame/provenance/} contains the source map and later ordinary proofs. The inherited archive remains intact, including its notices. New scripts, source data and report are accompanied by a checksum inventory. The work is ready for incorporation as a separate research package; it does not change the repository's canonical displayed equation.

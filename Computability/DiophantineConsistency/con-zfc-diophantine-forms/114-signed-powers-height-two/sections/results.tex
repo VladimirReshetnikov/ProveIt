@@ -1,0 +1,82 @@
+\section{Results and the meaning of simplicity}
+\subsection{The explicit equations}
+
+Let \(r_0,\ldots,r_{362}\in\Z[x_0,\ldots,x_{576}]\) be the quadratic polynomials printed in Appendix~\ref{app:rows}. Define
+\begin{equation}\label{eq:main}
+\boxed{\displaystyle P_{577}(x_0,\ldots,x_{576})=
+\sum_{j=0}^{362}r_j(x_0,\ldots,x_{576})^2=0,
+\qquad x_0,\ldots,x_{576}\in\Z.}
+\end{equation}
+This is one ordinary polynomial equation with fixed integer coefficients. The sum is finite and completely specified. The subscripts of its coordinates are labels, not parameters. In particular, it contains no variable exponent, hidden bounded quantifier, unspecified universal-polynomial parameter, or coefficient selected according to whether ZFC is consistent.
+
+The machine-readable quadratic rows are in \code{quotient_frame/support8/equation.json}. The fully collected polynomial, with all 7,326 coefficients, is in the adjacent \code{polynomial.json}. The archive also supplies the complete lower-height equation \(P_{582}=0\) in \code{quotient_frame/support16_affine2/}. It is the sum of the squares of 368 explicitly listed quadratic rows.
+
+The second main construction is
+\begin{equation}\label{eq:heighttwo}
+\boxed{\displaystyle Q_{3564}(z_0,\ldots,z_{3563})=
+\sum_{j=0}^{3349}s_j(z_0,\ldots,z_{3563})^2=0,
+\qquad z_0,\ldots,z_{3563}\in\Z.}
+\end{equation}
+Its complete rows, coefficient list and reconstruction certificate are in \code{height_two/anchored/}. Section~\ref{sec:height} gives a finite construction of every row from the supplied 1,457-coordinate parent. The large subscript counts actual unknowns; it does not hide fixed coefficient payloads.
+
+\begin{theorem}[Consistency endpoint]\label{thm:endpoint}
+For each of the supplied polynomials \(P_{577},P_{582},P_{586},P_{591},Q_{3564}\), ZFC proves
+\[
+\bigl(\text{there is no zero over the stated power of }\Z\bigr)
+\quad\longleftrightarrow\quad\Con(\mathrm{ZFC}).
+\]
+The consistency predicate is the absence of a finite syntactic refutation in the fixed ZFC calculus used by the inherited source calibration. The proof is an ordinary mathematical proof using that identified calibration, together with the new reductions proved below; the new entire equivalence has not been checked in a proof assistant.
+\end{theorem}
+
+The construction proves an equivalence, not either side of that equivalence. A finite refutation supplies finite integer witnesses by the completeness construction. Conversely, any integer zero can be reconstructed into a finite refutation. These are unbounded statements: no bound is placed on proof length, Pell indices, or the magnitudes of the unknowns.
+
+\subsection{Measured improvements}
+
+We use \emph{coefficient height} to mean the maximum absolute value of a coefficient of the fully collected polynomial. The count of quadratic residuals refers to its displayed sum-of-squares representation; it is not the number of equations in the final problem, which is one.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrrr}
+\toprule
+Construction & Variables & Rows & Monomials & Height\\
+\midrule
+Matched direct predecessor &604&372&9,676&2,445,790,974,704\\
+New quotient-radius equation &577&363&7,326&2,445,790,974,704\\
+Squared-output companion &586&372&7,059&2,445,790,974,704\\
+Matched lower-height predecessor &609&377&8,823&964,213\\
+New quotient-radius companion &582&368&6,069&964,213\\
+Squared-output, lower height &591&377&5,835&964,213\\
+New coefficient-two equation &3,564&3,350&14,518&2\\
+\bottomrule
+\end{tabular}
+\caption{All rows describe unrestricted integer unknowns and exact degree four. Baselines are fixed at the inspected repository snapshot.}
+\end{table}
+
+The quotient-radius change removes 27 final unknowns and nine quadratic residuals. The 577-variable equation has 2,350 fewer monomials than its matched 604-variable predecessor, a 24.29\% reduction. The lower-height 582-variable equation has 2,754 fewer monomials than its matched 609-variable predecessor, a 31.21\% reduction, with the same height 964,213.
+
+The squared-output radius, developed first, supplies another useful tradeoff: its 586-variable form has 7,059 terms, and its 591-variable lower-height form has 5,835 terms. Thus these forms have nine more variables but fewer terms than the corresponding quotient-radius forms. All four are retained. The lower-height variants have five more variables and substantially smaller coefficients than their corresponding high-coefficient variants.
+
+At source level nine nonnegativity conditions disappear, saving 27 private sign witnesses. Squaring the terminal outputs prevents nine old coordinate eliminations, leaving a net saving of 18. Squaring the quotient coordinates instead restores those eliminations and realizes the full saving of 27. All counts are measured from complete polynomial artifacts.
+
+For \(Q_{3564}\), the full coefficient histogram is
+\[
+\begin{array}{c|rrr}
+\text{coefficient}&-2&1&2\\\hline
+\text{number of monomials}&4,470&7,280&2,768.
+\end{array}
+\]
+In particular, no large integer has merely been moved to an unexplained coefficient port. The logical source is encoded in the finite arrangement of elementary rows.
+
+\subsection{What is and is not improved}
+
+There is no established single ordering called ``simplest Diophantine equation.'' The useful objectives here include number of variables, total degree, coefficient height, number of monomials, arithmetic circuit size, and the length of the complete fixed-data recipe. These objectives conflict.
+
+The pinned repository already contains nine-positive-variable and ten-unrestricted-integer constructions, as well as 38-unrestricted-integer quartics obtained through the native coefficient route. The present 577-variable equation does not improve those variable counts. Its improvement concerns the direct C222 proof-certificate quartics with moderate literal coefficients. The coefficient-two equation is a further tradeoff in the coefficient-height direction. It is not evidence that 3,564 is the fewest number of variables possible at height two.
+
+The contribution is therefore two specific constructions and two reusable mechanisms. The first replaces a sign-dependent magnitude bound by a sign-independent one and then recovers signs from arithmetic. The second prevents accumulation of coefficients by separating occurrences with private unit variables. The investigation does not establish that either general device is historically new throughout the literature. The changes are new relative to the inspected construction, and the supplied numerical gains are independently checkable.
+
+\subsection{Frozen comparison point}
+
+All source comparisons use ProveIt commit
+\begin{center}\small\pin.\end{center}
+The collection README is older than some active research files. The actual baselines come from \code{research/factorial-radius-output-sign-profile/}, whose 75-predicate family includes the 604- and 609-variable equations above. We also inspected the active size comparison and the newer incoming archives before selecting this branch. No earlier repository construction is removed or replaced by this package.

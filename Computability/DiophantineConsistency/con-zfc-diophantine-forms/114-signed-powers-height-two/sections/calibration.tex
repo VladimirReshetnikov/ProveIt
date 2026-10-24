@@ -1,0 +1,63 @@
+\section{From the numerical source to consistency}\label{sec:calibration}
+\subsection{The logical source is independent of K215}
+
+The starting point is the repository's numerical C222 calculus, used directly as a proof-certificate source. The name is historical; this construction does not encode the tape or transition table of a 222-state or 215-state machine. Nor does it substitute an unspecified program index into Jones's universal polynomial.
+
+The inherited source has explicit arithmetic constructors for formula codes and a fixed table of rule alternatives. The projected certificate uses eight numerical columns: four rule/schema parameters, two consecutive accumulator values, and two beta-code quotient columns. The truth and unconditional axiom alternatives have no nontrivial premises. Modus ponens and generalization retain their actual premise and conclusion constructors. The guarded axiom alternative retains the arithmetic test that distinguishes its required parameters. The source archive contains the complete rule table and constructor data; the new radius transformation changes none of them.\cite{repository,archive}
+
+The accumulator uses weights \(w(j)=1+Mj\) and transitions
+\[
+S_{i+1}w(v_i)=S_iw(p_i)w(q_i).
+\]
+For a finite valid certificate these equations telescope to an equality of products of linear factors. A sufficiently large explicitly generated carrier allows that numerical equality to be decoded coefficient by coefficient into a polynomial identity. The inherited one-sided degree argument bounds the degrees on both sides before using base uniqueness; it does not assume the desired balance in advance.
+
+The polynomial flow identity implies derivability of the target even if the proposed rule multiset contains cycles or repeated premises. One can evaluate a suitable linear functional supported outside the derivability closure: every permitted rule respects that closure, so an unmatched target outside it contradicts the flow identity. Completeness expands a finite derivation into a finite proof tree and pads it with truth steps. Thus this is an unbounded finite-derivation certificate, rather than a certificate for proofs below a fixed external bound.
+
+\subsection{Why the arithmetic compiler has finitely many variables}
+
+The eight columns are encoded by common CRT and beta representations. Exact factorial and binomial constructions supply the necessary moduli and low-digit extraction. The range certificates use binomial divisibility, which permits the high-digit quotients to be auxiliary values rather than independent semantic columns. All variable-length computation is represented by arithmetic identities with fixed finite witness lists.
+
+The shared Pell construction certifies all 21 required powers with one common frame and a finite collection of seed-index tests. Its auxiliary units and congruences can be chosen simultaneously by finite period arguments. All power bases, exponents and proposed outputs are allocated before the private Pell coordinates. That separation is the reason the new frame can be rebuilt after its semantic inputs are fixed.
+
+The compiler's numerical values can be enormous. Finiteness, exact integral identities, and an unbounded proof of correctness are what matter for the Diophantine representation. A practical search for a ZFC refutation, a feasible solution bound, and an actual standard integer zero are not claimed.
+
+\subsection{The exact calibration dependency}
+
+The preserved source archive contains the immediate Lean source files for the named endpoint theorems
+\[
+\code{KEndpoint.c222_iff_zf_refutation}
+\]
+and
+\[
+\code{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\]
+The first is unconditional and occurs before the later machine-parameter portion of its file. The second transfers syntactic refutation existence between ZF and ZFC using the inherited constructibility argument. Together their intended ordinary mathematical content is
+\begin{equation}\label{eq:logicalbridge}
+\mathrm{C222}(1) \longleftrightarrow\
+\Refut(\mathrm{ZF})\ \longleftrightarrow\ \Refut(\mathrm{ZFC}).
+\end{equation}
+The immediate calibration files are pinned to commit
+\begin{center}\small\texttt{08200eb10fde2db408c69dffd840d6920a569b1f}.\end{center}
+Their complete byte counts and SHA-256 values were checked against the archive's ledger. The independent reviewer inspected the actual statements as well as the file identities. This investigation did not rebuild their full transitive Lean development.\cite{archive,calibration}
+
+The complete inherited archive is included as a frozen dependency, with SHA-256
+\begin{center}\scriptsize
+\texttt{59f847872298260ee35e9d8e4cd0b52d2d78658ac523981fe060e81f40ca4a59}.
+\end{center}
+Later ordinary arithmetic reductions are also included with their original repository paths and hashes. These include the candidate-output factorial radius, signed comparison-base theorem, paired index guards, factorial lower-bound guard, and early first-output sign recovery. This package identifies and preserves that dependency chain rather than treating a finite Python replay as a substitute for its number theory or logical calibration.
+
+\subsection{Proof of the consistency endpoint}
+
+\begin{proof}[Proof of Theorem~\ref{thm:endpoint}]
+The source arithmetic theorem identifies the existence of a valid numerical certificate with \(\mathrm{C222}(1)\). The squared-output transformation in Proposition~\ref{prop:existence} and the quotient-radius transformation in Corollary~\ref{cor:quotient} preserve that existence statement. The signed integer projections preserve it in both directions by exact polynomial restoration. The coefficient-height transformation preserves it by Theorem~\ref{thm:unitbijection}. Composing any of these paths with \eqref{eq:logicalbridge} gives
+\[
+\exists\mathbf x\in\Z^d\;P(\mathbf x)=0
+\quad\longleftrightarrow\quad
+\exists p\;\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot).
+\]
+All fixed data, finite sequences, congruences, Pell recurrences and witness constructions are arithmetically definable. The ordinary arguments use induction, integer algebra, elementary number theory, and the identified source calibration, all formalizable in ZFC. Negating the displayed equivalence gives the stated no-zero equivalence with \(\Con(\mathrm{ZFC})\).
+\end{proof}
+
+No consistency assumption is used in deriving the equivalence. If a finite syntactic contradiction exists, the completeness constructions produce the corresponding finite integer witnesses. If an integer zero exists, soundness produces a finite syntactic contradiction. Neither implication depends on our being able to exhibit such an object.
+
+The statement ``ZFC proves the equivalence'' here has the ordinary mathematical meaning that the supplied proof and its named dependencies can be formalized in ZFC. It is distinct from a completed new proof-assistant theorem and from an emitted proof term in the repository's encoded object-language ZFC. The latter tasks remain unfinished, in agreement with the repository's formalization pause. This is a limitation on certification status, not a replacement of the no-zero claim by a bounded numerical test.

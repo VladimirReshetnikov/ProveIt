@@ -1,0 +1,162 @@
+\section{Eleven unrestricted integers: selective coprime fusion}
+\label{sec:integer-fusion}
+
+The principal new equation has \textbf{eleven unrestricted integer unknowns,
+exact degree $688$, and $126$ live binary arithmetic operations}.
+Its direct sibling has degree $728$ and $122$ operations.
+The preceding eleven-integer endpoint had degree $2240$ and $206$ operations.
+A more aggressive fusion gives a lower-cost alternative of degree $1632$
+and $114$ operations. These are comparisons of complete displayed
+circuits, not global optimality claims. The unbounded native/refutation
+calibration remains inherited; no new formal kernel certificate is claimed.
+
+\subsection{The complete polynomial}
+The independent coordinates are
+\[
+ (j,C,z,h,r,v,w,T,c,n,s)\in\mathbb Z^{11}.
+\]
+Use the six fixed integers $\beta,K_0,M_C,M_F,A_c,B_c$ specified by the
+retained source-34 coefficient recipe, with $M_F$ already shifted.
+Here $A_c=2^{1113}$ and $B_c=2^{666104}$; neither is a variable.
+
+All subsequent symbols are polynomial abbreviations:
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,& W&=12w+4,\\
+ X&=qW,&Y&=(2v+1)q^3,& E&=XY,\\
+ a&=E+Y,& H&=4a+3,&\Delta&=a^2+H,\\
+ F&=(K_0+W)C-z(q-1),\\
+ R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+hE,&\eta&=c-Yk,\\
+ D_{\rm err}&=(A_cF-q)^2+(B_cC-q)^2,\\
+ B&=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ L&=XY^2k,&D_t&=1+L(L+k),\\
+ D&=3B-4,&D_g&=1+4DD_t s^2,&P&=D_tD_g,\\
+ I&=2src^2,&D_f&=1+\Delta I^2,&Q&=\Delta^2I^2,\\
+ \delta&=Q-1,&V&=D_f(c-R+4IT)-c,\\
+ C_y&=QV^2-1,&D_a&=\delta C_y,\\
+ K&=X(3c-2X)+2,&S&=IH^5,&z_c&=HT+K,\\
+ A_*&=(z_c^2+3H^2)(z_c^3-19H^3),\\
+ Z&=S\bigl(n+(2Q-1)V\bigr)-A_*,\\
+ u&=S^2D_f,&b&=4S^2D_a,&e&=16S^2P.
+\end{align*}
+The promised single polynomial equation is
+\begin{equation}\label{eq:integer-fusion}
+ \boxed{\ \bigl[(Z^2-u-b-e)^2-4(ub+ue+be)\bigr]^2
+                 -64ubeZ^2=0.\ }
+\end{equation}
+There are no radicals, divisions, variable exponents or implicit witnesses
+in this display. Removing $(2Q-1)V$ from $Z$ gives the direct $728/122$
+variant by an integral translation of $n$.
+
+\subsection{Why the fusion is valid}
+The polynomial in~\eqref{eq:integer-fusion} is the product of the eight
+independent conjugates of $Z-\sqrt u-\sqrt b-\sqrt e$.
+The former five-root construction is reduced in two different ways:
+the main root is recovered arithmetically rather than included in the norm,
+and two other square conditions are fused using
+\[
+ \gcd(D_t,D_g)=\gcd(D_t,1+4DD_t s^2)=1.
+\]
+Thus $D_tD_g$ is a positive square exactly when both coprime positive
+factors are squares. This is not an assumption that arbitrary products of
+squares can be reversed.
+
+For every integer assignment $H\ne0$, $\Delta>1$, $D_f,D_t\ge1$.
+If $I=0$, the equation specializes to $A_*^8\ne0$, because
+\[
+ A_*=H^5\pi(T+K/H),\qquad \pi(x)=(x^2+3)(x^3-19)
+\]
+has no rational zero. Hence $I,s,r,c\ne0$ at any zero.
+Then $|I|\ge c^2$, $D_f>|c|+1$, $|V|\ge1$, and $D_a>0$.
+If $D_g<0$, its fused radical would be the only imaginary term in a
+vanishing factor, an impossibility. Therefore $D_g>0$, and $B\ge2$.
+The centered budget supplies the common strict signs of $q,F,C,q-F-C$
+and $|c/k-Y|<1/2$.
+
+All three radicands $D_f,D_a,P$ are odd positive integers. In a rational
+signed sum with weights $1,2,4$, each irrational squareclass has a unique
+least $2$-adic weight and cannot cancel. Thus all three roots are integers.
+Coprimality recovers separate square roots of $D_t,D_g$.
+The auxiliary quotient $y=\sqrt{D_a}/\delta$ is integral by the retained
+adjacent-Pell descent. The factor identity now implies $S\mid A_*$.
+Monicity and prime-valuation comparison give $H\mid K$. Since
+\[
+ K=HXc-2\{X(X+2ac)-1\},\qquad H\text{ odd},
+\]
+the signed quadratic main projector is recovered as well.
+
+The missing main Pell norm must not be assumed in this argument.
+From the strong and auxiliary norms, absolute-value Pell folding gives
+$|c|=\psi_{|a+2|}(p)$ for some $p\ge1$ before projection.
+The retained centered signed-rank proof then yields $p=R=2t+1$, $t\ge24$,
+and the requisite ratio bound. The signed whole-product estimate yields
+$\operatorname{sign}(c)X=2^R$; the original centered half-binomial argument
+restores positive orientation and the native interval. Fresh private
+witnesses then restore the exact old signed kernel and its finite
+syntactic refutation endpoint. The complete proof records each dependency
+and its order in \texttt{integer/PROOF.md}.
+
+Conversely, a finite refutation supplies the same canonical outer tuple,
+with $B>64$ and $D_t=\tau^2>0$. Since $(3B-4)D_t\equiv2\pmod3$,
+ordinary Pell existence and a squared unit supply $s,g>0$ with
+$D_g=g^2$. The retained full-residue interpolation theorem then chooses
+one fixed strong pair $I,f$ before any residue for $T$ is requested.
+The intersective polynomial $\pi$ has a root modulo every integer;
+choose $T$ so that $I\mid\pi(T+K/H)$, and finally set
+\[
+ n=A_*/S+f+2\delta y+4\tau g-(2Q-1)V.
+\]
+This makes a conjugate factor zero. In particular, the strong witness is
+not varied after selecting the intersective residue.
+
+\subsection{Exact degree and independently checked arithmetic}
+The relevant degrees are
+\[
+ \deg(S,D_f,Q,V,D_a,D_t,D_g,P)=(34,20,32,25,114,34,60,94).
+\]
+Thus $\deg(u,b,e)=(88,182,162)$. Put $C_*=S(2Q-1)V$ and
+$s_*=Sn-A_*$. The exact identity
+\[
+ b-C_*^2=S^2(-V^2-4Q+4)
+\]
+gives $\deg(Z^2-b)\le126$. Rewriting the norm with
+$\omega=Z^2-b$, its inner bracket has unique leading term $-4be$
+of degree $344$; the remaining outer correction has degree $614$.
+Hence the output has degree $688$ and leading form $16b_0^2e_0^2$.
+For the authentic fixed tuple its coefficient
+\[
+ [j^{376}w^{84}v^{96}h^{12}s^{32}r^{28}c^{56}T^4]E_8
+       =2^{780}3^{462}\beta^{376}>0
+\]
+proves that this bound is attained. No generic-coefficient assumption or
+random sampling is used.
+
+The portable checker authenticates all six numeral payloads, every live
+arithmetic register, all $35$ coefficients of the free three-root norm,
+all degree-leading inductions and the centered cancellation cut.
+Both ordinary and optimized Python runs pass. Counting every live binary
+addition, subtraction and multiplication, including squares and scalar
+products, gives exactly $126$ operations; leaves and reuse are free.
+
+\subsection{A lower-operation alternative}
+Replace $I$ by
+\[
+ I=2src^2D_tD_gD_m(a+2),\qquad D_m=1+\Delta c^2,
+\]
+recompute the dependent definitions, and set $Z=Sn-A_*$. The equation
+\[
+ \boxed{\ \delta Z^2-S^2D_fD_tD_gC_y=0\ }
+\]
+has degree $1632$ and $114$ operations, still in eleven integers.
+It is a polynomial despite its derivation from a rational auxiliary root.
+Now $D_f,D_t,D_g,D_a$ are pairwise coprime: the new factors in $I$
+give the first four coprimalities, while
+\[
+ D_a\equiv(a+2)^2D_m\pmod {D_f}
+\]
+gives the last one. Squaring $\delta Z/S$ recovers the product of these
+four positive coprime integers; each is a square. The same adjacent-Pell
+descent and scalar projection finish soundness. All additional factors
+in $I$ are fixed before applying the same full-residue interpolation
+lemma, so completeness introduces no stronger unproved interpolation
+assumption. The detailed proof and complete circuit accompany the package.

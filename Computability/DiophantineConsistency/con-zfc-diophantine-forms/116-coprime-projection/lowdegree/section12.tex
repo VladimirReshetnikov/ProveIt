@@ -1,0 +1,63 @@
+\section{A four-root companion: twelve integers, degree 500}
+\label{sec:four-carrier}
+The final member removes $p_1$ as well, leaving \textbf{12 unrestricted
+integer variables, exact degree500 and148 live operations}.  It improves
+both measures over the inspected degree1000/180-gate twelve-variable
+endpoint.  The guard is now a square radicand inside the norm itself,
+not an additional inequality or hidden witness.
+
+Keep the13-variable definitions and set
+\[
+ G_0=B_{\rm sign}-1-p_2^2-p_3(p_3+1),\qquad
+ Z_*=Z+U(A+B+C_*).
+\]
+Define the four scaled radicands
+\[
+ a_r=4U^2D_\tau,\quad b_r=36U^2D_f,\quad
+ c_r=324U^2D_a,\quad e_r=729U^2G_0,
+\]
+and the direct four-root evaluator
+\begin{align*}
+ p&=a_rb_r,&q_*&=c_re_r,&u_*&=a_r+b_r,&v_*&=c_r+e_r,\\
+ s_*&=Z_*^2-u_*-v_*,\\
+ k_*&=s_*^2-4u_*v_*+4(p+q_*),\\
+ \ell_*&=s_*+2v_*,&m_*&=s_*+2u_*,\\
+ E_*&=k_*^2+16[p\ell_*^2-q_*(m_*^2+4p)],\\
+ O_*&=k_*\ell_*+8q_*m_*.
+\end{align*}
+The complete equation is
+\[
+ \boxed{P_{12}=E_*^2-64pO_*^2=0.}
+\]
+It is exactly the product over all16 signed sums of the four roots, with
+no finalizer needed.
+
+\paragraph{Why the guard can join the roots.}
+Monicity of the16-sign norm first makes the rational total center integral,
+so the same coprime CRT recovers the cubic scale.  The first three radicands
+remain units modulo3.  Their root weights $2,6,18$ have respective
+three-adic coefficient orders $0,1,2$; the fourth weight $27$ has order
+at least3 after the squarefree decomposition of nonzero $G_0$.
+Therefore no nonrational squareclass can cancel.  If $G_0=0$, that root is
+simply omitted; a negative $G_0$ is excluded by the same squareclass argument,
+not assumed away.  Thus $G_0=g^2$ for an integer $g$ and
+\[
+ B_{\rm sign}=1+p_2^2+p_3(p_3+1)+g^2>0.
+\]
+Set $p_{1,15}=g$ and restore the other three integer roots exactly as in
+the13-variable proof.  The adjacent-Pell denominator lemma restores the
+auxiliary coordinate.  Conversely every15-variable zero gives this norm
+zero after an integral shift of $n$ incorporating $27p_1$.  Both maps apply
+to every zero, without extra canonical choices.
+
+\paragraph{Exact degree.}
+The triple-centered root defects are unchanged.  The cleared16 factors
+have degrees $47$ eight times, $17$ four times and $14$ four times,
+so their product has exact degree500.  Its actual leading witness is
+\[
+ [j^{228}w^{76}v^{84}h^8z^8r^{32}c^{64}]P_{12}
+   =2^{488}3^{332}\beta^{228}>0.
+\]
+The148 live gates are90 multiplications,35 additions and23 subtractions.
+The complete scalar definitions, ordinary proof and independent certificate
+are under \texttt{lowdegree/twelve/}.

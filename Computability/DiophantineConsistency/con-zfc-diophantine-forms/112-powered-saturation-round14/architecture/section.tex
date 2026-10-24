@@ -1,0 +1,694 @@
+\section{One factorial for proof labels and CRT rows}
+\label{sec:shared-factorial-carrier}
+
+This section proves the new arithmetic route completely, including its
+constructive reverse direction.  Its final Cantor-syntax endpoint is a
+quartic in \(349\) nonnegative integer unknowns.  It is the sum of squares
+of \(268\) explicitly listed quadratic residuals, or equivalently the
+supplied polynomial with \(12\,768\) collected monomials and coefficient
+height \(86\,915\,503\).  The square-shell companion has \(351\) natural
+unknowns, \(270\) residuals, \(16\,193\) monomials and height
+\(15\,317\,516\).
+
+The inherited interface is the literal C222 rule calculus, its existing
+ordinary ZFC calibration, and the simultaneous positive-power Pell
+representation.  Those results are not reproved or advertised as newly
+formalized here.  Everything replacing the old large carrier and CRT
+architecture is proved below.  In particular, no incomplete global
+encoding is labelled a consistency polynomial.  Neither consistency nor
+inconsistency is assumed, and no new end-to-end Lean or object-language
+ZFC derivation is claimed.
+
+The structural idea is to reuse \(F=t!\) for two distinct purposes:
+the weights \(1+jF\) separate formula-label multiplicities, while the
+moduli \(1+F^2/i\) separate the bounded arithmetic rows.  A binomial range
+condition applied to a \emph{derived polynomial expression}, rather
+than another independently encoded local coordinate, connects the two
+roles.  This removes the former enormous carrier power and its fixed
+chain of twenty-two squarings.
+
+\subsection{The precise local source interface}
+
+Natural numbers include zero throughout.  Fix a positive horizon \(t\),
+outer parameters \(x,y,F\), a row index \(0\le i<t\), and eight local
+coordinates
+\[
+ (a,b,c,d,S,S',u,v).
+\]
+Their bounds are
+\[
+ a,b,c,d\le t,\qquad S,S'\le y,\qquad u,v\le x.             \tag{A1}
+\]
+Let \(c_1,\ldots,c_9\) be the nine literal axiom/schema codes in the
+inherited calibrated source, and let \(I,A\) be its implication and
+universal constructors.  Both syntax variants use their complete
+constructor recipes, not unspecified parameters.  All constructor
+expressions are polynomials with nonnegative integer coefficients.
+Define
+\[
+ W_z=1+Fz,\qquad
+ G=\bigl((c-a)^2(c-b)^2-(d+1)^2\bigr)^2.
+\]
+The nonnegative Horn factor is
+\begin{align*}
+ H={}&(S'-S)^2
+       \prod_{\nu=1}^{8}(S'W_{c_\nu}-S)^2\\
+    &{}\cdot\bigl((S'W_{c_9}-S)^2+G\bigr)\\
+    &{}\cdot(S'W_b-SW_aW_{I(a,b)})^2
+       (S'W_{A(a,b)}-SW_b)^2 .
+\end{align*}
+The local polynomial is
+\begin{align}
+ L(i,a,b,c,d,S,S',u,v)
+   ={}&H+\bigl(x-S-(1+(i+1)y)u\bigr)^2 \notag\\
+      &+\bigl(x-S'-(1+(i+2)y)v\bigr)^2.                  \tag{A2}
+\end{align}
+It is nonnegative at every natural tuple, not only at bounded ones.
+The extra expression controlling all possible rule labels is
+\[
+ J(a,b,c,d)=\sum_{\nu=1}^{9}c_\nu+a+b+I(a,b)+A(a,b)+1.     \tag{A3}
+\]
+In particular \(J\ge1\).  If \(J\le t\), every label that can occur in
+a vanishing Horn branch lies in \([0,t]\).
+
+The finite majorant calculation is performed on these actual source
+expressions.  Put
+\[
+ R=2+t+x+y+F.
+\]
+Replace every difference square \((r-s)^2\) in the source by
+\((U+V)^2\), using positive upper bounds for \(r,s\), and bound each local
+input by its corresponding quantity in (A1).  Include both \(L\) and
+\(J\), together with \(t+x+y+1\), in the final upper expression.  The
+complete gate ledger gives
+\[
+ 0\le L(i,\mathbf w)<R^E,\qquad
+ 0<J(\mathbf w)<R^E,\qquad E=8\,388\,608.                 \tag{A4}
+\]
+A separate positive-constructor ledger gives
+\[
+ J(a,b,c,d)\le(n+1)^\ell
+ \quad(0\le a,b,c,d\le n,\ n\ge1),\qquad
+ \ell=4\,194\,304.                                      \tag{A5}
+\]
+These are exact finite certificates.  A constant \(c>0\) is assigned
+exponent \(\lceil\log_2 c\rceil\); additions increase the larger
+exponent by one; products add exponents.  Since each relevant bounding
+base is at least \(2\), every such step is an elementary valid
+inequality.  The input bounds and all constructor constants occur in
+the ledgers.  Thus (A4)--(A5) do not conceal coefficient factors in an
+asymptotic estimate.  Their finite values and the full ledger identities
+are independently checked.
+
+\subsection{Reciprocal moduli and the range lemma}
+
+\paragraph{Reciprocal-modulus lemma.}
+For \(t\ge1\), set
+\[
+ F=t!,\qquad T=F^2,\qquad
+ d_i=1+\frac{T}{i}\quad(1\le i\le t),\qquad
+ B=\binom{T+t}{t}.                                      \tag{A6}
+\]
+Then every \(d_i\) is an integer greater than one, its prime divisors
+exceed \(t\), the \(d_i\) are pairwise coprime, and
+\[
+ B=\prod_{i=1}^{t}d_i.                                  \tag{A7}
+\]
+
+\paragraph{Proof.}
+Because \(i\mid F\), one has
+\(d_i=1+F(F/i)\equiv1\pmod F\).  A prime at most \(t\)
+divides \(F\), and therefore cannot divide \(d_i\).
+If a prime divided both \(d_i,d_j\), it would divide
+\(id_i-jd_j=i-j\); for distinct \(i,j\), this is impossible
+because that prime exceeds \(t\).  Finally,
+\[
+ \prod_{i=1}^{t}d_i
+ =\prod_{i=1}^{t}\frac{T+i}{i}
+ =\frac{(T+t)!}{T!\,t!}
+ =\binom{T+t}{t}.
+\]
+The final arithmetic graph materializes only the binomial on the right.
+No variable-length product or division by a variable index appears in
+the polynomial.  In particular, \(B\ge2\).
+\hfill\(\square\)
+
+\paragraph{One-sided prime-power range lemma.}
+Let \(p\) be prime, \(e,k\ge1\), and \(a\ge0\).  With the usual convention
+\(\binom ak=0\) for \(a<k\),
+\[
+ p^e\mid\binom ak\quad\Longrightarrow\quad
+ a\bmod p^e<k.                                         \tag{A8}
+\]
+
+\paragraph{Proof.}
+The case \(a<k\) is immediate.  Otherwise the factorial valuation formula is
+\[
+ v_p\binom ak=
+ \sum_{j\ge1}\left(
+ \left\lfloor\frac a{p^j}\right\rfloor
+ -\left\lfloor\frac {a-k}{p^j}\right\rfloor
+ -\left\lfloor\frac k{p^j}\right\rfloor\right).           \tag{A9}
+\]
+Every summand is \(0\) or \(1\), by the elementary floor-addition identity.
+If the interval \([a-k+1,a]\) contained no multiple of \(p^e\),
+it would contain no multiple of \(p^j\) for \(j\ge e\).
+For those \(j\), its length is less than \(p^j\), and the corresponding
+summands in (A9) vanish.  Hence the valuation would be at most \(e-1\),
+a contradiction.  Therefore \(p^e\mid a-r\) for some \(0\le r<k\).
+The least residue of \(a\) is the least residue of \(r\), which is at
+most \(r\), proving (A8).
+\hfill\(\square\)
+
+This implication is deliberately one-sided.  For example \(4\bmod4=0<2\),
+but \(4\nmid\binom42=6\).  The construction never invokes the false converse.
+
+\subsection{Complete amplified bounded-universal elimination}
+
+Here is the general arithmetic interface used below.  Let \(b_j\ge0\),
+let \(t\ge1\), and let
+\[
+ K\ge\max(1,t,b_1+1,\ldots,b_r+1).
+\]
+Use (A6) and put \(N=B^K\).  Let \(P(i,\mathbf w)\) be an integer
+polynomial, with any fixed external parameters suppressed, such that
+\[
+ 0\le P(i,\mathbf w)<2^K
+ \quad\text{for }0\le i<t,\ 0\le w_j\le b_j.              \tag{A10}
+\]
+Then the following statements are equivalent:
+\begin{enumerate}
+\item For every \(i<t\), there is a bounded tuple \(\mathbf w\) with
+\(P(i,\mathbf w)=0\).
+\item There are positive integers \(C,A_1,\ldots,A_r\le N^2\) such that
+\begin{align}
+ B&\mid C+T+1,                                         \tag{A11}\\
+ N&\mid\binom Ct,\qquad
+ N\mid\binom{A_j}{b_j+1}\quad(1\le j\le r),              \tag{A12}\\
+ N&\mid P(C,\mathbf A).                                \tag{A13}
+\end{align}
+\end{enumerate}
+For soundness the upper bounds \(C,A_j\le N^2\) are not needed.
+
+\paragraph{Soundness.}
+Fix \(i\in\{1,\ldots,t\}\), choose a prime \(p\mid d_i\), and write
+\(m=v_p(d_i)\ge1\), \(e=Km\).  Pairwise coprimality gives
+\(v_p(N)=e\).  Since \(T\equiv-i\pmod p\), (A11) implies
+\(C\equiv i-1\pmod p\).  Applying (A8) to the index range gives
+\(C\equiv s\pmod{p^e}\) for some \(0\le s<t\).
+As \(p>t\), the congruence \(s\equiv i-1\pmod p\) forces \(s=i-1\).
+For each local column, (A8) similarly gives
+\(A_j\equiv w_j\pmod{p^e}\) with \(0\le w_j\le b_j\).
+Polynomial congruence and (A13) now give
+\[
+ p^e\mid P(i-1,\mathbf w).
+\]
+But \(p^e\ge2^K\), so (A10) forces this nonnegative value to be zero.
+This produces a valid bounded row for each index.
+
+\paragraph{Constructive completeness.}
+Select one bounded tuple for each row.  Because the \(d_i\) are pairwise
+coprime, CRT supplies representatives in \([1,B^{2K}]\) satisfying
+\[
+ C\equiv i-1\pmod{d_i^{2K}},\qquad
+ A_j\equiv w_{i-1,j}\pmod{d_i^{2K}}.                    \tag{A14}
+\]
+A zero least residue is replaced by \(B^{2K}\).
+Thus the representatives are positive and at most \(N^2\).
+Equations (A11) and (A13) follow immediately.
+
+For any requested range lower index \(k\le K\), a representative \(a\)
+in (A14) is congruent to some \(w\in[0,k-1]\) modulo \(p^{2Km}\).
+If \(a<k\), its binomial is zero.  Otherwise the falling factorial has
+the positive factor \(a-w\), divisible by \(p^{2Km}\).
+The elementary valuation bound
+\[
+ v_p(k!)\le k-1\le K-1<Km
+\]
+shows that division by \(k!\) still leaves valuation at least \(Km\).
+This holds for every prime divisor of \(B\), proving all conditions
+in (A12).  The strengthening to precision \(2K\) is exactly what
+makes completeness valid even when a small prime divides a range
+denominator.
+\hfill\(\square\)
+
+The free index \(C\) and its range condition are essential.
+One must not reuse the old unamplified reciprocal index \(C=B-T-1\).
+For \(t=2\), \(F=2\), \(T=4\), \(B=15\), this gives \(C=10\):
+it is \(0\) modulo \(5\), but not modulo \(25\).
+The frozen construction retains (A11)--(A12).
+
+\subsection{A self-bounding factorial, with both implications}
+
+\paragraph{Factorial lemma.}
+Let \(n\ge1\) and let \(f\ge0\) be a proposed factorial output.  Put
+\[
+ \rho=fn^2,\qquad V=(\rho+1)^n,\qquad D=\binom{\rho+n}{n}.
+\]
+There exist natural \(u,v\) with
+\[
+ V+D=Df+u+1,\qquad D=u+v+1                              \tag{A15}
+\]
+if and only if \(f=n!\).
+
+\paragraph{Proof of soundness.}
+The second row gives \(D\ge1\), and subtracting it from the first gives
+\(V+v=Df\).  Since \(V\ge1\), one first obtains \(f\ge1\).
+The rows say exactly
+\[
+ f-1<\frac VD\le f,\qquad
+ f=\left\lceil\frac VD\right\rceil.                     \tag{A16}
+\]
+Write \(G=n!\).  The ratio is
+\[
+ \frac VD
+ =G\prod_{i=1}^{n}\frac{\rho+1}{\rho+i}
+ =G\prod_{i=1}^{n}
+       \left(1-\frac{i-1}{\rho+i}\right).               \tag{A17}
+\]
+Every factor is positive and at most \(1\).  Moreover
+\[
+ \sum_{i=1}^{n}\frac{i-1}{\rho+i}
+ \le\frac{n(n-1)}{2\rho}
+ =\frac{n-1}{2fn}<\frac1{2f},
+\]
+with the zero sum for \(n=1\) satisfying the same final strict inequality.
+The elementary finite-product estimate
+\(\prod_i(1-z_i)\ge1-\sum_i z_i\), for \(0\le z_i\le1\),
+therefore gives
+\[
+ G\left(1-\frac1{2f}\right)<\frac VD\le G.               \tag{A18}
+\]
+Since \(G\) is an integer, (A16) and the upper bound give \(f\le G\).
+The lower bound and \(V/D\le f\) give
+\[
+ G<\frac{2f^2}{2f-1}
+   =f+\frac f{2f-1}\le f+1.
+\]
+Integrality yields \(G\le f\).  Hence \(f=G=n!\).
+
+\paragraph{Constructive completeness.}
+Set \(f=G=n!\).  Equation (A18) gives
+\(G-\tfrac12<V/D\le G\), so its ceiling is \(G\).
+Explicitly define
+\[
+ u=V+D-DG-1,\qquad v=DG-V.
+\]
+The ratio inequalities show that these are natural integers, and
+direct substitution verifies both equations in (A15).
+The proof includes \(n=1\).
+\hfill\(\square\)
+
+The output \(f\) occurs in its own radius, but no numerical fixed-point
+assumption is made.  It is an existential arithmetic coordinate.
+The equations themselves force its unique intended value.
+
+\subsection{The digit graph and a noncircular radix bootstrap}
+
+For clarity, first state the digit interface.  Suppose \(q\ge2\) and
+all binomial coefficients \(\binom nj\), \(0\le j\le k\), are less than
+\(q\).  If
+\[
+ (q+1)^n=q^k(qh+c)+r,\qquad
+ 0\le r<q^k,\quad 0\le c<q,                             \tag{A19}
+\]
+then \(c=\binom nk\).  This follows by expanding \((q+1)^n\):
+the lower coefficients form the carry-free remainder, the coefficient
+at \(q^k\) is \(c\), and every higher term is divisible by \(q^{k+1}\).
+Conversely the true coefficient supplies the ordinary quotient and
+remainder in (A19).
+
+If \(N\mid q\), the fused graph
+\[
+ (q+1)^n=q^kNh+r,\qquad 0\le r<q^k                       \tag{A20}
+\]
+is equivalent to \(N\mid\binom nk\), under the same lower-digit bounds.
+Indeed the quotient by \(q^k\) is \(\binom nk+qH\).  It is divisible
+by \(N\) precisely when the coefficient is.  All reverse witnesses
+are nonnegative ordinary quotients and remainders.
+The inequalities in (A19)--(A20) are implemented by natural slack rows.
+
+In the final construction \(t\ge16\), and the proposed factorial output
+is denoted \(F\).  Define, by ordinary gates and power requests,
+\[
+ \rho=Ft^2,\quad V=(\rho+1)^t,\quad
+ T=F^2,\quad B=\binom{T+t}{t},\quad
+ R=2+t+x+y+F,\quad K=2R,\quad N=B^K,
+\]
+and use one common radix
+\[
+ q=N(N+V+1)^K.                                         \tag{A21}
+\]
+At this point the binomial symbols for the proposed \(D,B\) are
+\emph{requests}; their intended values must still be justified.
+Impose (A15) for \(n=t,f=F\), the raw index row
+\[
+ C+T+1=Bq_I,                                           \tag{A22}
+\]
+and the exact/fused digit rows.  The index \(C\) is positive.
+
+The soundness order is as follows.
+\begin{enumerate}
+\item The raw equation (A22), with \(T=F^2\ge0\), forces \(B>0\).
+The base \(\rho+1\) is positive regardless of the proposed \(F\).
+The independently proved positive-power graph therefore recovers
+\(V\ge1\).
+\item The raw ceiling rows give \(D=u+v+1\ge1\) and \(V+v=DF\),
+hence \(F\ge1\), without yet interpreting \(D\).
+Also \(K>0\).  Recovering \(N=B^K\) gives \(N\ge1\), and recovering
+the power in (A21) gives \(q>V^K\ge V^2\).
+\item Because \(\rho=Ft^2\ge t\), for \(0\le j\le t\),
+\[
+ \binom{\rho+t}{j}\le\binom{\rho+t}{t}
+ \le(\rho+1)^t=V<q.
+\]
+The first inequality is monotonicity up to the midpoint; the second
+follows termwise from
+\(\binom{\rho+t}{t}=\prod_{i=1}^{t}(1+\rho/i)\).
+Thus (A19) validates \(D\).  The factorial lemma now gives \(F=t!\).
+\item Independently of any intended value of \(B\),
+\[
+ F^2+t\le(Ft^2+1)^2=(\rho+1)^2.
+\]
+Hence every coefficient through index \(t\) of its binomial request
+is at most \((F^2+t)^t\le V^2<q\).
+The second exact digit is valid, so \(B=\binom{F^2+t}{t}\).
+Only now use the reciprocal-modulus lemma to conclude \(B\ge2\),
+and therefore \(N\ge2^K\).
+\end{enumerate}
+All remaining power bases are \(q,q+1\) or already recovered positive
+quantities.  The simultaneous Pell criterion applies to the finite
+power family with its original natural witness conditions.
+The recovery does not assume a binomial value before that binomial's
+digit has been validated.
+
+For the nine independently chosen representatives (eight columns and
+the index), retain the aggregate bound
+\[
+ C+\sum_{j=1}^{8}A_j+g=9N^2.                            \tag{A23}
+\]
+Every ordinary range lower index satisfies \(1\le k\le R-1\).
+For \(0\le j\le k\), using \(K=2R\),
+\[
+ \binom nj\le n^k\le9^kN^{2k}
+ <2^{4R}N^{2k}\le N^{2k+2}\le N^K<q.                   \tag{A24}
+\]
+If \(j>n\), the coefficient is zero.  This validates every ordinary
+range graph by (A20).  Notice that no interpretation of those ranges
+was used to prove their digit bound.
+
+\subsection{Why the amplification coefficient can be small}
+
+The previous amplified route used \(K=8\,388\,608R\).
+Here \(K=2R\) suffices because the already required factorial provides
+a fixed large floor.  Explicitly,
+\[
+ 16!=20\,922\,789\,888\,000>2^{44}.
+\]
+For \(E=8\,388\,608\),
+\[
+ 44E<2^{44},\qquad 2E\le2^{44}.                         \tag{A25}
+\]
+At \(r_0=2^{44}\), one has \(r_0^E=2^{44E}<2^{r_0}\).
+For any integer \(r\ge r_0\),
+\[
+ \left(1+\frac1r\right)^E
+ \le\sum_{j=0}^{E}\left(\frac Er\right)^j<2,
+\]
+since \(E/r\le1/2\) and the geometric sum is finite.
+If \(r^E<2^r\), multiplication by this inequality gives
+\((r+1)^E<2^{r+1}\).  Integer induction proves
+\[
+ r^E<2^r\quad(r\ge2^{44}).
+\]
+After the factorial bootstrap, \(R\ge F=t!\ge16!\), so
+\[
+ L(i,\mathbf w),J(\mathbf w)<R^E<2^R<2^K.               \tag{A26}
+\]
+This is exactly the unbounded evaluation bound needed for CRT decoding.
+It is used only \emph{after} the factorial has been recovered, not as a
+circular premise for the earlier digit interpretation.
+
+The preserved hybrid comparison admits another premise.
+If an existing carrier gives
+\(R\ge2^\lambda\), \(\lambda\ge8\), \(E\le2\lambda\), then
+\(2^\lambda>2\lambda^2\ge\lambda E\) and \(2^\lambda\ge2E\).
+The same base case and induction prove \(R^E<2^R\).
+The final shared-factorial endpoint does not retain that old carrier;
+it uses the explicit factorial floor (A25).
+
+\subsection{Complete factorial-weight Horn-flow equivalence}
+
+\paragraph{Weight separation.}
+For \(1\le j\le t\), put \(W_j=1+jF\), \(F=t!\).
+These weights are pairwise coprime.  If a prime \(p\) divided
+\(W_j,W_k\), it would divide \((j-k)F\) but not \(F\).
+Thus \(p\mid j-k\), so \(p\le t\) and \(p\mid F\), a contradiction.
+Every positive-label weight is greater than one and has a prime divisor.
+The truth weight is \(W_0=1\).
+
+\paragraph{Soundness of the encoded path.}
+Suppose each row \(i<t\) has a bounded zero of (A2), with
+\(J(a,b,c,d)\le t\).  The beta equalities give
+\[
+ x=S_i+(1+(i+1)y)u_i,\quad
+ x=S'_i+(1+(i+2)y)v_i.
+\]
+As \(S_i,S'_i\le y\), uniqueness of remainders modulo the common
+overlap modulus shows \(S'_i=S_{i+1}\) for \(i<t-1\).
+The outer endpoint rows are
+\[
+ x=F+1+(y+1)u_0,\qquad y=F+1+r_0,\qquad
+ x=1+(1+(t+1)y)u_t.                                    \tag{A27}
+\]
+They force \(S_0=F+1=W_1\) and \(S'_{t-1}=1\), because these
+also lie in the prescribed remainder intervals.
+
+Every summand in (A2) is nonnegative.  Thus its Horn product vanishes,
+and at least one actual rule branch vanishes.  Choose such a branch
+and denote its premises by \(p_i,q_i\) and conclusion by \(v_i\),
+using truth label \(0\) for unused premises.  The branch equation is
+\[
+ S'_i W_{v_i}=S_iW_{p_i}W_{q_i}.                        \tag{A28}
+\]
+For an axiom both premises are \(0\); for generalization one is \(0\).
+The truth branch has all three labels \(0\).
+The bundled schema factor is a sum of two squares, so its vanishing
+also enforces its actual side condition.  A purely numerical match
+with an invalid schema instance is not accepted.
+
+All labels in (A28) are in \([0,t]\), by the definition of \(J\).
+All weights are positive.  Starting from \(S_0=W_1>0\), equation (A28)
+inductively forces every \(S'_i\), hence every \(S_i\), positive.
+Multiplying the row equalities and cancelling the overlapping positive
+states is therefore legitimate.  The endpoints yield
+\[
+ \prod_i W_{v_i}=W_1\prod_iW_{p_i}W_{q_i}.               \tag{A29}
+\]
+For any positive label \(j\le t\), choose a prime \(p_j\mid W_j\).
+Pairwise coprimality annihilates the valuations of every other weight.
+Taking the \(p_j\)-valuation in (A29) and cancelling the positive integer
+\(v_{p_j}(W_j)\) gives
+\[
+ \#\{i:v_i=j\}
+ -\#\{i:p_i=j\}-\#\{i:q_i=j\}=\delta_{j1}.              \tag{A30}
+\]
+The weights need not be prime or square-free.
+
+Let \(D_0\) be the closure of truth under the finitely many chosen valid
+rules.  If falsity \(1\) were outside \(D_0\), each rule with conclusion
+outside \(D_0\) would have at least one premise outside \(D_0\).
+Hence the total number of outside conclusions would be at most the
+number of outside premises.  Summing (A30) over the positive labels
+outside \(D_0\), however, gives the difference equal to \(1\).
+This contradiction proves \(1\in D_0\), hence a finite actual
+refutation.  This argument admits cyclic, repeated and unordered rule
+occurrences.  No fictitious balance equation for label \(0\) is used:
+truth is already in \(D_0\).
+
+\paragraph{Constructive completeness.}
+Start from a finite C222 derivation of falsity and expand its proof DAG
+to a finite proof tree.  Collect its finitely many parameter tuples and
+compute the full value of \(J\) for each tuple, including the codes of
+branches not used by that tuple.  Also include the fixed truth-padding
+tuple \(a=b=c=d=0\).  First choose \(t\) at least \(16\), at least the
+number of tree steps, at least every parameter, and at least every one
+of those finitely many label sums.  This choice does not involve \(F\)
+or any accumulator.  Only then define \(F=t!\) and the weights.
+
+Start with the pending multiset containing falsity.  Expand a proof-tree
+conclusion \(v\) backwards to its premises \(p,q\).  The product of
+weights of the pending multiset before the expansion is \(S\);
+the product after it is \(S'\).  Both are positive integers and satisfy
+(A28).  Truth leaves have unit weight.  Once the proof tree is
+exhausted the product is \(1\).  Insert truth steps to obtain exactly
+\(t\) rows; they leave the current product unchanged and their label
+sums were included in the horizon choice.
+
+Now choose \(y\) divisible by \(t!\), at least every accumulator,
+and at least \(F+1\).  The \(t+1\) moduli
+\(1+(i+1)y\), \(0\le i\le t\), are pairwise coprime:
+a common prime would divide an index difference at most \(t\) while
+remaining coprime to \(y\), impossible because \(t!\mid y\).
+CRT gives a nonnegative \(x\) with all prescribed state residues.
+Every residue lies in \([0,y]\), below its modulus, so the corresponding
+Euclidean quotients are natural and at most \(x\).
+The outer slacks and quotients in (A27) are natural as well.
+This constructs the bounded eight-column source path.  In particular,
+the horizon is not required to dominate the accumulator sizes,
+which are chosen and encoded only afterwards.
+\hfill\(\square\)
+
+\subsection{Derived polynomial ranges and their independent carry bound}
+
+\paragraph{General derived-range lemma.}
+Use the amplified CRT construction above and now require \(K\ge t+1\).
+Let \(J\) be an integer polynomial nonnegative on natural inputs, with
+\(0\le J(\mathbf w)<2^K\) for every bounded local tuple.
+Adding
+\[
+ N\mid\binom{J(\mathbf A)}{t+1}                         \tag{A31}
+\]
+forces \(J(\mathbf w)\le t\) in every decoded row.
+
+Indeed, for the relevant prime power \(p^e\mid N\), (A8) gives
+\(J(\mathbf A)\equiv r\pmod{p^e}\) for some \(0\le r\le t\).
+Polynomial congruence gives \(J(\mathbf w)\equiv r\pmod{p^e}\).
+Because \(J(\mathbf w)<2^K\le p^e\) and \(t<K\le p^e\),
+these are both least nonnegative residues.  Thus \(J(\mathbf w)=r\le t\).
+
+Conversely, suppose the selected local tuples have \(J(\mathbf w)\le t\).
+The precision-\(2K\) representatives give
+\(J(\mathbf A)\equiv J(\mathbf w)\pmod{p^{2Km}}\).
+If \(J(\mathbf A)<t+1\), its binomial is zero.  Otherwise its falling
+factorial contains a factor divisible by \(p^{2Km}\).
+Division by \((t+1)!\) loses at most \(t<K\le Km\) in valuation,
+so (A31) follows for every prime of \(B\).
+This is the complete reverse direction and does not require any
+independent CRT coordinate for \(J\).
+\hfill\(\square\)
+
+For the specific label expression (A3), the needed local bound is
+(A26).  Thus (A31) replaces the extra witness \(w\) and residual
+\((t-w-J)^2\) of the nine-column predecessor.  The local source
+(A2) itself is unchanged.
+
+There is an important distinct implementation obligation:
+the digit graph for (A31) must be carry-free even though its upper
+argument is a derived polynomial.  The aggregate (A23) must
+\emph{not} include \(J(\mathbf A)\), which may be much larger than
+\(N^2\).  The ordinary CRT construction cannot promise such an
+aggregate bound for a derived value.
+
+Let \(n\) be the largest of the four encoded constructor parameters.
+By (A23), \(n\le9N^2\); because \(N\ge2^K\) and \(t\ge16\),
+\(N\ge10\).  Hence
+\[
+ n+1\le9N^2+1\le N^3.
+\]
+The independently certified positive-DAG bound (A5) gives
+\[
+ J(\mathbf A)\le(n+1)^\ell\le N^{3\ell}.                \tag{A32}
+\]
+The finite numerical base check is
+\[
+ 2\cdot16!\ge3\ell\cdot17.
+\]
+It persists for every \(t\ge16\): if
+\(2t!\ge3\ell(t+1)\), then
+\[
+ 2(t+1)!\ge3\ell(t+1)^2\ge3\ell(t+2).
+\]
+Consequently
+\[
+ 3\ell(t+1)\le2F<2R=K.                                \tag{A33}
+\]
+For every lower digit \(0\le j\le t+1\), (A32)--(A33) yield
+\[
+ \binom{J(\mathbf A)}j
+ \le J(\mathbf A)^{t+1}
+ \le N^{3\ell(t+1)}
+ \le N^K<q.                                           \tag{A34}
+\]
+Again a coefficient above the upper index is zero.
+This proves that the additional fused digit graph recognizes exactly
+(A31).  Its bound is independent of the representative aggregate and
+explicitly accounts for the entire constructor degree and coefficients.
+There are ten range requests in total, but only nine independent
+representatives in (A23).
+
+\subsection{Assembly into one complete polynomial}
+
+The finite arithmetic system now consists of the outer and endpoint
+rows, the single self-bounding factorial, the reciprocal product
+binomial, the amplification and common radix, nine ordinary ranges,
+one derived-label range, the index congruence and the local evaluation
+divisibility.  Every power request is replaced by the inherited explicit
+simultaneous Pell graph.  Every ordinary gate is quadraticized while
+sharing identical intermediate expressions.  If the resulting quadratic
+residuals are \(r_1,\ldots,r_s\), define
+\[
+ Q(\mathbf z)=\sum_{\nu=1}^{s}r_\nu(\mathbf z)^2.         \tag{A35}
+\]
+Its complete literal rows and expanded coefficients are supplied.
+For natural inputs, \(Q=0\) is equivalent to every row being zero.
+
+\paragraph{Soundness of the assembled equation.}
+From a natural zero, recover the true powers and interpret the exact
+factorial and reciprocal-product digits in the order proved above.
+Then use the factorial floor to establish (A26), and the separate
+ordinary and derived carry estimates to interpret all range graphs.
+Amplified CRT decoding yields a bounded zero of (A2) at every row,
+and the derived-range lemma gives \(J\le t\) there.
+The factorial-weight Horn-flow theorem produces a finite C222
+refutation.  Applying the inherited source calibration gives the stated
+ZFC refutability predicate.
+
+\paragraph{Constructive completeness of the assembled equation.}
+Start with a finite calibrated refutation.  Choose the padded horizon
+and construct the shared-factorial path before choosing its beta
+encoding, as proved above.  Set \(F=t!\), \(T=F^2\),
+\(B=\binom{T+t}{t}\), \(K=2R\), and \(N=B^K\).
+Choose the eight columns and the index by precision-\(2K\) CRT.
+Their positive representatives are at most \(N^2\), so (A23) has a
+natural slack.  The local polynomial remains nonnegative on all
+natural inputs; its divisibility quotient is therefore natural.
+The derived-label lemma supplies (A31).
+Define the true \(\rho,V,q\); the factorial lemma supplies its two
+ceiling witnesses, and the carry-free estimates supply the actual
+digit quotients and remainders.  Finally the existing simultaneous
+Pell completeness theorem supplies one common frame and all witnesses
+for this finite family of true positive powers.  Thus the full
+quadratic system, and hence (A35), has a natural zero.
+
+The final nonnegative contraction deletes coordinates only with exact
+integral reverse substitutions certified to be nonnegative on the
+remaining natural variables.  For signed-coefficient restorations,
+the certificate explicitly expands a positive rational sum of squares
+of affine forms plus a coefficientwise nonnegative remainder.
+Every identity and substitution is independently replayed, so the
+contraction preserves both zero-existence directions, not merely the
+forward map.  It leaves \(349\) variables and \(268\) quadratic rows
+in the Cantor endpoint.  Independent expansion of their squares gives
+the stated exact quartic and coefficient ledger.
+
+\paragraph{Measured tradeoffs and finite evidence.}
+The new endpoint uses one factorial, two exact binomials, ten range
+graphs, nineteen positive-power requests, sixteen independently tested
+Pell indices and one derived index.  Normal and Python-optimized
+regeneration reproduce all twelve final endpoint files byte for byte.
+The semantic regressions include \(361\,200\) range cases, \(32\)
+constructive CRT cases, ten derived-range constructions, \(600\)
+factorial candidates and \(47\,904\) small Horn-rule multisets.
+Negative controls expose the false converse to (A8), invalid canonical
+index lifting, a bad CRT row, missing label bounds, and derived values
+that exceed the representative aggregate.  These finite tests support
+the implementation; the quantified proofs above establish the
+unbounded implications.
+
+The \(350\)-variable local-slack predecessor has fewer monomials than
+the \(349\)-variable derived-range endpoint.  The earlier \(363\)-variable
+reciprocal construction has fewer still.  These are explicit
+variable/support/height tradeoffs; no global optimum or worldwide
+priority is asserted.  All inherited code, calculus, Pell and
+contraction dependencies retain their original provenance and notices.

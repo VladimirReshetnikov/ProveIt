@@ -1,0 +1,354 @@
+\section{Merging sign certificates in the direct quartic}
+\label{sec:guards}
+
+The direct quartic uses a different source representation. Its arithmetic
+body includes quotient/remainder rows, with separate nonnegativity
+certificates for a remainder and its complementary slack. A shared positive
+modulus lets two such certificates be replaced by one.
+
+\begin{lemma}[Shared remainder bounds]
+\label{lem:guard}
+For integers $r,s,B$ with $r+s+1=B$ and $B\ge1$,
+\[
+(r\ge0\ \land\ s\ge0)\quad\longleftrightarrow\quad rs\ge0.
+\tag{49}
+\]
+\end{lemma}
+
+\begin{proof}
+The forward implication is immediate. Conversely, nonnegative product
+excludes opposite nonzero signs. Both values cannot be negative because
+their sum is $B-1\ge0$. If either is zero, the other equals $B-1\ge0$.
+\end{proof}
+
+For integer variables, nonnegativity has the representation
+\[
+n=a^2+b^2+d(d+1).
+\tag{50}
+\]
+The right side is nonnegative. Conversely, $4n+1$ for $n\ge0$ is not
+of the excluded form $4^u(8v+7)$, so the three-square theorem represents
+it by three squares. Exactly one coordinate is odd, by reduction
+modulo four. Relabeling gives
+$4n+1=(2a)^2+(2b)^2+(2d+1)^2$, proving (50).
+
+Two linear nonnegative expressions normally require six private integer
+witnesses. Their product instead uses three, with the quadratic row
+$rs-a^2-b^2-d^2-d=0$.
+The modulus sign is supplied by a retained anchor pair with the same
+sum; no source interpretation is needed.
+
+\subsection{The six literal pairs}
+
+The indices below refer to the original arithmetic body, before projection.
+Each anchor remains separately guarded, and its exact source rows prove
+that the shared modulus is at least one.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Remainder & Slack & Modulus & Retained anchor pair\\
+\midrule
+562&563&547&549,\ 550\\
+585&586&574&576,\ 577\\
+593&594&574&576,\ 577\\
+601&602&574&576,\ 577\\
+619&620&608&610,\ 611\\
+637&638&626&628,\ 629\\
+\bottomrule
+\end{tabular}
+\caption{Six applications of (49). The coefficient certificate checks
+each $r+s+1-B=0$ identity by summing actual source rows.}
+\label{tab:guards}
+\end{table}
+
+For example, raw rows 553--555 are
+\[
+-v_{585}-v_{586}+v_{589}=0,\quad
+-1-v_{589}+v_{590}=0,\quad v_{574}-v_{590}=0.
+\]
+Their sum is $v_{574}-v_{585}-v_{586}-1=0$.
+Three other unchanged rows give
+$v_{574}-v_{576}-v_{577}-1=0$.
+The retained guards on $v_{576}$ and $v_{577}$ establish $v_{574}\ge1$;
+the new guard on $v_{585}v_{586}$ therefore restores both omitted signs.
+
+The six replacements retain 63 old predicates and add six product
+predicates, giving 69 instead of 75.
+Every arithmetic coordinate and body equation is unchanged.
+A new zero restores the twelve omitted nonnegative values by (49), and
+fresh witnesses from (50) give the complete old system.
+An old zero makes each product nonnegative, so fresh product witnesses
+give the new system.
+Thus their projections onto the arithmetic body coordinates are identical.
+
+\subsection{One strict lower bound replaces two more signs}
+
+There is a further exact implication in the same literal body:
+\[
+v_7=v_6^2,\ v_8=v_7^2,\ \ldots,\ v_{28}=v_{27}^2,\qquad
+v_{28}=v_3+1.
+\tag{51}
+\]
+There are 22 squaring rows, followed by the two original rows establishing
+the last equality. On these integer equations,
+\[
+(v_3\ge0\ \land\ v_6\ge0)\quad\longleftrightarrow\quad v_6\ge1.
+\tag{52}
+\]
+Indeed $v_6\ge1$ propagates through the squares to $v_{28}\ge1$,
+giving $v_3\ge0$. Conversely $v_6=0$ would force $v_3=-1$,
+contradicting the old guard; the old $v_6\ge0$ then implies $v_6\ge1$.
+This covers the boundary $v_6=1,v_3=0$.
+
+Replace the two old triples by the single guard
+\[
+v_6-1-a^2-b^2-d(d+1)=0.
+\tag{53}
+\]
+The source now has 68 predicates.
+A new zero first restores the 69-predicate system by (51)--(52);
+the shared remainder proof then restores all 75 original predicates.
+Only after those restorations is the C222 source interpretation applied.
+Completeness uses fresh triples in the reverse order.
+No omitted sign is justified by a semantic interpretation that itself
+requires that sign.
+
+\subsection{The complete 589-variable quartic}
+
+The unprojected system has $1,259+3\cdot68=1,463$ integer coordinates and
+$1,177+68=1,245$ quadratic rows.
+The principal monic projection removes 874 coordinates and rows,
+leaving 589 coordinates and 371 quadratic residuals.
+Each deleted coordinate has a unique integral restoration, checked by
+substituting in every remaining equation.
+There is no rational relaxation or unrecorded free variable.
+
+Let the delivered residuals be $f_0,\ldots,f_{370}$. The equation is
+\[
+\boxed{
+Q_{589}(x_0,\ldots,x_{588})
+=\sum_{j=0}^{370}f_j(x_0,\ldots,x_{588})^2=0,
+\qquad x_i\in\Z.
+}
+\tag{54}
+\]
+Every coefficient of every residual is explicitly supplied in
+\texttt{quartic/fused68/support8/equation.json}.
+The fully collected polynomial is in the adjacent
+\texttt{polynomial.json}, and the plain-text residual list gives the same
+finite specification without a JSON reader.
+
+Over $\Z$, (54) is equivalent to all residuals being zero.
+Projection followed by guard restoration recovers the entire old
+75-predicate source. Applying its ordinary C222/refutation calibration
+therefore gives (1) with $D=\Z$ and $n=589$.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Profile & Variables & Rows & Monomials & Height\\
+\midrule
+Matched old source &604&372&9,676&2,445,790,974,704\\
+Six pair replacements &592&372&8,167&2,445,790,974,704\\
+Final principal &\textbf{589}&371&8,156&2,445,790,974,704\\
+Final, quadratic first &595&377&7,595&6,956,012\\
+Final, smaller coefficients &600&382&7,075&964,213\\
+\bottomrule
+\end{tabular}
+\caption{Complete unrestricted-integer quartics, all of exact degree four.
+The 600-variable alternative has every coefficient below one million.}
+\label{tab:quartics}
+\end{table}
+
+The guard count alone would predict an eighteen-variable saving from the
+six pairs. The actual projection saves twelve, because the products keep
+six additional source coordinates alive. The strict bound then saves
+three more variables. All reported counts are from complete equations
+and checked inverses, rather than estimates.
+
+\Needspace{13\baselineskip}
+\subsection{The direct logical endpoint}
+
+The unchanged arithmetic body directly encodes the numerical C222 calculus.
+The named logical endpoint is the composition of
+\[
+\texttt{KEndpoint.c222\_iff\_zf\_refutation}
+\]
+and
+\[
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+\]
+The first identifies C222 derivation of its falsehood code with finite
+ZF refutation; the second transports refutability between ZF and ZFC.
+Their exact immediate source files are included and pinned, but their
+transitive Lean imports were not rebuilt here.
+The ordinary arithmetic bridge and later guard reductions are explicitly
+identified in \texttt{quartic/CALIBRATION\_DEPENDENCIES.md}.
+The equation uses neither K215 simulation nor Jones' universal polynomial.
+
+\section{Verification, reproducibility and proof boundaries}
+
+\paragraph{Exact algebra.}
+The norm checker multiplies all sixteen conjugate factors and compares
+all 495 coefficients with the new schedules. For each of six delivered
+integer variants, it proves equality of the complete old and new tails
+over a free polynomial ring and authenticates every unchanged prefix.
+The positive checker verifies the parity identities, octic norm,
+complete register inventories, exact leading polynomials and degree claims.
+The quartic checker verifies source-row identities, all monic integral
+restorations, and every collected coefficient of the entire sum of squares.
+
+\paragraph{Finite specification and provenance.}
+The files contain every coefficient and every operation.
+The BFS reconstructor decodes the entire 436-character seed, constructs
+all 430 actions and 943 tiles, and reconstructs all four full integers.
+Each raw payload matches the pinned complete-page value, rather than only
+a modular residue or selected bits.
+The integer packet includes all six authentic coefficient payloads,
+and the direct quartic has literal coefficients with no parameter ports.
+
+\paragraph{Unbounded mathematics.}
+The square gap, radical rationality, index bounds, transport contradiction,
+guard reconstruction and consistency calibration concern arbitrarily
+large witnesses. The paper proofs supply those implications.
+Modular controls are only supplementary transcription checks.
+Neither a finite search finding no zeros nor large numerical experiments
+would prove consistency.
+
+\subsection{Claims that are not being made}
+
+This packet supplies no new complete Lean or Rocq certificate, no encoded
+object-language derivation of the entire calibration, and no proof of
+$\Con$ itself. The source pins and retained licenses identify the inherited
+dependencies. We did not rerun every historical native compiler or earlier
+proof-assistant build in the repository.
+
+The operation count is not a bit-complexity bound. The fixed native
+coefficients are large, and legitimate witnesses may be much larger.
+The direct quartic has smaller literal coefficients but many more variables.
+No result is advertised as uniformly best in all those measures.
+
+\subsection{Reproduction}
+
+Run from the extracted packet:
+\begin{lstlisting}
+python3 verify_all.py
+\end{lstlisting}
+The exact checkers use the Python standard library. They check the supplied
+finite artifacts without network access; optional builders are included too.
+
+The report is rebuilt with:
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+Recorded receipts and a checksum manifest accompany the files.
+
+\section{What this round establishes}
+
+The direct integer result saves fifteen actual variables and more than
+fifteen percent of the expanded support at unchanged degree and coefficient
+height. It uses evidence already present in the source: a common positive
+remainder bound and a short squaring chain.
+
+The compact positive result uses two genuine proof improvements.
+The square-gap lemma replaces an asymmetric radical weight with a uniform
+rationality argument. The auxiliary index bound then shows that the
+existing witness already supplies enough growth for transport, eliminating
+two additional arithmetic operations. The final scaled and direct equations
+improve both degree and operation count over their respective parents.
+
+The integer norm changes are algebraically simpler to certify.
+Because the complete polynomials agree identically, there is no new
+signed-domain soundness argument or exceptional specialization to resolve.
+The packet retains both the symmetric derivation and the one-operation
+cheaper schedule found in the pinned source.
+
+Two tempting reductions were not promoted to theorems.
+Replacing $\mu=q^2+1$ by $q+1$ destroys the first-index pinning inequality
+used with $R<q^4$. Replacing the trace's additive positivity certificate
+by a Pell guard can leave a zero-ordinate branch.
+No delivered endpoint relies on either unproved replacement.
+
+A substantially smaller variable count remains open. The present
+constructions are concrete improvements with reproducible equations and
+proofs, not evidence that a global minimum has been reached.
+
+\appendix
+\section{Complete fixed coefficients for the positive equations}
+\label{app:constants}
+
+This is the finite BFS compact44 recipe used by the pinned complete
+equation page \cite{page}. It defines all four coefficients in (16)--(21)
+without an external coefficient oracle. Every index and exponent is fixed
+or bound in a finite sum. The script \texttt{reconstruct\_constants.py}
+executes this recipe independently and compares all four entire raw byte
+strings with the pinned values. The letter $K$ in this inherited recipe
+denotes $K_0$ in the main text.
+
+\begingroup
+\small\setlength{\parskip}{4pt}
+\input{constants.tex}
+\endgroup
+
+\clearpage
+\section{Delivered file organization}
+
+\begin{longtable}{@{}p{0.31\textwidth}p{0.63\textwidth}@{}}
+\toprule
+Path & Contents\\
+\midrule
+\endhead
+\texttt{report.tex}, \texttt{report.pdf}&
+The report, with its companion LaTeX input files.\\
+\texttt{positive/}&
+Final 96/360 and 102/332 circuits; weight-only checkpoints; mathematical
+proofs, exact checks, original coefficients and pinned source proofs.\\
+\texttt{positive/coefficients\_bfs/}&
+The four completely reconstructed coefficients used by the main displayed
+equation, with a binding for the BFS circuit variants.\\
+\texttt{integer/}&
+Preferred 126-, 138-, and 137-operation integer circuits, symmetric
+alternatives, original parents, all six coefficients and exact norm checks.\\
+\texttt{quartic/}&
+All quadratic residuals, complete quartic coefficients, source predicates,
+projection certificates, builders, exact checkers and matched parent profiles.\\
+\texttt{reconstruct\_constants.py}&
+Finite reconstruction from the printed seed, actions and tiles.\\
+\texttt{verify\_all.py}&
+Runs the selected exact checks and records their outcomes.\\
+\texttt{PROVENANCE.json}&
+Frozen repository snapshot, source references and claim boundaries.\\
+\texttt{SHA256SUMS.txt}&
+Hashes of package files, excluding this checksum file itself.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+\small\raggedright
+\bibitem{zero}
+ProveIt contributors. \emph{Ten-positive zero-offset equation}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/candidates/ten-positive-zero-offset}.
+\bibitem{direct}
+ProveIt contributors. \emph{Direct positive base with the zero-offset main parameter}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/candidates/ten-positive-direct-zero-offset}.
+\bibitem{trace}
+ProveIt contributors. \emph{Thirteen-integer quadratic trace equation}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/candidates/integer13-quadratic-trace}.
+\bibitem{scalar}
+ProveIt contributors. \emph{Scalar carrier in twelve unrestricted integers}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/candidates/scalar-carrier12}.
+\bibitem{quartic75}
+ProveIt contributors. \emph{Complete 75-predicate direct quartic family}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/research/factorial-radius-output-sign-profile}.
+\bibitem{page}
+ProveIt contributors. \emph{Complete ten-positive equation page and coefficients}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/candidates/one-page-short10}.
+\bibitem{sun}
+Zhi-Wei Sun. \emph{Ten unknowns for Hilbert's tenth problem over the integers}.
+arXiv:2609.01594, 2026. \url{https://arxiv.org/abs/2609.01594}.
+\end{thebibliography}
+

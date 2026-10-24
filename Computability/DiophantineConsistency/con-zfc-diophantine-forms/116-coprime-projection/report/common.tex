@@ -1,0 +1,91 @@
+\section{What is optimized and what is proved}
+The object sought is a fixed polynomial with integer coefficients, not a
+family with an uninstantiated machine parameter. Its quantified variables
+have one explicitly stated domain. A polynomial abbreviation and a shared
+arithmetic register introduce no extra variables; conversely, a quantified
+witness hidden inside a special-function graph must be counted.
+
+We compare the number of quantified variables, exact total degree, and
+live binary arithmetic operations. Fixed integer constants are coefficients,
+not additional unknowns. Addition, subtraction and multiplication each cost
+one operation, including multiplication by a small constant. This convention
+measures a shared straight-line circuit, not expanded monomial count or bit
+complexity. Large fixed coefficients remain an important separate cost.
+There is no assertion that these measures admit a common global minimum.
+
+The new results are ordinary mathematical reductions. Their concluding
+consistency statements compose these reductions with explicitly identified,
+pinned arithmetic-kernel, initialized-machine and syntactic-refutation
+calibration theorems. The accompanying programs check literal circuits,
+identities, degree certificates and fixed coefficient payloads. They do not
+replace the unbounded mathematical proofs, and do not constitute a new
+end-to-end Lean, Rocq or encoded object-language ZFC certificate.
+
+In particular, the assertion is an equivalence
+\[
+ \mathsf{ZFC}\vdash
+ \bigl(\neg\exists\mathbf x\in D^n\ P(\mathbf x)=0\bigr)
+ \longleftrightarrow\operatorname{Con}(\mathsf{ZFC}),
+\]
+using the stated ordinary calibration. It is not a proof of either side.
+Here $D=\mathbb Z$, $\mathbb Z_{>0}$ or $\mathbb N$ is specified separately
+for each construction, and $\mathbb N$ includes zero.
+
+\section{Coprime products and monic congruence carriers}
+The elementary observation driving this iteration is stronger when used
+in the design of witnesses rather than applied after a polynomial has
+already been built.
+
+\begin{lemma}[Coprime square extraction]
+Let $a_1,\ldots,a_m$ be positive, pairwise coprime integers. Their product
+is a square if and only if each $a_i$ is a square. If $a,b,d$ are positive integers, $ab/d$ is a rational square and
+$\gcd(a,bd)=1$, then $a$ is a square.
+\end{lemma}
+\begin{proof}
+For every prime dividing $a_i$, the valuation of the product is exactly
+the valuation of $a_i$. It must be even. The rational assertion uses the
+same valuation computation, with the denominator contributing zero at
+these primes. Positivity fixes the sign ambiguity.
+\end{proof}
+
+For example, $a$ and $1+ad u^2$ are automatically coprime. Imposing that
+their product is a square therefore recovers two square conditions from
+one. This is not a universal equivalence between arbitrary two square
+conditions and one product condition: the coprimality and sign proofs are
+essential. It also changes the original witness problem. Completeness must
+show that the newly constrained Pell ordinate can actually be chosen.
+
+\begin{lemma}[A useful two-root criterion]
+Let $a,b>0$ be rational numbers with $a\ne b$. If a signed sum of their
+square roots is rational, both square roots are rational.
+\end{lemma}
+\begin{proof}
+The sum cannot be zero. If $z=\epsilon\sqrt a+\eta\sqrt b\ne0$, then
+$2z\epsilon\sqrt a=z^2+a-b$, and similarly for the other root.
+\end{proof}
+
+Neither statement can be used without its hypotheses. The integer
+constructions below prove positivity before splitting products. The
+positive-variable construction proves the two radicands unequal by a
+congruence obstruction, before making any parity or transport deduction.
+
+\begin{lemma}[A monic carrier for two congruences]
+Let $M,H$ be nonzero coprime integers, and let $n,K,v,v_0$ be integers.
+Set $U=MH$ and $Z=Un+MK+H(v-v_0)$. If $Z/U$ is a root of any monic
+polynomial with integer coefficients, then
+\[
+ M\mid v-v_0,\qquad H\mid K.
+\]
+\end{lemma}
+\begin{proof}
+A rational algebraic integer is an integer, so $U\mid Z$. Reducing modulo
+$M$ and $H$ and using coprimality gives the two conclusions.
+\end{proof}
+
+This observation changes the order of the proof. A monic radical norm
+can force the scale and projection congruences before any individual
+radical has been shown rational. Its norm equation alone makes the total
+rational center integral. The restored scale can then justify the bounds
+or prime-valuation arguments needed to recover each separate Pell root.
+This avoids a circular appeal to the very scale that the equation is
+supposed to enforce.

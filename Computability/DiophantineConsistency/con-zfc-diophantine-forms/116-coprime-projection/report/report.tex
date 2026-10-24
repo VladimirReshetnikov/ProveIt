@@ -1,0 +1,45 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{etoolbox}
+% Leave a visible gap between two-digit section numbers and TOC titles.
+\makeatletter
+\patchcmd{\l@section}{\setlength\@tempdima{1.5em}}{\setlength\@tempdima{2.3em}}{}%
+  {\PackageError{report}{Could not widen TOC section numbers}{Check the article class definition.}}
+\makeatother
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}
+\DeclareMathOperator{\lcm}{lcm}
+\setlength{\emergencystretch}{2em}
+\title{Coprime Pell products and rational projection\\for Diophantine consistency}
+\author{Research notes for ProveIt}
+\date{24 October 2026}
+\begin{document}
+\maketitle
+\input{summary.tex}
+\input{results.tex}
+\clearpage
+\tableofcontents
+\input{common.tex}
+\input{baseline.tex}
+\input{sections/integer.tex}
+\input{sections/lowdegree.tex}
+\input{sections/thirteen.tex}
+\input{sections/twelve.tex}
+\input{sections/positive.tex}
+\input{sections/alternative.tex}
+\input{coefficients.tex}
+\input{validation.tex}
+\input{references.tex}
+\end{document}

@@ -1,0 +1,128 @@
+\section{A first-root carrier: fifteen integers, degree 56}
+\label{sec:first-carrier}
+The principal new equation has \textbf{15 unrestricted integer unknowns,
+exact degree 56, and 110 live binary arithmetic operations}.  It improves
+both degree and evaluator cost over the inspected 15-variable degree-170
+and degree-172 alternatives.  The construction is not a generic variable
+renaming: it makes the first Pell root carry two coprime congruences, replacing
+the separate main-root coordinate and a large radical norm.
+
+The unknowns are
+\[
+ j,C,z,h,r,v,w,T,c,n,f,y,p_1,p_2,p_3\in\mathbb Z.
+\]
+Use the same six fixed source34 coefficients as in the retained calibrated
+source, with $M_F$ already shifted.  All expressions below are abbreviations,
+not additional unknowns:
+\begin{align*}
+ J&=6j+1,& q&=\beta J+1,& W&=12w+4,\\
+ X&=qW,&Y&=qv,&F&=(K_0+W)C-z(q-1),\\
+ R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ E&=XY,&a&=E+Y,&H&=4a+3,\\
+ \Delta&=a^2+H,&k&=R+1+hE,&\eta&=c-Yk,\\
+ L&=EYk,& I&=(2r+1)c^2,&Q&=\Delta(f^2-1),\\
+ V&=f^2(cT-R)-c,& M&=2q^2,& U&=MH,\\
+ K_*&=2X^2-3Xc-2,&Z&=Un+MK_*+H(v-q^2).
+\end{align*}
+Put
+\begin{align*}
+ D&=(\mathrm{cone}_A F-q)^2+(\mathrm{cone}_B C-q)^2,\\
+ B_{\rm sign}&=k^2(q^2-D)-4q^2\eta^2,\\
+ P_{\rm pos}&=1+p_1^2+p_2^2+p_3(p_3+1),\\
+ A_1&=Z^2+(2Z-Uk)UL-U^2,\\
+ A_2&=f^2-\Delta I^2-1,\\
+ A_3&=V^2-(Q-1)y(2V+y)-1,\\
+ A_4&=B_{\rm sign}-P_{\rm pos}.
+\end{align*}
+The complete equation is
+\begin{equation}\label{eq:carrier15}
+ \boxed{P_{15}=A_1^2+A_2^2+A_3^2+A_4^2=0.}
+\end{equation}
+Its literal DAG is \texttt{lowdegree/equation.json}.
+
+\paragraph{Why the compression is sound.}
+Unconditionally, $q$ is even, $q\equiv2\pmod3$, $H$ is odd, and
+$H\equiv3\pmod q$.  Hence $\gcd(H,M)=1$ and $U\ne0$.
+The first row makes $t=Z/U$ a rational root of the monic integer polynomial
+$t^2+(2t-k)L-1$, so $t\in\mathbb Z$.  Coprime CRT gives
+\[
+ v=q^2(2v_0+1),\qquad H\mid K_*.
+\]
+Thus the cubic scale is recovered \emph{before} the signed Pell bootstrap.
+For $K=X(X+2ac)-1$, the identity $2K-K_*=HXc$ implies $H\mid K$.
+The budget row supplies the common native signs and $|\eta/k|<1/2$.
+The strong and auxiliary rows recover the omitted main Pell square by the
+ordinary folded-index lemma.  Normalized rank then gives its index $R$.
+The retained whole-product estimate
+$|H|>2^{2R+2}|X|^2$ turns $H\mid K$ into the exact signed power relation,
+and restores an integral main coordinate
+$\gamma=(d-X-ac)/H$.  This yields a literal zero of the pinned normalized
+17-variable source.  The proof does not assume positivity of $\eta$ before
+the source's centered half-binomial argument recovers it.
+
+Conversely, every zero of that source has even $q$, hence even old $J_3$.
+Set $j=J_3/2$, $C=q-F-\alpha$, $v=q^2(2v_0+1)$, and
+$n=t_{\rm old}-K_*/H-v_0$.  The old main row proves $H\mid K_*$;
+all the displayed coordinates are integers and all four new rows vanish.
+The complete signed proof and maps are in \texttt{lowdegree/PROOF.md}.
+
+\paragraph{Exact, not merely syntactic, size.}
+The row degrees are $28,14,18,16$.  The actual fixed-coefficient polynomial has
+\[
+ [j^{30}w^{10}v^{12}h^4]P_{15}=2^{62}3^{40}\beta^{30}>0.
+\]
+Thus its exact degree is56.  Its110 live gates are63 multiplications,
+24 additions and23 subtractions.  Independent normal and optimized-Python
+checks verify all register cuts, coefficients, liveness, the leading form,
+and rejection of corrupted gates.
+
+\section{A double-centered companion: fourteen integers, degree 108}
+\label{sec:double-carrier}
+The second equation removes the explicit $f$, leaving \textbf{14 unrestricted
+integers, exact degree108, and119 live operations}.  Keep the preceding
+abbreviations except replace $f^2$ everywhere by
+\[
+ D_f=1+\Delta I^2,\qquad Q=\Delta(D_f-1),\qquad
+ V=D_f(cT-R)-c.
+\]
+Define the two doubled root centers and errors
+\begin{align*}
+ A&=2L+k,&B&=2(a+2)I,\\
+ a_*&=4-k^2,&b_*&=4(1-I^2),\\
+ D_0&=Z^2+2BUZ+U^2(a_*-b_*),\\
+ E_0&=Z+U(A+B),\\
+ B_0&=A[Z^2+2BUZ-b_*U^2]-a_*U[Z+UB],\\
+ N&=D_0^2+4UE_0B_0.
+\end{align*}
+Now $A^2+a_*=4D_\tau$, $B^2+b_*=4D_f$, where
+$D_\tau=1+L(L+k)$.  The complete equation is
+\begin{equation}\label{eq:carrier14}
+ \boxed{P_{14}=N^2+[V^2-(Q-1)y(2V+y)-1]^2+
+ [B_{\rm sign}-P_{\rm pos}]^2=0.}
+\end{equation}
+The exact two-root norm identity makes $Z/U+A+B$ a rational root of a monic
+quartic over $\mathbb Z$.  Hence CRT again recovers the scale first, without
+assuming radical rationality or excluding $v=0$ by hand.  The guard and
+recovered scale give $\sqrt{D_f}>2\sqrt{D_\tau}$, so the nonzero rational
+signed root sum forces both roots rational and therefore integral.  This
+restores the15-variable equation by selecting $f=\sqrt{D_f}$ and an integral
+new $n$.  Conversely every15-variable zero gives a zero here by shifting
+$n$ to the sum of its doubled integer roots minus $A+B$ and the CRT offsets.
+
+The fully centered norm has degree54, not the larger bound obtained by
+expanding an uncentered norm syntactically.  In the final polynomial,
+\[
+ [j^{56}w^{18}v^{22}h^4r^2c^4n^2]P_{14}
+   =2^{130}3^{74}\beta^{56}>0.
+\]
+Its119 live gates are69 multiplications,30 additions and20 subtractions.
+The literal equation, full proof, and separate independent review are under
+\texttt{lowdegree/fourteen/}.
+
+\paragraph{Common semantic boundary.}
+Both reductions use the unchanged authenticated source34 coefficient tuple
+and the retained ordinary normalized-source, native compiler and finite-ZFC-
+refutation calibration.  They do not prove consistency, claim global
+minimality, or supply a new end-to-end proof-assistant or encoded internal-ZFC
+certificate.  Their two-way arithmetic maps are explicit, with no hidden
+existential registers or domain restrictions.

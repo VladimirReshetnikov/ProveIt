@@ -1,0 +1,223 @@
+{
+  "status": "PASS",
+  "scope": "Standalone positive-power graphs; not source calibration or Lean verification.",
+  "artifacts": {
+    "POWER_ONE_9AUX.json": {
+      "auxiliary_count": 9,
+      "input_count": 3,
+      "residual_count": 4,
+      "exact_residual_degrees": {
+        "scale": 6,
+        "auxiliary_norm": 10,
+        "main_norm_0": 8,
+        "index_norm_0": 8
+      },
+      "exact_polynomial_degree": 20,
+      "random_modular_cases": 150,
+      "sha256": "33dea4e179da602e9d6febdf9afe40d28d1c90125913b37822c32a0e02497cfc"
+    },
+    "POWER_TWO_13AUX.json": {
+      "auxiliary_count": 13,
+      "input_count": 6,
+      "residual_count": 6,
+      "exact_residual_degrees": {
+        "scale": 6,
+        "auxiliary_norm": 16,
+        "main_norm_0": 10,
+        "index_norm_0": 10,
+        "main_norm_1": 10,
+        "index_norm_1": 10
+      },
+      "exact_polynomial_degree": 32,
+      "random_modular_cases": 150,
+      "sha256": "47f0eef15128be24a3ec1c5ba19b1bdb2b4be7e98a7dee30e92290b3dba71d23"
+    },
+    "POWER_TWO_14AUX.json": {
+      "auxiliary_count": 14,
+      "input_count": 6,
+      "residual_count": 7,
+      "exact_residual_degrees": {
+        "scale": 6,
+        "auxiliary_norm": 12,
+        "base_congruence": 3,
+        "main_norm_0": 6,
+        "index_norm_0": 10,
+        "main_norm_1": 6,
+        "index_norm_1": 10
+      },
+      "exact_polynomial_degree": 24,
+      "random_modular_cases": 150,
+      "sha256": "01395bc43682267c0aa13ffe8638de5afb5d3585b21744937196cd663c59e405"
+    }
+  },
+  "full_k1_witnesses": [
+    {
+      "artifact": "POWER_ONE_9AUX.json",
+      "bases": [
+        1
+      ],
+      "sign": 1,
+      "maximum_witness_bits": 71
+    },
+    {
+      "artifact": "POWER_ONE_9AUX.json",
+      "bases": [
+        1
+      ],
+      "sign": -1,
+      "maximum_witness_bits": 35
+    },
+    {
+      "artifact": "POWER_ONE_9AUX.json",
+      "bases": [
+        2
+      ],
+      "sign": 1,
+      "maximum_witness_bits": 111
+    },
+    {
+      "artifact": "POWER_ONE_9AUX.json",
+      "bases": [
+        2
+      ],
+      "sign": -1,
+      "maximum_witness_bits": 55
+    },
+    {
+      "artifact": "POWER_ONE_9AUX.json",
+      "bases": [
+        7
+      ],
+      "sign": 1,
+      "maximum_witness_bits": 351
+    },
+    {
+      "artifact": "POWER_ONE_9AUX.json",
+      "bases": [
+        7
+      ],
+      "sign": -1,
+      "maximum_witness_bits": 175
+    },
+    {
+      "artifact": "POWER_TWO_13AUX.json",
+      "bases": [
+        1,
+        1
+      ],
+      "sign": 1,
+      "maximum_witness_bits": 133
+    },
+    {
+      "artifact": "POWER_TWO_13AUX.json",
+      "bases": [
+        1,
+        1
+      ],
+      "sign": -1,
+      "maximum_witness_bits": 66
+    },
+    {
+      "artifact": "POWER_TWO_13AUX.json",
+      "bases": [
+        1,
+        2
+      ],
+      "sign": 1,
+      "maximum_witness_bits": 178
+    },
+    {
+      "artifact": "POWER_TWO_13AUX.json",
+      "bases": [
+        1,
+        2
+      ],
+      "sign": -1,
+      "maximum_witness_bits": 89
+    },
+    {
+      "artifact": "POWER_TWO_13AUX.json",
+      "bases": [
+        3,
+        5
+      ],
+      "sign": 1,
+      "maximum_witness_bits": 431
+    },
+    {
+      "artifact": "POWER_TWO_13AUX.json",
+      "bases": [
+        3,
+        5
+      ],
+      "sign": -1,
+      "maximum_witness_bits": 215
+    },
+    {
+      "artifact": "POWER_TWO_14AUX.json",
+      "bases": [
+        1,
+        1
+      ],
+      "sign": 1,
+      "maximum_witness_bits": 133
+    },
+    {
+      "artifact": "POWER_TWO_14AUX.json",
+      "bases": [
+        1,
+        2
+      ],
+      "sign": 1,
+      "maximum_witness_bits": 178
+    },
+    {
+      "artifact": "POWER_TWO_14AUX.json",
+      "bases": [
+        3,
+        5
+      ],
+      "sign": 1,
+      "maximum_witness_bits": 431
+    }
+  ],
+  "shared_crt_tests": [
+    {
+      "base": 2,
+      "indices": [
+        1,
+        2
+      ],
+      "period_mod_4D_squared": 32,
+      "maximum_coordinate_bits": 60
+    },
+    {
+      "base": 2,
+      "indices": [
+        2,
+        3
+      ],
+      "period_mod_4D_squared": 1440,
+      "maximum_coordinate_bits": 2735
+    },
+    {
+      "base": 3,
+      "indices": [
+        1,
+        2
+      ],
+      "period_mod_4D_squared": 48,
+      "maximum_coordinate_bits": 122
+    }
+  ],
+  "negative_branch_regression": {
+    "local_tuples_checked": 196848,
+    "accepted_tuples": 159
+  },
+  "deliberate_corruptions_rejected": [
+    "auxiliary count",
+    "degree claim",
+    "dropped residual",
+    "changed modulus coefficient"
+  ]
+}

@@ -1,0 +1,461 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,hyperref,xurl,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+pdftitle={Saturating a Pell witness to remove a radical},
+pdfauthor={OpenAI ChatGPT; prepared for Vladimir Reshetnikov},
+pdfsubject={Explicit Diophantine equations equivalent to syntactic consistency of ZFC},
+pdfkeywords={Diophantine equation, ZFC, consistency, Pell equation, coprime saturation}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\newcommand{\sha}{\texttt{84e16e43092614bae262ca59651cb9d77e31a255}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Saturated Pell consistency equations}
+\fancyhead[R]{\small 24 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{Saturating a Pell witness to remove a radical\\[4pt]
+\large Smaller explicit Diophantine equations for syntactic consistency of ZFC}
+\author{Research contribution prepared for Vladimir Reshetnikov\\
+\small AI-assisted mathematical analysis and artifact preparation: OpenAI ChatGPT}
+\date{24 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give four explicit polynomials in ten strictly positive integer
+unknowns, with operation/degree profiles
+$92/283$, $93/278$, $98/258$, and $99/254$.
+They improve the inspected ProveIt ten-positive baselines $99/368$ and
+$105/340$.  The substantive change absorbs the first Pell ordinate into
+the strong Pell witness, making two required squares coprime factors of
+one square.  An elementary congruence excludes the exceptional cancellation
+between the two remaining radicals.  The final equation is consequently
+a four-factor norm instead of an eight-factor norm.  Both directions of
+positive-witness existence are proved; the reverse direction uses a finite
+Pell-matrix period and the explicit auxiliary witness already available in
+the source construction.
+
+The same saturation principle, with a compatible rescaling of the
+auxiliary coordinate and full-residue interpolation, gives an equation
+in twelve unrestricted integers with profile $123/1084$.  It improves
+both current twelve-integer parents.  Polynomial coordinate changes
+with profiles $143/1200$ and $146/1184$ are retained as controls in an
+appendix.  A final appendix develops an
+explicit degree-14 local equational proof kernel as a component of a
+different future source encoding.
+
+The consistency calibration is inherited from the precisely identified
+ordinary native, compiler, and refutation theorems in the repository.  This
+contribution supplies ordinary proofs formalizable in ZFC and reproducible
+finite certificates; it does not supply a new end-to-end Lean or Rocq proof,
+prove consistency, establish a global optimum, or claim a new minimum
+number of unrestricted integer variables.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Results, comparison, and the logical claim}
+
+The source snapshot is ProveIt commit \sha.  All comparisons in this
+article refer to that snapshot.  Its active research directory is more
+recent than its placed-manuscript catalogue: the complete displayed page
+has $101$ operations and degree $368$, while the accepted zero-offset
+evaluator already has $99$ operations at the same degree.  The direct
+coordinate sibling has $105$ operations and degree $340$.
+The new comparison is therefore against these later accepted evaluators,
+not against the older wave-ten catalogue \cite{repo,zero,direct}.
+
+\begin{center}
+\begin{tabular}{@{}llrr@{}}\toprule
+Construction & Quantified domain & Binary operations & Exact degree\\\midrule
+Pinned zero-offset parent & $10$ positive integers & $99$ & $368$\\
+New saturated upper center & $10$ positive integers & $92$ & $283$\\
+New saturated sharp center & $10$ positive integers & $93$ & $278$\\
+Pinned direct parent & $10$ positive integers & $105$ & $340$\\
+New direct upper center & $10$ positive integers & $98$ & $258$\\
+New direct sharp center & $10$ positive integers & $99$ & $254$\\\midrule
+Pinned rational scalar carrier & $12$ unrestricted integers & $145$ & $1200$\\
+Pinned integral scalar carrier & $12$ unrestricted integers & $141$ & $1456$\\
+New saturated scalar carrier & $12$ unrestricted integers & $123$ & $1084$\\
+Centered integral control & $12$ unrestricted integers & $143$ & $1200$\\
+Centered rational control & $12$ unrestricted integers & $146$ & $1184$\\\bottomrule
+\end{tabular}
+\end{center}
+
+An operation is one binary addition, subtraction, or multiplication,
+including multiplication by a numerical constant and squaring.  Registers
+can be shared.  Constants and variable inputs are leaves, not operations.
+Degree counts quantified variables only.  This is an arithmetic-circuit
+measure, not bit complexity: the large fixed coefficients are reported
+separately and are not being made smaller.
+
+The $92/283$ form saves seven operations and $85$ degrees from $99/368$,
+approximately $7.1\%$ and $23.1\%$, respectively.  The $99/254$ direct form
+uses no more operations than the former cheapest ten-positive evaluator
+and reduces its degree by $114$, approximately $31.0\%$.
+The four new ten-positive points are different cost/degree choices.
+The twelve-integer saturation saves $22$ operations and $116$ degrees
+from its rational parent, and $18$ operations and $372$ degrees from
+its integral parent.
+They do not improve the repository's nine-positive or ten-unrestricted-
+integer variable counts, nor its separate low-degree quartic families.
+
+\begin{theorem}[Consistency interpretation and its dependency boundary]
+Let $N_{2,\varepsilon}$ and $N^{\rm dir}_{2,\varepsilon}$ be the completely
+specified polynomials below, for $\varepsilon=0,1$, at the coherent fixed
+tuple of Appendix~\ref{sec:constants}.  The ordinary source calibration
+identified in Section~\ref{sec:dependencies}, composed with the witness
+constructions in this article, gives
+\[
+ \ZFC\vdash
+ \left[\neg\exists\mathbf x\in\Z_{>0}^{10}\,
+             N_{2,\varepsilon}(\mathbf x)=0\right]
+       \ \longleftrightarrow\ \Con(\ZFC),
+\]
+and the same statement for the direct variant.  The twelve-integer
+form in Section~\ref{sec:integer12-saturated}, and the controls in
+Appendix~\ref{sec:integer12-main}, have the analogous statement with
+$\mathbf x\in\Z^{12}$.
+\end{theorem}
+
+Here $\Con(\ZFC)$ denotes absence of a finite syntactic refutation in the
+same effective ZFC calculus used by the pinned source.  The displayed
+claim is an ordinary mathematical derivability claim, using the existing
+ordinary calibration, formalizable in ZFC.  The archive does not contain an
+independent formal verification of that entire inherited theorem.  Its
+new machine-executed checks concern the literal polynomial specifications,
+their algebraic identities, and their finite certificates.  No assertion
+that either side of the equivalence is true is needed for the construction.
+
+\subsection{What is new in this round}
+
+The transport expansion $W B/(q-1)=LB+B/(q-1)$ and the general ideas of
+centering and saturating Pell witnesses already occur in the source
+collection.  They are credited as such.  The principal new result is the
+complete application of coprime-product saturation to the current
+ten-positive kernel: a two-root recovery proof, an inexpensive upper
+center, full positive completeness after changing the strong witness,
+and the four literal equations above.  A focused search of the downloaded
+incoming submissions and the inspected active proofs found no earlier
+instance of these complete equations.  This is a repository-relative
+comparison, not a claim of worldwide priority for coprime-square splitting.
+The unrestricted-integer extension applies the same idea to the signed
+scalar carrier.  Its additional contribution is the compatible auxiliary
+rescaling and residue interpolation needed to preserve completeness.
+
+\section{The complete ten-positive polynomial}
+\label{sec:definition}
+
+Choose once and for all $\varepsilon\in\{0,1\}$.  It selects a polynomial;
+it is not an eleventh unknown.  The ten unknowns are
+\[
+ J,F,\alpha,i,T,w,Y,n,\eta,\zeta\in\Z_{>0}.
+\]
+The four fixed integers $\beta,K_0,M_C,M_F$ are specified completely in
+Appendix~\ref{sec:constants} and as literal payloads in the archive.
+They satisfy
+\[
+ \beta\ge31\text{ odd},\qquad K_0>0,\qquad
+       0<M_C<\beta<M_F<2\beta.
+\]
+All symbols introduced next are polynomial abbreviations; none adds an
+existential variable.  Set
+\begin{align}
+ q&=\beta J+1,& C&=q-F-\alpha,& X&=wq,\nonumber\\
+ \mu&=q^2+1,& k&=\eta+\zeta,& c&=kY+\eta,\label{eq:outer}\\
+ A&=\mu Y(X+1)+1,& H&=4A-5,&\Delta&=A^2-1,\nonumber\\
+ V_0&=X\mu^2Y^2,& E&=1+V_0(V_0+1)k^2,&U&=ic^2.\label{eq:kernel}
+\end{align}
+The rank and transport data are
+\begin{align}
+ R&=[(q-1)(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\nonumber\\
+ e&=k-R-1,& B_t&=(K_0+w)C-F,\nonumber\\
+ T'&=T+\alpha,& b&=cT'-R,&L&=kT'.\label{eq:transport}
+\end{align}
+The saturated strong and auxiliary quantities are
+\begin{align}
+ D_f&=1+\Delta U^2E,&Q&=\Delta^2U^2E,&\delta&=Q-1,\nonumber\\
+ V&=D_fb-c,&D_y&=QV^2-1,&D_g&=ED_f,\nonumber\\
+ C_g&=(A+\varepsilon)UE,&K_+&=X(3c-2X)+2.\label{eq:saturated}
+\end{align}
+Define the integer polynomials
+\begin{align}
+ P_1&=q^3(q-1),&M&=P_1\mu^2H,\nonumber\\
+ Z&=P_1\mu^2\{H(n+V+C_g-LB_t)+K_+\}\nonumber\\
+   &\hspace{13mm}+H\{\mu^2[(q-1)Y-q^3B_t]-P_1e\},\label{eq:numerator}\\
+ f_s&=\delta Z^2,& f_g&=\delta M^2D_g,&f_y&=M^2D_y.\nonumber
+\end{align}
+The promised single equation is
+\begin{equation}
+ \boxed{\quad N_{2,\varepsilon}
+       =(f_s-f_g-f_y)^2-4f_gf_y=0.\quad}
+ \label{eq:main}
+\end{equation}
+There is no division, radical, variable exponent, unbounded product, or
+undetermined program parameter in this polynomial.  Large powers used in
+the fixed coefficient recipe define constants before the unknowns are
+introduced.  The names \texttt{saturated\_upper.json} and
+\texttt{saturated\_sharp.json} correspond to $\varepsilon=1$ and $0$.
+
+\subsection{The direct coordinate version}
+
+Replace the unknown $w$ by a positive unknown $x$ and set $X=q+x$.
+In \eqref{eq:transport} replace $B_t$ by
+\[
+ B=(qK_0+X)C-qF.
+\]
+Use $P_1=q^4(q-1)$ and $M=P_1\mu^2H$.  Replace only the numerator by
+\begin{align}
+ Z_{\rm dir}
+ &=P_1\mu^2\{H(n+V+C_g-LB)+K_+\}\nonumber\\
+ &\quad+H\{\mu^2[q(q-1)Y-q^3B-(q-1)X]-P_1e\}.
+ \label{eq:directnumerator}
+\end{align}
+All other formulas, including the final norm, stay as displayed.
+In particular the direct $P_1$ contains $q^4$, not $q^3$.
+Its normalized center has the additional term $-X/q^4$; this is a proof
+identity, not a division in the evaluator.  The retained direct-coordinate
+argument recovers $q\mid X$ only after the whole-product projection has
+removed the $H$ denominator.  No earlier cancellation of $q$ is used.
+
+\subsection{The exact arithmetic schedules}
+
+The JSON files list every gate in topological order as
+\texttt{[register, operation, operand1, operand2]}.  All gates, inputs,
+and fixed ports are live.  For efficient strong arithmetic, put
+\[
+ U_E=UE,\quad \Delta=(A-1)(A+1),\quad
+ S_E=\Delta U_E,\quad B_f=S_EU,
+ \quad D_f=B_f+1,\quad Q=\Delta B_f.
+\]
+For the upper center $(A+1)U_E$, the literal $A+1$ is already needed in
+$\Delta$.  The sharper $AU_E$ requires one extra addition to obtain $A$.
+The final norm takes thirteen gates from $M^2$ through its output,
+including the product $D_g=ED_f$.  The operation breakdowns are
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Variant & Multiplications & Additions & Subtractions & Total\\\midrule
+Upper &55&20&17&92\\
+Sharp &55&21&17&93\\
+Direct upper &59&21&18&98\\
+Direct sharp &59&22&18&99\\\bottomrule
+\end{tabular}
+\end{center}
+The distributed transport numerator used here was already available in
+the earlier dyadic submission.  The new schedules compose it with the
+saturated kernel, not with a re-labelled old finalizer.
+
+\section{Why the product of two squares can replace two radicals}
+\label{sec:product-explanation}
+
+The central design choice is the congruence
+\[
+ D_f=1+\Delta U^2E\equiv1\pmod E.
+\]
+Thus $E$ and $D_f$ are coprime.  Once the two-root norm forces
+$ED_f$ to be a square, both factors must individually be squares:
+\[
+ E=\tau^2,\qquad D_f=f^2.
+\]
+The proof-only integer $I=U\tau$ then satisfies the original strong
+equation
+\[
+ f^2-\Delta I^2=1,\qquad c^2\mid I.
+\]
+There is no additional unknown for $I$ or $\tau$ in the new equation.
+
+One must also exclude a false zero caused by cancellation of two equal
+irrational roots.  Here that exclusion is built into the same factor $E$:
+if
+\[
+ ED_f=\frac{QV^2-1}{Q-1},
+\]
+then $(Q-1)ED_f=QV^2-1$, whereas $E\mid Q$ makes the two sides
+congruent to $0$ and $-1$ modulo $E>1$.  This contradiction is the reason
+the two-root finalizer is sound.  No unsupported assertion that a rational
+sum of radicals makes every radical rational is used.
+
+The converse is also substantive.  An old strong ordinate need not be
+divisible by $\tau$.  Instead, after constructing the canonical outer
+witnesses, choose a positive Pell-matrix period modulo $c^2\tau$.
+The resulting new ordinate is divisible by $c^2\tau$, so
+$U=I/\tau=ic^2$ for a positive integer $i$.  The explicit auxiliary
+Pell solution is large enough to make the final $n$ positive despite the
+new upper center.  These details are proved in the next section.
+
+\input{report_parts/saturation_semantics.tex}
+
+\input{report_parts/saturated_degree_proof.tex}
+
+\section{A saturated equation over twelve unrestricted integers}
+\input{report_parts/integer12_saturated.tex}
+
+\section{Proof dependencies, reproducibility, and limitations}
+\label{sec:dependencies}
+
+\subsection{The inherited semantic boundary}
+
+The new positive proofs reuse the following ordinary theorems from the
+pinned construction.  Their exact statements and source proofs are
+retained under \texttt{source/proofs/}:
+\begin{enumerate}
+\item Main/auxiliary Pell folding recovers $c=\psi_A(p)$ from the strong
+      equation, the auxiliary equation, and their retained congruences.
+\item The strong rank and signed auxiliary-index lemmas recover $p=R$
+      once the transport argument has supplied the correct rank range.
+\item The zero-offset Pell-ratio estimate, whole-product projection,
+      fixed-minus parity, and reconstruction of the unscaled source
+      apply to the recovered outer data.  In the direct variant, delayed
+      $q$-divisibility is part of this interface.
+\item The complete native/controller theorem, together with the K215
+      syntactic-refutation calibration and the coherent BFS state/color
+      transfer, identifies source solutions with finite ZFC refutations.
+\end{enumerate}
+The fourth item is a substantive inherited theorem.  Reconstructing the
+coefficient bytes or running a finite machine prefix would not prove it.
+This packet does not describe those finite computations as such a proof.
+The new arithmetic arguments are uniform for the specified port box;
+the final fixed tuple is the \emph{whole} coherent BFS tuple from the
+complete source page.  Its $K_0$ is not equated with the different original
+compact44 $K_0$.  No individual port is substituted between tuples.
+
+The twelve-integer packets have their own six-port source34 tuple,
+\texttt{mixed-parity-unrounded-1064921}.  The parent and dependencies are
+retained separately under \texttt{integer12\_saturated/parent/} and
+\texttt{integer12/parent/}.  The two coefficient
+families are not mixed.  All ordinary proofs use only finite algebra,
+integer arithmetic, induction, and the previously arithmetized source
+calibration.  The remaining end-to-end proof-assistant work is explicitly
+outside this contribution.
+
+\subsection{What the executable checks establish}
+
+\begin{itemize}
+\item Every literal gate, input, fixed port, and live operation count is
+      checked; deterministic rebuilds reproduce the exported JSON files.
+\item The complete generic two-root norm has six terms after expansion;
+      its equality with the four signed factors is verified exactly.
+      The intermediate and saturated integer three-root norms, and the
+      earlier twelve-integer sixteen-factor norm, are checked independently
+      as well.
+\item The anti-cancellation congruence and shared-product identities are
+      checked over free polynomial rings, independently of sample values.
+\item The complete four compact44 coefficients are reconstructed from
+      the printed 436-character seed and all 943 tiles, then compared
+      against every supplied coefficient byte.  The twelve-integer
+      coefficient recipe is replayed separately.
+\item Exact univariate polynomial replays corroborate all four saturated
+      degree certificates.  The global upper bounds and nonzero highest
+      homogeneous forms are proved symbolically in the article; they
+      are not inferred from those one-dimensional checks.
+\item Independently transcribed complete formulas are bound to every
+      gate of the four positive saturated graphs and the twelve-integer
+      saturated graphs by exact identities over free local polynomial
+      rings.  Modular evaluations with the actual fixed coefficients
+      provide additional transcription controls.  These checks do not
+      prove integer unsolvability.
+\end{itemize}
+
+From the extracted archive root, the main finite replay commands are
+\begin{verbatim}
+python3 -B build.py --check
+python3 -B verify.py
+python3 -B -O verify.py
+python3 -B integer12_saturated/build.py --check
+python3 -B integer12_saturated/verify.py
+python3 -B -O integer12_saturated/verify.py
+python3 -B integer12/build.py --check
+python3 -B integer12/verify.py --output /tmp/integer12-check.json
+python3 -B alternative/relational_kernel.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+Only the Python standard library is needed for the arithmetic checks.
+LaTeX is needed only to rebuild the PDF.  No network access is needed
+after extraction.  Verification receipts and provenance hashes are
+included, together with the complete sources.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Can saturation be applied to more square constraints without
+      increasing witness-reconstruction cost?}  Coprimality alone is not
+      enough: every absorbed factor must be supplied by a compatible
+      canonical witness.  The Pell-period argument here solves that
+      problem for the first and strong ordinates.
+\item \textbf{Can the upper center be approximated more accurately by a
+      cheap integer polynomial?}  The sharp center $AUE$ leaves defect
+      $(U^2E^2-E)/(AUE+\sqrt{ED_f})$.  Removing its highest homogeneous
+      part could lower degree further, but extra denominators and their
+      exact integer recovery must be counted.
+\item \textbf{Can a nine-positive form use the same two-root interface?}
+      Eliminating an additional interpolation coordinate requires a
+      proved simultaneous Pell-divisibility construction.  Setting a
+      witness to $1$, or sharing two independent ordinates without that
+      theorem, does not establish completeness.
+\item \textbf{Can a source based directly on equational proofs beat the
+      native history compiler?}  The local kernel in the final appendix
+      is explicit and small.  A fully printed finite axiom tuple, a
+      conservative calibration, and a counted unbounded-history compiler
+      are still needed before it becomes a competing consistency equation.
+\item \textbf{Which ordinary calibration links should be formalized next?}
+      A useful next target is the new product-square recovery and the
+      finite Pell-period completeness map, followed by composition with
+      the existing native/internal-arithmetic work.  Rechecking only
+      finite evaluations would not discharge that task.
+\end{enumerate}
+
+\appendix
+\input{report_parts/complete_constants.tex}
+\section{Coordinate-shear controls over twelve integers}
+\label{sec:integer12-main}
+
+The following two earlier improvements are retained as simple algebraic
+controls.  The saturated equation in Section~\ref{sec:integer12-saturated}
+has a better operation count and degree than either.  These controls
+use a different proof mechanism: invertible polynomial coordinate
+changes covering the entire integer domain, including exceptional
+values of the denominators used only in explanations.
+
+\input{report_parts/integer12.tex}
+\input{report_parts/appendix_relational_kernel.tex}
+
+\begin{thebibliography}{9}\raggedright
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt: DiophantineConsistency},
+snapshot \sha, inspected 24 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency}.
+\bibitem{zero} ProveIt, \emph{Ten strictly positive integers, 99 operations,
+degree 368}, \texttt{candidates/ten-positive-zero-offset}, at \cite{repo}.
+The complete ordinary proof and literal parent are retained in this packet.
+\bibitem{direct} ProveIt, \emph{Combined direct/zero-offset105/340},
+\texttt{candidates/ten-positive-direct-zero-offset}, at \cite{repo}.
+\bibitem{source61} ProveIt source61, \emph{Congruence carriers},
+\texttt{con-zfc-diophantine-forms/61-congruence-carriers}; its rank,
+index, and auxiliary completeness interfaces are restated in the retained
+\texttt{ten-positive-scaled-norm.md} ordinary proof.
+\bibitem{scalar12} ProveIt, \emph{Twelve unrestricted integers by a scalar carrier},
+\texttt{candidates/scalar-carrier12}, at \cite{repo}.
+The complete ordinary proof, signed-kernel interface, arbitrary-residue
+interpolation theorem, and literal parents are retained in this packet.
+\bibitem{dyadic} ProveIt incoming submission,
+\emph{ConZFC Dyadic Pell Reductions, 23 October 2026},
+\texttt{dyadic10/PROOF.md}.  Earlier distributed transport numerator and
+separate upper-root centering; full archive at the pinned incoming snapshot.
+\bibitem{carlmoroz} M. Carl and B. Z. Moroz,
+\emph{On a Diophantine representation of the predicate of provability},
+Max Planck Institute preprint 2006/129.
+\url{https://webdoc.sub.gwdg.de/ebook/serien/e/mpi_mathematik/2006/129.pdf}.
+\bibitem{fgo} A. Formisano, I. Gavazzi, and E. G. Omodeo,
+\emph{Diophantine Modeling of Provability in Algebraic Logic},
+CILC 2025, CEUR Workshop Proceedings 4003, paper13.
+\url{https://ceur-ws.org/Vol-4003/paper13.pdf}.
+\end{thebibliography}
+\end{document}

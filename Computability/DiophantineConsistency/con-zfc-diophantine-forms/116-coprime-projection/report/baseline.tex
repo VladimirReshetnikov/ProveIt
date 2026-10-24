@@ -1,0 +1,54 @@
+\section{Pinned comparison and attribution}
+The comparison is pinned to ProveIt commit
+\texttt{84e16e43092614bae262ca59651cb9d77e31a255}.
+The recent source changes matter: they already improve several endpoints
+relative to the previous delivery. In particular the incoming compact-proof
+packet has a fifteen-integer degree-$172$ circuit with $123$ operations,
+which supersedes the previous degree-$176$, $125$-operation comparison.
+We use the stronger available comparator below.
+
+\begin{center}
+\begin{tabular}{lrrr}
+Domain and construction & Variables & Degree & Operations\\\hline
+Previous eleven-integer delivery & 11 & 2240 & 206\\
+Recent scalar carrier & 12 & 1200 & 145\\
+Recent scalar carrier, integral variant & 12 & 1456 & 141\\
+Recent thirteen-integer norm & 13 & 536 & 135\\
+Recent guard-reduced integer form & 14 & 312 & 117\\
+Incoming compact-proof integer form & 15 & 172 & 123\\
+Recent direct-base positive form & 10 & 340 & 105\\
+Recent cheaper positive form & 10 & 368 & 99\\
+Recent nine-positive circuit & 9 & 1191570 & 405
+\end{tabular}
+\end{center}
+
+These rows do not exhaust the Pareto frontier. The repository also has
+lower-variable, much higher-degree equations; low-operation formulas with
+more variables; and direct quartic compiler constructions. At the initial comparison pin the direct projected quartic has $604$
+unrestricted integer variables. A bounded late review through commit
+\texttt{56b4d15d128b} finds a completed $601$-integer projected quartic.
+The subsequent $73$-predicate source theorem does not yet supply a measured
+smaller projected quartic. Such expanded quartic sizes are not comparable
+to short circuit counts without
+also accounting for expanded support and coefficient height.
+
+The scalar intersective carrier, signed absolute Pell folding,
+full-residue interpolation and centered budget are inherited ideas and are
+credited as such. The new contribution is their use with deliberately
+coprime square products and, separately, with a rational first-root
+projection carrying two congruences. We do not claim historical priority
+for the elementary square-product lemma or a literature-wide minimum.
+
+The archive's baseline comparison records exact source paths and hashes.
+All original source files and older candidate polynomials remain unchanged.
+Original-label source34 and compact44 coefficients are kept in separate
+coherent sets. In particular no original-label initialization coefficient
+is identified with the repaired BFS-renamed initialization coefficient.
+
+A late transport expansion in upstream commit \texttt{49379c31d969}
+reduces the two ten-positive comparator circuits to $103/340$ and $98/368$
+(operations/degree). Applying that exact identity to the new fused
+polynomial gives $96/266$, without changing its coefficients, degree or
+zero set. This late simplification is credited to the upstream construction.
+The initial comparison table remains a record of the frozen starting pin;
+the final positive comparison uses the late figures.

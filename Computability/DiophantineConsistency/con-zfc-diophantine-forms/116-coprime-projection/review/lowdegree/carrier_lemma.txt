@@ -1,0 +1,30 @@
+Independent carrier lemma (provisional notation, 2026-10-24)
+
+Let q,H,M,U,ell,k,K,v,n be integers, M=2q^2, U=MH,
+qH != 0, gcd(H,M)=1, L=ell*k, and
+S=U*n+M*K+H*(v-q^2).
+Then
+  S^2+2*U*L*S-U^2*(ell*k^2+1)=0
+is equivalent to the simultaneous conditions
+  tau^2=1+ell*(ell+1)*k^2,
+  H divides K,
+  M divides v-q^2,
+for some integer tau (and with n chosen accordingly in the reverse direction).
+
+Proof. S/U is a rational root of the MONIC integer polynomial
+  t^2+2*L*t-(ell*k^2+1).
+A rational root of a monic integer polynomial is integral. Thus U divides
+S, and tau=L+S/U is integral with tau^2=1+ell*(ell+1)*k^2.
+From U|S obtain MH | M*K+H*(v-q^2). Reducing modulo H and cancelling
+gcd(M,H)=1 gives H|K; reducing modulo M gives M|v-q^2. Conversely
+if the three conditions hold, n=tau-L-K/H-(v-q^2)/M is integral and
+gives S/U=tau-L, hence the carrier row vanishes. Absolute signs of q,H,
+ell,k,K,v,n are irrelevant. The only denominator exclusions are qH != 0.
+
+For the pinned affine kernel q=beta(6j+1)+1, W=12w+4, X=qW,
+Y=qv, a=(X+1)Y, H=4a+3, beta=2^1064921-1,
+q is even and q=2 mod 3, hence q!=0. H is odd and H=3 mod q.
+Therefore gcd(H,2q^2)=1 for all integer assignments. Also H cannot vanish,
+because H=3 mod 4. No large-scale, sign, or Pell argument is needed here.
+The recovered M|(v-q^2) excludes v=0 directly: it would imply 2|1.
+Thus this carrier itself recovers v!=0, independently of any positivity guard.

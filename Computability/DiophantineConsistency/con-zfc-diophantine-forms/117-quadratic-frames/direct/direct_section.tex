@@ -1,0 +1,351 @@
+\section{A direct consistency quartic in 576 unrestricted integers}
+\label{sec:direct576}
+
+The direct proof-certificate route admits a new simplification: a
+quadratic bound on a proposed power output can replace its sign
+predicate.  Once the indexed Pell coordinates are oriented, a small
+signed residue identifies the output and recovers its sign.  Combining
+this with two local source identities and a factorial digit obstruction
+gives the following explicit quartics.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Equation & Variables & Quadratic rows & Terms & Height\\
+\hline
+Previous principal &604&372&9,676&2,445,790,974,704\\
+New principal &\textbf{576}&368&\textbf{7,172}&2,445,790,974,704\\
+Previous lower height &609&377&8,823&964,213\\
+New lower height &\textbf{582}&374&\textbf{6,200}&964,213\\
+\hline
+\end{tabular}
+\end{center}
+
+All four total degrees are exactly four.  The two new equations are
+literally
+\[
+ P_{576}(x)=\sum_{j=0}^{367}R_j(x)^2=0,
+ \qquad
+ P_{582}(x)=\sum_{j=0}^{373}\widetilde R_j(x)^2=0,
+\]
+where the accompanying JSON files list every quadratic residual and
+every nonzero expanded coefficient.  There are no coefficient ports or
+unmaterialized variable powers.  The first equation saves 28 variables
+and 2,504 monomials at unchanged height; the second saves 27 variables
+and 2,623 monomials.  These are measured improvements, not a minimality
+claim.  This direct C222 route does not use K215, Jones compression or
+Sun's integer reduction.
+
+The precise new theorem is integer-zero existence equivalence with the
+pinned 75-predicate direct-C222 source.  Its existing ordinary
+refutation/consistency calibration transfers separately.  All arguments
+here are finite integer arithmetic that can be performed in ZFC; no
+consistency or external soundness assumption is made.  A new Lean,
+Rocq or sealed object-language ZFC proof object is not claimed.
+
+\subsection{The exact source change}
+
+The source is pinned at ProveIt commit
+\texttt{84e16e43092614bae262ca59651cb9d77e31a255}, in the
+\texttt{factorial-radius-output-sign-profile/raw} research packet.
+Its body has 1,259 coordinates and 1,177 quadratic residuals.  A
+predicate $E\ge0$ is represented by
+\[
+ E-a^2-b^2-c(c+1)=0
+\]
+with three private integer variables.  These witnesses exist exactly
+when $E\ge0$, by the three-square theorem applied to $4E+1$.
+
+Delete exactly the twelve scalar predicates with raw indices
+\[
+ 6,104,106,575,584,592,600,609,618,627,636,825.
+\]
+Keep the other 63 predicates.  Put
+\[
+ S=\{6,106,573,583,591,599,607,617,625,635\}.
+\]
+Change only body residual 1176, originally $x_{643}-x_{1258}$, to
+\[
+ x_{643}-x_{1258}+\sum_{i\in S}(x_i-x_i^2).
+\]
+This adds no coordinate and preserves quadratic degree.  Every other
+body residual is unchanged.  The resulting raw equation has 1,448
+integer coordinates and 1,240 quadratic residuals.
+
+Let $\mathcal A$ be the set of all 43 distinct base, exponent and
+output indices in the 21 actual power calls.  The original frame
+gate identities now give exactly
+\begin{equation}
+ W=2+\sum_{i\in\mathcal A\setminus S}x_i+\sum_{i\in S}x_i^2,
+ \qquad W=x_{643}.
+ \label{eq:direct-signed-frame}
+\end{equation}
+The complete list $\mathcal A$ and the actual source-row ideal are
+included in the certificate.  A squared contribution bounds either
+sign of an integer because $z^2\ge |z|$.
+
+\subsection{Signs and a dominating Pell frame}
+
+Write $f=x_{87}$, $r=x_{94}$, $s=x_{95}$ and $N=x_{93}$.  The
+retained predicates give $f\ge2$, $r,s\ge0$.  Exact source rows
+78--85 imply
+\[
+ N=fr+(f-1)s+f\ge2.
+\]
+Separately, an eleven-row polynomial identity gives
+\begin{equation}
+ f(x_{104}+1)=f x_{59}+x_{131}+3.
+ \label{eq:direct-output104}
+\end{equation}
+The two right-hand coordinates retain direct nonnegativity predicates.
+Thus $x_{104}+1>0$ and $x_{104}\ge0$, without any power interpretation.
+The full eleven integral polynomial multipliers are supplied.
+
+Filtering the old prefix proof now proves 604 of the 643 semantic
+coordinate signs.  Its only postponed special bound concerns $x_{130}$.
+The only unknown-sign frame arguments are precisely the ten members
+of $S$.  All actual bases and seed exponents are already positive.
+In particular, with $t=x_4$, $K=x_{86}$ and $f_1=x_{107}$,
+\begin{align*}
+ &t\ge1,\quad K\ge3,\quad f_1\ge0,\\
+ &M=x_{129}=1+f(x_{59}+1)\ge3,\\
+ &b=x_{530}=M(1+N+x_{113})\ge9,\qquad x_{531}=b+1\ge10,\\
+ &x_{103}=1+(t+1)f\ge5.
+\end{align*}
+Consequently the new frame gives, for every actual call $(n,k,m)$,
+\begin{equation}
+ W\ge3,\qquad 1\le n,k<W,\qquad |m|<W.
+ \label{eq:direct-frame-bounds}
+\end{equation}
+
+The retained initial modulus and its identity
+$T_0=2A(t+1)-(t+1)^2-1$ force $A=x_{644}\ge2$.
+The unchanged bootstrap norm is
+\[
+ A^2-1=W^3(W+2)Z^2.
+\]
+Here $Z\ne0$.  At Pell base $W+1$ this is the solution
+$(A,W|Z|)$.  Classification and the recurrence modulo $W$ imply
+that its positive index is a multiple of $W$.  Hence
+\begin{equation}
+ A>W^W,
+ \qquad T_n=2An-n^2-1\ge A>W^W.
+ \label{eq:direct-large-modulus}
+\end{equation}
+The last inequality follows from the exact decomposition
+\[
+ T_n-A=(2n-1)(A-n-1)+(n-1)(n+2).
+\]
+
+The retained $V\ge1$ predicate and the unchanged product identity
+$V=(\prod_iY_i^2)(v+1)$ make every seed ordinate nonzero and give
+$Y_i^2\mid V$.  The common norm implies $|U|\ge A$.  From
+$B=1+4V(q+1)$ and $B\equiv A\pmod U$, the case $q=-1$ is impossible:
+it would force $U\mid A-1$, although $0<A-1<|U|$.  Every other $q$
+gives $|B|\ge3$.  Thus the pinned signed-base index theorem is
+available whenever the particular short-interval condition
+$k\le |Y|$ has been established.
+
+\subsection{A power output may initially be signed}
+
+\paragraph{Signed-output lemma.}
+In this section $\chi_k(a),\psi_k(a)$ use an index subscript:
+they start at $(1,0)$ and satisfy
+$\chi_{k+1}=a\chi_k+(a^2-1)\psi_k$,
+$\psi_{k+1}=\chi_k+a\psi_k$.
+Assume \eqref{eq:direct-frame-bounds}--\eqref{eq:direct-large-modulus},
+$n\ge2$, and
+\[
+ |X|=\chi_k(A),\quad Y=\psi_k(A)>0,\qquad
+ X-(A-n)Y-m=T_nh,
+\]
+where $m,h$ are unrestricted integers.  Then
+$X=\chi_k(A)$ and $m=n^k$.
+
+\paragraph{Proof.}
+Put $p=\chi_k-(A-n)\psi_k$ and
+$q=\chi_k+(A-n)\psi_k$.  The Pell recurrence and norm give
+$p\equiv n^k\pmod{T_n}$ and $pq=1+T_n\psi_k^2$.
+If $X<0$, then $T_n\mid mn^k+1$.  This dividend is nonzero
+for every integer $m$, since $n^k\ge2$, but
+\[
+ |mn^k+1|\le(W-1)^W+1<W^W<T_n.
+\]
+This is impossible.  Hence $X>0$, and $T_n\mid m-n^k$.  Now
+\[
+ |m-n^k|\le W-1+(W-1)^{W-1}<W^W<T_n,
+\]
+so $m=n^k$.  Notice that positivity of $Y$ is essential:
+if both main coordinates could be negative, $m=-n^k$ would survive.
+Every application below first supplies that positive ordinate.
+
+\subsection{Restoring the deleted predicates in order}
+
+\paragraph{The eight range quotients.}
+For actual calls $10,12,13,14,15,17,18,20$, all eight original
+$Y\ge k$ predicates remain.  The respective outputs are
+$573,583,591,599,607,617,625,635$; all bases are $x_{531}\ge10$.
+The signed index theorem followed by the signed-output lemma makes
+these outputs their intended positive powers.  Their exact range
+rows are
+\[
+ m=(Me)q+r,\qquad e=r+s+1,\qquad r,s\ge0.
+\]
+Here $M=x_{129}$, not the radix $b=x_{530}$.  Since
+$0\le r<e\le Me$, a negative $q$ would make $m<0$.
+All eight quotients and their 24 dependent signs are recovered.
+Only the seven prefix signs
+\[
+ 6,106,124,125,130,132,133
+\]
+remain unproved.
+
+\paragraph{The first factorial.}
+None of those seven coordinates is a sign premise of the pinned
+local first-factorial argument.  Put $d=fK^2$ and $C=x_{91}$.
+Its exact inputs are
+\[
+ C=r+s+1,\quad fC=N+s,\qquad
+ x_{532}=x_{533}(C+ba)+u,
+\]
+\[
+ x_{533}=u+v+1,\qquad b=C+z+1,
+\]
+with $a,u,v,z\ge0$, together with actual calls $1,5,6$.
+All three outputs $N,x_{532},x_{533}$ remain known nonnegative.
+
+For either missing first-factorial index, $|Y|\ge2$ implies
+$|Y|\ge2A>W>k$, so the index theorem and a nonnegative-output
+supporting call recover its true positive pair.  If $|Y|=1$, the
+four possible residues $n,-2A+n,2A-n,-n$ and the small-output bound
+leave exactly $X=A,Y=1,m=n$.  Thus the effective indices are
+$e\in\{K,1\}$ and $j\in\{K+d,1\}$, with
+\[
+ N=(d+1)^e,\quad x_{533}=b^e,\quad x_{532}=(b+1)^j.
+\]
+If $j=1,e=K$, the digit equation contradicts $C\ge1$; if
+$j=e=1$, it forces $C=1$ and then $f\ge d+1>f$.
+Therefore $j=K+d$.  If $e=1$, the bound
+$b\ge(f+1)(d+2)>K+d$ identifies the first binomial digit as
+$C=K+d$, and the ceiling equation forces $f=1$, again impossible.
+Both index guards are restored.  The pinned local factorial lemma
+now gives $f=K!$, so $f$ is even.  Its complete low-digit and
+self-referential-radius proof is bundled; it uses these three calls,
+not an interpretation of the remaining powers.
+
+\paragraph{Orienting the t-pair with a different output.}
+The base $x_{103}=1+(t+1)f$ is odd.  The t-seed norm and its
+actual call-2 residue modulo two imply $x_{104}$ is odd, without
+interpreting t.  Hence $t$ and $k_{122}=t+x_{104}+2$ have opposite
+parity.  An even index excludes $|Y|=1$: the signed abscissa
+half-period argument makes the comparison index odd, while its
+ordinate congruence modulo four makes it even.  Thus its true index
+is recovered, and a positive-output call orients its pair.
+
+If t is even, use \emph{call 2}, whose output $x_{104}\ge0$ was
+proved in \eqref{eq:direct-output104}; its base is at least five.
+If $k_{122}$ is even, use \emph{call 9}, with output $x_{560}\ge0$.
+The retained product of these two index slacks then makes the
+other slack nonnegative.  The indexed t-pair is oriented by call 2
+also when t is odd.  This change of supporting call avoids assuming
+the missing sign of call 0's output $x_6$.
+
+With that positive t-pair, the signed-output lemma at bases $t+1$
+and $f$ recovers $x_6=(t+1)^t>0$ and $x_{106}=f^t>0$.
+The remaining source rows give
+\[
+ x_{125}=x_{123}x_{107}x_{106}\ge0,\quad
+ x_{125}=M+x_{126}x_{130},\quad
+ x_{126}=M+x_{131}+1>M.
+\]
+Consequently $x_{130}\ge0$; its dependent signs follow.  The
+entire 643-coordinate semantic prefix is now natural.
+
+\paragraph{The second factorial's shifted index.}
+It remains to recover the deleted predicate at 825.  With t exact,
+actual calls 4 and 8 give
+\[
+ N_1=x_{113}=(1+f_1t^2)^t\ge1,\qquad x_{547}=b^t.
+\]
+The second factorial rows give
+$C_1=x_{114}+x_{115}+1\ge1$ and $f_1C_1=N_1+x_{115}$,
+so $f_1\ge1$.  Its shifted seed has index $t+f_1t^2$.
+The large-ordinate case recovers its true positive pair as above.
+In the small case $|Y|=1$, the signed residue analysis forces
+$x_{546}=b+1$.  Its exact digit equation is
+\[
+ x_{546}=b^t(C_1+ba_1)+u_1,\qquad
+ C_1\ge1,\quad a_1\ge0,\quad0\le u_1<b^t.
+\]
+For $t\ge2$ the right side is at least $b^t>b+1$.
+For $t=1$, division forces $C_1=1$, whereas
+$f_1C_1=f_1+1+x_{115}>f_1$.  Both cases are impossible.
+Thus the omitted shifted-index slack is strictly positive.
+
+\subsection{Completeness requires a fresh private frame}
+
+All 75 parent predicate values have now been recovered.  The unchanged
+Pell and small-residue arguments give every true power value; they
+use only the dominating bounds, not the literal old linear frame.
+Nevertheless, adjoining guard triples alone does \emph{not} produce
+an old source zero: its original frame equality usually fails.
+
+Hold the natural semantic prefix fixed and reconstruct the private
+Pell data.  Choose either its old linear frame $W_0$ or the new squared
+one, and set
+\[
+ A_0=\chi_{W_0}(W_0+1),\qquad
+ Z_0=\psi_{W_0}(W_0+1)/W_0.
+\]
+The recurrence modulo $W_0$ proves the division is exact.  Choose
+all main pairs at their actual indices.  In the finite quadratic
+ring modulo $L=4\prod_iY_i^2$, the unit
+$A_0+\sqrt{A_0^2-1}$ has finite order.  This supplies a positive
+common Pell solution with $U\equiv1$, $V\equiv0\pmod L$.
+The norm gives $\gcd(U,V)=1$, and $U$ is odd.  CRT supplies
+$B\equiv A_0\pmod U$, $B\equiv1\pmod{4V}$, with $B>A_0$.
+Take the comparison pairs at their true indices and use their
+integral progression quotients.  The product quotient is
+$V/(\prod_iY_i^2)-1\ge0$.
+
+For each power call, its integral quotient follows from
+\[
+ H_0=1,\quad H_{j+1}=nH_j+T_n\psi_j(A_0),\quad
+ H_j=\chi_j(A_0)-(A_0-n)\psi_j(A_0).
+\]
+Reevaluate the derived t+1 pair, discriminant, moduli and private
+arithmetic gates.  Every one of the 109 private nongate residuals
+is the sole nongate, with coefficient $\pm1$, in an exact row
+identity for a target just satisfied.  All other terms are unit
+gate equations.  The independent audit checks this entire coverage,
+including the 474 private topological gate definitions.  Fresh
+three-square witnesses satisfy every private guard.
+
+Using the old linear frame constructs an old 75-predicate zero from
+any new zero.  Conversely, use the old source's true powers and the
+same completion with the squared frame, omitting the twelve predicates.
+This constructs a new zero.  The maps establish existence equivalence;
+they are not asserted to be inverse on private witnesses.
+
+\subsection{Exact algebraic verification}
+
+The final projections contain respectively 872 and 866 monic
+eliminations.  Each deleted coordinate has a unique polynomial
+integer restoration, every surviving residual stays quadratic,
+and no unconstrained variable is discarded.  Reversing the sequence
+gives a bijection of complete integer zero sets, including guard rows.
+An independently authored checker verifies the source changes,
+604-sign initial dependency boundary, all staged interfaces and
+all 109 private completion targets.  A separate checker imports no
+optimizer, replays every signed restoration and collects every
+quartic coefficient.  Both normal and optimized Python modes pass,
+and changed source rows, guards, inverses and coefficients are rejected.
+
+These finite checks establish the literal polynomials and their
+algebraic transformations.  The unbounded arguments are the Pell,
+integer-order, local factorial and finite CRT proofs given above and
+in the bundled pinned sources.  They do not prove Con(ZFC) itself.
+The next concrete research questions are to minimize the outputs
+needed to orient all seed pairs, and to optimize the signed frame
+together with degree-preserving monic projection: a square is free
+in the raw coordinate count but may prevent a later elimination.
