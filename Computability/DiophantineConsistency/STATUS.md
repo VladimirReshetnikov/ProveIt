@@ -80,7 +80,7 @@ rational-root integrality after exposing the early main Pell bound, then
 restores the signed source and positive inverse. Separate ordinary review
 and exact normal/optimized algebra checks pass.
 
-The latest [synchronized direct review](PROPOSAL_REVIEW_SYNCHRONIZED_CERTIFICATES.md)
+The [synchronized direct review](PROPOSAL_REVIEW_SYNCHRONIZED_CERTIFICATES.md)
 accepts522/529/596/895-natural-variable quartics with a common Pell frame
 and radix, after full ordinary review and normal/optimized rebuilding.
 Our [actual-row guard family](candidates/synchronized-row-guards/README.md)
@@ -90,8 +90,8 @@ interpretation. [Signed projection](candidates/synchronized-signed-projections/R
 then reaches1,190 integers,26,411 terms and height83,900,628. Complete
 reverse restoration recovers every original guard and sign condition.
 The separate [batched direct review](reviews/batched-direct-peer.md)
-also accepts its1,690-integer companion; signed projection is now being
-applied to the newer integer family with seven complete tradeoff points.
+also accepts its1,690-integer companion; signed projection produced
+seven complete synchronized tradeoff points, now retained as checkpoints.
 All are degree4. Lean remains paused.
 
 The historical [direct C222 quartic](PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md) is a
@@ -342,5 +342,18 @@ release modes, all whole coefficient bytes and root's separate ordinary
 review pass. The [congruence family](reviews/congruence-certificates-peer.md)
 also adds14-integer148/414 and16-integer118/124 tradeoffs. Free positive J
 reduces13-positive90/51 to88/51; the canonical page remains90/51 under the
-policy of waiting for a significant displayed improvement. The incoming
-10-positive124/816 candidate is now under separate review.
+policy of waiting for a significant displayed improvement. The ten-positive
+proposal now passes review; its identical shared-product sibling reaches123/816.
+
+
+The latest accepted reductions are9-positive419/1472168 and compact427/1626248
+(position-zero encoding plus an identical norm),10-positive123/816 (scaled
+centered norm),12-integer215/2400 or209/2912 (fixed-prime separation), and
+13-integer184/1072 (identical shared norms). Complete ordinary reviews and
+normal/optimized scoped checks pass. The [new direct source](PROPOSAL_REVIEW_QUARTICS407888.md)
+yields407 naturals or888 integers, with a917-integer lower-height alternative.
+The [502-natural radius composition](candidates/synchronized-factorial-radius/README.md)
+is also frozen and independently reviewed. Its further composition and the
+new valuation-circuit savings are underway. The ten-positive alternate
+one-page rendering is pending; the canonical13-positive90/51 page remains
+unchanged for now.

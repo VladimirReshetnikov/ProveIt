@@ -21,11 +21,11 @@ not establish the size of a complete consistency equation.
 | Positive integers | 13 | 88 | 51 | Free positive J; canonical one-page90/51 version retained |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
-| Positive integers | 10 | 131 | 1,152 | Four-root radical/residue form |
-| Positive integers | 9 | 433 | 1,628,768 | Saturated compact54 source and identical norm rewrite |
+| Positive integers | 10 | 123 | 816 | Scaled centered sixteen-fold norm with shared product |
+| Positive integers | 9 | 419 / 427 | 1,472,168 / 1,626,248 | Position-zero normalization; original31 / smaller compact54 tuples |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Positive integers | 9 | 722 | 1,158,228 | Collected J,D radical evaluator and identical norm rewrite |
-| Positive integers | 9 | 953 | 999,518 | Saturated H1868 radical, D collection and identical norm rewrite |
+| Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
 | Integers | 10 | 471 | 1,245,324 | Shorter source-aware approximation guard |
 | Integers | 10 | 475 / 478 / 512 | 1,179,788 / 1,114,252 / 1,080,888 | Short guard combined with compact shears |
 | Integers | 37 | not optimized | 4 | Reviewed joint-sign quartics |
@@ -35,15 +35,15 @@ not establish the size of a complete consistency equation.
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational-root norm tradeoff |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated three-root norm |
 | Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue and prime-separation two-root norms |
-| Integers | 12 | 248 / 223 | 4,832 / 16,000 | Intersective Pell interpolation; whole source34 tuple |
-| Integers | 13 | 185 / 186 / 190 | 1,408 / 1,392 / 1,072 | Guard-first fusion and trace recovery before separation |
+| Integers | 12 | 215 / 209 | 2,400 / 2,912 | Fixed-prime separation and short intersective carrier |
+| Integers | 13 | 184 | 1,072 | Trace recovery and identical shared-norm evaluator |
 | Integers | 14 | 137 / 148 | 792 / 414 | Root fusion and CRT/valuation composition |
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
-| Nonnegative integers | 522 | not optimized | 4 | Synchronized frame;20,225 terms, height83,900,628 |
-| Nonnegative integers | 529 / 596 / 895 | not optimized | 4 | Support/height alternatives:10,782 /7,263 /4,863 terms |
-| Integers | 1,224 | not optimized | 4 | Synchronized actual-row guards;23,590 terms, height83,900,628 |
-| Integers | 1,190 | not optimized | 4 | Signed projection of the certified parent;26,411 terms, same height |
-| Integers | 1,231 / 1,298 / 1,597 | not optimized | 4 | Guarded alternatives:14,148 /10,628 /8,232 terms |
+| Nonnegative integers | 407 | not optimized | 4 | Projected source, low-digit radix and rational SOS contraction;8,420 terms |
+| Nonnegative integers | 410 / 573 / 690 | not optimized | 4 | Different term/height choices; all complete expanded polynomials |
+| Integers | 917 | not optimized | 4 | Lower-height projection;6,986 terms, height63,906,036 |
+| Integers | 888 | not optimized | 4 | Guarded signed projection;10,156 terms, height2,445,790,974,704 |
+| Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
 Operations mean live binary `+`, `-`, and `*`, with squares and fixed-scalar
 multiplications charged and fixed numeral leaves free. Variable counts
@@ -81,14 +81,14 @@ Fixing every positive-power common bound to`W=n+k`, deleting both
 redundant lower-bound slacks and composing the beta majorant gives
 3,328/5,739 natural variables. Actual-row guards yield6,604 integers.
 Those complete checkpoints remain preserved. The newer synchronized
-shared-frame construction supersedes them with the table's522-natural
+shared-frame construction first superseded them with522-natural
 and1,224-integer points; complete ordinary and exact finite reviews pass.
 Signed monic projection then reaches1,190 integers, preserving every
 guard through a complete reverse-restoration certificate. Its larger
 26,411-term expansion is an explicit cost of the variable reduction.
 The separate batched667-natural/1,690-integer proposal also passes its
-scoped review. Its shared-offset and signed-projection ideas are being
-combined with the new certified integer family in separate candidates.
+scoped review. The projected source now improves these checkpoints to
+407 naturals or888/917 integers through the table's new exact transformations.
 
 The first completed reduction is
 [`gap2082-shared-products`](candidates/gap2082-shared-products/README.md):
@@ -214,4 +214,23 @@ point to190 operations. The latter gives14-integer148/414 and a free
 positive J; an identical polarized tail composes with that positive
 change to give12-positive96/70. Complete tuples remain separated. The
 canonical13-positive90/51 page is retained for these minor circuit changes;
-the incoming10-positive124/816 candidate is being reviewed separately.
+the ten-positive proposal is now reviewed and its identical shared-product
+sibling reaches123/816.
+
+
+The next checked wave improves several domains at once. The
+[position-zero norm family](candidates/position-zero-norm-sharing/README.md)
+reaches9-positive419/1472168 and compact427/1626248, with1056/997810 as
+a lower-degree choice. The [scaled ten-positive sibling](candidates/ten-positive-scaled-norm-shared/README.md)
+gives123/816 after full ordinary and normal/optimized parent review.
+The [valuation twelve-integer review](PROPOSAL_REVIEW_VALUATION_INTEGER12.md)
+accepts215/2400 and209/2912; the [trace shared norm](candidates/interpolation-shared-norms/README.md)
+reaches13-integer184/1072. All keep their whole coefficient tuples.
+
+The [projected direct review](PROPOSAL_REVIEW_QUARTICS407888.md) accepts
+407-natural/888-integer quartics; the917-integer companion has lower
+height63,906,036 and6,986 terms. The502-natural self-bounding-radius
+sibling remains a verified checkpoint. Composing its radius with the
+new radix and optimizing the valuation norms are active next steps.
+An alternate complete ten-positive page is being prepared before any
+canonical display decision. Lean remains paused.

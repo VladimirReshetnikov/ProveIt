@@ -68,24 +68,31 @@ Over unrestricted integers, a
 has22 unknowns, degree14 and119 operations. Its complete integer zero set
 is carried bijectively to the parent by an explicit polynomial shear.
 
-The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records a
-433-operation nine-positive equation at degree1,628,768, a lower-degree
-953-operation form at999,518, ten-positive131/1,152 and eleven-positive
-111/211. Guard-first root fusion supplies thirteen-integer185/1,408,
-186/1,392 and the reviewed trace190/1,072 alternatives.
-[Intersective interpolation](PROPOSAL_REVIEW_TWELVE_INTERPOLATION.md) gives
-twelve-integer248/4,832 and223/16,000 equations.
+The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records
+[position-zero](candidates/position-zero-norm-sharing/README.md) nine-positive
+419/1,472,168 and compact54 427/1,626,248 forms, plus a lower-degree
+1,056/997,810 choice. The earlier953/999,518 remains a different cost option.
+The [scaled ten-positive equation](candidates/ten-positive-scaled-norm-shared/README.md)
+now reaches123/816; eleven-positive111/211 is a different tradeoff.
+Exact [shared norms](candidates/interpolation-shared-norms/README.md) give
+thirteen-integer184/1,072.
+[Fixed-prime separation](PROPOSAL_REVIEW_VALUATION_INTEGER12.md) lowers the
+twelve-integer interpolation choices to215/2,400 and209/2,912.
 [CRT/valuation composition](reviews/congruence-certificates-peer.md) adds
 fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The displayed90/51 page
 is retained for this minor change.
 
-The direct C222 route now supplies a complete
-[quartic in1,190 unrestricted integers](candidates/synchronized-signed-projections/README.md),
-with26,411 explicitly collected monomials and coefficient height83,900,628.
+The direct C222 route now supplies reviewed complete
+[quartics in888 or917 unrestricted integers](PROPOSAL_REVIEW_QUARTICS407888.md).
+The888-variable point has10,156 terms and height2,445,790,974,704; the917
+point has6,986 terms and height63,906,036. Its407-natural-variable parent
+has8,420 terms and height83,843,774. The earlier
+[1,190-integer quartic](candidates/synchronized-signed-projections/README.md),
+with26,411 terms and height83,900,628, remains preserved.
 Its [synchronized natural parent](PROPOSAL_REVIEW_SYNCHRONIZED_CERTIFICATES.md)
 has522 variables. Its certified1,224-integer parent and the signed-projection
-alternatives retain different term/height tradeoffs. One global Pell frame, a common
+alternatives are preserved as reproducible historical checkpoints. One global Pell frame, a common
 binomial radix and actual-row sign certificates improve the earlier
 27,916/8,619/6,604-integer checkpoints. The separate
 [batched review](reviews/batched-direct-peer.md) validates the shared-offset

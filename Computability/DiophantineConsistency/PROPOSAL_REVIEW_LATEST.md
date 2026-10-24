@@ -15,10 +15,10 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 
 | Domain | Unknowns | Operations | Exact degree | Evidence |
 |---|---:|---:|---:|---|
-| Positive integers | 9 | **433** | 1,628,768 | Saturated compact54 source plus identical norm rewrite |
+| Positive integers | 9 | 419 / 427 | 1,472,168 / 1,626,248 | Position-zero normalization; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
-| Positive integers | 9 | **953** | **999,518** | Saturated H1868 radical, D collection and identical norm rewrite |
-| Positive integers | 10 | **131** | 1,152 | Four-root radical/residue proposal |
+| Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
+| Positive integers | 10 | 123 | 816 | Scaled centered sixteen-fold norm with shared product |
 | Positive integers | 11 | **111** | **211** | Adaptive q²Y carrier combined with double center |
 | Positive integers | 12 | **96** | **70** | Free positive J and an identical polarized norm tail |
 | Positive integers | 13 | **88** | **51** | Free positive J; canonical90/51 page retained |
@@ -26,18 +26,18 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 10 | 471 | 1,245,324 | Round12 short guard; full replay and ordinary guard review |
 | Integers | 10 | **475 / 478 / 512** | 1,179,788 / 1,114,252 / 1,080,888 | Short guard combined with compact older shears |
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational norm and nonnegative guard finalizer |
-| Integers | 12 | 248 / 223 | 4,832 / 16,000 | Intersective Pell interpolation; whole source34 tuple |
-| Integers | 13 | 185 / 186 / 190 | 1,408 / 1,392 / 1,072 | Guard-first fusion and trace recovery before separation |
+| Integers | 12 | 215 / 209 | 2,400 / 2,912 | Fixed-prime separation and short intersective carrier |
+| Integers | 13 | 184 | 1,072 | Trace recovery and identical shared-norm evaluator |
 | Integers | 14 | 137 / 148 | 792 / 414 | Root fusion and CRT/valuation composition |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated norm;204/128 improves344/131 |
 | Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue families and prime separation |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-gate checkpoint retained |
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
-| Nonnegative integers | 522 | not optimized | 4 | Synchronized arithmetic;20,225 terms, height83,900,628 |
-| Nonnegative integers | 529 / 596 / 895 | not optimized | 4 | Distinct support/height tradeoffs |
-| Integers | 1,224 | not optimized | 4 | Actual-row sign certificates;23,590 terms, height83,900,628 |
-| Integers | 1,190 | not optimized | 4 | Signed monic projection;26,411 terms, same height |
-| Integers | 1,231 / 1,298 / 1,597 | not optimized | 4 | Guarded support/height tradeoffs |
+| Nonnegative integers | 407 | not optimized | 4 | Projected source, low-digit radix and rational SOS contraction;8,420 terms |
+| Nonnegative integers | 410 / 573 / 690 | not optimized | 4 | Different term/height choices; all complete expanded polynomials |
+| Integers | 917 | not optimized | 4 | Lower-height projection;6,986 terms, height63,906,036 |
+| Integers | 888 | not optimized | 4 | Guarded signed projection;10,156 terms, height2,445,790,974,704 |
+| Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
 The nine-variable953/999,518 point improves both operations and degree over
 the earlier1,073/1,103,950 radical form; the latter's smaller compact54
@@ -273,12 +273,14 @@ points, but its self-bounding factorial is reusable: with `rho=f*n²`,
 the exact ceiling of `(rho+1)^n/binom(rho+n,n)` equals f if and only if
 f=n!. The ceiling rows exclude f=0 without assuming the intended value.
 This removes one power call per factorial. Both full normal/optimized
-replays and the independent ordinary/finite review pass. A new sibling
-is composing this lemma with the different synchronized engine.
+replays and the independent ordinary/finite review pass. The complete
+[synchronized sibling](candidates/synchronized-factorial-radius/README.md)
+now reaches502/509/573/850 natural variables and passes root review.
+Its composition with the newer407-source radix is underway.
 
 The congruence-certificate and twelve-integer interpolation archives
-arriving ina6269e4da6 remain under review. Preliminary claims are not
-promoted to the table. The earlier direct7617 projection is
+arriving ina6269e4da6 now pass the ordinary and scoped release reviews
+described below. The earlier direct7617 projection is
 queued; its local-source ideas may compose with the newer frame engine.
 Further combinations are researched as separate candidates. Both
 differently named parity ZIPs remain distinct.
@@ -313,5 +315,39 @@ All ten fixed payloads match their earlier whole tuples byte for byte;
 normal/optimized circuit and norm replays pass. These modest positive
 circuit improvements leave the canonical13-positive90/51 PDF unchanged.
 
-A new ten-positive124-operation degree816 candidate arrived at8380e70262.
-It is under separate review and is not yet counted as an accepted point.
+The ten-positive124-operation degree816 candidate from8380e70262 now
+[passes ordinary and full replay review](reviews/ten-positive-scaled-norm-peer.md).
+The [complete shared-product sibling](candidates/ten-positive-scaled-norm-shared/README.md)
+saves one more operation, reaching123/816 by an exact identity. A complete
+alternate one-page rendering is being prepared; the canonical13-positive
+90/51 page retains its lower-degree/fewer-operation tradeoff.
+
+
+## Position zero, fixed-prime interpolation, and the new direct source
+
+The [position-zero review](reviews/constructive-nine-peer.md) proves that
+weight zero is valid in the actual H10 positive ratio interface and fully
+recalibrates the population threshold after shifting source weights/targets.
+The [identical norm-tail sibling](candidates/position-zero-norm-sharing/README.md)
+then gives9-positive419/1472168,427/1626248 and1056/997810. Original31 and
+compact54 remain different storage choices; no individual port is mixed.
+
+The [valuation twelve-integer review](PROPOSAL_REVIEW_VALUATION_INTEGER12.md)
+now accepts215/2400 and209/2912. A short intersective quintic has an odd
+remainder coefficient1mod3; every nonempty changed-sign radical subset
+is separated by a unique least3-adic order. This works before positivity,
+including imaginary/odd-valued guards. The old full-I-before-residue
+interpolation order remains intact. These dominate the earlier12-integer
+239/4832 and215/16000 complete shared-norm points. Their new pointwise
+circuit optimizations are underway and are not yet counted.
+
+The [407/888 direct review](PROPOSAL_REVIEW_QUARTICS407888.md) passes its
+ordinary proof, both full replays and the independent no-import checks.
+Its projected eight-column source, one-sided flow-degree bootstrap,
+low-digit radix reuse and fused divisibility reduce the natural quartic
+to407 variables. Complete sign proofs and signed restoration give888
+integers, or917 with much lower coefficient height. The independently
+reviewed [502-natural factorial-radius sibling](candidates/synchronized-factorial-radius/README.md)
+is retained; composing that radius with the new radix is now underway.
+The3776/3671 and shared-Pell1873 arrivals remain queued as separate
+coefficient/support tradeoffs; no unreviewed point is counted here.
