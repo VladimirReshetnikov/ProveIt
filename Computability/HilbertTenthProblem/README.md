@@ -38,7 +38,7 @@ As the packages state them:
 - eleven positive unknowns at degree 325 (the eleven-positive forms still
   need independent review);
 - twelve positive unknowns at degree 82, and thirteen at degree 28;
-- fourteen positive unknowns at degree 24, and fifteen at degree 24;
+- fourteen positive unknowns at degree 24;
 - a fifteen-positive equation in 66 operations at degree 157;
 - a quartic in 38 unrestricted integers.
 

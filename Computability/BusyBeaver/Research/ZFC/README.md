@@ -1149,16 +1149,18 @@ removed. By an ordinary argument, ZFC then proves "no solution" ↔ Con(ZFC).
 
 K215 is not required: by Vladimir's direction, proposals may use other
 encodings, provided they prove their own calibration (the report's section
-"Any encoding is welcome"). Wave-9 66 and wave-10 68 already sketch a
-proof-certificate source calibrated instead through `KEndpoint.c222_iff_zf_refutation` and
-`ConstructibleChoice.zf_refutation_iff_zfc_refutation`.
+"Any encoding is welcome"). Wave-9 66 and wave-10 68 already sketch
+proof-certificate sources over the C222 calculus. 66 calibrates through
+`KEndpoint.c222_iff_zf_refutation` and
+`ConstructibleChoice.zf_refutation_iff_zfc_refutation`; 68 inherits that
+bridge from 66.
 
 As the packages state them:
 
 - nine positive unknowns in 444 operations, or at degree 1,379,730;
 - 10 unrestricted integers via a cited reduction of Sun, in 481 operations
   at degree 1,576,864;
-- a 15-unknown equation of degree 24, and one in 66 operations;
+- a 14-unknown equation of degree 24, and a 15-unknown one in 66 operations;
 - the smallest coefficient tuple binding an equation has B = 2^429959.
 
 Materialized coefficient bytes do not by themselves prove the compiler

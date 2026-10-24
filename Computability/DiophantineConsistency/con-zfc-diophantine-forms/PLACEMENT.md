@@ -2966,8 +2966,8 @@ Members not in this tree:
   name the shortest repository path holding the same bytes. Licence, notice
   and attribution files are always kept. 75 bundles the eight wave-9 ZIPs; they are
   mapped to their arrival commit `0c6be9a074`. The packages pin the
-  wave-9 placement `a2cd79b912` or the later merge `9cca523d9f`; 74 and
-  75 cite both.
+  wave-9 placement `a2cd79b912` or the later merge `9cca523d9f`; 68, 74
+  and 75 cite both.
 - **Checksum ledgers, logs and TeX build artifacts.** `SHA256SUMS*`, `*.log`
   and TeX auxiliaries (`*.aux`, `*.toc`, …) are excluded by the root
   `.gitignore`; they were not verified.

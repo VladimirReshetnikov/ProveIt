@@ -53,7 +53,7 @@ frontier is now:**
   unchanged).
 
 The report holds forty-five research packages; all but 60, 66 and 68 state
-AI assistance.
+AI assistance (74 only for its reviews).
 
 - **Wave 5**, sources 31–37: batch 221 (arrival `b7f8b75b5b`, placed in
   `952c1fab49`), pinned to `8c6eec9d19`.
@@ -111,7 +111,8 @@ bridge are not formalized.
 
 Other routes in the repository:
 - **Explored by packages.** Wave 9's 60, 66 and 67 and wave 10's 68 and 75
-  discuss or build pieces of routes past K215 and Jones (see the wave-9 and
+  discuss or build pieces of routes past K215 and Jones; 73 proves a lemma on
+  encoding proof syntax, and 70–72 discuss alternatives (see the wave-9 and
   wave-10 sections below). None has yet produced a finished equation.
 - **In the active research.** It records its own alternatives in
   [ALTERNATIVE_ENCODINGS.md](../ALTERNATIVE_ENCODINGS.md). These include a
@@ -186,7 +187,8 @@ Wave 10 also ships ignored TeX build artifacts. Ignored members are checksum led
 
 This is the route the packages so far have taken; it is not required (see
 above). Each finished equation defines polynomials or small systems with four
-**fixed integer coefficient ports**:
+**fixed integer coefficient ports** (69's and 71's integer forms use six
+payloads):
 
 - Bm1 = B − 1;
 - Kconstant = D_C + B·D_R;
@@ -278,9 +280,11 @@ Wave 10 works mostly on guards and roots:
 - **One quadratic-form guard** (68, 69, 71) replaces two sign guards. It
   gives 69's and 71's 38ℤ quartic, 32ℤ sextic and 27ℤ octic, and 68's 28ℤ
   octic and 26ℤ degree-16 form.
-- **Residue orientation and root transfer** (70) delete a positivity witness
-  and move a Pell root into an existing gap, for eleven and twelve positive
-  unknowns.
+- **Residue orientation** (70) removes the X = 2u² witness from the integer
+  quartic. **Root transfer** (70) moves Pell roots into an existing positive
+  gap: one root for twelve positive unknowns, three for eleven.
+- **Congruence carriers** (72) give thirteen positive unknowns at degree 28
+  and fourteen at 24.
 - **Rational Pell descent** (69) recovers integrality after a norm merger,
   for twelve positive unknowns at degree 82.
 - **Adaptive carrier moduli and centred norms** (71, 73, 74) and a
@@ -335,16 +339,18 @@ lower directory number counts as earlier.
 | 10ℤ (Sun's reduction) | **1,576,864 / 481**, the lowest degree and the fewest operations at once. It dominates every earlier 10ℤ form, including 66's 490 and 494 and 67's 519 | 68 | 68 |
 | Fewest integers without Sun's 2026 reduction | unchanged: **13ℤ**, 10,461,744 / 519 (67) and 11,543,632 / 518 (59) | 67; 59 | — |
 | Eleven positive | **325 / 113** (system 110), dominating 52's 954 / 113 | 70 | 70 |
-| Twelve positive, Pareto frontier | **82 / 102** (69); 110 / 100 and the sum of squares 164 / 99 (74); 57's 242 / 94 and **258 / 89**. Dominated: 70's 84 / 103, 71's 110 / 102, 73's 110 / 105 and 164 / 104, 75's 114 / 105, and 61's forms | 69; 74; 57 | — |
+| Twelve positive, Pareto frontier | **82 / 102** (69); 110 / 100 and the sum of squares 164 / 99 (74); 57's 242 / 94 and **258 / 89**. Dominated: 70's 84 / 103, 71's 110 / 102, 73's 110 / 105 and 164 / 104, 75's 114 / 105 and SOS 172 / 104, and 61's forms | 69; 74; 57 | — |
 | Thirteen positive, Pareto frontier | **28 / 98** (72); 30 / 92 (73; 74 has the same polynomial in 93); **114 / 83** (62). Dominated: 70's and 75's 30 / 94 (one polynomial) and 61's 34 / 93 | 72; 73; 62 | — |
 | Fourteen positive, Pareto frontier | **24 / 101** (72); 65's 26 / 92; 64's 30 / 83; 55's and 59's **52 / 79** | 72; 65; 64; 55 | — |
+| Nine positive on a smaller tuple | unchanged: 60's 1,797,796 / 465 and 62's 1,834,516 / 453 (2^590069); 54's 490 (2^429959) | 60, 62; 54 | — |
+| Twelve positive, systems | unchanged: 59's three-equation system at 94 operations | 59 | 59 |
 | Fifteen positive | unchanged: 66 ops (51's P66, degree 157); lowest degree 24 / 88 (66); Pareto frontier as after wave 9 | 51; 66 | — |
 | Integer quartic | **38ℤ**, two different polynomials (25 residuals each) | 69; 71 | 69 |
 | Integer sextic | **32ℤ**, two different polynomials (19 residuals each). The four 34ℤ sextics of 70, 72, 73 and 75 are dominated | 69; 71 | 69 |
-| Integer octic | **27ℤ**, two different polynomials (14 residuals each). 68's 28ℤ and 70's 29ℤ are dominated | 69; 71 | 69 |
+| Integer octic | **27ℤ**, two different polynomials (14 residuals each). 68's 28ℤ, 70's 29ℤ and 75's 30ℤ (which ties 62's) are dominated | 69; 71 | 69 |
 | Integer, degree 16 | 26ℤ, 13 residuals | 68 | 68 |
 | Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125; 24ℤ at 1936 / 161. From wave 2 (history only, see the wave-2 README `5b0c9ae9fd`): 15's positive-domain sextic in 25 and octic in 20 unknowns, which still dominate 75's 26- and 21-unknown versions | waves 2, 5, 6 | — |
-| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54). 69's and 71's integer forms use six coefficient payloads (881,696 and 615,883 raw bytes) instead of four; 73's sextic is the first integer form bound to the 2^590069 tuple | 54 | 54 |
+| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54). 69's and 71's integer forms use six coefficient payloads (881,696 and 615,883 raw bytes) instead of four; 73's sextic is the first low-degree residual-system integer form bound to the 2^590069 tuple (39's and 52's ten-integer forms and 58's 60ℤ translation already were) | 54 | 54 |
 
 ## Wave 10 (sources 68–75)
 
@@ -357,7 +363,7 @@ lower directory number counts as earlier.
 | [`72-congruence-sextic/`](72-congruence-sextic/) | `con_zfc_congruence_and_sextic_2026-10-23.zip` | *Congruence Carriers and a Sextic Reduction for Diophantine Consistency* (README: *Three explicit equations for Diophantine ZFC consistency*) | **13 / 1 / 28 / 98** (system 91); **14 / 1 / 24 / 101** (system 92); 34ℤ sextic (34's tuple); positive forms on 2^590069 |
 | [`73-guard-reanchoring/`](73-guard-reanchoring/) | `con_zfc_guard_reanchoring.zip` | *Reanchored sign constraints and adaptive Pell carriers* | 34ℤ sextic, on 2^590069 (recommended) and on 34's tuple; **13 / 1 / 30 / 92** (system 85); 12 / 1 / 110 / 105 and SOS 164 / 104 |
 | [`74-centered-pell-gaps/`](74-centered-pell-gaps/) | `con-zfc-centered-pell-gaps-2026-10-23.zip` | *Centered Pell gaps and adaptive congruence moduli* | **12 / 1 / 110 / 100** and **SOS 164 / 99** (ℕ product 112; 36ℤ translation 220 / 184); 13 / 1 / 30 / 93 |
-| [`75-signed-bootstrap/`](75-signed-bootstrap/) | `ZFC_Diophantine_Signed_Bootstrap_2026-10-23.zip` | *Signed-power bootstrap and alternative certificate interfaces* (README) | 34ℤ sextic (19 residuals); 13 / 1 / 30 / 94; 12 / 1 / 114 / 105; `certificates/` and `direct/` interface work (see below); bundles the eight wave-9 ZIPs |
+| [`75-signed-bootstrap/`](75-signed-bootstrap/) | `ZFC_Diophantine_Signed_Bootstrap_2026-10-23.zip` | *Signed-power recovery and inert-prime certificates for ZFC consistency* (README: *Signed-power bootstrap and alternative certificate interfaces*) | 34ℤ sextic (19 residuals); 13 / 1 / 30 / 94; 12 / 1 / 114 / 105; `certificates/` and `direct/` interface work (see below); bundles the eight wave-9 ZIPs |
 
 Directory numbers: 68–73 carry zeroed file times and follow archive-name
 order; 74 and 75 follow their file times. 71's archive wraps a directory
@@ -389,7 +395,7 @@ wave-10 equation uses neither. Two packages work on other routes:
   quantifiers, aimed at 66's direct proof-checker step. The theorem is
   proved, but its factorial, binomial and power steps are not expanded into
   polynomials, nothing is instantiated or counted, and no calibration is
-  named. The dossier calls it a variant of the classical
+  named. At intake it read as a variant of the classical
   Matiyasevich–Robinson construction; 75 does not compare it with the
   literature.
 - **75's `direct/`.** A fixed-input boundary: a small universal machine
@@ -413,12 +419,14 @@ differences, and the integer forms were expanded with SymPy with the
 coefficient ports symbolic. Every measured figure agrees with its claim.
 
 - **One guard idea, three times.** 68, 69 and 71 each replace two sign
-  guards by one quadratic-form guard of the shape xy − (s − x − y)². None
-  cites the others.
+  guards by one quadratic-form guard of the shape xy − (s − x − y)², up to
+  constant factors (69's carries a factor 4). None cites the others.
 - **69 and 71: same sizes, different polynomials.** Their 38ℤ quartics share
   24 of 25 rows and differ only in the guard row and its fixed numbers. Their
-  32ℤ sextics and 27ℤ octics share most rows (11 of 14 for the octics) and
-  differ in the guard and in which coordinates are kept. Both packages'
+  32ℤ sextics share 13 of 19 rows and keep different coordinates. Their 27ℤ
+  octics share 11 of 14 rows and the same coordinates apart from the guard
+  witnesses; they differ in the guard and in how X is substituted (69:
+  X = 4w(βJ + 1); 71: X = 2u²). Both packages'
   restoration maps back to the quartic check out exactly.
 - **Derived forms.**
   - 70's direct 40ℤ quartic is 64's 41ℤ quartic with X replaced by
@@ -427,12 +435,13 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
   - 68's ten-integer form uses 66's gap source repacked on 65's layout, with
     a strengthened Lucas-index lemma that drops a divisibility hypothesis.
   - 71's nine-positive form is 65's source with 63's majorant and 62's
-    power rewrite, which answers wave-9 further question 2.
+    power rewrite. Wave-9 further question 2 had asked for 65's source with
+    66's or 67's majorants; 71 used 63's.
 - **Thirteen positive.** 73's 30 / 92 and 74's 30 / 93 are one polynomial,
   and 73 evaluates it in one operation fewer. 70's and 75's 30 / 94 are one
   other polynomial. 72's 28 / 98 is a third. None of these packages cites
   another.
-- **Twelve positive.** All ten wave-9 and wave-10 circuits are pairwise
+- **Twelve positive.** All eleven wave-9 and wave-10 circuits (61 has two) are pairwise
   different, with no ±1 shift relating any two. Pieces are shared: 74's norm
   residual is 71's, and 71's carrier residual is 75's.
 - **The four 34ℤ sextics** of 70, 72, 73 and 75 are four different
@@ -443,21 +452,24 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
 - **Parallel discoveries.** The triple guard idea; 69 and 71 at identical
   sizes; the 73 / 74 and 70 / 75 thirteen-positive pairs; four 34ℤ sextics.
 - **A caution overtaken.** 74's research note says the naive combination of
-  62 and 64 does not reach 34 integers, and that deleting the global square
-  guard is not justified. Four siblings reach 34 integers anyway, and 75
-  deletes exactly that guard with a new proof.
+  62 and 64 does not reach 34 or 29 variables, and that deleting the global
+  square guard is not justified. Six siblings reach a sextic in at most 34
+  integers and four an octic in at most 29. 70 and 75 each delete that
+  guard with a new signed argument.
 - **Comparisons against stale baselines.**
-  - 71 compares its nine-positive form only with 62's 453, though 66's 444
-    and 449 were in the tree at its pin.
+  - For fewest operations, 71 cites only 62's 453, though 66's 444 and 449
+    were in the tree at its pin. (Its degree comparison, with 67's
+    1,494,006 / 487, is right.)
   - 72 compares its 14-positive form with 60's 89-operation evaluator; 66's
     88-operation evaluator of the same polynomial was already there.
-- **Stale README at the pins.** 71 and 73 observe that this README, at
+- **Stale README at the pins.** 69, 71 and 73 observe that this README, at
   `9cca523d9f`, still described waves 5–8. That was true; the wave-9
   reconciliation came later.
 - **Placement side effects.** 72 reports that 61's `ACTIVE_BINDING.json`
   paths are broken. That is true in the placed tree, because intake omitted
-  the payloads as copies; the arrival archives are intact. 72's, 73's and
-  75's own binding paths break the same way.
+  the payloads as copies; the arrival archives are intact. The binding paths
+  of 68–73 and 75 break the same way, and 74's whole `coefficients/` folder
+  was omitted.
 - **An unattributed correction.** 68 calls an "incorrect claimed
   41-quartic-to-29-octic elimination" wrong without naming whose it is.
 - **The active review.** 75 notes that, at `bdd86761ba`, the active wave-9
@@ -484,8 +496,9 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
   | 74 | `verify.py` | writes its receipts in place |
   | 75 | `verify.py` | SymPy |
 
-- **Titles.** 69's and 70's PDF metadata titles differ from their TeX titles;
-  72's README H1 differs, and its title begins like 61's.
+- **Titles.** 69's and 70's PDF metadata titles differ from their TeX titles,
+  and 68's PDF has none. 72's and 75's README H1s differ from their printed
+  titles, and 72's title begins like 61's.
 - **Inside packages.**
   - 68's `direct/README.md` names six scripts and two data files, and
     `packing/README.md` names `prepare.py` and `search.cpp`; none is
@@ -503,8 +516,9 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
   - 72 says it was "prepared with OpenAI ChatGPT"; 74's AI statement covers
     only its reviews.
 - **Retained intermediates.** 70's alternate quartic, 73's second sextic
-  binding, 74's natural and 36ℤ translations, and 68's prototypes named in
-  its report.
+  binding, 71's and 75's companion and comparison circuits, and 68's
+  prototypes named in its report. 74's natural and 36ℤ forms are domain
+  translations, not intermediates.
 
 ### Further questions (wave 10)
 
@@ -517,8 +531,8 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
 2. **Combinations (intake observations, untested as proofs).**
    - 70's residue orientation with 69's or 71's guard, for a 37ℤ quartic.
    - 68's guard lemma on the two remaining guards of 69's or 71's 27ℤ octic.
-     One dossier built this form and measured 25 unknowns at degree 12; its
-     correctness is not proved.
+     An intake check built this form and measured 25 unknowns at degree 12;
+     its correctness is not proved.
    - 72's elimination with 73's guard change, for a smaller sextic.
 3. **Coefficients.** Bind the new integer forms to a four-port compact
    tuple, as 73 does for its sextic.
@@ -1647,8 +1661,8 @@ The packages say, in their own words (exceptions noted):
     `ConstructibleChoice.zf_refutation_iff_zfc_refutation`; its global
     constructor is an unelaborated Lean sketch with no theorem.
   - Wave-10 68's `direct/` constructor is likewise uncompiled and proves
-    no theorem; 75's `certificates/` and `direct/` are proved interface
-    lemmas, not equations.
+    no theorem; 75's `certificates/` and `direct/` are paper-proved
+    interface lemmas, not equations.
   - No package supplies a new end-to-end formal certificate. Subsequent
     active stage formalization is recorded separately below.
 - **No new general theorem.**
@@ -1770,7 +1784,7 @@ attribution file the packages ship is kept in place.
 | 7 | `124c07c0b77a9e20e84676514d8b1ff78536ea3f` | `4b4349064a` | `6d375f2d2d` |
 | 8 | `4b4349064a750ba6347293b55874a7f92abdd0db` (54–57, 59); `6d375f2d2deac0519e659bbce5b48087023c1430` (58) | `7331974b69` | `beb0192cb8` |
 | 9 | `beb0192cb8dc36f78c369c080f2adfbc1887a486` | `0c6be9a074` | `a2cd79b912` |
-| 10 | `a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49` or `9cca523d9f27ad39d52993f4065cbd7e58f8bdd4` | `9513bd88ce` | `d79b41884d` |
+| 10 | `9cca523d9f27ad39d52993f4065cbd7e58f8bdd4` (68–73); `a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49` (74); both, and `bdd86761ba` (75) | `9513bd88ce` | `d79b41884d` |
 
 ## Files
 
