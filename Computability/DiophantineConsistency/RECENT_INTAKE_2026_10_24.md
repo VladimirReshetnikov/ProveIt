@@ -931,3 +931,27 @@ full rebuilds pass fresh root review and match retained author receipts.
 All prior packets remain preserved. This improves the direct quartic
 family; the canonical ten-positive 98-operation/degree-360 page is unchanged.
 Lean formalization remains paused, and equation-size research continues.
+
+## Direct tile indices shorten the complete printed recipe
+
+The [directly indexed standalone page](research/indexed-tile-enumeration/equation.pdf),
+with [TeX](research/indexed-tile-enumeration/equation.tex), removes the
+sorted-rank computation for the same 943-tile language. The complete
+constant recipe falls from 2,393 to 2,343 nonwhite printed characters;
+the whole page falls from 3,217 to 3,167. All index explanations, the full
+436-character seed and its 62-character alphabet are counted. The page
+retains ten positive unknowns, 98 operations, exact degree 360 and the
+same one-Letter-page layout.
+
+The new selector order changes K. Its [ordinary proof and root review](research/indexed-tile-enumeration/PEER_REVIEW.md)
+rebuild the entire native witness and cofinal rank controller for the new
+coherent tuple; they do not transfer old packed words pointwise. All 430
+transitions, 943 tile conjugacies, 66,062 native basis identities, four
+complete integers and controller unit/order/lift facts pass independent
+checks. Eight fresh root normal/optimized build, render, checker and
+artifact runs match the author records; each artifact run rejects 40
+actual corruptions and passes two complete controls.
+
+This 50-character gain is retained as a research alternative. The canonical
+98/360 PDF and TeX stay unchanged until a larger improvement is ready.
+Lean remains paused and the reduction goal continues.
