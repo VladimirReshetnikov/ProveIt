@@ -62,7 +62,13 @@ cannot carry both.
   each other circularly; F + alpha = q − C is the only coupling and it is
   not sign-definite).
 
-Hence nine positive unknowns need a window with one tested word.
+Hence, with the devices tried here, nine positive unknowns need a window
+with one tested word. As the research session notes in NEXT_STEPS.md,
+these are obstacles to the tested changes, not an impossibility proof: a
+different arithmetic encoding of the two residues may exist. (The same
+session has since lowered the ten-positive kernel to 98 operations and
+degree 360 with the index weight L = kI + b, which also corrects the
+"degree floor" wording of the first note.)
 
 ## 3. Where a redesign could act
 
