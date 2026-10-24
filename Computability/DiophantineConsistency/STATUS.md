@@ -16,6 +16,14 @@ The lower-degree package71 branch also saves three gates, reaching475
 positive /482 natural operations at the unchanged degree1,379,730; see
 [`order7-shared-products`](candidates/order7-shared-products/README.md).
 
+Later saturation and an exact shared norm tail reach **433 operations at
+degree1,628,768** with nine positive unknowns. The collected H1868 radical
+form reaches **953 operations at degree999,518**. The original31 and
+compact54 coefficient tuples remain separate storage tradeoffs. See
+[`norm-tail-sharing`](candidates/norm-tail-sharing/README.md) and the
+[latest review](PROPOSAL_REVIEW_LATEST.md). New complete positive-domain
+points include ten variables/131 operations/degree1,152 and eleven/111/211.
+
 The shortest inspected complete page prints a436-character base62 numeral
 with its entire alphabet and positional sum. Its complete coefficient
 recipe has2293 nonwhite characters, down from2514 on the preserved771-digit
@@ -52,6 +60,21 @@ now gives14-positive73/342 and75/293 equations. Their signed-root
 specialization, full literal circuits and coefficient-independent degree
 witnesses pass separate ordinary review and normal/optimized checks.
 All Lean work remains paused.
+
+The [centered Hilbert Tenth transfer](candidates/fixed-root-centers/README.md)
+adds fourteen-positive74/312 and76/191. Its ordinary version proves deleted
+rational-root integrality after exposing the early main Pell bound, then
+restores the signed source and positive inverse. Separate ordinary review
+and exact normal/optimized algebra checks pass.
+
+The [direct C222 quartic](PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md) is a
+complete ordinary alternative with27,916 integer variables,758,275 monomials
+and maximum absolute coefficient320,307,372,009,918. It uses no K215,
+native coefficient tuple or Jones universal equation. All52 normal/optimized
+authored replay stages pass, including36 byte-exact reconstructed artifacts.
+Its ordinary arithmetic/calculus proof has separate independent review;
+the new Lean/internal-ZFC compilation theorem remains open. Newer13-integer
+and shared-direct proposals are being assessed rather than assumed valid.
 
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),
@@ -166,7 +189,7 @@ commits and are deliberately retained in the delivered provenance records.
 | Unbounded internal consistency sentence | Lean checked for unsealed coding | `ObjectConsistency.unsealedConsistencySentence`; the internal sealed/unsealed proof-certificate bridge remains open |
 | Internal universal closure, bounds and sealing | Lean checked | `ObjectCodeClosure`, `ObjectCodeBound`, `ObjectCodeSeal`: nonstandard-input totality, functionality, exact syntax quotation and actual ZFC proofs |
 | Sealed internal consistency target | Lean checked sentence and semantics | `ObjectCodeSeal.consistencySentence` quotes actual `ZFCax_s` axioms; equivalence to the internal polynomial remains open |
-| Further short-equation reduction | In progress | Current checked frontier: 69 operations/degree 111, 73/80, 75/68, 76/64 |
+| Fifteen-positive local short-equation checkpoints | Preserved | 69 operations/degree111,73/80,75/68,76/64; current size-only comparisons across domains and tuples are in SIZE_REDUCTION.md |
 
 ## Validation environment
 

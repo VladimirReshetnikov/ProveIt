@@ -19,15 +19,22 @@ not establish the size of a complete consistency equation.
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 99 / 100 | 164 / 70 | Ordinary-norm100/70 improves100/110 and102/82 |
 | Positive integers | 13 | 90 | 51 | Ordinary strong norm improves the90/55 unit product |
-| Positive integers | 14 | 73 / 75 | 342 / 293 | Hilbert Tenth strong-root transfer; lower-degree14-variable choices remain |
-| Positive integers | 11 | 111 / 114 | 277 / 257 | Reviewed ordinary three-root improvements |
-| Positive integers | 9 | 440 | 1,845,940 | Shared-product reduction of the443-operation target |
+| Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
+| Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
+| Positive integers | 10 | 131 | 1,152 | Four-root radical/residue form |
+| Positive integers | 9 | 433 | 1,628,768 | Saturated compact54 source and identical norm rewrite |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
-| Positive integers | 9 | 1,065 | 1,158,228 | D-register compression of the new radical-majorant equation |
-| Integers | 10 | 480 | 1,245,324 | Reviewed saturated-Lucas H1868 equation |
+| Positive integers | 9 | 722 | 1,158,228 | Collected J,D radical evaluator and identical norm rewrite |
+| Positive integers | 9 | 953 | 999,518 | Saturated H1868 radical, D collection and identical norm rewrite |
+| Integers | 10 | 471 | 1,245,324 | Shorter source-aware approximation guard |
+| Integers | 10 | 475 / 478 / 512 | 1,179,788 / 1,114,252 / 1,080,888 | Short guard combined with compact shears |
 | Integers | 37 | not optimized | 4 | Reviewed joint-sign quartics |
 | Integers | 22 | 119 | 14 | Centered joint-guard combination;118 operations at degree16 is retained |
 | Integers | 19 | 109 | 88 | Reviewed joint projection; other tradeoffs retained |
+| Integers | 17 | 114 | 88 | Explicit counted saturated-certificate/congruence interface |
+| Integers | 16 | 134 / 135 | 192 / 184 | Separated rational-root norm tradeoff |
+| Nonnegative integers | 16,036 | not optimized | 4 | Complete direct C222 proof-certificate compiler |
+| Integers | 27,916 | not optimized | 4 | Same direct compiler with three-square input guards |
 
 Operations mean live binary `+`, `-`, and `*`, with squares and fixed-scalar
 multiplications charged and fixed numeral leaves free. Variable counts
@@ -42,6 +49,13 @@ The arrivals in`c1a102936a` and`9a33342a03` have been reviewed;
 endpoints, exact derived improvements and alternate source encodings.
 It records which full releases and selected component stages were replayed.
 No incoming archive or historical delivered tree was replaced.
+
+The [latest continuation review](PROPOSAL_REVIEW_LATEST.md) includes
+eae4f1952b,440dd03ab8,d42be5cd87 and43ac596e36. It records the saturated
+nine-variable targets, adaptive eleven-positive form, centered Hilbert
+Tenth transfers, integer shears and complete direct-C222 alternative.
+The newer13-integer and shared-direct claims at751bc067e2 remain under
+review; neither is silently added to the checked table.
 
 The first completed reduction is
 [`gap2082-shared-products`](candidates/gap2082-shared-products/README.md):
@@ -98,13 +112,16 @@ The latter is now improved to
 [ninety operations and degree51](research/ordinary-unit-products/ORDINARY13.md)
 by the same early-rank theorem, with no added unknown or gate.
 
-For the lowest inspected nine-positive degree, the arriving radical
-majorant's1,753-operation evaluator is reduced to1,065 operations at the
+An earlier nine-positive degree reduction collected the arriving radical
+majorant's1,753-operation evaluator into1,065 operations at the
 same degree1,158,228. Reusing its existing D register collects654 terms
 into312, and exact polynomial substitution/remap certificates preserve
 the entire original polynomial. See
 [`radical-d-shared`](candidates/radical-d-shared/README.md) and
 [the nine-variable review](PROPOSAL_REVIEW_WAVE11_NINE.md).
+Later whole-radical representations reach722/1,158,228 and953/999,518;
+their distinct polynomials, sources and tuple costs are recorded in the
+latest comparison rather than conflated with this identity checkpoint.
 
 For unrestricted integers,
 [`joint22-centered`](candidates/joint22-centered/README.md) combines two new
@@ -114,8 +131,9 @@ lowers degree16 to14. The result has22 integer unknowns and119 operations,
 improving the delivered degree14 evaluator by four gates. Complete inverse
 row maps, the whole fixed six-port tuple and an exact leading form are checked.
 
-1. Further optimize the literal440-operation circuit, preserving its exact
-   polynomial. Search for shared powers and algebraic rearrangements that
+1. Further optimize the literal433-operation and953-operation circuits,
+   preserving their exact polynomials. Search for shared powers and algebraic
+   rearrangements that
    remove live gates, with local exact identities and independent modular
    evaluation/topology checks.
 2. Simplify the short positive equations and new root/guard mergers.
@@ -135,6 +153,9 @@ now supplies14-positive73/342 and75/293 equations. Its signed-positivity
 obligation is closed by an ordinary fixed-blank proof and independent review;
 literal circuits, exact degree witnesses and normal/optimized checks pass.
 Frozen source emitters and arrays were read as inert metadata.
+The [ordinate-centered extension](candidates/fixed-root-centers/README.md)
+adds74/312 and76/191, with a separately reviewed balanced-unit integrality
+argument before the ordinary signed-root reconstruction.
 
 Python algebra, explicit circuits and manuscript derivations remain useful
 validation tools. They do not replace the unbounded ordinary correctness
