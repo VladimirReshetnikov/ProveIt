@@ -19,13 +19,14 @@ not establish the size of a complete consistency equation.
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 99 / 100 | 164 / 70 | Ordinary-norm100/70 improves100/110 and102/82 |
 | Positive integers | 13 | 90 | 51 | Ordinary strong norm improves the90/55 unit product |
-| Positive integers | 11 | 113 | 325 | Three-root transfer, package70 |
+| Positive integers | 11 | 111 / 114 | 277 / 257 | Reviewed ordinary three-root improvements |
 | Positive integers | 9 | 440 | 1,845,940 | Shared-product reduction of the443-operation target |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Positive integers | 9 | 1,065 | 1,158,228 | D-register compression of the new radical-majorant equation |
-| Integers | 10 | 481 | 1,576,864 | Free-Lucas finalizer, package68 |
-| Integers | 38 | not optimized | 4 | Cone/determinant alternatives, packages69/71 |
+| Integers | 10 | 480 | 1,245,324 | Reviewed saturated-Lucas H1868 equation |
+| Integers | 37 | not optimized | 4 | Reviewed joint-sign quartics |
 | Integers | 22 | 119 | 14 | Centered joint-guard combination;118 operations at degree16 is retained |
+| Integers | 19 | 109 | 88 | Reviewed joint projection; other tradeoffs retained |
 
 Operations mean live binary `+`, `-`, and `*`, with squares and fixed-scalar
 multiplications charged and fixed numeral leaves free. Variable counts
@@ -34,6 +35,12 @@ integer domains are compared separately. These are useful points, not the
 complete frontier or a global optimality claim.
 
 ## Work now underway
+
+The arrivals in`c1a102936a` and`9a33342a03` have been reviewed;
+[PROPOSAL_REVIEW_WAVE11.md](PROPOSAL_REVIEW_WAVE11.md) compares finished
+endpoints, exact derived improvements and alternate source encodings.
+It records which full releases and selected component stages were replayed.
+No incoming archive or historical delivered tree was replaced.
 
 The first completed reduction is
 [`gap2082-shared-products`](candidates/gap2082-shared-products/README.md):
@@ -115,6 +122,10 @@ row maps, the whole fixed six-port tuple and an exact leading form are checked.
 4. Explore alternate proof-certificate and flow encodings. Identify a
    complete global polynomial and its cost before comparing it with a
    finished endpoint; keep unbounded aggregation obligations explicit.
+
+The [Hilbert Tenth transfer note](SIZE_RESEARCH_H10.md) records specific
+strong-root deletion leads and their remaining signed-positivity obligation.
+Its frozen source emitters and arrays are being read as inert metadata.
 
 Python algebra, explicit circuits and manuscript derivations remain useful
 validation tools. They do not replace the unbounded ordinary correctness

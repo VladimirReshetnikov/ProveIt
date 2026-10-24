@@ -45,6 +45,13 @@ answers. We compare these measures separately, retaining constructions
 with different tradeoffs, including direct quartics and proof-certificate
 encodings. Global optimality is not asserted.
 
+The new [wave11 review](PROPOSAL_REVIEW_WAVE11.md) covers arrivals
+`c1a102936a` and`9a33342a03`, including stronger eleven-positive forms,
+the saturated ten-integer equation and smaller signed-domain quartics.
+It distinguishes full release replays from selected component audits.
+The [Hilbert Tenth size leads](SIZE_RESEARCH_H10.md) record additional
+transferable root-elimination arguments under active review.
+
 Neither a K215 encoding nor a Jones universal equation is a requirement.
 Direct proof-certificate and arithmetic-trace encodings are separate research
 routes. The nine-variable comparison below is one working branch of a

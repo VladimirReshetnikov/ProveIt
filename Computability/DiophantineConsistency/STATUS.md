@@ -37,6 +37,14 @@ equation has22 unrestricted integer unknowns, exact degree14 and119 live
 gates. Complete inverse row transformations, the whole six-port binding,
 literal DAG and coefficient-independent leading form pass exact checks.
 
+The [wave11 review](PROPOSAL_REVIEW_WAVE11.md) is complete for its stated
+release/component scopes: accepted new points include eleven-positive
+111/277 and114/257, ten-integer480/1,245,324 and37-integer quartics.
+The separate report-only811-operation nine-variable claim lacks its
+referenced section/artifacts and is not counted as a checked endpoint.
+The [Hilbert Tenth transfer note](SIZE_RESEARCH_H10.md) identifies the next
+signed-root specialization to review, while all Lean work remains paused.
+
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),
 at the repository owner's request. Live catalogue/intake/research links
