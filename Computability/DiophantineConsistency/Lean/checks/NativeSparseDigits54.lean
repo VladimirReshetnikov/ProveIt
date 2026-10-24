@@ -1,0 +1,14 @@
+import DiophantineConsistency.NativeSparseDigits54
+
+#print axioms DiophantineConsistency.NativeSparseDigits54.positions_nodup
+#print axioms DiophantineConsistency.NativeSparseDigits54.support_lt
+#print axioms DiophantineConsistency.NativeSparseDigits54.zero_mem_support
+#print axioms DiophantineConsistency.NativeSparseDigits54.dummy_mem_support
+#print axioms DiophantineConsistency.NativeSparseDigits54.selector_one_not_mem
+#print axioms DiophantineConsistency.NativeSparseDigits54.cellWord_eq_lowPort
+#print axioms DiophantineConsistency.NativeSparseDigits54.mask_word
+#print axioms DiophantineConsistency.NativeSparseDigits54.source_assignment
+#print axioms DiophantineConsistency.NativeSparseDigits54.assignment_sparse
+#print axioms DiophantineConsistency.NativeSparseDigits54.assignment_boolean
+#print axioms DiophantineConsistency.NativeSparseDigits54.source_sparse_convolution
+#print axioms DiophantineConsistency.NativeSparseDigits54.source_assignment_exists

@@ -41,11 +41,25 @@ rename and sealing programs too; see [ANNOTATED_SCHEMAS.md](ANNOTATED_SCHEMAS.md
 [Context validation, shifting and the assumption rule](ANNOTATED_CONTEXT_RULE.md)
 now have supplied numeric programs too, including soundness for arbitrary raw codes.
 [Shared validated coordinates and literal output/premise programs](ANNOTATED_RULE_COORDINATES.md)
-now cover all17 original rules. Their side conditions, backward references,
-axiom dispatch and full proof-line loop remain in progress.
+now cover all17 original rules.
+The [complete numeric logical scanner](ANNOTATED_LINE_SCANNER.md) now checks
+raw numeric proof lines and backward references for every original rule,
+with supplied primitive-recursive code and an exact acceptance/provability
+equivalence. The [complete sealed-ZFC refutation checker](ANNOTATED_REFUTATION_PR.md)
+now includes actual axiom/schema dispatch, the full axiom-context scan and
+an exact existential acceptance/refutability equivalence. Its literal
+program has83281 nodes, or76313 after certified optimization. These are
+program-tree sizes; its smaller shared quadratic graph and internal-model
+interpretation remain in progress.
 The [literal quartic compiler](OBJECT_QUARTIC_COMPILER.md) now has an actual
 ZFC derivation of its source/target no-zero equivalence over the entire
-internal omega. Internal verification of the full checker encoding remains open.
+internal omega. The [actual sharp pairing quartic](OBJECT_SHARP_PAIRING.md)
+now also has internal totality, functionality and surjectivity proofs,
+including unconditional derivations in ZFC. Internal verification of the
+full checker encoding remains open. The [actual predecessor, tree projections
+and zero-test quartics](OBJECT_NUMERIC_WIRE.md) now also have exact semantics
+over every internal natural input, preserving the existing shared-register
+expressions and witness counts.
 A [complete one-page equation](candidates/one-page/README.md) now specifies
 the15-positive-variable P69 and every fixed coefficient using one1294-digit
 integer and fixed arithmetic formulas. The printed seed and all four coefficient
@@ -146,9 +160,13 @@ now proves exact empty-cell or single-tile acceptance from arbitrary Boolean
 selectors, with no one-hot premise. The [whole-stencil carry step](NATIVE_CONVOLUTION54.md)
 now derives pointwise mask tests with all temporal rotation phases retained.
 The [origin radix digit](NATIVE_ORIGIN54.md) is now forced to one from the
-actual source mask and exact low-MC recipe. Remaining assignment support,
-literal port/basis binding, phase synchronization and whole compiler
-calibration and the converse completeness direction remain open.
+actual source mask and exact low-MC recipe. The [sparse assignment](NATIVE_SPARSE_DIGITS54.md)
+is now reconstructed from the source, including the positive cell count,
+exact word, origin and Boolean/capacity bounds. The [literal clause bands](NATIVE_CLEAN_BANDS54.md)
+now equal the corresponding local coefficient sums plus the explicit
+temporal contribution, including cyclic collisions. High-mask binding,
+phase synchronization, whole compiler calibration and converse completeness
+remain open.
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,
 all 136 quadratic coefficient records, exact selective positions, sharp

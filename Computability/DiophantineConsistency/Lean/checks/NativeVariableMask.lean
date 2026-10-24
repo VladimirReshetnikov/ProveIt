@@ -1,0 +1,7 @@
+import DiophantineConsistency.NativeVariableMask
+
+#print axioms DiophantineConsistency.NativeVariableMask.cellDigit_complement
+#print axioms DiophantineConsistency.NativeVariableMask.cellWord_complement
+#print axioms DiophantineConsistency.NativeVariableMask.word_periodic
+#print axioms DiophantineConsistency.NativeVariableMask.word_originMask
+#print axioms DiophantineConsistency.NativeVariableMask.periodic_factor
