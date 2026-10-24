@@ -91,27 +91,23 @@ fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The displayed90/51 page
 is retained for this minor change.
 
-The direct C222 route now supplies reviewed complete
-[quartics in888 or917 unrestricted integers](PROPOSAL_REVIEW_QUARTICS407888.md).
-The888-variable point has10,156 terms and height2,445,790,974,704; the917
-point has6,986 terms and height63,906,036. Its407-natural-variable parent
-has8,420 terms and height83,843,774. The
-[self-bounding factorial composition](candidates/projected-factorial-radius/README.md)
-now lowers the natural count to399 with8,286 terms and height83,843,274.
-Its integer conversion is being checked separately. The earlier
-[1,190-integer quartic](candidates/synchronized-signed-projections/README.md),
-with26,411 terms and height83,900,628, remains preserved.
-Its [synchronized natural parent](PROPOSAL_REVIEW_SYNCHRONIZED_CERTIFICATES.md)
-has522 variables. Its certified1,224-integer parent and the signed-projection
-alternatives are preserved as reproducible historical checkpoints. One global Pell frame, a common
-binomial radix and actual-row sign certificates improve the earlier
-27,916/8,619/6,604-integer checkpoints. The separate
-[batched review](reviews/batched-direct-peer.md) validates the shared-offset
-and signed-projection route at1,690 integers. These equations use ordinary
-literal coefficients and are independent of K215 and Jones. Separate
-ordinary proofs, full incoming replays and exact normal/optimized candidate
-checks pass. Signed restoration preserves every guard before recovering
-the original natural domain. Internal formalization remains open and Lean
+The direct C222 route now supplies complete
+[integer quartics in862/863/865 variables](candidates/projected-radius-integers/README.md),
+with11,245/9,909/9,814 terms and common height2,445,790,974,704. Its
+891-integer companion has6,797 terms and lower height63,905,891. Fresh
+actual-row sign certificates precede any semantic interpretation, and
+reverse signed restoration preserves every guard. The
+[natural factorial-radius family](candidates/projected-factorial-radius/README.md)
+now reaches399 variables,8,286 terms and height83,843,274, with complete
+support/height alternatives. All are exact quartics with ordinary literal
+coefficients, independent of K215 and Jones.
+
+The [407/888/917 review](PROPOSAL_REVIEW_QUARTICS407888.md),
+[1,190-integer projection](candidates/synchronized-signed-projections/README.md)
+and earlier synchronized/batched families remain reproducible checkpoints.
+Full ordinary proofs, normal/optimized finite replays and independent root
+reviews distinguish the new arithmetic transformations from their named
+C222/refutation calibration. Internal formalization remains open and Lean
 remains paused.
 
 The [two parity-family reviews](PROPOSAL_REVIEW_PARITY_FAMILIES.md) add

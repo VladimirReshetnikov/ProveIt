@@ -377,3 +377,12 @@ the product formula is used. All six literal quartics, raw exports and
 rational SOS restorations pass normal/optimized checks and root review.
 A new integer guard/projection family is being checked separately; its
 unsealed counts are not yet table entries. Lean remains paused.
+
+
+The projected-radius integer conversion now passes root ordinary review,
+both full candidate modes and deterministic comparisons:862/863/865-variable
+quartics plus the891-variable lower-height alternative. Its fresh sign
+certificate proves all667 original signs from161 guards before interpreting
+arithmetic. Complete reverse projection retains every guard. These improve
+the888/917 checkpoints as recorded in the comparison; no semantic sign
+relaxation beyond the literal row certificate is included in these counts.

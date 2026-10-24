@@ -35,8 +35,8 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | 917 | not optimized | 4 | Lower-height projection;6,986 terms, height63,906,036 |
-| Integers | 888 | not optimized | 4 | Guarded signed projection;10,156 terms, height2,445,790,974,704 |
+| Integers | 891 | not optimized | 4 | Lower-height projection;6,797 terms, height63,905,891 |
+| Integers | 862 / 863 / 865 | not optimized | 4 | Actual-row guards and signed projection;11,245 /9,909 /9,814 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
 The nine-variable953/999,518 point improves both operations and degree over
@@ -387,3 +387,14 @@ the exact displayed hashes and preserves the earlier13-positive90/51 link.
 Three fewer unknowns is the selected improvement; higher degree and33
 more operations are explicit costs. No global minimum or completed Lean/
 internal-ZFC theorem is implied by this display choice.
+
+
+The [projected-radius integer companions](candidates/projected-radius-integers/README.md)
+now freeze862/863/865-variable quartics at height2445790974704 and a
+891-variable lower-height point at63905891. Fresh161-seed/506-derived
+actual-row sign proofs precede arithmetic interpretation; reverse signed
+restoration recovers every guard before natural semantics. All four complete
+coefficient tables, both checker/build modes and root's ordinary review pass.
+The prior888/917 and1190 checkpoints remain preserved. Further semantic
+sign relaxations and lower-height retention are under separate research;
+no unmaterialized count is promoted.
