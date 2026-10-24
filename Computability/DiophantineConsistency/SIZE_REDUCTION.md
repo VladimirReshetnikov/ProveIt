@@ -22,7 +22,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
 | Positive integers | 10 | 105 | 408 | Symmetric three-root norm and quadratic main-Pell projection |
-| Positive integers | 9 | 419 / 427 | 1,472,168 / 1,626,248 | Position-zero normalization; original31 / smaller compact54 tuples |
+| Positive integers | 9 | 414 / 422 | 1,355,142 / 1,497,238 | Main folding into first norm; original31 / smaller compact54 tuples |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Positive integers | 9 | 722 | 1,158,228 | Collected J,D radical evaluator and identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
@@ -378,3 +378,18 @@ whole payloads/parent inventory and final normal/optimized checks pass.
 Both degrees are halved; cost falls by63 and61 operations. Canonical
 10-positive105/408 PDF/TeX remains the lower-variable/operation tradeoff;
 Lean stays paused.
+
+
+The [nine-positive folded-saturation equations](research/nine-folded-saturation/README.md)
+now reach414 operations/degree1,355,142 on the full original31 tuple and
+422/1,497,238 on compact54-sharp. Saturating the strong norm with the
+first Pell radicand allows a two-root equation; coprimality recovers both
+squares, then main-Pell folding recovers C=psi_A(B1). Positivity is proved
+before extraction, and finite matrix periods construct positive i,j,n.
+Both directions retain the exact source/binomial boundary and whole fixed
+tuples. Root read the full ordinary proof/checker and verified every
+retained source node, every local algebraic cut, centered identity and
+actual-coefficient homogeneous witness in both Python modes; both complete
+rebuilds pass and all packet seals are checked. Both cost and degree improve
+the matched419/427 parents. Lower-degree higher-cost alternatives remain
+separate, and canonical10-positive105/408 PDF/TeX is unchanged. Lean is paused.

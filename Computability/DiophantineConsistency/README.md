@@ -553,3 +553,18 @@ whole payloads/parent inventory and final normal/optimized checks pass.
 Both degrees are halved; cost falls by63 and61 operations. Canonical
 10-positive105/408 PDF/TeX remains the lower-variable/operation tradeoff;
 Lean stays paused.
+
+
+The [nine-positive folded-saturation equations](research/nine-folded-saturation/README.md)
+now reach414 operations/degree1,355,142 on the full original31 tuple and
+422/1,497,238 on compact54-sharp. Saturating the strong norm with the
+first Pell radicand allows a two-root equation; coprimality recovers both
+squares, then main-Pell folding recovers C=psi_A(B1). Positivity is proved
+before extraction, and finite matrix periods construct positive i,j,n.
+Both directions retain the exact source/binomial boundary and whole fixed
+tuples. Root read the full ordinary proof/checker and verified every
+retained source node, every local algebraic cut, centered identity and
+actual-coefficient homogeneous witness in both Python modes; both complete
+rebuilds pass and all packet seals are checked. Both cost and degree improve
+the matched419/427 parents. Lower-degree higher-cost alternatives remain
+separate, and canonical10-positive105/408 PDF/TeX is unchanged. Lean is paused.
