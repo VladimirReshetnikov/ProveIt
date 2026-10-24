@@ -43,6 +43,8 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
+| Integers | **517** | not optimized | **4** | Round14 derived factorial carrier; 310 rows, 6,774 terms, height 3,904,267 |
+| Integers | 519 | not optimized | 4 | Round14 lower-height alternative; 321 rows, 6,253 terms, height 411,060 |
 | Integers | 557 | not optimized | 4 | Ten output squares, 56 guards, CSE/default projection; 6,937 terms, height 2,445,790,974,704 |
 | Integers | 577 / 576 | not optimized | 4 | Existing-square 63-guard CSE projections; 5,754 / 5,818 terms, heights 964,213 / 45,769,613 |
 | Integers | 787 / 657 / 599 / 584 | not optimized | 4 | Existing-square 63-guard lower-height CSE projections; heights 4,750 / 737,653 / 737,653 / 938,261 |
@@ -1523,3 +1525,28 @@ See the [root acceptance](reviews/shared-binomial-digit-product-root-peer.md).
 No projected improvement is predicted: the measured default remains the
 557-variable quartic pending a separate full compiler packet. The canonical
 92/283 page and paused Lean work are unchanged.
+
+## Reviewed Round14 direct quartics: 517 and 519 integer variables
+
+The [ordinary review](research/intake-45b399ec51/ROUND14_REVIEW.md)
+approves the new factorial/carrier architecture and signed-Pell proof
+relative to the named inherited C222/refutation contracts. Complete
+[scoped reproduction](research/round14-direct-reproduction/README.md)
+and fresh root normal/optimized runs rebuild all 34 distinct endpoint
+artifacts exactly, including full quartics, signed inverses and integral
+translations. The independent static collector rejects twelve actual
+data corruptions. See the [root acceptance](reviews/round14-direct-root-peer.md).
+
+The new points are **517 unrestricted integer unknowns, 310 rows, 6,774
+quartic terms, height 3,904,267**, and **519 unknowns, 321 rows, 6,253
+terms, height 411,060**. Both have exact degree four. All earlier complete
+families are preserved. The architecture generators themselves were not
+replayed; their frozen raw interfaces and ordinary semantics were reviewed
+separately. The unrelated norm branch and Lean were not executed.
+
+The eight newly unpacked manuscript releases now occupy111 through118
+under con-zfc-diophantine-forms. Exact historical ZIPs remain readable
+from the pinned Git arrival commit; selected adapters authenticate their
+whole bytes without restoring them into docs/incoming. This relocation
+does not itself approve any other incoming mathematical claims. The
+canonical ten-positive92/283 PDF and TeX remain unchanged.

@@ -1420,3 +1420,28 @@ See the [root acceptance](reviews/shared-binomial-digit-product-root-peer.md).
 No projected improvement is predicted: the measured default remains the
 557-variable quartic pending a separate full compiler packet. The canonical
 92/283 page and paused Lean work are unchanged.
+
+## Reviewed Round14 direct quartics: 517 and 519 integer variables
+
+The [ordinary review](research/intake-45b399ec51/ROUND14_REVIEW.md)
+approves the new factorial/carrier architecture and signed-Pell proof
+relative to the named inherited C222/refutation contracts. Complete
+[scoped reproduction](research/round14-direct-reproduction/README.md)
+and fresh root normal/optimized runs rebuild all 34 distinct endpoint
+artifacts exactly, including full quartics, signed inverses and integral
+translations. The independent static collector rejects twelve actual
+data corruptions. See the [root acceptance](reviews/round14-direct-root-peer.md).
+
+The new points are **517 unrestricted integer unknowns, 310 rows, 6,774
+quartic terms, height 3,904,267**, and **519 unknowns, 321 rows, 6,253
+terms, height 411,060**. Both have exact degree four. All earlier complete
+families are preserved. The architecture generators themselves were not
+replayed; their frozen raw interfaces and ordinary semantics were reviewed
+separately. The unrelated norm branch and Lean were not executed.
+
+The eight newly unpacked manuscript releases now occupy111 through118
+under con-zfc-diophantine-forms. Exact historical ZIPs remain readable
+from the pinned Git arrival commit; selected adapters authenticate their
+whole bytes without restoring them into docs/incoming. This relocation
+does not itself approve any other incoming mathematical claims. The
+canonical ten-positive92/283 PDF and TeX remain unchanged.
