@@ -915,3 +915,15 @@ checker/rebuild replays passed; see the
 [root review](reviews/paired-guard-profile-root-peer.md). A product wire
 produces the same projected quartics. No variable saving is inferred merely
 from guard count. The canonical PDF and Lean sources remain unchanged.
+
+## Reflected auxiliary parameter improves the nine-positive family
+
+The complete [reflected-nine packet](research/nine-folded-reflected-parameter/README.md)
+uses G=F(A+C+1)-A. It stays positive before margin recovery, is1 modulo C
+and -A modulo F. Signed Pell folding gives the same soundness rank; the
+actual odd completeness index removes the reflection sign. The original
+and compact whole tuples now have408/1,191,570 and416/1,316,546
+operations/degree, saving one operation and degree2. Root ordinary review
+and all four normal/optimized checker/rebuild replays passed; see the
+[root review](reviews/nine-reflected-root-peer.md). All source bindings and
+the canonical page are preserved; Lean remains paused.
