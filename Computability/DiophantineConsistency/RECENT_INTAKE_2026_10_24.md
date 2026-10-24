@@ -377,3 +377,18 @@ normal/optimized page peers, renderer replays, author reconstructions and
 27 closed seals. The full rendered page was visually checked. All prior
 pages remain preserved; [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
 binds the exact canonical PDF, TeX and polynomial. Lean remains paused.
+
+## Complete78-guard compact quartics accepted
+
+The [new compact family](candidates/projected-radius-comparison-base/README.md)
+has901/642/616/614/613 integer unknowns, all at exact degree4. The613
+profile has375 rows,10,013 terms and coefficient height2,445,790,974,704;
+the642 profile has5,565 terms at height63,905,891. Each saves three
+unknowns, one row and15 terms at unchanged height against its matching
+79-guard predecessor. The [root review](reviews/comparison-base-quartics-root-peer.md)
+checks every full coefficient collection and inverse. Complete projection
+restoration precedes the signed-B theorem and62-coordinate comparison lift;
+all78 guard values stay fixed, while three fresh witnesses guard NEWq4
+in literal904. Its21-sign theorem then reaches967. All four root
+normal/optimized checker/rebuild replays, nested complete source checks
+and34 closed seals pass. The canonical101/368 page and Lean remain unchanged.

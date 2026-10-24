@@ -41,10 +41,10 @@ not establish the size of a complete consistency equation.
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | 645 | not optimized | 4 | Main-root/modulus guard reduction, lower-height projection;5,580 terms, height63,905,891 |
+| Integers | 642 | not optimized | 4 | Comparison-base lift, lower-height projection;5,565 terms, height63,905,891 |
 | Integers | 1,496 / 849 | not optimized | 4 | Retained-wire79-guard equations;4,995 /3,827 terms, heights427 /4,750 |
 | Integers | 704 / 640 / 626 | not optimized | 4 | Retained-wire79-guard projections;5,590 /8,940 /8,904 terms, heights737,653 /737,653 /938,261 |
-| Integers | 616 / 617 / 619 | not optimized | 4 | Main-root/modulus sign recovery and private sign orbits;10,028 /8,692 /8,597 terms, height2,445,790,974,704 |
+| Integers | 613 / 614 / 616 | not optimized | 4 | Signed comparison-base lift and private sign orbits;10,013 /8,677 /8,582 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
 Operations mean live binary `+`, `-`, and `*`, with squares and fixed-scalar
@@ -622,3 +622,18 @@ normal/optimized page peers, renderer replays, author reconstructions and
 27 closed seals. The full rendered page was visually checked. All prior
 pages remain preserved; [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
 binds the exact canonical PDF, TeX and polynomial. Lean remains paused.
+
+## Complete78-guard compact quartics accepted
+
+The [new compact family](candidates/projected-radius-comparison-base/README.md)
+has901/642/616/614/613 integer unknowns, all at exact degree4. The613
+profile has375 rows,10,013 terms and coefficient height2,445,790,974,704;
+the642 profile has5,565 terms at height63,905,891. Each saves three
+unknowns, one row and15 terms at unchanged height against its matching
+79-guard predecessor. The [root review](reviews/comparison-base-quartics-root-peer.md)
+checks every full coefficient collection and inverse. Complete projection
+restoration precedes the signed-B theorem and62-coordinate comparison lift;
+all78 guard values stay fixed, while three fresh witnesses guard NEWq4
+in literal904. Its21-sign theorem then reaches967. All four root
+normal/optimized checker/rebuild replays, nested complete source checks
+and34 closed seals pass. The canonical101/368 page and Lean remain unchanged.
