@@ -97,8 +97,11 @@ zero tests and conditionals, including nil and found-zero behavior.
 Wave-ten packages68–75 have now been reviewed; all eight full normal release
 replays pass. They add38-integer quartics, an11-positive degree325/113-operation
 equation, and a478-operation nine-positive equation of degree1,379,730.
-The443-operation compact54-sharp candidate remains the operation target in
-the nine-positive branch. See [the combined wave-ten review](PROPOSAL_REVIEW_WAVE10.md)
+An exact shared-product rewrite now reduces the compact54-sharp candidate
+from443 to440 operations, retaining degree1,845,940 and every coefficient;
+see [the new candidate](candidates/gap2082-shared-products/README.md).
+This is the current operation target in the nine-positive branch.
+See [the combined wave-ten review](PROPOSAL_REVIEW_WAVE10.md)
 for the domain-preserving comparison, coefficient costs and proof boundaries.
 
 Wave-nine placement `a2cd79b912` has now been reviewed. All eight full normal

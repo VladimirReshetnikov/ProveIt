@@ -19,7 +19,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 99 / 100 / 102 | 164 / 110 / 82 | Current degree/cost tradeoffs from packages74/69 |
 | Positive integers | 11 | 113 | 325 | Three-root transfer, package70 |
-| Positive integers | 9 | 443 | 1,845,940 | Current low-operation nine-variable target |
+| Positive integers | 9 | 440 | 1,845,940 | Shared-product reduction of the443-operation target |
 | Positive integers | 9 | 478 | 1,379,730 | Lower-degree alternative, package71 |
 | Integers | 10 | 481 | 1,576,864 | Free-Lucas finalizer, package68 |
 | Integers | 38 | not optimized | 4 | Cone/determinant alternatives, packages69/71 |
@@ -32,7 +32,17 @@ complete frontier or a global optimality claim.
 
 ## Work now underway
 
-1. Optimize the literal 443-operation circuit, preserving its exact
+The first completed reduction is
+[`gap2082-shared-products`](candidates/gap2082-shared-products/README.md):
+sharing `M*U` between `P,A`, sharing `C*D` between `E,Lambda`, and reusing
+the already computed `R+1` saves three operations. Exact local integer
+polynomial identities plus a complete structural gate remap prove that
+the440/447 positive/natural circuits equal their443/450 parents.
+Coefficients and named values are unchanged. Both normal and optimized
+Python replays check the deterministic artifacts, topology, liveness,
+actual-coefficient diagnostics and an identity-corruption control.
+
+1. Further optimize the literal440-operation circuit, preserving its exact
    polynomial. Search for shared powers and algebraic rearrangements that
    remove live gates, with local exact identities and independent modular
    evaluation/topology checks.

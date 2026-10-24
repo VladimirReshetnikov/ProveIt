@@ -7,6 +7,12 @@ The active goal continues with equation-size and complexity reduction;
 see [SIZE_REDUCTION.md](SIZE_REDUCTION.md). The Lean statuses below record
 completed checkpoints, rather than instructions to continue formalization.
 
+The first size-only result is a440-operation nine-positive circuit, down
+from443, with the exact same polynomial and degree1,845,940; the natural
+translation uses447 operations. Shared products and rank cancellation are
+checked by exact local ring identities and a complete gate remap. See
+[`gap2082-shared-products`](candidates/gap2082-shared-products/README.md).
+
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),
 at the repository owner's request. Live catalogue/intake/research links
