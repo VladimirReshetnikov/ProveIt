@@ -979,3 +979,20 @@ Projected quartic savings remain to be measured from complete equations
 and certificates. The current best checked direct quartic still has
 569 integer unknowns. The canonical compact page is unchanged and Lean
 remains paused.
+
+## Eight new proposal archives at 45b399ec51
+
+The [static intake](research/intake-45b399ec51/TRIAGE.md) authenticates all
+eight archives, 1,693 members and 237 statically indexed Python files.
+It records exact read scopes and distinguishes delivered claims from
+accepted results. No incoming program was executed for this checkpoint.
+An independent root replay verifies every member hash and the AST index.
+
+The most promising new claims are ten-positive 92/283 and 93/278 saturated
+Pell equations, a ten-positive 96/266 coprime-fusion equation, and direct
+quartics with 517 or 519 integer variables. Complete mathematical and
+code reviews are in progress. The current page and accepted comparison
+frontier are unchanged by intake alone. New shared-sum, quotient-frame
+and transport-majorant mechanisms are recorded as separate research leads.
+Lean remains paused; successful substantial compact improvements will
+replace the canonical PDF and its standalone TeX after full verification.
