@@ -79,11 +79,12 @@ has22 unknowns, degree14 and119 operations. Its complete integer zero set
 is carried bijectively to the parent by an explicit polynomial shear.
 
 The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records
-[tight main folding](research/nine-folded-saturation-tight/README.md) nine-positive
-409/1,191,572 and compact54 417/1,316,548 forms, plus a lower-degree
+[shared odd-rank](research/nine-folded-shared-odd-rank/README.md) nine-positive
+405/1,191,570 and compact54 413/1,316,546 forms, plus a lower-degree
 [position-zero](candidates/position-zero-norm-sharing/README.md)1,056/997,810 choice. The earlier953/999,518 remains a different cost option.
-The [quadratic ten-positive equation](candidates/ten-positive-quadratic-projection-shared/README.md)
-now reaches99/368 with a [zero-offset scaled base and shared muY](candidates/ten-positive-zero-offset/README.md).
+The [expanded-transport ten-positive equations](research/ten-positive-expanded-transport/README.md)
+reach98/368 with a zero-offset scaled base and shared muY, or103/340
+with a direct positive main-base input.
 Its strong and auxiliary Pell equations recover the
 omitted main root; a strict bound on the entire projection product excludes
 extra branches. The former122/816 evaluator remains frozen;
@@ -1157,3 +1158,21 @@ K-bound obstruction, so no one-gate compiler improvement is assumed.
 Natural395/394 and other advertised endpoint tradeoffs await their own full
 ordinary/literal calibration review. The current measured601-integer family
 and98/368 ten-positive evaluator are unchanged; Lean remains paused.
+
+## Replaying sealed checks after incoming archive placement
+
+The source76–110 placement removed old incoming ZIP paths. The separate
+[compatibility runner](research/historical-archives-compat/README.md) supplies
+35 exact hash-checked historical ZIPs temporarily from pinned Git objects,
+runs an argv command, then removes only unchanged files it created. Existing
+paths are preserved and concurrent wrapper lifetimes are serialized. This
+keeps all sealed proof/checker bytes unchanged. For example:
+
+```sh
+python -B Computability/DiophantineConsistency/tools/with_historical_archives.py -- python -B Computability/DiophantineConsistency/research/encoded-index-sign-profile/check.py --output /tmp/encoded74-check.json
+```
+
+Root read the complete wrapper and replayed both modes of all10 integrity
+controls; the frozen601 normal/optimized receipt bytes also match under the
+runner. See the [root review](reviews/historical-archives-compat-root-peer.md).
+This changes reproduction only, with no equation or Lean change.

@@ -1132,3 +1132,21 @@ K-bound obstruction, so no one-gate compiler improvement is assumed.
 Natural395/394 and other advertised endpoint tradeoffs await their own full
 ordinary/literal calibration review. The current measured601-integer family
 and98/368 ten-positive evaluator are unchanged; Lean remains paused.
+
+## Replaying sealed checks after incoming archive placement
+
+The source76–110 placement removed old incoming ZIP paths. The separate
+[compatibility runner](research/historical-archives-compat/README.md) supplies
+35 exact hash-checked historical ZIPs temporarily from pinned Git objects,
+runs an argv command, then removes only unchanged files it created. Existing
+paths are preserved and concurrent wrapper lifetimes are serialized. This
+keeps all sealed proof/checker bytes unchanged. For example:
+
+```sh
+python -B Computability/DiophantineConsistency/tools/with_historical_archives.py -- python -B Computability/DiophantineConsistency/research/encoded-index-sign-profile/check.py --output /tmp/encoded74-check.json
+```
+
+Root read the complete wrapper and replayed both modes of all10 integrity
+controls; the frozen601 normal/optimized receipt bytes also match under the
+runner. See the [root review](reviews/historical-archives-compat-root-peer.md).
+This changes reproduction only, with no equation or Lean change.
