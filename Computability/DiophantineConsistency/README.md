@@ -905,3 +905,18 @@ seals pass. Complete coefficient payloads, all99 live definitions and the
 attained degree368 leading component are bound. This improves101/368 by
 two operations. The complete canonical101/368 PDF/TeX is preserved while
 minor presentation updates are batched, as requested. Lean stays paused.
+
+## Guard-exchange profile finds no benefit in the tested configurations
+
+The [paired coefficient profile](research/bootstrap-guard-exchange-profile/README.md)
+tests both compact/raw sources at five support caps, keeping every setting
+and source coefficient except the guarded value fixed within each pair.
+All20 profiles in each root normal/optimized replay reproduce the complete
+receipts. Integer substitutions verify and every quartic is independently
+expanded. The [root review](reviews/bootstrap-profile-root-peer.md) records
+unchanged variable/row/support/height metrics and one added term in each
+projected exchange. The accepted guard placement is retained. An unrelated
+raw baseline order gives a possible613-variable/9661-term point at the
+same high coefficient height; a full separate package is under review.
+No new accepted frontier follows from this research measurement alone.
+Canonical101/368 PDF/TeX and paused Lean remain unchanged.
