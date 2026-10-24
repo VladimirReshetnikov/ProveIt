@@ -1100,3 +1100,15 @@ and595/8,232/45,769,613 (variables/terms/height). The594-variable predecessor
 has69 fewer terms and is preserved. This is the direct quartic family;
 other domains and compact norm equations remain separate tradeoffs.
 The canonical ten-positive page is unchanged and Lean remains paused.
+
+
+## Mixed-radix seed: complete-recipe comparison is negative
+
+The [closed mixed-radix experiment](research/mixed-radix-bfs-seed/README.md)
+saves221–233 seed bits and37–39 base62 symbols, while its complete printed
+recipes grow by26–35 nonwhite characters after paying for the product and
+halt decoder. Root read the full proof/renderer and matched both full
+render/reconstruction receipts; every action, tile and coefficient byte
+remains exact. See the [root review](reviews/mixed-radix-seed-root-review.md).
+All three standalone PDF/TeX siblings are preserved. The canonical page
+remains the better tested display; this does not rule out other decoders.

@@ -1,0 +1,168 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=.38in]{geometry}
+\usepackage{amsmath,amssymb,multicol}
+\pdfinfoomitdate=1\pdftrailerid{}
+\pagestyle{empty}\setlength{\parindent}{0pt}\setlength{\parskip}{2pt}
+\setlength{\columnsep}{13pt}\setlength{\jot}{0pt}
+\setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{3pt}
+\let\bigsum\sum\renewcommand{\sum}{\bigsum\nolimits}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\begin{document}
+\begin{center}
+{\large\bfseries A complete ten-variable consistency equation}\\[-1pt]
+{\small Strictly positive integer unknowns; exact degree 368; a 101-operation evaluator.}
+\end{center}\vspace{-8pt}
+\begin{multicols}{2}
+\fontsize{9}{9.5}\selectfont
+The only unknowns are
+\[
+J,F,\alpha,i,T,w,Y,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+All other symbols in the equation are polynomial abbreviations:
+\[
+\begin{gathered}
+q_-=\beta J,\quad q=q_-+1,\\
+C=q-F-\alpha,\\
+X=wq,\quad k=\eta+\zeta,\quad c=kY+\eta,\quad a=XY+Y,\\
+\mu=q^2+1,\quad A=\mu(a+2),\quad H=4A-1,\\
+\Delta=A(A+2),\quad I=ic^2,\\
+V_0=X(\mu Y)^2,\quad\ell=V_0k,\quad D_\tau=\ell(\ell+k)+1,\\
+R=[q_-(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+e=k-R-1,\quad B_t=(K+w)C-F,\\
+D_f=1+\Delta I^2,\quad Q=\Delta^2I^2,\quad\delta=Q-1,\\
+T'=T+\alpha,\quad b'=cT'-R,\quad V=D_fb'-c,\\
+D_y=QV^2-1,\quad K_2=X(3c-2X)+2,\\
+L=HI+b',\quad W=1+q_-L,\\
+P_1=q^3q_-,\quad M=P_1\mu^2H,\\
+Z=P_1\mu^2[H(n+V)+K_2]\\
+\qquad+H[\mu^2(q_-Y-q^3WB_t)-P_1e],\\
+S=\delta Z^2,\quad A_\tau=9\delta M^2D_\tau,\quad A_f=\delta M^2D_f,\\
+A_y=M^2D_y,\quad\Sigma_1=S+A_y,\quad\Sigma_2=A_\tau+A_f,\\
+P=\Sigma_1-\Sigma_2,\quad U=SA_y,\quad V_N=A_\tau A_f,\\
+E=P^2-4(U+V_N).
+\end{gathered}
+\]
+The single equation is
+\[
+\boxed{E^2-64UV_N=0.}
+\]
+
+\textbf{The four fixed integers.}
+Every index, set, sum, product and floor below defines a constant, not
+another unknown. Put
+\[
+\rho=2^{67},\quad B=\rho^{8807},\quad\beta=B-1,\quad
+G_m(x)=\sum_{j=0}^{m-1}x^j.
+\]
+Define
+\[
+\begin{split}
+\mathcal E={}&\rg0{942}\cup\rg{983}{992}\cup\rg{1003}{1011}\\
+&\cup\rg{1013}{1031}\cup\{1063,1064,1095,2195,3296\}.
+\end{split}
+\]
+Then
+\begin{align*}
+M_C={}&B-1-\sum_{e\in\mathcal E\setminus\{1\}}\rho^e-2\rho^{1063},\\
+M_F={}&B-1+4+(2^{51}-2)(\rho^{4393}+\rho^{5495})\\
+&+\rho^{1013}G_{10}(\rho)+\rho^{1065}G_9(\rho)
+  +\rho^{2195}+\rho^{3296}\\
+&+(2^{65}-1)\rho^{8792}G_{13}(\rho)+(2^{19}-1)\rho^{8805},\\
+K={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}+\rho^{8849}\\
+&+(\rho^{4393}+\rho^{5495})\Phi(1/\rho),
+\end{align*}
+where
+\[
+\begin{split}
+\Phi(x)={}&(1+2^{51})G_{943}(x)
+ -2^{10}\sum_{t\in\mathcal T}v(t)x^{\varrho(t)}\\
+&+\sum_{(b,e,m)\in\mathcal C}2^b x^e G_m(2x),\\
+\mathcal C={}&\{(10,1023,8),(18,1013,9),(27,1003,8),\\
+&(35,983,9),(44,1031,1),(45,1022,1),(46,1011,1),\\
+&(47,992,1),(48,1095,1),(49,2195,1),(50,3296,1)\}.
+\end{split}
+\]
+The rational intermediate in K cancels exactly; all four results are positive integers.
+
+\textbf{The 943 fixed tiles and their ranks.}
+Use the actions $u_j,v_j,d_j$ decoded below. Let
+\[
+\begin{gathered}
+h(q,b)=2(q+1)+b,\quad
+\mathcal R=\{u_j:d_j=1,\ 0\le j<430\},\\
+\mathcal L=\{u_j:d_j=0,\ 0\le j<430\},\\
+r_q=6+|\mathcal R\cap\rg0{q-1}|,\quad
+l_q=205+|\mathcal L\cap\rg0{q-1}|.
+\end{gathered}
+\]
+An interval ending at $-1$ is empty. The following union is $\mathcal T$;
+the index ranges in each row are fixed:
+\[
+\setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
+\text{range}&\text{tile }(w,n,e,s)\\\hline
+j=2q+b<430&((1-d_j)l_{u_j},h(q,b),d_jr_{u_j},v_j)\\
+b=0,1&(0,h(215,b),0,h(215,b)),\ (0,b,0,b)\\
+q\in\mathcal R,\ b=0,1&(r_q,b,0,h(q,b))\\
+q\in\mathcal L,\ b=0,1&(0,b,l_q,h(q,b))\\
+t\in\{0,1,432,433\}&(0,t,0,438)\\
+&(2,434,2,0),\ (2,435,3,1)\\
+&(3,436,4,h(u_0,0)),\ (4,436,4,0),\ (5,0,0,0)\\
+t=434,435,436&(1,438,1,t)\\
+a\in\{0,1,4\},\ b=0,1,2&(a,437,b,437)
+\end{array}
+\]
+Put $s_*=(2,435,3,1)$, $f_*=(5,0,0,0)$, and $\mathcal T'=\mathcal T\setminus\{s_*,f_*\}$.
+For $t=(w,n,e,s)$ set
+\[
+\begin{gathered}
+\kappa(t)=2^{30}w+2^{20}n+2^{10}e+s,\\
+v(t)=w+2^8n+2^{17}e+2^{25}s+127\,2^{34},\\
+\varrho(s_*)=0,\quad\varrho(f_*)=1,\\
+\varrho(t)=2+\sum_{z\in\mathcal T'}
+ \fl{\frac{2^{40}+\kappa(t)-\kappa(z)-1}{2^{40}}}
+ \quad(t\in\mathcal T').
+\end{gathered}
+\]
+
+\textbf{A closed decoder for the 430 actions.}
+Put $D_b(A,k)=\fl{A/b^k}\bmod b$, where
+$a\bmod b=a-b\fl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
+\[
+\begin{gathered}
+N=\mathcal A\bmod2^{636},\quad \mathcal S=\fl{\mathcal A/2^{636}},\\
+\nu_j=D_2(N,j),\quad \sigma_j=\sum_{k=0}^{j-1}\nu_k,\\
+P_j=\prod_{k=0}^{j-1}(\sigma_k+1)^{1-\nu_k}\quad(0\le j\le430),\\
+E_0=\fl{\mathcal S/P_{430}},\\
+m_q=D_2(N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14(1-m_q)+m_qD_{16}(E_0,\tau_q),\\
+u_j=\nu_j(1+\sigma_j)+(1-\nu_j)(\fl{\mathcal S/P_j}\bmod(\sigma_j+1))\ (j\ne125),\\
+u_{125}=215,\\
+v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
+\end{gathered}
+\]
+Empty sums are zero and empty products are one. Here
+$(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
+uses this actual first target, including its state renaming.
+
+\textbf{The integer $\mathcal A$.}
+The alphabet, in order of digit values $0,\ldots,61$, is
+{\fontsize{7.7}{8.2}\selectfont\ttfamily 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}.\par
+Concatenate the following 398 characters as digits $e_0,\ldots,e_{397}$;
+put $\mathcal A=\sum_{j=0}^{397}e_j62^{397-j}$.\par
+\begingroup\fontsize{7.7}{8.2}\selectfont\ttfamily
+7VJDM2pc5PQv484dFSsImHBWHFG011Xh6aVxoX4DUVVDfnJOgFDzkIjzuBFBsD\par
+6ojI1MLCnoBzx9PSxtmAr9B4vgq0kItyCweCx2KphsJOBE5A0lMrQFt0rG0lly\par
+zbaKqAVagZqTlh47o6yHGwHgis1lZTtdDxkEidgXS5U6eIDs2LgAwOLnp0yj4H\par
+1H0tLlEU47GzRvvzTrSUd6lFRnanMOvfJjMP9tJlOB0xosqTRkafy8CjiUTODm\par
+2FYK4Ynq8TkIBrl36Qf1k4BQ74LusvbPydWGZfIzSb5rnZqHpmPYMcYT10DXBX\par
+w7FY3lGy060dfNF7Nok3mqhAWueKJwy4GikXt7YqrZvQZPsREUWkdV4M18HiBR\par
+K71iIDsTBeOPk7Rx6ShG74L5uP\par
+\endgroup
+\normalfont\fontsize{7.7}{8.2}\selectfont
+The ordinary state/color-conjugacy, native and Pell arguments give
+unsolvability iff $\mathrm{Con}(\mathrm{ZFC})$.
+Native calibration and internal-ZFC formalization remain open in Lean.
+This page is a complete finite specification, not an unsolvability proof.
+\end{multicols}
+\end{document}
