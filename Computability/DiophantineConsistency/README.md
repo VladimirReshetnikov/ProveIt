@@ -40,6 +40,9 @@ operations with five additional degrees. All constants still fit on one
 Letter page in 9-point type; the [root review](reviews/one-page-uncentered89-root-peer.md)
 binds every actual printed formula, constant and coefficient to the accepted
 whole source. The canonical 92/283 page is retained while further gains are batched.
+The [direct-carrier sharing extension](research/saturated-direct-carrier-cse/README.md)
+also saves one multiplication in each of five complete direct variants,
+including96/258,97/254 and94/262; their entire polynomials are preserved.
 
 The preceding [ten-positive degree408 page](candidates/one-page-quadratic10/equation.pdf)
 is preserved with its [TeX](candidates/one-page-quadratic10/equation.tex),

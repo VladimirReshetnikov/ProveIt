@@ -1540,3 +1540,22 @@ payload files and110 peer bindings pass. See the
 [root acceptance](reviews/one-page-uncentered89-root-peer.md).
 The canonical92/283 PDF and TeX remain stable while further gains are batched;
 Lean remains paused.
+
+## One multiplication shared across all five direct variants
+
+The [complete direct-carrier packet](research/saturated-direct-carrier-cse/README.md)
+reuses the already live qbJ=q*(q-1) in P1=q³*qbJ and deletes its private q⁴
+gate. Every whole output polynomial is unchanged. Operation/degree profiles
+become97/258 and98/254 for the saturated upper/sharp routes,96/258 and97/254
+for reused-b, and94/262 for uncentered transport. All independent positive
+inputs, both whole native tuples and the complete global degree proofs transfer
+by the free polynomial identity and induction through every remaining row.
+
+Root read the entire proof and executable closure and independently replayed
+all six normal/optimized producer/checker/artifact commands. Every receipt
+exactly matches the author;36 complete malformed artifacts are rejected per
+mode. All old/new rows, sole consumers, coefficient bytes and leading-form
+records are bound. The restricted associative search has no global minimality
+claim. See the [root acceptance](reviews/saturated-direct-carrier-cse-root-peer.md).
+These minor gains are batched; the canonical92/283 PDF and TeX remain unchanged,
+and Lean remains paused.

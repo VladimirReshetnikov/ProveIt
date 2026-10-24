@@ -18,11 +18,11 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 9 | 405 / 413 | 1,191,570 / 1,316,546 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
-| Positive integers | 10 | 89 / 95 | 288 / 262 | Uncentered saturated b transport; fewer-operation tradeoff, canonical page retained |
-| Positive integers | 10 | 91 / 92 / 97 / 98 | 283 / 278 / 258 / 254 | Existing b transport; one-operation minor checkpoint, canonical page retained |
+| Positive integers | 10 | 89 / 94 | 288 / 262 | Uncentered b transport; complete89-operation comparison page, exact shared-carrier direct94 |
+| Positive integers | 10 | 91 / 92 / 96 / 97 | 283 / 278 / 258 / 254 | Existing b transport and exact shared direct carrier; canonical page retained |
 | Positive integers | 10 | **92** | **283** | Coprime saturated Pell product; complete canonical page and indexed constants |
 | Positive integers | 10 | 93 | 278 | Sharp saturated center; lower-degree tradeoff |
-| Positive integers | 10 | 98 / 99 | 258 / 254 | Direct positive X and upper/sharp saturated centers |
+| Positive integers | 10 | 97 / 98 | 258 / 254 | Direct positive X, shared carrier and upper/sharp saturated centers |
 | Positive integers | 10 | 97 | 368 | Existing-square transport weight; one-operation saving, higher degree |
 | Positive integers | 10 | 102 | 344 | Existing-square transport and direct positive X; operation/degree tradeoff |
 | Positive integers | 10 | 98 | 360 | Positive index weight, zero-offset base; preserved predecessor page |
@@ -86,9 +86,10 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
 The canonical [equation.pdf](equation.pdf) and standalone [TeX](equation.tex)
-now print the complete ten-positive101/368 equation, including every fixed
-constant. The preceding102/388 and all earlier pages remain preserved;
-see the [page review](reviews/short10-page-peer.md).
+now print the complete ten-positive92/283 equation, including every fixed
+constant. The separate89/288 comparison page and all earlier pages remain
+preserved; see the [current page proof](candidates/one-page-saturated10/README.md)
+and [comparison review](reviews/one-page-uncentered89-root-peer.md).
 
 The nine-variable953/999,518 point improves both operations and degree over
 the earlier1,073/1,103,950 radical form; the latter's smaller compact54
@@ -1648,3 +1649,22 @@ payload files and110 peer bindings pass. See the
 [root acceptance](reviews/one-page-uncentered89-root-peer.md).
 The canonical92/283 PDF and TeX remain stable while further gains are batched;
 Lean remains paused.
+
+## One multiplication shared across all five direct variants
+
+The [complete direct-carrier packet](research/saturated-direct-carrier-cse/README.md)
+reuses the already live qbJ=q*(q-1) in P1=q³*qbJ and deletes its private q⁴
+gate. Every whole output polynomial is unchanged. Operation/degree profiles
+become97/258 and98/254 for the saturated upper/sharp routes,96/258 and97/254
+for reused-b, and94/262 for uncentered transport. All independent positive
+inputs, both whole native tuples and the complete global degree proofs transfer
+by the free polynomial identity and induction through every remaining row.
+
+Root read the entire proof and executable closure and independently replayed
+all six normal/optimized producer/checker/artifact commands. Every receipt
+exactly matches the author;36 complete malformed artifacts are rejected per
+mode. All old/new rows, sole consumers, coefficient bytes and leading-form
+records are bound. The restricted associative search has no global minimality
+claim. See the [root acceptance](reviews/saturated-direct-carrier-cse-root-peer.md).
+These minor gains are batched; the canonical92/283 PDF and TeX remain unchanged,
+and Lean remains paused.
