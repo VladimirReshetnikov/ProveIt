@@ -70,6 +70,45 @@ session has since lowered the ten-positive kernel to 98 operations and
 degree 360 with the index weight L = kI + b, which also corrects the
 "degree floor" wording of the first note.)
 
+## 2a. Three facts that pin the target down
+
+Checked against the window and the compiler proofs after the first draft
+of this brief:
+
+1. The test word has to be the reduced residue F = (K_0 + w)·C mod (q−1).
+   The rotation factor w = 2^(R − dN) is astronomically large (R is of the
+   order of q^3 to q^4), so the unreduced product (K_0 + w)·C has no cell
+   structure; the reduction by q − 1 = B^N − 1 is what turns 2^R into a
+   rotation by h cells. The quotient t = ((K_0 + w)C − F)/(q−1) is therefore
+   unavoidable, and exactly one of F and t has to be a word-sized unknown.
+2. J cannot be replaced by a quotient. It multiplies the masks (M_C·J + 1,
+   M_F·J − 1) and the index term (M_C + qM_F)J inside R, so it must be an
+   integer register; quotients absorbed by the norm's sum variable never
+   re-enter other registers.
+3. The only bit test available is population saturation: a word whose bits
+   are tested must be a digit field of R, together with its complement.
+   Hence every window of the present type needs three source unknowns:
+   {J, C, F or t}.
+
+Two shortcuts fail for the same reasons. Dropping C's own mask test does
+not work: a stray bit of C outside the data positions is moved by the
+convolution kernels (shifts by 30, 62, 1100, 2201 and 4393 − e within a
+cell) to positions that are not tested, so it stays invisible unless C is
+itself a tested field. Avoiding the reduction modulo q − 1 by zero-padding
+the top rows does not work either: the temporal stride is the row width,
+which the compiler reads only from R modulo dN (the rank controller sets
+R ≡ d·width mod dN, so 2^R ≡ B^width mod q − 1), and every linear layout of
+a space-time diagram leaves one neighbour offset unbounded, so the stride
+is intrinsically a cyclic rotation and some word must carry its residue.
+
+So a one-word window cannot keep "F has no bits at the test positions"
+as its validity condition. It must make the tableau word C
+**self-certifying**: validity of the tiling has to be a population
+identity on C's own digit fields, with the neighbour comparisons (north
+against south of the temporal predecessor, east against west of the
+spatial neighbour, anchors) folded into C's encoding rather than into a
+derived word. Options 1–3 below are judged against this.
+
 ## 3. Where a redesign could act
 
 1. **Self-consistency instead of a test word.** Encode the run as C and
