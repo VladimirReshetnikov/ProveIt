@@ -21,6 +21,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
+| Positive integers | 10 | 89 / 95 | 288 / 262 | Uncentered saturated b transport; fewer-operation tradeoff, canonical page retained |
 | Positive integers | 10 | 91 / 92 / 97 / 98 | 283 / 278 / 258 / 254 | Existing b transport; one-operation minor checkpoint, canonical page retained |
 | Positive integers | 10 | **92** | **283** | Coprime saturated Pell product; complete canonical page and indexed constants |
 | Positive integers | 10 | 93 | 278 | Sharp saturated center; lower-degree tradeoff |
@@ -1417,3 +1418,23 @@ theorem. All coefficient/term alternatives and earlier equations remain
 preserved. The separate Round14 family reaches517/519 variables; this
 554 result is progress within the older source pipeline. The canonical
 92/283 PDF and TeX and paused Lean work are unchanged.
+
+## Removing the center gives 89/288 and 95/262 tradeoffs
+
+The [complete uncentered packet](research/ten-positive-uncentered-b-weight/README.md)
+uses **89 operations at exact degree288**, or95 at degree262 on the
+direct chart, with ten strictly positive unknowns. The already folded
+odd Pell index excludes the first two auxiliary possibilities; the fifth
+index forces a strong enough transport bound to omit Cg altogether.
+Positive completeness follows from the exact forward n_new=n_old+Cg
+shear; positivity of a reverse shear is not assumed.
+
+The global degree proof is a polynomial cancellation argument with a
+uniquely dominant final term and explicit nonzero highest coefficients.
+Independent full proof/code review and all six normal/optimized replays
+pass, covering every live gate, all four parent routes, both whole native
+tuples,10 source corruptions and28 malformed artifacts. See the
+[root acceptance](reviews/ten-uncentered-b-root-peer.md).
+These save operations with slightly higher degree than their centered
+parents. The canonical complete92/283 PDF and standalone TeX remain
+stable while further changes are batched. Lean remains paused.

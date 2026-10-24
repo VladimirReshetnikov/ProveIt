@@ -1,0 +1,13 @@
+# Acceptance of the uncentered saturated equations
+
+The complete ten-positive graphs have 89 operations at exact degree288 and95 operations at degree262. They remove the polynomial center correction from the reused-b equations. This is an operation/degree tradeoff, so the canonical92/283 PDF and TeX remain stable while minor alternatives are batched. Both actual upper/sharp source routes give identical new graphs, with all ten inputs and four coefficient ports live.
+
+Root read and independently checked the entire new ordinary proof. Folding gives c=psi_A(p) at an odd index and c>=3, hence c>=4Delta+3 before the transport sign. Together with b>c this gives V>4Q. The first and third auxiliary odd Pell indices are excluded; the fifth-index gap yields V>8Q² and b>4g. The sharper identity b-e=c(T+alpha)-k+1>0 bounds the normalized remainder independently of R. These inequalities rule out negative transport for every signed radical choice, including the direct X/q^4 term before q divides X is known. Every later rank, parity, denominator and whole-product projection step retains its required order.
+
+Positive completeness follows from the exact forward shear n_new=n_centered+Cg>0, with all other inputs fixed. The complete numerators and norms agree under that substitution. An arbitrary reverse shear need not preserve positivity and is not asserted. The alternate explicit canonical witness construction and direct q/q^4 scale identities are also retained.
+
+The global degree proof uses elementary polynomial cancellation: omega=fs-fy has uniquely dominant middle term in its complete centered identity, while -4fg*fy uniquely dominates the final norm. Root checked the entire leading forms and the nonzero selected coefficients -2^10*beta^152 and -2^10*beta^126. Exact rays supplement the global proof. This avoids a Laurent argument for these two degree claims.
+
+The [independent peer review](../research/ten-positive-uncentered-b-weight/PEER_REVIEW.md) covers the full proof, all new code, four complete route maps and both whole native tuples. Six fresh normal/optimized source/producer/artifact outputs match the author byte-for-byte. They check all184 gates through74 free interfaces, complete clearing/shear/direct identities and global forms,10 actual graph mutations and28 malformed artifacts, with four positive/write controls. Root authenticated all166 inherited pins,211 peer bindings, all46 payload members and all six exact receipt pairs. The whole source seal is e4fe2d2e3d502619cfda003341fd08b49efea408ccdd569d3a551c64dd8f7ac0.
+
+Earlier packets, both coherent calibrations and canonical files remain preserved. No internal object-ZFC proof artifact or consistency assertion is supplied. Lean remains paused.
