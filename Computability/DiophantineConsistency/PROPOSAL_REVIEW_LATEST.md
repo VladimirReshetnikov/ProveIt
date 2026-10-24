@@ -26,15 +26,15 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 10 | 471 | 1,245,324 | Round12 short guard; full replay and ordinary guard review |
 | Integers | 10 | **475 / 478 / 512** | 1,179,788 / 1,114,252 / 1,080,888 | Short guard combined with compact older shears |
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational norm and nonnegative guard finalizer |
-| Integers | 12 | 215 / 209 | 2,400 / 2,912 | Fixed-prime separation and short intersective carrier |
+| Integers | 12 | 208 / 202 | 2,400 / 2,912 | Fixed-prime separation with identical shared norms |
 | Integers | 13 | 184 | 1,072 | Trace recovery and identical shared-norm evaluator |
 | Integers | 14 | 137 / 148 | 792 / 414 | Root fusion and CRT/valuation composition |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated norm;204/128 improves344/131 |
 | Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue families and prime separation |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-gate checkpoint retained |
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
-| Nonnegative integers | 407 | not optimized | 4 | Projected source, low-digit radix and rational SOS contraction;8,420 terms |
-| Nonnegative integers | 410 / 573 / 690 | not optimized | 4 | Different term/height choices; all complete expanded polynomials |
+| Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
+| Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
 | Integers | 917 | not optimized | 4 | Lower-height projection;6,986 terms, height63,906,036 |
 | Integers | 888 | not optimized | 4 | Guarded signed projection;10,156 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
@@ -351,3 +351,21 @@ reviewed [502-natural factorial-radius sibling](candidates/synchronized-factoria
 is retained; composing that radius with the new radix is now underway.
 The3776/3671 and shared-Pell1873 arrivals remain queued as separate
 coefficient/support tradeoffs; no unreviewed point is counted here.
+
+
+The [valuation shared-norm packet](candidates/valuation-shared-norms/README.md)
+now freezes12-integer208/2400 and202/2912. Seven exact cut identities and
+an every-node proof preserve the entire polynomials. A separate graded-lex
+calculation over all six formal ports certifies the actual child leading
+terms and their nonzero beta-only specialization. Both full candidate
+modes and root's independent review pass.
+
+The [projected factorial-radius family](candidates/projected-factorial-radius/README.md)
+now reaches399 naturals/317 rows/8286 terms/height83843274, with complete
+402/403/453-variable alternatives. The summed radix bounds both factorial
+binomials even when the proposed t! output is initially zero. The paired
+factorial inequality supplies the strict remaining low-digit bound before
+the product formula is used. All six literal quartics, raw exports and
+rational SOS restorations pass normal/optimized checks and root review.
+A new integer guard/projection family is being checked separately; its
+unsealed counts are not yet table entries. Lean remains paused.

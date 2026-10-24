@@ -357,3 +357,21 @@ is also frozen and independently reviewed. Its further composition and the
 new valuation-circuit savings are underway. The ten-positive alternate
 one-page rendering is pending; the canonical13-positive90/51 page remains
 unchanged for now.
+
+
+The [valuation shared-norm packet](candidates/valuation-shared-norms/README.md)
+now freezes12-integer208/2400 and202/2912. Seven exact cut identities and
+an every-node proof preserve the entire polynomials. A separate graded-lex
+calculation over all six formal ports certifies the actual child leading
+terms and their nonzero beta-only specialization. Both full candidate
+modes and root's independent review pass.
+
+The [projected factorial-radius family](candidates/projected-factorial-radius/README.md)
+now reaches399 naturals/317 rows/8286 terms/height83843274, with complete
+402/403/453-variable alternatives. The summed radix bounds both factorial
+binomials even when the proposed t! output is initially zero. The paired
+factorial inequality supplies the strict remaining low-digit bound before
+the product formula is used. All six literal quartics, raw exports and
+rational SOS restorations pass normal/optimized checks and root review.
+A new integer guard/projection family is being checked separately; its
+unsealed counts are not yet table entries. Lean remains paused.

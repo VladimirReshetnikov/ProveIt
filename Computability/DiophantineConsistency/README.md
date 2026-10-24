@@ -76,8 +76,9 @@ The [scaled ten-positive equation](candidates/ten-positive-scaled-norm-shared/RE
 now reaches123/816; eleven-positive111/211 is a different tradeoff.
 Exact [shared norms](candidates/interpolation-shared-norms/README.md) give
 thirteen-integer184/1,072.
-[Fixed-prime separation](PROPOSAL_REVIEW_VALUATION_INTEGER12.md) lowers the
-twelve-integer interpolation choices to215/2,400 and209/2,912.
+[Fixed-prime separation](PROPOSAL_REVIEW_VALUATION_INTEGER12.md) and
+[identical shared norms](candidates/valuation-shared-norms/README.md) lower
+the twelve-integer choices to208/2,400 and202/2,912.
 [CRT/valuation composition](reviews/congruence-certificates-peer.md) adds
 fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The displayed90/51 page
@@ -87,7 +88,10 @@ The direct C222 route now supplies reviewed complete
 [quartics in888 or917 unrestricted integers](PROPOSAL_REVIEW_QUARTICS407888.md).
 The888-variable point has10,156 terms and height2,445,790,974,704; the917
 point has6,986 terms and height63,906,036. Its407-natural-variable parent
-has8,420 terms and height83,843,774. The earlier
+has8,420 terms and height83,843,774. The
+[self-bounding factorial composition](candidates/projected-factorial-radius/README.md)
+now lowers the natural count to399 with8,286 terms and height83,843,274.
+Its integer conversion is being checked separately. The earlier
 [1,190-integer quartic](candidates/synchronized-signed-projections/README.md),
 with26,411 terms and height83,900,628, remains preserved.
 Its [synchronized natural parent](PROPOSAL_REVIEW_SYNCHRONIZED_CERTIFICATES.md)
