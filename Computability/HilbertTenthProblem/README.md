@@ -15,8 +15,8 @@ universal Diophantine equations by James P. Jones and coauthors:
 
 **Fixed-input specializations for Con(ZFC)** (not formalized). The report
 [`con-zfc-diophantine-forms`](../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5–9
-(batches 221–225, thirty-seven packages).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–10
+(batches 221–226, forty-five packages).
 
 Every finished equation so far applies the native-window/Pell compiler
 below, with its input interface removed, to the blank run of the 215-state ZFC machine
@@ -31,16 +31,16 @@ compiler, provided it proves its own calibration; see the report's section
 
 As the packages state them:
 
-- nine positive unknowns in 444 operations, or at degree 1,494,006;
-- 10 unrestricted integers at degree 3,327,556, or in 490 operations, via a
+- nine positive unknowns in 444 operations, or at degree 1,379,730;
+- 10 unrestricted integers at degree 1,576,864 in 481 operations, via a
   cited 2026 preprint of Z.-W. Sun (not formalized, not checked at intake);
 - 13 unrestricted integers without that preprint, at degree 10,461,744;
-- eleven positive unknowns at degree 954 (the eleven-positive forms still
+- eleven positive unknowns at degree 325 (the eleven-positive forms still
   need independent review);
-- twelve positive unknowns at degree 118, and thirteen at degree 34;
-- fourteen positive unknowns at degree 26, and fifteen at degree 24;
+- twelve positive unknowns at degree 82, and thirteen at degree 28;
+- fourteen positive unknowns at degree 24, and fifteen at degree 24;
 - a fifteen-positive equation in 66 operations at degree 157;
-- a quartic in 41 unrestricted integers.
+- a quartic in 38 unrestricted integers.
 
 These are fixed-instance results, so the universal operation bounds stated
 below are unchanged. Neither the Diophantine bridge nor the compiler is
@@ -48,7 +48,7 @@ formalized. The Lean development proves MRDP and `Jones1982.nine_unknowns`,
 the existence of a nine-unknown representation without a degree bound.
 
 The report's Jones-route forms use `Jones1982.Nine.wset_iff_nine` (wave 5)
-or its ratio lemmas directly (waves 6–9), with `Jones1982.USys_of_mem`, for
+or its ratio lemmas directly (waves 6–10), with `Jones1982.USys_of_mem`, for
 a fixed parent system or quartic. None uses `nine_unknowns`, which fixes
 ν = 58. Their new arguments are unformalized, so the new polynomials are not
 themselves instances of a Lean theorem.
