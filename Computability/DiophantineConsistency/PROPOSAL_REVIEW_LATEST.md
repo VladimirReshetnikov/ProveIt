@@ -26,11 +26,12 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational norm and nonnegative guard finalizer |
 | Integers | 13 | 185 / 186 / 195 | 1,408 / 1,392 / 1,088 | Complete guard-first five-root fusion |
 | Integers | 14 | 137 / 148 / 150 / 156 / 163 | 792 / 748 / 696 / 664 / 652 | Root fusion and compact fixed-prime norm evaluators |
-| Integers | 15 | 131 | 344 | Root-fusion companion; newer parity point under review |
+| Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated norm;204/128 improves344/131 |
+| Integers | 16 | 115 / 119 | 160 / 112 | Distinct parity/residue families |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-gate checkpoint retained |
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
-| Nonnegative integers | 3,609 | not optimized | 4 | Prime-lift shared CRT;15,752 collected terms |
-| Nonnegative integers | 6,180 | not optimized | 4 | Retained-wire variant;coefficient height1,992 |
+| Nonnegative integers | 3,603 | not optimized | 4 | Shared CRT and beta majorant;15,670 collected terms |
+| Nonnegative integers | 6,179 | not optimized | 4 | Retained-wire beta-majorant variant;coefficient height1,992 |
 | Integers | 8,619 | not optimized | 4 | Prime-lift shared CRT with semantic-input guards;39,811 terms |
 
 The nine-variable953/999,518 point improves both operations and degree over
@@ -117,6 +118,15 @@ other source tuples remain separate comparisons.
   full prefix/tail substitutions, all six fixed tuples and attained
   degrees pass independent normal/optimized checks. The useful new
   fourteen-integer tradeoffs are652/163,664/156 and748/148.
+* [Both parity families](PROPOSAL_REVIEW_PARITY_FAMILIES.md) pass their
+  small-integer ordinary reviews and exact scoped replays. The first's
+  15/204/128 improves root-fusion15/344/131 and fixed-prime15/214/139;
+  its15/352/124 saves four operations at higher degree. The distinct
+  second archive gives16/112/119 by a modulus-four root reconstruction.
+  The first's16/160/115 remains a lower-operation alternative. The
+  second direct-quartic and integer20 components are outside this review;
+  the ordinary-only first driver and optimized component scopes are
+  reported precisely rather than conflated.
 * The [coordinate-family peer review](reviews/coordinate-family-peer.md)
   verifies the complete polynomial row/inverse transformations and exact
   leading forms. Twenty integer variables now reach degree18; this is a
@@ -171,12 +181,24 @@ all1,939 retained gate definitions and exact collected expansion pass in
 normal and optimized Python. The proof remains ordinary ZFC-formalizable
 mathematics; no new Lean or sealed object-ZFC derivation is claimed.
 
+The [literal beta-majorant refinement](candidates/shared-crt-beta-majorant/README.md)
+sets `H=E+F`. The actual bound circuit retains the beta denominator square
+`D²`, giving `H>=D²>=1` unconditionally over naturals. The separate
+endpoint row `y=M0+r0+2` then gives `H>=t` before applying the arithmetic
+and CRT theorems. Off the endpoint zero set that index inequality can
+fail; the checker includes an exact counterexample. The resulting
+quartics have3,603 natural variables/15,670 terms/height127,285,252, or
+6,179 variables/17,417 terms/height1,992. Both complete expansions,
+majorant path, affine restoration and normal/optimized rebuilds pass,
+with separate ordinary peer review. The frozen8,619-integer equation
+still uses its3,609-variable parent and remains a distinct checkpoint.
+
 ## Newer arrivals still being assessed
 
-The prime-separation archive and both differently named parity archives
-arriving in8b328dc180 ande2b2f16765 remain under small-equation review.
-They are distinct proposals, so the second parity ZIP is not substituted
-for the first. Preliminary counts are not promoted to the accepted table.
+The prime-separation archive arriving in8b328dc180 remains under
+small-equation review. Both differently named parity archives are reviewed
+above as distinct proposals. The second parity ZIP is not substituted
+for the first.
 The centered-compression dependency ZIP contains a byte-identical existing
 joint-guards archive rather than a new equation. Further shared-CRT bound
 and Pell power-certificate reductions are being checked as separate

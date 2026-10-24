@@ -72,7 +72,10 @@ complete ordinary alternative independent of K215, native coefficients
 and Jones. Its52-stage incoming replay and ordinary proof passed separate
 reviews. The newer [shared-direct construction](PROPOSAL_REVIEW_SHARED_CERTIFICATES_DIRECT.md)
 and [prime-power CRT lift](candidates/shared-crt-prime-lift/README.md)
-reduce the natural-variable count from16,036 to3,609. The complete
+reduce the natural-variable count from16,036 to3,609. Reusing the actual
+[beta majorant](candidates/shared-crt-beta-majorant/README.md) reduces it
+further to3,603; the endpoint supplies the needed index bound before CRT.
+The complete
 [integer companion](candidates/shared-crt-prime-lift/integer/README.md)
 has8,619 variables,39,811 monomials and coefficient height127,285,349,
 compared with27,916 variables in the original. Full coefficient files,
@@ -86,8 +89,11 @@ ordinary reviews and normal/optimized release replays. Exact
 save277 operations for five roots and67 for four without changing any
 polynomial. Useful fourteen-integer points include148/748,156/664 and
 163/652; the root-fusion thirteen-integer points remain cheaper than the
-fixed-prime counterparts. Both newer parity archives and prime separation
-remain under review. No global optimality claim is made.
+fixed-prime counterparts. Both newer [parity families](PROPOSAL_REVIEW_PARITY_FAMILIES.md)
+now pass small-integer ordinary reviews and scoped normal/optimized
+replays, adding fifteen-integer128/204 and124/352, and sixteen-integer
+119/112 and115/160. Prime separation remains under review. No global
+optimality claim is made.
 
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),

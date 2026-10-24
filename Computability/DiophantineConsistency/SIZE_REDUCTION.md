@@ -33,11 +33,13 @@ not establish the size of a complete consistency equation.
 | Integers | 19 | 109 | 88 | Reviewed joint projection; other tradeoffs retained |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-operation checkpoint retained |
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational-root norm tradeoff |
+| Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated three-root norm |
+| Integers | 16 | 115 / 119 | 160 / 112 | Parity/residue-controlled two-root norm |
 | Integers | 13 | 185 / 186 / 195 | 1,408 / 1,392 / 1,088 | Guard-first five-root fusion |
 | Integers | 14 | 137 / 148 / 150 / 156 / 163 | 792 / 748 / 696 / 664 / 652 | Root fusion and compact fixed-prime norm evaluator |
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
-| Nonnegative integers | 3,609 | not optimized | 4 | Direct shared CRT;15,752 terms, coefficient height127,285,349 |
-| Nonnegative integers | 6,180 | not optimized | 4 | Retained-wire direct variant; coefficient height1,992 |
+| Nonnegative integers | 3,603 | not optimized | 4 | Direct shared CRT and beta majorant;15,670 terms, height127,285,252 |
+| Nonnegative integers | 6,179 | not optimized | 4 | Retained-wire beta-majorant variant; coefficient height1,992 |
 | Integers | 8,619 | not optimized | 4 | Direct shared CRT with semantic-input three-square guards |
 
 Operations mean live binary `+`, `-`, and `*`, with squares and fixed-scalar
@@ -61,7 +63,11 @@ Tenth transfers, integer shears and complete direct-C222 alternative.
 The13-integer and shared-direct arrivals at751bc067e2 have now passed their
 ordinary reviews and full finite replays. A stronger prime-supported CRT
 construction yields the direct points above; its natural and integer
-polynomials are fully collected. Newer parity proposals remain under review.
+polynomials are fully collected. Reusing the literal beta-row majorant
+reduces the natural points to3,603/6,179; its index bound uses an endpoint
+row before the CRT interpretation. Both parity small-integer families
+have now passed separate ordinary reviews and their scoped replays.
+Prime separation remains under review.
 
 The first completed reduction is
 [`gap2082-shared-products`](candidates/gap2082-shared-products/README.md):

@@ -56,13 +56,20 @@ fourteen-integer148/748,156/664 and163/652 tradeoffs.
 The direct C222 route now supplies a complete
 [quartic in8,619 unrestricted integers](candidates/shared-crt-prime-lift/integer/README.md),
 with39,811 explicitly collected monomials and coefficient height127,285,349.
-Its [natural parent](candidates/shared-crt-prime-lift/README.md) has3,609
-variables; a6,180-variable variant lowers the height to1,992. A prime-power
+Its frozen [natural parent](candidates/shared-crt-prime-lift/README.md) has3,609
+variables. The later [beta-majorant refinement](candidates/shared-crt-beta-majorant/README.md)
+has3,603 natural variables or6,179 with coefficient height1,992. A prime-power
 CRT lift and shared certificates improve the earlier27,916-integer
 construction. These equations use ordinary literal coefficients and are
 independent of K215 and Jones. Separate ordinary proofs, full incoming
 replays and exact normal/optimized candidate checks pass. The internal
 formalization remains open and Lean remains paused.
+
+The [two parity-family reviews](PROPOSAL_REVIEW_PARITY_FAMILIES.md) add
+fifteen-integer128-operation/degree204 and124/352 choices, and
+sixteen-integer119/112 and115/160. Both retain the complete calibrated
+source34 tuple; their root/sign recovery and finite replay scopes are
+recorded separately.
 
 ## Approach and comparison
 

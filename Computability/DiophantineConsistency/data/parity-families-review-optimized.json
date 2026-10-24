@@ -1,0 +1,569 @@
+{
+  "arrivals": {
+    "first": {
+      "archive": "docs/incoming/con-zfc-parity-norms-2026-10-23.zip",
+      "files": 317,
+      "raw_bytes": 9408746,
+      "sha256": "f3fc95973c1d8da403612e7e565cda01038e63587a4e86db79dc36fc3a5683c1"
+    },
+    "second": {
+      "archive": "docs/incoming/con-zfc-parity-norms-2026-10-23 (2).zip",
+      "files": 235,
+      "raw_bytes": 45800743,
+      "sha256": "a653107c2cba5244c99cebf87df6f4f9489cb41c4f5815a4127aead645ea087a"
+    }
+  },
+  "first_normal_full_release": {
+    "byte_identical_rebuilt_specifications": 28,
+    "elapsed_seconds": 18.33,
+    "fixed_coefficient_raw_bytes": 615883,
+    "manifest": {
+      "files": 316,
+      "status": "PASS"
+    },
+    "primary": {
+      "counts": {
+        "add": 51,
+        "mul": 129,
+        "sub": 31
+      },
+      "degree_witness_mod_1000000007": 756708762,
+      "exact_total_degree": 1392,
+      "file": "parity13_shifted_dag.json",
+      "integer_variables": 13,
+      "operations": 211,
+      "sha256": "44c8113b298a49d211b775bc6e2ffd8945de707dd1c0bad200056cb4dc920bf8"
+    },
+    "python_version": "3.12.13",
+    "scope": "Finite exact algebra and coefficient reconstruction, literal DAGs, degrees and supplementary diagnostics. The report supplies the unbounded arithmetic reduction; the native semantic theorem is inherited.",
+    "stages": [
+      {
+        "script": "coefficients/verify.py",
+        "seconds": 0.198,
+        "status": "PASS",
+        "stdout_sha256": "160895a58e64baca4ce82f076b46b677320239a2688543062fe074340463d3d7"
+      },
+      {
+        "script": "build.py",
+        "seconds": 0.09,
+        "status": "PASS",
+        "stdout_sha256": "71d5648fd2a4a062769548846488e7ed961878f680798d76901d6b20c21ea2f1"
+      },
+      {
+        "script": "build_norm_family.py",
+        "seconds": 0.083,
+        "status": "PASS",
+        "stdout_sha256": "4a824ebadcf64acf1ea04f2c87e0a1d9331917c8f9784cf0f3a7c8305bd94bcf"
+      },
+      {
+        "script": "compact_norm.py",
+        "seconds": 0.266,
+        "status": "PASS",
+        "stdout_sha256": "30f595faa20365099c870800d378ea1b7f7015d097c2686d01d98b2536194f49"
+      },
+      {
+        "script": "audit.py",
+        "seconds": 0.65,
+        "status": "PASS",
+        "stdout_sha256": "7ea9d307432e9690042070fe89b38b2f22c9db58bb2619e23044744585aa1a96"
+      },
+      {
+        "script": "audit_norm_family.py",
+        "seconds": 9.073,
+        "status": "PASS",
+        "stdout_sha256": "dcc8bc1225d0c6ffc0bb2ceb977601bbcc099548739d4a28c608620a77d0274d"
+      },
+      {
+        "script": "audit_shift.py",
+        "seconds": 0.712,
+        "status": "PASS",
+        "stdout_sha256": "245cfa6718013bcaaf1d9ea2751f6095048d887253eb911766cb7b0474562f82"
+      },
+      {
+        "script": "audit_compact_kernel.py",
+        "seconds": 2.293,
+        "status": "PASS",
+        "stdout_sha256": "850c6e653912efd9325d5dd6d78e711b9507e59f510caf5d8534ae4a36998859"
+      },
+      {
+        "script": "independent_checks.py",
+        "seconds": 0.313,
+        "status": "PASS",
+        "stdout_sha256": "d0920898f68981d3c527c8ca264a04151e1e628b41b67c53caab88915cd4f1f8"
+      },
+      {
+        "script": "independent_graph_audit.py",
+        "seconds": 0.431,
+        "status": "PASS",
+        "stdout_sha256": "882b5da2b9eafcd0ca85cb0a254fd9d71434471edab4be76ca2090881194bdb8"
+      },
+      {
+        "script": "independent_compact_audit.py",
+        "seconds": 4.111,
+        "status": "PASS",
+        "stdout_sha256": "cc457ad6081ff22cbe42e6d9f3a28c165b9d6611af08736818e38c342eb5c99b"
+      }
+    ],
+    "status": "PASS"
+  },
+  "first_optimized_seven_audits": {
+    "scope": "All7 supplied independent/algebra/degree audit scripts under-O; inherited coefficient recipe remains ordinary-mode as required.",
+    "stages": [
+      {
+        "exit_code": 0,
+        "mode": "-O",
+        "script": "audit.py",
+        "seconds": 0.635,
+        "stdout_sha256": "7ea9d307432e9690042070fe89b38b2f22c9db58bb2619e23044744585aa1a96"
+      },
+      {
+        "exit_code": 0,
+        "mode": "-O",
+        "script": "audit_norm_family.py",
+        "seconds": 8.84,
+        "stdout_sha256": "dcc8bc1225d0c6ffc0bb2ceb977601bbcc099548739d4a28c608620a77d0274d"
+      },
+      {
+        "exit_code": 0,
+        "mode": "-O",
+        "script": "audit_shift.py",
+        "seconds": 0.707,
+        "stdout_sha256": "245cfa6718013bcaaf1d9ea2751f6095048d887253eb911766cb7b0474562f82"
+      },
+      {
+        "exit_code": 0,
+        "mode": "-O",
+        "script": "audit_compact_kernel.py",
+        "seconds": 2.297,
+        "stdout_sha256": "850c6e653912efd9325d5dd6d78e711b9507e59f510caf5d8534ae4a36998859"
+      },
+      {
+        "exit_code": 0,
+        "mode": "-O",
+        "script": "independent_checks.py",
+        "seconds": 0.315,
+        "stdout_sha256": "d0920898f68981d3c527c8ca264a04151e1e628b41b67c53caab88915cd4f1f8"
+      },
+      {
+        "exit_code": 0,
+        "mode": "-O",
+        "script": "independent_graph_audit.py",
+        "seconds": 0.423,
+        "stdout_sha256": "882b5da2b9eafcd0ca85cb0a254fd9d71434471edab4be76ca2090881194bdb8"
+      },
+      {
+        "exit_code": 0,
+        "mode": "-O",
+        "script": "independent_compact_audit.py",
+        "seconds": 4.089,
+        "stdout_sha256": "af10c1037b645922f000dcf9d67e6f11683af759e1773acc8fa48962efcad38f"
+      }
+    ],
+    "status": "PASS"
+  },
+  "focused_checks": {
+    "free_ring_identities": [
+      "primitive odd-carrier norm",
+      "mod4 rational-root extraction",
+      "mod4 completeness factorization",
+      "guard-only S\u00b2-4A"
+    ],
+    "mod4_private_root_sign_controls": 1080,
+    "negative_control": "Bare L=0,A=5,d=1,Q=5 norm vanishes with irrational roots; affine carriers exclude this branch.",
+    "scope": "Finite fixtures supplement ordinary proofs, not a source-zero or consistency search.",
+    "signed_primitive_zero_controls": 288
+  },
+  "manifest_entries": {
+    "first": 316,
+    "second": 234
+  },
+  "primary_tradeoffs": {
+    "first15": {
+      "degree": 204,
+      "operations": 128,
+      "variables": 15
+    },
+    "second16": {
+      "degree": 112,
+      "operations": 119,
+      "variables": 16
+    }
+  },
+  "proof_boundary": "Ordinary source calibration remains inherited. No Lean, internal-model or consistency claim is added.",
+  "scope": "Both small-integer norm components; second direct-quartic and integer20 components not reviewed or replayed.",
+  "second_normal_six_norm_audits": {
+    "algebra": {
+      "all_new_local_polynomial_identities": true,
+      "exact_degree15": 310,
+      "exact_degree16": 112,
+      "three_root_degree": 222,
+      "three_root_leading": "262144*Q**2*V**6*d**4*k**8*m**8",
+      "three_root_terms": 3120,
+      "two_root_degree": 56,
+      "two_root_leading": "16*d**2*k**4*m**2"
+    },
+    "algebra_mod4": {
+      "exact_degree15": 310,
+      "exact_degree16": 112,
+      "three_root_degree": 222,
+      "three_root_leading": "4194304*Q**2*V**6*d**4*k**8*m**8",
+      "three_root_terms": 3151,
+      "two_root_degree": 56,
+      "two_root_leading": "1*d**2*k**4*m**2"
+    },
+    "centered_degree": {
+      "authentic_V": "c*T*f-R0*f**2-c",
+      "inner_expansion_sha256": "158d35e02eba2945ffb5f0175275360d4f188aa7e6e7aacaaa2a04b08be5c933",
+      "inner_terms": 61891,
+      "inner_top": "512*X**9*Y**13*R0**3*h**3*f**6*c**8*(R0*f**2+h*Y*(X-2*f**2))",
+      "inner_weighted_degree": 109,
+      "norm_exact_degree": 218,
+      "odd_center": "n=2*n0+1-2*h*Y*R0",
+      "proof_scope": "Exact weighted identity on independent atoms; specializing genuine leading forms is justified in NOTE.md.",
+      "status": "PASS",
+      "triple_tail_degree_upper_bound": 212,
+      "unit_product_exact_degree": 306,
+      "variables": [
+        "X",
+        "Y",
+        "R0",
+        "h",
+        "f",
+        "c",
+        "T",
+        "n0"
+      ],
+      "weights": [
+        2,
+        4,
+        5,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "centered_degree_mod4": {
+      "actual_coefficient": {
+        "coefficient": "2**116*3**210*beta**184",
+        "monomial": {
+          "J3": 184,
+          "c": 16,
+          "f": 16,
+          "h": 14,
+          "v_scale": 42,
+          "w3": 26,
+          "z": 8
+        }
+      },
+      "authentic_V": "c*T*f-R0*f**2-c",
+      "center": "n=4*(n0-h*Y*R0)+2",
+      "inner_expansion_sha256": "f4a22dbed30874373ad55a89f5ab819e8fd2cd17cb75d0dfd8b55a5dd370b2f1",
+      "inner_terms": 61557,
+      "inner_top": "2048*X**9*Y**13*R0**3*h**3*f**6*c**8*(R0*f**2+h*Y*(X-2*f**2))",
+      "inner_weighted_degree": 109,
+      "norm_exact_degree": 218,
+      "proof_scope": "Exact weighted identity on independent atoms; specializing genuine leading forms is justified in NOTE_MOD4.md.",
+      "radicands": [
+        "Afirst",
+        "Q/d",
+        "16*S**2*(Q*V**2-1)/(Q-1)"
+      ],
+      "root_sum": "L=n+m*k+4*S*V",
+      "status": "PASS",
+      "triple_tail_degree_upper_bound": 212,
+      "unit_product_exact_degree": 306,
+      "variables": [
+        "X",
+        "Y",
+        "R0",
+        "h",
+        "f",
+        "c",
+        "T",
+        "n0"
+      ],
+      "variant": "modulus-four centered15",
+      "weights": [
+        2,
+        4,
+        5,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "coefficients": {
+      "all_six_compressed_and_raw_hashes": true,
+      "raw_bytes": 615883
+    },
+    "literal": [
+      {
+        "counts": {
+          "add": 28,
+          "mul": 67,
+          "sub": 25
+        },
+        "name": "integer16_odd_degree112",
+        "operations": 120,
+        "sha256": "7cec9545764590d3dcc682e9af7b36bda81b76cb8d12727eb00120bc566781bf",
+        "variables": 16
+      },
+      {
+        "counts": {
+          "add": 30,
+          "mul": 80,
+          "sub": 27
+        },
+        "name": "integer15_odd_degree310",
+        "operations": 137,
+        "sha256": "daa8f6530e195efe7fbf5137fde4940a617645a418b79c10082d5985b7c2548a",
+        "variables": 15
+      },
+      {
+        "counts": {
+          "add": 30,
+          "mul": 82,
+          "sub": 28
+        },
+        "name": "integer15_odd_degree306",
+        "operations": 140,
+        "sha256": "ee5f017642961b37669bfbf353b7325014c05c4125467b2055a1dd17e404cd46",
+        "variables": 15
+      },
+      {
+        "counts": {
+          "add": 28,
+          "mul": 66,
+          "sub": 25
+        },
+        "name": "integer16_mod4_degree112",
+        "operations": 119,
+        "sha256": "021c6f6ba81c1537fff502154324986532ef9cac98b873394fc23980a4fa840a",
+        "variables": 16
+      },
+      {
+        "counts": {
+          "add": 30,
+          "mul": 79,
+          "sub": 27
+        },
+        "name": "integer15_mod4_degree310",
+        "operations": 136,
+        "sha256": "7fce30ff24d14a67a85a50eeb17c126c75f3330a064c512feaf663843462045e",
+        "variables": 15
+      },
+      {
+        "counts": {
+          "add": 30,
+          "mul": 81,
+          "sub": 28
+        },
+        "name": "integer15_mod4_degree306",
+        "operations": 139,
+        "sha256": "915edfd8cdd03aae0f8cf39b78bddf3ab384754966207c8028e5fd0c217c2b7e",
+        "variables": 15
+      }
+    ],
+    "mode": "normal",
+    "scope": "Exact finite algebra, dimensions, circuit binding and fixed coefficients. Universal semantics are the ordinary proof in PROOF.md.",
+    "status": "PASS"
+  },
+  "second_optimized_six_norm_audits": {
+    "algebra": {
+      "all_new_local_polynomial_identities": true,
+      "exact_degree15": 310,
+      "exact_degree16": 112,
+      "three_root_degree": 222,
+      "three_root_leading": "262144*Q**2*V**6*d**4*k**8*m**8",
+      "three_root_terms": 3120,
+      "two_root_degree": 56,
+      "two_root_leading": "16*d**2*k**4*m**2"
+    },
+    "algebra_mod4": {
+      "exact_degree15": 310,
+      "exact_degree16": 112,
+      "three_root_degree": 222,
+      "three_root_leading": "4194304*Q**2*V**6*d**4*k**8*m**8",
+      "three_root_terms": 3151,
+      "two_root_degree": 56,
+      "two_root_leading": "1*d**2*k**4*m**2"
+    },
+    "centered_degree": {
+      "authentic_V": "c*T*f-R0*f**2-c",
+      "inner_expansion_sha256": "158d35e02eba2945ffb5f0175275360d4f188aa7e6e7aacaaa2a04b08be5c933",
+      "inner_terms": 61891,
+      "inner_top": "512*X**9*Y**13*R0**3*h**3*f**6*c**8*(R0*f**2+h*Y*(X-2*f**2))",
+      "inner_weighted_degree": 109,
+      "norm_exact_degree": 218,
+      "odd_center": "n=2*n0+1-2*h*Y*R0",
+      "proof_scope": "Exact weighted identity on independent atoms; specializing genuine leading forms is justified in NOTE.md.",
+      "status": "PASS",
+      "triple_tail_degree_upper_bound": 212,
+      "unit_product_exact_degree": 306,
+      "variables": [
+        "X",
+        "Y",
+        "R0",
+        "h",
+        "f",
+        "c",
+        "T",
+        "n0"
+      ],
+      "weights": [
+        2,
+        4,
+        5,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "centered_degree_mod4": {
+      "actual_coefficient": {
+        "coefficient": "2**116*3**210*beta**184",
+        "monomial": {
+          "J3": 184,
+          "c": 16,
+          "f": 16,
+          "h": 14,
+          "v_scale": 42,
+          "w3": 26,
+          "z": 8
+        }
+      },
+      "authentic_V": "c*T*f-R0*f**2-c",
+      "center": "n=4*(n0-h*Y*R0)+2",
+      "inner_expansion_sha256": "f4a22dbed30874373ad55a89f5ab819e8fd2cd17cb75d0dfd8b55a5dd370b2f1",
+      "inner_terms": 61557,
+      "inner_top": "2048*X**9*Y**13*R0**3*h**3*f**6*c**8*(R0*f**2+h*Y*(X-2*f**2))",
+      "inner_weighted_degree": 109,
+      "norm_exact_degree": 218,
+      "proof_scope": "Exact weighted identity on independent atoms; specializing genuine leading forms is justified in NOTE_MOD4.md.",
+      "radicands": [
+        "Afirst",
+        "Q/d",
+        "16*S**2*(Q*V**2-1)/(Q-1)"
+      ],
+      "root_sum": "L=n+m*k+4*S*V",
+      "status": "PASS",
+      "triple_tail_degree_upper_bound": 212,
+      "unit_product_exact_degree": 306,
+      "variables": [
+        "X",
+        "Y",
+        "R0",
+        "h",
+        "f",
+        "c",
+        "T",
+        "n0"
+      ],
+      "variant": "modulus-four centered15",
+      "weights": [
+        2,
+        4,
+        5,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "coefficients": {
+      "all_six_compressed_and_raw_hashes": true,
+      "raw_bytes": 615883
+    },
+    "literal": [
+      {
+        "counts": {
+          "add": 28,
+          "mul": 67,
+          "sub": 25
+        },
+        "name": "integer16_odd_degree112",
+        "operations": 120,
+        "sha256": "7cec9545764590d3dcc682e9af7b36bda81b76cb8d12727eb00120bc566781bf",
+        "variables": 16
+      },
+      {
+        "counts": {
+          "add": 30,
+          "mul": 80,
+          "sub": 27
+        },
+        "name": "integer15_odd_degree310",
+        "operations": 137,
+        "sha256": "daa8f6530e195efe7fbf5137fde4940a617645a418b79c10082d5985b7c2548a",
+        "variables": 15
+      },
+      {
+        "counts": {
+          "add": 30,
+          "mul": 82,
+          "sub": 28
+        },
+        "name": "integer15_odd_degree306",
+        "operations": 140,
+        "sha256": "ee5f017642961b37669bfbf353b7325014c05c4125467b2055a1dd17e404cd46",
+        "variables": 15
+      },
+      {
+        "counts": {
+          "add": 28,
+          "mul": 66,
+          "sub": 25
+        },
+        "name": "integer16_mod4_degree112",
+        "operations": 119,
+        "sha256": "021c6f6ba81c1537fff502154324986532ef9cac98b873394fc23980a4fa840a",
+        "variables": 16
+      },
+      {
+        "counts": {
+          "add": 30,
+          "mul": 79,
+          "sub": 27
+        },
+        "name": "integer15_mod4_degree310",
+        "operations": 136,
+        "sha256": "7fce30ff24d14a67a85a50eeb17c126c75f3330a064c512feaf663843462045e",
+        "variables": 15
+      },
+      {
+        "counts": {
+          "add": 30,
+          "mul": 81,
+          "sub": 28
+        },
+        "name": "integer15_mod4_degree306",
+        "operations": 139,
+        "sha256": "915edfd8cdd03aae0f8cf39b78bddf3ab384754966207c8028e5fd0c217c2b7e",
+        "variables": 15
+      }
+    ],
+    "mode": "optimized",
+    "scope": "Exact finite algebra, dimensions, circuit binding and fixed coefficients. Universal semantics are the ordinary proof in PROOF.md.",
+    "status": "PASS"
+  },
+  "second_regeneration": {
+    "byte_identical_regenerated_files": 12,
+    "status": "PASS"
+  },
+  "status": "PASS ordinary proof review and scoped finite replays",
+  "whole_source34_raw_hashes": {
+    "K0": "18c40dd3b52b2882ee8346d098942ae487b54d0d040d9cd88f826b050794d1af",
+    "MC": "3fc17cf73716c7528a91d45dc2bfffa8b76fb86d6d14f5451cf32c125a588777",
+    "MF": "78a7befe6b09c6f59bb325aec1ef35caa72bc6a7d2d01fa39071b9c6e8d92722",
+    "beta": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea",
+    "cone_A": "66463b4c98a7cd43faffe6cc0462f7f4fa65b7fd9bc57cba38789e585d59c615",
+    "cone_B": "42be64ea01465eb227e9c993dba41affc2d9244aed8ec8f33d3268bda7c6b401"
+  }
+}
