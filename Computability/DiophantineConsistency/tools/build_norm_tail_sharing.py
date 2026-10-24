@@ -125,9 +125,10 @@ def fixed(case, parent):
     path = DEST / case["fixed_binding"]
     binding = json.loads(path.read_text())
     result = {}
-    if case["fixed_kind"] == "shared54":
+    if case["fixed_kind"] != "norm10":
+        payload_root = DEST / case["fixed_root"] if "fixed_root" in case else path.parent.parent
         for item in binding["records"]:
-            compressed = (path.parent.parent / item["path"]).read_bytes()
+            compressed = (payload_root / item["path"]).read_bytes()
             raw = gzip.decompress(compressed)
             require(sha(compressed) == item["gzip_sha256"] and sha(raw) == item["raw_sha256"], "whole shared leaf hashes")
             result[item["name"]] = item["sign"] * int.from_bytes(raw, "little")

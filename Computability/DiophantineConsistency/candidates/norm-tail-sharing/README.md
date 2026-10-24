@@ -14,6 +14,7 @@ existence equivalence.
 
 | Literal | Domain | Unknowns | New operations | Parent operations | Exact degree |
 |---|---|---:|---:|---:|---:|
+| saturated_h1868_radical.json | Positive integers | 9 | **953** | 954 | **999,518** |
 | saturated_positive.json | Positive integers | 9 | **433** | 434 | 1,628,768 |
 | saturated_natural.json | Nonnegative integers | 9 | 440 | 441 | 1,628,768 |
 | saturated_radical_positive.json | Positive integers | 9 | **1,073** | 1,074 | 1,103,950 |
@@ -50,6 +51,7 @@ Each is authenticated during replay; there are no variable coefficient
 ports. No coefficient is transplanted between families.
 
 The parent ordinary equivalences and their reviews are in
+[`saturated-h1868-d`](../saturated-h1868-d/README.md),
 [`saturated-nine`](../saturated-nine/README.md),
 [`radical-jd-shared`](../radical-jd-shared/README.md), and
 [the ten-integer shear review](../../PROPOSAL_REVIEW_POLYNOMIAL_SHEARS_NORM10.md).
