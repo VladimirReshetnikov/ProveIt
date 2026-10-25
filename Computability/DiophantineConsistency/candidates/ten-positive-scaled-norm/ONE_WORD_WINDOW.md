@@ -109,6 +109,38 @@ against south of the temporal predecessor, east against west of the
 spatial neighbour, anchors) folded into C's encoding rather than into a
 derived word. Options 1–3 below are judged against this.
 
+## 2b. The sharpest form of the target: alpha = 1 (24 October, evening)
+
+In the current fused ten-positive kernels (packages 113, 116, 119, 121 and
+their research-session descendants down to 86 operations) the three source
+unknowns are J, F and alpha; the tableau word is derived, C = q − F − alpha,
+and the transport quotient t = B/g is already absorbed by the norm. So the
+one unknown a nine-positive form must lose is the slack alpha.
+
+Fixing alpha = 1 gives C + F = q − 1 = B^N − 1, i.e. **C is the bitwise
+complement of F**. Then:
+
+- the transport (K0 + w)·C ≡ F (mod q − 1) becomes
+  (K0 + w + 1)·C ≡ 0 (mod q − 1): the shifted-and-convolved tableau plus the
+  tableau itself is a multiple of B^N − 1;
+- the two mask tests become tests on C alone: (C − 1) AND (MC·J + 1) = 0 and
+  (NOT C) AND (MF·J − 1) = 0, i.e. C has fixed zeros at the MC positions and
+  fixed ones at the MF positions;
+- the rank keeps its four-block form, with the F-blocks equal to the
+  complement blocks of C, so the population target 3dN + 2 is unchanged.
+
+So the self-certifying window of section 2a has a precise arithmetic form:
+a tile encoding whose cyclic convolution with the fixed kernels and the row
+shift, **plus the word itself**, sums to all ones in every cell (no carries
+across cells), exactly when the tiling is valid. The current Wang943 encoding
+does not have this property: its test word F is zero at the test positions
+and unconstrained elsewhere, while here every bit of F would be forced.
+Designing such an encoding (or proving none exists for local tile languages
+with carry-free cells) is the concrete next research step. If it exists, the
+kernel needs no other change, and the 86- to 97-operation ten-positive forms
+become nine-positive forms of about the same size, against 420 operations at
+degree 1,472,168 today.
+
 ## 3. Where a redesign could act
 
 1. **Self-consistency instead of a test word.** Encode the run as C and
