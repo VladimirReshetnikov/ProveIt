@@ -20,31 +20,48 @@ See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **entire equation in fifteen positive
-unknowns, exact degree157, with a66-operation evaluator**. All fixed
-constants remain on the same Letter page, including the full 436-character
-numeral, alphabet, decoder and943 tiles, in9-point mathematics. Its shorter
-fixed recipe uses one direction-indexed rank chart, a complemented payload
-and a floor-free ten-row tile table while preserving the entire polynomial
-and all four integers. Against the preserved
-[grouped66 page](candidates/one-page-grouped66/equation.pdf), complete TeX
-shrinks5395 to5244 bytes and actual extracted nonwhite text2885 to2801,
-saving84 visible characters at unchanged fonts. Against the preserved
-[original66/157 page](candidates/one-page-fifteen66/equation.pdf), the
-combined savings are280 TeX bytes and224 visible characters.
+unknowns, exact degree157, with a66-operation evaluator**. Every fixed
+constant, the full436-character numeral, alphabet, decoder and943 tiles
+fit on one Letter page, with9-point body and7.7-point seed/footer.
+The coherent radix55 recipe reduces the four raw constants from295388
+to242484 bytes, a52904-byte reduction (17.9%). Complete TeX falls5244
+to5195 bytes, and actual extracted nonwhite PDF text2801 to2764 characters,
+saving49 bytes and37 printed characters at unchanged fonts. The PDF file
+itself grows159875 to160082 bytes, an increase of207 bytes; file compression,
+raw coefficient storage and complete printed size are separate metrics.
 
-The [root page acceptance](reviews/one-page-compact66-root-peer.md) binds
-all23 actual printed polynomial cuts, every constant, two complete final
-statics, ten first-attempt checks/renders, six byte-exact fresh replays
-and both actual visual reviews. Pre-execution proof/control findings and
-the predecessor's earlier failed source audit remain fully preserved.
-The complete ordinary proof composes the whole indexed normalized-positive
-source and canonical `R=3 mod4` family with the squared-modulus construction,
-including both positive witness maps. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
-binds the maintained PDF and TeX. The earlier arithmetic improvement against
-the preserved [ten-positive85/328 page](candidates/one-page-doubled85/equation.pdf)
-saves nineteen operations and171 degree while adding five unknowns.
-All predecessor pages remain available. Global optimality and a new Lean
-derivation are not claimed; Lean remains paused.
+ALL four radix55 ports change together. The free-port P66 template,
+fifteen-positive domain,66 live operations and degree157 are unchanged;
+the new specialization is a different polynomial from the old radix67
+specialization. The complete ordinary proof uses the accepted
+[55-bit wrapping controller](research/compact66-radix55-wrap-controller/README.md),
+its [bounded unit evidence](research/compact66-radix55-unit-probe-verification/README.md)
+and both positive native/Pell maps, including canonical `R=3 mod4` and
+squared-modulus reconstruction. The known controller zero modulo5 is
+handled by wrapping, not inverted. Full source calibration is retained
+as an ordinary mathematical contract, not a fresh native or Lean replay.
+
+The [complete page evidence](research/compact66-radix55-page-verification/README.md)
+and [ROOT page acceptance](reviews/one-page-compact66-radix55-root-peer.md)
+bind all23 actual printed cuts,66 live gates, the full degree157 leader,
+every new raw coefficient byte, all3297 Phi coefficients,943 ordered
+tiles,430 actions and436 positional seed coefficients. Two FULL final
+statics, all ten first commands and six fresh commands pass, with all
+18 fresh capture files byte-exact. Each of the six complete audits retains
+163 negative and22 valid controls, and both actual visual reviews pass.
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the exact page and
+external closed evidence manifest. All earlier findings and failed or
+interrupted predecessor observations remain preserved.
+
+The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
+[grouped66 page](candidates/one-page-grouped66/equation.pdf) and
+[original66/157 page](candidates/one-page-fifteen66/equation.pdf) remain
+unchanged. Against the preserved
+[ten-positive85/328 page](candidates/one-page-doubled85/equation.pdf),
+the arithmetic improvement still saves nineteen operations and171 degree
+while adding five unknowns. All predecessor pages and histories remain
+available. No global minimum, consistency decision or new Lean derivation
+is claimed; Lean remains paused.
 
 The complete [unshifted-T equations](research/ten-positive-unshift-t-finite/RESULTS.md)
 now reach **84 operations at degree328**, or83/436,80/750 and81/560, in the
@@ -156,8 +173,8 @@ also passes both complete ordinary reviews. It proves shorter whole padding
 identities and, at57 bits, a sharper carry bound and an automatic rank class
 modulo3. Its three new bracket-unit conditions remain uncomputed;59 also
 needs a new prime/lift certificate. See the [conditional acceptance](reviews/compact66-radix57-59-padding-ordinary-acceptance.json).
-The maintained page stays on its verified67-bit tuple until a significant
-complete improvement is proved and independently reproduced.
+Those conditional57/59-bit proposals remain separate from the verified55-bit
+page; they do not supply a numerical57/59-bit endpoint or a further page gain.
 
 A lower-row direct degree-four comparison, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
 now reaches **327 unrestricted integer unknowns**, with216 rows,5,718 terms

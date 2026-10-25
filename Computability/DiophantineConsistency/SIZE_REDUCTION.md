@@ -111,21 +111,32 @@ exclude named polynomial abbreviations. Positive, natural and unrestricted
 integer domains are compared separately. These are useful points, not the
 complete frontier or a global optimality claim.
 
-The maintained [equation.pdf](equation.pdf) displays the15-positive
-66-operation degree157 equation in full, including every constant, with
-standalone [TeX](equation.tex). Its complete436-character fixed numeral,
-alphabet, decoder and 943 tiles fit on one Letter page in 9-point arithmetic.
-It saves nineteen operations and171 degree against the preserved
-[ten-positive85/328 page](candidates/one-page-doubled85/equation.pdf), with
-five more unknowns. Its shorter fixed recipe now removes two explicit
-support/control tables while keeping all four complete integers unchanged.
-The current compact recipe further reduces actual nonwhite extracted
-characters2885 to2801 and complete TeX5395 to5244 bytes at unchanged fonts.
-All ten first commands, six fresh byte-exact replays and both actual-page
-visual reviews pass; the earlier grouped-page source-audit failure remains
-preserved. Significant checked
-gains are batched into the maintained PDF; all complete predecessors remain
-available. See the [whole page acceptance](reviews/one-page-compact66-root-peer.md).
+The maintained [equation.pdf](equation.pdf) displays the complete radix55
+15-positive66-operation degree157 equation, including every fixed constant,
+with standalone [TeX](equation.tex). The full436-character numeral,
+alphabet, decoder and943 tiles fit on one Letter page in9pt body/7.7pt
+seed. Relative to the preserved radix67 compact page, the new coherent
+four-port specialization reduces raw constants295388 to242484 bytes,
+saving52904 (17.9%); complete TeX5244 to5195 bytes saves49, and actual
+nonwhite PDF text2801 to2764 characters saves37. The PDF file grows207
+bytes,159875 to160082; this is not a PDF-compression improvement.
+
+All four ports change together. The free-port template, positive domain,
+66 live operations and exact degree157 stay the same; the old and new
+specialized polynomials are different. Full ordinary55 wrap/unit and both
+positive native/Pell maps license the new source calibration. All ten
+first applications, six byte-exact fresh replays,163 negative/22 valid
+controls per audit and both actual visual reviews pass. The complete
+[external evidence](research/compact66-radix55-page-verification/README.md)
+and [ROOT acceptance](reviews/one-page-compact66-radix55-root-peer.md)
+bind every actual formula and constant, without a new native or Lean replay.
+
+The arithmetic still saves nineteen operations and171 degree against the
+preserved [ten-positive85/328 page](candidates/one-page-doubled85/equation.pdf),
+with five more unknowns. The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf)
+and all complete predecessors/findings remain unchanged. Significant
+verified gains are batched into the maintained PDF; no global minimum
+or consistency decision is claimed, and Lean remains paused.
 
 ## Work now underway
 
@@ -2910,9 +2921,9 @@ comparison must charge the complete recipe and all tuple-binding changes.
 No new numerical endpoint, glyph/byte saving or minimum is claimed. A
 55-bit two-stage carry bootstrap and its controller refinement are described
 below.
-Maintained67-bit compact66 PDF/TeX remain current; significant verified
-complete gains will trigger an update, while minor notation changes are
-batched. Lean stays paused.
+These conditional57/59-bit notes supply no numerical endpoint or further
+page saving. The separately verified55-bit page is now maintained, with
+minor notation changes still batched and Lean paused.
 
 ## A further output-gate shear has complete ordinary proofs
 
@@ -2966,9 +2977,10 @@ consistency check, not a required unit. Four actual normal/optimized
 first/fresh applications exit0 with seven negative/two valid controls,
 all six fresh files agree in full and197 original inputs are unchanged.
 The corrected evidence commit-reference typo and both complete first
-reviews remain preserved. No new numerical four-port tuple, specialized
-source/DAG endpoint or page saving is accepted. That complete one-page
-candidate is now under CODE ONLY preparation; main PDF/TeX stay current.
+reviews remain preserved. That bounded modular evidence did not itself
+accept a numerical four-port tuple, specialized source/DAG endpoint or
+page saving. The later complete page evidence below supplies those separate
+checks and preserves the initial proof/probe histories.
 
 ## A pair-sum shear gives a smaller complete ordinary height bound
 
@@ -3003,3 +3015,46 @@ must remain for the logical completeness interpretation. Truth deletion
 is already prior work, and projected constructor witnesses cannot be
 counted as new savings. No new branch compiler, final count or endpoint
 is claimed for this lead.
+
+## Complete radix55 specialization shortens the maintained66/157 page
+
+The [complete page evidence](research/compact66-radix55-page-verification/README.md)
+and [ROOT page acceptance](reviews/one-page-compact66-radix55-root-peer.md)
+now bind the complete radix55 display. Its same free-port P66 template has
+fifteen strictly positive unknowns,66 live operations and exact degree157.
+ALL four numerical ports are newly specialized together; the old radix67
+and new radix55 specialized polynomials are not identified. The whole
+55-bit wrapping-controller proof, bounded units3422/500242 at8807/581197,
+canonical `R=3 mod4` family and both positive squared-modulus Pell maps
+provide the retained ordinary source calibration. The known mod5 zero
+is handled by wrapping, and all initial false-premise/finding/repair
+history remains preserved. No fresh native/compiler/Lean replay is claimed.
+
+Against the preserved [radix67 compact page](candidates/one-page-compact66/equation.pdf):
+
+| Complete metric | Previous | Current | Change |
+| --- | ---: | ---: | ---: |
+| Raw four-port bytes |295388|242484|−52904 (17.9%)|
+| Complete TeX bytes |5244|5195|−49|
+| Actual nonwhite PDF characters |2801|2764|−37|
+| PDF file bytes |159875|160082|+207|
+
+The file-size increase is separate from the coefficient-storage and
+printed-size reductions; no PDF-compression gain is claimed. Both pages
+use one Letter sheet,9pt body and7.7pt seed/footer. Every constant,
+436-character numeral/alphabet/decoder and943 tiles remains on the page.
+Two FULL final statics precede all ten first commands and six fresh
+read-only commands, all actualexit0 observed by ROOT. Every one of the18
+fresh capture files reproduces its first same-mode bytes. Six complete
+audits retain163 negative/22 valid controls each; all23 actual cuts,
+66 live gates,15 unknowns/four ports,3297 Phi coefficients,430 actions,
+943 tuples and all raw bytes are bound. Whole PDF glyph/normalization,
+zero-overfull and both actual visual reviews pass.
+
+The closed external manifest is369d156ca59b03db1873ccd924eebfb371e3f85190cfea0115e9f575a90f8035,
+76 payloads/77 whole files. The held candidate stays exactly27 files,
+without results or a MANIFEST added inside it. The previous compact,
+grouped, original66/157 and ten-positive pages remain available, as do
+all quartic alternatives, including accepted height32053. This page
+update decides no consistency statement, supplies no new Lean theorem
+and claims no global optimum.

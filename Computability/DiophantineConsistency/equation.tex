@@ -43,7 +43,7 @@ Every index, set, sum, product and floor below defines a constant, not
 another unknown. Put
 \[
 \begin{gathered}
-\rho=2^{67},\quad B=\rho^{8807},\quad\beta=B-1,\\
+\rho=2^{55},\quad B=\rho^{8807},\quad\beta=B-1,\\
 G_m(x)=\sum_{j=0}^{m-1}x^j,\quad
 \Lambda=\rho^{4393}+\rho^{5495}.
 \end{gathered}
@@ -51,17 +51,18 @@ G_m(x)=\sum_{j=0}^{m-1}x^j,\quad
 \begin{align*}
 M_C={}&\beta+\rho-(\rho+3)\rho^{1063}\\
 &-\sum_{e=0}^{3296}\fl{(D_\rho(\Phi(\rho),e)+\rho-1)/\rho}\rho^e,\\
-M_F={}&B-1+4+(2^{51}-2)\Lambda\\
+M_F={}&2B+3+(2^{51}-2)\Lambda\\
 &+\rho^{1013}G_{10}(\rho)+\rho^{1065}G_9(\rho)
   +\rho^{2195}+\rho^{3296}\\
-&+(2^{65}-1)\rho^{8792}G_{13}(\rho)+(2^{19}-1)\rho^{8805},\\
+&-\rho^{8792}+(2^{41}-4)\rho^{7691},\\
 K={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}+\rho^{8849}\\
 &+\Lambda\Phi(1/\rho),
 \end{align*}
 where
 \[
 \begin{split}
-\Phi(x)={}&G_{943}(x)+2^{10}\sum_{i=0}^{942}v(t_i)x^i\\
+\Phi(x)={}&\sum_{i=0}^{942}(1+2^{44}-2^{10}w_i-2^{18}n_i\\
+&-2^{27}p_i-2^{35}s_i)x^i\\
 &+2^{10}x^{1003}(x^{20}+2^{17})G_8(2x)\\
 &+2^{18}x^{983}(x^{30}+2^{17})G_9(2x)\\
 &+2^{44}x^{992}(x^{39}+2x^{30}+4x^{19}+8)\\
@@ -83,7 +84,7 @@ An interval ending at $-1$ is empty. The table defines $t_i$ for
 $0\le i\le942$; all index ranges are fixed:
 \[
 \setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
-\text{index }i&\text{tile }t_i=(w,n,e,s)\\\hline
+\text{index }i&\text{tile }t_i=(w_i,n_i,p_i,s_i)\\\hline
 0,1&(2,435,3,1),\ (5,0,0,0)\\
 j+2\ (j=2q+b<430)&((1-d_j)r_{0,u_j},h(q,b),d_jr_{1,u_j},v_j)\\
 434-2a+b\ (a,b=0,1)&(0,432a+b,0,432a+b)\\
@@ -96,11 +97,6 @@ j+2\ (j=2q+b<430)&((1-d_j)r_{0,u_j},h(q,b),d_jr_{1,u_j},v_j)\\
 934+3a+b\ (a,b=0,1,2)&(a^2,437,b,437)
 \end{array}
 \]
-For $t=(w,n,e,s)$ put
-\[
-v(t)=2^{34}-w-2^8n-2^{17}e-2^{25}s.
-\]
-
 \textbf{A closed decoder for the 430 actions.}
 Put $D_b(A,k)=\fl{A/b^k}\bmod b$, where
 $a\bmod b=a-b\fl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:

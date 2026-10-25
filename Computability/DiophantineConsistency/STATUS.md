@@ -25,22 +25,34 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf), with standalone
-[TeX](equation.tex), prints fifteen strictly positive unknowns, exact degree157
-and66 operations, including every fixed constant on one Letter page in
-9-point mathematics. Its shorter fixed recipe uses one rank chart for both
-directions and a floor-free ten-row table. It saves84 actual extracted
-characters and151 TeX bytes against the preserved grouped66 page:
-2885 to2801 visible characters and5395 to5244 bytes at unchanged fonts.
-The equation and all four integers are unchanged. Two complete final static
-reviews, all ten first-attempt commands, six byte-exact fresh root replays
-and two actual visual reviews pass. All pre-execution findings and earlier
-page evidence remain preserved. See the
-[root acceptance](reviews/one-page-compact66-root-peer.md). Against the
-earlier ten-positive85/328 page, the arithmetic improvement still saves
-nineteen operations and171 degree while adding five unknowns. The
-ordinary proof composes the whole indexed normalized source, canonical
-`R=3 mod4` and squared-modulus reconstruction with both positive maps.
-All predecessor pages remain available. Lean remains paused.
+[TeX](equation.tex), prints the complete coherent radix55 equation in fifteen
+strictly positive unknowns, exact degree157 and66 live operations. Every
+constant,943 tiles and the full436-character seed/decoder fit on one Letter
+page in9pt body/7.7pt seed. Relative to the preserved
+[radix67 compact page](candidates/one-page-compact66/equation.pdf), raw
+coefficient bytes fall295388 to242484, saving52904 (17.9%); complete TeX
+falls5244 to5195 bytes and actual nonwhite PDF text2801 to2764 characters.
+The PDF file grows159875 to160082 bytes, so its compression is a separate
+metric from those reductions. All four new ports change coherently: the
+free-port P66 template/domain/cost/degree are unchanged, while the new
+specialized polynomial differs from the old radix67 specialization.
+
+Two complete final statics, all ten first applications and six byte-exact
+fresh applications pass, with163 negative/22 valid controls per complete
+audit and both actual visual reviews PASS. The
+[closed evidence](research/compact66-radix55-page-verification/README.md)
+and [ROOT page acceptance](reviews/one-page-compact66-radix55-root-peer.md)
+bind the whole tuple, every actual printed formula, full66-gate liveness
+and degree157 leader. The ordinary55 wrap/unit proofs and both complete
+positive native/Pell maps provide full source calibration, including the
+canonical `R=3 mod4` squared-modulus converse. This is inherited ordinary
+mathematics, not a new native/compiler/Lean replay. The initial false mod5
+unit premise and all first findings/repairs remain preserved.
+
+Against the earlier ten-positive85/328 page, the arithmetic improvement
+still saves nineteen operations and171 degree while adding five unknowns.
+Every predecessor page and its entire history remains available; Lean
+remains paused, with no consistency decision or global minimum claim.
 The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
 remains a different tradeoff.
 
@@ -155,8 +167,8 @@ now passes both full final ordinary rereviews and [joint ordinary acceptance](re
 The preserved initial draft and both complete first reviews found one
 padding-exponent binding defect; the separately released naming-only repair
 resolves it without changing any constant formula. Fresh coherent numeric
-tuple/endpoint verification remains open. Main67-bit compact66 PDF/TeX and
-paused Lean are unchanged.
+tuple/endpoint verification remains open for that65-bit branch. The separately
+verified55-bit page is now maintained; Lean remains paused.
 
 The [conditional57/59-bit padding note](research/compact66-radix57-59-padding/README.md)
 passes both full ordinary reviews and [conditional acceptance](reviews/compact66-radix57-59-padding-ordinary-acceptance.json).
@@ -184,10 +196,12 @@ both are nonzero. The known zero modulo5 remains and is handled by the
 wrapping bits. All four actual normal/optimized first/fresh processes
 exit0 with seven negative/two valid controls; all six fresh files are
 byte-exact and197 inputs remain unchanged. This discharges exactly the
-two finite unit premises. A coherent new numerical tuple, its full
-specialized source/front binding and the updated one-page candidate are
-being prepared under execution hold. Their size/page gains are not yet
-accepted; the maintained67-bit PDF/TeX remain current.
+two finite unit premises. The later complete55-bit numerical tuple and
+source/front/page binding are now verified in the separate
+[page evidence](research/compact66-radix55-page-verification/README.md) and
+[ROOT page acceptance](reviews/one-page-compact66-radix55-root-peer.md).
+That complete page supplies the maintained PDF/TeX; the bounded modular
+receipt alone did not establish those later endpoint or page-size facts.
 
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
