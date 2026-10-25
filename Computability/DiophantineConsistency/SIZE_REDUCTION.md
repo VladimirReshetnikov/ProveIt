@@ -21,10 +21,10 @@ not establish the size of a complete consistency equation.
 | Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
-| Positive integers | 10 | 89 / 95 | 288 / 262 | Uncentered saturated b transport; fewer-operation tradeoff, canonical page retained |
-| Positive integers | 10 | 91 / 92 / 97 / 98 | 283 / 278 / 258 / 254 | Existing b transport; one-operation minor checkpoint, canonical page retained |
-| Positive integers | 10 | **92** | **283** | Coprime saturated Pell product; complete canonical page and indexed constants |
-| Positive integers | 10 | 84 / 85 | 436 / 328 | Accepted doubled product square; complete85 page preparation pending |
+| Positive integers | 10 | 89 / 95 | 288 / 262 | Uncentered saturated b transport; fewer-operation tradeoff, earlier page preserved |
+| Positive integers | 10 | 91 / 92 / 97 / 98 | 283 / 278 / 258 / 254 | Existing b transport; one-operation minor checkpoint, earlier page preserved |
+| Positive integers | 10 | 92 | 283 | Preserved complete lower-degree saturated page and indexed constants |
+| Positive integers | 10 | 84 / **85** | 436 / **328** | Accepted doubled product square; complete85 maintained page and all constants |
 | Positive integers | 10 | 93 | 278 | Sharp saturated center; lower-degree tradeoff |
 | Positive integers | 10 | 98 / 99 | 258 / 254 | Direct positive X and upper/sharp saturated centers |
 | Positive integers | 10 | 97 | 368 | Existing-square transport weight; one-operation saving, higher degree |
@@ -103,14 +103,16 @@ exclude named polynomial abbreviations. Positive, natural and unrestricted
 integer domains are compared separately. These are useful points, not the
 complete frontier or a global optimality claim.
 
-The maintained [equation.pdf](equation.pdf) displays the10-positive
-92-operation degree283 equation in full, including every constant, with
+The maintained [equation.pdf](equation.pdf) displays the 10-positive
+85-operation degree 328 equation in full, including every constant, with
 standalone [TeX](equation.tex). Its complete436-character fixed numeral,
-alphabet, decoder and943 tiles fit on one Letter page in9-point arithmetic.
-The separate [86-operation degree466 page](candidates/one-page-qcube86/equation.pdf)
-is a cost/degree tradeoff. The13-positive90/51 page remains a lower-degree
-alternative with three more unknowns. Significant checked improvements are
-batched into the canonical PDF; complete predecessors remain preserved.
+alphabet, decoder and 943 tiles fit on one Letter page in 9-point arithmetic.
+It saves seven operations and simplifies the finalizer against the preserved
+[92/283 page](candidates/one-page-saturated10/equation.pdf), with degree 45
+higher. All actual-page checks, byte-exact replays and visual reviews pass.
+The84/436 equation saves one additional operation at higher degree; it is
+preserved separately. Significant checked gains are batched into the
+maintained PDF; all complete predecessors remain available.
 
 ## Work now underway
 
@@ -2223,3 +2225,24 @@ but these counts are explicitly unmaterialized and are not new accepted
 endpoints. A separate finite packet must check every actual gate and map.
 These are further cost/degree tradeoffs and do not replace85/328 as the
 balanced complete-page candidate.
+
+
+## Maintained PDF updated to the complete85/328 equation
+
+The [maintained PDF](equation.pdf) and [standalone TeX](equation.tex) now
+contain the complete ten-positive doubled product-square equation,85 live
+operations and exact degree 328. The simpler carrier/finalizer saves seven
+operations against the preserved 92/283 page, with degree 45 higher. All four
+fixed integers,943 tiles, decoder, alphabet and 436-character numeral remain
+printed in full on one Letter page at the previous font sizes.
+
+Both complete static reviews, all five released author commands, four fresh
+byte-exact root replays and independent actual-PDF visual reviews pass.
+All 30 printed polynomial cuts cover every 85 gate over four free ports;
+the entire constant TeX and PDF suffix are checked. See the
+[root acceptance](reviews/one-page-doubled85-root-peer.md) and
+[closed replay packet](research/one-page-doubled85-root-verification/ROOT_BINDING.json).
+The ordinary proof retains the actual canonical `R>3q` repair and complete
+indexed native/controller/refutation interpretation. Every predecessor,
+including the complete92/283 page, remains preserved. The327-variable
+quartic is unchanged. Lean remains paused and the reduction goal active.
