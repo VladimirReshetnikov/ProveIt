@@ -1972,3 +1972,20 @@ These are inert fixed-layout calculations with full coefficient hashes;
 a delivered successor remains pending. No optimizer retention or global
 minimum is claimed. Accepted equations and canonical PDF/TeX stay preserved,
 and Lean stays paused.
+
+
+## Complete refined-product source accepted
+
+The [literal refined-product source](research/signed-pell-cap-refined-product-source/README.md)
+now realizes the complete signed-A scalar-compression theorem. Both maps
+fix the original unnormalized399-coordinate body and all retained witnesses.
+Seven monic products and one strict graph replace ten scalar graphs.
+Its guarded478-coordinate/365-row namespace is a SOURCE count only.
+
+All five author commands and four fresh root source checks/rebuilds pass;
+each collector rejects35 actual corruptions, including wrong call-row
+memberships. Every whole artifact, map, graph, privacy cut,15norms/18requests/
+5moduli/37frame atoms/54ports/11ideals and full calibration pass. See the
+[root acceptance](reviews/signed-pell-cap-refined-product-source-root-peer.md).
+No optimized quartic count follows yet. Existing359/364 equations, canonical
+PDF/TeX and paused Lean work remain preserved.
