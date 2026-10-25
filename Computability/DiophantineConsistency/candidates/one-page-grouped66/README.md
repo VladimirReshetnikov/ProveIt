@@ -36,7 +36,11 @@ The exact old FORMULA_MAP is a documentary reference and is compared with
 the actual parsed cuts; it does not supply replacement formulas.
 
 The new native parser consumes the ACTUAL MC,Phi,Lambda,MF,K right-hand
-sides. It compares every formal coefficient over943 independent payloads,
+sides. Before evaluation, a strict AST visitor proves each definition's
+variable/function scope, acyclic earlier dependencies and lexical index
+bindings. Phi's local x is distinct from rho; self references, free x,
+unbound i/e/payloads and nonfixed exponent/index/bound expressions fail.
+It then compares every formal coefficient over943 independent payloads,
 all41 controls, all3297 digits and both dummy holes, the complete Laurent
 polynomials and every one of295388 canonical raw bytes. Other native
 text is compared with the exact full selected body. The complete expected
@@ -46,7 +50,8 @@ definition. There is no unknown-glyph suppression or subset-only acceptance.
 
 The source-only audit is designed for24 inherited negatives/4 valid
 front/source controls plus17 actual native negatives/5 valid algebra
-controls and4 complete-stream glyph negatives. They are future checks,
+controls,12 actual scope negatives requiring the specific context-error
+path, and4 complete-stream glyph negatives. They are future checks,
 not runtime results. Normal and optimized modes use explicit exceptions;
 no assert statement can disappear. TOOLCHAIN.md fixes ten sequential
 commands after two full static approvals and separate explicit root

@@ -217,6 +217,87 @@ def native_slots(body):
     return slots,masked
 
 
+class NativeContextError(ValueError):
+    """An actual printed expression violates its definition or lexical scope."""
+
+
+def native_contexts(trees):
+    # Distinct printed variables are never identified until these checks prove
+    # the appropriate one-variable context. In particular x is local to Phi;
+    # rho is unavailable there, and x is unavailable in every integer definition.
+    contexts = {
+        'Phi':({'x'},{'G','sum'},{'i'}),
+        'Lambda':({'rho'},set(),set()),
+        'MC':({'rho','B','beta'},{'Phi','D','floor','sum'},{'e'}),
+        'MF':({'rho','B','beta','Lambda'},{'G'},set()),
+        'K':({'rho','B','beta','Lambda'},{'Phi','G'},set())}
+    order=['Phi','Lambda','MC','MF','K']
+    need(set(trees)==set(order),'five complete native definitions')
+    established={'rho','B','beta'}
+    records={}
+    for slot in order:
+        globals_allowed,functions_allowed,indices_allowed=contexts[slot]
+        actual_globals,dependencies,indices=set(),set(),set()
+        def require(ok, message):
+            if not ok:
+                raise NativeContextError('NATIVE_CONTEXT: '+slot+': '+message)
+        def fixed(node,bound):
+            # Powers and finite bounds may use only literal arithmetic and
+            # lexically bound finite indices, never x,rho or another global.
+            op=node[0]
+            if op=='n':
+                require(type(node[1]) is int,'literal fixed integer')
+            elif op=='v':
+                require(node[1] in bound,'unbound/global name in fixed exponent or bound '+node[1])
+            else:
+                require(op in ['+','-','*','/','^'],'nonarithmetic fixed exponent or bound '+op)
+                fixed(node[1],bound);fixed(node[2],bound)
+        def visit(node,bound=frozenset()):
+            op=node[0]
+            if op=='n':
+                require(type(node[1]) is int,'literal integer')
+            elif op=='v':
+                name=node[1]
+                if name not in bound:
+                    require(name in globals_allowed,'unbound or unavailable variable '+name)
+                    actual_globals.add(name)
+                    if name!='x':
+                        require(name in established,'definition used before proof '+name)
+                        dependencies.add(name)
+            elif op=='payload':
+                require(slot=='Phi' and 'i' in bound,'payload requires the lexical Phi sum index i')
+            elif op in ['+','-','*','/']:
+                visit(node[1],bound);visit(node[2],bound)
+            elif op=='^':
+                visit(node[1],bound);fixed(node[2],bound)
+            else:
+                require(op in functions_allowed,'unavailable function '+op)
+                if op=='G':
+                    fixed(node[1],bound);visit(node[2],bound)
+                elif op=='sum':
+                    index=node[1]
+                    require(index in indices_allowed and index not in bound,'unavailable or shadowed sum index '+index)
+                    require(type(node[2]) is int,'literal lower finite bound')
+                    fixed(node[3],bound)
+                    indices.add(index)
+                    visit(node[4],bound|{index})
+                elif op=='floor':
+                    visit(node[1],bound)
+                elif op=='D':
+                    visit(node[1],bound);visit(node[2],bound);fixed(node[3],bound)
+                elif op=='Phi':
+                    require('Phi' in established,'Phi used before its definition is proved')
+                    dependencies.add('Phi');visit(node[1],bound)
+                else:
+                    raise NativeContextError('NATIVE_CONTEXT: '+slot+': unsupported function '+op)
+        visit(trees[slot])
+        records[slot]={'global_variables':sorted(actual_globals),'previous_definition_dependencies':sorted(dependencies),
+                       'lexically_bound_sum_indices':sorted(indices)}
+        established.add(slot)
+    return {'definition_order':order,'definitions':records,'acyclic_context_checked_before_all_evaluation':True,
+            'x_local_to_Phi_and_rho_excluded_from_Phi':True,'no_self_reference_or_unbound_indices':True}
+
+
 class Native:
     def __init__(self,phi,tiles):
         self.rho=1<<67;self.B=1<<590069
@@ -332,13 +413,16 @@ def native_audit(tex):
     need(skeleton==native_slots(reference.split(MARKER,1)[1])[1], 'entire unchanged943 tile/action/seed/footer text and native display skeleton')
     need(r'\mathcal E' not in body and r'\mathcal C' not in body,'no hidden old support/control table')
     trees={name:parse(rhs) for name,rhs in slots.items()}
+    contexts=native_contexts(trees)
     expected,triples=expected_phi();tiles=load(INDEXED/'TILES.json')
     work=Native(expected,tiles)
     actual_phi=work.formal(trees['Phi'])
     need(actual_phi==expected,'entire Phi over943 independent formal payload coefficients and all41 controls')
     work=Native(actual_phi,tiles)
-    native={name:work.formal(trees[name]) for name in ['Lambda','MC','MF','K']}
+    native={'Lambda':work.formal(trees['Lambda'])}
     need(native['Lambda']=={(4393,()):1,(5495,()):1},'complete Lambda identity')
+    # Only now may the remaining definitions use the proved Lambda expansion.
+    native.update({name:work.formal(trees[name]) for name in ['MC','MF','K']})
     old=(PARENT/'equation.tex').read_text();support_block=old.split(r'\mathcal E={}',1)[1].split(r'\end{split}',1)[0]
     support=set()
     # The first shorthand is \rg0{942}; every other range has braced limits.
@@ -376,7 +460,7 @@ def native_audit(tex):
         need(value>0 and value.bit_length()==pin['bits'] and value.to_bytes((pin['bits']+7)//8,'little')==raw,'all bytes of actual printed native integer '+name)
         records[name]={'bytes':len(raw),'sha256':digest(raw)};total+=len(raw)
     need(total==295388,'all four whole integers')
-    return {'all943_formal_selector_coefficients':True,'control_triples':len(triples),'control_coefficients':41,
+    return {'native_contexts':contexts,'all943_formal_selector_coefficients':True,'control_triples':len(triples),'control_coefficients':41,
             'full_formal_Phi_terms':len(actual_phi),'actual_digits_checked':3297,'nonzero_support':984,
             'zero_dummy_positions':[1063,1064],'all_formal_Lambda_MC_MF_K_coefficients_equal':True,'whole_raw_bytes':total,'ports':records}
 
@@ -441,6 +525,30 @@ def native_controls(tex):
             rejected.append(label)
         else:
             raise ValueError('accepted native corruption '+label)
+    slots,_=native_slots(tex.split(MARKER,1)[1])
+    scope_mutants=[
+        ('Lambda self reference',r'\Lambda=\rho^{4393}+\rho^{5495}',r'\Lambda=\Lambda'),
+        ('Phi self reference',slots['Phi'],r'\Phi(x)'),
+        ('Phi local x replaced by global rho','G_{943}(x)',r'G_{943}(\rho)'),
+        ('Lambda global rho replaced by free x',r'\Lambda=\rho^{4393}+\rho^{5495}',r'\Lambda=x^{4393}+\rho^{5495}'),
+        ('MF free global x',r'\rho^{1013}G_{10}(\rho)',r'x^{1013}G_{10}(\rho)'),
+        ('K free global x',r'\Lambda\Phi(1/\rho)',r'\Lambda\Phi(1/x)'),
+        ('MC unbound index i',r'D_\rho(\Phi(\rho),e)',r'D_\rho(\Phi(\rho),i)'),
+        ('MF unbound index e',r'\rho^{2195}+\rho^{3296}',r'\rho^e+\rho^{3296}'),
+        ('Phi payload outside its lexical sum','G_{943}(x)','v(t_i)G_{943}(x)'),
+        ('Phi nonfixed sum bound',r'\sum_{i=0}^{942}',r'\sum_{i=0}^{x}'),
+        ('Phi nonfixed geometric bound','G_{943}(x)','G_x(x)'),
+        ('Phi nonfixed exponent','x^{20}','x^x')]
+    scope_rejected=[]
+    for label,old,new in scope_mutants:
+        need(tex.count(old)==1,'unique actual native context mutation '+label)
+        try:
+            native_audit(tex.replace(old,new))
+        except NativeContextError as error:
+            need(str(error).startswith('NATIVE_CONTEXT: '),'specific native context rejection')
+            scope_rejected.append({'control':label,'error':str(error)})
+        else:
+            raise ValueError('accepted native context corruption '+label)
     positives=[tex.replace(r'\beta+\rho-(\rho+3)',r'\rho+\beta-(\rho+3)'),
                tex.replace(r'\Lambda=\rho^{4393}+\rho^{5495}',r'\Lambda=\rho^{5495}+\rho^{4393}'),
                tex.replace('x^{1003}(x^{20}+2^{17})','x^{1003}(2^{17}+x^{20})'),
@@ -462,8 +570,9 @@ def native_controls(tex):
         else:
             raise ValueError('accepted whole native glyph corruption '+label)
         glyph_controls.append(label)
-    need(len(rejected)==17 and len(positives)==5 and len(glyph_controls)==4,'all grouped native controls')
-    return {'actual_TeX_negative':rejected,'valid_native_algebra':len(positives),'whole_native_glyph_negative':glyph_controls}
+    need(len(rejected)==17 and len(scope_rejected)==12 and len(positives)==5 and len(glyph_controls)==4,'all grouped native controls')
+    return {'actual_TeX_negative':rejected,'actual_TeX_context_negative':scope_rejected,
+            'valid_native_algebra':len(positives),'whole_native_glyph_negative':glyph_controls}
 
 
 def pdf_audit():

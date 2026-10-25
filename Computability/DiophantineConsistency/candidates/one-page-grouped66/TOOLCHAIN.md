@@ -38,13 +38,20 @@ retains both positive witness maps and its ordinary whole indexed native
 interface. No old/new native coefficient identity is introduced.
 
 The actual new five native expressions are completely parsed and compared
-as full formal polynomials: all943 selector symbols/41 controls, all3297
+only after their AST variable/function scopes, acyclic dependencies and
+lexical index bindings are checked before any evaluation. Phi's local x
+cannot be replaced by rho, Lambda/Phi cannot refer to themselves, and the
+integer definitions cannot use free x or unbound i/e. Powers, bounds and
+digit indices use only literal arithmetic or bound finite indices.
+The expressions are then compared as full formal polynomials:
+all943 selector symbols/41 controls, all3297
 radix digits,984 nonzero positions, both dummy holes, all Lambda/MC/MF/K
 coefficients and all295388 raw integer bytes. No producer result supplies
 the expected native algebra. Other tile/action/decoder/seed/footer text
 must match the complete held reference. The normal/optimized audits also
 exercise24 inherited negatives/4 valid controls,17 actual native negatives/
-5 valid native algebra controls and4 full-stream glyph negatives. The
+5 valid native algebra controls,12 actual scope negatives requiring the
+specific NativeContextError path, and4 full-stream glyph negatives. The
 source-only mode launches no PDF subprocess.
 
 The renderer imports only stdlib and authenticates all whole inputs/source

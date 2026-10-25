@@ -184,6 +184,18 @@ compares every byte of all four resulting canonical integers with the
 unchanged295388 raw bytes. The fixed tile list is the whole accepted
 indexed943 input; no native compiler or new calibration is executed.
 
+Before any formal or numerical evaluation, a separate AST visitor checks
+the five definition contexts in acyclic order Phi,Lambda,MC,MF,K. Phi may
+use only its local x, bound i/payload and geometric/finite-sum arithmetic;
+rho and Phi calls are unavailable there. Lambda uses only rho arithmetic,
+so its own name is unavailable. MC,MF,K may use only their declared earlier
+constants/functions; free x and unbound i/e are unavailable. Powers,
+finite bounds and digit indices require literal arithmetic or lexically
+bound finite indices. Thus the later one-variable Laurent representation
+never identifies an undeclared global with the proper local variable or
+substitutes a definition into its own unproved right-hand side. Twelve
+actual-TeX mutations must fail specifically at this context visitor.
+
 The actual front retains all23 polynomial cuts and the complete degree
 and liveness audit from sections1--5. Actual-TeX native corruptions and
 valid algebraic variations reach the same full native semantic path,

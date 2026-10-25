@@ -139,7 +139,21 @@ the local proof hash plus the data index; its outputs are not inputs to
 the independent native algebra.
 
 The five actual new right-hand sides are fully tokenized and consumed,
-not compared only by source hashes. Phi is collected over all943 formal
+not compared only by source hashes. A separate AST visitor runs before
+any formal or numerical evaluation, in the dependency order Phi,Lambda,
+MC,MF,K. Phi permits local x, lexically bound i/payload and G/sum
+arithmetic, with no rho,B,beta,Lambda,Phi,D or floor. Lambda permits only
+rho arithmetic and cannot refer to itself. MC permits rho,B,beta and
+already proved Phi with D/floor and its bound e sum. MF permits
+rho,B,beta,Lambda and G; K permits those globals and already proved Phi/G.
+Neither may introduce free x or unbound i/e. All powers, geometric/sum
+bounds and digit indices are separately visited as literal arithmetic or
+lexically bound finite indices; a sum index is bound only in its own
+body, with no shadowing or leakage. Every referenced constant/function
+definition must already be established. This proves the acyclic contexts
+before any stored Lambda/Phi expansion or shared Laurent variable is used.
+
+Phi is collected over all943 formal
 payload variables and all41 controls. The old complete eleven-triple
 formula supplies an independent coefficient comparison. The actual new
 MC must collect to the full old rho polynomial; all3297 digit calls,
@@ -150,8 +164,13 @@ tile/action/decoder/seed/alphabet/footer text and native display skeleton
 are checked against the exact selected complete body, with only those
 five right-hand sides masked for semantic checking.
 
-Seventeen actual native TeX corruptions and five valid native algebra
-variations call that same full native checker. The adopted24 negative
+Seventeen actual native TeX corruptions, twelve context corruptions and
+five valid native algebra variations call that same full native checker.
+The twelve scope controls require the specific NativeContextError path:
+Lambda/Phi self reference, Phi's local x replaced by rho, free x in
+Lambda/MF/K, unbound i/e, a payload outside its i sum, and nonfixed sum/
+geometric bounds or an x-dependent exponent. A generic parse/algebra
+failure does not count as their successful rejection. The adopted24 negative
 and4 valid front/source/binding/calibration/degree controls remain. Four
 additional glyph corruptions call the same complete native glyph-stream
 equality used for the actual PDF. No control is a claimed success at HOLD.
