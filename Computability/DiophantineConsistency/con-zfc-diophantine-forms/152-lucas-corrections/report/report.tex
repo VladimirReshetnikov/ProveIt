@@ -1,0 +1,429 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=.82in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,microtype}
+\usepackage{xcolor,xurl,hyperref,fancyhdr}
+\definecolor{inkblue}{HTML}{173C60}
+\hypersetup{colorlinks=true,linkcolor=inkblue,urlcolor=inkblue,citecolor=inkblue,
+ pdftitle={Lucas corrections and elimination of arithmetic witnesses},
+ pdfauthor={Prepared for Vladimir Reshetnikov with AI assistance},
+ pdfsubject={Explicit Diophantine equations for syntactic Con(ZFC)}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\allowdisplaybreaks[3]
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist{nosep,leftmargin=1.5em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Lucas corrections and witness elimination}
+\fancyhead[R]{\small Con(ZFC)}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+
+\title{\color{inkblue}\bfseries Lucas corrections and elimination\\
+of arithmetic witnesses\vspace{5pt}\\
+\large Explicit Diophantine forms for $\Con(\mathrm{ZFC})$}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt repository\\
+\small Research, derivations, code and independent scoped reviews with AI assistance}
+\date{25 October 2026\\\small Comparison snapshot:
+\texttt{3ecd6a6cf53d47519228328567f45fb7ee9781d9}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give two new arithmetic transformations and a family of explicit polynomial
+projections for the Diophantine consistency problem.  A second-order Lucas
+correction makes the previously obstructed scale $Y=qs$ usable in the compact
+native/Pell construction.  It yields one equation in ten strictly positive
+integer variables, of exact degree $304$, evaluated in $87$ charged binary
+arithmetic operations.  A separate sign-recovery argument combines two front
+nonnegativity certificates in the direct C222 construction.  Its principal
+quartic has $248$ unrestricted integer variables, $5{,}321$ collected monomials,
+and coefficient height $128{,}446$, improving its matched $252$-variable parent
+without increasing degree or height.  Acyclic monic elimination then gives,
+among other points, $153$ unrestricted integers at degree $8$, $125$ at degree
+$16$, and $102$ at degree $256$.  The complete octic has $188{,}579$ monomials
+and height $750{,}273{,}658{,}864$.
+
+For each delivered equation, the new ordinary arithmetic proof, composed with
+the identified inherited refutation calibration, proves in ZFC that absence
+of solutions in its stated domain is equivalent to syntactic
+$\Con(\mathrm{ZFC})$.  The archive supplies literal equations, all fixed
+coefficient bytes and their reconstruction, restoration certificates,
+independent exact checkers, and complete printed specifications of the
+principal compact polynomial and the projected integer family.  Global
+minimality and a new end-to-end proof-assistant formalization are not claimed.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\section{The result, its domain, and its comparison boundary}
+\label{sec:overview}
+
+The objective is a fixed polynomial $P$ and a specified domain $D$ such that
+\begin{equation}
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\mathbf x\in D\;P(\mathbf x)=0\bigr)
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+ \label{eq:target}
+\end{equation}
+Here $\Con(\mathrm{ZFC})$ denotes the arithmetical assertion that there is no
+finite syntactic refutation in the repository's fixed recursive presentation
+of ZFC.  Equivalence of reasonable effective proof presentations can be
+proved by the corresponding syntactic translations.  The present paper uses
+the inherited presentation consistently and does not select coefficients on
+the basis of whether it is consistent.
+
+The proof strategy establishes the positive existential statement first:
+an allowed zero exists if and only if a finite refutation exists.  Negating
+that equivalence gives \eqref{eq:target}.  No assumption of consistency is
+used to prove the equivalence, and this paper does not establish either its
+unsolvability side or its consistency side.
+
+\subsection{Three useful outcomes rather than an unspecified optimum}
+
+Different measures of simplicity conflict.  An expression with a small
+number of unknowns can hide large fixed coefficients; expanding an expression
+can change its apparent length without changing the polynomial; eliminating
+an arithmetic witness can increase degree.  We therefore give a primary
+compact result and a separate family with small explicit circuit numerals.
+
+\begin{center}
+\begin{tabular}{@{}lrrp{6.0cm}@{}}
+\toprule
+Construction & Unknowns & Degree & Main feature\\
+\midrule
+Compact Lucas correction & $10$ positive & $304$ & $87$ binary operations;
+the complete coherent fixed native tuple is supplied.\\[3pt]
+Principal direct quartic & $248$ integer & $4$ & $5{,}321$ terms;
+height $128{,}446$; direct C222 proof calculus.\\[3pt]
+Direct octic projection & $153$ integer & $8$ & Entire expansion supplied:
+$188{,}579$ terms, height $750{,}273{,}658{,}864$.\\[3pt]
+Moderate-degree projection & $125$ integer & $16$ & Literal circuit and
+integral restoration; coefficient height below $2^{80}$.\\[3pt]
+Smaller-dimension projection & $102$ integer & $256$ & Literal circuit and
+integral restoration; coefficient height below $2^{691}$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+``Positive'' means strictly positive, and ``integer'' means unrestricted
+integer.  These domains are part of the theorem.  The straight-line
+abbreviations in every displayed equation are definitions, not extra
+existential variables.  The integer projections have only addition,
+subtraction, multiplication and fixed integer constants.  Acyclic
+restoration is a finite polynomial construction, not an invocation of a
+universal Diophantine polynomial with unspecified parameters.
+
+For the compact equation, each live binary addition, subtraction and
+multiplication is charged once; a square and multiplication by a fixed
+constant each count as one multiplication.  This is arithmetic circuit cost,
+not bit complexity.  The largest of its four stored fixed coefficient ports
+has $592{,}884$ bits.  In the direct projection circuits the largest literal
+constant is $256$; this does \emph{not} bound the coefficients after expansion.
+The separate height columns refer to those collected coefficients.
+
+\subsection{What improves on the inspected sources}
+
+All comparisons are to the pinned repository snapshot above, including the
+eight incoming archives recorded in \texttt{SOURCE\_LEDGER.json}.
+The latest incoming material matters: comparing only against an older
+maintained page would overstate the improvement.  The inspected compact
+sources already contain $75/626$, $76/464$ and $77/460$ operation/degree
+points, as well as the lower-degree points below
+\cite{centered,review,graphdigits,forms}.
+
+\begin{center}
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Ten-positive construction & Operations & Degree & Status\\
+\midrule
+Centered residues & 75 & 626 & Prior comparison\\
+Centered residues & 76 & 464 & Prior comparison\\
+Centered residues & 77 & 460 & Prior comparison\\
+Unshifted doubled product square & 84 & 328 & Prior comparison\\
+Graph-digit center & 87 & 323 & Prior comparison\\
+Sharp graph-digit center & 88 & 318 & Prior comparison\\
+Second-order Lucas correction & \textbf{87} & \textbf{304} & This paper\\
+Uncentered transport & 89 & 288 & Prior comparison\\
+Lower-degree native form & 121 & 246 & Prior comparison\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus the new $87/304$ point improves both displayed graph-digit points in
+the cost--degree comparison, with the same ten-positive domain.  It does not
+dominate every earlier compact point.  The meaningful mathematical change
+is that a scale explicitly rejected in the inspected denominator-engineering
+notes becomes possible by correcting the index congruence
+\cite{denominator}.  No literature-wide priority claim is inferred from that
+repository comparison.
+
+The direct quartic's matched parent has $252$ unrestricted integer variables,
+$182$ residuals, $5{,}340$ terms and height $128{,}446$
+\cite{common}.  The new $248$-variable principal improves variable and term
+counts while retaining the other metrics.  Two further quartics use $246$
+and $245$ variables with different height/sparsity tradeoffs.  These counts
+should not be presented as global records for unrestricted integer
+Diophantine consistency: the repository already contains much smaller
+native-tuple forms \cite{forms}.  The distinction here is the direct-calculus
+route, its explicit modest coefficients, and the complete algebraic maps.
+
+\subsection{The exact inheritance boundary}
+
+The compact contribution changes the arithmetic front of the existing
+native/Pell route.  It retains the complete directly indexed BFS943 tuple
+and its original native/refutation calibration.  Its source data ultimately
+descend from the existing machine/tile encoding; this paper does not claim
+that compact route is independent of K215.  In contrast, the direct quartic
+and its higher-degree projections encode the C222 numerical proof calculus.
+Their arithmetic does not simulate K215 and does not use Jones's universal
+polynomial or Sun's reduction.
+
+For the direct route the inherited final bridges are
+\begin{align*}
+ &\texttt{KEndpoint.c222\_iff\_zf\_refutation},\\
+ &\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+\end{align*}
+The first theorem is about the machine-independent calculus even though its
+source file also contains machine endpoint theorems.  The second is the
+constructibility-based equiconsistency bridge from ZF to ZFC.  The delivered
+source closure retains these interface files and identifies their upstream
+dependencies.  It is not a new standalone build of all transitive Lean
+imports.
+
+The new contributions are ordinary unbounded mathematical proofs plus finite
+exact algebraic certificates.  Finite checking authenticates the literal
+polynomials, restorations, degree witnesses, coefficient bytes and operation
+counts.  It does not replace the Pell, CRT, native-compiler or syntactic
+calibration theorems.  A claim of a new end-to-end Lean theorem, or a new
+internal-ZFC proof term, would therefore be stronger than this deliverable.
+All ``independent reviews'' supplied here are separate checks within an
+AI-assisted workflow; they are not outside human peer review.
+
+\input{compact.tex}
+\input{direct.tex}
+\input{elimination.tex}
+
+\section{Verification, reproduction, and use of the archive}
+\label{sec:verification}
+
+The archive is designed for local reproduction without a network connection.
+Its mathematical data and checkers use Python's standard library.  The PDF
+can be rebuilt with an ordinary pdfLaTeX installation.  From the package root:
+\begin{verbatim}
+python3 -B verify.py
+python3 -B -O verify.py
+python3 -B verify.py --rebuild
+python3 build_report.py
+\end{verbatim}
+The first command checks the sealed file manifest and component/source
+bindings, then runs the independent finite audits.  The second also disables
+Python assertions throughout the component checks; no substantive check is
+allowed to disappear with optimization.  The third additionally reconstructs
+the delivered equation files and compares their bytes with the release.
+The report builder updates the PDF and its single-file TeX edition.  Such a
+rebuild intentionally changes a sealed document if the local TeX engine
+differs, so a release's manifest should be checked before rebuilding it.
+
+For the compact pair the separate checker binds the actual circuit gates
+to $37$ exact polynomial cuts per equation, propagates the entire highest
+homogeneous form, and verifies five additional algebraic identities.
+It rejects $175$ actual gate mutations for the principal and $173$ for its
+control.  The four fixed numerals are reconstructed from the complete seed
+recipe, and every delivered coefficient payload is authenticated.  The
+finite recurrence and index tests are diagnostic controls in addition to
+the unbounded proof, not evidence that a consistency statement has been
+decided by finite search.
+
+For the direct quartics the checker independently reconstructs the changed
+source, checks the $18$ Horn factoring identities, all monic projections,
+all integral translations, the entire collected quartics, and the unchanged
+parent file pins.  The principal has $203$ monic projection steps and $70$
+translated coordinates.  A clean rebuild reproduces all $22$ generated
+JSON artifacts for the three profiles.  Five deliberately corrupted new
+artifacts are rejected; the parent's own audit is retained and run as well.
+
+For the eight higher-degree forms the checker locally expands every circuit
+block in previously defined source coordinates.  Every source row is
+accounted for exactly once, either as a solved monic definition or as a
+remaining residual.  This verifies the entire polynomial substitution
+without expanding the highest-degree final forms.  Separate nonzero modular
+derivative witnesses prove that every listed input actually occurs in the
+resulting polynomial.  The $153$-variable octic is also expanded in full by a
+separate sparse-polynomial engine.  Seven deliberate corruptions test the
+algebraic certificate rejection path.  The complete coefficient norm bound
+and a nonzero highest-degree witness establish the reported height bounds
+and exact degrees; they are not floating-point estimates.
+
+\subsection{Files that define the result}
+
+The authoritative compact circuit is
+\path{compact/equation_bV.json}.  The principal direct equation is
+\path{direct_quartics/equations/integer248/equation.json}, together with its
+fully collected \path{expanded_polynomial.json}.  The eight projected
+circuits are in \path{higher_degree/equations/}.  Their source file is byte
+identical to the principal $248$-variable equation; the top-level verifier
+checks this binding explicitly.
+
+All $182$ principal residuals are printed in Appendix~\ref{app:residuals}.
+Together with the recursive elimination rule and the complete pivot tables
+in Appendix~\ref{app:monic-pivots}, they give a finite paper specification of every
+projected polynomial.  The JSON circuits are convenient executable versions
+of those fixed definitions.  The complete fixed coefficient recipe for the
+ten-positive form is printed in Appendix~\ref{app:constants}.
+
+Each component contains its proof, producer, independent verifier, exact
+evaluator or circuit format, source hashes and successful verification
+receipts.  \path{review/} holds the additional scoped mathematical reviews
+and root-level replays.  \path{SOURCE_LEDGER.json} records all inspected
+incoming archive hashes.  \path{MANIFEST_SHA256.json} binds the final release
+files.  Original licenses and notices are preserved.
+
+\section{What the new ideas change, and what remains open}
+\label{sec:outlook}
+
+The compact result demonstrates a useful design principle: an index error
+need not be encoded only to first order.  When a Pell/Lucas congruence falls
+short of the modulus needed for a bounded rank, subtracting a short Taylor
+term can increase usable precision without adding an existential variable.
+Here the correction is cubic in the target rank, but its degree is far below
+the dominant transport term.  The cost is a new signed-transport proof and
+careful treatment of primes dividing its denominator.  The result succeeds
+because those costs can be paid without destroying the final degree gain.
+
+The direct result illustrates a different saving.  Two nonnegativity certificates
+can sometimes be replaced by one product certificate if an existing exact
+digit condition chooses the correct sign branch.  The difficult part is
+the order of the proof: size bounds and power semantics must remain valid
+in the unwanted branch, before factoriality or the desired signs are known.
+The new signed-base argument supplies that order.
+
+The higher-degree family uses standard monic substitution.  Its contribution
+is the concrete, fully specified set of eliminations and certified tradeoff
+points on the new source.  It should not be described as a new general
+elimination theorem.  Compared with a quartic-only optimization, it exposes
+how many of the remaining unknowns are merely arithmetic intermediate
+values.  Its large-degree endpoint is included as a measured boundary point,
+not selected as the most practical presentation.
+
+Further reductions remain possible.  A still smaller substitution such as
+$Y=q+s$ would change the crucial coprimality $H\equiv-1\pmod q$ and the
+index-recovery divisibility; no proof for that substitution is supplied.
+Higher-order corrections also need to pay for their signed tails and their
+small-prime denominators.  For the direct family, the delivered projection
+orders are achieved points, not a search-completeness certificate.  More
+systematic degree/height-aware substitution or another semantic guard
+recovery could improve them.  None of these prospects is counted as a
+completed result in the tables.
+
+\appendix
+\clearpage
+\input{constants.tex}
+
+\clearpage
+\section{All residuals of the principal direct quartic}
+\label{app:residuals}
+The variables are exactly $x_0,\ldots,x_{247}\in\Z$.  Define
+\[
+ \boxed{\quad P_{248}(x)=\sum_{j=0}^{181}R_j(x)^2=0.\quad}
+\]
+The following list is complete and ordered.  There are no additional domain
+restrictions or unlisted rows.  Its source file has SHA-256
+\begin{center}\small
+\path{c51ebc12534db042bd1c7bf7c59f84602f51625e2d952dffa82fa054b5d92192}.
+\end{center}
+The variable-to-source correspondence and every restoration are delivered
+in the accompanying certificates.  For the higher-degree forms, the row
+and coordinate numbers in this list are precisely those used by the pivot
+tables; no renumbering is implicit.
+
+\begingroup
+\small
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{5pt}
+\setlength{\jot}{2pt}
+\input{residuals248.tex}
+\endgroup
+
+\clearpage
+\begingroup
+\setlength{\LTpre}{4pt}
+\setlength{\LTpost}{6pt}
+\input{pivots.tex}
+\endgroup
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{repository}
+Vladimir Reshetnikov and ProveIt contributors.
+\emph{ProveIt}, comparison snapshot
+\texttt{3ecd6a6cf53d47519228328567f45fb7ee9781d9}, 25 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9}.
+
+\bibitem{forms}
+ProveIt contributors. \emph{Con(ZFC) in Diophantine form}, delivered
+manuscript index and comparison notes, at the same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9/Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+
+\bibitem{review}
+ProveIt contributors. \emph{Latest proposal review}, at the same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/Computability/DiophantineConsistency/PROPOSAL_REVIEW_LATEST.md}.
+
+\bibitem{centered}
+\emph{Centered Residues}, incoming archive, 25 October 2026.
+Compact component, including the retained arithmetic proofs and indexed
+constant recipe.  Original notices are preserved in this package.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Centered_Residues_2026-10-25.zip}.
+
+\bibitem{denominator}
+\emph{Residual Bases and Denominator Engineering}, incoming archive,
+25 October 2026.  In particular \texttt{compact/PROOF.md}, Section 8,
+records the rejected $Y=qs$ first-order approach.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Residual_Bases_Denominator_Engineering_2026-10-25.zip}.
+
+\bibitem{coprime}
+\emph{Coprime Products and Positive Centers}, incoming archive,
+25 October 2026.  The partial-scale predecessor motivates delayed recovery
+of divisibility in a rational carrier.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Coprime_Products_and_Positive_Centers_2026-10-25.zip}.
+
+\bibitem{common}
+\emph{Common Remainders and Radix 47}, incoming archive, 25 October 2026.
+The direct component is retained unchanged in
+\path{direct_quartics/upstream_common/}, with all $88$ copied files pinned.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Common_Remainders_Radix47_2026-10-25.zip}.
+
+\bibitem{graphdigits}
+\emph{Graph Digits}, delivered package 139, compact component.
+The $87/323$ and $88/318$ points used in the comparison.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9/Computability/DiophantineConsistency/con-zfc-diophantine-forms/139-graph-digits/compact}.
+
+\bibitem{calibration}
+ProveIt contributors. The retained interfaces
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} and
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+See \path{direct_quartics/upstream_common/upstream/round17/architecture/proofs/inherited/calibration/}
+and its exact upstream source pins.  The corresponding native-route
+interfaces and provenance are in \path{compact/parent/proof_sources/}.
+\end{thebibliography}
+
+\end{document}

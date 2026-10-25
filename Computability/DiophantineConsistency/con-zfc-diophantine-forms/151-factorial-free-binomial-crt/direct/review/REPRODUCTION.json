@@ -1,0 +1,139 @@
+{
+  "byte_identical_alias_files": [
+    "principal/equation.json",
+    "principal/expanded_polynomial.json",
+    "principal/METRICS.json",
+    "principal/residuals.txt",
+    "principal/residuals.tex",
+    "principal/variables.tsv",
+    "companion/equation.json",
+    "companion/expanded_polynomial.json",
+    "companion/METRICS.json",
+    "companion/residuals.txt",
+    "companion/residuals.tex",
+    "companion/variables.tsv"
+  ],
+  "byte_identical_rebuilt_json_files": [
+    "factorial_free_affine/mutation.json",
+    "factorial_free_affine/raw_source.json",
+    "factorial_free_affine/factored_source.json",
+    "factorial_free_affine/factorization_certificate.json",
+    "factorial_free_affine/projected.json",
+    "factorial_free_affine/projection_certificate.json",
+    "factorial_free_affine/translation_certificate.json",
+    "factorial_free_affine/equation.json",
+    "factorial_free_affine/expanded_polynomial.json",
+    "factorial_free_affine/METRICS.json",
+    "factorial_free_affine242_balanced/certificate.json",
+    "factorial_free_affine242_balanced/equation.json",
+    "factorial_free_affine242_balanced/expanded_polynomial.json",
+    "factorial_free_affine242_balanced/METRICS.json",
+    "factorial_free_affine241_balanced/certificate.json",
+    "factorial_free_affine241_balanced/equation.json",
+    "factorial_free_affine241_balanced/expanded_polynomial.json",
+    "factorial_free_affine241_balanced/METRICS.json"
+  ],
+  "companion_equation_sha256": "4ac1f58659deee06fdd8d956ebc1f38f72543135759f1174b145e3d8f5b4f9fb",
+  "independent_exact_audit": {
+    "parent": {
+      "independent_final_translation": true,
+      "independent_guard_reconstruction": true,
+      "independent_horn_factorization_edits": 18,
+      "independent_monic_steps": 205,
+      "independent_sos_collection": true,
+      "independent_source_reconstruction": true,
+      "metrics": {
+        "degree": 4,
+        "height": 128446,
+        "monomials": 5340,
+        "rows": 182,
+        "variables": 252
+      },
+      "scope": "No producer modules imported. The inherited independent checker verifies every Horn factoring edit; all source edits, sign guards, monic projections, final translation, and the final SOS collection are independently replayed.",
+      "status": "PASS"
+    },
+    "profiles": {
+      "factorial_free_affine": {
+        "endpoints": {
+          "factorial_free_affine241_balanced": {
+            "finite_maps": {
+              "affine_exposure_operations": 5,
+              "coordinate_shears": 6,
+              "final_row_operations": 36,
+              "unit_affine_projections": 4
+            },
+            "metrics": {
+              "degree": 4,
+              "height": 7968,
+              "monomials": 12774,
+              "row_height": 64,
+              "rows": 177,
+              "variables": 241
+            }
+          },
+          "factorial_free_affine242_balanced": {
+            "finite_maps": {
+              "affine_exposure_operations": 5,
+              "coordinate_shears": 6,
+              "final_row_operations": 34,
+              "unit_affine_projections": 3
+            },
+            "metrics": {
+              "degree": 4,
+              "height": 7968,
+              "monomials": 5018,
+              "row_height": 64,
+              "rows": 178,
+              "variables": 242
+            }
+          }
+        },
+        "projection": {
+          "horn_edits": 18,
+          "monic_projections": 202,
+          "unused_removed": 114
+        },
+        "rejected_corruptions": [
+          "radix.odd_square",
+          "growth.base_definition",
+          "self_radix.base_definition",
+          "shared.frame_definition",
+          "beta.odd_square_multiplier",
+          "monic inverse coefficient",
+          "quartic coefficient"
+        ],
+        "source_endpoint_metrics": {
+          "degree": 4,
+          "height": 128446,
+          "monomials": 5255,
+          "row_height": 256,
+          "rows": 181,
+          "variables": 245
+        },
+        "source_reconstruction": "PASS"
+      }
+    },
+    "scope": "Exact finite source, Horn edits, integral monic projections, all coordinate and row transformations, every quartic coefficient; unbounded semantic theorem is separate.",
+    "status": "PASS"
+  },
+  "independent_power_interface_audit": {
+    "base_moduli_checked": 5,
+    "compiler_imports": false,
+    "distinct_frame_atoms": 37,
+    "front_bootstrap_rows_checked": true,
+    "one_step_derived_pair_checked": true,
+    "principal_pairs_checked": 14,
+    "raw_source_sha256": "7b2d75791f10c717bbadca278e78e9f315508d56acdc8ad3eb82b63ddbb2e855",
+    "requests_checked": 18,
+    "scope": "Raw final affine-base power interface; mathematical soundness, calibration, and projection are separate obligations.",
+    "status": "passed"
+  },
+  "principal_equation_sha256": "3970268165d2dea4914550913d1e882f9c6f108008de677a919fc2a01b8740a5",
+  "readable_export_check": {
+    "mode": "check",
+    "readable_files": 6,
+    "status": "PASS"
+  },
+  "scope": "Exact finite construction and polynomial data; the unbounded semantic proof is separate.",
+  "status": "PASS"
+}

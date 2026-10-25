@@ -1,0 +1,245 @@
+\section{Centered integer-root charts: fewer operations at fixed degree}
+\label{sec:centered-root-charts}
+
+A polynomial change of the carrier coordinate lowers the literal arithmetic
+length of two retained fixed equations. The new points are
+\[
+ \boxed{14\text{ integers},\quad\deg 88,\quad110\text{ operations}},
+ \qquad
+ \boxed{13\text{ integers},\quad\deg156,\quad117\text{ operations}}.
+\]
+The first saves five operations over $14/88/115$ and strictly dominates the
+previous $14/94/110$ alternative. The $14/86/112$ point remains a genuine
+lower-degree tradeoff. The second saves eight operations over $13/156/125$.
+The six complete fixed numerals and the ordinary native/refutation calibration
+are unchanged. These are not global optimality or new kernel-certificate claims.
+
+\subsection{The complete arithmetic interface}
+The fixed ports are $(\beta,K_0,M_C,M_F,A_c,B_c)$, with $M_F$ already shifted,
+$\beta=2^{1064921}-1$, $A_c=2^{1113}$ and $B_c=2^{666104}$. All following
+letters are polynomial abbreviations, not additional witnesses:
+\begin{gather*}
+ J=6j+1,\quad q_m=\beta J,\quad q=q_m+1,\quad W=12w+4,\\
+ X=qW,\quad Y=v,\quad F=(K_0+W)C-zq_m,\\
+ R=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ E=XY,\quad a=E+Y,\quad H=4a+3,\quad\Delta=a^2+H,\\
+ k=R+1+hE,\quad\eta=c-Yk,\quad L=E(Yk),\quad I=(2r+1)c^2,\\
+ M=2q^3,\quad U=MH,\quad K_\ell=X(2X-3c)-2,\\
+ Z=Un+MK_\ell+H(Y-q^3),\quad D_t=1+L(L+k),\quad b=2L+k,\\
+ D_e=(A_cF-q)^2+(B_cC-q)^2,\\
+ \mathcal B=(Yk)^2(q^2-D_e)-q^2\bigl(4(Y\eta)^2+(kq^3)^2\bigr).
+\end{gather*}
+The retained fifteen-integer parent additionally has $f,y,p_1,p_2,p_3$ and
+\begin{align*}
+ Q&=\Delta(f^2-1),&V&=f^2(cT-R)-c,\\
+ A&=(Z+Uk)^2+4U(LZ-U),&B_s&=f^2-\Delta I^2-1,\\
+ C_a&=V^2-(Q-1)y(2V+y)-1,\\
+ B_g&=\mathcal B-1-p_1^2-p_2^2-p_3(p_3+1).
+\end{align*}
+Its single polynomial is $A^2+B_s^2+C_a^2+B_g^2$. The complete ordinary
+proof and source equation are retained under \texttt{roots/inherited/baseline/source/}.
+The exact identity central to the new chart is
+\begin{equation}\label{eq:center-carrier-identity}
+ A=(Z+Ub)^2-4U^2D_t.
+\end{equation}
+
+Before imposing any equation, $q$ is even and nonzero, $H$ is odd and
+nonzero, hence $U\ne0$. Also $|X|\ge8$, and $a=(X+1)Y$ is either zero or
+has $|a|\ge7$, so $\Delta=(a+2)^2-1\ge3$. With $D=XY^2$, we have
+$D_t=1+D(D+1)k^2\ge1$. Since $D$ is even, $D_t$ is odd. Finally
+$\Delta\equiv0$ or $3\pmod4$, so $B_s\not\equiv2\pmod4$ and $B_s\ne-2$.
+
+\subsection{The fourteen-variable equation and all-zero maps}
+Use the unrestricted inputs
+\[
+ (j,C,z,h,r,v,w,T,c,n,f,y,p_2,p_3).
+\]
+Keep $Q,V$ above and define
+\begin{align*}
+ S&=f^2-\Delta I^2,&E_a&=V^2-(Q-1)y(2V+y),\\
+ G&=\mathcal B-1-p_2^2-p_3(p_3+1),\\
+ g_a&=U^2G,&d_b&=4U^2D_t,\\
+ N_2&=(Z^2-g_a-d_b)^2-4g_ad_b,\\
+ P_{14}&=(N_2+1)S E_a-1.
+\end{align*}
+There are no division or radical gates. Since $N_2$ is a square modulo $4$
+and $S=B_s+1\ne-1$, the three integral factors in $P_{14}+1$ can multiply
+to $1$ only when each is $1$. Thus $P_{14}=0$ is equivalent to
+$N_2=B_s=C_a=0$.
+
+For soundness write $\rho=Z/U\in\mathbb Q$ and $A_r=4D_t\ge4$. Then
+\begin{equation}\label{eq:center-two-norm}
+ (\rho^2-A_r-G)^2-4A_rG=0.
+\end{equation}
+Negative $G$ is impossible because the left side would be a square plus a
+strictly positive number. Hence $G\ge0$ and $\mathcal B>0$, forcing
+$Yk\ne0$. As $\mathcal B\le Y^2k^2q^2$ and $|D|\ge8$,
+\[
+ A_r\ge4+2X^2Y^4k^2\ge4+32q^2Y^4k^2
+       >Y^2k^2q^2\ge\mathcal B>G.
+\]
+Consequently $\rho\ne0$: otherwise \eqref{eq:center-two-norm} says
+$A_r=G$. Only now form
+\[
+ p=\frac{\rho^2+G-A_r}{2\rho},\qquad u=\rho-p.
+\]
+Their squares are $G$ and $A_r$. A rational number with integral square is
+integral, by reduction to lowest terms. Therefore $p,u\in\mathbb Z$, and
+$u$ is even. Write $u=2\tau$. The branch $G=0$ is included: it gives
+$p=0$, not a discarded solution. Restore
+\[
+ p_{1,\mathrm{old}}=p,\qquad n_{\mathrm{old}}=n-b-p.
+\]
+Then $Z_{\mathrm{old}}/U+b=2\tau$, so
+\eqref{eq:center-carrier-identity} gives $A_{\mathrm{old}}=0$.
+The strong and auxiliary rows are unchanged, and $p^2=G$ restores the guard.
+
+Conversely, at any parent zero,
+$(Z_{\mathrm{old}}/U+b)^2=4D_t$ makes that rational number an even integer
+$2\tau$. Delete $p_1$ and set
+\[
+ n_{\mathrm{new}}=n_{\mathrm{old}}+b+p_{1,\mathrm{old}}.
+\]
+Now $\rho=2\tau+p_{1,\mathrm{old}}$ and $G=p_{1,\mathrm{old}}^2$;
+substitution proves $N_2=0$, while the other rows are unchanged. These maps
+apply to every parent zero, not only a canonical family.
+
+\subsection{The thirteen-variable centered norm}
+Use
+\[
+ (j,C,z,h,r,v,w,T,c,n,y,p_1,p_2),
+\]
+and set
+\begin{align*}
+ D_s&=\Delta I^2,&F_s&=1+D_s,&Q&=\Delta D_s,\\
+ V&=F_s(cT-R)-c,&E_a&=V^2-(Q-1)y(2V+y),\\
+ G&=4(\mathcal B-p_1^2-p_2^2)-3,\\
+ g_a&=U^2G,&d_b&=4U^2D_t,&f_c&=16U^2F_s,\\
+ g_{ad}&=g_ad_b,&g_{ab}&=g_a+d_b,&Z_2&=Z^2,\\
+ K&=(Z_2-g_{ab}-f_c)^2-4(g_{ad}+g_{ab}f_c),\\
+ N_3&=K^2-64g_{ad}f_cZ_2,&P_{13}&=(N_3+1)E_a-1.
+\end{align*}
+Because $N_3$ is a square modulo $4$, $P_{13}=0$ is exactly $N_3=0$ and
+$E_a=1$. The complete signed factorization is
+\begin{equation}\label{eq:center-three-factor}
+ \frac{N_3}{U^8}
+ =\prod_{\varepsilon\in\{\pm1\}^3}
+ \left(\rho-\varepsilon_1\sqrt G
+ -2\varepsilon_2\sqrt{D_t}-4\varepsilon_3\sqrt{F_s}\right),
+ \qquad \rho=\frac ZU.
+\end{equation}
+This is a polynomial identity valid over $\mathbb C$. Here $D_t,F_s\ge1$
+and $G\equiv1\pmod4$. If $G<0$, each factor has a nonzero imaginary part
+from its sole imaginary radical; thus a zero forces $G>0$. The case $G=0$
+is impossible from the outset, and neither other radicand can vanish.
+
+To handle shared square classes, write each positive radicand as $u_i^2d_i$
+with $u_i>0$ integral and $d_i$ squarefree. A vanishing factor gives
+\[
+ \rho=\varepsilon_1u_1\sqrt{d_1}
+       +2\varepsilon_2u_2\sqrt{d_2}
+       +4\varepsilon_3u_3\sqrt{d_3}.
+\]
+Distinct squarefree radicals are rationally independent, as follows by
+character averaging over the prime-root sign-change automorphisms of a
+multiquadratic field. Grouping a common irrational class cannot give zero:
+a group containing the $G$ term has an odd coefficient and all other
+coefficients even; a group without $G$ but containing $D_t$ has one
+coefficient of exact $2$-adic valuation $1$ and at most a multiple of $4$;
+a group containing only $F_s$ has one nonzero coefficient. The oddness of
+$G,D_t$ supplies the stated valuations; $F_s$ need not be odd. An even
+squarefree class can only contain $F_s$ and is likewise impossible.
+
+Thus all roots are integers. Select their signs from the zero factor and write
+\[
+ g^2=G,\qquad\tau^2=D_t,\qquad f^2=F_s,
+ \qquad\rho=g+2\tau+4f.
+\]
+The integer $g$ is odd. In particular $\rho$ is odd and nonzero, so the
+zero-carrier cancellation branch has been ruled out, not omitted. Restore
+\[
+ f_{\mathrm{old}}=f,\qquad p_{3,\mathrm{old}}=(g-1)/2,
+ \qquad n_{\mathrm{old}}=n-b-g-4f.
+\]
+Then $Z_{\mathrm{old}}/U+b=2\tau$, the strong row is $f^2-F_s=0$,
+the auxiliary interface is unchanged, and
+$p_{3,\mathrm{old}}(p_{3,\mathrm{old}}+1)=(G-1)/4$ restores the guard.
+Conversely, from every parent zero take $g=2p_{3,\mathrm{old}}+1$ and
+\[
+ n_{\mathrm{new}}=n_{\mathrm{old}}+b+g+4f_{\mathrm{old}},
+\]
+deleting $f,p_3$. The parent carrier supplies the integral $\tau$ as before;
+then one factor in \eqref{eq:center-three-factor} vanishes and the auxiliary
+row is unchanged. No additional Pell interpolation theorem is needed.
+
+\subsection{The exact shear and actual degree witnesses}
+Relative to each frozen Round18 equation, the change is simply
+\[
+ n_{\mathrm{old}}=n_{\mathrm{new}}-(2L+k).
+\]
+Since $L,k$ are independent of $n$, this is a polynomial triangular
+automorphism of the entire input lattice, with the inverse adding $2L+k$.
+It replaces the old carrier by $Z^2-4U^2D_t$ and its old centered square by
+$Z^2$. Direct expansion yields exactly the new norms and finalizers.
+This polynomial zero-set bijection is distinct from the root-dependent
+restoration to fifteen coordinates above.
+
+Put
+\[
+ q_0=6\beta j,\quad X_0=12q_0w,\quad Y_0=v,\quad
+ R_0=q_0^4z-12q_0^3wC,\quad
+ U_0=8q_0^3X_0Y_0,\quad L_0=X_0Y_0^2R_0.
+\]
+The complete highest norm forms are
+\begin{align*}
+ (N_2)_{60}&=U_0^4R_0^4(q_0^8+4X_0^2Y_0^4)^2,\\
+ (N_3)_{120}&=2^8U_0^8R_0^8(q_0^8+X_0^2Y_0^4)^4.
+\end{align*}
+The strong and auxiliary degrees in the fourteen-input chart are $12,16$;
+the thirteen-input auxiliary degree is $36$. The literal coefficient
+witnesses are
+\begin{align*}
+ [j^{56}w^8v^8z^5r^2c^4f^4y]P_{14}
+   &=-2^{87}3^{64}\beta^{56}\ne0,\\
+ [j^{106}w^{14}v^{14}z^9r^4c^8y]P_{13}
+   &=2^{171}3^{120}\beta^{106}\ne0.
+\end{align*}
+Hence the degrees are exactly $88,156$ for the authentic fixed tuple, not
+merely generic-port bounds. The operation breakdowns are respectively
+$(64,23,23)$ and $(70,23,24)$ for multiplication, addition and subtraction.
+All unknowns and all six coefficient ports are live.
+
+\subsection{A scoped obstruction to degree reduction by this method}
+Let a further polynomial shear be $n\mapsto n+\Theta$, with $\Theta$ independent of $n$.
+If $\deg\Theta\le9$, let $\Theta_9$ denote its degree-nine part. In the three-root
+chart the degree-$60$ inner norm is
+\[
+ U_0^4\left[
+ (\Theta_9^2+4R_0^2q_0^8-4L_0^2)^2+(8R_0q_0^4L_0)^2
+ \right].
+\]
+This real-polynomial sum of squares is nonzero because its second square is
+nonzero. The outer subtracted term has degree at most $114$, so it cannot
+cancel the degree-$120$ square. For the two-root chart, replace $4R_0^2q_0^8$
+by $R_0^2q_0^8$ and $8R_0q_0^4L_0$ by $4R_0q_0^4L_0$; its degree-$60$
+norm is likewise nonzero. If $m=\deg\Theta>9$, the highest powers of $Z+U\Theta$
+dominate and the norm degrees increase to $4(m+6)$ or $8(m+6)$.
+Thus no polynomial $n$-shear alone lowers $88$ or $156$. This explicitly
+restricted obstruction is not a lower bound over all encodings.
+
+\subsection{Verification and interpretation}
+The independent checker imports neither builder nor circuit code. It checks
+every named cut, topology, liveness and count; propagates complete leading
+forms; proves the shear, signed-factor, extraction and obstruction identities;
+and rejects each of the $227$ separately modified live gates. Normal and
+optimized Python runs have the same acceptance conditions. All $615{,}883$
+raw bytes of the six fixed numerals are authenticated and independently
+reconstructed by the retained finite recipe. The full inherited root/source
+packet is hash-pinned. The earlier carrier leading-form correction is already
+known and is not re-presented as a discovery.
+
+Finite algebra does not decide existence of any zero. The unbounded
+square-class argument is the proof above; the signed-Pell/native/compiler
+and syntactic-refutation theorem is the explicit inherited ordinary
+mathematical dependency. No publication or new end-to-end proof-assistant
+or object-language consistency certificate is claimed.

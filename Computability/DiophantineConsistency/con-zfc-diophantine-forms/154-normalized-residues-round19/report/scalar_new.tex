@@ -1,0 +1,160 @@
+\subsection{A sharp degree floor for this fixed frame}
+The following negative result explains why further polynomial-center search
+alone cannot lower the degree below the Round~18 value. It is a theorem
+about a precisely fixed polynomial family, not a general Diophantine
+complexity bound.
+
+\begin{theorem}\label{thm:degree-floor}
+Keep all the scalar registers defined above, the authentic six coefficients,
+and the eleven independent coordinates fixed. For any nonzero fixed integer
+$L$ and any integer polynomial $\Psi$ in the ten coordinates other than $n$,
+\[
+ \deg\mathcal N_{L,\Psi}\ge300.
+\]
+The center $\Psi_{300}$ with $L=32$ attains degree $300$. Thus $300$ is the
+exact minimum in this fixed-frame, constant-weight, integer-center family.
+The degree assertion does not require $L$ to be even; the logical
+zero-set theorem above does.
+\end{theorem}
+\begin{proof}
+All ports are constants of degree zero and $\beta\ne0$. A subscript zero
+in this proof denotes the complete highest homogeneous component, not an
+arbitrarily chosen leading monomial. Set
+\[
+ q_0=6\beta j,\quad X_0=12q_0w,\quad a_0=X_0v,
+ \quad F_0=12wC-zq_0,
+\]
+\[
+ k_0=R_0=-q_0^3F_0,\qquad \ell_0=X_0v^2.
+\]
+These are nonzero polynomials of degrees $1,2,3,2,5,4$, respectively.
+Exact substitution in the literal registers gives
+\begin{center}\small
+\begin{tabular}{@{}lrl@{}}\toprule
+Register & Degree & Highest homogeneous component\\\midrule
+$A$ &3&$a_0$\\
+$\Delta$ &6&$a_0^2$\\
+$D_m$ &8&$a_0^2c^2$\\
+$B$ &12&$ra_0^3c^2$\\
+$U$ &11&$ra_0^2c^4$\\
+$D_f$ &22&$ra_0^5c^6$\\
+$Q,\delta$ &28&$q_*=ra_0^7c^6$\\
+$V$ &37&$v_*=4r^2a_0^8c^{10}T$\\
+$C_y$ &102&$q_*v_*^2$\\
+$D_t$ &18&$\ell_0^2k_0^2$\\
+$\mathcal B$ &18&$-k_0^2q_0^8$\\
+$P$ &56&$-p_*^2$, where $p_*=q_0^4\ell_0^2k_0^3s$\\
+$S$ &20&$s_*=128sra_0q_0^{15}$\\\bottomrule
+\end{tabular}
+\end{center}
+In particular the highest form of $P$ is a negative square. To check this
+sign directly, the terms $Y^2k^2(q^2-D_{\rm err})$ and
+$-4Y^2q^2\eta^2$ in $\mathcal B$ have degree at most $16$, whereas
+$-k^2q^8$ has degree $18$. Since
+\[
+ P=D_t+(\mathcal B-4)D_t^2s^2,
+\]
+its degree-$56$ part is exactly $-p_*^2$. This is the invariant that
+prevents a degree-$300$ cancellation.
+
+The carrier has degree $35$. Indeed its leading factors are
+\[
+ (z_c)_0=8a_0q_0^3T-4q_0^3X_0^2,\qquad
+ (A_c)_0=((z_c)_0)^5.
+\]
+The two summands of $(z_c)_0$ cannot cancel because one contains $T$ and
+the other does not.
+
+Write $d=\deg\Psi$, treating the zero polynomial as degree $-\infty$.
+If $d<54$, then $\deg Z\le73$ and $\deg p_a\le174$, whereas
+$\deg p_b=124$ and $\deg p_c=176$. Thus the inner expression
+$H_*=p_a+p_b-p_c$ has degree $176$. The cross term has degree at most
+$298$, so $\deg\mathcal N=352$.
+
+If $d>54$, then $\deg Z=20+d$ and $\deg p_a=68+2d>176$.
+It dominates both other terms of $H_*$. Consequently
+\[
+ \deg\mathcal N=136+4d>352,
+\]
+because $\deg(4p_ap_b)=192+2d<136+4d$.
+
+It remains to consider $d=54$. Let $\psi_0$ be the nonzero degree-$54$
+part of $\Psi$. The leading forms of $p_a$ and $p_b$ are respectively
+$q_*s_*^2\psi_0^2$ and $-q_*s_*^2p_*^2$, of degrees $176$ and $124$.
+Therefore the degree-$300$ part of the negative cross term is
+\begin{equation}\label{eq:positive-cross}
+ (-4p_ap_b)_{300}=(2q_*s_*^2\psi_0p_*)^2\ne0.
+\end{equation}
+Put $h=\deg H_*$. If $h<150$, this cross term proves degree $300$.
+If $h>150$, $H_*^2$ proves degree $2h>300$. If $h=150$, the degree-$300$
+part is the sum of the square of the highest form of $H_*$ and the nonzero
+square in \eqref{eq:positive-cross}. A sum of real polynomial squares with
+one nonzero summand is not the zero polynomial. Thus in all cases
+$\deg\mathcal N=\max(2h,300)\ge300$. Attainment is verified next.
+\end{proof}
+This theorem does not cover different carriers, changed auxiliary norms,
+polynomial weights, coordinate changes in the other ten variables, or a
+different encoding of refutation. It does not imply a global minimum even
+among eleven-variable equations. Within its stated family, however, an
+unsuccessful center search has a mathematical explanation rather than
+merely an exhausted search budget.
+
+\subsection{The attaining center and exact highest degree}
+For completeness, the attained bound is checked at the actual coefficients,
+not inferred from a syntactic degree estimate. Work first in the polynomial
+ring with independent symbols $A,c,r,T,R$ and weights $(3,1,1,1,5)$.
+Keep the exact identities
+\[
+ \Delta=A^2-1,\quad U=rc^2(1+\Delta c^2),\quad
+ B=rA(1+\Delta c^2),\quad BD_f=B+\Delta A^2U^2.
+\]
+Define
+\begin{align*}
+ \lambda&=(8\Delta+4)U-rc^4,&\Psi_0&=\lambda V,\\
+ h_*&=2U^3T(c^2-2),&b_*&=16A^3U^2T,\\
+ e_*&=3rc^6U^2T.
+\end{align*}
+The attaining center is $\Psi_{300}=4(\Psi_0+h_*+b_*)+e_*$.
+Its squared approximation error
+$D_{300}=\Psi_{300}^2-32^2BD_fV^2$ follows from the exact identities
+\begin{align*}
+ D_{316}&=[8Ur(2c^2-c^4)+r^2c^8-64B]V^2,\\
+ D_{308}&=D_{316}+2\Psi_0h_*+h_*^2,\\
+ D_{304}&=D_{308}+2(\Psi_0+h_*)b_*+b_*^2,\\
+ D_{300}&=16D_{304}+8(\Psi_0+h_*+b_*)e_*+e_*^2.
+\end{align*}
+These are literal polynomial identities obtained by squaring and using
+$BD_f=B+\Delta A^2U^2$. Expand with
+$U=r(c^4A^2+c^2-c^4)$ and
+$V=D_f(c-R+4AUT)-c$. The highest weighted part of $D_{300}$ is
+\[
+ 4096A^{16}c^{26}r^6T^2,
+\]
+of weight $82$; every remaining term has smaller weight. The supplied exact
+coefficient expansion verifies the cancellation of every term of greater
+weight, not only a numerical sample.
+
+Set $E_{300}=\delta\Psi_{300}^2-32^2BD_fC_y$. Since $C_y=QV^2-1$ and
+$\delta=Q-1$,
+\[
+ E_{300}=\delta D_{300}-32^2BD_f(V^2-1).
+\]
+The second summand has weight $108$; the first has highest part
+$4096A^{23}c^{32}r^7T^2$ of weight $110$. Put $W_*=Sn-A_c$ of degree
+$35$. The exact norm cut is
+\[
+ p_a+p_b-p_c=\delta W_*^2+2\delta S\Psi_{300}W_*
+             +\delta S^2P+S^2E_{300}.
+\]
+The first three terms have degrees at most $98$, $137$ and $124$,
+respectively, whereas the last has exact degree $150$. Its square thus has
+degree $300$. A nonzero $T^4$ term in that degree, before expanding $a_0,q_0$,
+is
+\[
+ 2^{52}s^4r^{18}c^{64}T^4a_0^{50}q_0^{60}.
+\]
+The leading cross term has $T$-degree only two, so it cannot cancel this
+monomial. This independently establishes attainment; it agrees with the
+positive-square argument of Theorem~\ref{thm:degree-floor}.
+
+\input{scalar_results.tex}

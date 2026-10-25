@@ -1,0 +1,353 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,booktabs,microtype,xurl,hyperref}
+\hypersetup{hidelinks,pdftitle={Three-parameter proof calculi and modular saturation},pdfauthor={Research artifact for ProveIt}}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\imp}{\mathbin{\to}}
+\newcommand{\file}[1]{\texttt{\nolinkurl{#1}}}
+\title{Three-parameter proof calculi and modular saturation\\
+\large A measured alternative that does not beat the natural-variable parent}
+\author{Research artifact for ProveIt}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We replace a four-parameter implicational axiom by K, S, and Peirce and
+remove its companion bounded disequality witness using an unbounded modular
+inverse. A small-value decoding argument makes the inverse usable without
+another binomial range certificate. We prove both directions of this change,
+including a necessary lift of two encoded representatives to keep the
+saturation quotient nonnegative. A literal 521-step Hilbert derivation
+certifies the propositional replacement. The implementation produces a
+quartic in 231 nonnegative integer variables with 183 quadratic residuals;
+it loses to the retained 229-variable natural parent. It is an experimental
+source-calculus alternative, not the preferred equation of the surrounding
+package and not a new end-to-end formalization.
+\end{abstract}
+
+\section{Scope, parent, and exact outcome}
+
+The parent is the natural-variable constructor in
+\file{ConZFC_Residual_Bases_Denominator_Engineering_2026-10-25.zip},
+retained in ProveIt at commit
+\file{3ecd6a6cf53d47519228328567f45fb7ee9781d9}.
+The archive and all required compiler files are identified by exact hashes
+in \file{PARENT_PIN.json}. The parent uses a numerical proof calculus
+calibrated to ZFC, descending factorials, reciprocal CRT moduli, binomial
+digit certificates, a shared Pell frame, and one semantic index anchor.
+We retain that arithmetic architecture and change the local source only.
+
+All coordinates here range over $\NN=\{0,1,\ldots\}$. The delivered equation is
+\[
+ P_{231}(z_0,\ldots,z_{230})=
+ \sum_{j=0}^{182} R_j(z_0,\ldots,z_{230})^2=0,
+\]
+where every coefficient of every quadratic $R_j$ is in
+\file{equation.json}. The fully collected quartic is in
+\file{expanded_polynomial.json}. No exponentiation, binomial, factorial,
+bounded quantifier, or proof predicate is a primitive of this polynomial.
+The following metrics are recomputed from its literal coefficients.
+
+\begin{center}
+\begin{tabular}{lrrrrr}
+\toprule
+Natural endpoint & Variables & Rows & Degree & Monomials & Height\\
+\midrule
+Retained projected parent &229&179&4&6,596&83,879,378\\
+This experiment &231&183&4&6,369&83,899,166\\
+\bottomrule
+\end{tabular}
+\end{center}
+The parent also has a balanced row-basis endpoint with 5,607 monomials and
+height 65,892,965. Thus even the lower monomial count in the displayed
+comparison is not a sparsity record. The main construction elsewhere in this
+package uses unrestricted integers; its coordinate count is a different
+comparison. The present experiment supplies a source-level theorem and a
+fully measured unsuccessful compression attempt.
+
+\section{A basis with at most three parameters}
+
+Write the numerical implication constructor as
+\[
+ I(a,b)=2(a+b)(a+b+1)+4b,
+\]
+and, temporarily, write $a\imp b$ for this constructor. The source calculus
+has the four-parameter axiom
+\begin{equation}\label{old}
+ ((c\imp d)\imp a)\imp((a\imp c)\imp(b\imp c)).
+\end{equation}
+Replace it by the three schemata
+\begin{align*}
+ \mathrm K&:\quad a\imp(b\imp a),\\
+ \mathrm S&:\quad(a\imp(b\imp c))\imp((a\imp b)\imp(a\imp c)),\\
+ \mathrm P&:\quad((a\imp b)\imp a)\imp a.
+\end{align*}
+Retain all other numerical axiom families, the guarded bundle, modus ponens,
+and generalization. No new bound is imposed on the numerical instantiations.
+
+\begin{proposition}\label{basis}
+The original and replacement numerical calculi have the same derivable codes.
+\end{proposition}
+\begin{proof}
+The retained calibration source \file{KCode222.lean} contains
+\file{c222_k}, \file{c222_s}, and
+\file{c222_classical}, whose Peirce component is supplied by
+\file{Lukasiewicz.peirce}. Thus each new schema is derivable in the
+original calculus.
+
+For the converse, K and S support the ordinary deduction transformation.
+If an axiom or an undischarged assumption proves $D$, K derives
+$A\imp D$. The discharged assumption $A$ is treated by the standard K/S
+proof of $A\imp A$. A modus-ponens step is discharged with S. This is a
+finite syntactic transformation, valid under every interpretation of the
+binary constructor.
+
+Put $f=(c\imp d)\imp a$ and $g=a\imp c$. Under assumptions $f,g,c\imp d$,
+two applications of modus ponens derive $c$. Discharging $c\imp d$ gives
+$(c\imp d)\imp c$. Peirce with parameters $c,d$ then gives $c$ under $f,g$.
+Add the unused assumption $b$ and discharge $b,g,f$, in that order. The result
+is precisely \eqref{old}.
+
+The supplied certificate expands all deduction transformations into 521
+literal lines: 132 K instances, 128 S instances, one Peirce instance,
+and 260 modus-ponens steps. The independent checker accepts only these axiom
+instances and exact earlier-line references. It accepts no remaining
+assumptions or deduction-theorem rule. Replacing every use of an axiom by
+its finite derivation now gives both inclusions of derivable codes.
+\end{proof}
+
+The source's bundle requires $c\ne a$ and $c\ne b$. Its parameter $c$ also
+occurs as the formula matrix, so simply choosing $c=a+b+1$ is not an
+equivalent axiom restriction. We keep $c$ unrestricted and enforce its two
+disequalities by the following separate device.
+
+\section{The modular saturation lemma}
+
+Let $\boldsymbol z$ denote the bounded local fields. Let $U(\boldsymbol z)$
+be a product of squared residuals, one for each \emph{non-bundle} branch.
+Let $V(\boldsymbol z)$ be the squared residual for the unguarded bundle
+transition, and put
+\[
+ D(\boldsymbol z)=(c-a)^2(c-b)^2,\qquad
+ L(\boldsymbol z)=U(\boldsymbol z)V(\boldsymbol z)
+                  +\sum_\nu G_\nu(\boldsymbol z)^2.
+\]
+Here the $G_\nu$ are the two beta-sequence residuals. Consequently $U,V,L$
+are nonnegative at every natural tuple. The desired local condition is
+\begin{equation}\label{desired}
+ G_\nu=0\text{ for every }\nu,\qquad
+ U=0\quad\text{or}\quad(V=0\text{ and }D\ne0).
+\end{equation}
+
+Let $\boldsymbol A$ be an encoded tuple, with a common modulus $N$.
+Add just the two global equalities
+\begin{equation}\label{saturation}
+ L(\boldsymbol A)=Nq_L,\qquad
+ U(\boldsymbol A)D(\boldsymbol A)e
+   =U(\boldsymbol A)+Nq_s.
+\end{equation}
+The new $e$ is an \emph{unbounded} natural coordinate. It does not receive
+a range certificate or become a Pell sequence index.
+
+\begin{lemma}[Soundness]\label{sound}
+Suppose $m\mid N$, $m\ge2$, and
+$\boldsymbol A\equiv\boldsymbol z\pmod m$. If \eqref{saturation} holds and
+\[
+ 0\le L(\boldsymbol z)<m,\qquad 0\le U(\boldsymbol z)<m,
+\]
+then \eqref{desired} holds, regardless of the size of $e$.
+\end{lemma}
+\begin{proof}
+The first equality implies $L(\boldsymbol z)\equiv0\pmod m$; its bound
+therefore gives $L(\boldsymbol z)=0$. Nonnegativity gives all $G_\nu=0$
+and $UV=0$. If $D(\boldsymbol z)=0$, reduce the second equality modulo $m$.
+It gives $U(\boldsymbol z)\equiv0\pmod m$, and the separate bound gives
+$U(\boldsymbol z)=0$. Otherwise $D\ne0$, and $UV=0$ gives the stated
+alternative.
+\end{proof}
+
+The separate upper bound on $U$ is essential: a bound on $UV$ does not bound
+$U$ when $V=0$. For example, $m=3$, $U=3$, $V=D=0$ satisfies both zero
+congruences with an invalid guard. The construction's majorant explicitly
+includes $U$, in addition to $L$, rather than assuming this missing bound.
+
+\begin{lemma}[CRT completeness]\label{complete}
+Let $m_1,\ldots,m_t$ be pairwise coprime, $K\ge1$, and
+$N=(\prod_i m_i)^K$. Suppose each local tuple $\boldsymbol z_i$ satisfies
+\eqref{desired}. Assume $\gcd(D(\boldsymbol z_i),m_i)=1$ whenever
+$U(\boldsymbol z_i)\ne0$. Choose an encoded tuple satisfying
+$\boldsymbol A\equiv\boldsymbol z_i\pmod{m_i^{2K}}$ for every $i$.
+If $D(\boldsymbol A)\ge1$, then positive $e$ and natural $q_L,q_s$ exist
+satisfying \eqref{saturation}.
+\end{lemma}
+\begin{proof}
+For every row with $U(\boldsymbol z_i)\ne0$, choose
+$e_i\equiv D(\boldsymbol z_i)^{-1}\pmod{m_i^{2K}}$.
+For every other row choose $e_i=0$. CRT supplies an $e$ in these residue
+classes, and adding a sufficiently large multiple of $N^2$ makes $e\ge1$.
+For every $i$, either $U(\boldsymbol z_i)=0$ or $D(\boldsymbol z_i)e_i=1$
+modulo $m_i^{2K}$. Therefore $N^2$ divides
+$U(\boldsymbol A)(D(\boldsymbol A)e-1)$.
+The same polynomial-congruence argument gives $N^2\mid L(\boldsymbol A)$.
+Since $L,U\ge0$, $D(\boldsymbol A)\ge1$, and $e\ge1$, both quotients in
+\eqref{saturation} are nonnegative integers.
+\end{proof}
+
+Nonzero guards need not be units for arbitrary moduli. For example, $D=3$
+has no inverse modulo 3. The hypothesis is supplied here by the specific
+reciprocal moduli, not by an invalid general converse to Lemma~\ref{sound}.
+
+\section{Application to the reciprocal CRT compiler}
+
+After the inherited factorial decoding, let
+\[
+ t\ge12,\quad F=t!,\quad m_i=F^2/i-1\ (1\le i\le t),\quad
+ B=\prod_{i=1}^t m_i=\binom{F^2-1}{t},\quad N=B^x.
+\]
+Every $i$ divides $F$, so $m_i\equiv-1\pmod F$. Every prime dividing an
+$m_i$ is therefore greater than $t$. If a prime divided both $m_i$ and
+$m_j$, it would divide $i m_i-jm_j=j-i$, which is impossible for $i\ne j$.
+Thus the moduli are pairwise coprime. Since $0\le a,b,c\le t$ in each
+decoded row, both nonzero differences $c-a,c-b$ have absolute value at most
+$t$. Their squared product is consequently a unit modulo the row modulus.
+This proves the unit hypothesis of Lemma~\ref{complete}.
+
+The bounded local columns are now exactly
+\[
+ a,b,c,S,S',u,v.
+\]
+The original eighth column $d$ was used by the four-parameter axiom and
+the equality witnessing the bundle's disequality guard. Proposition~\ref{basis}
+and Lemmas~\ref{sound}--\ref{complete} remove both uses.
+The global index representative and derived-label sum retain their own
+range requests. Together with the exact factorial binomial this gives ten
+modular digit requests, one fewer than in the parent. There are six exact
+power graphs, twelve independent Pell seeds, and frame offset fourteen.
+
+For soundness, choose a prime $p\mid m_i$ and put
+$\mu=v_p(m_i)$. The retained one-direction prime-power range lemma decodes
+all local columns modulo $p^{x\mu}$. The two exact global equations
+\eqref{saturation} are divisible by that modulus. The new majorant includes
+$L,U,D$ and the label sum. Its computed exponent is $6{,}893{,}371$,
+rounded upward to $E=2^{23}$, exactly the parent's existing budget. With
+$R=2+t+x+y+F$, the inherited endpoints give
+\[
+ R<2x,\quad x>2^{32},\quad L,U<R^E<(2x)^E<2^x\le p^{x\mu}.
+\]
+Lemma~\ref{sound} applies. The unchanged beta compatibility and
+multiplicative Horn-flow argument now recover a refutation in the new
+calculus, and Proposition~\ref{basis} converts it into an original one.
+
+For completeness, convert an original refutation to the new basis and pad
+the horizon beyond all its local parameters and labels. The inherited
+beta construction supplies $x,y$. Choose each positive independent encoded
+representative initially in $(0,N^2]$, with the prescribed local residues
+modulo $m_i^{2x}$. Then replace
+\begin{equation}\label{lifts}
+ A_a\longmapsto A_a+2N^2,\qquad A_b\longmapsto A_b+N^2,
+\end{equation}
+leaving $A_c$ in $(0,N^2]$. Both lifted representatives are strictly greater
+than $A_c$, so the global $D$ is positive. All row congruences are preserved.
+Lemma~\ref{complete}, with $K=x$, supplies $e,q_L,q_s$.
+
+The two lifts are not optional bookkeeping. In a proof that never needs a
+bundle branch, canonical global representatives can have $A_b=A_c$ while
+global $U>0$. Then the requested natural quotient would satisfy
+$0=U+Nq_s$, which is impossible. Lifting only $A_a$, as in the parent,
+would not fix this case. The metadata and proof both use \eqref{lifts}.
+
+The parent's radix is self-sized:
+\[
+ q=(NH)^x,\qquad H=1+\text{sum of the independent representatives}.
+\]
+There is no aggregate upper-bound certificate restricting the lifts.
+After \eqref{lifts}, every independent representative is at most $3N^2$.
+The semantic label anchor $J$ contains the term $A_a$ and its quadratic
+syntax growth; in particular $J\ge2A_a^2>8N^4>6N^2$. It still exceeds
+twice every nonanchor index. The retained cofinal-anchor construction can
+therefore choose its Pell witnesses. The radix is chosen after the lifted
+representatives, so its coefficient bounds adapt to them. The unbounded
+$e$ is absent from the range and Pell-index lists. No circular enlargement
+of the radix or horizon is introduced.
+
+The stronger precision $m_i^{2x}$ supplies each binomial range divisibility
+to precision $m_i^x$: one vanishing factor has the stronger valuation,
+whereas the denominator factorial loses at most $k-1\le x-1$ for a range
+length $k\le x$. This is the retained one-direction argument; no general
+converse of the binomial range lemma is used.
+
+\section{Polynomial export and calibration boundary}
+
+The raw adapter emits 337 natural variables and 289 quadratic residuals.
+The inherited nonnegative affine and certified quadratic contractions
+eliminate 106 variables and produce the delivered 231-variable quartic.
+Two restorations have negative coefficients but carry exact rational
+sum-of-squares plus nonnegative-monomial certificates. The inherited
+independent checker replays those restorations and independently expands
+the target polynomial. The supplied standalone checker independently checks
+the literal target's coefficients and the 521-line basis derivation, but
+does not reconstruct the inherited arithmetic interpretation.
+
+The ordinary proof dependency is explicit. The parent supplies the
+descending-factorial bootstrap, binomial digit graph, common Pell frame,
+semantic index anchor, and original numerical-calculus calibration. The
+new claims proved here are the basis replacement, the modular saturation
+argument, and its positive-quotient/cofinal completeness adjustment.
+Together these give, within ZFC and relative to those retained arithmetic
+proofs,
+\[
+ (\exists\boldsymbol z\in\NN^{231})\ P_{231}(\boldsymbol z)=0
+ \quad\Longleftrightarrow\quad
+ \text{there exists a finite syntactic ZFC refutation}.
+\]
+Negating gives the requested form with $\Con(\mathrm{ZFC})$.
+This is an equivalence, not a proof of consistency. We do not claim that
+the new equation's entire interpretation has been checked by Lean.
+
+The parent retains named calibration theorems
+\file{KEndpoint.c222_iff_zf_refutation} and
+\file{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+Its calibration files are pinned at repository commit
+\file{08200eb10fde2db408c69dffd840d6920a569b1f}; that older calibration
+pin is distinct from the current intake commit and is not silently updated.
+
+\section{What was learned}
+
+The inverse can safely remain unbounded because soundness reduces the
+guard failure to a separately bounded nonnegative factor. This is the
+useful general mechanism. One range column and one Pell seed disappear,
+but K/S/Peirce introduce additional source branches and arithmetic gates,
+and the saturation row also requires gates and a quotient. With this
+compiler the net result is two additional natural variables and four
+additional rows. Fewer source parameters do not imply a smaller literal
+Diophantine equation.
+
+No literature-priority claim is made for modular saturation. We have not
+asserted an optimal implicational basis, an optimal inverse encoding, or a
+new variable record. The retained artifacts make the architectural change
+auditable and leave a precise target for later work: reduce the polynomial
+cost of a three-parameter classical basis, or share the inverse with an
+already cofinal witness using an independently proved joint existence
+argument. Such sharing is not used in the delivered equation.
+
+\begin{thebibliography}{9}
+\bibitem{parent}
+V.~Reshetnikov, \emph{ProveIt}, retained incoming archive
+\file{ConZFC_Residual_Bases_Denominator_Engineering_2026-10-25.zip}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming}.
+
+\bibitem{calibration}
+ProveIt calibration sources, \file{KCode222.lean},
+\file{KEndpoint.lean}, and \file{ConstructibleChoice.lean}, retained
+at commit \file{08200eb10fde2db408c69dffd840d6920a569b1f}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/08200eb10fde2db408c69dffd840d6920a569b1f/Computability/BusyBeaver/Lean/BusyBeaver/ZFC}.
+\end{thebibliography}
+\end{document}

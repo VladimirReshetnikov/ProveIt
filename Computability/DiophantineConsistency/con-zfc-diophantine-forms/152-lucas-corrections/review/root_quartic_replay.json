@@ -1,0 +1,122 @@
+{
+  "status": "PASS",
+  "optimized": false,
+  "upstream_pinned_files": 88,
+  "independent_audit": {
+    "source": {
+      "variables_before_projection": 551,
+      "quadratic_residuals_before_factoring": 386,
+      "retained_guards": 2,
+      "new_guards": 1
+    },
+    "horn_factorization_edits": 18,
+    "profiles": {
+      "integer248": {
+        "variables": 248,
+        "residuals": 182,
+        "degree": 4,
+        "monomials": 5321,
+        "height": 128446,
+        "projection_steps": 203,
+        "translated_coordinates": 70,
+        "equation_sha256": "c51ebc12534db042bd1c7bf7c59f84602f51625e2d952dffa82fa054b5d92192",
+        "expanded_polynomial_sha256": "b479a80535ceb0d563261474fde8acd31cdfccdfd25afbe3936b2420dccf650a"
+      },
+      "integer246": {
+        "variables": 246,
+        "residuals": 180,
+        "degree": 4,
+        "monomials": 5048,
+        "height": 195955,
+        "projection_steps": 205,
+        "translated_coordinates": 62,
+        "equation_sha256": "70f78f521c8e659c1335ad75f9faea68f30e030ac4f0bd4ba953a182b3d1c5ee",
+        "expanded_polynomial_sha256": "4ec2a932355df81e5d9d157e8fcc4338f64eda8221456fa00d7d9720c3a8debd"
+      },
+      "integer245": {
+        "variables": 245,
+        "residuals": 179,
+        "degree": 4,
+        "monomials": 21845,
+        "height": 314701,
+        "projection_steps": 206,
+        "translated_coordinates": 61,
+        "equation_sha256": "c784406998f2d1666b9c460ba6802cd320ff95848af226ea88d9f23cb480f16b",
+        "expanded_polynomial_sha256": "3369c7255e254ed4363498f97221b854a6f0eaf3279a5414262d86418112ef64"
+      }
+    }
+  },
+  "negative_controls": {
+    "rejected": 5,
+    "controls": [
+      "bootstrap.guard0 coefficient",
+      "bootstrap.odd_square_radix coefficient",
+      "monic restoration coefficient",
+      "collected polynomial coefficient",
+      "integral coordinate shift"
+    ]
+  },
+  "scope": "Finite literal replay; unbounded semantic proof is PROOF.md.",
+  "parent_audit": {
+    "status": "PASS",
+    "optimized": false,
+    "upstream_pinned_files": 50,
+    "independent_audit": {
+      "status": "PASS",
+      "independent_source_reconstruction": true,
+      "independent_guard_reconstruction": true,
+      "independent_monic_steps": 205,
+      "independent_horn_factorization_edits": 18,
+      "independent_sos_collection": true,
+      "independent_final_translation": true,
+      "metrics": {
+        "variables": 252,
+        "rows": 182,
+        "degree": 4,
+        "monomials": 5340,
+        "height": 128446
+      },
+      "scope": "No producer modules imported. The inherited independent checker verifies every Horn factoring edit; all source edits, sign guards, monic projections, final translation, and the final SOS collection are independently replayed."
+    },
+    "negative_controls": {
+      "status": "PASS",
+      "mode": "normal",
+      "negative_controls": [
+        {
+          "mutation": "ratio_coefficient",
+          "rejected": true
+        },
+        {
+          "mutation": "digit_coefficient",
+          "rejected": true
+        },
+        {
+          "mutation": "budget_coefficient",
+          "rejected": true
+        },
+        {
+          "mutation": "restoration",
+          "rejected": true
+        },
+        {
+          "mutation": "translation",
+          "rejected": true
+        },
+        {
+          "mutation": "quartic_coefficient",
+          "rejected": true
+        },
+        {
+          "mutation": "factor_root",
+          "rejected": true
+        }
+      ]
+    },
+    "equation_sha256": "359a38d9ba49f94e1fff7697ff1af7c5b8a6273d56096f6405fc67f212e8d31d",
+    "expanded_polynomial_sha256": "829ec168b17bbd9916dd1e8a566ec5d803c5c528a3eab7786aab9a804dd25a34"
+  },
+  "rebuild": {
+    "identical_json_files": 22,
+    "fresh_audit": "PASS"
+  }
+}

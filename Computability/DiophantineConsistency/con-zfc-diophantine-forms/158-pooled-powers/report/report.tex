@@ -1,0 +1,930 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.87in]{geometry}
+\usepackage{booktabs,longtable,array,microtype,xcolor,enumitem,fancyhdr}
+\usepackage{hyperref,xurl}
+\hypersetup{colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,
+urlcolor=blue!40!black,pdftitle={Pooling exact power certificates for Diophantine consistency},
+pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\G}{\mathcal G}
+\newcommand{\Pow}{\mathcal P}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Diophantine consistency}
+\fancyhead[R]{\small Pooled exact powers}
+\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\input{metrics.tex}
+\title{Pooling exact power certificates for\\Diophantine consistency\\[6pt]
+\large A fixed quartic in \NumVars\ unrestricted integer variables}
+\author{AI-assisted research prepared for Vladimir Reshetnikov\\
+\small ProveIt research program}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct a fixed polynomial of total degree four in \NumVars\
+unrestricted integer variables whose integer unsolvability is provably
+equivalent in ZFC to \(\Con(\mathrm{ZFC})\), by composing the new arithmetic
+proof with the repository's identified C222 refutation calibration.
+The polynomial is the sum of squares of \NumRows\ literal quadratic
+residuals; its collected expansion has \NumTerms\ nonzero monomials and
+coefficient height \CoeffHeight. The inspected parent has 245 variables,
+181 residuals, 5,304 monomials, and the same degree and height.
+The principal new construction replaces all power congruences sharing one
+base by two quadratic equations with two auxiliary integers, independently
+of the number of requests. A sum of squared errors, a signed Pell
+congruence, and the already available square frame prove simultaneous
+exactness, including exclusion of negative exponents at nonunit bases.
+The modulus itself need not be a coordinate. Eleven requests at one base
+and three at another save twelve variables. Cofinal strict ranges and a
+smaller beta base save five more; exact changes of auxiliary coordinates
+save three. The delivered equation encodes a numerical proof calculus
+directly and uses neither K215 nor Jones's universal polynomial.
+The result improves this explicit direct quartic family. It is not a
+global minimality theorem or a new end-to-end proof-assistant certificate.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The equation, theorem, and comparison}
+
+Let \(\mathbf x=(x_0,\ldots,x_{\LastVar})\in\Z^{\NumVars}\). The equation is
+\begin{equation}\label{eq:main}
+\boxed{\qquad P_{\NumVars}(\mathbf x)
+       =\sum_{j=0}^{\LastRow}R_j(\mathbf x)^2=0.\qquad}
+\end{equation}
+Appendix~\ref{app:residuals} prints every residual \(R_j\), with every
+coefficient and coordinate index. The same literal specification is
+\path{equation/equation.json}; the collected polynomial is
+\path{equation/expanded_polynomial.json}. All coefficients are fixed
+integers. No factorial, binomial operator, variable exponent, unspecified
+parameter, or black-box universal polynomial remains in
+\eqref{eq:main}.
+
+\begin{theorem}\label{thm:main}
+For the literal polynomial in \eqref{eq:main}, the arguments below, composed
+with the retained arithmetic and C222/ZF/ZFC refutation calibrations, prove
+\[
+\mathrm{ZFC}\ \vdash\
+\left(\forall\mathbf x\in\Z^{\NumVars},\ P_{\NumVars}(\mathbf x)\ne0\right)
+\quad\longleftrightarrow\quad\Con(\mathrm{ZFC}).
+\]
+The polynomial has exact total degree four, \NumTerms\ collected nonzero
+monomials, and maximum absolute coefficient \CoeffHeight.
+\end{theorem}
+
+The consistency assertion is syntactic consistency for the effective ZFC
+presentation fixed by the inherited calibration. The construction assumes
+neither consistency nor inconsistency. Its coefficients and verification
+artifacts are obtained by finite arithmetic independently of whether a
+refutation exists.
+
+The comparison is pinned to ProveIt commit
+\begin{center}\small\texttt{a0ef2df5bb1f73c35cd334bbc7f53553350ef06a}.\end{center}
+All nine incoming archives at that snapshot were downloaded and their
+relevant reports inspected. The immediate baseline is the
+\emph{Joint Norm} archive, whose 245-variable direct polynomial supersedes
+the older 252-variable endpoint for this comparison \cite{repo,joint}.
+The main collection's top-level summary does not yet include that incoming
+improvement. It would therefore be misleading to compare only with its
+older 282-variable direct result.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Measure & Inspected parent & This equation & Change\\
+\midrule
+Unrestricted integer variables & 245 & \NumVars & $-20$\\
+Quadratic residuals & 181 & \NumRows & $-19$\\
+Total degree & 4 & 4 & 0\\
+Collected monomials & 5,304 & \NumTerms & $+2,563$\\
+Coefficient height & 128,446 & \CoeffHeight & 0\\
+Largest residual coefficient & 256 & 256 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The reduction in variables is approximately \(8.16\%\). The larger
+monomial count is a real tradeoff: squaring a pooled residual creates more
+cross terms. The claim is fewer variables at the same degree and
+coefficient height, not improvement of every complexity measure.
+
+\paragraph{What ``simplest'' can mean.}
+The repository also contains equations with far fewer variables but
+substantially larger degree or large fixed coefficient encodings
+\cite{forms}. Sun's ten-integer undecidability theorem concerns a different
+degree/variable tradeoff \cite{sun}; the present construction does not
+improve that general variable bound. Our objective here is a direct
+quartic with moderate literal coefficients and a transparent arithmetic
+certificate. We do not know an absolute simplest equation, and no
+literature-wide priority or minimality claim is made.
+
+\section{The new idea: two equations for many exact powers}
+\label{sec:pool}
+
+The inherited construction already classifies a finite family of signed
+Pell pairs at one large parameter. Its remaining power checks had one
+congruence quotient per request and one modulus per base. Those separate
+quotients can be removed in groups. The important feature is that the
+aggregation remains quadratic. The earlier batched-certificate proposal
+shares the Pell environment while keeping individual power congruences
+\cite{batched}; the present pooling removes those individual quotients.
+
+\subsection{Signed Pell notation and the classical congruence}
+
+For an integer \(A\) with \(|A|>1\), define the Pell polynomials by
+\[
+\chi_A(0)=1,\qquad\psi_A(0)=0,
+\]
+\[
+\begin{pmatrix}\chi_A(k+1)\\\psi_A(k+1)\end{pmatrix}
+=\begin{pmatrix}A&A^2-1\\1&A\end{pmatrix}
+ \begin{pmatrix}\chi_A(k)\\\psi_A(k)\end{pmatrix}.
+\]
+The matrix has determinant one, so the definition extends to every
+\(k\in\Z\), with \(\chi_A(-k)=\chi_A(k)\) and
+\(\psi_A(-k)=-\psi_A(k)\). In particular,
+\[
+\chi_A(k)^2-(A^2-1)\psi_A(k)^2=1.
+\]
+These functions occur in the proof only. Existing quadratic equations
+certify their coordinates in the delivered polynomial.
+
+For an integer base \(n\), put
+\begin{equation}\label{eq:modulus}
+T=2An-n^2-1.
+\end{equation}
+Then \(\gcd(n,T)=1\), since \(T\equiv-1\pmod n\). The standard power
+congruence is
+\begin{equation}\label{eq:pellpower}
+\chi_A(k)+(n-A)\psi_A(k)\equiv n^k\pmod T,
+\qquad k\in\Z,
+\end{equation}
+where a negative exponent on the right is interpreted in the group of
+units of \(\Z/(T)\). To prove it, substitute \(n-A\) for the formal
+square root of \(A^2-1\):
+\((n-A)^2\equiv A^2-1\pmod T\), and the fundamental unit maps to
+\(A+(n-A)=n\). Positive powers follow by multiplication and negative
+powers by invertibility. This proves the signed version directly.
+Classical Diophantine power and factorial representations are also
+formalized in existing libraries and work such as \cite{pak}; our new
+step is the following aggregate use of the congruence.
+
+\subsection{An exact quadratic identity}
+
+Suppose a group has one common base \(n\) and requests
+\((k_i,m_i)\), \(1\le i\le r\). Write
+\[
+X_i=\chi_A(k_i),\qquad Y_i=\psi_A(k_i),\qquad Z_i=AY_i.
+\]
+The \(Z_i\) are existing coordinates, with quadratic definitions.
+For the proof abbreviate
+\[
+D_i=m_i-X_i+Z_i,\qquad
+H=\sum_{i=1}^rY_i(m_i-X_i),\qquad
+S=\sum_{i=1}^r(D_i^2-Y_i^2).
+\]
+Introduce only two integers \(K,L\), and impose
+\begin{align}
+K-2\sum_{i=1}^rY_i(m_i-X_i)-(2A-n)L&=0,
+                                                        \label{eq:pool1}\\
+\sum_{i=1}^r\bigl((m_i-X_i+Z_i)^2-Y_i^2\bigr)-nK+L&=0.
+                                                        \label{eq:pool2}
+\end{align}
+Both residuals have total degree at most two. Neither \(H\), \(S\),
+\(D_i\), nor \(T\) is an additional coordinate. The number of auxiliary
+variables is independent of \(r\).
+
+\begin{lemma}[Exact aggregate identity]\label{lem:identity}
+Assume \(Z_i=AY_i\). Equations~\eqref{eq:pool1}--\eqref{eq:pool2}
+imply
+\begin{equation}\label{eq:erroridentity}
+\sum_{i=1}^r\bigl(m_i-X_i+(A-n)Y_i\bigr)^2
+=T\left(L-\sum_{i=1}^rY_i^2\right).
+\end{equation}
+Conversely, if each individual power error on the left is divisible by
+\(T\ne0\), integers \(K,L\) satisfying the two quadratic rows exist.
+\end{lemma}
+
+\begin{proof}
+Substitution of \(K=2H+(2A-n)L\) into the second row gives
+\(S-2nH=TL\). On the other hand,
+\begin{align*}
+\sum_i(D_i-nY_i)^2
+ &=\sum_iD_i^2-2nH-(2An-n^2)\sum_iY_i^2\\
+ &=S-2nH-T\sum_iY_i^2.
+\end{align*}
+This is \eqref{eq:erroridentity}. Conversely set
+\[
+L=\sum_iY_i^2+
+ \frac{\sum_i(m_i-X_i+(A-n)Y_i)^2}{T},
+\qquad K=2H+(2A-n)L.
+\]
+The assumed divisibilities make \(L\) integral, and the identity proves
+both rows. No sign condition on either new integer is needed.
+\end{proof}
+
+One cannot infer that each error vanishes merely from
+\(T\mid\sum e_i^2\). The next theorem supplies the essential small-error
+argument. It applies to the small semantic errors obtained after Pell
+reduction, not to the very large raw Pell coordinates.
+
+\subsection{The existing square frame is sufficient}
+
+The inherited frame is
+\begin{equation}\label{eq:frame}
+W=2+\sum_{a\in\mathcal A}a^2,
+\qquad |A|>W^W,
+\end{equation}
+where every actual base, requested exponent, and proposed output is an
+atom in \(\mathcal A\). Repeated atoms cause no problem. In our application
+\(W\ge258\). Thus the stronger bounds
+\(n^2,k_i^2,m_i^2<W\), not just \(|n|,|k_i|,|m_i|<W\), are available.
+
+\begin{theorem}[Quadratic pooling of signed powers]\label{thm:pool}
+Suppose \(W\ge258\), \(1\le r\le15\), \(n\ne0\),
+\[
+|A|>W^W,\qquad n^2,k_i^2,m_i^2<W,
+\]
+and the pairs \((X_i,Y_i)\) are the canonical signed Pell pairs at the
+indices \(k_i\), with \(Z_i=AY_i\). Then the two quadratic equations
+\eqref{eq:pool1}--\eqref{eq:pool2} force
+\[
+\begin{cases}
+k_i\ge0\ \text{and}\ m_i=n^{k_i},& |n|\ge2,\\
+m_i=n^{k_i},& n\in\{-1,1\}.
+\end{cases}
+\]
+For unit bases the integer power is defined for every signed index.
+Conversely, these exact power values admit \(K,L\).
+\end{theorem}
+
+\begin{proof}
+Put \(b=\lfloor\sqrt{W-1}\rfloor\). Then \(b\ge16\),
+\(|n|,|k_i|,|m_i|\le b\), and \(b+k_i\ge0\). By
+\eqref{eq:erroridentity} and \eqref{eq:pellpower}, multiplication by
+\(n^{2b}\) gives
+\[
+T\mid E,\qquad
+E:=\sum_{i=1}^r\bigl(m_i n^b-n^{b+k_i}\bigr)^2.
+\]
+This is an ordinary nonnegative integer: the exponent shift has removed
+every inverse. As \(b\ge2\),
+\[
+|m_i n^b-n^{b+k_i}|
+ \le b^{b+1}+b^{2b}\le2b^{2b}.
+\]
+Consequently,
+\begin{equation}\label{eq:smallerror}
+0\le E\le4r b^{4b}<W^{2b+1}\le W^W.
+\end{equation}
+Here \(4r\le60<W\), \(b^2<W\), and
+\(2b+1\le b^2+1\le W\). Also
+\[
+|T|\ge2|A||n|-n^2-1\ge2|A|-W>|A|>W^W.
+\]
+Thus \(0\le E<|T|\) and \(T\mid E\), so \(E=0\). Every summand
+vanishes. If \(k_i\ge0\), cancel the nonzero integer \(n^b\) to obtain
+\(m_i=n^{k_i}\). If \(k_i=-j<0\), cancellation gives
+\(m_i n^j=1\). This is impossible for \(|n|\ge2\); for \(n=\pm1\)
+it gives exactly the asserted unit power. Conversely the classical
+congruence makes every individual error divisible by \(T\), and
+Lemma~\ref{lem:identity} constructs \(K,L\).
+\end{proof}
+
+The number fifteen is a convenient bound for this particular application.
+The identical proof works for any number \(r\) of requests when
+\(4r<W\) and the other frame hypotheses hold. The two auxiliary
+coordinates do not grow with the number of requests.
+
+The use of the square bounds is decisive. A coarser estimate using only
+\(|k_i|<W\) would suggest enlarging the Pell frame. That enlargement is
+unnecessary here. The final polynomial retains the original odd Pell-frame
+certificate unchanged. The finite checker reconstructs the frame as a sum
+of 36 affine squares after the removed request and authenticates every
+pooled base, exponent, and output against that list.
+
+\subsection{The two actual groups and the variable saving}
+
+After the strict-horizon change below, the direct source has seventeen
+power requests. Fourteen belong to the two groups in this table.
+The symbols are semantic values, before the final integral coordinate
+changes.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Base & Requested indices & Number\\
+\midrule
+\(q+1\) & \(F^2+t,a,b,c,d,S,S',u,v,C,h\) & 11\\
+\(q\) & \(t,y+1,x\) & 3\\
+\(F^2+1\) & \(t\) & 1\\
+\(B\) & \(x\) & 1\\
+\(BH\) & \(x\) & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The nine independent CRT representatives are
+\(a,b,c,d,S,S',u,v,C\). The derived argument \(h\) is a fixed
+constructor polynomial in the four schema representatives. The last
+three requests remain individual, which makes the bootstrap simple.
+Each pooled group removes its old modulus coordinate and all its old
+quotients, and introduces two integers. The savings are therefore
+\[
+(11+1)-2=10,\qquad(3+1)-2=2.
+\]
+The existing Pell pairs and their multiplication coordinates are retained.
+The theorem is not using unrecorded powers as primitives; the entire
+certificate consists of the retained quadratic rows and the four new
+quadratic rows.
+
+\section{Cofinal horizons remove a complete power request}
+\label{sec:strict}
+
+The horizon is selected existentially from
+\(t=16+z^2\). A finite refutation permits arbitrarily large choices of
+this form before the factorial and accumulator states are constructed.
+This freedom makes weak upper bounds unnecessarily expensive.
+
+\subsection{Strict local ranges}
+
+The parent uses binomial divisibilities with lower index \(t+1\) for
+four local schema parameters and one locally decoded derived-label sum.
+Use lower index \(t\) instead. They now enforce
+\[
+0\le a,b,c,d<t,\qquad 0\le J(a,b,c,d)<t
+\]
+on every decoded local tuple. All inherited soundness arguments require
+only the weaker bounds \(\le t\), so the stronger conditions suffice.
+The one-sided prime-power binomial range lemma gives this conclusion
+in exactly the same manner as in the parent.
+
+The notation must be kept straight. The local value \(J(a,b,c,d)\) is
+bounded by \(t\). The value \(h=J(A_a,A_b,A_c,A_d)\) on the large
+global CRT representatives is generally much larger and is the semantic
+Pell anchor. No bound \(h<t\) is imposed.
+
+For completeness, take a finite proof tree, list all its parameter tuples,
+and add the fixed truth-padding tuple. Choose \(t=16+z^2\) strictly larger
+than its number of expansion steps, every parameter, and every full
+derived-label sum on that finite list. These sums are independent of
+\(F=t!\), so this choice is not circular.
+
+At the parent's precision \(2x\), a global representative is congruent
+to the intended local value \(w<t\) modulo \(p^{2xm}\). If the global
+value is smaller than \(t\), the required binomial is zero. Otherwise
+its falling factorial has a factor congruent to zero modulo
+\(p^{2xm}\); division by \(t!\) loses at most \(t-1<xm\) powers of
+\(p\). Thus the required \(p^{xm}\) divisibility holds. Polynomial
+congruence proves the same statement for the derived-label value.
+
+\subsection{One denominator disappears}
+
+Put \(M=q^x\). The parent normalizes digit remainders by ratios
+\(M/q^t\), \(M/q^{t+1}\), and \(M/q^{y+1}\), with a fourth group
+already using \(M\). After tightening the five ranges, every use of
+\(M/q^{t+1}\) can use \(M/q^t\). Delete the output \(q^{t+1}\), its
+power quotient, the private wire for its one-step Pell addition, and its
+normalization ratio. This saves four variables and three rows.
+
+The removed output's square is also deleted from the square frame.
+Every retained base, exponent, and output remains bounded by an explicit
+square. The unchanged \(t\) pair is still needed by both \(q^t\) and
+\((F^2+1)^t\). The modified early bootstrap obtains \(x\ge t\), rather
+than \(x\ge t+1\); Section~\ref{sec:bootstrap} proves the adjusted
+estimates explicitly.
+
+\section{A smaller beta base}
+\label{sec:beta}
+
+Let \(V=(F^2+1)^t\). Replace the parent's
+\(y=V(V-1)\) by the affine identity
+\begin{equation}\label{eq:beta}
+y=V-1.
+\end{equation}
+This is another use of the cofinal horizon, and eliminates one coordinate.
+
+Starting with one pending formula, each backward expansion of a proof
+tree replaces one formula by at most two premises. If the finite tree
+requires \(L\) expansions, every pending multiset has at most
+\(L+1\le t\) elements. Truth padding adds only a weight-one operation
+and does not enlarge the nontrivial state. Every formula label \(j\)
+lies below \(t\), and the inherited multiplicative weight is
+\(1+jF\). Since \(F=t!\ge t\),
+\[
+1+jF\le1+(t-1)F<F^2+1.
+\]
+Every positive accumulator state is therefore strictly below
+\((F^2+1)^t=V\), and at most \(y\). Also \(F\mid V-1=y\).
+This is exactly the divisibility needed to make the beta moduli
+\(1+(i+1)y\), for \(i=0,\ldots,t\), pairwise coprime. Indeed a common
+prime divisor would divide an index difference, hence \(F\), hence
+\(y\), which is incompatible with dividing \(1+(i+1)y\).
+
+After factorial recovery, \(y>F+2\) still holds by an enormous margin.
+Thus the endpoint and amplification arguments retain their hypotheses.
+Before that recovery, \(V\ge1\) gives \(y\ge0\), including the
+temporary branch \(F=0,V=1,y=0\), which is separately excluded below.
+
+There is an offset in the centered parent coordinates: actual
+\(y=x_2-1\), whereas \(V=x_6\). The literal new row is consequently
+\(x_2-x_6=0\), not \(x_2-x_6+1=0\). Its exact elimination is checked
+in the supplied certificate. This detail matters for both endpoints.
+
+\section{Soundness in an acyclic order}
+\label{sec:bootstrap}
+
+We give the dependency order in some detail because signed witnesses and
+the deleted initial guards make premature positivity assumptions unsafe.
+The argument retains the parent's rounded factorial certificate and
+shared remainder norm; the changed pieces are stated explicitly.
+
+\subsection{What is available first}
+
+The retained signed Pell cap and pooled coordinate-orientation argument
+give all fourteen principal pairs at their requested signed indices,
+before interpreting any front power. They use the square frame, a
+separate squared semantic anchor, and bounded residues modulo \(A-1\).
+Their hypotheses are unchanged by pooling; the cap does not depend on
+individual power quotients. The retained proof texts are listed in
+Section~\ref{sec:calibration}.
+
+Among the three individual power requests, the request at \(F^2+1\)
+first gives \(V=(F^2+1)^t\), since its index \(t\ge16\) is already known.
+The shared norm has the semantic form
+\begin{equation}\label{eq:jointnorm}
+M^2=1+4\left(e^2+\sum_{j=1}^{11}\rho_j^2\right)+\G(\alpha,\beta,\gamma),
+\qquad \G(u,v,w)=u^2+v^2+w(w+1),
+\end{equation}
+and the ceiling rows are
+\begin{equation}\label{eq:ceiling}
+Bd=M,\qquad FM-dV-e=0.
+\end{equation}
+Here \(\G\ge0\) for all integer inputs. Thus \(M,B,d\ne0\), and
+\(e=d(FB-V)\) gives
+\begin{equation}\label{eq:halfwidth}
+|FB-V|<|B|/2.
+\end{equation}
+Write \(b_0=|B|\), \(f=|F|\). It follows that
+\(1\le V<(f+1/2)b_0\). If \(f=0\), then \(b_0>2\). If
+\(f\ge1\) and \(b_0\le f\), then
+\((f^2+1)^t\ge(f^2+1)^2>f^2+f/2\), a contradiction. Hence
+\begin{equation}\label{eq:frontmagnitudes}
+b_0\ge2,\qquad |F|<b_0,\qquad V<b_0^2.
+\end{equation}
+
+\subsection{The unit-base case licenses the first pooled group}
+
+Set \(H=1+2\sum a_i\), where the sum runs over the nine actual CRT
+representatives. It is odd, hence nonzero, without any sign premise.
+The individual requests at \(B\) and \(BH\) force
+\[
+x\ge0,\qquad N=B^x,\qquad q=(BH)^x.
+\]
+In particular \(q\ne0\), so Theorem~\ref{thm:pool} applies to the
+three requests at base \(q\), even if temporarily \(q=1\).
+If \(x=0\), then \(q=1\), and the pooled request for \(M=q^x\)
+gives \(M=1\). This contradicts \(Bd=M\) and \(|B|\ge2\).
+Therefore \(x\ge1\) and \(|q|\ge2\).
+
+The retained denominator identity \(q^t r_t=q^x\) now gives
+\(x\ge t\): a negative power of an integer of absolute value at least
+two cannot be an integer ratio. Consequently
+\[
+|q|\ge b_0^x\ge2^{16},\qquad |q+1|\ge2^{16}-1\ge2.
+\]
+The eleven-request group at base \(q+1\) now forces every actual
+representative to be nonnegative and all its powers to be exact. It also
+forces the derived requested index to be nonnegative; the independent
+anchor has already excluded zero. Thus \(H\ge1\).
+
+This order explains why the theorem's unit-base clause matters. Demanding
+\(|q|\ge2\) as a premise before proving \(x\ne0\) would leave a gap.
+
+\subsection{Factorial digit recovery, including the zero candidate}
+
+Let \(Q=|q|\). The binomial numerator is now the exact signed-radix
+power \((q+1)^{F^2+t}\). If \(F\ne0\), each coefficient through degree
+\(t\) is at most \(V=(F^2+1)^t\). The signed low tail \(r^0\) at
+position \(t\) therefore satisfies
+\[
+\frac{|r^0|}{Q^t}<\frac{V}{Q-1}
+ <\frac{2}{b_0^{x-2}}\le\frac{2}{2^{14}}<\frac1{32}.
+\]
+The common norm bounds the absolute value of every chosen remainder by
+half its absolute modulus. Two congruent remainders, one of absolute
+value less than half that modulus and the canonical one of absolute
+value less than one thirty-second of it, cannot differ by a nonzero
+multiple of the modulus.
+They are equal. The next digit gives
+\[
+B\equiv\binom{F^2+t}{t}\pmod q.
+\]
+Both values have difference less than
+\(b_0+b_0^2<Q\), so \(B=\binom{F^2+t}{t}>0\).
+
+When \(F=0\), it would be wrong to bound all \(\binom tj\) by one.
+Instead \(V=1\), \eqref{eq:halfwidth} gives \(b_0\ge3\), and
+\[
+\frac{|r^0|}{Q^t}<\frac{2^t}{Q-1}
+ <2(2/3)^t\le2(2/3)^{16}<\frac1{32}.
+\]
+The same recovery forces \(B=\binom tt=1\), contradicting \(b_0\ge3\).
+Thus this branch has no zero.
+
+\subsection{The rounded factorial lemma}
+
+For completeness we recall the inherited elementary fixed-point argument
+on the range needed here. If \(t\ge16\), \(F\in\Z\),
+\[
+B=\binom{F^2+t}{t},\qquad V=(F^2+1)^t,
+\]
+then \(|F-V/B|<1/2\) holds exactly when \(F=t!\). Put
+\(L_0=t!\), \(a=t(t-1)/2\), and
+\[
+f_t(u)=L_0\prod_{j=1}^t\frac{u^2+1}{u^2+j}.
+\]
+This is nondecreasing for \(u\ge0\), lies in \((0,L_0)\), and
+\[
+f_t(u)\ge L_0\left(1-\frac{a}{u^2+1}\right).
+\]
+The half-width condition excludes \(F\le0\) and \(F\ge L_0+1\).
+For \(1\le F\le t-1\),
+\(f_t(F)\ge2^t/(t+1)>t-1/2\ge F+1/2\).
+For \(t\le F\le L_0/2\), the displayed lower bound exceeds
+\(L_0/2+1/2\). For \(L_0/2\le F\le L_0-1\), it gives
+\(L_0-f_t(F)<4a/L_0=2/(t-2)!<1/2\), again excluding \(F\).
+At \(F=L_0\),
+\[
+0<L_0-f_t(L_0)<\frac{a}{L_0}=
+\frac1{2(t-2)!}<\frac1{32},
+\]
+which proves both the characterization and the completeness margin.
+
+We have now recovered \(F=t!\), \(B>0\), \(q>0\), and \(y=V-1>F+2\).
+The endpoint identities are
+\[
+x=F+1+(y+1)u_0,\qquad
+x=1+\bigl(1+(t+1)y\bigr)u_t.
+\]
+Since \(x\ge t>1\), the second gives \(u_t\ge1\), hence
+\begin{equation}\label{eq:endpoint}
+x\ge2+(t+1)y.
+\end{equation}
+The inherited coefficient estimates recover all remaining digit ranges.
+The lowered positions in Section~\ref{sec:strict} only strengthen them.
+The strict amplification proof, using \(R=2+t+x+y+F<2x\), the bound
+\(x>2^{32}\), and the retained majorant exponent \(2^{23}\), again gives
+\(R^{2^{23}}<2^x\). The finite CRT and Horn-flow decoding therefore
+produce a C222 refutation.
+
+\section{Completeness from a finite refutation}
+\label{sec:completeness}
+
+Start with a finite C222 refutation. Select the strict cofinal horizon as
+in Section~\ref{sec:strict}; then define \(F=t!\), \(V=(F^2+1)^t\),
+and \(y=V-1\). Section~\ref{sec:beta} supplies the pending-state bound
+and beta CRT hypotheses. The parent's construction gives the beta code
+\(x\), the exact factorial-binomial value \(B\), and the nine CRT
+representatives at precision \(N^2\), where \(N=B^x\).
+
+Choose representatives cofinally in their residue classes, as in the
+retained semantic-anchor construction: the dominant schema representative
+can be between \(2N^2\) and \(4N^2\), with prescribed parity, while the
+others are at most \(2N^2\). This makes the large global derived index
+\(h\) even and strictly larger than every other principal index. This
+choice does not alter the small local values or their strict bounds.
+Set \(H=1+2\sum a_i\), \(q=(BH)^x\), and fill all seventeen genuine
+power values.
+
+Only now form \(W\) from the semantic atoms. The ordinary parent frame
+chooses a sufficiently large canonical Pell abscissa at center \(W+1\),
+with ordinate an odd multiple of \(W\). It gives \(|A|>W^W\).
+The canonical principal pairs, squared semantic anchor, common auxiliary
+pair, and comparison pair exist by the retained constructive Pell and
+finite-period arguments. No new condition on the frame is imposed.
+
+Every exact power satisfies its original power congruence, so
+Lemma~\ref{lem:identity} supplies the two aggregate integers for each
+group. Thus completeness of the new pooled rows follows from simultaneous
+completeness of the old congruences without requiring that their
+individual quotient coordinates remain in the equation.
+
+Every true digit remainder, normalized to \(M=q^x\), is smaller than
+\(M/32\); the rounded factorial error has the same bound. The twelve
+errors therefore satisfy
+\[
+4\left(e^2+\sum_{j=1}^{11}\rho_j^2\right)
+ <\frac{48}{1024}M^2<M^2.
+\]
+The remaining nonnegative integer slack is represented by
+\(\G(u,v,w)=u^2+v^2+w(w+1)\). One quick proof of its universality is
+to apply the three-square theorem to \(4n+1\): exactly one of the
+three square roots is odd, giving the claimed form after division by four.
+The other retained guard is filled in the same way.
+
+Finally apply the exact coordinate maps of the next section. Every finite
+refutation thus yields an integer zero of the delivered polynomial.
+Together with soundness this proves the required equivalence of
+existential statements. The strict-horizon and beta changes go through
+freshly constructed refutation witnesses; they are not claimed to be
+bijections between arbitrary old and new assignments at a fixed horizon.
+
+\section{Exact reductions of auxiliary coordinates}
+\label{sec:algebra}
+
+Three further variables disappear by identities over \(\Z\). These
+steps have explicit maps in both directions and do not need semantic
+bounds, positivity, or divisions.
+
+\subsection{Store a sum when only the sum is used}
+
+Suppose \(u=f(\mathbf z)\), \(v=g(\mathbf z)\) are private definitions,
+and every other residual uses these variables only through \(u+v\).
+Replace them by \(w=f(\mathbf z)+g(\mathbf z)\). Projection gives
+\(w=u+v\), and restoration gives \(u=f\), \(v=g\). If \(f,g\)
+are quadratic, their sum is still quadratic even when substituting either
+separately into a product would have raised degree.
+
+In the centered parent, the two values are
+\[
+x_{81}=x_{80}^2,\qquad
+x_{83}=(x_{14}-x_{15}-x_{82})^2.
+\]
+Their only external use is
+\(-x_{101}(x_{81}+x_{83})\). One sum coordinate therefore replaces
+the two and removes one variable and one row.
+
+\subsection{Compute the products that the remaining rows use}
+
+Let \(F=x_3\), \(S=x_{14}\), \(S'=x_{15}\). The product
+\(FS'=x_{70}\) already exists. Three auxiliary definitions in the
+centered parent are
+\[
+x_{84}=1+Fx_{11},\quad x_{85}=1+F(x_{10}-1),\quad
+x_{89}=1+F(6x_{10}+8x_{11}+2x_{21}).
+\]
+They are used only after multiplication by \(S\) or \(S'\).
+Introduce one coordinate \(J=FS\), delete these three definitions,
+and use the distributive identities
+\begin{align*}
+S'(1+Fx_{11})&=S'+(FS')x_{11},\\
+S(1+F(x_{10}-1))&=S+J(x_{10}-1),\\
+S(1+Fx_{11})&=S+Jx_{11},\\
+S'(1+F\ell)&=S'+(FS')\ell,
+\qquad\ell=6x_{10}+8x_{11}+2x_{21}.
+\end{align*}
+All replacement residuals remain quadratic. The old values restore by
+their three definitions, so this saves two variables and two rows with
+an exact integral inverse on zero sets.
+
+\subsection{Pell difference coordinates reduce density}
+
+To control the density caused by pooling, replace each principal
+abscissa by the difference
+\(D_i=X_i-Z_i\). This is a triangular integral change of coordinates,
+with inverse \(X_i=D_i+Z_i\). The norm becomes
+\[
+D_i^2+2D_iZ_i+Y_i^2-1=0,
+\]
+and the long pooled square uses \((m_i-D_i)^2\).
+Before that substitution, reduce the orientation row by the retained
+norms. Modulo those norms its summand satisfies
+\[
+(X_i-1)^2+(Y_i-k_i)^2
+\equiv Z_i^2+k_i^2-2X_i-2k_iY_i+2.
+\]
+After the difference substitution, \(D_i\) occurs only linearly here.
+Adding or subtracting a retained residual from another is reversible
+and preserves the common zero set. The independent checker authenticates
+the exact row combinations and every offset in the centered coordinates.
+
+These transformations yield the following total saving:
+\[
+\underbrace{4}_{\text{strict ranges}}+
+\underbrace{1}_{\text{beta base}}+
+\underbrace{3}_{\text{auxiliary coordinates}}+
+\underbrace{12}_{\text{power groups}}=20.
+\]
+The last density change does not alter the number of variables.
+
+\section{Calibration and the formalization boundary}
+\label{sec:calibration}
+
+The underlying source is the numerical proof calculus C222, under the
+\texttt{xx0} square-shell recoding used by the direct arithmetic
+construction. The
+constructors, the eight ordinary axiom families, the guarded bundle,
+modus ponens, and generalization are retained exactly from the immediate
+parent. Falsity has code 1 and truth code 0. The new equation
+changes how finite refutation certificates are represented arithmetically,
+not which calculus is calibrated.
+
+The semantic chain is
+\[
+\begin{split}
+\exists\mathbf x\ P_{\NumVars}(\mathbf x)=0
+&\quad\longleftrightarrow\quad
+\text{a finite square-shell C222 derivation of 1}\\
+&\quad\longleftrightarrow\quad
+\text{a finite original C222 derivation of 1}\\
+&\quad\longleftrightarrow\quad
+\text{a finite ZF refutation}\\
+&\quad\longleftrightarrow\quad
+\text{a finite ZFC refutation}.
+\end{split}
+\]
+
+For clarity, the recoding is an ordinary theorem rather than a claim that
+the two sets of constructor polynomials are identical. Put
+\[
+Q_0(a,b)=(a+b)^2+a,\qquad
+Q_1(a,b)=(a+b)^2+3a+4b+3.
+\]
+The shell constructors are \(I=2Q_0\), \(M=2Q_0+1\),
+\(\mathsf A=2Q_1\), and \(\mathsf E=2Q_1+1\).
+On the shell \(a+b=s\), \(Q_0\) covers
+\([s^2,s^2+s]\) once; on the preceding shell, \(Q_1\) covers
+\([s^2+s+1,(s+1)^2-1]\) once. These intervals partition \(\N\).
+Every positive constructor value exceeds both arguments. Decoding and
+recursing therefore gives a total constructor-preserving bijection
+\(f\) from the original Cantor coding to this shell coding, with the
+shared case \(I(0,0)=0\) treated as a base case. Its inverse is obtained
+by the opposite decoding; induction proves both inverse identities.
+In particular \(f(0)=0\), \(f(1)=1\), and equality and disequality are
+preserved.
+
+All constructor-term axioms and the two inference rules transport by
+\(f\). In the guarded branch, the arithmetic witness must be rebuilt:
+from the two transported freshness disequalities choose
+\[
+d_{\mathrm{new}}
+=\left|(f(c)-f(a))(f(c)-f(b))\right|-1\ge0.
+\]
+This gives the required squared guard. It does not assume that \(f\)
+preserves addition. A separate branch in which \(d\) is a code parameter
+transports \(d\) normally; the branches are alternatives, so these
+assignments do not conflict. The inverse bijection proves the converse
+transport. The full inherited argument is supplied unmodified in
+\path{inherited/shell_recoding_supplement/SHELL_ENCODING_PROOF.md}, with
+the literal constructor sources and their pinned provenance.
+
+The named logical interfaces in the retained source are
+\path{KEndpoint.c222_iff_zf_refutation} and
+\path{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+The latter uses the constructible-universe equiconsistency argument.
+The relevant interface files, source pins, ordinary arithmetic proofs,
+and original notices are included under
+\path{inherited/joint_norm245/}; the separately identified syntax supplement
+closes the recoding step. These retained sources are not a complete
+recompiled proof-assistant dependency closure.
+
+For auditing the new arithmetic, the most relevant retained proof files
+are the Joint Norm \path{proofs/BOOTSTRAP_PROOF.md} and, within its
+normalized-parent closure, \path{PROOF_315.md},
+\path{ORIENTATION_FIRST_PROOF.md}, \path{STRICT_BUDGET_PROOF.md},
+\path{INHERITED_DERIVED_LABEL_RANGE_PROOF.md}, and the direct calculus
+and CRT exposition. The provenance manifest gives exact file paths and
+hashes, rather than relying on these abbreviated names to identify a
+dependency.
+
+All new arguments use integer polynomial identities, induction on finite
+recurrences and proofs, elementary bounds, finite CRT, and finite-group
+Pell periodicity. They are ordinary mathematics formalizable in ZFC.
+Together with the identified inherited calibration they prove
+Theorem~\ref{thm:main}. The supplied Python checks certify finite objects
+and exact transformations. They do not certify the absence of zeros,
+establish consistency, or replace the unbounded mathematical proofs.
+The full imported Lean dependency closure was not recompiled in this
+work, and no new end-to-end Lean or Rocq theorem is claimed.
+
+\section{Reproduction and finite evidence}
+
+The package contains the literal residual system, its full sparse
+expansion, the construction stages, transformation certificates, the
+unmodified immediate parent and retained proof closure, the report source,
+and independent verification scripts. Python 3 with its standard library
+is sufficient for the new finite checks.
+
+From the package root, run
+\begin{verbatim}
+python3 -B verify.py
+python3 -B -O verify.py
+\end{verbatim}
+The build command and the PDF rebuild command are in \path{README.md}.
+The new verifier checks source identities, the semantic edit boundaries,
+the auxiliary-coordinate maps, the two power groups and their exact
+affine ports, the unchanged square frame and atom coverage, the Pell
+coordinate changes, and every coefficient of the collected polynomial.
+It computes the reported dimensions, degree, support, coefficient height,
+and coordinate liveness from the delivered residuals.
+
+Separate exact checks exercise the aggregate polynomial identity, signed
+Pell congruences, unit and negative bases, negative indices, the square-frame
+error estimate, and the corrected zero-factorial bound. These are useful
+falsification and regression checks; the preceding theorems establish the
+unbounded conclusions. The reviews were independently assigned to other
+AI research agents, not represented as external human peer review.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Can distinct bases share one aggregate?}
+The present proof groups by an identical base and uses its single modulus
+\(2An-n^2-1\). Pooling different bases without new product or CRT
+coordinates would require a different quadratic identity. A naive sum
+of their errors has no common modulus and is not justified by this proof.
+\item \textbf{Can an entire Pell pair disappear?}
+We removed quotient coordinates while keeping canonical pairs. A useful
+next target is a semantic exponent identity that reconstructs a pair
+already needed elsewhere, with no new multiplication coordinates.
+\item \textbf{How far can auxiliary-coordinate compression go?}
+The sum replacement and product redistribution exploit how values are
+used by the remaining equations. A systematic search over integral
+changes of coordinates and quadratic row combinations may find more
+reductions than single-row monic elimination. Coefficient height and
+support must be measured alongside dimension.
+\item \textbf{Can the new module be formally verified independently?}
+The aggregate identity, signed modular power lemma, and square-frame
+error bound form a small coherent target for Lean or Rocq. A theorem
+with an explicit list of affine ports would allow subsequent compilations
+to reuse one checked module.
+\item \textbf{What is the best calculus for the arithmetic cost?}
+Optimizing the number of schema parameters can help, but a parameter
+hidden in a marker premise may reappear as an additional encoded column
+in the global proof-flow construction. A local reduction must be carried
+through the complete arithmetic compiler before claiming a smaller
+consistency equation. The full guarded-bundle freshness range must also
+be retained unless a new logical calibration is proved.
+\item \textbf{Can density be reduced without giving back the variables?}
+The principal equation has more collected monomials than its parent.
+Alternative quadratic residual bases and integral Pell coordinates are
+natural targets for a future support/height optimization at dimension
+\NumVars.
+\end{enumerate}
+
+\section*{Attribution}
+\addcontentsline{toc}{section}{Attribution}
+The C222 calibration, finite flow/CRT encoding, rounded factorial, signed
+Pell cap, cofinal semantic anchor, and common digit norm are inherited
+and identified in the source ledger. The new contributions are the
+two-equation pooling of exact powers at a common base with no modulus
+coordinate, its signed square-frame proof and integration into the
+bootstrap, the strict-horizon and linear beta refinements, the exact
+auxiliary-coordinate reductions, and the literal combined endpoint.
+No claim is made that elementary polynomial identities themselves are
+new. Novelty is stated relative to the inspected constructions; a global
+priority claim would require a broader literature review.
+
+\begin{thebibliography}{9}
+\small\setlength{\itemsep}{2pt}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, snapshot
+\texttt{a0ef2df5bb1f73c35cd334bbc7f53553350ef06a}, 25 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/commit/a0ef2df5bb1f73c35cd334bbc7f53553350ef06a}.
+\bibitem{joint} \emph{A single norm for factorial and digit certificates},
+incoming package \path{ConZFC_Joint_Norm_2026-10-25.zip}, in the preceding
+repository snapshot. The unmodified direct component is included here.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/a0ef2df5bb1f73c35cd334bbc7f53553350ef06a/docs/incoming/ConZFC_Joint_Norm_2026-10-25.zip}.
+\bibitem{forms} V. Reshetnikov, \emph{Con(ZFC) in Diophantine form},
+collection README and placement ledger, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/a0ef2df5bb1f73c35cd334bbc7f53553350ef06a/Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+\bibitem{batched} \emph{Shared arithmetic certificates for Diophantine
+consistency equations}, collection package 96, especially
+\path{report/batched_powers.tex}. This earlier batching shares the Pell
+environment and retains separate local power congruences.
+\bibitem{pak} K. P\k{a}k and C. Kaliszyk, \emph{Formalizing a Diophantine
+Representation of the Set of Prime Numbers}, ITP 2022,
+arXiv:2204.12311. \url{https://arxiv.org/abs/2204.12311}.
+\bibitem{sun} Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem
+over the integers}, arXiv:2609.01594v2, 2026.
+\url{https://arxiv.org/abs/2609.01594v2}.
+\end{thebibliography}
+
+\appendix
+\clearpage
+\section{Literal residual specification}\label{app:residuals}
+The following \NumRows\ residuals, in precisely this order, define
+\eqref{eq:main}. All \(x_i\) range independently over \(\Z\). A line
+break within a residual does not start a new equation. This appendix is
+generated directly from \path{equation/equation.json} and checked against
+that file. The variable names in the machine-readable list are provenance
+labels; only the displayed integer coefficients and indices define the
+polynomial. Every index from 0 through \LastVar\ occurs.
+\input{residuals.tex}
+
+\clearpage
+\section{Artifact identities}
+\input{identities.tex}
+\end{document}

@@ -1,0 +1,2103 @@
+
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,hyperref,microtype,fancyhdr,enumitem}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+pdftitle={Shared factorial errors in a Diophantine equation for Con(ZFC)},
+pdfauthor={OpenAI ChatGPT, prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Shared factorial errors and Diophantine consistency}
+\fancyhead[R]{\small 25 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{5pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=4pt}
+\allowdisplaybreaks[4]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\ZF}{\mathrm{ZF}}\newcommand{\Ccalc}{\mathsf C222}
+\newcommand{\Gform}{\mathcal G}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\MainVars}{240}
+\newcommand{\MainLast}{239}
+\newcommand{\MainRows}{177}
+\newcommand{\MainRowLast}{176}
+\newcommand{\MainTerms}{21482}
+\newcommand{\MainHeight}{6144}
+\newcommand{\MainDir}{equation240}
+\title{\textbf{Shared factorial errors in a Diophantine equation for
+\(\Con(\ZFC)\)}\\[5pt]\large A direct quartic with \MainVars{} unrestricted
+integer unknowns}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt project\\
+\small Mathematical development and computational assistance: OpenAI ChatGPT}
+\date{25 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We give a completely specified degree-four polynomial in \MainVars{}
+unrestricted integer unknowns whose lack of integer zeros is provably
+equivalent in ZFC to \(\Con(\ZFC)\). The final equation has \MainRows{}
+quadratic residuals, \MainTerms{} collected monomials, and coefficient
+height \MainHeight{}. Every residual is printed in this report.
+
+The main mathematical change shares one norm certificate between eleven
+modular digit remainders and a signed factorial approximation error.
+A nearest-integer factorial lemma recovers the intended factorial after
+binomial extraction, making two former positivity certificates unnecessary.
+Centered digits also allow an initially signed odd radix, whose positivity
+is recovered later. The original beta-spacing formula is retained.
+These changes give a 244-variable direct core; exact integral elimination
+and reversible residual-row operations produce the stated final equation.
+
+The route uses the numerical proof calculus C222 and its identified ZF/ZFC
+refutation calibration, without instantiating K215 or Jones's universal
+polynomial. We distinguish ordinary unbounded proofs from finite algebra
+checks. No global simplicity minimum, consistency proof, or newly completed
+end-to-end proof-assistant formalization is claimed.
+\end{abstract}
+\newpage\tableofcontents\newpage
+\section{An explicit equation and the scope of the result}
+
+The principal deliverable is the following single polynomial equation over
+unrestricted integers:
+\begin{equation}\label{eq:main-definition}
+ P(x_0,\ldots,x_{\MainLast})
+   :=\sum_{i=0}^{\MainRowLast}Q_i(x_0,\ldots,x_{\MainLast})^2=0.
+\end{equation}
+The appendix gives every coefficient of every quadratic polynomial \(Q_i\).
+The file \texttt{\MainDir/\allowbreak equation.json} is the same finite definition in a
+sparse, machine-readable format; the accompanying collected coefficient
+file gives \(P\) directly. There are no unspecified universal polynomials,
+variable-exponent operations, or machine simulations in this definition.
+The powers appearing in the proof below describe the meanings of ordinary
+polynomial registers.
+
+\begin{theorem}\label{thm:main}
+For the fixed integer polynomial in \eqref{eq:main-definition}, ZFC proves
+\[
+ \bigl(\forall \mathbf X\in\mathbb Z^{\MainVars}\quad P(\mathbf X)\ne0\bigr)
+       \quad\Longleftrightarrow\quad \operatorname{Con}(\mathrm{ZFC}).
+\]
+More precisely, ZFC proves that an integer zero exists if and only if a
+finite refutation exists in the fixed numerical presentation of ZFC used
+by the retained ProveIt calibration.
+\end{theorem}
+
+The equation has \(\MainVars\) variables, \(\MainRows\) squared quadratic
+residuals, total degree four, \(\MainTerms\) nonzero collected monomials,
+and coefficient height \(\MainHeight\). The height is the largest absolute
+coefficient after all like monomials have been collected. All variables
+range over \(\mathbb Z\), including coordinates whose eventual arithmetic
+interpretations are nonnegative.
+
+The comparison is with the incoming common-remainder construction at the
+pinned repository snapshot, rather than with an older, larger ancestor.
+The exact endpoints supplied here make the tradeoffs visible:
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Equation & Variables & Residuals & Monomials & Height\\
+\hline
+Common-remainder parent &252&182&5340&128446\\
+New arithmetic core &244&181&5346&128446\\
+Primary dimension endpoint &\MainVars&\MainRows&\MainTerms&\MainHeight\\
+Balanced companion &241&178&5351&15107\\
+Lower-height companion &241&178&9544&4512\\
+\hline
+\end{tabular}
+\end{center}
+All five entries have degree four. The primary endpoint gives the smallest
+dimension among the new supplied forms, at a substantial cost in support:
+its collected polynomial has about four times as many terms as the
+252-variable parent. The balanced companion keeps almost the parent's
+support while removing eleven variables and reducing coefficient height.
+These are distinct exact equations with the same existence theorem.
+
+This is an improvement of the direct numerical proof-calculus branch. It
+does not establish a global minimum. Other branches of the repository
+already contain quartics in far fewer variables, including a 37-integer
+form, with different coefficient and encoding costs \cite{overview}.
+There is no established scalar measure called \emph{simplest} that orders
+dimension, degree, coefficient size, support, and proof complexity.
+Here the declared objective is an explicit quartic with small coefficients,
+a direct refutation interpretation, and a complete reproducible description.
+
+The new arithmetic step is to use the existing common norm to certify the
+factorial error as well as all eleven digit remainders. This removes the
+two initial factorial sign certificates. A signed-radix proof then permits
+the radix certificate to be only an affine oddness equation. These changes
+are compatible with the inherited deterministic Pell comparison center.
+The common normalized remainders, the center construction, and the
+underlying calculus are credited to their predecessors
+\cite{common,symmetric,centered,repo}; the proof below identifies precisely
+which additional implications are needed.
+
+\section{The retained arithmetic interface}
+
+Write \(t=16+d^2\), where \(d\) is an unrestricted integer. The principal
+arithmetic quantities are
+\[
+ F,\quad B,\quad V,\quad x,\quad y,\quad N,\quad q,\quad
+ M,\qquad H=1+\sum_{\nu=1}^{9}a_\nu.
+\]
+The \(a_\nu\) are the nine actual CRT representatives. In the stored source,
+several are a coordinate plus one; it is their actual values, rather than
+their shifted coordinates, that will become nonnegative.
+
+The retained exact-power requests have the intended meanings
+\begin{equation}\label{eq:power-meanings}
+ V=(F^2+1)^t,\qquad N=B^x,\qquad q=(BH)^x,\qquad M=q^x,
+\end{equation}
+together with the powers used in the binomial numerators and denominators.
+There are eighteen requests, sharing fourteen independent principal Pell
+pairs. At this point these displays are requested meanings, not assumptions.
+Their interpretation is recovered in a specified order below.
+
+The beta spacing is left literally unchanged:
+\begin{equation}\label{eq:beta}
+ y=V(V-1).
+\end{equation}
+The endpoint equations include
+\begin{equation}\label{eq:endpoints}
+ x=F+1+(y+1)u_0,\qquad
+ x=1+\bigl(1+(t+1)y\bigr)u_t.
+\end{equation}
+Initially \(u_0,u_t,x,F,B,q\) may have either sign.
+
+The eleven normalized remainder registers fall into four groups:
+\begin{center}
+\begin{tabular}{llr}
+\hline
+Denominator & Meaning & Number\\
+\hline
+\(q^t\) & Factorial digit and encoded index &2\\
+\(q^{t+1}\) & Four syntax representatives and derived label &5\\
+\(q^{y+1}\) & Two pending-multiset representatives &2\\
+\(q^x\) & Two beta quotients &2\\
+\hline
+\end{tabular}
+\end{center}
+The existing ratio equations are
+\begin{equation}\label{eq:ratios}
+ q^t v_t=M,\qquad q^{t+1}v_{t+1}=M,\qquad
+ q^{y+1}v_y=M.
+\end{equation}
+Each displayed power in these equations is a retained output register.
+The quotient for the last group is the constant one.
+
+For clarity, put
+\[
+ G(a,b,c)=a^2+b^2+c(c+1).
+\]
+This form is nonnegative at every integer triple and represents every
+nonnegative integer. The latter is the familiar consequence of the
+three-square theorem applied to \(4n+1\): exactly one square is odd, and
+the two even squares can be divided by four. This is the same guard form
+already used in the parent \cite{common}.
+
+The altered arithmetic core replaces the three separate initial scalar
+sign certificates by
+\begin{align}
+ q&=2z+1,                                                    \label{eq:odd}\\
+ Bv&=M,                                                     \label{eq:factor-ratio}\\
+ MF&=vV+S,                                                  \label{eq:factor-error}\\
+ M^2&=1+4\left(S^2+\sum_{i=1}^{11}R_i^2\right)+G(a,b,c).
+                                                               \label{eq:common-norm}
+\end{align}
+The new integers \(v,S\) normalize the factorial error at the same
+denominator \(M\) as the other remainders. No inequality, division,
+factorial, or variable power has been added to the literal polynomial
+system. Equations \eqref{eq:odd}--\eqref{eq:common-norm} are polynomial
+rows of degree at most two in their actual registers.
+
+\section{Pell orientation before arithmetic signs}
+
+For a signed integer center \(A\), define the Pell polynomials by
+\[
+ X_0(A)=1,\quad Y_0(A)=0,\qquad
+ X_{k+1}=AX_k+(A^2-1)Y_k,\quad Y_{k+1}=X_k+AY_k.
+\]
+For negative indices use \(X_{-k}=X_k\), \(Y_{-k}=-Y_k\).
+The retained frame bounds every actual base, requested index, and proposed
+power output in absolute value by an integer \(W\), with
+\begin{equation}\label{eq:frame}
+ W\ge258,\qquad |A|>W^W,\qquad |A-1|>4W^3.
+\end{equation}
+These are consequences of square-based frame equations. Their proof does
+not assume signs for \(F,B,q,x\), or the power outputs.
+
+The deterministic comparison center is retained from the supplied
+predecessor proof \cite{symmetric}. To distinguish its auxiliary pair
+from the arithmetic quantity \(H\), write it as
+\[
+ H_{\rm p}^2-(A^2-1)J_{\rm p}^2=1,\qquad
+ J_{\rm p}=C^2(2e+1),
+\]
+where \((U,C)\) is the principal anchor pair with requested index \(h\).
+The squared cap says
+\[
+ C^2=h^2+1+\sum_{\text{other pairs}}Y_i^2+G(a',b',c').
+\]
+It gives \(C\ne0\), \(|h|<|C|\), and strict domination of all other
+principal ordinates. The comparison center is defined by
+\[
+ f=(1-A)H_{\rm p},\qquad D=A+H_{\rm p}f
+    =1-(A-1)(A^2-1)J_{\rm p}^2.
+\]
+Thus \(|D|>1\), \(D\equiv A\pmod{H_{\rm p}}\), and \(D\equiv1\pmod C\).
+The comparison ordinate residue is \(R=h+Ck\).
+
+Here is the part of its proof that matters for compatibility. Classify
+the anchor and common Pell ordinates at \(|A|\) by positive indices
+\(i,l\). For \(i\ge2\), the squared divisibility condition implies
+\(|C|\mid l\) and \(l>i\). The abscissa comparison gives the comparison
+index \(j\equiv\pm i\pmod{2l}\); the new ordinate residue gives
+\(j\equiv\pm h\pmod{|C|}\). Consequently
+\(i\equiv\pm h\pmod{|C|}\). The growth bound
+\[
+ |C|=Y_i(|A|)\ge i+2|A|-2
+\]
+and \(|h|<W\) imply \(i+|h|<|C|\), so \(i=|h|<W\).
+All other classified indices are smaller by the cap.
+
+The exceptional case \(i=1\) has \(|C|=1\). The cap then forces \(h=0\)
+and every other ordinate to vanish. Reducing the retained orientation
+pool modulo \(A-1\) gives a nonnegative small error sum. Its anchor
+ordinate contributes one, so it is strictly positive, while
+\eqref{eq:frame} makes it strictly smaller than \(|A-1|\).
+Its asserted divisibility is impossible. This exceptional branch
+therefore supplies no zero.
+
+All fourteen principal pairs retain both-coordinate orientation:
+the squared abscissa errors and squared ordinate-index errors remain
+in the pool. After classification their small residues have errors at
+most two and strictly less than \(2W\), respectively. The resulting
+nonnegative residue sum is less than
+\(4\cdot14(W^2+1)<4W^3<|A-1|\). Divisibility forces every error to vanish.
+Thus each principal pair is exactly
+\((X_k(A),Y_k(A))\) at its signed requested index.
+
+This use of all fourteen pairs is deliberate. A separate predecessor
+reduction keeps fewer abscissa tests, but its hypotheses cannot simply
+be assumed in the signed bootstrap below. The present construction
+does not make that deletion. The complete retained center and frame
+proofs are included in the proof closure.
+
+\section{A power lemma valid at signed bases}
+
+\begin{lemma}\label{lem:signed-power}
+Assume \eqref{eq:frame}. Let \(|n|,|k|,|m|<W\), with \(|n|\ge2\), and set
+\[
+ T=2An-n^2-1.
+\]
+If the pair is canonically oriented at \(k\) and its power row asserts
+\[
+ X_k(A)+(n-A)Y_k(A)\equiv m\pmod T,
+\]
+then \(k\ge0\) and \(m=n^k\).
+For \(n=\epsilon\in\{1,-1\}\), the same row instead gives
+\(m=\epsilon^k\) for every integer \(k\), including negative \(k\).
+\end{lemma}
+
+\begin{proof}
+For \(|n|\ge2\),
+\[
+ |T|>4W^W-(W-1)^2-1>W^W+W.
+\]
+Modulo \(T\), one has
+\((n-A)^2=A^2-1\) and \(n(2A-n)=1\).
+The Pell identities therefore give \(n^k\) at nonnegative indices
+and its multiplicative inverse at negative indices. If \(k\ge0\),
+the congruence has
+\[
+ |m-n^k|<W+W^W<|T|,
+\]
+so it is equality. If \(k=-j<0\), multiplication by \(n^j\) gives
+\(mn^j\equiv1\pmod T\). But
+\[
+ |mn^j-1|\le(W-1)^W+1<|T|,
+\]
+forcing the impossible integer equality \(mn^j=1\).
+
+For a unit base, \(T=2A\epsilon-2\) and \(2A\equiv2\epsilon\pmod T\).
+The sequence
+\(f_k=X_k(A)+(\epsilon-A)Y_k(A)\) has initial values
+\(f_0=1,f_1=\epsilon\) and satisfies
+\(f_{k+1}=2Af_k-f_{k-1}\). This recurrence runs backwards as well
+as forwards. Hence \(f_k\equiv\epsilon^k\pmod T\) for every signed
+integer \(k\). Finally \(|T|>2W^W-2>W\), whereas
+\(|m-\epsilon^k|\le W\), giving the stated equality.
+\end{proof}
+
+The base \(-1\) case is essential: it cannot be replaced by a lemma
+that presupposes a nonnegative exponent. The literal request for
+\(M=q^x\) has the row
+\[
+ -M+X_x(A)-AY_x(A)+qY_x(A)-T_q\eta=0.
+\]
+Both \(M\) and \(q\), and the actual base \(BH\) of the self-radix
+request, are included in the frame. Thus the lemma applies to the
+unshifted arithmetic values claimed here.
+
+\section{One norm also certifies the factorial error}
+
+The shared-radius argument works before the denominator signs are known.
+Suppose nonzero integers \(L,v_i,M\) satisfy \(Lv_i=M\) and
+\[
+ v_i U=M Q+R_i.
+\]
+Then \(v_i\mid R_i\); setting \(r_i=R_i/v_i\) gives an integer and
+recovers \(U=LQ+r_i\). Equation \eqref{eq:common-norm} implies
+\[
+ |R_i|<|M|/2,\qquad |r_i|<|L|/2.
+\]
+If a prescribed signed remainder \(r_i^0\) is congruent to \(U\)
+modulo \(L\) and has \(|r_i^0|<|L|/2\), uniqueness follows:
+the multiple \(r_i-r_i^0\) of \(L\) has absolute value less than \(|L|\).
+Positivity of either \(L\) or \(r_i^0\) is unnecessary.
+
+The same mechanism yields the new factorial estimate.
+First, \eqref{eq:common-norm} gives \(M\ne0\).
+Equations \eqref{eq:factor-ratio}--\eqref{eq:factor-error} then imply
+\[
+ B\ne0,\quad v\ne0,\quad S=v(BF-V).
+\]
+With \(b=|B|\) and \(s=BF-V\), this gives
+\begin{equation}\label{eq:near}
+ s\in\mathbb Z,\qquad |s|<b/2.
+\end{equation}
+The canonical pair at the already positive index \(t\) gives
+\(V=(F^2+1)^t\ge1\), using the unit case if \(F=0\).
+
+\begin{lemma}\label{lem:early-bound}
+Under these conditions, \(b\ge2\), \(b>|F|\), and \(V<b^2\).
+If \(F=0\), in fact \(b\ge3\). If \(F\ne0\), \(B\) and \(F\)
+have the same sign.
+\end{lemma}
+
+\begin{proof}
+When \(F=0\), \(V=1\) and \(|BF-V|=1<b/2\), so \(b>2\).
+Suppose \(f=|F|\ge1\). Opposite signs would give
+\(|BF-V|=bf+V>b/2\), a contradiction. Therefore \(BF=bf\).
+If \(b\le f\), \eqref{eq:near} would give
+\[
+ V<b(f+1/2)\le f^2+f/2,
+\]
+contradicting \(V\ge(f^2+1)^2>f^2+f/2\).
+Thus \(b\ge f+1\ge2\), and
+\[
+ V<b(f+1/2)\le b(b-1/2)<b^2.
+\]
+\end{proof}
+
+This estimate supplies the coefficient margin formerly obtained from
+two separate nonnegativity graphs. It has not yet identified \(B\)
+as a binomial coefficient or \(F\) as a factorial.
+
+\section{Recovering the radix and the first exact digit}
+
+\subsection{Excluding the two unit radices}
+
+Equation \eqref{eq:odd} makes \(q\) odd, hence nonzero. If \(q=1\)
+or \(q=-1\), Lemma~\ref{lem:signed-power} applied to the request
+\(M=q^x\) gives \(|M|=1\), with no assumption on \(x\).
+But \(Bv=M\) and \(|B|\ge2\) make this impossible. Consequently
+\[
+ Q:=|q|\ge3,\qquad |q+1|\ge2.
+\]
+Every actual representative \(a_\nu\) is a requested exponent at
+base \(q+1\). The same lemma now gives \(a_\nu\ge0\), and therefore
+\(H\ge1\). The derived label \(h\) is also an exponent at that base,
+so \(h\ge0\); the anchor conclusion excludes \(h=0\).
+The request at base \(q\) gives \(x\ge0\) and \(M=q^x\).
+
+The retained ratio \(q^{t+1}v_{t+1}=M\) is now an equality of
+nonzero integer powers. Its absolute values imply \(x\ge t+1\).
+Since \(|BH|\ge b\ge2\), the self-radix request gives
+\begin{equation}\label{eq:signed-radix-size}
+ q=(BH)^x,\qquad Q\ge b^x\ge b^{t+1}.
+\end{equation}
+Neither the radix nor \(B\) has been assumed positive in this argument.
+The beta value \eqref{eq:beta} is nonnegative, but its size is not
+needed to reach \eqref{eq:signed-radix-size}.
+
+\subsection{A binomial coefficient at a possibly negative radix}
+
+Put \(n=F^2+t\) and \(C_j=\binom{n}{j}\). The exact numerator request
+at base \(q+1\) gives \(U=(q+1)^n\). Dividing its normalized digit
+row by its nonzero ratio gives
+\begin{equation}\label{eq:factor-digit}
+ U=q^t(B+q\eta)+r,\qquad |r|<Q^t/2.
+\end{equation}
+For \(F\ne0\), every coefficient through position \(t\) satisfies
+\begin{equation}\label{eq:coeff}
+ C_j\le(F^2+1)^t=V<b^2\qquad(0\le j\le t).
+\end{equation}
+For completeness, the general inequality
+\(\binom{m+t}{j}\le(m+1)^t\), for \(m\ge1\) and \(j\le t\),
+follows by induction on \(t\). Pascal's identity handles
+\(j\le t\) in the next row using \(2\le m+1\); the new edge is
+bounded by
+\(\binom{m+t+1}{t+1}=\prod_{i=1}^{t+1}(1+m/i)\le(m+1)^{t+1}\).
+If \(F=0\), use the separate bound \(C_j\le2^t\).
+Using \(V=1\) to bound those coefficients would be incorrect.
+
+For either sign of \(q\), the binomial theorem gives the signed
+low polynomial
+\[
+ r^0=\sum_{j=0}^{t-1}C_jq^j,\qquad
+ |r^0|<\frac{C_{\max}}{Q-1}Q^t.
+\]
+When \(F\ne0\), \eqref{eq:signed-radix-size} gives
+\[
+ \frac{C_{\max}}{Q-1}
+ <\frac{2}{b^{t-1}}<\frac1{32}.
+\]
+When \(F=0\), \(b\ge3\), and
+\[
+ \frac{C_{\max}}{Q-1}
+ \le\frac{2^t}{3^{t+1}-1}
+ <(2/3)^{t+1}<\frac1{32}
+ \qquad(t\ge16).
+\]
+Thus \(|r^0|<Q^t/32\). It is congruent to \(U\) modulo
+the possibly negative integer \(q^t\). The signed remainder
+uniqueness argument gives \(r=r^0\).
+
+Subtract the low polynomial from \eqref{eq:factor-digit},
+divide by \(q^t\), and reduce modulo \(q\). The result is
+\[
+ B\equiv C_t\pmod q.
+\]
+In the nonzero-\(F\) case, \(|B-C_t|\le b+C_t<b+b^2<Q\).
+In the zero-\(F\) case, \(C_t=1\) and \(b+1<Q\).
+Therefore in both cases
+\begin{equation}\label{eq:B-exact}
+ B=\binom{F^2+t}{t}>0.
+\end{equation}
+The case \(F=0\) would give \(B=1\), contradicting \(b\ge3\).
+Hence \(F\ne0\); the sign conclusion of
+Lemma~\ref{lem:early-bound} now gives \(F>0\).
+Finally \(q=(BH)^x\) with \(B>0,H\ge1,x\ge t+1\) gives \(q>0\).
+The negative-radix branch has served its purpose and has been excluded
+by the arithmetic itself. All remaining exact-power requests, including
+\(N=B^x\), now have their usual positive-base meanings.
+
+\section{The nearest-integer factorial fixed point}
+
+The new bound is symmetric around zero, so the old ceiling lemma alone
+does not justify the construction. The required strengthened statement
+has a short direct proof.
+
+\begin{lemma}\label{lem:nearest-factorial}
+For integers \(t\ge16\), \(F\ge1\), put
+\[
+ R_t(F)=\frac{(F^2+1)^t}{\binom{F^2+t}{t}}.
+\]
+Then
+\[
+ |F-R_t(F)|<\tfrac12\quad\Longleftrightarrow\quad F=t!.
+\]
+At the solution one also has
+\[
+ 0<F-R_t(F)<\tfrac1{32}.
+\]
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+ R_t(F)=t!\prod_{i=2}^t
+       \left(1-\frac{i-1}{F^2+i}\right).
+\]
+Every factor increases with \(F\). Consequently
+\[
+ R_t(F)\ge R_t(1)=\frac{2^t}{t+1}>t^2+\tfrac12
+       \qquad(t\ge16).
+\]
+The last inequality holds at \(16\) and persists by elementary
+induction. The assumed nearest-integer bound therefore gives \(F>t^2\).
+Using \(\prod_i(1-e_i)\ge1-\sum_i e_i\) for \(0\le e_i\le1\),
+we obtain
+\[
+ R_t(F)>
+ t!\left(1-\frac{t(t-1)}{2F^2}\right)>\frac34t!.
+\]
+Thus \(F>R_t(F)-1/2>t!/2\). Applying the same estimate a second
+time, now at this much larger lower bound, gives
+\[
+ 0<t!-R_t(F)<\frac{t!\,t(t-1)}{2F^2}
+                 <\frac{2t(t-1)}{t!}<\frac1{32}.
+\]
+The last bound holds at \(16\), and its left-hand expression decreases
+by a factor \(1/(t-1)\) when \(t\) increases by one.
+It follows that
+\[
+ |F-t!|\le |F-R_t(F)|+|R_t(F)-t!|<\frac{17}{32}<1.
+\]
+Both \(F\) and \(t!\) are integers, so \(F=t!\).
+
+Conversely, set \(F=t!\). The same product estimate directly gives
+\[
+ 0<F-R_t(F)<\frac{t(t-1)}{2t!}<\frac1{32},
+\]
+which implies the nearest-integer bound.
+\end{proof}
+
+Equations \eqref{eq:near} and \eqref{eq:B-exact} provide exactly
+the hypothesis of Lemma~\ref{lem:nearest-factorial}. Hence
+\begin{equation}\label{eq:factorial-recovered}
+ F=t!,\qquad
+ B=\prod_{i=1}^t\left(1+\frac{F^2}{i}\right),\qquad
+ 0<BF-V<B/32.
+\end{equation}
+The old nonnegative factorial slacks can now be reconstructed as
+\(s=BF-V\) and \(r=B-s-1\). Both are nonnegative integers.
+Also \(q\ge B^{t+1}>B\), so the old output slack \(q-B-1\)
+is nonnegative. Fresh \(G\)-witnesses can therefore fill each
+deleted scalar certificate. Their signs are conclusions of the proof.
+
+\section{The remaining digits and the calibrated refutation}
+
+The beta spacing was not enlarged or otherwise modified.
+From \(V=(F^2+1)^t\) one has \(F^2\mid V-1\), and therefore
+\(F^2\mid y\). The standard cofinal CRT proof for
+\(y=V(V-1)\) applies literally. In particular \(y>F+2\).
+In the first endpoint equation, \(u_0\le-1\) would imply
+\(x\le F-y<0\), contradicting \(x\ge t+1\). Thus
+\(u_0\ge0\) and \(x\ge F+1\).
+The second endpoint, together with \(x>1\), gives \(u_t\ge1\) and
+\begin{equation}\label{eq:strong-endpoint}
+ x\ge2+(t+1)y.
+\end{equation}
+All four range denominators in the table are now positive divisors
+of \(M=q^x\).
+
+For reference, the retained strict amplification estimates are stronger
+than mere denominator divisibility. Set
+\(\mathcal R=2+t+x+y+F\). Equation \eqref{eq:strong-endpoint}
+and \(y>F+2\) give \(\mathcal R<2x\), while
+\(x\ge F+1\ge16!+1>2^{32}\). The inherited local polynomial
+ledger uses exponent \(2^{23}\), and
+\[
+ 2^{23}\log_2(2x)<x\qquad(x\ge2^{32}).
+\]
+Hence its local bound is less than
+\(\mathcal R^{2^{23}}<(2x)^{2^{23}}<2^x\).
+This is exactly the amplification margin used in the parent
+prime-power extraction, with precision \(2x\) and loss less than \(x\).
+
+After the factorial interpretation, the encoded-index congruence is
+\(B\mid C_0+F^2+1\). Since \(B>F^2+1\), the nonnegative
+representative \(C_0\) cannot vanish; consequently \(H\ge2\).
+For any ordinary representative \(a\ge0\) and relevant range position
+\(k\le x\), use
+\[
+ \binom aj\le\max(1,a)^k\le H^x\qquad(0\le j\le k).
+\]
+The maximum is necessary when \(a=j=0\).
+For the derived label, the retained degree ledger gives
+\(h\le H^{2^{22}}\), and the factorial and endpoint bounds give
+\(2^{22}(t+1)<x\). Its required coefficients have the same
+upper bound \(H^x\).
+
+As \(q=B^xH^x\), every true low remainder for the other ten digits
+is nonnegative and satisfies
+\[
+ r_i^0<\frac{H^x}{q-1}q^{k_i}
+       <\frac{2}{B^x}q^{k_i}<q^{k_i}/32.
+\]
+The shared norm and normalized equations therefore recover these
+ordinary low remainders exactly. Their quotient congruences are precisely
+the parent's \(N\)-divisibility range tests, with \(N=B^x\mid q\).
+The inherited prime-power argument recovers the bounded local
+parameters. The constructor equations and Horn-flow identities are
+unchanged, so they decode a finite refutation in the numerical
+\(\mathrm{C222}\) calculus \cite{common,repo}.
+
+This is a statement about the actual nonnegative semantic
+representatives. A stored representative-minus-one coordinate may
+equal \(-1\); no pointwise claim that all old natural coordinates have
+become nonnegative is needed or made.
+
+The retained logical interfaces are named
+\[
+ \begin{gathered}
+ \texttt{KEndpoint.c222\_iff\_zf\_refutation}
+ \\
+ \texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+ \end{gathered}
+\]
+Their ordinary calibration identifies existence of the decoded
+refutation with existence of a finite ZFC refutation in the fixed
+numeration. The retained source proofs explain the underlying syntax,
+rules, and calibration. This completes the soundness direction at the
+arithmetic source level.
+
+\section{Constructive completeness}
+
+Conversely, begin with a finite calibrated refutation. The inherited
+cofinal construction chooses an arbitrarily large horizon
+\(t=16+d^2\), puts \(F=t!\), \(V=(F^2+1)^t\),
+\(y=V(V-1)\), and supplies a sufficiently large beta-CRT code \(x\).
+The two genuine beta quotients are nonnegative and less than \(x\),
+since their denominators are at least two. The strict range tests
+therefore admit the same canonical witnesses as the parent.
+
+There are two parity conditions on the amplified representatives.
+The factors \(1+F^2/i\) are all odd, because
+\(F^2/i=F(F/i)\) is even. Hence \(B\), \(N=B^x\), and
+the precision modulus \(N^2\) are odd. Changing a representative
+by \(N^2\) preserves its CRT residues and reverses its parity.
+
+Choose the dominant representative \(a\) in
+\([2N^2,4N^2)\), and choose \(b\) with opposite parity.
+The retained literal constructors give
+\[
+ h\ge2a^2,\qquad h\equiv1+a+b\pmod2.
+\]
+Thus \(h\) is even and remains a dominant semantic anchor.
+Choose the parity of a third independent representative so that the
+sum of all nine representatives is even. Each other representative
+can remain in \((0,2N^2]\). These choices preserve the original
+dominance and precision estimates and make \(H\) odd.
+Now \(q=(BH)^x\) is odd, and
+\[
+ z=(q-1)/2
+\]
+is the required integer witness for \eqref{eq:odd}.
+There is no need to prescribe the parity of \(x\).
+This is weaker than the inherited odd-square construction
+\cite{centered}, whose parity argument supplied an even \(x\).
+
+For completeness of the deterministic center, take a positive
+admissible \(A\), \(C=Y_h(A)\), and \(U=X_h(A)\).
+Since \(h\) is even, \(C\) is even and \(U\) is odd.
+Choose \(l=hC\). Pell composition gives
+\[
+ J_{\rm p}=Y_l(A)=C\,Y_C(U).
+\]
+The polynomial expansion and
+\(U^2-1=(A^2-1)C^2\) give
+\[
+ \frac{Y_C(U)}{C}\equiv U^{C-1}\pmod C.
+\]
+Thus \(J_{\rm p}/C^2\) is an odd integer, supplying \(e\).
+Take \(H_{\rm p}=X_l(A)\), \(f=(1-A)H_{\rm p}\), and
+\(D=A+H_{\rm p}f\). The comparison pair
+\((X_h(D),Y_h(D))\) has the required abscissa congruence modulo
+\(H_{\rm p}\) and ordinate congruence modulo \(C\).
+All quotients are integers, even if \(D\) is negative.
+The retained cofinal frame and squared-cap construction supplies its
+other witnesses. The full orientation pool holds because canonical
+Pell coordinates have residues \(1,h\) modulo \(A-1\).
+
+Finally \(B\mid q\mid M=q^x\). Set
+\[
+ v=M/B,\qquad S=v(BF-V).
+\]
+Lemma~\ref{lem:nearest-factorial} gives
+\[
+ 0<S/M=F-V/B<1/32.
+\]
+For each genuine digit remainder choose
+\(R_i=(M/L_i)r_i^0\). The preceding bounds give
+\(0\le R_i<M/32\). Consequently
+\[
+ 4\left(S^2+\sum_{i=1}^{11}R_i^2\right)
+       <\frac{48}{1024}M^2<M^2.
+\]
+The integer
+\(M^2-1-4(S^2+\sum R_i^2)\) is nonnegative and therefore
+has a \(G\)-representation. This supplies the single new norm row.
+All other arithmetic, constructor, and Horn rows retain their canonical
+witnesses. Every finite refutation thus yields an integer zero of
+the new source.
+
+\section{From the source to the delivered quartics}
+
+The source-level modifications above are justified by the unbounded
+arithmetic proof. The subsequent reductions are exact finite algebra
+and require no further number-theoretic premise \cite{residual}.
+Their certificates distinguish three operations.
+
+First, an affine integer coordinate shear or translation is a bijection
+of the integer lattice, with its stated integral inverse.
+Second, an elementary residual replacement
+\[
+ Q_i\longleftarrow Q_i+g(\mathbf X)Q_j,\qquad i\ne j,
+\]
+preserves the common zero set and has the explicit inverse with
+\(-g\); the final coefficient reductions use integer row shears.
+Third, a residual \(X_j-f(\widehat{\mathbf X})=0\) with unit
+coefficient allows integral elimination of \(X_j\), with the unique
+restoration \(X_j=f(\widehat{\mathbf X})\). Each actual substitution
+and degree bound is checked on its literal coefficient list.
+
+The primary endpoint uses six coordinate shears, five elementary
+exposure actions, four unit-affine projections, and 409 final
+unimodular residual shears after the arithmetic core.
+These operations explain why dimension can fall while the final
+sum of squares becomes denser and its coefficients become smaller.
+An invertible row operation preserves simultaneous zeros; it need
+not preserve the numerical value of the sum of squares.
+The polynomial in \eqref{eq:main-definition} is the sum of squares
+of the final rows, not an assertion that all intermediate quartics
+are coefficientwise identical.
+
+The supplied verifier replays the finite transformations, checks
+their inverses or unit pivots, translates coordinates by the stated
+convention, expands every squared residual, collects every
+coefficient, and recomputes the reported metrics. The accompanying
+receipts record the completed checks and rejection controls.
+The source snapshot and retained proof dependencies are pinned;
+the construction does not depend on a moving repository branch.
+
+Over the integers, a sum of squares is zero exactly when every
+summand is zero. Combining this fact, the certified finite
+transformations, source soundness, source completeness, and the
+retained logical calibration gives
+\[
+ \mathrm{ZFC}\ \vdash\
+ \left[
+   \exists\mathbf X\in\mathbb Z^{\MainVars}\;P(\mathbf X)=0
+   \ \longleftrightarrow\
+   \exists p\;\operatorname{Prf}_{\mathrm{ZFC}}(p,\bot)
+ \right].
+\]
+Negation yields Theorem~\ref{thm:main}.
+
+\section{What has and has not been established}
+
+The completed mathematical contribution is a shared certificate for
+the factorial error and digit errors, together with a signed-radix
+bootstrap that removes the need for the original three initial
+scalar sign graphs. The delicate points are explicit: both unit
+radices are excluded before assuming a nonnegative exponent;
+the first binomial digit is recovered in negative radix by absolute
+remainder uniqueness; the \(F=0\) coefficients are bounded separately;
+and the symmetric error condition is proved to force \(F=t!\)
+by a nearest-integer theorem. The beta spacing and all fourteen
+principal orientations remain intact.
+
+The result is an ordinary mathematical proof, composed with identified
+inherited arithmetic and logical proofs, and supported by complete
+finite algebraic artifacts. It is formalizable in ZFC. The new
+unbounded argument has not been emitted as a complete proof-assistant
+kernel term or as a literal object-language ZFC derivation.
+The finite checker authenticates the polynomial and its algebraic
+maps; it does not prove the universal Pell, CRT, or calibration
+theorems by numerical testing. Internal AI-assisted review is
+documented as such and is not external peer review.
+
+No consistency assumption is used in the equivalence, and no decision
+of the equation's solvability or proof of \(\operatorname{Con}(\mathrm{ZFC})\)
+is claimed. The improvement is substantial within its declared
+direct quartic architecture, while its global mathematical novelty
+and optimality remain separate questions. Its concrete output is
+the explicit family of equations, the proof of the new arithmetic
+reduction, and the reproducible coefficient and transformation data.
+
+\begin{thebibliography}{9}\raggedright\small
+\bibitem{repo}
+V. Reshetnikov and ProveIt contributors, \emph{ProveIt}, inspected commit
+\texttt{3ecd6a6cf53d47519228328567f45fb7ee9781d9}, 25 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9}.
+\bibitem{common}
+ProveIt incoming contribution, \emph{ConZFC Common Remainders Radix47},
+25 October 2026. Retained 252-integer direct equation and proof closure.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Common_Remainders_Radix47_2026-10-25.zip}.
+\bibitem{centered}
+ProveIt incoming contribution, \emph{ConZFC Centered Residues},
+25 October 2026. Source of the odd-square radix predecessor and the
+inspected compact 75/626, 76/464, and 77/460 points.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Centered_Residues_2026-10-25.zip}.
+\bibitem{symmetric}
+ProveIt incoming contribution, \emph{ConZFC Symmetric Remainders},
+25 October 2026. The deterministic-center proof is retained; its
+selected-nine orientation optimization is not used here.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Symmetric_Remainders_2026-10-25.zip}.
+\bibitem{residual}
+ProveIt incoming contribution, \emph{ConZFC Residual Bases and Denominator
+Engineering}, 25 October 2026. Source of the compared affine-exposure
+and residual-basis methodology.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Residual_Bases_Denominator_Engineering_2026-10-25.zip}.
+\bibitem{overview}
+ProveIt, \emph{Con(ZFC) in Diophantine form}, collection overview,
+and \emph{Later arrivals and current size reductions}, active review,
+at the inspected commit. Counts are compared in their stated domains.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9/Computability/DiophantineConsistency}.
+\end{thebibliography}
+\appendix
+\section{The complete residual list}\label{app:residuals}
+The variables \(x_0,\ldots,x_{\MainLast}\) range independently over \(\Z\).
+The entire equation is \(P=\sum_{j=0}^{\MainRowLast}Q_j^2=0\).
+The following list is generated from the literal JSON and independently parsed back into its exact integer coefficient data. Each monomial coefficient is literal. There are no additional quantified registers.
+\begingroup\small\setlength{\jot}{1pt}
+% BEGIN_Q 0
+\begin{align*}
+Q_{0}={}&-x_{3}^{2}+x_{4}
+\end{align*}
+% END_Q 0
+% BEGIN_Q 1
+\begin{align*}
+Q_{1}={}&x_{0}-x_{0}\,x_{2}-x_{2}+x_{9}
+\end{align*}
+% END_Q 1
+% BEGIN_Q 2
+\begin{align*}
+Q_{2}={}&-x_{2}\,x_{7}-x_{3}+x_{8}\,x_{9}
+\end{align*}
+% END_Q 2
+% BEGIN_Q 3
+\begin{align*}
+Q_{3}={}&-1+x_{1}-x_{8}\,x_{9}
+\end{align*}
+% END_Q 3
+% BEGIN_Q 4
+\begin{align*}
+Q_{4}={}&1+x_{4}-x_{5}\,x_{20}+x_{18}
+\end{align*}
+% END_Q 4
+% BEGIN_Q 5
+\begin{align*}
+Q_{5}={}&-1-x_{10}^{2}-2\,x_{10}\,x_{11}-x_{11}^{2}+x_{21}
+\end{align*}
+% END_Q 5
+% BEGIN_Q 6
+\begin{align*}
+Q_{6}={}&2+x_{1}-x_{3}\,x_{11}-x_{4}+x_{5}\,x_{20}-x_{8}\,x_{9}
+\\ &{}+x_{10}+x_{10}^{2}-x_{10}\,x_{11}+x_{10}\,x_{12}-8\,x_{10}\,x_{21}
+\\ &{}-4\,x_{10}\,x_{25}-12\,x_{11}-5\,x_{11}^{2}+7\,x_{11}\,x_{12}-16\,x_{11}\,x_{21}
+\\ &{}-x_{18}-4\,x_{21}+12\,x_{21}^{2}+x_{22}+x_{25}+x_{26}+2\,x_{27}
+\\ &{}-x_{40}-x_{48}+x_{78}+x_{83}
+\end{align*}
+% END_Q 6
+% BEGIN_Q 7
+\begin{align*}
+Q_{7}={}&-1-x_{1}+x_{8}\,x_{9}+2\,x_{10}-x_{10}^{2}-4\,x_{10}\,x_{22}-4\,x_{22}
+\\ &{}-4\,x_{22}^{2}+x_{23}
+\end{align*}
+% END_Q 7
+% BEGIN_Q 8
+\begin{align*}
+Q_{8}={}&-24\,x_{10}\,x_{23}+24\,x_{10}\,x_{37}+2\,x_{23}-4\,x_{23}^{2}+x_{24}-2\,x_{37}
+\\ &{}+4\,x_{37}^{2}-x_{38}
+\end{align*}
+% END_Q 8
+% BEGIN_Q 9
+\begin{align*}
+Q_{9}={}&-1-x_{1}+x_{8}\,x_{9}-x_{11}-x_{11}^{2}-2\,x_{11}\,x_{12}-x_{12}
+\\ &{}-x_{12}^{2}+x_{25}
+\end{align*}
+% END_Q 9
+% BEGIN_Q 10
+\begin{align*}
+Q_{10}={}&-2-x_{1}+x_{3}\,x_{11}+x_{8}\,x_{9}+7\,x_{10}-x_{10}^{2}
+\\ &{}+x_{10}\,x_{11}+3\,x_{10}\,x_{12}-4\,x_{10}\,x_{25}+x_{11}+2\,x_{11}^{2}
+\\ &{}+3\,x_{11}\,x_{12}-x_{12}+3\,x_{12}^{2}+2\,x_{25}+x_{26}-x_{48}-x_{78}
+\\ &{}-x_{83}
+\end{align*}
+% END_Q 10
+% BEGIN_Q 11
+\begin{align*}
+Q_{11}={}&-1+x_{10}-x_{10}^{2}-2\,x_{10}\,x_{12}+x_{12}-x_{12}^{2}+x_{27}
+\end{align*}
+% END_Q 11
+% BEGIN_Q 12
+\begin{align*}
+Q_{12}={}&1+2\,x_{0}+x_{1}-x_{3}\,x_{11}-x_{8}\,x_{9}+x_{10}+4\,x_{10}^{2}
+\\ &{}-13\,x_{10}\,x_{11}+x_{10}\,x_{12}-16\,x_{10}\,x_{21}+8\,x_{10}\,x_{65}+4\,x_{11}
+\\ &{}+4\,x_{11}^{2}-9\,x_{11}\,x_{12}+8\,x_{11}\,x_{25}-4\,x_{11}\,x_{27}+16\,x_{11}\,x_{65}
+\\ &{}+6\,x_{12}+7\,x_{12}^{2}-2\,x_{12}\,x_{13}-24\,x_{12}\,x_{21}-x_{13}^{2}-13\,x_{21}
+\\ &{}+8\,x_{21}^{2}-8\,x_{21}\,x_{27}-8\,x_{21}\,x_{65}+6\,x_{25}-4\,x_{25}^{2}
+\\ &{}-8\,x_{25}\,x_{27}+2\,x_{26}+7\,x_{27}-4\,x_{27}^{2}+x_{28}+x_{30}-x_{33}
+\\ &{}-8\,x_{35}-8\,x_{35}^{2}+2\,x_{36}-x_{40}+x_{43}-2\,x_{48}+4\,x_{65}
+\\ &{}-4\,x_{65}^{2}+x_{66}+7\,x_{78}+x_{83}-2\,x_{214}^{2}
+\end{align*}
+% END_Q 12
+% BEGIN_Q 13
+\begin{align*}
+Q_{13}={}&-4\,x_{26}^{2}-8\,x_{26}\,x_{28}-4\,x_{28}^{2}+x_{29}
+\end{align*}
+% END_Q 13
+% BEGIN_Q 14
+\begin{align*}
+Q_{14}={}&-2-x_{1}+x_{3}\,x_{11}+x_{8}\,x_{9}-x_{10}-x_{10}^{2}
+\\ &{}+4\,x_{10}\,x_{12}+4\,x_{10}\,x_{25}+8\,x_{10}\,x_{27}-5\,x_{11}+3\,x_{11}^{2}
+\\ &{}+6\,x_{11}\,x_{12}+8\,x_{11}\,x_{25}+8\,x_{11}\,x_{27}-x_{12}+3\,x_{12}^{2}
+\\ &{}-4\,x_{21}+9\,x_{25}-4\,x_{25}^{2}-8\,x_{25}\,x_{27}+x_{26}+8\,x_{27}
+\\ &{}-4\,x_{27}^{2}+x_{30}-x_{48}-x_{83}
+\end{align*}
+% END_Q 14
+% BEGIN_Q 15
+\begin{align*}
+Q_{15}={}&-1-x_{1}+x_{3}\,x_{11}+x_{8}\,x_{9}-7\,x_{10}+7\,x_{10}^{2}
+\\ &{}+7\,x_{10}\,x_{11}-3\,x_{10}\,x_{12}+8\,x_{10}\,x_{21}+4\,x_{10}\,x_{25}
+\\ &{}-8\,x_{10}\,x_{27}-8\,x_{10}\,x_{30}+2\,x_{11}-15\,x_{11}^{2}+11\,x_{11}\,x_{12}
+\\ &{}-16\,x_{11}\,x_{21}+8\,x_{11}\,x_{25}-24\,x_{11}\,x_{27}-16\,x_{11}\,x_{30}-x_{12}
+\\ &{}+4\,x_{12}^{2}-2\,x_{12}\,x_{13}+8\,x_{12}\,x_{27}+4\,x_{12}\,x_{30}-x_{13}^{2}
+\\ &{}+2\,x_{21}-4\,x_{21}^{2}-16\,x_{21}\,x_{27}-8\,x_{21}\,x_{30}+7\,x_{25}-4\,x_{25}^{2}
+\\ &{}-8\,x_{25}\,x_{27}+x_{26}+16\,x_{27}-4\,x_{27}^{2}+5\,x_{30}+x_{31}
+\\ &{}+x_{43}-x_{47}-x_{48}+x_{78}-x_{83}
+\end{align*}
+% END_Q 15
+% BEGIN_Q 16
+\begin{align*}
+Q_{16}={}&2+2\,x_{0}+x_{1}-x_{3}\,x_{11}-x_{4}+x_{5}\,x_{20}
+\\ &{}-x_{8}\,x_{9}-2\,x_{10}-x_{10}^{2}-7\,x_{10}\,x_{11}-5\,x_{10}\,x_{12}
+\\ &{}+8\,x_{10}\,x_{27}+4\,x_{10}\,x_{57}-11\,x_{11}+9\,x_{11}^{2}+x_{11}\,x_{12}
+\\ &{}-8\,x_{11}\,x_{25}+8\,x_{11}\,x_{27}-16\,x_{12}-2\,x_{12}^{2}-8\,x_{12}\,x_{25}
+\\ &{}+8\,x_{12}\,x_{57}-x_{18}-x_{21}-12\,x_{25}-16\,x_{25}^{2}-8\,x_{25}\,x_{27}
+\\ &{}+x_{26}+7\,x_{27}-4\,x_{27}^{2}+x_{30}+x_{32}+4\,x_{35}+4\,x_{35}^{2}
+\\ &{}-x_{36}+x_{48}+4\,x_{57}+4\,x_{57}^{2}-x_{58}-7\,x_{78}+x_{83}
+\\ &{}-2\,x_{214}^{2}
+\end{align*}
+% END_Q 16
+% BEGIN_Q 17
+\begin{align*}
+Q_{17}={}&-1+2\,x_{10}+10\,x_{10}^{2}-7\,x_{10}\,x_{11}-9\,x_{10}\,x_{12}-8\,x_{10}\,x_{25}
+\\ &{}+8\,x_{10}\,x_{27}+24\,x_{10}\,x_{41}-x_{11}+6\,x_{11}^{2}+x_{11}\,x_{12}
+\\ &{}-4\,x_{11}\,x_{27}-8\,x_{12}-3\,x_{12}^{2}+2\,x_{12}\,x_{13}-8\,x_{12}\,x_{27}
+\\ &{}+16\,x_{12}\,x_{41}+x_{13}^{2}+4\,x_{21}-3\,x_{25}+2\,x_{26}-4\,x_{27}
+\\ &{}+8\,x_{27}\,x_{41}+x_{33}+4\,x_{35}+4\,x_{35}^{2}-x_{36}-4\,x_{41}
+\\ &{}+4\,x_{41}^{2}-x_{42}-x_{43}-2\,x_{48}-9\,x_{78}
+\end{align*}
+% END_Q 17
+% BEGIN_Q 18
+\begin{align*}
+Q_{18}={}&1+x_{1}-x_{8}\,x_{9}-4\,x_{32}^{2}-8\,x_{32}\,x_{33}-4\,x_{33}^{2}
+\\ &{}+x_{34}
+\end{align*}
+% END_Q 18
+% BEGIN_Q 19
+\begin{align*}
+Q_{19}={}&1-2\,x_{10}+4\,x_{10}^{2}+4\,x_{10}\,x_{11}-4\,x_{10}\,x_{12}-8\,x_{10}\,x_{27}
+\\ &{}-8\,x_{10}\,x_{65}-20\,x_{11}-7\,x_{11}^{2}+14\,x_{11}\,x_{12}+8\,x_{11}\,x_{21}
+\\ &{}+16\,x_{11}\,x_{25}-8\,x_{11}\,x_{27}-16\,x_{11}\,x_{65}+x_{12}-6\,x_{12}^{2}
+\\ &{}+2\,x_{12}\,x_{13}+x_{13}^{2}+7\,x_{21}-8\,x_{21}\,x_{25}+8\,x_{21}\,x_{65}
+\\ &{}+2\,x_{25}+8\,x_{25}\,x_{27}-4\,x_{27}+4\,x_{27}^{2}-x_{30}+x_{35}-x_{43}
+\\ &{}-4\,x_{65}+4\,x_{65}^{2}-x_{66}+6\,x_{78}
+\end{align*}
+% END_Q 19
+% BEGIN_Q 20
+\begin{align*}
+Q_{20}={}&-1-x_{1}+x_{8}\,x_{9}-5\,x_{10}-x_{10}^{2}-2\,x_{10}\,x_{12}+x_{11}
+\\ &{}+x_{11}^{2}+2\,x_{11}\,x_{12}-2\,x_{12}-x_{25}-x_{27}-4\,x_{35}
+\\ &{}-4\,x_{35}^{2}+x_{36}
+\end{align*}
+% END_Q 20
+% BEGIN_Q 21
+\begin{align*}
+Q_{21}={}&1+x_{0}+x_{1}-x_{8}\,x_{9}+11\,x_{10}+12\,x_{10}^{2}
+\\ &{}+9\,x_{10}\,x_{11}-7\,x_{10}\,x_{12}-8\,x_{10}\,x_{21}+16\,x_{10}\,x_{22}
+\\ &{}+12\,x_{10}\,x_{25}+8\,x_{10}\,x_{27}+8\,x_{10}\,x_{30}+6\,x_{11}-13\,x_{11}^{2}
+\\ &{}+5\,x_{11}\,x_{12}-8\,x_{11}\,x_{21}+64\,x_{11}\,x_{22}+16\,x_{11}\,x_{25}
+\\ &{}+24\,x_{11}\,x_{27}+16\,x_{11}\,x_{30}-15\,x_{12}+4\,x_{12}^{2}-2\,x_{12}\,x_{13}
+\\ &{}+4\,x_{12}\,x_{21}+8\,x_{12}\,x_{27}-4\,x_{12}\,x_{30}-x_{13}^{2}+17\,x_{21}
+\\ &{}-20\,x_{21}^{2}+32\,x_{21}\,x_{22}-8\,x_{21}\,x_{25}+16\,x_{21}\,x_{27}
+\\ &{}+8\,x_{21}\,x_{30}+2\,x_{22}-16\,x_{22}^{2}+3\,x_{23}-2\,x_{24}-6\,x_{25}
+\\ &{}+4\,x_{25}^{2}-7\,x_{26}+3\,x_{27}-2\,x_{29}-5\,x_{30}-3\,x_{31}-4\,x_{32}
+\\ &{}-2\,x_{34}-3\,x_{35}-4\,x_{35}^{2}-x_{36}+x_{37}-4\,x_{38}-2\,x_{39}
+\\ &{}+x_{40}-2\,x_{42}+x_{43}+x_{45}-2\,x_{46}+x_{47}+x_{48}
+\\ &{}-x_{65}-4\,x_{67}-2\,x_{68}-3\,x_{78}-x_{210}\,x_{223}-x_{214}^{2}+x_{218}
+\end{align*}
+% END_Q 21
+% BEGIN_Q 22
+\begin{align*}
+Q_{22}={}&1+x_{0}+x_{1}-x_{8}\,x_{9}-25\,x_{10}^{2}+8\,x_{10}\,x_{11}
+\\ &{}+8\,x_{10}\,x_{12}+4\,x_{10}\,x_{25}-24\,x_{10}\,x_{37}+3\,x_{11}^{2}-2\,x_{11}\,x_{12}
+\\ &{}-x_{12}+x_{12}^{2}-5\,x_{21}-2\,x_{25}-x_{26}-3\,x_{27}+4\,x_{35}
+\\ &{}+4\,x_{35}^{2}-x_{36}+2\,x_{37}-4\,x_{37}^{2}+x_{38}+x_{48}+2\,x_{78}
+\\ &{}-x_{214}^{2}
+\end{align*}
+% END_Q 22
+% BEGIN_Q 23
+\begin{align*}
+Q_{23}={}&-x_{11}^{2}-4\,x_{11}\,x_{38}-4\,x_{38}^{2}+x_{39}
+\end{align*}
+% END_Q 23
+% BEGIN_Q 24
+\begin{align*}
+Q_{24}={}&-2-x_{1}+x_{2}\,x_{7}+x_{3}\,x_{10}+x_{3}\,x_{11}+x_{4}
+\\ &{}-x_{5}\,x_{20}-2\,x_{10}-2\,x_{10}^{2}-4\,x_{10}\,x_{11}-3\,x_{11}-x_{11}^{2}
+\\ &{}+2\,x_{11}\,x_{12}+x_{12}+x_{12}^{2}+x_{18}-12\,x_{21}-16\,x_{21}^{2}
+\\ &{}-x_{25}+x_{40}-x_{83}-x_{84}
+\end{align*}
+% END_Q 24
+% BEGIN_Q 25
+\begin{align*}
+Q_{25}={}&1+x_{0}+x_{10}-x_{10}^{2}+5\,x_{10}\,x_{11}+5\,x_{10}\,x_{12}
+\\ &{}+8\,x_{10}\,x_{27}+18\,x_{11}-13\,x_{11}^{2}-7\,x_{11}\,x_{12}-16\,x_{11}\,x_{25}
+\\ &{}+8\,x_{11}\,x_{27}-24\,x_{11}\,x_{40}+7\,x_{12}+x_{12}^{2}-8\,x_{12}\,x_{25}
+\\ &{}-16\,x_{12}\,x_{40}-6\,x_{21}+5\,x_{25}-12\,x_{25}^{2}-8\,x_{25}\,x_{27}
+\\ &{}-8\,x_{25}\,x_{40}+2\,x_{26}+7\,x_{27}-4\,x_{27}^{2}+x_{30}-4\,x_{35}
+\\ &{}-4\,x_{35}^{2}+x_{36}+4\,x_{40}-4\,x_{40}^{2}+x_{41}-x_{48}-x_{78}
+\\ &{}-x_{214}^{2}
+\end{align*}
+% END_Q 25
+% BEGIN_Q 26
+\begin{align*}
+Q_{26}={}&-1+x_{0}-x_{1}+x_{8}\,x_{9}-3\,x_{10}-5\,x_{10}^{2}-3\,x_{10}\,x_{11}
+\\ &{}-11\,x_{10}\,x_{12}-4\,x_{10}\,x_{25}-8\,x_{10}\,x_{27}+4\,x_{10}\,x_{57}-5\,x_{11}
+\\ &{}+10\,x_{11}^{2}+5\,x_{11}\,x_{12}+8\,x_{11}\,x_{25}+4\,x_{11}\,x_{27}-13\,x_{12}
+\\ &{}+x_{12}^{2}-8\,x_{12}\,x_{25}-24\,x_{12}\,x_{27}+8\,x_{12}\,x_{57}-4\,x_{21}
+\\ &{}+x_{25}-8\,x_{25}\,x_{27}+3\,x_{26}-9\,x_{27}-8\,x_{27}^{2}+x_{30}+x_{33}
+\\ &{}+8\,x_{35}+8\,x_{35}^{2}-2\,x_{36}-4\,x_{48}+4\,x_{57}+4\,x_{57}^{2}-x_{58}
+\\ &{}-5\,x_{78}-x_{214}^{2}
+\end{align*}
+% END_Q 26
+% BEGIN_Q 27
+\begin{align*}
+Q_{27}={}&-x_{12}^{2}-2\,x_{12}\,x_{13}-x_{13}^{2}+x_{43}
+\end{align*}
+% END_Q 27
+% BEGIN_Q 28
+\begin{align*}
+Q_{28}={}&1+x_{1}-x_{8}\,x_{9}+x_{10}^{2}-4\,x_{10}\,x_{43}+2\,x_{12}
+\\ &{}-x_{12}^{2}+2\,x_{12}\,x_{13}-8\,x_{12}\,x_{43}+x_{13}^{2}-2\,x_{27}+3\,x_{43}
+\\ &{}-4\,x_{43}^{2}+x_{44}
+\end{align*}
+% END_Q 28
+% BEGIN_Q 29
+\begin{align*}
+Q_{29}={}&-1-x_{1}+x_{8}\,x_{9}-4\,x_{10}+5\,x_{10}^{2}+2\,x_{10}\,x_{11}
+\\ &{}-6\,x_{10}\,x_{12}-8\,x_{10}\,x_{27}-4\,x_{10}\,x_{43}+5\,x_{11}+x_{11}^{2}
+\\ &{}-8\,x_{11}\,x_{25}-8\,x_{11}\,x_{27}-13\,x_{12}+3\,x_{12}^{2}+16\,x_{12}\,x_{27}
+\\ &{}-8\,x_{12}\,x_{43}+6\,x_{21}-11\,x_{25}+8\,x_{25}^{2}-2\,x_{26}+12\,x_{27}
+\\ &{}-x_{30}+4\,x_{35}+4\,x_{35}^{2}-x_{36}+4\,x_{43}-4\,x_{43}^{2}+x_{44}
+\\ &{}+x_{45}-6\,x_{78}
+\end{align*}
+% END_Q 29
+% BEGIN_Q 30
+\begin{align*}
+Q_{30}={}&x_{10}\,x_{11}-x_{10}\,x_{12}-x_{11}-x_{11}\,x_{12}-3\,x_{12}
+\\ &{}-2\,x_{12}\,x_{13}-x_{13}^{2}-16\,x_{27}^{2}-32\,x_{27}\,x_{43}-16\,x_{27}\,x_{44}
+\\ &{}-16\,x_{27}\,x_{45}-3\,x_{43}-16\,x_{43}^{2}-16\,x_{43}\,x_{44}-16\,x_{43}\,x_{45}
+\\ &{}-2\,x_{44}-4\,x_{44}^{2}-8\,x_{44}\,x_{45}-4\,x_{45}^{2}+x_{46}-x_{78}
+\end{align*}
+% END_Q 30
+% BEGIN_Q 31
+\begin{align*}
+Q_{31}={}&2+x_{1}-x_{3}\,x_{11}-x_{4}+x_{5}\,x_{20}-x_{8}\,x_{9}
+\\ &{}+x_{10}-12\,x_{10}^{2}+6\,x_{10}\,x_{11}+4\,x_{10}\,x_{12}-4\,x_{10}\,x_{25}
+\\ &{}+24\,x_{10}\,x_{27}+16\,x_{10}\,x_{30}+4\,x_{11}-x_{11}^{2}-8\,x_{11}\,x_{12}
+\\ &{}-8\,x_{11}\,x_{25}-8\,x_{11}\,x_{27}+x_{12}-4\,x_{12}^{2}+2\,x_{12}\,x_{13}
+\\ &{}-8\,x_{12}\,x_{27}-4\,x_{12}\,x_{30}+x_{13}^{2}-x_{18}+x_{21}-8\,x_{25}
+\\ &{}+4\,x_{25}^{2}+8\,x_{25}\,x_{27}-x_{26}-8\,x_{27}-12\,x_{27}^{2}-16\,x_{27}\,x_{30}
+\\ &{}-x_{30}-4\,x_{30}^{2}-x_{43}+x_{47}+x_{48}+x_{83}
+\end{align*}
+% END_Q 31
+% BEGIN_Q 32
+\begin{align*}
+Q_{32}={}&1+x_{1}-x_{8}\,x_{9}-x_{10}^{2}-2\,x_{10}\,x_{12}+x_{11}^{2}
+\\ &{}+2\,x_{11}\,x_{12}-4\,x_{12}+8\,x_{12}\,x_{25}+x_{21}+6\,x_{25}-4\,x_{25}^{2}
+\\ &{}+x_{48}-2\,x_{78}
+\end{align*}
+% END_Q 32
+% BEGIN_Q 33
+\begin{align*}
+Q_{33}={}&1-x_{0}+x_{3}-x_{3}\,x_{10}-x_{3}\,x_{11}+x_{10}
+\\ &{}+x_{10}\,x_{11}+5\,x_{10}\,x_{12}-4\,x_{10}\,x_{25}-x_{11}-x_{11}^{2}
+\\ &{}-3\,x_{11}\,x_{12}+5\,x_{12}-3\,x_{12}^{2}+2\,x_{12}\,x_{13}+8\,x_{12}\,x_{25}
+\\ &{}+12\,x_{12}\,x_{48}+x_{13}^{2}-x_{21}-10\,x_{25}-8\,x_{25}^{2}
+\\ &{}-16\,x_{25}\,x_{48}+x_{26}-2\,x_{27}-4\,x_{35}-4\,x_{35}^{2}+x_{36}
+\\ &{}-x_{43}-3\,x_{48}-4\,x_{48}^{2}+x_{49}+x_{78}+x_{83}+x_{84}
+\\ &{}+x_{214}^{2}
+\end{align*}
+% END_Q 33
+% BEGIN_Q 34
+\begin{align*}
+Q_{34}={}&1+x_{1}-x_{3}\,x_{11}-x_{8}\,x_{9}+2\,x_{11}-2\,x_{11}\,x_{12}
+\\ &{}-4\,x_{11}\,x_{49}+x_{12}-3\,x_{12}^{2}-8\,x_{12}\,x_{49}-x_{25}-4\,x_{49}^{2}
+\\ &{}+x_{50}+x_{83}
+\end{align*}
+% END_Q 34
+% BEGIN_Q 35
+\begin{align*}
+Q_{35}={}&-1-4\,x_{50}-4\,x_{50}^{2}+x_{51}
+\end{align*}
+% END_Q 35
+% BEGIN_Q 36
+\begin{align*}
+Q_{36}={}&1-x_{12}^{2}-8\,x_{12}\,x_{50}-4\,x_{12}\,x_{51}+8\,x_{50}-8\,x_{50}^{2}
+\\ &{}-16\,x_{50}\,x_{51}-2\,x_{51}-4\,x_{51}^{2}+x_{52}
+\end{align*}
+% END_Q 36
+% BEGIN_Q 37
+\begin{align*}
+Q_{37}={}&2+x_{1}-x_{3}\,x_{11}-x_{8}\,x_{9}+2\,x_{11}-2\,x_{11}\,x_{12}
+\\ &{}-4\,x_{11}\,x_{52}+x_{12}-3\,x_{12}^{2}-8\,x_{12}\,x_{52}-x_{25}-4\,x_{52}^{2}
+\\ &{}+x_{53}+x_{83}
+\end{align*}
+% END_Q 37
+% BEGIN_Q 38
+\begin{align*}
+Q_{38}={}&-4\,x_{47}^{2}-8\,x_{47}\,x_{53}-4\,x_{53}^{2}+x_{54}
+\end{align*}
+% END_Q 38
+% BEGIN_Q 39
+\begin{align*}
+Q_{39}={}&-1-x_{1}+x_{8}\,x_{9}-x_{10}+x_{10}^{2}-x_{10}\,x_{11}
+\\ &{}-x_{10}\,x_{12}+4\,x_{10}\,x_{25}-8\,x_{10}\,x_{47}-4\,x_{10}\,x_{54}-x_{11}^{2}
+\\ &{}-x_{11}\,x_{12}+x_{12}-x_{12}^{2}-3\,x_{25}-x_{26}-x_{27}
+\\ &{}+24\,x_{47}-12\,x_{47}^{2}+8\,x_{47}\,x_{53}-16\,x_{47}\,x_{54}+x_{48}
+\\ &{}+4\,x_{53}^{2}+11\,x_{54}-4\,x_{54}^{2}+x_{55}+x_{78}
+\end{align*}
+% END_Q 39
+% BEGIN_Q 40
+\begin{align*}
+Q_{40}={}&-1-4\,x_{55}-4\,x_{55}^{2}+x_{56}
+\end{align*}
+% END_Q 40
+% BEGIN_Q 41
+\begin{align*}
+Q_{41}={}&1+x_{1}-x_{8}\,x_{9}-x_{12}^{2}-8\,x_{12}\,x_{55}-4\,x_{12}\,x_{56}
+\\ &{}+8\,x_{55}-8\,x_{55}^{2}-16\,x_{55}\,x_{56}-2\,x_{56}-4\,x_{56}^{2}+x_{57}
+\end{align*}
+% END_Q 41
+% BEGIN_Q 42
+\begin{align*}
+Q_{42}={}&1+x_{1}-x_{8}\,x_{9}-2\,x_{10}-x_{10}^{2}-x_{10}\,x_{11}
+\\ &{}-3\,x_{10}\,x_{12}-4\,x_{10}\,x_{57}+x_{11}\,x_{12}-3\,x_{12}-x_{12}^{2}
+\\ &{}-8\,x_{12}\,x_{57}+x_{21}-x_{25}-x_{27}-4\,x_{57}-4\,x_{57}^{2}+x_{58}
+\\ &{}-x_{78}
+\end{align*}
+% END_Q 42
+% BEGIN_Q 43
+\begin{align*}
+Q_{43}={}&2-x_{0}+x_{1}-x_{2}\,x_{7}-x_{3}\,x_{10}-x_{3}\,x_{11}
+\\ &{}-x_{4}+x_{5}\,x_{20}-x_{18}-12\,x_{58}-4\,x_{58}^{2}+x_{59}
+\\ &{}+x_{83}+x_{84}+x_{214}^{2}
+\end{align*}
+% END_Q 43
+% BEGIN_Q 44
+\begin{align*}
+Q_{44}={}&-x_{10}\,x_{11}+x_{10}\,x_{12}-x_{11}^{2}-x_{11}\,x_{12}+2\,x_{12}
+\\ &{}-2\,x_{12}^{2}+16\,x_{12}\,x_{58}+8\,x_{12}\,x_{59}-3\,x_{25}-16\,x_{25}\,x_{58}
+\\ &{}-8\,x_{25}\,x_{59}-x_{48}+8\,x_{58}-16\,x_{58}^{2}-16\,x_{58}\,x_{59}+4\,x_{59}
+\\ &{}-4\,x_{59}^{2}+x_{60}+x_{78}
+\end{align*}
+% END_Q 44
+% BEGIN_Q 45
+\begin{align*}
+Q_{45}={}&-1-x_{1}+x_{8}\,x_{9}-x_{10}+2\,x_{10}^{2}+2\,x_{10}\,x_{11}
+\\ &{}+2\,x_{10}\,x_{12}-2\,x_{11}-3\,x_{11}^{2}+2\,x_{11}\,x_{12}-8\,x_{11}\,x_{25}
+\\ &{}-4\,x_{11}\,x_{60}+4\,x_{12}-4\,x_{12}^{2}+2\,x_{12}\,x_{13}-12\,x_{12}\,x_{48}
+\\ &{}+16\,x_{12}\,x_{60}+x_{13}^{2}-x_{21}-5\,x_{25}+4\,x_{25}^{2}+16\,x_{25}\,x_{48}
+\\ &{}-16\,x_{25}\,x_{60}-x_{27}-x_{43}-x_{48}+4\,x_{48}^{2}-x_{49}
+\\ &{}-4\,x_{60}^{2}+x_{61}
+\end{align*}
+% END_Q 45
+% BEGIN_Q 46
+\begin{align*}
+Q_{46}={}&2-x_{0}+x_{1}-x_{2}\,x_{7}-x_{3}\,x_{10}-x_{3}\,x_{11}
+\\ &{}-x_{4}+x_{5}\,x_{20}-x_{18}-12\,x_{53}-4\,x_{53}^{2}+x_{62}
+\\ &{}+x_{83}+x_{84}+x_{214}^{2}
+\end{align*}
+% END_Q 46
+% BEGIN_Q 47
+\begin{align*}
+Q_{47}={}&1+4\,x_{47}^{2}+8\,x_{47}\,x_{53}-12\,x_{53}^{2}-16\,x_{53}\,x_{61}
+\\ &{}-16\,x_{53}\,x_{62}-x_{54}-4\,x_{61}^{2}-8\,x_{61}\,x_{62}-4\,x_{62}^{2}+x_{63}
+\end{align*}
+% END_Q 47
+% BEGIN_Q 48
+\begin{align*}
+Q_{48}={}&x_{12}-x_{12}^{2}-8\,x_{12}\,x_{61}-4\,x_{12}\,x_{63}-16\,x_{61}^{2}
+\\ &{}-16\,x_{61}\,x_{63}-4\,x_{63}^{2}+x_{64}
+\end{align*}
+% END_Q 48
+% BEGIN_Q 49
+\begin{align*}
+Q_{49}={}&2+x_{1}-x_{3}\,x_{11}-x_{8}\,x_{9}+4\,x_{10}+2\,x_{10}^{2}
+\\ &{}+8\,x_{10}\,x_{21}+3\,x_{11}-11\,x_{11}^{2}+2\,x_{11}\,x_{12}+16\,x_{11}\,x_{21}
+\\ &{}+2\,x_{12}+2\,x_{12}^{2}-4\,x_{12}\,x_{21}-10\,x_{21}-4\,x_{21}^{2}+x_{25}
+\\ &{}+x_{65}-4\,x_{78}+x_{83}
+\end{align*}
+% END_Q 49
+% BEGIN_Q 50
+\begin{align*}
+Q_{50}={}&2\,x_{10}\,x_{12}-4\,x_{10}\,x_{25}+8\,x_{10}\,x_{65}-9\,x_{11}+5\,x_{11}^{2}
+\\ &{}+2\,x_{11}\,x_{12}+16\,x_{11}\,x_{65}-3\,x_{12}-x_{12}^{2}+4\,x_{12}\,x_{21}
+\\ &{}+6\,x_{21}-8\,x_{21}\,x_{65}+x_{25}+x_{26}+x_{27}-x_{48}+3\,x_{65}
+\\ &{}-4\,x_{65}^{2}+x_{66}+4\,x_{78}
+\end{align*}
+% END_Q 50
+% BEGIN_Q 51
+\begin{align*}
+Q_{51}={}&1+x_{1}-x_{8}\,x_{9}+2\,x_{10}+x_{10}^{2}-3\,x_{10}\,x_{11}
+\\ &{}-3\,x_{10}\,x_{12}+8\,x_{10}\,x_{21}-8\,x_{10}\,x_{25}+16\,x_{10}\,x_{64}
+\\ &{}+16\,x_{10}\,x_{66}-3\,x_{11}+x_{11}^{2}-3\,x_{11}\,x_{12}+16\,x_{11}\,x_{21}
+\\ &{}+32\,x_{11}\,x_{64}+32\,x_{11}\,x_{66}-4\,x_{12}+3\,x_{12}^{2}-2\,x_{12}\,x_{13}
+\\ &{}+12\,x_{12}\,x_{21}-x_{13}^{2}-x_{21}-4\,x_{21}^{2}-16\,x_{21}\,x_{64}
+\\ &{}-16\,x_{21}\,x_{66}+2\,x_{26}-4\,x_{35}-4\,x_{35}^{2}+x_{36}+x_{43}
+\\ &{}-2\,x_{48}-4\,x_{64}^{2}-8\,x_{64}\,x_{66}-3\,x_{65}-2\,x_{66}-4\,x_{66}^{2}
+\\ &{}+x_{67}+5\,x_{78}
+\end{align*}
+% END_Q 51
+% BEGIN_Q 52
+\begin{align*}
+Q_{52}={}&-1-x_{1}+x_{8}\,x_{9}-4\,x_{67}-4\,x_{67}^{2}+x_{68}
+\end{align*}
+% END_Q 52
+% BEGIN_Q 53
+\begin{align*}
+Q_{53}={}&-x_{3}\,x_{15}+x_{69}
+\end{align*}
+% END_Q 53
+% BEGIN_Q 54
+\begin{align*}
+Q_{54}={}&x_{14}-x_{15}-2\,x_{24}\,x_{69}-x_{70}
+\end{align*}
+% END_Q 54
+% BEGIN_Q 55
+\begin{align*}
+Q_{55}={}&x_{14}-x_{15}-4\,x_{26}\,x_{69}-2\,x_{29}\,x_{69}-x_{71}
+\end{align*}
+% END_Q 55
+% BEGIN_Q 56
+\begin{align*}
+Q_{56}={}&-x_{3}\,x_{15}-2\,x_{31}\,x_{69}+2\,x_{46}\,x_{69}-x_{69}-x_{72}
+\\ &{}+x_{77}
+\end{align*}
+% END_Q 56
+% BEGIN_Q 57
+\begin{align*}
+Q_{57}={}&x_{14}-x_{15}-4\,x_{32}\,x_{69}-2\,x_{34}\,x_{69}-x_{73}
+\end{align*}
+% END_Q 57
+% BEGIN_Q 58
+\begin{align*}
+Q_{58}={}&x_{14}-x_{15}+2\,x_{24}\,x_{69}-2\,x_{31}\,x_{69}-2\,x_{36}\,x_{69}
+\\ &{}+x_{70}-x_{72}-x_{74}
+\end{align*}
+% END_Q 58
+% BEGIN_Q 59
+\begin{align*}
+Q_{59}={}&x_{14}-x_{15}-4\,x_{38}\,x_{69}-2\,x_{39}\,x_{69}-x_{75}
+\end{align*}
+% END_Q 59
+% BEGIN_Q 60
+\begin{align*}
+Q_{60}={}&x_{14}-x_{15}-2\,x_{42}\,x_{69}-x_{76}
+\end{align*}
+% END_Q 60
+% BEGIN_Q 61
+\begin{align*}
+Q_{61}={}&-2\,x_{3}\,x_{15}+x_{14}-x_{15}-2\,x_{46}\,x_{69}-2\,x_{69}-x_{77}
+\end{align*}
+% END_Q 61
+% BEGIN_Q 62
+\begin{align*}
+Q_{62}={}&-x_{10}\,x_{11}+x_{10}\,x_{12}+x_{11}+x_{11}\,x_{12}-x_{12}
+\\ &{}-x_{12}^{2}+x_{78}
+\end{align*}
+% END_Q 62
+% BEGIN_Q 63
+\begin{align*}
+Q_{63}={}&1+2\,x_{13}+x_{13}^{2}-x_{78}^{2}+x_{79}
+\end{align*}
+% END_Q 63
+% BEGIN_Q 64
+\begin{align*}
+Q_{64}={}&-x_{79}^{2}+x_{80}
+\end{align*}
+% END_Q 64
+% BEGIN_Q 65
+\begin{align*}
+Q_{65}={}&x_{3}\,x_{15}-4\,x_{67}\,x_{69}-2\,x_{68}\,x_{69}+x_{69}+x_{81}
+\end{align*}
+% END_Q 65
+% BEGIN_Q 66
+\begin{align*}
+Q_{66}={}&-x_{14}^{2}+2\,x_{14}\,x_{15}+2\,x_{14}\,x_{81}-x_{15}^{2}-2\,x_{15}\,x_{81}
+\\ &{}-x_{81}^{2}+x_{82}
+\end{align*}
+% END_Q 66
+% BEGIN_Q 67
+\begin{align*}
+Q_{67}={}&-1-x_{3}\,x_{11}+x_{83}
+\end{align*}
+% END_Q 67
+% BEGIN_Q 68
+\begin{align*}
+Q_{68}={}&-x_{15}\,x_{83}+x_{85}\,x_{86}+x_{87}
+\end{align*}
+% END_Q 68
+% BEGIN_Q 69
+\begin{align*}
+Q_{69}={}&-1+x_{3}-x_{3}\,x_{10}+x_{84}
+\end{align*}
+% END_Q 69
+% BEGIN_Q 70
+\begin{align*}
+Q_{70}={}&-2-x_{2}\,x_{7}+x_{3}+2\,x_{3}\,x_{10}+3\,x_{3}\,x_{11}
+\\ &{}-2\,x_{3}\,x_{21}+x_{8}\,x_{9}+x_{83}+x_{85}
+\end{align*}
+% END_Q 70
+% BEGIN_Q 71
+\begin{align*}
+Q_{71}={}&-x_{14}\,x_{84}+x_{86}
+\end{align*}
+% END_Q 71
+% BEGIN_Q 72
+\begin{align*}
+Q_{72}={}&3\,x_{14}+x_{14}\,x_{83}+9\,x_{15}-5\,x_{15}\,x_{83}-4\,x_{15}\,x_{84}
+\\ &{}-x_{15}\,x_{85}-2\,x_{24}\,x_{69}-2\,x_{36}\,x_{69}-2\,x_{42}\,x_{69}-x_{70}
+\\ &{}-x_{74}-x_{76}-3\,x_{85}\,x_{86}-3\,x_{87}+x_{88}
+\end{align*}
+% END_Q 72
+% BEGIN_Q 73
+\begin{align*}
+Q_{73}={}&-x_{14}\,x_{70}+x_{15}\,x_{70}+x_{89}
+\end{align*}
+% END_Q 73
+% BEGIN_Q 74
+\begin{align*}
+Q_{74}={}&-x_{71}\,x_{89}+x_{90}
+\end{align*}
+% END_Q 74
+% BEGIN_Q 75
+\begin{align*}
+Q_{75}={}&-x_{72}\,x_{90}+x_{91}
+\end{align*}
+% END_Q 75
+% BEGIN_Q 76
+\begin{align*}
+Q_{76}={}&-x_{73}\,x_{91}+x_{92}
+\end{align*}
+% END_Q 76
+% BEGIN_Q 77
+\begin{align*}
+Q_{77}={}&-x_{74}\,x_{92}+x_{93}
+\end{align*}
+% END_Q 77
+% BEGIN_Q 78
+\begin{align*}
+Q_{78}={}&-x_{75}\,x_{93}+x_{94}
+\end{align*}
+% END_Q 78
+% BEGIN_Q 79
+\begin{align*}
+Q_{79}={}&-x_{76}\,x_{94}+x_{95}
+\end{align*}
+% END_Q 79
+% BEGIN_Q 80
+\begin{align*}
+Q_{80}={}&-x_{77}\,x_{95}+x_{96}
+\end{align*}
+% END_Q 80
+% BEGIN_Q 81
+\begin{align*}
+Q_{81}={}&-x_{87}\,x_{96}+x_{97}
+\end{align*}
+% END_Q 81
+% BEGIN_Q 82
+\begin{align*}
+Q_{82}={}&-x_{88}\,x_{97}+x_{98}
+\end{align*}
+% END_Q 82
+% BEGIN_Q 83
+\begin{align*}
+Q_{83}={}&-x_{98}^{2}+x_{99}
+\end{align*}
+% END_Q 83
+% BEGIN_Q 84
+\begin{align*}
+Q_{84}={}&-x_{2}-x_{2}\,x_{18}+x_{18}+x_{100}
+\end{align*}
+% END_Q 84
+% BEGIN_Q 85
+\begin{align*}
+Q_{85}={}&-x_{16}\,x_{100}+x_{101}
+\end{align*}
+% END_Q 85
+% BEGIN_Q 86
+\begin{align*}
+Q_{86}={}&-2\,x_{1}^{2}+2\,x_{1}\,x_{14}+2\,x_{1}\,x_{15}+2\,x_{1}\,x_{101}+2\,x_{1}\,x_{102}
+\\ &{}-x_{14}^{2}-2\,x_{14}\,x_{101}-x_{15}^{2}-2\,x_{15}\,x_{102}+x_{19}\,x_{103}
+\\ &{}-x_{80}\,x_{99}-x_{82}\,x_{99}-x_{101}^{2}-x_{102}^{2}
+\end{align*}
+% END_Q 86
+% BEGIN_Q 87
+\begin{align*}
+Q_{87}={}&-x_{2}\,x_{17}+x_{17}-x_{17}\,x_{100}+x_{102}
+\end{align*}
+% END_Q 87
+% BEGIN_Q 88
+\begin{align*}
+Q_{88}={}&-x_{106}-2\,x_{106}\,x_{237}+x_{108}
+\end{align*}
+% END_Q 88
+% BEGIN_Q 89
+\begin{align*}
+Q_{89}={}&-x_{5}\,x_{130}+x_{104}\,x_{228}-x_{107}-x_{108}\,x_{130}
+\end{align*}
+% END_Q 89
+% BEGIN_Q 90
+\begin{align*}
+Q_{90}={}&x_{109}\,x_{229}-x_{111}\,x_{133}-x_{112}
+\end{align*}
+% END_Q 90
+% BEGIN_Q 91
+\begin{align*}
+Q_{91}={}&x_{113}\,x_{229}-x_{114}\,x_{133}-x_{115}
+\end{align*}
+% END_Q 91
+% BEGIN_Q 92
+\begin{align*}
+Q_{92}={}&x_{116}\,x_{229}-x_{117}\,x_{133}-x_{118}
+\end{align*}
+% END_Q 92
+% BEGIN_Q 93
+\begin{align*}
+Q_{93}={}&x_{119}\,x_{229}-x_{120}\,x_{133}-x_{121}
+\end{align*}
+% END_Q 93
+% BEGIN_Q 94
+\begin{align*}
+Q_{94}={}&x_{122}\,x_{230}-x_{124}\,x_{133}-x_{125}
+\end{align*}
+% END_Q 94
+% BEGIN_Q 95
+\begin{align*}
+Q_{95}={}&x_{126}\,x_{230}-x_{127}\,x_{133}-x_{128}
+\end{align*}
+% END_Q 95
+% BEGIN_Q 96
+\begin{align*}
+Q_{96}={}&-x_{19}\,x_{130}+x_{133}
+\end{align*}
+% END_Q 96
+% BEGIN_Q 97
+\begin{align*}
+Q_{97}={}&x_{129}-x_{131}\,x_{133}-x_{132}
+\end{align*}
+% END_Q 97
+% BEGIN_Q 98
+\begin{align*}
+Q_{98}={}&-x_{133}\,x_{135}+x_{134}-x_{136}
+\end{align*}
+% END_Q 98
+% BEGIN_Q 99
+\begin{align*}
+Q_{99}={}&-x_{133}\,x_{138}+x_{137}\,x_{228}-x_{139}
+\end{align*}
+% END_Q 99
+% BEGIN_Q 100
+\begin{align*}
+Q_{100}={}&-x_{133}\,x_{141}+x_{140}\,x_{229}-x_{142}
+\end{align*}
+% END_Q 100
+% BEGIN_Q 101
+\begin{align*}
+Q_{101}={}&x_{143}-2\,x_{143}\,x_{145}+x_{146}
+\end{align*}
+% END_Q 101
+% BEGIN_Q 102
+\begin{align*}
+Q_{102}={}&-x_{143}\,x_{146}-x_{146}+x_{147}
+\end{align*}
+% END_Q 102
+% BEGIN_Q 103
+\begin{align*}
+Q_{103}={}&x_{146}^{2}-x_{147}^{2}+x_{167}
+\end{align*}
+% END_Q 103
+% BEGIN_Q 104
+\begin{align*}
+Q_{104}={}&-x_{144}\,x_{149}-x_{149}+x_{150}
+\end{align*}
+% END_Q 104
+% BEGIN_Q 105
+\begin{align*}
+Q_{105}={}&2\,x_{148}+x_{148}^{2}+x_{149}^{2}-x_{150}^{2}
+\end{align*}
+% END_Q 105
+% BEGIN_Q 106
+\begin{align*}
+Q_{106}={}&x_{4}^{2}-2\,x_{4}\,x_{144}+x_{144}^{2}+x_{151}-x_{167}
+\end{align*}
+% END_Q 106
+% BEGIN_Q 107
+\begin{align*}
+Q_{107}={}&-1-x_{4}\,x_{149}+x_{6}+x_{144}\,x_{149}-x_{148}+x_{151}\,x_{152}
+\end{align*}
+% END_Q 107
+% BEGIN_Q 108
+\begin{align*}
+Q_{108}={}&1-2\,x_{5}+x_{5}^{2}-2\,x_{5}\,x_{144}+x_{153}
+\end{align*}
+% END_Q 108
+% BEGIN_Q 109
+\begin{align*}
+Q_{109}={}&-x_{5}\,x_{198}+x_{19}+x_{153}\,x_{154}-x_{197}+x_{199}
+\end{align*}
+% END_Q 109
+% BEGIN_Q 110
+\begin{align*}
+Q_{110}={}&-1+2\,x_{144}\,x_{213}-x_{155}+2\,x_{213}-x_{213}^{2}
+\end{align*}
+% END_Q 110
+% BEGIN_Q 111
+\begin{align*}
+Q_{111}={}&1+x_{155}\,x_{156}-x_{197}-x_{198}\,x_{213}+x_{199}+2\,x_{237}
+\end{align*}
+% END_Q 111
+% BEGIN_Q 112
+\begin{align*}
+Q_{112}={}&-x_{144}\,x_{158}-x_{158}+x_{159}
+\end{align*}
+% END_Q 112
+% BEGIN_Q 113
+\begin{align*}
+Q_{113}={}&2\,x_{157}+x_{157}^{2}+x_{158}^{2}-x_{159}^{2}
+\end{align*}
+% END_Q 113
+% BEGIN_Q 114
+\begin{align*}
+Q_{114}={}&-x_{144}+x_{144}^{2}-4\,x_{144}\,x_{237}-x_{155}\,x_{156}+x_{160}-x_{167}
+\\ &{}+x_{197}+x_{198}\,x_{213}-x_{199}+x_{215}\,x_{221}-x_{219}+2\,x_{237}
+\\ &{}+4\,x_{237}^{2}
+\end{align*}
+% END_Q 114
+% BEGIN_Q 115
+\begin{align*}
+Q_{115}={}&-1+x_{104}+x_{144}\,x_{158}-x_{157}-x_{158}-2\,x_{158}\,x_{237}
+\\ &{}+x_{160}\,x_{161}
+\end{align*}
+% END_Q 115
+% BEGIN_Q 116
+\begin{align*}
+Q_{116}={}&-1+x_{105}+x_{144}\,x_{149}-2\,x_{144}\,x_{162}-x_{148}-2\,x_{149}\,x_{237}
+\\ &{}+x_{160}\,x_{162}+x_{162}+4\,x_{162}\,x_{237}
+\end{align*}
+% END_Q 116
+% BEGIN_Q 117
+\begin{align*}
+Q_{117}={}&1+x_{144}-x_{144}\,x_{164}-x_{164}+x_{165}
+\end{align*}
+% END_Q 117
+% BEGIN_Q 118
+\begin{align*}
+Q_{118}={}&-x_{144}+x_{144}\,x_{164}+2\,x_{163}+x_{163}^{2}-x_{164}+x_{164}^{2}
+\\ &{}-x_{165}-x_{165}^{2}
+\end{align*}
+% END_Q 118
+% BEGIN_Q 119
+\begin{align*}
+Q_{119}={}&x_{109}-x_{144}+x_{144}\,x_{164}+x_{160}\,x_{166}-x_{163}-x_{164}
+\\ &{}-2\,x_{164}\,x_{237}+2\,x_{237}
+\end{align*}
+% END_Q 119
+% BEGIN_Q 120
+\begin{align*}
+Q_{120}={}&-x_{144}-x_{144}^{2}+x_{167}+x_{215}\,x_{221}-x_{219}
+\end{align*}
+% END_Q 120
+% BEGIN_Q 121
+\begin{align*}
+Q_{121}={}&x_{110}+x_{144}\,x_{150}-2\,x_{144}\,x_{168}-x_{148}-2\,x_{148}\,x_{237}
+\\ &{}-x_{149}\,x_{167}-2\,x_{150}\,x_{237}+x_{155}\,x_{156}+x_{160}\,x_{168}+x_{168}
+\\ &{}+4\,x_{168}\,x_{237}-x_{197}-x_{198}\,x_{213}+x_{199}
+\end{align*}
+% END_Q 121
+% BEGIN_Q 122
+\begin{align*}
+Q_{122}={}&-x_{144}\,x_{170}-x_{170}+x_{171}
+\end{align*}
+% END_Q 122
+% BEGIN_Q 123
+\begin{align*}
+Q_{123}={}&2\,x_{169}+x_{169}^{2}+x_{170}^{2}-x_{171}^{2}
+\end{align*}
+% END_Q 123
+% BEGIN_Q 124
+\begin{align*}
+Q_{124}={}&-1+x_{113}+x_{144}\,x_{170}+x_{160}\,x_{172}-x_{169}-x_{170}
+\\ &{}-2\,x_{170}\,x_{237}
+\end{align*}
+% END_Q 124
+% BEGIN_Q 125
+\begin{align*}
+Q_{125}={}&-x_{144}\,x_{174}-x_{174}+x_{175}
+\end{align*}
+% END_Q 125
+% BEGIN_Q 126
+\begin{align*}
+Q_{126}={}&2\,x_{173}+x_{173}^{2}+x_{174}^{2}-x_{175}^{2}
+\end{align*}
+% END_Q 126
+% BEGIN_Q 127
+\begin{align*}
+Q_{127}={}&-1+x_{116}+x_{144}\,x_{174}+x_{160}\,x_{176}-x_{173}-x_{174}
+\\ &{}-2\,x_{174}\,x_{237}
+\end{align*}
+% END_Q 127
+% BEGIN_Q 128
+\begin{align*}
+Q_{128}={}&-x_{144}\,x_{178}-x_{178}+x_{179}
+\end{align*}
+% END_Q 128
+% BEGIN_Q 129
+\begin{align*}
+Q_{129}={}&2\,x_{177}+x_{177}^{2}+x_{178}^{2}-x_{179}^{2}
+\end{align*}
+% END_Q 129
+% BEGIN_Q 130
+\begin{align*}
+Q_{130}={}&-1+x_{119}+x_{144}\,x_{178}+x_{160}\,x_{180}-x_{177}-x_{178}
+\\ &{}-2\,x_{178}\,x_{237}
+\end{align*}
+% END_Q 130
+% BEGIN_Q 131
+\begin{align*}
+Q_{131}={}&-x_{144}\,x_{182}-x_{182}+x_{183}
+\end{align*}
+% END_Q 131
+% BEGIN_Q 132
+\begin{align*}
+Q_{132}={}&2\,x_{181}+x_{181}^{2}+x_{182}^{2}-x_{183}^{2}
+\end{align*}
+% END_Q 132
+% BEGIN_Q 133
+\begin{align*}
+Q_{133}={}&-1+x_{122}+x_{144}\,x_{182}+x_{160}\,x_{184}-x_{181}-x_{182}
+\\ &{}-2\,x_{182}\,x_{237}
+\end{align*}
+% END_Q 133
+% BEGIN_Q 134
+\begin{align*}
+Q_{134}={}&-x_{144}\,x_{186}-x_{186}+x_{187}
+\end{align*}
+% END_Q 134
+% BEGIN_Q 135
+\begin{align*}
+Q_{135}={}&2\,x_{185}+x_{185}^{2}+x_{186}^{2}-x_{187}^{2}
+\end{align*}
+% END_Q 135
+% BEGIN_Q 136
+\begin{align*}
+Q_{136}={}&-1+x_{123}+x_{144}\,x_{186}-2\,x_{144}\,x_{188}+x_{160}\,x_{188}-x_{185}
+\\ &{}-2\,x_{186}\,x_{237}+x_{188}+4\,x_{188}\,x_{237}
+\end{align*}
+% END_Q 136
+% BEGIN_Q 137
+\begin{align*}
+Q_{137}={}&-x_{144}\,x_{190}-x_{190}+x_{191}
+\end{align*}
+% END_Q 137
+% BEGIN_Q 138
+\begin{align*}
+Q_{138}={}&2\,x_{189}+x_{189}^{2}+x_{190}^{2}-x_{191}^{2}
+\end{align*}
+% END_Q 138
+% BEGIN_Q 139
+\begin{align*}
+Q_{139}={}&-1+x_{126}+x_{144}\,x_{190}+x_{160}\,x_{192}-x_{189}-x_{190}
+\\ &{}-2\,x_{190}\,x_{237}
+\end{align*}
+% END_Q 139
+% BEGIN_Q 140
+\begin{align*}
+Q_{140}={}&-x_{144}\,x_{194}-x_{194}+x_{195}
+\end{align*}
+% END_Q 140
+% BEGIN_Q 141
+\begin{align*}
+Q_{141}={}&2\,x_{193}+x_{193}^{2}+x_{194}^{2}-x_{195}^{2}
+\end{align*}
+% END_Q 141
+% BEGIN_Q 142
+\begin{align*}
+Q_{142}={}&-1+x_{129}+x_{144}\,x_{194}+x_{160}\,x_{196}-x_{193}-x_{194}
+\\ &{}-2\,x_{194}\,x_{237}
+\end{align*}
+% END_Q 142
+% BEGIN_Q 143
+\begin{align*}
+Q_{143}={}&1-x_{144}\,x_{198}-x_{198}+x_{199}
+\end{align*}
+% END_Q 143
+% BEGIN_Q 144
+\begin{align*}
+Q_{144}={}&-1-x_{5}\,x_{198}+x_{19}+x_{153}\,x_{154}+x_{197}+x_{197}^{2}
+\\ &{}+x_{198}^{2}-x_{199}-x_{199}^{2}
+\end{align*}
+% END_Q 144
+% BEGIN_Q 145
+\begin{align*}
+Q_{145}={}&x_{130}-2\,x_{144}\,x_{200}+x_{160}\,x_{200}-x_{197}-x_{198}
+\\ &{}-2\,x_{198}\,x_{237}+x_{199}+x_{200}+4\,x_{200}\,x_{237}
+\end{align*}
+% END_Q 145
+% BEGIN_Q 146
+\begin{align*}
+Q_{146}={}&-x_{144}\,x_{202}-x_{202}+x_{203}
+\end{align*}
+% END_Q 146
+% BEGIN_Q 147
+\begin{align*}
+Q_{147}={}&2\,x_{201}+x_{201}^{2}+x_{202}^{2}-x_{203}^{2}
+\end{align*}
+% END_Q 147
+% BEGIN_Q 148
+\begin{align*}
+Q_{148}={}&-1+x_{134}+x_{144}\,x_{202}+x_{160}\,x_{204}-x_{201}-x_{202}
+\\ &{}-2\,x_{202}\,x_{237}
+\end{align*}
+% END_Q 148
+% BEGIN_Q 149
+\begin{align*}
+Q_{149}={}&-x_{144}\,x_{206}-x_{206}+x_{207}
+\end{align*}
+% END_Q 149
+% BEGIN_Q 150
+\begin{align*}
+Q_{150}={}&2\,x_{205}+x_{205}^{2}+x_{206}^{2}-x_{207}^{2}
+\end{align*}
+% END_Q 150
+% BEGIN_Q 151
+\begin{align*}
+Q_{151}={}&-1+x_{137}+x_{144}\,x_{206}+x_{160}\,x_{208}-x_{205}-x_{206}
+\\ &{}-2\,x_{206}\,x_{237}
+\end{align*}
+% END_Q 151
+% BEGIN_Q 152
+\begin{align*}
+Q_{152}={}&-x_{144}\,x_{210}-x_{210}+x_{211}
+\end{align*}
+% END_Q 152
+% BEGIN_Q 153
+\begin{align*}
+Q_{153}={}&2\,x_{209}+x_{209}^{2}+x_{210}^{2}-x_{211}^{2}
+\end{align*}
+% END_Q 153
+% BEGIN_Q 154
+\begin{align*}
+Q_{154}={}&-1+x_{140}+x_{144}\,x_{210}+x_{160}\,x_{212}-x_{209}-x_{210}
+\\ &{}-2\,x_{210}\,x_{237}
+\end{align*}
+% END_Q 154
+% BEGIN_Q 155
+\begin{align*}
+Q_{155}={}&-1-2\,x_{0}-3\,x_{0}^{2}-2\,x_{0}\,x_{4}-x_{1}-x_{1}^{2}-x_{2}
+\\ &{}-x_{2}^{2}-x_{4}-2\,x_{4}^{2}-x_{5}^{2}-x_{5}\,x_{20}+x_{5}\,x_{198}
+\\ &{}-x_{6}+x_{8}\,x_{9}+x_{10}+2\,x_{10}\,x_{12}-x_{11}^{2}-x_{12}
+\\ &{}-x_{13}^{2}-x_{14}^{2}-x_{15}^{2}-x_{16}^{2}-x_{17}^{2}+x_{18}
+\\ &{}-x_{18}^{2}-x_{19}-x_{19}^{2}-x_{27}-x_{104}^{2}-x_{105}^{2}
+\\ &{}-x_{109}^{2}-x_{110}^{2}-x_{113}^{2}-x_{116}^{2}-x_{119}^{2}-x_{122}^{2}
+\\ &{}-x_{123}^{2}-x_{126}^{2}-x_{129}^{2}-x_{130}^{2}-x_{134}^{2}-x_{137}^{2}
+\\ &{}-x_{140}^{2}+x_{143}-x_{144}+x_{144}^{2}-4\,x_{144}\,x_{237}+x_{149}^{2}
+\\ &{}-x_{153}\,x_{154}+2\,x_{155}\,x_{156}+x_{158}^{2}+x_{160}-2\,x_{164}+x_{164}^{2}
+\\ &{}-x_{167}+x_{170}^{2}+x_{174}^{2}+x_{178}^{2}+x_{182}^{2}+x_{186}^{2}
+\\ &{}+x_{190}^{2}+x_{194}^{2}-x_{197}+x_{198}^{2}-2\,x_{198}\,x_{213}+x_{199}
+\\ &{}+x_{202}^{2}+x_{206}^{2}-x_{210}^{2}-x_{213}^{2}+x_{215}\,x_{221}-x_{219}
+\\ &{}+x_{231}^{2}+x_{232}^{2}+x_{233}+x_{233}^{2}-4\,x_{237}-4\,x_{237}^{2}
+\end{align*}
+% END_Q 155
+% BEGIN_Q 156
+\begin{align*}
+Q_{156}={}&-x_{5}\,x_{10}-x_{5}\,x_{11}-x_{5}\,x_{12}-x_{5}\,x_{13}
+\\ &{}-x_{5}\,x_{14}-x_{5}\,x_{15}-x_{5}\,x_{16}-x_{5}\,x_{17}
+\\ &{}-x_{5}\,x_{18}+x_{213}
+\end{align*}
+% END_Q 156
+% BEGIN_Q 157
+\begin{align*}
+Q_{157}={}&-2+x_{0}-2\,x_{1}-x_{2}+2\,x_{2}\,x_{7}-x_{3}-x_{3}\,x_{10}
+\\ &{}-x_{3}\,x_{11}+2\,x_{3}\,x_{21}+x_{4}-x_{5}\,x_{20}-x_{6}
+\\ &{}+x_{6}^{2}+x_{11}+x_{11}^{2}+2\,x_{11}\,x_{12}+x_{12}+x_{12}^{2}
+\\ &{}+x_{18}-x_{25}-3\,x_{83}-x_{84}-x_{85}-x_{144}\,x_{198}-x_{198}
+\\ &{}+x_{199}-x_{214}^{2}-x_{215}^{2}-x_{216}^{2}-x_{217}^{2}-x_{218}^{2}
+\\ &{}+x_{224}^{2}+x_{225}^{2}
+\end{align*}
+% END_Q 157
+% BEGIN_Q 158
+\begin{align*}
+Q_{158}={}&-1+x_{2}+x_{6}-x_{6}^{2}
+\end{align*}
+% END_Q 158
+% BEGIN_Q 159
+\begin{align*}
+Q_{159}={}&-x_{144}\,x_{216}-x_{216}+x_{224}
+\end{align*}
+% END_Q 159
+% BEGIN_Q 160
+\begin{align*}
+Q_{160}={}&-1+x_{215}^{2}+x_{216}^{2}-x_{224}^{2}
+\end{align*}
+% END_Q 160
+% BEGIN_Q 161
+\begin{align*}
+Q_{161}={}&-x_{218}-x_{218}\,x_{219}+x_{225}
+\end{align*}
+% END_Q 161
+% BEGIN_Q 162
+\begin{align*}
+Q_{162}={}&-1+x_{217}^{2}+x_{218}^{2}-x_{225}^{2}
+\end{align*}
+% END_Q 162
+% BEGIN_Q 163
+\begin{align*}
+Q_{163}={}&-x_{210}^{2}+x_{226}
+\end{align*}
+% END_Q 163
+% BEGIN_Q 164
+\begin{align*}
+Q_{164}={}&x_{216}-2\,x_{220}\,x_{226}-x_{226}
+\end{align*}
+% END_Q 164
+% BEGIN_Q 165
+\begin{align*}
+Q_{165}={}&x_{144}\,x_{215}+x_{221}
+\end{align*}
+% END_Q 165
+% BEGIN_Q 166
+\begin{align*}
+Q_{166}={}&-x_{144}-x_{215}\,x_{221}+x_{219}
+\end{align*}
+% END_Q 166
+% BEGIN_Q 167
+\begin{align*}
+Q_{167}={}&-1-x_{209}-x_{215}\,x_{222}+x_{217}
+\end{align*}
+% END_Q 167
+% BEGIN_Q 168
+\begin{align*}
+Q_{168}={}&-x_{10}-x_{11}-4\,x_{21}-2\,x_{24}-4\,x_{26}-2\,x_{29}-2\,x_{31}
+\\ &{}-4\,x_{32}-2\,x_{34}-2\,x_{36}-4\,x_{38}-2\,x_{39}-2\,x_{42}-2\,x_{46}
+\\ &{}-4\,x_{67}-2\,x_{68}-x_{210}\,x_{223}+x_{218}
+\end{align*}
+% END_Q 168
+% BEGIN_Q 169
+\begin{align*}
+Q_{169}={}&-1+2\,x_{0}^{2}+2\,x_{0}\,x_{4}-2\,x_{0}\,x_{149}-2\,x_{0}\,x_{158}+x_{1}^{2}
+\\ &{}-2\,x_{1}\,x_{198}+x_{2}^{2}-2\,x_{2}\,x_{186}+x_{4}^{2}-2\,x_{4}\,x_{158}
+\\ &{}+x_{10}^{2}-2\,x_{10}\,x_{164}-2\,x_{10}\,x_{210}+x_{11}^{2}-2\,x_{11}\,x_{170}
+\\ &{}-2\,x_{11}\,x_{210}+x_{12}^{2}-2\,x_{12}\,x_{174}+x_{13}^{2}-2\,x_{13}\,x_{178}
+\\ &{}+x_{14}^{2}-2\,x_{14}\,x_{182}+x_{15}^{2}-2\,x_{15}\,x_{190}+x_{16}^{2}
+\\ &{}-2\,x_{16}\,x_{194}+x_{17}^{2}-2\,x_{17}\,x_{202}+x_{18}^{2}-2\,x_{18}\,x_{206}
+\\ &{}-8\,x_{21}\,x_{210}-4\,x_{24}\,x_{210}-8\,x_{26}\,x_{210}-4\,x_{29}\,x_{210}
+\\ &{}-4\,x_{31}\,x_{210}-8\,x_{32}\,x_{210}-4\,x_{34}\,x_{210}-4\,x_{36}\,x_{210}
+\\ &{}-8\,x_{38}\,x_{210}-4\,x_{39}\,x_{210}-4\,x_{42}\,x_{210}-4\,x_{46}\,x_{210}
+\\ &{}-8\,x_{67}\,x_{210}-4\,x_{68}\,x_{210}+x_{144}-x_{144}\,x_{164}-x_{144}\,x_{227}
+\\ &{}+x_{148}^{2}+x_{157}^{2}+x_{163}^{2}+x_{164}+x_{165}+x_{169}^{2}
+\\ &{}+x_{173}^{2}+x_{177}^{2}+x_{181}^{2}+x_{185}^{2}+x_{189}^{2}+x_{193}^{2}
+\\ &{}+x_{197}^{2}+x_{201}^{2}+x_{205}^{2}+x_{209}^{2}+x_{210}^{2}+x_{226}
+\\ &{}-x_{231}^{2}-x_{232}^{2}-x_{233}-x_{233}^{2}
+\end{align*}
+% END_Q 169
+% BEGIN_Q 170
+\begin{align*}
+Q_{170}={}&-x_{105}\,x_{228}+x_{130}
+\end{align*}
+% END_Q 170
+% BEGIN_Q 171
+\begin{align*}
+Q_{171}={}&-x_{110}\,x_{229}+x_{130}
+\end{align*}
+% END_Q 171
+% BEGIN_Q 172
+\begin{align*}
+Q_{172}={}&-x_{123}\,x_{230}+x_{130}
+\end{align*}
+% END_Q 172
+% BEGIN_Q 173
+\begin{align*}
+Q_{173}={}&2+x_{1}-x_{2}\,x_{7}-x_{3}\,x_{10}-x_{3}\,x_{11}-x_{4}
+\\ &{}+x_{5}\,x_{20}+x_{10}+x_{10}^{2}+2\,x_{10}\,x_{11}-8\,x_{10}\,x_{21}
+\\ &{}-4\,x_{10}\,x_{24}-8\,x_{10}\,x_{26}-4\,x_{10}\,x_{29}-4\,x_{10}\,x_{31}
+\\ &{}-8\,x_{10}\,x_{32}-4\,x_{10}\,x_{34}-4\,x_{10}\,x_{36}-8\,x_{10}\,x_{38}
+\\ &{}-4\,x_{10}\,x_{39}-4\,x_{10}\,x_{42}-4\,x_{10}\,x_{46}-8\,x_{10}\,x_{67}
+\\ &{}-4\,x_{10}\,x_{68}+2\,x_{11}+3\,x_{11}^{2}-2\,x_{11}\,x_{12}-8\,x_{11}\,x_{21}
+\\ &{}-4\,x_{11}\,x_{24}-8\,x_{11}\,x_{26}-4\,x_{11}\,x_{29}-4\,x_{11}\,x_{31}
+\\ &{}-8\,x_{11}\,x_{32}-4\,x_{11}\,x_{34}-4\,x_{11}\,x_{36}+4\,x_{11}\,x_{38}
+\\ &{}-4\,x_{11}\,x_{39}-4\,x_{11}\,x_{42}-4\,x_{11}\,x_{46}-8\,x_{11}\,x_{67}
+\\ &{}-4\,x_{11}\,x_{68}-x_{12}-x_{12}^{2}-x_{18}+8\,x_{21}-16\,x_{21}\,x_{24}
+\\ &{}-32\,x_{21}\,x_{26}-16\,x_{21}\,x_{29}-16\,x_{21}\,x_{31}-32\,x_{21}\,x_{32}
+\\ &{}-16\,x_{21}\,x_{34}-16\,x_{21}\,x_{36}-32\,x_{21}\,x_{38}-16\,x_{21}\,x_{39}
+\\ &{}-16\,x_{21}\,x_{42}-16\,x_{21}\,x_{46}-32\,x_{21}\,x_{67}-16\,x_{21}\,x_{68}
+\\ &{}-2\,x_{24}-4\,x_{24}^{2}-16\,x_{24}\,x_{26}-8\,x_{24}\,x_{29}-8\,x_{24}\,x_{31}
+\\ &{}-16\,x_{24}\,x_{32}-8\,x_{24}\,x_{34}-8\,x_{24}\,x_{36}-16\,x_{24}\,x_{38}
+\\ &{}-8\,x_{24}\,x_{39}-8\,x_{24}\,x_{42}-8\,x_{24}\,x_{46}-16\,x_{24}\,x_{67}
+\\ &{}-8\,x_{24}\,x_{68}+x_{25}-4\,x_{26}-12\,x_{26}^{2}+8\,x_{26}\,x_{28}
+\\ &{}-16\,x_{26}\,x_{29}-16\,x_{26}\,x_{31}-32\,x_{26}\,x_{32}-16\,x_{26}\,x_{34}
+\\ &{}-16\,x_{26}\,x_{36}-32\,x_{26}\,x_{38}-16\,x_{26}\,x_{39}-16\,x_{26}\,x_{42}
+\\ &{}-16\,x_{26}\,x_{46}-32\,x_{26}\,x_{67}-16\,x_{26}\,x_{68}+4\,x_{28}^{2}-3\,x_{29}
+\\ &{}-4\,x_{29}^{2}-8\,x_{29}\,x_{31}-16\,x_{29}\,x_{32}-8\,x_{29}\,x_{34}-8\,x_{29}\,x_{36}
+\\ &{}-16\,x_{29}\,x_{38}-8\,x_{29}\,x_{39}-8\,x_{29}\,x_{42}-8\,x_{29}\,x_{46}
+\\ &{}-16\,x_{29}\,x_{67}-8\,x_{29}\,x_{68}-2\,x_{31}-4\,x_{31}^{2}-16\,x_{31}\,x_{32}
+\\ &{}-8\,x_{31}\,x_{34}-8\,x_{31}\,x_{36}-16\,x_{31}\,x_{38}-8\,x_{31}\,x_{39}
+\\ &{}-8\,x_{31}\,x_{42}-8\,x_{31}\,x_{46}-16\,x_{31}\,x_{67}-8\,x_{31}\,x_{68}-4\,x_{32}
+\\ &{}-12\,x_{32}^{2}+8\,x_{32}\,x_{33}-16\,x_{32}\,x_{34}-16\,x_{32}\,x_{36}
+\\ &{}-32\,x_{32}\,x_{38}-16\,x_{32}\,x_{39}-16\,x_{32}\,x_{42}-16\,x_{32}\,x_{46}
+\\ &{}-32\,x_{32}\,x_{67}-16\,x_{32}\,x_{68}+4\,x_{33}^{2}-3\,x_{34}-4\,x_{34}^{2}
+\\ &{}-8\,x_{34}\,x_{36}-16\,x_{34}\,x_{38}-8\,x_{34}\,x_{39}-8\,x_{34}\,x_{42}
+\\ &{}-8\,x_{34}\,x_{46}-16\,x_{34}\,x_{67}-8\,x_{34}\,x_{68}-2\,x_{36}-4\,x_{36}^{2}
+\\ &{}-16\,x_{36}\,x_{38}-8\,x_{36}\,x_{39}-8\,x_{36}\,x_{42}-8\,x_{36}\,x_{46}
+\\ &{}-16\,x_{36}\,x_{67}-8\,x_{36}\,x_{68}-4\,x_{38}-4\,x_{38}^{2}-16\,x_{38}\,x_{39}
+\\ &{}-16\,x_{38}\,x_{42}-16\,x_{38}\,x_{46}-32\,x_{38}\,x_{67}-16\,x_{38}\,x_{68}
+\\ &{}-5\,x_{39}-4\,x_{39}^{2}-8\,x_{39}\,x_{42}-8\,x_{39}\,x_{46}-16\,x_{39}\,x_{67}
+\\ &{}-8\,x_{39}\,x_{68}-x_{40}-2\,x_{42}-4\,x_{42}^{2}-8\,x_{42}\,x_{46}
+\\ &{}-16\,x_{42}\,x_{67}-8\,x_{42}\,x_{68}-2\,x_{46}-4\,x_{46}^{2}-16\,x_{46}\,x_{67}
+\\ &{}-8\,x_{46}\,x_{68}+4\,x_{67}-8\,x_{67}^{2}-16\,x_{67}\,x_{68}-4\,x_{68}-4\,x_{68}^{2}
+\\ &{}+x_{83}+x_{84}-x_{149}^{2}-x_{158}^{2}+2\,x_{164}-x_{164}^{2}-x_{170}^{2}
+\\ &{}-x_{174}^{2}-x_{178}^{2}-x_{182}^{2}-x_{186}^{2}-x_{190}^{2}-x_{194}^{2}
+\\ &{}-x_{198}^{2}-x_{202}^{2}-x_{206}^{2}+x_{210}^{2}-x_{210}\,x_{223}+x_{218}
+\\ &{}-x_{231}^{2}-x_{232}^{2}-x_{233}-x_{233}^{2}
+\end{align*}
+% END_Q 173
+% BEGIN_Q 174
+\begin{align*}
+Q_{174}={}&-1-4\,x_{107}^{2}-4\,x_{112}^{2}-4\,x_{115}^{2}-4\,x_{118}^{2}-4\,x_{121}^{2}-4\,x_{125}^{2}
+\\ &{}-4\,x_{128}^{2}+x_{130}^{2}-4\,x_{132}^{2}-4\,x_{136}^{2}-4\,x_{139}^{2}-4\,x_{142}^{2}
+\\ &{}-x_{234}^{2}-x_{235}^{2}-x_{236}-x_{236}^{2}-4\,x_{239}^{2}
+\end{align*}
+% END_Q 174
+% BEGIN_Q 175
+\begin{align*}
+Q_{175}={}&-x_{5}\,x_{238}+x_{130}
+\end{align*}
+% END_Q 175
+% BEGIN_Q 176
+\begin{align*}
+Q_{176}={}&x_{3}\,x_{130}-x_{6}\,x_{238}-x_{239}
+\end{align*}
+% END_Q 176
+\endgroup
+\section{Coordinate names and artifact interpretation}
+The semantic names below describe the restored graph coordinates; the equation itself uses only the independent \(x_i\). Recorded translation shifts must be applied before identifying an actual source quantity with a final coordinate. The names are annotations, not new equations.
+\begingroup\footnotesize\renewcommand{\arraystretch}{0.96}
+\begin{longtable}{r >{\raggedright\arraybackslash}p{0.38\textwidth} r >{\raggedright\arraybackslash}p{0.38\textwidth}}
+\toprule Index & Source name & Index & Source name\\\midrule\endhead
+0 & \path{t0} & 120 & \path{range3.quotient}\\
+1 & \path{x} & 121 & \path{normalized.range3.remainder}\\
+2 & \path{y} & 122 & \path{pow10.output}\\
+3 & \path{fact0.output} & 123 & \path{pow11.output}\\
+4 & \path{mul.1} & 124 & \path{range4.quotient}\\
+5 & \path{choose0.output} & 125 & \path{normalized.range4.remainder}\\
+6 & \path{pow0.output} & 126 & \path{pow12.output}\\
+7 & \path{endpoint.u0} & 127 & \path{range5.quotient}\\
+8 & \path{endpoint.ut} & 128 & \path{normalized.range5.remainder}\\
+9 & \path{mul.11} & 129 & \path{pow13.output}\\
+10 & \path{crt.encoded.a} & 130 & \path{pow14.output}\\
+11 & \path{crt.encoded.b} & 131 & \path{range6.quotient}\\
+12 & \path{crt.encoded.c} & 132 & \path{normalized.range6.remainder}\\
+13 & \path{crt.encoded.d} & 133 & \path{mul.430}\\
+14 & \path{crt.encoded.S} & 134 & \path{pow15.output}\\
+15 & \path{crt.encoded.Sp} & 135 & \path{range7.quotient}\\
+16 & \path{crt.encoded.u} & 136 & \path{normalized.range7.remainder}\\
+17 & \path{crt.encoded.vq} & 137 & \path{pow16.output}\\
+18 & \path{crt.encoded_index_minus_one} & 138 & \path{range8.quotient}\\
+19 & \path{pow1.output} & 139 & \path{normalized.range8.remainder}\\
+20 & \path{crt.index_quotient} & 140 & \path{pow17.output}\\
+21 & \path{mul.40} & 141 & \path{range9.quotient}\\
+22 & \path{add.50} & 142 & \path{normalized.range9.remainder}\\
+23 & \path{mul.53} & 143 & \path{shared.W}\\
+24 & \path{add.61} & 144 & \path{shared.A}\\
+25 & \path{mul.64} & 145 & \path{shared.Zminus1}\\
+26 & \path{add.71} & 146 & \path{mul.450}\\
+27 & \path{mul.75} & 147 & \path{mul.451}\\
+28 & \path{add.83} & 148 & \path{index0.X}\\
+29 & \path{mul.86} & 149 & \path{index0.Y}\\
+30 & \path{mul.96} & 150 & \path{mul.460}\\
+31 & \path{add.101} & 151 & \path{base0.T}\\
+32 & \path{add.112} & 152 & \path{pow0.quotient}\\
+33 & \path{add.119} & 153 & \path{base1.T}\\
+34 & \path{mul.123} & 154 & \path{pow1.quotient}\\
+35 & \path{mul.137} & 155 & \path{base2.T}\\
+36 & \path{add.142} & 156 & \path{pow2.quotient}\\
+37 & \path{mul.148} & 157 & \path{index2.X}\\
+38 & \path{add.156} & 158 & \path{index2.Y}\\
+39 & \path{mul.159} & 159 & \path{mul.503}\\
+40 & \path{add.172} & 160 & \path{base3.T}\\
+41 & \path{add.177} & 161 & \path{pow3.quotient}\\
+42 & \path{add.181} & 162 & \path{pow4.quotient}\\
+43 & \path{mul.184} & 163 & \path{index3.X}\\
+44 & \path{mul.188} & 164 & \path{index3.Y}\\
+45 & \path{mul.194} & 165 & \path{mul.529}\\
+46 & \path{add.199} & 166 & \path{pow5.quotient}\\
+47 & \path{add.205} & 167 & \path{index_addition.D}\\
+48 & \path{mul.210} & 168 & \path{pow6.quotient}\\
+49 & \path{mul.214} & 169 & \path{index5.X}\\
+50 & \path{add.221} & 170 & \path{index5.Y}\\
+51 & \path{mul.225} & 171 & \path{mul.554}\\
+52 & \path{mul.229} & 172 & \path{pow7.quotient}\\
+53 & \path{add.236} & 173 & \path{index6.X}\\
+54 & \path{mul.240} & 174 & \path{index6.Y}\\
+55 & \path{add.247} & 175 & \path{mul.567}\\
+56 & \path{mul.251} & 176 & \path{pow8.quotient}\\
+57 & \path{mul.255} & 177 & \path{index7.X}\\
+58 & \path{add.262} & 178 & \path{index7.Y}\\
+59 & \path{mul.266} & 179 & \path{mul.580}\\
+60 & \path{mul.270} & 180 & \path{pow9.quotient}\\
+61 & \path{add.277} & 181 & \path{index8.X}\\
+62 & \path{mul.281} & 182 & \path{index8.Y}\\
+63 & \path{mul.285} & 183 & \path{mul.593}\\
+64 & \path{add.292} & 184 & \path{pow10.quotient}\\
+65 & \path{add.299} & 185 & \path{index9.X}\\
+66 & \path{mul.303} & 186 & \path{index9.Y}\\
+67 & \path{add.308} & 187 & \path{mul.606}\\
+68 & \path{mul.311} & 188 & \path{pow11.quotient}\\
+69 & \path{mul.314} & 189 & \path{index10.X}\\
+70 & \path{sqd.1} & 190 & \path{index10.Y}\\
+71 & \path{sqd.2} & 191 & \path{mul.619}\\
+72 & \path{sqd.3} & 192 & \path{pow12.quotient}\\
+73 & \path{sqd.4} & 193 & \path{index11.X}\\
+74 & \path{sqd.5} & 194 & \path{index11.Y}\\
+75 & \path{sqd.6} & 195 & \path{mul.632}\\
+76 & \path{sqd.7} & 196 & \path{pow13.quotient}\\
+77 & \path{sqd.8} & 197 & \path{index12.X}\\
+78 & \path{sqd.9} & 198 & \path{index12.Y}\\
+79 & \path{mul.331} & 199 & \path{mul.645}\\
+80 & \path{sqd.11} & 200 & \path{pow14.quotient}\\
+81 & \path{mul.334} & 201 & \path{index13.X}\\
+82 & \path{sqd.12} & 202 & \path{index13.Y}\\
+83 & \path{mul.337} & 203 & \path{mul.658}\\
+84 & \path{mul.340} & 204 & \path{pow15.quotient}\\
+85 & \path{mul.342} & 205 & \path{index14.X}\\
+86 & \path{mul.344} & 206 & \path{index14.Y}\\
+87 & \path{sqd.13} & 207 & \path{mul.671}\\
+88 & \path{sqd.14} & 208 & \path{pow16.quotient}\\
+89 & \path{mul.350} & 209 & \path{index15.X}\\
+90 & \path{mul.351} & 210 & \path{index15.Y}\\
+91 & \path{mul.352} & 211 & \path{mul.684}\\
+92 & \path{mul.353} & 212 & \path{pow17.quotient}\\
+93 & \path{mul.354} & 213 & \path{self_radix.BH}\\
+94 & \path{mul.355} & 214 & \path{cofinal.horizon_root}\\
+95 & \path{mul.356} & 215 & \path{cap.H}\\
+96 & \path{mul.357} & 216 & \path{cap.J}\\
+97 & \path{mul.358} & 217 & \path{cap.S}\\
+98 & \path{mul.359} & 218 & \path{cap.R}\\
+99 & \path{mul.360} & 219 & \path{cap.B}\\
+100 & \path{mul.362} & 220 & \path{cap.e}\\
+101 & \path{mul.364} & 221 & \path{cap.f}\\
+102 & \path{mul.367} & 222 & \path{cap.g}\\
+103 & \path{crt.nonnegative_quotient} & 223 & \path{cap.h}\\
+104 & \path{pow3.output} & 224 & \path{cap.common_Ay}\\
+105 & \path{pow4.output} & 225 & \path{cap.BR}\\
+106 & \path{choose0.high} & 226 & \path{cap.Y2}\\
+107 & \path{normalized.choose0.remainder} & 227 & \path{cap.pooled_quotient}\\
+108 & \path{mul.396} & 228 & \path{remainder_budget.ratio0}\\
+109 & \path{pow5.output} & 229 & \path{remainder_budget.ratio1}\\
+110 & \path{pow6.output} & 230 & \path{remainder_budget.ratio2}\\
+111 & \path{range0.quotient} & 231 & \path{new_guard3.a}\\
+112 & \path{normalized.range0.remainder} & 232 & \path{new_guard3.b}\\
+113 & \path{pow7.output} & 233 & \path{new_guard3.c}\\
+114 & \path{range1.quotient} & 234 & \path{new_guard4.a}\\
+115 & \path{normalized.range1.remainder} & 235 & \path{new_guard4.b}\\
+116 & \path{pow8.output} & 236 & \path{new_guard4.c}\\
+117 & \path{range2.quotient} & 237 & \path{radix.odd_square_root_half}\\
+118 & \path{normalized.range2.remainder} & 238 & \path{bootstrap.normalizing_ratio}\\
+119 & \path{pow9.output} & 239 & \path{bootstrap.normalized_ceiling_error}\\
+\bottomrule\end{longtable}\endgroup
+\end{document}
