@@ -25,34 +25,33 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete zero-weight6007 equation: fifteen positive unknowns, exact
-degree157 and66 integer-leaf operations. The four constants total**141226
-raw bytes**,30785 fewer than the preceding172011 (17.9%). The whole recipe
-also shrinks: TeX5085 bytes and nonwhite extracted text2706 characters,
-each down4. PDF159636 bytes is11 bytes smaller. Fonts remain9pt/7.7pt on
-one Letter page.
+the complete Start-marker4177 equation: fifteen positive unknowns, exact
+degree157 and66 integer-leaf operations. Its four constants total**98219
+raw bytes**,43007 fewer than6007 (30.5%). The whole recipe also shrinks:
+TeX5072 bytes, nonwhite extracted text2699 characters and PDF159631 bytes,
+down13,7 and5 respectively. Fonts remain9pt/7.7pt on one Letter page.
 
-The complete [ordinary proof](research/zero-weight-flag-independent/PROOF.md)
-has separate root and independent mathematical audits. A physical flag
-with zero clause weight permits smaller nonuniform label and clause
-positions. Decoding precedes alignment, and alignment precedes flag
-recovery. Global carry29, all17 copies, both clause predecessors, all875
-padding bits, final resets, fresh subsets, actual rank and both P66 maps
-are covered. The finite Pc0 certificate uses lambda368369, exact orders
-23/1001 and H residues2/53/95646. Normal and optimized checks reproduce
-all finite and materialized files. The actual printed flag-term deletion
-is rejected even though it leaves weighted Phi unchanged. Two actual
-full-page visual inspections pass. See the
-[complete candidate](candidates/one-page-zero-weight6007/README.md),
-[mathematical review](reviews/zero-weight6007-independent-peer.md) and
-[page review](reviews/zero-weight6007-page-peer.md).
+The complete [ordinary proof](research/start-marker-independent/PROOF.md)
+has separate root and independent mathematical audits. One Start-copy
+monomial replaces the943-term count block. Three parity tests and the
+already-decoded at-most-one-selector condition recover alignment; canonical
+words have one shifted Start marker. Global carry29, all17 copies, the
+actual c0*marker upper-predecessor term,875 tail-padding bits, top resets,
+fresh safe subsets, actual rank and both P66 maps are covered. The new
+Pcs certificate uses lambda224113, orders23/87 and H residues9/2620/158694.
+Normal and optimized finite/materializer checks reproduce every saved file.
+Actual TeX marker deletion is rejected even though weighted Phi stays
+unchanged. Two full-page visual inspections pass. See the
+[complete candidate](candidates/one-page-start-marker4177/README.md),
+[mathematical review](reviews/start-marker4177-independent-peer.md) and
+[page review](reviews/start-marker4177-page-peer.md).
 
-The previous7309,7691,three-anchor47 and55 pages and CURRENT records are
-preserved. This is a new specialization of the uniform66/157 front, with
-explicit ordinary native/Pell/refutation contracts and no new formal-kernel
-replay or consistency decision. Research remains active, including a
-prospective single Start-marker kernel. Separate rational-leaf65 graphs
-retain their own fixed tuple bindings and operation convention.
+Every previous page and CURRENT record remains preserved. This is a new
+specialization of the uniform66/157 front with explicit ordinary calibration,
+not a new formal-kernel replay or consistency decision. Research remains
+active: a lower marker at1031 has a finite97046-byte candidate, pending its
+complete proof and page. Separate rational-leaf65 graphs retain their own
+fixed tuple bindings and operation convention.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 still saves nineteen operations and171 degree while adding five unknowns.

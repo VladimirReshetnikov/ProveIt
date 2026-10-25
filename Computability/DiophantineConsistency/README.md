@@ -19,32 +19,33 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **complete zero-weight6007 equation
+[equation.tex](equation.tex) print the **complete Start-marker4177 equation
 in fifteen positive unknowns, exact degree157, with66 integer-leaf binary
 operations**. All four fixed constants, the436-character numeral, alphabet,
 closed decoder and943 tiles fit on one Letter page at9-point body and
 7.7-point seed/footer sizes.
 
-The [complete candidate](candidates/one-page-zero-weight6007/README.md)
-reduces raw coefficient storage from172011 to**141226 bytes**, saving30785
-(17.9%) from one-anchor7309. Complete TeX falls5089 to5085 bytes, nonwhite
-`pdftotext -layout` text2710 to2706 characters and PDF159647 to159636 bytes.
-Variables, degree and integer-leaf operation count stay unchanged. All four
-integers change coherently, giving a new specialization of the same P66.
+The [complete candidate](candidates/one-page-start-marker4177/README.md)
+reduces raw coefficient storage from141226 to**98219 bytes**, saving43007
+(30.5%) from zero-weight6007. Complete TeX falls5085 to5072 bytes, nonwhite
+`pdftotext -layout` text2706 to2699 characters and PDF159636 to159631 bytes.
+Variables, degree and integer-leaf operation count stay unchanged. The four
+integers coherently define a new specialization of the same P66 template.
 
-The [whole ordinary proof](research/zero-weight-flag-independent/PROOF.md)
-retains a physical flag while giving it zero weight in the count clauses.
-The clauses recover at most one tile and its labels; Start and the
-selector-count copy recover alignment; only then does occupation force
-the flag. The nonuniform layout, global carry29, all875 padding bits,
-predecessor resets, actual rank changes and both P66 maps are checked.
-The new [finite certificate](research/zero-weight-flag-independent/certificate.json)
-discharges Pc0 with orders23/1001, lambda368369 and H residues2/53/95646.
-Complete [root](reviews/zero-weight6007-root.md) and
-[independent](reviews/zero-weight6007-independent-peer.md) mathematical
-reviews pass. Whole printed-port reconstruction passes normal and optimized
-checks, including deletion of the actual printed physical-flag term.
-The [page review](reviews/zero-weight6007-page-peer.md) records full source
+The [whole ordinary proof](research/start-marker-independent/PROOF.md)
+replaces the943-term selector-count block by one monomial copying Start.
+The physical marker remains zero-weight in the count clauses and tracks
+a temporal translate of Start. Three existing parity tests recover alignment:
+every nonzero field offset would require two selectors in one cell, after
+the clauses have proved at most one. Global carry29, all875 tail-padding
+bits, predecessor resets, actual rank and both P66 maps are checked.
+The [finite certificate](research/start-marker-independent/certificate.json)
+discharges Pcs with orders23/87, lambda224113 and H residues9/2620/158694.
+Full [root](reviews/start-marker4177-root.md) and
+[independent](reviews/start-marker4177-independent-peer.md) mathematical
+reviews pass. Normal and optimized reconstruction checks reproduce every
+printed integer and reject deletion of the actual zero-weight marker term.
+The [page review](reviews/start-marker4177-page-peer.md) records full source
 agreement and a second actual visual inspection.
 [CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the page and preserves
 the preceding metadata verbatim.
@@ -52,12 +53,13 @@ the preceding metadata verbatim.
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
 proof, consistency decision or global minimum is claimed. Lean remains
-paused. The [one-anchor7309](candidates/one-page-one-anchor7309/equation.pdf),
+paused. The [zero-weight6007](candidates/one-page-zero-weight6007/equation.pdf),
+[one-anchor7309](candidates/one-page-one-anchor7309/equation.pdf),
 [two-anchor7691](candidates/one-page-two-anchor7691/equation.pdf),
 [three-anchor47](candidates/one-page-complemented47-independent/equation.pdf)
 and [radix55](candidates/one-page-compact66-radix55/equation.pdf) pages remain
-preserved with their complete evidence. Further work tests whether the
-physical flag can track only Start and remove the943-term count kernel.
+preserved. Further work moves the Start marker lower using more of the
+calibrated Start pattern and investigates shorter padding recipes.
 
 The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
 [grouped66 page](candidates/one-page-grouped66/equation.pdf) and

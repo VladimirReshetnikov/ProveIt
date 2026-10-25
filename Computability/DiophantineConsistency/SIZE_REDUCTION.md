@@ -13,22 +13,23 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained page now uses the fully reviewed **zero-weight6007** tuple.
-Its four raw integers total141226 bytes versus172011 for one-anchor7309,
-180987 for two-anchor7691,207214 for three-anchor47 and242484 for radix55.
-Against7309, complete TeX and nonwhite extracted text each fall4 to5085
-and2706; PDF falls11 to159636 bytes. Fonts and the15-positive/66-operation/
-degree157 profile are unchanged. Pc0 is discharged; see the
-[complete candidate](candidates/one-page-zero-weight6007/README.md).
+The maintained page now uses the fully reviewed **Start-marker4177** tuple.
+Its four raw integers total98219 bytes versus141226 for zero-weight6007,
+172011 for one-anchor7309,180987 for two-anchor7691,207214 for three-anchor47
+and242484 for radix55. Against6007, complete TeX falls13 to5072 bytes,
+nonwhite extracted text falls7 to2699 and PDF falls5 to159631 bytes.
+Fonts and the15-positive/66-operation/degree157 profile are unchanged.
+Pcs is discharged; see the
+[complete candidate](candidates/one-page-start-marker4177/README.md).
 
-The physical flag remains in Psi at one but vanishes at two through2-t.
-Count clauses recover only the tile and its labels. Start and the whole
-selector-count copy then recover alignment, and occupation finally fixes
-flags. This ordering allows smaller clause masks and a nonuniform layout.
-The complete carry29, predecessor,875-bit padding, actual-rank, safe-subset
-and P66 arguments pass independent review. Every printed coefficient and
-physical support bit is reconstructed; deleting the actual flag term is
-rejected even though weighted Phi stays identical.
+The943-term count-copy block is replaced by one monomial copying selector0.
+The zero-weight physical marker tracks a temporal translate of Start.
+Three calibrated parity tests and the already-proved at-most-one-selector
+condition exclude every nonzero offset. This permits much lower clauses
+and a complete zero top band for all875 padding bits. The full native,
+actual-rank, safe-subset and P66 arguments pass independent review. Every
+printed coefficient and physical support bit is reconstructed; deleting
+the actual marker term is rejected while weighted Phi remains identical.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
 gives65 operations for the same bound three-anchor47 polynomial while
@@ -40,13 +41,13 @@ those specific bindings. Neither is an integer-leaf65 record. The specific
 four-gate tail requiring MC=MF_native is ruled out by odd-d mask parity;
 this is no general lower bound on64-operation evaluators.
 
-The next substantial lead replaces the943-term selector-count kernel by
-one term that copies only the Start selector. Multiple calibrated Start
-south bits may exclude every nonzero offset using the already-proved
-at-most-one-selector condition. The physical marker would then track a
-temporal translate of Start, rather than occupation in every cell. This
-needs a new full native proof, mask/padding and controller checks before
-promotion. The complete6007 result remains the maintained checkpoint.
+The next layout moves the physical Start marker from1048 to1031. All
+eight calibrated south-one tests exclude the extra offsets; the sole
+remaining offset32 would force selector942 and an incompatible south bit.
+A complete finite candidate atL4127 totals97046 bytes,1173 below4177.
+It needs a separately reviewed full ordinary proof and page before promotion.
+Further padding work looks for concise blocks of universally zero upper
+bits within the product, preserving both byte and printed-recipe measures.
 
 The requested neighboring research is relevant at two different interfaces.
 [Hilbert Tenth](../HilbertTenthProblem/README.md) supplies the half-binomial
