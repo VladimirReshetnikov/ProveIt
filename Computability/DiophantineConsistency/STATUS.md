@@ -35,6 +35,13 @@ pass review; see the [candidate](candidates/one-page-saturated10/README.md).
 The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
 remains a different tradeoff.
 
+The complete direct quartic now has **436 unrestricted integer unknowns,
+288 rows,4,624 terms and height128,446**, after jointly removing the F/A
+sign graphs. Its full ordinary source licenses, every quartic coefficient,
+inverse/free-coordinate map and four independent root replays pass; see
+the [root acceptance](reviews/round15-sign-guard-projections-root-peer.md).
+All earlier quartics and the separate compact canonical page are preserved.
+
 The preserved fifteen-positive page prints a436-character base62 numeral
 with its entire alphabet and positional sum. Its complete coefficient
 recipe has2297 nonwhite characters, down from2518 on the preserved771-digit
@@ -1744,3 +1751,26 @@ undoubled pairs for18 calls, retaining one full cap comparison, the derived
 t+1 pair and all five shared moduli. The literal successor source/checker is
 still pending. This is an ordinary mathematical lead with no new equation or
 count claim; all accepted pages, quartics and paused Lean work remain preserved.
+
+
+## Complete direct quartic reaches436 integer variables
+
+The [joint centered equation](research/round15-sign-guard-projections/full-data/joint_F_A/centered/equation.json)
+has **436 unrestricted integer variables,288 rows,exact degree4,4,624 terms,
+height128,446 and row height256**. It saves6 variables,2 rows and28 terms
+against the preserved442 parent at unchanged heights. The F-only intermediate
+has439 variables/289 rows/4,638 terms at the same heights; both complete plain
+charts remain available too. All four endpoints have their own exact complete
+source, projection and translation certificates.
+
+Root and peer read the entire new code/proof closure before execution. All
+four fresh root checker/rebuild receipts and stdout files exactly match the
+author. Every one of the40 generated full-data members rebuilds byte-exactly;
+36 actual corruptions are rejected per collector mode. Root separately checked
+the entire factored variable/row maps and180-step lists: the only retained
+coordinate losses are the declared3/6 guard auxiliaries, with the same15 free
+coordinates and full reverse reconstruction. The closed85-file author payload
+and separate root replay packet are sealed; see the
+[root acceptance](reviews/round15-sign-guard-projections-root-peer.md).
+No global optimum or new internal-ZFC/Lean theorem is claimed. The canonical
+ten-positive92/283 PDF and TeX remain the separate compact display. Lean stays paused.

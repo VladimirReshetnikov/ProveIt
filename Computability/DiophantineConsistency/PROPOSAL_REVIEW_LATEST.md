@@ -47,7 +47,9 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Nonnegative integers | **329** | not optimized | **4** | Unified factorial/CRT binomial, derived Cantor;253 rows,12,210 terms,height86,844,780 |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | **442** | not optimized | **4** | Unified binomial, selective even indices and residue-one orientation;290 rows,4,652 terms,height128,446 |
+| Integers | **436** | not optimized | **4** | Joint redundant-sign removal;288 rows,4,624 terms,height128,446; complete source and four root replays |
+| Integers | 439 | not optimized | 4 | F-only intermediate;289 rows,4,638 terms,height128,446 |
+| Integers | 442 | not optimized | 4 | Preserved unified-binomial parent;290 rows,4,652 terms,height128,446 |
 | Integers | 496 | not optimized | 4 | Preserved paired-guard quadratic-first checkpoint;307 rows,5,924 terms,height5,061,227 |
 | Integers | 498 | not optimized | 4 | Complete paired guards,support16;309 rows,6,615 terms,height3,904,259 |
 | Integers | 501 / 502 | not optimized | 4 | Lower-height paired guards;5,615 /6,111 terms,heights620,468 /411,053 |
@@ -1859,3 +1861,26 @@ undoubled pairs for18 calls, retaining one full cap comparison, the derived
 t+1 pair and all five shared moduli. The literal successor source/checker is
 still pending. This is an ordinary mathematical lead with no new equation or
 count claim; all accepted pages, quartics and paused Lean work remain preserved.
+
+
+## Complete direct quartic reaches436 integer variables
+
+The [joint centered equation](research/round15-sign-guard-projections/full-data/joint_F_A/centered/equation.json)
+has **436 unrestricted integer variables,288 rows,exact degree4,4,624 terms,
+height128,446 and row height256**. It saves6 variables,2 rows and28 terms
+against the preserved442 parent at unchanged heights. The F-only intermediate
+has439 variables/289 rows/4,638 terms at the same heights; both complete plain
+charts remain available too. All four endpoints have their own exact complete
+source, projection and translation certificates.
+
+Root and peer read the entire new code/proof closure before execution. All
+four fresh root checker/rebuild receipts and stdout files exactly match the
+author. Every one of the40 generated full-data members rebuilds byte-exactly;
+36 actual corruptions are rejected per collector mode. Root separately checked
+the entire factored variable/row maps and180-step lists: the only retained
+coordinate losses are the declared3/6 guard auxiliaries, with the same15 free
+coordinates and full reverse reconstruction. The closed85-file author payload
+and separate root replay packet are sealed; see the
+[root acceptance](reviews/round15-sign-guard-projections-root-peer.md).
+No global optimum or new internal-ZFC/Lean theorem is claimed. The canonical
+ten-positive92/283 PDF and TeX remain the separate compact display. Lean stays paused.

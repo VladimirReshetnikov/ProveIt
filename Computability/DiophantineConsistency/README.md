@@ -53,14 +53,15 @@ is preserved separately from the canonical92/283 page. Its complete
 actual-formula and rendered-page checks; see the
 [root review](reviews/one-page-qcube86-root-peer.md).
 
-For degree-four equations, the [complete unified-binomial construction](con-zfc-diophantine-forms/125-unified-binomial-round15/direct/integer442/)
-now reaches **442 unrestricted integer unknowns**, with4,652 terms and height
-128,446. Full ordinary/source review and independent normal/optimized exact
-reconstruction pass; see the [root acceptance](reviews/round15-direct-root-peer.md).
-Its six natural-domain alternatives reach329 nonnegative unknowns. A separate
-[joint sign theorem](reviews/round15-signed-frame-root-peer.md) now removes
-both F and A guards at the complete fixed body; successor quartic counts
-await their own compiler checks. The
+For direct degree-four equations, the [complete sign-guard reduction](research/round15-sign-guard-projections/full-data/joint_F_A/centered/equation.json)
+now reaches **436 unrestricted integer unknowns**, with4,624 terms and height
+128,446. Both omitted signs have complete ordinary proofs; independent full
+normal/optimized coefficient checks and byte-exact rebuilds pass. See the
+[root acceptance](reviews/round15-sign-guard-projections-root-peer.md).
+The F-only intermediate has439 variables; the full
+[442-variable parent](con-zfc-diophantine-forms/125-unified-binomial-round15/direct/integer442/)
+and all inverse certificates remain preserved. Its six natural-domain
+alternatives reach329 nonnegative unknowns. The
 [preceding496-variable family](research/round14-pair-guard-projections/README.md),
 all lower-height alternatives and their complete inverse certificates remain preserved.
 The [eight-bundle intake](research/intake-5f3379063d/README.md) records the newer

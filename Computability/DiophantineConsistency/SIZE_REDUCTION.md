@@ -1687,3 +1687,26 @@ is exact, but its [static source census](research/quadratic-power-congruence/SOU
 shows that the accepted442 projection already fuses all five shared modulus
 definitions. A helper per quotient would sacrifice sharing; this local rewrite
 has no demonstrated size gain and is not being expanded into another compiler.
+
+
+## Complete direct quartic reaches436 integer variables
+
+The [joint centered equation](research/round15-sign-guard-projections/full-data/joint_F_A/centered/equation.json)
+has **436 unrestricted integer variables,288 rows,exact degree4,4,624 terms,
+height128,446 and row height256**. It saves6 variables,2 rows and28 terms
+against the preserved442 parent at unchanged heights. The F-only intermediate
+has439 variables/289 rows/4,638 terms at the same heights; both complete plain
+charts remain available too. All four endpoints have their own exact complete
+source, projection and translation certificates.
+
+Root and peer read the entire new code/proof closure before execution. All
+four fresh root checker/rebuild receipts and stdout files exactly match the
+author. Every one of the40 generated full-data members rebuilds byte-exactly;
+36 actual corruptions are rejected per collector mode. Root separately checked
+the entire factored variable/row maps and180-step lists: the only retained
+coordinate losses are the declared3/6 guard auxiliaries, with the same15 free
+coordinates and full reverse reconstruction. The closed85-file author payload
+and separate root replay packet are sealed; see the
+[root acceptance](reviews/round15-sign-guard-projections-root-peer.md).
+No global optimum or new internal-ZFC/Lean theorem is claimed. The canonical
+ten-positive92/283 PDF and TeX remain the separate compact display. Lean stays paused.
