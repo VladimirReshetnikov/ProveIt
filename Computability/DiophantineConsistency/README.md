@@ -44,12 +44,13 @@ The [direct-carrier sharing extension](research/saturated-direct-carrier-cse/REA
 also saves one multiplication in each of five complete direct variants,
 including96/258,97/254 and94/262; their entire polynomials are preserved.
 
-For degree-four equations, the [complete paired-guard family](research/round14-pair-guard-projections/README.md)
-now reaches **496 unrestricted integer unknowns**, with5,924 terms and height
-5,061,227. A498-variable alternative has6,615 terms and smaller height3,904,259;
-a502-variable branch lowers height to411,053. Every full equation, coefficient
-list and inverse certificate is retained; see the
-[root acceptance](reviews/round14-pair-guard-projections-root-peer.md).
+For degree-four equations, the [complete unified-binomial construction](con-zfc-diophantine-forms/125-unified-binomial-round15/direct/integer442/)
+now reaches **442 unrestricted integer unknowns**, with4,652 terms and height
+128,446. Full ordinary/source review and independent normal/optimized exact
+reconstruction pass; see the [root acceptance](reviews/round15-direct-root-peer.md).
+Its six natural-domain alternatives reach329 nonnegative unknowns. The
+[preceding496-variable family](research/round14-pair-guard-projections/README.md),
+all lower-height alternatives and their complete inverse certificates remain preserved.
 
 The preceding [ten-positive degree408 page](candidates/one-page-quadratic10/equation.pdf)
 is preserved with its [TeX](candidates/one-page-quadratic10/equation.tex),

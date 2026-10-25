@@ -1588,3 +1588,37 @@ its explicit inherited C222/Pell/refutation calibration. The canonical compact
 92/283 PDF and TeX remain unchanged; Lean remains paused. A later incoming
 Round15 proposal claims442 variables and is a separate review priority; that
 claim is not promoted by this acceptance.
+
+## Complete unified-binomial quartic: 442 integer unknowns
+
+The [reviewed Round15 direct equation](con-zfc-diophantine-forms/125-unified-binomial-round15/direct/integer442/)
+has **442 unrestricted integer unknowns,290 residuals,exact degree four,
+4,652 terms and coefficient height128,446**. It improves the496-variable
+checkpoint in every listed measure and also improves the502-variable
+lower-height alternative. Their complete equations remain preserved.
+The separately checked natural architecture reaches329 nonnegative unknowns,
+with six complete natural alternatives. Natural and integer domains stay explicit.
+
+One binomial simultaneously certifies the factorial and CRT product. Its raw
+bounds establish the pure radix before digit meaning. Selectively even Pell
+indices, residue-one orientation and seven weighted guard pairs reduce the
+signed source. Root and peer independently reviewed the complete unbounded
+arguments, actual source/seed/frame/guard/remainder interfaces and full executable
+closure before execution. Soundness and completeness rebuild private Pell
+witnesses from the semantic front tuple.
+
+Both fresh root normal/optimized scoped replays exactly match the peer. Each
+reconstructs all72 architecture files,15 signed-source files and five centered
+endpoint files byte for byte; all569 original private archive members remain
+unchanged. The independent auditor checks all natural/integer projections,
+180 monic restorations,15 declared free coordinates,13 separate private-slack
+inverses,54 integral translations and every quartic coefficient, rejecting14
+actual corruptions per mode. The canonical placement's omitted duplicate imports
+are supplied only in private exact-archive trees, with no repository restoration.
+See the [root acceptance](reviews/round15-direct-root-peer.md),
+[ordinary/source review](research/intake-5f3379063d/ROUND15_DIRECT_REVIEW.md)
+and [scoped reproduction](research/round15-direct-reproduction/README.md).
+
+The inherited C222/Pell/refutation calibration remains explicit; no new internal
+ZFC or Lean endpoint is claimed. The canonical ten-positive92/283 PDF and TeX
+remain unchanged because this is a separate quartic tradeoff. Lean stays paused.

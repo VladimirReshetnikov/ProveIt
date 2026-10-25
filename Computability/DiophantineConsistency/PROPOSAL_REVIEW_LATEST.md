@@ -43,9 +43,11 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue families and prime separation |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-gate checkpoint retained |
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
+| Nonnegative integers | **329** | not optimized | **4** | Unified factorial/CRT binomial, derived Cantor;253 rows,12,210 terms,height86,844,780 |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | **496** | not optimized | **4** | Complete paired guards, quadratic-first;307 rows,5,924 terms,height5,061,227 |
+| Integers | **442** | not optimized | **4** | Unified binomial, selective even indices and residue-one orientation;290 rows,4,652 terms,height128,446 |
+| Integers | 496 | not optimized | 4 | Preserved paired-guard quadratic-first checkpoint;307 rows,5,924 terms,height5,061,227 |
 | Integers | 498 | not optimized | 4 | Complete paired guards,support16;309 rows,6,615 terms,height3,904,259 |
 | Integers | 501 / 502 | not optimized | 4 | Lower-height paired guards;5,615 /6,111 terms,heights620,468 /411,053 |
 | Integers | 517 | not optimized | 4 | Preserved Round14 derived parent;310 rows,6,774 terms,height3,904,267 |
@@ -1700,3 +1702,37 @@ its explicit inherited C222/Pell/refutation calibration. The canonical compact
 92/283 PDF and TeX remain unchanged; Lean remains paused. A later incoming
 Round15 proposal claims442 variables and is a separate review priority; that
 claim is not promoted by this acceptance.
+
+## Complete unified-binomial quartic: 442 integer unknowns
+
+The [reviewed Round15 direct equation](con-zfc-diophantine-forms/125-unified-binomial-round15/direct/integer442/)
+has **442 unrestricted integer unknowns,290 residuals,exact degree four,
+4,652 terms and coefficient height128,446**. It improves the496-variable
+checkpoint in every listed measure and also improves the502-variable
+lower-height alternative. Their complete equations remain preserved.
+The separately checked natural architecture reaches329 nonnegative unknowns,
+with six complete natural alternatives. Natural and integer domains stay explicit.
+
+One binomial simultaneously certifies the factorial and CRT product. Its raw
+bounds establish the pure radix before digit meaning. Selectively even Pell
+indices, residue-one orientation and seven weighted guard pairs reduce the
+signed source. Root and peer independently reviewed the complete unbounded
+arguments, actual source/seed/frame/guard/remainder interfaces and full executable
+closure before execution. Soundness and completeness rebuild private Pell
+witnesses from the semantic front tuple.
+
+Both fresh root normal/optimized scoped replays exactly match the peer. Each
+reconstructs all72 architecture files,15 signed-source files and five centered
+endpoint files byte for byte; all569 original private archive members remain
+unchanged. The independent auditor checks all natural/integer projections,
+180 monic restorations,15 declared free coordinates,13 separate private-slack
+inverses,54 integral translations and every quartic coefficient, rejecting14
+actual corruptions per mode. The canonical placement's omitted duplicate imports
+are supplied only in private exact-archive trees, with no repository restoration.
+See the [root acceptance](reviews/round15-direct-root-peer.md),
+[ordinary/source review](research/intake-5f3379063d/ROUND15_DIRECT_REVIEW.md)
+and [scoped reproduction](research/round15-direct-reproduction/README.md).
+
+The inherited C222/Pell/refutation calibration remains explicit; no new internal
+ZFC or Lean endpoint is claimed. The canonical ten-positive92/283 PDF and TeX
+remain unchanged because this is a separate quartic tradeoff. Lean stays paused.
