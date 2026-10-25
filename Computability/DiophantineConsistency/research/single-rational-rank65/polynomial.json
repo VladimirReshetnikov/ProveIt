@@ -1,0 +1,487 @@
+{
+  "coefficient_binding": {
+    "certificate": "../../research/complemented47-controller-independent/certificate.json",
+    "certificate_sha256": "f95746541354778fd4f5942a58c0f11c238388017f55b249ff7ca4760c73ee7b",
+    "path": "coefficients/",
+    "ports": {
+      "K0": {
+        "bits": 415904,
+        "file": "K.bin.gz",
+        "gzip_sha256": "484e830b62dd2c46e8f35ee328d0e78a0c1333fef5ce2a193c2396cadf2aed39",
+        "raw_bytes": 51988,
+        "raw_sha256": "fa8d378af9a7dde45d710cb4480636a3ab2f5ad4e53210fd68da6fe6b55ab03b"
+      },
+      "MC": {
+        "bits": 413929,
+        "file": "MC.bin.gz",
+        "gzip_sha256": "524a960329b7da8456a660c6874df1b44a295aece12c2ed263b9f0b8875f3297",
+        "raw_bytes": 51742,
+        "raw_sha256": "f9d3e993386834f3e57b964481c32bb0928645524f089dda517c64fb5fcfcd3f"
+      },
+      "MF": {
+        "bits": 413930,
+        "file": "MF_source.bin.gz",
+        "gzip_sha256": "bc17480d0b1dc3671c83d90141ad097ab79706570650a816ca0d2290e4a0d55b",
+        "raw_bytes": 51742,
+        "raw_sha256": "fe0075a416f8bea9d12cdac4d7090ad15e0a22e1ad52704880878f2d0bab6f3e"
+      },
+      "beta": {
+        "bits": 413929,
+        "file": "beta.bin.gz",
+        "gzip_sha256": "2dd49e2f05b02529a7a131feec066615cefb5d2d71acd3bdda216cfe8a5049a6",
+        "raw_bytes": 51742,
+        "raw_sha256": "98212faf6e2c10c56518b7ff24535a136e04ceb80276d8c617178e1b7753d510"
+      }
+    },
+    "raw_bytes": 207214,
+    "schema": "complemented_three_anchor47_materialized_v1"
+  },
+  "coefficient_binding_base": "../../candidates/one-page-complemented47-independent",
+  "derived_integer_leaves": {
+    "W": "MC-MF"
+  },
+  "derived_rational_leaves": {
+    "U": {
+      "denominator": "beta",
+      "numerator": "MF"
+    }
+  },
+  "exact_degree": 157,
+  "fixed_runtime_leaves": [
+    "beta",
+    "K0",
+    "U",
+    "W"
+  ],
+  "integer_source_ports": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "metric": "Each binary +,-,* costs one; fixed rational leaves are free. This is not an integer-leaf65 record.",
+  "name": "same_complemented47_integer_polynomial_single_rational65_evaluator",
+  "operation_counts": {
+    "*": 37,
+    "+": 15,
+    "-": 13
+  },
+  "operations": 65,
+  "output": "polynomial",
+  "parent_snapshot": {
+    "bytes": 6625,
+    "path": "source/parent66.json",
+    "sha256": "93322aaec1a113a2f42b47b083577173cb14e41dcd3f6691c3c07a444b3e220c"
+  },
+  "proof": "README.md",
+  "source": [
+    [
+      "qm",
+      "*",
+      "beta",
+      "J"
+    ],
+    [
+      "q",
+      "+",
+      "qm",
+      1
+    ],
+    [
+      "q2",
+      "*",
+      "q",
+      "q"
+    ],
+    [
+      "q3",
+      "*",
+      "q2",
+      "q"
+    ],
+    [
+      "X",
+      "*",
+      "w",
+      "q"
+    ],
+    [
+      "Y",
+      "*",
+      "s",
+      "q3"
+    ],
+    [
+      "E",
+      "*",
+      "X",
+      "Y"
+    ],
+    [
+      "k",
+      "+",
+      "eta",
+      "zeta"
+    ],
+    [
+      "kY",
+      "*",
+      "k",
+      "Y"
+    ],
+    [
+      "ell",
+      "*",
+      "E",
+      "kY"
+    ],
+    [
+      "tau2",
+      "*",
+      "tau",
+      "tau"
+    ],
+    [
+      "ell_plus_k",
+      "+",
+      "ell",
+      "k"
+    ],
+    [
+      "first_product",
+      "*",
+      "ell",
+      "ell_plus_k"
+    ],
+    [
+      "N0",
+      "-",
+      "tau2",
+      "first_product"
+    ],
+    [
+      "c",
+      "+",
+      "kY",
+      "eta"
+    ],
+    [
+      "a",
+      "+",
+      "E",
+      "Y"
+    ],
+    [
+      "four_a",
+      "*",
+      4,
+      "a"
+    ],
+    [
+      "H",
+      "+",
+      "four_a",
+      3
+    ],
+    [
+      "a2",
+      "*",
+      "a",
+      "a"
+    ],
+    [
+      "Delta",
+      "+",
+      "a2",
+      "H"
+    ],
+    [
+      "ac",
+      "*",
+      "a",
+      "c"
+    ],
+    [
+      "main_base",
+      "+",
+      "X",
+      "ac"
+    ],
+    [
+      "gammaH",
+      "*",
+      "gamma",
+      "H"
+    ],
+    [
+      "main_root",
+      "+",
+      "main_base",
+      "gammaH"
+    ],
+    [
+      "c2",
+      "*",
+      "c",
+      "c"
+    ],
+    [
+      "Dc2",
+      "*",
+      "Delta",
+      "c2"
+    ],
+    [
+      "main_square",
+      "*",
+      "main_root",
+      "main_root"
+    ],
+    [
+      "N1",
+      "-",
+      "main_square",
+      "Dc2"
+    ],
+    [
+      "qF",
+      "-",
+      "q",
+      "F"
+    ],
+    [
+      "C",
+      "-",
+      "qF",
+      "alpha"
+    ],
+    [
+      "gap_product",
+      "*",
+      "qm",
+      "qF"
+    ],
+    [
+      "gap",
+      "+",
+      "gap_product",
+      "alpha"
+    ],
+    [
+      "q2minus1",
+      "-",
+      "q2",
+      1
+    ],
+    [
+      "shifted_gap",
+      "+",
+      "gap",
+      "U"
+    ],
+    [
+      "rank_product",
+      "*",
+      "q2minus1",
+      "shifted_gap"
+    ],
+    [
+      "rank_linear",
+      "*",
+      "J",
+      "W"
+    ],
+    [
+      "R",
+      "+",
+      "rank_product",
+      "rank_linear"
+    ],
+    [
+      "hE",
+      "*",
+      "h",
+      "E"
+    ],
+    [
+      "index_partial",
+      "-",
+      "k",
+      "hE"
+    ],
+    [
+      "Nk",
+      "-",
+      "index_partial",
+      "R"
+    ],
+    [
+      "Kw",
+      "+",
+      "K0",
+      "w"
+    ],
+    [
+      "transport",
+      "*",
+      "Kw",
+      "C"
+    ],
+    [
+      "transport_partial",
+      "+",
+      "transport",
+      "qF"
+    ],
+    [
+      "zqm",
+      "*",
+      "z",
+      "qm"
+    ],
+    [
+      "Nt",
+      "-",
+      "transport_partial",
+      "zqm"
+    ],
+    [
+      "f2",
+      "*",
+      "f",
+      "f"
+    ],
+    [
+      "cT",
+      "*",
+      "c",
+      "T"
+    ],
+    [
+      "cTminusR",
+      "-",
+      "cT",
+      "R"
+    ],
+    [
+      "f2inner",
+      "*",
+      "f2",
+      "cTminusR"
+    ],
+    [
+      "V",
+      "-",
+      "f2inner",
+      "c"
+    ],
+    [
+      "normalized_S",
+      "*",
+      "i",
+      "Dc2"
+    ],
+    [
+      "normalized_S2",
+      "*",
+      "normalized_S",
+      "normalized_S"
+    ],
+    [
+      "V2",
+      "*",
+      "V",
+      "V"
+    ],
+    [
+      "y2",
+      "*",
+      "y",
+      "y"
+    ],
+    [
+      "V2minusY2",
+      "-",
+      "V2",
+      "y2"
+    ],
+    [
+      "aux_product",
+      "*",
+      "normalized_S2",
+      "V2minusY2"
+    ],
+    [
+      "Na",
+      "+",
+      "aux_product",
+      "y2"
+    ],
+    [
+      "scaled_f2",
+      "*",
+      "Delta",
+      "f2"
+    ],
+    [
+      "scaled_Ns",
+      "-",
+      "scaled_f2",
+      "normalized_S2"
+    ],
+    [
+      "product0",
+      "*",
+      "N0",
+      "N1"
+    ],
+    [
+      "product1",
+      "*",
+      "product0",
+      "Na"
+    ],
+    [
+      "product2",
+      "*",
+      "product1",
+      "Nk"
+    ],
+    [
+      "product3",
+      "*",
+      "product2",
+      "Nt"
+    ],
+    [
+      "product4",
+      "*",
+      "product3",
+      "scaled_Ns"
+    ],
+    [
+      "polynomial",
+      "-",
+      "product4",
+      "Delta"
+    ]
+  ],
+  "witness_domain": "strictly positive integers",
+  "witnesses": [
+    "J",
+    "F",
+    "alpha",
+    "z",
+    "f",
+    "h",
+    "i",
+    "T",
+    "s",
+    "w",
+    "tau",
+    "eta",
+    "zeta",
+    "y",
+    "gamma"
+  ]
+}

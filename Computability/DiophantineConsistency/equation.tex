@@ -43,30 +43,29 @@ Every index, set, sum, product and floor below defines a constant, not
 another unknown. Put
 \[
 \begin{gathered}
-\rho=2^{55},\quad B=\rho^{8807},\quad\beta=B-1,\\
+\rho=2^{47},\quad B=\rho^{7691},\quad\beta=B-1,\\
 G_m(x)=\sum_{j=0}^{m-1}x^j,\quad
 \Lambda=\rho^{4393}+\rho^{5495}.
 \end{gathered}
 \]
 \begin{align*}
 M_C={}&\beta+\rho-(\rho+3)\rho^{1063}\\
-&-\sum_{e=0}^{3296}\fl{(D_\rho(\Phi(\rho),e)+\rho-1)/\rho}\rho^e,\\
-M_F={}&2B+3+(2^{51}-2)\Lambda\\
-&+\rho^{1013}G_{10}(\rho)+\rho^{1065}G_9(\rho)
-  +\rho^{2195}+\rho^{3296}\\
-&-\rho^{8792}+(2^{41}-4)\rho^{7691},\\
-K={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}+\rho^{8849}\\
+&-G_{943}(\rho)-\Psi(\rho,1),\\
+M_F={}&B+3+(2^{46}-2)\Lambda\\
+&+\rho^{1013}G_9(\rho)+\rho^{1065}G_8(\rho)
+  +\rho^{2195}\\
+&+2^{26}\rho^{6726}-\rho^{6708},\\
+K={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{7733}\\
 &+\Lambda\Phi(1/\rho),
 \end{align*}
 where
 \[
 \begin{split}
-\Phi(x)={}&\sum_{i=0}^{942}(1+2^{44}-2^{10}w_i-2^{18}n_i\\
-&-2^{27}p_i-2^{35}s_i)x^i\\
-&+2^{10}x^{1003}(x^{20}+2^{17})G_8(2x)\\
-&+2^{18}x^{983}(x^{30}+2^{17})G_9(2x)\\
-&+2^{44}x^{992}(x^{39}+2x^{30}+4x^{19}+8)\\
-&+2^{48}x^{1095}(1+2x^{1100}+4x^{2201}).
+\Phi(x)={}&\sum_{i=0}^{942}[1+2^{10}(1+w_i+2^8n_i\\
+&+2^{17}p_i+2^{25}s_i)]x^i+2^{10}\Psi(x,2),\\
+\Psi(x,t)={}&x^{1003}(x^{20}+t^{17})G_8(tx)\\
+&+t^8x^{983}(x^{30}+t^{17})G_9(tx)\\
+&+t^{34}x^{1095}(1+tx^{1100}).
 \end{split}
 \]
 The rational intermediate in K cancels exactly; all four results are positive integers.
@@ -131,7 +130,7 @@ We1YC554GKrVHsA8oUGKSA6F6k5KREBSD0Tgd7bFALY84LLbpw574BQyvdoHrl\par
 8P\par
 \endgroup
 \normalfont\fontsize{7.7}{8.2}\selectfont
-The ordinary state/color-conjugacy, native and Pell arguments give
+The ordinary complemented-color, native and Pell arguments give
 unsolvability iff $\mathrm{Con}(\mathrm{ZFC})$.
 Native calibration and internal-ZFC formalization remain open in Lean.
 This page is a complete finite specification, not an unsolvability proof.

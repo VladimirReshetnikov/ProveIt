@@ -1,0 +1,408 @@
+\section{A direct quartic from one certificate for two front signs}
+\label{sec:direct-front}
+
+The second contribution is a local arithmetic simplification of the direct
+C222 construction.  Its principal equation has 248 unrestricted integer
+variables, degree four, 5,321 collected monomials, and coefficient height
+128,446.  It is the sum of the squares of the 182 explicit quadratic
+residuals in
+\texttt{equations/integer248/equation.json}.  Here and below, coefficient
+height is measured after collecting the entire polynomial.
+
+\begin{center}
+\begin{tabular}{lrrrrr}
+Profile & Variables & Residuals & Degree & Terms & Height\\ \hline
+Common Remainders parent & 252 & 182 & 4 & 5,340 & 128,446\\
+Principal & 248 & 182 & 4 & 5,321 & 128,446\\
+Balanced projection & 246 & 180 & 4 & 5,048 & 195,955\\
+Dimension projection & 245 & 179 & 4 & 21,845 & 314,701
+\end{tabular}
+\end{center}
+
+These are three achieved projections of one new raw source, not an
+assertion that every better projection has been excluded.  The principal
+profile strictly improves the dimension and term count of its matched
+parent while preserving degree, residual count, and coefficient height.
+The new mathematical step is a proof that one product certificate can
+replace two front sign certificates, even though the product alone has
+an unwanted negative branch.  The exact factorial digit already present
+in the source excludes that branch.
+
+\subsection{Literal source change and inherited interface}
+
+Put
+\[
+ G(a,b,c)=a^2+b^2+c(c+1).
+\]
+This is nonnegative on $\Z^3$ and represents every nonnegative integer.
+Indeed, the three-square theorem represents $4n+1$ as three squares; its
+residues modulo four put exactly one odd square in that representation.
+Writing it as $(2c+1)^2$ and the others as $(2a)^2,(2b)^2$ gives $n=G(a,b,c)$.
+
+Use the following semantic names for the unchanged source coordinates:
+\[
+\begin{split}
+ r&=\texttt{fact0.remainder},\quad
+ s=\texttt{fact0.slack},\quad F=\texttt{fact0.output},\\
+ B&=\texttt{choose0.output},\quad
+ V=\texttt{pow0.output},\quad q=\texttt{pow2.output}.
+\end{split}
+\]
+The old front separately imposed $r\geq0$, $s\geq0$, and
+$o\geq0$, where $q=B+o+1$.  Replace its two first ternary guards by
+\begin{equation}
+ (r+1)(s+1)=1+G(a,b,c).
+ \label{eq:front-fused}
+\end{equation}
+This is the quadratic row $rs+r+s-a^2-b^2-c^2-c=0$; it requires no
+multiplication gate.  Compose the previously supplied odd-square radix
+restriction by deleting $q=B+o+1$ and its private guard, and inserting
+\begin{equation}
+ q=(2z+1)^2.
+ \label{eq:front-odd}
+\end{equation}
+The two remaining guards---the strict squared Pell cap and the common
+normalized remainder norm---are unchanged.  All other source rows,
+all eighteen power requests, and all endpoint and Horn-flow relations
+are retained.  The old coordinate $o$ occurs only in its deleted bound
+row and can therefore be restored freely at the end.
+
+The starting point is the direct component of
+\path{ConZFC_Common_Remainders_Radix47_2026-10-25.zip}, at repository
+snapshot \path{3ecd6a6cf53d47519228328567f45fb7ee9781d9}.
+Its \path{NORMALIZED_REMAINDERS_PROOF.md}, together with the retained
+\path{ORIENTATION_FIRST_PROOF.md} and
+\path{STRICT_BUDGET_PROOF.md}, supplies the following interface
+\emph{before} the removed front signs are used.  An integer $W\geq258$
+and a signed Pell center $A$ satisfy
+\begin{equation}
+ |A|>W^W,\qquad |n|,|k|,|m|<W
+ \label{eq:front-frame}
+\end{equation}
+for every requested base, index, and output.  The corresponding principal
+Pell coordinates are canonical at the signed nominal index $k$.
+The frame uses squares of the proposed atoms, and the squared semantic
+anchor with bounded pooled errors orients both Pell coordinates.
+Consequently those conclusions do not presuppose the signs of $F,B,q$
+or of the independent CRT representatives.  We retain that inherited
+orientation theorem and extend its subsequent power argument to signed
+bases explicitly below.
+
+\subsection{The signed-base extension}
+
+\begin{lemma}[Signed bases]
+\label{lem:front-signed}
+Under the inherited interface \eqref{eq:front-frame}, a power request
+with $2\leq |n|<W$ forces $k\geq0$ and $m=n^k$.  The assertion holds
+for either sign of $n$ and either sign of $A$.
+\end{lemma}
+\begin{proof}
+Set $T=2An-n^2-1$.  The actual output row is
+\[
+ m\equiv X_k(A)+(n-A)Y_k(A)\pmod T.
+\]
+The canonical signed pairs have
+$X_{-j}(A)=X_j(A)$ and $Y_{-j}(A)=-Y_j(A)$.
+Furthermore
+\[
+ |T|\geq2|A||n|-n^2-1
+       \geq4|A|-(W-1)^2-1>W^W+W,
+\]
+where the last inequality follows from $W\geq258$ and $|A|>W^W$.
+The absolute value on $A$ is essential: no positive-center premise has
+been introduced.  Since $T\equiv-1\pmod n$, $n$ is invertible modulo $T$.
+
+Substituting $n-A$ into the Pell identity gives
+$(n-A)^2\equiv A^2-1\pmod T$.  The canonical Pell addition identities
+therefore give $m\equiv n^k\pmod T$ when $k\geq0$.  In that case
+\[
+ |m-n^k|\leq |m|+|n|^k<W+W^W<|T|,
+\]
+so the congruence is an equality.  If $k=-j<0$, the signed pair is the
+inverse of the index-$j$ Pell unit; its norm is one.  Thus
+$mn^j\equiv1\pmod T$.  Now $1\leq j\leq W-1$ and $|m|\leq W-1$, so
+\[
+ |mn^j-1|\leq(W-1)^W+1<|T|.
+\]
+It follows that $mn^j=1$, impossible in $\Z$ because $|n|^j\geq2$.
+Hence $k\geq0$ and the first argument applies.
+\end{proof}
+
+For the separate base-one case, a known nonnegative index gives
+$m\equiv1\pmod{2A-2}$; the same size argument gives $m=1$.
+This case is needed because $F=0$ has not yet been excluded.  The known
+index $t\geq16$ in the request at base $F^2+1$ consequently gives
+\begin{equation}
+ V=(F^2+1)^t\geq1
+ \label{eq:front-V}
+\end{equation}
+for every initially possible integer $F$.
+
+\subsection{Both front branches have the needed size bound}
+
+The untouched ceiling relations are
+\begin{equation}
+ r+s=B-1,\qquad BF=V+s.
+ \label{eq:front-ceiling}
+\end{equation}
+The right side of \eqref{eq:front-fused} is positive.  Since its two
+factors are integers, it leaves precisely the alternatives
+\[
+ \text{(I) }r,s\geq0,
+ \qquad
+ \text{(II) }r,s\leq-2.
+\]
+In case I, $B\geq1$ and $BF=V+s\geq1$ force $F\geq1$.
+Since $V=(F^2+1)^t>F^2$, the inequality $V\leq BF$ then gives
+$B>F$.  In particular $B\geq2$ and
+\[
+ V\leq BF<B^2.
+\]
+
+In case II put $B=-b$, so $b\geq3$.  If $F=0$, the base-one case of
+\eqref{eq:front-V} gives $V=1$, and $BF=V+s$ would give $s=-1$.
+If $F\geq1$, combining \eqref{eq:front-ceiling} gives
+\[
+ r=(1-F)B+V-1>0,
+\]
+because $(1-F)B\geq0$ and $V>1$.  Both possibilities contradict
+case II.  Therefore $F=-f$ for some $f\geq1$.  The same two ceiling
+identities now give
+\begin{equation}
+ bf+2\leq V\leq(f+1)b-1<(f+1)b.
+ \label{eq:front-negative-bound}
+\end{equation}
+For $f\geq1$ and $t\geq16$, $(f^2+1)^t>(f+1)^2$.
+Comparing this with \eqref{eq:front-negative-bound} shows $b>f+1$,
+and hence $V<b^2$.
+
+Thus, in both branches, defining $f=|F|$ and $b=|B|$ gives
+\begin{equation}
+ f\geq1,\qquad b\geq2,\qquad V=(f^2+1)^t<b^2.
+ \label{eq:front-uniform}
+\end{equation}
+This deduction has used no factorial fixed point or binomial-digit
+interpretation.  That separation is what makes the later sign recovery
+noncircular.
+
+\subsection{Recovering the radix before resolving the branch}
+
+Equation \eqref{eq:front-odd} first gives $q\geq1$, so $q+1\geq2$.
+Each of the nine actual CRT representatives $a_i$ is an exponent in a
+retained request at base $q+1$.  Lemma~\ref{lem:front-signed} therefore
+makes each $a_i\geq0$ and authenticates its output.  Set
+\[
+ H_0=1+\sum_{i=1}^{9}a_i\geq1.
+\]
+These are actual representatives; several delivered coordinates are
+shifted by one and need not themselves be nonnegative.
+
+Apply the lemma next to the retained request $N=B^x$.  Its base has
+$|B|\geq2$ by \eqref{eq:front-uniform}, so it forces $x\geq0$ even
+while $q=1$ is still an initial possibility.  The unchanged cofinal beta
+choice is
+\[
+ y=V(V-1)>f+2.
+\]
+In unshifted semantic coordinates, the retained endpoints are
+\begin{equation}
+ x=F+1+(y+1)u_0,
+ \qquad
+ x=1+\bigl(1+(t+1)y\bigr)u_t.
+ \label{eq:front-endpoints}
+\end{equation}
+The second equality excludes $x=0$ because its bracket is an integer
+greater than one.  If $x=1$, the first would say
+$F+(y+1)u_0=0$, impossible since $0<|F|<y+1$.  Consequently $x\geq2$,
+and the second equality then forces $u_t\geq1$.  Thus
+\begin{equation}
+ x\geq2+(t+1)y\geq8.
+ \label{eq:front-x-bound}
+\end{equation}
+The coordinate translations used in the emitted polynomial do not alter
+these semantic identities; their explicit shifts are recorded separately.
+
+The request $q=(BH_0)^x$ now has $|BH_0|\geq2$ and is authenticated
+by the lemma.  Since its output is positive, $B<0$ would force $x$ even.
+Therefore in either branch
+\begin{equation}
+ N=b^x>0,\qquad q=b^xH_0^x\geq b^x,\qquad N\mid q.
+ \label{eq:front-radix-bound}
+\end{equation}
+In particular $q>1$.  All denominator requests are now genuine positive
+powers of $q$.  Write
+\[
+ M=q^x,\qquad D_0=q^t,\qquad D_1=q^{t+1},\qquad D_y=q^{y+1}.
+\]
+By \eqref{eq:front-x-bound}, these three denominators divide $M$.
+Nothing in this argument has assumed $F=t!$ or the sign of $B$.
+
+\subsection{The exact factorial digit chooses the positive branch}
+
+For $m\geq1$, $t\geq1$ and $0\leq j\leq t$, the elementary estimate
+\begin{equation}
+ \binom{m+t}{j}\leq(m+1)^t
+ \label{eq:front-binomial-bound}
+\end{equation}
+holds.  One proof is induction on $t$: Pascal's identity bounds each
+nonedge entry in the next row by $2(m+1)^t\leq(m+1)^{t+1}$; the new
+edge is bounded by
+$\prod_{i=1}^{t+1}(1+m/i)\leq(m+1)^{t+1}$.
+Apply this with $m=F^2\geq1$.  Every coefficient through position $t$
+of $(q+1)^{F^2+t}$ is at most $V<b^2$.  Its true low remainder at
+position $t$ is therefore
+\[
+ r^0=\sum_{j=0}^{t-1}\binom{F^2+t}{j}q^j,
+ \qquad
+ 0\leq r^0<\frac{V D_0}{q-1}<\frac{D_0}{32}.
+\]
+For the last inequality, \eqref{eq:front-radix-bound} and
+\eqref{eq:front-x-bound} give
+\[
+ \frac{V}{q-1}<\frac{b^2}{q-1}
+ <\frac{2}{b^{x-2}}\leq\frac1{32}.
+\]
+Thus the displayed sum really is the ordinary remainder modulo $D_0$;
+the polynomial tail is divisible by $D_0$.
+
+Here is the precise role of the inherited common norm.  Its normalized
+digit rows have $D_i v_i=M$ and
+$v_iU_i=M Q_i+R_i$.  Since $D_i,M>0$, $v_i$ is a positive integer.
+The digit row makes $v_i\mid R_i$, so $r_i=R_i/v_i$ is an integer.
+The norm equation
+\begin{equation}
+ M^2=1+4\sum_{i=1}^{11}R_i^2+G(\alpha,\beta,\gamma)
+ \label{eq:front-norm}
+\end{equation}
+gives $|R_i|<M/2$, hence $|r_i|<D_i/2$.
+For the factorial row, $r_i\equiv r^0\pmod{D_0}$.
+Together with $0\leq r^0<D_0/32$, this forces $r_i=r^0$.
+No sign of $B$ is used in this recovery.
+
+The exact factorial digit row is now
+\[
+ (q+1)^{F^2+t}=D_0(B+qh)+r^0.
+\]
+Divide by $D_0$ after subtracting $r^0$ and reduce modulo $q$ to obtain
+\begin{equation}
+ B\equiv C\pmod q,
+ \qquad C=\binom{F^2+t}{t}>0.
+ \label{eq:front-final-digit}
+\end{equation}
+Unlike the old proof, this argument does not yet assume $0\leq B<q$.
+Instead, \eqref{eq:front-uniform} and the coefficient estimate give
+\[
+ |B-C|\leq b+C\leq b+V<b+b^2<q,
+\]
+the last inequality following from $q\geq b^x$, $b\geq2$ and $x\geq8$.
+Equation \eqref{eq:front-final-digit} therefore gives $B=C>0$.
+Case II is impossible.  We have recovered $r,s\geq0$, $F\geq1$,
+and $q>B$.  Restore the old private slack by $o=q-B-1\geq0$ and fill
+all three deleted ternary guards using surjectivity of $G$.
+
+At this point the previous Common Remainders source has an integer
+solution.  Its exact factorial fixed-point theorem gives $F=t!$.
+Its remaining ten low-digit estimates, prime-power CRT range decoding,
+and Horn-flow interpretation therefore apply with their original
+premises.  The new argument has restored those premises in the order
+needed: size bound, radix, normalized remainder, factorial digit, front
+signs, then factoriality.
+
+\subsection{Completeness and the parity restriction}
+
+For the converse, begin with a finite C222 refutation and use the
+retained cofinal arithmetic construction.  The odd-square radix
+restriction is inherited from the separate Centered Residues proof,
+included as \texttt{INHERITED\_ODD\_SQUARE\_PROOF.md}; its compatibility
+with the present construction can be seen explicitly.
+
+After factoriality, $F=t!$ is even.  Each $i\leq t$ divides $F$ and
+$F^2/i$ is even, so
+\[
+ B=\binom{F^2+t}{t}=\prod_{i=1}^t\left(1+\frac{F^2}{i}\right)
+\]
+is odd.  Also $y=V(V-1)$ is even, so every beta CRT modulus is odd.
+The CRT progression for $x$ consequently has odd period, allowing $x$
+to be chosen even and as large as required.  Now $N=B^x$ and $N^2$
+are odd.  The independent amplified CRT representatives can be shifted
+by multiples of $N^2$ without changing their required residues.
+Adjusting a third representative's parity makes $H_0$ odd while leaving
+the two representatives used for the dominant anchor's parity free to
+retain opposite parities.  The dominant lift can still be made large
+enough for all strict bounds.  Thus $BH_0$ is odd and $x$ is even;
+$q=(BH_0)^x$ is the square of an odd integer and
+\eqref{eq:front-odd} has an integer witness $z$.
+
+The genuine old front has $r,s\geq0$, so $rs+r+s\geq0$ has a
+$G$ representation and satisfies \eqref{eq:front-fused}.  The old
+cofinal low-remainder estimates give $0\leq r_i^0<D_i/32$ for all
+eleven digits.  Setting $R_i=(M/D_i)r_i^0$ gives $R_i<M/32$ and
+\[
+ 4\sum_{i=1}^{11}R_i^2
+ <\frac{44}{1024}M^2<M^2.
+\]
+Hence the nonnegative integer
+$M^2-1-4\sum_iR_i^2$ has a $G$ representation, preserving
+\eqref{eq:front-norm}.  Every other retained row is the old row with
+its cofinal witness.  This constructs a zero of the new raw source.
+
+The raw modification therefore preserves \emph{existence} of integer
+zeros in both directions.  It is not a bijection on all arbitrary old
+private-witness tuples.  The later monic projections and integral
+translations, in contrast, have explicit reverse-restoration maps.
+
+\subsection{Exact endpoint and the logical calibration chain}
+
+\begin{theorem}
+\label{thm:direct248}
+Let $P_{248}\in\Z[x_0,\ldots,x_{247}]$ be the sum of the squares of
+the 182 delivered residuals in the principal profile.  With the
+retained direct-C222 arithmetic and logical calibration,
+\[
+ \mathrm{ZFC}\vdash
+ \left(\exists x\in\Z^{248}\;P_{248}(x)=0\right)
+ \longleftrightarrow
+ \text{there exists a finite ZFC refutation}.
+\]
+Consequently ZFC proves that the absence of integer zeros of $P_{248}$
+is equivalent to $\operatorname{Con}(\mathrm{ZFC})$.
+The same conclusions hold for the two delivered 246- and 245-variable
+quartics.
+\end{theorem}
+\begin{proof}
+Over the integers a finite sum of squares vanishes exactly when every
+residual vanishes.  The supplied integral translations are bijections;
+each monic elimination has an integer polynomial restoration, replayed
+in reverse order.  The independently checked Horn factoring identities
+preserve the source's solution existence.  The preceding soundness and
+completeness arguments identify zeros of the new source with zeros of
+the Common Remainders source.  The retained arithmetic proof decodes
+those zeros into finite C222 refutations, and constructs arithmetic
+witnesses from such refutations.
+
+The last two logical bridges are the identified repository theorems
+\path{KEndpoint.c222_iff_zf_refutation} and
+\path{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+Thus the complete chain is: explicit quartic zero, new raw arithmetic
+witness, old Common Remainders witness, finite C222 refutation, finite
+ZF refutation, and finite ZFC refutation.  Every arrow used here is
+either the new arithmetic argument above, a finite exact algebraic
+certificate, or the named inherited calibration.  The first-order
+arithmetical statement that no finite syntactic ZFC refutation exists
+is $\operatorname{Con}(\mathrm{ZFC})$; negating the existence
+equivalence gives the stated result.
+\end{proof}
+
+The package retains all 88 files in the parent's arithmetic and proof
+closure, pinned byte-for-byte.  Its new finite verifier imports the
+retained independent algebra checker, not the producing eliminator.  It
+reconstructs the complete raw mutation, checks 18 Horn-factor edits,
+replays every monic restoration and translation, and expands each full
+sum of squares.  The principal profile has 203 monic elimination steps
+and 70 translated coordinates.  Independent runs under ordinary Python
+and under \texttt{python -O} pass, including five rejected deliberate
+mutations; a clean rebuild reproduces all 22 generated JSON files
+byte-for-byte.  These are algebraic checks of the emitted artifacts.
+The unbounded arithmetic proof remains an ordinary mathematical proof,
+with a separate independent review; no new end-to-end Lean elaboration
+or proof of consistency is being claimed.

@@ -1,0 +1,188 @@
+\section{Trading degree for fewer direct proof coordinates}
+\label{sec:monic-elimination}
+
+The preceding sign bootstrap gives a direct equation in $248$ unrestricted
+integers.  We now reduce its dimension by allowing higher degree.  This
+route retains the direct C222 proof calculus: no K215 simulation, Jones
+universal equation, or large fixed coefficient tuple is introduced.
+The elimination principle is standard.  The contribution here is the
+complete family of explicit polynomials and the certified tradeoffs below.
+
+Write the preceding source as
+\[
+ P_{248}(x)=\sum_{j=0}^{181}R_j(x)^2,
+ \qquad x=(x_0,\ldots,x_{247})\in\Z^{248}.
+\]
+The complete quadratic residual list is retained without change in
+\texttt{source/equation248.json}; its source hash is recorded in
+\texttt{SOURCE.json}.  The pivot tables in
+Appendix~\ref{app:monic-pivots}, together with that literal residual list,
+specify every new polynomial by finite substitution.
+
+\begin{theorem}[Acyclic monic elimination]
+\label{thm:acyclic-monic}
+Let $R_0,\ldots,R_{m-1}\in\Z[x_0,\ldots,x_{N-1}]$.
+Select different rows and different coordinates so that each selected row
+has the form
+\[
+ R_{r(v)}=\varepsilon_v x_v+f_v,
+ \qquad \varepsilon_v\in\{-1,1\},
+ \qquad x_v\text{ does not occur in }f_v.
+\]
+Suppose the directed graph on selected coordinates, with an edge $v\to w$
+when $x_w$ occurs in $f_v$, is acyclic.  List the retained source indices
+as $i_0<\cdots<i_{n-1}$, and let $y=(y_0,\ldots,y_{n-1})$.
+Define integer polynomials $F_v(y)$ by $F_{i_j}=y_j$ on retained
+coordinates, and recursively by
+\[
+ F_v=-\varepsilon_v f_v(F)
+\]
+on selected coordinates.  If $I$ is the set of unselected rows, put
+\[
+ Q(y)=\sum_{j\in I}R_j(F(y))^2.
+\]
+Projection to retained coordinates is a bijection between the integer
+zero sets of $\sum_jR_j^2$ and $Q$.  Its inverse is the polynomial map
+$y\mapsto(F_0(y),\ldots,F_{N-1}(y))$.
+\end{theorem}
+
+\begin{proof}
+At an integer zero of the source sum of squares, every residual is zero.
+Each selected row therefore forces exactly
+$x_v=-\varepsilon_v f_v$.  Induction along a reverse topological order of the
+acyclic graph gives $x_v=F_v(y)$ for every coordinate.  The unselected
+residuals vanish, so $Q(y)=0$.
+
+Conversely, if $Q(y)=0$, every remaining squared integer residual is zero.
+Set $x=F(y)$.  The selected residuals vanish by their definitions, and
+the unselected ones by $Q(y)=0$.  Thus the source polynomial is zero.
+Every restored coordinate is an integer because all the substitutions
+have integer coefficients.  The same induction proves uniqueness.
+No division, nonzero denominator, congruence, or sign choice is needed.
+\end{proof}
+
+The unrestricted integer domain matters.  Applying this theorem to a
+nonnegative-domain equation would require additional proofs that all
+restored coordinates remain nonnegative at every zero.  We use the
+integer source throughout.
+
+\subsection{The resulting explicit family}
+
+Every row in the following table defines one ordinary polynomial.  Its
+complete arithmetic DAG uses only integer constants, its stated input
+variables, and binary addition, subtraction and multiplication.
+Intermediate registers abbreviate polynomials and are not additional
+quantified unknowns.  Degree is exact.  The last column is a proved bound
+on the height after collecting all coefficients; it is not the largest
+constant appearing in the DAG.
+
+\begin{center}
+\begin{tabular}{rrrr}
+\hline
+Integer unknowns & Remaining residuals & Degree & Height bound \\
+\hline
+225 & 159 & 6 & $<2^{27}$ \\
+153 & 87 & 8 & $<2^{47}$ \\
+144 & 78 & 12 & $<2^{50}$ \\
+125 & 59 & 16 & $<2^{80}$ \\
+117 & 51 & 32 & $<2^{144}$ \\
+111 & 45 & 64 & $<2^{173}$ \\
+102 & 36 & 256 & $<2^{691}$ \\
+94 & 28 & $65{,}540$ & $<2^{164870}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+The degree-$16$ equation removes $123$ of the source's $248$ coordinates,
+or $49.6\%$.  The degree-$256$ equation removes $146$, or $58.9\%$.
+These are alternatives within the direct proof-calculus route, not
+global dimension records among all coefficient encodings.  The
+$94$-variable equation illustrates the cost of prioritizing dimension
+alone: its degree and coefficient bound are much larger.
+
+For the $153$-variable octic the package also supplies every collected
+coefficient.  Its exact expansion has $188{,}579$ nonzero monomials and
+height
+\[
+ 750{,}273{,}658{,}864.
+\]
+Its $87$ fully substituted residuals contain $3{,}476$ monomials in total.
+This exact height is stronger than the general $2^{47}$ bound.  The
+expansion makes the support cost of eliminating coordinates explicit.
+
+\subsection{Exact degree and coefficient bounds}
+
+Give each retained coordinate degree one.  For each restored coordinate
+propagate the maximum, over its monomials, of the sum of the previously
+assigned coordinate degrees.  Apply the same rule to each remaining
+residual.  If the largest bound is $d$, then $\deg Q\le2d$.
+
+To prove equality, the supplied certificate gives a remaining residual
+of degree bound $d$ whose degree-$d$ homogeneous part is nonzero when
+the retained coordinate with source index $i$ is set to $i+3$, reduced
+modulo $1{,}000{,}000{,}007$.  A nonzero modular value proves a nonzero
+integer value; no primality assumption is needed.  At this integer point
+the sum of the squares of all degree-$d$ homogeneous parts is positive.
+It follows that $\deg Q=2d$.  This is an exact nonvanishing certificate,
+not probabilistic polynomial identity testing.
+
+\begin{lemma}[A propagated height bound]
+\label{lem:monic-height}
+Set $L_v=1$ for each retained coordinate.  For a restored polynomial
+$F_v=\sum_M c_M\prod_{j\in M}F_j$, set
+\[
+ L_v=\sum_M |c_M|\prod_{j\in M}L_j.
+\]
+Use the same rule to obtain a bound $L_j'$ for each remaining residual.
+Then every coefficient of $Q$ has absolute value at most
+\[
+ B_Q=\sum_{j\in I}(L_j')^2.
+\]
+If this positive integer has bit length $b$, every coefficient has
+absolute value strictly below $2^b$.
+\end{lemma}
+
+\begin{proof}
+For an integer polynomial $f$, let $\|f\|_1$ be the sum of the absolute
+values of its collected coefficients.  The triangle and convolution
+inequalities give
+\[
+ \|f+g\|_1\le\|f\|_1+\|g\|_1,
+ \qquad \|fg\|_1\le\|f\|_1\|g\|_1.
+\]
+Induction through the substitutions proves $\|F_v\|_1\le L_v$.
+Applying the same inequalities to the residuals and their squared sum
+proves $\|Q\|_1\le B_Q$.  Each coefficient is bounded by this norm,
+and $B_Q<2^b$ by the definition of bit length.
+\end{proof}
+
+All stated bit bounds are obtained by exact integer arithmetic.  The
+largest literal constant in these DAGs is $256$; that different statistic
+does not replace the expanded coefficient bounds in the table.
+
+\subsection{Verification and the consistency theorem}
+
+The independent checker expands each circuit block as a polynomial in
+the coordinates already available.  These local expansions have
+degree at most two, even when the fully substituted polynomial has degree
+$65{,}540$.  It checks the blocks coefficient by coefficient against their
+source rows, verifies the complete row partition and acyclic restoration,
+and checks the final sum of squares.  A separate sparse engine expands
+the octic completely.  Exact nonzero partial derivatives modulo
+$1{,}000{,}000{,}007$ certify that every declared input occurs
+in each collected polynomial.  These tests accompany the ordinary proof;
+they do not replace its unbounded source calibration.
+
+By Theorem~\ref{thm:acyclic-monic}, each displayed $Q$ has an integer zero
+if and only if $P_{248}$ has one.  Compose this elementary, ZFC-formalizable
+bijection with the already proved existence equivalence for the fused
+front-sign source and its retained C222/ZFC calibration.  For every row
+of the table this gives
+\[
+ \mathrm{ZFC}\ \vdash
+ \bigl[\text{$Q$ has no zero in its stated integer domain}\bigr]
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+This establishes an equivalence, without assuming or proving either
+side.  The new finite algebra is not claimed to be a fresh end-to-end
+proof-assistant development.

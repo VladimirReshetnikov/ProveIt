@@ -1,0 +1,231 @@
+\section{A companion equation in ten positive variables}
+\label{sec:compactcompanion}
+
+A second construction uses a different tradeoff: ten strictly positive
+unknowns, 78 binary arithmetic operations, and exact total degree 454.
+It retains the whole four-integer native coefficient tuple of the incoming
+\emph{Centered Residues} package. Its matched parent has 76 operations and
+degree 464; that package also supplies 77/460. Thus this companion spends
+two or one extra operations to reduce degree by ten or six. This is a
+specific comparison, not a global simplicity claim. The new argument
+recovers the first Pell square only after recovering the main Pell square.
+
+\subsection{The complete polynomial}
+
+The variables are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+The fixed ports are \(\beta,K_0,M_C,M_F\); their complete literal bytes
+and finite reconstruction are supplied in the accompanying compact
+component. They obey \(\beta\ge31\) odd, \(K_0>0\), and
+\(0<M_C<\beta<M_F<2\beta\). They are constants, not unknowns.
+Define the following polynomial abbreviations:
+\begin{align*}
+ h&=\beta J,&q&=h+1,&C&=q-F-\alpha,\\
+ X&=wq,&Y&=q^3s,&k&=\eta+\zeta,\\
+ c&=kY+\eta,&A&=Y(X+1)+1,&\Delta&=A^2-1,\\
+ H&=4A-5,&\ell&=(XY)(kY),&E&=1+\ell(\ell+k),\\
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ e&=k-R-1,& B&=(K_0+w)C-F.
+\end{align*}
+The new strong-pair subgraph is
+\begin{align*}
+ D_m&=1+\Delta c^2,&U&=iAc^2,&S&=ED_m,\\
+ a&=\Delta U^2S,&F_2&=1+a,&Q&=\Delta a,&G&=SF_2.
+\end{align*}
+Complete the equation with
+\begin{align*}
+ b&=cT-R,&V&=F_2b-c,&L&=bV,\\
+ K&=X(3c-2X)+2,&M&=hXYH,\\
+ Z&=hXY\{H(n-LB)+K\}-H\{XYB+he\},\\
+ P&=Q\{Z^2-M^2GV^2\}+(M^2G-Z^2).
+\end{align*}
+The single equation is \(P=0\). Every abbreviation is polynomial. In
+particular \(F_2\) being a square will be a conclusion; its name is not
+a square-root instruction. The graph has exactly ten variable leaves
+and four fixed coefficient leaves.
+
+\begin{theorem}
+Composed with the retained whole-tuple native/refutation calibration,
+ordinary mathematics formalizable in ZFC proves
+\[
+ \bigl(\forall\mathbf x\in\mathbb Z_{>0}^{10},\ P(\mathbf x)\ne0\bigr)
+ \quad\Longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+The polynomial has exact degree 454 and a 78-operation evaluator.
+\end{theorem}
+
+\subsection{Delayed recovery of the first square}
+
+For proof notation set \(\delta=Q-1\), \(C_y=QV^2-1\), and
+\(z=Z/M\). Positive inputs give \(F_2>2c\), \(Q>F_2>1\), \(M>0\),
+and \(|V|>1\), regardless of the initial sign of \(b\). Hence all
+radicands in the following argument are positive. The folded identity is
+\[
+ P=\delta Z^2-M^2GC_y.
+\]
+Also \(Q=\Delta^2U^2S>c^2\) and \(F_2>S\), estimates used below.
+The three required coprimality facts follow directly from the definitions:
+\begin{align*}
+ &\gcd(S,F_2)=1,
+ &&\gcd(S,\delta C_y)=1,\\
+ &\delta=\Delta F_2-A^2,\quad F_2\equiv1\pmod A,
+ &&\gcd(F_2,\delta)=1,\\
+ &C_y\equiv-\Delta c^2-1=-D_m\pmod{F_2},
+ \quad F_2\equiv1\pmod{D_m},
+ &&\gcd(F_2,C_y)=1.
+\end{align*}
+The first line uses \(S\mid Q\); the second uses \(A\mid U\); the
+last uses \(D_m\mid S\). No coprimality between \(E\) and \(D_m\)
+is asserted.
+
+At a zero, \(\delta z^2=GC_y\). Prime valuations and the preceding
+coprimalities force \(G\) to be a positive square. Since its positive
+factors \(S,F_2\) are coprime, write
+\[
+ S=\sigma^2,\qquad F_2=f^2,\qquad G=g^2,
+ \qquad g=\sigma f>0.
+\]
+Then \(y=|z|/g\) is a positive rational solution of
+\begin{equation}
+ QV^2-(Q-1)y^2=1.\label{eq:compactadjacent}
+\end{equation}
+It is integral. Indeed, if its reduced denominator is \(m\), then
+\(m^2\mid Q-1\). For \(v=|V|>1\), one has
+\(v<y<Qv/(Q-1)\), and the transformation
+\[
+ v'=(2Q-1)v-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2Qv
+\]
+preserves the norm and the reduced denominator, has integer \(v'\), and
+satisfies \(0<|v'|<v\). Reflect signs and descend to \(|v|=1\), where
+\(|y|=1\). Thus \(m=1\), and \(z=\pm gy\) is integral.
+
+Put \(I=U\sigma\). The recovered strong pair satisfies
+\[
+ f^2-\Delta I^2=1,\qquad Q=(\Delta I)^2,\qquad c^2\mid I.
+\]
+The retained all-index folding theorem now applies, giving
+\(c=\psi_A(p)\) for a positive odd index \(p\). Its hypotheses are the
+strong norm, \(0<c\le I\), the integral auxiliary norm
+\eqref{eq:compactadjacent}, and \(V\equiv-c\pmod f\). To see the
+folding directly, write \(f=\chi_A(m)\), \(I=\psi_A(m)\). Auxiliary
+Pell classification yields an odd index \(j\). The standard odd-quotient
+identity, reduced modulo \(f\), gives \(\psi_A(j)\equiv\pm c\pmod f\).
+Reducing \(j\) modulo \(2m\) and reflecting gives \(0\le p\le m\).
+Both \(\psi_A(p)\) and \(c\) are at most \(I<f/2\), so the congruence
+cannot wrap and \(c=\psi_A(p)\); parity makes \(p\) odd.
+
+Consequently
+\[
+ D_m=\chi_A(p)^2=d^2,\qquad E=(\sigma/d)^2.
+\]
+An integer that is a rational square is an integer square. Hence
+\(E=\tau^2\), \(\sigma=\tau d\), and \(g=\tau df\).
+This order is essential: the first square is recovered \emph{after}
+main folding, not used as an assumption in that folding.
+
+\subsection{Transport, calibration, and the converse}
+
+The first-Pell classification now gives
+\(k=2\psi_{2XY^2+1}(n_0)\). Its first index is impossible, because it
+would put \(c=2Y+1\) strictly between the first two main ordinates.
+Thus
+\[
+ n_0\ge2,\qquad k\ge8XY^2+4,\qquad c>kY\ge k>8q^7,
+ \qquad c>X,
+\]
+so \(K>0\). The new strong-size estimate is
+\[
+ \frac{a^2}{g^2}=\Delta U^2\frac a{1+a}
+   >\frac{\Delta U^2}{2}>36.
+\]
+Together with \(a>2c\), it gives \(|V|>3g\) for nonzero \(b\),
+\(\operatorname{sgn}V=\operatorname{sgn}b\), and
+\(y<3|V|/2\). The case \(b=0\) would make
+\((c^2-1)/(Q-1)=y^2-c^2\) an integer strictly between zero and one.
+
+The parent's third-main-index exclusion uses only the unchanged outer
+data: if \(p=3\), then \(n_0=2\), and \(0<\eta<k\) forces
+\(2Y-X\in\{1,2\}\), contrary to \(q\mid X,Y\). Thus
+\(c>4\Delta+3\). In the auxiliary norm, odd indices 1 and 3 are then
+excluded. The two signs at index 3 would require
+\[
+ F_2(b-4\Delta)=c-(4\Delta+3)
+ \quad\hbox{or}\quad
+ F_2(b+4\Delta)=c+(4\Delta+3),
+\]
+whose right sides lie strictly between zero and \(2c<F_2\).
+Therefore \(|V|>8Q^2\), \(|b|>4F_2>4g\), and
+\(gy<3bV/8<L/2\).
+
+For proof notation let
+\(\kappa=K/H\), \(\rho=e/(XY)\), \(t=B/h\), and \(W=1+hL\).
+The exact carrier is
+\[
+ z=n+\kappa-Wt-\rho.
+\]
+Since \(e=b-cT+k-1<b\), one has \(\rho<|b|/(XY)\).
+If \(B\le-1\), the carrier and the preceding estimates would give
+\(n<L/2-L+|b|/(XY)<0\). Hence \(B\ge0\), which forces \(C>0\).
+The inherited mask bound is now licensed: \(3q<R<q^4-2\).
+The normalized rank theorem and the signed auxiliary-index theorem
+apply to the recovered strong pair, \(c>2p,2R\), and the two residues
+\(V\equiv-c\pmod f\), \(V\equiv-R\pmod c\); they yield \(p=R\).
+
+The rest of the retained carrier proof is unchanged. Integrality of \(z\)
+gives \(XY\mid hHe\); its divisor \(q^4\), coprime to \(hH\), gives
+\(q^4\mid e\). The first recurrence gives
+\(k\equiv2n_0\pmod{4XY^2}\). Since \(n_0<R\), the error
+\(2n_0-R-1\) is a multiple of \(q^4\) of absolute value below \(q^4\).
+Thus \(2n_0=R+1\), and only then the full recurrence proves
+\(XY\mid e\). The retained ratio bound and whole-product projection
+yield \(X=2^R\), followed by \(h\mid B\). The fixed-minus parity,
+half-binomial rounding, and fresh unscaled native reconstruction therefore
+have exactly their parent hypotheses and yield a finite ZFC refutation.
+The complete inherited proof closure and its coefficient identities are
+included alongside \texttt{compact/PROOF.md}.
+
+Conversely, a refutation supplies the parent's canonical positive outer
+witnesses, with \(R\equiv3\pmod4\), \(c=\psi_A(R)\),
+\(d=\chi_A(R)\), \(E=\tau^2\), and integral
+\(\kappa>0,\rho>0,t\ge0\). Choose one positive strong Pell pair
+\((f,I)\) with
+\[
+ Ac^2\tau d\mid I.
+\]
+It exists by a finite period of the determinant-one Pell matrix modulo
+that integer. Set \(i=I/(Ac^2\tau d)>0\). This realizes exactly
+\(F_2=f^2\), \(Q=(\Delta I)^2\), and \(G=(\tau df)^2\).
+The retained positive auxiliary reconstruction, which needs only
+\(c\mid I\), supplies positive \(T,V,y\) for this \emph{same} strong
+pair. Finally choose
+\[
+ n=gy+(1+hL)t+\rho-\kappa.
+\]
+Here \(\kappa<Xc<f\le g\), so \(n>0\). The carrier equals \(gy\),
+proving \(P=0\). Both existential directions are thus established at
+the stated inherited calibration boundary.
+
+\subsection{Exact degree and finite verification}
+
+The evaluator has 46 multiplications, 18 additions, and 14 subtractions;
+squares and scalar products count. The decisive exact degrees are
+\[
+ \deg(Q,G,V,M,Z)=(102,134,96,13,117).
+\]
+Thus \(-QM^2GV^2\) uniquely supplies degree 454, whereas
+\(QZ^2\) has degree 336. Writing \(q_0=\beta J\) and
+\(k_0=\eta+\zeta\), the entire highest homogeneous part is
+\[
+ [P]_{454}=-16q_0^{284}w^{42}s^{80}i^8k_0^{38}T^2.
+\]
+The coefficient of \(J^{284}w^{42}s^{80}i^8\eta^{38}T^2\) is
+\(-16\beta^{284}\ne0\) at the actual fixed tuple.
+The independent checker covers all 78 gates by 31 exact polynomial cuts,
+reconstructs every coefficient byte, checks all 39 terms of this leading
+part, and rejects nine mutations that preserve both gate counts and
+liveness. Normal and optimized Python runs pass. These finite checks
+authenticate the object; the unbounded proof and inherited calibration
+remain the mathematical basis of the consistency equivalence.

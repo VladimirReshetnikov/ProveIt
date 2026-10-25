@@ -1,0 +1,875 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.84in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{xcolor,microtype,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black,
+pdftitle={Recovering signs from a binomial digit},
+pdfauthor={AI-assisted research for Vladimir Reshetnikov and ProveIt},
+pdfsubject={An explicit quartic consistency equation in 247 integer variables}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\Ccal}{\mathsf{C222}}
+\newcommand{\G}{\mathcal G}
+\newcommand{\file}[1]{\texttt{\nolinkurl{#1}}}
+\input{report_inputs/metrics.tex}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Recovering signs from a binomial digit}
+\rhead{\small ProveIt research contribution}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\title{\textbf{Recovering signs from a binomial digit}\\[0.5em]
+\large An explicit quartic consistency equation in 247 integer variables}
+\author{Research prepared with AI assistance\\
+\small For Vladimir Reshetnikov and the ProveIt repository}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a completely specified ordinary polynomial
+$P\in\ZZ[z_1,\ldots,z_{247}]$ of degree four, with \FinalTerms{} collected
+monomials and coefficient height \FinalHeight{}, such that ZFC proves
+that $P$ has no integer zero if and only if ZFC is consistent. The polynomial
+is the sum of squares of \FinalRows{} explicitly printed quadratic
+residuals. Its mathematical reduction is proved by composition with the
+retained, pinned C222 refutation calibration.
+
+The new step recovers the sign of the factorial binomial digit before
+using the usual ceiling-sign certificates. A retained denominator-ratio
+equation forces an early exponent bound, and the self-sized radix then
+separates the positive binomial digit from all signed alternatives.
+Three scalar nonnegativity certificates can consequently be replaced by
+one product certificate and a cofinally available square restriction on
+the radix. Combined with an inherited deterministic Pell comparison
+center, this removes five variables from the 252-integer common-remainder
+predecessor. Certified integral changes of coordinates and residual basis
+give the final height and support.
+
+This is a measured improvement of a particular small-coefficient direct
+quartic, not a variable-count record or a proof of global minimality.
+The new unbounded argument is an ordinary mathematical proof; a fresh
+end-to-end proof-assistant formalization is not claimed. Independent
+finite checks validate the exact source changes, integral restorations,
+all coefficients, and every residual printed here.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The delivered equation and the meaning of simplicity}
+\label{sec:equation}
+
+The deliverable is the single equation
+\begin{equation}\label{eq:main}
+ \boxed{\quad P(z_1,\ldots,z_{247})
+       :=\sum_{j=1}^{182}R_j(z_1,\ldots,z_{247})^2=0,
+       \qquad (z_1,\ldots,z_{247})\in\ZZ^{247}.\quad}
+\end{equation}
+Appendix~\ref{app:rows} prints every $R_j$. The file
+\file{equations/quartic247/equation.json} gives the same finite list, and
+\file{equations/quartic247/expanded_polynomial.json} gives every collected
+coefficient of $P$. All variables are unrestricted integers. There are
+no suppressed parameters, variable-exponent operations, factorial
+operations, proof predicates, or quantified helper functions in
+\eqref{eq:main}. The notation for such objects below is used only to
+prove the meaning of ordinary arithmetic registers.
+
+\begin{theorem}\label{thm:main}
+Let $P$ be the literal polynomial \eqref{eq:main}. With the syntactic
+axiomatization of ZFC used by the retained ProveIt calibration, ZFC proves
+\[
+ \bigl(\exists z_1,\ldots,z_{247}\in\ZZ,\ P(z_1,\ldots,z_{247})=0\bigr)
+ \ \longleftrightarrow\
+ \text{there is a finite ZFC refutation}.
+\]
+Equivalently,
+\[
+ \ZFC\vdash
+ \left[
+ \bigl(\forall \mathbf z\in\ZZ^{247},\ P(\mathbf z)\ne0\bigr)
+ \longleftrightarrow \Con(\ZFC)
+ \right].
+\]
+Its degree is exactly $4$, its support has exactly $4\,755$ monomials,
+and its maximum absolute coefficient is $8\,815$.
+\end{theorem}
+
+Here consistency means the absence of a finite syntactic derivation of
+contradiction in the fixed first-order ZFC theory. We do not assert
+either side of the equivalence separately. The theorem does not
+conflict with the second incompleteness theorem: if ZFC is consistent,
+the construction does not supply a ZFC proof of the universal
+nonvanishing statement.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Endpoint over unrestricted integers & Variables & Rows & Degree & Terms & Height\\
+\midrule
+Common-remainder predecessor &252&182&4&5,340&128,446\\
+New source after integral projection &247&182&4&5,310&128,446\\
+Delivered coordinate and residual basis &247&182&4&4,755&8,815\\
+Prior shared-residue comparison &260&186&4&4,770&9,191\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The comparison is pinned to repository commit
+\file{3ecd6a6cf53d47519228328567f45fb7ee9781d9}, including the incoming
+archives listed in \file{SOURCE_LEDGER.json}. Relative to the matched
+252-variable predecessor, the delivered polynomial removes five
+variables and 585 collected monomials, and lowers the height by
+119,631. Relative to the prior 260-variable small-height endpoint, it
+also improves all three displayed size measures.
+
+There is no canonical total ordering of Diophantine equations by
+simplicity. The repository already contains a quartic in 37 unrestricted
+integers with large fixed coefficients, as well as still smaller
+variable counts at larger degrees \cite{repo}. Those are not displaced
+as variable-count achievements by this result. Our concrete objective
+is a direct, fully expanded, modest-coefficient quartic with transparent
+arithmetic witnesses. The route uses the numerical calculus C222
+directly; it does not encode a K215 computation or instantiate Jones's
+universal polynomial. C222's retained logical calibration is nevertheless
+an essential inherited dependency.
+
+For small integrity checks on the literal expansion, the constant
+coefficient is $3494$, the coefficient of $z_1^4$ is $13$, and the
+coefficient of $z_{12}^2z_{14}^2$ is $8815$. These are not a substitute
+for the complete coefficient file.
+
+\section{The retained arithmetic interface}
+\label{sec:interface}
+
+We begin with the direct common-remainder construction \cite{common}.
+Its semantic registers satisfy the following ordinary identities before
+their intended signs have been established:
+\begin{align}
+ t&=16+h_0^2,                  & B&=r+s+1,                    \label{eq:fronta}\\
+ BF&=V+s,                     & y&=V(V-1),                   \label{eq:frontb}\\
+ q&=B+o+1,                    & x&=1+[1+(t+1)y]u_t,           \label{eq:frontc}\\
+ B\mu&=F^2+C_0+1,             & H_0&=1+\sum_{i=1}^{9}a_i.    \label{eq:frontd}
+\end{align}
+The $a_i$ are the nine actual encoded representatives, including $C_0$.
+They are not initially presumed nonnegative. Composite expressions in
+these displays are represented by the existing quadratic circuit.
+
+For integers $\alpha,\beta,\gamma$, put
+\[
+ \G(\alpha,\beta,\gamma)=\alpha^2+\beta^2+\gamma(\gamma+1).
+\]
+This is always nonnegative and represents every nonnegative integer.
+Indeed, the three-square theorem applies to $4n+1$; in a representation
+by three squares exactly one coordinate is odd. Writing it as
+$2\gamma+1$ and the other two as $2\alpha,2\beta$ gives the assertion.
+The predecessor uses three separate such representations for $r,s,o$.
+
+The new source deletes these nine private coordinates and imposes only
+\begin{equation}\label{eq:new}
+ \boxed{\quad
+ rs=\G(\alpha,\beta,\gamma),\qquad q=(6\zeta+3)^2.
+ \quad}
+\end{equation}
+There are four fresh unrestricted integer coordinates here. We use
+the weak product condition $rs\ge0$; an unnecessary strict condition
+would change the polynomial. Both equations are quadratic in the
+actual source registers.
+
+\subsection{Power meanings are established before the missing signs}
+
+The retained source has eighteen genuine Pell power requests, including
+\[
+ V=(F^2+1)^t,\quad N=B^x,\quad q=(BH_0)^x,\quad
+ D_t=q^t,\quad D_{t+1}=q^{t+1},\quad D_y=q^{y+1},\quad M=q^x,
+\]
+the factorial numerator $U_f=(q+1)^{F^2+t}$, and the representative
+numerator requests. These displays describe the meanings to be proved,
+not extra operations in the polynomial.
+
+The signed frame, the squared semantic cap, and the canonical
+orientation argument are inherited from the ordinary proofs
+\file{PROOF_315.md}, \file{ORIENTATION_FIRST_PROOF.md}, and
+\file{STRICT_BUDGET_PROOF.md}, retained under
+\file{source/inherited_common/upstream/round17/direct/}.
+Before any arithmetic sign is used, they give
+\[
+ W\ge258,\qquad |\text{every power atom}|<W,\qquad
+ |A|>W^W,\qquad |A-1|>4W^3.
+\]
+They bound the absolute classified Pell indices, including at negative
+centers and negative nominal indices.
+
+We retain all fourteen orientation terms. For a principal pair
+$(X_i,Y_i)$ with requested index $k_i$, the pool has the form
+\begin{equation}\label{eq:pool}
+ \sum_{i=1}^{14}\bigl((Y_i-k_i)^2+1-X_i\bigr)=(A-1)Q.
+\end{equation}
+The actual summands $1-X_i$ need not be nonnegative. The proof reduces
+them modulo $A-1$: the small abscissa residues are
+$s_i\in\{-1,1\}$, and the small ordinate residues are signed classified
+indices $b_i$. Thus the integer
+\[
+ E=\sum_{i=1}^{14}(b_i-k_i)^2+\sum_{i=1}^{14}(1-s_i)
+\]
+is nonnegative, divisible by $A-1$, and satisfies
+$E<4W^3<|A-1|$. It is zero. This recovers the full canonical pairs.
+The smaller selective nine-term pool from a previous packet is
+\emph{not} substituted: its later sign bootstrap would not justify
+the new order of argument.
+
+\subsection{The inherited deterministic comparison center}
+
+We combine \eqref{eq:new} with the already proved deterministic-center
+construction \cite{center}. The common Pell pair satisfies
+\[
+ H^2-(A^2-1)J^2=1,\qquad J=C^2(2e+1).
+\]
+Replacing the old free comparison-center constructor by
+$f=(1-A)H$ gives
+\[
+ D=A+Hf
+  =A+(1-A)H^2
+  =1-(A-1)(A^2-1)J^2.
+\]
+Consequently $D\equiv A\pmod H$ and $D\equiv1\pmod C$. The comparison
+ordinate congruence can be $R=h+Cq_c$, without the old factor $4$.
+This deletes one additional private coordinate. It is valid for signed
+$D$, which is often negative.
+
+The exact proof, retained as \file{proofs/PELL_CENTER_PRIOR.md}, uses
+squared-ordinate divisibility and abscissa residue separation.
+At an actual anchor index $i\ge2$, Pell growth gives
+$i+|h|<|C|$; the congruence $i\equiv\pm h\pmod{|C|}$ therefore yields
+$i=|h|$. At the exceptional unit ordinate $|C|=1$, the squared cap
+forces $h=0$ and all other actual indices to vanish; the anchor then
+contributes a positive term to the bounded orientation residue $E$,
+a contradiction. The proof works with the full fourteen-term pool
+used here. Completeness chooses an even semantic anchor and rebuilds
+the private comparison witnesses.
+
+\subsection{The normalized digit equations}
+
+The retained common-remainder block contains the literal ratio rows
+\begin{equation}\label{eq:ratios}
+ D_t v_t=M,\qquad D_{t+1}v_{t+1}=M,\qquad D_yv_y=M,
+\end{equation}
+and the factorial numerator row
+\begin{equation}\label{eq:digit}
+ v_t U_f=M(B+qk_f)+R_f.
+\end{equation}
+The product $qk_f$ is already a circuit register. All eleven
+normalized remainders satisfy the one norm identity
+\begin{equation}\label{eq:norm}
+ M^2=1+4\sum_{i=1}^{11}R_i^2+\G(\alpha_*,\beta_*,\gamma_*).
+\end{equation}
+The starred coordinates are independent of the new coordinates in
+\eqref{eq:new}. Equation \eqref{eq:norm} implies $|R_i|<M/2$ once
+$M>0$. The retained normalized-remainder proof supplies stronger
+$1/32$ margins for completeness.
+
+\section{The new step: recover the digit, then its signs}
+\label{sec:new}
+
+\begin{lemma}[Canonical powers at signed bases]\label{lem:signed}
+Once the retained full orientation theorem has been applied, a power
+request at a base $n$ with $|n|\ge2$ forces its requested index $k$
+to be nonnegative and its output to be $n^k$.
+\end{lemma}
+\begin{proof}
+The ordinary power graph uses the modulus
+$T=2An-n^2-1$. The frame gives
+$|T|>W^W+W$, and $T\equiv-1\pmod n$, so $n$ is invertible modulo
+$T$. For $k\ge0$, the canonical Pell recurrence yields
+$m\equiv n^k\pmod T$. The bound on all atoms and indices makes the
+absolute difference smaller than $|T|$, hence $m=n^k$.
+For $k=-j<0$, the inverse recurrence instead gives
+$mn^j\equiv1\pmod T$. The same bound would imply $mn^j=1$,
+impossible for $|n|\ge2$ and $j\ge1$.
+The argument uses absolute values throughout, so negative $n$ causes
+no change. At $n=1$ and a known nonnegative index the output is $1$;
+at $n=-1$ it is $(-1)^k$. We will exclude base zero before using the
+self-radix request.
+\end{proof}
+
+\begin{lemma}[An early exponent bound]\label{lem:early}
+Every integer zero of the new source satisfies
+\[
+ q\ge9,\quad M=q^x>0,\quad x\ge t+1\ge17,\quad
+ V\ge1,\quad y\ge0,\quad a_i\ge0,\quad H_0\ge1,\quad B\ne0.
+\]
+\end{lemma}
+\begin{proof}
+The square in \eqref{eq:new} is the square of an integer congruent
+to $3$ modulo $6$, hence $q\ge9$. The genuine $q^x$ request and
+Lemma~\ref{lem:signed} imply $x\ge0$ and $M=q^x$.
+Since $t\ge16$, the $t+1$ request is also exact. The middle row of
+\eqref{eq:ratios} is therefore
+\[
+ q^{t+1}v_{t+1}=q^x.
+\]
+If $x<t+1$, cancellation would make a multiple of $q$ equal to $1$.
+Thus $x\ge t+1$. This uses no factorial identity or ceiling sign.
+
+The known nonnegative $t$ and the base $F^2+1\ge1$ give
+$V=(F^2+1)^t\ge1$, hence $y=V(V-1)\ge0$.
+Every actual representative is an exponent in a genuine request
+at $q+1\ge10$, so each is nonnegative. In particular $C_0\ge0$
+and $H_0\ge1$. Finally
+$B\mu=F^2+C_0+1>0$ excludes $B=0$ without assigning a sign to $\mu$.
+\end{proof}
+
+\begin{lemma}[The self-radix bounds a signed output]\label{lem:radix}
+At every integer zero,
+\[
+ q=(BH_0)^x=|BH_0|^x\ge2^x,\qquad
+ B^2\le q,\qquad |B|<q/2.
+\]
+\end{lemma}
+\begin{proof}
+The base $BH_0$ is nonzero. If its absolute value were $1$, its
+canonical output at the already nonnegative index $x$ would be
+$1$ or $-1$, contradicting $q\ge9$. Thus its absolute value is at
+least $2$ and Lemma~\ref{lem:signed} applies. Positivity of $q$
+gives the equality with $|BH_0|^x$. Since $x\ge17$ and $H_0\ge1$,
+we have $B^2\le q$. Finally $\sqrt q<q/2$ for $q\ge9$.
+\end{proof}
+
+\begin{lemma}[A uniform coefficient bound]\label{lem:coefficient}
+Put $m=F^2$ and $n=m+t$. Then
+\[
+ n\le x-1,\qquad 2^n\le q/2.
+\]
+\end{lemma}
+\begin{proof}
+The coefficient $1+(t+1)y$ in \eqref{eq:frontc} is positive.
+Since $x\ge17$, its integer quotient $u_t$ is at least $1$, giving
+\begin{equation}\label{eq:xbudget}
+ x\ge 2+(t+1)y.
+\end{equation}
+If $m=0$, then $n=t\le x-1$ by Lemma~\ref{lem:early}.
+If $m\ge1$, Bernoulli's inequality yields
+\[
+ V=(m+1)^t\ge1+mt\ge m+t=n.
+\]
+Here $V\ge2$, so $y=V(V-1)\ge V\ge n$, and
+\eqref{eq:xbudget} is stronger than the required bound.
+Now $q\ge2^x$ proves $2^n\le2^{x-1}\le q/2$.
+\end{proof}
+
+\begin{proposition}[Digit-first sign recovery]\label{prop:digit}
+Every integer zero of the new source satisfies
+\[
+ B=\binom{F^2+t}{t}>0,\qquad r\ge0,\qquad s\ge0,\qquad
+ F\ge1,\qquad B\ge2,\qquad o\ge0.
+\]
+\end{proposition}
+\begin{proof}
+The factorial numerator is exactly $U_f=(q+1)^n$.
+Let
+\[
+ \rho=\sum_{j=0}^{t-1}\binom njq^j,\qquad d=\binom nt.
+\]
+The sum of all binomial coefficients is $2^n$. Since the omitted
+coefficients include a positive one, Lemma~\ref{lem:coefficient} gives
+\begin{align*}
+ 0\le\rho
+   &\le(2^n-1)q^{t-1}<q^t/2,\\
+ 0<d&<2^n\le q/2.
+\end{align*}
+In particular $\rho$ is the ordinary low remainder of $U_f$ modulo
+$q^t$. Since $v_t=M/q^t>0$, the canonical normalized low remainder
+$v_t\rho$ lies in $[0,M/2)$. Equation \eqref{eq:digit} gives
+$R_f\equiv v_t\rho\pmod M$, whereas \eqref{eq:norm} gives
+$|R_f|<M/2$. Their difference is a multiple of $M$ of absolute
+value less than $M$, so $R_f=v_t\rho$.
+
+After subtraction and division by $M$, the digit row implies
+$B\equiv d\pmod q$. Lemma~\ref{lem:radix} gives $|B|<q/2$,
+and $0<d<q/2$. Hence $|B-d|<q$ and the congruence is equality.
+This establishes the positive digit before the product guard has
+been used.
+
+Now $rs=\G(\alpha,\beta,\gamma)\ge0$ and $r+s=B-1\ge0$ imply
+$r,s\ge0$: opposite strict signs contradict the product, two
+negative signs contradict the sum, and a negative sign paired with
+zero also contradicts the sum. The ceiling row gives
+$BF=V+s>0$, so $F\ge1$. Moreover $V=(F^2+1)^t>F^2$,
+whence $BF>F^2$ and $B>F\ge1$.
+Finally $q=(BH_0)^x\ge B^x>B$, so
+$o=q-B-1\ge0$.
+\end{proof}
+
+All three deleted scalar guards can now be filled by fresh ternary
+representations. The order of the proof is essential: it does not
+assume the ceiling signs in order to obtain the binomial digit that
+establishes those signs. The retained ratio for $q^{t+1}$, previously
+serving the common-remainder normalization, supplies the early
+information that breaks this dependence.
+
+\section{Returning to the calibrated source}
+\label{sec:factorial}
+
+For completeness of the mathematical exposition, we give the factorial
+fixed-point step explicitly. The rest of the CRT and Horn-flow
+decoding is retained without alteration.
+
+\begin{lemma}[The square-output factorial fixed point]\label{lem:factorial}
+For the positive values recovered above, $F=t!$.
+\end{lemma}
+\begin{proof}
+Write $T=t!$. From $r=B-s-1\ge0$ and $s\ge0$ we have
+$0\le s\le B-1$, hence
+\[
+ B(F-1)<V\le BF,\qquad F=\left\lceil V/B\right\rceil.
+\]
+The recovered binomial identity gives
+\[
+ \frac VB
+  =T\prod_{i=1}^{t}\frac{F^2+1}{F^2+i}\le T.
+\]
+As $T$ is integral, $F\le T$. Each factor in the product is
+nondecreasing as a function of $F^2\ge1$. Evaluating at $F^2=1$
+therefore gives
+\[
+ \frac VB\ge \frac{2^t}{t+1}>t^2\qquad(t\ge16).
+\]
+The final inequality holds at $16$ and is preserved upon increasing
+$t$: $2t^2>(t+1)(t+2)$ for $t\ge4$.
+Thus $F>t^2$.
+
+For $0\le e_i<1$, the elementary product inequality
+$\prod(1-e_i)\ge1-\sum e_i$ now gives
+\[
+ \prod_{i=1}^{t}\frac{F^2+1}{F^2+i}
+ =\prod_{i=1}^{t}\left(1-\frac{i-1}{F^2+i}\right)
+ >1-\frac{t(t-1)}{2F^2}
+ >1-\frac{1}{2F}.
+\]
+Consequently
+$T(1-1/(2F))<V/B\le F$, so
+\[
+ T<\frac{2F^2}{2F-1}
+   =F+\frac{F}{2F-1}<F+1.
+\]
+Since $F,T$ are integers, $T\le F$. Together with $F\le T$
+this proves equality.
+\end{proof}
+
+For $1\le i\le t$, put $d_i=1+F^2/i$. These are integers and
+$B=\prod_i d_i$. Every prime factor of $d_i$ exceeds $t$:
+if $p\le t$, then $p\mid F^2/i$, since $F=t!$, so $p\nmid d_i$.
+A common prime divisor of $d_i,d_j$ would divide
+$id_i-jd_j=i-j$, impossible when $i\ne j$. Thus the $d_i$ are
+pairwise coprime. These are the inherited amplified CRT moduli.
+
+After the front signs and factorial have been recovered, the proof in
+\file{source/inherited_common/proofs/NORMALIZED_REMAINDERS_PROOF.md}
+applies to the remaining ten low remainders. It covers the zero
+representative case using
+$\binom aj\le\max(1,a)^k$, rather than an invalid bound by $0^k$.
+For each relevant denominator $L_i\mid M$, its genuine remainder
+$r_i^0$ satisfies $0\le r_i^0<L_i/32$.
+The norm and congruence then force $R_i=(M/L_i)r_i^0$ exactly.
+This restores all old quotient and interval meanings.
+
+The unchanged prime-power range tests and unit-weight Horn-flow
+decoding give a finite C222 derivation of the contradiction code.
+The retained calibration supplies the two links
+\[
+ \Ccal\text{ derives contradiction}
+ \ \longleftrightarrow\
+ \ZF\text{ has a finite refutation}
+ \ \longleftrightarrow\
+ \ZFC\text{ has a finite refutation}.
+\]
+Their named endpoints are
+\file{KEndpoint.c222_iff_zf_refutation} and
+\file{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+The corresponding Lean source files and the inherited ordinary
+calibration documents are included under
+\file{source/inherited_common/upstream/round17/architecture/proofs/inherited/calibration/}.
+This proves soundness of the new source.
+
+\section{Completeness of the square restriction}
+\label{sec:complete}
+
+It is not enough to observe that \eqref{eq:new} is sound. The new
+restriction $q=(6\zeta+3)^2$ must still allow a witness for every
+finite refutation.
+
+Begin with a finite refutation and the predecessor's cofinal arithmetic
+construction. Choose a permitted horizon $t=16+h_0^2$ large enough,
+put $F=t!$, $V=(F^2+1)^t$, and $y=V(V-1)$. The beta-CRT
+moduli $1+(i+1)y$ are all odd. A CRT residue class modulo their
+odd least common multiple therefore contains even, arbitrarily large
+integers. Choose $x$ even and sufficiently large to satisfy all the
+retained endpoint bounds.
+
+Since $i\mid F$ and $6\mid F$, each $F^2/i=F(F/i)$ is divisible
+by $6$. Thus
+\begin{equation}\label{eq:modsix}
+ B=\prod_{i=1}^{t}(1+F^2/i)\equiv1\pmod6,\qquad
+ N=B^x\equiv1\pmod6,\qquad N^2\equiv1\pmod6.
+\end{equation}
+The independent representative moduli have product $N^2$.
+Adding a multiple of $N^2$ to any actual representative preserves
+all its encoded local data and permits an arbitrary residue modulo $6$.
+
+One must preserve the semantic anchor while making this adjustment.
+Choose the ordinary $b$ representative first. If $a_0$ is the least
+nonnegative residue for the dominant $a$ representative, take
+\[
+ a=a_0+8N^2\quad\hbox{or}\quad a=a_0+9N^2
+\]
+to make $a,b$ have opposite parities. The literal derived-label
+constructor has $h\ge2a^2$ and $h\equiv1+a+b\pmod2$.
+Hence $h$ is even and at least $128N^4$.
+
+Reserve one ordinary representative other than $a,b$. Start it in
+$(0,N^2]$, then add $jN^2$ for an appropriate
+$j\in\{0,\ldots,5\}$ to arrange
+\begin{equation}\label{eq:Hthree}
+ H_0=1+\sum_i a_i\equiv3\pmod6.
+\end{equation}
+The adjusted representative remains at most $6N^2$; the dominant
+$a$ remains below $10N^2$. The other representatives can remain
+below $2N^2$, or $6N^2$ if harmless earlier parity choices are
+retained. The fixed front indices are below $N^2$, as in the parent.
+Thus the even $h\ge128N^4$ still dominates every other requested
+index, and the squared-cap completeness estimates remain valid.
+The actual radix and the private frame are built after these lifts;
+there is no attempt to keep an obsolete upper bound on $H_0$.
+
+By \eqref{eq:modsix} and \eqref{eq:Hthree}, $BH_0$ is an odd
+multiple of $3$. As $x$ is positive and even,
+$Q=(BH_0)^{x/2}$ is also an odd multiple of $3$. Therefore
+\[
+ \zeta=(Q-3)/6\in\ZZ,\qquad q=(BH_0)^x=(6\zeta+3)^2.
+\]
+No fixed $3$-adic valuation is being imposed; every odd multiple of
+$3$ is congruent to $3$ modulo $6$.
+
+The canonical ceiling remainders $r,s$ are nonnegative, so their
+product has a $\G$ representation. The eleven genuine normalized
+remainders satisfy $0\le R_i<M/32$. Hence
+\[
+ 4\sum_{i=1}^{11}R_i^2<\frac{11}{256}M^2<M^2.
+\]
+The integer $M^2-1-4\sum R_i^2$ is nonnegative and has its own
+independent $\G$ representation, supplying \eqref{eq:norm}.
+Finally choose the frame and the canonical private Pell witnesses,
+including the inherited deterministic comparison center. All new
+source rows are satisfied.
+
+This is an existential construction with fresh private witnesses.
+It does not claim a bijection of all old and new solution tuples.
+Together with Section~\ref{sec:factorial}, it proves both directions
+of the source equivalence.
+
+\section{From the source theorem to the literal quartic}
+\label{sec:compile}
+
+The source compiler and certificates are included so that the displayed
+equation is a finite object with a reviewable connection to the proof.
+No search for witnesses or assumption of consistency is used to
+construct its coefficients.
+
+\subsection{Exact algebraic transformations}
+
+The file \file{source/equation247_weak/delta_certificate.json}
+records every changed source row and every deleted private guard.
+The source audit checks the actual polynomials, not just row names.
+Eighteen inherited Horn factorizations and 204 integral monic
+restorations lead to the raw 247-variable system; seventy integral
+translations give its centered coordinates.
+
+A monic restoration deletes a variable only when an explicit polynomial
+with integer coefficients reconstructs it from the retained variables.
+The reverse substitution is checked exactly. Thus there are no
+unreported divisibility conditions or rational coordinates.
+Unused private coordinates are omitted only after their nonoccurrence
+has been verified.
+
+The final coordinate census explains the net saving precisely.
+The nine old scalar-guard coordinates and the old free center coordinate
+disappear. Four fresh guard coordinates appear, and the coordinate
+\file{fact0.remainder}, which was eliminable in the predecessor, is
+retained to keep the new product row quadratic. Thus the measured
+change is $252-10+5=247$, rather than a naive count of deleted guards.
+
+To improve the final coefficient profile, we transfer 76 known
+integral coordinate shears from the prior shared-residue packet
+\cite{shared}, matching the original coordinate names rather than
+assuming the same coordinate numbering. A step $(i,j,k)$ means
+\[
+ \text{old }z_j=\text{new }z_j+k\,\text{new }z_i.
+\]
+It has determinant one and inverse coefficient $-k$.
+The entire integer matrix, its two-sided inverse, and the full old-to-new
+coordinate map are checked. These are coordinate changes on
+$\ZZ^{247}$, so integer solvability is preserved.
+
+Four additional residual operations improve the height:
+\[
+ R_{18}\leftarrow R_{18}-22R_{11},\quad
+ R_{19}\leftarrow R_{19}-R_{11},\quad
+ R_{52}\leftarrow R_{52}-R_{11},\quad
+ R_{27}\leftarrow R_{27}-R_{23}.
+\]
+The indices here are one-based and the operations occur in the displayed
+order. They are recorded with zero-based indices in
+\file{certificates/row_operations.json}.
+Each operation is an invertible integer row operation. It preserves
+the simultaneous zero set of the residuals. It generally changes
+the scalar sum-of-squares polynomial, so we do not assert an identity
+between the old and new sums of squares.
+
+All final residuals remain quadratic, with maximum absolute residual
+coefficient $66$ and 1,077 total residual monomial occurrences.
+Their squared sum has the exact metrics in Section~\ref{sec:equation};
+all 247 variables occur in the collected polynomial.
+
+\subsection{What has been checked}
+
+\file{source/verify_composed.py} independently reconstructs the source
+delta, invokes the retained independently implemented Horn and monic
+replay, checks translations, and collects the raw quartic.
+\file{code/build_final.py} reconstructs the final finite outputs from
+the frozen coordinate and residual certificates.
+
+\file{code/check_final.py} is a second implementation using sparse
+exponent-vector monomials and explicit binomial expansion. It imports
+no producer or eliminator. It checks each map forward and backward,
+both matrix inverse identities, every final residual, every collected
+coefficient, the complete coordinate map, degree, height, support,
+and coordinate liveness. It also parses the actual LaTeX residual
+file back into polynomials and compares them with the machine-readable
+equation.
+
+Six deliberate source/projection corruptions and eight deliberate
+final-algebra corruptions are rejected. The latter include changes
+to a shear, its historical coordinate mapping, a residual operation,
+a final residual, a collected coefficient, the coordinate map,
+a printed formula, and the domain. Normal Python and optimized
+Python both pass; disabling assertions does not disable the checks.
+The receipts and substantive reviews are retained in \file{review/}.
+
+These finite checks prove exact algebraic identities for the emitted
+finite data. They do not replace the unbounded number-theoretic
+arguments or recheck the entire inherited Lean development.
+The proof of Theorem~\ref{thm:main} is the ordinary argument in
+Sections~\ref{sec:interface}--\ref{sec:complete}, composed with the
+retained calibration and the verified finite transformations.
+Every new argument uses elementary arithmetic, finite coding and
+standard set-theoretic constructions formalizable in ZFC. No fresh
+kernel-checked proof of this complete final theorem, and no encoded
+object-ZFC proof term, is claimed.
+
+\section{Reproducibility, attribution, and further research}
+\label{sec:research}
+
+The canonical starting point is \file{README.md}. With Python's
+standard library, run
+\begin{verbatim}
+python3 -B verify.py
+python3 -O -B verify.py
+\end{verbatim}
+The default checks are read-only. To reconstruct the final files from
+the frozen raw source and maps, run
+\begin{verbatim}
+python3 -B code/build_final.py --write
+\end{verbatim}
+To evaluate an explicitly supplied 247-integer tuple without pretending
+to decide consistency, run
+\begin{verbatim}
+python3 -B code/evaluate.py tuple.json --expanded
+\end{verbatim}
+The input is a JSON list in the order $z_1,\ldots,z_{247}$.
+The build script \file{build_report.sh} compiles this report and the
+optional experimental note. The package includes the ordinary source
+proofs, exact transformation certificates, independent checkers,
+machine-readable equations, all report inputs, a provenance ledger,
+and a SHA-256 manifest.
+
+\subsection{The actual new contribution}
+
+The deterministic Pell center, odd-square idea, common normalized
+remainder norm, and historical coordinate shears are credited to
+their incoming source packets \cite{center,budgets,common,shared}.
+The new mathematical contribution here is the specific
+\emph{digit-first sign recovery} argument:
+\[
+ q^{t+1}\mid q^x
+ \ \Longrightarrow\ x\ge t+1
+ \ \Longrightarrow\ 2^{F^2+t}\le q/2
+ \ \Longrightarrow\ B=\binom{F^2+t}{t}>0.
+\]
+The self-radix bound on $|B|$ is also essential in the last implication.
+This order permits the weak product guard and removes the three
+individual front sign certificates. The nonunit square
+$(6\zeta+3)^2$ and its cofinal CRT construction make the early radix
+argument unconditional.
+
+This is a concrete improvement relative to the audited snapshot.
+It is not an exhaustive literature-priority claim or a declaration
+of a major breakthrough. General universal-equation results
+\cite{jones,bayer,sun} establish useful context for variable-count
+tradeoffs but do not supply this direct source theorem.
+
+\subsection{A different calculus was implemented and measured}
+
+The accompanying directory
+\file{experiments/three_parameter_calculus/} investigates replacing
+the four-parameter implicational schema by K, S, and Peirce, together
+with a modular saturation equation whose inverse coordinate is
+unbounded. A literal 521-step Hilbert derivation certifies the
+propositional replacement. Its note proves the required local
+small-value decoding, prime-divisor argument, CRT inverse choice,
+and nonnegative quotient repair.
+
+The resulting experimental quartic has 231 \emph{nonnegative}
+integer variables, 183 residuals, 6,369 monomials and height
+83,899,166. It loses to its own 229-variable nonnegative parent:
+extra source branches and multiplication gates cost more than the
+removed bounded column saves. These domains and architectures
+must not be confused with the 247 unrestricted integers of
+Theorem~\ref{thm:main}. The experiment is included because it
+provides an exact, falsifiable result for a distinct proposed route.
+Its standalone checker verifies the finite basis certificate and
+polynomial expansion; rebuilding through its different full parent
+compiler additionally requires the pinned parent archive identified
+in that directory.
+
+\subsection{Questions suggested by the reduction}
+
+The most promising next work is to examine existing divisibility
+identities for information available before the sign bootstrap.
+The $q^{t+1}$ ratio is indispensable to the present proof; deleting
+it on the assumption that it is merely a remainder-normalization
+overhead would destroy the early exponent bound.
+Other ratios may have a different status, but a reduction must
+preserve both quadratic degree and an integral restoration.
+
+One can also ask whether the single product nonnegativity condition
+can be represented with fewer coordinates under additional cofinal
+arithmetic restrictions. Such a claim needs a complete cofinal
+construction; a sign argument alone is insufficient.
+The unsuccessful calculus experiment suggests co-designing the
+local proof calculus with its arithmetic circuit, since fewer
+logical parameters need not mean fewer final polynomial variables.
+
+Finally, the integer coordinate and residual searches can be improved
+independently of the semantics, provided every chosen map has a
+checked integral inverse. Formalizing the early-exponent and
+digit-sign lemmas in the existing proof environment would make a
+valuable next integration step. None of these proposed directions
+is used as an unproved premise in the delivered equation.
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+V. Reshetnikov et al.,
+\emph{ProveIt: Computability and Diophantine consistency research},
+snapshot \file{3ecd6a6cf53d47519228328567f45fb7ee9781d9}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9/Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+The ledger also pins the incoming archives.
+
+\bibitem{common}
+\emph{ConZFC Common Remainders / Radix 47}, 25 October 2026,
+\file{docs/incoming/ConZFC_Common_Remainders_Radix47_2026-10-25.zip},
+at snapshot \cite{repo}. The portable direct source closure and its
+ordinary proofs are retained under \file{source/inherited_common/}.
+
+\bibitem{center}
+\emph{ConZFC Symmetric Remainders}, 25 October 2026,
+\file{docs/incoming/ConZFC_Symmetric_Remainders_2026-10-25.zip},
+at snapshot \cite{repo}. Deterministic comparison-center proof
+retained as \file{proofs/PELL_CENTER_PRIOR.md}.
+
+\bibitem{budgets}
+\emph{ConZFC Symmetric Residue Budgets}, 25 October 2026,
+\file{docs/incoming/ConZFC_Symmetric_Residue_Budgets_2026-10-25.zip},
+at snapshot \cite{repo}. Prior odd-square proof retained as
+\file{proofs/ODD_SQUARE_PRIOR.md}.
+
+\bibitem{shared}
+\emph{ConZFC Shared Residue Bounds}, 25 October 2026,
+\file{docs/incoming/ConZFC_Shared_Residue_Bounds_2026-10-25.zip},
+at snapshot \cite{repo}. Exact historical shear inputs and transfer
+certificate are retained in \file{certificates/}.
+
+\bibitem{jones}
+J. P. Jones, Universal Diophantine equation,
+\emph{Journal of Symbolic Logic} 47 (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}.
+
+\bibitem{bayer}
+J. Bayer, M. David, M. Hassler, Y. Matiyasevich and D. Schleicher,
+\emph{Diophantine Equations over $\ZZ$: Universal Bounds and
+Parallel Formalization}, arXiv:2506.20909, version 3, 22 October 2026.
+\url{https://arxiv.org/abs/2506.20909}.
+
+\bibitem{sun}
+Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers},
+arXiv:2609.01594, version 2, 2 September 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{All 182 quadratic residuals}\label{app:rows}
+
+Every symbol below is one of the 247 unrestricted integer coordinates.
+The single equation is the sum of the squares of these complete
+residuals, set equal to zero. Coefficients omitted before a monomial
+are $1$ or $-1$ according to the displayed sign. There are no
+additional definitions or constraints in this appendix.
+
+\begingroup
+\small
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{5pt}
+\setlength{\abovedisplayshortskip}{3pt}
+\setlength{\belowdisplayshortskip}{3pt}
+\input{report_inputs/residuals.tex}
+\endgroup
+
+\clearpage
+\section{Exact data format and integrity}
+
+In a polynomial JSON file a term is a pair
+$[c,[i_1,\ldots,i_d]]$, denoting
+$c\,z_{i_1+1}\cdots z_{i_d+1}$. Indices are zero-based in the files
+and one-based in the displayed mathematics. An empty index list is
+a constant, repeated indices are powers, all coefficients are integers,
+and all like monomials have been collected in the expansion.
+
+The SHA-256 digest of the final residual equation file is
+\begin{quote}\small\ttfamily
+6df8f7de8b389084d6ce000f777f27ffc962e05b51217662e680201cffd1578d
+\end{quote}
+and that of the collected polynomial is
+\begin{quote}\small\ttfamily
+19b2bc4e8cbb8d112feed0b88ca6c91884a40985745026eed020a78eee35187f.
+\end{quote}
+The period after the second digest is punctuation. The raw
+247-variable weak-product equation before the final integral maps has
+digest
+\begin{quote}\small\ttfamily
+14b814894521add09fb6847e59de2d802f2e466f6f9fc724f346a21461125a6b.
+\end{quote}
+The hashes bind finite files; they do not constitute a mathematical
+proof. The manifest separately binds all deliverable files, excluding
+the manifest itself.
+\end{document}

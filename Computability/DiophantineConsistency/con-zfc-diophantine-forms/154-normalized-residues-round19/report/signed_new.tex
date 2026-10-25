@@ -1,0 +1,93 @@
+\subsection{The exact five selected endpoints}
+The starting literal array is the incoming centered Common remainders
+252-variable, 182-row equation. Its translation certificate identifies the
+semantic radix coordinate. The new construction deletes exactly the old
+front guard on $q-B-1$, adds the odd-square row, and changes the common
+budget from coefficient four with constant $-1$ to coefficient two with
+constant zero. The two witness arguments above justify these semantic
+changes. The discarded private guard coordinates are absent afterward;
+all other rows are retained exactly at this stage. The resulting source
+has 250 variables and 182 rows.
+
+The balanced construction first applies 76 fixed integral coordinate shears,
+transported by coordinate identity from the Shared bounds certificate.
+Five elementary residual additions expose three affine defining rows.
+In the intermediate 250-coordinate order, with zero-based indices and
+coordinates $\xi_i$, their unique restorations are
+\begin{align*}
+ \xi_{37}&=-4-7\xi_{10}-4\xi_{11}-4\xi_{21}+\xi_{22},\\
+ \xi_{89}&=-12+6\xi_3+8\xi_{84}+4\xi_{85}+\xi_{86},\\
+ \xi_{166}&=-3+2\xi_{107}-2\xi_{148}+\xi_{164}.
+\end{align*}
+The defining rows have unit coefficients on the eliminated coordinates.
+Substituting these formulas and deleting those rows reduces the system to
+247 variables and 179 rows. After reindexing, 33 further elementary
+residual additions give the intermediate \file{balanced247} checkpoint. Every identity is certified
+against the actual preceding stage, and every remaining residual is still
+quadratic.
+
+Three further monic quadratic rows can be eliminated without raising
+residual degree. In the 247-coordinate checkpoint order, write the coordinates
+as $\eta_i$. Their exact restorations are
+\begin{align*}
+ \eta_{62}&=10+14\eta_{53}+4\eta_{53}^2,\\
+ \eta_{64}&=-\eta_{12}+\eta_{12}^2+4\eta_{12}\eta_{63}+4\eta_{63}^2,\\
+ \eta_{45}&=2\eta_{10}-\eta_{10}^2-4\eta_{10}\eta_{43}
+            +2\eta_{43}-4\eta_{43}^2+\eta_{44}.
+\end{align*}
+These are the semantic coordinates named \file{mul.281}, \file{add.292}
+and \file{mul.194}, respectively. At each deletion the coordinate occurs
+only as a linear monomial in every other residual. Such a residual has the
+form $av+G$ with $a\in\Z$ and $G$ quadratic and independent of $v$;
+replacing $v$ by its quadratic restoration keeps degree at most two.
+The independent checker verifies this occurrence condition before every
+quadratic deletion, in addition to checking all resulting degrees. Unique
+restoration proves the same zero-set bijection as Lemma~\ref{lem:elementary}.
+After these three deletions and nine further row additions, the result has
+244 variables, 176 rows, 5212 terms and height 3968.
+
+The 243-variable alternative also eliminates the coordinate \file{add.380}
+by a 15-term affine restoration, before those three quadratic deletions.
+In the same checkpoint order that additional formula is
+\begin{align*}
+ \eta_{103}={}&5\eta_{10}-3\eta_{11}+4\eta_{21}+2\eta_{24}
+ +4\eta_{26}+2\eta_{29}+2\eta_{31}+2\eta_{34}\\
+ &+2\eta_{36}+4\eta_{38}+2\eta_{39}+2\eta_{42}
+ +2\eta_{46}+4\eta_{67}+2\eta_{68}.
+\end{align*}
+Its final frozen residual basis uses 802 further row additions. The sparse
+form instead uses the original 76 shears and seven residual additions,
+without any projection. The separate 246-variable form uses six elementary
+linear-coordinate shears, 1057 row additions and four affine projections.
+The low-height form retains the first three affine projections and a longer
+frozen row basis. No optimization search is needed to define or reproduce
+any of these finite sequences.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Endpoint & Variables & Rows & Terms & Height\\\midrule
+\file{balanced244} &244&176&5212&3968\\
+\file{dimension243} &243&175&19517&7680\\
+\file{sparse250} &250&182&4770&6709\\
+\file{dimension246} &246&178&21537&6144\\
+\file{lowheight247} &247&179&10422&3840\\\bottomrule
+\end{tabular}
+\end{center}
+Every equation is the sum of the squares of its full residual array over
+$\Z$. The first four contain the collected monomial $13x_0^4$; the last
+contains $22x_0^4$. Since every row has degree at most two, these nonzero
+coefficients establish exact degree four. Full coefficient collection gives
+the displayed support and height, rather than an upper bound from the
+largest residual coefficient. The intermediate \file{exposed247} and
+\file{balanced247} arrays remain technical source and construction
+checkpoints; they are not presented as additional selected frontier points.
+
+The inverse algebraic witness maps are explicit: reverse the residual
+operations, restore each eliminated coordinate, and reverse the coordinate
+shears. For the two semantic source changes, restore old guards with fresh
+ternary witnesses after the proven residue and sign recovery. Conversely,
+start with a finite refutation, use the compatible even-code and odd-radix
+canonical witnesses, fill the common spherical budget, then apply the
+exact coordinate maps. This composes both existential directions all the
+way to the retained calibrated source. The semantic stages are not claimed
+to give a bijection between arbitrary private witness choices.

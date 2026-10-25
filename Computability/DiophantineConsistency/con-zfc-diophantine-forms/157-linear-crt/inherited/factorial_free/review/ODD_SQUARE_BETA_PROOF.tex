@@ -1,0 +1,145 @@
+\section{A cofinal square multiple for the beta modulus}
+\label{sec:odd-square-beta}
+
+This section independently verifies a further change to the factorial-free
+certificate.  It concerns the beta modulus parameter $y$, not the radix $q$
+or the generalized binomial CRT modulus $B$.
+
+Let $t\ge16$ and let
+\[
+ F=\bigl(2(t+1)\bigr)^t.
+\]
+The old front end imposed $y\ge F+3$ by a ternary nonnegative-value
+certificate.  Replace that certificate by two quadratic equations in two
+unrestricted integer coordinates $u,w$:
+\begin{equation}\label{eq:odd-square-beta-rows}
+ w-4u^2-4u-1=0,\qquad y-Fw=0.
+\end{equation}
+Thus $w=(2u+1)^2\ge1$ and $y\ge F>0$.  No factorial is certified by
+these equations.  Factorials used below occur only in a finite existence
+proof.
+
+\subsection{The initial sign and size recovery remains acyclic}
+
+Use the selected factorial-free front end: $q$ is an odd square;
+$H=2+\sum_j a_j$; all nine actual representatives $a_j$ are
+nonnegative by their requests at base $q+1\ge2$; and the index row
+$C_0+F^2+1=B\iota$ implies $B\ne0$.  Therefore $|BH|\ge2$.
+The signed power certificate for $q=(BH)^x$ excludes $x<0$, so $x\ge0$.
+This reasoning does not require $B>0$ or $q>1$ in advance.
+
+Retain the two endpoint equations, with unrestricted integer quotients:
+\begin{equation}\label{eq:odd-square-beta-endpoints}
+ x=F+1+(y+1)u_0,\qquad
+ x=1+\bigl(1+(t+1)y\bigr)u_t.
+\end{equation}
+The second equation excludes $x=0$: otherwise the integer
+$1+(t+1)y>1$ would divide $1$.  Hence $x\ge1$.
+If $u_0\le-1$, the first equation would give
+$x\le F-y\le0$, a contradiction.  It follows that
+\[
+ u_0\ge0,\qquad x\ge F+1>1.
+\]
+The second endpoint then gives $u_t\ge1$ and
+\begin{equation}\label{eq:odd-square-beta-x-bound}
+ x\ge2+(t+1)y\ge2+(t+1)F.
+\end{equation}
+
+These are sufficient for every earlier bootstrap bound.  In particular,
+for $F\ge7$ and $t\le F$,
+\[
+ F^2+t\le F(F+1)\le2^{F-1}.
+\]
+The last inequality holds at $F=7$ and is preserved upon increasing $F$,
+since $(F+2)/F<2$.  For $0\le j\le t$ it follows that
+\[
+ \binom{F^2+t}{j}\le(F^2+t)^t\le2^{t(F-1)}
+ \le q/2^{F+t+2}<q/64.
+\]
+Here $q=|BH|^x\ge2^x$ and
+$x-t(F-1)\ge F+t+2>6$.  In particular the largest relevant coefficient
+divided by $q-1$ is less than $1/32$.  The geometric-series estimate
+therefore places the ordinary low remainder strictly below $q^t/32$.
+Thus the first centered binomial digit can be decoded before any
+interpretation of the local beta rows, with enough margin for the common
+remainder budget.
+
+The local arithmetic majorant is unchanged.  If
+$R_0=2+t+x+y+F$, then \eqref{eq:odd-square-beta-x-bound} gives
+$R_0<2x$, because
+$t(y-1)>F$.  Also $x\ge F+1>2^{32}$.  The inherited exponent
+$E=2^{23}$ therefore still gives
+$L<R_0^E<(2x)^E<2^x$.  The lower indices $t,t+1,y+1,x$ remain at most
+$K=x$.  Finally, $F>2^{22}$ gives
+$2^{22}(t+1)<x$, retaining the derived-label digit bound.  None of
+these arguments presupposes that $y>F$.
+
+\subsection{The exceptional boundary $y=F$ is impossible at a zero}
+
+After decoding the generalized CRT certificate, obtain the same actual
+local source rows as before.  Denote their accumulators by $S_i,S'_i$.
+Their range conditions give
+\[
+ 0\le S_i,S'_i\le y,
+\]
+and the beta rows use the consecutive moduli
+$D_i=1+(i+1)y$.  Because $y<D_i$ for every $i\ge0$, ordinary
+remainder uniqueness implies $S'_i=S_{i+1}$ for $i<t-1$.
+
+Suppose $y=F$.  The first endpoint says that $x$ is divisible by
+$y+1$, hence $S_0=0$.  Every selected source rule has a flow identity
+\[
+ S'_i(1+v_iF)=S_i(1+p_iF)(1+q_iF).
+\]
+The label weights are positive integers.  Consequently $S_i=0$ implies
+$S'_i=0$, and the overlaps propagate zero through every row.  However,
+the last endpoint says $x\equiv1\pmod{1+(t+1)y}$, so the final
+bounded remainder is $S'_{t-1}=1$.  This is a contradiction.
+
+Therefore every zero has $y>F$.  Indeed the odd-square parametrization
+gives the stronger $y\ge9F$.  In particular $F+1\le y$, and the first
+endpoint now gives $S_0=F+1$ by ordinary remainder uniqueness.  The
+usual multiplication and cancellation of positive accumulators, followed
+by polynomial multiplicity separation, applies without any further
+change.  This boundary exclusion is essential: the inequality $y\ge F$
+alone does not make $F+1$ a canonical initial remainder.
+
+\subsection{Completeness and freedom to choose the parity of $x$}
+
+Start from a finite proof tree.  First choose the permitted horizon $t$
+large enough for its step count, labels, parameters and padding rows.
+Then fix $F$ and all finitely many pending-multiset products.
+
+Write $t!=2^a m$ with $m$ odd.  Since
+\[
+ a=v_2(t!)<t,\qquad v_2(F)\ge t,
+\]
+the integer $F$ supplies the entire power of two in $t!$.  Choose an
+arbitrarily large positive odd multiple $v$ of $m$, and put
+\[
+ u=(v-1)/2,\qquad w=v^2,\qquad y=Fv^2.
+\]
+Then $t!\mid y$, $y$ is even, and $y$ can exceed every pending product
+and $F+1$.  Both rows \eqref{eq:odd-square-beta-rows} hold.
+
+The moduli $1+(i+1)y$, $0\le i\le t$, are pairwise coprime.  A common
+prime divisor of two of them would divide their index difference, hence
+would be at most $t$ and would divide $t!\mid y$, which is impossible.
+CRT supplies the prescribed accumulator residues.  Since every modulus
+is odd, the common representative $x$ may be chosen even, positive, and
+arbitrarily large.  Its quotients are nonnegative and its row quotients
+are strictly less than $x$.
+
+The remaining front variables, generalized binomial CRT representatives,
+and private Pell witnesses are then chosen in their established order.
+In particular the parity choices making $H$ odd and the semantic anchor
+even remain independent of this beta-CRT step.  Thus $q=(BH)^x$ is an
+odd square, as required.  This proves completeness of the replacement.
+
+\paragraph{Exact cost boundary.}
+Before any subsequent projection, this replaces three ternary-guard
+witnesses and one quadratic row by two witnesses and two quadratic rows.
+It therefore saves one unrestricted integer coordinate at degree four,
+while adding one quadratic residual.  Counts after algebraic contraction
+must be read from the emitted final equation, not inferred from this
+local accounting alone.

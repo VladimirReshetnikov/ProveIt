@@ -1,0 +1,45 @@
+\input{signed_companions.tex}
+
+\section{An exact evaluator improvement in ten positive variables}
+\label{sec:compact}
+The compact companion keeps the incoming degree-382 polynomial in ten
+strictly positive variables. It reduces its live binary arithmetic count
+from 80 to 79. This is an evaluation improvement of the identical
+polynomial, rather than a new zero set or a decrease in its degree.
+
+The parent circuit contains the registers
+\[
+ K_Y=kY,\qquad D=XY,\qquad V_0=DY,\qquad V_{0k}=V_0k,
+\]
+where $K_Y$ names the product of $k$ and $Y$. The register $V_0$ has a single
+use. Delete it and define $V_{0k}=DK_Y$. The identity
+\[
+ (DY)k=D(kY)
+\]
+proves equality at every input and for arbitrary values of all four fixed
+coefficient ports. Every other gate is unchanged. There are 17 additions,
+15 subtractions, and 47 multiplications; every gate, variable, and fixed
+coefficient is live. Squaring and fixed scalar multiplication each count
+as one multiplication.
+
+The highest homogeneous component is unchanged:
+\[
+ -2^{10}(\beta J)^{206}w^{34}s^{80}i^{14}
+ (\eta+\zeta)^{46}T^2.
+\]
+Its total variable degree is 382 and it is nonzero at the supplied positive
+fixed $\beta$. The exact graph is
+\texttt{compact/equation79\_degree382.json}. Its complete four-port
+coefficient tuple, finite reconstruction recipe, and ordinary proof
+dependencies are retained alongside it. The tuple is the coherent indexed
+native specialization, different from the signed companions' six-port
+tuple. Neither tuple is an unspecified coefficient oracle or additional
+unknown.
+
+The identity combines the incoming partial-saturation equation with
+sharing already used in the centered-residue construction. No claim of
+novelty is made for associativity or the general sharing technique. The
+strictly positive domain is essential to this compact calibration and is
+not the unrestricted integer domain of the main quartics or the signed
+companions. This 79/382 point also has a different degree--cost tradeoff
+from the incoming ten-positive 75/626 and 76/464 points.

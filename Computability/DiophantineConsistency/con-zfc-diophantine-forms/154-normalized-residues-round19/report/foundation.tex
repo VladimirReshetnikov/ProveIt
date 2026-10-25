@@ -1,0 +1,136 @@
+\section{Logical scope and literal polynomial definitions}
+\label{sec:foundation}
+\subsection{What the consistency interpretation asserts}
+Throughout, $\N=\{0,1,2,\ldots\}$ and $\Z$ denotes the unrestricted integers.
+The domain is part of an equation, not a presentation detail. An equation over
+$\N$ is not thereby an equation over $\Z$, and an unrestricted construction
+requires its own sign argument or an explicit domain conversion.
+
+Let $\operatorname{Ref}_{\mathrm{ZFC}}(r)$ be the fixed arithmetized predicate
+saying that $r$ codes a finite syntactic ZFC refutation. For each selected
+endpoint $P$ on the stated domain $D$, the claim is
+\begin{equation}\label{eq:calibration}
+ \exists\boldsymbol{x}\in D^n\;P(\boldsymbol{x})=0
+ \quad\Longleftrightarrow\quad
+ \exists r\in\N\;\operatorname{Ref}_{\mathrm{ZFC}}(r).
+\end{equation}
+The ordinary transformations proved here are composed with the identified
+inherited calibration. On that proof chain, formalization in ZFC yields
+\begin{equation}\label{eq:consistency}
+ \mathrm{ZFC}\vdash
+ \left[\forall\boldsymbol{x}\in D^n\;P(\boldsymbol{x})\ne0\right]
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+\end{equation}
+This report does not assert that either sentence in
+\eqref{eq:consistency} is true. In particular it does not prove consistency,
+decide solvability, establish a global minimum, or supply a new end-to-end
+proof-assistant kernel check or encoded object-language ZFC derivation.
+
+For the direct families, the retained ordinary logical interfaces are
+\begin{quote}\small
+\file{KEndpoint.c222_iff_zf_refutation}\\
+\file{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\end{quote}
+The first relates the fixed numerical calculus to a finite ZF refutation;
+the second is the retained ZF-to-ZFC refutation equivalence. The arithmetic
+front implements that calculus using finite syntax constructors, reciprocal
+CRT carriers, factorial and power certificates, and range tests. The scalar
+family instead retains the separately identified source34 native/compiler
+and refutation calibration, followed by its signed-rank and interpolation
+reductions. These are two calibrated routes, not interchangeable coefficient
+tuples.
+
+\subsection{The modular structure of the proof}
+The proof chain has four logically different layers.
+\begin{enumerate}
+\item The inherited calibration identifies a fixed finite arithmetic relation
+with syntactic refutation. Its provenance and exact numerical payloads are
+part of the source closure.
+\item Unbounded arithmetic arguments prove both witness directions for the
+certificate relations. These include Pell classification, CRT choices,
+factorial fixed points, integer signs, and rank or interpolation lemmas.
+\item Exact polynomial transformations replace one finite presentation by
+another. Integral substitutions, restored monic coordinates, graph identities
+and coefficient collection establish the claimed zero-set correspondence.
+\item Finite independent checkers verify the actual emitted arrays and graphs,
+not merely an abstract instance of a theorem.
+\end{enumerate}
+A hash certifies file identity, not a theorem; an exhaustive coefficient
+check certifies an identity, not an unbounded Pell assertion. Each layer is
+used only for what it establishes. The new sections give complete arguments
+for this round's transformations; the retained source closure supplies
+the inherited arithmetic and logical inputs at their stated boundary.
+
+\subsection{Explicit finite arrays define the direct equations}
+For a direct endpoint, the ordered \texttt{variables} array in
+\file{equation.json} fixes the independent coordinates
+$x_0,\ldots,x_{n-1}$. A term encoded as $[c,[i_1,\ldots,i_d]]$ denotes
+$c\prod_{j=1}^{d}x_{i_j}$; the empty index list denotes the constant $c$.
+Repeated indices are retained and give ordinary powers. The $m$ residual
+rows $R_0,\ldots,R_{m-1}$ have integer coefficients and degree at most two.
+The equation is exactly
+\begin{equation}\label{eq:sos}
+ P(\boldsymbol{x})=\sum_{j=0}^{m-1}R_j(\boldsymbol{x})^2=0.
+\end{equation}
+Every coefficient and every coordinate appears in a finite supplied array.
+The adjacent \file{expanded_polynomial.json} stores the fully collected
+polynomial, including its constant term. There is no factorial, variable
+exponent, division, binomial coefficient, bounded quantifier, or sequence
+symbol among its algebraic primitives. Such expressions occur only in the
+proof explaining its zeros.
+
+For either domain $D\subseteq\Z$, equation \eqref{eq:sos} is equivalent to
+$R_j(\boldsymbol{x})=0$ for every $j$, because each square is nonnegative.
+Exact degree four is established by a collected nonzero quartic coefficient,
+not merely by the upper bound $\deg R_j\le2$. All independent coordinates
+are counted; named arithmetic abbreviations are not new unknowns.
+
+The height-one endpoints are defined directly by their collected coefficient
+arrays. Their graph certificates prove the displayed energy identity and
+its zero-set correspondence. The independent checker reconstructs the
+energy and compares every collected coefficient. The height claim therefore
+concerns the final polynomial, not only its generating rows.
+
+\subsection{Arithmetic graphs define the scalar equations}
+The scalar graph leaves are eleven independent unrestricted integer
+variables, ordinary integer constants, or six fixed authentic numerical
+ports. Each internal node is binary addition, subtraction, or multiplication.
+An acyclic graph with one designated output therefore denotes a unique
+element of an ordinary polynomial ring over $\Z$. Registers abbreviate
+polynomials; they do not introduce hidden existential variables. There is
+no division or radical gate.
+
+The source34 tuple is the inherited
+\file{mixed-parity-unrounded-1064921} tuple at coefficient source commit
+\begin{center}\small
+\file{2605669a532342f153b13eb6b4a0af4b54f5fa37}.
+\end{center}
+Its ports include $\beta=2^{1064921}-1$,
+$\mathrm{cone\_A}=2^{1113}$, $\mathrm{cone\_B}=2^{666104}$, and the complete
+literal $K_0,M_C,M_F$ payloads. The retained $M_F$ already includes its
+native-value-plus-$\beta$ shift. It must not be shifted twice or replaced by
+a port from a positive-domain tuple. The payload files contain complete
+minimal unsigned little-endian integers and are bound by byte length,
+bit length and SHA-256; neither a hash nor an ellipsis is substituted for a
+coefficient. The finite inherited compiler recipe reconstructs those values.
+
+\subsection{What each measure counts}
+For a nonzero collected polynomial $P=\sum_\alpha c_\alpha x^\alpha$, write
+\[
+ \deg P=\max_{c_\alpha\ne0}|\alpha|,\qquad
+ |\supp P|=\#\{\alpha:c_\alpha\ne0\},\qquad
+ \htpoly(P)=\max_\alpha|c_\alpha|.
+\]
+Support includes a nonzero constant coefficient. The number of residual
+rows is distinct from support and from the number of operations. Scalar
+cost counts live binary graph gates, including squares and multiplication
+by fixed constants; copying a register and reading a leaf are free. Dead
+nodes do not count. Unless an expanded scalar polynomial is materialized,
+its support and total coefficient height are unmeasured, not zero.
+
+A point dominates another only when it is no worse in every displayed
+measure and strictly better in at least one, with domain and degree held
+fixed where required. This is a finite comparison among specified
+presentations. Height one, smaller dimension, sparse support and low graph
+cost are different objectives, and no single global simplicity ordering is
+claimed.

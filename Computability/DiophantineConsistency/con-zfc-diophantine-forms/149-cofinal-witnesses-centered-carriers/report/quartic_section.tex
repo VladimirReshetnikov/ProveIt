@@ -1,0 +1,143 @@
+\section{Common remainders, odd-square radices, and 246-variable quartics}
+\label{sec:round19-quartics}
+
+The strongest incoming literal integer source has 252 variables and 182
+quadratic residuals.  We compose its common-remainder normalization with the
+separately established odd-square radix construction, then transport the
+previous affine-exposure certificates and optimize the residual basis.
+This is a composition of identified arithmetic and universal algebraic
+proofs, not a change from unrestricted integers to natural variables.
+The completed profiles are:
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Profile & Variables & Rows & Monomials & Height\\
+\hline
+Fewest variables & 246 & 178 & 12,541 & 12,227\\
+Sparse & 247 & 179 & 4,352 & 23,316\\
+Balanced & 247 & 179 & 4,432 & 17,235\\
+Low height & 247 & 179 & 5,648 & 6,144\\
+\hline
+\end{tabular}
+\end{center}
+Each fixed equation is
+\[
+ P(\mathbf x)=\sum_{i=0}^{m-1}R_i(\mathbf x)^2=0,
+ \qquad \mathbf x\in\mathbb Z^n,
+\]
+with every $R_i$ quadratic or affine and $P$ of exact degree four.
+The artifact supplies every residual, every collected coefficient, and the
+complete coordinate map.  Height is the maximum absolute \emph{collected}
+coefficient of $P$, not the height of its residuals.  These are achieved
+tradeoffs; no global minimality is claimed.
+
+\subsection{The arithmetic composition: 252 to 250}
+Let $q$ be the actual radix and $B$ the exact-binomial output.
+In the centered incoming coordinates $q=x_{107}-1$ and $B=x_5$.
+The only changed residual is the old ternary guard
+\[
+ -2-x_5+x_{107}-x_{243}^2-x_{244}^2-x_{245}-x_{245}^2=0.
+\]
+Its three auxiliary coordinates occur nowhere else.  Delete them and
+introduce a single unrestricted $z$ with
+\[
+ x_{107}-2-4z-4z^2=0,
+ \quad\text{equivalently}\quad q=(2z+1)^2.
+\]
+All other 181 rows are unchanged after exact renumbering.  This gives a
+250-variable, 182-row source.  The finite edit is not a pointwise bijection:
+the soundness and completeness arguments are semantic and are supplied
+separately in full.
+
+Here is the essential noncircular soundness order.  The unchanged signed
+frame, anchor, and pooled orientation first recover the canonical Pell
+pairs.  The known positive horizon interprets
+$V=(F^2+1)^t$, including the base-one case.  The two retained ceiling guards
+then give $F\ge1$, $B\ge2$, $V<B^2$, and
+$y=V(V-1)>F+2$.  The latter is an actual source equation, not merely a
+cofinal choice.  The new square gives $q\ge1$, so numerator requests at
+base $q+1\ge2$ force every actual CRT representative nonnegative, whence
+$H\ge1$.  The existing request at base $BH\ge2$ yields
+$x\ge0$ and $q=(BH)^x$.  The endpoint equations force
+$x\ge F+1\ge2$ and $x\ge2+(t+1)y$.  Thus $q\ge B^2>B$,
+recovering the removed output-slack inequality before binomial recovery.
+The normalized-remainder proof now applies unchanged.
+
+For completeness, the cofinal beta moduli are odd because $y=V(V-1)$ is
+even; an even beta code $x$ can therefore be chosen by CRT.  The existing
+odd-modulus representative freedom permits $H$ odd while preserving the
+opposite parities needed by the semantic anchor and all dominance bounds.
+Then $BH$ is odd, $x$ is even, and
+$z=((BH)^{x/2}-1)/2$ is integral.  The genuine remainder bounds
+$r_i<L_i/32$ are unaffected.  Their normalized representatives satisfy
+\[
+ 4\sum_i (M r_i/L_i)^2<\frac{11}{256}M^2<M^2,
+\]
+so the single common norm guard still has its ternary witnesses.
+These two directions compose with the inherited C222/ZF/ZFC-refutation
+calibration.  Hence ZFC proves that integer unsolvability of every final
+fixed quartic is equivalent to $\operatorname{Con}(\mathrm{ZFC})$.
+No consistency assertion or new end-to-end proof-assistant verification is
+being made.
+
+\subsection{Universal affine exposure: 250 to 246 or 247}
+For residuals, $R_i\leftarrow R_i+kR_j$ with $i\ne j$ is inverted by
+$-k$ and preserves the common zero set.  Integral triangular coordinate
+shears are lattice bijections.  A unit affine equation
+$\epsilon x_t+L=0$, $\epsilon\in\{-1,1\}$, permits deletion and unique
+restoration $x_t=-\epsilon L$.  These elementary facts preserve degree at
+most two and imply the same zero-set equivalence for the sum of squares.
+They do not imply equality of the old and new quartic polynomials.
+
+After the six credited initial shears, exact expansion in the stronger
+250-coordinate source gives
+\begin{align*}
+ Q_{21}-Q_6&=4+4x_{10}+8x_{11}+4x_{21}-x_{22}+x_{37},\\
+ Q_{73}-Q_{71}-4Q_{70}-8Q_{68}
+ &=12-6x_3-8x_{84}-4x_{85}-x_{86}+x_{89},\\
+ Q_{119}-Q_{117}&=3-2x_{107}+2x_{148}-x_{164}+x_{166}.
+\end{align*}
+These remove $x_{37},x_{89},x_{166}$ and give 247 variables and 179 rows.
+The already affine row $Q_{90}$ additionally removes $x_{105}$, giving
+246 variables and 178 rows.  Its dense substitution explains the larger
+support of the fewest-variable profile.  A separately credited 76-step
+coordinate preconditioner is used for the other profiles; their current
+affine equations are verified exactly, not assumed to match these displays.
+Additional finite row and coordinate operations are frozen in each
+certificate.  Every original source coordinate is printed as an affine
+polynomial in the final coordinates, and every original residual pullback
+is checked as a universal polynomial identity.
+
+\subsection{A degree-three obstruction, not a general lower bound}
+For the 178 residuals in 246 variables, form the integer matrix of the
+degree-two and degree-three coefficients of
+\[
+ R_i,\ x_0R_i,\ldots,x_{245}R_i\qquad(0\le i<178).
+\]
+There are $178(246+1)=43,966$ columns.  An independent sparse elimination
+finds full column rank modulo the prime $1,000,003$.  Therefore an integer
+minor is nonzero, and the matrix has full column rank over $\mathbb Q$.
+It follows that
+\[
+ \deg\!\left(\sum_i L_iR_i\right)\le1,
+ \quad L_i\text{ affine over }\mathbb Q
+ \quad\Longrightarrow\quad L_i=0\ \text{for all }i.
+\]
+This rules out \emph{all affine-polynomial multipliers}, including the
+nonlinear combinations $x_jR_i$, not only constant row combinations as in
+the prior round.  It does not rule out higher-degree multipliers, semantic
+witness replacements, a different source circuit, or smaller quartics by
+other methods.  A deliberately duplicated residual must lose rank.
+
+\subsection{Reproducibility and the proof boundary}
+The portable verification entry point rebuilds the inherited source,
+authenticates its retained files, checks the odd-square edit independently
+of its producer, verifies all source-restoration identities and quartic
+coefficients, and demands byte-identical fresh endpoint builds.
+Both ordinary Python and Python with optimization enabled are run.
+The residual text and TeX are parsed back to their exact coefficient lists;
+corrupt affine maps, coordinate shears, row operations, residuals, and
+expanded coefficients are rejected.  The Macaulay computation uses exact
+finite-field arithmetic only.  These checks establish the finite objects
+and universal algebra; the separately identified unbounded arithmetic and
+logical-calibration proofs remain their stated dependencies.

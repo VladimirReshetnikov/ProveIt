@@ -24,30 +24,33 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 [latest review](PROPOSAL_REVIEW_LATEST.md). New complete positive-domain
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
-The current [equation.pdf](equation.pdf), with standalone
-[TeX](equation.tex), prints the complete coherent radix55 equation in fifteen
-strictly positive unknowns, exact degree157 and66 live operations. Every
-constant,943 tiles and the full436-character seed/decoder fit on one Letter
-page in9pt body/7.7pt seed. Relative to the preserved
-[radix67 compact page](candidates/one-page-compact66/equation.pdf), raw
-coefficient bytes fall295388 to242484, saving52904 (17.9%); complete TeX
-falls5244 to5195 bytes and actual nonwhite PDF text2801 to2764 characters.
-The PDF file grows159875 to160082 bytes, so its compression is a separate
-metric from those reductions. All four new ports change coherently: the
-free-port P66 template/domain/cost/degree are unchanged, while the new
-specialized polynomial differs from the old radix67 specialization.
+The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
+the complete two-anchor7691 equation: fifteen positive unknowns, exact
+degree157,66 integer-leaf operations. The new four constants total
+**180987 raw bytes**,26227 fewer than the preceding207214 (12.7%).
+Complete TeX is5083 bytes, extracted nonwhite `pdftotext -layout` text2707
+characters, and PDF159652 bytes; the previous values were5145,2734 and
+159762. Fonts remain9pt/7.7pt on one Letter page.
 
-Two complete final statics, all ten first applications and six byte-exact
-fresh applications pass, with163 negative/22 valid controls per complete
-audit and both actual visual reviews PASS. The
-[closed evidence](research/compact66-radix55-page-verification/README.md)
-and [ROOT page acceptance](reviews/one-page-compact66-radix55-root-peer.md)
-bind the whole tuple, every actual printed formula, full66-gate liveness
-and degree157 leader. The ordinary55 wrap/unit proofs and both complete
-positive native/Pell maps provide full source calibration, including the
-canonical `R=3 mod4` squared-modulus converse. This is inherited ordinary
-mathematics, not a new native/compiler/Lean replay. The initial false mod5
-unit premise and all first findings/repairs remain preserved.
+The complete [new ordinary proof](research/two-anchor-independent/PROOF.md)
+has separate root and independent mathematical audits. A calibrated Start
+bit replaces the third anchor; weighted flags, global carry29, every copy
+and clause, interior padding, nonzero-top-field slack, actual rank and both
+P66 maps are checked together. The new finite Pc2 certificate uses
+lambda2122441, H residues18/6993/1324284 and lift quotient1096353. Normal
+and optimized checks reproduce the certificate. The complete printed
+recipe reconstructs all four integers and retains the literal66-gate
+all-live evaluator. Two actual visual inspections pass. See the
+[complete candidate](candidates/one-page-two-anchor7691/README.md),
+[mathematical peer review](reviews/two-anchor7691-independent-peer.md) and
+[page review](reviews/two-anchor7691-page-peer.md).
+
+The old47 and55 pages and CURRENT records are preserved. This is a new
+specialization of the uniform66/157 front, with explicit ordinary
+native/Pell/refutation contracts and no new formal-kernel replay or
+consistency decision. Research remains active. Separate rational-leaf65
+checkpoints preserve the same polynomial within their own bound tuples;
+that operation convention does not change the integer-leaf66 label.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 still saves nineteen operations and171 degree while adding five unknowns.
@@ -306,37 +309,39 @@ copies and872 LOW26 padding tests; an occupied clause has raw2^46+1<rho.
 The [first](reviews/compact66-complemented-three-anchor-radix47-ordinary-peer.md)
 and [second](reviews/compact66-complemented-three-anchor-radix47-ordinary-second-peer.md)
 FULL nonauthor reviews pass, followed by [separate ROOT conditional acceptance](reviews/compact66-complemented-three-anchor-radix47-ordinary-acceptance.json).
-All NEW controller residues and admissible-prime existence remain UNKNOWN.
-The [separate CODE ONLY probe](research/compact66-complemented-three-anchor-radix47-controller-probe/README.md)
-is frozen and has ROOT's complete first static review. An upstream merge then
-retired its pinned incoming ZIP, so its original live runtime closure fails
-authentication. No application ran; the original source and finding are
-preserved. The [explicit historical/placed association](reviews/common-remainders47-retired-archive-provenance-association.json)
-authenticates the archive's actual Git bytes and all four current plaintexts.
-The complete [three-anchor page CODE/TEX draft](candidates/one-page-compact66-complemented47/README.md)
-is committed, including equation.tex; its controller attachment remains null
-and final HOLD is absent.
+The later [independent controller certificate](research/complemented47-controller-independent/README.md)
+discharges the THREE-anchor conditions for its exact tuple. Its complete
+[page](candidates/one-page-complemented47-independent/README.md) is retained
+as a predecessor of the maintained two-anchor7691 display above.
 
-The next compact target is the [complete two-weighted-anchor/Mersenne8191 proposal](research/compact66-complemented-two-anchor-radix47-mersenne8191/README.md).
-It deletes a third anchor and a bare transport term, uses an early Start-label
-alignment argument and shrinks the odd cell to8191=2^13-1. Its elementary fixed
-orders23/13 give controller spacing299. The whole624-line proof covers981
-physical positions,17 copies,one anchor test,872 LOW26 tests,29-to11 carries,
-every phase/subset and both full P66 witness maps. The [first FULL nonauthor review](reviews/compact66-complemented-two-anchor-radix47-mersenne8191-ordinary-peer.md)
-passes with a nonblocking label-control wording clarification. A second review
-and separate ROOT acceptance are still needed. A [new CODE ONLY controller draft](reviews/compact66-two-anchor47-mersenne8191-probe-code-only-preparation.md)
-may be prepared while awaiting those decisions; final sealing and execution
-remain separate. ALL NEW H2 values and admissible-prime existence are UNKNOWN.
-No old or incoming finite certificate transfers. No new measured page gain or
-numerical endpoint is accepted. The maintained PDF and TeX will be updated
-together after a significant complete checked gain.
+The separate frozen [CODE ONLY probe](research/compact66-complemented-three-anchor-radix47-controller-probe/README.md)
+never ran: upstream retired its required live ZIP after ROOT's first full
+static. Its [first independent finding and ROOT disposition](reviews/compact66-complemented-three-anchor47-probe-retirement-root-disposition.json)
+remain preserved. The [historical/placed association](reviews/common-remainders47-retired-archive-provenance-association.json)
+authenticates the original archive and four current plaintexts. The separate
+[three-anchor CODE/TEX draft](candidates/one-page-compact66-complemented47/README.md)
+and its unrendered source remain historical preparation, without relabeling
+any failure or importing the later independent numerical results.
 
-The [seven further archive intake](research/incoming-7a8da41437-codefree-intake/README.md)
-records factorial-free,normalized-residue,nearest-factorial,Lucas-correction
-and other new tradeoffs as reported/unverified. A separate code-free inquiry
-asks whether complete fixed-index direct-C222 residual families could print
-more briefly on one page, even with more unknowns. It requires every constant,
-index family and argument table to be explicit; no hidden compiler is allowed.
+The separate [two-weighted-anchor/L8191 proof](research/compact66-complemented-two-anchor-radix47-mersenne8191/README.md)
+now has TWO complete independent nonauthor reviews and [ROOT conditional
+ordinary acceptance](reviews/compact66-complemented-two-anchor-radix47-mersenne8191-ordinary-acceptance.json).
+Its own H2 residues and controller-prime conditions remain UNKNOWN. The new
+bounded probe and CODE/TEX draft were never executed; they are superseded
+for immediate page work by the smaller, independently constructed L7691
+tuple. No finite certificate transfers between the two specializations.
+The earlier +1/spacing11 tuple likewise retains its distinct open conditions.
+
+The [seven-archive intake](research/incoming-7a8da41437-codefree-intake/README.md)
+retains reported/unverified quartic and ten-variable metrics. Those archives
+are now placed as sources149--155; their original Git associations persist.
+The fresh [literal direct-C222 research](research/direct-c222-one-page-template/README.md)
+prints every constructor, eighteen power requests and their full polynomial
+certificate. Its proposed554-natural-variable/332-residual equation removes
+the machine seed and controller assumptions, trading variables and degree
+for a potentially shorter specification. Independent ordinary review and
+physical one-page fit remain open. Lean stays paused; substantial checked
+improvements update the maintained PDF and TeX together.
 
 The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
 and [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)

@@ -1,0 +1,46 @@
+\subsection{Selected outputs and matched source controls}
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Endpoint & Variables & Terms & Height & Constant\\\midrule
+\file{minimum528} &528&20816&1&1\\
+\file{compact534} &534&18543&1&1\\
+\file{balanced580} &580&12001&1&1\\
+\file{sparse620} &620&8318&1&1\\
+\file{sparser717} &717&7176&1&1\\\bottomrule
+\end{tabular}
+\end{center}
+All five have exact degree four, unrestricted integer coordinates and every
+declared coordinate present. Their complete coefficient arrays and literal
+polynomial text are supplied. The first two use the specifically identified
+\file{exposed247} source with 247 variables, 179 rows, 4889 terms and
+height 170496. This is the stage after the first three affine projections,
+but before the later height-reducing residual basis changes. It is not the
+literal \file{balanced247} equation.
+
+The fixed selection of 24 affine square rows expands this source to
+271 variables and 203 rows; coefficient normalization gives 345 variables
+and 277 rows. The two final graphs use 20 and 24 hub vertices. Polarization
+then removes ten and eleven equality dummies, respectively. These are
+arithmetic-source and compiler improvements together. The 534-variable,
+18543-term point improves both dimension and support over the Round~18
+571-variable, 19833-term point. The 528-variable point saves a further six
+coordinates but has more support.
+
+To isolate polarization alone, the replay also rebuilds the exact four
+Round~18 graph certificates before making the new change. It checks their
+historical hashes and holds the arithmetic source and graph parameters fixed:
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Matched source & Before variables/terms & After variables/terms\\\midrule
+Round 18 compact &571/19833&559/19809\\
+Round 18 balanced &593/12027&580/12001\\
+Round 18 sparse &646/8368&620/8318\\
+Round 18 sparser &742/7226&717/7176\\\bottomrule
+\end{tabular}
+\end{center}
+Thus each matched-source transformation improves both displayed measures.
+The 559-variable control is reproducible but is not selected as a principal
+endpoint because the new-source 534-variable point has fewer variables and
+fewer terms. The selected 580-variable output retains the old 263-variable
+arithmetic source; the last two retain the old 285-variable sparse source.
+No new refutation calibration is needed for any of these choices.

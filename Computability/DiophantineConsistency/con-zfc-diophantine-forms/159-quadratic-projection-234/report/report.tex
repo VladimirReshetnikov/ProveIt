@@ -1,0 +1,759 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,fancyhdr,enumitem}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={A direct quartic for Con(ZFC) in 234 integer variables},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov and ProveIt},pdfsubject={Exact quadratic elimination and cofinal arithmetic witnesses}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small A direct quartic in 234 integer variables}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{0.4em}
+\setlist{nosep,leftmargin=*}
+\allowdisplaybreaks[3]\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Par}{P_{\mathrm{240}}}
+\newcommand{\New}{P_{\mathrm{234}}}
+\newcommand{\BP}{P_{\mathrm{235},\beta}}
+\newcommand{\SP}{P_{\mathrm{236},\beta}}
+\title{\textbf{A direct quartic for $\Con(\mathrm{ZFC})$\\in 234 integer variables}\\[0.5em]
+\large Exact elimination along common quadratic directions\\and cofinal quadratic spacing}
+\author{AI-assisted mathematical research\\Prepared for Vladimir Reshetnikov and the ProveIt project}
+\date{25 October 2026}
+\begin{document}
+\maketitle\thispagestyle{empty}
+\begin{abstract}
+We give an explicit polynomial $\New\in\Z[x_0,\ldots,x_{233}]$ whose
+integer unsolvability is provably equivalent in ZFC to $\Con(\mathrm{ZFC})$,
+by composing a new exact reduction with the pinned ProveIt numerical-calculus
+calibration. It is a sum of 171 explicitly listed quadratic squares, has
+degree four, 19,050 collected monomials, and coefficient height 4,480.
+Its actual parent has 240 variables, 177 residuals, 21,482 monomials, and
+height 6,144. Thus all four size measures improve while degree stays four.
+
+The main reduction identifies six integral directions annihilated by every
+quadratic Hessian. A unit linear slope permits deletion of one variable and
+one residual, with an explicit integer polynomial inverse on zero sets.
+An independently implemented checker verifies all six transformations and
+every coefficient of the final polynomial. A separate arithmetic change
+replaces two beta-spacing equations by $y=F^2+u^2+v^2$. An elementary
+prime-power and CRT argument makes this family cofinal among suitable
+factorial multiples. This produces factorial-free companions in 235 and
+236 integer variables.
+
+The contribution is a concrete reduction of the direct small-coefficient
+branch, not a global minimum or a new universal-variable bound. The algebra
+and cofinality arguments are ordinary unbounded proofs; finite coefficient
+verification and the inherited logical calibration have distinct scopes.
+No end-to-end Lean or Rocq proof is claimed.
+\end{abstract}
+\vfill
+\begin{center}\small
+Comparison snapshot: \texttt{7a8da414376a80b90ecf799f37ceb26fb9ac674e}.\\
+All final variables range over the unrestricted integers.\\
+Every principal residual is printed in Appendix~\ref{app:residuals}.
+\end{center}
+\newpage\tableofcontents\newpage
+
+\section{The explicit result}
+
+The principal mathematical object is the fixed ordinary polynomial
+\begin{equation}\label{eq:main}
+ \boxed{\qquad \New(x_0,\ldots,x_{233})=
+            \sum_{i=0}^{170}\mathcal Q_i(x_0,\ldots,x_{233})^2.\qquad}
+\end{equation}
+Appendix~\ref{app:residuals} specifies every coefficient of every
+$\mathcal Q_i$. The file \nolinkurl{equations/P234/equation.json} is exactly
+the same definition in sparse machine-readable form. Its neighboring
+\nolinkurl{expanded_polynomial.json} lists all 19,050 collected terms of
+$\New$ directly. Neither definition contains a variable exponent, binomial
+coefficient, proof-checking oracle, unspecified universal polynomial, or
+uncomputed program-dependent integer.
+
+For orientation, the first six residuals are
+\begin{align*}
+\mathcal Q_0&=x_4-x_3^2,\\
+\mathcal Q_1&=x_0-x_0x_2-x_2+x_9,\\
+\mathcal Q_2&=-x_2x_7-x_3+x_8x_9,\\
+\mathcal Q_3&=-1+x_1-x_8x_9,\\
+\mathcal Q_4&=1+x_4-x_5x_{20}+x_{18},\\
+\mathcal Q_5&=-1-x_{10}^2-2x_{10}x_{11}-x_{11}^2+x_{21}.
+\end{align*}
+The other 165 residuals are part of the definition, not omitted hypotheses.
+Every residual coefficient has absolute value at most 64. After squaring
+and collecting, the coefficient of $x_0^4$ is 13, so the degree is exactly
+four. The largest absolute coefficient is attained, for example, at
+$x_{11}^2x_{22}^2$, whose coefficient is 4,480.
+
+\begin{theorem}[Principal consistency equation]\label{thm:main}
+For the polynomial \eqref{eq:main}, the new algebraic proof composed with
+the pinned ProveIt calibration establishes
+\[
+ \mathrm{ZFC}\vdash
+ \left(\neg\exists\boldsymbol x\in\Z^{234}\quad\New(\boldsymbol x)=0\right)
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+More specifically, ZFC proves an explicit integer zero-set bijection
+between the new residual system and the pinned 240-variable parent.
+No consistency assumption is used to establish this reduction.
+\end{theorem}
+
+The exact new result proved independently of the inherited semantics is
+\begin{equation}\label{eq:algebra-calibration}
+ \mathrm{ZFC}\vdash
+ \bigl(\exists\boldsymbol x\in\Z^{234}\;\New(\boldsymbol x)=0\bigr)
+ \longleftrightarrow
+ \bigl(\exists\boldsymbol z\in\Z^{240}\;\Par(\boldsymbol z)=0\bigr).
+\end{equation}
+The parent theorem identifies the latter existence statement with finite
+syntactic ZFC refutability. Section~\ref{sec:logical} states that dependency
+precisely; it is not silently reclassified as a new formal verification.
+
+\subsection{Measured comparison and the objective}
+
+\begin{center}\small
+\begin{tabular}{lrrrrr}
+\toprule
+Equation & Variables & Residuals & Degree & Monomials & Height\\
+\midrule
+Shared-error parent $\Par$ &240&177&4&21,482&6,144\\
+\textbf{Principal $\New$} &\textbf{234}&\textbf{171}&\textbf{4}&\textbf{19,050}&\textbf{4,480}\\
+Factorial-free parent &242&178&4&5,018&7,968\\
+Factorial-free $\BP$ &235&170&4&18,550&4,576\\
+Smaller-support $\SP$ &236&171&4&4,947&16,866\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Height means the largest absolute coefficient of the fully collected
+polynomial, rather than of an uncollected expression or of one residual.
+Monomials are counted after all cancellations. The three delivered outputs
+have different advantages: $\New$ has the smallest dimension and height;
+$\BP$ uses the factorial-free arithmetic source and has one fewer residual;
+$\SP$ has substantially smaller support.
+
+Relative to its actual parent, $\New$ removes six variables and six
+residuals, 2,432 collected monomials, and 1,664 from the coefficient height.
+The reductions are 2.5\%, approximately 11.32\%, and approximately 27.08\%
+for variables, monomials, and height, respectively. This is a concrete
+improvement of that branch, not a major new universal bound.
+
+The inspected repository already contains nine-positive-variable and
+other low-variable constructions, including quartics in 37 unrestricted
+integers on a different branch~\cite{overview}. Consequently 234 is not a
+project-wide variable record. The present objective is a direct numerical
+proof-calculus interpretation, degree four, small literal coefficients,
+and an auditable finite definition. No scalar measure called
+``simplest'' orders all these resources. The distinction between degree,
+variable count and explicit representation is also central in current
+work on universal Diophantine bounds~\cite{bayer,afp}.
+
+\section{What the parent certifies}\label{sec:logical}
+
+The comparison source is the unchanged incoming archive
+\emph{Shared Factorial Error}, at the pinned commit~\cite{shared,repo}.
+Its selected file is
+\nolinkurl{equations/equation240/equation.json}. The archive hash is
+recorded in \nolinkurl{SOURCES.json}, and the exact member bytes are checked
+against the bundled input on every release verification.
+
+The parent uses the numerical calculus $C_{222}$, with truth code 0 and
+falsity code 1. It represents a finite multiset of single-conclusion Horn
+rule instances together with a balance condition. Bounded row certificates
+and a Chinese remainder construction enforce the local arithmetic. A
+shared Pell construction represents the required powers by ordinary
+polynomial equations. The parent does not use a simulation of K215 or a
+specialization of Jones's universal polynomial in its emitted definition.
+
+The logical endpoints inherited from ProveIt are
+\begin{center}\small
+\nolinkurl{KEndpoint.c222_iff_zf_refutation},\\
+\nolinkurl{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\end{center}
+They identify finite $C_{222}$ refutability with syntactic ZF refutability
+and then syntactic ZFC refutability. The ZF/ZFC step uses the established
+constructible-universe equiconsistency argument. The retained source
+archives identify the numerical rules and ordinary arithmetic-to-calculus
+proofs as well as these logical interfaces.
+
+A useful reason that the multiset representation is sound is the following
+finite closure argument. Pad unused premise slots by derivable truth.
+Suppose at every positive label the number of conclusions minus premises
+is zero, except at the target label where it is one. If the target were
+outside the finite Horn closure of truth, every rule with an outside
+conclusion would have at least one outside premise. Summing conclusions
+minus premises over the outside labels would give a number at most zero,
+contradicting one. Thus circular collections cannot manufacture a false
+refutation merely by balancing multiplicities.
+
+In the shared-error source, the arithmetic quantity $F$ is authenticated as
+$t!$ by a nearest-integer fixed point. The normalized common error supplies
+\[
+ \left|F-\frac{(F^2+1)^t}{\binom{F^2+t}{t}}\right|<\frac12.
+\]
+For $t\ge16$ and the signs recovered in the parent, its unbounded proof
+forces $F=t!$. A shared norm simultaneously controls this error and eleven
+digit remainders. The signed-base power lemma is used before signs of the
+radix and binomial output are known. These ordering issues matter: a
+positivity conclusion obtained from a decoded digit cannot be assumed in
+the estimate that first decodes that digit.
+
+The independent ordinary review in
+\nolinkurl{proofs/parent_arithmetic_review.md} checks the changed signed
+bootstrap, the separate unit-base and $F=0$ cases, the nearest-factorial
+estimate, and the compatible witness construction. It found no material
+gap in those arguments under their retained Pell and calibration
+interfaces. The original release verifier was also rerun successfully,
+including all 242 sealed files, its earlier source transformations, the
+240-variable profile, and its printed equation.
+
+These checks do not constitute a fresh build of the entire transitive
+Lean or Rocq development. The new contribution proves
+\eqref{eq:algebra-calibration} by elementary algebra, and then composes
+with the identified ordinary parent theorem. This explicit dependency is
+the mathematical scope of Theorem~\ref{thm:main}.
+
+\section{Elimination along a common quadratic direction}
+
+Write an integer quadratic polynomial as
+\[
+ Q_i(\boldsymbol x)=q_i(\boldsymbol x)+\ell_i(\boldsymbol x)+c_i,
+\]
+where $q_i$ is homogeneous of degree two, $\ell_i$ is linear, and $c_i$
+is constant. Let $H_i$ be its integer Hessian: the diagonal entry for a
+term $a x_j^2$ is $2a$, and a mixed term $b x_jx_k$ contributes $b$ at
+each of the two symmetric off-diagonal positions.
+
+\begin{lemma}[Constant directional slope]\label{lem:direction}
+If $\boldsymbol v\in\Z^n$ satisfies $H_i\boldsymbol v=0$, then for all
+$\boldsymbol y\in\Z^n$ and $s\in\Z$,
+\[
+ Q_i(\boldsymbol y+s\boldsymbol v)
+      =Q_i(\boldsymbol y)+s\,\ell_i(\boldsymbol v).
+\]
+\end{lemma}
+\begin{proof}
+Expanding the homogeneous quadratic part gives the cross term
+$s\boldsymbol y^TH_i\boldsymbol v$ and the pure term
+$s^2q_i(\boldsymbol v)$. The former vanishes. Since
+$2q_i(\boldsymbol v)=\boldsymbol v^TH_i\boldsymbol v=0$, the latter
+vanishes as well. The linear and constant parts give the stated formula.
+\end{proof}
+
+\begin{theorem}[Integral quadratic projection]\label{thm:projection}
+Let $Q_0,\ldots,Q_{m-1}\in\Z[x_0,\ldots,x_{n-1}]$ have degree at most
+two. Suppose there are $\boldsymbol v\in\Z^n$ and indices $p,r$ such that
+\[
+ H_i\boldsymbol v=0\quad\text{for every }i,\qquad v_p=1,\qquad
+ a_r:=\ell_r(\boldsymbol v)\in\{-1,1\}.
+\]
+Set $a_i=\ell_i(\boldsymbol v)$. Regard $\boldsymbol y$ as a vector with
+$y_p=0$ and $n-1$ free integer coordinates, and define
+\begin{equation}\label{eq:projected}
+ R_i(\boldsymbol y)=Q_i(\boldsymbol y)-a_i a_rQ_r(\boldsymbol y),
+ \qquad i\ne r.
+\end{equation}
+These are integer quadratics. Their common integer zero set is in explicit
+bijection with the common integer zero set of the original $Q_i$.
+\end{theorem}
+\begin{proof}
+Given a new zero, put
+\begin{equation}\label{eq:lift}
+ s=-a_rQ_r(\boldsymbol y),\qquad
+ \boldsymbol x=\boldsymbol y+s\boldsymbol v.
+\end{equation}
+Every coordinate is an integer. Lemma~\ref{lem:direction} gives
+$Q_r(\boldsymbol x)=Q_r(\boldsymbol y)+sa_r=0$, because $a_r^2=1$.
+For every other row it gives
+$Q_i(\boldsymbol x)=R_i(\boldsymbol y)=0$.
+
+Conversely, given an old zero, let $s=x_p$ and
+$\boldsymbol y=\boldsymbol x-x_p\boldsymbol v$. Then $y_p=0$.
+The same identity gives $Q_r(\boldsymbol y)=-x_pa_r$, so the scalar
+reconstructed by \eqref{eq:lift} is exactly $x_p$. For every $i\ne r$,
+\[
+ R_i(\boldsymbol y)=-x_pa_i-a_i a_r(-x_pa_r)=0.
+\]
+The two constructions are inverse. Formula~\eqref{eq:projected} is a
+constant integer row combination restricted to $y_p=0$, hence has degree
+at most two. There is no division or residual congruence condition.
+\end{proof}
+
+\begin{corollary}
+Replacing $\sum_iQ_i^2=0$ by $\sum_{i\ne r}R_i^2=0$ removes one integer
+unknown and one quadratic residual without increasing degree above four.
+The equivalence is provable by finite arithmetic in ZFC.
+\end{corollary}
+\begin{proof}
+A sum of integer squares is zero precisely when each summand is zero.
+Apply Theorem~\ref{thm:projection}.
+\end{proof}
+
+\subsection{A small example}
+
+Consider the residuals
+\[
+ u-a^2,\qquad v-b^2,\qquad w-(u+v)c.
+\]
+The direction that increases $u$ and decreases $v$ annihilates all three
+quadratic Hessians. With $s=u+v$, the system becomes
+\[
+ s-a^2-b^2=0,\qquad w-sc=0.
+\]
+It has one fewer integer variable and one fewer residual. A zero of the
+new system restores $u=a^2$, $v=b^2$, and the inverse uses $s=u+v$.
+A procedure that only substitutes a single existing variable will initially
+see cubic terms in $uc$ or $vc$. Changing to the combination $u+v$ exposes
+the quadratic-preserving reduction.
+
+\subsection{Integrality is an essential hypothesis}
+
+A primitive integral direction alone does not justify division by its
+slope. If all slopes have a common factor greater than one, solving for
+the eliminated coordinate can leave a divisibility condition. Our
+certificates check $v_p=1$ and a literal slope $\pm1$ at every step.
+More general primitive directions and slope vectors can be handled by
+unimodular completions and Bezout combinations, but that generalization
+is not needed for any claimed count in this release.
+
+The proof also uses the unrestricted integer domain. An invertible integer
+change of coordinates need not preserve positivity or nonnegativity.
+The present reduction is not automatically a reduction of the repository's
+nine-positive-variable equations.
+
+\section{The six eliminations and the coefficient reduction}
+
+The discovery program stacks the sparse Hessian rows and computes their
+common kernel by exact rational Gaussian elimination. It clears
+denominators, makes each vector primitive, and considers coordinates with
+unit entries. It then checks every Hessian product and every candidate
+unit slope exactly. The selected coordinate change and unit substitution
+are stored as a finite certificate.
+
+For the principal parent, the six deleted register names, in order, are
+\begin{center}\small
+\begin{tabular}{crrrl}
+\toprule
+Step & Input variables & Output variables & Output residuals & Deleted register\\
+\midrule
+1&240&239&176&\texttt{add.71}\\
+2&239&238&175&\texttt{mul.188}\\
+3&238&237&174&\texttt{mul.303}\\
+4&237&236&173&\texttt{sqd.11}\\
+5&236&235&172&\texttt{add.277}\\
+6&235&234&171&\texttt{add.112}\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are historical wire names, not mathematical operations remaining in
+the final polynomial. The coordinate indices, complete integer direction
+vectors, selected residuals, unit slopes and restoration polynomials are
+specified in \nolinkurl{stages/radical234/projection_certificate.json}.
+Renumbering after each deletion is recorded explicitly.
+
+Immediately after these six steps the quartic has 20,739 monomials and
+height 18,542. We then apply 147 recorded elementary operations
+\begin{equation}\label{eq:rowop}
+ R_i\ \longleftarrow\ R_i+kR_j,
+ \qquad i\ne j,\quad k\in\Z.
+\end{equation}
+Each is invertible by subtracting $kR_j$. Thus the common zero set is
+unchanged, although the polynomial obtained by summing squares usually
+changes. The operations give the final 19,050 monomials and height 4,480.
+They are recorded in \nolinkurl{equations/P234/row_certificate.json}.
+
+The row search chooses reductions of the squared Euclidean norm of the
+coefficient vectors. Its heuristic has no role in the correctness proof.
+The checker replays the frozen operations exactly and then replays them
+backwards, recovering the original intermediate rows. This is the reason
+that a changed optimization heuristic need not be trusted or rerun.
+
+The independent projection checker uses \eqref{eq:projected} directly.
+The constructor uses a shear followed by substitution. These two
+implementations agree coefficient by coefficient on every intermediate
+residual. Numerical evaluations at arbitrary small tuples supplement
+these identities as regression controls; they are not substitutes for
+the identities and are not assumed zeros of the consistency equation.
+
+\section{A second contribution: cofinal quadratic spacing}\label{sec:cofinal}
+
+The factorial-free parent~\cite{factorialfree} uses
+\[
+ t=16+h^2,\qquad F=[2(t+1)]^t,
+\]
+where the displayed power is represented by the inherited ordinary Pell
+certificate. Its beta spacing is specified by two quadratic register rows
+\begin{equation}\label{eq:oldbeta}
+ m=(2w+1)^2,\qquad y=Fm.
+\end{equation}
+The spacing must be large enough to encode a finite accumulator path; in
+the converse construction it is chosen as a multiple of $t!$. Authenticating
+$F=t!$ is not part of this branch.
+
+We replace \eqref{eq:oldbeta} by the single quadratic row
+\begin{equation}\label{eq:newbeta}
+ \boxed{\qquad y=F^2+u^2+v^2,\qquad u,v\in\Z.\qquad}
+\end{equation}
+The already stored value $F^2$ is reused. This uses the same two witness
+slots, removes one residual, and implies $y\ge F^2>F+1$ once the existing
+growth certificate has been interpreted. The following theorem supplies
+exactly the completeness property needed.
+
+\begin{lemma}[Two squares modulo an odd prime power]\label{lem:odd}
+For every odd prime $p$ and $e\ge1$, there exist integers $a,b$ with
+$a^2+b^2\equiv-1\pmod{p^e}$.
+\end{lemma}
+\begin{proof}
+The squares in $\mathbb F_p$ and minus one minus those squares are two
+sets of size $(p+1)/2$, so they intersect. A resulting solution modulo $p$
+cannot have both coordinates zero. Suppose the first is nonzero; the other
+case is symmetric. Given a solution modulo $p^j$, change $a$ to
+$a+\delta p^j$, where
+\[
+ \delta\equiv
+ -\frac{1+a^2+b^2}{p^j}(2a)^{-1}\pmod p.
+\]
+Expansion proves the congruence modulo $p^{j+1}$. The coordinate remains
+nonzero modulo $p$, so induction completes the lift.
+\end{proof}
+
+\begin{theorem}[Cofinal factorial multiples]\label{thm:cofinal}
+Let $t\ge1$, $F\ge2$, and assume $2^{v_2(t!)}\mid F^2$. For every
+integer bound $C$, there are integers $u,v$ such that
+\[
+ y=F^2+u^2+v^2>C,\qquad t!\mid y.
+\]
+Both $u$ and $v$ can be chosen as multiples of $F$. If $F$ is even,
+the resulting $y$ is even.
+\end{theorem}
+\begin{proof}
+Write $t!=2^a m$ with $m$ odd. Lemma~\ref{lem:odd} and the Chinese
+remainder theorem give $m\mid1+A^2+B^2$. This also holds when $m=1$,
+with the congruence vacuous. For positive integers $k$, put
+\[
+ u_k=F(A+km),\qquad v_k=FB,\qquad
+ y_k=F^2\bigl(1+(A+km)^2+B^2\bigr).
+\]
+The odd part $m$ divides $y_k$, and $2^a$ divides $F^2$. Hence $t!$ divides
+$y_k$. The family is unbounded, so some $y_k$ exceeds $C$. Its parity
+when $F$ is even is immediate.
+\end{proof}
+
+For the actual $F=[2(t+1)]^t$, we have $v_2(F)\ge t>v_2(t!)$, so the
+hypothesis holds with a large margin. The theorem is elementary and
+unbounded. The delivered program constructs 195 exact examples for
+$t=16,\ldots,80$ and three offsets each; those examples are checks of the
+constructor, not the proof of cofinality.
+
+\subsection{Soundness in the required order}
+
+The known positive horizon and positive base first recover
+$F=[2(t+1)]^t$ from the unchanged power certificate. Only then does
+\eqref{eq:newbeta} imply $y\ge F^2>F+1$. The retained radix is an odd
+square $q=(2z+1)^2$, hence at least one. Its numerator power requests at
+base $q+1\ge2$ make the nine actual CRT representatives nonnegative;
+therefore their offset sum $H$ is at least two.
+
+The retained index row has the form
+$B\iota=C_0+F^2+1$, with a nonnegative representative $C_0$, and excludes
+$B=0$. Thus $|BH|\ge2$. The signed-power lemma gives
+$x\ge0$ and $q=(BH)^x$. The endpoint
+\[
+ x=1+[1+(t+1)y]u_t
+\]
+excludes $x=0$, since its bracket is greater than one and cannot divide
+$-1$. In the other endpoint,
+\[
+ x=F+1+(y+1)u_0,
+\]
+a negative integer $u_0$ would force $x\le F-y<0$. Hence
+\[
+ u_0\ge0,\qquad x\ge F+1,\qquad
+ u_t\ge1,\qquad x\ge2+(t+1)y\ge2+(t+1)F^2.
+\]
+These bounds strengthen the parent bounds. Its centered-remainder proof
+can therefore recover the positive binomial value
+$B=\binom{F^2+t}{t}$, and its generalized CRT theorem recovers every
+bounded local rule. No sign of that binomial output is assumed before
+its digit is authenticated.
+
+The initial accumulator $F+1$ is now a proper remainder modulo $y+1$
+immediately. The old boundary case $y=F$, which required a zero-path
+contradiction, is impossible. The same positive-weight product and finite
+Horn-closure argument yield a $C_{222}$ refutation.
+
+\subsection{Completeness and the parity choices}
+
+Start with a finite $C_{222}$ refutation. Choose a sufficiently large
+permitted horizon $t=16+h^2$, form $F$, and construct its finite positive
+accumulator path before choosing $y$. Theorem~\ref{thm:cofinal} supplies
+an even multiple of $t!$ exceeding every accumulator and $F+1$.
+The moduli $1+(i+1)y$ for $0\le i\le t$ are pairwise coprime: a common
+prime divides the index difference, hence is at most $t$ and divides $y$,
+contrary to its dividing $1+(i+1)y$. They are all odd.
+
+CRT gives the required beta code $x$. Adding their odd product changes
+parity, so $x$ can be chosen even and arbitrarily large. Define the same
+$B$ and $N=B^x$ as in the parent and use its generalized binomial CRT at
+every prime of $B$. The value $B$ is odd because
+$v_2(F^2)>\lfloor\log_2t\rfloor$: each $F^2+i$ has the same two-adic
+valuation as $i$, so those valuations cancel in the binomial quotient.
+The precision modulus is therefore odd and its representative classes
+have free parity. The parent's choices of a dominating even anchor and
+odd $H$ remain available. Then $q=(BH)^x$ is an odd square.
+
+The other power, remainder, and norm witnesses are supplied by the
+unchanged constructive arguments. Thus the new spacing preserves the
+existence equivalence with a finite refutation. It generally does
+\emph{not} extend an individual zero to the old block
+\eqref{eq:oldbeta}: $y/F$ need not be an odd square. We use an existential
+soundness/completeness proof for this step, rather than claiming a
+coordinate bijection.
+
+\section{The two factorial-free companions}
+
+In the parent's final 242-variable chart, the actual spacing is $x_2-1$,
+$F=x_3$, and its existing square is $x_4$. The two private witness slots
+are 240 and 241. The literal source change is
+\begin{align*}
+ -1+x_2-x_3x_{240}&\quad\rightsquigarrow\quad
+ -1+x_2-x_4-x_{240}^2-x_{241}^2,\\
+ -1+x_{240}-4x_{241}-4x_{241}^2&\quad\text{is deleted}.
+\end{align*}
+The row $x_4-x_3^2$ is retained. The checker verifies that neither private
+witness occurs anywhere else. The old projection and row certificates
+also leave this block untouched; the arithmetic review records this
+transport explicitly.
+
+The new source has 242 variables and 177 residuals. Six applications of
+Theorem~\ref{thm:projection} give 236 variables and 171 residuals. One
+further elementary row operation gives $\SP$, with 4,947 monomials and
+height 16,866. The definition is
+\[
+ \SP=\sum_{i=0}^{170}S_i^2,
+\]
+where every $S_i$ is listed literally in
+\nolinkurl{equations/P236_beta/equation.json}.
+
+For the 235-variable companion, an affine residual in the 236-variable
+intermediate chart permits the following exact substitution:
+\begin{align*}
+ x_{96}={}&x_9+x_{10}+4x_{20}+2x_{23}+2x_{27}+2x_{29}+2x_{31}\\
+ &+2x_{33}+4x_{35}+2x_{36}+2x_{39}+2x_{42}+4x_{61}+2x_{62}.
+\end{align*}
+Its unit coefficient makes the restoration integral and unique.
+Deleting that row and substituting everywhere leaves 235 variables and
+170 residuals, still quadratic. After 433 reversible integer row
+operations, the resulting quartic $\BP$ has 18,550 monomials and height
+4,576. All its coefficients appear in
+\nolinkurl{equations/P235_beta/equation.json} and its expanded neighbor.
+
+\begin{corollary}
+The ordinary new proofs, composed with the factorial-free parent's
+calibration, give in ZFC both equivalences
+\[
+ \neg\exists\boldsymbol x\in\Z^{235}\;\BP(\boldsymbol x)=0
+       \ \longleftrightarrow\ \Con(\mathrm{ZFC}),
+ \qquad
+ \neg\exists\boldsymbol x\in\Z^{236}\;\SP(\boldsymbol x)=0
+       \ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+\end{corollary}
+
+\section{Verification and its limits}
+
+\subsection{Exact finite statements that were checked}
+
+The independent checker is a standard-library Python program and imports
+no discovery or projection implementation. Its checks include:
+\begin{enumerate}
+\item Both unchanged source-archive hashes and the exact selected equation
+      members; every intermediate certificate is tied to its source.
+\item Every Hessian-kernel identity, unit direction coordinate, unit slope,
+      deleted residual, renumbering, and restoration polynomial.
+\item The direct identity \eqref{eq:projected}, independently of the
+      producer's shear-and-substitution algorithm.
+\item The extra affine substitution by the independent identity
+      $A x_p^2+B x_p+C\mapsto A S^2+B S+C$.
+\item Every elementary integer row operation and its reverse replay.
+\item All coefficients of each complete expanded sum of squares, and all
+      dimensions, residual counts, degrees, supports, and heights.
+\item A separate parser for the printed principal residuals, so the
+      appendix is checked against the literal coefficient data.
+\end{enumerate}
+The projection checker rejects eight kinds of deliberate corruptions;
+the affine checker rejects five, and the row checker rejects four.
+Representative checks also passed with Python optimization enabled, so
+correctness gates do not depend on removable \texttt{assert} statements.
+The full package verification is reproducible with
+\texttt{python3 -B verify.py}.
+
+These finite checks establish the supplied algebraic certificates. The
+cofinality theorem and the inherited arithmetic/logical calibration are
+unbounded mathematical arguments. The release does not call samples an
+unbounded proof or call a Python program a proof-assistant kernel.
+
+\subsection{Two useful but limited rank facts}
+
+For the principal system, the stacked Hessian has full column rank 234
+modulo the explicitly verified prime 1,000,003. A nonzero minor modulo a
+prime is nonzero over $\Q$, so its common Hessian radical over $\Q$ is
+zero. Thus no further nonzero constant direction makes \emph{every}
+residual have a coordinate-independent slope.
+
+Separately, the homogeneous quadratic parts of its 171 residuals have
+row rank 171 over $\Q$. Hence no nonzero constant linear combination of
+the residuals is affine. The 235-variable companion has the corresponding
+full row rank 170. These facts certify exhaustion of the two particular
+linear-algebra moves on the displayed presentations.
+
+They do not establish a minimum under arbitrary transformations. For a
+small counterexample, take
+\[
+ R_1=x^2-1,\qquad R_2=xy-1,\qquad R_3=y^2-1.
+\]
+Their quadratic parts are independent and their common Hessian radical
+is zero. Nevertheless,
+\[
+ yR_1-xR_2=x-y.
+\]
+This polynomial-multiplier identity supplies $x=y$, reducing the system
+to $x^2-1=0$. Both rank checks hold before that reduction. Nonlinear
+coordinate changes, polynomial residual combinations, and a different
+semantic encoding therefore remain outside the limited certificate.
+
+\section{Further research questions}
+
+\paragraph{Polynomial residual combinations.}
+Can a bounded degree-three Macaulay computation find a useful affine
+consequence of the 234-variable system? The generators would be its
+residuals and their products with single variables. A successful candidate
+should carry an explicit polynomial-combination identity and an integral
+restoration map. The counterexample above shows why this question is
+strictly stronger than either rank test already completed.
+
+\paragraph{Integral lattice generalization.}
+The current implementation uses directions with a unit coordinate and a
+single unit residual slope. Can Hermite or Smith normal form expose more
+useful choices earlier in the source pipeline? Any nonunit invariant
+factor must be retained as a divisibility condition. A rational elimination
+without that accounting is insufficient for integer solutions.
+
+\paragraph{Joint source and coordinate optimization.}
+The same six common directions occur in several recent direct-source
+variants. Can the source compiler use shared combinations as registers
+from the outset? Doing so could avoid the later coefficient growth, and
+could permit a lower-support version of the 234-variable endpoint.
+This should be measured against the entire coefficient list, not a
+partial gate count.
+
+\paragraph{A smaller cofinal arithmetic family.}
+The family $F^2+u^2+v^2$ handles every odd prime power and uses the already
+available two-adic valuation of $F$. Is there a one-witness family with the
+same uniform divisibility and cofinality properties? The tempting family
+$F^2+u^2$ cannot generally replace it: if a prime $p\equiv3\pmod4$ does
+not divide $F$, the congruence $u^2\equiv-F^2\pmod p$ is impossible.
+Any proposed one-witness replacement must explain how it avoids this
+local obstruction.
+
+\paragraph{Formalizing the short new interface.}
+The integral projection theorem is a compact first target: its proof needs
+only polynomial evaluation, the constant directional-slope identity, and
+integer unit arithmetic. The cofinal-spacing theorem is another contained
+target, using finite-field square counts, elementary lifting, and CRT.
+These are better delimited milestones than treating successful finite
+coefficient checks as a completed internal ZFC development.
+
+\section{Files and integration}
+
+The archive includes this LaTeX source and PDF, the complete principal
+residual appendix, all three final coefficient lists and expansions,
+exact intermediate data, construction and independent verification code,
+ordinary proof reviews, immutable source archives, and a checksum manifest.
+Its intended intake location is \nolinkurl{docs/incoming}, followed by an
+additive placement in the DiophantineConsistency collection. No existing
+repository file was changed.
+
+A polynomial term is encoded as \texttt{[coefficient,[variable indices]]};
+repeated indices represent repeated factors and an empty index list is
+constant. The polynomial is the sum of the squares of its residuals.
+Variable names are explanatory metadata. The arrays and their integer
+coefficients are the definition.
+
+The new checks need only Python's standard library and no network. A user
+can evaluate a supplied tuple with \nolinkurl{code/evaluate.py}. The
+verification scripts do not attempt to locate a refutation or a polynomial
+zero. Run \texttt{pdflatex} twice on \nolinkurl{report/report.tex} to rebuild
+the PDF; typesetting versions may change PDF bytes without changing any
+mathematical object.
+
+The proof dependencies are deliberately visible. The result is a new,
+fully emitted equation and a checked reduction from its documented source.
+It is not a proof that this equation has no integer solution, nor a claim
+that the broader search for the simplest consistency equation is finished.
+
+\begingroup\raggedright
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov and ProveIt contributors,
+\emph{ProveIt}, repository snapshot
+\texttt{7a8da414376a80b90ecf799f37ceb26fb9ac674e}, 25 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/7a8da414376a80b90ecf799f37ceb26fb9ac674e}.
+
+\bibitem{overview} ProveIt,
+\emph{Con(ZFC) in Diophantine form}, consolidated manuscript collection
+and active proposal review, at \cite{repo}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/7a8da414376a80b90ecf799f37ceb26fb9ac674e/Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+
+\bibitem{shared} ProveIt incoming research,
+\emph{Shared Factorial Error}, 25 October 2026,
+\nolinkurl{ConZFC_Shared_Factorial_Error_2026-10-25.zip}, retained unchanged
+in \nolinkurl{sources/}. Original location: \nolinkurl{docs/incoming}
+at \cite{repo}. The selected parent is its
+\nolinkurl{equations/equation240/equation.json}.
+
+\bibitem{factorialfree} ProveIt incoming research,
+\emph{Removing Factorial Authenticity: Binomial Prime-Power Certificates
+for Diophantine Consistency}, 25 October 2026,
+\nolinkurl{ConZFC_Factorial_Free_Binomial_CRT_2026-10-25.zip}, retained
+unchanged in \nolinkurl{sources/}. Original location:
+\nolinkurl{docs/incoming} at \cite{repo}. The selected parent is its
+\nolinkurl{direct/principal/equation.json}.
+
+\bibitem{bayer} J. Bayer, M. David, M. Ha\ss ler, Y. Matiyasevich,
+and D. Schleicher,
+\emph{Diophantine equations over $\Z$: universal bounds and parallel
+formalization}, arXiv:2506.20909v3, 22 October 2026.
+\url{https://arxiv.org/html/2506.20909v3}.
+
+\bibitem{afp} M. David et al.,
+\emph{Universal Pairs for Diophantine Equations}, Archive of Formal Proofs,
+29 July 2025. \url{https://isa-afp.org/entries/Diophantine_Universal_Pairs.html}.
+\end{thebibliography}
+\endgroup
+
+\clearpage\appendix
+\section{Every quadratic residual of the principal polynomial}\label{app:residuals}
+
+This appendix is the complete definition of the 234-variable equation.
+All $x_0,\ldots,x_{233}$ are unrestricted integers, and
+$\New=\sum_{i=0}^{170}\mathcal Q_i^2$. Coefficients and repeated variable
+indices are checked against the JSON definition by a separate parser.
+Line breaks in a residual have no algebraic meaning.
+
+\begingroup\small
+\setlength{\jot}{2pt}
+\input{residuals234.tex}
+\endgroup
+\end{document}
