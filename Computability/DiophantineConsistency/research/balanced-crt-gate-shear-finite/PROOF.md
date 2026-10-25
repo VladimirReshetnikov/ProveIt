@@ -4,6 +4,16 @@ This is a preparation proof. No new module or helper has been imported,
 compiled or run. The exact ordinary source note remains unchanged; no
 new expanded polynomial, census or endpoint is claimed here.
 
+The entire initial HOLD11444fb3dadefec4ea147da06789d748c55a0f00b5dac87b3fbb6175b7ff8c43
+and both complete first static reports are preserved in27950a82da. Each
+report identified only the missing distinct fresh-receipt route; neither
+found an arithmetic defect and no application had run. The separate
+bounded repair release1dd9d6aae4 changes only the guard's fixed allowlist
+for four read-only receipt roles, these explanatory documents, own pins
+and HOLD. build.py/check.py, arithmetic,13 artifact schemas and all186
+external records remain exactly unchanged. The initial checkpoint and
+finding remain historical evidence rather than being overwritten.
+
 ## 1. Complete inputs and authorization boundary
 
 SOURCE_PINS flattens all150 inputs of the accepted fast verification,
@@ -187,7 +197,7 @@ actual external saved data. Both normal and optimized producer modes
 must pass. The full checker runs both modes with all66 negative/8 valid
 controls; no assertions are disabled under -O.
 
-The five exact TOOLCHAIN commands each require a distinct absent fixed
+The first five exact TOOLCHAIN commands each require a distinct absent fixed
 external JSON receipt, whose complete bytes are also stdout. The caller
 preserves complete stdout and stderr separately. Data paths, receipt
 paths and every existing component must be ordinary nonsymlink paths
@@ -195,6 +205,18 @@ outside the entire repository. Relative paths, '..', changed destinations
 and overwriting are rejected. The held/source folders are reauthenticated
 after arithmetic and before writing each receipt. No bytecode, test,
 optimizer, native/compiler, old checker, Lean, TeX or PDF is invoked.
+
+For exactly check, check-optimized, rebuild and rebuild-optimized, the
+guard also allows the fixed absent receipt
+`/tmp/balanced-crt-shear-root-{role}.json`. No second build receipt or
+data destination is allowed. The matching stdout/stderr captures add
+twelve paths to the original sixteen; all28 are checked absent at inert
+refreeze. A fresh invocation uses the same unchanged script and role,
+with only its permitted receipt argument changed. Neither receipt
+pathname nor first/fresh label is serialized, so same-mode first/fresh
+JSON and stdout must be wholly byte-identical. Every first file stays
+in place; fresh commands cannot overwrite it. Four fresh commands are
+printed separately and remain held for a later separate ROOT release.
 
 The final held seal requires two full independent static approvals and
 a separate ROOT execution release. Final inert result/data closure,

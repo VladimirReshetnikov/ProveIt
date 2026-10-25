@@ -24,6 +24,15 @@ The old34-file centering source remains its exact observed tree without
 a MANIFEST. Its original optimized interruption remains historical. This
 preparation neither modifies that source nor labels it finally sealed.
 
+The complete initial held checkpoint11444fb3... and both full first
+static reports are preserved in27950a82da. Both reports found one
+workflow issue: the original receipt allowlist admitted only first-run
+paths, preventing later fresh replays while retaining first captures.
+The separate bounded repair release1dd9d6aae4 permits only a second
+fixed receipt path for the four read-only roles. No application has run.
+Producer/checker code, arithmetic, artifact schemas and all186 external
+pins are unchanged. No additional mathematical finding is being repaired.
+
 ## Frozen core and independent routes
 
 The seven held payloads are README, PROOF, TOOLCHAIN, guard.py, build.py,
@@ -94,15 +103,24 @@ the fixed policy and exact producer/checker/guard/source-pins bytes.
 The destination and each receipt must be absent when first written.
 All paths are fixed reviewed absolute paths outside the repository,
 with symlink components rejected. No writes go to held or parent files.
+The four read-only roles additionally admit fixed
+`/tmp/balanced-crt-shear-root-{role}.json` receipts and matching captures.
+The build role retains its sole original receipt and data destination.
+Receipt content contains no chosen pathname, allowing whole-byte
+same-mode comparison of first and fresh results. All28 first/fresh
+data, receipt and capture paths were absent at inert refreeze inspection.
 
-TOOLCHAIN specifies exactly five sequential held commands: materialize,
+TOOLCHAIN specifies five first sequential held commands: materialize,
 full normal check, full optimized check, pure normal rebuild and pure
 optimized rebuild. Rebuilds generate the complete13-object bundle in
 memory and compare every canonical byte with the actual saved data;
 they import no checker and write only their distinct external receipt.
 Each receipt's complete JSON is also stdout; stderr remains separate.
+Four additional read-only fresh commands are printed separately. They
+require a later separate ROOT release and preserve every first capture.
 
 Two full static approvals on the final held seal and a later separate
 ROOT first-execution release are required before any of those commands.
+The first-execution release does not itself release fresh commands.
 No execution, new metrics, acceptance, TeX/PDF or Lean result is claimed.
 All maintained pages and paused Lean work remain unchanged.

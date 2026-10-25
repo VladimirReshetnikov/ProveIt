@@ -69,8 +69,10 @@ def external_data(path, *, absent):
 
 def external_receipt(path, role):
     path = plain_path(path)
-    need(path == Path('/tmp/balanced-crt-shear-' + role + '.json'),
-         'unreviewed receipt path')
+    allowed = {Path('/tmp/balanced-crt-shear-' + role + '.json')}
+    if role in {'check', 'check-optimized', 'rebuild', 'rebuild-optimized'}:
+        allowed.add(Path('/tmp/balanced-crt-shear-root-' + role + '.json'))
+    need(path in allowed, 'unreviewed receipt path')
     need(not path.exists() and path.parent.is_dir(), 'receipt freshness')
     return path
 

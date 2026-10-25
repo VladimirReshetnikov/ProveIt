@@ -3,7 +3,7 @@
     "bytes": 3675,
     "sha256": "b45b2098e721ee65d85272f0b0f0621f058526845e457d7df1f5e7bf3ae74d8b"
   },
-  "execution_boundary": "Two complete static approvals on final held seal followed by separate ROOT release; preserve first failure and no retries or source writes.",
+  "execution_boundary": "Two complete final static approvals on repaired held seal followed by separate ROOT first-execution release; four read-only fresh commands require their own later separate release. Preserve every first capture. No retries/source writes.",
   "external_files": {
     "research/balanced-crt-gate-shear/MANIFEST.json": {
       "bytes": 509,
@@ -766,16 +766,16 @@
   },
   "own_core": {
     "PROOF.md": {
-      "bytes": 11528,
-      "sha256": "ba0955c9aaa9c4d03d54fae230db783a09b8186256d9aeeafc248030e1e95b6c"
+      "bytes": 12933,
+      "sha256": "4b7725d1dbac28dcce39c4cf30f04529bb511207ca46d5745075f16bd95f1180"
     },
     "README.md": {
-      "bytes": 6141,
-      "sha256": "f44c60abbf265026b15c93332168be8ac545dfc66a26e4d2d63ba4e842f2cbf2"
+      "bytes": 7314,
+      "sha256": "41a3d73e50a5df2fac4570ab23c3dc3374056ba42f069d886d085b6d89428b04"
     },
     "TOOLCHAIN.md": {
-      "bytes": 3001,
-      "sha256": "c17677353df261c78b8aa48fa746952c27e8a80c7a0af3a563cb77b529c79f49"
+      "bytes": 5626,
+      "sha256": "6c80c67cbd7d44447f4a4d058112fe42d2402570e9d4fbbe5da7a67756c84ec3"
     },
     "build.py": {
       "bytes": 8473,
@@ -786,8 +786,8 @@
       "sha256": "967550680a90536f5484f21bb8e229922568e8255378794e35c97ad6679fecb9"
     },
     "guard.py": {
-      "bytes": 5739,
-      "sha256": "cbe89eb8a9474dfe3d515e297f5205cf3e227a0431b98ea002752828889eb3fd"
+      "bytes": 5907,
+      "sha256": "c70cb1f28aac55df1f54ffa04674b6922d60455a81accdc15e6f25dad49a75c5"
     }
   },
   "parent_acceptance_commit": "eb794242da",
@@ -818,8 +818,48 @@
     "/tmp/balanced-crt-shear-rebuild.stderr",
     "/tmp/balanced-crt-shear-rebuild-optimized.json",
     "/tmp/balanced-crt-shear-rebuild-optimized.stdout",
-    "/tmp/balanced-crt-shear-rebuild-optimized.stderr"
+    "/tmp/balanced-crt-shear-rebuild-optimized.stderr",
+    "/tmp/balanced-crt-shear-root-check.json",
+    "/tmp/balanced-crt-shear-root-check.stdout",
+    "/tmp/balanced-crt-shear-root-check.stderr",
+    "/tmp/balanced-crt-shear-root-check-optimized.json",
+    "/tmp/balanced-crt-shear-root-check-optimized.stdout",
+    "/tmp/balanced-crt-shear-root-check-optimized.stderr",
+    "/tmp/balanced-crt-shear-root-rebuild.json",
+    "/tmp/balanced-crt-shear-root-rebuild.stdout",
+    "/tmp/balanced-crt-shear-root-rebuild.stderr",
+    "/tmp/balanced-crt-shear-root-rebuild-optimized.json",
+    "/tmp/balanced-crt-shear-root-rebuild-optimized.stdout",
+    "/tmp/balanced-crt-shear-root-rebuild-optimized.stderr"
   ],
+  "pre_execution_path_repair": {
+    "bounded_repair_release_commit": "1dd9d6aae4",
+    "external_pin_count_unchanged": 186,
+    "finding": "Original fixed first receipt allowlist prevented distinct fresh read-only replays while preserving all first captures; no application or arithmetic failure occurred.",
+    "first_commands_need_new_two_full_statics_and_separate_release": true,
+    "fresh_commands_need_later_separate_release": true,
+    "initial_checkpoint_and_both_full_static_reports_commit": "27950a82da",
+    "initial_hold_sha256": "11444fb3dadefec4ea147da06789d748c55a0f00b5dac87b3fbb6175b7ff8c43",
+    "initial_source_pins_sha256": "db0511289e3508d0df41719cff33139fc161736f3ed05d24df9becdd16fb246c",
+    "new_data_destination_or_materialization_role": false,
+    "only_runtime_change": "Four read-only roles additionally accept their fixed absent /tmp/balanced-crt-shear-root-{role}.json path. No chosen pathname is serialized.",
+    "producer_and_checker_unchanged": {
+      "build.py": {
+        "bytes": 8473,
+        "sha256": "125457241095048e3c0ad384f40c1d576fbdb952b4b010e843690908200672f4"
+      },
+      "check.py": {
+        "bytes": 24657,
+        "sha256": "967550680a90536f5484f21bb8e229922568e8255378794e35c97ad6679fecb9"
+      }
+    },
+    "read_only_fresh_roles": [
+      "check",
+      "check-optimized",
+      "rebuild",
+      "rebuild-optimized"
+    ]
+  },
   "schema": "held_balanced_crt_shear_finite_pins_v1",
   "scope": "Exactly the fixed balanced2,2 one-gate shear of both accepted complete centered profiles; no search, other shear, native replay, Lean/PDF or generated metrics at preparation. Old34-file observed tree receives no MANIFEST.",
   "status": "CODE ONLY / HOLD; no new/adopted import, compilation, AST or application execution",
