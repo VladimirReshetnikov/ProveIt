@@ -20,34 +20,38 @@ See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **entire equation in ten positive
-unknowns, exact degree 283, with a 92-operation evaluator**. All fixed
-constants are defined on the same Letter page, including the full
-436-character numeral, alphabet, decoder and 943 tiles, in 9-point body type.
-Compared with the preserved 98/360 display, this saves six operations and
-lowers degree by 77. The shorter indexed constant recipe is licensed by
-its complete separate native calibration and the coefficient-uniform
-saturated theorem. The [page proof and independent checks](candidates/one-page-saturated10/README.md)
-bind every actual printed formula and constant to the complete circuit.
-[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the displayed files.
-The [98/360 predecessor](candidates/one-page-index-weight10/equation.pdf),
-its [TeX](candidates/one-page-index-weight10/equation.tex), and all earlier
-complete pages remain preserved.
+unknowns, exact degree 328, with an 85-operation evaluator**. All fixed
+constants remain on the same Letter page, including the full 436-character
+numeral, alphabet, decoder and 943 tiles, in 9-point mathematics. Pell
+doubling replaces the nested norm with one product-square equation and
+simplifies the carrier. This saves seven operations against the preserved
+[92/283 page](candidates/one-page-saturated10/equation.pdf), while increasing
+degree by 45. That lower-degree page and all earlier displays remain preserved.
+
+The [root page acceptance](reviews/one-page-doubled85-root-peer.md) binds
+all actual printed formulas and every constant, both visual reviews and
+four byte-exact fresh replays. The complete ordinary proof retains the
+actual canonical `R>3q` completeness premise and the entire accepted indexed
+native/source interpretation. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
+binds the maintained PDF and TeX. This is a verified cost/degree choice,
+not a global simplicity optimum or a new Lean derivation.
 
 A separately reviewed [89-operation comparison page](candidates/one-page-uncentered89/equation.pdf),
 with its complete [standalone TeX](candidates/one-page-uncentered89/equation.tex),
-has the same ten-positive domain and exact degree 288. It saves three
+has the same ten-positive domain and exact degree 288. Against the preserved 92/283 page it saves three
 operations with five additional degrees. All constants still fit on one
 Letter page in 9-point type; the [root review](reviews/one-page-uncentered89-root-peer.md)
 binds every actual printed formula, constant and coefficient to the accepted
-whole source. The canonical 92/283 page is retained while further gains are batched.
+whole source. The preserved 92/283 page remains a lower-degree comparison.
 The [direct-carrier sharing extension](research/saturated-direct-carrier-cse/README.md)
 also saves one multiplication in each of five complete direct variants,
 including96/258,97/254 and94/262; their entire polynomials are preserved.
 
 The [q-cube-normalized ten-positive form](research/ten-positive-qcube-normalization/README.md)
-now uses86 operations at exact degree466. Its complete positive-domain proof,
+now uses 86 operations at exact degree 466. Its complete positive-domain proof,
 whole native bindings and independent checks pass; this cost/degree alternative
-is preserved separately from the canonical92/283 page. Its complete
+is preserved separately. The accepted 84/436 and 85/328 forms improve both
+its cost and degree. Its complete
 [one-page PDF](candidates/one-page-qcube86/equation.pdf) and
 [standalone TeX](candidates/one-page-qcube86/equation.tex) now pass independent
 actual-formula and rendered-page checks; see the
@@ -55,16 +59,16 @@ actual-formula and rendered-page checks; see the
 
 A complete [nine-positive comparison page](candidates/one-page-shared-odd9/equation.pdf)
 and its [standalone TeX](candidates/one-page-shared-odd9/equation.tex) now fit
-every constant on one Letter page at9-point mathematics. The accepted
-413-operation evaluator has exact degree1,316,546 and uses the entire
-original722-character compact54 recipe. All actual-TeX/PDF checks, both
+every constant on one Letter page at 9-point mathematics. The accepted
+413-operation evaluator has exact degree 1,316,546 and uses the entire
+original 722-character compact54 recipe. All actual-TeX/PDF checks, both
 visual reviews and four byte-exact root replays pass; see the
 [root acceptance](reviews/one-page-shared-odd9-root-peer.md). The complete
 [433-operation predecessor](candidates/one-page-saturated9/equation.pdf)
-and its TeX remain preserved. The new page saves20operations and312,222degrees
+and its TeX remain preserved. The new page saves 20 operations and 312,222 degrees
 over that predecessor. Its lower
 variable count carries substantially higher cost and degree, so the
-canonical92/283 page remains the displayed compact form.
+maintained 85/328 page remains the displayed compact form.
 
 For direct degree-four equations, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
 now reaches **327 unrestricted integer unknowns**, with216 rows,5,718 terms
@@ -2115,3 +2119,24 @@ The85/328 form is being prepared as a complete-page successor with the same
 entire printed constants; no PDF is promoted before its separate formula,
 render and visual checks pass. The327-variable quartic is unchanged. Lean
 remains paused, and no global optimum or consistency assertion is made.
+
+
+## Maintained PDF updated to the complete85/328 equation
+
+The [maintained PDF](equation.pdf) and [standalone TeX](equation.tex) now
+contain the complete ten-positive doubled product-square equation,85 live
+operations and exact degree 328. The simpler carrier/finalizer saves seven
+operations against the preserved 92/283 page, with degree 45 higher. All four
+fixed integers,943 tiles, decoder, alphabet and 436-character numeral remain
+printed in full on one Letter page at the previous font sizes.
+
+Both complete static reviews, all five released author commands, four fresh
+byte-exact root replays and independent actual-PDF visual reviews pass.
+All 30 printed polynomial cuts cover every 85 gate over four free ports;
+the entire constant TeX and PDF suffix are checked. See the
+[root acceptance](reviews/one-page-doubled85-root-peer.md) and
+[closed replay packet](research/one-page-doubled85-root-verification/ROOT_BINDING.json).
+The ordinary proof retains the actual canonical `R>3q` repair and complete
+indexed native/controller/refutation interpretation. Every predecessor,
+including the complete92/283 page, remains preserved. The327-variable
+quartic is unchanged. Lean remains paused and the reduction goal active.

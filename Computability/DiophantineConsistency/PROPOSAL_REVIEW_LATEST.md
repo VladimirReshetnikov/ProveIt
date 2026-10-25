@@ -18,10 +18,11 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 9 | 405 / 413 | 1,191,570 / 1,316,546 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
-| Positive integers | 10 | **86** | 466 | Complete q-cube normalization; cost/degree tradeoff with the canonical92/283 page |
+| Positive integers | 10 | 86 | 466 | Preserved q-cube comparison, now improved in both metrics by84/436 and85/328 |
 | Positive integers | 10 | 89 / 94 | 288 / 262 | Uncentered b transport; complete89-operation comparison page, exact shared-carrier direct94 |
-| Positive integers | 10 | 91 / 92 / 96 / 97 | 283 / 278 / 258 / 254 | Existing b transport and exact shared direct carrier; canonical page retained |
-| Positive integers | 10 | **92** | **283** | Coprime saturated Pell product; complete canonical page and indexed constants |
+| Positive integers | 10 | 91 / 92 / 96 / 97 | 283 / 278 / 258 / 254 | Existing b transport and exact shared direct carrier; earlier page preserved |
+| Positive integers | 10 | **85** / 84 | **328** / 436 | Accepted doubled product square; complete85 maintained page and indexed constants |
+| Positive integers | 10 | 92 | 283 | Preserved complete lower-degree saturated page |
 | Positive integers | 10 | 93 | 278 | Sharp saturated center; lower-degree tradeoff |
 | Positive integers | 10 | 97 / 98 | 258 / 254 | Direct positive X, shared carrier and upper/sharp saturated centers |
 | Positive integers | 10 | 97 | 368 | Existing-square transport weight; one-operation saving, higher degree |
@@ -47,7 +48,8 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Nonnegative integers | **329** | not optimized | **4** | Unified factorial/CRT binomial, derived Cantor;253 rows,12,210 terms,height86,844,780 |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | **359** | not optimized | **4** | Shared cap;222 rows,6,058 terms,height128,446; complete ordinary source and four root replays |
+| Integers | **327** | not optimized | **4** | Complete fused-nine chart;216 rows,5,718 terms,height128,446; four byte-exact root replays |
+| Integers | 359 | not optimized | 4 | Shared cap;222 rows,6,058 terms,height128,446; complete ordinary source and four root replays |
 | Integers | **364** | not optimized | **4** | Unique five-sum extension;227 rows,4,574 terms,height128,446; complete quartic and four root replays |
 | Integers | 433 | not optimized | 4 | Lower-term helper alternative;287 rows,4,606 terms,height128,446 |
 | Integers | 436 | not optimized | 4 | Preserved joint redundant-sign parent;288 rows,4,624 terms,height128,446 |
@@ -2377,3 +2379,24 @@ The85/328 form is being prepared as a complete-page successor with the same
 entire printed constants; no PDF is promoted before its separate formula,
 render and visual checks pass. The327-variable quartic is unchanged. Lean
 remains paused, and no global optimum or consistency assertion is made.
+
+
+## Maintained PDF updated to the complete85/328 equation
+
+The [maintained PDF](equation.pdf) and [standalone TeX](equation.tex) now
+contain the complete ten-positive doubled product-square equation,85 live
+operations and exact degree 328. The simpler carrier/finalizer saves seven
+operations against the preserved 92/283 page, with degree 45 higher. All four
+fixed integers,943 tiles, decoder, alphabet and 436-character numeral remain
+printed in full on one Letter page at the previous font sizes.
+
+Both complete static reviews, all five released author commands, four fresh
+byte-exact root replays and independent actual-PDF visual reviews pass.
+All 30 printed polynomial cuts cover every 85 gate over four free ports;
+the entire constant TeX and PDF suffix are checked. See the
+[root acceptance](reviews/one-page-doubled85-root-peer.md) and
+[closed replay packet](research/one-page-doubled85-root-verification/ROOT_BINDING.json).
+The ordinary proof retains the actual canonical `R>3q` repair and complete
+indexed native/controller/refutation interpretation. Every predecessor,
+including the complete92/283 page, remains preserved. The327-variable
+quartic is unchanged. Lean remains paused and the reduction goal active.
