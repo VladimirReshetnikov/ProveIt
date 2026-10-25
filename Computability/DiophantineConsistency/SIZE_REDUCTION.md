@@ -2209,3 +2209,17 @@ The85/328 form is being prepared as a complete-page successor with the same
 entire printed constants; no PDF is promoted before its separate formula,
 render and visual checks pass. The327-variable quartic is unchanged. Lean
 remains paused, and no global optimum or consistency assertion is made.
+
+
+## Next cost tradeoff: q-cube normalization after doubling
+
+The [code-free proposal](research/ten-positive-qcube-doubled/PROPOSAL.md)
+passes [root ordinary review](reviews/ten-positive-qcube-doubled-ordinary-root.md)
+and an [independent review](reviews/ten-positive-qcube-doubled-ordinary-peer.md).
+Its actual positive-input argument avoids assuming that the reverse shear
+`n-s` is positive. The whole finalizer clears by `q^6`; the complete leading
+forms give degrees750 and560. Manual schedules suggest81/82 operations,
+but these counts are explicitly unmaterialized and are not new accepted
+endpoints. A separate finite packet must check every actual gate and map.
+These are further cost/degree tradeoffs and do not replace85/328 as the
+balanced complete-page candidate.
