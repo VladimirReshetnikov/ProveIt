@@ -308,13 +308,35 @@ and [second](reviews/compact66-complemented-three-anchor-radix47-ordinary-second
 FULL nonauthor reviews pass, followed by [separate ROOT conditional acceptance](reviews/compact66-complemented-three-anchor-radix47-ordinary-acceptance.json).
 All NEW controller residues and admissible-prime existence remain UNKNOWN.
 The [separate CODE ONLY probe](research/compact66-complemented-three-anchor-radix47-controller-probe/README.md)
-is being sealed for two full static reviews before any application; the prior
-+1/spacing11 draft remains preserved. A complete one-page CODE/TEX draft is
-also being prepared under its [limited authority](reviews/compact66-complemented47-page-code-tex-draft-release.md).
-No new measured page gain or numerical endpoint is accepted. The maintained
-PDF and TeX will be updated together after a significant complete checked gain.
-A separate two-weighted-anchor proof is under exploration; it changes the
-constants again and inherits no three-anchor finite certificate or acceptance.
+is frozen and has ROOT's complete first static review. An upstream merge then
+retired its pinned incoming ZIP, so its original live runtime closure fails
+authentication. No application ran; the original source and finding are
+preserved. The [explicit historical/placed association](reviews/common-remainders47-retired-archive-provenance-association.json)
+authenticates the archive's actual Git bytes and all four current plaintexts.
+The complete [three-anchor page CODE/TEX draft](candidates/one-page-compact66-complemented47/README.md)
+is committed, including equation.tex; its controller attachment remains null
+and final HOLD is absent.
+
+The next compact target is the [complete two-weighted-anchor/Mersenne8191 proposal](research/compact66-complemented-two-anchor-radix47-mersenne8191/README.md).
+It deletes a third anchor and a bare transport term, uses an early Start-label
+alignment argument and shrinks the odd cell to8191=2^13-1. Its elementary fixed
+orders23/13 give controller spacing299. The whole624-line proof covers981
+physical positions,17 copies,one anchor test,872 LOW26 tests,29-to11 carries,
+every phase/subset and both full P66 witness maps. The [first FULL nonauthor review](reviews/compact66-complemented-two-anchor-radix47-mersenne8191-ordinary-peer.md)
+passes with a nonblocking label-control wording clarification. A second review
+and separate ROOT acceptance are still needed. A [new CODE ONLY controller draft](reviews/compact66-two-anchor47-mersenne8191-probe-code-only-preparation.md)
+may be prepared while awaiting those decisions; final sealing and execution
+remain separate. ALL NEW H2 values and admissible-prime existence are UNKNOWN.
+No old or incoming finite certificate transfers. No new measured page gain or
+numerical endpoint is accepted. The maintained PDF and TeX will be updated
+together after a significant complete checked gain.
+
+The [seven further archive intake](research/incoming-7a8da41437-codefree-intake/README.md)
+records factorial-free,normalized-residue,nearest-factorial,Lucas-correction
+and other new tradeoffs as reported/unverified. A separate code-free inquiry
+asks whether complete fixed-index direct-C222 residual families could print
+more briefly on one page, even with more unknowns. It requires every constant,
+index family and argument table to be explicit; no hidden compiler is allowed.
 
 The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
 and [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)
