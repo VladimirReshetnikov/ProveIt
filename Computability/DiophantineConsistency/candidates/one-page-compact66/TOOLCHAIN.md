@@ -52,6 +52,12 @@ can replace the independent polynomial identity.
 Every inherited mathematical/glyph control remains. New negative controls
 cover every changed table family/domain, rank/set/payload binding, actual
 decoder and positional formula, plus14 specific RECIPE_CONTEXT controls.
+The action-set range430 to429 mutation is a coverage/schema rejection:
+action429 repeats289, so its removal preserves the set but violates the
+declared full430-index contract. The negative census includes syntax and
+coverage checks and does not imply every rejection changes a coefficient
+or polynomial. The changed-set predicate and independent full430-action/
+943-tuple comparisons remain unchanged.
 Eight valid algebra variants must pass the entire semantic and raw-byte
 path. Nine new full-native glyph corruptions reach the same complete PDF
 comparison helper. The full front helper retains the mathematical ASCII

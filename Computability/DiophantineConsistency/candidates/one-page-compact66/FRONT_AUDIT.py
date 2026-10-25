@@ -289,7 +289,8 @@ def recipe_controls(tex):
         ('global direction domain','For $d=0,1$, let','For $d=0,1,2$, let'),
         ('head label','h(q,b)=2q+b+2','h(q,b)=2q+b+3'),
         ('set direction predicate','d_j=d,','d_j=1,'),
-        ('set action range',r'd_j=d,\ 0\le j<430',r'd_j=d,\ 0\le j<429'),
+        # Action429 repeats289: this preserves the set but violates coverage.
+        ('set action coverage/schema (duplicate preserving)',r'd_j=d,\ 0\le j<430',r'd_j=d,\ 0\le j<429'),
         ('rank affine offset','205-199d+','204-199d+'),
         ('rank set subscript',r'|\mathcal S_d\cap',r'|\mathcal S_0\cap'),
         ('rank interval end',r'\rg0{q-1}',r'\rg0q'),

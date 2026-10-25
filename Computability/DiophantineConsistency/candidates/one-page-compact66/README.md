@@ -41,7 +41,11 @@ payload symbols, all41 controls,3297 digits and every raw integer byte.
 The full accepted23-cut/66-gate/liveness/degree157 audit and its controls
 remain. New actual-TeX controls cover each changed domain, family, sign,
 coefficient and scope, with valid algebraic controls through the same
-complete path. Full expected PDF streams charge every new glyph while
+complete path. The range430 to429 case is coverage/schema: its repeated
+last action leaves the set unchanged but violates full430-index coverage.
+Negative controls do not all assert changed mathematics; independent
+changed-set, complete-action and complete-tuple checks remain.
+Full expected PDF streams charge every new glyph while
 retaining every seed/alphabet/footer glyph. Only known floor encodings,
 whitespace and validated prose-only ASCII line hyphens are normalized;
 Unicode minus, intentional hyphens and unknown glyphs are preserved.

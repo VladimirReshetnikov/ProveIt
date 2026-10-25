@@ -70,17 +70,24 @@ independently checked. No template hash replaces a changed semantic check.
 New actual-TeX controls mutate each changed function, field, row domain,
 index, direction/sign and lexical scope; valid commutations and alternative
 algebraic spellings must pass through the same complete semantic path.
+The action-set range430 to429 case is coverage/schema: the last action
+repeats an earlier target/direction, so this rejects incomplete declared
+coverage despite preserving the set. Negative controls are not all claims
+of changed mathematics; independent changed-set/action/tuple checks remain.
 The inherited23-cut/degree/source controls and scope/native/glyph checks
 are retained with the complemented selector baseline adapted explicitly.
 
-The full PDF expected stream starts with the accepted fifteen66 extracted
-text and charges every prescribed grouped/compact/binary change, including
-all new set/rank subscripts, domains, payload signs and flag parentheses.
+The full expected native PDF suffix starts with the actual accepted
+grouped66 extraction and first checks that complete suffix against its
+whole reviewed prescription. It charges every compact/binary replacement,
+including all new set/rank subscripts, domains, payload signs and flag
+parentheses. The full front uses the accepted fifteen66 extraction.
 All436 seed characters,62 alphabet characters and footer glyphs remain.
 Prose normalization uses exact new prose spans, guarded TeX math regions,
 and the same complete-stream controls. The added fixed d domain changes
-the inline math count and must be charged explicitly. No grouped66 render
-or new rendered metric is assumed. One Letter page,9-point body,7.7-point
+the inline math count and must be charged explicitly. The accepted grouped
+render is an authenticated input; no new compact rendered metric is claimed.
+One Letter page,9-point body,7.7-point
 seed, zero overfull diagnostics, full PDF audits, pure rerenders and two
 independent visual reviews remain future gates.
 

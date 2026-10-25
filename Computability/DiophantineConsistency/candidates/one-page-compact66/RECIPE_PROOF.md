@@ -179,9 +179,11 @@ The full old986-position support E includes exactly two dummy holes at
 
     I_e=floor((D_rho(Phi(rho),e)+rho-1)/rho).
 
-It is1 exactly on the984 nonzero positions and0 elsewhere. The leading
-1 at e=0, the absence at e=1, both dummy holes and every control position
-are included in this finite statement. It gives the same complete low
+It is1 exactly on the984 nonzero positions and0 elsewhere. Both selector
+positions e=0 and e=1 have indicator1; the two dummy holes have indicator0,
+and every control position is included. In particular I_1=1: the omission
+at exponent1 belongs only to the old MC subtraction over E excluding1.
+The indicator gives the same complete low
 mask via
 
     MC=beta+rho-(rho+3)*rho^1063-sum_(e=0)^3296 I_e*rho^e.
@@ -236,7 +238,14 @@ variants;17 native negatives,12 specific native scope negatives,5 valid
 native algebra variants and4 full-native glyph negatives; and3 complete-
 front glyph negatives plus2 valid prose/hyphen variants. New controls
 mutate every changed family, domain, coefficient/sign, decoder binding
-and positional digit formula;14 additional scope mutations must reach
+and positional digit formula. The action-set range430 to429 control is
+explicitly coverage/schema: action429 repeats action289's target and
+direction, so this case preserves the extensional set while violating the
+declared full430-index contract. It does not demonstrate a changed
+coefficient or polynomial. The separate changed-set predicate control and
+complete430-action/943-tuple checks remain. The negative census includes
+semantic, scope and schema rejection, not a claim that every rejected
+string changes the mathematics. Fourteen additional scope mutations must reach
 RECIPE_CONTEXT specifically. Eight valid recipe variants exercise the
 same complete mathematical path, including distributivity, equality
 symmetry, index commutation and square multiplication. Nine additional
