@@ -15,8 +15,8 @@ universal Diophantine equations by James P. Jones and coauthors:
 
 **Fixed-input specializations for Con(ZFC)** (not formalized). The report
 [`con-zfc-diophantine-forms`](../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5–13
-(batches 221–229, ninety-six packages).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–14
+(batches 221–230, one hundred and three packages).
 
 Until wave 11, every finished equation applied the native-window/Pell
 compiler below, with its input interface removed, to the blank run of the
@@ -26,8 +26,8 @@ is an explicit polynomial with fixed integer coefficients, and by an ordinary
 argument formalizable in ZFC, ZFC proves "no solution" ↔ Con(ZFC). Wave 11
 adds finished direct quartics in the numerical proof calculus C222, with no
 coefficient tuple and without K215, this compiler or Jones; waves 12 and
-13 bring them down to 261 naturals and 442 unrestricted integers (report
-sources 124 and 125).
+13 and 14 bring them down to 233 naturals and 324 unrestricted integers
+(report sources 129 and 131).
 
 That route is not required. By Vladimir's direction, a proposal is free to
 use another encoding instead of K215, Jones's universal equation or this
@@ -37,11 +37,11 @@ compiler, provided it proves its own calibration; see the report's section
 As the packages state them:
 
 - nine positive unknowns in 420 operations, or at degree 997,810;
-- ten positive unknowns in 89 operations at degree 288, or at degree 254;
+- ten positive unknowns in 84 operations at degree 436, or at degree 246;
 - 10 unrestricted integers at degree 1,245,324 in 467 operations, via a
   cited 2026 preprint of Z.-W. Sun (not formalized, not checked at intake);
-- 11 unrestricted integers without that preprint, in 111 operations or at
-  degree 416, and 15 at degree 48 in 108 operations;
+- 11 unrestricted integers without that preprint, in 109 operations or at
+  degree 352, and 15 at degree 44 in 111 operations;
 - eleven positive unknowns at degree 211 in 107 operations;
 - twelve positive unknowns at degree 70, and thirteen at degree 28;
 - fourteen positive unknowns at degree 24;
