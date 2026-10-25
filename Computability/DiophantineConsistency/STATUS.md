@@ -72,16 +72,26 @@ monic/free-coordinate maps and the whole source calibration. The
 [root acceptance](reviews/round16-square-weighted-projections-root-peer.md)
 keeps these raw tradeoffs separate from lower-height centered forms.
 
-The new fixed58-shift centering has five successful author commands, but
-its fresh optimized ROOT check returned143 without a result JSON or
-diagnostic. The [interruption evidence](reviews/round16-common-name-centering-fresh-interruption/README.md)
-is preserved, no retry is released, and final acceptance remains pending.
-The independent [normal fresh check](reviews/round16-common-name-centering-fresh-normal-pass/README.md)
-subsequently exited0 with complete JSON/stdout equal to author bytes;
-both pure build replays also pass and all142 prior files remain unchanged.
-This separate alternative does not affect the verified compact page.
+The fixed58-shift quartics now have a complete separate verification path:
+weighted315 variables/217 rows/5743 terms and plain316/218/5737, both at
+height128446 and row height256, degree4 and all coordinates live. Both full
+final statics and all four first/fresh normal/optimized overlay processes
+pass; all eight complete fresh files equal first bytes and all150 inputs
+remain unchanged. The [ROOT acceptance](reviews/fast-sparse-substitution-replay-root-peer.md)
+binds the universal substitution proof, unchanged old checker and complete
+source/witness-map checks. These save2256/2250 terms against their raw
+parents without changing variables or rows. No fresh native or Lean replay
+is asserted, and the compact66 page is unchanged.
 
-The lower-height fused-nine direct quartic has **327 unrestricted integer unknowns,
+The original fresh optimized check returned143 without JSON or diagnostic;
+its [interruption evidence](reviews/round16-common-name-centering-fresh-interruption/README.md)
+remains preserved and its cause unresolved. Its later
+[normal PASS](reviews/round16-common-name-centering-fresh-normal-pass/README.md)
+and both pure builds remain separate historical records. The old34-file
+observed source is immutable without a MANIFEST. Acceptance rests on the
+new closed evidence, not on relabeling or retrying the interrupted process.
+
+The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
 ordinary source and all finite Horn/projection/translation layers pass four
 fresh independent root replays; see the

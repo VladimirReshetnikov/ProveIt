@@ -96,11 +96,17 @@ give degree-four equations with315 unrestricted integer unknowns/217 rows/
 7999 terms and316/218/7987, both at height14250071. Five first-attempt
 commands and four fresh root replays pass byte for byte; see the
 [root acceptance](reviews/round16-square-weighted-projections-root-peer.md).
-Their smaller variable counts come with larger heights and term counts
-than the preserved lower-height centered chart below. Only these two raw
-profiles were run; no new centering result is inferred.
+These raw parents remain preserved. A separately completed
+[fixed58-shift verification](research/fast-sparse-substitution-replay-verification/README.md)
+now accepts weighted315/217/5743 and plain316/218/5737 at height128446
+and row height256, with every coordinate live. All four first/fresh
+normal/optimized processes pass and reproduce whole original reports;
+all eight fresh files are byte-identical and150 inputs remain unchanged.
+See the [ROOT acceptance](reviews/fast-sparse-substitution-replay-root-peer.md).
+The earlier optimized exit143 remains preserved and unresolved; the old
+observed source is unchanged. No fresh native or Lean replay is claimed.
 
-For lower-height direct degree-four equations, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
+A lower-row direct degree-four comparison, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
 now reaches **327 unrestricted integer unknowns**, with216 rows,5,718 terms
 and height128,446. It saves32 variables, six rows and340 terms against the
 preserved [359-variable shared-cap form](research/signed-pell-cap-projections/data/centered/equation.json).

@@ -15,7 +15,8 @@ not establish the size of a complete consistency equation.
 
 | Domain | Variables | Operations | Degree | Use |
 |---|---:|---:|---:|---|
-| Integers | 315 / 316 | not optimized | 4 | Fresh raw square-radix charts;217/218 rows,7999/7987 terms,height14250071; no centering claim |
+| Integers | **315 / 316** | not optimized | **4** | Complete fixed58-shift charts;217/218 rows,5743/5737 terms,height128446,row height256; separate full fast verification accepted |
+| Integers | 315 / 316 | not optimized | 4 | Preserved raw parents;217/218 rows,7999/7987 terms,height14250071 |
 | Positive integers | **15** | **66** | **157** | Maintained complete one-page indexed equation and every constant; all actual-page/replay/visual checks pass |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 96 | 70 | Free positive J and an identical polarized norm tail |
@@ -2706,3 +2707,32 @@ These are minor representation gains, not new PDF metrics. They remain
 queued for batching: maintained equation.pdf/equation.tex stay unchanged,
 and any future implementation/render needs its own reviews and release.
 Lean stays paused.
+
+## Separate complete verification accepts the fixed58-shift quartics
+
+The [new closed replay evidence](research/fast-sparse-substitution-replay-verification/README.md)
+passes [ordinary review](reviews/fast-sparse-substitution-replay-ordinary-peer.md)
+and [ROOT acceptance](reviews/fast-sparse-substitution-replay-root-peer.md).
+Weighted has315 integer variables/217 rows/5743 terms; plain has316/218/5737.
+Both have degree4, height128446, row height256 and every coordinate live.
+Compared with their raw parents, weighted saves2256 terms and plain2250
+at identical variable/row counts; height falls14250071 to128446. Against
+the327-variable/216-row/5718-term chart, weighted saves12 variables while
+adding one row and25 terms. The older chart remains a useful tradeoff.
+
+A separately reviewed exact accumulator replaces only sparse substitution
+in the unchanged old checker. Both complete final statics precede separate
+ROOT execution releases. All four first/fresh normal/optimized processes
+actually exit0, retain12 differential/64 negative/four valid controls, and
+produce byte-identical original reports. All eight complete fresh files
+match first outputs, with all150 whole inputs unchanged. The23-payload
+evidence packet binds both full coefficient directions and whole source
+map/calibration scope without generating new data.
+
+The original optimized exit143 remains unresolved historical evidence;
+the successful separate implementation does not relabel it. The original
+34-file observed source remains unchanged without a MANIFEST. This new
+combined verification path accepts its unchanged13 data artifacts under
+the retained ordinary source/native contract. No fresh native or Lean
+replay occurs. Main compact66 PDF/TeX stay unchanged because this quartic
+tradeoff does not simplify their complete printed recipe.
