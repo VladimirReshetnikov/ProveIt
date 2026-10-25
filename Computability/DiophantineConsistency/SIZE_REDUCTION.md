@@ -118,12 +118,13 @@ It saves nineteen operations and171 degree against the preserved
 [ten-positive85/328 page](candidates/one-page-doubled85/equation.pdf), with
 five more unknowns. Its shorter fixed recipe now removes two explicit
 support/control tables while keeping all four complete integers unchanged.
-Actual nonwhite extracted characters decrease3025 to2885 and complete TeX
-5524 to5395 bytes at unchanged fonts. All ten corrected r2 commands, six
-fresh byte-exact replays and both actual-page visual reviews pass; the
-earlier failed source-audit attempt remains preserved. Significant checked
+The current compact recipe further reduces actual nonwhite extracted
+characters2885 to2801 and complete TeX5395 to5244 bytes at unchanged fonts.
+All ten first commands, six fresh byte-exact replays and both actual-page
+visual reviews pass; the earlier grouped-page source-audit failure remains
+preserved. Significant checked
 gains are batched into the maintained PDF; all complete predecessors remain
-available. See the [whole page acceptance](reviews/one-page-grouped66-root-peer.md).
+available. See the [whole page acceptance](reviews/one-page-compact66-root-peer.md).
 
 ## Work now underway
 
@@ -2921,9 +2922,13 @@ and quadratic tables prove prospective5728/5734 terms, exact height54709
 and row height128, with unchanged316/315 variables and218/217 rows.
 Exactly55 terms disappear and two appear; some retained magnitudes grow.
 All lower degrees and live coordinates are covered, rather than inferred
-from one leading coefficient. A separate fixed finite implementation is
-in preparation under execution hold. The accepted table remains at the
-fully generated93109 neighbor forms until that verification completes.
+from one leading coefficient. Both complete final statics and all nine
+released first/fresh finite applications now pass, with128 negative/12
+valid controls per checker, twelve byte-exact fresh captures and379
+unchanged inputs. The exact generated13-artifact census agrees with the
+ordinary theorem. Complete inert evidence assembly and independent
+ordinary review remain in progress; the accepted table stays at93109
+until separate ROOT finite endpoint acceptance.
 
 ## The55-bit mod5 obstruction and same-tuple wrap refinement
 
@@ -2944,9 +2949,34 @@ final ordinary rereviews pass after the separately released one-word
 per-bit/per-prefix correction, and the
 [joint conditional acceptance](reviews/compact66-radix55-wrap-controller-ordinary-acceptance.json)
 binds their exact final source. Initial sources and both full first
-reports remain immutable. The revised modular probe is still an unsealed
-CODE-ONLY draft, with no execution or unknown residue evaluation, tuple
-or page output.
+reports remain immutable.
+
+The [closed55-bit modular evidence](research/compact66-radix55-unit-probe-verification/README.md)
+now passes both full final ordinary reviews and
+[ROOT bounded acceptance](reviews/compact66-radix55-unit-probe-bounded-acceptance.json).
+Hctrl is3422 modulo8807 and500242 modulo581197 by two independent full
+coefficient/modular routes. Both are nonzero, so the final wrapping proof's
+two finite unit premises are discharged. The known mod5 zero remains a
+consistency check, not a required unit. Four actual normal/optimized
+first/fresh applications exit0 with seven negative/two valid controls,
+all six fresh files agree in full and197 original inputs are unchanged.
+The corrected evidence commit-reference typo and both complete first
+reviews remain preserved. No new numerical four-port tuple, specialized
+source/DAG endpoint or page saving is accepted. That complete one-page
+candidate is now under CODE ONLY preparation; main PDF/TeX stay current.
+
+## A pair-sum shear gives a smaller complete ordinary height bound
+
+The [fixedcoord27 follow-up](research/pair-sum-gate-shear/README.md) passes
+both full ordinary reviews and [joint bound acceptance](reviews/pair-sum-gate-shear-ordinary-acceptance.json).
+After the precedingcoord35 map, set old27=new27-new10-new12. All eleven
+changed complete residuals and the noncommuting composed inverse are
+explicit. The result has exact residual height96 and degree4, all316/315
+coordinates live, and nine fewer residual-term occurrences. The entire
+polynomial has32053<=height<=41466, with separate bounds for every degree
+and every output coordinate. Exact expanded height/support are unknown.
+Finite source preparation is separate and has not executed; no generated
+endpoint, page gain or global optimum is claimed.
 
 ## A retained alternative-calculus transfer lead
 

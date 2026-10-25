@@ -119,9 +119,20 @@ unchanged. The [coord35 output-gate shear](research/pell-output-gate-shear/READM
 now passes both full ordinary reviews and [joint theorem acceptance](reviews/pell-output-gate-shear-ordinary-acceptance.json).
 Complete hand tables prove prospective height54709, row height128 and
 5728 plain/5734 weighted terms. It removes55 terms and introduces two;
-some retained coefficients grow. A separate finite implementation is
-being prepared under execution hold; these are not accepted generated
-endpoint figures and the comparison table retains the verified93109 forms.
+some retained coefficients grow. The separately reviewed finite code has
+now passed all nine actual first/fresh applications, including128 negative
+and12 valid controls in each checker. All12 fresh capture files reproduce
+first bytes;379 inputs and13 generated files remain unchanged. Complete
+inert evidence assembly and independent ordinary review are in progress;
+these figures await ROOT finite endpoint acceptance. The comparison table
+therefore retains the accepted93109 forms.
+
+The next [pair-sum shear](research/pair-sum-gate-shear/README.md) passes
+both full ordinary reviews and [joint bound acceptance](reviews/pair-sum-gate-shear-ordinary-acceptance.json).
+It proves32053<=height<=41466, exact residual height96, degree4 and full
+liveness at unchanged variable/row counts, with nine fewer residual-term
+occurrences. Exact expanded height and support remain unknown. Its
+separate finite source is being prepared without execution.
 
 The [bounded radix65 evidence](research/compact66-radix65-unit-probe-verification/README.md)
 passes [ordinary review](reviews/compact66-radix65-unit-probe-verification-ordinary-peer.md)
@@ -156,7 +167,18 @@ modulo8807*N and CRT. Both full final rereviews and
 check the complete proof under only two remaining unit conditions. The
 separately released one-word repair distinguishes a single wrapping bit's
 quotient increment from a prefix's sum; both full first reports remain
-preserved. No probe, new tuple or page output has run.
+preserved. The [complete modular evidence](research/compact66-radix55-unit-probe-verification/README.md)
+now passes both full final ordinary reviews and
+[ROOT bounded acceptance](reviews/compact66-radix55-unit-probe-bounded-acceptance.json).
+Both independent routes give Hctrl=3422 modulo8807 and500242 modulo581197;
+both are nonzero. The known zero modulo5 remains and is handled by the
+wrapping bits. All four actual normal/optimized first/fresh processes
+exit0 with seven negative/two valid controls; all six fresh files are
+byte-exact and197 inputs remain unchanged. This discharges exactly the
+two finite unit premises. A coherent new numerical tuple, its full
+specialized source/front binding and the updated one-page candidate are
+being prepared under execution hold. Their size/page gains are not yet
+accepted; the maintained67-bit PDF/TeX remain current.
 
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
