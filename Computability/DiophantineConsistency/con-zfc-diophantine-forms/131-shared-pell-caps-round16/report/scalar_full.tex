@@ -1,0 +1,631 @@
+% Complete unabridged proof from scalar/PROOF.md
+\section{Parity normalized product equations in eleven unrestricted integers}
+
+
+
+\subsection{Result and scope}
+
+
+
+This component gives two complete ordinary integer polynomials, each with eleven unrestricted integer unknowns and the six unchanged, fixed source34 coefficient ports. The native-index form has \textbf{109 binary operations and exact degree 966}. Replacing its first-index modulus by \texttt{4q\textasciicircum{}\allowbreak{}4} gives \textbf{110 operations and exact degree 882}. These are operation/\allowbreak{}degree tradeoffs against the independently developed lower-degree three-root forms.
+
+
+
+The arithmetic mechanism is a product of three pairwise coprime integers. A congruence modulo four recovers their signs after square extraction. There is no radical norm in the displayed equation. The strong Pell ordinate is saturated with the square root of an already coprime product; the auxiliary coordinate is rescaled compatibly. A weak scalar carrier and the supported-modulus interpolation theorem supply the reverse direction.
+
+
+
+The claimed consistency equivalence uses the same explicitly retained ordinary source34/\allowbreak{}native/\allowbreak{}compiler/\allowbreak{}refutation calibration as the predecessor. The new result is the complete ordinary arithmetic reduction below. It is not a new Lean/\allowbreak{}Rocq endpoint, a machine-checked object-ZFC derivation, a proof of consistency, or a global simplicity minimum.
+
+
+
+\subsection{1. Complete polynomial}
+
+
+
+All eleven independent variables
+
+
+
+\begin{verbatim}
+j, C, z, h, r, v, w, T, c, n, s
+\end{verbatim}
+
+range over \textbf{all integers}. The fixed ports are
+
+
+
+\begin{verbatim}
+beta, K0, MC, MF, cone_A, cone_B.
+\end{verbatim}
+
+They are the entire coherent source34 tuple, including the already-shifted MF, with \texttt{beta=\allowbreak{}2\textasciicircum{}\allowbreak{}1064921-1}, \texttt{cone\_\allowbreak{}A=\allowbreak{}2\textasciicircum{}\allowbreak{}1113}, and \texttt{cone\_\allowbreak{}B=\allowbreak{}2\textasciicircum{}\allowbreak{}666104}. The supplied compressed bytes and reconstruction recipe specify all six numerals. They are not quantified parameters.
+
+
+
+Every following symbol is a polynomial abbreviation:
+
+
+
+\begin{verbatim}
+J=6j+1, q=beta J+1, W=12w+4,
+X=qW, Y=(2v+1)q^3, E=XY,
+a=(X+1)Y, A=a+2, H=4a+3, Delta=a^2+H=A^2-1,
+F=(K0+W)C-z(q-1),
+R=[q(q-F)-C](q^2-1)+(MC+q MF)J.
+\end{verbatim}
+
+Choose one of two explicit moduli:
+
+
+
+\begin{verbatim}
+M_index=XY              (109-operation form),
+M_index=4q^4            (110-operation form).
+\end{verbatim}
+
+Continue with
+
+
+
+\begin{verbatim}
+k=R+1+h M_index, eta=c-Yk,
+Derr=(cone_A F-q)^2+(cone_B C-q)^2,
+Budget=k^2(q^2-Derr)-4q^2 eta^2,
+D=Budget-4,
+ell=XY^2, Dt=1+ell(ell+1)k^2,
+Dg=1+D Dt s^2, P=Dt Dg,
+Dm=1+Delta c^2,
+U=r c^2 A Dm,
+Df=1+Delta U^2 P,
+Q=Delta^2 U^2 P, delta=Q-1,
+b=c-R+4UPT, V=Df b-c, Cy=QV^2-1,
+K=X(3c-2X)+2,
+S=srH, zc=HT+K,
+Ac=(zc^2+3H^2)(zc^3-19H^3), Z=Sn-Ac.
+\end{verbatim}
+
+The single equation is
+
+
+
+\begin{verbatim}
+delta Z^2 - S^2 P Df Cy = 0.                         (1)
+\end{verbatim}
+
+This is a division-free ordinary polynomial with integer coefficients. In the literal graph Dg is not materialized; the identical identity
+
+
+
+\begin{verbatim}
+P=Dt+D(Dt s)^2
+\end{verbatim}
+
+uses no forced factor two in its guard scale. In the short-index form, the existing register \texttt{4q\textasciicircum{}\allowbreak{}2} from the budget is also used to compute \texttt{(4q\textasciicircum{}\allowbreak{}2)q\textasciicircum{}\allowbreak{}2=\allowbreak{}4q\textasciicircum{}\allowbreak{}4}, saving one more multiplication without changing the polynomial. The shared product \texttt{UP=\allowbreak{}U\textasteriskcentered{}\allowbreak{}P} is reused in \texttt{strong=\allowbreak{}(Delta U)\textasteriskcentered{}\allowbreak{}UP} and \texttt{b=\allowbreak{}c-R+\allowbreak{}4UPT}.
+
+
+
+\subsection{2. Unconditional nonzero facts}
+
+
+
+The actual affine restrictions and fixed tuple give, for every integer assignment,
+
+
+
+\begin{verbatim}
+q even, q=2 mod3, |q|>=beta-1,
+X=0 mod8, X=2 mod3, |X|>=4|q|,
+Y=0 mod8, |Y|>=|q|^3,
+|a|>2, A!=0, H odd and nonzero, Delta>1.
+\end{verbatim}
+
+In particular A is even and Dm is a positive integer. For every integer ell, ell(ell+\allowbreak{}1)\textgreater{}\allowbreak{}=\allowbreak{}0, so Dt\textgreater{}\allowbreak{}=\allowbreak{}1. Moreover ell is a multiple of eight, hence Dt=\allowbreak{}1 modulo eight. The authentic cone coefficients are divisible by sixteen. Writing Ucone=\allowbreak{}cone\_\allowbreak{}A F and Vcone=\allowbreak{}cone\_\allowbreak{}B C, expansion gives
+
+
+
+\begin{verbatim}
+Budget+(qk)^2
+  = k^2[2q(Ucone+Vcone)-Ucone^2-Vcone^2]-4q^2 eta^2
+  = 0 modulo sixteen.
+\end{verbatim}
+
+Here q is even, so every displayed summand is divisible by sixteen. An even square is 0 or 4 modulo sixteen. Consequently
+
+
+
+\begin{verbatim}
+Budget=0 or12 modulo16, D=12 or8 modulo16.          (2a)
+\end{verbatim}
+
+In particular D is divisible by four and is never an integer square. This is the new parity lemma: it replaces both the former scalar factor three in D and the forced factor four in Dg. Since Dg=\allowbreak{}1 modulo four, it is nonzero and
+
+
+
+\begin{verbatim}
+P=1 mod4, P!=0.                                    (2)
+\end{verbatim}
+
+Because Delta\textgreater{}\allowbreak{}1, neither \texttt{Df=\allowbreak{}1+\allowbreak{}Delta U\textasciicircum{}\allowbreak{}2 P} nor \texttt{delta=\allowbreak{}Delta\textasciicircum{}\allowbreak{}2 U\textasciicircum{}\allowbreak{}2 P-1} can vanish. Also \texttt{Cy=\allowbreak{}QV\textasciicircum{}\allowbreak{}2-1} cannot vanish: an integer identity QV\textasciicircum{}\allowbreak{}2=\allowbreak{}1 would force Q=\allowbreak{}1, already excluded. Thus
+
+
+
+\begin{verbatim}
+Da=(Q-1)(QV^2-1)=delta Cy
+\end{verbatim}
+
+is nonzero on every integer assignment. No sign or Pell interpretation has been used for these assertions.
+
+
+
+If S=\allowbreak{}0, equation (1) reduces to \texttt{delta Ac\textasciicircum{}\allowbreak{}2=\allowbreak{}0}. This is impossible. Indeed H!=\allowbreak{}0 and
+
+
+
+\begin{verbatim}
+Ac=H^5 pi(T+K/H), pi(x)=(x^2+3)(x^3-19).
+\end{verbatim}
+
+The first factor has no real zero; the second has no rational zero. Therefore every zero of (1) has S!=\allowbreak{}0, and hence s,r are nonzero. The value c has not yet been shown nonzero.
+
+
+
+\subsection{3. Coprimality and sign recovery, including c=\allowbreak{}0}
+
+
+
+All gcds here mean gcds of absolute integer values. Directly,
+
+
+
+\begin{verbatim}
+gcd(P,Df)=1,
+Q=0, delta=-1, Cy=-1, Da=1 modulo P,
+\end{verbatim}
+
+so gcd(P,Da)=\allowbreak{}1. Modulo Df,
+
+
+
+\begin{verbatim}
+Q=-Delta, delta=-A^2, V=-c, Cy=-Dm,
+Da=A^2 Dm.
+\end{verbatim}
+
+Since \texttt{A Dm | U}, the integer Df is 1 modulo both A and Dm. Consequently
+
+
+
+\begin{verbatim}
+gcd(Df,Da)=1.                                      (3)
+\end{verbatim}
+
+These identities remain valid for negative P or Df and for U=\allowbreak{}0.
+
+
+
+Multiplying (1) by delta and dividing by the nonzero rational square S\textasciicircum{}\allowbreak{}2 gives
+
+
+
+\begin{verbatim}
+(delta Z/S)^2 = P Df Da.                           (4)
+\end{verbatim}
+
+The right side is a nonzero integer. A rational number whose square is an integer is an integer, so it is an integer square. By (3), the absolute value of each of P,Df,Da is separately an integer square. By (2), P cannot be the negative of an odd square, which would be 3 modulo four. Thus P\textgreater{}\allowbreak{}0. Now Df=\allowbreak{}1+\allowbreak{}Delta U\textasciicircum{}\allowbreak{}2 P\textgreater{}\allowbreak{}0, and (4) forces Da\textgreater{}\allowbreak{}0. We obtain positive integers
+
+
+
+\begin{verbatim}
+p0^2=P, f^2=Df, e0^2=Da.                           (5)
+\end{verbatim}
+
+There is a second coprime split:
+
+
+
+\begin{verbatim}
+gcd(Dt,Dg)=gcd(Dt,1+D Dt s^2)=1.
+\end{verbatim}
+
+Dt is positive and P=\allowbreak{}DtDg\textgreater{}\allowbreak{}0, so Dg\textgreater{}\allowbreak{}0. Therefore
+
+
+
+\begin{verbatim}
+Dt=tau^2, Dg=g^2, p0=tau g
+\end{verbatim}
+
+for positive integers tau,g. Since s!=\allowbreak{}0, Budget\textless{}\allowbreak{}=\allowbreak{}3 would imply D\textless{}\allowbreak{}=\allowbreak{}-1 and Dg\textless{}\allowbreak{}=\allowbreak{}1-Dt\textless{}\allowbreak{}=\allowbreak{}0. Dg is nonzero, so this contradicts Dg\textgreater{}\allowbreak{}0. Hence Budget\textgreater{}\allowbreak{}=\allowbreak{}4; (2a) sharpens this to Budget\textgreater{}\allowbreak{}=\allowbreak{}12. In particular Budget\textgreater{}\allowbreak{}0.
+
+
+
+The centered-budget argument is now valid. It supplies k!=\allowbreak{}0, Derr\textless{}\allowbreak{}q\textasciicircum{}\allowbreak{}2, the common nonzero sign of q,F,C,q-F-C, and
+
+
+
+\begin{verbatim}
+|c/k-Y|<1/2, sign(c)=sign(kY).
+\end{verbatim}
+
+It also excludes c=\allowbreak{}0 directly: at c=\allowbreak{}0,
+
+
+
+\begin{verbatim}
+Budget=k^2[q^2-Derr-4q^2Y^2]<=0,
+\end{verbatim}
+
+since |Y|\textgreater{}\allowbreak{}=\allowbreak{}1. Thus c!=\allowbreak{}0 and U!=\allowbreak{}0. We have now recovered positivity before invoking any Pell classification or dividing by c.
+
+
+
+\subsection{4. Restore the complete strong and auxiliary source}
+
+
+
+Define only in the proof
+
+
+
+\begin{verbatim}
+I=U p0, T_old=p0 T.
+\end{verbatim}
+
+They are integers, \texttt{I!=\allowbreak{}0}, \texttt{c\textasciicircum{}\allowbreak{}2|I}, and \texttt{|I|\textgreater{}\allowbreak{}=\allowbreak{}c\textasciicircum{}\allowbreak{}2}. The exact restored identities are
+
+
+
+\begin{verbatim}
+f^2=1+Delta I^2,
+Q=(Delta I)^2>1,
+b=c-R+4I T_old,
+V=f^2(c-R+4I T_old)-c.
+\end{verbatim}
+
+The rational number \texttt{y=\allowbreak{}e0/\allowbreak{}delta} satisfies
+
+
+
+\begin{verbatim}
+QV^2-(Q-1)y^2=1.                                   (6)
+\end{verbatim}
+
+It is integral. Here is the adjacent-coefficient descent in the form needed here. If y=\allowbreak{}u/\allowbreak{}d is in lowest terms, d\textasciicircum{}\allowbreak{}2 divides Q-1. The map
+
+
+
+\begin{verbatim}
+V'=(2Q-1)V-2(Q-1)y,
+y'=(2Q-1)y-2QV
+\end{verbatim}
+
+preserves (6), keeps V' integral, and preserves the reduced denominator d. After reflecting signs, V\textgreater{}\allowbreak{}1 and y\textgreater{}\allowbreak{}0 give V\textless{}\allowbreak{}y\textless{}\allowbreak{}QV/\allowbreak{}(Q-1), hence -V\textless{}\allowbreak{}V'\textless{}\allowbreak{}V. The norm prevents V'=\allowbreak{}0. Descent reaches |V|=\allowbreak{}1, where |y|=\allowbreak{}1. Thus d=\allowbreak{}1. This proves the assertion without assuming divisibility by delta from the fact that Da is a square.
+
+
+
+Canceling nonzero delta in (1) after (5)--(6) gives
+
+
+
+\begin{verbatim}
+Z^2=S^2 p0^2 f^2 y^2.
+\end{verbatim}
+
+Thus Z/\allowbreak{}S is an integer, and S|Ac. Because H|S and Ac=\allowbreak{}K\textasciicircum{}\allowbreak{}5 modulo H,
+
+
+
+\begin{verbatim}
+H | K^5.                                          (7)
+\end{verbatim}
+
+The congruences needed for signed rank recovery hold exactly:
+
+
+
+\begin{verbatim}
+V=-c modulo f,
+V+R=Delta I^2(c-R)+4I Df T_old=0 modulo c.
+\end{verbatim}
+
+No assumption that I/\allowbreak{}c\textasciicircum{}\allowbreak{}2 is odd has been introduced. The retained signed-folding theorem explicitly permits an arbitrary nonzero integer strong multiplier.
+
+
+
+\subsection{5. Smaller first-index modulus}
+
+
+
+For the native-index variant the retained centered-rank proof applies without any change to its first-index congruence. For the short variant we verify the only changed input to that argument.
+
+
+
+The packing bounds supplied by Budget\textgreater{}\allowbreak{}0 give
+
+
+
+\begin{verbatim}
+0<R<|q|^4-2.
+\end{verbatim}
+
+Set M=\allowbreak{}4q\textasciicircum{}\allowbreak{}4. Then M\textgreater{}\allowbreak{}3R+\allowbreak{}1. The identity
+
+
+
+\begin{verbatim}
+2XY^2=2(12w+4)(2v+1)^2 q^7
+\end{verbatim}
+
+shows \texttt{M | 2XY\textasciicircum{}\allowbreak{}2}. Write xi=\allowbreak{}sign(X), sigma=\allowbreak{}sign(k), and \texttt{PellBase=\allowbreak{}|2XY\textasciicircum{}\allowbreak{}2+\allowbreak{}1|}. The latter is congruent to xi modulo M. The first Pell classification therefore yields an index n1\textgreater{}\allowbreak{}=\allowbreak{}1 and
+
+
+
+\begin{verbatim}
+|k|=2 psi_PellBase(n1),
+sigma xi^(n1-1) 2n1 = R+1 modulo M.                (8)
+\end{verbatim}
+
+The unaltered strip and growth estimates give the main index p\textgreater{}\allowbreak{}=\allowbreak{}1 with \texttt{|c|=\allowbreak{}psi\_\allowbreak{}|A|(p)} and p\textgreater{}\allowbreak{}n1. If the sign in (8) is positive then n1\textgreater{}\allowbreak{}=\allowbreak{}(R+\allowbreak{}1)/\allowbreak{}2. If negative, n1\textgreater{}\allowbreak{}R because M\textgreater{}\allowbreak{}3R+\allowbreak{}1. Thus all initial growth bounds in the retained proof hold. Strong and auxiliary folding then give p=\allowbreak{}R, without using the projection (7). Since n1\textless{}\allowbreak{}p=\allowbreak{}R, the negative case is impossible. Both 2n1 and R+\allowbreak{}1 lie strictly between zero and M, so (8) gives \texttt{2n1=\allowbreak{}R+\allowbreak{}1} exactly.
+
+
+
+All subsequent ratio, projection and sign arguments are unchanged. After their orientation conclusions, the exact first-Pell formula is
+
+
+
+\begin{verbatim}
+k=2 psi_(2XY^2+1)((R+1)/2).
+\end{verbatim}
+
+Reduction of this recurrence modulo XY gives \texttt{XY | k-R-1}. Hence \texttt{h\_\allowbreak{}old=\allowbreak{}(k-R-1)/\allowbreak{}(XY)} is an integer and restores the original source's literal h coordinate. A new h is allowed because it occurs in that source only in the definition of k.
+
+
+
+For completeness, the canonical first-Pell value satisfies the same recurrence. Since M|2XY\textasciicircum{}\allowbreak{}2, it has \texttt{M | k-R-1}; choose the new h as the corresponding integer quotient. Thus both directions are proved. The change does not assume that XY and 4q\textasciicircum{}\allowbreak{}4 are equal or divide one another.
+
+
+
+\subsection{6. Fifth-power projection and the finite-refutation endpoint}
+
+
+
+The retained signed folding and rank proof, with Section 5 for the short index, now gives \texttt{R=\allowbreak{}2t+\allowbreak{}1}, \texttt{t\textgreater{}\allowbreak{}=\allowbreak{}24}, and
+
+
+
+\begin{verbatim}
+c=sigma psi_A(R), x=|X|>=4(beta-1)>=2^64,
+|Y|>(x-3)^t/2-1,
+|H|>x(x-3)^t>x^(t+1)/2^t.
+\end{verbatim}
+
+Let \texttt{Kquad=\allowbreak{}X(X+\allowbreak{}2ac)-1}. The identity
+
+
+
+\begin{verbatim}
+K=HXc-2Kquad
+\end{verbatim}
+
+and odd H show that (7) implies H|Kquad\textasciicircum{}\allowbreak{}5. The exact signed-Pell projector congruence is
+
+
+
+\begin{verbatim}
+2^R Kquad = Pi modulo H,
+Pi=(sigma X-2^R)(2^R sigma X+1).
+\end{verbatim}
+
+Thus H|Pi\textasciicircum{}\allowbreak{}5. Each factor has absolute value less than \texttt{2\textasciicircum{}\allowbreak{}(R+\allowbreak{}1)x}, so
+
+
+
+\begin{verbatim}
+|Pi|^5<2^(20t+20)x^10<|H|.
+\end{verbatim}
+
+For the last inequality use x\textgreater{}\allowbreak{}=\allowbreak{}2\textasciicircum{}\allowbreak{}64 and
+
+
+
+\begin{verbatim}
+64(t-9)-(21t+20)=43t-596>=436>0.
+\end{verbatim}
+
+It follows that Pi=\allowbreak{}0. Its second factor is odd and nonzero, so sigma X=\allowbreak{}2\textasciicircum{}\allowbreak{}R. The retained centered orientation and half-binomial proof then restores X,c,k,Y\textgreater{}\allowbreak{}0, \texttt{0\textless{}\allowbreak{}eta/\allowbreak{}k\textless{}\allowbreak{}1/\allowbreak{}4}, the exact main-Pell projection, and every literal old signed source row after fresh private witnesses are regenerated. Section 5 restores h\_\allowbreak{}old when required.
+
+
+
+This is the full hypothesis set of the inherited source34/\allowbreak{}native finite- refutation endpoint. Therefore a zero of either new polynomial yields a finite syntactic ZFC refutation, under that same named ordinary calibration.
+
+
+
+\subsection{7. Completeness, with a fixed strong pair}
+
+
+
+Start with the canonical outer witness supplied by a finite refutation. Keep j,C,z,v,w,c and the canonical first-Pell value k; choose h using the appropriate modulus. The source gives A\textgreater{}\allowbreak{}1 even, R=\allowbreak{}3 modulo four, \texttt{c=\allowbreak{}psi\_\allowbreak{}A(R)\textgreater{}\allowbreak{}0}, \texttt{c=\allowbreak{}R modulo four}, and \texttt{Dt=\allowbreak{}tau\textasciicircum{}\allowbreak{}2} with tau\textgreater{}\allowbreak{}0. It also gives the stronger centered Budget\textgreater{}\allowbreak{}=\allowbreak{}64.
+
+
+
+The integer D=\allowbreak{}Budget-4 is positive because the canonical Budget is at least64, and it is nonsquare by (2a). The canonical Dt=\allowbreak{}tau\textasciicircum{}\allowbreak{}2 is a nonzero square, so D Dt is positive and nonsquare. Ordinary Pell existence directly gives positive integers s,g with
+
+
+
+\begin{verbatim}
+g^2=1+D Dt s^2.
+\end{verbatim}
+
+No squaring of the unit and no restriction on the parity of s is needed.
+
+
+
+Fix these and set \texttt{p0=\allowbreak{}tau g}. Now A,Dm,p0,s,c are fixed positive integers. Choose ONE positive strong Pell pair I,f with
+
+
+
+\begin{verbatim}
+4s A Dm p0 c^2 | I,
+f^2-Delta I^2=1.
+\end{verbatim}
+
+The retained finite-period construction and supported-modulus interpolation theorem supply such a pair. Define
+
+
+
+\begin{verbatim}
+r=I/(A Dm p0 c^2), U=I/p0.
+\end{verbatim}
+
+These are positive integers; r is a multiple of 4s. Keep this pair I,f fixed from now on. Every prime factor of \texttt{M=\allowbreak{}p0 s r} divides I.
+
+
+
+The canonical projector gives H|K; put kappa=\allowbreak{}K/\allowbreak{}H. The classical intersective quintic pi(x)=\allowbreak{}(x\textasciicircum{}\allowbreak{}2+\allowbreak{}3)(x\textasciicircum{}\allowbreak{}3-19) has a root modulo every positive integer. Choose a residue a0 modulo sr with
+
+
+
+\begin{verbatim}
+pi(a0+kappa)=0 modulo sr.
+\end{verbatim}
+
+The supported-modulus interpolation theorem, applied to this same fixed I,f and modulus M, supplies an auxiliary T\_\allowbreak{}old in the prescribed class
+
+
+
+\begin{verbatim}
+T_old=p0 a0 modulo p0 s r,
+\end{verbatim}
+
+with its full integral auxiliary Pell witness y. Consequently p0|T\_\allowbreak{}old; set T=\allowbreak{}T\_\allowbreak{}old/\allowbreak{}p0. Then T=\allowbreak{}a0 modulo sr and
+
+
+
+\begin{verbatim}
+Ac/S=H^4 pi(T+kappa)/(sr)
+\end{verbatim}
+
+is an integer. The auxiliary equality is precisely the new equality, since \texttt{4I T\_\allowbreak{}old=\allowbreak{}4UPT}. Finally choose
+
+
+
+\begin{verbatim}
+n=Ac/S+p0 f y.
+\end{verbatim}
+
+This unrestricted integer makes (1) vanish. The order is outer witness, guard s/\allowbreak{}g, one strong I/\allowbreak{}f/\allowbreak{}r, intersective residue, T\_\allowbreak{}old and T/\allowbreak{}y, then n. No strong pair is changed after the residue is requested; no coprimality between H, s, r, p0, or I is assumed.
+
+
+
+Therefore each polynomial has an integer zero exactly when the calibrated source has a finite syntactic ZFC refutation. Composing the retained ordinary calibration gives in ZFC the equivalence between the polynomial's universal nonvanishing over Z\textasciicircum{}\allowbreak{}11 and Con(ZFC).
+
+
+
+\subsection{8. Exact degrees and coefficients}
+
+
+
+With q0=\allowbreak{}6 beta j, X0=\allowbreak{}12q0 w, Y0=\allowbreak{}2v q0\textasciicircum{}\allowbreak{}3, a0=\allowbreak{}X0Y0, let k0 denote the top homogeneous part of k. It is
+
+
+
+\begin{verbatim}
+k0=h a0                          (native modulus),
+k0=4h q0^4-q0^3 F0,
+F0=12w C-q0 z                    (short modulus).
+\end{verbatim}
+
+The prefix degrees are as follows; each indicated leading part is nonzero.
+
+
+
+\begin{verbatim}
+| register | k | P | U | Df | Q | b | V | Cy | S | Ac |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| native | 7 | 94 | 23 | 152 | 164 | 118 | 270 | 704 | 8 | 35 |
+| short | 5 | 82 | 23 | 140 | 152 | 106 | 246 | 644 | 8 | 35 |
+\end{verbatim}
+
+In both variants Z has degree 35. The first summand delta Z\textasciicircum{}\allowbreak{}2 has degree 234 or 222. The second summand has degree 966 or 882 and therefore uniquely determines the top homogeneous part.
+
+
+
+Direct multiplication, with
+
+
+
+\begin{verbatim}
+P0=-4 q0^2 X0^4 Y0^10 k0^6 s^2,
+U0=r a0^3 c^4, S0=4sr a0,
+\end{verbatim}
+
+gives the complete leading form
+
+
+
+\begin{verbatim}
+2^22 * q0^14 X0^70 Y0^112 k0^42 s^16 r^12 c^40 T^2.
+\end{verbatim}
+
+For the native form it is a single monomial. Its coefficient at
+
+
+
+\begin{verbatim}
+j^588 w^112 v^154 h^42 s^16 r^12 c^40 T^2
+\end{verbatim}
+
+is exactly \texttt{2\textasciicircum{}\allowbreak{}988 \textasteriskcentered{}\allowbreak{} 3\textasciicircum{}\allowbreak{}700 \textasteriskcentered{}\allowbreak{} beta\textasciicircum{}\allowbreak{}588\textgreater{}\allowbreak{}0}. For the short form the coefficient at
+
+
+
+\begin{verbatim}
+j^588 w^70 v^112 h^42 s^16 r^12 c^40 T^2
+\end{verbatim}
+
+is exactly \texttt{2\textasciicircum{}\allowbreak{}946 \textasteriskcentered{}\allowbreak{} 3\textasciicircum{}\allowbreak{}658 \textasteriskcentered{}\allowbreak{} beta\textasciicircum{}\allowbreak{}588\textgreater{}\allowbreak{}0}. It is selected by the maximum h exponent in k0\textasciicircum{}\allowbreak{}42. The exponent sums are respectively 966 and 882. These are polynomial degree proofs at the actual fixed beta, not degree guesses from numerical evaluation along lines.
+
+
+
+The independent checker does not import the producer. It verifies all literal local polynomial formulas, every live gate, the complete coefficients, the exact leading monomial at every gate, the coprimality remainder identities, the auxiliary rescaling identities, and the smaller-modulus divisibility. Finite checks support the artifact and algebra; they do not replace the unbounded Pell, interpolation, or inherited consistency arguments.
+
+
+
+\subsection{9. Read dependencies}
+
+
+
+\begin{itemize}
+
+\item Incoming \texttt{ZFC\_\allowbreak{}Diophantine\_\allowbreak{}Coprime\_\allowbreak{}Projection\_\allowbreak{}2026-10-24.zip}, component \texttt{integer/\allowbreak{}PROOF.md}, especially Sections 2--4; the original complete source34 coefficient tuple and its reconstruction recipe.
+
+\item Its \texttt{integer/\allowbreak{}source/\allowbreak{}centered11-proof.md}, Sections 3, 5.2--5.4 and 6: centered signs, signed rank recovery, exact half-binomial interval, restoration to the native endpoint, and the original full-residue theorem.
+
+\item Its \texttt{integer/\allowbreak{}source/\allowbreak{}signed-quadratic-proof.md}, Sections 2 and 5: absolute main-root folding and the signed quadratic projector congruence.
+
+\item Incoming \texttt{ConZFC\_\allowbreak{}Powered\_\allowbreak{}Saturation\_\allowbreak{}Factorial\_\allowbreak{}Carriers\_\allowbreak{}Round14\_\allowbreak{}2026-10-24.zip}, \texttt{radicals/\allowbreak{}PROOF.md}, Sections 4--6: fifth-power saturation and supported- modulus interpolation with its explicit Pell valuation proof.
+
+\end{itemize}
+
+
+
+The new square-root saturation has a separately checked completeness rescaling. It is not a pointwise polynomial substitution of the old all-fused equation and does not assert a bijection of arbitrary zeros.
+
+
+
+
+
+\subsection{10. Attribution and local closure}
+
+
+
+The square-root saturation, three-factor coprime product, short-index modulus and witness ordering are retained from the authenticated incoming Shared Binomial Certificates lowops construction, whose complete proof is source/\allowbreak{}SHARED\_\allowbreak{}PRODUCT\_\allowbreak{}PROOF.md. They are not claimed as new in this round. The two local changes are the parity-normalized guard D=\allowbreak{}Budget-4 and the removal of the now-redundant factor four in Dg. Every affected bootstrap and completeness step has been re-proved above.
+
+
+
+The six actual coefficient payloads, complete fixed recipe and machine/\allowbreak{}tile data are in coefficients/. The retained source34 calibration sources and ordinary signed and interpolation arguments are in inherited/. The source and coefficient bytes are pinned in SOURCE\_\allowbreak{}PINS.json. All references to other package layouts in unchanged source copies are historical; their matching retained documents are in inherited/\allowbreak{}provenance/.
+
+
+
+The producer and independent checker are adaptations of the authenticated incoming lowops arithmetic tools. The checker does not import the producer. It verifies complete local polynomial cuts, every live gate, actual full coefficient bytes, exact leading coefficients at every DAG node, the coprimality and rescaling identities, and rejection of changed formulas. Finite checks do not replace the unbounded proof or inherited calibration.

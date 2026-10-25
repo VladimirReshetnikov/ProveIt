@@ -1,0 +1,233 @@
+\section{A second result: Pell doubling and one product square}
+\label{sec:doubling-square}
+
+The second construction has ten strictly positive integer unknowns.
+It supplies two cost--degree tradeoffs: an 84-operation polynomial of
+exact degree 436, and an 85-operation polynomial of exact degree 328.
+Both retain the complete four-integer coefficient tuple of the inspected
+89-operation, degree-288 parent.  In particular, this is a measured
+reduction in arithmetic length, with a degree increase; it is not a
+smaller-variable or global-minimality claim.
+
+An incoming eleven-integer construction already uses a single product
+square, enforcing coprimality by multiplying a strong Pell ordinate by
+the full base and main radicand.  We credit that prior construction.
+The change here is to \emph{double a Pell pair before eliminating its
+roots}.  The resulting polynomial identity makes the auxiliary modulus
+a multiple of the entire combined radicand.  Coprimality then follows
+without that extra saturation.  The classical doubling identity itself
+is not new; the claim is this application and the two explicit equations.
+
+\subsection{The complete polynomial front}
+
+The unknowns are precisely
+\[
+ J,F,\alpha,i,T,w,Y,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+The four \emph{fixed} coefficient integers $\beta,K_0,M_C,M_F$ are
+the whole directly indexed BFS943 tuple retained from the pinned source.
+All four literal compressed byte strings, their bit lengths and hashes,
+and their symbolic specification are included with the circuits.  They
+satisfy
+\[
+ \beta\ge31\text{ odd},\qquad K_0>0,\qquad
+ 0<M_C<\beta<M_F<2\beta.
+\]
+Every symbol below is a polynomial abbreviation, with no further
+existential quantifier:
+\begin{align*}
+ q&=\beta J+1,&h&=q-1,&C&=q-F-\alpha,\\
+ X&=wq,&\mu&=q^2+1,&k&=\eta+\zeta,\\
+ c&=kY+\eta,&A&=\mu Y(X+1)+1,&\Delta&=A^2-1,\\
+ H&=4A-5,&V_0&=X\mu^2Y^2,&E&=1+V_0(V_0+1)k^2,\\
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ e&=k-R-1,&B&=(K_0+w)C-F,&U&=ic^2,\\
+ a&=\Delta U^2E,&F_0&=1+a,&G&=EF_0,\\
+ F_{\rm sq}&=1+4aF_0,&Q&=\Delta(F_{\rm sq}-1),\\
+ b&=c(T+\alpha)-R,&V&=F_{\rm sq}b-c,\\
+ K_+&=X(3c-2X)+2,&P&=q^3h,&M&=P\mu^2H.
+\end{align*}
+Choose $L=V^2$ for the 84-operation equation, or $L=bV$ for the
+85-operation equation.  Put
+\begin{align*}
+ Z&=P\mu^2\{H(n-LB)+K_+\}
+       +H\{\mu^2(hY-q^3B)-Pe\},\\
+ R_G&=M^2G.
+\end{align*}
+The single equation is
+\begin{equation}
+ \boxed{Q(Z^2-R_GV^2)+(R_G-Z^2)=0.}
+ \label{eq:doubling-final}
+\end{equation}
+The circuit files are \texttt{equation\_84.json} and
+\texttt{equation\_85.json}.  Their operators are exclusively binary
+addition, subtraction and multiplication.
+
+\subsection{Why the product square recovers every required root}
+
+For this proof only, write $\delta=Q-1$ and $D_y=QV^2-1$.
+Equation~\eqref{eq:doubling-final} is the identical polynomial
+\begin{equation}
+ \delta Z^2-M^2GD_y=0.
+ \label{eq:doubling-product}
+\end{equation}
+The early positive-input bounds give $A>4$, $\Delta\ge3$, $E>1$,
+$c\ge3$, $U\ge c^2$, $F_{\rm sq}>c+1$, $Q>1$ and $M>0$.
+Initially $b$ may have either sign.  If $b=0$, then $V=-c$;
+otherwise $|V|\ge F_{\rm sq}-c>1$.  Therefore $D_y>0$ and
+$\delta>0$ before any sign assertion about $B$ or $C$.
+
+The essential polynomial identities are
+\begin{equation}
+ F_{\rm sq}=(1+2a)^2,\qquad
+ Q=4\Delta^2U^2G.
+ \label{eq:doubling-gcd}
+\end{equation}
+Thus $\delta\equiv D_y\equiv-1\pmod G$, giving
+$\gcd(G,\delta D_y)=1$.  At a zero, set $z=Z/M\in\mathbb Q$.
+The equation $\delta z^2=GD_y$ forces every prime valuation in $G$
+to be even.  This argument is valid even if $M$ shares prime factors
+with $G$, because a rational square still has even valuations.
+Consequently $G=g^2$ for a positive integer $g$.
+
+Since $F_0=1+\Delta U^2E$ is coprime to $E$, the factors of
+$G=EF_0$ are separately squares:
+\[
+ E=\tau^2,\qquad F_0=f_0^2,\qquad g=\tau f_0.
+\]
+The positive rational $y=|z|/g$ satisfies
+\begin{equation}
+ QV^2-(Q-1)y^2=1.
+ \label{eq:doubling-adjacent}
+\end{equation}
+It is integral.  To see this, write $y=r/m$ in lowest terms and put
+$v=|V|$.  Clearing denominators gives $m^2\mid Q-1$.  For $v>1$,
+$v<y<Qv/(Q-1)$, and the norm-preserving transformation
+\[
+ v'=(2Q-1)v-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2Qv
+\]
+keeps $v'$ integral and the reduced denominator $m$ unchanged, while
+$-v<v'<v$.  Reflecting signs and descending on $|v|$ reaches $v=1$,
+where $y=1$.  Hence $m=1$, and $z=\pm gy$ is integral.
+
+Define the strong pair in the proof by
+\[
+ f=1+2a,\qquad I=2Ug=2U\tau f_0.
+\]
+Then
+\[
+ f^2-\Delta I^2=1,\qquad Q=(\Delta I)^2,\qquad c^2\mid I,
+ \qquad V=f^2\{c(T+\alpha)-R\}-c.
+\]
+It is the Pell double of the seed pair $(f_0,U\tau)$.  These are
+exactly the strong and auxiliary interfaces needed by the retained
+source theorem.
+
+\subsection{The sign argument is established before decoding}
+
+The inherited all-index folding theorem gives $c=\psi_A(p)$ for odd
+$p\ge1$.  The first norm gives
+$k=2\psi_{2V_0+1}(n_0)$.  Its first index is impossible, because it
+would put $c=2Y+1$ strictly between consecutive Pell ordinates $1$
+and $2A$.  Hence
+\[
+ k\ge8V_0+4,\qquad c>8q^5,\qquad c>X,\qquad K_+>0.
+\]
+The unchanged mask bound $R<q^4+(\alpha+2)q^2$ then gives $b>c\ge3$,
+without assuming the sign of $B$.
+
+Put
+\[
+ \kappa=K_+/H>0,\quad s=Y/q^3>0,\quad
+ \rho=e/\mu^2,\quad t=B/h,\quad W=1+hL.
+\]
+The complete cleared numerator gives the rational identity
+\begin{equation}
+ z=n+\kappa+s-Wt-\rho.
+ \label{eq:doubling-carrier}
+\end{equation}
+Moreover $b-e=c(T+\alpha)-k+1>0$, so $\rho<b/\mu^2$.
+
+For $L=V^2$, the elementary inequality
+\[
+ a^2-g^2
+   =E\{(\Delta U^2)E(\Delta U^2-1)-1\}>0
+\]
+gives $g<a$.  Since $F_{\rm sq}-1=4aF_0>a$,
+$V>(F_{\rm sq}-1)b>3g$ and $V>b$.
+Equation~\eqref{eq:doubling-adjacent} gives $y<3V/2$, hence
+$gy<V^2/2$.  If $B\le-1$, then $Wt<-V^2$ and
+\[
+ n<\frac{V^2}{2}-V^2+\frac{V}{\mu^2}<0,
+\]
+a contradiction.
+
+For $L=bV$, a sharper bound follows from the fifth auxiliary index.
+Since $p$ is odd and $c\ge3$, one has $p\ge3$, so
+$c\ge\psi_A(3)=4\Delta+3$.  It follows that $V>4Q$.
+Writing $Q=S^2$, the positive auxiliary Pell trace has odd index;
+indices one and three give $V=1$ and $V=4Q-3$ and are excluded.
+Therefore
+\[
+ V\ge16Q^2-20Q+5>8Q^2,
+\]
+and
+\[
+ b>\frac{8\Delta^2(F_{\rm sq}-1)^2}{F_{\rm sq}}
+   >4\Delta^3I^2>4g.
+\]
+Thus $gy<3bV/8<L/2$.  A hypothetical $B\le-1$ yields
+$n<L/2-L+b/\mu^2<0$, again impossible.  Both versions therefore
+give $B\ge0$, and its literal definition forces $C>0$.
+
+At this point the inherited rank, parity, denominator and whole-product
+projection arguments apply in their original order.  They require
+$c^2\mid I$, the same fixed-minus residues, an integral carrier $z$,
+and $W\equiv1\pmod h$.  All have been established.  The strong index
+need not be odd, so doubling causes no parity obstruction.  The source
+reconstruction consequently gives a finite syntactic ZFC refutation.
+
+\subsection{Completeness and the two precise tradeoffs}
+
+A finite refutation supplies the canonical outer, first and main data.
+Choose a seed Pell period whose ordinate $I_0$ is divisible by
+$c^2\tau$; existence follows from the finite order of the determinant-one
+Pell matrix modulo $c^2\tau$.  Put $i=I_0/(c^2\tau)$ and double the
+seed pair:
+\[
+ f=2f_0^2-1,\qquad I=2f_0I_0.
+\]
+The unchanged auxiliary-completeness theorem permits this strong pair
+and gives a fresh positive $T$ and $y>V$.  It places no parity
+restriction on the strong index or $I/c^2$.
+The integer choice
+\[
+ n=gy+Wt+\rho-\kappa-s
+\]
+is positive: the canonical bounds give $\tau>Y\ge s$ and
+$f_0>Xc>\kappa$, hence $g>\kappa+s$; also $Wt,\rho\ge0$.
+Its carrier is $z=gy$, so the polynomial vanishes.  This completes
+both existential directions.  With the explicitly retained ordinary
+native calibration, ZFC proves absence of positive zeros equivalent
+to $\operatorname{Con}(\mathrm{ZFC})$.
+
+The 84-operation graph has 50 products, 19 sums and 15 differences;
+the 85-operation graph adds the single product $bV$.  The exact degrees
+are certified by global upper bounds and nonzero leading forms.
+Writing $q_0=\beta J$ and $k_0=\eta+\zeta$, the degree-328 leading
+part is
+\[
+ -2^{10}q_0^{156}w^{34}Y^{78}i^{14}k_0^{44}(q_0-F)^2,
+\]
+while the degree-436 leading part is
+\[
+ 2^{14}q_0^{200}w^{46}Y^{104}i^{20}k_0^{60}
+ (q_0-F)^4(q_0-F-\alpha)^2.
+\]
+Both are nonzero at the actual $\beta>0$.
+The standalone standard-library verifier checks every literal gate,
+all four coefficient bindings, the exact identities, degree upper
+bounds and nonzero finite-field specializations using the actual tuple.
+These finite checks supplement the ordinary proof; they do not replace
+the retained unbounded calibration or constitute a new Lean proof object.

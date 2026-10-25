@@ -1,0 +1,128 @@
+\section{A single product improves both low-cost endpoints}
+The same main-radicand saturation yields a distinct low-cost pair:
+\[
+ (11\text{ integers},924\text{ degree},109\text{ operations}),\qquad
+ (11\text{ integers},840\text{ degree},110\text{ operations}).
+\]
+These strictly improve the incoming $966/111$ and $882/112$ pairs in
+both degree and evaluation cost. The degree-352 family is unchanged.
+
+Use the same eleven variables and six actual coefficient payloads.
+Keep $J,q,W,X,F,R,a,A,H,\Delta$ from the ordinary source front, but
+restore the literal cubic scale and choose one of two index moduli:
+\[
+ Y=(2v+1)q^3,\quad E=XY,\quad
+ k=R+1+hM_{\rm index},\qquad
+ M_{\rm index}=E\quad\hbox{or}\quad4q^4.
+\]
+Use the original centered budget, not the stronger free-scale one:
+\begin{align*}
+ \eta&=c-Yk,&D_{\rm err}&=(A_cF-q)^2+(B_cC-q)^2,\\
+ \mathcal B&=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ L&=XY^2k,&D_\tau&=1+L(L+k),&D&=3\mathcal B-4,\\
+ D_g&=1+4DD_\tau s^2,&P&=D_\tau D_g,&D_m&=1+\Delta c^2.
+\end{align*}
+The new definitions are
+\begin{align*}
+ B_P&=D_mP,&U&=Arc^2,\\
+ D_f&=1+\Delta U^2B_P,&Q&=\Delta^2U^2B_P,&\delta&=Q-1,\\
+ V&=D_f(c-R+4UB_PT)-c,&C_y&=QV^2-1,&D_a&=\delta C_y,\\
+ K&=X(3c-2X)+2,&S&=srH,&z_c&=HT+K,\\
+ \mathcal A&=(z_c^2+3H^2)(z_c^3-19H^3),&Z&=Sn-\mathcal A.
+\end{align*}
+The entire equation is now only
+\begin{equation}\label{eq:lowops-product}
+ \boxed{\delta Z^2-S^2B_PD_fC_y=0.}
+\end{equation}
+The literal files are
+\texttt{integer\_lowops/product\_main\_guard11\_native.json} and
+\texttt{product\_main\_guard11\_short.json}.
+
+\subsection{The sign branch and noncircular square recovery}
+Unconditionally, $D_m>0$, $D_\tau\ge1$, $P$ is odd and nonzero,
+and $\delta,D_f,D_a$ are nonzero. The zero-free quintic makes
+$\mathcal A\ne0$; at $S=0$ the output is $\delta\mathcal A^2\ne0$.
+Thus $r,s\ne0$ at any zero.
+
+The three integers $B_P,D_f,D_a$ are pairwise coprime, with no sign
+assumption: $D_f=D_a=1$ modulo $B_P$, and modulo $D_f$ one has
+$D_a=A^2D_m$. Since $A\mid U$ and $D_m\mid B_P$, $D_f$ is coprime
+to both factors of this remainder. Equation~\eqref{eq:lowops-product}
+gives
+\[
+ (\delta Z/S)^2=B_PD_fD_a.
+\]
+Their absolute values are therefore separately squares. But
+$\Delta A^2=(A^2-1)A^2$ is divisible by4, so $D_f\equiv1\pmod4$.
+A negative square is impossible, proving $D_f>0$.
+If $c\ne0$, a negative $B_P$ would make
+$D_f=1+\Delta U^2B_P<0$. If $c=0$, then $D_m=D_f=D_a=1$ and the
+product itself makes $B_P=P$ positive. Thus in all cases $B_P>0$, $P>0$,
+and $D_a>0$. Write
+\[
+ p_0^2=B_P,\qquad f^2=D_f,\qquad e^2=D_a.
+\]
+Now $D_g>0$ implies $\mathcal B\ge2$. The centered strip excludes
+$c=0$, because the literal $Y$ is nonzero.
+
+Set $I=Up_0$ and $T_{\rm old}=p_0T$. These restore the exact strong and
+auxiliary formulas; adjacent-Pell descent makes $y=e/\delta$ integral.
+At this point we deliberately recover the omitted main square
+\emph{before} assuming the first-Pell square.
+The early absolute-folding theorem uses only
+\[
+ |A|\ge3,\quad |c|\le|I|,\quad f^2-\Delta I^2=1,
+ \quad V\equiv-c\pmod f,
+ \quad QV^2-(Q-1)y^2=1.
+\]
+Classify $f=\chi_{|A|}(m)$, $|I|=\psi_{|A|}(m)$ and fold the odd
+auxiliary index modulo $2m$. The bound
+$\psi_{|A|}(p)+|c|\le2|I|<f$ prevents wraparound and gives
+$|c|=\psi_{|A|}(p)$. Hence $D_m=d^2$.
+Only now does $P=p_0^2/d^2$ become an integer square. Coprimality of
+$D_\tau,D_g$ then yields their separate square roots. This order avoids
+a circular invocation of the first-Pell classification.
+
+Canceling $\delta$ gives $Z^2=S^2p_0^2f^2y^2$, so $S\mid\mathcal A$
+and $H\mid K^5$. The same nonodd strong-rank proof, fifth-power
+whole-product bound, orientation, half-binomial interval and fresh odd
+source restoration now apply. For the short modulus, $4q^4>3R+1$ and
+$4q^4\mid2XY^2$ give the unchanged first-index no-wrap argument;
+after orientation its recurrence restores the literal native $h$.
+All dependencies and exceptional cases are stated in the complete
+\texttt{integer\_lowops/PROOF.md}.
+
+\subsection{Completeness and exact metrics}
+Canonical source data give $D_m=d^2$, $D_\tau=\tau^2$ and
+$\mathcal B>64$. First choose and fix the guard pair $s,g$ by ordinary
+Pell existence, and set $p_0=d\tau g$. Then choose one strong pair with
+\[
+ 4sAp_0c^2\mid I,\qquad f^2-\Delta I^2=1,\qquad
+ r=I/(Ap_0c^2).
+\]
+Every prime of $p_0sr$ divides this fixed $I$.
+With $\kappa=K/H$, choose a root $a_0$ of $\pi(T+\kappa)$ modulo $sr$,
+and use supported-modulus interpolation to require
+$T_{\rm old}=p_0a_0\pmod{p_0sr}$.
+Then $T=T_{\rm old}/p_0$ is integral,
+$\mathcal A/S=H^4\pi(T+\kappa)/(sr)$ is integral, and
+$n=\mathcal A/S+p_0fy$ solves~\eqref{eq:lowops-product}.
+The guard is fixed before the strong pair, and the strong pair is fixed
+before requesting an auxiliary residue.
+
+The native degrees of $(P,B_P,D_f,Q,V,C_y,S,Z)$ are
+$(94,108,138,150,256,662,8,35)$; the short degrees are
+$(82,96,126,138,232,602,8,35)$. The second term of the output uniquely
+dominates, proving degrees924 and840.
+An attained native coefficient is
+\[
+ [j^{564}w^{106}v^{148}h^{42}s^{16}r^{12}c^{34}T^2]P
+       =2^{960}3^{677}\beta^{564}>0;
+\]
+the short coefficient replaces $w^{106}v^{148}$ by $w^{64}v^{106}$
+and is $2^{918}3^{635}\beta^{564}>0$.
+Independent local checks authenticate the complete numeral recipes,
+bind every live register, prove the coprimality and rescaling identities,
+and certify exact degree and costs under normal and optimized Python.
+The finite audit is explicitly separate from the retained unbounded
+ordinary arithmetic and consistency calibration.

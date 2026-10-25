@@ -1,0 +1,149 @@
+% Complete unabridged proof from root_math/SIGNED_POOLED_CAP.md
+\section{A signed pooled Pell index certificate}
+
+
+
+This is a new arithmetic lemma for possible integration into the direct proof-rule equation. It is not by itself a completed consistency equation. The unsigned pooled-cap idea is inherited from the authenticated incoming Shared Pell Bound 261 package. The additional contribution here is recovering both signs of every principal Pell pair through the same bounded congruence.
+
+
+
+\subsection{Statement}
+
+
+
+All parameters and coordinates in this note are integers. For A \textgreater{}\allowbreak{}=\allowbreak{} 2 define X\_\allowbreak{}0=\allowbreak{}1, Y\_\allowbreak{}0=\allowbreak{}0 and
+
+
+
+\begin{verbatim}
+X_(j+1)=A X_j+(A^2-1)Y_j,
+Y_(j+1)=X_j+A Y_j.
+\end{verbatim}
+
+Let W\textgreater{}\allowbreak{}=\allowbreak{}4 and 1\textless{}\allowbreak{}=\allowbreak{}m\textless{}\allowbreak{}=\allowbreak{}W. Suppose A-1\textgreater{}\allowbreak{}4W\textasciicircum{}\allowbreak{}3, V=\allowbreak{}Y\_\allowbreak{}W(A), and 1\textless{}\allowbreak{}=\allowbreak{}k\_\allowbreak{}i\textless{}\allowbreak{}W for every i=\allowbreak{}1,...,m. All x\_\allowbreak{}i,y\_\allowbreak{}i,Q,u,v,w below are unrestricted integers. Impose
+
+
+
+\begin{verbatim}
+x_i^2-(A^2-1)y_i^2=1                    for every i,
+V^2-1-sum_i y_i^2=u^2+v^2+w(w+1),
+sum_i [(y_i-k_i)^2+(x_i-1)^2]=(A-1)Q.
+\end{verbatim}
+
+Then x\_\allowbreak{}i=\allowbreak{}X\_\allowbreak{}(k\_\allowbreak{}i)(A), y\_\allowbreak{}i=\allowbreak{}Y\_\allowbreak{}(k\_\allowbreak{}i)(A) for every i. Conversely all these canonical pairs extend to a solution of the two aggregate rows.
+
+
+
+\subsection{Soundness}
+
+
+
+The ternary form u\textasciicircum{}\allowbreak{}2+\allowbreak{}v\textasciicircum{}\allowbreak{}2+\allowbreak{}w(w+\allowbreak{}1) is nonnegative at every integer tuple. Thus y\_\allowbreak{}i\textasciicircum{}\allowbreak{}2\textless{}\allowbreak{}V\textasciicircum{}\allowbreak{}2, so |y\_\allowbreak{}i|\textless{}\allowbreak{}V. The complete elementary Pell classification over the integers gives a unique j\_\allowbreak{}i\textgreater{}\allowbreak{}=\allowbreak{}0 and signs sigma\_\allowbreak{}i,epsilon\_\allowbreak{}i in \{1,-1\} with x\_\allowbreak{}i=\allowbreak{}sigma\_\allowbreak{}i X\_\allowbreak{}(j\_\allowbreak{}i)(A) and y\_\allowbreak{}i=\allowbreak{}epsilon\_\allowbreak{}i Y\_\allowbreak{}(j\_\allowbreak{}i)(A). The sign epsilon\_\allowbreak{}i is immaterial when j\_\allowbreak{}i=\allowbreak{}0. Strict monotonicity of Y\_\allowbreak{}j gives 0\textless{}\allowbreak{}=\allowbreak{}j\_\allowbreak{}i\textless{}\allowbreak{}W.
+
+
+
+Modulo A-1 the recurrence gives X\_\allowbreak{}j=\allowbreak{}1 and Y\_\allowbreak{}j=\allowbreak{}j. Hence A-1 divides
+
+
+
+\begin{verbatim}
+E=sum_i [(epsilon_i j_i-k_i)^2+(sigma_i-1)^2].
+\end{verbatim}
+
+This is a sum of nonnegative integers. Since both j\_\allowbreak{}i and k\_\allowbreak{}i belong to [0,W-1],
+
+
+
+\begin{verbatim}
+0<=E<=4m((W-1)^2+1)<=4W((W-1)^2+1)<4W^3<A-1.
+\end{verbatim}
+
+Therefore E=\allowbreak{}0. Every sigma\_\allowbreak{}i=\allowbreak{}1 and epsilon\_\allowbreak{}i j\_\allowbreak{}i=\allowbreak{}k\_\allowbreak{}i\textgreater{}\allowbreak{}0, so epsilon\_\allowbreak{}i=\allowbreak{}1 and j\_\allowbreak{}i=\allowbreak{}k\_\allowbreak{}i. No initial sign guard on x\_\allowbreak{}i,y\_\allowbreak{}i or Q was used. In particular the zero-index and negative-coordinate branches are excluded by the argument, not omitted from the classification.
+
+
+
+\subsection{Completeness}
+
+
+
+For canonical pairs, every summand in the pooled congruence is divisible by A-1 (indeed by its square), so its quotient Q is an integer. Every k\_\allowbreak{}i\textless{}\allowbreak{}W gives y\_\allowbreak{}i\textless{}\allowbreak{}=\allowbreak{}Y\_\allowbreak{}(W-1). The recurrence implies
+
+
+
+\begin{verbatim}
+Y_W> (2A-1)Y_(W-1).
+\end{verbatim}
+
+Since A-1\textgreater{}\allowbreak{}4W\textasciicircum{}\allowbreak{}3 and m\textless{}\allowbreak{}=\allowbreak{}W, (2A-1)\textasciicircum{}\allowbreak{}2\textgreater{}\allowbreak{}m+\allowbreak{}1. Consequently
+
+
+
+\begin{verbatim}
+V^2-1-sum_i y_i^2 >= 0.
+\end{verbatim}
+
+Every nonnegative integer G is u\textasciicircum{}\allowbreak{}2+\allowbreak{}v\textasciicircum{}\allowbreak{}2+\allowbreak{}w(w+\allowbreak{}1). To see this, Legendre's three-square theorem represents 4G+\allowbreak{}1 as a sum of three squares: its residue 1 modulo4 guarantees exactly one odd square. Write the even squares as (2u)\textasciicircum{}\allowbreak{}2,(2v)\textasciicircum{}\allowbreak{}2 and the odd square as (2w+\allowbreak{}1)\textasciicircum{}\allowbreak{}2, then divide by4. This supplies the aggregate slack witnesses.
+
+
+
+\subsection{Polynomial and compilation boundary}
+
+
+
+The displayed A and V are semantic parameters at this stage. An ordinary equation must still certify V=\allowbreak{}Y\_\allowbreak{}W(A), and establish A-1\textgreater{}\allowbreak{}4W\textasciicircum{}\allowbreak{}3 and all index bounds before using this lemma. In the inherited square-frame construction A\textgreater{}\allowbreak{}=\allowbreak{} (W+\allowbreak{}1)\textasciicircum{}\allowbreak{}W suffices: for W\textgreater{}\allowbreak{}=\allowbreak{}4,
+
+
+
+\begin{verbatim}
+(W+1)^W-1 >= (W+1)^4-1 >4W^3.
+\end{verbatim}
+
+The requested indices may include doubled ones provided the actual frame bounds 2k\_\allowbreak{}i\textless{}\allowbreak{}W. This must be checked from its literal atom ledger.
+
+
+
+All displayed rows are polynomial. A quartic final sum of squares additionally requires quadratic gates for A\textasciicircum{}\allowbreak{}2 and the products in the individual Pell rows. Existing square registers can be reused in the pooled row, which is quadratic in the displayed coordinates, without expanding a large square of a long sum unnecessarily. The anchor certificate remains an explicit proof obligation. No assumption of consistency or a refutation is used.
+
+
+
+\subsection{A stronger aggregate sharing the anchor lower bound}
+
+
+
+Suppose in addition W\textgreater{}\allowbreak{}=\allowbreak{}2 max\_\allowbreak{}i k\_\allowbreak{}i+\allowbreak{}1. Replace the square-cap row by
+
+
+
+\begin{verbatim}
+V=W+1+sum_i y_i^2+u^2+v^2+w(w+1).
+\end{verbatim}
+
+This implies V\textgreater{}\allowbreak{}W and |y\_\allowbreak{}i|\textless{}\allowbreak{}sqrt(V)\textless{}\allowbreak{}V, so both the preceding soundness argument and the anchor's required bound V\textgreater{}\allowbreak{}=\allowbreak{}W hold at once. It removes the need for a separate anchor-lower-bound predicate.
+
+
+
+For completeness put k=\allowbreak{}max\_\allowbreak{}i k\_\allowbreak{}i. The addition identity gives Y\_\allowbreak{}(2k)=\allowbreak{}2X\_\allowbreak{}k Y\_\allowbreak{}k\textgreater{}\allowbreak{}2Y\_\allowbreak{}k\textasciicircum{}\allowbreak{}2. Since W\textgreater{}\allowbreak{}=\allowbreak{}2k+\allowbreak{}1,
+
+
+
+\begin{verbatim}
+Y_W >= Y_(2k+1) > (2A-1)Y_(2k) > 2(2A-1)Y_k^2.
+\end{verbatim}
+
+Thus Y\_\allowbreak{}W-sum\_\allowbreak{}i y\_\allowbreak{}i\textasciicircum{}\allowbreak{}2 \textgreater{}\allowbreak{} (4A-2-m)Y\_\allowbreak{}k\textasciicircum{}\allowbreak{}2 \textgreater{}\allowbreak{} W, since m\textless{}\allowbreak{}=\allowbreak{}W, A-1\textgreater{}\allowbreak{}4W\textasciicircum{}\allowbreak{}3, and Y\_\allowbreak{}k\textgreater{}\allowbreak{}=\allowbreak{}1. Its difference from W+\allowbreak{}1 is a nonnegative integer and has the required ternary representation.
+
+
+
+For the square frame W=\allowbreak{}2(2+\allowbreak{}sum\_\allowbreak{}a a\textasciicircum{}\allowbreak{}2), both an atom k and a doubled atom 2k meet this stronger bound: W-4|k|\textgreater{}\allowbreak{}=\allowbreak{}2((|k|-1)\textasciicircum{}\allowbreak{}2+\allowbreak{}1)\textgreater{}\allowbreak{}0. The literal compiler must include every relevant exponent atom in this sum.
+
+
+
+\subsection{Signed index extension for bootstrap ordering}
+
+
+
+If some requested indices have unknown sign before factorial recovery, replace 1\textless{}\allowbreak{}=\allowbreak{}k\_\allowbreak{}i\textless{}\allowbreak{}W by |k\_\allowbreak{}i|\textless{}\allowbreak{}W. The identical bounded-error proof gives x\_\allowbreak{}i=\allowbreak{}X\_\allowbreak{}(|k\_\allowbreak{}i|), and y\_\allowbreak{}i=\allowbreak{}sign(k\_\allowbreak{}i)Y\_\allowbreak{}(|k\_\allowbreak{}i|), with y\_\allowbreak{}i=\allowbreak{}0 when k\_\allowbreak{}i=\allowbreak{}0. It does not by itself prove k\_\allowbreak{}i\textgreater{}\allowbreak{}0. An application may first interpret an independently positive t-index, derive the factorial sign from its raw ceiling rows, and only then prove the remaining indices positive. This ordering must appear in the full compilation proof.
+
+
+
+The stronger aggregate's completeness remains valid if all k\_\allowbreak{}i=\allowbreak{}0: all y\_\allowbreak{}i vanish and Y\_\allowbreak{}W\textgreater{}\allowbreak{}W+\allowbreak{}1. Otherwise the preceding proof applies with k=\allowbreak{}max\_\allowbreak{}i |k\_\allowbreak{}i|. This signed-index extension does not assert that n\textasciicircum{}\allowbreak{}k is an integer when k\textless{}\allowbreak{}0; that assertion is neither needed nor licensed.

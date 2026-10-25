@@ -1,0 +1,229 @@
+\section{A ten-positive-variable equation of degree 246}\label{sec:center246}
+
+A second native companion improves degree rather than operation count.
+It has ten positive unknowns, exact degree \textbf{246}, and a completely
+paid schedule of \textbf{121 operations} (73 multiplications, 25 additions,
+and 23 subtractions).  Its parent sharp-center equation has degree 254
+and 97 operations \cite{gapfusion}.  This is a degree/cost tradeoff.
+The following construction uses the same complete compact44 tuple as
+Section~\ref{sec:positive}, but restores the independent coordinate $Y$:
+\emph{the substitution $Y=q^3s$ is not made here}.
+
+\subsection{The full polynomial and its two correction terms}
+
+Let $J,F,\alpha,i,T,x,Y,n,\eta,\zeta\in\Pos$.  Define
+\begin{align*}
+ q&=\beta J+1,&X&=q+x,&g&=q(q-1),\\
+ C_d&=q-F-\alpha,&B&=(qK_0+X)C_d-qF,\\
+ \mu&=q^2+1,&t&=\mu Y,&L&=X+1,\\
+ A&=tL+1,&\Delta&=A^2-1,&H&=4A-5,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&v&=Xt^2,\\
+ D&=1+v(v+1)k^2,&E&=ic^2,\\
+ F_s&=1+\Delta DE^2,&Q&=\Delta^2DE^2,&\delta&=Q-1.
+\end{align*}
+The remaining unchanged kernel and carrier data are
+\begin{align*}
+ R&=[(q-1)(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ e&=k-R-1,&b&=c(T+\alpha)-R,&V&=F_sb-c,\\
+ D_*&=QV^2-1,&P&=q^4(q-1),&M&=P\mu^2H,\\
+ K_+&=X(3c-2X)+2,&W&=1+gb.
+\end{align*}
+The new polynomial abbreviations are
+\begin{align}
+ Q_1&=k^2\bigl[t^2LX^2(tL-1)+t(L^3-2L+1)-L^2+2\bigr],\label{eq:center-Q1}\\
+ Q_3&=k^2(tX^2-3L+6),&\lambda&=8L^3,\label{eq:center-Q3}\\
+ \Gamma&=E(8L^3AD-4Q_1-Q_3),&a&=\lambda^2DF_s.\label{eq:center-Gamma}
+\end{align}
+Set
+\begin{equation}\label{eq:center-Z}
+ \begin{aligned}
+ Z={}&P\mu^2\bigl[H(n+V+\Gamma-bB)+K_+\bigr]\\
+     &+H\bigl[\mu^2(gY-q^3B-(q-1)X)-Pe\bigr].
+ \end{aligned}
+\end{equation}
+The complete equation is
+\begin{equation}\label{eq:center246}
+ \boxed{\mathcal N_{246}
+ =\bigl(\delta Z^2-M^2D_*-\delta M^2a\bigr)^2
+       -4\delta M^4aD_*=0.}
+\end{equation}
+All abbreviations are integer polynomials in the ten listed unknowns.
+The corresponding literal graph and coefficient payloads are in
+\pathfile{center246/}.  No additional quantified coordinate is hidden
+in~\eqref{eq:center246}.
+
+The construction comes from two exact polynomial divisions.  With
+$\Omega=L^3D$ and $X=L-1$, expansion gives
+\begin{align}
+ \Omega&=AQ_1+r_1=A^3Q_3+r_3,\label{eq:center-divisions}\\
+ r_1&=L^3+k^2(L^2-t-2),\nonumber\\
+ r_3&=L^3+k^2\bigl[L^2t^2(L^2+5L-3t-12)
+             +Lt(8L-3t-16)+3L-t-6\bigr].\nonumber
+\end{align}
+Thus $8\Omega A-4Q_1-Q_3$ retains the polynomial portions of the
+first three terms of
+$8\Omega\sqrt{A^2-1}=8\Omega A-4\Omega/A-\Omega/A^3-\cdots$.
+The series is a discovery guide only: the construction and proof use
+the exact identities~\eqref{eq:center-divisions}.
+For a shorter evaluation schedule, put $p=A-1$, $u=tX^2$ and use
+\begin{equation}\label{eq:center-paid}
+ 4Q_1+Q_3=k^2\bigl[u\{4p(p-1)+4L+9\}
+                    +4(tX-L^2)-3L+14\bigr].
+\end{equation}
+
+\subsection{Positive bounds, root recovery, and transport}
+
+\begin{lemma}\label{lem:center-bounds}
+On the whole positive input domain, $0<\Gamma<Q$.
+At every positive zero of~\eqref{eq:center246}, the recovered Pell roots
+satisfy $\lambda\tau f+X/q^4<2Q<b/4$.
+\end{lemma}
+\begin{proof}
+Here $L\ge33$ and $t\ge1025$.  Both $Q_1,Q_3$ are positive:
+the last part of $Q_1/k^2$ is at least
+$L^3-L^2-2L+3>0$, while
+$Q_3/k^2\ge(L-2)(L-3)+1>0$.
+The first term of $Q_1/k^2$ is at least $24t^3>t+2$, so
+$r_1>-k^2(t+2)>-Q_1$ and~\eqref{eq:center-divisions} gives
+$\Omega>(A-1)Q_1>Q_1$.  Also $Q_3<k^2tX^2<D\le\Omega$.
+It follows that
+\[
+ 0<\Gamma<\lambda ADE,\qquad
+ \lambda A=8L^3(tL+1)\le16tL^4<t^4L^4<\Delta^2.
+\]
+Since $E\ge1$, this proves $\Gamma<Q$.
+
+For completeness, root recovery does not require the desired transport
+sign.  Since $F_s>c+1$ and $b$ is integral, $|V|>1$ and $D_*/\delta>0$.
+The positive radicands $a$ and $D_*/\delta$ are unequal: equality
+would give $\delta\lambda^2DF_s=QV^2-1$, impossible modulo $D>1$.
+Writing $z=Z/M$, the norm therefore has $z\ne0$ and gives the rational
+square root $(z^2+a-D_*/\delta)/(2z)$ of $a$.
+As $\lambda>0$ and $\gcd(D,F_s)=1$, it follows that
+$D=\tau^2$ and $F_s=f^2$ for positive integers $\tau,f$.
+With $I=\tau E$, the unchanged adjacent-Pell descent gives an integer
+$y>0$ and
+\[
+ f^2-\Delta I^2=1,\qquad Q=(\Delta I)^2,\qquad
+ QV^2-(Q-1)y^2=1,
+ \qquad z=\varepsilon\lambda\tau f+\nu y.
+\]
+Here $\varepsilon,\nu\in\{1,-1\}$.
+The parent's pre-transport folding, first-index, and fifth-index
+arguments now give $b>8Q$, $K_+>0$,
+$0<y-V<b/4$, and $e/\mu^2<b/4$ \cite{gapfusion}.
+None uses the new integral center or radical weight.
+Finally $f<AI$ implies $\lambda\tau f<\lambda ADE<Q$;
+also $X/q^4<Q$.  Their sum is less than $2Q<b/4$.
+\end{proof}
+
+The exact normalized carrier is
+\begin{equation}\label{eq:center-carrier}
+ \frac ZM=n+V+\Gamma+\frac{K_+}{H}+\frac Y{q^3}
+          -\frac{WB}{g}-\frac X{q^4}-\frac e{\mu^2}.
+\end{equation}
+Combining it with the recovered signed roots and
+Lemma~\ref{lem:center-bounds} gives
+\[
+ n<\frac{3b}{4}+\frac{WB}{g}.
+\]
+If $B\le-1$, then $WB/g\le-b-1/g$, contradicting $n>0$.
+Thus $B\ge0$ and $C_d>0$.  The remaining ordered rank, parity,
+coprimality, whole-product projection, and unscaled source reconstruction
+are those of the pinned gap-fusion proof.  The center and weighted root
+are integral; the fractional terms in~\eqref{eq:center-carrier} and
+$W\equiv1\pmod g$ are unchanged.  Hence the same source61/native/controller
+calibration recovers a finite ZFC refutation.  This is the inherited
+native branch, not the direct C222 route of the principal quartic.
+
+Conversely take the parent's fresh canonical kernel witnesses from a
+refutation.  They supply integral $t_0=B/g\ge0$, $\rho=e/\mu^2\ge1$,
+$s_Y=Y/q^3>0$, $\kappa=K_+/H>0$, $X/q^4>0$, and
+$u=y-V>2Q$, with $s_Y,\kappa<c$.  Define the remaining coordinate by
+\begin{equation}\label{eq:center-complete}
+ n=Wt_0+\rho+\lambda\tau f-\Gamma+u-s_Y-\kappa+X/q^4.
+\end{equation}
+It is an integer and is positive because
+$n>2Q-Q-2c>0$; here $Q>c^4>2c$ follows from $E=ic^2$ and $c\ge3$.
+The carrier becomes $\lambda\tau f+y$, so the norm vanishes.
+This proves existence equivalence by a fresh positive construction,
+without claiming a positive pointwise inverse for every parent zero.
+
+\subsection{Exact degree and a noncancelling coefficient}
+
+Write $C_*:=\Gamma^2-a$.  Assign weights $1,3,1,5$ to the independent
+polynomial variables $L,t,k,E$.  Then
+$\degr A=4$, $\degr D=16$, $\degr\Omega=19$,
+$\degr Q_1=15$, $\degr Q_3=7$, $\degr r_1=5$, and $\degr r_3=13$.
+An exact identity derived from~\eqref{eq:center-divisions} is
+\begin{equation}\label{eq:center-defect}
+ \begin{aligned}
+ A^2(C_*+64L^6D)=E^2\bigl[&64A^2\Omega r_1
+       +16\Omega(r_3-2r_1)+16r_1^2\\
+       &+8A^2Q_1Q_3+A^2Q_3^2\bigr].
+ \end{aligned}
+\end{equation}
+The two degree-42 terms on the right have combined leading part
+$-112L^7t^7k^4E^2$.  All others have smaller degree.
+Since $A_0=Lt$, this proves
+\begin{equation}\label{eq:center-defect-leading}
+ \degr C_*=34,\qquad (C_*)_0=-112L_0^5t_0^5k_0^4E_0^2.
+\end{equation}
+The supplied certificate independently lists and checks all 52
+coefficients of $C_*$.
+
+In the actual ten inputs, the unchanged kernel has
+\[
+ \degr\delta=42,\quad\degr V=38,\quad\degr M=13,
+ \quad\degr a=56,\quad\degr\Gamma=28.
+\]
+Write $Z=M(V+\Gamma)+Z_0$, where $\degr Z_0\le19$ and
+$(Z_0)_0=-M_0b_0B_0$.  Put
+\[
+ \Theta=\delta M^2C_*-M^2(V^2-1)
+       +2\delta M(V+\Gamma)Z_0+\delta Z_0^2.
+\]
+Direct expansion gives
+\begin{equation}\label{eq:center-norm-expansion}
+ \begin{aligned}
+ \mathcal N_{246}={}&4\delta^2M^4V^2C_*
+       +4\delta M^2V\Gamma\Theta+\Theta^2\\
+       &-4\delta M^4aV^2+4\delta M^4a.
+ \end{aligned}
+\end{equation}
+Here $\degr\Theta=112$, so the five displayed terms have degrees at most
+$246,246,224,226,150$.  The first two terms both contribute at degree 246;
+their possible cancellation must be checked.
+
+Let $q_0=\beta J$, $X_0=q_0+x$, $t_0=q_0^2Y$, $k_0=\eta+\zeta$,
+$E_0=ik_0^2Y^2$, $b_0=-q_0^3(q_0-F)$, and
+$B_0=(q_0K_0+X_0)(q_0-F-\alpha)-q_0F$.
+The complete leading form is
+\[
+ 4\delta_0^2M_0^4V_0^2
+ \bigl((C_*)_0-2\Gamma_0b_0B_0\bigr),
+ \qquad\Gamma_0=8X_0^6t_0^5k_0^2E_0.
+\]
+Its first summand has degree ten in $i$ and equals
+\[
+ -7\cdot2^{14}q_0^{116}X_0^{29}i^{10}Y^{57}
+                     k_0^{32}(q_0-F)^2;
+\]
+the second has degree nine in $i$.  Consequently
+\begin{equation}\label{eq:center-coefficient}
+ \boxed{[J^{116}x^{29}i^{10}Y^{57}\eta^{32}F^2]\,
+          \mathcal N_{246}=-7\cdot2^{14}\beta^{116}\ne0.}
+\end{equation}
+This proves exact degree 246 for the actual fixed tuple, rather than
+only for generic ports.
+
+The companion checker passes 151 checks, including exact local polynomial
+identities, complete coefficient and source pins, circuit liveness,
+independent formula evaluations, and degree/leading-form transcription
+checks over three finite fields.  Polynomial-part radical centering
+already appears elsewhere in ProveIt, for example the unrestricted-integer
+construction in \pathfile{87-direct-centered-round12/norm/PROOF.md}.
+The new result is this concrete application and degree/cost point relative
+to the frozen snapshot.  It inherits the parent's ordinary calibration;
+no new end-to-end proof-assistant certificate or global minimality claim
+is made.

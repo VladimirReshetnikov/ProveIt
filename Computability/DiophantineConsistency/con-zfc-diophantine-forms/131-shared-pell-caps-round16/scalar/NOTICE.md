@@ -1,0 +1,1 @@
+Round16 product arithmetic and proof changes are local modifications of the authenticated Shared Binomial Certificates lowops construction. Its unmodified proof is retained at source/SHARED_PRODUCT_PROOF.md. Original coefficient, source, and license notices are retained. No new formal kernel endpoint, consistency proof, or global optimality claim is made.

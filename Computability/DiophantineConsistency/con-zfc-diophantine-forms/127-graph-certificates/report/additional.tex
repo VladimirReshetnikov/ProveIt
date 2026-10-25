@@ -1,0 +1,297 @@
+\section{A linear strong-Pell multiplier in eleven integers}
+\label{sec:linear-multiplier}
+
+This section gives a separate improvement in the small-variable native
+construction. It retains the complete source34 coefficient tuple, and hence
+its inherited native/compiler/refutation calibration. The new polynomials
+have eleven unrestricted integer unknowns. Their exact degree and live
+binary-operation counts are
+\[
+  (440,126)\quad\hbox{and}\quad(412,127).
+\]
+The newest inspected paired predecessors have profiles $(456,124)$ and
+$(416,125)$. The change therefore lowers degree while adding two operations.
+It is a new tradeoff, with no assertion of a global minimum. All polynomial
+abbreviations below are registers, not additional quantified unknowns.
+
+The idea is to replace the square of the strong Pell multiplier by a linear
+input. A coprime product forces that input to become a square at every zero.
+Prime-adic orders of polynomial weights keep the radical terms separated, and a
+rescaled interpolation request supplies the converse. The sign of the new
+input cannot be assumed; recovering it is part of the proof.
+
+\subsection{The literal polynomial}
+
+Let
+\[
+ j,C,z,h,r,v,w,T,c,n,s\in\mathbb Z.
+\]
+The six fixed positive coefficients are
+$\beta,K_0,M_C,M_F,A_c,B_c$. Their complete integer payloads and finite
+reconstruction recipe are supplied with this component. In particular
+\[
+ \beta=2^{1064921}-1,\qquad A_c=2^{1113},\qquad B_c=2^{666104}.
+\]
+$M_F$ already includes its source shift. The other three large constants
+are the exact whole source34 tuple, not new free parameters.
+Define
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+ X&=qW,&Y&=qv,&E&=XY,\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,\\
+ F&=(K_0+W)C-z(q-1),&&&\\
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,&&&\\
+ k&=R+1+hE,&\eta&=c-Yk.&&
+\end{align*}
+Set
+\begin{align*}
+ D_{\rm err}&=(A_cF-q)^2+(B_cC-q)^2,\\
+ B_{\rm dg}&=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ D&=3B_{\rm dg}-4,&\ell&=XY^2,&L&=\ell k,\\
+ D_t&=1+L(L+k),&D_g&=1+DD_ts^2,&P&=D_tD_g.
+\end{align*}
+Here the new multiplier enters linearly:
+\begin{align*}
+ U&=rc^2,&I_2&=rc^4,&D_f&=1+\Delta I_2,\\
+ Q&=\Delta^2I_2,&\delta&=Q-1,&V&=D_f(c-R+4UT)-c,\\
+ C_y&=QV^2-1,&D_a&=\delta C_y,&K&=X(3c-2X)+2.
+\end{align*}
+Finally put
+\begin{align*}
+ M&=2q^2,&D_c&=MH,&S&=srM^5H,\\
+ z_c&=D_cT+MK+H(v-q^2),&&&\\
+ A_c^{\ast}&=(z_c^2+3D_c^2)(z_c^3-19D_c^3),&&&\\
+ \mathcal A&=9S^2rD_f,&\mathcal B&=S^2D_a,
+ &\mathcal G&=81S^2r^2P.
+\end{align*}
+The starred carrier $A_c^{\ast}$ is unrelated to the fixed cone coefficient
+$A_c$. Use $Z=Sn-A_c^{\ast}$ for the direct version and
+$Z=S(n+QV)-A_c^{\ast}$ for the centered version. The single equation is
+\begin{equation}
+ \boxed{\mathcal N=
+ \left[(Z^2+\mathcal A-\mathcal B-\mathcal G)^2
+       -4(\mathcal AZ^2+\mathcal B\mathcal G)\right]^2
+       -64\mathcal AZ^2\mathcal B\mathcal G=0.}
+ \label{eq:linear-multiplier-norm}
+\end{equation}
+The delivered circuits use only integer leaves and binary addition,
+subtraction and multiplication. They absorb the fixed scale $81$ into
+$D_g$ and reuse $S^2r$. The paired evaluation of the three-root norm is
+credited to the incoming Round15 construction. Formally,
+\[
+ \mathcal N=\prod_{\epsilon\in\{-1,1\}^3}
+ \bigl(Z-\epsilon_1\sqrt{\mathcal A}
+        -\epsilon_2\sqrt{\mathcal B}
+        -\epsilon_3\sqrt{\mathcal G}\bigr).
+\]
+This is a polynomial identity even when the radicands are dependent,
+zero or negative; the radicals are used only in its proof.
+
+\subsection{Signed bootstrap before Pell classification}
+
+The authentic coefficient restrictions give
+$q$ even, $q\equiv2\pmod3$, $|q|\ge16$, and $|X|\ge4|q|$.
+If $v=0$, then $a=0$ and $\Delta=3$; otherwise $|a|>3$.
+Thus $\Delta>1$ on every integer assignment. Also $H$ is odd and
+nonzero, $H\equiv3\pmod q$, and $\gcd(H,M)=1$.
+Since $X\equiv2\pmod3$, we have $a,H,\Delta\equiv0\pmod3$.
+The consecutive product $\ell(\ell+1)$ is nonnegative, so $D_t\ge1$.
+
+The polynomial $\pi(t)=(t^2+3)(t^3-19)$ has no rational root.
+Consequently $A_c^{\ast}=D_c^5\pi(z_c/D_c)$ is never zero.
+At $S=0$, equation~\eqref{eq:linear-multiplier-norm} reduces to
+$(A_c^{\ast})^8=0$, impossible. Every zero therefore has $s,r\ne0$.
+
+The auxiliary radicand $D_a$ is positive without assuming $r>0$.
+If $c=0$, then $Q=0$ and $D_a=1$. If $c\ne0,r<0$, then $Q<0$ and
+both factors in $(Q-1)(QV^2-1)$ are negative. If $c\ne0,r>0$, then
+$Q>1$ and $D_f>|c|+1$. Because $V=D_fb-c$ for an integer $b$, either
+$b=0$ and $|V|=|c|\ge1$, or $|V|\ge D_f-|c|>1$; again $D_a>0$.
+
+The product $rD_f$ is nonzero and is positive whenever $c\ne0$.
+Its only possible negative case is $c=0,r<0$, when $rD_f=r$.
+After dividing a vanishing conjugate factor by $S$, its radical terms,
+with independent signs, are
+\begin{equation}
+ 3\sqrt{rD_f},\qquad \sqrt{D_a},\qquad 9r\sqrt P.
+ \label{eq:linear-radicals}
+\end{equation}
+One negative radicand among $rD_f,P$ would leave a single nonzero
+imaginary term. If both were negative, cancellation would require
+$9(-r)=81r^2(-P)$, hence $1=9rP$, impossible over the integers.
+Thus $rD_f>0$ and $P\ge0$. In fact $P>0$: the even fixed cone
+coefficients make $B_{\rm dg}$ and $D$ divisible by $4$, so
+$D_g\equiv1\pmod4$.
+
+If $B_{\rm dg}\le0$, then $D_g\le-3$, contradicting $P>0$.
+Therefore $B_{\rm dg}\ge4$. The usual centered disk inequality yields
+$k\ne0$, the common strict sign of $q,F,C,q-F-C$, and
+$|c/k-Y|<1/2$. Nonvanishing of $c$ is deferred until the cubic scale
+has been recovered.
+
+\subsection{A variable prime-adic separation lemma}
+
+Write $a_3=v_3(|r|)$ and $b_3=v_3(P)$. The congruences
+$D_f\equiv D_a\equiv1\pmod3$ imply
+$v_3(rD_f)=a_3$ and $v_3(D_a)=0$.
+Decompose the positive integer radicands in
+\eqref{eq:linear-radicals} into squares times squarefree integers.
+For a squareclass whose squarefree part has $3$-adic valuation
+$\varepsilon\in\{0,1\}$, the valuations of its coefficients are,
+when the corresponding terms occur,
+\[
+ \begin{array}{c|c}
+ \text{auxiliary term}&0\quad(\varepsilon=0\text{ only})\\
+ \text{strong term}&1+(a_3-\varepsilon)/2\\
+ \text{guard term}&2+a_3+(b_3-\varepsilon)/2.
+ \end{array}
+\]
+If the auxiliary term is present it has uniquely least valuation.
+If strong and guard belong to the same class, their valuation difference
+is $1+(a_3+b_3)/2>0$. Each nontrivial squareclass therefore has a unique
+coefficient of least valuation and cannot cancel. Linear independence
+of distinct squarefree radicals forces every radicand in
+\eqref{eq:linear-radicals} to be an integer square.
+
+In particular $rD_f$ is a positive square and $\gcd(r,D_f)=1$.
+The two factors are either both positive squares or both negatives of
+positive squares. The latter would give $-f^2\equiv1\pmod3$, impossible.
+Thus
+\begin{equation}
+ r=u^2>0,\qquad D_f=f^2>0. \label{eq:linear-recovery}
+\end{equation}
+Also $\gcd(D_t,D_g)=1$ gives $D_t=\tau^2,D_g=g^2$.
+The integral radical sum now implies $S\mid A_c^{\ast}$.
+
+Since $M^5\mid S$, monicity of the homogenized quintic gives $M\mid z_c$:
+if $p^e\Vert M$ but $v_p(z_c)=b<e$, the leading term $z_c^5$ would have
+strictly smaller valuation than every other term of $A_c^{\ast}$.
+Reducing modulo $M$ and using $\gcd(M,H)=1$ yields
+\[
+ v=q^2(2v_{\rm old}+1),\qquad Y=(2v_{\rm old}+1)q^3\ne0.
+\]
+If $c=0$, the positive budget would equal
+$k^2[q^2(1-4Y^2)-D_{\rm err}]\le0$, a contradiction.
+
+Now define the proof-only integer $I=c^2u$. We obtain
+\[
+ f^2-\Delta I^2=1,\quad Q=(\Delta I)^2>1,\quad
+ V=f^2(c-R+4IT_{\rm old})-c,\quad T_{\rm old}=uT.
+\]
+The rational auxiliary root $\sqrt{D_a}/(Q-1)$ is integral by the
+retained adjacent-coefficient Pell descent. Hence the old strong and
+auxiliary interfaces, including $c^2\mid I$,
+$V\equiv-c\pmod f$ and $V\equiv-R\pmod c$, are all restored.
+
+\subsection{Source recovery and the converse}
+
+The inherited signed rank argument applies to this recovered interface.
+It requires neither oddness of $I/c^2$ nor freedom to change
+$T_{\rm old}$ at this stage. It gives
+\[
+ c=\operatorname{sgn}(c)\psi_{a+2}(R),\quad
+ R=2t+1,\ t\ge24,\quad
+ |Y|>(|X|-3)^t/2-1,\quad |H|>|X|(|X|-3)^t.
+\]
+The divisibility $H\mid A_c^{\ast}$ gives $H\mid K^5$.
+With $\sigma=\operatorname{sgn}(c)$ and
+$\Pi=(\sigma X-2^R)(2^R\sigma X+1)$, the retained projection identity
+therefore implies $H\mid\Pi^5$. The actual fixed $\beta$ gives
+$x=|X|\ge2^{64}$, and
+\[
+ |\Pi|^5<2^{20t+20}x^{10}<x^{t+1}/2^t<|H|.
+\]
+The middle inequality follows from $64(t-9)>21t+20$ for $t\ge24$.
+Thus $\Pi=0$ and $\sigma X=2^R$. The retained orientation and
+centered half-binomial argument restores an actual old native source
+zero, and its ordinary calibration yields a finite syntactic refutation.
+
+Conversely, start with the old canonical outer witness supplied by a
+finite refutation. It has $D_t=\tau^2$, $B_{\rm dg}\ge64$,
+$D_t\equiv1\pmod3$, and $D\equiv2\pmod3$.
+Choose a positive Pell solution $g^2-DD_ts^2=1$.
+Choose one positive strong pair $I,f$ with $4sc^2\mid I$, and keep it
+fixed. Put
+\[
+ u=I/c^2,\qquad r=u^2,\qquad m=sr=su^2.
+\]
+The inherited supported-modulus interpolation theorem supplies every
+$T_{\rm old}$ residue modulo any positive modulus all of whose prime
+divisors divide this fixed $I$. Its full proof is retained in
+\texttt{source/POWERED\_PROOF.md}, Section~5.
+
+Canonical projection gives $H\mid K$, so
+$\kappa=K/H+(v-q^2)/M$ is integral. Choose an intersective root
+$a_0\pmod m$ of $\pi(t+\kappa)$. Every prime divisor of $um=su^3$
+divides $I$. Request
+\[
+ T_{\rm old}\equiv ua_0\pmod{um}.
+\]
+This yields an auxiliary Pell witness while retaining the same $I,f$.
+Consequently $T=T_{\rm old}/u$ is integral and $T\equiv a_0\pmod m$.
+Thus
+\[
+ \frac{A_c^{\ast}}S=\frac{H^4\pi(T+\kappa)}{sr}\in\mathbb Z.
+\]
+For the direct polynomial take
+$n=A_c^{\ast}/S+3uf+\delta y+9r\tau g$; for the centered polynomial
+subtract $QV$. One conjugate factor vanishes. The order of witness
+choices is outer data, guard pair, fixed strong pair, residue,
+auxiliary pair, and finally $n$. The strong pair is never changed after
+the residue is requested.
+
+Composing both directions with the retained calibration proves in
+ordinary ZFC the equivalence between universal nonvanishing and
+$\operatorname{Con}(\mathrm{ZFC})$. This is an ordinary proof composed
+with named inherited theorems, not a new complete Lean, Rocq or encoded
+object-language ZFC derivation. It proves neither side of that equivalence.
+
+\subsection{Exact degrees and finite validation}
+
+The relevant exact register degrees are
+\[
+ \begin{array}{c|rrrrrrrrrr}
+ \text{register}&I_2&D_f&Q&V&D_a&D_t&P&S&A_c^{\ast}&
+       (\mathcal A,\mathcal B,\mathcal G)\\ \hline
+ \text{degree}&5&13&21&18&78&22&62&16&35&(46,110,96).
+ \end{array}
+\]
+The direct version has uniquely dominant radicand $\mathcal B$, giving
+degree $4\cdot110=440$. In the centered version let $C_0=SQV$ and
+$Z_0=Sn-A_c^{\ast}$. The exact defect
+\[
+ \mathcal B-C_0^2=-S^2\bigl(Q(V^2+1)-1\bigr)
+\]
+gives $\deg(Z^2-\mathcal B)\le90$.
+In the symmetric norm form the inner bracket has unique highest term
+$-4\mathcal B\mathcal G$, of degree $206$; its other terms have
+degrees at most $192,156,142$. The final correction has degree $362$.
+Hence the exact centered degree is $412$.
+
+Let $q_0=6\beta j$, $X_0=12q_0w$, $Y_0=q_0v$,
+$R_0=-q_0^3(12wC-q_0z)$ and $k_0=R_0+hX_0Y_0$.
+The entire centered highest form is
+\[
+ 2^{64}3^{10}s^{12}r^{20}c^{32}q_0^{84}X_0^{40}Y_0^{52}R_0^4k_0^{12}.
+\]
+For example the following actual coefficients remain nonzero at the
+complete fixed tuple:
+\begin{align*}
+ [j^{216}w^{52}v^{64}h^{12}z^4s^{12}r^{20}c^{32}]\mathcal N_{
+ \rm centered}&=2^{384}3^{278}\beta^{216},\\
+ [j^{224}w^{56}v^{56}z^8s^8r^{24}c^{64}]\mathcal N_{
+ \rm direct}&=2^{392}3^{280}\beta^{224}.
+\end{align*}
+These establish exact total degree globally; they are not numerical
+samples at particular solutions.
+
+The separate finite checker imports neither the producer nor its DAG
+utility. It authenticates the full coefficient tuple and retained source
+files, checks all 68 register identities in each circuit over a free
+integer polynomial ring, verifies every coefficient of the eight-factor
+norm, checks the whole leading forms, and rejects seven changed nodes per
+variant. Normal and optimized runs pass, the coefficient recipe reproduces
+all six integers byte for byte, and both circuits rebuild identically.
+These checks establish finite algebra and transcription claims; the
+unbounded Pell and consistency interpretation remain the ordinary proofs
+just described.

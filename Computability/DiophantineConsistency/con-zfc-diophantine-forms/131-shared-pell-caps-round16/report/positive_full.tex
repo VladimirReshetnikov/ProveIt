@@ -1,0 +1,284 @@
+% Complete unabridged proof from positive/PROOF.md
+\section{Three Pell square conditions compressed to one square}
+
+
+
+\subsection{Result and scope}
+
+
+
+There are four new fixed integer polynomials, each in ten strictly positive integer unknowns. The scaled profiles are 87 operations at exact degree 436 and 88 operations at exact degree 380. The direct profiles are 92 operations at degree 384 and 93 operations at degree 334. Operations are live binary additions, subtractions and multiplications, including fixed-constant multiplications. These improve the operation count of the 89/\allowbreak{}288 and 94/\allowbreak{}262 uncentered predecessors, not their degrees. No global minimum is asserted.
+
+
+
+The new mechanism is simultaneous coprimality with both auxiliary-Pell factors. It replaces the four-factor two-root norm by one square equation. All coefficients are the complete, coherent compact44 BFS tuple bound in each JSON file. This is not a mixture with the public indexed tuple.
+
+
+
+The new unbounded arithmetic argument composes with the retained ordinary native/\allowbreak{}controller/\allowbreak{}refutation calibration. Its conclusion is that ZFC proves absence of positive zeros equivalent to Con(ZFC), with the inherited finite refutation convention. It is not a new Lean theorem or an internal object-ZFC proof object, and it does not assert consistency.
+
+
+
+\subsection{Complete polynomial definition}
+
+
+
+The positive unknowns are J,F,alpha,i,T,w,Y,n,eta,zeta on the scaled chart; replace w by x on the direct chart. The four fixed integer ports are beta, K0,MC,MF, with beta odd, beta\textgreater{}\allowbreak{}=\allowbreak{}31, K0\textgreater{}\allowbreak{}0 and 0\textless{}\allowbreak{}MC\textless{}\allowbreak{}beta\textless{}\allowbreak{}MF\textless{}\allowbreak{}2beta. Their complete literal payloads and finite recipe are in coefficients/.
+
+
+
+Define the following integer polynomials. No displayed intermediate is a separately quantified variable.
+
+
+
+\begin{verbatim}
+q=beta J+1, C=q-F-alpha, mu=q^2+1,
+scaled: X=wq, h=q-1, B=(K0+w)C-F, P=q^3(q-1), low=(q-1)Y-q^3 B,
+direct: X=q+x, h=q(q-1), B=(qK0+X)C-qF, P=q^4(q-1),
+        low=q(q-1)Y-q^3 B-(q-1)X,
+A=mu Y(X+1)+1, Delta=A^2-1, H=4A-5,
+k=eta+zeta, c=kY+eta, Vfirst=X mu^2 Y^2,
+D=1+Vfirst(Vfirst+1)k^2,
+R=((q-1)(q-F)+alpha)(q^2-1)+(MC+q MF)J, e=k-R-1,
+Kc=1+Delta c^2, E=i c^2 A Kc,
+Fstrong=1+Delta D E^2, Q=Delta^2 D E^2, delta=Q-1,
+b=c(T+alpha)-R, V=Fstrong b-c,
+Dnum=Q V^2-1, G=D Fstrong, Kpos=X(3c-2X)+2,
+M=P mu^2 H.
+\end{verbatim}
+
+For the 87/\allowbreak{}436 and 92/\allowbreak{}384 equations set L=\allowbreak{}V\textasciicircum{}\allowbreak{}2. For the 88/\allowbreak{}380 and 93/\allowbreak{}334 equations set L=\allowbreak{}(Delta D E)(Fstrong b). Then put
+
+
+
+\begin{verbatim}
+Z=P mu^2 [H(n-LB)+Kpos]+H[mu^2 low-Pe],
+N=delta Z^2-M^2 G Dnum.
+\end{verbatim}
+
+The equation is N=\allowbreak{}0. Its complete literal circuit, without divisions, square roots, exponentiation gates or hidden witnesses, is supplied in each equations/\allowbreak{}\textasteriskcentered{}.json file. The normalized rational identity used only in proofs is
+
+
+
+\begin{verbatim}
+Z/M=n+Kpos/H+Y/q^3-(1+hL)B/h-e/mu^2-[X/q^4].             (1)
+\end{verbatim}
+
+The bracket is present only on the direct chart. Relative to the predecessor, the first, main and auxiliary kernels have the same functional form, but the strong ordinate has been additionally saturated by A Kc. There is no V or other large polynomial center in (1).
+
+
+
+\subsection{1 Root recovery before any transport or source argument}
+
+
+
+All positive inputs give A\textgreater{}\allowbreak{}6, c\textgreater{}\allowbreak{}=\allowbreak{}3, E\textgreater{}\allowbreak{}=\allowbreak{}c\textasciicircum{}\allowbreak{}2 A Kc, D\textgreater{}\allowbreak{}1 and delta\textgreater{}\allowbreak{}4. Fstrong\textgreater{}\allowbreak{}c+\allowbreak{}2. Because b is integral, V=\allowbreak{}Fstrong b-c is nonzero and |V|\textgreater{}\allowbreak{}1: if b=\allowbreak{}0 then V=\allowbreak{}-c; otherwise |V|\textgreater{}\allowbreak{}=\allowbreak{}Fstrong-c\textgreater{}\allowbreak{}1. Hence Dnum\textgreater{}\allowbreak{}0.
+
+
+
+The following are polynomial congruences, valid before any square root is known to be integral:
+
+
+
+\begin{verbatim}
+Fstrong = 1 mod D, delta = -1 mod D, Dnum = -1 mod D;
+delta = -A^2 mod Fstrong;
+Dnum = -(1+Delta c^2) = -Kc mod Fstrong.
+\end{verbatim}
+
+The last line uses Q=\allowbreak{}Delta(Fstrong-1) and V=\allowbreak{}-c mod Fstrong. Because A and Kc divide E, Fstrong is 1 modulo both A and Kc. Thus
+
+
+
+\begin{verbatim}
+gcd(D,Fstrong delta Dnum)=1,
+gcd(Fstrong,delta Dnum)=1.                              (2)
+\end{verbatim}
+
+At a zero of N, the positive integer D Fstrong delta Dnum is the rational square (delta Z/\allowbreak{}M)\textasciicircum{}\allowbreak{}2, hence is an integer square. By (2) and unique prime factorization, D and Fstrong are separately squares. Write D=\allowbreak{}tau\textasciicircum{}\allowbreak{}2 and Fstrong=\allowbreak{}f\textasciicircum{}\allowbreak{}2 with tau,f positive integers. Also delta Dnum is a square, so y=\allowbreak{}sqrt(Dnum/\allowbreak{}delta) is rational. Set I=\allowbreak{}tau E. Then
+
+
+
+\begin{verbatim}
+f^2-Delta I^2=1, Q=(Delta I)^2, c^2 divides I,
+Q V^2-(Q-1)y^2=1.                                    (3)
+\end{verbatim}
+
+The retained adjacent-Pell descent makes y a positive integer. Its short proof does not assume a particular sign of V. Write y=\allowbreak{}a/\allowbreak{}m in lowest terms, so m\textasciicircum{}\allowbreak{}2 divides Q-1. For v=\allowbreak{}|V|\textgreater{}\allowbreak{}1 the transformation
+
+
+
+\begin{verbatim}
+v'=(2Q-1)v-2(Q-1)y, y'=(2Q-1)y-2Qv
+\end{verbatim}
+
+preserves Qv\textasciicircum{}\allowbreak{}2-(Q-1)y\textasciicircum{}\allowbreak{}2=\allowbreak{}1, has integral nonzero v' with |v'|\textless{}\allowbreak{}v, and preserves the reduced denominator m of y'. The inequalities needed are v\textless{}\allowbreak{}y\textless{}\allowbreak{}Qv/\allowbreak{}(Q-1). Taking absolute values and descending reaches v=\allowbreak{}1,y=\allowbreak{}1; therefore m=\allowbreak{}1. The original square equation consequently gives
+
+
+
+\begin{verbatim}
+Z/M=epsilon tau f y, epsilon in {-1,+1}.                (4)
+\end{verbatim}
+
+The single-square compression has recovered exactly the three required Pell conditions and an integral carrier. It did not assume parity, B\textgreater{}\allowbreak{}=\allowbreak{}0, the main index identity, or any source semantics.
+
+
+
+\subsection{2 The transport majorants are sufficient}
+
+
+
+The inherited all-index strong/\allowbreak{}auxiliary folding lemma applies to (3), with c\textless{}\allowbreak{}=\allowbreak{}I, c\textasciicircum{}\allowbreak{}2|I and V=\allowbreak{}-c mod f. It gives c=\allowbreak{}psi\_\allowbreak{}A(p) for positive odd p. The unchanged first norm gives k=\allowbreak{}2 psi\_\allowbreak{}(2Vfirst+\allowbreak{}1)(j), and j=\allowbreak{}1 is excluded as in the predecessor: it would give k=\allowbreak{}2 and c=\allowbreak{}2Y+\allowbreak{}1 strictly between the first two main ordinates. Thus k\textgreater{}\allowbreak{}=\allowbreak{}8Vfirst+\allowbreak{}4 and
+
+
+
+\begin{verbatim}
+c>8X mu^2 Y^2, Kpos>0, H>3X.
+\end{verbatim}
+
+The unconditional retained mask estimate R\textless{}\allowbreak{}c alpha/\allowbreak{}4 yields
+
+
+
+\begin{verbatim}
+b=c(T+alpha)-R>c>k,X, V>(Fstrong-1)b>b>1.
+\end{verbatim}
+
+This order does not use the sign of B. Put g=\allowbreak{}tau f and a=\allowbreak{}g y. The strong norm gives f\textless{}\allowbreak{}A I, so g\textless{}\allowbreak{}A D E. Furthermore
+
+
+
+\begin{verbatim}
+V>(Fstrong-1)c=Delta D E^2 c>4 A D E>4g,               (5)
+\end{verbatim}
+
+because Delta/\allowbreak{}A\textgreater{}\allowbreak{}A-1\textgreater{}\allowbreak{}5 and E c\textgreater{}\allowbreak{}=\allowbreak{}1. The auxiliary equation gives y\textless{}\allowbreak{}2V. Therefore a\textless{}\allowbreak{}2gV\textless{}\allowbreak{}V\textasciicircum{}\allowbreak{}2/\allowbreak{}2. Also b-e=\allowbreak{}c(T+\allowbreak{}alpha)-k+\allowbreak{}1\textgreater{}\allowbreak{}0, so
+
+
+
+\begin{verbatim}
+rho=e/mu^2<b/4,
+[X/q^4]<b/4.                                        (6)
+\end{verbatim}
+
+If rho is negative the same one-sided estimate remains valid. For L=\allowbreak{}V\textasciicircum{}\allowbreak{}2, (5)-(6) show a+\allowbreak{}rho+\allowbreak{}[X/\allowbreak{}q\textasciicircum{}\allowbreak{}4]\textless{}\allowbreak{}L, since b\textless{}\allowbreak{}V\textless{}\allowbreak{}V\textasciicircum{}\allowbreak{}2.
+
+
+
+For the lower-degree variant, SE=\allowbreak{}Delta D E\textgreater{}\allowbreak{}4g, so L=\allowbreak{}SE(Fstrong b)\textgreater{}\allowbreak{}4gV\textgreater{}\allowbreak{}2a and also L-a\textgreater{}\allowbreak{}2gV\textgreater{}\allowbreak{}b. This again gives a+\allowbreak{}rho+\allowbreak{}[X/\allowbreak{}q\textasciicircum{}\allowbreak{}4]\textless{}\allowbreak{}L. All inequalities are strict and pre-transport.
+
+
+
+Solve (1) and (4) for the positive coordinate n:
+
+
+
+\begin{verbatim}
+n=epsilon a-Kpos/H-Y/q^3+(1+hL)B/h+rho+[X/q^4].       (7)
+\end{verbatim}
+
+If B\textless{}\allowbreak{}=\allowbreak{}-1, the transport term is at most -L-1/\allowbreak{}h. Equations (5)-(6), Kpos/\allowbreak{}H\textgreater{}\allowbreak{}0 and Y/\allowbreak{}q\textasciicircum{}\allowbreak{}3\textgreater{}\allowbreak{}0 make the right side negative. Hence B\textgreater{}\allowbreak{}=\allowbreak{}0. Since F\textgreater{}\allowbreak{}0, its definition on either chart forces C\textgreater{}\allowbreak{}0.
+
+
+
+\subsection{3 Later source reconstruction}
+
+
+
+This is the precise inherited dependency boundary. B\textgreater{}\allowbreak{}=\allowbreak{}0 gives 3q\textless{}\allowbreak{}R\textless{}\allowbreak{}q\textasciicircum{}\allowbreak{}4-2. The normalized strong rank and signed auxiliary-index lemmas, using c\textasciicircum{}\allowbreak{}2|I and the same congruences V=\allowbreak{}-c mod f and V=\allowbreak{}-R mod c, give p=\allowbreak{}R. Odd R gives even q and odd J. Only then does gcd(mu\textasciicircum{}\allowbreak{}2,PH)=\allowbreak{}1 isolate mu\textasciicircum{}\allowbreak{}2|e from the integral carrier (4). The first-index congruence yields j=\allowbreak{}(R+\allowbreak{}1)/\allowbreak{}2. The zero-offset ratio estimates give Y\textgreater{}\allowbreak{}X\textasciicircum{}\allowbreak{}r/\allowbreak{}3 and X\textasciicircum{}\allowbreak{}(r+\allowbreak{}1)\textless{}\allowbreak{}H, where R=\allowbreak{}2r+\allowbreak{}1, r\textgreater{}\allowbreak{}=\allowbreak{}48.
+
+
+
+The carrier still gives H|P Kpos. The retained whole-product projection, without cancelling a nonunit through H, then gives X=\allowbreak{}2\textasciicircum{}\allowbreak{}R. The direct chart's later q|X and q\textasciicircum{}\allowbreak{}4|X steps remain in their original order. The remaining fractions give q\textasciicircum{}\allowbreak{}3|Y and the nonnegative integer t=\allowbreak{}B/\allowbreak{}h (after B=\allowbreak{}q Bt on the direct chart). The only required property of the changed weight is 1+\allowbreak{}hL=\allowbreak{}1 mod h, which holds for every integer L. The fixed-minus parity, half-binomial rounding and fresh unscaled source reconstruction are unchanged. Consequently a positive zero yields a finite refutation under the whole calibrated coefficient tuple.
+
+
+
+Replacing a sum of roots by their product does not assert any root-index identity not already obtained from the three recovered equations. The later argument uses only integrality of the normalized carrier, not the particular integer on its right side. Full statements of the inherited interfaces and their original proofs are retained in provenance/.
+
+
+
+\subsection{4 Fresh positive completeness}
+
+
+
+Starting from a finite refutation, take the canonical outer and first-Pell data supplied by the inherited source theorem: X=\allowbreak{}2\textasciicircum{}\allowbreak{}R, R=\allowbreak{}3 mod 4, r\textgreater{}\allowbreak{}=\allowbreak{}48, q\textasciicircum{}\allowbreak{}3|Y, t=\allowbreak{}B/\allowbreak{}h\textgreater{}\allowbreak{}=\allowbreak{}0, c=\allowbreak{}psi\_\allowbreak{}A(R), D=\allowbreak{}tau\textasciicircum{}\allowbreak{}2, eta,zeta\textgreater{}\allowbreak{}0, and rho=\allowbreak{}(k-R-1)/\allowbreak{}mu\textasciicircum{}\allowbreak{}2\textgreater{}\allowbreak{}=\allowbreak{}1. Do not retain the former strong witness.
+
+
+
+Choose a positive Pell index m such that
+
+
+
+\begin{verbatim}
+tau c^2 A Kc divides psi_A(m).
+\end{verbatim}
+
+It exists because the determinant-one recurrence matrix is invertible modulo this fixed positive modulus, and a positive power is the identity in the finite matrix group. Let I=\allowbreak{}psi\_\allowbreak{}A(m), f=\allowbreak{}chi\_\allowbreak{}A(m), and i=\allowbreak{}I/\allowbreak{}(tau c\textasciicircum{}\allowbreak{}2 A Kc)\textgreater{}\allowbreak{}0. This gives exactly E=\allowbreak{}i c\textasciicircum{}\allowbreak{}2 A Kc and (3).
+
+
+
+Apply the inherited auxiliary-completeness lemma to this fresh strong pair, obtaining the same positive T and positive y,V with (3). All source congruences, including the construction of T=\allowbreak{}Tstar-alpha\textgreater{}\allowbreak{}0, are unaffected by adding a divisor to the strong period. Set the actual L to either specified polynomial and define the integer
+
+
+
+\begin{verbatim}
+n=tau f y-Kpos/H-Y/q^3+(1+hL)t+rho+[X/q^4].            (8)
+\end{verbatim}
+
+The canonical estimates give tau\textgreater{}\allowbreak{}Y\textgreater{}\allowbreak{}=\allowbreak{}Y/\allowbreak{}q\textasciicircum{}\allowbreak{}3 and f\textgreater{}\allowbreak{}Xc\textgreater{}\allowbreak{}Kpos/\allowbreak{}H. Since tau,f\textgreater{}\allowbreak{}=\allowbreak{}3 and y\textgreater{}\allowbreak{}=\allowbreak{}1, tau f y\textgreater{}\allowbreak{}=\allowbreak{}tau f\textgreater{}\allowbreak{}tau+\allowbreak{}f\textgreater{}\allowbreak{}Y/\allowbreak{}q\textasciicircum{}\allowbreak{}3+\allowbreak{}Kpos/\allowbreak{}H. All remaining terms in (8) are nonnegative, so n\textgreater{}\allowbreak{}0, even when t=\allowbreak{}0. The carrier equals tau f y, proving N=\allowbreak{}0. Every quantified coordinate is strictly positive. This is a fresh existence construction, not a claim of a positive pointwise inverse from the predecessor's zero set.
+
+
+
+\subsection{5 Exact global degree and literal counts}
+
+
+
+All variables have degree one and all four coefficient ports degree zero. The following degrees and leading forms follow directly from the literal definitions. Let q0=\allowbreak{}beta J, k0=\allowbreak{}eta+\allowbreak{}zeta, X0=\allowbreak{}q0 w on the scaled chart and X0=\allowbreak{}q0+\allowbreak{}x on the direct chart. Put c0=\allowbreak{}k0 Y, A0=\allowbreak{}q0\textasciicircum{}\allowbreak{}2 Y X0, D0=\allowbreak{}q0\textasciicircum{}\allowbreak{}8 X0\textasciicircum{}\allowbreak{}2 Y\textasciicircum{}\allowbreak{}4 k0\textasciicircum{}\allowbreak{}2, E0=\allowbreak{}i A0\textasciicircum{}\allowbreak{}3 c0\textasciicircum{}\allowbreak{}4. Then the leading forms of Fstrong,Q,b,V,M are respectively
+
+
+
+\begin{verbatim}
+F0=A0^2 D0 E0^2, Q0=A0^4 D0 E0^2,
+b0=-q0^3(q0-F), V0=F0 b0,
+M0=4q0^8 A0 (scaled), 4q0^9 A0 (direct).
+\end{verbatim}
+
+The B leading forms are B0=\allowbreak{}w(q0-F-alpha) on the scaled chart and B0=\allowbreak{}(q0 K0+\allowbreak{}X0)(q0-F-alpha)-q0 F on the direct chart. Each is nonzero, including for the actual fixed tuple; on the direct chart the coefficient of x alpha is -1.
+
+
+
+\begin{verbatim}
+register        scaled   direct
+A                  5        4
+Delta             10        8
+c                  2        2
+Kc                14       12
+E                 24       21
+D                 18       16
+Fstrong           76       66
+Q,delta           86       74
+b                  4        4
+V                 80       70
+Dnum             246      214
+G                 94       82
+M                 13       13
+B                  2        2
+\end{verbatim}
+
+For the low-operation variant, L0=\allowbreak{}V0\textasciicircum{}\allowbreak{}2 and deg L=\allowbreak{}160 or140. The uniquely highest part of Z is -M0 L0 B0, of degree175 or155. Consequently delta Z\textasciicircum{}\allowbreak{}2 has degree436 or384 and leading form Q0 M0\textasciicircum{}\allowbreak{}2 L0\textasciicircum{}\allowbreak{}2 B0\textasciicircum{}\allowbreak{}2. The other summand M\textasciicircum{}\allowbreak{}2 G Dnum has degree366 or322, strictly smaller. Thus N has exactly degree436 or384.
+
+
+
+For the lower-degree variant, L0=\allowbreak{}A0\textasciicircum{}\allowbreak{}2 D0 E0 F0 b0, of degree132 or115. The same unique-dominance calculation gives deg Z=\allowbreak{}147 or130 and deg N=\allowbreak{}380 or334. These exceed366 or322 respectively. The same product Q0 M0\textasciicircum{}\allowbreak{}2 L0\textasciicircum{}\allowbreak{}2 B0\textasciicircum{}\allowbreak{}2 is the nonzero leading form. The domain is an integral polynomial ring, so these are global attained degree proofs for the actual fixed coefficients, not degrees inferred from a sampled specialization.
+
+
+
+The literal source-row comparison is: add five saturation gates, delete the one n+\allowbreak{}V gate, and replace the thirteen-gate two-root tail by a seven-gate square tail, saving two gates overall. V\textasciicircum{}\allowbreak{}2 was already live. The lean majorant adds one multiplication. Independent topological and backward-live checks ensure every counted row and every input is used.
+
+
+
+\subsection{6 Finite checks and their limits}
+
+
+
+build.py reads the frozen parent JSON, never imports its source programs, and constructs the four complete graphs. verify.py independently checks the literal definitions, normalized carrier, all coefficient payload hashes, coprimality identities, exact polynomial replays and leading terms, and dependency liveness. Normal and optimized Python runs must agree. These finite checks supplement the unbounded proof; they do not establish the absence of zeros or replace the inherited logical calibration.

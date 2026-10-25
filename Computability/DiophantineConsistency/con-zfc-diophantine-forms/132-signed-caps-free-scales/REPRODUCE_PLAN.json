@@ -1,0 +1,225 @@
+{
+  "schema": "explicit_replay_plan_v1",
+  "rebuild_files": [
+    "integer/free_main_saturated11_none.json",
+    "integer/free_main_saturated11_sharp.json",
+    "integer/free_main_saturated11_simple.json",
+    "integer/main_saturated11_none.json",
+    "integer/main_saturated11_sharp.json",
+    "integer/main_saturated11_simple.json",
+    "integer/METRICS.json",
+    "lowdegree/equation.json",
+    "lowdegree/specification.json",
+    "positive/first.json",
+    "positive/second.json",
+    "alternative/signed_cap/raw_equation.json",
+    "alternative/signed_cap/cap_certificate.json",
+    "alternative/signed_cap/factored_source.json",
+    "alternative/signed_cap/factorization_certificate.json",
+    "alternative/signed_cap/equation.json",
+    "alternative/signed_cap/projection_certificate.json",
+    "alternative/signed_cap/terminal_elimination_certificate.json",
+    "alternative/signed_cap/expanded_polynomial.json",
+    "alternative/signed_cap/METRICS.json",
+    "alternative/odd_cap/raw_equation.json",
+    "alternative/odd_cap/cap_certificate.json",
+    "alternative/odd_cap/factored_source.json",
+    "alternative/odd_cap/factorization_certificate.json",
+    "alternative/odd_cap/equation.json",
+    "alternative/odd_cap/projection_certificate.json",
+    "alternative/odd_cap/terminal_elimination_certificate.json",
+    "alternative/odd_cap/expanded_polynomial.json",
+    "alternative/odd_cap/METRICS.json",
+    "integer_lowops/product_main_guard11_native.json",
+    "integer_lowops/product_main_guard11_short.json",
+    "integer_lowops/METRICS.json"
+  ],
+  "compare_files": [
+    "integer/free_main_saturated11_none.json",
+    "integer/free_main_saturated11_sharp.json",
+    "integer/free_main_saturated11_simple.json",
+    "integer/main_saturated11_none.json",
+    "integer/main_saturated11_sharp.json",
+    "integer/main_saturated11_simple.json",
+    "integer/METRICS.json",
+    "lowdegree/equation.json",
+    "lowdegree/specification.json",
+    "positive/first.json",
+    "positive/second.json",
+    "alternative/signed_cap/raw_equation.json",
+    "alternative/signed_cap/cap_certificate.json",
+    "alternative/signed_cap/factored_source.json",
+    "alternative/signed_cap/factorization_certificate.json",
+    "alternative/signed_cap/equation.json",
+    "alternative/signed_cap/projection_certificate.json",
+    "alternative/signed_cap/terminal_elimination_certificate.json",
+    "alternative/signed_cap/expanded_polynomial.json",
+    "alternative/signed_cap/METRICS.json",
+    "alternative/odd_cap/raw_equation.json",
+    "alternative/odd_cap/cap_certificate.json",
+    "alternative/odd_cap/factored_source.json",
+    "alternative/odd_cap/factorization_certificate.json",
+    "alternative/odd_cap/equation.json",
+    "alternative/odd_cap/projection_certificate.json",
+    "alternative/odd_cap/terminal_elimination_certificate.json",
+    "alternative/odd_cap/expanded_polynomial.json",
+    "alternative/odd_cap/METRICS.json",
+    "integer/CHECK{check_suffix}.json",
+    "lowdegree/review/CHECK.json",
+    "review/positive/AUDIT.json",
+    "review/integer/AUDIT.json",
+    "review/integer/receipt-{mode}.json",
+    "review/alternative/INDEPENDENT_CAP_REPLAY.json",
+    "alternative/MUTATION_CHECKS.json",
+    "alternative/signed_cap/CHECK.json",
+    "alternative/signed_cap/POWER_COVERAGE.json",
+    "alternative/signed_cap/PRESEMANTIC_BOUNDS.json",
+    "alternative/odd_cap/CHECK.json",
+    "alternative/odd_cap/POWER_COVERAGE.json",
+    "alternative/odd_cap/PRESEMANTIC_BOUNDS.json",
+    "integer_lowops/product_main_guard11_native.json",
+    "integer_lowops/product_main_guard11_short.json",
+    "integer_lowops/METRICS.json",
+    "integer_lowops/CHECK{check_suffix}.json",
+    "review/lowops/AUDIT.json",
+    "review/integer_lowops/receipt-{mode}.json"
+  ],
+  "commands": [
+    {
+      "args": [
+        "integer/build.py"
+      ]
+    },
+    {
+      "args": [
+        "lowdegree/build.py"
+      ]
+    },
+    {
+      "args": [
+        "positive/build.py"
+      ]
+    },
+    {
+      "args": [
+        "alternative/build_signed_cap.py",
+        "alternative/signed_cap"
+      ]
+    },
+    {
+      "args": [
+        "alternative/build_signed_cap.py",
+        "alternative/odd_cap",
+        "--odd-auxiliary"
+      ]
+    },
+    {
+      "args": [
+        "integer/check.py"
+      ]
+    },
+    {
+      "args": [
+        "lowdegree/review/audit.py"
+      ]
+    },
+    {
+      "args": [
+        "positive/build.py",
+        "--check"
+      ],
+      "stdout_reference": "positive/BUILD_CHECK.txt"
+    },
+    {
+      "args": [
+        "positive/check.py"
+      ],
+      "stdout_reference": "positive/CHECK.json"
+    },
+    {
+      "args": [
+        "alternative/check_signed_cap.py",
+        "alternative/signed_cap"
+      ]
+    },
+    {
+      "args": [
+        "alternative/check_signed_cap.py",
+        "alternative/odd_cap"
+      ]
+    },
+    {
+      "args": [
+        "alternative/check_mutations.py"
+      ]
+    },
+    {
+      "args": [
+        "review/positive/independent_audit.py"
+      ],
+      "stdout_reference": "review/positive/NORMAL_OUTPUT.json"
+    },
+    {
+      "args": [
+        "review/integer/independent_audit.py"
+      ],
+      "stdout_reference": "review/integer/NORMAL_OUTPUT.json"
+    },
+    {
+      "args": [
+        "review/integer/check_independent.py",
+        "--receipt",
+        "review/integer/receipt-{mode}.json"
+      ]
+    },
+    {
+      "args": [
+        "review/alternative/audit_cap_independent.py",
+        "--package",
+        "alternative",
+        "--output",
+        "review/alternative"
+      ]
+    },
+    {
+      "args": [
+        "integer_lowops/build.py"
+      ]
+    },
+    {
+      "args": [
+        "integer_lowops/check.py"
+      ]
+    },
+    {
+      "args": [
+        "review/lowops/independent_audit.py"
+      ],
+      "stdout_reference": "review/lowops/NORMAL_OUTPUT.json"
+    },
+    {
+      "args": [
+        "review/integer_lowops/check_independent.py",
+        "--receipt",
+        "review/integer_lowops/receipt-{mode}.json"
+      ]
+    },
+    {
+      "args": [
+        "report/check_report.py"
+      ],
+      "stdout_reference": "report/EDITORIAL_MATH_CHECK.json"
+    },
+    {
+      "args": [
+        "review/report/check_report_data.py"
+      ],
+      "stdout_reference": "review/report/DATA_CHECK.json"
+    }
+  ],
+  "environment_for_exact_receipt_bytes": {
+    "python": "3.12.14",
+    "sympy": "1.14.0",
+    "note": "Generated equation/DAG bytes match across modes. Environment-bearing receipts are compared against mode-specific references."
+  }
+}

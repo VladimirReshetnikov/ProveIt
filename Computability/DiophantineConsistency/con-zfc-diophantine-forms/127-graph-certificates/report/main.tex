@@ -1,0 +1,498 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array,microtype,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref,xurl,fancyhdr,listings}
+\usepackage{tikz}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,
+ pdftitle={Shared arithmetic certificates and graph energies for Diophantine consistency},
+ pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Diophantine consistency: graph certificates}
+\fancyhead[R]{\small 24 October 2026}\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}\newcommand{\Ctwo}{\mathcal C_{222}}
+\newcommand{\htp}{\operatorname{ht}}\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\input{metrics.tex}
+\title{Shared arithmetic certificates and graph energies\\for Diophantine consistency}
+\author{An AI-assisted research contribution to ProveIt\\Prepared for Vladimir Reshetnikov}
+\date{24 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct explicit fixed Diophantine polynomials whose absence of solutions
+is provably equivalent in ZFC to $\Con(\ZFC)$, using the repository's identified
+numerical-proof-calculus calibration. The central algebraic contribution is a
+simple-graph incidence construction: half the sum of squared vertex divergences
+has integral coefficients of absolute value one, and free tree flows enforce a
+whole system of polynomial equations. Sharing graph vertices across different
+equations and sharing their multiplicative factors reduces the number of
+unknowns substantially. Complete coefficient lists, reconstruction programs,
+independent exact checks, and ordinary soundness and completeness proofs are
+included. A complementary arithmetic construction combines modular binomial
+digits with one common Pell bound. All domains, inherited proof interfaces,
+and comparisons with the inspected repository snapshot are stated explicitly.
+The results are concrete improvements on selected constructions; neither a
+global simplicity minimum nor a newly completed proof-assistant verification
+is claimed.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The result and its meaning}
+\label{sec:result}
+
+\subsection{A fixed equation over the integers}
+The principal graph equation is the literal polynomial
+\[
+  \boxed{\quad P_{\GraphVars}(z_0,\ldots,z_{\GraphLast})=0,
+                  \qquad z_i\in\Z.\quad}
+\]
+Its complete collected coefficients and coordinate order are in
+\file{graph/principal/polynomial.json}; a complete plain-text equation is in
+\file{graph/principal/polynomial.txt}. It has exact total degree four,
+\GraphTerms{} nonzero monomials, constant coefficient one, and every nonzero
+coefficient equal to $+1$ or $-1$. These are expanded-polynomial measurements,
+not bounds on an unexpanded expression. In particular, its coefficient height
+is the smallest positive height possible for a nonzero integer polynomial.
+
+The proof establishes
+\begin{equation}\label{eq:main}
+ \ZFC\ \vdash\
+ \left(\forall\mathbf z\in\Z^{\GraphVars}\;
+                  P_{\GraphVars}(\mathbf z)\ne0\right)
+       \ \longleftrightarrow\ \Con(\ZFC).
+\end{equation}
+This is an equivalence proved in the theory. It does not assert either side of
+the equivalence. The construction uses the numerical calculus $\Ctwo$; it does
+not encode the execution of K215 or specialize Jones's universal polynomial.
+
+Here $\Con(\ZFC)$ is the syntactic assertion that the fixed effective proof
+system for ZFC has no finite derivation of a contradiction. The source interfaces
+identify this ordinary arithmetical statement precisely. A polynomial described
+by an explicit finite list is just as fixed as one printed on a single line:
+there are no unspecified coefficient ports, variable exponents, or operations
+whose completion depends on consistency.
+
+\subsection{Comparison and scope}
+\input{results_table.tex}
+
+The snapshot inspected for this contribution is
+\texttt{f4d8db99e060339f3306a04d507c35bc1d0d68c5} of ProveIt.
+The eight archives then present in \file{docs/incoming} were also inspected.
+The earlier height-one construction has 7,431 integer variables and 34,086
+monomials, and is based on an explicit 519-variable source system~\cite{heightone}. A comparison
+on that very same source isolates the improvement from the new graph compiler.
+The principal graph equation additionally uses the later 442-variable source~\cite{round15}.
+
+The repository already contains equations with far fewer variables and much
+larger fixed coefficients. Consequently a height-one quartic is a distinct
+tradeoff, not a new overall minimum variable count. Natural-variable equations
+are listed separately: $\N=\{0,1,2,\ldots\}$ throughout. Every assertion about an
+integer equation permits arbitrary negative as well as positive coordinates.
+
+\subsection{What is new and what is inherited}
+The new algebraic part is a finite, generic transformation of any quadratic
+integer system. Its proof does not require Pell theory, proof theory, or a
+consistency assumption. Its special application to ZFC uses an inherited
+equivalence between the source's integer zeros and finite $\Ctwo$ derivations,
+then the named interfaces
+\begin{align*}
+ &\texttt{KEndpoint.c222\_iff\_zf\_refutation},\\
+ &\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+\end{align*}
+The first interface concerns the numerical calculus directly; a machine boot or
+simulation hypothesis is not being silently inserted. The second transfers
+refutability between ZF and ZFC. The retained source material identifies the
+ordinary arithmetic proofs and these formal interface texts.
+
+The new finite verifiers check the literal transformations and all collected
+coefficients. They do not establish unbounded number-theoretic statements by
+testing small examples. No complete new Lean or Rocq build of the transitive
+source development, and no serialized object-language ZFC derivation, is
+claimed. The mathematical proof is ordinary mathematics formalizable in ZFC.
+
+\section{Why graph incidence gives coefficient height one}
+\label{sec:graph}
+
+Let $G=(V,E)$ be a finite oriented simple graph, with no loops and no two edges
+joining the same unordered pair of vertices. Give each edge a polynomial label
+$p_e$. Write
+\[
+ d_v=\sum_{e:\,v=\operatorname{tail}(e)}p_e
+       -\sum_{e:\,v=\operatorname{head}(e)}p_e,
+ \qquad
+ \mathcal E_G=\frac12\sum_{v\in V}d_v^2.
+\]
+The orientation is bookkeeping; changing an edge's orientation and its label's
+sign leaves the divergences unchanged.
+
+\begin{lemma}[Incidence expansion]\label{lem:incidence}
+If the edge labels are distinct independent indeterminates, then
+$\mathcal E_G$ is an integer polynomial with every nonzero coefficient in
+$\{-1,+1\}$. It is nonnegative over $\mathbb R$, and it vanishes exactly when
+all vertex divergences vanish.
+\end{lemma}
+\begin{proof}
+Every edge occurs at exactly two endpoints. Its square therefore has coefficient
+$2/2=1$. Two distinct edges can share at most one endpoint, so their cross
+product occurs with coefficient $+1$, $-1$, or zero after division by two.
+These exhaust the terms. The assertion about zeros follows directly from the
+sum of real squares. The factor $1/2$ belongs to the proof representation; it
+does not leave a fractional coefficient in the expanded polynomial.
+\end{proof}
+
+For polynomial edge labels, distinct formal edge-products might become the same
+monomial. Avoiding that collision is the main algebraic issue addressed in
+Section~\ref{sec:aliases}; it cannot be omitted from a height-one claim.
+
+\subsection{Free tree flows impose component balances}
+Partition the vertices into blocks. Some edges, called prescribed edges, carry
+fixed polynomial expressions in the source coordinates. Within each block,
+choose a spanning tree whose edge labels are fresh unrestricted integer
+unknowns. There are no other free edges.
+
+\begin{lemma}[Integral tree-flow completion]\label{lem:tree}
+For fixed integral prescribed labels, a block's vertex divergences can all be
+made zero by assigning its tree flows if and only if the total prescribed
+divergence of that block is zero. If it exists, the assignment is unique and
+each flow is an integral signed sum of prescribed labels.
+\end{lemma}
+\begin{proof}
+Summing divergences over a block cancels every internal free edge, proving
+necessity. For sufficiency, root the tree. At a leaf the incident free edge is
+uniquely determined by cancellation of that leaf's prescribed divergence.
+Delete the leaf, add its net prescribed divergence to the parent, and repeat.
+The last root equation holds exactly when the total is zero. This also proves
+uniqueness and the signed-sum formula. No division or rational witness appears.
+\end{proof}
+
+\subsection{One shared set of vertices for every equation}
+Consider normalized equations
+\begin{equation}\label{eq:normalized}
+ R_r=\sum_{i=0}^{s_r-1}\epsilon_{ri}m_{ri}=0,
+       \qquad \epsilon_{ri}\in\{-1,+1\}.
+\end{equation}
+Choose a positive integer $H$. Make $H$ hub vertices. For row $r$, make
+$b_r=\ceil{s_r/H}$ row vertices. Its $s_r$ prescribed edges go from its row
+vertices to the hubs, with labels $\epsilon_{ri}m_{ri}$, using each hub at most
+once at any particular row vertex. Connect each row block by a free path, and
+connect the common hub block by one free path.
+
+The canonical allocation numbers all occurrences consecutively. Occurrence
+$i$ of row $r$, with $o_r$ occurrences in earlier rows, goes from row vertex
+$\lfloor i/H\rfloor$ to hub $(o_r+i)\bmod H$. This is a simple graph. Its
+number of free flow unknowns is exactly
+\begin{equation}\label{eq:flowcount}
+ F(H)=H-1+\sum_r\left(\ceil{s_r/H}-1\right).
+\end{equation}
+
+\begin{proposition}[Shared graph representation]\label{prop:graph-representation}
+For fixed integral values of the $m_{ri}$, there exist integral free flows
+with $\mathcal E_G=0$ if and only if all the equations
+\eqref{eq:normalized} hold. When they exist, the free flows are unique.
+\end{proposition}
+\begin{proof}
+The total prescribed divergence of row block $r$ is $R_r$. The total over the
+hub block is $-\sum_rR_r$. Apply Lemma~\ref{lem:tree} to each block. All row
+balances vanish exactly when every row equation holds; then the hub balance
+vanishes automatically. The graph energy vanishes exactly when all divergences
+do, by its sum-of-squares representation.
+\end{proof}
+
+The parameter $H$ controls a real tradeoff. Small $H$ can use very few flows,
+but gives high-degree hub vertices and many cross terms. A larger $H$ often
+reduces the number of monomials at the cost of more flow variables. Equation
+\eqref{eq:flowcount} is exact; it is not an asymptotic complexity claim.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=stealth,scale=0.95,every node/.style={font=\small}]
+\node[draw,circle,minimum size=9mm] (r1) at (0,1.2) {$R_1$};
+\node[draw,circle,minimum size=9mm] (r2) at (0,-1.2) {$R_2$};
+\node[draw,circle,minimum size=9mm] (h1) at (5,2.0) {$h_1$};
+\node[draw,circle,minimum size=9mm] (h2) at (5,0) {$h_2$};
+\node[draw,circle,minimum size=9mm] (h3) at (5,-2.0) {$h_3$};
+\draw[->,MidnightBlue] (r1) -- node[pos=.24,above,fill=white,inner sep=1pt] {$A$} (h1);
+\draw[->,MidnightBlue] (r1) -- node[pos=.32,above,fill=white,inner sep=1pt] {$B$} (h2);
+\draw[->,MidnightBlue] (r1) -- node[pos=.20,below,fill=white,inner sep=1pt] {$-C$} (h3);
+\draw[->,MidnightBlue] (r2) -- node[pos=.20,above,fill=white,inner sep=1pt] {$D$} (h1);
+\draw[->,MidnightBlue] (r2) -- node[pos=.32,below,fill=white,inner sep=1pt] {$E$} (h2);
+\draw[->,MidnightBlue] (r2) -- node[pos=.24,below,fill=white,inner sep=1pt] {$-F$} (h3);
+\draw[->,very thick] (h1) -- node[right] {$p$} (h2);
+\draw[->,very thick] (h2) -- node[right] {$q$} (h3);
+\end{tikzpicture}
+\caption{Two equations $A+B-C=0$ and $D+E-F=0$ use two common
+tree-flow unknowns. Blue edges are prescribed monomials; black edges are free
+integer flows. The sum of the squared five vertex divergences, divided by two,
+enforces both equations and has unit coefficients before protected substitution.}
+\label{fig:two-rows}
+\end{figure}
+
+\section{Sharing factors while preserving all coefficients}
+\label{sec:aliases}
+
+\subsection{Signed unit normalization}
+The source is a finite system $Q_j(x_0,\ldots,x_{n-1})=0$, with each $Q_j$
+quadratic and all coefficients integral. The credited predecessor's
+normalization is retained. All delivered source variables occur in their
+system; unused coordinates may first be removed if only preservation of
+existence is needed. Empty residuals may likewise be discarded. Every required
+positive coefficient $c>1$ receives
+a constant coordinate $C_c$, together with the necessary repeated integer
+halves. In increasing order impose
+\[
+ C_c-2H_c-(c\bmod2)=0,\qquad
+ H_c=\begin{cases}1,&\lfloor c/2\rfloor=1,\\
+ C_{\lfloor c/2\rfloor},&\lfloor c/2\rfloor>1.
+ \end{cases}
+\]
+Here the coefficient $-2$ is retained as two signed occurrences of $-H_c$.
+Every constructor is monic in its new coordinate; thus it forces $C_c=c$.
+For each required quadratic coefficient product, introduce a shared scale
+$S_{c,i}$ with $S_{c,i}-C_cx_i=0$. Replace $cx_ix_j$ by $S_{c,i}x_j$,
+$cx_i$ by $C_cx_i$, and a constant $c$ by $C_c$, retaining signs. This gives
+only signed unit occurrences of monomials of degree at most two. All source
+solutions extend uniquely to the normalized system, and the inverse is the
+projection to the original variables.
+
+This normalization uses binary constructors, not $c$ repeated copies of a term.
+The source equation and every monic constructor are retained literally and
+checked by exact substitution. No appeal to the numerical size of a hypothetical
+solution is involved.
+
+\subsection{Occurrence tags and common factors}
+Initially give each signed term occurrence a private coordinate $a_i$.
+For a normalized quadratic term $v_jv_k$, choose an orientation and represent
+it by $m_i=a_i b_k$, where $a_i$ is an alias of $v_j$ and $b_k$ is a common
+representative of $v_k$. All private coordinates, common representatives, and
+free graph flows have disjoint names. A linear term $v_j$ is represented by
+$a_i u$, where $u$ is one common unit coordinate. A constant term is represented
+by $a_i u$ with both coordinates assigned logical value one.
+
+For a square $v_j^2$, the smaller variant uses $m_i=a_i^2$. This changes the
+maximum exponent of an individual final coordinate from two to four, but keeps
+the total degree four. The variant retaining $a_i b_j$ instead is also valid.
+
+Every ordinary logical variable's aliases are tied together by the cycles below.
+All unit aliases, including $u$, are tied to one by a single unit path.
+The choice of orientation influences the number of common representatives and
+two-element alias groups. The released finite orientation is recorded in the
+certificate; its deterministic heuristic is an optimization, not a theorem of
+global optimality.
+
+\begin{lemma}[Distinct edge-products with private tags]\label{lem:private}
+With distinct private coordinates for each occurrence, the products $m_i^2$
+and $m_im_j$ uniquely determine their unordered pair of prescribed occurrences.
+Mixed products $m_iw_e$ with free flow coordinates and products of flow
+coordinates cannot collide with them or with one another, except for the
+intentional commutativity of a product.
+\end{lemma}
+\begin{proof}
+Each prescribed monomial contains its private occurrence coordinate, and no
+other prescribed monomial contains that coordinate. Its multiplicity is one
+or, for a square occurrence, two. The private part of a pair-product therefore
+determines its occurrence multiset. Flow coordinates have a separate namespace.
+Prescribed-pair products have degree four, mixed prescribed-flow products degree
+three, and flow-pair products degree two. Their namespaces and degrees separate
+the three cases.
+\end{proof}
+
+\input{alias_compression.tex}
+
+\subsection{Equality cycles and the unit path}
+For an ordinary logical variable with distinct aliases $a_1,\ldots,a_k$, no
+constraint is needed for $k=1$. If $k=2$, append one extra alias. For $k\ge3$ set
+\[
+ C(a_1,\ldots,a_k)=\sum_{i=1}^k a_i^2-
+                         \sum_{i=1}^k a_ia_{i+1},\qquad a_{k+1}=a_1.
+\]
+Then $2C=\sum_i(a_i-a_{i+1})^2$, so its zeros identify all aliases.
+The cycle has length at least three, ensuring every coefficient is $+1$ or $-1$.
+A two-cycle would instead create a coefficient $-2$ and is not permitted.
+
+For the unit aliases $u_1,\ldots,u_k$, append fresh coordinates if needed so
+that $k\ge2$, and use
+\[
+ U=1+\sum_{i=1}^k u_i^2-u_1-u_k-
+                            \sum_{i=1}^{k-1}u_iu_{i+1}.
+\]
+The identity
+\[
+ 2U=(u_1-1)^2+\sum_{i=1}^{k-1}(u_i-u_{i+1})^2+(u_k-1)^2
+\]
+shows that $U\ge0$ and $U=0$ exactly when every unit alias is one. Its two
+endpoints are distinct; hence its linear coefficients also have absolute value
+one. The graph's quadratic terms involve only flow coordinates, while cycle
+and unit-path quadratic terms involve only alias coordinates. No collision
+between these components is possible.
+
+\section{The complete compiler theorem}
+\label{sec:compiler}
+
+Define the final polynomial by
+\begin{equation}\label{eq:wholegraph}
+  \boxed{\quad P=\mathcal E_G+\sum_{\text{ordinary alias groups}}C+U.\quad}
+\end{equation}
+This is a compact mathematical specification of the fully expanded integral
+polynomial in the release. All summands are nonnegative at every real point.
+
+\begin{theorem}[Height-one quartic representation]\label{thm:compiler}
+For the certified construction above, $P$ is a fixed integer polynomial of
+coefficient height one and exact total degree four. Its integer zero set is in
+explicit bijection with the integer zero set of the source system $Q_j=0$.
+The inverse map is a coordinate projection; the forward map has integer
+coefficients and degree at most two.
+\end{theorem}
+\begin{proof}
+The coefficient assertion follows from the simple-graph expansion, the
+certified distinctness of prescribed monomial products, and the separate
+namespaces for graph and alias constraints. The unit path supplies the sole
+constant term, which is one. At least one prescribed edge exists, and its
+square is a surviving quartic term; the total degree is therefore exactly four.
+
+Suppose $P=0$ at an integer tuple. Each nonnegative summand must vanish.
+The unit path forces every unit alias to one. The equality cycles identify the
+aliases of each logical variable. The graph energy forces each divergence to
+zero, and summing over a row block recovers that row's normalized equation.
+The monic constructors then force their literal constant and scale values,
+recovering every original $Q_j=0$.
+
+Conversely, start with a source zero. Compute the constants and scales, assign
+every alias its logical value, and assign each prescribed edge its signed
+monomial value. Every row balance is zero. Lemma~\ref{lem:tree} assigns the
+unique integral free flows that cancel all divergences. All cycles and the unit
+path vanish. Thus $P=0$. Constants and scales, aliases, equality dummies, and
+tree flows were uniquely assigned, proving the zero-set bijection. Constants
+are fixed, scales are linear in source variables, prescribed monomials have
+degree at most two, and tree flows are signed sums of those monomials. This
+proves the assertion about the degree and integrality of the forward map.
+\end{proof}
+
+\subsection{A useful identity away from the zero set}
+The forward map can be extended to every source tuple. Root each free tree;
+choose flows that cancel all nonroot divergences. The remaining divergence in
+row block $r$ is its normalized residual $R_r$, and the hub-root divergence is
+$-\sum_rR_r$. The alias constraints still vanish. The normalized constructors
+vanish on the canonical extension of the original tuple. Therefore
+\begin{equation}\label{eq:offzero}
+ P(L(\mathbf x))=\frac12\left(
+              \sum_j Q_j(\mathbf x)^2+
+                        \left(\sum_jQ_j(\mathbf x)\right)^2\right).
+\end{equation}
+This is the correct off-zero identity for shared hub vertices. It is generally
+different from $\sum_jQ_j^2$. The right side is nevertheless integral and
+vanishes exactly when all $Q_j$ vanish. The identity makes no assumption about
+the existence of a refutation and gives a useful independent check of the lift.
+
+\subsection{Transferring the consistency interpretation}
+The identified source proof gives, in ordinary mathematics formalizable in ZFC,
+\[
+ \exists\mathbf x\in\Z^n\;\bigwedge_jQ_j(\mathbf x)=0
+ \ \longleftrightarrow\
+ \text{$\Ctwo$ has the specified finite derivation}
+ \ \longleftrightarrow\ \neg\Con(\ZFC).
+\]
+Theorem~\ref{thm:compiler} is an elementary finite algebraic statement about
+integer polynomials, graphs, and trees; its proof is formalizable in ZFC.
+Composing the two equivalences and negating proves \eqref{eq:main}. No use of
+$\Con(\ZFC)$ as a premise occurs in either direction.
+
+\input{direct.tex}
+
+\input{additional.tex}
+
+\section{Exact verification and reproducibility}
+\label{sec:verification}
+\input{verification.tex}
+
+\section{What remains open}
+\label{sec:future}
+
+\paragraph{A single simplicity objective.}
+Variable count, total degree, coefficient height, collected support, and
+arithmetic-circuit length are different quantities. There is no proof that one
+of the present equations minimizes all of them, or even one globally. A useful
+next step is a reproducible Pareto comparison under a fixed domain and complete
+coefficient binding, with explicit costs for describing the polynomial.
+
+\paragraph{Better graph layouts.}
+The shared-hub family is a transparent constructive choice. Other simple graphs
+may reduce $|E_{\rm free}|$ and $\sum_v\binom{\deg v}{2}$ simultaneously.
+Free edges must retain an integral completion theorem; arbitrary real linear
+dependence would not suffice. More general totally unimodular incidence
+structures are a natural direction, provided their collected coefficients stay
+controlled.
+
+\paragraph{Better factor sharing.}
+The private-tag argument is deliberately strong. Avoiding duplicate pair-products
+is the actual requirement. One can study certificate-producing alias packings
+under exact multiplicative collision constraints, including how square
+occurrences interact with common representatives. Optimizing the number of
+normalized terms before allocating aliases is also likely to matter.
+
+\paragraph{Signed arithmetic certificates.}
+The arithmetic bottleneck in unrestricted-integer encodings is often sign
+recovery, not the number of arithmetic operations in the intended natural
+computation. A pooled congruence can recover several signs only after an
+independent bound on all possible indices has been established. Preserving this
+logical order while sharing the bound further is an explicit research target.
+
+\paragraph{A generic formal proof first.}
+The graph compiler has a short proof independent of all inherited Pell and
+refutation-calibration theorems. Formalizing its simple-graph, tree-flow, and
+monomial-support invariants would provide a reusable verified component.
+The source-calibration chain can then be attached with its domain interfaces
+visible. This is a more concrete target than treating a successful polynomial
+rebuild as an end-to-end formal proof.
+
+\paragraph{Priority and generality.}
+The new constructions were compared with the pinned repository and its incoming
+archives. A targeted literature search did not establish a prior identical
+construction; it also does not establish worldwide priority. The elementary
+graph and tree-flow facts are standard linear algebra. The contribution here
+is the proved integration, coefficient control, and explicit measured
+consistency equations with reproducible finite artifacts.
+
+\appendix
+\section{Artifact specification and reading order}
+\input{artifact_map.tex}
+
+\section{Source provenance and calibration}
+\input{provenance.tex}
+
+\input{direct_residuals.tex}
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, inspected snapshot
+\texttt{f4d8db99e060339f3306a04d507c35bc1d0d68c5}, 24 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{heightone} ProveIt incoming research packet,
+\emph{Coefficient height one and an eleven-integer degree-464 equation for
+Con(ZFC)}, 24 October 2026. Literal source519, normalization, equality cycles,
+unit path, and retained arithmetic calibration; exact archive provenance in the
+release source ledger.
+\bibitem{round15} ProveIt incoming research packet,
+\emph{Round 15 unified binomial and even Pell index equations}, 24 October 2026.
+Literal source442 and its ordinary arithmetic/refutation proof.
+\bibitem{binomial} ProveIt incoming research packet,
+\emph{Shared binomial certificates and short carriers for Con(ZFC)},
+24 October 2026. Modular binomial and direct-calculus compiler dependencies.
+\bibitem{cap} ProveIt incoming research packet,
+\emph{Shared Pell bound: a 261-variable direct construction},
+24 October 2026. One-bound indexed-Pell construction and ordinary proof.
+\end{thebibliography}
+\end{document}

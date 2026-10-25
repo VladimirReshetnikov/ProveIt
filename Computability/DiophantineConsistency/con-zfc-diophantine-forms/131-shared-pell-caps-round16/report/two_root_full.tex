@@ -1,0 +1,523 @@
+% Complete unabridged proof from scalar/TWO_ROOT_PROOF.md
+\section{Two rational square conditions with a nonzero center}
+
+
+
+\subsection{Result and scope}
+
+
+
+The short-index construction below is a fixed polynomial in eleven unrestricted integers of exact degree810 with112 live binary arithmetic operations. Its weak-scale companion has degree654 with117 operations. A native-index cubic-scale comparison has degree906 with111 operations but is dominated by the separate degree882/\allowbreak{}110-operation product equation and is retained only for transparent comparison.
+
+
+
+The new mechanism removes the A Dm saturation from the incoming three-factor coprime product and instead uses a denominator-cleared two-square identity. A nonzero-center argument, rather than fixed prime-separating weights, individually recovers both rational squares. The inherited signed source calibration is unchanged. These are ordinary arithmetic proofs, not new kernel-checked or object-ZFC derivations, and no global minimum or proof of consistency is claimed.
+
+
+
+\subsection{1. Full polynomial and its two scale choices}
+
+
+
+The variables are j,C,z,h,r,v,w,T,c,n,s, all unrestricted integers. The six fixed numeral ports beta,K0,MC,MF,cone\_\allowbreak{}A,cone\_\allowbreak{}B are exactly the full payloads in coefficients/. In particular beta=\allowbreak{}2\textasciicircum{}\allowbreak{}1064921-1, cone\_\allowbreak{}A=\allowbreak{}2\textasciicircum{}\allowbreak{}1113, and cone\_\allowbreak{}B=\allowbreak{}2\textasciicircum{}\allowbreak{}666104. The compiler coefficient MF is already shifted. No port is quantified.
+
+
+
+Define
+
+
+
+\begin{verbatim}
+J=6j+1, q=beta J+1, W=12w+4, X=qW,
+F=(K0+W)C-z(q-1),
+R=[q(q-F)-C](q^2-1)+(MC+q MF)J.
+\end{verbatim}
+
+For the degree810 equation use
+
+
+
+\begin{verbatim}
+Y=(2v+1)q^3, index_modulus=4q^4.
+\end{verbatim}
+
+For the degree906 comparison use the same Y but index\_\allowbreak{}modulus=\allowbreak{}XY. For the degree654 weak-scale equation use
+
+
+
+\begin{verbatim}
+Y=qv, index_modulus=XY.
+\end{verbatim}
+
+Continue, in all cases, with
+
+
+
+\begin{verbatim}
+E=XY, a=E+Y, H=4a+3, Delta=a^2+H=(a+2)^2-1,
+k=R+1+h index_modulus, eta=c-Yk,
+Derr=(cone_A F-q)^2+(cone_B C-q)^2,
+Budget=k^2(q^2-Derr)-4q^2 eta^2, D=Budget-4,
+ell=XY^2, Dt=1+ell(ell+1)k^2,
+Dg=1+D Dt s^2, P=Dt Dg,
+U=rc^2, Df=1+Delta U^2 P,
+Q=Delta^2 U^2 P, delta=Q-1,
+b=c-R+4UPT, V=Df b-c, Cy=QV^2-1,
+K=X(3c-2X)+2.
+\end{verbatim}
+
+For the cubic-scale equations set
+
+
+
+\begin{verbatim}
+S=srH, zc=HT+K,
+Ac=(zc^2+3H^2)(zc^3-19H^3).
+\end{verbatim}
+
+For the weak-scale equation set
+
+
+
+\begin{verbatim}
+M=2q^2, Dc=HM,
+S=srH M^5,
+zc=Dc T+MK+H(v-q^2),
+Ac=(zc^2+3Dc^2)(zc^3-19Dc^3).
+\end{verbatim}
+
+Finally define, for every variant,
+
+
+
+\begin{verbatim}
+Z=S(n+V)-Ac, Aux=S^2 Cy, Guard=S^2 P Df,
+Inner=delta(Z^2-Guard)-Aux,
+Ftwo=Inner^2-4delta Aux Guard.                      (1)
+\end{verbatim}
+
+Equation Ftwo=\allowbreak{}0 is the complete ordinary integer polynomial. The literal graph computes P=\allowbreak{}Dt+\allowbreak{}D(Dt s)\textasciicircum{}\allowbreak{}2, U=\allowbreak{}rc\textasciicircum{}\allowbreak{}2, UP=\allowbreak{}UP, strong=\allowbreak{}(Delta U)UP, Df=\allowbreak{}strong+\allowbreak{}1 and Q=\allowbreak{}Delta strong; all are exactly the displayed polynomials. Symbols are abbreviations, not new unknowns. There are no divisions, radicals, variable exponents or unresolved ports in the graph.
+
+
+
+\subsection{2. Unconditional facts and the new parity guard}
+
+
+
+The fixed tuple and affine definitions give q even, q=\allowbreak{}2 modulo3, |q|\textgreater{}\allowbreak{}=\allowbreak{}beta-1, X=\allowbreak{}0 modulo8, X=\allowbreak{}2 modulo3 and |X|\textgreater{}\allowbreak{}=\allowbreak{}4|q|. H is odd and nonzero. For cubic Y, |Y|\textgreater{}\allowbreak{}=\allowbreak{}|q|\textasciicircum{}\allowbreak{}3 and Delta\textgreater{}\allowbreak{}1. For weak Y, if v=\allowbreak{}0 then Delta=\allowbreak{}3; otherwise |a|=\allowbreak{}|(X+\allowbreak{}1)qv| is much larger than4, again giving Delta\textgreater{}\allowbreak{}1. No nonzero-Y assumption is made yet in the weak case.
+
+
+
+Since ell is an integer, ell(ell+\allowbreak{}1)\textgreater{}\allowbreak{}=\allowbreak{}0 and Dt\textgreater{}\allowbreak{}=\allowbreak{}1. Since X is a multiple of8 and Y is even in both scales, ell is a multiple of32; in particular Dt=\allowbreak{}1 modulo4. The cone coefficients are divisible by16 and q is even, so
+
+
+
+\begin{verbatim}
+Budget=-(qk)^2 modulo16,
+Budget=0 or12 modulo16,
+D=12 or8 modulo16.                                (2)
+\end{verbatim}
+
+For explicit verification, Budget+\allowbreak{}(qk)\textasciicircum{}\allowbreak{}2 equals
+
+
+
+\begin{verbatim}
+k^2[2q(cone_A F+cone_B C)-(cone_A F)^2-(cone_B C)^2]
+    -4q^2 eta^2,
+\end{verbatim}
+
+whose terms are all divisible by16. Thus D is a multiple of4, is nonzero and is never a square. Consequently
+
+
+
+\begin{verbatim}
+Dg=1 modulo4, P=1 modulo4, P!=0.
+\end{verbatim}
+
+Since Delta\textgreater{}\allowbreak{}1, Df=\allowbreak{}1+\allowbreak{}Delta U\textasciicircum{}\allowbreak{}2 P never vanishes, Q can never be1, and Cy=\allowbreak{}QV\textasciicircum{}\allowbreak{}2-1 never vanishes. In particular delta!=\allowbreak{}0. These claims do not presuppose P\textgreater{}\allowbreak{}0 or a Pell interpretation.
+
+
+
+The scalar quintic pi(t)=\allowbreak{}(t\textasciicircum{}\allowbreak{}2+\allowbreak{}3)(t\textasciicircum{}\allowbreak{}3-19) has no rational root. With the nonzero denominator d=\allowbreak{}H or Dc, Ac=\allowbreak{}d\textasciicircum{}\allowbreak{}5 pi(zc/\allowbreak{}d) is therefore nonzero. If S=\allowbreak{}0, (1) is delta\textasciicircum{}\allowbreak{}2 Ac\textasciicircum{}\allowbreak{}4, nonzero. Every zero has S!=\allowbreak{}0 and hence s,r!=\allowbreak{}0. This does not yet prove c!=\allowbreak{}0.
+
+
+
+\subsection{3. The zero-center obstruction}
+
+
+
+At Z=\allowbreak{}0 the exact polynomial identity is
+
+
+
+\begin{verbatim}
+Ftwo=S^4(Cy-delta P Df)^2.                          (3)
+\end{verbatim}
+
+Suppose Ftwo=\allowbreak{}0 and Z=\allowbreak{}0. Then Cy=\allowbreak{}delta P Df. Since Q is divisible by P, Cy=\allowbreak{}-1 modulo P. The right side is divisible by P, so P divides1. The congruence P=\allowbreak{}1 modulo4 excludes P=\allowbreak{}-1; hence P=\allowbreak{}1. Now Dt is a positive integer and P=\allowbreak{}Dt Dg=\allowbreak{}1, so Dt=\allowbreak{}Dg=\allowbreak{}1. The equality Dg=\allowbreak{}1+\allowbreak{}D Dt s\textasciicircum{}\allowbreak{}2 then forces D=\allowbreak{}0, contradicting (2). Therefore
+
+
+
+\begin{verbatim}
+Z!=0                                               (4)
+\end{verbatim}
+
+at every integer zero. No sign, square-root extraction, auxiliary denominator descent, or scale restoration has been used in proving this.
+
+
+
+\subsection{4. Separate the two squares without a fixed weight}
+
+
+
+Put t=\allowbreak{}Z/\allowbreak{}S, a0=\allowbreak{}Cy/\allowbreak{}delta and b0=\allowbreak{}P Df, only as rational numbers in this proof. Dividing (1) by the nonzero rational square delta\textasciicircum{}\allowbreak{}2 S\textasciicircum{}\allowbreak{}4 gives
+
+
+
+\begin{verbatim}
+(t^2-a0-b0)^2=4a0 b0.                             (5)
+\end{verbatim}
+
+By (4), t!=\allowbreak{}0. Define rational numbers
+
+
+
+\begin{verbatim}
+y0=(t^2+a0-b0)/(2t), p1=(t^2-a0+b0)/(2t).
+\end{verbatim}
+
+A direct expansion of (5) gives
+
+
+
+\begin{verbatim}
+y0^2=a0, p1^2=b0, y0+p1=t.                        (6)
+\end{verbatim}
+
+Thus the two square conditions separate algebraically. No unjustified inference that an arbitrary sum of radicals is rational is used; the nonzero-center proof supplies the essential hypothesis. Since b0 is an integer, the rational number p1 is an integer. P Df is nonzero, hence strictly positive.
+
+
+
+Also gcd(P,Df)=\allowbreak{}1, because Df=\allowbreak{}1 modulo P. Unique prime factorization therefore makes |P| and |Df| individually integer squares. P is odd and P=\allowbreak{}1 modulo4; it cannot be the negative of an odd square. Thus P\textgreater{}\allowbreak{}0. It follows that Df=\allowbreak{}1+\allowbreak{}Delta U\textasciicircum{}\allowbreak{}2 P\textgreater{}\allowbreak{}0. Choose positive integers p0,f with
+
+
+
+\begin{verbatim}
+P=p0^2, Df=f^2.
+\end{verbatim}
+
+Since gcd(Dt,Dg)=\allowbreak{}1, Dt\textgreater{}\allowbreak{}=\allowbreak{}1 and P\textgreater{}\allowbreak{}0, their product square splits as
+
+
+
+\begin{verbatim}
+Dt=tau^2, Dg=g^2, p0=tau g
+\end{verbatim}
+
+with positive integers tau,g. If Budget\textless{}\allowbreak{}=\allowbreak{}3, then D\textless{}\allowbreak{}=\allowbreak{}-1 and s!=\allowbreak{}0 give Dg\textless{}\allowbreak{}=\allowbreak{}1-Dt\textless{}\allowbreak{}=\allowbreak{}0, contrary to Dg\textgreater{}\allowbreak{}0. Therefore Budget\textgreater{}\allowbreak{}=\allowbreak{}4; (2) strengthens this to Budget\textgreater{}\allowbreak{}=\allowbreak{}12. It follows that k!=\allowbreak{}0, Derr\textless{}\allowbreak{}q\textasciicircum{}\allowbreak{}2 and
+
+
+
+\begin{verbatim}
+|c/k-Y|<1/2, sign(c)=sign(kY) whenever cY!=0.        (7)
+\end{verbatim}
+
+The disk inequality also gives the same nonzero common signs of q,F,C,q-F-C as the retained source proof.
+
+
+
+\subsection{5. Integer auxiliary root and carrier divisibility before scale restoration}
+
+
+
+Set I=\allowbreak{}U p0. Then I is an integer, c\textasciicircum{}\allowbreak{}2 divides I, and
+
+
+
+\begin{verbatim}
+f^2=1+Delta I^2, Q=(Delta I)^2,
+V=f^2(c-R+4I T_old)-c, T_old=p0T.                  (8)
+\end{verbatim}
+
+Equation (6) gives the rational auxiliary equation
+
+
+
+\begin{verbatim}
+QV^2-(Q-1)y0^2=1.                                 (9)
+\end{verbatim}
+
+If c=\allowbreak{}0, then U=\allowbreak{}I=\allowbreak{}Q=\allowbreak{}0 and (9) gives y0\textasciicircum{}\allowbreak{}2=\allowbreak{}1, so y0 is integral. If c!=\allowbreak{}0, then r!=\allowbreak{}0 and p0\textgreater{}\allowbreak{}0 imply I!=\allowbreak{}0, |I|\textgreater{}\allowbreak{}=\allowbreak{}c\textasciicircum{}\allowbreak{}2 and Q\textgreater{}\allowbreak{}1. Adjacent-coefficient Pell descent makes y0 integral. Namely, write y0=\allowbreak{}A/\allowbreak{}B in lowest terms. B\textasciicircum{}\allowbreak{}2 divides Q-1. The map
+
+
+
+\begin{verbatim}
+V'=(2Q-1)V-2(Q-1)y0,
+y'=(2Q-1)y0-2QV
+\end{verbatim}
+
+preserves (9), keeps V' integral and preserves the least common denominator B by its integral unimodular matrix. After reflecting signs, V\textgreater{}\allowbreak{}1 and y0\textgreater{}\allowbreak{}0 imply V\textless{}\allowbreak{}y0\textless{}\allowbreak{}QV/\allowbreak{}(Q-1), hence -V\textless{}\allowbreak{}V'\textless{}\allowbreak{}V; the norm excludes V'=\allowbreak{}0. Descent reaches |V|=\allowbreak{}|y0|=\allowbreak{}1 and therefore B=\allowbreak{}1.
+
+
+
+In both c cases, (6) now gives t=\allowbreak{}y0+\allowbreak{}p1 in Z. As Z=\allowbreak{}S(n+\allowbreak{}V)-Ac,
+
+
+
+\begin{verbatim}
+S divides Ac.                                     (10)
+\end{verbatim}
+
+This is proved before assuming the cubic scale, c!=\allowbreak{}0, or Q\textgreater{}\allowbreak{}1 in the weak-scale case. It is the critical ordering point for that variant.
+
+
+
+For cubic Y, reducing (10) modulo H gives H|K\textasciicircum{}\allowbreak{}5. Inequality (7) and |Y|\textgreater{}\allowbreak{}=\allowbreak{}|q|\textasciicircum{}\allowbreak{}3 exclude c=\allowbreak{}0.
+
+
+
+For weak Y, H=\allowbreak{}3 modulo q and H is odd. Since q=\allowbreak{}2 modulo3,
+
+
+
+\begin{verbatim}
+gcd(H,2q^2)=1.
+\end{verbatim}
+
+Write M=\allowbreak{}2q\textasciicircum{}\allowbreak{}2 and Dc=\allowbreak{}HM. Since M\textasciicircum{}\allowbreak{}5 divides S, (10) implies M\textasciicircum{}\allowbreak{}5|Ac. If p\textasciicircum{}\allowbreak{}e exactly divides M and v\_\allowbreak{}p(zc)=\allowbreak{}b\textless{}\allowbreak{}e, expansion
+
+
+
+\begin{verbatim}
+Ac=zc^5+3Dc^2 zc^3-19Dc^3 zc^2-57Dc^5
+\end{verbatim}
+
+shows that the first term has strictly smaller valuation5b than each other term. This contradicts p\textasciicircum{}\allowbreak{}(5e)|Ac. Thus M|zc. Reduction modulo M and gcd(H,M)=\allowbreak{}1 give
+
+
+
+\begin{verbatim}
+M | v-q^2, v=q^2(2v_old+1),
+Y=(2v_old+1)q^3.                                  (11)
+\end{verbatim}
+
+The old nonzero cubic scale is restored. Inequality (7) now excludes c=\allowbreak{}0. The other component H|Ac gives H|(MK)\textasciicircum{}\allowbreak{}5, hence H|K\textasciicircum{}\allowbreak{}5 by coprimality. No unsound inference H|K from H|K\textasciicircum{}\allowbreak{}5 is made.
+
+
+
+\subsection{6. Signed rank and native-source restoration}
+
+
+
+After Section5, every variant has exactly the required signed kernel data:
+
+
+
+\begin{itemize}
+
+\item the actual cubic scale, Delta=\allowbreak{}(a+\allowbreak{}2)\textasciicircum{}\allowbreak{}2-1\textgreater{}\allowbreak{}1 and nonzero c,I;
+
+\item c\textasciicircum{}\allowbreak{}2|I, f\textasciicircum{}\allowbreak{}2-Delta I\textasciicircum{}\allowbreak{}2=\allowbreak{}1, and |I|\textgreater{}\allowbreak{}=\allowbreak{}c\textasciicircum{}\allowbreak{}2;
+
+\item the auxiliary Pell equation (9) with y0 integral;
+
+\item V=\allowbreak{}-c modulo f and V=\allowbreak{}-R modulo c, by (8);
+
+\item the first Pell square Dt=\allowbreak{}tau\textasciicircum{}\allowbreak{}2;
+
+\item common nonzero signs of q,F,C,q-F-C, the strict centered strip (7), and the unchanged packing bounds |q|(|q|\textasciicircum{}\allowbreak{}2-1)\textless{}\allowbreak{}R\textless{}\allowbreak{}|q|\textasciicircum{}\allowbreak{}4-2;
+
+\item the powered main projection H|K\textasciicircum{}\allowbreak{}5.
+
+\end{itemize}
+
+
+
+For the XY index modulus, the signed strong-index proof in inherited/\allowbreak{}centered11-proof.md Section5.2 and the absolute folding in inherited/\allowbreak{}signed-quadratic-proof.md Section2 apply. The proof explicitly allows arbitrary nonzero I/\allowbreak{}c\textasciicircum{}\allowbreak{}2; no odd multiplier is assumed. For 4q\textasciicircum{}\allowbreak{}4, the smaller-index proof in PROOF.md Section5 applies: 4q\textasciicircum{}\allowbreak{}4\textgreater{}\allowbreak{}3R+\allowbreak{}1 and 4q\textasciicircum{}\allowbreak{}4|2XY\textasciicircum{}\allowbreak{}2 restore the same first-index congruence, and after orientation the ordinary h\_\allowbreak{}old=\allowbreak{}(k-R-1)/\allowbreak{}(XY) is regenerated.
+
+
+
+These arguments first give R=\allowbreak{}2t0+\allowbreak{}1, t0\textgreater{}\allowbreak{}=\allowbreak{}24, and
+
+
+
+\begin{verbatim}
+|H|>x(x-3)^t0, x=|X|>=2^64,
+c=sign(c) psi_(a+2)(R).
+\end{verbatim}
+
+For completeness, the actual projection step uses the identity
+
+
+
+\begin{verbatim}
+2Kquad=HcX-K, Kquad=X(X+2ac)-1.
+\end{verbatim}
+
+Since H is odd, H|K\textasciicircum{}\allowbreak{}5 implies H|Kquad\textasciicircum{}\allowbreak{}5. The retained signed Pell congruence gives H|Pi\textasciicircum{}\allowbreak{}5 for
+
+
+
+\begin{verbatim}
+Pi=(sign(c)X-2^R)(2^R sign(c)X+1).
+\end{verbatim}
+
+The bounds |Pi|\textasciicircum{}\allowbreak{}5\textless{}\allowbreak{}2\textasciicircum{}\allowbreak{}(20t0+\allowbreak{}20)x\textasciicircum{}\allowbreak{}10 and |H|\textgreater{}\allowbreak{}x\textasciicircum{}\allowbreak{}(t0+\allowbreak{}1)/\allowbreak{}2\textasciicircum{}\allowbreak{}t0 imply |Pi|\textasciicircum{}\allowbreak{}5\textless{}\allowbreak{}|H|, since 64(t0-9)-(21t0+\allowbreak{}20)=\allowbreak{}43t0-596\textgreater{}\allowbreak{}=\allowbreak{}436. Thus Pi=\allowbreak{}0 and sign(c)X=\allowbreak{}2\textasciicircum{}\allowbreak{}R. The unchanged late orientation and uniform half-binomial proof restore X,c,k,Y\textgreater{}\allowbreak{}0, 0\textless{}\allowbreak{}eta/\allowbreak{}k\textless{}\allowbreak{}1/\allowbreak{}4, the exact main projector and all original native source rows after fresh private witnesses are regenerated.
+
+
+
+This proves the soundness reduction to a finite syntactic ZFC refutation under the same named ordinary source34/\allowbreak{}compiler calibration. Its copies, provenance and notices are retained in inherited/. No new end-to-end formal verification is asserted.
+
+
+
+\subsection{7. Completeness with no cyclic witness selection}
+
+
+
+Start with a finite syntactic refutation and its canonical outer data. These fix q,X,Y,c,R,k,Dt=\allowbreak{}tau\textasciicircum{}\allowbreak{}2, Budget\textgreater{}\allowbreak{}=\allowbreak{}64 and the exact main projector H|K. For the short modulus choose h=\allowbreak{}(k-R-1)/\allowbreak{}(4q\textasciicircum{}\allowbreak{}4); its integrality follows from the first Pell recurrence as in PROOF.md Section5. For the weak variant set v=\allowbreak{}q\textasciicircum{}\allowbreak{}2(2v\_\allowbreak{}old+\allowbreak{}1), leaving the canonical numerical Y and all outer registers unchanged.
+
+
+
+D=\allowbreak{}Budget-4 is positive and nonsquare by (2). Since Dt=\allowbreak{}tau\textasciicircum{}\allowbreak{}2 is a nonzero square, D Dt is positive nonsquare. Ordinary Pell existence supplies positive s,g with g\textasciicircum{}\allowbreak{}2=\allowbreak{}1+\allowbreak{}D Dt s\textasciicircum{}\allowbreak{}2. Fix these and put p0=\allowbreak{}tau g.
+
+
+
+Choose one strong Pell pair I,f with
+
+
+
+\begin{verbatim}
+4s p0 c^2 | I, f^2-Delta I^2=1.
+\end{verbatim}
+
+The retained supported-modulus interpolation theorem permits this pair and keeps it fixed thereafter. Set r=\allowbreak{}I/\allowbreak{}(p0 c\textasciicircum{}\allowbreak{}2), so U=\allowbreak{}rc\textasciicircum{}\allowbreak{}2=\allowbreak{}I/\allowbreak{}p0. Every prime factor of p0sr divides I. No strong pair is changed after a residue is selected.
+
+
+
+For cubic scale put kappa=\allowbreak{}K/\allowbreak{}H. Choose a0 modulo sr with pi(a0+\allowbreak{}kappa)=\allowbreak{}0 modulo sr. For weak scale use pi(a0+\allowbreak{}kappa+\allowbreak{}v\_\allowbreak{}old)=\allowbreak{}0 modulo sr. Intersectivity of pi is the retained quintic theorem. Supported-modulus interpolation for this fixed I,f supplies T\_\allowbreak{}old in the residue
+
+
+
+\begin{verbatim}
+T_old=p0 a0 modulo p0sr
+\end{verbatim}
+
+with its integral auxiliary Pell ordinate y. Consequently T=\allowbreak{}T\_\allowbreak{}old/\allowbreak{}p0 is an integer and T=\allowbreak{}a0 modulo sr. Formula (8) then is exactly the new auxiliary definition because I T\_\allowbreak{}old=\allowbreak{}UPT.
+
+
+
+In the cubic case Ac=\allowbreak{}H\textasciicircum{}\allowbreak{}5 pi(T+\allowbreak{}kappa), giving Ac/\allowbreak{}S integral. In the weak case zc=\allowbreak{}HM(T+\allowbreak{}kappa+\allowbreak{}v\_\allowbreak{}old) and Ac=\allowbreak{}(HM)\textasciicircum{}\allowbreak{}5 pi(T+\allowbreak{}kappa+\allowbreak{}v\_\allowbreak{}old), again giving Ac/\allowbreak{}S integral. Now set
+
+
+
+\begin{verbatim}
+n=Ac/S+y+p0f-V.
+\end{verbatim}
+
+This is an integer, Z/\allowbreak{}S=\allowbreak{}y+\allowbreak{}p0f, Cy=\allowbreak{}delta y\textasciicircum{}\allowbreak{}2 and P Df=\allowbreak{}(p0f)\textasciicircum{}\allowbreak{}2. Substitution makes (1) zero. All witness choices are in the order outer data, guard s/\allowbreak{}g, one fixed I/\allowbreak{}f/\allowbreak{}r, intersective residue, T\_\allowbreak{}old and T/\allowbreak{}y, then n. The guard never depends on the subsequently chosen strong pair.
+
+
+
+Both existence directions hold. Composing the retained ordinary calibration, ZFC proves that universal nonvanishing of each displayed fixed polynomial over Z\textasciicircum{}\allowbreak{}11 is equivalent to Con(ZFC).
+
+
+
+\subsection{8. Exact degree and actual nonzero coefficients}
+
+
+
+Let q0=\allowbreak{}6beta j, X0=\allowbreak{}12q0w and write Y0=\allowbreak{}2v q0\textasciicircum{}\allowbreak{}3 for cubic scale or Y0=\allowbreak{}q0v for weak scale. Let a0=\allowbreak{}X0Y0. The highest k part is h a0 for the native cubic index, 4h q0\textasciicircum{}\allowbreak{}4-q0\textasciicircum{}\allowbreak{}3F0 for the short index, and h a0-q0\textasciicircum{}\allowbreak{}3F0 for weak scale, where F0=\allowbreak{}12wC-q0z. The ties in the latter two forms are retained.
+
+
+
+The common leading factors are
+
+
+
+\begin{verbatim}
+P0=-4q0^2 X0^4 Y0^10 k0^6 s^2,
+U0=rc^2, Df0=a0^2 U0^2 P0, Q0=a0^4 U0^2 P0,
+V0=4a0^2 U0^3 P0^2 T, Cy0=Q0 V0^2.
+\end{verbatim}
+
+The degree tables are
+
+
+
+\begin{verbatim}
+variant       P  Df   Q   V  Cy  S  Ac
+native       94 112 124 210 544  8  35
+short        82 100 112 186 484  8  35
+weak         62  76  84 142 368 16  35.
+\end{verbatim}
+
+Put Wc=\allowbreak{}Sn-Ac, so Z=\allowbreak{}Wc+\allowbreak{}SV and degWc=\allowbreak{}35. The complete centering identity is
+
+
+
+\begin{verbatim}
+Inner=delta Wc^2+2delta S V Wc
+            +S^2(1-V^2-delta P Df).                (12)
+\end{verbatim}
+
+In each variant the unique highest term is -S\textasciicircum{}\allowbreak{}2 V\textasciicircum{}\allowbreak{}2. Its degrees are436,388,316. The squared Inner therefore has degree872,776,632, respectively. The correction -4delta S\textasciicircum{}\allowbreak{}4 Cy P Df has degree906,810,654, respectively, strictly higher. Thus it gives the entire nonzero highest homogeneous form.
+
+
+
+For the two cubic variants that form is
+
+
+
+\begin{verbatim}
+-2^30 q0^16 X0^50 Y0^98 k0^48 s^20 r^16 c^24 T^2.
+\end{verbatim}
+
+The native attained coefficient is
+
+
+
+\begin{verbatim}
+[j^552 w^98 v^146 h^48 s^20 r^16 c^24 T^2] Ftwo
+    =-2^924 3^650 beta^552.
+\end{verbatim}
+
+The short attained coefficient is
+
+
+
+\begin{verbatim}
+[j^552 w^50 v^98 h^48 s^20 r^16 c^24 T^2] Ftwo
+    =-2^876 3^602 beta^552.
+\end{verbatim}
+
+For weak scale S0=\allowbreak{}128sr a0 q0\textasciicircum{}\allowbreak{}10 and the entire top form is
+
+
+
+\begin{verbatim}
+-2^50 q0^56 X0^50 Y0^98 k0^48 s^20 r^16 c^24 T^2.
+\end{verbatim}
+
+Its maximal-h coefficient is
+
+
+
+\begin{verbatim}
+[j^300 w^98 v^146 h^48 s^20 r^16 c^24 T^2] Ftwo
+    =-2^546 3^398 beta^300.
+\end{verbatim}
+
+Each monomial exponent sum is the claimed degree, and each coefficient is nonzero at the authentic fixed beta. Maximal h makes the choice unique even where k0 has two summands. These are exact actual-DAG leading-coefficient proofs, not numerical tests or generic-coefficient assumptions.
+
+
+
+\subsection{9. Arithmetic checks and limitations}
+
+
+
+The generators and checkers are owned adaptations of the attributed lowops DAG tools. The checkers never import their producer. They validate topology, full liveness, all eleven variables, complete six-port bindings and actual decompressed bytes, complete local polynomial cuts, the two-root and center identities, exact leading coefficients at every node with (12) at its cancellation gate, and modified-formula negative controls. Both normal and optimized Python checks pass.
+
+
+
+The degree906 comparison is explicitly not a Pareto improvement. Degree810/\allowbreak{}112 operations and degree654/\allowbreak{}117 operations are new tradeoff points against the inspected round15 schedules. This does not assert global minimality, historical priority for Pell or norm identities, or a new formal calibration endpoint.

@@ -1,0 +1,102 @@
+\subsection{Reusing factors through a graph without four-cycles}
+\label{sec:alias-compression}
+
+The private factor for each term occurrence gives a simple sufficient
+condition for coefficient separation. It is stronger than necessary.
+We can reuse a private-side alias among occurrences that denote the same
+logical first factor, provided a second graph satisfies an elementary
+restriction. This \emph{factor graph} is different from the graph whose
+divergences define the polynomial.
+
+Put the private-side aliases in one part $A$ and the shared representatives
+in another part $S$, including the common unit representative in $S$.
+A nonsquare occurrence $m_i=a_is_i$ is an edge between its two factors.
+Require that this bipartite graph is simple and has no cycle of length
+four. In the version allowing $m_i=a_i^2$, each such square occurrence
+keeps an alias that appears in no other source monomial.
+
+\paragraph{Uniqueness of products.}
+Suppose that two products of two nonsquare occurrence monomials are equal
+as formal monomials. Equality determines the multisets of private-side
+and shared-side factors. If either multiset is repeated, simplicity
+forces the pair of edges. Otherwise the only possible ambiguity is
+\[
+ (as)(bt)=(at)(bs), \qquad a\ne b,\quad s\ne t.
+\]
+The four required edges would form a four-cycle, which is forbidden.
+An isolated square occurrence is recognized by its private coordinate,
+which occurs in no other source monomial. Products involving such an
+occurrence are therefore uniquely recognized as well.
+
+It follows that source-edge squares and products of distinct source
+edges never collide after substitution. A source-edge/flow-edge product
+is identified by its flow coordinate and its distinct source monomial.
+Thus the half-incidence energy still has coefficients in
+$\{-1,0,1\}$. The alias equality cycles occupy the separate quadratic
+alias namespace, while the flow quadratics use flow coordinates.
+The unit path supplies the only linear and constant terms. These
+observations establish coefficient separation for the entire polynomial.
+
+\paragraph{Preservation of the zero set.}
+An alias is reused only among copies of the same logical normalized
+variable. Those copies already agree at every zero of the uncompressed
+construction. Conversely, every source zero assigns that logical value
+to the reused alias. Rebuild the ordinary equality cycle on the distinct
+surviving aliases, adding one dummy exactly when the class has size two.
+Both maps on zero sets remain mutually inverse. All internal graph flows
+are still uniquely determined by their spanning-tree equations.
+
+\paragraph{A deterministic finite construction.}
+The supplied compressor processes occurrences in their recorded order.
+It keeps square occurrences separate. An occurrence with shared factor
+$s$ can join a private group for the same logical variable if $s$ is new
+to the group and no pair $\{s,t\}$ with an existing neighbor $t$ has
+already been assigned to another private group. Among eligible groups
+it chooses a largest one, with creation order breaking ties. Otherwise
+it creates a new group. The neighbor-pair ledger proves inductively that
+the factor graph stays simple and has no four-cycle. This is a
+deterministic feasible packing, with no assertion of optimality.
+
+On the 442-variable source with 128 hubs and square aliases, this merges
+1,969 private occurrences into 1,752 groups. Rebuilding the equality
+cycles removes 61 further dummy variables. The resulting complete
+polynomial has 2,215 variables and 30,468 monomials, compared with
+2,493 variables and 31,186 monomials before this compression. Its total
+degree is four, its coefficient height is one, and its individual
+variable degrees are at most four. All these counts refer to the fully
+collected polynomial, independently reconstructed from the sum of
+squares for twice that polynomial.
+
+\subsection{A small example of sharing the flow witnesses}
+\label{sec:two-row-example}
+
+Let two abstract residuals be
+\[
+ R_1=A+B-C,\qquad R_2=D+E-F.
+\]
+Join their row vertices to three common hub vertices. Only two free
+hub-path flows, $p$ and $q$, are needed. The half-incidence energy $\mathcal E$
+is specified by
+\begin{align*}
+ 2\mathcal E={}&R_1^2+R_2^2+(p-A-D)^2\\
+              &+(q-p-B-E)^2+(C+F-q)^2.
+\end{align*}
+Every abstract edge symbol occurs in exactly two squared divergences.
+Two different edge symbols meet in at most one divergence. Consequently
+$\mathcal E$ has integer coefficients of absolute value at most one.
+It is nonnegative and vanishes precisely when $R_1=R_2=0$, with the
+uniquely determined flows
+\[
+ p=A+D,\qquad q=A+B+D+E=C+F.
+\]
+The last equality uses the two residual equations. Away from their
+common zero set, choose the polynomial formulas
+$p=A+D$ and $q=A+B+D+E$. Then the exact identity is
+\[
+ \mathcal E=\frac12\bigl(R_1^2+R_2^2+(R_1+R_2)^2\bigr).
+\]
+This illustrates why sharing hubs preserves the zero set while changing
+the off-zero value identity. The general construction substitutes the
+protected quadratic occurrence monomials for the six abstract symbols;
+the factor-separation argument above prevents coefficient collisions
+under that substitution.

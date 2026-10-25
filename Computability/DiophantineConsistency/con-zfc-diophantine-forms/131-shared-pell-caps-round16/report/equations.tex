@@ -1,0 +1,37 @@
+\section{The fixed polynomial definitions}
+For each quartic endpoint the ordered variable array and every residual are supplied in \nolinkurl{equation.json}. If its rows are $R_1,\ldots,R_s$, the equation is exactly
+\[
+ P(x_0,\ldots,x_{n-1})=\sum_{j=1}^{s}R_j(x_0,\ldots,x_{n-1})^2=0.
+\]
+No residual is optional. A term \nolinkurl{[c,[i1,...,ik]]} denotes $c\prod_{a=1}^k x_{i_a}$; the empty list denotes a constant. All rows have degree at most two. The independent collected artifact \nolinkurl{expanded_polynomial.json} contains every nonzero coefficient of $P$. This convention, the literal lists, and the explicit variable domains define four ordinary integer polynomials without any oracle or variable-exponent primitive.
+
+The exact endpoint directories are
+\begin{quote}\small
+\nolinkurl{architecture/unified_cap_h12/natural}\\
+\nolinkurl{architecture/unified_cap_sparse_h12/natural}\\
+\nolinkurl{direct/integer324}\\
+\nolinkurl{direct/integer338}.
+\end{quote}
+Gate, projection and translation certificates preserve the entire derivation. Rebuilding and independent expansion are separate checks.
+
+The small-variable equations are fully defined by the register displays in their complete proof sections and by complete literal directed acyclic graphs over $+,-,\times$, integer literals, variable leaves, and fixed coefficient leaves. There is no quantified coefficient port. The source34 six-port payload and compact44 four-port payload are supplied as gzip-compressed minimal unsigned little-endian bytes with finite reconstruction recipes. The source34 $M_F$ port is already shifted. Recipe files and notices identify the convention precisely.
+
+\subsection{The two front charts must not be conflated}
+The natural composition uses
+\[
+ \begin{gathered}
+ t=t_0+12,\quad R=2+t+x+y+F,\quad K=R,\quad N=B^K,\\
+ H=1+C+A_1+\cdots+A_8,\qquad q=(NH)^K.
+ \end{gathered}
+\]
+The literal signed source instead uses
+\[
+ \begin{gathered}
+ t=16+h_0^2,\quad V_0=(F^2+1)^t,\quad y=V_0(V_0-1),\\
+ R_0=2+t+x+y+F,\quad K=2R_0,\quad N=B^K,\\
+ H_0=1+\sum_{i=1}^9a_i,\qquad q=(BH_0)^K.
+ \end{gathered}
+\]
+Both use $B=\binom{F^2+t}{t}$ only after a noncircular raw-row bootstrap. All powers in these semantic displays are realized by finite polynomial Pell graphs; the literal coefficient artifacts contain no variable-exponent operation. Equality of the desired semantic interfaces is not equality of the two source polynomials or their witness maps.
+
+The following sections reproduce the full new proofs. Literal-register displays use a caret for exponentiation and an asterisk for multiplication. This convention intentionally preserves every formula without Markdown-to-TeX interpretation. Square roots appear only in ordinary proof arguments, never as operations in a final equation.

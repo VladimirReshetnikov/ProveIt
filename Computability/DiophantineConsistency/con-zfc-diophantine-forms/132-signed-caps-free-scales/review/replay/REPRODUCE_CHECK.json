@@ -1,0 +1,612 @@
+{
+  "schema": "round16_offline_replay_v1",
+  "status": "PASS",
+  "python": "3.12.14",
+  "scope": "Exact finite algebra, literal transcription, degree certificates, source integrity, deterministic replay and negative controls. Not a proof of consistency or a fresh transitive kernel theorem.",
+  "manifest": {
+    "status": "PASS",
+    "files": 1546,
+    "bytes": 21450916,
+    "manifest_sha256": "a69ae45718a42456289ae08e4ac668295ea72c55d32d0f0061deb7069febd05a"
+  },
+  "prior": {
+    "status": "PASS",
+    "files": 910,
+    "scope": "Exact preceding release inventory. Historical programs are inert during this replay."
+  },
+  "reviewed_code": {
+    "status": "PASS",
+    "files": 35
+  },
+  "sympy": "1.14.0",
+  "negative_controls": [
+    {
+      "control": "changed equation",
+      "status": "REJECTED"
+    },
+    {
+      "control": "missing equation",
+      "status": "REJECTED"
+    },
+    {
+      "control": "changed coefficient payload",
+      "status": "REJECTED"
+    },
+    {
+      "control": "unsafe path ../escape",
+      "status": "REJECTED"
+    },
+    {
+      "control": "unsafe path /absolute",
+      "status": "REJECTED"
+    },
+    {
+      "control": "unsafe path C:/drive",
+      "status": "REJECTED"
+    },
+    {
+      "control": "unsafe path a\\b",
+      "status": "REJECTED"
+    },
+    {
+      "control": "corrupted stored ZIP member",
+      "status": "REJECTED"
+    }
+  ],
+  "normal": {
+    "status": "PASS",
+    "commands": [
+      {
+        "arguments": [
+          "integer/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "019fecca6cea3d5f8de85389f60e208f61c8bf3d1e2a04e2bd8586a6aa296256",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_01.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "8079c7baf49f24f29b94f087bcc53fb0a297d47c1ef93c571e860c4519920864",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_02.txt"
+      },
+      {
+        "arguments": [
+          "positive/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "7bcec474abba511bde19b812a26f58734036c0877f1625aecc8bac95c9c74395",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_03.txt"
+      },
+      {
+        "arguments": [
+          "alternative/build_signed_cap.py",
+          "alternative/signed_cap"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "786fe61bd945f581be9477bf96d7a089670c92133e92d1adb5b958545d488249",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_04.txt"
+      },
+      {
+        "arguments": [
+          "alternative/build_signed_cap.py",
+          "alternative/odd_cap",
+          "--odd-auxiliary"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "e8542427c69ac3df783a8a4fe2fa9028e87ff8f249f83ad6506f5d005f363360",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_05.txt"
+      },
+      {
+        "arguments": [
+          "integer/check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "a16aabdbaa314c1b49a229ec3b1e31a145177a160935eb25d29a7c2ca24ea33e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_06.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/review/audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "978e5602795abd42aa3177b8cc59f3f70244c39c364dfcdc115033c3a96ca7d1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_07.txt"
+      },
+      {
+        "arguments": [
+          "positive/build.py",
+          "--check"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "7bcec474abba511bde19b812a26f58734036c0877f1625aecc8bac95c9c74395",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_08.txt"
+      },
+      {
+        "arguments": [
+          "positive/check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "21ef99e40204af9afa723e5f2ef1b1e89543b29e5ef29286ef10f29a0b25dcc1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_09.txt"
+      },
+      {
+        "arguments": [
+          "alternative/check_signed_cap.py",
+          "alternative/signed_cap"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "6bbdbff33e768a3ec15f71c7a3b95f075d9858c49b4b7f96ab2310e1bb42b5d3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_10.txt"
+      },
+      {
+        "arguments": [
+          "alternative/check_signed_cap.py",
+          "alternative/odd_cap"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "c70da9f3e48702ffeff10bdedacdf555742b8daa0a23bc95d12be0dc3d7f89d4",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_11.txt"
+      },
+      {
+        "arguments": [
+          "alternative/check_mutations.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "5200988543d4ef18fb01a1634a16dd5e8bb81cd64db1a1e79ba78cf46d48121d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_12.txt"
+      },
+      {
+        "arguments": [
+          "review/positive/independent_audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "fe87ac7dc1f18f5528ecf8c9977d29b6ea4877923681700653d09b6b6b6f4622",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_13.txt"
+      },
+      {
+        "arguments": [
+          "review/integer/independent_audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "be7b8faafa32968c955e630cd3259af4ac1b857e8fce64ab009840f8f5cac5ed",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_14.txt"
+      },
+      {
+        "arguments": [
+          "review/integer/check_independent.py",
+          "--receipt",
+          "review/integer/receipt-normal.json"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "c722731171845d3fbe69bc4a017dbfb0cd0b06880a3063185c8bfb05e9de7f3d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_15.txt"
+      },
+      {
+        "arguments": [
+          "review/alternative/audit_cap_independent.py",
+          "--package",
+          "alternative",
+          "--output",
+          "review/alternative"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "2b7754f78dd552fcaac0c5e557d855df8ae2ae3415432895b6c7c74237d50259",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_16.txt"
+      },
+      {
+        "arguments": [
+          "integer_lowops/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "eeff245c4bda2e7255481966d46b2c800551faf56f3f343f69d998a5150b5ab8",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_17.txt"
+      },
+      {
+        "arguments": [
+          "integer_lowops/check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "afb350af4ac562d13c7fbe88a59e77151a3bbb763922ffa644b3d65ad3fd76b6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_18.txt"
+      },
+      {
+        "arguments": [
+          "review/lowops/independent_audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "ca51406124b0716ba3b24595a6a2ba341141846c4def1d0d00d17ab229ac5b04",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_19.txt"
+      },
+      {
+        "arguments": [
+          "review/integer_lowops/check_independent.py",
+          "--receipt",
+          "review/integer_lowops/receipt-normal.json"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "3b7ae6923e014fc383f0aab22c14de02de0878c73907a804bcd504406f0280ee",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_20.txt"
+      },
+      {
+        "arguments": [
+          "report/check_report.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "bcfedb2398444265bb065c818d9d75046387eecc35c01956c6e72b8ebf945b8c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_21.txt"
+      },
+      {
+        "arguments": [
+          "review/report/check_report_data.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "177148347ddd81aa77d64cf26690d372d95c73846d2cf48dd7a406613dcde4cc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_22.txt"
+      }
+    ],
+    "exact_byte_comparisons": [
+      "alternative/MUTATION_CHECKS.json",
+      "alternative/odd_cap/CHECK.json",
+      "alternative/odd_cap/METRICS.json",
+      "alternative/odd_cap/POWER_COVERAGE.json",
+      "alternative/odd_cap/PRESEMANTIC_BOUNDS.json",
+      "alternative/odd_cap/cap_certificate.json",
+      "alternative/odd_cap/equation.json",
+      "alternative/odd_cap/expanded_polynomial.json",
+      "alternative/odd_cap/factored_source.json",
+      "alternative/odd_cap/factorization_certificate.json",
+      "alternative/odd_cap/projection_certificate.json",
+      "alternative/odd_cap/raw_equation.json",
+      "alternative/odd_cap/terminal_elimination_certificate.json",
+      "alternative/signed_cap/CHECK.json",
+      "alternative/signed_cap/METRICS.json",
+      "alternative/signed_cap/POWER_COVERAGE.json",
+      "alternative/signed_cap/PRESEMANTIC_BOUNDS.json",
+      "alternative/signed_cap/cap_certificate.json",
+      "alternative/signed_cap/equation.json",
+      "alternative/signed_cap/expanded_polynomial.json",
+      "alternative/signed_cap/factored_source.json",
+      "alternative/signed_cap/factorization_certificate.json",
+      "alternative/signed_cap/projection_certificate.json",
+      "alternative/signed_cap/raw_equation.json",
+      "alternative/signed_cap/terminal_elimination_certificate.json",
+      "integer/CHECK.json",
+      "integer/METRICS.json",
+      "integer/free_main_saturated11_none.json",
+      "integer/free_main_saturated11_sharp.json",
+      "integer/free_main_saturated11_simple.json",
+      "integer/main_saturated11_none.json",
+      "integer/main_saturated11_sharp.json",
+      "integer/main_saturated11_simple.json",
+      "integer_lowops/CHECK.json",
+      "integer_lowops/METRICS.json",
+      "integer_lowops/product_main_guard11_native.json",
+      "integer_lowops/product_main_guard11_short.json",
+      "lowdegree/equation.json",
+      "lowdegree/review/CHECK.json",
+      "lowdegree/specification.json",
+      "positive/BUILD_CHECK.txt",
+      "positive/CHECK.json",
+      "positive/first.json",
+      "positive/second.json",
+      "report/EDITORIAL_MATH_CHECK.json",
+      "review/alternative/INDEPENDENT_CAP_REPLAY.json",
+      "review/integer/AUDIT.json",
+      "review/integer/NORMAL_OUTPUT.json",
+      "review/integer/receipt-normal.json",
+      "review/integer_lowops/receipt-normal.json",
+      "review/lowops/AUDIT.json",
+      "review/lowops/NORMAL_OUTPUT.json",
+      "review/positive/AUDIT.json",
+      "review/positive/NORMAL_OUTPUT.json",
+      "review/report/DATA_CHECK.json"
+    ],
+    "unchanged_coefficient_files": 161
+  },
+  "optimized": {
+    "status": "PASS",
+    "commands": [
+      {
+        "arguments": [
+          "integer/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "019fecca6cea3d5f8de85389f60e208f61c8bf3d1e2a04e2bd8586a6aa296256",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_01.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "8079c7baf49f24f29b94f087bcc53fb0a297d47c1ef93c571e860c4519920864",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_02.txt"
+      },
+      {
+        "arguments": [
+          "positive/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "7bcec474abba511bde19b812a26f58734036c0877f1625aecc8bac95c9c74395",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_03.txt"
+      },
+      {
+        "arguments": [
+          "alternative/build_signed_cap.py",
+          "alternative/signed_cap"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "786fe61bd945f581be9477bf96d7a089670c92133e92d1adb5b958545d488249",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_04.txt"
+      },
+      {
+        "arguments": [
+          "alternative/build_signed_cap.py",
+          "alternative/odd_cap",
+          "--odd-auxiliary"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "e8542427c69ac3df783a8a4fe2fa9028e87ff8f249f83ad6506f5d005f363360",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_05.txt"
+      },
+      {
+        "arguments": [
+          "integer/check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "a16aabdbaa314c1b49a229ec3b1e31a145177a160935eb25d29a7c2ca24ea33e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_06.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/review/audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "978e5602795abd42aa3177b8cc59f3f70244c39c364dfcdc115033c3a96ca7d1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_07.txt"
+      },
+      {
+        "arguments": [
+          "positive/build.py",
+          "--check"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "7bcec474abba511bde19b812a26f58734036c0877f1625aecc8bac95c9c74395",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_08.txt"
+      },
+      {
+        "arguments": [
+          "positive/check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "21ef99e40204af9afa723e5f2ef1b1e89543b29e5ef29286ef10f29a0b25dcc1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_09.txt"
+      },
+      {
+        "arguments": [
+          "alternative/check_signed_cap.py",
+          "alternative/signed_cap"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "6bbdbff33e768a3ec15f71c7a3b95f075d9858c49b4b7f96ab2310e1bb42b5d3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_10.txt"
+      },
+      {
+        "arguments": [
+          "alternative/check_signed_cap.py",
+          "alternative/odd_cap"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "c70da9f3e48702ffeff10bdedacdf555742b8daa0a23bc95d12be0dc3d7f89d4",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_11.txt"
+      },
+      {
+        "arguments": [
+          "alternative/check_mutations.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "5200988543d4ef18fb01a1634a16dd5e8bb81cd64db1a1e79ba78cf46d48121d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_12.txt"
+      },
+      {
+        "arguments": [
+          "review/positive/independent_audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "fe87ac7dc1f18f5528ecf8c9977d29b6ea4877923681700653d09b6b6b6f4622",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_13.txt"
+      },
+      {
+        "arguments": [
+          "review/integer/independent_audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "be7b8faafa32968c955e630cd3259af4ac1b857e8fce64ab009840f8f5cac5ed",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_14.txt"
+      },
+      {
+        "arguments": [
+          "review/integer/check_independent.py",
+          "--receipt",
+          "review/integer/receipt-optimized.json"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "b24caed002bf1f929a9160fb6ed43b138881ab1e2ebd279e6ce65109b17671ef",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_15.txt"
+      },
+      {
+        "arguments": [
+          "review/alternative/audit_cap_independent.py",
+          "--package",
+          "alternative",
+          "--output",
+          "review/alternative"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "2b7754f78dd552fcaac0c5e557d855df8ae2ae3415432895b6c7c74237d50259",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_16.txt"
+      },
+      {
+        "arguments": [
+          "integer_lowops/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "eeff245c4bda2e7255481966d46b2c800551faf56f3f343f69d998a5150b5ab8",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_17.txt"
+      },
+      {
+        "arguments": [
+          "integer_lowops/check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "afb350af4ac562d13c7fbe88a59e77151a3bbb763922ffa644b3d65ad3fd76b6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_18.txt"
+      },
+      {
+        "arguments": [
+          "review/lowops/independent_audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "ca51406124b0716ba3b24595a6a2ba341141846c4def1d0d00d17ab229ac5b04",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_19.txt"
+      },
+      {
+        "arguments": [
+          "review/integer_lowops/check_independent.py",
+          "--receipt",
+          "review/integer_lowops/receipt-optimized.json"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "ca304d97ebecb7b53060efb61f5203b7087e2ed18f3d536290bf7b439370c608",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_20.txt"
+      },
+      {
+        "arguments": [
+          "report/check_report.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "bcfedb2398444265bb065c818d9d75046387eecc35c01956c6e72b8ebf945b8c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_21.txt"
+      },
+      {
+        "arguments": [
+          "review/report/check_report_data.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "177148347ddd81aa77d64cf26690d372d95c73846d2cf48dd7a406613dcde4cc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_22.txt"
+      }
+    ],
+    "exact_byte_comparisons": [
+      "alternative/MUTATION_CHECKS.json",
+      "alternative/odd_cap/CHECK.json",
+      "alternative/odd_cap/METRICS.json",
+      "alternative/odd_cap/POWER_COVERAGE.json",
+      "alternative/odd_cap/PRESEMANTIC_BOUNDS.json",
+      "alternative/odd_cap/cap_certificate.json",
+      "alternative/odd_cap/equation.json",
+      "alternative/odd_cap/expanded_polynomial.json",
+      "alternative/odd_cap/factored_source.json",
+      "alternative/odd_cap/factorization_certificate.json",
+      "alternative/odd_cap/projection_certificate.json",
+      "alternative/odd_cap/raw_equation.json",
+      "alternative/odd_cap/terminal_elimination_certificate.json",
+      "alternative/signed_cap/CHECK.json",
+      "alternative/signed_cap/METRICS.json",
+      "alternative/signed_cap/POWER_COVERAGE.json",
+      "alternative/signed_cap/PRESEMANTIC_BOUNDS.json",
+      "alternative/signed_cap/cap_certificate.json",
+      "alternative/signed_cap/equation.json",
+      "alternative/signed_cap/expanded_polynomial.json",
+      "alternative/signed_cap/factored_source.json",
+      "alternative/signed_cap/factorization_certificate.json",
+      "alternative/signed_cap/projection_certificate.json",
+      "alternative/signed_cap/raw_equation.json",
+      "alternative/signed_cap/terminal_elimination_certificate.json",
+      "integer/CHECK_OPTIMIZED.json",
+      "integer/METRICS.json",
+      "integer/free_main_saturated11_none.json",
+      "integer/free_main_saturated11_sharp.json",
+      "integer/free_main_saturated11_simple.json",
+      "integer/main_saturated11_none.json",
+      "integer/main_saturated11_sharp.json",
+      "integer/main_saturated11_simple.json",
+      "integer_lowops/CHECK_OPTIMIZED.json",
+      "integer_lowops/METRICS.json",
+      "integer_lowops/product_main_guard11_native.json",
+      "integer_lowops/product_main_guard11_short.json",
+      "lowdegree/equation.json",
+      "lowdegree/review/CHECK.json",
+      "lowdegree/specification.json",
+      "positive/BUILD_CHECK.txt",
+      "positive/CHECK.json",
+      "positive/first.json",
+      "positive/second.json",
+      "report/EDITORIAL_MATH_CHECK.json",
+      "review/alternative/INDEPENDENT_CAP_REPLAY.json",
+      "review/integer/AUDIT.json",
+      "review/integer/NORMAL_OUTPUT.json",
+      "review/integer/receipt-optimized.json",
+      "review/integer_lowops/receipt-optimized.json",
+      "review/lowops/AUDIT.json",
+      "review/lowops/NORMAL_OUTPUT.json",
+      "review/positive/AUDIT.json",
+      "review/positive/NORMAL_OUTPUT.json",
+      "review/report/DATA_CHECK.json"
+    ],
+    "unchanged_coefficient_files": 161
+  },
+  "manifest_after": {
+    "status": "PASS",
+    "files": 1546,
+    "bytes": 21450916,
+    "manifest_sha256": "a69ae45718a42456289ae08e4ac668295ea72c55d32d0f0061deb7069febd05a"
+  }
+}

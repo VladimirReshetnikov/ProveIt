@@ -1,0 +1,527 @@
+{
+  "status": "PASS",
+  "universal": {
+    "four_conjugates": true,
+    "center_identities": true,
+    "cancellation_cuts": true,
+    "coprimality_remainders": true,
+    "auxiliary_rescaling": true,
+    "shared_guard_identity": true,
+    "finite_edge_cases": 5292
+  },
+  "dependencies_authenticated": 109,
+  "all_six_coefficient_payloads_authenticated": true,
+  "full_coefficient_recipe_rebuilt": true,
+  "recipe_audit": {
+    "basis_convolution_checks": 69230,
+    "b": 121,
+    "L": 8801,
+    "d": 1064921,
+    "mass_bits": 118,
+    "threshold_bits": 121,
+    "max_product_exponent": 8791,
+    "padding_exponents": [
+      8792,
+      8793,
+      8794,
+      8795,
+      8796,
+      8797,
+      8798,
+      8799
+    ],
+    "padding_popcount": 860,
+    "d_factorization": {
+      "11": 2,
+      "13": 1,
+      "677": 1
+    },
+    "orders": {
+      "121": 10,
+      "13": 12,
+      "677": 52
+    },
+    "lambda": 2341,
+    "k": 2340,
+    "non_Wieferich_residue": 2556373,
+    "unit_rows": {
+      "11": [
+        2,
+        3,
+        7
+      ],
+      "13": [
+        6,
+        9,
+        1
+      ],
+      "677": [
+        611,
+        293,
+        53
+      ],
+      "2341": [
+        2100,
+        1896,
+        594
+      ]
+    }
+  },
+  "equations": [
+    {
+      "name": "product_main_guard11_native",
+      "topology": {
+        "live_nodes": 134,
+        "operations": 109,
+        "counts": {
+          "mul": 68,
+          "add": 23,
+          "sub": 18
+        },
+        "syntactic_degree": 924
+      },
+      "free_ring_register_bindings": [
+        {
+          "register": "J",
+          "expression": "6*j+1"
+        },
+        {
+          "register": "qm",
+          "expression": "beta*J"
+        },
+        {
+          "register": "q",
+          "expression": "qm+1"
+        },
+        {
+          "register": "q2",
+          "expression": "q*q"
+        },
+        {
+          "register": "q3",
+          "expression": "q**3"
+        },
+        {
+          "register": "W",
+          "expression": "12*w+4"
+        },
+        {
+          "register": "X",
+          "expression": "q*W"
+        },
+        {
+          "register": "Y",
+          "expression": "(2*v+1)*q3"
+        },
+        {
+          "register": "E",
+          "expression": "X*Y"
+        },
+        {
+          "register": "a",
+          "expression": "E+Y"
+        },
+        {
+          "register": "H",
+          "expression": "4*a+3"
+        },
+        {
+          "register": "Delta",
+          "expression": "a*a+H"
+        },
+        {
+          "register": "A",
+          "expression": "a+2"
+        },
+        {
+          "register": "F",
+          "expression": "(K0+W)*C-z*qm"
+        },
+        {
+          "register": "R",
+          "expression": "(q*(q-F)-C)*(q2-1)+(MC+q*MF)*J"
+        },
+        {
+          "register": "q24",
+          "expression": "4*q2"
+        },
+        {
+          "register": "k",
+          "expression": "R+1+h*E"
+        },
+        {
+          "register": "Yk",
+          "expression": "Y*k"
+        },
+        {
+          "register": "eta",
+          "expression": "c-Yk"
+        },
+        {
+          "register": "Derr",
+          "expression": "(cone_A*F-q)**2+(cone_B*C-q)**2"
+        },
+        {
+          "register": "Budget",
+          "expression": "k*k*(q2-Derr)-q24*eta*eta"
+        },
+        {
+          "register": "L",
+          "expression": "E*Y*k"
+        },
+        {
+          "register": "Dt",
+          "expression": "1+L*(L+k)"
+        },
+        {
+          "register": "D4",
+          "expression": "12*Budget-16"
+        },
+        {
+          "register": "Pg",
+          "expression": "Dt*s"
+        },
+        {
+          "register": "P",
+          "expression": "Dt+4*(3*Budget-4)*Dt*Dt*s*s"
+        },
+        {
+          "register": "c2",
+          "expression": "c*c"
+        },
+        {
+          "register": "Dm",
+          "expression": "1+Delta*c*c"
+        },
+        {
+          "register": "BP",
+          "expression": "Dm*P"
+        },
+        {
+          "register": "U",
+          "expression": "r*c*c*A"
+        },
+        {
+          "register": "UBP",
+          "expression": "U*BP"
+        },
+        {
+          "register": "strong",
+          "expression": "Delta*U*UBP"
+        },
+        {
+          "register": "Df",
+          "expression": "strong+1"
+        },
+        {
+          "register": "Q",
+          "expression": "Delta*strong"
+        },
+        {
+          "register": "delta",
+          "expression": "Q-1"
+        },
+        {
+          "register": "V",
+          "expression": "Df*(c-R+4*UBP*T)-c"
+        },
+        {
+          "register": "Cy",
+          "expression": "Q*V*V-1"
+        },
+        {
+          "register": "K",
+          "expression": "X*(3*c-2*X)+2"
+        },
+        {
+          "register": "H2",
+          "expression": "H*H"
+        },
+        {
+          "register": "H3",
+          "expression": "H**3"
+        },
+        {
+          "register": "zc",
+          "expression": "H*T+K"
+        },
+        {
+          "register": "zc2",
+          "expression": "zc*zc"
+        },
+        {
+          "register": "Ac",
+          "expression": "(zc*zc+3*H*H)*(zc**3-19*H**3)"
+        },
+        {
+          "register": "S",
+          "expression": "s*r*H"
+        },
+        {
+          "register": "Z",
+          "expression": "S*n-Ac"
+        },
+        {
+          "register": "output",
+          "expression": "delta*Z*Z-S*S*BP*Df*Cy"
+        }
+      ],
+      "leading_certificate": {
+        "exact_degree": 924,
+        "monomial": {
+          "T": 2,
+          "j": 564,
+          "w": 106,
+          "v": 148,
+          "h": 42,
+          "s": 16,
+          "r": 12,
+          "c": 34,
+          "C": 0,
+          "z": 0,
+          "n": 0
+        },
+        "coefficient": {
+          "sign": 1,
+          "powers": {
+            "2": 960,
+            "3": 677
+          },
+          "beta": 564
+        },
+        "cancellation_cuts": [],
+        "all_actual_gate_leaders_checked": 134
+      }
+    },
+    {
+      "name": "product_main_guard11_short",
+      "topology": {
+        "live_nodes": 135,
+        "operations": 110,
+        "counts": {
+          "mul": 69,
+          "add": 23,
+          "sub": 18
+        },
+        "syntactic_degree": 840
+      },
+      "free_ring_register_bindings": [
+        {
+          "register": "J",
+          "expression": "6*j+1"
+        },
+        {
+          "register": "qm",
+          "expression": "beta*J"
+        },
+        {
+          "register": "q",
+          "expression": "qm+1"
+        },
+        {
+          "register": "q2",
+          "expression": "q*q"
+        },
+        {
+          "register": "q3",
+          "expression": "q**3"
+        },
+        {
+          "register": "W",
+          "expression": "12*w+4"
+        },
+        {
+          "register": "X",
+          "expression": "q*W"
+        },
+        {
+          "register": "Y",
+          "expression": "(2*v+1)*q3"
+        },
+        {
+          "register": "E",
+          "expression": "X*Y"
+        },
+        {
+          "register": "a",
+          "expression": "E+Y"
+        },
+        {
+          "register": "H",
+          "expression": "4*a+3"
+        },
+        {
+          "register": "Delta",
+          "expression": "a*a+H"
+        },
+        {
+          "register": "A",
+          "expression": "a+2"
+        },
+        {
+          "register": "F",
+          "expression": "(K0+W)*C-z*qm"
+        },
+        {
+          "register": "R",
+          "expression": "(q*(q-F)-C)*(q2-1)+(MC+q*MF)*J"
+        },
+        {
+          "register": "q24",
+          "expression": "4*q2"
+        },
+        {
+          "register": "k",
+          "expression": "R+1+h*q24*q2"
+        },
+        {
+          "register": "Yk",
+          "expression": "Y*k"
+        },
+        {
+          "register": "eta",
+          "expression": "c-Yk"
+        },
+        {
+          "register": "Derr",
+          "expression": "(cone_A*F-q)**2+(cone_B*C-q)**2"
+        },
+        {
+          "register": "Budget",
+          "expression": "k*k*(q2-Derr)-q24*eta*eta"
+        },
+        {
+          "register": "L",
+          "expression": "E*Y*k"
+        },
+        {
+          "register": "Dt",
+          "expression": "1+L*(L+k)"
+        },
+        {
+          "register": "D4",
+          "expression": "12*Budget-16"
+        },
+        {
+          "register": "Pg",
+          "expression": "Dt*s"
+        },
+        {
+          "register": "P",
+          "expression": "Dt+4*(3*Budget-4)*Dt*Dt*s*s"
+        },
+        {
+          "register": "c2",
+          "expression": "c*c"
+        },
+        {
+          "register": "Dm",
+          "expression": "1+Delta*c*c"
+        },
+        {
+          "register": "BP",
+          "expression": "Dm*P"
+        },
+        {
+          "register": "U",
+          "expression": "r*c*c*A"
+        },
+        {
+          "register": "UBP",
+          "expression": "U*BP"
+        },
+        {
+          "register": "strong",
+          "expression": "Delta*U*UBP"
+        },
+        {
+          "register": "Df",
+          "expression": "strong+1"
+        },
+        {
+          "register": "Q",
+          "expression": "Delta*strong"
+        },
+        {
+          "register": "delta",
+          "expression": "Q-1"
+        },
+        {
+          "register": "V",
+          "expression": "Df*(c-R+4*UBP*T)-c"
+        },
+        {
+          "register": "Cy",
+          "expression": "Q*V*V-1"
+        },
+        {
+          "register": "K",
+          "expression": "X*(3*c-2*X)+2"
+        },
+        {
+          "register": "H2",
+          "expression": "H*H"
+        },
+        {
+          "register": "H3",
+          "expression": "H**3"
+        },
+        {
+          "register": "zc",
+          "expression": "H*T+K"
+        },
+        {
+          "register": "zc2",
+          "expression": "zc*zc"
+        },
+        {
+          "register": "Ac",
+          "expression": "(zc*zc+3*H*H)*(zc**3-19*H**3)"
+        },
+        {
+          "register": "S",
+          "expression": "s*r*H"
+        },
+        {
+          "register": "Z",
+          "expression": "S*n-Ac"
+        },
+        {
+          "register": "output",
+          "expression": "delta*Z*Z-S*S*BP*Df*Cy"
+        }
+      ],
+      "leading_certificate": {
+        "exact_degree": 840,
+        "monomial": {
+          "T": 2,
+          "j": 564,
+          "w": 64,
+          "v": 106,
+          "h": 42,
+          "s": 16,
+          "r": 12,
+          "c": 34,
+          "C": 0,
+          "z": 0,
+          "n": 0
+        },
+        "coefficient": {
+          "sign": 1,
+          "powers": {
+            "2": 918,
+            "3": 635
+          },
+          "beta": 564
+        },
+        "cancellation_cuts": [],
+        "all_actual_gate_leaders_checked": 135
+      }
+    }
+  ],
+  "rejected_mutations": [
+    "integer_leaf",
+    "variable_leaf",
+    "degree"
+  ]
+}

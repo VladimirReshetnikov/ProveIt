@@ -1,0 +1,225 @@
+\section{Eleven integers, degree 352: saturating by a hidden square root}
+\label{sec:integer352}
+The primary equation below has eleven unrestricted integer unknowns, exact
+total degree $352$, and $132$ live binary arithmetic operations. It improves
+the incoming degree-$416$ endpoint in degree, at a cost of seven operations.
+Three new nondominated companions have degree/cost pairs
+$428/123$, $376/127$, and $364/131$. The six fixed source34 numerals are
+unchanged. This is a new ordinary arithmetic reduction with the inherited
+native/compiler/refutation calibration, not a consistency proof, a global
+minimum, or a new end-to-end proof-assistant certificate.
+
+\subsection{The complete polynomial}
+The unknowns are
+\[
+ (j,C,z,h,r,v,w,T,c,n,s)\in\mathbb Z^{11}.
+\]
+Use the fully authenticated numerals
+$\beta,K_0,M_C,M_F,A_c,B_c$, with
+$\beta=2^{1064921}-1$, $A_c=2^{1113}$, $B_c=2^{666104}$ and the already
+shifted $M_F$. Every symbol below is a polynomial abbreviation:
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,&X&=qW,&Y&=v,\\
+ E&=XY,&a&=E+Y,&A&=a+2,&H&=4a+3,&\Delta&=a^2+H,\\
+ F&=(K_0+W)C-z(q-1),\\
+ R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+hE,&\eta&=c-Yk,\\
+ D_{\rm err}&=(A_cF-q)^2+(B_cC-q)^2,\\
+ B_0&=k^2(q^2-D_{\rm err})-4q^2\eta^2,&
+ \mathcal B&=Y^2B_0-k^2q^8,\\
+ \ell&=XY^2,&L&=\ell k,&D_\tau&=1+L(L+k),\\
+ D&=3\mathcal B-4,&D_g&=1+4DD_\tau s^2,&P&=D_\tau D_g,\\
+ D_m&=1+\Delta c^2,&U_b&=rc^2,&U&=AU_b,\\
+ D_f&=1+\Delta U^2D_m,&Q&=\Delta^2U^2D_m,&\delta&=Q-1,\\
+ V&=D_f(c-R+4UD_mT)-c,&C_y&=QV^2-1,&D_a&=\delta C_y,\\
+ K&=X(3c-2X)+2,&M&=2q^3,&D_c&=HM,&S&=srHM^5,\\
+ z_c&=D_cT+MK+H(Y-q^3),\\
+ \mathcal A&=(z_c^2+3D_c^2)(z_c^3-19D_c^3),\\
+ \lambda&=(2\Delta+1)U_bD_m,&Z&=S(n+\lambda V)-\mathcal A.
+\end{align*}
+The final equation is the ordinary integer polynomial
+\begin{equation}\label{eq:integer352}
+ \boxed{\bigl(\delta Z^2+\delta S^2P-4S^2D_mD_fC_y\bigr)^2
+             -4\delta^2S^2PZ^2=0.}
+\end{equation}
+Its literal evaluator is
+\texttt{integer/free\_main\_saturated11\_sharp.json}.
+It has no division, radicals, variable exponents, or hidden witnesses.
+The displayed radicals in the proof are only an analysis of this polynomial.
+
+\subsection{Why one main square root can replace a full factor}
+Unconditionally, $q$ is even, $q\equiv2\pmod3$, $|q|\ge\beta-1$,
+$8\mid X$, $X\equiv2\pmod3$, and $|X|\ge4|q|$.
+The integer $H$ is odd and nonzero. If $Y=0$, then $\Delta=3$;
+otherwise $|a|\ge|X|-1$, so in either case $\Delta=A^2-1>1$.
+Thus $D_m,D_f>0$. Also $4\mid Q$, $D_f\equiv1\pmod4$,
+$\delta$ is odd and nonzero, and $D_\tau,P$ are odd, with $D_\tau\ge1$.
+These parity assertions do not assume $Y$ even: $\Delta A$ is always even.
+
+The intersective quintic $\pi(t)=(t^2+3)(t^3-19)$ has no rational root,
+so $\mathcal A=D_c^5\pi(z_c/D_c)\ne0$. If $S=0$, the output is
+$\delta^2\mathcal A^4\ne0$. Every zero therefore has $r,s\ne0$.
+If $c=0$, then $D_a=1$. If $c\ne0$, then $|U|\ge2c^2$ and
+$D_f>|c|+1$; the integer-distance argument in
+$V=D_fb-c$ gives $V\ne0$, $Q>1$, and $D_a>0$.
+
+Equation~\eqref{eq:integer352} is $\delta^2$ times the product of
+\[
+ Z\pm2S\sqrt{D_mD_fC_y/\delta}\pm S\sqrt P.
+\]
+The first radicand equals $D_mD_fD_a/\delta^2>0$.
+Thus $P$ cannot be negative at a zero: it would give the sole nonzero
+imaginary term in a vanishing factor. Hence $D_g>0$ and $\mathcal B\ge2$.
+The stronger budget yields
+\[
+ k\ne0,\quad B_0>0,\quad |Y|>|q|^3,\quad
+ D_{\rm err}<q^2,\quad |c/k-Y|<\tfrac12.
+\]
+It supplies the authentic common-sign packing bounds and excludes $c=0$.
+
+Multiplying a normalized factor by $\delta$ gives a rational signed sum
+of $2\sqrt{D_mD_fD_a}$ and $\delta\sqrt P$.
+Since $P$ and $\delta$ are odd, the two terms have different 2-adic
+orders if they belong to the same nontrivial squareclass; they cannot
+cancel. Distinct squareclasses are linearly independent. Thus both
+$D_mD_fD_a$ and $P$ are squares.
+
+Crucially, $D_m,D_f,D_a$ are pairwise coprime. Modulo $D_m$,
+$D_f=D_a=1$. Modulo $D_f$,
+\[
+ Q=-\Delta,\quad\delta=-A^2,\quad V=-c,\quad C_y=-D_m,
+ \quad D_a=A^2D_m.
+\]
+Because $A\mid U$, $D_f$ is coprime to $A$ as well as $D_m$.
+Consequently
+\[
+ d^2=D_m,\quad f^2=D_f,\quad e^2=D_a,\quad
+ \tau^2=D_\tau,\quad g^2=D_g
+\]
+for positive integers; the last split uses $\gcd(D_\tau,D_g)=1$.
+The new integer coordinates used only in the proof are
+\[
+ I=Ud,\qquad T_{\rm old}=dT.
+\]
+They satisfy $c^2\mid I$ and restore exactly
+\[
+ f^2-\Delta I^2=1,\quad Q=(\Delta I)^2,\quad
+ V=f^2(c-R+4IT_{\rm old})-c.
+\]
+The rational $y=e/\delta$ is integral by adjacent-Pell denominator
+descent: its norm-preserving transformation decreases $|V|$ while
+preserving a reduced denominator, ending at $|V|=|y|=1$.
+The factor equation now gives $S\mid\mathcal A$.
+
+\subsection{Late scale recovery without early coprimality}
+The divisibility $M^5\mid\mathcal A$ forces $M\mid z_c$ by the
+unique lowest valuation of $z_c^5$ when $v_p(z_c)<v_p(M)$.
+Hence $M\mid H(Y-q^3)$. Its 2-primary part proves $Y$ even, but
+we do not yet cancel $H$ modulo $q$.
+Also $H\mid\mathcal A$ gives $H\mid(MK)^5$. With
+\[
+ K_q=X(X+2ac)-1,\qquad K=HXc-2K_q,
+\]
+oddness of $H$ gives $H\mid(q^3K_q)^5$.
+
+The retained signed pre-projection rank argument now has every required
+hypothesis: the cubic-scale magnitude, centered strip, common signs,
+first and main norms, $c^2\mid I$, and the two exact auxiliary residues
+$V\equiv-c\pmod f$, $V\equiv-R\pmod c$.
+Its nonodd strong-rank step gives $c\mid m$ for the strong Pell index;
+it does not assume that $I/c^2$ is odd. It yields
+\[
+ R=2t+1,\quad t\ge36,\quad
+ c=\operatorname{sign}(c)\psi_A(R),\quad
+ |H|>|X|(|X|-3)^t.
+\]
+Here $t\ge36$ follows already from
+$R>|q|(|q|^2-1)\ge4080$.
+
+Put $x=|X|$, $\sigma=\operatorname{sign}(c)$ and
+$\Pi=(\sigma X-2^R)(2^R\sigma X+1)$.
+The Pell projector congruence implies $H\mid q^{15}\Pi^5$.
+But
+\[
+ |q|^{15}|\Pi|^5<2^{20t-10}x^{25},\qquad
+ |H|>x^{t+1}/2^t.
+\]
+The unconditional $x\ge4(\beta-1)\ge2^{64}$ and $t\ge36$ give
+$64(t-24)-(21t-10)=43t-1526\ge22>0$.
+Thus the divisible integer is smaller than $|H|$ and must be zero.
+Its odd second factor is nonzero, so $\sigma X=2^R$.
+Now $q\mid X$ makes $|q|$ a power of two. Since $H$ is odd,
+$\gcd(H,M)=1$ finally holds, yielding
+\[
+ Y=(2v_{\rm old}+1)q^3.
+\]
+The source's orientation, centered half-binomial interval, and fresh
+odd-kernel restoration apply. The full proof explicitly constructs the
+fresh strong/auxiliary witnesses; it does not relabel incoming $I/c^2$
+as odd. An actual old signed Q41 zero is then passed to the retained
+native/compiler/refutation theorem.
+
+\subsection{Completeness with one fixed strong pair}
+Start with a canonical native witness. It has $D_m=d^2$, $D_\tau=\tau^2$,
+$B_0>q^2k^2/4$ and $Y>X=2^R>4q^3$, so the stronger budget exceeds64.
+Since $D D_\tau$ is positive and2 modulo3, ordinary Pell existence and
+squaring a unit give the required $s,g>0$.
+Choose one strong pair with
+\[
+ 4sAdc^2\mid I,\qquad f^2-\Delta I^2=1,
+ \qquad r=I/(Adc^2).
+\]
+All primes of $dsr$ divide this fixed $I$.
+The retained supported-modulus interpolation theorem realizes every
+$T_{\rm old}$ class modulo $dsr$ without changing this strong pair.
+Write $\kappa=K/H$. Choose an intersective root $a_0$ of
+$\pi(T+\kappa+v_{\rm old})$ modulo $sr$, and prescribe
+\[
+ T_{\rm old}=da_0\pmod{dsr}.
+\]
+Then $T=T_{\rm old}/d$ is integral and
+$\mathcal A/S=H^4\pi(T+\kappa+v_{\rm old})/(sr)$ is integral.
+Finally set
+\[
+ n=\mathcal A/S+2dfy+\tau g-\lambda V.
+\]
+A conjugate factor vanishes. The order is outer data, guard, fixed strong
+pair, intersective residue, auxiliary interpolation, and $n$.
+This proves both directions of the ordinary zero-existence reduction.
+
+\subsection{Exact degree, evaluation, and verification}
+The important degrees are
+\[
+ \deg(S,D_m,D_f,Q,V,C_y,\lambda,\mathcal A)
+       =(20,8,26,32,41,114,17,35).
+\]
+Writing $W_0=Sn-\mathcal A$, the sharp identity
+\[
+ \lambda^2-4D_mD_f=D_m^2U_b^2-4D_m
+\]
+shows that the inner bracket has unique leading term
+$S^2QD_m^2U_b^2V^2$, of degree176. The final correction has degree316,
+so the exact output degree is352. An attained monomial is
+\[
+ [j^{124}w^{64}v^{64}s^4r^{24}c^{68}T^4]P
+      =2^{288}3^{188}\beta^{124}>0.
+\]
+The graph shares the exact expressions
+\[
+ \mathcal B=(Yk)^2(q^2-D_{\rm err})
+          -q^2\bigl(4(Y\eta)^2+(kq^3)^2\bigr),\quad L=E(Yk),
+ \qquad P=D_\tau+(12\mathcal B-16)(D_\tau s)^2.
+\]
+Every scalar multiplication and square is counted.
+The direct and simple centers give $376/127$ and $364/131$.
+A weaker-scale companion with $Y=qv$, the old budget and $M=2q^2$
+gives $428/123$; its detailed early-CRT proof is in the package.
+
+The local checker, without importing the builder, verifies every named
+register over free polynomial rings, all four conjugates, coprimality
+remainders, rescaling, exact cancellation cuts and attained gate leaders,
+topology/liveness, all six numeral payloads and their complete finite
+reconstruction, and rejects deliberate corruptions. It passes normally
+and with Python optimization. The retained source files and notices are
+hashed; their unbounded theorems are an explicit dependency, not something
+the finite checks claim to certify.

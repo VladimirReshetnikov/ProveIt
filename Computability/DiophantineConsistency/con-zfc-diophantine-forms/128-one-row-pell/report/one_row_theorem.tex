@@ -1,0 +1,333 @@
+\section{One row certifies signed Pell pairs and their indices}
+\label{sec:one-row-pell}
+
+The useful change is to make the same nonnegative expression serve as a
+size bound and as a congruence test.  A separate upper-bound equation is
+unnecessary.  Moreover, a very small residue distinguishes the two signs
+of a Pell abscissa, so the same expression can orient both coordinates.
+The result below is an ordinary arithmetic theorem.  Its application to
+the ZFC equation retains the complete inherited indexed-Pell certificate
+and the subsequent arithmetic-source calibration.
+
+For $A\ge2$, write
+\[
+ (A+\sqrt{A^2-1})^j
+   =\chi_A(j)+\psi_A(j)\sqrt{A^2-1}\qquad(j\ge0).
+\]
+We use the standard integer-coordinate Pell classification and addition
+formulas.  In particular, every integer solution of
+$X^2-(A^2-1)Y^2=1$ has
+\[
+ X=\sigma\chi_A(j),\qquad Y=\varepsilon\psi_A(j),
+ \quad j\ge0,\quad \sigma,\varepsilon\in\{1,-1\}.
+\]
+The sign of $Y$ is immaterial when $j=0$.  Reduction of the defining
+recurrence modulo $A-1$ gives
+\begin{equation}\label{eq:one-row-residues}
+ \chi_A(j)\equiv1,\qquad \psi_A(j)\equiv j\pmod{A-1}.
+\end{equation}
+Also $\psi_A(j)\ge j$, and both sequences are strictly increasing after
+their zero endpoints.
+
+\subsection{The exact inherited anchor contract}
+
+One complete indexed-Pell certificate is retained at an index $W$.
+Denote its principal pair by $(U,V)$ and its private witnesses by
+$\boldsymbol\xi$.  The contract used here is precisely this: under the
+certificate's stated domain conditions and $V\ge W\ge1$, its equations
+imply
+\[
+ U=\chi_A(W),\qquad V=\psi_A(W).
+\]
+Conversely, this true pair has private witnesses satisfying the same
+equations and domain conditions.  We remove only a separate witness or
+row for $V\ge W$; the new aggregate row proves that inequality before
+the anchor theorem is invoked.
+
+For example, a usual nonnegative-witness version of this interface has
+the equations
+\begin{align*}
+ U^2-(A^2-1)V^2&=1,&
+ U_1^2-(A^2-1)V_1^2&=1,\\
+ S_1^2-(B_0^2-1)R_1^2&=1,&
+ B_0&=1+4V(q+1)=A+U_1b,\\
+ V_1&=V^2(v+1),&
+ S_1&=U+U_1s,\\
+ R_1&=W+4Vr.
+\end{align*}
+All the nonnegativity and positive-multiple conditions of the chosen
+literal version remain in force.  The following theorem permits the
+\emph{principal seed pairs} to be signed.  It does not silently permit
+signed private quotients in this anchor.  If an independently proved
+signed anchor is used instead, its complete hypotheses must likewise
+be retained.
+
+\begin{lemma}[A square separates the next index]\label{lem:next-index-square}
+Let $A\ge2$, $B\ge2$, and $1\le e<B$.  Then
+\[
+ \bigl(\psi_A(B+1)-e\bigr)^2>\psi_A(2B).
+\]
+\end{lemma}
+\begin{proof}
+Put $y=\psi_A(B)$ and $x=\chi_A(B)$.  The norm identity gives
+$x\le Ay$, because $y\ge1$, and also $x>(A-1)y$.  Since $y\ge B$,
+\[
+ \psi_A(B+1)-e=Ay+x-e>(2A-2)y+1.
+\]
+The addition formula gives $\psi_A(2B)=2xy\le2Ay^2$.  Finally,
+$(2A-2)^2\ge2A$ for $A\ge2$; equality at $A=2$ is harmless because
+of the additional positive terms after squaring.  Thus
+$((2A-2)y+1)^2>2Ay^2$, proving the claim.
+\end{proof}
+
+\begin{theorem}[A single row for oriented indexed Pell pairs]
+\label{thm:one-row-oriented}
+Let $W=2B\ge4$ be even, let $A-1>W^3$, and let
+\[
+ 1\le e_i<B\quad(1\le i\le m),\qquad m\le W-2.
+\]
+Retain the complete anchor contract above.  For each $i$, impose just
+the principal norm
+\begin{equation}\label{eq:one-row-principal}
+ X_i^2-(A^2-1)Y_i^2=1,
+ \qquad X_i,Y_i\in\Z.
+\end{equation}
+Add the single aggregate equation
+\begin{equation}\label{eq:one-row-oriented}
+ \boxed{\quad
+ V=W+\sum_{i=1}^m\bigl((X_i-1)^2+(Y_i-e_i)^2\bigr)
+          +(A-1)Q,\qquad Q\ge0.
+ \quad}
+\end{equation}
+Every solution has
+\[
+ (X_i,Y_i)=(\chi_A(e_i),\psi_A(e_i))
+ \quad\text{for every }i.
+\]
+Conversely, these true principal pairs extend to a solution by fresh
+anchor witnesses and an explicitly determined nonnegative integer $Q$.
+\end{theorem}
+
+\begin{proof}[Soundness]
+Every term added to $W$ in \eqref{eq:one-row-oriented} is nonnegative,
+so first $V\ge W$.  The anchor theorem is now applicable and gives
+$V=\psi_A(W)$.  Only after this step classify each principal norm as
+\[
+ X_i=\sigma_i\chi_A(j_i),\qquad
+ Y_i=\varepsilon_i\psi_A(j_i),\qquad j_i\ge0.
+\]
+The aggregate equation bounds $(Y_i-e_i)^2\le V-W<V$.  If
+$j_i\ge B+1$, then, for either sign of $Y_i$,
+\[
+ |Y_i-e_i|\ge\psi_A(B+1)-e_i.
+\]
+Lemma~\ref{lem:next-index-square} contradicts the preceding strict
+bound.  Consequently $0\le j_i\le B$ for every $i$.
+
+Reduce the aggregate equation modulo $A-1$.  Since
+$V=\psi_A(W)\equiv W$, \eqref{eq:one-row-residues} gives
+\[
+ A-1\mid E,
+ \qquad
+ E=\sum_{i=1}^m\bigl((\sigma_i-1)^2+
+                         (\varepsilon_i j_i-e_i)^2\bigr).
+\]
+Here $(\sigma_i-1)^2$ is either $0$ or $4$.  Because $j_i\le B$ and
+$1\le e_i\le B-1$, the absolute value of the other error is at most
+$2B-1=W-1$.  Therefore
+\begin{align*}
+ 0\le E&\le m\bigl(4+(W-1)^2\bigr)\\
+       &\le(W-2)\bigl(4+(W-1)^2\bigr)<W^3<A-1.
+\end{align*}
+For completeness, the strict polynomial inequality used here is
+\[
+ W^3-(W-2)\bigl(4+(W-1)^2\bigr)=4W^2-9W+10>0.
+\]
+Thus $E=0$.  Each nonnegative summand vanishes, forcing
+$\sigma_i=1$ and $\varepsilon_i j_i=e_i>0$.  This orients both
+coordinates and identifies every index, including exclusion of $j_i=0$.
+\end{proof}
+
+\begin{proof}[Constructive completeness]
+Take the true principal pairs and a complete anchor at $W$.  Write
+$z=\psi_A(B-1)\ge1$.  Since $e_i\le B-1$ and $\psi_A(e_i)\ge e_i$,
+the actual error sum satisfies
+\begin{align*}
+ E_{\rm actual}
+ &=\sum_i\bigl((\chi_A(e_i)-1)^2+
+                     (\psi_A(e_i)-e_i)^2\bigr)\\
+ &\le m\bigl(\chi_A(B-1)^2+\psi_A(B-1)^2\bigr)
+ \le m(A^2+1)z^2.
+\end{align*}
+On the other hand, $\psi_A(B)>Az$ and
+$\chi_A(B)>(A-1)\psi_A(B)$, so
+\[
+ V=\psi_A(2B)=2\chi_A(B)\psi_A(B)>2(A-1)A^2z^2.
+\]
+It follows that
+\[
+ V-E_{\rm actual}
+  >\bigl([2(A-1)-m]A^2-m\bigr)z^2>W.
+\]
+The last inequality uses $A>W+1$, which follows from $A-1>W^3$, and
+$m\le W-2$.  Every $\chi_A(e_i)-1$ and $\psi_A(e_i)-e_i$ is divisible
+by $A-1$, as is $V-W$.  Hence
+\begin{equation}\label{eq:one-row-Q-witness}
+ Q=\frac{V-W-E_{\rm actual}}{A-1}
+\end{equation}
+is a positive integer and supplies the aggregate equation.  The
+inherited anchor completeness theorem supplies its private witnesses
+afresh.  No pointwise transfer of unrelated old auxiliary tuples is
+required.
+\end{proof}
+
+\subsection{A natural-domain specialization}
+
+\begin{corollary}\label{cor:one-row-natural}
+Under the same conditions on $A,W,m,e_i$, if all principal seed
+coordinates are nonnegative, the simpler row
+\begin{equation}\label{eq:one-row-natural}
+ V=W+\sum_i(Y_i-e_i)^2+(A-1)Q,\qquad Q\ge0,
+\end{equation}
+already identifies the complete canonical pairs.
+\end{corollary}
+\begin{proof}
+The preceding square bound gives $j_i\le B$.  Nonnegative principal
+coordinates have positive abscissa and nonnegative ordinate signs.
+The residue error is now $\sum_i(j_i-e_i)^2<W^3<A-1$, so the same
+argument identifies the indices.  For completeness, put
+$E_{\rm actual}=\sum_i(\psi_A(e_i)-e_i)^2\le m z^2$ and use
+$V>2(A-1)z^2$.  Thus $V-W-E_{\rm actual}>0$, and division by $A-1$
+gives the required natural $Q$.
+\end{proof}
+
+For a natural arithmetic source whose original common frame was
+$W_0=2+\sum_{a\in\mathcal A}a$, choose the new frame $W=2W_0$.
+Every positive seed exponent which occurs as an actual atom satisfies
+$e_i<W/2$.  The change concerns the complete frame, including every
+subsequent occurrence in its Pell certificate.  It is not a replacement
+of one occurrence while leaving an old specialization elsewhere.
+
+\subsection{The signed square frame and ordinary power outputs}
+
+This subsection records an optional generalization.  The measured
+378-integer equation instead uses the doubled linear frame of
+Section~\ref{sec:frame}, with its atom signs proved first and a separate
+lower parameter $L$.  The following square frame and signed-output
+consequence are not included in its reported counts.
+
+For a signed source one can use the complete common frame
+\begin{equation}\label{eq:one-row-square-frame}
+ W=2\left(2+\sum_{a\in\mathcal A}a^2\right).
+\end{equation}
+Its atoms are the actual semantic bases, exponents, and outputs before
+their meanings have been established.  For every integer atom $k$,
+\[
+ W-4|k|\ge4+2k^2-4|k|=2(|k|-1)^2+2>0.
+\]
+Thus positive seed exponents $e_i=k_i$, and even selectively doubled
+ones $e_i=2k_i$, lie below $W/2$.  Each claim must be traced to the
+actual atom set; this inequality is not available for an arbitrary
+unlisted expression.  The number of distinct positive seed atoms gives
+the required count bound $m\le W-2$.
+
+A polynomial large-frame certificate is
+\[
+ A^2-\bigl((W+1)^2-1\bigr)(WZ)^2=1,
+ \qquad A\ge0,\quad Z\ge1.
+\]
+Pell classification at $W+1$ gives
+$(A,WZ)=(\chi_{W+1}(h),\psi_{W+1}(h))$ for $h\ge1$.
+The ordinate recurrence modulo $W$ gives $W\mid h$, so $h\ge W$.
+Consequently
+\[
+ A\ge\chi_{W+1}(W)\ge(W+1)^W,
+ \qquad A-1>W^3.
+\]
+This reasoning uses the literal frame and its norm, before interpreting
+any power request.  It also supplies the stronger modulus bounds needed
+for power recovery.
+
+\begin{corollary}[Recovery of a signed power output]
+\label{cor:one-row-signed-power}
+Assume the strong frame bound $A\ge(W+1)^W$, and suppose a seed pair
+has been oriented by Theorem~\ref{thm:one-row-oriented}.  Let
+$1\le n<W$, $1\le e<W$, and $m\in\Z$ with $|m|<W$ be actual
+base, exponent, and output atoms.  Put $T_n=2An-n^2-1$.  Then the
+ordinary power congruence
+\[
+ \chi_A(e)+(n-A)\psi_A(e)=m+T_n h,\qquad h\in\Z,
+\]
+forces $m=n^e>0$.
+\end{corollary}
+\begin{proof}
+The standard Pell recurrence modulo $T_n$ gives
+$\chi_A(e)+(n-A)\psi_A(e)\equiv n^e\pmod{T_n}$: its characteristic
+identity is $n^2-2An+1\equiv0$.  Therefore $T_n\mid(m-n^e)$.
+For $1\le n<W<A$,
+\[
+ T_n\ge2A-2>W^W,
+ \qquad |m-n^e|<W+W^{W-1}<W^W.
+\]
+The only possible multiple is zero.
+\end{proof}
+
+This corollary makes separate output squaring and sign selection
+unnecessary at this interface.  It does not discard the source
+conditions which establish that the actual bases and exponents are
+positive.  Nor does it orient unrelated arithmetic-source coordinates.
+An implementation must restore the complete original power-request
+list and then check every later source use in its actual dependency
+order.  For completeness the standard positive-power construction
+provides the ordinary quotient; the corollary permits it to be signed.
+
+\subsection{Exact row identities and essential hypotheses}
+
+\begin{remark}[A useful replacement on the principal norm locus]
+Let $\mathcal N_i=X_i^2-(A^2-1)Y_i^2-1$.  The free polynomial identity
+\begin{align*}
+ &(X_i-1)^2+(Y_i-e_i)^2\\
+ &\quad-\bigl((AY_i)^2-2X_i+2-2e_iY_i+e_i^2\bigr)
+ =\mathcal N_i
+\end{align*}
+allows the aggregate error to be replaced by the bracketed expression
+when the principal norm rows are retained.  More precisely, the new
+aggregate residual is the old one plus $\sum_i\mathcal N_i$, so the
+complete integer zero set is unchanged.  If $AY_i$ already has an
+actual stored multiplication wire, the replacement remains quadratic
+in those coordinates.  Without that wire, writing $(AY_i)^2$ does
+\emph{not} make it a quadratic polynomial in $A,Y_i$; a wire and its
+defining row must be counted.  All size claims require the full emitted
+graph, not this identity alone.
+\end{remark}
+
+The condition $Q\ge0$ is essential.  For an exact example, take
+$W=4$, $A=66$, one requested index $e=1$, and the correct anchor at $4$.
+Replace the seed by the positive Pell pair at $j=66=1+(A-1)$.
+Both $\chi_A(66)-1$ and $\psi_A(66)-1$ are divisible by $65$,
+and $V-4$ is divisible by $65$.  Thus
+\[
+ Q=\frac{V-4-(\chi_A(66)-1)^2-(\psi_A(66)-1)^2}{65}
+\]
+is an integer satisfying the aggregate equality.  It is negative,
+because the wrong ordinate alone exceeds the proved cap.  Allowing an
+unrestricted $Q$ would therefore admit a false index even though
+$A-1=65>4^3$ and every other displayed condition holds.
+
+Over unrestricted integers, the retained sign predicate $Q\ge0$ can
+be realized by the familiar three-variable identity
+\[
+ Q=a^2+b^2+c(c+1),\qquad a,b,c\in\Z.
+\]
+If a quartic sum of quadratic residual squares is intended, keep $Q$
+as an actual coordinate in $(A-1)Q$.  Directly substituting its
+quadratic representation into that product would produce a cubic
+residual.  Finally, the auxiliary letters in a straight-line evaluator
+are abbreviations only when explicitly eliminated; their status in a
+quadratic system must follow its stated variable list.
+
+All arguments above use integer algebra, induction, Pell classification,
+and finite divisibility.  They are formalizable within ZFC and assume
+neither its consistency nor its inconsistency.  The new arithmetic
+lemma supplies one part of the full syntactic-refutation equivalence;
+it is not by itself a new end-to-end formal proof artifact.
