@@ -1,0 +1,277 @@
+\subsection{The incoming rebased frame and two shorter centers}
+The latest Nearest factorial input already changes the first-index
+congruence and the magnitude budget together, obtaining degree 298 at
+150 gates. Its rebased frame replaces the two old definitions by
+\begin{equation}\label{eq:rebased-frame}
+ k=R+1+h\ell,\qquad \mathcal B_6=Y^2B_0-k^2q^6,
+ \qquad \ell=XY^2,
+\end{equation}
+and uses $D=\mathcal B_6-4$. Every other register in the preceding
+complete definitions is retained. The older frame instead keeps
+$k=R+1+hE$ and $\mathcal B_8=Y^2B_0-k^2q^8$.
+These are different polynomial families. A degree-298 endpoint in the
+rebased family does not contradict a degree-300 bound in the older one.
+
+Set $\gamma=8\Delta+4$ and
+$\lambda=4(\gamma U-rc^4)$. The new centers are
+\begin{align}
+ \Psi'_{298}&=\lambda V+U^2T
+  \left\{rc^4[(\gamma-1)(c^2-2)-2]+64A\Delta\right\},
+       \label{eq:center298}\\
+ \Psi'_{300}&=\lambda V+U^2T
+  \left\{rc^4[(\gamma-1)(c^2-2)]+64A\Delta\right\}.
+       \label{eq:center300}
+\end{align}
+Use $\Psi'_{298}$ with the rebased front and $\Psi'_{300}$ with the
+old front, in both cases with $L=32$ in \eqref{eq:scalarfinal}.
+The ten outer coordinates and the eleventh coordinate $n$ remain
+unrestricted integers. The six authentic numerical ports are unchanged.
+
+\begin{theorem}\label{thm:center-shear}
+The two displayed equations have polynomially bijective integer zero sets
+with their respective calibrated parents. They have exact degree and live
+binary-operation counts $298/147$ and $300/145$, respectively.
+\end{theorem}
+\begin{proof}[Proof of the zero set assertion]
+The incoming rebased center is
+\[
+ \Psi^{\rm p}_{298}=[(32\Delta+16)U-4rc^4]V
+ +U^2T[8U(c^2-2)+64A^3+rc^4(3c^2-16)].
+\]
+The old degree-300 center replaces its final term $rc^4(3c^2-16)$
+by $3rc^6$. The exact identities
+$U=rc^2+\Delta rc^4$ and $A^3=A\Delta+A$ give
+\begin{align*}
+ \Psi'_{298}-\Psi^{\rm p}_{298}
+      &=U^2T(16rc^2-64A)=:\epsilon_{298},\\
+ \Psi'_{300}-\Psi^{\rm p}_{300}
+      &=U^2T(16rc^2-64A-14rc^4)=:\epsilon_{300}.
+\end{align*}
+Each $\epsilon$ is an integer polynomial independent of $n$.
+Keeping all outer coordinates and setting $n_{\rm p}=n+\epsilon$
+makes the parent's $Z$ exactly equal to the new $Z$, hence makes the
+entire parent and new polynomials equal under substitution.
+The inverse is $n=n_{\rm p}-\epsilon$. This is a bijection on the
+full integer zero sets, not a rational map or a test at sample points.
+It proves the new calibration once each respective parent is calibrated.
+The operation and exact degree assertions are proved below.
+\end{proof}
+
+\subsection{The rebased parent keeps its guard and its late scale proof}
+The changed frame in \eqref{eq:rebased-frame} must not be confused with
+an earlier rejected guard deletion. The complete incoming ordinary proof
+is retained with its dependencies. Its critical witness argument is stated
+here to fix the logical handoff precisely.
+
+The unchanged even-weight norm, coprime-product and adjacent-coefficient
+descent recover $B=u^2$, $D_f=f^2$, $D_t=\tau^2$ and an integral
+auxiliary $y$, with $u,f,\tau>0$, together with
+$\mathcal B_6\ge12$, $S\ne0$ and $S\mid A_c$.
+Before extraction one still has $\Delta>1$, odd nonzero $H$,
+$D\equiv8$ or $12\pmod{16}$, $P\equiv1\pmod4$, and odd nonzero
+$\delta$. The possible cancellation of two negative radical parts would
+require $1024B=P$, excluded modulo four. The exact coprimalities
+\[
+ \gcd(B,D_f)=\gcd(B,\delta C_y)=\gcd(D_f,\delta C_y)=1,
+ \qquad D_f\equiv1\pmod3
+\]
+therefore supply positive individual squares. With the proof-only values
+$I=c^2u$ and $T_{\rm old}=uT$, the recovered equations are
+\[
+ f^2-\Delta I^2=1,\qquad
+ V=f^2(c-R+4IT_{\rm old})-c,
+\]
+\[
+ (\Delta I)^2V^2-[(\Delta I)^2-1]y^2=1.
+\]
+In particular $c^2\mid I$. The denominator descent uses this integral
+quantity, not an assumed integral value of a rational square root.
+
+The guard $\mathcal B_6>0$ gives $kY\ne0$, $B_0>0$ and
+$|Y|>|q|^2$. Its centered disk supplies the common nonzero signs of
+$q,F,C,q-F-C$, the strip $|c/k-Y|<1/2$, and the authentic packing bound
+\[
+ |q|(|q|^2-1)<R<|q|^4-2.
+\]
+Since $|X|\ge4|q|$ and $|q|\ge16$,
+\[
+ |\ell|=|X|Y^2>4|q|^5>3R+1.
+\]
+The carrier valuation gives $M\mid H(Y-q^3)$, whose 2-primary part
+makes $Y$ even, and $H\mid q^{15}K_q^5$ for
+$K_q=X(X+2ac)-1$. It does \emph{not} yet give $q^3\mid Y$.
+
+The first Pell recurrence supplies
+$\psi_{2\ell+1}(m)\equiv m\pmod{2\ell}$.
+Together with $k=R+1+h\ell$ it gives the signed congruence
+$\varepsilon\,2m\equiv R+1\pmod{|\ell|}$.
+Its positive branch forces $m\ge(R+1)/2$; the negative branch forces
+$m>R$. The retained absolute root folding and nonodd strong-rank lemma,
+using $c^2\mid I$ rather than an unjustified oddness assumption, and
+the two auxiliary residues give the main index $p=R$. The negative
+branch is impossible, and no wrap in the positive branch gives
+$2m=R+1$. The retained ratio argument needs $|Y|\ge6$, which has
+already been proved; it does not need the as-yet unavailable cubic scale.
+Writing $R=2t+1$, it yields
+\[
+ |Y|>(|X|-3)^t/2-1,
+ \qquad |H|>|X|(|X|-3)^t.
+\]
+
+Put $x=|X|$ and
+$\Pi=(\sgn(c)X-2^R)(2^R\sgn(c)X+1)$.
+The inherited whole-product bound, applied with these proved hypotheses,
+gives
+\[
+ H\mid q^{15}\Pi^5,\qquad
+ |q|^{15}|\Pi|^5<2^{20t-10}x^{25},
+ \qquad |H|>x^{t+1}/2^t.
+\]
+The authentic bounds $x\ge2^{64}$ and $t\ge36$ make
+$43t-1526\ge22$, so the divisible integer has magnitude below $|H|$.
+Thus $\Pi=0$ and $\sgn(c)X=2^R$. Reduction modulo three fixes
+$c>0$ and $X=2^R$, and the surviving sign branch and strip give $k,Y>0$.
+Only at this point does $q\mid X$ show that $|q|$ is a power of two.
+Now odd $H$ is coprime to $M=2q^3$, and the scale is recovered late:
+\[
+ Y=(2v_{\rm scale}+1)q^3,\qquad v_{\rm scale}\in\Z.
+\]
+The centered half-binomial theorem then gives $0<\eta/k<1/4$.
+
+A general rebased zero need not satisfy $\mathcal B_8>0$.
+Soundness therefore returns to the earlier $B_0$-only source, not to a
+stronger free-scale guard. In that native handoff set
+$h_{\rm old}=Yh$. Then
+$R+1+h_{\rm old}XY=R+1+hXY^2=k$ exactly.
+The retained construction regenerates the required fresh odd strong and
+auxiliary witnesses, restores its native interval and square coordinate,
+and passes an actual source zero to its compiler/refutation theorem.
+It does not assert that the current multiplier was already odd.
+
+Conversely the canonical source has
+$k=2\psi_{2\ell+1}((R+1)/2)$, whose recurrence implies
+$4\ell\mid k-R-1$, so the new $h$ is integral.
+Its $\mathcal B_8>64$ implies $\mathcal B_6>\mathcal B_8>64$.
+Choose the Pell guard pair, then one strong pair satisfying
+$4sAdc^2\mid I$, then $u,r$, then an intersective-quintic residue.
+Interpolate $T_{\rm old}$ modulo $usr$ with that same fixed pair;
+it is not reselected after imposing a residue. The retained divisibility
+proofs make
+\[
+ n=A_c/S+32ufy+\tau g-\Psi
+\]
+an integer and make one norm factor vanish. This completes the identified
+parent's witness construction. The exact center shear adds no further
+number-theoretic assumption or witness-order choice.
+
+\subsection{Exact degrees at the authentic coefficients}
+For an independently checkable cancellation calculation, work first in the
+free ring on $(A,c,r,T,R)$ with weights $(3,1,1,1,5)$, set
+$\Delta=A^2-1$ and keep the literal $U,B,D_f,Q,V$. Define
+\[
+ D_\Psi=\Psi^2-1024BD_fV^2,
+ \qquad E_\Psi=(Q-1)D_\Psi-1024BD_f(V^2-1).
+\]
+Complete exact collection gives the following full top forms:
+\begin{align*}
+ [D_{\Psi'_{298}}]_{80}
+   &=512A^{15}c^{24}r^5TR-8192A^{17}c^{22}r^5T^2,\\
+ [E_{\Psi'_{298}}]_{108}
+   &=512A^{22}c^{30}r^6TR-24576A^{24}c^{28}r^6T^2,\\
+ [D_{\Psi'_{300}}]_{82}&=512A^{16}c^{26}r^6T^2,\\
+ [E_{\Psi'_{300}}]_{110}&=512A^{23}c^{32}r^7T^2.
+\end{align*}
+All higher-weight coefficients vanish. The supplied independent checker
+reconstructs every coefficient, not only these displayed leading terms:
+the two remainder pairs have $449/881$ and $455/888$ terms, respectively.
+
+Put $W_0=Sn-A_c$. The exact cancellation identity is
+\[
+ p_a+p_b-p_c=\delta W_0^2+2\delta S\Psi W_0
+              +\delta S^2P+S^2E_\Psi.
+\]
+Here $\deg S=20$, $\deg W_0=35$, $\deg\delta=28$ and
+$\deg\Psi=54$. The first three terms have degrees at most
+$98,137,122$ in the rebased frame, with the last bound $124$ in
+the old frame. The final term has degree $148$ for $\Psi'_{298}$ and
+$150$ for $\Psi'_{300}$. Thus the first inner square has degree $296$
+in the rebased case, while $-4p_ap_b$ has exact degree $298$ and cannot
+cancel. In the old frame the two contributions tie at degree $300$,
+but the inner-square leader has $T$-degree four and the cross term has
+$T$-degree two. Again they cannot cancel. Explicit actual coefficients are
+\begin{align*}
+ [j^{136}w^{46}v^{50}z^6s^6r^{12}c^{40}T^2]\,\mathcal N_{298}
+   &=2^{272}3^{182}\beta^{136}>0,\\
+ [j^{110}w^{50}v^{50}s^4r^{18}c^{64}T^4]\,\mathcal N_{300}
+   &=2^{256}3^{160}\beta^{110}>0.
+\end{align*}
+Their exponent sums are $298$ and $300$. These are attained degrees at
+the authentic fixed tuple, not generic-port degrees or sampled line tests.
+
+\subsection{Two exact degree floors in two distinct fixed frames}
+\begin{theorem}\label{thm:degree-floor}
+Keep the eleven indeterminates, authentic tuple and all register definitions
+of the respective scalar frame fixed. Among nonzero constant
+integer radical weights $L$ and integer polynomial centers $\Psi$
+independent of $n$, the minimum output degree is $298$ for the rebased
+frame and $300$ for the old frame. The displayed centers attain those
+bounds. Neither statement is an operation-count minimum or a bound for
+other arithmetic frames.
+\end{theorem}
+\begin{proof}
+Subscript zero now denotes the complete highest homogeneous part in the
+actual coordinate ring. Put
+\[
+ q_0=6\beta j,\quad X_0=12q_0w,\quad a_0=X_0v,
+ \quad F_0=12wC-q_0z,\quad R_0=-q_0^3F_0,
+ \quad\ell_0=X_0v^2.
+\]
+For the rebased frame, $k_0=R_0+h\ell_0$; both terms have degree five.
+For the old frame $k_0=R_0$. Set
+\[
+ q_*=ra_0^7c^6,\quad s_*=128sra_0q_0^{15},\quad
+ p_*=s\ell_0^2k_0^3,
+\]
+\[
+ G_0=(\mathrm{cone\_A}\,vF_0)^2+(2q_0v^2)^2+(q_0^3)^2.
+\]
+In the rebased frame,
+$(\mathcal B_6)_0=-k_0^2G_0$ has degree $16$ and
+$P_0=-p_*^2G_0$ has degree $54$.
+In the old frame $P_0=-(q_0^4p_*)^2$ has degree $56$.
+For both, $\delta_0=q_*$, $S_0=s_*$,
+$\deg A_c=35$, and $\deg(BD_fC_y)=136$.
+The complete forms are nonzero at the actual tuple. In particular
+$G_0$ is a nonzero sum of three real polynomial squares since $q_0\ne0$.
+The independent top-form checker includes the terms involving $h$ in
+the rebased $k_0$ rather than incorrectly reusing the old $R_0$ alone.
+
+Let $d=\deg\Psi$, with the zero center assigned $d=-\infty$.
+If $d<54$, then $\deg Z\le73$ and $\deg p_a\le174$, while
+$\deg p_c=176$ and $\deg p_b=122$ or $124$. Thus the inner sum
+has degree $176$ and the cross term has degree at most $296$ or $298$,
+so the output degree is $352$. If $d>54$, then
+$\deg p_a=68+2d>176$ dominates, giving
+$\deg\mathcal N=136+4d>352$; the cross term has smaller degree
+$190+2d$ or $192+2d$.
+
+For $d=54$, let $\psi_0$ be its nonzero degree-54 form. The rebased
+cross term has complete degree-298 part
+\[
+ (-4p_ap_b)_{298}
+       =(2q_*s_*^2\psi_0p_*)^2G_0.
+\]
+This is a nonzero sum of real polynomial squares. If the inner sum has
+degree below $149$, this proves exact degree $298$; if above $149$,
+its square has larger degree. At equality, the degree-298 part is this
+nonzero sum plus the square of the inner sum's top form and cannot vanish.
+The old frame has the identical argument at degree $300$, replacing
+$G_0$ by $q_0^8$ and the dividing degree $149$ by $150$.
+Thus both lower bounds hold. The attained coefficients above supply the
+matching upper bounds.
+\end{proof}
+The theorem does not cover changed carriers, polynomial weights, other
+radical architectures, altered outer-coordinate charts or arbitrary
+Diophantine encodings. It neither assumes a zero nor decides consistency.
+
+\input{scalar_results.tex}

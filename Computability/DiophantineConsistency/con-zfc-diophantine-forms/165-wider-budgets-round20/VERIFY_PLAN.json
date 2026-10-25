@@ -1,0 +1,130 @@
+{
+  "steps": [
+    {
+      "name": "signed transformations normal",
+      "arguments": [
+        "signed/verify.py"
+      ]
+    },
+    {
+      "name": "signed exact regeneration normal",
+      "arguments": [
+        "signed/build.py",
+        "--check"
+      ]
+    },
+    {
+      "name": "common parent reconstruction normal",
+      "arguments": [
+        "signed/parent252/code/verify.py",
+        "--rebuild"
+      ]
+    },
+    {
+      "name": "historical height source reconstruction normal",
+      "arguments": [
+        "check_height_sources.py",
+        "--common-parent",
+        "signed/parent252",
+        "--bindings",
+        "HEIGHT_SOURCE_BINDINGS.json"
+      ]
+    },
+    {
+      "name": "height one reconstruction normal",
+      "arguments": [
+        "height_one/verify.py",
+        "--single"
+      ]
+    },
+    {
+      "name": "independent all polynomial coefficients normal",
+      "arguments": [
+        "audit/recollect_polynomials.py",
+        "."
+      ]
+    },
+    {
+      "name": "cross component bindings normal",
+      "arguments": [
+        "check_bindings.py"
+      ]
+    },
+    {
+      "name": "scalar reconstruction and degree proofs normal",
+      "arguments": [
+        "scalar/replay.py"
+      ]
+    },
+    {
+      "name": "signed transformations optimized",
+      "arguments": [
+        "-O",
+        "signed/verify.py"
+      ]
+    },
+    {
+      "name": "signed exact regeneration optimized",
+      "arguments": [
+        "-O",
+        "signed/build.py",
+        "--check"
+      ]
+    },
+    {
+      "name": "common parent reconstruction optimized",
+      "arguments": [
+        "-O",
+        "signed/parent252/code/verify.py",
+        "--rebuild"
+      ]
+    },
+    {
+      "name": "historical height source reconstruction optimized",
+      "arguments": [
+        "-O",
+        "check_height_sources.py",
+        "--common-parent",
+        "signed/parent252",
+        "--bindings",
+        "HEIGHT_SOURCE_BINDINGS.json"
+      ]
+    },
+    {
+      "name": "height one reconstruction optimized",
+      "arguments": [
+        "-O",
+        "height_one/verify.py",
+        "--single"
+      ]
+    },
+    {
+      "name": "independent all polynomial coefficients optimized",
+      "arguments": [
+        "-O",
+        "audit/recollect_polynomials.py",
+        "."
+      ]
+    },
+    {
+      "name": "cross component bindings optimized",
+      "arguments": [
+        "-O",
+        "check_bindings.py"
+      ]
+    },
+    {
+      "name": "scalar reconstruction and degree proofs optimized",
+      "arguments": [
+        "-O",
+        "scalar/replay.py"
+      ]
+    },
+    {
+      "name": "printed principal residuals",
+      "arguments": [
+        "check_printed_equation.py"
+      ]
+    }
+  ]
+}

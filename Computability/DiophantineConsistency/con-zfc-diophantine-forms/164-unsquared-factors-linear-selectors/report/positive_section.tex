@@ -1,0 +1,353 @@
+\section{Inverse-Lucas correction: 85 operations in ten positive variables}
+\label{sec:inverse-lucas}
+
+\paragraph{Result and scope.}
+The literal polynomial \texttt{positive/equation\_bV.json} has ten
+independently strictly positive integer unknowns, exact degree \(304\),
+and \(85\) live binary arithmetic operations.  The newest inspected
+Lucas-correction parent has the same degree and \(87\) operations.
+The square-weight control has \(84\) operations and degree \(410\);
+it is dominated by known earlier points and is not promoted as a frontier
+improvement.  The complete indexed BFS943/radix67 tuple is unchanged,
+with largest fixed port of \(592{,}884\) bits.
+
+Composed with the explicitly retained ordinary native/refutation
+calibration, the proof below gives
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\boldsymbol{x}\in\mathbb Z_{>0}^{10}\;
+ P(\boldsymbol{x})=0\bigr)\longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+This neither proves consistency nor asserts a zero.  It is an ordinary
+mathematical proof with exact finite artifact checks, not a new end-to-end
+proof-assistant object or a global-minimum claim.
+
+The new mechanism replaces the forward rank correction by an inverse
+Lucas correction at the existing abscissa \(k\).  This saves two
+multiplications and removes the exceptional negative-rank transport cases.
+A genuine obstruction at the prime \(3\) means that the old denominator
+proof cannot simply be reused.  Projection must precede full denominator
+recovery; a new absolute bound handles a possibly negative corrected quotient
+in the positive lift.  The second-order expansion and the projection-first
+strategy themselves are explicitly inherited from the inspected Lucas
+Corrections and Cofinal Witnesses archives at commit
+\texttt{7a8da414376a80b90ecf799f37ceb26fb9ac674e}.
+
+\subsection{Complete polynomial}
+The only unknowns are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+The fixed integers \(\beta,K_0,M_C,M_F\) are the whole supplied tuple,
+with \(\beta\ge31\) odd, \(K_0>0\), and
+\(0<M_C<\beta<M_F<2\beta\).  Define polynomial abbreviations:
+\begin{gather*}
+ h=\beta J,\quad q=h+1,\quad C=q-F-\alpha,\\
+ X=qw,\quad Y=qs,\quad k=\eta+\zeta,\quad c=kY+\eta,\\
+ A=Y(X+1)+1,\quad \Delta=A^2-1,\quad H=4A-5,\\
+ v=XY^2,\quad \ell=vk=(XY)(kY),\quad E=1+\ell(\ell+k),\\
+ R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ B=(K_0+w)C-F,\quad U=ic^2,\quad a=\Delta U^2E,\\
+ F_0=1+a,\quad G=EF_0,\quad F_s=1+4aF_0,\quad Q=\Delta(F_s-1),\\
+ b=cT-R,\quad V=F_sb-c,\quad K=X(3c-2X)+2,\\
+ e_6=6(k-R-1)-\ell(k^2-4),\quad D_6=6q^6,\quad M=hD_6H.
+\end{gather*}
+Use \(L=bV\) for the principal equation, or \(L=V^2\) for the control,
+and put
+\begin{align}
+ Z&=hD_6\bigl[H(n-LB)+K\bigr]
+       -H\bigl[D_6B+h(e_6-6q^4s)\bigr],\label{eq:inverse-Z}\\
+ P&=Q\bigl(Z^2-M^2GV^2\bigr)+(M^2G-Z^2).\label{eq:inverse-P}
+\end{align}
+The single equation is \(P=0\).  All displayed powers have fixed
+nonnegative integer exponents.  The DAG does not compute \(v\)
+separately: it reuses \(\ell=(XY)(kY)\).  There are no division gates,
+variable exponents, sequence functions, or additional quantified variables.
+
+For proof only define
+\begin{gather*}
+ e_*=\frac{e_6}{6}=k-R-1-\frac{vk(k^2-4)}{6},\quad
+ \rho=\frac{e_*}{q^6},\quad\sigma=\frac{s}{q^2},\\
+ t=\frac{B}{h},\quad W=1+hL,\quad
+ \kappa=\frac{K}{H},\quad z=\frac{Z}{M}.
+\end{gather*}
+Without assuming any integrality of these quotients,
+\begin{equation}
+ z=n+\kappa+\sigma-Wt-\rho.\label{eq:inverse-carrier}
+\end{equation}
+
+\subsection{Root extraction and uniform signed transport}
+The unchanged root and folding arguments are retained in
+\texttt{inherited\_lucas/PROOF.md}, Sections 2--3, with their ordinary
+Pell sources.  We state their premises and conclusions to specify the
+interface precisely.  Positive inputs give \(q\ge32\), \(X,Y\ge q\),
+\(k\ge2\), \(c>k\), \(A>4\), \(U\ge c^2\), \(F_s>2c\),
+and \(Q>c^2\).  Moreover
+\[
+ F_s=(1+2a)^2,\qquad Q=4\Delta^2U^2G,\qquad\gcd(E,1+a)=1.
+\]
+At a zero, prime valuations in
+\((Q-1)z^2=G(QV^2-1)\) give \(G=g^2\), \(E=\tau^2\),
+\(F_0=f_0^2\), with \(g=\tau f_0>0\) integral.  Rational adjacent-Pell
+descent makes \(y=|z|/g\) integral, and
+\[
+ QV^2-(Q-1)y^2=1,\quad z=\varepsilon gy,\quad
+ \varepsilon\in\{1,-1\}.
+\]
+Writing \(f=1+2a\), \(I=2Ug\), we have
+\(f^2-\Delta I^2=1\), \(Q=(\Delta I)^2\), and \(c^2\mid I\).
+Signed all-index folding gives
+\[
+ c=\psi_A(p)\quad(p>0\text{ odd}),\qquad
+ k=2\psi_{1+2v}(m),\quad m\ge2,
+\]
+where \(\psi_a(0)=0\), \(\psi_a(1)=1\), and
+\(\psi_a(j+2)=2a\psi_a(j+1)-\psi_a(j)\).
+In particular \(k\ge8v+4\), \(c>8XY^3\ge8q^4\), \(c>X\), and
+\(K>0\).
+
+The inherited exclusions of main and auxiliary index three use only
+\(q\mid X,Y\), not the rank correction.  They give, for either weight,
+\begin{equation}
+ b\ne0,\quad \operatorname{sign}V=\operatorname{sign}b,
+ \quad |V|>|b|,\quad L>0,\quad gy<L/2,
+ \quad {|b|\over q^6}<L/2.\label{eq:inverse-abs}
+\end{equation}
+For \(L=bV\), the main index-three remainder would force
+\(2Y-X\in\{1,2\}\), impossible modulo \(q\).  The two signed auxiliary
+index-three possibilities would give
+\[
+ F_s(b-4\Delta)=c-(4\Delta+3),\qquad
+ F_s(b+4\Delta)=c+(4\Delta+3),
+\]
+whose right sides lie strictly between \(0\) and \(F_s\).
+Thus the auxiliary index is at least five, giving \(|b|>4g\) and
+\(gy<3L/8\).  Neither sign branch is discarded.
+
+The new correction has an advantage before any sign of \(R\) is known:
+\(k\ge2\) makes \(vk(k^2-4)/6\ge0\).  Therefore
+\[
+ e_*\le k-R-1<b,\qquad \rho<|b|/q^6.
+\]
+If \(B\le-1\), then \(Wt<-L\), and
+\eqref{eq:inverse-carrier}--\eqref{eq:inverse-abs} force
+\[
+ n=\varepsilon gy-\kappa-\sigma+Wt+\rho
+   <L/2-L+|b|/q^6<0,
+\]
+a contradiction.  This handles all negative \(R\) and \(R=0\)
+uniformly.  Hence \(B\ge0\), so \(C>0\).  Only now is the inherited
+mask bound \(3q<R<q^4-2\) invoked.  Then \(c>2R\) and \(b,V>0\);
+the normalized-rank and signed auxiliary-index theorems give \(p=R\).
+Thus \(R\) is positive odd; mask parity gives even \(q\) and odd \(J\).
+
+\subsection{Inverse-Lucas authentication at all primes}
+The inherited, universally valid finite Lucas expansion gives
+\begin{equation}
+ k=2m+8vC_m+32v^2Z_m,
+ \quad C_m=\binom{m+1}{3},\quad Z_m\in\mathbb Z_{\ge0}.
+ \label{eq:inverse-expansion}
+\end{equation}
+Binomial notation occurs only in the proof.  Since \(k=2u\) is even,
+\(k(k^2-4)/6=4u(u-1)(u+1)/3\) is integral.  Thus \(e_*\) is
+integral at a zero.  Clearing the integral carrier gives
+\(6q^6\mid hH(e_6-6q^4s)\); cancelling the ordinary factor six and
+using \(h=q-1\), \(H\equiv-1\pmod q\), gives
+\begin{equation}
+ q^6\mid e_*-q^4s,\qquad q^4\mid e_*.
+ \label{eq:inverse-q4}
+\end{equation}
+No modular inverse of six is used.
+
+Put \(t_0=2m\), \(d=2m-R-1\), \(A_m=C_m+4vZ_m\), and
+\(S_m=k^2+kt_0+t_0^2-4\).  The exact inverse identity is
+\begin{equation}
+ 3(e_*-d)=4v^2(24Z_m-A_mS_m).
+ \label{eq:inverse-identity}
+\end{equation}
+Indeed \(t_0(t_0^2-4)=48C_m\), \(k-t_0=8vA_m\), and
+\(k(k^2-4)-t_0(t_0^2-4)=(k-t_0)S_m\).
+Since \(v=q^3ws^2\), the right side is divisible by \(q^6\).
+For each prime \(\lambda\mid q\), with \(a_\lambda\ge1\) its
+valuation in \(q\),
+\[
+ \operatorname{ord}_\lambda(e_*-d)
+ \ge6a_\lambda-\operatorname{ord}_\lambda(3)\ge4a_\lambda.
+\]
+Hence \(q^4\mid d\).  The first base \(1+2XY^2\) exceeds \(A\).
+If \(m\ge R\), monotonicity would give
+\(k/2\ge\psi_A(R)=c\), contrary to \(c>k\).  Thus \(1\le m<R\),
+and \(|d|<R<q^4\), proving
+\begin{equation}
+ d=0,\qquad m=(R+1)/2.\label{eq:inverse-index}
+\end{equation}
+
+It would be false to infer full \(q^6\)-divisibility here.
+For \(q=3,v=27,m=2,R=3\), the inverse error is
+\(-47{,}911{,}824\equiv243\pmod{729}\).
+This modular diagnostic is not a purported zero of the full polynomial.
+Evenness of \(q\) alone does not remove the obstruction at three.
+
+\subsection{Projection first, denominator second}
+Because \(z=Z/M\) is integral, reducing the literal numerator
+\eqref{eq:inverse-Z} modulo \(H\) gives \(H\mid6hq^6K\).
+As \(\gcd(q,H)=1\),
+\begin{equation}
+ H\mid6hK.\label{eq:inverse-project}
+\end{equation}
+This uses neither integral \(\rho\) nor integral \(\sigma\), and does
+not cancel three.  Write \(R=2r+1\), so \(r\ge48\).
+The retained uniform ratio theorem, licensed by the authenticated
+indices, gives
+\[
+ Y>X^r/3,\qquad X^{r+1}<3Y(X+1)<H.
+\]
+Modulo odd \(H\), the scaled recurrence gives
+\(3\cdot2^{R-1}\psi_A(R)\equiv4^R-1\), because \(4A\equiv5\).
+Consequently \(2^{R-1}K\equiv-(X-2^R)(2^RX+1)\pmod H\).
+Equation \eqref{eq:inverse-project} therefore implies divisibility
+of this whole product by \(H\), with multiplier \(6h\).
+
+For an explicit height check let \(u_0=2^R=2\cdot4^r\).
+Since \(6<q^3\) and \(q^3h<X^4\),
+\begin{align*}
+ 6h\,|(X-u_0)(u_0X+1)|
+ &<X^4(X+u_0)(u_0X+1)\\
+ &\le4\cdot4^rX^6+8\cdot16^rX^5<X^{r+1}<H.
+\end{align*}
+After division by \(X^{r+1}\), the two terms decrease with
+\(X\ge32,r\ge48\); their sum at \((32,48)\) is
+\(2^{-117}+2^{-25}<1\).  Hence the whole divisible product is zero,
+and its other factors are positive.  Thus \(X=2^R\); the same universal
+projection then gives integral positive \(\kappa=K/H\).
+
+Now \(q\mid X\) implies \(q=2^a\), \(a\ge5\).
+Equation \eqref{eq:inverse-identity}, with \(d=0\), finally gives
+\(q^6\mid e_*\), because three is a unit modulo \(q\).
+Thus \(\rho\) is integral.  The carrier says
+\(\sigma-WB/h\) is integral.  Multiplying by \(q^2h\) and reducing
+modulo \(q^2\) gives \(q^2\mid s\).  Hence \(q^3\mid Y\),
+\(\sigma\) is integral, and \(h\mid WB\).  Since \(W\equiv1\pmod h\),
+\(h\mid B\), so \(t\) is a nonnegative integer.
+
+The fixed-minus parity, exact half-binomial rounding, and fresh original
+native reconstruction now have their full retained premises.
+That source uses base \(Y(X+1)+2\), not the auxiliary base \(A\).
+The unchanged whole-tuple calibration produces a finite ZFC refutation.
+
+\subsection{Constructive positive completeness}
+A finite refutation supplies the retained canonical outer data
+\(q=2^a\), \(X=2^R=qw\), \(R>3q\), \(R\equiv3\pmod4\),
+\(q^3\mid Y\), \(C>0\), and \(t=B/h\ge0\) integral.
+Set \(s=Y/q>0\), and form
+\[
+ c=\psi_A(R),\quad k=2\psi_{1+2XY^2}((R+1)/2),\quad
+ \tau=\chi_{1+2XY^2}((R+1)/2),\quad
+ \eta=c-kY,\quad\zeta=k-\eta.
+\]
+The exact ratio theorem gives \(0<\eta<k\), hence both last inputs
+are positive.  Equation \eqref{eq:inverse-identity} and dyadic \(q\)
+give integral \(\rho\).  Projection gives positive integral \(\kappa\),
+and \(\sigma=Y/q^3\) is integral.
+
+A positive period of the Pell matrix modulo \(c^2\tau\) gives a seed
+\((f_0,I_0)\) with \(c^2\tau\mid I_0\).
+Set \(i=I_0/(c^2\tau)>0\).  Then \(a=\Delta I_0^2=f_0^2-1\),
+\(F_0=f_0^2\), and \(G=(\tau f_0)^2\).
+The doubled pair \(f=2f_0^2-1\), \(I=2f_0I_0\) has exactly the
+required definitions.  The retained auxiliary-completeness theorem gives
+positive \(V,y\) and the positive integer
+\(T=(V+c+Rf^2)/(cf^2)\), the actual unshifted input.
+
+The new \(\rho\) may be negative; the old nonnegative-quotient argument
+is not reused.  Since \(k\ge R+1\) and \(vk^2>6\),
+\[
+ |\rho|\le {k-R-1+vk(k^2-4)/6\over q^6}
+       <{k+vk^3/6\over q^6}<vk^3/3.
+\]
+For every permitted \(i\ge1\),
+\[
+ g>\sqrt\Delta\,c^2E>c^2v^2k^2>vk^3,
+\]
+so \(|\rho|<g/3\).  Also \(\sqrt\Delta>A-1=Y(X+1)>X\) and
+\(cE>4\), hence \(g>4Xc\).  As \(\kappa<Xc\) and
+\(\sigma\le Y<Xc\), we have \(\kappa+\sigma<g/2\).
+For either positive weight put
+\[
+ n=gy+(1+hL)t+\rho-\kappa-\sigma.
+\]
+This is integral, and \(y\ge1\), \(t\ge0\) imply
+\(n>g-g/3-g/2>0\).  Its carrier is \(z=gy\), so \(P=0\).
+All ten independent coordinates have been constructed strictly positively;
+no inverse positive shear or unproved sign is used.  Every permitted
+period seed works, without additional cofinal enlargement.
+
+\subsection{Exact costs and verification}
+Deleting the incoming gate \(v=(XY)Y\), restoring the sharing
+\(\ell=(XY)(kY)\), and replacing its four-gate rank cubic by
+\(k^2\), \(k^2-4\), \(\ell(k^2-4)\) saves two multiplications.
+The principal has \(51\) multiplications, \(18\) additions and
+\(16\) subtractions.  All inputs, ports and rows are live.
+
+Put \(q_0=\beta J\), \(k_0=\eta+\zeta\),
+\(C_0=q_0-F-\alpha\), and
+\(B_0=k_0sT-q_0^2(q_0-F)\).  The \emph{complete} highest homogeneous
+forms are
+\begin{align*}
+ [P_{bV}]_{304}
+ &=-9\cdot2^{12}q_0^{128}w^{34}s^{78}i^{14}k_0^{44}B_0^2,\\
+ [P_{V^2}]_{410}
+ &=9\cdot2^{16}q_0^{166}w^{46}s^{104}i^{20}k_0^{60}B_0^4C_0^2.
+\end{align*}
+Their full expansions have respectively \(274\) and \(3750\) terms.
+Nonzero coefficients at maximal \(T\)-power establish the exact degrees
+for the actual \(\beta>0\), not merely a formal upper bound or a ray sample.
+
+The producer-independent checker covers all actual rows with \(37\)
+exact free-polynomial cuts per graph, verifies full leading forms and
+every coefficient byte, reconstructs the four fixed numerals, and rejects
+both alternative operations at every gate plus a missing-correction
+mutation: \(171\) rejections for the principal and \(169\) for the control.
+Separate finite recurrence controls include the obstruction at three;
+they do not replace the unbounded arithmetic proof.
+Normal and optimized Python receipts agree byte for byte.
+\begin{verbatim}
+python3 -B positive/build.py --check
+python3 -B positive/verify.py
+python3 -O -B positive/verify.py
+\end{verbatim}
+
+\subsection{Whole complemented-label radix47 sidecar}
+The same two free-port row lists are separately specialized to the
+\emph{entire} frozen complemented-label radix47 tuple.  The principal
+remains \(85/304\), but its largest fixed port is \(415{,}904\) bits and
+the four raw numerals occupy \(207{,}214\) bytes rather than \(295{,}388\).
+This reuses the incoming encoding and controller; it is not a new radix
+theorem and is not the repository's conditional three-anchor radix47 layout.
+The canonical radix67 equations remain separate.
+
+The new arithmetic is uniform in the same scalar, source-shift mask and
+population interface already checked for the whole47 tuple.  In soundness
+it recovers \(C>0\), \(X=qw=2^R\), \(q^3\mid Y\), the native
+half-binomial, and \((K_0+w)C-F=t(q-1)\), \(t\ge0\).
+These are exactly the retained whole47 bridge's premises, with
+\(W_{\rm native}=w\) and source transport variable \(t+1\).
+Its fresh Pell witnesses are constructed at \(Y(X+1)+2\), before the
+actual complemented-label decoder is applied.  Conversely, the actual
+whole47 controller supplies dyadic \(q\) and the same outer interface;
+choosing \(w=W_{\rm native}\), \(s=Y/q\), and applying the explicit
+positive construction above gives a new zero.  No old67 decoder or
+controller is silently substituted.
+
+The complete ordinary native bridge, incoming P66 equation, all four
+payloads, \(3297\) coefficients, \(51\) native target identities, and its
+\(37\) pinned dependencies are retained under
+\path{positive/radix47/inherited/}.  The sidecar checker requires identical
+free-port rows and an exact whole-tuple binding, reconstructs every numeral,
+and repeats the cuts, leading-form and mutation checks.  Its normal and
+optimized receipts agree.  The default main checker includes this sidecar;
+its literal binding can also be reproduced independently:
+\begin{verbatim}
+python3 -B positive/radix47/build.py --check
+python3 -B positive/radix47/verify.py
+\end{verbatim}

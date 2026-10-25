@@ -1166,7 +1166,8 @@ As the packages state them:
 - 10 unrestricted integers via a cited reduction of Sun, in 467 operations
   at degree 1,245,324;
 - a 14-unknown equation of degree 24, and a 15-unknown one in 66 operations;
-- the smallest coefficient tuple binding an equation has B = 2^429959.
+- the smallest coefficient tuple binding an equation has B = 2^413929 (141's
+  radix-47 P66, if its carry proof holds; otherwise 2^429959).
 
 Materialized coefficient bytes do not by themselves prove the compiler
 theorem. Only the machine endpoint is checked in Lean/Rocq; the Diophantine

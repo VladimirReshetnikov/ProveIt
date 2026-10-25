@@ -87,8 +87,8 @@ The research session's own candidates are compared in
 [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md). Its maintained page
 was 113's universal 92 / 283 circuit on a third tuple until 24 October, 22:16
 (then 85 / 328, `8b54afed72`); since `9f52a5c479` (25 October, 00:53) it is a
-fifteen-positive 66-operation, degree-157 equation (radix55 ports since
-`47bf0efc20`). By 17:12 on 24 October
+fifteen-positive 66-operation, degree-157 equation (radix55 ports from
+`47bf0efc20`, complemented-47 ports since `100b6e1a90`, 25 October 15:35). By 17:12 on 24 October
 it also had 89 / 288 (`90d8b714f9`, page `0ca3812ae9`) and a ten-positive
 86 / 466 (`75f850496c`), which wave-14 package 133's 84 / 436 dominates.
 At 22:03 it accepted 133's 84 / 436 and 85 / 328 (`a223b3e174`) with an
@@ -101,12 +101,13 @@ repository's package, written concurrently, supplies the emitted circuits
 and their checks (`a2c20ea419`). Wave-15 package 137 ships the same two
 polynomials; it contains no research state after 21:38, but its positive
 circuits are undated. Wave-15 package 134's 78 / 630 and 79 / 468 (built
-21:48) dominate them, and wave-16 package 140's 75 / 626 dominates those.
+21:48) dominate them, and wave-16 package 140's 75 / 626 and 76 / 464
+dominate those.
 
 The report holds one hundred and seventeen research packages. All but 60, 66, 68, 97, 102,
 106, 110, 121 and 125 state AI assistance. Some do so only in part: 74
 for its reviews; 77, 78, 101 and 130 in their TeX author lines; 88, 131, 132 and 137
-in copied notices; 111 in its PDF author field; 116 and 143 in one component file.
+in copied notices; 111 in its PDF author field; 116 in one component file; 143 for its reviews and in one component file.
 
 - **Wave 5**, sources 31–37: batch 221 (arrival `b7f8b75b5b`, placed in
   `952c1fab49`), pinned to `8c6eec9d19`.
@@ -401,13 +402,17 @@ row. The active research session's own candidates and this
 repository's `candidates/ten-positive-gap-fusion` (an independent
 derivation of package points) are compared in its
 [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
-At the wave-16 intake two research rows still dominate package rows: its
+At the wave-16 intake research points at two unknown counts still dominate
+package rows: its
 nine-positive 405 operations at degree 1,191,570 and 413 at 1,316,546
 (`23d8510a10`; the 413 form on the 2^429959 tuple), 722 at 1,158,228 and
 1,056 at 997,810 dominate every nine-positive package point, and its
 ten-positive 84 / 328 (operations / degree, `b33b254625`) dominates 133's
 85 / 328. Its fourteen-positive 73 / 342 to 76 / 191 are now dominated by
-142's, and its ℤ quartics of height 15,109 by 145's 260.
+142's, and its ℤ quartics of height 15,109 by 145's 260. Its 65-operation
+evaluator of P66 with rational leaves (`49e2df4489`, 15:35) is not ranked,
+since rational leaves are not integer coefficients; its complemented-47 page
+(`100b6e1a90`) binds P66 with B = 2^413929, as 141's tuple does.
 
 - "u / e / d / o" means unknowns / equations / degree / operations; pairs
   are degree / operations, except in the ten-positive rows and the wave-14
@@ -457,7 +462,7 @@ lower directory number counts as earlier.
 | Nine positive, lowest degree | **997,810 / 1,057** | 101 | 101 |
 | Nine positive, Pareto frontier | 1,472,168 / 420 (101); 1,376,378 / 456 (105); 1,158,228 / 726 (82); 997,810 / 1,057 (101). Dominated by these: 66's 444 and every earlier nine-positive form; 101's 428 and 85's 434 ≡ 86's 435 (one polynomial), 105's 442, 86's 449, 79's 1,753, 85's 1,074, 86's 1,086 | 82, 101, 105 | — |
 | Nine positive on the 2^429959 tuple | **1,626,248 / 428** (101); 1,628,768 / 434 (85; 86 evaluates the same polynomial in 435); 1,520,186 / 442 (105). Earlier: 54's 490 | 85, 101, 105 | 85 |
-| Ten positive, Pareto frontier | **75 / 626**, 76 / 464 and 77 / 460 (140); 80 / 382 (142); 85 / 328 (133); 87 / 323 and 88 / 318 (139); 89 / 288, 91 / 283, 92 / 278, 94 / 262, 96 / 258, 97 / 254 (119 on the BFS tuple, 121 on the original one; 119's 92 / 278 is 117's polynomial in one operation fewer, 121's the same circuit on the other tuple); 102 / 253 and 104 / 252 (132); **121 / 246** (130). Dominated: 140's 76 / 622; 142's 76 / 626 and 77 / 464, 143's 77 / 626, 78 / 464 and 79 / 460 (140's polynomials in more operations); 141's and 146's 77–80 / 626–460 (140's with T replaced by T + α); 147's 77 / 630 and 78 / 468; 143's 80 / 384 and controls; 134's 78 / 630 and 79 / 468; 138's 83 / 436, 80 / 750 and 81 / 560; 137's 81 / 750 and 82 / 560; 133's 84 / 436; 130's 86 / 466, 87 / 466, 89 / 450 and 90 / 450, 131's 87 / 436 and 88 / 380, 113's, 116's, 117's and 118's forms, 115's 98 / 368 and 103 / 340, and every earlier form | 119, 121, 130, 132, 133, 139, 140, 142 | 84 (first), 113 (fusion) |
+| Ten positive, Pareto frontier | **75 / 626**, 76 / 464 and 77 / 460 (140); 80 / 382 (142); 85 / 328 (133); 87 / 323 and 88 / 318 (139); 89 / 288, 91 / 283, 92 / 278, 94 / 262, 96 / 258, 97 / 254 (119 on the BFS tuple, 121 on the original one; 119's 92 / 278 is 117's polynomial in one operation fewer, 121's the same circuit on the other tuple); 102 / 253 and 104 / 252 (132); **121 / 246** (130). Dominated: 140's 76 / 622; 142's 76 / 626 and 77 / 464, 143's 77 / 626, 78 / 464 and 79 / 460 (140's polynomials in more operations); 141's and 146's 77–80 / 626–460 (140's with T replaced by T + α); 147's 77 / 630 and 78 / 468; 142's 79 / 516 and its shifted 77 / 626 and 78 / 464 (141's polynomials); 143's 80 / 384, its controls and its radix-55 specializations; 134's 78 / 630 and 79 / 468; 138's 83 / 436, 80 / 750 and 81 / 560; 137's 81 / 750 and 82 / 560; 133's 84 / 436; 130's 86 / 466, 87 / 466, 89 / 450 and 90 / 450, 131's 87 / 436 and 88 / 380, 113's, 116's, 117's and 118's forms, 115's 98 / 368 and 103 / 340, and every earlier form | 119, 121, 130, 132, 133, 139, 140, 142 | 84 (first), 113 (fusion) |
 | 10ℤ (Sun's reduction), Pareto frontier | **1,245,324 / 467**, 1,179,788 / 470, 1,114,252 / 473, **1,080,888 / 507** (106, re-evaluating 87's 471 form and the research session's three shears of it). Other polynomials: 76's 480 / 1,245,324, 83's 484 / 1,179,788, 487 / 1,114,252 and 521 / 1,081,125, 87's 485, 496 and 545 / 1,080,888, 91's re-evaluations. All dominate 68's 1,576,864 / 481 | 76, 83, 87, 106 | 76 (degree), 87 (operations) |
 | 11ℤ, without Sun's reduction, Pareto frontier | **924 / 107** and 840 / 108 (138); 810 / 112 (131); 648 / 115 (137); 488 / 118 and 464 / 119 (125); 398 / 121, 352 / 125, 340 / 129 and 328 / 130 (135); 316 / 133, 308 / 140, 304 / 144 and **300 / 148** (144). Dominated: 132's 924 / 109, 840 / 110, 428 / 123, 412 / 127, 396 / 128, 376 / 127, 364 / 131 and 352 / 132, 131's 966 / 109, 882 / 110 and 654 / 117, 137's 640 / 118, 580 / 119 and 574 / 122, 135's controls 382 / 125 and 366 / 126, 123's forms, 125's 456 / 124 and 416 / 125, 127's 440 / 126 and 412 / 127, 116's, 120's, 121's and 126's forms, 110's three | 125, 131, 135, 137, 138, 144 | 110 |
 | 12ℤ, Pareto frontier | **500 / 139** (121's evaluator of 116's polynomial); **1,084 / 123** (113). Dominated: 116's 500 / 148, 112's 768 / 141, 111's 1,040 / 140 and four further forms, 110's 1,000 / 180 and 1,024 / 179, 118's two, and every wave-11 form | 113, 121 | 97 |
@@ -471,8 +476,8 @@ lower directory number counts as earlier.
 | Integer octic | **25ℤ** in 127 operations (77). Dominated: the 26ℤ octics of 76, 77, 78, 79, 81, 82 and 68's 28ℤ, 69's and 71's 27ℤ | 77 | 77 |
 | Integer sextic | **30ℤ** (76). Dominated: the 31ℤ sextics of 77, 79, 81 (144 operations), 82, and the 32ℤ and 34ℤ sextics of waves 9–10 | 76 | 76 |
 | Integer quartic | **37ℤ** (76 ≡ 82, two variants; 77's four variants differ in one guard row). Dominated: 69's and 71's 38ℤ | 76, 77, 82 | 76 |
-| Direct C222 quartic, ℕ (no K215, Jones, Sun or coefficient tuple) | **221 / 171 / 10,216 / 2.4·10^12** and 223 / 173 / 6,858 / 83,953,724 and 222 / 172 / 9,522 / 83,954,186 (140); 221 / 171 / 13,935 / 118,464,197 and 224 / 174 / 6,527 / 83,953,869 (144); 221 / 172 / 9,536 / 83,954,186 and 222 / 173 / 6,821 / 83,954,028 (142); 229 / 179 / 5,607 / 65,892,965 (143); 255 / 203 / 5,743 / 64,214,623 (133); 242 / 190 / 9,308 / 18,049,118 (128); 278 / 215 / 5,524 / 83,852,788 (131); 320 (123), 331ds / 255 / 15,769 / 15,246,025 and 332ss / 255 / 14,184 / 10,785,132 (125) and 333 / 264 / 4,357 (122) on height or terms; 4,860 / 4,476 / 14,719 / **1,837** (98, lowest height). Raw systems (those of 140, 142, 143 and 144 unclaimed): 324 / 275 / 4,870 / 64,000,366 (142), 325 / 275 / 4,876 / 64,000,365 (144), 326 / 276 / 4,858 / 64,000,366 (140), 335 / 285 / 4,606 / 63,932,469 (143), 343 / 291 / 4,593 / 64,174,057 (133), 359 / 307 / 5,706 / 1,418,780 (128), 412 / 349 / **2,852** / 63,907,302 (131), 479 / 414 / 3,042 / 1,144,307 (123), 554 / 476 / 3,276 / 1,142,323 (112). Dominated: 144's 222 and 223, 143's 228s, 139's 226 and 227, 135's 228, 229 and 230, 134's 233, 138's 235 and 236, 129's 233 and 234, 133's 237, 239 and 240, 131's 249, 124's 261 and 292, 127's, 130's 241 and dense 239, 108's and 109's 395; raw: 144's 327, 139's 332, 135's 334, 138's 336 and 337, 134's 339, 130's 349, 131's 387, 127's and 129's raws, 123's 465, 124's 435 and 406, and earlier forms | 98, 112, 122, 123, 125, 128, 131, 133, 140, 142, 143, 144 | 87 (earliest), 89 (this lineage) |
-| Direct C222 quartic, ℤ | **252 / 182 / 5,340 / 128,446** (141); 258 / 186 / 5,319 / 47,281 and 261 / 185 / 5,332 / 47,281 (147); 260 / 186 / 4,770 / 9,191 (145); 260 / 185 / 5,099 / 128,446 (146); 263 / 191 / 4,141, 264 / 190 / 4,135, 285 / 213 / 3,750 and 286 / 212 / **3,744** (144, height 128,446); 279 / 189 / 5,483 / **7,200**, 284 / 194 / 4,270 / 10,864 and 306 / 216 / 3,870 / 14,512 (143); 571 integers / 19,833 terms, 593 / 12,027, 646 / 8,368 and 742 / 7,226, all at **height 1** (144; not sums of squares, so compared on variables, terms and height). Dominated: 140's 258, 259 and 261, 144's 258–261 and its baseline variants, 145's 259, 261 and pre-shear forms, 146's 259, 143's 278 and 279 (sparse), 135's 282, 287 and 309 and its height-one 793, 806 and 994, and everything those dominated | 141, 143, 144, 145, 146, 147 | 87 |
+| Direct C222 quartic, ℕ (no K215, Jones, Sun or coefficient tuple) | **221 / 171 / 10,216 / 2.4·10^12** and 223 / 173 / 6,858 / 83,953,724 and 222 / 172 / 9,522 / 83,954,186 (140); 221 / 171 / 13,935 / 118,464,197 and 224 / 174 / 6,527 / 83,953,869 (144); 221 / 172 / 9,536 / 83,954,186 and 222 / 173 / 6,821 / 83,954,028 (142); 229 / 179 / 5,607 / 65,892,965 (143); 255 / 203 / 5,743 / 64,214,623 (133); 242 / 190 / 9,308 / 18,049,118 (128); 278 / 215 / 5,524 / 83,852,788 (131); 320 (123), 331ds / 255 / 15,769 / 15,246,025 and 332ss / 255 / 14,184 / 10,785,132 (125) and 333 / 264 / 4,357 (122) on height or terms; 4,860 / 4,476 / 14,719 / **1,837** (98, lowest height). Raw systems (those of 140, 142, 143 and 144 unclaimed): 324 / 275 / 4,870 / 64,000,366 (142), 325 / 275 / 4,876 / 64,000,365 (144), 326 / 276 / 4,858 / 64,000,366 (140), 335 / 285 / 4,606 / 63,932,469 (143), 343 / 291 / 4,593 / 64,174,057 (133), 359 / 307 / 5,706 / 1,418,780 (128), 412 / 349 / **2,852** / 63,907,302 (131), 479 / 414 / 3,042 / 1,144,307 (123), 554 / 476 / 3,276 / 1,142,323 (112). Dominated: 144's 222 and 223, 143's 228s and its 229 control (6,596 terms), 139's 226 and 227, 135's 228, 229 and 230, 134's 233, 138's 235 and 236, 129's 233 and 234, 133's 237, 239 and 240, 131's 249, 124's 261 and 292, 127's, 130's 241 and dense 239, 108's and 109's 395; raw: 144's 327, 139's 332, 135's 334, 138's 336 and 337, 134's 339, 130's 349, 131's 387, 127's and 129's raws, 123's 465, 124's 435 and 406, and earlier forms | 98, 112, 122, 123, 125, 128, 131, 133, 140, 142, 143, 144 | 87 (earliest), 89 (this lineage) |
+| Direct C222 quartic, ℤ | **252 / 182 / 5,340 / 128,446** (141); 258 / 186 / 5,319 / 47,281 and 261 / 185 / 5,332 / 47,281 (147); 260 / 186 / 4,770 / 9,191 (145); 260 / 185 / 5,099 / 128,446 (146); 263 / 191 / 4,141, 264 / 190 / 4,135, 285 / 213 / 3,750 and 286 / 212 / **3,744** (144, height 128,446); 279 / 189 / 5,483 / **7,200**, 284 / 194 / 4,270 / 10,864 and 306 / 216 / 3,870 / 14,512 (143); 571 integers / 19,833 terms, 593 / 12,027, 646 / 8,368 and 742 / 7,226, all at **height 1** (144; not sums of squares, so compared on variables, terms and height). Dominated: 140's 258, 259 and 261, 141's retained 252 / 182 / 6,616 / 412,188, 147's intermediate forms, 144's 258–261 and its baseline variants, 145's 259, 261 and pre-shear forms, 146's 259, 143's 278 and 279 (sparse), 135's 282, 287 and 309 and its height-one 793, 806 and 994, and everything those dominated | 141, 143, 144, 145, 146, 147 | 87 |
 | Eleven positive | **211 / 107** (115's evaluator of the research session's polynomial, which 105 evaluates in 110). Dominated: 83's 211 / 112, 86's 213 / 112, 87's 211 / 113, 82's 269 / 111, the 277 / 111 polynomial of 76, 77, 78, 79, 81, 77's 257 / 114, and 70's 325 / 113 | 83, 105, 115 | 76 (277), 83 (211) |
 | Twelve positive, Pareto frontier | **70 / 95** (115's evaluator of 98's free-J polynomial); 57's **258 / 89**. Dominated: 98's 70 / 98, 76's 78 / 101 ≡ 82's 78 / 102, 78's ≡ 81's 78 / 103, 87's 70 / 100, 69's 82 / 102, 74's forms | 98, 115; 57 | 80 (claim), 87 (first artifact), 98 |
 | Thirteen positive, Pareto frontier | **28 / 98** (72); 30 / 92 (73; 74 evaluates the same polynomial in 93); **51 / 87** (115's evaluator of 98's polynomial); 114 / 83 (62); **433 / 72** (142). Dominated: 98's 51 / 88, 70's and 75's 30 / 94, 61's 34 / 93 | 72; 73; 98, 115; 62; 142 | — |
@@ -501,14 +506,14 @@ pairs degree / operations.
 
 | Dir | Archive | Title as printed | Constructions |
 |---|---|---|---|
-| [`140-centered-residues/`](140-centered-residues/) | `ConZFC_Centered_Residues_2026-10-25.zip` | *Centered residue certificates and reusable Pell denominators* | ten positive **75 / 626**, **76 / 464**, **77 / 460** (133's indexed tuple); direct quartics ℤ 258 / 186 / 5,366, 259 / 185 / 5,361 (height 128,446); ℕ **222 / 172 / 9,522 / 83,954,186**, 221 / 171 / 10,216 / 2.4·10^12, **223 / 173 / 6,858 / 83,953,724**; unclaimed raw ℕ 326 / 276 / 4,858 / 64,000,366 |
-| [`141-common-remainders-radix47/`](141-common-remainders-radix47/) | `ConZFC_Common_Remainders_Radix47_2026-10-25.zip` (wrapper `conzfc_common_remainders_20261025`) | *Common remainder certificates and explicit polynomial forms of Con(ZFC)* (README H1 and PDF metadata differ) | direct quartic **ℤ 252 / 182 / 5,340 / 128,446**; fifteen positive 66 / 157 on new radix-47 and radix-49 tuples (B = 2^413929 and 2^431543); ten positive 78 / 626, 79 / 464, 80 / 460 |
+| [`140-centered-residues/`](140-centered-residues/) | `ConZFC_Centered_Residues_2026-10-25.zip` | *Centered residue certificates and reusable Pell denominators* | ten positive **75 / 626**, **76 / 464**, **77 / 460** (133's indexed tuple); direct quartics ℤ 258 / 186 / 5,366, 259 / 185 / 5,361 (height 128,446); ℕ **222 / 172 / 9,522 / 83,954,186**, **221 / 171 / 10,216 / 2.4·10^12**, **223 / 173 / 6,858 / 83,953,724**; unclaimed raw ℕ 326 / 276 / 4,858 / 64,000,366 |
+| [`141-common-remainders-radix47/`](141-common-remainders-radix47/) | `ConZFC_Common_Remainders_Radix47_2026-10-25.zip` (wrapper `conzfc_common_remainders_20261025`) | *Common remainder certificates and explicit polynomial forms of Con(ZFC)* (README H1 and PDF metadata differ) | direct quartic **ℤ 252 / 182 / 5,340 / 128,446**; fifteen positive in 66 operations at degree 157 on new radix-47 and radix-49 tuples (B = 2^413929 and 2^431543); ten positive 78 / 626, 79 / 464, 80 / 460 |
 | [`142-coprime-products-positive-centers/`](142-coprime-products-positive-centers/) | `ConZFC_Coprime_Products_and_Positive_Centers_2026-10-25.zip` | *Coprime product certificates and positive Pell centers* | **fourteen positive 70 / 189 and 71 / 157**, **thirteen positive 72 / 433**; ten positive **80 / 382** (and 76 / 626, 77 / 464); direct quartics ℕ **221 / 172 / 9,536 / 83,954,186** and **222 / 173 / 6,821 / 83,954,028**; unclaimed raw ℕ 324 / 275 / 4,870 / 64,000,366 |
-| [`143-residual-bases/`](143-residual-bases/) | `ConZFC_Residual_Bases_Denominator_Engineering_2026-10-25.zip` (wrapper `ConZFC_Residual_Bases_Denominator_Engineering`) | *Residual basis reduction and smaller Diophantine consistency equations* (README H1 differs; PDF metadata empty) | **14ℤ 86 / 112 and 94 / 110**; 13ℤ 156 / 125 (137's polynomial); direct quartics ℤ **279 / 189 / 5,483 / 7,200**, **284 / 194 / 4,270 / 10,864**, **306 / 216 / 3,870 / 14,512**, 278 / 188 / 12,884 / 12,227; ℕ **229 / 179 / 5,607 / 65,892,965**; ten positive 77 / 626 to 80 / 384, also on the research session's radix-55 tuple; unclaimed raw ℕ 335 / 285 / 4,606 / 63,932,469 |
-| [`144-shared-certificates-round18/`](144-shared-certificates-round18/) | `ConZFC_Shared_Certificates_Round18_2026-10-25.zip` | *Shared polynomial certificates for ZFC consistency* (README H1 differs) | **height one in 571 / 19,833, 593 / 12,027, 646 / 8,368 and 742 / 7,226** (integers / terms); direct quartics ℤ 258 / 186 / 5,364, **263 / 191 / 4,141**, **264 / 190 / 4,135**, **285 / 213 / 3,750**, **286 / 212 / 3,744** (height 128,446); ℕ **221 / 171 / 13,935 / 118,464,197**, **224 / 174 / 6,527 / 83,953,869**, 222 and 223; **11ℤ 316 / 133, 308 / 140, 304 / 144, 300 / 148** (source34); unclaimed raw ℕ 325 / 275 / 4,876 / 64,000,365 and 327 |
+| [`143-residual-bases/`](143-residual-bases/) | `ConZFC_Residual_Bases_Denominator_Engineering_2026-10-25.zip` (wrapper `ConZFC_Residual_Bases_Denominator_Engineering`) | *Residual basis reduction and smaller Diophantine consistency equations* (README H1 differs; PDF metadata empty) | **14ℤ 86 / 112 and 94 / 110**; **13ℤ 156 / 125** (137's polynomial); direct quartics ℤ **279 / 189 / 5,483 / 7,200**, **284 / 194 / 4,270 / 10,864**, **306 / 216 / 3,870 / 14,512**, 278 / 188 / 12,884 / 12,227, 279 / 189 / 5,202 / 12,662; ℕ **229 / 179 / 5,607 / 65,892,965**; ten positive 77 / 626 to 80 / 384, also on the research session's radix-55 tuple; unclaimed raw ℕ 335 / 285 / 4,606 / 63,932,469 |
+| [`144-shared-certificates-round18/`](144-shared-certificates-round18/) | `ConZFC_Shared_Certificates_Round18_2026-10-25.zip` | *Shared polynomial certificates for ZFC consistency* (README H1 differs) | **height one in 571 / 19,833, 593 / 12,027, 646 / 8,368 and 742 / 7,226** (integers / terms); direct quartics ℤ 258 / 186 / 5,364, 259 / 185 / 5,356, **263 / 191 / 4,141**, **264 / 190 / 4,135**, **285 / 213 / 3,750**, **286 / 212 / 3,744** (height 128,446); ℕ **221 / 171 / 13,935 / 118,464,197**, **224 / 174 / 6,527 / 83,953,869**, 222 and 223; **11ℤ 316 / 133, 308 / 140, 304 / 144, 300 / 148** (source34); unclaimed raw ℕ 325 / 275 / 4,876 / 64,000,365 and 327 |
 | [`145-shared-residue-bounds/`](145-shared-residue-bounds/) | `ConZFC_Shared_Residue_Bounds_2026-10-25.zip` | *Shared quadratic bounds for Diophantine refutation certificates* (README H1 differs; PDF metadata empty) | direct quartic **ℤ 260 / 186 / 4,770 / 9,191**, with companions 261 / 185 / 5,332 and 259 / 185 / 23,960 |
 | [`146-symmetric-remainders/`](146-symmetric-remainders/) | `ConZFC_Symmetric_Remainders_2026-10-25.zip` | *Symmetric remainder bounds for Diophantine consistency* | direct quartics **ℤ 260 / 185 / 5,099 / 128,446** and 259 / 184 / 21,287 / 240,653; ten positive 77 / 626, 78 / 464, 79 / 460 |
-| [`147-symmetric-residue-budgets/`](147-symmetric-residue-budgets/) | `ConZFC_Symmetric_Residue_Budgets_2026-10-25.zip` | *Symmetric residue budgets for a 258-variable consistency quartic* (README H1 shorter) | direct quartics **ℤ 258 / 186 / 5,319 / 47,281** and **261 / 185 / 5,332 / 47,281**; ten positive 77 / 630 and 78 / 468 |
+| [`147-symmetric-residue-budgets/`](147-symmetric-residue-budgets/) | `ConZFC_Symmetric_Residue_Budgets_2026-10-25.zip` | *Symmetric residue budgets for a 258-variable consistency quartic* (README H1 differs) | direct quartics **ℤ 258 / 186 / 5,319 / 47,281** and **261 / 185 / 5,332 / 47,281**; ten positive 77 / 630 and 78 / 468 |
 
 ### Identities and dominance (intake findings)
 
@@ -516,9 +521,13 @@ Three read-only dossiers recounted every circuit, measured every headline
 degree on random lines, re-expanded every direct quartic, rebuilt 144's
 height-one polynomials from their certificates and replayed the
 elimination, projection, translation, shear and row-operation
-certificates; every headline figure was confirmed (not checked: 140's
-"42 generated files" rebuild, 144's matched 603 / 12,289 replay, and every
-unbounded proof). An inherited replay script mishandled steps with pivot
+certificates; every headline figure was confirmed. Not checked: 140's
+"42 generated files" rebuild, 144's matched 603 / 12,289 replay, the
+zero-set bijection of 144's height-one graphs with their sources, the Horn
+factorizations of 141 and 145, 142's raw mutation row by row, 144's pooled
+transformation from 334 to 327 and 325, 143's 14ℤ reductions beyond their
+counts and its radix-55 bridge, every coefficient recipe (none was run), and
+every unbounded proof. An inherited replay script mishandled steps with pivot
 sign −1; 144's `natural221` certificate passes once that is corrected.
 
 - **Ten positive: one family, five packages.** On 133's indexed tuple, 140's
@@ -537,7 +546,7 @@ sign −1; 144's `natural221` certificate passes once that is corrected.
 - **Integers without Sun's reduction.** 143's 14ℤ 86 / 112 and 94 / 110 are
   new reductions of the 15-variable degree-44 source; its 88 / 115 and
   13ℤ 156 / 125 evaluate 137's polynomials in fewer operations, and 156 / 125
-  dominates both 13ℤ points of wave 15. 144's 11ℤ 316 / 133 to 300 / 148
+  dominates both 13ℤ points of the frontier after wave 15. 144's 11ℤ 316 / 133 to 300 / 148
   lower the degree below 135's 328 / 130; 308 / 140 and 304 / 144 are
   316 / 133 with n replaced by n + 2U³T(c² − 2) and n + U²T[2U(c² − 2) + 16A³].
 - **Direct ℤ quartics.** Six packages pool the eleven remainder certificates
@@ -566,25 +575,34 @@ sign −1; 144's `natural221` certificate passes once that is corrected.
 ### Tensions, not adjudicated at intake
 
 - **The ten-positive family has no settled priority.** 140, 141, 142, 143
-  and 146 built the XY / q⁴ carrier independently between 13:52 and 14:03;
-  140 evaluates it most cheaply. The research session proposed 147's two
+  and 146, whose PDFs were built between 13:52 and 14:03, have the XY / q⁴
+  carrier independently; 140 evaluates it most cheaply. The research session proposed 147's two
   unshifted circuits code-free at 14:30 (`1b7428898a`), after the arrival;
-  147's are dated 13:37.
+  147's files date from 13:37. They are the unshifted-T versions of 134's
+  circuits that this README's wave-15 further question 1 asked for (written
+  at 14:21); 146's unshipped deterministic-centre row bears on question 2.
 - **One pooling idea, six packages.** The guard pooling of 140, 141 and
   144–147 is the signed analogue of 139's pooled ℕ digits; no package cites
   another. The research session's height-15,109 quartics (315 / 217 / 5,620 and
-  316 / 218 / 5,614, by shears, accepted in `2989b466d4`) are cited by none;
-  145's 260 dominates them.
-- **The R > 3q repair.** 140, 142, 143 and 146 state the canonical bound;
-  141 and 147 inherit 134's outer data without restating it.
-- **Unclaimed forms.** The raw ℕ systems above, 144's refactored height-one
+  316 / 218 / 5,614, by shears, accepted in `2989b466d4`) are cited only by
+  143, which reuses their six coordinate shears; 145's 260 and 143's 279, 284
+  and 306 dominate them.
+- **The R > 3q repair.** 140, 142 and 143 state the canonical bound. 146
+  derives 3q < R < q⁴ − 2 only for soundness, and its completeness data state
+  (R − 1)/2 ≥ 48. 141 and 147 inherit 134's outer data without restating it.
+- **Unclaimed forms.** The raw ℕ systems above are not claimed by their
+  packages but are ranked with the raw systems, as in earlier waves. 144's
+  refactored height-one
   sources (302 / 230 / 3,394 / 4,178 and 324 / 252 / 3,003 / 4,178, complete by its
   refactor theorem) and 145's shear stage 260 / 186 / 4,753 / 98,336 are not
   claimed and are not ranked here.
 - **The research session moved in parallel.** It reviewed this wave
-  code-free (`91cd6e314b`, 14:43; every metric "reported, unverified") and at
-  15:35 published its complemented radix-47 page (`100b6e1a90`), with the
-  same 207,214 raw coefficient bytes as 141's radix-47 tuple.
+  code-free (`91cd6e314b`, 14:43; every metric "reported, unverified"). From
+  141's complemented-label proof it derived a combined encoding with a changed
+  K and masks (frozen `992a9b4aa9`, 14:55; controller `a7b9c6f607`, 15:30),
+  and its complemented radix-47 page (`100b6e1a90`, 15:35) binds the same
+  B = 2^413929 in the same 207,214 raw bytes; its K, MC and MF differ from
+  141's.
 - **The undelivered archives.** 140, 142, 143 and 144 carry the same 19
   `ConZFC_Shell_Reciprocal_660` code files (143's natural builder routes
   through them); 145 and 147 carry its `shell_source.py` (145 also its
@@ -596,16 +614,20 @@ sign −1; 144's `natural221` certificate passes once that is corrected.
 - **Drivers fail in place.** 140, 141, 143, 144, 146 and 147 check full
   manifests; 142's top-level check passes silently when its gitignored
   `SHA256SUMS` is absent, but its component checks fail; 145 reads 79 omitted
-  parent pins. All eight have builders that rewrite delivered files; 146's
-  and 147's report builders overwrite the PDF.
+  parent pins. All eight have builders that rewrite delivered files; 143's, 146's (by
+  default) and 147's report builders overwrite the PDF.
 - **Not shipped.** 146's 281 / 192 / 5,213 row; 144's `scalar/research/`,
   named in its README.
 - **Records.** 145 calls two different equations primary and ships
   `merged_products_centered` unlisted, with three byte-identical cap files;
   147 presents removing the T shift as new and cites a "Source 142" from
-  another numbering; 143 compares its ℕ forms without 139's 226 and 227.
-- **Titles.** README H1 differs: 141, 143, 144, 145, 147; PDF metadata empty:
-  143, 145.
+  another numbering; 143 compares its ℕ forms without 139's 226 and 227;
+  141 names an intermediate `equation.json` beside its endpoint; 142's
+  `equation_14_reduced.json` has no degree field and the name "raw" marks its
+  preferred graph; 145's equations carry the stale `source_commit`
+  `08200eb10f`.
+- **Titles.** README H1 differs: 141, 143, 144, 145, 147; PDF metadata
+  differs: 141, 142; PDF metadata empty: 143, 145.
 - **Licence and attribution.** No root licence or NOTICE: 143, 145. No root
   NOTICE: 141, 142, 146, 147. Every package states AI assistance itself.
 
@@ -616,8 +638,8 @@ sign −1; 144's `natural221` certificate passes once that is corrected.
 2. Apply 142's partial q² carrier to 140's XY / q⁴ circuits.
 3. Decide whether the unclaimed raw systems and refactored quartics count as
    endpoints.
-4. Compare 141's radix-47 tuple with the research session's complemented-47
-   page, and audit its carry proof.
+4. Audit 141's 29-to-12 carry proof, on which both 141's tuple and the
+   research session's combined complemented-47 encoding rest.
 
 ## Wave 15 (sources 134–139)
 
@@ -3232,7 +3254,7 @@ The packages say, in their own words (exceptions noted):
   - In wave 11, the nine-positive forms of 79, 82, 85, 86, 101 and 105 keep
     the ratio finalizer through 66's and 71's sources. No other wave-11
     form uses a Jones lemma; the direct quartics use none.
-  - Waves 12–16 use no Jones lemma: their ten- to thirteen-positive
+  - Waves 12–16 use no Jones lemma: their ten- to fifteen-positive
     forms, 117's 30ℤ companion and the 11ℤ–15ℤ forms are native K215 forms,
     and their quartics are direct.
   - No package uses `Jones1982.nine_unknowns`, which fixes ν = 58.
@@ -3292,7 +3314,7 @@ The packages say, in their own words (exceptions noted):
   finite C222 derivation" is an ordinary proof in each package, checked by
   finite replays. None of these packages uses
   `DirectQuarticZFC.noNaturalZero_iff_conZFC` in its construction (116, 120,
-  127, 131, 132, 135, 137 and 138 cite it in copied provenance).
+  127, 131, 132, 135, 137, 138, 143 and 144 cite it in copied provenance).
 - **Nothing delivered in this report is formalized.** The active stage
   proofs for 52 live outside this directory.
 
