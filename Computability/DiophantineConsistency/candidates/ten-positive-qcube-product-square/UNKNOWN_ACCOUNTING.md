@@ -14,7 +14,7 @@ needs a new source theorem rather than a schedule edit.
 | T | the auxiliary congruence V ≡ −c − R·f² (mod c·f²), through b = c(T + α) − R | the auxiliary Pell solution V is not polynomial in the other data |
 | w | X = w·q = 2^R, forced by H ∣ Kpos | 2^R is not polynomial; see below |
 | s | Y = q³·s, the half-binomial extraction Y = ⌊c/k⌋ read by the source reconstruction at Y(X + 1) + 2 | Y is not polynomial in c and k |
-| η, ζ | the two Pell ordinates k = η + ζ (first norm E = τ²) and c = kY + η (folded strong Pell), with 0 < η < k | two independent Pell ordinates; ζ ≥ 1 is the upper half of the floor Y = ⌊c/k⌋ |
+| η, ζ | the two Pell ordinates k = η + ζ (first norm E = τ²) and c = kY + η (folded strong Pell), with 0 < η < k | two independent Pell ordinates, so two unknowns; writing k = η + ζ makes the floor condition 0 < η < k free |
 | n | the slack in the centre Z/M = n + κ − W·t − ρ = ε·g·y | see below |
 
 ## The exponential gadget
@@ -34,10 +34,11 @@ depends on X.
 
 With X = 2^R, c/k ≈ (2^(R/2) + 2^(−R/2))^(R−1)/2, so Y holds the
 half-binomial digits that the source reconstruction reads. Positivity of η
-gives Y ≤ c/k. Only ζ ≥ 1 gives Y > c/k − 1. No other constraint of the
-kernel bounds Y from above, so removing ζ would let an underestimate of Y
-through. Removing it needs a cheaper two-sided floor gadget, or a source
-theorem that reads only a one-sided bound on Y.
+gives Y ≤ c/k, and ζ ≥ 1 gives Y > c/k − 1. The floor costs no unknown of
+its own: η and ζ are exactly the two values c and k need anyway, and the
+split k = η + ζ costs one addition. (An earlier version of this note said
+ζ was spent on the floor; that was wrong, since removing ζ would leave the
+Pell ordinate k without a free value.)
 
 ## The slack n
 
@@ -51,9 +52,9 @@ back into g, V and L, so neither can act as the slack.
 
 A nine-unknown equation at kernel cost (about 80 operations) needs one of:
 
-- a new floor gadget, so that ζ can go;
-- a source theorem that reads Y one-sidedly, or that does not need
-  X = 2^R and n0 = (R + 1)/2 separately;
+- a source theorem that needs only one of the two Pell ordinates c and k,
+  for example one that reads the half-binomial digits from c alone or does
+  not need X = 2^R and n0 = (R + 1)/2 separately;
 - merging two calibration digits into one unknown under a native theorem
   that allows it.
 
