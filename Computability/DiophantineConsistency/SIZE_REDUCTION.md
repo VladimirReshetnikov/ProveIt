@@ -15,7 +15,8 @@ not establish the size of a complete consistency equation.
 
 | Domain | Variables | Operations | Degree | Use |
 |---|---:|---:|---:|---|
-| Integers | **315 / 316** | not optimized | **4** | Complete balanced-shear charts;217/218 rows,5809/5803 terms,height98336,row height256; nine first/fresh processes pass |
+| Integers | **315 / 316** | not optimized | **4** | Complete neighbor-shear charts;217/218 rows,5787/5781 terms,height93109,row height160; nine first/fresh processes pass |
+| Integers | 315 / 316 | not optimized | 4 | Preserved balanced-shear parents;217/218 rows,5809/5803 terms,height98336,row height256 |
 | Integers | 315 / 316 | not optimized | 4 | Complete fixed58-shift parents;217/218 rows,5743/5737 terms,height128446,row height256; separate full fast verification accepted |
 | Integers | 315 / 316 | not optimized | 4 | Preserved raw parents;217/218 rows,7999/7987 terms,height14250071 |
 | Positive integers | **15** | **66** | **157** | Maintained complete one-page indexed equation and every constant; all actual-page/replay/visual checks pass |
@@ -2837,17 +2838,25 @@ three-row blocks. Exhaustive hand tables give31 to20 t-supported terms
 in each block, with no new monomial or coefficient growth; all t-free
 coefficients stay identical. The maps have complete integer inverses.
 
-Combining this theorem with the accepted old full data gives prospective
-5781 plain/5787 weighted terms, exact height93109 and row height160.
-Variables316/315, rows218/217, exact degree4 and liveness stay fixed.
+The [complete generated verification](research/neighbor-gate-shear-verification/README.md)
+now passes [full independent evidence review](reviews/neighbor-gate-shear-verification-ordinary-peer.md)
+and [ROOT endpoint acceptance](reviews/neighbor-gate-shear-verification-root-peer.md).
+The actual artifacts have5781 plain/5787 weighted terms, exact height93109
+and row height160. Variables316/315, rows218/217, degree4 and liveness
+stay fixed. Both complete forward/inverse quartic substitutions and every
+residual, coefficient, census and composed witness map are checked.
 The new chart is outside the earlier coordinate21-only height-minimum
 family; no contradiction or global minimum claim occurs. Both complete
 source/witness maps retain the accepted ordinary consistency contract.
 
-These are proof deductions, not measured transformed artifacts. The
-fixed finite implementation is being prepared CODE ONLY/HOLD and needs
-two complete final static approvals and a separate ROOT execution release.
-The comparison table continues to show accepted generated data. The
+Two full final statics precede separate first/fresh ROOT releases. All
+nine actual processes exit0; all92 negative/12 valid controls pass in
+each checker, and all12 complete fresh captures match first bytes.
+All294 source inputs and13 data files remain unchanged. The48-payload
+closure preserves every actual object/capture and complete review/release
+history, including the unresolved old143. The comparison table now shows
+these accepted generated data. A further coord35 shear is under study.
+The
 optional(3,2) member has14 fewer residual monomial occurrences but a
 reappearing quartic monomial, so its full support remains unresolved and
 it is not combined with this bounded candidate. Main PDF/TeX and paused

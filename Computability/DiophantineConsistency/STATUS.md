@@ -105,15 +105,17 @@ member and universal surviving coefficient prove the exact height minimum
 No general coordinate/support optimum, fresh native or Lean replay is
 claimed. The main compact66 PDF/TeX remain current and unchanged.
 
-A [code-free neighbor-shear proof](research/neighbor-gate-shear/README.md)
-now passes [ROOT](reviews/neighbor-gate-shear-ordinary-root.md) and
-[independent ordinary review](reviews/neighbor-gate-shear-ordinary-peer.md).
-Two local output-gate changes remove exactly22 monomials without any
-coefficient growth. Complete local tables and the old full data imply
-prospective5781 plain/5787 weighted terms, height93109 and row height160,
-at unchanged dimensions/rows/degree. These are ordinary deductions about
-the specified polynomial; no transformed data or finite endpoint is yet
-accepted. A fixed implementation is being prepared under execution hold.
+The complete [neighbor-shear verification](research/neighbor-gate-shear-verification/README.md)
+now passes [independent ordinary evidence review](reviews/neighbor-gate-shear-verification-ordinary-peer.md)
+and [ROOT endpoint acceptance](reviews/neighbor-gate-shear-verification-root-peer.md).
+Plain316/218/5781 and weighted315/217/5787 have exact degree4, height93109,
+row height160 and every coordinate live. Two local output-gate changes
+remove22 monomials, add none and increase no coefficient magnitude.
+All nine actual processes exit0, every checker retains92 negative/12
+valid controls, all12 complete fresh capture files reproduce first bytes,
+and294 source inputs/13 data objects remain unchanged. Full inverse
+coefficient and composed source maps are checked. The main page is
+unchanged; a further coord35 height/support reduction is under study.
 
 The [bounded radix65 evidence](research/compact66-radix65-unit-probe-verification/README.md)
 passes [ordinary review](reviews/compact66-radix65-unit-probe-verification-ordinary-peer.md)

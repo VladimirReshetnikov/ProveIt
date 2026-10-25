@@ -117,6 +117,16 @@ in support. Height98336 is an exact minimum in this specified two-parameter
 shear family followed by constant translations, with no global claim.
 This quartic tradeoff leaves the maintained compact66 page unchanged.
 
+The complete [neighbor-shear successor](research/neighbor-gate-shear-verification/README.md)
+now improves those profiles to **plain316/218/5781 and weighted315/217/5787**,
+both at height93109 and row height160. It removes22 terms without any
+new monomial or coefficient growth. All nine actual first/fresh processes
+pass, with92 negative/12 valid controls and12 byte-exact fresh capture
+files;294 source inputs remain unchanged. The [ROOT acceptance](reviews/neighbor-gate-shear-verification-root-peer.md)
+follows full independent evidence review and retains every composed source
+map and calibration boundary. Earlier quartics remain available; this
+degree-four improvement does not shorten the maintained one-page formula.
+
 A [bounded65-bit modular probe](research/compact66-radix65-unit-probe-verification/README.md)
 now discharges the three previously unknown controller-bracket unit
 conditions: H0 residues5,62,418969 at primes13,8807,581197, respectively.
