@@ -1669,3 +1669,23 @@ without relying on a sampled ray. See the
 All earlier equations remain preserved. The canonical92/283 PDF and TeX stay
 stable while the cost/degree alternatives are compared; a separate complete
 86/466 comparison page is under actual printed-form review. Lean remains paused.
+
+## Ordinary factorial-output guard removal accepted
+
+The [new staged theorem](research/round15-factorial-output-guard/PROOF.md)
+proves that the exact Round15 source's remaining37 predicates already force
+F>=1. It interprets only the retained t pair first: raw rows give B>=1,q>=2
+and L>=2; the q request orients the pair, then the F²+1 request gives V>=1
+for arbitrary signedF. The literal identity FB=V+slack recovers F's sign
+before any F-dependent seed or K meaning is used.
+
+All522 body coordinates and446 rows are fixed; only the private F Legendre
+triple is discarded and existentially restored. Root and independent reviewer
+read the complete proof and source boundary; fresh normal/optimized root
+receipts exactly match the author. Twenty actual identities, all38 guard
+graphs/privacy, the complete frame and all18 power interfaces pass, with30
+actual corruptions rejected per mode. See the
+[root acceptance](reviews/round15-factorial-output-guard-root-peer.md).
+This is an ordinary guard-domain theorem, without a new projected count or
+materialized quartic. The442 checkpoint and canonical92/283 PDF/TeX remain
+preserved, and Lean stays paused.
