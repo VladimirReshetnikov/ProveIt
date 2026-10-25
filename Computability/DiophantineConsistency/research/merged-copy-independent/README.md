@@ -47,8 +47,10 @@ spacing506, auxiliary prime `lambda=190763=377*506+1>d`, H residues
 34,3240,43425 and lift quotient65850. The complete four-port tuple costs
 95205 raw bytes,1841 fewer than marker1031's97046. The shared18 monomial
 is explicitly checked to occur once in the kernel and all three complete
-modular evaluations. Independent mathematical review is pending, and
-printed-page measurements remain a separate check.
+modular evaluations. The [independent mathematical and finite review](../../reviews/merged-copy4049-independent-peer.md)
+reports no unresolved new gap, including a separate reconstruction of the
+layout, copies, offsets and whole integers without project imports.
+Printed-page measurements remain a separate check.
 
 | Port | Bits | Minimal unsigned bytes | SHA256 |
 | --- | ---: | ---: | --- |
