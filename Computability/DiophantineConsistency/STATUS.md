@@ -1867,3 +1867,23 @@ ordinary/native endpoint bindings pass. See the
 [root acceptance](reviews/signed-pell-cap-projections-root-peer.md).
 Further cap/guard relaxations remain separate proposals. The compact canonical
 PDF/TeX and earlier equations are preserved. Lean stays paused.
+
+
+## Three further cap simplifications: ordinary proofs accepted
+
+The [unoriented cap theorem](research/signed-pell-cap-unoriented/PROPOSAL.md)
+removes the cap lower graph and its pooled error term. A nonzero requested t
+excludes the collapsed cap first; signed-center power semantics then recover
+the native arithmetic front before fresh positive private witnesses are built.
+The [F recovery theorem](research/signed-pell-cap-factorial-output-guard/PROOF.md)
+omits F's graph in the current policy by using signed targets and the supported
+t pair before its old positivity ledger. The
+[current-cap helper involution](research/signed-pell-cap-helper-reflection/PROOF.md)
+replaces two helper graphs by one, using four actual private ports.
+
+Root and independent peers reviewed every proof and literal interface; each
+ordinary packet is closed. These are separately scoped results. Combining
+them requires a fresh source proof, all coordinate/graph maps and independent
+checks; no projected count follows by subtraction. The accepted359 quartic,
+433 lower-term alternative, canonical PDF/TeX and paused Lean work remain
+preserved.
