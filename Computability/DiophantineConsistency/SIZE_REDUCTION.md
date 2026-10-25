@@ -13,19 +13,21 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained page now uses the fully reviewed **two-anchor7691** tuple.
-Its four raw integers total180987 bytes versus207214 for three-anchor47
-and242484 for radix55. Complete TeX shrinks62 bytes and extracted nonwhite
-PDF text27 characters from the immediate parent, at unchanged fonts.
-The15-positive/66-operation/degree157 integer-leaf profile is unchanged.
-The new finite controller condition Pc2 is discharged; see the
-[complete candidate](candidates/one-page-two-anchor7691/README.md).
+The maintained page now uses the fully reviewed **one-anchor7309** tuple.
+Its four raw integers total172011 bytes versus180987 for two-anchor7691,
+207214 for three-anchor47 and242484 for radix55. Complete TeX grows6 bytes
+to5089 and extracted nonwhite text3 characters to2710 from the immediate
+parent. Both complete pages are preserved; the current choice prioritizes
+raw constant size. Fonts and15-positive/66-operation/degree157 profile
+are unchanged. Pc1 is discharged; see the
+[complete candidate](candidates/one-page-one-anchor7309/README.md).
 
-The mathematical savings come from using a forced Start-label bit as an
-alignment test, decoding two weighted flags, relocating every padding bit
-into an interior zero band, and replacing a zero-tail requirement with a
-small final-digit bound. The complete global carry29, native inverse,
-canonical subset/rank and P66 witness proofs pass separate review.
+A single flag of weight three and a complete selector-count copy replace
+the two-anchor layout. All-phase alignment still uses the calibrated Start
+bit. Smaller clause centers, an explicitly retained upper-predecessor cross
+term, all871 interior padding bits and the zero final field shorten the
+cell to7309. The complete globalcarry29, native inverse, canonical subset,
+actual-rank and P66 proofs pass separate review.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
 gives65 operations for the same bound three-anchor47 polynomial while
@@ -37,10 +39,11 @@ those specific bindings. Neither is an integer-leaf65 record. The specific
 four-gate tail requiring MC=MF_native is ruled out by odd-d mask parity;
 this is no general lower bound on64-operation evaluators.
 
-Next layout targets move the remaining flag closer to the copy groups,
-or replace the lower flag by a selector-count copy. Those are research
-leads requiring fresh whole support, carry, padding and controller checks.
-They do not replace the reviewed7691 tuple before complete proofs pass.
+Next layout targets shift the label/dummy groups and tighten the clause
+centers. The present unique-difference argument forces anchor2079 for its
+fixed low layout, so further savings need a changed layout or alignment
+argument. Prospective shifted and moved-flag leads require fresh whole
+support, carry, padding and controller checks before replacing7309.
 
 The requested neighboring research is relevant at two different interfaces.
 [Hilbert Tenth](../HilbertTenthProblem/README.md) supplies the half-binomial
