@@ -1365,3 +1365,17 @@ payload and48 root bindings are sealed; see the
 [root acceptance](reviews/round15-signed-frame-root-peer.md). No new projected
 count is claimed pending the separate compiler packet. The442 checkpoint,
 canonical92/283 PDF/TeX and paused Lean work remain preserved.
+
+
+## Shared-cap source reduction: ordinary proof and design accepted
+
+The [signed-cap study](research/signed-pell-cap/README.md) extends pooled
+Pell index recovery to signed ordinates. Including the positive cap itself
+in the pooled residue forces the center positive at an even frame index.
+The complete absolute-center anchor and constructive CRT/completeness order
+are independently reviewed; see the [root review](reviews/signed-pell-cap-root-peer.md).
+Its [source design](research/signed-pell-cap/DESIGN.md) pools all15 original
+undoubled pairs for18 calls, retaining one full cap comparison, the derived
+t+1 pair and all five shared moduli. The literal successor source/checker is
+still pending. This is an ordinary mathematical lead with no new equation or
+count claim; all accepted pages, quartics and paused Lean work remain preserved.
