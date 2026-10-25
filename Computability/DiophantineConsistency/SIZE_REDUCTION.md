@@ -2408,3 +2408,21 @@ strictly positive final witnesses. All four whole native ports and eleven
 signed fixed streams retain their exact recipes. No new graph, emitted
 count or finite endpoint has been accepted; a separately reviewed finite
 packet is required. The maintained page and Lean remain unchanged.
+
+## Both square-radix sources pass complete independent replay
+
+The [sealed source results](research/round16-square-weighted-source/RESULTS.md)
+pass two full static reviews, all five released commands and four fresh
+root replays. All eight root JSON/stdout files equal the author bytes;
+the [root acceptance](reviews/round16-square-weighted-source-root-peer.md)
+authenticates the final whole inventory. Actual raw systems are602/423
+plain and600/421 weighted, with quadratic rows and30 unconstrained raw
+coordinates each. Both check modes pass43 actual negative controls and
+four valid semantic controls, including the complete15-norm/18-request/
+54-port/38-atom source and full cap/pool.
+
+These measured raw censuses provide checked inputs for fresh Horn/monic
+projection. They do not replace the accepted327-variable quartic or
+predict optimized dimensions. The ordinary Hstar/remainder/weighted
+source maps and exact calibration remain explicit. The maintained page
+and Lean remain unchanged.

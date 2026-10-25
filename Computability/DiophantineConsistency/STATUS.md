@@ -1,6 +1,6 @@
 # Research status
 
-Updated 24 October 2026. This is a work log, not a completion certificate.
+Updated 25 October 2026. This is a work log, not a completion certificate.
 
 **Current direction:** Lean formalization is paused at the owner's request.
 The active goal continues with equation-size and complexity reduction;
@@ -2311,3 +2311,15 @@ The ordinary proof retains the actual canonical `R>3q` repair and complete
 indexed native/controller/refutation interpretation. Every predecessor,
 including the complete92/283 page, remains preserved. The327-variable
 quartic is unchanged. Lean remains paused and the reduction goal active.
+
+## Round16 square-radix source checkpoint
+
+The [two complete literal sources](research/round16-square-weighted-source/RESULTS.md)
+are accepted after two full static reviews, five released commands and
+four independent root replays with whole-byte equality. Raw plain602/423
+and weighted600/421 retain30 unused coordinates each; all rows are
+quadratic. Both checker modes pass43 negative and four valid controls,
+the full15-norm/18-request/54-port/38-atom context and complete cap/pool.
+Fresh projection remains separate; no new optimized quartic or maintained
+page is claimed. See the [root review](reviews/round16-square-weighted-source-root-peer.md).
+Lean remains paused.
