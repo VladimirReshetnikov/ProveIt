@@ -341,9 +341,11 @@ The fresh [literal direct-C222 research](research/direct-c222-one-page-template/
 prints every constructor, eighteen power requests and their full polynomial
 certificate. Its proposed554-natural-variable/332-residual equation removes
 the machine seed and controller assumptions, trading variables and degree
-for a potentially shorter specification. Independent ordinary review and
-physical one-page fit remain open. Lean stays paused; substantial checked
-improvements update the maintained PDF and TeX together.
+for a potentially shorter specification. The [independent ordinary review](reviews/direct-c222-indexed-template-independent.md)
+passes within its explicit inherited Pell/C222 calibration and establishes
+exact degree2097684. Complete circuit size and physical one-page fit remain
+unmeasured; no printed-size win is claimed. Lean stays paused; substantial
+checked improvements update the maintained PDF and TeX together.
 
 The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
 and [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)

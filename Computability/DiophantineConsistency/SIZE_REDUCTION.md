@@ -62,6 +62,7 @@ zero-set maps, full coefficient recipes and domain/metric distinctions.
 
 | Domain | Variables | Operations | Degree | Use |
 |---|---:|---:|---:|---|
+| Natural / positive integers | 554 | unoptimized | 2097684 | Complete literal direct-C222 template;18 private power certificates and332 squared residuals. Ordinary review passes; complete page and circuit size unmeasured |
 | Integers | **315 / 316** | not optimized | **4** | Accepted corrected second pair-sum R1 charts;217/218 rows,5620/5614 terms,height15109,row height72; nine actual processes and both full ordinary evidence reviews pass |
 | Integers | 315 / 316 | not optimized | 4 | Preserved accepted pair-sum U parents;217/218 rows,5632/5626 terms,height32053,row height96 |
 | Integers | 315 / 316 | not optimized | 4 | Preserved neighbor-shear parents;217/218 rows,5787/5781 terms,height93109,row height160 |
@@ -3270,9 +3271,11 @@ The fresh [literal direct-C222 research](research/direct-c222-one-page-template/
 prints every constructor, eighteen power requests and their full polynomial
 certificate. Its proposed554-natural-variable/332-residual equation removes
 the machine seed and controller assumptions, trading variables and degree
-for a potentially shorter specification. Independent ordinary review and
-physical one-page fit remain open. Lean stays paused; substantial checked
-improvements update the maintained PDF and TeX together.
+for a potentially shorter specification. The [independent ordinary review](reviews/direct-c222-indexed-template-independent.md)
+passes within its explicit inherited Pell/C222 calibration and establishes
+exact degree2097684. Complete circuit size and physical one-page fit remain
+unmeasured; no printed-size win is claimed. Lean stays paused; substantial
+checked improvements update the maintained PDF and TeX together.
 
 The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
 and [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)
