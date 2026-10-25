@@ -2297,3 +2297,24 @@ complete graphs, free-port cuts, full leading forms and actual counts need
 their own reviewed finite packet. The bV branch needs a separate stronger
 argument; it is not licensed by this V-squared theorem. The maintained page
 remains85/328 and Lean remains paused.
+
+
+## The lower-degree bV branches also permit unshifted T
+
+The separate [complete bV ordinary proof](research/ten-positive-unshift-t-bv/PROPOSAL.md)
+passes [root](reviews/ten-positive-unshift-t-bv-ordinary-root.md) and
+[independent ordinary review](reviews/ten-positive-unshift-t-bv-ordinary-peer.md).
+Integral carrier recovery supplies an early whole-product divisibility.
+At hypothetical main index3, the exact eta gap and a prime-valuation bound
+would make H divide a strictly positive entire product smaller than H.
+This excludes that index without assuming q divides Y, parity, positive
+transport or decoded native semantics. Both signs of the third auxiliary
+branch are then excluded, yielding the required bV transport bound.
+
+The same private addition can therefore be removed in both lower-degree
+charts. Manual predictions are84/328 and81/560, with complete positive maps
+and leading forms recorded. These join the V-squared83/436 and80/750
+predictions in a new held finite implementation. No changed circuit has
+yet been executed or accepted. A one-operation improvement alone does not
+trigger a maintained-page replacement; the verified85/328 PDF/TeX remains
+current while larger reductions are sought. Lean stays paused.
