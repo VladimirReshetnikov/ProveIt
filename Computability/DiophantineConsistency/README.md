@@ -19,40 +19,43 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **entire complemented three-anchor
-radix47 equation in fifteen positive unknowns, exact degree157, with a
-66-operation integer-leaf evaluator**. All four fixed constants, the
-436-character numeral, alphabet, decoder and943 tiles fit on one Letter
-page at the retained9-point body and7.7-point seed/footer sizes.
+[equation.tex](equation.tex) print the **complete two-anchor7691 equation
+in fifteen positive unknowns, exact degree157, with66 integer-leaf binary
+operations**. All four fixed constants, the436-character numeral, alphabet,
+closed decoder and943 tiles fit on one Letter page at the retained9-point
+body and7.7-point seed/footer sizes.
 
-The [complete new candidate](candidates/one-page-complemented47-independent/README.md)
-reduces raw coefficient storage from242484 to**207214 bytes**, saving35270
-(14.5%). Complete TeX falls5195 to5145 bytes; nonwhite PDF text extracted
-with `pdftotext -layout` falls2764 to2734 characters. PDF bytes fall160082
-to159762. These are distinct measures; degree, variables and integer-leaf
-operation count are unchanged. The entire coherent tuple changes, so its
-specialized polynomial differs from the preserved radix55 polynomial.
+The [complete candidate](candidates/one-page-two-anchor7691/README.md)
+reduces raw coefficient storage from207214 to**180987 bytes**, saving26227
+(12.7%) from the preceding three-anchor47 tuple and61497 (25.4%) from
+radix55. Complete TeX falls5145 to5083 bytes; nonwhite PDF text extracted
+with `pdftotext -layout` falls2734 to2707 characters. PDF bytes fall159762
+to159652. Degree, variables and integer-leaf operation count are unchanged.
+The entire coherent tuple changes, defining a different specialized
+polynomial while retaining the exact free-port P66 template.
 
-The [whole ordinary proof](research/compact66-complemented-three-anchor-radix47/README.md)
-uses positive complemented colors to remove four occupation markers, with
-explicit29-to11 cyclic carries and protected local tests. Its formerly open
-finite controller condition is now [discharged independently](research/complemented47-controller-independent/README.md):
-lambda1012691, bracket residues39/6181/1009404 and valuation-one lifting.
-The [root](reviews/complemented47-continuation-root.md) and
-[independent](reviews/compact66-complemented-three-anchor47-continuation-peer.md)
-mathematical audits preserve both complete positive witness directions and
-the actual-rank construction. Normal/optimized finite and whole-port checks,
-complete actual-source comparison and two visual inspections pass; see the
-[finite/page review](reviews/complemented47-independent-finite-page-peer.md).
-[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the new page and records
-the earlier current metadata verbatim in the candidate directory.
+The [whole ordinary proof](research/two-anchor-independent/PROOF.md)
+replaces one anchor by a calibrated Start-label test, uses two differently
+weighted flags, and proves all-phase decoding with global carry bound29.
+Moving every padding test into an interior zero band and bounding the
+nonzero final digit shorten the cell from8807 to7691 fields. The
+[finite certificate](research/two-anchor-independent/certificate.json)
+discharges the new controller condition at lambda2122441, with H residues
+18/6993/1324284. Complete [root](reviews/two-anchor7691-root.md) and
+[independent](reviews/two-anchor7691-independent-peer.md) mathematical
+reviews pass, including every safe dummy subset, actual rank, and both
+positive P66 witness directions. Whole printed-port reconstruction and
+normal/optimized checks pass; the [page review](reviews/two-anchor7691-page-peer.md)
+records the second actual visual inspection. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
+binds the new page and preserves the preceding metadata verbatim.
 
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
 proof, consistency decision or global minimum is claimed. Lean remains
-paused. The [radix55 page](candidates/one-page-compact66-radix55/equation.pdf),
-its complete evidence and all historical conditional/failure records remain
-preserved. The goal continues with smaller formulas and encodings.
+paused. The [three-anchor47 page](candidates/one-page-complemented47-independent/equation.pdf),
+[radix55 page](candidates/one-page-compact66-radix55/equation.pdf), complete
+evidence and all historical conditional/failure records remain preserved.
+The goal continues with shorter layouts and simpler arithmetic circuits.
 
 The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
 [grouped66 page](candidates/one-page-grouped66/equation.pdf) and

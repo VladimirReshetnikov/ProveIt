@@ -13,19 +13,34 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained page now uses the fully reviewed complemented three-anchor47
-tuple. Its four raw integers total207214 bytes versus242484 for radix55,
-while complete TeX shrinks50 bytes and extracted nonwhite PDF text30
-characters at unchanged fonts. The15-positive/66-operation/degree157
-integer-leaf profile is unchanged. The new finite controller conditions
-have been discharged; see the [complete candidate](candidates/one-page-complemented47-independent/README.md).
+The maintained page now uses the fully reviewed **two-anchor7691** tuple.
+Its four raw integers total180987 bytes versus207214 for three-anchor47
+and242484 for radix55. Complete TeX shrinks62 bytes and extracted nonwhite
+PDF text27 characters from the immediate parent, at unchanged fonts.
+The15-positive/66-operation/degree157 integer-leaf profile is unchanged.
+The new finite controller condition Pc2 is discharged; see the
+[complete candidate](candidates/one-page-two-anchor7691/README.md).
 
-The [rational-rank factorization](research/rational-rank-factorization65/README.md)
-gives65 operations for the *same* polynomial when fixed rational leaves
-are allowed. Its universal identity applies to each coherent tuple
-separately. The saved65 graph is bound to preserved radix55; this is a
-separate operation convention, not an integer-leaf65 record or a claim
-that the47 and55 polynomials are identical.
+The mathematical savings come from using a forced Start-label bit as an
+alignment test, decoding two weighted flags, relocating every padding bit
+into an interior zero band, and replacing a zero-tail requirement with a
+small final-digit bound. The complete global carry29, native inverse,
+canonical subset/rank and P66 witness proofs pass separate review.
+
+The [single-rational rank evaluator](research/single-rational-rank65/README.md)
+gives65 operations for the same bound three-anchor47 polynomial while
+using only one rational leaf and one nonintegral intermediate. The earlier
+[two-rational evaluator](research/rational-rank-factorization65/README.md)
+remains bound to preserved radix55. Their identities apply uniformly to
+each coherent tuple, but the saved graphs and coefficient receipts have
+those specific bindings. Neither is an integer-leaf65 record. The specific
+four-gate tail requiring MC=MF_native is ruled out by odd-d mask parity;
+this is no general lower bound on64-operation evaluators.
+
+Next layout targets move the remaining flag closer to the copy groups,
+or replace the lower flag by a selector-count copy. Those are research
+leads requiring fresh whole support, carry, padding and controller checks.
+They do not replace the reviewed7691 tuple before complete proofs pass.
 
 The requested neighboring research is relevant at two different interfaces.
 [Hilbert Tenth](../HilbertTenthProblem/README.md) supplies the half-binomial
@@ -36,8 +51,8 @@ K215 machine already encoded by the430 actions. Further seed savings need
 a smaller complete calibrated machine or an improved encoding of that exact
 machine, including initialization. State count alone is insufficient.
 
-Continue with rational-factorization specialization, integer-only rank and
-transport sharing, and smaller finite label/seed recipes. Preserve exact
+Continue with shorter anchor layouts, integer-only rank and transport
+sharing, and smaller finite label/seed recipes. Preserve exact
 zero-set maps, full coefficient recipes and domain/metric distinctions.
 
 ## Current comparison points

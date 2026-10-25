@@ -24,28 +24,33 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 [latest review](PROPOSAL_REVIEW_LATEST.md). New complete positive-domain
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
-The current [equation.pdf](equation.pdf) and [TeX](equation.tex) now print
-the complete complemented three-anchor radix47 equation: fifteen positive
-unknowns, exact degree157,66 integer-leaf operations. The new four constants
-total**207214 raw bytes**,35270 fewer than radix55 (14.5%). Complete TeX
-is5145 bytes, extracted nonwhite `pdftotext -layout` text2734 characters,
-and PDF159762 bytes; the previous values were5195,2764 and160082.
-Fonts remain9pt/7.7pt on one Letter page.
+The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
+the complete two-anchor7691 equation: fifteen positive unknowns, exact
+degree157,66 integer-leaf operations. The new four constants total
+**180987 raw bytes**,26227 fewer than the preceding207214 (12.7%).
+Complete TeX is5083 bytes, extracted nonwhite `pdftotext -layout` text2707
+characters, and PDF159652 bytes; the previous values were5145,2734 and
+159762. Fonts remain9pt/7.7pt on one Letter page.
 
-The complete local proof has separate root and peer mathematical audits.
-A newly authored stdlib verifier discharges Pc3 at lambda1012691, with new
-H residues39/6181/1009404 and lift quotient282338. Its normal and optimized
-runs reproduce the entire deterministic certificate. A separate materializer
-checks the actual complete TeX, all four integer bytes, coherent evaluator
-bindings and whole66-gate liveness; both modes pass. Two actual visual
-inspections pass. See the [complete candidate](candidates/one-page-complemented47-independent/README.md)
-and [independent finite/page review](reviews/complemented47-independent-finite-page-peer.md).
+The complete [new ordinary proof](research/two-anchor-independent/PROOF.md)
+has separate root and independent mathematical audits. A calibrated Start
+bit replaces the third anchor; weighted flags, global carry29, every copy
+and clause, interior padding, nonzero-top-field slack, actual rank and both
+P66 maps are checked together. The new finite Pc2 certificate uses
+lambda2122441, H residues18/6993/1324284 and lift quotient1096353. Normal
+and optimized checks reproduce the certificate. The complete printed
+recipe reconstructs all four integers and retains the literal66-gate
+all-live evaluator. Two actual visual inspections pass. See the
+[complete candidate](candidates/one-page-two-anchor7691/README.md),
+[mathematical peer review](reviews/two-anchor7691-independent-peer.md) and
+[page review](reviews/two-anchor7691-page-peer.md).
 
-The old55 page and CURRENT record are preserved, together with every frozen
-conditional proposal and earlier observation. The new polynomial specializes
-the same uniform66/157 front at a different coherent tuple. The ordinary
-native/Pell/refutation chain is retained explicitly; there is no new formal
-kernel replay or consistency decision. Research remains active.
+The old47 and55 pages and CURRENT records are preserved. This is a new
+specialization of the uniform66/157 front, with explicit ordinary
+native/Pell/refutation contracts and no new formal-kernel replay or
+consistency decision. Research remains active. Separate rational-leaf65
+checkpoints preserve the same polynomial within their own bound tuples;
+that operation convention does not change the integer-leaf66 label.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 still saves nineteen operations and171 degree while adding five unknowns.
