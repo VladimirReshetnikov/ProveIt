@@ -1,6 +1,6 @@
 # Independent ordinary review: balanced CRT gate shear
 
-Verdict: **PASS** for the exact ordinary proposal and its stated finite coefficient claims. No correction is required. This approval supplies neither a generated polynomial nor an execution release, transformed whole height/support measurement, new numerical endpoint, or calibration acceptance.
+Verdict: **PASS** for the exact ordinary proposal and its stated finite coefficient claims. No author-packet correction is required. This approval supplies neither a generated polynomial nor an execution release, transformed whole height/support measurement, new numerical endpoint, or calibration acceptance.
 
 The reviewed packet is `research/balanced-crt-gate-shear`, MANIFEST SHA-256 `a016d1e1f8fe2b33437a3502a9371257b82aef1ec4d4cc17367f509a93ae62a2` (509 bytes). Its exact two payloads total 26510 bytes:
 
@@ -8,6 +8,8 @@ The reviewed packet is `research/balanced-crt-gate-shear`, MANIFEST SHA-256 `a01
 | --- | ---: | --- |
 | README.md | 11765 | `84ecbcb44499a4965bb36bcc7a2e37014c9808f2c087f4fd2f37f106f61170f4` |
 | SOURCE_PINS.json | 14745 | `0aae4e089aa9174f6bd258f56f511f6079a86f6f03b9a4f14a72e1d53e54b28c` |
+
+Report history: the original peer MD (`548949dbe003ac6dae9b8beef5ac4d4f752fd4d5e7f5445473aab4fc9ecdbcdc`), companion JSON (`a6c387f8c060bac31db2f61316c5b00e89722ea0968337271bd50fc68f8336cf`), and ROOT's review-prose finding are preserved in commit `8f654b5ba7`. This authorized report-only repair corrects the row 15 linear-term trace below. I freshly reread the complete unchanged source note, all thirteen full literal rows in both profiles, both finite coefficient tables and the other explanatory traces, and reauthenticated the complete declared closure. No other explanatory trace mismatch was found; the source seal and ordinary PASS are unchanged.
 
 ## Review scope and authentication
 
@@ -38,7 +40,7 @@ The complete actual occurrence lists are:
 
 The ten common rows agree term for term between profiles. The remaining outputs are exactly plain `(86,89,105)` and weighted `(87,90,106)` in the note's order. I checked the entire literal rows, including constants and linear terms, against all thirteen displayed factorizations, rather than checking their leading parts alone.
 
-Useful checks on the lower terms include the following. Row 5 changes from `x21-(a+b-1)^2` to `u-(a+b)^2-1`. Row 15's old linear part becomes `-2a+8c-2u+8z27+4z30`, which equals `2L15-M`, with its constant `+1` retained. Row 25 becomes `z41-16u^2-14u-2a-4b-6`. Row 50's remaining linear part becomes `4a+8b-c-4u`, exactly `-2L50+c`. Row 52's remaining linear part becomes `4a+8b-4u-2z67`, exactly `-L52+2z65`. The complete bilinear and addition rows give precisely the note's three final formulas; the addition row retains every term in the full displayed `D`.
+Useful checks on the lower terms include the following. Row 5 changes from `x21-(a+b-1)^2` to `u-(a+b)^2-1`. Row 15's old linear part `6a+8b+8c+2x21+8z27+4z30` becomes `2a+4b+8c+2u+8z27+4z30`, which equals `2L15-M`, with its constant `+1` retained. Row 25 becomes `z41-16u^2-14u-2a-4b-6`. Row 50's remaining linear part becomes `4a+8b-c-4u`, exactly `-2L50+c`. Row 52's remaining linear part becomes `4a+8b-4u-2z67`, exactly `-L52+2z65`. The complete bilinear and addition rows give precisely the note's three final formulas; the addition row retains every term in the full displayed `D`.
 
 All other rows are unchanged because the exhaustive literal occurrence lists contain no further use of coordinate 21. No hidden gate definition or presumed equality of coordinates is used in these substitutions.
 

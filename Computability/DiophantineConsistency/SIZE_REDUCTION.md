@@ -2736,3 +2736,27 @@ combined verification path accepts its unchanged13 data artifacts under
 the retained ordinary source/native contract. No fresh native or Lean
 replay occurs. Main compact66 PDF/TeX stay unchanged because this quartic
 tradeoff does not simplify their complete printed recipe.
+
+## A balanced gate shear has an exact inverse and selected coefficient gains
+
+The [ordinary proposal](research/balanced-crt-gate-shear/README.md) passes
+[ROOT](reviews/balanced-crt-gate-shear-ordinary-root.md) and final
+[independent review](reviews/balanced-crt-gate-shear-ordinary-peer.md).
+The determinant-one change x21=z21-2z10-2z11 preserves both integer
+zero sets, the quadratic row bound, exact degree4 and all live coordinates.
+All13 changed residuals are specified for each current centered profile,
+and the complete two-parameter leading-form difference is proved.
+
+Selected coefficients fall128446 to28798 and126901 to93109; one specified
+leading monomial vanishes. The unchanged coefficients at ax22^3 and ax37^3
+prove a98336 height lower bound throughout this gate-shear family. The
+more aggressive3,4 choice creates a164828 coefficient, so fails to improve
+height. No full transformed height, support count or new endpoint is
+claimed. A separate CODE ONLY/HOLD implementation is being prepared to
+check the whole polynomial; no new helper or application is released.
+
+One wrong row15 linear-term sentence in the first peer review was preserved
+with [ROOT's finding](reviews/balanced-crt-gate-shear-peer-report-finding.md)
+in8f654b5ba7 before bounded report-only correction. The source formula
+was correct and unchanged; the final complete ordinary recheck passes.
+Main compact66 PDF/TeX and paused Lean work remain unchanged.
