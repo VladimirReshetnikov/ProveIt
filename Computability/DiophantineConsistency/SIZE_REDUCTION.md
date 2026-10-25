@@ -2478,3 +2478,18 @@ constant suffix unchanged. The maintained equation.pdf and equation.tex
 are byte-identical copies of this sealed candidate; CURRENT_EQUATION.json
 binds them. The complete ten-positive85/328 predecessor remains available.
 Ordinary native/Pell/refutation composition is retained; Lean stays paused.
+
+## A shorter possible target numeral, with whole-page cost still open
+
+The [mixed-radix proposal](research/mixed-radix-target-seed/PROPOSAL.md)
+passes [root](reviews/mixed-radix-target-seed-root.md) and
+[independent ordinary review](reviews/mixed-radix-target-seed-peer.md).
+Encoding only already-discovered targets plus a halt escape reduces the
+fixed target allocation from1675 to1454 bits. Exact integer bounds prove
+an eventual399-character base62 numeral,37 characters below436, while
+preserving all430 actions,943 tiles and every coefficient formula.
+
+No new literal or packed target stream was computed. Extra prefix-product
+and escape notation must be charged before claiming a complete printed
+recipe gain; that comparison remains open. The maintained66/157 page
+keeps its complete accepted436-character recipe.
