@@ -1,0 +1,914 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.82in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black,
+ pdftitle={A fixed-base modular Diophantine equation for ZFC consistency},
+ pdfauthor={Research prepared with AI assistance for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Diophantine consistency: fixed-base and modular certificates}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt plus 1pt}
+\setcounter{tocdepth}{1}
+\setlist{nosep,leftmargin=*}
+\emergencystretch=3em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\G}{\mathcal G}\newcommand{\LL}{\mathcal L}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\input{metrics.tex}
+\begin{document}
+\begin{titlepage}
+\vspace*{0.8in}
+{\color{blue!45!black}\large RESEARCH CONTRIBUTION FOR PROVEIT}\par
+\vspace{0.22in}
+{\huge\bfseries A fixed-base, modular Diophantine equation for ZFC consistency\par}
+\vspace{0.25in}
+{\Large Reusing a binomial modulus as the proof-label base\par}
+\vspace{0.35in}
+{\large Prepared with AI assistance for Vladimir Reshetnikov\par}
+{\large 25 October 2026\par}
+\vspace{0.35in}
+\begin{center}
+\fbox{\begin{minipage}{0.86\textwidth}
+\textbf{Main delivered equation.} An explicitly specified polynomial in
+\textbf{\MainVars\ unrestricted integer variables}, of exact degree four,
+defined by \MainRows\ quadratic residuals. Its collected expansion has
+\MainTerms\ nonzero monomials and coefficient height \MainHeight.
+\[
+ P(\boldsymbol z)=\sum_{i=0}^{\MainLastRow}R_i(\boldsymbol z)^2=0.
+\]
+The ordinary proof, composed with the retained numerical-calculus
+calibration, establishes
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\boldsymbol z\in\Z^{\MainVars}\ P(\boldsymbol z)=0\bigr)
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+Every residual is printed in Appendix~\ref{app:residuals} and supplied
+as exact machine-readable data. No unspecified coefficient or variable
+exponent remains in the delivered polynomial.
+\end{minipage}}
+\end{center}
+\vfill
+\textbf{Evidence boundary.} This is an ordinary mathematical proof with
+reproducible finite algebraic checks. It is not a new end-to-end Lean/Rocq
+formalization, a proof of consistency, or a claim of global minimality.
+\end{titlepage}
+
+\begin{abstract}
+We simplify the direct proof-certificate route to a Diophantine equation
+for syntactic consistency of ZFC. The central change is to give one
+binomial coefficient two jobs. With a proof horizon $t$, set
+$R=16^t$ and $B=\binom{R+t}{t}$. The number $B$ supplies both the
+prime-power selectors for proof rows and the evaluation point in the
+label weights $1+jB$. An elementary bound for $\lcm(1,\ldots,t)$
+proves the required row coverage, while $B>(t+1)^t$ proves exact
+label-multiplicity recovery. No certificate of factorial authenticity,
+and no separate variable-base growth power, is needed.
+
+We then compose this arithmetic front with the predecessor's modular
+numerator method in the current signed Pell architecture. The new
+compatibility argument allows all nine CRT representatives to remain
+signed, recovers the necessary positive quantities from existing power
+requests, and moves eleven numerator outputs out of the magnitude frame.
+A new cofinal two-square completion of the Pell center restores the
+common modular-root congruence. Only six exponential requests remain exact; successor
+denominators use multiplication. The resulting finite quadratic system
+is contracted with explicit integral restoration maps and converted to
+the literal quartic displayed in this report. The contribution is a
+structural improvement within the direct, small-coefficient family;
+few-variable constructions with different coefficient and degree costs
+remain distinct alternatives.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The exact result and its scope}
+
+We use $\N=\{0,1,2,\ldots\}$ and quantify every coordinate of the
+principal equation over all of $\Z$. The file
+\nolinkurl{equations/balanced/equation.json} declares the ordered variables
+and every quadratic residual. A sparse term $[c,[i_1,\ldots,i_d]]$ denotes
+$c z_{i_1}\cdots z_{i_d}$; an empty index list denotes the constant $c$.
+The finite sum of residual squares is the definition of $P$. The separate
+\nolinkurl{expanded_polynomial.json} gives every collected coefficient.
+
+\begin{theorem}[Consistency equivalence]\label{thm:main}
+For the supplied fixed polynomial $P\in\Z[z_0,\ldots,z_{\MainLastVar}]$,
+ZFC proves that an integer zero exists if and only if a finite syntactic
+ZFC refutation exists. Consequently ZFC proves
+\[
+ \neg\exists\boldsymbol z\in\Z^{\MainVars}\ P(\boldsymbol z)=0
+ \quad\longleftrightarrow\quad\Con(\mathrm{ZFC}).
+\]
+The exact degree of $P$ is four.
+\end{theorem}
+
+The companion in \nolinkurl{equations/compact/equation.json} uses
+\CompactVars\ integer variables and \CompactRows\ quadratic residuals.
+It has \CompactTerms\ collected monomials and the same coefficient
+height \MainHeight. It is obtained by one additional integral affine
+elimination, so it has an integer zero exactly when $P$ does.
+Appendix~\ref{app:compact} prints its full residual list as well.
+The principal version is preferred when the shorter expansion matters;
+the companion is preferred when one fewer coordinate matters more.
+
+The proof does not assume either consistency or inconsistency. In
+particular, proving the equivalence does not prove the absence of zeros.
+The syntactic consistency predicate is the one calibrated by the
+repository's fixed numerical calculus $C_{222}$, with truth label $0$
+and falsity label $1$. The retained logical interfaces are
+\nolinkurl{KEndpoint.c222_iff_zf_refutation} and
+\nolinkurl{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+Their source and provenance accompany the package; their complete
+transitive proof-assistant development was not rebuilt here.
+
+The new arithmetic arguments below are finite number theory and
+primitive recursive coding arguments formalizable in ZFC. Their
+composition with these inherited calibrations proves
+Theorem~\ref{thm:main}. A fresh machine-checked object-language ZFC
+derivation is a separate, unfinished task. Exact coefficient checks
+verify the finite artifacts and their algebraic transformations, not
+the unbounded semantic theorem by themselves.
+
+\subsection{What ``simpler'' means in this report}
+
+There is no single total ordering of variable count, degree, coefficient
+height, monomial count, arithmetic circuit cost, and proof length. The
+repository already contains equations with far fewer unknowns, including
+quartics with large fixed coefficient payloads. This report optimizes the
+direct proof-calculus family, which retains modest literal coefficients
+and avoids both a $K215$ simulation and an instantiation of Jones's
+universal equation.
+
+The comparison snapshot is the immutable ProveIt commit
+\begin{center}\small
+\texttt{b7e35224c04fe1031c0a53f80a395e9b32205022}.
+\end{center}
+We inspected its active research documents, delivered packages through
+147, and all eight incoming archives present at that commit. The
+top-level comparison tables lagged behind the newest incoming material;
+the comparison below therefore uses the actual incoming endpoints.
+
+\input{comparison.tex}
+
+The modular numerator device itself is inherited: the retained
+\nolinkurl{INHERITED_MODULAR_FACTORIAL_PROOF.md} already uses six exact
+powers, eleven modular numerators, and a common Pell-root congruence.
+What is changed here is its compatibility with the fixed-base/binomial
+weight front and the later signed, pooled certificate architecture.
+The dual use of $B$, the new sign bootstrap, the two-square cofinal-center
+theorem, and their complete composition were not found in the inspected
+snapshot. No literature-wide priority claim is made.
+
+\section{The arithmetic design before polynomial compilation}
+
+The following notation explains certified register values. Powers and
+binomial coefficients in this section are not extra operations in the
+final quartic. They are replaced by the polynomial certificates discussed
+below and printed literally in the appendix.
+
+Choose a cofinal proof horizon $t=16+h^2$. The essential front is
+\begin{align}
+ R&=16^t,& B&=2b+1,& B&=\binom{R+t}{t},\label{eq:front1}\\
+ y&=RB(2v+1)^2,&
+ H&=2+2(R+t)+C^2+\sum_{j=1}^{8}A_j^2,\label{eq:front2}\\
+ N&=B^x,& q&=(BH)^x=6z+3.&\label{eq:front3}
+\end{align}
+Here $C,A_1,\ldots,A_8$ are the actual CRT representatives. Some raw
+stored coordinates equal these values minus one; every literal source
+edit preserves that distinction. The nine representatives are unrestricted
+integers. Their small residues recovered later are nonnegative.
+
+The two beta endpoints and the row-index congruence are
+\begin{align}
+ x&=B+1+(y+1)u_0,\label{eq:initial}\\
+ x&=1+[1+(t+1)y]u_t,\label{eq:final}\\
+ B h_B&=C+R+1.\label{eq:index}
+\end{align}
+Every Horn weight is now $1+jB$. The former independent growth base
+$F=[2(t+1)]^t$ and the radius $F^2$ are removed from the semantics.
+The same $B$ is used throughout; changing only some occurrences would
+not give the claimed construction.
+
+The six exact requests are
+\begin{equation}\label{eq:six}
+ R=16^t,\quad N=B^x,\quad q=(BH)^x,\quad
+ D_t=q^t,\quad D_y=q^{y+1},\quad M=q^x.
+\end{equation}
+Set $D_{t+1}=qD_t$ by multiplication. The eleven binomial numerator
+indices are $R+t$, $C$, the eight representatives $A_j$, and the
+derived label $J(\boldsymbol A)$. Their relevant lower indices are
+$t,t+1,y+1,x$. The exact-binomial digit for $B$ uses $t$;
+the index range uses $t$; four syntax ranges and the derived-label
+range use $t+1$; two accumulator ranges use $y+1$; two quotient
+ranges use $x$.
+
+\section{A fixed-base radius and a binomial with two roles}
+
+\subsection{The radius supplies every row selector}
+
+Let $\Lambda_t=\lcm(1,\ldots,t)$, with $t\ge1$.
+
+\begin{lemma}\label{lem:lcm}
+For every $n\ge1$, $\Lambda_n\le4^{n-1}$. In particular,
+$16^t\ge\Lambda_t^2$.
+\end{lemma}
+\begin{proof}
+Let $m=\lceil n/2\rceil$. The quotient $\Lambda_n/\Lambda_m$
+divides $\binom{n}{\lfloor n/2\rfloor}$. To see this, its valuation
+at any prime is at most one: there is at most one new prime power
+between $m+1$ and $n$. If such a prime power occurs, its contribution
+to the factorial valuation of the central binomial coefficient is one,
+and all other contributions are nonnegative.
+
+For $n=2r$, induction and the binomial row sum give
+\[
+ \Lambda_{2r}\le\Lambda_r\binom{2r}{r}
+ \le4^{r-1}2^{2r}=4^{2r-1}.
+\]
+For $n=2r+1$, the two equal central coefficients together are at most
+the row sum, so $\binom{2r+1}{r}\le2^{2r}$. Hence
+\[
+ \Lambda_{2r+1}\le\Lambda_{r+1}\binom{2r+1}{r}
+ \le4^r4^r=4^{2r}.
+\]
+The initial case $n=1$ is immediate. The stated radius consequence
+is weaker than the resulting strict bound and follows at once.
+\end{proof}
+
+The next selector theorem is inherited from the incoming factorial-free
+binomial CRT report, and is restated with its proof because it is the
+key interface used by the new fixed radius. The classical lcm/binomial
+divisibility used in its proof is also related to Farhi's identity
+\cite{farhi}.
+
+\begin{lemma}[Coverage and compatibility of selectors]\label{lem:selectors}
+Let $t\ge1$, $R\ge\Lambda_t^2$, and $B=\binom{R+t}{t}$.
+For every $i\in\{1,\ldots,t\}$ there is a full prime power
+$p^e\Vert B$ such that $p^e\mid R+i$ and $p^e>t$.
+Conversely, every full prime power $p^e\Vert B$ divides at least one
+of $R+1,\ldots,R+t$.
+\end{lemma}
+\begin{proof}
+For the first assertion, $R+i>\Lambda_t^2$, so some prime $p$ has
+$v=v_p(R+i)>2a$, where $a=\lfloor\log_p t\rfloor$. Since $p^v>t$,
+the valuation of $R+j$ for $j\ne i$ is exactly $v_p(j-i)$. Therefore
+\[
+ e=v_p(B)=v-\delta,\qquad
+ \delta=v_p\!\left(t\binom{t-1}{i-1}\right).
+\]
+For each $p^r$, the corresponding factorial-valuation summand for
+$\delta$ is zero or one, and vanishes when $p^r>t$.
+Thus $0\le\delta\le a$, so $a<e\le v$ as required.
+
+For the converse, put $v=\max_i v_p(R+i)$. The valuation of $B$ is
+the sum over $r\ge1$ of
+\[
+ \left\lfloor\frac{R+t}{p^r}\right\rfloor
+ -\left\lfloor\frac R{p^r}\right\rfloor
+ -\left\lfloor\frac t{p^r}\right\rfloor.
+\]
+Each term is zero or one and all terms above $r=v$ vanish. Hence
+$e\le v$, and a factor attaining the maximum is compatible.
+\end{proof}
+
+The two directions have different uses. Coverage proves soundness for
+each row. Compatibility supplies assignments at every prime of the
+global modulus in the CRT completeness construction, including primes
+not chosen as a particular row's selector.
+
+\subsection{The same binomial separates label multiplicities}
+
+\begin{lemma}\label{lem:binomial-growth}
+For $t\ge1$ and $R=16^t$,
+\[
+ B=\binom{R+t}{t}>(t+1)^t.
+\]
+Moreover $B$ is odd.
+\end{lemma}
+\begin{proof}
+The inequality $16^t>t(t+1)$ follows by induction: its left side
+grows by a factor of 16 and the right side by at most 3. Every factor
+$(R+i)/i$, $1\le i\le t$, is greater than $t+1$, proving the first
+claim by the product formula for $B$.
+
+For oddness, $v_2(R)=4t>\lfloor\log_2t\rfloor$. Consequently
+$v_2(R+i)=v_2(i)$ for every $1\le i\le t$. The valuations in the
+numerator product and in $t!$ cancel exactly.
+\end{proof}
+
+Here is the large-evaluation argument inherited from the factorial-free
+predecessor, now applied to $B$. Suppose the decoded $t$ proof rows
+have conclusion labels $c_i$ and premise labels $p_i,q_i$ in $[0,t]$,
+and the accumulator updates imply
+\begin{equation}\label{eq:balance}
+ \prod_{i<t}(1+c_iB)
+ =(1+B)\prod_{i<t}(1+p_iB)(1+q_iB).
+\end{equation}
+Discard factors with label zero. If the two sides have different numbers
+of remaining factors, the smaller factor count is at most $t$, while
+$B>(t+1)^t$ makes a product with one more factor strictly larger than
+any product with the smaller count. Thus the counts agree and are at
+most $t$.
+
+Replace $B$ by an indeterminate $T$. Each resulting product has
+nonnegative coefficients and coefficient sum at most $(t+1)^t<B$.
+If their difference were nonzero, let $a_rT^r$ be its lowest nonzero
+term. The equality at $T=B$ would imply $B\mid a_r$, although
+$0<\abs{a_r}<B$. Thus the products agree in $\Z[T]$. Unique
+factorization, or their distinct rational roots $-1/j$, gives the
+exact multiplicity balance for each positive label.
+
+To finish the flow argument, let $D$ be the set of labels derivable by
+the valid Horn rules. It contains truth. A rule whose conclusion is
+outside $D$ has at least one premise outside $D$. Summing conclusion
+counts minus premise counts over the complement of $D$ therefore gives
+a nonpositive number. If falsity were outside $D$, the exact balance
+\eqref{eq:balance} would give one instead. Hence falsity is derivable.
+No acyclicity assumption about the chosen multiset of rules is needed.
+
+\section{Pell values, the free center, and modular numerators}
+
+For an integer $A$, define the Pell polynomials by
+\[
+ X_0=1,\quad Y_0=0,\qquad
+ X_{k+1}=AX_k+(A^2-1)Y_k,\quad Y_{k+1}=X_k+AY_k,
+\]
+and extend them to negative indices by $X_{-k}=X_k$ and $Y_{-k}=-Y_k$.
+The retained square frame, semantic anchor, and pooled error certificate
+recover exactly these pairs at every requested signed index. The
+complete fourteen-pair orientation pool is retained.
+
+For a genuine exact request with base $n$, the certified congruence is
+\[
+ X_k(A)+(n-A)Y_k(A)\equiv m
+ \pmod{2An-n^2-1}.
+\]
+The magnitude frame bounds every exact base, exponent, and output atom
+in absolute value by $W$. Its large-center bound makes the modulus
+larger than the possible error, giving $m=n^k$ for $\abs n\ge2$ and
+forcing $k\ge0$. If $k<0$, the same recurrence would force the
+impossible integer equality $m n^{-k}=1$. These signed recovery
+arguments are inherited from the retained source proofs.
+
+\subsection{Why the center must be freed}
+
+The current signed frame restricts its abscissa to a particular Pell
+sequence. This alone does not justify choosing it in an arbitrary
+congruence class. Retain the lower frame with abscissa $L$ and use
+\begin{equation}\label{eq:free-center}
+                         A=L^2+u^2+v^2.
+\end{equation}
+This gives $A\ge L^2$ at every integer solution. Completeness requires
+a special argument: an arbitrary prescribed nonnegative difference is
+not a sum of two squares. The frame itself is existentially chosen,
+and its finite residue behavior provides the missing freedom. The
+cofinal completion lemma below proves exactly what is needed. It saves
+one coordinate relative to the initially verified constructor
+$A=L^2+u^2+v^2+w(w+1)$.
+
+Only the lower frame uses $L$; the principal Pell pairs and the
+semantic anchor use $A$. The magnitude frame excludes the eleven
+modular numerator outputs, which now depend on $A$. It also removes
+redundant atoms with separately proved bounds. In particular, keeping
+$t$, $R+t$, and $q$ controls the fixed base 16, $R$, $t+1$, and $q+1$:
+$W\ge t^2+2\ge258$ and
+\[
+ R^2\le2\bigl((R+t)^2+t^2\bigr)\le2(W-2)<W^2.
+\]
+The successor output $D_{t+1}$ no longer needs an exact-power magnitude
+bound. Every retained exact request and modular index still has its
+required strict bound. These changes are part of the literal frame
+certificate, rather than a numerical estimate on sample inputs.
+
+\subsection{A single modular-root equation}
+
+Set $\Omega=NM$ and impose
+\begin{equation}\label{eq:common-root}
+ 2A(q+1)-(q+1)^2-1=\Omega w.
+\end{equation}
+For every signed integer index $n$, retain the polynomial numerator
+\begin{equation}\label{eq:mu}
+ \mu_n=X_n(A)+(q+1-A)Y_n(A).
+\end{equation}
+It need not equal the enormous integer $(q+1)^n$.
+
+\begin{lemma}[Signed modular powers]\label{lem:modular}
+Under \eqref{eq:common-root}, with $\Omega\ne0$,
+\[
+ \mu_n\equiv(q+1)^n\pmod\Omega\qquad(n\in\Z),
+\]
+where a negative exponent means the inverse power in the residue ring.
+\end{lemma}
+\begin{proof}
+Write $s=q+1$. Equation~\eqref{eq:common-root} says
+$s(2A-s)\equiv1\pmod\Omega$, so $s$ is a unit. The Pell
+recurrence and $(s-A)^2\equiv A^2-1$ show that the evaluated Pell
+unit at index $n$ is $s^n$. This proves positive indices by induction,
+and inverse powers give negative indices.
+\end{proof}
+
+In completeness, $B$ and $q$ are odd, and $N\mid q$; hence
+$\Omega$ is odd and every prime dividing $\Omega$ divides $q$.
+The root congruence specifies
+\[
+ A_0=\frac{(q+1)^2+1}{2(q+1)}
+    =1+\frac{q^2}{2(q+1)}\pmod\Omega.
+\]
+Its denominator is invertible. The following lemma constructs this
+residue class using precisely the two-square center.
+
+\begin{theorem}[Cofinal two-square center]\label{thm:two-square}
+Let $W\ge2$ and let $q,\Omega$ be positive odd integers such that
+every prime of $\Omega$ divides $q$. There exist a positive odd $k$
+and integers $u,v$ such that, with $L=X_{Wk}(W+1)$,
+\[
+ A=L^2+u^2+v^2\equiv A_0\pmod\Omega.
+\]
+The value $A$ can be made arbitrarily large, and $Y_{Wk}(W+1)/W$
+is an odd integer. Thus the old odd-quotient frame and the new common
+root remain simultaneously complete.
+\end{theorem}
+\begin{proof}
+If $\Omega=1$, choose $k=1$ and arbitrary sufficiently large $u$;
+the frame-parity argument below still applies. Assume $\Omega>1$.
+Put $D=W(W+2)$ and work in the finite quadratic ring
+\[
+ S_\Omega=(\Z/\Omega\Z)[s]/(s^2-D).
+\]
+The element $e=(W+1)+s$ is a norm-one unit. Write the finite order of
+$e^W$ as $2^r k$ with $k$ odd. Then $g=e^{Wk}$ has power-of-two
+order. Its coefficients are $L=X_{Wk}(W+1)$ and $Y=Y_{Wk}(W+1)$.
+
+Fix $p^a\Vert\Omega$. If $L\equiv\varepsilon\pmod p$ with
+$\varepsilon\in\{1,-1\}$, then the image of $g$ is exactly
+$\varepsilon$ in $S_p$. When $D\not\equiv0\pmod p$, this follows
+from $L^2-DY^2=1$. When $D\equiv0\pmod p$, the nilpotent part of
+$\varepsilon+Ys$ has $p$-power order, and is killed only trivially by
+a power of two because $p$ is odd. This proves the assertion also
+in the ramified case.
+
+The kernel of the unit reduction map $S_{p^a}^{\times}\to S_p^{\times}$
+is a finite $p$-group: its elements are $1+pz$. The element
+$\varepsilon g$ belongs to this kernel and has power-of-two order,
+so it is the identity. Consequently $L^2\equiv1\pmod{p^a}$.
+
+Since $A_0\equiv1\pmod p$, the difference $A_0-L^2$ is a unit
+unless $L\equiv\pm1\pmod p$. In the latter case it equals
+$q^2/(2(q+1))$ modulo $p^a$, and is either zero or has the even
+valuation $2v_p(q)$. Every residue of zero or even valuation modulo
+an odd prime power is a sum of two squares. For a unit, the two
+sets $\{a^2:a\in\mathbb F_p\}$ and
+$\{c-b^2:b\in\mathbb F_p\}$ intersect for any nonzero residue $c$,
+since each has $(p+1)/2$ elements. At least
+one resulting coordinate is nonzero, so its invertible derivative
+lifts the solution to every $p^a$. For valuation $2b$, multiply
+both coordinates of a unit representation by $p^b$.
+
+CRT, applied separately to the two square coordinates, therefore gives
+$u^2+v^2\equiv A_0-L^2\pmod\Omega$. Replacing $u$ by
+$u+j\Omega$ makes $A$ arbitrarily large.
+
+It remains to check the literal frame parity. The recurrence modulo $W$
+gives $W\mid Y_W(W+1)$. If $W$ is odd, the ordinate is odd.
+If $W$ is even, its base is odd, every abscissa is odd, and
+$Y_{2m}=2X_mY_m$ gives $v_2(Y_W)=v_2(W)$; odd-index ordinates are
+odd. Hence $Y_W(W+1)/W$ is odd in both cases. Finally,
+\[
+ Y_{Wk}(W+1)=Y_W(W+1)Y_k(X_W(W+1)),
+\]
+whose second factor is odd for odd $k$. Thus the quotient remains
+odd and supplies the old witness in
+$L^2-W^3(W+2)(2z+1)^2=1$.
+\end{proof}
+
+\begin{remark}[Why the frame choice matters]
+This theorem does not work by holding the least frame point fixed.
+For example, $W=4$, $q=3$, $\Omega=9$ give the least frame abscissa
+$L=4801$ and $A_0-L^2\equiv3\pmod9$, which is not a sum of two
+squares modulo 9. Choosing the odd multiplier from the finite unit
+order is essential. The proof does not add an order computation or
+an extra quantified object to the polynomial; it chooses an existing
+existential frame witness in the completeness direction.
+\end{remark}
+
+\section{Signed binomial digits from modular data}
+
+For $n\in\Z$ and $k\in\N$, use the integer-valued generalized
+binomial coefficient
+\[
+ \binom nk=\frac{n(n-1)\cdots(n-k+1)}{k!},\qquad \binom n0=1.
+\]
+For $n=-a<0$, this equals $(-1)^k\binom{a+k-1}{k}$.
+
+\begin{lemma}[Uniform coefficient bound]\label{lem:signed-bound}
+For every $n\in\Z$ and $k\ge0$,
+\[
+ \abs{\binom nk}\le\max(1,\abs n)^k.
+\]
+\end{lemma}
+\begin{proof}
+The ordinary nonnegative case is immediate. For $n=-a<0$,
+$\binom{a+k-1}{k}$ counts multisets of size $k$ from $a$ colors.
+Every multiset has a sorted word, and there are $a^k$ words. The
+case $k=0$ is included.
+\end{proof}
+
+\begin{lemma}[The range implication for signed upper indices]\label{lem:signed-range}
+If $p$ is prime, $e,k\ge1$, and $p^e\mid\binom nk$ for
+$n\in\Z$, then $n\bmod p^e<k$.
+\end{lemma}
+\begin{proof}
+If the falling factorial contains zero, then $0\le n<k$, and the
+claim is immediate. Otherwise its valuation minus $v_p(k!)$ is a
+sum of terms, each zero or one: a block of $k$ consecutive integers
+contains either $\lfloor k/p^r\rfloor$ or one more multiples of
+$p^r$. If the block contained no multiple of $p^e$, then $k<p^e$
+and every term at level $r\ge e$ would vanish. The valuation would
+be at most $e-1$, a contradiction. A multiple in the block gives
+$n\equiv j\pmod{p^e}$ with $0\le j<k$.
+\end{proof}
+
+The implication is one-sided. Its converse is not used. Completeness
+will use higher CRT precision to compensate for division by $k!$.
+
+\subsection{Finite truncation, including negative indices}
+
+The formal identity $(1+T)^n=\sum_{j\ge0}\binom njT^j$ holds
+in $\Z[[T]]$ for all signed $n$, using the formal inverse for $n<0$.
+It may equally be proved modulo $T^{k+1}$ by a finite recurrence,
+so no analytic convergence claim is involved. Suppose $q>0$, $N\mid q$,
+$1\le k\le x$, and $D=q^k$. Define
+\[
+ r_0=\sum_{j=0}^{k-1}\binom njq^j.
+\]
+The modulus $ND$ divides $\Omega=Nq^x$, and the omitted terms
+of degree at least $k+1$ vanish modulo $ND$. Lemma~\ref{lem:modular}
+therefore gives
+\begin{equation}\label{eq:truncation}
+ \mu_n\equiv r_0+D\binom nk\pmod{ND}.
+\end{equation}
+This remains true at the largest lower index $k=x$ because $N\mid q$.
+
+\subsection{The common centered norm}
+
+Write $\G(a,b,c)=a^2+b^2+c(c+1)$. This is nonnegative on
+$\Z^3$, and represents every nonnegative integer. Indeed, Legendre's
+three-square theorem represents $4g+1$ as three squares. Exactly one
+square is odd modulo four; write the coordinates as $2a,2b,2c+1$.
+Dividing the resulting equality by four gives
+$g=a^2+b^2+c(c+1)$. This is the inherited ternary gap constructor;
+it is distinct from the new two-square center theorem.
+
+For each of the eleven digits, let $D_i$ be its already certified
+denominator and put $D_i v_i=M$. Retain the normalized row
+\begin{equation}\label{eq:normalized}
+ v_i\mu_{n_i}=M Q_i+\rho_i.
+\end{equation}
+For the exact digit $Q_i=B+q h_i$; for a range digit $Q_i=N h_i$.
+For $D_i=M$, $v_i=1$ is a constant rather than a new coordinate.
+The single norm budget is
+\begin{equation}\label{eq:norm}
+ M^2=1+4\sum_{i=1}^{11}\rho_i^2+\G(\alpha,\beta,\gamma).
+\end{equation}
+
+Since $v_i\mid M$, equation~\eqref{eq:normalized} implies
+$v_i\mid\rho_i$. Thus $r_i=\rho_i/v_i$ is an integer and
+$\mu_{n_i}=D_iQ_i+r_i$. The norm gives $\abs{r_i}<D_i/2$.
+If $\abs{r_0}<D_i/32$, then $D_i\mid r_i-r_0$ and
+$\abs{r_i-r_0}<D_i$, so $r_i=r_0$. Applying
+\eqref{eq:truncation} to a range digit yields
+\[
+                         N\mid\binom{n_i}{k_i}.
+\]
+For the exact digit, the stronger modulus $qD_t\mid\Omega$
+yields $B\equiv\binom{R+t}{t}\pmod q$.
+
+The argument does not require a signed representative's truncation to
+be a least nonnegative remainder. Its small absolute value is sufficient.
+Canonical completeness representatives are positive, but soundness
+applies to every integer zero of the final equation.
+
+\section{Soundness in a noncircular order}
+
+\subsection{Recover positive arithmetic before reading digits}
+
+The inherited Pell index and orientation proof applies first. Its
+magnitude frame now contains the six exact requests and every modular
+numerator index; it does not contain the modular outputs.
+The free-center row gives $A>0$ and the required magnitude separation.
+
+The request with base 16 gives $R=16^t>1$. The affine radix condition
+$q=6z+3$ gives $\abs q\ge3$, and the explicitly odd $B$ is nonzero.
+The exact request $D_y=q^{y+1}$ forces $y+1\ge0$. But
+$y=RB(2v+1)^2$ is a nonzero multiple of $R$. A nonpositive $y$
+would therefore be at most $-R<-1$. Thus $y>0$ and $B>0$.
+
+The possible value $B=1$ needs separate treatment before binomial
+authentication. For every signed $k$, the Pell evaluation at base 1
+is congruent to 1 modulo $2(A-1)$: the Pell unit evaluates to the unit 1
+in that residue ring. Hence the retained exact request forces
+$N\equiv1\pmod{2(A-1)}$. Its frame bound $\abs N<W$ and the
+large-center bound force $N=1$. Thus $N=B^x$ holds also in this
+temporary base-one case. For $B\ge3$ it follows from the usual exact
+power lemma once $x\ge0$ is recovered below.
+
+The square-defined $H$ is positive for arbitrary signed representatives.
+Hence the request $q=(BH)^x$ gives $x\ge0$ and $q>0$. The affine
+radix excludes $x=0$. Since $y\ge RB>B$, a negative $u_0$ in
+\eqref{eq:initial} would imply $x\le B-y<0$. Therefore
+$u_0\ge0$ and $x\ge B+1>1$. Equation~\eqref{eq:final} now
+forces $u_t\ge1$, giving
+\begin{equation}\label{eq:large-x}
+ x\ge2+(t+1)y,\qquad y\ge RB>B,\qquad x>2^{32}.
+\end{equation}
+This order uses neither the sign of a CRT representative nor the value
+of a binomial digit. In particular, it avoids using factoriality or a
+binomial interpretation to prove the signs needed for that interpretation.
+
+All four denominator groups are now positive divisors of $M=q^x$,
+and $N=B^x$ is positive and divides $q$. The local majorant and
+derived-label budgets can be interpreted at this point.
+
+\subsection{Bounds for every relevant coefficient}
+
+Set $\ell=2^{22}$ and $E=2^{23}$. The retained local arithmetic
+ledger bounds the derived-label polynomial in absolute value by
+$H^\ell$ and bounds the decoded nonnegative local rule polynomial by
+\[
+ 0\le\LL<(2+t+x+y+B)^E.
+\]
+The signed derived-label bound has a separate structural audit. For
+$H\ge2$, assign exponent 1 to each bounded stored input. At an actual
+sparse gate $g=\sum_m c_m\prod_{i\in m}v_i$, the auditor assigns
+\[
+ e(g)=\left\lceil\log_2\sum_m\abs{c_m}\right\rceil
+       +\max_m\sum_{i\in m}e(v_i).
+\]
+Induction proves $\abs g\le H^{e(g)}$. The supplied ledger checks
+91 ancestor gates and only four free leaves. It obtains exponent
+$3{,}649{,}856$ for the stored wire $J-1$, and $3{,}649{,}857<\ell$
+for $J$. It does not assume positivity of the inputs. The stored
+inputs are actual representatives minus one; $H\ge2+a^2$ implies
+$\abs{a-1}\le H$ for every signed integer $a$.
+
+Before binomial authentication, \eqref{eq:large-x} and $R=16^t$
+already give $x>2\ell(t+1)$ and $x>2t$. For the actual
+representatives, $\max(1,\abs{A_j})\le\sqrt H$ and likewise for
+$C$. Thus Lemma~\ref{lem:signed-bound} bounds every relevant
+coefficient of an ordinary range by $H^{x/2}$. For the derived label,
+the same bound follows from $\ell(t+1)<x/2$. For the main binomial,
+$R+t<H$ and $t<x/2$ give it again. Consequently, for all eleven
+digits and all relevant positions,
+\[
+ \abs{\binom nj}\le H^{x/2}\le\sqrt q.
+\]
+As $q$ is already far greater than 4096,
+\[
+ \frac{\abs{r_0}}{q^k}
+ \le\frac{\sqrt q}{q-1}<\frac1{32}.
+\]
+All common-norm reconstructions are therefore valid, including those
+with negative upper indices.
+
+For the main digit, both $B$ and $\binom{R+t}{t}$ are positive
+and less than $q/2$: the former follows from $B\le BH$ and
+$q=(BH)^x$ with $x\ge3$, and the latter from its square-root bound.
+Their congruence modulo $q$ is therefore equality. This authenticates
+$B=\binom{R+t}{t}$.
+
+\subsection{Decode rows and recover a finite refutation}
+
+The range congruences have the form
+\[
+ N\mid\binom Ct,\qquad
+ N\mid\binom{A_j}{b_j+1},\qquad
+ N\mid\LL(C,\boldsymbol A),
+\]
+with an additional range for the polynomially derived label. For row
+$i-1$, choose $p^e$ from Lemma~\ref{lem:selectors}. By
+Lemma~\ref{lem:signed-range}, the ordinary residue of $C$ modulo
+$p^{xe}$ lies in $[0,t-1]$. Equation~\eqref{eq:index} identifies
+that residue modulo $p^e$ with $i-1$. Since $p^e>t$, it is exactly
+$i-1$. All other columns recover their bounded nonnegative local
+values in the same way.
+
+The inequalities in \eqref{eq:large-x} give
+$2+t+x+y+B<2x$. The elementary inequality
+$(2x)^{2^{23}}<2^x$ for $x>2^{32}$ then bounds every decoded local
+value by $2^x\le p^{xe}$. Its divisibility by $p^{xe}$ forces it to
+vanish. For the derived label, the decoded syntax inputs lie in
+$[0,t]$. Apply the same structural ledger with input bound $t+1$ to
+obtain
+\[
+ 0\le J(\text{local syntax})\le(t+1)^\ell
+ <(2+t+x+y+B)^E<2^x.
+\]
+Its small range residue and its locally evaluated value are congruent
+modulo $p^{xe}$ and both lie in $[0,p^{xe})$, so they agree.
+Every row is valid.
+
+The recovered beta accumulator starts at $B+1$ and ends at 1.
+The inequality $y>B$ makes the initial remainder proper without a
+boundary exception. Valid local updates have positive weights $1+jB$;
+starting from $B+1>0$, all accumulators are positive. Multiply the
+updates and cancel them to obtain \eqref{eq:balance}. Lemma~\ref{lem:binomial-growth}
+and the flow argument then give a finite $C_{222}$ refutation. The
+retained logical calibration gives a finite ZFC refutation.
+
+\section{Constructive completeness}
+
+Start with a finite $C_{222}$ refutation, expand it to a proof tree,
+and choose $t=16+h^2$ beyond every required row count and label bound.
+Truth padding supplies exactly $t$ rows. Set $R=16^t$ and
+$B=\binom{R+t}{t}$. Build the pending accumulators using weights
+$1+jB$.
+
+Let $O$ be the odd part of $t!$. Choose an arbitrarily large positive
+odd multiple $w$ of $O$ and set $y=RBw^2$. By
+Lemma~\ref{lem:binomial-growth}, $B$ is odd; $v_2(R)=4t>v_2(t!)$.
+Thus $y$ is an even multiple of $t!$, and can exceed every accumulator.
+The beta moduli $1+(i+1)y$, $0\le i\le t$, are pairwise coprime:
+a common prime would divide $j-i\le t$ and hence $y$, an impossibility.
+They are all odd. CRT supplies the beta code $x$; choose a positive,
+sufficiently large even lift. The endpoint quotients and local beta
+quotients then satisfy their required bounds. The latter are strictly
+below $x$ because their moduli are at least two.
+
+Set $N=B^x$, which is odd. For each full prime power $p^e\Vert B$,
+use the compatible row from Lemma~\ref{lem:selectors}, and prescribe
+the row's actual values modulo $p^{2xe}$. CRT supplies all nine
+representatives modulo $N^2$. The extra precision is essential:
+division by any range factorial $k!$, with $k\le x$, loses at most
+$k-1<x\le xe$ powers of $p$. The resulting binomial therefore
+remains divisible by $p^{xe}$. This proves completeness of the range
+conditions without using a false converse to Lemma~\ref{lem:signed-range}.
+
+Choose the dominant schema representative $a$ odd and the other eight
+representatives even. The inherited label constructors give
+$J\equiv1+a+b\pmod2$ and $J\ge2a^2$, so the semantic anchor is
+even. These parity choices make $H$ odd. If $3\mid B$, then $BH$
+is already a multiple of 3. If $3\nmid B$, the modulus $N^2$ is
+coprime to 6, and the representatives may additionally be chosen so
+that $H\equiv0\pmod3$. Two independent square residues suffice:
+their possible sums modulo 3 are 0, 1, and 2. This adjustment preserves
+the stated parities and the CRT classes.
+
+Choose the other representatives positive and at most $6N^2$; take
+$a$ in a compatible class between $2N^2$ and $8N^2$. Then
+$J\ge8N^4$ dominates twice every other requested index. The front
+indices satisfy $R+t<B<N^2$ and $t,y+1,x<N^2$. Increasing the
+representatives changes the self-sized radix using their actual values,
+so it does not invalidate the coefficient bounds.
+
+Now $q=(BH)^x$ is a positive odd multiple of 3, hence it has the
+required affine form $6z+3$. Compute the exact powers in
+\eqref{eq:six}, the successor denominator, the actual index atoms, and
+their magnitude frame. Choose the lower frame abscissa $L$ and a sufficiently large
+$A=L^2+u^2+v^2$ by Theorem~\ref{thm:two-square}, so that
+\eqref{eq:common-root} holds. The inherited anchor and pooled
+orientation completion at this $A$ supplies all requested Pell pairs.
+Use their polynomial values \eqref{eq:mu} as the eleven modular
+numerators.
+
+The genuine normalized remainders have absolute value below $M/32$.
+Therefore
+\[
+ 4\sum_{i=1}^{11}\rho_i^2<\frac{44}{1024}M^2<M^2.
+\]
+The remaining nonnegative integer gap in \eqref{eq:norm} has a
+$\G$ representation. All quotient witnesses are integral by the
+common-root and range congruences. This constructs a zero of the
+new raw polynomial system from every finite refutation, without
+making any choice depend circularly on the subsequently chosen Pell
+center.
+
+\section{The literal polynomial and finite verification}
+
+Every source definition is a quadratic integer equation. The builder
+records the exact changes from the pinned parent, the recomputed
+magnitude frame, the full power-request census, and every deleted
+private coordinate. It then applies the retained Horn factorization
+and polynomial contractions.
+
+A permitted monic contraction removes a row of the form
+$\epsilon z_i+f=0$, where $\epsilon\in\{1,-1\}$ and $f$ does
+not involve $z_i$. Substitution gives an integer polynomial inverse,
+and the checker requires every remaining residual to stay quadratic.
+Recorded affine consequences and integer residual-row operations
+preserve the common zero set. For example, replacing $R_i$ by
+$R_i+cR_j$ is reversed by subtraction. Integer coordinate translations
+are bijections on the declared domain. The sum-of-squares polynomial
+may change under these operations, but its zero set remains equivalent.
+
+\input{verification.tex}
+
+The verification code uses explicit exceptions for failed conditions,
+so optimized Python does not disable its checks. The arithmetic
+regressions cover signed generalized binomial coefficients, signed
+range implications, fixed-base binomial parity and growth, prime-power
+row selectors, and common-root modular digits. These finite cases
+are useful error detectors; the proofs in the preceding sections are
+what establish the unbounded claims.
+
+\subsection{Reproduction and integration}
+
+From a fresh extraction, with Python 3.10 or later:
+\begin{verbatim}
+python3 -B verify.py
+python3 -O -B verify.py
+\end{verbatim}
+The verifier is read-only unless a receipt path is explicitly supplied.
+The archive includes deterministic builders and exact source-to-output
+certificates; no network access or external symbolic algebra system is
+needed for verification. To rebuild the article with ordinary TeX Live,
+run \nolinkurl{build_report.sh}. The standalone TeX source contains
+all generated report inputs. PDF metadata may vary by TeX installation;
+the exact polynomial data do not.
+
+The contribution can be placed as a new directory in
+\nolinkurl{Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+This work does not modify an upstream branch. Source licenses and
+attribution notices are retained. The integrity manifest is a local
+checksum inventory, not an external signature or a proof certificate.
+
+\section{What remains open}
+
+The delivered result is a complete, fixed polynomial with an ordinary
+consistency-equivalence proof. It does not establish the smallest
+possible variable count, the smallest coefficient height, or a global
+optimal arithmetic circuit. Nor does it make a nine-natural-variable
+or ten-integer-variable universality result obsolete. In particular,
+Sun's September 2026 ten-integer-variable theorem \cite{sun10}
+and the contemporary universal-bound work \cite{bayer} concern
+different complexity tradeoffs.
+
+The central reusable result here is the source architecture:
+one binomial supplies row selectors and multiplicity separation;
+one existing exponent request supplies the needed sign; and one
+cofinal center supports all modular numerators. The finite code measures
+the complete composition. Further improvements should target the
+remaining six exact powers, the private anchor witnesses, or a
+different local proof calculus. Merely shortening a displayed
+abbreviation, omitting a signed case, or discarding a completeness
+condition would not be an improvement.
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, inspected commit
+\texttt{b7e35224c04fe1031c0a53f80a395e9b32205022}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+The exact inherited source and archive hashes are in the supplied provenance ledger.
+\bibitem{factorialfree} \emph{Removing factorial authenticity from
+Diophantine consistency}, incoming ProveIt research packet,
+25 October 2026. Retained in \nolinkurl{upstream/factorial_free/}.
+The binomial selector and large-evaluation lemmas are inherited from
+this packet; its earlier modular numerator sources are separately credited.
+\bibitem{farhi} B. Farhi, \emph{An identity involving the least common
+multiple of binomial coefficients and its application},
+American Mathematical Monthly 116 (2009), 836--839.
+\url{https://arxiv.org/abs/0906.2295}.
+\bibitem{sun10} Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth
+problem over the integers}, arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+\bibitem{bayer} J. Bayer, M. David, M. Ha\ss ler, Y. Matiyasevich,
+and D. Schleicher, \emph{Diophantine equations over $\Z$: universal
+bounds and parallel formalization}, arXiv:2506.20909v3,
+22 October 2026. \url{https://arxiv.org/html/2506.20909v3}.
+\end{thebibliography}
+
+\clearpage\appendix
+\section{Complete principal residual list}\label{app:residuals}
+
+The only unknowns are $z_0,\ldots,z_{\MainLastVar}\in\Z$.
+Define $P=\sum_{i=0}^{\MainLastRow}R_i^2$ using the following
+literal list. There are no additional quantified symbols. This list
+and the declared integer domain specify the entire equation; the
+JSON file uses the same zero-based coordinate ordering.
+
+\input{residuals.tex}
+\clearpage
+\section{Complete compact residual list}\label{app:compact}
+
+For the companion, the only unknowns are
+$w_0,\ldots,w_{\CompactLastVar}\in\Z$. Its equation is
+\[
+ Q(\boldsymbol w)=\sum_{i=0}^{\CompactLastRow}S_i(\boldsymbol w)^2=0.
+\]
+These are exactly the residuals in
+\nolinkurl{equations/compact/equation.json}, with $w$ used as the
+printed coordinate name. The compact equation has an integer solution
+if and only if a finite syntactic ZFC refutation exists.
+
+\input{compact_residuals.tex}
+\end{document}

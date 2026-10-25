@@ -1,0 +1,1440 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.82in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black,
+ pdftitle={A fixed-base modular Diophantine equation for ZFC consistency},
+ pdfauthor={Research prepared with AI assistance for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Diophantine consistency: fixed-base and modular certificates}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt plus 1pt}
+\setcounter{tocdepth}{1}
+\setlist{nosep,leftmargin=*}
+\emergencystretch=3em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\G}{\mathcal G}\newcommand{\LL}{\mathcal L}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+% BEGIN report/metrics.tex
+\newcommand{\MainVars}{230}
+\newcommand{\MainRows}{176}
+\newcommand{\MainTerms}{4,482}
+\newcommand{\MainHeight}{7,968}
+\newcommand{\MainLastRow}{175}
+\newcommand{\MainLastVar}{229}
+\newcommand{\CompactVars}{229}
+\newcommand{\CompactRows}{175}
+\newcommand{\CompactTerms}{12,006}
+\newcommand{\CompactLastRow}{174}
+\newcommand{\CompactLastVar}{228}
+% END report/metrics.tex
+\begin{document}
+\begin{titlepage}
+\vspace*{0.8in}
+{\color{blue!45!black}\large RESEARCH CONTRIBUTION FOR PROVEIT}\par
+\vspace{0.22in}
+{\huge\bfseries A fixed-base, modular Diophantine equation for ZFC consistency\par}
+\vspace{0.25in}
+{\Large Reusing a binomial modulus as the proof-label base\par}
+\vspace{0.35in}
+{\large Prepared with AI assistance for Vladimir Reshetnikov\par}
+{\large 25 October 2026\par}
+\vspace{0.35in}
+\begin{center}
+\fbox{\begin{minipage}{0.86\textwidth}
+\textbf{Main delivered equation.} An explicitly specified polynomial in
+\textbf{\MainVars\ unrestricted integer variables}, of exact degree four,
+defined by \MainRows\ quadratic residuals. Its collected expansion has
+\MainTerms\ nonzero monomials and coefficient height \MainHeight.
+\[
+ P(\boldsymbol z)=\sum_{i=0}^{\MainLastRow}R_i(\boldsymbol z)^2=0.
+\]
+The ordinary proof, composed with the retained numerical-calculus
+calibration, establishes
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\boldsymbol z\in\Z^{\MainVars}\ P(\boldsymbol z)=0\bigr)
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+Every residual is printed in Appendix~\ref{app:residuals} and supplied
+as exact machine-readable data. No unspecified coefficient or variable
+exponent remains in the delivered polynomial.
+\end{minipage}}
+\end{center}
+\vfill
+\textbf{Evidence boundary.} This is an ordinary mathematical proof with
+reproducible finite algebraic checks. It is not a new end-to-end Lean/Rocq
+formalization, a proof of consistency, or a claim of global minimality.
+\end{titlepage}
+
+\begin{abstract}
+We simplify the direct proof-certificate route to a Diophantine equation
+for syntactic consistency of ZFC. The central change is to give one
+binomial coefficient two jobs. With a proof horizon $t$, set
+$R=16^t$ and $B=\binom{R+t}{t}$. The number $B$ supplies both the
+prime-power selectors for proof rows and the evaluation point in the
+label weights $1+jB$. An elementary bound for $\lcm(1,\ldots,t)$
+proves the required row coverage, while $B>(t+1)^t$ proves exact
+label-multiplicity recovery. No certificate of factorial authenticity,
+and no separate variable-base growth power, is needed.
+
+We then compose this arithmetic front with the predecessor's modular
+numerator method in the current signed Pell architecture. The new
+compatibility argument allows all nine CRT representatives to remain
+signed, recovers the necessary positive quantities from existing power
+requests, and moves eleven numerator outputs out of the magnitude frame.
+A new cofinal two-square completion of the Pell center restores the
+common modular-root congruence. Only six exponential requests remain exact; successor
+denominators use multiplication. The resulting finite quadratic system
+is contracted with explicit integral restoration maps and converted to
+the literal quartic displayed in this report. The contribution is a
+structural improvement within the direct, small-coefficient family;
+few-variable constructions with different coefficient and degree costs
+remain distinct alternatives.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The exact result and its scope}
+
+We use $\N=\{0,1,2,\ldots\}$ and quantify every coordinate of the
+principal equation over all of $\Z$. The file
+\nolinkurl{equations/balanced/equation.json} declares the ordered variables
+and every quadratic residual. A sparse term $[c,[i_1,\ldots,i_d]]$ denotes
+$c z_{i_1}\cdots z_{i_d}$; an empty index list denotes the constant $c$.
+The finite sum of residual squares is the definition of $P$. The separate
+\nolinkurl{expanded_polynomial.json} gives every collected coefficient.
+
+\begin{theorem}[Consistency equivalence]\label{thm:main}
+For the supplied fixed polynomial $P\in\Z[z_0,\ldots,z_{\MainLastVar}]$,
+ZFC proves that an integer zero exists if and only if a finite syntactic
+ZFC refutation exists. Consequently ZFC proves
+\[
+ \neg\exists\boldsymbol z\in\Z^{\MainVars}\ P(\boldsymbol z)=0
+ \quad\longleftrightarrow\quad\Con(\mathrm{ZFC}).
+\]
+The exact degree of $P$ is four.
+\end{theorem}
+
+The companion in \nolinkurl{equations/compact/equation.json} uses
+\CompactVars\ integer variables and \CompactRows\ quadratic residuals.
+It has \CompactTerms\ collected monomials and the same coefficient
+height \MainHeight. It is obtained by one additional integral affine
+elimination, so it has an integer zero exactly when $P$ does.
+Appendix~\ref{app:compact} prints its full residual list as well.
+The principal version is preferred when the shorter expansion matters;
+the companion is preferred when one fewer coordinate matters more.
+
+The proof does not assume either consistency or inconsistency. In
+particular, proving the equivalence does not prove the absence of zeros.
+The syntactic consistency predicate is the one calibrated by the
+repository's fixed numerical calculus $C_{222}$, with truth label $0$
+and falsity label $1$. The retained logical interfaces are
+\nolinkurl{KEndpoint.c222_iff_zf_refutation} and
+\nolinkurl{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+Their source and provenance accompany the package; their complete
+transitive proof-assistant development was not rebuilt here.
+
+The new arithmetic arguments below are finite number theory and
+primitive recursive coding arguments formalizable in ZFC. Their
+composition with these inherited calibrations proves
+Theorem~\ref{thm:main}. A fresh machine-checked object-language ZFC
+derivation is a separate, unfinished task. Exact coefficient checks
+verify the finite artifacts and their algebraic transformations, not
+the unbounded semantic theorem by themselves.
+
+\subsection{What ``simpler'' means in this report}
+
+There is no single total ordering of variable count, degree, coefficient
+height, monomial count, arithmetic circuit cost, and proof length. The
+repository already contains equations with far fewer unknowns, including
+quartics with large fixed coefficient payloads. This report optimizes the
+direct proof-calculus family, which retains modest literal coefficients
+and avoids both a $K215$ simulation and an instantiation of Jones's
+universal equation.
+
+The comparison snapshot is the immutable ProveIt commit
+\begin{center}\small
+\texttt{b7e35224c04fe1031c0a53f80a395e9b32205022}.
+\end{center}
+We inspected its active research documents, delivered packages through
+147, and all eight incoming archives present at that commit. The
+top-level comparison tables lagged behind the newest incoming material;
+the comparison below therefore uses the actual incoming endpoints.
+
+% BEGIN report/comparison.tex
+\begin{center}\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Profile & Variables & Rows & Degree & Monomials & Height \\
+\midrule
+Matched parent & 252 & 182 & 4 & 5,340 & 128,446 \\
+Factorial-free, sparse & 242 & 178 & 4 & 5,018 & 7,968 \\
+Factorial-free, compact & 241 & 177 & 4 & 12,774 & 7,968 \\
+Shared error, minimum & 240 & 177 & 4 & 21,482 & 6,144 \\
+Shared error, lower height & 241 & 178 & 4 & 9,544 & 4,512 \\
+Normalized, balanced & 244 & 176 & 4 & 5,212 & 3,968 \\
+\midrule
+\textbf{New principal} & \textbf{230} & \textbf{176} & \textbf{4} & \textbf{4,482} & \textbf{7,968} \\
+\textbf{New compact} & \textbf{229} & \textbf{175} & \textbf{4} & \textbf{12,006} & \textbf{7,968} \\
+\bottomrule
+\end{tabular}
+\end{center}
+Every row in this table quantifies over unrestricted integers.
+Height means the largest absolute coefficient after collecting the expanded quartic.
+The source paths and exact metric files for the comparison rows are in \nolinkurl{provenance/comparison.json}.
+% END report/comparison.tex
+
+The modular numerator device itself is inherited: the retained
+\nolinkurl{INHERITED_MODULAR_FACTORIAL_PROOF.md} already uses six exact
+powers, eleven modular numerators, and a common Pell-root congruence.
+What is changed here is its compatibility with the fixed-base/binomial
+weight front and the later signed, pooled certificate architecture.
+The dual use of $B$, the new sign bootstrap, the two-square cofinal-center
+theorem, and their complete composition were not found in the inspected
+snapshot. No literature-wide priority claim is made.
+
+\section{The arithmetic design before polynomial compilation}
+
+The following notation explains certified register values. Powers and
+binomial coefficients in this section are not extra operations in the
+final quartic. They are replaced by the polynomial certificates discussed
+below and printed literally in the appendix.
+
+Choose a cofinal proof horizon $t=16+h^2$. The essential front is
+\begin{align}
+ R&=16^t,& B&=2b+1,& B&=\binom{R+t}{t},\label{eq:front1}\\
+ y&=RB(2v+1)^2,&
+ H&=2+2(R+t)+C^2+\sum_{j=1}^{8}A_j^2,\label{eq:front2}\\
+ N&=B^x,& q&=(BH)^x=6z+3.&\label{eq:front3}
+\end{align}
+Here $C,A_1,\ldots,A_8$ are the actual CRT representatives. Some raw
+stored coordinates equal these values minus one; every literal source
+edit preserves that distinction. The nine representatives are unrestricted
+integers. Their small residues recovered later are nonnegative.
+
+The two beta endpoints and the row-index congruence are
+\begin{align}
+ x&=B+1+(y+1)u_0,\label{eq:initial}\\
+ x&=1+[1+(t+1)y]u_t,\label{eq:final}\\
+ B h_B&=C+R+1.\label{eq:index}
+\end{align}
+Every Horn weight is now $1+jB$. The former independent growth base
+$F=[2(t+1)]^t$ and the radius $F^2$ are removed from the semantics.
+The same $B$ is used throughout; changing only some occurrences would
+not give the claimed construction.
+
+The six exact requests are
+\begin{equation}\label{eq:six}
+ R=16^t,\quad N=B^x,\quad q=(BH)^x,\quad
+ D_t=q^t,\quad D_y=q^{y+1},\quad M=q^x.
+\end{equation}
+Set $D_{t+1}=qD_t$ by multiplication. The eleven binomial numerator
+indices are $R+t$, $C$, the eight representatives $A_j$, and the
+derived label $J(\boldsymbol A)$. Their relevant lower indices are
+$t,t+1,y+1,x$. The exact-binomial digit for $B$ uses $t$;
+the index range uses $t$; four syntax ranges and the derived-label
+range use $t+1$; two accumulator ranges use $y+1$; two quotient
+ranges use $x$.
+
+\section{A fixed-base radius and a binomial with two roles}
+
+\subsection{The radius supplies every row selector}
+
+Let $\Lambda_t=\lcm(1,\ldots,t)$, with $t\ge1$.
+
+\begin{lemma}\label{lem:lcm}
+For every $n\ge1$, $\Lambda_n\le4^{n-1}$. In particular,
+$16^t\ge\Lambda_t^2$.
+\end{lemma}
+\begin{proof}
+Let $m=\lceil n/2\rceil$. The quotient $\Lambda_n/\Lambda_m$
+divides $\binom{n}{\lfloor n/2\rfloor}$. To see this, its valuation
+at any prime is at most one: there is at most one new prime power
+between $m+1$ and $n$. If such a prime power occurs, its contribution
+to the factorial valuation of the central binomial coefficient is one,
+and all other contributions are nonnegative.
+
+For $n=2r$, induction and the binomial row sum give
+\[
+ \Lambda_{2r}\le\Lambda_r\binom{2r}{r}
+ \le4^{r-1}2^{2r}=4^{2r-1}.
+\]
+For $n=2r+1$, the two equal central coefficients together are at most
+the row sum, so $\binom{2r+1}{r}\le2^{2r}$. Hence
+\[
+ \Lambda_{2r+1}\le\Lambda_{r+1}\binom{2r+1}{r}
+ \le4^r4^r=4^{2r}.
+\]
+The initial case $n=1$ is immediate. The stated radius consequence
+is weaker than the resulting strict bound and follows at once.
+\end{proof}
+
+The next selector theorem is inherited from the incoming factorial-free
+binomial CRT report, and is restated with its proof because it is the
+key interface used by the new fixed radius. The classical lcm/binomial
+divisibility used in its proof is also related to Farhi's identity
+\cite{farhi}.
+
+\begin{lemma}[Coverage and compatibility of selectors]\label{lem:selectors}
+Let $t\ge1$, $R\ge\Lambda_t^2$, and $B=\binom{R+t}{t}$.
+For every $i\in\{1,\ldots,t\}$ there is a full prime power
+$p^e\Vert B$ such that $p^e\mid R+i$ and $p^e>t$.
+Conversely, every full prime power $p^e\Vert B$ divides at least one
+of $R+1,\ldots,R+t$.
+\end{lemma}
+\begin{proof}
+For the first assertion, $R+i>\Lambda_t^2$, so some prime $p$ has
+$v=v_p(R+i)>2a$, where $a=\lfloor\log_p t\rfloor$. Since $p^v>t$,
+the valuation of $R+j$ for $j\ne i$ is exactly $v_p(j-i)$. Therefore
+\[
+ e=v_p(B)=v-\delta,\qquad
+ \delta=v_p\!\left(t\binom{t-1}{i-1}\right).
+\]
+For each $p^r$, the corresponding factorial-valuation summand for
+$\delta$ is zero or one, and vanishes when $p^r>t$.
+Thus $0\le\delta\le a$, so $a<e\le v$ as required.
+
+For the converse, put $v=\max_i v_p(R+i)$. The valuation of $B$ is
+the sum over $r\ge1$ of
+\[
+ \left\lfloor\frac{R+t}{p^r}\right\rfloor
+ -\left\lfloor\frac R{p^r}\right\rfloor
+ -\left\lfloor\frac t{p^r}\right\rfloor.
+\]
+Each term is zero or one and all terms above $r=v$ vanish. Hence
+$e\le v$, and a factor attaining the maximum is compatible.
+\end{proof}
+
+The two directions have different uses. Coverage proves soundness for
+each row. Compatibility supplies assignments at every prime of the
+global modulus in the CRT completeness construction, including primes
+not chosen as a particular row's selector.
+
+\subsection{The same binomial separates label multiplicities}
+
+\begin{lemma}\label{lem:binomial-growth}
+For $t\ge1$ and $R=16^t$,
+\[
+ B=\binom{R+t}{t}>(t+1)^t.
+\]
+Moreover $B$ is odd.
+\end{lemma}
+\begin{proof}
+The inequality $16^t>t(t+1)$ follows by induction: its left side
+grows by a factor of 16 and the right side by at most 3. Every factor
+$(R+i)/i$, $1\le i\le t$, is greater than $t+1$, proving the first
+claim by the product formula for $B$.
+
+For oddness, $v_2(R)=4t>\lfloor\log_2t\rfloor$. Consequently
+$v_2(R+i)=v_2(i)$ for every $1\le i\le t$. The valuations in the
+numerator product and in $t!$ cancel exactly.
+\end{proof}
+
+Here is the large-evaluation argument inherited from the factorial-free
+predecessor, now applied to $B$. Suppose the decoded $t$ proof rows
+have conclusion labels $c_i$ and premise labels $p_i,q_i$ in $[0,t]$,
+and the accumulator updates imply
+\begin{equation}\label{eq:balance}
+ \prod_{i<t}(1+c_iB)
+ =(1+B)\prod_{i<t}(1+p_iB)(1+q_iB).
+\end{equation}
+Discard factors with label zero. If the two sides have different numbers
+of remaining factors, the smaller factor count is at most $t$, while
+$B>(t+1)^t$ makes a product with one more factor strictly larger than
+any product with the smaller count. Thus the counts agree and are at
+most $t$.
+
+Replace $B$ by an indeterminate $T$. Each resulting product has
+nonnegative coefficients and coefficient sum at most $(t+1)^t<B$.
+If their difference were nonzero, let $a_rT^r$ be its lowest nonzero
+term. The equality at $T=B$ would imply $B\mid a_r$, although
+$0<\abs{a_r}<B$. Thus the products agree in $\Z[T]$. Unique
+factorization, or their distinct rational roots $-1/j$, gives the
+exact multiplicity balance for each positive label.
+
+To finish the flow argument, let $D$ be the set of labels derivable by
+the valid Horn rules. It contains truth. A rule whose conclusion is
+outside $D$ has at least one premise outside $D$. Summing conclusion
+counts minus premise counts over the complement of $D$ therefore gives
+a nonpositive number. If falsity were outside $D$, the exact balance
+\eqref{eq:balance} would give one instead. Hence falsity is derivable.
+No acyclicity assumption about the chosen multiset of rules is needed.
+
+\section{Pell values, the free center, and modular numerators}
+
+For an integer $A$, define the Pell polynomials by
+\[
+ X_0=1,\quad Y_0=0,\qquad
+ X_{k+1}=AX_k+(A^2-1)Y_k,\quad Y_{k+1}=X_k+AY_k,
+\]
+and extend them to negative indices by $X_{-k}=X_k$ and $Y_{-k}=-Y_k$.
+The retained square frame, semantic anchor, and pooled error certificate
+recover exactly these pairs at every requested signed index. The
+complete fourteen-pair orientation pool is retained.
+
+For a genuine exact request with base $n$, the certified congruence is
+\[
+ X_k(A)+(n-A)Y_k(A)\equiv m
+ \pmod{2An-n^2-1}.
+\]
+The magnitude frame bounds every exact base, exponent, and output atom
+in absolute value by $W$. Its large-center bound makes the modulus
+larger than the possible error, giving $m=n^k$ for $\abs n\ge2$ and
+forcing $k\ge0$. If $k<0$, the same recurrence would force the
+impossible integer equality $m n^{-k}=1$. These signed recovery
+arguments are inherited from the retained source proofs.
+
+\subsection{Why the center must be freed}
+
+The current signed frame restricts its abscissa to a particular Pell
+sequence. This alone does not justify choosing it in an arbitrary
+congruence class. Retain the lower frame with abscissa $L$ and use
+\begin{equation}\label{eq:free-center}
+                         A=L^2+u^2+v^2.
+\end{equation}
+This gives $A\ge L^2$ at every integer solution. Completeness requires
+a special argument: an arbitrary prescribed nonnegative difference is
+not a sum of two squares. The frame itself is existentially chosen,
+and its finite residue behavior provides the missing freedom. The
+cofinal completion lemma below proves exactly what is needed. It saves
+one coordinate relative to the initially verified constructor
+$A=L^2+u^2+v^2+w(w+1)$.
+
+Only the lower frame uses $L$; the principal Pell pairs and the
+semantic anchor use $A$. The magnitude frame excludes the eleven
+modular numerator outputs, which now depend on $A$. It also removes
+redundant atoms with separately proved bounds. In particular, keeping
+$t$, $R+t$, and $q$ controls the fixed base 16, $R$, $t+1$, and $q+1$:
+$W\ge t^2+2\ge258$ and
+\[
+ R^2\le2\bigl((R+t)^2+t^2\bigr)\le2(W-2)<W^2.
+\]
+The successor output $D_{t+1}$ no longer needs an exact-power magnitude
+bound. Every retained exact request and modular index still has its
+required strict bound. These changes are part of the literal frame
+certificate, rather than a numerical estimate on sample inputs.
+
+\subsection{A single modular-root equation}
+
+Set $\Omega=NM$ and impose
+\begin{equation}\label{eq:common-root}
+ 2A(q+1)-(q+1)^2-1=\Omega w.
+\end{equation}
+For every signed integer index $n$, retain the polynomial numerator
+\begin{equation}\label{eq:mu}
+ \mu_n=X_n(A)+(q+1-A)Y_n(A).
+\end{equation}
+It need not equal the enormous integer $(q+1)^n$.
+
+\begin{lemma}[Signed modular powers]\label{lem:modular}
+Under \eqref{eq:common-root}, with $\Omega\ne0$,
+\[
+ \mu_n\equiv(q+1)^n\pmod\Omega\qquad(n\in\Z),
+\]
+where a negative exponent means the inverse power in the residue ring.
+\end{lemma}
+\begin{proof}
+Write $s=q+1$. Equation~\eqref{eq:common-root} says
+$s(2A-s)\equiv1\pmod\Omega$, so $s$ is a unit. The Pell
+recurrence and $(s-A)^2\equiv A^2-1$ show that the evaluated Pell
+unit at index $n$ is $s^n$. This proves positive indices by induction,
+and inverse powers give negative indices.
+\end{proof}
+
+In completeness, $B$ and $q$ are odd, and $N\mid q$; hence
+$\Omega$ is odd and every prime dividing $\Omega$ divides $q$.
+The root congruence specifies
+\[
+ A_0=\frac{(q+1)^2+1}{2(q+1)}
+    =1+\frac{q^2}{2(q+1)}\pmod\Omega.
+\]
+Its denominator is invertible. The following lemma constructs this
+residue class using precisely the two-square center.
+
+\begin{theorem}[Cofinal two-square center]\label{thm:two-square}
+Let $W\ge2$ and let $q,\Omega$ be positive odd integers such that
+every prime of $\Omega$ divides $q$. There exist a positive odd $k$
+and integers $u,v$ such that, with $L=X_{Wk}(W+1)$,
+\[
+ A=L^2+u^2+v^2\equiv A_0\pmod\Omega.
+\]
+The value $A$ can be made arbitrarily large, and $Y_{Wk}(W+1)/W$
+is an odd integer. Thus the old odd-quotient frame and the new common
+root remain simultaneously complete.
+\end{theorem}
+\begin{proof}
+If $\Omega=1$, choose $k=1$ and arbitrary sufficiently large $u$;
+the frame-parity argument below still applies. Assume $\Omega>1$.
+Put $D=W(W+2)$ and work in the finite quadratic ring
+\[
+ S_\Omega=(\Z/\Omega\Z)[s]/(s^2-D).
+\]
+The element $e=(W+1)+s$ is a norm-one unit. Write the finite order of
+$e^W$ as $2^r k$ with $k$ odd. Then $g=e^{Wk}$ has power-of-two
+order. Its coefficients are $L=X_{Wk}(W+1)$ and $Y=Y_{Wk}(W+1)$.
+
+Fix $p^a\Vert\Omega$. If $L\equiv\varepsilon\pmod p$ with
+$\varepsilon\in\{1,-1\}$, then the image of $g$ is exactly
+$\varepsilon$ in $S_p$. When $D\not\equiv0\pmod p$, this follows
+from $L^2-DY^2=1$. When $D\equiv0\pmod p$, the nilpotent part of
+$\varepsilon+Ys$ has $p$-power order, and is killed only trivially by
+a power of two because $p$ is odd. This proves the assertion also
+in the ramified case.
+
+The kernel of the unit reduction map $S_{p^a}^{\times}\to S_p^{\times}$
+is a finite $p$-group: its elements are $1+pz$. The element
+$\varepsilon g$ belongs to this kernel and has power-of-two order,
+so it is the identity. Consequently $L^2\equiv1\pmod{p^a}$.
+
+Since $A_0\equiv1\pmod p$, the difference $A_0-L^2$ is a unit
+unless $L\equiv\pm1\pmod p$. In the latter case it equals
+$q^2/(2(q+1))$ modulo $p^a$, and is either zero or has the even
+valuation $2v_p(q)$. Every residue of zero or even valuation modulo
+an odd prime power is a sum of two squares. For a unit, the two
+sets $\{a^2:a\in\mathbb F_p\}$ and
+$\{c-b^2:b\in\mathbb F_p\}$ intersect for any nonzero residue $c$,
+since each has $(p+1)/2$ elements. At least
+one resulting coordinate is nonzero, so its invertible derivative
+lifts the solution to every $p^a$. For valuation $2b$, multiply
+both coordinates of a unit representation by $p^b$.
+
+CRT, applied separately to the two square coordinates, therefore gives
+$u^2+v^2\equiv A_0-L^2\pmod\Omega$. Replacing $u$ by
+$u+j\Omega$ makes $A$ arbitrarily large.
+
+It remains to check the literal frame parity. The recurrence modulo $W$
+gives $W\mid Y_W(W+1)$. If $W$ is odd, the ordinate is odd.
+If $W$ is even, its base is odd, every abscissa is odd, and
+$Y_{2m}=2X_mY_m$ gives $v_2(Y_W)=v_2(W)$; odd-index ordinates are
+odd. Hence $Y_W(W+1)/W$ is odd in both cases. Finally,
+\[
+ Y_{Wk}(W+1)=Y_W(W+1)Y_k(X_W(W+1)),
+\]
+whose second factor is odd for odd $k$. Thus the quotient remains
+odd and supplies the old witness in
+$L^2-W^3(W+2)(2z+1)^2=1$.
+\end{proof}
+
+\begin{remark}[Why the frame choice matters]
+This theorem does not work by holding the least frame point fixed.
+For example, $W=4$, $q=3$, $\Omega=9$ give the least frame abscissa
+$L=4801$ and $A_0-L^2\equiv3\pmod9$, which is not a sum of two
+squares modulo 9. Choosing the odd multiplier from the finite unit
+order is essential. The proof does not add an order computation or
+an extra quantified object to the polynomial; it chooses an existing
+existential frame witness in the completeness direction.
+\end{remark}
+
+\section{Signed binomial digits from modular data}
+
+For $n\in\Z$ and $k\in\N$, use the integer-valued generalized
+binomial coefficient
+\[
+ \binom nk=\frac{n(n-1)\cdots(n-k+1)}{k!},\qquad \binom n0=1.
+\]
+For $n=-a<0$, this equals $(-1)^k\binom{a+k-1}{k}$.
+
+\begin{lemma}[Uniform coefficient bound]\label{lem:signed-bound}
+For every $n\in\Z$ and $k\ge0$,
+\[
+ \abs{\binom nk}\le\max(1,\abs n)^k.
+\]
+\end{lemma}
+\begin{proof}
+The ordinary nonnegative case is immediate. For $n=-a<0$,
+$\binom{a+k-1}{k}$ counts multisets of size $k$ from $a$ colors.
+Every multiset has a sorted word, and there are $a^k$ words. The
+case $k=0$ is included.
+\end{proof}
+
+\begin{lemma}[The range implication for signed upper indices]\label{lem:signed-range}
+If $p$ is prime, $e,k\ge1$, and $p^e\mid\binom nk$ for
+$n\in\Z$, then $n\bmod p^e<k$.
+\end{lemma}
+\begin{proof}
+If the falling factorial contains zero, then $0\le n<k$, and the
+claim is immediate. Otherwise its valuation minus $v_p(k!)$ is a
+sum of terms, each zero or one: a block of $k$ consecutive integers
+contains either $\lfloor k/p^r\rfloor$ or one more multiples of
+$p^r$. If the block contained no multiple of $p^e$, then $k<p^e$
+and every term at level $r\ge e$ would vanish. The valuation would
+be at most $e-1$, a contradiction. A multiple in the block gives
+$n\equiv j\pmod{p^e}$ with $0\le j<k$.
+\end{proof}
+
+The implication is one-sided. Its converse is not used. Completeness
+will use higher CRT precision to compensate for division by $k!$.
+
+\subsection{Finite truncation, including negative indices}
+
+The formal identity $(1+T)^n=\sum_{j\ge0}\binom njT^j$ holds
+in $\Z[[T]]$ for all signed $n$, using the formal inverse for $n<0$.
+It may equally be proved modulo $T^{k+1}$ by a finite recurrence,
+so no analytic convergence claim is involved. Suppose $q>0$, $N\mid q$,
+$1\le k\le x$, and $D=q^k$. Define
+\[
+ r_0=\sum_{j=0}^{k-1}\binom njq^j.
+\]
+The modulus $ND$ divides $\Omega=Nq^x$, and the omitted terms
+of degree at least $k+1$ vanish modulo $ND$. Lemma~\ref{lem:modular}
+therefore gives
+\begin{equation}\label{eq:truncation}
+ \mu_n\equiv r_0+D\binom nk\pmod{ND}.
+\end{equation}
+This remains true at the largest lower index $k=x$ because $N\mid q$.
+
+\subsection{The common centered norm}
+
+Write $\G(a,b,c)=a^2+b^2+c(c+1)$. This is nonnegative on
+$\Z^3$, and represents every nonnegative integer. Indeed, Legendre's
+three-square theorem represents $4g+1$ as three squares. Exactly one
+square is odd modulo four; write the coordinates as $2a,2b,2c+1$.
+Dividing the resulting equality by four gives
+$g=a^2+b^2+c(c+1)$. This is the inherited ternary gap constructor;
+it is distinct from the new two-square center theorem.
+
+For each of the eleven digits, let $D_i$ be its already certified
+denominator and put $D_i v_i=M$. Retain the normalized row
+\begin{equation}\label{eq:normalized}
+ v_i\mu_{n_i}=M Q_i+\rho_i.
+\end{equation}
+For the exact digit $Q_i=B+q h_i$; for a range digit $Q_i=N h_i$.
+For $D_i=M$, $v_i=1$ is a constant rather than a new coordinate.
+The single norm budget is
+\begin{equation}\label{eq:norm}
+ M^2=1+4\sum_{i=1}^{11}\rho_i^2+\G(\alpha,\beta,\gamma).
+\end{equation}
+
+Since $v_i\mid M$, equation~\eqref{eq:normalized} implies
+$v_i\mid\rho_i$. Thus $r_i=\rho_i/v_i$ is an integer and
+$\mu_{n_i}=D_iQ_i+r_i$. The norm gives $\abs{r_i}<D_i/2$.
+If $\abs{r_0}<D_i/32$, then $D_i\mid r_i-r_0$ and
+$\abs{r_i-r_0}<D_i$, so $r_i=r_0$. Applying
+\eqref{eq:truncation} to a range digit yields
+\[
+                         N\mid\binom{n_i}{k_i}.
+\]
+For the exact digit, the stronger modulus $qD_t\mid\Omega$
+yields $B\equiv\binom{R+t}{t}\pmod q$.
+
+The argument does not require a signed representative's truncation to
+be a least nonnegative remainder. Its small absolute value is sufficient.
+Canonical completeness representatives are positive, but soundness
+applies to every integer zero of the final equation.
+
+\section{Soundness in a noncircular order}
+
+\subsection{Recover positive arithmetic before reading digits}
+
+The inherited Pell index and orientation proof applies first. Its
+magnitude frame now contains the six exact requests and every modular
+numerator index; it does not contain the modular outputs.
+The free-center row gives $A>0$ and the required magnitude separation.
+
+The request with base 16 gives $R=16^t>1$. The affine radix condition
+$q=6z+3$ gives $\abs q\ge3$, and the explicitly odd $B$ is nonzero.
+The exact request $D_y=q^{y+1}$ forces $y+1\ge0$. But
+$y=RB(2v+1)^2$ is a nonzero multiple of $R$. A nonpositive $y$
+would therefore be at most $-R<-1$. Thus $y>0$ and $B>0$.
+
+The possible value $B=1$ needs separate treatment before binomial
+authentication. For every signed $k$, the Pell evaluation at base 1
+is congruent to 1 modulo $2(A-1)$: the Pell unit evaluates to the unit 1
+in that residue ring. Hence the retained exact request forces
+$N\equiv1\pmod{2(A-1)}$. Its frame bound $\abs N<W$ and the
+large-center bound force $N=1$. Thus $N=B^x$ holds also in this
+temporary base-one case. For $B\ge3$ it follows from the usual exact
+power lemma once $x\ge0$ is recovered below.
+
+The square-defined $H$ is positive for arbitrary signed representatives.
+Hence the request $q=(BH)^x$ gives $x\ge0$ and $q>0$. The affine
+radix excludes $x=0$. Since $y\ge RB>B$, a negative $u_0$ in
+\eqref{eq:initial} would imply $x\le B-y<0$. Therefore
+$u_0\ge0$ and $x\ge B+1>1$. Equation~\eqref{eq:final} now
+forces $u_t\ge1$, giving
+\begin{equation}\label{eq:large-x}
+ x\ge2+(t+1)y,\qquad y\ge RB>B,\qquad x>2^{32}.
+\end{equation}
+This order uses neither the sign of a CRT representative nor the value
+of a binomial digit. In particular, it avoids using factoriality or a
+binomial interpretation to prove the signs needed for that interpretation.
+
+All four denominator groups are now positive divisors of $M=q^x$,
+and $N=B^x$ is positive and divides $q$. The local majorant and
+derived-label budgets can be interpreted at this point.
+
+\subsection{Bounds for every relevant coefficient}
+
+Set $\ell=2^{22}$ and $E=2^{23}$. The retained local arithmetic
+ledger bounds the derived-label polynomial in absolute value by
+$H^\ell$ and bounds the decoded nonnegative local rule polynomial by
+\[
+ 0\le\LL<(2+t+x+y+B)^E.
+\]
+The signed derived-label bound has a separate structural audit. For
+$H\ge2$, assign exponent 1 to each bounded stored input. At an actual
+sparse gate $g=\sum_m c_m\prod_{i\in m}v_i$, the auditor assigns
+\[
+ e(g)=\left\lceil\log_2\sum_m\abs{c_m}\right\rceil
+       +\max_m\sum_{i\in m}e(v_i).
+\]
+Induction proves $\abs g\le H^{e(g)}$. The supplied ledger checks
+91 ancestor gates and only four free leaves. It obtains exponent
+$3{,}649{,}856$ for the stored wire $J-1$, and $3{,}649{,}857<\ell$
+for $J$. It does not assume positivity of the inputs. The stored
+inputs are actual representatives minus one; $H\ge2+a^2$ implies
+$\abs{a-1}\le H$ for every signed integer $a$.
+
+Before binomial authentication, \eqref{eq:large-x} and $R=16^t$
+already give $x>2\ell(t+1)$ and $x>2t$. For the actual
+representatives, $\max(1,\abs{A_j})\le\sqrt H$ and likewise for
+$C$. Thus Lemma~\ref{lem:signed-bound} bounds every relevant
+coefficient of an ordinary range by $H^{x/2}$. For the derived label,
+the same bound follows from $\ell(t+1)<x/2$. For the main binomial,
+$R+t<H$ and $t<x/2$ give it again. Consequently, for all eleven
+digits and all relevant positions,
+\[
+ \abs{\binom nj}\le H^{x/2}\le\sqrt q.
+\]
+As $q$ is already far greater than 4096,
+\[
+ \frac{\abs{r_0}}{q^k}
+ \le\frac{\sqrt q}{q-1}<\frac1{32}.
+\]
+All common-norm reconstructions are therefore valid, including those
+with negative upper indices.
+
+For the main digit, both $B$ and $\binom{R+t}{t}$ are positive
+and less than $q/2$: the former follows from $B\le BH$ and
+$q=(BH)^x$ with $x\ge3$, and the latter from its square-root bound.
+Their congruence modulo $q$ is therefore equality. This authenticates
+$B=\binom{R+t}{t}$.
+
+\subsection{Decode rows and recover a finite refutation}
+
+The range congruences have the form
+\[
+ N\mid\binom Ct,\qquad
+ N\mid\binom{A_j}{b_j+1},\qquad
+ N\mid\LL(C,\boldsymbol A),
+\]
+with an additional range for the polynomially derived label. For row
+$i-1$, choose $p^e$ from Lemma~\ref{lem:selectors}. By
+Lemma~\ref{lem:signed-range}, the ordinary residue of $C$ modulo
+$p^{xe}$ lies in $[0,t-1]$. Equation~\eqref{eq:index} identifies
+that residue modulo $p^e$ with $i-1$. Since $p^e>t$, it is exactly
+$i-1$. All other columns recover their bounded nonnegative local
+values in the same way.
+
+The inequalities in \eqref{eq:large-x} give
+$2+t+x+y+B<2x$. The elementary inequality
+$(2x)^{2^{23}}<2^x$ for $x>2^{32}$ then bounds every decoded local
+value by $2^x\le p^{xe}$. Its divisibility by $p^{xe}$ forces it to
+vanish. For the derived label, the decoded syntax inputs lie in
+$[0,t]$. Apply the same structural ledger with input bound $t+1$ to
+obtain
+\[
+ 0\le J(\text{local syntax})\le(t+1)^\ell
+ <(2+t+x+y+B)^E<2^x.
+\]
+Its small range residue and its locally evaluated value are congruent
+modulo $p^{xe}$ and both lie in $[0,p^{xe})$, so they agree.
+Every row is valid.
+
+The recovered beta accumulator starts at $B+1$ and ends at 1.
+The inequality $y>B$ makes the initial remainder proper without a
+boundary exception. Valid local updates have positive weights $1+jB$;
+starting from $B+1>0$, all accumulators are positive. Multiply the
+updates and cancel them to obtain \eqref{eq:balance}. Lemma~\ref{lem:binomial-growth}
+and the flow argument then give a finite $C_{222}$ refutation. The
+retained logical calibration gives a finite ZFC refutation.
+
+\section{Constructive completeness}
+
+Start with a finite $C_{222}$ refutation, expand it to a proof tree,
+and choose $t=16+h^2$ beyond every required row count and label bound.
+Truth padding supplies exactly $t$ rows. Set $R=16^t$ and
+$B=\binom{R+t}{t}$. Build the pending accumulators using weights
+$1+jB$.
+
+Let $O$ be the odd part of $t!$. Choose an arbitrarily large positive
+odd multiple $w$ of $O$ and set $y=RBw^2$. By
+Lemma~\ref{lem:binomial-growth}, $B$ is odd; $v_2(R)=4t>v_2(t!)$.
+Thus $y$ is an even multiple of $t!$, and can exceed every accumulator.
+The beta moduli $1+(i+1)y$, $0\le i\le t$, are pairwise coprime:
+a common prime would divide $j-i\le t$ and hence $y$, an impossibility.
+They are all odd. CRT supplies the beta code $x$; choose a positive,
+sufficiently large even lift. The endpoint quotients and local beta
+quotients then satisfy their required bounds. The latter are strictly
+below $x$ because their moduli are at least two.
+
+Set $N=B^x$, which is odd. For each full prime power $p^e\Vert B$,
+use the compatible row from Lemma~\ref{lem:selectors}, and prescribe
+the row's actual values modulo $p^{2xe}$. CRT supplies all nine
+representatives modulo $N^2$. The extra precision is essential:
+division by any range factorial $k!$, with $k\le x$, loses at most
+$k-1<x\le xe$ powers of $p$. The resulting binomial therefore
+remains divisible by $p^{xe}$. This proves completeness of the range
+conditions without using a false converse to Lemma~\ref{lem:signed-range}.
+
+Choose the dominant schema representative $a$ odd and the other eight
+representatives even. The inherited label constructors give
+$J\equiv1+a+b\pmod2$ and $J\ge2a^2$, so the semantic anchor is
+even. These parity choices make $H$ odd. If $3\mid B$, then $BH$
+is already a multiple of 3. If $3\nmid B$, the modulus $N^2$ is
+coprime to 6, and the representatives may additionally be chosen so
+that $H\equiv0\pmod3$. Two independent square residues suffice:
+their possible sums modulo 3 are 0, 1, and 2. This adjustment preserves
+the stated parities and the CRT classes.
+
+Choose the other representatives positive and at most $6N^2$; take
+$a$ in a compatible class between $2N^2$ and $8N^2$. Then
+$J\ge8N^4$ dominates twice every other requested index. The front
+indices satisfy $R+t<B<N^2$ and $t,y+1,x<N^2$. Increasing the
+representatives changes the self-sized radix using their actual values,
+so it does not invalidate the coefficient bounds.
+
+Now $q=(BH)^x$ is a positive odd multiple of 3, hence it has the
+required affine form $6z+3$. Compute the exact powers in
+\eqref{eq:six}, the successor denominator, the actual index atoms, and
+their magnitude frame. Choose the lower frame abscissa $L$ and a sufficiently large
+$A=L^2+u^2+v^2$ by Theorem~\ref{thm:two-square}, so that
+\eqref{eq:common-root} holds. The inherited anchor and pooled
+orientation completion at this $A$ supplies all requested Pell pairs.
+Use their polynomial values \eqref{eq:mu} as the eleven modular
+numerators.
+
+The genuine normalized remainders have absolute value below $M/32$.
+Therefore
+\[
+ 4\sum_{i=1}^{11}\rho_i^2<\frac{44}{1024}M^2<M^2.
+\]
+The remaining nonnegative integer gap in \eqref{eq:norm} has a
+$\G$ representation. All quotient witnesses are integral by the
+common-root and range congruences. This constructs a zero of the
+new raw polynomial system from every finite refutation, without
+making any choice depend circularly on the subsequently chosen Pell
+center.
+
+\section{The literal polynomial and finite verification}
+
+Every source definition is a quadratic integer equation. The builder
+records the exact changes from the pinned parent, the recomputed
+magnitude frame, the full power-request census, and every deleted
+private coordinate. It then applies the retained Horn factorization
+and polynomial contractions.
+
+A permitted monic contraction removes a row of the form
+$\epsilon z_i+f=0$, where $\epsilon\in\{1,-1\}$ and $f$ does
+not involve $z_i$. Substitution gives an integer polynomial inverse,
+and the checker requires every remaining residual to stay quadratic.
+Recorded affine consequences and integer residual-row operations
+preserve the common zero set. For example, replacing $R_i$ by
+$R_i+cR_j$ is reversed by subtraction. Integer coordinate translations
+are bijections on the declared domain. The sum-of-squares polynomial
+may change under these operations, but its zero set remains equivalent.
+
+% BEGIN report/verification.tex
+\begin{center}\small
+\begin{tabular}{@{}lr@{}}
+\toprule Finite audit & Count \\ \midrule
+Literal exact-power requests retained & 6 \\
+Modular numerator definitions checked & 11 \\
+Principal signed Pell pairs checked & 14 \\
+Retained frame atoms & 21 \\
+Independent Horn factoring edits & 18 \\
+Integral monic restorations & 208 \\
+Coordinate translations before final refinements & 69 \\
+Final balanced / compact affine projections & 2 / 3 \\
+Deliberately corrupted algebra artifacts rejected & 7 \\
+\bottomrule\end{tabular}\end{center}
+Each collected coefficient is checked independently by summing the literal residual squares.
+The normal and optimized-Python checks give the same algebraic results.
+The complete packet also reproduces all 41 newly built stage and endpoint JSON files byte for byte.
+The two-square-center regressions cover 2,210 completions and 3,128 prime-power cases,
+including the counterexample to keeping an arbitrary frame fixed.
+% END report/verification.tex
+
+The verification code uses explicit exceptions for failed conditions,
+so optimized Python does not disable its checks. The arithmetic
+regressions cover signed generalized binomial coefficients, signed
+range implications, fixed-base binomial parity and growth, prime-power
+row selectors, and common-root modular digits. These finite cases
+are useful error detectors; the proofs in the preceding sections are
+what establish the unbounded claims.
+
+\subsection{Reproduction and integration}
+
+From a fresh extraction, with Python 3.10 or later:
+\begin{verbatim}
+python3 -B verify.py
+python3 -O -B verify.py
+\end{verbatim}
+The verifier is read-only unless a receipt path is explicitly supplied.
+The archive includes deterministic builders and exact source-to-output
+certificates; no network access or external symbolic algebra system is
+needed for verification. To rebuild the article with ordinary TeX Live,
+run \nolinkurl{build_report.sh}. The standalone TeX source contains
+all generated report inputs. PDF metadata may vary by TeX installation;
+the exact polynomial data do not.
+
+The contribution can be placed as a new directory in
+\nolinkurl{Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+This work does not modify an upstream branch. Source licenses and
+attribution notices are retained. The integrity manifest is a local
+checksum inventory, not an external signature or a proof certificate.
+
+\section{What remains open}
+
+The delivered result is a complete, fixed polynomial with an ordinary
+consistency-equivalence proof. It does not establish the smallest
+possible variable count, the smallest coefficient height, or a global
+optimal arithmetic circuit. Nor does it make a nine-natural-variable
+or ten-integer-variable universality result obsolete. In particular,
+Sun's September 2026 ten-integer-variable theorem \cite{sun10}
+and the contemporary universal-bound work \cite{bayer} concern
+different complexity tradeoffs.
+
+The central reusable result here is the source architecture:
+one binomial supplies row selectors and multiplicity separation;
+one existing exponent request supplies the needed sign; and one
+cofinal center supports all modular numerators. The finite code measures
+the complete composition. Further improvements should target the
+remaining six exact powers, the private anchor witnesses, or a
+different local proof calculus. Merely shortening a displayed
+abbreviation, omitting a signed case, or discarding a completeness
+condition would not be an improvement.
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, inspected commit
+\texttt{b7e35224c04fe1031c0a53f80a395e9b32205022}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+The exact inherited source and archive hashes are in the supplied provenance ledger.
+\bibitem{factorialfree} \emph{Removing factorial authenticity from
+Diophantine consistency}, incoming ProveIt research packet,
+25 October 2026. Retained in \nolinkurl{upstream/factorial_free/}.
+The binomial selector and large-evaluation lemmas are inherited from
+this packet; its earlier modular numerator sources are separately credited.
+\bibitem{farhi} B. Farhi, \emph{An identity involving the least common
+multiple of binomial coefficients and its application},
+American Mathematical Monthly 116 (2009), 836--839.
+\url{https://arxiv.org/abs/0906.2295}.
+\bibitem{sun10} Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth
+problem over the integers}, arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+\bibitem{bayer} J. Bayer, M. David, M. Ha\ss ler, Y. Matiyasevich,
+and D. Schleicher, \emph{Diophantine equations over $\Z$: universal
+bounds and parallel formalization}, arXiv:2506.20909v3,
+22 October 2026. \url{https://arxiv.org/html/2506.20909v3}.
+\end{thebibliography}
+
+\clearpage\appendix
+\section{Complete principal residual list}\label{app:residuals}
+
+The only unknowns are $z_0,\ldots,z_{\MainLastVar}\in\Z$.
+Define $P=\sum_{i=0}^{\MainLastRow}R_i^2$ using the following
+literal list. There are no additional quantified symbols. This list
+and the declared integer domain specify the entire equation; the
+JSON file uses the same zero-based coordinate ordering.
+
+% BEGIN report/residuals.tex
+\begingroup
+\small
+\setlength{\jot}{3pt}
+\allowdisplaybreaks[4]
+\begin{align*}
+R_{0}={}& z_{3} - z_{4} - 2z_{4}\,z_{228} \\[2pt]
+R_{1}={}& z_{0} - z_{0}\,z_{2} - z_{2} + z_{7} \\[2pt]
+R_{2}={}& -1 - z_{2}\,z_{5} + z_{6}\,z_{7} - 2z_{228} \\[2pt]
+R_{3}={}& -1 + z_{1} - z_{6}\,z_{7} \\[2pt]
+R_{4}={}& 1 + z_{4} + z_{16} - z_{18} - 2z_{18}\,z_{228} \\[2pt]
+R_{5}={}& -1 - z_{8}^{2} - 2z_{8}\,z_{9} - z_{9}^{2} + z_{19} \\[2pt]
+R_{6}={}& -10z_{8} + z_{8}^{2} - 6z_{8}\,z_{9} - 8z_{8}\,z_{19} - 20z_{9} - 11z_{9}^{2} - 16z_{9}\,z_{19} \\*
+&\quad  - 15z_{19} - 4z_{19}^{2} + z_{20} \\[2pt]
+R_{7}={}& -2 + 2z_{8} - z_{8}^{2} - 4z_{8}\,z_{20} - 4z_{20} - 4z_{20}^{2} + z_{21} \\[2pt]
+R_{8}={}& 1 + 6z_{8} - 36z_{8}^{2} - 24z_{8}\,z_{21} + 2z_{21} - 4z_{21}^{2} + z_{22} \\[2pt]
+R_{9}={}& -2 - z_{9} - z_{9}^{2} - 2z_{9}\,z_{10} - z_{10} - z_{10}^{2} + z_{23} \\[2pt]
+R_{10}={}& -8 + 7z_{8} - z_{8}^{2} + 4z_{8}\,z_{10} - 4z_{8}\,z_{23} - 4z_{10} + 4z_{23} + z_{24} - z_{46} \\[2pt]
+R_{11}={}& -1 + z_{8} - z_{8}^{2} - 2z_{8}\,z_{10} + z_{10} - z_{10}^{2} + z_{25} \\[2pt]
+R_{12}={}& 23 + 16z_{8} - 8z_{8}\,z_{9} - 8z_{8}\,z_{10} - 16z_{8}\,z_{19} - 8z_{8}\,z_{25} + 19z_{9} \\*
+&\quad  + 9z_{9}^{2} - 36z_{9}\,z_{10} - 12z_{9}\,z_{25} + 16z_{10} + 8z_{10}^{2} - 24z_{10}\,z_{19} - 8z_{19}\,z_{25} \\*
+&\quad  - z_{20} + z_{26} - z_{31} \\[2pt]
+R_{13}={}& -4z_{24}^{2} - 8z_{24}\,z_{26} - 4z_{26}^{2} + z_{27} \\[2pt]
+R_{14}={}& -2 - 8z_{8} + 8z_{8}\,z_{23} + 8z_{8}\,z_{25} - 8z_{9} + 8z_{9}\,z_{23} + 8z_{9}\,z_{25} - 4z_{19} \\*
+&\quad  + 8z_{23} - 4z_{23}^{2} - 8z_{23}\,z_{25} + 8z_{25} - 4z_{25}^{2} + z_{28} \\[2pt]
+R_{15}={}& 6 + 4z_{8} + 32z_{8}\,z_{9} + 16z_{8}\,z_{19} + 16z_{8}\,z_{25} + 8z_{8}\,z_{28} + 24z_{9} \\*
+&\quad  - 32z_{9}\,z_{25} - 16z_{9}\,z_{28} + 12z_{19} - 16z_{19}\,z_{25} - 8z_{19}\,z_{28} - z_{20} + 8z_{25} \\*
+&\quad  - 16z_{25}^{2} - 16z_{25}\,z_{28} + 4z_{28} - 4z_{28}^{2} + z_{29} \\[2pt]
+R_{16}={}& 22 - 5z_{8} - z_{8}^{2} - 8z_{8}\,z_{9} - 12z_{8}\,z_{10} - 4z_{8}\,z_{23} - 8z_{9} - 16z_{9}\,z_{10} \\*
+&\quad  - 16z_{9}\,z_{23} - 20z_{10} - 20z_{10}^{2} - 24z_{10}\,z_{23} - 28z_{23} - 4z_{23}^{2} + z_{30} \\[2pt]
+R_{17}={}& 19 - 25z_{8} - 7z_{8}^{2} - 8z_{8}\,z_{9} - 30z_{8}\,z_{10} - 16z_{8}\,z_{25} + 3z_{9} + 5z_{9}^{2} \\*
+&\quad  - 4z_{9}\,z_{25} - 27z_{10} - 21z_{10}^{2} - 24z_{10}\,z_{25} - 6z_{23} - 17z_{25} - 4z_{25}^{2} + z_{31} \\[2pt]
+R_{18}={}& 2 - 4z_{30}^{2} - 8z_{30}\,z_{31} - 4z_{31}^{2} + z_{32} \\[2pt]
+R_{19}={}& -19z_{8} + 8z_{8}^{2} + 8z_{8}\,z_{19} + 8z_{8}\,z_{23} - 46z_{9} - 24z_{9}^{2} + 24z_{9}\,z_{19} \\*
+&\quad  + 24z_{9}\,z_{23} - 2z_{10} + 4z_{19} - 4z_{19}^{2} - 8z_{19}\,z_{23} + 14z_{23} - 4z_{23}^{2} - z_{25} \\*
+&\quad  + z_{33} \\[2pt]
+R_{20}={}& -3 - 6z_{8} - 4z_{10} - 2z_{25} - 4z_{33} - 4z_{33}^{2} + z_{34} \\[2pt]
+R_{21}={}& 8 + 42z_{8} + 7z_{8}^{2} + 28z_{8}\,z_{20} + 48z_{9} - 32z_{9}^{2} - 32z_{9}\,z_{19} \\*
+&\quad  + 64z_{9}\,z_{20} - 40z_{19}^{2} + 32z_{19}\,z_{20} + 14z_{20} - 4z_{20}^{2} + z_{35} + 2z_{38} \\[2pt]
+R_{22}={}& 1 + 6z_{8} - 36z_{8}^{2} - 24z_{8}\,z_{35} + 2z_{35} - 4z_{35}^{2} + z_{36} \\[2pt]
+R_{23}={}& -z_{9}^{2} - 4z_{9}\,z_{36} - 4z_{36}^{2} + z_{37} \\[2pt]
+R_{24}={}& -6 - 2z_{8} - 4z_{9} - 14z_{19} - 16z_{19}^{2} + z_{38} \\[2pt]
+R_{25}={}& 24 + 21z_{9} - 21z_{9}^{2} - 18z_{9}\,z_{10} - 24z_{9}\,z_{23} - 24z_{9}\,z_{38} + 3z_{10} \\*
+&\quad  - 9z_{10}^{2} - 16z_{10}\,z_{38} + 3z_{23} - 12z_{23}^{2} - 8z_{23}\,z_{38} + 4z_{38} - 4z_{38}^{2} + z_{39} \\*
+&\quad  + 2z_{46} \\[2pt]
+R_{26}={}& 16 - 10z_{8} - 20z_{8}^{2} - 16z_{8}\,z_{10} - 24z_{8}\,z_{25} - 24z_{8}\,z_{39} - 12z_{10} \\*
+&\quad  - 16z_{10}\,z_{25} - 16z_{10}\,z_{39} - 14z_{25} - 4z_{25}^{2} - 8z_{25}\,z_{39} + 4z_{39} - 4z_{39}^{2} \\*
+&\quad  + z_{40} \\[2pt]
+R_{27}={}& -z_{10}^{2} - 2z_{10}\,z_{11} - z_{11}^{2} + z_{41} \\[2pt]
+R_{28}={}& 2 + z_{8}^{2} - 4z_{8}\,z_{41} + 2z_{10} - 2z_{10}^{2} - 8z_{10}\,z_{41} - 2z_{25} + 4z_{41} - 4z_{41}^{2} \\*
+&\quad  + z_{42} \\[2pt]
+R_{29}={}& -31 - 16z_{10} - 16z_{10}\,z_{23} + 16z_{10}\,z_{25} - 8z_{23} + 12z_{23}^{2} - 8z_{23}\,z_{25} + 24z_{25} \\*
+&\quad  - 4z_{25}^{2} + z_{43} - 4z_{46} \\[2pt]
+R_{30}={}& -4z_{10} - 16z_{25}^{2} - 32z_{25}\,z_{41} - 16z_{25}\,z_{42} - 16z_{25}\,z_{43} - 4z_{41} - 16z_{41}^{2} \\*
+&\quad  - 16z_{41}\,z_{42} - 16z_{41}\,z_{43} - 2z_{42} - 4z_{42}^{2} - 8z_{42}\,z_{43} - 4z_{43}^{2} + z_{44} \\[2pt]
+R_{31}={}& -16z_{8}^{2} + 8z_{8}\,z_{10} + 32z_{8}\,z_{25} + 16z_{8}\,z_{28} + z_{10} - z_{10}^{2} - 8z_{10}\,z_{25} \\*
+&\quad  - 4z_{10}\,z_{28} - 16z_{25}^{2} - 16z_{25}\,z_{28} - 4z_{28}^{2} + z_{45} \\[2pt]
+R_{32}={}& -1 - 8z_{10} - 4z_{10}^{2} + 8z_{10}\,z_{23} + 8z_{23} - 4z_{23}^{2} + z_{46} \\[2pt]
+R_{33}={}& -1 - 9z_{10}^{2} + 24z_{10}\,z_{23} + 12z_{10}\,z_{46} - 16z_{23}^{2} - 16z_{23}\,z_{46} - 4z_{46}^{2} + z_{47} \\[2pt]
+R_{34}={}& 1 + z_{9} - z_{9}^{2} - 4z_{9}\,z_{10} - 4z_{9}\,z_{47} - 4z_{10}^{2} - 8z_{10}\,z_{47} - 4z_{47}^{2} + z_{48} \\[2pt]
+R_{35}={}& -1 - 4z_{48} - 4z_{48}^{2} + z_{49} \\[2pt]
+R_{36}={}& -1 - z_{10}^{2} - 8z_{10}\,z_{48} - 4z_{10}\,z_{49} - 16z_{48}^{2} - 16z_{48}\,z_{49} - 4z_{49}^{2} + z_{50} \\[2pt]
+R_{37}={}& 2 + z_{9} - z_{9}^{2} - 4z_{9}\,z_{10} - 4z_{9}\,z_{50} - 4z_{10}^{2} - 8z_{10}\,z_{50} - 4z_{50}^{2} + z_{51} \\[2pt]
+R_{38}={}& -4z_{45}^{2} - 8z_{45}\,z_{51} - 4z_{51}^{2} + z_{52} \\[2pt]
+R_{39}={}& -9 + 7z_{8} - z_{8}^{2} - 8z_{8}\,z_{45} - 4z_{8}\,z_{52} + 24z_{45} - 16z_{45}^{2} - 16z_{45}\,z_{52} \\*
+&\quad  + 12z_{52} - 4z_{52}^{2} + z_{53} \\[2pt]
+R_{40}={}& -1 - 4z_{53} - 4z_{53}^{2} + z_{54} \\[2pt]
+R_{41}={}& -z_{10}^{2} - 8z_{10}\,z_{53} - 4z_{10}\,z_{54} - 16z_{53}^{2} - 16z_{53}\,z_{54} - 4z_{54}^{2} + z_{55} \\[2pt]
+R_{42}={}& -z_{8} - z_{8}^{2} - 4z_{8}\,z_{10} - 4z_{8}\,z_{55} - 4z_{10} - 4z_{10}^{2} - 8z_{10}\,z_{55} - 4z_{55} \\*
+&\quad  - 4z_{55}^{2} + z_{56} \\[2pt]
+R_{43}={}& -10 - 12z_{56} - 4z_{56}^{2} + z_{57} \\[2pt]
+R_{44}={}& 2 + 4z_{10} + 16z_{10}\,z_{56} + 8z_{10}\,z_{57} - 4z_{23} - 16z_{23}\,z_{56} - 8z_{23}\,z_{57} - z_{46} \\*
+&\quad  + 8z_{56} - 16z_{56}^{2} - 16z_{56}\,z_{57} + 4z_{57} - 4z_{57}^{2} + z_{58} \\[2pt]
+R_{45}={}& z_{9} - z_{9}^{2} + 8z_{9}\,z_{10} - 8z_{9}\,z_{23} - 4z_{9}\,z_{58} - 16z_{10}^{2} + 32z_{10}\,z_{23} \\*
+&\quad  + 16z_{10}\,z_{58} - 16z_{23}^{2} - 16z_{23}\,z_{58} - 4z_{58}^{2} + z_{59} \\[2pt]
+R_{46}={}& -10 - 12z_{51} - 4z_{51}^{2} + z_{60} \\[2pt]
+R_{47}={}& 1 - 16z_{51}^{2} - 16z_{51}\,z_{59} - 16z_{51}\,z_{60} - 4z_{59}^{2} - 8z_{59}\,z_{60} - 4z_{60}^{2} + z_{61} \\[2pt]
+R_{48}={}& z_{10} - z_{10}^{2} - 8z_{10}\,z_{59} - 4z_{10}\,z_{61} - 16z_{59}^{2} - 16z_{59}\,z_{61} - 4z_{61}^{2} + z_{62} \\[2pt]
+R_{49}={}& -6z_{8} - 3z_{8}^{2} - 18z_{8}\,z_{9} - 16z_{9} - 27z_{9}^{2} + 4z_{9}\,z_{10} + 3z_{10} + 3z_{10}^{2} \\*
+&\quad  - 4z_{10}\,z_{19} - 19z_{19} - 8z_{19}^{2} + z_{20} + z_{63} - 4z_{76} \\[2pt]
+R_{50}={}& 1 - 8z_{8} - 4z_{8}\,z_{10} + 8z_{8}\,z_{63} - 16z_{9} - 8z_{9}\,z_{10} + 16z_{9}\,z_{63} + z_{10} \\*
+&\quad  + z_{10}^{2} + 4z_{10}\,z_{19} + 8z_{19} - 8z_{19}\,z_{63} + 3z_{63} - 4z_{63}^{2} + z_{64} \\[2pt]
+R_{51}={}& -2 - 12z_{8} - 16z_{8}\,z_{10} + 16z_{8}\,z_{62} + 16z_{8}\,z_{64} - 24z_{9} - 32z_{9}\,z_{10} \\*
+&\quad  + 32z_{9}\,z_{62} + 32z_{9}\,z_{64} + 4z_{10} + 4z_{10}^{2} + 16z_{10}\,z_{19} + 12z_{19} - 16z_{19}\,z_{62} \\*
+&\quad  - 16z_{19}\,z_{64} - 4z_{62}^{2} - 8z_{62}\,z_{64} - 4z_{63} - 2z_{64} - 4z_{64}^{2} + z_{65} \\[2pt]
+R_{52}={}& -2 - 4z_{65} - 4z_{65}^{2} + z_{66} \\[2pt]
+R_{53}={}& -z_{13} - 2z_{13}\,z_{228} + z_{67} \\[2pt]
+R_{54}={}& z_{12} - z_{13} - 2z_{22}\,z_{67} - z_{68} \\[2pt]
+R_{55}={}& z_{12} - z_{13} - 4z_{24}\,z_{67} - 2z_{27}\,z_{67} - z_{69} \\[2pt]
+R_{56}={}& -2z_{29}\,z_{67} + 2z_{44}\,z_{67} - 2z_{67} - z_{70} + z_{75} \\[2pt]
+R_{57}={}& z_{12} - z_{13} - 4z_{30}\,z_{67} - 2z_{32}\,z_{67} - z_{71} \\[2pt]
+R_{58}={}& z_{12} - z_{13} - 2z_{34}\,z_{67} + 6z_{67} - z_{72} \\[2pt]
+R_{59}={}& z_{12} - z_{13} - 4z_{36}\,z_{67} - 2z_{37}\,z_{67} - z_{73} \\[2pt]
+R_{60}={}& z_{12} - z_{13} - 2z_{40}\,z_{67} - z_{74} \\[2pt]
+R_{61}={}& z_{12} - z_{13} - 2z_{44}\,z_{67} - 4z_{67} - z_{75} \\[2pt]
+R_{62}={}& -z_{8}\,z_{9} + z_{8}\,z_{10} + z_{9} + z_{9}\,z_{10} - z_{10} - z_{10}^{2} + z_{76} \\[2pt]
+R_{63}={}& 1 + 2z_{11} + z_{11}^{2} - z_{76}^{2} + z_{77} \\[2pt]
+R_{64}={}& -z_{77}^{2} + z_{78} \\[2pt]
+R_{65}={}& -4z_{65}\,z_{67} - 2z_{66}\,z_{67} + 2z_{67} + z_{79} \\[2pt]
+R_{66}={}& -z_{12}^{2} + 2z_{12}\,z_{13} + 2z_{12}\,z_{79} - z_{13}^{2} - 2z_{13}\,z_{79} - z_{79}^{2} + z_{80} \\[2pt]
+R_{67}={}& -1 - z_{9} - 2z_{9}\,z_{228} + z_{81} \\[2pt]
+R_{68}={}& -z_{13}\,z_{81} + z_{83}\,z_{84} + z_{85} \\[2pt]
+R_{69}={}& -z_{8} - 2z_{8}\,z_{228} + z_{82} + 2z_{228} \\[2pt]
+R_{70}={}& 1 + 2z_{8} + 4z_{8}\,z_{228} + 4z_{9} + 8z_{9}\,z_{228} - 2z_{19} - 4z_{19}\,z_{228} + z_{83} + 4z_{228} \\[2pt]
+R_{71}={}& -z_{12}\,z_{82} + z_{84} \\[2pt]
+R_{72}={}& z_{12}\,z_{81} + 6z_{13} - 8z_{13}\,z_{81} - 4z_{13}\,z_{82} - z_{13}\,z_{83} - 12z_{13}\,z_{228} + z_{86} \\[2pt]
+R_{73}={}& -z_{12}\,z_{68} + z_{13}\,z_{68} + z_{87} \\[2pt]
+R_{74}={}& -z_{69}\,z_{87} + z_{88} \\[2pt]
+R_{75}={}& -z_{70}\,z_{88} + z_{89} \\[2pt]
+R_{76}={}& -z_{71}\,z_{89} + z_{90} \\[2pt]
+R_{77}={}& -z_{72}\,z_{90} + z_{91} \\[2pt]
+R_{78}={}& -z_{73}\,z_{91} + z_{92} \\[2pt]
+R_{79}={}& -z_{74}\,z_{92} + z_{93} \\[2pt]
+R_{80}={}& -z_{75}\,z_{93} + z_{94} \\[2pt]
+R_{81}={}& -z_{85}\,z_{94} + z_{95} \\[2pt]
+R_{82}={}& -z_{86}\,z_{95} + z_{96} \\[2pt]
+R_{83}={}& -z_{96}^{2} + z_{97} \\[2pt]
+R_{84}={}& -z_{2} - z_{2}\,z_{16} + z_{16} + z_{98} \\[2pt]
+R_{85}={}& -z_{14}\,z_{98} + z_{99} \\[2pt]
+R_{86}={}& -2z_{1}^{2} + 2z_{1}\,z_{12} + 2z_{1}\,z_{13} + 2z_{1}\,z_{99} + 2z_{1}\,z_{100} - z_{12}^{2} - 2z_{12}\,z_{99} \\*
+&\quad  - z_{13}^{2} - 2z_{13}\,z_{100} + z_{17}\,z_{102} - z_{78}\,z_{97} - z_{80}\,z_{97} - z_{99}^{2} - z_{100}^{2} \\[2pt]
+R_{87}={}& -z_{2}\,z_{15} + z_{15} - z_{15}\,z_{98} + z_{100} \\[2pt]
+R_{88}={}& -z_{8} - z_{9} - 4z_{19} - 2z_{22} - 4z_{24} - 2z_{27} - 2z_{29} - 4z_{30} - 2z_{32} - 2z_{34} \\*
+&\quad  - 4z_{36} - 2z_{37} - 2z_{40} - 2z_{44} - 4z_{65} - 2z_{66} + z_{101} \\[2pt]
+R_{89}={}& -3z_{105} - 6z_{105}\,z_{221} + z_{107} \\[2pt]
+R_{90}={}& z_{103}\,z_{212} - z_{106} - z_{107}\,z_{128} - z_{128} - 2z_{128}\,z_{228} \\[2pt]
+R_{91}={}& z_{108}\,z_{213} - z_{110}\,z_{131} - z_{111} \\[2pt]
+R_{92}={}& z_{112}\,z_{213} - z_{113}\,z_{131} - z_{114} \\[2pt]
+R_{93}={}& z_{115}\,z_{213} - z_{116}\,z_{131} - z_{117} \\[2pt]
+R_{94}={}& z_{118}\,z_{213} - z_{119}\,z_{131} - z_{120} \\[2pt]
+R_{95}={}& z_{121}\,z_{214} - z_{123}\,z_{131} - z_{124} \\[2pt]
+R_{96}={}& z_{125}\,z_{214} - z_{126}\,z_{131} - z_{127} \\[2pt]
+R_{97}={}& -z_{17}\,z_{128} + z_{131} \\[2pt]
+R_{98}={}& -z_{131}\,z_{135} + z_{134}\,z_{212} - z_{136} \\[2pt]
+R_{99}={}& -z_{131}\,z_{138} + z_{137}\,z_{213} - z_{139} \\[2pt]
+R_{100}={}& z_{140} - 2z_{140}\,z_{142} + z_{143} \\[2pt]
+R_{101}={}& -z_{140}\,z_{143} - z_{143} + z_{144} \\[2pt]
+R_{102}={}& -1 + z_{143}^{2} - z_{144}^{2} + z_{224}^{2} \\[2pt]
+R_{103}={}& -z_{141}\,z_{146} - 7z_{146} + z_{147} \\[2pt]
+R_{104}={}& 2z_{145} + z_{145}^{2} + z_{146}^{2} - z_{147}^{2} \\[2pt]
+R_{105}={}& 1 - z_{4} - 32z_{141}\,z_{148} + z_{145} + 16z_{146} - z_{147} + 33z_{148} \\[2pt]
+R_{106}={}& -12 - 2z_{141} - 4z_{141}\,z_{228} + z_{149} - 24z_{228} + 4z_{228}^{2} \\[2pt]
+R_{107}={}& z_{17} + z_{149}\,z_{150} - z_{183} - z_{184} - 2z_{184}\,z_{228} + z_{185} \\[2pt]
+R_{108}={}& -1 + 2z_{141}\,z_{196} - z_{151} + 14z_{196} - z_{196}^{2} \\[2pt]
+R_{109}={}& 3 + z_{151}\,z_{152} - z_{183} - z_{184}\,z_{196} + z_{185} + 6z_{221} \\[2pt]
+R_{110}={}& -z_{141}\,z_{154} - 7z_{154} + z_{155} \\[2pt]
+R_{111}={}& 2z_{153} + z_{153}^{2} + z_{154}^{2} - z_{155}^{2} \\[2pt]
+R_{112}={}& -39 + z_{131}\,z_{229} - 8z_{141} - 12z_{141}\,z_{221} - 36z_{221} + 36z_{221}^{2} \\[2pt]
+R_{113}={}& 1 - z_{103} - z_{141}\,z_{154} + z_{153} - 3z_{154} + 6z_{154}\,z_{221} \\[2pt]
+R_{114}={}& 7 - z_{131}\,z_{229} + 2z_{141} + z_{156} - 12z_{221} \\[2pt]
+R_{115}={}& -1 + z_{104} - z_{145} - 3z_{146} - 6z_{146}\,z_{221} + z_{147} + z_{156}\,z_{157} \\[2pt]
+R_{116}={}& 7 + z_{141} - z_{141}\,z_{159} - 7z_{159} + z_{160} \\[2pt]
+R_{117}={}& 1 + 2z_{158} + z_{158}^{2} - 2z_{159} + z_{159}^{2} - z_{160}^{2} \\[2pt]
+R_{118}={}& 4 - z_{108} + z_{141} - z_{141}\,z_{159} + z_{158} - 3z_{159} + 6z_{159}\,z_{221} - 6z_{221} \\[2pt]
+R_{119}={}& -3z_{104} - 6z_{104}\,z_{221} + z_{109} \\[2pt]
+R_{120}={}& -z_{141}\,z_{162} - 7z_{162} + z_{163} \\[2pt]
+R_{121}={}& 2z_{161} + z_{161}^{2} + z_{162}^{2} - z_{163}^{2} \\[2pt]
+R_{122}={}& 1 - z_{112} - z_{141}\,z_{162} + z_{161} - 3z_{162} + 6z_{162}\,z_{221} \\[2pt]
+R_{123}={}& -z_{141}\,z_{165} - 7z_{165} + z_{166} \\[2pt]
+R_{124}={}& 2z_{164} + z_{164}^{2} + z_{165}^{2} - z_{166}^{2} \\[2pt]
+R_{125}={}& 1 - z_{115} - z_{141}\,z_{165} + z_{164} - 3z_{165} + 6z_{165}\,z_{221} \\[2pt]
+R_{126}={}& -z_{141}\,z_{168} - 7z_{168} + z_{169} \\[2pt]
+R_{127}={}& 2z_{167} + z_{167}^{2} + z_{168}^{2} - z_{169}^{2} \\[2pt]
+R_{128}={}& 1 - z_{118} - z_{141}\,z_{168} + z_{167} - 3z_{168} + 6z_{168}\,z_{221} \\[2pt]
+R_{129}={}& -z_{141}\,z_{171} - 7z_{171} + z_{172} \\[2pt]
+R_{130}={}& 2z_{170} + z_{170}^{2} + z_{171}^{2} - z_{172}^{2} \\[2pt]
+R_{131}={}& 1 - z_{121} - z_{141}\,z_{171} + z_{170} - 3z_{171} + 6z_{171}\,z_{221} \\[2pt]
+R_{132}={}& -z_{141}\,z_{174} - 7z_{174} + z_{175} \\[2pt]
+R_{133}={}& 2z_{173} + z_{173}^{2} + z_{174}^{2} - z_{175}^{2} \\[2pt]
+R_{134}={}& -1 + z_{122} + z_{156}\,z_{176} - z_{173} - 3z_{174} - 6z_{174}\,z_{221} + z_{175} \\[2pt]
+R_{135}={}& -z_{141}\,z_{178} - 7z_{178} + z_{179} \\[2pt]
+R_{136}={}& 2z_{177} + z_{177}^{2} + z_{178}^{2} - z_{179}^{2} \\[2pt]
+R_{137}={}& 1 - z_{125} - z_{141}\,z_{178} + z_{177} - 3z_{178} + 6z_{178}\,z_{221} \\[2pt]
+R_{138}={}& -z_{141}\,z_{181} - 7z_{181} + z_{182} \\[2pt]
+R_{139}={}& 2z_{180} + z_{180}^{2} + z_{181}^{2} - z_{182}^{2} \\[2pt]
+R_{140}={}& 1 - z_{129}\,z_{131} - z_{130} - z_{141}\,z_{181} + z_{180} - 3z_{181} + 6z_{181}\,z_{221} \\[2pt]
+R_{141}={}& 1 - z_{141}\,z_{184} - 7z_{184} + z_{185} \\[2pt]
+R_{142}={}& -1 + 2z_{183} + z_{183}^{2} + z_{184}^{2} - 2z_{185} - z_{185}^{2} \\[2pt]
+R_{143}={}& z_{128} + z_{156}\,z_{186} - z_{183} - 3z_{184} - 6z_{184}\,z_{221} + z_{185} \\[2pt]
+R_{144}={}& -z_{141}\,z_{188} - 7z_{188} + z_{189} \\[2pt]
+R_{145}={}& 2z_{187} + z_{187}^{2} + z_{188}^{2} - z_{189}^{2} \\[2pt]
+R_{146}={}& 1 - z_{131}\,z_{132} - z_{133} - z_{141}\,z_{188} + z_{187} - 3z_{188} + 6z_{188}\,z_{221} \\[2pt]
+R_{147}={}& -z_{141}\,z_{191} - 7z_{191} + z_{192} \\[2pt]
+R_{148}={}& 2z_{190} + z_{190}^{2} + z_{191}^{2} - z_{192}^{2} \\[2pt]
+R_{149}={}& 1 - z_{134} - z_{141}\,z_{191} + z_{190} - 3z_{191} + 6z_{191}\,z_{221} \\[2pt]
+R_{150}={}& -z_{141}\,z_{194} - 7z_{194} + z_{195} \\[2pt]
+R_{151}={}& 2z_{193} + z_{193}^{2} + z_{194}^{2} - z_{195}^{2} \\[2pt]
+R_{152}={}& 1 - z_{137} - z_{141}\,z_{194} + z_{193} - 3z_{194} + 6z_{194}\,z_{221} \\[2pt]
+R_{153}={}& -12 - 2z_{0}^{2} - 2z_{0}\,z_{4} - z_{1}^{2} - z_{2}^{2} - z_{4}^{2} + 2z_{8} + 2z_{8}\,z_{9} - z_{10}^{2} \\*
+&\quad  - z_{11}^{2} - z_{12}^{2} - z_{13}^{2} - z_{14}^{2} - z_{15}^{2} - z_{16}^{2} - z_{17}^{2} - z_{19} - z_{101}^{2} - z_{104}^{2} \\*
+&\quad  - z_{122}^{2} - z_{128}^{2} + z_{140} - z_{196}^{2} - 36z_{221} - 36z_{221}^{2} - 4z_{228} - 4z_{228}^{2} \\[2pt]
+R_{154}={}& z_{196} - z_{227} - 2z_{227}\,z_{228} \\[2pt]
+R_{155}={}& -16 + z_{0} - z_{197}^{2} \\[2pt]
+R_{156}={}& -z_{141}\,z_{199} - 7z_{199} + z_{208} \\[2pt]
+R_{157}={}& -1 + z_{198}^{2} + z_{199}^{2} - z_{208}^{2} \\[2pt]
+R_{158}={}& -z_{201} - z_{201}\,z_{202} + z_{209} \\[2pt]
+R_{159}={}& -1 + z_{200}^{2} + z_{201}^{2} - z_{209}^{2} \\[2pt]
+R_{160}={}& -z_{194}^{2} + z_{210} \\[2pt]
+R_{161}={}& z_{199} - 2z_{204}\,z_{210} - z_{210} \\[2pt]
+R_{162}={}& -4z_{199} - 8z_{199}\,z_{203} + z_{202} \\[2pt]
+R_{163}={}& -6 - z_{141} - z_{198}\,z_{205} + z_{202} \\[2pt]
+R_{164}={}& -1 - z_{193} - z_{198}\,z_{206} + z_{200} \\[2pt]
+R_{165}={}& -z_{101} - 4z_{194}\,z_{207} + z_{201} \\[2pt]
+R_{166}={}& -2 + 2z_{0}^{2} + 2z_{0}\,z_{4} - 2z_{0}\,z_{146} - 2z_{0}\,z_{154} + z_{1}^{2} - 2z_{1}\,z_{184} + z_{2}^{2} \\*
+&\quad  - 2z_{2}\,z_{174} + z_{4}^{2} - 2z_{4}\,z_{154} + z_{8}^{2} - 2z_{8}\,z_{159} + z_{9}^{2} - 2z_{9}\,z_{162} + z_{10}^{2} \\*
+&\quad  - 2z_{10}\,z_{165} + z_{11}^{2} - 2z_{11}\,z_{168} + z_{12}^{2} - 2z_{12}\,z_{171} + z_{13}^{2} - 2z_{13}\,z_{178} + z_{14}^{2} \\*
+&\quad  - 2z_{14}\,z_{181} + z_{15}^{2} - 2z_{15}\,z_{188} + z_{16}^{2} - 2z_{16}\,z_{191} - 2z_{101}\,z_{194} - z_{141}\,z_{211} \\*
+&\quad  + z_{145}^{2} + z_{153}^{2} + z_{158}^{2} + 2z_{159} + z_{161}^{2} + z_{164}^{2} + z_{167}^{2} + z_{170}^{2} + z_{173}^{2} + z_{177}^{2} \\*
+&\quad  + z_{180}^{2} + z_{183}^{2} + z_{187}^{2} + z_{190}^{2} + z_{193}^{2} + 2z_{194}^{2} - 6z_{211} - z_{215}^{2} - z_{216}^{2} - z_{217} \\*
+&\quad  - z_{217}^{2} \\[2pt]
+R_{167}={}& -z_{104}\,z_{212} + z_{128} \\[2pt]
+R_{168}={}& -z_{109}\,z_{213} + z_{128} \\[2pt]
+R_{169}={}& -z_{122}\,z_{214} + z_{128} \\[2pt]
+R_{170}={}& -1 + z_{2} - z_{3}\,z_{222} \\[2pt]
+R_{171}={}& -2 - z_{101}^{2} - z_{146}^{2} - z_{154}^{2} + 2z_{159} - z_{159}^{2} - z_{162}^{2} - z_{165}^{2} - z_{168}^{2} - z_{171}^{2} \\*
+&\quad  - z_{174}^{2} - z_{178}^{2} - z_{181}^{2} - z_{184}^{2} - z_{188}^{2} - z_{191}^{2} + z_{194}^{2} - z_{215}^{2} - z_{216}^{2} - z_{217} \\*
+&\quad  - z_{217}^{2} \\[2pt]
+R_{172}={}& -1 - 4z_{106}^{2} - 4z_{111}^{2} - 4z_{114}^{2} - 4z_{117}^{2} - 4z_{120}^{2} - 4z_{124}^{2} - 4z_{127}^{2} + z_{128}^{2} \\*
+&\quad  - 4z_{130}^{2} - 4z_{133}^{2} - 4z_{136}^{2} - 4z_{139}^{2} - z_{218}^{2} - z_{219}^{2} - z_{220} - z_{220}^{2} \\[2pt]
+R_{173}={}& -1 + z_{222} - 4z_{223} - 4z_{223}^{2} \\[2pt]
+R_{174}={}& 7 + z_{141} - z_{224}^{2} - z_{225}^{2} - z_{226}^{2} \\[2pt]
+R_{175}={}& -3 - 2z_{0} - 2z_{4} + 2z_{8} - z_{8}^{2} - z_{9}^{2} - z_{10}^{2} - z_{11}^{2} - z_{12}^{2} - z_{13}^{2} \\*
+&\quad  - z_{14}^{2} - z_{15}^{2} - z_{16}^{2} + z_{227} \\
+\end{align*}
+\endgroup
+% END report/residuals.tex
+\clearpage
+\section{Complete compact residual list}\label{app:compact}
+
+For the companion, the only unknowns are
+$w_0,\ldots,w_{\CompactLastVar}\in\Z$. Its equation is
+\[
+ Q(\boldsymbol w)=\sum_{i=0}^{\CompactLastRow}S_i(\boldsymbol w)^2=0.
+\]
+These are exactly the residuals in
+\nolinkurl{equations/compact/equation.json}, with $w$ used as the
+printed coordinate name. The compact equation has an integer solution
+if and only if a finite syntactic ZFC refutation exists.
+
+% BEGIN report/compact_residuals.tex
+\begingroup
+\small
+\setlength{\jot}{3pt}
+\allowdisplaybreaks[4]
+\begin{align*}
+S_{0}={}& w_{3} - w_{4} - 2w_{4}\,w_{227} \\[2pt]
+S_{1}={}& w_{0} - w_{0}\,w_{2} - w_{2} + w_{7} \\[2pt]
+S_{2}={}& -1 - w_{2}\,w_{5} + w_{6}\,w_{7} - 2w_{227} \\[2pt]
+S_{3}={}& -1 + w_{1} - w_{6}\,w_{7} \\[2pt]
+S_{4}={}& 1 + w_{4} + w_{16} - w_{18} - 2w_{18}\,w_{227} \\[2pt]
+S_{5}={}& -1 - w_{8}^{2} - 2w_{8}\,w_{9} - w_{9}^{2} + w_{19} \\[2pt]
+S_{6}={}& -10w_{8} + w_{8}^{2} - 6w_{8}\,w_{9} - 8w_{8}\,w_{19} - 20w_{9} - 11w_{9}^{2} - 16w_{9}\,w_{19} \\*
+&\quad  - 15w_{19} - 4w_{19}^{2} + w_{20} \\[2pt]
+S_{7}={}& -2 + 2w_{8} - w_{8}^{2} - 4w_{8}\,w_{20} - 4w_{20} - 4w_{20}^{2} + w_{21} \\[2pt]
+S_{8}={}& 1 + 6w_{8} - 36w_{8}^{2} - 24w_{8}\,w_{21} + 2w_{21} - 4w_{21}^{2} + w_{22} \\[2pt]
+S_{9}={}& -2 - w_{9} - w_{9}^{2} - 2w_{9}\,w_{10} - w_{10} - w_{10}^{2} + w_{23} \\[2pt]
+S_{10}={}& -8 + 7w_{8} - w_{8}^{2} + 4w_{8}\,w_{10} - 4w_{8}\,w_{23} - 4w_{10} + 4w_{23} + w_{24} - w_{46} \\[2pt]
+S_{11}={}& -1 + w_{8} - w_{8}^{2} - 2w_{8}\,w_{10} + w_{10} - w_{10}^{2} + w_{25} \\[2pt]
+S_{12}={}& 23 + 16w_{8} - 8w_{8}\,w_{9} - 8w_{8}\,w_{10} - 16w_{8}\,w_{19} - 8w_{8}\,w_{25} + 19w_{9} \\*
+&\quad  + 9w_{9}^{2} - 36w_{9}\,w_{10} - 12w_{9}\,w_{25} + 16w_{10} + 8w_{10}^{2} - 24w_{10}\,w_{19} - 8w_{19}\,w_{25} \\*
+&\quad  - w_{20} + w_{26} - w_{31} \\[2pt]
+S_{13}={}& -4w_{24}^{2} - 8w_{24}\,w_{26} - 4w_{26}^{2} + w_{27} \\[2pt]
+S_{14}={}& -2 - 8w_{8} + 8w_{8}\,w_{23} + 8w_{8}\,w_{25} - 8w_{9} + 8w_{9}\,w_{23} + 8w_{9}\,w_{25} - 4w_{19} \\*
+&\quad  + 8w_{23} - 4w_{23}^{2} - 8w_{23}\,w_{25} + 8w_{25} - 4w_{25}^{2} + w_{28} \\[2pt]
+S_{15}={}& 6 + 4w_{8} + 32w_{8}\,w_{9} + 16w_{8}\,w_{19} + 16w_{8}\,w_{25} + 8w_{8}\,w_{28} + 24w_{9} \\*
+&\quad  - 32w_{9}\,w_{25} - 16w_{9}\,w_{28} + 12w_{19} - 16w_{19}\,w_{25} - 8w_{19}\,w_{28} - w_{20} + 8w_{25} \\*
+&\quad  - 16w_{25}^{2} - 16w_{25}\,w_{28} + 4w_{28} - 4w_{28}^{2} + w_{29} \\[2pt]
+S_{16}={}& 22 - 5w_{8} - w_{8}^{2} - 8w_{8}\,w_{9} - 12w_{8}\,w_{10} - 4w_{8}\,w_{23} - 8w_{9} - 16w_{9}\,w_{10} \\*
+&\quad  - 16w_{9}\,w_{23} - 20w_{10} - 20w_{10}^{2} - 24w_{10}\,w_{23} - 28w_{23} - 4w_{23}^{2} + w_{30} \\[2pt]
+S_{17}={}& 19 - 25w_{8} - 7w_{8}^{2} - 8w_{8}\,w_{9} - 30w_{8}\,w_{10} - 16w_{8}\,w_{25} + 3w_{9} + 5w_{9}^{2} \\*
+&\quad  - 4w_{9}\,w_{25} - 27w_{10} - 21w_{10}^{2} - 24w_{10}\,w_{25} - 6w_{23} - 17w_{25} - 4w_{25}^{2} + w_{31} \\[2pt]
+S_{18}={}& 2 - 4w_{30}^{2} - 8w_{30}\,w_{31} - 4w_{31}^{2} + w_{32} \\[2pt]
+S_{19}={}& -19w_{8} + 8w_{8}^{2} + 8w_{8}\,w_{19} + 8w_{8}\,w_{23} - 46w_{9} - 24w_{9}^{2} + 24w_{9}\,w_{19} \\*
+&\quad  + 24w_{9}\,w_{23} - 2w_{10} + 4w_{19} - 4w_{19}^{2} - 8w_{19}\,w_{23} + 14w_{23} - 4w_{23}^{2} - w_{25} \\*
+&\quad  + w_{33} \\[2pt]
+S_{20}={}& -3 - 6w_{8} - 4w_{10} - 2w_{25} - 4w_{33} - 4w_{33}^{2} + w_{34} \\[2pt]
+S_{21}={}& 8 + 42w_{8} + 7w_{8}^{2} + 28w_{8}\,w_{20} + 48w_{9} - 32w_{9}^{2} - 32w_{9}\,w_{19} \\*
+&\quad  + 64w_{9}\,w_{20} - 40w_{19}^{2} + 32w_{19}\,w_{20} + 14w_{20} - 4w_{20}^{2} + w_{35} + 2w_{38} \\[2pt]
+S_{22}={}& 1 + 6w_{8} - 36w_{8}^{2} - 24w_{8}\,w_{35} + 2w_{35} - 4w_{35}^{2} + w_{36} \\[2pt]
+S_{23}={}& -w_{9}^{2} - 4w_{9}\,w_{36} - 4w_{36}^{2} + w_{37} \\[2pt]
+S_{24}={}& -6 - 2w_{8} - 4w_{9} - 14w_{19} - 16w_{19}^{2} + w_{38} \\[2pt]
+S_{25}={}& 24 + 21w_{9} - 21w_{9}^{2} - 18w_{9}\,w_{10} - 24w_{9}\,w_{23} - 24w_{9}\,w_{38} + 3w_{10} \\*
+&\quad  - 9w_{10}^{2} - 16w_{10}\,w_{38} + 3w_{23} - 12w_{23}^{2} - 8w_{23}\,w_{38} + 4w_{38} - 4w_{38}^{2} + w_{39} \\*
+&\quad  + 2w_{46} \\[2pt]
+S_{26}={}& 16 - 10w_{8} - 20w_{8}^{2} - 16w_{8}\,w_{10} - 24w_{8}\,w_{25} - 24w_{8}\,w_{39} - 12w_{10} \\*
+&\quad  - 16w_{10}\,w_{25} - 16w_{10}\,w_{39} - 14w_{25} - 4w_{25}^{2} - 8w_{25}\,w_{39} + 4w_{39} - 4w_{39}^{2} \\*
+&\quad  + w_{40} \\[2pt]
+S_{27}={}& -w_{10}^{2} - 2w_{10}\,w_{11} - w_{11}^{2} + w_{41} \\[2pt]
+S_{28}={}& 2 + w_{8}^{2} - 4w_{8}\,w_{41} + 2w_{10} - 2w_{10}^{2} - 8w_{10}\,w_{41} - 2w_{25} + 4w_{41} - 4w_{41}^{2} \\*
+&\quad  + w_{42} \\[2pt]
+S_{29}={}& -31 - 16w_{10} - 16w_{10}\,w_{23} + 16w_{10}\,w_{25} - 8w_{23} + 12w_{23}^{2} - 8w_{23}\,w_{25} + 24w_{25} \\*
+&\quad  - 4w_{25}^{2} + w_{43} - 4w_{46} \\[2pt]
+S_{30}={}& -4w_{10} - 16w_{25}^{2} - 32w_{25}\,w_{41} - 16w_{25}\,w_{42} - 16w_{25}\,w_{43} - 4w_{41} - 16w_{41}^{2} \\*
+&\quad  - 16w_{41}\,w_{42} - 16w_{41}\,w_{43} - 2w_{42} - 4w_{42}^{2} - 8w_{42}\,w_{43} - 4w_{43}^{2} + w_{44} \\[2pt]
+S_{31}={}& -16w_{8}^{2} + 8w_{8}\,w_{10} + 32w_{8}\,w_{25} + 16w_{8}\,w_{28} + w_{10} - w_{10}^{2} - 8w_{10}\,w_{25} \\*
+&\quad  - 4w_{10}\,w_{28} - 16w_{25}^{2} - 16w_{25}\,w_{28} - 4w_{28}^{2} + w_{45} \\[2pt]
+S_{32}={}& -1 - 8w_{10} - 4w_{10}^{2} + 8w_{10}\,w_{23} + 8w_{23} - 4w_{23}^{2} + w_{46} \\[2pt]
+S_{33}={}& -1 - 9w_{10}^{2} + 24w_{10}\,w_{23} + 12w_{10}\,w_{46} - 16w_{23}^{2} - 16w_{23}\,w_{46} - 4w_{46}^{2} + w_{47} \\[2pt]
+S_{34}={}& 1 + w_{9} - w_{9}^{2} - 4w_{9}\,w_{10} - 4w_{9}\,w_{47} - 4w_{10}^{2} - 8w_{10}\,w_{47} - 4w_{47}^{2} + w_{48} \\[2pt]
+S_{35}={}& -1 - 4w_{48} - 4w_{48}^{2} + w_{49} \\[2pt]
+S_{36}={}& -1 - w_{10}^{2} - 8w_{10}\,w_{48} - 4w_{10}\,w_{49} - 16w_{48}^{2} - 16w_{48}\,w_{49} - 4w_{49}^{2} + w_{50} \\[2pt]
+S_{37}={}& 2 + w_{9} - w_{9}^{2} - 4w_{9}\,w_{10} - 4w_{9}\,w_{50} - 4w_{10}^{2} - 8w_{10}\,w_{50} - 4w_{50}^{2} + w_{51} \\[2pt]
+S_{38}={}& -4w_{45}^{2} - 8w_{45}\,w_{51} - 4w_{51}^{2} + w_{52} \\[2pt]
+S_{39}={}& -9 + 7w_{8} - w_{8}^{2} - 8w_{8}\,w_{45} - 4w_{8}\,w_{52} + 24w_{45} - 16w_{45}^{2} - 16w_{45}\,w_{52} \\*
+&\quad  + 12w_{52} - 4w_{52}^{2} + w_{53} \\[2pt]
+S_{40}={}& -1 - 4w_{53} - 4w_{53}^{2} + w_{54} \\[2pt]
+S_{41}={}& -w_{10}^{2} - 8w_{10}\,w_{53} - 4w_{10}\,w_{54} - 16w_{53}^{2} - 16w_{53}\,w_{54} - 4w_{54}^{2} + w_{55} \\[2pt]
+S_{42}={}& -w_{8} - w_{8}^{2} - 4w_{8}\,w_{10} - 4w_{8}\,w_{55} - 4w_{10} - 4w_{10}^{2} - 8w_{10}\,w_{55} - 4w_{55} \\*
+&\quad  - 4w_{55}^{2} + w_{56} \\[2pt]
+S_{43}={}& -10 - 12w_{56} - 4w_{56}^{2} + w_{57} \\[2pt]
+S_{44}={}& 2 + 4w_{10} + 16w_{10}\,w_{56} + 8w_{10}\,w_{57} - 4w_{23} - 16w_{23}\,w_{56} - 8w_{23}\,w_{57} - w_{46} \\*
+&\quad  + 8w_{56} - 16w_{56}^{2} - 16w_{56}\,w_{57} + 4w_{57} - 4w_{57}^{2} + w_{58} \\[2pt]
+S_{45}={}& w_{9} - w_{9}^{2} + 8w_{9}\,w_{10} - 8w_{9}\,w_{23} - 4w_{9}\,w_{58} - 16w_{10}^{2} + 32w_{10}\,w_{23} \\*
+&\quad  + 16w_{10}\,w_{58} - 16w_{23}^{2} - 16w_{23}\,w_{58} - 4w_{58}^{2} + w_{59} \\[2pt]
+S_{46}={}& -10 - 12w_{51} - 4w_{51}^{2} + w_{60} \\[2pt]
+S_{47}={}& 1 - 16w_{51}^{2} - 16w_{51}\,w_{59} - 16w_{51}\,w_{60} - 4w_{59}^{2} - 8w_{59}\,w_{60} - 4w_{60}^{2} + w_{61} \\[2pt]
+S_{48}={}& w_{10} - w_{10}^{2} - 8w_{10}\,w_{59} - 4w_{10}\,w_{61} - 16w_{59}^{2} - 16w_{59}\,w_{61} - 4w_{61}^{2} + w_{62} \\[2pt]
+S_{49}={}& -6w_{8} - 3w_{8}^{2} - 18w_{8}\,w_{9} - 16w_{9} - 27w_{9}^{2} + 4w_{9}\,w_{10} + 3w_{10} + 3w_{10}^{2} \\*
+&\quad  - 4w_{10}\,w_{19} - 19w_{19} - 8w_{19}^{2} + w_{20} + w_{63} - 4w_{76} \\[2pt]
+S_{50}={}& 1 - 8w_{8} - 4w_{8}\,w_{10} + 8w_{8}\,w_{63} - 16w_{9} - 8w_{9}\,w_{10} + 16w_{9}\,w_{63} + w_{10} \\*
+&\quad  + w_{10}^{2} + 4w_{10}\,w_{19} + 8w_{19} - 8w_{19}\,w_{63} + 3w_{63} - 4w_{63}^{2} + w_{64} \\[2pt]
+S_{51}={}& -2 - 12w_{8} - 16w_{8}\,w_{10} + 16w_{8}\,w_{62} + 16w_{8}\,w_{64} - 24w_{9} - 32w_{9}\,w_{10} \\*
+&\quad  + 32w_{9}\,w_{62} + 32w_{9}\,w_{64} + 4w_{10} + 4w_{10}^{2} + 16w_{10}\,w_{19} + 12w_{19} - 16w_{19}\,w_{62} \\*
+&\quad  - 16w_{19}\,w_{64} - 4w_{62}^{2} - 8w_{62}\,w_{64} - 4w_{63} - 2w_{64} - 4w_{64}^{2} + w_{65} \\[2pt]
+S_{52}={}& -2 - 4w_{65} - 4w_{65}^{2} + w_{66} \\[2pt]
+S_{53}={}& -w_{13} - 2w_{13}\,w_{227} + w_{67} \\[2pt]
+S_{54}={}& w_{12} - w_{13} - 2w_{22}\,w_{67} - w_{68} \\[2pt]
+S_{55}={}& w_{12} - w_{13} - 4w_{24}\,w_{67} - 2w_{27}\,w_{67} - w_{69} \\[2pt]
+S_{56}={}& -2w_{29}\,w_{67} + 2w_{44}\,w_{67} - 2w_{67} - w_{70} + w_{75} \\[2pt]
+S_{57}={}& w_{12} - w_{13} - 4w_{30}\,w_{67} - 2w_{32}\,w_{67} - w_{71} \\[2pt]
+S_{58}={}& w_{12} - w_{13} - 2w_{34}\,w_{67} + 6w_{67} - w_{72} \\[2pt]
+S_{59}={}& w_{12} - w_{13} - 4w_{36}\,w_{67} - 2w_{37}\,w_{67} - w_{73} \\[2pt]
+S_{60}={}& w_{12} - w_{13} - 2w_{40}\,w_{67} - w_{74} \\[2pt]
+S_{61}={}& w_{12} - w_{13} - 2w_{44}\,w_{67} - 4w_{67} - w_{75} \\[2pt]
+S_{62}={}& -w_{8}\,w_{9} + w_{8}\,w_{10} + w_{9} + w_{9}\,w_{10} - w_{10} - w_{10}^{2} + w_{76} \\[2pt]
+S_{63}={}& 1 + 2w_{11} + w_{11}^{2} - w_{76}^{2} + w_{77} \\[2pt]
+S_{64}={}& -w_{77}^{2} + w_{78} \\[2pt]
+S_{65}={}& -4w_{65}\,w_{67} - 2w_{66}\,w_{67} + 2w_{67} + w_{79} \\[2pt]
+S_{66}={}& -w_{12}^{2} + 2w_{12}\,w_{13} + 2w_{12}\,w_{79} - w_{13}^{2} - 2w_{13}\,w_{79} - w_{79}^{2} + w_{80} \\[2pt]
+S_{67}={}& -1 - w_{9} - 2w_{9}\,w_{227} + w_{81} \\[2pt]
+S_{68}={}& -w_{13}\,w_{81} + w_{83}\,w_{84} + w_{85} \\[2pt]
+S_{69}={}& -w_{8} - 2w_{8}\,w_{227} + w_{82} + 2w_{227} \\[2pt]
+S_{70}={}& 1 + 2w_{8} + 4w_{8}\,w_{227} + 4w_{9} + 8w_{9}\,w_{227} - 2w_{19} - 4w_{19}\,w_{227} + w_{83} + 4w_{227} \\[2pt]
+S_{71}={}& -w_{12}\,w_{82} + w_{84} \\[2pt]
+S_{72}={}& w_{12}\,w_{81} + 6w_{13} - 8w_{13}\,w_{81} - 4w_{13}\,w_{82} - w_{13}\,w_{83} - 12w_{13}\,w_{227} + w_{86} \\[2pt]
+S_{73}={}& -w_{12}\,w_{68} + w_{13}\,w_{68} + w_{87} \\[2pt]
+S_{74}={}& -w_{69}\,w_{87} + w_{88} \\[2pt]
+S_{75}={}& -w_{70}\,w_{88} + w_{89} \\[2pt]
+S_{76}={}& -w_{71}\,w_{89} + w_{90} \\[2pt]
+S_{77}={}& -w_{72}\,w_{90} + w_{91} \\[2pt]
+S_{78}={}& -w_{73}\,w_{91} + w_{92} \\[2pt]
+S_{79}={}& -w_{74}\,w_{92} + w_{93} \\[2pt]
+S_{80}={}& -w_{75}\,w_{93} + w_{94} \\[2pt]
+S_{81}={}& -w_{85}\,w_{94} + w_{95} \\[2pt]
+S_{82}={}& -w_{86}\,w_{95} + w_{96} \\[2pt]
+S_{83}={}& -w_{96}^{2} + w_{97} \\[2pt]
+S_{84}={}& -w_{2} - w_{2}\,w_{16} + w_{16} + w_{98} \\[2pt]
+S_{85}={}& -w_{14}\,w_{98} + w_{99} \\[2pt]
+S_{86}={}& -2w_{1}^{2} + 2w_{1}\,w_{12} + 2w_{1}\,w_{13} + 2w_{1}\,w_{99} + 2w_{1}\,w_{100} - w_{12}^{2} - 2w_{12}\,w_{99} \\*
+&\quad  - w_{13}^{2} - 2w_{13}\,w_{100} + w_{17}\,w_{101} - w_{78}\,w_{97} - w_{80}\,w_{97} - w_{99}^{2} - w_{100}^{2} \\[2pt]
+S_{87}={}& -w_{2}\,w_{15} + w_{15} - w_{15}\,w_{98} + w_{100} \\[2pt]
+S_{88}={}& -3w_{104} - 6w_{104}\,w_{220} + w_{106} \\[2pt]
+S_{89}={}& w_{102}\,w_{211} - w_{105} - w_{106}\,w_{127} - w_{127} - 2w_{127}\,w_{227} \\[2pt]
+S_{90}={}& w_{107}\,w_{212} - w_{109}\,w_{130} - w_{110} \\[2pt]
+S_{91}={}& w_{111}\,w_{212} - w_{112}\,w_{130} - w_{113} \\[2pt]
+S_{92}={}& w_{114}\,w_{212} - w_{115}\,w_{130} - w_{116} \\[2pt]
+S_{93}={}& w_{117}\,w_{212} - w_{118}\,w_{130} - w_{119} \\[2pt]
+S_{94}={}& w_{120}\,w_{213} - w_{122}\,w_{130} - w_{123} \\[2pt]
+S_{95}={}& w_{124}\,w_{213} - w_{125}\,w_{130} - w_{126} \\[2pt]
+S_{96}={}& -w_{17}\,w_{127} + w_{130} \\[2pt]
+S_{97}={}& -w_{130}\,w_{134} + w_{133}\,w_{211} - w_{135} \\[2pt]
+S_{98}={}& -w_{130}\,w_{137} + w_{136}\,w_{212} - w_{138} \\[2pt]
+S_{99}={}& w_{139} - 2w_{139}\,w_{141} + w_{142} \\[2pt]
+S_{100}={}& -w_{139}\,w_{142} - w_{142} + w_{143} \\[2pt]
+S_{101}={}& -1 + w_{142}^{2} - w_{143}^{2} + w_{223}^{2} \\[2pt]
+S_{102}={}& -w_{140}\,w_{145} - 7w_{145} + w_{146} \\[2pt]
+S_{103}={}& 2w_{144} + w_{144}^{2} + w_{145}^{2} - w_{146}^{2} \\[2pt]
+S_{104}={}& 1 - w_{4} - 32w_{140}\,w_{147} + w_{144} + 16w_{145} - w_{146} + 33w_{147} \\[2pt]
+S_{105}={}& -12 - 2w_{140} - 4w_{140}\,w_{227} + w_{148} - 24w_{227} + 4w_{227}^{2} \\[2pt]
+S_{106}={}& w_{17} + w_{148}\,w_{149} - w_{182} - w_{183} - 2w_{183}\,w_{227} + w_{184} \\[2pt]
+S_{107}={}& -1 + 2w_{140}\,w_{195} - w_{150} + 14w_{195} - w_{195}^{2} \\[2pt]
+S_{108}={}& 3 + w_{150}\,w_{151} - w_{182} - w_{183}\,w_{195} + w_{184} + 6w_{220} \\[2pt]
+S_{109}={}& -w_{140}\,w_{153} - 7w_{153} + w_{154} \\[2pt]
+S_{110}={}& 2w_{152} + w_{152}^{2} + w_{153}^{2} - w_{154}^{2} \\[2pt]
+S_{111}={}& -39 + w_{130}\,w_{228} - 8w_{140} - 12w_{140}\,w_{220} - 36w_{220} + 36w_{220}^{2} \\[2pt]
+S_{112}={}& 1 - w_{102} - w_{140}\,w_{153} + w_{152} - 3w_{153} + 6w_{153}\,w_{220} \\[2pt]
+S_{113}={}& 7 - w_{130}\,w_{228} + 2w_{140} + w_{155} - 12w_{220} \\[2pt]
+S_{114}={}& -1 + w_{103} - w_{144} - 3w_{145} - 6w_{145}\,w_{220} + w_{146} + w_{155}\,w_{156} \\[2pt]
+S_{115}={}& 7 + w_{140} - w_{140}\,w_{158} - 7w_{158} + w_{159} \\[2pt]
+S_{116}={}& 1 + 2w_{157} + w_{157}^{2} - 2w_{158} + w_{158}^{2} - w_{159}^{2} \\[2pt]
+S_{117}={}& 4 - w_{107} + w_{140} - w_{140}\,w_{158} + w_{157} - 3w_{158} + 6w_{158}\,w_{220} - 6w_{220} \\[2pt]
+S_{118}={}& -3w_{103} - 6w_{103}\,w_{220} + w_{108} \\[2pt]
+S_{119}={}& -w_{140}\,w_{161} - 7w_{161} + w_{162} \\[2pt]
+S_{120}={}& 2w_{160} + w_{160}^{2} + w_{161}^{2} - w_{162}^{2} \\[2pt]
+S_{121}={}& 1 - w_{111} - w_{140}\,w_{161} + w_{160} - 3w_{161} + 6w_{161}\,w_{220} \\[2pt]
+S_{122}={}& -w_{140}\,w_{164} - 7w_{164} + w_{165} \\[2pt]
+S_{123}={}& 2w_{163} + w_{163}^{2} + w_{164}^{2} - w_{165}^{2} \\[2pt]
+S_{124}={}& 1 - w_{114} - w_{140}\,w_{164} + w_{163} - 3w_{164} + 6w_{164}\,w_{220} \\[2pt]
+S_{125}={}& -w_{140}\,w_{167} - 7w_{167} + w_{168} \\[2pt]
+S_{126}={}& 2w_{166} + w_{166}^{2} + w_{167}^{2} - w_{168}^{2} \\[2pt]
+S_{127}={}& 1 - w_{117} - w_{140}\,w_{167} + w_{166} - 3w_{167} + 6w_{167}\,w_{220} \\[2pt]
+S_{128}={}& -w_{140}\,w_{170} - 7w_{170} + w_{171} \\[2pt]
+S_{129}={}& 2w_{169} + w_{169}^{2} + w_{170}^{2} - w_{171}^{2} \\[2pt]
+S_{130}={}& 1 - w_{120} - w_{140}\,w_{170} + w_{169} - 3w_{170} + 6w_{170}\,w_{220} \\[2pt]
+S_{131}={}& -w_{140}\,w_{173} - 7w_{173} + w_{174} \\[2pt]
+S_{132}={}& 2w_{172} + w_{172}^{2} + w_{173}^{2} - w_{174}^{2} \\[2pt]
+S_{133}={}& -1 + w_{121} + w_{155}\,w_{175} - w_{172} - 3w_{173} - 6w_{173}\,w_{220} + w_{174} \\[2pt]
+S_{134}={}& -w_{140}\,w_{177} - 7w_{177} + w_{178} \\[2pt]
+S_{135}={}& 2w_{176} + w_{176}^{2} + w_{177}^{2} - w_{178}^{2} \\[2pt]
+S_{136}={}& 1 - w_{124} - w_{140}\,w_{177} + w_{176} - 3w_{177} + 6w_{177}\,w_{220} \\[2pt]
+S_{137}={}& -w_{140}\,w_{180} - 7w_{180} + w_{181} \\[2pt]
+S_{138}={}& 2w_{179} + w_{179}^{2} + w_{180}^{2} - w_{181}^{2} \\[2pt]
+S_{139}={}& 1 - w_{128}\,w_{130} - w_{129} - w_{140}\,w_{180} + w_{179} - 3w_{180} + 6w_{180}\,w_{220} \\[2pt]
+S_{140}={}& 1 - w_{140}\,w_{183} - 7w_{183} + w_{184} \\[2pt]
+S_{141}={}& -1 + 2w_{182} + w_{182}^{2} + w_{183}^{2} - 2w_{184} - w_{184}^{2} \\[2pt]
+S_{142}={}& w_{127} + w_{155}\,w_{185} - w_{182} - 3w_{183} - 6w_{183}\,w_{220} + w_{184} \\[2pt]
+S_{143}={}& -w_{140}\,w_{187} - 7w_{187} + w_{188} \\[2pt]
+S_{144}={}& 2w_{186} + w_{186}^{2} + w_{187}^{2} - w_{188}^{2} \\[2pt]
+S_{145}={}& 1 - w_{130}\,w_{131} - w_{132} - w_{140}\,w_{187} + w_{186} - 3w_{187} + 6w_{187}\,w_{220} \\[2pt]
+S_{146}={}& -w_{140}\,w_{190} - 7w_{190} + w_{191} \\[2pt]
+S_{147}={}& 2w_{189} + w_{189}^{2} + w_{190}^{2} - w_{191}^{2} \\[2pt]
+S_{148}={}& 1 - w_{133} - w_{140}\,w_{190} + w_{189} - 3w_{190} + 6w_{190}\,w_{220} \\[2pt]
+S_{149}={}& -w_{140}\,w_{193} - 7w_{193} + w_{194} \\[2pt]
+S_{150}={}& 2w_{192} + w_{192}^{2} + w_{193}^{2} - w_{194}^{2} \\[2pt]
+S_{151}={}& 1 - w_{136} - w_{140}\,w_{193} + w_{192} - 3w_{193} + 6w_{193}\,w_{220} \\[2pt]
+S_{152}={}& -10 - 2w_{0}^{2} - 2w_{0}\,w_{4} - w_{1}^{2} - w_{2}^{2} - w_{4}^{2} + 2w_{8} + 2w_{8}\,w_{9} - w_{10}^{2} \\*
+&\quad  - w_{11}^{2} - w_{12}^{2} - w_{13}^{2} - w_{14}^{2} - w_{15}^{2} - w_{16}^{2} - w_{17}^{2} - w_{19} - w_{103}^{2} - w_{121}^{2} \\*
+&\quad  - w_{127}^{2} + w_{139} + w_{145}^{2} + w_{153}^{2} - 2w_{158} + w_{158}^{2} + w_{161}^{2} + w_{164}^{2} + w_{167}^{2} + w_{170}^{2} \\*
+&\quad  + w_{173}^{2} + w_{177}^{2} + w_{180}^{2} + w_{183}^{2} + w_{187}^{2} + w_{190}^{2} - w_{193}^{2} - w_{195}^{2} + w_{214}^{2} + w_{215}^{2} \\*
+&\quad  + w_{216} + w_{216}^{2} - 36w_{220} - 36w_{220}^{2} - 4w_{227} - 4w_{227}^{2} \\[2pt]
+S_{153}={}& w_{195} - w_{226} - 2w_{226}\,w_{227} \\[2pt]
+S_{154}={}& -16 + w_{0} - w_{196}^{2} \\[2pt]
+S_{155}={}& -w_{140}\,w_{198} - 7w_{198} + w_{207} \\[2pt]
+S_{156}={}& -1 + w_{197}^{2} + w_{198}^{2} - w_{207}^{2} \\[2pt]
+S_{157}={}& -w_{200} - w_{200}\,w_{201} + w_{208} \\[2pt]
+S_{158}={}& -1 + w_{199}^{2} + w_{200}^{2} - w_{208}^{2} \\[2pt]
+S_{159}={}& -w_{193}^{2} + w_{209} \\[2pt]
+S_{160}={}& w_{198} - 2w_{203}\,w_{209} - w_{209} \\[2pt]
+S_{161}={}& -4w_{198} - 8w_{198}\,w_{202} + w_{201} \\[2pt]
+S_{162}={}& -6 - w_{140} - w_{197}\,w_{204} + w_{201} \\[2pt]
+S_{163}={}& -1 - w_{192} - w_{197}\,w_{205} + w_{199} \\[2pt]
+S_{164}={}& -w_{8} - w_{9} - 4w_{19} - 2w_{22} - 4w_{24} - 2w_{27} - 2w_{29} - 4w_{30} - 2w_{32} - 2w_{34} \\*
+&\quad  - 4w_{36} - 2w_{37} - 2w_{40} - 2w_{44} - 4w_{65} - 2w_{66} - 4w_{193}\,w_{206} + w_{200} \\[2pt]
+S_{165}={}& -2 + 2w_{0}^{2} + 2w_{0}\,w_{4} - 2w_{0}\,w_{145} - 2w_{0}\,w_{153} + w_{1}^{2} - 2w_{1}\,w_{183} + w_{2}^{2} \\*
+&\quad  - 2w_{2}\,w_{173} + w_{4}^{2} - 2w_{4}\,w_{153} + w_{8}^{2} - 2w_{8}\,w_{158} - 2w_{8}\,w_{193} + w_{9}^{2} \\*
+&\quad  - 2w_{9}\,w_{161} - 2w_{9}\,w_{193} + w_{10}^{2} - 2w_{10}\,w_{164} + w_{11}^{2} - 2w_{11}\,w_{167} + w_{12}^{2} \\*
+&\quad  - 2w_{12}\,w_{170} + w_{13}^{2} - 2w_{13}\,w_{177} + w_{14}^{2} - 2w_{14}\,w_{180} + w_{15}^{2} - 2w_{15}\,w_{187} + w_{16}^{2} \\*
+&\quad  - 2w_{16}\,w_{190} - 8w_{19}\,w_{193} - 4w_{22}\,w_{193} - 8w_{24}\,w_{193} - 4w_{27}\,w_{193} - 4w_{29}\,w_{193} \\*
+&\quad  - 8w_{30}\,w_{193} - 4w_{32}\,w_{193} - 4w_{34}\,w_{193} - 8w_{36}\,w_{193} - 4w_{37}\,w_{193} - 4w_{40}\,w_{193} \\*
+&\quad  - 4w_{44}\,w_{193} - 8w_{65}\,w_{193} - 4w_{66}\,w_{193} - w_{140}\,w_{210} + w_{144}^{2} + w_{152}^{2} + w_{157}^{2} + 2w_{158} \\*
+&\quad  + w_{160}^{2} + w_{163}^{2} + w_{166}^{2} + w_{169}^{2} + w_{172}^{2} + w_{176}^{2} + w_{179}^{2} + w_{182}^{2} + w_{186}^{2} + w_{189}^{2} \\*
+&\quad  + w_{192}^{2} + 2w_{193}^{2} - 6w_{210} - w_{214}^{2} - w_{215}^{2} - w_{216} - w_{216}^{2} \\[2pt]
+S_{166}={}& -w_{103}\,w_{211} + w_{127} \\[2pt]
+S_{167}={}& -w_{108}\,w_{212} + w_{127} \\[2pt]
+S_{168}={}& -w_{121}\,w_{213} + w_{127} \\[2pt]
+S_{169}={}& -1 + w_{2} - w_{3}\,w_{221} \\[2pt]
+S_{170}={}& -1 - 8w_{8}\,w_{19} - 4w_{8}\,w_{22} - 8w_{8}\,w_{24} - 4w_{8}\,w_{27} - 4w_{8}\,w_{29} - 8w_{8}\,w_{30} \\*
+&\quad  - 4w_{8}\,w_{32} - 4w_{8}\,w_{34} - 8w_{8}\,w_{36} - 4w_{8}\,w_{37} - 4w_{8}\,w_{40} - 4w_{8}\,w_{44} \\*
+&\quad  - 8w_{8}\,w_{65} - 4w_{8}\,w_{66} - 8w_{9}\,w_{19} - 4w_{9}\,w_{22} - 8w_{9}\,w_{24} - 4w_{9}\,w_{27} \\*
+&\quad  - 4w_{9}\,w_{29} - 8w_{9}\,w_{30} - 4w_{9}\,w_{32} - 4w_{9}\,w_{34} - 8w_{9}\,w_{36} - 4w_{9}\,w_{37} \\*
+&\quad  - 4w_{9}\,w_{40} - 4w_{9}\,w_{44} - 8w_{9}\,w_{65} - 4w_{9}\,w_{66} - w_{19} - 16w_{19}^{2} - 16w_{19}\,w_{22} \\*
+&\quad  - 32w_{19}\,w_{24} - 16w_{19}\,w_{27} - 16w_{19}\,w_{29} - 32w_{19}\,w_{30} - 16w_{19}\,w_{32} - 16w_{19}\,w_{34} \\*
+&\quad  - 32w_{19}\,w_{36} - 16w_{19}\,w_{37} - 16w_{19}\,w_{40} - 16w_{19}\,w_{44} - 32w_{19}\,w_{65} - 16w_{19}\,w_{66} \\*
+&\quad  - 4w_{22}^{2} - 16w_{22}\,w_{24} - 8w_{22}\,w_{27} - 8w_{22}\,w_{29} - 16w_{22}\,w_{30} - 8w_{22}\,w_{32} \\*
+&\quad  - 8w_{22}\,w_{34} - 16w_{22}\,w_{36} - 8w_{22}\,w_{37} - 8w_{22}\,w_{40} - 8w_{22}\,w_{44} - 16w_{22}\,w_{65} \\*
+&\quad  - 8w_{22}\,w_{66} - 16w_{24}^{2} - 16w_{24}\,w_{27} - 16w_{24}\,w_{29} - 32w_{24}\,w_{30} - 16w_{24}\,w_{32} \\*
+&\quad  - 16w_{24}\,w_{34} - 32w_{24}\,w_{36} - 16w_{24}\,w_{37} - 16w_{24}\,w_{40} - 16w_{24}\,w_{44} - 32w_{24}\,w_{65} \\*
+&\quad  - 16w_{24}\,w_{66} - 4w_{27}^{2} - 8w_{27}\,w_{29} - 16w_{27}\,w_{30} - 8w_{27}\,w_{32} - 8w_{27}\,w_{34} \\*
+&\quad  - 16w_{27}\,w_{36} - 8w_{27}\,w_{37} - 8w_{27}\,w_{40} - 8w_{27}\,w_{44} - 16w_{27}\,w_{65} - 8w_{27}\,w_{66} \\*
+&\quad  - 4w_{29}^{2} - 16w_{29}\,w_{30} - 8w_{29}\,w_{32} - 8w_{29}\,w_{34} - 16w_{29}\,w_{36} - 8w_{29}\,w_{37} \\*
+&\quad  - 8w_{29}\,w_{40} - 8w_{29}\,w_{44} - 16w_{29}\,w_{65} - 8w_{29}\,w_{66} - 16w_{30}^{2} - 16w_{30}\,w_{32} \\*
+&\quad  - 16w_{30}\,w_{34} - 32w_{30}\,w_{36} - 16w_{30}\,w_{37} - 16w_{30}\,w_{40} - 16w_{30}\,w_{44} - 32w_{30}\,w_{65} \\*
+&\quad  - 16w_{30}\,w_{66} - 4w_{32}^{2} - 8w_{32}\,w_{34} - 16w_{32}\,w_{36} - 8w_{32}\,w_{37} - 8w_{32}\,w_{40} \\*
+&\quad  - 8w_{32}\,w_{44} - 16w_{32}\,w_{65} - 8w_{32}\,w_{66} - 4w_{34}^{2} - 16w_{34}\,w_{36} - 8w_{34}\,w_{37} \\*
+&\quad  - 8w_{34}\,w_{40} - 8w_{34}\,w_{44} - 16w_{34}\,w_{65} - 8w_{34}\,w_{66} - 16w_{36}^{2} - 16w_{36}\,w_{37} \\*
+&\quad  - 16w_{36}\,w_{40} - 16w_{36}\,w_{44} - 32w_{36}\,w_{65} - 16w_{36}\,w_{66} - 4w_{37}^{2} - 8w_{37}\,w_{40} \\*
+&\quad  - 8w_{37}\,w_{44} - 16w_{37}\,w_{65} - 8w_{37}\,w_{66} - 4w_{40}^{2} - 8w_{40}\,w_{44} - 16w_{40}\,w_{65} \\*
+&\quad  - 8w_{40}\,w_{66} - 4w_{44}^{2} - 16w_{44}\,w_{65} - 8w_{44}\,w_{66} - 16w_{65}^{2} - 16w_{65}\,w_{66} - 4w_{66}^{2} \\*
+&\quad  - w_{145}^{2} - w_{153}^{2} + 2w_{158} - w_{158}^{2} - w_{161}^{2} - w_{164}^{2} - w_{167}^{2} - w_{170}^{2} - w_{173}^{2} - w_{177}^{2} \\*
+&\quad  - w_{180}^{2} - w_{183}^{2} - w_{187}^{2} - w_{190}^{2} + w_{193}^{2} - w_{214}^{2} - w_{215}^{2} - w_{216} - w_{216}^{2} \\[2pt]
+S_{171}={}& -1 - 4w_{105}^{2} - 4w_{110}^{2} - 4w_{113}^{2} - 4w_{116}^{2} - 4w_{119}^{2} - 4w_{123}^{2} - 4w_{126}^{2} + w_{127}^{2} \\*
+&\quad  - 4w_{129}^{2} - 4w_{132}^{2} - 4w_{135}^{2} - 4w_{138}^{2} - w_{217}^{2} - w_{218}^{2} - w_{219} - w_{219}^{2} \\[2pt]
+S_{172}={}& -1 + w_{221} - 4w_{222} - 4w_{222}^{2} \\[2pt]
+S_{173}={}& 7 + w_{140} - w_{223}^{2} - w_{224}^{2} - w_{225}^{2} \\[2pt]
+S_{174}={}& -3 - 2w_{0} - 2w_{4} + 2w_{8} - w_{8}^{2} - w_{9}^{2} - w_{10}^{2} - w_{11}^{2} - w_{12}^{2} - w_{13}^{2} \\*
+&\quad  - w_{14}^{2} - w_{15}^{2} - w_{16}^{2} + w_{226} \\
+\end{align*}
+\endgroup
+% END report/compact_residuals.tex
+\end{document}

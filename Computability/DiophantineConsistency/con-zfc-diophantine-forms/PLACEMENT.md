@@ -18046,3 +18046,435 @@ Total: 2793 members = 886 staged + 1898 omitted copies + 9 ignored.
 | `report/qa/compile_logs/pass-1.log` | not staged: log file (`*.log`) |
 | `report/qa/compile_logs/pass-2.log` | not staged: log file (`*.log`) |
 | `report/qa/compile_logs/pass-3.log` | not staged: log file (`*.log`) |
+
+## Placement record: batch 235 (wave 19)
+
+Intake record, not a delivered file. The three archives of two arrival
+commits, "Con(ZFC) in Diophantine form" on 25 October 2026, were extracted
+straight from the committed ZIPs into numbered directories 166–168, in
+arrival order and archive-name order within an arrival, with the single
+wrapper directory removed: two from `35fa5f6bc6` (16:33) as 166 and 167, and
+one from `ee9474c313` (16:36) as 168.
+Nothing was edited and nothing was run at intake.
+
+**Waves 5–18 are kept.** By Vladimir's direction, wave 19 is placed beside
+them (sources 31–165), not instead of them; this section is appended to the
+earlier records above.
+
+Members not in this tree:
+
+- **Copies of repository files.** A member byte-identical (up to line ends)
+  to a blob at the placement parent in a stable place is omitted: this
+  collection, another tracked tree outside the active research session's
+  volatile directories, or an earlier arrival ZIP. A member whose only
+  copies lie in `Computability/DiophantineConsistency/` outside this report
+  (the research session's `candidates/`, `research/`, `tools/`), or in
+  `.claude/` worktree copies, is kept, as in batches 227–234 (the rule of
+  `c16a89ad94`). The tables below name the repository path holding the same
+  bytes. Licence, notice and attribution files are always kept.
+- **Checksum ledgers, logs, bytecode and TeX build artifacts** are excluded
+  by the root `.gitignore`; they were not verified.
+
+To rerun a package, extract its archive from its arrival commit into a
+scratch directory and run it there:
+
+```sh
+git show <arrival>:'docs/incoming/<archive>.zip' > /tmp/<archive>.zip
+```
+
+| Dir | Archive | Members | Placed | Omitted copies | Ignored | Wrapper |
+|---|---|---:|---:|---:|---:|---|
+| `166-fixed-base-modular/` | `ConZFC_Fixed_Base_Modular_2026-10-25.zip` | 275 | 112 | 163 | 0 | `ConZFC_Fixed_Base_Modular_2026-10-25/` |
+| `167-integral-projection/` | `ConZFC_Integral_Projection_2026-10-25.zip` | 68 | 45 | 22 | 1 | `ConZFC_Integral_Projection_2026-10-25/` |
+| `168-reciprocal-pooling/` | `ConZFC_Reciprocal_Pooling_2026-10-25.zip` | 270 | 82 | 188 | 0 | `ConZFC_Reciprocal_Pooling_2026-10-25/` |
+
+Total: 613 members = 239 staged + 373 omitted copies + 1 ignored.
+
+### `166-fixed-base-modular/` (`ConZFC_Fixed_Base_Modular_2026-10-25.zip`)
+
+| Delivered member | Same bytes in the repository |
+|---|---|
+| `provenance/comparison_sources/profile_00_METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/equation/METRICS.json` |
+| `provenance/comparison_sources/profile_01_METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/comparisons/factorial_free242/METRICS.json` |
+| `provenance/comparison_sources/profile_02_METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/comparisons/factorial_free241/METRICS.json` |
+| `provenance/comparison_sources/profile_03_METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/159-quadratic-projection-234/stages/source240/METRICS.json` |
+| `provenance/comparison_sources/profile_04_METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/155-shared-factorial-error/equations/equation241_affine/METRICS.json` |
+| `provenance/comparison_sources/profile_05_METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/154-normalized-residues-round19/signed/balanced244/METRICS.json` |
+| `upstream/factorial_free/INTEGRATION.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/INTEGRATION.md` |
+| `upstream/factorial_free/MANIFEST.sha256` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/MANIFEST.sha256` |
+| `upstream/factorial_free/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/README.md` |
+| `upstream/factorial_free/SOURCE_LEDGER.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/SOURCE_LEDGER.json` |
+| `upstream/factorial_free/build_report.sh` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/build_report.sh` |
+| `upstream/factorial_free/code/check_new_lemmas.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/code/check_new_lemmas.py` |
+| `upstream/factorial_free/code/report_inputs.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/code/report_inputs.py` |
+| `upstream/factorial_free/direct/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/README.md` |
+| `upstream/factorial_free/direct/SOURCE_LEDGER.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/SOURCE_LEDGER.json` |
+| `upstream/factorial_free/direct/audit_power_interface.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/audit_power_interface.py` |
+| `upstream/factorial_free/direct/build_affine.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/build_affine.py` |
+| `upstream/factorial_free/direct/build_factorial_free.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/build_factorial_free.py` |
+| `upstream/factorial_free/direct/check_factorial_free.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/check_factorial_free.py` |
+| `upstream/factorial_free/direct/companion/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/comparisons/factorial_free241/METRICS.json` |
+| `upstream/factorial_free/direct/companion/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/comparisons/factorial_free241/equation.json` |
+| `upstream/factorial_free/direct/companion/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/companion/expanded_polynomial.json` |
+| `upstream/factorial_free/direct/companion/residuals.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/companion/residuals.tex` |
+| `upstream/factorial_free/direct/companion/residuals.txt` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/companion/residuals.txt` |
+| `upstream/factorial_free/direct/companion/variables.tsv` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/companion/variables.tsv` |
+| `upstream/factorial_free/direct/evaluate.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/evaluate.py` |
+| `upstream/factorial_free/direct/export_equations.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/export_equations.py` |
+| `upstream/factorial_free/direct/factorial_free_affine/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine/METRICS.json` |
+| `upstream/factorial_free/direct/factorial_free_affine/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine/equation.json` |
+| `upstream/factorial_free/direct/factorial_free_affine/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine/expanded_polynomial.json` |
+| `upstream/factorial_free/direct/factorial_free_affine/factored_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine/factored_source.json` |
+| `upstream/factorial_free/direct/factorial_free_affine/factorization_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine/factorization_certificate.json` |
+| `upstream/factorial_free/direct/factorial_free_affine/mutation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine/mutation.json` |
+| `upstream/factorial_free/direct/factorial_free_affine/projected.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine/projected.json` |
+| `upstream/factorial_free/direct/factorial_free_affine/projection_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine/projection_certificate.json` |
+| `upstream/factorial_free/direct/factorial_free_affine/raw_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine/raw_source.json` |
+| `upstream/factorial_free/direct/factorial_free_affine/translation_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine/translation_certificate.json` |
+| `upstream/factorial_free/direct/factorial_free_affine241_balanced/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/comparisons/factorial_free241/METRICS.json` |
+| `upstream/factorial_free/direct/factorial_free_affine241_balanced/certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine241_balanced/certificate.json` |
+| `upstream/factorial_free/direct/factorial_free_affine241_balanced/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/comparisons/factorial_free241/equation.json` |
+| `upstream/factorial_free/direct/factorial_free_affine241_balanced/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/companion/expanded_polynomial.json` |
+| `upstream/factorial_free/direct/factorial_free_affine241_balanced/residuals.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/companion/residuals.tex` |
+| `upstream/factorial_free/direct/factorial_free_affine241_balanced/residuals.txt` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/companion/residuals.txt` |
+| `upstream/factorial_free/direct/factorial_free_affine241_balanced/variables.tsv` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/companion/variables.tsv` |
+| `upstream/factorial_free/direct/factorial_free_affine242_balanced/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/comparisons/factorial_free242/METRICS.json` |
+| `upstream/factorial_free/direct/factorial_free_affine242_balanced/certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/factorial_free_affine242_balanced/certificate.json` |
+| `upstream/factorial_free/direct/factorial_free_affine242_balanced/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/comparisons/factorial_free242/equation.json` |
+| `upstream/factorial_free/direct/factorial_free_affine242_balanced/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/159-quadratic-projection-234/stages/source242/expanded_polynomial.json` |
+| `upstream/factorial_free/direct/factorial_free_affine242_balanced/residuals.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/principal/residuals.tex` |
+| `upstream/factorial_free/direct/factorial_free_affine242_balanced/residuals.txt` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/principal/residuals.txt` |
+| `upstream/factorial_free/direct/factorial_free_affine242_balanced/variables.tsv` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/principal/variables.tsv` |
+| `upstream/factorial_free/direct/parent/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/README.md` |
+| `upstream/factorial_free/direct/parent/code/build.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/code/build.py` |
+| `upstream/factorial_free/direct/parent/code/center_integer.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/145-shared-residue-bounds/certificate/center_integer.py` |
+| `upstream/factorial_free/direct/parent/code/check.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/code/check.py` |
+| `upstream/factorial_free/direct/parent/code/check_controls.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/code/check_controls.py` |
+| `upstream/factorial_free/direct/parent/code/factor_horn.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/direct/factor_horn.py` |
+| `upstream/factorial_free/direct/parent/code/inherited_independent_algebra.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/125-unified-binomial-round15/direct_audit/check_direct.py` |
+| `upstream/factorial_free/direct/parent/code/terminal_elimination.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/104-valuation-signed/direct/terminal_elimination.py` |
+| `upstream/factorial_free/direct/parent/code/translate_coordinates.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/direct/translate_coordinates.py` |
+| `upstream/factorial_free/direct/parent/code/verify.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/code/verify.py` |
+| `upstream/factorial_free/direct/parent/data/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/METRICS.json` |
+| `upstream/factorial_free/direct/parent/data/PROJECTION_CHECK.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/PROJECTION_CHECK.json` |
+| `upstream/factorial_free/direct/parent/data/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/equation.json` |
+| `upstream/factorial_free/direct/parent/data/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/expanded_polynomial.json` |
+| `upstream/factorial_free/direct/parent/data/factored_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/factored_source.json` |
+| `upstream/factorial_free/direct/parent/data/factorization_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/factorization_certificate.json` |
+| `upstream/factorial_free/direct/parent/data/guarded.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/guarded.json` |
+| `upstream/factorial_free/direct/parent/data/parent_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension/source.json` |
+| `upstream/factorial_free/direct/parent/data/parent_transform_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension/transform_certificate.json` |
+| `upstream/factorial_free/direct/parent/data/projected.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/projected.json` |
+| `upstream/factorial_free/direct/parent/data/projection_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/projection_certificate.json` |
+| `upstream/factorial_free/direct/parent/data/remainder_transformation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/remainder_transformation.json` |
+| `upstream/factorial_free/direct/parent/data/source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/source.json` |
+| `upstream/factorial_free/direct/parent/data/translation_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/translation_certificate.json` |
+| `upstream/factorial_free/direct/parent/equation/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/equation/METRICS.json` |
+| `upstream/factorial_free/direct/parent/equation/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/equation/equation.json` |
+| `upstream/factorial_free/direct/parent/equation/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/equation/expanded_polynomial.json` |
+| `upstream/factorial_free/direct/parent/equation/projected.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/projected.json` |
+| `upstream/factorial_free/direct/parent/equation/translation_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/equation/translation_certificate.json` |
+| `upstream/factorial_free/direct/parent/proofs/INDEPENDENT_REVIEW.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/proofs/INDEPENDENT_REVIEW.md` |
+| `upstream/factorial_free/direct/parent/proofs/NORMALIZED_REMAINDERS_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/proofs/NORMALIZED_REMAINDERS_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/SOURCE_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/upstream/SOURCE_PINS.json` |
+| `upstream/factorial_free/direct/parent/upstream/parent/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension/METRICS.json` |
+| `upstream/factorial_free/direct/parent/upstream/parent/METRICS_centered.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension_centered/METRICS.json` |
+| `upstream/factorial_free/direct/parent/upstream/parent/source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension/source.json` |
+| `upstream/factorial_free/direct/parent/upstream/parent/transform_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension/transform_certificate.json` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/architecture/README.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/INHERITED_CONSECUTIVE_ORDINATES.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/129-semantic-pell-anchor/proofs/CONSECUTIVE_ORDINATES.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/INHERITED_DERIVED_LABEL_RANGE_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/architecture/DERIVED_LABEL_RANGE_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/INHERITED_FACTORIAL_CARRIER_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/architecture/FACTORIAL_CARRIER_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/INHERITED_HYBRID_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/architecture/HYBRID_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/INHERITED_MODULAR_FACTORIAL_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/123-shared-binomial/direct/PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/INHERITED_ONE_ROW_CAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/128-one-row-pell/diagnostics/ONE_ROW_SIGNED_PELL_CAP.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/INHERITED_ROUND15_UNIFIED_PRODUCT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/125-unified-binomial-round15/architecture/UNIFIED_PRODUCT_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/INHERITED_SELF_RADIX_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/124-shared-pell-bound261/proofs/SELF_RADIX_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/INHERITED_SEMANTIC_ANCHOR_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/129-semantic-pell-anchor/proofs/ANCHOR_REUSE_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/INHERITED_UNIFIED_CAP_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/131-shared-pell-caps-round16/architecture/UNIFIED_CAP_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/INHERITED_shared_powers.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/100-quartics407-888/upstream/proofs/shared_powers.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/ONE_ROW_SEMANTIC_ANCHOR_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/architecture/proofs/ONE_ROW_SEMANTIC_ANCHOR_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/affine_shared_step.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/direct/affine_shared_step.json` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/audit_calculus.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/direct/audit_calculus.py` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/build_equation.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/direct/build_equation.py` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calculus.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/report/calculus.tex` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/BoundedForallCertificate.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/BoundedForallCertificate.lean` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/BoundedForallRepresentation.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/BoundedForallRepresentation.lean` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/Bridge.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/Bridge.lean` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/CALIBRATION_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/CALIBRATION_PINS.json` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/COMMUTATIVE_CERTIFICATES.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/COMMUTATIVE_CERTIFICATES.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/FactorialRepresentation.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/FactorialRepresentation.lean` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/PellRepresentation.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/PellRepresentation.lean` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/PowerRepresentation.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/PowerRepresentation.lean` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/direct_flow_large_carrier_README.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/calibration/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/crt.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/report/crt.tex` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/direct_arithmetic.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/architecture/section.tex` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/direct_calculus.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/direct/direct_calculus.py` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/primitives.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/report/primitives.tex` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/round14_architecture.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/architecture/section.tex` |
+| `upstream/factorial_free/direct/parent/upstream/round17/architecture/proofs/inherited/wire_eliminated_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/src/wire_eliminated_source.json` |
+| `upstream/factorial_free/direct/parent/upstream/round17/direct/ORIENTATION_FIRST_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/ORIENTATION_FIRST_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/direct/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/direct/PROOF_315.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/PROOF_315.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/direct/STRICT_BUDGET_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/STRICT_BUDGET_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/direct/proofs/INHERITED_ODD_AUXILIARY_REVIEW.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/132-signed-caps-free-scales/alternative/SIGNED_CAP_REVIEW.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/direct/proofs/INHERITED_ROUND15_DIRECT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/125-unified-binomial-round15/direct/PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/direct/proofs/INHERITED_ROUND15_UNIFIED_PRODUCT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/125-unified-binomial-round15/architecture/UNIFIED_PRODUCT_PROOF.md` |
+| `upstream/factorial_free/direct/parent/upstream/round17/direct/proofs/INHERITED_ROUND16_DIRECT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/131-shared-pell-caps-round16/direct/PROOF.md` |
+| `upstream/factorial_free/direct/parent/verification/verification_optimized.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/verification/verification_optimized.json` |
+| `upstream/factorial_free/direct/parent/verification/verification_rebuild.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/verification/verification_rebuild.json` |
+| `upstream/factorial_free/direct/principal/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/comparisons/factorial_free242/METRICS.json` |
+| `upstream/factorial_free/direct/principal/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/comparisons/factorial_free242/equation.json` |
+| `upstream/factorial_free/direct/principal/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/159-quadratic-projection-234/stages/source242/expanded_polynomial.json` |
+| `upstream/factorial_free/direct/principal/residuals.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/principal/residuals.tex` |
+| `upstream/factorial_free/direct/principal/residuals.txt` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/principal/residuals.txt` |
+| `upstream/factorial_free/direct/principal/variables.tsv` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/principal/variables.tsv` |
+| `upstream/factorial_free/direct/reproduce.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/reproduce.py` |
+| `upstream/factorial_free/direct/review/FINAL_CHECK_NORMAL.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/review/FINAL_CHECK_NORMAL.json` |
+| `upstream/factorial_free/direct/review/FINAL_CHECK_OPTIMIZED.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/review/FINAL_CHECK_OPTIMIZED.json` |
+| `upstream/factorial_free/direct/review/FINAL_POWER_INTERFACE_AUDIT.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/review/FINAL_POWER_INTERFACE_AUDIT.json` |
+| `upstream/factorial_free/direct/review/FINAL_POWER_INTERFACE_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/review/FINAL_POWER_INTERFACE_AUDIT.json` |
+| `upstream/factorial_free/direct/review/REPRODUCTION.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/direct/review/REPRODUCTION.json` |
+| `upstream/factorial_free/direct/sources/AFFINE_EXPOSURE_PROVENANCE.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/143-residual-bases/quartic/SOURCE_PROVENANCE.json` |
+| `upstream/factorial_free/direct/sources/INHERITED_AFFINE_EXPOSURE_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/143-residual-bases/quartic/PROOF.md` |
+| `upstream/factorial_free/direct/sources/INHERITED_ODD_SQUARE_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/140-centered-residues/arithmetic/ODD_SQUARE_AND_WEIGHTED_PROOF.md` |
+| `upstream/factorial_free/report/comparison.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/report/comparison.tex` |
+| `upstream/factorial_free/report/main.pdf` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/report/main.pdf` |
+| `upstream/factorial_free/report/main.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/report/main.tex` |
+| `upstream/factorial_free/report/residuals.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/report/residuals.tex` |
+| `upstream/factorial_free/report/results.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/report/results.tex` |
+| `upstream/factorial_free/report/verification.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/report/verification.tex` |
+| `upstream/factorial_free/review/FACTORIAL_FREE_AUDIT.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/review/FACTORIAL_FREE_AUDIT.md` |
+| `upstream/factorial_free/review/FACTORIAL_FREE_BINOMIAL_CRT.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/review/FACTORIAL_FREE_BINOMIAL_CRT.md` |
+| `upstream/factorial_free/review/INDEPENDENT_REVIEW.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/review/INDEPENDENT_REVIEW.md` |
+| `upstream/factorial_free/review/ODD_SQUARE_BETA_PROOF.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/review/ODD_SQUARE_BETA_PROOF.tex` |
+| `upstream/factorial_free/review/PDF_QA.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/review/PDF_QA.json` |
+| `upstream/factorial_free/review/ROOT_VERIFICATION.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/review/ROOT_VERIFICATION.json` |
+| `upstream/factorial_free/review/new_lemmas_check.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/review/new_lemmas_check.json` |
+| `upstream/factorial_free/verify.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/verify.py` |
+
+### `167-integral-projection/` (`ConZFC_Integral_Projection_2026-10-25.zip`)
+
+| Delivered member | Same bytes in the repository |
+|---|---|
+| `inherited/ConZFC_Pooled_Powers_2026-10-25.zip` | `docs/incoming/ConZFC_Pooled_Powers_2026-10-25.zip (arrival 536c08e791)` |
+| `inherited/calibration_review/c222_internalization_audit.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/145-shared-residue-bounds/review/c222_internalization_audit.md` |
+| `inherited/calibration_review/calibration_sources/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
+| `inherited/calibration_review/calibration_sources/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
+| `inherited/calibration_review/calibration_sources/KEind222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean` |
+| `inherited/calibration_review/calibration_sources/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
+| `inherited/calibration_review/calibration_sources/KLowerQHyp.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean` |
+| `inherited/calibration_review/calibration_sources/KQ1Collect.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Collect.lean` |
+| `inherited/calibration_review/calibration_sources/KQ1Model.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Model.lean` |
+| `inherited/calibration_review/calibration_sources/KQ1ZF.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ZF.lean` |
+| `inherited/calibration_review/calibration_sources/KQHyp.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQHyp.lean` |
+| `inherited/calibration_review/calibration_sources/KSeedDirect222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean` |
+| `inherited/calibration_review/calibration_sources/KUpper222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KUpper222.lean` |
+| `inherited/calibration_review/calibration_sources/SOURCE_MANIFEST.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/145-shared-residue-bounds/review/calibration_sources/SOURCE_MANIFEST.json` |
+| `inherited/calibration_review/calibration_sources/WFModelCore.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean` |
+| `inherited/calibration_review/calibration_sources/WFRelativization.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean` |
+| `inherited/calibration_review/calibration_sources/WellFoundedPartCore.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPartCore.lean` |
+| `inputs/pooled225.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/equation.json` |
+| `variants/220/inputs/pooled225.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/equation.json` |
+| `verification/JOINT245_FRESH_REPLAY.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/PARENT_REPLAY.json` |
+| `verification/POOLED225_FRESH_OPTIMIZED_REPLAY.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/REBUILD.json` |
+| `verification/POOLED225_FRESH_REPLAY.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/REBUILD.json` |
+| `SHA256SUMS` | not staged: checksum ledger |
+
+### `168-reciprocal-pooling/` (`ConZFC_Reciprocal_Pooling_2026-10-25.zip`)
+
+| Delivered member | Same bytes in the repository |
+|---|---|
+| `inherited/parent225/INTEGRATION.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/INTEGRATION.md` |
+| `inherited/parent225/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/README.md` |
+| `inherited/parent225/build.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/build.py` |
+| `inherited/parent225/code/build_basis.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/code/build_basis.py` |
+| `inherited/parent225/code/build_pools.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/code/build_pools.py` |
+| `inherited/parent225/code/check_all_frame_atoms.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/code/check_all_frame_atoms.py` |
+| `inherited/parent225/code/check_input_validation.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/code/check_input_validation.py` |
+| `inherited/parent225/code/check_pool_frame.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/code/check_pool_frame.py` |
+| `inherited/parent225/code/check_pool_lemma.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/code/check_pool_lemma.py` |
+| `inherited/parent225/code/check_report.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/code/check_report.py` |
+| `inherited/parent225/code/export_equation.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/code/export_equation.py` |
+| `inherited/parent225/code/linear_beta.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/code/linear_beta.py` |
+| `inherited/parent225/code/shear_pell.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/code/shear_pell.py` |
+| `inherited/parent225/code/strict_horizon.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/code/strict_horizon.py` |
+| `inherited/parent225/equation/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/METRICS.json` |
+| `inherited/parent225/equation/SCHEMA.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/SCHEMA.md` |
+| `inherited/parent225/equation/beta_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/beta_certificate.json` |
+| `inherited/parent225/equation/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/equation.json` |
+| `inherited/parent225/equation/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/expanded_polynomial.json` |
+| `inherited/parent225/equation/residual_labels.tsv` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/residual_labels.tsv` |
+| `inherited/parent225/equation/residuals.txt` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/residuals.txt` |
+| `inherited/parent225/equation/variables.tsv` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/variables.tsv` |
+| `inherited/parent225/evaluate.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/evaluate.py` |
+| `inherited/parent225/inherited/joint_norm245/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/README.md` |
+| `inherited/parent225/inherited/joint_norm245/SOURCE_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/SOURCE_PINS.json` |
+| `inherited/parent225/inherited/joint_norm245/code/build.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/code/build.py` |
+| `inherited/parent225/inherited/joint_norm245/code/evaluate.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/code/evaluate.py` |
+| `inherited/parent225/inherited/joint_norm245/code/verify.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/code/verify.py` |
+| `inherited/parent225/inherited/joint_norm245/data/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/METRICS.json` |
+| `inherited/parent225/inherited/joint_norm245/data/PROJECTION_CHECK.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/PROJECTION_CHECK.json` |
+| `inherited/parent225/inherited/joint_norm245/data/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/equation.json` |
+| `inherited/parent225/inherited/joint_norm245/data/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/expanded_polynomial.json` |
+| `inherited/parent225/inherited/joint_norm245/data/factored_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/factored_source.json` |
+| `inherited/parent225/inherited/joint_norm245/data/factorization_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/factorization_certificate.json` |
+| `inherited/parent225/inherited/joint_norm245/data/projected.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/projected.json` |
+| `inherited/parent225/inherited/joint_norm245/data/projection_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/projection_certificate.json` |
+| `inherited/parent225/inherited/joint_norm245/data/source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/source.json` |
+| `inherited/parent225/inherited/joint_norm245/data/source_transformation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/source_transformation.json` |
+| `inherited/parent225/inherited/joint_norm245/data/translation_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/translation_certificate.json` |
+| `inherited/parent225/inherited/joint_norm245/equation/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/equation/METRICS.json` |
+| `inherited/parent225/inherited/joint_norm245/equation/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/inputs/parent245.json` |
+| `inherited/parent225/inherited/joint_norm245/equation/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/equation/expanded_polynomial.json` |
+| `inherited/parent225/inherited/joint_norm245/equation/projected.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/data/projected.json` |
+| `inherited/parent225/inherited/joint_norm245/equation/residuals.txt` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/equation/residuals.txt` |
+| `inherited/parent225/inherited/joint_norm245/equation/translation_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/equation/translation_certificate.json` |
+| `inherited/parent225/inherited/joint_norm245/equation/variables.tsv` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/equation/variables.tsv` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/README.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/code/build.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/code/build.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/code/center_integer.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/145-shared-residue-bounds/certificate/center_integer.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/code/check.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/code/check.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/code/check_controls.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/code/check_controls.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/code/factor_horn.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/direct/factor_horn.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/code/inherited_independent_algebra.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/125-unified-binomial-round15/direct_audit/check_direct.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/code/terminal_elimination.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/104-valuation-signed/direct/terminal_elimination.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/code/translate_coordinates.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/direct/translate_coordinates.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/code/verify.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/code/verify.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/METRICS.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/PROJECTION_CHECK.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/PROJECTION_CHECK.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/equation.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/expanded_polynomial.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/factored_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/factored_source.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/factorization_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/factorization_certificate.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/guarded.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/guarded.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/parent_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension/source.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/parent_transform_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension/transform_certificate.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/projected.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/projected.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/projection_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/projection_certificate.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/remainder_transformation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/remainder_transformation.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/source.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/data/translation_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/translation_certificate.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/equation/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/equation/METRICS.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/equation/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/equation/equation.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/equation/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/equation/expanded_polynomial.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/equation/projected.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/data/projected.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/equation/translation_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/equation/translation_certificate.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/proofs/INDEPENDENT_REVIEW.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/proofs/INDEPENDENT_REVIEW.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/proofs/NORMALIZED_REMAINDERS_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/proofs/NORMALIZED_REMAINDERS_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/SOURCE_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/upstream/SOURCE_PINS.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/parent/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension/METRICS.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/parent/METRICS_centered.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension_centered/METRICS.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/parent/source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension/source.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/parent/transform_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/strict_dimension/transform_certificate.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/architecture/README.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/INHERITED_CONSECUTIVE_ORDINATES.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/129-semantic-pell-anchor/proofs/CONSECUTIVE_ORDINATES.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/INHERITED_DERIVED_LABEL_RANGE_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/architecture/DERIVED_LABEL_RANGE_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/INHERITED_FACTORIAL_CARRIER_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/architecture/FACTORIAL_CARRIER_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/INHERITED_HYBRID_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/architecture/HYBRID_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/INHERITED_MODULAR_FACTORIAL_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/123-shared-binomial/direct/PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/INHERITED_ONE_ROW_CAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/128-one-row-pell/diagnostics/ONE_ROW_SIGNED_PELL_CAP.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/INHERITED_ROUND15_UNIFIED_PRODUCT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/125-unified-binomial-round15/architecture/UNIFIED_PRODUCT_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/INHERITED_SELF_RADIX_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/124-shared-pell-bound261/proofs/SELF_RADIX_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/INHERITED_SEMANTIC_ANCHOR_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/129-semantic-pell-anchor/proofs/ANCHOR_REUSE_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/INHERITED_UNIFIED_CAP_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/131-shared-pell-caps-round16/architecture/UNIFIED_CAP_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/INHERITED_shared_powers.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/100-quartics407-888/upstream/proofs/shared_powers.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/ONE_ROW_SEMANTIC_ANCHOR_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/architecture/proofs/ONE_ROW_SEMANTIC_ANCHOR_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/affine_shared_step.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/direct/affine_shared_step.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/audit_calculus.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/direct/audit_calculus.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/build_equation.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/direct/build_equation.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calculus.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/report/calculus.tex` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/BoundedForallCertificate.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/BoundedForallCertificate.lean` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/BoundedForallRepresentation.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/BoundedForallRepresentation.lean` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/Bridge.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/Bridge.lean` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/CALIBRATION_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/CALIBRATION_PINS.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/COMMUTATIVE_CERTIFICATES.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/COMMUTATIVE_CERTIFICATES.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/FactorialRepresentation.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/FactorialRepresentation.lean` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/PellRepresentation.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/PellRepresentation.lean` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/PowerRepresentation.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/PowerRepresentation.lean` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/provenance/inherited/direct_flow_large_carrier_README.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/calibration/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/crt.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/report/crt.tex` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/direct_arithmetic.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/architecture/section.tex` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/direct_calculus.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/direct/direct_calculus.py` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/primitives.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/89-shared-certificates/report/primitives.tex` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/round14_architecture.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/architecture/section.tex` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/architecture/proofs/inherited/wire_eliminated_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/99-shared-pell608/src/wire_eliminated_source.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/direct/ORIENTATION_FIRST_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/ORIENTATION_FIRST_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/direct/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/direct/PROOF_315.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/PROOF_315.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/direct/STRICT_BUDGET_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/STRICT_BUDGET_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/direct/proofs/INHERITED_ODD_AUXILIARY_REVIEW.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/132-signed-caps-free-scales/alternative/SIGNED_CAP_REVIEW.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/direct/proofs/INHERITED_ROUND15_DIRECT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/125-unified-binomial-round15/direct/PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/direct/proofs/INHERITED_ROUND15_UNIFIED_PRODUCT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/125-unified-binomial-round15/architecture/UNIFIED_PRODUCT_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/upstream/round17/direct/proofs/INHERITED_ROUND16_DIRECT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/131-shared-pell-caps-round16/direct/PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/verification/verification_optimized.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/verification/verification_optimized.json` |
+| `inherited/parent225/inherited/joint_norm245/inherited/normalized252/verification/verification_rebuild.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/direct/verification/verification_rebuild.json` |
+| `inherited/parent225/inherited/joint_norm245/proofs/BOOTSTRAP_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/proofs/BOOTSTRAP_PROOF.md` |
+| `inherited/parent225/inherited/joint_norm245/verification/inherited_parent_replay.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/150-digit-recovery/review/INHERITED_COMMON_STANDARD.json` |
+| `inherited/parent225/inherited/joint_norm245/verification/normal.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/verification/normal.json` |
+| `inherited/parent225/inherited/joint_norm245/verification/optimized.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/verification/optimized.json` |
+| `inherited/parent225/inherited/joint_norm245/verification/rebuild.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/148-joint-norm/direct/verification/rebuild.json` |
+| `inherited/parent225/inherited/shell_recoding_supplement/PROVENANCE.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/inherited/shell_recoding_supplement/PROVENANCE.json` |
+| `inherited/parent225/inherited/shell_recoding_supplement/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/inherited/shell_recoding_supplement/README.md` |
+| `inherited/parent225/inherited/shell_recoding_supplement/SHELL_ENCODING_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/intake/ConZFC_Shell_Reciprocal_660_2026-10-24/ConZFC_Shell_Reciprocal_660/proofs/shell_encoding_proof.md` |
+| `inherited/parent225/inherited/shell_recoding_supplement/constructor_sources/SHA256.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/constructor_sources/SHA256.json` |
+| `inherited/parent225/inherited/shell_recoding_supplement/constructor_sources/build_derived_label_range.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/architecture/build_derived_label_range.py` |
+| `inherited/parent225/inherited/shell_recoding_supplement/constructor_sources/shell_source.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/intake/ConZFC_Shell_Reciprocal_660_2026-10-24/ConZFC_Shell_Reciprocal_660/code/shell_source.py` |
+| `inherited/parent225/inputs/parent245.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/inputs/parent245.json` |
+| `inherited/parent225/inputs/square_frame_atoms.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/inputs/square_frame_atoms.json` |
+| `inherited/parent225/proofs/INDEPENDENT_HORIZON_REVIEW.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/proofs/INDEPENDENT_HORIZON_REVIEW.md` |
+| `inherited/parent225/proofs/INDEPENDENT_POOL_REVIEW.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/proofs/INDEPENDENT_POOL_REVIEW.md` |
+| `inherited/parent225/proofs/PELL_DIFFERENCES.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/proofs/PELL_DIFFERENCES.md` |
+| `inherited/parent225/proofs/POOLED_POWERS.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/proofs/POOLED_POWERS.md` |
+| `inherited/parent225/proofs/PRIVATE_WIRE_BASIS.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/proofs/PRIVATE_WIRE_BASIS.md` |
+| `inherited/parent225/proofs/SECOND_POOL_REVIEW.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/proofs/SECOND_POOL_REVIEW.md` |
+| `inherited/parent225/proofs/STRICT_HORIZON_AND_BETA.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/proofs/STRICT_HORIZON_AND_BETA.md` |
+| `inherited/parent225/proofs/SYNTAX_RECODING.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/proofs/SYNTAX_RECODING.md` |
+| `inherited/parent225/provenance/SOURCES.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/provenance/SOURCES.json` |
+| `inherited/parent225/report/identities.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/report/identities.tex` |
+| `inherited/parent225/report/metrics.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/report/metrics.tex` |
+| `inherited/parent225/report/report.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/report/report.tex` |
+| `inherited/parent225/report/residuals.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/report/residuals.tex` |
+| `inherited/parent225/stages/basis238/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/basis238/METRICS.json` |
+| `inherited/parent225/stages/basis238/basis_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/basis238/basis_certificate.json` |
+| `inherited/parent225/stages/basis238/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/basis238/equation.json` |
+| `inherited/parent225/stages/basis238/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/basis238/expanded_polynomial.json` |
+| `inherited/parent225/stages/differences226/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/differences226/METRICS.json` |
+| `inherited/parent225/stages/differences226/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/differences226/equation.json` |
+| `inherited/parent225/stages/differences226/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/differences226/expanded_polynomial.json` |
+| `inherited/parent225/stages/differences226/shear_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/differences226/shear_certificate.json` |
+| `inherited/parent225/stages/pooled226/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/pooled226/METRICS.json` |
+| `inherited/parent225/stages/pooled226/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/pooled226/equation.json` |
+| `inherited/parent225/stages/pooled226/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/pooled226/expanded_polynomial.json` |
+| `inherited/parent225/stages/pooled226/pool_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/pooled226/pool_certificate.json` |
+| `inherited/parent225/stages/principal225/METRICS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/METRICS.json` |
+| `inherited/parent225/stages/principal225/beta_certificate.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/beta_certificate.json` |
+| `inherited/parent225/stages/principal225/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/equation.json` |
+| `inherited/parent225/stages/principal225/expanded_polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/expanded_polynomial.json` |
+| `inherited/parent225/stages/strict241/certificate241.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/strict241/certificate241.json` |
+| `inherited/parent225/stages/strict241/equation241.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/strict241/equation241.json` |
+| `inherited/parent225/stages/strict241/expanded241.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/strict241/expanded241.json` |
+| `inherited/parent225/stages/strict241/metrics241.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/stages/strict241/metrics241.json` |
+| `inherited/parent225/verification/ALL_FRAME_ATOMS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/ALL_FRAME_ATOMS.json` |
+| `inherited/parent225/verification/OPTIMIZED.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/OPTIMIZED.json` |
+| `inherited/parent225/verification/PARENT_REPLAY.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/PARENT_REPLAY.json` |
+| `inherited/parent225/verification/PDF_QA.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/PDF_QA.json` |
+| `inherited/parent225/verification/POOL_FRAME.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/POOL_FRAME.json` |
+| `inherited/parent225/verification/POOL_LEMMA.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/POOL_LEMMA.json` |
+| `inherited/parent225/verification/PRINTED_EQUATION.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/PRINTED_EQUATION.json` |
+| `inherited/parent225/verification/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/README.md` |
+| `inherited/parent225/verification/REBUILD.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/REBUILD.json` |
+| `inherited/parent225/verification/VALIDATION_CONTROLS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/VALIDATION_CONTROLS.json` |
+| `inherited/parent225/verify.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verify.py` |
+| `verification/upstream148_parent_replay.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/PARENT_REPLAY.json` |
+| `verification/upstream158_parent_replay.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/verification/REBUILD.json` |

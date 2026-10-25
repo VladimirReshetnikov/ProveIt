@@ -1,0 +1,77 @@
+{
+  "schema": "conzfc-reciprocal-verification-plan-v1",
+  "comparison_commit": "953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4",
+  "domain": "unrestricted integers",
+  "parent": {
+    "equation": "inherited/parent225/equation/equation.json",
+    "canonical_sha256": "fee84c408828aba3e7ceebe9a37f58509327063aa7fd078fd49c80adf3af4e56",
+    "inherited_verifier": "inherited/parent225/verify.py"
+  },
+  "stages": [
+    {
+      "name": "five_quadratic_projections",
+      "mode": "radical",
+      "source": "inherited/parent225/equation/equation.json",
+      "target": "stages/radical220"
+    },
+    {
+      "name": "integral_affine_lattice",
+      "mode": "affine",
+      "source": "stages/radical220/equation.json",
+      "target": "stages/lattice219"
+    },
+    {
+      "name": "unit_affine_projection",
+      "mode": "unit_affine",
+      "source": "stages/lattice219/equation.json",
+      "target": "stages/affine218"
+    },
+    {
+      "name": "protected_integer_row_basis",
+      "mode": "rows",
+      "source": "stages/affine218/equation.json",
+      "target": "equations/quartic218"
+    },
+    {
+      "name": "reciprocal_pooling",
+      "mode": "reciprocal",
+      "source": "equations/quartic218/equation.json",
+      "target": "equations/decic215"
+    }
+  ],
+  "final_equations": [
+    {
+      "path": "equations/quartic218/equation.json",
+      "canonical_sha256": "878d2f427a117f35b4c211a223003978d52509acc46a5c97b829380b6e608ad8",
+      "variables": 218,
+      "residuals": 155,
+      "degree": 4,
+      "monomials": 34984,
+      "height": 113304
+    },
+    {
+      "path": "equations/decic215/equation.json",
+      "canonical_sha256": "a335e0d1d1d82aa2cd30c2f436ed61a752fff001db134b339c23fae01d4a70b0",
+      "variables": 215,
+      "residuals": 152,
+      "degree": 10,
+      "monomials": 99914,
+      "height": 113304
+    }
+  ],
+  "additional_checks": [
+    "parent225 finite stage verifier",
+    "parent225 final square-frame identity and all actual base/index/output atoms",
+    "parent225 pool-frame binding",
+    "independent reciprocal-lemma exact identities and bounded arithmetic controls",
+    "code/check_report.py when present"
+  ],
+  "default_behavior": "Read-only: no generated files, cache files, or receipts are written unless --receipt is specified.",
+  "rebuild_behavior": "Use temporary directories only. Rebuild all inherited parent225 stages, the integral-affine219 producer, and the final reciprocal215 producer; compare the selected emitted files byte for byte.",
+  "limitations": [
+    "Finite algebra and complete polynomial coefficients are checked, not consistency or existence of a solution.",
+    "The unbounded reciprocal-pooling theorem and inherited logical/arithmetic calibration are ordinary proof dependencies, not consequences of finite tests.",
+    "No new complete Lean/Rocq build or object-level ZFC derivation is performed.",
+    "The default verifier does not regenerate the PDF or rerun optimization searches."
+  ]
+}
