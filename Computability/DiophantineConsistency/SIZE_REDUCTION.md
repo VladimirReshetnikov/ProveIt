@@ -3176,13 +3176,25 @@ label and reserving zero for empty cells. Its11-bit count guard permits a
 184-to22 cyclic-carry proof, including occupied raw rho+1, actual digit1 and
 outgoing1 cleared by explicit resets. It retains15 positive unknowns and the
 uniform66-operation degree157 front, with982 physical positions and870 padding
-bits. The [FULL ROOT lead review](reviews/compact66-three-anchor-radix47-lead-root.md)
-and a [FULL independent review](reviews/compact66-three-anchor-radix47-ordinary-second-peer.md)
-find no gap; another independent full review remains in progress. All new
-bracket values and admissible-prime existence are UNKNOWN. A separate
-[CODE ONLY probe preparation](reviews/compact66-three-anchor-radix47-probe-code-only-preparation-release.md)
-is in progress, with no new application or page-size claim. This encoding
-changes the earlier scoped47 alias's ten-bit guard and seven-marker layout.
+bits. The FULL [first](reviews/compact66-three-anchor-radix47-ordinary-peer.md)
+and [second](reviews/compact66-three-anchor-radix47-ordinary-second-peer.md)
+independent nonauthor reviews pass, with [separate ROOT conditional acceptance](reviews/compact66-three-anchor-radix47-ordinary-acceptance.json).
+All new bracket values and admissible-prime existence remain UNKNOWN. The
+unsealed prospective probe is preserved as a draft; no application or page-size
+claim follows. This encoding changes the earlier scoped47 alias's ten-bit guard
+and seven-marker layout.
+
+The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
+now prioritizes a stronger combination: complemented genuine labels are also
+positive, so the four-marker deletion can use smaller selector coefficients.
+The [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)
+keeps all incoming numeric certificates and page claims unverified. A fresh
+complete complemented-three-anchor47 proof is being authored, and a [separate CODE ONLY amendment](reviews/compact66-complemented-three-anchor47-probe-code-only-amendment.md)
+permits a new unsealed draft while preserving the old one. Its preliminary hand
+bounds are29-to11, and its occupied clause fits within one digit. The combined
+source still needs two FULL nonauthor reviews, new finite discharge and a
+complete coherent page before a significant-only PDF/TeX update. Incoming75/626
+ten-positive circuits and smaller direct quartics also merit full review.
 
 The [exact47 layout identities](research/compact66-three-anchor-radix47-layout-identities/README.md)
 also give a geometric low-mask recipe and one common selector bias, preserving
