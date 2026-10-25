@@ -106,6 +106,17 @@ See the [ROOT acceptance](reviews/fast-sparse-substitution-replay-root-peer.md).
 The earlier optimized exit143 remains preserved and unresolved; the old
 observed source is unchanged. No fresh native or Lean replay is claimed.
 
+A complete [balanced-shear verification](research/balanced-crt-gate-shear-verification/README.md)
+now lowers the same profiles' height to98336, with weighted315/217/5809
+and plain316/218/5803. The determinant-one chart preserves both whole zero
+sets; all nine first/fresh processes pass and all twelve fresh capture
+files match byte for byte. See the
+[ROOT acceptance](reviews/balanced-crt-gate-shear-verification-root-peer.md).
+The66 extra terms buy lower height; the centered parents remain smaller
+in support. Height98336 is an exact minimum in this specified two-parameter
+shear family followed by constant translations, with no global claim.
+This quartic tradeoff leaves the maintained compact66 page unchanged.
+
 A lower-row direct degree-four comparison, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
 now reaches **327 unrestricted integer unknowns**, with216 rows,5,718 terms
 and height128,446. It saves32 variables, six rows and340 terms against the

@@ -15,7 +15,8 @@ not establish the size of a complete consistency equation.
 
 | Domain | Variables | Operations | Degree | Use |
 |---|---:|---:|---:|---|
-| Integers | **315 / 316** | not optimized | **4** | Complete fixed58-shift charts;217/218 rows,5743/5737 terms,height128446,row height256; separate full fast verification accepted |
+| Integers | **315 / 316** | not optimized | **4** | Complete balanced-shear charts;217/218 rows,5809/5803 terms,height98336,row height256; nine first/fresh processes pass |
+| Integers | 315 / 316 | not optimized | 4 | Complete fixed58-shift parents;217/218 rows,5743/5737 terms,height128446,row height256; separate full fast verification accepted |
 | Integers | 315 / 316 | not optimized | 4 | Preserved raw parents;217/218 rows,7999/7987 terms,height14250071 |
 | Positive integers | **15** | **66** | **157** | Maintained complete one-page indexed equation and every constant; all actual-page/replay/visual checks pass |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
@@ -2795,3 +2796,32 @@ and mod13 Phi condition are proved without evaluating the new indexedPhi.
 No new tuple, byte saving, equation or page gain is claimed. All current
 295388 coefficient bytes, compact66 PDF/TeX and paused Lean work remain
 unchanged; neither ordinary note invokes a new application.
+
+## Complete balanced shear lowers height to98336
+
+The [closed data and execution evidence](research/balanced-crt-gate-shear-verification/README.md)
+passes [ordinary review](reviews/balanced-crt-gate-shear-verification-ordinary-peer.md)
+and [ROOT acceptance](reviews/balanced-crt-gate-shear-verification-root-peer.md).
+Weighted has315 integer variables/217 rows/5809 quartic terms; plain
+has316/218/5803. Both have exact degree4, height98336, row height256 and
+every coordinate live. Against their centered parents this adds66 terms
+per profile while lowering height128446 to98336. The parents and older
+327/216/5718 chart remain useful alternatives.
+
+All13 affected row formulas, every unchanged row, whole SOS and complete
+forward/inverse quartic substitutions pass independent producer/checker
+routes. Both modes retain66 actual negative and eight valid controls.
+All nine actual first/fresh processes exit0; all twelve fresh capture
+files match byte for byte, with194 inputs and13 data artifacts unchanged.
+The48-payload evidence seal preserves both full final code approvals,
+separate releases, initial workflow finding and historical exit143.
+
+For every integer m,n, the two-parameter gate shear preserves the98336
+coefficient at z10*z22^3; constant translations preserve this degree-four
+coefficient. The completed m=n=2 member attains that lower bound, proving
+the exact minimum98336 within this family plus later constant shifts.
+No optimum for general integer coordinate changes or support is claimed.
+The whole source/witness maps retain their ordinary consistency contract
+without a fresh native or Lean replay. This height/support tradeoff does
+not shorten the compact66 page, so main equation.pdf/equation.tex remain
+unchanged and minor spelling gains remain queued for batching.

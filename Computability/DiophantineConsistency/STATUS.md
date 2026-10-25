@@ -91,6 +91,20 @@ and both pure builds remain separate historical records. The old34-file
 observed source is immutable without a MANIFEST. Acceptance rests on the
 new closed evidence, not on relabeling or retrying the interrupted process.
 
+The complete balanced shear now passes
+[ordinary review](reviews/balanced-crt-gate-shear-verification-ordinary-peer.md)
+and [ROOT acceptance](reviews/balanced-crt-gate-shear-verification-root-peer.md).
+Weighted315/217/5809 and plain316/218/5803 have degree4, height98336,
+row height256 and all coordinates live. This adds66 terms per profile
+against the centered parents while lowering height128446 to98336.
+The whole forward/inverse substitutions and inherited witness maps pass
+normal/optimized checking; all nine actual processes exit0, all twelve
+fresh files match, and194 source inputs remain unchanged. The attaining
+member and universal surviving coefficient prove the exact height minimum
+98336 for this two-parameter shear family plus constant translations.
+No general coordinate/support optimum, fresh native or Lean replay is
+claimed. The main compact66 PDF/TeX remain current and unchanged.
+
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
 ordinary source and all finite Horn/projection/translation layers pass four
