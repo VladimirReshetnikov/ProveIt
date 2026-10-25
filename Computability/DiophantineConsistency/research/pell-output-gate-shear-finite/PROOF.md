@@ -8,15 +8,19 @@ jointly accepted in a3dc95494b after both complete ordinary reviews.
 This file explains how every part is to be checked against actual whole
 artifacts, not how selected successful examples might be extrapolated.
 
-The INITIAL packet deliberately retains the author self-read finding
-listed in README: guard.py's SOURCE literal names the absent successor
-verification folder instead of the accepted neighbor parent. The pinned
-inputs are the correct existing neighbor data; no unavailable successor
-bytes are assumed or invented. This is an unresolved preparation defect,
-not a failed application attempt. No code may run. Both full initial
-reviews and this exact initial packet must be preserved before ROOT
-separately releases a bounded correction and fresh final-seal reviews.
-The complete remaining source/contract self-read found no second issue.
+The INITIAL author finding and both complete first CHANGES_REQUIRED
+reviews remain preserved: whole initial source/ROOT report ef46e9ccc1,
+independent full first pair b6b872b182. The sole SOURCE_PARENT_PATH
+defect named an absent successor instead of the accepted neighbor data;
+no successor bytes or failed application attempt existed. The separate
+bounded ROOT release6b824575ce corrects ONLY that guard SOURCE literal
+to the existing neighbor parent. Every other guard byte and all build,
+check and TOOLCHAIN bytes remain identical to the initial Git snapshot.
+PINS retains every original input and binds all eight initial source
+Git records, both first pairs and the repair release. Full final author
+code/prose self-reread finds no further issue. No code may run before
+two FULL final exact-seal static approvals and a separate ROOT release;
+the initial first reports are not overwritten or relabeled approvals.
 
 ## 1. Algebra and arithmetic independence
 

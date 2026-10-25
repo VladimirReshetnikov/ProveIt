@@ -6,7 +6,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[3]
 BASE = REPO / 'Computability/DiophantineConsistency'
-SOURCE = BASE / 'research/pell-output-gate-shear-verification/data'
+SOURCE = BASE / 'research/neighbor-gate-shear-verification/data'
 DATA = Path('/tmp/proveit-pell-output-gate-shear-data-v1')
 CORE = {'README.md', 'PROOF.md', 'TOOLCHAIN.md', 'guard.py', 'build.py',
         'check.py', 'SOURCE_PINS.json'}

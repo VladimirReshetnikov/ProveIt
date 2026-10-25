@@ -20,23 +20,30 @@ The four fresh read-only commands require a later separate release.
 Final evidence assembly and endpoint acceptance are separate decisions.
 This package supplies neither runtime outcomes nor generated artifacts.
 
-## Initial author self-read finding: execution remains blocked
+## Preserved initial finding and separately bounded path repair
 
 The complete initial source read found one copy-adaptation error BEFORE
-the initial HOLD or any application attempt: guard.py currently declares
+the initial HOLD or any application attempt: the initial guard declared
 
     SOURCE = BASE / 'research/pell-output-gate-shear-verification/data'
 
 instead of the required existing accepted
-`research/neighbor-gate-shear-verification/data`. The printed successor
-path is absent. It is not added to the source pins and no data is
-invented there. All external pins intentionally bind the actual accepted
-neighbor inputs. The incorrect literal is retained in this initial
-packet for ROOT and independent full first static review. ROOT requires
-preserving the initial packet and both reviews before a separate bounded
-correction. No application/helper/import/AST has occurred. Full author
-self-read found no other issue. This known finding is unresolved here;
-none of the planned commands is released.
+`research/neighbor-gate-shear-verification/data`. That successor path is
+absent; no data was invented or pinned there. The entire initial packet
+and full ROOT first report are preserved in ef46e9ccc1, and the complete
+independent first pair in b6b872b182. BOTH first full reviews remain
+CHANGES_REQUIRED for SOURCE_PARENT_PATH only, never initial approvals.
+
+The separate ROOT repair release6b824575ce permits only correcting that
+one guard literal. It now points to the actual accepted neighbor data.
+Every other guard byte and the entire producer, checker and TOOLCHAIN
+are identical to the initial Git snapshot. PINS binds all eight initial
+source Git records, both complete first pairs and the separate release,
+while retaining every original external input and whole parent. No
+application attempt, import/helper/AST or runtime repair/retry occurred.
+The complete final author self-reread found no further issue. Two FULL
+final static reviews of this exact repaired seal and a separate ROOT
+execution release remain required; none of the commands is released.
 
 ## Accepted mathematical and data inputs
 
