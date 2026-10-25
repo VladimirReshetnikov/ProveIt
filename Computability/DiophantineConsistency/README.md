@@ -231,13 +231,36 @@ Local carry resets replace global aligned no-carry. The new lambda/lift
 certificate and all three Hctrl unit values at17,L=8807,lambda remain
 UNKNOWN; no numerical51 endpoint or page gain is accepted.
 
-The new [conditional49 shared-marker encoding](research/compact66-shared-marker-radix49/README.md)
+The [conditional49 shared-marker encoding](research/compact66-shared-marker-radix49/README.md)
 passes both FULL ordinary reviews and [separate conditional acceptance](reviews/compact66-shared-marker-radix49-ordinary-acceptance.json).
-All seven physical markers remain, with common clause weight2^44, and are
-recovered individually. It uses radix2^49, mask mu=2^47-2 and the full49L
-controller. Its new lambda/lift and three Hctrl unit values at7,L=8807,lambda
-remain UNKNOWN. [Bounded-probe preparation](reviews/compact66-shared-marker-radix49-probe-code-only-preparation-release.md)
-is CODE ONLY; execution remains separately unreleased.
+All seven physical markers share clause weight2^44 and are individually
+recovered. Its bounded certificate probe now has [two first actual successes](reviews/compact66-shared-marker-radix49-probe-first-results.json)
+and [two exact fresh successes](reviews/compact66-shared-marker-radix49-probe-fresh-results.json),
+all exit0 with38 negative/four valid controls each. The first candidate
+lambda434011 has certified B-order18870, valuation-one lift and bracket
+units2/3135/6522 at7/8807/lambda. Final closed evidence reviews and separate
+bounded acceptance remain pending; no whole49 tuple or page is yet accepted.
+
+The [low-bit-padding R1](research/compact66-radix49-low-bit-padding-r1/README.md)
+now passes two FULL nonauthor ordinary reviews and [separate conditional acceptance](reviews/compact66-radix49-low-bit-padding-r1-ordinary-acceptance.json).
+It moves39 mask bits inside the proved whole zero field7693, simplifying
+the telescoped MF coefficient. K and the finite controller conditions are
+unchanged, but the actual rank and private witnesses are reconstructed fresh.
+The [original calibration finding](reviews/compact66-radix49-low-bit-padding-ordinary-peer.md)
+is preserved; R1 explicitly has five actual factors1 and Ns=Delta.
+
+An [optional kernel repair](research/compact66-shared-marker-radix49-kernel-units/README.md)
+passes both FULL ordinary reviews, with the [preserved ROOT correction](reviews/compact66-shared-marker-radix49-kernel-units-ordinary-root-correction.md),
+and [separate conditional acceptance](reviews/compact66-shared-marker-radix49-kernel-units-ordinary-acceptance.json).
+Its fixed choice among three harmless terms proves both fixed bracket
+units symbolically. It is a longer fallback; its lambda conditions remain
+open, and it is separate from the successful base49 probe.
+
+The [read-only intake of incoming134–139](research/incoming134-139-codefree-intake/README.md)
+prioritizes134's reported ten-positive78/630 and79/468 circuits and135's
+282/287/309-integer quartic family for full review. Their domains, heights,
+fixed-port costs and prior-art comparisons differ. No incoming program ran,
+metric was independently recomputed, or maintained-page change was accepted.
 
 The [scoped47 clause alias](research/compact66-shared-marker-radix47-clause-alias/README.md)
 passes both FULL reviews and [separate scoped acceptance](reviews/compact66-shared-marker-radix47-clause-alias-ordinary-acceptance.json).
