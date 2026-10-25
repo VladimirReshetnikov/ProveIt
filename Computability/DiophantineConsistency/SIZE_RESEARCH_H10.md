@@ -125,3 +125,18 @@ consistency encoding.
 The source-edge counts and exact read-source hashes are retained in
 `data/h10-size-leads.json`. No existing universal result, native calibration
 or formal/internal-ZFC proof status is strengthened by this note.
+
+## Earlier index recovery from the normalized pair
+
+The new [ordinary lemma](research/normalized-strong-auxiliary-index/README.md)
+and [root review](reviews/normalized-strong-auxiliary-index-root.md) recover
+c=psi_A(r) directly from the normalized strong and auxiliary norms. They
+allow signed auxiliary V and arbitrary integer quotient T, prove rc|m
+and R congruent to +/-r modulo c, and recover r=R in the stated positive
+half-window. The proof uses the local odd Q-polynomial identities and an
+explicit signed index fold; it needs no supplied main norm for this step.
+
+The main norm still links its supplied trace to the power-of-two residue
+required by the native calibration. This lemma therefore gives an earlier
+proof step, without a current gate or variable saving. No changed equation,
+maintained-page update or Lean work follows from this note.
