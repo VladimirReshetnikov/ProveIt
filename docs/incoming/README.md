@@ -27,6 +27,28 @@ publication keep their separate scopes.
 
 ## Current queue
 
+## Queue status after batches 228–229
+
+Two further arrivals of 24 October, each of eight archives titled "Con(ZFC)
+in Diophantine form", are placed as waves 12 and 13 of
+[con-zfc-diophantine-forms](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md),
+beside waves 5–11 (no earlier wave deleted, by Vladimir's direction):
+
+- batch 228, arrival `45b399ec51` (15:28), placement `55fe52f28c`: sources
+  111–118; 1,693 members = 1,150 staged + 535 copies omitted + 8 ignored;
+- batch 229, arrival `5f3379063d` (16:35), placement `9f7ff01558`: sources
+  119–126; 2,686 members = 1,058 staged + 1,624 copies omitted + 4 ignored;
+  43 placed paths exceed 250 characters (git `core.longpaths` is on).
+
+Both placements keep members matched only by the research session's
+volatile copies (the rule of `c16a89ad94`) and retire all their ZIPs; one
+reconciliation README (`d2aca4e574`) covers both waves. Package 112 bundles
+partial copies of two archives never delivered here
+(`ConZFC_Prime_Power_375_553`, `ConZFC_Shell_Reciprocal_660`), recorded as
+part of 112, not placed separately. The report is outside the
+research-report collection, which stays at 290. Nothing was rerun. The
+queue is clear.
+
 ## Queue status after batch 227
 
 The thirty-six archives that arrived in the seventeen commits `c1a102936a`
@@ -1686,6 +1708,8 @@ ProveIt-era batches (from this directory):
 | 225 | Eight wave-9 manuscripts from `0c6be9a074`, placed beside waves 5–8 (Vladimir's direction: do not delete previous waves): placement `a2cd79b912` adds sources 60–67 of `Computability/DiophantineConsistency/con-zfc-diophantine-forms` (1,829 members = 1,030 staged + 766 copies omitted + 33 ignored; PLACEMENT.md record appended), retiring all eight ZIPs; reconciliation README `42d8cbf310` covers waves 5–9 (nine positive 444 ops 66 or degree 1,494,006 67; 10ℤ 490 ops 66 or degree 3,327,556 67; 13ℤ without Sun 10,461,744 67; 12/13/14/15 positive at degree 118/34/26/24; 41ℤ quartic 64) and records Vladimir's direction that proposals may use encodings other than K215 and Jones. No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–9 |
 | 226 | Eight wave-10 manuscripts from `9513bd88ce`, placed beside waves 5–9 (Vladimir's direction: do not delete previous waves): placement `d79b41884d` adds sources 68–75 of `Computability/DiophantineConsistency/con-zfc-diophantine-forms` (1,192 members = 703 staged + 440 copies omitted + 49 ignored; 75's bundled wave-9 ZIPs mapped to arrival `0c6be9a074`; PLACEMENT.md record appended), retiring all eight ZIPs; reconciliation README `cf4a5218a5` covers waves 5–10 (10ℤ 1,576,864 / 481 68; eleven positive 325 / 113 70; nine positive degree 1,379,730 71; twelve positive 82 69; 38ℤ quartic, 32ℤ sextic, 27ℤ octic 69 and 71). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–10 |
 | 227 | Thirty-six wave-11 archives from seventeen arrivals `c1a102936a` … `e13c748234`, placed beside waves 5–10 (Vladimir's direction: do not delete previous waves): placement `240bf9e422` adds sources 76–110 of `Computability/DiophantineConsistency/con-zfc-diophantine-forms`, `c16a89ad94` restores 1,119 members (1,108 staged files) omitted against research-session copies (7,386 members = 5,291 staged + 2,043 copies omitted + 52 ignored; the `…_Dependency.zip` wrapper is a byte copy of 77's archive; PLACEMENT.md record appended), retiring all 36 ZIPs; reconciliation README covers waves 5–11 (nine positive 420 / 1,472,168 and 997,810 / 1,057 101; ten positive 718 / 126 109; 11ℤ 2,240 / 206 110; 12ℤ 1,000 / 180 110; eleven positive 211 / 110 105; twelve positive 70 / 98 98; 37ℤ quartic, 30ℤ sextic 76, 25ℤ octic 77; direct C222 quartics 394ℕ and 663ℤ 108). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–11 |
+| 228 | Eight wave-12 archives from `45b399ec51`, placed beside waves 5–11: placement `55fe52f28c` adds sources 111–118 (1,693 members = 1,150 staged + 535 copies omitted + 8 ignored), retiring all eight ZIPs; reconciled in `d2aca4e574` (coprime fusion in 113, 116, 117; direct quartics 517 ℤ and 349 ℕ by 112, height 2 by 114; 11ℤ to 15ℤ forms by 116). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–13 |
+| 229 | Eight wave-13 archives from `5f3379063d`, placed beside waves 5–12: placement `9f7ff01558` adds sources 119–126 (2,686 members = 1,058 staged + 1,624 copies omitted + 4 ignored; 43 paths over 250 characters), retiring all eight ZIPs; reconciled in `d2aca4e574` (ten positive 89 / 288 to 97 / 254 by 119 and 121; 11ℤ 966 / 111 by 123 to 416 / 125 by 125; direct quartics 261 ℕ by 124, 442 ℤ by 125, height 1 by 120). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–13 |
 
 
 
