@@ -216,11 +216,14 @@ receipt alone did not establish those later endpoint or page-size facts.
 The [conditional radix53 adapter](research/compact66-radix53-carry-tolerance/README.md)
 passes both full ordinary reviews and [separate conditional acceptance](reviews/compact66-radix53-carry-tolerance-ordinary-acceptance.json).
 The complete carry fixed-point, clean-clause decoding, final alignment,
-padding/slack and both positive Pell maps have ordinary proofs. A new
-prime/order/lift certificate and all three bracket units remain unresolved;
-no prime existence, numerical tuple or size gain is asserted. A deterministic
-bounded probe is being prepared under CODE ONLY/HOLD, with fixed-unit
-obstruction and bounded exhaustion retained as possible scientific outcomes.
+padding/slack and both positive Pell maps have ordinary proofs. The [closed
+bounded evidence](research/compact66-radix53-certificate-probe-verification/README.md)
+now supplies prime2518517, exact B-order32708, valuation-one lift and
+controller residues18/7928/1709750 at53/8807/2518517. All four actual
+normal/optimized and fresh runs passed, each with23 negative/four valid
+controls; both FULL ordinary evidence reviews pass. [Separate ROOT acceptance](reviews/compact66-radix53-certificate-probe-bounded-acceptance.json)
+discharges those finite premises. No numeric53 tuple, specialized source/
+degree receipt or further page gain is accepted yet; the55-bit page remains.
 
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete

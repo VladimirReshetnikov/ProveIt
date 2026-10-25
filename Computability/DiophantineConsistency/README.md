@@ -188,10 +188,13 @@ page; they do not supply a numerical57/59-bit endpoint or a further page gain.
 The [conditional53-bit adapter](research/compact66-radix53-carry-tolerance/README.md)
 also passes both full ordinary reviews and [conditional acceptance](reviews/compact66-radix53-carry-tolerance-ordinary-acceptance.json).
 Its soundness proof permits bounded cyclic carries, then recovers ordinary
-one-hot decoding and alignment. Completeness still requires a new prime,
-order/lift certificate and three controller units; no such values or
-numeric53-bit endpoint are supplied. A bounded finite probe is being
-prepared under CODE ONLY/HOLD. The verified55-bit page remains current.
+one-hot decoding and alignment. The [complete bounded certificate evidence](research/compact66-radix53-certificate-probe-verification/README.md)
+now supplies prime2518517, the exact order/lift certificate and all three
+controller units, after four actual successful runs and two FULL ordinary
+reviews. [Separate ROOT acceptance](reviews/compact66-radix53-certificate-probe-bounded-acceptance.json)
+discharges precisely those finite conditions. A coherent numeric53-bit tuple,
+its full specialized source checks and a checked page remain separate work.
+The verified55-bit page remains current until that complete version is ready.
 
 A lower-row direct degree-four comparison, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
 now reaches **327 unrestricted integer unknowns**, with216 rows,5,718 terms

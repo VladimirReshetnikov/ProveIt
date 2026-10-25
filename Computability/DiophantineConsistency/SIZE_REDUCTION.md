@@ -3089,9 +3089,15 @@ It uses bounded cyclic carries before clean-clause decoding, then proves
 alignment, complete padding/slack and the whole positive source bridge.
 Its converse requires a new prime `lambda>d`, with228956 dividing
 `lambda-1`, the square/order/lift conditions, and controller units at53,
-8807 andlambda. No new prime, residue, numeric tuple or size gain is yet
-accepted. A CODE ONLY/HOLD probe is being prepared to test fixed units
-first and then the bounded candidates `lambda=228956*m+1`,3<=m<=66.
-An obstruction or bounded exhaustion is a possible result; no existence
-outside that range is assumed. The complete55-bit page remains maintained,
-and Lean remains paused.
+8807 andlambda. The [closed bounded certificate evidence](research/compact66-radix53-certificate-probe-verification/README.md)
+and [separate ROOT acceptance](reviews/compact66-radix53-certificate-probe-bounded-acceptance.json)
+now discharge precisely those conditions. The fixed `m=3..66` probe stops
+at the first admissible prime, `m=11, lambda=2518517`, after eight certified
+composites. The exact B-order is32708; the retained lift is
+`B^(lambda-1)=1+1720744*lambda (mod lambda^2)`, with0<1720744<lambda.
+The three controller residues are18,7928,1709750. Four actual first/fresh
+normal/optimized runs passed with23 negative/four valid controls each;
+the full source, conditional proof, captures and provenance have two FULL
+ordinary reviews. This finite certificate supplies no new numeric tuple,
+specialized source/degree/page receipt or measured size saving. Those are
+the next complete checks. The55-bit page remains maintained, and Lean paused.
