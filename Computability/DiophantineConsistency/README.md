@@ -47,7 +47,11 @@ including96/258,97/254 and94/262; their entire polynomials are preserved.
 The [q-cube-normalized ten-positive form](research/ten-positive-qcube-normalization/README.md)
 now uses86 operations at exact degree466. Its complete positive-domain proof,
 whole native bindings and independent checks pass; this cost/degree alternative
-is preserved separately from the canonical92/283 page.
+is preserved separately from the canonical92/283 page. Its complete
+[one-page PDF](candidates/one-page-qcube86/equation.pdf) and
+[standalone TeX](candidates/one-page-qcube86/equation.tex) now pass independent
+actual-formula and rendered-page checks; see the
+[root review](reviews/one-page-qcube86-root-peer.md).
 
 For degree-four equations, the [complete unified-binomial construction](con-zfc-diophantine-forms/125-unified-binomial-round15/direct/integer442/)
 now reaches **442 unrestricted integer unknowns**, with4,652 terms and height

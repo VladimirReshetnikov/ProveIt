@@ -1668,7 +1668,7 @@ without relying on a sampled ray. See the
 
 All earlier equations remain preserved. The canonical92/283 PDF and TeX stay
 stable while the cost/degree alternatives are compared; a separate complete
-86/466 comparison page is under actual printed-form review. Lean remains paused.
+86/466 comparison page is now accepted with its complete PDF and standalone TeX. Lean remains paused.
 
 ## Ordinary factorial-output guard removal accepted
 
@@ -1689,3 +1689,22 @@ actual corruptions rejected per mode. See the
 This is an ordinary guard-domain theorem, without a new projected count or
 materialized quartic. The442 checkpoint and canonical92/283 PDF/TeX remain
 preserved, and Lean stays paused.
+
+
+## Complete 86-operation comparison page accepted
+
+The [new one-page PDF](candidates/one-page-qcube86/equation.pdf) and
+[standalone TeX](candidates/one-page-qcube86/equation.tex) print the entire
+**ten-positive,86-operation,degree466** equation, including all fixed constants
+on the same Letter page in9-point type. Root and peer reviewed all31 actual
+printed definitions, the boxed equation and86 live gates. Fresh normal and
+optimized root checks match the peer exactly;19 actual printed corruptions
+are rejected per mode. The entire rendered constant body,436-character numeral,
+whole indexed tuple and all four coefficient payloads are authenticated.
+
+The closed27-file payload and117 whole-file peer bindings pass root checks;
+root also visually inspected the final page. See the
+[root acceptance](reviews/one-page-qcube86-root-peer.md). This saves six
+operations against92/283 while adding183 degrees, so it remains a separate
+comparison and the canonical equation.pdf/.tex retain92/283. All predecessors
+are preserved. Lean remains paused.
