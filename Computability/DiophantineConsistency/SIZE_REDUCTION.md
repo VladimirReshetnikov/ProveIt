@@ -2279,3 +2279,21 @@ square-horizon, beta-CRT and full C222/ZFC calibration. It is not the
 accepted327 source. No new source, projected quartic, variable census or
 runtime closure has yet been accepted. Those complete finite stages remain
 separate work; the main page and Lean are unchanged.
+
+
+## Unshifted auxiliary parameter: V-squared ordinary theorem accepted
+
+The [code-free unshifted-T proposal](research/ten-positive-unshift-t-square/PROPOSAL.md)
+passes [root](reviews/ten-positive-unshift-t-square-ordinary-root.md) and
+[independent ordinary review](reviews/ten-positive-unshift-t-square-ordinary-peer.md).
+Replacing b=c(T+alpha)-R by cT-R removes a private addition, with all ten
+inputs still positive. Its soundness proof handles both signs of b and V,
+uses the integral adjacent norm to exclude b=0, and proves gy<V^2/2 before
+transport. Only after C>0 is positive orientation restored. The later
+decoding interfaces and both positive existence maps are retained.
+
+The predicted83/436 and80/750 points are not yet emitted endpoints. Exact
+complete graphs, free-port cuts, full leading forms and actual counts need
+their own reviewed finite packet. The bV branch needs a separate stronger
+argument; it is not licensed by this V-squared theorem. The maintained page
+remains85/328 and Lean remains paused.
