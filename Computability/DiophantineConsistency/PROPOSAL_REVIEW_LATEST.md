@@ -2133,3 +2133,19 @@ accepts these precise lemmas and local Boolean gate identities. A complete
 carry-dependent compiler, fixed coefficients, padding and rank controller
 remain open. No nine-positive equation, new numerical frontier or canonical
 PDF/TeX update follows. Lean remains paused.
+
+
+## Affine-square lifts reduce prospective term and coefficient size
+
+The [ordinary affine-square theorem](research/signed-pell-cap-affine-square-lifts/PROPOSAL.md)
+uniquely extends the accepted364 chart while fixing every old coordinate.
+Root independently checked both complete virtual quartics, every changed
+row, full SOS differences and whole-polynomial substitutions. Four lifts
+give prospective368/231/4467/98336 (variables/rows/terms/height); six give
+370/233/4443/53943, with residual height160 and exact degree4.
+
+See the [root review](reviews/signed-pell-cap-affine-square-lifts-root-peer.md).
+These are inert fixed-layout calculations with full coefficient hashes;
+a delivered successor remains pending. No optimizer retention or global
+minimum is claimed. Accepted equations and canonical PDF/TeX stay preserved,
+and Lean stays paused.
