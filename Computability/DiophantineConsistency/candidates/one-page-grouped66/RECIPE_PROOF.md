@@ -185,14 +185,25 @@ The entire front stream is compared separately with the accepted parent.
 No selected-substring acceptance substitutes for either full comparison.
 
 Only whitespace, known floor glyph encodings U+0004/U+0005 as U+230A/
-U+230B, and automatic English line hyphenation whose concatenated word
-occurs in the immutable TeX source are normalized. Direct U+230A/U+230B
-already have the same representation. This equates font encodings of the
-same floor delimiters while preserving both delimiters and every interior
-operand. A new or unknown glyph remains present and makes the full stream
-comparison fail. Automatic hyphen joining is likewise limited to exact
-source words; meaningful source hyphens and all mathematical minus signs
-remain. No new rendering is claimed by this specification.
+U+230B, and explicitly eligible ASCII line hyphens are normalized. Direct
+U+230A/U+230B already have the same representation. Both floor delimiters
+and every interior operand remain. The hyphen rule uses an immutable
+English-word whitelist paired with exact literal prose spans. Every span
+must occur once outside inline/display/align math; every eligible word
+must occur in its span and be absent from mathematical tokens, command
+names, the seed and concatenations of intentional source hyphens. It does
+not collect arbitrary words from TeX. Words have at least5 ASCII letters;
+joining requires at least2 letters before the ASCII hyphen and3 after its
+line break. Unicode minus, intentional hyphens and unknown glyphs remain.
+
+The actual PDF front and new normalization regressions call the same
+complete-front comparison helper. Three mathematical corruptions must be
+rejected: ac replaced by a-<newline>c, ac replaced by a Unicode minus c,
+and an unknown inserted glyph. Two valid controls split polynomial as
+poly-<newline>nomial and move the existing title hyphen in fifteen-variable
+to the line end. The latter must retain its intentional hyphen. Existing
+native/front/source controls remain unchanged. No control or new rendering
+is claimed successful before the separate execution release.
 
 The earlier charged whole-text proxy saves140 visible characters, from
 2553 to2413 for the complete suffix; it is not a new PDF measurement.

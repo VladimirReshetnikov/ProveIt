@@ -51,8 +51,9 @@ the expected native algebra. Other tile/action/decoder/seed/footer text
 must match the complete held reference. The normal/optimized audits also
 exercise24 inherited negatives/4 valid controls,17 actual native negatives/
 5 valid native algebra controls,12 actual scope negatives requiring the
-specific NativeContextError path, and4 full-stream glyph negatives. The
-source-only mode launches no PDF subprocess.
+specific NativeContextError path,4 full-stream native glyph negatives,
+and3 negative/2 valid normalization controls through the same complete-front
+comparison helper used for the actual PDF. Source-only launches no PDF process.
 
 The renderer imports only stdlib and authenticates all whole inputs/source
 records first. It typesets exactly the immutable TeX in a private scratch
@@ -70,8 +71,12 @@ suffix with explicitly charged full replacements of the accepted suffix.
 They verify the saved extracted text against actual extraction, all domain/
 cost glyphs, every tile/table/decoder/seed/alphabet/footer glyph, both floor
 delimiters and the full Lambda definition. Normalization is restricted to
-whitespace, known U+0004/U+0005 floor encodings and source-word-confirmed
-automatic English hyphenation. An unknown glyph or changed mathematical
+whitespace, known U+0004/U+0005 floor encodings and eligible ASCII line
+hyphens from an immutable English whitelist. Exact prose spans must lie
+outside all math, and each word must exclude math/command/seed tokens and
+intentional hyphen joins. Words have at least5 letters, with at least2
+left/3 right letters around a line-end ASCII hyphen. Unicode minus,
+intentional hyphens and unknown glyphs remain. Changed mathematical
 content fails the complete stream comparison. Page count and retained
 zero-overfull diagnostics are checked again.
 

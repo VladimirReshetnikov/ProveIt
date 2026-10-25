@@ -51,8 +51,11 @@ definition. There is no unknown-glyph suppression or subset-only acceptance.
 The source-only audit is designed for24 inherited negatives/4 valid
 front/source controls plus17 actual native negatives/5 valid algebra
 controls,12 actual scope negatives requiring the specific context-error
-path, and4 complete-stream glyph negatives. They are future checks,
-not runtime results. Normal and optimized modes use explicit exceptions;
+path,4 complete-stream native glyph negatives and3 negative/2 valid
+controls through the actual complete-front comparison
+for prose-whitelisted line hyphens, mathematical minus and unknown glyphs.
+These are future checks, not runtime results. Normal and optimized modes
+use explicit exceptions;
 no assert statement can disappear. TOOLCHAIN.md fixes ten sequential
 commands after two full static approvals and separate explicit root
 release. All receipts/stdout must remain external until results are

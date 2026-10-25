@@ -465,13 +465,56 @@ def native_audit(tex):
             'zero_dummy_positions':[1063,1064],'all_formal_Lambda_MC_MF_K_coefficients_equal':True,'whole_raw_bytes':total,'ports':records}
 
 
+def prose_hyphen_words():
+    # Immutable English words paired with their exact reviewed prose spans.
+    # No word is obtained from arbitrary TeX, math, commands or seed bytes.
+    spans=[
+        ('The only unknowns are',{'unknowns'}),
+        ('All other symbols in the equation are polynomial abbreviations:',{'symbols','equation','polynomial','abbreviations'}),
+        ('The single equation is',{'single','equation'}),
+        ('Every index, set, sum, product and floor below defines a constant, not\nanother unknown. Put',
+         {'Every','product','floor','below','defines','constant','another','unknown'}),
+        ('The rational intermediate in K cancels exactly; all four results are positive integers.',
+         {'rational','intermediate','cancels','exactly','results','positive','integers'}),
+        ('Use the actions ',{'actions'}),
+        (' decoded below. Let',{'decoded'}),
+        ('An interval ending at ',{'interval','ending'}),
+        (' is empty. The table defines ',{'empty','table','defines'}),
+        ('; all index ranges are fixed:',{'ranges','fixed'}),
+        ('uses this actual first target, including its state renaming.',{'actual','first','target','including','state','renaming'}),
+        ('The alphabet, in order of digit values ',{'alphabet','order','digit','values'}),
+        ('Concatenate the following 436 characters as digits ',{'Concatenate','following','characters','digits'}),
+        ('The ordinary state/color-conjugacy, native and Pell arguments give',{'ordinary','color','conjugacy','native','arguments'}),
+        ('unsolvability iff ',{'unsolvability'}),
+        ('Native calibration and internal-ZFC formalization remain open in Lean.',{'Native','calibration','internal','formalization','remain'}),
+        ('This page is a complete finite specification, not an unsolvability proof.',{'complete','finite','specification','unsolvability','proof'})]
+    tex=(PAGE/'equation.tex').read_text()
+    math=list(re.finditer(r'\\\[(.*?)\\\]|\$(.*?)\$|\\begin\{align\*\}(.*?)\\end\{align\*\}',tex,re.S))
+    math_words={w for m in math for w in re.findall(r'[A-Za-z]+',m[0])}
+    commands=set(re.findall(r'\\([A-Za-z]+)',tex))
+    seed=(PAGE/'SEED.txt').read_text().strip()
+    intentional={a+b for a,b in re.findall(r'([A-Za-z]+)-([A-Za-z]+)',tex)}
+    words=set()
+    for span,allowed in spans:
+        need(tex.count(span)==1 and not re.search(r'[\\$]',span),'one exact literal English prose span')
+        start=tex.index(span);end=start+len(span)
+        need(all(end<=m.start() or start>=m.end() for m in math),'prose whitelist span is outside all math')
+        for word in allowed:
+            need(re.fullmatch(r'[A-Za-z]{5,}',word) and re.search(r'\b'+re.escape(word)+r'\b',span),
+                 'whitelist word occurs in its literal prose span')
+            need(word not in math_words and word not in commands and word not in seed and word not in intentional,
+                 'whitelist excludes math, macros, seed and intentional hyphen joins')
+        words.update(allowed)
+    return words
+
+
 def glyphs(text):
     # Normalize only whitespace, known floor font encodings, and automatic
-    # English hyphenation proved against the unchanged literal prose words.
-    words=set(re.findall(r'[A-Za-z]+', (PAGE/'equation.tex').read_text()))
+    # English hyphenation from the validated immutable prose-only whitelist.
+    words=prose_hyphen_words()
     def join(m):
         return m[1]+m[2] if m[1]+m[2] in words else m[0]
-    text=re.sub(r'([A-Za-z]+)-\s*\n\s*([A-Za-z]+)',join,text)
+    text=re.sub(r'\b([A-Za-z]{2,})-\s*\n\s*([A-Za-z]{3,})\b',join,text)
     return re.sub(r'\s','',text.replace('\x04','⌊').replace('\x05','⌋'))
 
 
@@ -496,6 +539,32 @@ def compare_native_glyphs(text):
     expected=expected_native_glyphs()
     need(glyphs(text)==expected,'entire actual native glyph stream, all five changed slots,943 table,decoder,436seed,alphabet and footer')
     return expected
+
+
+def compare_front_glyphs(text):
+    prior=(PARENT/'equation.txt').read_text().split('The four fixed integers.',1)[0]
+    need(glyphs(text)==glyphs(prior),'every actual front/title/domain/equation glyph')
+
+
+def front_hyphen_controls():
+    prior=(PARENT/'equation.txt').read_text().split('The four fixed integers.',1)[0]
+    target='D = X + ac + γH'
+    need(prior.count(target)==1 and prior.count('polynomial')==1 and prior.count('fifteen-variable')==1,
+         'unique actual complete-front hyphenation control targets')
+    rejected=[]
+    for label,replacement in [('mathematical ASCII minus','D = X + a-\nc + γH'),
+                              ('mathematical Unicode minus','D = X + a−\nc + γH'),
+                              ('unknown mathematical glyph','D = X + a☃c + γH')]:
+        try:
+            compare_front_glyphs(prior.replace(target,replacement))
+        except ValueError:
+            rejected.append(label)
+        else:
+            raise ValueError('accepted complete-front corruption '+label)
+    compare_front_glyphs(prior.replace('polynomial','poly-\nnomial'))
+    compare_front_glyphs(prior.replace('fifteen-variable','fifteen-\nvariable'))
+    need(len(rejected)==3,'all three complete-front corruption controls')
+    return {'complete_front_negative':rejected,'valid_English_line_hyphen':True,'intentional_hyphen_preserved':True}
 
 
 def native_controls(tex):
@@ -581,8 +650,8 @@ def pdf_audit():
     actual=extract(PAGE/'equation.pdf');prior=(PARENT/'equation.txt').read_text()
     boundary='The four fixed integers.'
     need(actual.count(boundary)==prior.count(boundary)==1,'whole actual PDF section boundary')
-    left,native=actual.split(boundary,1);old_left=prior.split(boundary,1)[0]
-    need(glyphs(left)==glyphs(old_left),'every actual front/title/domain/equation glyph')
+    left,native=actual.split(boundary,1)
+    compare_front_glyphs(left)
     expected=compare_native_glyphs(native)
     need((PAGE/'equation.txt').read_text()==actual,'whole saved PDF text matches actual extraction')
     info=subprocess.run(['pdfinfo',str(PAGE/'equation.pdf')],check=True,capture_output=True,text=True,timeout=30).stdout
@@ -591,7 +660,7 @@ def pdf_audit():
     return {'whole_front_glyphs_equal_accepted_parent':True,'whole_native_glyphs_equal_prescribed_complete_replacement':True,
             'native_normalized_glyphs':len(expected),'native_expected_sha256':digest(expected.encode()),
             'actual_nonwhite_PDF_characters':len(re.sub(r'\s','',actual)),'all_saved_text_bytes_match':True,
-            'normalization':'whitespace, two known floor font encodings, and only source-word-confirmed automatic English hyphenation'}
+            'normalization':'whitespace, two known floor encodings, and only immutable-prose-whitelist ASCII line hyphens with left>=2/right>=3 letters; Unicode minus, intentional hyphens and unknown glyphs preserved'}
 
 
 def main():
@@ -622,6 +691,7 @@ def main():
     degree=old.degree_audit(definitions)
     front_negative,front_positive=old.controls(tex,packet,historical,body,seed,cal)
     controls=native_controls(tex)
+    hyphens=front_hyphen_controls()
     pdf=None if args.source_only else pdf_audit()
     result={'status':'PASS','optimized_python':bool(sys.flags.optimize),'mode':'source/actual-TeX only' if args.source_only else 'complete actual grouped page',
             'operations':66,'operation_counts':counts,'exact_degree':157,'all66_rows_live_and_covered':True,
@@ -629,6 +699,7 @@ def main():
             'degree_proof':degree,'whole_native_recipe':native,'whole_indexed_binding':bound,
             'accepted_front_negative_controls':front_negative,'accepted_front_valid_controls':front_positive,
             'grouped_native_controls':controls,'PDF_audited':not args.source_only,'actual_PDF':pdf,
+            'complete_front_hyphenation_controls':hyphens,
             'source_pins_sha256':digest((PAGE/'SOURCE_PINS.json').read_bytes()),'auditor_sha256':digest(Path(__file__).read_bytes()),
             'adopted_front_sha256':digest((PARENT/'FRONT_AUDIT.py').read_bytes()),
             'sha256':{n:digest((PAGE/n).read_bytes()) for n in ['equation.tex','polynomial.json','COEFFICIENT_BINDING.json','CALIBRATION_BINDING.json','SOURCE_INDEX.json','FORMULA_MAP.json','SEED.txt']},

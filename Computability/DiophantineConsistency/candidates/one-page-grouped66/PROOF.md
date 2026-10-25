@@ -203,9 +203,15 @@ bypassing only the immutable whole-source hash. The inherited front
 controls likewise reach the accepted free-port parser. Complete changed
 PDF glyph streams are prescribed as replacements of the accepted full
 suffix, including every new floor, control coefficient and Lambda glyph.
-Only whitespace, explicitly known floor-font encodings and source-word-
-confirmed automatic prose hyphenation may be normalized. No unknown or
-arbitrary glyph is suppressed.
+Only whitespace, explicitly known floor-font encodings and whitelist-
+eligible ASCII line hyphens may be normalized. The immutable English
+whitelist is validated against exact prose spans outside all math; each
+word excludes mathematical tokens, command names, seed substrings and
+intentional hyphen joins. Words have at least5 letters, split with at
+least2 left and3 right letters. Unicode minus and every other glyph are
+preserved. The same complete-front helper must reject mathematical ASCII/
+Unicode minus and an unknown glyph, accept a split English word, and
+preserve an intentional title hyphen. These add3 negative/2 valid controls.
 
 Two full static reviews and separate explicit root execution release are
 required before the held commands. A future render must remain one Letter
