@@ -1991,3 +1991,19 @@ alternative. No optimizer or new source semantics is part of this extension.
 This is useful direct-quartic progress, not a significant improvement over
 the compact ten-positive page. Canonical equation.pdf and equation.tex stay
 preserved under the owner's update policy. Lean remains paused.
+
+
+## Scalar compression composes with the refined cap source
+
+The [new ordinary composition proof](research/signed-pell-cap-refined-scalar-product/PROOF.md)
+now permits the eight-factor replacement at the exact refined source.
+Its signed-A, t-only chronology recovers the ten omitted scalar signs,
+then restores their graph witnesses on the original unnormalized whole
+body. Both directions fix that body, h and every retained witness.
+
+Root and independent review accept the complete proof and literal interface,
+including all18 joint call/row/port memberships,168 whole row records and
+all367 reflection identities. See the [root acceptance](reviews/signed-pell-cap-refined-scalar-product-root-peer.md).
+The earlier row erratum is respected. This is a labelled-policy theorem;
+a numeric source and projected equation remain separate work. No numerical
+saving is inferred, and canonical PDF/TeX and paused Lean remain preserved.
