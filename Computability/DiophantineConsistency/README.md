@@ -212,9 +212,23 @@ one-hot decoding and alignment. The [complete bounded certificate evidence](rese
 now supplies prime2518517, the exact order/lift certificate and all three
 controller units, after four actual successful runs and two FULL ordinary
 reviews. [Separate ROOT acceptance](reviews/compact66-radix53-certificate-probe-bounded-acceptance.json)
-discharges precisely those finite conditions. A coherent numeric53-bit tuple,
-its full specialized source checks and a checked page remain separate work.
-The verified55-bit page remains current until that complete version is ready.
+discharges precisely those finite conditions. The coherent53-bit tuple is
+now built: all five [stage-A source processes](reviews/one-page-compact66-radix53-stage-A-results.json)
+exit0, with233666 raw coefficient bytes versus242484 maintained. All five
+[stage-B render/audit/rerender processes](reviews/one-page-compact66-radix53-stage-B-results.json)
+also exit0; both complete audits agree except the optimization flag and all five
+rerender artifacts are byte-identical. The candidate has2770 nonwhite PDF
+characters versus2764 maintained, and5207 TeX bytes versus5195. This is
+smaller raw storage, not a shorter page. Six fresh runs, visual review,
+closure, ordinary reviews and endpoint acceptance remain pending; the55-bit page stays current.
+
+The [conditional51-bit local-reset adapter](research/compact66-radix51-local-resets/README.md)
+now has two FULL ordinary reviews, [ROOT](reviews/compact66-radix51-local-resets-ordinary-root.md)
+and [independent peer](reviews/compact66-radix51-local-resets-ordinary-peer.md),
+and [separate conditional acceptance](reviews/compact66-radix51-local-resets-ordinary-acceptance.json).
+Local carry resets replace global aligned no-carry. The new lambda/lift
+certificate and all three Hctrl unit values at17,L=8807,lambda remain
+UNKNOWN; no numerical51 endpoint or page gain is accepted.
 
 A lower-row direct degree-four comparison, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
 now reaches **327 unrestricted integer unknowns**, with216 rows,5,718 terms

@@ -3122,9 +3122,26 @@ composites. The exact B-order is32708; the retained lift is
 The three controller residues are18,7928,1709750. Four actual first/fresh
 normal/optimized runs passed with23 negative/four valid controls each;
 the full source, conditional proof, captures and provenance have two FULL
-ordinary reviews. This finite certificate supplies no new numeric tuple,
-specialized source/degree/page receipt or measured size saving. Those are
-the next complete checks. The55-bit page remains maintained, and Lean paused.
+ordinary reviews. That bounded certificate alone supplied no numeric tuple
+or page receipt. The coherent53-bit tuple has now been built: all five
+[stage-A source processes](reviews/one-page-compact66-radix53-stage-A-results.json)
+exit0, with233666 raw coefficient bytes versus242484 maintained. All five
+[stage-B render/audit/rerender processes](reviews/one-page-compact66-radix53-stage-B-results.json)
+also exit0; complete normal/optimized audits agree except the optimization flag and all five
+rerender artifacts are byte-identical. Candidate PDF text is2770 nonwhite
+characters versus2764 maintained; TeX is5207 versus5195 bytes. Raw storage
+is smaller, but the printed page is not shorter. Six fresh runs, visual
+review, closure, ordinary reviews and endpoint acceptance remain pending. The55-bit
+page remains maintained, with no promotion or new Lean work.
+
+The [conditional51-bit local-reset adapter](research/compact66-radix51-local-resets/README.md)
+now passes both FULL ordinary reviews, [ROOT](reviews/compact66-radix51-local-resets-ordinary-root.md)
+and [independent peer](reviews/compact66-radix51-local-resets-ordinary-peer.md),
+and [separate conditional acceptance](reviews/compact66-radix51-local-resets-ordinary-acceptance.json).
+Local carry resets replace global aligned no-carry throughout its proof.
+The required new lambda/lift certificate and all three Hctrl unit values
+at17,L=8807,lambda remain UNKNOWN. No numerical51 endpoint, measured size
+saving or page gain is accepted.
 
 ## The squared quotient does not by itself justify a degree137 strong norm
 

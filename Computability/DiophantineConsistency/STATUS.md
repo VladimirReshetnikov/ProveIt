@@ -240,8 +240,23 @@ now supplies prime2518517, exact B-order32708, valuation-one lift and
 controller residues18/7928/1709750 at53/8807/2518517. All four actual
 normal/optimized and fresh runs passed, each with23 negative/four valid
 controls; both FULL ordinary evidence reviews pass. [Separate ROOT acceptance](reviews/compact66-radix53-certificate-probe-bounded-acceptance.json)
-discharges those finite premises. No numeric53 tuple, specialized source/
-degree receipt or further page gain is accepted yet; the55-bit page remains.
+discharges those finite premises. The coherent53-bit tuple is now built,
+with all five [stage-A source processes](reviews/one-page-compact66-radix53-stage-A-results.json)
+exit0 and233666 raw coefficient bytes versus242484 maintained. All five
+[stage-B render/audit/rerender processes](reviews/one-page-compact66-radix53-stage-B-results.json)
+also exit0; normal/optimized complete audits agree except the optimization flag, and all five
+rerender artifacts match first bytes. Candidate nonwhite PDF text is2770
+characters versus2764 maintained; TeX is5207 versus5195 bytes. No shorter
+page or promotion is claimed. Six fresh runs, visual review, closure,
+ordinary reviews and endpoint acceptance remain pending; the55-bit page remains maintained.
+
+The [conditional51-bit local-reset proof](research/compact66-radix51-local-resets/README.md)
+passes both FULL ordinary reviews, [ROOT](reviews/compact66-radix51-local-resets-ordinary-root.md)
+and [independent peer](reviews/compact66-radix51-local-resets-ordinary-peer.md),
+with [separate conditional acceptance](reviews/compact66-radix51-local-resets-ordinary-acceptance.json).
+It replaces global aligned no-carry with local carry resets. The new
+lambda/lift certificate and all three Hctrl unit values at17,L=8807,lambda
+are UNKNOWN; no numerical51 endpoint or page gain is accepted.
 
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
