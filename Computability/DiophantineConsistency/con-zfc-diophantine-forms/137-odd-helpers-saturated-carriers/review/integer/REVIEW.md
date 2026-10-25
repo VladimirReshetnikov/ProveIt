@@ -1,0 +1,41 @@
+# Independent review: eleven-integer amplified product carriers
+
+## Verdict
+
+PASS for the new ordinary arithmetic reductions and finite algebraic claims, relative to the explicitly retained ordinary source34/native/K215 calibration. No new proof of consistency, encoded object-ZFC derivation, kernel-checked end-to-end theorem, ten-variable construction, or optimality claim is established or inferred by this review.
+
+The primary weak direct circuit has eleven unrestricted integer variables, exact degree 648 and 115 live binary gates (73 multiplication, 23 addition, 19 subtraction). It improves the recovered 654/117 point in both metrics. The three comparison circuits are independently valid at 640/118, 580/119 and 574/122, but remain dominated diagnostics rather than additional frontier advances.
+
+This reviewer read the complete new proof, the adjacent-Pell and nonodd strong-rank interfaces in centered11-proof.md, the fixed-supported-modulus interpolation proof in POWERED_SATURATION_PARENT.md, the signed/free-scale interfaces used by the changes, and the retained ordinary calibration/source34 coefficient explanation. No producer circuit or proof was edited. Producer code was inspected before the separate replay copy was executed.
+
+## Soundness order, including the weak zero-scale branch
+
+1. The unconditional affine facts are sufficient. In the weak branch Y=0 gives A=2 and Delta=3; otherwise |(X+1)Y| is large enough that A is nonzero and Delta>1. The proof does not smuggle in |A|>=3 here. Dm and Dt are positive, P is odd and nonzero, Df and delta are nonzero, and the rational-zero-free quintic excludes S=0 at any zero.
+2. The explicit polynomial remainders give pairwise coprimality of BP, Df and Da. A rational integral square is an integer square, so the product-square equation makes the absolute values of all three factors squares. Df=1 mod4 excludes its being a negative square. With c nonzero, BP<0 would make Df<0; with c=0 the same product equation directly makes BP positive. Thus all three factors are positive squares and Budget>=2. No parity or scale magnitude is needed for this step.
+3. Carrier integrality is genuinely established before early main-root folding. When c=0 it follows directly from Z²=S²BP. When c is nonzero, write I=U p0 and Q=(Delta I)²>1. For y=e/(Q-1), the adjacent equation is QV²-(Q-1)y²=1. If y=a/b is reduced, b² divides Q-1. The displayed transformation preserves the norm, integral V, and exactly denominator b because 2Q-1=1 mod b. Taking V,y positive, V>1 implies -V<V'<V: the upper inequality is equivalent to V²>1, and the lower follows immediately on squaring. Norm one excludes V'=0. Descent reaches V=|y|=1, forcing b=1. This proof does not need |A|>=3. Substitution now gives Z/S integral and S|Ac.
+4. The valuation descent from M⁵|Ac is correct even at primes 3 and 19: if v_p(zc)<v_p(M), the monic term zc⁵ has strictly smaller valuation than every other term. Therefore M|zc. In the weak branch gcd(H,M)=1 recovers v=(2v_old+1)q², excluding Y=0 before folding. In the free branch only the two-primary cancellation is used initially, giving Y even; the strengthened budget separately gives |Y|>|q|³. No early odd-prime cancellation is assumed.
+5. Only after these facts does the proof invoke absolute folding at |A|>=3, recover Dm square, split the positive coprime first/guard factors, and run the signed ranks. The nonodd strong-rank argument only requires c²|I: Pell composition yields p|m and c|(m/p), hence c|m. It does not require the incoming multiplier to be odd.
+6. The fifth-power projector bounds the entire q¹⁵Pi⁵ before cancellation. The displayed exponent difference 43t-1526 is positive at t>=36. This forces Pi=0 and the signed power X=2^R. In the free branch only now are odd-prime factors canceled to recover exact cubic scale. The half-binomial interval theorem is uniform at these recovered coordinates, not an asymptotic large-scale assertion.
+7. Literal source restoration is existential regeneration of fresh odd strong/auxiliary witnesses. It is not a false identification of the new incoming strong multiplier with the old odd one. The formulas I_star=psi_A(Rc), rho_star=Delta I_star, r_old=(rho_star/c²-1)/2, and the odd quotient congruences supply the actual old source rows.
+
+## Completeness and quantifier order
+
+The canonical source supplies the strengthened budget margin, R=3 mod4, c=R mod4, and exact cubic scale. The proof fixes the positive guard s,g first. Its Pell discriminant (3Budget-4)Dt is positive and 2 mod3, hence nonsquare. Next it fixes p0 and one positive strong pair with 4s A p0 c²|I, and defines r=I/(A p0 c²). Every prime of p0sr divides I.
+
+The retained supported-modulus theorem applies to that same fixed strong pair. Its p-adic isometry proof, rather than merely its lowest-order congruence, makes the auxiliary coordinate surjective modulo every I-supported modulus, including p0sr. Only then is the intersective residue a0 modulo sr selected and T_old=p0a0 mod p0sr imposed. This both makes T_old divisible by p0 and gives T=a0 mod sr, while preserving the chosen guard and strong pair. The final integer n is therefore well-defined. There is no circular later retuning of a prior witness.
+
+For the direct equation lambda=0; for the centered comparison lambda=A U BP. The full PROOF.md states this explicitly. At the time of review, section.tex defined lambda only when introducing the centered variant but retained -lambda V in the generic completeness formula. This is a presentation ambiguity, not a flaw in the complete proof or circuit; the final report should explicitly set lambda=0 for the direct case, or omit that term when discussing only the primary equation.
+
+## Independent finite certificates
+
+The fresh reviewer implementation ../independent_norm_audit.py imports no producer builder or checker. It reconstructs exact integer-polynomial identities at local cuts, requires every arithmetic gate to be covered, checks topology and complete liveness, and uses an independently chosen graded-lex order for attained leading monomials. For centered outputs it verifies the universal cancellation identity and the unique weighted maximum after cancellation. It rejects a separate real operation mutation at every live arithmetic gate: 474 rejected mutations across the four circuits, in each Python mode.
+
+The primary attained coefficient is +2^546 3^443 beta^372 at j^372 w^64 v^106 s^16 r^12 c^34 z^42 T². The companion coefficients match the complete proof exactly: -2^538 3^437 beta^368, +2^478 3^389 beta^318, and -2^472 3^385 beta^316 at their stated monomials. These are actual nonzero coefficients for the fixed authentic beta, not evaluations on random rays.
+
+INDEPENDENT_NORMAL.json and INDEPENDENT_OPTIMIZED.json contain the independent records. A separately inspected producer checker was replayed from producer_replay.py without modifying producer files; its outputs are PRODUCER_NORMAL.json and PRODUCER_OPTIMIZED.json. This second replay independently rebuilt the complete four-port source34 recipe, including the exact 943 tiles, 69,230 basis checks, masks, rank-controller orders and non-Wieferich certificate, and authenticated the two cone numerals and 111 retained dependency files.
+
+lemma_diagnostics.py additionally checks 21,480 adjacent-Pell candidates, 210 rational-root cases, 33 exact descent steps, 960 lifting identities, 3,840 quotient-isometry instances and 39,200 signed coprimality instances, normally and under -O. These finite grids support implementation review; the unbounded proofs above and in the named sources remain necessary.
+
+## Exact calibration boundary
+
+The six complete payloads, including already-shifted MF, are bound to the same coherent source34 tuple. The retained CALIBRATION_STATUS.md identifies the ordinary Source34-to-blank-K215 and K215-to-finite-ZFC-refutation theorems. source34_coefficients.md supplies the mixed-field decoder, carry/slack bounds, support geometry, rank controller and canonical parity promises; k215_ordinary.md supplies the ordinary exact-table machine calibration. This review does not replace those inherited mathematical theorems with finite tests or with the copied external Lean endpoint. The separate encoded object-language ZFC composition remains outside the claim.

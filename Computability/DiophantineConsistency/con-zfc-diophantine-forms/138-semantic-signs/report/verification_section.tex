@@ -1,0 +1,114 @@
+\subsection{What is supplied and what was checked}
+
+The archive contains this PDF and all its LaTeX inputs, the principal
+integer polynomial and its 319-variable companion, both natural quartics,
+the three compact positive circuits, and both eleven-integer circuits.
+Every endpoint has its ordered variable list, literal coefficients or
+complete arithmetic DAG, source binding, and an evaluator or exact
+verification entry point. Imported source proofs and licenses retain
+their provenance.
+
+The top-level command
+\begin{center}\vtt{python3 -B verify_all.py --rebuild}\end{center}
+runs the independent component checks and deterministic rebuilds from the
+archive alone, in ordinary and optimized Python. Python's standard library
+is sufficient. No network, proof search, machine simulation, symbolic
+algebra package, or original repository checkout is required. The PDF
+build is separate and uses pdfLaTeX through the supplied build script.
+
+The finite checks cover the following distinct obligations:
+\begin{itemize}
+\item The direct integer source changes are checked literally, including
+the nine powers at base $q+1$, the remaining fourteen guards, and the two
+new square-coordinate rows. The 217 monic elimination steps, translations,
+and all 6,607 collected coefficients of the principal equation are replayed.
+The parity companion has its own complete replay.
+\item The natural branch checks every changed and unchanged raw row,
+both simultaneous coordinate shifts, all 101 elimination certificates per
+endpoint, and all quartic coefficients. Its isolated producer regenerates
+the twelve normative JSON files exactly. Four corrupted artifacts per
+endpoint are rejected.
+\item The positive branch authenticates the entire fixed coefficient tuple,
+checks ten exact free-polynomial identities, every graph reference and live
+operation, global degree bounds, and complete univariate polynomial
+specializations with nonzero leading coefficients. Twelve actual gate
+mutations are rejected. The final component receipt records 276 checks.
+\item The eleven-integer branch reconstructs all six fixed coefficients
+from their finite recipe, checks local identities and every live gate,
+proves the full leading monomial over the coefficient ring, and rejects
+literal, input, and degree corruptions.
+\end{itemize}
+
+These checks are not numerical evidence for consistency. They certify
+finite algebra, exact artifacts, and transformations. The unbounded
+Pell, factorial, CRT, and proof-calculus arguments are the ordinary
+mathematical proofs in this report and the identified inherited sources.
+Separate agents reviewed the new sign-sensitive arguments; those reviews
+are internal independent checks in this AI-assisted workflow, not outside
+human endorsements. The work does not claim a newly compiled Lean/Rocq
+development or a sealed object-language ZFC proof.
+
+\subsection{Comparison and scope}
+
+The repository was inspected at
+\begin{center}\small
+\vtt{1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61}.
+\end{center}
+It includes packages 127--133. This matters because an older summary table
+still listed weaker endpoints. The comparisons in Section 1 use literal
+equations and live circuits from the newest relevant packages, not the
+stale table. A complete manuscript or equation from an earlier package is
+credited wherever its proof interface is reused.
+
+The direct 286-variable equation is the recommended unrestricted-integer
+result of this iteration. It reduces dimension substantially while keeping
+every coefficient below $2^{17}$ in absolute value. It is not the
+fewest-variable quartic in the repository. The natural 235-variable form
+has a different domain and much larger coefficients; it must not be
+silently presented as an equation in 235 unrestricted integers. Likewise,
+the 80-operation compact form has ten \emph{positive} inputs and larger
+degree than the 83-operation form. The ordinary ten-integer constructions
+using Sun's reduction remain a different dimension/degree/constant-size
+tradeoff~\cite{sun}.
+
+The source repository is unchanged by this work. The deliverable is an
+integration-ready archive, with a suggested destination in the active
+Diophantine consistency research collection and a source ledger that pins
+all comparisons.
+
+\subsection{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Can other arithmetic guards be recovered semantically?}
+The principal saving came from using a power certificate twice: once for
+its value and once for its exponent's sign. A systematic dependency audit
+of the remaining fourteen guards could find further removals. Each
+candidate must be proved before the step that needs it; a circular
+factorial or radix argument would introduce spurious roots.
+\item \textbf{Can the natural one-row cap be transferred to the signed
+compiler?} The natural bound uses a nonnegative quotient essentially.
+A signed analogue would need to recover that quotient's sign or replace
+the bound with another exact arithmetic condition. Merely reusing the
+same equation over $\Z$ is unsound.
+\item \textbf{Can abscissa orientation be made sparser?} The pooled
+$(x_i-1)^2$ terms buy 27 deleted sign witnesses but account for the
+principal support increase. A smaller subset of principal orientations,
+followed by propagation along shared power relations, may retain most of
+the dimensional saving with fewer collected monomials.
+\item \textbf{Can the 80-operation construction retain a lower degree?}
+The $q^3$ normalization removes three gates but raises the degrees of
+the Pell data. A different quotient coordinate or a compatible lower
+degree carrier would improve this tradeoff. The leading forms in
+Section~\ref{sec:compact} identify the precise terms to target.
+\item \textbf{Can the new arithmetic interface be formalized independently
+of the whole compiler?} The negative-exponent lemma, even-frame anchor,
+linear cofinal bound, and free auxiliary-coordinate transport are compact
+targets for Lean or Rocq. Proving these first would make subsequent
+compiler changes easier to audit. A full internal-ZFC derivation remains
+a separate task.
+\end{enumerate}
+
+The most useful general lesson of this iteration is constructive: before
+adding a sign witness, inspect whether an already required arithmetic
+relation and its size bound force that sign. The new equations make this
+principle precise in an encoding of finite set-theoretic refutations.

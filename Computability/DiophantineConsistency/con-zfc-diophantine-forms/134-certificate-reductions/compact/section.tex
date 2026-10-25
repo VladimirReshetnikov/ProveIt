@@ -1,0 +1,389 @@
+\section{An existing Pell denominator removes the artificial scale}
+\label{sec:compact-unscaled}
+
+The compact branch gives two further fixed equations in ten strictly
+positive integers. Their exact arithmetic cost and total degree are
+\[
+ (78,630)\qquad\text{and}\qquad(79,468).
+\]
+Here an operation is one live binary addition, subtraction, or
+multiplication, including a square or multiplication by a fixed integer.
+The complete arithmetic circuits are \code{compact/equation78.json} and
+\code{compact/equation79.json}. These are cost--degree tradeoffs against
+the pinned package 133's $(84,436)$ and $(85,328)$ equations. The number
+of unknowns and the entire fixed coefficient tuple are unchanged.
+
+The new idea is an order of deduction. A large known divisor of a
+denominator first identifies a Pell index. The identified index then
+restores divisibility by the whole denominator. Pairwise coprimality of
+all carrier denominators is unnecessary. This allows us to delete the
+artificial scale $\mu=q^2+1$ and reuse the existing square $Y^2$.
+The quotient substitution $Y=q^3s$, Pell doubling, and the final
+product-square equation have predecessors in the pinned repository.
+
+\subsection{Literal polynomial and fixed coefficients}
+
+The only unknowns are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\Z_{>0}.
+\]
+The fixed integers $\beta,K_0,M_C,M_F$ are the complete directly indexed
+BFS943 tuple of package 133. They satisfy
+\[
+ \beta\ge31\text{ odd},\qquad K_0>0,\qquad
+ 0<M_C<\beta<M_F<2\beta.
+\]
+The supplied compressed unsigned little-endian payloads fix every byte;
+\code{compact/rebuild_coefficients.py} reconstructs all four integers
+from the unchanged finite tile specification and its 436-character code.
+All four reconstructed raw hashes agree with the pinned parent.
+The largest fixed port has 592,884 bits. This is the size of the stored
+constant, not the height of the fully expanded polynomial.
+
+All following symbols are polynomial abbreviations:
+\begin{gather*}
+ q=\beta J+1,\quad h=q-1,\quad C=q-F-\alpha,\quad X=wq,\\
+ Y=q^3s,\quad k=\eta+\zeta,\quad c=kY+\eta,\quad D=Y^2,\\
+ A=Y(X+1)+1,\quad \Delta=A^2-1,\quad H=4A-5,\\
+ V_0=XD,\qquad E=1+V_0(V_0+1)k^2,\\
+ R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ e=k-R-1,\quad B=(K_0+w)C-F,\quad U=ic^2,\\
+ a=\Delta U^2E,\quad F_0=1+a,\quad G=EF_0,\\
+ F_*=1+4aF_0,\qquad Q=\Delta(F_*-1),\\
+ b=c(T+\alpha)-R,\quad V=F_*b-c,\quad K_+=X(3c-2X)+2.
+\end{gather*}
+Choose $L=V^2$ for the 78-operation equation, or $L=bV$ for the
+79-operation equation, and define
+\begin{align*}
+ M&=hDH,\\
+ Z&=hD\bigl[H(n-LB)+K_+\bigr]-H(DB+he),\\
+ R_G&=M^2G.
+\end{align*}
+The single equation is
+\begin{equation}
+ \boxed{\ P_L=Q(Z^2-R_GV^2)+(R_G-Z^2)=0.\ }
+ \label{eq:compact-unscaled}
+\end{equation}
+There are no additional quantified variables, nonpolynomial primitives,
+or implicit conditions in this definition. The actual circuits compute
+$A-1$, $\Delta=(A-1)((A-1)+2)$, and $H=4(A-1)-1$.
+
+\begin{theorem}[Unscaled compact consistency equations]
+For either stated choice of $L$, ordinary arithmetic formalizable in ZFC,
+composed with the pinned indexed native/refutation calibration, proves
+\[
+ \ZFC\vdash
+ \bigl(\neg\exists\mathbf x\in\Z_{>0}^{10}\;
+ P_L(\mathbf x)=0\bigr)\ \longleftrightarrow\ \Con(\ZFC).
+\]
+The exact degrees are 630 and 468, and the supplied evaluators have 78
+and 79 live binary operations, respectively.
+\end{theorem}
+
+\subsection{Inherited interfaces and their scope}
+
+The proof uses the following explicitly retained ordinary arithmetic
+interfaces. They are statements of earlier work, not claims made by a
+finite coefficient checker.
+\begin{enumerate}
+\item The universal main/auxiliary Pell folding and rank theorems:
+from the strong norm, $c^2\mid I$, and the fixed-minus auxiliary
+residues, they first recover $c=\psi_A(p)$ for an odd positive $p$,
+and, once $0<p,R<c/2$, recover $p=R$.
+\item The universal projection and fixed-minus parity theorems:
+after the required index and size bounds, they give the whole-product
+projection modulo $4A-5$ and $R\equiv3\pmod4$.
+\item The zero-offset ratio estimate, proved uniformly for every
+$\lambda\ge1$, and its half-binomial rounding consequences.
+\item The indexed native coefficient calibration and fresh source
+reconstruction: the resulting outer arithmetic data are equivalent to
+a finite syntactic ZFC refutation. This branch retains its native/K215
+ancestry; it is separate from the direct-calculus quartics.
+\end{enumerate}
+The exact source files and immutable commit are recorded in
+\code{compact/SOURCE_PINS.json}. The new argument below verifies the
+changed premises and supplies both existential directions. It does not
+claim a new end-to-end proof-assistant derivation.
+
+\subsection{Root extraction before index or sign semantics}
+
+For proof notation only put
+\[
+ \delta=Q-1,\quad D_y=QV^2-1,\quad z=Z/M,\quad
+ \kappa=K_+/H,\quad \rho=e/D,\quad t=B/h,\quad W=1+hL.
+\]
+The identities
+\begin{equation}
+ P_L=\delta Z^2-M^2GD_y,\qquad
+ z=n+\kappa-Wt-\rho
+ \label{eq:compact-carrier}
+\end{equation}
+hold without divisibility assumptions. Positivity of the inputs gives
+$q\ge32$, $X\ge q$, $Y\ge q^3$, $k\ge2$, $c\ge3$, $A>4$,
+$\Delta\ge3$, $U\ge c^2$, $E>1$, $F_*>c+1$, $Q>1$, and $M>0$.
+For every integer $b$, $V=F_*b-c\ne0$: at $b=0$ it is $-c$;
+otherwise $|V|\ge F_*-c>1$. Therefore $D_y>0$.
+
+Identically,
+\[
+ F_*=(1+2a)^2,\qquad Q=4\Delta^2U^2G.
+\]
+Thus $G$ is coprime to both $\delta$ and $D_y$. A zero of
+\eqref{eq:compact-unscaled} gives $\delta z^2=GD_y$.
+For each prime dividing $G$, its valuation in $G$ is even, because
+the other two factors are units at that prime and a rational square
+has even valuation. Hence $G=g^2$ with $g>0$ integral. Since
+$F_0\equiv1\pmod E$, the positive coprime factors split:
+\[
+ E=\tau^2,\qquad F_0=f_0^2,\qquad g=\tau f_0.
+\]
+Then $y=|z|/g$ is a positive rational satisfying
+\begin{equation}
+ QV^2-(Q-1)y^2=1.
+ \label{eq:compact-adjacent}
+\end{equation}
+
+For completeness, the special adjacent form forces $y$ integral.
+Writing $y=r/m$ in lowest terms gives $m^2\mid Q-1$. If
+$v=|V|>1$, then $v<y<Qv/(Q-1)$. The norm-preserving transformation
+\[
+ v'=(2Q-1)v-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2Qv
+\]
+has an integer first coordinate with $0<|v'|<v$ and preserves the
+reduced denominator $m$ of its second coordinate. Reflecting signs and
+descending reaches $v=1,y=1$, so $m=1$. Consequently
+\[
+ z=\varepsilon gy\in\Z,\qquad \varepsilon\in\{-1,1\}.
+\]
+Set $f=1+2a$ and $I=2Ug$. Pell doubling gives
+\begin{equation}
+ f^2-\Delta I^2=1,\qquad Q=(\Delta I)^2,\qquad c^2\mid I,
+ \qquad V=f^2[c(T+\alpha)-R]-c.
+ \label{eq:compact-strong}
+\end{equation}
+No residue involving a scale $\mu$ has been used.
+
+\subsection{Main folding and transport signs}
+
+The folding interface applies to \eqref{eq:compact-adjacent} and
+\eqref{eq:compact-strong}, since $c\le I$ and $V\equiv-c\pmod f$.
+It gives $c=\psi_A(p)$ for odd $p\ge1$. The first norm yields
+$k=2\psi_{2V_0+1}(n_0)$ for $n_0\ge1$. If $n_0=1$, then
+$k=2$, $\eta=\zeta=1$, and $c=2Y+1$ lies strictly between the first
+two main ordinates $1$ and $2A$, impossible. Therefore
+\begin{equation}
+ k\ge8V_0+4,\qquad
+ c>kY\ge k>8XY^2\ge8q^7.
+ \label{eq:compact-large-c}
+\end{equation}
+This replaces the earlier scale-based $8q^5$ bound by a stronger one.
+It proves $c>X$ and $K_+>0$.
+The unconditional mask estimate
+$R<q^4+(\alpha+2)q^2$, together with
+\eqref{eq:compact-large-c}, gives $b>c$ before any sign is assigned
+to $B$. Thus $V>0$, $\kappa>0$, and
+\begin{equation}
+ b-e=c(T+\alpha)-k+1>0,\qquad \rho<b/D.
+ \label{eq:compact-rho}
+\end{equation}
+
+For $L=V^2$, the identity
+\[
+ a^2-g^2=E\bigl[\Delta U^2E(\Delta U^2-1)-1\bigr]>0
+\]
+gives $g<a$, whence $V>(F_*-1)b>ab>3g$. Since
+$y<3V/2$ by \eqref{eq:compact-adjacent}, $gy<L/2$.
+
+For $L=bV$, the same fifth-index argument as in package 133 gives
+$b>4g$. In detail, $c\ge3$ makes $p\ge3$, so $c\ge4\Delta+3$ and
+$V>4Q$. Put $S=\Delta I$, so $Q=S^2\ge4$. Classification of
+\eqref{eq:compact-adjacent} gives $SV=\chi_S(j)$ with odd $j$.
+The first two odd indices give $V=1,4Q-3$, both excluded. Hence
+\[
+ V\ge16Q^2-20Q+5>8Q^2,
+ \qquad b>4\Delta^2(F_*-1)=4\Delta^3I^2>4g.
+\]
+It follows that $gy<3bV/8<L/2$ here as well.
+
+If $B\le-1$, then $Wt\le-L-1/h$. Equations
+\eqref{eq:compact-carrier} and \eqref{eq:compact-rho} imply
+\[
+ n=\varepsilon gy-\kappa+Wt+\rho
+   <L/2-L+b/D<0,
+\]
+because $V>b>1$ and $D>2$. This contradicts $n>0$. Therefore
+$B\ge0$ and $C>0$. The outer mask bounds now give
+$3q<R<q^4-2$. The rank interface has all its premises:
+$c^2\mid I$, $c>2R$, $c>2p$, $V\equiv-c\pmod f$, and
+$V\equiv-R\pmod c$. It gives $p=R$; the unchanged mask parity
+then yields even $q$ and odd $J$.
+
+\subsection{The new staged index lemma}
+
+\begin{lemma}[Partial divisibility recovers the full denominator]
+At every positive zero of \eqref{eq:compact-unscaled},
+\[
+ n_0=(R+1)/2\qquad\text{and}\qquad Y^2\mid e.
+\]
+Neither $\gcd(Y,q-1)=1$ nor integrality of $e/Y^2$ is needed as a premise.
+\end{lemma}
+
+\begin{proof}
+The integral carrier in \eqref{eq:compact-carrier}, after clearing
+$hH$, implies $Y^2\mid hHe$. Since $Y=q^3s$, one has $q^6\mid Y^2$.
+Moreover $h=q-1$ and $H=4Y(X+1)-1\equiv-1\pmod q$, so
+$\gcd(q^6,hH)=1$. Consequently $q^6\mid e$.
+
+Let $P_0=2XY^2+1$. The base-one Pell recurrence gives
+\[
+ \psi_{P_0}(n_0)\equiv n_0\pmod{P_0-1},\qquad
+ k\equiv2n_0\pmod{4XY^2}.
+\]
+It follows that $q^6\mid2n_0-R-1$.
+But $P_0-A=Y(2XY-X-1)>0$. If $n_0\ge R$, monotonicity in the
+base and index gives $k/2=\psi_{P_0}(n_0)\ge\psi_A(R)=c$,
+contradicting $c=kY+\eta>k$. Thus $1\le n_0<R$, and
+\[
+ |2n_0-R-1|<R<q^4<q^6.
+\]
+The divisible integer must be zero. Returning to the \emph{full}
+first-Pell congruence now gives $4XY^2\mid k-R-1=e$, and in
+particular $Y^2\mid e$.
+\end{proof}
+
+The modulus $q^6$ is used only in this proof. It introduces no new
+polynomial register. The whole denominator is recovered after the
+index, which is the step that removes the artificial scale.
+
+\subsection{Projection, source recovery, and positive completeness}
+
+Write $R=2r+1$, with $r\ge48$. The retained zero-offset ratio lemma
+holds for every $\lambda\ge1$ with
+$A_\lambda=\lambda Y(X+1)+1$ and
+$P_\lambda=2X\lambda^2Y^2+1$. At $\lambda=1$ it gives
+\[
+ \xi<\frac{\psi_A(2r+1)}{\psi_{P_0}(r+1)}
+ <\xi\left(1+\frac1{Y(X+1)}\right)^{2r},\qquad
+ \xi=\frac{(X+1)^{2r}}{X^r}.
+\]
+The lemma explicitly includes this value of $\lambda$. Its lower
+comparison follows from
+\[
+ (2A_\lambda-1)^2X-(X+1)^2(2P_\lambda)
+ =4\lambda Y(X+1)X+X-2(X+1)^2>0;
+\]
+the upper comparison uses
+$A_\lambda\le\lambda(Y(X+1)+1)$.
+Together with $Y<c/k<Y+1$, it yields
+$Y>X^r/3$ and $X^{r+1}<3Y(X+1)<H$.
+
+Now $\rho$ is integral, so the carrier gives $H\mid hK_+$.
+The identity
+\[
+ K_+=HXc-2K_{\mathrm{quad}},\qquad
+ K_{\mathrm{quad}}=X[X+2(A-2)c]-1
+\]
+allows cancellation of two through odd $H$. The universal projection
+therefore implies
+\[
+ H\mid h(X-2^R)(2^RX+1).
+\]
+The retained whole-product bound applies with the same $X\ge q\ge32$
+and $r\ge48$; its old multiplier $q^3h$ was larger. Thus the entire
+product has absolute value below $X^{r+1}<H$, and $X=2^R$.
+No cancellation of a possibly nonunit factor modulo a composite $H$
+is assumed. It follows that $\kappa$ is integral. The remaining carrier
+gives $h\mid WB$, hence $h\mid B$ because $W\equiv1\pmod h$.
+The quotient $t\ge0$ is integral and $q^3\mid Y$ is literal.
+Fixed-minus parity and exact half-binomial rounding now reconstruct
+the earlier source with its \emph{fresh} base $Y(X+1)+2$.
+The pinned native calibration yields a finite ZFC refutation.
+
+Conversely, a refutation supplies canonical outer data with
+$X=2^R$, $R\equiv3\pmod4$, $r\ge48$, $q^3\mid Y$, and
+$t=B/h\ge0$, together with the half-binomial identity. Set $s=Y/q^3>0$.
+At the new unscaled bases take
+\[
+ c=\psi_A(R),\quad k=2\psi_{P_0}(r+1),\quad
+ \tau=\chi_{P_0}(r+1),\quad
+ \eta=c-kY,\quad\zeta=k-\eta.
+\]
+The uniform ratio bound and the same rounding estimates prove
+$0<\eta<k$, so both new coordinates are positive.
+The base-one recurrence gives $e$ a positive multiple of $4XY^2$,
+so $\rho\ge1$; projection gives a positive integral $\kappa$.
+
+Choose a seed Pell pair $(f_0,I_0)$ at a positive multiple of the
+finite matrix period modulo $c^2\tau$, and set
+$i=I_0/(c^2\tau)>0$. Then $U=I_0/\tau$, $F_0=f_0^2$, and
+$G=(\tau f_0)^2$. Double this pair:
+\[
+ f=2f_0^2-1,\qquad I=2f_0I_0=2Ug.
+\]
+The retained auxiliary-completeness theorem accepts this strong
+pair without a restriction on the parity of its index. It supplies
+$T'=T+\alpha>\alpha$ and positive $V,y$ satisfying the stated auxiliary
+equation, so $T>0$. Finally choose
+\[
+ n=gy+Wt+\rho-\kappa.
+\]
+Every term is integral. Since
+$f_0>(A-1)I_0>Xc>\kappa$, one has $g>\kappa$; hence $n>0$.
+The resulting carrier is exactly $z=gy$, and the polynomial vanishes.
+This constructs all ten positive inputs freshly and proves both
+existential directions.
+
+\subsection{Exact cost, degree, and checks}
+
+The actual circuits have the following operation counts:
+\begin{center}
+\begin{tabular}{lrrrrr}
+\toprule
+Weight&Multiplications&Additions&Subtractions&Total&Degree\\
+\midrule
+$V^2$&46&18&14&78&630\\
+$bV$&47&18&14&79&468\\
+\bottomrule
+\end{tabular}
+\end{center}
+The relevant global degrees are
+\[
+ \begin{array}{c|rrrrrrrrr}
+ \text{register}&A&\Delta&E&U&a&F_*&Q&G&V\\\hline
+ \deg&6&12&22&11&56&112&124&78&118
+ \end{array}
+\]
+with $\deg b=6$, $\deg M=15$, and $\deg B=2$.
+For $L=V^2$, $\deg Z=253$ and $QZ^2$ uniquely supplies degree 630.
+For $L=bV$, $\deg Z=141$ and $-QM^2GV^2$ uniquely supplies degree 468.
+
+Let $q_0=\beta J$, $k_0=\eta+\zeta$, and $t_0=T+\alpha$.
+The entire leading homogeneous components are
+\begin{align*}
+ [P_{V^2}]_{630}
+ &=2^{14}q_0^{382}w^{46}s^{112}i^{20}k_0^{64}t_0^4
+       (q_0-F-\alpha)^2,\\
+ [P_{bV}]_{468}
+ &=-2^{10}q_0^{288}w^{34}s^{84}i^{14}k_0^{46}t_0^2.
+\end{align*}
+They are nonzero at the actual fixed positive $\beta$.
+In particular the displayed formulas contain coefficients
+$2^{14}\beta^{382}$ and $-2^{10}\beta^{288}$ on the respective
+monomials
+\[
+ J^{382}w^{46}s^{112}i^{20}\eta^{64}T^4F^2,
+ \qquad J^{288}w^{34}s^{84}i^{14}\eta^{46}T^2.
+\]
+These also illustrate the cost of the compact representation: the
+expanded coefficients can be much larger than the stored ports.
+
+The independent standard-library checker proves 28 exact polynomial
+cut identities per circuit, covering all 78 or 79 actual registers.
+It verifies topology, backward liveness, every fixed coefficient byte,
+the complete leading forms (1,950 and 141 terms), and eight actual
+algebraic corruptions per circuit. Normal and optimized Python checks
+and byte-identical circuit rebuilds are supplied separately.
+These finite checks verify the artifacts and their algebra; the
+unbounded zero-existence equivalence is the ordinary proof above and
+its stated inherited interfaces.

@@ -1,0 +1,519 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.86in]{geometry}
+\usepackage{booktabs,longtable,array,microtype,enumitem,xcolor}
+\usepackage{fancyhdr,xurl,hyperref,listings}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,pdftitle={Local certificates for Diophantine consistency},pdfauthor={AI-assisted research for Vladimir Reshetnikov}}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\emergencystretch=2em
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Local certificates for Diophantine consistency}\fancyhead[R]{\small ProveIt}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\srcpin}{\path{1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61}}
+\newcommand{\Ht}{\operatorname{ht}}\newcommand{\supp}{\operatorname{supp}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true}
+\input{metrics.tex}
+\title{Local certificates for Diophantine consistency\\[3pt]\large Shared Pell orientation and smaller quartics with unit coefficients}
+\author{Research contribution prepared for Vladimir Reshetnikov\\\small Mathematical development, implementation, and review with AI assistance}
+\date{24 October 2026 (America/Los\_Angeles)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give explicit ordinary integer polynomials whose lack of integer solutions
+is provably equivalent in ZFC to the syntactic consistency of ZFC. The work
+builds on the direct numerical-calculus branch of ProveIt and develops two
+reductions. First, a linear trace-orientation term is added to an existing
+pooled Pell-index congruence. This shares the work formerly performed by nine
+separate sign certificates. Second, coefficient-preserving identifications of
+graph aliases are certified by exact polynomial collection; a global
+four-cycle restriction on an auxiliary factor graph is unnecessary. A
+two-variable quartic equality energy removes further auxiliary variables.
+The release contains the literal residuals and complete collected coefficient
+lists, constructive zero-set arguments, deterministic reconstruction code,
+and independent finite checkers. Every final variable ranges over all of
+$\Z$. The reductions are ordinary mathematical proofs formalizable in ZFC,
+composed with the explicitly identified inherited C222/ZF/ZFC calibration.
+They do not claim a new end-to-end proof-assistant verification or a globally
+simplest equation.
+\end{abstract}
+
+\section{The actual equations and the scope of the result}
+\label{sec:outcome}
+
+The principal direct equation is the fixed polynomial
+\begin{equation}\label{eq:direct}
+ P_{\mathrm{dir}}(z_0,\ldots,z_{\DirectLast})
+   =\sum_{j=0}^{\DirectRowLast} r_j(z)^2=0,
+ \qquad z\in\Z^{\DirectVars}.
+\end{equation}
+Here the $r_j$ are all the quadratic residuals in
+\path{direct/integer306/equation.json}, in their specified coordinate order. Their
+complete readable transcription is supplied with the release. Its exact
+degree is four, its collected support has \DirectTerms\ monomials, and its
+coefficient height is \DirectHeight. This is a finite literal equation:
+there is no variable-exponent operation, binomial predicate, unspecified
+universal polynomial, or additional implicit existential variable in
+\eqref{eq:direct}.
+
+The unit-coefficient equations have the particularly uniform form
+\begin{equation}\label{eq:unit-literal}
+ P_{\mathrm{unit}}(x)=1+
+       \sum_{\alpha\in\mathcal A_+}x^\alpha
+       -\sum_{\alpha\in\mathcal A_-}x^\alpha=0,
+ \qquad x\in\Z^n.
+\end{equation}
+The two finite, disjoint sets of nonconstant exponent vectors are exactly
+the positive and negative entries of each released
+\path{polynomial.json}. Repeated coordinate indices mean powers; the empty
+index tuple denotes the constant. The coefficient list itself, not a request
+to generate some unspecified polynomial, defines the equation. The selected
+profiles and their exact metrics are listed below.
+
+\input{results_table.tex}
+
+For every selected polynomial $P$ of arity $n$, our conclusion is
+\begin{equation}\label{eq:main}
+ \ZFC\ \vdash\
+ \bigl[\neg\exists x\in\Z^n\;P(x)=0\bigr]
+       \ \longleftrightarrow\ \Con(\ZFC).
+\end{equation}
+The proof proceeds by proving the positive existential statement equivalent
+to the existence of a finite syntactic ZFC refutation and then negating it.
+No assertion of either side of \eqref{eq:main} is needed.
+
+\subsection{What ``simpler'' means here}
+
+There is no total ordering of all the relevant costs. We report arity,
+degree, number of collected monomials, and coefficient height separately.
+In particular, the repository already has quartics with fewer variables
+and very large fixed coefficient tuples, and higher-degree equations with
+far fewer variables \cite{repooverview}. The direct equation improves the
+small-coefficient C222 construction; the graph equations improve the
+unit-coefficient quartic construction. None is asserted to minimize arity
+among all consistency polynomials.
+
+For a nonzero polynomial with integer coefficients, coefficient height
+cannot be less than one. Thus the graph equations have the smallest
+possible nonzero coefficient height, while their arity and support remain
+subjects for optimization. This elementary height observation is quite
+different from a global simplicity theorem.
+
+The source snapshot is \srcpin. The repository's main catalogue at that
+snapshot still summarizes earlier waves, although packages 127--133 have
+already been placed. We inspected those newer packages directly. Comparisons
+are to specified literal artifacts, so a change of source, domain, or
+individual-degree bound is stated explicitly.
+
+\section{An elementary graph representation of equations}
+\label{sec:graph}
+
+We first describe the inherited graph representation, because it exposes
+exactly what the new contraction theorem preserves. Let $\mathcal G=(V,E)$
+be a finite simple graph, with an arbitrary orientation. Attach an integer
+polynomial $m_e$ of degree at most two to each edge. Put
+\[
+ d_v=\sum_{e\text{ leaves }v}m_e-\sum_{e\text{ enters }v}m_e,
+ \qquad \mathcal E_{\mathcal G}=\frac12\sum_{v\in V}d_v^2.
+\]
+The expression is nonnegative over $\R$ and vanishes precisely when every
+vertex divergence vanishes. The factor $1/2$ is proof notation: after
+collection the supplied final polynomial has integral coefficients.
+
+Before substituting the edge polynomials, consider independent edge symbols
+$t_e$. Each $t_e^2$ occurs at its two endpoints and therefore has coefficient
+one in $\mathcal E_{\mathcal G}(t)$. Two distinct edges in a simple graph
+share at most one endpoint, so their product has coefficient $+1$, $-1$, or
+zero. The resulting height-one assertion need not survive an arbitrary
+substitution $t_e=m_e$; different edge products may become the same
+monomial. That is the only coefficient issue the new exact collector must
+settle.
+
+\begin{lemma}[Integral tree flows]\label{lem:tree}
+Partition the vertices into connected blocks whose internal edges form
+trees. Give all edges between blocks fixed integer values. There is an
+integer assignment to the internal edges making every divergence zero if
+and only if each block has total external signed flow zero. When it exists,
+the assignment is unique.
+\end{lemma}
+\begin{proof}
+Summing divergences over a block cancels all its internal edges, proving
+necessity. For sufficiency, root its tree and remove leaves successively.
+The only remaining internal edge at a leaf has coefficient $+1$ or $-1$,
+so the leaf equation uniquely determines its integer value. Transfer this
+contribution to the parent and continue. The final root equation is the
+assumed block balance. The construction proves integrality and uniqueness.
+\end{proof}
+
+Normalize a source system into rows
+\[
+ R_r=\sum_{i=1}^{s_r}\epsilon_{ri}m_{ri},\qquad
+       \epsilon_{ri}\in\{-1,1\},\quad\deg m_{ri}\leq2.
+\]
+The normalization uses monic topological equations to construct positive
+integer coefficients by binary addition and to construct constant multiples
+of source variables. The source coordinates are retained, every added
+coordinate has a unique integer value, and the normalization therefore
+preserves the integer zero set bijectively.
+
+For a chosen positive integer $H$, use one hub block of $H$ vertices. The
+block of row $r$ has $\lceil s_r/H\rceil$ vertices. Represent each signed
+term occurrence by a distinct edge between its row block and the hub
+block; the available bipartite capacity is sufficient. Connect each block
+internally by a tree. Row-block balance is exactly $R_r=0$, and hub-block
+balance is the negative sum of those equations. Lemma~\ref{lem:tree} gives
+the desired equivalence. The number of independent tree-flow coordinates is
+\begin{equation}\label{eq:flow-count}
+ H-1+\sum_r\bigl(\lceil s_r/H\rceil-1\bigr).
+\end{equation}
+
+Each normalized logical variable is represented on its occurrences by one
+or more \emph{aliases}. An alias is an ordinary independent integer
+coordinate until its equality energy is imposed. Terms are homogenized to
+degree two using aliases of the constant one. Tree-flow variables occupy a
+separate coordinate class. There is no hidden interpretation imposed on
+the quantified coordinates: all alias and unit conditions are equations
+inside the final polynomial.
+
+\section{A smaller equality certificate}
+\label{sec:equality}
+
+For $k\geq3$ aliases of one logical coordinate, use the cycle energy
+\begin{equation}\label{eq:cycle}
+ C(a_1,\ldots,a_k)=\sum_{i=1}^k a_i^2-
+                      \sum_{i=1}^k a_i a_{i+1},\qquad a_{k+1}=a_1.
+\end{equation}
+Twice this polynomial is $\sum_i(a_i-a_{i+1})^2$. It is nonnegative and
+vanishes exactly when all aliases agree. Its collected nonzero coefficients
+are $+1$ or $-1$. A singleton needs no equality equation. A two-vertex
+cycle would have coefficient $-2$ on $a_1a_2$, so the earlier compiler
+inserted a third, dummy alias.
+
+\begin{lemma}[Two-coordinate quartic equality]\label{lem:pair}
+The polynomial
+\begin{equation}\label{eq:pair}
+ F(a,b)=a^4+b^4-a^3b-ab^3
+\end{equation}
+is nonnegative over $\R$ and vanishes exactly when $a=b$. Its four nonzero
+coefficients have absolute value one. In particular it requires no dummy
+coordinate.
+\end{lemma}
+\begin{proof}
+Two useful exact identities are
+\begin{align*}
+ F(a,b)&=(a-b)^2(a^2+ab+b^2),\\
+ 2F(a,b)&=(a^2-b^2)^2+(a^2-ab)^2+(ab-b^2)^2.
+\end{align*}
+The first proves the equality condition because
+$a^2+ab+b^2=(a+b/2)^2+3b^2/4$ is positive except at $(0,0)$, where
+$a=b$ already holds. The second gives a direct rational
+sum-of-squares certificate and is used by the independent collector.
+\end{proof}
+
+The new equality energy must be checked against the other quartic
+monomials. For example, if $a^4$ already has coefficient $+1$ in the graph
+energy, adding \eqref{eq:pair} would produce coefficient $+2$. Such a
+replacement is rejected. The compiler applies the lemma only where the
+complete collected polynomial keeps height one; otherwise it retains the
+three-alias quadratic cycle. This is an exact finite condition, not an
+assumption that the new monomials occupy a fresh namespace.
+
+For unit aliases $u_1,\ldots,u_k$, with $k\geq2$, use
+\begin{equation}\label{eq:unit-path}
+ U=1+\sum_{i=1}^k u_i^2-u_1-u_k-
+                          \sum_{i=1}^{k-1}u_i u_{i+1}.
+\end{equation}
+Twice $U$ is
+$(u_1-1)^2+\sum_{i<k}(u_i-u_{i+1})^2+(u_k-1)^2$.
+It is nonnegative, and its zeros make every unit alias equal to one.
+
+\section{Exact coefficient collection replaces a global restriction}
+\label{sec:quotient}
+
+The earlier factor-sharing compiler keeps a bipartite factor graph without
+four-cycles \cite{graph127}. That condition ensures that every product of
+two source-edge monomials determines its two occurrences uniquely. It is
+a convenient sufficient condition, but it also restricts products which
+never appear in the graph energy.
+
+For instance, take four pairwise disjoint source edges with monomials
+$as,at,bs,bt$. Their factor graph contains a four-cycle, yet their actual
+energy is
+\[
+ (as)^2+(at)^2+(bs)^2+(bt)^2.
+\]
+All coefficients are one. The algebraic equality $(as)(bt)=(at)(bs)$ is
+irrelevant because neither cross product occurs. More generally, even
+colliding contributions can be harmless when their signed collected
+coefficient remains in $\{-1,0,1\}$.
+
+\begin{definition}[Admissible alias identification]
+An identification maps old aliases to new aliases only within the same
+logical source-variable class, or within the unit class. Flow coordinates
+are retained separately. Substitute this map into the graph-edge
+polynomials, reconstruct the equality cycles and unit path, and optionally
+use Lemma~\ref{lem:pair} for two-alias classes. The identification is
+\emph{admissible} if exact expansion shows that every collected coefficient
+of the complete resulting energy is $0$, $1$, or $-1$.
+\end{definition}
+
+\begin{theorem}[Certified alias quotient]\label{thm:quotient}
+Let a normalized integer source system have a certified graph representation
+as above. Every admissible alias identification produces a polynomial of
+degree at most four and coefficient height at most one, whose integer zeros
+are in bijection with the integer zeros of the normalized source. If its
+collected list contains a degree-four monomial and constant coefficient one,
+its degree and coefficient height are exactly four and one.
+\end{theorem}
+\begin{proof}
+Write the resulting polynomial as
+\[
+ P'=\frac12\sum_v d_v'^2+\sum_{\text{cycle classes}}C+
+          \sum_{\text{pair classes}}F+U.
+\]
+Every summand is nonnegative over $\R$. Thus $P'=0$ forces every divergence,
+every alias equality, and every unit condition. A new alias class therefore
+has one well-defined logical source value. Substitute these values into
+the source term occurrences. Their logical identities are unchanged by
+the identification. Summing the zero divergences over each row block
+recovers all normalized source equations.
+
+Conversely, take an integer zero of the normalized source. Assign each
+new alias its logical source value and each unit alias the value one.
+Every equality and unit energy is zero. The same external row-term values
+satisfy all block balances, so Lemma~\ref{lem:tree} supplies the unique
+integer internal flows. Consequently $P'=0$.
+
+Every alias and internal flow is uniquely determined by the source zero,
+including any retained dummy aliases. Reading source values and performing
+this construction are inverse maps. This proves bijection. The degree
+bound follows from the degrees of the graph edges and equality energies.
+The coefficient assertion is precisely the exact finite admissibility
+check. A literal degree-four coefficient and the constant one witness
+attainment of both bounds.
+\end{proof}
+
+\begin{remark}[Zero sets and polynomial values]
+The theorem does not claim the off-solution identity
+$P'(L(z))=\sum_r R_r(z)^2$. Canonical rooted-tree elimination leaves one
+residual per row block and $-\sum_rR_r$ at the hub root; its graph energy
+is instead
+\[
+ \tfrac12\left(\sum_rR_r^2+(\sum_rR_r)^2\right).
+\]
+Both have the same zero set. Distinguishing these identities prevents an
+incorrect claim of value-preserving substitution.
+\end{remark}
+
+\subsection{How the particular certificates were found}
+
+The search merges two aliases of the same logical value and updates all
+affected collected monomials exactly. A proposed merge is accepted only if
+all new coefficients stay in $\{-1,0,1\}$. Equality cycles are rebuilt
+on the distinct surviving aliases. Each safe two-coordinate quartic
+replacement is then checked against the full polynomial. All computation
+uses integers, with no floating-point comparisons or random evaluations
+as proof substitutes.
+
+The order of attempted merges is an optimization choice. A different order
+can give a different valid quotient; neither the deterministic order nor
+the finite hub sweep proves optimality. The accepted certificate is checked
+independently of the search history. This is essential: trust in a greedy
+search is unnecessary once its exact finite output has been verified.
+
+The parent graph, the map of source occurrences, the parent-to-child alias
+map, all new equality classes, every edge, and the final coefficient list
+are retained. The independent checker expands twice the energy as a sum
+of squares and compares every coefficient. Its expansion does not use the
+producer's adjacent-edge collection routine.
+
+\clearpage
+\section{A direct quartic in 306 unrestricted integers}
+\label{sec:signed}
+\input{signed_section.tex}
+
+\section{Logical calibration and what is inherited}
+\label{sec:calibration}
+
+The direct source is the ordinary numerical proof-calculus construction
+called C222 in ProveIt. The relevant logical interfaces are
+\path{KEndpoint.c222_iff_zf_refutation} and
+\path{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+The arithmetic source relates an integer zero of its explicit residual
+system to a finite C222 derivation. The cited interfaces then relate such
+a derivation to a finite syntactic ZFC refutation. These are inherited
+calibration results, with the precise source snapshot and local retained
+proofs recorded in the provenance ledger.
+
+The new steps in this report are the shared orientation/sign construction,
+the exact alias-quotient criterion and its realized contractions, and the
+two-coordinate equality energy as used in that compiler. They use the
+already supplied source arithmetic calibration. A correctness theorem for
+a compiler or an exact checksum is not itself a proof of that calibration;
+our verification reports keep these roles separate.
+
+All new arguments are finite algebra, integer congruences, elementary
+Pell recurrence arguments, finite graph induction, and explicitly inherited
+number-theoretic representation theorems. They can be expressed and proved
+in ZFC. Composing them with the inherited calibration gives
+\[
+ \ZFC\vdash
+   (\exists z\;P_{\mathrm{dir}}(z)=0)
+   \longleftrightarrow
+   (\exists p\;\operatorname{Refutation}_{\ZFC}(p)),
+\]
+and the graph theorem gives the same statement for each unit-coefficient
+equation. Classical negation yields \eqref{eq:main}.
+
+There is no newly generated Lean or Rocq proof term for the entire final
+coefficient file, and no claim that a newly emitted object-language ZFC
+derivation has been checked by a kernel. The release provides an ordinary
+proof with exact finite arithmetic certificates. Its mathematical conclusion
+does not depend on assuming consistency; interpreting the equations as
+having no integer solution does require the corresponding consistency
+claim, which we do not prove here.
+
+The direct branch does not simulate K215 and does not instantiate Jones's
+universal polynomial. Those other branches remain useful comparisons, not
+requirements of this construction. General universal-pair results such as
+\cite{bayer,jones} address other arity/degree tradeoffs and do not imply
+that the present polynomials are globally minimal.
+
+\section{Exact artifacts and verification}
+\label{sec:verification}
+
+The delivery is designed to make each mathematical claim reviewable as a
+finite object. The original parent residual system is retained without
+alteration. The direct transformation certificate specifies every deleted
+guard, changed pooled row, new product equation, and coordinate renaming.
+The graph certificates retain the complete normalized source and graph
+interfaces. All expanded polynomials are supplied in sparse integer form.
+
+\input{verification_section.tex}
+
+The distinction between a mathematical proof and an integrity check matters.
+A SHA-256 inventory detects changed bytes; it does not establish an
+algebraic identity. Exact coefficient reconstruction proves the stated
+finite identity; it does not prove the unbounded Pell or logical
+calibration by testing examples. The release includes these layers
+separately and records which programs check which assertions.
+
+\subsection{Offline use}
+
+Python 3.10 or later with its standard library suffices for the selected
+arithmetic-artifact checks. From the release directory run
+\begin{lstlisting}
+python3 -B verify.py
+python3 -B -O verify.py
+python3 -B verify.py --rebuild
+python3 -B evaluate.py --help
+\end{lstlisting}
+The verification entry point preserves the delivered equations. Evaluation
+at a supplied integer tuple is exact, but is not an algorithm for deciding
+whether any integer zero exists. The ordinary proof and inherited
+calibration give the semantic interpretation of the polynomial; the
+evaluator simply evaluates its literal coefficients.
+
+The paper is built with
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The LaTeX inputs, generated tables, and readable equation transcriptions are
+included. PDF byte identity can depend on TeX versions and metadata; the
+mathematical coefficient lists and their canonical reconstruction are the
+normative finite artifacts.
+
+\section{Further research questions}
+\label{sec:future}
+
+\paragraph{Joint choice of graph and aliases.}
+The hub layout affects which edge products occur, and hence which alias
+identifications are safe. The current search chooses a graph first and
+contracts aliases afterwards. A joint optimizer could trade a small number
+of tree-flow coordinates for many fewer factor aliases, or reduce support
+without increasing arity. A graph modification would need a new block-tree
+certificate, not only a coefficient count.
+
+\paragraph{Larger certified contractions.}
+A greedy sequence of individually admissible pair merges can miss a
+simultaneous merge whose intermediate polynomials have height two but whose
+final signed collisions cancel back to height one. Theorem~\ref{thm:quotient}
+applies directly to the final identification. Searching blocks of aliases
+with an independently checked final certificate is therefore legitimate.
+There is no need to insist that every hypothetical intermediate quotient
+itself be released as a height-one polynomial.
+
+\paragraph{Other equality energies.}
+The quartic identity in Lemma~\ref{lem:pair} is useful but collides with
+fourth powers already present in some graph energies. Can a small library
+of nonnegative height-one equality polynomials, used with exact overlap
+tests, eliminate more dummies? Any alternative must preserve its full zero
+set over unrestricted integers, including zero and negative values. An
+individual-degree-two companion would be especially useful, since the
+present quartic pair guard permits fourth powers.
+
+\paragraph{A general finite-residue orientation compiler.}
+The Pell trace has the tiny residue alphabet $\{-1,1\}$ modulo $A-1$.
+The new linear defect $1-x$ represents the nonnegative values $0$ and $2$
+on that alphabet. Other arithmetic modules may have similarly small
+residue alphabets, permitting their branch choices to be certified in one
+pooled congruence. The required error bound and dependency order must be
+proved before any sign information is used.
+
+\paragraph{Formal certificates for the entire chain.}
+The graph and alias theorems are natural targets for Lean or Rocq. A small
+verified sparse-polynomial checker could then connect their abstract
+statements to the emitted coefficient files. The direct orientation lemma
+needs a formal signed-Pell classification and the exact source frame bound.
+Closing these interfaces would strengthen the verification status without
+changing the literal equations.
+
+\paragraph{Comparisons under a stated objective.}
+It remains reasonable to minimize arity subject to degree four and height
+one, or minimize support subject to a fixed arity cap. These are concrete
+optimization problems. A single unqualified phrase such as ``the simplest
+Diophantine equation'' does not select between such incomparable outcomes.
+The present release makes progress under explicit criteria and leaves the
+global question open.
+
+\appendix
+\section{Literal direct residuals}
+\label{app:residuals}
+Every coordinate in this appendix ranges independently over $\Z$. The
+single polynomial is the sum of the squares of \emph{all} the displayed
+residuals, not the square of their sum. Coordinate names impose no extra
+domain restrictions. This transcription is generated from the same literal
+JSON checked by the independent expansion verifier.
+\input{direct_residuals.tex}
+
+\section{Source identities and comparison inventory}
+\input{provenance_section.tex}
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{graph127} ProveIt research packet 127, \emph{Shared arithmetic
+certificates and graph energies for Con(ZFC)}, 24 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61/Computability/DiophantineConsistency/con-zfc-diophantine-forms/127-graph-certificates}.
+\bibitem{cap131} ProveIt research packet 131, \emph{Shared Pell caps and
+coprime product equations for ZFC consistency}, retained at the same pin.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61/Computability/DiophantineConsistency/con-zfc-diophantine-forms/131-shared-pell-caps-round16}.
+\bibitem{repooverview} ProveIt, \emph{Con(ZFC) in Diophantine form},
+catalogue and active-research review, snapshot \srcpin.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61/Computability/DiophantineConsistency}.
+\bibitem{jones} J. P. Jones, \emph{Universal Diophantine equation},
+Journal of Symbolic Logic 47 (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}.
+\bibitem{bayer} J. Bayer, M. David, M. Hassler, Y. Matiyasevich, and
+D. Schleicher, \emph{Diophantine Equations over $\mathbb Z$: Universal
+Bounds and Parallel Formalization}, arXiv:2506.20909v3, 22 October 2026.
+\url{https://arxiv.org/abs/2506.20909v3}.
+\end{thebibliography}
+\end{document}

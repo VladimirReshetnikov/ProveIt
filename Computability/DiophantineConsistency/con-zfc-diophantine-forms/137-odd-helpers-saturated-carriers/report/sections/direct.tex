@@ -1,0 +1,174 @@
+\section{Direct quartics from an odd helper and cofinal compositions}
+\label{sec:round17-direct}
+
+\subsection{Three measured endpoints}
+The smallest-variable endpoint of this branch is the literal equation
+\[
+ P_{307}(z_0,\ldots,z_{306})
+   =\sum_{j=0}^{210}R_j(z_0,\ldots,z_{306})^2=0,
+ \qquad z_i\in\mathbb Z.
+\]
+Every quadratic $R_j$ and its ordered coordinates are listed in
+\texttt{direct/centered307/equation.json}; its complete collected quartic is
+\texttt{expanded\_polynomial.json} in the same directory. It has 22,532
+nonzero monomials and coefficient height 394,412. Two useful siblings are
+retained rather than hidden by a single-number comparison:
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+Unknowns & Residuals & Degree & Monomials & Height\\
+\midrule
+307 & 211 & 4 & 22,532 & 394,412\\
+308 & 212 & 4 & 5,364 & 195,962\\
+310 & 214 & 4 & 5,612 & 128,446\\
+\bottomrule
+\end{tabular}
+\end{center}
+The incoming 324-integer endpoint has 208 residuals, 5,808 terms and height
+128,446. Thus the 310 endpoint improves variables and support at equal height,
+but uses six more residuals. The 307 endpoint prioritizes variable count, not
+support or height. These are comparisons within the inspected direct-calculus
+small-coefficient architecture, not globally smallest quartics. Other retained
+architectures have many fewer variables and enormous fixed coefficients.
+
+\subsection{The exact new helper simplification}
+Write $W$ for the even square frame, $A$ for its signed Pell parameter,
+$(U,C)$ for the single cap, and $(H,J)$ for its auxiliary Pell pair. Retain
+the quadratic cap and primary-only pooled congruence, but replace
+\[
+ J=C^2(e+1)\quad\hbox{by}\quad J=C^2(2e+1),\qquad e\in\mathbb Z.
+\]
+This removes the remaining comparison-base sign graph. The full proof does
+not assert that its signed comparison base becomes positive.
+
+The cap and nonzero target exclude $|C|=1$: otherwise all primary ordinates
+would vanish and a strictly positive sum of small index squares would be
+divisible by $A-1$. Hence $|C|>1$. The odd quotient gives $|J|\ge C^2>1$,
+so Pell classification gives
+\[
+ |H|\ge 2|A|^2-1>|A-1|.
+\]
+If the comparison constructor $D=1+4J(d+1)=A+Hf$ had $d+1=0$, then
+$H\mid A-1$, a contradiction. Therefore $|D|\ge4|J|-1\ge15$.
+The existing index-residue proof works at negative $D$ by polynomial Pell
+base transfer and independent coordinate signs. It recovers
+$|C|=Y_W(|A|)$, then every canonical signed-index primary ordinate.
+
+For completeness choose $U=X_W(A)$, $C=Y_W(A)$ at positive $A$.
+Since $W$ is even, $U$ is odd and $C$ is even. Set
+\[
+ H=X_C(U)=X_{WC}(A),\qquad
+ J=C Y_C(U)=Y_{WC}(A).
+\]
+For odd $U$, the doubling identity $Y_{2n}(U)=2X_n(U)Y_n(U)$ and parity
+at odd indices imply $v_2(Y_n(U))=v_2(n)$. The expansion
+$Y_C(U)=CU^{C-1}+(U^2-1)T$, with
+$U^2-1=(A^2-1)C^2$, also proves $C\mid Y_C(U)$.
+Thus $J/C^2$ is an odd integer.
+Also $H$ is odd and coprime to $4J$, so CRT supplies a large positive
+$D\equiv A\pmod H$, $D\equiv1\pmod{4J}$. Its index-$W$ pair supplies
+the complete helper. Soundness restores the old positive helper by this
+fresh construction, not by an invalid whole-tuple sign reflection.
+
+\subsection{Cofinal and arithmetic composition}
+The materialized source also uses the explicitly credited upstream ingredients
+\[
+ t=16+h_0^2,\quad y=V_0(V_0-1),\quad
+ A^2-((W+1)^2-1)[W(2z+1)]^2=1,
+\]
+and the self-sized radix
+\[
+ F=t!,\quad V_0=(F^2+1)^t,\quad B=\binom{F^2+t}{t},\quad
+ N=B^K,\quad q=(BH_0)^K,\quad H_0=1+\sum_{i=1}^9 a_i.
+\]
+These powers and factorials describe recovered meanings; they are not operations
+left in the final polynomial. All 18 powers have literal quadratic Pell
+lowerings, 15 independent indices and one derived index. The modified frame
+contains all 38 distinct actual power atoms, including the new base $BH_0$.
+
+The proof first obtains $q\ge2$ from retained scalar signs, then orients the
+$t$ pair and recovers $V_0$ and $F\ge1$. The consecutive-product modulus
+makes $y\ge F+1$. Positive denominator powers justify three product guards
+in place of six separate scalar signs. The unchanged positive $x$ anchor
+is retained. Successor output residues modulo $q\ge3$ exclude negative
+encoded indices; the strict eight-factor product excludes zero factors.
+The ninth zero endpoint is excluded by
+$Bv_{27}=F^2+1$ with $0<F^2+1<B$. Only after these steps is $H_0$ used
+as a positive radix factor. The ordinary binomial, factorial, prime-power CRT
+and Horn-flow proof then applies with its fully stated new radix bounds.
+
+Completeness starts with a finite refutation, pads its finite proof tree to
+a sufficiently large square-offset horizon, and then sets $F=t!$.
+The chosen $y$ is divisible by $F$ and exceeds every proof accumulator, so
+the beta CRT code exists. Choose the independent representatives before
+forming $H_0$ and $q$. Construct the frame and private Pell witnesses last.
+This order has no fixed-point or future-modulus circularity.
+
+\subsection{Logical and validation boundary}
+The three charts are not claimed equal as polynomials. They are existentially
+equivalent by explicit integer coordinate restoration. Write $v_i$ for the
+unprojected body numbering and $a=v_{16}$, $b=v_{17}$, $c=v_{18}$.
+The quadratic-first policy, relative to the affine-first 310-coordinate
+policy, deletes nine additional wires by the exact restorations
+\begin{align*}
+ v_{55}&=v_{54}^2,\\
+ v_{66}&=93+30a+32b+14v_{29}+(24+8a+8b+4v_{29})^2,\\
+ v_{69}&=21+8b+6c+2v_{35}+v_{67}^2,\\
+ v_{74}&=(3+a+2c+2v_{73})^2,\\
+ v_{76}&=v_{75}^2,\\
+ v_{82}&=(4+2b+2v_{35})^2,\\
+ v_{98}&=(7+2v_{97})^2,\\
+ v_{106}&=51+3c+16v_{102}+8v_{104}
+             +(13+c+4v_{102}+2v_{104})^2,\\
+ v_{109}&=(9+2a+2v_{29}+2v_{108})^2.
+\end{align*}
+It instead retains the seven wires
+$v_{56},v_{67},v_{70},v_{77},v_{83},v_{99},v_{110}$ that the other
+order deletes. The net saving is therefore two coordinates and two rows,
+giving 308, not nine. Each deletion solves a whole current row with unit
+coefficient; its target occurs only linearly in the remaining current rows
+when its restoration is quadratic. The full ordered certificate verifies
+that all substituted rows remain quadratic.
+
+Raising the allowed affine restoration support from $16$ to $32$ then removes
+one further wire, with the explicit affine restoration
+\begin{align*}
+v_{171}={}&48+9a+9b+4v_{29}+2v_{34}+4v_{37}+2v_{42}+2v_{46}
+ +4v_{49}+2v_{53}+2v_{58}\\
+ &+4v_{63}+2v_{64}+2v_{72}+2v_{79}+4v_{112}+2v_{113}.
+\end{align*}
+This gives 307 and causes the larger support cost. Forward, compute these
+wires and forget them after substitution. Reverse, restore every deleted
+wire in reverse certificate order, set the actual unconstrained wires to $0$,
+and rebuild the original private Horn witnesses. Both maps are integral and
+preserve zero existence. The complete certificates also contain every earlier
+common elimination, not only the distinguishing steps displayed here.
+
+Finally each centering chart is the bijection
+$v_i=z_i+s_i$ with its full integer shift list supplied in
+\texttt{translation\_certificate.json}; the inverse is $z_i=v_i-s_i$.
+The recorded finite coordinate-descent search changes coefficients, not
+the zero-existence theorem. No optimality of this elimination order or
+centering policy is asserted.
+
+The full ordinary proof is \texttt{direct/PROOF.md}, with the native arithmetic,
+square-shell coding, calculus and named ZF/ZFC calibration sources retained
+locally. It gives, in ZFC,
+\[
+ \exists z\in\mathbb Z^n\;P_n(z)=0
+ \quad\Longleftrightarrow\quad
+ \text{a finite ZFC refutation exists}.
+\]
+Negation is the desired equivalence with $\operatorname{Con}(\mathrm{ZFC})$.
+There is no claim to prove consistency or to supply a new proof-assistant
+kernel certificate. The independent checker verifies all actual power
+lowerings, the full frame and pool, 11 successor residue ideals, Horn
+identities and private scopes, every monic restoration, integer translations
+and every collected quartic coefficient. Eight altered-artifact controls and
+finite signed-helper diagnostics supplement, but do not replace, the universal
+proof. Normal and optimized Python rebuilds are byte-identical.
+
+The mathematical novelty is the exact odd-helper composition and its measured
+endpoints. The odd-quotient parity trick itself, the cofinal restrictions,
+self-sized radix, and support-product principle have explicit prior credits.
+No global minimality or literature-wide historical-priority claim is made.

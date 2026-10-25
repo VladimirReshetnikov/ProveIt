@@ -1,0 +1,147 @@
+\section{Absorbing a positivity square with fourteen integers}
+\label{sec:positive-root14}
+The polynomial below uses fourteen unrestricted integer variables, has exact
+ordinary total degree $88$, and a division-free evaluator with $119$ binary
+operations ($67$ multiplications, $27$ additions and $25$ subtractions).
+It is equivalent by explicit two-way maps on every zero to the pinned
+fifteen-variable free-scale degree-$44$ source. Consequently its zero
+nonexistence is equivalent in ordinary ZFC to syntactic $\mathrm{Con}(\mathrm{ZFC})$
+under that unchanged compiler/calibration theorem. This is neither a proof of
+consistency nor a new end-to-end formal-kernel certificate.
+
+\subsection{The complete fixed equation}
+All unknowns are unrestricted integers:
+\[
+ j,C,z,h,r,v,w,T,c,n,f,y,p_2,p_3.
+\]
+The six fixed numerals $\beta,K_0,M_C,M_F,A_c,B_c$ are exactly the authenticated
+source34 payloads, with $M_F$ already shifted. The remaining names are polynomial
+abbreviations, not extra witnesses:
+\begin{gather*}
+ J=6j+1,\quad q_m=\beta J,\quad q=q_m+1,\quad W=12w+4,\\
+ X=qW,\quad Y=v,\quad F=(K_0+W)C-zq_m,\\
+ R=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ E=XY,\quad a=E+Y,\quad H=4a+3,\quad\Delta=a^2+H,\\
+ k=R+1+hE,\quad \eta=c-Yk,\quad L=E(Yk),\\
+ I=(2r+1)c^2,\quad Q=\Delta(f^2-1),\quad V=f^2(cT-R)-c,\\
+ M=2q^3,\quad U=MH,\quad K_{\rm lo}=X(2X-3c)-2,\\
+ Z=Un+MK_{\rm lo}+H(Y-q^3),\\
+ D_{\rm err}=(A_cF-q)^2+(B_cC-q)^2,\\
+ B_{\rm ud}=(Yk)^2(q^2-D_{\rm err})
+       -q^2\bigl(4(Y\eta)^2+(kq^3)^2\bigr),\\
+ G=B_{\rm ud}-1-p_2^2-p_3(p_3+1).
+\end{gather*}
+Set
+\begin{align*}
+ C_1&=(Z+Uk)^2+4U(LZ-U),\\
+ B&=f^2-\Delta I^2-1,\\
+ C_2&=V^2-(Q-1)y(2V+y)-1,\\
+ N&=(C_1-U^2G)^2-16U^4G\bigl(1+L(L+k)\bigr).
+\end{align*}
+The single equation is
+\[
+ \boxed{P=(N+1)(B+1)(C_2+1)-1=0.}
+\]
+The evaluator shares $U^2G$, $q^3$ and the already-counted registers. No division,
+radical, inequality or variable exponent appears in its literal DAG.
+
+\subsection{An exact, unsquared conjunction}
+For integers $A,B$ with $A,B\ne-2$, the equation
+$(A+1)(B+1)(C+1)=1$ is equivalent to $A=B=C=0$: all three factors must be units,
+and the first two cannot be $-1$.
+Here $N$ is a square modulo $4$, hence $N\ne-2$. Write $A_0=a+2$, so
+$\Delta=A_0^2-1$. If $A_0$ is odd, $B\equiv f^2-1\pmod4$; if $A_0$ is even,
+$B\equiv f^2+I^2-1\pmod4$. Neither can be $2\pmod4$, so $B\ne-2$.
+Thus $P=0$ is exactly $N=B=C_2=0$, with no nonnegativity assumption on $N$.
+For comparison, the general construction $\prod_i(3R_i+1)=1$ also encodes
+$R_i=0$ over integers; the present residue exclusions avoid those extra scalar
+multiplications. No novelty is claimed for that general unit-product device.
+
+\subsection{Separation and extraction before invoking the source}
+Since $\beta=2^{1064921}-1$ is odd and greater than one, $q$ is even and nonzero.
+Also $H$ is odd and nonzero. Thus $U\ne0$ on every integer assignment, and
+$|X|=|qW|\ge4|q|\ge8$.
+Introduce proof-only quantities
+\[
+ D=XY^2,\quad A=4\bigl(1+D(D+1)k^2\bigr),\quad
+ b=2L+k,\quad t=Z/U,\quad\rho=t+b.
+\]
+The exact norm identity is
+\[
+ N/U^4=(\rho^2-A-G)^2-4AG. \tag{L1}
+\]
+Because $D(D+1)\ge0$ for integer $D$, $A\ge4$. At $N=0$, (L1) forces
+$G\ge0$. Therefore $B_{\rm ud}=G+1+p_2^2+p_3(p_3+1)>0$, which excludes
+$Y=0$ and $k=0$. Directly, $B_{\rm ud}\le Y^2k^2q^2$. Since
+$|D|\ge8$, one has $D(D+1)\ge D^2/2$, and hence
+\[
+ A\ge4+2X^2Y^4k^2\ge4+32q^2Y^4k^2
+   >Y^2k^2q^2\ge B_{\rm ud}>G. \tag{L2}
+\]
+In particular $\rho\ne0$, since (L1) with $\rho=0$ would force $A=G$.
+The rational numbers
+\[
+ p=\frac{\rho^2-A+G}{2\rho},\qquad u=\rho-p
+\]
+satisfy $p^2=G$ and $u^2=A$. A rational square root of an integer is integral,
+so $p,u\in\mathbb Z$, and $u$ is even. It follows that
+\[
+ t_{\rm old}=t-p=u-b\in\mathbb Z,\qquad
+ t_{\rm old}^2+2(2L+k)t_{\rm old}+k^2-4=0. \tag{L3}
+\]
+The argument explicitly handles equal square classes: for two roots, the
+separation $A>G$ rules out the sole cancelling-sum obstruction. It does not
+claim that pairwise distinctness suffices for a norm with more than two roots.
+
+\subsection{Complete maps in both directions}
+At any new zero, retain all shared coordinates and set
+\[
+ p_{1,\rm old}=p,\qquad n_{\rm old}=n-p.
+\]
+Since $Z$ is affine in $n$ with coefficient $U$, (L3) makes the old first carrier
+zero. Its strong and auxiliary residuals are unchanged, and its guard is zero
+because $B_{\rm ud}=p^2+1+p_2^2+p_3(p_3+1)$. This is a literal zero of the
+pinned fifteen-variable polynomial, so its complete ordinary soundness theorem
+now applies. No premature CRT or canonical assumption has been used.
+
+Conversely, from any old zero, delete $p_1$ and set
+$n_{\rm new}=n_{\rm old}+p_1$. Then $G=p_1^2$ and
+$Z_{\rm new}=Z_{\rm old}+Up_1$. The universal identity
+\[
+ N_{\rm new}=C_{1,\rm old}
+ \bigl[C_{1,\rm old}+4Up_1(Z_{\rm old}+Ub)+4U^2p_1^2\bigr]
+\]
+gives $N_{\rm new}=0$, with the other two residuals unchanged.
+This applies, in particular, to every member of the authentic canonical source34
+family supplied from a finite ZFC refutation. No new rank-tuning or two-square
+representation theorem is required.
+
+\subsection{Exact coefficient, cost and boundary}
+The degrees of $C_1,B,C_2,G,N$ are $22,12,16,18,60$.
+For the leading homogeneous forms, write
+\begin{gather*}
+ q_0=6\beta j,\quad X_0=12q_0w,\quad Y_0=v,\quad
+ R_0=q_0^4z-12q_0^3wC,\\
+ a_0=X_0Y_0,\quad U_0=8q_0^3X_0Y_0.
+\end{gather*}
+Then
+\begin{gather*}
+ N_{60}=U_0^4R_0^4q_0^8(q_0^8+16X_0^2Y_0^4),\\
+ B_{12}=-4a_0^2r^2c^4,\qquad (C_2)_{16}=2a_0^2f^4R_0y.
+\end{gather*}
+Their product is the unique degree-$88$ part of $P$. In particular,
+\[
+ [j^{56}w^8v^8z^5r^2c^4f^4y]P
+       =-2^{87}3^{64}\beta^{56}\ne0.
+\]
+Thus the degree is attained on the actual fixed coefficients. The $119$-gate
+count includes all scalar multiplications and squares. This lowers the historical
+fourteen-variable degree-$108$/119-gate endpoint's degree at unchanged evaluator
+cost; it is a different tradeoff from the fifteen-variable degree-$44$/111-gate
+source.
+
+The independent audit checks all 33 named registers, literal liveness and gate
+counts, the nonzero coefficient, complete coefficient bytes, source pins,
+identities, residue cases, signed bounds, and deliberate gate mutations. Normal
+and optimized runs pass. These finite checks do not replace the unbounded source34
+compiler/refutation theorem, whose source closure remains an explicit dependency.

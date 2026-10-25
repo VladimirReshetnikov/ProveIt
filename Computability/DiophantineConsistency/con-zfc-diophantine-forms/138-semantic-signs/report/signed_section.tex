@@ -1,0 +1,102 @@
+This component retains the entire six-integer source34 tuple of package 132,
+including $\beta=2^{1064921}-1$, $C_A=2^{1113}$, and $C_B=2^{666104}$.
+The other three numerals $K_0,M_C,M_F$ and the full finite reconstruction
+recipe are supplied in \filepath{integer11/coefficients/}. These constants
+are independent of the four-coefficient tuple in Section~\ref{sec:compact}.
+
+The eleven unknowns $j,C,z,h,r,v,w,T,c,n,s$ range over all of $\Z$. Set
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+ X&=qW,&Y&=(2v+1)q^3,&E&=XY,\\
+ a&=E+Y,&A&=a+2,&H&=4a+3,\\
+ \Delta&=a^2+H=A^2-1,\\
+ F&=(K_0+W)C-z(q-1),\\
+ R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J.
+\end{align*}
+Choose $M_0=E$ for the native version or $M_0=4q^4$ for the short-index
+version, and continue with
+\begin{align*}
+ k&=R+1+hM_0,&\eta&=c-Yk,\\
+ D_{\rm err}&=(C_AF-q)^2+(C_BC-q)^2,\\
+ B_{\rm ud}&=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ L&=XY^2k,&D_t&=1+L(L+k),&D&=B_{\rm ud}-4,\\
+ P&=D_t+D(D_ts)^2,&D_m&=1+\Delta c^2,&B_P&=D_mP,\\
+ U&=Arc^2,&D_f&=1+\Delta U^2B_P,&Q&=\Delta^2U^2B_P,\\
+ V&=D_f(c-R+4UB_PT)-c,&K_+&=X(3c-2X)+2,\\
+ S&=srH,&z_c&=HT+K_+,\\
+ A_c&=(z_c^2+3H^2)(z_c^3-19H^3),&Z&=Sn-A_c,\\
+ R_G&=S^2B_PD_f.
+\end{align*}
+The two final equations have the same shape
+\begin{equation}\label{eq:signed}
+ \boxed{Q(Z^2-R_GV^2)+(R_G-Z^2)=0.}
+\end{equation}
+
+The change combines package 132's main-root saturation with package 131's
+parity guard. The authenticated affine front gives even $q$ and makes
+$U_c=C_AF$, $V_c=C_BC$ divisible by sixteen. Expanding,
+\[
+ B_{\rm ud}+(qk)^2
+ =k^2\bigl[2q(U_c+V_c)-U_c^2-V_c^2\bigr]-4q^2\eta^2
+ \equiv0\pmod{16}.
+\]
+Thus $B_{\rm ud}\equiv0$ or $12\pmod{16}$, and
+$D\equiv12$ or $8\pmod{16}$. In particular $D$ is nonsquare and
+divisible by four. Since $D_t\ge1$ and $D_t\equiv1\pmod8$,
+\[
+ D_g=1+DD_ts^2\equiv1\pmod4,\qquad P=D_tD_g\equiv1\pmod4.
+\]
+The old factors three and four in the guard are unnecessary.
+
+For completeness of the sign-sensitive argument, put
+$\delta=Q-1$, $C_y=QV^2-1$, and $D_a=\delta C_y$.
+The affine front has $\Delta>1$, nonzero even $A$, and nonzero odd $H$.
+The polynomial $(u^2+3)(u^3-19)$ has no rational zero; consequently
+$A_c\ne0$, and a zero of \eqref{eq:signed} forces $S\ne0$.
+The three integers $B_P,D_f,D_a$ are nonzero and pairwise coprime.
+Indeed $D_f\equiv D_a\equiv1\pmod{B_P}$, while modulo $D_f$
+\[
+ Q\equiv-\Delta,\quad V\equiv-c,\quad
+ D_a\equiv A^2D_m.
+\]
+Because $A\mid U$ and $D_m\mid B_P$, $D_f$ is coprime to $A^2D_m$.
+Multiplying the final equation by $\delta$ gives
+\[
+ (\delta Z/S)^2=B_PD_fD_a.
+\]
+The absolute values of the factors are therefore squares. Since
+$D_f\equiv1\pmod4$, it is positive. If $c\ne0$, a negative $B_P$ would
+make $D_f<0$. If $c=0$, then $D_m=D_f=D_a=1$, so the same square identity
+gives $B_P=P>0$ directly. Hence $B_P,P,D_a>0$ in all cases.
+
+Now $D_g>0$. If $B_{\rm ud}\le3$, then $D\le-1$ and $s\ne0$ would
+give $D_g\le1-D_t\le0$. Thus $B_{\rm ud}\ge4$, in fact at least twelve
+by its residue class. The centered budget recovers the strict front signs
+and excludes $c=0$. Extract $p_0^2=B_P$ and define $I=Up_0$,
+$T_{\rm old}=p_0T$. This restores the strong and auxiliary Pell norms,
+with $c^2\mid I$. The parent's early folding theorem uses these norms
+before the first Pell root: it gives $D_m=d^2$. Only then infer
+$P=(p_0/d)^2$ and split the coprime positive factors $D_t,D_g$ into
+squares. This order avoids circular root extraction.
+
+The remaining signed rank, projector, and fresh source reconstruction are
+the unchanged package-132 interfaces. For the converse, canonical outer
+data have $D_t=\tau^2$ and $B_{\rm ud}>64$. Then $DD_t>0$ is nonsquare,
+so Pell's theorem supplies $s,g>0$ with $g^2-DD_ts^2=1$. Fix
+$p_0=d\tau g$ first, choose one strong pair with
+$4sAp_0c^2\mid I$, and use the parent's supported-modulus interpolation
+with that same pair. This constructs the required integer $T$ and $n$.
+The interpolation depends on divisibility support, not on the removed
+scalar factors in $D$.
+
+Replacing $12B_{\rm ud}-16$ by $B_{\rm ud}-4$ saves one multiplication.
+The exact finalizer identity
+\[
+ (Q-1)Z^2-R_G(QV^2-1)
+ =Q(Z^2-R_GV^2)+(R_G-Z^2)
+\]
+saves one further operation. The complete circuits consequently have 107
+and 108 operations at unchanged exact degrees 924 and 840. Their global
+leading monomials, including nonzero authentic coefficients, are proved
+by the independent symbolic checker. The new guard and finalizer have
+also received a separate mathematical review in the archive.

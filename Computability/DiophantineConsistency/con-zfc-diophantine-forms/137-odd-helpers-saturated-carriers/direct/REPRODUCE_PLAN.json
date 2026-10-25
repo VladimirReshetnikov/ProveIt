@@ -1,0 +1,90 @@
+{
+  "cache_policy": "Each whole rebuild runs from a fresh source copy without Python caches. Active source dependencies and release inventories exclude cache directories, pyc and pyo files.",
+  "checks": [
+    {
+      "argv": [
+        "python",
+        "-B",
+        "check.py"
+      ],
+      "receipt": "CHECK_NORMAL.json"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "-O",
+        "check.py"
+      ],
+      "receipt": "CHECK_OPTIMIZED.json"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "check_diagnostics.py"
+      ],
+      "receipt": "DIAGNOSTICS.json"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "check_report.py"
+      ],
+      "receipt": "REPORT_FORMULA_CHECK.json"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "-O",
+        "check_report.py"
+      ],
+      "receipt": "REPORT_FORMULA_CHECK_OPTIMIZED.json"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "check_inventory.py"
+      ],
+      "receipt": "CACHE_INVENTORY_CHECK.json"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "-O",
+        "check_inventory.py"
+      ],
+      "receipt": "CACHE_INVENTORY_CHECK_OPTIMIZED.json"
+    }
+  ],
+  "expected_python": "3.12.14",
+  "rebuilds": [
+    {
+      "argv": [
+        "python",
+        "-B",
+        "reproduce.py",
+        "--receipt",
+        "DEST"
+      ],
+      "receipt": "REBUILD_NORMAL.json"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "reproduce.py",
+        "--optimized",
+        "--receipt",
+        "DEST"
+      ],
+      "receipt": "REBUILD_OPTIMIZED.json"
+    }
+  ],
+  "receipt_destinations": "Use destinations outside sealed release; capture check stdout there.",
+  "standard_library_only": true
+}

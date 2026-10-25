@@ -1,0 +1,156 @@
+\section{Canonical saturation of the doubled Pell product square}
+\label{sec:positive81}
+Two new literal polynomials in ten strictly positive integer unknowns have
+\[
+ (\text{operations},\text{degree})=(81,750),\qquad(82,560).
+\]
+They combine canonical $q$-cube saturation with the incoming doubled-Pell
+product-square construction. Compared with the latter's $(84,436)$ and
+$(85,328)$ points, this saves three gates at a degree cost. The complete
+\emph{directly indexed BFS943 compact44} coefficient tuple is unchanged.
+This is an ordinary arithmetic reduction using the retained source/native
+calibration, not a variable-count record, a global minimum, a consistency
+proof, or a newly generated formal proof endpoint.
+
+\subsection{Literal equations}
+The independent variables are
+$J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}$.
+The four fixed numerals $\beta,K_0,M_C,M_F$ are supplied in the coefficient
+payload and satisfy $\beta\ge31$ odd, $K_0>0$ and
+$0<M_C<\beta<M_F<2\beta$. Define
+\begin{align*}
+q&=\beta J+1,& h&=q-1,& X&=wq,& \mu&=q^2+1,&Y&=q^3s,\\
+k&=\eta+\zeta,&c&=kY+\eta,&A&=\mu Y(X+1)+1,&\Delta&=A^2-1,&H&=4A-5,\\
+V_0&=X\mu^2Y^2,&E&=1+V_0(V_0+1)k^2,&U&=ic^2,\\
+R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+e&=k-R-1,&C&=q-F-\alpha,&B&=(K_0+w)C-F,\\
+a&=\Delta U^2E,&F_0&=1+a,&G&=EF_0,&F_{\rm sq}&=1+4aF_0,\\
+Q&=\Delta(F_{\rm sq}-1),&b&=c(T+\alpha)-R,&V&=F_{\rm sq}b-c,\\
+K_+&=X(3c-2X)+2,&M&=h\mu^2H.
+\end{align*}
+Choose $L=V^2$ for the 81-gate equation or $L=bV$ for the 82-gate equation,
+and put
+\begin{align*}
+ Z&=h\mu^2[H(n-LB)+K_+]-H[\mu^2B+he],\\
+ R_G&=M^2G,\\
+ \boxed{N=Q(Z^2-R_GV^2)+(R_G-Z^2)=0.}
+\end{align*}
+All symbols are polynomial abbreviations, not additional unknowns.
+With proof notation $\delta=Q-1$, $D_y=QV^2-1$,
+$\kappa=K_+/H$, $\rho=e/\mu^2$, $t=B/h$ and $W=1+hL$,
+\begin{equation}
+ N=\delta Z^2-M^2GD_y,
+ \qquad \frac ZM=n+\kappa-Wt-\rho.
+ \label{eq:positive81-carrier}
+\end{equation}
+
+\subsection{Normalization and positive soundness}
+For the matching source133 polynomial, the substitutions
+$Y_{\rm old}=q^3s$ and $n_{\rm old}=n-s$ give whole-polynomial identities
+\[
+ Z_{\rm old}=q^3Z,\qquad M_{\rm old}=q^3M,
+ \qquad N_{\rm old}=q^6N.
+\]
+The exponent is six, because this output is quadratic in the cleared
+coordinates. The shifted $n-s$ need not be positive, so this identity alone
+is not used as a positive soundness argument.
+
+All source kernel inequalities hold because $Y>0$. On every positive
+input, $G,\delta,D_y,M$ are positive. Pell doubling gives
+\[
+ F_{\rm sq}=(1+2a)^2,\qquad Q=4\Delta^2U^2G,
+ \qquad \gcd(G,\delta D_y)=1.
+\]
+At a zero, $\delta(Z/M)^2=GD_y$, so prime valuations force $G=g^2$.
+Since $F_0=1\pmod E$, its coprime factors are squares:
+$E=\tau^2$, $F_0=f_0^2$, $g=\tau f_0$.
+Rational adjacent-Pell descent makes
+$y=|Z/M|/g$ an integer satisfying
+\[
+ QV^2-(Q-1)y^2=1,\qquad Z/M=\varepsilon gy,
+ \quad \varepsilon\in\{-1,1\}.
+\]
+The doubled strong pair $f=1+2a$, $I=2Ug$ satisfies
+$f^2-\Delta I^2=1$, $Q=(\Delta I)^2$ and $c^2\mid I$.
+The retained all-index folding theorem and the first norm therefore give
+$c=\psi_A(p)$ for odd $p\ge3$, $k\ge8V_0+4$, $b>c$,
+$V>0$, $K_+>0$, and the one-sided bound $\rho<b/\mu^2$.
+These deductions use neither the transport sign nor carrier divisibility.
+
+For $L=V^2$, the inequalities $g<a$ and
+$V>(F_{\rm sq}-1)b>ab>3g$ imply $gy<V^2/2$.
+If $B\le-1$, equation~\eqref{eq:positive81-carrier} gives, for either
+root sign,
+\[
+ n=\varepsilon gy-\kappa+Wt+\rho
+ <V^2/2-V^2+V/\mu^2<0.
+\]
+For $L=bV$, the retained fifth-auxiliary-index argument first gives
+$V>8Q^2$ and $b>4g$. Hence $gy<3bV/8<L/2$ and negative $B$ would give
+\[
+ n<L/2-L+b/\mu^2<0.
+\]
+Both contradictions concern the actual positive $n$, not $n-s$.
+Thus $B\ge0$ and $C>0$.
+
+The later arithmetic now follows in its original order: rank recovery
+gives $p=R$, then parity gives even $q$; only then denominator coprimality
+gives $\mu^2\mid e$. The first-index comparison and ratio bounds hold
+unchanged. Clearing the integral carrier modulo $H$ gives
+$H\mid hK_+$ and therefore the source's weaker premise
+$H\mid q^3hK_+$. Its whole-product projection and height estimate force
+$X=2^R$, without cancelling nonunits. Then $\kappa$ is integral, and
+$W=1\pmod h$ gives $h\mid B$. Finally $q^3\mid Y$ is literal.
+The fixed-minus parity, exact half-binomial rounding and fresh unscaled
+source reconstruction yield a finite refutation through the unchanged
+whole indexed calibration.
+
+\subsection{Canonical completeness}
+From a finite refutation, use the source133 canonical outer and first
+Pell data, including $q^3\mid Y$. Choose its fresh seed period divisible
+by $c^2\tau$, double that seed, and use its explicit odd auxiliary
+witness. The source's positive carrier is
+\[
+ n_{\rm old}=gy+Wt+\rho-\kappa-Y/q^3>0.
+\]
+Set $s=Y/q^3>0$ and $n=n_{\rm old}+s>0$.
+The normalization identity gives $q^6N=N_{\rm old}=0$, hence $N=0$.
+Equivalently $n=gy+Wt+\rho-\kappa>0$, since $g>\kappa$ and
+$Wt,\rho\ge0$. This includes native transport $t=0$ and does not
+assume simultaneous solvability of unrelated Pell equations.
+Thus absence of a positive zero is equivalent to $\operatorname{Con}
+(\mathrm{ZFC})$ under exactly the retained ordinary calibration.
+
+\subsection{Exact degree and reproducible arithmetic}
+The degrees of $A,c,U,E,a,G,F_{\rm sq},Q,b,V,M,B$ are
+\[
+ 8,5,11,30,68,98,136,152,6,142,13,2.
+\]
+For $L=V^2$, $\deg Z=299$, so the two summands of
+$\delta Z^2-M^2GD_y$ have degrees750 and560. For $L=bV$, their
+respective degrees are478 and560. Hence no highest-degree cancellation
+is possible.
+With $q_0=\beta J$, $k_0=\eta+\zeta$ and $t_0=T+\alpha$, the full
+attained homogeneous forms are
+\begin{align*}
+ [N_{81}]_{750}&=2^{14}q_0^{506}w^{46}s^{108}i^{20}k_0^{64}
+ t_0^4(q_0-F-\alpha)^2,\\
+ [N_{82}]_{560}&=-2^{10}q_0^{384}w^{34}s^{80}i^{14}k_0^{46}t_0^2.
+\end{align*}
+In particular the coefficients at
+$J^{506}w^{46}s^{108}i^{20}\eta^{64}T^4F^2$ and
+$J^{384}w^{34}s^{80}i^{14}\eta^{46}T^2$ are respectively
+$2^{14}\beta^{506}$ and $-2^{10}\beta^{384}$, nonzero for the actual
+fixed numerals.
+
+The exact operation splits are $(48,19,14)$ and $(49,19,14)$ for products,
+sums and differences. All vertices and input ports are live. Three gates
+are saved by adding $Y=q^3s$, deleting four old carrier gates, and changing
+the remaining carrier rows. The standard-library checker verifies all
+coefficient numeral bytes, complete graph bindings, normalization,
+full polynomial rays, local identities and actual gate mutations, both
+normally and under Python optimization. The proof, not these finite
+controls, supplies the unbounded equivalence. Three older gzip containers
+have different headers from source133, but their decompressed coefficient
+bytes match its pinned hashes exactly; this packaging distinction is
+recorded explicitly.

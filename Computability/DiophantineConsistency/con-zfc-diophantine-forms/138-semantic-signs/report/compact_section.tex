@@ -1,0 +1,200 @@
+This section is independent of the direct-calculus coefficients. It fixes
+the entire indexed BFS943 tuple $(\beta,K_0,M_C,M_F)$ of package 133.
+The finite recipe in Appendix~\ref{app:constants} and the supplied integer
+payloads specify those four numbers completely. In particular
+\[
+ \beta\ge31\text{ is odd},\quad K_0>0,\quad
+ 0<M_C<\beta<M_F<2\beta.
+\]
+The largest numeral has 592,884 bits. The already shifted $M_F$ must not
+be shifted a second time or mixed with another coefficient tuple.
+
+\subsection{Complete formulas}
+
+For the 83-operation equation the ten unknowns are
+\[
+ J,F,\alpha,i,T,w,Y,n,\eta,\zeta\in\Z_{>0}.
+\]
+For the normalized 80- and 81-operation equations replace the input $Y$
+by $s\in\Z_{>0}$ and define $Y=q^3s$. The common polynomial definitions are
+\begin{align*}
+ q&=\beta J+1,& h&=q-1,& C&=q-F-\alpha,\\
+ X&=wq,&\mu&=q^2+1,& k&=\eta+\zeta,\\
+ c&=kY+\eta,& A&=\mu Y(X+1)+1,\\
+ \Delta&=A^2-1,& H&=4A-5,\\
+ v&=X\mu^2Y^2,&E&=1+v(v+1)k^2,\\
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ e&=k-R-1,&B&=(K_0+w)C-F,\\
+ U&=ic^2,&a&=\Delta U^2E,&F_0&=1+a,\\
+ G&=EF_0,\\
+ F_*&=1+4aF_0,&Q&=\Delta(F_*-1),\\
+ b&=cT-R,&V&=F_*b-c,&K_+&=X(3c-2X)+2.
+\end{align*}
+The abbreviation $F_*$ denotes a polynomial, not an additional unknown.
+Take the transport weight $L=V^2$ for the 83- and 80-operation forms,
+and $L=bV$ for the 81-operation form. For the unnormalized form set
+\begin{align*}
+ P&=q^3h,&M&=P\mu^2H,\\
+ Z&=P\mu^2[H(n-LB)+K_+]
+       +H[\mu^2(hY-q^3B)-Pe].
+\end{align*}
+For the normalized forms set
+\[
+ M=h\mu^2H,\qquad
+ Z=h\mu^2[H(n-LB)+K_+]-H[\mu^2B+he].
+\]
+In each case the complete equation is
+\begin{equation}\label{eq:compact}
+ \boxed{Q\bigl(Z^2-M^2GV^2\bigr)+(M^2G-Z^2)=0.}
+\end{equation}
+It is identically $(Q-1)Z^2-M^2G(QV^2-1)=0$.
+The strict positivity of the ten inputs is part of the domain.
+
+\subsection{Root extraction and the free auxiliary coordinate}
+
+The package-133 kernel uses Pell doubling:
+\[
+ F_*=(1+2a)^2,\qquad Q=4\Delta^2U^2G,\qquad\gcd(E,F_0)=1.
+\]
+Positive inputs give $q\ge32$, $c\ge3$, $a>c$, $Q>c^2$, and $M>0$.
+If $b=0$, then $V=-c$; otherwise $|V|\ge F_*-c>1$. At a zero, put
+$z=Z/M$. Since $G\mid Q$, both $Q-1$ and $QV^2-1$ are $-1$ modulo $G$.
+Prime valuations in
+\[
+ (Q-1)z^2=G(QV^2-1)
+\]
+make $G=g^2$ for an integer $g>0$. Coprimality gives
+$E=\tau^2$, $F_0=f_0^2$, and $g=\tau f_0$.
+
+The positive rational $y=|z|/g$ satisfies
+\begin{equation}\label{eq:adjacent}
+ QV^2-(Q-1)y^2=1.
+\end{equation}
+It is integral. Indeed, if $y=r/m$ is reduced, then $m^2\mid Q-1$.
+For $v_1=|V|>1$, the norm-preserving transformation
+\[
+ v_2=(2Q-1)v_1-2(Q-1)y,\quad y_2=(2Q-1)y-2Qv_1
+\]
+keeps $v_2$ integral, preserves the reduced denominator of $y_2$, and
+has $-v_1<v_2<v_1$. The preserved norm excludes $v_2=0$. Descending in $|v_1|$ reaches one, where $y=1$.
+Consequently $z=\epsilon gy$ for $\epsilon=\pm1$.
+
+Define, in the proof only, $f=1+2a$ and $I=2Ug$. Then
+\[
+ f^2-\Delta I^2=1,\quad f^2=F_*,\quad Q=(\Delta I)^2,
+ \quad c^2\mid I.
+\]
+The retained main-folding theorem permits either sign of $V$ and yields
+$c=Y_p(A)$ for odd $p\ge1$. The first norm gives
+$k=2Y_{n_0}(2v+1)$. The case $n_0=1$ would give $c=2Y+1$ strictly
+between the first two Pell ordinates, so $n_0\ge2$. In particular
+\[
+ k\ge8v+4,\qquad c>k>8q^5,\qquad K_+>0.
+\]
+
+The new improvement is that $b=cT-R$ needs no preliminary shift
+$T+\alpha$ when the transport argument is proved with absolute values.
+At a zero, $b$ cannot vanish: otherwise
+\[
+ y^2=c^2+\frac{c^2-1}{Q-1}
+\]
+lies strictly between consecutive integers. For nonzero $b$, its sign
+equals that of $V$ and $|b|<|V|$. Also
+\[
+ a^2-g^2=E[\Delta U^2E(\Delta U^2-1)-1]>0,
+\]
+so $g<a$ and $|V|\ge F_*-c>3g$. From \eqref{eq:adjacent},
+$y<\tfrac32|V|$, hence $gy<V^2/2$.
+
+Put $\kappa=K_+/H>0$, $t=B/h$, $\rho=e/\mu^2$, and
+$W_*=1+hL$. The exact carrier identities are
+\[
+ \frac ZM=n+\kappa+Y/q^3-W_*t-\rho
+ \quad\hbox{or}\quad
+ \frac ZM=n+\kappa-W_*t-\rho.
+\]
+The one-sided estimate
+\[
+ b-e=cT-k+1>0,\qquad
+ \rho<\frac b{\mu^2}\le\frac{|b|}{\mu^2}<\frac{|V|}{\mu^2}
+\]
+uses only $T\ge1$ and $c>k$. If $B\le-1$, then for $L=V^2$ either
+carrier gives
+\[
+ n<\frac{V^2}{2}-V^2+\frac{|V|}{\mu^2}<0,
+\]
+a contradiction. Thus $B\ge0$, and the definition of $B$ forces $C>0$.
+This proves the essential new soundness step for the 83- and 80-operation
+equations. It never assumes the deleted shift has a positive inverse.
+
+\subsection{Why the smaller weight works after normalization}
+
+For $L=bV$ a stronger bound is needed. The literal identities $q\mid X,Y$
+in the normalized chart exclude the exceptional main index $p=3$ before
+transport. Suppose $p=3$, so $c=4A^2-1$. A first index $n_0\ge3$ would
+give $kY>32v^2Y>4A^2>c$, so $n_0=2$ and $k=8v+4$.
+Writing $D=(X+1)^2-2XY$ then gives the exact identity
+\[
+ \eta=4\mu^2Y^2D+8\mu Y(X+1)+3-4Y.
+\]
+The inequalities $0<\eta<k$ exclude $D\ge2X$ and $D\le0$.
+For the latter, $D=1+X(X+2-2Y)\le-1$ implies $X+1<2Y$, making the
+display negative. Thus $0<D<2X$, which forces
+$2Y-X\in\{1,2\}$. This contradicts $q\mid X,Y$ and $q\ge32$.
+Hence $p\ge5$ and $c>4\Delta+3$.
+
+In \eqref{eq:adjacent}, put $S=\Delta I$ and $Q=S^2$. Pell classification
+gives an odd auxiliary index; its first and third absolute $V$ values
+are $1$ and $4Q-3$. The first is already excluded. The second is
+impossible because $V=F_*b-c$ would give either
+\[
+ F_*(b-4\Delta)=c-4\Delta-3,
+ \qquad F_*(b+4\Delta)=c+4\Delta+3,
+\]
+whose right side is strictly between zero and $F_*$. Therefore
+$|V|\ge16Q^2-20Q+5>8Q^2$. As $c<F_*$,
+\[
+ |b|>8Q^2/F_*-1>4\Delta^3I^2-1>4g.
+\]
+Now $L=bV=|b||V|>0$, $gy<3L/8<L/2$, and
+$\rho<|b|/\mu^2<L/2$. If $B\le-1$, the carrier again gives $n<0$.
+This proves the missing sign step for the 81-operation equation.
+
+\subsection{Later decoding, converse, and exact size}
+
+After $C>0$, the retained mask bound gives $3q<R<q^4-2$. The signed-index
+lemma uses the actual residues $V\equiv-c\pmod f$ and
+$V\equiv-R\pmod c$, with $c^2\mid I$; it allows either sign of $V$ and
+contains no condition $T>\alpha$. It gives $p=R$. The original parity,
+denominator, first-index, and whole-product projector arguments then
+restore the native source and its finite refutation. The normalized
+carrier supplies a stronger denominator premise; no nonunit is cancelled
+modulo a composite modulus.
+
+Conversely the parent's canonical witnesses give a positive old
+$T_{\rm old}$ and $q^3\mid Y$. Set $T=T_{\rm old}+\alpha$. For the
+normalized equations also set $s=Y/q^3$ and
+$n=n_{\rm old}+s$. These are positive. The exact substitutions give
+\[
+ Z_{\rm old}=q^3Z_{\rm new},\quad
+ M_{\rm old}=q^3M_{\rm new},\quad
+ N_{\rm old}=q^6N_{\rm new},
+\]
+so the new polynomial vanishes. Soundness was proved directly because
+the inverse coordinate shift need not preserve positivity.
+
+The three live operation counts are respectively
+$(50,18,15)$, $(49,18,14)$, and $(48,18,14)$ for multiplication,
+addition, and subtraction. Put $q_0=\beta J$ and $k_0=\eta+\zeta$.
+Their highest homogeneous forms are
+\begin{align*}
+ P_{83}^{\rm top}&=2^{14}q_0^{200}w^{46}Y^{104}i^{20}k_0^{60}
+                  (q_0-F)^4(q_0-F-\alpha)^2,\\
+ P_{81}^{\rm top}&=-2^{10}q_0^{384}w^{34}s^{80}i^{14}k_0^{46}T^2,\\
+ P_{80}^{\rm top}&=2^{14}q_0^{506}w^{46}s^{108}i^{20}k_0^{64}T^4
+                  (q_0-F-\alpha)^2.
+\end{align*}
+They are nonzero for the authentic tuple and have degrees 436, 560,
+and 750. Global gate-by-gate upper bounds and full univariate polynomial
+replays independently verify attainment. A finite ray calculation alone
+would not supply the global upper bound; both are included.

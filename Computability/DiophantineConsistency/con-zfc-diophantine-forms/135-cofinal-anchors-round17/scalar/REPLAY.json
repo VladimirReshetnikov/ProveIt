@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "isolated_temporary_directory": true,
+  "producer_output_byte_identical": true,
+  "normal_and_optimized_checker_pass": true,
+  "all_live_gate_degree_certificates_rebuilt": true,
+  "complete_six_port_payload_and_recipe_rebuilt": true,
+  "pinned_release_files": 131,
+  "generated_files_compared": [
+    "METRICS.json",
+    "CHECK.json",
+    "CHECK_OPTIMIZED.json",
+    "free_cofactor11_simple.json",
+    "weak_cofactor11_simple.json",
+    "free_cofactor11_sharp.json",
+    "weak_cofactor11_sharp.json",
+    "free_cofactor11_none.json",
+    "weak_cofactor11_none.json"
+  ],
+  "runs": [
+    {
+      "command": [
+        "python",
+        "build.py"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "bb0abe690e43fb481c4d6229b82d4e25496c914e21bbfff97947bf6a0c16e0ba"
+    },
+    {
+      "command": [
+        "python",
+        "check.py"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "1fb6b4e19ca37f3166b92a970e8dad412b2cd169b94596e52b851709b2434507"
+    },
+    {
+      "command": [
+        "python",
+        "-O",
+        "check.py"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "1fb6b4e19ca37f3166b92a970e8dad412b2cd169b94596e52b851709b2434507"
+    }
+  ]
+}

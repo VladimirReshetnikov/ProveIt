@@ -1,0 +1,214 @@
+% Complete unabridged proof from direct/PROOF_315.md
+\section{Reusing a semantic Pell anchor over unrestricted integers}
+
+
+
+\subsection{Result and scope}
+
+
+
+The selected exact equation is the sum of the squares of the 204 quadratic residuals in \texttt{integer315/\allowbreak{}equation.json}. Its 315 variables range over all integers. Its separately materialized collected polynomial has degree four, 5709 nonzero monomials and coefficient height 128446. The conservative comparison \texttt{integer321} has 321 variables, 206 rows, 5785 monomials and the same height. These are literal finite counts, not global minimality claims.
+
+
+
+The input is precisely the round16 direct portable source. The two input files are bound by SHA256 in the independent checker. All eighteen power requests, the square-output factorial fixed point, the cofinal horizon, the self-sized radix, the range tests and the finite Horn-refutation calibration are unchanged. The inherited semantic boundary is the ordinary interpretation associated with \texttt{KEndpoint.c222\_\allowbreak{}iff\_\allowbreak{}zf\_\allowbreak{}refutation} and \texttt{ConstructibleChoice.zf\_\allowbreak{}refutation\_\allowbreak{}iff\_\allowbreak{}zfc\_\allowbreak{}refutation}. We do not claim a new end-to-end proof-assistant certificate or a proof of consistency. The result is an ordinary mathematical proof, formalizable in ZFC, that integer solvability is equivalent to the existence of a finite ZFC refutation.
+
+
+
+The round16 \texttt{direct/\allowbreak{}PROOF.md} supplies the complete arithmetic-front argument. This note gives the replacement private Pell certificate, its full sign schedule, and the changed completeness choice. In particular it does not silently treat a signed private coordinate as a natural one.
+
+
+
+\subsection{Shared notation and unchanged front}
+
+
+
+Write X\_\allowbreak{}j(a), Y\_\allowbreak{}j(a) for the Pell polynomials defined by X\_\allowbreak{}0=\allowbreak{}1, Y\_\allowbreak{}0=\allowbreak{}0 and
+
+
+
+\begin{verbatim}
+X_(j+1)=a X_j+(a^2-1)Y_j,
+Y_(j+1)=X_j+aY_j.
+\end{verbatim}
+
+For j\textgreater{}\allowbreak{}0 extend to negative indices by X\_\allowbreak{}(-j)=\allowbreak{}X\_\allowbreak{}j and Y\_\allowbreak{}(-j)=\allowbreak{}-Y\_\allowbreak{}j. For negative centers,
+
+
+
+\begin{verbatim}
+X_j(-a)=(-1)^j X_j(a),
+Y_j(-a)=(-1)^(j-1)Y_j(a)  (j>0).
+\end{verbatim}
+
+The unchanged square frame W=\allowbreak{}2+\allowbreak{}sum(atom\textasciicircum{}\allowbreak{}2) includes every actual affine base, exponent and output atom of all eighteen requests. Thus W\textgreater{}\allowbreak{}=\allowbreak{}258, |atom|\textless{}\allowbreak{}W, atom\textasciicircum{}\allowbreak{}2\textless{}\allowbreak{}W, and every requested absolute index is less than W. The fifteen principal pairs include the already needed derived-label pair. Its requested index is denoted h; literally h=\allowbreak{}1+\allowbreak{}add.380. It is a monotone syntax-constructor expression in the four positive CRT representatives, so h\textgreater{}\allowbreak{}=\allowbreak{}2 before interpreting any power.
+
+
+
+The unchanged odd frame is
+
+
+
+\begin{verbatim}
+A^2-W^3(W+2)(2z+1)^2=1.
+\end{verbatim}
+
+No sign graph is retained on A. Put a=\allowbreak{}|A|. Classification at center W+\allowbreak{}1, with ordinate |W(2z+\allowbreak{}1)|, gives a=\allowbreak{}X\_\allowbreak{}l(W+\allowbreak{}1), with positive l divisible by W. Hence
+
+
+
+\begin{verbatim}
+a>=X_W(W+1)>W^W,       |A-1|>4W^3.
+\end{verbatim}
+
+This argument uses neither a power output's sign nor a binomial interpretation.
+
+
+
+\subsection{The reused signed anchor}
+
+
+
+Reuse the derived-label seed pair (U,C), including its original norm and A\textasteriskcentered{}\allowbreak{}C multiplication gate. No fresh duplicate anchor norm is created. Retain one auxiliary pair (H,J), one comparison pair (S,R), and a comparison center D, with
+
+
+
+\begin{verbatim}
+U^2-(A^2-1)C^2=1,
+H^2-(A^2-1)J^2=1,
+S^2-(D^2-1)R^2=1,
+J=C^2(2e+1),
+D=1+4J(2d+1),
+D=A+Hf,       S=U+Hg,       R=h+4Cq.
+\end{verbatim}
+
+Every displayed coordinate is an unrestricted integer. The squared cap is
+
+
+
+\begin{verbatim}
+C^2=h^2+1+sum_(i not anchor) y_i^2+u^2+v^2+w(w+1).       (1)
+\end{verbatim}
+
+The ternary form is always nonnegative. Therefore |C|\textgreater{}\allowbreak{}h, so C is nonzero. The odd auxiliary factor gives J nonzero and C\textasciicircum{}\allowbreak{}2 divides J. Consequently |H|\textgreater{}\allowbreak{}=\allowbreak{}a and |D|\textgreater{}\allowbreak{}=\allowbreak{}3. D is congruent to 1 modulo 4C even when C, J or D is negative.
+
+
+
+Classify the anchor and auxiliary pairs at a:
+
+
+
+\begin{verbatim}
+|U|=X_i(a), |C|=Y_i(a), |H|=X_l(a), |J|=Y_l(a).
+\end{verbatim}
+
+Here i,l\textgreater{}\allowbreak{}0. The inherited squared-divisibility Pell lemma gives i\textless{}\allowbreak{}=\allowbreak{}l and |C| divides l. Polynomial transfer through D=\allowbreak{}A modulo H and S=\allowbreak{}U modulo H gives comparison index j=\allowbreak{}+\allowbreak{}/\allowbreak{}-i modulo 2l. For A\textless{}\allowbreak{}0, the additional factor (-1)\textasciicircum{}\allowbreak{}j in X\_\allowbreak{}j(A) is absorbed by the independent abscissa sign. At D=\allowbreak{}1 modulo 4C, the ordinate recurrence gives j=\allowbreak{}+\allowbreak{}/\allowbreak{}-h modulo 4|C|. Hence i=\allowbreak{}+\allowbreak{}/\allowbreak{}-h modulo 2|C|. Since 1\textless{}\allowbreak{}=\allowbreak{}i\textless{}\allowbreak{}=\allowbreak{}|C| and 0\textless{}\allowbreak{}h\textless{}\allowbreak{}|C|, only i=\allowbreak{}h is possible. Thus
+
+
+
+\begin{verbatim}
+|C|=Y_h(a).
+\end{verbatim}
+
+The proof uses the absolute values of the signed anchor and auxiliary ordinates. In particular neither C\textgreater{}\allowbreak{}0 nor J\textgreater{}\allowbreak{}0 is an implicit assumption.
+
+
+
+\subsection{Pooled signed-index recovery including the anchor}
+
+
+
+For every other principal pair, (1) gives |y\_\allowbreak{}i|\textless{}\allowbreak{}|C|, hence its classified index satisfies j\_\allowbreak{}i\textless{}\allowbreak{}h\textless{}\allowbreak{}W. For the anchor itself j=\allowbreak{}h\textless{}\allowbreak{}W. Retain all fifteen terms in the single pooled row, including the anchor term:
+
+
+
+\begin{verbatim}
+sum_i (y_i-k_i)^2=(A-1)q0.                              (2)
+\end{verbatim}
+
+The free quotient q0 has no sign graph. If A\textgreater{}\allowbreak{}0, reducing the recurrence modulo A-1 yields y\_\allowbreak{}i=\allowbreak{}epsilon\_\allowbreak{}i j\_\allowbreak{}i. If A\textless{}\allowbreak{}0, a=\allowbreak{}-A is congruent to -1 modulo A-1 and yields y\_\allowbreak{}i=\allowbreak{}epsilon\_\allowbreak{}i(-1)\textasciicircum{}\allowbreak{}(j\_\allowbreak{}i-1)j\_\allowbreak{}i; at j\_\allowbreak{}i=\allowbreak{}0 the residue is zero. Thus (A-1) divides the nonnegative integer
+
+
+
+\begin{verbatim}
+E=sum_i (r_i-k_i)^2,
+\end{verbatim}
+
+where r\_\allowbreak{}i is the indicated signed integer index. Since all j\_\allowbreak{}i\textless{}\allowbreak{}W, |k\_\allowbreak{}i|\textless{}\allowbreak{}W and the fifteen pairs are fewer than W,
+
+
+
+\begin{verbatim}
+0<=E<4*15*W^2<4W^3<|A-1|.
+\end{verbatim}
+
+Therefore E=\allowbreak{}0 and y\_\allowbreak{}i=\allowbreak{}Y\_\allowbreak{}(k\_\allowbreak{}i)(A) for every pair. Keeping the anchor's pooled term is essential: for an even h and a negative A its correct ordinate is negative. A positive linear cap combined with anchor reuse would not justify this signed-center variant.
+
+
+
+\subsection{Powers and the acyclic front-sign schedule}
+
+
+
+For any positive requested index k\textless{}\allowbreak{}W, base 2\textless{}\allowbreak{}=\allowbreak{}n\textless{}\allowbreak{}W, and signed candidate output |m|\textless{}\allowbreak{}W, put T=\allowbreak{}2An-n\textasciicircum{}\allowbreak{}2-1. Its magnitude exceeds W\textasciicircum{}\allowbreak{}W+\allowbreak{}W. Once y=\allowbreak{}Y\_\allowbreak{}k(A), the two possible norm abscissas are +\allowbreak{}/\allowbreak{}-X\_\allowbreak{}k(A). The correct choice gives m=\allowbreak{}n\textasciicircum{}\allowbreak{}k modulo T. The wrong choice gives m\textasteriskcentered{}\allowbreak{}n\textasciicircum{}\allowbreak{}k=\allowbreak{}-1 modulo T, by multiplying the two conjugate recurrence expressions; this identity holds for either sign of A. Since |m\textasteriskcentered{}\allowbreak{}n\textasciicircum{}\allowbreak{}k+\allowbreak{}1|\textless{}\allowbreak{}W\textasciicircum{}\allowbreak{}W+\allowbreak{}1\textless{}\allowbreak{}|T|, the wrong case would imply the impossible equality m\textasteriskcentered{}\allowbreak{}n\textasciicircum{}\allowbreak{}k=\allowbreak{}-1. The correct congruence similarly gives m=\allowbreak{}n\textasciicircum{}\allowbreak{}k. For base one, the already oriented t pair gives the result directly.
+
+
+
+The retained front signs are exactly those of round16 except for A. Initially x\textgreater{}\allowbreak{}=\allowbreak{}0, all nine encoded representatives minus one are nonnegative, the factorial remainder and slack are nonnegative, and the exact-binomial output slack is nonnegative. Therefore B=\allowbreak{}r+\allowbreak{}s+\allowbreak{}1\textgreater{}\allowbreak{}=\allowbreak{}1, q=\allowbreak{}B+\allowbreak{}o+\allowbreak{}1\textgreater{}\allowbreak{}=\allowbreak{}2 and t=\allowbreak{}16+\allowbreak{}h0\textasciicircum{}\allowbreak{}2\textgreater{}\allowbreak{}=\allowbreak{}16. First apply the signed-center power argument to q\textasciicircum{}\allowbreak{}t. This orients the t abscissa to X\_\allowbreak{}t(A), not necessarily to a positive number. The same pair gives V0=\allowbreak{}(F\textasciicircum{}\allowbreak{}2+\allowbreak{}1)\textasciicircum{}\allowbreak{}t. The raw ceiling identity FB=\allowbreak{}V0+\allowbreak{}s\textgreater{}\allowbreak{}0 gives F\textgreater{}\allowbreak{}=\allowbreak{}1, and then B\textgreater{}\allowbreak{}=\allowbreak{}2, q\textgreater{}\allowbreak{}=\allowbreak{}3 and y=\allowbreak{}V0(V0-1)\textgreater{}\allowbreak{}=\allowbreak{}F+\allowbreak{}1. Thus K=\allowbreak{}2(2+\allowbreak{}t+\allowbreak{}x+\allowbreak{}y+\allowbreak{}F)\textgreater{}\allowbreak{}0. All representative indices are positive, and so is the derived-label index. The B\textasciicircum{}\allowbreak{}K request gives N, its shared pair gives q=\allowbreak{}(B H0)\textasciicircum{}\allowbreak{}K, and all remaining q or q+\allowbreak{}1 requests follow. This is the same acyclic order as round16.
+
+
+
+Only after the power interpretations are established do the eleven product guards r\_\allowbreak{}i\textasteriskcentered{}\allowbreak{}s\_\allowbreak{}i\textgreater{}\allowbreak{}=\allowbreak{}0 combine with the positive denominator equations r\_\allowbreak{}i+\allowbreak{}s\_\allowbreak{}i=\allowbreak{}L\_\allowbreak{}i-1\textgreater{}\allowbreak{}=\allowbreak{}0 to give both signs. The factorial fixed point, all range tests and Horn decoding then proceed exactly as in round16. Signed A changes no semantic front value. Private Pell quotient signs need not become natural: if comparison with the older all-natural private representation is wanted, reconstruct its witnesses afresh at a positive center.
+
+
+
+\subsection{Cofinal semantic-anchor completeness}
+
+
+
+Begin with a finite refutation and perform the round16 cofinal horizon and beta-CRT construction. It fixes t,F,V0,y,x,B,K,N before the independent representatives. Since t\textgreater{}\allowbreak{}=\allowbreak{}16 and F=\allowbreak{}t!, each d\_\allowbreak{}i=\allowbreak{}1+\allowbreak{}F\textasciicircum{}\allowbreak{}2/\allowbreak{}i is odd, so N and N\textasciicircum{}\allowbreak{}2 are odd. The representative moduli multiply to N\textasciicircum{}\allowbreak{}2.
+
+
+
+Choose the ordinary positive representatives in their required residue classes with 0\textless{}\allowbreak{}a\_\allowbreak{}i\textless{}\allowbreak{}=\allowbreak{}2N\textasciicircum{}\allowbreak{}2, prescribing parity by adding N\textasciicircum{}\allowbreak{}2 when needed. For the dominant a representative, start with its least nonnegative residue a0 in [0,N\textasciicircum{}\allowbreak{}2), and choose a=\allowbreak{}a0+\allowbreak{}2N\textasciicircum{}\allowbreak{}2 or a0+\allowbreak{}3N\textasciicircum{}\allowbreak{}2 to have parity opposite to b. Then 2N\textasciicircum{}\allowbreak{}2\textless{}\allowbreak{}=\allowbreak{}a\textless{}\allowbreak{}4N\textasciicircum{}\allowbreak{}2. The literal monotone derived-label constructor gives h\textgreater{}\allowbreak{}=\allowbreak{}2a\textasciicircum{}\allowbreak{}2, and its parity is h=\allowbreak{}1+\allowbreak{}a+\allowbreak{}b modulo 2. Thus h is even and exceeds every other requested index, indeed it can be chosen to exceed twice their maximum. The inherited fixed-front bounds are far below N\textasciicircum{}\allowbreak{}2. The self-sized radix H0=\allowbreak{}1+\allowbreak{}sum representatives is chosen only afterward, so q=\allowbreak{}(B H0)\textasciicircum{}\allowbreak{}K still dominates all required binomial coefficients; no new circular modulus choice is introduced. The factor-of-four increase in the representatives is harmless because the radix uses their actual values rather than an old aggregate ceiling.
+
+
+
+Form the actual square frame, choose A=\allowbreak{}X\_\allowbreak{}W(W+\allowbreak{}1)\textgreater{}\allowbreak{}0 and the ordinary odd frame witness, and use canonical principal pairs. Set U=\allowbreak{}X\_\allowbreak{}h(A), C=\allowbreak{}Y\_\allowbreak{}h(A). If M=\allowbreak{}max\_\allowbreak{}(i not anchor) k\_\allowbreak{}i\textless{}\allowbreak{}h, then Y\_\allowbreak{}M(A)\textless{}\allowbreak{}=\allowbreak{}Y\_\allowbreak{}(h-1)(A). Recurrence gives C\textgreater{}\allowbreak{}(2A-1)Y\_\allowbreak{}(h-1)(A). As A\textgreater{}\allowbreak{}W\textasciicircum{}\allowbreak{}W, h\textless{}\allowbreak{}W and the number of other pairs is 14,
+
+
+
+\begin{verbatim}
+C^2-sum_(i not anchor)Y_(k_i)(A)^2
+  >[(2A-1)^2-14]Y_(h-1)(A)^2>h^2+1.
+\end{verbatim}
+
+Thus the slack in (1) is nonnegative and has a ternary representation. Every term in (2) is divisible by A-1, so its free quotient exists.
+
+
+
+To construct the odd auxiliary quotient explicitly, use h even. Then C=\allowbreak{}Y\_\allowbreak{}h(A) is even and U=\allowbreak{}X\_\allowbreak{}h(A) is odd. Choose the common index l=\allowbreak{}hC, and let H=\allowbreak{}X\_\allowbreak{}l(A), J=\allowbreak{}Y\_\allowbreak{}l(A). Composition gives J=\allowbreak{}C\textasteriskcentered{}\allowbreak{}Y\_\allowbreak{}C(U). The binomial Pell-polynomial expansion gives
+
+
+
+\begin{verbatim}
+Y_C(U)=C U^(C-1) modulo C^2,
+\end{verbatim}
+
+because U\textasciicircum{}\allowbreak{}2-1=\allowbreak{}(A\textasciicircum{}\allowbreak{}2-1)C\textasciicircum{}\allowbreak{}2. Thus J/\allowbreak{}C\textasciicircum{}\allowbreak{}2 is an integer congruent to U\textasciicircum{}\allowbreak{}(C-1) modulo C, so it is odd. Set e=\allowbreak{}(J/\allowbreak{}C\textasciicircum{}\allowbreak{}2-1)/\allowbreak{}2. Also H is odd and the Pell norm gives gcd(H,J)=\allowbreak{}1, hence gcd(H,8J)=\allowbreak{}1. CRT chooses D\textgreater{}\allowbreak{}=\allowbreak{}2 with D=\allowbreak{}A modulo H and D=\allowbreak{}1+\allowbreak{}4J modulo 8J. Set d=\allowbreak{}(D-1-4J)/\allowbreak{}(8J), S=\allowbreak{}X\_\allowbreak{}h(D), R=\allowbreak{}Y\_\allowbreak{}h(D), and fill the three congruence quotients. This supplies every anchor witness without an e sign graph.
+
+
+
+The elementary universal representation n=\allowbreak{}u\textasciicircum{}\allowbreak{}2+\allowbreak{}v\textasciicircum{}\allowbreak{}2+\allowbreak{}w(w+\allowbreak{}1) for every n\textgreater{}\allowbreak{}=\allowbreak{}0 fills all retained guards. The old arithmetic front and every genuine power request are unchanged. Hence each finite refutation extends to a zero of the exact new system.
+
+
+
+\subsection{Literal compilation and audit boundary}
+
+
+
+The emitted source records reused anchor coordinates and index, the signed-center flag, squared-anchor flag, odd auxiliary coefficient, every source edit, all frame atoms, every guard and all original power requests. The independent checker does not import the producing compiler. It reconstructs the complete source, checks the exact guard identities and their noncircular sign dependencies, replays Horn factorization and every integral monic restoration, composes integral translations, and independently collects every quartic coefficient. It runs both normally and under Python -O. Deliberate malformed source, frame, guard, factorization, restoration, translation and polynomial controls are rejected.
+
+
+
+These finite checks certify the actual finite polynomial and its exact algebraic transformations. They do not replace the unbounded Pell, CRT, factorial, Horn-flow and logical-calibration arguments. Those arguments establish both directions without an assumption of consistency. Negating the solvability statement proves, in ZFC, that this polynomial has no integer zero if and only if Con(ZFC).

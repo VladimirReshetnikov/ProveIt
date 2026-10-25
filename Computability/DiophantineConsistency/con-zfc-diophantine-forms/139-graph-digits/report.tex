@@ -1,0 +1,1107 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=.82in,headheight=15pt]{geometry}
+\usepackage{booktabs,longtable,array,microtype,enumitem,xcolor,fancyhdr}
+\usepackage{listings,xurl,hyperref}
+\definecolor{ink}{HTML}{15324D}
+\definecolor{soft}{HTML}{EDF3F7}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,citecolor=ink,
+ pdftitle={Smaller explicit Diophantine equations for Con(ZFC)},
+ pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\urlstyle{tt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{ink}Diophantine consistency: graphs and shared digit bounds}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5.5pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt}
+\lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,columns=fullflexible,
+ keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{ink!25},
+ backgroundcolor=\color{soft},aboveskip=8pt,belowskip=8pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\Refut}{\operatorname{Ref}}\newcommand{\Ht}{\operatorname{ht}}
+\newcommand{\degp}{\operatorname{deg}}
+\newcommand{\file}[1]{\path{#1}}
+\newcommand{\Qeq}{\mathcal Q}
+\newcommand{\Ueq}{\mathcal U}
+\begin{document}
+\thispagestyle{empty}
+{\color{ink}\Large\bfseries Smaller explicit Diophantine equations for
+\(\Con(\ZFC)\)}\par
+\vspace{4pt}
+{\large Graph energies, shared digit bounds, and Pell centers}\par
+\vspace{9pt}
+Prepared for Vladimir Reshetnikov and the ProveIt project\par
+24 October 2026\par
+\textit{AI-assisted mathematical research with exact reproducible artifacts.}
+
+\begin{abstract}
+We construct several explicit integer-coefficient polynomials whose
+unsolvability, in their specified domains, is equivalent in ZFC to the
+syntactic consistency of ZFC. The main conceptual improvement is a graph
+compiler that checks the coefficient support actually used by a graph
+energy, rather than requiring all possible pairs of factor monomials to
+be distinct. Opposite occurrences are paired, compatible aliases are
+identified, and a four-term quartic removes certain equality witnesses.
+On exactly the source used by the previous unit-coefficient construction,
+the resulting quartic falls from 2,215 variables and 30,468 monomials to
+1,137 variables and 23,105 monomials. With the newer signed source, we obtain
+unit-coefficient quartics in 951, 984, and 1,050 unrestricted integers.
+Their constant term is one and every other nonzero coefficient is also
+\(1\) or \(-1\).
+
+A second construction pools binomial low-digit bounds by their common
+denominator and combines this with a semantic Pell anchor. It gives a
+quartic in 226 nonnegative integers, with 175 quadratic residuals and
+10,314 monomials; a 227-variable companion has only 7,905 monomials.
+A third, smaller improvement gives two ten-positive-variable polynomials
+of degrees 323 and 318 with 87- and 88-operation evaluators.
+All equations are literal finite objects in the archive. The new algebraic
+and arithmetic arguments are proved here. Their consistency interpretation
+uses explicitly identified, pinned ProveIt calibration theorems.
+No global minimum, consistency proof, historical priority claim, or new
+end-to-end proof-assistant verification is asserted.
+\end{abstract}
+
+\vfill
+\begin{center}
+\fcolorbox{ink!25}{soft}{\parbox{.91\textwidth}{\small
+\textbf{Suggested starting points.}
+For coefficient simplicity, inspect the 984-variable quartic with
+every nonzero coefficient \(\pm1\).
+For the direct proof-calculus route, inspect the 226-variable natural
+quartic and its complete residual appendix.
+For a short evaluator, inspect the ten-positive-variable formulas in
+Section~\ref{sec:compact}.}}
+\end{center}
+\clearpage
+\begingroup\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The results and their exact meaning}
+
+Throughout, \(\N=\{0,1,2,\ldots\}\). Positive integers are written
+\(\Z_{>0}\); they are never silently interchanged with \(\N\) or \(\Z\).
+Let \(\Refut_{\ZFC}(p)\) be the pinned syntactic predicate saying that
+\(p\) codes a finite refutation in ZFC, and put
+\[
+ \Con(\ZFC)\;:\Longleftrightarrow\;\neg\exists p\,\Refut_{\ZFC}(p).
+\]
+The target is a theorem \emph{about a fixed polynomial}, not a proof of
+the truth of either side of that theorem.
+
+\begin{theorem}[Delivered consistency equations]\label{thm:main}
+For every equation in Table~\ref{tab:results}, the integer companion in
+Section~\ref{sec:cap}, and the two compact equations in
+Section~\ref{sec:compact}, let \(D\) be its stated coordinate domain and
+\(n\) its number of unknowns. The new ordinary proofs in this report,
+composed with the
+identified inherited calibration, give
+\[
+ \ZFC\ \vdash\quad
+ \bigl[\exists\mathbf x\in D^n\;P(\mathbf x)=0\bigr]
+ \ \longleftrightarrow\ \exists p\,\Refut_{\ZFC}(p).
+\]
+Consequently ZFC proves
+\[
+ \boxed{\bigl[\text{there is no zero of }P\text{ in }D^n\bigr]
+       \ \longleftrightarrow\ \Con(\ZFC).}
+\]
+For the graph equations, the new part is stronger: it is an unconditional
+explicit bijection between their integer zero sets and the zero sets of
+the pinned signed source systems.
+\end{theorem}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Equation and domain & Variables & Degree & Monomials & Height\\
+\midrule
+Graph, fewest variables, \(\Z\) & 951 & 4 & 56,916 & 1\\
+Graph, balanced choice, \(\Z\) & 984 & 4 & 30,076 & 1\\
+Graph, sparse choice, \(\Z\) & 1,050 & 4 & 21,766 & 1\\
+Graph, matched older source, \(\Z\) & 1,137 & 4 & 23,105 & 1\\
+Direct calculus, \(\N\) & 226 & 4 & 10,314 & 87,839,583\\
+Direct calculus, sparse, \(\N\) & 227 & 4 & 7,905 & 87,839,583\\
+\bottomrule
+\end{tabular}
+\caption{Literal collected polynomials. Height is the largest absolute
+value of a collected coefficient. All graph polynomials have constant one.}
+\label{tab:results}
+\end{table}
+
+The additional compact equations have ten strictly positive unknowns,
+degrees 323 and 318, and 87 and 88 live binary arithmetic operations,
+respectively. Each has the same four fixed
+large coefficients reconstructed from a complete finite recipe; these
+are not extra variables. Its support is not expanded in this release.
+
+\subsection{Which meaning of ``simplest'' improves?}
+
+There is no established global simplicity minimum. The repository already
+contains quartics with fewer unrestricted integer variables when large
+coefficients are allowed, and higher-degree equations with fewer variables
+still. We therefore compare within the relevant families and retain the
+actual tradeoffs.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Matched comparison & Variables & Monomials & Height\\
+\midrule
+Package 127, signed442 source & 2,215 & 30,468 & 1\\
+New compiler, same signed442 source & 1,137 & 23,105 & 1\\
+Package 129, natural233 & 233 & 50,762 & 88,674,690\\
+New direct natural226 & 226 & 10,314 & 87,839,583\\
+Package 129, natural234 & 234 & 9,019 & 87,741,134\\
+New sparse natural227 & 227 & 7,905 & 87,839,583\\
+\bottomrule
+\end{tabular}
+\caption{Comparisons to the inspected repository snapshot. All rows have
+degree four. The final sparse comparison slightly increases coefficient
+height; it is not a simultaneous improvement in every measure.}
+\label{tab:comparison}
+\end{table}
+
+The same-source graph reduction saves 1,078 variables, about 48.7 percent,
+and 7,363 monomials, about 24.2 percent. This isolates the new compiler
+from the additional gain obtained by switching to the newer signed324
+source. The 226-variable natural equation improves all displayed size
+measures over natural233. Against natural234, the 227-variable alternative
+has fewer variables and terms but a slightly larger coefficient height.
+
+\begin{minipage}{\textwidth}
+The comparison snapshot is ProveIt commit
+\begin{center}\small
+\texttt{1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61}.
+\end{center}
+The comparison includes the seven recently integrated packages 127--133.
+Relevant references are listed at the end.
+\end{minipage}
+
+\section{A graph polynomial with exactly the source zero set}
+
+This section is independent of Pell equations, Turing machines, and set
+theory. It applies to a finite system of quadratic equations over \(\Z\).
+The inherited signed324 source is a system
+\[
+ R_1(\mathbf z)=\cdots=R_{208}(\mathbf z)=0,
+ \qquad \mathbf z\in\Z^{324},
+\]
+whose literal rows are retained as \file{graph/source324/equation.json}.
+Its consistency calibration is discussed in Section~\ref{sec:calibration}.
+
+\subsection{Normalization with a unique integral extension}
+
+First replace nonunit integer coefficients by explicitly defined constant
+and scale coordinates. For each positive coefficient \(c>1\), recursively
+include the constants needed for
+\[
+ c=2\lfloor c/2\rfloor+(c\bmod2).
+\]
+The corresponding equation uses two occurrences of the half-constant,
+each with coefficient \(-1\), rather than a coefficient \(-2\).
+For \(c z_i z_j\), use a scale coordinate \(s_{c,i}=c z_i\), then
+the product \(s_{c,i}z_j\). Linear and constant terms are handled by the
+same fixed constants. The definitions are triangular and monic.
+
+The result is a list of signed term occurrences
+\[
+ S_r=\sum_{j=1}^{s_r}\epsilon_{rj}m_{rj},
+ \qquad \epsilon_{rj}\in\{-1,1\},\quad\deg m_{rj}\le2.
+\]
+Every original tuple has a unique extension to the new coordinates;
+all added defining rows then vanish, and the other rows equal the
+original residuals. For signed324, normalization gives 506 coordinates,
+390 rows, and 1,748 signed occurrences. For signed442 it gives 650
+coordinates, 498 rows, and 1,969 occurrences. Occurrences, rather than
+only collected monomials, matter at this stage.
+
+\subsection{Incidence energy and integral tree flows}
+
+Let a finite directed graph have an integer-valued polynomial label
+\(t_e\) on every edge. Define its divergence at vertex \(v\) by
+\[
+ d_v=\sum_{\operatorname{tail}(e)=v}t_e
+       -\sum_{\operatorname{head}(e)=v}t_e,
+ \qquad E_G=\frac12\sum_v d_v^2.
+\]
+The polynomial \(E_G\) has integer coefficients: an edge square occurs
+at its two endpoints, while every cross term in a squared divergence
+has an even coefficient. Parallel edges do not invalidate integrality.
+They can invalidate a particular height-one bound, which is why the
+collected coefficient check is retained.
+
+\begin{lemma}[Tree completion]\label{lem:tree}
+Partition the vertices into nonempty blocks. Inside every block the
+free edges form a spanning tree and carry distinct unrestricted integer
+variables. All other edge values are prescribed. There is an internal
+flow with every divergence zero exactly when the prescribed divergence
+sum in each block is zero. When it exists it is unique and integral.
+\end{lemma}
+\begin{proof}
+Necessity follows by summing divergences within a block; internal edges
+cancel. Root the internal tree. At each leaf, its one remaining tree-edge
+value is determined, with coefficient \(1\) or \(-1\), by the other
+incident values. Eliminate the leaf and proceed. The final root equation
+is precisely the block sum. This proves existence, uniqueness and
+integrality without division.
+\end{proof}
+
+Use one block for each normalized row and one common hub block. Place
+prescribed signed monomial edges so that the row-block sums are exactly
+the \(S_r\). The hub sum is then \(-\sum_rS_r\). Introduce free tree
+flows inside the blocks. By Lemma~\ref{lem:tree},
+\[
+ \exists\text{ integral free flows } E_G=0
+ \quad\Longleftrightarrow\quad S_r=0\text{ for every }r.
+\]
+The graph need not be a tree globally.
+
+\subsection{Pairing opposite occurrences}
+
+Suppose the same monomial occurs with sign \(+1\) in row \(r\) and
+sign \(-1\) in row \(s\). Instead of two edges to the common hub,
+use one edge from block \(r\) to block \(s\), with that monomial
+as label. Each row sum is unchanged, and the two hub contributions
+cancel. This removes a prescribed edge and its associated factor copy.
+
+The delivered deterministic layouts match 137 opposite pairs on the
+signed324 source and 141 on signed442. The initial layout avoids
+parallel prescribed edges, giving an easy initial coefficient bound.
+This is a construction choice, not a necessary hypothesis of the final
+zero-set theorem. The independent verifier checks the final block sums
+directly, so it need not trust the matching algorithm.
+
+\subsection{Aliases and a unit path}
+
+An \emph{alias} is a coordinate intended to equal a particular normalized
+source coordinate. Initially, each prescribed monomial receives private
+factor copies, with some shared second factors. Linear and constant terms
+are made homogeneous of degree two using aliases of the number one.
+Thus prescribed edge labels have degree two and free edge labels have
+degree one. The copied source value of an alias is recorded explicitly.
+
+For a class of \(k\ge3\) ordinary aliases define
+\[
+ C(a_1,\ldots,a_k)=\sum_{j=1}^k a_j^2
+                 -\sum_{j=1}^k a_ja_{j+1},\qquad a_{k+1}=a_1.
+\]
+Since \(2C=\sum_j(a_j-a_{j+1})^2\), it is nonnegative over \(\mathbb R\)
+and vanishes exactly when all its aliases agree. A singleton needs no
+penalty. A two-element class can initially be extended by one dummy
+alias to obtain a three-cycle.
+
+For the unit aliases \(u_1,\ldots,u_k\), \(k\ge2\), use
+\[
+ \Ueq(\mathbf u)=1+\sum_{j=1}^k u_j^2-u_1-u_k
+                    -\sum_{j=1}^{k-1}u_ju_{j+1}.
+\]
+Twice this polynomial is
+\[
+ (u_1-1)^2+\sum_{j=1}^{k-1}(u_j-u_{j+1})^2+(u_k-1)^2.
+\]
+It therefore vanishes precisely when all unit aliases equal one.
+Ordinary classes, unit aliases, and free flows are disjoint.
+
+\section{Why checking actual support permits much more compression}
+
+\subsection{A global factor restriction is unnecessarily strong}
+
+The earlier compiler guaranteed that every product of two prescribed
+monomials uniquely identified its two occurrences. A sufficient condition
+was the absence of a four-cycle in a bipartite factor graph. But the
+incidence energy contains only products from edges sharing a vertex.
+Products of nonadjacent edge labels never appear.
+
+For a concrete example, put the edge labels
+\(ab,ad,cd,cb\), in that order, on a directed four-cycle. Its energy is
+\begin{align*}
+ E={}&a^2b^2+a^2d^2+c^2d^2+b^2c^2\\
+     &-a^2bd-acd^2-bc^2d-ab^2c.
+\end{align*}
+Every nonzero coefficient is \(1\) or \(-1\). Yet the factor graph has
+a four-cycle, and \((ab)(cd)=(ad)(cb)\). Those two equal products come
+from opposite edge pairs, so neither occurs in the energy. This is the
+precise gap exploited by the new compiler.
+
+\begin{theorem}[Certified alias identification]\label{thm:quotient}
+Start with a graph construction with complete ordinary alias classes
+and a unit class. Identify any coordinates only within the same class,
+leaving flow coordinates distinct. Substitute those identifications into
+the graph energy and rebuild valid equality penalties on the surviving
+aliases: singleton classes need none, two-element classes use a dummy
+three-cycle or Lemma~\ref{lem:quarticpair}, and the unit path retains at
+least two aliases. If the complete collected polynomial has coefficients in
+\(\{-1,0,1\}\), its coefficient height is one and its integer zero
+set remains in explicit bijection with the original source zero set.
+\end{theorem}
+\begin{proof}
+Every old zero already gives the same value to the aliases being
+identified. Conversely, any tuple for the identified coordinates expands
+by copying each coordinate into all of its old aliases. At a zero of the
+new polynomial, nonnegativity makes every component vanish. The rebuilt
+ordinary penalties enforce the source labels, the unit path enforces
+one, and the graph divergences vanish. The row-block sums consequently
+give every normalized equation. Tree completion supplies the unique
+integral flows in the forward direction. All normalizing constants and
+scales were also uniquely determined.
+
+This is a zero-set argument; rebuilding a cycle need not give the same
+polynomial as substituting into the old cycle. The energy substitution
+and the rebuilt penalties must be checked separately. The height claim
+is exactly the finite collected-coefficient condition in the statement.
+It does not require global monomial-product uniqueness.
+\end{proof}
+
+The implemented search tries identifications of equal-labelled aliases
+and updates every affected energy coefficient with exact integers. An
+identification is accepted only when no collected coefficient leaves
+\(\{-1,0,1\}\). There is no numerical sampling and no optimization
+oracle in the definition of the final polynomial. A fixed profile and a
+complete literal certificate are supplied; the verifier independently
+checks the resulting object from the original source.
+
+\subsection{A four-term equality removes a dummy coordinate}
+
+\begin{lemma}[A unit-coefficient equality polynomial]\label{lem:quarticpair}
+The polynomial
+\[
+ \boxed{\Qeq(a,b)=a^4+b^4-a^3b-ab^3
+             =(a-b)^2(a^2+ab+b^2)}
+\]
+is nonnegative over \(\mathbb R\), vanishes exactly on \(a=b\), and
+has degree four and four nonzero coefficients, all of height one.
+\end{lemma}
+\begin{proof}
+The second factor equals \((a+b/2)^2+3b^2/4\). It is positive away
+from \((0,0)\), which already lies on the diagonal. The displayed
+factorization proves the assertions.
+\end{proof}
+
+For a two-alias class, replace its dummy three-cycle by \(\Qeq(a,b)\).
+This saves one coordinate. Unlike a quadratic cycle, the new penalty
+can overlap the graph's quartic terms, so we accept it only after checking
+the full collected sum. The balanced equation saves 57 dummy coordinates
+this way; the minimum-variable equation saves 58, the sparse equation 59,
+and the matched older-source equation 67.
+
+\begin{proposition}[A narrowly defined local optimum]
+Among nonzero real-nonnegative polynomials in two variables with integer
+coefficient height one and zero set exactly \(a=b\), degree four is
+minimal. Four nonzero monomials are also minimal.
+\end{proposition}
+\begin{proof}
+A globally nonnegative nonzero polynomial cannot have odd total degree:
+its highest nonzero homogeneous part changes sign under simultaneous
+negation. A polynomial of degree at most two vanishing on the entire
+diagonal and nonnegative everywhere must be \(c(a-b)^2\), \(c>0\).
+This also follows by writing the polynomial in \(a-b,b\); nonnegativity
+forces the coefficient of the first-order transverse term to vanish.
+Integrality gives \(c\ge1\), so its mixed coefficient has magnitude at
+least two. Thus degree below four is impossible.
+
+After substituting \(a=b=t\), the sum of the coefficients at each
+total degree must be zero. With coefficient height one, every nonempty
+degree group therefore has an even number of terms. With fewer than
+four terms a nonzero candidate has exactly two opposite same-degree
+monomials. On the positive quadrant their difference changes sign as
+\(a/b\) passes through one. It cannot be globally nonnegative.
+Lemma~\ref{lem:quarticpair} attains both bounds. This proposition is
+about this local equality gadget, not global Diophantine simplicity.
+\end{proof}
+
+\subsection{The final equation and an exact lift identity}
+
+Let \(\mathcal C\) be the surviving ordinary cycles and \(\mathcal T\)
+the selected two-alias classes. Each delivered graph polynomial is
+\begin{equation}\label{eq:graph}
+ \boxed{P_G=\frac12\sum_v d_v^2
+             +\sum_{C\in\mathcal C}C
+             +\sum_{(a,b)\in\mathcal T}\Qeq(a,b)
+             +\Ueq(\mathbf u)=0.}
+\end{equation}
+The fixed vertices, edges, edge labels and alias classes are completely
+listed in its certificate. The polynomial JSON also lists every
+collected coefficient directly. The factor \(1/2\) is not a hidden
+rational coefficient in the collected polynomial: integrality and
+height one are both checked coefficient by coefficient.
+
+There is an explicit polynomial lift \(L\) from the original source
+coordinates, obtained by computing its normalizing constants and scales,
+copying the alias values, setting the units to one and filling tree
+flows by leaf elimination. For arbitrary source tuples, not just zeros,
+\begin{equation}\label{eq:lift}
+ P_G(L(\mathbf z))=
+ \frac12\left(\sum_r R_r(\mathbf z)^2+
+                    \left(\sum_rR_r(\mathbf z)\right)^2\right).
+\end{equation}
+Indeed, only the block roots can retain divergence; they carry the
+individual residuals and their negative sum. All equality penalties
+vanish. In particular the right side is \emph{not generally just}
+\(\sum R_r^2\). The independent checker proves the root-divergence
+identities symbolically and checks the complete coefficient expansion.
+
+\section{Pooling low binomial digits in the direct calculus construction}
+\label{sec:direct}
+
+The graph theorem is a general compiler improvement. The next construction
+changes the actual arithmetic certificate for a finite C222 derivation.
+It starts from package 129's fully specified 344-coordinate normalized
+natural graph, whose semantic interface and proofs are retained in the
+direct component. No K215 simulation and no Jones universal polynomial
+is instantiated on this route.
+
+\subsection{The inherited arithmetic interface}
+
+The source has a horizon \(t\ge16\), a proposed factorial \(F\), and
+parameters \(x,y\), with
+\[
+ R=2+t+x+y+F,\qquad K=2R,\qquad N=B^K,\qquad q=N^K.
+\]
+It also represents
+\[
+ V_0=(F^2+1)^t,\quad
+ D_t=q^t,\quad D_{t+1}=qD_t,\quad
+ D_y=q^{y+1},\quad D_x=q^{x+1}.
+\]
+These variable powers are \emph{semantic descriptions} of retained
+quadratic Pell circuits. They are not operations of the final polynomial.
+Their intended meaning is established in the inherited soundness order,
+before the factorial/binomial interpretation is used.
+
+There are nine independent positive CRT representatives
+\(a,b,c,d,S,S',u,v,C\), and a derived nonnegative constructor label
+\(J\). The Cantor constructor is
+\[
+ I(a,b)=2(a+b)(a+b+1)+4b.
+\]
+The actual label polynomial contains \(I(a,b)\) and other nonnegative
+terms, so \(J\ge2a^2\). Eleven numerator requests have the following
+four common low-digit denominators:
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}\toprule
+Numerator requests & Denominator\\\midrule
+Factorial binomial and \(C\) & \(D_t\)\\
+\(a,b,c,d,J\) & \(D_{t+1}\)\\
+\(S,S'\) & \(D_y\)\\
+\(u,v\) & \(D_x\)\\\bottomrule
+\end{tabular}
+\end{center}
+Originally each remainder \(r_i\) had a private nonnegative slack
+\(s_i\), with \(D_i=r_i+s_i+1\). We pool these eleven bounds into four.
+The separate factorial digit-output condition \(q=B+o+1\) is retained.
+
+\begin{lemma}[Shared low-digit budget]\label{lem:digits}
+Let \(q\ge2\), \(k\ge1\), and \(n_1,\ldots,n_m\in\N\). Suppose
+\[
+ \sum_{i=1}^m\binom{n_i}{j}\le q-1\qquad(0\le j<k).
+\]
+For the canonical low residues
+\(r_i=\sum_{j=0}^{k-1}\binom{n_i}{j}q^j\), one has
+\(\sum_i r_i\le q^k-1\). Hence a single nonnegative slack satisfies
+\[
+ q^k=\sum_i r_i+s+1.
+\]
+Conversely this one row, with arbitrary natural remainders, restores
+all old bounds by \(s_i=s+\sum_{h\ne i}r_h\).
+\end{lemma}
+\begin{proof}
+Sum the coefficient bounds against \(q^j\) and use
+\((q-1)\sum_{j<k}q^j=q^k-1\). The restoration identity is literal
+and all its coefficients are nonnegative.
+\end{proof}
+
+Pooling strengthens the arbitrary-witness constraints. Separate bounds
+\(r_i<q^k\) alone would not justify it. Completeness therefore needs a
+new uniform digit-margin estimate, proved next.
+
+\subsection{The actual radix has ample unused low-digit capacity}
+
+This subsection is only a constructive \emph{completeness} argument.
+Start from a finite C222 refutation and choose the inherited true
+witnesses, so \(F=t!\) and the displayed powers have their genuine
+values. Soundness will not assume these identities prematurely.
+
+The pinned CRT construction chooses the representatives at most \(N^2\)
+and then replaces only \(a\) by \(a+N^2\). Thus every representative
+is at most \(2N^2\), and their sum is at most \(10N^2\). Since
+\(B\ge2\),
+\[
+ N\ge4^R,\qquad \frac q{N^2}=N^{2R-2},\qquad N^2\ge6.
+\]
+Each lower index \(k\in\{t,t+1,y+1,x+1\}\) is at most \(R-1\).
+For an ordinary representative and \(0\le j<k\),
+\[
+ \binom nj\le\max(1,n^j)
+ \le(10N^2)^{R-2}<N^{2R-2}=q/N^2,
+\]
+because \(10^{R-2}<N^2\), already implied by \(N^2\ge16^R\).
+
+For the factorial upper index \(n_0=F^2+t<R^2+R\), use
+\(R^2+R\le2^{2R}\), \(t\le R\), and \(R\ge2\):
+\[
+ \binom{n_0}{j}\le n_0^t\le2^{2R^2}
+       \le2^{4R^2-4R}\le N^{2R-2}=q/N^2
+       \qquad(0\le j<t).
+\]
+For the derived label, the retained literal constructor bound gives
+\[
+ J\le N^{3\ell},\quad \ell=2^{22},\qquad
+ 3\ell(t+1)\le2t!=2F.
+\]
+The latter inequality holds at \(t\ge16\) in the inherited padded
+construction. Consequently, for \(0\le j<t+1\),
+\[
+ \binom Jj\le\max(1,J^j)\le N^{3\ell t}
+       \le N^{2F}\le N^{2R-2}=q/N^2.
+\]
+No group has more than five members, and \(q/N^2\) is an integer.
+Therefore \(5(q/N^2)\le q-1\). Lemma~\ref{lem:digits} constructs all
+four new slacks without enlarging the radix or changing the CRT modulus.
+
+\section{One natural row authenticates the Pell indices}
+\label{sec:cap}
+
+For \(A\ge2\), define the Pell sequences by
+\[
+ X_0=1,\ Y_0=0,\qquad
+ X_{j+1}=AX_j+(A^2-1)Y_j,\quad Y_{j+1}=X_j+AY_j.
+\]
+Natural norm-one solutions at discriminant \(A^2-1\) have ordinates
+\(Y_j(A)\). The elementary recurrence and multiplication law give
+\[
+ Y_j\equiv j\pmod{A-1},\quad Y_j\ge j,\quad
+ X_j>(A-1)Y_j\ (j\ge1),\quad
+ Y_{j+1}>(2A-1)Y_j,
+\]
+and \(Y_{2j}=2X_jY_j\). Classification can be proved by descent using
+the inverse of the smallest positive unit \(A+\sqrt{A^2-1}\).
+
+The inherited frame gives, before interpreting any binomial,
+\[
+ W\ge3,\quad A-1>W^3,\quad 2\le H<W,\quad
+ 1\le k_i<W,\quad r=14\le W-2.
+\]
+A complete retained indexed certificate fixes \(V=Y_H(A)\), where
+the semantic anchor is \(H=J\). The other pairs are represented by
+consecutive ordinates satisfying
+\(Y_i^2+Z_i^2-2AY_iZ_i=1\); retained multiplication gates keep the
+literal residuals quadratic. Their output conditions choose the required
+orientation, as proved in the inherited source.
+
+\begin{theorem}[Fused natural Pell cap]\label{thm:cap}
+Under the frame assumptions above, suppose every \(Y_i\) is a natural
+Pell ordinate and \(Q\in\N\) satisfies
+\begin{equation}\label{eq:cap}
+ \boxed{V=H+\sum_{i=1}^{r}(Y_i-k_i)^2+(A-1)Q.}
+\end{equation}
+Then \(Y_i=Y_{k_i}(A)\) for all \(i\). Conversely, canonical pairs
+extend to a natural \(Q\) whenever \(H\ge2\max_i k_i+1\).
+\end{theorem}
+\begin{proof}
+Write \(Y_i=Y_{j_i}(A)\). Equation~\eqref{eq:cap} gives
+\(|Y_i-k_i|\le\sqrt V\). Since \(H\ge2\),
+\(V\ge2A>2W\) and \(V>4\). Hence
+\[
+ Y_i\le k_i+\sqrt V<W+\sqrt V<V.
+\]
+Strict monotonicity implies \(j_i<H<W\). Reduction modulo \(A-1\)
+now shows that \(A-1\) divides
+\(E_0=\sum_i(j_i-k_i)^2\). But
+\[
+ 0\le E_0\le r(W-1)^2<W^3<A-1.
+\]
+Thus \(E_0=0\), proving every requested index.
+
+For the converse put \(m=\max_i k_i\), and take canonical pairs.
+Then \(E_1=\sum_i(Y_{k_i}-k_i)^2\le rY_m^2\). The doubled-gap
+assumption and Pell growth give
+\begin{align*}
+ V&\ge Y_{2m+1}>(2A-1)Y_{2m}\\
+  &=2(2A-1)X_mY_m
+   >2(2A-1)(A-1)Y_m^2.
+\end{align*}
+Since \(A>W\) and \(r,H<W\), this is greater than
+\(rY_m^2+H\). Also \(V-H\) and every \(Y_{k_i}-k_i\) are divisible
+by \(A-1\). Therefore \(Q=(V-H-E_1)/(A-1)\) is a nonnegative
+integer and satisfies~\eqref{eq:cap}.
+\end{proof}
+
+\subsection{The semantic anchor already has the required gap}
+
+The inherited constructive choice gives \(N^2<a\le2N^2\). Hence
+\[
+ H=J\ge2a^2>2N^4.
+\]
+Every other CRT seed is at most \(N^2\); the five non-CRT indices
+\(t,K,y+1,x+1,F^2+t\) are at most \(N\). Thus
+\(m\le2N^2\). For \(N\ge2\), \(2N^4\ge4N^2+1\), so the required
+\(H\ge2m+1\) follows with no new coordinate or inequality.
+
+This gap is used only in constructive completeness. Arbitrary zeros need
+not satisfy the specific CRT representative choice \(a>N^2\); the
+soundness half of Theorem~\ref{thm:cap} does not assume it.
+
+\subsection{The two witness directions in their proper order}
+
+From a new natural zero, first recover the raw frame bounds. The fused
+row supplies \(H\le V\), so the retained full anchor criterion applies.
+Theorem~\ref{thm:cap} then identifies all fourteen seed ordinates.
+Restore the old congruence quotient by
+\[
+ Q_{\mathrm{old}}=\frac{\sum_i(Y_i-k_i)^2}{A-1}.
+\]
+It is integral and nonnegative. Restore the old aggregate slack by
+\(s=Y_H-H-1-\sum_iY_i\). Since \(k_i<H\) and \(A>W\), growth gives
+\(Y_H-rY_{H-1}>H\), so this slack is natural as well. Finally restore
+every individual digit slack by Lemma~\ref{lem:digits}. One has now
+obtained a zero of the entire inherited graph; its existing soundness
+theorem produces the finite refutation.
+
+For completeness, start from the derivation, choose the inherited padded
+CRT witnesses and the same lift \(a\mapsto a+N^2\), and compute the
+true arithmetic quantities. Section~\ref{sec:direct} supplies the four
+digit slacks. Choose the independently bounded Pell parameter in the
+retained soluble common-root congruence class. Canonical seed pairs and
+the anchor at \(J\), together with Theorem~\ref{thm:cap}, supply \(Q\).
+All remaining witnesses are unchanged. This is an equivalence of
+\emph{existence}; it is not a claimed bijection on arbitrary old natural
+witnesses.
+
+\subsection{Literal contraction to 226 variables}
+
+The actual source transformation starts with 344 natural coordinates and
+293 quadratic rows. Removing obsolete cap sum gates, fusing the cap, and
+replacing eleven digit bounds by four leaves 332 coordinates and 281 rows.
+A checked monic projection removes 106 further coordinates and rows,
+giving 226 coordinates and 175 quadratic residuals. The sparse projection
+removes 105 and gives 227 coordinates and 176 rows.
+
+Every deleted coordinate has an explicit polynomial restoration certified
+nonnegative on the natural domain by nonnegative monomials or rational
+sum-of-squares certificates. The final equations are exactly
+\[
+ P_{226}(\mathbf z)=\sum_{j=0}^{174}Q_j(\mathbf z)^2=0,
+ \qquad
+ P_{227}(\mathbf z)=\sum_{j=0}^{175}\widetilde Q_j(\mathbf z)^2=0.
+\]
+All residuals and every collected coefficient are supplied. The principal
+residual list is printed in Appendix~\ref{app:residuals}. There are no
+variable exponents, factorial symbols, bounded universal quantifiers, or
+free coefficient parameters in these literal polynomials.
+
+An optional integer-domain companion substitutes
+\[
+ z_i=a_i^2+b_i^2+c_i(c_i+1),\qquad 0\le i<226.
+\]
+This expression is nonnegative at every integer triple and represents
+every natural number: apply the three-square theorem to \(4z_i+1\),
+which is never of the excluded form \(4^e(8h+7)\), then place the unique
+odd square in the third position. The result is a specified degree-eight
+polynomial in 678 unrestricted integers. It is a domain conversion, not
+an improvement on the specialized signed quartics.
+
+\section{Ten-positive-variable equations of degrees 323 and 318}
+\label{sec:compact}
+
+This smaller contribution retains package 133's complete four-coefficient
+tuple and native calibration. It is separate from the direct C222 route.
+The only variables are
+\[
+ J,F,\alpha,i,T,w,Y,n,\eta,\zeta\in\Z_{>0}.
+\]
+The fixed positive integers \(\beta,K_0,M_C,M_F\) are reconstructed by
+the finite 943-tile recipe retained in the compact component and printed
+in Appendix~\ref{app:constants}. In particular \(\beta\ge31\) is odd
+and \(0<M_C<\beta<M_F<2\beta\).
+
+Define the following polynomial abbreviations:
+\begin{align*}
+ q&=\beta J+1, & h&=q-1, & C&=q-F-\alpha,\\
+ X&=wq, & \mu&=q^2+1, & k&=\eta+\zeta,\\
+ c&=kY+\eta, & A&=\mu Y(X+1)+1, & \Delta&=A^2-1,\\
+ H&=4A-5, & V_0&=X\mu^2Y^2, & E&=1+V_0(V_0+1)k^2,\\
+ U&=ic^2, & a&=\Delta U^2E, & F_0&=1+a,\\
+ G&=EF_0, & F_s&=1+4aF_0, & Q&=\Delta(F_s-1).
+\end{align*}
+Also put
+\begin{align*}
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ e&=k-R-1, & B&=(K_0+w)C-F,\\
+ b&=c(T+\alpha)-R, & V&=F_s b-c,\\
+ K_+&=X(3c-2X)+2, & P&=q^3h,\qquad M=P\mu^2H.
+\end{align*}
+The new lower center is
+\[
+ d=(A-1)UE,
+\]
+and the carrier is
+\begin{align*}
+ Z={}&P\mu^2\{H[n+V(d-bB)]+K_+\}\\
+     &+H\{\mu^2(hY-q^3B)-Pe\}.
+\end{align*}
+The single ordinary polynomial equation is
+\begin{equation}\label{eq:compact}
+ \boxed{Q(Z^2-M^2GV^2)+(M^2G-Z^2)=0.}
+\end{equation}
+No symbol in these abbreviations adds a quantified unknown.
+
+\subsection{The shear preserves positive solvability}
+
+The 85-operation parent uses the carrier center \(n-bVB\). Let its
+polynomial be \(N_{85}\), and let~\eqref{eq:compact} be \(N_{87}\).
+The literal ring identity is
+\[
+ N_{87}(\text{other variables},n)
+   =N_{85}(\text{other variables},n+dV).
+\]
+This alone does not prove positive-domain equivalence: \(V\) must first
+be oriented. The parent's pretransport arguments apply to any rational
+carrier. From a positive zero they recover positive integers \(g,y\)
+with
+\[
+ G=g^2,\qquad QV^2-(Q-1)y^2=1,
+\]
+and prove \(b>c\), hence \(V>0\), before using the literal center.
+These unchanged arguments use the identities
+\[
+ F_s=(1+2a)^2,\qquad Q=4\Delta^2U^2G,
+\]
+which make \(G\) coprime to \((Q-1)(QV^2-1)\). Valuations recover
+the square factors and the retained adjacent-Pell descent recovers
+integrality. Their full ordinary proof is retained unchanged.
+Since \(d>0\), the new zero therefore gives a positive old coordinate
+\(n+dV\), so inherited soundness applies.
+
+For completeness use the canonical old witnesses. In the parent's proof
+notation let \(s=Y/q^3>0\), \(\kappa=K_+/H>0\), \(\rho=e/\mu^2\ge0\),
+\(t_0=B/(q-1)\ge0\), and \(W_0=1+(q-1)bV\). These are integers on
+those witnesses, with
+\[
+ n_{85}=gy+W_0t_0+\rho-\kappa-s.
+\]
+The exact identity
+\begin{equation}\label{eq:centerdefect}
+ G-d^2=E+2(A-1)U^2E^2>0
+\end{equation}
+gives the integer bound \(g-d\ge1\). The canonical inequalities give
+\(y>V>2c\) and \(\kappa<c\), \(s<c\). Thus
+\begin{align*}
+ n_{85}-dV
+   &=(g-d)V+g(y-V)+W_0t_0+\rho-\kappa-s\\
+   &>V-\kappa-s>0.
+\end{align*}
+This constructs the new positive coordinate and proves the converse.
+
+\subsection{Exact arithmetic cost and degree}
+
+Both \(A-1\) and \(UE\) are already live in the parent circuit.
+Replace its three gates for \(bV,bVB,n-bVB\) by five gates for
+\(d,bB,d-bB,V(d-bB),n+V(d-bB)\). The exact count is therefore
+87: 52 multiplications, 20 additions, and 15 subtractions. Fixed scalar
+products and squares each count as a multiplication.
+
+Let \(Z_0\) be the old uncentered numerator, so \(Z=MdV+Z_0\). Then
+the output equals
+\begin{align*}
+ &-M^2\{Q(G-d^2)+d^2\}V^2
+   +2(Q-1)MdVZ_0\\
+ &\hspace{30mm}+(Q-1)Z_0^2+M^2G.
+\end{align*}
+The prefix degrees are
+\[
+ \deg Q=86,\quad\deg M=13,\quad\deg G=56,\quad
+ \deg V=80,\quad\deg d=28,\quad\deg Z_0\le99.
+\]
+Equation~\eqref{eq:centerdefect} has exact degree 51. The four displayed
+terms have degree at most 323, 306, 284, and 82, respectively; the first
+has a nonzero highest homogeneous part. With \(q_0=\beta J\), it is
+\[
+ -2^{11}q_0^{153}w^{33}Y^{77}i^{14}
+           (\eta+\zeta)^{44}(q_0-F)^2.
+\]
+For example the coefficient of
+\(J^{153}w^{33}Y^{77}i^{14}\eta^{44}F^2\) is
+\(-2^{11}\beta^{153}\ne0\). The literal polynomial therefore has
+exact total degree 323, not merely a syntactic upper bound.
+
+This gives a modest new operations/degree tradeoff between the existing
+85/328 and 89/288 points. It does not dominate either of them. The
+84/436 parent remains the cheaper evaluator among this small set.
+
+\subsection{A sharper center gives 88 operations and degree 318}
+
+There is a second valid choice, \(d_\sharp=AUE\), in exactly the same
+carrier and output formula. Compute it by adding the already live
+\(UE\) to \((A-1)UE\), so it costs one additional addition. The count
+is 88 operations: 52 multiplications, 21 additions, and 15 subtractions.
+The shear and new-to-old positivity argument are unchanged.
+
+The lower-center inverse bound \(g>d\) does not apply to this choice.
+Instead the inherited canonical source witnesses have
+\(X=2^R\), \(R>3q\), \(w=X/q\), \(C\ge1\), and \(F<q\).
+For \(q\ge32\), this gives \(w>q>F\), and therefore
+\(B=(K_0+w)C-F\ge1\). The retained pretransport bound is \(b>4g\).
+Also
+\[
+ 4G-d_\sharp^2=4E+(3A^2-4)U^2E^2>0,
+\]
+so \(d_\sharp<2g\) and \(bB-d_\sharp>0\). Rewriting the same old
+canonical witness gives
+\[
+ n_{85}-d_\sharp V
+   =gy+t_0+\rho-\kappa-s+V(bB-d_\sharp)
+   >V-\kappa-s>0.
+\]
+Thus constructive positive completeness also holds for the sharper
+center. This uses actual calibrated witnesses, not an assumption that
+the old carrier coordinate can be freely enlarged.
+
+Its exact defect is \(G-d_\sharp^2=E-U^2E^2\), of degree 46.
+The four degree bounds in the preceding output identity become
+318, 306, 284, and 82. The highest homogeneous part is
+\[
+ 2^{10}(\beta J)^{150}w^{32}Y^{76}i^{14}
+             (\eta+\zeta)^{44}(\beta J-F)^2,
+\]
+which is nonzero. Hence the total degree is exactly 318. The full
+component proof further establishes that both shears are bijections
+on the respective positive zero sets, including either radical-sign
+branch; the existential directions above already suffice for
+Theorem~\ref{thm:main}.
+
+\section{Calibration, proof scope, and reproducibility}
+\label{sec:calibration}
+
+\subsection{What is proved here and what is imported}
+
+There are three distinct proof layers.
+\begin{enumerate}
+\item \textbf{New unconditional finite algebra.} The graph theorem proves
+an explicit integer zero-set bijection for any checked source system.
+The local equality lemma and the exact graph identities do not depend
+on a consistency assumption or a proof calculus.
+\item \textbf{New unbounded arithmetic.} The shared digit-margin proof,
+the natural fused cap, their witness order, and the compact lower-center
+argument are ordinary mathematical proofs. Their essential unbounded
+claims are not inferred from finite tests.
+\item \textbf{Inherited consistency calibration.} The signed324 source
+comes from package 131's direct C222 arithmetic theorem; signed442 comes
+from package 125. The natural route imports package 129's semantic graph
+and its calibration. The named logical interfaces are
+\path{KEndpoint.c222_iff_zf_refutation} and
+\path{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+The compact branch retains package 133's separate native/K215 calibration.
+\end{enumerate}
+
+The direct source represents a finite syntactic derivation in the
+numerical calculus C222. Its retained soundness and completeness use
+factorial fixed points, binomial digits, CRT representatives and Horn
+derivation decoding. The arithmetic system has a zero exactly when the
+calculus has a derivation; the two named logical interfaces then connect
+that derivation to a finite ZFC refutation. These are the precise
+mathematical dependencies of Theorem~\ref{thm:main}.
+
+No new complete Lean/Rocq development or encoded object-language ZFC proof
+term is supplied. The existing formal dependency closures were not all
+rebuilt during this work. This is an ordinary proof formalizable in ZFC,
+with independently checked finite polynomial artifacts. As in standard
+mathematical reuse, importing a named source theorem is distinct from
+claiming to have re-proved its entire foundation. The archive retains
+source identities, relevant proof texts and explicit boundaries.
+
+\subsection{What the exact checks establish}
+
+The graph verifier is independent of the producer. It checks triangular
+normalization, exact restoration of every original residual, complete
+alias and unit partitions, all logical block sums, the internal spanning
+trees, and the entire collected coefficient list. It also checks the
+symbolic canonical lift in~\eqref{eq:lift}. Deliberate mutations of source
+rows, incidence signs, alias labels, free flows and the final constant
+are rejected. Fresh rebuilds reproduce the mathematical JSON artifacts
+byte for byte.
+
+The direct checker independently reconstructs the changed raw rows,
+including the four pooled digit bounds and the fused cap. It retains
+the unchanged factorial output bound, checks the entire affine export,
+replays every monic projection with its nonnegativity certificate, and
+compares every expanded quartic coefficient. A separate reviewer checked
+the unbounded digit estimates, anchor gap and witness order.
+
+The compact checker reconstructs all four fixed integers from the finite
+printed tile recipe, checks their hashes and bit lengths, verifies the
+literal circuit modification and cost, and checks the degree certificate.
+Its finite-field coefficient controls supplement the displayed symbolic
+upper bound; they are not the proof of positive solvability.
+
+Integrity hashes identify delivered bytes; they are not theorem-prover
+certificates or claims of an external signature. ``Independent review''
+here means a separately tasked AI-assisted review and separately written
+checkers, not an external human endorsement.
+
+\subsection{How to use the archive}
+
+The full deliverable is self-contained for the supported finite
+reconstruction and coefficient checks. Python 3.12 is the tested runtime;
+the implementation uses the standard library. From the archive root:
+\begin{lstlisting}[language=bash]
+python3 -B verify_all.py --rebuild
+python3 -B -O verify_all.py
+./build_report.sh
+\end{lstlisting}
+The PDF rebuild uses a normal pdfLaTeX installation. PDF bytes may differ
+across TeX installations; byte equality is required for mathematical data,
+not for cross-version PDF metadata. The top-level manifest records the
+delivered files. Component READMEs identify smaller commands and exact
+artifact formats.
+
+Every graph monomial is an explicit product of indexed coordinates with
+coefficient \(1\) or \(-1\). Every direct residual is an explicit integer
+quadratic. Every compact register is a polynomial abbreviation in the ten
+declared unknowns and four fixed reconstructed integers. No delivered
+equation asks the reader to select an unspecified polynomial by DPRM.
+
+\section{Further research questions}
+
+\textbf{Joint graph layout and alias optimization.}
+The search first selects a graph and then identifies compatible aliases.
+Can a joint optimization of edge incidence, opposite-occurrence matching
+and alias classes reduce the 951-variable endpoint substantially? The
+complete coefficient certificate permits much more freedom than a global
+Sidon or four-cycle restriction. A useful objective should record both
+dimension and support, since fewer hubs can increase monomial count.
+
+\textbf{Equality penalties and the actual energy.}
+The four-term quartic is locally optimal in the narrow class proved here.
+It need not be optimal as part of a larger nonnegative polynomial.
+Can cancellations with the graph energy eliminate the remaining dummy
+coordinates while preserving height one? Any proposal must certify the
+sum's nonnegativity and its zero set, not just its coefficient list.
+
+\textbf{Pool more arithmetic inequalities.}
+The direct gain came from proving that several canonical remainders
+jointly fit below one denominator. Other source bounds may have comparable
+unused margins. Which can be pooled without a circular dependence on the
+factorial or binomial interpretation? A sufficient condition must be proved
+for canonical witnesses, and a literal restoration map must handle every
+new zero.
+
+\textbf{Transfer the pooled digits to the signed source.}
+The current 226-variable reduction is over \(\N\). Signed systems recover
+remainder signs from product guards. Sharing their bounds may remove more
+variables, but requires a fresh sign argument; the natural-domain proof
+does not automatically transfer. A smaller signed source would also
+improve the height-one compiler's output.
+
+\textbf{Improve the compact center.}
+The center \((A-1)UE\) cancels five leading degrees at a cost of two gates.
+Can another polynomial lower center reduce the degree more while preserving
+the explicit positive reconstruction? A formal coordinate shear is not
+enough: positivity of the transformed witness must be proved in both
+directions and in the correct order.
+
+\textbf{Close the formal calibration chain.}
+The graph transformation is a small, general target for proof-assistant
+formalization: finite maps, integer polynomial identities, positive
+semidefinite energies, and unimodular tree elimination. The direct
+arithmetic bridge is more substantial. A future formal release should
+make the exact internal-ZFC endpoint explicit rather than treating
+finite script checks as a substitute.
+
+\textbf{Meaningful lower bounds.}
+The only optimality statement here is the local two-variable equality
+gadget theorem. The global minimum number of variables, degree, support,
+coefficient height or operations for a Con(ZFC) equation remains unknown.
+A valuable next step would be a lower bound for a precisely specified
+compiler class, not an unsupported claim that one displayed equation is
+the simplest possible.
+
+\appendix
+\section{Complete principal natural residuals}\label{app:residuals}
+
+The following is the complete 175-row quadratic specification of
+\(P_{226}=\sum_jQ_j^2\). The variables are \(z_0,\ldots,z_{225}\in\N\).
+Rows are generated directly from the authoritative equation JSON and
+checked against it. The collected expansion is also included in the
+archive; the row format is substantially shorter to read.
+\input{report_inputs/natural226_residuals.tex}
+
+\section{Complete compact circuit and fixed coefficients}\label{app:constants}
+
+The register table below gives all 87 paid binary operations of the
+lower-center equation. For the sharp-center equation replace the single
+row \texttt{d=Am1*UE} by \texttt{d0=Am1*UE} followed by
+\texttt{d=d0+UE}; every other row is unchanged. Its output
+is the polynomial~\eqref{eq:compact}; the register names introduce no new
+unknowns. The four ports are fixed by the finite recipe following the
+table. The recipe is transcribed from the pinned complete parent display,
+and its full four-integer output is independently bound by hashes and
+bit lengths in the circuit artifact.
+\input{report_inputs/compact_registers.tex}
+
+The following finite Python recipe defines the four integers without a
+repository checkout or a network request. Every range is fixed; no input
+variable of the Diophantine equation occurs in it. The surrounding source
+file also checks the resulting byte hashes against the pinned parent.
+\lstinputlisting[language=Python]{report_inputs/constant_recipe.py}
+
+\section{Artifact inventory and source references}
+
+\begin{longtable}{@{}p{.35\textwidth}p{.60\textwidth}@{}}
+\toprule Path & Purpose\\\midrule\endhead
+\file{graph/equations/} & Four literal height-one polynomials, readable expansions, graph certificates and metrics.\\
+\file{graph/independent_verify.py} & Independent finite algebra, graph and complete coefficient checker.\\
+\file{graph/source324/}, \file{graph/source442/} & Exact pinned source equations; signed324 proof and calibration scope.\\
+\file{direct/equations/} & Natural226 and natural227 residuals, complete expansions, projection certificates and integer678 recipe.\\
+\file{direct/PROOF.md} & Detailed pooled-digit and fused-cap proof, including witness order.\\
+\file{compact/} & Literal 87- and 88-operation polynomials, fixed coefficient reconstruction, parent comparison and exact checks.\\
+\file{verification/} & Final integrated verification receipts and document review.\\
+\file{PROVENANCE.json} & Inspected repository commit and component source boundaries.\\
+\file{MANIFEST.sha256} & Integrity inventory of the delivered files.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{9}
+\bibitem{p127} ProveIt, package 127, \emph{Shared arithmetic certificates
+and graph energies for Con(ZFC)}. Pinned
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61/Computability/DiophantineConsistency/con-zfc-diophantine-forms/127-graph-certificates}{repository package}.
+The inherited graph energy, shared hub construction and sufficient
+four-cycle condition are predecessors of the present compiler.
+\bibitem{p125} ProveIt, package 125, \emph{Round 15 unified binomial and
+even Pell index equations}. Pinned
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61/Computability/DiophantineConsistency/con-zfc-diophantine-forms/125-unified-binomial-round15}{repository package}.
+Source of the signed442 comparison equation.
+\bibitem{p128} ProveIt, package 128, \emph{One-row Pell certificates}.
+Pinned \href{https://github.com/VladimirReshetnikov/ProveIt/tree/1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61/Computability/DiophantineConsistency/con-zfc-diophantine-forms/128-one-row-pell}{repository package}.
+Predecessor for combining a cap and an index congruence.
+\bibitem{p129} ProveIt, package 129, \emph{A semantic Pell anchor}.
+Pinned \href{https://github.com/VladimirReshetnikov/ProveIt/tree/1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61/Computability/DiophantineConsistency/con-zfc-diophantine-forms/129-semantic-pell-anchor}{repository package}.
+The source of the semantic label anchor, CRT lift, consecutive ordinates
+and the natural233/natural234 comparison equations.
+\bibitem{p131} ProveIt, package 131, \emph{Shared Pell caps, round 16}.
+Pinned \href{https://github.com/VladimirReshetnikov/ProveIt/tree/1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61/Computability/DiophantineConsistency/con-zfc-diophantine-forms/131-shared-pell-caps-round16}{repository package}.
+Source of the signed324 equation and its ordinary arithmetic calibration.
+\bibitem{p133} ProveIt, package 133, \emph{Staged certificates}.
+Pinned \href{https://github.com/VladimirReshetnikov/ProveIt/tree/1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61/Computability/DiophantineConsistency/con-zfc-diophantine-forms/133-staged-certificates}{repository package}.
+The 84/436 and 85/328 parents, product-square proof and complete indexed
+coefficient tuple of the compact component.
+\bibitem{dprm} J.~Bayer, M.~David, B.~Stock, A.~Pal, Y.~Matiyasevich and
+D.~Schleicher, \emph{Diophantine Equations and the DPRM Theorem}, Archive
+of Formal Proofs. \url{https://isa-afp.org/entries/DPRM_Theorem.html}.
+General background only; no unspecified DPRM polynomial is used as a
+delivered equation in this report.
+\end{thebibliography}
+\end{document}
