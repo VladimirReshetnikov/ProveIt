@@ -109,7 +109,7 @@ These cost two products and three sums. The exact full census is
 
 | Evaluator | Multiplications | Additions | Subtractions | Total |
 | --- | ---: | ---: | ---: | ---: |
-| Maintained integer-leaf DAG | 38 | 15 | 13 | 66 |
+| Preserved radix55 integer-leaf DAG | 38 | 15 | 13 | 66 |
 | This rational-leaf DAG | 37 | 16 | 12 | 65 |
 
 Every gate, all fifteen witness leaves and all four runtime fixed leaves

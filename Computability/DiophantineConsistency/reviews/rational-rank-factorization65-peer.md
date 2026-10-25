@@ -133,7 +133,7 @@ Reviewed file SHA-256 values, relative to
 
 | File | SHA-256 |
 | --- | --- |
-| README.md | `78bc24dfaf975daac29b0fefac203b20676221559a01fd4bf20ca70d66c16e3e` |
+| README.md | `75b858aaeb302dac8e7b9100ba1506195aa8bc6c0d6366df06ffefc592fa5fa3` |
 | audit.py | `aae7db319e20367041f2faea19ded4d500c4b18a6ad34d3c07fcfba62acb522e` |
 | polynomial.json | `b7a89884c0330d23b5995dd293c77b0cc24fcaaf9cea85053a207daf1aafff67` |
 | AUDIT.json | `5fe10e8d4aad62afab5e5a7919fd4377197e5dea6d3a3bff604c5d91e1a5cf46` |
