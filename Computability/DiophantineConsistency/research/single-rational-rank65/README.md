@@ -129,6 +129,26 @@ denominator clearing therefore does not improve the established integer
 gate count. No lower bound for every possible four-operation rank tail or
 every possible integer evaluator is claimed.
 
+One specific route to64 operations is now explicit and falsifiable. If a
+new coherent native compiler could arrange MC=MF_native, its source shift
+would give W=MC-MF_source=-beta, hence W*J=-qm. The four-gate tail would be
+
+    q2minus1=q^2-1;
+    shifted_gap=G+MF/beta;
+    rank_product=q2minus1*shifted_gap;
+    R=rank_product-qm.
+
+The current tuple cannot meet this condition. Its ordinary mask interface
+has pc(MC)+pc(MF_native)=d with d=47*8807=413929 odd. Equality of the two
+masks would force d=2*pc(MC), which is even. Direct whole-byte counts also
+give pc(MC)=412947 and pc(MF_native)=982. Thus silently replacing W*J by
+-qm gives a different rank and is invalid here. The same parity obstruction
+applies to any compiler retaining the sum-d population interface at odd
+d, including d=47*7691. An even d is only a necessary condition for this
+particular shortcut; it supplies neither equal masks nor a valid compiler.
+This is a specific coefficient obstruction, not a general arithmetic-circuit
+lower bound or a new64-operation candidate.
+
 ## 4. Exact degree, checks and proof boundary
 
 The stdlib-only [audit](audit.py) reads inert JSON and imports no repository
@@ -157,10 +177,11 @@ The coefficient of
 is8*beta^92, nonzero on the complete complemented47 tuple. Degree157 is
 therefore exact. The audit authenticates all207214 existing raw coefficient
 bytes, their compressed hashes, their individual big-endian bit lengths,
-and the whole accepted controller certificate hash. It rejects four
+and the whole accepted controller certificate hash. It rejects five
 corruptions of the rank tail: dropping U's denominator, changing W's
-subtraction to addition, adding an unwanted denominator to W, and replacing
-q^2-1 by q^2-2.
+subtraction to addition, adding an unwanted denominator to W, the unlicensed
+substitution W=-beta, and replacing q^2-1 by q^2-2. It also checks the two
+complete mask populations that rule out the specific four-gate shortcut.
 
 Run from the repository root:
 

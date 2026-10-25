@@ -211,6 +211,7 @@ def main():
         ("omit_denominator", {"U": leaves["MF"]}),
         ("wrong_W_sign", {"W": add(leaves["MC"], leaves["MF"])}),
         ("unwanted_W_denominator", {"W": mul(leaves["W"], monomial({"beta": -1}))}),
+        ("unlicensed_four_gate_tail", {"W": {m: -c for m, c in leaves["beta"].items()}}),
     ]:
         need(exact_evaluator(new_rows, override)("R") != old_rank, name)
         negative_controls.append(name)
@@ -243,6 +244,11 @@ def main():
         coefficient_files[port] = {"path": str(path.relative_to(ROOT)), **digest(raw)}
     need(raw_total == 207214 == binding["raw_bytes"], "all whole raw coefficient bytes")
     need(values["beta"] < values["MF"] < 2 * values["beta"], "1<U<2: sole rational leaf nonintegral")
+    native_mf = values["MF"] - values["beta"]
+    mask_populations = {"MC": values["MC"].bit_count(), "MF_native": native_mf.bit_count()}
+    need(mask_populations == {"MC": 412947, "MF_native": 982}, "whole native mask populations")
+    need(sum(mask_populations.values()) == 47 * 8807 and values["MC"] != native_mf,
+         "odd-width obstruction to W=-beta")
 
     packet = {
         "name": "same_complemented47_integer_polynomial_single_rational65_evaluator",
@@ -270,6 +276,8 @@ def main():
         "sole_noninteger_runtime_gate": "shifted_gap",
         "sole_noninteger_fixed_leaf": "U=MF/beta",
         "rank_product_and_rank_linear_have_integral_coefficients": True,
+        "native_mask_populations": mask_populations,
+        "W_equals_minus_beta": False,
         "universal_same_integer_polynomial": True,
         "all_65_gates_and_15_witnesses_and_4_runtime_leaves_live": True,
         "all_4_coherent_integer_ports_bound": True,

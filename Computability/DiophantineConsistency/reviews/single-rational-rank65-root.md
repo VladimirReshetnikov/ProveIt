@@ -25,7 +25,7 @@ it does not lower65 to64 or establish an integer-leaf65 evaluator.
 Root normal and optimized `audit.py --check` processes both exited0.
 They check the full rank identity, unchanged prefix/suffix, the complete
 323-term main-norm cancellation and56-term degree157 leader, all input
-and gate liveness, all207214 raw coefficient bytes and four rejected
+and gate liveness, all207214 raw coefficient bytes and five rejected
 algebraic mutations. The proof and precise gate substitution justify the
 whole-polynomial claim; sample evaluations are not used as a substitute.
 
@@ -34,3 +34,10 @@ The ordinary consistency equivalence transfers with that parent's exact
 calibration boundary. There is no new formal-kernel replay or global
 minimality assertion. Raw bytes above measure the four original integer
 ports, not a separate encoding of the derived rational constant.
+
+The subsequent narrow64-operation target was also reviewed. Equality of
+MC and MF_native would reuse `-qm` and remove one gate, but is impossible
+under the current odd-d complementary population contract. The exact
+whole-mask counts412947 and982 sum to413929. The fifth negative control
+rejects the unlicensed substitution W=-beta. This rules out that specific
+shortcut, without claiming any general circuit lower bound.
