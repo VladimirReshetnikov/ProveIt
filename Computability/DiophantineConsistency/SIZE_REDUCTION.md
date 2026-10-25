@@ -2581,3 +2581,21 @@ grouped proposal,3970→3854, including all new notation and the full seed.
 Rendered cost and fit remain unmeasured. This accepted ordinary identity
 does not amend the separately held grouped66 page or its checker repair,
 and does not update the maintained PDF/TeX or resume Lean.
+
+## Floor-free table and one fewer fixed decoder operation
+
+The [binary pass/cleanup proposal](research/binary-pass-cleanup-tiles/README.md)
+passes both [ROOT](reviews/binary-pass-cleanup-tiles-root.md) and
+[independent ordinary review](reviews/binary-pass-cleanup-tiles-ordinary-peer.md).
+Two binary row bijections merge the four pass tiles and remove the cleanup
+floor; distributivity shortens the head label and default flag expression.
+Every943 tile remains at its exact index, all430 actions and436 seed
+characters remain identical, and the whole Phi/four-port tuple is unchanged.
+
+The entire charged proposed constant body is3819 bytes/3555 nonwhite
+source characters, saving35/32 against the accepted compact body. Its
+table has ten rows and no floor; its fixed flag expression saves one
+arithmetic operation. The equation itself remains fifteen-positive,
+66 operations and degree157. These further source reductions have no
+rendered measurement yet; a separate held implementation is being prepared.
+They do not alter the independently executing grouped66 page or resume Lean.
