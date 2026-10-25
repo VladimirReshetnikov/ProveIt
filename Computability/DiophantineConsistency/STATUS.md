@@ -132,10 +132,16 @@ lower row height160 to128. All older alternatives remain available.
 
 The next [pair-sum shear](research/pair-sum-gate-shear/README.md) passes
 both full ordinary reviews and [joint bound acceptance](reviews/pair-sum-gate-shear-ordinary-acceptance.json).
-It proves32053<=height<=41466, exact residual height96, degree4 and full
-liveness at unchanged variable/row counts, with nine fewer residual-term
-occurrences. Exact expanded height and support remain unknown. Its
-separate finite source is being prepared without execution.
+Its ordinary proof bounds32053<=height<=41466, with residual height96,
+degree4 and full liveness. The [complete finite evidence](research/pair-sum-gate-shear-verification/README.md)
+now passes both full ordinary reviews and [separate ROOT acceptance](reviews/pair-sum-gate-shear-verification-root-peer.md).
+The exact endpoints are plain316/218/5626 and weighted315/217/5632
+variables/rows/terms, both at height32053 and row height96. All nine
+actual processes pass, including128 negative/12 valid controls per checker;
+all12 fresh captures match and460 source inputs remain unchanged.
+Against the Pell-output parent,114 terms disappear and12 appear, net102
+fewer in each profile. Complete noncommuting maps and inherited source
+calibration remain bound; no global minimum is claimed.
 
 The [bounded radix65 evidence](research/compact66-radix65-unit-probe-verification/README.md)
 passes [ordinary review](reviews/compact66-radix65-unit-probe-verification-ordinary-peer.md)

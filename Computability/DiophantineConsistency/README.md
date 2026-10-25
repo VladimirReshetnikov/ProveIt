@@ -127,6 +127,17 @@ follows full independent evidence review and retains every composed source
 map and calibration boundary. Earlier quartics remain available; this
 degree-four improvement does not shorten the maintained one-page formula.
 
+Two further complete integer shears now reach
+**plain316/218/5626 and weighted315/217/5632**, both at exact degree4,
+height32053 and residual height96. The [pair-sum evidence](research/pair-sum-gate-shear-verification/README.md)
+passes both full ordinary reviews and [ROOT acceptance](reviews/pair-sum-gate-shear-verification-root-peer.md).
+Its nine actual first/fresh processes pass, all12 fresh captures reproduce
+their first bytes, and all460 source inputs remain unchanged. Complete
+saved forward/inverse/SOS identities,128 negative/12 valid controls and
+all noncommuting source-restoration maps are retained. The final shear
+removes114 terms and introduces12, net102 against the Pell-output parent;
+this is an accepted quartic tradeoff, with no global minimum claim.
+
 A [bounded65-bit modular probe](research/compact66-radix65-unit-probe-verification/README.md)
 now discharges the three previously unknown controller-bracket unit
 conditions: H0 residues5,62,418969 at primes13,8807,581197, respectively.

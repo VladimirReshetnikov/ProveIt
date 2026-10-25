@@ -15,7 +15,7 @@ not establish the size of a complete consistency equation.
 
 | Domain | Variables | Operations | Degree | Use |
 |---|---:|---:|---:|---|
-| Integers | **315 / 316** | not optimized | **4** | Complete Pell-output shear charts;217/218 rows,5734/5728 terms,height54709,row height128; nine first/fresh processes and both full evidence reviews pass |
+| Integers | **315 / 316** | not optimized | **4** | Complete pair-sum shear charts;217/218 rows,5632/5626 terms,height32053,row height96; nine first/fresh processes and both full evidence reviews pass |
 | Integers | 315 / 316 | not optimized | 4 | Preserved neighbor-shear parents;217/218 rows,5787/5781 terms,height93109,row height160 |
 | Integers | 315 / 316 | not optimized | 4 | Preserved balanced-shear parents;217/218 rows,5809/5803 terms,height98336,row height256 |
 | Integers | 315 / 316 | not optimized | 4 | Complete fixed58-shift parents;217/218 rows,5743/5737 terms,height128446,row height256; separate full fast verification accepted |
@@ -2979,9 +2979,18 @@ changed complete residuals and the noncommuting composed inverse are
 explicit. The result has exact residual height96 and degree4, all316/315
 coordinates live, and nine fewer residual-term occurrences. The entire
 polynomial has32053<=height<=41466, with separate bounds for every degree
-and every output coordinate. Exact expanded height/support are unknown.
-Finite source preparation is separate and has not executed; no generated
-endpoint, page gain or global optimum is claimed.
+and every output coordinate. Exact expanded height/support were unknown
+before the separately reviewed finite stage.
+Those were pre-execution ordinary bounds. The [complete finite packet](research/pair-sum-gate-shear-verification/README.md)
+now passes both full ordinary reviews and [ROOT finite acceptance](reviews/pair-sum-gate-shear-verification-root-peer.md).
+The exact endpoints are plain316/218/5626 and weighted315/217/5632,
+height32053, residual height96 and degree4, with every coordinate live.
+All nine actual applications pass; all12 fresh capture files reproduce
+first bytes,460 source inputs and13 data files remain unchanged, and
+each checker retains128 negative/12 valid controls. Both profiles remove
+114 terms and introduce12, net102 fewer than the Pell-output parent.
+Complete noncommuting maps and the full retained ordinary calibration are
+preserved. No global optimum or printed-page gain follows from this quartic.
 
 ## A retained alternative-calculus transfer lead
 
