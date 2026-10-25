@@ -11,8 +11,8 @@ It is one complete final static approval, not an execution release.
 ROOT authored none of the candidate or renderer. I independently read
 EVERY current new code line:128 guard,130 producer,653 auditor and178
 renderer,1089 total. I also freshly read ALL748 grouped-core,491 recipe
-and487 arithmetic-front adopted lines,1736 total, including their unused
-historical methods and top-level import behavior. All2825 application
+and487 arithmetic-front adopted lines,1726 total, including their unused
+historical methods and top-level import behavior. All2815 application
 lines, every control branch, complete design/README/proof/TOOLCHAIN,
 actual139-line TeX and formula map were reviewed. No import, helper,
 application, AST/compiler, recipe evaluation, coefficient materialization,
@@ -159,3 +159,12 @@ No unresolved static mathematical, source, control, scope, I/O or provenance
 finding emerged. This PASS does not release execution, accept a numerical
 endpoint or claim the prospective242484 raw bytes/one-page saving. The
 maintained PDF/TeX, all old parents and paused Lean remain unchanged.
+
+ROOT report-only arithmetic correction: the complete original review pair
+is preserved in commit32623f8f06. Its individual source counts were correct,
+but748+491+487 was summed as1736 instead of1726, making the total2825
+instead of2815. The independent reviewer caught this while finalizing its
+outside companion record. This correction changes only the two aggregate
+report counts, this disclosure and the companion Markdown hash/size. All
+seven complete reads, exact candidate/source bytes, static verdict and
+no-execution boundary are unchanged. No candidate repair or reseal occurs.
