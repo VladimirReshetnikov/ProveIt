@@ -2564,3 +2564,20 @@ an unrendered comparison. A separately reviewed page preparation must
 measure actual glyphs, fit and readability before a maintained-page update.
 Lean stays paused; the current PDF/TeX remain the accepted fifteen-positive
 66-operation/degree157 version.
+
+## Compact tile parameters preserve every indexed tile
+
+The [ordinary proposal](research/compact-tile-parameters/README.md) passes
+[root acceptance](reviews/compact-tile-parameters-root.md) and
+[independent review](reviews/compact-tile-parameters-peer.md).
+One direction-indexed rank merges the right/left definitions and copy
+rows; a square parameter gives the last nine tiles; cancelling the
+artificial payload prefix makes the selector contribution positive.
+Every tile remains at its exact old index, and the whole Phi and all
+four coefficient integers remain identical.
+
+The entire constant body saves another116 source bytes against the
+grouped proposal,3970→3854, including all new notation and the full seed.
+Rendered cost and fit remain unmeasured. This accepted ordinary identity
+does not amend the separately held grouped66 page or its checker repair,
+and does not update the maintained PDF/TeX or resume Lean.
