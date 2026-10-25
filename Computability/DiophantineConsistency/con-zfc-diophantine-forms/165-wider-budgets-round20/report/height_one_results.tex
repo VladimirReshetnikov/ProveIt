@@ -1,0 +1,54 @@
+\subsection{Selected literal outputs and matched sources}
+\begin{center}\small
+\begin{tabular}{@{}lrrl@{}}\toprule
+Endpoint & Variables & Terms & Original arithmetic source\\\midrule
+\file{minimum503} &503&24193&New exposed 241\\
+\file{compact505} &505&20491&New power exposed 242\\
+\file{compact512} &512&18255&New power exposed 242\\
+\file{balanced557} &557&11999&Retained grouped 263\\
+\file{sparse617} &617&8318&Retained sparse 285\\
+\file{sparser713} &713&7176&Retained sparse 285\\\bottomrule
+\end{tabular}
+\end{center}
+All six have exact degree four, coefficient height one, constant coefficient
+one, no equality dummy coordinates, and every declared unrestricted
+coordinate present. Each supplies its entire coefficient array, literal
+polynomial text, graph certificate and source binding. The 503-variable
+point is a dimension tradeoff: the 505-variable point has much smaller
+support. The latter improves both variables and support over Round~19's
+528-variable point. The 512-variable choice similarly dominates the old
+534-variable point; the remaining three dominate their respective old
+580-, 620- and 717-variable counterparts.
+
+The first source has 241 variables and 178 rows before a fixed 26-coordinate
+affine refactorization; it then has 267 variables and 204 rows, and
+normalization gives 339 variables and 276 rows. Its final graph uses
+16 initial hub vertices and 21 remaining flows. The next two use the
+separate power-base source with 242 variables and 178 rows, then 269
+variables and 205 rows after 27 affine definitions; normalization gives
+343 variables and 279 rows. Their initial hub counts are 20 and 24,
+and their final flow counts are 22 and 26. None is identified with the
+literal 238-variable balanced equation merely because it descends from
+the same shared-error arithmetic.
+
+To isolate the structural changes from new arithmetic sources, five
+matched replays authenticate the exact old graph and polynomial hashes
+before applying the new operations:
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Matched Round 19 graph & Before variables/terms & After variables/terms\\\midrule
+Minimum selected &528/20816&508/20808\\
+Compact &534/18543&518/18543\\
+Balanced &580/12001&557/11999\\
+Sparse &620/8318&617/8318\\
+Sparser &717/7176&713/7176\\\bottomrule
+\end{tabular}
+\end{center}
+The last four use anchored equality absorption alone. In the first,
+absorption alone gives 511 variables and 20816 terms; internal flow
+contraction and renewed same-logical alias contraction give 508 and 20808.
+Thus each matched comparison improves dimension without increasing support.
+The 508- and 518-variable controls are reproduced evidence, not additional
+released endpoints. The final selected source and graph choices are frozen
+in the catalog; their quality does not depend on claiming an exhaustive
+search or an optimality theorem.

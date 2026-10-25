@@ -1,0 +1,251 @@
+\section{Polynomial centers and eleven integer equations}
+\label{sec:scalar}
+\subsection{Complete polynomial definitions}
+The independent coordinates are exactly
+\[
+ (j,C,z,h,r,v,w,T,c,n,s)\in\Z^{11}.
+\]
+The six fixed ports are the authentic source34 numerals specified in
+Section~\ref{sec:foundation}; none is another variable. Define the following
+ordinary polynomial abbreviations:
+\begin{align*}
+ J&=6j+1,& q&=\beta J+1,& W&=12w+4,\\
+ X&=qW,&Y&=v,&E&=XY,\\
+ a&=E+Y,&A&=a+2,&H&=4a+3,\\
+ \Delta&=a^2+H=A^2-1,&&&
+\end{align*}
+\begin{align*}
+ F&=(K_0+W)C-z(q-1),\\
+ R&=[q(q-F)-C](q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+hE,\qquad \eta=c-Yk,\\
+ D_{\rm err}&=(\mathrm{cone\_A}F-q)^2+(\mathrm{cone\_B}C-q)^2,\\
+ B_0&=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ \mathcal B&=Y^2B_0-k^2q^8,\qquad D=\mathcal B-4,\\
+ \ell&=XY^2,\qquad D_t=1+\ell(\ell+1)k^2,\\
+ D_g&=1+DD_ts^2,\qquad P=D_tD_g.
+\end{align*}
+The cofactor, auxiliary norm and carrier registers are
+\begin{align*}
+ D_m&=1+\Delta c^2,& B&=rAD_m,& U&=rc^2D_m,\\
+ I_2&=c^4B=Ac^2U,& D_f&=1+\Delta I_2,& Q&=\Delta^2I_2,\\
+ \delta&=Q-1,& V&=D_f(c-R+4AUT)-c,& C_y&=QV^2-1,\\
+ K&=X(3c-2X)+2,&M&=2q^3,&D_c&=HM,\\
+ S&=srHM^5,&&&
+\end{align*}
+\[
+ z_c=D_cT+MK+H(v-q^3),\qquad
+ A_c=(z_c^2+3D_c^2)(z_c^3-19D_c^3).
+\]
+The following inherited Round~18 centers fix the comparison boundary:
+\begin{align*}
+ \Psi_{316}&=[(8\Delta+4)U-rc^4]V,&L_{316}&=8,\\
+ \Psi_{308}&=\Psi_{316}+2U^3T(c^2-2),&L_{308}&=8,\\
+ \Psi_{304}&=\Psi_{316}+U^2T[2U(c^2-2)+16A^3],&L_{304}&=8,\\
+ \Psi_{300}&=[(32\Delta+16)U-4rc^4]V&&\\
+ &\quad+U^2T[8U(c^2-2)+64A^3+3rc^6],&L_{300}&=32.
+\end{align*}
+Every center is an integer polynomial independent of $n$. For any selected even weight $L$ and integer center $\Psi$, put
+\begin{align}
+ Z&=S(n+\Psi)-A_c,\nonumber\\
+ p_a&=\delta Z^2,\qquad p_b=\delta S^2P,
+ \qquad p_c=L^2S^2BD_fC_y,\nonumber\\
+ \mathcal N_{L,\Psi}&=(p_a+p_b-p_c)^2-4p_ap_b.
+ \label{eq:scalarfinal}
+\end{align}
+The equation is $\mathcal N_{L,\Psi}=0$ over $\Z^{11}$.
+The displayed centers are retained comparison controls defining the old
+frame. The new shorter centers and the separately rebased degree-298
+frame are specified below. No division,
+radical or variable exponent is an operation of this polynomial. The
+literal graph shares the identities
+\[
+ P=D_t+(\mathcal B-4)(D_ts)^2,
+\]
+\[
+ \mathcal B=(Yk)^2(q^2-D_{\rm err})
+       -q^2\bigl[4(Y\eta)^2+(kq^3)^2\bigr],
+ \qquad A^2=\Delta+1.
+\]
+Sharing these registers changes graph cost, not the polynomial.
+
+\subsection{An even weight and integral center lemma for the old frame}
+\begin{theorem}\label{thm:evenweight}
+For every fixed nonzero even $L$ and every integer polynomial $\Psi$ in
+the ten coordinates other than $n$, the projection of the integer zero
+set of \eqref{eq:scalarfinal} onto those ten coordinates equals that of
+the retained Round~17 free-scale equation. The latter uses
+$L=2$ and $\Psi=(2\Delta+1)UV$.
+\end{theorem}
+\begin{proof}
+We first record the unconditional arithmetic facts from Sections 2--4
+of the retained \file{LINEAR_COFACTOR_ROUND17_PROOF.md}. They do not
+assume a zero of the present norm. The authentic affine restrictions give
+\begin{gather*}
+ q\equiv0\pmod2,\qquad q\equiv2\pmod3,\qquad |q|\ge16,\\
+ X\equiv0\pmod8,\qquad X\equiv2\pmod3,\qquad |X|\ge4|q|.
+\end{gather*}
+Thus $A\ne0$, $\Delta=A^2-1>1$, $\Delta\equiv0\pmod3$,
+$H$ is odd and nonzero, and $D_m,D_t\ge1$. The exact modulo-sixteen
+budget identity gives $D\equiv8$ or $12\pmod{16}$, so $D$ is nonzero
+and nonsquare. Also $P\equiv1\pmod4$ and $P\ne0$.
+Both $D_f$ and $\delta$ are nonzero, $Q$ is even, and $\delta$ is odd.
+
+The rational polynomial $\pi(t)=(t^2+3)(t^3-19)$ has no rational root.
+Since $D_c\ne0$,
+\[
+ A_c=D_c^5\pi(z_c/D_c)\ne0.
+\]
+If $S=0$, the output norm is $(\delta A_c^2)^2\ne0$.
+Every new zero therefore has $S,s,r,B\ne0$.
+
+Put $D_a=\delta C_y$ and $C_*=BD_fD_a$. One has $D_a>0$:
+if $c=0$, then $Q=0$ and $D_a=1$; if $c\ne0$ and $B<0$,
+then $\delta,C_y<0$; if $c\ne0$ and $B>0$, then
+$D_f>|c|+1$, so $V=D_fb-c$ is nonzero for every integer $b$, and
+$\delta,C_y>0$. Moreover $BD_f>0$ whenever $c\ne0$.
+Hence $C_*\ne0$, and its only possible negative case is $c=0,B<0$.
+
+The four-conjugate norm identity for \eqref{eq:scalarfinal}, after
+normalizing by nonzero $S$ and multiplying by $\delta$, gives a rational
+signed sum
+\begin{equation}\label{eq:radicalsum}
+ \pm L\sqrt{C_*}\ \pm\delta\sqrt P\in\Q.
+\end{equation}
+If exactly one radicand is negative, its nonzero imaginary contribution
+cannot cancel. If both are negative, then $c=0$, $\delta=-1$ and
+$C_*=B$. Cancellation would force $L^2B=P$, impossible modulo four
+because $L$ is even and $P\equiv1\pmod4$. Therefore $C_*,P>0$.
+
+Write these positive integers as squares times positive squarefree integers.
+Different nontrivial squarefree radicals are independent over $\Q$.
+The only remaining possible irrational cancellation would have the same
+nontrivial squarefree part in both terms of \eqref{eq:radicalsum}.
+Its first coefficient would be even, whereas its second coefficient would
+be odd: $L$ is even and $\delta,P$ are odd. Cancellation is impossible.
+Thus $C_*$ and $P$ are positive integer squares.
+
+The cofactor coprimalities are unchanged:
+\[
+ \gcd(B,D_f)=\gcd(B,D_a)=\gcd(D_f,D_a)=1.
+\]
+Indeed $D_f\equiv1\pmod B$ and $Q\equiv0\pmod B$, giving
+$D_a\equiv1\pmod B$. Modulo $D_f$, one has
+\[
+ Q\equiv-\Delta,\quad\delta\equiv-A^2,\quad
+ V\equiv-c,\quad C_y\equiv-D_m,\quad
+ D_a\equiv A^2D_m.
+\]
+Since $B=rAD_m$, while $D_f\equiv1$ modulo both $A$ and $D_m$,
+these imply the last coprimality. Therefore $|B|,|D_f|,D_a$ are squares.
+As $D_a>0$, $B,D_f$ have the same sign. But $D_f\equiv1\pmod3$
+excludes a negative square, so there are positive integers $u,f,e$ with
+\begin{equation}\label{eq:scalarroots}
+ B=u^2,\qquad D_f=f^2,\qquad D_a=e^2.
+\end{equation}
+Similarly $\gcd(D_t,D_g)=1$ and $D_t\ge1$ give
+$D_t=\tau^2$, $D_g=g^2$ with $\tau,g>0$.
+Since $s\ne0$, the guard forces $\mathcal B\ge4$, strengthened by its
+modulo-sixteen class to $\mathcal B\ge12$.
+It follows that $k,Y\ne0$, $B_0>0$, and
+\[
+ Y^2B_0>k^2q^8,\qquad B_0\le k^2q^2,
+ \qquad |Y|>|q|^3.
+\]
+The centered strip from $B_0>0$ then excludes $c=0$.
+
+Define proof-only integers $I=c^2u$ and $T_{\rm old}=uT$.
+By \eqref{eq:scalarroots},
+\[
+ f^2-\Delta I^2=1,\qquad Q=(\Delta I)^2,\qquad
+ V=f^2(c-R+4IT_{\rm old})-c.
+\]
+The rational number $y=e/\delta$ satisfies
+\begin{equation}\label{eq:auxnorm}
+ QV^2-(Q-1)y^2=1.
+\end{equation}
+It is integral by adjacent-coefficient descent. If $b$ is its reduced
+denominator, then $b^2\mid Q-1$. After choosing signs, for $|V|>1$ the
+unimodular transformation
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV
+\]
+preserves \eqref{eq:auxnorm} and the reduced denominator, with
+$0<|V'|<|V|$. The first coordinate is integral because $(Q-1)y$ is
+integral; denominator preservation also follows from
+$\gcd(2Q-1,b)=1$. For $V>1$ and $Q>1$, the norm gives
+\[
+ V<y<\frac{(2Q-1)V}{2(Q-1)}.
+\]
+The squared upper bound minus $y^2$, multiplied by $4(Q-1)^2$,
+is $V^2+4(Q-1)>0$. Consequently $0<V'<V$.
+Descent reaches $|V|=1$, where $|y|=1$, forcing $b=1$.
+The formal $c=0$ case would directly give $y=-1$, although it is already
+excluded here.
+
+The two normalized roots of the original four-conjugate equation are now
+integers $Lufy$ and $\tau g$. Hence $Z/S$ is integral. Since $\Psi$
+is integral, $S\mid A_c$. No size or sign condition on $\Psi$ was used.
+Keep the ten outer coordinates of the new zero and set
+\[
+ n_{\rm old}=A_c/S+2ufy+\tau g-(2\Delta+1)UV.
+\]
+This is an integer and makes one old conjugate factor vanish, producing an
+actual Round~17 zero. Conversely an old zero supplies these same integral
+roots and divisibility by the retained theorem. Keeping its ten outer
+coordinates, set
+\[
+ n_{\rm new}=A_c/S+Lufy+\tau g-\Psi.
+\]
+One new factor vanishes. These constructions prove equality of projected
+zero sets. They need not be mutually inverse on $n$, since the norm can
+have several sign branches. For a fixed $L$, changing only the center is
+separately a literal bijective integral shear of $n$.
+\end{proof}
+
+\subsection{The complete inherited calibration chain}
+Theorem~\ref{thm:evenweight} reduces both directions to an actual old
+zero, not merely a list of necessary Pell properties. Thus its inherited
+scale, sign, rank and syntactic interfaces remain exactly applicable.
+For clarity, the retained source proof proceeds as follows.
+
+Carrier divisibility first gives $M\mid H(v-q^3)$, even $Y$, and
+\[
+ H\mid q^{15}K_q^5,\qquad K_q=X(X+2ac)-1.
+\]
+The strong and auxiliary pairs, together with $c^2\mid I$, recover the
+main Pell root by absolute folding. With $D_t=\tau^2$, the centered
+strip, $|Y|>|q|^3$ and the authentic packing inequalities
+\[
+ |q|(|q|^2-1)<R<|q|^4-2,
+\]
+the signed rank theorem yields
+\[
+ c=\sgn(c)\psi_A(R),\qquad R=2t+1,
+ \qquad |H|>|X|(|X|-3)^t.
+\]
+The powered projection at the actual large base forces
+$\sgn(c)X=2^R$. Reduction modulo three fixes $c>0$ and $X=2^R$;
+the old strip fixes $k,Y>0$. Exact $H\mid K$ restores
+$Y=(2v_{\rm old}+1)q^3$. The uniform half-binomial theorem then restores
+the positive native interval, and fresh odd strong witnesses produce an
+actual signed Q41 source zero. Only that restored zero is passed to the
+retained source34/native/compiler/finite-refutation calibration.
+
+Conversely, canonical source witnesses give $\mathcal B>64$.
+After choosing the guard pair $s,g$, the old proof chooses one strong
+pair $I,f$ with $4sAdc^2\mid I$, where $D_m=d^2$, and sets
+\[
+ u=I/c^2,\qquad t_{\rm strong}=I/(Adc^2),\qquad
+ r=At_{\rm strong}^2.
+\]
+That pair is kept fixed. The supported-modulus theorem interpolates
+$T_{\rm old}$ modulo $usr$ using the same pair, while an intersective
+root of $\pi$ modulo $sr$ makes $A_c/S$ integral. There is no reselection
+of the strong pair after a residue request. For changes confined to this old frame, the center modification replaces
+only its final integer $n$ by $n_{\rm new}$ above and introduces no new
+interpolation or choice-order assumption. Full inherited proofs and their
+source identities are retained separately; they are not promoted here to
+a newly checked formal-kernel endpoint.
+
+\input{scalar_new.tex}

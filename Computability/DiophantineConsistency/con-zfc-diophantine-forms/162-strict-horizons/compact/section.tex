@@ -1,0 +1,278 @@
+\section{A free quotient in the compact Pell encoding}
+\label{sec:free-quotient}
+
+This section gives two additional equations in ten strictly positive
+integer variables. Their exact arithmetic costs and total degrees are
+\(83/312\) and \(89/278\). The second improves the earlier \(89/288\)
+and \(92/278\) points in cost and degree. The first improves the earlier
+\(84/328\) point in both metrics. Other tradeoffs remain relevant.
+These are ordinary proofs composed with the retained native/refutation
+calibration, not new proof-assistant certificates or global optimality
+claims.
+
+\subsection{The change of arithmetic architecture}
+
+The incoming constructions used \(Y=qs\) and
+\(c=kY+\eta\). The factor \(q\) then propagated through
+\(U=ic^2\), making the strong Pell part expensive in degree.
+We instead take
+\[
+ Y=s,\qquad \lambda=q,
+\]
+and put \(\lambda\) into the two Pell bases. This retains the
+needed divisibility while lowering the degree of \(c\).
+The complete denominator is recovered only after exponential projection.
+The positive shift \(T+\alpha\) is restored: it supplies a direct
+early proof of \(b>c\) when \(Y\) is no longer divisible by \(q\).
+
+\subsection{Complete polynomial specification}
+
+The independent variables are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+The fixed tuple \((\beta,K_0,M_C,M_F)\) is the complete directly
+indexed BFS943 radix67 tuple retained with this component. Its largest
+port has 592,884 bits. Every byte and its finite reconstruction are
+included; a port name is not an extra unknown. In particular
+\(\beta\ge31\) is odd and
+\(K_0>0\), \(0<M_C<\beta<M_F<2\beta\).
+Set
+\[
+ h=\beta J,\quad q=h+1,\quad C=q-F-\alpha,\quad Y=s.
+\]
+Choose either the plain chart or the corrected chart:
+\[
+\begin{array}{c|ccc}
+ &W_0&X&D\\ \hline
+ \text{plain}&qw&q^2w&q^7\\
+ \text{corrected}&w&qw&6q^7
+\end{array}
+\]
+Both use the following polynomial abbreviations:
+\begin{align*}
+ k&=\eta+\zeta,&c&=kY+\eta,\\
+ A&=qY(X+1)+1,&\Delta&=A^2-1,&H&=4A-5,\\
+ v&=Xq^2Y^2,&E&=1+v(v+1)k^2,\\
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ B&=(K_0+W_0)C-F,&U&=ic^2,\\
+ a&=\Delta U^2E,&F_0&=1+a,&G&=EF_0,\\
+ F_s&=1+4aF_0,&Q&=\Delta(F_s-1),\\
+ b&=c(T+\alpha)-R,&V&=F_sb-c,\\
+ K&=X(3c-2X)+2,&L&=bV.
+\end{align*}
+In the plain chart let
+\[
+ E_c=k-R-1-q^4s;
+\]
+in the corrected chart let
+\[
+ E_c=6(k-R-1-q^4s)-v(R+1)(R-1)(R+3).
+\]
+Finally define
+\begin{align*}
+ M&=hDH,\\
+ Z&=hD\{H(n-LB)+K\}-H(DB+hE_c),\\
+ P&=Q(Z^2-M^2GV^2)+(M^2G-Z^2).
+\end{align*}
+The requested single equation is \(P=0\). Every displayed abbreviation
+is a fixed polynomial. There are no variable exponents, divisions,
+factorials, or extra predicates in the emitted circuits.
+
+\paragraph{Theorem.}
+For either chart, ZFC proves
+\[
+ \bigl(\nexists J,F,\alpha,i,T,w,s,n,\eta,\zeta>0:\ P=0\bigr)
+ \quad\longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+
+\subsection{Ordered soundness argument}
+
+For proof notation only, write
+\[
+ t=B/h,\quad W=1+hL,\quad \kappa=K/H,
+ \quad \sigma=Y/q^3,\quad z=Z/M.
+\]
+For the plain chart put \(e=k-R-1\), \(\rho=e/q^7\).
+For the corrected chart put
+\[
+ \bar e=k-R-1-\frac{v(R+1)(R-1)(R+3)}6,
+ \qquad\rho=\bar e/q^7.
+\]
+No integrality of these quotients is initially assumed. Identically,
+\[
+ P=(Q-1)Z^2-M^2G(QV^2-1),\qquad
+ z=n+\kappa+\sigma-Wt-\rho.                       \tag{F1}
+\]
+
+\paragraph{Root extraction and early positive transport.}
+At a positive zero, the identities
+\[
+ F_s=(1+2a)^2,\qquad Q=4\Delta^2U^2G,
+ \qquad\gcd(E,F_0)=1
+\]
+and prime valuations give \(E=\tau^2\), \(F_0=f_0^2\),
+\(G=g^2\), where \(g=\tau f_0>0\). The retained rational
+adjacent-Pell descent gives a positive integer \(y\) such that
+\[
+ QV^2-(Q-1)y^2=1,\qquad z=\pm gy.
+\]
+With \(f=1+2a\), \(I=2Ug\), one has
+\[
+ f^2-\Delta I^2=1,\quad c^2\mid I,\quad Q=(\Delta I)^2.
+\]
+The signed folding theorem gives \(c=\psi_A(p)\) for positive odd
+\(p\). Here \(\psi_A(j)\) denotes the Pell ordinate. Since
+\(c\ge3\), \(p\ge3\); therefore
+\[
+ c\ge4A^2-1>4q^4.
+\]
+The unconditional mask estimate is
+\(R<q^4+(\alpha+2)q^2\). Thus
+\[
+ b-c>\alpha(c-q^2)-q^4-2q^2
+       \ge c-q^4-3q^2>0.
+\]
+This argument includes \(Y=1\) and does not assume a sign of \(C\).
+The auxiliary Pell index is odd; because
+\(V>c(f^2-1)>4Q\), its first and third values are excluded. Hence
+\[
+ V>8Q^2,\qquad b>4g,\qquad gy<\frac{3}{8}bV<\frac L2.
+                                                               \tag{F2}
+\]
+
+For the plain chart, \(\rho<b/q^7<L/2\). If \(B\le-1\),
+then \(Wt<-L\), and (F1)--(F2) contradict \(n>0\).
+For the corrected chart the same proof applies whenever
+\((R+1)(R-1)(R+3)\ge0\). Its remaining cases are \(R\le-4\)
+and \(R=0\). The exact identity
+\[
+ R=(hC+q\alpha)(q^2-1)+(M_C+qM_F)J
+\]
+shows that, for \(R=-r\le-4\),
+\(C<0\), \(|C|>r/q^3\), and
+\(Wt<-(1+w|C|)L\). The adverse correction is less than
+\(ws^2r^3/(6q^4)\), whereas
+\(L>(F_s-1)r^2\) and \(F_s-1>s^2\), so
+\(w|C|L\) strictly exceeds it. For \(R=0\) the correction is
+only \(ws^2/(2q^4)\) and the same margin suffices.
+Therefore both charts force \(B\ge0\), hence \(C>0\).
+
+The calibrated mask bound is now licensed:
+\[
+ 3q<R<q^4-2.
+\]
+The normalized strong-rank and signed-index theorems, using
+\(c^2\mid I\), \(c>2R\), \(c>2p\),
+\(V\equiv-c\pmod f\) and \(V\equiv-R\pmod c\), give
+\(p=R\). In particular \(R\) is odd.
+
+\paragraph{Authenticate the first index.}
+The first square gives \(k=2\psi_{1+2v}(n_0)\).
+Comparison of the two Pell bases gives \(1\le n_0<R\).
+Because \(H\equiv-1\pmod q\), clearing (F1) in the plain chart
+gives \(q^4\mid e\). The first recurrence gives
+\(k\equiv2n_0\pmod{4v}\), and here \(q^4\mid v\).
+Consequently \(q^4\mid 2n_0-R-1\); its absolute value is less
+than \(R<q^4\), so \(2n_0=R+1\).
+
+The corrected chart has only \(q^3\mid v\). Let
+\(r_0=(R+1)/2\). The exact Lucas expansion gives
+\[
+ 2\psi_{1+2v}(m)=2m+8v\binom{m+1}{3}+32v^2Z_m,
+ \qquad Z_m\in\mathbb Z_{\ge0}.
+\]
+Thus \(\bar e\) is integral. Clearing (F1) and cancelling the
+literal factor 6 gives
+\(q^7\mid\bar e-q^4s\), hence \(q^4\mid\bar e\).
+For \(d=2n_0-R-1\) one first obtains \(q^3\mid d\), and then
+\[
+ 6(\bar e-d)=vd\{(2n_0)^2+(2n_0)(R+1)+(R+1)^2-4\}
+                    +192v^2Z_{n_0}.
+\]
+The right side is divisible by \(q^6\). For every prime
+\(\ell\mid q\), its consequence
+\(v_\ell(\bar e-d)\ge6v_\ell(q)-1\ge4v_\ell(q)\)
+also covers \(\ell=2,3\). Hence \(q^4\mid d\), and the
+same strict bound forces \(d=0\). Thus both charts give
+\[
+ n_0=(R+1)/2.                                             \tag{F3}
+\]
+
+\paragraph{Project before recovering the denominator.}
+Reduction of the literal numerator modulo \(H\) gives
+\(H\mid hK\) in the plain chart and \(H\mid6hK\) in the
+corrected chart. Only the power of \(q\) was cancelled; no coprimality
+of \(H\) and 3 is assumed.
+
+Write \(R=2r+1\), \(r\ge48\). The retained ratio theorem is
+uniform for every \(\lambda\ge1\), with
+\(A=\lambda Y(X+1)+1\) and first base
+\(1+2X\lambda^2Y^2\). Apply it at \(\lambda=q\) and use
+(F3) and \(Y<c/k<Y+1\). It gives
+\[
+ Y>X^r/3,\qquad X^{r+1}<3Y(X+1)<H.
+\]
+The universal projection therefore yields
+\(H\mid d_0h(X-2^R)(2^RX+1)\), with \(d_0=1\) or 6.
+The entire product has absolute value below \(H\):
+\[
+ q^3h|(X-2^R)(2^RX+1)|
+ <4\cdot4^rX^6+8\cdot16^rX^5<X^{r+1}.
+\]
+The last inequality holds for \(X\ge32,r\ge48\); after division
+by \(X^{r+1}\), the corner value is
+\(2^{-117}+2^{-25}<1\), and both terms decrease.
+Consequently \(X=2^R\) and \(\kappa\) is integral.
+
+Now \(q\mid X\) implies \(q=2^m\), \(m\ge5\), and
+\(R>3q>6m\), so \(q^6\mid X\) and \(q^8\mid v\).
+For the plain chart (F3) gives \(4v\mid e\); for the corrected
+chart it gives \(\bar e=32v^2Z_{r_0}\). Thus \(\rho\) is a
+nonnegative integer in both cases. Finally (F1) gives
+\(Y/q^3-WB/h\in\mathbb Z\). Reduction modulo \(q^3\)
+and \(h\) proves
+\[
+ q^3\mid Y,\qquad h\mid B,\qquad B/h\ge0.
+\]
+The retained parity, exact half-binomial rounding and fresh native-source
+reconstruction now give a syntactic ZFC refutation.
+
+\subsection{Constructive converse and exact degree}
+
+A refutation supplies canonical outer data \(q^3\mid Y\),
+\(X=2^R\), \(R\equiv3\pmod4\), \(R>3q\), and
+\(B/h\ge0\). Set \(s=Y\), and take \(w=X/q^2\) or
+\(w=X/q\) for the two charts. Use fresh bases at \(\lambda=q\),
+and form \(c=\psi_A(R)\),
+\(k=2\psi_{1+2v}((R+1)/2)\),
+\(\eta=c-kY\), \(\zeta=k-\eta\).
+The uniform ratio gives their strict positivity. A Pell matrix period
+modulo \(c^2\tau\) supplies the seed \((f_0,I_0)\), and
+\(i=I_0/(c^2\tau)>0\). Double the seed as above. Positive
+auxiliary reconstruction gives \(T_*>\alpha\), so
+\(T=T_*-\alpha>0\). Set
+\[
+ n=gy+(1+hL)t+\rho-\kappa-Y/q^3.
+\]
+This is positive because
+\(g\ge f_0>(A-1)I_0>2Xc\), whereas
+\(\kappa<Xc\) and \(Y/q^3\le Y<Xc\).
+Its carrier equals \(gy\), proving \(P=0\).
+
+For \(q_0=\beta J\), \(k_0=\eta+\zeta\), the complete leading
+forms are
+\begin{align*}
+ [P_{\rm plain}]_{312}
+   &=-2^{10}q_0^{140}w^{34}s^{78}i^{14}k_0^{44}(q_0-F)^2,\\
+ [P_{\rm corrected}]_{278}
+   &=-9\cdot2^{12}q_0^{106}w^{34}s^{78}i^{14}k_0^{44}(q_0-F)^2.
+\end{align*}
+Both have 135 terms. The highest part of \(b\) comes from \(-R\),
+not from \(c(T+\alpha)\); retaining this change is essential.
+The independent checker proves 28 exact cut identities per circuit,
+covers every gate, verifies these entire leading forms, authenticates
+all coefficient bytes, and rejects twenty deliberate actual corruptions.
+Normal and optimized Python give identical mathematical receipts.
+The complete unbounded proof and retained ordinary dependencies are
+provided in the component's \texttt{PROOF.md} and source directory.

@@ -1,0 +1,58 @@
+\section{Verification and reproducibility}\label{sec:verification}
+\input{verification.tex}
+
+The canonical equations use ordered sparse terms:
+$[a,[i_1,\ldots,i_r]]$ denotes $a x_{i_1}\cdots x_{i_r}$.
+Repeated indices are repeated factors, and an empty index list is a
+constant. Every array is finite. The evaluator accepts an ordered tuple
+of exact integers; it is not a solver or a consistency decision procedure.
+
+Every compact coefficient is included with its inherited exact
+reconstruction. The actual native tuple, not an arbitrary tuple
+satisfying a few bounds, is bound to the consistency statement.
+Checks distinguish coefficient reconstruction, literal circuit identity,
+degree certification, expansion, transformation correctness, and the
+unbounded mathematical proof.
+
+The source snapshot and archive hashes are in the ledger. The final
+manifest authenticates the deliverable bytes. The TeX source builds
+with a standard TeX Live installation; font versions and PDF metadata
+can change the PDF hash without altering the canonical equations.
+
+\section{What this iteration adds, and further research}
+
+The compact advance is the use of the explicit strong-trace congruence
+$f\equiv1\pmod c$, together with a complete signed proof, to replace
+$f^2(cT-R)-c$ by $f(cT-R)-c$. This lowers degree at the same binary operation count: the new trace
+is evaluated as $f=a+(1+a)$ using the already shared $1+a$. The new polynomial parent-to-child map gives a further
+algebraic check on completeness.
+
+The direct advance is a reusable integral projection mechanism that
+finds six hidden removable directions. The $t^t$ lemma separately
+simplifies an actual power request and its justification. The projection
+applies to more than one inherited source, and the label lemma is
+proved before any quadratic projection.
+
+The following questions are concrete directions for subsequent work.
+No unproved answer is used in this release.
+\begin{enumerate}
+\item Can a weaker auxiliary congruence yield a further compact
+trace deletion? A new index argument would be needed: the present
+residue modulo $f$ does essential work.
+\item Can a changed residual presentation expose more removable
+directions after the common radical becomes zero? Constant invertible
+row operations preserve the common radical, so they cannot suffice alone.
+\item Can a structured nonlinear coordinate change preserve quadratic
+residuals and expose more unit coordinates? A valid proposal needs an
+integral inverse or an explicit existential restoration.
+\item Can a simpler proof calculus reduce the direct front end enough
+to compensate for its arithmetic overhead and calibration? Counting
+rule schemata alone does not measure the final polynomial.
+\item Can the synchronized power compiler use the diagonal nature
+of $F=t^t$ more deeply than changing its base? Soundness must still
+cover arbitrary integer assignments.
+\item Can the radical-projection and trace-congruence lemmas first
+be formalized as reusable components, then connected to the internal-ZFC
+calibration? This would address the actual formal gap rather than
+recheck only finite numerical cases.
+\end{enumerate}

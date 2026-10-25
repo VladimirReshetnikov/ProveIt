@@ -1,0 +1,259 @@
+\section{A smaller arithmetic certificate base: \texorpdfstring{$F=t^t$}{the diagonal power}}\label{sec:selfpower}
+
+This section belongs to the direct proof-calculus construction and uses a
+different $F$ from the compact mask. The factorial-free predecessor uses
+$F=[2(t+1)]^t$ to separate proof-label multiplicities and make its binomial
+CRT modulus cover every row. The diagonal power $F=t^t$ suffices for both
+jobs. Its exact power relation is compiled into polynomial Pell residuals;
+it is not left in the final Diophantine equation.
+
+\begin{lemma}[Label balance at the diagonal power]\label{lem:labels}
+Let $t\ge1$, $F=t^t$, and $W_j=1+jF$ for $0\le j\le t$.
+Suppose $v_i,p_i,q_i\in\{0,\ldots,t\}$ for $0\le i<t$, and
+\begin{equation}\label{eq:labels}
+ \prod_{i<t}W_{v_i}=(1+F)\prod_{i<t}W_{p_i}W_{q_i}.
+\end{equation}
+At every positive label $j$, its conclusion multiplicity minus its
+premise multiplicity is one at $j=1$ and zero otherwise.
+\end{lemma}
+\begin{proof}
+Discard the label-zero factors, which are one. If the two factor counts
+differ, their smaller count $r$ is at most $t$, because the left side
+has at most $t$ nonunit factors. The side with more factors is at least
+$(F+1)^{r+1}$, and the other side is at most
+$(1+tF)^r\le t^r(F+1)^r$. But $F+1=t^t+1>t^r$, a contradiction.
+Hence their counts agree, with common value $r\le t$.
+
+Replace $F$ by an indeterminate $z$. Each side is a product of $r$
+linear factors $1+jz$, where $1\le j\le t$. Its coefficient of $z^k$,
+for $0\le k\le r$, is positive and at most
+\[
+ \binom rk t^k\le t^{r-k}t^k=t^r\le F.
+\]
+For the inequality, inject the $(r-k)$-element subsets of an $r$-element
+set into ordered $(r-k)$-tuples from a $t$-element set. Thus every
+coefficient of the difference polynomial has absolute value strictly
+less than $F$. If the difference were nonzero, divide its evaluation
+at $F$ by the power corresponding to its lowest nonzero coefficient
+and reduce modulo $F$. That coefficient would be a nonzero multiple
+of $F$ of absolute value less than $F$. This is impossible.
+The products are therefore equal in $\Z[z]$, and the distinct roots
+$-1/j$ give the claimed multiplicities. When $F=1$, the coefficient
+difference bound itself already implies that the difference is zero.
+\end{proof}
+
+The strict bound is on the \emph{difference} coefficients. Bounding
+each entire product by its coefficient sum misses this improvement
+and retains the unnecessarily larger base $(t+1)^t$.
+
+\begin{lemma}[Single-conclusion flow]
+Take a finite multiset of valid Horn rules with one conclusion and at most
+two premises; pad unused premises with freely derivable truth, label zero.
+If their multiplicities have the balance in Lemma~\ref{lem:labels},
+then label one has a finite derivation.
+\end{lemma}
+\begin{proof}
+Form the closure of truth under these finitely many rule instances.
+If label one were outside, every rule whose conclusion is outside would
+have at least one premise outside. The sum of conclusions minus premises
+over outside labels would be at most zero. The prescribed balance
+instead gives one, a contradiction.
+\end{proof}
+
+This inherited flow argument explains why an unordered certificate with
+cycles does not create a false proof. It needs no ordering of the rows.
+
+\subsection{The binomial compiler still covers every row}
+
+Let $\Lambda_t=\lcm(1,\ldots,t)$ and $\mathcal R=F^2$. We need only
+\emph{numerical domination}, not $\Lambda_t\mid F$:
+\[
+ \Lambda_t\le t!\le t^t=F,\qquad \mathcal R\ge\Lambda_t^2.
+\]
+Indeed $\Lambda_t$ need not divide $t^t$: three divides $\Lambda_{16}$
+but not $16^{16}$. Avoiding this divisibility requirement was the
+purpose of the inherited factorial-free compiler.
+
+For clarity, its two prime-power facts are recalled here. Put
+$\mathcal B=\binom{\mathcal R+t}{t}$. Every full prime power
+$p^e\Vert\mathcal B$ divides some $\mathcal R+j$, $1\le j\le t$:
+Legendre's valuation formula consists of zero-one summands and its
+sum is at most $\max_jv_p(\mathcal R+j)$. Conversely, each row $j$
+has a full prime power of $\mathcal B$ exceeding $t$. Since
+$\mathcal R+j>\Lambda_t^2$, some $v=v_p(\mathcal R+j)$ exceeds
+$2\lfloor\log_p t\rfloor$. For this prime, the valuation in
+$\mathcal B$ is exactly
+\[
+ v-v_p\!\left(t\binom{t-1}{j-1}\right).
+\]
+The subtracted valuation is at most $\lfloor\log_p t\rfloor$, because
+$t\binom{t-1}{j-1}\mid\Lambda_t$. This classical denominator bound
+also follows from Farhi's binomial lcm identity~\cite{farhi}.
+The resulting full prime power therefore exceeds $t$ and identifies
+the row uniquely. The first fact covers \emph{every prime} in the
+converse CRT construction, while the second covers \emph{every row}
+in soundness. Both remain valid with $F=t^t$.
+
+\subsection{Parity and cofinal completeness}
+
+The retained horizon is $t=16+h_0^2$. For completeness choose the
+cofinal subfamily with even $h_0$, so $t$ is even. Then
+\[
+ v_2(F)=t\,v_2(t)\ge t.
+\]
+Thus $F$ and the beta base $y=F(2u+1)^2$ are even.
+Let $O$ be the odd part of $t!$. Choose $2u+1$ to be a sufficiently
+large positive odd multiple of $O$. Since $v_2(F)\ge t>v_2(t!)$,
+this makes $y$ an even multiple of $t!$, as required by the inherited
+pairwise-coprime beta-modulus construction. This choice supplies the
+missing odd prime factors; it does not incorrectly assume $t!\mid t^t$.
+The beta moduli $1+(j+1)y$ are all odd, so their CRT progression
+admits arbitrarily large even representatives for the beta code.
+The binomial modulus $\mathcal B$ is odd: since
+$v_2(F^2)>\lfloor\log_2t\rfloor$,
+$v_2(F^2+j)=v_2(j)$ for $1\le j\le t$, and the numerator and $t!$
+have equal two-adic valuations. All inherited CRT parity choices
+remain available.
+
+Soundness imposes no new evenness condition on an arbitrary satisfying
+horizon. The independent audit examines each use of the old base
+$[2(t+1)]^t$, rather than replacing it in the formula and assuming
+all estimates survive. The needed size bound follows already from
+$F=t^t\ge16^{16}=2^{64}$ at $t\ge16$, together with
+$F\ge\Lambda_t$. The source edit also changes the actual power-call
+base and the shared frame metadata, which are checked separately.
+
+\section{Eliminating common quadratic directions}\label{sec:radical}
+
+The second direct improvement is algebraic and reusable. An ordinary
+monic substitution can raise degree: replacing a variable by a quadratic
+expression where it appears quadratically elsewhere may create quartic
+residuals and an eighth-degree sum of squares. Instead, we find directions
+along which \emph{every} residual's quadratic part is constant.
+
+Write
+\[
+ R_j(\boldsymbol x)=c_j+\ell_j(\boldsymbol x)+Q_j(\boldsymbol x),
+\]
+where $\ell_j$ and $Q_j$ are homogeneous of degrees one and two.
+Let $H_j$ be the integer Hessian matrix of $Q_j$; a term $a x_r^2$
+contributes $2a$ in its diagonal position.
+
+\begin{definition}
+The common quadratic radical is
+\[
+ \mathcal K=\bigcap_j\ker_{\Q}H_j\subseteq\Q^n.
+\]
+\end{definition}
+
+\begin{theorem}[Integral radical projection]\label{thm:radical}
+Suppose $\boldsymbol d\in\Z^n\cap\mathcal K$ has $d_v=1$ at a
+coordinate $v$, and $\ell_r(\boldsymbol d)=\varepsilon\in\{1,-1\}$
+for a residual $r$. The common integer zero set of the system is then
+in explicit polynomial bijection with the common integer zero set
+of $m-1$ quadratic residuals in $n-1$ coordinates.
+\end{theorem}
+\begin{proof}
+Make the integral coordinate change
+\[
+ x_v=y_v,\qquad x_w=y_w+d_wy_v\quad(w\ne v).
+\]
+Its inverse is $y_v=x_v$, $y_w=x_w-d_wx_v$, so it is unimodular.
+Since $H_j\boldsymbol d=0$, the quadratic part of every transformed
+residual is independent of $y_v$. Each transformed residual is
+\[
+ S_j(\widehat{\boldsymbol y})+\ell_j(\boldsymbol d)y_v,
+\]
+where the hat omits coordinate $v$ and $S_j$ is quadratic.
+The selected row has the unique integral solution
+$y_v=-\varepsilon S_r$. Substituting in all other rows gives
+\[
+ S_j-\varepsilon\ell_j(\boldsymbol d)S_r,
+\]
+still quadratic. Delete the selected row and coordinate.
+Restriction maps an old zero to a new zero. Restoring $y_v$ by
+the displayed expression and undoing the shear gives its unique
+inverse. All maps have integer coefficients.
+\end{proof}
+
+The sum of squares still has degree at most four. Its polynomial need not equal the
+old polynomial; the zero sets correspond. This distinction matters
+when comparing collected term counts and coefficient heights.
+
+\subsection{A small example}
+
+For
+\[
+ R_1=(x+y)^2+z-1,\qquad R_2=(x+y)^2+x+2y,
+\]
+the direction $(1,-1,0)$ belongs to both Hessian kernels. Substituting
+$x=u$, $y=v-u$ gives $R_1=v^2+z-1$ and $R_2=v^2+2v-u$.
+The second row restores $u=v^2+2v$, leaving only $v^2+z-1=0$.
+Both the shear and the restoration are integral. The large certificates
+use exactly this mechanism.
+
+\subsection{The six actual projections}
+
+At every stage, the supplied certificate records the ordered variable
+names, the integer radical direction, the unit coordinate, the selected
+row, the shears, the quadratic restoration, and the retained-coordinate
+map. Each branch uses six such projections. Each step deletes exactly
+its selected coordinate and row; no further unused variable is discarded
+at this stage.
+
+The independent checker verifies $H_j\boldsymbol d=0$ for every row,
+the unit slope, both coordinate identities, the restored pivot equation,
+and every substituted residual as an exact polynomial identity.
+It expands and collects the final sum of squares. Earlier preprocessing
+may remove unused coordinates; that separate existence-of-zeros step
+is not described as a bijection of all raw assignments.
+
+The search computes rational kernels and clears denominators, but its
+output certificate is integral. No search heuristic is a mathematical
+premise. Exact modular rank certificates show that the final stacked
+Hessian matrix has full column rank modulo $101$ in all three branches.
+The corresponding integer minor is nonzero, so the common radical is
+zero over $\Q$. There are no further directions of this particular type
+at these charts. This is not a global minimality statement.
+
+\section{From proof calculus to the fixed integer quartics}
+
+The direct branch uses the numerical proof calculus $C_{222}$. The
+retained source compiles its finite numerical Horn rule families, an
+unordered flow certificate, bounded range assertions, binomial CRT
+row selection, and a synchronized Pell power representation. The
+result is a system of quadratic residuals with fixed integer coefficients.
+It has no Turing machine coefficient tuple and does not invoke Jones's
+universal polynomial.
+
+The $235$- and $236$-variable branches begin with the factorial-free
+compiler~\cite{factorialfree}, change the power request to $t^t$ by
+Section~\ref{sec:selfpower}, and apply the six radical projections.
+Their support tradeoff reflects an earlier dense affine elimination
+used only in the $235$ branch. The $234$-variable branch applies the
+six projections to the shared-factorial-error quartic~\cite{sharederror};
+it does not claim to remove that branch's factorial identity.
+
+The relevant chain, formalizable internally in ZFC, is
+\[
+ \begin{gathered}
+  \text{an integer zero of the final quartic}\\
+  \Longleftrightarrow\text{a valid compiled arithmetic certificate}\\
+  \Longleftrightarrow\text{a finite }C_{222}\text{ refutation}\\
+  \Longleftrightarrow\neg\Con(\mathrm{ZF})
+  \Longleftrightarrow\neg\Con(\mathrm{ZFC}).
+ \end{gathered}
+\]
+The last step is syntactic equiconsistency, using the retained
+constructible-model calibration. It does not assume a transitive
+model or an externally standard model. The archived calibration
+review identifies the source interfaces on both sides.
+
+An external proof-assistant theorem about standard numerical objects
+and an encoded object-language ZFC derivation are different artifacts.
+This release supplies ordinary arguments formalizable in ZFC and
+retains the inherited formal-interface sources. It does not claim
+that every stage has been newly elaborated as a Lean, Rocq, or
+object-ZFC proof term. A finite Python replay authenticates coefficients
+and transformations; it does not replace unbounded Pell, CRT, and
+syntactic calibration arguments.

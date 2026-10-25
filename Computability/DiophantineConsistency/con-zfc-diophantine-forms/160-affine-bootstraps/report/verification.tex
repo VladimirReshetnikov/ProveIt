@@ -1,0 +1,34 @@
+The frozen finite checks passed in ordinary and optimized Python modes.
+The ordinary run also regenerated all 37 generated JSON files in a fresh
+temporary directory and compared them byte for byte with the archive.
+No external Python package is required for the polynomial checks.
+
+\begin{itemize}[leftmargin=*]
+\item The source checker verifies every new source edit, the complete
+      37-atom/33-coordinate frame ledger, 18 inherited Horn identities,
+      and 205 or 206 monic projections, depending on the profile.
+\item Each final endpoint has six coordinate shears, five affine-exposure
+      operations, and three or four affine projections. Every final
+      residual row operation is checked exactly over the integers.
+\item The independent collector recomputed all six delivered quartics
+      (two intermediate systems and four final endpoints), including
+      every collected coefficient and every claimed metric.
+\item The source/map checker rejected 16 deliberate corruptions across
+      its two profiles. The separate polynomial collector rejected
+      another 18 corrupted residual, coefficient, and metric examples.
+\item The literal LaTeX appendices and plain-text residual lists are
+      regenerated from the frozen equations; the export check requires
+      exact equality with the supplied text.
+\end{itemize}
+
+From the unpacked package root, run:
+\begin{verbatim}
+python3 -B verify.py
+python3 -B verify.py --rebuild
+python3 -B -O code/verify_endpoints.py
+sh build_report.sh
+\end{verbatim}
+The first command checks the archive manifest and all finite certificates.
+The second additionally rebuilds the 37 JSON files. The third verifies
+that the checks do not depend on Python assertions. The last command
+requires a standard pdfLaTeX installation and rebuilds this report.

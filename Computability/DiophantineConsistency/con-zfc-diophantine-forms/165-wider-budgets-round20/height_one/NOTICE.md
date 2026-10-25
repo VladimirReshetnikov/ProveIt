@@ -1,0 +1,9 @@
+# Attribution, provenance and scope
+
+The credited Round17 affine refactorizer, incidence-local alias contractor, literal printer and predecessor compiler are preserved under upstream/ with their license/vendor notice. Released upstream files remain byte-identical to the Round19 inputs. network_compile.py and normalize.py are unchanged signed-incidence routines. INHERITED_NETWORK_PROOF.tex and INHERITED_POLARIZATION_PROOF.md retain prior complete algebraic proofs.
+
+Round20 additions: guard_dummies.py replaces exclusive equality dummies by products with existing anchored unit aliases; flow_contract.py deletes internal tree flows; pipeline.py composes and cleans semantic certificates; check_steps.py independently verifies literal substitutions and quotient graphs; check_network.py independently reconstructs the new equality penalty from square differences. spread.py is extended only to expand that new penalty. build.py and verify.py provide deterministic final replay and mutation controls.
+
+The new original241 and original242 sources are byte-identical to signed/exposed241 and signed/power_exposed242 respectively in the enclosing release. The retained original247/263/285 sources are byte-identical to the explicitly bound height_sources/ inputs. SOURCE_BINDINGS.json pins all hashes and source-proof interfaces. Their finite-refutation calibration remains inherited; the surrounding release closes these interfaces using the signed source proof and authenticated historical source adapter.
+
+Finite verification establishes exact algebraic facts, not consistency. No end-to-end new formal-kernel certification, global optimum, exhaustive frontier or literature-priority claim is made. Fixed selections and graph parameters define concrete literal equations and are not variables in those equations.

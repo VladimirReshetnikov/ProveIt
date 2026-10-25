@@ -1,0 +1,124 @@
+\subsection{A smaller power base in the factorial-free alternative}
+A separate companion starts from the incoming Factorial-free binomial CRT
+source rather than from the shared-factorial-error source. Its retained
+prime-power separation theorem uses
+\[
+ R\ge\operatorname{lcm}(1,\ldots,t)^2,\qquad
+ B=\binom{R+t}{t},
+\]
+to obtain a suitable full prime-power factor for every row, and to assign
+every prime-power factor of $B$ to a row for reverse CRT completeness.
+Its product-label recovery originally required a larger evaluation point.
+The following elementary refinement permits a simpler authentic power
+request without changing its local row rules.
+
+\begin{lemma}\label{lem:power-label}
+Let $t\ge2$ be an integer and $F=t^t$. Suppose two multisets of labels
+from $\{1,\ldots,t\}$ have equal products of weights $1+jF$, and at
+least one multiset has cardinality at most $t$. Then the multisets agree,
+including multiplicities.
+\end{lemma}
+\begin{proof}
+First the cardinalities must agree. If the smaller count is $d\le t$
+and the larger count is at least $d+1$, the larger product is at least
+$(F+1)^{d+1}$, whereas the smaller is at most
+\[
+ (1+tF)^d\le t^d(F+1)^d.
+\]
+This contradicts $F+1>t^t\ge t^d$, including $d=0$.
+Thus both cardinalities are the same $d\le t$.
+
+Let $A(z),B(z)$ be the corresponding products of $d$ factors $1+jz$.
+When $d=0$, both polynomials are one. Otherwise every coefficient from
+degree zero through $d$ is positive, and for $0\le k\le d$ it is at most
+\[
+ \binom dk t^k=\binom d{d-k}t^k
+       \le d^{d-k}t^k\le t^d\le F.
+\]
+Consequently every coefficient of $A-B$ has absolute value strictly less
+than $F$: both coefficients being subtracted lie in $\{1,\ldots,F\}$.
+A strict upper bound on either coefficient separately is unnecessary.
+If $A-B$ were nonzero, divide it by its lowest nonzero power of $z$.
+The resulting nonzero constant coefficient has magnitude less than $F$,
+so evaluation at $F$ cannot vanish modulo $F$. This contradicts
+$A(F)=B(F)$. Hence $A=B$. The distinct labels give distinct roots
+$-1/j$, and unique factorization over $\Q$ recovers their multiplicities.
+Labels zero, if allowed by the arithmetic convention, can first be
+discarded because their weight is one.
+\end{proof}
+
+For this companion choose the cofinal even horizon
+\begin{equation}\label{eq:power-horizon}
+ t=16+2h_0^2,\qquad F=t^t,
+\end{equation}
+using the already present genuine power request at index $t$ with base
+$t$. These are the meanings of existing quadratic power certificates,
+not variable-exponent gates in the final polynomial. The base is an
+existing register, so its expression no longer needs the incoming
+$2(t+1)$ construction. The literal delta consists of two raw rows: $t_0=h_0^2$ becomes
+$t_0=2h_0^2$, and the growth base $2t_0+34$ becomes $t_0+16$.
+Every horizon use inherits its changed value through the same shared
+$t_0$ register. The rebuilt frame includes the actual new base and every
+other required request atom; the independent source-delta checker verifies
+that complete propagation.
+
+We check all new arithmetic compatibility conditions. For $t\ge16$,
+$F=t^t>t!$, $F\ge16^{16}>2^{32}$ and
+$v_2(F)=t\,v_2(t)\ge t$, because $t$ is even.
+Taking $R=F^2$ therefore exceeds the retained CRT threshold.
+For $1\le i\le t$, the inequality
+$v_2(F^2)>\log_2t\ge v_2(i)$ gives
+$v_2(F^2+i)=v_2(i)$. Hence
+\[
+ v_2\!\left(\binom{F^2+t}{t}\right)
+ =\sum_{i=1}^t v_2(F^2+i)-v_2(t!)=0,
+\]
+so $B$ is odd, as required by the source's representative parity choices.
+
+In completeness the retained beta spacing has the form
+$y=F(2w+1)^2$. Choose the odd factor divisible by the odd part of $t!$
+and arbitrarily large within that odd divisibility class. Since
+$v_2(t!)<t\le v_2(F)$, this makes $y$ an arbitrarily large even
+multiple of $t!$. The original beta CRT, even-code and odd-square radix
+construction therefore remains available. The new horizon is cofinal,
+and the retained padding theorem extends any finite proof to an admissible
+horizon. The original exclusion of the boundary $y=F$, using the zero
+initial accumulator and the terminal accumulator one, is unchanged.
+All other quantitative arguments use only the now verified bounds
+$F>t!$, $F\ge7$, $F>2^{32}$ and the retained endpoint inequalities
+$x\ge F+1$ and $x\ge2+(t+1)y$.
+
+The power companion also widens its eleven-remainder norm from
+$M^2=1+4\sum R_i^2+G$ to $M^2=2\sum R_i^2+G$.
+Here the retained odd-square radix gives $q\ge1$ independently.
+The authenticated positive $F=t^t$ gives $y\ge F$, and the numerator
+requests give nonnegative actual representatives and $H\ge2$.
+The raw encoded-index row excludes $B=0$. The self-radix request then
+forces $x\ge0$; the last beta endpoint excludes $x=0$, and the first
+excludes a negative initial quotient. Hence
+$x\ge F+1$ and $x\ge2+(t+1)y$, and
+$q=|BH|^x\ge2^x>1$. Thus $M=q^x\ne0$ before using the new sphere.
+The same coefficient estimates as in the retained source, using
+$F\ge t$, $F\ge7$ and these endpoint bounds, place every canonical
+low remainder below $L_i/32$. Dividing each normalized row by its
+nonzero ratio gives an integral $r_i$ with
+$|r_i|\le L_i/\sqrt2<3L_i/4$. The divisible difference from the true
+remainder has magnitude less than $25L_i/32<L_i$, so it vanishes.
+The original bound $|B|<q/2$ and the exact factorial-binomial
+coefficient bound $C_*<q/32$ still give $B=C_*>0$ without circularity.
+For completeness, the canonical remainders give
+$2\sum R_i^2<22M^2/1024<M^2$, so their nonnegative integer gap has a
+$G$ representation. This proves both directions of the additional sphere
+change for this separate source.
+
+For soundness, the unchanged signed bootstrap authenticates the request
+$F=t^t$, so the retained prime-power theorem applies at $R=F^2$ and
+Lemma~\ref{lem:power-label} supplies the product-label injectivity.
+The unchanged local calculus and calibration recover a finite refutation.
+Conversely, the cofinal and parity construction just checked supplies all
+new power-base and horizon witnesses, and the retained reverse CRT theorem
+supplies all other witnesses. Thus this companion has the same existence
+interpretation, but by its own complete source route. It is not claimed
+to be a coordinate bijection with the shared-error source, and it does
+not impose $F=t!$. No least-possible evaluation point or global
+coefficient optimum is asserted by Lemma~\ref{lem:power-label}.

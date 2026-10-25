@@ -1,0 +1,227 @@
+\section{Canonical CRT signs and common-square extraction}
+\label{sec:round20-natural}
+
+Every coordinate in this section independently ranges over
+\(\mathbb N=\{0,1,2,\ldots\}\). The selected ordinary quartics are
+\(P(\mathbf z)=\sum_j R_j(\mathbf z)^2\), with every quadratic residual
+and every expanded integer coefficient supplied literally in the packet.
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Endpoint & Variables & Rows & Quartic terms & Height\\
+\hline
+Previous dimension control &219&171&8,267&130,686,428\\
+Previous sparse control &221&173&5,253&65,867,916\\
+New \texttt{natural206} &206&158&8,210&130,686,376\\
+New \texttt{balanced207} &207&159&5,278&69,238,087\\
+New \texttt{sparse208} &208&160&5,198&65,866,712\\
+\hline
+\end{tabular}
+\end{center}
+The new dimension and sparse equations improve their corresponding controls
+in all four displayed metrics; the 207-variable equation is a middle tradeoff.
+These are measured constructions, not claims of global optimality.
+Relative to the retained ordinary calibration from C222 through ZF to ZFC,
+each has a natural
+zero exactly when a finite syntactic ZFC refutation exists. Hence ZFC proves
+its no-natural-zero sentence equivalent to \(\operatorname{Con}(\mathrm{ZFC})\).
+This is neither a consistency proof nor a newly kernel-checked end-to-end
+logical derivation. Factorials, Pell sequences and powers below belong to
+the ordinary proof, not to the syntax of the fixed released quartics.
+
+\subsection{An exact factorization of the unchanged local source}
+
+Use the old source's representative-minus-one coordinates \(a,b,c,d,S,S'\).
+Write
+\begin{align*}
+ \delta_0&=S-S',& \delta_i&=S-S'-m_i\quad(1\le i\le8),\\
+ \delta_{11}&=(a-c)^2(b-c)^2-(d+2)^2,
+ &\delta_{12}&=S-S'-\texttt{mul.358},\\
+ \delta_{13}&=\texttt{mul.363}-\texttt{mul.369},
+ &\delta_{14}&=\texttt{mul.372}-\texttt{mul.373}.
+\end{align*}
+Here \((m_1,\ldots,m_8)\) are the already existing gates
+\[
+ (\texttt{mul.339},\texttt{mul.341},\texttt{mul.343},\texttt{mul.345},
+ \texttt{mul.347},\texttt{mul.349},\texttt{mul.351},\texttt{mul.353}).
+\]
+The old axiom/rule disjunction is the literal nonnegative polynomial
+\[
+ R=\left(\prod_{i=0}^{8}\delta_i^2\right)
+       (\delta_{11}^2+\delta_{12}^2)\delta_{13}^2\delta_{14}^2.
+ \tag{C1}
+\]
+The complete local source adds the two unchanged beta-difference squares,
+\(R+\beta_1^2+\beta_2^2\). No change to the logical calculus is being made.
+
+Define eleven oriented affine factors and two useful expressions by
+\[
+ g_i=-\delta_i\ (0\le i\le8),\qquad
+ g_9=-\delta_{13},\qquad g_{10}=\delta_{14},\qquad
+ Q=\prod_{i=0}^{10}g_i,\quad E=(a-c)(b-c),\quad D=d+2.
+\]
+Ten quadratic product rows construct \(Q\) successively, starting with
+\(g_0g_1\); affine factors require no new coordinate. One row constructs
+\(E\). Three more quadratic rows construct
+\[
+ Z_0=Q(E-D),\qquad Z=Z_0(E+D),\qquad T=-Q\delta_{12}.
+ \tag{C2}
+\]
+Replace the old evaluation input \(R\) by \(Z^2+T^2\), retaining the full
+source-evaluation row and its natural quotient. The integer identities
+\[
+ Q^2=\left(\prod_{i=0}^{8}\delta_i^2\right)\delta_{13}^2\delta_{14}^2,
+ \qquad (E-D)(E+D)=E^2-D^2=\delta_{11}
+\]
+give \(Z^2+T^2=R\), without any sign assumption.
+Thus \emph{the entire local source polynomial is unchanged}, as are its
+majorant, prime-power decoding and logical interpretation.
+
+The old fifteen square gates, two inequality-product gates and eleven
+disjunction-product gates become fourteen product gates: a saving of
+fourteen coordinates and fourteen rows before contraction. The new raw
+source has \(310\) natural coordinates and \(262\) quadratic rows. All
+thirteen nonanchor Pell seeds, eleven digit requests, six exact powers,
+source endpoints, semantic frame and derived label polynomial are retained.
+
+\subsection{Pointwise soundness and the genuine natural-domain issue}
+
+From any natural zero of the new source, restore each old square as its
+literal square and restore the old nonnegative product chain in order.
+These values are natural regardless of the signs of the affine factors.
+The identity above restores the old evaluation row; every other old row
+was retained verbatim. We have therefore obtained a natural zero of the
+complete old source, to which its established soundness proof applies.
+
+Conversely, an arbitrary old tuple need not make the new partial products
+nonnegative. Consequently the transformation is \textbf{not claimed to be
+an orthant automorphism or a pointwise extension of all old witnesses}.
+The required completeness direction starts from a finite refutation and
+uses the freedom in choosing its canonical CRT representatives.
+
+\subsection{Cofinal sign choices preserve every CRT condition}
+
+First perform the parent's even descending construction, before choosing
+the encoded column representatives:
+\[
+ t=2t_0+4,\quad F=t!,\quad n=F^2-1,\quad V=n^t,\quad y=V-1.
+\]
+Choose \(t\) larger than the finite proof-tree data and all its local labels.
+There are at most \(t\) pending nontruth vertices, each with weight at most
+\(1+tF<n\), so every pending state is at most \((1+tF)^t<V\), hence at
+most \(y\). Since \(t\) is even, \(F\mid y\). The beta moduli
+\(1+(i+1)y\), \(0\le i\le t\), are pairwise coprime: a common prime
+would divide a positive index difference at most \(t\), and thus \(F\)
+and \(y\), contradicting its division of either modulus. Beta CRT gives
+\(x\) with the prescribed pending states and endpoint residues; enlarge
+\(x\) within its class as required. Define
+\[
+ B=\binom nt,\qquad N=B^x.
+\]
+In particular, \(N\) has been fixed before any subsequent lift.
+
+The inherited valuation construction uses positive representatives modulo
+\(N^2\). Adding an arbitrary multiple of \(N^2\) to any minus-one
+coordinate preserves its required residue, positivity and precision; there
+is no parity or square restriction on these natural coordinates.
+Choose the representatives for \(c,d,S,u,v\) and the encoded row index
+first. Next choose \(b>c\) in its prescribed class and then \(S'>S\)
+in its prescribed class. Finally choose \(a\) in its class so large that
+\begin{gather*}
+ a>c+d+3,\qquad
+ a\ge\text{every previously fixed nonanchor index and coordinate},\\
+ (S+1)(1+F(a+1))>(S'+1)(1+F(b+1)).
+ \tag{C3}
+\end{gather*}
+All these are lower bounds on \(a\); a full tail of its arithmetic
+progression satisfies them. There is no dependence of \(N\) on these choices.
+
+We now verify every new factor's sign. The factors \(g_0=S'-S\) and
+\(g_i=S'-S+m_i\), \(1\le i\le8\), are positive, as is
+\(-\delta_{12}=S'-S+\texttt{mul.358}\). To check the two remaining
+factors, set \(M=\texttt{mul.36}\). The literal inherited rows give
+\begin{align*}
+ \texttt{mul.363}&=(S'+1)(1+F(b+1)),\\
+ \texttt{mul.368}&=(S+1)(1+F(a+1)),\\
+ \texttt{mul.369}&=(1+F(4+4b+2M))\texttt{mul.368}.
+\end{align*}
+Thus (C3) implies \(g_9=\texttt{mul.369}-\texttt{mul.363}>0\).
+Also
+\begin{align*}
+ \texttt{mul.372}&=(S'+1)(1+F(6+4b+2M)),\\
+ \texttt{mul.373}&=(S+1)(1+F(b+1)).
+\end{align*}
+Their inner weight difference is \(F(5+3b+2M)>0\); combined with
+\(S'>S\), this gives \(g_{10}>0\). Finally \(b-c\ge1\) and
+\(a-c>d+3\) imply \(E>D>0\). Every partial product, \(Z_0,Z,T\)
+in (C2) is therefore natural.
+
+The ordinary local residues are unchanged by these lifts, so the inherited
+precision argument still makes the nonnegative source a multiple of \(N\).
+Its quotient is natural. This also holds for its exactly equal new expression.
+
+\subsection{The anchor is chosen after the signs, without a cycle}
+
+There is an important constraint beyond CRT residues: the semantic Pell
+anchor must dominate every requested seed index. It is not enough merely
+to enlarge the self-sized radix. Here the actual source anchor is unchanged:
+\[
+ J=7+4b+2M+\texttt{add.402},\qquad
+ M=(a+b)^2+5(a+b)+6.
+\]
+All remaining terms are nonnegative, so
+\(J\ge2(a+1)^2\). Condition (C3) makes every nonanchor seed index at
+most \(a+1\), including the index \(a+1\) itself. Hence
+\[
+ J\ge2\max_i k_i,
+\]
+exactly the inherited sufficient condition for natural completeness of the
+one-row error-square cap. No lift of \(S\) or \(S'\) occurs afterward;
+neither is required to exceed \(J\) or a derived syntax weight.
+
+Only now define the positive sum \(S_{\rm base}\) of the independent
+representatives, with its fixed offset, and choose
+\(q=(NS_{\rm base})^x\). Every representative is below \(S_{\rm base}\),
+whatever the size of its lift. The unchanged constructor ledger gives
+\(J\le S_{\rm base}^{\ell}\), \(\ell=2^{22}\). The inherited even-horizon
+bootstrap gives \(y>2^{36}\), \(x>2^{38}\), and \(\ell(t+1)<x\).
+Thus all required nonfactorial low coefficients are at most
+\(S_{\rm base}^x\), and factorial low coefficients are at most \(V<N\).
+The four pooled digit groups, of sizes \(2,5,2,2\), remain carry-free since
+\[
+ 5S_{\rm base}^x+N<N^xS_{\rm base}^x=q.
+\]
+Their low-remainder sums are at most one less than the respective denominator,
+so all pooled slacks are natural.
+
+Compute the remaining denominator powers and frame \(W\) next; choose its
+lower Pell witness, a sufficiently large \(A\) in the common-root class,
+and then all principal, positive-center auxiliary, comparison and seed Pell
+witnesses. The anchor inequality supplies the natural merged-error quotient.
+None of these later choices changes the already fixed indices or CRT lifts.
+This completes the acyclic construction of a new natural zero.
+
+\subsection{Independent finite certification and artifacts}
+
+The source checker independently identifies all 28 removed gate definitions,
+all 14 new gate definitions, the evaluation-row replacement and all 247
+otherwise unchanged rows. It verifies the factorization compositionally by
+exact integer identities, not by random evaluations. Corruption controls
+include deleting the source-evaluation row, changing a factor, widening the
+domain to integers and modifying an unrelated row.
+
+The subsequent monic eliminations are separately and pointwise certified:
+every eliminated coordinate is an integer polynomial equal to a positive
+rational sum of affine squares plus nonnegative monomials. Independent
+replay proves their natural restorability and every substitution. They yield
+\(206/158\), \(207/159\) and \(208/160\) controls. Finally 25, 30 and 33 invertible integer
+\emph{row} shears produce the selected endpoints in the table; coordinates
+and their natural domains do not change. Exact inverse operations, every
+expanded coefficient, refreshed metrics and printed residuals parsed back
+from TeX are verified both normally and with Python assertions disabled.
+
+The full proof, complete literal quartics, pre-basis controls, certificates,
+offline rebuild and frozen ordinary arithmetic/logical closure are included
+under \texttt{natural/}. The new theorem uses canonical sign choices only
+for completeness; soundness and the later certified contractions remain
+pointwise. This distinction is essential to the reduction.
