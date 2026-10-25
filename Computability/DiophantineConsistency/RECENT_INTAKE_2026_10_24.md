@@ -1402,3 +1402,21 @@ and separate root replay packet are sealed; see the
 [root acceptance](reviews/round15-sign-guard-projections-root-peer.md).
 No global optimum or new internal-ZFC/Lean theorem is claimed. The canonical
 ten-positive92/283 PDF and TeX remain the separate compact display. Lean stays paused.
+
+
+## A private-helper reflection replaces two guards by one
+
+The [new ordinary normalization](research/round15-helper-reflection/PROOF.md)
+replaces d>=0 and V>=1 by the single affine bound v255>=4. An explicit
+five-coordinate involution preserves all446 body residuals up to sign and
+fixes every semantic/frame/power port. It restores the two old signs before
+the matching F-only or joint theorem is applied. This is an existential
+normalization of private witnesses, not a fixed-whole-body guard deletion.
+
+Both fresh root normal/optimized receipts exactly match the author: all446
+row identities,the full body-SOS identity,522 coordinate involutions,all38
+old graphs/privacy and18 actual corruption controls pass. The complete
+ordinary packet is sealed; see the
+[root acceptance](reviews/round15-helper-reflection-root-peer.md). A separate
+materialization is required for any projected count. The accepted436 quartic,
+cap prototype's initial helper policy and canonical PDF/TeX remain preserved.
