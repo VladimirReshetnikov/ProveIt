@@ -2625,3 +2625,21 @@ binds the59-payload candidate and21-payload fresh verification packet.
 The previous complete66/157 page remains available. Further compact-table
 source reductions are being prepared separately; they are not silently
 included in this render. Lean remains paused and the iterative goal active.
+
+## Early Pell-index recovery does not remove the first norm's later role
+
+The [ordinary analysis](research/fifteen-first-norm-necessity/README.md)
+passes [ROOT](reviews/fifteen-first-norm-necessity-ordinary-root.md) and
+[independent review](reviews/fifteen-first-norm-necessity-ordinary-peer.md).
+Positivity of the existing h already gives the index window needed to
+recover the main Pell index without N0. The first norm still supplies a
+different index relation needed by the later growth and population proof,
+even if the exact power X=2^R is separately available.
+
+An explicit free-port family satisfies all remaining factors with exact
+X=2^R, yet admits no completion of N0. Thus those ordinary hypotheses do
+not uniformly justify its deletion. This is a pointwise free-port
+obstruction, not a false zero or an existence-level disproof for the
+actual indexed coefficient tuple; deletion there remains unresolved.
+No numerical witness tuple was generated, no smaller complete endpoint
+is claimed, and the maintained PDF/TeX and paused Lean work are unchanged.
