@@ -1784,3 +1784,21 @@ also checked the entire partial coordinate/row maps,180 matched monic steps,
 [root acceptance](reviews/round15-helper-guard-projections-root-peer.md).
 The plain chart is preserved too, with a14-point quartic-height increase.
 Earlier equations and canonical PDF/TeX remain preserved. Lean stays paused.
+
+
+## Shared Pell cap reaches359 integer variables
+
+The [complete shared-cap quartic](research/signed-pell-cap-projections/data/centered/equation.json)
+has359 integer variables,222 rows,6058 terms and exact degree4, with height
+128446 and row height256. It removes74 variables and65 rows compared with
+the433 helper form, while adding1452 terms. Both forms remain available.
+
+The complete ordinary source theorem now composes with explicit Horn witness
+overwrite maps,147 certified monic restorations and the actual free list
+[133,135]. Four fresh root collector/rebuild modes and all eight retained
+receipt/stdout files exactly match the author; each collector rejects34
+actual corruptions. Both whole polynomials, translations, centering and
+ordinary/native endpoint bindings pass. See the
+[root acceptance](reviews/signed-pell-cap-projections-root-peer.md).
+Further cap/guard relaxations remain separate proposals. The compact canonical
+PDF/TeX and earlier equations are preserved. Lean stays paused.

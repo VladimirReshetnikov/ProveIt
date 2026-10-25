@@ -53,18 +53,19 @@ is preserved separately from the canonical92/283 page. Its complete
 actual-formula and rendered-page checks; see the
 [root review](reviews/one-page-qcube86-root-peer.md).
 
-For direct degree-four equations, the [complete helper-normalized reduction](research/round15-helper-guard-projections/full-data/joint_helper/centered/equation.json)
-now reaches **433 unrestricted integer unknowns**, with4,606 terms and height
-128,446. The private-helper normalization and omitted front signs have complete
-ordinary proofs; independent full normal/optimized coefficient checks and
-byte-exact rebuilds pass. See the
-[root acceptance](reviews/round15-helper-guard-projections-root-peer.md).
-The436 and439 intermediates and the full
+For direct degree-four equations, the [complete shared-cap form](research/signed-pell-cap-projections/data/centered/equation.json)
+now reaches **359 unrestricted integer unknowns**, with222 rows,6,058 terms
+and height128,446. Its ordinary source theorem, complete Horn/projection
+inverses, independent normal/optimized coefficient checks and byte-exact
+rebuilds pass; see the [root acceptance](reviews/signed-pell-cap-projections-root-peer.md).
+It reduces variables and rows while increasing terms. The
+[433-variable helper form](research/round15-helper-guard-projections/full-data/joint_helper/centered/equation.json)
+retains the lower4,606-term count at the same heights. The436/439 intermediates,
 [442-variable parent](con-zfc-diophantine-forms/125-unified-binomial-round15/direct/integer442/)
 and all inverse certificates remain preserved. Its six natural-domain
 alternatives reach329 nonnegative unknowns. The
-[preceding496-variable family](research/round14-pair-guard-projections/README.md),
-all lower-height alternatives and their complete inverse certificates remain preserved.
+[preceding496-variable family](research/round14-pair-guard-projections/README.md)
+and all lower-height alternatives remain preserved.
 The [eight-bundle intake](research/intake-5f3379063d/README.md) records the newer
 319-natural,261-natural and height-one proposals with their exact review scopes.
 
@@ -1674,3 +1675,21 @@ also checked the entire partial coordinate/row maps,180 matched monic steps,
 [root acceptance](reviews/round15-helper-guard-projections-root-peer.md).
 The plain chart is preserved too, with a14-point quartic-height increase.
 Earlier equations and canonical PDF/TeX remain preserved. Lean stays paused.
+
+
+## Shared Pell cap reaches359 integer variables
+
+The [complete shared-cap quartic](research/signed-pell-cap-projections/data/centered/equation.json)
+has359 integer variables,222 rows,6058 terms and exact degree4, with height
+128446 and row height256. It removes74 variables and65 rows compared with
+the433 helper form, while adding1452 terms. Both forms remain available.
+
+The complete ordinary source theorem now composes with explicit Horn witness
+overwrite maps,147 certified monic restorations and the actual free list
+[133,135]. Four fresh root collector/rebuild modes and all eight retained
+receipt/stdout files exactly match the author; each collector rejects34
+actual corruptions. Both whole polynomials, translations, centering and
+ordinary/native endpoint bindings pass. See the
+[root acceptance](reviews/signed-pell-cap-projections-root-peer.md).
+Further cap/guard relaxations remain separate proposals. The compact canonical
+PDF/TeX and earlier equations are preserved. Lean stays paused.

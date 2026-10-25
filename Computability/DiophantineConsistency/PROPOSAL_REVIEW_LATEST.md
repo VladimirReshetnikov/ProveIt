@@ -47,7 +47,8 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Nonnegative integers | **329** | not optimized | **4** | Unified factorial/CRT binomial, derived Cantor;253 rows,12,210 terms,height86,844,780 |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | **433** | not optimized | **4** | Private-helper normalization;287 rows,4,606 terms,height128,446; complete source and four root replays |
+| Integers | **359** | not optimized | **4** | Shared cap;222 rows,6,058 terms,height128,446; complete ordinary source and four root replays |
+| Integers | 433 | not optimized | 4 | Lower-term helper alternative;287 rows,4,606 terms,height128,446 |
 | Integers | 436 | not optimized | 4 | Preserved joint redundant-sign parent;288 rows,4,624 terms,height128,446 |
 | Integers | 439 | not optimized | 4 | F-only intermediate;289 rows,4,638 terms,height128,446 |
 | Integers | 442 | not optimized | 4 | Preserved unified-binomial parent;290 rows,4,652 terms,height128,446 |
@@ -1959,3 +1960,21 @@ also checked the entire partial coordinate/row maps,180 matched monic steps,
 [root acceptance](reviews/round15-helper-guard-projections-root-peer.md).
 The plain chart is preserved too, with a14-point quartic-height increase.
 Earlier equations and canonical PDF/TeX remain preserved. Lean stays paused.
+
+
+## Shared Pell cap reaches359 integer variables
+
+The [complete shared-cap quartic](research/signed-pell-cap-projections/data/centered/equation.json)
+has359 integer variables,222 rows,6058 terms and exact degree4, with height
+128446 and row height256. It removes74 variables and65 rows compared with
+the433 helper form, while adding1452 terms. Both forms remain available.
+
+The complete ordinary source theorem now composes with explicit Horn witness
+overwrite maps,147 certified monic restorations and the actual free list
+[133,135]. Four fresh root collector/rebuild modes and all eight retained
+receipt/stdout files exactly match the author; each collector rejects34
+actual corruptions. Both whole polynomials, translations, centering and
+ordinary/native endpoint bindings pass. See the
+[root acceptance](reviews/signed-pell-cap-projections-root-peer.md).
+Further cap/guard relaxations remain separate proposals. The compact canonical
+PDF/TeX and earlier equations are preserved. Lean stays paused.

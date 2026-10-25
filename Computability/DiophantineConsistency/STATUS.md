@@ -35,12 +35,13 @@ pass review; see the [candidate](candidates/one-page-saturated10/README.md).
 The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
 remains a different tradeoff.
 
-The complete direct quartic now has **433 unrestricted integer unknowns,
-287 rows,4,606 terms and height128,446**, after private-helper normalization
-and joint F/A sign removal. Its full ordinary source licenses, every quartic
-coefficient, inverse/free-coordinate map and four independent root replays pass;
-see the [root acceptance](reviews/round15-helper-guard-projections-root-peer.md).
-All earlier quartics and the separate compact canonical page are preserved.
+The shared-cap direct quartic now has **359 unrestricted integer unknowns,
+222 rows,6,058 terms and height128,446**, with exact degree4. Its complete
+ordinary source and all finite Horn/projection/translation layers pass four
+fresh independent root replays; see the
+[root acceptance](reviews/signed-pell-cap-projections-root-peer.md).
+The433-variable form remains the lower-term alternative, with4,606 terms
+at the same heights. Earlier quartics and the compact canonical page are preserved.
 
 The preserved fifteen-positive page prints a436-character base62 numeral
 with its entire alphabet and positional sum. Its complete coefficient
@@ -1848,3 +1849,21 @@ also checked the entire partial coordinate/row maps,180 matched monic steps,
 [root acceptance](reviews/round15-helper-guard-projections-root-peer.md).
 The plain chart is preserved too, with a14-point quartic-height increase.
 Earlier equations and canonical PDF/TeX remain preserved. Lean stays paused.
+
+
+## Shared Pell cap reaches359 integer variables
+
+The [complete shared-cap quartic](research/signed-pell-cap-projections/data/centered/equation.json)
+has359 integer variables,222 rows,6058 terms and exact degree4, with height
+128446 and row height256. It removes74 variables and65 rows compared with
+the433 helper form, while adding1452 terms. Both forms remain available.
+
+The complete ordinary source theorem now composes with explicit Horn witness
+overwrite maps,147 certified monic restorations and the actual free list
+[133,135]. Four fresh root collector/rebuild modes and all eight retained
+receipt/stdout files exactly match the author; each collector rejects34
+actual corruptions. Both whole polynomials, translations, centering and
+ordinary/native endpoint bindings pass. See the
+[root acceptance](reviews/signed-pell-cap-projections-root-peer.md).
+Further cap/guard relaxations remain separate proposals. The compact canonical
+PDF/TeX and earlier equations are preserved. Lean stays paused.
