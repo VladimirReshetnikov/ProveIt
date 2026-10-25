@@ -2514,3 +2514,18 @@ collection. These raw systems save12/11 variables against the lower-height
 327-variable centered endpoint, with more terms and larger coefficients.
 No dominance or unrun centered measurement is claimed. The maintained
 complete66/157 PDF/TeX and paused Lean work remain unchanged.
+
+## A bounded fixed translation for the new raw quartics
+
+The [ordinary plan](research/round16-common-name-centering-plan/README.md)
+passes [root](reviews/round16-common-name-centering-plan-root.md) and
+[independent review](reviews/round16-common-name-centering-plan-ordinary-peer.md).
+Exactly58 of the old centered chart's61 nonzero shifts have unique names
+in both new raw systems. The entire table specifies both new indices;
+all other shifts are zero. An optional eleven-shift comparison is separate.
+
+The whole-space integer inverse and full SOS substitution identity are
+elementary and preserve degree four and variable count. Actual coefficients,
+heights and term counts must be freshly collected. The plan pins all whole
+parents and gives a small runtime closure without the old search/producer.
+No translated equation, new code, execution or measured gain is accepted.
