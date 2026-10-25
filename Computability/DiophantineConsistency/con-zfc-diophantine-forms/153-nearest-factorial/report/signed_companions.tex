@@ -1,0 +1,197 @@
+\section{Using the full first-index modulus}
+\label{sec:indexmodulus}
+
+The signed Pell family admits a separate decrease in degree. The complete
+circuits supplied with this section have the following exact sizes; every
+unknown ranges over all integers.
+\begin{center}
+\begin{tabular}{rrrr}
+Unknowns&Old degree/operations&New degree&New operations\\\hline
+14&86/112&82&113\\
+14&94/110&90&111\\
+13&156/125&152&126\\
+11&300/148&298&150
+\end{tabular}
+\end{center}
+These are degree--cost tradeoffs. This separate branch retains the repository's native/K215 specialization; its fixed coefficient tuple must not be confused with the direct quartic, which has small literal coefficients. Their six fixed native coefficients are
+the complete source34 tuple supplied in the component, rather than new
+unknowns or an unnamed universal polynomial.
+
+\subsection{The change in the arithmetic kernel}
+The inherited signed front defines
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+ X&=qW,&Y&=v,&&\\
+ F&=(K_0+W)C-z(q-1),&&&&\\
+ R&=[q(q-F)-C](q^2-1)+(M_C+qM_F)J.&&&&
+\end{align*}
+Write
+\[
+ E=XY,\quad a=E+Y,\quad A=a+2,\quad H=4a+3,
+ \quad \Delta=A^2-1.
+\]
+Replace the old index coordinate and magnitude budget by
+\begin{align}
+ \ell&=XY^2,&k&=R+1+h\ell,&\eta&=c-Yk,\label{eq:rebasedk}\\
+ D_e&=(\mathrm{cone}_A F-q)^2+(\mathrm{cone}_B C-q)^2,&&&\notag\\
+ B_0&=k^2(q^2-D_e)-4q^2\eta^2,&&&\notag\\
+ \mathcal B_6&=Y^2B_0-k^2q^6.&&&\label{eq:rebasebudget}
+\end{align}
+The predecessors used $k=R+1+hXY$ and
+$\mathcal B_8=Y^2B_0-k^2q^8$. The first Pell radicand is unchanged
+as a function of the semantic values:
+\[
+ D_t=1+\ell(\ell+1)k^2.
+\]
+
+At any new zero the guard gives $\mathcal B_6>0$. Thus $kY\ne0$,
+$B_0>0$, and, since $B_0\le k^2q^2$,
+\begin{equation}\label{eq:rebasemagnitude}
+ |Y|>|q|^2.
+\end{equation}
+The centered-disk argument recovers the common signs of $q,F,C,q-F-C$
+and $|c/k-Y|<1/2$. Put $q_0=|q|$, $x=|X|$, $m=|Y|$.
+The authentic coefficient bounds supply
+\[
+ q_0\ge16,\qquad x\ge4q_0,\qquad
+ q_0(q_0^2-1)<R<q_0^4-2.
+\]
+The larger modulus now satisfies
+\begin{equation}\label{eq:rebasedmodulus}
+ |\ell|=xm^2>4q_0^5>3R+1.
+\end{equation}
+This replaces the predecessor's early requirement $|XY|>3R+1$.
+
+\subsection{Why the first index is still recovered exactly}
+For the Pell ordinate sequence
+$\psi_b(0)=0$, $\psi_b(1)=1$,
+$\psi_b(n+2)=2b\psi_b(n+1)-\psi_b(n)$, induction gives
+\[
+ \psi_{2\ell+1}(n)\equiv n\pmod{2\ell}.
+\]
+The unchanged first/main Pell classification yields
+\[
+ |k|=2\psi_{|2\ell+1|}(n_0),\qquad
+ |c|=\psi_{|A|}(p),\qquad p>n_0\ge1.
+\]
+The inequality $p>n_0$ follows from $|2\ell+1|>|A|$ and
+$|c|>|k|$, both consequences of the centered strip and
+\eqref{eq:rebasemagnitude}. The literal index definition gives
+\[
+ \epsilon\,2n_0\equiv R+1\pmod{|\ell|},\qquad
+ \epsilon=\operatorname{sgn}(k)\operatorname{sgn}(X)^{n_0-1}.
+\]
+By \eqref{eq:rebasedmodulus}, the positive branch has
+$n_0\ge(R+1)/2$; the negative branch has $n_0>R$.
+These are exactly the lower index bounds needed by the retained signed
+strong-rank and auxiliary step-down lemmas. They recover $p=R$.
+The negative branch is then impossible, and the congruence cannot wrap:
+\[
+ 2n_0=R+1.
+\]
+
+The signed ratio argument needs only $x\ge64$, $m\ge6$, this index
+equality and the centered strip. It consequently gives, for $R=2t+1$,
+\[
+ m>\frac{(x-3)^t}{2}-1,\qquad |H|>x(x-3)^t.
+\]
+The inherited whole-product projection now forces
+$X=2^R$ and the correct signs, and finally recovers
+$Y=(2v_{\rm scale}+1)q^3$. The new soundness proof rejoins the earlier
+$B_0$-only source, with
+\[
+ h_{\rm old}=Yh_{\rm new}.
+\]
+In particular it does \emph{not} infer $\mathcal B_8>0$ from
+$\mathcal B_6>0$ at an arbitrary zero. Fresh ternary positivity witnesses
+restore $B_0>0$ in the earlier source. This explicit distinction avoids a
+circular use of the old stronger magnitude guard.
+
+Conversely, canonical old witnesses have
+$k=2\psi_{2\ell+1}((R+1)/2)$. Hence $4\ell$ divides $k-R-1$ and the
+new $h=(k-R-1)/\ell$ is integral. Their margin gives
+\[
+ \mathcal B_6=\mathcal B_8+k^2(q^8-q^6)>\mathcal B_8>0.
+\]
+A fresh ternary representation completes the new witnesses. Thus both
+directions of the calibrated zero-existence equivalence hold.
+
+\subsection{A complete fourteen-integer polynomial of degree82}
+The only unknowns are
+\[
+ j,C,z,h,r,v,w,T,c,n,f,p_2,p_1,s\in\mathbb Z.
+\]
+Use the preceding front and define the following polynomial abbreviations:
+\begin{align*}
+ L&=\ell k,& I&=(2r+1)c^2,&Q&=\Delta(f^2-1),\\
+ V&=f^2(cT-R)-c,& M&=2q^3,&U&=MH,\\
+ K_{\rm lo}&=X(2X-3c)-2,
+ &Z&=Un+MK_{\rm lo}+H(Y-q^3),\\
+ A_c&=(Z+Uk)^2+4U(LZ-U),
+ &S_f&=f^2-\Delta I^2,\\
+ B_g&=\mathcal B_6-p_1^2-p_2^2,
+ &G&=4B_g-3,\\
+ \delta&=Q-1,&C_y&=QV^2-1,\\
+ K_s&=\delta\bigl(s(s+1)-B_g+1\bigr)-C_y,
+ &N_s&=K_s^2-G\delta C_y.
+\end{align*}
+The equation is
+\begin{equation}\label{eq:integer82}
+ \boxed{(A_c+1)S_f(N_s+1)-1=0.}
+\end{equation}
+The first factor cannot be $-1$ because $A_c$ is a square modulo4.
+The second cannot be $-1$ because $\Delta$ is0 or3 modulo4.
+Their product equation therefore forces $A_c=0$, $S_f=1$, $N_s=0$.
+
+The retained primitive odd-carrier lemma follows from
+\begin{align*}
+ &16\left([d(s(s+1)-b)-e]^2-(4b+1)de\right)\\
+ &\qquad=[d((2s+1)^2+4b+1)-4e]^2
+       -4d^2(2s+1)^2(4b+1).
+\end{align*}
+When $d\ne0$, its zero is equivalent to integral witnesses $g,u$ with
+$g^2=4b+1$, $du^2=e$, and $2s+1=g+2u$.
+Apply it to $b=B_g-1$, $d=\delta$, $e=C_y$.
+The strong equation makes $Q=\Delta^2I^2$, so $\delta\ne0$.
+Then $p_3=(g-1)/2$ and $y=u-V$ restore the omitted positivity and
+auxiliary coordinates. The inverse assignment is $s=p_3+V+y$.
+This proves the exact algebraic reduction to the changed kernel.
+
+The complete actual degree is82. One certified nonzero coefficient is
+\[
+ [j^{47}w^9v^{10}z^5f^4r^2c^4n]\,P_{82}
+       =-2^{75}3^{56}\beta^{47}.
+\]
+Every fixed coefficient has its full finite reconstruction in the supplied
+component. The complete proof of the degree90 and degree152 companions
+uses the same changed kernel and retained parity-root mergers.
+
+\subsection{The eleven-integer degree298 endpoint}
+The eleven-integer linear-cofactor family uses the same new
+$k,\mathcal B_6$. Its incoming degree300 center can be improved by the
+single integral correction
+\[
+ \Psi_{\rm new}=\Psi_{\rm old}-16rc^4U_s^2T,
+ \qquad U_s=rc^2\bigl(1+(A^2-1)c^2\bigr).
+\]
+At this scalar family's final Q41/native handoff, explicitly set
+$h_{\rm old}=Yh_{\rm new}$, so that the retained source computes
+$R+1+h_{\rm old}XY=R+1+h_{\rm new}XY^2=k$; the other restored outer
+coordinates and fresh strong witnesses follow the retained scalar
+construction.
+The complete circuit and full ordinary proof are in the signed component.
+For the exact cancellation audit, assign weights $(3,1,1,1,5)$ to
+$(A,c,r,T,R)$. The pre-auxiliary center remainder drops from degree82 to80,
+and the full center remainder from110 to108. The norm's squared inner
+term consequently has degree296. The weaker budget lowers the other
+norm term from degree300 to298, which now dominates. The actual
+coefficient
+\[
+ [j^{136}w^{46}v^{50}z^6s^6r^{12}c^{40}T^2]\,P_{298}
+       =2^{272}3^{182}\beta^{136}
+\]
+is positive and nonzero. The independent sparse-ring checker verifies all
+924 coefficients of the full center remainder, every circuit cut and the
+attained degree at the actual coefficient tuple. These finite checks
+authenticate the algebraic artifact; the unbounded Pell and logical
+calibration remain the explicitly identified ordinary proof inputs.

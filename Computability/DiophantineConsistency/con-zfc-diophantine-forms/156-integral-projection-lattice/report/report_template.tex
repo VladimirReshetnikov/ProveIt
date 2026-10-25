@@ -1,0 +1,796 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{booktabs,longtable,array,microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,xurl,hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,
+ pdftitle={Integral Projections and Lattice Forms for Diophantine Consistency},
+ pdfauthor={Prepared for Vladimir Reshetnikov with AI assistance}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\htp}{\operatorname{ht}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Diophantine consistency}
+\fancyhead[R]{\small Integral projection and lattice forms}
+\fancyfoot[C]{\thepage}
+\allowdisplaybreaks[3]
+\setlist{itemsep=3pt,topsep=5pt}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{0.8in}
+{\color{MidnightBlue}\Large ProveIt research contribution\par}
+\vspace{0.35in}
+{\huge\bfseries Integral Projections and Lattice Forms\\[0.15in]
+for Diophantine Consistency\par}
+\vspace{0.3in}
+{\Large Complete explicit quartics and exact certificates\par}
+\vspace{0.6in}
+{\large Prepared for Vladimir Reshetnikov\\[0.08in]
+25 October 2026\\[0.08in]With AI assistance\par}
+\vspace{0.5in}
+\begin{abstract}
+We construct and supply several ordinary integer-coefficient polynomials
+whose integer unsolvability is provably equivalent in ZFC to its syntactic
+consistency. The contribution is an exact compression of the pinned
+ProveIt direct proof-calculus constructions, using two complementary
+operations. First, an affine equation with a nonunit coefficient can
+eliminate a variable when a retained equation certifies that the rational
+restoration is integral. Second, a positive-definite integral Gram matrix
+with even diagonal can replace the diagonal sum-of-squares combiner.
+The principal result is a completely specified quartic in 240 unrestricted
+integer variables with 5,803 collected monomials and coefficient height
+6,404. Its Gram form has only thirteen mixed residual products; a rank-eight
+block is an even unimodular lattice. A companion has 9,357 monomials and
+height 4,160. A simpler sum-of-squares companion has 9,217 monomials and
+height 4,512, improving both support and height over the inspected
+240-variable predecessor's 21,482 and 6,144.
+
+The paper prints every residual of the principal polynomial. The package
+also contains complete collected coefficient arrays, rational restoration
+certificates, exact positive-definiteness certificates, independent
+checkers, and immutable copies of the inherited source archives.
+The new transformations are proved here; the C222-to-ZFC calibration is
+explicitly inherited. We do not claim a global simplicity optimum,
+literature-wide priority, or a new end-to-end proof-assistant derivation.
+An additional, fully materialized eleven-axiom finite theory gives a
+precise research direction without being counted as a new compiled
+Diophantine endpoint.
+\end{abstract}
+\vfill
+\noindent\small Comparison snapshot:
+\code{7a8da414376a80b90ecf799f37ceb26fb9ac674e}.\\
+All unknowns in the completed new equations range over $\Z$.
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{What is obtained}
+
+The requested logical target is
+\begin{equation}\label{eq:target}
+\ZFC\vdash
+\left[\neg\exists\boldsymbol x\in\Z^n\;P(\boldsymbol x)=0\right]
+\longleftrightarrow \Con(\ZFC).
+\end{equation}
+Here consistency means the absence of a finite refutation in the
+repository's specified syntactic ZFC calculus. The equivalence does not
+assume consistency and does not prove either side separately.
+
+The central completed polynomial in this report is
+\begin{equation}\label{eq:principal}
+\boxed{\quad Q_{240}(\boldsymbol x)=
+\sum_{i=0}^{176}r_i(\boldsymbol x)^2+
+\sum_{(i,j,\epsilon)\in E}\epsilon\,r_i(\boldsymbol x)r_j(\boldsymbol x)=0,
+\qquad \boldsymbol x\in\Z^{240}.\quad}
+\end{equation}
+Every $r_i$ is a fixed quadratic integer polynomial, printed in
+Appendix~\ref{app:residuals}. The thirteen-element signed edge list $E$ is
+printed in Section~\ref{sec:gram}. Thus the displayed specification is a
+finite ordinary polynomial, with no variable exponent, factorial, binomial
+primitive, uninstantiated universal polynomial, or undecidable coefficient
+selection.
+
+\subsection{Exact measurements}
+
+The support count is the number of nonzero monomials after full collection;
+height is the maximum absolute collected coefficient. These are different
+from residual count, expression length, operation count, and coefficient
+bit complexity. All rows below have exact degree four and all their
+declared coordinates occur in the collected polynomial.
+
+%%RESULTS_TABLE%%
+
+The usual sum of 177 residual squares gives two useful projected forms.
+The Gram versions retain those residuals and add respectively thirteen and
+seven mixed products. They have the same zero sets as their respective
+sum-of-squares inputs.
+
+The new sum-of-squares form $S_{240}^{\rm low}$ improves the inspected
+240-variable Shared Factorial Error endpoint in both support and height:
+\[
+21\,482\longrightarrow9\,217,\qquad
+6\,144\longrightarrow4\,512.
+\]
+The changes are reductions of approximately $57.09\%$ and $26.56\%$.
+The lower-height Gram companion $H_{240}$ reaches $4\,160$, while its
+support rises from $9\,217$ to $9\,357$. The principal $Q_{240}$ uses fewer
+terms, $5\,803$, at height $6\,404$. These are distinct tradeoffs; no single
+one dominates every other profile.
+
+\subsection{Scope of the comparison}
+
+The pinned repository contains constructions with far fewer unknowns,
+including nine-positive-variable forms and a 37-integer quartic, using
+different coefficient architectures and circuit costs. The present work
+improves the direct numerical proof-calculus family with fully materialized
+small integer coefficients. It is not a variable-count record across all
+representations. The meaningful novelty here is the certified use of
+integrality-aware projection together with a nondiagonal residual
+combiner on these complete equations.
+
+The immediate comparison archives are
+\code{ConZFC_Shared_Factorial_Error_2026-10-25.zip} and
+\code{ConZFC_Factorial_Free_Binomial_CRT_2026-10-25.zip}, both in
+\code{docs/incoming} at the stated commit~\cite{repo,shared,factorialfree}.
+We inspected all seven incoming archives and the newest consolidated
+construction directories. Their earlier source histories are retained in
+the original archives rather than silently replaced.
+
+\section{The exact logical dependency}\label{sec:dependency}
+
+Let $P_{\rm src}$ denote one of the supplied predecessor polynomials.
+The source reports establish, by their ordinary arithmetic proofs and
+identified calibration interfaces,
+\begin{equation}\label{eq:source-theorem}
+\ZFC\vdash
+\left[\exists\boldsymbol z\in\Z^m\;P_{\rm src}(\boldsymbol z)=0\right]
+\longleftrightarrow
+\left[\text{there is a finite ZFC refutation}\right].
+\end{equation}
+Their direct arithmetic route encodes derivations in the numerical
+calculus C222; it does not simulate K215 or instantiate Jones's universal
+equation. Its named logical interfaces are
+\begin{align*}
+&\code{KEndpoint.c222_iff_zf_refutation},\\
+&\code{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\end{align*}
+The relevant source files are included for inspection and pinned to the
+same repository snapshot~\cite{endpoint,choice}. The second interface is
+the constructible-universe equiconsistency transport from ZF to ZFC.
+
+The new work proves explicit equivalences
+\[
+\exists P_{\rm new}=0\ \longleftrightarrow\ \exists P_{\rm src}=0
+\]
+and, for a Gram companion, equality of the corresponding integer zero
+sets. Composing with \eqref{eq:source-theorem} and negating gives
+\eqref{eq:target}. Every new argument uses elementary arithmetic of
+integers and rationals, finite polynomial identities, or an exact finite
+positive-definiteness certificate; all are formalizable in ZFC.
+
+This is an ordinary mathematical proof composed with a named inherited
+theorem. The release does not contain a newly checked object-language
+ZFC derivation of the entire chain, nor a rebuilt transitive Lean/Rocq
+dependency closure. Finite coefficient checks authenticate the
+polynomials and transformations; they do not substitute for the
+unbounded source interpretation. The full predecessor reports and source
+proof closures are retained in the two original archives under
+\code{sources/}.
+
+\section{Projection through a nonunit coefficient}\label{sec:projection}
+
+\subsection{The general theorem}
+
+Ordinary gate elimination usually restricts a defining equation to
+$x=f(\boldsymbol y)$ or $-x=f(\boldsymbol y)$. A coefficient such as $2$
+is excluded because solving $2x=f(\boldsymbol y)$ over $\Q$ can create
+spurious integer tuples $\boldsymbol y$ with a half-integral $x$.
+The missing condition can sometimes be supplied by a different equation
+that is already present.
+
+\begin{theorem}[Integral restoration]\label{thm:projection}
+Let a finite integer-polynomial system in $(x,\boldsymbol y)$ contain
+\[
+a x+L(\boldsymbol y)=0,\qquad 0\ne a\in\Z,
+\]
+and a different retained equation
+\[
+b(\boldsymbol y)x^d+
+h_{d-1}(\boldsymbol y)x^{d-1}+\cdots+h_0(\boldsymbol y)=0,
+\qquad d\ge1,
+\]
+with integer-polynomial coefficients. Assume
+$\gcd(a,b(\boldsymbol y))=1$ for each integer tuple under consideration.
+Substitute $x=-L(\boldsymbol y)/a$ into every other equation, clear fixed
+rational denominators by nonzero constants, and delete the first equation.
+Then coordinate projection is a bijection between the old and new
+integer zero sets. The inverse inserts $x=-L(\boldsymbol y)/a$.
+If $L$ is affine and every old residual has degree at most two, every new
+residual still has degree at most two.
+\end{theorem}
+
+\begin{proof}
+The forward map follows by substitution. For the reverse map, start with
+an integer zero $\boldsymbol y$ of the new system and set
+$x=-L(\boldsymbol y)/a\in\Q$. Every old equation vanishes, because its
+cleared version vanishes and each clearing constant is nonzero.
+Write $x=u/v$ in lowest terms, with $v>0$. The affine equation implies
+$v\mid a$. Multiplying the retained degree-$d$ equation by $v^d$ shows
+$v\mid b(\boldsymbol y)u^d$. Since $\gcd(u,v)=1$, one has
+$v\mid b(\boldsymbol y)$. The stated coprimality forces $v=1$.
+Thus $x$ is integral. The inverse is unique because $a\ne0$.
+Finally, affine substitution does not increase the total degree of a
+polynomial. Removing the nonzero integer content of a residual also
+preserves its zero set.
+\end{proof}
+
+A monic retained equation, or one with leading coefficient $-1$, is
+enough. The proof is the standard rational-root argument. The contribution
+is the verified choice of pivots and integrality equations in the
+complete source systems. Without the second equation, deleting $x$ from
+$2x-y=0$ would incorrectly permit odd $y$.
+
+\subsection{The selected square witness}
+
+Both selected Shared Factorial Error parents have 241 unrestricted
+coordinates $z_0,\ldots,z_{240}$ and 178 residuals. Use zero-based row and
+variable indices. Source row 88 is
+\[
+A(\boldsymbol z)-2z_{39}=0,
+\]
+where the affine expression independent of $z_{39}$ is
+\begin{align}
+A(\boldsymbol z)={}&z_{103}-z_{10}-z_{11}
+ -4(z_{21}+z_{26}+z_{32}+z_{38}+z_{67})\notag\\
+&-2(z_{24}+z_{29}+z_{31}+z_{34}+z_{36}
+      +z_{42}+z_{46}+z_{68}).\label{eq:A}
+\end{align}
+The different source row 23 is
+\begin{equation}\label{eq:square-row}
+z_{39}-(z_{11}+2z_{38})^2=0.
+\end{equation}
+Delete row 88 and substitute $z_{39}=A/2$ in every other row.
+After denominator clearing, \eqref{eq:square-row} becomes
+\begin{equation}\label{eq:integrality-row}
+A-2(z_{11}+2z_{38})^2=0.
+\end{equation}
+At any integer zero, $A$ is therefore even and the rationally reconstructed
+$A/2$ is exactly the integer square $(z_{11}+2z_{38})^2$.
+No new parity coordinate is needed.
+
+All other residuals stay quadratic. Reindex retained coordinates in their
+old order:
+\[
+x_j=z_j\quad(j<39),\qquad x_j=z_{j+1}\quad(j\ge39).
+\]
+The certificate records each nonzero rational multiplier used to clear
+denominators and remove residual content. The projected balanced source
+has 5,477 collected monomials and height 15,107; the projected lower-height
+source has 9,217 and 4,512.
+
+Eliminating $z_{103}$ through the unit coefficient in the same row is a
+different projection. It expands many occurrences of a large sum.
+Eliminating the square coordinate $z_{39}$ instead uses more arithmetic
+information but produces a much sparser 240-variable endpoint.
+This explains why a rule that considers only unit pivots can miss a
+useful dimension-preserving comparison.
+
+\subsection{A second application}
+
+The factorial-free principal source has 242 coordinates and 178 rows.
+Its row 88 has coefficient $-2$ at $z_{67}$, and retained row 52 says
+\[
+z_{67}=2+4z_{66}+4z_{66}^2.
+\]
+The same argument removes $z_{67}$ and gives an explicit 241-variable
+quartic with 177 residuals, 5,141 monomials, and height 7,968.
+The predecessor's other 241-variable projection has 12,774 terms at
+the same height. The complete new system and every substitution are
+included in \code{projection/factorialfree241/}.
+
+\section{A positive lattice form in place of a sum of squares}\label{sec:gram}
+
+\subsection{The aggregation theorem}
+
+\begin{theorem}[Even integral Gram aggregation]\label{thm:gram}
+Let $r_0,\ldots,r_{m-1}\in\Z[\boldsymbol x]$ and let $H$ be a symmetric,
+positive-definite integer matrix with even diagonal. Then
+\[
+Q(\boldsymbol x)=\frac12\,\boldsymbol r(\boldsymbol x)^T
+H\boldsymbol r(\boldsymbol x)
+\]
+has integer coefficients and, for every real tuple $\boldsymbol x$,
+\[
+Q(\boldsymbol x)=0
+\quad\Longleftrightarrow\quad
+r_i(\boldsymbol x)=0\ \hbox{for every }i.
+\]
+If each residual has degree at most two, then $\deg Q\le4$.
+\end{theorem}
+
+\begin{proof}
+The diagonal coefficient is $H_{ii}/2\in\Z$; each mixed coefficient is
+$H_{ij}\in\Z$, because the two symmetric entries cancel the factor $1/2$.
+Positive definiteness gives $\boldsymbol v^TH\boldsymbol v>0$ for every
+nonzero real vector $\boldsymbol v$. Apply this to
+$\boldsymbol v=\boldsymbol r(\boldsymbol x)$. The degree bound follows
+by multiplying two residuals.
+\end{proof}
+
+The familiar sum of squares uses $H=2I$. There is no need for that
+particular matrix if the only purpose of the final polynomial is to
+enforce simultaneous vanishing. Small off-diagonal coefficients can cancel
+large coefficients in the expanded polynomial.
+
+This enlarges the aggregation family beyond integer changes of the
+residual row basis followed by an unweighted sum of squares. In formal
+residual coordinates, an integer sum of squares of integer linear forms
+has even mixed coefficients. Our selected form has odd mixed coefficients.
+This observation concerns the formal residual variables; it does not
+assert that the substituted polynomial admits no other sum-of-squares
+representation.
+
+\subsection{The complete thirteen-edge specification}
+
+Number the projected balanced residuals from $0$ to $176$. In addition to
+their ordinary squares, the principal polynomial contains
+\begin{align}
+&-r_{12}r_{16}-r_{12}r_{19}-r_{12}r_{17}
+ -r_{49}r_{51}-r_{19}r_{51}\notag\\
+&-r_6r_{21}-r_{17}r_{26}-r_{15}r_{21}
+ +r_{14}r_{21}+r_{17}r_{19}\notag\\
+&-r_7r_{19}-r_7r_{17}+r_6r_{50}.\label{eq:edges}
+\end{align}
+Equations \eqref{eq:principal}, \eqref{eq:edges}, and
+Appendix~\ref{app:residuals} specify every coefficient of $Q_{240}$.
+
+Only two blocks of $H$ are nontrivial. On residual coordinates
+$(6,14,15,21,50)$ the first is
+\[
+H_5=
+\begin{pmatrix}
+2&0&0&-1&1\\
+0&2&0&1&0\\
+0&0&2&-1&0\\
+-1&1&-1&2&0\\
+1&0&0&0&2
+\end{pmatrix}.
+\]
+On coordinates $(7,12,16,17,19,26,49,51)$ the second is
+\[
+H_8=
+\begin{pmatrix}
+2&0&0&-1&-1&0&0&0\\
+0&2&-1&-1&-1&0&0&0\\
+0&-1&2&0&0&0&0&0\\
+-1&-1&0&2&1&-1&0&0\\
+-1&-1&0&1&2&0&0&-1\\
+0&0&0&-1&0&2&0&0\\
+0&0&0&0&0&0&2&-1\\
+0&0&0&0&-1&0&-1&2
+\end{pmatrix}.
+\]
+The other 164 blocks are $(2)$. Exact rational $LDL^T$ elimination, in the
+displayed orders, gives
+\[
+D_5=\operatorname{diag}(2,2,2,\tfrac12,1),\qquad
+D_8=\operatorname{diag}(2,2,\tfrac32,\tfrac56,
+                         \tfrac45,\tfrac34,2,\tfrac16).
+\]
+Every pivot is positive. The full unit lower triangular factors are
+supplied as rational numerator--denominator pairs in
+\code{gram/balanced/GRAM_CERTIFICATE.json}; the checker verifies
+$H=LDL^T$ entry by entry. This is an exact proof, independent of any
+floating-point eigenvalue estimate.
+
+The two determinants are $4$ and $1$. The second block is an even,
+positive-definite, unimodular lattice of rank eight, so it is isometric
+to $E_8$ by the classical uniqueness theorem; Elkies gives a short
+author-hosted proof~\cite{elkies}. This identification is interesting but
+is not needed for the zero-set equivalence. The rational $LDL^T$
+certificate already proves everything required.
+
+\subsection{Measured effect and companion}
+
+The Gram change takes the balanced projected input from height 15,107 to
+6,404, a reduction of $57.61\%$. Its support grows from 5,477 to 5,803,
+or $5.95\%$. The support/height tradeoff is explicit and does not change
+the dimension or degree.
+
+The lower-height input has a separate seven-edge Gram form, supplied
+completely in \code{gram/lowheight/}. It changes 9,217 terms and height
+4,512 to 9,357 and 4,160. Its two nontrivial blocks have orders seven
+and two, determinants $4$ and $3$, and exact positive pivots
+\[
+(2,2,\tfrac32,2,1,\tfrac43,\tfrac14),
+\qquad (2,\tfrac32).
+\]
+That form is $H_{240}$ in the results table.
+
+\begin{corollary}[Completed consistency equations]
+The principal polynomial $Q_{240}$, the lower-height companion $H_{240}$,
+both projected sum-of-squares polynomials, and the factorial-free
+241-variable companion each satisfy \eqref{eq:target} in their stated
+unrestricted integer domains.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:projection} transports integer solutions to the exact
+source equation. For either Gram companion,
+Theorem~\ref{thm:gram} first transports zeros to all its residuals.
+Apply the inherited source equivalence \eqref{eq:source-theorem} and
+negate the resulting existential statement.
+\end{proof}
+
+\section{Why the new equation is fully explicit}
+
+The main JSON record contains exactly 240 ordered variables and 177
+quadratic residual lists. A sparse term
+\[
+[c,[i,j,\ldots]]
+\]
+denotes $c x_i x_j\cdots$; repeated indices denote repeated factors and
+an empty list denotes the constant $c$. All indices are zero-based.
+The additional list \code{gram_cross_terms} records the triples
+$(i,j,\epsilon)$ in \eqref{eq:edges}.
+
+\code{expanded_polynomial.json} contains every collected coefficient of
+the single ordinary quartic. The specification does not depend on a
+search run, an optimizer, a positivity oracle, or an unexpanded
+universal-polynomial parameter. Evaluators use integer arithmetic only.
+The fact that the equation encodes an undecidable consistency question
+does not prevent its coefficients, dimensions, degree, and evaluation
+at any given finite integer tuple from being calculated exactly.
+
+The transformations also retain more than bare satisfiability.
+Projection and affine restoration are mutually inverse on the old
+and new integer zero sets. A Gram change preserves the entire real
+zero set of the residual conjunction. These stronger statements make
+the soundness argument particularly short and auditable.
+
+\section{Verification and its limits}\label{sec:verification}
+
+The top-level \code{verify.py} checks the exact source-archive bindings,
+all new projection identities, both Gram certificates, every final
+collected coefficient, and the generated report data. It uses Python's
+standard library. The projection checker uses exponent-vector
+polynomials and does not import the producer, whose monomials are lists
+of indices. The Gram checker independently multiplies residuals,
+reconstructs each block, and checks the rational factorization.
+
+The retained receipts include:
+\begin{itemize}
+\item full coefficient and integer-restoration checks for all three
+      projections, including nine deliberately corrupted controls;
+\item independent checks of the thirteen- and seven-edge Gram forms,
+      including rejection of a singular Gram matrix and a false
+      factorization;
+\item exact regeneration of the projection JSON data and both Gram
+      endpoints;
+\item a fresh replay of the inherited Shared Factorial Error release,
+      including its parent arithmetic artifact checks and its printed
+      equation check;
+\item separate reviews of the projection, Gram forms, and the
+      inherited signed-radix/nearest-factorial proof boundary;
+\item exact evaluation-circuit and formula-tree checks for the
+      eleven-axiom finite theory, including all 5,803 collected
+      coefficients and five deliberately corrupted controls.
+\end{itemize}
+
+Required checks use explicit failures rather than Python assertions, and
+normal and optimized-interpreter runs are recorded. Independent reviews
+here mean separately performed reviews within an AI-assisted workflow,
+not outside human peer review.
+
+\subsection{A useful stopping certificate}
+
+For each projected system, form the matrix whose rows are the
+coefficients of the homogeneous quadratic parts of its 177 residuals.
+The supplied finite-field elimination gives rank 177 modulo the prime
+$1\,000\,003$. A nonzero minor modulo a prime is a nonzero integer
+minor, so the rows are independent over $\Q$. Therefore no nonzero
+constant rational linear combination of these residuals is affine.
+
+This rules out exposing another affine row by ordinary constant row
+combinations in these fixed systems. It does not rule out a different
+projection order, polynomial multipliers, a changed source certificate,
+or a different proof calculus. It is a narrow and useful stopping result,
+not a lower bound on Diophantine representations of consistency.
+
+\subsection{What was not checked}
+
+We did not search for a zero, decide consistency, rebuild all historical
+Lean/Rocq dependencies, or prove a global optimum. No finite collection
+of sampled tuples would establish the universal logical equivalence.
+The checks establish literal algebra and finite certificates. The
+ordinary proofs establish the new universal transformations, and the
+credited source proofs provide the refutation interpretation.
+
+\section{A tested semantic redesign that did not improve the endpoint}
+
+The source theory can be altered safely by separating its full
+membership-vacuity family from a fixed-role seed family. One may also
+replace the four-parameter implicational axiom by three-parameter
+classical bases and express freshness using finitely many polynomial
+charts. However, reducing local schema arity does not by itself
+reduce the final Diophantine equation.
+
+We compiled two explicit probes through the portable natural-number
+compiler. The three-parameter variant produced 246 natural coordinates
+and 201 residuals; the split four-parameter variant produced 226 and 178.
+Both exceed the inspected 219-natural-variable endpoint. The extra
+branches and constructor work outweigh the anticipated saving.
+The repository's incoming Digit Recovery experiments already contain
+a related three-parameter probe, so that direction is credited rather
+than claimed as unexplored.
+
+These probes are not release endpoints and are not used in the proof of
+the completed quartics. Their measured failure is useful evidence for
+optimizing the entire compiled certificate, rather than optimizing only
+schema counts or the number of local parameters.
+
+\section{A different research route: a finite theory with one coded input}
+\label{sec:grounding}
+
+The preceding results are complete. The following construction is a
+proved logical transformation and a materialized finite-theory target
+for a new compiler; it does not yet supply a smaller materialized
+Diophantine equation.
+
+Start with an explicitly given integer polynomial $P$ and a finite
+arithmetic circuit that evaluates it. Consider the fixed finite language
+of commutative rings with identity, augmented by a binary pairing
+function $\pi$ and unary projections $\ell,r$. The eight function symbols
+are $0,1,-,\ell,r,+,\cdot,\pi$, with respective arities
+$0,0,1,1,1,2,2,2$. Let $E$ contain the universal closures of the following
+eight ring identities:
+\begin{align*}
+(a+b)+c&=a+(b+c), & a+b&=b+a,\\
+a+0&=a, & a+(-a)&=0,\\
+(ab)c&=a(bc), & ab&=ba,\\
+a1&=a, & a(b+c)&=ab+ac,
+\end{align*}
+and the universal closures of
+\[
+\ell(\pi(a,b))=a,\qquad r(\pi(a,b))=b.
+\]
+Use a balanced binary pairing tree to encode a $k$-tuple as one element.
+The corresponding coordinate projections have depth at most
+$\lceil\log_2 k\rceil$ after padding to a power of two.
+
+If the circuit for $P$ has $s$ stored wires, a second balanced tuple
+codes their values. Write $C_P(z,u)$ for the finite conjunction of its
+gate equations, where input values are projections of $z$ and wire
+values are projections of $u$. Write $o(u)$ for the output projection.
+Define the single first-order sentence
+\begin{equation}\label{eq:theta}
+\theta_P:\quad \forall z\,\exists u\;
+\bigl(C_P(z,u)\ \wedge\ o(u)\ne0\bigr).
+\end{equation}
+All conjunctions can be balanced; the logical form has only the two
+displayed outer quantifiers, though the finite matrix and its projection
+terms must still be counted.
+
+\begin{theorem}[Finite pairing-ring reduction]\label{thm:ring}
+For every explicit integer polynomial $P$ with its fixed finite
+arithmetic circuit, ZFC proves
+\[
+\Con(E+\theta_P)
+\quad\Longleftrightarrow\quad
+\neg\exists\boldsymbol n\in\Z^k\;P(\boldsymbol n)=0.
+\]
+\end{theorem}
+
+\begin{proof}
+If $P$ has no integer zero, use the standard ring $\Z$. Choose a
+bijection $\pi:\Z^2\to\Z$ with its two inverse coordinate functions.
+For any $z$, its projections are integers. The circuit has its uniquely
+computed integer wire values; pair those values into $u$. Its output
+is nonzero, so \eqref{eq:theta} holds. This is a model of the finite
+theory, hence the theory is consistent by first-order soundness.
+
+Conversely, suppose an integer tuple $\boldsymbol n$ is a root.
+Form its ground paired term $z_{\boldsymbol n}$ using ordinary ring
+numerals, including additive inverses for negative integers.
+The projection identities reduce its input coordinates to those
+numerals. Instantiate \eqref{eq:theta} at $z_{\boldsymbol n}$.
+Its gate equations force, by a finite induction on the circuit,
+each projected wire value to equal its calculated integer numeral.
+Ring numeral normalization proves that the final value is $0$.
+This contradicts the required nonzero output. These steps give a
+finite first-order refutation, uniformly constructible from the root
+and the finite circuit. The two arguments are formalizable in ZFC.
+\end{proof}
+
+Applying this theorem to a completed polynomial in this report gives
+another explicit finite theory equiconsistent with ZFC. It does not
+need a new arithmetized ZFC proof predicate, Robinson arithmetic, or a
+finite class-theory presentation.
+
+\subsection{A fully materialized instance}
+
+The directory \code{finite_theory/} supplies this theory for the principal
+$Q_{240}$, including its complete arithmetic directed acyclic graph
+and all eleven literal first-order syntax trees. Integer constants are
+constructed from $0$ and $1$ through binary addition chains and
+negation. Every occurrence of a tuple projection is expanded into
+compositions of $\ell$ and $r$; every conjunction is a literal balanced
+binary tree. There are no unexpanded tuple macros or gate-specific
+function symbols in the artifact.
+
+\begin{center}\small
+\begin{tabular}{lr}
+\toprule
+Measurement & Exact value\\\midrule
+Arithmetic gates & 2,736\\
+Addition / multiplication / negation gates & 1,200 / 1,040 / 254\\
+Input gates / zero gates / one gates & 240 / 1 / 1\\
+Arithmetic graph depth (edges) & 23\\
+Input / gate tuple projection depths (edges) & 8 / 12\\
+Syntax nodes in $\theta_{Q_{240}}$ & 107,256\\
+Syntax nodes in the eleven-sentence theory & 107,353\\
+Maximum functional syntax depth (edges) & 28\\
+Formula-only depth / maximum term depth (edges) & 15 / 13\\
+Complete theory JSON size (bytes) & 697,036\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The sentence $\theta_{Q_{240}}$ has exactly two quantifier nodes and
+quantifier depth two. Counting the ten background sentences as well,
+the theory has twenty-two quantifier nodes and maximum quantifier
+depth three. The syntax-node counts include repeated projection terms;
+whole-theory counts are sums and depths are maxima over its eleven
+sentences. These are measurements of the functional language, not
+measurements of a relational translation or a numerical formula code.
+
+An independent checker expands the complete arithmetic graph and,
+separately, the residual Gram form, comparing all 5,803 coefficients.
+It checks every syntax node, symbol arity, bound variable, background
+axiom, gate equation, conjunction, and metric. The builder regenerates
+the five mathematical JSON files byte for byte. This supplies a
+concrete compilation input rather than merely a schematic sentence.
+
+\subsection{The remaining compilation problem}
+
+The engineering opportunity is to compile refutations of this finite
+theory with a fixed logical kernel, moving the particular polynomial
+into fixed finite axiom-code data. Balanced tuple coding avoids the naive
+prefix of one quantifier per input or intermediate wire. It is not
+free compression: a complete implementation must relationalize the
+function language, supply the exact axiom codes, account for their
+bit lengths, and prove the new source-to-calculus calibration. The
+present Cantor-style formula coding can make a deep encoded sentence
+astronomically large. No improved variable count, degree, or practical
+coefficient size is asserted for this route until those costs are
+measured and the final polynomial is emitted.
+
+\section{Files and incorporation}
+
+The package is intended as a new contribution directory; it does not
+overwrite an existing numbered construction. The principal files are:
+\begin{center}\small
+\begin{tabular}{p{0.40\textwidth}p{0.51\textwidth}}
+\toprule
+Path & Purpose\\\midrule
+\code{gram/balanced/} & Principal $Q_{240}$, full coefficients and $LDL^T$ certificate\\
+\code{gram/lowheight/} & Lower-height $H_{240}$ with its complete certificate\\
+\code{projection/} & Three exact projections, source copies, restoration maps and rank certificates\\
+\code{finite_theory/} & Complete eleven-axiom syntax trees, 2,736-gate circuit and independent checker\\
+\code{sources/} & Two immutable parent archives and pinned calibration excerpts\\
+\code{review/} & Actual verification receipts and scoped independent reviews\\
+\code{verify.py} & Offline verification entry point\\
+\code{evaluate.py} & Exact evaluation at a supplied integer tuple\\
+\code{build_report.py} & Rebuild this standalone LaTeX source and PDF\\
+\code{SOURCE_LEDGER.json} & Source archive hashes, commit, paths and provenance\\
+\code{MANIFEST.sha256} & Integrity hashes of the delivered payload\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Use Python 3.10 or later:
+\begin{verbatim}
+python3 -B verify.py
+python3 -B -O verify.py
+python3 -B verify.py --rebuild
+python3 -B evaluate.py --profile gram-balanced point.json
+python3 -B build_report.py
+\end{verbatim}
+The last command additionally requires a conventional pdfLaTeX
+installation with the packages listed in the source preamble.
+PDF metadata and TeX-engine versions can change PDF bytes while the
+mathematical JSON data remain identical.
+
+\appendix
+\section{Every residual of the principal equation}\label{app:residuals}
+
+All $x_0,\ldots,x_{239}$ range independently over $\Z$.
+The following finite list defines $r_0,\ldots,r_{176}$.
+Together with the thirteen mixed terms in \eqref{eq:edges}, this is
+the complete polynomial $Q_{240}$. The formulas are generated from
+the canonical JSON and checked against it.
+
+%%RESIDUAL_APPENDIX%%
+
+\section{Machine-readable specification and exact evaluation}
+
+Each equation record declares its domain and ordered coordinates.
+For a sum-of-squares profile, evaluate every quadratic residual and add
+its square. For a Gram profile, also add each signed mixed product in
+\code{gram_cross_terms}. The collected coefficient file is a second
+exact representation of the same polynomial. The verifier expands the
+residual expression and compares it to that full coefficient list.
+
+No externally supplied semantic witness is needed to evaluate a tuple.
+The evaluators are not solvers. A result at any particular tuple gives
+no decision procedure for the existence of an arbitrary integer zero.
+
+\begin{thebibliography}{99}
+\bibitem{repo}
+V. Reshetnikov and contributors, \emph{ProveIt}, 25 October 2026.\\
+Snapshot \code{7a8da414376a80b90ecf799f37ceb26fb9ac674e}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/7a8da414376a80b90ecf799f37ceb26fb9ac674e/Computability/DiophantineConsistency}.
+
+\bibitem{shared}
+ProveIt incoming research package,
+\emph{Shared factorial errors: explicit Diophantine equations for Con(ZFC)},
+25 October 2026, prepared with AI assistance.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/7a8da414376a80b90ecf799f37ceb26fb9ac674e/docs/incoming/ConZFC_Shared_Factorial_Error_2026-10-25.zip}.
+Original archive retained under \code{sources/}.
+
+\bibitem{factorialfree}
+ProveIt incoming research package,
+\emph{Removing factorial authenticity from Diophantine consistency},
+25 October 2026, prepared with AI assistance.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/7a8da414376a80b90ecf799f37ceb26fb9ac674e/docs/incoming/ConZFC_Factorial_Free_Binomial_CRT_2026-10-25.zip}.
+Original archive retained under \code{sources/}.
+
+\bibitem{endpoint}
+ProveIt, \code{KEndpoint.lean}, theorem
+\code{c222_iff_zf_refutation}, pinned snapshot above.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/7a8da414376a80b90ecf799f37ceb26fb9ac674e/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean}.
+
+\bibitem{choice}
+ProveIt, \code{ConstructibleChoice.lean}, theorem
+\code{zf_refutation_iff_zfc_refutation}, pinned snapshot above.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/7a8da414376a80b90ecf799f37ceb26fb9ac674e/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean}.
+
+\bibitem{elkies}
+N. D. Elkies, \emph{Yet another proof of the uniqueness of the $E_8$
+lattice}, August 2004. The stated uniqueness theorem is credited to
+L. J. Mordell (1938).
+\url{https://people.math.harvard.edu/~elkies/Misc/E8.pdf}.
+
+\bibitem{jones}
+J. P. Jones, \emph{Universal Diophantine equation},
+Journal of Symbolic Logic \textbf{47} (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}.
+Background on universal representations, not a dependency of the
+direct arithmetic route used here.
+
+\bibitem{bayer}
+J. Bayer, M. David, M. Ha{\ss}ler, Y. Matiyasevich and D. Schleicher,
+\emph{Diophantine equations over $\Z$: universal bounds and parallel
+formalization}, arXiv:2506.20909v3, 22 October 2026.
+\url{https://arxiv.org/html/2506.20909v3}.
+Background on the distinct variable/degree optimization problem.
+\end{thebibliography}
+\end{document}

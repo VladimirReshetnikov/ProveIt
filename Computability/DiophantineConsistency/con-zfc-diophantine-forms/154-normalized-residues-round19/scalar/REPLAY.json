@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "clean_temporary_copy": true,
+  "no_research_imported": true,
+  "byte_identical_rebuilt_artifacts": {
+    "METRICS.json": "e730a11118b024ca52cf57cf98b9595b032315f9b77056753ad226fcb2bb0277",
+    "free_whole_center11_c300.json": "e997ab4529cfd983e52603ea68dec4250650da800790fe40576955a8edce20a5"
+  },
+  "runs": [
+    {
+      "command": [
+        "python",
+        "build.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "check.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "-O",
+        "check.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "audit_mutations.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "-O",
+        "audit_mutations.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "check_scalar_top_forms.py",
+        "--graph",
+        "free_whole_center11_c300.json",
+        "--output",
+        "SCALAR_TOP_FORMS_NORMAL.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "-O",
+        "check_scalar_top_forms.py",
+        "--graph",
+        "free_whole_center11_c300.json",
+        "--output",
+        "SCALAR_TOP_FORMS_OPTIMIZED.json"
+      ],
+      "exit_code": 0
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "steps": [
+    {
+      "name": "signed transformations normal",
+      "arguments": [
+        "signed/verify.py"
+      ]
+    },
+    {
+      "name": "signed regeneration normal",
+      "arguments": [
+        "signed/build.py",
+        "--check"
+      ]
+    },
+    {
+      "name": "inherited common reconstruction normal",
+      "arguments": [
+        "signed/inherited_common/code/verify.py",
+        "--rebuild"
+      ]
+    },
+    {
+      "name": "inherited sphere reconstruction normal",
+      "arguments": [
+        "check_old_signed.py"
+      ]
+    },
+    {
+      "name": "height one reconstruction normal",
+      "arguments": [
+        "height_one/verify.py",
+        "--single"
+      ]
+    },
+    {
+      "name": "independent SOS coefficients normal",
+      "arguments": [
+        "check_sos_independent.py",
+        "signed"
+      ]
+    },
+    {
+      "name": "source bindings normal",
+      "arguments": [
+        "check_bindings.py"
+      ]
+    },
+    {
+      "name": "signed transformations optimized",
+      "arguments": [
+        "-O",
+        "signed/verify.py"
+      ]
+    },
+    {
+      "name": "signed regeneration optimized",
+      "arguments": [
+        "-O",
+        "signed/build.py",
+        "--check"
+      ]
+    },
+    {
+      "name": "inherited common reconstruction optimized",
+      "arguments": [
+        "-O",
+        "signed/inherited_common/code/verify.py",
+        "--rebuild"
+      ]
+    },
+    {
+      "name": "inherited sphere reconstruction optimized",
+      "arguments": [
+        "-O",
+        "check_old_signed.py"
+      ]
+    },
+    {
+      "name": "height one reconstruction optimized",
+      "arguments": [
+        "-O",
+        "height_one/verify.py",
+        "--single"
+      ]
+    },
+    {
+      "name": "independent SOS coefficients optimized",
+      "arguments": [
+        "-O",
+        "check_sos_independent.py",
+        "signed"
+      ]
+    },
+    {
+      "name": "source bindings optimized",
+      "arguments": [
+        "-O",
+        "check_bindings.py"
+      ]
+    },
+    {
+      "name": "scalar theorem and unchanged attaining baseline",
+      "arguments": [
+        "scalar/replay.py"
+      ]
+    },
+    {
+      "name": "printed principal equation",
+      "arguments": [
+        "check_printed_equation.py"
+      ]
+    }
+  ]
+}

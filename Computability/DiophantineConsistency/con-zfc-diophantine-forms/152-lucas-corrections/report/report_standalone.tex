@@ -1,0 +1,2939 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=.82in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,microtype}
+\usepackage{xcolor,xurl,hyperref,fancyhdr}
+\definecolor{inkblue}{HTML}{173C60}
+\hypersetup{colorlinks=true,linkcolor=inkblue,urlcolor=inkblue,citecolor=inkblue,
+ pdftitle={Lucas corrections and elimination of arithmetic witnesses},
+ pdfauthor={Prepared for Vladimir Reshetnikov with AI assistance},
+ pdfsubject={Explicit Diophantine equations for syntactic Con(ZFC)}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\allowdisplaybreaks[3]
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist{nosep,leftmargin=1.5em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Lucas corrections and witness elimination}
+\fancyhead[R]{\small Con(ZFC)}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+
+\title{\color{inkblue}\bfseries Lucas corrections and elimination\\
+of arithmetic witnesses\vspace{5pt}\\
+\large Explicit Diophantine forms for $\Con(\mathrm{ZFC})$}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt repository\\
+\small Research, derivations, code and independent scoped reviews with AI assistance}
+\date{25 October 2026\\\small Comparison snapshot:
+\texttt{3ecd6a6cf53d47519228328567f45fb7ee9781d9}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give two new arithmetic transformations and a family of explicit polynomial
+projections for the Diophantine consistency problem.  A second-order Lucas
+correction makes the previously obstructed scale $Y=qs$ usable in the compact
+native/Pell construction.  It yields one equation in ten strictly positive
+integer variables, of exact degree $304$, evaluated in $87$ charged binary
+arithmetic operations.  A separate sign-recovery argument combines two front
+nonnegativity certificates in the direct C222 construction.  Its principal
+quartic has $248$ unrestricted integer variables, $5{,}321$ collected monomials,
+and coefficient height $128{,}446$, improving its matched $252$-variable parent
+without increasing degree or height.  Acyclic monic elimination then gives,
+among other points, $153$ unrestricted integers at degree $8$, $125$ at degree
+$16$, and $102$ at degree $256$.  The complete octic has $188{,}579$ monomials
+and height $750{,}273{,}658{,}864$.
+
+For each delivered equation, the new ordinary arithmetic proof, composed with
+the identified inherited refutation calibration, proves in ZFC that absence
+of solutions in its stated domain is equivalent to syntactic
+$\Con(\mathrm{ZFC})$.  The archive supplies literal equations, all fixed
+coefficient bytes and their reconstruction, restoration certificates,
+independent exact checkers, and complete printed specifications of the
+principal compact polynomial and the projected integer family.  Global
+minimality and a new end-to-end proof-assistant formalization are not claimed.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\section{The result, its domain, and its comparison boundary}
+\label{sec:overview}
+
+The objective is a fixed polynomial $P$ and a specified domain $D$ such that
+\begin{equation}
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\mathbf x\in D\;P(\mathbf x)=0\bigr)
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+ \label{eq:target}
+\end{equation}
+Here $\Con(\mathrm{ZFC})$ denotes the arithmetical assertion that there is no
+finite syntactic refutation in the repository's fixed recursive presentation
+of ZFC.  Equivalence of reasonable effective proof presentations can be
+proved by the corresponding syntactic translations.  The present paper uses
+the inherited presentation consistently and does not select coefficients on
+the basis of whether it is consistent.
+
+The proof strategy establishes the positive existential statement first:
+an allowed zero exists if and only if a finite refutation exists.  Negating
+that equivalence gives \eqref{eq:target}.  No assumption of consistency is
+used to prove the equivalence, and this paper does not establish either its
+unsolvability side or its consistency side.
+
+\subsection{Three useful outcomes rather than an unspecified optimum}
+
+Different measures of simplicity conflict.  An expression with a small
+number of unknowns can hide large fixed coefficients; expanding an expression
+can change its apparent length without changing the polynomial; eliminating
+an arithmetic witness can increase degree.  We therefore give a primary
+compact result and a separate family with small explicit circuit numerals.
+
+\begin{center}
+\begin{tabular}{@{}lrrp{6.0cm}@{}}
+\toprule
+Construction & Unknowns & Degree & Main feature\\
+\midrule
+Compact Lucas correction & $10$ positive & $304$ & $87$ binary operations;
+the complete coherent fixed native tuple is supplied.\\[3pt]
+Principal direct quartic & $248$ integer & $4$ & $5{,}321$ terms;
+height $128{,}446$; direct C222 proof calculus.\\[3pt]
+Direct octic projection & $153$ integer & $8$ & Entire expansion supplied:
+$188{,}579$ terms, height $750{,}273{,}658{,}864$.\\[3pt]
+Moderate-degree projection & $125$ integer & $16$ & Literal circuit and
+integral restoration; coefficient height below $2^{80}$.\\[3pt]
+Smaller-dimension projection & $102$ integer & $256$ & Literal circuit and
+integral restoration; coefficient height below $2^{691}$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+``Positive'' means strictly positive, and ``integer'' means unrestricted
+integer.  These domains are part of the theorem.  The straight-line
+abbreviations in every displayed equation are definitions, not extra
+existential variables.  The integer projections have only addition,
+subtraction, multiplication and fixed integer constants.  Acyclic
+restoration is a finite polynomial construction, not an invocation of a
+universal Diophantine polynomial with unspecified parameters.
+
+For the compact equation, each live binary addition, subtraction and
+multiplication is charged once; a square and multiplication by a fixed
+constant each count as one multiplication.  This is arithmetic circuit cost,
+not bit complexity.  The largest of its four stored fixed coefficient ports
+has $592{,}884$ bits.  In the direct projection circuits the largest literal
+constant is $256$; this does \emph{not} bound the coefficients after expansion.
+The separate height columns refer to those collected coefficients.
+
+\subsection{What improves on the inspected sources}
+
+All comparisons are to the pinned repository snapshot above, including the
+eight incoming archives recorded in \texttt{SOURCE\_LEDGER.json}.
+The latest incoming material matters: comparing only against an older
+maintained page would overstate the improvement.  The inspected compact
+sources already contain $75/626$, $76/464$ and $77/460$ operation/degree
+points, as well as the lower-degree points below
+\cite{centered,review,graphdigits,forms}.
+
+\begin{center}
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Ten-positive construction & Operations & Degree & Status\\
+\midrule
+Centered residues & 75 & 626 & Prior comparison\\
+Centered residues & 76 & 464 & Prior comparison\\
+Centered residues & 77 & 460 & Prior comparison\\
+Unshifted doubled product square & 84 & 328 & Prior comparison\\
+Graph-digit center & 87 & 323 & Prior comparison\\
+Sharp graph-digit center & 88 & 318 & Prior comparison\\
+Second-order Lucas correction & \textbf{87} & \textbf{304} & This paper\\
+Uncentered transport & 89 & 288 & Prior comparison\\
+Lower-degree native form & 121 & 246 & Prior comparison\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus the new $87/304$ point improves both displayed graph-digit points in
+the cost--degree comparison, with the same ten-positive domain.  It does not
+dominate every earlier compact point.  The meaningful mathematical change
+is that a scale explicitly rejected in the inspected denominator-engineering
+notes becomes possible by correcting the index congruence
+\cite{denominator}.  No literature-wide priority claim is inferred from that
+repository comparison.
+
+The direct quartic's matched parent has $252$ unrestricted integer variables,
+$182$ residuals, $5{,}340$ terms and height $128{,}446$
+\cite{common}.  The new $248$-variable principal improves variable and term
+counts while retaining the other metrics.  Two further quartics use $246$
+and $245$ variables with different height/sparsity tradeoffs.  These counts
+should not be presented as global records for unrestricted integer
+Diophantine consistency: the repository already contains much smaller
+native-tuple forms \cite{forms}.  The distinction here is the direct-calculus
+route, its explicit modest coefficients, and the complete algebraic maps.
+
+\subsection{The exact inheritance boundary}
+
+The compact contribution changes the arithmetic front of the existing
+native/Pell route.  It retains the complete directly indexed BFS943 tuple
+and its original native/refutation calibration.  Its source data ultimately
+descend from the existing machine/tile encoding; this paper does not claim
+that compact route is independent of K215.  In contrast, the direct quartic
+and its higher-degree projections encode the C222 numerical proof calculus.
+Their arithmetic does not simulate K215 and does not use Jones's universal
+polynomial or Sun's reduction.
+
+For the direct route the inherited final bridges are
+\begin{align*}
+ &\texttt{KEndpoint.c222\_iff\_zf\_refutation},\\
+ &\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+\end{align*}
+The first theorem is about the machine-independent calculus even though its
+source file also contains machine endpoint theorems.  The second is the
+constructibility-based equiconsistency bridge from ZF to ZFC.  The delivered
+source closure retains these interface files and identifies their upstream
+dependencies.  It is not a new standalone build of all transitive Lean
+imports.
+
+The new contributions are ordinary unbounded mathematical proofs plus finite
+exact algebraic certificates.  Finite checking authenticates the literal
+polynomials, restorations, degree witnesses, coefficient bytes and operation
+counts.  It does not replace the Pell, CRT, native-compiler or syntactic
+calibration theorems.  A claim of a new end-to-end Lean theorem, or a new
+internal-ZFC proof term, would therefore be stronger than this deliverable.
+All ``independent reviews'' supplied here are separate checks within an
+AI-assisted workflow; they are not outside human peer review.
+
+% BEGIN compact.tex
+\section{A second-order Lucas correction: ten positive variables, degree 304}
+\label{sec:lucas-q1}
+
+The principal result of this section is a fixed integer polynomial in ten
+strictly positive integer variables, with exact degree $304$ and an evaluator
+using $87$ binary arithmetic operations.  The arithmetic change repairs a
+specific failed direction in the latest inspected submissions: with the
+smaller scale $Y=qs$, the elementary first-Pell congruence visibly supplies
+only $q^3$, whereas the unknown rank is bounded by $q^4$.  Retaining the next
+term of the Lucas polynomial supplies enough precision to recover the index.
+The full denominator and the omitted native divisibility are then recovered
+in that order.
+
+This is a new step within the inherited native/Pell encoding.  The proof
+below composes it with the explicitly retained ordinary calibration of that
+encoding to finite syntactic ZFC refutability.  The complete formula, fixed
+coefficient bytes and their finite reconstruction are supplied.  No new
+end-to-end proof-assistant object or proof of consistency is claimed.
+
+\subsection{The complete polynomial}
+
+The only variables are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+The four fixed integers $\beta,K_0,M_C,M_F$ are the entire directly indexed
+BFS943 tuple of the retained parent.  They satisfy
+\[
+ \beta\ge31\text{ odd},\qquad K_0>0,\qquad
+ 0<M_C<\beta<M_F<2\beta.
+\]
+The largest stored port has $592{,}884$ bits.  These are fixed coefficients,
+not additional existential variables.  Their complete finite recipe is
+retained separately from the mathematical abbreviations below.
+
+Define the following polynomial expressions:
+\begin{gather*}
+ h=\beta J,\quad q=h+1,\quad C=q-F-\alpha,\quad X=wq,\quad Y=qs,\\
+ k=\eta+\zeta,\quad c=kY+\eta,\quad
+ A=Y(X+1)+1,\quad \Delta=A^2-1,\quad H=4A-5,\\
+ v=XY^2,\qquad E=1+v(v+1)k^2,\\
+ R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\qquad
+ B=(K_0+w)C-F,\\
+ U=ic^2,\quad a=\Delta U^2E,\quad F_0=1+a,\quad G=EF_0,\\
+ F_*=1+4aF_0,\quad Q=\Delta(F_*-1),\quad
+ b=cT-R,\quad V=F_*b-c,\quad K=X(3c-2X)+2.
+\end{gather*}
+The new corrected numerator is
+\begin{equation}
+ e_6=6(k-R-1)-v(R+1)(R-1)(R+3).
+ \label{eq:lucas-e6}
+\end{equation}
+For the principal equation put $L=bV$, and define
+\begin{align*}
+ D_6&=6q^6,\qquad M=hD_6H,\\
+ Z&=hD_6\bigl[H(n-LB)+K\bigr]
+       -H\bigl[D_6B+h(e_6-6q^4s)\bigr],\\
+ R_G&=M^2G.
+\end{align*}
+The requested single equation is
+\begin{equation}
+ \boxed{\;P=Q(Z^2-R_GV^2)+(R_G-Z^2)=0.\;}
+ \label{eq:lucas-principal}
+\end{equation}
+Every named expression is a polynomial abbreviation.  No division, factorial,
+binomial coefficient, variable exponent or implicit additional witness occurs
+in the equation.  Its literal evaluator is \texttt{equation\_bV.json}.
+
+Replacing $L$ by $V^2$ gives a control equation with degree $410$ in $86$
+operations.  It is useful for separating the index correction from the sharper
+transport estimate, but is dominated by earlier cost--degree points and is
+not claimed as a frontier improvement.
+
+\begin{theorem}[Second-order compact consistency equation]
+\label{thm:lucas-q1}
+For the complete fixed coefficient tuple just specified, the ordinary
+arithmetic proof below, composed with the retained native/refutation
+calibration, establishes
+\[
+ \mathrm{ZFC}\vdash
+ \left(\neg\exists\mathbf x\in\mathbb Z_{>0}^{10}\;
+ P(\mathbf x)=0\right)\longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+The principal polynomial has exact degree $304$.  Its supplied evaluator has
+$53$ multiplications, $18$ additions and $16$ subtractions, for $87$ binary
+operations in total, including squares and multiplication by fixed numerals.
+\end{theorem}
+
+For the proof only, write
+\[
+ t=\frac Bh,\quad W=1+hL,\quad \kappa=\frac KH,\quad
+ \sigma=\frac{s}{q^2},\quad \bar e=\frac{e_6}{6},\quad
+ \rho=\frac{\bar e}{q^6},\quad z=\frac ZM.
+\]
+These rational quantities need not initially be integral.  Direct polynomial
+identities give
+\begin{equation}
+ P=(Q-1)Z^2-M^2G(QV^2-1),\qquad
+ z=n+\kappa+\sigma-Wt-\rho.
+ \label{eq:lucas-carrier}
+\end{equation}
+In particular the appearance of $1/6$ in the proof does not introduce a
+rational-coefficient gate: the circuit computes the integer polynomial $e_6$.
+
+\subsection{Roots and early ranks without assuming source signs}
+
+Positivity gives $q\ge32$, $X,Y\ge q$, $k\ge2$, $c>kY$, $A\ge3$,
+$U\ge c^2$, $F_*>2c$, $Q>1$ and $M>0$.  For every integer $b$,
+$V=F_*b-c$ is nonzero and $|V|>1$.  The exact identities
+\[
+ F_*=(1+2a)^2,\qquad Q=4\Delta^2U^2G
+\]
+show that $G$ is coprime to both $Q-1$ and $QV^2-1$.  At a zero of $P$,
+the first identity in \eqref{eq:lucas-carrier} yields
+$(Q-1)z^2=G(QV^2-1)$.  Every prime valuation of $G$ is even, so
+$G=g^2$ with $g>0$ integral.  Since $\gcd(E,F_0)=1$, its positive factors
+are separately squares:
+\[
+ E=\tau^2,\qquad F_0=f_0^2,\qquad g=\tau f_0.
+\]
+The positive rational $y=|z|/g$ satisfies
+\begin{equation}
+ QV^2-(Q-1)y^2=1.
+ \label{eq:lucas-adjacent}
+\end{equation}
+
+The adjacent-Pell descent forces $y$ integral.  To recall its short proof,
+write $y=r/m$ in lowest terms.  Then $m^2\mid Q-1$.  If $u=|V|>1$, then
+$u<y<Qu/(Q-1)$, and the norm-preserving transformation
+\[
+ u'=(2Q-1)u-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2Qu
+\]
+has a nonzero integer first coordinate with $|u'|<u$ and preserves the
+reduced denominator $m$ of its second coordinate.  Reflection and descent
+reach $u=y=1$, forcing $m=1$.  Thus $z=\varepsilon gy$ is integral,
+where $\varepsilon\in\{-1,1\}$.
+
+Set $f=1+2a$ and $I=2Ug$.  Pell doubling gives
+\begin{equation}
+ f^2-\Delta I^2=1,\qquad Q=(\Delta I)^2,\qquad c^2\mid I,
+ \qquad V=f^2(cT-R)-c.
+ \label{eq:lucas-strong}
+\end{equation}
+The retained signed all-index folding theorem applies to
+\eqref{eq:lucas-adjacent}--\eqref{eq:lucas-strong}, $c\le I$ and
+$V\equiv-c\pmod f$.  It requires no sign for $V$ or $R$ and gives
+$c=\psi_A(p)$ for a positive odd $p$.  Here $\psi_A(0)=0$,
+$\psi_A(1)=1$ and $\psi_A(j+2)=2A\psi_A(j+1)-\psi_A(j)$.
+The first norm gives
+\[
+ k=2\psi_{2v+1}(n_0),\qquad n_0\ge1.
+\]
+If $n_0=1$, then $k=2$, $\eta=\zeta=1$, and $c=2Y+1$ lies strictly
+between the first two main ordinates $1$ and $2A$.  This is impossible.
+Consequently
+\begin{equation}
+ n_0\ge2,\quad k\ge8v+4,\quad
+ c>kY>8XY^3\ge8q^4,\quad c>X,\quad K>0.
+ \label{eq:lucas-early-growth}
+\end{equation}
+No sign of $B,C,R,b,V$ or $\bar e$ has been assumed.
+
+\subsection{Absolute transport at the smaller scale}
+
+If $b=0$, equation \eqref{eq:lucas-adjacent} would give
+$y^2-c^2=(c^2-1)/(Q-1)$ strictly between zero and one.  Hence $b\ne0$,
+$\operatorname{sgn}V=\operatorname{sgn}b$, and $|V|>|b|$.  With
+$D_0=\Delta U^2$, one has
+\[
+ \frac{a^2}{g^2}=\frac{D_0a}{1+a}>\frac{D_0}{2}>9.
+\]
+Thus $a>3g$, $|V|>3g$ and $y<3|V|/2$.  In particular
+$gy<V^2/2$ for the control.
+
+For $L=bV$, the third main index must also be excluded.  Suppose
+$c=4A^2-1$.  If $n_0\ge3$, then $k>32v^2$, while $A<2XY$ gives
+\[
+ c<16X^2Y^2<32X^2Y^5<kY<c,
+\]
+a contradiction.  Thus $n_0=2$ and $k=8XY^2+4$.  Put
+$u=X+2-2Y$.  Direct expansion gives
+\[
+ \eta=4Y^2(Xu+1)+8Y(X+1)+3-4Y.
+\]
+For $u\le-1$ this is negative, using $Y(X-1)>2(X+1)$.  For $u\ge2$,
+subtracting $k$ leaves at least $4Y^2+8Y(X+1)-4Y-1>0$.  Both contradict
+$0<\eta<k$.  The remaining $u=0,1$ would make $2Y-X$ equal to $2$ or $1$,
+contradicting $q\mid X,Y$ and $q\ge32$.  Therefore $p\ge5$ and
+$c>c_3:=4\Delta+3$.
+
+Put $S=\Delta I$, so $S^2=Q$.  Pell classification of
+\eqref{eq:lucas-adjacent} gives $|V|=\chi_S(j)/S$ for a positive odd $j$.
+Index one gives $|V|=1$ and is excluded.  At index three,
+$|V|=4Q-3$ would give one of
+\[
+ F_*(b-4\Delta)=c-c_3,\qquad F_*(b+4\Delta)=c+c_3.
+\]
+Both right sides lie strictly between zero and $2c<F_*$, impossible.
+Hence $j\ge5$, $|V|\ge16Q^2-20Q+5>8Q^2$, and
+\[
+ |b|>\frac{8Q^2-c}{F_*}>4F_*>4g.
+\]
+It follows that $L=bV=|b||V|>0$ and $gy<3L/8<L/2$.  For either transport
+choice we have established
+\begin{equation}
+ L>0,\qquad gy<L/2,\qquad |b|/q^6<L/2.
+ \label{eq:lucas-transport-bounds}
+\end{equation}
+
+\subsection{The corrected numerator and all possible rank signs}
+
+The new correction needs a fresh sign argument: its cubic changes sign at
+negative ranks.  Set $e_0=k-R-1$ and
+$B_R=(R+1)(R-1)(R+3)$.  Since $b-e_0=cT-k+1>0$,
+\[
+ \rho<\frac b{q^6}-\frac{vB_R}{6q^6}.
+\]
+When $B_R\ge0$, this implies $\rho<|b|/q^6$.  If $B\le-1$, then
+$Wt<-L$ and \eqref{eq:lucas-carrier}, with positive $\kappa,\sigma$ and
+\eqref{eq:lucas-transport-bounds}, gives $n<0$.
+
+The integer exceptions are exactly $R\le-4$ and $R=0$.  Write
+$P_{\rm mask}=(M_C+qM_F)J>0$.  The exact outer identity is
+\begin{equation}
+ R=(hC+q\alpha)(q^2-1)+P_{\rm mask}.
+ \label{eq:lucas-signed-outer}
+\end{equation}
+For $R=-r\le-4$, it implies $C<0$ and
+\[
+ |C|>\frac r{h(q^2-1)}>\frac r{q^3}.
+\]
+Thus $B=-(K_0+w)|C|-F\le-1-w|C|$ and
+$Wt<-(1+w|C|)L$.  The adverse correction is bounded by
+\begin{equation}
+ \delta_0=\frac{v(r-1)(r+1)(r-3)}{6q^6}
+          <\frac{ws^2r^3}{6q^3},
+ \label{eq:lucas-adverse}
+\end{equation}
+because $v=wq^3s^2$.  Here $b=cT+r>r,c$, so
+$V>(F_*-1)b$ and either choice of $L$ satisfies
+$L>(F_*-1)r^2$.  Also $\Delta>Y^2\ge s^2$ and
+$F_*-1=4a(1+a)>s^2$.  Consequently $w|C|L>\delta_0$.  Substitution gives
+\[
+ n<L/2-(1+w|C|)L+|b|/q^6+\delta_0<0.
+\]
+
+For $R=0$, \eqref{eq:lucas-signed-outer} again gives $C<0$, while
+$\delta_0=v/(2q^6)=ws^2/(2q^3)$.  Now $b=cT\ge c$ and
+$V\ge(F_*-1)b$, so $L>F_*-1$ and
+$w|C|L>w(F_*-1)>\delta_0$.  The same contradiction follows.
+This handles every integer rank, including the cases where the new cubic
+correction has the unfavorable sign.
+
+Therefore every positive zero has $B\ge0$, which forces $C>0$ because
+$F>0$.  The retained mask bound now applies:
+\begin{equation}
+ 3q<R<q^4-2.
+ \label{eq:lucas-rank-box}
+\end{equation}
+Equation \eqref{eq:lucas-early-growth} gives $c>2R$, whence $b,V>0$.
+The retained normalized rank and signed auxiliary-index theorems have all
+their original hypotheses: $c^2\mid I$, $c>2R,c>2p$,
+$V\equiv-c\pmod f$ and $V\equiv-R\pmod c$.  They give $p=R$.
+In particular $R$ is positive odd; the unchanged mask parity gives even $q$
+and odd $J$.
+
+\subsection{The second-order index lemma}
+
+The new argument is elementary and works at every prime, including the primes
+dividing the displayed denominator $6$.
+
+\begin{lemma}[Corrected index recovery]
+\label{lem:lucas-corrected-index}
+At every positive zero of \eqref{eq:lucas-principal},
+\[
+ n_0=(R+1)/2,\qquad q^6\mid\bar e,
+ \qquad \rho\in\mathbb Z_{\ge0},\qquad q^2\mid s.
+\]
+The conclusions hold as well for the square-transport control.
+\end{lemma}
+
+\begin{proof}
+The Lucas polynomial has the finite expansion
+\begin{equation}
+ \psi_{1+2v}(m)=\sum_{j=0}^{m-1}(4v)^j
+                    \binom{m+j}{2j+1}.
+ \label{eq:lucas-binomial-expansion}
+\end{equation}
+For a direct derivation, its recurrence gives the formal generating function
+\[
+ \sum_{m\ge1}\psi_{1+2v}(m)t^{m-1}
+ =\frac1{(1-t)^2-4vt}
+ =\sum_{j\ge0}\frac{(4v)^jt^j}{(1-t)^{2j+2}}.
+\]
+Coefficient comparison yields \eqref{eq:lucas-binomial-expansion}.  In
+particular, for an explicitly determined nonnegative integer $Z_m$,
+\begin{equation}
+ 2\psi_{1+2v}(m)
+ =2m+8v\binom{m+1}{3}+32v^2Z_m.
+ \label{eq:lucas-second-order}
+\end{equation}
+The formula also covers $m=1,2$, when $Z_m=0$.
+
+Put $r_0=(R+1)/2$, an integer by the preceding rank argument.  Then
+$B_R=48\binom{r_0+1}{3}$, so $\bar e=e_6/6$ is an integer and
+\begin{equation}
+ \bar e=k-2r_0-8v\binom{r_0+1}{3}.
+ \label{eq:lucas-ebar}
+\end{equation}
+The integrality of $z$ and the carrier give
+$6q^6\mid hH(e_6-6q^4s)$.  Cancelling the literal common factor $6$,
+now that \eqref{eq:lucas-ebar} is integral, gives
+$q^6\mid hH(\bar e-q^4s)$.  Because $h=q-1$ and
+$H=4Y(X+1)-1\equiv-1\pmod q$, one has $\gcd(q,hH)=1$.  Hence
+\begin{equation}
+ q^6\mid\bar e-q^4s,\qquad q^4\mid\bar e.
+ \label{eq:lucas-carrier-congruence}
+\end{equation}
+No inverse of $6$ modulo $q$ has been taken.
+
+Set $d=2n_0-R-1=2(n_0-r_0)$.  Reducing
+\eqref{eq:lucas-second-order} and \eqref{eq:lucas-ebar} modulo $4v$
+gives $\bar e\equiv d\pmod{4v}$.  Since $q^3\mid v$, equation
+\eqref{eq:lucas-carrier-congruence} first gives $q^3\mid d$.
+The exact Taylor difference is
+\begin{align}
+ 6(\bar e-d)
+ &=vd\bigl[(2n_0)^2+(2n_0)(R+1)+(R+1)^2-4\bigr]
+       +192v^2Z_{n_0}.
+ \label{eq:lucas-taylor-upgrade}
+\end{align}
+Both terms are divisible by $q^6$.  If a prime $\ell\mid q$ has
+$a=v_\ell(q)\ge1$, then $v_\ell(6)\le1$, so
+\[
+ v_\ell(\bar e-d)\ge6a-1\ge4a.
+\]
+Thus $q^4\mid\bar e-d$, uniformly at $\ell=2,3$ as well.  Together
+with \eqref{eq:lucas-carrier-congruence}, this gives $q^4\mid d$.
+
+The first base $2XY^2+1$ exceeds $A$.  Were $n_0\ge R$, monotonicity
+in the positive base and index would give $k/2\ge\psi_A(R)=c$,
+contrary to $c>k$.  Therefore $1\le n_0<R$, and
+\eqref{eq:lucas-rank-box} gives $|d|<R<q^4$.  Hence $d=0$.
+
+Only now return to the full expansion: equations
+\eqref{eq:lucas-second-order}--\eqref{eq:lucas-ebar} give
+$\bar e=32v^2Z_{r_0}$.  Because $q^3\mid v$, this proves
+$q^6\mid\bar e$ and $\rho\ge0$ integral.  Finally,
+\eqref{eq:lucas-carrier-congruence} gives $q^6\mid q^4s$, hence
+$q^2\mid s$.
+\end{proof}
+
+The two congruence steps are essential.  The first establishes divisibility
+of the index error by $q^3$; this makes the correction error small in the
+relevant prime valuations and upgrades it to the $q^4$ modulus needed for
+the ordinary size bound.  The full $q^6$ denominator is recovered after the
+index has been identified.
+
+\subsection{Projection and restoration of the native source}
+
+Lemma~\ref{lem:lucas-corrected-index} makes $\sigma=s/q^2$ integral and
+restores $q^3\mid Y=qs$ before projection.  The carrier now gives
+$\kappa-WB/h\in\mathbb Z$, so $H\mid hK$.
+Write $R=2r+1$.  By \eqref{eq:lucas-rank-box}, $r\ge48$.
+The retained ratio theorem, uniformly valid at scale one, gives
+\[
+ Y>X^r/3,\qquad X^{r+1}<3Y(X+1)<H.
+\]
+The universal Pell projector and the retained entire-product estimate give
+\[
+ H\mid h(X-2^R)(2^RX+1),\qquad
+ |h(X-2^R)(2^RX+1)|<H.
+\]
+The product is zero, so $X=2^R$ and $\kappa$ is integral.  No possibly
+nonunit factor of the product has been cancelled modulo $H$.  The remaining
+carrier gives $h\mid WB$, and $W\equiv1\pmod h$ gives $h\mid B$.
+Thus the native quotient $t=B/h$ is a nonnegative integer.
+
+All inherited fixed-minus parity and exact half-binomial rounding hypotheses
+have now been restored.  The fresh reconstruction uses the original source
+base $Y(X+1)+2$, which is distinct from the auxiliary base $A$ used here.
+It produces an actual zero of the calibrated native source.  The whole fixed
+coefficient tuple's retained native/refutation theorem therefore yields a
+finite syntactic ZFC refutation from every positive zero of
+\eqref{eq:lucas-principal}.
+
+\subsection{Construction of positive witnesses}
+
+Conversely, a finite refutation supplies the parent's canonical outer data:
+$q^3\mid Y$, $X=2^R$, $R\equiv3\pmod4$, $R>3q$ and integral
+$t=B/h\ge0$, with the exact half-binomial interval.  Define the new positive
+input $s=Y/q$.  Then $\sigma=s/q^2=Y/q^3$ is an integer and at most $Y$.
+Using the scale-one bases, put
+\begin{gather*}
+ c=\psi_A(R),\qquad
+ k=2\psi_{2XY^2+1}\bigl((R+1)/2\bigr),\\
+ \tau=\chi_{2XY^2+1}\bigl((R+1)/2\bigr),\qquad
+ \eta=c-kY,\quad\zeta=k-\eta.
+\end{gather*}
+The inherited uniform ratio estimate gives $\eta,\zeta>0$.  The full
+Lucas expansion gives $\rho\ge0$ integral; projection gives positive
+integral $\kappa<Xc$.
+
+A positive multiple of a finite Pell matrix period modulo $c^2\tau$
+supplies one seed pair $(f_0,I_0)$ with $c^2\tau\mid I_0$.
+Set $i=I_0/(c^2\tau)>0$ and double this pair exactly as in the parent.
+It yields \eqref{eq:lucas-strong}, $G=(\tau f_0)^2$ and the canonical
+positive auxiliary pair $V,y$, with the positive integral unshifted input
+\[
+ T=\frac{V+c+Rf^2}{cf^2}.
+\]
+No private strong pair is reselected after its auxiliary congruences are
+specified.  Moreover
+\[
+ f_0>(A-1)I_0>2Xc,\qquad \kappa<Xc,\qquad \sigma\le Y<Xc,
+\]
+so $g=\tau f_0>\kappa+\sigma$.  Now set
+\[
+ n=gy+(1+hL)t+\rho-\kappa-\sigma.
+\]
+This is a strictly positive integer, and the resulting carrier is $z=gy$.
+The polynomial therefore vanishes.  Every one of the ten independent
+inputs has been constructed positively.  This completes both existential
+directions in Theorem~\ref{thm:lucas-q1}.
+
+\subsection{Exact degree and validation}
+
+The relevant global degrees are
+\[
+ \begin{array}{c|rrrrrrrr}
+ \text{expression}&Y&c&A&\Delta&v&E&U&a\\\hline
+ \deg&2&3&4&8&6&14&7&36
+ \end{array}
+ \qquad
+ \begin{array}{c|rrrrrrr}
+ \text{expression}&F_*&Q&G&b&V&M&Z\ (L=bV)\\\hline
+ \deg&72&80&50&4&76&11&93
+ \end{array}
+\]
+The correction $v(R+1)(R-1)(R+3)$ has degree $18$, below the leading
+transport part.  For $L=bV$, the term $-QM^2GV^2$ uniquely dominates the
+final expression and has degree $304$.  For $L=V^2$, $\deg Z=165$ and
+$QZ^2$ uniquely supplies degree $410$.
+
+At the smaller scale, $cT$ and $R$ both have degree four; the leading part
+of $b=cT-R$ must retain both.  Put
+\[
+ q_0=\beta J,\qquad k_0=\eta+\zeta,\qquad C_0=q_0-F-\alpha,
+ \qquad B_0=k_0sT-q_0^2(q_0-F).
+\]
+The entire highest homogeneous polynomials are
+\begin{align*}
+ [P_{bV}]_{304}
+   &=-9\cdot2^{12}q_0^{128}w^{34}s^{78}i^{14}k_0^{44}B_0^2,\\
+ [P_{V^2}]_{410}
+   &=9\cdot2^{16}q_0^{166}w^{46}s^{104}i^{20}k_0^{60}B_0^4C_0^2.
+\end{align*}
+For example, their respective coefficients at
+\[
+ J^{128}w^{34}s^{80}i^{14}\eta^{46}T^2,\qquad
+ J^{166}w^{46}s^{108}i^{20}\eta^{64}T^4F^2
+\]
+are $-9\cdot2^{12}\beta^{128}$ and
+$9\cdot2^{16}\beta^{166}$, both nonzero at the authentic fixed tuple.
+These give global degree certificates, rather than sampled line degrees.
+
+The independent exact checker binds all actual evaluator rows through $37$
+free-polynomial cuts per circuit.  It recounts the live gates, checks every
+fixed coefficient byte, and propagates the complete highest homogeneous
+forms: $274$ terms for the
+principal equation and $3{,}750$ for the control.  Actual operator corruption
+checks reject $175$ modified principal artifacts and $173$ control artifacts.
+Normal and optimized Python runs agree.  A separate retained reconstruction
+script regenerates all four fixed numerals from their finite recipe and
+checks them against the stored bytes.  The Taylor identity
+\eqref{eq:lucas-taylor-upgrade} is checked exactly; separate finite Lucas
+recurrence controls are explicitly diagnostic.
+
+Those finite checks certify the equations and algebraic certificates.  They
+do not replace the unbounded arithmetic proof above or the named inherited
+calibration, and do not decide the existence of a ZFC refutation.  The new
+work has also received a separate ordinary mathematical review within this
+AI-assisted workflow; that is not an outside human referee's endorsement.
+% END compact.tex
+
+% BEGIN direct.tex
+\section{A direct quartic from one certificate for two front signs}
+\label{sec:direct-front}
+
+The second contribution is a local arithmetic simplification of the direct
+C222 construction.  Its principal equation has 248 unrestricted integer
+variables, degree four, 5,321 collected monomials, and coefficient height
+128,446.  It is the sum of the squares of the 182 explicit quadratic
+residuals in
+\texttt{equations/integer248/equation.json}.  Here and below, coefficient
+height is measured after collecting the entire polynomial.
+
+\begin{center}
+\begin{tabular}{lrrrrr}
+Profile & Variables & Residuals & Degree & Terms & Height\\ \hline
+Common Remainders parent & 252 & 182 & 4 & 5,340 & 128,446\\
+Principal & 248 & 182 & 4 & 5,321 & 128,446\\
+Balanced projection & 246 & 180 & 4 & 5,048 & 195,955\\
+Dimension projection & 245 & 179 & 4 & 21,845 & 314,701
+\end{tabular}
+\end{center}
+
+These are three achieved projections of one new raw source, not an
+assertion that every better projection has been excluded.  The principal
+profile strictly improves the dimension and term count of its matched
+parent while preserving degree, residual count, and coefficient height.
+The new mathematical step is a proof that one product certificate can
+replace two front sign certificates, even though the product alone has
+an unwanted negative branch.  The exact factorial digit already present
+in the source excludes that branch.
+
+\subsection{Literal source change and inherited interface}
+
+Put
+\[
+ G(a,b,c)=a^2+b^2+c(c+1).
+\]
+This is nonnegative on $\Z^3$ and represents every nonnegative integer.
+Indeed, the three-square theorem represents $4n+1$ as three squares; its
+residues modulo four put exactly one odd square in that representation.
+Writing it as $(2c+1)^2$ and the others as $(2a)^2,(2b)^2$ gives $n=G(a,b,c)$.
+
+Use the following semantic names for the unchanged source coordinates:
+\[
+\begin{split}
+ r&=\texttt{fact0.remainder},\quad
+ s=\texttt{fact0.slack},\quad F=\texttt{fact0.output},\\
+ B&=\texttt{choose0.output},\quad
+ V=\texttt{pow0.output},\quad q=\texttt{pow2.output}.
+\end{split}
+\]
+The old front separately imposed $r\geq0$, $s\geq0$, and
+$o\geq0$, where $q=B+o+1$.  Replace its two first ternary guards by
+\begin{equation}
+ (r+1)(s+1)=1+G(a,b,c).
+ \label{eq:front-fused}
+\end{equation}
+This is the quadratic row $rs+r+s-a^2-b^2-c^2-c=0$; it requires no
+multiplication gate.  Compose the previously supplied odd-square radix
+restriction by deleting $q=B+o+1$ and its private guard, and inserting
+\begin{equation}
+ q=(2z+1)^2.
+ \label{eq:front-odd}
+\end{equation}
+The two remaining guards---the strict squared Pell cap and the common
+normalized remainder norm---are unchanged.  All other source rows,
+all eighteen power requests, and all endpoint and Horn-flow relations
+are retained.  The old coordinate $o$ occurs only in its deleted bound
+row and can therefore be restored freely at the end.
+
+The starting point is the direct component of
+\path{ConZFC_Common_Remainders_Radix47_2026-10-25.zip}, at repository
+snapshot \path{3ecd6a6cf53d47519228328567f45fb7ee9781d9}.
+Its \path{NORMALIZED_REMAINDERS_PROOF.md}, together with the retained
+\path{ORIENTATION_FIRST_PROOF.md} and
+\path{STRICT_BUDGET_PROOF.md}, supplies the following interface
+\emph{before} the removed front signs are used.  An integer $W\geq258$
+and a signed Pell center $A$ satisfy
+\begin{equation}
+ |A|>W^W,\qquad |n|,|k|,|m|<W
+ \label{eq:front-frame}
+\end{equation}
+for every requested base, index, and output.  The corresponding principal
+Pell coordinates are canonical at the signed nominal index $k$.
+The frame uses squares of the proposed atoms, and the squared semantic
+anchor with bounded pooled errors orients both Pell coordinates.
+Consequently those conclusions do not presuppose the signs of $F,B,q$
+or of the independent CRT representatives.  We retain that inherited
+orientation theorem and extend its subsequent power argument to signed
+bases explicitly below.
+
+\subsection{The signed-base extension}
+
+\begin{lemma}[Signed bases]
+\label{lem:front-signed}
+Under the inherited interface \eqref{eq:front-frame}, a power request
+with $2\leq |n|<W$ forces $k\geq0$ and $m=n^k$.  The assertion holds
+for either sign of $n$ and either sign of $A$.
+\end{lemma}
+\begin{proof}
+Set $T=2An-n^2-1$.  The actual output row is
+\[
+ m\equiv X_k(A)+(n-A)Y_k(A)\pmod T.
+\]
+The canonical signed pairs have
+$X_{-j}(A)=X_j(A)$ and $Y_{-j}(A)=-Y_j(A)$.
+Furthermore
+\[
+ |T|\geq2|A||n|-n^2-1
+       \geq4|A|-(W-1)^2-1>W^W+W,
+\]
+where the last inequality follows from $W\geq258$ and $|A|>W^W$.
+The absolute value on $A$ is essential: no positive-center premise has
+been introduced.  Since $T\equiv-1\pmod n$, $n$ is invertible modulo $T$.
+
+Substituting $n-A$ into the Pell identity gives
+$(n-A)^2\equiv A^2-1\pmod T$.  The canonical Pell addition identities
+therefore give $m\equiv n^k\pmod T$ when $k\geq0$.  In that case
+\[
+ |m-n^k|\leq |m|+|n|^k<W+W^W<|T|,
+\]
+so the congruence is an equality.  If $k=-j<0$, the signed pair is the
+inverse of the index-$j$ Pell unit; its norm is one.  Thus
+$mn^j\equiv1\pmod T$.  Now $1\leq j\leq W-1$ and $|m|\leq W-1$, so
+\[
+ |mn^j-1|\leq(W-1)^W+1<|T|.
+\]
+It follows that $mn^j=1$, impossible in $\Z$ because $|n|^j\geq2$.
+Hence $k\geq0$ and the first argument applies.
+\end{proof}
+
+For the separate base-one case, a known nonnegative index gives
+$m\equiv1\pmod{2A-2}$; the same size argument gives $m=1$.
+This case is needed because $F=0$ has not yet been excluded.  The known
+index $t\geq16$ in the request at base $F^2+1$ consequently gives
+\begin{equation}
+ V=(F^2+1)^t\geq1
+ \label{eq:front-V}
+\end{equation}
+for every initially possible integer $F$.
+
+\subsection{Both front branches have the needed size bound}
+
+The untouched ceiling relations are
+\begin{equation}
+ r+s=B-1,\qquad BF=V+s.
+ \label{eq:front-ceiling}
+\end{equation}
+The right side of \eqref{eq:front-fused} is positive.  Since its two
+factors are integers, it leaves precisely the alternatives
+\[
+ \text{(I) }r,s\geq0,
+ \qquad
+ \text{(II) }r,s\leq-2.
+\]
+In case I, $B\geq1$ and $BF=V+s\geq1$ force $F\geq1$.
+Since $V=(F^2+1)^t>F^2$, the inequality $V\leq BF$ then gives
+$B>F$.  In particular $B\geq2$ and
+\[
+ V\leq BF<B^2.
+\]
+
+In case II put $B=-b$, so $b\geq3$.  If $F=0$, the base-one case of
+\eqref{eq:front-V} gives $V=1$, and $BF=V+s$ would give $s=-1$.
+If $F\geq1$, combining \eqref{eq:front-ceiling} gives
+\[
+ r=(1-F)B+V-1>0,
+\]
+because $(1-F)B\geq0$ and $V>1$.  Both possibilities contradict
+case II.  Therefore $F=-f$ for some $f\geq1$.  The same two ceiling
+identities now give
+\begin{equation}
+ bf+2\leq V\leq(f+1)b-1<(f+1)b.
+ \label{eq:front-negative-bound}
+\end{equation}
+For $f\geq1$ and $t\geq16$, $(f^2+1)^t>(f+1)^2$.
+Comparing this with \eqref{eq:front-negative-bound} shows $b>f+1$,
+and hence $V<b^2$.
+
+Thus, in both branches, defining $f=|F|$ and $b=|B|$ gives
+\begin{equation}
+ f\geq1,\qquad b\geq2,\qquad V=(f^2+1)^t<b^2.
+ \label{eq:front-uniform}
+\end{equation}
+This deduction has used no factorial fixed point or binomial-digit
+interpretation.  That separation is what makes the later sign recovery
+noncircular.
+
+\subsection{Recovering the radix before resolving the branch}
+
+Equation \eqref{eq:front-odd} first gives $q\geq1$, so $q+1\geq2$.
+Each of the nine actual CRT representatives $a_i$ is an exponent in a
+retained request at base $q+1$.  Lemma~\ref{lem:front-signed} therefore
+makes each $a_i\geq0$ and authenticates its output.  Set
+\[
+ H_0=1+\sum_{i=1}^{9}a_i\geq1.
+\]
+These are actual representatives; several delivered coordinates are
+shifted by one and need not themselves be nonnegative.
+
+Apply the lemma next to the retained request $N=B^x$.  Its base has
+$|B|\geq2$ by \eqref{eq:front-uniform}, so it forces $x\geq0$ even
+while $q=1$ is still an initial possibility.  The unchanged cofinal beta
+choice is
+\[
+ y=V(V-1)>f+2.
+\]
+In unshifted semantic coordinates, the retained endpoints are
+\begin{equation}
+ x=F+1+(y+1)u_0,
+ \qquad
+ x=1+\bigl(1+(t+1)y\bigr)u_t.
+ \label{eq:front-endpoints}
+\end{equation}
+The second equality excludes $x=0$ because its bracket is an integer
+greater than one.  If $x=1$, the first would say
+$F+(y+1)u_0=0$, impossible since $0<|F|<y+1$.  Consequently $x\geq2$,
+and the second equality then forces $u_t\geq1$.  Thus
+\begin{equation}
+ x\geq2+(t+1)y\geq8.
+ \label{eq:front-x-bound}
+\end{equation}
+The coordinate translations used in the emitted polynomial do not alter
+these semantic identities; their explicit shifts are recorded separately.
+
+The request $q=(BH_0)^x$ now has $|BH_0|\geq2$ and is authenticated
+by the lemma.  Since its output is positive, $B<0$ would force $x$ even.
+Therefore in either branch
+\begin{equation}
+ N=b^x>0,\qquad q=b^xH_0^x\geq b^x,\qquad N\mid q.
+ \label{eq:front-radix-bound}
+\end{equation}
+In particular $q>1$.  All denominator requests are now genuine positive
+powers of $q$.  Write
+\[
+ M=q^x,\qquad D_0=q^t,\qquad D_1=q^{t+1},\qquad D_y=q^{y+1}.
+\]
+By \eqref{eq:front-x-bound}, these three denominators divide $M$.
+Nothing in this argument has assumed $F=t!$ or the sign of $B$.
+
+\subsection{The exact factorial digit chooses the positive branch}
+
+For $m\geq1$, $t\geq1$ and $0\leq j\leq t$, the elementary estimate
+\begin{equation}
+ \binom{m+t}{j}\leq(m+1)^t
+ \label{eq:front-binomial-bound}
+\end{equation}
+holds.  One proof is induction on $t$: Pascal's identity bounds each
+nonedge entry in the next row by $2(m+1)^t\leq(m+1)^{t+1}$; the new
+edge is bounded by
+$\prod_{i=1}^{t+1}(1+m/i)\leq(m+1)^{t+1}$.
+Apply this with $m=F^2\geq1$.  Every coefficient through position $t$
+of $(q+1)^{F^2+t}$ is at most $V<b^2$.  Its true low remainder at
+position $t$ is therefore
+\[
+ r^0=\sum_{j=0}^{t-1}\binom{F^2+t}{j}q^j,
+ \qquad
+ 0\leq r^0<\frac{V D_0}{q-1}<\frac{D_0}{32}.
+\]
+For the last inequality, \eqref{eq:front-radix-bound} and
+\eqref{eq:front-x-bound} give
+\[
+ \frac{V}{q-1}<\frac{b^2}{q-1}
+ <\frac{2}{b^{x-2}}\leq\frac1{32}.
+\]
+Thus the displayed sum really is the ordinary remainder modulo $D_0$;
+the polynomial tail is divisible by $D_0$.
+
+Here is the precise role of the inherited common norm.  Its normalized
+digit rows have $D_i v_i=M$ and
+$v_iU_i=M Q_i+R_i$.  Since $D_i,M>0$, $v_i$ is a positive integer.
+The digit row makes $v_i\mid R_i$, so $r_i=R_i/v_i$ is an integer.
+The norm equation
+\begin{equation}
+ M^2=1+4\sum_{i=1}^{11}R_i^2+G(\alpha,\beta,\gamma)
+ \label{eq:front-norm}
+\end{equation}
+gives $|R_i|<M/2$, hence $|r_i|<D_i/2$.
+For the factorial row, $r_i\equiv r^0\pmod{D_0}$.
+Together with $0\leq r^0<D_0/32$, this forces $r_i=r^0$.
+No sign of $B$ is used in this recovery.
+
+The exact factorial digit row is now
+\[
+ (q+1)^{F^2+t}=D_0(B+qh)+r^0.
+\]
+Divide by $D_0$ after subtracting $r^0$ and reduce modulo $q$ to obtain
+\begin{equation}
+ B\equiv C\pmod q,
+ \qquad C=\binom{F^2+t}{t}>0.
+ \label{eq:front-final-digit}
+\end{equation}
+Unlike the old proof, this argument does not yet assume $0\leq B<q$.
+Instead, \eqref{eq:front-uniform} and the coefficient estimate give
+\[
+ |B-C|\leq b+C\leq b+V<b+b^2<q,
+\]
+the last inequality following from $q\geq b^x$, $b\geq2$ and $x\geq8$.
+Equation \eqref{eq:front-final-digit} therefore gives $B=C>0$.
+Case II is impossible.  We have recovered $r,s\geq0$, $F\geq1$,
+and $q>B$.  Restore the old private slack by $o=q-B-1\geq0$ and fill
+all three deleted ternary guards using surjectivity of $G$.
+
+At this point the previous Common Remainders source has an integer
+solution.  Its exact factorial fixed-point theorem gives $F=t!$.
+Its remaining ten low-digit estimates, prime-power CRT range decoding,
+and Horn-flow interpretation therefore apply with their original
+premises.  The new argument has restored those premises in the order
+needed: size bound, radix, normalized remainder, factorial digit, front
+signs, then factoriality.
+
+\subsection{Completeness and the parity restriction}
+
+For the converse, begin with a finite C222 refutation and use the
+retained cofinal arithmetic construction.  The odd-square radix
+restriction is inherited from the separate Centered Residues proof,
+included as \texttt{INHERITED\_ODD\_SQUARE\_PROOF.md}; its compatibility
+with the present construction can be seen explicitly.
+
+After factoriality, $F=t!$ is even.  Each $i\leq t$ divides $F$ and
+$F^2/i$ is even, so
+\[
+ B=\binom{F^2+t}{t}=\prod_{i=1}^t\left(1+\frac{F^2}{i}\right)
+\]
+is odd.  Also $y=V(V-1)$ is even, so every beta CRT modulus is odd.
+The CRT progression for $x$ consequently has odd period, allowing $x$
+to be chosen even and as large as required.  Now $N=B^x$ and $N^2$
+are odd.  The independent amplified CRT representatives can be shifted
+by multiples of $N^2$ without changing their required residues.
+Adjusting a third representative's parity makes $H_0$ odd while leaving
+the two representatives used for the dominant anchor's parity free to
+retain opposite parities.  The dominant lift can still be made large
+enough for all strict bounds.  Thus $BH_0$ is odd and $x$ is even;
+$q=(BH_0)^x$ is the square of an odd integer and
+\eqref{eq:front-odd} has an integer witness $z$.
+
+The genuine old front has $r,s\geq0$, so $rs+r+s\geq0$ has a
+$G$ representation and satisfies \eqref{eq:front-fused}.  The old
+cofinal low-remainder estimates give $0\leq r_i^0<D_i/32$ for all
+eleven digits.  Setting $R_i=(M/D_i)r_i^0$ gives $R_i<M/32$ and
+\[
+ 4\sum_{i=1}^{11}R_i^2
+ <\frac{44}{1024}M^2<M^2.
+\]
+Hence the nonnegative integer
+$M^2-1-4\sum_iR_i^2$ has a $G$ representation, preserving
+\eqref{eq:front-norm}.  Every other retained row is the old row with
+its cofinal witness.  This constructs a zero of the new raw source.
+
+The raw modification therefore preserves \emph{existence} of integer
+zeros in both directions.  It is not a bijection on all arbitrary old
+private-witness tuples.  The later monic projections and integral
+translations, in contrast, have explicit reverse-restoration maps.
+
+\subsection{Exact endpoint and the logical calibration chain}
+
+\begin{theorem}
+\label{thm:direct248}
+Let $P_{248}\in\Z[x_0,\ldots,x_{247}]$ be the sum of the squares of
+the 182 delivered residuals in the principal profile.  With the
+retained direct-C222 arithmetic and logical calibration,
+\[
+ \mathrm{ZFC}\vdash
+ \left(\exists x\in\Z^{248}\;P_{248}(x)=0\right)
+ \longleftrightarrow
+ \text{there exists a finite ZFC refutation}.
+\]
+Consequently ZFC proves that the absence of integer zeros of $P_{248}$
+is equivalent to $\operatorname{Con}(\mathrm{ZFC})$.
+The same conclusions hold for the two delivered 246- and 245-variable
+quartics.
+\end{theorem}
+\begin{proof}
+Over the integers a finite sum of squares vanishes exactly when every
+residual vanishes.  The supplied integral translations are bijections;
+each monic elimination has an integer polynomial restoration, replayed
+in reverse order.  The independently checked Horn factoring identities
+preserve the source's solution existence.  The preceding soundness and
+completeness arguments identify zeros of the new source with zeros of
+the Common Remainders source.  The retained arithmetic proof decodes
+those zeros into finite C222 refutations, and constructs arithmetic
+witnesses from such refutations.
+
+The last two logical bridges are the identified repository theorems
+\path{KEndpoint.c222_iff_zf_refutation} and
+\path{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+Thus the complete chain is: explicit quartic zero, new raw arithmetic
+witness, old Common Remainders witness, finite C222 refutation, finite
+ZF refutation, and finite ZFC refutation.  Every arrow used here is
+either the new arithmetic argument above, a finite exact algebraic
+certificate, or the named inherited calibration.  The first-order
+arithmetical statement that no finite syntactic ZFC refutation exists
+is $\operatorname{Con}(\mathrm{ZFC})$; negating the existence
+equivalence gives the stated result.
+\end{proof}
+
+The package retains all 88 files in the parent's arithmetic and proof
+closure, pinned byte-for-byte.  Its new finite verifier imports the
+retained independent algebra checker, not the producing eliminator.  It
+reconstructs the complete raw mutation, checks 18 Horn-factor edits,
+replays every monic restoration and translation, and expands each full
+sum of squares.  The principal profile has 203 monic elimination steps
+and 70 translated coordinates.  Independent runs under ordinary Python
+and under \texttt{python -O} pass, including five rejected deliberate
+mutations; a clean rebuild reproduces all 22 generated JSON files
+byte-for-byte.  These are algebraic checks of the emitted artifacts.
+The unbounded arithmetic proof remains an ordinary mathematical proof,
+with a separate independent review; no new end-to-end Lean elaboration
+or proof of consistency is being claimed.
+% END direct.tex
+
+% BEGIN elimination.tex
+\section{Trading degree for fewer direct proof coordinates}
+\label{sec:monic-elimination}
+
+The preceding sign bootstrap gives a direct equation in $248$ unrestricted
+integers.  We now reduce its dimension by allowing higher degree.  This
+route retains the direct C222 proof calculus: no K215 simulation, Jones
+universal equation, or large fixed coefficient tuple is introduced.
+The elimination principle is standard.  The contribution here is the
+complete family of explicit polynomials and the certified tradeoffs below.
+
+Write the preceding source as
+\[
+ P_{248}(x)=\sum_{j=0}^{181}R_j(x)^2,
+ \qquad x=(x_0,\ldots,x_{247})\in\Z^{248}.
+\]
+The complete quadratic residual list is retained without change in
+\texttt{source/equation248.json}; its source hash is recorded in
+\texttt{SOURCE.json}.  The pivot tables in
+Appendix~\ref{app:monic-pivots}, together with that literal residual list,
+specify every new polynomial by finite substitution.
+
+\begin{theorem}[Acyclic monic elimination]
+\label{thm:acyclic-monic}
+Let $R_0,\ldots,R_{m-1}\in\Z[x_0,\ldots,x_{N-1}]$.
+Select different rows and different coordinates so that each selected row
+has the form
+\[
+ R_{r(v)}=\varepsilon_v x_v+f_v,
+ \qquad \varepsilon_v\in\{-1,1\},
+ \qquad x_v\text{ does not occur in }f_v.
+\]
+Suppose the directed graph on selected coordinates, with an edge $v\to w$
+when $x_w$ occurs in $f_v$, is acyclic.  List the retained source indices
+as $i_0<\cdots<i_{n-1}$, and let $y=(y_0,\ldots,y_{n-1})$.
+Define integer polynomials $F_v(y)$ by $F_{i_j}=y_j$ on retained
+coordinates, and recursively by
+\[
+ F_v=-\varepsilon_v f_v(F)
+\]
+on selected coordinates.  If $I$ is the set of unselected rows, put
+\[
+ Q(y)=\sum_{j\in I}R_j(F(y))^2.
+\]
+Projection to retained coordinates is a bijection between the integer
+zero sets of $\sum_jR_j^2$ and $Q$.  Its inverse is the polynomial map
+$y\mapsto(F_0(y),\ldots,F_{N-1}(y))$.
+\end{theorem}
+
+\begin{proof}
+At an integer zero of the source sum of squares, every residual is zero.
+Each selected row therefore forces exactly
+$x_v=-\varepsilon_v f_v$.  Induction along a reverse topological order of the
+acyclic graph gives $x_v=F_v(y)$ for every coordinate.  The unselected
+residuals vanish, so $Q(y)=0$.
+
+Conversely, if $Q(y)=0$, every remaining squared integer residual is zero.
+Set $x=F(y)$.  The selected residuals vanish by their definitions, and
+the unselected ones by $Q(y)=0$.  Thus the source polynomial is zero.
+Every restored coordinate is an integer because all the substitutions
+have integer coefficients.  The same induction proves uniqueness.
+No division, nonzero denominator, congruence, or sign choice is needed.
+\end{proof}
+
+The unrestricted integer domain matters.  Applying this theorem to a
+nonnegative-domain equation would require additional proofs that all
+restored coordinates remain nonnegative at every zero.  We use the
+integer source throughout.
+
+\subsection{The resulting explicit family}
+
+Every row in the following table defines one ordinary polynomial.  Its
+complete arithmetic DAG uses only integer constants, its stated input
+variables, and binary addition, subtraction and multiplication.
+Intermediate registers abbreviate polynomials and are not additional
+quantified unknowns.  Degree is exact.  The last column is a proved bound
+on the height after collecting all coefficients; it is not the largest
+constant appearing in the DAG.
+
+\begin{center}
+\begin{tabular}{rrrr}
+\hline
+Integer unknowns & Remaining residuals & Degree & Height bound \\
+\hline
+225 & 159 & 6 & $<2^{27}$ \\
+153 & 87 & 8 & $<2^{47}$ \\
+144 & 78 & 12 & $<2^{50}$ \\
+125 & 59 & 16 & $<2^{80}$ \\
+117 & 51 & 32 & $<2^{144}$ \\
+111 & 45 & 64 & $<2^{173}$ \\
+102 & 36 & 256 & $<2^{691}$ \\
+94 & 28 & $65{,}540$ & $<2^{164870}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+The degree-$16$ equation removes $123$ of the source's $248$ coordinates,
+or $49.6\%$.  The degree-$256$ equation removes $146$, or $58.9\%$.
+These are alternatives within the direct proof-calculus route, not
+global dimension records among all coefficient encodings.  The
+$94$-variable equation illustrates the cost of prioritizing dimension
+alone: its degree and coefficient bound are much larger.
+
+For the $153$-variable octic the package also supplies every collected
+coefficient.  Its exact expansion has $188{,}579$ nonzero monomials and
+height
+\[
+ 750{,}273{,}658{,}864.
+\]
+Its $87$ fully substituted residuals contain $3{,}476$ monomials in total.
+This exact height is stronger than the general $2^{47}$ bound.  The
+expansion makes the support cost of eliminating coordinates explicit.
+
+\subsection{Exact degree and coefficient bounds}
+
+Give each retained coordinate degree one.  For each restored coordinate
+propagate the maximum, over its monomials, of the sum of the previously
+assigned coordinate degrees.  Apply the same rule to each remaining
+residual.  If the largest bound is $d$, then $\deg Q\le2d$.
+
+To prove equality, the supplied certificate gives a remaining residual
+of degree bound $d$ whose degree-$d$ homogeneous part is nonzero when
+the retained coordinate with source index $i$ is set to $i+3$, reduced
+modulo $1{,}000{,}000{,}007$.  A nonzero modular value proves a nonzero
+integer value; no primality assumption is needed.  At this integer point
+the sum of the squares of all degree-$d$ homogeneous parts is positive.
+It follows that $\deg Q=2d$.  This is an exact nonvanishing certificate,
+not probabilistic polynomial identity testing.
+
+\begin{lemma}[A propagated height bound]
+\label{lem:monic-height}
+Set $L_v=1$ for each retained coordinate.  For a restored polynomial
+$F_v=\sum_M c_M\prod_{j\in M}F_j$, set
+\[
+ L_v=\sum_M |c_M|\prod_{j\in M}L_j.
+\]
+Use the same rule to obtain a bound $L_j'$ for each remaining residual.
+Then every coefficient of $Q$ has absolute value at most
+\[
+ B_Q=\sum_{j\in I}(L_j')^2.
+\]
+If this positive integer has bit length $b$, every coefficient has
+absolute value strictly below $2^b$.
+\end{lemma}
+
+\begin{proof}
+For an integer polynomial $f$, let $\|f\|_1$ be the sum of the absolute
+values of its collected coefficients.  The triangle and convolution
+inequalities give
+\[
+ \|f+g\|_1\le\|f\|_1+\|g\|_1,
+ \qquad \|fg\|_1\le\|f\|_1\|g\|_1.
+\]
+Induction through the substitutions proves $\|F_v\|_1\le L_v$.
+Applying the same inequalities to the residuals and their squared sum
+proves $\|Q\|_1\le B_Q$.  Each coefficient is bounded by this norm,
+and $B_Q<2^b$ by the definition of bit length.
+\end{proof}
+
+All stated bit bounds are obtained by exact integer arithmetic.  The
+largest literal constant in these DAGs is $256$; that different statistic
+does not replace the expanded coefficient bounds in the table.
+
+\subsection{Verification and the consistency theorem}
+
+The independent checker expands each circuit block as a polynomial in
+the coordinates already available.  These local expansions have
+degree at most two, even when the fully substituted polynomial has degree
+$65{,}540$.  It checks the blocks coefficient by coefficient against their
+source rows, verifies the complete row partition and acyclic restoration,
+and checks the final sum of squares.  A separate sparse engine expands
+the octic completely.  Exact nonzero partial derivatives modulo
+$1{,}000{,}000{,}007$ certify that every declared input occurs
+in each collected polynomial.  These tests accompany the ordinary proof;
+they do not replace its unbounded source calibration.
+
+By Theorem~\ref{thm:acyclic-monic}, each displayed $Q$ has an integer zero
+if and only if $P_{248}$ has one.  Compose this elementary, ZFC-formalizable
+bijection with the already proved existence equivalence for the fused
+front-sign source and its retained C222/ZFC calibration.  For every row
+of the table this gives
+\[
+ \mathrm{ZFC}\ \vdash
+ \bigl[\text{$Q$ has no zero in its stated integer domain}\bigr]
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+This establishes an equivalence, without assuming or proving either
+side.  The new finite algebra is not claimed to be a fresh end-to-end
+proof-assistant development.
+% END elimination.tex
+
+
+\section{Verification, reproduction, and use of the archive}
+\label{sec:verification}
+
+The archive is designed for local reproduction without a network connection.
+Its mathematical data and checkers use Python's standard library.  The PDF
+can be rebuilt with an ordinary pdfLaTeX installation.  From the package root:
+\begin{verbatim}
+python3 -B verify.py
+python3 -B -O verify.py
+python3 -B verify.py --rebuild
+python3 build_report.py
+\end{verbatim}
+The first command checks the sealed file manifest and component/source
+bindings, then runs the independent finite audits.  The second also disables
+Python assertions throughout the component checks; no substantive check is
+allowed to disappear with optimization.  The third additionally reconstructs
+the delivered equation files and compares their bytes with the release.
+The report builder updates the PDF and its single-file TeX edition.  Such a
+rebuild intentionally changes a sealed document if the local TeX engine
+differs, so a release's manifest should be checked before rebuilding it.
+
+For the compact pair the separate checker binds the actual circuit gates
+to $37$ exact polynomial cuts per equation, propagates the entire highest
+homogeneous form, and verifies five additional algebraic identities.
+It rejects $175$ actual gate mutations for the principal and $173$ for its
+control.  The four fixed numerals are reconstructed from the complete seed
+recipe, and every delivered coefficient payload is authenticated.  The
+finite recurrence and index tests are diagnostic controls in addition to
+the unbounded proof, not evidence that a consistency statement has been
+decided by finite search.
+
+For the direct quartics the checker independently reconstructs the changed
+source, checks the $18$ Horn factoring identities, all monic projections,
+all integral translations, the entire collected quartics, and the unchanged
+parent file pins.  The principal has $203$ monic projection steps and $70$
+translated coordinates.  A clean rebuild reproduces all $22$ generated
+JSON artifacts for the three profiles.  Five deliberately corrupted new
+artifacts are rejected; the parent's own audit is retained and run as well.
+
+For the eight higher-degree forms the checker locally expands every circuit
+block in previously defined source coordinates.  Every source row is
+accounted for exactly once, either as a solved monic definition or as a
+remaining residual.  This verifies the entire polynomial substitution
+without expanding the highest-degree final forms.  Separate nonzero modular
+derivative witnesses prove that every listed input actually occurs in the
+resulting polynomial.  The $153$-variable octic is also expanded in full by a
+separate sparse-polynomial engine.  Seven deliberate corruptions test the
+algebraic certificate rejection path.  The complete coefficient norm bound
+and a nonzero highest-degree witness establish the reported height bounds
+and exact degrees; they are not floating-point estimates.
+
+\subsection{Files that define the result}
+
+The authoritative compact circuit is
+\path{compact/equation_bV.json}.  The principal direct equation is
+\path{direct_quartics/equations/integer248/equation.json}, together with its
+fully collected \path{expanded_polynomial.json}.  The eight projected
+circuits are in \path{higher_degree/equations/}.  Their source file is byte
+identical to the principal $248$-variable equation; the top-level verifier
+checks this binding explicitly.
+
+All $182$ principal residuals are printed in Appendix~\ref{app:residuals}.
+Together with the recursive elimination rule and the complete pivot tables
+in Appendix~\ref{app:monic-pivots}, they give a finite paper specification of every
+projected polynomial.  The JSON circuits are convenient executable versions
+of those fixed definitions.  The complete fixed coefficient recipe for the
+ten-positive form is printed in Appendix~\ref{app:constants}.
+
+Each component contains its proof, producer, independent verifier, exact
+evaluator or circuit format, source hashes and successful verification
+receipts.  \path{review/} holds the additional scoped mathematical reviews
+and root-level replays.  \path{SOURCE_LEDGER.json} records all inspected
+incoming archive hashes.  \path{MANIFEST_SHA256.json} binds the final release
+files.  Original licenses and notices are preserved.
+
+\section{What the new ideas change, and what remains open}
+\label{sec:outlook}
+
+The compact result demonstrates a useful design principle: an index error
+need not be encoded only to first order.  When a Pell/Lucas congruence falls
+short of the modulus needed for a bounded rank, subtracting a short Taylor
+term can increase usable precision without adding an existential variable.
+Here the correction is cubic in the target rank, but its degree is far below
+the dominant transport term.  The cost is a new signed-transport proof and
+careful treatment of primes dividing its denominator.  The result succeeds
+because those costs can be paid without destroying the final degree gain.
+
+The direct result illustrates a different saving.  Two nonnegativity certificates
+can sometimes be replaced by one product certificate if an existing exact
+digit condition chooses the correct sign branch.  The difficult part is
+the order of the proof: size bounds and power semantics must remain valid
+in the unwanted branch, before factoriality or the desired signs are known.
+The new signed-base argument supplies that order.
+
+The higher-degree family uses standard monic substitution.  Its contribution
+is the concrete, fully specified set of eliminations and certified tradeoff
+points on the new source.  It should not be described as a new general
+elimination theorem.  Compared with a quartic-only optimization, it exposes
+how many of the remaining unknowns are merely arithmetic intermediate
+values.  Its large-degree endpoint is included as a measured boundary point,
+not selected as the most practical presentation.
+
+Further reductions remain possible.  A still smaller substitution such as
+$Y=q+s$ would change the crucial coprimality $H\equiv-1\pmod q$ and the
+index-recovery divisibility; no proof for that substitution is supplied.
+Higher-order corrections also need to pay for their signed tails and their
+small-prime denominators.  For the direct family, the delivered projection
+orders are achieved points, not a search-completeness certificate.  More
+systematic degree/height-aware substitution or another semantic guard
+recovery could improve them.  None of these prospects is counted as a
+completed result in the tables.
+
+\appendix
+\clearpage
+% BEGIN constants.tex
+\section{Complete fixed coefficient recipe for the compact equation}
+\label{app:constants}
+This appendix reproduces the retained directly indexed BFS943 constant recipe.
+Its local symbols are scoped to this appendix: the integer called $K$ here is
+$K_0$ in Section~\ref{sec:lucas-q1}, and the radix $B$ here is unrelated to
+the variable expression $B=(K_0+w)C-F$ there.  Every range is fixed.  Thus
+this is a complete finite definition of four integer coefficients, not an
+extra quantified condition.  The delivered binary coefficients are checked
+against this recipe, including every digit of the seed.
+
+The native tuple is inherited, with its state/color conjugacy and calibration;
+it is not the new contribution of this paper.  See
+\texttt{compact/parent/proof\_sources/indexed\_native.md} and the accompanying
+source ledger for the precise boundary.
+
+\textbf{The four fixed integers.}
+Every index, set, sum, product and floor below defines a constant, not
+another unknown. Put
+\[
+\rho=2^{67},\quad B=\rho^{8807},\quad\beta=B-1,\quad
+G_m(x)=\sum_{j=0}^{m-1}x^j.
+\]
+Define
+\[
+\begin{split}
+\mathcal E={}&\rg0{942}\cup\rg{983}{992}\cup\rg{1003}{1011}\\
+&\cup\rg{1013}{1031}\cup\{1063,1064,1095,2195,3296\}.
+\end{split}
+\]
+Then
+\begin{align*}
+M_C={}&B-1-\sum_{e\in\mathcal E\setminus\{1\}}\rho^e-2\rho^{1063},\\
+M_F={}&B-1+4+(2^{51}-2)(\rho^{4393}+\rho^{5495})\\
+&+\rho^{1013}G_{10}(\rho)+\rho^{1065}G_9(\rho)
+  +\rho^{2195}+\rho^{3296}\\
+&+(2^{65}-1)\rho^{8792}G_{13}(\rho)+(2^{19}-1)\rho^{8805},\\
+K={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}+\rho^{8849}\\
+&+(\rho^{4393}+\rho^{5495})\Phi(1/\rho),
+\end{align*}
+where
+\[
+\begin{split}
+\Phi(x)={}&(1+2^{51})G_{943}(x)
+ -2^{10}\sum_{i=0}^{942}v(t_i)x^i\\
+&+\sum_{(b,e,m)\in\mathcal C}2^b x^e G_m(2x),\\
+\mathcal C={}&\{(10,1023,8),(18,1013,9),(27,1003,8),\\
+&(35,983,9),(44,1031,1),(45,1022,1),(46,1011,1),\\
+&(47,992,1),(48,1095,1),(49,2195,1),(50,3296,1)\}.
+\end{split}
+\]
+The rational intermediate in K cancels exactly; all four results are positive integers.
+
+\textbf{The 943 indexed fixed tiles.}
+Use the actions $u_j,v_j,d_j$ decoded below. Let
+\[
+\begin{gathered}
+h(q,b)=2(q+1)+b,\quad
+\mathcal R=\{u_j:d_j=1,\ 0\le j<430\},\\
+\mathcal L=\{u_j:d_j=0,\ 0\le j<430\},\\
+r_q=6+|\mathcal R\cap\rg0{q-1}|,\quad
+l_q=205+|\mathcal L\cap\rg0{q-1}|.
+\end{gathered}
+\]
+An interval ending at $-1$ is empty. The table defines $t_i$ for
+$0\le i\le942$; all index ranges are fixed:
+\[
+\setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
+\text{index }i&\text{tile }t_i=(w,n,e,s)\\\hline
+0,1&(2,435,3,1),\ (5,0,0,0)\\
+j+2\ (j=2q+b<430)&((1-d_j)l_{u_j},h(q,b),d_jr_{u_j},v_j)\\
+432+b\ (b=0,1)&(0,h(215,b),0,h(215,b))\\
+434+b\ (b=0,1)&(0,b,0,b)\\
+424+2r_q+b\ (q\in\mathcal R,b=0,1)&(r_q,b,0,h(q,b))\\
+424+2l_q+b\ (q\in\mathcal L,b=0,1)&(0,b,l_q,h(q,b))\\
+924+j\ (0\le j<4)&(0,j+430\fl{j/2},0,438)\\
+928&(2,434,2,0)\\
+929&(3,436,4,4)\\
+930&(4,436,4,0)\\
+497+t\ (t=434,435,436)&(1,438,1,t)\\
+\substack{934+3a+b-6\fl{a/4}\\a\in\{0,1,4\},\ b=0,1,2}&(a,437,b,437)
+\end{array}
+\]
+For $t=(w,n,e,s)$ put
+\[
+v(t)=w+2^8n+2^{17}e+2^{25}s+127\,2^{34}.
+\]
+
+\textbf{A closed decoder for the 430 actions.}
+Put $D_b(A,k)=\fl{A/b^k}\bmod b$, where
+$a\bmod b=a-b\fl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
+\[
+\begin{gathered}
+N=\mathcal A\bmod2^{636},\quad
+T_0=\fl{\mathcal A/2^{636}}\bmod2^{1675},\\
+E_0=\fl{\mathcal A/2^{2311}},\\
+\nu_j=D_2(N,j),\quad \sigma_j=\sum_{k=0}^{j-1}\nu_k,\\
+m_q=D_2(N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14(1-m_q)+m_qD_{16}(E_0,\tau_q),\\
+u_j=\nu_j(1+\sigma_j)+(1-\nu_j)D_{216}(T_0,j-\sigma_j),\\
+v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
+\end{gathered}
+\]
+Empty sums are zero. Here $(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
+uses this actual first target, including its state renaming.
+
+\textbf{The integer $\mathcal A$.}
+The alphabet, in order of digit values $0,\ldots,61$, is\par
+{\fontsize{10}{12}\selectfont\ttfamily 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}.\par
+Concatenate the following 436 characters as digits $e_0,\ldots,e_{435}$;
+put $\mathcal A=\sum_{j=0}^{435}e_j62^{435-j}$.\par
+\begingroup\fontsize{10}{12}\selectfont\ttfamily
+BxEnhvy6NipzkWmROo0GsA3uK3twWLxscLq20UTumy5Cdu461LwD6g7RDNzF8Y\par
+iYDFTpB8ehAypd7d6OsOL4APamnJeNXQypUezCmW9n4oXP6XfgmiWuAWZ8ZJ7U\par
+OP7gu4kVdlGZqZHULQMar1dXNeJW4i7oNVI8usp8BlovjjZbwPCovZI328fRUq\par
+4q92R81s5GjWQaQfGhkq9UYMK3rRMaBmsOIBkJqc2cj2VRIZ6mjzkBIOkW9SjZ\par
+FzeA6J5u4j3sBL3SdgwXzM9mHvQivu8EJ1TBTpRhHDqZIbmYgwQ8VqTAFotl6F\par
+We1YC554GKrVHsA8oUGKSA6F6k5KREBSD0Tgd7bFALY84LLbpw574BQyvdoHrl\par
+0Oe35uwDf15DpT6VJWZBjSbHPpPAINYTte0eUxnTFTKBlGj8Am6sb1gLldh8WZ\par
+8P\par
+\endgroup
+% END constants.tex
+
+
+\clearpage
+\section{All residuals of the principal direct quartic}
+\label{app:residuals}
+The variables are exactly $x_0,\ldots,x_{247}\in\Z$.  Define
+\[
+ \boxed{\quad P_{248}(x)=\sum_{j=0}^{181}R_j(x)^2=0.\quad}
+\]
+The following list is complete and ordered.  There are no additional domain
+restrictions or unlisted rows.  Its source file has SHA-256
+\begin{center}\small
+\path{c51ebc12534db042bd1c7bf7c59f84602f51625e2d952dffa82fa054b5d92192}.
+\end{center}
+The variable-to-source correspondence and every restoration are delivered
+in the accompanying certificates.  For the higher-degree forms, the row
+and coordinate numbers in this list are precisely those used by the pivot
+tables; no renumbering is implicit.
+
+\begingroup
+\small
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{5pt}
+\setlength{\jot}{2pt}
+% BEGIN residuals248.tex
+% Residual 0: multiplication
+\begin{align*}
+R_{0} &= -x_{3}^{2} +x_{4}
+\end{align*}
+
+% Residual 1: multiplication
+\begin{align*}
+R_{1} &= -1 -x_{3} x_{5} +x_{5} +x_{6} -x_{7}
+\end{align*}
+
+% Residual 2: multiplication
+\begin{align*}
+R_{2} &= x_{0} -x_{0} x_{2} -x_{2} +x_{10}
+\end{align*}
+
+% Residual 3: multiplication
+\begin{align*}
+R_{3} &= -1 +x_{1} -x_{2} x_{8} -x_{3}
+\end{align*}
+
+% Residual 4: multiplication
+\begin{align*}
+R_{4} &= -1 +x_{1} -x_{9} x_{10}
+\end{align*}
+
+% Residual 5: multiplication
+\begin{align*}
+R_{5} &= 1 +x_{4} -x_{5} x_{21} +x_{19}
+\end{align*}
+
+% Residual 6: multiplication
+\begin{align*}
+R_{6} &= -1 +2 x_{11} -x_{11}^{2} -2 x_{11} x_{12} +2 x_{12} -x_{12}^{2} +x_{22}
+\end{align*}
+
+% Residual 7: multiplication
+\begin{align*}
+R_{7} &= -5 -30 x_{11} -36 x_{11}^{2} -96 x_{11} x_{12} -24 x_{11} x_{22} -40 x_{12} -64 x_{12}^{2} \\
+&\quad -32 x_{12} x_{22} -10 x_{22} -4 x_{22}^{2} +x_{23}
+\end{align*}
+
+% Residual 8: multiplication
+\begin{align*}
+R_{8} &= -2 +2 x_{11} -x_{11}^{2} -4 x_{11} x_{23} +4 x_{23} -4 x_{23}^{2} +x_{24}
+\end{align*}
+
+% Residual 9: multiplication
+\begin{align*}
+R_{9} &= 1 +6 x_{11} -36 x_{11}^{2} -192 x_{11} x_{23} -24 x_{11} x_{24} +16 x_{23} -256 x_{23}^{2} \\
+&\quad -64 x_{23} x_{24} +2 x_{24} -4 x_{24}^{2} +x_{25}
+\end{align*}
+
+% Residual 10: multiplication
+\begin{align*}
+R_{10} &= -2 -x_{12}^{2} -2 x_{12} x_{13} -x_{13}^{2} +x_{26}
+\end{align*}
+
+% Residual 11: multiplication
+\begin{align*}
+R_{11} &= -9 +7 x_{11} -x_{11}^{2} -4 x_{11} x_{12} -4 x_{11} x_{26} +12 x_{12} -4 x_{12}^{2} \\
+&\quad -8 x_{12} x_{26} +12 x_{26} -4 x_{26}^{2} +x_{27}
+\end{align*}
+
+% Residual 12: multiplication
+\begin{align*}
+R_{12} &= -1 +2 x_{11} -x_{11}^{2} -2 x_{11} x_{13} +2 x_{13} -x_{13}^{2} +x_{28}
+\end{align*}
+
+% Residual 13: multiplication
+\begin{align*}
+R_{13} &= -6 x_{11} -144 x_{11}^{2} -192 x_{11} x_{12} -192 x_{11} x_{13} -48 x_{11} x_{22} \\
+&\quad -48 x_{11} x_{28} -8 x_{12} -64 x_{12}^{2} -128 x_{12} x_{13} -32 x_{12} x_{22} -32 x_{12} x_{28} \\
+&\quad -64 x_{13}^{2} -32 x_{13} x_{22} -32 x_{13} x_{28} -2 x_{22} -4 x_{22}^{2} -8 x_{22} x_{28} \\
+&\quad -4 x_{28}^{2} +x_{29}
+\end{align*}
+
+% Residual 14: multiplication
+\begin{align*}
+R_{14} &= -4 x_{27}^{2} -8 x_{27} x_{29} -4 x_{29}^{2} +x_{30}
+\end{align*}
+
+% Residual 15: multiplication
+\begin{align*}
+R_{15} &= -6 +16 x_{13} -16 x_{13}^{2} -16 x_{13} x_{26} -16 x_{13} x_{28} +8 x_{26} -4 x_{26}^{2} \\
+&\quad -8 x_{26} x_{28} +8 x_{28} -4 x_{28}^{2} +x_{31}
+\end{align*}
+
+% Residual 16: multiplication
+\begin{align*}
+R_{16} &= 1 +6 x_{11} -36 x_{11}^{2} -96 x_{11} x_{12} -48 x_{11} x_{13} -24 x_{11} x_{22} -48 x_{11} x_{28} \\
+&\quad -24 x_{11} x_{31} +8 x_{12} -64 x_{12}^{2} -64 x_{12} x_{13} -32 x_{12} x_{22} -64 x_{12} x_{28} \\
+&\quad -32 x_{12} x_{31} +8 x_{13} -16 x_{13}^{2} -16 x_{13} x_{22} -32 x_{13} x_{28} -16 x_{13} x_{31} \\
+&\quad +2 x_{22} -4 x_{22}^{2} -16 x_{22} x_{28} -8 x_{22} x_{31} +8 x_{28} -16 x_{28}^{2} \\
+&\quad -16 x_{28} x_{31} +4 x_{31} -4 x_{31}^{2} +x_{32}
+\end{align*}
+
+% Residual 17: multiplication
+\begin{align*}
+R_{17} &= -10 -5 x_{11} -x_{11}^{2} -12 x_{11} x_{12} -16 x_{11} x_{13} -4 x_{11} x_{26} -36 x_{12} \\
+&\quad -36 x_{12}^{2} -96 x_{12} x_{13} -24 x_{12} x_{26} -48 x_{13} -64 x_{13}^{2} -32 x_{13} x_{26} \\
+&\quad -12 x_{26} -4 x_{26}^{2} +x_{33}
+\end{align*}
+
+% Residual 18: multiplication
+\begin{align*}
+R_{18} &= -2 -24 x_{11} -36 x_{11}^{2} -12 x_{11} x_{12} -96 x_{11} x_{13} -24 x_{11} x_{28} -3 x_{12} \\
+&\quad -x_{12}^{2} -16 x_{12} x_{13} -4 x_{12} x_{28} -32 x_{13} -64 x_{13}^{2} -32 x_{13} x_{28} \\
+&\quad -8 x_{28} -4 x_{28}^{2} +x_{34}
+\end{align*}
+
+% Residual 19: multiplication
+\begin{align*}
+R_{19} &= 2 -4 x_{33}^{2} -8 x_{33} x_{34} -4 x_{34}^{2} +x_{35}
+\end{align*}
+
+% Residual 20: multiplication
+\begin{align*}
+R_{20} &= -12 +16 x_{11} -4 x_{11}^{2} -8 x_{11} x_{13} -8 x_{11} x_{22} -8 x_{11} x_{26} +16 x_{13} \\
+&\quad -4 x_{13}^{2} -8 x_{13} x_{22} -8 x_{13} x_{26} +16 x_{22} -4 x_{22}^{2} -8 x_{22} x_{26} \\
+&\quad +16 x_{26} -4 x_{26}^{2} +x_{36}
+\end{align*}
+
+% Residual 21: multiplication
+\begin{align*}
+R_{21} &= -3 -24 x_{11} -64 x_{11}^{2} -160 x_{11} x_{13} -64 x_{11} x_{26} -32 x_{11} x_{28} \\
+&\quad -32 x_{11} x_{36} -26 x_{13} -100 x_{13}^{2} -80 x_{13} x_{26} -40 x_{13} x_{28} \\
+&\quad -40 x_{13} x_{36} -8 x_{26} -16 x_{26}^{2} -16 x_{26} x_{28} -16 x_{26} x_{36} -6 x_{28} \\
+&\quad -4 x_{28}^{2} -8 x_{28} x_{36} -4 x_{36} -4 x_{36}^{2} +x_{37}
+\end{align*}
+
+% Residual 22: multiplication
+\begin{align*}
+R_{22} &= -1 -18 x_{11} -36 x_{11}^{2} -96 x_{11} x_{12} -24 x_{11} x_{22} -24 x_{12} -64 x_{12}^{2} \\
+&\quad -32 x_{12} x_{22} -6 x_{22} -4 x_{22}^{2} +x_{38}
+\end{align*}
+
+% Residual 23: multiplication
+\begin{align*}
+R_{23} &= -2 +2 x_{11} -x_{11}^{2} -4 x_{11} x_{38} +4 x_{38} -4 x_{38}^{2} +x_{39}
+\end{align*}
+
+% Residual 24: multiplication
+\begin{align*}
+R_{24} &= 1 +6 x_{11} -36 x_{11}^{2} -192 x_{11} x_{38} -24 x_{11} x_{39} +16 x_{38} -256 x_{38}^{2} \\
+&\quad -64 x_{38} x_{39} +2 x_{39} -4 x_{39}^{2} +x_{40}
+\end{align*}
+
+% Residual 25: multiplication
+\begin{align*}
+R_{25} &= -x_{12}^{2} -4 x_{12} x_{40} -4 x_{40}^{2} +x_{41}
+\end{align*}
+
+% Residual 26: multiplication
+\begin{align*}
+R_{26} &= -6 -30 x_{11} -64 x_{11}^{2} -128 x_{11} x_{12} -64 x_{11} x_{22} -32 x_{12} -64 x_{12}^{2} \\
+&\quad -64 x_{12} x_{22} -14 x_{22} -16 x_{22}^{2} +x_{42}
+\end{align*}
+
+% Residual 27: multiplication
+\begin{align*}
+R_{27} &= -4 +8 x_{12} -64 x_{12}^{2} -96 x_{12} x_{13} -32 x_{12} x_{26} -32 x_{12} x_{42} +6 x_{13} \\
+&\quad -36 x_{13}^{2} -24 x_{13} x_{26} -24 x_{13} x_{42} +2 x_{26} -4 x_{26}^{2} -8 x_{26} x_{42} \\
+&\quad +4 x_{42} -4 x_{42}^{2} +x_{43}
+\end{align*}
+
+% Residual 28: multiplication
+\begin{align*}
+R_{28} &= 8 x_{11} -64 x_{11}^{2} -96 x_{11} x_{13} -32 x_{11} x_{28} -32 x_{11} x_{43} +6 x_{13} \\
+&\quad -36 x_{13}^{2} -24 x_{13} x_{28} -24 x_{13} x_{43} +2 x_{28} -4 x_{28}^{2} -8 x_{28} x_{43} \\
+&\quad +4 x_{43} -4 x_{43}^{2} +x_{44}
+\end{align*}
+
+% Residual 29: multiplication
+\begin{align*}
+R_{29} &= -x_{13}^{2} -2 x_{13} x_{14} -x_{14}^{2} +x_{45}
+\end{align*}
+
+% Residual 30: multiplication
+\begin{align*}
+R_{30} &= 2 x_{11} -x_{11}^{2} -4 x_{11} x_{13} -4 x_{11} x_{45} +4 x_{13} -4 x_{13}^{2} -8 x_{13} x_{45} \\
+&\quad +4 x_{45} -4 x_{45}^{2} +x_{46}
+\end{align*}
+
+% Residual 31: multiplication
+\begin{align*}
+R_{31} &= -35 +24 x_{11} -4 x_{11}^{2} -8 x_{11} x_{12} -8 x_{11} x_{26} -8 x_{11} x_{28} +24 x_{12} \\
+&\quad -4 x_{12}^{2} -8 x_{12} x_{26} -8 x_{12} x_{28} +24 x_{26} -4 x_{26}^{2} -8 x_{26} x_{28} \\
+&\quad +24 x_{28} -4 x_{28}^{2} +x_{47}
+\end{align*}
+
+% Residual 32: multiplication
+\begin{align*}
+R_{32} &= -16 x_{11}^{2} -32 x_{11} x_{13} -32 x_{11} x_{28} -32 x_{11} x_{45} -16 x_{11} x_{46} \\
+&\quad -16 x_{11} x_{47} -4 x_{13} -16 x_{13}^{2} -32 x_{13} x_{28} -32 x_{13} x_{45} -16 x_{13} x_{46} \\
+&\quad -16 x_{13} x_{47} -16 x_{28}^{2} -32 x_{28} x_{45} -16 x_{28} x_{46} -16 x_{28} x_{47} -4 x_{45} \\
+&\quad -16 x_{45}^{2} -16 x_{45} x_{46} -16 x_{45} x_{47} -2 x_{46} -4 x_{46}^{2} -8 x_{46} x_{47} \\
+&\quad -4 x_{47}^{2} +x_{48}
+\end{align*}
+
+% Residual 33: multiplication
+\begin{align*}
+R_{33} &= x_{13} -25 x_{13}^{2} -40 x_{13} x_{28} -20 x_{13} x_{31} -16 x_{28}^{2} -16 x_{28} x_{31} \\
+&\quad -4 x_{31}^{2} +x_{49}
+\end{align*}
+
+% Residual 34: multiplication
+\begin{align*}
+R_{34} &= -1 +8 x_{12} -4 x_{12}^{2} -8 x_{12} x_{26} +8 x_{26} -4 x_{26}^{2} +x_{50}
+\end{align*}
+
+% Residual 35: multiplication
+\begin{align*}
+R_{35} &= -1 -16 x_{12}^{2} -8 x_{12} x_{13} -32 x_{12} x_{26} -16 x_{12} x_{50} -x_{13}^{2} \\
+&\quad -8 x_{13} x_{26} -4 x_{13} x_{50} -16 x_{26}^{2} -16 x_{26} x_{50} -4 x_{50}^{2} +x_{51}
+\end{align*}
+
+% Residual 36: multiplication
+\begin{align*}
+R_{36} &= 1 +x_{12} -x_{12}^{2} -4 x_{12} x_{13} -4 x_{12} x_{51} -4 x_{13}^{2} -8 x_{13} x_{51} \\
+&\quad -4 x_{51}^{2} +x_{52}
+\end{align*}
+
+% Residual 37: multiplication
+\begin{align*}
+R_{37} &= -1 -4 x_{52} -4 x_{52}^{2} +x_{53}
+\end{align*}
+
+% Residual 38: multiplication
+\begin{align*}
+R_{38} &= -1 -x_{13}^{2} -8 x_{13} x_{52} -4 x_{13} x_{53} -16 x_{52}^{2} -16 x_{52} x_{53} -4 x_{53}^{2} \\
+&\quad +x_{54}
+\end{align*}
+
+% Residual 39: multiplication
+\begin{align*}
+R_{39} &= 2 +x_{12} -x_{12}^{2} -4 x_{12} x_{13} -4 x_{12} x_{54} -4 x_{13}^{2} -8 x_{13} x_{54} \\
+&\quad -4 x_{54}^{2} +x_{55}
+\end{align*}
+
+% Residual 40: multiplication
+\begin{align*}
+R_{40} &= -4 x_{49}^{2} -8 x_{49} x_{55} -4 x_{55}^{2} +x_{56}
+\end{align*}
+
+% Residual 41: multiplication
+\begin{align*}
+R_{41} &= -9 +7 x_{11} -x_{11}^{2} -8 x_{11} x_{49} -4 x_{11} x_{56} +24 x_{49} -16 x_{49}^{2} \\
+&\quad -16 x_{49} x_{56} +12 x_{56} -4 x_{56}^{2} +x_{57}
+\end{align*}
+
+% Residual 42: multiplication
+\begin{align*}
+R_{42} &= -1 -4 x_{57} -4 x_{57}^{2} +x_{58}
+\end{align*}
+
+% Residual 43: multiplication
+\begin{align*}
+R_{43} &= -x_{13}^{2} -8 x_{13} x_{57} -4 x_{13} x_{58} -16 x_{57}^{2} -16 x_{57} x_{58} -4 x_{58}^{2} \\
+&\quad +x_{59}
+\end{align*}
+
+% Residual 44: multiplication
+\begin{align*}
+R_{44} &= -x_{11} -x_{11}^{2} -4 x_{11} x_{13} -4 x_{11} x_{59} -4 x_{13} -4 x_{13}^{2} -8 x_{13} x_{59} \\
+&\quad -4 x_{59} -4 x_{59}^{2} +x_{60}
+\end{align*}
+
+% Residual 45: multiplication
+\begin{align*}
+R_{45} &= -10 -12 x_{60} -4 x_{60}^{2} +x_{61}
+\end{align*}
+
+% Residual 46: multiplication
+\begin{align*}
+R_{46} &= 1 +4 x_{12} -4 x_{12}^{2} -8 x_{12} x_{26} -16 x_{12} x_{60} -8 x_{12} x_{61} +4 x_{26} \\
+&\quad -4 x_{26}^{2} -16 x_{26} x_{60} -8 x_{26} x_{61} +8 x_{60} -16 x_{60}^{2} -16 x_{60} x_{61} \\
+&\quad +4 x_{61} -4 x_{61}^{2} +x_{62}
+\end{align*}
+
+% Residual 47: multiplication
+\begin{align*}
+R_{47} &= x_{12} -25 x_{12}^{2} -40 x_{12} x_{26} -20 x_{12} x_{62} -16 x_{26}^{2} -16 x_{26} x_{62} \\
+&\quad -4 x_{62}^{2} +x_{63}
+\end{align*}
+
+% Residual 48: multiplication
+\begin{align*}
+R_{48} &= -10 -12 x_{55} -4 x_{55}^{2} +x_{64}
+\end{align*}
+
+% Residual 49: multiplication
+\begin{align*}
+R_{49} &= 1 -16 x_{55}^{2} -16 x_{55} x_{63} -16 x_{55} x_{64} -4 x_{63}^{2} -8 x_{63} x_{64} -4 x_{64}^{2} \\
+&\quad +x_{65}
+\end{align*}
+
+% Residual 50: multiplication
+\begin{align*}
+R_{50} &= x_{13} -x_{13}^{2} -8 x_{13} x_{63} -4 x_{13} x_{65} -16 x_{63}^{2} -16 x_{63} x_{65} \\
+&\quad -4 x_{65}^{2} +x_{66}
+\end{align*}
+
+% Residual 51: multiplication
+\begin{align*}
+R_{51} &= -4 x_{11} -4 x_{11}^{2} -4 x_{11} x_{13} -8 x_{11} x_{22} -x_{13} -x_{13}^{2} -4 x_{13} x_{22} \\
+&\quad -4 x_{22} -4 x_{22}^{2} +x_{67}
+\end{align*}
+
+% Residual 52: multiplication
+\begin{align*}
+R_{52} &= 1 +4 x_{11} -4 x_{11}^{2} -8 x_{11} x_{22} -8 x_{11} x_{67} +4 x_{22} -4 x_{22}^{2} \\
+&\quad -8 x_{22} x_{67} +4 x_{67} -4 x_{67}^{2} +x_{68}
+\end{align*}
+
+% Residual 53: multiplication
+\begin{align*}
+R_{53} &= -2 -4 x_{11} -16 x_{11}^{2} -32 x_{11} x_{22} -16 x_{11} x_{66} -16 x_{11} x_{68} -4 x_{22} \\
+&\quad -16 x_{22}^{2} -16 x_{22} x_{66} -16 x_{22} x_{68} -4 x_{66}^{2} -8 x_{66} x_{68} -2 x_{68} \\
+&\quad -4 x_{68}^{2} +x_{69}
+\end{align*}
+
+% Residual 54: multiplication
+\begin{align*}
+R_{54} &= -2 -4 x_{69} -4 x_{69}^{2} +x_{70}
+\end{align*}
+
+% Residual 55: multiplication
+\begin{align*}
+R_{55} &= -x_{3} x_{16} +x_{71}
+\end{align*}
+
+% Residual 56: multiplication
+\begin{align*}
+R_{56} &= x_{15} -x_{16} -2 x_{25} x_{71} -x_{72}
+\end{align*}
+
+% Residual 57: multiplication
+\begin{align*}
+R_{57} &= x_{15} -x_{16} -4 x_{27} x_{71} -2 x_{30} x_{71} -x_{73}
+\end{align*}
+
+% Residual 58: multiplication
+\begin{align*}
+R_{58} &= x_{15} -x_{16} -2 x_{32} x_{71} -6 x_{71} -x_{74}
+\end{align*}
+
+% Residual 59: multiplication
+\begin{align*}
+R_{59} &= x_{15} -x_{16} -4 x_{33} x_{71} -2 x_{35} x_{71} -x_{75}
+\end{align*}
+
+% Residual 60: multiplication
+\begin{align*}
+R_{60} &= x_{15} -x_{16} -2 x_{37} x_{71} +6 x_{71} -x_{76}
+\end{align*}
+
+% Residual 61: multiplication
+\begin{align*}
+R_{61} &= x_{15} -x_{16} -4 x_{40} x_{71} -2 x_{41} x_{71} -x_{77}
+\end{align*}
+
+% Residual 62: multiplication
+\begin{align*}
+R_{62} &= x_{15} -x_{16} -2 x_{44} x_{71} -x_{78}
+\end{align*}
+
+% Residual 63: multiplication
+\begin{align*}
+R_{63} &= x_{15} -x_{16} -2 x_{48} x_{71} -4 x_{71} -x_{79}
+\end{align*}
+
+% Residual 64: nonnegative_square_difference
+\begin{align*}
+R_{64} &= -x_{11} x_{12} +x_{11} x_{13} +x_{12} +x_{12} x_{13} -x_{13} -x_{13}^{2} +x_{80}
+\end{align*}
+
+% Residual 65: multiplication
+\begin{align*}
+R_{65} &= 1 +2 x_{14} +x_{14}^{2} -x_{80}^{2} +x_{81}
+\end{align*}
+
+% Residual 66: nonnegative_square_difference
+\begin{align*}
+R_{66} &= -x_{81}^{2} +x_{82}
+\end{align*}
+
+% Residual 67: multiplication
+\begin{align*}
+R_{67} &= -4 x_{69} x_{71} -2 x_{70} x_{71} +2 x_{71} +x_{83}
+\end{align*}
+
+% Residual 68: nonnegative_square_difference
+\begin{align*}
+R_{68} &= -x_{15}^{2} +2 x_{15} x_{16} +2 x_{15} x_{83} -x_{16}^{2} -2 x_{16} x_{83} -x_{83}^{2} +x_{84}
+\end{align*}
+
+% Residual 69: multiplication
+\begin{align*}
+R_{69} &= -1 -x_{3} x_{12} +x_{85}
+\end{align*}
+
+% Residual 70: multiplication
+\begin{align*}
+R_{70} &= -x_{16} x_{85} +x_{87} x_{88} +x_{89}
+\end{align*}
+
+% Residual 71: multiplication
+\begin{align*}
+R_{71} &= -1 +x_{3} -x_{3} x_{11} +x_{86}
+\end{align*}
+
+% Residual 72: multiplication
+\begin{align*}
+R_{72} &= -1 +2 x_{3} -2 x_{3} x_{11} -2 x_{3} x_{22} +x_{87}
+\end{align*}
+
+% Residual 73: multiplication
+\begin{align*}
+R_{73} &= -x_{15} x_{86} +x_{88}
+\end{align*}
+
+% Residual 74: multiplication
+\begin{align*}
+R_{74} &= -1 -6 x_{3} x_{11} -8 x_{3} x_{12} -2 x_{3} x_{22} +x_{90}
+\end{align*}
+
+% Residual 75: multiplication
+\begin{align*}
+R_{75} &= x_{15} x_{85} -x_{16} x_{90} +x_{91}
+\end{align*}
+
+% Residual 76: multiplication
+\begin{align*}
+R_{76} &= -x_{15} x_{72} +x_{16} x_{72} +x_{92}
+\end{align*}
+
+% Residual 77: multiplication
+\begin{align*}
+R_{77} &= -x_{73} x_{92} +x_{93}
+\end{align*}
+
+% Residual 78: multiplication
+\begin{align*}
+R_{78} &= -x_{74} x_{93} +x_{94}
+\end{align*}
+
+% Residual 79: multiplication
+\begin{align*}
+R_{79} &= -x_{75} x_{94} +x_{95}
+\end{align*}
+
+% Residual 80: multiplication
+\begin{align*}
+R_{80} &= -x_{76} x_{95} +x_{96}
+\end{align*}
+
+% Residual 81: multiplication
+\begin{align*}
+R_{81} &= -x_{77} x_{96} +x_{97}
+\end{align*}
+
+% Residual 82: multiplication
+\begin{align*}
+R_{82} &= -x_{78} x_{97} +x_{98}
+\end{align*}
+
+% Residual 83: multiplication
+\begin{align*}
+R_{83} &= -x_{79} x_{98} +x_{99}
+\end{align*}
+
+% Residual 84: multiplication
+\begin{align*}
+R_{84} &= -x_{89} x_{99} +x_{100}
+\end{align*}
+
+% Residual 85: multiplication
+\begin{align*}
+R_{85} &= -x_{91} x_{100} +x_{101}
+\end{align*}
+
+% Residual 86: multiplication
+\begin{align*}
+R_{86} &= -x_{101}^{2} +x_{102}
+\end{align*}
+
+% Residual 87: multiplication
+\begin{align*}
+R_{87} &= -x_{2} -x_{2} x_{19} +x_{19} +x_{103}
+\end{align*}
+
+% Residual 88: multiplication
+\begin{align*}
+R_{88} &= -x_{17} x_{103} +x_{104}
+\end{align*}
+
+% Residual 89: nonnegative_square_difference
+\begin{align*}
+R_{89} &= -2 x_{1}^{2} +2 x_{1} x_{15} +2 x_{1} x_{16} +2 x_{1} x_{104} +2 x_{1} x_{105} -x_{15}^{2} \\
+&\quad -2 x_{15} x_{104} -x_{16}^{2} -2 x_{16} x_{105} +x_{20} x_{107} -x_{82} x_{102} -x_{84} x_{102} \\
+&\quad -x_{104}^{2} -x_{105}^{2}
+\end{align*}
+
+% Residual 90: multiplication
+\begin{align*}
+R_{90} &= -x_{2} x_{18} +x_{18} -x_{18} x_{103} +x_{105}
+\end{align*}
+
+% Residual 91: addition
+\begin{align*}
+R_{91} &= -9 x_{11} -9 x_{12} -4 x_{22} -2 x_{25} -4 x_{27} -2 x_{30} -2 x_{32} -4 x_{33} -2 x_{35} -2 x_{37} \\
+&\quad -4 x_{40} -2 x_{41} -2 x_{44} -2 x_{48} -4 x_{69} -2 x_{70} +x_{106}
+\end{align*}
+
+% Residual 92: multiplication
+\begin{align*}
+R_{92} &= -x_{108} x_{111} +x_{111} +x_{113}
+\end{align*}
+
+% Residual 93: choose0.digit
+\begin{align*}
+R_{93} &= -x_{5} x_{135} +x_{109} x_{235} -x_{112} -x_{113} x_{135}
+\end{align*}
+
+% Residual 94: crt.range.a.quotient_multiple
+\begin{align*}
+R_{94} &= x_{114} x_{236} -x_{116} x_{138} -x_{117}
+\end{align*}
+
+% Residual 95: crt.range.b.quotient_multiple
+\begin{align*}
+R_{95} &= x_{118} x_{236} -x_{119} x_{138} -x_{120}
+\end{align*}
+
+% Residual 96: crt.range.c.quotient_multiple
+\begin{align*}
+R_{96} &= x_{121} x_{236} -x_{122} x_{138} -x_{123}
+\end{align*}
+
+% Residual 97: crt.range.d.quotient_multiple
+\begin{align*}
+R_{97} &= x_{124} x_{236} -x_{125} x_{138} -x_{126}
+\end{align*}
+
+% Residual 98: crt.range.S.quotient_multiple
+\begin{align*}
+R_{98} &= x_{127} x_{237} -x_{129} x_{138} -x_{130}
+\end{align*}
+
+% Residual 99: crt.range.Sp.quotient_multiple
+\begin{align*}
+R_{99} &= x_{131} x_{237} -x_{132} x_{138} -x_{133}
+\end{align*}
+
+% Residual 100: multiplication
+\begin{align*}
+R_{100} &= -x_{20} x_{135} +x_{138}
+\end{align*}
+
+% Residual 101: multiplication
+\begin{align*}
+R_{101} &= x_{134} -x_{136} x_{138} -x_{137}
+\end{align*}
+
+% Residual 102: multiplication
+\begin{align*}
+R_{102} &= -x_{138} x_{140} +x_{139} -x_{141}
+\end{align*}
+
+% Residual 103: crt.range.index.quotient_multiple
+\begin{align*}
+R_{103} &= -x_{138} x_{143} +x_{142} x_{235} -x_{144}
+\end{align*}
+
+% Residual 104: crt.range.derived_label_sum.quotient_multiple
+\begin{align*}
+R_{104} &= -x_{138} x_{146} +x_{145} x_{236} -x_{147}
+\end{align*}
+
+% Residual 105: multiplication
+\begin{align*}
+R_{105} &= x_{148} -2 x_{148} x_{150} +x_{151}
+\end{align*}
+
+% Residual 106: multiplication
+\begin{align*}
+R_{106} &= -x_{148} x_{151} -x_{151} +x_{152}
+\end{align*}
+
+% Residual 107: shared.last_norm
+\begin{align*}
+R_{107} &= 2 x_{149} +x_{149}^{2} +x_{151}^{2} -x_{152}^{2}
+\end{align*}
+
+% Residual 108: multiplication
+\begin{align*}
+R_{108} &= -x_{149} x_{154} -x_{154} +x_{155}
+\end{align*}
+
+% Residual 109: index0.norm1
+\begin{align*}
+R_{109} &= 2 x_{153} +x_{153}^{2} +x_{154}^{2} -x_{155}^{2}
+\end{align*}
+
+% Residual 110: multiplication
+\begin{align*}
+R_{110} &= x_{4}^{2} -2 x_{4} x_{149} -2 x_{149} +x_{156}
+\end{align*}
+
+% Residual 111: multiplication
+\begin{align*}
+R_{111} &= -1 -x_{4} x_{154} +x_{6} -x_{153} -x_{154} +x_{155} +x_{156} x_{157}
+\end{align*}
+
+% Residual 112: multiplication
+\begin{align*}
+R_{112} &= 1 -2 x_{5} +x_{5}^{2} -2 x_{5} x_{149} +x_{158}
+\end{align*}
+
+% Residual 113: multiplication
+\begin{align*}
+R_{113} &= -x_{5} x_{204} +x_{20} +x_{158} x_{159} -x_{203} +x_{205}
+\end{align*}
+
+% Residual 114: base2.T_definition
+\begin{align*}
+R_{114} &= -1 +2 x_{149} x_{219} -x_{160} +2 x_{219} -x_{219}^{2}
+\end{align*}
+
+% Residual 115: multiplication
+\begin{align*}
+R_{115} &= -1 +x_{108} +x_{160} x_{161} -x_{203} -x_{204} x_{219} +x_{205}
+\end{align*}
+
+% Residual 116: multiplication
+\begin{align*}
+R_{116} &= -x_{149} x_{163} -x_{163} +x_{164}
+\end{align*}
+
+% Residual 117: index2.norm1
+\begin{align*}
+R_{117} &= 2 x_{162} +x_{162}^{2} +x_{163}^{2} -x_{164}^{2}
+\end{align*}
+
+% Residual 118: multiplication
+\begin{align*}
+R_{118} &= 1 -2 x_{108} +x_{108}^{2} -2 x_{108} x_{149} +x_{165}
+\end{align*}
+
+% Residual 119: multiplication
+\begin{align*}
+R_{119} &= -1 -x_{108} x_{163} +x_{109} -x_{162} +x_{164} +x_{165} x_{166}
+\end{align*}
+
+% Residual 120: multiplication
+\begin{align*}
+R_{120} &= 4 -4 x_{108} +x_{108}^{2} -2 x_{108} x_{149} +2 x_{149} +x_{167}
+\end{align*}
+
+% Residual 121: multiplication
+\begin{align*}
+R_{121} &= -1 -x_{108} x_{154} +x_{110} -x_{153} +x_{154} +x_{155} +x_{167} x_{168}
+\end{align*}
+
+% Residual 122: multiplication
+\begin{align*}
+R_{122} &= 1 +x_{149} -x_{149} x_{170} -x_{170} +x_{171}
+\end{align*}
+
+% Residual 123: index3.norm1
+\begin{align*}
+R_{123} &= 1 +2 x_{169} +x_{169}^{2} -2 x_{170} +x_{170}^{2} -x_{171}^{2}
+\end{align*}
+
+% Residual 124: multiplication
+\begin{align*}
+R_{124} &= -1 +x_{108} -x_{108} x_{170} +x_{114} +x_{165} x_{172} -x_{169} +x_{171}
+\end{align*}
+
+% Residual 125: multiplication
+\begin{align*}
+R_{125} &= -2 x_{149} -x_{149}^{2} +x_{173}
+\end{align*}
+
+% Residual 126: multiplication
+\begin{align*}
+R_{126} &= 1 -x_{108} -x_{108} x_{153} -x_{108} x_{155} +x_{115} +x_{149} x_{155} +x_{153} -x_{154} x_{173} \\
+&\quad +2 x_{155} +x_{167} x_{174}
+\end{align*}
+
+% Residual 127: multiplication
+\begin{align*}
+R_{127} &= -x_{149} x_{176} -x_{176} +x_{177}
+\end{align*}
+
+% Residual 128: index5.norm1
+\begin{align*}
+R_{128} &= 2 x_{175} +x_{175}^{2} +x_{176}^{2} -x_{177}^{2}
+\end{align*}
+
+% Residual 129: multiplication
+\begin{align*}
+R_{129} &= -1 -x_{108} x_{176} +x_{118} +x_{165} x_{178} -x_{175} +x_{177}
+\end{align*}
+
+% Residual 130: multiplication
+\begin{align*}
+R_{130} &= -x_{149} x_{180} -x_{180} +x_{181}
+\end{align*}
+
+% Residual 131: index6.norm1
+\begin{align*}
+R_{131} &= 2 x_{179} +x_{179}^{2} +x_{180}^{2} -x_{181}^{2}
+\end{align*}
+
+% Residual 132: multiplication
+\begin{align*}
+R_{132} &= -1 -x_{108} x_{180} +x_{121} +x_{165} x_{182} -x_{179} +x_{181}
+\end{align*}
+
+% Residual 133: multiplication
+\begin{align*}
+R_{133} &= -x_{149} x_{184} -x_{184} +x_{185}
+\end{align*}
+
+% Residual 134: index7.norm1
+\begin{align*}
+R_{134} &= 2 x_{183} +x_{183}^{2} +x_{184}^{2} -x_{185}^{2}
+\end{align*}
+
+% Residual 135: multiplication
+\begin{align*}
+R_{135} &= -1 -x_{108} x_{184} +x_{124} +x_{165} x_{186} -x_{183} +x_{185}
+\end{align*}
+
+% Residual 136: multiplication
+\begin{align*}
+R_{136} &= -x_{149} x_{188} -x_{188} +x_{189}
+\end{align*}
+
+% Residual 137: index8.norm1
+\begin{align*}
+R_{137} &= 2 x_{187} +x_{187}^{2} +x_{188}^{2} -x_{189}^{2}
+\end{align*}
+
+% Residual 138: multiplication
+\begin{align*}
+R_{138} &= -1 -x_{108} x_{188} +x_{127} +x_{165} x_{190} -x_{187} +x_{189}
+\end{align*}
+
+% Residual 139: multiplication
+\begin{align*}
+R_{139} &= -x_{149} x_{192} -x_{192} +x_{193}
+\end{align*}
+
+% Residual 140: index9.norm1
+\begin{align*}
+R_{140} &= 2 x_{191} +x_{191}^{2} +x_{192}^{2} -x_{193}^{2}
+\end{align*}
+
+% Residual 141: multiplication
+\begin{align*}
+R_{141} &= -1 -x_{108} x_{192} +x_{128} +x_{167} x_{194} -x_{191} +x_{192} +x_{193}
+\end{align*}
+
+% Residual 142: multiplication
+\begin{align*}
+R_{142} &= -x_{149} x_{196} -x_{196} +x_{197}
+\end{align*}
+
+% Residual 143: index10.norm1
+\begin{align*}
+R_{143} &= 2 x_{195} +x_{195}^{2} +x_{196}^{2} -x_{197}^{2}
+\end{align*}
+
+% Residual 144: multiplication
+\begin{align*}
+R_{144} &= -1 -x_{108} x_{196} +x_{131} +x_{165} x_{198} -x_{195} +x_{197}
+\end{align*}
+
+% Residual 145: multiplication
+\begin{align*}
+R_{145} &= -x_{149} x_{200} -x_{200} +x_{201}
+\end{align*}
+
+% Residual 146: index11.norm1
+\begin{align*}
+R_{146} &= 2 x_{199} +x_{199}^{2} +x_{200}^{2} -x_{201}^{2}
+\end{align*}
+
+% Residual 147: multiplication
+\begin{align*}
+R_{147} &= -1 -x_{108} x_{200} +x_{134} +x_{165} x_{202} -x_{199} +x_{201}
+\end{align*}
+
+% Residual 148: multiplication
+\begin{align*}
+R_{148} &= 1 -x_{149} x_{204} -x_{204} +x_{205}
+\end{align*}
+
+% Residual 149: index12.norm1
+\begin{align*}
+R_{149} &= -1 +2 x_{203} +x_{203}^{2} +x_{204}^{2} -2 x_{205} -x_{205}^{2}
+\end{align*}
+
+% Residual 150: multiplication
+\begin{align*}
+R_{150} &= -x_{108} x_{204} +x_{135} +x_{167} x_{206} -x_{203} +x_{204} +x_{205}
+\end{align*}
+
+% Residual 151: multiplication
+\begin{align*}
+R_{151} &= -x_{149} x_{208} -x_{208} +x_{209}
+\end{align*}
+
+% Residual 152: index13.norm1
+\begin{align*}
+R_{152} &= 2 x_{207} +x_{207}^{2} +x_{208}^{2} -x_{209}^{2}
+\end{align*}
+
+% Residual 153: multiplication
+\begin{align*}
+R_{153} &= -1 -x_{108} x_{208} +x_{139} +x_{165} x_{210} -x_{207} +x_{209}
+\end{align*}
+
+% Residual 154: multiplication
+\begin{align*}
+R_{154} &= -x_{149} x_{212} -x_{212} +x_{213}
+\end{align*}
+
+% Residual 155: index14.norm1
+\begin{align*}
+R_{155} &= 2 x_{211} +x_{211}^{2} +x_{212}^{2} -x_{213}^{2}
+\end{align*}
+
+% Residual 156: multiplication
+\begin{align*}
+R_{156} &= -1 -x_{108} x_{212} +x_{142} +x_{165} x_{214} -x_{211} +x_{213}
+\end{align*}
+
+% Residual 157: multiplication
+\begin{align*}
+R_{157} &= -x_{149} x_{216} -x_{216} +x_{217}
+\end{align*}
+
+% Residual 158: index15.norm1
+\begin{align*}
+R_{158} &= 2 x_{215} +x_{215}^{2} +x_{216}^{2} -x_{217}^{2}
+\end{align*}
+
+% Residual 159: multiplication
+\begin{align*}
+R_{159} &= -1 -x_{108} x_{216} +x_{145} +x_{165} x_{218} -x_{215} +x_{217}
+\end{align*}
+
+% Residual 160: shared.frame_definition
+\begin{align*}
+R_{160} &= -6 -2 x_{0} -3 x_{0}^{2} -2 x_{0} x_{4} -x_{1}^{2} -x_{2}^{2} -2 x_{4} -2 x_{4}^{2} -x_{5}^{2} \\
+&\quad -x_{6}^{2} +2 x_{11} -x_{11}^{2} -x_{12}^{2} -x_{13}^{2} -x_{14}^{2} -x_{15}^{2} -x_{16}^{2} \\
+&\quad -x_{17}^{2} -x_{18}^{2} -x_{19}^{2} -x_{20}^{2} -x_{106}^{2} +2 x_{108} -2 x_{108}^{2} -x_{109}^{2} \\
+&\quad -x_{110}^{2} -x_{114}^{2} -x_{115}^{2} -x_{118}^{2} -x_{121}^{2} -x_{124}^{2} -x_{127}^{2} \\
+&\quad -x_{128}^{2} -x_{131}^{2} -x_{134}^{2} -x_{135}^{2} -x_{139}^{2} -x_{142}^{2} -x_{145}^{2} +x_{148} \\
+&\quad -x_{219}^{2}
+\end{align*}
+
+% Residual 161: self_radix.base_definition
+\begin{align*}
+R_{161} &= -x_{5} x_{11} -x_{5} x_{12} -x_{5} x_{13} -x_{5} x_{14} -x_{5} x_{15} -x_{5} x_{16} -x_{5} x_{17} \\
+&\quad -x_{5} x_{18} -x_{5} x_{19} +x_{219}
+\end{align*}
+
+% Residual 162: cofinal.horizon
+\begin{align*}
+R_{162} &= -16 +x_{0} -x_{220}^{2}
+\end{align*}
+
+% Residual 163: cofinal.beta_base
+\begin{align*}
+R_{163} &= -1 +x_{2} +x_{6} -x_{6}^{2}
+\end{align*}
+
+% Residual 164: cap.common_Ay
+\begin{align*}
+R_{164} &= -x_{149} x_{222} -x_{222} +x_{231}
+\end{align*}
+
+% Residual 165: cap.common_norm
+\begin{align*}
+R_{165} &= -1 +x_{221}^{2} +x_{222}^{2} -x_{231}^{2}
+\end{align*}
+
+% Residual 166: cap.BR
+\begin{align*}
+R_{166} &= -x_{224} -x_{224} x_{225} +x_{232}
+\end{align*}
+
+% Residual 167: cap.comparison_norm
+\begin{align*}
+R_{167} &= -1 +x_{223}^{2} +x_{224}^{2} -x_{232}^{2}
+\end{align*}
+
+% Residual 168: cap.Y2
+\begin{align*}
+R_{168} &= -x_{216}^{2} +x_{233}
+\end{align*}
+
+% Residual 169: cap.common_multiple
+\begin{align*}
+R_{169} &= x_{222} -2 x_{227} x_{233} -x_{233}
+\end{align*}
+
+% Residual 170: cap.comparison_constructor
+\begin{align*}
+R_{170} &= -4 x_{222} -8 x_{222} x_{226} +x_{225}
+\end{align*}
+
+% Residual 171: cap.comparison_modulus
+\begin{align*}
+R_{171} &= -x_{149} -x_{221} x_{228} +x_{225}
+\end{align*}
+
+% Residual 172: cap.abscissa_residue
+\begin{align*}
+R_{172} &= -1 -x_{215} -x_{221} x_{229} +x_{223}
+\end{align*}
+
+% Residual 173: cap.index_residue
+\begin{align*}
+R_{173} &= -x_{106} -4 x_{216} x_{230} +x_{224}
+\end{align*}
+
+% Residual 174: cap.pooled_index_residue
+\begin{align*}
+R_{174} &= 2 x_{0}^{2} +2 x_{0} x_{4} -2 x_{0} x_{154} -2 x_{0} x_{163} +x_{1}^{2} -2 x_{1} x_{204} \\
+&\quad +x_{2}^{2} -2 x_{2} x_{192} +x_{4}^{2} -2 x_{4} x_{163} +x_{11}^{2} -2 x_{11} x_{170} +x_{12}^{2} \\
+&\quad -2 x_{12} x_{176} +x_{13}^{2} -2 x_{13} x_{180} +x_{14}^{2} -2 x_{14} x_{184} +x_{15}^{2} \\
+&\quad -2 x_{15} x_{188} +x_{16}^{2} -2 x_{16} x_{196} +x_{17}^{2} -2 x_{17} x_{200} +x_{18}^{2} \\
+&\quad -2 x_{18} x_{208} +x_{19}^{2} -2 x_{19} x_{212} +x_{106}^{2} -2 x_{106} x_{216} -x_{149} x_{234} \\
+&\quad +x_{153}^{2} +x_{154}^{2} +x_{162}^{2} +x_{163}^{2} +x_{169}^{2} +x_{170}^{2} +x_{175}^{2} \\
+&\quad +x_{176}^{2} +x_{179}^{2} +x_{180}^{2} +x_{183}^{2} +x_{184}^{2} +x_{187}^{2} +x_{188}^{2} \\
+&\quad +x_{191}^{2} +x_{192}^{2} +x_{195}^{2} +x_{196}^{2} +x_{199}^{2} +x_{200}^{2} +x_{203}^{2} \\
+&\quad +x_{204}^{2} +x_{207}^{2} +x_{208}^{2} +x_{211}^{2} +x_{212}^{2} +x_{215}^{2} +x_{216}^{2}
+\end{align*}
+
+% Residual 175: remainder_budget.ratio0
+\begin{align*}
+R_{175} &= -x_{110} x_{235} +x_{135}
+\end{align*}
+
+% Residual 176: remainder_budget.ratio1
+\begin{align*}
+R_{176} &= -x_{115} x_{236} +x_{135}
+\end{align*}
+
+% Residual 177: remainder_budget.ratio2
+\begin{align*}
+R_{177} &= -x_{128} x_{237} +x_{135}
+\end{align*}
+
+% Residual 178: bootstrap.odd_square_radix
+\begin{align*}
+R_{178} &= -2 +x_{108} -4 x_{238} -4 x_{238}^{2}
+\end{align*}
+
+% Residual 179: bootstrap.guard0
+\begin{align*}
+R_{179} &= -1 +x_{5} +x_{5} x_{7} -x_{7} -x_{7}^{2} -x_{239}^{2} -x_{240}^{2} -x_{241} -x_{241}^{2}
+\end{align*}
+
+% Residual 180: bootstrap.guard1
+\begin{align*}
+R_{180} &= -2 -x_{106}^{2} -x_{154}^{2} -x_{163}^{2} +2 x_{170} -x_{170}^{2} -x_{176}^{2} -x_{180}^{2} \\
+&\quad -x_{184}^{2} -x_{188}^{2} -x_{192}^{2} -x_{196}^{2} -x_{200}^{2} -x_{204}^{2} -x_{208}^{2} \\
+&\quad -x_{212}^{2} +x_{216}^{2} -x_{242}^{2} -x_{243}^{2} -x_{244} -x_{244}^{2}
+\end{align*}
+
+% Residual 181: bootstrap.guard2
+\begin{align*}
+R_{181} &= -1 -4 x_{112}^{2} -4 x_{117}^{2} -4 x_{120}^{2} -4 x_{123}^{2} -4 x_{126}^{2} -4 x_{130}^{2} \\
+&\quad -4 x_{133}^{2} +x_{135}^{2} -4 x_{137}^{2} -4 x_{141}^{2} -4 x_{144}^{2} -4 x_{147}^{2} \\
+&\quad -x_{245}^{2} -x_{246}^{2} -x_{247} -x_{247}^{2}
+\end{align*}
+% END residuals248.tex
+
+\endgroup
+
+\clearpage
+\begingroup
+\setlength{\LTpre}{4pt}
+\setlength{\LTpost}{6pt}
+% BEGIN pivots.tex
+\section{Complete monic-elimination pivot tables}
+\label{app:monic-pivots}
+
+Every entry $j\mapsto v$ selects the source residual $R_j$ and source
+coordinate $x_v$ of the printed $248$-variable equation.  Both indices are
+zero based: $0\le j<182$ and $0\le v<248$.  Write the selected row uniquely
+as $R_j=\varepsilon_vx_v+f_v$ with $\varepsilon_v=\pm1$, and replace
+$x_v$ by $-\varepsilon_vf_v$.  The substitution dependency graph is acyclic;
+apply the definitions recursively, evaluating dependencies before their
+users (a reverse topological order for the graph defined in the theorem). Retain, in
+increasing source-index order, every coordinate not selected as a target.
+The new polynomial is the sum of the squares of all unselected residuals
+after these substitutions.  Thus these finite tables and the complete
+source residual list specify all eight polynomials without a search rule
+or unspecified compiler choice.  The machine-readable certificates and
+literal polynomial DAGs supply the same definitions independently.
+
+\subsection{225 integer variables, degree 6}
+There are $23$ selected coordinates and $159$ remaining residuals.
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{*{6}{r@{\,$\mapsto$\,}r}}
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$}\\
+\hline
+\endfirsthead
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$ (continued)}\\
+\hline
+\endhead
+2 & 10 & 56 & 72 & 69 & 85 & 73 & 88 & 74 & 90 & 77 & 93 \\
+79 & 95 & 81 & 97 & 83 & 99 & 86 & 102 & 87 & 103 & 91 & 106 \\
+92 & 113 & 100 & 138 & 110 & 156 & 112 & 158 & 114 & 160 & 118 & 165 \\
+120 & 167 & 125 & 173 & 160 & 148 & 168 & 233 & 170 & 225 & \multicolumn{2}{c}{} \\
+\hline
+\end{longtable}
+\endgroup
+
+\subsection{153 integer variables, degree 8}
+There are $95$ selected coordinates and $87$ remaining residuals.
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{*{6}{r@{\,$\mapsto$\,}r}}
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$}\\
+\hline
+\endfirsthead
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$ (continued)}\\
+\hline
+\endhead
+1 & 6 & 2 & 10 & 3 & 1 & 5 & 19 & 8 & 24 & 11 & 27 \\
+13 & 29 & 15 & 31 & 17 & 33 & 18 & 34 & 20 & 36 & 23 & 39 \\
+25 & 41 & 26 & 42 & 30 & 46 & 31 & 47 & 34 & 50 & 37 & 53 \\
+40 & 56 & 42 & 58 & 45 & 61 & 47 & 63 & 48 & 64 & 51 & 67 \\
+54 & 70 & 56 & 72 & 58 & 74 & 60 & 76 & 62 & 78 & 64 & 80 \\
+66 & 82 & 68 & 84 & 69 & 85 & 72 & 87 & 73 & 88 & 74 & 90 \\
+77 & 93 & 79 & 95 & 81 & 97 & 83 & 99 & 84 & 100 & 86 & 102 \\
+88 & 104 & 90 & 105 & 91 & 106 & 92 & 113 & 94 & 117 & 95 & 120 \\
+96 & 123 & 97 & 126 & 98 & 130 & 99 & 133 & 101 & 137 & 102 & 141 \\
+103 & 144 & 104 & 147 & 106 & 152 & 108 & 155 & 110 & 156 & 112 & 158 \\
+114 & 160 & 116 & 164 & 119 & 162 & 121 & 153 & 122 & 171 & 124 & 169 \\
+125 & 173 & 127 & 177 & 129 & 175 & 130 & 181 & 132 & 179 & 133 & 185 \\
+135 & 183 & 136 & 189 & 138 & 187 & 139 & 193 & 141 & 191 & 142 & 197 \\
+144 & 195 & 145 & 201 & 147 & 199 & 148 & 205 & 150 & 203 & 151 & 209 \\
+153 & 207 & 154 & 213 & 156 & 211 & 157 & 217 & 162 & 0 & 164 & 231 \\
+168 & 233 & 170 & 225 & 172 & 215 & 173 & 224 & 175 & 135 & \multicolumn{2}{c}{} \\
+\hline
+\end{longtable}
+\endgroup
+
+\subsection{144 integer variables, degree 12}
+There are $104$ selected coordinates and $78$ remaining residuals.
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{*{6}{r@{\,$\mapsto$\,}r}}
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$}\\
+\hline
+\endfirsthead
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$ (continued)}\\
+\hline
+\endhead
+0 & 4 & 1 & 6 & 2 & 10 & 3 & 1 & 5 & 19 & 8 & 24 \\
+13 & 29 & 16 & 32 & 17 & 33 & 18 & 34 & 20 & 36 & 23 & 39 \\
+26 & 42 & 28 & 44 & 30 & 46 & 31 & 47 & 34 & 50 & 37 & 53 \\
+40 & 56 & 42 & 58 & 45 & 61 & 47 & 63 & 48 & 64 & 51 & 67 \\
+56 & 72 & 57 & 73 & 58 & 74 & 59 & 75 & 60 & 76 & 61 & 77 \\
+62 & 78 & 63 & 79 & 64 & 80 & 66 & 82 & 67 & 83 & 68 & 84 \\
+69 & 85 & 71 & 86 & 72 & 87 & 73 & 88 & 74 & 90 & 77 & 93 \\
+79 & 95 & 81 & 97 & 83 & 99 & 84 & 100 & 86 & 102 & 88 & 104 \\
+90 & 105 & 91 & 106 & 92 & 113 & 93 & 112 & 94 & 117 & 95 & 120 \\
+96 & 123 & 97 & 126 & 98 & 130 & 99 & 133 & 100 & 138 & 101 & 137 \\
+102 & 141 & 103 & 144 & 104 & 147 & 105 & 151 & 106 & 152 & 108 & 155 \\
+110 & 156 & 112 & 158 & 114 & 160 & 116 & 164 & 119 & 162 & 121 & 153 \\
+122 & 171 & 124 & 114 & 125 & 173 & 126 & 115 & 127 & 177 & 129 & 175 \\
+130 & 181 & 132 & 179 & 133 & 185 & 135 & 183 & 136 & 189 & 138 & 187 \\
+139 & 193 & 141 & 191 & 142 & 197 & 144 & 195 & 145 & 201 & 147 & 199 \\
+148 & 205 & 150 & 203 & 151 & 209 & 153 & 207 & 154 & 213 & 156 & 211 \\
+157 & 217 & 159 & 145 & 162 & 0 & 164 & 231 & 168 & 233 & 170 & 225 \\
+172 & 215 & 173 & 224 & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} \\
+\hline
+\end{longtable}
+\endgroup
+
+\subsection{125 integer variables, degree 16}
+There are $123$ selected coordinates and $59$ remaining residuals.
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{*{6}{r@{\,$\mapsto$\,}r}}
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$}\\
+\hline
+\endfirsthead
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$ (continued)}\\
+\hline
+\endhead
+0 & 4 & 1 & 6 & 2 & 10 & 3 & 1 & 5 & 19 & 7 & 23 \\
+8 & 24 & 13 & 29 & 16 & 32 & 17 & 33 & 18 & 34 & 20 & 36 \\
+22 & 38 & 23 & 39 & 25 & 41 & 26 & 42 & 28 & 44 & 29 & 45 \\
+30 & 46 & 31 & 47 & 33 & 49 & 34 & 50 & 35 & 51 & 37 & 53 \\
+38 & 54 & 40 & 56 & 42 & 58 & 43 & 59 & 45 & 61 & 47 & 63 \\
+48 & 64 & 49 & 65 & 51 & 67 & 52 & 68 & 54 & 70 & 56 & 72 \\
+57 & 73 & 58 & 74 & 59 & 75 & 60 & 76 & 61 & 77 & 62 & 78 \\
+63 & 79 & 64 & 80 & 66 & 82 & 67 & 83 & 68 & 84 & 69 & 85 \\
+71 & 86 & 72 & 87 & 73 & 88 & 74 & 90 & 75 & 91 & 76 & 92 \\
+77 & 93 & 79 & 95 & 81 & 97 & 83 & 99 & 84 & 100 & 86 & 102 \\
+87 & 103 & 88 & 104 & 90 & 105 & 91 & 106 & 92 & 113 & 93 & 112 \\
+94 & 117 & 95 & 120 & 96 & 123 & 97 & 126 & 98 & 130 & 99 & 133 \\
+100 & 138 & 101 & 137 & 102 & 141 & 103 & 144 & 104 & 147 & 105 & 151 \\
+106 & 152 & 108 & 155 & 110 & 156 & 112 & 158 & 114 & 160 & 116 & 164 \\
+118 & 165 & 119 & 162 & 120 & 167 & 121 & 153 & 122 & 171 & 124 & 114 \\
+125 & 173 & 126 & 115 & 127 & 177 & 129 & 175 & 130 & 181 & 132 & 179 \\
+133 & 185 & 135 & 183 & 136 & 189 & 138 & 187 & 139 & 193 & 141 & 191 \\
+142 & 197 & 144 & 195 & 145 & 201 & 147 & 199 & 148 & 205 & 150 & 203 \\
+151 & 209 & 153 & 207 & 154 & 213 & 156 & 211 & 157 & 217 & 159 & 145 \\
+161 & 219 & 162 & 0 & 164 & 231 & 166 & 232 & 168 & 233 & 170 & 225 \\
+172 & 215 & 173 & 224 & 175 & 135 & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} \\
+\hline
+\end{longtable}
+\endgroup
+
+\subsection{117 integer variables, degree 32}
+There are $131$ selected coordinates and $51$ remaining residuals.
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{*{6}{r@{\,$\mapsto$\,}r}}
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$}\\
+\hline
+\endfirsthead
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$ (continued)}\\
+\hline
+\endhead
+0 & 4 & 1 & 6 & 2 & 10 & 3 & 1 & 5 & 19 & 6 & 22 \\
+7 & 23 & 8 & 24 & 13 & 29 & 15 & 31 & 18 & 34 & 20 & 36 \\
+22 & 38 & 23 & 39 & 26 & 42 & 28 & 44 & 29 & 45 & 30 & 46 \\
+31 & 47 & 33 & 49 & 34 & 50 & 35 & 51 & 37 & 53 & 38 & 54 \\
+40 & 56 & 42 & 58 & 43 & 59 & 45 & 61 & 47 & 63 & 48 & 64 \\
+49 & 65 & 50 & 66 & 51 & 67 & 52 & 68 & 54 & 70 & 56 & 72 \\
+57 & 73 & 58 & 74 & 59 & 75 & 60 & 76 & 61 & 77 & 62 & 78 \\
+63 & 79 & 64 & 80 & 65 & 81 & 66 & 82 & 67 & 83 & 68 & 84 \\
+69 & 85 & 70 & 89 & 71 & 86 & 72 & 87 & 73 & 88 & 74 & 90 \\
+75 & 91 & 76 & 92 & 77 & 93 & 78 & 94 & 79 & 95 & 80 & 96 \\
+81 & 97 & 83 & 99 & 84 & 100 & 86 & 102 & 87 & 103 & 88 & 104 \\
+90 & 105 & 91 & 106 & 92 & 113 & 93 & 112 & 94 & 117 & 95 & 120 \\
+96 & 123 & 97 & 126 & 98 & 130 & 99 & 133 & 100 & 138 & 101 & 137 \\
+102 & 141 & 103 & 144 & 104 & 147 & 105 & 151 & 106 & 152 & 108 & 155 \\
+110 & 156 & 112 & 158 & 113 & 20 & 114 & 160 & 116 & 164 & 118 & 165 \\
+119 & 162 & 120 & 167 & 121 & 153 & 122 & 171 & 124 & 114 & 125 & 173 \\
+126 & 115 & 127 & 177 & 129 & 175 & 130 & 181 & 132 & 179 & 133 & 185 \\
+135 & 183 & 136 & 189 & 138 & 187 & 139 & 193 & 141 & 191 & 142 & 197 \\
+144 & 195 & 145 & 201 & 147 & 199 & 148 & 205 & 150 & 203 & 151 & 209 \\
+153 & 207 & 154 & 213 & 156 & 211 & 157 & 217 & 159 & 145 & 161 & 219 \\
+162 & 0 & 163 & 2 & 164 & 231 & 166 & 232 & 168 & 233 & 169 & 222 \\
+170 & 225 & 172 & 215 & 173 & 224 & 175 & 135 & 178 & 108 & \multicolumn{2}{c}{} \\
+\hline
+\end{longtable}
+\endgroup
+
+\subsection{111 integer variables, degree 64}
+There are $137$ selected coordinates and $45$ remaining residuals.
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{*{6}{r@{\,$\mapsto$\,}r}}
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$}\\
+\hline
+\endfirsthead
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$ (continued)}\\
+\hline
+\endhead
+0 & 4 & 1 & 6 & 2 & 10 & 3 & 1 & 5 & 19 & 7 & 23 \\
+8 & 24 & 11 & 27 & 13 & 29 & 16 & 32 & 17 & 33 & 18 & 34 \\
+19 & 35 & 20 & 36 & 22 & 38 & 23 & 39 & 25 & 41 & 26 & 42 \\
+28 & 44 & 29 & 45 & 30 & 46 & 31 & 47 & 33 & 49 & 34 & 50 \\
+35 & 51 & 37 & 53 & 38 & 54 & 40 & 56 & 42 & 58 & 43 & 59 \\
+44 & 60 & 45 & 61 & 47 & 63 & 48 & 64 & 49 & 65 & 50 & 66 \\
+51 & 67 & 52 & 68 & 54 & 70 & 56 & 72 & 57 & 73 & 58 & 74 \\
+59 & 75 & 60 & 76 & 61 & 77 & 62 & 78 & 63 & 79 & 64 & 80 \\
+65 & 81 & 66 & 82 & 67 & 83 & 68 & 84 & 69 & 85 & 70 & 89 \\
+71 & 86 & 72 & 87 & 73 & 88 & 74 & 90 & 75 & 91 & 76 & 92 \\
+77 & 93 & 78 & 94 & 79 & 95 & 80 & 96 & 81 & 97 & 82 & 98 \\
+83 & 99 & 84 & 100 & 86 & 102 & 87 & 103 & 88 & 104 & 90 & 105 \\
+91 & 106 & 92 & 113 & 93 & 112 & 94 & 117 & 95 & 120 & 96 & 123 \\
+97 & 126 & 98 & 130 & 99 & 133 & 100 & 138 & 101 & 137 & 102 & 141 \\
+103 & 144 & 104 & 147 & 105 & 151 & 106 & 152 & 108 & 155 & 110 & 156 \\
+112 & 158 & 113 & 20 & 114 & 160 & 116 & 164 & 118 & 165 & 119 & 162 \\
+120 & 167 & 121 & 153 & 122 & 171 & 124 & 114 & 125 & 173 & 126 & 115 \\
+127 & 177 & 129 & 175 & 130 & 181 & 132 & 179 & 133 & 185 & 135 & 183 \\
+136 & 189 & 138 & 187 & 139 & 193 & 141 & 191 & 142 & 197 & 144 & 195 \\
+145 & 201 & 147 & 199 & 148 & 205 & 150 & 203 & 151 & 209 & 153 & 207 \\
+154 & 213 & 156 & 211 & 157 & 217 & 159 & 145 & 161 & 219 & 162 & 0 \\
+163 & 2 & 164 & 231 & 166 & 232 & 168 & 233 & 169 & 222 & 170 & 225 \\
+171 & 149 & 172 & 215 & 173 & 224 & 175 & 135 & 178 & 108 & \multicolumn{2}{c}{} \\
+\hline
+\end{longtable}
+\endgroup
+
+\subsection{102 integer variables, degree 256}
+There are $146$ selected coordinates and $36$ remaining residuals.
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{*{6}{r@{\,$\mapsto$\,}r}}
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$}\\
+\hline
+\endfirsthead
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$ (continued)}\\
+\hline
+\endhead
+0 & 4 & 1 & 6 & 2 & 10 & 3 & 1 & 5 & 19 & 7 & 23 \\
+8 & 24 & 11 & 27 & 13 & 29 & 14 & 30 & 15 & 31 & 16 & 32 \\
+17 & 33 & 18 & 34 & 19 & 35 & 20 & 36 & 21 & 37 & 22 & 38 \\
+23 & 39 & 25 & 41 & 26 & 42 & 27 & 43 & 28 & 44 & 29 & 45 \\
+30 & 46 & 31 & 47 & 32 & 48 & 33 & 49 & 34 & 50 & 35 & 51 \\
+36 & 52 & 37 & 53 & 38 & 54 & 40 & 56 & 42 & 58 & 43 & 59 \\
+44 & 60 & 45 & 61 & 47 & 63 & 48 & 64 & 49 & 65 & 50 & 66 \\
+51 & 67 & 52 & 68 & 54 & 70 & 55 & 71 & 56 & 72 & 57 & 73 \\
+58 & 74 & 59 & 75 & 60 & 76 & 61 & 77 & 62 & 78 & 63 & 79 \\
+64 & 80 & 65 & 81 & 66 & 82 & 67 & 83 & 68 & 84 & 69 & 85 \\
+70 & 89 & 71 & 86 & 72 & 87 & 73 & 88 & 74 & 90 & 75 & 91 \\
+76 & 92 & 77 & 93 & 78 & 94 & 79 & 95 & 80 & 96 & 81 & 97 \\
+82 & 98 & 83 & 99 & 84 & 100 & 85 & 101 & 86 & 102 & 87 & 103 \\
+88 & 104 & 90 & 105 & 91 & 106 & 92 & 113 & 93 & 112 & 94 & 117 \\
+95 & 120 & 96 & 123 & 97 & 126 & 98 & 130 & 99 & 133 & 100 & 138 \\
+101 & 137 & 102 & 141 & 103 & 144 & 104 & 147 & 105 & 151 & 106 & 152 \\
+108 & 155 & 110 & 156 & 112 & 158 & 113 & 20 & 114 & 160 & 116 & 164 \\
+118 & 165 & 119 & 162 & 120 & 167 & 121 & 153 & 122 & 171 & 124 & 114 \\
+125 & 173 & 126 & 115 & 127 & 177 & 129 & 175 & 130 & 181 & 132 & 179 \\
+133 & 185 & 135 & 183 & 136 & 189 & 138 & 187 & 139 & 193 & 141 & 191 \\
+142 & 197 & 144 & 195 & 145 & 201 & 147 & 199 & 148 & 205 & 150 & 203 \\
+151 & 209 & 153 & 207 & 154 & 213 & 156 & 211 & 157 & 217 & 159 & 145 \\
+160 & 148 & 161 & 219 & 162 & 0 & 163 & 2 & 164 & 231 & 166 & 232 \\
+168 & 233 & 169 & 222 & 170 & 225 & 171 & 149 & 172 & 215 & 173 & 224 \\
+175 & 135 & 178 & 108 & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} \\
+\hline
+\end{longtable}
+\endgroup
+
+\subsection{94 integer variables, degree 65,540}
+There are $154$ selected coordinates and $28$ remaining residuals.
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{*{6}{r@{\,$\mapsto$\,}r}}
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$}\\
+\hline
+\endfirsthead
+\hline
+\multicolumn{12}{c}{Source residual $j$ $\mapsto$ eliminated coordinate $v$ (continued)}\\
+\hline
+\endhead
+0 & 4 & 1 & 6 & 2 & 10 & 3 & 1 & 5 & 19 & 6 & 22 \\
+7 & 23 & 8 & 24 & 9 & 25 & 10 & 26 & 11 & 27 & 12 & 28 \\
+13 & 29 & 14 & 30 & 15 & 31 & 16 & 32 & 17 & 33 & 18 & 34 \\
+19 & 35 & 20 & 36 & 21 & 37 & 22 & 38 & 23 & 39 & 24 & 40 \\
+25 & 41 & 26 & 42 & 27 & 43 & 28 & 44 & 29 & 45 & 30 & 46 \\
+31 & 47 & 32 & 48 & 33 & 49 & 34 & 50 & 35 & 51 & 36 & 52 \\
+37 & 53 & 38 & 54 & 39 & 55 & 40 & 56 & 42 & 58 & 43 & 59 \\
+44 & 60 & 45 & 61 & 46 & 62 & 47 & 63 & 48 & 64 & 49 & 65 \\
+50 & 66 & 51 & 67 & 52 & 68 & 53 & 69 & 54 & 70 & 55 & 71 \\
+56 & 72 & 57 & 73 & 58 & 74 & 59 & 75 & 60 & 76 & 61 & 77 \\
+62 & 78 & 63 & 79 & 64 & 80 & 65 & 81 & 66 & 82 & 67 & 83 \\
+68 & 84 & 69 & 85 & 70 & 89 & 71 & 86 & 72 & 87 & 73 & 88 \\
+74 & 90 & 75 & 91 & 76 & 92 & 77 & 93 & 78 & 94 & 79 & 95 \\
+80 & 96 & 81 & 97 & 82 & 98 & 83 & 99 & 84 & 100 & 85 & 101 \\
+86 & 102 & 87 & 103 & 88 & 104 & 90 & 105 & 91 & 106 & 92 & 113 \\
+93 & 112 & 94 & 117 & 95 & 120 & 96 & 123 & 97 & 126 & 98 & 130 \\
+99 & 133 & 100 & 138 & 101 & 137 & 102 & 141 & 103 & 144 & 104 & 147 \\
+105 & 151 & 106 & 152 & 108 & 155 & 110 & 156 & 112 & 158 & 113 & 20 \\
+114 & 160 & 116 & 164 & 118 & 165 & 119 & 162 & 120 & 167 & 121 & 153 \\
+122 & 171 & 124 & 114 & 125 & 173 & 126 & 115 & 127 & 177 & 129 & 175 \\
+130 & 181 & 132 & 179 & 133 & 185 & 135 & 183 & 136 & 189 & 138 & 187 \\
+139 & 193 & 141 & 191 & 142 & 197 & 144 & 195 & 145 & 201 & 147 & 199 \\
+148 & 205 & 150 & 203 & 151 & 209 & 153 & 207 & 154 & 213 & 156 & 211 \\
+157 & 217 & 159 & 145 & 160 & 148 & 161 & 219 & 162 & 0 & 163 & 2 \\
+164 & 231 & 166 & 232 & 168 & 233 & 169 & 222 & 170 & 225 & 171 & 149 \\
+172 & 215 & 173 & 224 & 175 & 135 & 178 & 108 & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} \\
+\hline
+\end{longtable}
+\endgroup
+
+% END pivots.tex
+
+\endgroup
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{repository}
+Vladimir Reshetnikov and ProveIt contributors.
+\emph{ProveIt}, comparison snapshot
+\texttt{3ecd6a6cf53d47519228328567f45fb7ee9781d9}, 25 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9}.
+
+\bibitem{forms}
+ProveIt contributors. \emph{Con(ZFC) in Diophantine form}, delivered
+manuscript index and comparison notes, at the same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9/Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+
+\bibitem{review}
+ProveIt contributors. \emph{Latest proposal review}, at the same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/Computability/DiophantineConsistency/PROPOSAL_REVIEW_LATEST.md}.
+
+\bibitem{centered}
+\emph{Centered Residues}, incoming archive, 25 October 2026.
+Compact component, including the retained arithmetic proofs and indexed
+constant recipe.  Original notices are preserved in this package.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Centered_Residues_2026-10-25.zip}.
+
+\bibitem{denominator}
+\emph{Residual Bases and Denominator Engineering}, incoming archive,
+25 October 2026.  In particular \texttt{compact/PROOF.md}, Section 8,
+records the rejected $Y=qs$ first-order approach.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Residual_Bases_Denominator_Engineering_2026-10-25.zip}.
+
+\bibitem{coprime}
+\emph{Coprime Products and Positive Centers}, incoming archive,
+25 October 2026.  The partial-scale predecessor motivates delayed recovery
+of divisibility in a rational carrier.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Coprime_Products_and_Positive_Centers_2026-10-25.zip}.
+
+\bibitem{common}
+\emph{Common Remainders and Radix 47}, incoming archive, 25 October 2026.
+The direct component is retained unchanged in
+\path{direct_quartics/upstream_common/}, with all $88$ copied files pinned.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3ecd6a6cf53d47519228328567f45fb7ee9781d9/docs/incoming/ConZFC_Common_Remainders_Radix47_2026-10-25.zip}.
+
+\bibitem{graphdigits}
+\emph{Graph Digits}, delivered package 139, compact component.
+The $87/323$ and $88/318$ points used in the comparison.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9/Computability/DiophantineConsistency/con-zfc-diophantine-forms/139-graph-digits/compact}.
+
+\bibitem{calibration}
+ProveIt contributors. The retained interfaces
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} and
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+See \path{direct_quartics/upstream_common/upstream/round17/architecture/proofs/inherited/calibration/}
+and its exact upstream source pins.  The corresponding native-route
+interfaces and provenance are in \path{compact/parent/proof_sources/}.
+\end{thebibliography}
+
+\end{document}

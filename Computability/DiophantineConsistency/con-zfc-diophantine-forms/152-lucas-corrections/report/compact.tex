@@ -1,0 +1,484 @@
+\section{A second-order Lucas correction: ten positive variables, degree 304}
+\label{sec:lucas-q1}
+
+The principal result of this section is a fixed integer polynomial in ten
+strictly positive integer variables, with exact degree $304$ and an evaluator
+using $87$ binary arithmetic operations.  The arithmetic change repairs a
+specific failed direction in the latest inspected submissions: with the
+smaller scale $Y=qs$, the elementary first-Pell congruence visibly supplies
+only $q^3$, whereas the unknown rank is bounded by $q^4$.  Retaining the next
+term of the Lucas polynomial supplies enough precision to recover the index.
+The full denominator and the omitted native divisibility are then recovered
+in that order.
+
+This is a new step within the inherited native/Pell encoding.  The proof
+below composes it with the explicitly retained ordinary calibration of that
+encoding to finite syntactic ZFC refutability.  The complete formula, fixed
+coefficient bytes and their finite reconstruction are supplied.  No new
+end-to-end proof-assistant object or proof of consistency is claimed.
+
+\subsection{The complete polynomial}
+
+The only variables are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+The four fixed integers $\beta,K_0,M_C,M_F$ are the entire directly indexed
+BFS943 tuple of the retained parent.  They satisfy
+\[
+ \beta\ge31\text{ odd},\qquad K_0>0,\qquad
+ 0<M_C<\beta<M_F<2\beta.
+\]
+The largest stored port has $592{,}884$ bits.  These are fixed coefficients,
+not additional existential variables.  Their complete finite recipe is
+retained separately from the mathematical abbreviations below.
+
+Define the following polynomial expressions:
+\begin{gather*}
+ h=\beta J,\quad q=h+1,\quad C=q-F-\alpha,\quad X=wq,\quad Y=qs,\\
+ k=\eta+\zeta,\quad c=kY+\eta,\quad
+ A=Y(X+1)+1,\quad \Delta=A^2-1,\quad H=4A-5,\\
+ v=XY^2,\qquad E=1+v(v+1)k^2,\\
+ R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\qquad
+ B=(K_0+w)C-F,\\
+ U=ic^2,\quad a=\Delta U^2E,\quad F_0=1+a,\quad G=EF_0,\\
+ F_*=1+4aF_0,\quad Q=\Delta(F_*-1),\quad
+ b=cT-R,\quad V=F_*b-c,\quad K=X(3c-2X)+2.
+\end{gather*}
+The new corrected numerator is
+\begin{equation}
+ e_6=6(k-R-1)-v(R+1)(R-1)(R+3).
+ \label{eq:lucas-e6}
+\end{equation}
+For the principal equation put $L=bV$, and define
+\begin{align*}
+ D_6&=6q^6,\qquad M=hD_6H,\\
+ Z&=hD_6\bigl[H(n-LB)+K\bigr]
+       -H\bigl[D_6B+h(e_6-6q^4s)\bigr],\\
+ R_G&=M^2G.
+\end{align*}
+The requested single equation is
+\begin{equation}
+ \boxed{\;P=Q(Z^2-R_GV^2)+(R_G-Z^2)=0.\;}
+ \label{eq:lucas-principal}
+\end{equation}
+Every named expression is a polynomial abbreviation.  No division, factorial,
+binomial coefficient, variable exponent or implicit additional witness occurs
+in the equation.  Its literal evaluator is \texttt{equation\_bV.json}.
+
+Replacing $L$ by $V^2$ gives a control equation with degree $410$ in $86$
+operations.  It is useful for separating the index correction from the sharper
+transport estimate, but is dominated by earlier cost--degree points and is
+not claimed as a frontier improvement.
+
+\begin{theorem}[Second-order compact consistency equation]
+\label{thm:lucas-q1}
+For the complete fixed coefficient tuple just specified, the ordinary
+arithmetic proof below, composed with the retained native/refutation
+calibration, establishes
+\[
+ \mathrm{ZFC}\vdash
+ \left(\neg\exists\mathbf x\in\mathbb Z_{>0}^{10}\;
+ P(\mathbf x)=0\right)\longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+The principal polynomial has exact degree $304$.  Its supplied evaluator has
+$53$ multiplications, $18$ additions and $16$ subtractions, for $87$ binary
+operations in total, including squares and multiplication by fixed numerals.
+\end{theorem}
+
+For the proof only, write
+\[
+ t=\frac Bh,\quad W=1+hL,\quad \kappa=\frac KH,\quad
+ \sigma=\frac{s}{q^2},\quad \bar e=\frac{e_6}{6},\quad
+ \rho=\frac{\bar e}{q^6},\quad z=\frac ZM.
+\]
+These rational quantities need not initially be integral.  Direct polynomial
+identities give
+\begin{equation}
+ P=(Q-1)Z^2-M^2G(QV^2-1),\qquad
+ z=n+\kappa+\sigma-Wt-\rho.
+ \label{eq:lucas-carrier}
+\end{equation}
+In particular the appearance of $1/6$ in the proof does not introduce a
+rational-coefficient gate: the circuit computes the integer polynomial $e_6$.
+
+\subsection{Roots and early ranks without assuming source signs}
+
+Positivity gives $q\ge32$, $X,Y\ge q$, $k\ge2$, $c>kY$, $A\ge3$,
+$U\ge c^2$, $F_*>2c$, $Q>1$ and $M>0$.  For every integer $b$,
+$V=F_*b-c$ is nonzero and $|V|>1$.  The exact identities
+\[
+ F_*=(1+2a)^2,\qquad Q=4\Delta^2U^2G
+\]
+show that $G$ is coprime to both $Q-1$ and $QV^2-1$.  At a zero of $P$,
+the first identity in \eqref{eq:lucas-carrier} yields
+$(Q-1)z^2=G(QV^2-1)$.  Every prime valuation of $G$ is even, so
+$G=g^2$ with $g>0$ integral.  Since $\gcd(E,F_0)=1$, its positive factors
+are separately squares:
+\[
+ E=\tau^2,\qquad F_0=f_0^2,\qquad g=\tau f_0.
+\]
+The positive rational $y=|z|/g$ satisfies
+\begin{equation}
+ QV^2-(Q-1)y^2=1.
+ \label{eq:lucas-adjacent}
+\end{equation}
+
+The adjacent-Pell descent forces $y$ integral.  To recall its short proof,
+write $y=r/m$ in lowest terms.  Then $m^2\mid Q-1$.  If $u=|V|>1$, then
+$u<y<Qu/(Q-1)$, and the norm-preserving transformation
+\[
+ u'=(2Q-1)u-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2Qu
+\]
+has a nonzero integer first coordinate with $|u'|<u$ and preserves the
+reduced denominator $m$ of its second coordinate.  Reflection and descent
+reach $u=y=1$, forcing $m=1$.  Thus $z=\varepsilon gy$ is integral,
+where $\varepsilon\in\{-1,1\}$.
+
+Set $f=1+2a$ and $I=2Ug$.  Pell doubling gives
+\begin{equation}
+ f^2-\Delta I^2=1,\qquad Q=(\Delta I)^2,\qquad c^2\mid I,
+ \qquad V=f^2(cT-R)-c.
+ \label{eq:lucas-strong}
+\end{equation}
+The retained signed all-index folding theorem applies to
+\eqref{eq:lucas-adjacent}--\eqref{eq:lucas-strong}, $c\le I$ and
+$V\equiv-c\pmod f$.  It requires no sign for $V$ or $R$ and gives
+$c=\psi_A(p)$ for a positive odd $p$.  Here $\psi_A(0)=0$,
+$\psi_A(1)=1$ and $\psi_A(j+2)=2A\psi_A(j+1)-\psi_A(j)$.
+The first norm gives
+\[
+ k=2\psi_{2v+1}(n_0),\qquad n_0\ge1.
+\]
+If $n_0=1$, then $k=2$, $\eta=\zeta=1$, and $c=2Y+1$ lies strictly
+between the first two main ordinates $1$ and $2A$.  This is impossible.
+Consequently
+\begin{equation}
+ n_0\ge2,\quad k\ge8v+4,\quad
+ c>kY>8XY^3\ge8q^4,\quad c>X,\quad K>0.
+ \label{eq:lucas-early-growth}
+\end{equation}
+No sign of $B,C,R,b,V$ or $\bar e$ has been assumed.
+
+\subsection{Absolute transport at the smaller scale}
+
+If $b=0$, equation \eqref{eq:lucas-adjacent} would give
+$y^2-c^2=(c^2-1)/(Q-1)$ strictly between zero and one.  Hence $b\ne0$,
+$\operatorname{sgn}V=\operatorname{sgn}b$, and $|V|>|b|$.  With
+$D_0=\Delta U^2$, one has
+\[
+ \frac{a^2}{g^2}=\frac{D_0a}{1+a}>\frac{D_0}{2}>9.
+\]
+Thus $a>3g$, $|V|>3g$ and $y<3|V|/2$.  In particular
+$gy<V^2/2$ for the control.
+
+For $L=bV$, the third main index must also be excluded.  Suppose
+$c=4A^2-1$.  If $n_0\ge3$, then $k>32v^2$, while $A<2XY$ gives
+\[
+ c<16X^2Y^2<32X^2Y^5<kY<c,
+\]
+a contradiction.  Thus $n_0=2$ and $k=8XY^2+4$.  Put
+$u=X+2-2Y$.  Direct expansion gives
+\[
+ \eta=4Y^2(Xu+1)+8Y(X+1)+3-4Y.
+\]
+For $u\le-1$ this is negative, using $Y(X-1)>2(X+1)$.  For $u\ge2$,
+subtracting $k$ leaves at least $4Y^2+8Y(X+1)-4Y-1>0$.  Both contradict
+$0<\eta<k$.  The remaining $u=0,1$ would make $2Y-X$ equal to $2$ or $1$,
+contradicting $q\mid X,Y$ and $q\ge32$.  Therefore $p\ge5$ and
+$c>c_3:=4\Delta+3$.
+
+Put $S=\Delta I$, so $S^2=Q$.  Pell classification of
+\eqref{eq:lucas-adjacent} gives $|V|=\chi_S(j)/S$ for a positive odd $j$.
+Index one gives $|V|=1$ and is excluded.  At index three,
+$|V|=4Q-3$ would give one of
+\[
+ F_*(b-4\Delta)=c-c_3,\qquad F_*(b+4\Delta)=c+c_3.
+\]
+Both right sides lie strictly between zero and $2c<F_*$, impossible.
+Hence $j\ge5$, $|V|\ge16Q^2-20Q+5>8Q^2$, and
+\[
+ |b|>\frac{8Q^2-c}{F_*}>4F_*>4g.
+\]
+It follows that $L=bV=|b||V|>0$ and $gy<3L/8<L/2$.  For either transport
+choice we have established
+\begin{equation}
+ L>0,\qquad gy<L/2,\qquad |b|/q^6<L/2.
+ \label{eq:lucas-transport-bounds}
+\end{equation}
+
+\subsection{The corrected numerator and all possible rank signs}
+
+The new correction needs a fresh sign argument: its cubic changes sign at
+negative ranks.  Set $e_0=k-R-1$ and
+$B_R=(R+1)(R-1)(R+3)$.  Since $b-e_0=cT-k+1>0$,
+\[
+ \rho<\frac b{q^6}-\frac{vB_R}{6q^6}.
+\]
+When $B_R\ge0$, this implies $\rho<|b|/q^6$.  If $B\le-1$, then
+$Wt<-L$ and \eqref{eq:lucas-carrier}, with positive $\kappa,\sigma$ and
+\eqref{eq:lucas-transport-bounds}, gives $n<0$.
+
+The integer exceptions are exactly $R\le-4$ and $R=0$.  Write
+$P_{\rm mask}=(M_C+qM_F)J>0$.  The exact outer identity is
+\begin{equation}
+ R=(hC+q\alpha)(q^2-1)+P_{\rm mask}.
+ \label{eq:lucas-signed-outer}
+\end{equation}
+For $R=-r\le-4$, it implies $C<0$ and
+\[
+ |C|>\frac r{h(q^2-1)}>\frac r{q^3}.
+\]
+Thus $B=-(K_0+w)|C|-F\le-1-w|C|$ and
+$Wt<-(1+w|C|)L$.  The adverse correction is bounded by
+\begin{equation}
+ \delta_0=\frac{v(r-1)(r+1)(r-3)}{6q^6}
+          <\frac{ws^2r^3}{6q^3},
+ \label{eq:lucas-adverse}
+\end{equation}
+because $v=wq^3s^2$.  Here $b=cT+r>r,c$, so
+$V>(F_*-1)b$ and either choice of $L$ satisfies
+$L>(F_*-1)r^2$.  Also $\Delta>Y^2\ge s^2$ and
+$F_*-1=4a(1+a)>s^2$.  Consequently $w|C|L>\delta_0$.  Substitution gives
+\[
+ n<L/2-(1+w|C|)L+|b|/q^6+\delta_0<0.
+\]
+
+For $R=0$, \eqref{eq:lucas-signed-outer} again gives $C<0$, while
+$\delta_0=v/(2q^6)=ws^2/(2q^3)$.  Now $b=cT\ge c$ and
+$V\ge(F_*-1)b$, so $L>F_*-1$ and
+$w|C|L>w(F_*-1)>\delta_0$.  The same contradiction follows.
+This handles every integer rank, including the cases where the new cubic
+correction has the unfavorable sign.
+
+Therefore every positive zero has $B\ge0$, which forces $C>0$ because
+$F>0$.  The retained mask bound now applies:
+\begin{equation}
+ 3q<R<q^4-2.
+ \label{eq:lucas-rank-box}
+\end{equation}
+Equation \eqref{eq:lucas-early-growth} gives $c>2R$, whence $b,V>0$.
+The retained normalized rank and signed auxiliary-index theorems have all
+their original hypotheses: $c^2\mid I$, $c>2R,c>2p$,
+$V\equiv-c\pmod f$ and $V\equiv-R\pmod c$.  They give $p=R$.
+In particular $R$ is positive odd; the unchanged mask parity gives even $q$
+and odd $J$.
+
+\subsection{The second-order index lemma}
+
+The new argument is elementary and works at every prime, including the primes
+dividing the displayed denominator $6$.
+
+\begin{lemma}[Corrected index recovery]
+\label{lem:lucas-corrected-index}
+At every positive zero of \eqref{eq:lucas-principal},
+\[
+ n_0=(R+1)/2,\qquad q^6\mid\bar e,
+ \qquad \rho\in\mathbb Z_{\ge0},\qquad q^2\mid s.
+\]
+The conclusions hold as well for the square-transport control.
+\end{lemma}
+
+\begin{proof}
+The Lucas polynomial has the finite expansion
+\begin{equation}
+ \psi_{1+2v}(m)=\sum_{j=0}^{m-1}(4v)^j
+                    \binom{m+j}{2j+1}.
+ \label{eq:lucas-binomial-expansion}
+\end{equation}
+For a direct derivation, its recurrence gives the formal generating function
+\[
+ \sum_{m\ge1}\psi_{1+2v}(m)t^{m-1}
+ =\frac1{(1-t)^2-4vt}
+ =\sum_{j\ge0}\frac{(4v)^jt^j}{(1-t)^{2j+2}}.
+\]
+Coefficient comparison yields \eqref{eq:lucas-binomial-expansion}.  In
+particular, for an explicitly determined nonnegative integer $Z_m$,
+\begin{equation}
+ 2\psi_{1+2v}(m)
+ =2m+8v\binom{m+1}{3}+32v^2Z_m.
+ \label{eq:lucas-second-order}
+\end{equation}
+The formula also covers $m=1,2$, when $Z_m=0$.
+
+Put $r_0=(R+1)/2$, an integer by the preceding rank argument.  Then
+$B_R=48\binom{r_0+1}{3}$, so $\bar e=e_6/6$ is an integer and
+\begin{equation}
+ \bar e=k-2r_0-8v\binom{r_0+1}{3}.
+ \label{eq:lucas-ebar}
+\end{equation}
+The integrality of $z$ and the carrier give
+$6q^6\mid hH(e_6-6q^4s)$.  Cancelling the literal common factor $6$,
+now that \eqref{eq:lucas-ebar} is integral, gives
+$q^6\mid hH(\bar e-q^4s)$.  Because $h=q-1$ and
+$H=4Y(X+1)-1\equiv-1\pmod q$, one has $\gcd(q,hH)=1$.  Hence
+\begin{equation}
+ q^6\mid\bar e-q^4s,\qquad q^4\mid\bar e.
+ \label{eq:lucas-carrier-congruence}
+\end{equation}
+No inverse of $6$ modulo $q$ has been taken.
+
+Set $d=2n_0-R-1=2(n_0-r_0)$.  Reducing
+\eqref{eq:lucas-second-order} and \eqref{eq:lucas-ebar} modulo $4v$
+gives $\bar e\equiv d\pmod{4v}$.  Since $q^3\mid v$, equation
+\eqref{eq:lucas-carrier-congruence} first gives $q^3\mid d$.
+The exact Taylor difference is
+\begin{align}
+ 6(\bar e-d)
+ &=vd\bigl[(2n_0)^2+(2n_0)(R+1)+(R+1)^2-4\bigr]
+       +192v^2Z_{n_0}.
+ \label{eq:lucas-taylor-upgrade}
+\end{align}
+Both terms are divisible by $q^6$.  If a prime $\ell\mid q$ has
+$a=v_\ell(q)\ge1$, then $v_\ell(6)\le1$, so
+\[
+ v_\ell(\bar e-d)\ge6a-1\ge4a.
+\]
+Thus $q^4\mid\bar e-d$, uniformly at $\ell=2,3$ as well.  Together
+with \eqref{eq:lucas-carrier-congruence}, this gives $q^4\mid d$.
+
+The first base $2XY^2+1$ exceeds $A$.  Were $n_0\ge R$, monotonicity
+in the positive base and index would give $k/2\ge\psi_A(R)=c$,
+contrary to $c>k$.  Therefore $1\le n_0<R$, and
+\eqref{eq:lucas-rank-box} gives $|d|<R<q^4$.  Hence $d=0$.
+
+Only now return to the full expansion: equations
+\eqref{eq:lucas-second-order}--\eqref{eq:lucas-ebar} give
+$\bar e=32v^2Z_{r_0}$.  Because $q^3\mid v$, this proves
+$q^6\mid\bar e$ and $\rho\ge0$ integral.  Finally,
+\eqref{eq:lucas-carrier-congruence} gives $q^6\mid q^4s$, hence
+$q^2\mid s$.
+\end{proof}
+
+The two congruence steps are essential.  The first establishes divisibility
+of the index error by $q^3$; this makes the correction error small in the
+relevant prime valuations and upgrades it to the $q^4$ modulus needed for
+the ordinary size bound.  The full $q^6$ denominator is recovered after the
+index has been identified.
+
+\subsection{Projection and restoration of the native source}
+
+Lemma~\ref{lem:lucas-corrected-index} makes $\sigma=s/q^2$ integral and
+restores $q^3\mid Y=qs$ before projection.  The carrier now gives
+$\kappa-WB/h\in\mathbb Z$, so $H\mid hK$.
+Write $R=2r+1$.  By \eqref{eq:lucas-rank-box}, $r\ge48$.
+The retained ratio theorem, uniformly valid at scale one, gives
+\[
+ Y>X^r/3,\qquad X^{r+1}<3Y(X+1)<H.
+\]
+The universal Pell projector and the retained entire-product estimate give
+\[
+ H\mid h(X-2^R)(2^RX+1),\qquad
+ |h(X-2^R)(2^RX+1)|<H.
+\]
+The product is zero, so $X=2^R$ and $\kappa$ is integral.  No possibly
+nonunit factor of the product has been cancelled modulo $H$.  The remaining
+carrier gives $h\mid WB$, and $W\equiv1\pmod h$ gives $h\mid B$.
+Thus the native quotient $t=B/h$ is a nonnegative integer.
+
+All inherited fixed-minus parity and exact half-binomial rounding hypotheses
+have now been restored.  The fresh reconstruction uses the original source
+base $Y(X+1)+2$, which is distinct from the auxiliary base $A$ used here.
+It produces an actual zero of the calibrated native source.  The whole fixed
+coefficient tuple's retained native/refutation theorem therefore yields a
+finite syntactic ZFC refutation from every positive zero of
+\eqref{eq:lucas-principal}.
+
+\subsection{Construction of positive witnesses}
+
+Conversely, a finite refutation supplies the parent's canonical outer data:
+$q^3\mid Y$, $X=2^R$, $R\equiv3\pmod4$, $R>3q$ and integral
+$t=B/h\ge0$, with the exact half-binomial interval.  Define the new positive
+input $s=Y/q$.  Then $\sigma=s/q^2=Y/q^3$ is an integer and at most $Y$.
+Using the scale-one bases, put
+\begin{gather*}
+ c=\psi_A(R),\qquad
+ k=2\psi_{2XY^2+1}\bigl((R+1)/2\bigr),\\
+ \tau=\chi_{2XY^2+1}\bigl((R+1)/2\bigr),\qquad
+ \eta=c-kY,\quad\zeta=k-\eta.
+\end{gather*}
+The inherited uniform ratio estimate gives $\eta,\zeta>0$.  The full
+Lucas expansion gives $\rho\ge0$ integral; projection gives positive
+integral $\kappa<Xc$.
+
+A positive multiple of a finite Pell matrix period modulo $c^2\tau$
+supplies one seed pair $(f_0,I_0)$ with $c^2\tau\mid I_0$.
+Set $i=I_0/(c^2\tau)>0$ and double this pair exactly as in the parent.
+It yields \eqref{eq:lucas-strong}, $G=(\tau f_0)^2$ and the canonical
+positive auxiliary pair $V,y$, with the positive integral unshifted input
+\[
+ T=\frac{V+c+Rf^2}{cf^2}.
+\]
+No private strong pair is reselected after its auxiliary congruences are
+specified.  Moreover
+\[
+ f_0>(A-1)I_0>2Xc,\qquad \kappa<Xc,\qquad \sigma\le Y<Xc,
+\]
+so $g=\tau f_0>\kappa+\sigma$.  Now set
+\[
+ n=gy+(1+hL)t+\rho-\kappa-\sigma.
+\]
+This is a strictly positive integer, and the resulting carrier is $z=gy$.
+The polynomial therefore vanishes.  Every one of the ten independent
+inputs has been constructed positively.  This completes both existential
+directions in Theorem~\ref{thm:lucas-q1}.
+
+\subsection{Exact degree and validation}
+
+The relevant global degrees are
+\[
+ \begin{array}{c|rrrrrrrr}
+ \text{expression}&Y&c&A&\Delta&v&E&U&a\\\hline
+ \deg&2&3&4&8&6&14&7&36
+ \end{array}
+ \qquad
+ \begin{array}{c|rrrrrrr}
+ \text{expression}&F_*&Q&G&b&V&M&Z\ (L=bV)\\\hline
+ \deg&72&80&50&4&76&11&93
+ \end{array}
+\]
+The correction $v(R+1)(R-1)(R+3)$ has degree $18$, below the leading
+transport part.  For $L=bV$, the term $-QM^2GV^2$ uniquely dominates the
+final expression and has degree $304$.  For $L=V^2$, $\deg Z=165$ and
+$QZ^2$ uniquely supplies degree $410$.
+
+At the smaller scale, $cT$ and $R$ both have degree four; the leading part
+of $b=cT-R$ must retain both.  Put
+\[
+ q_0=\beta J,\qquad k_0=\eta+\zeta,\qquad C_0=q_0-F-\alpha,
+ \qquad B_0=k_0sT-q_0^2(q_0-F).
+\]
+The entire highest homogeneous polynomials are
+\begin{align*}
+ [P_{bV}]_{304}
+   &=-9\cdot2^{12}q_0^{128}w^{34}s^{78}i^{14}k_0^{44}B_0^2,\\
+ [P_{V^2}]_{410}
+   &=9\cdot2^{16}q_0^{166}w^{46}s^{104}i^{20}k_0^{60}B_0^4C_0^2.
+\end{align*}
+For example, their respective coefficients at
+\[
+ J^{128}w^{34}s^{80}i^{14}\eta^{46}T^2,\qquad
+ J^{166}w^{46}s^{108}i^{20}\eta^{64}T^4F^2
+\]
+are $-9\cdot2^{12}\beta^{128}$ and
+$9\cdot2^{16}\beta^{166}$, both nonzero at the authentic fixed tuple.
+These give global degree certificates, rather than sampled line degrees.
+
+The independent exact checker binds all actual evaluator rows through $37$
+free-polynomial cuts per circuit.  It recounts the live gates, checks every
+fixed coefficient byte, and propagates the complete highest homogeneous
+forms: $274$ terms for the
+principal equation and $3{,}750$ for the control.  Actual operator corruption
+checks reject $175$ modified principal artifacts and $173$ control artifacts.
+Normal and optimized Python runs agree.  A separate retained reconstruction
+script regenerates all four fixed numerals from their finite recipe and
+checks them against the stored bytes.  The Taylor identity
+\eqref{eq:lucas-taylor-upgrade} is checked exactly; separate finite Lucas
+recurrence controls are explicitly diagnostic.
+
+Those finite checks certify the equations and algebraic certificates.  They
+do not replace the unbounded arithmetic proof above or the named inherited
+calibration, and do not decide the existence of a ZFC refutation.  The new
+work has also received a separate ordinary mathematical review within this
+AI-assisted workflow; that is not an outside human referee's endorsement.

@@ -1,0 +1,285 @@
+\section{Small signed quartics and their arithmetic boundary}
+\label{sec:signed}
+Every variable in this section ranges over $\Z$. The new finite coordinate
+and row transformations are applied to an authenticated signed arithmetic
+source, not to a natural-number equation with its signs silently discarded.
+This section first supplies the unbounded argument needed by that source;
+then it proves the exact algebraic transformations used in the new endpoints.
+The source files and each frozen transformation are part of the release.
+
+\subsection{The unchanged signed arithmetic interface}
+Write $t,F,B,V,y,x,N,q$ for the semantic coordinates before integral
+centering. The unchanged signed Pell frame and semantic anchor identify
+both coordinates of the principal Pell pairs before any low-digit sign
+is used. This is the orientation-first interface retained from Round~17.
+Its signed power lemma says that a framed power request at an integer base
+$n\ge2$ forces its requested exponent $k$ to be nonnegative and its output
+to equal $n^k$. Briefly, the classified signed Pell index gives the power
+congruence; if $k<0$, multiplication by $n^{-k}$ and the strict frame bound
+would force $mn^{-k}=1$ for an integer output $m$, which is impossible.
+For base one and a known nonnegative index, the same congruence and frame
+bound give output one. This argument does not assume the output is positive.
+
+The retained ceiling signs and endpoint rows give
+\begin{align}
+ t&\ge16,&V&=(F^2+1)^t,\nonumber\\
+ FB&=V+s_0,& B&=r_0+s_0+1,\qquad r_0,s_0\ge0,\nonumber\\
+ y&=V(V-1),&x&=F+1+(y+1)u_0,\nonumber\\
+ x&=1+[1+(t+1)y]u_t,&N&=B^x,\nonumber\\
+ H_0&=1+\sum_{i=1}^{9}a_i,&q&=(BH_0)^x.
+ \label{eq:signedfront}
+\end{align}
+The powers here describe the proved meanings of existing quadratic
+certificates; exponentiation is not an operation in the final polynomial.
+The $a_i$ are the actual encoded representatives. The derived constructor
+label $h$ satisfies the retained ledger bound
+\begin{equation}\label{eq:labelbound}
+ 0<h\le(n_*+1)^\ell\le(BH_0)^\ell,
+ \qquad n_* =\max(1,a,b,c,d),\quad \ell=2^{22},
+\end{equation}
+once $a_i\ge0$ and $B\ge2$. The last inequality follows from
+$n_*+1\le2H_0\le BH_0$, including the case $H_0=1$.
+
+\subsection{An acyclic odd square bootstrap}
+The odd-square source replaces the old ternary guard on $q-B-1$ by
+\begin{equation}\label{eq:odd-square}
+ q=(2z+1)^2.
+\end{equation}
+Only $q\ge1$ follows initially. The unchanged orientation argument uses
+the square frame, not this missing sign. The request for $V$ has known
+index $t\ge16$ and base at least one. Thus $V=(F^2+1)^t\ge1$.
+The ceiling equations force $F\ge1$ and $B>F$, since
+$FB\ge V\ge F^2+1$ while $B\ge1$. In particular $B\ge2$ and
+$y>F+2$.
+
+The genuine request $N=B^x$ now forces $x\ge0$. If $u_0\le-1$, the
+first endpoint would give $x\le F-y<0$; hence $u_0\ge0$ and
+$x\ge F+1\ge2$. The last endpoint then forces $u_t\ge1$, so
+\begin{equation}\label{eq:endpointbound}
+ x\ge2+(t+1)y.
+\end{equation}
+The numerator requests at base $q+1\ge2$ force all nine $a_i\ge0$;
+the derived-label request and nonzero anchor give $h>0$. Consequently
+$H_0\ge1$, and the existing request for $q$ yields
+$q=(BH_0)^x\ge B^2>B$. The deleted output slack is therefore
+$q-B-1\ge0$. Every original front sign has now been recovered, without
+using a low-digit remainder sign or the conclusion $F=t!$.
+
+\subsection{A uniform coefficient bound before factorial decoding}
+The useful margin can be proved entirely before the factorial fixed point.
+Since $V\ge2^t$, for $t\ge16$ we have
+\[
+ y\ge2^t(2^t-1)>\ell,\qquad y\ge t+2.
+\]
+Combining these integer inequalities with \eqref{eq:endpointbound} gives
+\begin{equation}\label{eq:gaps}
+ x\ge\ell t+4,\qquad x\ge t(t+1)+4.
+\end{equation}
+All requested digit positions have $k\le x$. For every coefficient below
+the requested position, the following three estimates apply.
+
+For an ordinary upper index $0\le a<H_0$ and $0\le j<k\le x$,
+\[
+ \binom aj\le\max(1,a)^j\le H_0^x\le q/16,
+\]
+because $B\ge2$ and $x\ge4$. For the derived label, $k=t+1$, so
+\[
+ \binom hj\le h^j\le(BH_0)^{\ell t}
+ \le(BH_0)^{x-4}\le q/16\qquad(0\le j\le t).
+\]
+For the factorial upper index, $F^2+t\le B^{t+1}$: indeed
+$F^2<B^2\le B^t$, $t\le2^t\le B^t$, and $2B^t\le B^{t+1}$.
+Therefore
+\[
+ \binom{F^2+t}{j}\le(F^2+t)^t\le B^{t(t+1)}
+ \le B^{x-4}\le q/16\qquad(0\le j\le t).
+\]
+These inequalities assume no factorial identity. Put
+\[
+ \rho(a,k)=\sum_{j=0}^{k-1}\binom ajq^j,\qquad D=q^k.
+\]
+For every needed pair $(a,k)$, the estimates give
+\begin{equation}\label{eq:smalltail}
+ 0\le\rho(a,k)\le\frac{q(D-1)}{16(q-1)}
+ \le\frac{D-1}{8}<\frac D8.
+\end{equation}
+
+\subsection{Recovering all remainder signs from shared budgets}
+There are eleven remainders. The two with denominator $q^t$ are the
+factorial digit remainder and encoded-index remainder; five have denominator
+$q^{t+1}$, including the derived-label remainder; two stack remainders have
+denominator $q^{y+1}$; and two strict quotient remainders have denominator
+$q^x$. The old interval guards have the form
+\[
+ D=r+s+1,\qquad rs=u^2+v^2+w(w+1).
+\]
+The second expression is nonnegative at every integer tuple and represents
+every nonnegative integer. To prove the latter assertion, apply the
+three-square theorem to $4n+1$. Modulo four exactly one of its three square
+summands is odd. Write it as $(2w+1)^2$ and the even squares as
+$(2u)^2,(2v)^2$, then divide by four.
+
+For the symmetric version, retain the linear interval rows and replace a
+group's private product guards by
+\begin{equation}\label{eq:symmetricbudget}
+ D^2-4\sum_{i\in G}r_i^2-1=u^2+v^2+w(w+1).
+\end{equation}
+Every new zero has $|r_i|<D/2$. The unchanged numerator row gives
+$r_i\equiv(q+1)^{a_i}\equiv\rho(a_i,k)\pmod D$. For the factorial
+row its other part is $D(B+qH)$; for a range row it is $DNQ$. Both are
+multiples of $D$ regardless of the signs of $H,Q$. Thus
+\[
+ |r_i-\rho(a_i,k)|<D/2+D/8<D,
+\]
+so the divisible difference is zero. All remainders are canonical and
+nonnegative, and $s_i=D-1-r_i\ge0$ restores every old interval guard.
+For the factorial digit, subtract its recovered tail and divide by $q^t$.
+The quotient identity gives
+\[
+ B\equiv\binom{F^2+t}{t}\pmod q.
+\]
+The displayed coefficient bound also holds at $j=t$, so the binomial is
+in $[0,q)$; the recovered front guard gives $0<B<q$. Thus
+$B=\binom{F^2+t}{t}$ exactly. Only after this recovery is the inherited
+factorial fixed-point theorem used to deduce $F=t!$. The unchanged CRT range and local Horn arguments
+then produce an actual finite C222 derivation and its inherited ZFC
+refutation interpretation.
+
+Conversely, construct the inherited canonical witnesses from a finite
+refutation. A group of at most five remainders obeys
+$4\sum\rho_i^2<5D^2/16<D^2$. The nonnegative integer
+$D^2-4\sum\rho_i^2-1$ therefore has a ternary representation, supplying
+all new auxiliaries.
+
+The adjacent levels merge by adding two product coordinates
+$z_0=qr_0$, $z_1=qr_1$ and using one group at
+$D'=q^{t+1}=qD$. Its seven entries are $z_0,z_1$ and the five higher-level
+remainders. Soundness gives $|r_i|<D/2$ by division by $q>0$; completeness
+uses $4\sum\rho_i^2<7D'^2/16<D'^2$. The two product rows are quadratic.
+Replacing two ternary triples by one while adding two products saves one
+coordinate. The alternative spherical version uses
+$D^2-2\sum r_i^2=u^2+v^2+w(w+1)$; it gives
+$|r_i|\le D/\sqrt2<3D/4$, still enough because $3D/4+D/8<D$.
+Its seven-entry completeness bound is $2\sum\rho_i^2<7D^2/32<D^2$.
+These are two different literal budget formulas, each with a complete
+signed uniqueness argument.
+
+\subsection{Completeness of the odd square restriction}
+To construct \eqref{eq:odd-square}, choose the beta code $x$ even.
+In true witnesses, $F=t!$, $V=(F^2+1)^t$, and $y=V(V-1)$ is even.
+Every beta CRT modulus $1+(i+1)y$ is odd; adding their odd common modulus
+changes the code's parity. A sufficiently large even representative
+preserves all endpoint and nonnegative quotient requirements.
+
+Each exact factorial-product factor $1+F^2/i$ is odd, since
+$F^2/i=F(F/i)$ is even for $1\le i\le t$. Hence $B$, and then $N=B^x$,
+are odd. Each of the nine independent CRT representatives can be shifted
+by the odd modulus $N^2$, so their parities can be prescribed independently.
+Choose opposite parities for $a,b$ as required by the semantic anchor,
+and choose one of the other seven parities so that their total sum is even.
+Then $H_0$ is odd. All ordinary representatives can retain their old bounds
+at most $2N^2$; choose the dominant $a$ in $[2N^2,4N^2)$ with its prescribed
+parity. The inherited dominance and frame estimates are therefore preserved.
+Finally $BH_0$ is odd and $x$ is even, so
+\[
+ z=\frac{(BH_0)^{x/2}-1}{2}\in\Z
+\]
+supplies the odd-square row. This is a construction of fresh witnesses,
+not a claim that every old zero already has an odd-square radix.
+
+\subsection{One normalized budget across all four denominator levels}
+The incoming Common remainders construction uses a stronger sharing step.
+Set $M=q^x$ and let $L_i$ be each remainder's original denominator.
+By \eqref{eq:endpointbound}, every exponent defining $L_i$ is at most $x$;
+hence $L_i$ is a positive divisor of $M$. For the three smaller denominator
+levels introduce one ratio coordinate each, with a quadratic row
+\[
+ L v_L=M.
+\]
+For the largest level take $v_M=1$ without adding a coordinate. Replace
+an old digit identity $U_i=L_iQ_i+r_i$ by
+\begin{equation}\label{eq:normalized-digit}
+ v_{L_i}U_i=MQ_i+R_i.
+\end{equation}
+All displayed high quotients are existing registers or products arranged as
+in the literal quadratic graph. In particular, a range digit's old product
+$NL_i$ can be replaced by the shared product $NM$, so the new actual row is
+$v_{L_i}U_i=(NM)H_i+R_i$. The factorial digit uses the existing register
+for $B+qH$. No cubic product is silently inserted into a residual.
+
+\begin{lemma}\label{lem:normalized}
+The scaled identities \eqref{eq:normalized-digit}, the ratio rows, and
+\begin{equation}\label{eq:one-budget}
+ M^2-2\sum_{i=1}^{11}R_i^2=u^2+v^2+w(w+1)
+\end{equation}
+recover every old remainder interval. Conversely, canonical witnesses with
+$0\le r_i<L_i/8$ extend to these rows.
+\end{lemma}
+\begin{proof}
+Each ratio equals $M/L_i>0$. Since both $v_{L_i}U_i$ and $MQ_i$ are
+divisible by $v_{L_i}$, so is $R_i$. Thus
+$r_i=R_i/v_{L_i}$ is an integer; this is a proof-only division, not a gate
+or an extra rational witness. Dividing the scaled row restores the original
+digit identity. Equation \eqref{eq:one-budget} gives $|R_i|\le M/\sqrt2<3M/4$, hence
+$|r_i|<3L_i/4$. By \eqref{eq:smalltail} and congruence, the difference
+$r_i-\rho(a_i,k_i)$ is divisible by $L_i$ and has absolute value below
+$7L_i/8<L_i$. Hence it is zero. All deleted interval slacks and product
+witnesses can be restored exactly as before.
+
+Conversely, define $v_{L_i}=M/L_i$ and $R_i=v_{L_i}r_i$ from canonical
+witnesses. Every scaled row holds, and $0\le R_i<M/8$. Therefore
+\[
+ 2\sum_{i=1}^{11}R_i^2<\frac{11}{32}M^2<M^2.
+\]
+The integer $M^2-2\sum R_i^2$ is nonnegative and has the required
+ternary representation. This proves existence in both directions.
+\end{proof}
+The incoming common-denominator source instead uses
+$M^2-4\sum R_i^2-1=G$. Its soundness radius is $M/2$, and the same
+canonical witnesses complete it because $4\sum R_i^2<11M^2/16<M^2$.
+The two budgets are therefore existentially equivalent through the calibrated
+source relation, not by an asserted pointwise equality of their private
+ternary witnesses.
+
+The new form combines the common-denominator idea with the earlier pre-factorial
+margin and, where specified, the compatible odd-square radix. In
+particular, the ratio rows are interpreted only after positive powers have
+been established; the large common guard is never used to establish the
+signs on which its own interpretation depends.
+
+\subsection{Certified integral changes preserve the entire zero set}
+\begin{lemma}\label{lem:elementary}
+Let $R=(R_1,\ldots,R_m)$ be integer polynomials. Each of the following
+operations preserves the indicated integer zero set: an integral elementary
+coordinate shear; an elementary integral residual-row operation; and
+elimination of a coordinate by a monic defining row. The first two are
+bijections on the complete zero sets; the third is a bijection after restoring
+the eliminated coordinate by its defining polynomial.
+\end{lemma}
+\begin{proof}
+For a shear $x_i=y_i+c y_j$ with $i\ne j$ and $c\in\Z$, leave every
+other coordinate unchanged. The inverse is $y_i=x_i-cx_j$, again integral.
+Substitution gives $R(x)=R(Ly)$ identically. Translation by an integer
+constant has the equally explicit inverse translation.
+
+For a row operation replace $R_i$ by $R_i+cR_j$, with $i\ne j$, keeping
+all other rows. A zero of the old rows is a zero of the new rows. A zero of
+the new rows has $R_j=0$, hence $R_i=(R_i+cR_j)-cR_j=0$. Equivalently,
+the residual vector is multiplied by an elementary matrix in
+$\operatorname{GL}_m(\Z)$. Its sum of squares generally changes, but its
+zero set does not.
+
+For a row $x_i-f(x_{\ne i})=0$ with $f\in\Z[x_{\ne i}]$, substitute
+$x_i=f$ in every remaining row. A new zero extends uniquely by this value,
+and every old zero has that value. This proves both directions and
+uniqueness. An exact checker verifies that any degree restriction survives
+the substitution; it is not a general property of monic elimination.
+\end{proof}
+A frozen sequence of these operations is a finite mathematical certificate.
+The particular heuristic that found it is immaterial to its validity.
+A shear transported between two sources by coordinate names requires
+checking the full named substitution on the actual target rows; positional
+index agreement alone is insufficient. Residual height and support are
+measured only after collecting the whole final sum of squares.
+
+\input{signed_new.tex}

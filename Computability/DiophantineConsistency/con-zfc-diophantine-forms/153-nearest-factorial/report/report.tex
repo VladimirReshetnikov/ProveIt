@@ -1,0 +1,412 @@
+\documentclass[11pt,letterpaper]{article}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array,xcolor,enumitem,fancyhdr,xurl,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,pdftitle={Nearest-factorial certificates for Diophantine consistency},pdfauthor={Research prepared with AI assistance for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Nearest-factorial certificates}\fancyhead[R]{\small ProveIt research}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=0.2em,topsep=0.4em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\Refut}{\operatorname{Ref}}\newcommand{\PellX}{\mathsf X}\newcommand{\PellY}{\mathsf Y}
+\newcommand{\G}{\mathcal G}
+\makeatletter
+\renewcommand*\l@section{\@dottedtocline{1}{0em}{1.5em}}
+\makeatother
+\input{metrics.tex}
+\title{Nearest-factorial certificates\\for Diophantine consistency}
+\author{Research prepared for Vladimir Reshetnikov and ProveIt\\\small Developed with AI assistance}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct a fixed polynomial over unrestricted integers whose lack of zeros is provably equivalent in ZFC to syntactic consistency of ZFC. The main explicit endpoint is a quartic in \MainVariables{} variables, given as the sum of squares of \MainRows{} quadratic residuals, with \MainTerms{} collected monomials and coefficient height \MainHeight{}. A \BalancedVariables{}-variable companion has \BalancedTerms{} monomials and height \BalancedHeight{}. Every main residual is printed in this article; both complete expansions and exact transformation certificates accompany it.
+
+The new arithmetic step removes the initial sign certificates for a factorial ceiling. A common residue bound first supplies a signed nearest-integer relation. Divisibility already present in the compiler excludes a degenerate radix and supplies an exponent bound. Exact digit recovery then establishes the signs, and a nearest-integer factorial theorem identifies the factorial. This closes the apparent circularity without reintroducing separate sign witnesses. The direct route uses the finite numerical proof calculus $C_{222}$ and the repository's retained logical calibration. It does not simulate K215 or instantiate a universal Diophantine polynomial. The result is an ordinary mathematical proof with exact finite artifact checks; it is not a new end-to-end proof-assistant derivation or a claim of global minimality.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\begingroup\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The equation and the achieved improvement}
+\label{sec:result}
+Throughout, $\N=\{0,1,2,\ldots\}$ and all variables of the principal equation range independently over $\Z$. Let $R_0,\ldots,R_{\LastRow}$ be the literal polynomials in Appendix~\ref{app:residuals}. Define
+\begin{equation}\label{eq:principal}
+ \boxed{P(\mathbf z)=\sum_{j=0}^{\LastRow}R_j(\mathbf z)^2=0,
+ \qquad \mathbf z\in\Z^{\MainVariables}.}
+\end{equation}
+There is no input parameter, unspecified coefficient, variable exponent, factorial primitive, or predicate in this definition. Named intermediate quantities in the proof explain the construction; the displayed residual list fixes the actual ordinary polynomial. The canonical machine-readable specification is \texttt{direct/equations/P242/equation.json}; \texttt{expanded\_polynomial.json} in that directory lists every collected coefficient.
+
+\begin{theorem}\label{thm:main}
+For the fixed polynomial \eqref{eq:principal}, ZFC proves
+\begin{equation}\label{eq:main}
+ \neg\exists\mathbf z\in\Z^{\MainVariables}\ P(\mathbf z)=0
+ \quad\longleftrightarrow\quad \Con(\ZFC).
+\end{equation}
+The same statement holds for the supplied balanced quartic in \BalancedVariables{} unrestricted integer variables. Here $\Con(\ZFC)$ means that no finite syntactic ZFC refutation exists.
+\end{theorem}
+
+The proof is developed below as a reduction to the retained $C_{222}$ arithmetic certificate and its ZFC-provable refutability calibration. It proves neither side of \eqref{eq:main} separately.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrrrr}
+\toprule
+Unrestricted-integer equation & Variables & Rows & Degree & Terms & Height\\
+\midrule
+Inspected common-remainder parent & 252 & 182 & 4 & 5,340 & 128,446\\
+New arithmetic, before row reduction & 246 & 182 & 4 & 6,576 & 412,187\\
+New balanced endpoint & \BalancedVariables & \BalancedRows & 4 & \BalancedTerms & \BalancedHeight\\
+New dimension endpoint & \MainVariables & \MainRows & 4 & \MainTerms & \MainHeight\\
+\bottomrule
+\end{tabular}
+\caption{Exact finite measurements. Terms means collected nonzero monomials; height is the maximum absolute coefficient of the final quartic. Rows are the residuals before squaring.}
+\end{table}
+
+The matched parent is the current incoming common-remainder construction~\cite{common}. Its common modulus and small-remainder argument are inherited. The odd-square radix and its compatible parity construction are inherited from the centered-residue work~\cite{centered}. The new contribution is the signed factorial-ceiling reduction and its acyclic proof. The later integral row and coordinate reductions use established algebraic techniques with new explicit certificates.
+
+There is no single ordering of ``simplest'' without specifying costs. The dimension endpoint saves ten integer variables and four residuals against the 252-variable parent and lowers coefficient height, while increasing support. The balanced endpoint saves nine variables and three residuals and has a substantially smaller height and expansion than the dimension endpoint. Existing ten-integer equations use fewer unknowns at much larger degree and with large encoded coefficients~\cite{repo,sun}. The present claim is a concrete improvement in the direct, small-coefficient quartic lineage, not a global variable-count record.
+
+The comparison snapshot is ProveIt commit
+\begin{center}\small\texttt{3ecd6a6cf53d47519228328567f45fb7ee9781d9}.\end{center}
+All eight incoming archives at that snapshot were inventoried and their stated endpoints inspected. This is not a claim to have independently rebuilt every earlier package. The exact hashes and selected dependencies are retained in the source ledger.
+
+\section{The inherited arithmetic interface}
+\label{sec:interface}
+The source is a finite quadratic certificate for a derivation of falsity in the numerical calculus $C_{222}$. A CRT encoding of a finite derivation, a factorial carrier, binomial digit tests, and a shared Pell certificate implement the required arithmetic. Its ordinary proof closure accompanies the new files. We state the exact interface needed here so that the new argument does not borrow a sign assumption it has deleted.
+
+The source has an integer horizon $t=16+h_0^2$, hence $t\ge16$. Its requested powers, once identified, include
+\begin{equation}\label{eq:semantic-values}
+ V=(F^2+1)^t,\qquad N=B^x,\qquad q=(BH)^x,\qquad M=q^x,
+\end{equation}
+where $H=1+\sum_{i=1}^{9}a_i$. The actual CRT representatives $a_i$ are initially signed integers. Each is a requested exponent at base $q+1$. The source also requests the factorial numerator $(q+1)^{F^2+t}$ and the denominators
+\begin{equation}\label{eq:denominators}
+ q^t,\quad q^{t+1},\quad q^{y+1},\quad q^x=M,
+ \qquad y=V(V-1).
+\end{equation}
+The semantic powers in \eqref{eq:semantic-values}--\eqref{eq:denominators} name ordinary polynomial coordinates in the emitted residual system. No such exponentiation is an operation of the final polynomial.
+
+There are eleven low-digit equations. Two use $q^t$, five use $q^{t+1}$, two use $q^{y+1}$, and two use $M$. The common-remainder parent introduces three exact ratios
+\begin{equation}\label{eq:ratios}
+ L_i v_i=M\qquad(L_i\ne M),
+\end{equation}
+and rescales each low remainder $r_i$ to $R_i=v_i r_i$, taking $v_i=1$ when $L_i=M$. An identity $U_i=L_i Q_i+r_i$ becomes
+\begin{equation}\label{eq:scaled-digit}
+ v_iU_i=MQ_i+R_i.
+\end{equation}
+The factorial digit has $Q_i=B+q\ell$. Range-digit quotients include the already represented factor $N$. All actual residuals remain quadratic by reusing their existing multiplication coordinates. In particular, \eqref{eq:scaled-digit} does not introduce a rational variable: \eqref{eq:ratios} implies $v_i\mid R_i$.
+
+The source's square frame $W=2+\sum \text{atom}^2$ contains every power base, requested exponent, and proposed output, with the documented fixed terms giving $W\ge258$. Thus their absolute values are below $W$. The odd frame equation and its signed Pell analysis give a center $A$ satisfying
+\begin{equation}\label{eq:frame}
+ |A|>W^W,\qquad |A-1|>4W^3.
+\end{equation}
+The shared semantic anchor and its squared cap bound all classified Pell indices before any front arithmetic sign is established. Both-coordinate residue pooling then identifies the canonical signed pairs at the requested signed indices. These are the retained presemantic parts of \texttt{PROOF\_315.md}, \texttt{ORIENTATION\_FIRST\_PROOF.md}, and \texttt{STRICT\_BUDGET\_PROOF.md}. Their original later sign schedule is replaced here.
+
+More explicitly, classified pairs reduce modulo $A-1$ to signed small index residues. The pool is a sum of squares of their abscissa errors from $1$ and ordinate errors from their requested indices. The corresponding small nonnegative residue sum is less than $4W^3$ and divisible by $A-1$. Equation~\eqref{eq:frame} makes it zero. This argument uses squares and absolute values; it requires neither $F>0$, $B>0$, nor $q>1$.
+
+\section{The new signed certificate}
+\label{sec:certificate}
+For integers $u,v,w$, set
+\begin{equation}\label{eq:G}
+ \G(u,v,w)=u^2+v^2+w(w+1).
+\end{equation}
+It is always nonnegative and represents every nonnegative integer. Indeed $4n+1$ is a sum of three squares by the Gauss--Legendre theorem; modulo $4$, one square is odd and two are even. Dividing after subtracting $1$ gives \eqref{eq:G}. This standard representation also appears as equation~(1.1) in~\cite{sun}.
+
+The old factorial ceiling used
+\begin{equation}\label{eq:old-ceiling}
+ BF=V+s,\qquad B=r+s+1,\qquad r\ge0,\quad s\ge0.
+\end{equation}
+There was also an initial sign certificate for $o$ in $q=B+o+1$. Each scalar nonnegativity certificate required three private integer witnesses through \eqref{eq:G}.
+
+Delete the three initial sign certificates and the two equations in \eqref{eq:old-ceiling}. Introduce two unrestricted integer coordinates $v_B,S$ and require
+\begin{equation}\label{eq:new-ceiling}
+ \boxed{Bv_B=M,\qquad v_BV+S=MF.}
+\end{equation}
+Replace the initial radix sign by the credited odd-square row
+\begin{equation}\label{eq:odd}
+ q=(2z+1)^2.
+\end{equation}
+Finally include the new ceiling entry in the existing common norm bound:
+\begin{equation}\label{eq:budget}
+ \boxed{M^2=1+4\left(S^2+\sum_{i=1}^{11}R_i^2\right)
+                  +\G(g_1,g_2,g_3).}
+\end{equation}
+The independent squared Pell-anchor cap keeps its own ternary witnesses. These are the only two scalar nonnegative-gap certificates left in this arithmetic stage.
+
+Equations~\eqref{eq:new-ceiling}, \eqref{eq:odd}, and \eqref{eq:budget} are quadratic. The old ceiling coordinates are private to the deleted rows, which the checker verifies literally. The unused product coordinate $BF$ is removed by an integral monic elimination. There are no changes to the eighteen requested powers or to the numerical proof calculus.
+
+It would be invalid to read \eqref{eq:new-ceiling} as an ordinary positive ceiling immediately. Its first consequence is a signed nearest-integer relation, and its meaning must be recovered in the order proved next.
+
+\section{Recovering powers and excluding the exceptional branches}
+\label{sec:bootstrap}
+\subsection{A power lemma with the required sign scope}
+Define Pell polynomials by
+\[
+ \PellX_0(A)=1,\quad \PellY_0(A)=0,\qquad
+ \PellX_{k+1}=A\PellX_k+(A^2-1)\PellY_k,\quad
+ \PellY_{k+1}=\PellX_k+A\PellY_k,
+\]
+and extend by $\PellX_{-k}=\PellX_k$, $\PellY_{-k}=-\PellY_k$.
+
+\begin{lemma}\label{lem:power}
+Under the retained frame and canonical-pair interface, a power request with integer base $n$, requested signed index $k$, and integer output $m$ has the following meanings. If $|n|\ge2$, then $k\ge0$ and $m=n^k$. If $n=1$, then $m=1$ even when $k<0$.
+\end{lemma}
+\begin{proof}
+Put $T=2An-n^2-1$. For $n\ne0$, $T\equiv-1\pmod n$, so $n$ is invertible modulo $T$. The Pell recurrence gives
+\[
+ \PellX_k(A)+(n-A)\PellY_k(A)\equiv n^k\pmod T
+\]
+for $k\ge0$, and the invertible recurrence extends it to signed indices in the modular sense. For $k=-j<0$, the literal output congruence therefore gives $mn^j\equiv1\pmod T$. The frame bounds imply
+\[
+ |mn^j-1|<W^W+1<|T|.
+\]
+Hence $mn^j=1$ in $\Z$, impossible when $|n|\ge2$. With $k\ge0$, the same magnitude argument gives $m=n^k$.
+
+When $n=1$, the scalar recurrence modulo $T=2(A-1)$ has initial values $1,1$, so all its values, forward and backward, are $1$. Thus $m\equiv1\pmod T$ and the frame bound gives $m=1$. This is a congruence argument, not the false literal identity $\PellX_k-\PellY_k=1$ for a general center.
+\end{proof}
+
+\subsection{The radix and a divisibility lower bound}
+Equation~\eqref{eq:odd} gives $q\ge1$. The request with base $F^2+1$ and positive index $t$ gives $V=(F^2+1)^t$ without a sign assumption on $F$.
+
+If $q=1$, Lemma~\ref{lem:power} gives $M=1$ even for a signed proposed $x$. The norm bound forces $S=0$. Equations~\eqref{eq:new-ceiling} give $B=v_B=1$ or $B=v_B=-1$, and then $F=v_BV$. This contradicts
+\[
+ V=(F^2+1)^t>|F|.
+\]
+Therefore $q>1$, and in fact $q\ge9$ by its odd-square form. The request at base $q$ gives $x\ge0$ and $M=q^x>0$. One of the retained ratios now gives
+\begin{equation}\label{eq:xlower}
+ q^{t+1}\mid q^x\quad\Longrightarrow\quad x\ge t+1\ge17.
+\end{equation}
+This lower bound does not use either beta endpoint or a factorial sign. It is what prevents the zero-factorial branch from escaping the certificate.
+
+The requests at base $q+1$ force all nine actual representatives nonnegative. Hence $H\ge1$. The derived-label index is also nonnegative; the retained anchor rules out its zero value.
+
+\subsection{What the new ceiling bound says before positivity}
+Since $Bv_B=M>0$, both $B$ and $v_B$ are nonzero. Put $b=|B|$ and define the integer $s=BF-V$. Equations~\eqref{eq:new-ceiling} imply $S=v_Bs$. Thus \eqref{eq:budget} gives
+\begin{equation}\label{eq:nearest-signed}
+ |s|<\frac b2.
+\end{equation}
+This holds for either sign of $B$. We have not yet proved $s\ge0$.
+
+\begin{lemma}[Excluding a zero factorial]\label{lem:Fzero}
+Every zero of the new source has $F\ne0$.
+\end{lemma}
+\begin{proof}
+If $F=0$, then $V=1$ and $s=-1$, so \eqref{eq:nearest-signed} gives $b\ge3$. The request at the possibly negative base $BH$ is now legitimate in Lemma~\ref{lem:power}, giving $q=(BH)^x>0$. Consequently
+\[
+ q=(bH)^x\ge b^x\ge3^{t+1}.
+\]
+The factorial numerator is $(q+1)^t$. Its coefficients are at most $2^t$, so its ordinary low part below position $t$ satisfies
+\[
+ 0\le\rho<q^t\frac{2^t}{q-1}<\frac{q^t}{32}
+ \qquad(t\ge16).
+\]
+The scaled digit equation and its exact ratio imply that its proposed low remainder is an integer congruent to $\rho$ modulo $q^t$. The common norm gives absolute value below $q^t/2$. Their difference has absolute value less than $q^t$, so the two remainders agree.
+
+The recovered digit says $B\equiv\binom tt=1\pmod q$. Since $b<q-1$, this forces $B=1$, contradicting $b\ge3$.
+\end{proof}
+
+\begin{lemma}[The pre-factorial coefficient bound]\label{lem:coeff}
+For $m\ge1$, $t\ge1$, and $0\le j\le t$,
+\[
+ \binom{m+t}{j}\le(m+1)^t.
+\]
+\end{lemma}
+\begin{proof}
+Induct on $t$. Pascal's identity bounds each nonedge entry of the next row by $2(m+1)^t\le(m+1)^{t+1}$. For the new edge use
+\[
+ \binom{m+t+1}{t+1}=\prod_{i=1}^{t+1}\left(1+\frac mi\right)\le(m+1)^{t+1}.
+\]
+The initial case is immediate. The hypothesis $m\ge1$ matters: the $F=0$ branch used $2^t$ instead.
+\end{proof}
+
+\begin{lemma}[Recovering the signs and the binomial]\label{lem:signs}
+Every zero of the new source satisfies
+\[
+ F>0,\qquad B>0,\qquad B=\binom{F^2+t}{t}.
+\]
+\end{lemma}
+\begin{proof}
+Set $f=|F|\ge1$. If $BF<0$, then $BF\le-b$ and $V=BF-s<-b/2<0$, impossible. Thus $BF=bf>0$. By \eqref{eq:nearest-signed},
+\[
+ V<b(f+\tfrac12).
+\]
+But $(f^2+1)^t\ge(f^2+1)^2>(f+1)(f+\tfrac12)$. Hence $b\ge f+2$ and
+\begin{equation}\label{eq:Vbound}
+ V<b^2-b.
+\end{equation}
+As above, the signed-base request gives $q=(bH)^x\ge b^x$, with $x\ge17$. Lemma~\ref{lem:coeff} bounds every coefficient through position $t$ by $V$. Therefore the true low remainder of $(q+1)^{F^2+t}$ satisfies
+\[
+ 0\le\rho<q^t\frac{V}{q-1}<\frac{q^t}{32}.
+\]
+The normalized norm identifies this remainder exactly, giving $C\equiv B\pmod q$ for $C=\binom{F^2+t}{t}$, where $1\le C\le V<q$.
+
+If $B<0$, then $C=q-b\ge b^2-b>V$, contradicting \eqref{eq:Vbound}. Thus $B>0$, and $BF>0$ gives $F>0$. Since $B<q$, the congruence is the equality $B=C$.
+\end{proof}
+
+\section{A nearest-integer factorial theorem}
+\label{sec:factorial}
+\begin{theorem}\label{thm:nearest}
+Let $t\ge16$ and $F\ge1$ be integers, and put
+\begin{equation}\label{eq:R}
+ \mathcal R_t(F)=\frac{(F^2+1)^t}{\binom{F^2+t}{t}}
+   =t!\prod_{i=1}^{t}\frac{F^2+1}{F^2+i}.
+\end{equation}
+Then
+\begin{equation}\label{eq:nearest-factorial}
+ \left|F-\mathcal R_t(F)\right|<\frac12
+ \quad\Longleftrightarrow\quad F=t!.
+\end{equation}
+At the canonical value there is the stronger estimate
+\begin{equation}\label{eq:canonical-margin}
+ 0<t!-\mathcal R_t(t!)<\frac{t(t-1)}{2t!}<\frac1{32}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $K=t!$. The factors in \eqref{eq:R} are nondecreasing in $F$, and at least one is strictly less than $1$. Thus
+\[
+ \frac{2^t}{t+1}=\mathcal R_t(1)\le\mathcal R_t(F)<K.
+\]
+For $t\ge16$, $2^t/(t+1)>t^2+\tfrac12$: it holds at $16$, and the relevant cubic upper bound grows by less than a factor two at each next integer. The assumed distance in \eqref{eq:nearest-factorial} therefore gives $F>t^2$ and $F\le K$.
+
+Let $u_i=(i-1)/(F^2+i)$. Since $F\ge t^2+1$,
+\[
+ F^2>t(t-1)(F+1),\qquad
+ \sum_{i=1}^{t}u_i<\frac{t(t-1)}{2F^2}<\frac1{2(F+1)}.
+\]
+The elementary product inequality $\prod(1-u_i)\ge1-\sum u_i$ now yields
+\[
+ \mathcal R_t(F)>K\left(1-\frac1{2(F+1)}\right).
+\]
+If $K\ge F+1$, the right side is at least $F+\tfrac12$, a contradiction. Hence $F=K$.
+
+Conversely, the same product inequality at $F=K$ gives
+\[
+ 0<K-\mathcal R_t(K)
+ <K\frac{t(t-1)}{2(K^2+1)}
+ <\frac{t(t-1)}{2K}<\frac1{32}.
+\]
+The last inequality holds at $16$ and its left side decreases as $t$ increases. This proves both claims.
+\end{proof}
+
+By Lemma~\ref{lem:signs}, $B=\binom{F^2+t}{t}$, so \eqref{eq:nearest-signed} is exactly the left side of \eqref{eq:nearest-factorial}. Therefore $F=t!$. Moreover, \eqref{eq:canonical-margin} gives
+\begin{equation}\label{eq:restored-s}
+ s=BF-V>0,\qquad 0<\frac sB<\frac1{32}.
+\end{equation}
+We can now restore the old ceiling witnesses as $s$ and $r=B-s-1\ge0$, and restore the old radix slack as $o=q-B-1\ge0$. All their deleted ternary sign witnesses exist. Their signs are consequences at the end of the argument, not premises at the beginning.
+
+\section{The remaining digits and constructive completeness}
+\label{sec:completeness}
+\subsection{Soundness after the factorial is identified}
+The unchanged beta endpoints are
+\[
+ x=F+1+(y+1)u_0,\qquad x=1+[1+(t+1)y]u_t.
+\]
+Now $F=t!$, $y=V(V-1)>F+2$, and $x\ge0$. A negative $u_0$ would make $x<0$, so $u_0\ge0$ and $x\ge F+1\ge2$. Hence $u_t\ge1$ and
+\begin{equation}\label{eq:strong-x}
+ x\ge2+(t+1)y.
+\end{equation}
+The parent's strict amplification exponent, which equals $x$, local coefficient bounds, and CRT range argument therefore apply in their original proved order.
+
+For completeness of the interface explanation, let $C_0$ denote the encoded-index representative, one of the nine $a_i$. Its congruence is $B\mid C_0+F^2+1$. Once $F=t!$, the product formula for $B$ gives $B>F^2+1$. Thus $C_0\ne0$, so $H\ge2$. Ordinary range-binomial coefficients at any upper representative $a\ge0$ are bounded using $\max(1,a)^k$, not $a^k$ at $a=0$. The derived label has the retained bound $H^{4194304}$, and \eqref{eq:strong-x} with the factorial bound gives the required exponent margin. These are exactly the repaired zero-representative estimates in the inherited proof.
+
+Each of the remaining ten true low residues is consequently less than $L_i/32$. Its normalized version is less than $M/32$. Equation~\eqref{eq:budget}, together with the exact scaled digit, identifies it uniquely. The old interval slack $L_i-r_i-1$ and its ternary product witnesses can be restored. Thus a zero of the new source supplies all the semantic arithmetic needed by the old CRT and Horn-derivation decoder. It yields a finite $C_{222}$ refutation.
+
+\subsection{Building the new witnesses from a refutation}
+Start with any finite $C_{222}$ refutation. The inherited construction supplies a cofinal horizon $t=16+h_0^2$, $F=t!$, $V=(F^2+1)^t$, $y=V(V-1)$, and a beta CRT class of codes $x$. Since $y$ is even, all its moduli, including the two endpoint moduli, are odd. Adding their odd common multiple changes parity while preserving the congruences. Choose $x$ sufficiently large and even.
+
+The reciprocal factors $1+F^2/i$ for $1\le i\le t$ are odd, so their product $B$ and $N^2=B^{2x}$ are odd. Each independent CRT representative can therefore have either parity by adding $N^2$. Choose the two leading syntax representatives with opposite parity, as required for the even semantic anchor. Independently choose a third representative's parity so that the sum of all nine representatives is even; thus $H$ is odd. The established dominant lift of the first representative preserves anchor dominance. This is the existing odd-square completeness construction, not a new parity assumption.
+
+Then $BH$ is odd and $x$ is even, so \eqref{eq:odd} is satisfied by
+\[
+ z=\frac{(BH)^{x/2}-1}{2}\in\Z.
+\]
+Set $v_B=M/B$ and $S=v_B(BF-V)$. These are integers and, by \eqref{eq:canonical-margin}, $0<S<M/32$. For each genuine low digit choose $R_i=(M/L_i)r_i$. The common-remainder estimates give $0\le R_i<M/32$. Hence
+\[
+ 4\left(S^2+\sum_{i=1}^{11}R_i^2\right)
+ <\frac{48}{1024}M^2=\frac3{64}M^2<M^2.
+\]
+The integer gap after subtracting $1$ is nonnegative and therefore has a representation by \eqref{eq:G}. This fills \eqref{eq:budget}. Equations~\eqref{eq:new-ceiling} hold identically. The original canonical private Pell witnesses and every remaining arithmetic witness are unchanged. Thus every finite refutation extends to a zero of the new source.
+
+\section{Exact algebraic compilation and validation}
+\label{sec:algebra}
+The proof above changes the semantic certificate. The later transformations are finite polynomial algebra over $\Z$.
+
+An integral coordinate shear replaces a coordinate by itself plus an integer linear combination of other coordinates; its inverse subtracts that combination. A residual-row operation replaces $R_i$ by $R_i+kR_j$, $i\ne j$, $k\in\Z$; its inverse uses $-k$. Coordinate shears give integral bijections of common zero sets; row operations leave the common zero set unchanged. They generally change the sum-of-squares polynomial, which is recollected afterward.
+
+A monic elimination solves a residual $\pm z_i+L=0$, where $L$ is an integer polynomial independent of $z_i$, and substitutes the resulting expression in every other row. Whenever the recorded degree check stays at most two, the resulting sum of squares remains quartic. The reverse substitution explicitly reconstructs the eliminated coordinate. Existence over all integers is preserved in both directions.
+
+The new arithmetic stage has 246 variables and 182 rows. The exact compilation includes eighteen inherited Horn factorizations, 203 integral monic eliminations, and the recorded fixed translations. Six credited coordinate shears followed by reversible row combinations expose four affine consequences~\cite{residual}. Eliminating three gives the balanced endpoint; eliminating all four gives the dimension endpoint. Additional row reductions lower coefficient height; their support tradeoffs are included in the measured endpoint counts. Every operation and inverse is supplied in machine-readable certificates.
+
+The independent checker reconstructs the semantic source mutation without importing its producer. It verifies the private-coordinate deletion boundary, all eleven normalized digits, the two new ceiling rows, the odd square, and the twelve-term norm budget. It then checks the Horn factoring identities, integral restorations, translations, row changes, and every collected coefficient. The separate coordinate checker also runs each shear and row operation backward. Deliberately corrupted controls test that the checkers reject changed equations and certificates.
+
+No zero of the consistency equation is found or assumed in these checks. Their role is to verify the finite mathematical object and the exact reductions. The unbounded Pell, factorial, CRT, and logical arguments remain mathematical proofs; finite testing cannot establish their universal assertions.
+
+\input{companions.tex}
+
+\section{Why the calibration is provable in ZFC}
+\label{sec:calibration}
+The retained ordinary interfaces are
+\begin{align*}
+ C_{222}(1)&\longleftrightarrow \Refut(\mathrm{ZF}),\\
+ \Refut(\mathrm{ZF})&\longleftrightarrow\Refut(\ZFC),
+\end{align*}
+represented in the repository by
+\path{KEndpoint.c222_iff_zf_refutation} and
+\path{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+The numerical code $1$ is falsity. These are refutation-existence statements, not an assumption that either theory is consistent.
+
+The calibration contains more than elementary finite arithmetic. It uses first-order completeness for set theories, uniformly defined interpretations and quotients of set structures, and the constructible-model transfer between ZF and ZFC. These are available inside ZFC. The relevant ``well-founded part'' of a model is defined by an internal first-order predicate. It is not assumed to be externally well founded or transitive. This distinction is essential: existence of an externally well-founded model would be a stronger claim than ordinary consistency.
+
+Inside ZFC, syntax and finite derivations are represented by natural numbers and finite sequences; satisfaction for a set structure is defined by recursion. The uniform syntax translations and internal substructure constructions therefore apply to the theory's own finite codes. The new integer algebra, Pell induction, CRT arguments, and nearest-factorial proof can be carried out in the same theory. Composing the two directions proved above with the retained calibration gives
+\[
+ \ZFC\vdash
+ \bigl(\exists\mathbf z\in\Z^{\MainVariables}\ P(\mathbf z)=0\bigr)
+ \longleftrightarrow\Refut(\ZFC).
+\]
+Negating gives Theorem~\ref{thm:main}. This is an ordinary proof of ZFC-provability; the release does not contain a newly compiled Lean/Rocq proof of this entire endpoint or an emitted proof term in the encoded object-language ZFC calculus. The retained source interface files and the scoped internalization audit make this boundary explicit.
+
+\section{Reproduction, attribution, and further questions}
+\label{sec:reproduction}
+The package contains the editable article, both complete direct quartics, coefficient expansions, provenance, proof dependencies, explicit inverse certificates, finite verifiers, and recorded verification results. The root \texttt{README.md} gives the exact commands. Arithmetic verification uses Python's standard library; PDF rebuilding uses ordinary pdfLaTeX. The checkers need no network, repository checkout, or search for a refutation.
+
+The newly derived result is the absorption of the factorial ceiling into the common signed residue bound. Its proof uses a divisibility lower bound already present in the source, a separate treatment of $F=0$, signed digit recovery, and Theorem~\ref{thm:nearest}. Shared remainders, odd-square radix selection, Pell frames, the numerical proof calculus, and the initial algebraic compiler have identified predecessors. Coordinate and row reduction are standard techniques. Claims of improvement are relative to the inspected snapshot; no literature-wide priority or global optimum is asserted. The work and separate reviews were AI-assisted, with no implication of outside human peer review.
+
+The following questions remain open in this research program.
+\begin{enumerate}
+\item Can another exact source invariant replace a remaining scalar bound before its semantic meaning is known? The successful criterion here is an acyclic recovery proof with explicit treatment of degenerate branches.
+\item Can the fourth affine elimination be reorganized so that the \MainVariables{}-variable quartic approaches the support of the \BalancedVariables{}-variable companion? The current lower variable count has a measurable density cost.
+\item Can the squared semantic-anchor cap and common residue cap share witnesses without making index recovery circular? A product of two signed gaps alone does not enforce their individual signs.
+\item Can the nearest-factorial mechanism be incorporated into a fresh proof-calculus compiler with a smaller initial arithmetic interface, rather than only reducing the present interface?
+\item Can the full ordinary arithmetic bridge and its internal-ZFC calibration be reified and checked end to end? The existing interface proofs and the present exact finite certificates provide different parts of that task.
+\item Which complexity objective should determine the preferred next endpoint: variable count, degree, support, coefficient bit length, evaluator length, or proof length? The supplied alternatives expose these costs rather than treating one as a universal notion of simplicity.
+\end{enumerate}
+
+\begingroup\raggedright
+\begin{thebibliography}{9}
+\bibitem{repo} Vladimir Reshetnikov and contributors, \emph{ProveIt: Diophantine consistency research}, repository snapshot \texttt{3ecd6a6cf53d47519228328567f45fb7ee9781d9}, 25 October 2026. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9/Computability/DiophantineConsistency}.
+\bibitem{common} \emph{Common remainder certificates for Diophantine consistency}, incoming AI-assisted research package, 25 October 2026. \path{ConZFC_Common_Remainders_Radix47_2026-10-25.zip}, preserved at the snapshot in~\cite{repo}; especially \path{direct/proofs/NORMALIZED_REMAINDERS_PROOF.md}.
+\bibitem{centered} \emph{Centered residue certificates and reusable Pell denominators}, incoming AI-assisted research package, 25 October 2026. \path{ConZFC_Centered_Residues_2026-10-25.zip}; especially \path{arithmetic/ODD_SQUARE_AND_WEIGHTED_PROOF.md}.
+\bibitem{residual} \emph{Residual bases and denominator engineering for ZFC consistency}, incoming AI-assisted research package, 25 October 2026. \path{ConZFC_Residual_Bases_Denominator_Engineering_2026-10-25.zip}.
+\bibitem{signed} \emph{Shared certificates for Diophantine consistency}, incoming AI-assisted research package, 25 October 2026. \path{ConZFC_Shared_Certificates_Round18_2026-10-25.zip}.
+\bibitem{sun} Zhi-Wei Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers}, arXiv:2609.01594v2, 2 September 2026. \url{https://arxiv.org/abs/2609.01594}. Used here for context and the standard ternary representation, not as the direct equation's logical encoding.
+\end{thebibliography}
+\endgroup
+
+\clearpage\appendix
+\section{Every residual of the principal quartic}\label{app:residuals}
+The coordinates below are $z_0,\ldots,z_{\LastVariable}\in\Z$. Their historical compiler names are metadata only; after the integral shears they are the coordinates defined by this literal list. Repeated indices mean repeated factors. Every line has integer coefficients and degree at most two. The equation is exactly the finite sum of their squares in \eqref{eq:principal}.
+
+\input{residuals.tex}
+\end{document}

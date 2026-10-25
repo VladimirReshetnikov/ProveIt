@@ -1,0 +1,355 @@
+\section{Ten-positive equations: projection before full denominator recovery}
+\label{sec:compact}
+The two useful new local operation/degree points are \textbf{79/382} and
+\textbf{80/338}, with ten independently strictly positive integer unknowns.
+The whole indexed BFS943 radix67 coefficient tuple is retained, including all
+four complete payloads and their finite reconstruction. Its largest port has
+592,884 bits. Expanded polynomial coefficients can be larger.
+
+\begin{center}
+\begin{tabular}{llrr}
+Chart & Transport weight & Binary operations & Exact degree\\\hline
+$X=qw,\ Y=q^2s,\ D=q^5$ & $V^2$ &78&516\\
+$X=qw,\ Y=q^2s,\ D=q^5$ & $bV$ &79&382\\
+$X=q^2w,\ Y=qs,\ D=q^6$ & $V^2$ &79&456\\
+$X=q^2w,\ Y=qs,\ D=q^6$ & $bV$ &80&338
+\end{tabular}
+\end{center}
+The square-weight rows are dominated controls, not frontier claims. The
+incoming \emph{Centered Residues} package already supplies $75/626,76/464$
+and $77/460$; its $XY,kY$ arithmetic sharing is inherited here. The incoming
+\emph{Coprime Products} package already proves the $q^2$ chart at $80/382$;
+composing it with that sharing saves one operation. The substantive new chart
+is $Y=qs,X=q^2w,D=q^6$, with projection before full-denominator recovery.
+The older rejected chart $Y=qs,X=qw$ had only $q^3$ visibly in its first
+recurrence modulus. It is not reasserted. Sign-free unshifting, the two signed
+third-index exclusions, Pell doubling, and the native calibration are credited
+in the copied proof sources. No historical priority or global optimum is claimed.
+
+\paragraph{Theorem and boundary.}
+At the explicitly retained ordinary Pell/native/refutation calibration,
+each polynomial below has a positive zero if and only if the inherited
+syntactic calculus has a finite ZFC refutation. Equivalently, ZFC proves that
+absence of a positive zero is equivalent to $\operatorname{Con}(\mathrm{ZFC})$.
+This neither proves consistency nor asserts that a zero exists. It is ordinary
+mathematics formalizable in ZFC, not a new end-to-end Lean/Rocq derivation or
+emitted object-ZFC proof. The finite verifier checks algebra and artifacts,
+not the existence or absence of refutations.
+
+\subsection{Complete polynomial definitions}
+The ten inputs are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+The fixed ports are the entire calibrated tuple $\beta,K_0,M_C,M_F$, with
+$\beta\ge31$ odd, $K_0>0$, and $0<M_C<\beta<M_F<2\beta$.
+Choose one complete chart:
+\[
+\begin{array}{c|ccccc}
+ &W_0&X&Y&D&\sigma\text{ (proof only)}\\\hline
+q^2&w&qw&q^2s&q^5&s/q\\
+q^1&qw&q^2w&qs&q^6&s/q^2
+\end{array}
+\]
+In both cases $X=qW_0$ and $\sigma=Y/q^3$. Define
+\begin{align*}
+ h&=\beta J,&q&=h+1,&C&=q-F-\alpha,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&A&=Y(X+1)+1,\\
+ \Delta&=A^2-1,&H&=4A-5,&v&=XY^2,\\
+ \ell&=(XY)(kY),&E&=1+\ell(\ell+k),\\
+ e&=k-R-1,&B&=(K_0+W_0)C-F,\\
+ U&=ic^2,&a&=\Delta U^2E,&F_0&=1+a,\\
+ G&=EF_0,&\mathcal F&=1+4aF_0,&Q&=\Delta(\mathcal F-1),\\
+ b&=cT-R,&V&=\mathcal F b-c,&K&=X(3c-2X)+2.
+\end{align*}
+Also set\[R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J.\]
+Choose $L=V^2$ or $L=bV$. The final polynomial is
+\begin{align}
+ M&=hDH,\nonumber\\
+ Z&=hD[H(n-LB)+K]-H[DB+h(e-sq^4)],\label{eq:r19carrier}\\
+ P&=Q(Z^2-M^2GV^2)+(M^2G-Z^2).\label{eq:r19poly}
+\end{align}
+All symbols are polynomial abbreviations, not additional unknowns. Every
+square and scalar multiplication is charged as a binary gate; there is no
+root, division, or exponentiation instruction in the four emitted DAGs.
+For proof only set $z=Z/M$, $\kappa=K/H$, $\rho=e/D$, $t=B/h$, and
+$\mathcal W=1+hL$. Since $D\sigma=sq^4$ in both charts,
+\begin{equation}
+ z=n+\kappa+\sigma-\mathcal Wt-\rho.
+ \label{eq:r19rational}
+\end{equation}
+None of these quotients is initially presumed integral.
+
+\subsection{Roots, folding, and unconditional bounds}
+Positive inputs imply $q\ge32$, $X,Y\ge q$, $q\mid X,Y$, $k\ge2$, $c>k$,
+$A>4$, $\Delta\ge3$, $U\ge c^2$, and $E>1$. Thus $a>c$,
+$\mathcal F>2c$, and $Q>c^2$. For any integral $b$, $V\ne0$: if $b=0$
+then $V=-c$; otherwise $|V|\ge\mathcal F-c>1$. Identically,
+\[
+ \mathcal F=(1+2a)^2,\qquad Q=4\Delta^2U^2G,\qquad \gcd(E,F_0)=1.
+\]
+At $P=0$,
+\[
+ (Q-1)z^2=G(QV^2-1).
+\]
+For every prime dividing $G$, the two other integer factors are $-1$
+modulo that prime. Rational-square valuations force $G=g^2$, $g>0$
+integral. Coprimality gives $E=\tau^2$, $F_0=f_0^2$, $g=\tau f_0$.
+The positive rational $y=|z|/g$ satisfies
+\begin{equation}
+ QV^2-(Q-1)y^2=1.\label{eq:r19adjacent}
+\end{equation}
+It is integral by adjacent-Pell descent: for reduced $y=r/m$, one has
+$m^2\mid Q-1$, and the norm-preserving map
+\[
+ v'=(2Q-1)v-2(Q-1)y,\qquad y'=(2Q-1)y-2Qv
+\]
+from $v=|V|>1$ has nonzero integral $v'$, $|v'|<v$, and unchanged reduced
+denominator of $y$. Sign reflection and descent reach $v=y=1$.
+Hence $z=\varepsilon gy$ is integral, $\varepsilon\in\{1,-1\}$.
+
+The proof integers $f=1+2a$ and $I=2Ug$ obey
+\[
+ f^2=\mathcal F,\quad f^2-\Delta I^2=1,\quad c^2\mid I,
+ \quad Q=(\Delta I)^2.
+\]
+The retained signed all-index folding theorem applies to $c\le I$ and
+$V\equiv-c\pmod f$, without a sign assumption on $V$. It gives
+$c=\psi_A(p)$ for odd positive $p$. The first norm gives
+$k=2\psi_{2XY^2+1}(n_0)$, $n_0\ge1$. At $n_0=1$, $k=2$ and
+$c=2Y+1$ lies strictly between $\psi_A(1)=1$ and $\psi_A(2)=2A$.
+Consequently
+\begin{equation}
+ n_0\ge2,\quad k\ge8XY^2+4,\quad c>8XY^3\ge8q^5,
+ \quad c>X,\quad K>0.\label{eq:r19uncond}
+\end{equation}
+No positivity of $B,C,R,b$ has been assumed.
+
+\subsection{Unshifted transport, including both signed exclusions}
+If $b=0$, equation~\eqref{eq:r19adjacent} gives
+$y^2=c^2+(c^2-1)/(Q-1)$ strictly between consecutive integers.
+Thus $b\ne0$, $\operatorname{sign}V=\operatorname{sign}b$, and
+$|V|>|b|$. Directly,
+\[
+ a^2-g^2=E[\Delta U^2E(\Delta U^2-1)-1]>0,
+ \quad \mathcal F-c>3a>3g,\quad y<\tfrac32|V|.
+\]
+Hence $gy<V^2/2$.
+For $L=bV$, suppose first that the main index is $p=3$.
+Then $c=4A^2-1$. If $n_0\ge3$, then $kY>32X^2Y^5$, whereas
+$A<2XY$ gives $c<16X^2Y^2$, impossible. Therefore $n_0=2$,
+$k=8XY^2+4$. With $u=X+2-2Y$,
+\[
+ \eta=4Y^2(Xu+1)+8Y(X+1)+3-4Y.
+\]
+For $u\le-1$ this is negative, since $Y(X-1)>2(X+1)$; for $u\ge2$
+it exceeds $k$. Thus $u=0$ or $1$, giving $2Y-X\in\{1,2\}$,
+contrary to $q\mid X,Y$, $q\ge32$. Hence $p\ge5$ and
+$c>c_3:=4\Delta+3$.
+
+Put $S=\Delta I$, so $Q=S^2$. Pell classification of
+\eqref{eq:r19adjacent} gives $|V|=\chi_S(j)/S$ for odd $j$;
+even traces are $\pm1$ modulo $S$. The first index gives $|V|=1$.
+At the third index $|V|=4Q-3$, and the two signs would imply
+\[
+ \mathcal F(b-4\Delta)=c-c_3\quad\text{or}\quad
+ \mathcal F(b+4\Delta)=c+c_3.
+\]
+Both are excluded by $0<c-c_3<c+c_3<2c<\mathcal F$.
+Therefore $j\ge5$, $|V|\ge16Q^2-20Q+5>8Q^2$, and
+\[
+ |b|>\frac{8Q^2-c}{\mathcal F}>8\mathcal F-\tfrac12
+ >4\mathcal F>4g.
+\]
+It follows that $L=bV>0$ and $gy<3L/8<L/2$.
+
+For either weight $e<b$, since $b-e=cT-k+1>0$, so $\rho<|b|/D$.
+If $B\le-1$, then $\mathcal Wt<-L$; using $\kappa,\sigma>0$ in
+\eqref{eq:r19rational} yields
+\[
+ n=\varepsilon gy-\kappa-\sigma+\mathcal Wt+\rho
+   <L/2-L+|b|/D<0,
+\]
+since $D>2$. This contradicts the actual positive input $n$.
+Thus $B\ge0$, hence $C>0$. Only now use the mask bound
+$3q<R<q^4-2$. Equation~\eqref{eq:r19uncond} gives $c>2R$, so $b,V>0$.
+The retained normalized-rank and signed auxiliary-index lemmas, with
+$c^2\mid I$, $c>2R,c>2p$, and the fixed-minus residues, give $p=R$.
+Mask parity yields even $q$ and odd $J$.
+
+\subsection{Authenticate the first index before the full denominator}
+Integral $z$ in~\eqref{eq:r19rational} implies
+\[
+ D\mid hH(e-sq^4).
+\]
+Since $H=4Y(X+1)-1\equiv-1\pmod q$ and $h=q-1$,
+$\gcd(q,hH)=1$. As $D=q^5$ or $q^6$, this implies $q^4\mid e$.
+The universal first recurrence is
+\[
+ k\equiv2n_0\pmod{4XY^2}.
+\]
+Its modulus is visibly divisible by $q^4$: $XY^2=q^5ws^2$ in the
+$q^2$ chart, and $XY^2=q^4ws^2$ in the $q^1$ chart.
+Therefore $q^4\mid2n_0-R-1$. Moreover
+$P_0=2XY^2+1>A$, because $P_0-A=Y(2XY-X-1)>0$.
+If $n_0\ge R$, monotonicity in base and index gives
+$k/2\ge\psi_A(R)=c$, contrary to $c>k$. Hence
+\[
+ 1\le n_0<R,\qquad |2n_0-R-1|<R<q^4,
+\]
+and necessarily $2n_0=R+1$. Returning to the full recurrence gives
+\begin{equation}
+ 4XY^2\mid e.\label{eq:r19fullrec}
+\end{equation}
+In the $q^2$ chart this already gives $q^5\mid e$.
+In the $q^1$ chart it does \emph{not} yet give $q^6\mid e$.
+That conclusion is deliberately deferred.
+
+\subsection{Projection first, full denominator second}
+Modulo $H$, the literal numerator gives $Z\equiv hDK$. Since $H\mid M$
+and $z$ is integral, $H\mid hDK$. As $D$ is a power of $q$ and
+$H\equiv-1\pmod q$, cancellation is legitimate here and gives
+\begin{equation}
+ H\mid hK,\label{eq:r19projectionpremise}
+\end{equation}
+\emph{without} assuming $\rho$ integral. This is the new ordering.
+
+Write $R=2r+1$; $r\ge48$. The retained scale-one ratio lemma gives
+\[
+ \xi<\frac{\psi_A(2r+1)}{\psi_{2XY^2+1}(r+1)}
+ <\xi\left(1+\frac1{Y(X+1)}\right)^{2r},\qquad
+ \xi=\frac{(X+1)^{2r}}{X^r}.
+\]
+Together with $Y<c/k<Y+1$, this implies $Y>X^r/3$ and
+$X^{r+1}<3Y(X+1)<H$. The universal projection identity, odd $H$, and
+\eqref{eq:r19projectionpremise} give
+$H\mid h(X-2^R)(2^RX+1)$, hence also divisibility after multiplication
+by $q^3$. Here is an explicit whole-product bound. Put $t_0=2^R=2\cdot4^r$.
+Since $q^3h<X^4$,
+\begin{align*}
+ q^3h\,|(X-t_0)(t_0X+1)|
+ &<X^4(X+t_0)(t_0X+1)\\
+ &\le4\cdot4^rX^6+8\cdot16^rX^5<X^{r+1}.
+\end{align*}
+After division by $X^{r+1}$ the two terms decrease on $X\ge32,r\ge48$;
+at $(32,48)$ their sum is $2^{-117}+2^{-25}<1$. Thus the entire product
+is zero, and its positive factors give $X=2^R$. The universal identity then
+makes $\kappa=K/H$ a positive integer. No arbitrary factor of a composite
+modulus was canceled.
+
+Since $q\mid X=2^R$ and $q\ge32$, $q=2^m$ for $m\ge5$.
+The induction $2^m\ge2m$ for $m\ge2$ yields
+\[
+ R>3q=3\cdot2^m\ge6m,\qquad q^6\mid X.
+\]
+Equation~\eqref{eq:r19fullrec} now gives $q^6\mid e$ in the new chart.
+Thus $\rho=e/D$ is integral in both charts. This is a property of proved
+zeros, not a claim that $q^6\mid4XY^2$ for all positive inputs.
+
+Equation~\eqref{eq:r19rational} now makes $s/q^j-\mathcal WB/h$
+integral, where $j=1$ or $2$. Clear $q^jh$ and reduce first modulo
+$q^j$, then modulo $h$. Since $\gcd(q,h)=1$ and $\mathcal W\equiv1\pmod h$,
+\[
+ q^j\mid s,\qquad h\mid B,\qquad q^3\mid Y,
+ \qquad t=B/h\in\mathbb Z_{\ge0}.
+\]
+The missing native divisibility has been recovered, not assumed.
+
+\subsection{Native soundness and constructive positive completeness}
+Soundness now supplies positive outer data $J,F,\alpha,W_0,Y$ with
+$C>0$, $X=qW_0=2^R$, $q^3\mid Y$, and
+\[
+ (K_0+W_0)C-F=t(q-1),\qquad t\ge0.
+\]
+The retained fixed-minus parity gives $R\equiv3\pmod4$; the ratio and
+exact half-binomial rounding theorem identifies the native $Y$. Reconstruct
+fresh source witnesses at $A_{\rm source}=Y(X+1)+2$, \emph{not} our $A$.
+With $z_{\rm source}=t+1>0$, the native transport identity is exactly
+\[
+ (K_0+W_0)C+(q-F)-z_{\rm source}(q-1)=1.
+\]
+The whole indexed BFS943 calibration yields a finite syntactic ZFC refutation.
+The scalar port inequalities used early are not a substitute for that decoder.
+
+Conversely a finite refutation gives canonical data $q=2^m$, $X=2^R=qW_{\rm native}$,
+$R>3q$, $R\equiv3\pmod4$, $q^3\mid Y$, and the same transport $t\ge0$.
+The preceding elementary bound gives $q^6\mid X$.
+Choose $w=X/q$, $s=Y/q^2$ for the $q^2$ chart; choose $w=X/q^2$, $s=Y/q$
+for the $q^1$ chart. All are positive integers, and in either case
+$W_0=W_{\rm native}$: the coefficient in the native transport is preserved.
+Set
+\[
+ c=\psi_A(R),\quad k=2\psi_{P_0}((R+1)/2),\quad
+ \tau=\chi_{P_0}((R+1)/2),\quad
+ \eta=c-kY,\quad\zeta=k-\eta.
+\]
+The retained exact ratio/rounding theorem gives $0<\eta<k$.
+The full recurrence and $q^6\mid X$ give integral $\rho\ge0$;
+projection gives integral $0<\kappa<Xc$.
+
+A positive multiple of the Pell matrix period modulo $c^2\tau$ supplies a
+seed pair $(f_0,I_0)$ with $c^2\tau\mid I_0$. Take $i=I_0/(c^2\tau)>0$.
+Then $a=\Delta I_0^2=f_0^2-1$, $F_0=f_0^2$, $G=(\tau f_0)^2$, and the
+doubled pair is exactly $f=2f_0^2-1$, $I=2f_0I_0$.
+The retained auxiliary-completeness lemma supplies positive $V,y$ and the
+positive integer
+\[
+ T=\frac{V+c+Rf^2}{cf^2}.
+\]
+This is the actual unshifted $T$, not a possibly negative inverse shift.
+For either positive weight, choose
+\[
+ n=gy+(1+hL)t+\rho-\kappa-\sigma.
+\]
+All terms are integral since canonical $\sigma=Y/q^3$ is integral.
+Also $\sigma<Y<Xc$, $\kappa<Xc$, $I_0\ge c^2$, and
+$f_0>(A-1)I_0>2Xc$, so $g=\tau f_0>\kappa+\sigma$.
+Thus $n>0$ and its carrier is $z=gy$, proving $P=0$.
+Every independent coordinate is positive. This is a fresh canonical witness
+construction, not an unproved positive inverse shear.
+
+\subsection{Exact global degrees and reproducibility}
+The literal sharing is $A-1=XY+Y$ and $\ell=(XY)(kY)$.
+From the incoming $q^4$ charts, remove the private $q^3$ multiplication,
+change $Y$, add $D=q^4q$ or $q^4q^2$, and add $sq^4$ and $e-sq^4$.
+This is net two operations in the $q^2$ chart. The $q^1$ chart additionally
+splits $X$ into $W_0=qw$, $X=qW_0$, using $W_0$ in $B$.
+All gates, inputs, and four fixed ports are live.
+
+Put $q_0=\beta J$, $k_0=\eta+\zeta$, and $C_0=q_0-F-\alpha$.
+The complete leading forms for the $q^2$ chart are
+\begin{align*}
+ [P_{V^2}]_{516}&=2^{14}q_0^{272}w^{46}s^{108}i^{20}k_0^{64}T^4C_0^2,\\
+ [P_{bV}]_{382}&=-2^{10}q_0^{206}w^{34}s^{80}i^{14}k_0^{46}T^2.
+\end{align*}
+In the $q^1$ chart, $\deg(cT)=\deg R=4$; dropping $R$ would give an
+incorrect leading form. Define
+\[
+ B_0=k_0sT-q_0^2(q_0-F).
+\]
+Then the complete forms are
+\begin{align*}
+ [P_{V^2}]_{456}&=2^{14}q_0^{212}w^{46}s^{104}i^{20}k_0^{60}B_0^4C_0^2,\\
+ [P_{bV}]_{338}&=-2^{10}q_0^{162}w^{34}s^{78}i^{14}k_0^{44}B_0^2.
+\end{align*}
+Their sparse expansions have respectively $390,47,3750,274$ monomials.
+The selected maximal-$T$ coefficients are $2^{14}\beta^{272}$,
+$-2^{10}\beta^{206}$, $2^{14}\beta^{212}$, $-2^{10}\beta^{162}$, nonzero
+at the actual $\beta>0$. These prove exact multivariate degrees, not
+numerical-ray estimates. The unique top summand is $QZ^2$ for $V^2$ and
+$-QM^2GV^2$ for $bV$.
+
+The independent standard-library checker does not import the producer. It
+covers every actual row with 28 free-polynomial cuts per graph, proves the
+entire leading forms, checks liveness and the whole tuple, reconstructs every
+coefficient byte, and rejects ten genuine algebraic corruptions per graph.
+Normal and optimized Python receipts are identical. The complete unbounded
+proof is also supplied in \texttt{PROOF.md}; the active local
+\texttt{SOURCE\_PINS.json} authenticates all copied ordinary dependencies.
+\begin{verbatim}
+python3 -B build.py --check
+python3 -B verify.py --output /tmp/positive-check.json
+python3 -B -O verify.py --output /tmp/positive-check-O.json
+python3 -B rebuild_coefficients.py
+\end{verbatim}
+All source intake was read-only. No remote repository was modified.
