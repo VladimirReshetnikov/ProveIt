@@ -2185,3 +2185,22 @@ integer translations, every coefficient and complete source calibration
 are checked. See the [root acceptance](reviews/signed-pell-cap-refined-product-projections-root-peer.md).
 The fixed policy claims no global optimum. Earlier equations and the
 canonical92/283 page remain preserved; Lean remains paused.
+
+
+## A fused ninth factor removes one source guard graph
+
+The [ordinary fused-product theorem](research/signed-pell-cap-nine-factor-fused/PROOF.md)
+replaces r0>=0 and P8>=1 by the single quadratic graph
+`(r0+1)P8-1=a9²+b9²+c9(c9+1)`, without another product coordinate.
+The retained Qy anchors first recover y>=0; all eight other factors are
+proved nonnegative before strict fused positivity restores r0 and all signs.
+Both maps fix the whole original unnormalized406-coordinate body and
+restore TWO fresh old graph triples. The complete ordinary proof,181literal
+rows, all graph/privacy/interface maps and all eleven coefficient identities
+pass independent and root review. See the
+[root acceptance](reviews/signed-pell-cap-nine-factor-fused-root-peer.md).
+
+The475-coordinate/364-row,24-graph namespace is a declared source policy
+only. A complete materialized successor and projected size remain pending;
+no dimension saving is inferred from source subtraction. The329-variable
+equation, canonical compact page and paused Lean work remain preserved.
