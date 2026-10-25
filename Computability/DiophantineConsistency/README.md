@@ -53,6 +53,16 @@ is preserved separately from the canonical92/283 page. Its complete
 actual-formula and rendered-page checks; see the
 [root review](reviews/one-page-qcube86-root-peer.md).
 
+A complete [nine-positive comparison page](candidates/one-page-saturated9/equation.pdf)
+and its [standalone TeX](candidates/one-page-saturated9/equation.tex) now fit
+every constant on one Letter page at9-point mathematics. The accepted
+433-operation evaluator has exact degree1,628,768 and uses the entire
+original722-character compact54 recipe. All actual-TeX/PDF checks, both
+visual reviews and four byte-exact root replays pass; see the
+[root acceptance](reviews/one-page-saturated9-root-peer.md). Its lower
+variable count carries substantially higher cost and degree, so the
+canonical92/283 page remains the displayed compact form.
+
 For direct degree-four equations, the [complete refined-product form](research/signed-pell-cap-refined-product-projections/data/centered/equation.json)
 now reaches **329 unrestricted integer unknowns**, with216 rows,5,728 terms
 and height128,446. It saves30 variables, six rows and330 terms against the
@@ -1943,3 +1953,24 @@ reauthenticated all228 external/five core pins and twelve exact closed
 inventories. See the [root acceptance](reviews/signed-pell-cap-nine-factor-source-root-peer.md).
 The existing329-variable quartic and canonical92-operation/degree283 page
 remain preserved. Lean remains paused.
+
+
+## Complete nine-positive equation fits one page
+
+The [complete comparison PDF](candidates/one-page-saturated9/equation.pdf)
+and [standalone TeX](candidates/one-page-saturated9/equation.tex) print the
+entire nine-positive433-operation, exact-degree1,628,768 equation and
+every fixed constant on one Letter page at9-point mathematics/8-point
+seed. The full original722-character recipe reconstructs all four native
+payloads and eleven signed fixed leaves, including initializer698.
+
+All40 displayed identities/every464graphnode/all85free-port kernel
+coefficients,29actualTeX corruptions and three positive controls pass
+in normal/optimized checks. Both pure rebuilds reproduce all five derived
+files, and all eight fresh root JSON/stdout records are byte-identical.
+Actual PDF text, strict overflow checks and separate root/peer visual
+reviews pass. Seven closed histories preserve every failed checkpoint.
+See the [root acceptance](reviews/one-page-saturated9-root-peer.md).
+This is a variable-count alternative with substantially higher cost and
+degree; the canonical ten-positive92/283 PDF/TeX remain preserved. No
+new Lean or encoded internal-ZFC proof is claimed. Lean remains paused.

@@ -33,6 +33,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 10 | 98 | 368 | Zero-offset scaled base, shared muY and expanded transport |
 | Positive integers | 10 | 103 | 340 | Direct positive X, shared carrier and expanded transport |
 | Positive integers | 9 | 405 / 413 | 1,191,570 / 1,316,546 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
+| Positive integers | 9 | 433 | 1,628,768 | Complete one-page specification including all original compact54 constants |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Positive integers | 9 | 722 | 1,158,228 | Collected J,D radical evaluator and identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
@@ -2049,3 +2050,24 @@ reauthenticated all228 external/five core pins and twelve exact closed
 inventories. See the [root acceptance](reviews/signed-pell-cap-nine-factor-source-root-peer.md).
 The existing329-variable quartic and canonical92-operation/degree283 page
 remain preserved. Lean remains paused.
+
+
+## Complete nine-positive equation fits one page
+
+The [complete comparison PDF](candidates/one-page-saturated9/equation.pdf)
+and [standalone TeX](candidates/one-page-saturated9/equation.tex) print the
+entire nine-positive433-operation, exact-degree1,628,768 equation and
+every fixed constant on one Letter page at9-point mathematics/8-point
+seed. The full original722-character recipe reconstructs all four native
+payloads and eleven signed fixed leaves, including initializer698.
+
+All40 displayed identities/every464graphnode/all85free-port kernel
+coefficients,29actualTeX corruptions and three positive controls pass
+in normal/optimized checks. Both pure rebuilds reproduce all five derived
+files, and all eight fresh root JSON/stdout records are byte-identical.
+Actual PDF text, strict overflow checks and separate root/peer visual
+reviews pass. Seven closed histories preserve every failed checkpoint.
+See the [root acceptance](reviews/one-page-saturated9-root-peer.md).
+This is a variable-count alternative with substantially higher cost and
+degree; the canonical ten-positive92/283 PDF/TeX remain preserved. No
+new Lean or encoded internal-ZFC proof is claimed. Lean remains paused.

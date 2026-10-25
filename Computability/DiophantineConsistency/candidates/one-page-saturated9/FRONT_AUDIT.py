@@ -361,7 +361,9 @@ def printed_front(tex, graph, kernel_data, layout):
     kernels, supports = {}, {}
     for pos in [1, 3, 5]:
         degree = int(sections[pos])
-        text = clean_math(sections[pos+1]).strip().removesuffix('.')
+        text = clean_math(sections[pos+1]).strip()
+        if text.endswith(('.', ',')):
+            text = text[:-1]
         value = Parser(text, env, lists, {}).parse()
         expected = {}
         record = next(k for k in kernel_data['kernels'] if k['degree'] == degree)
@@ -406,8 +408,10 @@ def printed_front(tex, graph, kernel_data, layout):
         need(tokens(lhs) == [('symbol', name)] and name not in printed, 'exact ordered fresh front alias '+name)
         value = Parser(rhs, printed, lists, kernels).parse()
         need(value == evaluate(node, {}), 'complete exact literal-block identity '+name)
-        printed[name] = atom(name)
-        context[node] = atom(name)
+        # N0 is also a shared B-power helper in later source chains.
+        replacement = value if name == 'N0' else atom(name)
+        printed[name] = replacement
+        context[node] = replacement
         assignments.append({'symbol': name, 'node': node})
         if name == 'R':
             # Actual k reuses node374 rather than traversing node375. The
@@ -655,6 +659,8 @@ def pdf_text(path):
 def math_glyphs(text):
     """Full front variable/operator/numeral stream, ignoring delimiters only."""
     text = clean_math(text)
+    # Poppler draws the superscript before subscript in these two forms.
+    text = text.replace(r'W_1^2', r'W^2_1').replace(r'V_0^2', r'V^2_0')
     for command, value in [(r'\Omega', 'Ω'), (r'\Theta', 'Θ'), (r'\delta', 'δ'), (r'\Lambda', 'Λ'), (r'\beta', 'β'), (r'\ell', 'ℓ'), (r'\mathcal W', 'W'), (r'\mathcal T', 'T')]:
         text = text.replace(command, value)
     text = text.replace('−', '-').replace('∗', '*').replace('Ω', 'Ω')

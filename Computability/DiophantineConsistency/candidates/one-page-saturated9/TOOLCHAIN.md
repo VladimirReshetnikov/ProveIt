@@ -6,11 +6,59 @@ render failed its guard: two pages, a37.46252-point kernel hbox and
 a31.1629-point vertical overflow. Its full failure transcript is archived;
 no PDF/success receipt was materialized and no actual auditor/rebuild ran.
 
-Root selected the separate exact nine-point-tight.tex proposal: 9-point
-arithmetic at9.0 leading, tighter gaps/header/prose and D1 groups8/7/7.
-It preserves every formula and numeral, the whole 722-symbol seed and
-8-point seed type. Only the two matching font assertions change in the
-programs. The current code/layout has NOT been imported, compiled or run.
+The reviewed/released nine-point-tight.tex v2 then reached one scratch
+page/163624 bytes and no vertical overflow, but failed on a10.7589-point
+kernel hbox. Its exact checkpoint/transcript are archived in history/v2;
+no PDF/success artifact or actual auditor/rebuild was materialized. Root
+selected one further D2 line break. The current nine-point-wrap.tex retains
+9-point arithmetic at9.0 leading, 8-point seed, all tighter-v2 spacing and
+every formula/numeral. Both executable tools remain byte-identical to v2.
+The reviewed/released v3 wrap removed all horizontal overflow, but its
+onepage/163670byte scratch output failed a0.46492-point vertical guard.
+Its exact checkpoint/transcript are in history/v3; no PDF/success artifact
+or actual auditor/rebuild was materialized/run. Root selected only a
+paragraph gap change1point to0.8points. Current nine-point-gap.tex preserves
+all fonts/formulas/seed and both executable tools; it has NOT been rendered
+or passed to an actual auditor/rebuild before release. Its actual released
+v4 scratch render then reduced the outer-height warning exactly0.2pt to
+0.26492pt on onepage/163647bytes, still rejected with no horizontal
+overflow. Its full closure/transcript are preserved in history/v4.
+Root selected only paragraph gap0.8points to0points for current
+nine-point-zero-gap.tex. Every font/formula/seed and executable byte is
+unchanged. The v5 guarded render then PASSED one Letter page at9ptmath/
+8ptseed with zero overfull warnings, all722seed/alphabet characters and
+domain/cost text. Root preliminary visual review passed. Command2 then
+stopped on unstripped terminal display commas after D0/D1; no mathematical
+audit or later command passed. Closed history/v5 preserves the exact core,
+seven successful render files and full auditor failure transcript.
+
+The reviewed delimiter correction removes exactly one terminal display comma
+or period before parsing each entire kernel RHS; the full-consumption check
+is unchanged. Actual TeX/graph/map/renderer and all five
+live derived render artifacts remain byte-identical. The old render
+receipt/stdout moved into history/v5 so a fresh command1 can write against
+the reviewed refreshed tool pins. Both reviews and a new release precede
+all five commands. That released delimiter-corrected run again rendered
+the identical page, then the normal auditor stopped at Z: it had made
+already-proved N0=B^117 independent of B, despite shared target powers
+using node55. Closed history/v6 preserves exact core/pins/render/trace.
+
+The reviewed N0 correction retains its checked B^117 RHS in BOTH printed
+and graph contexts. Every other cut/check, full expression consumption,
+coverage, TeX/graph/map/renderer and all derived rendering bytes remain
+unchanged. Old rendering receipt/stdout are archived for
+fresh reviewed pins. Both delta reviews and root release precede the
+five commands. The released v7 mathematical stages then completed all40/
+464/85 exact identities, full4ports/11leaves and29negative/3positiveTeX
+controls, but the PDF front stream failed on extractor order W_1^2/V_0^2.
+The full v7 records/trace are archived in history/v7; no final audit PASS.
+
+The present PDF-only correction normalizes those TWO reviewed expectedTeX
+spellings to W^2_1/V^2_0 before existing glyph stripping. Actual PDF raw
+text is unaffected; no other check, math/parser/context/control or source/
+TeX/renderer/PDF byte changes. It has NOT run. Old rendering receipt/stdout
+are archived for fresh current pins. Both reviews and root release precede
+the five commands. The strict overflow guard is unchanged.
 No source/parent program or Lean command has run. The revised whole pins
 include all original inputs, current preparation/core and the closed
 historical snapshot. The original pin files remain exact in history/v1.

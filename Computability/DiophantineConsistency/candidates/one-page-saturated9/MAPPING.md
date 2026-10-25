@@ -8,12 +8,61 @@ PDF materialization, actual-TeX auditor or pure rebuild followed that
 failure. The full transcript is archived. No source/parent program or Lean
 command has run.
 
-Root selected the explicit tighter 9-point layout in layout-options: 9.0
-leading, 1-point gaps, a two-line header, shorter D1 groups and combined
-native prose. The 722-character seed remains 8-point. Every mathematical
-formula and coefficient is preserved; the new layout has NOT been rendered
-or passed to the actual auditor. Fit and legibility remain empirical
-obligations, with no automatic font fallback.
+The selected tighter 9-point/9.0-leading layout then produced one scratch
+page of 163624 bytes with no vertical overflow, but failed on one
+10.7589-point kernel hbox. Its complete checkpoint and failure transcript
+are preserved in history/v2; no PDF/success artifact or actual audit/rebuild
+was materialized. The present revision only adds one D2 line break before
++2p(299,326,1326,1521). Both executable tools are byte-identical to v2.
+The wrap then removed all horizontal overflow and produced one scratch
+page of 163670 bytes, but the strict guard rejected a 0.46492-point vertical
+overflow. Its exact checkpoint/transcript are archived in history/v3. No
+actual auditor or pure rebuild ran. The current revision changes only the
+paragraph gap from 1 point to 0.8 points, retaining both executable tools
+and every formula, coefficient, font and seed character. This gap revision
+then failed its guard at a 0.26492-point vertical overflow, with one scratch
+page of 163647 bytes and no horizontal overflow. The exact v4 checkpoint
+and full transcript are preserved in history/v4. No auditor/rebuild ran.
+Root selected only paragraph gap0.8points to0points for the current revision;
+all fonts, formulas and executable bytes remain unchanged. This zero-gap
+revision then PASSED its guarded render: one Letter page at9-point
+arithmetic/8-point seed, zero overfull warnings and complete seed/alphabet.
+The next actual-auditor command stopped at a parser delimiter defect:
+D0/D1 end with display commas, but the kernel parser stripped only a
+terminal period. No exact-front/native/PDF audit success or later command
+is claimed. The complete v5 closure, seven successful render records and
+full failure are archived in history/v5.
+
+The current code-only correction removes exactly one final display comma
+or period before parsing each complete kernel RHS. Full expression
+consumption is unchanged. TeX, graph, formula map, renderer and all five
+derived render artifacts remain byte-identical. Root preliminary actual-PDF
+visual review passed; final acceptance still requires the corrected actual
+audits, pure rebuilds and fresh root replays. The corrected auditor has
+then ran after both delimiter reviews: the render again passed with all
+five files byte-identical. The normal auditor reached Z and found a
+proof-context defect: already-proved N0=B^117 had become an independent
+atom even though later target powers reuse node55. The exact v6 core,
+successful render records and full trace are preserved in history/v6.
+
+The present narrow correction retains N0's proved B^117 polynomial in
+BOTH printed and graph contexts. Every other cut remains atomized as
+before, with unchanged full identities, topology, coverage and complete
+consumption. No source formula or PDF byte changes. This transparent-cut
+auditor then completed all40cut/every464node/all85kernel identities,
+whole4nativeport/11fixedleaf reconstruction and29negative/3positiveTeX
+controls, then stopped at the PDF glyph comparison. These are partial
+stages, not a final audit PASS. The actual extractor draws W_1^2 as W2
+then1 and V_0^2 as V2 then0; source-order glyph stripping expected W12/V02.
+The exact v7 closure, rendering records and full traceback are archived
+in history/v7.
+
+The current PDF-only correction normalizes only those two reviewed TeX
+spellings to W^2_1/V^2_0 before existing glyph stripping. Actual raw PDF
+text contains no TeX underscores and is unaffected. Every mathematical,
+parser/context/control, TeX, renderer and PDF byte is unchanged. This
+glyph-corrected module has NOT run; final audits/rebuilds remain pending.
+No guard is bypassed and no canonical file changes.
 
 ## 1. Exact accepted equation and positive inputs
 

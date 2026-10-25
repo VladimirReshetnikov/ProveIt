@@ -8,14 +8,69 @@ failed its overflow/fit guard: two pages, a 37.46252-point horizontal and
 31.1629-point vertical overflow. The complete transcript is archived; no
 PDF/success receipt was materialized. No actual auditor or rebuild ran.
 
-Root selected a layout-only revision retaining 9-point arithmetic with
-9.0 leading, shorter D1 groups and tighter gaps/header/prose. Only the two
-font-string assertions change in the executable tools; their arithmetic,
-parsers, controls and process arguments are unchanged. This revised layout
-and toolchain have NOT been imported, compiled or executed. No parent/source
-program or Lean command has run. Current SOURCE_PINS/TOOL_PINS are refreshed
-coherently while the original complete closures remain archived. No revised
-fit, PDF, corruption-rejection or rebuild success is claimed.
+The selected tight v2 retained 9-point arithmetic with 9.0 leading, shorter
+D1 groups and tighter gaps/header/prose; only two font-string assertions
+changed in its tools. After both delta reviews and release, its first
+scratch render produced one page of 163624 bytes and no vertical overflow,
+but failed on one 10.7589-point kernel hbox. The whole v2 closure/transcript
+are archived in history/v2. No PDF/success artifact or actual auditor/rebuild
+was materialized. Root selected one further D2 line break only. Both current
+executable tools are byte-identical to reviewed v2, and every algorithm,
+control and process argument is unchanged. After both delta approvals and
+release, the v3 wrap removed all horizontal overflow but failed a
+0.46492-point vertical guard on one scratch page of163670bytes. Its entire
+checkpoint/transcript are archived in history/v3. No PDF/success artifact,
+actual auditor or pure rebuild was materialized/run. The current revision
+changed paragraph gap1point to0.8points only. After both delta approvals
+and release its onepage/163647byte scratch render reduced the warning
+exactly0.2pt to0.26492pt, still rejected with no horizontal overflow. The
+complete v4 closure/transcript are archived in history/v4; no PDF/success
+artifact, actual auditor or rebuild was materialized/run. Root selected
+only paragraph gap0.8points to0points for the current unexecuted revision.
+Every formula, coefficient, font, seed character and executable byte remains
+unchanged. The v5 guarded render then PASSED, materializing one Letter
+page at9ptmath/8ptseed with no overfull warnings and complete literal text.
+Root preliminary PDF visual review passed legibility/nativeoperators.
+Command2 stopped before any mathematical audit claim: the D0/D1 display
+commas remained after stripping only a final period. The complete v5
+core/pins, seven successful render records, empty failed-auditor stdout
+and full traceback are archived in history/v5.
+
+The current specific parser correction strips exactly one terminal comma
+or period outside the complete kernel polynomial expression. The parser's
+full-consumption requirement is unchanged; no other grammar, arithmetic,
+coefficient, control, source, TeX, renderer or PDF byte changes. The five
+derived rendering files remain live and byte-identical. The old rendering
+receipt/stdout are archived so a fresh released command1 can describe the
+new reviewed tool closure. The corrected auditor has NOT run. No guard is
+weakened or bypassed. After both delimiter reviews and release, rendering
+again passed with all five derived files byte-identical. The auditor then
+reached Z and rejected a proof-context defect: already-proved N0=B^117 was
+made an independent atom despite later target power chains sharing node55.
+The full v6 core/pins/successful render/trace are archived in history/v6.
+
+The current single transparent-cut exception retains the proved N0 RHS in
+BOTH environments, instead of atomizing N0. All other cuts still atomize;
+all identities, topology/coverage and complete consumption remain required.
+This is substitution of an exact previously proved definition, not an
+independence assumption or weakened comparison. No other grammar/source/
+TeX/graph/map/renderer/PDF change is made. That corrected module then ran
+after both reviews: all40cuts/every464node/all85kernels, entire
+4nativeports/11fixedleaves and29negative/3positiveTeX controls completed.
+The final PDF front stream comparison stopped because raw extraction
+draws W_1^2 as W2 then1 and V_0^2 as V2 then0, while the old expected
+stream retained source order W12/V02. No final audit receipt was emitted.
+The whole v7 closure/rendering/trace are archived in history/v7.
+
+The present PDF-only correction normalizes exactly these two reviewed
+spellings to W^2_1 and V^2_0 before the existing glyph strip. Actual PDF
+raw text has no TeX underscores, so that side is unchanged. Every other
+mathematical/parser/context/control/TeX/renderer/PDF byte and comparison is
+unchanged. This corrected glyph module has NOT run; final audits/rebuilds/
+root replays remain pending. Partial stages are not a final audit PASS.
+No parent/source program or Lean command has run. Current SOURCE_PINS and
+TOOL_PINS are refreshed while both complete historical closures remain
+archived. No current fit, PDF, corruption or rebuild success is claimed.
 
 ## 1. The exact mathematical object
 
@@ -55,7 +110,10 @@ addition, subtraction, multiplication, fixed natural powers, parentheses,
 the displayed finite-list p, and the three displayed kernel calls D0..D2.
 Unknown exponents and unparsed trailing text are rejected.
 
-Each complete printed Dd polynomial is expanded over the free ring
+One terminal display comma or period is removed outside each complete
+kernel RHS; the polynomial parser must then consume the entire expression.
+No comma inside a finite support list is removed. Each complete printed Dd
+polynomial is expanded over the free ring
 
     Z[B,beta,K0,MC,MF].
 
@@ -85,11 +143,22 @@ must be exactly those of the unchanged pinned parent.
 
 The validator then reads all 40 actual displayed definitions, in their
 display order. For each definition, earlier checked cuts become formal
-indeterminates. The actual parent DAG is recursively evaluated backwards
+indeterminates, with the single transparent N0 exception below. The actual
+parent DAG is recursively evaluated backwards
 until those cuts, with its fixed coefficient recipes expanded over all
 four formal native ports. The printed right side is parsed independently
 into the same free ring. Exact equality proves that complete block.
 Afterwards the newly proved cut may itself be used as an indeterminate.
+
+N0 is the exception: after its exact block proves N0=B^117, both the
+printed environment and graph-node55 context retain that proved polynomial
+in B. Node55 is a shared pure-power helper, not only a consumer-level N0
+register: the actual Z chain contains node142=node55*node72. Replacing55
+by an independent atom would erase a relation required when comparing a
+printed B-power sum. Retaining the checked RHS is valid substitution of a
+proved identity over the same free ring. It proves the same full block,
+keeps every other cut independent as before, and changes no touched-node
+or full-coverage requirement. No unproved relation is inserted.
 
 The two large fixed scales are represented temporarily by named formal
 atoms only for the literal printed numerals 2^864026 and 2^6480184. Section
@@ -203,6 +272,11 @@ comparison; it is fully checked by the actual-TeX parser. All seven native
 formula blocks have every printed numeral checked in order, with large
 sum limits placed in the PDF extractor's upper-before-lower order. The
 complete alphabet and seed must be exact in actual extracted text.
+
+Both reviewed simultaneous sub/superscript spellings W_1^2 and V_0^2 are
+normalized on the expected TeX side to the extractor's superscript-before-
+subscript order. This preserves every actual symbol and numeral; it is
+not a general permutation, omission or loosening of the full front check.
 
 Native sum/floor fonts can have extractor-dependent glyph names. Their
 exact full operator/variable syntax is proved from actual TeX, while a
