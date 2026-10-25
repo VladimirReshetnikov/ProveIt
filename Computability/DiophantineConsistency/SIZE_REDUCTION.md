@@ -39,6 +39,9 @@ not establish the size of a complete consistency equation.
 | Integers | 10 | 471 | 1,245,324 | Shorter source-aware approximation guard |
 | Integers | 10 | 475 / 478 / 512 | 1,179,788 / 1,114,252 / 1,080,888 | Short guard combined with compact shears |
 | Integers | 37 | not optimized | 4 | Reviewed joint-sign quartics |
+| Integers | **329** | not optimized | **4** | Complete refined-product chart;216 rows,5,728 terms,height128,446 |
+| Integers | 359 | not optimized | 4 | Preserved shared-cap chart;222 rows,6,058 terms,height128,446 |
+| Integers | 364 | not optimized | 4 | Grouped shared-cap term tradeoff;227 rows,4,574 terms,height128,446 |
 | Integers | 22 | 119 | 14 | Centered joint-guard combination;118 operations at degree16 is retained |
 | Integers | 19 | 109 | 88 | Reviewed joint projection; other tradeoffs retained |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-operation checkpoint retained |
@@ -97,13 +100,14 @@ exclude named polynomial abbreviations. Positive, natural and unrestricted
 integer domains are compared separately. These are useful points, not the
 complete frontier or a global optimality claim.
 
-The maintained [equation.pdf](equation.pdf) now displays the10-positive
-101-operation degree368 equation in full, including every constant, with
-standalone [TeX](equation.tex). It retains the full fixed recipe and saves
-one operation and degree20 against the preserved102/388 page. This combined
-update includes a fixed root weight, I=ic² and the positive short projector,
-with full positive witness proofs. The earlier13-positive90/51 page remains
-a lower-degree/cost alternative with three more unknowns.
+The maintained [equation.pdf](equation.pdf) displays the10-positive
+92-operation degree283 equation in full, including every constant, with
+standalone [TeX](equation.tex). Its complete436-character fixed numeral,
+alphabet, decoder and943 tiles fit on one Letter page in9-point arithmetic.
+The separate [86-operation degree466 page](candidates/one-page-qcube86/equation.pdf)
+is a cost/degree tradeoff. The13-positive90/51 page remains a lower-degree
+alternative with three more unknowns. Significant checked improvements are
+batched into the canonical PDF; complete predecessors remain preserved.
 
 ## Work now underway
 
@@ -1989,3 +1993,22 @@ memberships. Every whole artifact, map, graph, privacy cut,15norms/18requests/
 [root acceptance](reviews/signed-pell-cap-refined-product-source-root-peer.md).
 No optimized quartic count follows yet. Existing359/364 equations, canonical
 PDF/TeX and paused Lean work remain preserved.
+
+
+## Complete refined-product quartic reaches329 integer variables
+
+The [delivered centered equation](research/signed-pell-cap-refined-product-projections/data/centered/equation.json)
+and [entire quartic](research/signed-pell-cap-refined-product-projections/data/centered/expanded_polynomial.json)
+have329 unrestricted integer variables,216 quadratic rows,5,728 terms and
+exact degree4, with height128,446 and residual height256. Against the
+complete359 form this saves30 variables, six rows and330 terms at unchanged
+heights. The364-variable grouped form retains its lower4,574-term tradeoff.
+
+Both full static reviews, all five author commands and four fresh root
+checks/rebuilds pass. Both collectors reject46 actual corruptions; all
+eight full root JSON/stdout records match the author byte for byte. The
+actual148 monic steps, two free coordinates, Horn private overwrites,
+integer translations, every coefficient and complete source calibration
+are checked. See the [root acceptance](reviews/signed-pell-cap-refined-product-projections-root-peer.md).
+The fixed policy claims no global optimum. Earlier equations and the
+canonical92/283 page remain preserved; Lean remains paused.

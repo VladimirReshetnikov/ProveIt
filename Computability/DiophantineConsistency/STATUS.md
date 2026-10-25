@@ -35,11 +35,13 @@ pass review; see the [candidate](candidates/one-page-saturated10/README.md).
 The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
 remains a different tradeoff.
 
-The shared-cap direct quartic now has **359 unrestricted integer unknowns,
-222 rows,6,058 terms and height128,446**, with exact degree4. Its complete
+The refined-product direct quartic now has **329 unrestricted integer unknowns,
+216 rows,5,728 terms and height128,446**, with exact degree4. Its complete
 ordinary source and all finite Horn/projection/translation layers pass four
 fresh independent root replays; see the
-[root acceptance](reviews/signed-pell-cap-projections-root-peer.md).
+[root acceptance](reviews/signed-pell-cap-refined-product-projections-root-peer.md).
+It saves30 variables, six rows and330 terms against the preserved359 form
+at unchanged heights. Both collectors reject46 actual corruptions.
 The [complete grouped alternative](research/signed-pell-cap-grouped-quartic/data/equation.json)
 has364 variables,227 rows and4,574 terms at the same heights. Four fresh root
 checks/rebuilds pass, including30 actual corruption controls per collector.
@@ -2057,3 +2059,22 @@ memberships. Every whole artifact, map, graph, privacy cut,15norms/18requests/
 [root acceptance](reviews/signed-pell-cap-refined-product-source-root-peer.md).
 No optimized quartic count follows yet. Existing359/364 equations, canonical
 PDF/TeX and paused Lean work remain preserved.
+
+
+## Complete refined-product quartic reaches329 integer variables
+
+The [delivered centered equation](research/signed-pell-cap-refined-product-projections/data/centered/equation.json)
+and [entire quartic](research/signed-pell-cap-refined-product-projections/data/centered/expanded_polynomial.json)
+have329 unrestricted integer variables,216 quadratic rows,5,728 terms and
+exact degree4, with height128,446 and residual height256. Against the
+complete359 form this saves30 variables, six rows and330 terms at unchanged
+heights. The364-variable grouped form retains its lower4,574-term tradeoff.
+
+Both full static reviews, all five author commands and four fresh root
+checks/rebuilds pass. Both collectors reject46 actual corruptions; all
+eight full root JSON/stdout records match the author byte for byte. The
+actual148 monic steps, two free coordinates, Horn private overwrites,
+integer translations, every coefficient and complete source calibration
+are checked. See the [root acceptance](reviews/signed-pell-cap-refined-product-projections-root-peer.md).
+The fixed policy claims no global optimum. Earlier equations and the
+canonical92/283 page remain preserved; Lean remains paused.

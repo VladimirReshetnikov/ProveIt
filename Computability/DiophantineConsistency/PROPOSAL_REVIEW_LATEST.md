@@ -2166,3 +2166,22 @@ memberships. Every whole artifact, map, graph, privacy cut,15norms/18requests/
 [root acceptance](reviews/signed-pell-cap-refined-product-source-root-peer.md).
 No optimized quartic count follows yet. Existing359/364 equations, canonical
 PDF/TeX and paused Lean work remain preserved.
+
+
+## Complete refined-product quartic reaches329 integer variables
+
+The [delivered centered equation](research/signed-pell-cap-refined-product-projections/data/centered/equation.json)
+and [entire quartic](research/signed-pell-cap-refined-product-projections/data/centered/expanded_polynomial.json)
+have329 unrestricted integer variables,216 quadratic rows,5,728 terms and
+exact degree4, with height128,446 and residual height256. Against the
+complete359 form this saves30 variables, six rows and330 terms at unchanged
+heights. The364-variable grouped form retains its lower4,574-term tradeoff.
+
+Both full static reviews, all five author commands and four fresh root
+checks/rebuilds pass. Both collectors reject46 actual corruptions; all
+eight full root JSON/stdout records match the author byte for byte. The
+actual148 monic steps, two free coordinates, Horn private overwrites,
+integer translations, every coefficient and complete source calibration
+are checked. See the [root acceptance](reviews/signed-pell-cap-refined-product-projections-root-peer.md).
+The fixed policy claims no global optimum. Earlier equations and the
+canonical92/283 page remain preserved; Lean remains paused.
