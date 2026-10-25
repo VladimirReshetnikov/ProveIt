@@ -1974,3 +1974,20 @@ See the [root acceptance](reviews/one-page-saturated9-root-peer.md).
 This is a variable-count alternative with substantially higher cost and
 degree; the canonical ten-positive92/283 PDF/TeX remain preserved. No
 new Lean or encoded internal-ZFC proof is claimed. Lean remains paused.
+
+
+## Two support-pair products replace four scalar graphs
+
+The [ordinary exchange](research/signed-pell-cap-support-pair-products/PROPOSAL.md)
+replaces four scalar sign graphs for183/184/191/192 by two directly
+quadratic product graphs. The abstract signed-cap argument and positive
+t-only request first give L=q^t and Qt1=q^(t+1), without their output
+signs. Both weighted sums are then strictly positive, so the product
+predicates restore every old sign. Four fresh old triples are restored
+on the unchanged original406-coordinate body before full parent calibration.
+
+Root and independent full reviews accept the unbounded proof and exact
+whole source/privacy/interfaces; see the [root review](reviews/signed-pell-cap-support-pair-products-root-peer.md).
+This note emits no new source or quartic and claims no projected size.
+The current complete equations, canonical PDF/TeX and Lean pause remain
+preserved. The separate fused-nine projection is still being checked.
