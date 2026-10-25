@@ -289,7 +289,7 @@ If the exact native relation is(K0+B^w0)C=F+z0(q-1), then
 is integral and satisfies(K0+w)C+(q-F)-z(q-1)=1. The native z0 is
 nonnegative: the raw transport(K0+B^w0)C is positive,0<F<q-1,
 and their difference is the integer multiple z0(q-1), so z0 cannot
-be negative. Each wrapping prefix increases this quotient by exactly
+be negative. Each wrapping bit increases this quotient by exactly
 t_r; nonwrapping interior changes leave it fixed. Thus wrapping cannot
 undermine the positive transport witness.
 
