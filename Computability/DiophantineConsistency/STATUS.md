@@ -2097,3 +2097,21 @@ The475-coordinate/364-row,24-graph namespace is a declared source policy
 only. A complete materialized successor and projected size remain pending;
 no dimension saving is inferred from source subtraction. The329-variable
 equation, canonical compact page and paused Lean work remain preserved.
+
+
+## Complete fused-nine source accepted
+
+The [literal fused-nine successor](research/signed-pell-cap-nine-factor-source/README.md)
+now materializes the one-graph replacement on the complete original body.
+All406 body coordinates/all341 residuals are fixed; the guarded source has
+475 coordinates,364 quadratic rows and24 whole graphs. Both old triples
+are freshly restored before complete parent calibration. These are source
+dimensions only; a projected quartic has not yet been measured.
+
+Both full static reviews, all five author commands and four fresh root
+checks/rebuilds pass. Both checkers reject46 actual corruptions, and all
+eight full root JSON/stdout records match the author byte for byte. Root
+reauthenticated all228 external/five core pins and twelve exact closed
+inventories. See the [root acceptance](reviews/signed-pell-cap-nine-factor-source-root-peer.md).
+The existing329-variable quartic and canonical92-operation/degree283 page
+remain preserved. Lean remains paused.
