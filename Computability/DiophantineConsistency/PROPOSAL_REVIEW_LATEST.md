@@ -47,7 +47,8 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Nonnegative integers | **329** | not optimized | **4** | Unified factorial/CRT binomial, derived Cantor;253 rows,12,210 terms,height86,844,780 |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | **436** | not optimized | **4** | Joint redundant-sign removal;288 rows,4,624 terms,height128,446; complete source and four root replays |
+| Integers | **433** | not optimized | **4** | Private-helper normalization;287 rows,4,606 terms,height128,446; complete source and four root replays |
+| Integers | 436 | not optimized | 4 | Preserved joint redundant-sign parent;288 rows,4,624 terms,height128,446 |
 | Integers | 439 | not optimized | 4 | F-only intermediate;289 rows,4,638 terms,height128,446 |
 | Integers | 442 | not optimized | 4 | Preserved unified-binomial parent;290 rows,4,652 terms,height128,446 |
 | Integers | 496 | not optimized | 4 | Preserved paired-guard quadratic-first checkpoint;307 rows,5,924 terms,height5,061,227 |
@@ -1941,3 +1942,20 @@ See the [root acceptance](reviews/one-word-window-root-peer.md). Transport,
 carry/anchor/alignment and a replacement for the independent dummy controller
 still require complete proofs. No nine-positive equation, new size bound or
 formalization is claimed. The canonical PDF/TeX remain unchanged. Lean stays paused.
+
+
+## Helper normalization reaches433 integer variables
+
+The [complete centered quartic](research/round15-helper-guard-projections/full-data/joint_helper/centered/equation.json)
+has433 integer variables,287 rows,4606 terms and exact degree4, with quartic
+height128446 and row height256. It saves3 variables,1 row and18 terms against
+the436 parent at unchanged heights. The private-helper inverse may change five
+body coordinates before restoring the old signs; the semantic front is fixed.
+
+All author source/full checks and four fresh independent root full checks and
+byte-exact rebuilds pass; each collector rejects42 actual corruptions. Root
+also checked the entire partial coordinate/row maps,180 matched monic steps,
+15 free coordinates and whole calibration bindings. See the
+[root acceptance](reviews/round15-helper-guard-projections-root-peer.md).
+The plain chart is preserved too, with a14-point quartic-height increase.
+Earlier equations and canonical PDF/TeX remain preserved. Lean stays paused.

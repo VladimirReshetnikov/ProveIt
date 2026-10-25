@@ -35,11 +35,11 @@ pass review; see the [candidate](candidates/one-page-saturated10/README.md).
 The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
 remains a different tradeoff.
 
-The complete direct quartic now has **436 unrestricted integer unknowns,
-288 rows,4,624 terms and height128,446**, after jointly removing the F/A
-sign graphs. Its full ordinary source licenses, every quartic coefficient,
-inverse/free-coordinate map and four independent root replays pass; see
-the [root acceptance](reviews/round15-sign-guard-projections-root-peer.md).
+The complete direct quartic now has **433 unrestricted integer unknowns,
+287 rows,4,606 terms and height128,446**, after private-helper normalization
+and joint F/A sign removal. Its full ordinary source licenses, every quartic
+coefficient, inverse/free-coordinate map and four independent root replays pass;
+see the [root acceptance](reviews/round15-helper-guard-projections-root-peer.md).
 All earlier quartics and the separate compact canonical page are preserved.
 
 The preserved fifteen-positive page prints a436-character base62 numeral
@@ -1831,3 +1831,20 @@ See the [root acceptance](reviews/one-word-window-root-peer.md). Transport,
 carry/anchor/alignment and a replacement for the independent dummy controller
 still require complete proofs. No nine-positive equation, new size bound or
 formalization is claimed. The canonical PDF/TeX remain unchanged. Lean stays paused.
+
+
+## Helper normalization reaches433 integer variables
+
+The [complete centered quartic](research/round15-helper-guard-projections/full-data/joint_helper/centered/equation.json)
+has433 integer variables,287 rows,4606 terms and exact degree4, with quartic
+height128446 and row height256. It saves3 variables,1 row and18 terms against
+the436 parent at unchanged heights. The private-helper inverse may change five
+body coordinates before restoring the old signs; the semantic front is fixed.
+
+All author source/full checks and four fresh independent root full checks and
+byte-exact rebuilds pass; each collector rejects42 actual corruptions. Root
+also checked the entire partial coordinate/row maps,180 matched monic steps,
+15 free coordinates and whole calibration bindings. See the
+[root acceptance](reviews/round15-helper-guard-projections-root-peer.md).
+The plain chart is preserved too, with a14-point quartic-height increase.
+Earlier equations and canonical PDF/TeX remain preserved. Lean stays paused.

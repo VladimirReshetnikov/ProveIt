@@ -53,12 +53,13 @@ is preserved separately from the canonical92/283 page. Its complete
 actual-formula and rendered-page checks; see the
 [root review](reviews/one-page-qcube86-root-peer.md).
 
-For direct degree-four equations, the [complete sign-guard reduction](research/round15-sign-guard-projections/full-data/joint_F_A/centered/equation.json)
-now reaches **436 unrestricted integer unknowns**, with4,624 terms and height
-128,446. Both omitted signs have complete ordinary proofs; independent full
-normal/optimized coefficient checks and byte-exact rebuilds pass. See the
-[root acceptance](reviews/round15-sign-guard-projections-root-peer.md).
-The F-only intermediate has439 variables; the full
+For direct degree-four equations, the [complete helper-normalized reduction](research/round15-helper-guard-projections/full-data/joint_helper/centered/equation.json)
+now reaches **433 unrestricted integer unknowns**, with4,606 terms and height
+128,446. The private-helper normalization and omitted front signs have complete
+ordinary proofs; independent full normal/optimized coefficient checks and
+byte-exact rebuilds pass. See the
+[root acceptance](reviews/round15-helper-guard-projections-root-peer.md).
+The436 and439 intermediates and the full
 [442-variable parent](con-zfc-diophantine-forms/125-unified-binomial-round15/direct/integer442/)
 and all inverse certificates remain preserved. Its six natural-domain
 alternatives reach329 nonnegative unknowns. The
@@ -1656,3 +1657,20 @@ See the [root acceptance](reviews/one-word-window-root-peer.md). Transport,
 carry/anchor/alignment and a replacement for the independent dummy controller
 still require complete proofs. No nine-positive equation, new size bound or
 formalization is claimed. The canonical PDF/TeX remain unchanged. Lean stays paused.
+
+
+## Helper normalization reaches433 integer variables
+
+The [complete centered quartic](research/round15-helper-guard-projections/full-data/joint_helper/centered/equation.json)
+has433 integer variables,287 rows,4606 terms and exact degree4, with quartic
+height128446 and row height256. It saves3 variables,1 row and18 terms against
+the436 parent at unchanged heights. The private-helper inverse may change five
+body coordinates before restoring the old signs; the semantic front is fixed.
+
+All author source/full checks and four fresh independent root full checks and
+byte-exact rebuilds pass; each collector rejects42 actual corruptions. Root
+also checked the entire partial coordinate/row maps,180 matched monic steps,
+15 free coordinates and whole calibration bindings. See the
+[root acceptance](reviews/round15-helper-guard-projections-root-peer.md).
+The plain chart is preserved too, with a14-point quartic-height increase.
+Earlier equations and canonical PDF/TeX remain preserved. Lean stays paused.
