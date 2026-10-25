@@ -2546,3 +2546,21 @@ rendered, and no native tuple or arithmetic equation changes. The gain
 is modest and nested floors introduce a readability tradeoff. Further
 recipe simplifications can be combined before actual page preparation;
 the maintained66/157 PDF and TeX remain current.
+
+## Four control groups remove the remaining coefficient table
+
+The [grouped recipe](research/grouped-fixed-coefficient-recipe/README.md)
+passes [root](reviews/grouped-fixed-coefficient-recipe-root.md) and
+[independent ordinary review](reviews/grouped-fixed-coefficient-recipe-ordinary-peer.md).
+Four explicit terms replace all eleven control triples by an identity
+in Z[x]. Combined with the support-decoded mask and one fully charged
+fixed Lambda abbreviation, the complete proposal removes both E and C
+without changing any of the four integers or the66/157 polynomial.
+
+The whole proposed constant body saves129 source bytes. Its fully charged
+extracted-text proxy saves140 characters across the entire page, including
+the new Lambda definition and all four replacement terms. This remains
+an unrendered comparison. A separately reviewed page preparation must
+measure actual glyphs, fit and readability before a maintained-page update.
+Lean stays paused; the current PDF/TeX remain the accepted fifteen-positive
+66-operation/degree157 version.
