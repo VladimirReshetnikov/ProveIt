@@ -1939,3 +1939,20 @@ all367 reflection identities. See the [root acceptance](reviews/signed-pell-cap-
 The earlier row erratum is respected. This is a labelled-policy theorem;
 a numeric source and projected equation remain separate work. No numerical
 saving is inferred, and canonical PDF/TeX and paused Lean remain preserved.
+
+
+## Exact cyclic carries and a carry-free compiler obstruction
+
+The [new ordinary one-word note](research/one-word-linear-boolean-window/PROPOSAL.md)
+uses the Hilbert Tenth spectral theorem to rule out the specified cofinal
+carry-free full-target layout. It also proves exact transport equivalence
+to a unique cyclic carry stream in a fixed bounded alphabet, with every
+offset collision included. Fixed-period carry schedules retain the same
+obstruction; a successful cofinal route needs carry periods unbounded by
+a fixed constant.
+
+The [independent root review](reviews/one-word-linear-boolean-window-root-peer.md)
+accepts these precise lemmas and local Boolean gate identities. A complete
+carry-dependent compiler, fixed coefficients, padding and rank controller
+remain open. No nine-positive equation, new numerical frontier or canonical
+PDF/TeX update follows. Lean remains paused.
