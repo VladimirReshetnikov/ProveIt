@@ -58,6 +58,14 @@ A nine-unknown equation at kernel cost (about 80 operations) needs one of:
 - merging two calibration digits into one unknown under a native theorem
   that allows it.
 
+The first item is harder than it looks. The ratio c/k is the binomial
+extraction: with X = 2^R, c/k ≈ ((X + 1)/√X)^(R−1)/2, a quotient of two
+exponentials in R, (X + 1)^(R−1) and X^((R−1)/2). The standard Diophantine
+extractions of binomial digits (Matiyasevich, Jones) likewise use two
+exponentials, u^n and (u + 1)^n. Each exponential costs a Pell ordinate, and
+each Pell ordinate costs an unknown. A single-ordinate source would
+therefore need a binomial extraction from one exponential. We know of none.
+
 The existing nine-positive equations (405 operations at degree 1,191,570;
 `research/nine-folded-shared-odd-rank`) avoid the coefficient tuple and
 compute their source inside the circuit instead, which is where the extra
