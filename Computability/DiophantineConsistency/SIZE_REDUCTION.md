@@ -2825,3 +2825,30 @@ The whole source/witness maps retain their ordinary consistency contract
 without a fresh native or Lean replay. This height/support tradeoff does
 not shorten the compact66 page, so main equation.pdf/equation.tex remain
 unchanged and minor spelling gains remain queued for batching.
+
+## Two neighbor gate shears have a complete local support theorem
+
+The [ordinary proposal](research/neighbor-gate-shear/README.md) passes
+[ROOT](reviews/neighbor-gate-shear-ordinary-root.md) and
+[independent review](reviews/neighbor-gate-shear-ordinary-peer.md).
+On the accepted balanced charts, change coordinate23 by-8 times22 and
+coordinate38 by-8 times37. Complete occurrence lists isolate two disjoint
+three-row blocks. Exhaustive hand tables give31 to20 t-supported terms
+in each block, with no new monomial or coefficient growth; all t-free
+coefficients stay identical. The maps have complete integer inverses.
+
+Combining this theorem with the accepted old full data gives prospective
+5781 plain/5787 weighted terms, exact height93109 and row height160.
+Variables316/315, rows218/217, exact degree4 and liveness stay fixed.
+The new chart is outside the earlier coordinate21-only height-minimum
+family; no contradiction or global minimum claim occurs. Both complete
+source/witness maps retain the accepted ordinary consistency contract.
+
+These are proof deductions, not measured transformed artifacts. The
+fixed finite implementation is being prepared CODE ONLY/HOLD and needs
+two complete final static approvals and a separate ROOT execution release.
+The comparison table continues to show accepted generated data. The
+optional(3,2) member has14 fewer residual monomial occurrences but a
+reappearing quartic monomial, so its full support remains unresolved and
+it is not combined with this bounded candidate. Main PDF/TeX and paused
+Lean remain unchanged.

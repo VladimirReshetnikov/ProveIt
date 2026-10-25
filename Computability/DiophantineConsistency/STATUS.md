@@ -105,6 +105,16 @@ member and universal surviving coefficient prove the exact height minimum
 No general coordinate/support optimum, fresh native or Lean replay is
 claimed. The main compact66 PDF/TeX remain current and unchanged.
 
+A [code-free neighbor-shear proof](research/neighbor-gate-shear/README.md)
+now passes [ROOT](reviews/neighbor-gate-shear-ordinary-root.md) and
+[independent ordinary review](reviews/neighbor-gate-shear-ordinary-peer.md).
+Two local output-gate changes remove exactly22 monomials without any
+coefficient growth. Complete local tables and the old full data imply
+prospective5781 plain/5787 weighted terms, height93109 and row height160,
+at unchanged dimensions/rows/degree. These are ordinary deductions about
+the specified polynomial; no transformed data or finite endpoint is yet
+accepted. A fixed implementation is being prepared under execution hold.
+
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
 ordinary source and all finite Horn/projection/translation layers pass four
