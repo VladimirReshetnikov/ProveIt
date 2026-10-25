@@ -1823,3 +1823,25 @@ root also visually inspected the final page. See the
 operations against92/283 while adding183 degrees, so it remains a separate
 comparison and the canonical equation.pdf/.tex retain92/283. All predecessors
 are preserved. Lean remains paused.
+
+
+## Both Round15 sign guards are jointly redundant
+
+The [joint ordinary proof](research/round15-signed-frame-orientation/PROPOSAL.md)
+proves that the exact522-coordinate/446-row body and36 retained predicates
+already force F>=1 and A>=2. It first interprets t at a signed center,
+recovers F, then uses the two requests on the SAME positive even-K ordinate
+to exclude A<0. The second request uses the signed negative output of the
+first; no output sign is assumed early. This is a new joint argument, not
+an application of the F-only theorem with its A premise missing.
+
+Root and peer reviewed the full unbounded proof and all340 checker lines
+before replay. Fresh root normal/optimized receipts exactly match the author:
+32 source/frame identities,four universal signed norm identities,all38 old
+guard graphs/privacy,the full37-atom frame and18 interfaces pass;58 actual
+corruptions are rejected per mode. Both witness directions fix the complete
+body and restore only the two private Legendre triples. The closed11-file
+payload and48 root bindings are sealed; see the
+[root acceptance](reviews/round15-signed-frame-root-peer.md). No new projected
+count is claimed pending the separate compiler packet. The442 checkpoint,
+canonical92/283 PDF/TeX and paused Lean work remain preserved.

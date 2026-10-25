@@ -57,7 +57,10 @@ For degree-four equations, the [complete unified-binomial construction](con-zfc-
 now reaches **442 unrestricted integer unknowns**, with4,652 terms and height
 128,446. Full ordinary/source review and independent normal/optimized exact
 reconstruction pass; see the [root acceptance](reviews/round15-direct-root-peer.md).
-Its six natural-domain alternatives reach329 nonnegative unknowns. The
+Its six natural-domain alternatives reach329 nonnegative unknowns. A separate
+[joint sign theorem](reviews/round15-signed-frame-root-peer.md) now removes
+both F and A guards at the complete fixed body; successor quartic counts
+await their own compiler checks. The
 [preceding496-variable family](research/round14-pair-guard-projections/README.md),
 all lower-height alternatives and their complete inverse certificates remain preserved.
 The [eight-bundle intake](research/intake-5f3379063d/README.md) records the newer
