@@ -2669,3 +2669,21 @@ candidate and21-payload fresh packet. All pre-execution proof/control
 findings were preserved and corrected before any candidate run; no runtime
 failure or retry occurred. Predecessor pages remain available. Lean stays
 paused and the iterative size-reduction goal active.
+
+## Constant shifts cannot lower the new quartics' current height
+
+The [ordinary coefficient proof](research/translation-height-obstruction/README.md)
+passes [ROOT](reviews/translation-height-obstruction-root.md) and
+[independent review](reviews/translation-height-obstruction-ordinary-peer.md).
+Each exactly pinned plain/weighted quartic has the degree-four coefficient
+128446 at x10^2*x11*x12. Its leading homogeneous form is invariant under
+every constant translation. The current whole height128446 therefore
+already attains the minimum in that class, for all integer shift vectors.
+
+This rules out further height gains from centering those polynomials;
+support count and lower-degree coefficients can still change. An integral
+linear shear has a different leading form and is an eligible next research
+direction with an explicit whole-space inverse. No shear, new metric or
+global coordinate minimum is claimed. This coefficient theorem keeps
+the separate centering-replay acceptance boundary intact and changes
+neither the maintained compact66 PDF/TeX nor the Lean pause.
