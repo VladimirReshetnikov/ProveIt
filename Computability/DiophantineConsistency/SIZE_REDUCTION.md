@@ -2443,3 +2443,19 @@ page is worth preparing alongside the ten-variable choice. New indexed
 specialization, actual-TeX checks, page fit and visual acceptance remain
 unperformed; this assessment promotes no page or new endpoint. Lean stays
 paused.
+
+## A precise obstruction to replacing alpha by an independent C
+
+The [conditional escape proof](research/fifteen-positive-c-input-obstruction/README.md)
+and [root review](reviews/fifteen-positive-c-input-obstruction-root.md)
+show why the apparent65-operation edit needs a new soundness argument.
+Starting from any canonical full source witness, positive shifts of F,C,h,z
+make the recovered alpha and rank negative while preserving both carrier
+factors. A fresh auxiliary Pell period modulo c*f² restores positive T,y
+and preserves the entire product equation. The argument retains each
+whole native tuple separately.
+
+This disproves the proposed pointwise domain-restoration premise
+conditionally on a canonical witness. It neither supplies an unconditional
+extra zero nor rules out a different existence-normalization theorem.
+No65-operation consistency endpoint or maintained-page change is accepted.
