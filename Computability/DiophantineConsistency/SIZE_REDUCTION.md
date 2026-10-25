@@ -2906,7 +2906,53 @@ formula: at65 it uses2^19*rho^8805-rho^8792 for padding; at59 it uses
 These are algebraic identities for full nonnegative masks. A later size
 comparison must charge the complete recipe and all tuple-binding changes.
 No new numerical endpoint, glyph/byte saving or minimum is claimed. A
-55-bit two-stage carry-bootstrap refinement is under investigation.
+55-bit two-stage carry bootstrap and its controller refinement are described
+below.
 Maintained67-bit compact66 PDF/TeX remain current; significant verified
 complete gains will trigger an update, while minor notation changes are
 batched. Lean stays paused.
+
+## A further output-gate shear has complete ordinary proofs
+
+The [coord35 proposal](research/pell-output-gate-shear/README.md) now passes
+both full ordinary reviews and [joint theorem acceptance](reviews/pell-output-gate-shear-ordinary-acceptance.json).
+The fixed inverse changes only one coordinate. Complete70-quartic, cubic
+and quadratic tables prove prospective5728/5734 terms, exact height54709
+and row height128, with unchanged316/315 variables and218/217 rows.
+Exactly55 terms disappear and two appear; some retained magnitudes grow.
+All lower degrees and live coordinates are covered, rather than inferred
+from one leading coefficient. A separate fixed finite implementation is
+in preparation under execution hold. The accepted table remains at the
+fully generated93109 neighbor forms until that verification completes.
+
+## The55-bit mod5 obstruction and same-tuple wrap refinement
+
+The [initial55-bit proof](research/compact66-radix55-bootstrap/README.md)
+uses one clean clause to bootstrap decoded sparsity into full carry freedom.
+Its whole formula nevertheless gives rho=3,B=2,Lambda=0,K=0 and Hctrl=0
+modulo5. The [ROOT finding](reviews/compact66-radix55-bootstrap-mod5-obstruction-root.md)
+and both complete first reviews are preserved. The conditional implication
+is valid but its three-unit antecedent is false; it is not a viable
+completeness controller.
+
+The separate [wrap controller](research/compact66-radix55-wrap-controller/README.md)
+keeps ALL four coefficient formulas. Four wrapping dummy cells realize
+every actual-rank class modulo5; a disjoint interior Boolean orbit tunes
+modulo8807*N, and CRT with the automatic mod11 class gives the required
+full rank. Only Hctrl at8807 and581197 remains conditional. Both full
+first reviews check that mathematics and request one per-bit/per-prefix
+wording correction before final rereviews. Initial sources/reports remain
+immutable. The revised modular probe is still an unsealed CODE-ONLY draft,
+with no execution or unknown residue evaluation, tuple or page output.
+
+## A retained alternative-calculus transfer lead
+
+The existing [fixed-core source appendix](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/155-marker-appendix-fixed_core-README.md)
+separates arbitrary fresh membership vacuity from a fixed-role positive
+seed. Applying that split directly to the C222 CRT/quartic compiler is a
+possible alternative source experiment; machine-emitter subtree counts
+do not establish a smaller complete equation. Arbitrary membership vacuity
+must remain for the logical completeness interpretation. Truth deletion
+is already prior work, and projected constructor witnesses cannot be
+counted as new savings. No new branch compiler, final count or endpoint
+is claimed for this lead.

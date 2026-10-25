@@ -115,7 +115,13 @@ All nine actual processes exit0, every checker retains92 negative/12
 valid controls, all12 complete fresh capture files reproduce first bytes,
 and294 source inputs/13 data objects remain unchanged. Full inverse
 coefficient and composed source maps are checked. The main page is
-unchanged; a further coord35 height/support reduction is under study.
+unchanged. The [coord35 output-gate shear](research/pell-output-gate-shear/README.md)
+now passes both full ordinary reviews and [joint theorem acceptance](reviews/pell-output-gate-shear-ordinary-acceptance.json).
+Complete hand tables prove prospective height54709, row height128 and
+5728 plain/5734 weighted terms. It removes55 terms and introduces two;
+some retained coefficients grow. A separate finite implementation is
+being prepared under execution hold; these are not accepted generated
+endpoint figures and the comparison table retains the verified93109 forms.
 
 The [bounded radix65 evidence](research/compact66-radix65-unit-probe-verification/README.md)
 passes [ordinary review](reviews/compact66-radix65-unit-probe-verification-ordinary-peer.md)
@@ -139,7 +145,15 @@ predecoded57-bit carry bound and automatic mod3 class permit a reduced
 rank controller, conditionally on three new bracket units at19,8807,581197.
 The59-bit template additionally needs a new prime/lift certificate. No
 unknown unit is evaluated and no numerical endpoint, size or page saving
-is accepted. A55-bit carry-bootstrap refinement is being investigated.
+is accepted. The [initial55-bit bootstrap](research/compact66-radix55-bootstrap/README.md)
+has a [hand-proved mod5 obstruction](reviews/compact66-radix55-bootstrap-mod5-obstruction-root.md):
+Hctrl55 is identically zero, so its three-unit completeness premise is
+false. Its entire source and both full first reviews are preserved.
+A separate [same-tuple wrapping controller](research/compact66-radix55-wrap-controller/README.md)
+tunes that class using four wrapping bits, then interior Boolean tuning
+modulo8807*N and CRT. Full first reviews check the mathematics under only
+two remaining unit conditions, with one bounded wording correction pending
+final rereview. No probe, new tuple or page output has run.
 
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
