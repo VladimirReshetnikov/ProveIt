@@ -1952,3 +1952,16 @@ large-kernel arithmetic family. Root and independent review accept these
 lemmas and their carry-aware limits. Their simultaneous compiler and
 controller intersection remains open; no nine-positive equation or
 numerical improvement is claimed. Canonical PDF/TeX remain unchanged.
+
+
+## Scalar-product row-address correction
+
+The new scalar-product note cited two wrong power-row addresses. Its q-base
+y+1 and x+1 requests are at old source rows292 and307, respectively;
+rows297 and312 belong to different successor-base calls. The intended ports
+and ordinary argument are preserved by the [explicit erratum](reviews/signed-pell-cap-scalar-product-row-erratum.md).
+Root and [independent review](reviews/signed-pell-cap-scalar-product-row-erratum-peer.md)
+checked all18 actual call memberships and both complete lowered requests.
+The earlier literal-binding acceptance must be read with this correction.
+Frozen packets and delivered equations are preserved; subsequent interfaces
+must check the row-to-call membership explicitly.
