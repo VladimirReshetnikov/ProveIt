@@ -3062,7 +3062,7 @@ and claims no global optimum.
 ## Accepted ordinary leads after the radix55 page update
 
 The [second pair-sum shear](research/second-pair-sum-gate-shear/README.md)
-has two full ordinary PASS reviews and [separate joint acceptance](reviews/second-pair-sum-gate-shear-ordinary-acceptance.json).
+received two full ordinary PASS reviews and [separate joint acceptance](reviews/second-pair-sum-gate-shear-ordinary-acceptance.json).
 Its coordinate25 map is `w25=z25-z11-z12`, composed before the accepted
 U/T/N/S maps. All eleven affected rows and every degree's whole coefficient
 bounds give15109<=height<=24000, strictly below the accepted32053 source.
@@ -3070,6 +3070,18 @@ Exact row height72, degree4, all316/315 coordinates live and eight fewer
 residual monomial occurrences are proved. Expanded height, support and
 term delta remain unknown. Its fixed finite implementation is under
 CODE ONLY/HOLD; it supplies no generated endpoint or page saving yet.
+
+The later first materialization exited0, then the first normal checker
+exited1 at its full new-row formula comparison. Row30's old linear part
+`24b-24c+24p+24r-35` becomes `-48c+24p+24r-35` under `p-b-c`, whereas
+the ordinary note and checker literal used−24c. The correct row30 height
+is48, not35; its quadratic part and the quartic witness table are unchanged.
+Both complete ordinary reviews and both full statics missed the defect.
+All subsequent applications stopped, with [the complete first failure](research/second-pair-sum-gate-shear-first-failure/README.md)
+preserved under seal fc8676225660ab9219d5a2ed0c850bbd2ce52db70389da7fdcb50c9b219acba1.
+The13 produced files and their metrics are provisional, not an accepted
+finite endpoint. A bounded correction needs full renewed reviews and new
+runtime authority; the accepted32053 frontier and maintained55 page remain.
 
 The [conditional radix53 note](research/compact66-radix53-carry-tolerance/README.md)
 also has two full ordinary PASS reviews and [separate conditional acceptance](reviews/compact66-radix53-carry-tolerance-ordinary-acceptance.json).

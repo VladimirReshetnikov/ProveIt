@@ -156,12 +156,14 @@ fewer in each profile. Complete noncommuting maps and inherited source
 calibration remain bound; no global minimum is claimed.
 
 The [coordinate25 successor](research/second-pair-sum-gate-shear/README.md)
-passes both full ordinary reviews and [joint bound acceptance](reviews/second-pair-sum-gate-shear-ordinary-acceptance.json).
-It proves15109<=height<=24000, exact degree4 and full liveness, with
-row height72 and eight fewer residual monomial occurrences. The source is
-the complete accepted32053-height pair-sum chart, and the exact expanded
-height/support are still unknown. Finite code is under CODE ONLY/HOLD;
-no computation, generated endpoint or maintained-page gain is accepted.
+received both full ordinary reviews and [joint bound acceptance](reviews/second-pair-sum-gate-shear-ordinary-acceptance.json).
+Its first materialization exited0, but the first normal checker exited1:
+the row30 new linear coefficient must be−48c, not the printed−24c.
+All later applications stopped; the [complete first-failure packet](research/second-pair-sum-gate-shear-first-failure/README.md)
+preserves original source/reviews, all produced data and captures. Both
+full statics missed that formula error. The produced metrics remain
+provisional; the accepted finite frontier stays32053 until a separately
+reviewed correction and complete endpoint verification pass.
 
 The [bounded radix65 evidence](research/compact66-radix65-unit-probe-verification/README.md)
 passes [ordinary review](reviews/compact66-radix65-unit-probe-verification-ordinary-peer.md)

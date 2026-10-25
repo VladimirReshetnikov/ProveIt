@@ -156,12 +156,13 @@ removes114 terms and introduces12, net102 against the Pell-output parent;
 this is an accepted quartic tradeoff, with no global minimum claim.
 
 A [second pair-sum shear](research/second-pair-sum-gate-shear/README.md)
-now passes both full ordinary reviews and [joint bound acceptance](reviews/second-pair-sum-gate-shear-ordinary-acceptance.json).
-It proves whole height15109..24000, below32053, with exact degree4,
-all coordinates live, row height72 and eight fewer residual occurrences.
-The exact expanded height and support remain unknown. Its finite verifier
-is being prepared under CODE ONLY/HOLD; these ordinary bounds do not yet
-constitute a generated endpoint or a page improvement.
+received both full ordinary reviews and [joint bound acceptance](reviews/second-pair-sum-gate-shear-ordinary-acceptance.json),
+but its first normal checker subsequently caught a row30 linear-term error
+missed by those reviews and both full statics. The sequence stopped after
+materialization; [all original evidence is preserved](research/second-pair-sum-gate-shear-first-failure/README.md).
+The correct substitution gives−48c rather than−24c. Generated metrics
+remain provisional, with no accepted successor endpoint or page gain.
+Any correction needs a separate bounded repair and complete final reviews.
 
 A [bounded65-bit modular probe](research/compact66-radix65-unit-probe-verification/README.md)
 now discharges the three previously unknown controller-bracket unit
