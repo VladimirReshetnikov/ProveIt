@@ -61,8 +61,7 @@ K={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}+\rho^{8849}\\
 where
 \[
 \begin{split}
-\Phi(x)={}&(1+2^{51})G_{943}(x)
- -2^{10}\sum_{i=0}^{942}v(t_i)x^i\\
+\Phi(x)={}&G_{943}(x)+2^{10}\sum_{i=0}^{942}v(t_i)x^i\\
 &+2^{10}x^{1003}(x^{20}+2^{17})G_8(2x)\\
 &+2^{18}x^{983}(x^{30}+2^{17})G_9(2x)\\
 &+2^{44}x^{992}(x^{39}+2x^{30}+4x^{19}+8)\\
@@ -72,14 +71,12 @@ where
 The rational intermediate in K cancels exactly; all four results are positive integers.
 
 \textbf{The 943 indexed fixed tiles.}
-Use the actions $u_j,v_j,d_j$ decoded below. Let
+Use the actions $u_j,v_j,d_j$ decoded below. For $d=0,1$, let
 \[
 \begin{gathered}
-h(q,b)=2(q+1)+b,\quad
-\mathcal R=\{u_j:d_j=1,\ 0\le j<430\},\\
-\mathcal L=\{u_j:d_j=0,\ 0\le j<430\},\\
-r_q=6+|\mathcal R\cap\rg0{q-1}|,\quad
-l_q=205+|\mathcal L\cap\rg0{q-1}|.
+h(q,b)=2q+b+2,\quad
+\mathcal S_d=\{u_j:d_j=d,\ 0\le j<430\},\\
+r_{d,q}=205-199d+|\mathcal S_d\cap\rg0{q-1}|.
 \end{gathered}
 \]
 An interval ending at $-1$ is empty. The table defines $t_i$ for
@@ -88,22 +85,20 @@ $0\le i\le942$; all index ranges are fixed:
 \setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
 \text{index }i&\text{tile }t_i=(w,n,e,s)\\\hline
 0,1&(2,435,3,1),\ (5,0,0,0)\\
-j+2\ (j=2q+b<430)&((1-d_j)l_{u_j},h(q,b),d_jr_{u_j},v_j)\\
-432+b\ (b=0,1)&(0,h(215,b),0,h(215,b))\\
-434+b\ (b=0,1)&(0,b,0,b)\\
-424+2r_q+b\ (q\in\mathcal R,b=0,1)&(r_q,b,0,h(q,b))\\
-424+2l_q+b\ (q\in\mathcal L,b=0,1)&(0,b,l_q,h(q,b))\\
-924+j\ (0\le j<4)&(0,j+430\fl{j/2},0,438)\\
+j+2\ (j=2q+b<430)&((1-d_j)r_{0,u_j},h(q,b),d_jr_{1,u_j},v_j)\\
+434-2a+b\ (a,b=0,1)&(0,432a+b,0,432a+b)\\
+\substack{424+2r_{d,q}+b\\q\in\mathcal S_d,\ d,b=0,1}&(dr_{d,q},b,(1-d)r_{d,q},h(q,b))\\
+924+2a+b\ (a,b=0,1)&(0,432a+b,0,438)\\
 928&(2,434,2,0)\\
 929&(3,436,4,4)\\
 930&(4,436,4,0)\\
 497+t\ (t=434,435,436)&(1,438,1,t)\\
-\substack{934+3a+b-6\fl{a/4}\\a\in\{0,1,4\},\ b=0,1,2}&(a,437,b,437)
+934+3a+b\ (a,b=0,1,2)&(a^2,437,b,437)
 \end{array}
 \]
 For $t=(w,n,e,s)$ put
 \[
-v(t)=w+2^8n+2^{17}e+2^{25}s+127\,2^{34}.
+v(t)=2^{34}-w-2^8n-2^{17}e-2^{25}s.
 \]
 
 \textbf{A closed decoder for the 430 actions.}
@@ -116,7 +111,7 @@ T_0=\fl{\mathcal A/2^{636}}\bmod2^{1675},\\
 E_0=\fl{\mathcal A/2^{2311}},\\
 \nu_j=D_2(N,j),\quad \sigma_j=\sum_{k=0}^{j-1}\nu_k,\\
 m_q=D_2(N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
-F_q=14(1-m_q)+m_qD_{16}(E_0,\tau_q),\\
+F_q=14+m_q(D_{16}(E_0,\tau_q)-14),\\
 u_j=\nu_j(1+\sigma_j)+(1-\nu_j)D_{216}(T_0,j-\sigma_j),\\
 v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
 \end{gathered}

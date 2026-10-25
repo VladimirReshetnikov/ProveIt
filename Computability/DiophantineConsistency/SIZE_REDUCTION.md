@@ -2643,3 +2643,29 @@ obstruction, not a false zero or an existence-level disproof for the
 actual indexed coefficient tuple; deletion there remains unresolved.
 No numerical witness tuple was generated, no smaller complete endpoint
 is claimed, and the maintained PDF/TeX and paused Lean work are unchanged.
+
+## Floor-free compact tile recipe promoted to the maintained page
+
+The [verified compact66 page](candidates/one-page-compact66/RESULTS.md)
+now supplies equation.pdf and committed equation.tex. One direction-indexed
+rank chart, complemented payload, merged binary pass/cleanup rows and
+square terminal parameter retain every943 tile at its exact old index.
+The ten-row table has no floor; the fixed flag formula uses one fewer
+arithmetic operation. The fifteen-positive66/157 polynomial and all four
+whole coefficient integers remain identical.
+
+Full TeX5395 to5244 saves151 bytes against grouped66, and actual whole-page
+nonwhite extracted text2885 to2801 saves84 visible characters at unchanged
+9pt body/7.7pt seed. All constants, the full436-character numeral, ordered
+alphabet and430-action decoder remain explicit on one Letter page.
+Compared with the original66/157 page, cumulative savings are280 TeX bytes
+and224 visible characters. This does not reduce the PDF file byte count.
+
+Two full final statics, all ten first-attempt commands, six fresh processes
+with eighteen byte-identical evidence files and both actual visual reviews
+pass. All193 whole input/artifact files remain unchanged. The
+[ROOT acceptance](reviews/one-page-compact66-root-peer.md) binds the62-payload
+candidate and21-payload fresh packet. All pre-execution proof/control
+findings were preserved and corrected before any candidate run; no runtime
+failure or retry occurred. Predecessor pages remain available. Lean stays
+paused and the iterative size-reduction goal active.

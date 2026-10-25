@@ -27,14 +27,15 @@ points include ten variables/131 operations/degree1,152 and eleven/111/211.
 The current [equation.pdf](equation.pdf), with standalone
 [TeX](equation.tex), prints fifteen strictly positive unknowns, exact degree157
 and66 operations, including every fixed constant on one Letter page in
-9-point mathematics. Its shorter fixed recipe removes two support/control
-tables and saves140 actual extracted characters at unchanged fonts;
-the complete TeX is5395 bytes against5524 in the preserved preceding66/157
-page. The equation and all four integers are unchanged. Two full corrected
-static reviews, ten separately released r2 commands, six byte-exact fresh
-root replays and two actual visual reviews pass; the initial failed source
-audit and complete evidence remain preserved. See the
-[root acceptance](reviews/one-page-grouped66-root-peer.md). Against the
+9-point mathematics. Its shorter fixed recipe uses one rank chart for both
+directions and a floor-free ten-row table. It saves84 actual extracted
+characters and151 TeX bytes against the preserved grouped66 page:
+2885 to2801 visible characters and5395 to5244 bytes at unchanged fonts.
+The equation and all four integers are unchanged. Two complete final static
+reviews, all ten first-attempt commands, six byte-exact fresh root replays
+and two actual visual reviews pass. All pre-execution findings and earlier
+page evidence remain preserved. See the
+[root acceptance](reviews/one-page-compact66-root-peer.md). Against the
 earlier ten-positive85/328 page, the arithmetic improvement still saves
 nineteen operations and171 degree while adding five unknowns. The
 ordinary proof composes the whole indexed normalized source, canonical
@@ -70,6 +71,12 @@ pass69 actual negative and four valid controls, including full Horn/
 monic/free-coordinate maps and the whole source calibration. The
 [root acceptance](reviews/round16-square-weighted-projections-root-peer.md)
 keeps these raw tradeoffs separate from lower-height centered forms.
+
+The new fixed58-shift centering has five successful author commands, but
+its fresh optimized ROOT check returned143 without a result JSON or
+diagnostic. The [interruption evidence](reviews/round16-common-name-centering-fresh-interruption/README.md)
+is preserved, no retry is released, and final acceptance remains pending.
+This separate alternative does not affect the verified compact page.
 
 The lower-height fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete

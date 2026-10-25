@@ -23,16 +23,20 @@ The current [equation.pdf](equation.pdf) and standalone
 unknowns, exact degree157, with a66-operation evaluator**. All fixed
 constants remain on the same Letter page, including the full 436-character
 numeral, alphabet, decoder and943 tiles, in9-point mathematics. Its shorter
-fixed recipe removes two explicit support/control tables while preserving
-the entire polynomial and all four integers. Against the preserved
-[previous66/157 page](candidates/one-page-fifteen66/equation.pdf), complete
-TeX shrinks5524 to5395 bytes and actual extracted nonwhite text3025 to2885
-characters, saving140 visible characters at unchanged fonts.
+fixed recipe uses one direction-indexed rank chart, a complemented payload
+and a floor-free ten-row tile table while preserving the entire polynomial
+and all four integers. Against the preserved
+[grouped66 page](candidates/one-page-grouped66/equation.pdf), complete TeX
+shrinks5395 to5244 bytes and actual extracted nonwhite text2885 to2801,
+saving84 visible characters at unchanged fonts. Against the preserved
+[original66/157 page](candidates/one-page-fifteen66/equation.pdf), the
+combined savings are280 TeX bytes and224 visible characters.
 
-The [root page acceptance](reviews/one-page-grouped66-root-peer.md) binds
-all23 actual printed polynomial cuts, every constant, both actual visual
-reviews, ten corrected-checkpoint checks/renders and six byte-exact fresh
-replays. The earlier failed source-audit attempt remains fully preserved.
+The [root page acceptance](reviews/one-page-compact66-root-peer.md) binds
+all23 actual printed polynomial cuts, every constant, two complete final
+statics, ten first-attempt checks/renders, six byte-exact fresh replays
+and both actual visual reviews. Pre-execution proof/control findings and
+the predecessor's earlier failed source audit remain fully preserved.
 The complete ordinary proof composes the whole indexed normalized-positive
 source and canonical `R=3 mod4` family with the squared-modulus construction,
 including both positive witness maps. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
