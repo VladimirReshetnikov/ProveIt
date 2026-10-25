@@ -20,6 +20,16 @@ one-page validation is claimed. The prospective removal of a named
 function and paragraph is a concrete structural simplification. The
 maintained accepted compact66 PDF remains unchanged.
 
+The initial unaccepted draft used a global east-coordinate family e_i,
+which collided with the unchanged global seed digits e_j. In particular
+tile0 requires east3 while the first seed character B has digit value11.
+The original note and both complete first reviews are preserved in commit
+`27d9839af2`, initial manifest
+`ab52be2eb1b608de1709556451101d17939a4734888f95cd63db8661b2e12e40`.
+This bounded repair uses fresh p_i for east coordinates in both the complete
+header and selector. Seed e_j and decoder E_0 remain unchanged and distinct.
+Fresh full ordinary ROOT and peer reviews are required before acceptance.
+
 ## 1. Bind the four indexed coordinates in the existing header
 
 Keep every table row, index and domain literally unchanged. Change only
@@ -29,13 +39,15 @@ its existing header from
 
 to
 
-    tile t_i=(w_i,n_i,e_i,s_i).
+    tile t_i=(w_i,n_i,p_i,s_i).
 
 This completely binds the four coordinate names for each of the already
 specified fixed indices0..942. The displayed table still determines all
 943 ordered quadruples from the same fixed decoder. These names are
 projections of fixed tuples, not additional unknowns, witnesses, coefficient
-inputs or an external table/program. The paragraph saying every index,
+inputs or an external table/program. In particular p_i denotes only the
+east coordinate; e_j denotes only a seed digit, and E_0 only the stored
+high flag word. The paragraph saying every index,
 set, sum, product and floor defines a constant remains. In Phi, its local
 summation index selects these fixed coordinates; it does not refer to the
 positive polynomial input called i. The unindexed positive w and s in the
@@ -44,7 +56,7 @@ arithmetic prefix are likewise distinct from these indexed constants.
 Replace the complete selector part of Phi by
 
     sum_(i=0)^942
-      (1+2^44-2^10*w_i-2^18*n_i-2^27*e_i-2^35*s_i)*x^i.
+      (1+2^44-2^10*w_i-2^18*n_i-2^27*p_i-2^35*s_i)*x^i.
 
 Delete the entire paragraph and display beginning `For t=(w,n,e,s) put`,
 which formerly defined v(t). Do not change the separate decoded action
@@ -55,14 +67,14 @@ printed in the entire body below, including its continuation line.
 ## 2. Universal coefficient identity and whole-constant equality
 
 Work in the integer polynomial ring with x and every independent coordinate
-W_i,N_i,E_i,S_i,0<=i<=942. The old complemented payload is
+W_i,N_i,P_i,S_i,0<=i<=942. The old complemented payload is
 
-    v_i=2^34-W_i-2^8*N_i-2^17*E_i-2^25*S_i.
+    v_i=2^34-W_i-2^8*N_i-2^17*P_i-2^25*S_i.
 
 For every index, distributivity and the fixed power identities give
 
     1+2^10*v_i
-      =1+2^44-2^10*W_i-2^18*N_i-2^27*E_i-2^35*S_i.
+      =1+2^44-2^10*W_i-2^18*N_i-2^27*P_i-2^35*S_i.
 
 The constant coefficient is1+2^44, and the four subtracted weights have
 exponents10,18,27,35 in the ordered west/north/east/south positions.
@@ -70,12 +82,12 @@ Since G943(x)=sum_(i=0)^942 x^i, the entire selector polynomial identity is
 
     G943(x)+2^10*sum_(i=0)^942 v_i*x^i
       =sum_(i=0)^942
-        (1+2^44-2^10*W_i-2^18*N_i-2^27*E_i-2^35*S_i)*x^i.
+        (1+2^44-2^10*W_i-2^18*N_i-2^27*P_i-2^35*S_i)*x^i.
 
 This is a full coefficient identity for arbitrary coordinate indeterminates;
 no actual tile evaluation, sampled coefficients, ignored high positions
 or numerical equality of isolated ports is used. Equivalently, with the
-old canonical payload V_i=127*2^34+W_i+2^8*N_i+2^17*E_i+2^25*S_i,
+old canonical payload V_i=127*2^34+W_i+2^8*N_i+2^17*P_i+2^25*S_i,
 the new coefficient is exactly1+2^51-2^10*V_i. Thus the existing native
 selector algebra applies in precisely the same canonical payload basis.
 
@@ -178,7 +190,7 @@ The complete indexed header and all deleted explanatory prose are charged.
 The old/new body nonwhite counts are3555/3535. The old whole standalone
 TeX is5244 bytes; with its identical1425-byte prefix the proposed whole
 would be5218. The complete proposed body SHA-256 is
-`aa5949fa80eb109fc2d41f199c5e6414745ff9e25d4e0e25eae8be60846453f9`.
+`55b50341d3512d21f5255557512fb7f2477312831fe7b789dff859546d51892a`.
 
 For a separately charged notation proxy, start with the entire accepted
 native extraction and its known2307-character normalized prescription.
@@ -228,7 +240,7 @@ where
 \[
 \begin{split}
 \Phi(x)={}&\sum_{i=0}^{942}(1+2^{44}-2^{10}w_i-2^{18}n_i\\
-&-2^{27}e_i-2^{35}s_i)x^i\\
+&-2^{27}p_i-2^{35}s_i)x^i\\
 &+2^{10}x^{1003}(x^{20}+2^{17})G_8(2x)\\
 &+2^{18}x^{983}(x^{30}+2^{17})G_9(2x)\\
 &+2^{44}x^{992}(x^{39}+2x^{30}+4x^{19}+8)\\
@@ -250,7 +262,7 @@ An interval ending at $-1$ is empty. The table defines $t_i$ for
 $0\le i\le942$; all index ranges are fixed:
 \[
 \setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
-\text{index }i&\text{tile }t_i=(w_i,n_i,e_i,s_i)\\\hline
+\text{index }i&\text{tile }t_i=(w_i,n_i,p_i,s_i)\\\hline
 0,1&(2,435,3,1),\ (5,0,0,0)\\
 j+2\ (j=2q+b<430)&((1-d_j)r_{0,u_j},h(q,b),d_jr_{1,u_j},v_j)\\
 434-2a+b\ (a,b=0,1)&(0,432a+b,0,432a+b)\\

@@ -2687,3 +2687,22 @@ direction with an explicit whole-space inverse. No shear, new metric or
 global coordinate minimum is claimed. This coefficient theorem keeps
 the separate centering-replay acceptance boundary intact and changes
 neither the maintained compact66 PDF/TeX nor the Lean pause.
+
+## Small direct-coordinate recipe simplification queued for batching
+
+The [code-free proposal](research/direct-tile-coordinate-coefficients/README.md)
+passes final [ROOT](reviews/direct-tile-coordinate-coefficients-ordinary-root.md)
+and [independent review](reviews/direct-tile-coordinate-coefficients-ordinary-peer.md).
+Expanding the entire943-coefficient selector in the four fixed tile
+coordinates removes the separate payload-function paragraph. The whole
+Phi polynomial, all four integers and the15-positive66/157 equation are
+identical. A fresh p_i coordinate family resolves the first draft's seed
+name collision; both original findings remain preserved in27d9839af2.
+
+The complete proposed body saves26 UTF-8 source bytes and20 nonwhite
+source characters, with the full indexed header and continuation charged.
+Its separately charged unrendered spelling proxy saves23 characters.
+These are minor representation gains, not new PDF metrics. They remain
+queued for batching: maintained equation.pdf/equation.tex stay unchanged,
+and any future implementation/render needs its own reviews and release.
+Lean stays paused.
