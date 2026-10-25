@@ -4,7 +4,7 @@ Direction chosen by Vladimir on 24 October 2026 (see NEXT_STEPS.md): make
 the ten-positive kernel a nine-positive equation by changing the compiler's
 window so that the transport reads one tableau word. This brief fixes what
 the present window does, why the kernel cannot absorb a third source
-unknown, and where a redesign has to act. Nothing here is a result.
+unknown, and where a redesign has to act. Section 2d records an obstruction to the complement form; nothing else here is a result.
 
 ## 1. What the present window is
 
@@ -108,6 +108,111 @@ identity on C's own digit fields, with the neighbour comparisons (north
 against south of the temporal predecessor, east against west of the
 spatial neighbour, anchors) folded into C's encoding rather than into a
 derived word. Options 1–3 below are judged against this.
+
+## 2b. The sharpest form of the target: alpha = 1 (24 October, evening)
+
+In the current fused ten-positive kernels (packages 113, 116, 119, 121 and
+their research-session descendants down to 86 operations) the three source
+unknowns are J, F and alpha; the tableau word is derived, C = q − F − alpha,
+and the transport quotient t = B/g is already absorbed by the norm. So the
+one unknown a nine-positive form must lose is the slack alpha.
+
+Fixing alpha = 1 gives C + F = q − 1 = B^N − 1, i.e. **C is the bitwise
+complement of F**. Then:
+
+- the transport (K0 + w)·C ≡ F (mod q − 1) becomes
+  (K0 + w + 1)·C ≡ 0 (mod q − 1): the shifted-and-convolved tableau plus the
+  tableau itself is a multiple of B^N − 1;
+- the two mask tests become tests on C alone: (C − 1) AND (MC·J + 1) = 0 and
+  (NOT C) AND (MF·J − 1) = 0, i.e. C has fixed zeros at the MC positions and
+  fixed ones at the MF positions;
+- the rank keeps its four-block form, with the F-blocks equal to the
+  complement blocks of C, so the population target 3dN + 2 is unchanged.
+
+So the self-certifying window of section 2a has a precise arithmetic form:
+a tile encoding whose cyclic convolution with the fixed kernels and the row
+shift, **plus the word itself**, sums to all ones in every cell (no carries
+across cells), exactly when the tiling is valid. The current Wang943 encoding
+does not have this property: its test word F is zero at the test positions
+and unconstrained elsewhere, while here every bit of F would be forced.
+Designing such an encoding (or proving none exists for local tile languages
+with carry-free cells) is the concrete next research step. If it exists, the
+kernel needs no other change, and the 86- to 97-operation ten-positive forms
+become nine-positive forms of about the same size, against 420 operations at
+degree 1,472,168 today.
+
+### 2c. First feasibility analysis of the complement form
+
+*Local edge checks are expressible.* With alpha = 1 the identity
+(K0 + w + 1)·C ≡ 0 (mod B^N − 1) says that, cell by cell, the bits the fixed
+kernels and the row shift deliver to each position, plus the cell's own bit
+there, sum to the corresponding digit of a multiple of B^N − 1. Store every
+edge colour in two places, once plainly and once complemented
+(w̄ = 2^m − 1 − w). If the kernel delivers e_i onto the complemented field
+w̄_(i+1) of the east neighbour (and s_i onto n̄_(i+h) through the row shift),
+each bit position receives e_bit + w̄_bit, which is 1 exactly when the colours
+agree at that bit, and 0 or 2 when they disagree. So matching colours
+produce an all-ones field with no carry, which is what the complement form
+requires. Tile selection (one of the 943 tiles per occupied cell) is already
+a linear aggregate in the present compiler (package 44, section 3, the
+aggregate lemma with a = 10, m = 41), so it can be re-targeted at all ones
+by fixed ones of C at known positions.
+
+*What must still be excluded.* A residue ≡ 0 (mod B^N − 1) is m·(B^N − 1)
+for a small m, not only B^N − 1. For example, "every position receives 2"
+(m = 2: all plain and complemented copies equal to 1, i.e. mismatches
+everywhere) passes the congruence, and so do balanced patterns of 0's and 2's
+whose carries wrap around the cycle. These must be excluded by C's fixed
+zeros and ones and by the population target σ2(R) = 3dN + 2, and the
+exclusion has to be proved, as the present compiler proves its clean bands
+and anchor parities (package 44, section 5;
+`HilbertTenthProblem/Papers/1980/FIXED_RAW_UNIVERSAL_75_PROOF.md`, section 4).
+
+*What a full compiler still needs.* Re-encoding the 943-tile language with
+complemented copies (roughly doubling the cell width d), new anchor and
+boundary handling for the start and end markers, a new carry analysis for
+the cyclic sum, re-derived fixed coefficients (K0, MC, MF) and population
+calibration, and a new soundness and completeness proof of the window.
+None of this is attempted here; the analysis above only shows that the local
+part of the complement form is not obstructed.
+
+### 2d. A global obstruction to the complement form (24 October, later)
+
+The local analysis of 2c is not enough: the global congruence turns the
+accepted words into a group.
+
+*The accepted set before masks is cyclic.* Put M = B^N − 1 and
+g = gcd(K0 + B^h + 1, M). Since w ≡ B^h (mod M), the complement form
+(K0 + w + 1)·C ≡ 0 (mod M) holds exactly for the multiples C = k·(M/g),
+0 ≤ k < g. The fixed-bit masks then select a subset of these g words.
+
+*Rows evolve by a fixed multiplier.* k·(M/g) is the N-digit repetend of k/g
+in base B: its digits come from the remainders r_(j+1) = B·r_j mod g. One row
+later (h cells) the remainder is multiplied by B^h, and B^h ≡ −(K0 + 1)
+(mod g). So, read row by row, an accepted word is the base-B expansion of
+x0·κ^i mod g with the single fixed multiplier κ = −(K0 + 1), the same for
+every N and h. The tableau rows would have to evolve by a fixed linear map
+modulo g.
+
+*Every digit-wise tie behaves the same way.* Any choice of alpha that is a
+fixed function of the small unknowns (alpha = 1, alpha = J, …) makes C a
+fixed digit-wise function of F, and the transport becomes
+(K0 + w + 1)·F ≡ const (mod M): a coset of the same cyclic group, with
+affine instead of linear row evolution. Only J, F and alpha are below q
+among the kernel's unknowns, so alpha cannot be supplied by another
+unknown either.
+
+*Consequence.* The K215 blank run is a nonlinear computation. For it to be
+the expansion of x0·κ^i mod g with κ fixed, and for the masks to accept only
+such runs, would need an arithmetic encoding of the machine in iterated
+multiplication by one constant. None is known, and it is not plausible.
+This is an obstruction argument, not an impossibility proof: an unexpected
+choice of K0 and of the masks is not excluded. With that caveat, the
+two-word structure of the present compiler family is necessary. A
+nine-positive form at low degree needs a different source, for example
+Jones's two-unknown gap source at much lower radix degree, rather than a
+one-word variant of this window. Option 1 of section 3 is therefore
+withdrawn. Options 2 and 3 tie no digits and are not affected.
 
 ## 3. Where a redesign could act
 
