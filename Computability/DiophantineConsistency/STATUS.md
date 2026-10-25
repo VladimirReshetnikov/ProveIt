@@ -1887,3 +1887,22 @@ them requires a fresh source proof, all coordinate/graph maps and independent
 checks; no projected count follows by subtraction. The accepted359 quartic,
 433 lower-term alternative, canonical PDF/TeX and paused Lean work remain
 preserved.
+
+
+## Ten scalar graphs can share one eight-factor product
+
+The [new current-cap ordinary theorem](research/signed-pell-cap-scalar-product/PROOF.md)
+restores ten scalar signs using one strict product of eight nonnegative
+factors. Signed-index power analysis first recovers x and the reciprocal
+index automatically. Four q-divisible denominator powers are established
+before all eleven successor residues, with no premature K/N interpretation.
+Only then does the product exclude the remaining eight zero factors.
+
+Root and independent peer reviewed the complete258-line proof and literal
+interfaces, including67 source rows,11 whole polynomial ideal combinations
+and all30 omitted auxiliary occurrence sets. See the
+[root acceptance](reviews/signed-pell-cap-scalar-product-root-peer.md).
+Both directions fix the original cap body. F, helper signs and both old cap
+policies remain; a future refined-source composition needs a separate proof.
+No successor equation or projected saving is claimed. Canonical PDF/TeX and
+accepted equations are preserved; Lean stays paused.
