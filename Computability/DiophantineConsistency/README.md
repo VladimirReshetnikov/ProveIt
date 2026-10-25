@@ -44,6 +44,11 @@ The [direct-carrier sharing extension](research/saturated-direct-carrier-cse/REA
 also saves one multiplication in each of five complete direct variants,
 including96/258,97/254 and94/262; their entire polynomials are preserved.
 
+The [q-cube-normalized ten-positive form](research/ten-positive-qcube-normalization/README.md)
+now uses86 operations at exact degree466. Its complete positive-domain proof,
+whole native bindings and independent checks pass; this cost/degree alternative
+is preserved separately from the canonical92/283 page.
+
 For degree-four equations, the [complete unified-binomial construction](con-zfc-diophantine-forms/125-unified-binomial-round15/direct/integer442/)
 now reaches **442 unrestricted integer unknowns**, with4,652 terms and height
 128,446. Full ordinary/source review and independent normal/optimized exact

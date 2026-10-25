@@ -1644,3 +1644,28 @@ in these bundles add no new compact record by their counts alone. The
 [future-lead notes](research/intake-5f3379063d/FUTURE_LEADS.md) preserve those
 opportunities without promoting unchecked source/compiler claims. The canonical
 92/283 PDF/TeX and paused Lean work remain unchanged.
+
+## Complete ten-positive 86-operation cost alternative
+
+The [q-cube-normalized equation](research/ten-positive-qcube-normalization/README.md)
+has **86 live operations and exact global degree466**, with ten strictly positive
+unknowns. It evaluates Y=q³s, absorbs the integral old Y/q³ term into a fresh
+positive n, and cancels a common q³ from both cleared carrier coordinates.
+The entire old norm is q^12 times the new one under n_old=n_new-s. This is a
+cost/degree tradeoff against89/288; the source proof excludes negative transport
+directly before using the shifted integer, and its canonical positive converse
+uses the explicit inherited q³|Y condition. No reverse positive shear is assumed.
+
+Root and peer reviewed the complete ordinary proof and all source/collector/
+artifact code. All six fresh root normal/optimized receipts exactly match the
+author. Thirty-six free polynomial interfaces cover every actual gate; both whole
+coefficient tuples, all215 source pins and262 peer bindings are authenticated.
+Nine graph and33 complete artifact corruptions are rejected per mode, with four
+positive/output controls. The global cancellation proof identifies the entire
+105-term leading form and a nonzero coefficient -2^10*beta^326, proving466
+without relying on a sampled ray. See the
+[root acceptance](reviews/ten-qcube-normalization-root-peer.md).
+
+All earlier equations remain preserved. The canonical92/283 PDF and TeX stay
+stable while the cost/degree alternatives are compared; a separate complete
+86/466 comparison page is under actual printed-form review. Lean remains paused.
