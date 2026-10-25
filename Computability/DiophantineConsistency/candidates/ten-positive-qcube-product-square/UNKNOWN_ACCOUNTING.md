@@ -66,6 +66,18 @@ exponentials, u^n and (u + 1)^n. Each exponential costs a Pell ordinate, and
 each Pell ordinate costs an unknown. A single-ordinate source would
 therefore need a binomial extraction from one exponential. We know of none.
 
+The binomial digits are needed because of what the native source checks.
+It is a Wang-tiling encoding: 943 tiles packed into base-B digits
+(B = ρ^L, ρ = 2^67), with local matching checked by masked sums against MC
+and MF (`research/ten-positive-doubled-product-square/provenance/indexed_native_proof.md`).
+A masked sum is a bitwise-domination test x ≼ y. Its classical Diophantine
+form is Lucas's theorem: C(y, x) is odd exactly when x ≼ y. So one Pell
+ordinate fewer would mean a masking test with a single exponential, which
+would be a new result about Diophantine representations, not a schedule
+edit. The Pell-base trick, which reads t^R from c = ψ_A(R) modulo
+2tA − t² − 1, does not supply it: the denominator 2^(R(R−1)/2) of the floor
+has an exponent quadratic in R, and that modulus is only about μYX².
+
 The existing nine-positive equations (405 operations at degree 1,191,570;
 `research/nine-folded-shared-odd-rank`) avoid the coefficient tuple and
 compute their source inside the circuit instead, which is where the extra
