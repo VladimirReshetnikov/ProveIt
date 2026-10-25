@@ -2390,3 +2390,21 @@ still needs whole-integer regeneration and actual typesetting/visual checks;
 no page fit or new numerical equation is claimed. This is an unrestricted
 integer, degree-four alternative. The maintained ten-positive85/328 PDF
 and its TeX remain current; Lean stays paused.
+
+## A product-square tradeoff for the nine-positive equation
+
+The [ordinary proposal](research/nine-positive-doubled-product-square/PROPOSAL.md)
+passes [root review](reviews/nine-positive-doubled-product-square-root.md) and
+[independent review](reviews/nine-positive-doubled-product-square-ordinary-peer.md).
+Pell doubling makes the two radicands coprime, allowing a single final
+norm. The complete manual schedule predicts411 operations, two fewer
+than the accepted413, with the same nine positive inputs and entire
+compact54 coefficient tuple. The full highest form proves exact degree
+1783926, above the parent's1316546, so this is a tradeoff.
+
+The positive-margin argument precedes root classification. Fresh strong
+and auxiliary periods supply both existential witness directions, including
+strictly positive final witnesses. All four whole native ports and eleven
+signed fixed streams retain their exact recipes. No new graph, emitted
+count or finite endpoint has been accepted; a separately reviewed finite
+packet is required. The maintained page and Lean remain unchanged.
