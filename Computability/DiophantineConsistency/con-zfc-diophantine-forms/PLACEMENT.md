@@ -12742,7 +12742,10 @@ Intake record, not a delivered file. The eight archives of the arrival
 commit `3ecd6a6cf5` (25 October 2026, 14:29, "Con(ZFC) in Diophantine form")
 were extracted straight from the committed ZIPs into numbered directories
 140–147, in archive-name order, with the single wrapper directory removed.
-Nothing was edited and nothing was run at intake.
+Nothing was edited and nothing was run at intake. The placement commit also
+removed `ConZFC_Joint_Norm_2026-10-25.zip`, which the drop process had added in
+`a0ef2df5bb` 31 seconds earlier, without placing it; `b7e35224c0` restored
+it, and batch 233 places it as source 148.
 
 **Waves 5–15 are kept.** By Vladimir's direction, wave 16 is placed beside
 them (sources 31–139), not instead of them; this section is appended to the
