@@ -76,6 +76,9 @@ The new fixed58-shift centering has five successful author commands, but
 its fresh optimized ROOT check returned143 without a result JSON or
 diagnostic. The [interruption evidence](reviews/round16-common-name-centering-fresh-interruption/README.md)
 is preserved, no retry is released, and final acceptance remains pending.
+The independent [normal fresh check](reviews/round16-common-name-centering-fresh-normal-pass/README.md)
+subsequently exited0 with complete JSON/stdout equal to author bytes;
+both pure build replays also pass and all142 prior files remain unchanged.
 This separate alternative does not affect the verified compact page.
 
 The lower-height fused-nine direct quartic has **327 unrestricted integer unknowns,
