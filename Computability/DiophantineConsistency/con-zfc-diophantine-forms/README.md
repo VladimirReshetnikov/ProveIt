@@ -35,42 +35,43 @@ circuit counts, proof assessments and its next formalization target:
 The delivered packages remain unchanged.
 
 **Explicit polynomials with fixed integer coefficients whose unsolvability
-ZFC proves equivalent to Con(ZFC). Waves 5–15 are all in the tree. The stated
+ZFC proves equivalent to Con(ZFC). Waves 5–16 are all in the tree. The stated
 frontier, over the packages of this collection, is now:**
 
 - **nine positive unknowns** in 420 operations at degree 1,472,168 (101), or
   at degree 997,810 in 1,057 operations (101);
-- **ten positive unknowns** in 78 operations at degree 630 (134), or at
-  degree 246 in 121 (130), with thirteen further Pareto points between;
+- **ten positive unknowns** in 75 operations at degree 626 (140), or at
+  degree 246 in 121 (130), with fourteen further Pareto points between;
 - **ten unrestricted integers** at degree 1,245,324 in 467 operations and at
   degree 1,080,888 in 507 (106), via Sun's reduction;
 - **eleven unrestricted integers without Sun's reduction** in 107
-  operations at degree 924 (138), or at degree 328 in 130 (135); twelve at
+  operations at degree 924 (138), or at degree 300 in 148 (144); twelve at
   degree 500 in 139 (121), or in 123 operations at degree 1,084 (113);
-  thirteen at degree 156 in 127 (137) or 536 in 126 (118); fourteen at
-  degree 88 in 119 (137); fifteen at degree 44 in 111 (132) or 48 in 108
-  (121) (each count ranked on its own; across counts, 125's 11ℤ 488 / 118
-  and 135's 398 / 121 dominate both 12ℤ points and 13ℤ 536 / 126; both 15ℤ
-  points dominate every 16ℤ point, and 48 / 108 also 17ℤ 88 / 110);
+  thirteen at degree 156 in 125 (143's evaluator of 137's polynomial);
+  fourteen at degree 86 in 112 or 94 in 110 (143); fifteen at degree 44 in
+  111 (132) or 48 in 108 (121) (each count ranked on its own; across counts,
+  125's 11ℤ 488 / 118 and 135's 398 / 121 dominate both 12ℤ points; the 14ℤ
+  and 15ℤ points dominate every 16ℤ point, and 48 / 108 also 17ℤ 88 / 110);
   sixteen at 98 in 138 (106) and 112 in 119 (93); seventeen at 88 in 110 (88);
 - **direct quartics in the numerical proof calculus C222**, with no
-  coefficient tuple and without K215, Jones or Sun: 226 naturals (139) and
-  282 unrestricted integers (135), and quartics with every coefficient ±1
-  in 793 integers (135);
+  coefficient tuple and without K215, Jones or Sun: 221 naturals (140, 142,
+  144) and 252 unrestricted integers (141), and quartics with every
+  coefficient ±1 in 571 integers (144);
 - **eleven positive unknowns** at degree 211 in 107 operations (115);
 - **twelve positive unknowns** at degree 70 in 95 operations (115), or in 89
   operations (57's 258 form);
 - **thirteen positive unknowns** at degree 28 (72), at degree 51 in 87
-  operations (115), or in 83 operations at degree 114 (62);
-- **fourteen positive unknowns** at degree 24 (72), or in 79 operations at
-  degree 52 (55, 59);
+  operations (115), or in 72 operations at degree 433 (142);
+- **fourteen positive unknowns** at degree 24 (72), or in 70 operations at
+  degree 189 (142);
 - **fifteen positive unknowns** at degree 24 in 88 operations (66), and in
   66 operations (51's P66, degree 157), both unchanged;
 - **a quartic in 37 unrestricted integers** (76, 82; 77), a sextic in 30
   (76), an octic in 25 in 127 operations (77), and a degree-14 form in 22
   (79, 81);
-- **the smallest native tuple binding an equation**, B = 2^429959 (54,
-  unchanged); the direct quartics bind no tuple at all.
+- **the smallest native tuple binding an equation**, B = 2^413929 (141's
+  radix-47 P66, if its carry proof holds; otherwise 54's 2^429959); the
+  direct quartics bind no tuple at all.
 
 Results in this repository that are not intake packages are compared
 separately. The four-root ten-positive equation
@@ -100,12 +101,12 @@ repository's package, written concurrently, supplies the emitted circuits
 and their checks (`a2c20ea419`). Wave-15 package 137 ships the same two
 polynomials; it contains no research state after 21:38, but its positive
 circuits are undated. Wave-15 package 134's 78 / 630 and 79 / 468 (built
-21:48) dominate them.
+21:48) dominate them, and wave-16 package 140's 75 / 626 dominates those.
 
-The report holds one hundred and nine research packages. All but 60, 66, 68, 97, 102,
+The report holds one hundred and seventeen research packages. All but 60, 66, 68, 97, 102,
 106, 110, 121 and 125 state AI assistance. Some do so only in part: 74
 for its reviews; 77, 78, 101 and 130 in their TeX author lines; 88, 131, 132 and 137
-in copied notices; 111 in its PDF author field; 116 in one component file.
+in copied notices; 111 in its PDF author field; 116 and 143 in one component file.
 
 - **Wave 5**, sources 31–37: batch 221 (arrival `b7f8b75b5b`, placed in
   `952c1fab49`), pinned to `8c6eec9d19`.
@@ -140,14 +141,17 @@ in copied notices; 111 in its PDF author field; 116 in one component file.
 - **Wave 15**, sources 134–139: batch 231 (arrival `e0c98c629b`, placed in
   `1eed4b48cd`), pinned to the wave-14 placement `1c5367452a` (137 to
   `b30ddde0aa`).
+- **Wave 16**, sources 140–147: batch 232 (arrival `3ecd6a6cf5`, placed in
+  `d32d28da26`), pinned to the wave-15 arrival `e0c98c629b` (141 to
+  `55d1f72aed`).
 
-**Earlier waves are kept.** By Vladimir's direction, waves 6–15 are each
+**Earlier waves are kept.** By Vladimir's direction, waves 6–16 are each
 placed beside the earlier waves rather than replacing them. Wave-7 packages
 cite wave-5 and wave-6 packages by number; no wave-7 package cites another.
 In wave 8, only 59 cites a sibling: it reviews and builds on 56 and 57,
 which reached it during packaging. No wave-9 or wave-10 package cites a
 sibling of its own wave. Wave 11 spans seventeen arrivals, and later
-packages of it cite earlier ones; no package of waves 12–15 cites a
+packages of it cite earlier ones; no package of waves 12–16 cites a
 sibling.
 
 ## Any encoding is welcome
@@ -181,8 +185,8 @@ Lean development of Jones's reduction. The compiler and the Diophantine
 bridge are not formalized.
 
 Other routes in the repository:
-- **Finished by packages.** The direct C222 quartics of waves 11–15 (87's
-  27,916 integers down to 139's 226 naturals and 135's 282 integers) are complete
+- **Finished by packages.** The direct C222 quartics of waves 11–16 (87's
+  27,916 integers down to 221 naturals and 141's 252 integers) are complete
   explicit polynomials on a route without K215 or Jones; their calibration
   is two Lean interfaces plus an ordinary proof of "polynomial zero iff
   C222 derivation" (wave-11 section). Wave 9's 60, 66 and 67 and wave 10's
@@ -216,7 +220,8 @@ They remain in history:
 | 12 | 228 | `45b399ec51` | `55fe52f28c` … (kept) | `e87cc5c80c` |
 | 13 | 229 | `5f3379063d` | `9f7ff01558` … (kept) | `e87cc5c80c` |
 | 14 | 230 | `fd3e384e92` | `1c5367452a` … (kept) | `55a1e3a19d` |
-| 15 | 231 | `e0c98c629b` | `1eed4b48cd` … | this file |
+| 15 | 231 | `e0c98c629b` | `1eed4b48cd` … (kept) | `20795b3d1c` |
+| 16 | 232 | `3ecd6a6cf5` | `d32d28da26` … | this file |
 
 Until `ea8ae71167`, every one of these READMEs lived at
 `SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md`.
@@ -242,8 +247,8 @@ values where available, to tell polynomials apart. Agreement at random points
 is strong evidence of identity, not proof; disagreement proves the
 polynomials differ.
 
-[`PLACEMENT.md`](PLACEMENT.md) is the recovery map for all eleven waves: the
-batch-221 record, then the appended batch-222 to batch-231 records.
+[`PLACEMENT.md`](PLACEMENT.md) is the recovery map for all twelve waves: the
+batch-221 record, then the appended batch-222 to batch-232 records.
 
 | Wave | Archive members | Staged | Omitted copies | Ignored |
 |---|---:|---:|---:|---:|
@@ -258,6 +263,7 @@ batch-221 record, then the appended batch-222 to batch-231 records.
 | 13 | 2,686 | 1,058 | 1,624 | 4 |
 | 14 | 3,294 | 1,148 | 2,140 | 6 |
 | 15 | 3,468 | 1,258 | 2,205 | 5 |
+| 16 | 2,665 | 1,255 | 1,408 | 2 |
 
 Omitted copies are byte-identical (up to line ends) to repository files.
 Most of the later waves' are copies of earlier-wave files of this
@@ -383,11 +389,11 @@ Wave 10 works mostly on guards and roots:
 - **Composed sources and finalizers**: 71's nine-positive form, and 68's
   ten-integer form with a strengthened Lucas-index lemma.
 
-## Combined frontier, waves 5–15 (intake findings)
+## Combined frontier, waves 5–16 (intake findings)
 
 Numbers are the packages' own. At intake, read-only dossiers recounted
 every operation count and measured the degrees of the headline circuits
-(two each for waves 12 to 14, three for wave 15, five for wave 11, four for each earlier wave); all checked
+(two each for waves 12 to 14, three each for waves 15 and 16, five for wave 11, four for each earlier wave); all checked
 figures agree with the claims. The mathematics was not re-derived, and
 every dominance statement assumes the competing proofs are correct. Only
 packages of this collection are ranked here, each unknown count on its own
@@ -395,18 +401,18 @@ row. The active research session's own candidates and this
 repository's `candidates/ten-positive-gap-fusion` (an independent
 derivation of package points) are compared in its
 [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
-At the wave-15 intake several research circuits dominate package rows: its
+At the wave-16 intake two research rows still dominate package rows: its
 nine-positive 405 operations at degree 1,191,570 and 413 at 1,316,546
 (`23d8510a10`; the 413 form on the 2^429959 tuple), 722 at 1,158,228 and
-1,056 at 997,810 dominate every nine-positive package point; its
+1,056 at 997,810 dominate every nine-positive package point, and its
 ten-positive 84 / 328 (operations / degree, `b33b254625`) dominates 133's
-85 / 328; and its fourteen-positive 73 / 342 to 76 / 191 use fewer
-operations than the packages' 79. Its ℤ quartics of height 15,109
-(315 / 217 / 5,620 and 316 / 218 / 5,614) are Pareto with 135's.
+85 / 328. Its fourteen-positive 73 / 342 to 76 / 191 are now dominated by
+142's, and its ℤ quartics of height 15,109 by 145's 260.
 
 - "u / e / d / o" means unknowns / equations / degree / operations; pairs
   are degree / operations, except in the ten-positive rows and the wave-14
-  and wave-15 sections' ten-positive entries, which give operations / degree. For the
+  to wave-16 sections' ten-positive entries, and the wave-16 section's
+  thirteen- and fourteen-positive entries, which give operations / degree. For the
   direct quartics (degree 4 throughout) the measures are variables /
   residuals / expanded terms / coefficient
   height.
@@ -451,12 +457,12 @@ lower directory number counts as earlier.
 | Nine positive, lowest degree | **997,810 / 1,057** | 101 | 101 |
 | Nine positive, Pareto frontier | 1,472,168 / 420 (101); 1,376,378 / 456 (105); 1,158,228 / 726 (82); 997,810 / 1,057 (101). Dominated by these: 66's 444 and every earlier nine-positive form; 101's 428 and 85's 434 ≡ 86's 435 (one polynomial), 105's 442, 86's 449, 79's 1,753, 85's 1,074, 86's 1,086 | 82, 101, 105 | — |
 | Nine positive on the 2^429959 tuple | **1,626,248 / 428** (101); 1,628,768 / 434 (85; 86 evaluates the same polynomial in 435); 1,520,186 / 442 (105). Earlier: 54's 490 | 85, 101, 105 | 85 |
-| Ten positive, Pareto frontier | **78 / 630** and 79 / 468 (134); 83 / 436 (138, 133's 84 / 436 with T replaced by T − α); 85 / 328 (133); 87 / 323 and 88 / 318 (139); 89 / 288, 91 / 283, 92 / 278, 94 / 262, 96 / 258, 97 / 254 (119 on the BFS tuple, 121 on the original one; 119's 92 / 278 is 117's polynomial in one operation fewer, 121's the same circuit on the other tuple); 102 / 253 and 104 / 252 (132); **121 / 246** (130). Dominated: 138's 80 / 750 and 81 / 560, 137's 81 / 750 and 82 / 560, 133's 84 / 436, 130's 86 / 466, 87 / 466, 89 / 450 and 90 / 450, 131's 87 / 436 and 88 / 380, 113's, 116's, 117's and 118's forms, 115's 98 / 368 and 103 / 340, and every earlier form | 119, 121, 130, 132, 133, 134, 138, 139 | 84 (first), 113 (fusion) |
+| Ten positive, Pareto frontier | **75 / 626**, 76 / 464 and 77 / 460 (140); 80 / 382 (142); 85 / 328 (133); 87 / 323 and 88 / 318 (139); 89 / 288, 91 / 283, 92 / 278, 94 / 262, 96 / 258, 97 / 254 (119 on the BFS tuple, 121 on the original one; 119's 92 / 278 is 117's polynomial in one operation fewer, 121's the same circuit on the other tuple); 102 / 253 and 104 / 252 (132); **121 / 246** (130). Dominated: 140's 76 / 622; 142's 76 / 626 and 77 / 464, 143's 77 / 626, 78 / 464 and 79 / 460 (140's polynomials in more operations); 141's and 146's 77–80 / 626–460 (140's with T replaced by T + α); 147's 77 / 630 and 78 / 468; 143's 80 / 384 and controls; 134's 78 / 630 and 79 / 468; 138's 83 / 436, 80 / 750 and 81 / 560; 137's 81 / 750 and 82 / 560; 133's 84 / 436; 130's 86 / 466, 87 / 466, 89 / 450 and 90 / 450, 131's 87 / 436 and 88 / 380, 113's, 116's, 117's and 118's forms, 115's 98 / 368 and 103 / 340, and every earlier form | 119, 121, 130, 132, 133, 139, 140, 142 | 84 (first), 113 (fusion) |
 | 10ℤ (Sun's reduction), Pareto frontier | **1,245,324 / 467**, 1,179,788 / 470, 1,114,252 / 473, **1,080,888 / 507** (106, re-evaluating 87's 471 form and the research session's three shears of it). Other polynomials: 76's 480 / 1,245,324, 83's 484 / 1,179,788, 487 / 1,114,252 and 521 / 1,081,125, 87's 485, 496 and 545 / 1,080,888, 91's re-evaluations. All dominate 68's 1,576,864 / 481 | 76, 83, 87, 106 | 76 (degree), 87 (operations) |
-| 11ℤ, without Sun's reduction, Pareto frontier | **924 / 107** and 840 / 108 (138); 810 / 112 (131); 648 / 115 (137); 488 / 118 and 464 / 119 (125); 398 / 121, 352 / 125, 340 / 129 and **328 / 130** (135). Dominated: 132's 924 / 109, 840 / 110, 428 / 123, 412 / 127, 396 / 128, 376 / 127, 364 / 131 and 352 / 132, 131's 966 / 109, 882 / 110 and 654 / 117, 137's 640 / 118, 580 / 119 and 574 / 122, 135's controls 382 / 125 and 366 / 126, 123's forms, 125's 456 / 124 and 416 / 125, 127's 440 / 126 and 412 / 127, 116's, 120's, 121's and 126's forms, 110's three | 125, 131, 135, 137, 138 | 110 |
+| 11ℤ, without Sun's reduction, Pareto frontier | **924 / 107** and 840 / 108 (138); 810 / 112 (131); 648 / 115 (137); 488 / 118 and 464 / 119 (125); 398 / 121, 352 / 125, 340 / 129 and 328 / 130 (135); 316 / 133, 308 / 140, 304 / 144 and **300 / 148** (144). Dominated: 132's 924 / 109, 840 / 110, 428 / 123, 412 / 127, 396 / 128, 376 / 127, 364 / 131 and 352 / 132, 131's 966 / 109, 882 / 110 and 654 / 117, 137's 640 / 118, 580 / 119 and 574 / 122, 135's controls 382 / 125 and 366 / 126, 123's forms, 125's 456 / 124 and 416 / 125, 127's 440 / 126 and 412 / 127, 116's, 120's, 121's and 126's forms, 110's three | 125, 131, 135, 137, 138, 144 | 110 |
 | 12ℤ, Pareto frontier | **500 / 139** (121's evaluator of 116's polynomial); **1,084 / 123** (113). Dominated: 116's 500 / 148, 112's 768 / 141, 111's 1,040 / 140 and four further forms, 110's 1,000 / 180 and 1,024 / 179, 118's two, and every wave-11 form | 113, 121 | 97 |
-| 13ℤ, Pareto frontier | **156 / 127** (137); 536 / 126 (118). Dominated: 116's 274 / 129, 105's 1,072 / 186, 1,392 / 177 and 1,408 / 176 and every earlier 13ℤ form | 118, 137 | 88 |
-| 14ℤ | **88 / 119** (137). Dominated: 116's 108 / 119, 106's 378 / 145, 88's 792 / 137 and every earlier 14ℤ form | 137 | 88 |
+| 13ℤ | **156 / 125** (143's evaluator of 137's polynomial). Dominated: 137's 156 / 127, 118's 536 / 126, 116's 274 / 129, 105's 1,072 / 186, 1,392 / 177 and 1,408 / 176 and every earlier 13ℤ form | 143 | 88 |
+| 14ℤ, Pareto frontier | **86 / 112** and **94 / 110** (143). Dominated: 143's 88 / 115 and 137's 88 / 119 (one polynomial), 116's 108 / 119, 106's 378 / 145, 88's 792 / 137 and every earlier 14ℤ form | 143 | 88 |
 | 15ℤ, Pareto frontier | **44 / 111** (132); **48 / 108** (121). Dominated: 116's 56 / 110, 106's 172 / 123 and every earlier 15ℤ form | 121, 132 | 88 (first 15ℤ form, 344 / 131) |
 | 16ℤ, Pareto frontier | **98 / 138** (106); 108 / 132 (91); **112 / 119** (93); 124 / 118 (98); **160 / 115** (92). Dominated: 92's 152 / 120, 132 / 128 and 120 / 123, 93's 112 / 120, 86's 184 / 135 and 192 / 134 | 91, 92, 93, 98, 106 | 86 |
 | 17ℤ | **88 / 110** (88). 82's and 86's 17ℤ / 88 forms are different polynomials (82 uncounted, 86 at 114); 84's 112 / 124 and 110 / 140 dominated | 88 | 82 |
@@ -465,19 +471,153 @@ lower directory number counts as earlier.
 | Integer octic | **25ℤ** in 127 operations (77). Dominated: the 26ℤ octics of 76, 77, 78, 79, 81, 82 and 68's 28ℤ, 69's and 71's 27ℤ | 77 | 77 |
 | Integer sextic | **30ℤ** (76). Dominated: the 31ℤ sextics of 77, 79, 81 (144 operations), 82, and the 32ℤ and 34ℤ sextics of waves 9–10 | 76 | 76 |
 | Integer quartic | **37ℤ** (76 ≡ 82, two variants; 77's four variants differ in one guard row). Dominated: 69's and 71's 38ℤ | 76, 77, 82 | 76 |
-| Direct C222 quartic, ℕ (no K215, Jones, Sun or coefficient tuple) | **226 / 175 / 10,314 / 87,839,583** and 227 / 176 / 7,905 / 87,839,583 (139); 229 / 179 / 9,184 / 83,954,634 and 230 / 180 / 6,858 / 83,954,472 (135); 255 / 203 / 5,743 / 64,214,623 (133); 242 / 190 / 9,308 / 18,049,118 (128); 278 / 215 / 5,524 / 83,852,788 (131); 320 (123), 331ds / 255 / 15,769 / 15,246,025 and 332ss / 255 / 14,184 / 10,785,132 (125) and 333 / 264 / 4,357 (122) on height or terms; 4,860 / 4,476 / 14,719 / **1,837** (98, lowest height). Raw systems: 332 / 281 / 5,256 / 64,189,687 (139), 334 / 284 / 4,871 / 64,000,374 (135), 337 / 286 / 4,696 / 64,174,125 (138), 339 / 288 / 5,000 / 63,933,525 (134), 343 / 291 / 4,593 / 64,174,057 (133), 359 / 307 / 5,706 / 1,418,780 (128), 412 / 349 / **2,852** / 63,907,302 (131), 479 / 414 / 3,042 / 1,144,307 (123), 554 / 476 / 3,276 / 1,142,323 (112). Dominated: 135's 228 (by 139's 227), 134's 233, 138's 235 and 236, 129's 233 and 234, 133's 237, 239 and 240, 131's 249, 124's 261 and 292, 127's, 130's 241 and dense 239, 108's and 109's 395; raw: 138's 336, 130's 349, 131's 387, 127's and 129's raws (by 133's 343), 123's 465, 124's 435 and 406, and earlier forms | 98, 112, 122, 123, 125, 128, 131, 133, 134, 135, 138, 139 | 87 (earliest), 89 (this lineage) |
-| Direct C222 quartic, ℤ | **282 / 192 / 5,491 / 128,446**, 287 / 197 / 4,313 / 128,446 and 309 / 219 / **3,922** / 128,446 (135); 793 integers / 51,982 terms, 806 / 23,719 and 994 / 11,744, all at **height 1** (135; not sums of squares, so compared on variables, terms and height). Dominated: 134's 314, 136's 306, 137's 307, 308 and 310, 138's 286 and 319, 131's 324 and 338, 102's 3,776, 114's 3,564, the height-one forms of 127 (2,215 / 30,468), 136 and 139, 125's 442, 132's 352 and 355, 128's 378, 127's 381 and 391, 130's 964, 120's height-one 7,431, and every earlier form | 135 | 87 |
+| Direct C222 quartic, ℕ (no K215, Jones, Sun or coefficient tuple) | **221 / 171 / 10,216 / 2.4·10^12** and 223 / 173 / 6,858 / 83,953,724 and 222 / 172 / 9,522 / 83,954,186 (140); 221 / 171 / 13,935 / 118,464,197 and 224 / 174 / 6,527 / 83,953,869 (144); 221 / 172 / 9,536 / 83,954,186 and 222 / 173 / 6,821 / 83,954,028 (142); 229 / 179 / 5,607 / 65,892,965 (143); 255 / 203 / 5,743 / 64,214,623 (133); 242 / 190 / 9,308 / 18,049,118 (128); 278 / 215 / 5,524 / 83,852,788 (131); 320 (123), 331ds / 255 / 15,769 / 15,246,025 and 332ss / 255 / 14,184 / 10,785,132 (125) and 333 / 264 / 4,357 (122) on height or terms; 4,860 / 4,476 / 14,719 / **1,837** (98, lowest height). Raw systems (those of 140, 142, 143 and 144 unclaimed): 324 / 275 / 4,870 / 64,000,366 (142), 325 / 275 / 4,876 / 64,000,365 (144), 326 / 276 / 4,858 / 64,000,366 (140), 335 / 285 / 4,606 / 63,932,469 (143), 343 / 291 / 4,593 / 64,174,057 (133), 359 / 307 / 5,706 / 1,418,780 (128), 412 / 349 / **2,852** / 63,907,302 (131), 479 / 414 / 3,042 / 1,144,307 (123), 554 / 476 / 3,276 / 1,142,323 (112). Dominated: 144's 222 and 223, 143's 228s, 139's 226 and 227, 135's 228, 229 and 230, 134's 233, 138's 235 and 236, 129's 233 and 234, 133's 237, 239 and 240, 131's 249, 124's 261 and 292, 127's, 130's 241 and dense 239, 108's and 109's 395; raw: 144's 327, 139's 332, 135's 334, 138's 336 and 337, 134's 339, 130's 349, 131's 387, 127's and 129's raws, 123's 465, 124's 435 and 406, and earlier forms | 98, 112, 122, 123, 125, 128, 131, 133, 140, 142, 143, 144 | 87 (earliest), 89 (this lineage) |
+| Direct C222 quartic, ℤ | **252 / 182 / 5,340 / 128,446** (141); 258 / 186 / 5,319 / 47,281 and 261 / 185 / 5,332 / 47,281 (147); 260 / 186 / 4,770 / 9,191 (145); 260 / 185 / 5,099 / 128,446 (146); 263 / 191 / 4,141, 264 / 190 / 4,135, 285 / 213 / 3,750 and 286 / 212 / **3,744** (144, height 128,446); 279 / 189 / 5,483 / **7,200**, 284 / 194 / 4,270 / 10,864 and 306 / 216 / 3,870 / 14,512 (143); 571 integers / 19,833 terms, 593 / 12,027, 646 / 8,368 and 742 / 7,226, all at **height 1** (144; not sums of squares, so compared on variables, terms and height). Dominated: 140's 258, 259 and 261, 144's 258–261 and its baseline variants, 145's 259, 261 and pre-shear forms, 146's 259, 143's 278 and 279 (sparse), 135's 282, 287 and 309 and its height-one 793, 806 and 994, and everything those dominated | 141, 143, 144, 145, 146, 147 | 87 |
 | Eleven positive | **211 / 107** (115's evaluator of the research session's polynomial, which 105 evaluates in 110). Dominated: 83's 211 / 112, 86's 213 / 112, 87's 211 / 113, 82's 269 / 111, the 277 / 111 polynomial of 76, 77, 78, 79, 81, 77's 257 / 114, and 70's 325 / 113 | 83, 105, 115 | 76 (277), 83 (211) |
 | Twelve positive, Pareto frontier | **70 / 95** (115's evaluator of 98's free-J polynomial); 57's **258 / 89**. Dominated: 98's 70 / 98, 76's 78 / 101 ≡ 82's 78 / 102, 78's ≡ 81's 78 / 103, 87's 70 / 100, 69's 82 / 102, 74's forms | 98, 115; 57 | 80 (claim), 87 (first artifact), 98 |
-| Thirteen positive, Pareto frontier | **28 / 98** (72); 30 / 92 (73; 74 evaluates the same polynomial in 93); **51 / 87** (115's evaluator of 98's polynomial); **114 / 83** (62). Dominated: 98's 51 / 88, 70's and 75's 30 / 94, 61's 34 / 93 | 72; 73; 98, 115; 62 | — |
-| Fourteen positive, Pareto frontier | unchanged: **24 / 101** (72); 65's 26 / 92; 64's 30 / 83; 55's and 59's **52 / 79** | 72; 65; 64; 55 | — |
-| Fifteen positive | unchanged: 66 ops (51's P66, degree 157); lowest degree 24 / 88 (66); Pareto frontier as after wave 9 | 51; 66 | — |
+| Thirteen positive, Pareto frontier | **28 / 98** (72); 30 / 92 (73; 74 evaluates the same polynomial in 93); **51 / 87** (115's evaluator of 98's polynomial); 114 / 83 (62); **433 / 72** (142). Dominated: 98's 51 / 88, 70's and 75's 30 / 94, 61's 34 / 93 | 72; 73; 98, 115; 62; 142 | — |
+| Fourteen positive, Pareto frontier | **24 / 101** (72); 65's 26 / 92; 64's 30 / 83; 55's and 59's 52 / 79; 157 / 71 and **189 / 70** (142) | 72; 65; 64; 55; 142 | — |
+| Fifteen positive | 66 ops (51's P66, degree 157; 141 binds the same 66-operation shape to radix-47 and radix-49 tuples); lowest degree 24 / 88 (66); Pareto frontier as after wave 9 | 51; 66 | — |
 | Twelve positive, systems | unchanged: 59's three-equation system at 94 operations | 59 | 59 |
 | Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125. From wave 2 (history only, see the wave-2 README `5b0c9ae9fd`): 15's positive-domain sextic in 25 and octic in 20 unknowns, which still dominate 75's 26- and 21-unknown versions | waves 2, 5, 6 | — |
-| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54) among tuple-bound equations; 85, 86, 101 and 105 bind nine-positive forms to it. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1 (135; earlier 127, 120) and 2 (114) to about 9.9·10^27 (115)) | 54; 87–89 | 54 |
+| Smallest coefficients binding an equation | **B = 2^413929** (141's radix-47 tuple for the fifteen-positive P66, 207,214 raw bytes, if its 29-to-12 carry proof holds); before it **B = 2^429959** (54), to which 85, 86, 101 and 105 bind nine-positive forms. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1 (144; earlier 135, 127, 120) and 2 (114) to about 9.9·10^27 (115)) | 141; 54; 87–89 | 54 |
 
 
 
+
+
+## Wave 16 (sources 140–147)
+
+The eight archives of arrival `3ecd6a6cf5` (25 October 2026, 14:29) were
+placed as batch 232 in `d32d28da26`, in archive-name order. Seven pin the
+wave-15 arrival `e0c98c629b` (13:29); 141 pins `55d1f72aed` (13:37). None
+pins the wave-15 placement or reconciliation, and none saw another wave-16
+archive. Their PDFs were built on 25 October between 13:45 and 14:04 (147
+at 13:45, 146 at 13:52, 145 at 13:54, 144 at 13:56, 142 at 13:59:28, 143 at
+13:59:31, 140 at 13:59:42, 141 at 14:03). None cites a sibling. No placed
+path exceeds 250 characters. In this section ten-positive and
+thirteen- and fourteen-positive pairs are operations / degree, integer-circuit
+pairs degree / operations.
+
+| Dir | Archive | Title as printed | Constructions |
+|---|---|---|---|
+| [`140-centered-residues/`](140-centered-residues/) | `ConZFC_Centered_Residues_2026-10-25.zip` | *Centered residue certificates and reusable Pell denominators* | ten positive **75 / 626**, **76 / 464**, **77 / 460** (133's indexed tuple); direct quartics ℤ 258 / 186 / 5,366, 259 / 185 / 5,361 (height 128,446); ℕ **222 / 172 / 9,522 / 83,954,186**, 221 / 171 / 10,216 / 2.4·10^12, **223 / 173 / 6,858 / 83,953,724**; unclaimed raw ℕ 326 / 276 / 4,858 / 64,000,366 |
+| [`141-common-remainders-radix47/`](141-common-remainders-radix47/) | `ConZFC_Common_Remainders_Radix47_2026-10-25.zip` (wrapper `conzfc_common_remainders_20261025`) | *Common remainder certificates and explicit polynomial forms of Con(ZFC)* (README H1 and PDF metadata differ) | direct quartic **ℤ 252 / 182 / 5,340 / 128,446**; fifteen positive 66 / 157 on new radix-47 and radix-49 tuples (B = 2^413929 and 2^431543); ten positive 78 / 626, 79 / 464, 80 / 460 |
+| [`142-coprime-products-positive-centers/`](142-coprime-products-positive-centers/) | `ConZFC_Coprime_Products_and_Positive_Centers_2026-10-25.zip` | *Coprime product certificates and positive Pell centers* | **fourteen positive 70 / 189 and 71 / 157**, **thirteen positive 72 / 433**; ten positive **80 / 382** (and 76 / 626, 77 / 464); direct quartics ℕ **221 / 172 / 9,536 / 83,954,186** and **222 / 173 / 6,821 / 83,954,028**; unclaimed raw ℕ 324 / 275 / 4,870 / 64,000,366 |
+| [`143-residual-bases/`](143-residual-bases/) | `ConZFC_Residual_Bases_Denominator_Engineering_2026-10-25.zip` (wrapper `ConZFC_Residual_Bases_Denominator_Engineering`) | *Residual basis reduction and smaller Diophantine consistency equations* (README H1 differs; PDF metadata empty) | **14ℤ 86 / 112 and 94 / 110**; 13ℤ 156 / 125 (137's polynomial); direct quartics ℤ **279 / 189 / 5,483 / 7,200**, **284 / 194 / 4,270 / 10,864**, **306 / 216 / 3,870 / 14,512**, 278 / 188 / 12,884 / 12,227; ℕ **229 / 179 / 5,607 / 65,892,965**; ten positive 77 / 626 to 80 / 384, also on the research session's radix-55 tuple; unclaimed raw ℕ 335 / 285 / 4,606 / 63,932,469 |
+| [`144-shared-certificates-round18/`](144-shared-certificates-round18/) | `ConZFC_Shared_Certificates_Round18_2026-10-25.zip` | *Shared polynomial certificates for ZFC consistency* (README H1 differs) | **height one in 571 / 19,833, 593 / 12,027, 646 / 8,368 and 742 / 7,226** (integers / terms); direct quartics ℤ 258 / 186 / 5,364, **263 / 191 / 4,141**, **264 / 190 / 4,135**, **285 / 213 / 3,750**, **286 / 212 / 3,744** (height 128,446); ℕ **221 / 171 / 13,935 / 118,464,197**, **224 / 174 / 6,527 / 83,953,869**, 222 and 223; **11ℤ 316 / 133, 308 / 140, 304 / 144, 300 / 148** (source34); unclaimed raw ℕ 325 / 275 / 4,876 / 64,000,365 and 327 |
+| [`145-shared-residue-bounds/`](145-shared-residue-bounds/) | `ConZFC_Shared_Residue_Bounds_2026-10-25.zip` | *Shared quadratic bounds for Diophantine refutation certificates* (README H1 differs; PDF metadata empty) | direct quartic **ℤ 260 / 186 / 4,770 / 9,191**, with companions 261 / 185 / 5,332 and 259 / 185 / 23,960 |
+| [`146-symmetric-remainders/`](146-symmetric-remainders/) | `ConZFC_Symmetric_Remainders_2026-10-25.zip` | *Symmetric remainder bounds for Diophantine consistency* | direct quartics **ℤ 260 / 185 / 5,099 / 128,446** and 259 / 184 / 21,287 / 240,653; ten positive 77 / 626, 78 / 464, 79 / 460 |
+| [`147-symmetric-residue-budgets/`](147-symmetric-residue-budgets/) | `ConZFC_Symmetric_Residue_Budgets_2026-10-25.zip` | *Symmetric residue budgets for a 258-variable consistency quartic* (README H1 shorter) | direct quartics **ℤ 258 / 186 / 5,319 / 47,281** and **261 / 185 / 5,332 / 47,281**; ten positive 77 / 630 and 78 / 468 |
+
+### Identities and dominance (intake findings)
+
+Three read-only dossiers recounted every circuit, measured every headline
+degree on random lines, re-expanded every direct quartic, rebuilt 144's
+height-one polynomials from their certificates and replayed the
+elimination, projection, translation, shear and row-operation
+certificates; every headline figure was confirmed (not checked: 140's
+"42 generated files" rebuild, 144's matched 603 / 12,289 replay, and every
+unbounded proof). An inherited replay script mishandled steps with pivot
+sign −1; 144's `natural221` certificate passes once that is corrected.
+
+- **Ten positive: one family, five packages.** On 133's indexed tuple, 140's
+  75 / 626, 76 / 464 and 77 / 460 are new polynomials: 134's circuits with
+  the transport unshifted and the carrier denominator Y² replaced by XY or
+  q⁴ (degree 630 → 626). 142's 76 / 626 and 77 / 464 and 143's 77 / 626,
+  78 / 464 and 79 / 460 evaluate the same polynomials in one or two more
+  operations. 141's three and 146's three are the same polynomials with T
+  replaced by T + α. 147's 77 / 630 and 78 / 468 are 134's two with T
+  replaced by T − α. Two charts are new: 142's 80 / 382 (a partial q²
+  carrier), which dominates 138's 83 / 436, and 143's 80 / 384, which 142's
+  dominates.
+- **Fourteen and thirteen positive.** 142's 70 / 189, 71 / 157 and 72 / 433
+  are coprime unit products on the indexed tuple, with fewer operations than
+  any earlier point (the minima were 79 and 83).
+- **Integers without Sun's reduction.** 143's 14ℤ 86 / 112 and 94 / 110 are
+  new reductions of the 15-variable degree-44 source; its 88 / 115 and
+  13ℤ 156 / 125 evaluate 137's polynomials in fewer operations, and 156 / 125
+  dominates both 13ℤ points of wave 15. 144's 11ℤ 316 / 133 to 300 / 148
+  lower the degree below 135's 328 / 130; 308 / 140 and 304 / 144 are
+  316 / 133 with n replaced by n + 2U³T(c² − 2) and n + U²T[2U(c² − 2) + 16A³].
+- **Direct ℤ quartics.** Six packages pool the eleven remainder certificates
+  of 135's 282 source: 141 by one common denominator (252 / 182 / 5,340, which
+  dominates 140's and 144's 258–261), 140 by radius rows, 144 by spherical
+  guards, and 145, 146 and 147 by ternary caps (−2 in 145, −4 in 146 and 147;
+  145's 261 and 147's four-pool source differ only in those four rows). 145
+  lowers the height to 9,191 by 76 unimodular shears and 147 to 47,281 by 30
+  row operations; 143 exposes row bases and reaches heights 7,200 to 14,512.
+  147's centred odd three-pool equation is 140's 258 with two coordinates
+  translated (5,319 terms against 5,366), and its P258 follows from it by 30
+  row operations. On variables, terms and height, 144's height-one forms
+  dominate every earlier height-one form (571 / 19,833 beats 135's 793 and
+  806; 646 / 8,368 beats 994).
+- **Direct ℕ quartics.** 140, 142 and 144 pool the low digits of 135's raw
+  334 source; their 221–224 dominate 139's 226 and 227 and 135's 228–230.
+  143's 229 / 179 / 5,607 / 65,892,965 has fewer terms than any ℕ quartic with
+  fewer variables.
+  140, 142, 143 and 144 also ship unclaimed raw systems (324–335) that
+  dominate every earlier raw system with fewer than 343 variables.
+- **Coefficients.** 141's radix-47 tuple binds the unchanged 66-operation
+  P66 shape with B = 2^413929 (207,214 raw bytes), below 54's 2^429959, if its
+  29-to-12 carry proof holds; its radix-49 tuple completes the research
+  session's conditional radix-49 encoding.
+
+### Tensions, not adjudicated at intake
+
+- **The ten-positive family has no settled priority.** 140, 141, 142, 143
+  and 146 built the XY / q⁴ carrier independently between 13:52 and 14:03;
+  140 evaluates it most cheaply. The research session proposed 147's two
+  unshifted circuits code-free at 14:30 (`1b7428898a`), after the arrival;
+  147's are dated 13:37.
+- **One pooling idea, six packages.** The guard pooling of 140, 141 and
+  144–147 is the signed analogue of 139's pooled ℕ digits; no package cites
+  another. The research session's height-15,109 quartics (315 / 217 / 5,620 and
+  316 / 218 / 5,614, by shears, accepted in `2989b466d4`) are cited by none;
+  145's 260 dominates them.
+- **The R > 3q repair.** 140, 142, 143 and 146 state the canonical bound;
+  141 and 147 inherit 134's outer data without restating it.
+- **Unclaimed forms.** The raw ℕ systems above, 144's refactored height-one
+  sources (302 / 230 / 3,394 / 4,178 and 324 / 252 / 3,003 / 4,178, complete by its
+  refactor theorem) and 145's shear stage 260 / 186 / 4,753 / 98,336 are not
+  claimed and are not ranked here.
+- **The research session moved in parallel.** It reviewed this wave
+  code-free (`91cd6e314b`, 14:43; every metric "reported, unverified") and at
+  15:35 published its complemented radix-47 page (`100b6e1a90`), with the
+  same 207,214 raw coefficient bytes as 141's radix-47 tuple.
+- **The undelivered archives.** 140, 142, 143 and 144 carry the same 19
+  `ConZFC_Shell_Reciprocal_660` code files (143's natural builder routes
+  through them); 145 and 147 carry its `shell_source.py` (145 also its
+  shell-encoding proof); 141 and 146 carry none. No package carries a
+  finished equation of either undelivered archive.
+
+### Delivery discrepancies (wave 16)
+
+- **Drivers fail in place.** 140, 141, 143, 144, 146 and 147 check full
+  manifests; 142's top-level check passes silently when its gitignored
+  `SHA256SUMS` is absent, but its component checks fail; 145 reads 79 omitted
+  parent pins. All eight have builders that rewrite delivered files; 146's
+  and 147's report builders overwrite the PDF.
+- **Not shipped.** 146's 281 / 192 / 5,213 row; 144's `scalar/research/`,
+  named in its README.
+- **Records.** 145 calls two different equations primary and ships
+  `merged_products_centered` unlisted, with three byte-identical cap files;
+  147 presents removing the T shift as new and cites a "Source 142" from
+  another numbering; 143 compares its ℕ forms without 139's 226 and 227.
+- **Titles.** README H1 differs: 141, 143, 144, 145, 147; PDF metadata empty:
+  143, 145.
+- **Licence and attribution.** No root licence or NOTICE: 143, 145. No root
+  NOTICE: 141, 142, 146, 147. Every package states AI assistance itself.
+
+### Further questions (wave 16)
+
+1. Combine 143's row-basis exposure with 141's common denominator or 144's
+   spherical guards.
+2. Apply 142's partial q² carrier to 140's XY / q⁴ circuits.
+3. Decide whether the unclaimed raw systems and refactored quartics count as
+   endpoints.
+4. Compare 141's radix-47 tuple with the research session's complemented-47
+   page, and audit its carry proof.
 
 ## Wave 15 (sources 134–139)
 
@@ -611,6 +751,102 @@ confirmed (not checked: 134's leading coefficient and its 1,950- and
    282 source.
 3. Decide whether 135's refactored ℤ quartics count as endpoints.
 4. Combine 139's carrier shears with 134's removal of the scale μ.
+
+### Frontier after wave 15, as placed
+
+The combined frontier near the top of this README supersedes this table,
+which is kept as the state after wave 15.
+
+Numbers are the packages' own. At intake, read-only dossiers recounted
+every operation count and measured the degrees of the headline circuits
+(two each for waves 12 to 14, three for wave 15, five for wave 11, four for each earlier wave); all checked
+figures agree with the claims. The mathematics was not re-derived, and
+every dominance statement assumes the competing proofs are correct. Only
+packages of this collection are ranked here, each unknown count on its own
+row. The active research session's own candidates and this
+repository's `candidates/ten-positive-gap-fusion` (an independent
+derivation of package points) are compared in its
+[PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
+At the wave-15 intake several research circuits dominate package rows: its
+nine-positive 405 operations at degree 1,191,570 and 413 at 1,316,546
+(`23d8510a10`; the 413 form on the 2^429959 tuple), 722 at 1,158,228 and
+1,056 at 997,810 dominate every nine-positive package point; its
+ten-positive 84 / 328 (operations / degree, `b33b254625`) dominates 133's
+85 / 328; and its fourteen-positive 73 / 342 to 76 / 191 use fewer
+operations than the packages' 79. Its ℤ quartics of height 15,109
+(315 / 217 / 5,620 and 316 / 218 / 5,614) are Pareto with 135's.
+
+- "u / e / d / o" means unknowns / equations / degree / operations; pairs
+  are degree / operations, except in the ten-positive rows and the wave-14
+  and wave-15 sections' ten-positive entries, which give operations / degree. For the
+  direct quartics (degree 4 throughout) the measures are variables /
+  residuals / expanded terms / coefficient
+  height.
+- Operations count every binary +, −, × including multiplication by fixed
+  numerals; reuse and system comparisons are free. Fixed leaves are free,
+  so a constant folded into a leaf costs nothing. Packages differ in what
+  they fold:
+  - 66 stores a threshold power as a leaf (otherwise 495 and 499 operations,
+    not 490 and 494);
+  - the ten-integer circuits of 65 (525) and 67 (519, 520, 522) contain 7
+    gates on constants only;
+  - 68's ten-integer form (481) would cost 486 if the five gates building
+    its threshold were charged;
+  - 72's 98 and 101 leave six derived constants as leaves; computing them
+    takes 7 operations;
+  - the wave-11 ten-integer and nine-positive forms use eleven or twelve
+    derived leaves (radix and threshold powers, recipe outputs), all
+    materialized and checked.
+- Unknowns are strictly positive unless marked ℤ (unrestricted integers)
+  or ℕ (naturals). Natural-coordinate companions have separate counts:
+  - in wave 7, package 52 adds three operations, 47 adds four, and 53's
+    calibrated form adds six;
+  - in wave 8, 54 adds three, 57 two, 55 six, 56 seven (nine for its
+    reference form), 59 seven (four for its initial form), and 58's
+    natural translation fifteen;
+  - in wave 9, every nine-positive form adds seven, and 63's fourteen-positive
+    form adds fourteen;
+  - in wave 10, 71's nine-positive form adds seven and 74's twelve-positive
+    product adds twelve;
+  - in wave 11, 85's nine-positive forms add seven, 84's ten-positive form
+    ten, and 110's ten.
+
+  The domain translation and its actual circuit must be stated.
+
+The base is the earliest-arriving package that presents the construction in
+full; where only one package has it, that package. Within one wave, the
+lower directory number counts as earlier.
+
+| Criterion | Best stated | Found by | Base |
+|---|---|---|---|
+| Nine positive, fewest operations | **420** at degree 1,472,168 (ℕ: not shipped) | 101 | 101 |
+| Nine positive, lowest degree | **997,810 / 1,057** | 101 | 101 |
+| Nine positive, Pareto frontier | 1,472,168 / 420 (101); 1,376,378 / 456 (105); 1,158,228 / 726 (82); 997,810 / 1,057 (101). Dominated by these: 66's 444 and every earlier nine-positive form; 101's 428 and 85's 434 ≡ 86's 435 (one polynomial), 105's 442, 86's 449, 79's 1,753, 85's 1,074, 86's 1,086 | 82, 101, 105 | — |
+| Nine positive on the 2^429959 tuple | **1,626,248 / 428** (101); 1,628,768 / 434 (85; 86 evaluates the same polynomial in 435); 1,520,186 / 442 (105). Earlier: 54's 490 | 85, 101, 105 | 85 |
+| Ten positive, Pareto frontier | **78 / 630** and 79 / 468 (134); 83 / 436 (138, 133's 84 / 436 with T replaced by T − α); 85 / 328 (133); 87 / 323 and 88 / 318 (139); 89 / 288, 91 / 283, 92 / 278, 94 / 262, 96 / 258, 97 / 254 (119 on the BFS tuple, 121 on the original one; 119's 92 / 278 is 117's polynomial in one operation fewer, 121's the same circuit on the other tuple); 102 / 253 and 104 / 252 (132); **121 / 246** (130). Dominated: 138's 80 / 750 and 81 / 560, 137's 81 / 750 and 82 / 560, 133's 84 / 436, 130's 86 / 466, 87 / 466, 89 / 450 and 90 / 450, 131's 87 / 436 and 88 / 380, 113's, 116's, 117's and 118's forms, 115's 98 / 368 and 103 / 340, and every earlier form | 119, 121, 130, 132, 133, 134, 138, 139 | 84 (first), 113 (fusion) |
+| 10ℤ (Sun's reduction), Pareto frontier | **1,245,324 / 467**, 1,179,788 / 470, 1,114,252 / 473, **1,080,888 / 507** (106, re-evaluating 87's 471 form and the research session's three shears of it). Other polynomials: 76's 480 / 1,245,324, 83's 484 / 1,179,788, 487 / 1,114,252 and 521 / 1,081,125, 87's 485, 496 and 545 / 1,080,888, 91's re-evaluations. All dominate 68's 1,576,864 / 481 | 76, 83, 87, 106 | 76 (degree), 87 (operations) |
+| 11ℤ, without Sun's reduction, Pareto frontier | **924 / 107** and 840 / 108 (138); 810 / 112 (131); 648 / 115 (137); 488 / 118 and 464 / 119 (125); 398 / 121, 352 / 125, 340 / 129 and **328 / 130** (135). Dominated: 132's 924 / 109, 840 / 110, 428 / 123, 412 / 127, 396 / 128, 376 / 127, 364 / 131 and 352 / 132, 131's 966 / 109, 882 / 110 and 654 / 117, 137's 640 / 118, 580 / 119 and 574 / 122, 135's controls 382 / 125 and 366 / 126, 123's forms, 125's 456 / 124 and 416 / 125, 127's 440 / 126 and 412 / 127, 116's, 120's, 121's and 126's forms, 110's three | 125, 131, 135, 137, 138 | 110 |
+| 12ℤ, Pareto frontier | **500 / 139** (121's evaluator of 116's polynomial); **1,084 / 123** (113). Dominated: 116's 500 / 148, 112's 768 / 141, 111's 1,040 / 140 and four further forms, 110's 1,000 / 180 and 1,024 / 179, 118's two, and every wave-11 form | 113, 121 | 97 |
+| 13ℤ, Pareto frontier | **156 / 127** (137); 536 / 126 (118). Dominated: 116's 274 / 129, 105's 1,072 / 186, 1,392 / 177 and 1,408 / 176 and every earlier 13ℤ form | 118, 137 | 88 |
+| 14ℤ | **88 / 119** (137). Dominated: 116's 108 / 119, 106's 378 / 145, 88's 792 / 137 and every earlier 14ℤ form | 137 | 88 |
+| 15ℤ, Pareto frontier | **44 / 111** (132); **48 / 108** (121). Dominated: 116's 56 / 110, 106's 172 / 123 and every earlier 15ℤ form | 121, 132 | 88 (first 15ℤ form, 344 / 131) |
+| 16ℤ, Pareto frontier | **98 / 138** (106); 108 / 132 (91); **112 / 119** (93); 124 / 118 (98); **160 / 115** (92). Dominated: 92's 152 / 120, 132 / 128 and 120 / 123, 93's 112 / 120, 86's 184 / 135 and 192 / 134 | 91, 92, 93, 98, 106 | 86 |
+| 17ℤ | **88 / 110** (88). 82's and 86's 17ℤ / 88 forms are different polynomials (82 uncounted, 86 at 114); 84's 112 / 124 and 110 / 140 dominated | 88 | 82 |
+| 18ℤ–20ℤ | 18ℤ **32 / 112** (88) and 88 / 105 (85; 82's 18ℤ / 32 uncounted, 84's 80 / 115 and 77's 88 / 109 dominated); 19ℤ **28 / 116** (88) and 32 / 108 (85, the pivot polynomial of 83 and 84; 82 uncounted; 89's 19ℤ / 40 and 77's 32 / 112 dominated); 20ℤ **18 / 115** (93) and 20 / 111 (85; the pivot polynomial of 83 and 84; 88's 24 / 120 and 77's 32 / 112 dominated) | 82, 83, 85, 88, 89, 93 | 82 (18ℤ, 19ℤ), 83 (20ℤ) |
+| 21ℤ–24ℤ | 21ℤ / 16 (89, 9 residuals; 83 ≡ 84 ≡ 85 at 114 operations; 87, different); 22ℤ / 14 (79; 81 at 123) and 22ℤ / 16 / 118 (77); 23ℤ / 10 (83 ≡ 86 at 131) and 23ℤ / 12 (77 at 121; 79, 81, 82); 24ℤ / 10 (78; 81 at 135; 82). All beat 68's 26ℤ / 16 and 37's 24ℤ / 1,936 | 77, 78, 79, 81, 83, 86, 89 | 77 |
+| Integer octic | **25ℤ** in 127 operations (77). Dominated: the 26ℤ octics of 76, 77, 78, 79, 81, 82 and 68's 28ℤ, 69's and 71's 27ℤ | 77 | 77 |
+| Integer sextic | **30ℤ** (76). Dominated: the 31ℤ sextics of 77, 79, 81 (144 operations), 82, and the 32ℤ and 34ℤ sextics of waves 9–10 | 76 | 76 |
+| Integer quartic | **37ℤ** (76 ≡ 82, two variants; 77's four variants differ in one guard row). Dominated: 69's and 71's 38ℤ | 76, 77, 82 | 76 |
+| Direct C222 quartic, ℕ (no K215, Jones, Sun or coefficient tuple) | **226 / 175 / 10,314 / 87,839,583** and 227 / 176 / 7,905 / 87,839,583 (139); 229 / 179 / 9,184 / 83,954,634 and 230 / 180 / 6,858 / 83,954,472 (135); 255 / 203 / 5,743 / 64,214,623 (133); 242 / 190 / 9,308 / 18,049,118 (128); 278 / 215 / 5,524 / 83,852,788 (131); 320 (123), 331ds / 255 / 15,769 / 15,246,025 and 332ss / 255 / 14,184 / 10,785,132 (125) and 333 / 264 / 4,357 (122) on height or terms; 4,860 / 4,476 / 14,719 / **1,837** (98, lowest height). Raw systems: 332 / 281 / 5,256 / 64,189,687 (139), 334 / 284 / 4,871 / 64,000,374 (135), 337 / 286 / 4,696 / 64,174,125 (138), 339 / 288 / 5,000 / 63,933,525 (134), 343 / 291 / 4,593 / 64,174,057 (133), 359 / 307 / 5,706 / 1,418,780 (128), 412 / 349 / **2,852** / 63,907,302 (131), 479 / 414 / 3,042 / 1,144,307 (123), 554 / 476 / 3,276 / 1,142,323 (112). Dominated: 135's 228 (by 139's 227), 134's 233, 138's 235 and 236, 129's 233 and 234, 133's 237, 239 and 240, 131's 249, 124's 261 and 292, 127's, 130's 241 and dense 239, 108's and 109's 395; raw: 138's 336, 130's 349, 131's 387, 127's and 129's raws (by 133's 343), 123's 465, 124's 435 and 406, and earlier forms | 98, 112, 122, 123, 125, 128, 131, 133, 134, 135, 138, 139 | 87 (earliest), 89 (this lineage) |
+| Direct C222 quartic, ℤ | **282 / 192 / 5,491 / 128,446**, 287 / 197 / 4,313 / 128,446 and 309 / 219 / **3,922** / 128,446 (135); 793 integers / 51,982 terms, 806 / 23,719 and 994 / 11,744, all at **height 1** (135; not sums of squares, so compared on variables, terms and height). Dominated: 134's 314, 136's 306, 137's 307, 308 and 310, 138's 286 and 319, 131's 324 and 338, 102's 3,776, 114's 3,564, the height-one forms of 127 (2,215 / 30,468), 136 and 139, 125's 442, 132's 352 and 355, 128's 378, 127's 381 and 391, 130's 964, 120's height-one 7,431, and every earlier form | 135 | 87 |
+| Eleven positive | **211 / 107** (115's evaluator of the research session's polynomial, which 105 evaluates in 110). Dominated: 83's 211 / 112, 86's 213 / 112, 87's 211 / 113, 82's 269 / 111, the 277 / 111 polynomial of 76, 77, 78, 79, 81, 77's 257 / 114, and 70's 325 / 113 | 83, 105, 115 | 76 (277), 83 (211) |
+| Twelve positive, Pareto frontier | **70 / 95** (115's evaluator of 98's free-J polynomial); 57's **258 / 89**. Dominated: 98's 70 / 98, 76's 78 / 101 ≡ 82's 78 / 102, 78's ≡ 81's 78 / 103, 87's 70 / 100, 69's 82 / 102, 74's forms | 98, 115; 57 | 80 (claim), 87 (first artifact), 98 |
+| Thirteen positive, Pareto frontier | **28 / 98** (72); 30 / 92 (73; 74 evaluates the same polynomial in 93); **51 / 87** (115's evaluator of 98's polynomial); **114 / 83** (62). Dominated: 98's 51 / 88, 70's and 75's 30 / 94, 61's 34 / 93 | 72; 73; 98, 115; 62 | — |
+| Fourteen positive, Pareto frontier | unchanged: **24 / 101** (72); 65's 26 / 92; 64's 30 / 83; 55's and 59's **52 / 79** | 72; 65; 64; 55 | — |
+| Fifteen positive | unchanged: 66 ops (51's P66, degree 157); lowest degree 24 / 88 (66); Pareto frontier as after wave 9 | 51; 66 | — |
+| Twelve positive, systems | unchanged: 59's three-equation system at 94 operations | 59 | 59 |
+| Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125. From wave 2 (history only, see the wave-2 README `5b0c9ae9fd`): 15's positive-domain sextic in 25 and octic in 20 unknowns, which still dominate 75's 26- and 21-unknown versions | waves 2, 5, 6 | — |
+| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54) among tuple-bound equations; 85, 86, 101 and 105 bind nine-positive forms to it. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1 (135; earlier 127, 120) and 2 (114) to about 9.9·10^27 (115)) | 54; 87–89 | 54 |
 
 ## Wave 14 (sources 127–133)
 
@@ -2673,7 +2909,7 @@ where waves 7–10 improve on it.
 ## Wave 5 (sources 31–37)
 
 Wave 5 is described as placed, with its frontier at that time. The
-combined frontier above supersedes it where waves 6–15 improve on it.
+combined frontier above supersedes it where waves 6–16 improve on it.
 
 ### Supersession of wave 4
 
@@ -2914,8 +3150,8 @@ The packages say, in their own words (exceptions noted):
   - Sun's reduction is not formalized anywhere in the repository (checked at
     intake: nothing in `Computability/HilbertTenthProblem`).
   - The active Lean research in `Computability/DiophantineConsistency/`
-    postdates the wave-5 and wave-6 pins, but not the wave-7 to wave-15
-    pins. Packages of waves 11–15 build on its reviews and candidates, and
+    postdates the wave-5 and wave-6 pins, but not the wave-7 to wave-16
+    pins. Packages of waves 11–16 build on its reviews and candidates, and
     its candidates on them (see those sections).
   - Wave-7 46, 51 and 53 build their short forms on its checked circuits
     P69, P73 and P75.
@@ -2996,7 +3232,7 @@ The packages say, in their own words (exceptions noted):
   - In wave 11, the nine-positive forms of 79, 82, 85, 86, 101 and 105 keep
     the ratio finalizer through 66's and 71's sources. No other wave-11
     form uses a Jones lemma; the direct quartics use none.
-  - Waves 12–15 use no Jones lemma: their ten- to thirteen-positive
+  - Waves 12–16 use no Jones lemma: their ten- to thirteen-positive
     forms, 117's 30ℤ companion and the 11ℤ–15ℤ forms are native K215 forms,
     and their quartics are direct.
   - No package uses `Jones1982.nine_unknowns`, which fixes ν = 58.
@@ -3046,8 +3282,8 @@ The packages say, in their own words (exceptions noted):
     later `PROPOSAL_REVIEW_*.md` files), and built its own candidates on
     them and on this repository's `ten-positive-scaled-norm`; its current
     comparison is [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
-- **Direct C222 route (waves 11–15).** The direct quartics of 87, 89,
-  93–96, 98–109, 111, 112, 114, 115 and 117–139 rest on two Lean theorems, `KEndpoint.c222_iff_zf_refutation`
+- **Direct C222 route (waves 11–16).** The direct quartics of 87, 89,
+  93–96, 98–109, 111, 112, 114, 115 and 117–147 rest on two Lean theorems, `KEndpoint.c222_iff_zf_refutation`
   (`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean`) and
   `ConstructibleChoice.zf_refutation_iff_zfc_refutation`, and on the
   representation modules under `Computability/DiophantineConsistency/Lean/`
@@ -3079,6 +3315,7 @@ attribution file the packages ship is kept in place.
 | 13 | `45b399ec51` (all) | `5f3379063d` | `9f7ff01558` |
 | 14 | `f4d8db99e0` (all) | `fd3e384e92` | `1c5367452a` |
 | 15 | `1c5367452a` (134–136, 138, 139), `b30ddde0aa` (137) | `e0c98c629b` | `1eed4b48cd` |
+| 16 | `e0c98c629b` (140, 142–147), `55d1f72aed` (141) | `3ecd6a6cf5` | `d32d28da26` |
 
 ## Files
 
@@ -5761,4 +5998,228 @@ Every staged file, grouped by source directory (generated from the tree):
 - `139-graph-digits/graph/verification/`: `NORMAL.json`, `OPTIMIZED.json`
 - `139-graph-digits/report_inputs/`: `compact_registers.tex`, `constant_recipe.py`, `natural226_residuals.tex`
 - `139-graph-digits/verification/`: `FINAL_MATHEMATICAL_REVIEW.md`, `PDF_REVIEW.json`, `normal.json`, `optimized.json`
+- `140-centered-residues/`: `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `PROVENANCE.json`, `README.md`, `render_report_inputs.py`, `report.pdf`, `report.tex`, `verify_all.py`
+- `140-centered-residues/arithmetic/`: `LICENSE`, `NATURAL_PROOF.md`, `NOTICE.md`, `ODD_SQUARE_AND_WEIGHTED_PROOF.md`, `PROVENANCE.json`, `README.md`, `SIGNED_RADIUS_PROOF.md`, `VERIFY_NATURAL.json`, `VERIFY_OPTIMIZED.json`, `VERIFY_REBUILD.json`, `VERIFY_SIGNED_OPTIMIZED.json`, `build.py`, `build_signed_radius.py`, `evaluate.py`, `verify.py`, `verify_natural.py`, `verify_signed.py`
+- `140-centered-residues/arithmetic/audit261/`: `equation.json`, `expanded_polynomial.json`, `metrics.json`, `projected.json`, `projection.json`, `radius_certificate.json`, `raw_equation.json`, `translation.json`
+- `140-centered-residues/arithmetic/natural221_high/`: `equation.json`, `expanded_polynomial.json`, `metrics.json`, `projection.json`, `raw_equation.json`, `transformation.json`
+- `140-centered-residues/arithmetic/natural222/`: `equation.json`, `expanded_polynomial.json`, `metrics.json`, `projection.json`, `raw_equation.json`, `transformation.json`
+- `140-centered-residues/arithmetic/natural223_sparse/`: `equation.json`, `expanded_polynomial.json`, `metrics.json`, `projection.json`, `raw_equation.json`, `transformation.json`
+- `140-centered-residues/arithmetic/signed258/`: `equation.json`, `expanded_polynomial.json`, `metrics.json`, `projected.json`, `projection.json`, `radius_certificate.json`, `raw_equation.json`, `translation.json`
+- `140-centered-residues/arithmetic/signed259/`: `equation.json`, `expanded_polynomial.json`, `metrics.json`, `projected.json`, `projection.json`, `radius_certificate.json`, `raw_equation.json`, `translation.json`
+- `140-centered-residues/arithmetic/source/`: `row_priority.json`
+- `140-centered-residues/arithmetic/upstream/round17/`: `LICENSE`, `NOTICE.md`
+- `140-centered-residues/arithmetic/upstream/round17/architecture/portable/`: `LICENSE`, `ProveIt_LICENSE`
+- `140-centered-residues/arithmetic/upstream/round17/direct/`: `NOTICE.md`
+- `140-centered-residues/arithmetic/upstream/round17/direct/licenses/`: `LICENSE.Mathlib`, `LICENSE.ProveIt`, `LICENSE.incoming_signed`
+- `140-centered-residues/compact/`: `INDEPENDENT_REVIEW.md`, `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_LEDGER.json`, `build.py`, `build_metrics.json`, `coefficient_reconstruction.json`, `equation_XY_V2.json`, `equation_XY_bV.json`, `equation_q4_V2.json`, `equation_q4_bV.json`, `independent_verification.json`, `independent_verification_optimized.json`, `independent_verify.py`, `rebuild_coefficients.py`, `verification.json`, `verification_stdout.json`, `verify.py`
+- `140-centered-residues/compact/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-native44.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-package44.md`, `NOTICE-source61.md`, `NOTICE_K215.md`
+- `140-centered-residues/compact/proof_sources/`: `unshift_bv.md`, `unshift_square.md`
+- `140-centered-residues/report_inputs/`: `compact.tex`, `compact_constants.tex`, `direct_residuals.tex`, `metrics.tex`, `natural.tex`, `natural_residuals.tex`, `results_table.tex`, `verification.tex`
+- `140-centered-residues/reviews/`: `PELL_MATHEMATICAL_REVIEW.md`, `SIGNED_RADIUS_MATHEMATICAL_REVIEW.md`, `check_pell_independent.py`, `check_signed_radius_independent.py`, `pell_independent_receipt.json`, `pell_independent_receipt_optimized.json`, `signed_radius_independent_receipt.json`, `signed_radius_independent_receipt_optimized.json`, `signed_radius_release_receipt.json`, `signed_radius_release_receipt_optimized.json`
+- `140-centered-residues/verification/`: `COMPLETE_RELEASE.json`, `PDF_QA.json`
+- `141-common-remainders-radix47/`: `INTEGRATION.md`, `LICENSE`, `MANIFEST.json`, `README.md`, `RESULTS.json`, `verify_release.py`
+- `141-common-remainders-radix47/compact/`: `DENOMINATOR_PROOF.md`, `INDEPENDENT_REVIEW.md`, `LICENSE`, `NOTICE.md`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `build.py`, `equation_78_626.json`, `equation_79_464.json`, `equation_80_460.json`, `verify.py`
+- `141-common-remainders-radix47/compact/upstream/parent/`: `LICENSE`, `NOTICE.md`
+- `141-common-remainders-radix47/compact/upstream/parent/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-native44.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-package44.md`, `NOTICE-source61.md`, `NOTICE_K215.md`
+- `141-common-remainders-radix47/direct/`: `LICENSE`, `NOTICE.md`, `README.md`
+- `141-common-remainders-radix47/direct/code/`: `build.py`, `center_integer.py`, `check.py`, `check_controls.py`, `verify.py`
+- `141-common-remainders-radix47/direct/data/`: `METRICS.json`, `PROJECTION_CHECK.json`, `equation.json`, `expanded_polynomial.json`, `factored_source.json`, `factorization_certificate.json`, `guarded.json`, `projected.json`, `projection_certificate.json`, `remainder_transformation.json`, `source.json`, `translation_certificate.json`
+- `141-common-remainders-radix47/direct/equation/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `projected.json`, `translation_certificate.json`
+- `141-common-remainders-radix47/direct/proofs/`: `INDEPENDENT_REVIEW.md`, `NORMALIZED_REMAINDERS_PROOF.md`
+- `141-common-remainders-radix47/direct/upstream/`: `SOURCE_PINS.json`
+- `141-common-remainders-radix47/direct/upstream/round17/`: `LICENSE`, `NOTICE.md`
+- `141-common-remainders-radix47/direct/upstream/round17/direct/`: `NOTICE.md`
+- `141-common-remainders-radix47/direct/verification/`: `verification_optimized.json`, `verification_rebuild.json`
+- `141-common-remainders-radix47/radix47/`: `DEPENDENCIES.json`, `MANIFEST.json`, `README.md`, `TOOLCHAIN.json`, `audit_radix47_peer.py`, `materialize_radix47.py`, `materialize_radix49.py`, `radix_probe.py`, `verify_radix47.py`
+- `141-common-remainders-radix47/radix47/radix47/`: `INDEPENDENT_REVIEW.md`, `construction_report.json`, `equation.pdf`, `equation.tex`, `native_geometry.json`, `peer_audit_optimized_stdout.json`, `peer_audit_stdout.json`, `phi_coefficients.json`, `polynomial.json`, `radix47_proof.md`, `verification_optimized_stdout.json`, `verification_report.json`, `verification_stdout.json`
+- `141-common-remainders-radix47/radix47/radix47/coefficients/`: `K0.bin.gz`, `MC.bin.gz`, `MF.bin.gz`, `beta.bin.gz`
+- `141-common-remainders-radix47/radix47/sources/`: `equation.tex`
+- `141-common-remainders-radix47/radix47/sources/candidates/one-page-compact66-radix55/`: `PROOF.md`, `polynomial.json`
+- `141-common-remainders-radix47/radix47/sources/research/compact66-radix51-local-resets/`: `README.md`
+- `141-common-remainders-radix47/radix47/sources/research/compact66-shared-marker-radix49/`: `README.md`, `SOURCE_PINS.json`
+- `141-common-remainders-radix47/radix47/sources/research/indexed-tile-enumeration/coefficients/`: `K.bin.gz.base64`
+- `141-common-remainders-radix47/radix47/sources_pinned/Computability/DiophantineConsistency/candidates/one-page-compact66-radix55/`: `PROOF.md`, `equation.tex`, `polynomial.json`
+- `141-common-remainders-radix47/radix47/sources_pinned/Computability/DiophantineConsistency/candidates/one-page-compact66/`: `DESIGN.md`
+- `141-common-remainders-radix47/radix47/sources_pinned/Computability/DiophantineConsistency/research/compact-tile-parameters/`: `README.md`
+- `141-common-remainders-radix47/radix47/sources_pinned/Computability/DiophantineConsistency/research/compact66-radix51-local-resets/`: `MANIFEST.json`, `README.md`, `SOURCE_PINS.json`
+- `141-common-remainders-radix47/radix47/sources_pinned/Computability/DiophantineConsistency/research/compact66-radix53-carry-tolerance/`: `MANIFEST.json`, `README.md`, `SOURCE_PINS.json`
+- `141-common-remainders-radix47/radix47/sources_pinned/Computability/DiophantineConsistency/research/compact66-radix55-bootstrap/`: `README.md`
+- `141-common-remainders-radix47/radix47/sources_pinned/Computability/DiophantineConsistency/research/compact66-radix57-59-padding/`: `README.md`
+- `141-common-remainders-radix47/radix47/sources_pinned/Computability/DiophantineConsistency/research/compact66-radix65-native-adapter/`: `README.md`
+- `141-common-remainders-radix47/radix47/sources_pinned/Computability/DiophantineConsistency/research/compact66-shared-marker-radix47-clause-alias/`: `README.md`
+- `141-common-remainders-radix47/radix47/sources_pinned/Computability/DiophantineConsistency/research/direct-tile-coordinate-coefficients/`: `README.md`
+- `141-common-remainders-radix47/radix49/`: `DEPENDENCIES.json`, `MANIFEST.json`, `README.md`, `materialize_radix49.py`, `radix_probe.py`, `radix_probe_result.json`, `verify_radix49.py`
+- `141-common-remainders-radix47/radix49/radix49/`: `construction_report.json`, `equation.tex`, `phi_coefficients.json`, `polynomial.json`, `radix49_completion.md`, `verification_optimized_stdout.json`, `verification_report.json`, `verification_stdout.json`
+- `141-common-remainders-radix47/radix49/radix49/coefficients/`: `K0.bin.gz`, `MC.bin.gz`, `MF.bin.gz`, `beta.bin.gz`
+- `141-common-remainders-radix47/radix49/sources/`: `equation.tex`
+- `141-common-remainders-radix47/radix49/sources/candidates/one-page-compact66-radix55/`: `PROOF.md`, `polynomial.json`
+- `141-common-remainders-radix47/radix49/sources/research/compact66-radix51-local-resets/`: `README.md`
+- `141-common-remainders-radix47/radix49/sources/research/compact66-shared-marker-radix49/`: `README.md`, `SOURCE_PINS.json`
+- `141-common-remainders-radix47/radix49/sources/research/indexed-tile-enumeration/coefficients/`: `K.bin.gz.base64`
+- `141-common-remainders-radix47/radix49/sources_pinned/Computability/DiophantineConsistency/candidates/one-page-compact66-radix55/`: `PROOF.md`, `equation.tex`, `polynomial.json`
+- `141-common-remainders-radix47/radix49/sources_pinned/Computability/DiophantineConsistency/research/compact-tile-parameters/`: `README.md`
+- `141-common-remainders-radix47/radix49/sources_pinned/Computability/DiophantineConsistency/research/compact66-radix51-local-resets/`: `MANIFEST.json`, `README.md`, `SOURCE_PINS.json`
+- `141-common-remainders-radix47/radix49/sources_pinned/Computability/DiophantineConsistency/research/compact66-radix53-carry-tolerance/`: `MANIFEST.json`, `README.md`, `SOURCE_PINS.json`
+- `141-common-remainders-radix47/radix49/sources_pinned/Computability/DiophantineConsistency/research/compact66-radix55-bootstrap/`: `README.md`
+- `141-common-remainders-radix47/radix49/sources_pinned/Computability/DiophantineConsistency/research/compact66-radix57-59-padding/`: `README.md`
+- `141-common-remainders-radix47/radix49/sources_pinned/Computability/DiophantineConsistency/research/compact66-radix65-native-adapter/`: `README.md`
+- `141-common-remainders-radix47/radix49/sources_pinned/Computability/DiophantineConsistency/research/direct-tile-coordinate-coefficients/`: `README.md`
+- `141-common-remainders-radix47/report/`: `generate_appendix.py`, `native_section.tex`, `radix47_section.tex`, `report.pdf`, `report.tex`, `residuals.tex`, `verification_summary.tex`
+- `141-common-remainders-radix47/verification/`: `appendix_generation.json`, `compact_root.json`, `radix47_root.json`, `visual_qa.json`
+- `142-coprime-products-positive-centers/`: `INTEGRATION.md`, `LICENSE`, `PROVENANCE.json`, `README.md`, `verify.py`
+- `142-coprime-products-positive-centers/compact_xy/`: `CHECK.json`, `CHECK_OPTIMIZED.json`, `LICENSE`, `MANIFEST.json`, `PARTIAL_Q2_PROOF.md`, `PROOF.md`, `README.md`, `build.py`, `equation_76_626.json`, `equation_77_464.json`, `equation_77_626_shifted.json`, `equation_78_464_shifted.json`, `equation_79_516_partial.json`, `equation_80_382_partial.json`, `rebuild_coefficients.py`, `verify.py`
+- `142-coprime-products-positive-centers/compact_xy/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-native44.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-package44.md`, `NOTICE-source61.md`, `NOTICE_K215.md`
+- `142-coprime-products-positive-centers/compact_xy/upstream/`: `unshift_bv.md`, `unshift_square.md`
+- `142-coprime-products-positive-centers/natural/`: `LICENSE`, `PROOF.md`, `PROVENANCE.json`, `README.md`, `build.py`, `evaluate.py`, `render.py`, `verify.py`
+- `142-coprime-products-positive-centers/natural/equations/`: `SUMMARY.json`
+- `142-coprime-products-positive-centers/natural/equations/natural221/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `142-coprime-products-positive-centers/natural/equations/natural222/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `142-coprime-products-positive-centers/natural/equations/raw/`: `equation.json`, `expanded_polynomial.json`, `transformation.json`
+- `142-coprime-products-positive-centers/natural/inherited/`: `NOTICE.round17.md`
+- `142-coprime-products-positive-centers/natural/inherited/architecture/portable/`: `LICENSE`, `ProveIt_LICENSE`
+- `142-coprime-products-positive-centers/natural/transcriptions/`: `equation221.txt`, `equation222.txt`, `residuals221.tex`, `residuals222.tex`, `variables221.tsv`, `variables222.tsv`
+- `142-coprime-products-positive-centers/natural/verification/`: `normal.json`, `optimized.json`
+- `142-coprime-products-positive-centers/products/`: `MANIFEST.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `ROOT_ANCHOR_PROOF.md`, `ROOT_DOUBLING_PROOF.md`, `ROOT_SATURATION_PROOF.md`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `build.py`, `equation_13_anchored.json`, `equation_13_doubled.json`, `equation_14_raw.json`, `equation_14_reduced.json`, `positive13_doubled_product.json`, `positive14_coprime_product_raw.json`, `positive14_coprime_product_reduced.json`, `verify.py`
+- `142-coprime-products-positive-centers/products/parents/`: `COEFFICIENT_BINDING.json`, `P66.json`, `P66_PROOF.md`
+- `142-coprime-products-positive-centers/report/`: `constants_appendix.tex`, `fourteen.tex`, `report.pdf`, `report.tex`, `thirteen.tex`
+- `142-coprime-products-positive-centers/verification/`: `FINAL_CHECK.json`, `FINAL_CHECK_OPTIMIZED.json`, `PDF_QA.json`, `REVIEW_RECORD.md`, `product_review.md`, `product_review_checks.json`
+- `143-residual-bases/`: `FINAL_REPLAY.json`, `INTEGRATION.md`, `MANIFEST_SHA256.json`, `README.md`, `build_report.sh`, `verify.py`
+- `143-residual-bases/compact/`: `CHECK.json`, `CHECK_OPTIMIZED.json`, `LICENSE`, `NOTICE.inherited.md`, `PROOF.md`, `PROVENANCE.json`, `README.md`, `SOURCE_PINS.json`, `build.py`, `coefficients.tex`, `partial_bv.json`, `partial_v2.json`, `q4_bv.json`, `q4_v2.json`, `rebuild_coefficients.py`, `report_section.tex`, `verify.py`, `xy_bv.json`, `xy_v2.json`
+- `143-residual-bases/compact/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-native44.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-package44.md`, `NOTICE-source61.md`, `NOTICE_K215.md`
+- `143-residual-bases/compact/provenance/`: `unshift_general.md`
+- `143-residual-bases/compact_radix55/`: `BINDING_CHECK.json`, `CHECK.json`, `CHECK_OPTIMIZED.json`, `COEFFICIENT_BINDING.json`, `LICENSE`, `NOTICE.inherited.md`, `PROOF.md`, `PROVENANCE.json`, `README.md`, `REDUCTION_PROOF.md`, `SOURCE_PINS.json`, `build.py`, `partial_bv.json`, `partial_v2.json`, `q4_bv.json`, `q4_v2.json`, `radix55_section.tex`, `rebuild_coefficients.py`, `verify.py`, `verify_binding.py`, `xy_bv.json`, `xy_v2.json`
+- `143-residual-bases/compact_radix55/coefficients/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`
+- `143-residual-bases/compact_radix55/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-native44.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-package44.md`, `NOTICE-source61.md`, `NOTICE_K215.md`
+- `143-residual-bases/compact_radix55/provenance/`: `reduction_report67.tex`, `unshift_general.md`
+- `143-residual-bases/compact_radix55/provenance/radix55/`: `CALIBRATION_BINDING.json`, `COEFFICIENT_BINDING.json`, `MANIFEST.json`, `PROOF.md`, `README.md`, `SOURCE_INDEX.json`, `bootstrap.md`, `controller_acceptance.json`, `controller_review.md`, `controller_review_historical.md`, `controller_review_root.md`, `page_review.md`, `unit_acceptance.json`
+- `143-residual-bases/compact_radix55/provenance/templates67/`: `partial_bv.json`, `partial_v2.json`, `q4_bv.json`, `q4_v2.json`, `xy_bv.json`, `xy_v2.json`
+- `143-residual-bases/natural/`: `AFFINE_CHECK.json`, `ISOLATED_REPLAY.json`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `ROW_CHECK.json`, `SOURCE_MAP.json`, `VERIFY.json`, `VERIFY_OPTIMIZED.json`, `apply_row_basis.py`, `build.py`, `check_row_basis.py`, `check_semantic.py`, `contract_fixed.py`, `render_equation.py`, `report_section.tex`, `row_basis_certificate.json`, `row_operations.json`, `verify.py`
+- `143-residual-bases/natural/balanced229/`: `equation.json`, `expanded_polynomial.json`, `residuals.tex`, `residuals.txt`, `variables.tsv`
+- `143-residual-bases/natural/low_height228/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `priority.json`, `residuals.tex`, `residuals.txt`, `variables.tsv`
+- `143-residual-bases/natural/portable/`: `LICENSE`, `ProveIt_LICENSE`
+- `143-residual-bases/natural/portable/source/custom/`: `build_modular_factorial.py`, `build_strict_budget.py`
+- `143-residual-bases/natural/projected229/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `residuals.tex`, `residuals.txt`, `variables.tsv`
+- `143-residual-bases/natural/source/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `semantic.json`
+- `143-residual-bases/natural/sparse228/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `priority.json`, `residuals.tex`, `residuals.txt`, `variables.tsv`
+- `143-residual-bases/quartic/`: `AFFINE_RANK.json`, `CHECK_NORMAL.json`, `CHECK_OPTIMIZED.json`, `ENDPOINTS.json`, `EXPORT_BUILD.json`, `EXPORT_CHECK_NORMAL.json`, `EXPORT_CHECK_OPTIMIZED.json`, `INDEPENDENT_REVIEW.md`, `MANIFEST_SHA256.json`, `PROOF.md`, `README.md`, `SOURCE_PROVENANCE.json`, `affine_rank.py`, `build.py`, `check.py`, `export_readable.py`, `report_section.tex`
+- `143-residual-bases/quartic/certificates/`: `integer278.json`, `integer279_balanced.json`, `integer279_sparse.json`, `integer284_sparse.json`, `integer306_sparse.json`
+- `143-residual-bases/quartic/integer278/`: `METRICS.json`, `RESTORATION.json`, `equation.json`, `expanded_polynomial.json`, `residuals.tex`, `residuals.txt`, `variables.tsv`
+- `143-residual-bases/quartic/integer279_balanced/`: `METRICS.json`, `RESTORATION.json`, `equation.json`, `expanded_polynomial.json`, `residuals.tex`, `residuals.txt`, `variables.tsv`
+- `143-residual-bases/quartic/integer279_sparse/`: `METRICS.json`, `RESTORATION.json`, `equation.json`, `expanded_polynomial.json`, `residuals.tex`, `residuals.txt`, `variables.tsv`
+- `143-residual-bases/quartic/integer284_sparse/`: `METRICS.json`, `RESTORATION.json`, `equation.json`, `expanded_polynomial.json`, `residuals.tex`, `residuals.txt`, `variables.tsv`
+- `143-residual-bases/quartic/integer306_sparse/`: `METRICS.json`, `RESTORATION.json`, `equation.json`, `expanded_polynomial.json`, `residuals.tex`, `residuals.txt`, `variables.tsv`
+- `143-residual-bases/quartic/licenses/`: `LICENSE.Mathlib`, `LICENSE.ProveIt`, `LICENSE.incoming_signed`
+- `143-residual-bases/quartic/sources/`: `balanced-crt-gate-shear_upstream_certificate.json`, `neighbor-gate-shear_upstream_certificate.json`, `pair-sum-gate-shear_upstream_certificate.json`, `pell-output-gate-shear_upstream_certificate.json`, `second-pair-sum-gate-shear-r1_upstream_certificate.json`
+- `143-residual-bases/report/`: `compact_coefficients.tex`, `compact_section.tex`, `main.pdf`, `main.tex`, `natural_section.tex`, `quartic_section.tex`, `radix55_section.tex`, `results.tex`, `roots_section.tex`
+- `143-residual-bases/reviews/`: `PRESENTATION_REPAIRS.md`, `baseline.md`, `compact_math_review.md`, `compact_radix55_math_addendum.md`, `natural_math_review.md`, `quartic_math_review.md`, `report_metric_crosscheck.json`, `report_review.md`, `roots_math_review.md`
+- `143-residual-bases/roots/`: `BASELINE_PINS.json`, `CHECK.json`, `CHECK_NORMAL.txt`, `CHECK_OPTIMIZED.json`, `CHECK_OPTIMIZED.txt`, `CLOSURE_MAP.md`, `COEFFICIENT_REBUILD.json`, `COEFFICIENT_REBUILD.txt`, `COEFFICIENT_REBUILD_OPTIMIZED.json`, `COEFFICIENT_REBUILD_OPTIMIZED.txt`, `INHERITED_NOTICE.md`, `MANIFEST.json`, `METRICS.json`, `PROOF.md`, `README.md`, `REBUILD.json`, `RECONSTRUCTION_MODES.json`, `SOURCE_CLOSURE_PINS.json`, `build.py`, `check.py`, `integer13_degree156_ops125.json`, `integer13_degree156_ops125_spec.json`, `integer14_degree86_ops112.json`, `integer14_degree86_ops112_spec.json`, `integer14_degree88_ops115.json`, `integer14_degree88_ops115_spec.json`, `integer14_degree94_ops110.json`, `integer14_degree94_ops110_spec.json`, `reconstruct_coefficients.py`, `report_section.tex`
+- `143-residual-bases/roots/baseline/source/`: `KNOWN_LEADING_FORM_ERRATUM.md`
+- `143-residual-bases/roots/review/`: `roots_baseline_comparison.json`, `roots_independent_audit.json`, `roots_independent_audit.py`, `roots_math_review.md`
+- `143-residual-bases/roots/source_closure/`: `LICENSE.UPSTREAM`
+- `143-residual-bases/roots/source_closure/provenance/interpolation12/`: `LICENSE`, `NOTICE.md`
+- `143-residual-bases/roots/source_closure/provenance/trace_precursor/`: `LICENSE`, `NOTICE.md`
+- `144-shared-certificates-round18/`: `CLOSURE_MAP.md`, `ConZFC_Shared_Certificates_Round18_2026-10-25.pdf`, `ENDPOINTS.json`, `LICENSE`, `MANIFEST_SHA256.json`, `NOTICE.md`, `README.md`, `VERIFY_PLAN.json`, `check_sos_independent.py`, `rebuild_signed_independent.py`, `verify_release.py`
+- `144-shared-certificates-round18/audits/`: `HEIGHT_ONE_BIJECTION_MATHEMATICAL_AUDIT.md`, `NATURAL_POOLED_DIGITS_MATHEMATICAL_AUDIT.md`, `NATURAL_TRANSFORM_NORMAL.json`, `NATURAL_TRANSFORM_OPTIMIZED.json`, `SCALAR_EVEN_WEIGHT_SHEAR_AUDIT.md`, `SCALAR_SHEAR_DEPENDENCIES.json`, `SIGNED_SPHERE_MATHEMATICAL_AUDIT.md`, `SIGNED_TRANSFORM_NORMAL.json`, `SIGNED_TRANSFORM_OPTIMIZED.json`, `check_natural_transform.py`, `check_signed_transform.py`
+- `144-shared-certificates-round18/height_one/`: `CONFIG.json`, `ENDPOINTS.json`, `LICENSE`, `MANIFEST_SHA256.json`, `NOTICE.md`, `README.md`, `RELEASE_WHITELIST.json`, `REPLAY_BOTH.json`, `SOURCE_BINDINGS.json`, `check_network.py`, `compare_matched.py`, `network_compile.py`, `normalize.py`, `proof.tex`, `verify.py`
+- `144-shared-certificates-round18/height_one/comparison/`: `EXPECTED.json`, `REPLAY.json`
+- `144-shared-certificates-round18/height_one/endpoints/balanced593/`: `certificate.json`, `metrics.json`, `polynomial.json`, `polynomial.txt`
+- `144-shared-certificates-round18/height_one/endpoints/compact571/`: `certificate.json`, `metrics.json`, `polynomial.json`, `polynomial.txt`
+- `144-shared-certificates-round18/height_one/endpoints/sparse646/`: `certificate.json`, `metrics.json`, `polynomial.json`, `polynomial.txt`
+- `144-shared-certificates-round18/height_one/endpoints/sparser742/`: `certificate.json`, `metrics.json`, `polynomial.json`, `polynomial.txt`
+- `144-shared-certificates-round18/height_one/sources/`: `original263.json`, `original285.json`
+- `144-shared-certificates-round18/height_one/sources/refactored263/`: `factor_certificate.json`, `source.json`
+- `144-shared-certificates-round18/height_one/sources/refactored285/`: `factor_certificate.json`, `source.json`
+- `144-shared-certificates-round18/height_one/upstream/vendor/`: `GRAPH_NOTICE.md`, `LICENSE`
+- `144-shared-certificates-round18/natural/`: `ENDPOINTS.json`, `ISOLATED_REPLAY.json`, `LICENSE`, `PROFILE_RECIPES.json`, `PROOF.md`, `ProveIt_LICENSE`, `README.md`, `SOURCE_LEDGER.json`, `VERIFY_NORMAL.json`, `VERIFY_OPTIMIZED.json`, `build.py`, `reproduce.py`, `verify.py`
+- `144-shared-certificates-round18/natural/endpoints/natural221/`: `VERIFICATION.json`
+- `144-shared-certificates-round18/natural/endpoints/natural221/natural/`: `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `residuals.txt`, `variables.tsv`
+- `144-shared-certificates-round18/natural/endpoints/natural221/source/`: `equation.json`, `row_order.json`, `transformation.json`
+- `144-shared-certificates-round18/natural/endpoints/natural222/`: `VERIFICATION.json`
+- `144-shared-certificates-round18/natural/endpoints/natural222/natural/`: `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `residuals.txt`, `variables.tsv`
+- `144-shared-certificates-round18/natural/endpoints/natural222/source/`: `equation.json`, `expanded_polynomial.json`, `row_order.json`, `transformation.json`
+- `144-shared-certificates-round18/natural/endpoints/natural223/`: `VERIFICATION.json`
+- `144-shared-certificates-round18/natural/endpoints/natural223/natural/`: `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `residuals.txt`, `variables.tsv`
+- `144-shared-certificates-round18/natural/endpoints/natural223/source/`: `equation.json`, `expanded_polynomial.json`, `row_order.json`, `transformation.json`
+- `144-shared-certificates-round18/natural/endpoints/natural224_sparse/`: `VERIFICATION.json`
+- `144-shared-certificates-round18/natural/endpoints/natural224_sparse/natural/`: `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `residuals.txt`, `variables.tsv`
+- `144-shared-certificates-round18/natural/endpoints/natural224_sparse/source/`: `equation.json`, `expanded_polynomial.json`, `row_order.json`, `transformation.json`
+- `144-shared-certificates-round18/natural/review/`: `INCOMING_COMPARISON_METRICS.json`, `NATURAL_POOLED_DIGITS_MATHEMATICAL_AUDIT.md`, `NATURAL_TRANSFORM_NORMAL.json`, `NATURAL_TRANSFORM_OPTIMIZED.json`, `PORTABILITY_NOTE.md`, `PORTABLE_NORMAL.json`, `PORTABLE_OPTIMIZED.json`, `check_natural_transform.py`, `polynomial_helpers.py`
+- `144-shared-certificates-round18/prior_direct_closure/`: `LICENSE`, `NOTICE.md`
+- `144-shared-certificates-round18/prior_direct_closure/architecture/portable/`: `LICENSE`, `ProveIt_LICENSE`
+- `144-shared-certificates-round18/prior_direct_closure/direct/`: `NOTICE.md`
+- `144-shared-certificates-round18/prior_direct_closure/direct/licenses/`: `LICENSE.Mathlib`, `LICENSE.ProveIt`, `LICENSE.incoming_signed`
+- `144-shared-certificates-round18/provenance/`: `INCOMING_METRICS_RECOLLECTED.json`, `INTAKE_SUMMARY.md`, `OMITTED_HISTORICAL_EXPANSIONS.json`, `OMITTED_PRIOR_EXPANSIONS_CHECK.json`, `remote_manifest.json`
+- `144-shared-certificates-round18/report/`: `REPORT_QA.json`, `abstract.tex`, `build_report.sh`, `comparison.tex`, `foundation.tex`, `height_one.tex`, `height_one_results.tex`, `main.tex`, `natural.tex`, `questions.tex`, `results.tex`, `scalar.tex`, `scalar_results.tex`, `signed.tex`, `signed_results.tex`, `verification.tex`
+- `144-shared-certificates-round18/scalar/`: `CHECK.json`, `CHECK_OPTIMIZED.json`, `MANIFEST_SHA256.json`, `METRICS.json`, `MUTATIONS.json`, `MUTATIONS_OPTIMIZED.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `RELEASE_WHITELIST.json`, `REPLAY.json`, `SOURCE_PINS.json`, `audit_mutations.py`, `build.py`, `check.py`, `free_whole_center11_c300.json`, `free_whole_center11_c304.json`, `free_whole_center11_c308.json`, `free_whole_center11_c316.json`, `make_tex.py`, `replay.py`, `seal_release.py`, `section.tex`
+- `144-shared-certificates-round18/scalar/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-centered-compression.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `144-shared-certificates-round18/scalar/source/`: `LICENSE.UPSTREAM`
+- `144-shared-certificates-round18/scalar/source/provenance/interpolation12/`: `LICENSE`, `NOTICE.md`
+- `144-shared-certificates-round18/scalar/source/provenance/trace_precursor/`: `LICENSE`, `NOTICE.md`
+- `144-shared-certificates-round18/signed/`: `CHECK_NORMAL.json`, `CHECK_OPTIMIZED.json`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_spheres.py`, `check_spheres.py`
+- `144-shared-certificates-round18/signed/sphere_dimension_centered/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `144-shared-certificates-round18/signed/sphere_dimension_centered_merged/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `144-shared-certificates-round18/signed/sphere_dimension_centered_merged_odd/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `144-shared-certificates-round18/signed/sphere_dimension_centered_odd/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `144-shared-certificates-round18/signed/sphere_grouped_centered/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `144-shared-certificates-round18/signed/sphere_grouped_centered_merged/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `144-shared-certificates-round18/signed/sphere_grouped_centered_merged_odd/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `144-shared-certificates-round18/signed/sphere_grouped_centered_odd/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `144-shared-certificates-round18/signed/sphere_sparse_centered/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `144-shared-certificates-round18/signed/sphere_sparse_centered_merged/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `144-shared-certificates-round18/signed/sphere_sparse_centered_merged_odd/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `144-shared-certificates-round18/signed/sphere_sparse_centered_odd/`: `METRICS.json`, `certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `145-shared-residue-bounds/`: `MANIFEST.sha256`, `README.md`, `SOURCES.json`, `verify.py`
+- `145-shared-residue-bounds/certificate/`: `CLOSURE_MAP.md`, `ENDPOINTS.json`, `INDEPENDENT_DELTA_RECEIPT.json`, `INDEPENDENT_MATHEMATICAL_REVIEW.md`, `LICENSE`, `NOTICE.md`, `PARENT_PINS.json`, `PROJECTION_CAP_COMPARISON.json`, `PROOF.md`, `README.md`, `VERIFICATION_NORMAL.json`, `VERIFICATION_OPTIMIZED.json`, `build.py`, `center_integer.py`, `verify.py`
+- `145-shared-residue-bounds/certificate/grouped/`: `METRICS.json`, `PROJECTION_CHECK.json`, `equation.json`, `expanded_polynomial.json`, `factored_source.json`, `factorization_certificate.json`, `pool_certificate.json`, `projected.json`, `projection_certificate.json`, `source.json`, `translation_certificate.json`
+- `145-shared-residue-bounds/certificate/grouped_centered/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `projected.json`, `translation_certificate.json`
+- `145-shared-residue-bounds/certificate/merged_aggregate/`: `METRICS.json`, `PROJECTION_CHECK.json`, `equation.json`, `expanded_polynomial.json`, `factored_source.json`, `factorization_certificate.json`, `pool_certificate.json`, `projected.json`, `projection_certificate.json`, `source.json`, `translation_certificate.json`
+- `145-shared-residue-bounds/certificate/merged_aggregate_centered/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `projected.json`, `translation_certificate.json`
+- `145-shared-residue-bounds/certificate/merged_cap128/`: `METRICS.json`, `PROJECTION_CHECK.json`, `equation.json`, `expanded_polynomial.json`, `factored_source.json`, `factorization_certificate.json`, `pool_certificate.json`, `projected.json`, `projection_certificate.json`, `source.json`, `translation_certificate.json`
+- `145-shared-residue-bounds/certificate/merged_cap32/`: `METRICS.json`, `PROJECTION_CHECK.json`, `equation.json`, `expanded_polynomial.json`, `factored_source.json`, `factorization_certificate.json`, `pool_certificate.json`, `projected.json`, `projection_certificate.json`, `source.json`, `translation_certificate.json`
+- `145-shared-residue-bounds/certificate/merged_cap32_centered/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `projected.json`, `translation_certificate.json`
+- `145-shared-residue-bounds/certificate/merged_cap64/`: `METRICS.json`, `PROJECTION_CHECK.json`, `equation.json`, `expanded_polynomial.json`, `factored_source.json`, `factorization_certificate.json`, `pool_certificate.json`, `projected.json`, `projection_certificate.json`, `source.json`, `translation_certificate.json`
+- `145-shared-residue-bounds/certificate/merged_products/`: `METRICS.json`, `PROJECTION_CHECK.json`, `equation.json`, `expanded_polynomial.json`, `factored_source.json`, `factorization_certificate.json`, `pool_certificate.json`, `projected.json`, `projection_certificate.json`, `source.json`, `translation_certificate.json`
+- `145-shared-residue-bounds/certificate/merged_products_centered/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `projected.json`, `translation_certificate.json`
+- `145-shared-residue-bounds/certificate/parent/`: `NOTICE.md`
+- `145-shared-residue-bounds/certificate/parent/licenses/`: `LICENSE.Mathlib`, `LICENSE.ProveIt`, `LICENSE.incoming_signed`
+- `145-shared-residue-bounds/certificate/review/`: `PEER_REVIEW.md`, `SIGNED_POOL_INDEPENDENT_CHECK.json`, `check_signed_pool.py`
+- `145-shared-residue-bounds/code/`: `SIGNED_POOL_INDEPENDENT_CHECK.json`, `generate_principal.py`, `independent_pool_check.py`, `independent_shear_check.py`
+- `145-shared-residue-bounds/equations/principal/`: `coordinate_map.json`, `equation.json`, `expanded_polynomial.json`, `metrics.json`, `shears.json`
+- `145-shared-residue-bounds/equations/shear_stages/stage1/`: `equation.json`, `expanded_polynomial.json`, `shears.json`
+- `145-shared-residue-bounds/equations/shear_stages/stage2/`: `equation.json`, `expanded_polynomial.json`, `shears.json`
+- `145-shared-residue-bounds/equations/shear_stages/stage3/`: `equation.json`, `expanded_polynomial.json`, `shears.json`
+- `145-shared-residue-bounds/report/`: `metrics.tex`, `paper.pdf`, `paper.tex`, `residuals.tex`, `shears.tex`, `verification_summary.tex`
+- `145-shared-residue-bounds/review/`: `PDF_QA.json`, `PRINCIPAL_RECONSTRUCTION.json`, `RELEASE_CHECK_NORMAL.json`, `RELEASE_CHECK_OPTIMIZED.json`, `c222_internalization_audit.md`, `independent_pool_receipt.json`, `paper_mathematics_review.md`, `residue_pool_review.md`, `shears_normal.json`, `shears_optimized.json`
+- `145-shared-residue-bounds/review/calibration_sources/`: `SOURCE_MANIFEST.json`
+- `146-symmetric-remainders/`: `ENDPOINTS.json`, `INTEGRATION.md`, `LICENSE`, `MANIFEST.json`, `PROVENANCE.json`, `README.md`, `build_report.py`, `report.pdf`, `report.tex`, `verify.py`
+- `146-symmetric-remainders/compact/`: `CHECK.json`, `CHECK_OPTIMIZED.json`, `LICENSE`, `METRICS.json`, `NOTICE.md`, `PROOF.md`, `PROVENANCE.json`, `README.md`, `SOURCE_PINS.json`, `build.py`, `equation77.json`, `equation78.json`, `equation79.json`, `section.tex`, `verify.py`
+- `146-symmetric-remainders/compact/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-native44.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-package44.md`, `NOTICE-source61.md`, `NOTICE_K215.md`
+- `146-symmetric-remainders/compact/parent/`: `NOTICE.md`
+- `146-symmetric-remainders/direct/`: `CAPS_CHECK.json`, `CAPS_CHECK_OPTIMIZED.json`, `CENTER_PROOF.md`, `CHECK.json`, `GROUPED_SIGNED_DIGIT_CAPS.md`, `INDEPENDENT_CHECK.json`, `LICENSE`, `LINEAR_POOL_REVIEW.md`, `NOTICE.md`, `README.md`, `REPLAY.json`, `REPLAY_OPTIMIZED.json`, `SOURCE_PINS.json`, `build.py`, `check.py`, `check_independent.py`, `evaluate.py`, `render.py`, `verify.py`
+- `146-symmetric-remainders/direct/equations/dimension259/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `projected.json`, `projection_certificate.json`, `residuals.tex`, `residuals.txt`, `source.json`, `source_change.json`, `translation_certificate.json`, `variables.tsv`
+- `146-symmetric-remainders/direct/equations/linear9/`: `source.json`
+- `146-symmetric-remainders/direct/equations/symmetric_caps/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `projected.json`, `projection_certificate.json`, `residuals.tex`, `residuals.txt`, `source.json`, `source_change.json`, `translation_certificate.json`, `variables.tsv`
+- `146-symmetric-remainders/direct/inherited/`: `LICENSE`, `NOTICE.md`
+- `146-symmetric-remainders/direct/inherited/architecture/portable/`: `LICENSE`, `ProveIt_LICENSE`
+- `146-symmetric-remainders/direct/inherited/direct/`: `NOTICE.md`
+- `146-symmetric-remainders/report_inputs/`: `coefficients.tex`, `residuals.tex`
+- `146-symmetric-remainders/verification/`: `FINAL_CHECK.json`, `FINAL_CHECK_OPTIMIZED.json`, `PDF_QA.json`, `REVIEW_NOTES.md`
+- `147-symmetric-residue-budgets/`: `ConZFC_Symmetric_Residue_Budgets.pdf`, `ENDPOINTS.json`, `INTEGRATION.md`, `LICENSE`, `MANIFEST_SHA256.json`, `README.md`, `SOURCE_LEDGER.json`, `build_endpoints.py`, `build_report.sh`, `evaluate.py`, `verify.py`
+- `147-symmetric-residue-budgets/compact/`: `CHECK.json`, `CHECK_OPTIMIZED.json`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `UPSTREAM_PINS.json`, `build.py`, `equation77_degree630.json`, `equation78_degree468.json`, `section.tex`, `verify.py`
+- `147-symmetric-residue-budgets/compact/upstream/`: `LICENSE`, `NOTICE.md`
+- `147-symmetric-residue-budgets/compact/upstream/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-native44.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-package44.md`, `NOTICE-source61.md`, `NOTICE_K215.md`
+- `147-symmetric-residue-budgets/direct/`: `INDEPENDENT_LITERAL_REVIEW.json`, `INDEPENDENT_MATH_REVIEW_COMPACT.md`, `INDEPENDENT_REVIEW_SOURCE_PINS.json`, `PROOF.md`, `ROW_REVIEW.json`, `SOURCE_BINDINGS.json`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `build.py`, `center.py`, `peer_literal_audit.py`, `verify.py`
+- `147-symmetric-residue-budgets/direct/four_pools/`: `METRICS.json`, `PROJECTION_CHECK.json`, `delta_certificate.json`, `equation.json`, `expanded_polynomial.json`, `factored_source.json`, `factorization_certificate.json`, `projected.json`, `projection_certificate.json`, `source.json`, `translation_certificate.json`
+- `147-symmetric-residue-budgets/direct/four_pools_centered/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `projected.json`, `translation_certificate.json`
+- `147-symmetric-residue-budgets/direct/odd_three_pools/`: `METRICS.json`, `PROJECTION_CHECK.json`, `delta_certificate.json`, `equation.json`, `expanded_polynomial.json`, `factored_source.json`, `factorization_certificate.json`, `projected.json`, `projection_certificate.json`, `source.json`, `translation_certificate.json`
+- `147-symmetric-residue-budgets/direct/odd_three_pools_centered/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `projected.json`, `translation_certificate.json`
+- `147-symmetric-residue-budgets/direct/three_pools/`: `METRICS.json`, `PROJECTION_CHECK.json`, `delta_certificate.json`, `equation.json`, `expanded_polynomial.json`, `factored_source.json`, `factorization_certificate.json`, `projected.json`, `projection_certificate.json`, `source.json`, `translation_certificate.json`
+- `147-symmetric-residue-budgets/direct/three_pools_centered/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `projected.json`, `translation_certificate.json`
+- `147-symmetric-residue-budgets/direct/vendor/`: `LICENSE`, `review_direct_pools.py`
+- `147-symmetric-residue-budgets/equations/P258/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `residuals.tex`, `row_operations.json`, `variables.tsv`
+- `147-symmetric-residue-budgets/equations/P261/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `residuals.tex`, `row_operations.json`, `variables.tsv`
+- `147-symmetric-residue-budgets/report/`: `main.tex`
+- `147-symmetric-residue-budgets/research/`: `height_rows.py`, `reduce_rows.py`
+- `147-symmetric-residue-budgets/review/`: `DIRECT_POOLS_MATHEMATICAL_REVIEW.md`, `DIRECT_POOLS_REVIEW.json`, `DIRECT_POOLS_REVIEW_OPTIMIZED.json`, `PDF_REVIEW.json`, `RELEASE_NORMAL.json`, `RELEASE_OPTIMIZED.json`, `ROOT_MATHEMATICAL_REVIEW.md`, `ROW_REVIEW.json`, `semantic_frontend_note.md`
+- `147-symmetric-residue-budgets/sources/direct_parent/licenses/`: `LICENSE.Mathlib`, `LICENSE.ProveIt`, `LICENSE.incoming_signed`
 - top level: `README.md` (this file), `PLACEMENT.md`
