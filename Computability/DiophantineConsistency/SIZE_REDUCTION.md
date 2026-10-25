@@ -15,7 +15,8 @@ not establish the size of a complete consistency equation.
 
 | Domain | Variables | Operations | Degree | Use |
 |---|---:|---:|---:|---|
-| Integers | **315 / 316** | not optimized | **4** | Complete neighbor-shear charts;217/218 rows,5787/5781 terms,height93109,row height160; nine first/fresh processes pass |
+| Integers | **315 / 316** | not optimized | **4** | Complete Pell-output shear charts;217/218 rows,5734/5728 terms,height54709,row height128; nine first/fresh processes and both full evidence reviews pass |
+| Integers | 315 / 316 | not optimized | 4 | Preserved neighbor-shear parents;217/218 rows,5787/5781 terms,height93109,row height160 |
 | Integers | 315 / 316 | not optimized | 4 | Preserved balanced-shear parents;217/218 rows,5809/5803 terms,height98336,row height256 |
 | Integers | 315 / 316 | not optimized | 4 | Complete fixed58-shift parents;217/218 rows,5743/5737 terms,height128446,row height256; separate full fast verification accepted |
 | Integers | 315 / 316 | not optimized | 4 | Preserved raw parents;217/218 rows,7999/7987 terms,height14250071 |
@@ -2926,9 +2927,13 @@ from one leading coefficient. Both complete final statics and all nine
 released first/fresh finite applications now pass, with128 negative/12
 valid controls per checker, twelve byte-exact fresh captures and379
 unchanged inputs. The exact generated13-artifact census agrees with the
-ordinary theorem. Complete inert evidence assembly and independent
-ordinary review remain in progress; the accepted table stays at93109
-until separate ROOT finite endpoint acceptance.
+ordinary theorem. The [complete evidence](research/pell-output-gate-shear-verification/README.md)
+now passes both full ordinary reviews and
+[ROOT finite endpoint acceptance](reviews/pell-output-gate-shear-verification-root-peer.md).
+Both exact54709-height forms enter the accepted comparison table under
+the retained ordinary calibration, with53 fewer terms per profile than
+their neighbor parents. This quartic gain does not itself shorten the
+complete maintained fifteen-positive page; all predecessors are preserved.
 
 ## The55-bit mod5 obstruction and same-tuple wrap refinement
 

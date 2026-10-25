@@ -122,10 +122,13 @@ Complete hand tables prove prospective height54709, row height128 and
 some retained coefficients grow. The separately reviewed finite code has
 now passed all nine actual first/fresh applications, including128 negative
 and12 valid controls in each checker. All12 fresh capture files reproduce
-first bytes;379 inputs and13 generated files remain unchanged. Complete
-inert evidence assembly and independent ordinary review are in progress;
-these figures await ROOT finite endpoint acceptance. The comparison table
-therefore retains the accepted93109 forms.
+first bytes;379 inputs and13 generated files remain unchanged. The
+[complete evidence](research/pell-output-gate-shear-verification/README.md)
+passes both full ordinary reviews and
+[ROOT finite acceptance](reviews/pell-output-gate-shear-verification-root-peer.md).
+The exact54709-height forms are now accepted finite endpoints under the
+retained ordinary calibration. They save53 terms in each profile and
+lower row height160 to128. All older alternatives remain available.
 
 The next [pair-sum shear](research/pair-sum-gate-shear/README.md) passes
 both full ordinary reviews and [joint bound acceptance](reviews/pair-sum-gate-shear-ordinary-acceptance.json).
