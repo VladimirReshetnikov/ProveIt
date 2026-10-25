@@ -189,7 +189,7 @@ U+230B, and explicitly eligible ASCII line hyphens are normalized. Direct
 U+230A/U+230B already have the same representation. Both floor delimiters
 and every interior operand remain. The hyphen rule uses an immutable
 English-word whitelist paired with exact literal prose spans. Every span
-must occur once outside inline/display/align math; every eligible word
+must occur once outside guarded inline/display/align math; every eligible word
 must occur in its span and be absent from mathematical tokens, command
 names, the seed and concatenations of intentional source hyphens. It does
 not collect arbitrary words from TeX. Words have at least5 ASCII letters;
@@ -203,7 +203,19 @@ and an unknown inserted glyph. Two valid controls split polynomial as
 poly-<newline>nomial and move the existing title hyphen in fifteen-variable
 to the line end. The latter must retain its intentional hyphen. Existing
 native/front/source controls remain unchanged. No control or new rendering
-is claimed successful before the separate execution release.
+is claimed successful for this replacement before a new execution release.
+
+The first released run passed the producer and failed its first source
+audit when an unguarded display opener matched the second slash in the
+title's double-backslash linebreak. Commands3--10 never started; no PDF ran.
+The complete failed snapshot, receipts/logs and four unchanged relocated
+source outputs remain under reviews/one-page-grouped66-first-execution-failure.
+The repair guards both display delimiters and both inline-dollar delimiters
+against a preceding backslash. The prose validator and new delimiter
+controls share this helper. Actual full-source controls require9 display,
+16 inline and1 align region, first display line19, title/first prose outside
+math. One small shared-helper fixture checks the title linebreak and escaped
+opening/closing inline dollars. These are held controls, not retry results.
 
 The earlier charged whole-text proxy saves140 visible characters, from
 2553 to2413 for the complete suffix; it is not a new PDF measurement.

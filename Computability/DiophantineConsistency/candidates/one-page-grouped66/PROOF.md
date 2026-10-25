@@ -12,8 +12,11 @@ Their historical wording about a newly specialized source refers to that
 parent's specialization from source54; this preparation keeps the parent
 polynomial and complete coefficient binding byte-identical. Section6 and
 RECIPE_PROOF.md state the only new representation and verification work.
-No new application import, compilation, source production, TeX/PDF process
-or receipt has occurred for this held preparation.
+The first released execution passed source production and then failed its
+normal source audit on a display-delimiter classification bug; no later
+command or rendering ran. The exact failed attempt and four outputs are
+preserved outside this candidate. This replacement is a code-only repair
+with no further application import, compilation, execution or output.
 
 ## 1. Exact equation and domain
 
@@ -212,6 +215,12 @@ least2 left and3 right letters. Unicode minus and every other glyph are
 preserved. The same complete-front helper must reject mathematical ASCII/
 Unicode minus and an unknown glyph, accept a split English word, and
 preserve an intentional title hyphen. These add3 negative/2 valid controls.
+The same guarded delimiter helper must identify all26 actual TeX math
+regions(9 display,16 inline,1 align), with the first display on line19;
+the title's double-backslash linebreak and first prose stay outside math.
+A shared-helper fixture includes escaped inline dollars and that linebreak.
+Both display delimiters and inline-dollar delimiters reject a preceding
+backslash, preventing the first attempt's false display opener.
 
 Two full static reviews and separate explicit root execution release are
 required before the held commands. A future render must remain one Letter
@@ -219,5 +228,6 @@ page with zero overfull boxes,9-point body and7.7-point seed, followed by
 normal/optimized full audits, pure byte-identical rerenders, independent
 fresh replays and independent visual review. No new fit, rendered-size,
 successful control, runtime receipt or accepted numerical endpoint is
-claimed at HOLD. The maintained equation.tex/PDF and paused Lean files
-are outside this preparation's outputs.
+claimed for this replacement at HOLD. The preserved first build/audit
+record remains historical evidence. The maintained equation.tex/PDF and
+paused Lean files are outside this preparation's outputs.

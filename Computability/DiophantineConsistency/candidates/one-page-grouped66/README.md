@@ -5,8 +5,13 @@ CODE/TEX ONLY/HOLD. This candidate keeps the accepted fifteen-positive
 integers. It removes both printed support/control tables through the
 accepted grouped-fixed-coefficient identity and fully defines the shared
 fixed abbreviation Lambda. Lean remains paused. No new application
-import, compilation, execution, source output, TeX/PDF process, receipt,
-page-fit result or measured rendered-size improvement exists here yet.
+execution is released for this replacement checkpoint. The first released
+attempt passed source production and failed the first normal source audit
+on a delimiter-classification bug; commands3--10 never started and no
+rendering occurred. The exact four generated files and all receipts/logs
+are preserved in reviews/one-page-grouped66-first-execution-failure.
+This code-only repair adds no application import, compilation, execution
+or output. Current source/render outputs are absent; rendered size is unmeasured.
 
 The exact5395-byte equation.tex consists of the accepted fifteen66
 arithmetic prefix and the proposal's exact3970-byte selected constant
@@ -58,7 +63,10 @@ These are future checks, not runtime results. Normal and optimized modes
 use explicit exceptions;
 no assert statement can disappear. TOOLCHAIN.md fixes ten sequential
 commands after two full static approvals and separate explicit root
-release. All receipts/stdout must remain external until results are
+release, using distinct /tmp/grouped66-r2-* receipts. The same delimiter
+helper must identify9 display,16 inline and1 align region in the actual
+full TeX, exclude the title linebreak/first prose, and pass an escaped-dollar
+fixture. All receipts/stdout must remain external until results are
 reviewed. Source outputs, render artifacts and receipts are absent at HOLD.
 
 A future render must be one612x792 Letter page, zero overfull boxes,

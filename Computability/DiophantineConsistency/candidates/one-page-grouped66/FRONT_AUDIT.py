@@ -465,6 +465,32 @@ def native_audit(tex):
             'zero_dummy_positions':[1063,1064],'all_formal_Lambda_MC_MF_K_coefficients_equal':True,'whole_raw_bytes':total,'ports':records}
 
 
+def tex_math_regions(tex):
+    # A display opener/closer is not the second slash of a TeX linebreak;
+    # escaped inline dollars are literal prose, not math delimiters.
+    pattern=(r'(?<!\\)\\\[(.*?)(?<!\\)\\\]|(?<!\\)\$(.*?)(?<!\\)\$|'
+             r'\\begin\{align\*\}(.*?)\\end\{align\*\}')
+    return list(re.finditer(pattern,tex,re.S))
+
+
+def math_delimiter_controls(tex):
+    regions=tex_math_regions(tex)
+    counts={label:sum(m[group] is not None for m in regions)
+            for label,group in [('display',1),('inline',2),('align',3)]}
+    need(counts=={'display':9,'inline':16,'align':1} and len(regions)==26,'all26 actual TeX math regions')
+    first=next(m for m in regions if m[1] is not None)
+    need(tex[:first.start()].count('\n')+1==19,'actual first display is the unknowns signature on line19')
+    for text in [r'\\[-1pt]','A complete fifteen-variable consistency equation','The only unknowns are']:
+        need(tex.count(text)==1,'unique title/prose delimiter regression target')
+        start=tex.index(text);end=start+len(text)
+        need(all(end<=m.start() or start>=m.end() for m in regions),'title linebreak and first prose excluded from math')
+    fixture=r'\\[-1pt] literal \$5; $x+\$y$ \[z\] \begin{align*}w\end{align*}'
+    expected=[r'$x+\$y$',r'\[z\]',r'\begin{align*}w\end{align*}']
+    need([m[0] for m in tex_math_regions(fixture)]==expected,'same-helper linebreak/escaped-dollar fixture')
+    return {'actual_TeX_regions':counts,'total':26,'first_display_line':19,
+            'title_linebreak_and_first_prose_outside_math':True,'same_helper_escaped_dollar_fixture':True}
+
+
 def prose_hyphen_words():
     # Immutable English words paired with their exact reviewed prose spans.
     # No word is obtained from arbitrary TeX, math, commands or seed bytes.
@@ -489,7 +515,7 @@ def prose_hyphen_words():
         ('Native calibration and internal-ZFC formalization remain open in Lean.',{'Native','calibration','internal','formalization','remain'}),
         ('This page is a complete finite specification, not an unsolvability proof.',{'complete','finite','specification','unsolvability','proof'})]
     tex=(PAGE/'equation.tex').read_text()
-    math=list(re.finditer(r'\\\[(.*?)\\\]|\$(.*?)\$|\\begin\{align\*\}(.*?)\\end\{align\*\}',tex,re.S))
+    math=tex_math_regions(tex)
     math_words={w for m in math for w in re.findall(r'[A-Za-z]+',m[0])}
     commands=set(re.findall(r'\\([A-Za-z]+)',tex))
     seed=(PAGE/'SEED.txt').read_text().strip()
@@ -680,7 +706,9 @@ def main():
     need(cal==expected_cal,'entire inherited calibration with only proof-hash update')
     seed=(PAGE/'SEED.txt').read_text().strip()
     need((PAGE/'SEED.txt').read_bytes()==(PARENT/'SEED.txt').read_bytes()==(INDEXED/'SEED.txt').read_bytes(),'whole unchanged436-character seed')
-    tex=(PAGE/'equation.tex').read_text();native=native_audit(tex)
+    tex=(PAGE/'equation.tex').read_text()
+    delimiters=math_delimiter_controls(tex)
+    native=native_audit(tex)
     body=tex.split(MARKER,1)[1]
     cuts,math,box,_=old.tex_audit(tex,packet,historical,body,seed)
     mapping=load(PAGE/'FORMULA_MAP.json')
@@ -700,6 +728,7 @@ def main():
             'accepted_front_negative_controls':front_negative,'accepted_front_valid_controls':front_positive,
             'grouped_native_controls':controls,'PDF_audited':not args.source_only,'actual_PDF':pdf,
             'complete_front_hyphenation_controls':hyphens,
+            'actual_TeX_math_delimiter_controls':delimiters,
             'source_pins_sha256':digest((PAGE/'SOURCE_PINS.json').read_bytes()),'auditor_sha256':digest(Path(__file__).read_bytes()),
             'adopted_front_sha256':digest((PARENT/'FRONT_AUDIT.py').read_bytes()),
             'sha256':{n:digest((PAGE/n).read_bytes()) for n in ['equation.tex','polynomial.json','COEFFICIENT_BINDING.json','CALIBRATION_BINDING.json','SOURCE_INDEX.json','FORMULA_MAP.json','SEED.txt']},

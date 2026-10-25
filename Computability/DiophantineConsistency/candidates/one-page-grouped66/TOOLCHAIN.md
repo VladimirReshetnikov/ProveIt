@@ -1,23 +1,27 @@
 # Held grouped66 source, actual-TeX and full-page toolchain
 
-No candidate application import, compilation or execution, source output,
-TeX/PDF process or receipt has occurred. Two full static approvals and a
-separate explicit root release are prerequisites. The commands below are
-a held plan. Run from the repository root strictly in this order, keeping
-each entire stdout and stderr externally beside its JSON receipt. Stop at
+The first released attempt passed build1 and failed source-audit2 on the
+math-delimiter classifier. Commands3--10 never started and no rendering ran.
+All four source outputs were relocated unchanged to the preserved failure
+record under reviews/one-page-grouped66-first-execution-failure, alongside
+full logs/receipt and the old HOLD/pins. This code-only repair executes no
+additional application. Fresh full static approvals and a separate explicit
+root release are prerequisites for the following replacement held plan.
+Use distinct r2 receipts. Run from the repository root strictly in this
+order, keeping each entire stdout and stderr externally beside its JSON receipt. Stop at
 the first failure; review and re-freeze substantive fixes before continuing.
 
 ```sh
-python -B Computability/DiophantineConsistency/candidates/one-page-grouped66/build.py --output /tmp/grouped66-build.json
-python -B Computability/DiophantineConsistency/candidates/one-page-grouped66/FRONT_AUDIT.py --source-only --output /tmp/grouped66-source-audit.json
-python -B -O Computability/DiophantineConsistency/candidates/one-page-grouped66/FRONT_AUDIT.py --source-only --output /tmp/grouped66-source-audit-optimized.json
-python -B Computability/DiophantineConsistency/candidates/one-page-grouped66/build.py --check --output /tmp/grouped66-build-check.json
-python -B -O Computability/DiophantineConsistency/candidates/one-page-grouped66/build.py --check --output /tmp/grouped66-build-check-optimized.json
-python -B Computability/DiophantineConsistency/tools/render_grouped66_page.py --render --output /tmp/grouped66-render.json
-python -B Computability/DiophantineConsistency/candidates/one-page-grouped66/FRONT_AUDIT.py --output /tmp/grouped66-audit.json
-python -B -O Computability/DiophantineConsistency/candidates/one-page-grouped66/FRONT_AUDIT.py --output /tmp/grouped66-audit-optimized.json
-python -B Computability/DiophantineConsistency/tools/render_grouped66_page.py --check --output /tmp/grouped66-rerender.json
-python -B -O Computability/DiophantineConsistency/tools/render_grouped66_page.py --check --output /tmp/grouped66-rerender-optimized.json
+python -B Computability/DiophantineConsistency/candidates/one-page-grouped66/build.py --output /tmp/grouped66-r2-build.json
+python -B Computability/DiophantineConsistency/candidates/one-page-grouped66/FRONT_AUDIT.py --source-only --output /tmp/grouped66-r2-source-audit.json
+python -B -O Computability/DiophantineConsistency/candidates/one-page-grouped66/FRONT_AUDIT.py --source-only --output /tmp/grouped66-r2-source-audit-optimized.json
+python -B Computability/DiophantineConsistency/candidates/one-page-grouped66/build.py --check --output /tmp/grouped66-r2-build-check.json
+python -B -O Computability/DiophantineConsistency/candidates/one-page-grouped66/build.py --check --output /tmp/grouped66-r2-build-check-optimized.json
+python -B Computability/DiophantineConsistency/tools/render_grouped66_page.py --render --output /tmp/grouped66-r2-render.json
+python -B Computability/DiophantineConsistency/candidates/one-page-grouped66/FRONT_AUDIT.py --output /tmp/grouped66-r2-audit.json
+python -B -O Computability/DiophantineConsistency/candidates/one-page-grouped66/FRONT_AUDIT.py --output /tmp/grouped66-r2-audit-optimized.json
+python -B Computability/DiophantineConsistency/tools/render_grouped66_page.py --check --output /tmp/grouped66-r2-rerender.json
+python -B -O Computability/DiophantineConsistency/tools/render_grouped66_page.py --check --output /tmp/grouped66-r2-rerender-optimized.json
 ```
 
 The producer may materialize exactly polynomial.json,
@@ -54,6 +58,10 @@ exercise24 inherited negatives/4 valid controls,17 actual native negatives/
 specific NativeContextError path,4 full-stream native glyph negatives,
 and3 negative/2 valid normalization controls through the same complete-front
 comparison helper used for the actual PDF. Source-only launches no PDF process.
+The actual full-source delimiter control also requires9 display/16 inline/
+1 align region, first display line19 and title/first prose outside math.
+It shares guarded display/inline delimiters with the prose validator and
+checks a fixture containing the title linebreak and escaped inline dollars.
 
 The renderer imports only stdlib and authenticates all whole inputs/source
 records first. It typesets exactly the immutable TeX in a private scratch
