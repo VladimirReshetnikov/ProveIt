@@ -51,6 +51,8 @@ reconstruction pass; see the [root acceptance](reviews/round15-direct-root-peer.
 Its six natural-domain alternatives reach329 nonnegative unknowns. The
 [preceding496-variable family](research/round14-pair-guard-projections/README.md),
 all lower-height alternatives and their complete inverse certificates remain preserved.
+The [eight-bundle intake](research/intake-5f3379063d/README.md) records the newer
+319-natural,261-natural and height-one proposals with their exact review scopes.
 
 The preceding [ten-positive degree408 page](candidates/one-page-quadratic10/equation.pdf)
 is preserved with its [TeX](candidates/one-page-quadratic10/equation.tex),

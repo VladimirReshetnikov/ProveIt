@@ -1622,3 +1622,25 @@ and [scoped reproduction](research/round15-direct-reproduction/README.md).
 The inherited C222/Pell/refutation calibration remains explicit; no new internal
 ZFC or Lean endpoint is claimed. The canonical ten-positive92/283 PDF and TeX
 remain unchanged because this is a separate quartic tradeoff. Lean stays paused.
+
+## Eight newer bundles: full domain-aware intake retained
+
+The [new static intake](research/intake-5f3379063d/README.md) authenticates all
+eight original archives and2,686 members at commit5f3379063d. Root read all
+three inert programs and replayed each in normal/optimized Python; complete
+inventory and literal receipts exactly match the author. Seventeen complete
+quartics were independently expanded with34 actual row/coefficient corruption
+controls per mode. The height-one polynomial's entire literal coefficient list
+and census also pass, while its lifting/compiler closure remains a separate
+obligation. All23 intake payload files and391 whole-file peer bindings are sealed.
+
+The principal442 integer route has its separate full approval already recorded.
+The319-natural modular-binomial and261-natural pooled-Pell constructions are
+new review and composition leads, with different domains and explicit source,
+signed, majorant and completeness obligations. Their counts do not describe
+unrestricted-integer quartics. Other source34 integer circuits retain separate
+six-port calibration. Existing ten-positive89/91/92/94/96/97 profiles reprinted
+in these bundles add no new compact record by their counts alone. The
+[future-lead notes](research/intake-5f3379063d/FUTURE_LEADS.md) preserve those
+opportunities without promoting unchecked source/compiler claims. The canonical
+92/283 PDF/TeX and paused Lean work remain unchanged.
