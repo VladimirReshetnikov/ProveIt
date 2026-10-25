@@ -40,8 +40,11 @@ The shared-cap direct quartic now has **359 unrestricted integer unknowns,
 ordinary source and all finite Horn/projection/translation layers pass four
 fresh independent root replays; see the
 [root acceptance](reviews/signed-pell-cap-projections-root-peer.md).
-The433-variable form remains the lower-term alternative, with4,606 terms
-at the same heights. Earlier quartics and the compact canonical page are preserved.
+The [complete grouped alternative](research/signed-pell-cap-grouped-quartic/data/equation.json)
+has364 variables,227 rows and4,574 terms at the same heights. Four fresh root
+checks/rebuilds pass, including30 actual corruption controls per collector.
+It adds five variables to save1,484 terms and improves all three counts of
+the older433/287/4606 form. Earlier quartics and the compact page are preserved.
 
 The preserved fifteen-positive page prints a436-character base62 numeral
 with its entire alphabet and positional sum. Its complete coefficient
@@ -1965,3 +1968,26 @@ checked all18 actual call memberships and both complete lowered requests.
 The earlier literal-binding acceptance must be read with this correction.
 Frozen packets and delivered equations are preserved; subsequent interfaces
 must check the row-to-call membership explicitly.
+
+
+## Complete grouped quartic:364 variables and4,574 terms
+
+The [delivered grouped equation](research/signed-pell-cap-grouped-quartic/data/equation.json)
+and [whole expanded polynomial](research/signed-pell-cap-grouped-quartic/data/expanded_polynomial.json)
+now have364 unrestricted integer variables,227 quadratic residuals and
+exact degree4, with4,574 terms and height128,446. Five unique unrestricted
+sums preserve every old coordinate of the accepted359 chart. The complete
+row reconstruction, full SOS difference, whole polynomial under extension,
+all seven inherited maps and native calibration pass independent checks.
+
+All five author commands and four fresh root check/rebuild modes pass;
+each collector rejects30 actual corruptions and all eight root receipt/stdout
+records match exactly. See the [root acceptance](reviews/signed-pell-cap-grouped-quartic-root-peer.md).
+The new form removes1,484 terms while adding five variables to the359 form.
+It improves the older433/287/4606 alternative by69 variables,60 rows and
+32 terms at unchanged heights. The359 form remains the lower-variable
+alternative. No optimizer or new source semantics is part of this extension.
+
+This is useful direct-quartic progress, not a significant improvement over
+the compact ten-positive page. Canonical equation.pdf and equation.tex stay
+preserved under the owner's update policy. Lean remains paused.
