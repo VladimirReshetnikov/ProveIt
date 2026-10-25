@@ -25,10 +25,15 @@ written here at 22:01–22:05 without knowledge of it and committed afterwards.
 
 What this package adds is the finite material that proposal does not
 supply: the emitted circuits, a deterministic build from 133's pinned
-schedules, and the checks below. On the operations / degree frontier the two
-points sit before 133's 84 / 436, 85 / 328 and the lower-degree points
-89 / 288 to 97 / 254 (119, 121), 102 / 253, 104 / 252 (132) and 121 / 246
-(130), which all remain.
+schedules, and the checks below.
+
+**No longer on the frontier.** Wave-15 package 137 (built by 21:44 on
+24 October, delivered 25 October) ships the same two polynomials. Wave-15
+package 134's 78 / 630 and 79 / 468 (133's circuits without the scale
+μ = q² + 1, built 21:48) dominate both, and so do the research session's
+unshifted-T 80 / 750 and 81 / 560 (`b33b254625`, 23:29), which wave-15
+package 138 also ships. See the collection's
+[wave-15 section](../../con-zfc-diophantine-forms/README.md#wave-15-sources-134139).
 
 ## How they are made
 
