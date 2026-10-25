@@ -45,6 +45,16 @@ The [root acceptance](reviews/ten-positive-qcube-doubled-finite-root-peer.md)
 records the139-direct-pin scope and retained accepted native theorem.
 These higher-degree cost reductions leave the maintained85/328 page intact.
 
+The subsequently accepted unshifted-T forms improve every one of their
+four parents by one addition at unchanged degree:83/436,84/328,80/750
+and81/560. All five author commands pass first try, and four fresh root
+normal/optimized checks and pure rebuilds give eight byte-exact whole
+JSON/stdout matches. The [root acceptance](reviews/ten-positive-unshift-t-finite-root-peer.md)
+binds all actual rows, complete leading forms,184 direct pins, seven closed
+dependencies,80 negative and eight valid controls per mode. The general
+bV soundness proof excludes main index3 before transport using early
+whole-carrier divisibility. This minor checkpoint preserves the85/328 page.
+
 The fused-nine direct quartic now has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
 ordinary source and all finite Horn/projection/translation layers pass four

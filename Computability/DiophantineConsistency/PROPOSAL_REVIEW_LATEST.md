@@ -23,6 +23,8 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 10 | 91 / 92 / 96 / 97 | 283 / 278 / 258 / 254 | Existing b transport and exact shared direct carrier; earlier page preserved |
 | Positive integers | 10 | **85** / 84 | **328** / 436 | Accepted doubled product square; complete85 maintained page and indexed constants |
 | Positive integers | 10 | 81 / 82 | 750 / 560 | Complete q-cube doubled alternatives; full positive/native proof and four byte-exact root replays;85/328 display retained |
+| Positive integers | 10 | **84** / 83 | **328** / 436 | Complete unshifted-T sources, one addition saved;85/328 maintained page retained at minor checkpoint |
+| Positive integers | 10 | 80 / 81 | 750 / 560 | Complete unshifted q-cube sources; full global forms, actual controls and four byte-exact root replays |
 | Positive integers | 10 | 92 | 283 | Preserved complete lower-degree saturated page |
 | Positive integers | 10 | 93 | 278 | Sharp saturated center; lower-degree tradeoff |
 | Positive integers | 10 | 97 / 98 | 258 / 254 | Direct positive X, shared carrier and upper/sharp saturated centers |

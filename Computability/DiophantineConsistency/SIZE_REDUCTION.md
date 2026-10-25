@@ -26,6 +26,8 @@ not establish the size of a complete consistency equation.
 | Positive integers | 10 | 92 | 283 | Preserved complete lower-degree saturated page and indexed constants |
 | Positive integers | 10 | 84 / **85** | 436 / **328** | Accepted doubled product square; complete85 maintained page and all constants |
 | Positive integers | 10 | 81 / 82 | 750 / 560 | Complete q-cube doubled graphs; fewer operations, higher degree; all fresh root replays pass |
+| Positive integers | 10 | **84** / 83 | **328** / 436 | Complete unshifted-T sources; one addition saved;85/328 maintained page retained for this minor checkpoint |
+| Positive integers | 10 | 80 / 81 | 750 / 560 | Complete unshifted q-cube sources; whole leading forms and all fresh root replays pass |
 | Positive integers | 10 | 93 | 278 | Sharp saturated center; lower-degree tradeoff |
 | Positive integers | 10 | 98 / 99 | 258 / 254 | Direct positive X and upper/sharp saturated centers |
 | Positive integers | 10 | 97 | 368 | Existing-square transport weight; one-operation saving, higher degree |
@@ -2334,3 +2336,21 @@ This neither constructs an unconditional false zero nor disproves broader
 existential equivalence. It rules out treating pointwise alpha recovery as
 an already available arithmetic step. No changed equation or numerical
 endpoint is accepted; the four held Tp-only variants are unaffected.
+
+
+## Four unshifted-T equations accepted after whole-byte replay
+
+The [complete finite packet](research/ten-positive-unshift-t-finite/RESULTS.md)
+now passes both full static reviews, all five first-try released author
+commands and four fresh independent root check/rebuilds. All eight entire
+root JSON/stdout strings equal the author records byte for byte. Actual
+ten-positive operation/degree pairs are83/436,84/328,80/750 and81/560.
+The [root acceptance](reviews/ten-positive-unshift-t-finite-root-peer.md)
+binds all gates, rows/maps,29 cuts per chart, complete1098/135/390/47-term
+leading forms,80 actual negative controls and eight valid controls per mode.
+
+Each saves one addition at unchanged degree. Both sealed ordinary positive
+proofs and the complete indexed/native/refutation interpretation remain
+explicit; the formal T-alpha identity is never a positive inverse. This
+is a minor checkpoint, so the maintained85/328 PDF/TeX stays unchanged.
+All complete predecessors are preserved; Lean remains paused.

@@ -36,14 +36,16 @@ native/source interpretation. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
 binds the maintained PDF and TeX. This is a verified cost/degree choice,
 not a global simplicity optimum or a new Lean derivation.
 
-Two complete [q-cube doubled alternatives](research/ten-positive-qcube-doubled-finite/RESULTS.md)
-now use **81 operations at degree750**, or **82 at degree560**, in the same
-ten-positive domain. Their entire graphs, leading forms, coefficient tuple
-and positive-domain proof pass separate review; four fresh root check/rebuild
+The complete [unshifted-T equations](research/ten-positive-unshift-t-finite/RESULTS.md)
+now reach **84 operations at degree328**, or83/436,80/750 and81/560, in the
+same ten-positive domain. Each saves one addition at unchanged degree from
+its whole parent. Full ordinary proofs, literal graphs, leading forms and
+coefficient bindings pass separate review; four fresh root check/rebuild
 runs reproduce all author records byte for byte. See the
-[root acceptance](reviews/ten-positive-qcube-doubled-finite-root-peer.md).
-They trade higher degree for three or four fewer operations, so the
-maintained85/328 page remains the displayed balanced choice.
+[root acceptance](reviews/ten-positive-unshift-t-finite-root-peer.md).
+The maintained85/328 page awaits a larger improvement before replacement.
+The preceding [81/750 and82/560 graphs](research/ten-positive-qcube-doubled-finite/RESULTS.md)
+and all complete pages remain preserved.
 
 A separately reviewed [89-operation comparison page](candidates/one-page-uncentered89/equation.pdf),
 with its complete [standalone TeX](candidates/one-page-uncentered89/equation.tex),
