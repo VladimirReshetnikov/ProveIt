@@ -1,0 +1,166 @@
+{
+  "schema": "standard-library-full-replay-v1",
+  "commands": [
+    {
+      "name": "scalar deterministic graph rebuild",
+      "args": [
+        "scalar/build.py"
+      ]
+    },
+    {
+      "name": "scalar complete coefficients and degree certificates",
+      "args": [
+        "scalar/check.py"
+      ]
+    },
+    {
+      "name": "independent scalar full numerical and highest-form audit",
+      "args": [
+        "scalar_audit/audit_scalar.py"
+      ]
+    },
+    {
+      "name": "all scalar arithmetic-gate corruption controls",
+      "args": [
+        "scalar_audit/audit_mutations.py"
+      ]
+    },
+    {
+      "name": "natural exact audit and byte-identical rebuild",
+      "args": [
+        "architecture/verify_architecture.py",
+        "--rebuild",
+        "--output",
+        "{output}/natural.json"
+      ]
+    },
+    {
+      "name": "independent natural semantic and coefficient audit",
+      "args": [
+        "cap_audit/check_natural.py",
+        "architecture/strict_natural229",
+        "architecture/strict_natural230",
+        "architecture/strict_natural228"
+      ]
+    },
+    {
+      "name": "signed byte-identical full reconstruction",
+      "args": [
+        "direct/reproduce.py",
+        "--output",
+        "{output}/direct-rebuild.json"
+      ]
+    },
+    {
+      "name": "signed full source chain and corruption controls",
+      "args": [
+        "direct/check_compiled_cap.py",
+        "direct/strict_dimension",
+        "direct/strict_grouped",
+        "direct/strict_sparse",
+        "--centered",
+        "direct/strict_dimension_centered",
+        "direct/strict_grouped_centered",
+        "direct/strict_sparse_centered",
+        "--raw",
+        "direct/portable_input",
+        "--adversarial",
+        "--output",
+        "{output}/direct.json"
+      ]
+    },
+    {
+      "name": "finite signed arithmetic regression controls",
+      "args": [
+        "direct/check_arithmetic_controls.py",
+        "--output",
+        "{output}/direct-controls.json"
+      ]
+    },
+    {
+      "name": "independent strict signed dimension",
+      "args": [
+        "cap_audit/check_signed.py",
+        "direct/strict_dimension",
+        "direct/strict_dimension_centered"
+      ]
+    },
+    {
+      "name": "independent strict signed grouped",
+      "args": [
+        "cap_audit/check_signed.py",
+        "direct/strict_grouped",
+        "direct/strict_grouped_centered"
+      ]
+    },
+    {
+      "name": "independent strict signed sparse",
+      "args": [
+        "cap_audit/check_signed.py",
+        "direct/strict_sparse",
+        "direct/strict_sparse_centered"
+      ]
+    },
+    {
+      "name": "height-one full audit and byte-identical regeneration",
+      "args": [
+        "height_one/verify.py",
+        "--mode",
+        "{mode}",
+        "--report",
+        "{output}/height-one.json"
+      ]
+    },
+    {
+      "name": "matched-source height-one comparison",
+      "args": [
+        "height_one/compare_matched.py",
+        "--report",
+        "{output}/height-matched.json"
+      ]
+    },
+    {
+      "name": "independent final height-one lift and all source bindings",
+      "args": [
+        "review/final_height_one_audit/verify_final.py",
+        "--release",
+        "height_one",
+        "--direct",
+        "direct",
+        "--output",
+        "{output}/height-final.json"
+      ]
+    },
+    {
+      "name": "literal endpoint metrics",
+      "args": [
+        "report_audit/check_report_metrics.py"
+      ]
+    },
+    {
+      "name": "complete proof character fidelity",
+      "args": [
+        "report_audit/check_proof_fidelity.py"
+      ]
+    },
+    {
+      "name": "cross-component proof source and license closure",
+      "args": [
+        "report_audit/check_closure.py"
+      ]
+    }
+  ],
+  "byte_compare": [
+    "scalar/CHECK.json",
+    "scalar/CHECK_OPTIMIZED.json",
+    "scalar/METRICS.json",
+    "scalar/free_cofactor11_none.json",
+    "scalar/free_cofactor11_sharp.json",
+    "scalar/free_cofactor11_simple.json",
+    "scalar/weak_cofactor11_none.json",
+    "scalar/weak_cofactor11_sharp.json",
+    "scalar/weak_cofactor11_simple.json"
+  ],
+  "internal_rebuilds": "Natural verifier compares17 selected files, signed reproducer57 JSON files, height-one verifier13 files per mode; each raises on any byte mismatch.",
+  "calibration_scope": "Exact finite checks do not replace the ordinary unbounded proof or inherited logical endpoint."
+}

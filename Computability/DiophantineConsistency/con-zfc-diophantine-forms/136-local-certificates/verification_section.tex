@@ -1,0 +1,48 @@
+For the direct equation, the first independent checker verifies 929 literal
+conditions and rejects four deliberately altered artifacts: a changed
+orientation term, a wrong first-factor shift, an escaping private quotient,
+and a changed collected coefficient. A separately written reviewer checks
+all 199 retained rows, all seven new rows, the nine actual raw power ports,
+and all 216 parent restoration polynomials. None of those restorations
+depends on the removed private guard coordinates or the changed private
+pool quotient. The second reviewer re-expands the full quartic by unordered
+monomial pairs, independently of the producer's ordered-pair algorithm.
+The coefficient of $z_0^4$ is 85, a literal degree-attainment witness.
+
+For each graph profile the checker first verifies the original normalized
+source and graph certificate. It then checks the complete logical alias
+map, separate flow coordinates, regenerated equality constraints and unit
+path. It reconstructs twice the final polynomial as a sum of squares,
+including the three-square identity for each quartic pair guard, and
+compares every collected coefficient. It also parses every term of the
+readable \path{polynomial.txt} back to the normative coefficient list.
+
+All three graph profiles have been reconstructed from their source rows,
+with byte-identical parent polynomials, parent certificates, final
+polynomials, final certificates, and metric files: eighteen mathematical
+JSON artifacts in total. The optional reconstruction uses the builders only
+after the independent verification. Normal and optimization-mode Python
+runs retain all necessary checks; the verifiers do not depend on
+\texttt{assert} statements.
+The integrated reconstruction also recreates all six direct-equation files
+in a temporary directory and compares their exact bytes.
+
+The graph evaluator also supplies a canonical witness lift. For an arbitrary
+integer source tuple $z$, its construction satisfies the exact identity
+\[
+ 2P_{\mathrm{unit}}(L(z))
+   =\sum_rR_r(z)^2+\left(\sum_rR_r(z)\right)^2.
+\]
+On source zeros this becomes a constructive lift to graph zeros. The
+identity follows from the block-tree construction and the monic coefficient
+normalization; finite evaluations are supplementary diagnostics.
+
+The integrated release check additionally compares the 306-variable source
+copied into the graph component with the direct equation byte for byte,
+parses every printed LaTeX residual back into its exact coefficient map,
+and checks the equation identities and integrity inventory. Its receipt is
+\path{verification/RELEASE_CHECK.json}; the optimization-mode companion is
+\path{verification/RELEASE_CHECK_OPTIMIZED.json}. Neither check is a search
+for a zero or a finite test of consistency.
+The retained build receipts precede final inventory sealing; running the
+released checker also verifies the completed \path{MANIFEST.sha256}.

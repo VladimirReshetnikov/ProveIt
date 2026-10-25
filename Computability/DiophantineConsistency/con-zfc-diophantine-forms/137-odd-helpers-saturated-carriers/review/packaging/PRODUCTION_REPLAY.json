@@ -1,0 +1,920 @@
+{
+  "schema": "round17_offline_replay_v1",
+  "status": "PASS",
+  "python": "3.12.14",
+  "scope": "Exact finite algebra, literal transcription, degree certificates, source integrity, deterministic replay and negative controls. Not a proof of consistency or a fresh transitive kernel theorem.",
+  "manifest": {
+    "status": "PASS",
+    "files": 2196,
+    "bytes": 32440310,
+    "manifest_sha256": "dd311fa6fa177f5a1889418e6f4da29e6f356ee3f5da49a7cd47fa24deb27bc7"
+  },
+  "prior": {
+    "status": "PASS",
+    "files": 1592,
+    "scope": "Exact preceding release inventory. Historical programs are inert during this replay."
+  },
+  "reviewed_code": {
+    "status": "PASS",
+    "files": 34
+  },
+  "sympy": "1.14.0",
+  "negative_controls": [
+    {
+      "control": "changed equation",
+      "status": "REJECTED"
+    },
+    {
+      "control": "missing equation",
+      "status": "REJECTED"
+    },
+    {
+      "control": "changed coefficient payload",
+      "status": "REJECTED"
+    },
+    {
+      "control": "unsafe path ../escape",
+      "status": "REJECTED"
+    },
+    {
+      "control": "unsafe path /absolute",
+      "status": "REJECTED"
+    },
+    {
+      "control": "unsafe path C:/drive",
+      "status": "REJECTED"
+    },
+    {
+      "control": "unsafe path a\\b",
+      "status": "REJECTED"
+    },
+    {
+      "control": "corrupted stored ZIP member",
+      "status": "REJECTED"
+    }
+  ],
+  "normal": {
+    "status": "PASS",
+    "commands": [
+      {
+        "arguments": [
+          "direct/build.py",
+          "direct/odd_t"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "001669ab4317741fb6160f6dc7ba504ee68daa1f57f8fe2fddf839657a7277f5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_01.txt"
+      },
+      {
+        "arguments": [
+          "direct/build.py",
+          "direct/odd_y",
+          "--cofinal-y"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "c5f4aecb1436b2115b8cc00fb058939ec352b3438d7ca4d3bb044f6b5cf373c0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_02.txt"
+      },
+      {
+        "arguments": [
+          "direct/build.py",
+          "direct/self_radix",
+          "--self-radix"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "c39969e37d61f6b06248ee1d0a0076a17067215eef31cfcf751e6f3b47a13cfd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_03.txt"
+      },
+      {
+        "arguments": [
+          "direct/build.py",
+          "direct/self_radix_qf",
+          "--self-radix",
+          "--quadratic-first"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "11c55fd64ae9408f20318272d7fba4ed7871166a6c9496e91a0fa8838872bb60",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_04.txt"
+      },
+      {
+        "arguments": [
+          "direct/build.py",
+          "direct/self_radix_min",
+          "--self-radix",
+          "--quadratic-first",
+          "--max-support",
+          "32"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "1ffa819b3f5b923b513263d50f0093cb80d4fe96c53a59c4bab9c8427c6dd69f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_05.txt"
+      },
+      {
+        "arguments": [
+          "direct/center.py",
+          "direct/self_radix",
+          "direct/centered310"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "6f02a3c6ff610793cb5295321ee90cd3c7d3321ea8e25f70c72c9b94cf84b72f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_06.txt"
+      },
+      {
+        "arguments": [
+          "direct/center.py",
+          "direct/self_radix_qf",
+          "direct/centered308"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "34eba782e3d38facfcc7b34630447d80d78d6e7f0354cfbb45a5ce2b2d8a6aa6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_07.txt"
+      },
+      {
+        "arguments": [
+          "direct/center.py",
+          "direct/self_radix_min",
+          "direct/centered307"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "32caa51376ad921b27539508c946fe81a77ce034e89c3eaecf0809e359d17455",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_08.txt"
+      },
+      {
+        "arguments": [
+          "direct/check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "fa9d6849765c00b9442aa620d3ea070110421eead5a519681432af0d271dced2",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_09.txt"
+      },
+      {
+        "arguments": [
+          "direct/check_diagnostics.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "76229d778ad42e35384859a1093e21b03183f768e6a7aadead14609bc011ede1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_10.txt"
+      },
+      {
+        "arguments": [
+          "direct/check_report.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "e8792ce3e61fea008ff267a6c23b68344aacdb5546157ed78908165c50c029d3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_11.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "654a75b9036322fa71fc63dfe2adbba85701419253e3e580245874c0eba68041",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_12.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/review/audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "00ec441989f4c1282ea7afa65672147520047d5bd0d3df62ece935699915e75c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_13.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/thirteen/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "5df58bc02d595147bcd32ece5d0cd78fecbc519abd13ec2163130ac6e7292078",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_14.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/thirteen/review/audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "f653c1b4ee688ccb4cea6df735a2924df1d939f43c18d0ce97e1417333e89ebc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_15.txt"
+      },
+      {
+        "arguments": [
+          "positive/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "17dc1e7ffdbbff8554fa06b01a75ceabb75a1ac92d66922a2fbbccb9813fe95c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_16.txt"
+      },
+      {
+        "arguments": [
+          "positive/build.py",
+          "--check"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "17dc1e7ffdbbff8554fa06b01a75ceabb75a1ac92d66922a2fbbccb9813fe95c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_17.txt"
+      },
+      {
+        "arguments": [
+          "positive/verify.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "65a5513235eea7c6a56f0647df4e0c4eb8f708bf3f0b6d32f7cf4cf825239598",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_18.txt"
+      },
+      {
+        "arguments": [
+          "integer/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "96113bff265c5d21ad8ce80331d0a19eb334615323551952d4c1ccbacbeefb38",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_19.txt"
+      },
+      {
+        "arguments": [
+          "integer/check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "812d1e0a584b5833e3cfd765d689f4378d030b3e643fdae86707b03a29250ebd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_20.txt"
+      },
+      {
+        "arguments": [
+          "review/positive/independent_check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "d4bfc0f8c70715b368a22550d860f2d68a072601ccd8f6e25edd5e4feb367e85",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_21.txt"
+      },
+      {
+        "arguments": [
+          "review/independent_norm_audit.py",
+          "integer"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "8035eaf33d4646f5d7ab01f2b1b7b3da51d6e83ba9938392998f00addb8cbf6a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_22.txt"
+      },
+      {
+        "arguments": [
+          "review/independent_norm_audit.py",
+          "lowdegree"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "2a0e991259671224a8946d357e545202f7fffc486078679504a0ab962f913140",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_23.txt"
+      },
+      {
+        "arguments": [
+          "review/independent_norm_audit.py",
+          "thirteen"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "81839d304628249aab3384935245ffacf0a83f73698ea038c10b3f0b130115ee",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_24.txt"
+      },
+      {
+        "arguments": [
+          "review/integer/lemma_diagnostics.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "c217a98ee5ce968940e65d464a22a88d7f6b83597e2c25b08e7fd0ece30b1452",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_25.txt"
+      },
+      {
+        "arguments": [
+          "baseline/audit_downloaded_data.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "535197f9b817f4dd5113493ebfd2dc0b86bf799a72c6bd111baf94cbc7cec545",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_26.txt"
+      },
+      {
+        "arguments": [
+          "review/report/verify_report_data.py",
+          "--root",
+          "."
+        ],
+        "returncode": 0,
+        "stdout_sha256": "cc69bd192679dcb5d1efe3ff3760e63de271be4f9aed45f14202717423692e18",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_27.txt"
+      },
+      {
+        "arguments": [
+          "report/check_report.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "25f2baa2c2ad9184c84c7d77f6e619adb8b12ef143f7c432aed8669fe5578bfc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "normal_28.txt"
+      }
+    ],
+    "exact_byte_comparisons": [
+      "baseline/AUDIT_STDOUT.json",
+      "baseline/INDEPENDENT_DATA_AUDIT.json",
+      "direct/CHECK_NORMAL.json",
+      "direct/DIAGNOSTICS.json",
+      "direct/REPORT_FORMULA_CHECK.json",
+      "direct/centered307/ENGINE.json",
+      "direct/centered307/METRICS.json",
+      "direct/centered307/SOURCE_BINDING.json",
+      "direct/centered307/SOURCE_PARENT.json",
+      "direct/centered307/equation.json",
+      "direct/centered307/expanded_polynomial.json",
+      "direct/centered307/factored_source.json",
+      "direct/centered307/factorization_certificate.json",
+      "direct/centered307/projected.json",
+      "direct/centered307/projection_certificate.json",
+      "direct/centered307/raw_equation.json",
+      "direct/centered307/terminal_elimination_certificate.json",
+      "direct/centered307/transformation_certificate.json",
+      "direct/centered307/translation_certificate.json",
+      "direct/centered308/ENGINE.json",
+      "direct/centered308/METRICS.json",
+      "direct/centered308/SOURCE_BINDING.json",
+      "direct/centered308/SOURCE_PARENT.json",
+      "direct/centered308/equation.json",
+      "direct/centered308/expanded_polynomial.json",
+      "direct/centered308/factored_source.json",
+      "direct/centered308/factorization_certificate.json",
+      "direct/centered308/projected.json",
+      "direct/centered308/projection_certificate.json",
+      "direct/centered308/raw_equation.json",
+      "direct/centered308/terminal_elimination_certificate.json",
+      "direct/centered308/transformation_certificate.json",
+      "direct/centered308/translation_certificate.json",
+      "direct/centered310/ENGINE.json",
+      "direct/centered310/METRICS.json",
+      "direct/centered310/SOURCE_BINDING.json",
+      "direct/centered310/SOURCE_PARENT.json",
+      "direct/centered310/equation.json",
+      "direct/centered310/expanded_polynomial.json",
+      "direct/centered310/factored_source.json",
+      "direct/centered310/factorization_certificate.json",
+      "direct/centered310/projected.json",
+      "direct/centered310/projection_certificate.json",
+      "direct/centered310/raw_equation.json",
+      "direct/centered310/terminal_elimination_certificate.json",
+      "direct/centered310/transformation_certificate.json",
+      "direct/centered310/translation_certificate.json",
+      "direct/odd_t/ENGINE.json",
+      "direct/odd_t/METRICS.json",
+      "direct/odd_t/SOURCE_BINDING.json",
+      "direct/odd_t/equation.json",
+      "direct/odd_t/expanded_polynomial.json",
+      "direct/odd_t/factored_source.json",
+      "direct/odd_t/factorization_certificate.json",
+      "direct/odd_t/projected.json",
+      "direct/odd_t/projection_certificate.json",
+      "direct/odd_t/raw_equation.json",
+      "direct/odd_t/terminal_elimination_certificate.json",
+      "direct/odd_t/transformation_certificate.json",
+      "direct/odd_t/translation_certificate.json",
+      "direct/odd_y/ENGINE.json",
+      "direct/odd_y/METRICS.json",
+      "direct/odd_y/SOURCE_BINDING.json",
+      "direct/odd_y/equation.json",
+      "direct/odd_y/expanded_polynomial.json",
+      "direct/odd_y/factored_source.json",
+      "direct/odd_y/factorization_certificate.json",
+      "direct/odd_y/projected.json",
+      "direct/odd_y/projection_certificate.json",
+      "direct/odd_y/raw_equation.json",
+      "direct/odd_y/terminal_elimination_certificate.json",
+      "direct/odd_y/transformation_certificate.json",
+      "direct/odd_y/translation_certificate.json",
+      "direct/self_radix/ENGINE.json",
+      "direct/self_radix/METRICS.json",
+      "direct/self_radix/SOURCE_BINDING.json",
+      "direct/self_radix/equation.json",
+      "direct/self_radix/expanded_polynomial.json",
+      "direct/self_radix/factored_source.json",
+      "direct/self_radix/factorization_certificate.json",
+      "direct/self_radix/projected.json",
+      "direct/self_radix/projection_certificate.json",
+      "direct/self_radix/raw_equation.json",
+      "direct/self_radix/terminal_elimination_certificate.json",
+      "direct/self_radix/transformation_certificate.json",
+      "direct/self_radix/translation_certificate.json",
+      "direct/self_radix_min/ENGINE.json",
+      "direct/self_radix_min/METRICS.json",
+      "direct/self_radix_min/SOURCE_BINDING.json",
+      "direct/self_radix_min/equation.json",
+      "direct/self_radix_min/expanded_polynomial.json",
+      "direct/self_radix_min/factored_source.json",
+      "direct/self_radix_min/factorization_certificate.json",
+      "direct/self_radix_min/projected.json",
+      "direct/self_radix_min/projection_certificate.json",
+      "direct/self_radix_min/raw_equation.json",
+      "direct/self_radix_min/terminal_elimination_certificate.json",
+      "direct/self_radix_min/transformation_certificate.json",
+      "direct/self_radix_min/translation_certificate.json",
+      "direct/self_radix_qf/ENGINE.json",
+      "direct/self_radix_qf/METRICS.json",
+      "direct/self_radix_qf/SOURCE_BINDING.json",
+      "direct/self_radix_qf/equation.json",
+      "direct/self_radix_qf/expanded_polynomial.json",
+      "direct/self_radix_qf/factored_source.json",
+      "direct/self_radix_qf/factorization_certificate.json",
+      "direct/self_radix_qf/projected.json",
+      "direct/self_radix_qf/projection_certificate.json",
+      "direct/self_radix_qf/raw_equation.json",
+      "direct/self_radix_qf/terminal_elimination_certificate.json",
+      "direct/self_radix_qf/transformation_certificate.json",
+      "direct/self_radix_qf/translation_certificate.json",
+      "integer/BUILD.txt",
+      "integer/CHECK.json",
+      "integer/CHECK_NORMAL.txt",
+      "integer/METRICS.json",
+      "integer/free_product11_none.json",
+      "integer/free_product11_simple.json",
+      "integer/weak_product11_none.json",
+      "integer/weak_product11_simple.json",
+      "lowdegree/equation.json",
+      "lowdegree/review/CHECK.json",
+      "lowdegree/review/NORMAL_RECEIPT.txt",
+      "lowdegree/specification.json",
+      "lowdegree/thirteen/equation.json",
+      "lowdegree/thirteen/review/CHECK.json",
+      "lowdegree/thirteen/review/NORMAL_RECEIPT.txt",
+      "lowdegree/thirteen/specification.json",
+      "positive/BUILD_CHECK.txt",
+      "positive/CHECK.json",
+      "positive/VERIFY.txt",
+      "positive/equation_81.json",
+      "positive/equation_82.json",
+      "report/DATA_CHECK.json",
+      "review/integer/INDEPENDENT_NORMAL.json",
+      "review/integer/INDEPENDENT_NORMAL.txt",
+      "review/integer/LEMMAS_NORMAL.json",
+      "review/integer/LEMMAS_NORMAL.txt",
+      "review/lowdegree/INDEPENDENT_NORMAL.json",
+      "review/lowdegree/INDEPENDENT_NORMAL.txt",
+      "review/lowdegree/thirteen/INDEPENDENT_NORMAL.json",
+      "review/lowdegree/thirteen/INDEPENDENT_NORMAL.txt",
+      "review/positive/CHECK_NORMAL.json",
+      "review/report/REPORT_DATA_CHECK.json"
+    ],
+    "unchanged_coefficient_files": 206
+  },
+  "optimized": {
+    "status": "PASS",
+    "commands": [
+      {
+        "arguments": [
+          "direct/build.py",
+          "direct/odd_t"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "001669ab4317741fb6160f6dc7ba504ee68daa1f57f8fe2fddf839657a7277f5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_01.txt"
+      },
+      {
+        "arguments": [
+          "direct/build.py",
+          "direct/odd_y",
+          "--cofinal-y"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "c5f4aecb1436b2115b8cc00fb058939ec352b3438d7ca4d3bb044f6b5cf373c0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_02.txt"
+      },
+      {
+        "arguments": [
+          "direct/build.py",
+          "direct/self_radix",
+          "--self-radix"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "c39969e37d61f6b06248ee1d0a0076a17067215eef31cfcf751e6f3b47a13cfd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_03.txt"
+      },
+      {
+        "arguments": [
+          "direct/build.py",
+          "direct/self_radix_qf",
+          "--self-radix",
+          "--quadratic-first"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "11c55fd64ae9408f20318272d7fba4ed7871166a6c9496e91a0fa8838872bb60",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_04.txt"
+      },
+      {
+        "arguments": [
+          "direct/build.py",
+          "direct/self_radix_min",
+          "--self-radix",
+          "--quadratic-first",
+          "--max-support",
+          "32"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "1ffa819b3f5b923b513263d50f0093cb80d4fe96c53a59c4bab9c8427c6dd69f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_05.txt"
+      },
+      {
+        "arguments": [
+          "direct/center.py",
+          "direct/self_radix",
+          "direct/centered310"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "6f02a3c6ff610793cb5295321ee90cd3c7d3321ea8e25f70c72c9b94cf84b72f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_06.txt"
+      },
+      {
+        "arguments": [
+          "direct/center.py",
+          "direct/self_radix_qf",
+          "direct/centered308"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "34eba782e3d38facfcc7b34630447d80d78d6e7f0354cfbb45a5ce2b2d8a6aa6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_07.txt"
+      },
+      {
+        "arguments": [
+          "direct/center.py",
+          "direct/self_radix_min",
+          "direct/centered307"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "32caa51376ad921b27539508c946fe81a77ce034e89c3eaecf0809e359d17455",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_08.txt"
+      },
+      {
+        "arguments": [
+          "direct/check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "fa9d6849765c00b9442aa620d3ea070110421eead5a519681432af0d271dced2",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_09.txt"
+      },
+      {
+        "arguments": [
+          "direct/check_diagnostics.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "76229d778ad42e35384859a1093e21b03183f768e6a7aadead14609bc011ede1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_10.txt"
+      },
+      {
+        "arguments": [
+          "direct/check_report.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "e8792ce3e61fea008ff267a6c23b68344aacdb5546157ed78908165c50c029d3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_11.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "654a75b9036322fa71fc63dfe2adbba85701419253e3e580245874c0eba68041",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_12.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/review/audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "00ec441989f4c1282ea7afa65672147520047d5bd0d3df62ece935699915e75c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_13.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/thirteen/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "5df58bc02d595147bcd32ece5d0cd78fecbc519abd13ec2163130ac6e7292078",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_14.txt"
+      },
+      {
+        "arguments": [
+          "lowdegree/thirteen/review/audit.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "f653c1b4ee688ccb4cea6df735a2924df1d939f43c18d0ce97e1417333e89ebc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_15.txt"
+      },
+      {
+        "arguments": [
+          "positive/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "17dc1e7ffdbbff8554fa06b01a75ceabb75a1ac92d66922a2fbbccb9813fe95c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_16.txt"
+      },
+      {
+        "arguments": [
+          "positive/build.py",
+          "--check"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "17dc1e7ffdbbff8554fa06b01a75ceabb75a1ac92d66922a2fbbccb9813fe95c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_17.txt"
+      },
+      {
+        "arguments": [
+          "positive/verify.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "65a5513235eea7c6a56f0647df4e0c4eb8f708bf3f0b6d32f7cf4cf825239598",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_18.txt"
+      },
+      {
+        "arguments": [
+          "integer/build.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "96113bff265c5d21ad8ce80331d0a19eb334615323551952d4c1ccbacbeefb38",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_19.txt"
+      },
+      {
+        "arguments": [
+          "integer/check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "812d1e0a584b5833e3cfd765d689f4378d030b3e643fdae86707b03a29250ebd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_20.txt"
+      },
+      {
+        "arguments": [
+          "review/positive/independent_check.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "d4bfc0f8c70715b368a22550d860f2d68a072601ccd8f6e25edd5e4feb367e85",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_21.txt"
+      },
+      {
+        "arguments": [
+          "review/independent_norm_audit.py",
+          "integer"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "001b868bca2d995c84a0ba3fb123293e82985a4dfae5105a34f6d86f860263ff",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_22.txt"
+      },
+      {
+        "arguments": [
+          "review/independent_norm_audit.py",
+          "lowdegree"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "e3dd9e4e9cbd97295fafab2ecbd0be3c02c71a7685152b576169c3a50e688d46",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_23.txt"
+      },
+      {
+        "arguments": [
+          "review/independent_norm_audit.py",
+          "thirteen"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "c91e06dc2402571398182e667adf43292dec78a2102444fd29538964d58d8672",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_24.txt"
+      },
+      {
+        "arguments": [
+          "review/integer/lemma_diagnostics.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "7b47136ccdd81c14bed13fb6d99bda49860419ae7e420411c126eecc2b560150",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_25.txt"
+      },
+      {
+        "arguments": [
+          "baseline/audit_downloaded_data.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "535197f9b817f4dd5113493ebfd2dc0b86bf799a72c6bd111baf94cbc7cec545",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_26.txt"
+      },
+      {
+        "arguments": [
+          "review/report/verify_report_data.py",
+          "--root",
+          "."
+        ],
+        "returncode": 0,
+        "stdout_sha256": "cc69bd192679dcb5d1efe3ff3760e63de271be4f9aed45f14202717423692e18",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_27.txt"
+      },
+      {
+        "arguments": [
+          "report/check_report.py"
+        ],
+        "returncode": 0,
+        "stdout_sha256": "25f2baa2c2ad9184c84c7d77f6e619adb8b12ef143f7c432aed8669fe5578bfc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "log": "optimized_28.txt"
+      }
+    ],
+    "exact_byte_comparisons": [
+      "baseline/AUDIT_STDOUT.json",
+      "baseline/INDEPENDENT_DATA_AUDIT.json",
+      "direct/CHECK_NORMAL.json",
+      "direct/DIAGNOSTICS.json",
+      "direct/REPORT_FORMULA_CHECK.json",
+      "direct/centered307/ENGINE.json",
+      "direct/centered307/METRICS.json",
+      "direct/centered307/SOURCE_BINDING.json",
+      "direct/centered307/SOURCE_PARENT.json",
+      "direct/centered307/equation.json",
+      "direct/centered307/expanded_polynomial.json",
+      "direct/centered307/factored_source.json",
+      "direct/centered307/factorization_certificate.json",
+      "direct/centered307/projected.json",
+      "direct/centered307/projection_certificate.json",
+      "direct/centered307/raw_equation.json",
+      "direct/centered307/terminal_elimination_certificate.json",
+      "direct/centered307/transformation_certificate.json",
+      "direct/centered307/translation_certificate.json",
+      "direct/centered308/ENGINE.json",
+      "direct/centered308/METRICS.json",
+      "direct/centered308/SOURCE_BINDING.json",
+      "direct/centered308/SOURCE_PARENT.json",
+      "direct/centered308/equation.json",
+      "direct/centered308/expanded_polynomial.json",
+      "direct/centered308/factored_source.json",
+      "direct/centered308/factorization_certificate.json",
+      "direct/centered308/projected.json",
+      "direct/centered308/projection_certificate.json",
+      "direct/centered308/raw_equation.json",
+      "direct/centered308/terminal_elimination_certificate.json",
+      "direct/centered308/transformation_certificate.json",
+      "direct/centered308/translation_certificate.json",
+      "direct/centered310/ENGINE.json",
+      "direct/centered310/METRICS.json",
+      "direct/centered310/SOURCE_BINDING.json",
+      "direct/centered310/SOURCE_PARENT.json",
+      "direct/centered310/equation.json",
+      "direct/centered310/expanded_polynomial.json",
+      "direct/centered310/factored_source.json",
+      "direct/centered310/factorization_certificate.json",
+      "direct/centered310/projected.json",
+      "direct/centered310/projection_certificate.json",
+      "direct/centered310/raw_equation.json",
+      "direct/centered310/terminal_elimination_certificate.json",
+      "direct/centered310/transformation_certificate.json",
+      "direct/centered310/translation_certificate.json",
+      "direct/odd_t/ENGINE.json",
+      "direct/odd_t/METRICS.json",
+      "direct/odd_t/SOURCE_BINDING.json",
+      "direct/odd_t/equation.json",
+      "direct/odd_t/expanded_polynomial.json",
+      "direct/odd_t/factored_source.json",
+      "direct/odd_t/factorization_certificate.json",
+      "direct/odd_t/projected.json",
+      "direct/odd_t/projection_certificate.json",
+      "direct/odd_t/raw_equation.json",
+      "direct/odd_t/terminal_elimination_certificate.json",
+      "direct/odd_t/transformation_certificate.json",
+      "direct/odd_t/translation_certificate.json",
+      "direct/odd_y/ENGINE.json",
+      "direct/odd_y/METRICS.json",
+      "direct/odd_y/SOURCE_BINDING.json",
+      "direct/odd_y/equation.json",
+      "direct/odd_y/expanded_polynomial.json",
+      "direct/odd_y/factored_source.json",
+      "direct/odd_y/factorization_certificate.json",
+      "direct/odd_y/projected.json",
+      "direct/odd_y/projection_certificate.json",
+      "direct/odd_y/raw_equation.json",
+      "direct/odd_y/terminal_elimination_certificate.json",
+      "direct/odd_y/transformation_certificate.json",
+      "direct/odd_y/translation_certificate.json",
+      "direct/self_radix/ENGINE.json",
+      "direct/self_radix/METRICS.json",
+      "direct/self_radix/SOURCE_BINDING.json",
+      "direct/self_radix/equation.json",
+      "direct/self_radix/expanded_polynomial.json",
+      "direct/self_radix/factored_source.json",
+      "direct/self_radix/factorization_certificate.json",
+      "direct/self_radix/projected.json",
+      "direct/self_radix/projection_certificate.json",
+      "direct/self_radix/raw_equation.json",
+      "direct/self_radix/terminal_elimination_certificate.json",
+      "direct/self_radix/transformation_certificate.json",
+      "direct/self_radix/translation_certificate.json",
+      "direct/self_radix_min/ENGINE.json",
+      "direct/self_radix_min/METRICS.json",
+      "direct/self_radix_min/SOURCE_BINDING.json",
+      "direct/self_radix_min/equation.json",
+      "direct/self_radix_min/expanded_polynomial.json",
+      "direct/self_radix_min/factored_source.json",
+      "direct/self_radix_min/factorization_certificate.json",
+      "direct/self_radix_min/projected.json",
+      "direct/self_radix_min/projection_certificate.json",
+      "direct/self_radix_min/raw_equation.json",
+      "direct/self_radix_min/terminal_elimination_certificate.json",
+      "direct/self_radix_min/transformation_certificate.json",
+      "direct/self_radix_min/translation_certificate.json",
+      "direct/self_radix_qf/ENGINE.json",
+      "direct/self_radix_qf/METRICS.json",
+      "direct/self_radix_qf/SOURCE_BINDING.json",
+      "direct/self_radix_qf/equation.json",
+      "direct/self_radix_qf/expanded_polynomial.json",
+      "direct/self_radix_qf/factored_source.json",
+      "direct/self_radix_qf/factorization_certificate.json",
+      "direct/self_radix_qf/projected.json",
+      "direct/self_radix_qf/projection_certificate.json",
+      "direct/self_radix_qf/raw_equation.json",
+      "direct/self_radix_qf/terminal_elimination_certificate.json",
+      "direct/self_radix_qf/transformation_certificate.json",
+      "direct/self_radix_qf/translation_certificate.json",
+      "integer/BUILD.txt",
+      "integer/CHECK_NORMAL.txt",
+      "integer/CHECK_OPTIMIZED.json",
+      "integer/METRICS.json",
+      "integer/free_product11_none.json",
+      "integer/free_product11_simple.json",
+      "integer/weak_product11_none.json",
+      "integer/weak_product11_simple.json",
+      "lowdegree/equation.json",
+      "lowdegree/review/CHECK.json",
+      "lowdegree/review/NORMAL_RECEIPT.txt",
+      "lowdegree/specification.json",
+      "lowdegree/thirteen/equation.json",
+      "lowdegree/thirteen/review/CHECK.json",
+      "lowdegree/thirteen/review/NORMAL_RECEIPT.txt",
+      "lowdegree/thirteen/specification.json",
+      "positive/BUILD_CHECK.txt",
+      "positive/CHECK_OPTIMIZED.json",
+      "positive/VERIFY.txt",
+      "positive/equation_81.json",
+      "positive/equation_82.json",
+      "report/DATA_CHECK.json",
+      "review/integer/INDEPENDENT_OPTIMIZED.json",
+      "review/integer/INDEPENDENT_OPTIMIZED.txt",
+      "review/integer/LEMMAS_OPTIMIZED.json",
+      "review/integer/LEMMAS_OPTIMIZED.txt",
+      "review/lowdegree/INDEPENDENT_OPTIMIZED.json",
+      "review/lowdegree/INDEPENDENT_OPTIMIZED.txt",
+      "review/lowdegree/thirteen/INDEPENDENT_OPTIMIZED.json",
+      "review/lowdegree/thirteen/INDEPENDENT_OPTIMIZED.txt",
+      "review/positive/CHECK_NORMAL.json",
+      "review/report/REPORT_DATA_CHECK.json"
+    ],
+    "unchanged_coefficient_files": 206
+  },
+  "manifest_after": {
+    "status": "PASS",
+    "files": 2196,
+    "bytes": 32440310,
+    "manifest_sha256": "dd311fa6fa177f5a1889418e6f4da29e6f356ee3f5da49a7cd47fa24deb27bc7"
+  }
+}

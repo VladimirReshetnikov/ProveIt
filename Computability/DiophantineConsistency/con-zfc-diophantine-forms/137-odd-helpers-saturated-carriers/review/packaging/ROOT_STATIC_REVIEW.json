@@ -1,0 +1,16 @@
+{
+  "status": "REVIEWED_BEFORE_RELEASE",
+  "scope": "Root static review of packaging/replay infrastructure, not mathematical proofs or completed production replay. Final plan, closure and code hashes remain to be checked.",
+  "files": {
+    "reproduce.py": "fd027df4b92fa288b455afc4741a00b67794910950886755ab78386762977236",
+    "record_replay_summary.py": "ca8a6998425fe36ca6bde2b63202c681419a5b5e92e90cb575469a68d02598c7",
+    "make_release_zip.py": "736434b733424f190727049385774d203f44840795209e30b0e35934cd765666"
+  },
+  "observations": [
+    "Manifest and archive enforce exact inventory, safe portable names, no symlinks, per-file bytes and CRC.",
+    "Replay runs normal and optimized Python in isolated copies; frozen root is compared before and after.",
+    "Explicit runtime checks use exceptions, not removable assert statements.",
+    "Code-review manifest must cover actual executed closure; final plan must bind targets and rebuilt files.",
+    "Add safe path validation to negative-control target names before touching them."
+  ]
+}

@@ -1,0 +1,339 @@
+# Odd nonzero helper quotients and cofinal signed-cap compositions
+
+## Statement, exact formula, and attribution
+
+For each published endpoint let R_j be exactly its residual list in
+`equation.json`, with the declared integer-coordinate order. The equation is
+
+    P(z_0,...,z_(n-1)) = sum_j R_j(z)^2 = 0, all z_i in Z.
+
+`expanded_polynomial.json` is its complete collected coefficient list, not a
+circuit estimate or a polynomial with variable exponents. The degree is four.
+The proof below establishes zero existence iff a finite ZFC refutation exists,
+at the inherited ordinary C222/refutation calibration. Thus ZFC proves that
+the no-integer-zero sentence is equivalent to Con(ZFC). This is not a proof
+of consistency, a new kernel-checked ZFC derivation, or a global minimum claim.
+
+The starting body is the complete fused-nine signed-cap source at upstream
+commit 61f87277eb8acdd9140021a346b7a869d9cbb32a, with 406 body coordinates,
+341 body rows, 475 guarded coordinates and 364 guarded rows. Its full literal
+files are retained in `source/`; all copied file hashes are in SOURCE_PINS.
+
+The contribution is the odd-helper quotient below, its signed-base proof,
+and its actual composition with the accepted signed-target/fused-factor
+source. The two support products are upstream 623d491b27c719151f652f15269bf65d10065db7.
+The odd frame, cofinal square horizon, consecutive-product beta modulus and
+self-sized radix are credited to incoming source131 and its cofinal sources.
+The old round16 odd cap already used an odd auxiliary quotient in a different
+positive-target construction. No historical-priority claim is made for the
+underlying parity trick. Exact new materialized compositions, not subtraction
+of advertised savings, determine the endpoint counts.
+
+## 1. Literal source changes and conventions
+
+All coordinate numbers here refer to the unprojected 406-coordinate body.
+Use t=v0+16, x=v1, y=v2, F=v3, B=v5, V0=v6, r=v7, s=v8,
+r0=v11, N=v26, q=v179, W=v245, A=v246, z=v247. The helper is
+H=v250, J=v251, d=v252, f=v253, AJ=v254, Dminus1=v255,
+Hf=v256, e=v375. The cap is U=v386, C=v387, AC=v388,
+C2=v389, S=v390, R=v391, DR=v392, g=v393, h=v394.
+
+Replace only these multiplier terms in the body:
+
+    v248=W(z+1)       -> v248=W(2z+1),
+    J=C2(e+1)         -> J=C2(2e+1).
+
+Keep all other frame, cap, primary norm, pool and power rows. Delete only the
+frame guard z>=0 and helper guard Dminus1-4>=0, including their private triples.
+Replace t0's ternary graph by t0=h0^2. Replace the scalar guard pairs
+(183,184) and (191,192) by graphs for their products. The `cofinal_y` sibling
+also adds y=V0(V0-1), replaces (213,214) by a product graph, and changes the
+strict fused graph (r0+1)P8-1>=0 to P8-1>=0. Its old row y=F+r0+1 remains.
+
+The optional `self_radix` sibling is described in section 7. Every other
+change is a recorded private-witness reindexing, Horn identity, integral
+monic elimination, or integer translation. The transformation certificate
+lists every changed full body row and every retained/deleted/fresh graph.
+
+For any integer c, c(c+1)>=0. Legendre's three-square theorem applied to
+4n+1 shows that n>=0 iff n=a^2+b^2+c(c+1) for some integers a,b,c.
+Each new graph is quadratic and has its own private witnesses.
+
+## 2. The odd frame requires no sign predicate
+
+The frame remains W=2(2+sum of squares of all distinct actual power atoms),
+so W is even, W>=516, every atom has absolute value below W, and there are
+15 primary indices with absolute values below W. The t target is nonzero,
+because t=16+h0^2. The unprojected scale rows are exactly
+
+    T=W(2z+1), E=(W+1)T, A^2+T^2-E^2=1.
+
+Thus A^2-((W+1)^2-1)T^2=1 and T is nonzero. Write a=|A|. Pell
+classification at base W+1 gives |T|=Y_n(W+1) for n>=1. Reduction modulo
+W gives Y_n(W+1)=n mod W, so W|n. Consequently
+
+    a>=X_W(W+1)>W^W,  a-1>4W^3.
+
+These statements use no requested exponential meaning or unproved sign.
+
+For completeness choose A=X_W(W+1). Because W+1 is odd, X_n(W+1) is
+odd for all n, Y_n(W+1) is odd when n is odd, and
+Y_(2n)=2X_nY_n. Induction on the power of two in n gives
+v2(Y_n(W+1))=v2(n). Together with W|Y_W(W+1), the quotient
+Y_W(W+1)/W is a positive odd integer. Set z=(Y_W/W-1)/2.
+This supplies the odd frame for every fixed semantic front, not only samples.
+
+## 3. Odd helper theorem, with signed A, C and comparison base
+
+Retain the three norms and congruences
+
+    U^2-(A^2-1)C^2=1, H^2-(A^2-1)J^2=1,
+    S^2-(D^2-1)R^2=1,
+    J=C^2(2e+1), D=1+4J(d+1)=A+Hf,
+    S=U+Hg, R=W+4Ch.
+
+Also retain the quadratic cap and primary-only pooled congruence
+
+    C^2-1-sum_i y_i^2 = a0^2+b0^2+c0(c0+1),
+    sum_i(y_i-k_i)^2=(A-1)Q.
+
+The first gives C nonzero. If |C|=1, all y_i=0, and the pool would make
+the strictly positive sum sum k_i^2, smaller than W^3, divisible by
+A-1, whose absolute value exceeds 4W^3. This is impossible. Hence L=|C|>1.
+Classification gives L=Y_i(a), |U|=X_i(a), i>=2. In particular L>=2a>W
+and 0<i<L. This excludes the exceptional index-one endpoint explicitly.
+
+Since 2e+1 is nonzero, |J|>=C^2=L^2>1. Classification of the helper gives
+|J|=Y_l(a), |H|=X_l(a), l>=2. In particular
+|H|>=2a^2-1>a+1>=|A-1|. If d+1=0, then D=1 and H divides A-1,
+contradicting this strict inequality. Therefore d+1 is nonzero and
+
+    |D|=|1+4J(d+1)|>=4|J|-1>=15.
+
+No sign of J, d, D, A or C has been inferred or assumed.
+
+The inherited Pell squared-divisibility fact, applied to L^2 dividing |J|, yields
+i<=l and L|l. The congruence R=W modulo4C, with0<W<L, implies R is
+nonzero. Classify the comparison norm at |D|, with absolute index j>=1.
+For negative D the polynomial recurrences satisfy
+X_j(D)=sgn(D)^j X_j(|D|) and
+Y_j(D)=sgn(D)^(j-1)Y_j(|D|); the independent coordinate signs absorb
+these factors. Thus the exact polynomial congruence D=A mod H and
+S=U mod H gives X_j(a)=+/-X_i(a) mod X_l(a), hence
+j=+/-i mod 2l by the same inherited up-to-sign residue lemma. The
+conditions i>=2 and i<=l are already established.
+
+Since D=1 mod 4L and R=W mod 4C, polynomial reduction of Y_j(D)
+gives j=+/-W mod 4L. Combining with L|l gives i=+/-W mod 2L.
+Both i and W are strictly between zero and L. The negative congruence
+cannot hold and the positive congruence forces i=W. Therefore
+
+    |C|=Y_W(|A|).
+
+Every primary Pell index j_i is then less than W. Write epsilon=sgn(A),
+y_i=sigma_iY_(j_i)(a), and tau_i=sigma_i epsilon^(j_i-1) for j_i>0.
+Reduction modulo A-1 makes the pool divisible by A-1 at the finite
+representative E=sum(tau_i*j_i-k_i)^2. Its bound is
+0<=E<4*15*W^2<4W^3<|A-1|, so E=0. Thus
+
+    y_i=Y_(k_i)(A), x_i=+/-X_(k_i)(A)
+
+with signed indices, including zero. No positive-index ledger was borrowed.
+
+### Constructive completeness of the odd helper
+
+After the semantic front and frame have been fixed choose positive A as in
+section 2, U=X_W(A), C=Y_W(A). Since W is even, U is odd and C is even.
+Put H=X_(WC)(A)=X_C(U) and J=Y_(WC)(A)=C*Y_C(U). The odd-base
+valuation lemma above gives v2(Y_C(U))=v2(C). Expanding the Pell power gives
+Y_C(U)=C*U^(C-1)+(U^2-1)T for an integer T; the cap norm says
+U^2-1=(A^2-1)C^2. Hence C divides Y_C(U). Therefore J/C^2 is a positive odd integer and
+e=(J/C^2-1)/2 is integral. Also H is odd, gcd(H,J)=1, and hence
+gcd(H,4J)=1. CRT supplies a sufficiently large positive D satisfying
+D=A mod H and D=1 mod 4J. Choose its index-W canonical pair S,R.
+Polynomial base transfer gives S=U mod H and R=W mod 4C. This supplies
+all comparison quotient witnesses and the complete odd helper.
+
+This construction reuses the old even-index odd-quotient idea, but is now
+composed with the signed-target quadratic cap, where C and A may initially
+have either sign and the old comparison-base lower graph is absent.
+
+## 4. Restoring the complete accepted signed-cap source
+
+It is false to restore the old helper merely by changing the sign of J:
+its comparison-base lower graph does not follow for the original negative D.
+Instead, after section 3 recovers |C|=Y_W(a), rebuild its private helper.
+Let L=|C|, H=X_(WL)(a), J=Y_(WL)(a), and choose large positive D by
+CRT with D=A mod H and D=1 mod 4J. Since W is even, X_W(A)=X_W(a).
+Choose S to be X_W(D) or -X_W(D) according to the actual sign of U,
+and choose R=Y_W(D). Then S=U mod H and R=W mod 4C. Fill all
+quotients and products, set the OLD e=J/C^2-1, and provide its old
+Dminus1-4 graph. This fixes A, C, U, every primary pair and every semantic
+port, but replaces the complete private helper tuple. It is an existential
+restoration, not a pointwise whole-body identity.
+
+Restore the old frame parameter by z_old=|2z+1|-1 and reflect its two
+ordinate multiplication gates if necessary. Its norm and A stay fixed,
+and z_old>=0. Supply t0's old ternary graph because t0=h0^2>=0.
+The new support products are handled next. Only after restoring every old
+graph and the full old tuple is its whole-source theorem invoked.
+
+## 5. Acyclic sign and support recovery
+
+The unchanged r,s>=0 and output slack o=v185>=0 give
+B=r+s+1>=1 and q=B+o+1>=2. Section 3 recovers the signed t pair
+without using the removed support signs. The actual q-base request at
+t>=16 gives L=v181=q^t and orients that pair relative to signed A.
+The same pair then gives V0=(F^2+1)^t, including the base-one case.
+The unchanged ceiling is FB=V0+s. Hence F>=1. As in the retained
+fused proof, this yields B>F^2+1 and q>=3 before interpreting B as a binomial.
+
+The signed-A request lemma used here is elementary: with
+T=2An-n^2-1, H_k=X_k(A)+(n-A)Y_k(A), one has
+H_k=n^k mod T and H_k*(X_k(A)-(n-A)Y_k(A))=1 mod T.
+The frame implies |T|>W^W while both |m-n^k| and |m*n^k+1|
+are below W^W. For n>=2,k>=1 the opposite abscissa branch would give
+m*n^k=-1, impossible. The canonical branch gives m=n^k.
+For a negative target k=-l<0 the ordinate is -Y_l(A). The canonical
+abscissa branch is J_l=X_l(A)-(n-A)Y_l(A), giving m*n^l=1 modulo T;
+the same strict frame bound makes this an integer equality, impossible
+for n>=2. The opposite branch is -H_l and gives m=-n^l. For k=0,
+y=0 and x=+/-1, so the output is m=+/-1. These enumerate every branch.
+Thus a q-base output at least2 forces k>0 and the canonical branch.
+They justify the unchanged x anchor without assuming its exponent sign.
+
+The derived t+1 recurrence now gives v189=q^(t+1). The exact bound
+rows166/171 say q*v183+v184=L-2>0 and
+q*v191+v192=v189-2>0. For q>0, uv>=0 and qu+v>0 imply u,v>=0:
+a negative factor would force the other nonpositive and make the weighted
+sum negative. Both support pairs are restored. Zero factors are allowed;
+the represented product is uv, not uv-1.
+
+In the cofinal-y siblings, y=V0(V0-1)>=F+1. Indeed V0>F^2+1 for
+t>=16,F>=1. Thus y>=0 and r0=y-F-1>=0 without its old graph. The
+q-base y+1 request gives v211=q^(y+1), so row184 makes the third
+weighted support sum positive and restores 213/214 from its product.
+The two x support scalar guards225/226 remain unchanged: their positive
+output anchor excludes nonpositive x+1 by the full signed-index lemma,
+giving x>=0. No unsupported product replacement is made for this pair.
+
+In the conservative odd_t sibling the unchanged scalar guards213/214 and
+row184 give v211=q*v213+v214+2>=2. The signed-index q request then
+excludes y+1<=0 and gives y>=0 and v211=q^(y+1). Thus every denominator
+used in the eleven successor residue ideals is also a genuine positive
+q-power in this sibling, without borrowing the later r0 sign.
+
+The unchanged successor residue ideals give every q+1-base output
+m=1 mod q. If its signed target k were negative, the only possible
+integer-output branch above would be m=-(q+1)^(-k)=-1 mod q,
+impossible because q>=3. Thus all nine independent targets
+v16+1,...,v24+1, and the derived-label target are nonnegative before
+strictness. The zero target is not excluded by this residue alone.
+The product of the first eight targets is P8. In the conservative sibling the original mixed graph
+forces P8>0 and r0+1>0; in the cofinal-y siblings P8-1>=0 forces P8>0,
+while r0>=0 was independently recovered above. Thus every original scalar
+sign required by the complete fused source has been restored. Its old
+mixed graph is supplied with a fresh triple. All other retained witnesses
+are copied; none of the fresh representations is asserted unique.
+
+For the ninth representative, the endpoint v24=-1 would make the unchanged
+raw index row B*v27=F^2+1. But 0<F^2+1<B: indeed
+FB>=V0=(F^2+1)^t>F(F^2+1), because t>=16 and F>=1. No integer
+multiple of the positive B lies strictly between0 and B. Hence v24+1>0
+as well. All nine representatives used in H0 are now strictly positive.
+
+## 6. Cofinal completeness, not same-tuple equivalence
+
+Begin with a finite C222 refutation and expand its proof DAG into a finite
+tree. The inherited native construction permits every sufficiently large
+horizon: insert truth-padding steps to reach exactly t. Choose h0 large
+enough that t=16+h0^2 exceeds its step count, every local parameter and
+all constructor label sums. Set F=t!. This proves completeness of the
+square restriction; mere unboundedness of an unspecified set would not.
+
+For the conservative sibling choose the ordinary beta modulus freely, as
+in the parent. For cofinal-y put b=F^2+1, V0=b^t and y=V0(V0-1).
+Every pending accumulator has at most t+1 factors, each at most
+1+tF<=b, so it is at most b^(t+1). Since t>=16,
+y=b^t(b^t-1)>b^(t+1). Also V0=1 mod F, so F|y, and y>=F+1.
+These are the complete inherited beta-CRT hypotheses. A common prime of
+1+(i+1)y and 1+(j+1)y would divide i-j, hence F and y, contradiction.
+Thus CRT supplies x and the endpoint quotients. Set r0=y-F-1>=0.
+
+Construct the parent's remaining semantic data and its genuine powers in
+their existing dependency order. With that front fixed, choose the odd
+frame, canonical primary pairs, cap, and odd helper of sections 2--3.
+For the quadratic cap slack let h=max k_i<W. Then
+C=Y_W(A)>=Y_(h+1)(A)>(2A-1)Y_h(A). Since A is enormous and h>=t>=16,
+C^2>15Y_h(A)^2+1>=sum_i Y_(k_i)(A)^2+1. Thus the exact quadratic
+cap graph has a nonnegative argument.
+Each difference Y_(k_i)(A)-k_i is divisible by A-1, so the pool quotient
+is integral. Supply every retained/product/strict graph using its actual
+nonnegative argument. This constructs a full zero of each source.
+
+Together with sections 4--5, this proves soundness/completeness of the
+conservative and cofinal-y siblings at the complete parent's calibration.
+
+## 7. Optional self-sized radix sibling
+
+This sibling has a different semantic front, not a same-front map to the
+old equation q=N^K. It uses the natural arithmetic argument retained in
+`source/COFINAL_131_PROOF.md` and the same complete C222 calibration.
+
+Let a_i=v(15+i)+1 for 1<=i<=9. Replace the aggregate bound by
+H0=1+sum a_i and q=(B H0)^K, keeping N=B^K. In the literal body
+v178=sum a_i, v174=B(1+v178); the former N-square v175 now equals
+v174^2, and the third power base changes from v26 to v174. The only
+new frame atom is v174, so the exact even frame has 38 distinct atoms.
+The corresponding scalar slack graph is deleted. No base is omitted from
+the frame; the old N atom remains because N is still a requested output.
+
+All preceding presemantic steps remain valid because they use q>=2,
+not its unknown power meaning. The q/q+1 requests and successor residue
+ideals establish strict positive representatives before H0 is used as a
+positive base. Now H0>1 and K=2(2+t+x+y+F)>0. The B request orients
+the K pair, giving N=B^K; its same-pair B*H0 request gives q=(B H0)^K.
+Thus N|q and q>=B^2>V0. The exact factorial binomial is recovered by
+the inherited carry-free coefficient bound, and the unchanged square-
+output fixed-point proof gives F=t! (no consistency assumption).
+
+Every independent a_i is below H0. For needed lower range index k<R0,
+binom(a_i,j)<=a_i^k<H0^K<=q for j<=k, with coefficient zero beyond
+the upper index. The derived label has the inherited majorant
+Jlabel<=(n+1)^ell, ell=4194304, with n+1<=H0; padding and F=t!
+give ell(t+1)<2F<K. Hence all its needed coefficients are below q.
+The unchanged local Horn majorant is below R0^8388608<2^R0<2^K.
+These are precisely the arithmetic inequalities used in the retained
+prime-power range decoding and multiplicity-flow proof. No old aggregate
+bound or old identity q=N^K is reused. All interpreted denominators are
+positive, and the retained paired intervals restore their digit signs.
+The natural CRT/Horn argument therefore extracts a finite refutation.
+
+Conversely, after the cofinal beta code fixes x,y,F and hence R0,K,B,N,
+choose the nine independent positive CRT representatives at precision2K.
+Only then define H0 and q=(B H0)^K. The bounds just proved validate all
+digits for these representatives; there is no circular future modulus.
+Construct the frame and private Pell certificates last. This supplies a
+complete zero and proves the same finite-refutation equivalence.
+
+## 8. Exact compilation and mathematical verification boundary
+
+The inherited Horn rewrite uses exact free-coefficient identities
+product(L_i^2)=(product L_i)^2 and r^2s^2=(rs)^2, with complete private
+occurrence checks. It reconstructs old private Horn witnesses in the reverse
+direction, rather than treating all private coordinates as unchanged.
+
+Each monic projection step solves v=f or -v=-f, where f is an integer
+polynomial independent of v. It substitutes in every remaining row and
+checks that all residual degrees remain at most two. Reverse the recorded
+steps to restore every deleted coordinate; restore actual unused coordinates
+as zero, then restore old Horn witnesses. Integer translations old=new+shift
+are bijections. Finally a sum of real squares vanishes iff every row vanishes.
+These give exact existential maps through every finite compiler stage.
+
+The independent checker replays literal edits, guard privacy, frame atom
+coverage, the Horn certificate, all monic restorations, translation, and
+every collected coefficient. Finite Pell, parity and support fixtures and
+mutation controls supplement but do not replace the unbounded proofs above.
+All branch dimensions/terms/heights are actual measured complete equations.
+No remote write, repository commit, machine run or consistency search occurs.

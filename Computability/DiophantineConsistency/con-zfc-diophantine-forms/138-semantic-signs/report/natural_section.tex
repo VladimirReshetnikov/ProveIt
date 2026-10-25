@@ -1,0 +1,87 @@
+The natural branch uses the separate raw source of package 133, with its
+dominant common digit modulus $M=Nq^{x+1}$. Its six exact powers and eleven modular numerator requests share fifteen
+principal indices: four power indices, one exact-binomial upper index,
+nine CRT representatives, and one constructor label. All raw coordinates in this
+branch are nonnegative. The new linear beta modulus of
+Section~\ref{sec:cofinal} is combined with a single bound-and-congruence
+row; the one-row mechanism is credited to package 128.
+
+Let $\mathcal S$ be the twelve distinct actual bases, exponents, and outputs
+of the six power requests. Put
+\[
+ B_*=2+\sum\mathcal S+\sum_{i=1}^9a_i+J_{\rm label},
+ \qquad W=2B_*.
+\]
+Every requested index $e_i$ is positive and less than $B_*$ directly from
+the raw definitions. This assertion uses no power or factorial semantics.
+The retained lower frame has
+\[
+ L^2-\bigl((W+1)^2-1\bigr)(WZ)^2=1,\qquad Z=z_0+1,
+ \qquad A=L+\sigma+1,\quad \sigma\ge0.
+\]
+The shift by one is an existence-preserving restriction: the later common
+root congruence admits cofinally many compatible $A$. The lower frame
+gives $L\ge X_W(W+1)\ge(W+1)^W$ and $A-1\ge L>W^3$.
+
+Retain the complete indexed anchor at $W$, with ordinate $C$, and replace
+the old separate cap and the two staged residues by the single quadratic
+row
+\begin{equation}\label{eq:naturalcap}
+ \boxed{C=W+\sum_{i=1}^{15}(Y_i-e_i)^2+(A-1)Q,\qquad Q\ge0.}
+\end{equation}
+The nonnegative domain is essential here. It first supplies $C\ge W$,
+so the anchor theorem yields $C=Y_W(A)$ before any seed-index bound is
+invoked.
+
+\begin{lemma}[One-row identification of all indices]
+Under these raw natural conditions, \eqref{eq:naturalcap} forces
+$Y_i=Y_{e_i}(A)$ for every principal pair. Conversely, canonical pairs
+admit a positive integer $Q$ satisfying that row.
+\end{lemma}
+\begin{proof}
+Write $B=B_*$ temporarily. If $1\le e<B$, put $z=Y_B(A)$ and
+$x=X_B(A)$. The norm gives $(A-1)z<x\le Az$. Since $z\ge B$,
+\[
+ Y_{B+1}(A)-e>(2A-2)z+1,\qquad Y_{2B}(A)=2xz\le2Az^2.
+\]
+For $A\ge2$, $(2A-2)^2\ge2A$, so
+$(Y_{B+1}-e)^2>Y_{2B}=C$. But \eqref{eq:naturalcap} makes each squared
+error smaller than $C$. Thus the actual index $j_i$ is at most $B$.
+Reducing modulo $A-1$ now gives
+\[
+ A-1\mid\sum_i(j_i-e_i)^2,
+ \qquad 0\le\sum_i(j_i-e_i)^2\le15(B-1)^2<W^3<A-1.
+\]
+Every error is zero.
+
+For the converse choose all pairs canonically and set $C=Y_{2B}(A)$.
+With $z=Y_{B-1}(A)$, the sum of the squared errors is at most $15z^2$,
+whereas $C>2(A-1)A^2z^2$. Since $A>W+1$, their difference exceeds $W$.
+Both $C-W$ and each $Y_{e_i}-e_i$ are divisible by $A-1$, so the
+quotient in \eqref{eq:naturalcap} is a positive integer.
+\end{proof}
+
+All six powers are now exact by the retained small-residue identities;
+the dominant common modulus, factorial fixed point, range digits, and
+calculus decoding follow in the original order. In completeness, the
+semantic data and all frame atoms are fixed first. The common-root
+congruence then supplies a sufficiently large compatible $A$, followed
+by the anchor and canonical seeds. There is no self-referential choice
+of the frame.
+
+For the linear beta restriction, use a new nonnegative coordinate
+$v=V-1$ and the row $y=v$, replacing the old endpoint slack.
+Soundness restores that slack as $y-F-1\ge0$ after the early ceiling
+bootstrap; completeness is Lemma~\ref{lem:linear}. All occurrences of
+$V$ and $A$ are shifted together in the literal graph.
+
+Monic projection with explicit nonnegativity certificates gives the
+235-variable equation with 184 residuals, 22,185 monomials, and height
+90,911,633. A sparser 236-variable companion keeps two staged rows:
+the first authenticates the five raw-bounded indices; only after exact
+power and factorial recovery does the second authenticate the remaining
+ten. It has 185 residuals, 15,645 monomials, and height 88,233,865.
+Both have degree four and the same ZFC-provable consistency equivalence
+over $\N$. Their complete literal residuals, expansions, inverse
+projection certificates, and ordinary proofs are supplied in
+\filepath{natural235/}.

@@ -1,0 +1,253 @@
+\subsection{The result and its scope}
+This construction compiles an explicitly given nonempty quadratic system over
+\(\mathbb Z\) into a nonnegative polynomial of degree at most four and
+coefficient height one. Source rows are collected and nonzero, and every
+source coordinate occurs; the supplied systems satisfy these conditions. Its
+new step is to contract aliases using the \emph{actual incidence energy},
+rather than protecting every possible pair of factor monomials. Two further
+improvements factor affine squares before coefficient normalization and
+replace certain three-coordinate equality cycles by a two-coordinate
+quartic. The supplied coefficient files, not an unexpanded circuit alone,
+define the final polynomials.
+
+The correspondence proved below is a bijection between integer zero sets.
+It is unconditional finite algebra. Applying it to the supplied calibrated
+source establishes the same ZFC-provable equivalence between unsolvability
+and \(\operatorname{Con}(\mathrm{ZFC})\) as that source. Neither the
+construction nor its finite checks prove either consistency or universal
+nonvanishing. No global optimum, literature-wide priority, or new
+end-to-end formal-kernel consistency calibration is claimed.
+
+\subsection{Exact affine refactorization}
+Let the original system be \(R_r(x)=0\), where each \(R_r\) is integral
+of total degree at most two. Suppose a homogeneous quadratic part is
+\(\epsilon L(x)^2\), where \(\epsilon\in\{-1,1\}\) and \(L\) is
+an integral linear form. Choose an integer \(k\), introduce \(z\), and
+replace that row by
+\[
+ z-L(x)-k=0,\qquad
+ \epsilon z^2+R_r(x)-\epsilon(L(x)+k)^2=0.
+\]
+The second displayed expression is quadratic because the homogeneous
+quadratic parts cancel. A previously introduced coordinate for the same
+affine form may be reused. Every added definition is monic in a fresh
+coordinate and depends only on original coordinates. Consequently, for
+every original tuple there is exactly one extension, namely
+\(z=L(x)+k\). Substitution proves the exact pullback identity for every
+replaced row. Reading the original coordinates is its inverse on zeros.
+No division, sign assumption, inequality, or domain change is used.
+
+The producer chooses candidate forms by exact integer square tests and
+coefficient comparison, never by numerical factorization. The independent
+checker instead reconstructs every affine definition and proves every
+original-row pullback coefficient by coefficient. Correctness therefore
+does not depend on the heuristic selecting the sparsest shift.
+
+\subsection{Unit coefficient normalization}
+Write the refactored source coordinates as \(X\). For every needed positive
+coefficient \(c>1\), and recursively for \(\lfloor c/2\rfloor>1\),
+introduce a coordinate \(t_c\) and the monic equation
+\[
+ t_c-t_{\lfloor c/2\rfloor}-t_{\lfloor c/2\rfloor}
+       -(c\bmod 2)=0,
+ \qquad t_1:=1.
+\]
+The two equal summands are retained as separate signed occurrences. In
+increasing order of \(c\), these equations force \(t_c=c\). For each
+needed product \(cX_iX_j\), introduce a shared scale coordinate
+\(s_{c,i}\) with \(s_{c,i}-t_cX_i=0\). Replace a signed source term of
+absolute coefficient \(c\) by, respectively,
+\[
+  t_c,\qquad t_cX_i,\qquad s_{c,i}X_j
+\]
+for constant, linear, and quadratic terms. Terms of absolute coefficient
+one need no change. All resulting rows have the form
+\[
+ S_r(y)=\sum_{j=0}^{s_r-1}\epsilon_{rj}m_{rj}(y),
+ \qquad \epsilon_{rj}\in\{-1,1\},\quad \deg m_{rj}\leq2.
+\]
+The new coordinates are uniquely determined by the monic constructors.
+The normalization checker verifies the topological pivots, their complete
+coverage, and the exact polynomial pullback of every source row. Thus this
+step is also a bijection of integer zero sets.
+
+\subsection{A shared incidence graph}
+Fix a positive integer \(H\). Make one hub block of \(H\) vertices. For
+row \(r\), make a row block of \(b_r=\lceil s_r/H\rceil\) vertices.
+Connect the vertices of each block by a tree with a different unrestricted
+integer flow coordinate on each internal edge. The number of free flow
+coordinates is exactly
+\[
+ F(H)=H-1+\sum_r(b_r-1).
+\]
+For each signed occurrence, add an edge directed from its row block to
+the hub block, with prescribed value \(\epsilon_{rj}M_{rj}\).
+The explicit placement in the certificate makes these edges distinct;
+there are no loops or parallel edges. Each \(M_{rj}\) is a homogeneous
+quadratic monomial in factor aliases. A quadratic source term uses aliases
+of its two logical factors. A linear term uses an alias of its logical
+factor times a unit alias. A constant term uses two unit aliases. The
+factors of a square may be the same coordinate.
+
+For each vertex \(v\), let \(d_v\) be the outgoing minus incoming edge
+sum. Define
+\[
+ E=\frac12\sum_v d_v^2.
+\]
+Before alias contraction, distinct formal edge values have diagonal
+coefficient one, since every edge has two endpoints. Distinct edges meet
+in at most one vertex, so their cross coefficient is zero or \(\pm1\).
+After monomial substitution, coefficients may collide. This is a
+\emph{coefficient} issue, not a zero-set issue: the exact sum-of-squares
+identity remains valid under every substitution.
+
+\subsection{Incidence local contraction}
+Every factor coordinate has a logical value: one normalized coordinate
+\(y_i\), or the distinguished unit value. Contract only coordinates with
+the same logical value. The producer tries a substitution \(b\mapsto a\)
+and collects \emph{all} affected terms of \(E\). It accepts the substitution
+only when each resulting coefficient belongs to \(\{-1,0,1\}\).
+Opposite signs may cancel; zero coefficients are deleted. No C4-free
+condition is imposed on the factor graph, and square aliases may merge
+with other aliases when the exact coefficient test permits it.
+
+This is strictly less restrictive than requiring uniqueness of the
+product of \emph{every} pair of source monomials. Only a source-edge
+square or a pair of incident edges contributes to \(E\). A collision
+between two products not simultaneously present in that support is
+irrelevant. Even a collision in the support can be harmless if its signed
+coefficients cancel. The independent checker does not trust the contraction
+history: it reconstructs the final vertex divergences, expands
+\(\sum_vd_v^2\), and verifies the entire collected polynomial.
+
+Contraction does not change either direction of the intended zero-set
+map. At every intended zero, aliases with the same logical value were
+already equal. Conversely, the following equality penalties force all
+remaining aliases in each logical class to agree. Every factor occurrence
+is independently checked against its normalized source monomial.
+
+\subsection{Equality and unit penalties}
+For a logical class of \(k\geq3\) distinct aliases, use the cycle energy
+\[
+ C(a_1,\ldots,a_k)=\sum_{i=1}^k a_i^2-
+                  \sum_{i=1}^k a_i a_{i+1},\qquad a_{k+1}=a_1.
+\]
+Twice this energy is \(\sum_i(a_i-a_{i+1})^2\). Its coefficients have
+height one, and it vanishes precisely when all aliases agree. A singleton
+requires no penalty. A two-member class can be completed to a three-cycle
+with one new dummy alias.
+
+There is a better option for a suitable two-member class:
+\begin{align*}
+ Q(a,b)&=a^4+b^4-a^3b-ab^3\\
+       &=(a-b)^2(a^2+ab+b^2).
+\end{align*}
+Since \(a^2+ab+b^2\) is positive except at \((0,0)\),
+\(Q\geq0\) and \(Q=0\) if and only if \(a=b\). An exact
+sum-of-squares identity, also used by the checker, is
+\[
+ 2Q=(a^2-b^2)^2+(a^2-ab)^2+(ab-b^2)^2.
+\]
+If neither \(a^2\) nor \(b^2\) occurs as a prescribed edge monomial,
+none of the four monomials of \(Q\) can occur in \(E\): a product
+producing \(a^4\) needs an \(a^2\) factor, and one producing
+\(a^3b\) needs an \(a^2\) factor; the other cases are symmetric.
+The lower-degree flow terms cannot collide either. Distinct logical
+classes are disjoint. Hence this criterion permits replacing the dummy
+and its cycle by \(Q\), saving one variable and two monomials while
+preserving height one. The emitted polynomial is checked in full even
+when this structural sufficient condition is available.
+
+Let \(u_1,\ldots,u_\ell\), with \(\ell\geq2\), be all unit aliases,
+adding dummies if needed. Use
+\[
+ U=1+\sum_{i=1}^{\ell}u_i^2-u_1-u_\ell-
+                      \sum_{i=1}^{\ell-1}u_iu_{i+1}.
+\]
+Twice \(U\) equals
+\((u_1-1)^2+\sum_{i<\ell}(u_i-u_{i+1})^2+(u_\ell-1)^2\).
+Thus \(U\geq0\), with equality precisely when every unit alias is one.
+Unit, ordinary-alias, and free-flow namespaces are disjoint.
+
+The final polynomial is
+\[
+ \boxed{\displaystyle P=E+\sum_{\text{cycle classes}}C+
+                         \sum_{\text{pair classes}}Q+U.}
+\]
+It is nonnegative over \(\mathbb R\). The source-edge products have
+degree two, so \(\deg P\leq4\). The only constant term is the one
+in \(U\). Full collected expansion proves that every nonzero coefficient
+is \(\pm1\), that the exact degree is four for each delivered endpoint,
+and that every counted variable actually occurs.
+
+\subsection{Explicit forward witness map}
+Given original integer coordinates \(x\), first evaluate all affine
+refactor definitions, then all constant and scale definitions. Assign
+every ordinary alias and its dummy the corresponding normalized value,
+and every unit alias or dummy the value one. All equality and unit
+penalties then vanish identically.
+
+Root every internal block tree at its first listed vertex. Let \(b_v\)
+be the divergence contributed at \(v\) by prescribed edges alone.
+For an internal tree edge joining a child \(v\) to its parent, let
+\(\sigma_v\in\{-1,1\}\) be that edge's incidence sign at the child.
+Set its flow to
+\[
+ w_v=-\sigma_v\sum_{t\text{ in the subtree rooted at }v}b_t.
+\]
+This is an explicit integer polynomial in the source coordinates. Summing
+subtree divergences shows that every nonroot divergence is zero. The
+root divergence is the sum of prescribed divergences over its block.
+For row block \(r\) it is \(S_r\); for the hub block it is
+\(-\sum_rS_r\). Constructor rows pull back to zero, while all other
+rows pull back to the original residuals. Therefore the full lift \(L\)
+satisfies the universal identity
+\[
+ P(L(x))=\frac12\left(\sum_rR_r(x)^2+
+                                \left(\sum_rR_r(x)\right)^2\right).
+\]
+In particular an original zero gives a final integer zero. The displayed
+identity is \emph{not} generally \(P(L(x))=\sum_rR_r(x)^2\).
+Its integrality follows either from the integer polynomial construction
+or from \(n^2\equiv n\pmod2\).
+
+\subsection{Explicit inverse and uniqueness}
+Suppose \(P(z)=0\) for an integer tuple \(z\). Every summand in the
+boxed definition is nonnegative, so each is zero. The equality penalties
+identify all aliases in each logical class, and the unit path forces all
+unit values to one. Read one listed alias representative from each
+logical class to obtain \(y\). Every vertex divergence vanishes because
+\(E=0\). Summing divergences over row block \(r\) cancels its internal
+edges and yields exactly \(S_r(y)=0\). Topological normalization forces
+each constant and scale coordinate to its prescribed value; affine
+refactor definitions force each added affine coordinate. Reading the
+original coordinates therefore gives \(R_r(x)=0\) for every \(r\).
+
+All remaining coordinates are uniquely determined by this \(x\). The
+constructor coordinates, aliases, units, and dummies are unique by their
+definitions. On each internal tree, eliminating a leaf uniquely determines
+its incident free flow, since its coefficient is \(\pm1\). Continuing
+to the root gives precisely the subtree formula above. Thus reading the
+original coordinates is inverse to \(L\) on zero sets, proving a
+bijection, not just equisolvability.
+
+\subsection{Reproducibility and evidence boundaries}
+The literal source equations, affine certificates, graph certificates,
+and fully collected polynomial files determine every mathematical object.
+The producer uses exact standard-library integer arithmetic. The independent
+checkers import no producer, reconstruct all affine source pullbacks,
+verify every alias occurrence, check the simple incidence graph and every
+internal tree, and expand twice the final polynomial as an actual sum of
+squares. Both ordinary Python and \texttt{python -O} runs use explicit
+exceptions rather than removable assertions. Deliberate corruption tests
+exercise coefficient signs, source hashes, source-row coverage, logical
+factor bindings, missing edges, alias coverage, unit endpoints, and metrics.
+Finite off-zero evaluations are supplementary implementation tests only;
+the preceding algebra establishes the unbounded witness maps.
+
+The incoming shared-incidence construction, coefficient normalization,
+cycle and unit energies, and their supplied source calibration retain
+their original attribution. The contribution here is incidence-local
+coefficient-aware contraction, the collision-safe quartic pair penalty,
+and their composition with exact affine refactorization and the new source.
+Comparisons are tied to the inspected archives and exact source hashes.

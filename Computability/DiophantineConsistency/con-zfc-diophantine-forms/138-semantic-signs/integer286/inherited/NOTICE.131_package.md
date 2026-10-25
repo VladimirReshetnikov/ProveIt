@@ -1,0 +1,5 @@
+# Attribution and scope
+
+This package composes and extends the attributed ordinary arithmetic constructions in the ProveIt research source collection. Imported material retains its original license and notices under architecture/portable/, direct/licenses/, scalar/licenses/, scalar/inherited/, positive/provenance/ and dependencies/. The root LICENSE is the retained ProveIt license, not an assertion of new ownership of inherited results.
+
+The incoming shared Pell cap, self-sized radix, cofinal horizon and consecutive beta modulus, single-product scalar construction, and earlier factorial/CRT fusion are explicitly credited in the report and component proofs. New contributions are the literal compositions, signed cap and power-sign recovery, parity normalization, nonzero-center two-root reduction and one-square positive compression, with their exact artifacts and measurements. Ordinary mathematical proofs and finite computation are distinguished from inherited logical calibration and from a new kernel-checked endpoint.

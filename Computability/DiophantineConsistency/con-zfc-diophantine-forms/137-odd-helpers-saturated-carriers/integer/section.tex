@@ -1,0 +1,172 @@
+\section{An eleven-integer single-product carrier at degree 648}
+\label{sec:integer-product}
+The new nondominated point is an ordinary polynomial in eleven unrestricted
+integers, of exact degree \(648\), evaluated by \(115\) binary arithmetic
+operations. It improves the recovered \(654/117\) endpoint in both degree and
+cost. Three audited comparisons have degree/cost pairs \(640/118\),
+\(580/119\), and \(574/122\); they are dominated by other recovered equations
+and are not advertised as frontier advances. None replaces the retained
+\(352/132\) low-degree or \(840/110\) low-cost endpoint.
+
+\subsection{The complete equation}
+The variables are \(j,C,z,h,r,v,w,T,c,n,s\in\mathbb Z\). All other symbols
+below are polynomial abbreviations. Use the same six authenticated fixed
+numerals \(\beta,K_0,M_C,M_F,A_C,B_C\), with the already shifted \(M_F\).
+Their complete bytes and reconstruction recipe accompany the literal DAG.
+For the primary weak-scale equation define
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,&X&=qW,&Y&=qv,\\
+ E&=XY,&a&=E+Y,&A&=a+2,&H&=4a+3,&\Delta&=a^2+H,\\
+ F&=(K_0+W)C-z(q-1),&&
+ R=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+hE,&\eta&=c-Yk,&
+ D_{\rm err}&=(A_CF-q)^2+(B_CC-q)^2,\\
+ B_0&=k^2(q^2-D_{\rm err})-4q^2\eta^2,&B&=B_0,\\
+ \ell&=XY^2,&L&=\ell k,&D_t&=1+L(L+k),\\
+ D&=3B-4,&D_g&=1+4DD_ts^2,&P&=D_tD_g,\\
+ D_m&=1+\Delta c^2,&B_P&=D_mP,&U&=Arc^2,\\
+ D_f&=1+\Delta U^2B_P,&Q&=\Delta^2U^2B_P,&\delta&=Q-1,\\
+ V&=D_f(c-R+4UB_PT)-c,&C_y&=QV^2-1,\\
+ K&=X(3c-2X)+2,&M&=2q^2,&D_c&=HM,\\
+ z_c&=D_cT+MK+H(v-q^2),&
+ A_c&=(z_c^2+3D_c^2)(z_c^3-19D_c^3),\\
+ S&=srHM^5,&Z&=Sn-A_c.
+\end{align*}
+The final polynomial is simply
+\[
+ \boxed{\mathcal F=\delta Z^2-S^2B_PD_fC_y.}
+\]
+There are no divisions, radical gates, variable exponents or unnamed
+witnesses. All scalar products and powers are charged in the literal DAG.
+The simple center replaces \(Z\) by \(S(n+\lambda V)-A_c\), where
+\(\lambda=AUB_P\). The free-scale comparisons instead take
+\(Y=v\), \(B=Y^2B_0-k^2q^8\), \(M=2q^3\), and replace
+\(H(v-q^2)\) in \(z_c\) by \(H(v-q^3)\).
+
+\subsection{Soundness, including the early zero-scale branch}
+Unconditionally, the authentic front gives \(q\) even, \(q\equiv2\pmod3\),
+\(8\mid X\), \(X\equiv2\pmod3\), and \(|X|\ge4|q|\).
+Also \(H\) is nonzero odd, \(\Delta>1\), \(D_m\ge1\), and
+\(D_t\ge1\). The odd integers \(D_g,P\) are nonzero. The integers
+\(D_f,\delta,C_y\) cannot vanish. As
+\(\pi(t)=(t^2+3)(t^3-19)\) has no rational root,
+\(A_c=D_c^5\pi(z_c/D_c)\ne0\). Therefore a zero of \(\mathcal F\)
+has \(S\ne0\), hence \(r,s\ne0\).
+
+Put \(D_a=\delta C_y\). The three nonzero factors \(B_P,D_f,D_a\)
+are pairwise coprime: the last two are \(1\) modulo \(B_P\), while
+\[
+ Q\equiv-\Delta,\quad \delta\equiv-A^2,\quad
+ V\equiv-c,\quad C_y\equiv-D_m,\quad D_a\equiv A^2D_m\pmod{D_f}.
+\]
+Since \(D_f\equiv1\pmod A\) and \(\pmod{D_m}\), the claim follows.
+The equation gives
+\[
+ (\delta Z/S)^2=B_PD_fD_a.
+\]
+Thus each absolute factor is a square. Since \(\Delta A^2\) is divisible
+by four, \(D_f\equiv1\pmod4\), so it cannot be a negative square.
+For \(c\ne0\), negativity of \(B_P\) would make \(D_f<0\); for
+\(c=0\), the equation directly gives \(Z^2=S^2B_P\). Hence
+\(B_P,D_f,D_a>0\). Write their positive roots as \(p_0,f,e\).
+Then \(P>0\) forces \(B\ge2\), yielding the centered strip and authentic
+packing bounds. The free guard additionally forces \(|Y|>|q|^3\).
+
+A crucial order-of-proof point is that carrier integrality comes
+\emph{before} main-root folding. If \(c=0\), it follows immediately from
+\(Z^2=S^2B_P\). Otherwise set \(I=Up_0\) and \(T_o=p_0T\).
+Then \(Q=(\Delta I)^2>1\), and the inherited adjacent-Pell denominator
+descent makes \(y=e/\delta\) integral. Thus
+\(Z^2=S^2p_0^2f^2y^2\), so in either branch \(S\mid A_c\).
+This avoids assuming \(|A|\ge3\) while the weak scale might still be zero.
+
+The valuation of the monic leading term in
+\[
+ A_c=z_c^5+3D_c^2z_c^3-19D_c^3z_c^2-57D_c^5
+\]
+then proves \(M\mid z_c\), and hence \(M\mid H(v-q^2)\) in the weak
+case. Since \(H\equiv3\pmod q\), \(q\not\equiv0\pmod3\), and
+\(H\) is odd, \(\gcd(H,M)=1\). Consequently
+\[
+ v=(2v_o+1)q^2,\qquad Y=(2v_o+1)q^3.
+\]
+Also \(H\mid K^5\). The restored magnitude and centered strip exclude
+\(c=0\). Now the inherited early absolute-folding argument applies to
+the strong and auxiliary norms; it yields \(D_m=d^2\) without using a
+first Pell root. From \(p_0^2=D_mP\) it follows that \(P\) is a square,
+and \(\gcd(D_t,D_g)=1\) splits it into \(D_t=\tau^2,D_g=g^2\).
+
+All pre-projection signed-rank hypotheses are now present, including
+\(c^2\mid I\), \(V\equiv-c\pmod f\), \(V\equiv-R\pmod c\), and
+\(k=R+1+hXY\). The retained nonodd strong-rank and first-index arguments
+give \(R=2t+1\), \(t\ge36\), and
+\( |H|>|X|(|X|-3)^t\). Writing \(\sigma=\operatorname{sign}(c)\),
+\[
+ \Pi=(\sigma X-2^R)(2^R\sigma X+1),
+\]
+the signed projection gives \(H\mid\Pi^5\). The free-scale version first
+gives only \(H\mid q^{15}\Pi^5\); its early carrier nevertheless gives
+\(Y\) even. Both are covered by the stronger bound, with \(x=|X|\),
+\[
+ |q|^{15}|\Pi|^5<2^{20t-10}x^{25}<x^{t+1}/2^t<|H|,
+\]
+because \(x\ge2^{64}\) and
+\(64(t-24)-(21t-10)=43t-1526\ge22\).
+Thus \(\sigma X=2^R\); residues modulo three force \(\sigma=1\).
+Only after this projection does the free case cancel its scale modulus,
+since \(q\mid2^R\) and \(H\) is odd.
+
+The inherited surviving signs and uniform centered half-binomial theorem
+then give \(c,k,Y>0\) and \(0<\eta/k<1/4\). Fresh strong/auxiliary
+private witnesses restore the literal old signed source zero, as detailed
+in \texttt{PROOF.md}; no oddness of the incoming \(I/c^2\) is assumed.
+Only this old zero is passed to the retained native/compiler/refutation
+calibration.
+
+\subsection{Completeness and its quantifier order}
+A finite syntactic refutation supplies the canonical outer tuple with
+\(D_m=d^2\), \(D_t=\tau^2\), \(A\) positive even,
+\(R\equiv c\equiv3\pmod4\), and \(B>64\).
+Since \(D_t\equiv1\pmod3\), \((3B-4)D_t\) is positive and
+\(2\pmod3\), hence nonsquare. Fix a positive Pell guard pair \(s,g\),
+and put \(p_0=d\tau g\). Choose one strong pair \(I,f\) with
+\(4sAp_0c^2\mid I\), and set \(r=I/(Ap_0c^2)\). Keep it fixed.
+Every prime of \(p_0sr\) divides \(I\), so the retained
+supported-modulus interpolation theorem realizes every \(T_o\) residue
+modulo \(p_0sr\) for this same pair.
+
+The canonical projector gives \(\kappa=K/H\in\mathbb Z\), and
+\[
+ A_c/S=H^4\pi(T+\kappa+v_o)/(sr).
+\]
+Choose an intersective root \(a_0\) of \(\pi(T+\kappa+v_o)\) modulo
+\(sr\), prescribe \(T_o\equiv p_0a_0\pmod{p_0sr}\), and use supported
+interpolation. Then \(T=T_o/p_0\) and \(A_c/S\) are integers. Set
+\(n=A_c/S+p_0fy-\lambda V\). The equation vanishes. The guard and
+strong pair are never reselected after choosing the residue.
+
+\subsection{Exact degree and replay boundary}
+For the weak direct equation the register degrees are
+\[
+ \deg(B_P,U,D_f,Q,V,C_y,S,A_c)=(72,7,94,102,174,450,16,35).
+\]
+The unique dominating product \(S^2B_PD_fC_y\) has degree \(648\).
+The attained monomial
+\[
+ j^{372}w^{64}v^{106}s^{16}r^{12}c^{34}z^{42}T^2
+\]
+has coefficient \(2^{546}3^{443}\beta^{372}>0\).
+For the simple center,
+\(\lambda^2-B_PD_f=U^2B_P^2-B_P\); exact expansion leaves a unique
+leading term \(S^2QU^2B_P^2V^2\), of degree \(640\).
+The free analogues have degrees \(580\) and \(574\).
+
+The independent standard-library checker does not import the builder.
+It binds every live arithmetic gate in free polynomial rings, checks
+all identities and exact leading monomials, reconstructs every fixed
+numeral, authenticates retained sources, and rejects every single-gate
+mutation. Normal and optimized Python runs agree. These finite checks
+are not substituted for unbounded Pell, interpolation, or compiler
+theorems. The result is an ordinary ZFC-provable equivalence between
+universal nonvanishing and syntactic \(\operatorname{Con}(\mathrm{ZFC})\),
+not a proof of consistency or a new end-to-end formal certificate.

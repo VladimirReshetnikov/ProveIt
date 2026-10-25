@@ -1,0 +1,171 @@
+\section{Parity separated roots with thirteen integers}
+\label{sec:parity-three-root13}
+This endpoint uses thirteen unrestricted integers, has exact degree $156$, and
+has a division-free evaluator of $127$ binary operations: $75$ multiplications,
+$27$ additions and $25$ subtractions. It eliminates both the strong Pell root and
+the triangular positivity coordinate from the fixed fifteen-variable free-scale
+source. Its zero existence is equivalent to that source by maps on every zero,
+not just a canonical subclass. The same ordinary source34 compiler/calibration
+therefore supplies the ZFC-provable equivalence between zero nonexistence and
+syntactic $\mathrm{Con}(\mathrm{ZFC})$; this is not a proof of consistency or a new
+end-to-end formal-kernel certificate.
+
+\subsection{Complete polynomial}
+The unknowns are
+\[
+ j,C,z,h,r,v,w,T,c,n,y,p_1,p_2\in\mathbb Z.
+\]
+The six constants $\beta,K_0,M_C,M_F,A_c,B_c$ are the unchanged complete source
+payloads, with $M_F$ already shifted. Define only polynomial abbreviations:
+\begin{gather*}
+ J=6j+1,\quad q_m=\beta J,\quad q=q_m+1,\quad W=12w+4,\\
+ X=qW,\quad Y=v,\quad F=(K_0+W)C-zq_m,\\
+ R=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ E=XY,\quad a=E+Y,\quad H=4a+3,\quad\Delta=a^2+H,\\
+ k=R+1+hE,\quad \eta=c-Yk,\quad L=E(Yk),\\
+ I=(2r+1)c^2,\quad D_s=\Delta I^2,\quad F_s=1+D_s,\\
+ Q=\Delta D_s,\quad V=F_s(cT-R)-c,\\
+ M=2q^3,\quad U=MH,\quad K_{\rm lo}=X(2X-3c)-2,\\
+ Z=Un+MK_{\rm lo}+H(Y-q^3),\\
+ D_{\rm err}=(A_cF-q)^2+(B_cC-q)^2,\\
+ B_{\rm ud}=(Yk)^2(q^2-D_{\rm err})
+       -q^2\bigl(4(Y\eta)^2+(kq^3)^2\bigr),\\
+ G=4(B_{\rm ud}-p_1^2-p_2^2)-3,\qquad D_t=1+L(L+k),\\
+ C_1=(Z+Uk)^2+4U(LZ-U),\qquad
+ C_2=V^2-(Q-1)y(2V+y)-1,\\
+ g_a=U^2G,\quad d_b=4U^2D_t,\quad f_c=16U^2F_s,\quad g_c=g_a+f_c,\\
+ J_N=(C_1-g_c)^2-4(g_af_c+d_bg_c),\\
+ N=J_N^2-64g_ad_bf_c(C_1+d_b).
+\end{gather*}
+The single equation is
+\[
+ \boxed{P=(N+1)(C_2+1)-1=0.}
+\]
+Sharing $D_s$ avoids recomputing $F_s-1$ and saves one subtraction. All powers
+are fixed natural powers; the literal DAG has no divisions or radicals.
+
+\subsection{Norm and exact conjunction}
+For proof only, put $b=2L+k$, $R_N=Z+Ub$ and $\rho=R_N/U$.
+The first-carrier identity gives $R_N^2=C_1+d_b$. The symmetric norm
+\[
+ F_8(S;g,d,f)=\bigl[(S-g-d-f)^2-4(gd+gf+df)\bigr]^2-64gdfS
+\]
+satisfies the polynomial identity
+\[
+ F_8(x^2;g,d,f)=\prod_{\epsilon\in\{\pm1\}^3}
+   \bigl(x-\epsilon_1\sqrt g-\epsilon_2\sqrt d-\epsilon_3\sqrt f\bigr).
+\]
+Substitution $S=C_1+d_b$, $(g,d,f)=(g_a,d_b,f_c)$ gives exactly $N$.
+Equivalently,
+\[
+ \frac{N}{U^8}=\prod_{\epsilon\in\{\pm1\}^3}
+ \bigl(\rho-\epsilon_1\sqrt G-2\epsilon_2\sqrt{D_t}
+                         -4\epsilon_3\sqrt{F_s}\bigr). \tag{T1}
+\]
+Since $N$ is a square modulo $4$, $N\ne-2$. The integer product
+$(N+1)(C_2+1)=1$ therefore forces both factors to be $1$; it is equivalent to
+$N=C_2=0$ with no sign premise on either residual. This is a tailored use of the
+standard unit-product device, not a claimed new general conjunction theorem.
+
+\subsection{Unconditional signs and square-class separation}
+The authentic odd $\beta>1$ makes $q$ even and nonzero. Also $H$ is odd and
+nonzero, so $U\ne0$. Since $|W|\ge4$, $X$ is even with $|X|\ge8$.
+Thus $a=(X+1)Y$ is either $0$ or has $|a|\ge7$, giving
+\[
+ \Delta=(a+2)^2-1\ge3,\qquad F_s=1+\Delta I^2\ge1.
+\]
+Writing $D=XY^2$, we have even $D$ and $D(D+1)\ge0$, whence
+$D_t=1+D(D+1)k^2$ is a positive odd integer. Also $G\equiv1\pmod4$.
+If $G<0$, every factor in (T1) has a nonzero imaginary part from its sole
+imaginary radical, while $\rho,\sqrt{D_t},\sqrt{F_s}$ are real. Hence at a zero
+$G>0$; $G=0$ is excluded by its residue.
+
+Write the positive radicands uniquely as
+\[
+ G=u_1^2d_1,\qquad D_t=u_2^2d_2,\qquad F_s=u_3^2d_3,
+\]
+where the $d_i$ are positive squarefree and the $u_i$ are positive integers.
+The numbers $u_1,u_2,d_1,d_2$ are odd. A vanishing norm factor gives
+\[
+ \rho=\epsilon_1u_1\sqrt{d_1}
+       +2\epsilon_2u_2\sqrt{d_2}+4\epsilon_3u_3\sqrt{d_3}\in\mathbb Q.
+\]
+Distinct squarefree radicals, including $\sqrt1$, are linearly independent over
+$\mathbb Q$: sign-change automorphisms in the finite multiquadratic extension,
+averaged against a chosen character, isolate each coefficient.
+Group terms with equal squarefree part. A group containing the $G$ term has an
+odd coefficient sum. A group containing $D_t$ but not $G$ has coefficient sum
+$2\pmod4$. A remaining group contains only the nonzero $F_s$ term. Thus no
+irrational square-class group can cancel. An even squarefree class, in
+particular, could contain only $F_s$ and is also impossible.
+Consequently all three radicals are integers. With the signs of the vanishing
+factor, write
+\[
+ g=\epsilon_1\sqrt G,\qquad \tau=\epsilon_2\sqrt{D_t},\qquad
+ f=\epsilon_3\sqrt{F_s};\qquad \rho=g+2\tau+4f.
+\]
+Here $g$ is odd; no oddness of $F_s$ was assumed. This is an exact valuation
+argument within common square classes, not an inference from pairwise distinct
+radicands or finite tests.
+
+\subsection{Complete maps and canonical completeness}
+From any new zero restore the old coordinates by
+\[
+ f_{\rm old}=f,\qquad p_{3,\rm old}=(g-1)/2,\qquad
+ n_{\rm old}=n-g-4f,
+\]
+retaining every other coordinate. All three restored coordinates are integral.
+Affineness of $Z$ gives $Z_{\rm old}/U=2\tau-b$, making its first carrier zero.
+The identity $f^2=F_s=1+\Delta I^2$ makes its strong row zero; its auxiliary row
+is unchanged because the new $F_s$ equals the old $f^2$. Finally,
+\[
+ p_{3,\rm old}(p_{3,\rm old}+1)=(G-1)/4,
+\]
+so its guard is precisely
+$B_{\rm ud}=1+p_1^2+p_2^2+p_{3,\rm old}(p_{3,\rm old}+1)$.
+This is a literal source zero, after which its ordinary soundness theorem
+applies. No preliminary CRT, positive orientation or canonical restriction was
+used.
+
+Conversely, from any old zero delete $f,p_3$ and put
+\[
+ n_{\rm new}=n_{\rm old}+(2p_{3,\rm old}+1)+4f_{\rm old}.
+\]
+The old rows imply $F_s=f_{\rm old}^2$, $G=(2p_{3,\rm old}+1)^2$, and
+$Z_{\rm old}/U+b=2\tau$ with integral $\tau^2=D_t$. The latter integrality is
+explicitly proved by the pinned source's monic carrier argument. One factor in
+(T1) is therefore zero and the auxiliary row is unchanged. This map applies to
+every old zero, in particular to the exact canonical source34 family supplied
+from a finite refutation. No extra canonical tuning or simultaneous
+representation theorem is required.
+
+\subsection{Exact coefficient and verification}
+The degrees of $C_1,F_s,D_t,G,Q,V,C_2,N$ are respectively
+$22,12,18,18,18,17,36,120$. Put
+\begin{gather*}
+ q_0=6\beta j,\quad X_0=12q_0w,\quad Y_0=v,\quad
+ R_0=q_0^4z-12q_0^3wC,\\
+ a_0=X_0Y_0,\quad U_0=8q_0^3X_0Y_0.
+\end{gather*}
+The leading forms are
+\begin{gather*}
+ N_{120}=2^8U_0^8R_0^8q_0^{16}(q_0^8+4X_0^2Y_0^4)^2,\\
+ (C_2)_{36}=32a_0^6r^4c^8R_0y.
+\end{gather*}
+Their product is the unique degree-$156$ part, and
+\[
+ [j^{106}w^{14}v^{14}z^9r^4c^8y]P
+       =2^{171}3^{120}\beta^{106}>0.
+\]
+The exponent sum is $156$, so this is actual degree attainment on the fixed
+coefficient slice. All thirteen variables and six coefficient ports are live;
+the unchanged numerals occupy $615883$ uncompressed bytes.
+
+The independent normal and optimized audits authenticate the source and numeral
+bytes, check every named register, multiply all eight signed-root factors,
+verify the centered norm schedule and lift, prove the coefficient and degree,
+check literal cost and liveness, and reject all live-gate mutations. Finite
+checks are not substituted for the square-class proof or the unchanged
+unbounded source34 compiler/refutation theorem. This endpoint is a new
+variable/degree/cost tradeoff, not a domination claim over the fourteen-variable
+degree-$88$ or fifteen-variable degree-$44$ constructions.

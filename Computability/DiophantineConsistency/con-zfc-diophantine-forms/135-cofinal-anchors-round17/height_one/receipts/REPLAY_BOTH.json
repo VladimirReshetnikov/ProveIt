@@ -1,0 +1,630 @@
+{
+  "byte_identical_regeneration": [
+    "normal/refactored287/source.json",
+    "normal/refactored287/factor_certificate.json",
+    "normal/refactored309/source.json",
+    "normal/refactored309/factor_certificate.json",
+    "normal/compact793/polynomial.json",
+    "normal/compact793/certificate.json",
+    "normal/compact793/metrics.json",
+    "normal/balanced806/polynomial.json",
+    "normal/balanced806/certificate.json",
+    "normal/balanced806/metrics.json",
+    "normal/sparse994/polynomial.json",
+    "normal/sparse994/certificate.json",
+    "normal/sparse994/metrics.json",
+    "optimized/refactored287/source.json",
+    "optimized/refactored287/factor_certificate.json",
+    "optimized/refactored309/source.json",
+    "optimized/refactored309/factor_certificate.json",
+    "optimized/compact793/polynomial.json",
+    "optimized/compact793/certificate.json",
+    "optimized/compact793/metrics.json",
+    "optimized/balanced806/polynomial.json",
+    "optimized/balanced806/certificate.json",
+    "optimized/balanced806/metrics.json",
+    "optimized/sparse994/polynomial.json",
+    "optimized/sparse994/certificate.json",
+    "optimized/sparse994/metrics.json"
+  ],
+  "checks": [
+    {
+      "component": "affine_refactor_287",
+      "mode": "normal",
+      "receipt": {
+        "metrics": {
+          "monic_definitions": 39,
+          "original_variables": 287,
+          "refactored_rows": 40,
+          "refactored_variables": 326,
+          "row_pullbacks": 197
+        },
+        "mutations_rejected": [
+          "row_sign",
+          "constructor_sign",
+          "hash"
+        ],
+        "original_sha256": "e342eee770c4d8ec4311fd87d65b02b97171ab39152151c97a64b97c9890b11b",
+        "proof": "Each added variable is uniquely determined by a monic affine constructor. Exact pullbacks certify both directions over unrestricted integers.",
+        "python_optimized": false,
+        "refactored_sha256": "99a93afc9e012f519a13db594244205f495ace74cfed863abf7981ca8c11b689",
+        "status": "pass"
+      }
+    },
+    {
+      "component": "affine_refactor_309",
+      "mode": "normal",
+      "receipt": {
+        "metrics": {
+          "monic_definitions": 39,
+          "original_variables": 309,
+          "refactored_rows": 40,
+          "refactored_variables": 348,
+          "row_pullbacks": 219
+        },
+        "mutations_rejected": [
+          "row_sign",
+          "constructor_sign",
+          "hash"
+        ],
+        "original_sha256": "b867f70b15340736a7caaeafacbe9de35adb5422fe7ab36964a444542919333d",
+        "proof": "Each added variable is uniquely determined by a monic affine constructor. Exact pullbacks certify both directions over unrestricted integers.",
+        "python_optimized": false,
+        "refactored_sha256": "dfe7bd10cc10e0735938fd5708ee257fa3f78391975931281e70e4ccdd60794d",
+        "status": "pass"
+      }
+    },
+    {
+      "component": "compact793",
+      "mode": "normal",
+      "receipt": {
+        "checks": [
+          "topological monic normalization and exact source pullback",
+          "full alias and unit provenance",
+          "simple incidence graph and internal spanning trees",
+          "independent literal half-sum-of-squares expansion",
+          "coefficient height one and constant one",
+          "complete variable/monomial/degree counts"
+        ],
+        "metrics": {
+          "alias_coordinates": 712,
+          "coefficient_height": 1,
+          "constant": 1,
+          "degree": 4,
+          "equality_dummies": 61,
+          "flow_variables": 20,
+          "hubs": 16,
+          "individual_degree": 4,
+          "monomials": 51982,
+          "negative_coefficients": 24113,
+          "normalized_rows": 298,
+          "normalized_variables": 388,
+          "occurrences": 1284,
+          "positive_coefficients": 27869,
+          "quartic_pair_classes": 36,
+          "source_rows": 236,
+          "source_variables": 326,
+          "unit_coordinates": 55,
+          "variables": 793
+        },
+        "mutations_rejected": [
+          "coefficient",
+          "source_hash",
+          "logical_factor",
+          "source_row",
+          "missing_edge",
+          "missing_alias",
+          "unit_endpoint",
+          "metric"
+        ],
+        "off_zero_samples": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "python_optimized": false,
+        "scope": "Finite algebraic certificates. The accompanying ordinary proof supplies the unbounded zero-set equivalence; source consistency calibration is inherited, not re-proved here.",
+        "source_sha256": "99a93afc9e012f519a13db594244205f495ace74cfed863abf7981ca8c11b689",
+        "status": "pass"
+      }
+    },
+    {
+      "component": "compact793_independent",
+      "mode": "normal",
+      "receipt": {
+        "certificate_sha256": "b25b3715a8932bae0db7f88b3efd51950e52aa000b69d038db329091a4d13178",
+        "coefficient_height": 1,
+        "constant": 1,
+        "degree": 4,
+        "exact_symbolic_lift_vertices": 319,
+        "graph_edges": 1304,
+        "graph_vertices": 319,
+        "identity": "P(L(x)) = (sum_r R_r(x)^2 + (sum_r R_r(x))^2)/2, universally",
+        "individual_degree": 4,
+        "monomials": 51982,
+        "normalization_rows": 298,
+        "normalization_variables": 388,
+        "polynomial_sha256": "5766ff7a2050e3a7eae54ada51a898f6d9e4d42a5c5f34bec036ed4d4e400071",
+        "quartic_equality_pairs": 36,
+        "same_logical_factor_bindings": 2568,
+        "scope": "Every coefficient and universal symbolic lift checked. Source consistency theorem remains inherited.",
+        "source_rows": 236,
+        "source_sha256": "99a93afc9e012f519a13db594244205f495ace74cfed863abf7981ca8c11b689",
+        "source_variables": 326,
+        "status": "pass",
+        "variables": 793
+      }
+    },
+    {
+      "component": "balanced806",
+      "mode": "normal",
+      "receipt": {
+        "checks": [
+          "topological monic normalization and exact source pullback",
+          "full alias and unit provenance",
+          "simple incidence graph and internal spanning trees",
+          "independent literal half-sum-of-squares expansion",
+          "coefficient height one and constant one",
+          "complete variable/monomial/degree counts"
+        ],
+        "metrics": {
+          "alias_coordinates": 711,
+          "coefficient_height": 1,
+          "constant": 1,
+          "degree": 4,
+          "equality_dummies": 48,
+          "flow_variables": 47,
+          "hubs": 48,
+          "individual_degree": 4,
+          "monomials": 23719,
+          "negative_coefficients": 10526,
+          "normalized_rows": 298,
+          "normalized_variables": 388,
+          "occurrences": 1284,
+          "positive_coefficients": 13193,
+          "quartic_pair_classes": 31,
+          "source_rows": 236,
+          "source_variables": 326,
+          "unit_coordinates": 62,
+          "variables": 806
+        },
+        "mutations_rejected": [
+          "coefficient",
+          "source_hash",
+          "logical_factor",
+          "source_row",
+          "missing_edge",
+          "missing_alias",
+          "unit_endpoint",
+          "metric"
+        ],
+        "off_zero_samples": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "python_optimized": false,
+        "scope": "Finite algebraic certificates. The accompanying ordinary proof supplies the unbounded zero-set equivalence; source consistency calibration is inherited, not re-proved here.",
+        "source_sha256": "99a93afc9e012f519a13db594244205f495ace74cfed863abf7981ca8c11b689",
+        "status": "pass"
+      }
+    },
+    {
+      "component": "balanced806_independent",
+      "mode": "normal",
+      "receipt": {
+        "certificate_sha256": "3afdb49e63d6ff16cc2fe5dbf1bbd10250b4017ef0f957c86b832092debbf06f",
+        "coefficient_height": 1,
+        "constant": 1,
+        "degree": 4,
+        "exact_symbolic_lift_vertices": 346,
+        "graph_edges": 1331,
+        "graph_vertices": 346,
+        "identity": "P(L(x)) = (sum_r R_r(x)^2 + (sum_r R_r(x))^2)/2, universally",
+        "individual_degree": 4,
+        "monomials": 23719,
+        "normalization_rows": 298,
+        "normalization_variables": 388,
+        "polynomial_sha256": "5139cac2a11e4391b129e1f7499492b2eae2f63a6bead2ff07ea7d243fc13117",
+        "quartic_equality_pairs": 31,
+        "same_logical_factor_bindings": 2568,
+        "scope": "Every coefficient and universal symbolic lift checked. Source consistency theorem remains inherited.",
+        "source_rows": 236,
+        "source_sha256": "99a93afc9e012f519a13db594244205f495ace74cfed863abf7981ca8c11b689",
+        "source_variables": 326,
+        "status": "pass",
+        "variables": 806
+      }
+    },
+    {
+      "component": "sparse994",
+      "mode": "normal",
+      "receipt": {
+        "checks": [
+          "topological monic normalization and exact source pullback",
+          "full alias and unit provenance",
+          "simple incidence graph and internal spanning trees",
+          "independent literal half-sum-of-squares expansion",
+          "coefficient height one and constant one",
+          "complete variable/monomial/degree counts"
+        ],
+        "metrics": {
+          "alias_coordinates": 745,
+          "coefficient_height": 1,
+          "constant": 1,
+          "degree": 4,
+          "equality_dummies": 58,
+          "flow_variables": 191,
+          "hubs": 192,
+          "individual_degree": 4,
+          "monomials": 11744,
+          "negative_coefficients": 4867,
+          "normalized_rows": 313,
+          "normalized_variables": 403,
+          "occurrences": 1264,
+          "positive_coefficients": 6877,
+          "quartic_pair_classes": 29,
+          "source_rows": 258,
+          "source_variables": 348,
+          "unit_coordinates": 82,
+          "variables": 994
+        },
+        "mutations_rejected": [
+          "coefficient",
+          "source_hash",
+          "logical_factor",
+          "source_row",
+          "missing_edge",
+          "missing_alias",
+          "unit_endpoint",
+          "metric"
+        ],
+        "off_zero_samples": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "python_optimized": false,
+        "scope": "Finite algebraic certificates. The accompanying ordinary proof supplies the unbounded zero-set equivalence; source consistency calibration is inherited, not re-proved here.",
+        "source_sha256": "dfe7bd10cc10e0735938fd5708ee257fa3f78391975931281e70e4ccdd60794d",
+        "status": "pass"
+      }
+    },
+    {
+      "component": "sparse994_independent",
+      "mode": "normal",
+      "receipt": {
+        "certificate_sha256": "aabbbe970289aadb1bb9e38adbd4ad4e6858bfed9eb7160fdf874f47393569fe",
+        "coefficient_height": 1,
+        "constant": 1,
+        "degree": 4,
+        "exact_symbolic_lift_vertices": 505,
+        "graph_edges": 1455,
+        "graph_vertices": 505,
+        "identity": "P(L(x)) = (sum_r R_r(x)^2 + (sum_r R_r(x))^2)/2, universally",
+        "individual_degree": 4,
+        "monomials": 11744,
+        "normalization_rows": 313,
+        "normalization_variables": 403,
+        "polynomial_sha256": "db9a43aae243939c071c48f5c0368688cbac340f7a0bc42a7ae765237fcf8f1f",
+        "quartic_equality_pairs": 29,
+        "same_logical_factor_bindings": 2528,
+        "scope": "Every coefficient and universal symbolic lift checked. Source consistency theorem remains inherited.",
+        "source_rows": 258,
+        "source_sha256": "dfe7bd10cc10e0735938fd5708ee257fa3f78391975931281e70e4ccdd60794d",
+        "source_variables": 348,
+        "status": "pass",
+        "variables": 994
+      }
+    },
+    {
+      "component": "affine_refactor_287",
+      "mode": "optimized",
+      "receipt": {
+        "metrics": {
+          "monic_definitions": 39,
+          "original_variables": 287,
+          "refactored_rows": 40,
+          "refactored_variables": 326,
+          "row_pullbacks": 197
+        },
+        "mutations_rejected": [
+          "row_sign",
+          "constructor_sign",
+          "hash"
+        ],
+        "original_sha256": "e342eee770c4d8ec4311fd87d65b02b97171ab39152151c97a64b97c9890b11b",
+        "proof": "Each added variable is uniquely determined by a monic affine constructor. Exact pullbacks certify both directions over unrestricted integers.",
+        "python_optimized": true,
+        "refactored_sha256": "99a93afc9e012f519a13db594244205f495ace74cfed863abf7981ca8c11b689",
+        "status": "pass"
+      }
+    },
+    {
+      "component": "affine_refactor_309",
+      "mode": "optimized",
+      "receipt": {
+        "metrics": {
+          "monic_definitions": 39,
+          "original_variables": 309,
+          "refactored_rows": 40,
+          "refactored_variables": 348,
+          "row_pullbacks": 219
+        },
+        "mutations_rejected": [
+          "row_sign",
+          "constructor_sign",
+          "hash"
+        ],
+        "original_sha256": "b867f70b15340736a7caaeafacbe9de35adb5422fe7ab36964a444542919333d",
+        "proof": "Each added variable is uniquely determined by a monic affine constructor. Exact pullbacks certify both directions over unrestricted integers.",
+        "python_optimized": true,
+        "refactored_sha256": "dfe7bd10cc10e0735938fd5708ee257fa3f78391975931281e70e4ccdd60794d",
+        "status": "pass"
+      }
+    },
+    {
+      "component": "compact793",
+      "mode": "optimized",
+      "receipt": {
+        "checks": [
+          "topological monic normalization and exact source pullback",
+          "full alias and unit provenance",
+          "simple incidence graph and internal spanning trees",
+          "independent literal half-sum-of-squares expansion",
+          "coefficient height one and constant one",
+          "complete variable/monomial/degree counts"
+        ],
+        "metrics": {
+          "alias_coordinates": 712,
+          "coefficient_height": 1,
+          "constant": 1,
+          "degree": 4,
+          "equality_dummies": 61,
+          "flow_variables": 20,
+          "hubs": 16,
+          "individual_degree": 4,
+          "monomials": 51982,
+          "negative_coefficients": 24113,
+          "normalized_rows": 298,
+          "normalized_variables": 388,
+          "occurrences": 1284,
+          "positive_coefficients": 27869,
+          "quartic_pair_classes": 36,
+          "source_rows": 236,
+          "source_variables": 326,
+          "unit_coordinates": 55,
+          "variables": 793
+        },
+        "mutations_rejected": [
+          "coefficient",
+          "source_hash",
+          "logical_factor",
+          "source_row",
+          "missing_edge",
+          "missing_alias",
+          "unit_endpoint",
+          "metric"
+        ],
+        "off_zero_samples": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "python_optimized": true,
+        "scope": "Finite algebraic certificates. The accompanying ordinary proof supplies the unbounded zero-set equivalence; source consistency calibration is inherited, not re-proved here.",
+        "source_sha256": "99a93afc9e012f519a13db594244205f495ace74cfed863abf7981ca8c11b689",
+        "status": "pass"
+      }
+    },
+    {
+      "component": "compact793_independent",
+      "mode": "optimized",
+      "receipt": {
+        "certificate_sha256": "b25b3715a8932bae0db7f88b3efd51950e52aa000b69d038db329091a4d13178",
+        "coefficient_height": 1,
+        "constant": 1,
+        "degree": 4,
+        "exact_symbolic_lift_vertices": 319,
+        "graph_edges": 1304,
+        "graph_vertices": 319,
+        "identity": "P(L(x)) = (sum_r R_r(x)^2 + (sum_r R_r(x))^2)/2, universally",
+        "individual_degree": 4,
+        "monomials": 51982,
+        "normalization_rows": 298,
+        "normalization_variables": 388,
+        "polynomial_sha256": "5766ff7a2050e3a7eae54ada51a898f6d9e4d42a5c5f34bec036ed4d4e400071",
+        "quartic_equality_pairs": 36,
+        "same_logical_factor_bindings": 2568,
+        "scope": "Every coefficient and universal symbolic lift checked. Source consistency theorem remains inherited.",
+        "source_rows": 236,
+        "source_sha256": "99a93afc9e012f519a13db594244205f495ace74cfed863abf7981ca8c11b689",
+        "source_variables": 326,
+        "status": "pass",
+        "variables": 793
+      }
+    },
+    {
+      "component": "balanced806",
+      "mode": "optimized",
+      "receipt": {
+        "checks": [
+          "topological monic normalization and exact source pullback",
+          "full alias and unit provenance",
+          "simple incidence graph and internal spanning trees",
+          "independent literal half-sum-of-squares expansion",
+          "coefficient height one and constant one",
+          "complete variable/monomial/degree counts"
+        ],
+        "metrics": {
+          "alias_coordinates": 711,
+          "coefficient_height": 1,
+          "constant": 1,
+          "degree": 4,
+          "equality_dummies": 48,
+          "flow_variables": 47,
+          "hubs": 48,
+          "individual_degree": 4,
+          "monomials": 23719,
+          "negative_coefficients": 10526,
+          "normalized_rows": 298,
+          "normalized_variables": 388,
+          "occurrences": 1284,
+          "positive_coefficients": 13193,
+          "quartic_pair_classes": 31,
+          "source_rows": 236,
+          "source_variables": 326,
+          "unit_coordinates": 62,
+          "variables": 806
+        },
+        "mutations_rejected": [
+          "coefficient",
+          "source_hash",
+          "logical_factor",
+          "source_row",
+          "missing_edge",
+          "missing_alias",
+          "unit_endpoint",
+          "metric"
+        ],
+        "off_zero_samples": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "python_optimized": true,
+        "scope": "Finite algebraic certificates. The accompanying ordinary proof supplies the unbounded zero-set equivalence; source consistency calibration is inherited, not re-proved here.",
+        "source_sha256": "99a93afc9e012f519a13db594244205f495ace74cfed863abf7981ca8c11b689",
+        "status": "pass"
+      }
+    },
+    {
+      "component": "balanced806_independent",
+      "mode": "optimized",
+      "receipt": {
+        "certificate_sha256": "3afdb49e63d6ff16cc2fe5dbf1bbd10250b4017ef0f957c86b832092debbf06f",
+        "coefficient_height": 1,
+        "constant": 1,
+        "degree": 4,
+        "exact_symbolic_lift_vertices": 346,
+        "graph_edges": 1331,
+        "graph_vertices": 346,
+        "identity": "P(L(x)) = (sum_r R_r(x)^2 + (sum_r R_r(x))^2)/2, universally",
+        "individual_degree": 4,
+        "monomials": 23719,
+        "normalization_rows": 298,
+        "normalization_variables": 388,
+        "polynomial_sha256": "5139cac2a11e4391b129e1f7499492b2eae2f63a6bead2ff07ea7d243fc13117",
+        "quartic_equality_pairs": 31,
+        "same_logical_factor_bindings": 2568,
+        "scope": "Every coefficient and universal symbolic lift checked. Source consistency theorem remains inherited.",
+        "source_rows": 236,
+        "source_sha256": "99a93afc9e012f519a13db594244205f495ace74cfed863abf7981ca8c11b689",
+        "source_variables": 326,
+        "status": "pass",
+        "variables": 806
+      }
+    },
+    {
+      "component": "sparse994",
+      "mode": "optimized",
+      "receipt": {
+        "checks": [
+          "topological monic normalization and exact source pullback",
+          "full alias and unit provenance",
+          "simple incidence graph and internal spanning trees",
+          "independent literal half-sum-of-squares expansion",
+          "coefficient height one and constant one",
+          "complete variable/monomial/degree counts"
+        ],
+        "metrics": {
+          "alias_coordinates": 745,
+          "coefficient_height": 1,
+          "constant": 1,
+          "degree": 4,
+          "equality_dummies": 58,
+          "flow_variables": 191,
+          "hubs": 192,
+          "individual_degree": 4,
+          "monomials": 11744,
+          "negative_coefficients": 4867,
+          "normalized_rows": 313,
+          "normalized_variables": 403,
+          "occurrences": 1264,
+          "positive_coefficients": 6877,
+          "quartic_pair_classes": 29,
+          "source_rows": 258,
+          "source_variables": 348,
+          "unit_coordinates": 82,
+          "variables": 994
+        },
+        "mutations_rejected": [
+          "coefficient",
+          "source_hash",
+          "logical_factor",
+          "source_row",
+          "missing_edge",
+          "missing_alias",
+          "unit_endpoint",
+          "metric"
+        ],
+        "off_zero_samples": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "python_optimized": true,
+        "scope": "Finite algebraic certificates. The accompanying ordinary proof supplies the unbounded zero-set equivalence; source consistency calibration is inherited, not re-proved here.",
+        "source_sha256": "dfe7bd10cc10e0735938fd5708ee257fa3f78391975931281e70e4ccdd60794d",
+        "status": "pass"
+      }
+    },
+    {
+      "component": "sparse994_independent",
+      "mode": "optimized",
+      "receipt": {
+        "certificate_sha256": "aabbbe970289aadb1bb9e38adbd4ad4e6858bfed9eb7160fdf874f47393569fe",
+        "coefficient_height": 1,
+        "constant": 1,
+        "degree": 4,
+        "exact_symbolic_lift_vertices": 505,
+        "graph_edges": 1455,
+        "graph_vertices": 505,
+        "identity": "P(L(x)) = (sum_r R_r(x)^2 + (sum_r R_r(x))^2)/2, universally",
+        "individual_degree": 4,
+        "monomials": 11744,
+        "normalization_rows": 313,
+        "normalization_variables": 403,
+        "polynomial_sha256": "db9a43aae243939c071c48f5c0368688cbac340f7a0bc42a7ae765237fcf8f1f",
+        "quartic_equality_pairs": 29,
+        "same_logical_factor_bindings": 2528,
+        "scope": "Every coefficient and universal symbolic lift checked. Source consistency theorem remains inherited.",
+        "source_rows": 258,
+        "source_sha256": "dfe7bd10cc10e0735938fd5708ee257fa3f78391975931281e70e4ccdd60794d",
+        "source_variables": 348,
+        "status": "pass",
+        "variables": 994
+      }
+    }
+  ],
+  "literal_equations_checked": 3,
+  "mode": "both",
+  "scope": "Exact finite algebra and deterministic artifact reproduction; unbounded zero-set proof is in report/proof_body.tex, source consistency calibration is supplied by the enclosing direct-source package.",
+  "source_sha256": {
+    "287": "e342eee770c4d8ec4311fd87d65b02b97171ab39152151c97a64b97c9890b11b",
+    "309": "b867f70b15340736a7caaeafacbe9de35adb5422fe7ab36964a444542919333d"
+  },
+  "status": "pass"
+}

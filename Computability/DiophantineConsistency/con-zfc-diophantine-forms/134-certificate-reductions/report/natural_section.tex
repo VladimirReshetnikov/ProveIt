@@ -1,0 +1,393 @@
+\section{A descending-binomial quartic in 233 natural variables}
+\label{sec:natural}
+
+This branch starts from the direct numerical-calculus construction of
+package 129 \cite{parent129}. It changes the factorial certificate and
+the associated reciprocal CRT moduli, combines the semantic anchor with
+a single cap equation, and uses a checked horizon floor of 12. It
+retains the Cantor-coded calculus, six exact power requests, eleven
+modular binomial requests, and the dominant denominator. Its final
+polynomial has 233 variables, 182 residuals, 7,313 collected monomials,
+and height 86,543,666.
+
+\subsection{A short factorial fixed point}
+
+The rising-binomial parent used a ceiling and had to exclude spurious
+small values before obtaining a strong lower bound for the factorial
+witness. Reversing the product gives a particularly direct lower bound.
+
+\begin{lemma}[Descending factorial identity]\label{lem:floor}
+Let \(t\ge3\), \(F\ge2\), and \(F^2-1\ge t\) be integers. Then
+\[
+ F=\left\lfloor\frac{(F^2-1)^t}{\binom{F^2-1}{t}}\right\rfloor
+ \quad\Longleftrightarrow\quad F=t!.
+\]
+\end{lemma}
+
+\begin{proof}
+Put \(n=F^2-1\), \(T=t!\), and \(S=t(t-1)/2\). The ratio is
+\[
+ H=T\prod_{j=0}^{t-1}\left(1-\frac{j}{n}\right)^{-1}\ge T.
+\]
+If its floor is \(F\), then \(F\ge T\). For \(t\ge3\),
+\(T-1>S\); this is immediate at \(t=3\) and persists by induction.
+Consequently
+\[
+ n\ge T^2-1=(T+1)(T-1)>(T+1)S.
+\]
+The elementary product inequality
+\(\prod_j(1-a_j)\ge1-\sum_j a_j\), for \(0\le a_j\le1\), gives
+\[
+ T\le H\le\frac{Tn}{n-S}
+       =T+\frac{TS}{n-S}<T+1.
+\]
+Thus the floor is \(T\), so \(F=T\). Conversely, if \(F=T\),
+the same displayed inequalities apply and the floor is \(F\).
+\end{proof}
+
+The actual polynomial graph makes \(F=f_0+2\), with \(f_0\in\N\),
+and evaluates
+\[
+ n=(f_0+1)(f_0+3)=F^2-1.
+\]
+This expression has nonnegative coefficients. Its two floor rows are
+\begin{equation}\label{eq:floor-rows}
+ V_0=BF+r,\qquad B=r+s+1,\qquad r,s\in\N.
+\end{equation}
+After the arithmetic interfaces have recovered
+\(V_0=n^t\) and \(B=\binom nt\), these rows say exactly
+\(BF\le V_0<B(F+1)\). The literal shift \(B=b_0+2\) ensures
+\(B\ge2\), so the recovered binomial is nonzero and \(n\ge t\).
+Lemma~\ref{lem:floor} then gives \(F=t!\). No factorial, floor, or
+binomial primitive survives in the final polynomial.
+
+\subsection{Descending reciprocal moduli}
+
+\begin{lemma}\label{lem:descending-crt}
+Let \(F=t!\) with \(t\ge3\). For \(1\le i\le t\), put
+\[
+ d_i=\frac{F^2}{i}-1.
+\]
+These are positive integers greater than one, are pairwise coprime,
+have no prime divisor at most \(t\), and satisfy
+\[
+ \prod_{i=1}^{t}d_i=\binom{F^2-1}{t}=B.
+\]
+\end{lemma}
+
+\begin{proof}
+Each \(i\mid F\), hence \(F^2/i\) is a multiple of \(F\) and
+\(d_i\equiv-1\pmod F\). Every prime at most \(t\) divides \(F\),
+so no such prime divides \(d_i\). If a prime divided both \(d_i\)
+and \(d_j\), it would divide
+\(i d_i-jd_j=j-i\), which is impossible for distinct indices in
+\(\{1,\ldots,t\}\). The product identity is
+\[
+ \prod_{i=1}^{t}\frac{F^2-i}{i}
+ =\frac{(F^2-1)\cdots(F^2-t)}{t!}.
+\]
+\end{proof}
+
+The encoded local-row index \(C\) now uses the polynomial equality
+\begin{equation}\label{eq:descending-index}
+ C+1=F^2+Bq_C,\qquad q_C\in\N,
+\end{equation}
+in place of the parent's \(C+F^2+1=Bq_C\). Modulo \(d_i\),
+\(F^2\equiv i\), so the recovered local index is still \(i-1\).
+The quotient's natural domain is legitimate in completeness. Indeed,
+\(B>F^2\): with \(n=F^2-1\), we have
+\(\binom nt\ge\binom n2>n+1\) in the present range. Every positive
+CRT representative of \(F^2-1\pmod B\) is therefore at least
+\(F^2-1\), and \(q_C\ge0\).
+
+An additional consequence is \(d_i\equiv-1\pmod4\), because
+\(4\mid F\) in the actual \(t\ge12\) construction. Thus each
+\(d_i\) has a prime divisor congruent to 3 modulo 4 with odd
+multiplicity. This observation is not used to claim another compression
+in the delivered equation; the preceding elementary CRT facts suffice.
+
+\subsection{One cap equation at a semantic index}
+
+For \(A\ge2\), write
+\[
+ X_j(A)+Y_j(A)\sqrt{A^2-1}=(A+\sqrt{A^2-1})^j.
+\]
+The nonnegative solutions of
+\(x^2-(A^2-1)y^2=1\) are exactly these pairs, with unique \(j\ge0\).
+The elementary recurrences give
+\[
+ Y_j(A)\equiv j\pmod{A-1},\quad Y_j(A)\ge j,\quad
+ Y_{j+1}(A)>(2A-1)Y_j(A)\quad(j\ge1).
+\]
+The complete one-index certificate of the parent is retained for a
+single pair \((X_*,Y_*)=(X_H(A),Y_H(A))\). The new simultaneous
+constraint is
+\begin{equation}\label{eq:natural-one-row}
+ \boxed{\quad
+ Y_*=H+\sum_{i=1}^{r}(y_i-k_i)^2+(A-1)Q,
+ \qquad Q\in\N.\quad}
+\end{equation}
+It combines the size cap and the error congruence in one quadratic row.
+Before the anchor is interpreted, this row already gives \(H\le Y_*\).
+It therefore supplies the index bound required by the retained
+one-index certificate.
+This is a specialization and combination of the earlier one-row cap
+idea \cite{cap128} with package 129's semantic anchor, not a priority
+claim for the general idea of combining a cap and a congruence.
+
+\begin{lemma}\label{lem:natural-cap}
+Assume \(W\ge3\), \(2\le H<W\), \(r\le W-2\),
+\(0\le k_i<W\), \(A>W+1\), and \(A-1>W^3\).
+Let \(Y_*=Y_H(A)\), and let each \((x_i,y_i)\) be a
+nonnegative Pell solution at base \(A\). If
+\eqref{eq:natural-one-row} holds, then
+\((x_i,y_i)=(X_{k_i}(A),Y_{k_i}(A))\) for every \(i\).
+Conversely, for the positive indices in this construction, the
+canonical pairs satisfy \eqref{eq:natural-one-row} with a natural
+\(Q\) whenever \(H>2\max_i k_i\).
+\end{lemma}
+
+\begin{proof}
+Write \(y_i=Y_{j_i}(A)\). If \(j_i\ge H\), then
+\(y_i\ge Y_*\ge Y_2(A)=2A>2W\), so
+\[
+ (y_i-k_i)^2\ge(Y_*-W+1)^2>Y_*.
+\]
+This contradicts the nonnegative right side of
+\eqref{eq:natural-one-row}. Therefore \(j_i<H<W\).
+Reducing the row modulo \(A-1\) gives divisibility of
+\[
+ E=\sum_i(j_i-k_i)^2,
+ \qquad 0\le E\le r(W-1)^2<W^3<A-1.
+\]
+Hence \(E=0\), proving every index equality.
+
+For completeness put \(m=\max_i k_i\ge1\). The identity
+\[
+ Y_{2m+1}(A)=Y_{m+1}(A)^2-Y_m(A)^2
+            >4A(A-1)Y_m(A)^2
+\]
+and \(H\ge2m+1\) show
+\[
+ Y_H(A)-H-\sum_i(Y_{k_i}(A)-k_i)^2
+ >[4A(A-1)-r]Y_m(A)^2-H>0.
+\]
+This integer is divisible by \(A-1\) by the recurrence congruence.
+Its quotient is the required nonnegative \(Q\).
+\end{proof}
+
+The anchor is the existing derived label polynomial \(H=J\), which
+includes the Cantor constructor
+\[
+ I(a,b)=2(a+b)(a+b+1)+4b,
+ \qquad J(a,b,c,d)\ge I(a,b)\ge2a^2.
+\]
+As in the parent, the nine independent CRT representatives initially
+lie in \([1,N^2]\). Increase the encoded \(a\)-column by \(N^2\).
+All local polynomial congruences at precision \(d_i^{2K}\) are
+preserved, and their aggregate remains at most \(10N^2\).
+The new \(a>N^2\) gives \(H>2N^4\). Every other required index
+is at most \(2N^2\), so \(H>2\max_i k_i\), as required for the
+new converse. No extra dominance inequality appears in the polynomial.
+Soundness uses only the cap lemma's explicit frame hypotheses.
+
+\subsection{The six exact powers and the order of recovery}
+
+The semantic parameters are
+\[
+ t=t_0+12,\quad F=f_0+2,\quad
+ R=2+t+x+y+F,\quad K=2R,\quad B=b_0+2.
+\]
+The six exact requests are
+\begin{equation}\label{eq:natural-six}
+ V_0=(F^2-1)^t,\qquad N=B^K,\qquad q=N^K,\qquad
+ D_t=q^t,\quad D_y=q^{y+1},\quad D_x=q^{x+1}.
+\end{equation}
+These are meanings proved for finite polynomial graphs, not operators
+allowed in \(P_{\N}\). The extra denominator \(q^{t+1}=qD_t\)
+uses a multiplication already accounted for in the graph.
+
+The unchanged enlarged growth frame is
+\[
+ W=16+\sum_{a\in\mathcal A}a,\quad Z=z+1,\quad
+ L^2-\big((W+1)^2-1\big)(WZ)^2=1,\quad A=L+\sigma,
+\]
+where \(\mathcal A\) contains every distinct base, exponent, and
+proposed output in \eqref{eq:natural-six}, as well as every modular
+upper index. All these atoms are natural and less than \(W\).
+Pell classification at base \(W+1\), followed by reduction modulo
+\(W\), shows that its nonzero index is at least \(W\). Therefore
+\[
+ A\ge L\ge X_W(W+1)\ge(W+1)^W,
+ \qquad A-1>W^3.
+\]
+The actual base \(A\) remains free to increase after the lower witness
+\(L\) is chosen. This freedom is needed for the later root congruence.
+
+There are fourteen ordinary index pairs and one fully certified
+anchor. For ordinary pairs the graph uses consecutive ordinates
+\(y,z\) and a product wire \(u\):
+\[
+ u=yz,\qquad y^2+z^2-2Au=1.
+\]
+Every such pair has an output row of the form
+\(ny=z+R_0\), with \(R_0\ge0\) and \(1\le n<A\).
+Thus \(y>0\), \(z<Ay\), and \(x=Ay-z>0\) gives an ordinary
+Pell pair. The one-row cap authenticates all its indices before
+interpreting a power or binomial coefficient.
+
+For a proposed power \(m=n^k\), put
+\(T_n=2An-n^2-1\) and impose
+\[
+ X_k(A)+(n-A)Y_k(A)=m+T_n h_n,\qquad h_n\in\N.
+\]
+Modulo \(T_n\), the left side is \(n^k\). The frame proves
+\(T_n>W^W+W\), \(m<W\), and \(n^k<W^W\), so both small
+residues must agree. This proves all six exact powers. The canonical
+left side is positive and \(0\le m<T_n\), so their difference cannot
+be a negative multiple of \(T_n\). Its congruence quotient is therefore
+natural in completeness. The literal modulus row also excludes a zero
+power base.
+
+Before using any factorial semantics, \(B\ge2\) gives
+\[
+ q=B^{K^2}\ge2^{4R^2}.
+\]
+With \(n=F^2-1<R^2\), every coefficient \(\binom nj\),
+\(0\le j\le t\), is less than
+\(R^{2t}\le2^{2Rt}<2^{2R^2}<q\). Thus the first binomial digit
+can be decoded before \(F=t!\) is known. Its output is \(B\);
+the floor rows now recover \(F=t!\) by Lemma~\ref{lem:floor}.
+There is no circular assumption that a large proposed factorial is
+already the true factorial.
+
+\subsection{The common root and exact digits}
+
+The unchanged endpoint rows include
+\[
+ y=F+1+r_0,\quad
+ x=F+1+(y+1)u_0,\quad
+ x=1+\bigl(1+(t+1)y\bigr)u_t.
+\]
+They imply \(x\ge2+(t+1)y>\max(t+1,y)\). Consequently
+\(M=ND_x=Nq^{x+1}\) is a multiple of every needed digit modulus.
+Put \(b=q+1\) and choose the common-root equation
+\[
+ 2Ab=b^2+1+M h_0.
+\]
+It implies
+\[
+ \rho_n=X_n(A)+(b-A)Y_n(A)\equiv b^n\pmod M.
+\]
+For an exact binomial output \(C=\binom nk\), with \(d=q^k\),
+the literal rows are
+\[
+ \rho_n=r+dC+qd h,\qquad d=r+s+1,\qquad q=C+o+1.
+\]
+For a range request \(N\mid\binom nk\), they are
+\[
+ \rho_n=r+Nd h,\qquad d=r+s+1.
+\]
+The carry-free binomial theorem gives precisely these interpretations.
+For completeness, \(\rho_n>0\), while \(0\le r+dC<qd\) for an
+exact digit and \(0\le r<d\le Nd\) for a range digit. Subtracting
+the indicated small residue therefore cannot give a negative multiple
+of the corresponding modulus, so the reconstructed high-digit
+quotients are nonnegative. Also \(N\mid q\), so \(\gcd(b,M)=1\).
+The linear congruence \(2bA\equiv b^2+1\pmod M\) is soluble:
+its only possible common divisor is 2, and then \(b^2+1\) is even.
+There are arbitrarily large suitable bases \(A\ge L\).
+
+The remaining ten range binomials recover the eight local source
+columns, the row index, and the derived label sum. Their upper-index
+and carry bounds are the parent's bounds with the descending factorial
+input, which is smaller than the former \(F^2+t\). In completeness,
+the semantic-anchor lift still uses the same \(10N^2\) aggregate.
+For representatives \(n\le10N^2\), relevant lower indices
+\(k\le R-1\), and \(0\le j\le k\), the old estimate gives
+\(\binom nj<q\).
+For the derived label sum, the exact source certificate gives
+\(J\le(n+1)^{\ell}\), \(\ell=2^{22}\), and
+\(3\ell(t+1)\le2F\le K\) gives the required stronger bound.
+
+\subsection{Why horizon 12 is sufficient}
+
+The literal majorant certificate has local exponent \(E=2^{23}\)
+and label exponent \(\ell=2^{22}\). At the new floor,
+\[
+ 12!=479001600,\qquad a=\lfloor\log_2(12!)\rfloor=28,
+\]
+and direct integer arithmetic verifies
+\[
+ aE<2^a,\qquad 2E\le2^a,\qquad
+ 3\ell\cdot13\le2\cdot12!.
+\]
+These imply the same unbounded inequalities used by the source.
+In particular, \(R^E<2^R\) starts at \(R=2^a\); the ratio of
+successive left sides is below 2 for \(R\ge2E\), so it persists
+for larger integers. The label inequality persists because a factorial
+grows faster than its linear comparison. Thus the smaller literal
+horizon changes coefficients without weakening a soundness estimate.
+
+\subsection{From the local arithmetic rows to refutations}
+
+For clarity, the inherited CRT and logical steps are stated explicitly.
+If \(p^e\mid\binom ak\), then \(a\bmod p^e<k\). For
+\(a\ge k\), this follows from the valuation formula for binomials:
+if the residue were at least \(k\), the valuation contributions at
+levels \(e,e+1,\ldots\) would vanish, leaving valuation at most
+\(e-1\). The case \(a<k\) is immediate. The converse is not
+assumed.
+
+For each \(d_i\), choose a prime divisor \(p\), let
+\(m=v_p(d_i)\), and work modulo \(p^{Km}\). The index congruence
+\eqref{eq:descending-index} and its range binomial recover \(i-1\).
+The other range binomials recover the bounded local numerical values.
+The source majorant bounds its nonnegative local rule polynomial by
+\(R^E<2^R<2^K\). Its divisibility by \(p^{Km}\ge2^K\)
+therefore makes it zero. This produces every local row of the
+numerical proof calculus.
+
+In completeness use CRT at precision \(d_i^{2K}\), whose common
+period is \(B^{2K}=N^2\). A falling-factorial numerator contains a
+factor divisible by \(p^{2Km}\), while division by \(k!\) loses
+at most \(k-1\le K-1\) powers of \(p\). At least \(Km\)
+powers remain, so all range divisibilities hold. This argument needs
+only the coprimality and product of the \(d_i\), both proved for the
+descending moduli above. The semantic lift preserves the same precision.
+
+Finally the local Horn-flow construction uses pairwise coprime weights
+\(w(j)=1+jF\). Its beta-coded accumulator starts at \(w(1)=F+1\)
+and ends at 1. Multiplying the local flow equations and taking prime
+valuations recovers the multiplicity balance of conclusions and
+premises. If contradiction label 1 were outside the closure of the
+selected rules, every rule concluding outside the closure would have
+an outside premise; the required excess of one outside conclusion is
+impossible. Conversely a finite proof tree supplies the flow, with
+padding to any sufficiently large horizon. This is the retained
+numerical-calculus equivalence, followed by the two logical interfaces
+stated in Theorem~\ref{thm:main}.
+
+The order is important: frame and Pell indices; six exact powers;
+first exact binomial; factorial; remaining binomial ranges; finite
+local rows; refutation. Completeness chooses a finite proof first,
+then its bounded semantic data, then the CRT representatives and their
+lift, and only afterwards the much larger Pell witnesses.
+
+\subsection{Literal compilation and independent review}
+
+The finite graph exports to 339 natural coordinates and 288 quadratic
+rows after affine normalization. A further 106 certified eliminations
+leave the displayed 233 coordinates and 182 rows. Each inverse
+substitution is an integer polynomial proved nonnegative on the natural
+orthant; the two restorations with negative coefficients have exact
+rational sum-of-squares certificates. Expansion gives exactly 7,313
+monomials and degree four. All 233 variables occur.
+
+An independent arithmetic review checks the unbounded floor, CRT, cap,
+and horizon arguments. Its separate coefficient replay verifies the
+entire expanded dictionary. Bounded controls exercise 2,197 factorial
+cases, ten reciprocal products, and 2,452 cap tuples; they supplement
+the proofs and are not used as evidence of universal unsolvability.
+The files \code{natural/REVIEW.md}, \code{natural/INDEPENDENT_REPLAY.json},
+and \code{natural/REPLAY.json} give the exact scopes.

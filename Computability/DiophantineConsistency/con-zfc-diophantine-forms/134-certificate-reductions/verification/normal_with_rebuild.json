@@ -1,0 +1,387 @@
+{
+  "checks": [
+    {
+      "arguments": [
+        "--rebuild"
+      ],
+      "name": "direct_independent",
+      "optimization": 0,
+      "result": {
+        "baseline": {
+          "coefficient_height": 128446,
+          "degree": 4,
+          "domain": "unrestricted integers",
+          "monomials": 5808,
+          "residual_height": 256,
+          "residuals": 208,
+          "variables": 324
+        },
+        "byte_identical_rebuild_files": 9,
+        "metrics": {
+          "coefficient_height": 128446,
+          "degree": 4,
+          "domain": "unrestricted integers",
+          "monomials": 5721,
+          "residual_height": 256,
+          "residuals": 204,
+          "variables": 314
+        },
+        "projection": {
+          "monic_restorations": 216,
+          "unconstrained_coordinates": 94
+        },
+        "rejected_corruptions": 3,
+        "source": {
+          "appended_rows": 2,
+          "modified_or_deleted_rows": 12,
+          "seeds": 15
+        },
+        "status": "PASS",
+        "translation": {
+          "translated_coordinates": 62
+        }
+      },
+      "returncode": 0,
+      "script": "direct/code/check.py",
+      "seconds": 14.659,
+      "status": "PASS"
+    },
+    {
+      "arguments": [
+        "--check"
+      ],
+      "name": "direct_equation_text",
+      "optimization": 0,
+      "result": {
+        "files": [
+          "residuals.tex",
+          "residuals.txt",
+          "variables.tsv"
+        ],
+        "status": "PASS",
+        "tex_rows_parsed": 204
+      },
+      "returncode": 0,
+      "script": "direct/code/print_equation.py",
+      "seconds": 0.049,
+      "status": "PASS"
+    },
+    {
+      "arguments": [
+        "--rebuild"
+      ],
+      "name": "natural_independent",
+      "optimization": 0,
+      "result": {
+        "affine_export": {
+          "all_exported_variables_occur": true,
+          "all_rows_compared": true,
+          "attribution": "Adapted from Shared_Pell_Bound_261 code/check_affine_export.py; extended with complete gate and dependency-closure checks.",
+          "checked_defining_gates": 626,
+          "expanded_coefficients_checked": 5000,
+          "expanded_sha256": "687f26c6bccb6c7ef63227cbb342ff5c74dbbcf9cc05a156de41214eca0023ad",
+          "independence": "No producer, optimizer, exporter, or upstream module imported.",
+          "maximum_exported_residual_degree": 2,
+          "metadata_sha256": "2419c7c71a0cb6d2a214c53708bd4b579cd01631d98f534ff841c9d2e43747bc",
+          "nonnegative_affine_restorations": 400,
+          "original_rows": 692,
+          "original_variables": 743,
+          "raw_equation_sha256": "32838d0114872b90d5ea0ef9f8a880534abeec0116c4372879f26b8d456708b3",
+          "retained_rows": 288,
+          "retained_variables": 339,
+          "unused_coordinates_removed": 4,
+          "verified": true
+        },
+        "arithmetic_controls": {
+          "binary_floor_exponent": 28,
+          "cap_examples": 9,
+          "factorial_floor": 479001600,
+          "floor_examples": 595,
+          "horizon_floor": 12,
+          "label_majorant": 4194304,
+          "local_majorant": 8388608
+        },
+        "corruption_rejected_after_rehash": true,
+        "engine_files_checked": 97,
+        "optimized_python": false,
+        "projection": {
+          "coefficient_height": 86543666,
+          "eliminations": 106,
+          "exact_degree": 4,
+          "expanded_monomials": 7313,
+          "method": "independent rational square expansion and occurrence-list substitution",
+          "negative_coefficient_restorations": 2,
+          "rows": 182,
+          "variables": 233,
+          "verified": true
+        },
+        "reconstructed_files": 9,
+        "scope": "finite exact identities, coefficients, reconstruction, and bounded controls; not a solvability test",
+        "status": "PASS"
+      },
+      "returncode": 0,
+      "script": "natural/verify.py",
+      "seconds": 1.433,
+      "status": "PASS"
+    },
+    {
+      "arguments": [
+        "--check"
+      ],
+      "name": "natural_equation_text",
+      "optimization": 0,
+      "result": {
+        "files": [
+          "residuals.tex",
+          "residuals.txt",
+          "variables.tsv"
+        ],
+        "status": "PASS",
+        "tex_rows_parsed": 182,
+        "variables": 233
+      },
+      "returncode": 0,
+      "script": "natural/render_equation.py",
+      "seconds": 0.05,
+      "status": "PASS"
+    },
+    {
+      "arguments": [],
+      "name": "natural_arithmetic_controls",
+      "optimization": 0,
+      "result": {
+        "canonical_cap_tuples_accepted": 4,
+        "factorial_candidate_controls": 2197,
+        "horizon_12_majorant_controls": true,
+        "one_row_cap_controls": 2452,
+        "proof_status": "Finite controls only; unbounded arguments are separate.",
+        "reciprocal_product_controls": 10,
+        "verified": true
+      },
+      "returncode": 0,
+      "script": "natural/review_arithmetic_controls.py",
+      "seconds": 0.035,
+      "status": "PASS"
+    },
+    {
+      "arguments": [],
+      "name": "natural_source_provenance",
+      "optimization": 0,
+      "result": {
+        "copied_parent_artifacts": 5,
+        "engine_files": 97,
+        "files_with_export_edits": 3,
+        "input_matches_pinned_upstream": 95,
+        "mathematically_modified_inputs": 2,
+        "pinned_git_tree_checked": false,
+        "status": "PASS"
+      },
+      "returncode": 0,
+      "script": "natural/provenance/check_pins.py",
+      "seconds": 0.055,
+      "status": "PASS"
+    },
+    {
+      "arguments": [
+        "--check"
+      ],
+      "name": "compact_circuit_reconstruction",
+      "optimization": 0,
+      "result": [
+        {
+          "bytes": 7020,
+          "operation": "verified",
+          "path": "equation78.json"
+        },
+        {
+          "bytes": 7076,
+          "operation": "verified",
+          "path": "equation79.json"
+        }
+      ],
+      "returncode": 0,
+      "script": "compact/build.py",
+      "seconds": 0.044,
+      "status": "PASS"
+    },
+    {
+      "arguments": [],
+      "name": "compact_coefficient_reconstruction",
+      "optimization": 0,
+      "result": [
+        {
+          "bits": 590069,
+          "gzip_sha256": "466796f146d60db9929fa0f0f62d70d5e6afbcea9940342764571f1ca6bea87c",
+          "port": "beta",
+          "raw_sha256": "0664a868cbfef9869ea05c40a1c445563f685ff857092594c1c1223bc4b21f9d"
+        },
+        {
+          "bits": 592884,
+          "gzip_sha256": "71438c19d86d3c06bc1a3bcc990c7d198d30e43b78beb0f9f4e780f942b89408",
+          "port": "K0",
+          "raw_sha256": "0a86821a704294199c2e1a50379d242c96840a3366e9d965689ba3d74605203f"
+        },
+        {
+          "bits": 590069,
+          "gzip_sha256": "271fabccdd555bda2c54c4c3a7379cc02eeba4893c07178bfd557a7683b74d5e",
+          "port": "MC",
+          "raw_sha256": "6007cabd5f5228618e8fb613f386d8fc3692a24520d6e4cd72af0262aae1ade4"
+        },
+        {
+          "bits": 590070,
+          "gzip_sha256": "935cd87f8b23f24a20fd742c48d2a9cbca6afd494b6b074445df72c98b0c6e3b",
+          "port": "MF",
+          "raw_sha256": "48333b0d30a4edeb8579f44286cb59806c5622cb42b367f5b5f9ee827711c737"
+        }
+      ],
+      "returncode": 0,
+      "script": "compact/rebuild_coefficients.py",
+      "seconds": 0.109,
+      "status": "PASS"
+    },
+    {
+      "arguments": [],
+      "name": "compact_independent",
+      "optimization": 0,
+      "result": {
+        "equations": {
+          "equation78.json": {
+            "all_registers_covered": 78,
+            "degree": 630,
+            "exact_cut_identities": 28,
+            "fixed_ports": 4,
+            "independent_inputs": 10,
+            "leading_terms": 1950,
+            "nonzero_coefficient": "16384*beta^382",
+            "operation_breakdown": {
+              "*": 46,
+              "+": 18,
+              "-": 14
+            },
+            "operations": 78,
+            "register_degrees": {
+              "Am1": 6,
+              "Bt": 2,
+              "Delta": 12,
+              "Dg": 78,
+              "DpI2": 56,
+              "Dtau": 22,
+              "Fsqr": 112,
+              "Mtot": 15,
+              "N": 630,
+              "Q": 124,
+              "RG": 108,
+              "U": 11,
+              "V": 118,
+              "X": 2,
+              "Y": 4,
+              "Znum": 253,
+              "c": 5,
+              "cTR": 6,
+              "q": 1
+            },
+            "rejected_actual_corruptions": [
+              "Y/operand",
+              "Fsqr/operator",
+              "brk/operator",
+              "Znum/operator",
+              "Q/operand",
+              "N/operator",
+              "e/operand",
+              "Y2/operand"
+            ],
+            "sha256": "f34d0a8e7f2aa953f960e42714747f8aa8e25fe8f565a6cf1ecad588a5ce1e80"
+          },
+          "equation79.json": {
+            "all_registers_covered": 79,
+            "degree": 468,
+            "exact_cut_identities": 28,
+            "fixed_ports": 4,
+            "independent_inputs": 10,
+            "leading_terms": 141,
+            "nonzero_coefficient": "-1024*beta^288",
+            "operation_breakdown": {
+              "*": 47,
+              "+": 18,
+              "-": 14
+            },
+            "operations": 79,
+            "register_degrees": {
+              "Am1": 6,
+              "Bt": 2,
+              "Delta": 12,
+              "Dg": 78,
+              "DpI2": 56,
+              "Dtau": 22,
+              "Fsqr": 112,
+              "Mtot": 15,
+              "N": 468,
+              "Q": 124,
+              "RG": 108,
+              "U": 11,
+              "V": 118,
+              "X": 2,
+              "Y": 4,
+              "Znum": 141,
+              "c": 5,
+              "cTR": 6,
+              "q": 1
+            },
+            "rejected_actual_corruptions": [
+              "Y/operand",
+              "Fsqr/operator",
+              "brk/operator",
+              "Znum/operator",
+              "Q/operand",
+              "N/operator",
+              "e/operand",
+              "Y2/operand"
+            ],
+            "sha256": "fdd63f2769214cb53c312b60c8831c135e7daba4b2feef74507b7625adcc29f8"
+          }
+        },
+        "fixed_numerals": [
+          {
+            "bits": 590069,
+            "gzip_sha256": "466796f146d60db9929fa0f0f62d70d5e6afbcea9940342764571f1ca6bea87c",
+            "port": "beta",
+            "raw_sha256": "0664a868cbfef9869ea05c40a1c445563f685ff857092594c1c1223bc4b21f9d"
+          },
+          {
+            "bits": 592884,
+            "gzip_sha256": "71438c19d86d3c06bc1a3bcc990c7d198d30e43b78beb0f9f4e780f942b89408",
+            "port": "K0",
+            "raw_sha256": "0a86821a704294199c2e1a50379d242c96840a3366e9d965689ba3d74605203f"
+          },
+          {
+            "bits": 590069,
+            "gzip_sha256": "271fabccdd555bda2c54c4c3a7379cc02eeba4893c07178bfd557a7683b74d5e",
+            "port": "MC",
+            "raw_sha256": "6007cabd5f5228618e8fb613f386d8fc3692a24520d6e4cd72af0262aae1ade4"
+          },
+          {
+            "bits": 590070,
+            "gzip_sha256": "935cd87f8b23f24a20fd742c48d2a9cbca6afd494b6b074445df72c98b0c6e3b",
+            "port": "MF",
+            "raw_sha256": "48333b0d30a4edeb8579f44286cb59806c5622cb42b367f5b5f9ee827711c737"
+          }
+        ],
+        "scope": "Exact finite algebra, literal circuit, fixed-numeral and degree verification; the unbounded equivalence is proved in PROOF.md and its named ordinary dependencies.",
+        "source_files_authenticated": 21,
+        "status": "PASS"
+      },
+      "returncode": 0,
+      "script": "compact/verify.py",
+      "seconds": 0.271,
+      "status": "PASS"
+    }
+  ],
+  "completed_utc": "2026-10-25T04:51:38.366968+00:00",
+  "optimization": 0,
+  "python": "3.12.14",
+  "rebuild": true,
+  "schema": "con-zfc-integration-check-v1",
+  "scope": "Independent finite artifact checks, equation-text round trips, exact circuit and coefficient reconstruction, arithmetic controls, and optional direct/natural byte-identical rebuilds. These checks do not constitute a formal proof in ZFC.",
+  "seconds": 16.709,
+  "status": "PASS"
+}

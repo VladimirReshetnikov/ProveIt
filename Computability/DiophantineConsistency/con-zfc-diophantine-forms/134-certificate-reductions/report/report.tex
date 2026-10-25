@@ -1,0 +1,369 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=24mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,microtype,xcolor,fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Eliminating auxiliary witnesses in Diophantine consistency},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov},pdfsubject={Explicit polynomial equations whose unsolvability is equivalent to Con(ZFC)}}
+\definecolor{ink}{HTML}{19364B}
+\definecolor{muted}{HTML}{526575}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{muted}Diophantine consistency: new certificate reductions}
+\fancyhead[R]{\small\color{muted}ProveIt research}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{3em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\lcm}{lcm}
+\title{\color{ink}\textbf{Eliminating Auxiliary Witnesses\\in Diophantine Consistency}\\[7pt]
+\large Polynomial comparison centers, staged index recovery,\\and a descending-binomial factorial identity}
+\author{Research prepared for Vladimir Reshetnikov\\
+\small AI-assisted mathematical construction and independent review}
+\date{25 October 2026}
+\begin{document}
+\maketitle\thispagestyle{empty}
+\begin{abstract}
+We give three complementary improvements to explicit Diophantine equations
+for the consistency of ZFC, compared with ProveIt commit
+\code{1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61}, including its newly placed
+packages 127--133. A direct quartic in 314 unrestricted integers has 204
+quadratic residuals, 5,721 collected monomials, and coefficient height
+128,446. It improves the 324-variable parent in variables, residuals, and
+support, at the same height. A direct quartic in 233 nonnegative integers
+has 182 residuals, 7,313 monomials, and height 86,543,666; it dominates
+both the 234-variable and 233-variable natural parents in the compared
+metrics. Separate polynomials in ten positive integers have complete
+78-operation and 79-operation evaluators, at exact degrees 630 and 468.
+Their shorter arithmetic circuits trade against larger degrees and retain
+their parent's large fixed coefficients.
+
+The main new mechanisms are a deterministic polynomial in place of a
+Chinese-remainder-selected Pell comparison base; recovery of an index
+from a known divisor before recovering its full denominator; and the
+identity
+\(F=\lfloor(F^2-1)^t/\binom{F^2-1}{t}\rfloor\iff F=t!\)
+on the stated positive domain. Complete new ordinary arguments,
+literal polynomial data, coefficient recipes, exact reconstruction,
+and independent finite checks are supplied. The direct constructions
+encode the numerical proof calculus and use neither K215 simulation nor
+Jones's universal polynomial. The compact branch retains its native
+calibration. The theorem is an equivalence provable in ZFC, not a proof
+of consistency or global minimality, and not a new end-to-end formal
+proof-assistant certificate.
+\end{abstract}
+\newpage
+{\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The completed equations and the comparison boundary}
+\label{sec:results}
+
+Write \(\N=\{0,1,2,\ldots\}\). There are four completed single
+polynomials, with three different optimization goals. The domain is part
+of each specification.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Equation and domain & Variables & Degree & Rows & Terms & Height\\
+\midrule
+Direct, all integers &314&4&204&5,721&128,446\\
+Direct, nonnegative integers &233&4&182&7,313&86,543,666\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For the unrestricted-integer endpoint, let \(r_0,\ldots,r_{203}\) be
+the literal residuals in \code{direct/equation.json}, printed in
+Appendix~\ref{app:integer}. Its polynomial is
+\begin{equation}\label{eq:integer-main}
+ P_{\Z}(z_0,\ldots,z_{313})=
+ \sum_{j=0}^{203}r_j(z_0,\ldots,z_{313})^2.
+\end{equation}
+For the natural-number endpoint, let \(s_0,\ldots,s_{181}\) be the
+literal residuals in \code{natural/equation.json}, printed in
+Appendix~\ref{app:natural}. Its polynomial is
+\begin{equation}\label{eq:natural-main}
+ P_{\N}(x_0,\ldots,x_{232})=
+ \sum_{j=0}^{181}s_j(x_0,\ldots,x_{232})^2.
+\end{equation}
+Both lists are fixed finite data. Their indices do not conceal a proof
+length, an unbounded list, or a variable number of quantified witnesses.
+Every residual has degree at most two. The complete collected expansions
+are in the adjacent \code{expanded_polynomial.json} files.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Compact equation and domain & Variables & Binary operations & Exact degree\\
+\midrule
+\code{compact/equation78.json}, positive integers &10&78&630\\
+\code{compact/equation79.json}, positive integers &10&79&468\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every live binary addition, subtraction, and multiplication is counted,
+including squares and multiplication by fixed numerals. Named registers
+are abbreviations in a polynomial expression, not extra unknowns.
+Section~\ref{sec:compact-unscaled} gives the
+complete formulas and proof. The four fixed integers are supplied as
+literal bytes, with an independently replayed finite reconstruction.
+
+\begin{theorem}[Consistency calibration]\label{thm:main}
+For the fixed polynomials above, ordinary mathematics formalizable in
+ZFC proves
+\begin{align*}
+ \ZFC&\vdash
+  \bigl(\neg\exists\mathbf z\in\Z^{314}\ P_{\Z}(\mathbf z)=0\bigr)
+       \longleftrightarrow\Con(\ZFC),\\
+ \ZFC&\vdash
+  \bigl(\neg\exists\mathbf x\in\N^{233}\ P_{\N}(\mathbf x)=0\bigr)
+       \longleftrightarrow\Con(\ZFC).
+\end{align*}
+For each of the two compact polynomials \(P\), it also proves
+\[
+ \bigl(\neg\exists\mathbf u\in\Z_{>0}^{10}\ P(\mathbf u)=0\bigr)
+       \longleftrightarrow\Con(\ZFC).
+\]
+Here \(\Con(\ZFC)\) is the syntactic absence of a finite refutation in
+the fixed effective ZFC calculus used by the inherited calibration.
+\end{theorem}
+
+The constructive assertion proved in each direction is that a polynomial
+zero exists exactly when a finite refutation exists. No consistency
+assumption is used in this equivalence. The direct branches compose
+with the numerical-calculus theorem
+\code{KEndpoint.c222_iff_zf_refutation} and the Choice transport
+\code{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+Their statements and source identities are retained. The new arithmetic
+steps are proved here; the named logical calibration is inherited, with
+its proof boundary recorded explicitly in Section~\ref{sec:verification}.
+
+\subsection{What is improved}
+
+The repository snapshot contains more than one frontier. In particular,
+the collection overview had not yet incorporated all of packages
+127--133 when those packages were placed. We compared their literal
+endpoint files, rather than treating the older overview as the latest
+result. The most relevant direct comparisons are:
+
+\begin{center}\small
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Domain & Construction & Variables & Rows & Terms & Height\\
+\midrule
+\(\Z\) & Package 131 &324&208&5,808&128,446\\
+\(\Z\) & This work &314&204&5,721&128,446\\
+\(\N\) & Package 129, recommended &234&183&9,019&87,741,134\\
+\(\N\) & Package 129, denser &233&182&50,762&88,674,690\\
+\(\N\) & This work &233&182&7,313&86,543,666\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The natural polynomial has about 18.9\% fewer monomials than the
+234-variable parent and about 85.6\% fewer than its 233-variable
+companion. Its height is also smaller than both. The unrestricted
+polynomial removes ten variables and four residuals, with smaller
+support and the same height. These are strict improvements in the
+displayed direct-construction comparisons.
+
+The compact comparison is different. Package 133 supplied
+84 operations at degree 436 and 85 operations at degree 328. The new
+78/630 and 79/468 endpoints save six operations each but raise degree.
+Neither compact endpoint is claimed to dominate the older pair in all
+metrics. Nor do the direct quartics have globally fewest variables:
+the repository already contains other architectures with many fewer
+variables, including quartics with very large specialized coefficients.
+The classical nine-natural-variable and recent ten-integer-variable
+representation results concern another measure of simplicity
+\cite{jones,sun}.
+
+\subsection{Why the three mechanisms are useful}
+
+An auxiliary witness can cost several final variables after its
+arithmetic and sign certificates are expanded. The present reductions
+therefore work at the level of existence proofs before optimizing the
+resulting polynomial.
+
+\begin{enumerate}[leftmargin=*]
+\item A Pell comparison base previously chosen by CRT can be an explicit
+polynomial in an existing Pell trace. Its defining identity supplies
+both required congruences automatically. This removes a witness choice,
+not merely a different name for a coordinate.
+\item To identify an index, the full error denominator need not be
+available first. A large known divisor, combined with a strict index
+bound, suffices. The exact index then recovers the full divisibility.
+This allows the compact branch to discard its artificial scale.
+\item A descending-binomial ratio places the factorial on the other
+side of a floor. The resulting reciprocal CRT moduli and polynomial
+interfaces have a smaller collected quartic than the earlier rising
+binomial construction.
+\end{enumerate}
+
+The classical Pell identities, the numerical proof calculus, coefficient
+encoding, sum-of-squares compilation, semantic-anchor idea, and existing
+one-row cap idea all retain their attribution. The claims of novelty
+are relative to the inspected ProveIt sources and concern the stated
+new lemmas or completed combinations. A literature-wide priority theorem
+is not asserted.
+
+\input{../direct/section.tex}
+\input{natural_section.tex}
+
+\input{../compact/section.tex}
+
+\section{What the verification proves}\label{sec:verification}
+
+There are three distinct levels of evidence.
+
+\textbf{Ordinary unbounded proofs.}
+The new Pell, valuation, factorial, CRT, and cap arguments establish
+the quantified mathematical implications. They compose with named
+inherited arithmetic and logical interfaces. A finite test is not used
+to infer a statement about all polynomial zeros.
+
+\textbf{Exact finite algebra.}
+The supplied independent checkers reconstruct every coefficient of
+both quartics, verify every retained affine or monic elimination and
+its restoration, check the integral translation in the signed branch,
+and verify the compact circuits' topology, liveness, coefficient
+binding, operation counts, and complete leading homogeneous forms.
+The natural exporter independently checks 626 defining gates,
+400 nonnegative affine restorations, and all 288 normalized rows before
+the 106 further contractions. Its two nontrivial positivity restorations
+are verified by exact rational sum-of-squares identities.
+
+The natural reconstruction is replayed from the included relocated
+arithmetic engine and its literal numerical-calculus input. The signed
+replay starts from the included, pinned factored source of package 131;
+it verifies the new source changes, projection, and final translation.
+That starting boundary is deliberate and documented: it is not presented
+as a rerun of every historical compiler stage. The compact coefficients
+are reconstructed from their finite tile recipe, rather than accepted
+from hashes alone. Checks run with explicit exceptions, and both normal
+and optimized Python are exercised. Deliberately corrupted coefficients
+or circuit data are rejected, including a natural coefficient alteration
+whose claimed hash has been updated.
+
+\textbf{Logical/formal boundary.}
+We inspected and retained the concrete refutation interfaces and the
+ordinary compiler proofs on which the new equations depend. We did not
+rebuild the full transitive Lean development, generate a Rocq proof, or
+produce an encoded object-language ZFC derivation of the new equations.
+The result is an ordinary mathematical construction formalizable in ZFC,
+with exact machine-checked finite algebra; it is not a newly completed
+end-to-end proof-assistant development. The inherited interface names do
+not turn the accompanying Python programs into a logical kernel.
+
+\subsection{Reproduction}
+
+From the extracted bundle root, using Python 3.10 or later:
+\begin{quote}\ttfamily
+python3 -B verify.py\par
+python3 -B -O verify.py
+\end{quote}
+The root runner records the checks for each component. Individual
+component READMEs state their exact replay boundaries and commands.
+The ordinary mathematical arguments remain readable independently of
+those programs. No search for a contradiction or a polynomial solution
+is performed.
+
+The complete paper can be compiled from \code{report/report.tex} with
+pdfLaTeX twice. The final PDF has been rendered and visually inspected;
+the archive also includes the full editable TeX sources. File hashes and
+the immutable repository comparison commit are in the provenance files.
+The data encoding for sparse polynomials is
+\code{[coefficient, [coordinate indices]]}; repeated indices are repeated
+factors, and an empty index list denotes a constant. All coordinate
+indices start at zero. Thus the supplied files specify literal ordinary
+polynomials without factorials, variable exponents, floor functions,
+bounded-quantifier macros, or unspecified universal polynomials.
+
+\section{Conclusions and the remaining target}
+
+The strongest result here in the direct small-coefficient integer branch
+is the 314-variable quartic. The new polynomial comparison center is
+reusable wherever an indexed-Pell certificate already contains its
+auxiliary norm. The natural branch gives a separate useful improvement
+with a particularly short new factorial proof. The compact branch shows
+that a denominator introduced to make a proof convenient can sometimes
+be removed by changing the order in which arithmetic information is
+recovered.
+
+None of these observations supplies a lower bound establishing the
+globally simplest consistency equation. The direct and compact
+constructions still make different trades between number of unknowns,
+degree, coefficient size, expanded support, and evaluation length.
+Further useful work should preserve all these measures, together with
+the domain and the exact calibration, when comparing a candidate.
+The included literal equations and proof boundaries make such a
+comparison reproducible.
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, comparison commit
+\code{1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{parent129} ProveIt package 129, \emph{Semantic Anchors for
+Diophantine Consistency}, 24 October 2026, especially the natural
+233/234 equations and ordinary arithmetic proof.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61/Computability/DiophantineConsistency/con-zfc-diophantine-forms/129-semantic-pell-anchor}.
+\bibitem{parent131} ProveIt package 131, \emph{Shared Pell Caps and
+Coprime Product Equations for ZFC Consistency}, signed 324-variable
+endpoint and its retained calibration, same pinned commit.
+\bibitem{parent132} ProveIt package 132, \emph{Signed Pell Caps and
+Free Scale Carriers}, odd-quotient and signed-cap arguments,
+same pinned commit.
+\bibitem{parent133} ProveIt package 133, \emph{Staged Pell Certificates
+and a Product-Square Equation for Con(ZFC)}, compact 84/436 and
+85/328 endpoints and complete coefficient tuple, same pinned commit.
+\bibitem{cap128} ProveIt package 128, \emph{One Quadratic Constraint
+for Many Pell Certificates}, one-row cap theorem, same pinned commit.
+\bibitem{jones} J. P. Jones, Universal Diophantine equation,
+\emph{Journal of Symbolic Logic} \textbf{47} (1982), 549--571.
+\bibitem{sun} Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth
+problem over the integers}, arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+\end{thebibliography}
+
+\appendix
+\section{The complete unrestricted-integer residual list}
+\label{app:integer}
+All 314 variables \(z_0,\ldots,z_{313}\) range independently over
+\(\Z\). The equation is \(\sum_{j=0}^{203}r_j^2=0\), using every
+row below. No semantic abbreviation remains in this finite definition.
+\input{../direct/residuals.tex}
+
+\section{The complete natural-number residual list}
+\label{app:natural}
+All 233 variables \(x_0,\ldots,x_{232}\) range independently over
+\(\N\). The equation is \(\sum_{j=0}^{181}s_j^2=0\), using every
+row below. The variable-name map in the artifact is explanatory only;
+the indexed list is already a complete polynomial specification.
+\input{../natural/residuals.tex}
+\section{The four fixed compact coefficients}
+\label{app:constants}
+The recipe below is reproduced from the pinned indexed native source.
+It supplies all four constants in Section~\ref{sec:compact-unscaled};
+the symbol \(K\) in this recipe is its \(K_0\). All bounds and
+indices here are fixed integers, not additional unknowns. The code in
+\code{compact/rebuild_coefficients.py} independently evaluates the
+recipe and checks its four literal payloads.
+\input{compact_constants.tex}
+\end{document}

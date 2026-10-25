@@ -1,0 +1,45 @@
+\section{The three fixed height one equations}
+Every row in the following table is an equation over unrestricted integers,
+with exact total degree four, coefficient height one, individual degree at
+most four, and constant coefficient one. The actual polynomial is the
+complete collected coefficient list in the named endpoint directory; the
+adjacent text file writes every monomial literally.
+\begin{center}
+\begin{tabular}{lrrrr}
+Endpoint & Variables & Monomials & Source variables & Hubs\\\hline
+compact793 & 793 & 51,982 & 287 & 16\\
+balanced806 & 806 & 23,719 & 287 & 48\\
+sparse994 & 994 & 11,744 & 309 & 192
+\end{tabular}
+\end{center}
+The first two use the strict grouped 287-variable source, with 197 source
+rows. The fixed affine refactorization adds 39 coordinates and 39 monic
+rows, replacing 40 affine-square occurrences and sharing one definition.
+Coefficient normalization then gives 388 logical coordinates and 298
+rows, with 1,284 signed term occurrences. The 793-variable endpoint has
+712 factor-alias coordinates, 61 equality dummies and 20 free flows; it
+uses 36 quartic pair penalties. The 806-variable endpoint has 711
+factor-alias coordinates, 48 equality dummies and 47 free flows; it uses
+31 quartic pair penalties. Unit aliases are already included in the
+factor-alias counts, not additional coordinates.
+
+The third endpoint uses the strict sparse 309-variable source with 219
+rows. The affine refactorization again adds 39 coordinates and 39 rows.
+Normalization gives 403 logical coordinates and 313 rows, with 1,264
+signed occurrences. The final polynomial has 745 factor aliases,
+58 equality dummies and 191 free flows, and uses 29 quartic pair penalties.
+
+Against the inspected incoming height-one equation with 2,215 variables
+and 30,468 monomials, the balanced and sparse endpoints improve both
+counts. The 793-variable point trades a larger support for fewer
+variables. On the identical incoming 442-variable source with 128 hubs,
+the incidence-local compiler and quartic pairs give 1,254 variables and
+27,714 monomials, compared with that incoming 2,215/30,468 result. This
+matched comparison uses no affine refactorization and therefore isolates
+the graph and alias changes from improvements to the calibrated source.
+
+The source JSON, transformation JSON and endpoint hashes are listed in
+\texttt{ENDPOINTS.json} and \texttt{SOURCE\_BINDINGS.json}. There are no
+unspecified coefficients, source-dependent parameters, or hidden extra
+unknowns in any final polynomial. The full mathematical proof follows;
+its source consistency calibration is the enclosing direct-source proof.

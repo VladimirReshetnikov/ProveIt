@@ -1,0 +1,547 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[letterpaper,margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,hyperref,fancyhdr}
+\definecolor{navy}{HTML}{18324D}
+\definecolor{linkblue}{HTML}{145A8D}
+\hypersetup{colorlinks=true,linkcolor=linkblue,urlcolor=linkblue,citecolor=linkblue,
+ pdftitle={Semantic Sign Recovery and Cofinal Bounds: Explicit Diophantine Forms of Con(ZFC)},
+ pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textsc{Explicit Diophantine consistency equations}}
+\fancyhead[R]{\small 24 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\vtt}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\filepath}[1]{\path{#1}}
+\newcommand{\sqnorm}[2]{#1^{2}-(#2)}
+\allowdisplaybreaks
+\title{\color{navy}\bfseries Semantic Sign Recovery and Cofinal Bounds\\[5pt]
+\large Explicit Diophantine forms of $\Con(\ZFC)$}
+\author{Research prepared for Vladimir Reshetnikov and ProveIt\\
+\small AI-assisted mathematical development, implementation, and independent checks}
+\date{24 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give an explicit quartic polynomial in 286 unrestricted integer variables
+whose absence of an integer zero is provably equivalent, in ZFC, to
+$\Con(\ZFC)$. It is the sum of squares of 196 literal quadratic residuals;
+the collected polynomial has 6,607 monomials and coefficient height 128,446.
+Relative to the inspected 324-variable direct-calculus parent, it removes
+38 variables and 12 residuals while preserving degree and coefficient height.
+The essential change is to orient the Pell abscissas and then derive the
+signs of encoded arguments from their existing integer power certificates.
+An integral output at a base at least two rules out a negative exponent.
+An improved cofinal bound makes a previously quadratic beta modulus linear.
+We also supply a 235-natural-variable quartic, three ten-positive-variable
+equations evaluated in 80, 81, or 83 binary arithmetic operations, and two
+eleven-integer equations evaluated in 107 or 108 operations. These results
+improve specified constructions, with the degree and support tradeoffs made
+explicit. They do not establish a global simplicity optimum. The new
+equivalence arguments are ordinary proofs formalizable in ZFC; this packet
+does not contain a new end-to-end proof-assistant derivation.
+\end{abstract}
+
+\section{Results, domain, and the meaning of simplicity}
+
+The principal deliverable is the fixed polynomial
+\begin{equation}\label{eq:main}
+ \boxed{\displaystyle P_{286}(z_0,\ldots,z_{285})
+       =\sum_{j=0}^{195}r_j(z_0,\ldots,z_{285})^2.}
+\end{equation}
+Every $r_j$ is printed literally in Appendix~\ref{app:residuals}. Thus
+\eqref{eq:main} is an ordinary polynomial with explicit integer coefficients,
+not an exponential Diophantine notation or an unspecified compilation request.
+Its only unknowns are the 286 displayed coordinates, all in $\Z$.
+
+\begin{theorem}[Principal consistency equivalence]\label{thm:main}
+With the syntactic finite-proof meaning of $\Con(\ZFC)$ used by the retained
+ProveIt calibration,
+\[
+ \ZFC\vdash
+ \left[(\forall \mathbf z\in\Z^{286})\;P_{286}(\mathbf z)\ne0\right]
+ \longleftrightarrow\Con(\ZFC).
+\]
+The polynomial has exact total degree four, 6,607 collected nonzero monomials,
+and maximum absolute coefficient 128,446.
+\end{theorem}
+
+The direct construction encodes the numerical proof calculus C222. It uses
+neither a simulation of K215 nor Jones's universal Diophantine polynomial.
+The compact companions use the repository's separate native calibration;
+their much larger constants must be counted when assessing simplicity.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrrr}
+\toprule
+Direct equation and domain&Variables&Rows&Monomials&Height\\
+\midrule
+Inspected parent, $\Z$&324&208&5,808&128,446\\
+Parity companion, $\Z$&319&207&5,779&128,446\\
+\textbf{Principal, $\Z$}&\textbf{286}&\textbf{196}&\textbf{6,607}&\textbf{128,446}\\
+Inspected minimum parent, $\N$&237&185&69,710&133,499,131\\
+\textbf{Natural companion, $\N$}&\textbf{235}&\textbf{184}&\textbf{22,185}&\textbf{90,911,633}\\
+\bottomrule
+\end{tabular}
+\caption{All rows are quadratic residuals and all final polynomials are
+quartic. Here $\N=\{0,1,2,\ldots\}$. The integer parent is package 131;
+the natural parent is package 133, at the pinned repository commit.}
+\end{table}
+
+The principal reduction is $38/324\approx11.73\%$ in unrestricted integer
+variables. Its monomial count increases by 799. The 319-variable companion
+instead improves variables, residuals, and support simultaneously, with
+unchanged degree and height. The natural companion improves every varying
+metric in its matched row. These comparisons concern the identified direct
+calculus architecture: the repository already contains quartics with far
+fewer variables and enormous coefficient encodings.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrr}
+\toprule
+Domain and construction&Variables&Exact degree&Binary operations\\
+\midrule
+Package 133 product-square parent&10 positive&436&84\\
+Free auxiliary coordinate&10 positive&436&\textbf{83}\\
+Normalized, product transport&10 positive&560&\textbf{81}\\
+Normalized, square transport&10 positive&750&\textbf{80}\\
+Package 132 native parent&11 integers&924&109\\
+Parity plus main-root saturation&11 integers&924&\textbf{107}\\
+Package 132 short-index parent&11 integers&840&110\\
+Parity plus main-root saturation&11 integers&840&\textbf{108}\\
+\bottomrule
+\end{tabular}
+\caption{Every live binary addition, subtraction, and multiplication counts,
+including squares and products by fixed constants. Constant leaves are fixed
+numerals, not unknowns. The 80- and 81-operation points trade degree for cost.}
+\end{table}
+
+There is no metric-independent meaning of ``simplest'' here. We therefore
+report the domain, dimension, degree, coefficient height, support, and
+evaluation cost separately. No argument below proves global minimality or
+historical priority. The contribution is the new combination and its
+complete witnesses, equations, and verification records.
+
+\section{Logical calibration and exact polynomial representation}
+
+The direct source is calibrated by the two existing, unconditional interfaces
+\begin{center}\small
+\vtt{KEndpoint.c222_iff_zf_refutation}\\
+\vtt{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\end{center}
+The first identifies derivability of falsity in C222 with a finite ZF
+refutation. The second identifies finite ZF and ZFC refutations, through
+the constructible-universe argument. The corresponding source declarations
+and the numerical calculus definitions are retained in the archive. We do
+not assume consistency, reflection, or the truth of all ZFC theorems in
+order to compose these syntactic equivalences.
+
+The inherited arithmetic construction encodes a finite derivation by a
+uniform factorial/CRT scheme, digit equations, and Pell certificates for
+the finitely many required powers. Its local polynomial permits exactly
+the numerical C222 rule instances. The proof permits a rule multiset
+initially; the retained Horn-flow argument extracts a finite derivation.
+That arithmetic-to-calculus theorem, rather than a halting assumption,
+is the interface used here. The included source ledger distinguishes it
+from the new lemmas below.
+
+Our task is to prove both implications
+\[
+ P_{286}(\mathbf z)=0\text{ for some }\mathbf z\in\Z^{286}
+ \quad\longleftrightarrow\quad
+ \text{a finite C222 refutation exists}.
+\]
+Negation and the two interfaces give Theorem~\ref{thm:main}. All new number
+theory is elementary arithmetic formalizable in ZFC. This statement concerns
+the equivalence; it does not assert either side of the resulting consistency
+sentence.
+
+The compiler turns each retained inequality $G\ge0$ into
+\[
+ G=u^2+v^2+w(w+1),\qquad u,v,w\in\Z.
+\]
+This form represents every nonnegative integer. Indeed, the three-square
+theorem applies to $4G+1$; one square is odd and the other two are even,
+giving the displayed form. Conversely every summand on its right is
+nonnegative for integer arguments. The compiler then factors identities
+exactly and eliminates only monic equations $z-Q=0$ whose substitution
+leaves all residuals quadratic. Every eliminated coordinate has an explicit
+integer restoration. The final centering is an integral translation.
+These operations preserve existence of integer zeros. A sum of integer
+squares vanishes exactly when each residual vanishes.
+
+\section{A cofinal bound that removes a multiplication}\label{sec:cofinal}
+
+In the parent construction the horizon is restricted to
+$t=16+h_0^2$. A finite C222 derivation can first be unfolded to a finite
+tree; $h_0$ is then chosen so that $t$ exceeds its step count, every local
+schema parameter, and every full constructor label. Truth steps pad the
+tree to exactly $t$ rows. This is an existence-preserving cofinal
+restriction, with the witnesses chosen in the stated order.
+
+Set
+\[
+ F=t!,\qquad V=(F^2+1)^t.
+\]
+The parent used the beta modulus $y=V(V-1)$. The following stronger estimate
+permits the linear expression $y=V-1$.
+
+\begin{lemma}[Linear cofinal modulus]\label{lem:linear}
+Every pending multiset in the padded construction has an accumulator
+strictly less than $V-1$. Also $F\mid V-1$ and $V-1\ge F+1$.
+\end{lemma}
+\begin{proof}
+There are at most $t+1$ pending members, with multiplicity. Each member
+has label at most $t$, so its weight is at most $1+tF\le(t+1)F$.
+For $t\ge16$, $F>(t+1)^2$. This follows at $t=16$ directly and propagates
+by multiplication by $t+1$. Hence
+\[
+ ((t+1)F)^{t+1}<F^{2t}\le(F^2+1)^t-1=V-1.
+\]
+For the strict inequality, after dividing by $F^{t+1}$ it suffices that
+$F^{t-1}>(t+1)^{t+1}$; the stronger bound
+$(t+1)^{2t-2}\ge(t+1)^{t+1}$ holds for $t\ge3$.
+The last weak inequality follows by expansion. Finally $V\equiv1\pmod F$,
+and the stated lower bound is immediate.
+\end{proof}
+
+The beta moduli $1+(i+1)y$, $0\le i\le t$, remain pairwise coprime:
+a common prime divides a difference of indices, hence is at most $t$,
+and divides both $F$ and $y$, contradicting divisibility of a modulus.
+Thus exactly the original beta CRT construction works with $y=V-1$.
+The resulting affine relation allows one more coordinate to be eliminated.
+This improvement applies to both new direct branches.
+
+There is no circular use of $F=t!$ in the soundness direction. Before
+factorial recovery, the raw power and ceiling rows already imply $F\ge1$,
+and then $(F^2+1)^t-1\ge F+1$. The stronger factorial bound is needed only
+when constructing witnesses from an actual refutation.
+
+\section{An even frame and an odd anchor quotient}\label{sec:parity}
+
+For an integer $b\ge2$ define the Pell sequences by
+\[
+ (b+\sqrt{b^2-1})^j=X_j(b)+Y_j(b)\sqrt{b^2-1},\qquad j\ge0.
+\]
+Their recurrences give
+\[
+ X_{2j}=2X_j^2-1,\qquad Y_{2j}=2X_jY_j.
+\]
+When $b$ is odd, every $X_j$ is odd and $Y_j$ is odd precisely when
+$j$ is odd. Doubling therefore proves
+\begin{equation}\label{eq:valuation}
+ v_2(Y_j(b))=v_2(j),\qquad j\ge1,\quad b\text{ odd}.
+\end{equation}
+We also use the elementary divisibility
+\begin{equation}\label{eq:divisibility}
+ c=Y_i(b)\quad\Longrightarrow\quad c^2\mid Y_{ic}(b).
+\end{equation}
+Expand $(X_i+c\sqrt{b^2-1})^c$: the first odd binomial term has a factor
+$c^2$, and every subsequent odd term has a factor $c^3$.
+
+Let the atoms be the parent's distinct actual power bases, exponents, and
+outputs, including their affine restorations. We replace its frame by
+\begin{align}
+ W&=2+2\sum\text{atom}^2,\label{eq:frameW}\\
+ A^2-W^3(W+2)(2z+1)^2&=1,\qquad A=2a^2-1.\label{eq:frameA}
+\end{align}
+The second equation replaces the old ternary guard on $A$ with one integer
+$a$. Although $A=2a^2-1$ allows $A=-1$ or $1$ algebraically, the frame
+norm excludes both; thus $A\ge2$ and is odd before any Pell classification.
+The retained frame argument gives
+\[
+ W\ge514,\qquad A>W^W,\qquad A-1>4W^3.
+\]
+
+The shared anchor still has ordinate $C>W$ and cap
+\begin{equation}\label{eq:cap}
+ C=W+1+\sum_i y_i^2+u^2+v^2+w(w+1).
+\end{equation}
+Replace its guarded common multiple by
+\begin{equation}\label{eq:oddJ}
+ J=2C^2(2e+1),\qquad e\in\Z.
+\end{equation}
+It is nonzero and divisible by $C^2$, irrespective of its sign. The common
+Pell norm and the old comparison norm use absolute indices and independent
+coordinate signs. Their index comparison therefore still proves
+$C=Y_W(A)$; it does not require $J>0$.
+
+\begin{lemma}[Completeness of the parity restrictions]\label{lem:parity}
+Every genuine front tuple has private witnesses satisfying
+\eqref{eq:frameW}--\eqref{eq:oddJ} and the retained anchor comparisons.
+\end{lemma}
+\begin{proof}
+Choose $A=X_W(W+1)$ and $a=X_{W/2}(W+1)$; $W$ is even, so Pell doubling
+gives $A=2a^2-1$. The recurrence at $W+1$ gives
+$Y_j(W+1)\equiv j\pmod{2W}$; hence $Y_W(W+1)/W$ is odd and supplies
+the integer $z$ in \eqref{eq:frameA}.
+Now take $C=Y_W(A)$, $\ell=2WC$, $J=Y_\ell(A)$, and $H=X_\ell(A)$.
+Equation~\eqref{eq:divisibility} and doubling give $2C^2\mid J$.
+Equation~\eqref{eq:valuation} gives
+\[
+ v_2(J)=1+v_2(W)+v_2(C)=1+2v_2(C).
+\]
+Thus $J/(2C^2)$ is positive odd and defines $e$. The abscissa $H$ is odd
+and coprime to $J$. CRT supplies the old comparison center $D$ with
+$D\equiv A\pmod H$ and $D\equiv1+4J\pmod{8J}$.
+The parent's growth bound makes the cap slack nonnegative, and its
+comparison pair at index $W$ supplies the remaining witnesses.
+\end{proof}
+
+These two compatible choices save five unrestricted integer coordinates
+and one residual. By themselves they give the separate 319-variable
+companion. Their role in the principal equation is to support the larger
+semantic sign reduction next.
+
+\section{Recovering signs from existing power equations}\label{sec:signs}
+
+There are fifteen principal pairs $(x_i,y_i)$ with proposed signed indices
+$k_i$. We retain every principal norm and power congruence, and strengthen
+one already present pooled residue to
+\begin{equation}\label{eq:pooled}
+ \sum_i\bigl((y_i-k_i)^2+(x_i-1)^2\bigr)=(A-1)q_0,
+ \qquad q_0\in\Z.
+\end{equation}
+Adding the abscissa squares introduces no coordinate. It does increase
+the collected support, which is reported rather than suppressed.
+
+\begin{lemma}[Orientation and exact signed indices]\label{lem:orientation}
+At a zero of the new source,
+$x_i=X_{|k_i|}(A)$ and $y_i=Y_{k_i}(A)$, where
+$Y_{-j}=-Y_j$.
+\end{lemma}
+\begin{proof}
+Pell classification gives
+$x_i=\sigma_iX_{j_i}(A)$ and $y_i=\epsilon_iY_{j_i}(A)$,
+with $j_i\ge0$ and signs $\sigma_i,\epsilon_i\in\{\pm1\}$.
+The cap bounds $j_i<W$, while the frame gives $|k_i|<W$.
+Modulo $A-1$, the Pell recurrences give $X_j\equiv1$ and $Y_j\equiv j$.
+Thus $A-1$ divides
+\[
+ E_0=\sum_i\bigl((\epsilon_i j_i-k_i)^2+(\sigma_i-1)^2\bigr).
+\]
+Each summand is less than $4W^2$. Hence
+$0\le E_0<60W^2<4W^3<A-1$, so $E_0=0$.
+This forces every $\sigma_i=1$ and every signed index as claimed.
+The huge actual abscissas need not be bounded: the argument bounds their
+small residues. The zero index presents no exception.
+\end{proof}
+
+\begin{lemma}[Integer outputs exclude negative exponents]\label{lem:negative}
+Let a retained power request have integer base $n\ge2$, signed index $k$,
+and integer output $m$. Under the frame and
+Lemma~\ref{lem:orientation}, it forces $k\ge0$ and $m=n^k$.
+\end{lemma}
+\begin{proof}
+The frame gives $n,|k|,|m|<W$. Put $T_n=2An-n^2-1>W^W+W$.
+For $k\ge0$, the Pell recurrence gives $m\equiv n^k\pmod{T_n}$;
+the absolute difference is smaller than $T_n$, so equality follows.
+For $k=-h<0$, use
+\[
+ \bigl(X_h-(A-n)Y_h\bigr)\bigl(X_h+(A-n)Y_h\bigr)
+ =1+T_nY_h^2.
+\]
+The two factors reduce to $n^h$ and $m$, respectively. Therefore
+$mn^h\equiv1\pmod{T_n}$. But
+\[
+ |mn^h-1|\le(W-1)^W+1<W^W<T_n.
+\]
+Consequently $mn^h=1$ as integers, impossible for $n\ge2$ and $h\ge1$.
+For an already nonnegative index the first argument also works at base one.
+\end{proof}
+
+This lemma is the main compression mechanism. A separate ternary witness
+is unnecessary when an existing integer power equation already proves the
+corresponding exponent nonnegative.
+
+\subsection{The acyclic bootstrap, including zero cases}
+
+Write the raw front as
+\[
+ t=16+h_0^2,\quad B=r+s+1,\quad FB=V+s,\quad r,s\ge0,
+\]
+and retain the endpoint
+\begin{equation}\label{eq:endpoint}
+ x-1=(1+(t+1)y)u_t.
+\end{equation}
+The nine actual CRT representatives are $a_1,\ldots,a_9$; their stored
+coordinates are $a_i-1$. Set
+\begin{equation}\label{eq:radix}
+ H_0=3+2\sum_{i=1}^9a_i,\quad R_0=2+t+x+y+F,\quad K=2R_0,
+ \quad q=(BH_0)^K,\quad q=(2v+1)^2.
+\end{equation}
+The power in \eqref{eq:radix} names a retained graph, not an operation of
+the final polynomial. The odd-square equation uses one new integer $v$
+and replaces a ternary guard on $q-B-1$.
+
+The following order avoids every dependency cycle.
+\begin{enumerate}
+\item The square gives $q\ge1$, while $t\ge16$ independently. The oriented
+graph for $(F^2+1)^t$ gives $V\ge1$, even before $F$ has a sign. The ceiling
+rows imply $F\ge1$ and $B>F\ge1$. With $y=V-1$ we obtain $y\ge F+1$.
+\item Every actual representative $a_i$ is the exponent of a retained
+request at base $q+1\ge2$. Lemma~\ref{lem:negative} gives $a_i\ge0$.
+The exact source call indices are $5,7,8,9,10,12,13,15,16$; the verifier
+checks their bases and affine exponent restorations against the literal
+power ledger. Now $H_0$ is odd and at least three.
+\item The graph for $B^K$, with $B\ge2$, gives $K\ge0$. If $K=0$, then
+$x=-2-t-y-F$. Equation~\eqref{eq:endpoint} would make
+$L=1+(t+1)y$ divide $x-1$, although
+\[
+ 0<|x-1|=3+t+y+F<L,
+\]
+because $L-(3+t+y+F)=t(y-1)-F-2\ge(t-1)F-2>0$.
+Hence $K\ge2$, since $K$ is even. Its second graph gives
+$q=(BH_0)^K\ge36$.
+\item Power call 14 has base $q$ and exponent $x+1$.
+Lemma~\ref{lem:negative} gives $x\ge-1$. If $x=-1$, the endpoint would
+make $L>2$ divide $-2$. Thus $x\ge0$. The removed output slack is also
+nonnegative, since $q>B$.
+\item The remaining constructor and elementary indices are now
+nonnegative, and all eighteen power requests acquire their intended
+meaning. Each paired remainder row has
+$r_i+s_i=L_i-1\ge0$ with $L_i$ a positive power of $q$; its retained
+guard $r_is_i\ge0$ forces both remainders nonnegative. Nonnegative-numerator division
+rows restore the remaining quotient signs.
+\end{enumerate}
+
+Only fourteen semantic guards remain: the two initial ceiling guards,
+eleven remainder products, and the shared cap. The two initial guards are
+not removed by an argument that depends on their consequences.
+
+\subsection{Why allowing a zero representative is sound}
+
+The argument proves $a_i\ge0$, whereas the parent required $a_i\ge1$.
+This is a deliberate extension, not a disguised identification of the
+stored coordinate $-1$ with a natural number. The CRT theorem uses the
+\emph{actual} argument $a_i$ in binomial coefficients and local constructor
+polynomials. Its range lemma includes $a_i=0$; coefficients of positive
+order then vanish. The local rule parameters in C222 range over natural
+numbers including zero.
+
+The choice $H_0=3+2\sum a_i$ provides the needed margin. For ordinary
+range coefficients, $0\le a_i<H_0$ suffices. For the derived label, put
+$n=\max(1,a_a,a_b,a_c,a_d)$. Then $n+1\le H_0$, including the case in
+which all four arguments are zero. The parent's fixed constructor bound
+$J_{\rm label}\le(n+1)^{4194304}$ and its factorial estimate
+$4194304(t+1)<2F<K$ remain valid. Thus every required digit coefficient
+fits below $H_0^K\le q$. The unchanged prime-power CRT and Horn-flow
+arguments yield a C222 refutation.
+
+The exact binomial and factorial recovery precedes that final decoding.
+The ceiling gives $V\le BF<B^2$, while $q\ge B^2>V$. The uniform
+coefficient bound therefore makes the retained exact digit graph give
+$B=\binom{F^2+t}{t}$. The parent's padded factorial fixed-point theorem
+then gives $F=t!$. This step uses neither positive representatives nor
+their old guards.
+
+\subsection{Completeness and the final count}
+
+Start with a finite C222 refutation. Lemma~\ref{lem:linear} constructs the
+new beta modulus and CRT code. Choose the independent representatives
+strictly positive as in the parent; permitting zero in the reverse
+direction imposes no new requirement here. Fix them before choosing
+$H_0$ and $q$. The factorial product
+\[
+ B=\prod_{i=1}^t(1+F^2/i)
+\]
+is odd: $i\mid F$ and $F$ is even. Hence $BH_0$ is odd and
+\[
+ v=\frac{(BH_0)^{R_0}-1}{2}\in\Z
+\]
+supplies the odd-square radix. Lemma~\ref{lem:parity} supplies the private
+frame and anchor. Canonical Pell pairs satisfy both congruences in
+\eqref{eq:pooled}; the quotient and all remaining guards therefore exist.
+This constructs a zero from every refutation and completes the new
+semantic part of Theorem~\ref{thm:main}.
+
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule
+Change from the 324-variable parent&Variables saved&Rows saved\\
+\midrule
+Even frame and odd anchor quotient&5&1\\
+Nine representative signs recovered from powers&27&9\\
+The sign of $x$ recovered from its power and endpoint&3&1\\
+Odd-square radix in place of a ternary guard&2&0\\
+Linear cofinal modulus&1&1\\
+\midrule
+Total&38&12\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{The natural-variable companion}\label{sec:natural}
+\input{natural_section.tex}
+
+\section{Three compact positive equations}\label{sec:compact}
+\input{compact_section.tex}
+
+\section{Two compact unrestricted-integer equations}\label{sec:signed}
+\input{signed_section.tex}
+
+\section{Reproduction, limitations, and further research}\label{sec:reproduce}
+\input{verification_section.tex}
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{proveit}
+Vladimir Reshetnikov and contributors, \emph{ProveIt}, inspected commit
+\vtt{1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+The archive's source ledger supplies exact paths and hashes.
+\bibitem{p131}
+ProveIt package 131, \emph{Shared Pell caps and coprime product equations
+for ZFC consistency}, direct and scalar components, at the inspected commit.
+\bibitem{p132}
+ProveIt package 132, \emph{Signed Pell caps and free scale carriers},
+eleven-integer main-root saturation component, at the inspected commit.
+\bibitem{p133}
+ProveIt package 133, \emph{Staged Pell certificates and a product-square
+equation for $\Con(\ZFC)$}, direct and compact components, at the inspected commit.
+\bibitem{p128}
+ProveIt package 128, \emph{One-row Pell certificates}, natural cap construction,
+at the inspected commit.
+\bibitem{mr}
+Yuri Matiyasevich and Julia Robinson, ``Reduction of an arbitrary
+Diophantine equation to one in 13 unknowns,'' \emph{Acta Arithmetica}
+27 (1975), 521--553. \url{https://doi.org/10.4064/aa-27-1-521-553}.
+\bibitem{sun}
+Zhi-Wei Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers},
+arXiv:2609.01594 (2026). \url{https://arxiv.org/abs/2609.01594}.
+This is background for the dimension frontier, not a dependency of the
+new direct quartics.
+\end{thebibliography}
+
+\clearpage\appendix
+\section{Every residual of the 286-integer polynomial}\label{app:residuals}
+The independent unknowns are $z_0,\ldots,z_{285}\in\Z$. The following
+literal table, together with \eqref{eq:main}, completely defines the
+principal polynomial. A repeated variable in a term denotes its ordinary
+power. The ordered coordinate names and compiler restoration maps are
+additional explanatory data; they are not needed to interpret this table.
+\input{integer_residuals.tex}
+
+\section{Fixed constants of the positive compact equations}\label{app:constants}
+\input{compact_constants.tex}
+\end{document}

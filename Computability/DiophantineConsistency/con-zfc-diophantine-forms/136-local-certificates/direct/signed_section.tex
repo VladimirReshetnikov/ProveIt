@@ -1,0 +1,301 @@
+\label{sec:signed306}
+
+The main direct construction starts from the literal centered polynomial
+of package 131~\cite{cap131}, in 324 unrestricted integer coordinates.  The source is
+pinned to ProveIt commit
+\texttt{1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61}; its equation, centering
+certificate, and ordinary arithmetic proof are retained in the archive.
+The new polynomial is
+\begin{equation}\label{eq:306definition}
+ P_{306}(z_0,\ldots,z_{305})=\sum_{j=0}^{205}r_j(z)^2,
+ \qquad z\in\mathbb Z^{306}.
+\end{equation}
+Every $r_j$ is an explicitly listed quadratic integer polynomial.  There
+are no implicit domain predicates: all 306 coordinates are unrestricted.
+The literal residuals and the complete collected coefficient list are
+supplied, together with their independent verifier.
+
+\begin{center}
+\begin{tabular}{lrrrrr}
+\toprule
+Equation & Variables & Rows & Degree & Terms & Height\\
+\midrule
+Pinned parent &324&208&4&5808&128446\\
+New equation &306&206&4&6259&128446\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus 18 coordinates and two rows are removed at the cost of 451 collected
+terms; both coefficient height and residual height, respectively 128446
+and 256, are preserved.  The comparison is within this direct C222
+construction.  Much smaller variable counts exist in the repository with
+different degrees and coefficient architectures.
+
+\begin{theorem}\label{thm:306-equivalence}
+Let $P_{324}$ be the pinned parent polynomial.  Ordinary mathematics
+formalizable in ZFC proves
+\[
+ (\exists z\in\mathbb Z^{306}\;P_{306}(z)=0)
+ \quad\Longleftrightarrow\quad
+ (\exists w\in\mathbb Z^{324}\;P_{324}(w)=0).
+\]
+Consequently, composing with the retained parent calibration,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl[\neg\exists z\in\mathbb Z^{306}\;P_{306}(z)=0\bigr]
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+\end{theorem}
+
+The new idea is a linear orientation term inside the existing bounded
+Pell-index congruence.  It permits nine sign graphs to be replaced by one
+strict product.  The proof must recover the signs before invoking the
+parent's complete arithmetic theorem.  We give that order explicitly.
+
+\subsection{Linear orientation in a bounded residue pool}
+
+For $A\geq2$ let $X_j(A),Y_j(A)$ be the canonical Pell sequences:
+\[
+ X_0=1,\quad Y_0=0,\qquad
+ X_{j+1}=AX_j+(A^2-1)Y_j,\quad Y_{j+1}=X_j+AY_j.
+\]
+The unchanged parent square frame and complete anchor yield, independently
+of the nine encoded-coordinate signs,
+\begin{equation}\label{eq:306frame}
+ W\geq258,\qquad A>W^W,\qquad A-1>4W^3.
+\end{equation}
+They also give 15 principal Pell norms, absolute indices $0\leq j_i<W$,
+signed proposed indices $|k_i|<W$, and absolute bounds $|n|,|m|<W$ for
+every requested base and output.  The fully indexed anchor is at $W$;
+its unchanged cap bounds every principal ordinate in absolute value.
+Its proof uses the frame, the anchor common-multiplier graph and the cap
+graph, all retained here.  No $k_i\geq0$ premise is required.
+
+Pell classification supplies signs $\sigma_i,\epsilon_i\in\{1,-1\}$ with
+\[
+ x_i=\sigma_iX_{j_i}(A),\qquad y_i=\epsilon_iY_{j_i}(A).
+\]
+At $j_i=0$ the choice of $\epsilon_i$ is immaterial.  Modulo $A-1$,
+the recurrence gives $X_j\equiv1$ and $Y_j\equiv j$.
+
+\begin{lemma}[Linear orientation pool]\label{lem:306pool}
+Assume the preceding bounds.  Let $I$ be a set of nine of the fifteen
+principal pairs.  The single row
+\begin{equation}\label{eq:306pool}
+ \sum_{i=1}^{15}(y_i-k_i)^2+\sum_{i\in I}(1-x_i)=(A-1)q_0,
+ \qquad q_0\in\mathbb Z,
+\end{equation}
+forces $\epsilon_i j_i=k_i$ for every $i$ and $\sigma_i=1$ for $i\in I$.
+\end{lemma}
+
+\begin{proof}
+Reduce \eqref{eq:306pool} modulo $A-1$.  It makes $A-1$ divide
+\[
+ E=\sum_{i=1}^{15}(\epsilon_i j_i-k_i)^2+
+     \sum_{i\in I}(1-\sigma_i).
+\]
+Every term in the last sum belongs to $\{0,2\}$.  Therefore
+\[
+ 0\leq E\leq60(W-1)^2+18<4W^3<A-1.
+\]
+For example,
+$4W^3-60(W-1)^2-18=4W^2(W-15)+120W-78>0$ for $W\geq258$.
+Hence $E=0$, and every nonnegative summand vanishes.
+\end{proof}
+
+Only the residue representative $E$ is small and nonnegative.  The actual
+left side of \eqref{eq:306pool} need not be either.  In particular the pool
+quotient must remain unrestricted.  A squared term $(x_i-1)^2$ was used
+in the parent's conservative orientation variant; the linear term
+$1-x_i$ works because its residue has the nonnegative alphabet $\{0,2\}$.
+The new application combines this cheaper orientation with removal of
+the nine encoded-coordinate sign graphs.
+
+\subsection{Signed indices and the early bootstrap}
+
+We need a power lemma that treats zero and negative proposed indices.
+Write $Y_{-j}=-Y_j$ and $X_{-j}=X_j$.
+
+\begin{lemma}[Signed-index power request]\label{lem:306request}
+Let $2\leq n<W$, $|k|<W$, $|m|<W$, and put
+$T=2An-n^2-1$.  Suppose
+\[
+ y=Y_k(A),\qquad x=\pm X_{|k|}(A),\qquad
+ x+(n-A)y=m+Tz
+\]
+for an integer $z$.  If $x=+X_{|k|}$, then $k\geq0$ and $m=n^k$.
+If $k>0$, either choice initially allowed for $x$ is forced to be positive.
+At $k=0$ and positive $x$, the output is exactly $m=1$.
+\end{lemma}
+
+\begin{proof}
+For $j\geq0$ put
+$H_j=X_j+(n-A)Y_j$ and $J_j=X_j-(n-A)Y_j$.  Direct multiplication and
+the recurrence give
+\[
+ H_jJ_j=1+TY_j^2,\qquad H_{j+1}=nH_j+TY_j,
+\]
+so $H_j\equiv n^j\pmod T$.  The frame bounds imply $T>W^W$.  For
+$1\leq j<W$ the required differences have absolute value below $W^W$;
+in particular
+$|mn^j-1|\leq(W-1)^W+1<W^W$.
+
+If $k=-j<0$ and $x=+X_j$, the request gives
+$mn^j\equiv1\pmod T$, hence $mn^j=1$ as an integer equality.  This is
+impossible since $n^j\geq2$.  If $k=j>0$ and $x=-X_j$, it similarly gives
+$mn^j=-1$, also impossible.  The remaining positive-index branch gives
+$m\equiv n^k\pmod T$, and the size bound makes it equality.  At $k=0$,
+$x=1,y=0$ gives $m=1$ directly by the same small-residue argument.
+\end{proof}
+
+The selected nine pairs are precisely the requests at base $q+1$ for
+the eight encoded CRT columns and their reciprocal-index column.  The
+following bootstrap does not use any of their removed sign graphs.
+The retained rows and retained nonnegative quantities $r,s,o$ give
+\[
+ t=16+h_0^2\geq16,\qquad B=r+s+1\geq1,\qquad q=B+o+1\geq2.
+\]
+The t-pair has its signed intended index from Lemma~\ref{lem:306pool}.
+Its genuine request at base $q$ and positive index $t$ forces its abscissa
+positive by Lemma~\ref{lem:306request}.  The same pair therefore gives
+\[
+ V_0=(F^2+1)^t,
+\]
+including the possible base-one case before the sign of $F$ is known.
+The literal ceiling rows give $FB=V_0+s>0$, so $F\geq1$.  With
+$b=F^2+1$, both $b>F$ and $b^{t-1}>F$, whence
+\begin{equation}\label{eq:306Bbound}
+ FB\geq b^t>Fb,\qquad B>F^2+1.
+\end{equation}
+The unchanged cofinal row $y=V_0(V_0-1)$ also gives $y>F$; the x-sign
+graph remains present.  Neither factorial meaning nor CRT interpretation
+has been used at this stage.
+
+Lemma~\ref{lem:306pool} orients the nine selected abscissas, and
+Lemma~\ref{lem:306request}, at base $q+1\geq3$, gives
+\[
+ k_a,k_b,k_c,k_d,k_S,k_{S'},k_u,k_{v_q},k_{\mathrm{index}}\geq0.
+\]
+Zero remains a genuine possibility at this point.  The reciprocal-index
+rows give
+\[
+ B\,v=F^2+k_{\mathrm{index}}+1
+\]
+for an unrestricted integer $v$.  If $k_{\mathrm{index}}=0$, its right
+side lies strictly between zero and $B$ by \eqref{eq:306Bbound}, an
+impossible integer multiple of $B$.  Therefore $k_{\mathrm{index}}\geq1$.
+
+\subsection{Six products and one fused positivity row}
+
+The other eight indices are nonnegative.  Introduce six unrestricted
+coordinates $P_2,\ldots,P_7$ with
+\begin{align*}
+ P_2&=k_a k_b,&P_3&=P_2 k_c,&P_4&=P_3 k_d,\\
+ P_5&=P_4 k_S,&P_6&=P_5 k_{S'},&P_7&=P_6 k_u.
+\end{align*}
+Finally introduce three unrestricted integers $a,b,c$ and impose
+\begin{equation}\label{eq:306product}
+ P_7 k_{v_q}-1=a^2+b^2+c(c+1).
+\end{equation}
+The right side is nonnegative at every integer triple.  The product of
+the eight nonnegative indices is thus at least one, so every index is
+at least one.  This restores all nine old encoded-coordinate signs.
+Every displayed row is quadratic; a separate $P_8$ coordinate is avoided.
+
+Conversely every nonnegative integer $n$ is
+$a^2+b^2+c(c+1)$.  Indeed, $4n+1$ is not of the forbidden form
+$4^u(8v+7)$, so Legendre's three-square theorem represents it by three
+squares.  Exactly one is odd; writing the three terms as
+$(2a)^2,(2b)^2,(2c+1)^2$ gives the result.  Thus every old zero, whose
+eight indices are positive, has witnesses for \eqref{eq:306product}.
+
+The eight-factor idea has a predecessor in the repository's
+\texttt{signed-pell-cap-refined-scalar-product} proof.  That proof obtains
+nonnegative indices from a different residue-one chart.  Here the original
+raw remainder chart is retained; the linear orientation pool supplies the
+required signs directly.  The change is this complete composition and its
+literal smaller polynomial, not invention of positive-product reasoning.
+
+\subsection{Literal chart and exact witness transformations}
+
+The centered parent has the following requested-index chart.  The third
+column lists its nine selected abscissa coordinates; all have zero
+centering shift.
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Index & Expression & Abscissa coordinate\\
+\midrule
+$k_a$ &$z_{10}-1$&174\\
+$k_b$ &$z_{11}$&180\\
+$k_c$ &$z_{12}$&184\\
+$k_d$ &$z_{13}$&188\\
+$k_S$ &$z_{14}$&192\\
+$k_{S'}$ &$z_{15}$&200\\
+$k_u$ &$z_{16}$&204\\
+$k_{v_q}$ &$z_{17}$&212\\
+$k_{\mathrm{index}}$ &$z_{18}$&216\\
+\bottomrule
+\end{tabular}
+\end{center}
+The old nonnegative quantities are $k_i-1$.  Delete precisely parent rows
+184--192, the nine scalar graphs labeled \texttt{domain\_guard.3} through
+\texttt{domain\_guard.11}, and their 27 private coordinates 252--278.
+They occur nowhere else.  Modify parent row 180, the pooled-index row, by
+adding precisely
+\[
+ 9-z_{174}-z_{180}-z_{184}-z_{188}-z_{192}
+   -z_{200}-z_{204}-z_{212}-z_{216}.
+\]
+The private pool quotient is coordinate 242 and occurs only in this row.
+The actual Pell center is $A=z_{151}+1$, so its divisor is $A-1=z_{151}$.
+
+For a new zero, the preceding argument proves the nine missing signs.
+Let $T_0=\sum_{i\in I}(1-X_i)$.  Each selected abscissa is canonical,
+so $T_0/(A-1)$ is an integer.  Set
+\[
+ q_{\mathrm{old}}=q_{\mathrm{new}}-T_0/(A-1),
+\]
+and choose fresh Legendre triples for all nine deleted scalar graphs.
+Every other retained parent coordinate stays fixed.  The private quotient
+change restores the old pooled row and affects no other row.  We now have
+a literal zero of the entire parent polynomial, so its complete C222
+calibration may be invoked.
+
+For the reverse direction, a parent zero has positive intended indices
+and canonical abscissas by its ordinary power theorem.  Set
+\[
+ q_{\mathrm{new}}=q_{\mathrm{old}}+T_0/(A-1),
+\]
+forget the 27 old guard witnesses, calculate the six product coordinates,
+and supply a triple for \eqref{eq:306product}.  All new rows hold.  These
+maps preserve the native front and every retained parent coordinate except
+the private pool quotient.  The Legendre witnesses are not unique, so
+there is no claim of a bijection between individual full zero tuples.
+This proves Theorem~\ref{thm:306-equivalence}.
+
+The parent projection and centering are also part of the supplied
+certificate boundary.  The nine deleted guard rows survived projection;
+no restoration polynomial depends on their removed auxiliary coordinates
+or the private pool quotient.  The independently checked occurrence sets
+therefore justify using the parent frame and anchor before restoring those
+graphs, without a circular appeal to the entire parent theorem.
+
+\subsection{Finite certification and its scope}
+
+There are $324-27+6+3=306$ coordinates and $208-9+6+1=206$ residuals.
+Their sum of squares has a nonzero degree-four coefficient, so the degree
+is exactly four.  The independent verifier imports no producer code.  It
+checks every retained row, the complete changed pool row, every removed
+witness occurrence set, the quotient's privacy, the affine chart, the
+six products, the fused positivity row, all collected coefficients and
+the exact metrics.  It also rejects deliberate changes to an orientation
+term, a factor shift, quotient privacy, and an expanded coefficient.
+
+These finite checks certify literal algebra and artifact bindings.  They
+do not establish unbounded number theory by sampling.  Pell classification,
+the retained full anchor, Legendre's theorem and the ordinary parent
+C222/ZF/ZFC calibration remain the identified mathematical dependencies.
+No new end-to-end proof-assistant certificate or encoded object-ZFC proof
+is claimed.

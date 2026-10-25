@@ -1,0 +1,369 @@
+\section{A direct quartic in 314 unrestricted integers}
+\label{sec:direct314}
+
+This component uses the numerical C222 proof calculus. It has no K215
+simulation and no specialization of a universal polynomial. Its complete
+ordinary polynomial is
+\begin{equation}\label{eq:direct314}
+ P_{314}(z_0,\ldots,z_{313})=\sum_{j=0}^{203}r_j(z)^2=0,
+ \qquad z\in\Z^{314}.
+\end{equation}
+Every quadratic residual is printed in the appendix and supplied literally
+in \code{direct/equation.json}; every collected coefficient is in
+\code{direct/expanded_polynomial.json}. The new equation has exact degree
+four, 5,721 monomials and coefficient height 128,446.
+
+\begin{theorem}\label{thm:direct314}
+With the retained ordinary C222-to-ZFC refutation calibration,
+\[
+ \ZFC\vdash
+ \bigl(\neg\exists z\in\Z^{314}\;P_{314}(z)=0\bigr)
+ \ \longleftrightarrow\ \Con(\ZFC).
+\]
+\end{theorem}
+
+Here ``retained calibration'' identifies previously proved mathematical
+dependencies; it is not an added consistency hypothesis. The present
+package does not claim a new end-to-end proof-assistant derivation.
+The exact parent comparison, independently recomputed from the literal
+equations, is
+\begin{center}
+\begin{tabular}{lrrrrr}
+\toprule
+Construction & Variables & Rows & Degree & Terms & Height\\
+\midrule
+Package 131 parent &324&208&4&5,808&128,446\\
+This construction &314&204&4&5,721&128,446\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus the reduction saves ten coordinates, four quadratic rows and 87
+collected monomials, without increasing degree or coefficient height.
+It improves this direct-calculus comparison; other coefficient
+architectures already use fewer variables.
+
+\subsection{The arithmetic interface and the semantic anchor}
+
+The pinned parent is package 131 at commit
+\code{1c5367452a0bd4dd7e9e4bceb1508b62dbd2ff61}. Its accepted factored
+quadratic source is retained as \code{direct/baseline/factored.json}, and
+its complete arithmetic argument as \code{direct/proofs/parent131.md}.
+The front has 18 power requests sharing 15 independent Pell pairs.
+One requested exponent is the derived syntax-label polynomial
+\[
+ h=J(A_a,A_b,A_c,A_d).
+\]
+The corresponding pair is literally \code{index15.X,index15.Y}, and
+its exponent is \code{1+add.380}. No new unknown is introduced by
+writing $h$.
+
+For the numerical implication constructor
+\[
+ I(a,b)=2(a+b)(a+b+1)+4b,
+\]
+$J$ is the fixed sum of the nine axiom conclusions, $a,b,I(a,b)$,
+the universal quantification constructor and 1. Its original natural circuit has
+nonnegative coefficients. The retained encoded-column guards give
+$A_a,A_b,A_c,A_d\ge1$, so
+\begin{equation}\label{eq:Janchor}
+ h\ge16,\qquad h\ge I(A_a,A_b)\ge2A_a^2.
+\end{equation}
+These are raw circuit consequences, prior to interpreting any proof.
+
+The parent has an additional fully indexed Pell cap at its frame index
+$W$. We reuse the pair $(U,C)$ already requested at $h$ as that cap.
+Its principal norm is retained; the old separate cap norm is deleted.
+The index-error pool continues to include all fifteen principal pairs,
+including the anchor. The new frame and cap conditions are
+\begin{align}
+ W&=2\left(2+\sum_{a\in\mathcal A}a^2\right),\label{eq:evenframe314}\\
+ C^2-W^2-1-\sum_{i\ne *}y_i^2&\ge0.\label{eq:squarecap314}
+\end{align}
+Here $\mathcal A$ is precisely the retained list of all actual base,
+exponent and output atoms, including $h$, with their complete affine
+restorations. The asterisk marks the anchor. The second condition is
+one quadratic row using
+\[
+ \mathcal N(a,b,c)=a^2+b^2+c(c+1).
+\]
+This form is nonnegative on $\Z^3$ and represents every natural integer:
+apply the three-square theorem to $4n+1$, whose three square residues
+force one odd and two even coordinates.
+
+All other front signs and arithmetic requests are retained. We remove
+the old sign guard on the scale $A$ and the old sign guard on the
+auxiliary multiplier, with their three private witnesses each. The
+ordinary sign argument is given below, rather than borrowing those
+deleted hypotheses.
+
+\subsection{An odd, large scale with either sign}
+
+Write $X_n(b),Y_n(b)$ for the integer Pell polynomials, defined by
+$X_0=1,Y_0=0$ and
+\[
+ X_{n+1}=bX_n+(b^2-1)Y_n,
+ \qquad Y_{n+1}=X_n+bY_n.
+\]
+For negative bases they satisfy
+\[
+ X_n(-b)=(-1)^nX_n(b),\qquad
+ Y_n(-b)=(-1)^{n-1}Y_n(b)\quad(n\ge1).
+\]
+Negative indices use $X_{-n}=X_n$ and $Y_{-n}=-Y_n$.
+
+The original odd-ordinate frame norm remains
+\begin{equation}\label{eq:framenorm314}
+ A^2-W^3(W+2)(2z+1)^2=1.
+\end{equation}
+Equation~\eqref{eq:evenframe314} makes $W$ even and $W\ge516$, hence
+$A$ is odd. Put $a=|A|$. Classification at center $W+1$ shows that
+$(a,|W(2z+1)|)$ has a positive Pell index $n$. As
+$Y_n(W+1)\equiv n\pmod W$, this index is a positive multiple of $W$.
+Consequently
+\begin{equation}\label{eq:scale314}
+ a\ge X_W(W+1)>W^W,
+ \qquad |A-1|\ge a-1>4W^3.
+\end{equation}
+Every semantic atom has absolute value below $W$. In particular
+$|k_i|<W$ for every requested index and $16\le h<W$.
+
+\subsection{A deterministic comparison center}
+
+The crucial new local construction replaces a CRT choice by the
+polynomial
+\begin{equation}\label{eq:detcenter314}
+ \boxed{D=A+(1-A)H^2.}
+\end{equation}
+The norms and auxiliary multiplier are
+\begin{align}
+ U^2-(A^2-1)C^2&=1,\label{eq:anchornorm314}\\
+ H^2-(A^2-1)J_c^2&=1,\label{eq:commonnorm314}\\
+ J_c&=C^2(2e+1),\qquad e\in\Z.\label{eq:oddaux314}
+\end{align}
+The cap gives $|C|>W$, so $C,J_c$ are nonzero. From the common norm,
+\begin{equation}\label{eq:centeridentity314}
+ D=1-(A-1)(A^2-1)J_c^2.
+\end{equation}
+Since $A$ is odd and $C^2\mid J_c$, equations
+\eqref{eq:detcenter314}--\eqref{eq:centeridentity314} imply
+\begin{equation}\label{eq:centerresidues314}
+ D\equiv A\pmod H,\qquad D\equiv1\pmod{4C},\qquad |D|>1.
+\end{equation}
+For $A\ge3$, the second expression is less than $-1$; for $A\le-3$
+it exceeds 1. Thus neither a sign condition on $D$ nor an adjustable
+comparison-center parameter is needed.
+
+Retain the comparison relations
+\begin{equation}\label{eq:comparison314}
+ S^2-(D^2-1)Q^2=1,
+ \qquad S=U+Hg,
+ \qquad Q=h+4Cq.
+\end{equation}
+We now establish the exact absolute anchor index.
+
+\begin{lemma}\label{lem:anchor314}
+Under the displayed conditions, $|C|=Y_h(|A|)$.
+\end{lemma}
+\begin{proof}
+Classify the first two norms at $a=|A|$:
+\[
+ |U|=X_i(a),\quad |C|=Y_i(a),\quad
+ |H|=X_l(a),\quad |J_c|=Y_l(a),
+\]
+with positive indices $i,l$. The divisibility $C^2\mid J_c$ gives
+$i<l$ and $|C|\mid l$. The latter is the usual squared-ordinate lemma:
+first $Y_i\mid Y_l$ implies $i\mid l$ by the addition law. Write
+$l=ik$ and expand the Pell unit power modulo $Y_i^2$ to obtain
+\[
+ Y_l/Y_i\equiv kX_i^{k-1}\pmod{Y_i}.
+\]
+The norm gives $\gcd(X_i,Y_i)=1$, so $Y_i\mid k$ and hence $Y_i\mid l$.
+
+Classify the comparison pair at $|D|$. Polynomial dependence on the
+base, $D\equiv A\pmod H$, and $S\equiv U\pmod H$, with the independent
+coordinate signs absorbed, imply that its index $j$ satisfies
+$j\equiv\pm i\pmod{2l}$. This is the parent's abscissa-residue lemma:
+reduce the unit exponent modulo $2l$, reflect about $l$, and use strict
+growth to distinguish the remaining absolute traces. Signed bases
+contribute only further allowed signs.
+
+Because $D\equiv1\pmod{4C}$, one has $Y_j(D)\equiv j\pmod{4C}$.
+The last comparison congruence gives $j\equiv\pm h\pmod{4C}$.
+As $|C|\mid l$, these imply $i\equiv\pm h\pmod{2|C|}$. But
+$1\le i\le|C|$ and $1\le h<W<|C|$, so $i=h$.
+\end{proof}
+
+The two quadratic rows
+\[
+ T-H^2=0,\qquad D-A-(1-A)T=0
+\]
+realize the deterministic center. They replace the old presentation
+$D=1+4J_c(2d+1)$, $D=A+Hf$. Actual savings are measured after full
+projection; a local variable subtraction alone would not establish them.
+
+\subsection{Signed index recovery without a sign guard on the scale}
+
+Each principal norm gives
+$y_i=\epsilon_iY_{j_i}(A)$ and $x_i=\pm X_{j_i}(A)$ for some
+$j_i\ge0$. For non-anchor pairs the square cap implies
+$|y_i|<|C|$, hence $j_i<h$; for the anchor $j_i=h$. All are below $W$.
+The unchanged pooled row is
+\begin{equation}\label{eq:pool314}
+ \sum_{i=1}^{15}(y_i-k_i)^2=(A-1)q_0,
+ \qquad q_0\in\Z.
+\end{equation}
+The polynomial recurrence gives $Y_j(A)\equiv j\pmod{A-1}$ for
+every signed $A$. Thus $|A-1|$ divides
+\[
+ E=\sum_{i=1}^{15}(\epsilon_i j_i-k_i)^2.
+\]
+This finite index error satisfies
+$0\le E<4\cdot15W^2<4W^3<|A-1|$. Hence $E=0$, and
+\begin{equation}\label{eq:canonical314}
+ y_i=Y_{k_i}(A),\qquad x_i=\pm X_{k_i}(A)
+\end{equation}
+for all requested indices, including zero or negative ones before the
+front signs have been decoded. In particular $C=Y_h(A)$ with the correct
+signed-base convention. We bound $E$, not the enormous ordinate-error
+sum in~\eqref{eq:pool314}.
+
+This signed-base argument credits the repository's earlier unoriented-cap
+work, retained as \code{direct/proofs/signed_scale.md}. The present
+proof rebinds it to the new complete semantic source.
+
+\subsection{Power semantics and the inherited arithmetic endpoint}
+
+For $k>0$, $2\le n<W$ and $|m|<W$, put $T_n=2An-n^2-1$ and
+\[
+ L_k=X_k(A)+(n-A)Y_k(A),\qquad
+ R_k=X_k(A)-(n-A)Y_k(A).
+\]
+The identities
+\[
+ L_kR_k=1+T_nY_k(A)^2,\qquad
+ L_{k+1}=nL_k+T_nY_k(A)
+\]
+hold for either sign of $A$, so $L_k\equiv n^k\pmod{T_n}$. The
+frame gives $|T_n|>W^W$, larger than both $|m-n^k|$ and $|mn^k+1|$.
+The genuine request therefore gives $m=n^k$ on the canonical abscissa
+branch. The opposite branch would give $mn^k=-1$, impossible in integers.
+Canonical orientation here need not mean a positive coordinate.
+
+The initial retained rows give
+$B=r+s+1\ge1$, $q=B+o+1\ge2$, $x\ge0$ and
+$t=16+h_0^2\ge16$. The $q^t$ request first selects the canonical
+$t$-pair. Its second request gives $V_0=(F^2+1)^t$, including the
+possible base-one case. The ceiling $FB=V_0+s>0$ yields $F\ge1$,
+then $B>F$ and $q\ge3$. The cofinal equation
+$y=V_0(V_0-1)$ yields $y\ge F+1$. Retained encoded-column guards
+then make every requested index positive, including
+$K=2(2+t+x+y+F)$. The $B^K$ and $(BH_0)^K$ requests recover
+\[
+ N=B^K,
+ \qquad q=(BH_0)^K,
+ \qquad H_0=1+\sum \text{the nine positive representatives}.
+\]
+All remaining pairs support requests at $q$ or $q+1$, and the polynomial
+addition law supplies the derived $t+1$ pair. Thus all 18 power
+interfaces are genuine. Each retained interval-product guard, together
+with $r_i+s_i=L_i-1\ge0$, then restores both remainder signs.
+
+At this point the parent's ordinary arithmetic theorem applies to the
+unchanged front. Its exact proof is retained, with the following chain
+made explicit. The ceiling gives $V_0\le BF<B^2\le q$, so the factorial
+digit is exact: $B=\binom{F^2+t}{t}$. The parent's fixed-point theorem
+at $t\ge16$ yields $F=t!$. The same $B$ equals the product of the
+pairwise coprime integers $d_i=1+F^2/i$, $1\le i\le t$. Amplified
+prime-power ranges at $N=B^K$, with the self-sized radix $NH_0^K$,
+recover every bounded local rule and derived-label constraint. The
+Horn-flow multiplicity argument then gives a C222 refutation, even for
+a supplied multiset containing cycles. The named logical interfaces
+\code{KEndpoint.c222_iff_zf_refutation} and
+\code{ConstructibleChoice.zf_refutation_iff_zfc_refutation}
+give a finite ZFC refutation. The older full formal development is
+identified rather than recompiled in this release.
+
+\subsection{Complete witness construction}
+
+Conversely, begin with a finite C222 refutation. Use the parent's
+cofinal horizon $t=16+h_0^2$, truth padding, factorial, beta code and
+front construction. Fix $R_0,K,B,N$ and choose the nine positive CRT
+representatives modulo $d_i^{2K}$. Their common period is $N^2$.
+Increase only $A_a$ by a sufficiently large multiple of $N^2$ so that
+\begin{equation}\label{eq:dominate314}
+ h\ge2\max_{i\ne *}k_i+1.
+\end{equation}
+This is possible by~\eqref{eq:Janchor}: the other varying target is
+only $A_a$ itself, whereas $h\ge2A_a^2$. Every local polynomial
+congruence is preserved at the original stronger precision. The parent
+has no aggregate upper bound on the representatives.
+
+Only after this lift compute $H_0$, $q=(BH_0)^K$, all power outputs,
+digits and finally the doubled frame $W$. The uniform estimate
+$J\le H_0^{2^{22}}$ and $2^{22}(t+1)<K$ preserve all digit bounds;
+they do not require the representatives to lie below $N^2$.
+This ordering avoids circular witness choices.
+
+Choose $A=X_W(W+1)>0$, which is odd because $W$ is even.
+The recurrence gives $Y_W(W+1)\equiv W\pmod{2W}$, so
+\[
+ z=\frac{Y_W(W+1)/W-1}{2}\in\Z
+\]
+satisfies the odd frame. Choose all principal pairs canonically, with
+$U=X_h(A),C=Y_h(A)$. If $k_*$ is the largest other requested index,
+Pell doubling and growth give
+\[
+ Y_{2k_*+1}(A)>(4A-2)Y_{k_*}(A)^2.
+\]
+Together with~\eqref{eq:dominate314} and $A>W^W$, this implies
+$C>W+\sum_{i\ne *}Y_{k_i}(A)^2$. The square-cap slack is therefore
+nonnegative and has a ternary representation. The pooled quotient
+exists because $Y_{k_i}(A)\equiv k_i\pmod{A-1}$.
+
+For the auxiliary pair choose $l=hC$ and
+\[
+ H=X_l(A),\qquad J_c=Y_l(A)=C Y_C(U).
+\]
+The unit-power expansion gives an integer $T$ such that
+\[
+ Y_C(U)=CU^{C-1}+(U^2-1)T,
+ \qquad
+ \frac{J_c}{C^2}=U^{C-1}+(A^2-1)CT.
+\]
+The quotient is a positive odd integer, since $A,U$ are odd. Thus
+$e=(J_c/C^2-1)/2$ supplies~\eqref{eq:oddaux314} for every semantic
+index $h$. The even frame extends package 132's even-index odd-quotient
+construction to this arbitrary anchor index.
+
+Define $D$ by~\eqref{eq:detcenter314} and take
+$S=X_h(D),Q=Y_h(D)$. These signed integers satisfy the comparison
+norm, and polynomial base transfer through~\eqref{eq:centerresidues314}
+gives both required congruences. Their unrestricted quotient witnesses
+therefore exist. Fill the unchanged arithmetic gates, front guards and
+power quotients. This constructs a zero of the complete new source.
+
+The two existential directions prove the new arithmetic theorem. They
+may replace old private Pell witnesses; no pointwise bijection fixing
+those witnesses is asserted.
+
+\subsection{Exact compilation and checked scope}
+
+The offline rebuild starts at the pinned, literal, already factored parent
+source. No new Horn factorization is performed. The source certificate
+lists all twelve modified or removed rows and both appended center rows.
+An independently written checker reconstructs the whole changed source,
+including every frame atom and all fifteen pool summands.
+
+Integral monic projection then restores all 216 eliminated coordinates
+by exact integer polynomials, checks all 94 genuinely absent free
+coordinates, and verifies the complete retained maps. The final 62
+coordinate translations are integral bijections, substituted into every
+row. Every coefficient of the sum of 204 squares is independently
+collected. Both the final and parent metrics are computed from literal
+equations. Three altered-artifact controls are rejected.
+
+These checks import no producer, optimizer or translation helper. The
+separate rebuild regenerates nine mathematical files byte for byte in a
+temporary directory. They establish finite algebraic claims; the
+unbounded Pell, representation, arithmetic and syntactic claims are
+the ordinary proofs above and in the retained dependencies.
