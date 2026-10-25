@@ -3101,3 +3101,24 @@ the full source, conditional proof, captures and provenance have two FULL
 ordinary reviews. This finite certificate supplies no new numeric tuple,
 specialized source/degree/page receipt or measured size saving. Those are
 the next complete checks. The55-bit page remains maintained, and Lean paused.
+
+## The squared quotient does not by itself justify a degree137 strong norm
+
+The [complete local obstruction](research/linear-strong-squared-modulus-obstruction/README.md)
+extends the H10 c-linear strong-norm target construction to the current
+`V=f^2*(c*T-R)-c` quotient. Its new period
+`(A+t)^(4*m*f)=1 mod f^2` proves both congruences needed for a positive
+integral T. The symbolic A28,p7,R11,m28 family retains the local growth
+and target-window margins, but its main index is7 rather than11, and c
+divides neither the strong index nor i. Both FULL ordinary reviews and
+[separate scoped acceptance](reviews/linear-strong-squared-modulus-obstruction-ordinary-acceptance.json)
+pass. No Pell evaluator or candidate program was run.
+
+Replacing `S=i*Delta*c^2` by `i*Delta*c` has a hand-derived66-operation,
+degree137 schedule and inherits the parent's completeness embedding.
+The squared quotient alone does not supply the lost soundness lemma.
+The local witness does not impose actual q,X,Y, common A/c/trace, the first
+norm, packed R, transport or native calibration; it is not a full false
+zero. Those additional simultaneous constraints could still prove this
+chart sound. Its consistency equivalence remains open, so no new degree
+frontier or maintained-page change is claimed.
