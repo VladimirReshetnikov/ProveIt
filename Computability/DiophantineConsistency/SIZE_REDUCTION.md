@@ -2426,3 +2426,20 @@ projection. They do not replace the accepted327-variable quartic or
 predict optimized dimensions. The ordinary Hstar/remainder/weighted
 source maps and exact calibration remain explicit. The maintained page
 and Lean remain unchanged.
+
+## Reconsidering the complete fifteen-positive66/157 form
+
+The [bounded assessment](research/fifteen-positive-page-feasibility/README.md)
+and [root review](reviews/fifteen-positive-page-feasibility-root.md) identify
+an existing materialized66-operation/degree157 equation with fifteen
+positive inputs. Its exact original four-port tuple already has a complete
+printed722-character recipe. The current shorter indexed recipe can also
+compose through its retained normalized-positive source and canonical
+R=3 modulo4 family, with a fresh whole-tuple binding and page audit.
+
+Compared with the maintained85/328 page, this saves nineteen operations
+and lowers degree by171 while adding five unknowns. A standalone held
+page is worth preparing alongside the ten-variable choice. New indexed
+specialization, actual-TeX checks, page fit and visual acceptance remain
+unperformed; this assessment promotes no page or new endpoint. Lean stays
+paused.
