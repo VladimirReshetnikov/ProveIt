@@ -1,4 +1,4 @@
-# Ten positive unknowns in 89 operations: coprime fusion with the gap majorant
+# Ten positive unknowns in 89 operations: coprime fusion with the gap majorant (independent derivation)
 
 Six complete equations N = 0 in ten strictly positive integers, each with an
 ordinary proof (PROOF.md) that it has no solution if and only if the
@@ -22,6 +22,27 @@ research session found the same polynomial independently and concurrently
 16:29). The three direct-coordinate circuits are each one row shorter than
 the research session's evaluators of the same or the same-profile
 polynomials.
+
+## Priority, as established at intake
+
+These six equations were built in this repository on 24 October 2026 between
+16:00 and 16:45 (commit 18a04bee9e). Earlier work already contains them:
+
+- wave-13 package **121** (`con-zfc-diophantine-forms/121-paired-guards-centered`,
+  built 15:58, delivered at 16:35) has the **same polynomials** as
+  `gap_fusion_scaled` (89/288), `gap_fusion_scaled_sharp_centre` (92/278),
+  `gap_fusion_direct` (94/262) and `gap_fusion_direct_sharp_centre` (97/254),
+  on the same original tuple and at the same operation counts;
+- wave-13 package **119** has all six profiles on the BFS tuple, identical
+  to the research session's polynomials;
+- the research session's `zero89`, reused-b and direct-carrier packets have
+  the same or same-profile polynomials (see below).
+
+Only the two lower-centre circuits (91/283 and 96/258, centre (A−1)·D·E) are
+polynomials not found elsewhere, and they match existing profiles exactly.
+This packet therefore adds **no new frontier point**. It is kept as an
+independent derivation with its own proof (PROOF.md) and checks, which
+confirm those points. It is not a priority claim.
 
 ## How they are made
 
