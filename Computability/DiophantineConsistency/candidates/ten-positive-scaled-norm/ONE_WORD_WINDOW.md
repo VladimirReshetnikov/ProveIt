@@ -286,3 +286,24 @@ size or degree bound is established by the proposed window changes.
 - Tile data: `44-b4-sparse/native/source/coefficients__wang943_tiles.json`
   and the K215 machine `BusyBeaver/Research/ZFC/candidate-k215/k215.tm`.
 - The kernel to attach: `candidates/ten-positive-zero-offset/`.
+
+
+## 5. Fixed-gap kernel restriction and a different local gap
+
+The [reviewed affine-gap note](../../research/one-word-window-affine-gap/PROPOSAL.md)
+proves that transport solvability with alpha=A(J), for a fixed integral
+polynomial A, forces gcd(K0+B^h+1,q-1) to divide (B-1)(1-A(0)).
+For alpha=D J-1 and even B, the kernel therefore divides B-1 and is
+coprime to J and N. Its compatible word differences are numerical tJ;
+addition can carry, so no cellwise independent toggle follows. This bounds
+one specified controller family at fixed dimensions, without ruling out
+all one-word encodings.
+
+A different gap alpha=(D+2)J+1 passes both exact retained local masks with
+strictly positive C,F and avoids that constant-term kernel bound. A separate
+arithmetic construction has growing transport kernels. Their simultaneous
+intersection with valid computations and a sufficient rank controller is
+unproved, as is compatibility with the old cofinal padding schedule. Neither
+separate existence supplies a nine-positive source or changes the accepted
+equations. See the [root review](../../reviews/one-word-window-affine-gap-root-peer.md)
+and [independent review](../../reviews/one-word-window-affine-gap-peer.md).

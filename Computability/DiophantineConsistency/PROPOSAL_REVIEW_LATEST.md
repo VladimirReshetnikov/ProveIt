@@ -2051,3 +2051,15 @@ Those are fixed-layout calculations; the complete successor equation is
 still pending materialization and independent checks. No optimizer was run
 and no survival or global-minimum claim is made. The accepted359 and433
 alternatives, canonical PDF/TeX and paused Lean work remain preserved.
+
+
+## Affine window-gap lemmas reviewed
+
+The [ordinary affine-gap note](research/one-word-window-affine-gap/PROPOSAL.md)
+now isolates a bounded transport kernel for gaps whose fixed polynomial
+has constant term different from1. It also constructs a different
+constant-term-one gap satisfying both local masks, and a separate
+large-kernel arithmetic family. Root and independent review accept these
+lemmas and their carry-aware limits. Their simultaneous compiler and
+controller intersection remains open; no nine-positive equation or
+numerical improvement is claimed. Canonical PDF/TeX remain unchanged.
