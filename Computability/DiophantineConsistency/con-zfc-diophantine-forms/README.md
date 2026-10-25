@@ -41,14 +41,16 @@ frontier, over the packages of this collection, is now:**
 - **nine positive unknowns** in 420 operations at degree 1,472,168 (101), or
   at degree 997,810 in 1,057 operations (101);
 - **ten positive unknowns** in 89 operations at degree 288, or at degree 254
-  in 97 (119, 121; six Pareto points between);
+  in 97 (119, 121; six Pareto points in all);
 - **ten unrestricted integers** at degree 1,245,324 in 467 operations and at
   degree 1,080,888 in 507 (106), via Sun's reduction;
 - **eleven unrestricted integers without Sun's reduction** in 111
   operations at degree 966 (123), or at degree 416 in 125 (125); twelve at
   degree 500 in 139 (121), or in 123 operations at degree 1,084 (113);
   thirteen at degree 274 in 129 (116); fourteen at degree 108 in 119 (116);
-  fifteen at degree 48 in 108 (121);
+  fifteen at degree 48 in 108 (121) (each count ranked on its own; across
+  counts, 125's 11ℤ 488 / 118 and 123's 966 / 111 dominate the 12ℤ and 13ℤ
+  points they undercut, and 121's 15ℤ 48 / 108 every 16ℤ and 17ℤ point);
   sixteen at 98 in 138 (106) and 112 in 119 (93); seventeen at 88 in 110 (88);
 - **direct quartics in the numerical proof calculus C222**, with no
   coefficient tuple and without K215, Jones or Sun: 261 naturals (124) and
@@ -78,14 +80,17 @@ from it. [candidates/ten-positive-gap-fusion](../candidates/ten-positive-gap-fus
 (24 October) combines wave 12's coprime fusion with 118's auxiliary-index
 gap. Its six equations (89 / 288 to 97 / 254) turned out to be preceded by
 wave-13 packages 119 and 121 (four identical polynomials in 121); it is kept
-as an independent derivation with its own proof, adding no frontier point. The research session's own candidates (its current page is
-113's 92 / 283; its reused-b profiles reach 91 / 283) are compared in
-[PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
+as an independent derivation with its own proof, adding no frontier point.
+The research session's own candidates are compared in
+[PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md). Its canonical page
+is 113's universal 92 / 283 circuit on a third tuple; by 17:12 on 24 October
+it also had 89 / 288 (`90d8b714f9`, page `0ca3812ae9`) and a ten-positive
+**86 / 466** (`75f850496c`), fewer operations than any package.
 
-The report holds ninety-six research packages; all but 60, 66, 68, 97, 102, 106
-and 110 state AI assistance, and of the later ones all but 121 and 125
-(111 only in its PDF author field, 116 only in one component file; 74 only for its reviews; 77, 78 and 101 only in
-their TeX author lines; 88 only in copied notices).
+The report holds ninety-six research packages. All but 60, 66, 68, 97, 102,
+106, 110, 121 and 125 state AI assistance. Some do so only in part: 74 for
+its reviews; 77, 78 and 101 in their TeX author lines; 88 in copied notices;
+111 in its PDF author field; 116 in one component file.
 
 - **Wave 5**, sources 31–37: batch 221 (arrival `b7f8b75b5b`, placed in
   `952c1fab49`), pinned to `8c6eec9d19`.
@@ -111,17 +116,20 @@ their TeX author lines; 88 only in copied notices).
   `e13c748234`, placed in `240bf9e422` and `c16a89ad94`), pinned to
   `2605669a53`, `cf4a5218a5`, `9a33342a03`, `a88aefd7dd`, `08200eb10f`,
   `04a1d79222`, `7e533c3381` and `ec80841c07` among others.
+- **Wave 12**, sources 111–118: batch 228 (arrival `45b399ec51`, placed in
+  `55fe52f28c`), all pinned to `84e16e4309`.
+- **Wave 13**, sources 119–126: batch 229 (arrival `5f3379063d`, placed in
+  `9f7ff01558`), all pinned to the wave-12 arrival `45b399ec51`.
+
 **Earlier waves are kept.** By Vladimir's direction, waves 6–13 are each
 placed beside the earlier waves rather than replacing them. Wave-7 packages
 cite wave-5 and wave-6 packages by number; no wave-7 package cites another.
 In wave 8, only 59 cites a sibling: it reviews and builds on 56 and 57,
 which reached it during packaging. No wave-9 or wave-10 package cites a
-sibling of its own wave.
+sibling of its own wave. Wave 11 spans seventeen arrivals, and later
+packages of it cite earlier ones; no wave-12 or wave-13 package cites a
+sibling.
 
-- **Wave 12**, sources 111–118: batch 228 (arrival `45b399ec51`, placed in
-  `55fe52f28c`), all pinned to `84e16e4309`.
-- **Wave 13**, sources 119–126: batch 229 (arrival `5f3379063d`, placed in
-  `9f7ff01558`); 119–122 pin `45b399ec51`.
 ## Any encoding is welcome
 
 By Vladimir's direction (23 October 2026), a proposal **need not** be built
@@ -153,8 +161,8 @@ Lean development of Jones's reduction. The compiler and the Diophantine
 bridge are not formalized.
 
 Other routes in the repository:
-- **Finished by packages.** Wave 11's direct C222 quartics (87's 27,916
-  integers down to 108's 394 naturals and 663 integers) are complete
+- **Finished by packages.** The direct C222 quartics of waves 11–13 (87's
+  27,916 integers down to 124's 261 naturals and 125's 442 integers) are complete
   explicit polynomials on a route without K215 or Jones; their calibration
   is two Lean interfaces plus an ordinary proof of "polynomial zero iff
   C222 derivation" (wave-11 section). Wave 9's 60, 66 and 67 and wave 10's
@@ -358,12 +366,12 @@ every operation count and measured the degrees of the headline circuits
 (two each for waves 12 and 13, five for wave 11, four for each earlier wave); all checked
 figures agree with the claims. The mathematics was not re-derived, and
 every dominance statement assumes the competing proofs are correct. Only
-packages of this collection are ranked here. The active research session's
-own candidates, several of which dominate rows below (ten positive at
-the same six fused ten-positive profiles), and this repository's
-`candidates/ten-positive-gap-fusion` (an independent derivation of the same
-ten-positive points) are
-compared in its [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
+packages of this collection are ranked here, each unknown count on its own
+row. The active research session's own candidates (at intake none dominates
+a package row; its ten-positive 86 / 466 is a further Pareto point) and this
+repository's `candidates/ten-positive-gap-fusion` (an independent
+derivation of package points) are compared in its
+[PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
 
 - "u / e / d / o" means unknowns / equations / degree / operations; pairs
   are degree / operations. For the direct quartics (degree 4 throughout)
@@ -410,9 +418,9 @@ lower directory number counts as earlier.
 | Nine positive, lowest degree | **997,810 / 1,057** | 101 | 101 |
 | Nine positive, Pareto frontier | 1,472,168 / 420 (101); 1,376,378 / 456 (105); 1,158,228 / 726 (82); 997,810 / 1,057 (101). Dominated by these: 66's 444 and every earlier nine-positive form; 101's 428 and 85's 434 ≡ 86's 435 (one polynomial), 105's 442, 86's 449, 79's 1,753, 85's 1,074, 86's 1,086 | 82, 101, 105 | — |
 | Nine positive on the 2^429959 tuple | **1,626,248 / 428** (101); 1,628,768 / 434 (85; 86 evaluates the same polynomial in 435); 1,520,186 / 442 (105). Earlier: 54's 490 | 85, 101, 105 | 85 |
-| Ten positive, Pareto frontier | **89 / 288**, 91 / 283, 92 / 278, 94 / 262, 96 / 258, **97 / 254** (119 on the BFS tuple, 121 on the original one; 92 / 278 is 117's polynomial in one operation fewer). Dominated: 113's 92 / 283, 93 / 278, 98 / 258 and 99 / 254, 116's 96 / 266, 117's 93 / 278, 118's 96 / 360 and 102 / 332, and every earlier form | 113, 116, 117, 119, 121 | 84 (first), 113 and 116 (fusion) |
+| Ten positive, Pareto frontier | **89 / 288**, 91 / 283, 92 / 278, 94 / 262, 96 / 258, **97 / 254** (119 on the BFS tuple, 121 on the original one; 119's 92 / 278 is 117's polynomial in one operation fewer, 121's the same circuit on the other tuple). Dominated: 113's 92 / 283, 93 / 278, 98 / 258 and 99 / 254 and its four four-root centred variants, 116's 96 / 266, 117's 93 / 278, 118's 96 / 360 and 102 / 332 and its stage graphs, 115's 98 / 368 and 103 / 340, and every earlier form | 113, 116, 117, 119, 121 | 84 (first), 113 (fusion) |
 | 10ℤ (Sun's reduction), Pareto frontier | **1,245,324 / 467**, 1,179,788 / 470, 1,114,252 / 473, **1,080,888 / 507** (106, re-evaluating 87's 471 form and the research session's three shears of it). Other polynomials: 76's 480 / 1,245,324, 83's 484 / 1,179,788, 487 / 1,114,252 and 521 / 1,081,125, 87's 485, 496 and 545 / 1,080,888, 91's re-evaluations. All dominate 68's 1,576,864 / 481 | 76, 83, 87, 106 | 76 (degree), 87 (operations) |
-| 11ℤ, without Sun's reduction, Pareto frontier | **966 / 111** and 882 / 112 (123); 488 / 118, 464 / 119, 456 / 124 and **416 / 125** (125). Dominated: 116's 688 / 126, 728 / 122 and 1,632 / 114 (also as 121's cheaper evaluators), 121's 820 / 119 and 964 / 118, 120's 464 / 122 and 488 / 121, 123's three norm forms, 126's four forms, 110's three | 110, 116, 120, 121, 123, 125, 126 | 110 |
+| 11ℤ, without Sun's reduction, Pareto frontier | **966 / 111** and 882 / 112 (123); 488 / 118, 464 / 119, 456 / 124 and **416 / 125** (125). Dominated: 116's 688 / 126, 728 / 122, 1,632 / 114 and 1,892 / 114 (also as 121's cheaper evaluators), 121's 820 / 119, 964 / 118, 796 / 122 and 772 / 124, 120's 464 / 122 and 488 / 121, 123's three norm forms, 126's four forms, 110's three | 110, 116, 120, 121, 123, 125, 126 | 110 |
 | 12ℤ, Pareto frontier | **500 / 139** (121's evaluator of 116's polynomial); **1,084 / 123** (113). Dominated: 116's 500 / 148, 112's 768 / 141, 111's 1,040 / 140 and four further forms, 110's 1,000 / 180 and 1,024 / 179, 118's two, and every wave-11 form | 97, 111, 112, 113, 116, 121 | 97 |
 | 13ℤ, Pareto frontier | **274 / 129** (116); 536 / 126 (118). Dominated: 105's 1,072 / 186, 1,392 / 177 and 1,408 / 176 and every earlier 13ℤ form | 116, 118 | 88 |
 | 14ℤ | **108 / 119** (116). Dominated: 106's 378 / 145, 88's 792 / 137 and every earlier 14ℤ form | 116 | 88 |
@@ -424,7 +432,7 @@ lower directory number counts as earlier.
 | Integer octic | **25ℤ** in 127 operations (77). Dominated: the 26ℤ octics of 76, 77, 78, 79, 81, 82 and 68's 28ℤ, 69's and 71's 27ℤ | 77 | 77 |
 | Integer sextic | **30ℤ** (76). Dominated: the 31ℤ sextics of 77, 79, 81 (144 operations), 82, and the 32ℤ and 34ℤ sextics of waves 9–10 | 76 | 76 |
 | Integer quartic | **37ℤ** (76 ≡ 82, two variants; 77's four variants differ in one guard row). Dominated: 69's and 71's 38ℤ | 76, 77, 82 | 76 |
-| Direct C222 quartic, ℕ (no K215, Jones, Sun or coefficient tuple) | **261 / 194 / 31,679 / 85,566,955** and 292 / 225 / 6,140 / 83,933,334 (124); 320 (123) and 331, 332 (125) at heights near 10^7; 395 (108, 109) on height; raw systems 475 / 406 / **3,089** (122) and 655 / 581 / 3,748 (108) on terms; 4,860 / 4,476 / 14,719 / **1,837** (98, lowest height). Dominated: 112's 349 and 350, 115's 358 and 361, 122's 332 and 333, 123's 319, 125's 329, 100's 407 and earlier forms | 98, 108, 109, 122, 123, 124, 125 | 87 (earliest), 89 (this lineage) |
+| Direct C222 quartic, ℕ (no K215, Jones, Sun or coefficient tuple) | **261 / 194 / 31,679 / 85,566,955** and 292 / 225 / 6,140 / 83,933,334 (124); 333 / 264 / 4,357 / 209,508,384 (122); 320 (123), 331ds / 255 / 15,769 / 15,246,025 and 332ss (125), heights near 10^7; 395 (108, 109) on height; 4,860 / 4,476 / 14,719 / **1,837** (98, lowest height). Raw (uncontracted) systems: 465 / 400 / **2,977** / 63,907,653 and 479 / 414 / 3,042 / 1,144,307 (123), 435 / 368 / 2,980 / 63,975,558 and 406 / 339 / 6,690 / 64,170,614 (124), 554 / 476 / 3,276 / 1,142,323 (112). Dominated: 112's 349 and 350, 115's 358 and 361, 122's 332 and its raw 475 and 487, 123's 319, 125's 329, 330sq, 331sc and 333sqss, 108's raw 655, 100's 407 and earlier forms | 98, 108, 109, 112, 122, 123, 124, 125 | 87 (earliest), 89 (this lineage) |
 | Direct C222 quartic, ℤ | **442 / 290 / 4,652 / 128,446** (125, also fewest terms); 3,776 / 2,015 / 20,194 / 47,959 (102); 3,564 / 3,350 / 14,518 / height 2 (114); 7,431 integers / 34,086 terms / **height 1** (120, not a sum of squares; twice it is). Dominated: 126's 478, 121's 489, 119's 508, 112's 517 and 519, 111's, 114's 577 to 591, 117's, 118's and every earlier form | 102, 114, 120, 125 | 87 |
 | Eleven positive | **211 / 107** (115's evaluator of the research session's polynomial, which 105 evaluates in 110). Dominated: 83's 211 / 112, 86's 213 / 112, 87's 211 / 113, 82's 269 / 111, the 277 / 111 polynomial of 76, 77, 78, 79, 81, 77's 257 / 114, and 70's 325 / 113 | 83, 105, 115 | 76 (277), 83 (211) |
 | Twelve positive, Pareto frontier | **70 / 95** (115's evaluator of 98's free-J polynomial); 57's **258 / 89**. Dominated: 98's 70 / 98, 76's 78 / 101 ≡ 82's 78 / 102, 78's ≡ 81's 78 / 103, 87's 70 / 100, 69's 82 / 102, 74's forms | 98, 115; 57 | 80 (claim), 87 (first artifact), 98 |
@@ -433,25 +441,28 @@ lower directory number counts as earlier.
 | Fifteen positive | unchanged: 66 ops (51's P66, degree 157); lowest degree 24 / 88 (66); Pareto frontier as after wave 9 | 51; 66 | — |
 | Twelve positive, systems | unchanged: 59's three-equation system at 94 operations | 59 | 59 |
 | Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125. From wave 2 (history only, see the wave-2 README `5b0c9ae9fd`): 15's positive-domain sextic in 25 and octic in 20 unknowns, which still dominate 75's 26- and 21-unknown versions | waves 2, 5, 6 | — |
-| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54) among tuple-bound equations; 85, 86, 101 and 105 bind nine-positive forms to it. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1,837 to 9·10^21) | 54; 87–89 | 54 |
+| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54) among tuple-bound equations; 85, 86, 101 and 105 bind nine-positive forms to it. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1 (120) and 2 (114) to about 9.9·10^27 (115)) | 54; 87–89 | 54 |
 
 
 ## Wave 13 (sources 119–126)
 
 The eight archives of arrival `5f3379063d` (24 October 2026, 16:35) were
-placed as batch 229 in `9f7ff01558`, in archive-name order. 119–122 pin the
-wave-12 arrival `45b399ec51`; their PDFs were built between 15:52 and 16:12.
-None cites a sibling. 43 placed paths exceed 250 characters (maximum 383),
-almost all licence and notice files inside 125's nested `intake/` bundles.
+placed as batch 229 in `9f7ff01558`, in archive-name order. All eight pin
+the wave-12 arrival `45b399ec51`; their PDFs were built between 15:52 and
+16:12. None cites a sibling. 43 placed paths exceed 250 characters (maximum
+383); all are licence and notice files kept by the always-keep rule, 33 in
+125, 6 in 121 and 2 each in 122 and 123, mostly inside nested `intake/`
+bundles. The research session accepted 125's 442 quartic (`12a6f5a037`)
+and reviewed the eight bundles (`a71b5bc67a`) before this reconciliation.
 
 | Dir | Archive | Title as printed | Constructions |
 |---|---|---|---|
 | [`119-cofinal-witnesses/`](119-cofinal-witnesses/) | `ConZFC_Cofinal_Witnesses_2026-10-24.zip` | *Reusing witnesses in Diophantine consistency equations* | direct quartic ℤ 508 / 308 / 6,545 / 996,521 (and a 512 checkpoint, a specialization of 112's 517); the six fused ten-positive profiles 89 / 288, 91 / 283, 92 / 278, 94 / 262, 96 / 258, 97 / 254 (BFS tuple) |
 | [`120-height-one-degree464/`](120-height-one-degree464/) | `ConZFC_Height_One_and_Degree_464_2026-10-24.zip` | *Coefficient height one and an eleven-integer degree-464 equation for Con(ZFC)* | a degree-4 polynomial in **7,431 integers with every coefficient ±1** (34,086 terms; twice it is a sum of squares, built from 112's 519); 11ℤ 464 / 122 and 488 / 121 |
 | [`121-paired-guards-centered/`](121-paired-guards-centered/) | `ConZFC_Paired_Guards_Centered_Carriers_2026-10-24.zip` (wrapper `ConZFC_Paired_Guards_Centered_Carriers`) | *Paired sign conditions and centered Pell carriers for Diophantine consistency* (README: *Paired guards and centered carriers for Con(ZFC)*) | direct quartic ℤ 489 / 308 / 6,905 / 11,302,118; the six fused ten-positive profiles on the original tuple; **15ℤ 48 / 108**; 12ℤ 500 / 139 and four 11ℤ forms (116's polynomials, cheaper); 11ℤ 820 / 119, 964 / 118; bundles 116's whole archive |
-| [`122-residue-compiler/`](122-residue-compiler/) | `ConZFC_Residue_Compiler_2026-10-24.zip` (wrapper `con_zfc_residue_compiler_2026-10-24`) | *One modulus for all binomial digits* | direct quartics ℕ 332 / 263 / 11,823 / 85,243,454 and 333 / 264 / 4,357 / 209,508,384; raw ℕ systems 475 / 406 / **3,089** and 487 / 418 / 3,106 |
-| [`123-shared-binomial/`](123-shared-binomial/) | `ConZFC_Shared_Binomial_Certificates_2026-10-24.zip` | *Shared Binomial Certificates and Short Carriers* (title page; README and PDF metadata word it differently) | **11ℤ 966 / 111, 882 / 112**, and 488 / 121, 464 / 125, 440 / 126; direct quartics ℕ 319 and 320 (height 15.2·10^6) |
-| [`124-shared-pell-bound261/`](124-shared-pell-bound261/) | `ConZFC_Shared_Pell_Bound_261_2026-10-24.zip` | *One Pell bound and one error congruence* | direct quartics **ℕ 261 / 194 / 31,679 / 85,566,955** and **292 / 225 / 6,140 / 83,933,334**; a 783ℤ degree-8 substitution recipe; bundles 112's whole archive |
+| [`122-residue-compiler/`](122-residue-compiler/) | `ConZFC_Residue_Compiler_2026-10-24.zip` (wrapper `con_zfc_residue_compiler_2026-10-24`) | *One modulus for all binomial digits* | direct quartics ℕ 332 / 263 / 11,823 / 85,243,454 and 333 / 264 / 4,357 / 209,508,384; raw ℕ systems 475 / 406 / 3,089 and 487 / 418 / 3,106 |
+| [`123-shared-binomial/`](123-shared-binomial/) | `ConZFC_Shared_Binomial_Certificates_2026-10-24.zip` | *Shared Binomial Certificates and Short Carriers* (title page; README and PDF metadata word it differently) | **11ℤ 966 / 111, 882 / 112**, and 488 / 121, 464 / 125, 440 / 126; direct quartics ℕ 319 and 320 (height 15.2·10^6); raw ℕ systems 465 / 400 / 2,977 and 479 / 414 / 3,042 |
+| [`124-shared-pell-bound261/`](124-shared-pell-bound261/) | `ConZFC_Shared_Pell_Bound_261_2026-10-24.zip` | *One Pell bound and one error congruence* | direct quartics **ℕ 261 / 194 / 31,679 / 85,566,955** and **292 / 225 / 6,140 / 83,933,334**; raw ℕ systems 435 / 368 / 2,980 and 406 / 339 / 6,690; a 783ℤ degree-8 substitution recipe; bundles 112's whole archive |
 | [`125-unified-binomial-round15/`](125-unified-binomial-round15/) | `ConZFC_Unified_Binomial_Even_Indices_Round15_2026-10-24.zip` | *Diophantine consistency equations with unified binomials and even Pell indices* (round 15 of 106 and 112's series) | direct quartic **ℤ 442 / 290 / 4,652 / 128,446** (and its uncentred 442 / 290 / 4,872 / 414,308); ℕ 329, 331, 332; **11ℤ 488 / 118, 464 / 119, 456 / 124, 416 / 125** |
 | [`126-weak-carriers-shared-signs/`](126-weak-carriers-shared-signs/) | `ConZFC_Weak_Carriers_and_Shared_Signs_2026-10-24.zip` | *Weak divisibility and shared sign certificates for Diophantine consistency* | direct quartic ℤ 478 / 305 / 5,484 / 511,326; 11ℤ 488 / 120, 464 / 123, 456 / 126, 416 / 129 |
 
@@ -481,7 +492,7 @@ degree and re-expanded every quartic; every claimed figure was confirmed.
   binomial and the CRT modulus product. 119 and 121 independently reuse the
   existing F² wire to fix signs before F is interpreted.
 - **Height one.** 120's polynomial has every coefficient +1 or −1 and
-  constant term 1; the dossier rebuilt twice it from the certificate and
+  constant term 1; the dossier rebuilt 2P from the certificate and
   checked that each of the 321 source rows pulls back. It beats 114's
   height 2 on height only (2.1 times the variables, 2.3 times the terms).
 
@@ -489,13 +500,18 @@ degree and re-expanded every quartic; every claimed figure was confirmed.
 
 - **The undelivered archives keep spreading.** All eight packages carry
   parts of `ConZFC_Prime_Power_375_553` and `ConZFC_Shell_Reciprocal_660`
-  through 112's `intake/` folder; 122's and 123's copies include their
-  finished equations (ℕ 363 and 364, ℤ 660), 124 bundles 112's whole
+  through 112's `intake/` folder; 121's and 122's copies include all five
+  of their finished equations (ℤ 553 and 660, ℕ 375, 363 and 364) and 123's
+  the 660 packet's three, 124 bundles 112's whole
   archive, and all four direct builders of 123–126 run the 660 packet's
   engine code, which exists here only through those copies.
-- **Priority.** 121 (built 15:58) precedes this repository's
-  `ten-positive-gap-fusion` (16:45) on four identical polynomials, and the
-  research session's `zero89` (16:29) on one; all three were independent.
+- **Priority.** On the ten-positive points, 117 (12:53) is first on the
+  92 / 278 circuit. 119 (built 16:12) has the research session's `zero89`
+  polynomial before that commit (16:29) and its reused-b 91 / 283 and
+  92 / 278 before `fc77fcd31a` (16:14); 121 (15:58) has four of this
+  repository's `ten-positive-gap-fusion` polynomials (16:00 to 16:45) and the
+  zero89 circuit on the original tuple. No dossier tested whether these were
+  independent.
 - **Uncredited reuse.** 126 does not credit 118 for the pair-product guard
   lemma, although its snapshot hashes 118.
 
@@ -505,10 +521,10 @@ degree and re-expanded every quartic; every claimed figure was confirmed.
   121 and 125 need SymPy; 121 creates a `<dir>_replay` directory next to its
   package before failing; most packages ship builders or component scripts
   that write in place. 125's reproduction commands name the wrong directory.
-- **Titles.** 121, 122, 125 differ between README and printed title; 123
-  has three wordings.
+- **Titles.** 121 and 125 differ between README and printed title; 122's
+  and 124's PDF metadata titles differ; 123 has three wordings.
 - **Licence and attribution.** No root licence for new material: 121, 123.
-  No root NOTICE: 124. No AI-assistance statement: 121; none explicit in 125.
+  No root NOTICE: 121, 124. No AI-assistance statement: 121; none explicit in 125.
 - **Inside packages.** 119 lists four 508 variants it does not ship and
   names its old modulus V² + 3F² − 1 where the 512 file uses V² + 3F − 1.
   125 describes a 446 companion and a `projection_frontier/` sweep that are
@@ -533,8 +549,8 @@ also pins `56b4d15d12`. None cites a sibling. The research session triaged
 them statically at
 [research/intake-45b399ec51/TRIAGE.md](../research/intake-45b399ec51/TRIAGE.md)
 and has since accepted 112's 517 and 519 integer quartics
-(`72f5374bc0`) and adopted 113's 92 / 283 polynomial as its canonical page
-(`adb42f031d`).
+(`72f5374bc0`) and adopted 113's universal 92 / 283 circuit, on a third
+tuple, as its canonical page (`adb42f031d`).
 
 Notation as in the wave-11 section: "u / d / o" is unknowns / exact degree /
 operations, ℤ unrestricted integers, ℕ naturals, otherwise strictly
@@ -602,17 +618,18 @@ claimed figure was confirmed.
 
 - **Two packages never delivered, bundled inside 112.** Under `intake/`, 112
   carries partial copies of `ConZFC_Prime_Power_375_553_2026-10-23` and
-  `ConZFC_Shell_Reciprocal_660_2026-10-24`, which appear nowhere else in the
-  repository's history. Their finished quartics (ℕ 375, 364 and
+  `ConZFC_Shell_Reciprocal_660_2026-10-24`, which reach this repository only
+  as these partial copies (and wave-13 copies of them). Their finished
+  quartics (ℕ 375, 364 / 292 / 6,613 / 7,002,666 and
   **363 / 291 / 6,674 / 83,842,716**, ℤ 553 and 660) re-expand exactly. The
-  ℕ 363 would dominate 108's and 109's naturals. They are recorded here as
+  ℕ 363 and 364 would dominate 108's and 109's naturals. They are recorded here as
   part of 112's directory, not as packages of their own; whether to treat
   them as sources is Vladimir's decision.
 - **Baselines moved during the wave.** None of the eight could have seen the
   research page of 14:48 (98 / 360). After intake the research session
   published 113's 92 / 283 as its page and the reused-b profiles 91 / 283,
   92 / 278, 97 / 258 and 98 / 254 (`fc77fcd31a`); see also this repository's
-  `candidates/ten-positive-gap-fusion` (below the frontier table).
+  `candidates/ten-positive-gap-fusion` (above the frontier table).
 - **Restricted claims.** 116's nine-auxiliary power graph has no calibrated
   tiling source (the raw 943-tile list contains an all-zero tile), as 116
   says. 112's three architecture proofs are written out in full; the
@@ -636,7 +653,7 @@ claimed figure was confirmed.
   ships two 589-variant quartics absent from its README. 113's headline
   JSONs omit their syntactic degree.
 - **Bundled copies.** 111 and 114 bundle 100's whole arrival archive; 115
-  bundles 100's tree; 112 bundles two undelivered archives (above).
+  bundles 100's tree; 112 bundles partial copies of two undelivered archives (above).
 
 ### Further questions (wave 12)
 
@@ -2446,9 +2463,9 @@ The packages say, in their own words (exceptions noted):
   - Sun's reduction is not formalized anywhere in the repository (checked at
     intake: nothing in `Computability/HilbertTenthProblem`).
   - The active Lean research in `Computability/DiophantineConsistency/`
-    postdates the wave-5 and wave-6 pins, but not the wave-7 to wave-11
-    pins. Wave 11's packages build on its reviews and candidates, and its
-    candidates on them (see the wave-11 section).
+    postdates the wave-5 and wave-6 pins, but not the wave-7 to wave-13
+    pins. Packages of waves 11–13 build on its reviews and candidates, and
+    its candidates on them (see those sections).
   - Wave-7 46, 51 and 53 build their short forms on its checked circuits
     P69, P73 and P75.
   - Wave-8 54 cites its later closed executable equation (at
@@ -2528,8 +2545,9 @@ The packages say, in their own words (exceptions noted):
   - In wave 11, the nine-positive forms of 79, 82, 85, 86, 101 and 105 keep
     the ratio finalizer through 66's and 71's sources. No other wave-11
     form uses a Jones lemma; the direct quartics use none.
-  - Waves 12 and 13 use no Jones lemma: their ten-positive and 11ℤ–15ℤ forms
-    are native K215 forms and their quartics are direct.
+  - Waves 12 and 13 use no Jones lemma: their ten- to thirteen-positive
+    forms, 117's 30ℤ companion and the 11ℤ–15ℤ forms are native K215 forms,
+    and their quartics are direct.
   - No package uses `Jones1982.nine_unknowns`, which fixes ν = 58.
 
   These new codes, decoders, finalizers, majorants and Pell-index arguments
@@ -2577,8 +2595,8 @@ The packages say, in their own words (exceptions noted):
     later `PROPOSAL_REVIEW_*.md` files), and built its own candidates on
     them and on this repository's `ten-positive-scaled-norm`; its current
     comparison is [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
-- **Direct C222 route (wave 11).** The direct quartics of 87, 89, 93–96 and
-  98–109 rest on two Lean theorems, `KEndpoint.c222_iff_zf_refutation`
+- **Direct C222 route (waves 11–13).** The direct quartics of 87, 89,
+  93–96, 98–109, 111, 112, 114, 115 and 117–126 rest on two Lean theorems, `KEndpoint.c222_iff_zf_refutation`
   (`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean`) and
   `ConstructibleChoice.zf_refutation_iff_zfc_refutation`, and on the
   representation modules under `Computability/DiophantineConsistency/Lean/`
@@ -2586,7 +2604,8 @@ The packages say, in their own words (exceptions noted):
   `HEAD` and copied inertly into the packages. The step "polynomial zero iff
   finite C222 derivation" is an ordinary proof in each package, checked by
   finite replays. None of these packages uses
-  `DirectQuarticZFC.noNaturalZero_iff_conZFC`.
+  `DirectQuarticZFC.noNaturalZero_iff_conZFC` in its construction (116 and
+  120 cite it in copied provenance).
 - **Nothing delivered in this report is formalized.** The active stage
   proofs for 52 live outside this directory.
 
@@ -2605,6 +2624,8 @@ attribution file the packages ship is kept in place.
 | 9 | `beb0192cb8dc36f78c369c080f2adfbc1887a486` | `0c6be9a074` | `a2cd79b912` |
 | 10 | `9cca523d9f27ad39d52993f4065cbd7e58f8bdd4` (68–73); `a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49` (74); both, and `bdd86761ba` (75) | `9513bd88ce` | `d79b41884d` |
 | 11 | `2605669a53` (76–81; components of 83–86); `cf4a5218a5` (82, 90, 91); `cfbf118b4a` (90–92); `9a33342a03` (87, 88); `08200eb10f` (89; calibration of 95, 98–100, 105, 106); `04a1d79222` (94, 97); `a88aefd7dd` (95, 96, 98); `8b328dc180` (99); `85ae407001` (100, 104); `7e533c3381` (101, 106, 110); `278bc68df1` (102); `b594a5e988` (103); `8f8fac484b` (105); `43ac596e36` (93); `ec80841c07` (107–110) | `c1a102936a` … `e13c748234` (17 commits) | `240bf9e422`, `c16a89ad94` |
+| 12 | `84e16e4309` (all; 116 also `56b4d15d12`) | `45b399ec51` | `55fe52f28c` |
+| 13 | `45b399ec51` (all) | `5f3379063d` | `9f7ff01558` |
 
 ## Files
 
