@@ -240,15 +240,15 @@ now supplies prime2518517, exact B-order32708, valuation-one lift and
 controller residues18/7928/1709750 at53/8807/2518517. All four actual
 normal/optimized and fresh runs passed, each with23 negative/four valid
 controls; both FULL ordinary evidence reviews pass. [Separate ROOT acceptance](reviews/compact66-radix53-certificate-probe-bounded-acceptance.json)
-discharges those finite premises. The coherent53-bit tuple is now built,
-with all five [stage-A source processes](reviews/one-page-compact66-radix53-stage-A-results.json)
-exit0 and233666 raw coefficient bytes versus242484 maintained. All five
-[stage-B render/audit/rerender processes](reviews/one-page-compact66-radix53-stage-B-results.json)
-also exit0; normal/optimized complete audits agree except the optimization flag, and all five
-rerender artifacts match first bytes. Candidate nonwhite PDF text is2770
-characters versus2764 maintained; TeX is5207 versus5195 bytes. No shorter
-page or promotion is claimed. Six fresh runs, visual review, closure,
-ordinary reviews and endpoint acceptance remain pending; the55-bit page remains maintained.
+discharges those finite premises. The [closed53 page evidence](research/compact66-radix53-page-verification/README.md)
+now retains all16 actual exit0 processes,18 byte-exact fresh captures and
+two actual visual PASS reviews, in77 payloads/78 whole files. The
+[ROOT](reviews/compact66-radix53-page-verification-ordinary-root.md) and
+[independent](reviews/compact66-radix53-page-verification-ordinary-peer.md)
+FULL final ordinary reviews pass. [Separate ROOT acceptance](reviews/compact66-radix53-page-finite-endpoint-acceptance.json)
+records this verified checkpoint without promotion. Raw coefficient bytes are233666 versus242484 maintained, while
+nonwhite PDF characters are2770 versus2764 and TeX bytes5207 versus5195.
+No shorter page or promotion is claimed; the55-bit page remains maintained.
 
 The [conditional51-bit local-reset proof](research/compact66-radix51-local-resets/README.md)
 passes both FULL ordinary reviews, [ROOT](reviews/compact66-radix51-local-resets-ordinary-root.md)
@@ -257,6 +257,20 @@ with [separate conditional acceptance](reviews/compact66-radix51-local-resets-or
 It replaces global aligned no-carry with local carry resets. The new
 lambda/lift certificate and all three Hctrl unit values at17,L=8807,lambda
 are UNKNOWN; no numerical51 endpoint or page gain is accepted.
+
+The [conditional49 shared-marker encoding](research/compact66-shared-marker-radix49/README.md)
+passes both FULL ordinary reviews and [separate conditional acceptance](reviews/compact66-shared-marker-radix49-ordinary-acceptance.json).
+It keeps all seven physical markers, assigns each marker clause weight2^44 and
+recovers each bit individually, with radix2^49, mask mu=2^47-2 and the
+full49L controller. New lambda/lift and all three Hctrl unit values at
+7,L=8807,lambda remain UNKNOWN. [Bounded-probe preparation](reviews/compact66-shared-marker-radix49-probe-code-only-preparation-release.md)
+is CODE ONLY; execution remains separately unreleased.
+
+The [scoped47 clause alias](research/compact66-shared-marker-radix47-clause-alias/README.md)
+has both FULL reviews and [separate scoped acceptance](reviews/compact66-shared-marker-radix47-clause-alias-ordinary-acceptance.json).
+A generic931..943-selector local alias obeys bounded carries; the931..942
+subfamily selects Start and omits Forbidden. This is no actual native/P66
+solution or47 impossibility result.
 
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
