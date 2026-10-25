@@ -25,32 +25,34 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete one-anchor7309 equation: fifteen positive unknowns, exact
-degree157,66 integer-leaf operations. The four constants total**172011
-raw bytes**,8976 fewer than the preceding180987 (5.0%). The complete
-printed recipe is slightly larger: TeX5089 bytes and nonwhite
-`pdftotext -layout` text2710 characters, up6 and3. PDF159647 bytes is
-5 bytes smaller. Fonts remain9pt/7.7pt on one Letter page.
+the complete zero-weight6007 equation: fifteen positive unknowns, exact
+degree157 and66 integer-leaf operations. The four constants total**141226
+raw bytes**,30785 fewer than the preceding172011 (17.9%). The whole recipe
+also shrinks: TeX5085 bytes and nonwhite extracted text2706 characters,
+each down4. PDF159636 bytes is11 bytes smaller. Fonts remain9pt/7.7pt on
+one Letter page.
 
-The complete [new ordinary proof](research/one-anchor-independent/PROOF.md)
-has separate root and independent mathematical audits. One weight-three
-flag and the complete selector-count copy replace the two-flag layout.
-Globalcarry29, all-phase Start alignment, the real upper-predecessor cross
-term, all871 padding bits, final reset, canonical subsets, actual rank
-and both P66 maps are checked. The finite Pc1 certificate uses
-lambda360181, exact orders23/1044 and H residues40/597/144105. Normal and
-optimized certificate and materializer checks reproduce the entire saved
-evidence. Two actual full-page visual inspections pass. See the
-[complete candidate](candidates/one-page-one-anchor7309/README.md),
-[mathematical peer review](reviews/one-anchor7309-independent-peer.md) and
-[page review](reviews/one-anchor7309-page-peer.md).
+The complete [ordinary proof](research/zero-weight-flag-independent/PROOF.md)
+has separate root and independent mathematical audits. A physical flag
+with zero clause weight permits smaller nonuniform label and clause
+positions. Decoding precedes alignment, and alignment precedes flag
+recovery. Global carry29, all17 copies, both clause predecessors, all875
+padding bits, final resets, fresh subsets, actual rank and both P66 maps
+are covered. The finite Pc0 certificate uses lambda368369, exact orders
+23/1001 and H residues2/53/95646. Normal and optimized checks reproduce
+all finite and materialized files. The actual printed flag-term deletion
+is rejected even though it leaves weighted Phi unchanged. Two actual
+full-page visual inspections pass. See the
+[complete candidate](candidates/one-page-zero-weight6007/README.md),
+[mathematical review](reviews/zero-weight6007-independent-peer.md) and
+[page review](reviews/zero-weight6007-page-peer.md).
 
-The old7691, three-anchor47 and55 pages and CURRENT records are preserved.
-This is a new specialization of the uniform66/157 front, with explicit
-ordinary native/Pell/refutation contracts and no new formal-kernel replay
-or consistency decision. Research remains active. Separate rational-leaf65
-checkpoints preserve the same polynomial within their own bound tuples;
-that operation convention does not change the integer-leaf66 label.
+The previous7309,7691,three-anchor47 and55 pages and CURRENT records are
+preserved. This is a new specialization of the uniform66/157 front, with
+explicit ordinary native/Pell/refutation contracts and no new formal-kernel
+replay or consistency decision. Research remains active, including a
+prospective single Start-marker kernel. Separate rational-leaf65 graphs
+retain their own fixed tuple bindings and operation convention.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 still saves nineteen operations and171 degree while adding five unknowns.
