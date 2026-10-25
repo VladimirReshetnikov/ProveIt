@@ -22,20 +22,25 @@ The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **entire equation in fifteen positive
 unknowns, exact degree157, with a66-operation evaluator**. All fixed
 constants remain on the same Letter page, including the full 436-character
-numeral, alphabet, decoder and943 tiles, in9-point mathematics. Compared
-with the preserved [ten-positive85/328 page](candidates/one-page-doubled85/equation.pdf),
-this saves nineteen operations and lowers degree by171 while adding five
-unknowns. The complete TeX is90 bytes shorter. The previous ten-variable
-page, lower-degree alternatives and all earlier displays remain preserved.
+numeral, alphabet, decoder and943 tiles, in9-point mathematics. Its shorter
+fixed recipe removes two explicit support/control tables while preserving
+the entire polynomial and all four integers. Against the preserved
+[previous66/157 page](candidates/one-page-fifteen66/equation.pdf), complete
+TeX shrinks5524 to5395 bytes and actual extracted nonwhite text3025 to2885
+characters, saving140 visible characters at unchanged fonts.
 
-The [root page acceptance](reviews/one-page-fifteen66-root-peer.md) binds
-all23 actual printed polynomial cuts, every constant, both visual reviews,
-ten first-attempt checks/renders and six byte-exact fresh replays. The
-complete ordinary proof composes the whole indexed normalized-positive
+The [root page acceptance](reviews/one-page-grouped66-root-peer.md) binds
+all23 actual printed polynomial cuts, every constant, both actual visual
+reviews, ten corrected-checkpoint checks/renders and six byte-exact fresh
+replays. The earlier failed source-audit attempt remains fully preserved.
+The complete ordinary proof composes the whole indexed normalized-positive
 source and canonical `R=3 mod4` family with the squared-modulus construction,
 including both positive witness maps. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
-binds the maintained PDF and TeX. This is a verified arithmetic/variable
-tradeoff; global optimality and a new Lean derivation are not claimed.
+binds the maintained PDF and TeX. The earlier arithmetic improvement against
+the preserved [ten-positive85/328 page](candidates/one-page-doubled85/equation.pdf)
+saves nineteen operations and171 degree while adding five unknowns.
+All predecessor pages remain available. Global optimality and a new Lean
+derivation are not claimed; Lean remains paused.
 
 The complete [unshifted-T equations](research/ten-positive-unshift-t-finite/RESULTS.md)
 now reach **84 operations at degree328**, or83/436,80/750 and81/560, in the

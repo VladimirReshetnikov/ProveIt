@@ -27,11 +27,16 @@ points include ten variables/131 operations/degree1,152 and eleven/111/211.
 The current [equation.pdf](equation.pdf), with standalone
 [TeX](equation.tex), prints fifteen strictly positive unknowns, exact degree157
 and66 operations, including every fixed constant on one Letter page in
-9-point mathematics. Against the preserved ten-positive85/328 page, it
-saves nineteen operations and171 degree while adding five unknowns.
-Both full static reviews, all ten released first-attempt commands,
-six byte-exact fresh root replays and both actual visual reviews pass;
-see the [root acceptance](reviews/one-page-fifteen66-root-peer.md). The
+9-point mathematics. Its shorter fixed recipe removes two support/control
+tables and saves140 actual extracted characters at unchanged fonts;
+the complete TeX is5395 bytes against5524 in the preserved preceding66/157
+page. The equation and all four integers are unchanged. Two full corrected
+static reviews, ten separately released r2 commands, six byte-exact fresh
+root replays and two actual visual reviews pass; the initial failed source
+audit and complete evidence remain preserved. See the
+[root acceptance](reviews/one-page-grouped66-root-peer.md). Against the
+earlier ten-positive85/328 page, the arithmetic improvement still saves
+nineteen operations and171 degree while adding five unknowns. The
 ordinary proof composes the whole indexed normalized source, canonical
 `R=3 mod4` and squared-modulus reconstruction with both positive maps.
 All predecessor pages remain available. Lean remains paused.

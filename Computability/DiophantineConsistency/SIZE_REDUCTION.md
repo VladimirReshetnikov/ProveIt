@@ -113,10 +113,14 @@ standalone [TeX](equation.tex). Its complete436-character fixed numeral,
 alphabet, decoder and 943 tiles fit on one Letter page in 9-point arithmetic.
 It saves nineteen operations and171 degree against the preserved
 [ten-positive85/328 page](candidates/one-page-doubled85/equation.pdf), with
-five more unknowns. All ten released commands, six fresh byte-exact replays
-and independent actual-page visual reviews pass. The full constant suffix
-is unchanged. Significant checked gains are batched into the maintained
-PDF; all complete predecessors remain available.
+five more unknowns. Its shorter fixed recipe now removes two explicit
+support/control tables while keeping all four complete integers unchanged.
+Actual nonwhite extracted characters decrease3025 to2885 and complete TeX
+5524 to5395 bytes at unchanged fonts. All ten corrected r2 commands, six
+fresh byte-exact replays and both actual-page visual reviews pass; the
+earlier failed source-audit attempt remains preserved. Significant checked
+gains are batched into the maintained PDF; all complete predecessors remain
+available. See the [whole page acceptance](reviews/one-page-grouped66-root-peer.md).
 
 ## Work now underway
 
@@ -2599,3 +2603,25 @@ arithmetic operation. The equation itself remains fifteen-positive,
 66 operations and degree157. These further source reductions have no
 rendered measurement yet; a separate held implementation is being prepared.
 They do not alter the independently executing grouped66 page or resume Lean.
+
+## Shorter complete constant recipe promoted to the maintained page
+
+The [accepted grouped66 page](candidates/one-page-grouped66/RESULTS.md)
+now supplies the maintained equation.pdf and committed equation.tex. The
+entire fifteen-positive66/157 polynomial and295388 raw coefficient bytes
+remain identical; two explicit support/control tables are replaced by
+the verified indicator sum, four grouped terms and shared fixed Lambda.
+Actual whole-page nonwhite extracted text drops3025 to2885 characters,
+and full TeX5524 to5395 bytes. One Letter page,9-point body,7.7-point seed,
+all436 numeral characters, the full decoder/alphabet/table and zero
+overfull diagnostics are preserved.
+
+Both full corrected statics, all ten r2 commands, six fresh normal/optimized
+source/full-PDF/rerender checks and two actual visual inspections pass.
+All twelve complete replay JSON/stdout files match and all125 whole input
+files remain unchanged. The initial source-audit failure and every output
+remain separately preserved. The [root acceptance](reviews/one-page-grouped66-root-peer.md)
+binds the59-payload candidate and21-payload fresh verification packet.
+The previous complete66/157 page remains available. Further compact-table
+source reductions are being prepared separately; they are not silently
+included in this render. Lean remains paused and the iterative goal active.

@@ -42,35 +42,31 @@ The single equation is
 Every index, set, sum, product and floor below defines a constant, not
 another unknown. Put
 \[
-\rho=2^{67},\quad B=\rho^{8807},\quad\beta=B-1,\quad
-G_m(x)=\sum_{j=0}^{m-1}x^j.
+\begin{gathered}
+\rho=2^{67},\quad B=\rho^{8807},\quad\beta=B-1,\\
+G_m(x)=\sum_{j=0}^{m-1}x^j,\quad
+\Lambda=\rho^{4393}+\rho^{5495}.
+\end{gathered}
 \]
-Define
-\[
-\begin{split}
-\mathcal E={}&\rg0{942}\cup\rg{983}{992}\cup\rg{1003}{1011}\\
-&\cup\rg{1013}{1031}\cup\{1063,1064,1095,2195,3296\}.
-\end{split}
-\]
-Then
 \begin{align*}
-M_C={}&B-1-\sum_{e\in\mathcal E\setminus\{1\}}\rho^e-2\rho^{1063},\\
-M_F={}&B-1+4+(2^{51}-2)(\rho^{4393}+\rho^{5495})\\
+M_C={}&\beta+\rho-(\rho+3)\rho^{1063}\\
+&-\sum_{e=0}^{3296}\fl{(D_\rho(\Phi(\rho),e)+\rho-1)/\rho}\rho^e,\\
+M_F={}&B-1+4+(2^{51}-2)\Lambda\\
 &+\rho^{1013}G_{10}(\rho)+\rho^{1065}G_9(\rho)
   +\rho^{2195}+\rho^{3296}\\
 &+(2^{65}-1)\rho^{8792}G_{13}(\rho)+(2^{19}-1)\rho^{8805},\\
 K={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}+\rho^{8849}\\
-&+(\rho^{4393}+\rho^{5495})\Phi(1/\rho),
+&+\Lambda\Phi(1/\rho),
 \end{align*}
 where
 \[
 \begin{split}
 \Phi(x)={}&(1+2^{51})G_{943}(x)
  -2^{10}\sum_{i=0}^{942}v(t_i)x^i\\
-&+\sum_{(b,e,m)\in\mathcal C}2^b x^e G_m(2x),\\
-\mathcal C={}&\{(10,1023,8),(18,1013,9),(27,1003,8),\\
-&(35,983,9),(44,1031,1),(45,1022,1),(46,1011,1),\\
-&(47,992,1),(48,1095,1),(49,2195,1),(50,3296,1)\}.
+&+2^{10}x^{1003}(x^{20}+2^{17})G_8(2x)\\
+&+2^{18}x^{983}(x^{30}+2^{17})G_9(2x)\\
+&+2^{44}x^{992}(x^{39}+2x^{30}+4x^{19}+8)\\
+&+2^{48}x^{1095}(1+2x^{1100}+4x^{2201}).
 \end{split}
 \]
 The rational intermediate in K cancels exactly; all four results are positive integers.
