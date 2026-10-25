@@ -2318,3 +2318,19 @@ predictions in a new held finite implementation. No changed circuit has
 yet been executed or accepted. A one-operation improvement alone does not
 trigger a maintained-page replacement; the verified85/328 PDF/TeX remains
 current while larger reductions are sought. Lean stays paused.
+
+
+## C as an independent input: missing positivity has an escape family
+
+A [bounded ordinary note](research/ten-positive-c-input-obstruction/README.md),
+with [root review](reviews/ten-positive-c-input-obstruction-root.md), records
+why a further apparent one-subtraction saving is not yet justified. Taking
+C directly would remove alpha's positive-input guarantee. Conditional on
+an old canonical zero, simultaneous positive shifts of F and C and fresh
+compatible Pell/carrier witnesses give broadened zeros with recovered
+alpha<0 and R<0. An upper bound on R cannot restore the lost exact rank.
+
+This neither constructs an unconditional false zero nor disproves broader
+existential equivalence. It rules out treating pointwise alpha recovery as
+an already available arithmetic step. No changed equation or numerical
+endpoint is accepted; the four held Tp-only variants are unaffected.
