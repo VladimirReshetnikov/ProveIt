@@ -1728,3 +1728,24 @@ ordinary packet is sealed; see the
 [root acceptance](reviews/round15-helper-reflection-root-peer.md). A separate
 materialization is required for any projected count. The accepted436 quartic,
 cap prototype's initial helper policy and canonical PDF/TeX remain preserved.
+
+
+## Signed-cap literal source accepted
+
+The [complete emitted source](research/signed-pell-cap-source/README.md) now
+matches the reviewed15-target/18-call cap design. All four complete JSON
+artifacts, every removed/private/retained row and guard map, the even frame,
+full cap anchor and joint residue are checked. Root independently replayed
+both checker and both byte-exact rebuild modes; all four receipts exactly
+match the author. Each checker rejects12 actual corruptions and verifies178
+retained sign identities,all42 required front targets,15 positive original
+index bounds,18 unsquared power congruences and five shared moduli.
+
+The [root acceptance](reviews/signed-pell-cap-source-root-peer.md) composes
+those exact interfaces with the complete ordinary soundness/completeness
+proof at the unchanged semantic front. Old doubled Pell witnesses are rebuilt
+freshly. The closed21-file payload is sealed, retaining F/V/d and the existing
+weighted/remainder policies. No factorization, projection, expanded quartic
+or new numerical frontier has run here; the finite projection packet is a
+separate next step. The436 checkpoint and canonical PDF/TeX are preserved.
+Lean stays paused.
