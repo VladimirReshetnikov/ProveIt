@@ -9,7 +9,8 @@ Hctrl55 is0 at5 and3422/500242 at8807/581197; no new tuple exists.
 
 ROOT now permits ONLY inert assembly of the separate new folder
 research/compact66-radix55-unit-probe-verification. Preserve all12 complete
-capture files, original full input snapshot, first/fresh result records,+exact static/release provenance, a descriptive README, ROOT_CHECK and
+capture files, original full input snapshot, first/fresh result records,
+exact static/release provenance, a descriptive README, ROOT_CHECK and
 closed MANIFEST. Bind every whole input, code seal, ordinary wrap proof,
 both final statics and all ROOT releases. Match raw captures in full;
 do not sanitize, shorten, replace or reinterpret any result/history.
