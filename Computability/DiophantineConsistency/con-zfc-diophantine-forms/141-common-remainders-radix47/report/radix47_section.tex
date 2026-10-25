@@ -1,0 +1,169 @@
+\subsection{Complemented labels permit a radix-$2^{47}$ encoding}
+
+The radix49 completion suggests a further change to the coefficient
+construction. The previous radix47 local obstruction~\cite{radix47obstruction}
+concerned unchanged selector coefficients: its predecoded carry allowance
+was too large to infer that a cell selected at most one tile. Instead of
+discarding that obligation, change the numerical labels so the full
+coefficient sum becomes smaller.
+
+For each original tile $(w_i,n_i,p_i,s_i)$, apply the bijections
+\[
+ w_i'=255-w_i,\quad p_i'=255-p_i,\quad
+ n_i'=511-n_i,\quad s_i'=511-s_i.
+\]
+The west/east labels use the same eight-bit bijection and the north/south
+labels the same nine-bit bijection. Thus edge equality and inequality,
+including the typed Start and forbidden-color conditions, are preserved.
+The seven physical marker bits and the occupancy bits are kept. An empty
+cell still has zero physical label bits; complementation is the relabeling
+of genuine tiles, not an unconditional complement of every empty bit.
+
+Put
+\[
+ u_i=w_i+2^8n_i+2^{17}p_i+2^{25}s_i.
+\]
+The complemented packed label is $2^{34}-1-u_i$, so the new selector
+coefficient is
+\begin{equation}\label{eq:complement}
+ c_i=1+2^{10}(u_i+1)\qquad(0\le i\le942).
+\end{equation}
+Every nonselector coefficient and physical support position is as in the
+shared-marker construction. Exact reconstruction of all 943 tiles gives
+\[
+ \sum_e c_e=3,953,059,820,717,999,
+ \qquad\max_i c_i=15,049,678,914,561<2^{44}.
+\]
+The old complete coefficient sum was 12,917,846,596,842,415. Both sums
+include the nonselector controls; the reduction is not obtained by
+omitting any coefficient from the proof.
+
+\subsubsection*{The full new coefficient tuple}
+
+Now set $\rho=2^{47}$, $L=8807$, $B=\rho^L=2^{413929}$,
+$\beta=B-1$, and $\Lambda=\rho^{4393}+\rho^{5495}$.
+Besides~\eqref{eq:complement}, the complete nonzero controls are
+\begin{align*}
+ c_{1023+j}&=2^{10+j},&c_{1003+j}&=2^{27+j}&&(0\le j\le7),\\
+ c_{1013+j}&=2^{18+j},&c_{983+j}&=2^{35+j}&&(0\le j\le8),\\
+ c_e&=2^{44}&&&
+ e&\in\{992,1011,1022,1031,1095,2195,3296\}.
+\end{align*}
+All other $c_e$ vanish. Let $\mathcal E$ be their support together with
+the two coefficient-zero dummy positions 1063 and 1064. It has 986
+positions. Define
+\begin{align*}
+ K_0={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}+\rho^{8849}
+       +\sum_{e=0}^{3296}c_e(\rho^{4393-e}+\rho^{5495-e}),\\
+ M_C={}&\beta-\sum_{e\in\mathcal E\setminus\{1\}}\rho^e-2\rho^{1063},\\
+ C_{\rm core}={}&\sum_{e=1013}^{1022}\rho^e+
+              \sum_{e=1065}^{1073}\rho^e+\rho^{2195}+\rho^{3296},\\
+ M_F={}&2B+3+(2^{47}-2)\Lambda+C_{\rm core}-\rho^{8792}
+                +(2^{28}-3)\rho^{7694}-\rho^{7691}.
+\end{align*}
+These are fixed integers. Every exponent and finite sum limit is fixed.
+The exact 943-tile data and the complete 3297-slot coefficient array are
+supplied; all four binary integers are also materialized. In particular,
+no unspecified tile enumeration or proof search is needed to define them.
+
+The positive native high-mask padding behind the compressed $M_F$ formula
+is fifteen full fields at 8792--8806, three full fields at 7691--7693,
+and bits 2--27 at field 7694. Its population is
+$15\cdot47+3\cdot47+26=872$. Together with the unchanged 114 core
+tests, this gives 986 ones, exactly matching the physical low support.
+The source shift by $\beta$ is applied once. All four ports are changed
+coherently; none is imported numerically from the radix49 tuple.
+
+\subsubsection*{Why the old carry obstruction no longer applies}
+
+The complete predecoded convolution bound, including the exceptional
+dummy and every temporal phase, maps the carry interval $0,\ldots,29$
+into itself. Thus
+\[
+ \#\{\hbox{selected tiles}\}+k\le943+29=972<1024.
+\]
+The ten low tested bits therefore recover zero or one selected tile.
+The remaining payload bits recover the complemented label and, by the
+same shared-marker counting argument, all seven marker bits individually.
+
+After this decoding, the selector maximum is below $\rho/8$ and the
+entire nonselector control sum is $\rho-1024$. The complete decoded
+convolution and temporal estimate, even with the earlier incoming carry,
+is strictly below $13\rho$. Hence the actual outgoing carries are at
+most 12. This bound protects the anchor predecessors and all subsequent
+local resets.
+
+At radix47 an occupied clause has raw value $\rho+1$. Its canonical
+digit is one and it emits carry one. This carry must not be silently
+dropped. The proof explicitly resets it before every later tested copy,
+anchor, padding, or origin field. For example, the larger clause
+predecessor has raw bound at most $1+7\cdot2^{44}-2^{10}$, and adding
+12 still leaves it below $\rho$. The two phase-anchor predecessor
+identities also leave room for every temporal phase plus carry 12.
+They recover integral temporal phase and whole-cell alignment as before.
+The raw padding predecessors at 7690 and 8791 are bounded by a single
+selector coefficient plus the incoming carry, so both reset. The complete
+zero fields 7691--7695 and 8792--8806 then validate the new padding.
+
+These arguments preserve the positive-source slack, all simultaneous
+safe-dummy changes, and the actual rank identity. They supply the same
+canonical $R\equiv3\pmod4$ and
+$\pc(R)=3dN+2$ interface required by the P66 converse. The full ordinary
+proof and the independent review are included in \file{radix47/}.
+
+\subsubsection*{The new finite controller}
+
+Here $d=47\cdot8807=413929$. Choose
+\[
+ \lambda=1012691>d,\qquad
+ \lambda-1=10\cdot101269,
+ \qquad101269=\operatorname{lcm}(23,4403).
+\]
+The exact residues are:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Modulus & $B$ & $K_0$ & $1+BK_0+B^2$\\
+\midrule
+47 & 12 & 5 & 17\\
+8807 & 2677 & 4079 & 5042\\
+1012691 & 959313 & 1005855 & 834350\\
+\bottomrule
+\end{tabular}
+\end{center}
+The exact orders at these three moduli are respectively
+$23$, $4403$, and $1012690$. Finally,
+\[
+ B^{\lambda-1}\equiv1+282338\lambda\pmod{\lambda^2}.
+\]
+All controller units are nonzero and the lift has valuation one. The
+same cofinal CRT and Boolean-subset rank-tuning proof now applies with
+the new $d$, prime, spacing, and tuple. Together with the complete
+carry/alignment proof, it establishes the ZFC-provable equivalence
+between positive unsolvability of~\eqref{eq:p66} at this tuple and
+$\Con(\ZFC)$.
+
+\begin{center}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Tuple & $\beta$ bits & $K_0$ bits & $M_C$ bits & $M_F$ bits & Raw bytes\\
+\midrule
+Radix55 & 484385 & 486696 & 484385 & 484386 & 242484\\
+Radix53 & 466771 & 468998 & 466771 & 466772 & 233666\\
+Completed radix49 & 431543 & 433602 & 431543 & 431544 & 216030\\
+New radix47 & 413929 & 415904 & 413929 & 413930 & \textbf{207214}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The new tuple saves 26,452 raw bytes, about 11.32\%, against the verified
+radix53 tuple. Its compressed four-coefficient payload is 8,356 bytes.
+The scalar $B=2^{413929}$ is also smaller than the collection's previously
+stated $2^{429959}$ native-base endpoint; this statement concerns that
+scalar, not a comparison of every metric of the two different encodings.
+
+Label complementation itself has predecessors in the repository. The new
+result is this complete indexed943/shared-marker/radix47 composition,
+the corrected carry bounds and resets, its entire coherent tuple, and the
+completed controller. It is not a claim to have invented complementation
+or to have proved a globally smallest coefficient tuple.

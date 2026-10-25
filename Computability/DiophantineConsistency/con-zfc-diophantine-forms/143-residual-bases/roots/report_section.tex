@@ -1,0 +1,208 @@
+\section{Primitive odd carriers: fourteen integers at degree 86}
+\label{sec:root-primitives}
+
+The auxiliary Pell root and the triangular positivity coordinate can be
+combined directly, without carrying the first Pell root through a three-root
+norm. The resulting complete equation has fourteen unrestricted integer
+unknowns, exact degree $86$, and $112$ live binary operations. It improves
+both degree and arithmetic length over the retained $14/88/119$ point.
+A $14/94/110$ companion saves two more operations at greater degree.
+The proof changes no fixed numeral or native/compiler calibration.
+
+\begin{center}
+\begin{tabular}{lrrr}
+Construction & Integer unknowns & Exact degree & Operations\\\hline
+Primitive auxiliary/guard carrier &14&86&112\\
+Primitive strong/guard carrier &14&94&110\\
+Exact recompilation of old two-root equation &14&88&115\\
+Exact recompilation of old three-root equation &13&156&125
+\end{tabular}
+\end{center}
+The $88/115$ row is dominated by $86/112$ and is retained to isolate the
+compiler-only saving. Arithmetic operations mean live binary addition,
+subtraction and multiplication, including multiplication by constants;
+these counts do not measure bit complexity.
+
+\subsection{Common arithmetic front and the precise inherited interface}
+The six fixed integers are exactly the retained source34 tuple
+$(\beta,K_0,M_C,M_F,A_c,B_c)$, with $M_F$ already shifted. In particular
+$\beta=2^{1064921}-1$, $A_c=2^{1113}$ and $B_c=2^{666104}$.
+Their complete authenticated payloads and finite reconstruction recipe
+accompany the DAGs. Define polynomial abbreviations
+\begin{align*}
+ J&=6j+1,&q_m&=\beta J,&q&=q_m+1,\\
+ W&=12w+4,&X&=qW,&Y&=v,\\
+ F&=(K_0+W)C-zq_m,\\
+ R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ E&=XY,&a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ k&=R+1+hE,&\eta&=c-Yk,&L&=E(Yk),&I&=(2r+1)c^2,\\
+ M&=2q^3,&U&=MH,&K_\ell&=X(2X-3c)-2,\\
+ Z&=Un+MK_\ell+H(Y-q^3),&
+ D_e&=(A_cF-q)^2+(B_cC-q)^2,\\
+ \mathcal B&=(Yk)^2(q^2-D_e)-q^2\bigl(4(Y\eta)^2+(kq^3)^2\bigr),\\
+ A&=(Z+Uk)^2+4U(LZ-U).
+\end{align*}
+For typographical width, the equation for $R$ and the displayed budget
+are read across their full lines; all names are abbreviations, not witnesses.
+The fifteen-integer parent additionally uses $f,y,p_1,p_2,p_3$ and
+\begin{align*}
+ Q&=\Delta(f^2-1),&V&=f^2(cT-R)-c,\\
+ B_s&=f^2-\Delta I^2-1,&
+ C_a&=V^2-(Q-1)y(2V+y)-1,\\
+ B_g&=\mathcal B-1-p_1^2-p_2^2-p_3(p_3+1).
+\end{align*}
+Its equation is $A^2+B_s^2+C_a^2+B_g^2=0$.
+The retained ordinary proof identifies integer-zero existence with finite
+syntactic ZFC refutability. The following new maps restore an actual zero of
+this precise parent, rather than introducing a new source interpretation.
+
+The facts needed before extraction hold on every integer assignment.
+The integer $q$ is even and nonzero, $H$ is odd and nonzero, and $U\ne0$.
+Also $|X|\ge8$, so $a=(X+1)Y$ is zero or has $|a|\ge7$; hence
+$\Delta=(a+2)^2-1\ge3$. The polynomial $A$ is a square modulo $4$,
+so $A\ne-2$. Since $\Delta$ is $0$ or $3$ modulo $4$, $B_s$ is $0,1$
+or $3$ modulo $4$, and $B_s\ne-2$ as well.
+
+\subsection{An odd carrier with no exceptional zero branch}
+\begin{lemma}[Primitive merger]
+Let $b,d,e,s\in\Z$, with $d\ne0$. Set
+\[
+ G=4b+1,\qquad K=d\bigl(s(s+1)-b\bigr)-e,
+ \qquad N=K^2-Gde.
+\]
+Then $N=0$ if and only if there are integers $g,u$ with
+\[
+ g^2=G,\qquad du^2=e,\qquad 2s+1=g+2u.
+\]
+\end{lemma}
+\begin{proof}
+Put $x=2s+1\ne0$. Direct expansion gives
+\[
+ 16N=\bigl[d(x^2+G)-4e\bigr]^2-4d^2x^2G.
+\]
+At a zero, $g=[d(x^2+G)-4e]/(2dx)$ is rational with integral square $G$,
+so it is an integer. Since $G\equiv1\pmod4$, $g$ is odd. Thus
+$u=(x-g)/2$ is integral, and the defining relation for $g$ gives $du^2=e$.
+Conversely substitution gives $K=dgu$, hence $N=0$.
+The argument permits negative $d,e$ and proves, rather than assumes,
+nonnegative $G$. In particular it loses no irrational-cancellation or
+zero-carrier branch.
+\end{proof}
+The generic primitive identity is already present in the retained parity-norm
+literature; the new result is its placement in this free-scale interface and
+the complete degree/cost reduction.
+
+\subsection{The complete degree-86 equation}
+Use the fourteen unrestricted inputs
+\[
+ (j,C,z,h,r,v,w,T,c,n,f,p_2,p_1,s).
+\]
+Keep the front and $Q,V$ above, and define
+\begin{align*}
+ B&=\mathcal B-p_1^2-p_2^2,&G&=4B-3,&\delta&=Q-1,&C_y&=QV^2-1,\\
+ K&=\delta\bigl(s(s+1)-B+1\bigr)-C_y,&
+ N&=K^2-G\delta C_y,&S&=f^2-\Delta I^2.
+\end{align*}
+The single equation is
+\begin{equation}\label{eq:root86}
+ \boxed{\;P_{86}=(A+1)S(N+1)-1=0.\;}
+\end{equation}
+This is an ordinary polynomial with fixed natural powers and no divisions,
+radicals or hidden witnesses. Its full division-free DAG is supplied.
+
+\begin{proposition}
+Equation~\eqref{eq:root86} has an integer zero if and only if the fixed
+fifteen-variable parent does.
+\end{proposition}
+\begin{proof}
+At a zero, the three integer factors $(A+1),S,(N+1)$ are units. The first
+cannot be $-1$ because $A\ne-2$, and the second cannot be $-1$ because
+$S=B_s+1$ and $B_s\ne-2$. Thus $A=B_s=N=0$.
+The strong row implies $Q=\Delta^2I^2$, which is $0$ or at least $9$;
+therefore $\delta\ne0$. Apply the lemma with
+$(b,d,e)=(B-1,\delta,C_y)$, obtaining odd $g$ and integral $u$.
+Restore
+\[
+ p_{3,\mathrm{old}}=(g-1)/2,\qquad y_{\mathrm{old}}=u-V.
+\]
+All other inputs are unchanged. Then $B_g=0$ and
+\[
+ C_{a,\mathrm{old}}=QV^2-(Q-1)(V+y_{\mathrm{old}})^2-1
+                  =C_y-\delta u^2=0.
+\]
+This includes $I=0$, where $Q=0$, $\delta=-1$ and $C_y=-1$.
+
+Conversely, from any parent zero set $s=p_{3,\mathrm{old}}+V+y_{\mathrm{old}}$
+and retain all other common inputs. With
+$g=2p_{3,\mathrm{old}}+1$ and $u=V+y_{\mathrm{old}}$, the lemma applies;
+hence $N=0$ and the other two factors are $1$.
+These maps work on every zero, not just a canonical family.
+\end{proof}
+
+\subsection{The degree-94, 110-operation alternative}
+Use inputs $(j,C,z,h,r,v,w,T,c,n,y,p_1,p_2,s)$ and replace $f^2$ by
+\[
+ D_s=\Delta I^2,\quad F_s=1+D_s,\quad Q=\Delta D_s,
+ \quad V=F_s(cT-R)-c.
+\]
+Keep $B=\mathcal B-p_1^2-p_2^2$, $G=4B-3$, and put
+\[
+ K=s(s+1)-B-D_s,\quad N=K^2-GF_s,
+ \quad E_a=V^2-(Q-1)y(2V+y).
+\]
+The complete equation is
+\[
+ \boxed{\;P_{94}=(A+1)(N+1)E_a-1=0.\;}
+\]
+Here $F_s$ is $0$ or $1$ modulo $4$, so $N=K^2-GF_s$ is $0,1$ or $3$
+modulo $4$ and cannot be $-2$. The first two factors must consequently
+both be $1$, forcing $A=N=0$ and $E_a=1$. Apply the same lemma with
+$(b,d,e)=(B-1,1,F_s)$ to recover $f^2=F_s$ and odd $g^2=G$; restore
+$p_3=(g-1)/2$. Conversely set $s=p_3+f$ at a parent zero. This proves
+both directions without additional Pell existence assumptions.
+
+\subsection{Exact degrees, compiler savings, and verification}
+Write
+\begin{gather*}
+ q_0=6\beta j,\quad X_0=12q_0w,\quad Y_0=v,\quad
+ R_0=q_0^4z-12q_0^3wC,\quad a_0=X_0Y_0,\\
+ U_0=8q_0^3X_0Y_0,\quad L_0=X_0Y_0^2R_0,
+ \quad Z_0=U_0n+4q_0^3X_0^2.
+\end{gather*}
+The complete degree-22 carrier form is
+$A_{22}=U_0^2R_0^2+4U_0L_0Z_0$; the degree-18 budget form is
+$-R_0^2q_0^8$. The first carrier summand is the already-disclosed correction
+to the inherited printed leading form, not a new defect discovery.
+Its omission does not change the old degree or the following $n$-dependent
+coefficient witnesses. The checker propagates the entire actual DAG.
+
+For $P_{86}$ the norm has degree $52$, with top form
+$a_0^4f^4R_0^4q_0^{16}$; the strong unit has degree $12$.
+For $P_{94}$ the norm and auxiliary unit both have degree $36$, with top
+forms $R_0^4q_0^{16}$ and $32a_0^6r^4c^8R_0y$.
+The unique highest product in each finalizer gives
+\begin{align*}
+ [j^{51}w^9v^{10}z^5f^4r^2c^4n]P_{86}
+   &=-2^{79}3^{60}\beta^{51}\ne0,\\
+ [j^{55}w^9v^{10}z^6r^4c^8yn]P_{94}
+   &=2^{86}3^{64}\beta^{55}\ne0.
+\end{align*}
+Their exponent sums are $86$ and $94$, respectively, so the degrees are
+attained at the actual fixed numeral tuple.
+
+The old $13/156/127$ evaluator computed an auxiliary residual $E-1$ and
+later added $1$ back. Compiling $E$ directly removes two operations, giving
+$13/156/125$ with the identical polynomial. The old $14/88/119$ evaluator
+did the same for both auxiliary and strong residuals; removing both pairs
+gives $14/88/115$, again pointwise-identical.
+
+The independent checker binds every named polynomial cut, all live gates,
+complete leading forms and actual nonzero coefficients. It checks the
+primitive and lifting identities, signed and residue controls, complete
+source/numeral bytes and all $453$ separate live-gate corruptions, normally
+and under Python optimization. A rebuild reproduces every DAG byte for byte.
+The numeral recipe separately reconstructs all six fixed integers.
+These are finite algebraic checks, not a decision of zero existence. The
+unbounded signed-Pell/native/compiler/refutation calibration remains the
+explicit inherited ordinary dependency; no new end-to-end proof-assistant or
+object-language consistency certificate is asserted.

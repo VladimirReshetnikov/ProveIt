@@ -1,0 +1,119 @@
+\section{Thirteen variables with two divisibility anchors}
+\label{sec:thirteen}
+
+This construction removes $f$ as an independent unknown as well as the two
+separate square witnesses. Its variables are
+\[
+J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,\gamma,t\in\Pos.
+\]
+Retain the common prefix of Section~\ref{sec:source}. In particular,
+$A=a+2$ is the main Pell base and $D=X+ac+\gamma H$ its retained
+candidate abscissa. Define
+\begin{align*}
+j&=ADi,& U&=jc^2,& W&=\Delta\Omega U^2,\\
+F_2&=1+W,& Q&=\Delta W,& G&=\Omega F_2,\\
+V&=F_2(cT-R)-c,&
+\mathcal E&=Q(t^2-GV^2)-t^2+G.
+\end{align*}
+The equation is
+\begin{equation}\label{eq:thirteen}
+\boxed{P_{13}=(3\mathcal E+1)N_1N_kN_t-1=0.}
+\end{equation}
+Its supplied evaluator has 72 operations: 41 multiplications, 19 additions,
+and 12 subtractions. Its exact total degree is 433.
+
+\begin{theorem}\label{thm:thirteen}
+The positive existence statement for \eqref{eq:thirteen} is equivalent to a
+finite ZFC refutation, with the same entire fixed coefficient tuple. Therefore
+\[
+\ZFC\vdash
+\bigl(\neg\exists\boldsymbol{x}\in\Pos^{13}\;P_{13}(\boldsymbol{x})=0\bigr)
+\longleftrightarrow\Con(\ZFC).
+\]
+\end{theorem}
+\begin{proof}[Soundness]
+The unit argument gives $\mathcal E=0$, $N_1=1$, and $N_kN_t=1$.
+All of $G,F_2,Q$ are positive and $Q>1$.
+The equation $\mathcal E=0$ excludes $V=0$.
+Put $B=Q-1$ and $C_a=QV^2-1$. The required coprimalities are proved
+before recovering any missing square root.
+
+First, $\Omega\mid Q$ and $F_2\equiv1\pmod\Omega$, so
+\[
+\gcd(\Omega,F_2BC_a)=1.
+\]
+Next $W=F_2-1$ and $V\equiv-c\pmod{F_2}$ imply
+\[
+B\equiv-\Delta-1=-A^2\pmod{F_2},
+\]
+\[
+C_a\equiv-\Delta c^2-1=-D^2\pmod{F_2}.
+\]
+The second equality uses the already established $N_1=1$.
+The two factors in $j=ADi$ ensure $F_2\equiv1\pmod A$ and
+$F_2\equiv1\pmod D$. Hence $\gcd(F_2,BC_a)=1$.
+Together these statements give
+\[
+\gcd(G,BC_a)=1,\qquad \gcd(\Omega,F_2)=1.
+\]
+Lemma~\ref{lem:product} supplies $G=g^2$, $g\mid t$, and
+$y=t/g>0$ with $QV^2-(Q-1)y^2=1$.
+The positive coprime factors of $G=\Omega F_2$ are individually squares:
+\[
+\Omega=\tau^2,\qquad F_2=f^2,\qquad g=\tau f.
+\]
+Set $I_0=\tau U$ and $i_0=I_0/c^2=\tau ADi>0$.
+Then
+\[
+f^2-\Delta I_0^2=1,\qquad Q=(\Delta I_0)^2,
+\qquad V=f^2(cT-R)-c.
+\]
+These restore the complete first, main, strong, and auxiliary source norms.
+Together with $N_kN_t=1$, they give a positive zero of $P_{66}$.
+\end{proof}
+\begin{proof}[Completeness]
+Begin with canonical outer data and $\tau^2=\Omega$.
+By Lemma~\ref{lem:period}, choose a positive strong Pell pair $f,I_0$
+such that $\tau ADc^2\mid I_0$. Put
+\[
+i=I_0/(\tau ADc^2),\quad U=I_0/\tau.
+\]
+Then $W=\Delta I_0^2=f^2-1$, $F_2=f^2$, $G=(\tau f)^2$,
+and $Q=(\Delta I_0)^2$.
+Reconstruct positive $T,V,y$ by \eqref{eq:aux-source}, and set
+$t=\tau f y$. All factors in \eqref{eq:thirteen} have the required values.
+This extra divisibility is imposed only on the freely chosen strong Pell
+ordinate; the canonical outer computation is unchanged.
+\end{proof}
+
+\subsection{Why both anchors are present}
+
+The factor $A$ controls the possible common primes of $F_2$ with $Q-1$.
+The factor $D$ controls the possible common primes of $F_2$ with $QV^2-1$.
+Neither coprimality is inferred merely from $F_2=1+W$.
+The main norm must be recovered before using the residue $-D^2$.
+This explicit ordering avoids the shared-squareclass obstruction that would
+invalidate an unrestricted product-of-radicands shortcut.
+
+The construction also avoids forcing $G\mid Q$: here only $\Omega\mid Q$.
+The additional coprimalities supply exactly what the valuation argument
+needs. A doubled strong-pair construction supplied an intermediate 72/465
+form; the anchored version improves its degree at the same operation count.
+That intermediate is not counted as another preferred endpoint.
+
+\subsection{Exact degree and a nonzero coefficient}
+
+The relevant register degrees are
+\[
+\deg j=18,\quad\deg U=28,\quad\deg W=90,\quad\deg Q=102,
+\quad\deg G=112,\quad\deg V=96.
+\]
+Thus $-QGV^2$ is the unique highest-degree summand of $\mathcal E$, of
+degree 406. Adding the factor degrees 18, 7, and 2 yields 433.
+For example, the coefficient of
+\[
+J^{268}w^{39}s^{76}\eta^{37}i^8T^2\gamma hz
+\]
+is $-24\beta^{268}\ne0$. The displayed exponents sum to 433.
+The delivered graph and independent leading-form calculation certify this
+degree exactly, rather than merely bounding it from above.

@@ -1,0 +1,46 @@
+\section{An alternate coherent radix55 specialization}
+The separate \texttt{compact\_radix55/} component retains the six free-port
+DAGs, domains, counts and degrees, but binds \emph{all four} ports to the
+accepted current radix55 native instance. The original radix67 component
+is unchanged. The specialized polynomials differ: their positive $\beta$
+values, and hence their displayed leading coefficients, differ.
+
+This is credited reuse of ProveIt's accepted wrapping-controller encoding,
+not a new encoding claim. Total raw coefficient storage decreases from
+295,388 to 242,484 bytes (52,904 fewer); the largest port decreases from
+592,884 to 486,696 bits. No printed-page or PDF-byte gain is claimed.
+The full independent reconstruction and whole binding are supplied.
+With the same finite $\Phi$, support and ordered 943 tiles as the fixed
+recipe, now let $\rho=2^{55}$, $\mathcal B=\rho^{8807}$ and
+$\beta=\mathcal B-1$. Define $K_0,M_C$ by the same formal exponent
+recipes, but replace the \emph{entire} source-mask padding by
+\[
+\begin{aligned}
+M_F={}&\beta+4+(2^{51}-2)(\rho^{4393}+\rho^{5495})+C_{\rm core}\\
+ &+(\rho-1)\sum_{j=8792}^{8806}\rho^j+(2^{41}-4)\rho^{7691}.
+\end{aligned}
+\]
+where $C_{\rm core}=\sum_{j=1013}^{1022}\rho^j+
+\sum_{j=1065}^{1073}\rho^j+\rho^{2195}+\rho^{3296}$.
+Simply changing the radix in the old padding would be wrong.
+
+The bridge uses the complete accepted native theorem, not numerical boxes
+alone. Its repaired wrapping controller, with the two actual unit residues
+3422 and 500242 at 8807 and 581197, constructs fresh canonical words and their
+\emph{actual} rank with $R\equiv3\pmod4$, $\operatorname{pc}(R)=3dN+2$,
+$q=\mathcal B^N$, $X=2^R$, and $Y/q^3$ positive odd.
+Its positive transport coordinate satisfies $B/(q-1)=z_{\rm source}-1\ge0$.
+These are exactly the outer data required by the six-chart converse;
+all seed, strong and auxiliary Pell witnesses are rebuilt afresh.
+For soundness the six-chart arithmetic restores the same half-binomial,
+$q^3\mid Y$, rank and transport fractions. Reconstruct the positive
+unscaled source at $A_{\rm source}=Y(X+1)+2$, choose its raw positive
+auxiliary quotient $T^*$. With the fresh source discriminant
+$\Delta_*=A_{\rm source}^2-1$ and fresh source witnesses $i_*,c_*$,
+set $S=\Delta_* i_*c_*^2$. These are not the reduction chart's discriminant or private witnesses.
+Its accepted P66 factors satisfy
+$N_0=N_1=N_a=N_k=N_t=1$, $N_s=\Delta_*$, so that whole radix55
+polynomial vanishes and its accepted calibration supplies a refutation.
+No old radix67 native word, isolated coefficient or private witness is reused.
+The full bridge proof and exact source pins are supplied; the old false
+modulo 5 unit is not imported into the repaired controller.

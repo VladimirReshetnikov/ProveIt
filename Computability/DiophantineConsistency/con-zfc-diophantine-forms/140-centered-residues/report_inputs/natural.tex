@@ -1,0 +1,88 @@
+\section{Natural-domain companion quartics}\label{sec:natural}
+
+There is a separate useful composition on the nonnegative-integer route.
+It combines the cofinal semantic anchor with the four-group low-digit
+budget of the graph-digits package \cite{cofinal,graphdigits}.  Its three
+selected endpoints are
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Variant & Variables & Residuals & Monomials & Height\\
+\midrule
+Smaller dimension & 221 & 171 & 10,216 & 2,445,412,949,744\\
+Balanced & 222 & 172 & 9,522 & 83,954,186\\
+Sparse & 223 & 173 & 6,858 & 83,953,724\\
+\bottomrule
+\end{tabular}
+\end{center}
+All have exact degree four and range over $\N$, not over unrestricted
+integers. The balanced and sparse points avoid the very large coefficient
+height paid by the 221-variable projection. The balanced 222-variable
+point improves every listed metric of the incoming 226-variable
+graph-digits endpoint, which had 175 residuals, 10,314 monomials, and
+height 87,839,583.
+
+\subsection{Pooling bounds in a nonnegative domain}
+
+Suppose $m$ nonnegative remainders share a positive denominator $D$.
+Instead of $m$ separate rows $r_i+s_i=D-1$, retain one nonnegative slack
+$s$ and impose
+\begin{equation}\label{eq:nat-pool}
+\sum_{i=1}^m r_i+s=D-1.
+\end{equation}
+Every individual interval is recovered by
+$s_i=s+\sum_{j\ne i}r_j\ge0$. Completeness requires the additional
+bound $\sum_i r_i<D$. This is a genuine extra requirement; it cannot be
+assumed merely because each $r_i<D$ separately.
+
+The natural parent's radix is
+\[
+q=(NS)^K,\qquad K=x,\qquad
+S=1+C+\sum\text{the eight independent encoded columns}.
+\]
+This $S$ is distinct from the signed construction's $H_0$, and the base
+contains $N$, not $B$. Let $U=NS$. Every ordinary positive upper index is
+less than $S$, so each of its needed low coefficients is at most
+$U^{K-1}$. The derived label satisfies $J\le S^\ell$ and
+$\ell t<K$, giving the same bound for its coefficients through degree
+$t$. In canonical completeness the factorial upper index $F^2+t<N$;
+its low coefficients also obey the same bound. The inherited inequalities
+give $U>5$.
+
+For a common lower index $k$, the sum of the $m\le5$ canonical low
+blocks therefore obeys
+\[
+\sum_i r_i\le mU^{K-1}\frac{q^k-1}{q-1}<q^k=D.
+\]
+For the strict inequality, $m\le5<U$ implies
+$mU^{K-1}\le q-U^{K-1}\le q-1$. Thus \eqref{eq:nat-pool} has its
+required nonnegative slack. Four groups replace eleven individual
+bounds, saving seven source slack coordinates and seven rows.
+
+There is also a redundant output bound. Immediately after exact power
+recovery, the ceiling gives $F\ge1$, $B>F$, and $B\ge2$; the endpoints
+give $K=x\ge2$. Hence
+\[
+N=B^K\ge B^2,\qquad q=(NS)^K\ge N^2\ge B^4>B.
+\]
+The output slack $q-B-1$ can be restored nonnegatively without using the
+factorial conclusion. Deleting it changes the later projection and
+slightly improves coefficients, but is dimension-neutral after the
+selected contractions. The final numbers in the table are measured
+from the complete emitted polynomials.
+
+\subsection{Proof and exact projection}
+
+A new natural zero restores every old remainder slack by the displayed
+nonnegative polynomial formula and restores the output slack using the
+power bootstrap. The inherited cofinal-anchor source then decodes a
+finite refutation. Conversely, the canonical refutation witnesses have
+the spare radix capacity proved above and extend to the pooled rows.
+The different final projections have checked natural restoration maps;
+two of the restorations use exact rational sum-of-squares certificates
+for nonnegativity rather than an incorrect coefficientwise sign test.
+
+Each natural companion therefore satisfies the same ZFC-provable
+no-zero equivalence on its specified natural domain. The complete
+balanced residual list appears in Appendix~\ref{app:natural}; all three
+literal expansions and their certificates are included in the archive.

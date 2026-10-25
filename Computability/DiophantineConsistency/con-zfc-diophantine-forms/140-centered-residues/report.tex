@@ -1,0 +1,369 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,microtype,xcolor}
+\usepackage{xurl,hyperref,listings,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,pdftitle={Centered residue certificates and reusable Pell denominators},pdfauthor={Research prepared with AI assistance for Vladimir Reshetnikov}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\ZF}{\mathrm{ZF}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=3pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Diophantine consistency: centered residues}
+\fancyhead[R]{\small 25 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20}}
+\input{report_inputs/metrics.tex}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{14mm}
+{\Large Research contribution for ProveIt\par}
+\vspace{9mm}
+{\huge\bfseries Centered residue certificates\par}
+\vspace{3mm}
+{\huge\bfseries and reusable Pell denominators\par}
+\vspace{8mm}
+{\Large Smaller explicit Diophantine equations\par}
+{\Large for the syntactic consistency of ZFC\par}
+\vspace{12mm}
+Prepared for Vladimir Reshetnikov\par
+25 October 2026\par
+Research, code, and exposition developed with AI assistance\par
+\vspace{11mm}
+\begin{abstract}
+We give new explicit integer-coefficient polynomials whose absence of solutions, on their stated domains, is provably equivalent in ZFC to $\Con(\ZFC)$. The main structural reduction replaces eleven separate signed remainder intervals by quadratic radius certificates. A small canonical-residue bound, established before the factorial interpretation, makes these certificates sufficient to recover all the original Euclidean remainders. Two product coordinates merge the first two groups, and a parity construction replaces a three-square radix guard by one odd-square variable. The resulting direct proof-calculus quartic has \SignedVariables{} unrestricted integer variables, \SignedRows{} quadratic residuals, \SignedTerms{} collected monomials, and coefficient height \SignedHeight{}.
+
+A separate admissible-denominator theorem improves the compact native construction. Its ten-positive-variable equations have operation/degree pairs $75/626$, $76/464$, and $77/460$. Every large coefficient is supplied literally and by a complete finite reconstruction. Natural-domain companion quartics and all coefficient expansions are included. The new proofs are ordinary mathematical proofs composed with the identified inherited numerical-calculus and native calibrations; the package does not assert a new end-to-end proof-assistant verification or a global simplicity minimum.
+\end{abstract}
+\vfill
+\small
+Comparison snapshot: ProveIt commit\par
+\code{e0c98c629bf10d30b695884f6b1d2ab361bdf513}.\par
+All six ZIP archives then present in \code{docs/incoming} were inspected.
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+
+\section{The result and what ``simplest'' means here}
+
+We use $\N=\{0,1,2,\ldots\}$. A consistency statement refers to the absence of a finite syntactic derivation of falsity from the repository's fixed ZFC axiom predicate. No semantic soundness assumption about ZFC is imposed. The aim is a fixed polynomial $P$ and a fixed witness domain $D$ such that
+\begin{equation}\label{eq:target}
+\ZFC\vdash \bigl(\neg\exists\mathbf x\in D\;P(\mathbf x)=0\bigr)
+\longleftrightarrow \Con(\ZFC).
+\end{equation}
+An equation of this kind does not decide its own solvability. In particular, the proof of \eqref{eq:target} does not prove $\Con(\ZFC)$.
+
+There is no single accepted ordering of ``simplest.'' Number of unknowns, degree, expanded support, coefficient height, binary evaluation cost, and the size of a complete coefficient specification measure different things. This contribution gives improvements on two concrete fronts, and records their domains separately.
+
+\input{report_inputs/results_table.tex}
+
+The strongest direct integer parent in the newly arrived cofinal-anchor package has 282 unknowns, 192 quadratic residuals, 5,491 monomials, and height 128,446 \cite{cofinal}. The new direct equation uses the same numerical proof-calculus route. It does not read or simulate K215 and does not specialize Jones's universal equation. The compact equations retain the established indexed native tuple; their improvements concern the arithmetic certificate, rather than a new logical encoding.
+
+These are not global variable-count records. The audited repository already contains nine-positive-variable equations and separate universal-polynomial quartics with far fewer unrestricted integer variables than the direct construction \cite{repository}. The direct construction has a different attraction: all coefficients are small explicit integers, and its mathematical route starts from a finite numerical proof calculus. Our comparison of direct quartics is therefore explicitly restricted to that family.
+
+\subsection{Precise finite definitions}
+
+Each direct equation is defined by its complete ordered list of integer quadratic residuals:
+\begin{equation}\label{eq:sos}
+P_{\mathrm{dir}}(x_0,\ldots,x_{\SignedVariables-1})
+=\sum_{j=0}^{\SignedRows-1} R_j(x_0,\ldots,x_{\SignedVariables-1})^2.
+\end{equation}
+Every $R_j$ is printed in the appendix and supplied in \code{arithmetic/signed258/equation.json}; the independently collected polynomial is \code{arithmetic/signed258/expanded_polynomial.json}. An entry $[c,[i_1,\ldots,i_d]]$ denotes $c x_{i_1}\cdots x_{i_d}$, with the empty list denoting the constant term. The JSON is a literal finite coefficient list, not an oracle, a universal-polynomial placeholder, or a variable-exponent expression.
+
+The compact equation is printed in Section~\ref{sec:compact}. All of its auxiliary names are polynomial abbreviations. Precisely ten names are existentially quantified. Its four very large coefficients are fixed integers, supplied as byte payloads together with a finite source recipe. They are not additional unknowns.
+
+\section{A centered-residue certificate}\label{sec:radius}
+
+The main new idea is to exploit information that the power representation already supplies. Once a modular numerator has been interpreted, its canonical low residue is known to be very small relative to its modulus. Consequently it suffices to put an unrestricted representative in a short interval around zero. One quadratic bound can do this for several representatives simultaneously.
+
+\begin{lemma}[Centered uniqueness]\label{lem:center}
+Let $D\ge1$ be an integer. Suppose $r,r_0\in\Z$, $r\equiv r_0\pmod D$, $0\le r_0<D/2$, and $|r|<D/2$. Then $r=r_0$.
+\end{lemma}
+\begin{proof}
+The difference $r-r_0$ is a multiple of $D$ and belongs to $(-D,D/2)$. Its only possible multiple of $D$ is zero.
+\end{proof}
+
+Put
+\begin{equation}\label{eq:g}
+g(a,b,c)=a^2+b^2+c(c+1).
+\end{equation}
+For integer inputs this is nonnegative, and every nonnegative integer is a value of $g$. For completeness of the latter statement, apply Legendre's three-square theorem to $4n+1$. It is not of the excluded form $4^e(8m+7)$. A three-square representation has exactly one odd coordinate; writing the even coordinates as $2a,2b$ and the odd one as $2c+1$ gives $n=g(a,b,c)$. This same standard representation is used in the inherited signed construction \cite{cofinal,sun}.
+
+\begin{theorem}[One radius certificate for several residues]\label{thm:radius}
+Let $1\le m\le56$, $D>0$, and $r_1,\ldots,r_m\in\Z$. Suppose the surrounding equations establish congruences
+\[
+r_i\equiv r_i^0\pmod D,\qquad 0\le r_i^0<D/15.
+\]
+The single quadratic equation
+\begin{equation}\label{eq:radius}
+D^2-4\sum_{i=1}^m r_i^2-1-g(a,b,c)=0
+\end{equation}
+forces $r_i=r_i^0$ for every $i$. Conversely the canonical representatives extend to a solution of \eqref{eq:radius} with integer $a,b,c$.
+\end{theorem}
+\begin{proof}
+Since $g\ge0$, equation \eqref{eq:radius} gives $4r_i^2\le D^2-1<D^2$. Thus $|r_i|<D/2$, and Lemma~\ref{lem:center} identifies every representative. Conversely,
+\[
+4\sum_i(r_i^0)^2<\frac{4m}{225}D^2\le\frac{224}{225}D^2<D^2.
+\]
+The integer $D^2-4\sum_i(r_i^0)^2-1$ is therefore nonnegative and has a representation \eqref{eq:g}.
+\end{proof}
+
+The certificate has degree two. Squaring it as one residual in \eqref{eq:sos} preserves total degree four. In particular, there is no hidden appeal to a nonpolynomial norm, an integer square-root operation, or a higher-degree sign test.
+
+\subsection{Why this replaces the old interval witnesses}
+
+The parent supplied, separately for eleven remainders, a slack $s_i$ and a three-variable representation of a nonnegative product:
+\[
+r_i+s_i=D_i-1,\qquad r_i s_i=g(a_i,b_i,c_i).
+\]
+Once $D_i>0$ was known, these equations implied $r_i,s_i\ge0$, hence $0\le r_i<D_i$. The eleven moduli belong to four groups of sizes $5,2,2,2$. Equation \eqref{eq:radius} replaces each whole group. Given its solution, set $s_i=D_i-1-r_i$ and restore the old product witnesses. Conversely, the arithmetic bounds below show that the parent already used the small canonical residues, so a new radius gap is representable.
+
+This is an equivalence of existential zero relations. It does not identify the old product witnesses with the new radius witnesses. The literal transformation deletes only coordinates private to the removed constraints, retains every unrelated row, and supplies explicit maps for the remaining coordinates. The final projection is checked separately; the number of deleted source witnesses alone does not predict the size of the projected quartic.
+
+\subsection{Merging two adjacent-power groups}
+
+The two low remainders at modulus $D_t=q^t$ and the five at modulus $D_{t+1}=q^{t+1}$ can share one radius. Introduce just two product coordinates
+\[
+u_1=qr_1,\qquad u_2=qr_2.
+\]
+Use $u_1,u_2$ and the other five remainders in \eqref{eq:radius}, with modulus $D_{t+1}$. Power recovery already gives $D_{t+1}=qD_t$ before this radius is interpreted. The canonical scaled remainders obey $q r_i^0<D_{t+1}/15$. Centered uniqueness therefore gives $u_i=qr_i^0$, and division by the positive integer $q$ gives $r_i=r_i^0$.
+
+The merged group has seven members, well within Theorem~\ref{thm:radius}. The two product equations are quadratic, so the final polynomial is still quartic. This change saves one variable relative to two separate three-variable radius gaps, while adding one residual. The final construction has groups of sizes $7,2,2$; the separate-group companion remains available because it has fewer rows and slightly fewer collected monomials.
+
+\section{The small-residue bound before factorial semantics}\label{sec:bootstrap}
+
+Here we state the exact inherited arithmetic interface on which the new reduction acts. Full predecessor proofs are retained beside the delivered source. The signed frame and orientation argument establishes the canonical Pell polynomials at each requested signed index before interpreting the power requests. Its square frame includes the actual bases, indices, and outputs, so this preliminary step uses no positivity assumption on the remainder variables being removed \cite{cofinal}.
+
+\subsection{Power and endpoint recovery}
+
+Write $t=16+u^2$, and let $F,B,V_0,x,y$ denote the parent's semantic coordinates. Its two retained factorial remainder guards give $B\ge1$ and
+\begin{equation}\label{eq:ceil}
+FB=V_0+s,\qquad s\ge0.
+\end{equation}
+The correctly oriented request at the positive index $t$ yields
+\[
+V_0=(F^2+1)^t\ge1.
+\]
+Thus $F\ge1$, $B>F$, and $B\ge2$. The cofinal beta base is
+\[
+y=V_0(V_0-1)>F+2.
+\]
+The signed power representation at base $B\ge2$ implies that its requested exponent $x$ is nonnegative. Indeed a negative exponent would give, by the same large-modulus congruence bound as the parent, an impossible equality $mB^j=1$ with $j\ge1$ and integer $m$. The two endpoint equations then imply
+\begin{align}
+x&=F+1+(y+1)u_0,\\
+x&=1+[1+(t+1)y]u_t,\\
+u_0&\ge0,\quad u_t\ge1,\quad x\ge2+(t+1)y.\label{eq:xlower}
+\end{align}
+
+Let $a_1,\ldots,a_9$ be the actual independent CRT representatives, and set
+\[
+H_0=1+\sum_{i=1}^9 a_i,\qquad K=x,\qquad U=BH_0.
+\]
+The radix guard supplies $q\ge1$. Each representative is the exponent of a request at base $q+1\ge2$, so the same negative-index argument forces $a_i\ge0$. It follows that $H_0\ge1$. The retained requests now establish
+\begin{equation}\label{eq:powers}
+N=B^K,\qquad q=(BH_0)^K=U^K,
+\qquad q^t,\ q^{t+1},\ q^{y+1},\ q^x.
+\end{equation}
+The derived-label numerator has upper index $J\ge0$, obtained from the fixed numerical constructor polynomial in the four parameter representatives. Its zero case is already excluded by the semantic Pell anchor. All numerator requests are consequently interpreted before any low-digit interval is used.
+
+For the radius-only intermediate, the old guard supplies $q\ge2$. For the final odd-square variant, Section~\ref{sec:odd-square} supplies $q\ge1$ and the recovery order just given. Both yield $q\ge B^2>V_0$ after \eqref{eq:powers}.
+
+\subsection{An explicit margin}
+
+Let $\ell=2^{22}$ be the unchanged checked degree majorant of the label polynomial. The source's constructor bound gives
+\begin{equation}\label{eq:jbound}
+J\le(\max(1,a_1,a_2,a_3,a_4)+1)^\ell\le(2H_0)^\ell\le U^\ell.
+\end{equation}
+This estimate is valid even when some actual representative is zero; it does not assume the stronger post-factorial positivity of the encoded index.
+
+Before identifying $F$ as a factorial, $V_0\ge2^t$ and \eqref{eq:xlower} give
+\[
+K\ge2+(t+1)2^t(2^t-1)>\ell(t+1)+4\qquad(t\ge16).
+\]
+For example, $2^{16}(2^{16}-1)>2^{22}+4$; the left side increases with $t$, so this elementary bound persists. In particular $K\ge6$ and $q\ge2^K>16$.
+
+For an ordinary upper index $a_i\le H_0$, every coefficient needed strictly below a lower index $k\le K$ satisfies
+\[
+\binom{a_i}{j}\le\max(1,a_i)^j\le H_0^{K-1}
+\le\frac{q}{B^K}\le\frac q{16}\qquad(0\le j<k).
+\]
+For the derived-label request, $k=t+1$ and \eqref{eq:jbound} gives
+\[
+\binom Jj\le\max(1,J)^j\le U^{\ell t}
+\le U^{K-4}\le q/16.
+\]
+For the factorial/product request, the inherited elementary binomial bound is
+\[
+\binom{F^2+t}{j}\le(F^2+1)^t=V_0<B^2\le q/16\qquad(0\le j\le t).
+\]
+The last inequality uses $q\ge B^K$, $B\ge2$, and $K\ge6$. This is deliberately established without invoking $F=t!$.
+
+\begin{lemma}[Low digits have room]\label{lem:digits}
+Suppose $q\ge16$, $D=q^k$, and all binomial coefficients through degree $k-1$ are at most $q/16$. The canonical remainder of $(q+1)^n$ modulo $D$ is
+\[
+r^0=\sum_{j=0}^{k-1}\binom nj q^j,
+\]
+and $0\le r^0<D/15$.
+\end{lemma}
+\begin{proof}
+Every displayed coefficient is below $q$, so the expression is a valid base-$q$ block. Moreover
+\[
+r^0\le\frac q{16}\frac{q^k-1}{q-1}<\frac{D}{15},
+\]
+using $q/(16(q-1))\le1/15$ for $q\ge16$ and the strict inequality $D-1<D$.
+\end{proof}
+
+All eleven low remainders therefore meet Theorem~\ref{thm:radius}'s hypotheses before factorial semantics is used. The four separate radius equations, or the three equations after the weighted merge, recover their exact canonical values. The modular digit for $\binom{F^2+t}{t}$ now gives the exact output $B$; the unchanged ceiling fixed-point argument gives $F=t!$. The original CRT range extraction and Horn-flow proof then apply in their established order. This ordering is the substantive point: a later interpretation is never used to justify a bound needed to obtain that interpretation.
+
+\section{One odd square can supply the initial radix guard}\label{sec:odd-square}
+
+The radius-only intermediate still retains the old exact-binomial output slack $o=q-B-1$ together with its three-variable sign certificate. The final construction removes that private slack and its sign witnesses and imposes instead
+\begin{equation}\label{eq:oddq}
+q=(2z+1)^2,
+\end{equation}
+where $z$ is one unrestricted integer. This is a quadratic residual and guarantees $q\ge1$ without another sign guard.
+
+\subsection{Soundness}
+
+Use the order in Section~\ref{sec:bootstrap}: recover $V_0$ at the already positive index $t$, then $F\ge1$ and $B\ge2$, then $x\ge0$ from the request $N=B^x$, and finally \eqref{eq:xlower}. The base $q+1\ge2$ orients all representative indices. Consequently $H_0\ge1$ and the exact radix request yields
+\[
+q=(BH_0)^x\ge B^2>B.
+\]
+Thus the omitted slack $o=q-B-1$ is nonnegative and admits a fresh representation \eqref{eq:g}. The remaining parent proof can be restored. In particular, neither $q>1$ nor $B<q$ was silently assumed to prove the exact power that supplies it.
+
+\subsection{Completeness and simultaneous parity choices}
+
+Start with a finite refutation and the parent's cofinal horizon and beta construction. Its chosen $y=V_0(V_0-1)$ is even. Every beta modulus $1+(i+1)y$ is therefore odd; their common period is odd. Adding that period permits choosing the global beta code $x$ even, while preserving all local residues and making it as large as required.
+
+At $F=t!$ the reciprocal CRT factors are $d_i=1+F^2/i$. Since $i\mid F$ and $F$ is even,
+\[
+F^2/i=F(F/i)\quad\hbox{is even},
+\]
+so every $d_i$, their product $B$, and $N=B^x$ are odd. CRT representatives can therefore be chosen with arbitrary prescribed parity by shifting them by the odd period $N^2$.
+
+Keep the parent's opposite parity for the two representatives determining the semantic anchor's parity. Choose the parity of a different representative to make $H_0=1+\sum a_i$ odd. This second choice does not change the anchor's parity. Ordinary representatives remain in $(0,2N^2]$; the designated dominant representative stays in $[2N^2,4N^2)$ and retains the parent's dominance bound. Thus all required anchor and range conditions still have witnesses.
+
+Now $U=BH_0$ is odd and $x$ is even. Hence
+\[
+q=U^x=(U^{x/2})^2,
+\qquad z=\frac{U^{x/2}-1}{2}\in\Z
+\]
+satisfies \eqref{eq:oddq}. The radius gaps are nonnegative by Theorem~\ref{thm:radius}, so fresh three-square witnesses finish the construction. All choices occur in the original dependency order; in particular the self-sized radix is chosen after the CRT representatives.
+
+\section{The direct polynomial and the logical endpoint}\label{sec:logical}
+
+The raw signed construction is transformed by exact algebraic factorization, elimination of integer coordinates with monic defining equations, and an integer translation. Each retained elimination has a polynomial restoration map. The independent checker verifies all substitutions and the complete collected sum of squares. The translation preserves the integer zero set and reduces coefficient size. These finite operations account for the final measured \SignedVariables{} coordinates, rather than an informal subtraction from the parent's count.
+
+The remaining arithmetic source is the inherited numerical calculus $\mathcal C_{222}$. Its finite local Horn-flow conditions recover a derivation of contradiction label $1$. Conversely any finite derivation supplies a padded local flow, CRT representatives, power witnesses, and the present radius and parity witnesses. Write $\operatorname{Ref}_{T}$ for the existence of a finite syntactic refutation in theory $T$. The two logical interfaces retained in the package are
+\begin{align*}
+\mathcal C_{222}(1)&\longleftrightarrow\operatorname{Ref}_{\ZF},\\
+\operatorname{Ref}_{\ZF}&\longleftrightarrow\operatorname{Ref}_{\ZFC}.
+\end{align*}
+They are the repository theorems \code{KEndpoint.c222_iff_zf_refutation} and \code{ConstructibleChoice.zf_refutation_iff_zfc_refutation} \cite{endpoint,choice}. The first is a machine-independent statement even though its file also contains machine endpoints. The second uses the constructible-model argument for removal of Choice.
+
+\begin{theorem}[The new direct equation]\label{thm:main}
+Let $P_{\mathrm{dir}}$ be the fixed polynomial \eqref{eq:sos} with the literal coefficients supplied in this package. Its degree is four, its domain is $\Z^{\SignedVariables}$, and
+\[
+\ZFC\vdash
+\left[\neg\exists\mathbf x\in\Z^{\SignedVariables}\;
+P_{\mathrm{dir}}(\mathbf x)=0\right]
+\longleftrightarrow\Con(\ZFC).
+\]
+\end{theorem}
+\begin{proof}
+Over the integers a sum of squares is zero exactly when every residual is zero. The restoration maps return a zero of the changed arithmetic source. Sections~\ref{sec:radius}--\ref{sec:odd-square} prove its equivalence to the calibrated finite-refutation relation, in both directions. Compose this equivalence with the two logical interfaces and negate it. All finite sequences, integer inequalities, Pell inductions, CRT constructions, and finite syntax used here are formalizable in ZFC.
+\end{proof}
+
+The statement is an ordinary formalizable theorem, rather than a newly emitted derivation in the object language of ZFC. The source interfaces are retained for inspection; this package does not rebuild their transitive Lean dependency graph. The new algebra checkers verify the emitted finite objects and restoration maps, not the truth of every unbounded mathematical claim by testing.
+
+\input{report_inputs/natural.tex}
+\input{report_inputs/compact.tex}
+
+\section{Verification, comparison, and remaining limits}\label{sec:verification}
+
+\input{report_inputs/verification.tex}
+
+The new radius theorem is a reusable arithmetic reduction: it applies whenever the surrounding equations identify small canonical residues and a short centered representative is enough. The odd-square step is more specific. It uses the actual odd CRT periods and the freedom to choose an even beta code; it must not be applied to an arbitrary radix without those completeness arguments. Likewise, the compact denominator theorem separates recovery of a small modulus from recovery of the full denominator. Neither reduction is justified by deleting a row and observing that a few evaluations still agree.
+
+Two plausible avenues did not supply a stronger completed result. Coefficient separation can replace prime-factor arguments in a finite Horn flow, but that mechanism already appears in the inspected repository and the current CRT carrier independently uses the factorial. Also, combining unequal natural-domain digit budgets by multiplying one by $q$ yields a correct quadratic constraint, but can obstruct later affine eliminations and increase the final variable count. The retained measured endpoints reflect the complete compiled polynomial, not the local source count.
+
+No global optimum or literature-wide priority is claimed. The repository audit fixes the comparison to the stated commit and its six incoming archives. The most compact new equation still uses the existing native coefficient tuple; the direct equation provides a separate route without that tuple. Further reductions should target the remaining power-certificate structure or the number of independently authenticated digit groups. A claim below the established nine-positive-variable frontier would require substantially different mathematics; this work does not make that claim.
+
+\appendix
+\section{Complete residual list of the direct integer quartic}\label{app:direct}
+
+All variables in this appendix range independently over $\Z$. Put
+\[
+P_{\mathrm{dir}}=\sum_{j=0}^{\SignedRows-1} R_j^2.
+\]
+The ordered variables are $x_0,\ldots,x_{\SignedVariables-1}$. Every displayed coefficient is literal. The adjacent machine-readable file also supplies the semantic variable names and the fully collected quartic.
+\input{report_inputs/direct_residuals.tex}
+
+\section{Complete residual list of the balanced natural companion}\label{app:natural}
+
+All variables here range over $\N$, including zero. The companion is
+$P_{\mathrm{nat}}(x_0,\ldots,x_{221})=\sum_{j=0}^{171}S_j^2$,
+with the following literal residuals in its own independent coordinate list.
+\input{report_inputs/natural_residuals.tex}
+
+\input{report_inputs/compact_constants.tex}
+
+\section{File map and reproduction}
+\begin{description}[style=nextline]
+\item[\code{report.tex}, \code{report_inputs/}, \code{report.pdf}]
+This report, its editable sections, and the compiled PDF.
+\item[\code{arithmetic/}]
+The selected unrestricted-integer and natural-domain quartics, all collected coefficients, source mutation certificates, restoration maps, exact checkers, and retained ordinary proof dependencies.
+\item[\code{compact/}]
+Four complete ten-positive circuits, four fixed coefficient payloads, deterministic reconstruction, full new proof, inherited proof sources, and separate independent checker.
+\item[\code{reviews/}, \code{verification/}]
+Mathematical review notes and actual verification receipts, with their scopes explicitly stated.
+\item[\code{PROVENANCE.json}, \code{MANIFEST.sha256}]
+Immutable comparison and source identities, plus the exact release-file checksum list.
+\end{description}
+From the extracted package, run
+\begin{lstlisting}
+python3 verify_all.py
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+Verification requires Python's standard library and performs no network access. Rebuilding the PDF requires a standard LaTeX installation. PDF metadata can differ between TeX distributions without changing any polynomial.
+
+\begin{thebibliography}{20}
+\bibitem{repository} Vladimir Reshetnikov and contributors. \emph{ProveIt, DiophantineConsistency}. Comparison commit \code{e0c98c629bf10d30b695884f6b1d2ab361bdf513}, 25 October 2026. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/e0c98c629bf10d30b695884f6b1d2ab361bdf513/Computability/DiophantineConsistency}.
+\bibitem{cofinal} \emph{Cofinal anchors and height one equations for ZFC consistency}, Round 17, 25 October 2026. Incoming archive \code{ConZFC_Cofinal_Anchors_Height_One_Round17_2026-10-25.zip}, in the pinned repository. In particular \code{ORIENTATION_FIRST_PROOF.md}, \code{STRICT_BUDGET_PROOF.md}, and \code{ONE_ROW_SEMANTIC_ANCHOR_PROOF.md}.
+\bibitem{graphdigits} \emph{Smaller explicit Diophantine equations for Con(ZFC)}, 24 October 2026. Incoming archive \code{conzfc_graph_digits_2026-10-24.zip}. The four-group natural low-digit pooling construction.
+\bibitem{certificate} \emph{ConZFC Certificate Reductions}, 25 October 2026. Incoming archive \code{ConZFC_Certificate_Reductions_2026-10-25.zip}. The $78/630$ and $79/468$ scale-free compact parents and their full coefficient recipe.
+\bibitem{unshift} ProveIt. \emph{Ten-positive unshifted transport}. \code{research/ten-positive-unshift-t-square}, \code{research/ten-positive-unshift-t-bv}, and \code{research/ten-positive-unshift-t-finite}, at the comparison commit. The complete ordinary proofs are copied in \code{compact/proof_sources/}.
+\bibitem{indexed} ProveIt. \emph{Indexed tile enumeration}. The full coherent radix-$2^{67}$ BFS943 coefficient recipe and source calibration, retained in \code{compact/proof_sources/indexed_native.md} and \code{indexed_constants.tex}.
+\bibitem{native61} ProveIt contribution 61. \emph{Congruence carriers}, with later native, saturation, ratio, and product-square proofs. The relevant ordinary Pell and reconstruction proofs are retained in \code{compact/proof_sources/}, with immutable identities in \code{compact/SOURCE_LEDGER.json}.
+\bibitem{endpoint} ProveIt. \code{SetTheory.BusyBeaver.ZFC.KEndpoint.c222_iff_zf_refutation}. The machine-independent numerical-calculus calibration. Source statement and proof are retained with the direct source dependencies.
+\bibitem{choice} ProveIt. \code{SetTheory.BusyBeaver.ZFC.ConstructibleChoice.zf_refutation_iff_zfc_refutation}. Constructible-model removal of Choice. Source statement and proof are retained with the direct source dependencies.
+\bibitem{sun} Zhi-Wei Sun. \emph{Further results on Hilbert's Tenth Problem}. Science China Mathematics 64 (2021), 281--306. The nonnegative-integer representation $a^2+b^2+c(c+1)$ is also used throughout the inherited direct arithmetic. \url{https://arxiv.org/abs/1704.03504}.
+\end{thebibliography}
+\end{document}

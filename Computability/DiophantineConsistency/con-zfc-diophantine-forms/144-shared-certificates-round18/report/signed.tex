@@ -1,0 +1,307 @@
+\section{Spherical digit bounds over unrestricted integers}
+\label{sec:signed}
+\subsection{The exact inherited source and sign boundary}
+All coordinates in this section range over $\Z$. The source equations are
+the authenticated Round~17 centered dimension, grouped and sparse endpoints.
+Their literal residual arrays and integral coordinate translations are
+retained in \file{source_inputs}, bound by \file{SOURCE_PINS.json}.
+The new changes are spherical batching of the eleven digit bounds, an
+optional two-wire merger of adjacent denominator levels, and an optional
+odd-square radix replacing one initial sign guard. All other rows remain
+unchanged.
+
+The inherited proof chain is \file{STRICT_BUDGET_PROOF.md},
+\file{ORIENTATION_FIRST_PROOF.md}, \file{PROOF_315.md}, and the retained
+Round~16 arithmetic-front proof, followed by the named C222/ZF/ZFC
+calibration. In particular, the preceding signed frame and semantic
+anchor establish the canonical orientation of both coordinates of every
+principal Pell pair before using any of the eleven digit guards. This
+orientation-first fact is indispensable; the present construction is not
+an unrestricted reinterpretation of a natural system.
+
+Let $t,F,V,B,x,y,N,q$ denote the semantic values before the integral
+centering translations. The unchanged front has
+\begin{align}
+ t&=16+h_0^2,& V&=(F^2+1)^t,\\
+ FB&=V+s_0,& B&=r_0+s_0+1,\\
+ y&=V(V-1),& x&=F+1+(y+1)u_0,\\
+ x&=1+[1+(t+1)y]u_t,& H_0&=1+\sum_{i=1}^{9}a_i,\\
+ N&=B^x,& q&=(BH_0)^x.
+\end{align}
+Here the exponentiation equations indicate the interpretation of unchanged
+polynomial certificates, not primitives of the final polynomial.
+The factorial remainder and slack $r_0,s_0$ have retained nonnegativity
+guards; the other symbols initially have only their declared signed
+coordinate domains.
+
+The square frame is $W=2+\sum(\text{power atom})^2\ge258$ and yields
+$|A|>W^W$. All requested signed exponents have absolute value below $W$.
+The squared semantic anchor bounds every classified Pell index. The
+orientation pool, its grouped form, or its separated sparse residues then
+recover $X_k(A),Y_k(A)$, allowing signed $k$ and signed $A$.
+None of these arguments uses the eleven interval guards or the radix
+output-slack guard changed here.
+
+Consequently the inherited signed power lemma is available: for a base
+$n\ge2$, a framed signed index $k$ and proposed integer output $m$, the
+exact power certificate forces $k\ge0$ and $m=n^k$. If $k<0$, multiplying
+the Pell congruence by $n^{-k}$ and using the large modulus bound would
+force $mn^{-k}=1$, impossible over the integers. For base one and known
+$k\ge0$, the request gives $m=1$. No output sign is presupposed.
+
+In the baseline spherical variants, the old initial guard $q-B-1\ge0$
+is retained. The inherited pre-factorial schedule therefore gives
+\begin{equation}\label{eq:signedpreconditions}
+ F\ge1,\quad B\ge2,\quad H_0\ge1,\quad y>F+2,\quad
+ x\ge2+(t+1)y,\quad N=B^x,\quad q=(BH_0)^x.
+\end{equation}
+In particular $x\ge6$ and $N\ge16$. The odd-square variant obtains the
+same conclusions by a separate acyclic schedule below.
+
+\subsection{The old digit equations and their spherical replacement}
+Write $D_k=q^k$. The exact factorial-binomial remainder satisfies
+\begin{equation}\label{eq:signedfactorialdigit}
+ (q+1)^{F^2+t}=(B+qH)D_t+r_f,
+\end{equation}
+where $H\in\Z$ is a high quotient. Each of the ten range remainders has
+\begin{equation}\label{eq:signedrangedigit}
+ (q+1)^a=ND_kQ_a+r_a,\qquad Q_a\in\Z.
+\end{equation}
+The groups are
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}\toprule
+Denominator & Remainders & Number\\\midrule
+$D_t$ & factorial remainder and encoded index & 2\\
+$D_{t+1}$ & encoded $a,b,c,d$ and derived label $h$ & 5\\
+$D_{y+1}$ & the two stack representatives & 2\\
+$D_x$ & the two strict quotient representatives & 2\\\bottomrule
+\end{tabular}
+\end{center}
+The old quadratic interval guards are
+\begin{equation}\label{eq:oldinterval}
+ r(D-1-r)=a^2+b^2+c(c+1).
+\end{equation}
+For $D>0$, their right-hand sides are nonnegative, so they force
+$0\le r<D$. Their exact source labels and centered coordinate identities
+are checked in the finite transformation certificate.
+
+For a group of remainders with common denominator $D$, replace all its
+old guards by the single quadratic row
+\begin{equation}\label{eq:sphere}
+ \boxed{D^2-2\sum_i r_i^2=u^2+v^2+w(w+1).}
+\end{equation}
+All three new coordinates are unrestricted. The right-hand side is
+nonnegative at every integer tuple. It also represents every nonnegative
+integer: by the three-square theorem, $4n+1$ is a sum of three squares;
+modulo four exactly one is odd. Writing the odd square as $(2w+1)^2$
+and the other two as $(2u)^2,(2v)^2$ gives
+$n=u^2+v^2+w(w+1)$.
+
+Equation~\eqref{eq:sphere} gives, for each member independently,
+\begin{equation}\label{eq:sphereradius}
+ |r_i|\le D/\sqrt2<3D/4.
+\end{equation}
+It does not assume or immediately imply that $r_i$ is nonnegative. The
+next argument supplies that conclusion using the exact digit equations.
+
+\subsection{Signed uniqueness of a small low tail}
+\begin{lemma}\label{lem:signedtail}
+Let $q\ge2$, $k\ge1$, $D=q^k$, $a\ge0$, and
+\[
+ T(a,k)=\sum_{j=0}^{k-1}\binom ajq^j.
+\]
+If $T(a,k)<D/8$, $r\equiv T(a,k)\pmod D$, and $|r|<3D/4$, then
+$r=T(a,k)$.
+\end{lemma}
+\begin{proof}
+The integer $r-T(a,k)$ is a multiple of $D$ and satisfies
+\[
+ |r-T(a,k)|\le |r|+T(a,k)<7D/8<D.
+\]
+It must be zero.
+\end{proof}
+Binomial expansion gives $(q+1)^a\equiv T(a,k)\pmod D$.
+Thus the literal rows \eqref{eq:signedfactorialdigit} and
+\eqref{eq:signedrangedigit} provide the required congruence independently
+of any sign on their quotients. The lemma explicitly excludes negative
+noncanonical representatives.
+
+\subsection{Recovering the factorial digit without circularity}
+For $M\ge1$, $t\ge0$ and $0\le j\le t$,
+\begin{equation}\label{eq:pascalbound}
+ \binom{M+t}{j}\le(M+1)^t.
+\end{equation}
+For $j=t$, the product formula bounds each factor $(M+i)/i$ by $M+1$.
+For $j<t$, induction on $t$ and Pascal's identity bound the two summands
+by $2(M+1)^{t-1}\le(M+1)^t$; the boundary cases are immediate.
+
+The unchanged $t$ request at base $F^2+1\ge1$ first yields
+$V=(F^2+1)^t\ge1$. The retained ceiling relations and $B\ge1$ force
+$F\ge1$. Since $FB\ge V\ge F^2+1$, we have $B>F$, hence
+\[
+ V\le FB<B^2.
+\]
+The endpoint gives $x\ge6$, and the exact radix gives $q\ge B^x$.
+Therefore
+\begin{equation}\label{eq:factorialsmall}
+ B^2\le q/16,\qquad V<q/16.
+\end{equation}
+Applying \eqref{eq:pascalbound} with $M=F^2$, every coefficient through
+position $t$ is at most $V$. Consequently
+\begin{equation}\label{eq:factorialtail}
+ T(F^2+t,t)<\frac{VD_t}{q-1}
+ <\frac{qD_t}{16(q-1)}\le D_t/8.
+\end{equation}
+No factorial identity has been assumed. The $D_t$ sphere bounds $r_f$
+even while its other coordinate remains uninterpreted, so
+Lemma~\ref{lem:signedtail} gives $r_f=T(F^2+t,t)$.
+Subtract this tail from \eqref{eq:signedfactorialdigit} and reduce modulo
+$qD_t$ to obtain
+\[
+ B\equiv\binom{F^2+t}{t}\pmod q.
+\]
+The old output guard gives $0\le B<q$ in the baseline construction;
+the odd-square schedule below proves $B<q$ directly. The binomial lies in
+$[0,q)$ by \eqref{eq:factorialsmall}. Thus
+$B=\binom{F^2+t}{t}$. Only now is the inherited square-radius factorial
+fixed-point theorem applied to the unchanged ceiling inequalities,
+yielding $F=t!$ and the exact reciprocal-CRT product $B$.
+
+\subsection{Recovering the other ten intervals in order}
+First handle ordinary encoded representatives, including the encoded-index
+representative $C_0$. They are already nonnegative, and $H_0\ge1$.
+For every ordinary representative $a$ and requested position
+$0\le j\le k\le x$,
+\[
+ \binom aj\le\max(1,a)^k\le H_0^x=q/N.
+\]
+All four lower indices are at most $x$, by
+$x\ge2+(t+1)y$ and $y\ge1$. Since $N\ge16$,
+\begin{equation}\label{eq:ordinarytail}
+ T(a,k)<\frac{qD_k}{N(q-1)}\le D_k/8.
+\end{equation}
+The spheres and Lemma~\ref{lem:signedtail} recover these ordinary tails,
+in particular the tail for $C_0$. Independently, the retained literal
+reciprocal-index congruence row gives $B\mid C_0+F^2+1$.
+Since the now exact factorial product satisfies
+$B>F^2+1$, $C_0=0$ is impossible. Thus $C_0\ge1$ and $H_0\ge2$.
+The raw congruence does not itself depend on a remainder interval; stating
+the ordinary tails first also makes clear that none uses the stronger
+derived-label majorant.
+
+For the derived label, the unchanged constructor ledger gives
+\[
+ h\le H_0^\ell,\qquad \ell=4194304.
+\]
+The inherited factorial estimate $\ell(t+1)<2F$ and endpoint bound
+$2F<x$ imply $\ell(t+1)<x$. Its needed binomial coefficients through
+position $t+1$ are therefore also at most $H_0^x=q/N$.
+The same strict tail estimate identifies its remainder. All eleven old
+interval conclusions have now been recovered.
+
+More explicitly, after subtracting a range tail, divide
+\eqref{eq:signedrangedigit} by $D_k$. The expansion becomes
+\[
+ NQ_a=\binom ak+qH_a
+\]
+for an integer $H_a$. Since $N\mid q$, this yields
+$N\mid\binom ak$, exactly the inherited range predicate.
+The unchanged prime-power precision, residue extraction and local Horn
+flow arguments then yield the original finite-refutation interpretation.
+No signed quotient has been treated as natural before this recovery.
+
+\subsection{Both witness directions and adjacent-level merging}
+For completeness, start with a finite refutation and construct the inherited
+cofinal semantic witnesses. Choose all digit remainders canonically as
+$T(a,k)$. By \eqref{eq:factorialtail} and \eqref{eq:ordinarytail}, each is
+less than its denominator divided by eight. In a group with $m\le5$,
+\[
+ 2\sum_iT_i^2<\frac{m}{32}D^2<D^2.
+\]
+The integer $D^2-2\sum_iT_i^2$ is nonnegative, so its ternary representation
+supplies the new guard coordinates. All unchanged residuals already vanish.
+Conversely, the preceding soundness proof restores every old interval from
+a new zero. Each $r(D-1-r)\ge0$ then has a ternary representation, filling
+the deleted old coordinates afresh. Undoing the recorded integral
+translation gives an actual zero of the calibrated source. This proves
+integer existential equivalence, without claiming that arbitrary old
+private witnesses extend unchanged.
+
+For the optional merger, introduce two explicit product coordinates
+\[
+ z_f=qr_f,\qquad z_C=qr_C.
+\]
+Replace the first two spheres by one at denominator $D_{t+1}=qD_t$,
+using $z_f,z_C$ and the five old $D_{t+1}$ remainders. The new sphere gives
+$|qr_f|,|qr_C|<3qD_t/4$, hence the old radius bound because $q>0$.
+The soundness argument is unchanged. Canonical scaled tails are below
+$D_{t+1}/8$, and now
+\[
+ 2\sum_{i=1}^{7}T_i^2<\frac7{32}D_{t+1}^2<D_{t+1}^2,
+\]
+so completeness still holds. Two ternary triples become one, saving three
+coordinates, while two product wires are added: net one fewer coordinate
+and one additional residual. Every residual remains quadratic.
+
+\subsection{An odd square replaces the initial radix sign guard}
+The separately identified odd-radix variants remove the three-coordinate
+ternary guard for $q-B-1\ge0$ and add one unrestricted $z$ with
+\begin{equation}\label{eq:oddradix}
+ q=(2z+1)^2.
+\end{equation}
+This supplies only $q\ge1$ initially. The following schedule replaces the
+old use of $q\ge2$.
+\begin{enumerate}
+\item The unchanged frame, anchor and orientation proof gives canonical
+principal Pell pairs without the removed guard. Since $t\ge16$, the
+request at base $F^2+1$ yields $V=(F^2+1)^t$, including the base-one case.
+The retained ceiling guards then give $F\ge1$, $B\ge2$, $V<B^2$ and
+$y>F+2$.
+\item Now $q+1\ge2$. Each actual encoded representative is the exponent
+of a numerator request at this base, so the signed power lemma makes every
+such representative nonnegative. Hence $H_0\ge1$. The derived-label
+request similarly gives a nonnegative index, with zero already excluded
+by the squared anchor.
+\item Since $BH_0\ge2$, its existing $x$ request forces $x\ge0$ and
+$q=(BH_0)^x$.
+\item In $x=F+1+(y+1)u_0$, a value $u_0\le-1$ would imply
+$x\le F-y<0$. Thus $x\ge F+1\ge2$. The other endpoint forces
+$u_t\ge1$, so $x\ge2+(t+1)y$. Consequently
+$q\ge B^x\ge B^2>B$ and $q\ge4$.
+\item The remaining powers, including $N=B^x$ and every denominator,
+are now exact. The missing output slack $q-B-1$ is nonnegative before
+factorial decoding. The preceding spherical proof applies in its stated
+order.
+\end{enumerate}
+No removed guard is used to establish its own replacement.
+
+For completeness, choose the beta code $x$ even in the inherited cofinal
+CRT construction. Since $y=V(V-1)$ is even, every beta modulus
+$1+(i+1)y$ is odd, and adding their odd common CRT modulus changes parity.
+A sufficiently large even representative preserves all encoded values and
+nonnegative endpoint quotients. After $F=t!$, each factor of $B$ is odd,
+so $N^2$ is odd. Every later encoded representative can be changed by
+$N^2$ while preserving its required congruences. Choose $a,b$ of opposite
+parity, as already needed for even semantic-anchor index $h$. Independently
+choose one of the other seven parities so the sum of all nine
+representatives is even; then $H_0$ is odd.
+
+The dominant $a$ can still lie in $[2N^2,4N^2)$ with its prescribed parity,
+and the other representatives remain at most $2N^2$. Thus the inherited
+anchor dominance and cap estimates remain valid. Now $BH_0$ is odd and
+$x$ even, so the positive integer $R=(BH_0)^{x/2}$ is odd. Taking
+$z=(R-1)/2$ gives \eqref{eq:oddradix}. All other CRT, radix and Pell
+witness choices proceed unchanged. This proves that the square restriction
+is compatible with completeness, not merely sufficient for soundness.
+
+\subsection{What the finite checker establishes}
+The producer reads only copied, hash-bound source equations and their
+coordinate translations. The separately implemented checker imports no
+producer. It reconstructs each replacement in named coordinates, verifies
+every untouched residual, expands each square and collects all coefficients,
+and checks liveness, degree, support and height. Deliberate changes to sphere,
+frame and odd-square rows must be rejected. Finite Pascal or tail examples
+serve as diagnostics only; the preceding unbounded arguments prove the
+mathematical implication. Together with the retained ordinary calibration,
+this establishes \eqref{eq:calibration} for each selected unrestricted
+quartic.

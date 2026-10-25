@@ -1,0 +1,49 @@
+\section{Results and interpretation}
+\label{sec:results}
+The new reductions use spare capacity already present in explicit arithmetic
+certificates. The signed construction pools low-digit bounds into spheres;
+the natural construction pools adjacent digit levels and can absorb the
+exact output bound. The height-one construction connects opposite monomial
+occurrences directly between rows and certifies fixed row-sign choices.
+The scalar construction changes a free integer coordinate by an integral
+polynomial shear. These are structural zero-set arguments, not assertions
+that a heuristic search has found a global optimum.
+
+All numbers below refer to complete emitted artifacts on their stated
+domains. The direct and height-one polynomials have exact degree four.
+The scalar degree and live binary graph cost are separate measures.
+
+\subsection{Natural quartics}
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Endpoint & Variables & Rows & Terms & Height\\\midrule
+\file{natural221} &221&171&13935&118464197\\
+\file{natural222} &222&172&9917&83954634\\
+\file{natural223} &223&173&7202&83954472\\
+\file{natural224_sparse} &224&174&6527&83953869\\\bottomrule
+\end{tabular}
+\end{center}
+All variables range over $\N$. The first three endpoints use four pools;
+the last uses three pools with the exact output bound absorbed. A certified
+row-order change supplies the 221-variable point. It is a genuine
+dimension/support/height tradeoff, not a simultaneous improvement over
+the balanced 222-variable form. The sparse 224-variable form improves
+variables, rows, support and height relative to the Round~17 sparse
+230-variable point. The 222-variable form improves all four measures
+relative to the incoming Graph digits 226-variable point, while its
+9917 terms exceed the Round~17 principal's 9184 terms. These distinctions
+matter when choosing an equation to use.
+
+\input{signed_results.tex}
+\input{height_one_results.tex}
+\input{scalar_results.tex}
+
+\subsection{What is and is not newly proved}
+Each new witness argument is unbounded and proves both directions of the
+stated zero-set correspondence. Literal coefficient arrays, complete
+arithmetic graphs, full fixed numerical payloads, exact restoration
+certificates and independent finite checks accompany the proofs.
+The consistency interpretation is obtained by composition with the named
+inherited calibrations described next. No new kernel-certified logical
+endpoint, no proof of $\Con(\mathrm{ZFC})$, and no global simplicity
+minimum is asserted.

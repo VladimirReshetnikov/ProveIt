@@ -1,0 +1,343 @@
+\section{Shift-free descending factorials and cofinal natural quartics}
+\label{sec:shift-free-natural}
+
+The new natural-domain branch combines the descending factorial identity
+from the incoming \emph{Certificate Reductions} packet with the cofinal
+semantic anchor and strict amplification exponent from Round~17. Its new
+step removes the artificial positive shifts on both the factorial and the
+CRT-carrier coordinates, deriving their positivity in the correct order
+from the already present polynomial rows.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Endpoint & Variables & Rows & Terms & Height\\
+\hline
+Round~17 balanced &229&179&9184&83954634\\
+New projected precursor &229&179&6596&83879378\\
+New balanced, row-reduced &229&179&5607&65892965\\
+Round~17 smaller &228&178&9866&2445412949744\\
+New smaller, lower height &228&178&9522&560804902\\
+New smaller, sparser &228&178&7512&2445412949744\\
+\hline
+\end{tabular}
+\end{center}
+Every row concerns a quartic over independently nonnegative integers.
+The two 228-variable variants use the identical new semantic graph and
+only change the certified elimination order; all restorations are proved
+nonnegative. In particular, no integer-only coordinate projection is
+being applied to natural variables.
+
+\subsection{The exact polynomial and logical statement}
+The balanced polynomial is
+\[
+ P_{229}(x_0,\ldots,x_{228})=\sum_{j=0}^{178}R_j(x_0,\ldots,x_{228})^2,
+ \qquad (x_0,\ldots,x_{228})\in\N^{229}.
+\]
+The full literal residual list is supplied in
+\texttt{balanced229/residuals.tex} and \texttt{equation.json}; every collected
+coefficient is in its \texttt{expanded\_polynomial.json}. The analogous files
+in \texttt{low\_height228/} and \texttt{sparse228/} define their complete
+178-row polynomials. A JSON term \([c,[i,j,\ldots]]\) means
+\(c x_i x_j\cdots\); an empty index list denotes a constant. These
+polynomials contain no binomial, factorial, floor, power, or Pell primitive.
+
+With the retained ordinary numerical C222/ZF/ZFC refutation calibration,
+each polynomial has a natural zero exactly when a finite syntactic ZFC
+refutation exists. Consequently ZFC proves the equivalence between its
+no-natural-zero sentence and \(\operatorname{Con}(\mathrm{ZFC})\).
+This neither proves consistency nor supplies a new end-to-end kernel
+proof or a global minimality theorem. The coefficient verification below
+is finite; the unbounded arithmetic steps are proved separately.
+
+\subsection{Semantic positivity replaces two coordinate shifts}
+Keep \(t=t_0+12\), but now use unshifted natural coordinates \(F,n,B,r,s\)
+and the three polynomial rows
+\begin{equation}\label{eq:sf-certificate}
+ n+1=F^2,\qquad V=BF+r,\qquad B=r+s+1.
+\end{equation}
+The first exact power request is \(V=n^t\). Its retained natural modulus
+coordinate \(T_n\) obeys
+\[
+ T_n+n^2+1=2An.
+\]
+This literal equality excludes \(n=0\), even before any power or factorial
+is interpreted. Thus \(F\ge2\) and \(n=F^2-1\ge3\).
+The new row \(n+1=F^2\) is deliberately not marked as a defining gate
+with globally nonnegative restoration \(F^2-1\).
+
+The remaining exact requests, with the same self-sized radix as Round~17,
+are
+\begin{equation}\label{eq:sf-powers}
+ V=n^t,\quad N=B^x,\quad q=(NS)^x,\quad
+ D_t=q^t,\quad D_y=q^{y+1},\quad D_x=q^x,
+\end{equation}
+where
+\[
+ S=1+C+A_a+A_b+A_c+A_d+A_S+A_{S'}+A_u+A_v.
+\]
+All representatives are positive. The shared frame is the sum of every
+distinct power base, exponent and output, together with every modular top
+index, plus 15. There are thirteen nonanchor seeds and eleven modular
+requests. The scale equations give \(A\ge(W+1)^W\), and the one-row
+anchor described below authenticates all indices before the powers are
+recovered. No factorial identity is needed for this stage: all atoms are
+natural and all intended exponents are positive, since \(t\ge12\),
+\(x\ge F+1\ge3\), and \(y\ge F+1\ge3\).
+
+\begin{lemma}[Shift-free bootstrap]\label{lem:sf-bootstrap}
+Once the exact powers are recovered, the rows
+\eqref{eq:sf-certificate} imply
+\[
+ B>F\ge2,\qquad V<B(F+1)\le B^2\le N\le q.
+\]
+In particular, the first binomial can be decoded without assuming
+\(F=t!\) or assuming that its output is positive in advance.
+\end{lemma}
+\begin{proof}
+The remainder rows give \(B\ge1\) and \(V<B(F+1)\).
+For \(F\ge2\),
+\[
+ n=F^2-1\ge F+1,\qquad V=n^t\ge n^2>F(F+1).
+\]
+Therefore \(B>F\), and integrality gives \(B\ge F+1\).
+Since \(x\ge3\), \(B^2\le B^x=N\le(NS)^x=q\).
+For \(0\le j\le t\),
+\(\binom nj\le n^j\le n^t=V<q\), with \(\binom nj=0\) when
+\(j>n\). Thus every relevant coefficient is carry-free.
+\end{proof}
+The root-modulus divisibility needed at this early point is also already
+available. The raw endpoints are
+\[
+ y\ge F+1,\qquad x\ge F+1,\qquad
+ x=1+(1+(t+1)y)u_t.
+\]
+As \(x\ge3\), \(u_t\ge1\), giving
+\(x\ge2+(t+1)y>\max(t+1,y+1)\). Hence
+\(M=Nq^x\) is divisible by \(qD_t\) and by all required range
+denominators multiplied by \(N\), without yet knowing \(F=t!\).
+The exact modular digit now gives \(B=\binom nt\). Since \(B\ge1\),
+\(n\ge t\), and the two remainder rows say
+\(F=\lfloor n^t/\binom nt\rfloor\).
+
+\begin{lemma}[Descending fixed point]\label{lem:sf-fixed}
+If \(t\ge3\), \(F\ge2\), and \(n=F^2-1\ge t\), then
+\[
+ F=\left\lfloor\frac{n^t}{\binom nt}\right\rfloor
+ \quad\Longleftrightarrow\quad F=t!.
+\]
+\end{lemma}
+\begin{proof}
+Put \(T=t!\), \(U=t(t-1)/2\), and
+\[
+ H=\frac{n^t}{\binom nt}
+   =T\prod_{j=0}^{t-1}(1-j/n)^{-1}\ge T.
+\]
+If \(F=\lfloor H\rfloor\), then \(F\ge T\).
+The inequality \(T-1>U\) holds at \(t=3\) and persists by induction:
+from \(T\ge U+2\) one gets
+\((t+1)T-1\ge(t+1)(U+2)-1>U+t\).
+Consequently
+\(n\ge T^2-1=(T+1)(T-1)>(T+1)U\).
+The elementary inequality \(\prod(1-a_j)\ge1-\sum a_j\) gives
+\[
+ T\le H\le\frac{Tn}{n-U}
+   =T+\frac{TU}{n-U}<T+1.
+\]
+Thus \(F=T\). Conversely the same estimates at \(F=T\) prove that
+\(\lfloor H\rfloor=T\).
+\end{proof}
+
+\subsection{The descending carrier and its correctly oriented index}
+\begin{lemma}\label{lem:sf-crt}
+Let \(F=t!\), \(t\ge3\). Then
+\[
+ d_i=F^2/i-1\quad(1\le i\le t)
+\]
+are pairwise coprime positive integers greater than one, every prime divisor
+of each \(d_i\) exceeds \(t\), and
+\(\prod_i d_i=\binom{F^2-1}{t}=B\).
+\end{lemma}
+\begin{proof}
+Since \(i\mid F\), \(d_i\equiv-1\pmod F\), excluding all primes at
+most \(t\). A common prime of \(d_i,d_j\) for \(i\ne j\) would divide
+\(id_i-jd_j=j-i\), impossible for a prime exceeding \(t\).
+The product identity is
+\(\prod_i(F^2-i)/i=\binom{F^2-1}{t}\).
+\end{proof}
+The literal index equality is now
+\begin{equation}\label{eq:sf-index}
+ C+1=F^2+Bq_C,\qquad\text{equivalently } C=n+Bq_C,
+\end{equation}
+not the rising-carrier predecessor's differently signed row.
+Modulo \(d_i\), it identifies \(C=i-1\).
+Its quotient is natural in completeness: \(F\ge6\),
+\(3\le t\le n-2\), and
+\(B=\binom nt\ge\binom n2>n\). Every positive representative
+congruent to \(n\pmod B\) is at least \(n\).
+
+\subsection{The shared Pell anchor and recovery chronology}
+For \(A\ge2\), define the ordinary Pell sequences by
+\[
+ (A+\sqrt{A^2-1})^j=X_j(A)+Y_j(A)\sqrt{A^2-1}.
+\]
+The complete retained three-norm certificate indexes a single principal
+pair at the derived label \(J\). The simultaneous row is
+\begin{equation}\label{eq:sf-anchor}
+ Y_J(A)=J+\sum_i(Y_i-k_i)^2+(A-1)Q,\qquad Q\in\N.
+\end{equation}
+Here the notation \(Y_J(A)\) is its proved meaning, not a primitive of
+the polynomial. Before indexing, the row supplies the anchor's omitted
+inequality \(J\le Y_*\). Its full private witnesses remain natural.
+
+For clarity, the retained cap argument applies whenever
+\(W\ge3\), \(2\le J<W\), \(A-1>W^3\), at most \(W-2\)
+seeds occur, and \(1\le k_i<W\).
+Pell classification writes \(Y_i=Y_{j_i}(A)\). If \(j_i\ge J\),
+then \(Y_i\ge Y_J(A)=V_*\ge2A>2W\), so
+\((Y_i-k_i)^2\ge(V_*-W+1)^2>V_*\), contradicting
+\eqref{eq:sf-anchor}. Thus \(j_i<J<W\). Reduction modulo \(A-1\),
+using \(Y_j(A)\equiv j\pmod{A-1}\), shows that
+\[
+ 0\le\sum_i(j_i-k_i)^2<W^3<A-1
+\]
+is divisible by \(A-1\), hence zero. Every index is authenticated.
+
+Conversely let \(m=\max k_i\) and \(z=Y_m(A)\).
+If \(J\ge2m\), then
+\[
+ Y_J(A)\ge2X_m(A)Y_m(A)>2(A-1)z^2.
+\]
+The sum of actual squared errors is at most \(r z^2\); since
+\(2(A-1)-r>J\), the numerator defining \(Q\) is positive and divisible
+by \(A-1\). This yields its natural value.
+
+The scale rows are
+\[
+ L^2-((W+1)^2-1)(WZ)^2=1,\quad Z=z_0+1,\quad A=L+\sigma.
+\]
+Their positive Pell index is divisible by \(W\), so
+\(A\ge X_W(W+1)\ge(W+1)^W\). Nonanchor seeds retain natural
+consecutive coordinates \(Y,Z'\) with
+\(Y^2+(Z')^2-2AYZ'=1\). Each has an output incidence
+\(bY=Z'+R\), \(R\ge0\), \(1\le b<A\). Thus \(Y>0\),
+\(Z'<AY\), and \(X=AY-Z'>0\) gives the ordinary principal norm.
+The anchor argument therefore applies to these ordinates too.
+
+For every exact request the authenticated pair satisfies
+\[
+ X_k(A)+(b-A)Y_k(A)=m+(2Ab-b^2-1)h.
+\]
+The Pell congruence gives \(m\equiv b^k\pmod{2Ab-b^2-1}\).
+The frame has \(b,k,m<W\), while its lower scale makes the modulus
+larger than \(W^W+W\); hence \(m=b^k\). Canonical positive Pell
+residues and their least nonnegative residues give nonnegative quotients.
+The common-root equation
+\[
+ 2A(q+1)=(q+1)^2+1+Mh_0,\qquad M=Nq^x,
+\]
+gives the analogous congruence for all modular numerator requests.
+Lemma~\ref{lem:sf-bootstrap} then decodes the first binomial, and only
+then Lemma~\ref{lem:sf-fixed} supplies \(F=t!\).
+
+\subsection{Local bounds, soundness, and constructive completeness}
+The endpoint equalities now imply
+\(R=2+t+x+y+F<2x\) and \(x>2^{32}\).
+The retained literal local majorant has \(E=2^{23}\).
+At \(x=2^{32}\), \((2x)^E<2^x\); the ratio bound
+\[
+ (1+1/x)^E<\frac1{1-E/x}<2
+\]
+propagates the inequality by induction. Thus each required local source
+value is \(<R^E<2^x\). The retained label majorant has
+\(\ell=2^{22}\), with \(\ell(t+1)<F<x\) for every padded
+\(t\ge12\). These are unbounded estimates, not numerical search
+cutoffs. The strict beta quotient ranges \(u,v<x\) are complete because
+their canonical denominators are at least two.
+
+Every independent representative is \(<S\), so its binomial
+coefficients through lower index \(x\) are \(<S^x<q\).
+The derived label has \(J\le S^\ell\), making all its needed
+coefficients through \(t+1\) also \(<S^x\). All eleven modular requests
+are therefore carry-free. For each row \(i-1\), choose \(p\mid d_i\)
+and \(m=v_p(d_i)\). The retained one-direction range lemma
+\[
+ p^e\mid\binom ak\ \Longrightarrow\ a\bmod p^e\in[0,k-1]
+\]
+recovers the small local values modulo \(p^{xm}\). The index row
+\eqref{eq:sf-index} distinguishes \(i-1\). The nonnegative local
+source value is \(<2^x\le p^{xm}\), so its zero residue forces its
+actual value to vanish. The derived label is similarly bounded.
+The unchanged beta and Horn-flow arithmetic yields a finite C222
+refutation, and the named retained calibration gives ZFC refutability.
+
+For completeness start with a finite refutation, expand to its proof tree,
+and pad \(t\ge12\) beyond every local parameter and label. Use the
+inherited beta construction for \(x,y\). Set
+\(F=t!\), \(n=F^2-1\), \(B=\prod_i d_i\), \(N=B^x\).
+Lemma~\ref{lem:sf-fixed} supplies the ordinary Euclidean remainder
+and complementary slack in \eqref{eq:sf-certificate}.
+Choose the nine positive independent representatives modulo
+\(d_i^{2x}\), initially in \((0,N^2]\), and increase only \(A_a\)
+by \(N^2\). All local polynomial congruences to precision \(2x\)
+are preserved. A falling-factorial numerator has a term of valuation
+at least \(2xm\), while division by \(k!\) loses at most
+\(k-1\le x-1\); hence the required binomial is divisible by
+\(p^{xm}\). This genuine precision argument supplies range
+completeness; no false converse of the range lemma is used.
+
+The nominal indices \(t,y+1,x,n\) are at most
+\(x^2+x<2^x\le N\); every independent representative is at most
+\(2N^2\). The Cantor-derived label obeys
+\[
+ J\ge2(A_a+N^2)^2>2N^4>4N^2\ge2\max_i k_i.
+\]
+Thus the cofinal shift supplies the anchor's completeness hypothesis
+without another polynomial row. Choose \(S,q\), denominators and
+\(W,L\) in that order. Since \(N\mid q\),
+\(\gcd(q+1,M)=1\); the linear common-root congruence has gcd one or
+two, and in the latter case its right side is even. Choose \(A\)
+arbitrarily large in that solution class. All scale and root quotients
+can be natural. Canonical Pell pairs, fresh private anchor witnesses,
+\(Q\) from \eqref{eq:sf-anchor}, and Euclidean digit witnesses
+complete the graph. The choices are acyclic.
+
+\subsection{A reversible row-basis improvement}
+The final balanced endpoint further replaces the 179 precursor residuals
+by 42 explicit elementary shears. Each operation, recorded as
+\((i,j,k)\) with \(i\ne j\), is
+\[
+ R_i\longleftarrow R_i+kR_j,\qquad k\in\Z\setminus\{0\}.
+\]
+Its inverse is the same operation with \(-k\), applied in reverse order.
+Thus the old and new residual vectors vanish on exactly the same tuples.
+Their sums of squares need not have equal values, but have identical zero
+sets over \(\N^{229}\). No coordinate is changed, projected, or made signed.
+The resulting quartic has 5,607 collected monomials and coefficient height
+65,892,965. The precursor's 6,596 terms and height 83,879,378 are retained
+as a control in \texttt{projected229/}.
+The complete operations, target residuals and exact metrics are in
+\texttt{row\_basis\_certificate.json}; \texttt{check\_row\_basis.py}
+checks every forward and inverse row identity, every collected coefficient,
+coordinate liveness, and the refreshed embedded endpoint metrics. It rejects
+six mutations, including deliberately stale metric metadata.
+
+\subsection{Exact export, natural restoration, and reproducibility}
+The independent affine checker validates all 613 defining gates,
+392 nonnegative affine restorations, all 285 exported source rows,
+and all 4,606 raw coefficients. The balanced precursor contraction has 106
+eliminations; both 228-variable variants have 107. Each restoration
+is an integer polynomial proved nonnegative by exact rational affine
+squares plus nonnegative monomials. The independent checker expands
+these certificates, substitutes them back, checks every degree bound,
+and independently collects the complete quartic. The literal TeX
+residuals are parsed back and compared term by term.
+
+\texttt{verify.py -{}-rebuild} checks all endpoints without mutating them
+and rebuilds the selected mathematical files in temporary directories.
+The portable source, exact source JSON, retained ordinary proofs and
+named Lean calibration inputs are included. Source-path hashes and
+modifications are exposed in \texttt{SOURCE\_MAP.json}; the full
+unbounded new argument is also available as \texttt{PROOF.md}.
+The supplied calibration inputs do not constitute a newly rebuilt full
+transitive Lean development or an encoded object-language ZFC proof.

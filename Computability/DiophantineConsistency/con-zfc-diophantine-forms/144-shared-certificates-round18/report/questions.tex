@@ -1,0 +1,33 @@
+\section{Further questions}
+\subsection{Joint optimization of arithmetic and graph sources}
+A source with fewer coordinates need not yield the smallest height-one
+polynomial: its monomial multiplicities, opposite-sign opportunities and
+alias incidences also matter. Can arithmetic refactorization, row-sign
+balancing and occurrence matching be chosen jointly with a useful
+certificate of optimality for a fixed finite source? A rigorous lower
+bound for one constrained compiler class would be meaningful; it would
+still not be a lower bound for all Diophantine equations.
+
+\subsection{Sharper pooled digit regions}
+The present bounds exploit generous known radix margins. One may ask
+whether an ellipsoidal form with certified integral weights permits further
+pooling across unequal denominators without increasing degree or adding
+more coordinates than it removes. Soundness must still identify the actual
+integer remainder, including negative candidates, before factorial or
+range decoding. A numerical search for small examples is not enough.
+
+\subsection{Less expensive exact polynomial shears}
+An integral coordinate shear can lower degree while increasing graph cost.
+Can one share its polynomial-part calculation with the existing carrier
+registers to retain the degree gain using fewer live binary operations?
+The relevant objective is the full fixed-coefficient output graph, including
+cancellations in the highest homogeneous component, not the apparent degree
+of an intermediate expression.
+
+\subsection{Formalizing the transformation boundary}
+The new finite row transformations, monic witness restorations and network
+energy identities are natural targets for machine-checked formalization.
+A useful next milestone is a checked theorem connecting the emitted arrays
+to the already identified source relation, followed by a transitive build
+of the calibration boundary. Merely checking a supplied hash manifest or
+including a named Lean declaration does not accomplish that milestone.

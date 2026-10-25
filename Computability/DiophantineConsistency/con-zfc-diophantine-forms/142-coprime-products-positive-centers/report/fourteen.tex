@@ -1,0 +1,104 @@
+\section{Fourteen variables by staged square recovery}
+\label{sec:fourteen}
+
+The unknowns are
+\[
+J,F,\alpha,z,f,h,i,T,s,w,\eta,\zeta,\gamma,t\in\Pos.
+\]
+Keep the common definitions in Section~\ref{sec:source}, and put
+$I=ic^2$ and $V=f^2(cT-R)-c$. The two complete choices are
+\[
+\begin{array}{c|cc}
+ & W & Q\\\hline
+\text{staged form} & \Delta\Omega I^2 & \Delta W\\
+\text{reduced form} & \Delta(\Omega I)^2 & \Delta(f^2-1)
+\end{array}
+\qquad L_s=f^2-W.
+\]
+For either choice define
+\[
+\mathcal E=Q(t^2-\Omega V^2)-t^2+\Omega,
+\qquad
+\boxed{P_{14}=(3\mathcal E+1)N_1N_kN_tL_s-1=0.}
+\]
+This is an ordinary integer polynomial. The staged version uses 70 operations
+and has degree 189; the reduced version uses 71 operations and has degree 157.
+The versions have different private witness parametrizations. They are
+existence-equivalent, not identical polynomials or asserted to have the same
+auxiliary-coordinate zero sets.
+
+\begin{theorem}\label{thm:fourteen}
+For either displayed $P_{14}$, existence of a positive zero is equivalent to
+existence of a positive zero of the calibrated source, and hence to a finite
+ZFC refutation. Consequently ZFC proves the requested no-zero equivalence
+with $\Con(\ZFC)$.
+\end{theorem}
+\begin{proof}[Soundness]
+Every factor in the unit product is $\pm1$.
+Lemma~\ref{lem:unit} gives $\mathcal E=0$.
+Because $\Delta=A^2-1$ is zero or three modulo four, $N_1$ cannot be $-1$,
+so $N_1=1$. The order for the remaining factors depends on the version.
+
+In the staged form, $Q=\Delta^2\Omega I^2>1$ and $\Omega\mid Q$ before
+knowing the sign of $L_s$. The equation $\mathcal E=0$ itself excludes
+$V=0$, since its left side would be $(Q-1)t^2+\Omega>0$.
+Lemma~\ref{lem:product} first yields $\Omega=\tau^2$ and $y=t/\tau>0$.
+Only now write $L_s=f^2-\Delta(\tau I)^2$; reduction modulo four excludes
+$L_s=-1$, so $L_s=1$ and $N_kN_t=1$.
+Set $i_0=\tau i$. Then $Q=(i_0\Delta c^2)^2$ and the recovered auxiliary
+norm is exactly the source norm.
+
+In the reduced form, $L_s=f^2-\Delta(\Omega I)^2$ already excludes $-1$.
+Thus $L_s=1$ first, and $Q=\Delta^2(\Omega I)^2>1$ with $\Omega\mid Q$.
+Again $\mathcal E=0$ excludes $V=0$, and the same lemma supplies
+$\tau=\sqrt\Omega$ and $y=t/\tau$. Here set $i_0=\Omega i$.
+In both versions $Q(V^2-y^2)+y^2=1$.
+
+The restored source factors satisfy $N_0=N_1=N_a=1$,
+$N_s=\Delta$, and $N_kN_t=1$. Thus the source polynomial vanishes.
+Every restored coordinate is strictly positive.
+\end{proof}
+\begin{proof}[Completeness]
+Start with canonical outer witnesses supplied by a finite refutation,
+including $\Omega=\tau^2$ and $c=Y_R(A)$ with $R\equiv3\pmod4$.
+By Lemma~\ref{lem:period}, choose a positive strong Pell pair $f,I_0$.
+For the staged version require $\tau c^2\mid I_0$ and put
+$i=I_0/(\tau c^2)>0$; for the reduced version require
+$\Omega c^2\mid I_0$ and put $i=I_0/(\Omega c^2)>0$.
+The uniform reconstruction \eqref{eq:aux-source} supplies new positive
+$T,V,y$; let $t=\tau y$. Now $L_s=N_1=N_k=N_t=1$, and
+\eqref{eq:product} gives $\mathcal E=0$ in both versions.
+This does not require an arbitrary old multiplier to have satisfied the
+new divisibility condition.
+\end{proof}
+
+\subsection{The useful dependency order}
+
+The staged form places only one copy of $\Omega$ in $W$.
+It would be invalid to call $W/\Delta$ a square before recovering
+$\Omega=\tau^2$. Instead, the product certificate first makes $\Omega$
+a square, and the strong unit sign is resolved afterward. This lowers the
+degree from the more direct squared-multiplier construction while preserving
+its operation count. The proof depends on this order, not on an informal
+replacement of a factor by its anticipated square root.
+
+\subsection{Exact degree}
+
+Assign degree one to the unknowns and zero to the fixed ports. The relevant
+exact degrees are
+\[
+\deg\Omega=22,\quad\deg c=5,\quad\deg\Delta=12,\quad\deg V=8.
+\]
+The main norm has degree 18 rather than its naive upper bound 22. With
+$Z=X+\gamma H$, the exact identity is
+\[
+D^2-\Delta c^2=2acZ+Z^2-Hc^2,
+\]
+and the leading term comes from $2ac\gamma H$.
+Also $\deg N_k=7$ and $\deg N_t=2$.
+For the staged form, $\deg Q=68$, $\deg\mathcal E=106$, and
+$\deg L_s=56$, giving $106+18+7+2+56=189$.
+For the reduced form, $\deg Q=14$, $\deg\mathcal E=52$, and
+$\deg L_s=78$, giving 157.
+The leading-term certificate is nonzero at the authentic positive $\beta$;
+the supplied exact checks also verify the literal circuit and its degree.

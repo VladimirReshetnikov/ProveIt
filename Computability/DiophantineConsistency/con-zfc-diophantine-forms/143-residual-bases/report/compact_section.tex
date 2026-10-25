@@ -1,0 +1,285 @@
+\section{Ten-positive equations by denominator engineering}\label{sec:compact}
+This section supplies six complete ordinary integer polynomials, each in ten
+strictly positive integer unknowns. Four give useful local operation/degree
+tradeoffs; two are retained as dominated controls. All fixed coefficients are
+the \emph{whole} indexed BFS943 native tuple, supplied literally in
+\texttt{compact/coefficients/}. Its finite reconstruction is
+\texttt{rebuild\_coefficients.py}; its largest port has 592,884 bits.
+These are not coefficient-free formulas, and fixed ports are not unknowns.
+
+\begin{center}
+\begin{tabular}{llrr}
+Chart & Weight & Binary operations & Exact degree\\\hline
+$Y=q^3s,\ D=XY$ & $V^2$ &77&626\\
+$Y=q^3s,\ D=XY$ & $bV$ &78&464\\
+$Y=q^3s,\ D=q^4$ & $V^2$ &78&622\\
+$Y=q^3s,\ D=q^4$ & $bV$ &79&460\\
+$Y=q^2s,\ D=q^3Y$ & $V^2$ &79&518\\
+$Y=q^2s,\ D=q^3Y$ & $bV$ &80&384
+\end{tabular}
+\end{center}
+The $78/622$ and $79/518$ points are dominated by $78/464$; they are
+uniform-family controls, not frontier claims. The incoming unscaled
+$78/630$ and $79/468$ points used $D=Y^2$. The new $77/626$ and $78/464$
+points respectively improve both metrics of those matched predecessors.
+The $80/384$ point also improves the incoming unshifted $83/436$ point
+in both metrics. Older lower-degree constructions remain relevant.
+No global optimum or literature-wide priority is claimed.
+
+\paragraph{Attribution and scope.}
+The incoming \emph{Certificate Reductions} argument already removed the
+artificial scale and recovered a Pell index from a known divisor before
+recovering a whole denominator. \emph{Semantic Signs} already proved
+unshifted transport and the exclusion of both signed third auxiliary
+branches. Pell doubling, product-square extraction, and quotient
+normalization are inherited. Here the new choices are $D=XY$, $D=q^4$,
+and the partially normalized $Y=q^2s,D=q^3Y$, whose fractional carrier
+numerator reuses $Y^2$. The proof below composes explicitly with the
+retained ordinary Pell/source theorems. It is not a new end-to-end
+proof-assistant certificate and proves neither consistency nor
+unsolvability separately.
+
+\subsection{The complete polynomials}
+The only independent coordinates are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\Z_{>0}.
+\]
+The fixed positive integers $\beta,K_0,M_C,M_F$ are the unchanged indexed
+tuple, with $\beta\ge31$ odd and $0<M_C<\beta<M_F<2\beta$.
+Define polynomial abbreviations
+\[
+\begin{gathered}
+q=\beta J+1,\quad h=q-1,\quad C=q-F-\alpha,\quad X=wq,\\
+k=\eta+\zeta,\quad c=kY+\eta,\quad A=Y(X+1)+1,\\
+\Delta=A^2-1,\quad H=4A-5,\quad v=XY^2,\\
+E=1+v(v+1)k^2,\\
+R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+e=k-R-1,\quad B=(K_0+w)C-F,\\
+U=ic^2,\quad a=\Delta U^2E,\quad F_0=1+a,\quad G=EF_0,\\
+F_{\rm sq}=1+4aF_0,\quad Q=\Delta(F_{\rm sq}-1),\\
+b=cT-R,\quad V=F_{\rm sq}b-c,\quad K=X(3c-2X)+2.
+\end{gathered}
+\]
+Choose $(Y,D)$ from $(q^3s,XY),(q^3s,q^4),(q^2s,q^3Y)$ and choose
+$L=V^2$ or $L=bV$. Put $M=hDH$. In the first two charts set
+\[
+ Z=hD\{H(n-LB)+K\}-H(DB+he).
+\]
+In the partial chart $Y=q^2s,D=q^3Y$ set instead
+\[
+ Z=hD\{H(n-LB)+K\}+H\{h(Y^2-e)-DB\}.
+\]
+In every case the complete polynomial equation is
+\begin{equation}\label{eq:newcompact}
+ P=Q(Z^2-M^2GV^2)+(M^2G-Z^2)=0.
+\end{equation}
+Every operation is addition, subtraction or multiplication; no division,
+root, exponent variable or hidden quantified intermediate occurs.
+For proof only let $z=Z/M$, $\kappa=K/H$, $\rho=e/D$,
+$t=B/h$, $W=1+hL$, and let $\sigma=0$ in the cubic charts and
+$\sigma=s/q$ in the partial chart. The exact rational identity is
+\begin{equation}\label{eq:compactcarrier}
+ z=n+\kappa+\sigma-Wt-\rho.
+\end{equation}
+In the partial chart $D\sigma=Y^2$ is the crucial reuse identity.
+
+\begin{theorem}\label{thm:compact-six}
+Each of the six polynomials above has a strictly positive integer zero
+if and only if the retained syntactic calculus has a finite ZFC
+refutation. Consequently, by the retained whole indexed calibration,
+ZFC proves that its positive unsolvability is equivalent to
+$\operatorname{Con}(\mathrm{ZFC})$.
+\end{theorem}
+\begin{proof}
+We give the changed unbounded arithmetic argument, retaining the stated
+universal Pell, ratio and native-calibration interfaces. Write
+$\psi_A(r),\chi_A(r)$ for Pell ordinate and trace.
+
+\emph{Roots before signs.}
+Positive inputs imply $q,X,Y\ge32$, $c>k\ge2$, $A>4$, $U\ge c^2$,
+$E>1$, $a>c$, $Q>c^2$, and $M>0$. The identities
+\[
+ F_{\rm sq}=(1+2a)^2,\qquad
+ Q=4\Delta^2U^2G,\qquad \gcd(E,F_0)=1
+\]
+are unconditional. For any integral $b$, $V\ne0$ and $QV^2-1>0$.
+Equation~\eqref{eq:newcompact} gives
+$(Q-1)z^2=G(QV^2-1)$. Since $G\mid Q$, both other integer factors
+are $-1$ modulo $G$; prime valuations force $G=g^2$.
+Coprimality gives $E=\tau^2,F_0=f_0^2,g=\tau f_0$ with positive roots.
+The rational number $y=|z|/g$ satisfies
+\begin{equation}\label{eq:adjacent-new}
+ QV^2-(Q-1)y^2=1.
+\end{equation}
+Rational adjacent-Pell descent makes $y$ integral: if its reduced
+denominator is $m$, then $m^2\mid Q-1$; the norm-preserving map
+\[
+ (v,y)\longmapsto((2Q-1)v-2(Q-1)y, (2Q-1)y-2Qv)
+\]
+keeps the first coordinate integral, keeps the reduced denominator,
+and strictly decreases $|v|>1$ after sign reflection. At $|v|=1$,
+$y=1$. Thus $z=\varepsilon gy$ is integral.
+
+Put $f=1+2a,I=2Ug$. Then
+$f^2=F_{\rm sq}$, $f^2-\Delta I^2=1$, $c^2\mid I$ and
+$Q=(\Delta I)^2$. The retained signed all-index folding theorem,
+which allows either sign of $V$, applies to these equations and
+$V=-c\pmod f$. It gives $c=\psi_A(p)$ for an odd $p\ge1$.
+The first norm gives $k=2\psi_{2v+1}(n_0)$, $n_0\ge1$.
+The value $n_0=1$ would give $c=2Y+1$ strictly between
+$\psi_A(1)=1$ and $\psi_A(2)=2A$. Hence
+\begin{equation}\label{eq:earlyc}
+ k\ge8XY^2+4,\qquad c>kY>8XY^3\ge8q^4,
+ \qquad \kappa>0.
+\end{equation}
+No sign of $B,C,R,b$ has been used.
+
+\emph{Sign-free transport.}
+At a zero, $b=0$ would make
+$y^2=c^2+(c^2-1)/(Q-1)$ lie between consecutive integers. Thus
+$\operatorname{sgn}V=\operatorname{sgn}b$ and $|V|>|b|$.
+Also $a^2-G=E[\Delta U^2E(\Delta U^2-1)-1]>0$,
+$F_{\rm sq}-c>3a>3g$, and $y<3|V|/2$.
+Therefore $gy<V^2/2$.
+
+For $L=bV$ a stronger bound is needed. Suppose $p=3$, so
+$c=4A^2-1$. If $n_0\ge3$, then $kY>32X^2Y^5$, whereas
+$c<16X^2Y^2$, a contradiction. Hence $n_0=2$ and $k=8XY^2+4$.
+For the integer $u=X+2-2Y$ one obtains
+\[
+ \eta=4Y^2(Xu+1)+8Y(X+1)+3-4Y.
+\]
+If $u\le-1$ this is negative, since
+$Y(X-1)>2(X+1)$ for $X,Y\ge32$.
+If $u\ge2$ it exceeds $k$. Hence $u\in\{0,1\}$, or
+$2Y-X\in\{1,2\}$, impossible since $q\mid X,Y$.
+Thus $p\ge5$ and $c>c_3=4\Delta+3$.
+
+Writing $S=\Delta I$, Pell classification of
+\eqref{eq:adjacent-new} gives $|V|=\chi_S(j)/S$ for odd $j$.
+The first possibility is $|V|=1$, already excluded. For the third,
+$V=\pm(4Q-3)$ gives respectively
+\[
+ F_{\rm sq}(b-4\Delta)=c-c_3,\qquad
+ F_{\rm sq}(b+4\Delta)=c+c_3.
+\]
+Both right sides lie strictly between $0$ and $F_{\rm sq}$.
+Thus $j\ge5$, $|V|>8Q^2$, and, since $Q>F_{\rm sq}>2c$,
+\[
+ |b|>\frac{8Q^2-c}{F_{\rm sq}}>4F_{\rm sq}>4g.
+\]
+Consequently $L=bV=|b||V|>0$ and $gy<3L/8<L/2$.
+
+For either weight $e<b$ because $b-e=cT-k+1>0$, so
+$\rho<|b|/D$. If $B\le-1$, then $Wt<-L$; the carrier gives
+\[
+ n< L/2-L+|b|/D<0,
+\]
+using $D>2$, $|V|>|b|$ and $|V|>1$. Contradiction.
+Thus $B\ge0$, and $F>0$ forces $C>0$.
+Only now use the mask estimate $3q<R<q^4-2$.
+Equation~\eqref{eq:earlyc} gives $c>2R$, hence $b>0,V>0$.
+The retained normalized-rank and signed-index theorems, using
+$c^2\mid I$, $c>2R,c>2p$ and the fixed-minus residues, give $p=R$.
+Their hypotheses do not require the removed shift $T+\alpha$.
+Odd $R$ then gives even $q$ and odd $J$.
+
+\emph{Recover a small index before the full denominator.}
+The recurrence at $P_0=2XY^2+1$ gives
+\[
+ k\equiv2n_0\pmod {4XY^2}.
+\]
+Since $P_0>A$, $n_0\ge R$ would imply $k/2\ge c$.
+Thus $1\le n_0<R$. Integral $z$ gives $D\mid hHe$ in the cubic
+charts, where $q^4\mid D$. Since $H=-1\pmod q$ and $h=q-1$,
+this yields $q^4\mid e$.
+In the partial chart clearing $qhH$ gives $D\mid qhHe$;
+$q^5\mid D$ again gives $q^4\mid e$.
+Crucially $q^4\mid4XY^2$ in \emph{all} these charts.
+Therefore $q^4\mid2n_0-R-1$, and
+$|2n_0-R-1|<R<q^4$ forces $2n_0=R+1$.
+The full recurrence now gives $4XY^2\mid e$.
+Each selected $D$ divides $4XY^2$; for $D=q^3Y$ the quotient is
+$4ws$. Thus $\rho$ is integral. No false coprimality of $Y$ and $h$
+was invoked.
+
+\emph{Projection and source decoding.}
+Write $R=2r+1$, so $r\ge48$. The retained ratio theorem at scale one,
+with $\xi=(X+1)^{2r}/X^r$, gives
+\[
+ \xi<\frac{\psi_A(2r+1)}{\psi_{P_0}(r+1)}
+ <\xi\left(1+\frac1{Y(X+1)}\right)^{2r}.
+\]
+Together with $Y<c/k<Y+1$, this gives $Y>X^r/3$ and
+$X^{r+1}<H$. With $\rho$ integral the carrier gives
+$H\mid hK$ in the cubic charts, $H\mid qhK$ in the partial chart.
+Either implies the inherited premise $H\mid q^3hK$.
+Universal projection and odd $H$ give
+\[
+ H\mid q^3h(X-2^R)(2^RX+1).
+\]
+The retained whole-product bound puts the absolute value of this
+\emph{entire} product below $X^{r+1}<H$, hence $X=2^R$.
+In particular $\kappa$ is integral; no individual nonunit factor was
+cancelled modulo $H$.
+The cubic carrier gives $h\mid B$. The partial carrier gives
+$s/q-WB/h\in\Z$; coprimality of $q,h$ gives $q\mid s$ and $h\mid B$.
+Thus $q^3\mid Y$ and $t\ge0$ is integral in every chart.
+The retained fixed-minus parity and half-binomial rounding theorems
+now have their full hypotheses. Their fresh reconstruction at
+$A_{\rm source}=Y(X+1)+2$, followed by the whole indexed native
+calibration, supplies a finite ZFC refutation.
+
+\emph{Positive converse.}
+A refutation supplies the retained canonical outer data,
+$X=2^R$, $R\equiv3\pmod4$, $R>3q$, $q^3\mid Y$, integral $t\ge0$,
+and the required half-binomial $Y$. Set $s=Y/q^3$ in cubic charts,
+$s=Y/q^2$ in the partial chart. Form the scale-one bases and canonical
+$c=\psi_A(R)$, $k=2\psi_{P_0}((R+1)/2)$, $\tau=\chi_{P_0}((R+1)/2)$.
+The ratio/rounding theorem gives $0<\eta=c-kY<k$, so
+$\zeta=k-\eta>0$. Also $4XY^2\mid e$, hence $\rho\ge0$ is integral,
+and projection gives integral $0<\kappa<Xc$.
+Choose a positive matrix-period multiple at $A$ modulo $c^2\tau$,
+with seed pair $(f_0,I_0)$ and $c^2\tau\mid I_0$.
+Put $i=I_0/(c^2\tau)>0$ and double the pair; this produces exactly
+$f=2f_0^2-1$, $I=2f_0I_0$, and all literal root definitions above.
+The retained auxiliary completeness theorem supplies positive $V,y$ and
+\[
+ T=\frac{V+c+Rf^2}{cf^2}\in\Z_{>0}.
+\]
+No subtraction of $\alpha$ is needed. Set
+$n=gy+Wt+\rho-\kappa-\sigma$.
+In the partial chart $\sigma=Y/q^3$ is now integral; in cubic charts
+it is zero. Since $\sigma<Y<Xc$, $\kappa<Xc$, and
+$f_0>(A-1)I_0>2Xc$, we have $g>\kappa+\sigma$ and therefore $n>0$.
+The carrier is $z=gy$, proving~\eqref{eq:newcompact}. All independent
+coordinates are positive; this is a fresh witness construction, not an
+unjustified positive inverse shear.
+\end{proof}
+
+\subsection{Exact degree and reproducibility}
+Let $q_0=\beta J$, $k_0=\eta+\zeta$, $C_0=q_0-F-\alpha$.
+The full highest homogeneous forms are respectively
+\begin{align*}
+ (XY,V^2):&\quad2^{14}q_0^{378}w^{48}s^{110}i^{20}k_0^{64}T^4C_0^2,\\
+ (XY,bV):&\quad-2^{10}q_0^{284}w^{36}s^{82}i^{14}k_0^{46}T^2,\\
+ (q^4,V^2):&\quad2^{14}q_0^{378}w^{46}s^{108}i^{20}k_0^{64}T^4C_0^2,\\
+ (q^4,bV):&\quad-2^{10}q_0^{284}w^{34}s^{80}i^{14}k_0^{46}T^2,\\
+ (q^3Y,V^2):&\quad2^{14}q_0^{272}w^{46}s^{110}i^{20}k_0^{64}T^4C_0^2,\\
+ (q^3Y,bV):&\quad-2^{10}q_0^{206}w^{34}s^{82}i^{14}k_0^{46}T^2.
+\end{align*}
+For $V^2$ the unique top summand is $QZ^2$; for $bV$ it is
+$-QM^2GV^2$. The displayed nonzero forms prove the claimed exact global
+degrees at the actual positive $\beta$. Every binary operation is charged,
+including squares and multiplication by scalar literals. All inputs,
+ports and gates are live. Six deterministic DAGs, frozen parent data,
+coefficient bytes, recipe and mathematical provenance accompany the proof.
+The independent checker covers every row by exact polynomial-cut identities,
+propagates complete leading forms, authenticates all fixed bytes, and rejects
+48 deliberate algebraic corruptions. Normal and optimized Python replays
+and deterministic rebuilds are supplied. These finite checks are not
+substitutes for the unbounded theorem above.
+
+A tempting $Y=qs,D=q^6$ route at $81/410$ or $82/304$ was rejected:
+$4XY^2$ is only visibly divisible by $q^3$, insufficient for its index
+argument. It is not an accepted equation or delivered endpoint.

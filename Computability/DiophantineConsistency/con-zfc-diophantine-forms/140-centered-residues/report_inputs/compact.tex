@@ -1,0 +1,746 @@
+\section{Compact equations from an existing denominator}
+\label{sec:compact}
+
+The second contribution is a family of explicit polynomials in ten
+strictly positive integer unknowns.  It improves the latest incoming
+\(78/630\) and \(79/468\) circuits, where the two numbers mean live binary
+arithmetic operations and exact total degree.  The new arithmetic permits
+an existing expression to serve as the carrier denominator; two further
+savings reuse products already needed elsewhere.  The complete results
+are as follows.
+
+\begin{center}
+\begin{tabular}{@{}llrr@{}}
+\toprule
+Denominator & Transport weight & Operations & Exact degree\\
+\midrule
+\(XY\) & \(V^2\) & \textbf{75} & \textbf{626}\\
+\(XY\) & \(bV\) & \textbf{76} & \textbf{464}\\
+\(q^4\) & \(V^2\) & 76 & 622\\
+\(q^4\) & \(bV\) & \textbf{77} & \textbf{460}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The \(76/622\) point has the simpler squared-weight proof, although
+\(76/464\) dominates it in the two numerical metrics.  The other three
+points trade arithmetic cost against degree.  All four use the same
+complete indexed BFS943 coefficient tuple, specified in
+Section~\ref{sec:compact-constants}; its four ports are constants, not
+additional unknowns.  The arithmetic changes are uniform in those ports
+within their stated box, but the consistency interpretation uses the
+calibration of that \emph{whole} tuple.\cite{certificate,indexed}
+
+\begin{theorem}[Compact consistency equations]
+\label{thm:compact-main}
+Each of the four fixed polynomials defined below has ten strictly positive
+integer unknowns.  Composing the ordinary arithmetic proof in this
+section with the retained indexed native/refutation calibration gives
+\[
+ \ZFC\ \vdash\
+ \bigl[\nexists\,\mathbf x\in\Z_{>0}^{10}:P(\mathbf x)=0\bigr]
+ \ \longleftrightarrow\ \Con(\ZFC).
+\]
+Their operation counts and exact total degrees are those in the table.
+\end{theorem}
+
+This is an ordinary theorem formalizable in ZFC.  It is not a new
+end-to-end Lean or Rocq derivation, an emitted object-language ZFC proof,
+a proof of consistency, or a claim of global optimality.  Pell doubling,
+the product-square finalizer, and the removal of the auxiliary shift have
+explicit predecessors.  The new denominator criterion and its completed
+composition are distinguished from those inherited steps below.
+\cite{certificate,unshift}
+
+\subsection{The complete polynomial}
+\label{subsec:compact-definition}
+
+The independent unknowns are exactly
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\Z_{>0}.
+\]
+The four fixed positive integers are \(\beta,K_0,M_C,M_F\), with
+\begin{equation}
+ \beta\ge31\text{ odd},\qquad K_0>0,\qquad
+ 0<M_C<\beta<M_F<2\beta.
+ \label{eq:compact-portbox}
+\end{equation}
+Define the following polynomial abbreviations:
+\begin{align}
+ h&=\beta J,& q&=h+1,& C&=q-F-\alpha,\nonumber\\
+ X&=wq,&Y&=q^3s,&k&=\eta+\zeta,\nonumber\\
+ c&=kY+\eta,& A&=Y(X+1)+1,&
+ \Delta&=A^2-1,\nonumber\\
+ H&=4A-5,& \ell&=(XY)(kY),&
+ E&=1+\ell(\ell+k).                         \label{eq:compact-base}
+\end{align}
+For the mask, transport, and strong norm, put
+\begin{align}
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\nonumber\\
+ e&=k-R-1, & B&=(K_0+w)C-F,\nonumber\\
+ U&=ic^2,& a&=\Delta U^2E,& F_0&=1+a,\nonumber\\
+ G&=EF_0,& \mathcal F&=1+4aF_0,&
+ Q&=\Delta(\mathcal F-1),\nonumber\\
+ b&=cT-R,& V&=\mathcal F b-c,&
+ K_+&=X(3c-2X)+2.                            \label{eq:compact-strong}
+\end{align}
+Here \(\mathcal F=(1+2a)^2\) is an identity; its square root has not
+been introduced as an unknown.  Choose one of
+\[
+ D=XY\quad\hbox{or}\quad D=q^4,
+ \qquad
+ L=V^2\quad\hbox{or}\quad L=bV.
+\]
+Finally set
+\begin{align}
+ M&=hDH,\nonumber\\
+ Z&=hD\bigl[H(n-LB)+K_+\bigr]-H(DB+he),\nonumber\\
+ R_G&=M^2G.                                             \label{eq:compact-carrier}
+\end{align}
+The requested single equation is
+\begin{equation}
+ \boxed{\ P=Q(Z^2-R_GV^2)+(R_G-Z^2)=0.\ }
+ \label{eq:compact-final}
+\end{equation}
+Every named quantity in these displays is a polynomial abbreviation.
+The delivered JSON graphs contain only binary addition, subtraction, and
+multiplication.  Squaring and multiplication by fixed scalars are counted
+as multiplications.  No division or variable exponent occurs in the
+polynomial.
+
+The displayed form also makes the two shared products visible:
+\(A-1=XY+Y\), while \(kY\), already used in \(c\), is reused in
+\(\ell=(XY)(kY)\).  The proof occasionally writes \(V_0=XY^2\), but
+the evaluator need not compute that expression separately.
+
+\subsection{The admissible-denominator criterion}
+\label{subsec:compact-denominator}
+
+The same proof works with a more general integer-polynomial denominator
+\(D\), provided that, at every positive input,
+\begin{equation}
+ D>0,\qquad q^4\mid D,\qquad D\mid4XY^2.
+ \label{eq:compact-admissible}
+\end{equation}
+The first divisibility will recover a bounded index error.  The second
+will recover the complete quotient only \emph{after} that error is known
+to vanish.  Pairwise coprimality of \(D\) with all the other denominators
+is unnecessary.  Both advertised choices satisfy the criterion:
+\begin{align*}
+ XY&=q^4(ws),&4XY^2&=(XY)(4Y),\\
+ 4XY^2&=q^4(4ws^2q^3).
+\end{align*}
+In particular, \(D\ge q^4>2\).
+
+Both choices depend only on the outer coordinates \(J,w,s\), so the
+canonical completeness construction below has no circular choice of a
+padding coordinate.  In fact the pointwise criterion already excludes
+such a dependence for any polynomial \(D\): with \(J,w,s\) fixed, it
+implies \(0<D\le4XY^2\) while any of the other coordinates varies through
+all positive integers.  A bounded polynomial in such a coordinate is
+constant.  Repeating this argument removes every non-outer coordinate.
+Within this criterion, total degree four is minimal for a polynomial
+denominator: fix \(w,s\) and let \(J\) grow, using \(D\ge(\beta J+1)^4\).
+The choice \(q^4\) attains that denominator-degree bound; this is not a
+global bound on consistency equations.
+
+The rational quantities used only in the proof are
+\[
+ z=\frac ZM,\qquad \kappa=\frac{K_+}{H},\qquad
+ \rho=\frac eD,\qquad t=\frac Bh,\qquad W=1+hL.
+\]
+The exact identities are
+\begin{align}
+ z&=n+\kappa-Wt-\rho,                         \label{eq:compact-rational}\\
+ P&=(Q-1)Z^2-M^2G(QV^2-1).                   \label{eq:compact-norm}
+\end{align}
+No divisibility premise is used in either identity.  In particular,
+\(\rho\) and \(t\) are not initially assumed integral.
+
+\subsection{Pell facts and the index lemmas}
+\label{subsec:compact-pell}
+
+For an integer \(A\ge2\), define
+\[
+ \chi_A(r)+\psi_A(r)\sqrt{A^2-1}
+       =(A+\sqrt{A^2-1})^r\qquad(r\ge0).
+\]
+Both sequences satisfy \(u_{r+2}=2Au_{r+1}-u_r\), with
+\(\chi_A(0)=1,\chi_A(1)=A\) and
+\(\psi_A(0)=0,\psi_A(1)=1\).
+Positive integer solutions of \(u^2-(A^2-1)v^2=1\) are exactly these
+pairs.  One elementary descent proves this classification: for \(v>1\),
+multiplication by \(A-\sqrt{A^2-1}\) gives a positive integer ordinate
+\(Av-u\) strictly smaller than \(v\); at \(v=1\), \(u=A\).
+The addition formulas also give strong divisibility,
+\begin{equation}
+ \gcd\bigl(\psi_A(r),\psi_A(t)\bigr)
+       =\psi_A(\gcd(r,t)).                         \label{eq:compact-gcd}
+\end{equation}
+Indeed, \(\chi_A(r)\) is a unit modulo \(\psi_A(r)\), and the addition
+law reduces the gcd of two ordinates exactly as the Euclidean algorithm
+reduces their indices.  These elementary facts are the Pell framework
+of the retained normalized kernel.\cite{native61}
+
+We also need the first norm in \eqref{eq:compact-base}.  If \(v\ge1\)
+and positive integers \(\tau,k\) satisfy
+\(\tau^2-v(v+1)k^2=1\), then
+\begin{equation}
+ \tau=\chi_{2v+1}(r),\qquad k=2\psi_{2v+1}(r)
+ \quad\hbox{for some }r\ge1.                       \label{eq:compact-first-class}
+\end{equation}
+For completeness, there is no solution with \(k=1\), because
+\(v(v+1)+1\) lies strictly between consecutive squares.  The pair
+\((2v+1,2)\) is a solution.  For \(k>2\), multiplication by its inverse
+unit gives the positive smaller ordinate \((2v+1)k-2\tau\).  Descent
+therefore classifies every positive solution as a power of this pair,
+which is precisely \eqref{eq:compact-first-class}.
+
+\begin{lemma}[Odd-index quotient identities]
+\label{lem:compact-odd}
+There are integer polynomials \(Q_r\) such that
+\begin{align*}
+ \chi_t(2r+1)&=tQ_r(t^2),&
+ Q_r(0)&=(-1)^r(2r+1),\\
+ Q_r(1-A^2)&=(-1)^r\psi_A(2r+1),&
+ \psi_t(2r+1)&\equiv(-1)^r\pmod{t^2}.
+\end{align*}
+\end{lemma}
+\begin{proof}
+Use \(Q_0(x)=1\), \(Q_1(x)=4x-3\), and
+\(Q_{r+1}(x)=(4x-2)Q_r(x)-Q_{r-1}(x)\).
+The odd trace subsequence gives the first identity.  Evaluation at zero
+gives the second.  At \(x=1-A^2\), the recurrence coefficient is the
+negative of the one for the odd \(\psi_A\) subsequence, whose initial
+values are \(1,4A^2-1\); this gives the third identity.  The recurrence
+for \(\psi_t(2r+1)\), with initial values \(1,4t^2-1\), gives the last
+congruence modulo \(t^2\).
+\end{proof}
+
+\begin{lemma}[Normalized rank]
+\label{lem:compact-rank}
+Suppose \(c=\psi_A(p)>2\), \(f,I>0\),
+\(f^2-(A^2-1)I^2=1\), and \(c^2\mid I\).
+Then \(f=\chi_A(m)\), \(I=\psi_A(m)\) for an index satisfying
+\(pc\mid m\), and hence \(c\mid m\) and \(m>2p\).
+\end{lemma}
+\begin{proof}
+Classification gives \(m\), and \eqref{eq:compact-gcd} gives \(p\mid m\).
+Write \(m=pv\) and \(D_0=\chi_A(p)\).  Composition gives
+\(I=c\psi_{D_0}(v)\).  Since \(D_0^2\equiv1\pmod c\), recurrence
+gives \(\psi_{D_0}(v)\equiv vD_0^{v-1}\pmod c\).
+The number \(D_0\) is invertible modulo \(c\), and \(c^2\mid I\), so
+\(c\mid v\).  Thus \(pc\mid m\) and \(m\ge pc>2p\).
+\end{proof}
+
+\begin{lemma}[Signed index recovery]
+\label{lem:compact-index}
+Let \(c=\psi_A(p)\), \(f=\chi_A(m)\), \(c\mid m\), \(m>2p\),
+\(S\ge2\), \(c\mid S\), and \(S^2=(A^2-1)(f^2-1)\).
+If \(0<p,R<c/2\) and integers \(V,y\) satisfy
+\[
+ S^2V^2-(S^2-1)y^2=1,\qquad
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c,
+\]
+then \(p=R\).  The signs of \(V,y\) are unrestricted.
+\end{lemma}
+\begin{proof}
+Classification at parameter \(S\) gives
+\(S|V|=\chi_S(\nu)\), \(|y|=\psi_S(\nu)\).
+The index \(\nu\) is odd: an even trace is \(\pm1\pmod S\).
+Lemma~\ref{lem:compact-odd}, using
+\(S^2\equiv1-A^2\pmod f\), gives
+\(\psi_A(\nu)\equiv\pm c\pmod f\).  Squaring and using
+\(\chi_A(2j)=1+2(A^2-1)\psi_A(j)^2\) therefore gives
+\[
+ \chi_A(2\nu)\equiv\chi_A(2p)\pmod{\chi_A(m)}.
+\]
+Here is the abscissa step used to read this congruence.  For
+\(0<k<m\), a congruence
+\(\chi_A(t)\equiv\chi_A(k)\pmod{\chi_A(m)}\) implies
+\(t\equiv\pm k\pmod{2m}\).  The addition laws reduce and reflect
+\(t\) to a signed representative \(\pm\chi_A(u)\), \(0\le u\le m\).
+The value \(u=m\) has residue zero.  The negative sign is impossible
+because \(0<\chi_A(u)+\chi_A(k)\le2\chi_A(m-1)<\chi_A(m)\).
+The positive sign forces equality and hence \(u=k\).
+Apply this step with \(k=2p<m\): it gives
+\(\nu\equiv\pm p\pmod m\), hence modulo \(c\).
+
+On the other hand, \(c\mid S\) and \(Q_r(0)=(-1)^r(2r+1)\), together
+with \(V\equiv-R\pmod c\), give \(\nu\equiv\pm R\pmod c\).
+Thus \(p\equiv\pm R\pmod c\).  The strict half-interval bounds on
+\(p,R\) force \(p=R\).
+\end{proof}
+
+\subsection{Root extraction before any transport sign}
+\label{subsec:compact-roots}
+
+At every positive input,
+\[
+ q\ge32,\quad X\ge q,\quad Y\ge q^3,\quad k\ge2,\quad c\ge3,
+ \quad A>4,\quad\Delta\ge3,\quad U\ge c^2,\quad E>1.
+\]
+Moreover \(\mathcal F>2c\), \(Q>1\), and \(M>0\).
+For every integral \(b\), \(V=\mathcal Fb-c\) is nonzero and
+\(|V|>1\): if \(b=0\), \(V=-c\); otherwise
+\(|V|\ge\mathcal F-c>1\).
+The identities
+\begin{equation}
+ \mathcal F=(1+2a)^2,\qquad
+ Q=4\Delta^2U^2G                                      \label{eq:compact-double}
+\end{equation}
+imply \(\gcd(G,Q-1)=\gcd(G,QV^2-1)=1\).
+At a zero of \(P\), equation~\eqref{eq:compact-norm} yields
+\[
+ (Q-1)z^2=G(QV^2-1).
+\]
+For every prime dividing \(G\), its valuations in \(Q-1\) and
+\(QV^2-1\) vanish; its valuation in \(G\) must therefore be even,
+because the valuation of a rational square is even.  Thus \(G=g^2\)
+for an integer \(g>0\).  Since \(F_0\equiv1\pmod E\), the coprime
+positive factors \(E,F_0\) are separately squares:
+\[
+ E=\tau^2,\qquad F_0=f_0^2,\qquad g=\tau f_0.
+\]
+No coprimality condition on \(M\) was required.
+Put \(y=|z|/g\).  Then
+\begin{equation}
+ QV^2-(Q-1)y^2=1.                                  \label{eq:compact-adjacent}
+\end{equation}
+
+\begin{lemma}[Integral ordinate in the adjacent norm]
+\label{lem:compact-adjacent}
+For an integer \(Q>1\), a nonzero integer \(V\), and a positive rational
+\(y\), equation~\eqref{eq:compact-adjacent} forces \(y\) integral.
+\end{lemma}
+\begin{proof}
+Write \(y=r/m\) in lowest terms.  Clearing denominators gives
+\(m^2\mid Q-1\).  For \(v=|V|>1\), the norm implies
+\(v<y<Qv/(Q-1)\).  The transformation
+\[
+ v'=(2Q-1)v-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2Qv
+\]
+preserves the norm.  Its first coordinate is integral and satisfies
+\(-v<v'<v\); it cannot vanish, since the norm is one.
+The reduced denominator of the second coordinate remains \(m\), because
+\(2Q-1\equiv1\pmod m\).  Reflecting signs and descending on the positive
+integer first coordinate eventually reaches \(v=1\), where the norm
+gives \(y=1\).  Hence the unchanged denominator is \(m=1\).
+\end{proof}
+
+Consequently \(z=\varepsilon gy\) is an integer, with
+\(\varepsilon\in\{-1,1\}\).  For proof purposes set
+\begin{equation}
+ f=1+2a,\qquad I=2Ug.
+ \label{eq:compact-proofpair}
+\end{equation}
+Then
+\begin{equation}
+ f^2=\mathcal F,\qquad f^2-\Delta I^2=1,\qquad
+ Q=(\Delta I)^2,\qquad c^2\mid I.                 \label{eq:compact-strongnorm}
+\end{equation}
+
+We next give the sign-free main-index folding argument explicitly.
+Classify \(f=\chi_A(m)\), \(I=\psi_A(m)\).
+At \(S=\Delta I\), classify \eqref{eq:compact-adjacent} as
+\(S|V|=\chi_S(j)\), \(y=\psi_S(j)\).  Again \(j\) is odd.
+Since \(S^2\equiv1-A^2\pmod f\),
+Lemma~\ref{lem:compact-odd} and \(V\equiv-c\pmod f\) give
+\(\psi_A(j)\equiv\pm c\pmod f\).  The addition laws give
+\[
+ \psi_A(j+2m)\equiv-\psi_A(j),\qquad
+ \psi_A(2m-j)\equiv\psi_A(j)\pmod f.
+\]
+Reduction modulo \(2m\), followed by reflection about \(m\), supplies
+\(p\in[0,m]\) of the parity of \(j\), with
+\(\psi_A(j)\equiv\pm\psi_A(p)\pmod f\).
+Now \(0<c\le I\), \(0\le\psi_A(p)\le I\), and \(2I<f\) because
+\(A\ge3\).  The congruence therefore forces
+\begin{equation}
+ c=\psi_A(p),\qquad p\ge1\text{ odd}.              \label{eq:compact-folded}
+\end{equation}
+Neither the sign of \(V\) nor a parity condition on \(m\) was imposed.
+
+Write \(V_0=XY^2\) for proof notation.  The first norm and
+\eqref{eq:compact-first-class} give
+\[
+ k=2\psi_{2V_0+1}(n_0),\qquad n_0\ge1.
+\]
+If \(n_0=1\), then \(k=2\), \(\eta=\zeta=1\), and \(c=2Y+1\)
+lies strictly between \(\psi_A(1)=1\) and \(\psi_A(2)=2A\), a
+contradiction.  Thus
+\begin{equation}
+ n_0\ge2,\quad k\ge8V_0+4,\quad
+ c>kY\ge k>8q^7,\quad c>X,\quad K_+>0.           \label{eq:compact-earlybound}
+\end{equation}
+No sign of \(B,C,R,b,V\), or \(\rho\) was used.
+
+\subsection{Signed transport with no shift in \texorpdfstring{$T$}{T}}
+\label{subsec:compact-sign}
+
+The old coordinate was \(T+\alpha\).  Its formal inverse after deletion
+is \(T_{\rm old}=T-\alpha\), which can be nonpositive.  Soundness therefore
+needs a direct argument; a formal substitution alone would be inadequate.
+\cite{unshift}
+
+First \(b\ne0\).  Otherwise \(V=-c\), and
+\eqref{eq:compact-adjacent} would give
+\[
+ y^2-c^2=\frac{c^2-1}{Q-1}\in(0,1),
+\]
+because \(Q\ge9c^4>c^2\).  The left side is integral.
+Put \(D_0=\Delta U^2\ge243\).  Since \(a=D_0E\) and
+\(g^2=E(1+a)\),
+\[
+ \frac{a^2}{g^2}=\frac{D_0a}{1+a}>\frac{D_0}{2}>9.
+\]
+Hence \(a>3g\), while \(a\ge c\).  For nonzero integral \(b\),
+\begin{equation}
+ \operatorname{sgn}V=\operatorname{sgn}b,\qquad
+ |V|\ge\mathcal F-c>a>3g,\qquad |V|>|b|,\qquad
+ y<\tfrac32|V|.                                    \label{eq:compact-absolute}
+\end{equation}
+For \(L=V^2\), these immediately give \(gy<L/2\).
+
+The choice \(L=bV\) requires a stronger estimate.  Suppose the odd
+main index in \eqref{eq:compact-folded} were \(p=3\), so
+\(c=4A^2-1\).  If \(n_0\ge3\), then
+\[
+ k>32V_0^2,\qquad
+ c<64X^2Y^2<32X^2Y^5<kY<c,
+\]
+using \(A<4XY\) and \(Y\ge q^3\), a contradiction.
+Thus \(n_0=2\) and \(k=8V_0+4\).
+Writing \(u=X+2-2Y\), the exact remainder identity is
+\begin{equation}
+ \eta=4Y^2(Xu+1)+8Y(X+1)+3-4Y.                    \label{eq:compact-p3}
+\end{equation}
+If \(u\le-1\), this is negative because
+\(Y(X-1)>2(X+1)\).  If \(u\ge2\), subtraction of \(k\) leaves at
+least \(4Y^2+8Y(X+1)-4Y-1>0\).  Since \(0<\eta<k\), one must have
+\(u\in\{0,1\}\), equivalently \(2Y-X\in\{1,2\}\).  But
+\(q\mid X,Y\) and \(q\ge32\).  This contradiction proves
+\begin{equation}
+ p\ge5,\qquad c>c_3:=4\Delta+3.                   \label{eq:compact-p5}
+\end{equation}
+
+At \(S=\Delta I\), the adjacent index \(j\) is odd.  Index one gives
+\(|V|=1\), already excluded.  Index three gives \(|V|=4Q-3\).
+The two possible signs would imply, respectively,
+\[
+ \mathcal F(b-4\Delta)=c-c_3,\qquad
+ \mathcal F(b+4\Delta)=c+c_3.
+\]
+Both right sides lie strictly between zero and \(\mathcal F\), since
+\(0<c-c_3<c+c_3<2c<\mathcal F\).  Thus neither can be a multiple of
+\(\mathcal F\).  Consequently \(j\ge5\) and
+\[
+ |V|\ge16Q^2-20Q+5>8Q^2.
+\]
+Since \(Q>\mathcal F>2c\), the triangle inequality gives
+\[
+ |b|>\frac{8Q^2-c}{\mathcal F}
+       >8\mathcal F-\tfrac12>4\mathcal F>4g.
+\]
+Together with \eqref{eq:compact-absolute}, this proves
+\begin{equation}
+ L=bV=|b||V|>0,\qquad gy<\tfrac38L<L/2.            \label{eq:compact-bvbound}
+\end{equation}
+
+For either weight, the new unshifted identity is
+\[
+ e=b-cT+k-1<b,\qquad \rho<|b|/D,
+\]
+using \(c>k\) and \(T\ge1\).  If \(B\le-1\), then
+\(Wt\le-L-1/h\).  Equation~\eqref{eq:compact-rational} gives
+\[
+ n=\varepsilon gy-\kappa+Wt+\rho
+     <L/2-L+|b|/D<0.
+\]
+The last inequality uses \(D>2\) and either \(L=V^2\) with
+\(|V|>|b|\), or \(L=|b||V|\) with \(|V|>1\).
+This contradicts the positive independent input \(n\).  Hence
+\begin{equation}
+ B\ge0,\qquad C>0.                               \label{eq:compact-transportpos}
+\end{equation}
+
+\subsection{Rank recovery and the staged denominator argument}
+\label{subsec:compact-staged}
+
+The outer bounds can now be proved without source semantics.  Let
+\(G_0=h(q-F)+\alpha\).  As \(q-F=C+\alpha\),
+\[
+ G_0=q\alpha+(q-1)C,\qquad q\le G_0\le q^2-q,
+\]
+while \eqref{eq:compact-portbox} gives
+\(0<(M_C+qM_F)J<h(1+2q)\).  Therefore
+\begin{equation}
+ 3q<R<q^4-2.                                      \label{eq:compact-outerbound}
+\end{equation}
+From \eqref{eq:compact-earlybound}, \(c>2R\).  Also
+\(c=\psi_A(p)>2p\): \(p\ge3\), and the Pell recurrence gives more
+than geometric growth at \(A\ge3\).  Lemma~\ref{lem:compact-rank}
+supplies \(m\) with \(c\mid m\), \(m>2p\).
+Since \(c^2\mid I\), the strong norm gives \(f^2\equiv1\pmod c\), so
+\[
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c.
+\]
+Lemma~\ref{lem:compact-index} applies with \(S=\Delta I\), giving
+\begin{equation}
+ p=R.                                             \label{eq:compact-rankexact}
+\end{equation}
+In addition, \(T\ge1\) and \(c>2R\) restore \(b\ge c-R>0\) and
+\(V>0\).  No later step needs the stronger, generally false inequality
+\(b>c\).  The retained mask parity argument yields even \(q\) and odd
+\(J\), but the following denominator cancellation does not require that
+parity conclusion.\cite{native61,certificate}
+
+Because \(z\) is integral, multiplying
+\eqref{eq:compact-rational} by \(hH\) gives
+\begin{equation}
+ D\mid hHe.                                      \label{eq:compact-partialdiv}
+\end{equation}
+But \(H=4Y(X+1)-1\equiv-1\pmod q\) and \(h=q-1\), so
+\(\gcd(q,hH)=1\).  Since \(q^4\mid D\),
+\begin{equation}
+ q^4\mid e.                                      \label{eq:compact-smallmodulus}
+\end{equation}
+The first norm has parameter \(P_0=2XY^2+1\).
+The base-one recurrence gives
+\(\psi_{P_0}(n_0)\equiv n_0\pmod{P_0-1}\); hence
+\begin{equation}
+ k\equiv2n_0\pmod{4XY^2}.                        \label{eq:compact-firstcong}
+\end{equation}
+Equations~\eqref{eq:compact-smallmodulus}--\eqref{eq:compact-firstcong}
+imply \(q^4\mid2n_0-R-1\).
+
+Now \(P_0>A\), since
+\(P_0-A=Y(2XY-X-1)>0\).  If \(n_0\ge R\), monotonicity in the
+positive index and base gives
+\[
+ k/2=\psi_{P_0}(n_0)\ge\psi_A(R)=c>k,
+\]
+impossible.  Thus \(1\le n_0<R\), and
+\[
+ |2n_0-R-1|<R<q^4.
+\]
+The bounded multiple of \(q^4\) must vanish:
+\begin{equation}
+ 2n_0=R+1.                                       \label{eq:compact-firstindex}
+\end{equation}
+Only now return to the \emph{full} recurrence modulus in
+\eqref{eq:compact-firstcong}.  It gives
+\[
+ 4XY^2\mid e,\qquad D\mid e,\qquad \rho\in\Z.
+\]
+The middle implication uses the second half of
+\eqref{eq:compact-admissible}.  No assumption that \(D\) itself is
+coprime to \(hH\) has entered the argument.
+
+\subsection{The retained projection and native calibration}
+\label{subsec:compact-transfer}
+
+Write \(R=2r+1\); equation~\eqref{eq:compact-outerbound} gives \(r\ge48\).
+The elementary recurrence bounds
+\[
+ \psi_A(j)\ge(2A-1)^{j-1},\qquad
+ \psi_{P_0}(j)\le(2P_0)^{j-1}\qquad(j\ge1)
+\]
+give a convenient self-contained height estimate.  Indeed,
+\[
+ (2A-1)^2-2XP_0
+ =4Y^2(2X+1)+4Y(X+1)+1-2X>0,
+\]
+so
+\[
+ \frac ck=
+ \frac{\psi_A(2r+1)}{2\psi_{P_0}(r+1)}
+ \ge\frac12\left(\frac{(2A-1)^2}{2P_0}\right)^r
+ >\frac{X^r}{2}.
+\]
+Since \(Y<c/k<Y+1\) and \(X^r>6\), this proves
+\begin{equation}
+ Y>X^r/3,\qquad X^{r+1}<3Y(X+1)<H.                \label{eq:compact-ratiobound}
+\end{equation}
+
+After \(\rho\) is integral, the carrier gives \(H\mid hK_+\).
+The needed projection can also be proved directly.  Modulo the odd
+integer \(H=4A-5\), put \(u_0=0\) and
+\(u_j=3\cdot2^{j-1}\psi_A(j)\) for \(j\ge1\).
+The Pell recurrence and \(4A\equiv5\pmod H\) give
+\[
+ u_{j+2}\equiv5u_{j+1}-4u_j\pmod H,\qquad u_0=0,\quad u_1=3.
+\]
+The sequence \(4^j-1\) has the same recurrence and initial values.
+Thus, writing \(x_*=2^R\),
+\[
+ 3x_*c\equiv2(x_*^2-1)\pmod H,\qquad
+ x_*K_+\equiv-2(X-x_*)(x_*X+1)\pmod H.
+\]
+Multiplying the known divisibility by \(x_*\) and cancelling only the
+unit two gives
+\begin{equation}
+ H\mid h(X-2^R)(2^RX+1).                         \label{eq:compact-projection}
+\end{equation}
+There is no division by three in this argument.  For the height of the
+\emph{entire product}, use \(h<X\), \(X+x_*<Xx_*\), and
+\(x_*X+1<2x_*X\):
+\[
+ \bigl|h(X-x_*)(x_*X+1)\bigr|
+ <2x_*^2X^3=8\cdot16^rX^3<X^{r+1}<H.
+\]
+The penultimate inequality follows from \(X\ge32\) and \(r\ge48\)
+(already \(r>13\) is enough).  The product must vanish, and hence
+\begin{equation}
+ X=2^R.                                          \label{eq:compact-power}
+\end{equation}
+This is not a cancellation of possibly nonunit individual factors modulo
+a composite integer.  Since \(x_*\) is a power of two and \(H\) is odd,
+the same congruence now gives \(H\mid K_+\), so \(\kappa\in\Z\).
+The carrier then makes \(Wt\) integral; since
+\(W\equiv1\pmod h\), \(h\mid B\), and \(t\in\Z_{\ge0}\).
+
+At this point the remaining inherited interface is explicit:
+the fixed-minus parity, exact half-binomial rounding, and indexed native
+calibration are retained from the supplied ordinary sources.  They are
+not inferred from the finite circuit checks.\cite{certificate,native61,indexed}
+All hypotheses of that retained fixed-minus parity, exact half-binomial
+rounding, and native reconstruction are now available, including the
+literal \(q^3\mid Y\).  Reconstruction uses the fresh source base
+\(Y(X+1)+2\); it does not identify that base with the present \(A\).
+The whole indexed source calibration sends these data to a finite
+syntactic ZFC refutation.  This establishes soundness at the explicitly
+retained ordinary calibration boundary.
+
+\subsection{Positive completeness}
+\label{subsec:compact-completeness}
+
+Conversely, a finite refutation supplies the inherited canonical outer
+data, with \(X=2^R\), \(R>3q\), \(R\equiv3\pmod4\),
+\(q^3\mid Y\), and an integer \(t=B/h\ge0\).
+The constructive scale-one ratio theorem supplies
+\begin{align*}
+ c&=\psi_A(R),&
+ k&=2\psi_{P_0}((R+1)/2),&
+ \tau&=\chi_{P_0}((R+1)/2),\\
+ \eta&=c-kY>0,&\zeta&=k-\eta>0.
+\end{align*}
+Here \(P_0=2XY^2+1\).  The first-index congruence gives
+\(4XY^2\mid e\), so \eqref{eq:compact-admissible} gives
+\(\rho=e/D\in\Z_{\ge0}\).  Projection gives positive integral
+\(\kappa\).
+
+The Pell matrix
+\[
+ \begin{pmatrix}A&\Delta\\1&A\end{pmatrix}
+\]
+has determinant one, and hence finite order modulo \(c^2\tau\).
+A positive multiple of this period supplies a seed pair \((f_0,I_0)\)
+with \(c^2\tau\mid I_0\).  Put \(i=I_0/(c^2\tau)>0\), so
+\(U=I_0/\tau\).  Then
+\[
+ a=\Delta I_0^2=f_0^2-1,\qquad
+ F_0=f_0^2,\qquad g=\tau f_0.
+\]
+Doubling this single seed pair gives
+\[
+ f=2f_0^2-1=1+2a,\qquad
+ I=2f_0I_0=2Ug,
+\]
+exactly the proof pair \eqref{eq:compact-proofpair}.  There is no
+simultaneous-solvability assertion about unrelated Pell equations.
+
+The auxiliary witnesses can also be written directly.  With
+\(S=\Delta I\) and \(R=2v+1\), where \(v\) is odd, set
+\[
+ V_*=\frac{\chi_S(R)}{S}=Q_v(S^2),\qquad
+ y_* =\psi_S(R).
+\]
+They are positive integers satisfying the adjacent norm.  Since
+\(S^2\equiv1-A^2\pmod{f^2}\) and \(c\mid S\),
+Lemma~\ref{lem:compact-odd} gives
+\[
+ V_*\equiv-c\pmod{f^2},\qquad V_*\equiv-R\pmod c.
+\]
+The strong norm gives \(f^2\equiv1\pmod c\) and
+\(\gcd(c,f^2)=1\).  Therefore
+\begin{equation}
+ T=\frac{V_*+c+Rf^2}{cf^2}\in\Z_{>0},\qquad
+ f^2(cT-R)-c=V_* .                              \label{eq:compact-Tcomplete}
+\end{equation}
+In particular, no subtraction of \(\alpha\) is needed.
+
+For either prescribed positive weight \(L\), choose
+\[
+ n=gy_*+(1+hL)t+\rho-\kappa.
+\]
+All summands are integers.  The inequalities
+\[
+ f_0>(A-1)I_0>Xc>\kappa
+\]
+show \(g>\kappa\); the last inequality follows already from
+\(H>3\) and \(K_+<3Xc\).  Since \(y_*\ge1\), \(t,\rho\ge0\),
+this gives \(n>0\).  Its carrier is exactly \(z=gy_*\), so
+\eqref{eq:compact-final} vanishes.  Every independent coordinate is
+strictly positive.  This proves completeness by fresh canonical
+witnesses and completes the proof of Theorem~\ref{thm:compact-main}.
+
+\subsection{Exact degrees, arithmetic costs, and finite evidence}
+\label{subsec:compact-metrics}
+
+Removing the private \(T+\alpha\) addition saves one operation.
+Sharing \(XY\) in the main base and first norm saves a multiplication
+when \(D=XY\).  Reusing the already computed \(kY\) in
+\(\ell=(XY)(kY)\) saves another multiplication.  The \(q^4\) option
+then adds the single square \((q^2)^2\).  Counts were obtained from
+the complete live graphs, including fixed scalar multiplications:
+\begin{center}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+\(D\)&\(L\)&Products&Sums&Differences&Total\\
+\midrule
+\(XY\)&\(V^2\)&44&17&14&75\\
+\(XY\)&\(bV\)&45&17&14&76\\
+\(q^4\)&\(V^2\)&45&17&14&76\\
+\(q^4\)&\(bV\)&46&17&14&77\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Write \(q_0=\beta J\), \(k_0=\eta+\zeta\).
+The full highest homogeneous components, in table order, are
+\begin{align}
+ &2^{14}q_0^{378}w^{48}s^{110}i^{20}k_0^{64}T^4
+       (q_0-F-\alpha)^2,\nonumber\\
+ &-2^{10}q_0^{284}w^{36}s^{82}i^{14}k_0^{46}T^2,\nonumber\\
+ &2^{14}q_0^{378}w^{46}s^{108}i^{20}k_0^{64}T^4
+       (q_0-F-\alpha)^2,\nonumber\\
+ &-2^{10}q_0^{284}w^{34}s^{80}i^{14}k_0^{46}T^2.
+ \label{eq:compact-leading}
+\end{align}
+Their degrees are \(626,464,622,460\).  The selected coefficients
+\(2^{14}\beta^{378}\) and \(-2^{10}\beta^{284}\) are nonzero at the
+actual fixed \(\beta\).  These are complete multivariate leading
+components, not numerical rays.  The squared-weight outputs have 390
+leading monomials; the \(bV\) outputs have 47.
+
+The supplied standard-library checker proves 32 or 33 exact
+free-polynomial cut identities covering every actual gate, checks full
+topology and liveness, collects every leading component, and validates
+the four literal coefficient payloads and bit lengths.  A separate
+reconstruction script regenerates the integers from the finite code in
+Section~\ref{sec:compact-constants}, byte for byte.  Normal and optimized
+Python runs agree.  A separately tasked AI reviewer checked the ordinary
+proof and independently verified the complete leading forms and graph
+liveness; its 480 signed modular scalar comparisons are additional
+regression evidence, not substitutes for the exact identities or the
+unbounded proof.  The independent review led to the explicit folding
+proof printed above.
+
+The emitted JSON graphs, coefficient bytes, builders, checkers,
+receipts, source ledger, and copied ordinary proof sources are included
+in the archive's \texttt{compact/} directory.  They specify actual fixed
+polynomials.  The native/refutation theorem remains the expressly
+retained calibration; the finite programs do not establish consistency
+or replace that theorem.
