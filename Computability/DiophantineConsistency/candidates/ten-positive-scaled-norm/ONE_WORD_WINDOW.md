@@ -141,6 +141,41 @@ kernel needs no other change, and the 86- to 97-operation ten-positive forms
 become nine-positive forms of about the same size, against 420 operations at
 degree 1,472,168 today.
 
+### 2c. First feasibility analysis of the complement form
+
+*Local edge checks are expressible.* With alpha = 1 the identity
+(K0 + w + 1)·C ≡ 0 (mod B^N − 1) says that, cell by cell, the bits the fixed
+kernels and the row shift deliver to each position, plus the cell's own bit
+there, sum to the corresponding digit of a multiple of B^N − 1. Store every
+edge colour in two places, once plainly and once complemented
+(w̄ = 2^m − 1 − w). If the kernel delivers e_i onto the complemented field
+w̄_(i+1) of the east neighbour (and s_i onto n̄_(i+h) through the row shift),
+each bit position receives e_bit + w̄_bit, which is 1 exactly when the colours
+agree at that bit, and 0 or 2 when they disagree. So matching colours
+produce an all-ones field with no carry, which is what the complement form
+requires. Tile selection (one of the 943 tiles per occupied cell) is already
+a linear aggregate in the present compiler (package 44, section 3, the
+aggregate lemma with a = 10, m = 41), so it can be re-targeted at all ones
+by fixed ones of C at known positions.
+
+*What must still be excluded.* A residue ≡ 0 (mod B^N − 1) is m·(B^N − 1)
+for a small m, not only B^N − 1. For example, "every position receives 2"
+(m = 2: all plain and complemented copies equal to 1, i.e. mismatches
+everywhere) passes the congruence, and so do balanced patterns of 0's and 2's
+whose carries wrap around the cycle. These must be excluded by C's fixed
+zeros and ones and by the population target σ2(R) = 3dN + 2, and the
+exclusion has to be proved, as the present compiler proves its clean bands
+and anchor parities (package 44, section 5;
+`HilbertTenthProblem/Papers/1980/FIXED_RAW_UNIVERSAL_75_PROOF.md`, section 4).
+
+*What a full compiler still needs.* Re-encoding the 943-tile language with
+complemented copies (roughly doubling the cell width d), new anchor and
+boundary handling for the start and end markers, a new carry analysis for
+the cyclic sum, re-derived fixed coefficients (K0, MC, MF) and population
+calibration, and a new soundness and completeness proof of the window.
+None of this is attempted here; the analysis above only shows that the local
+part of the complement form is not obstructed.
+
 ## 3. Where a redesign could act
 
 1. **Self-consistency instead of a test word.** Encode the run as C and
