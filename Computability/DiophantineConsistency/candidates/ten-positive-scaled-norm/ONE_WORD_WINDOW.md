@@ -4,7 +4,7 @@ Direction chosen by Vladimir on 24 October 2026 (see NEXT_STEPS.md): make
 the ten-positive kernel a nine-positive equation by changing the compiler's
 window so that the transport reads one tableau word. This brief fixes what
 the present window does, why the kernel cannot absorb a third source
-unknown, and where a redesign has to act. Nothing here is a result.
+unknown, and where a redesign has to act. Section 2d records an obstruction to the complement form; nothing else here is a result.
 
 ## 1. What the present window is
 
@@ -175,6 +175,44 @@ the cyclic sum, re-derived fixed coefficients (K0, MC, MF) and population
 calibration, and a new soundness and completeness proof of the window.
 None of this is attempted here; the analysis above only shows that the local
 part of the complement form is not obstructed.
+
+### 2d. A global obstruction to the complement form (24 October, later)
+
+The local analysis of 2c is not enough: the global congruence turns the
+accepted words into a group.
+
+*The accepted set before masks is cyclic.* Put M = B^N − 1 and
+g = gcd(K0 + B^h + 1, M). Since w ≡ B^h (mod M), the complement form
+(K0 + w + 1)·C ≡ 0 (mod M) holds exactly for the multiples C = k·(M/g),
+0 ≤ k < g. The fixed-bit masks then select a subset of these g words.
+
+*Rows evolve by a fixed multiplier.* k·(M/g) is the N-digit repetend of k/g
+in base B: its digits come from the remainders r_(j+1) = B·r_j mod g. One row
+later (h cells) the remainder is multiplied by B^h, and B^h ≡ −(K0 + 1)
+(mod g). So, read row by row, an accepted word is the base-B expansion of
+x0·κ^i mod g with the single fixed multiplier κ = −(K0 + 1), the same for
+every N and h. The tableau rows would have to evolve by a fixed linear map
+modulo g.
+
+*Every digit-wise tie behaves the same way.* Any choice of alpha that is a
+fixed function of the small unknowns (alpha = 1, alpha = J, …) makes C a
+fixed digit-wise function of F, and the transport becomes
+(K0 + w + 1)·F ≡ const (mod M): a coset of the same cyclic group, with
+affine instead of linear row evolution. Only J, F and alpha are below q
+among the kernel's unknowns, so alpha cannot be supplied by another
+unknown either.
+
+*Consequence.* The K215 blank run is a nonlinear computation. For it to be
+the expansion of x0·κ^i mod g with κ fixed, and for the masks to accept only
+such runs, would need an arithmetic encoding of the machine in iterated
+multiplication by one constant. None is known, and it is not plausible.
+This is an obstruction argument, not an impossibility proof: an unexpected
+choice of K0 and of the masks is not excluded. With that caveat, the
+two-word structure of the present compiler family is necessary. A
+nine-positive form at low degree needs a different source, for example
+Jones's two-unknown gap source at much lower radix degree, rather than a
+one-word variant of this window. Option 1 of section 3 is therefore
+withdrawn. Options 2 and 3 tie no digits and are not affected.
 
 ## 3. Where a redesign could act
 
