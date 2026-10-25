@@ -2153,3 +2153,22 @@ whole source/privacy/interfaces; see the [root review](reviews/signed-pell-cap-s
 This note emits no new source or quartic and claims no projected size.
 The current complete equations, canonical PDF/TeX and Lean pause remain
 preserved. The separate fused-nine projection is still being checked.
+
+
+## A simpler nine-positive printed front is prepared
+
+The [new standalone TeX draft](candidates/one-page-shared-odd9/equation.tex)
+uses the already accepted413-operation, exact-degree1,316,546 endpoint.
+It retains the same entire722-character native recipe as the completed
+433-operation page, saving20operations and312,222degrees. Both complete
+ordinary/data and mathematical-page reviews pass, including the fresh
+positive i/j/n witness maps, all four entire raw coefficient payloads,
+all85 translated free-port kernel terms and the whole444-node graph.
+The [sealed assessment](research/nine-page-lower-frontier-assessment/ASSESSMENT.md)
+explains why the405-operation original31 endpoint cannot reuse this tuple.
+
+This is mathematical TeX preparation. New actual-TeX/PDF validation,
+rendering fit and independent visual checks remain pending; no413PDF
+is claimed. See the [root preparation review](reviews/one-page-shared-odd9-mathematical-preparation-root.md).
+The completed433comparison, canonical92/283 page and Lean pause remain
+preserved while the separate reviewed toolchain is prepared.
