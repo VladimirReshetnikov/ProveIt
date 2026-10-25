@@ -1924,3 +1924,19 @@ staged178-identity sign ledger pass. See the
 This is a complete ordinary/literal source checkpoint with no new projected
 quartic count. The359 and433 alternatives and canonical PDF/TeX remain
 preserved. Lean stays paused.
+
+
+## Partial-sum extension ready for materialization
+
+The [fixed-chart partial-sum theorem](research/signed-pell-cap-pool-grouping/PROPOSAL.md)
+and its inert coefficient calculation passed complete root and independent
+ordinary/static reviews. Five unrestricted sums uniquely extend each zero
+of the accepted centered359 chart, fixing every old coordinate. The exact
+row reconstructions and full SOS difference are checked. Two independent
+root inert replays match the frozen author records byte-for-byte.
+
+The prospective364-variable/227-row quartic has4574 terms and height128446.
+Those are fixed-layout calculations; the complete successor equation is
+still pending materialization and independent checks. No optimizer was run
+and no survival or global-minimum claim is made. The accepted359 and433
+alternatives, canonical PDF/TeX and paused Lean work remain preserved.
