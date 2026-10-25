@@ -299,16 +299,26 @@ unsealed prospective probe is preserved as a draft; no application or page-size
 claim follows. This encoding changes the earlier scoped47 alias's ten-bit guard
 and seven-marker layout.
 
+The [complete complemented-three-anchor47 proof](research/compact66-complemented-three-anchor-radix47/README.md)
+combines positive complemented labels with four-marker deletion and ten-bit
+selector spacing. Its whole29-to11 carry proof covers every47 phase, all17
+copies and872 LOW26 padding tests; an occupied clause has raw2^46+1<rho.
+The [first](reviews/compact66-complemented-three-anchor-radix47-ordinary-peer.md)
+and [second](reviews/compact66-complemented-three-anchor-radix47-ordinary-second-peer.md)
+FULL nonauthor reviews pass, followed by [separate ROOT conditional acceptance](reviews/compact66-complemented-three-anchor-radix47-ordinary-acceptance.json).
+All NEW controller residues and admissible-prime existence remain UNKNOWN.
+The [separate CODE ONLY probe](research/compact66-complemented-three-anchor-radix47-controller-probe/README.md)
+is being sealed for two full static reviews before any application; the prior
++1/spacing11 draft remains preserved. A complete one-page CODE/TEX draft is
+also being prepared under its [limited authority](reviews/compact66-complemented47-page-code-tex-draft-release.md).
+No new measured page gain or numerical endpoint is accepted. The maintained
+PDF and TeX will be updated together after a significant complete checked gain.
+A separate two-weighted-anchor proof is under exploration; it changes the
+constants again and inherits no three-anchor finite certificate or acceptance.
+
 The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
-now prioritizes a stronger combination: complemented genuine labels are also
-positive, so the four-marker deletion can use smaller selector coefficients.
-The [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)
-keeps all incoming numeric certificates and page claims unverified. A fresh
-complete complemented-three-anchor47 proof is being authored, and a [separate CODE ONLY amendment](reviews/compact66-complemented-three-anchor47-probe-code-only-amendment.md)
-permits a new unsealed draft while preserving the old one. Its preliminary hand
-bounds are29-to11, and its occupied clause fits within one digit. The combined
-source still needs two FULL nonauthor reviews, new finite discharge and a
-complete coherent page before a significant-only PDF/TeX update. Incoming75/626
+and [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)
+keep incoming numeric certificates and page claims unverified. Reported75/626
 ten-positive circuits and smaller direct quartics also merit full review.
 
 The [exact47 layout identities](research/compact66-three-anchor-radix47-layout-identities/README.md)
