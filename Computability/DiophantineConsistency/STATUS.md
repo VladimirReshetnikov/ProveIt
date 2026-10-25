@@ -155,6 +155,14 @@ Against the Pell-output parent,114 terms disappear and12 appear, net102
 fewer in each profile. Complete noncommuting maps and inherited source
 calibration remain bound; no global minimum is claimed.
 
+The [coordinate25 successor](research/second-pair-sum-gate-shear/README.md)
+passes both full ordinary reviews and [joint bound acceptance](reviews/second-pair-sum-gate-shear-ordinary-acceptance.json).
+It proves15109<=height<=24000, exact degree4 and full liveness, with
+row height72 and eight fewer residual monomial occurrences. The source is
+the complete accepted32053-height pair-sum chart, and the exact expanded
+height/support are still unknown. Finite code is under CODE ONLY/HOLD;
+no computation, generated endpoint or maintained-page gain is accepted.
+
 The [bounded radix65 evidence](research/compact66-radix65-unit-probe-verification/README.md)
 passes [ordinary review](reviews/compact66-radix65-unit-probe-verification-ordinary-peer.md)
 and [ROOT acceptance](reviews/compact66-radix65-unit-probe-verification-root-peer.md).
@@ -202,6 +210,15 @@ source/front/page binding are now verified in the separate
 [ROOT page acceptance](reviews/one-page-compact66-radix55-root-peer.md).
 That complete page supplies the maintained PDF/TeX; the bounded modular
 receipt alone did not establish those later endpoint or page-size facts.
+
+The [conditional radix53 adapter](research/compact66-radix53-carry-tolerance/README.md)
+passes both full ordinary reviews and [separate conditional acceptance](reviews/compact66-radix53-carry-tolerance-ordinary-acceptance.json).
+The complete carry fixed-point, clean-clause decoding, final alignment,
+padding/slack and both positive Pell maps have ordinary proofs. A new
+prime/order/lift certificate and all three bracket units remain unresolved;
+no prime existence, numerical tuple or size gain is asserted. A deterministic
+bounded probe is being prepared under CODE ONLY/HOLD, with fixed-unit
+obstruction and bounded exhaustion retained as possible scientific outcomes.
 
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete

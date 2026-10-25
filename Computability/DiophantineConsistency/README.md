@@ -155,6 +155,14 @@ all noncommuting source-restoration maps are retained. The final shear
 removes114 terms and introduces12, net102 against the Pell-output parent;
 this is an accepted quartic tradeoff, with no global minimum claim.
 
+A [second pair-sum shear](research/second-pair-sum-gate-shear/README.md)
+now passes both full ordinary reviews and [joint bound acceptance](reviews/second-pair-sum-gate-shear-ordinary-acceptance.json).
+It proves whole height15109..24000, below32053, with exact degree4,
+all coordinates live, row height72 and eight fewer residual occurrences.
+The exact expanded height and support remain unknown. Its finite verifier
+is being prepared under CODE ONLY/HOLD; these ordinary bounds do not yet
+constitute a generated endpoint or a page improvement.
+
 A [bounded65-bit modular probe](research/compact66-radix65-unit-probe-verification/README.md)
 now discharges the three previously unknown controller-bracket unit
 conditions: H0 residues5,62,418969 at primes13,8807,581197, respectively.
@@ -175,6 +183,14 @@ modulo3. Its three new bracket-unit conditions remain uncomputed;59 also
 needs a new prime/lift certificate. See the [conditional acceptance](reviews/compact66-radix57-59-padding-ordinary-acceptance.json).
 Those conditional57/59-bit proposals remain separate from the verified55-bit
 page; they do not supply a numerical57/59-bit endpoint or a further page gain.
+
+The [conditional53-bit adapter](research/compact66-radix53-carry-tolerance/README.md)
+also passes both full ordinary reviews and [conditional acceptance](reviews/compact66-radix53-carry-tolerance-ordinary-acceptance.json).
+Its soundness proof permits bounded cyclic carries, then recovers ordinary
+one-hot decoding and alignment. Completeness still requires a new prime,
+order/lift certificate and three controller units; no such values or
+numeric53-bit endpoint are supplied. A bounded finite probe is being
+prepared under CODE ONLY/HOLD. The verified55-bit page remains current.
 
 A lower-row direct degree-four comparison, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
 now reaches **327 unrestricted integer unknowns**, with216 rows,5,718 terms

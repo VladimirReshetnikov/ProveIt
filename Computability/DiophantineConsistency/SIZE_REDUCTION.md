@@ -3058,3 +3058,28 @@ grouped, original66/157 and ten-positive pages remain available, as do
 all quartic alternatives, including accepted height32053. This page
 update decides no consistency statement, supplies no new Lean theorem
 and claims no global optimum.
+
+## Accepted ordinary leads after the radix55 page update
+
+The [second pair-sum shear](research/second-pair-sum-gate-shear/README.md)
+has two full ordinary PASS reviews and [separate joint acceptance](reviews/second-pair-sum-gate-shear-ordinary-acceptance.json).
+Its coordinate25 map is `w25=z25-z11-z12`, composed before the accepted
+U/T/N/S maps. All eleven affected rows and every degree's whole coefficient
+bounds give15109<=height<=24000, strictly below the accepted32053 source.
+Exact row height72, degree4, all316/315 coordinates live and eight fewer
+residual monomial occurrences are proved. Expanded height, support and
+term delta remain unknown. Its fixed finite implementation is under
+CODE ONLY/HOLD; it supplies no generated endpoint or page saving yet.
+
+The [conditional radix53 note](research/compact66-radix53-carry-tolerance/README.md)
+also has two full ordinary PASS reviews and [separate conditional acceptance](reviews/compact66-radix53-carry-tolerance-ordinary-acceptance.json).
+It uses bounded cyclic carries before clean-clause decoding, then proves
+alignment, complete padding/slack and the whole positive source bridge.
+Its converse requires a new prime `lambda>d`, with228956 dividing
+`lambda-1`, the square/order/lift conditions, and controller units at53,
+8807 andlambda. No new prime, residue, numeric tuple or size gain is yet
+accepted. A CODE ONLY/HOLD probe is being prepared to test fixed units
+first and then the bounded candidates `lambda=228956*m+1`,3<=m<=66.
+An obstruction or bounded exhaustion is a possible result; no existence
+outside that range is assumed. The complete55-bit page remains maintained,
+and Lean remains paused.
