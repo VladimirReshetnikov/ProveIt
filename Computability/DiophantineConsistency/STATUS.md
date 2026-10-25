@@ -1906,3 +1906,21 @@ Both directions fix the original cap body. F, helper signs and both old cap
 policies remain; a future refined-source composition needs a separate proof.
 No successor equation or projected saving is claimed. Canonical PDF/TeX and
 accepted equations are preserved; Lean stays paused.
+
+
+## Combined refined cap source accepted
+
+The [complete refined source](research/signed-pell-cap-refined-source/README.md)
+now binds the three separately proved cap/F/helper reductions with an explicit
+combined chronology. It normalizes the helper first, recovers signed-A target
+indices using only absolute bounds and nonzero t, then restores F before
+reconstructing fresh positive private witnesses at the unchanged native front.
+
+Four fresh root source collector/rebuild modes exactly match the author;
+each collector rejects25 actual corruptions. The full four JSON files, all
+graphs/maps/privacy,37 atoms/54 ports,15 norms/18 requests/five moduli and
+staged178-identity sign ledger pass. See the
+[root acceptance](reviews/signed-pell-cap-refined-source-root-peer.md).
+This is a complete ordinary/literal source checkpoint with no new projected
+quartic count. The359 and433 alternatives and canonical PDF/TeX remain
+preserved. Lean stays paused.
