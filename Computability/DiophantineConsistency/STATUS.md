@@ -151,9 +151,12 @@ Hctrl55 is identically zero, so its three-unit completeness premise is
 false. Its entire source and both full first reviews are preserved.
 A separate [same-tuple wrapping controller](research/compact66-radix55-wrap-controller/README.md)
 tunes that class using four wrapping bits, then interior Boolean tuning
-modulo8807*N and CRT. Full first reviews check the mathematics under only
-two remaining unit conditions, with one bounded wording correction pending
-final rereview. No probe, new tuple or page output has run.
+modulo8807*N and CRT. Both full final rereviews and
+[joint conditional acceptance](reviews/compact66-radix55-wrap-controller-ordinary-acceptance.json)
+check the complete proof under only two remaining unit conditions. The
+separately released one-word repair distinguishes a single wrapping bit's
+quotient increment from a prefix's sum; both full first reports remain
+preserved. No probe, new tuple or page output has run.
 
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete

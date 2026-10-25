@@ -2939,11 +2939,14 @@ The separate [wrap controller](research/compact66-radix55-wrap-controller/README
 keeps ALL four coefficient formulas. Four wrapping dummy cells realize
 every actual-rank class modulo5; a disjoint interior Boolean orbit tunes
 modulo8807*N, and CRT with the automatic mod11 class gives the required
-full rank. Only Hctrl at8807 and581197 remains conditional. Both full
-first reviews check that mathematics and request one per-bit/per-prefix
-wording correction before final rereviews. Initial sources/reports remain
-immutable. The revised modular probe is still an unsealed CODE-ONLY draft,
-with no execution or unknown residue evaluation, tuple or page output.
+full rank. Only Hctrl at8807 and581197 remains conditional. Both complete
+final ordinary rereviews pass after the separately released one-word
+per-bit/per-prefix correction, and the
+[joint conditional acceptance](reviews/compact66-radix55-wrap-controller-ordinary-acceptance.json)
+binds their exact final source. Initial sources and both full first
+reports remain immutable. The revised modular probe is still an unsealed
+CODE-ONLY draft, with no execution or unknown residue evaluation, tuple
+or page output.
 
 ## A retained alternative-calculus transfer lead
 
