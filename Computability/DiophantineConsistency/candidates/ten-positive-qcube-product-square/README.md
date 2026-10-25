@@ -64,6 +64,8 @@ n′ = n133 + s > 0.
   - rejection of two mutations;
   - the leading forms along rays.
 - `INDEPENDENT_REVIEW.md`: the adversarial review and its resolution.
+- `UNKNOWN_ACCOUNTING.md`: why this kernel family spends one unknown on each
+  of ten independent quantities (a heuristic record, not a minimality proof).
 
 Scope: relative to package 133's calibration and tuple. No Lean theorem,
 internal-ZFC certificate, consistency claim or minimality claim.

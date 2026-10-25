@@ -1,0 +1,63 @@
+# Why this kernel uses ten unknowns (heuristic accounting)
+
+A record of the search for a nine-unknown variant, written on 24 October 2026.
+This is **not** a minimality proof. It explains why every ten-positive
+kernel of this family (133's product square, its q-cube normalization here,
+and their parents back to 113's coprime fusion) spends exactly one unknown
+on each of ten independent quantities. It also explains why dropping one
+needs a new source theorem rather than a schedule edit.
+
+| Unknown | Quantity it supplies | Why no other register can supply it |
+|---|---|---|
+| J, F, α | the calibration index and the two mask digits of R = [h(q − F) + α](q² − 1) + (MC + q·MF)J | fixed by the native/controller theorem; fixing α as a function of the others makes the accepted words a cyclic group (`candidates/ten-positive-scaled-norm/ONE_WORD_WINDOW.md` §2d) |
+| i | the Pell period: U = i·c², with I0 a multiple of the order of [[A, Δ], [1, A]] modulo c²τ | the divisibility c² ∣ I has no polynomial witness |
+| T | the auxiliary congruence V ≡ −c − R·f² (mod c·f²), through b = c(T + α) − R | the auxiliary Pell solution V is not polynomial in the other data |
+| w | X = w·q = 2^R, forced by H ∣ Kpos | 2^R is not polynomial; see below |
+| s | Y = q³·s, the half-binomial extraction Y = ⌊c/k⌋ read by the source reconstruction at Y(X + 1) + 2 | Y is not polynomial in c and k |
+| η, ζ | the two Pell ordinates k = η + ζ (first norm E = τ²) and c = kY + η (folded strong Pell), with 0 < η < k | two independent Pell ordinates; ζ ≥ 1 is the upper half of the floor Y = ⌊c/k⌋ |
+| n | the slack in the centre Z/M = n + κ − W·t − ρ = ε·g·y | see below |
+
+## The exponential gadget
+
+With H = 4A − 5, the base A acts as 5/4 modulo H. The Pell solutions for
+5/4 are (5/4 + 3/4)^m = 2^m, so c = ψ_A(R) ≡ (2/3)(2^R − 2^(−R)) (mod H),
+and
+
+    Kpos = X(3c − 2X) + 2 ≡ −2(X − 2^R)(X + 2^(−R))   (mod H).
+
+The integrality of κ = Kpos/H, together with the size bounds, forces
+X = 2^R. Its five operations (3c, 2X, the difference, the product, + 2)
+cannot be shared with another register, and X must be an unknown, because A
+depends on X.
+
+## The floor Y = ⌊c/k⌋
+
+With X = 2^R, c/k ≈ (2^(R/2) + 2^(−R/2))^(R−1)/2, so Y holds the
+half-binomial digits that the source reconstruction reads. Positivity of η
+gives Y ≤ c/k. Only ζ ≥ 1 gives Y > c/k − 1. No other constraint of the
+kernel bounds Y from above, so removing ζ would let an underestimate of Y
+through. Removing it needs a cheaper two-sided floor gadget, or a source
+theorem that reads only a one-sided bound on Y.
+
+## The slack n
+
+Without n the centre would have to satisfy g·y = W·t + ρ − κ exactly, with
+g, y, t, ρ and κ all fixed by the canonical witnesses. Soundness needs the
+transport weight L > 2gy, so W·t = (1 + hL)t > gy whenever t ≥ 1, and the
+equation has no canonical zero. The candidate free parameters i and T feed
+back into g, V and L, so neither can act as the slack.
+
+## Consequence
+
+A nine-unknown equation at kernel cost (about 80 operations) needs one of:
+
+- a new floor gadget, so that ζ can go;
+- a source theorem that reads Y one-sidedly, or that does not need
+  X = 2^R and n0 = (R + 1)/2 separately;
+- merging two calibration digits into one unknown under a native theorem
+  that allows it.
+
+The existing nine-positive equations (405 operations at degree 1,191,570;
+`research/nine-folded-shared-odd-rank`) avoid the coefficient tuple and
+compute their source inside the circuit instead, which is where the extra
+operations go.
