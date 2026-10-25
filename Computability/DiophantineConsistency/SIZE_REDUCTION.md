@@ -2871,9 +2871,33 @@ agree between actual ordered tiles/controls and independent old-K recovery;
 both modular formulas agree, retaining seven negative/two valid controls.
 The18-payload evidence closure preserves complete original captures.
 
-This is finite modular progress. The complete65-bit native/source adapter,
-all formal geometry/carry/mask/population/controller obligations and both
-fresh positive witness maps still need a coherent proof and verification.
-No new tuple, coefficient-byte saving, smaller equation or page gain is
-accepted yet. Maintained67-bit compact66 PDF/TeX remain current, minor
-notation gains queued and Lean paused.
+The complete [65-bit ordinary native/source adapter](research/compact66-radix65-native-adapter/README.md)
+now passes both full final rereviews and [joint ordinary acceptance](reviews/compact66-radix65-native-adapter-ordinary-acceptance.json).
+All formal geometry, carry, mask, population, fresh actual-rank controller
+and both complete positive maps are proved under the retained contracts.
+The complete initial draft and both first reviews are preserved before a
+separately authorized exponent-naming repair. This accepts the ordinary
+formula/proof; a numerical whole-tuple specialization and its complete
+verification remain separate. No coefficient-byte or page gain is accepted.
+
+## Conditional57/59 packing and shorter padding formulas
+
+The [whole57/59 proposal](research/compact66-radix57-59-padding/README.md)
+passes both complete ordinary reviews and [conditional acceptance](reviews/compact66-radix57-59-padding-ordinary-acceptance.json).
+It replaces the57-bit predecoded convolution bound by A+2^51, using
+distinct kernel residues. Repacked zero padding retains all986 tests.
+Its automatic rank class modulo3 permits tuning modulo(d/3)N and then
+CRT, subject to exactly three new Hctrl units at19,8807,581197. These
+values are uncomputed. The59-bit sufficient template still needs a new
+fixed prime, lift and bracket units; no existence or search is asserted.
+
+The same elementary finite-sum identity compresses the ENTIRE source-mask
+formula: at65 it uses2^19*rho^8805-rho^8792 for padding; at59 it uses
+2^38*rho^8806-rho^8792; at57 it uses B-rho^8792+511rho^7691.
+These are algebraic identities for full nonnegative masks. A later size
+comparison must charge the complete recipe and all tuple-binding changes.
+No new numerical endpoint, glyph/byte saving or minimum is claimed. A
+55-bit two-stage carry-bootstrap refinement is under investigation.
+Maintained67-bit compact66 PDF/TeX remain current; significant verified
+complete gains will trigger an update, while minor notation changes are
+batched. Lean stays paused.

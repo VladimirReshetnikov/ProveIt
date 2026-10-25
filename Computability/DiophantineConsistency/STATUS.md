@@ -122,9 +122,22 @@ H0 is4,5,62,418969 modulo5,13,8807,581197; all are nonzero. All four
 actual processes exit0, retain seven negative/two valid controls, and
 reproduce six complete fresh files with121 inputs unchanged. Both full
 coefficient routes and modular formulas agree. This resolves the three
-finite unit questions, while the complete replacement native/source proof
-and fresh coherent tuple/endpoint verification remain open. Main67-bit
-compact66 PDF/TeX and paused Lean are unchanged.
+finite unit questions. The [complete65-bit native/source adapter](research/compact66-radix65-native-adapter/README.md)
+now passes both full final ordinary rereviews and [joint ordinary acceptance](reviews/compact66-radix65-native-adapter-ordinary-acceptance.json).
+The preserved initial draft and both complete first reviews found one
+padding-exponent binding defect; the separately released naming-only repair
+resolves it without changing any constant formula. Fresh coherent numeric
+tuple/endpoint verification remains open. Main67-bit compact66 PDF/TeX and
+paused Lean are unchanged.
+
+The [conditional57/59-bit padding note](research/compact66-radix57-59-padding/README.md)
+passes both full ordinary reviews and [conditional acceptance](reviews/compact66-radix57-59-padding-ordinary-acceptance.json).
+Full-width padding telescopes to short arithmetic expressions. A sharper
+predecoded57-bit carry bound and automatic mod3 class permit a reduced
+rank controller, conditionally on three new bracket units at19,8807,581197.
+The59-bit template additionally needs a new prime/lift certificate. No
+unknown unit is evaluated and no numerical endpoint, size or page saving
+is accepted. A55-bit carry-bootstrap refinement is being investigated.
 
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete

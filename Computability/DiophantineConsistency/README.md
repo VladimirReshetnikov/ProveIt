@@ -123,8 +123,20 @@ conditions: H0 residues5,62,418969 at primes13,8807,581197, respectively.
 Both complete coefficient/modular routes and four first/fresh processes
 pass, with six byte-exact fresh files. See the
 [ROOT bounded acceptance](reviews/compact66-radix65-unit-probe-verification-root-peer.md).
-A complete new native/source proof and coherent tuple verification remain
-separate work; no65-bit equation or page improvement is accepted yet.
+The complete [coherent65-bit native/source adapter](research/compact66-radix65-native-adapter/README.md)
+now passes both full final ordinary reviews after a separately authorized
+padding-exponent naming repair; the initial source and both first findings
+remain preserved. See the [joint ordinary acceptance](reviews/compact66-radix65-native-adapter-ordinary-acceptance.json).
+Fresh coherent tuple verification remains separate; no numerical65-bit
+endpoint or page improvement is accepted yet.
+
+A [conditional57/59-bit proposal](research/compact66-radix57-59-padding/README.md)
+also passes both complete ordinary reviews. It proves shorter whole padding
+identities and, at57 bits, a sharper carry bound and an automatic rank class
+modulo3. Its three new bracket-unit conditions remain uncomputed;59 also
+needs a new prime/lift certificate. See the [conditional acceptance](reviews/compact66-radix57-59-padding-ordinary-acceptance.json).
+The maintained page stays on its verified67-bit tuple until a significant
+complete improvement is proved and independently reproduced.
 
 A lower-row direct degree-four comparison, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
 now reaches **327 unrestricted integer unknowns**, with216 rows,5,718 terms
