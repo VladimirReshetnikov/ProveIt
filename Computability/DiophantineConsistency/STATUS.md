@@ -57,7 +57,16 @@ bV soundness proof excludes main index3 before transport using early
 whole-carrier divisibility. That minor checkpoint preserved the85/328 page;
 the substantial fifteen-positive66/157 update now becomes the main display.
 
-The fused-nine direct quartic now has **327 unrestricted integer unknowns,
+The fresh square-radix raw quartics have315/217/7999 terms and316/218/7987,
+both at height14250071 and row height2113. All five exact author commands
+and four fresh root checks/rebuilds pass, with all eight full root
+JSON/stdout records byte-identical to author counterparts. Both modes
+pass69 actual negative and four valid controls, including full Horn/
+monic/free-coordinate maps and the whole source calibration. The
+[root acceptance](reviews/round16-square-weighted-projections-root-peer.md)
+keeps these raw tradeoffs separate from lower-height centered forms.
+
+The lower-height fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
 ordinary source and all finite Horn/projection/translation layers pass four
 fresh independent root replays; see the

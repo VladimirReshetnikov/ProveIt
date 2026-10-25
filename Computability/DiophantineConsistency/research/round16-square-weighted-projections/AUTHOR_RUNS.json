@@ -1,0 +1,224 @@
+{
+  "all46_pre_final_files_unchanged": true,
+  "date": "2026-10-25",
+  "final_metadata_authorization": "After all five author commands and all four byte-exact independent root replays, root separately authorized only AUTHOR_RUNS.json, RESULTS.json, RESULTS.md, REPLAY_NOTES.md and final closed MANIFEST.json.",
+  "five_exact_sequential_author_commands": [
+    {
+      "command": "python -B build.py --output BUILD.json > verification/build.txt",
+      "exit_code": 0,
+      "first_attempt": true,
+      "full_stdout": {
+        "bytes": 13851,
+        "path": "verification/build.txt",
+        "sha256": "09070df045ddb23dd0f3beab235837e0fec9ef2ca5c5584fb0b962e631376c4c"
+      },
+      "json": {
+        "bytes": 13851,
+        "path": "BUILD.json",
+        "sha256": "09070df045ddb23dd0f3beab235837e0fec9ef2ca5c5584fb0b962e631376c4c"
+      }
+    },
+    {
+      "command": "python -B check.py --output CHECK.json > verification/check-normal.txt",
+      "exit_code": 0,
+      "first_attempt": true,
+      "full_stdout": {
+        "bytes": 52164,
+        "path": "verification/check-normal.txt",
+        "sha256": "b525c69d7e737b35e059f6217d8eff2ec9c7d5ecb4d83002ce12f69f10b7d3c0"
+      },
+      "json": {
+        "bytes": 52164,
+        "path": "CHECK.json",
+        "sha256": "b525c69d7e737b35e059f6217d8eff2ec9c7d5ecb4d83002ce12f69f10b7d3c0"
+      }
+    },
+    {
+      "command": "python -B -O check.py --output CHECK_OPTIMIZED.json > verification/check-optimized.txt",
+      "exit_code": 0,
+      "first_attempt": true,
+      "full_stdout": {
+        "bytes": 52163,
+        "path": "verification/check-optimized.txt",
+        "sha256": "c7c701158506b374b8fbed097695f167bd17a936d20574a93b952fc8dee36cc2"
+      },
+      "json": {
+        "bytes": 52163,
+        "path": "CHECK_OPTIMIZED.json",
+        "sha256": "c7c701158506b374b8fbed097695f167bd17a936d20574a93b952fc8dee36cc2"
+      }
+    },
+    {
+      "command": "python -B build.py --check --output BUILD_VERIFY.json > verification/rebuild-normal.txt",
+      "exit_code": 0,
+      "first_attempt": true,
+      "full_stdout": {
+        "bytes": 13850,
+        "path": "verification/rebuild-normal.txt",
+        "sha256": "8b4a7deb52dd4483c9fecb1e617d49e125e84c2a4ae09ea3fb8af164dbf289c3"
+      },
+      "json": {
+        "bytes": 13850,
+        "path": "BUILD_VERIFY.json",
+        "sha256": "8b4a7deb52dd4483c9fecb1e617d49e125e84c2a4ae09ea3fb8af164dbf289c3"
+      }
+    },
+    {
+      "command": "python -B -O build.py --check --output BUILD_VERIFY_OPTIMIZED.json > verification/rebuild-optimized.txt",
+      "exit_code": 0,
+      "first_attempt": true,
+      "full_stdout": {
+        "bytes": 13849,
+        "path": "verification/rebuild-optimized.txt",
+        "sha256": "525d4d401aa11ac1cde54d0792a59214a5a96919e9719ed5ba5494c2bdd9f733"
+      },
+      "json": {
+        "bytes": 13849,
+        "path": "BUILD_VERIFY_OPTIMIZED.json",
+        "sha256": "525d4d401aa11ac1cde54d0792a59214a5a96919e9719ed5ba5494c2bdd9f733"
+      }
+    }
+  ],
+  "four_fresh_independent_root_replays": [
+    {
+      "author_json_counterpart": {
+        "bytes": 52164,
+        "path": "CHECK.json",
+        "sha256": "b525c69d7e737b35e059f6217d8eff2ec9c7d5ecb4d83002ce12f69f10b7d3c0"
+      },
+      "author_stdout_counterpart": {
+        "bytes": 52164,
+        "path": "verification/check-normal.txt",
+        "sha256": "b525c69d7e737b35e059f6217d8eff2ec9c7d5ecb4d83002ce12f69f10b7d3c0"
+      },
+      "captured_external_full_stdout": {
+        "bytes": 52164,
+        "path": "/tmp/round16-projections-root-check-normal.txt",
+        "sha256": "b525c69d7e737b35e059f6217d8eff2ec9c7d5ecb4d83002ce12f69f10b7d3c0"
+      },
+      "captured_external_json": {
+        "bytes": 52164,
+        "path": "/tmp/round16-projections-root-check-normal.json",
+        "sha256": "b525c69d7e737b35e059f6217d8eff2ec9c7d5ecb4d83002ce12f69f10b7d3c0"
+      },
+      "kind": "check",
+      "mode": "normal",
+      "root_reported_exit_code": 0,
+      "whole_json_and_stdout_independently_equal": true
+    },
+    {
+      "author_json_counterpart": {
+        "bytes": 52163,
+        "path": "CHECK_OPTIMIZED.json",
+        "sha256": "c7c701158506b374b8fbed097695f167bd17a936d20574a93b952fc8dee36cc2"
+      },
+      "author_stdout_counterpart": {
+        "bytes": 52163,
+        "path": "verification/check-optimized.txt",
+        "sha256": "c7c701158506b374b8fbed097695f167bd17a936d20574a93b952fc8dee36cc2"
+      },
+      "captured_external_full_stdout": {
+        "bytes": 52163,
+        "path": "/tmp/round16-projections-root-check-optimized.txt",
+        "sha256": "c7c701158506b374b8fbed097695f167bd17a936d20574a93b952fc8dee36cc2"
+      },
+      "captured_external_json": {
+        "bytes": 52163,
+        "path": "/tmp/round16-projections-root-check-optimized.json",
+        "sha256": "c7c701158506b374b8fbed097695f167bd17a936d20574a93b952fc8dee36cc2"
+      },
+      "kind": "check",
+      "mode": "optimized",
+      "root_reported_exit_code": 0,
+      "whole_json_and_stdout_independently_equal": true
+    },
+    {
+      "author_json_counterpart": {
+        "bytes": 13850,
+        "path": "BUILD_VERIFY.json",
+        "sha256": "8b4a7deb52dd4483c9fecb1e617d49e125e84c2a4ae09ea3fb8af164dbf289c3"
+      },
+      "author_stdout_counterpart": {
+        "bytes": 13850,
+        "path": "verification/rebuild-normal.txt",
+        "sha256": "8b4a7deb52dd4483c9fecb1e617d49e125e84c2a4ae09ea3fb8af164dbf289c3"
+      },
+      "captured_external_full_stdout": {
+        "bytes": 13850,
+        "path": "/tmp/round16-projections-root-rebuild-normal.txt",
+        "sha256": "8b4a7deb52dd4483c9fecb1e617d49e125e84c2a4ae09ea3fb8af164dbf289c3"
+      },
+      "captured_external_json": {
+        "bytes": 13850,
+        "path": "/tmp/round16-projections-root-rebuild-normal.json",
+        "sha256": "8b4a7deb52dd4483c9fecb1e617d49e125e84c2a4ae09ea3fb8af164dbf289c3"
+      },
+      "kind": "rebuild",
+      "mode": "normal",
+      "root_reported_exit_code": 0,
+      "whole_json_and_stdout_independently_equal": true
+    },
+    {
+      "author_json_counterpart": {
+        "bytes": 13849,
+        "path": "BUILD_VERIFY_OPTIMIZED.json",
+        "sha256": "525d4d401aa11ac1cde54d0792a59214a5a96919e9719ed5ba5494c2bdd9f733"
+      },
+      "author_stdout_counterpart": {
+        "bytes": 13849,
+        "path": "verification/rebuild-optimized.txt",
+        "sha256": "525d4d401aa11ac1cde54d0792a59214a5a96919e9719ed5ba5494c2bdd9f733"
+      },
+      "captured_external_full_stdout": {
+        "bytes": 13849,
+        "path": "/tmp/round16-projections-root-rebuild-optimized.txt",
+        "sha256": "525d4d401aa11ac1cde54d0792a59214a5a96919e9719ed5ba5494c2bdd9f733"
+      },
+      "captured_external_json": {
+        "bytes": 13849,
+        "path": "/tmp/round16-projections-root-rebuild-optimized.json",
+        "sha256": "525d4d401aa11ac1cde54d0792a59214a5a96919e9719ed5ba5494c2bdd9f733"
+      },
+      "kind": "rebuild",
+      "mode": "optimized",
+      "root_reported_exit_code": 0,
+      "whole_json_and_stdout_independently_equal": true
+    }
+  ],
+  "historical_hold_inventory": {
+    "bytes": 1576,
+    "sha256": "9728ef032c234612b80e4fff2f1b541d5adca02ace89c6cc2ccf9cf00207ff7b"
+  },
+  "no_repairs_retries_core_changes_or_additional_application_runs": true,
+  "pre_final_snapshot": {
+    "bytes": 6450,
+    "sha256": "9165291083e185a68d53b956a86303b478362c791a2ab01ee075375477a0da98"
+  },
+  "preparation_commit": "fe4c6d9362",
+  "root_receipt_scope": "External captured paths are provenance, not runtime dependencies. Root retains its eight whole records outside the author packet; none are copied into this folder.",
+  "schema": "round16_square_weighted_projections_author_runs_v1",
+  "static_reviews_and_separate_release": {
+    "reviews/round16-square-weighted-projections-execution-release.md": {
+      "bytes": 1529,
+      "sha256": "ae42a0a26d5856ece225d585555e4585ef26129078f29c83abea71a29bd9a306"
+    },
+    "reviews/round16-square-weighted-projections-static-peer.json": {
+      "bytes": 5591,
+      "sha256": "376083d2c89677229c5b45bbe3ea9d698e5a0b4d2b3d1c720f5110ce1e3b6519"
+    },
+    "reviews/round16-square-weighted-projections-static-peer.md": {
+      "bytes": 11229,
+      "sha256": "44c71c8f53266b74c008c97cf55fdf747f54ef396fe90753107b64bfbabfa49f"
+    },
+    "reviews/round16-square-weighted-projections-static-root-auth.json": {
+      "bytes": 28617,
+      "sha256": "1ca9bf2565aef3477327cf57f159fa93ac2f3923a6fde6da6f3b785fba5218ac"
+    },
+    "reviews/round16-square-weighted-projections-static-root.md": {
+      "bytes": 3952,
+      "sha256": "d9133b8bba57a9ffa8738332989026d273057a7831a0536caf0f5be326a32060"
+    }
+  },
+  "status": "PASS",
+  "working_directory": "research/round16-square-weighted-projections"
+}

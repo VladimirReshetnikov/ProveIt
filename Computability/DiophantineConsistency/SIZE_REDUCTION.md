@@ -15,6 +15,7 @@ not establish the size of a complete consistency equation.
 
 | Domain | Variables | Operations | Degree | Use |
 |---|---:|---:|---:|---|
+| Integers | 315 / 316 | not optimized | 4 | Fresh raw square-radix charts;217/218 rows,7999/7987 terms,height14250071; no centering claim |
 | Positive integers | **15** | **66** | **157** | Maintained complete one-page indexed equation and every constant; all actual-page/replay/visual checks pass |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 96 | 70 | Free positive J and an identical polarized norm tail |
@@ -2493,3 +2494,23 @@ No new literal or packed target stream was computed. Extra prefix-product
 and escape notation must be charged before claiming a complete printed
 recipe gain; that comparison remains open. The maintained66/157 page
 keeps its complete accepted436-character recipe.
+
+## Fresh complete raw quartics reach315 and316 integer unknowns
+
+The [complete results](research/round16-square-weighted-projections/RESULTS.md)
+and [root acceptance](reviews/round16-square-weighted-projections-root-peer.md)
+bind both fresh Horn/monic projections of the accepted square-radix
+sources. Weighted has315 variables,217 rows and7999 quartic terms;
+plain has316,218 and7987. Both have height14250071 and row height2113.
+Every retained variable occurs. All actual free coordinates are present
+in the complete inverse, with fresh source maps applied after private
+Horn restoration.
+
+All five first-attempt commands and four fresh root checks/rebuilds pass;
+all eight complete root JSON/stdout strings match author bytes. Both
+checker modes pass69 actual negative and four valid controls, including
+the real private-escape/stale175/cubic-weighted paths and full coefficient
+collection. These raw systems save12/11 variables against the lower-height
+327-variable centered endpoint, with more terms and larger coefficients.
+No dominance or unrun centered measurement is claimed. The maintained
+complete66/157 PDF/TeX and paused Lean work remain unchanged.

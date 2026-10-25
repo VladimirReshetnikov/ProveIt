@@ -18,3 +18,10 @@ After all five succeed, root must separately authorize and run fresh
 independent normal/O checks and pure rebuilds before final acceptance.
 Later result/replay metadata and the final closed manifest are a separate
 authorization; this release supplies no count or successful execution claim.
+
+After all five author commands passed first try, root separately released
+four fresh checks/rebuilds in normal/O modes, writing only external
+/tmp/round16-projections-root-{check,rebuild}-{normal,optimized}.{json,txt}
+records. All four exited0; all eight complete JSON/stdout strings equal
+the author counterparts byte for byte. All46 pre-final author files
+remain unchanged. No additional profiles or translation were run.
