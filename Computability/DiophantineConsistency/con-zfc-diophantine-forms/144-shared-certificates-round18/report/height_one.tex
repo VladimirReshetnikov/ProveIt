@@ -1,0 +1,202 @@
+\section{Height one quartics by signed occurrence fusion}
+\label{sec:signed-network}
+The new reduction acts on a finite quadratic system over unrestricted
+integers. It changes neither its integer zero set up to a specified
+bijection nor its inherited consistency calibration. Its new ingredients
+are row-sign balancing and \emph{opposite-occurrence fusion}: equal
+monomials carrying opposite source signs are represented by a single
+incidence edge between their source rows. The retained Round~17 incidence compiler routed
+both occurrences separately to a common hub; the incoming Graph digits
+package also used occurrence pairing during alias identification. Here the
+pair itself becomes a direct source-row edge. All claims about coefficient
+height below refer to complete collected coefficient files, not merely an
+arithmetic circuit.
+
+\subsection{Certified normalization and row orientations}
+Let the given source be $R_r(x)=0$. We first use the preceding exact affine
+refactorization, when applicable: if the homogeneous quadratic part of a
+row is $\eta L(x)^2$, with $\eta=\pm1$, introduce $z=L(x)+k$ and replace
+the row by $\eta z^2+R_r(x)-\eta(L(x)+k)^2=0$. The new definition is monic
+and its value is uniquely determined. Shared affine definitions can be
+reused. Coefficient-by-coefficient substitution verifies every transformed
+row. The provided original source, transformed source and factor
+certificate fix this operation completely.
+
+Normalize integer coefficients by monic definitions of integer constants
+$t_c=c$ and scale variables $s_{c,i}=cX_i$. A constant is defined from
+already defined smaller constants as $t_c=t_a+t_b$ when $a+b=c$, using
+$t_1=1$. If no such pair is available, introduce the smaller binary
+intermediate and use
+$t_c=t_{\lfloor c/2\rfloor}+t_{\lfloor c/2\rfloor}+(c\bmod2)$.
+Each added definition is triangular and monic. The delivered DAG prefers
+two already-needed constants; in particular it does not introduce a
+binary intermediate merely because a binary-only recipe would do so.
+
+For each absolute quadratic coefficient $c>1$, form a finite graph on the
+source coordinates, with an edge $\{i,j\}$ for every term $cX_iX_j$.
+A loop at $i$ requires selecting $i$. Choose any vertex cover $V_c$ of
+this graph, and introduce $s_{c,i}=t_cX_i$ only for $i\in V_c$. A term
+$cX_iX_j$ is then represented by $s_{c,i}X_j$ if $i$ was selected, or by
+$X_is_{c,j}$ otherwise. The cover condition proves that one option always
+exists. The supplied deterministic greedy cover starts with the loop
+vertices and repeatedly selects a highest-degree remaining vertex;
+optimality is not assumed. Constants and linear terms use $t_c$ and
+$t_cX_i$, respectively. Unit coefficients need no constructor.
+
+Splitting repeated summands into separate occurrences yields
+\[
+ S_r(y)=\sum_j\epsilon_{rj}m_{rj}(y),\qquad \epsilon_{rj}\in\{-1,1\},
+ \quad \deg m_{rj}\le2.
+\]
+Every normalized coordinate has a unique integral value over an original
+tuple. The checker verifies all triangular pivots and each exact source-row
+pullback, rather than trusting the constant-chain or cover-selection
+recipe. Thus this refinement saves constructors without changing either
+witness map. The coefficient-factor choice, just like the later graph,
+is fixed by the certificate and is not a parameter of the polynomial.
+
+Choose a fixed sign $\sigma_r\in\{-1,1\}$ for each normalized row, and
+replace $S_r$ by $T_r=\sigma_rS_r$. This preserves both its zero set and
+uniqueness of all constructors. The choice is part of the finite
+certificate, not a parameter of the final polynomial. The supplied
+heuristic flips a row when doing so reduces
+\[
+ \sum_m\left|\sum_{r,j:m_{rj}=m}\sigma_r\epsilon_{rj}\right|.
+\]
+This balances opposite occurrences of the same logical monomial.
+Correctness does not require optimality of this heuristic.
+
+\subsection{Direct edges for cancelling occurrences}
+Create disjoint vertex blocks $B_r$ for the rows and a hub block $B_0$.
+Inside each block choose a tree, with one independent unrestricted integer
+flow variable on each tree edge. A normalized occurrence is assigned to a
+vertex in its own row block. Partition the occurrences into sets of size
+one or two. A pair is allowed only when its occurrences are in distinct
+rows, have the same logical monomial, and have opposite signs in $T_r$.
+
+A singleton of sign $\epsilon$ is represented by an edge from its row
+vertex to a hub vertex carrying $\epsilon M$. A pair $+m$ in row $r$ and
+$-m$ in row $s$ is represented by one edge from its row-$r$ vertex to its
+row-$s$ vertex, carrying $M$. Here $M$ is a degree-two homogeneous
+monomial in aliases of the logical factors of $m$: a linear term is
+multiplied by a unit alias and a constant uses two unit aliases. Each factor
+alias has one declared logical value. The two occurrences of a pair use
+\emph{the same} edge and the same factor aliases.
+
+The graph is required to be simple. The constructor rejects a pairing if
+its proposed unordered vertex pair was already used; remaining hub edges
+are placed without parallel edges. The certificate lists every bound
+source occurrence, and the checker verifies that each appears exactly
+once. More precisely, the edge boundary at the row-block level equals its
+list of signed source occurrences. Consequently, after substituting the
+intended logical values,
+\begin{equation}\label{eq:networkboundary}
+ \sum_{v\in B_r} b_v=T_r(y),\qquad
+ \sum_{v\in B_0} b_v=-\sum_rT_r(y).
+\end{equation}
+where $b_v$ is the divergence from prescribed edges alone. A fused edge
+contributes $+M$ and $-M$ to precisely its two bound rows; hence \eqref{eq:networkboundary} is
+unchanged by fusion. This is the central new identity.
+
+\subsection{The coefficient-height-one energy}
+Let $d_v$ denote the outgoing-minus-incoming sum of all prescribed and
+free edges, and put
+\[
+ E=\frac12\sum_vd_v^2.
+\]
+Each edge has two endpoints, so its diagonal energy coefficient is one.
+Two distinct edges of a simple graph meet at most once, so their formal
+cross coefficient is $0$ or $\pm1$. Give each prescribed product an
+initial private factor alias, and share its other logical factor as in the
+previous incidence compiler. The initial fully expanded energy has height
+one. Subsequently identify only aliases of the same logical value, and
+accept an identification only when full exact coefficient collection
+still has coefficients in $\{-1,0,1\}$. Such substitution preserves the
+sum-of-squares identity even when signed collisions cancel.
+
+For every remaining non-unit logical class with at least three aliases use
+\[
+ C(a_1,\ldots,a_k)=\sum_i a_i^2-\sum_i a_i a_{i+1},\quad a_{k+1}=a_1.
+\]
+Since $2C=\sum_i(a_i-a_{i+1})^2$, it is nonnegative and vanishes exactly
+when all aliases agree. A singleton needs no penalty. A class with two
+aliases is either completed to a three-cycle by one dummy, or uses
+\[
+ Q(a,b)=a^4+b^4-a^3b-ab^3=(a-b)^2(a^2+ab+b^2).
+\]
+This is nonnegative and vanishes exactly at $a=b$; also
+$2Q=(a^2-b^2)^2+(a^2-ab)^2+(ab-b^2)^2$. The latter option is used only
+when neither alias occurs as a prescribed square, which ensures its four
+monomials cannot collide with the incidence energy. For all unit aliases,
+adding dummies if necessary so that $\ell\ge2$, put
+\[
+ U=1+\sum_{i=1}^{\ell}u_i^2-u_1-u_\ell-
+       \sum_{i=1}^{\ell-1}u_iu_{i+1}.
+\]
+Twice $U$ is $(u_1-1)^2+\sum_{i<\ell}(u_i-u_{i+1})^2+(u_\ell-1)^2$.
+Thus the final literal polynomial is
+\begin{equation}\label{eq:networkenergy}
+ \boxed{P=E+\sum C+\sum Q+U.}
+\end{equation}
+It is nonnegative over the reals. All monomials have total degree at most
+four. The full coefficient files are independently checked to have exact
+degree four, every nonzero coefficient equal to $+1$ or $-1$, constant
+coefficient one, and every stated variable present. The new fusion step
+changes the source-edge incidence graph, but requires no change to these
+equality penalties or their proof.
+
+\subsection{Forward map, inverse map, and uniqueness}
+Given a source tuple, evaluate the monic affine, constant and scale
+constructors, assign each ordinary alias its logical value and every unit
+alias the value one. Assign equality dummies the value of their class.
+All equality and unit penalties then vanish.
+
+Root each internal tree at its first listed vertex. For a tree edge with
+child $v$, let $\tau_v=\pm1$ be its incidence sign at the child, and set
+\[
+ w_v=-\tau_v\sum_{t\text{ in the subtree of }v}b_t.
+\]
+This is an explicit integral polynomial in the source coordinates.
+Eliminating leaves proves that all nonroot divergences vanish. Formula
+\eqref{eq:networkboundary} gives root divergence $T_r$ in each row block and $-\sum_rT_r$ in the
+hub block. Thus the canonical lift satisfies, universally,
+\begin{equation}\label{eq:networklift}
+ P(L(x))=\frac12\left(\sum_rR_r(x)^2+
+                \left(\sum_r\delta_rR_r(x)\right)^2\right).
+\end{equation}
+where $\delta_r$ is the certified sign of the normalized row descending
+from the original residual $R_r$. Constructor rows pull back to zero.
+In particular every source zero has an integer lift. The affine-definition
+rows also vanish identically under their canonical substitution, so \eqref{eq:networklift}
+composes unchanged through affine refactorization. One must not replace
+\eqref{eq:networklift} by a bare sum of the original squares.
+
+Conversely, if $P(z)=0$, nonnegativity in \eqref{eq:networkenergy} forces every equality
+penalty and $U$ to vanish. Hence all ordinary aliases in a class agree,
+and all unit aliases equal one. Also $E=0$ forces every vertex divergence
+to vanish. Summing them over a row block cancels its internal tree flows;
+by the certified occurrence-boundary identity the result is precisely
+$T_r(y)=0$. Since $\sigma_r=\pm1$, all normalized rows $S_r(y)$ vanish.
+Triangular monic constructors then force the constant, scale and affine
+coordinates to their intended values. Reading the original logical
+coordinates yields an original source zero.
+
+The same argument proves uniqueness: constructors, aliases, units and
+dummies have unique values over the original tuple, and leaf elimination
+uniquely determines every internal tree flow. Thus the displayed forward
+map and coordinate projection are inverse bijections between integer zero
+sets. No sign restriction on a final variable, division by a variable,
+or unproved boundedness assertion is used.
+
+\subsection{Evidence and inherited consistency scope}
+The independent checker imports no producer. It verifies source hashes,
+all signed row pullbacks, topological constructors, every occurrence and
+its edge boundary, graph simplicity, every internal tree, equality-class
+coverage, all coefficients through literal half-sum-of-squares expansion,
+and every vertex of the universal symbolic lift. Its tests use explicit
+exceptions and remain active under optimized Python. The complete
+polynomial is also supplied in ordinary literal notation. Neither this
+finite algebra nor its successful replay proves $\operatorname{Con}(\mathrm{ZFC})$:
+it transfers the supplied source's existing ZFC-provable equivalence
+between unsolvability and consistency. No global-optimality, literature-wide
+priority or new end-to-end formal-kernel calibration is claimed.

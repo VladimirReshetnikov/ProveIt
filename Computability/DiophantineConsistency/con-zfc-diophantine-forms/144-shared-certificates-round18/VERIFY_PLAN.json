@@ -1,0 +1,135 @@
+{
+  "schema": "round18-verification-plan-v1",
+  "steps": [
+    {
+      "name": "natural_normal",
+      "arguments": [
+        "verify.py",
+        "--rebuild"
+      ],
+      "cwd": "natural"
+    },
+    {
+      "name": "signed_normal",
+      "arguments": [
+        "check_spheres.py"
+      ],
+      "cwd": "signed"
+    },
+    {
+      "name": "independent_signed_rows_normal",
+      "arguments": [
+        "audits/check_signed_transform.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "independent_natural_rows_normal",
+      "arguments": [
+        "audits/check_natural_transform.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "natural_optimized",
+      "arguments": [
+        "-O",
+        "verify.py",
+        "--rebuild"
+      ],
+      "cwd": "natural"
+    },
+    {
+      "name": "signed_optimized",
+      "arguments": [
+        "-O",
+        "check_spheres.py"
+      ],
+      "cwd": "signed"
+    },
+    {
+      "name": "independent_signed_rows_optimized",
+      "arguments": [
+        "-O",
+        "audits/check_signed_transform.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "independent_natural_rows_optimized",
+      "arguments": [
+        "-O",
+        "audits/check_natural_transform.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "signed_byte_reconstruction",
+      "arguments": [
+        "rebuild_signed_independent.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "scalar_full_replay",
+      "arguments": [
+        "replay.py"
+      ],
+      "cwd": "scalar"
+    },
+    {
+      "name": "height_one_full_replay",
+      "arguments": [
+        "verify.py"
+      ],
+      "cwd": "height_one"
+    },
+    {
+      "name": "root_full_SOS_normal",
+      "arguments": [
+        "check_sos_independent.py",
+        "signed/sphere_dimension_centered",
+        "signed/sphere_dimension_centered_merged",
+        "signed/sphere_dimension_centered_merged_odd",
+        "signed/sphere_dimension_centered_odd",
+        "signed/sphere_grouped_centered",
+        "signed/sphere_grouped_centered_merged",
+        "signed/sphere_grouped_centered_merged_odd",
+        "signed/sphere_grouped_centered_odd",
+        "signed/sphere_sparse_centered",
+        "signed/sphere_sparse_centered_merged",
+        "signed/sphere_sparse_centered_merged_odd",
+        "signed/sphere_sparse_centered_odd",
+        "natural/endpoints/natural221/natural",
+        "natural/endpoints/natural222/natural",
+        "natural/endpoints/natural223/natural",
+        "natural/endpoints/natural224_sparse/natural"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "root_full_SOS_optimized",
+      "arguments": [
+        "-O",
+        "check_sos_independent.py",
+        "signed/sphere_dimension_centered",
+        "signed/sphere_dimension_centered_merged",
+        "signed/sphere_dimension_centered_merged_odd",
+        "signed/sphere_dimension_centered_odd",
+        "signed/sphere_grouped_centered",
+        "signed/sphere_grouped_centered_merged",
+        "signed/sphere_grouped_centered_merged_odd",
+        "signed/sphere_grouped_centered_odd",
+        "signed/sphere_sparse_centered",
+        "signed/sphere_sparse_centered_merged",
+        "signed/sphere_sparse_centered_merged_odd",
+        "signed/sphere_sparse_centered_odd",
+        "natural/endpoints/natural221/natural",
+        "natural/endpoints/natural222/natural",
+        "natural/endpoints/natural223/natural",
+        "natural/endpoints/natural224_sparse/natural"
+      ],
+      "cwd": "."
+    }
+  ]
+}

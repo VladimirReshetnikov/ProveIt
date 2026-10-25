@@ -1,0 +1,595 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,longtable,array}
+\usepackage{microtype,xcolor,enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\definecolor{ink}{HTML}{183D51}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\SOS}{\operatorname{SOS}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{topsep=3pt,itemsep=2pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Symmetric residue budgets}
+\fancyhead[R]{\small Diophantine consistency}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\allowdisplaybreaks[3]
+\hypersetup{pdftitle={Symmetric residue budgets for a 258-variable consistency quartic},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov and ProveIt}}
+\begin{document}
+\begin{center}
+{\color{ink}\LARGE\bfseries Symmetric residue budgets\\[4pt]
+for a 258-variable consistency quartic}\par
+\vspace{8pt}
+{\large A direct equation for $\Con(\ZFC)$, with compact companions}\par
+\vspace{7pt}
+Prepared for Vladimir Reshetnikov and the ProveIt repository\\
+AI-assisted research contribution --- 25 October 2026
+\end{center}
+
+\begin{abstract}
+We give a fixed polynomial $P_{258}\in\Z[x_0,\ldots,x_{257}]$ of exact
+degree four such that ZFC proves that $P_{258}$ has no integer zero if and
+only if ZFC is consistent. The equation is supplied completely as a sum
+of 186 explicitly printed quadratic residual squares and as all 5,319
+collected coefficients. Its coefficient height is 47,281. It refines the
+latest inspected direct numerical-proof-calculus construction, which has
+282 variables, 192 residuals, 5,491 terms and height 128,446.
+
+The main change replaces eleven private interval certificates by shared
+quadratic bounds on signed remainders. A radix estimate proved before the
+factorial fixed point makes congruence uniqueness recover the missing
+signs. Two adjacent scales can share a bound. A compatible odd-square
+radix replaces a further sign certificate, while a changed recovery order
+avoids circular reasoning. Thirty elementary residual-row operations
+then reduce coefficient height without changing the zero set.
+
+A companion quartic has 261 variables and 185 residuals. Two separate
+ten-positive-variable equations save one arithmetic operation each, giving
+77 operations at degree 630 and 78 at degree 468. Their proof removes an
+auxiliary positivity shift by excluding a low Pell index. The new ordinary
+proofs compose with explicitly retained repository calibrations. No global
+simplicity minimum or new end-to-end proof-assistant certificate is claimed.
+\end{abstract}
+
+\section{The exact result and the comparison boundary}
+
+The comparison snapshot is ProveIt~\cite{repo} commit
+\code{e0c98c629bf10d30b695884f6b1d2ab361bdf513}.
+We inspected the two requested research areas and all six ZIP archives
+then present in \code{docs/incoming}. In particular, the comparison below
+includes the incoming round-17 cofinal-anchor construction~\cite{cofinal}; it is not a
+comparison against an obsolete earlier collection overview.
+
+\begin{theorem}[The supplied direct quartic]
+Let $r_0,\ldots,r_{185}\in\Z[x_0,\ldots,x_{257}]$ be the literal
+quadratic polynomials in Appendix~\ref{app:residuals}, and define
+\begin{equation}
+ \boxed{\quad P_{258}(x_0,\ldots,x_{257})
+     =\sum_{j=0}^{185}r_j(x_0,\ldots,x_{257})^2=0.\quad}
+ \label{eq:main}
+\end{equation}
+All 258 coordinates range independently over $\Z$. Composing the proofs
+in this report with the retained numerical C222/refutation calibration,
+\begin{equation}
+ \ZFC\vdash
+ \left(\neg\exists\mathbf x\in\Z^{258}\;
+       P_{258}(\mathbf x)=0\right)
+       \longleftrightarrow\Con(\ZFC).
+ \label{eq:consistency}
+\end{equation}
+The polynomial has exact degree four, 5,319 nonzero collected monomials,
+and coefficient height 47,281. Every coordinate is live. Its coefficient
+of $x_0^4$ is 13, and that of $x_{10}^2x_{12}^2$ is 47,281.
+\end{theorem}
+
+Here consistency means the absence of a finite syntactic refutation in
+the repository's specified ZFC proof system. Equation~\eqref{eq:consistency}
+is the result; it is not an independent assertion that either side is true.
+The actual mathematical dependency is an ordinary proof formalizable in
+ZFC. This packet does not supply a newly checked internal ZFC proof object
+or a new complete Lean/Rocq build of the whole chain.
+
+\begin{center}\small
+\begin{tabular}{lrrrrr}
+\toprule
+Direct equation over $\Z$ & Variables & Rows & Degree & Terms & Height\\
+\midrule
+Incoming matched parent & 282 & 192 & 4 & 5,491 & 128,446\\
+Shared four-budget companion & 261 & 185 & 4 & 5,332 & 47,281\\
+\textbf{Main odd-square equation} & \textbf{258} & \textbf{186} & \textbf{4}
+ & \textbf{5,319} & \textbf{47,281}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The 258-variable result removes 24 variables and six rows from the matched
+parent, removes 172 collected terms, and reduces its height by about
+63.2\%. The 261-variable companion uses one fewer residual than the main
+equation. Both have literal coefficient data and reconstruction checks.
+These are achieved improvements in a specified direct lineage. Existing
+native-encoding equations have fewer variables, sometimes at much higher
+degree or with very large fixed coefficients. We do not call this a global
+variable record or a globally simplest polynomial.
+
+The direct branch encodes the numerical C222 proof calculus. It does not
+simulate K215, specialize Jones's universal polynomial, or hide a machine
+description in a large coefficient port. Its final coefficients are the
+ordinary integers printed by its residuals. The separate compact branch
+in Section~\ref{sec:compact-shift} retains its native/K215 ancestry and
+must be assessed on its own domain and size metrics.
+
+\section{The inherited arithmetic interface}
+
+The parent direct construction is explicit and substantial. We retain its
+complete guarded quadratic source, its source metadata, the ordinary
+proofs of its arithmetic front, and the named logical interfaces. The
+new proof changes a narrowly identified part of that source rather than
+claiming to reprove the whole compilation from a finite test.
+
+The logical chain is
+\[
+ \begin{aligned}
+ \text{integer zero}&\ \Longleftrightarrow\ \text{finite C222 derivation}\\
+ &\ \Longleftrightarrow\ \text{finite ZF refutation}\\
+ &\ \Longleftrightarrow\ \text{finite ZFC refutation}.
+ \end{aligned}
+\]
+The last two retained interfaces are:
+\begin{itemize}
+\item \code{KEndpoint.c222\_iff\_zf\_refutation};
+\item \code{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+\end{itemize}
+Their files are included as source evidence; inclusion is not a claim
+that their entire transitive proof-assistant dependency tree was rebuilt.
+
+The arithmetic construction packs finite local proof data by Chinese
+remaindering, interprets binomial divisibilities as range conditions, and
+uses explicitly bounded Pell certificates to represent powers. Its
+signed orientation stage recovers both coordinates of each principal
+Pell pair before it uses the low-digit remainder signs. This order is
+the opportunity exploited here.
+
+Write $t,F,B,x,y,V_0,q$ for its semantic arithmetic values and
+$a_1,\ldots,a_9$ for its actual CRT representatives. They are polynomials
+in the source graph's coordinates, not new variables in
+\eqref{eq:main}. At the stage after power recovery but before the
+factorial fixed point, the parent proves
+\begin{gather}
+ t\ge16,\quad F\ge1,\quad B\ge F+1\ge2,\qquad
+ V_0=(F^2+1)^t,\qquad y=V_0(V_0-1),\label{eq:raw1}\\
+ x\ge2+(t+1)y,\qquad a_i\ge0,\qquad
+ H_0=1+\sum_{i=1}^9a_i\ge1,\qquad q=(BH_0)^x.
+ \label{eq:raw2}
+\end{gather}
+In particular, this stage does not yet use $F=t!$. The raw ceiling is
+$FB=V_0+s$ with $s\ge0$, and its two endpoint congruences give the large
+lower bound on $x$. A modified order for the odd-square version will be
+proved in Section~\ref{sec:odd}.
+
+There are eleven modular numerator requests. Each has a denominator
+$D_i=q^{k_i}$ and a low remainder $r_i$. The old rows impose
+\begin{equation}
+ D_i=r_i+s_i+1,\qquad
+ r_is_i=u_i^2+v_i^2+w_i(w_i+1).
+ \label{eq:oldguard}
+\end{equation}
+Once $D_i>0$ is known, the second row makes $r_i,s_i$ have the same sign,
+and the first forces them both nonnegative. It costs three private integer
+coordinates per request. We remove precisely the eleven product rows
+in~\eqref{eq:oldguard}; all the first rows are retained. The three initial
+ceiling/output sign graphs are separate from these eleven rows.
+
+\section{A residue-recognition lemma with a shared bound}
+
+The useful fact is not an unrestricted replacement for arbitrary interval
+guards. It relies on the intended residues occupying a small part of their
+interval.
+
+\begin{lemma}[Symmetric residue recognition]\label{lem:recognition}
+Let $D\ge1$ and let $\rho_1,\ldots,\rho_m$ be integers with
+$0\le\rho_i<D/8$. Suppose integers $r_i$ satisfy
+$r_i\equiv\rho_i\pmod D$ and
+\begin{equation}
+ D^2-4\sum_{i=1}^m r_i^2
+      =1+u^2+v^2+w(w+1).
+ \label{eq:budget}
+\end{equation}
+Then $r_i=\rho_i$ for all $i$. Conversely, if $m\le7$, the canonical
+choice $r_i=\rho_i$ admits integers $u,v,w$ satisfying
+\eqref{eq:budget}.
+\end{lemma}
+\begin{proof}
+For every integer $w$, $w(w+1)\ge0$. Equation~\eqref{eq:budget}
+implies $|r_i|<D/2$. Thus
+\[
+ |r_i-\rho_i|<D/2+D/8=5D/8<D.
+\]
+The difference is a multiple of $D$, so it is zero.
+
+For the converse,
+$4\sum_i\rho_i^2<7D^2/16<D^2$. Therefore the integer
+$D^2-4\sum_i\rho_i^2-1$ is nonnegative. Every nonnegative integer $n$
+has a representation $n=u^2+v^2+w(w+1)$. Indeed, the three-square theorem
+applied to $4n+1$ gives exactly one odd coordinate and two even
+coordinates; division by four gives the representation. This standard
+ternary form is also used in the parent and in current formalized
+Diophantine constructions~\cite{bayer}.
+\end{proof}
+
+The lemma allows the $r_i$ to be signed at the moment their congruences
+are checked. Nonnegativity is a conclusion. Its applicability here rests
+on proving the bound $\rho_i<D/8$ at the right point in the argument.
+
+\section{The radix margin is available before factorial recovery}
+\label{sec:margin}
+
+The parent constructor ledger supplies the positive integer
+$\ell=2^{22}=4,194,304$ and the derived-label bound
+\[
+ h\le(n_*+1)^\ell,
+ \qquad n_*=\max(1,a,b,c,d),
+\]
+where $a,b,c,d$ are four of the nine nonnegative CRT representatives.
+Since $n_*+1\le2H_0$ and $B\ge2$, we can use
+\begin{equation}
+ h\le(2H_0)^\ell\le(BH_0)^\ell.
+ \label{eq:derivedbound}
+\end{equation}
+This deliberately permits $H_0=1$. We do not use the later proof that a
+particular encoded index is nonzero.
+
+By~\eqref{eq:raw1}, $V_0\ge2^t$, so
+\[
+ y\ge2^t(2^t-1)>\ell,\qquad y\ge t+2\qquad(t\ge16).
+\]
+Together with~\eqref{eq:raw2}, these imply the two coarse but sufficient
+integer bounds
+\begin{equation}
+ x\ge\ell t+4,\qquad x\ge t(t+1)+4.
+ \label{eq:gaps}
+\end{equation}
+
+\begin{lemma}[Uniform low-digit bound]\label{lem:digits}
+For every one of the eleven numerator requests and every binomial
+coefficient below its requested digit position,
+\begin{equation}
+ \binom nj\le q/16.
+ \label{eq:smallcoeff}
+\end{equation}
+This conclusion follows from the pre-factorial facts
+\eqref{eq:raw1}--\eqref{eq:raw2} and the constructor ledger.
+\end{lemma}
+\begin{proof}
+There are three cases. For an ordinary representative $0\le n<H_0$,
+the denominator exponent $k$ is at most $x$. If $0\le j<k$, then
+\[
+ \binom nj\le\max(1,n)^j\le H_0^x\le q/16,
+\]
+since $q=B^xH_0^x$, $B\ge2$ and $x\ge4$. This includes $n=0,j=0$.
+
+For the derived-label representative, $k=t+1$ and $j\le t$.
+Equations~\eqref{eq:derivedbound} and~\eqref{eq:gaps} give
+\[
+ \binom hj\le h^j\le(BH_0)^{\ell t}
+       \le(BH_0)^{x-4}\le q/16.
+\]
+
+For the factorial upper index $n=F^2+t$, we have
+$F^2+t\le B^{t+1}$: indeed $F^2<B^2\le B^t$,
+$t\le2^t\le B^t$, and $2B^t\le B^{t+1}$. Therefore for $j<t$,
+\[
+ \binom{F^2+t}{j}\le(F^2+t)^t
+      \le B^{t(t+1)}\le B^{x-4}\le q/16.
+\]
+None of the three arguments assumes $F=t!$.
+\end{proof}
+
+For $D=q^k$, define the canonical low residue in the proof by
+\[
+ \rho(n,k)=\sum_{j=0}^{k-1}\binom nj q^j.
+\]
+This is proof notation only; it is not a variable-length operation in the
+final polynomial. The binomial theorem gives
+$\rho(n,k)\equiv(q+1)^n\pmod D$, and Lemma~\ref{lem:digits} gives
+\begin{equation}
+ 0\le\rho(n,k)\le\frac{q(D-1)}{16(q-1)}
+       \le\frac{D-1}{8}<\frac D8.
+ \label{eq:smallrho}
+\end{equation}
+
+The retained numerator equations make each actual $r_i$ congruent to
+this canonical residue modulo its positive denominator. The factorial
+numerator has a high part $D(B+qv)$; a range numerator has high part
+$DNv$. Both are multiples of $D$ regardless of the still-unproved sign
+of $v$. This is why the congruence can be used before the digit signs.
+
+\section{Pooling, merging, and soundness of the direct graph}
+
+The eleven requests have four denominator levels:
+\begin{center}
+\begin{tabular}{lrl}
+\toprule
+Denominator & Requests & Semantic upper indices\\
+\midrule
+$q^t$ & 2 & factorial upper index and encoded index\\
+$q^{t+1}$ & 5 & four local inputs and derived label\\
+$q^{y+1}$ & 2 & two local state representatives\\
+$q^x$ & 2 & two strict beta quotient representatives\\
+\bottomrule
+\end{tabular}
+\end{center}
+For each level, introduce one row~\eqref{eq:budget} instead of its old
+private product guards. The four rows use twelve guard coordinates in
+place of thirty-three. After the inherited exact-power recovery,
+Lemma~\ref{lem:recognition} and~\eqref{eq:smallrho} prove every
+$r_i=\rho_i\ge0$. The retained linear rows then give
+$s_i=D_i-1-r_i\ge0$. Thus every deleted old product guard can be restored
+using a ternary representation of $r_is_i$.
+
+All later inherited steps now apply. They authenticate the factorial
+digit, obtain $F=t!$ from the ceiling fixed point, decode the amplified
+CRT range conditions, and extract a finite C222 derivation from the
+unit-weight proof-flow certificate. This proves soundness. For
+completeness, start with the parent's witnesses for any finite refutation;
+their canonical low residues satisfy~\eqref{eq:smallrho}, and the
+converse of Lemma~\ref{lem:recognition} supplies the four new budgets.
+The exact compiled result has 261 variables and 185 rows.
+
+\subsection{Merging adjacent powers of the radix}
+
+Let $D=q^t$ and $D'=qD=q^{t+1}$. Introduce just two product coordinates
+\[
+ z_0=qr_0,\qquad z_1=qr_1
+\]
+for the two lower-level remainders. Pool $z_0,z_1$ together with the five
+higher-level remainders under denominator $D'$. The seven-entry budget
+forces $|z_i|<D'/2$, hence $|r_i|<D/2$ because $q>0$. The original
+denominator congruences therefore recover the same lower-level residues.
+Conversely, $q\rho_i<D'/8$ and the other five canonical residues have the
+same bound, so the seven-entry budget has witnesses.
+
+This replaces six guard coordinates by three and adds two product
+coordinates, saving one variable. Its 260-variable intermediate has
+186 rows. The polynomial expressions are still quadratic before taking
+their sum of squares.
+
+\section{An odd-square radix and a different recovery order}
+\label{sec:odd}
+
+The parent has one initial scalar sign guard on the factorial digit's
+output slack $o$, with $q=B+o+1$. Remove that three-coordinate guard and
+add the single quadratic row
+\begin{equation}
+ q=(2z+1)^2,\qquad z\in\Z.
+ \label{eq:oddsquare}
+\end{equation}
+This saves two more variables. It is a restriction on admissible raw
+witnesses, so it requires a new completeness argument as well as soundness.
+
+\subsection{Soundness without an initial lower bound of two on the radix}
+
+Initially~\eqref{eq:oddsquare} gives only $q\ge1$. The signed semantic
+anchor and square-frame argument orient all principal Pell pairs without
+using the deleted sign of $o$. Interpret $V_0=(F^2+1)^t$ first: its
+exponent $t\ge16$ is already known, and the base-one case is allowed.
+The two retained ceiling signs then give $F\ge1$, $B>F$, and
+$y=V_0(V_0-1)$.
+
+Now use the existing request $N=B^x$. Since $B\ge2$, the signed-power
+lemma forces $x\ge0$. The first beta endpoint gives $x\ge F+1\ge2$,
+and the last gives $x\ge2+(t+1)y$. The numerator requests have base
+$q+1\ge2$, so their exponents are nonnegative actual representatives;
+the anchor index is nonzero. Consequently $H_0\ge1$. The request with
+base $BH_0\ge2$ then gives
+\[
+ q=(BH_0)^x\ge B^2>B.
+\]
+Thus $o=q-B-1\ge0$ is recovered. From this point, all previous power
+and digit arguments apply with $q\ge2$. The order is
+\[
+ q\ge1\ \Rightarrow\ V_0\ \Rightarrow\ B\ge2
+ \ \Rightarrow\ x\ge2\ \Rightarrow\ H_0\ge1
+ \ \Rightarrow\ q\ge B^2>B.
+\]
+No step uses the very sign it is meant to establish.
+
+\subsection{Completeness by compatible parity choices}
+
+Begin with any finite refutation and the parent's cofinal construction.
+Choose its horizon $t\ge16$, $F=t!$, $V_0=(F^2+1)^t$ and
+$y=V_0(V_0-1)$. The number $y$ is even, so every beta CRT modulus
+$1+(i+1)y$ is odd. The beta code $x$ can therefore be chosen even and
+arbitrarily large in its required residue class. Its endpoint and quotient
+conditions are preserved by that choice.
+
+The factors $d_i=1+F^2/i$ are odd: $i\mid F$ and
+$F^2/i=F(F/i)$ is even. Therefore $B=\prod_i d_i$ and $N=B^x$ are odd.
+The independent representative CRT moduli have odd product $N^2$, so
+each representative's parity can be prescribed independently.
+
+Prescribe opposite parities to $a,b$, as required to make the semantic
+anchor $h$ even. Use one of the other seven representatives to make the
+sum of all nine representatives even, hence $H_0$ odd. Ordinary
+representatives remain in $(0,2N^2]$. The dominant representative is
+chosen as $a_0+2N^2$ or $a_0+3N^2$, maintaining the required parity and
+$2N^2\le a<4N^2$. All inherited dominance and cap estimates remain valid.
+
+Now $BH_0$ is odd and $x$ even, so
+\[
+ z=\frac{(BH_0)^{x/2}-1}{2}\in\Z
+\]
+supplies~\eqref{eq:oddsquare}. The shared remainder budgets can be
+completed as before. This proves completeness of the 258-variable graph.
+
+\section{Smaller coefficients by reversible residual operations}
+
+The preceding graph is converted into literal quadratic residuals by the
+retained Horn factorization and integral monic coordinate elimination.
+Every eliminated coordinate has an explicit polynomial restoration.
+Integral coordinate translations are bijective over the integer domain.
+After those steps the main equation has 258 variables, 186 rows, 5,319
+terms and height 128,446.
+
+We then apply 30 elementary transformations to its ordered residual list:
+\begin{equation}
+ r_i\longleftarrow r_i+k r_j\qquad(i\ne j, k\in\Z).
+ \label{eq:rowop}
+\end{equation}
+Each is a unimodular row transformation, with inverse obtained by
+replacing $k$ by $-k$. Therefore it preserves the simultaneous zero set
+of the residuals over every commutative ring. Over $\Z$ the sum of their
+squares vanishes exactly when each residual vanishes, so the transformed
+single equation has exactly the same integer zero set.
+
+The search for useful operations was finite and heuristic. Its output,
+not the search heuristic, is the certificate: every operation and its
+reverse is supplied and checked exactly. These operations lower the
+largest residual coefficient from 256 to 128 and the collected quartic
+height to 47,281. The final support count returns to 5,319. No claim of
+optimal row basis, optimal integer translation, or globally minimal
+coefficient height is made.
+
+This is a useful separation of concerns. Number theory justifies deleting
+sign witnesses. Reversible algebra improves the displayed coefficients.
+Neither improvement is inferred from testing whether the final equation
+has a solution.
+
+\input{../compact/section.tex}
+
+\section{Reproduction and verification boundaries}
+
+The following files specify the result without needing an external
+repository or a symbolic-mathematics service:
+\begin{itemize}
+\item \code{equations/P258/equation.json}: every ordered variable and all
+186 literal residuals; its adjacent expansion gives every quartic term.
+\item \code{equations/P261/}: the complete 261-variable companion.
+\item \code{direct/}: the literal guarded source, exact changes, source
+restorations, translations, arithmetic proof and finite verifier.
+\item \code{compact/}: both complete compact circuits, the four fixed
+integer payloads and their finite reconstruction, the new proof and
+the retained parent proofs.
+\item \code{sources/}: pinned inherited arithmetic and logical interfaces.
+\item \code{verify.py}: the combined finite check, including reverse row
+operations, complete SOS expansion, and parsing the printed residuals.
+\end{itemize}
+
+From the extracted archive root, use Python 3.10 or later:
+\begin{verbatim}
+python3 -B verify.py
+python3 -B -O verify.py
+python3 -B build_endpoints.py --check
+python3 -B evaluate.py point.json
+\end{verbatim}
+The default evaluator expects exactly 258 signed integer coordinates.
+It is an exact evaluator, not a consistency test or a solver. The
+standalone LaTeX paper is rebuilt with \code{sh build\_report.sh}.
+
+The mathematical claims have two kinds of support. The unbounded
+arguments prove soundness and completeness, including the delicate order
+of sign recovery. Finite checks authenticate the entire written
+polynomial, transformations, degrees, coefficient heights and circuit
+counts. The latter do not prove an unbounded number-theoretic lemma by
+sampling. Independent reviews in this packet are separate reviews within
+this AI-assisted workflow, not outside human peer review.
+
+Formalization is a natural next step. Existing formalized DPRM work shows
+how arithmetic graphs and proof encodings can be handled by a proof
+assistant~\cite{dprmformal}. We do not substitute that general theorem
+for the explicit coefficients or the calibrated equivalence in this
+particular construction.
+
+\section{What is new, and further research questions}
+
+The direct contribution is the completed application of symmetric
+remainder bounds to the signed C222 graph, including a pre-factorial radix
+margin, a two-scale merger, and the odd-square recovery order. The compact
+contribution is the proof that the shift $T+\alpha$ can be removed while
+preserving the entire positive zero set by an explicit triangular
+bijection. The row operations give a fully certified coefficient reduction
+at the new direct endpoints. CRT, Pell equations, ternary nonnegativity
+representations and elementary row operations are classical ingredients;
+no historical priority for them is asserted.
+
+Several questions remain particularly concrete:
+\begin{enumerate}
+\item Can all digit levels share one quadratic budget, with fewer added
+scaling coordinates than the guard coordinates it removes? The adjacent
+levels work because their ratio is the already present radix $q$.
+\item Can another cofinal arithmetic choice remove one of the two
+remaining ceiling sign graphs? A proposed restriction must preserve
+completeness; a convenient square condition cannot simply be assumed.
+\item Can the set-theoretic seed and logical vacuity parts of the
+numerical calculus be compiled separately to reduce the arithmetic front?
+The repository already contains warnings against dropping necessary
+vacuity instances. A new front needs its own complete calibration and
+explicit finite polynomial, not merely a suggestive formula.
+\item Can the signed residue-recognition lemma and the revised recovery
+order be formalized first as reusable Lean/Rocq lemmas, then composed
+with a verified literal compiler? This would close the principal gap
+between the current ordinary proof and an end-to-end formal endpoint.
+\item Can coefficient-aware row and coordinate transformations lower
+height further without increasing variables or support? The present
+30-operation certificate gives a reproducible starting point, not a
+lower bound.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+V. Reshetnikov and contributors,
+\emph{ProveIt}, immutable comparison snapshot
+\code{e0c98c629bf10d30b695884f6b1d2ab361bdf513}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/e0c98c629bf10d30b695884f6b1d2ab361bdf513}.
+\bibitem{cofinal}
+\emph{Cofinal anchors and height one equations for ZFC consistency},
+round 17, 25 October 2026, incoming research archive in~\cite{repo}.
+Its direct ordinary proof and exact guarded source are retained here.
+\bibitem{cert}
+\emph{Eliminating auxiliary witnesses in Diophantine consistency},
+25 October 2026, \code{ConZFC\_Certificate\_Reductions\_2026-10-25.zip}
+in~\cite{repo}. The compact component is retained byte for byte.
+\bibitem{digits}
+\emph{Pooled low digits and a semantic Pell cap},
+\code{conzfc\_graph\_digits\_2026-10-24.zip} in~\cite{repo}.
+The natural-domain pooling argument is a predecessor; the present signed
+remainder recognition and recovery schedule are different.
+\bibitem{bayer}
+J. Bayer, M. David, M. Ha\ss ler, Y. Matiyasevich and D. Schleicher,
+\emph{Diophantine equations over $\Z$: universal bounds and parallel
+formalization}, arXiv:2506.20909v3, 22 October 2026.
+\url{https://arxiv.org/abs/2506.20909}.
+\bibitem{dprmformal}
+J. Bayer, M. David, B. Stock, A. Pal, Y. Matiyasevich and D. Schleicher,
+\emph{Diophantine Equations and the DPRM Theorem}, Archive of Formal
+Proofs, 2022. \url{https://isa-afp.org/entries/DPRM_Theorem.html}.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{Every residual of the main equation}\label{app:residuals}
+
+The independent unknowns are exactly $x_0,\ldots,x_{257}\in\Z$.
+The equation is $\sum_{j=0}^{185}r_j^2=0$, with the following complete
+list. All constants below are literal integers; no reference to a proof
+predicate, variable exponent, recursion, or external numerical port is
+needed to evaluate the polynomial. The file
+\code{equations/P258/variables.tsv} also records the compiler's semantic
+names, which are not needed for this definition.
+
+\begingroup\small
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+\setlength{\jot}{1pt}
+\input{../equations/P258/residuals.tex}
+\endgroup
+\end{document}

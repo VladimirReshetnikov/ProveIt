@@ -1,0 +1,746 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Shared residue bounds for consistency equations}
+\fancyhead[R]{\small 25 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\allowdisplaybreaks[3]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Refut}{\operatorname{Ref}}
+\newcommand{\Height}{\operatorname{ht}}
+\input{metrics.tex}
+\title{Shared quadratic bounds for Diophantine refutation certificates\\[4pt]
+\large An explicit quartic in 260 unrestricted integers for $\Con(\mathrm{ZFC})$}
+\author{AI-assisted research note prepared for the ProveIt project}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct and supply a fixed polynomial $P\in\ZZ[z_1,\ldots,z_{260}]$
+of degree four such that ZFC proves that $P$ has no integer zero if and only
+if ZFC is consistent. The construction develops the repository's direct
+proof-certificate route; it uses neither a Turing-machine simulation nor a
+universal-polynomial coefficient tuple. Its main new step replaces eleven
+individual remainder interval certificates by three shared quadratic bounds.
+The already available radix margins make each canonical low binomial
+remainder very small compared with its modulus. A symmetric bound then
+identifies its signed modular lift, recovering its sign as a consequence.
+Two adjacent powers of the radix share a bound using one retained square
+wire and one new sum-of-squares wire.
+
+The principal equation is the sum of 186 completely listed quadratic
+residual squares. After explicit integral changes of coordinates, it has
+\FinalTerms{} nonzero monomials and coefficient height \FinalHeight{}.
+The previous direct endpoint in the inspected incoming archive has 282
+variables, 192 residuals, 5,491 monomials and height 128,446. A 261-variable,
+185-residual companion is also supplied. We prove the unbounded arithmetic
+reduction, provide exact reconstruction certificates and independent finite
+checks, and identify the retained logical calibration. The result is a
+concrete improvement within this direct construction, not a proof of a
+global simplicity minimum or of $\Con(\mathrm{ZFC})$ itself. No new complete
+Lean or Rocq proof of the final endpoint is claimed.
+\end{abstract}
+\tableofcontents
+
+\section{The delivered equation and the comparison being made}
+
+\subsection{A closed integer polynomial}
+
+The principal equation is
+\begin{equation}\label{eq:principal}
+ \boxed{\displaystyle P(z_1,\ldots,z_{260})
+       =\sum_{j=1}^{186}R_j(z_1,\ldots,z_{260})^2=0,
+       \qquad (z_1,\ldots,z_{260})\in\ZZ^{260}.}
+\end{equation}
+Every $R_j$ is printed in Appendix~\ref{app:residuals}. The sum has a fixed
+finite length. All coefficients are literal integers; there is no program
+index, uncomputed numerical port, variable exponent, hidden inequality or
+additional existential quantifier in~\eqref{eq:principal}. A shared
+polynomial expression in an explanation does not introduce a new unknown.
+The definitive machine-readable forms are
+\path{equations/principal/equation.json} and
+\path{equations/principal/expanded_polynomial.json}.
+
+\begin{theorem}[Consistency equivalence]\label{thm:main}
+For the fixed polynomial in~\eqref{eq:principal}, the ordinary mathematical
+proof given here, composed with the retained ProveIt calibration, is
+formalizable in ZFC and establishes
+\[
+ \mathrm{ZFC}\ \vdash\
+ \left[\forall\mathbf z\in\ZZ^{260}\ P(\mathbf z)\ne0\right]
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+Here $\Con(\mathrm{ZFC})$ is the usual syntactic assertion that the fixed
+effective first-order ZFC calculus has no finite proof of contradiction.
+The same assertion holds for the supplied 261-variable companion.
+\end{theorem}
+
+The logical calibration is an imported mathematical result, with its
+interface and internalization discussed in Section~\ref{sec:logic}. The
+new proof is an existential equivalence of integer zero sets through the
+arithmetic source. It does not assert that all private witnesses are unique.
+In particular, a sum-of-three-terms representation of a nonnegative integer
+usually has several possible witnesses.
+
+\subsection{What ``simpler'' measures here}
+
+There is no single agreed ordering of variable count, degree, coefficient
+height, support and evaluator length. We therefore give the actual measures
+rather than identify a preferred measure with a global minimum. Coefficient
+height means the largest absolute value of a \emph{collected} coefficient;
+support counts nonzero collected monomials. The number of quadratic
+residuals is a further representation measure, not an arithmetic-operation
+count.
+
+\begin{center}\small
+\begin{tabular}{lrrrrr}
+\toprule
+Equation & Variables & Rows & Degree & Monomials & Height\\
+\midrule
+Inspected direct predecessor &282&192&4&5,491&128,446\\
+Four shared bounds &261&185&4&5,332&128,446\\
+Three shared bounds &260&186&4&5,325&128,446\\
+Principal, after integral shears &260&186&4&\FinalTerms&\FinalHeight\\
+Wider projection, dimension tradeoff &259&185&4&23,960&240,653\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The predecessor is the \path{strict_dimension_centered} endpoint in the
+incoming Round 17 archive at commit
+\path{e0c98c629bf10d30b695884f6b1d2ab361bdf513}~\cite{repo,round17}.
+The repository separately contains equations with far fewer variables,
+including a 37-integer quartic built through a large fixed coefficient
+tuple, and high-degree ten-integer forms. We do not claim to improve their
+variable counts. The present advance is in the direct construction with
+small, fully materialized coefficients and no universal-polynomial tuple.
+Likewise, the 261-variable companion keeps a smaller number of residuals
+than the 260-variable version. The 259-variable alternative saves one further
+variable but substantially increases support and height; it is supplied as
+a distinct tradeoff. These distinctions matter when comparing
+prospective formalization effort and polynomial size.
+
+\section{A signed remainder can be certified collectively}
+
+\subsection{One standard nonnegativity representation}
+
+Put
+\[
+ T(a,b,c)=a^2+b^2+c(c+1).
+\]
+For integers $a,b,c$, this value is nonnegative. Conversely, every
+nonnegative integer is represented. Indeed, the three-square theorem
+represents $4n+1$ by three squares, since this number is never of the
+excluded form $4^e(8h+7)$. Exactly one square is odd modulo four.
+Writing the three entries as $2a,2b,2c+1$ gives $n=T(a,b,c)$.
+This familiar conversion is explicitly recorded, for example, in
+Sun~\cite[eq.~(1.1)]{sun2026}; it is also the conversion used by the
+retained integer source.
+
+\subsection{The collective bound}
+
+\begin{lemma}[Short signed lifts]\label{lem:lifts}
+Let $L\ge1$ and $1\le m\le32$ be integers. Suppose
+$0\le c_i<L/8$ and $r_i\equiv c_i\pmod L$. Then
+\begin{equation}\label{eq:collective}
+ L^2-2\sum_{i=1}^m r_i^2-1=T(a,b,c)
+\end{equation}
+has integer witnesses $a,b,c$ if and only if $r_i=c_i$ for every $i$.
+\end{lemma}
+\begin{proof}
+If~\eqref{eq:collective} holds, nonnegativity of $T$ gives
+$2r_i^2<L^2$, hence $|r_i|<3L/4$. Thus
+$|r_i-c_i|<7L/8<L$. A multiple of $L$ in this interval must be zero.
+For the converse, if all $r_i=c_i$, then
+\[
+ 2\sum_i c_i^2<\frac{m}{32}L^2\le L^2.
+\]
+The integral difference on the left of~\eqref{eq:collective} is therefore
+nonnegative, and the representation by $T$ supplies the three witnesses.
+\end{proof}
+
+This lemma places no prior sign restriction on the proposed remainders.
+Their signs are recovered from the modular meaning of the equations and
+the smallness of the canonical residues. The coefficient two is not a
+cosmetic choice. For $L=9$, $c=1$ and $r=-8$, the wrong lift satisfies
+$r\equiv c\pmod L$ and $c<L/8$, while
+$L^2-r^2-1=16=T(4,0,0)$. Simply dropping the two would invalidate the
+soundness assertion.
+
+\begin{lemma}[A quantitative low-digit margin]\label{lem:digits}
+Let $q\ge2$, $k\ge1$, $n\ge0$ be integers and suppose
+$\binom nj\le q/16$ for $0\le j<k$. With the convention
+$\binom nj=0$ when $j>n$, set
+\[
+ c(n,k)=\sum_{j=0}^{k-1}\binom nj q^j.
+\]
+Then $0\le c(n,k)<q^k/8$ and
+$c(n,k)\equiv(q+1)^n\pmod{q^k}$.
+\end{lemma}
+\begin{proof}
+The congruence is the binomial theorem. For the bound,
+\[
+ c(n,k)\le\frac q{16}\frac{q^k-1}{q-1}
+          <\frac{q^{k+1}}{16(q-1)}\le\frac{q^k}{8}.
+\]
+This argument concerns the canonical low residue and does not presume that
+a supplied signed remainder already has its intended value.
+\end{proof}
+
+\begin{corollary}[Different moduli with a common scale]\label{cor:scaled}
+Suppose $L=s_iL_i$ with positive integral $s_i,L_i$, and
+$r_i\equiv c_i\pmod{L_i}$ with $0\le c_i<L_i/8$. For at most 32 entries,
+\[
+ L^2-2\sum_i (s_i r_i)^2-1=T(a,b,c)
+\]
+has integer witnesses exactly when all $r_i=c_i$.
+\end{corollary}
+\begin{proof}
+Apply Lemma~\ref{lem:lifts} to $s_i r_i$ and $s_i c_i$ modulo $L$, then
+cancel the positive nonzero integers $s_i$.
+\end{proof}
+
+The concrete groups below have sizes $2,5,2,2$ or $7,2,2$, well inside
+the lemma's limit. There is no assertion that every old interval tuple
+satisfies the new bound without first using its genuine digit semantics.
+
+\section{The inherited arithmetic interface}
+
+\subsection{The proof-certificate route}
+
+The direct source encodes a finite numerical proof calculus using bounded
+local rows, factorial weights and Chinese-remainder decoding. Its powers
+are represented by an explicit simultaneous Pell system. Intermediate
+multiplication outputs are kept as variables so that every residual has
+degree at most two. Sum-of-squares merging then produces a quartic.
+The semantic source is a numerical presentation calibrated to C222 and
+then to ZFC refutability. It is not necessary to run any machine enumerating
+that calculus.
+
+The source closure in this archive retains the exact constructor files and
+ordinary source proofs. Several historical presentations use different
+numeric constructor conventions. The finite source being transformed is
+the literal signed source stored in \path{certificate/parent/strict_dimension};
+its constructor and calibration files fix that convention. We do not
+silently interchange the original Cantor codes with the later square-shell
+codes.
+
+In particular the actual square-shell constructors are
+\[
+ I(a,b)=2((a+b)^2+a),\quad M(a,b)=I(a,b)+1,
+\]
+\[
+ A(a,b)=2((a+b)^2+3a+4b+3),\quad E(a,b)=A(a,b)+1.
+\]
+The retained \path{SHELL_ENCODING_PROOF.md} gives a recursive
+constructor-preserving bijection to the original Cantor presentation,
+fixing truth and falsity ($0$ and $1$). It transports derivations in both
+directions. A guarded disequality witness is reconstructed after recoding;
+one does not simply apply the code bijection to that arithmetic witness.
+
+\subsection{Semantic coordinates used in the reduction}
+
+The following letters denote existing semantic values, rather than new
+quantified coordinates in~\eqref{eq:principal}:
+\begin{align}
+ t&=16+h_0^2,& V&=(F^2+1)^t,& y&=V(V-1),\label{eq:front1}\\
+ H_0&=1+\sum_{i=1}^{9} A_i,&K&=x,&N&=B^x,&q&=(BH_0)^x.\label{eq:front2}
+\end{align}
+The nine independent CRT representatives are denoted
+$a,b,c,d,S,S',u,v,C_0$. A fixed positive-constructor expression
+$h=h(a,b,c,d)$ bounds the rule labels. Every representative and $h$ itself
+occurs as an exponent in a genuine request with base $q+1$.
+
+The eleven digit rows are listed below. The first is an exact binomial
+request; the others encode the relevant binomial divisibilities.
+Their retained numerator identities always imply that the supplied
+remainder is congruent to $(q+1)^n$ modulo the displayed denominator,
+even when that remainder and its quotient have not yet been oriented.
+
+\begin{center}\small
+\begin{tabular}{llll}
+\toprule
+Source remainder & Upper index $n$ & Position $k$ & Modulus\\
+\midrule
+\texttt{choose0.remainder} &$F^2+t$&$t$&$q^t$\\
+\texttt{range8.remainder} &$C_0$&$t$&$q^t$\\
+\texttt{range0.remainder} &$a$&$t+1$&$q^{t+1}$\\
+\texttt{range1.remainder} &$b$&$t+1$&$q^{t+1}$\\
+\texttt{range2.remainder} &$c$&$t+1$&$q^{t+1}$\\
+\texttt{range3.remainder} &$d$&$t+1$&$q^{t+1}$\\
+\texttt{range9.remainder} &$h$&$t+1$&$q^{t+1}$\\
+\texttt{range4.remainder} &$S$&$y+1$&$q^{y+1}$\\
+\texttt{range5.remainder} &$S'$&$y+1$&$q^{y+1}$\\
+\texttt{range6.remainder} &$u$&$x$&$q^x$\\
+\texttt{range7.remainder} &$v$&$x$&$q^x$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Previously each remainder $r_i$ had a private slack $s_i$ and an interval
+certificate
+\begin{equation}\label{eq:oldinterval}
+ L_i=r_i+s_i+1,\qquad r_i s_i=T(\alpha_i,\beta_i,\gamma_i).
+\end{equation}
+Once $L_i>0$ is known, these equations force both $r_i,s_i$ to be
+nonnegative. The transformation removes exactly these eleven bound rows
+and eleven product-certificate rows. The 33 private ternary witnesses
+and unused slack coordinates are then removed by exact integral projection.
+
+\subsection{The three early sign certificates are retained}
+
+Let $r,s,o$ denote the separate factorial remainder, factorial slack and
+exact-binomial output slack. Their three nonnegativity certificates stay
+in the source, along with
+\begin{equation}\label{eq:early}
+ B=r+s+1,\qquad q=B+o+1,\qquad FB=V+s.
+\end{equation}
+The endpoint rows also stay:
+\begin{equation}\label{eq:endpoints}
+ x=F+1+(y+1)u_0,
+ \qquad x=1+[1+(t+1)y]u_t.
+\end{equation}
+They are crucial to the argument. Removing the delayed interval certificates
+does not authorize removing these early certificates.
+
+The inherited orientation-first theorem proves the signed Pell frame and
+every canonical principal pair before it uses any of
+\eqref{eq:oldinterval}. The literal deletion audit checks that the interval
+slacks and ternary witnesses are private: none is an atom needed for the
+frame, anchor, power requests, or early sign proof. This dependency order
+is why the transformation is valid.
+
+\section{Soundness without a circular radix assumption}\label{sec:soundness}
+
+\subsection{Recover powers and arithmetic signs first}
+
+We use the retained orientation-first Pell theorem in its stated signed
+form. It permits either sign of the large Pell center. It recovers the
+canonical signed Pell polynomials at the requested indices. If a request
+has positive base $n\ge2$ and a negative index $-j$, the power congruence
+would give $m n^j\equiv1$ modulo a modulus larger than
+$|m n^j-1|$. Consequently $m n^j=1$, impossible for integer $m$ and
+$j\ge1$. The same large-modulus argument gives the exact usual power for
+nonnegative indices. A request at base one is handled directly when its
+index is already nonnegative. These are inherited proved properties of
+the unchanged private system, not new positivity assumptions on its inputs.
+
+From~\eqref{eq:early}, initially $B\ge1$ and $q\ge2$, while
+$t\ge16$. The shared $t$ pair therefore gives $q^t$ and
+$V=(F^2+1)^t\ge1$. The ceiling row gives $F\ge1$ and
+\[
+ FB\ge V\ge F^2+1,\qquad B>F,\qquad B\ge2,\qquad q\ge3.
+\]
+Thus $V\le FB<B^2$. The retained cofinal equation gives
+$y=V(V-1)>F+2$.
+
+The $q^x$ request gives $x\ge0$. If $u_0\le-1$, the first endpoint row
+would instead give $x\le F-y<0$. Hence $u_0\ge0$ and $x\ge F+1\ge2$.
+The second endpoint row then forces $u_t\ge1$, and therefore
+\begin{equation}\label{eq:xbig}
+ x\ge2+(t+1)y>6.
+\end{equation}
+Every actual CRT representative, and the derived label $h$, is an exponent
+at base $q+1\ge4$. They are all nonnegative. Hence $H_0\ge1$, the base
+$BH_0\ge2$ is valid, and the retained requests give exactly
+$N=B^x$ and $q=(BH_0)^x$. All remaining requests have their intended
+arithmetic meanings. The adjacent denominator is obtained from the
+retained one-step Pell addition and equals $q^{t+1}=q\,q^t$.
+
+In particular, \emph{before} identifying a factorial or a supplied low
+remainder, we have the stronger radix margin
+\begin{equation}\label{eq:margin}
+ q=(BH_0)^x\ge B^6\ge16B^2>16V.
+\end{equation}
+
+\subsection{A factorial coefficient bound with no factorial premise}
+
+\begin{lemma}\label{lem:factorialdigits}
+For integers $F,t\ge1$ and $0\le j\le t$,
+\[
+ \binom{F^2+t}{j}\le(F^2+1)^t.
+\]
+\end{lemma}
+\begin{proof}
+If $F^2\ge t$, binomial coefficients are increasing up to position $t$,
+and
+\[
+ \binom{F^2+t}{j}\le\binom{F^2+t}{t}
+   =\prod_{i=1}^t\left(1+\frac{F^2}{i}\right)
+   \le(F^2+1)^t.
+\]
+If $4\le F^2<t$, each coefficient is at most
+$2^{F^2+t}<4^t<(F^2+1)^t$. The remaining case is $F=1$.
+Pascal's identity bounds each coefficient of row $t+1$ by the sum of
+row $t$, namely $2^t$; boundary coefficients satisfy the same inequality.
+\end{proof}
+
+Combining this lemma with~\eqref{eq:margin} and Lemma~\ref{lem:digits}
+shows that the canonical low remainder for the factorial digit is less
+than $q^t/8$. The shared bound gives its supplied remainder absolute value
+less than $3q^t/4$. In the merged group this follows first for $q r_0$
+at modulus $q^{t+1}$, and then by cancellation of the positive $q$.
+The unchanged numerator row gives the congruence, so the supplied remainder
+equals the canonical one.
+
+Only this one component of the bound is needed now. The other ten
+remainder squares are nonnegative, irrespective of their values. We have
+not assumed the bounds for their canonical residues in order to decode
+the factorial digit.
+
+Since $0\le B<q$ is independently retained and the coefficient through
+position $t$ is below $q$, the exact-binomial numerator identity now gives
+\begin{equation}\label{eq:Bbinomial}
+ B=\binom{F^2+t}{t}.
+\end{equation}
+
+\subsection{The square-radius factorial fixed point}
+
+For completeness of the arithmetic argument we record a short proof of
+the inherited fixed-point fact used at this stage.
+
+\begin{lemma}\label{lem:factorial}
+Suppose $t\ge16$, $F\ge1$, $V=(F^2+1)^t$,
+$B=\binom{F^2+t}{t}$, and nonnegative integers $r,s$ satisfy
+$B=r+s+1$ and $FB=V+s$. Then $F=t!$. Conversely $F=t!$ supplies such $r,s$.
+\end{lemma}
+\begin{proof}
+The two rows are equivalent to $F-1<V/B\le F$. Set $G=t!$. Then
+\[
+ \frac VB=G\prod_{i=1}^t\frac{F^2+1}{F^2+i}\le G,
+\]
+so $F\le G$. Each factor is nondecreasing in $F^2$. At $F=1$ the ratio
+is $2^t/(t+1)$; hence $F\ge2^t/(t+1)>t^2$. The last inequality holds
+at $t=16$ and persists because
+$(t+1)(t+2)/t^2<2$ for $t\ge16$.
+
+Using $\prod_i(1-z_i)\ge1-\sum_i z_i$ for $0\le z_i\le1$ gives
+\[
+ \frac VB
+ \ge G\left(1-\sum_{i=1}^t\frac{i-1}{F^2+i}\right)
+ >G\left(1-\frac1{2F}\right),
+\]
+because the sum is at most $t(t-1)/(2F^2)<1/(2F)$.
+Since $V/B\le F$,
+\[
+ G<\frac{2F^2}{2F-1}=F+\frac{F}{2F-1}\le F+1.
+\]
+Integrality gives $G\le F$, hence $F=G$.
+Conversely, $G=t!\ge2^{t-1}>t^2$ for $t\ge16$ (the last inequality holds
+at 16 and is preserved by induction). Thus at $F=G$ the same product estimate gives
+$G-\tfrac12<V/B\le G$. Thus $\lceil V/B\rceil=G$; take
+$s=GB-V$ and $r=V+B-GB-1$. Both are nonnegative and satisfy the rows.
+\end{proof}
+
+We may now conclude $F=t!$. The reciprocal moduli
+$d_i=1+F^2/i$ are integers, pairwise coprime, and
+$B=\prod_{i=1}^t d_i$. These facts are used only after
+Lemma~\ref{lem:factorial}, as in the retained CRT argument.
+
+\subsection{All remaining canonical residues have spare radix capacity}
+
+The retained index congruence is $B\mid C_0+F^2+1$. Since $t\ge16$,
+the product for $B$ is strictly larger than $F^2+1$. We already know
+$C_0\ge0$, so $C_0=0$ is impossible. Thus $C_0\ge1$ and $H_0\ge2$.
+
+Every lower position $k$ in the table is positive and at most $x$ by
+\eqref{eq:xbig}. For any ordinary representative $A\ge0$ and $0\le j<k$,
+\begin{equation}\label{eq:ordinarymargin}
+ \binom Aj\le\max(1,A)^j\le H_0^{x-1}\le q/64.
+\end{equation}
+The last inequality uses $q=B^xH_0^x$, $B\ge2$ and $x\ge6$.
+The expression $\max(1,A)$ deliberately handles zero representatives.
+
+For the derived-label expression the retained exact constructor majorant is
+$h\le H_0^{\ell}$ with $\ell=4,194,304$. This bound also handles zero
+representatives: if $n=\max(a,b,c,d)$, the positive-constructor estimate
+uses $\max(1,n)+1\le H_0$, because the separate representative $C_0$ is at
+least one. The inherited factorial estimate for $t\ge16$ is
+$\ell(t+1)<2F$, while~\eqref{eq:xbig} gives $2F<x$. Hence for $j<t+1$,
+\begin{equation}\label{eq:derivedmargin}
+ \binom hj\le H_0^{\ell t}\le H_0^{x-1}\le q/64.
+\end{equation}
+All remaining coefficients needed for low-digit extraction are therefore
+below $q/16$. Lemma~\ref{lem:digits} gives $c_i<L_i/8$ in every case.
+
+Apply Lemma~\ref{lem:lifts}, or its scaled version, to each supplied
+remainder. We obtain $r_i=c_i$ and therefore $0\le r_i<L_i$ for all eleven
+entries. Set $s_i=L_i-r_i-1\ge0$. The products $r_i s_i$ are nonnegative,
+so the standard ternary representation supplies every deleted product
+certificate in~\eqref{eq:oldinterval}. All retained source rows are already
+unchanged. Thus a new zero extends to a zero of the old signed source,
+preserving its common coordinates. Its proved CRT and refutation decoding
+now applies.
+
+\section{Completeness and the adjacent-modulus merger}
+
+Start with a zero of the old signed source, or obtain one from a finite
+refutation by its retained constructive completeness proof. The preceding
+arithmetic facts hold for that zero. In particular all eleven remainders
+are canonical and $0\le r_i<L_i/8$.
+
+Grouping equal denominators gives four groups of sizes $2,5,2,2$.
+Lemma~\ref{lem:lifts} provides one ternary certificate for each group.
+This yields the 261-variable companion. Every old coordinate still needed
+by another row is kept; only private witnesses and subsequently unused
+definitions are discarded.
+
+For the principal 260-variable source, write
+$L_0=q^t$ and $L=q^{t+1}=qL_0$. Denote the two small-modulus remainders
+by $r_0,r_8$ and the five large-modulus remainders by $r_a,r_b,r_c,r_d,r_h$.
+The merged seven entries are
+\[
+ qr_0,\ qr_8,\ r_a,\ r_b,\ r_c,\ r_d,\ r_h.
+\]
+Each canonical value is less than $L/8$. Keep the existing square wire
+$Q_2=q^2$ and define one new wire
+$S_0=r_0^2+r_8^2$. The merged residual is
+\begin{equation}\label{eq:merged}
+ L^2-2Q_2S_0-2(r_a^2+r_b^2+r_c^2+r_d^2+r_h^2)-1
+        -T(\alpha,\beta,\gamma)=0.
+\end{equation}
+Both this equation and the wire definitions have degree at most two in
+their stored coordinates. The left side before subtracting $T$ is
+nonnegative by Lemma~\ref{lem:lifts} with seven entries. Choose the three
+ternary witnesses and retain every other old coordinate. This constructs
+a new zero. The same lemma proves soundness for the merged bound, including
+the early factorial stage where the other residue values are still unknown.
+
+Relative to the four-group version, merging removes three bound witnesses
+and retains two additional wires, saving one integer variable. It leaves
+one extra residual. The retained $q^2$ wire had previously been eliminated
+by projection; it is not a free numerical parameter. The exact variable
+and row counts are measured after the complete projection, rather than
+inferred solely from this informal accounting.
+
+\section{Finite algebra: projection, translations and integral shears}
+
+The quadratic compiler factors the inherited arithmetic rows, substitutes
+only definitions monic in the eliminated integer coordinate, and records
+their restoration sequence. A monic definition $x_j=A(\widehat{\mathbf x})$
+permits integer elimination without a divisibility premise. The checker
+verifies the full substitutions and that every resulting row is still
+quadratic. Integral translations are bijections of $\ZZ^n$.
+
+The secondary coefficient reduction uses only elementary integral shears.
+For distinct coordinates $i,j$ and $k\in\ZZ$, replace
+\begin{equation}\label{eq:shear}
+ x_j=z_j+kz_i,\qquad x_v=z_v\quad(v\ne j).
+\end{equation}
+This linear map has determinant one and inverse $z_j=x_j-kx_i$.
+It is a bijection of the integer lattice. Substituting it into every
+quadratic residual preserves its degree bound and preserves the existence
+of a common integer zero in both directions. Successive shears compose;
+the complete ordered sequence appears in Appendix~\ref{app:shears} and
+in the machine-readable certificate.
+
+The search that chose this sequence is an optimization heuristic. It is
+not part of the correctness argument. The independent checker replays the
+frozen sequence by exact coefficient arithmetic, verifies its inverse,
+then expands all 186 residual squares and compares every coefficient of
+the delivered polynomial. No assertion that the chosen coordinate basis is
+optimal is needed. The source and final variable names must also be kept
+distinct: a final $z_i$ generally is not the original semantic coordinate
+having the same array index.
+
+Because a finite sum of real squares vanishes exactly when all summands
+vanish, the resulting single equation has precisely the intended integer
+zero-set projection. This completes the arithmetic part of
+Theorem~\ref{thm:main}.
+
+\section{Why the equivalence is provable in ZFC}\label{sec:logic}
+
+\subsection{The retained logical chain}
+
+The source chain is the calibrated numerical proof presentation,
+its C222 interface, ZF refutability, and ZFC refutability. The retained
+ProveIt declarations include
+\begin{align*}
+ \texttt{KEndpoint.c222\_iff\_zf\_refutation}:\quad
+   C_{222}(1)&\longleftrightarrow\Refut(\mathrm{ZF}),\\
+ \texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}:\quad
+   \Refut(\mathrm{ZF})&\longleftrightarrow\Refut(\mathrm{ZFC}).
+\end{align*}
+The concrete syntax-convention bridge and arithmetic source construction
+are preserved in the proof closure. The new transformations neither change
+the calculus nor assume that one of its derivations exists.
+
+The mathematical logical calibration uses first-order completeness,
+definable quotient and submodel constructions, and the constructible-model
+proof of equiconsistency of ZF and ZFC. It should not be described as merely
+a finite arithmetic calculation. The arithmetic reduction in this paper
+uses natural-number induction, finite binomial and congruence identities,
+the three-square theorem, and the inherited explicit Pell and CRT results.
+These are all statements and arguments available in ZFC.
+
+\subsection{A possible well-foundedness pitfall and its resolution}
+
+The lower calibration mentions a ``well-founded part.'' An externally
+well-founded or transitive set model would be an unjustified stronger
+requirement. The source instead defines \emph{internal} well-foundedness
+by quantifying over sets represented in the model:
+every represented nonempty subset of a represented set has an internally
+minimal element. The files \path{WellFoundedPartCore.lean},
+\path{WFRelativization.lean} and \path{WFModelCore.lean} give actual
+first-order formulas and recursive formula translations for this domain.
+Schema instances are handled through those translations.
+
+Consequently, inside any model of ZFC the calibration uses its own set
+structures, natural numbers and internally finite syntax. The definable
+submodel may be externally ill-founded. No argument replaces the model's
+natural numbers with the external standard ones, and no transitive-model
+assumption is introduced. The detailed scoped audit is supplied in
+\path{review/c222_internalization_audit.md}.
+
+\subsection{Proof status}
+
+There are three different claims here. First, the new unbounded
+zero-set equivalence is proved mathematically in this paper. Second, exact
+finite programs certify the literal sources, algebraic substitutions,
+residuals and expanded coefficient files. Third, the logical calibration
+is an identified retained mathematical dependency whose uniform
+formalizability in ZFC is audited. These together justify the ordinary
+ZFC-provability statement of Theorem~\ref{thm:main}.
+
+The release does not provide a newly built end-to-end Lean/Rocq theorem
+for this final polynomial, or an emitted proof term in the encoded
+object-language ZFC calculus. The imported calibration's full formal
+dependency closure has not been rebuilt here. These are precise
+formalization boundaries, rather than premises asserting consistency.
+The result supplies the equivalence; it supplies neither an integer zero
+nor a proof that no integer zero exists.
+
+\section{Reproducible artifacts and checks}
+
+The archive contains the principal and companion coefficient files,
+the exact immutable parent inputs, source transformation records,
+factorization and projection certificates, translations, the integral
+shear sequence, the mathematical proof closure, and the source of the
+independent checks. The root \path{README.md} gives the reproduction
+commands. Mathematical data are stored with sorted sparse coefficient
+lists and explicit integer-variable indices.
+
+The checks establish complete polynomial identities by integer arithmetic.
+They do not infer an identity from random evaluations. The principal
+polynomial is independently reconstructed as the sum of the delivered
+quadratic residual squares; its exact degree, height, support and variable
+liveness are recomputed. Deliberate corruption controls exercise changed
+coefficients, deleted terms, wrong interval groups and altered coordinate
+maps. Optimized Python execution is also checked, so correctness does not
+depend on removable \texttt{assert} statements.
+
+\input{verification_summary.tex}
+
+The fixed repository comparison is the commit above. The local archive
+retains the actual source bytes and their hashes. A later repository change
+cannot silently change which equation this report describes. Reproducing
+the finite checks is independent of the truth of $\Con(\mathrm{ZFC})$;
+no numerical search for a refutation is used as evidence of consistency.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Share additional denominator groups.} The two remaining
+moduli are $q^{y+1}$ and $q^x$. Can an already present quotient or power
+wire scale one group into another at a lower cost than the three witnesses
+saved? A new power request must be charged in full. A formal common
+denominator alone is not a size reduction.
+\item \textbf{Use the actual margins in a generic compiler.} A compiler
+could record the modulus, a canonical-residue bound and the stage at which
+that bound becomes available. It could then select collective certificates
+automatically, while preserving the dependency order used in
+Section~\ref{sec:soundness}. The signed lifting lemma is a natural reusable
+formalization target.
+\item \textbf{Jointly optimize coordinates and projection.} The present
+shears simplify a completed residual system. Choosing an integral basis
+before monic projection might expose further eliminations or a lower
+coefficient height. Such a candidate needs its full inverse coordinate map
+and a new collected coefficient audit.
+\item \textbf{Reduce the logical source rather than just its arithmetic.}
+The direct source still carries a substantial syntax-constructor graph.
+A different proof presentation may help, but it needs a uniform
+equiconsistency proof and a measured complete arithmetic encoding. Counting
+source rules or proof-checker instructions alone does not measure the
+resulting Diophantine polynomial.
+\item \textbf{Complete the formal endpoint.} Reify the source theorem,
+short-lift certificate and explicit algebraic transformations in the
+repository's formal arithmetic compiler, then derive the fixed polynomial
+equivalence in the sealed object calculus. The finite files delivered here
+give precise targets for that work; they do not substitute for it.
+\end{enumerate}
+
+\section*{Attribution and novelty scope}
+\addcontentsline{toc}{section}{Attribution and novelty scope}
+The numerical proof calculus, logical calibration, factorial/CRT source,
+Pell representation, signed orientation schedule and earlier compiler
+belong to the retained ProveIt work and incoming submissions. In particular,
+the incoming \textit{graph digits} construction already pools natural
+remainders with a one-sided sum bound. The present result uses a symmetric
+quadratic bound for unrestricted integer remainders and recovers their
+signs from short-lift uniqueness. Its contribution is the complete staged
+application, the adjacent-modulus merger, the explicit smaller quartics,
+and the additional certified integral coordinate simplification. No
+literature-wide first-priority claim is made for elementary inequalities,
+ternary nonnegativity, or integral shears. This note and its new code were
+prepared with AI assistance; inherited notices and licenses are retained.
+
+\begingroup\small\setlength{\parskip}{0pt}
+\begin{thebibliography}{9}
+\raggedright\setlength{\itemsep}{2pt}\setlength{\parsep}{0pt}
+\bibitem{repo} V. Reshetnikov and contributors,
+\textit{ProveIt}, research repository, snapshot
+\texttt{e0c98c629bf10d30b695884f6b1d2ab361bdf513}, 25 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/e0c98c629bf10d30b695884f6b1d2ab361bdf513/Computability/DiophantineConsistency}.
+\bibitem{round17} ProveIt incoming research package,
+\textit{Cofinal Anchors and Height One Equations for ZFC Consistency},
+Round 17, \texttt{ConZFC\_Cofinal\_Anchors\_Height\_One\_Round17\_2026-10-25.zip},
+\texttt{docs/incoming} at the snapshot in~\cite{repo}.
+\bibitem{graphdigits} ProveIt incoming research package,
+\textit{Graph digits}, \texttt{conzfc\_graph\_digits\_2026-10-24.zip},
+\texttt{docs/incoming} at the snapshot in~\cite{repo}.
+\bibitem{sun2026} Z.-W. Sun,
+\textit{Ten unknowns for Hilbert's tenth problem over the integers},
+arXiv:2609.01594v2, 2026. The nonnegative-integer representation is
+equation~(1.1). \url{https://arxiv.org/abs/2609.01594v2}.
+\bibitem{sun2021} Z.-W. Sun,
+\textit{Further results on Hilbert's Tenth Problem},
+Science China Mathematics \textbf{64} (2021), 281--306;
+arXiv:1704.03504v7. \url{https://arxiv.org/abs/1704.03504}.
+\end{thebibliography}
+\endgroup
+
+\clearpage\appendix
+\section{The frozen sequence of integral shears}\label{app:shears}
+\input{shears.tex}
+
+\clearpage
+\section{Every quadratic residual of the principal equation}\label{app:residuals}
+All coordinates $z_1,\ldots,z_{260}$ are independent unrestricted integers.
+The following fixed list, together with~\eqref{eq:principal}, is the complete
+equation. The variables in the JSON files use zero-based indices; the
+printed subscripts below are one-based. This appendix is generated directly
+from the final residual file and checked against it.
+\begingroup\small
+\setlength{\abovedisplayskip}{5pt}\setlength{\belowdisplayskip}{5pt}
+\setlength{\abovedisplayshortskip}{3pt}\setlength{\belowdisplayshortskip}{3pt}
+\setlength{\jot}{2pt}
+\input{residuals.tex}
+\endgroup
+\end{document}

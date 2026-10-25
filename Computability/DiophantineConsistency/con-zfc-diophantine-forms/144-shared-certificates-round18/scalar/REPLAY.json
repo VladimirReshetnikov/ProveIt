@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "clean_temporary_copy": true,
+  "no_research_imported": true,
+  "byte_identical_rebuilt_artifacts": {
+    "METRICS.json": "646186ce030325f2c964f70f2d9ec200c06497b13cd7280de2d1ea5a6bc989b7",
+    "free_whole_center11_c300.json": "e997ab4529cfd983e52603ea68dec4250650da800790fe40576955a8edce20a5",
+    "free_whole_center11_c304.json": "c21b0e89ab04deaa4839764e62d610d5721f58d02fec10e24e5bc2dd0ca0b0bc",
+    "free_whole_center11_c308.json": "0ae634d03f271c3667b30ce72932f17db1f1dd87b3046b3984fca25f172915f9",
+    "free_whole_center11_c316.json": "c015b822e0e78a3ae81f706b62cc0a7131181effd3b273991ee4c8c1a12bc7d3"
+  },
+  "runs": [
+    {
+      "command": [
+        "python",
+        "build.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "check.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "-O",
+        "check.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "audit_mutations.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python",
+        "-O",
+        "audit_mutations.py"
+      ],
+      "exit_code": 0
+    }
+  ]
+}

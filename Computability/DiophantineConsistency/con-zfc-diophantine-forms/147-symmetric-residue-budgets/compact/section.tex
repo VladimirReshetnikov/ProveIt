@@ -1,0 +1,294 @@
+\section{A compact companion: deleting the auxiliary shift}
+\label{sec:compact-shift}
+
+Two compact companions have ten strictly positive integer unknowns.  They
+retain the entire fixed indexed BFS943 coefficient tuple of the incoming
+\texttt{ConZFC\_Certificate\_Reductions\_2026-10-25.zip} at the repository
+snapshot used in this report.  Their live binary arithmetic costs and exact
+degrees are
+\[
+ (77,630)\qquad\hbox{and}\qquad(78,468).
+\]
+Each saves one addition at unchanged degree from its matched $(78,630)$ or
+$(79,468)$ parent. This is a small arithmetic reduction. The new reasoning
+is a low-index exclusion that permits signed transport before the input
+coordinates have acquired their intended interpretation. It proves that a
+previous shift $T+\alpha$ was redundant.
+
+\subsection{The complete polynomial}
+
+The only independent unknowns are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+The four fixed integers $\beta,K_0,M_C,M_F$ are specified by the finite
+recipe below. Every other symbol in the following display is a polynomial
+abbreviation, and adds no unknown:
+\begin{gather*}
+ q=\beta J+1,\quad h=q-1,\quad C=q-F-\alpha,\quad X=wq,\\
+ Y=q^3s,\quad k=\eta+\zeta,\quad c=kY+\eta,\quad D=Y^2,\\
+ A=Y(X+1)+1,\quad \Delta=A^2-1,\quad H=4A-5,\\
+ V_0=XD,\qquad E=1+V_0(V_0+1)k^2,\\
+ R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ e=k-R-1,\quad B=(K_0+w)C-F,\quad U=ic^2,\\
+ a=\Delta U^2E,\quad F_0=1+a,\quad G=EF_0,\\
+ F_*=1+4aF_0,\quad Q=\Delta(F_*-1),\\
+ b=cT-R,\quad V=F_*b-c,\quad K_+=X(3c-2X)+2.
+\end{gather*}
+For the 77-operation equation choose $L=V^2$; for the 78-operation
+equation choose $L=bV$. Set
+\begin{align*}
+ M&=hDH,\qquad R_G=M^2G,\\
+ Z&=hD\bigl[H(n-LB)+K_+\bigr]-H(DB+he).
+\end{align*}
+The single equation is
+\begin{equation}
+ \boxed{\;P_L=Q(Z^2-R_GV^2)+(R_G-Z^2)=0.\;}
+ \label{eq:compact-shift-deleted}
+\end{equation}
+The circuits use only binary addition, subtraction and multiplication;
+squares and multiplication by a fixed integer each count as one operation.
+The sole change from the corresponding parent is $b=cT-R$ in place of
+$c(T+\alpha)-R$.
+
+\paragraph{The theorem and its proof boundary.}
+For either choice of $L$, ordinary arithmetic formalizable in ZFC gives
+an explicit bijection of the positive zero sets of the new and parent
+polynomials. Composing it with the retained parent calibration gives
+\[
+ \mathrm{ZFC}\vdash
+ \left(\neg\exists\mathbf x\in\mathbb Z_{>0}^{10}\;
+ P_L(\mathbf x)=0\right)
+ \longleftrightarrow\mathrm{Con}(\mathrm{ZFC}).
+\]
+The compact branch retains its native compiler and K215 ancestry; it is
+separate from the direct proof-calculus construction. This statement is an
+ordinary proof with named inherited dependencies, not a newly emitted
+end-to-end proof-assistant certificate.
+
+\subsection{Why deleting the shift introduces no spurious positive zeros}
+
+There is an exact free-polynomial identity
+\[
+ P_{\rm new}(T)=P_{\rm parent}(T-\alpha).
+\]
+To use it over positive integers we must prove $T>\alpha$ at every new
+positive zero. It is not valid to assume this inequality as part of the
+coordinate change.
+
+The unchanged product-square argument works for either sign of $V$. It
+gives positive integers $g,y,f,I$ and $\varepsilon\in\{-1,1\}$ with
+\begin{gather*}
+ G=g^2,\quad f=1+2a,\quad I=2Ug,\quad f^2=F_*,\\
+ f^2-\Delta I^2=1,\quad Q=(\Delta I)^2,\quad c^2\mid I,\\
+ QV^2-(Q-1)y^2=1,\qquad Z/M=\varepsilon gy.
+\end{gather*}
+The signed all-index folding lemma recovers $c=\psi_A(p)$ with $p$ odd
+and positive. Here $\psi_A$ denotes the Pell ordinate for $A^2-1$.
+The first norm gives
+\[
+ k=2\psi_{P_0}(n_0),\qquad P_0=2XY^2+1.
+\]
+The possibility $n_0=1$ would give $c=2Y+1$ strictly between $1$ and
+$2A$, so $n_0\ge2$. Consequently
+\[
+ c>kY>8XY^3,\qquad c>X,\qquad K_+>0.
+\]
+
+\paragraph{A useful low-index exclusion.}
+Suppose $p=3$, so $c=4A^2-1$. If $n_0\ge3$, then
+$k>32X^2Y^4$, whereas $A<2XY$ gives $c<16X^2Y^2$; this contradicts
+$c>kY$. Thus $n_0=2$ and $k=8XY^2+4$. The exact identities
+\begin{align*}
+ 2c-(X+2)k&=8Y^2+16Y(X+1)-4X-2>0,\\
+ (X+3)k-2c&=8Y[(X-1)Y-2(X+1)]+4X+6>0
+\end{align*}
+hold for our $X\ge32,Y\ge32^3$. Together with $Y<c/k<Y+1$ they imply
+$0<2Y-X<3$. This is impossible since $q\mid X,Y$ and $q\ge32$.
+Hence $p\ge5$ and $c>4\Delta+3$. The same exclusion works for
+$X\ge3,Y\ge4$ whenever $X,Y$ share any divisor at least three.
+
+\paragraph{A bound that allows both signs.}
+Write $S=\Delta I$. Positive Pell classification gives
+$S|V|=\chi_S(j)$ and $y=\psi_S(j)$ for $j\ge1$ odd; even $j$
+is impossible modulo $S$. Also $f^2>c+4\Delta+3$.
+For $j=1$, the equation $f^2b=c\pm1$ is impossible between consecutive
+multiples of $f^2$. For $j=3$, the equation becomes
+\[
+ f^2(b-4\varepsilon_v\Delta)
+     =c-\varepsilon_v(4\Delta+3),\qquad\varepsilon_v\in\{-1,1\}.
+\]
+Its right side is strictly between $0$ and $f^2$ for both signs, using
+$c>4\Delta+3$. Thus $j\ge5$, and with $v=|V|$,
+\[
+ v\ge16Q^2-20Q+5>8Q^2.
+\]
+Since $c<f^2<Q$ and $f^2\ge3$,
+\begin{align*}
+ |b|&\ge(v-c)/f^2>(8Q^2-Q)/f^2\\
+ &=\Delta(1-f^{-2})(8Q-1)
+   \ge\tfrac23\Delta(8Q-1)>4\Delta Q>4g.
+\end{align*}
+Furthermore $V$ has the sign of $b$ and $v>|b|$. The auxiliary norm
+implies $y<3v/2$. Therefore both allowed weights are positive and satisfy
+\[
+ gy<L/2.
+\]
+
+Put $\kappa=K_+/H>0$, $\rho=e/D$, $t=B/h$, and $W=1+hL$.
+The exact carrier identity is
+$Z/M=n+\kappa-Wt-\rho$, and
+$b-e=cT-k+1>0$ gives $\rho<b/D$ even if $b<0$.
+If $B\le-1$, then $Wt\le-L-1/h$, whence
+\[
+ n=\varepsilon gy-\kappa+Wt+\rho<-L/2+b/D<0.
+\]
+For $b<0$ the final inequality is immediate; for $b>0$ it follows from
+$D>2$ and $L>b$. This contradicts $n>0$. Thus $B\ge0$, so $C>0$ and
+$\alpha<q$. The fixed mask bounds now give $0<R<q^4$, while
+$c>8XY^3\ge8q^{10}$. Consequently $b=cT-R>c/2>0$.
+Finally
+\[
+ g^2=E+\Delta U^2E^2>(A-1)^2U^2E^2,
+ \qquad g/c>(A-1)c\ge q,
+\]
+and therefore
+\[
+ T=(b+R)/c>b/c>4g/c>q>\alpha.
+\]
+The positive inverse coordinate $T_{\rm parent}=T-\alpha$ is now
+justified. In the other direction, every positive parent zero maps to a
+new positive zero by $T_{\rm new}=T_{\rm parent}+\alpha$. These maps
+are inverse bijections of the whole positive zero sets.
+
+\paragraph{Exact arithmetic checks.}
+The entire leading homogeneous components, with $q_0=\beta J$ and
+$k_0=\eta+\zeta$, are
+\begin{gather*}
+ 2^{14}q_0^{382}w^{46}s^{112}i^{20}k_0^{64}T^4
+       (q_0-F-\alpha)^2,\\
+ -2^{10}q_0^{288}w^{34}s^{84}i^{14}k_0^{46}T^2.
+\end{gather*}
+They are nonzero and have degrees $630$ and $468$. The verifier checks
+all actual circuit registers through 28 free-polynomial identities per
+equation, the complete leading forms, the fixed coefficient reconstruction,
+the three new low-index identities, and ten changed-formula rejection
+controls per equation. The full proof and exact dependency references are
+in \texttt{compact/PROOF.md}; the incoming ordinary proof and explicit
+signed folding lemma are included. Finite artifact checks do not prove the
+unbounded statements by sampling.
+
+\begingroup
+\newcommand{\cfl}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\crange}[2]{\{#1,\ldots,#2\}}
+\subsection{The complete finite coefficient recipe}
+Every index, set, sum, product and floor below defines a fixed constant, not
+another unknown. The letter $B_\ast$ belongs only to this constant recipe;
+it is distinct from the polynomial abbreviation $B$ above. Put
+\[
+\rho=2^{67},\quad B_\ast=\rho^{8807},\quad\beta=B_\ast-1,\quad
+G_m(x)=\sum_{j=0}^{m-1}x^j.
+\]
+Define
+\[
+\begin{split}
+\mathcal E={}&\crange0{942}\cup\crange{983}{992}\cup\crange{1003}{1011}\\
+&\cup\crange{1013}{1031}\cup\{1063,1064,1095,2195,3296\}.
+\end{split}
+\]
+Then
+\begin{align*}
+M_C={}&B_\ast-1-\sum_{e\in\mathcal E\setminus\{1\}}\rho^e-2\rho^{1063},\\
+M_F={}&B_\ast-1+4+(2^{51}-2)(\rho^{4393}+\rho^{5495})\\
+&+\rho^{1013}G_{10}(\rho)+\rho^{1065}G_9(\rho)
+  +\rho^{2195}+\rho^{3296}\\
+&+(2^{65}-1)\rho^{8792}G_{13}(\rho)+(2^{19}-1)\rho^{8805},\\
+K_0={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}+\rho^{8849}\\
+&+(\rho^{4393}+\rho^{5495})\Phi(1/\rho),
+\end{align*}
+where
+\[
+\begin{split}
+\Phi(x)={}&(1+2^{51})G_{943}(x)
+ -2^{10}\sum_{i=0}^{942}v(t_i)x^i\\
+&+\sum_{(b,e,m)\in\mathcal C}2^b x^e G_m(2x),\\
+\mathcal C={}&\{(10,1023,8),(18,1013,9),(27,1003,8),\\
+&(35,983,9),(44,1031,1),(45,1022,1),(46,1011,1),\\
+&(47,992,1),(48,1095,1),(49,2195,1),(50,3296,1)\}.
+\end{split}
+\]
+The rational intermediate in $K_0$ cancels exactly; all four results are positive integers.
+
+\textbf{The 943 indexed fixed tiles.}
+Use the actions $u_j,v_j,d_j$ decoded below. Let
+\[
+\begin{gathered}
+h(q,b)=2(q+1)+b,\quad
+\mathcal R=\{u_j:d_j=1,\ 0\le j<430\},\\
+\mathcal L=\{u_j:d_j=0,\ 0\le j<430\},\\
+r_q=6+|\mathcal R\cap\crange0{q-1}|,\quad
+l_q=205+|\mathcal L\cap\crange0{q-1}|.
+\end{gathered}
+\]
+An interval ending at $-1$ is empty. The table defines $t_i$ for
+$0\le i\le942$; all index ranges are fixed:
+\[
+\setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
+\text{index }i&\text{tile }t_i=(w,n,e,s)\\\hline
+0,1&(2,435,3,1),\ (5,0,0,0)\\
+j+2\ (j=2q+b<430)&((1-d_j)l_{u_j},h(q,b),d_jr_{u_j},v_j)\\
+432+b\ (b=0,1)&(0,h(215,b),0,h(215,b))\\
+434+b\ (b=0,1)&(0,b,0,b)\\
+424+2r_q+b\ (q\in\mathcal R,b=0,1)&(r_q,b,0,h(q,b))\\
+424+2l_q+b\ (q\in\mathcal L,b=0,1)&(0,b,l_q,h(q,b))\\
+924+j\ (0\le j<4)&(0,j+430\cfl{j/2},0,438)\\
+928&(2,434,2,0)\\
+929&(3,436,4,4)\\
+930&(4,436,4,0)\\
+497+t\ (t=434,435,436)&(1,438,1,t)\\
+\substack{934+3a+b-6\cfl{a/4}\\a\in\{0,1,4\},\ b=0,1,2}&(a,437,b,437)
+\end{array}
+\]
+For $t=(w,n,e,s)$ put
+\[
+v(t)=w+2^8n+2^{17}e+2^{25}s+127\,2^{34}.
+\]
+
+\textbf{A closed decoder for the 430 actions.}
+Put $D_b(A,k)=\cfl{A/b^k}\bmod b$, where
+$a\bmod b=a-b\cfl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
+\[
+\begin{gathered}
+N=\mathcal A\bmod2^{636},\quad
+T_0=\cfl{\mathcal A/2^{636}}\bmod2^{1675},\\
+E_0=\cfl{\mathcal A/2^{2311}},\\
+\nu_j=D_2(N,j),\quad \sigma_j=\sum_{k=0}^{j-1}\nu_k,\\
+m_q=D_2(N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14(1-m_q)+m_qD_{16}(E_0,\tau_q),\\
+u_j=\nu_j(1+\sigma_j)+(1-\nu_j)D_{216}(T_0,j-\sigma_j),\\
+v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
+\end{gathered}
+\]
+Empty sums are zero. Here $(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
+uses this actual first target, including its state renaming.
+
+\textbf{The integer $\mathcal A$.}
+The alphabet, in order of digit values $0,\ldots,61$, is:\par
+{\fontsize{7.7}{8.2}\selectfont\ttfamily 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}.\par
+Concatenate the following 436 characters as digits $e_0,\ldots,e_{435}$;
+put $\mathcal A=\sum_{j=0}^{435}e_j62^{435-j}$.\par
+\begingroup\fontsize{7.7}{8.2}\selectfont\ttfamily
+BxEnhvy6NipzkWmROo0GsA3uK3twWLxscLq20UTumy5Cdu461LwD6g7RDNzF8Y\par
+iYDFTpB8ehAypd7d6OsOL4APamnJeNXQypUezCmW9n4oXP6XfgmiWuAWZ8ZJ7U\par
+OP7gu4kVdlGZqZHULQMar1dXNeJW4i7oNVI8usp8BlovjjZbwPCovZI328fRUq\par
+4q92R81s5GjWQaQfGhkq9UYMK3rRMaBmsOIBkJqc2cj2VRIZ6mjzkBIOkW9SjZ\par
+FzeA6J5u4j3sBL3SdgwXzM9mHvQivu8EJ1TBTpRhHDqZIbmYgwQ8VqTAFotl6F\par
+We1YC554GKrVHsA8oUGKSA6F6k5KREBSD0Tgd7bFALY84LLbpw574BQyvdoHrl\par
+0Oe35uwDf15DpT6VJWZBjSbHPpPAINYTte0eUxnTFTKBlGj8Am6sb1gLldh8WZ\par
+8P\par
+\endgroup
+\endgroup
+
+The recipe reproduces all four retained integer payloads byte for byte. The
+largest fixed input coefficient has 592,884 bits. This is a stored-port
+size, not the coefficient height of the fully expanded polynomial.

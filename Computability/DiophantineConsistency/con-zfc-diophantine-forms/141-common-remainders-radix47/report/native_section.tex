@@ -1,0 +1,107 @@
+\section{Native coefficients: a completed controller and a smaller radix}\label{sec:native}
+
+The direct quartic is the principal result of this report. A separate
+native route keeps fifteen positive integer variables and a 66-operation
+polynomial of degree 157, while reducing the size of its four fixed
+integer coefficients. This section separates a completed prior proposal
+from a new change to the encoding.
+
+\subsection{The polynomial is fixed before the controller is chosen}
+
+The fifteen independent positive variables are
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma.
+\]
+For a specified whole coefficient tuple $(\beta,K_0,M_C,M_F)$, define
+the following polynomial abbreviations:
+\[
+\begin{aligned}
+ q&=\beta J+1,& C&=q-F-\alpha,\\
+ X&=wq,& Y&=sq^3,\\
+ E&=XY,& k&=\eta+\zeta,\\
+ c&=kY+\eta,& \ell&=EkY,\\
+ a&=E+Y,& H&=4a+3,\\
+ \Delta&=a^2+H,& D&=X+ac+\gamma H,\\
+ V&=f^2(cT-R)-c,& S&=i\Delta c^2.
+\end{aligned}
+\]
+\[
+ R=[(q-1)(q-F)+\alpha](q^2-1)+(M_C+qM_F)J.
+\]
+Put
+\begin{align*}
+ N_0&=\tau^2-\ell(\ell+k),&N_1&=D^2-\Delta c^2,\\
+ N_a&=S^2(V^2-y^2)+y^2,&N_k&=k-hE-R,\\
+ N_t&=(K_0+w)C+(q-F)-z(q-1),&N_s&=\Delta f^2-S^2.
+\end{align*}
+The single equation is
+\begin{equation}\label{eq:p66}
+ \boxed{N_0N_1N_aN_kN_tN_s-\Delta=0.}
+\end{equation}
+Its exact straight-line circuit has 38 multiplications, 15 additions,
+and 13 subtractions. The apparent top terms of $N_1$ cancel: with $Z=X+\gamma H$,
+$N_1=2acZ+Z^2-Hc^2$. The six factor degrees are therefore
+$22,18,62,7,2,46$. Setting all inputs equal to an indeterminate $t$
+gives leading term $2^{17}\beta^{91}t^{157}$, so the degree is exactly
+157. The four named constants are not quantified unknowns. The controller prime below is not part of the coefficient
+tuple; it is an explicit witness used in the completeness proof.
+
+\subsection{Closing the conditional radix-$2^{49}$ construction}
+
+The repository's shared-marker radix49 proposal~\cite{radix49} already
+contains the encoding and its ordinary native/Pell proof. Its remaining
+conditions were finite controller conditions. We complete precisely
+those conditions and materialize the entire coherent tuple.
+
+Let $\rho=2^{49}$, $L=8807$, $B=\rho^L$, and $d=49L=431543$.
+Choose the fixed prime
+\[
+ \lambda=434011>d,\qquad \lambda-1=1887\cdot230.
+\]
+For $H_{\rm ctrl}=1+BK_0+B^2$, exact computation gives:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Modulus & $B$ & $K_0$ & $H_{\rm ctrl}$\\
+\midrule
+7 & 4 & 5 & 2\\
+49 & 18 & 47 & 44\\
+8807 & 1901 & 973 & 3135\\
+434011 & 398487 & 335571 & 6522\\
+\bottomrule
+\end{tabular}
+\end{center}
+The exact orders are
+\[
+ \operatorname{ord}_{49}(B)=3,\quad
+ \operatorname{ord}_{8807}(B)=629,\quad
+ \operatorname{ord}_{434011}(B)=18870.
+\]
+The required valuation-one lift is
+\[
+ B^{\lambda-1}\equiv96356084144
+ =1+222013\lambda\pmod{\lambda^2}.
+\]
+Since $0<222013<\lambda$, the lift has valuation exactly one.
+The full modulus 49 is checked explicitly, rather than only its prime
+divisor seven. Deterministic trial division proves the asserted primes;
+annihilating powers and every maximal proper-power test prove the orders.
+
+These facts discharge all the finite premises of the inherited
+conditional theorem. Its carry, phase-alignment, safe-dummy, rank-tuning,
+Pell, and refutation arguments then give the ZFC-provable equivalence
+between positive unsolvability of~\eqref{eq:p66} at this tuple and
+$\Con(\ZFC)$. The new work here is the finite completion and complete
+coefficient specialization; the shared-marker architecture is prior work.
+
+The materialized radix49 tuple has bit lengths
+$(431543,433602,431543,431544)$ in the port order
+$(\beta,K_0,M_C,M_F)$, totaling 216,030 raw unsigned bytes. Its four
+deterministic gzip files total 8,774 bytes. The corresponding matched
+radix53 and radix55 tuples occupy 233,666 and 242,484 raw bytes.
+Raw coefficient storage, compressed storage, and printed-page length
+are different metrics. The complete coefficient recipe, binary files,
+standalone verifier, and inherited proof texts are supplied under
+\file{radix49/}.
+
+\input{radix47_section.tex}

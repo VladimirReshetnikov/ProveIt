@@ -1,0 +1,317 @@
+# Whole-expression centers in eleven unrestricted integers
+
+## Result and boundary
+
+Four fixed ordinary integer polynomials have exact (degree, live binary-operation)
+pairs **(316,133), (308,140), (304,144), (300,148)**. Each has eleven unrestricted
+integer variables and the identical six actual coefficient numerals of round17.
+They improve the degree side of the inspected eleven-integer frontier, not its
+minimum-operation side. In particular the separate incoming Semantic Signs
+(924,107)/(840,108) and Odd Helpers (648,115) endpoints remain relevant
+low-operation tradeoffs. No global minimum or proof of consistency is claimed.
+
+The arithmetic change is a fixed even radical weight and a polynomial shear of
+one coordinate. The complete zero-existence equivalence with the round17
+linear-cofactor source is proved below. Its authenticated ordinary
+native/compiler/refutation calibration is retained, not replaced by a new
+proof-assistant or object-language ZFC certificate. Composing that theorem,
+ZFC proves that universal nonvanishing of each displayed polynomial over Z^11
+is equivalent to syntactic Con(ZFC). This proves neither side true.
+
+## 1. Complete fixed polynomials
+
+The only variables are j,C,z,h,r,v,w,T,c,n,s in Z. The six ports
+beta,K0,MC,MF,cone_A,cone_B are fixed numerals, not additional variables.
+Their complete compressed little-endian bytes, SHA256 bindings and independent
+finite reconstruction recipe are in coefficients/. In particular
+beta=2^1064921-1, cone_A=2^1113, cone_B=2^666104; MF is already shifted.
+Define these ordinary polynomial abbreviations:
+
+    J=6j+1, q=beta J+1, W=12w+4, X=qW, Y=v,
+    E=XY, a=E+Y, A=a+2, H=4a+3, Delta=a^2+H=A^2-1,
+    F=(K0+W)C-z(q-1),
+    R=[q(q-F)-C](q^2-1)+(MC+q MF)J,
+    k=R+1+hE, eta=c-Yk,
+    Derr=(cone_A F-q)^2+(cone_B C-q)^2,
+    B0=k^2(q^2-Derr)-4q^2 eta^2,
+    Budget=Y^2 B0-k^2 q^8, D=Budget-4,
+    ell=XY^2, Dt=1+ell(ell+1)k^2,
+    Dg=1+D Dt s^2, P=Dt Dg,
+    Dm=1+Delta c^2, B=r A Dm, U=r c^2 Dm,
+    I2=c^4 B=A c^2 U,
+    Df=1+Delta I2, Q=Delta^2 I2, delta=Q-1,
+    V=Df(c-R+4A U T)-c, Cy=QV^2-1,
+    K=X(3c-2X)+2, M=2q^3, Dc=HM,
+    S=srH M^5,
+    zc=Dc T+M K+H(v-q^3),
+    Ac=(zc^2+3Dc^2)(zc^3-19Dc^3).
+
+Choose one row of the following table; L is a fixed numeral.
+
+    degree  L   Psi
+    316     8   [(8Delta+4)U-r c^4]V
+    308     8   [(8Delta+4)U-r c^4]V+2U^3 T(c^2-2)
+    304     8   [(8Delta+4)U-r c^4]V+U^2 T[2U(c^2-2)+16A^3]
+    300    32   [(32Delta+16)U-4r c^4]V
+                +U^2 T[8U(c^2-2)+64A^3+3r c^6].
+
+In all cases the entire polynomial is
+
+    Z=S(n+Psi)-Ac,
+    pa=delta Z^2, pb=delta S^2 P, pc=L^2 S^2 B Df Cy,
+    N=(pa+pb-pc)^2-4pa pb.                         (1)
+
+All displayed names except the eleven declared variables are abbreviations or
+fixed numerals. There are no radical, division, variable-exponent, or implicit
+existential gates. The literal circuits share the identities
+
+    P=Dt+(Budget-4)(Dt s)^2,
+    Budget=(Yk)^2(q^2-Derr)-q^2[4(Y eta)^2+(kq^3)^2],
+    A^2=Delta+1.
+
+## 2. The even-weight integral-center lemma
+
+We prove a slightly stronger statement: for every fixed nonzero even integer L
+and every integer polynomial Psi in the ten variables other than n, (1) has the
+same projection of its integer zero set onto those ten variables as the
+round17 equation. The latter uses L=2 and Psi=(2Delta+1)UV.
+
+The unconditional arithmetic facts used here are proved in the retained
+source/LINEAR_COFACTOR_ROUND17_PROOF.md, Sections 2--4, and use no conclusion
+from the present norm. They are recalled explicitly to identify all zero and
+sign cases. The authentic affine restrictions imply q even, q=2 mod3,
+|q|>=16, X=0 mod8, X=2 mod3 and |X|>=4|q|. Thus A is nonzero,
+Delta=A^2-1>1, Delta=0 mod3, H is odd/nonzero, Dm>=1 and Dt>=1.
+The exact modulo-sixteen budget calculation gives D=8 or12 mod16, hence
+D is nonzero and nonsquare, P=1 mod4 and P is nonzero. Also Df and delta
+are nonzero, Q is even, and delta is odd.
+
+The rational quintic pi(t)=(t^2+3)(t^3-19) has no rational root. Since
+Dc is nonzero, Ac=Dc^5 pi(zc/Dc) is nonzero. If S=0, (1) reduces to
+(delta Ac^2)^2, which is nonzero. Therefore S,s,r and B are nonzero
+at every new zero.
+
+Put Da=delta Cy and Cstar=B Df Da. The retained elementary sign proof gives
+Da>0. For completeness: if c=0, Q=0 and Da=1; if c!=0 and B<0,
+both delta and Cy are negative; if c!=0 and B>0, Df>|c|+1, and
+V=Df b-c is nonzero for any integer b, so delta,Cy>0. Moreover B Df>0
+whenever c!=0. Thus Cstar is nonzero; its only possible negative case is
+c=0,B<0.
+
+The four-factor norm identity for (1), divided by nonzero S and multiplied
+by delta, gives a rational signed sum
+
+    plus or minus L sqrt(Cstar) plus or minus delta sqrt(P).
+
+If exactly one radicand is negative, its nonzero imaginary term cannot cancel.
+If both are negative, then c=0, delta=-1 and Cstar=B. Cancellation would
+force L^2 B=P, impossible modulo4 because L is even and P=1 mod4.
+Therefore Cstar and P are positive.
+
+Write each as a square times a positive squarefree integer. Distinct
+squarefree radicals are linearly independent over Q. The only possible
+nonrational cancellation would require the same nontrivial squarefree part.
+But the coefficient of its first radical is even, while that of the second
+is odd: L is even, delta is odd and P is odd. Cancellation is impossible.
+Consequently both Cstar and P are positive integer squares.
+
+The exact pairwise-coprimality facts of round17 are unchanged:
+
+    gcd(B,Df)=gcd(B,Da)=gcd(Df,Da)=1,
+    Da=1 mod B, Da=A^2 Dm mod Df,
+    Df=1 mod A, Df=1 mod Dm, Df=1 mod3.
+
+Indeed Df=1 mod B, Q=0 mod B; modulo Df, Q=-Delta,
+delta=-A^2,V=-c,Cy=-Dm. Since B=r A Dm these give the asserted
+coprimalities. Thus |B|,|Df|,Da are squares. As Da>0, B and Df have
+one common sign, and Df=1 mod3 excludes a negative square. We obtain
+
+    B=u^2, Df=f^2, Da=e^2
+
+with positive u,f,e. Similarly gcd(Dt,Dg)=1 and Dt>=1 yield
+Dt=tau^2,Dg=g^2 with positive tau,g. In particular Budget>=12.
+It follows from Y^2 B0>k^2 q^8 that k,Y are nonzero, B0>0 and
+|Y|>|q|^3; the centered strip then excludes c=0.
+
+Define proof-only I=c^2u and Told=uT. Then
+
+    f^2-Delta I^2=1, Q=(Delta I)^2,
+    V=f^2(c-R+4I Told)-c.
+
+The rational y=e/delta satisfies QV^2-(Q-1)y^2=1. The elementary
+adjacent-coefficient descent makes y integral: if b is its reduced
+denominator, b^2 divides Q-1. After signs, for |V|>1 the integral
+unimodular transformation
+
+    V'=(2Q-1)V-2(Q-1)y,
+    y'=(2Q-1)y-2QV
+
+preserves that denominator and the norm, with 0<|V'|<|V|. The first
+coordinate is integral because (Q-1)y is integral. Descent reaches
+|V|=1, where |y|=1, forcing b=1. This also directly covers the formal
+c=0 endpoint, where y=-1, although it is already excluded here.
+
+The two normalized roots in the norm are therefore integers Lufy and
+tau g. Hence Z/S is integral. Since Psi is integral, S divides Ac.
+All these conclusions hold for arbitrary nonzero even L; no size bound
+on Psi and no sign assumption on it was used.
+
+Now retain the ten coordinates of this new zero and put
+
+    n_old=Ac/S+2ufy+tau g-(2Delta+1)UV.
+
+This is an integer and makes one old conjugate factor vanish, so it is an
+actual round17 zero. Conversely, an old zero gives the same integral
+roots and divisibility by the proven round17 theorem. Retain its ten
+coordinates and set
+
+    n_new=Ac/S+Lufy+tau g-Psi.
+
+One new factor vanishes. These explicit maps prove equality of the
+projected zero sets. They are not claimed to be mutually inverse on n,
+since a norm may admit several sign branches. For a fixed L, different
+centers separately are literal bijective shears of n.
+
+## 3. Calibration and fixed-witness completeness
+
+The previous section reduces both directions to an actual old zero, not merely
+to a list of necessary Pell properties. Thus all outer scales, signs, rank
+hypotheses and syntactic calibration are exactly those of the authenticated
+old theorem. Its chain, retained verbatim in source/, is as follows.
+Carrier divisibility first yields M|H(v-q^3), even Y, and
+H|q^15 Kq^5 for Kq=X(X+2ac)-1. The strong/auxiliary pair above and
+c^2|I recover the main Pell root by absolute folding. Together with
+Dt=tau^2, the centered strip, |Y|>|q|^3 and the authentic packing bounds
+|q|(|q|^2-1)<R<|q|^4-2, signed rank gives c=sign(c) psi_A(R),
+R=2t+1 and |H|>|X|(|X|-3)^t. The powered projection, using the
+actual enormous base, forces sign(c)X=2^R. Modulo3 then fixes c>0,
+X=2^R, and the old strip fixes k,Y>0. Exact H|K restores
+Y=(2v_old+1)q^3. The uniform half-binomial theorem restores the
+positive native interval, and fresh odd strong witnesses restore an
+actual signed Q41 source zero. Only that actual restored zero is passed
+to the retained source34/native/compiler/finite-refutation theorem.
+
+Conversely the canonical source family gives its margin Budget>64.
+After choosing its guard pair s,g, the old proof chooses ONE strong pair
+I,f with 4s A d c^2|I, where Dm=d^2, sets
+u=I/c^2, tstrong=I/(A d c^2), r=A tstrong^2, and keeps I,f fixed.
+The supported-modulus theorem interpolates Told modulo u s r with
+that same pair. An intersective root of pi modulo sr gives integral
+Ac/S. The old proof never reselects the strong pair after a residue
+request. Our final change only replaces its integral n by n_new above;
+therefore it introduces no new interpolation or choice-order obligation.
+
+The inherited ordinary proof boundary is stated, not promoted: these
+constructions prove the calibrated reduction, not Con(ZFC), not its
+negation, and not an end-to-end new formal certificate.
+
+## 4. Exact degree proof
+
+All degree statements are for the whole polynomial at the authentic fixed
+coefficient tuple, not for generic ports, syntactic circuit bounds or numeric
+line samples. The free-scale degrees inherited directly from the displayed
+registers are
+
+    a,A:3; Delta:6; R,k:5; Budget:18; Dt:18; P:56;
+    Dm:8; B:12; U:11; Df:22; Q,delta:28; V:37;
+    Cy:102; S:20; Ac:35; Psi:54; Z:74;
+    pa:176; pb:124; 4pa pb:300.
+
+Here k's highest form is R's: hXY has degree4, strictly below5.
+Put W0=Sn-Ac, so deg W0=35. In a free polynomial ring with independent
+A,c,r,T,R, use weights (3,1,1,1,5) and the exact definitions
+Delta=A^2-1, Dm=1+Delta c^2, B=r A Dm, U=r c^2 Dm,
+Df=1+Delta c^4B, V=Df(c-R+4A U T)-c. Define
+
+    Dcenter=Psi^2-L^2 B Df V^2,
+    Ecenter=delta Psi^2-L^2 B Df Cy
+           =delta Dcenter-L^2 B Df(V^2-1).             (2)
+
+The following exact weighted leading-form identities hold; every omitted
+monomial has strictly smaller displayed weight.
+
+    center  deg Dcenter  highest Dcenter                 deg Ecenter
+    316     90          -128 A^18 c^28 r^6 T^2           118
+    308     86          -1024 A^19 c^22 r^5 T^2          114
+    304     84          -48 A^16 c^28 r^6 T^2            112
+    300     82           4096 A^16 c^26 r^6 T^2          110.
+
+These are finite exact identities, not numerical conjectures. Here is a compact
+route to expansion. Put lambda=(8Delta+4)U-r c^4, Psi0=lambda V,
+h=2U^3T(c^2-2), b=16A^3U^2T and e=3r c^6U^2T. Then
+
+    D316=[8Ur(2c^2-c^4)+r^2c^8-64B]V^2,
+    D308=D316+2Psi0 h+h^2,
+    D304=D308+2(Psi0+h)b+b^2,
+    D300=16D304+8(Psi0+h+b)e+e^2.
+
+These follow just by squaring the four displayed centers and the identity
+B Df=B+Delta A^2 U^2. Expanding U=r[c^4A^2+c^2-c^4] and
+V=(1+(A^2-1)c^4 rA[1+(A^2-1)c^2])
+  *(c-R+4A r c^2[1+(A^2-1)c^2]T)-c
+in these four finite expressions gives the table. check.py independently
+expands them in a sparse free ring; CHECK.json supplies every coefficient of
+the exact Ecenter remainders. The auxiliary correction in (2) has weight108,
+strictly below each leading delta Dcenter. Multiplication by delta's unique
+highest form r A^7 c^6 gives the respective Ecenter leaders
+
+    -128 A^25 c^34 r^7 T^2,
+    -1024 A^26 c^28 r^6 T^2,
+    -48 A^23 c^34 r^7 T^2,
+    4096 A^23 c^32 r^7 T^2.
+
+Now use the exact norm cut
+
+    pa+pb-pc=delta W0^2+2delta S Psi W0+delta S^2 P
+                +S^2 Ecenter.                         (3)
+
+The first three terms have degrees at most98,137,124. The last has respective
+exact degrees158,154,152,150 with a unique highest monomial after the actual
+substitution A=a+2. Therefore the squared inner terms have degrees
+316,308,304,300. In the first three cases the correction4pa pb, degree300,
+is smaller. In the last it ties, but its entire highest form has T-degree2,
+whereas the inner-square highest monomial has T-degree4. Thus that monomial
+cannot cancel and degree300 is exact.
+
+For explicit coefficients put q0=6 beta j, a0=12q0 wv and note
+S0=128sr a0 q0^15. The certified highest monomials are
+
+    degree  exponents (j,w,v,s,r,c,T)       positive coefficient
+    316     (114,54,54,4,18,68,4)           2^264 3^168 beta^114
+    308     (116,56,56,4,16,56,4)           2^276 3^172 beta^116
+    304     (110,50,50,4,18,68,4)           2^246 3^162 beta^110
+    300     (110,50,50,4,18,64,4)           2^262 3^160 beta^110.
+
+Each exponent sum is its stated degree. Each is nonzero for the actual
+beta. In the degree300 case the T^4 highest summand is
+2^52 s^4 r^18 c^64 T^4 a0^50 q0^60. This proof makes no global lower-bound
+claim: a degree300 obstruction for the particular chosen norm/guard family
+would not exclude a different construction.
+
+## 5. Literal counts and checks
+
+The live arithmetic counts are, in increasing degree order:
+
+    300: 31 add,22 subtract,95 multiply =148;
+    304: 30 add,22 subtract,92 multiply =144;
+    308: 28 add,22 subtract,90 multiply =140;
+    316: 27 add,21 subtract,85 multiply =133.
+
+Every fixed scalar multiplication and every square costs one binary gate;
+reuse is free. All eleven variables and six fixed coefficient ports are live.
+The operation-count convention is identical to the inspected predecessors.
+
+build.py exports the actual division-free DAGs. check.py does not import the
+producer or its DAG class. It independently binds every named register and
+all live gates in free polynomial rings; checks the universal four-conjugate
+norm, exact center remainders and degree cuts; propagates attained actual
+leading coefficients through every node; authenticates all six decompressed
+coefficient payloads and reconstructs their complete finite recipe; checks
+all copied source pins and liveness/counts; and rejects altered constants,
+variables, degrees and selected semantic gates. Its normal and python -O
+runs use explicit runtime checks, not removable assert statements.
+
+The checker is a finite algebraic/regression certificate. The unbounded Pell,
+interpolation, intersectivity and native/refutation theorems remain exactly
+the stated ordinary mathematical inputs. Source proof text, licenses and
+actual coefficient payloads are retained for portable replay.

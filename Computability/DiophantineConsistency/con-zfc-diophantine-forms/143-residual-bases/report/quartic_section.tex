@@ -1,0 +1,191 @@
+\section{Hidden affine consequences: quartics in 278 and 279 integers}
+\label{sec:row-exposure}
+
+The new direct-calculus contribution is a reduction of the incoming
+282-coordinate quartic to 279 coordinates without a support or height
+penalty, and to 278 coordinates at a stated support tradeoff.  The mechanism
+is not a new number-theoretic assumption: elementary changes of residual
+basis expose affine identities that the original gate presentation hides.
+The corresponding 287- and 309-coordinate parents also lose three
+coordinates.  Every coordinate remains an unrestricted integer.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\hline
+Equation & Variables & Rows & Monomials & Height\\
+\hline
+Incoming dimension parent &282&192&5491&128446\\
+Incoming grouped parent &287&197&4313&128446\\
+Incoming sparse parent &309&219&3922&128446\\
+\hline
+New dimension tradeoff &278&188&12884&12227\\
+New balanced &279&189&5483&7200\\
+New sparse 279 &279&189&5202&12662\\
+New sparse 284 &284&194&4270&10864\\
+New sparse 306 &306&216&3870&14512\\
+\hline
+\end{tabular}
+\end{center}
+
+All eight displayed equations have exact degree four.  The two
+279-coordinate equations improve every varying metric of the matched
+282-coordinate parent; the 284- and 306-coordinate equations do likewise
+for their matched parents.  The 278-coordinate point sacrifices support
+for one fewer variable.  These are literal finite endpoints, not
+global-minimality or literature-priority claims.
+
+\subsection{Equivalence lemmas}
+
+\paragraph{Residual basis.}
+If $i\ne j$ and $k\in\mathbb Z$, replacing $R_i$ by $R_i+kR_j$
+leaves the common zero set unchanged: one implication is substitution,
+and the other follows by subtracting $kR_j$ after using $R_j=0$.
+The inverse uses $-k$, so each such operation is unimodular.  The
+sum-of-squares polynomial generally changes; its zero set does not.
+
+\paragraph{Integral coordinate chart.}
+The substitution $x_t=z_t+L(z)$, with $L$ integral affine and independent
+of $z_t$, is a bijection of integer lattices.  Its inverse is
+$z_t=x_t-L(x)$.  A sequence is inverted in reverse order.  Quadratic
+degree is preserved.
+
+\paragraph{Unit affine projection.}
+If one residual is $\epsilon x_t+L=0$, with $\epsilon\in\{1,-1\}$
+and $L$ integral affine and independent of $x_t$, substitute
+$x_t=-\epsilon L$ into every other residual and delete this row and
+coordinate.  Restriction maps old zeros to new zeros; the displayed
+integral formula gives the unique inverse extension.  Repeated extensions
+are evaluated in reverse projection order.  Degree remains at most two.
+
+Since $\sum_i R_i^2=0$ over $\mathbb Z$ exactly when every $R_i=0$,
+these three facts prove the corresponding equivalence for a single quartic.
+No sign guard, divisibility condition or cofinal choice is introduced.
+
+\subsection{Credited preconditioning and the new identities}
+
+Six previously published-in-repository coordinate shears are transferred
+to the three incoming parents.  This preconditioning is credited prior
+work, not the novelty claim.  With zero-based coordinate indices, the
+successive old-coordinate substitutions are
+\[
+\begin{aligned}
+x_{21}&\leftarrow x_{21}-2x_{10}-2x_{11},&
+x_{23}&\leftarrow x_{23}-8x_{22},\\
+x_{38}&\leftarrow x_{38}-8x_{37},&
+x_{35}&\leftarrow x_{35}-4x_{10}-5x_{12}-2x_{25}-x_{27},\\
+x_{27}&\leftarrow x_{27}-x_{10}-x_{12},&
+x_{25}&\leftarrow x_{25}-x_{11}-x_{12}.
+\end{aligned}
+\]
+They are executed in the displayed order, not simultaneously.  The
+upstream certificates, exact source hashes and commit are retained.
+Each forward and inverse map is independently checked here; no semantic
+acceptance claim for the upstream V-R1 endpoint is needed.
+
+Let $Q_i$ denote the residuals after this preconditioning.  Exact
+coefficient collection in each of the three parents gives
+\[
+\begin{aligned}
+Q_{21}-Q_6
+ &=4+4x_{10}+8x_{11}+4x_{21}-x_{22}+x_{37},\\
+Q_{73}-Q_{71}-4Q_{70}-8Q_{68}
+ &=12-6x_3-8x_{84}-4x_{85}-x_{86}+x_{89},\\
+Q_{122}-Q_{120}
+ &=3-2x_{107}+2x_{151}-x_{167}+x_{169}.
+\end{aligned}
+\]
+These are polynomial identities, not consequences inferred from sample
+solutions.  Replace rows 21, 73 and 122 by the left sides, using five
+elementary row shears.  The donor rows are unchanged.  The unit-affine
+projection lemma then gives
+\[
+\begin{aligned}
+x_{37}&=x_{22}-4-4x_{10}-8x_{11}-4x_{21},\\
+x_{89}&=x_{86}-12+6x_3+8x_{84}+4x_{85},\\
+x_{169}&=x_{167}-3+2x_{107}-2x_{151}.
+\end{aligned}
+\]
+The deleted coordinates are named \texttt{add.145}, \texttt{mul.346}
+and \texttt{base4.T}.  This proves the drops
+$(282,192)\to(279,189)$, $(287,197)\to(284,194)$ and
+$(309,219)\to(306,216)$ in coordinates and rows.
+
+\subsection{One further projection and the 278-coordinate point}
+
+The already affine row $Q_{90}$ has unit coordinate $x_{105}$,
+named \texttt{add.380}.  It is not counted as a newly discovered affine
+identity.  Its unique restoration is
+\[
+\begin{aligned}
+x_{105}={}&x_{10}+x_{11}+4x_{21}+2x_{24}+4x_{26}+2x_{29}
+            +2x_{31}+4x_{32}\\
+          &+2x_{34}+2x_{36}+4x_{39}+2x_{40}+2x_{43}
+            +2x_{47}+4x_{68}+2x_{69}.
+\end{aligned}
+\]
+Applying this additional projection to the dimension parent gives 278
+coordinates and 188 rows.  The dense replacement explains the larger
+collected support.  No new semantic lemma is needed.
+
+\subsection{The fixed quartics and their logical meaning}
+
+Each endpoint is defined exactly by
+\[
+ P(\mathbf z)=\sum_{i=0}^{m-1}r_i(\mathbf z)^2,
+ \qquad \mathbf z\in\mathbb Z^n,
+\]
+where its complete list of integral quadratic $r_i$ is in
+\texttt{equation.json}; complete collected coefficients are in
+\texttt{expanded\_polynomial.json}.  The package also supplies every row
+as human-readable text and TeX, the full coordinate-order table, and a
+complete affine map restoring the original parent coordinates.
+
+Following the projections, a frozen list of elementary residual row
+shears selects each stated support/height profile.  The lists are fully
+explicit in the endpoint certificates.  Their proof is the residual-basis
+lemma applied successively, not the search heuristic that found them.
+The deterministic builder runs no optimizer.  Exact expansion confirms
+degree four and that every declared coordinate occurs.
+
+\paragraph{Theorem.}
+Each supplied new equation has an integer zero if and only if its
+matched incoming parent has an integer zero.  Hence, composing with the
+parent's ordinary C222/ZF/ZFC refutation calibration, ZFC proves that
+integer unsolvability of each new equation is equivalent to
+$\operatorname{Con}(\mathrm{ZFC})$.
+
+\paragraph{Proof.}
+For a new zero, undo the final row shears to recover all projected
+residual equations.  Restore the deleted coordinates in reverse order;
+the deleted equations vanish identically and all remaining equations
+hold.  Undo the affine-exposure row shears, then evaluate the coordinate
+charts in reverse execution order.  This produces an old zero.  In the
+other direction, use the inverse coordinate bijection, the exact affine
+equalities, restriction to retained coordinates, and the forward row
+shears.  Every step is integral and reversible on zeros.  The final
+logical equivalence is exactly the inherited parent calibration.
+This argument does not prove consistency or claim a new end-to-end
+kernel-checked Lean theorem.
+
+\subsection{Verification and the limit of this particular method}
+
+An independent standard-library checker imports no producer.  It checks
+coordinate inverses, elementary row inverses, unit coefficients, the
+identical zero of every deleted row, absence of deleted coordinates,
+the exact coordinate renumbering, every collected coefficient and metric,
+and coordinate liveness.  It also reconstructs every original coordinate
+as an affine polynomial in the final ones and checks every original
+residual pullback as a polynomial identity.  Five corrupted-artifact
+controls are rejected.  Normal and \texttt{python -O} runs pass, including
+fresh byte-identical rebuilds.  The printed residual text and TeX are
+parsed back to their complete coefficient lists.
+
+For the 278-coordinate endpoint, the quadratic parts of the 188 residuals
+have rank 188 modulo 1000003.  Thus they also have rank 188 over
+$\mathbb Q$: a nonzero modular minor cannot have zero integer
+determinant.  No nonzero rational linear combination of this final
+residual basis is affine.  The parent's corresponding rank is 188, and
+the four displayed independent affine combinations account for its
+four-dimensional kernel.  This finite obstruction concerns this row
+span only, not nonlinear ideal consequences or global variable
+minimality.  The optional rank replay is supplied separately.

@@ -1,0 +1,252 @@
+#!/usr/bin/env python3
+"""Shift-free descending factorial certificate with one semantic Pell anchor.
+
+Deterministic constructor. All exported variables are natural.
+Inherited arithmetic is loaded from the adjacent portable source closure.
+"""
+from pathlib import Path
+import argparse
+import hashlib
+import json
+import sys
+
+sys.dont_write_bytecode = True
+
+
+def generate(output, support_cap=48, coordinates='consecutive', horizon=12):
+    output = Path(output).resolve()
+    if output.exists() and any(output.iterdir()):
+        raise ValueError('Output directory must be empty')
+    if horizon < 12:
+        raise ValueError('The amplification and label budgets require horizon >= 12')
+    syntax='cantor'
+    protected=()
+    semantic_anchor=True
+    merged=True
+    sys.path.insert(0, str(Path(__file__).resolve().parent / 'portable/source/custom'))
+    import build_strict_budget as rr
+    import build_modular_factorial as mf
+    h, dl = mf.h, mf.dl
+    ONE, TWO, const = h.ONE, h.TWO, h.const
+    FOUR = const(4)
+
+    class CombinedBuilder(mf.ModularFactorialBuilder):
+        radix_variant = 'power'
+        denominator_shift = True
+        merge_factorial = True
+        factorial = mf.ModularFactorialBuilder.factorial
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.cap_parameters = None
+            self.cap_residue_certificate = None
+            self.cap_bound_certificate = None
+            self.seed_certificates = []
+
+        def finalize_binomials(self):
+            if getattr(self,'binomials_finalized',False):
+                raise ValueError('Repeated binomial finalization')
+            self.binomials_finalized=True
+            N=self.amplification_data['N']; K=self.amplification_data['K']
+            reps=self.aggregate_requests
+            total=self.sum(n for n,_,_,_ in reps)
+            H=self.add(total,ONE)
+            q=self.power(self.mul(N,H),K)
+            qb=self.add(q,ONE)
+            for i,((n,k),out) in enumerate(self.binomials.items()):
+                self.modular_requests.append(dict(kind='exact',n=n,k=k,output=out,
+                    den=self.denominator(q,k),label='choose'+str(i)))
+            for n,k,modulus,label in self.range_requests:
+                self.modular_requests.append(dict(kind='divisible',n=n,k=k,
+                    den=self.denominator(q,k),label=label))
+            x=next(('v',i) for i,v in enumerate(self.variables) if v['name']=='x')
+            dx=self.denominator(q,K)
+            self.modular_root=self.mul(N,dx)
+            _,A,_=self._scale()
+            root_quotient=self.new('modular.root_quotient')
+            self.eq(self.product([TWO,A,qb]),
+                self.sum([self.square(qb),ONE,self.mul(self.modular_root,root_quotient)]),
+                'modular.common_root')
+            self.radix_data=dict(radix=q,root_base=qb,modulus=N,K=K,
+                V=self.factorial_radix['numerator'],representative_sum=total,H=H,
+                kind='(N*H)^x',exact_binomials=len(self.binomials),
+                range_binomials=len(self.range_requests),root_modulus=self.modular_root,
+                dominant_denominator=dx,root_kind='N*q^x',root_quotient=root_quotient,
+                aggregate_bound_removed=True,completeness_lift='encoded a increased by N^2')
+
+        def _cap(self):
+            if self.cap_parameters is not None:
+                return self.cap_parameters
+            W,A,_ = self._scale()
+            H = self.amplification_data['derived_label_sum'] if semantic_anchor else W
+            tag = 'index_cap'
+            X,Y,U,V,S,R = [self.new(tag+'.'+s) for s in ('X','Y','U','V','S','R')]
+            fourY = self.mul(FOUR,Y)
+            q4minus1 = self.new(tag+'.q4minus1')
+            B = self.add(ONE,self.mul(fourY,self.add(q4minus1,ONE)))
+            self.norm(A,X,Y,tag+'.norm1')
+            self.norm(A,U,V,tag+'.norm2')
+            self.norm(B,S,R,tag+'.norm3')
+            vd = self.new(tag+'.Vquotient_minus1')
+            self.eq(V,self.mul(self.square(Y),self.add(vd,ONE)),tag+'.V_positive_multiple')
+            bq,sq,rq = [self.new(tag+'.'+s) for s in ('Bquotient','Squotient','Rquotient')]
+            self.eq(B,self.add(A,self.mul(U,bq)),tag+'.B_mod_U')
+            self.eq(S,self.add(X,self.mul(U,sq)),tag+'.S_mod_U')
+            self.eq(R,self.add(H,self.mul(fourY,rq)),tag+'.R_mod_4Y')
+            self.cap_parameters = dict(index=H,base=A,pair=(X,Y),
+                auxiliary=(U,V,B),comparison=(S,R))
+            return self.cap_parameters
+
+        def _index(self,k):
+            if k in self.shared_indices:
+                return self.shared_indices[k]
+            cap = self._cap()
+            if semantic_anchor and k==cap['index']:
+                self.shared_indices[k] = cap['pair']
+                return cap['pair']
+            A = cap['base']
+            tag = 'index'+str(len(self.shared_indices))
+            Y = self.new(tag+'.Y')
+            if coordinates == 'standard':
+                X = self.new(tag+'.X')
+                self.norm(A,X,Y,tag+'.norm1')
+                pair = X,Y
+                record = dict(index=k,first=X,ordinate=Y,kind='standard',label=tag+'.norm1')
+            elif coordinates == 'consecutive':
+                Z = self.new(tag+'.previous_Y')
+                product = self.mul(Y,Z)
+                self.row([(1,[Y,Y]),(1,[Z,Z]),(-2,[A,product]),(-1,[])],tag+'.consecutive_norm')
+                pair = Z,Y
+                record = dict(index=k,first=Z,ordinate=Y,kind='consecutive',
+                    product=product,label=tag+'.consecutive_norm')
+            else:
+                raise ValueError('unknown coordinate mode')
+            self.shared_indices[k] = pair
+            self.seed_indices[k] = pair
+            self.seed_certificates.append(record)
+            return pair
+
+        def residue_equation(self,pair,base,terms,label):
+            first,Y = pair
+            if coordinates == 'standard' or pair==self.cap_parameters['pair']:
+                A = self._scale()[1]
+                self.eq(self.add(first,self.mul(Y,base)),
+                    self.sum([self.mul(Y,A)]+terms),label)
+            else:
+                self.eq(self.mul(Y,base),self.sum([first]+terms),label)
+
+        def finalize_power_frame(self):
+            if self.shared_frame_finalized:
+                return
+            if self.power_indices_ready:
+                raise ValueError('partial repeated finalization')
+            W,A,_ = self._scale()
+            cap = self._cap()
+            for n,k,m,tag in self.pending_powers:
+                pair = self._index(k)
+                modulus = self._base(n)
+                quotient = self.new(tag+'.quotient')
+                self.residue_equation(pair,n,[m,self.mul(modulus,quotient)],tag+'.power_congruence')
+                self.macro_log.append(dict(macro='power',output=m,base=n,exponent=k,
+                    shared_scale=True,common_index_cap=True))
+            q,qb,N = [self.radix_data[n] for n in ('radix','root_base','modulus')]
+            for request in self.modular_requests:
+                n,den,label = [request[n] for n in ('n','den','label')]
+                pair = self._index(n)
+                quotient,remainder,slack = [self.new(label+'.modular_'+s)
+                    for s in ('quotient','remainder','rslack')]
+                modulus = self.mul(den,q if request['kind']=='exact' else N)
+                residue = remainder
+                if request['kind']=='exact':
+                    out = request['output']
+                    os = self.new(label+'.modular_oslack')
+                    residue = self.add(remainder,self.mul(den,out))
+                    self.eq(q,self.sum([out,os,ONE]),label+'.digit_bound')
+                self.residue_equation(pair,qb,[residue,self.mul(modulus,quotient)],label+'.modular_digit')
+                self.eq(den,self.sum([remainder,slack,ONE]),label+'.remainder_bound')
+                request.update(pair=pair,quotient=quotient,remainder=remainder,
+                    remainder_slack=slack,modulus=modulus)
+            ordinates = [Y for first,Y in self.seed_indices.values()]
+            quotient = self.new('index_cap.error_square_quotient')
+            if merged:
+                slack=None
+                terms=[(1,[cap['pair'][1]]),(-1,[cap['index']]),(-1,[A,quotient]),(1,[quotient])]
+                for k,(first,Y) in self.seed_indices.items():
+                    terms.extend([(-1,[Y,Y]),(2,[Y,k]),(-1,[k,k])])
+                cap_label='index_cap.merged_bound_errors'
+            else:
+                slack=self.new('index_cap.aggregate_slack')
+                self.eq(cap['pair'][1],self.sum([cap['index'],ONE,slack]+ordinates),'index_cap.all_indices_bound')
+                terms=[(-1,[A,quotient]),(1,[quotient])]
+                for k,(first,Y) in self.seed_indices.items():
+                    terms.extend([(1,[Y,Y]),(-2,[Y,k]),(1,[k,k])])
+                cap_label='index_cap.squared_index_errors'
+            self.row(terms,cap_label)
+            # Modular top indices were absent from the six-power-only frame.
+            # Including them is necessary for sound simultaneous index recovery.
+            atoms = {a for (n,k),m in self.powers.items() for a in (n,k,m)}
+            atoms |= {r['n'] for r in self.modular_requests}
+            # q is already an exact-power atom. The positive offset gives
+            # q+1 < W, so the residue base qb needs no extra frame atom.
+            offset = len(self.seed_indices)+2
+            self.eq(W,self.sum([const(offset)]+sorted(atoms)),'shared.frame_definition')
+            self.cap_bound_certificate = dict(index=cap['index'],cap_ordinate=cap['pair'][1],
+                slack=slack,ordinates=ordinates,row_label=cap_label)
+            self.cap_residue_certificate = dict(base=A,quotient=quotient,
+                seeds=[dict(exponent=k,pair=pair) for k,pair in self.seed_indices.items()],
+                row_label=cap_label)
+            self.frame_certificate = dict(atoms=sorted(atoms),offset=offset,index=W,
+                lower_A=self.scale_lower,base=A,modular_tops=[r['n'] for r in self.modular_requests])
+            self.power_indices_ready = self.index_product_finalized = self.shared_frame_finalized = True
+
+    old = h.HybridBuilder
+    h.HybridBuilder = CombinedBuilder
+    try:
+        b,source,majorant = rr.construct(syntax=syntax,horizon_minimum=horizon)
+    finally:
+        h.HybridBuilder = old
+    eq,expanded,metrics = b.export(hashlib.sha256(source).hexdigest(),
+        'descending_strict_cap_six_power_'+coordinates+'_'+syntax,True)
+    protected_indices = [i for i,v in enumerate(eq['variables']) if v['name'] in protected]
+    if len(protected_indices)!=len(protected):
+        raise ValueError('a protected coordinate was not found')
+    target,certificate,polynomial = h.psd.contract(eq,support_cap=support_cap,
+        protected_variables=protected_indices)
+    receipt,independent = h.check.verify(eq,target,certificate)
+    if polynomial['terms'] != independent:
+        raise ValueError('coefficient expansion disagrees with independent checker')
+    meta = dict(powers=[dict(base=n,exponent=k,output=m) for (n,k),m in b.powers.items()],
+        factorials=b.factorial_certificates,
+        binomials=[dict(n=n,k=k,output=v) for (n,k),v in b.binomials.items()],
+        ranges=b.range_requests,radix=b.radix_data,product=b.product_data,
+        amplification=b.amplification_data,scale=b.shared_parameters,lower_A=b.scale_lower,
+        cap=b.cap_parameters,cap_bound=b.cap_bound_certificate,cap_residue=b.cap_residue_certificate,
+        frame=b.frame_certificate,seed_certificates=b.seed_certificates,
+        denominator_derivations=b.denominator_derivations,modular_requests=b.modular_requests,
+        variables=b.variables,rows=b.rows,gates=b.gates,local_majorant=majorant,
+        syntax=syntax,local_names=dl.LOCAL_NAMES,
+        wire_eliminated_source_sha256=eq['wire_eliminated_source_sha256'],
+        coordinates=coordinates,dominant_modulus=True,semantic_anchor=semantic_anchor,merged_cap=merged,horizon=horizon,amplification_budget='x')
+    for name,obj in [('equation.json',eq),('expanded_polynomial.json',expanded),
+                     ('METRICS.json',metrics),('semantic.json',meta),('local_majorant.json',majorant)]:
+        h.write(output/'raw'/name,obj)
+    for name,obj in [('equation.json',target),('expanded_polynomial.json',polynomial),
+                     ('elimination_certificate.json',certificate),('VERIFICATION.json',receipt)]:
+        h.write(output/'natural'/name,obj)
+    summary = dict(source=metrics,natural=receipt,power_calls=len(b.powers),
+        modular_requests=len(b.modular_requests),seed_indices=len(b.seed_indices),
+        coordinates=coordinates,dominant_modulus=True,syntax=syntax,
+        support_cap=support_cap,frame_offset=b.frame_certificate['offset'],
+        protected_coordinates=list(protected),semantic_anchor=semantic_anchor,merged_cap=merged,horizon=horizon,amplification_budget='x')
+    h.write(output/'SUMMARY.json',summary)
+    return summary
+
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser()
+    p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--support-cap',type=int,default=48)
+    p.add_argument('--coordinates',choices=['standard','consecutive'],default='consecutive')
+    p.add_argument('--horizon',type=int,default=12)
+    a=p.parse_args()
+    print(json.dumps(generate(a.output,a.support_cap,a.coordinates,a.horizon),indent=2))

@@ -1,0 +1,223 @@
+\section{Pooled digits in the aligned self sized radix}
+\label{sec:natural}
+\subsection{Exact inherited interface and the changed rows}
+All coordinates in this section range over $\N$. The input is the
+Round~17 normalized raw quadratic graph for \file{strict_natural229}, with
+334 variables and 284 rows. Its complete inherited ordinary proof is
+\file{ONE_ROW_SEMANTIC_ANCHOR_PROOF.md}. The present transformations alter
+only the eleven private modular remainder bounds and, in one variant,
+the exact binomial output bound. The six exact power requests, semantic
+Pell anchor at the derived label $J$, and simultaneous index certificate
+are unchanged.
+
+Use the inherited notation
+\[
+ t\ge12,\quad V_0=(F^2+1)^t,\quad K=x,\quad N=B^K,
+ \quad q=(NS)^K.
+\]
+Here $S$ is one plus the sum of the nine positive independent CRT
+representatives, not an individual stack representative. In genuine
+completed witnesses,
+\[
+ F=t!,\qquad B=\binom{F^2+t}{t}.
+\]
+These two identities are not assumed prematurely in soundness. Write
+\[
+ D_0=q^t,\quad D_1=q^{t+1}=qD_0,\quad
+ D_y=q^{y+1},\quad D_x=q^x.
+\]
+There are eleven modular remainders, organized as follows.
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}\toprule
+Remainders & Common denominator & Number\\\midrule
+$r_0,r_C$ for the factorial digit and index column & $D_0$ & 2\\
+$r_a,r_b,r_c,r_d,r_J$ & $D_1$ & 5\\
+$r_{S_0},r_{S_1}$ for the two stack columns & $D_y$ & 2\\
+$r_u,r_v$ for quotient columns & $D_x$ & 2\\\bottomrule
+\end{tabular}
+\end{center}
+The old separate bounds are $D_i=r_i+s_i+1$ with $s_i\in\N$.
+The exact factorial digit additionally satisfies $q=B+o+1$, with
+$o\in\N$.
+
+\subsection{A coefficient budget lemma}
+\begin{lemma}\label{lem:digitbudget}
+Let $q\ge2$, $k\ge1$, and
+\[
+ r_i=\sum_{j=0}^{k-1}c_{ij}q^j,\qquad c_{ij}\in\N.
+\]
+If $\sum_i c_{ij}\le q-1$ for every $j$, then
+$\sum_i r_i\le q^k-1$. Hence
+\begin{equation}\label{eq:poolgeneral}
+ q^k=\sum_i r_i+s+1
+\end{equation}
+has a natural slack $s$. Conversely, for arbitrary natural $r_i,s$,
+\eqref{eq:poolgeneral} implies $r_i<q^k$ for every $i$, and the old separate
+slacks are restored by the nonnegative polynomial formulas
+\[
+ s_i=s+\sum_{h\ne i}r_h.
+\]
+\end{lemma}
+\begin{proof}
+Summing by positions gives
+\[
+ \sum_i r_i=\sum_{j=0}^{k-1}\Bigl(\sum_i c_{ij}\Bigr)q^j
+ \le(q-1)\sum_{j=0}^{k-1}q^j=q^k-1.
+\]
+This proves existence of $s=q^k-1-\sum_i r_i\ge0$.
+Conversely, each $r_i$ is a nonnegative summand of $q^k-s-1<q^k$.
+The displayed restoration satisfies $r_i+s_i+1=q^k$ identically.
+\end{proof}
+The completeness condition bounds the sum of the coefficients, not merely
+each remainder separately. Separate old inequalities alone would not
+justify pooling.
+
+\subsection{Uniform spare capacity in the actual radix}
+Construct genuine witnesses in the inherited noncircular order. Begin with
+a finite derivation and choose its padded horizon $t\ge12$. Fix
+$F=t!$, $B$, $K=x$, and $N=B^K$; choose the nine positive independent CRT
+representatives modulo $N^2$. A further lift of the dominant $a$
+representative by $N^2$ preserves every required congruence and ensures
+$S>N^2$. The inherited cofinal choice is retained, so the semantic anchor
+still dominates the required indices. Every independent representative is
+strictly less than $S$. The unchanged endpoint and ceiling arguments give
+\[
+ K=x\ge F+1\ge2,\qquad B>F\ge1,\qquad N\ge4.
+\]
+Consequently
+\begin{equation}\label{eq:naturalradixmargin}
+ q=N^KS^K\ge16S^K.
+\end{equation}
+
+For an ordinary representative $n<S$ and a requested lower digit position
+$0\le j\le k\le K$,
+\[
+ \binom nj\le\max(1,n^K)<S^K.
+\]
+The same assertion for the derived label uses the inherited positive
+arithmetic-graph majorant
+\[
+ J\le S^\ell,\qquad \ell=2^{22},\qquad
+ \ell(t+1)<F<K.
+\]
+For $0\le j\le t+1$, this gives
+$\binom Jj\le\max(1,J^j)<S^K$. For the factorial upper index,
+the inherited elementary estimate yields
+\[
+ \binom{F^2+t}{j}\le V_0\quad(0\le j\le t),
+ \qquad V_0<B^2\le N.
+\]
+Since $S>N^2$, both $V_0$ and $B$ are strictly below $S^K$.
+Thus every low-position coefficient used in the eleven remainders, and
+also the exact output $B$, is at most $S^K-1$.
+
+These are completeness estimates, after genuine witnesses are fixed.
+The unchanged common-root Pell congruence identifies $(q+1)^n$ modulo
+the requisite digit modulus. Since the relevant binomial coefficients
+are below $q$, the canonical remainders are exactly the low base-$q$
+polynomials used above. This explanation introduces no exponentiation
+operation into the emitted quadratic rows.
+
+\subsection{Four independent pools}
+Replace each group's old private bounds by one row
+\begin{equation}\label{eq:naturalP4}
+ D_G=\sum_{i\in G}r_i+s_G+1,\qquad s_G\in\N.
+\end{equation}
+The largest group has five remainders, so at every position the coefficient
+sum is at most $5(S^K-1)<q$. Lemma~\ref{lem:digitbudget} supplies the four
+new slacks for canonical witnesses.
+
+For soundness, apply the converse part of the lemma independently to
+each pool. Every deleted old slack is restored by
+$s_i=s_G+\sum_{h\in G\setminus\{i\}}r_h\ge0$.
+No binomial interpretation is needed in this direction. All other rows
+and coordinates are unchanged, so a zero of the pooled raw graph yields a
+zero of the exact inherited graph. For completeness, construct canonical
+inherited witnesses first and then use the coefficient bounds above.
+The raw graph loses seven variables and seven rows: its size becomes
+327 variables and 277 rows.
+
+\subsection{Weighted mixing of adjacent denominator levels}
+The identity $D_1=qD_0$ lets the first two groups share a single bound.
+Put $T=r_a+r_b+r_c+r_d+r_J$. Replace their seven old bounds by
+\begin{equation}\label{eq:naturalP3}
+ qD_0=q(r_0+r_C)+T+s+1,\qquad s\in\N.
+\end{equation}
+Keep the $D_y$ and $D_x$ pools from \eqref{eq:naturalP4}.
+For soundness, $q\ge1$ and $D_0\ge1$ imply
+\[
+ qr_0<qD_0,\quad qr_C<qD_0,\quad
+ r_a,r_b,r_c,r_d,r_J<D_1.
+\]
+Thus $r_0,r_C<D_0$, and all seven old slacks
+$D_i-r_i-1$ are nonnegative integers. Their substitution restores the
+old equations identically.
+
+For completeness, multiplication by $q$ shifts each of the two smaller
+remainders' coefficient arrays upward by one position. All terms lie below
+position $t+1$. At most seven original coefficients contribute at any
+position, so their sum is at most $7(S^K-1)<q$.
+Lemma~\ref{lem:digitbudget} provides $s$. This raw graph has
+326 variables and 276 rows.
+
+The required positivity is available before decoding any binomial.
+The retained frame and anchor first identify all six exact powers. The
+unchanged ceiling equations imply $B\ge1$, $V_0\ge1$, $F\ge1$, $B>F$,
+and $K\ge2$. Hence $N=B^K\ge4$ and $q=(NS)^K>0$.
+This is precisely the inherited bootstrap; it uses neither a removed
+remainder bound nor the separate exact digit output bound.
+
+\subsection{Absorbing the exact binomial output bound}
+A further compatible change replaces \eqref{eq:naturalP3} by
+\begin{equation}\label{eq:naturalP3B}
+ qD_0=q(r_0+r_C)+T+BD_0+s+1
+\end{equation}
+and deletes $q=B+o+1$ and its private $o$. In canonical witnesses,
+$BD_0$ contributes the single digit $B$ at position $t$. At each position,
+at most eight quantities bounded by $S^K-1$ contribute. Therefore their
+sum is less than $8S^K\le q/2<q$, proving completeness by the same lemma.
+
+For soundness, the nonnegative extra term $BD_0$ cannot weaken the
+remainder inequalities already proved. The new row also gives
+$BD_0<qD_0$. Since $D_0>0$, it follows that $B<q$.
+Thus $o=q-B-1\in\N$ restores the deleted exact output bound.
+The pre-decoding positivity argument in the preceding subsection remains
+unchanged. This raw graph has 325 variables and 275 rows.
+All displayed rows remain quadratic: $qr_i$ and $BD_0$ are products of
+existing coordinates, not additional quantified gates.
+
+\subsection{Exact projection to the emitted quartics}
+Each selected endpoint is obtained from one of these raw graphs by a
+finite sequence of monic polynomial eliminations. Every restored
+coordinate is certified as a positive rational combination of squares of
+affine rational forms plus a polynomial with nonnegative integer
+coefficients. Such a formula is nonnegative on $\N^n$. Its exact equality
+to the integer restoration polynomial is checked after expansion, so
+integrality follows from the restoration polynomial itself.
+
+The independent checker replays all substitutions and retained rows,
+checks each nonnegativity certificate, verifies that residual degree never
+exceeds two, and collects the entire final sum of squares. A changed
+elimination order is supplied as an explicit permutation of the raw rows;
+its permutation property and exact relation to the fixed pooled source
+are checked. No heuristic search result is used as a substitute for the
+restoration identities.
+
+Composing the raw witness constructions with these certified projections
+proves existence equivalence with the inherited natural graph and therefore
+\eqref{eq:calibration}. Arbitrary old zeros need not extend to pooled zeros
+with the same private remainders; the completeness argument constructs
+canonical witnesses afresh from the encoded finite refutation. This is
+existential equivalence, not an asserted bijection of every intermediate
+zero set.
+
+\subsection{Attribution and the precise new composition}
+The incoming \file{conzfc_graph_digits_2026-10-24} package supplies the
+four-pool digit-budget idea for an older semantic cap. Round~17 supplies
+the aligned $K=x$ radix, factorial/product fusion, strict quotient ranges,
+cofinal representative choice and literal parent graph. The new composition
+uses the stronger margin \eqref{eq:naturalradixmargin}, weighted mixing of
+adjacent denominator levels, and absorption of the exact output bound.
+The retained contractor and independently implemented projection checker
+are credited to the earlier package100 code. None of these attributions
+alters the inherited logical calibration.

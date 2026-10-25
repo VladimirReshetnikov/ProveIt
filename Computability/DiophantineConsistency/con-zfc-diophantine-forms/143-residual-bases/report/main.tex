@@ -1,0 +1,147 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,longtable,array,hyperref,xcolor}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\height}{\operatorname{ht}}
+\setlength{\emergencystretch}{3em}
+\title{Residual basis reduction and smaller Diophantine consistency equations}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This report studies explicit polynomial equations whose unsolvability is
+provably equivalent in ZFC to the syntactic consistency of ZFC. The main
+new method changes the basis of quadratic residual equations to reveal
+linear consequences, then eliminates their unit-coefficient coordinates.
+It reduces both the dimension and the coefficient cost of a direct
+proof-calculus construction. Further results combine a shift-free
+descending-factorial certificate with residual reduction, replace
+unnecessarily large Pell transport denominators, and remove redundant
+arithmetic gates from small-variable root certificates.
+All comparisons specify the domain and the measured cost. The unbounded
+arguments use explicitly retained ordinary arithmetic and refutation
+calibrations. Exact finite checks certify the supplied polynomials and
+transformations; they are not a new end-to-end proof-assistant certificate,
+a consistency proof, or a theorem of global optimality.
+\end{abstract}
+\tableofcontents
+\section{The problem and the comparison boundary}
+For a fixed integer polynomial $P$ and a stated domain $D$, the target is
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists \boldsymbol{x}\in D^n\;P(\boldsymbol{x})=0\bigr)
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+Here consistency means absence of a finite syntactic refutation in the
+specified effective proof system. The statement is obtained by proving
+solvability equivalent to existence of such a refutation and then negating
+both sides. It does not decide whether either side holds.
+
+There is no single total order of simplicity. We measure the number of
+quantified variables, their domain, total degree, number of quadratic
+residuals where applicable, support of the fully collected polynomial,
+maximum absolute integer coefficient, and live binary operations in a
+specified straight-line evaluator. Addition, subtraction and
+multiplication each cost one, including squares and multiplication by
+fixed constants. Reusing a register is free. Fixed numerical ports are
+not variables, but their entire coherent tuples must be specified.
+
+The immutable repository comparison is
+\texttt{e0c98c629bf10d30b695884f6b1d2ab361bdf513} in
+\href{https://github.com/VladimirReshetnikov/ProveIt}{ProveIt}.
+The archive retains the source identities and distinguishes actively
+accepted repository constructions from newly submitted incoming packages.
+In particular, the incoming \emph{Cofinal Anchors} and \emph{Certificate
+Reductions} packages are stronger comparators than our preceding report.
+Our reductions of their literal equations are explicit; the word
+``incoming'' does not imply an independent external review or repository
+adoption. Attribution and inherited mathematical hypotheses are preserved.
+
+\input{results.tex}
+\section{Changing residuals without changing solutions}
+\begin{lemma}[Elementary residual operations]
+Let $R=(R_1,\ldots,R_m)$ be integer polynomials. Replacing $R_i$ by
+$R_i+kR_j$, for $i\ne j$ and $k\in\Z$, preserves their common zero set
+on every fixed coordinate domain. Its inverse replaces the new $R_i$
+by $R_i-kR_j$. Consequently, over $\Z^n$ or $\N^n$, the sums of the
+squares of the old and new residuals have precisely the same zeros.
+\end{lemma}
+\begin{proof}
+The forward and inverse substitutions are polynomial identities and
+leave all other rows unchanged. A sum of integer squares vanishes if
+and only if every summand vanishes. The assertion about sums of squares
+uses this ordered-domain fact; it is not asserted over the complex numbers.
+\end{proof}
+
+\begin{lemma}[Exposing an affine coordinate]
+Suppose exact elementary row operations produce a row
+$\varepsilon x_j+L(\boldsymbol{x}_{\ne j})$, where
+$\varepsilon\in\{1,-1\}$ and $L$ is affine with integer coefficients.
+Substitute $x_j=-\varepsilon L$ in every row and delete the resulting
+zero row and the coordinate $x_j$. The remaining system has a bijective
+correspondence of integer zeros with the original system, with the displayed
+formula as inverse coordinate restoration. Quadratic residuals remain
+quadratic. The assertion for natural-number coordinates additionally
+requires a proof that the restored coordinate is nonnegative.
+\end{lemma}
+\begin{proof}
+At every zero the displayed row uniquely specifies $x_j$. Conversely,
+substitution followed by restoration makes that row zero and makes
+every retained row equal to its substituted counterpart. Affine
+substitution does not increase degree. Repeat in the recorded order
+for several eliminations and invert in reverse order.
+\end{proof}
+
+These elementary facts motivate a different optimization problem from
+changing the encoded proof calculus or its Pell witnesses. Take the matrix
+of quadratic coefficients of the residual list. Its integer row
+combinations can have a vanishing quadratic part even when none of the
+individual rows is affine. Such combinations expose otherwise hidden
+coordinates. Afterwards a second residual-basis search can lower the
+support or coefficient height of the sum of squares. The final polynomial
+usually changes, while its zero set does not. Every accepted operation is
+recorded and replayed exactly; heuristic choices made during the search
+are not part of the proof.
+
+\input{quartic_section.tex}
+\input{natural_section.tex}
+\input{compact_section.tex}
+\input{compact_coefficients.tex}
+\input{roots_section.tex}
+\section{Reproduction and logical scope}
+The release includes literal equations, complete fixed coefficient data
+where used, source provenance, forward and inverse transformations,
+reconstruction programs, independent exact checks, and the editable
+sources of this report. The top-level replay command is described in
+\texttt{README.md}. Normal and optimized Python runs check the same
+mathematical obligations without depending on assertions. Full collected
+coefficient checks, all-register circuit checks and deliberately corrupted
+controls supplement the ordinary proofs.
+
+A finite replay cannot certify an unbounded Pell theorem by sampling.
+The mathematical claims instead compose the displayed universal arguments
+with the named retained source theorems. The direct-calculus branches use
+the numerical C222 refutation interface and its ZF--ZFC consistency
+calibration, not a K215 simulation or Jones universal polynomial. The
+compact and root-certificate branches retain their distinct native
+coefficient/refutation calibrations. No tuple from one branch may be
+substituted into another merely because its port names look similar.
+
+No upstream repository was changed. No literature-wide priority,
+minimum variable count, lower bound on circuit complexity, or fresh
+closed-kernel proof is claimed. Source-reviewed improvements arriving
+after the comparison pin do not retroactively change the identities of
+the sealed equations or the measured comparisons.
+\appendix
+\input{radix55_section.tex}
+\end{document}

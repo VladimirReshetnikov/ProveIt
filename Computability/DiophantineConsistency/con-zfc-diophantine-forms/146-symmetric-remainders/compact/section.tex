@@ -1,0 +1,176 @@
+\section{A smaller denominator also shortens the compact equations}
+\label{sec:xy-carrier}
+
+The direct-calculus quartic and the compact positive-integer equations serve
+different purposes. This section retains the existing native/K215 calibration
+and its fixed coefficient tuple, but makes a further proved reduction. It
+gives ordinary polynomials in ten strictly positive integers with
+operation/degree pairs
+\[
+ (77,626),\qquad(78,464),\qquad(79,460).
+\]
+The first two improve both metrics over the immediate $(78,630)$ and
+$(79,468)$ parents. The third improves the second parent's degree while
+preserving its operation count. These are representation tradeoffs; they
+are not claims of global minimality.
+
+\subsection{Complete polynomial}
+
+The only unknowns are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+The four fixed coefficients $\beta,K_0,M_C,M_F$ are the complete directly
+indexed BFS943 tuple retained in the archive. Their exact little-endian
+bytes and the full finite reconstruction recipe are supplied. The largest
+coefficient port has $592{,}884$ bits. These ports are fixed numerals, not
+additional unknowns. They satisfy
+\[
+ \beta\ge31\text{ odd},\quad K_0>0,\quad
+ 0<M_C<\beta<M_F<2\beta.
+\]
+All following symbols are polynomial abbreviations:
+\begin{gather*}
+ q=\beta J+1,\quad h=q-1,\quad C=q-F-\alpha,
+ \quad X=wq,\quad Y=q^3s,\\
+ k=\eta+\zeta,\quad c=kY+\eta,\quad
+ A=Y(X+1)+1,\quad\Delta=A^2-1,\quad H=4A-5,\\
+ V_0=XY^2,\qquad E=1+V_0(V_0+1)k^2,\\
+ R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ e=k-R-1,\quad B=(K_0+w)C-F,\quad U=ic^2,\\
+ a=\Delta U^2E,\quad F_0=1+a,\quad G=EF_0,\\
+ F_*=1+4aF_0,\quad Q=\Delta(F_*-1),\\
+ b=c(T+\alpha)-R,\quad V=F_*b-c,\quad
+ K_+=X(3c-2X)+2.
+\end{gather*}
+Choose $(D,L)=(XY,V^2)$, $(XY,bV)$, or $(q^4,bV)$, respectively,
+and put
+\begin{align*}
+ M&=hDH,\\
+ Z&=hD\bigl[H(n-LB)+K_+\bigr]-H(DB+he),\\
+ R_G&=M^2G.
+\end{align*}
+The single equation is
+\begin{equation}
+ \boxed{P_{D,L}=Q(Z^2-R_GV^2)+(R_G-Z^2)=0.}
+ \label{eq:xy-carrier}
+\end{equation}
+There are no extra quantified variables, square-root functions, divisions,
+or variable exponents in this equation. Its three literal arithmetic
+circuits are included as JSON.
+
+\subsection{The admissible-denominator argument}
+
+The new lemma applies to any specified polynomial $D=D(q,X,Y)$ satisfying
+\begin{equation}
+ D>2,\qquad q^4\mid D,\qquad D\mid4XY^2
+ \label{eq:xy-admissible}
+\end{equation}
+on the positive inputs. Both chosen denominators satisfy these conditions:
+$XY=q^4ws$, and $4XY^2/q^4=4wq^3s^2$.
+
+For proof notation only define
+\[
+ z=Z/M,\quad \kappa=K_+/H,\quad\rho=e/D,\quad
+ t=B/h,\quad W=1+hL.
+\]
+Identically,
+\[
+ P_{D,L}=(Q-1)Z^2-M^2G(QV^2-1),\qquad
+ z=n+\kappa-Wt-\rho.
+\]
+The unchanged product-square argument uses
+$F_*=(1+2a)^2$ and $Q=4\Delta^2U^2G$ to extract
+$G=g^2$, $E=\tau^2$, and $F_0=f_0^2$ with positive integral roots.
+Adjacent-Pell descent then proves
+\[
+ QV^2-(Q-1)y^2=1,\qquad z=\varepsilon gy\in\mathbb Z.
+\]
+The unchanged doubling and folding give a strong pair with $c^2\mid I$
+and a main index $c=\psi_A(p)$. The first norm gives
+\[
+ k=2\psi_{P_0}(n_0),\qquad P_0=2XY^2+1.
+\]
+The retained sign-transport estimates require only $D>2$; they prove
+$B\ge0$, $C>0$, and then identify $p=R$ with $3q<R<q^4-2$.
+No integrality of $\rho$ has been assumed in these steps.
+
+Now the integral carrier, after clearing $hH$, gives $D\mid hHe$.
+Since $q^4\mid D$, $h=q-1$, and $H\equiv-1\pmod q$, it follows that
+$q^4\mid e$. The base-one Pell recurrence gives
+\[
+ k\equiv2n_0\pmod{4XY^2},
+ \qquad q^4\mid 2n_0-R-1.
+\]
+Also $P_0>A$. If $n_0\ge R$, monotonicity would imply
+$k/2\ge\psi_A(R)=c$, contradicting $c>k$. Hence $1\le n_0<R$, so
+\[
+ |2n_0-R-1|<R<q^4.
+\]
+Thus $2n_0=R+1$. Returning to the full Pell congruence proves
+$4XY^2\mid e$, and \eqref{eq:xy-admissible} now proves $D\mid e$.
+The full denominator is recovered only after the index. No coprimality
+claim about all factors of $D$ is required.
+
+With $\rho$ integral, the inherited projection modulo $H$ forces
+$X=2^R$, and then $\kappa\in\mathbb Z$ and $h\mid B$. The unchanged
+parity and half-binomial reconstruction recover the native source and
+therefore a finite ZFC refutation.
+
+Conversely, choose the inherited canonical witnesses from a refutation.
+They have positive $e$ divisible by $4XY^2$, so $\rho=e/D$ is a positive
+integer for either new denominator. Keep the fresh strong and auxiliary
+Pell witnesses and set
+\[
+ n=gy+(1+hL)t+\rho-\kappa.
+\]
+All terms are integral, and the retained estimate $g>\kappa$ proves $n>0$.
+The carrier equals $gy$, giving a zero of \eqref{eq:xy-carrier}. The
+dependence $D=D(q,X,Y)$ ensures that choosing $n$ last is noncircular.
+This proves both existential directions and hence, by negation,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\mathbf x\in\mathbb Z_{>0}^{10}\,
+ P_{D,L}(\mathbf x)=0\bigr)
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+The full ordinary proof and explicitly identified inherited lemmas are
+retained in the compact packet.
+
+\subsection{Exact cost and degree}
+
+For $D=XY$ the three operations
+\[
+ D=XY,\qquad A-1=D+Y,\qquad V_0=DY
+\]
+replace four parent operations. The $q^4$ carrier adds one square of the
+already live value $q^2$. The resulting exact counts are
+\begin{center}
+\begin{tabular}{lrrrrr}
+\hline
+$(D,L)$&Multiplications&Additions&Subtractions&Total&Degree\\
+\hline
+$(XY,V^2)$&45&18&14&77&626\\
+$(XY,bV)$&46&18&14&78&464\\
+$(q^4,bV)$&47&18&14&79&460\\
+\hline
+\end{tabular}
+\end{center}
+Writing $q_0=\beta J$, $k_0=\eta+\zeta$, and $t_0=T+\alpha$, the full
+leading homogeneous forms are
+\begin{align*}
+ [P_{XY,V^2}]_{626}
+ &=2^{14}q_0^{378}w^{48}s^{110}i^{20}k_0^{64}t_0^4
+       (q_0-F-\alpha)^2,\\
+ [P_{XY,bV}]_{464}
+ &=-2^{10}q_0^{284}w^{36}s^{82}i^{14}k_0^{46}t_0^2,\\
+ [P_{q^4,bV}]_{460}
+ &=-2^{10}q_0^{284}w^{34}s^{80}i^{14}k_0^{46}t_0^2.
+\end{align*}
+These are nonzero for the actual fixed positive $\beta$. The independent
+checker verifies every coefficient of these forms and 28 exact polynomial
+identities covering every circuit gate. The actual fixed coefficients are
+reconstructed from their finite recipe, and altered gates are rejected.
+Such finite checks establish the delivered algebra; the unbounded
+consistency equivalence is the ordinary proof above and its stated
+inherited calibration.

@@ -1,0 +1,214 @@
+\section{The four fixed integers in the compact equations}
+\label{sec:compact-constants}
+
+This appendix specifies the complete coefficient tuple used in
+Section~\ref{sec:compact}.  It is the indexed BFS943 \emph{radix-67}
+tuple of the retained source, including its corrected initializer and
+the single source shift in \(M_F\).\cite{indexed,certificate}
+No radix-55 coefficient is substituted.  All indices, finite sets,
+digits, sums, floors, and decoding operations in this appendix define
+constants; they introduce no quantified unknowns into the equation.
+
+\subsection{Finite formulas for the coefficient integers}
+
+Put
+\[
+ \rho=2^{67},\qquad
+ \mathcal B=\rho^{8807},\qquad
+ \beta=\mathcal B-1,\qquad
+ G_m(x)=\sum_{j=0}^{m-1}x^j.
+\]
+The symbol \(\mathcal B\) here is a fixed radix power, distinct from the
+polynomial abbreviation \(B=(K_0+w)C-F\) in the compact equation.
+For integers \(a\le b\), write
+\([a,b]_{\mathbb Z}=\{a,a+1,\ldots,b\}\), and let an interval with
+upper endpoint smaller than its lower endpoint be empty.  Define
+\begin{align*}
+ \mathcal E={}&[0,942]_{\mathbb Z}
+   \cup[983,992]_{\mathbb Z}\cup[1003,1011]_{\mathbb Z}\\
+ &{}\cup[1013,1031]_{\mathbb Z}
+   \cup\{1063,1064,1095,2195,3296\}.
+\end{align*}
+Then
+\begin{align}
+ M_C={}&\beta-\sum_{e\in\mathcal E\setminus\{1\}}\rho^e
+                    -2\rho^{1063},\nonumber\\
+ M_F={}&\beta+4+(2^{51}-2)(\rho^{4393}+\rho^{5495})\nonumber\\
+ &+\rho^{1013}G_{10}(\rho)+\rho^{1065}G_9(\rho)
+          +\rho^{2195}+\rho^{3296}\nonumber\\
+ &+(2^{65}-1)\rho^{8792}G_{13}(\rho)
+          +(2^{19}-1)\rho^{8805},                 \label{eq:compact-fixedmasks}\\
+ K_0={}&\rho^{30}+\rho^{62}+\rho^{1100}
+       +\rho^{2201}+\rho^{8849}
+       +(\rho^{4393}+\rho^{5495})\Phi(1/\rho).
+                                                     \label{eq:compact-fixedK}
+\end{align}
+The polynomial \(\Phi\) is the following explicitly specified finite
+polynomial:
+\begin{align}
+ \Phi(x)={}&(1+2^{51})G_{943}(x)
+       -2^{10}\sum_{i=0}^{942}v(t_i)x^i\nonumber\\
+ &+\sum_{(b,e,m)\in\mathcal C}2^b x^eG_m(2x),
+                                                     \label{eq:compact-fixedPhi}\\
+ \mathcal C={}&\{
+   (10,1023,8),(18,1013,9),(27,1003,8),(35,983,9),\nonumber\\
+ &\hspace{8mm}(44,1031,1),(45,1022,1),(46,1011,1),(47,992,1),\nonumber\\
+ &\hspace{8mm}(48,1095,1),(49,2195,1),(50,3296,1)\}.
+                                                     \label{eq:compact-fixedcontrols}
+\end{align}
+The tiles \(t_i\) and their integer encoding \(v\) are given below.
+Every exponent occurring in \(\Phi\) is at most \(3296<4393\);
+therefore the reciprocal substitution in
+\eqref{eq:compact-fixedK} cancels exactly, leaving an integer.
+Equations~\eqref{eq:compact-fixedmasks}--\eqref{eq:compact-fixedcontrols}
+are fixed finite recipes, not arithmetic involving unknown exponents.
+
+\subsection{The 943 fixed indexed tiles}
+
+First decode the 430 triples \((u_j,v_j,d_j)\) by the next subsection.
+For a state index \(r\) and bit \(b\in\{0,1\}\), set
+\[
+ \mathfrak h(r,b)=2(r+1)+b.
+\]
+Let
+\[
+ \mathcal R=\{u_j:d_j=1,\ 0\le j<430\},\qquad
+ \mathcal L=\{u_j:d_j=0,\ 0\le j<430\},
+\]
+and, for each state index \(r\), define
+\[
+ \mathsf r_r=6+\bigl|\mathcal R\cap[0,r-1]_{\mathbb Z}\bigr|,
+ \qquad
+ \mathsf l_r=205+\bigl|\mathcal L\cap[0,r-1]_{\mathbb Z}\bigr|.
+\]
+The notation \(\mathsf r_r\) and \(\mathsf l_r\) denotes two fixed
+integer-valued tables.  The following table specifies every tile
+\(t_i=(w,n,e,s)\), \(0\le i\le942\), in its exact indexed order.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{longtable}{@{}ll@{}}
+\toprule
+Tile index \(i\) & Tile \(t_i=(w,n,e,s)\)\\
+\midrule
+\endfirsthead
+\toprule
+Tile index \(i\) & Tile \(t_i=(w,n,e,s)\)\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\(0\) & \((2,435,3,1)\)\\
+\(1\) & \((5,0,0,0)\)\\
+\(j+2,\quad j=2r+b<430\)
+ & \(\bigl((1-d_j)\mathsf l_{u_j},\mathfrak h(r,b),
+                 d_j\mathsf r_{u_j},v_j\bigr)\)\\
+\(432+b,\quad b=0,1\)
+ & \(\bigl(0,\mathfrak h(215,b),0,\mathfrak h(215,b)\bigr)\)\\
+\(434+b,\quad b=0,1\) & \((0,b,0,b)\)\\
+\(424+2\mathsf r_r+b,\quad r\in\mathcal R,\ b=0,1\)
+ & \(\bigl(\mathsf r_r,b,0,\mathfrak h(r,b)\bigr)\)\\
+\(424+2\mathsf l_r+b,\quad r\in\mathcal L,\ b=0,1\)
+ & \(\bigl(0,b,\mathsf l_r,\mathfrak h(r,b)\bigr)\)\\
+\(924+j,\quad 0\le j<4\)
+ & \(\bigl(0,j+430\lfloor j/2\rfloor,0,438\bigr)\)\\
+\(928\) & \((2,434,2,0)\)\\
+\(929\) & \((3,436,4,4)\)\\
+\(930\) & \((4,436,4,0)\)\\
+\(497+t,\quad t=434,435,436\) & \((1,438,1,t)\)\\
+\(\substack{934+3a+b-6\lfloor a/4\rfloor\\
+             a\in\{0,1,4\},\ b=0,1,2}\)
+ & \((a,437,b,437)\)\\
+\end{longtable}
+\endgroup
+
+For a fixed tile \(t=(w,n,e,s)\), the encoding used in
+\eqref{eq:compact-fixedPhi} is
+\[
+ v(t)=w+2^8n+2^{17}e+2^{25}s+127\cdot2^{34}.
+\]
+These tile coordinates are bound variables in a constant definition;
+they are unrelated to the independent positive unknowns that happen to
+use some of the same letters.
+
+\subsection{A closed decoder for all 430 actions}
+
+For nonnegative integers \(A,k\) and an integer base \(b\ge2\), define
+\[
+ D_b(A,k)=\left\lfloor\frac{A}{b^k}\right\rfloor\bmod b,
+ \qquad
+ a\bmod b=a-b\left\lfloor\frac ab\right\rfloor.
+\]
+Let \(\mathcal A\) be the fixed integer specified in the next subsection.
+Set
+\begin{align*}
+ N&=\mathcal A\bmod2^{636},\\
+ T_0&=\left\lfloor\mathcal A/2^{636}\right\rfloor\bmod2^{1675},\\
+ E_0&=\left\lfloor\mathcal A/2^{2311}\right\rfloor.
+\end{align*}
+For \(0\le r<215\), \(b\in\{0,1\}\), and \(j=2r+b\), put
+\begin{align}
+ \nu_j&=D_2(N,j),&
+ \sigma_j&=\sum_{k=0}^{j-1}\nu_k,\nonumber\\
+ m_r&=D_2(N,430+r),&
+ \tau_r&=\sum_{k=0}^{r-1}m_k,\nonumber\\
+ F_r&=14(1-m_r)+m_rD_{16}(E_0,\tau_r),\nonumber\\
+ u_j&=\nu_j(1+\sigma_j)
+          +(1-\nu_j)D_{216}(T_0,j-\sigma_j),\nonumber\\
+ v_j&=D_2(F_r,2b),&
+ d_j&=D_2(F_r,2b+1).                              \label{eq:compact-actiondecoder}
+\end{align}
+Empty sums are zero.  In particular,
+\((v_0,d_0,u_0)=(1,1,1)\).  The constructor uses this actual first
+target, including the source's state renaming.
+
+\subsection{The complete 436-character seed}
+
+The alphabet in increasing digit order \(0,1,\ldots,61\) is
+\begin{center}
+\texttt{0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}.
+\end{center}
+Concatenate the following seven full lines and final two-character line
+with no spaces or newlines.  If the resulting 436 digits have values
+\(e_0,\ldots,e_{435}\), define
+\[
+ \mathcal A=\sum_{j=0}^{435}e_j62^{435-j}.
+\]
+\begin{lstlisting}[language={},basicstyle=\ttfamily\footnotesize,
+  columns=fixed,keepspaces=true,breaklines=false]
+BxEnhvy6NipzkWmROo0GsA3uK3twWLxscLq20UTumy5Cdu461LwD6g7RDNzF8Y
+iYDFTpB8ehAypd7d6OsOL4APamnJeNXQypUezCmW9n4oXP6XfgmiWuAWZ8ZJ7U
+OP7gu4kVdlGZqZHULQMar1dXNeJW4i7oNVI8usp8BlovjjZbwPCovZI328fRUq
+4q92R81s5GjWQaQfGhkq9UYMK3rRMaBmsOIBkJqc2cj2VRIZ6mjzkBIOkW9SjZ
+FzeA6J5u4j3sBL3SdgwXzM9mHvQivu8EJ1TBTpRhHDqZIbmYgwQ8VqTAFotl6F
+We1YC554GKrVHsA8oUGKSA6F6k5KREBSD0Tgd7bFALY84LLbpw574BQyvdoHrl
+0Oe35uwDf15DpT6VJWZBjSbHPpPAINYTte0eUxnTFTKBlGj8Am6sb1gLldh8WZ
+8P
+\end{lstlisting}
+
+\subsection{Literal bytes and reconstruction check}
+
+The four resulting integers have the following exact bit lengths:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Fixed integer & Bit length\\
+\midrule
+\(\beta\) & 590\,069\\
+\(M_C\) & 590\,069\\
+\(M_F\) & 590\,070\\
+\(K_0\) & 592\,884\\
+\bottomrule
+\end{tabular}
+\end{center}
+The artifact contains their canonical unsigned little-endian bytes,
+compressed separately, with both compressed and raw SHA-256 identities
+in each graph's coefficient binding.  The included
+\texttt{rebuild\_coefficients.py} independently reconstructs the decoded
+actions, all 943 indexed tiles, and all four integers from this finite
+recipe.  It verifies every raw byte; \texttt{verify.py} also verifies
+the inequalities \eqref{eq:compact-portbox}.  The table and seed therefore give a complete
+finite specification; the coefficient files provide a convenient second
+representation of the same four constants, with no remaining compiler
+step needed to define the polynomial.

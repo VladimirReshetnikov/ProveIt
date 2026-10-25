@@ -1,0 +1,12 @@
+The actual source replay authenticates 83 inherited files and checks all
+three selected arithmetic variants. It rebuilds 16 JSON files per variant
+byte for byte and rejects 29 deliberate corruptions. A separately written
+checker, importing neither the producer nor its polynomial implementation,
+checks the 260- and 261-variable source changes, every monic restoration,
+and every final coefficient. The independent shear checker verifies all
+76 substitutions, both products of the forward and inverse integral
+coordinate matrices, the reverse residual identity, and three corrupted
+coordinate/coefficient cases. Normal and optimized Python runs pass.
+The root verifier additionally identifies the independently checked final
+rows with the principal file and checks that every printed residual is
+generated from that same complete list.
