@@ -11,6 +11,35 @@ A smaller formula must retain a complete ordinary proof chain, including
 its coefficient tuple and witness domain. Local gadget counts alone do
 not establish the size of a complete consistency equation.
 
+## 25 October continuation
+
+The maintained page now uses the fully reviewed complemented three-anchor47
+tuple. Its four raw integers total207214 bytes versus242484 for radix55,
+while complete TeX shrinks50 bytes and extracted nonwhite PDF text30
+characters at unchanged fonts. The15-positive/66-operation/degree157
+integer-leaf profile is unchanged. The new finite controller conditions
+have been discharged; see the [complete candidate](candidates/one-page-complemented47-independent/README.md).
+
+The [rational-rank factorization](research/rational-rank-factorization65/README.md)
+gives65 operations for the *same* polynomial when fixed rational leaves
+are allowed. Its universal identity applies to each coherent tuple
+separately. The saved65 graph is bound to preserved radix55; this is a
+separate operation convention, not an integer-leaf65 record or a claim
+that the47 and55 polynomials are identical.
+
+The requested neighboring research is relevant at two different interfaces.
+[Hilbert Tenth](../HilbertTenthProblem/README.md) supplies the half-binomial
+and Pell techniques already used by the front; a new transfer must count
+all gates and restore complete native witnesses.
+[Busy Beaver ZFC](../BusyBeaver/Research/ZFC/README.md) supplies the calibrated
+K215 machine already encoded by the430 actions. Further seed savings need
+a smaller complete calibrated machine or an improved encoding of that exact
+machine, including initialization. State count alone is insufficient.
+
+Continue with rational-factorization specialization, integer-only rank and
+transport sharing, and smaller finite label/seed recipes. Preserve exact
+zero-set maps, full coefficient recipes and domain/metric distinctions.
+
 ## Current comparison points
 
 | Domain | Variables | Operations | Degree | Use |

@@ -24,30 +24,28 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 [latest review](PROPOSAL_REVIEW_LATEST.md). New complete positive-domain
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
-The current [equation.pdf](equation.pdf), with standalone
-[TeX](equation.tex), prints the complete coherent radix55 equation in fifteen
-strictly positive unknowns, exact degree157 and66 live operations. Every
-constant,943 tiles and the full436-character seed/decoder fit on one Letter
-page in9pt body/7.7pt seed. Relative to the preserved
-[radix67 compact page](candidates/one-page-compact66/equation.pdf), raw
-coefficient bytes fall295388 to242484, saving52904 (17.9%); complete TeX
-falls5244 to5195 bytes and actual nonwhite PDF text2801 to2764 characters.
-The PDF file grows159875 to160082 bytes, so its compression is a separate
-metric from those reductions. All four new ports change coherently: the
-free-port P66 template/domain/cost/degree are unchanged, while the new
-specialized polynomial differs from the old radix67 specialization.
+The current [equation.pdf](equation.pdf) and [TeX](equation.tex) now print
+the complete complemented three-anchor radix47 equation: fifteen positive
+unknowns, exact degree157,66 integer-leaf operations. The new four constants
+total**207214 raw bytes**,35270 fewer than radix55 (14.5%). Complete TeX
+is5145 bytes, extracted nonwhite `pdftotext -layout` text2734 characters,
+and PDF159762 bytes; the previous values were5195,2764 and160082.
+Fonts remain9pt/7.7pt on one Letter page.
 
-Two complete final statics, all ten first applications and six byte-exact
-fresh applications pass, with163 negative/22 valid controls per complete
-audit and both actual visual reviews PASS. The
-[closed evidence](research/compact66-radix55-page-verification/README.md)
-and [ROOT page acceptance](reviews/one-page-compact66-radix55-root-peer.md)
-bind the whole tuple, every actual printed formula, full66-gate liveness
-and degree157 leader. The ordinary55 wrap/unit proofs and both complete
-positive native/Pell maps provide full source calibration, including the
-canonical `R=3 mod4` squared-modulus converse. This is inherited ordinary
-mathematics, not a new native/compiler/Lean replay. The initial false mod5
-unit premise and all first findings/repairs remain preserved.
+The complete local proof has separate root and peer mathematical audits.
+A newly authored stdlib verifier discharges Pc3 at lambda1012691, with new
+H residues39/6181/1009404 and lift quotient282338. Its normal and optimized
+runs reproduce the entire deterministic certificate. A separate materializer
+checks the actual complete TeX, all four integer bytes, coherent evaluator
+bindings and whole66-gate liveness; both modes pass. Two actual visual
+inspections pass. See the [complete candidate](candidates/one-page-complemented47-independent/README.md)
+and [independent finite/page review](reviews/complemented47-independent-finite-page-peer.md).
+
+The old55 page and CURRENT record are preserved, together with every frozen
+conditional proposal and earlier observation. The new polynomial specializes
+the same uniform66/157 front at a different coherent tuple. The ordinary
+native/Pell/refutation chain is retained explicitly; there is no new formal
+kernel replay or consistency decision. Research remains active.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 still saves nineteen operations and171 degree while adding five unknowns.

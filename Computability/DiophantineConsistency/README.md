@@ -19,39 +19,40 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **entire equation in fifteen positive
-unknowns, exact degree157, with a66-operation evaluator**. Every fixed
-constant, the full436-character numeral, alphabet, decoder and943 tiles
-fit on one Letter page, with9-point body and7.7-point seed/footer.
-The coherent radix55 recipe reduces the four raw constants from295388
-to242484 bytes, a52904-byte reduction (17.9%). Complete TeX falls5244
-to5195 bytes, and actual extracted nonwhite PDF text2801 to2764 characters,
-saving49 bytes and37 printed characters at unchanged fonts. The PDF file
-itself grows159875 to160082 bytes, an increase of207 bytes; file compression,
-raw coefficient storage and complete printed size are separate metrics.
+[equation.tex](equation.tex) print the **entire complemented three-anchor
+radix47 equation in fifteen positive unknowns, exact degree157, with a
+66-operation integer-leaf evaluator**. All four fixed constants, the
+436-character numeral, alphabet, decoder and943 tiles fit on one Letter
+page at the retained9-point body and7.7-point seed/footer sizes.
 
-ALL four radix55 ports change together. The free-port P66 template,
-fifteen-positive domain,66 live operations and degree157 are unchanged;
-the new specialization is a different polynomial from the old radix67
-specialization. The complete ordinary proof uses the accepted
-[55-bit wrapping controller](research/compact66-radix55-wrap-controller/README.md),
-its [bounded unit evidence](research/compact66-radix55-unit-probe-verification/README.md)
-and both positive native/Pell maps, including canonical `R=3 mod4` and
-squared-modulus reconstruction. The known controller zero modulo5 is
-handled by wrapping, not inverted. Full source calibration is retained
-as an ordinary mathematical contract, not a fresh native or Lean replay.
+The [complete new candidate](candidates/one-page-complemented47-independent/README.md)
+reduces raw coefficient storage from242484 to**207214 bytes**, saving35270
+(14.5%). Complete TeX falls5195 to5145 bytes; nonwhite PDF text extracted
+with `pdftotext -layout` falls2764 to2734 characters. PDF bytes fall160082
+to159762. These are distinct measures; degree, variables and integer-leaf
+operation count are unchanged. The entire coherent tuple changes, so its
+specialized polynomial differs from the preserved radix55 polynomial.
 
-The [complete page evidence](research/compact66-radix55-page-verification/README.md)
-and [ROOT page acceptance](reviews/one-page-compact66-radix55-root-peer.md)
-bind all23 actual printed cuts,66 live gates, the full degree157 leader,
-every new raw coefficient byte, all3297 Phi coefficients,943 ordered
-tiles,430 actions and436 positional seed coefficients. Two FULL final
-statics, all ten first commands and six fresh commands pass, with all
-18 fresh capture files byte-exact. Each of the six complete audits retains
-163 negative and22 valid controls, and both actual visual reviews pass.
-[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the exact page and
-external closed evidence manifest. All earlier findings and failed or
-interrupted predecessor observations remain preserved.
+The [whole ordinary proof](research/compact66-complemented-three-anchor-radix47/README.md)
+uses positive complemented colors to remove four occupation markers, with
+explicit29-to11 cyclic carries and protected local tests. Its formerly open
+finite controller condition is now [discharged independently](research/complemented47-controller-independent/README.md):
+lambda1012691, bracket residues39/6181/1009404 and valuation-one lifting.
+The [root](reviews/complemented47-continuation-root.md) and
+[independent](reviews/compact66-complemented-three-anchor47-continuation-peer.md)
+mathematical audits preserve both complete positive witness directions and
+the actual-rank construction. Normal/optimized finite and whole-port checks,
+complete actual-source comparison and two visual inspections pass; see the
+[finite/page review](reviews/complemented47-independent-finite-page-peer.md).
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the new page and records
+the earlier current metadata verbatim in the candidate directory.
+
+The proof remains ordinary mathematics composed with the retained explicit
+K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
+proof, consistency decision or global minimum is claimed. Lean remains
+paused. The [radix55 page](candidates/one-page-compact66-radix55/equation.pdf),
+its complete evidence and all historical conditional/failure records remain
+preserved. The goal continues with smaller formulas and encodings.
 
 The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
 [grouped66 page](candidates/one-page-grouped66/equation.pdf) and
@@ -276,12 +277,13 @@ The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/R
 now prioritizes a stronger combination: complemented genuine labels are also
 positive, so the four-marker deletion can use smaller selector coefficients.
 The [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)
-keeps all incoming numeric certificates and page claims unverified. A fresh
-complete complemented-three-anchor47 proof is being authored, and a [separate CODE ONLY amendment](reviews/compact66-complemented-three-anchor47-probe-code-only-amendment.md)
+keeps all incoming numeric certificates and page claims unverified. The then-prospective
+complete complemented-three-anchor47 proof is now resolved by the current
+page and finite evidence above. The historical [separate CODE ONLY amendment](reviews/compact66-complemented-three-anchor47-probe-code-only-amendment.md)
 permits a new unsealed draft while preserving the old one. Its preliminary hand
-bounds are29-to11, and its occupied clause fits within one digit. The combined
-source still needs two FULL nonauthor reviews, new finite discharge and a
-complete coherent page before a significant-only PDF/TeX update. Incoming75/626
+bounds are29-to11, and its occupied clause fits within one digit. Those
+historical preparation requirements are preserved in their original records; the later independent implementation, ordinary reviews and complete
+page checks are linked above. Incoming75/626
 ten-positive circuits and smaller direct quartics also merit full review.
 
 The [exact47 layout identities](research/compact66-three-anchor-radix47-layout-identities/README.md)
