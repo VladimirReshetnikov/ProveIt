@@ -2095,3 +2095,23 @@ remain unchanged while the staged 84/85 finite packet and complete page are
 prepared. A significant verified improvement will be reflected in the
 maintained PDF and TeX, with complete predecessors preserved. Lean remains
 paused and the size-reduction goal remains active.
+
+
+## Doubled product-square equations accepted at84/436 and85/328
+
+The [complete finite packet](research/ten-positive-doubled-product-square/RESULTS.md)
+now passes both static reviews, all four released author checks and four
+fresh root replays. Every whole root JSON and stdout agrees byte for byte
+with the author. The two ten-positive equations use84 operations at exact
+degree436 or85 at328, with all four unchanged indexed coefficient payloads.
+The repaired ordinary proof explicitly retains canonical `R>3q` for shifted
+positive T. The whole source/native interpretation, all actual gates and
+full leading forms are bound; see the
+[root acceptance](reviews/ten-positive-doubled-product-square-root-peer.md).
+
+Both improve the86/466 comparison in operation count and degree. They save
+operations relative to the maintained92/283 page while increasing degree.
+The85/328 form is being prepared as a complete-page successor with the same
+entire printed constants; no PDF is promoted before its separate formula,
+render and visual checks pass. The327-variable quartic is unchanged. Lean
+remains paused, and no global optimum or consistency assertion is made.
