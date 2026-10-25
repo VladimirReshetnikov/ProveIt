@@ -2299,3 +2299,25 @@ all eight fresh root JSON/stdout records match the author byte for byte.
 Both actual PDF visual reviews pass. See the [root acceptance](reviews/one-page-shared-odd9-root-peer.md).
 The main ten-positive92/283 PDF/TeX, all predecessors and the Lean pause
 remain preserved while newer compact proposals undergo separate review.
+
+
+## Complete fused-nine quartic reaches327 integer variables
+
+The [complete centered equation](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
+and [entire quartic](research/signed-pell-cap-nine-factor-projections/data/centered/expanded_polynomial.json)
+have327unrestricted integer unknowns,216rows,5,718terms, exact degree4
+and height128,446 (residual height256). This saves two unknowns and ten
+terms against329 at unchanged rows/heights. Actual retained maps account
+for every change: six old guard auxiliaries disappear; the existing p8
+and three fresh mixed-graph auxiliaries survive. No other old mapped
+retained coordinate is lost. The grouped364/4,574-term alternative stays.
+
+Both full static reviews, all five author commands and four fresh root
+checks/rebuilds pass. Both collectors reject54actual corruptions. Every
+full root JSON/stdout record is byte-identical to its author counterpart.
+All147monic restorations/two actual free coordinates/Horn overwrites,
+both integer translations, every coefficient, seven whole baseline charts
+and complete native/source calibration are checked. See the [root acceptance](reviews/signed-pell-cap-nine-factor-projections-root-peer.md).
+The accepted327equation and all predecessors remain preserved while new
+Round16 claims undergo separate review. Canonical92/283 and the Lean pause
+remain unchanged.

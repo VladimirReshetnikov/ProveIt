@@ -40,7 +40,8 @@ not establish the size of a complete consistency equation.
 | Integers | 10 | 471 | 1,245,324 | Shorter source-aware approximation guard |
 | Integers | 10 | 475 / 478 / 512 | 1,179,788 / 1,114,252 / 1,080,888 | Short guard combined with compact shears |
 | Integers | 37 | not optimized | 4 | Reviewed joint-sign quartics |
-| Integers | **329** | not optimized | **4** | Complete refined-product chart;216 rows,5,728 terms,height128,446 |
+| Integers | **327** | not optimized | **4** | Complete fused-nine chart;216 rows,5,718 terms,height128,446 |
+| Integers | 329 | not optimized | 4 | Preserved refined-product chart;216 rows,5,728 terms,height128,446 |
 | Integers | 359 | not optimized | 4 | Preserved shared-cap chart;222 rows,6,058 terms,height128,446 |
 | Integers | 364 | not optimized | 4 | Grouped shared-cap term tradeoff;227 rows,4,574 terms,height128,446 |
 | Integers | 22 | 119 | 14 | Centered joint-guard combination;118 operations at degree16 is retained |
@@ -217,12 +218,14 @@ lowers degree16 to14. The result has22 integer unknowns and119 operations,
 improving the delivered degree14 evaluator by four gates. Complete inverse
 row maps, the whole fixed six-port tuple and an exact leading form are checked.
 
-1. Further optimize the literal433-operation and953-operation circuits,
+1. Further optimize the literal413-operation and953-operation circuits,
    preserving their exact polynomials. Search for shared powers and algebraic
    rearrangements that
    remove live gates, with local exact identities and independent modular
    evaluation/topology checks.
-2. Simplify the short positive equations and new root/guard mergers.
+2. Review the new Staged Certificates84/85-operation claims and Round16
+   shared-cap quartics, then simplify the short positive equations and
+   new root/guard mergers.
    Seek an actual improvement over the existing variable/degree/operation
    choices, proving both directions of each witness transformation.
 3. Reduce the printed constant recipes. The shortest inspected full page
@@ -2127,3 +2130,25 @@ all eight fresh root JSON/stdout records match the author byte for byte.
 Both actual PDF visual reviews pass. See the [root acceptance](reviews/one-page-shared-odd9-root-peer.md).
 The main ten-positive92/283 PDF/TeX, all predecessors and the Lean pause
 remain preserved while newer compact proposals undergo separate review.
+
+
+## Complete fused-nine quartic reaches327 integer variables
+
+The [complete centered equation](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
+and [entire quartic](research/signed-pell-cap-nine-factor-projections/data/centered/expanded_polynomial.json)
+have327unrestricted integer unknowns,216rows,5,718terms, exact degree4
+and height128,446 (residual height256). This saves two unknowns and ten
+terms against329 at unchanged rows/heights. Actual retained maps account
+for every change: six old guard auxiliaries disappear; the existing p8
+and three fresh mixed-graph auxiliaries survive. No other old mapped
+retained coordinate is lost. The grouped364/4,574-term alternative stays.
+
+Both full static reviews, all five author commands and four fresh root
+checks/rebuilds pass. Both collectors reject54actual corruptions. Every
+full root JSON/stdout record is byte-identical to its author counterpart.
+All147monic restorations/two actual free coordinates/Horn overwrites,
+both integer translations, every coefficient, seven whole baseline charts
+and complete native/source calibration are checked. See the [root acceptance](reviews/signed-pell-cap-nine-factor-projections-root-peer.md).
+The accepted327equation and all predecessors remain preserved while new
+Round16 claims undergo separate review. Canonical92/283 and the Lean pause
+remain unchanged.

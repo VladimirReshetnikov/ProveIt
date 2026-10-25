@@ -66,19 +66,20 @@ over that predecessor. Its lower
 variable count carries substantially higher cost and degree, so the
 canonical92/283 page remains the displayed compact form.
 
-For direct degree-four equations, the [complete refined-product form](research/signed-pell-cap-refined-product-projections/data/centered/equation.json)
-now reaches **329 unrestricted integer unknowns**, with216 rows,5,728 terms
-and height128,446. It saves30 variables, six rows and330 terms against the
+For direct degree-four equations, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
+now reaches **327 unrestricted integer unknowns**, with216 rows,5,718 terms
+and height128,446. It saves32 variables, six rows and340 terms against the
 preserved [359-variable shared-cap form](research/signed-pell-cap-projections/data/centered/equation.json).
 Its ordinary source theorem, complete Horn/projection inverses, independent
 normal/optimized coefficient checks and byte-exact rebuilds pass; all eight
 fresh root records match the author byte for byte. See the
-[root acceptance](reviews/signed-pell-cap-refined-product-projections-root-peer.md).
+[root acceptance](reviews/signed-pell-cap-nine-factor-projections-root-peer.md).
+The preceding329-variable refined-product form remains preserved.
 The [complete grouped alternative](research/signed-pell-cap-grouped-quartic/data/equation.json)
 uses364 variables,227 rows and4,574 terms at the same heights. Its unique
 five-sum extension preserves every old coordinate and passes four fresh root
 checks/rebuilds; see the [root acceptance](reviews/signed-pell-cap-grouped-quartic-root-peer.md).
-It saves1,484 terms while adding five variables. The earlier
+Against the359cap chart it saves1,484 terms while adding five variables. The earlier
 [433-variable helper form](research/round15-helper-guard-projections/full-data/joint_helper/centered/equation.json),
 the436/439 intermediates,
 [442-variable parent](con-zfc-diophantine-forms/125-unified-binomial-round15/direct/integer442/)
@@ -2033,3 +2034,25 @@ all eight fresh root JSON/stdout records match the author byte for byte.
 Both actual PDF visual reviews pass. See the [root acceptance](reviews/one-page-shared-odd9-root-peer.md).
 The main ten-positive92/283 PDF/TeX, all predecessors and the Lean pause
 remain preserved while newer compact proposals undergo separate review.
+
+
+## Complete fused-nine quartic reaches327 integer variables
+
+The [complete centered equation](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
+and [entire quartic](research/signed-pell-cap-nine-factor-projections/data/centered/expanded_polynomial.json)
+have327unrestricted integer unknowns,216rows,5,718terms, exact degree4
+and height128,446 (residual height256). This saves two unknowns and ten
+terms against329 at unchanged rows/heights. Actual retained maps account
+for every change: six old guard auxiliaries disappear; the existing p8
+and three fresh mixed-graph auxiliaries survive. No other old mapped
+retained coordinate is lost. The grouped364/4,574-term alternative stays.
+
+Both full static reviews, all five author commands and four fresh root
+checks/rebuilds pass. Both collectors reject54actual corruptions. Every
+full root JSON/stdout record is byte-identical to its author counterpart.
+All147monic restorations/two actual free coordinates/Horn overwrites,
+both integer translations, every coefficient, seven whole baseline charts
+and complete native/source calibration are checked. See the [root acceptance](reviews/signed-pell-cap-nine-factor-projections-root-peer.md).
+The accepted327equation and all predecessors remain preserved while new
+Round16 claims undergo separate review. Canonical92/283 and the Lean pause
+remain unchanged.
