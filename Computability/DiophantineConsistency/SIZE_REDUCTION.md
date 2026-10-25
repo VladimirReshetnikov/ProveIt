@@ -2354,3 +2354,22 @@ proofs and the complete indexed/native/refutation interpretation remain
 explicit; the formal T-alpha identity is never a positive inverse. This
 is a minor checkpoint, so the maintained85/328 PDF/TeX stays unchanged.
 All complete predecessors are preserved; Lean remains paused.
+
+
+## Existing constructor expressions shorten the prospective strict product
+
+The [weighted-product addendum](research/round16-weighted-guard-products/PROPOSAL.md)
+passes [root](reviews/round16-weighted-guard-products-root.md) and
+[independent ordinary review](reviews/round16-weighted-guard-products-ordinary-peer.md).
+Two existing affine expressions equal positive-F-weighted pairs of four
+distinct required factors. Their product with the remaining four factors
+needs five monic quadratic definitions in place of seven; the strict graph
+represents F^2 times the old product and uses fresh ternary witnesses.
+The parent Hstar/remainder chronology restores F>=1 before this graph.
+
+The note also proves a separate private-slot presentation of Hstar using
+the otherwise orphan N^2 coordinate175. Actual old projection records show
+why neither source presentation alone determines a projected saving:
+one weighted intermediate was previously eliminated quadratically, and the
+orphan N^2 slot was already removed. Full new source and projection checks
+are being prepared; no new quartic count or maintained-page change is claimed.
