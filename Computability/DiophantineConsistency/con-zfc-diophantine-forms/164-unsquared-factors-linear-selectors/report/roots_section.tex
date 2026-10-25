@@ -1,0 +1,224 @@
+\section{Thirteen integers at degree 152 in 119 operations}
+\label{sec:root119}
+The literal polynomial \texttt{integer13\_degree152\_ops119.json} has thirteen
+unrestricted integer inputs, exact degree $152$, and $119$ live binary operations:
+$71$ multiplications, $24$ additions and $24$ subtractions. Squares and scalar
+multiplications are charged. This strictly improves the incoming $13/152/126$
+evaluator. Against the earlier $13/156/117$, it trades two operations for four
+degrees. The new whole polynomial is exactly the incoming one under
+$n_{\rm old}=n_{\rm new}-k$; this is a polynomial automorphism, not a numerical
+or generic-parameter comparison. All six supplied coefficient integers are
+unchanged. Intermediate registers below are abbreviations, not unknowns.
+
+The ordinary signed-index and native/compiler/refutation theorem is inherited
+from \path{roots/inherited/PROOF.md}, Sections 1--5, with its full retained
+source packet and finite numeral recipe. Thus ordinary ZFC proves that universal
+integer nonvanishing is equivalent to syntactic $\operatorname{Con}(\mathrm{ZFC})$.
+This does not assert consistency, global minimality, a new native encoding or
+a new end-to-end proof-assistant certificate. The incoming improvement from
+$XY$ to $XY^2$ in the first-index modulus and from $q^8$ to $q^6$ in the budget
+is credited to that source, not to the present evaluator change.
+
+\subsection{The full division-free polynomial}
+The thirteen inputs, all in $\mathbb Z$, are
+\[
+ j,C,z,h,r,v,w,T,c,n,y,p_1,p_2.
+\]
+The complete fixed ports are $\beta,K_0,M_C,M_F,A_c,B_c$, with $M_F$ already
+shifted. In particular $\beta=2^{1064921}-1$, $A_c=2^{1113}$ and
+$B_c=2^{666104}$. Their full bytes are in the component's
+\texttt{inherited/coefficients}, not unspecified parameters. Define
+\begin{gather*}
+ J=6j+1,\quad q_m=\beta J,\quad q=q_m+1,\\
+ W=12w+4,\quad X=qW,\quad Y=v,\\
+ F=(K_0+W)C-zq_m,
+ R=[q(q-F)-C](q^2-1)+(M_C+qM_F)J,\\
+ E=XY,\quad a=E+Y,\quad H=4a+3,\quad \Delta=a^2+H,\\
+ \ell=EY,k=R+1+h\ell,\eta=c-Yk,L=\ell k,\\
+ I=(2r+1)c^2,D_s=\Delta I^2,F_s=1+D_s,Q=\Delta D_s,\\
+ V=F_s(cT-R)-c,\quad q_3=q^3,M=2q_3,U=MH,\\
+ K_{\rm lo}=X(2X-3c)-2,
+ D_{\rm err}=(A_cF-q)^2+(B_cC-q)^2,\\
+ B=(Yk)^2(q^2-D_{\rm err})-q^2[4(Y\eta)^2+(kq^2)^2],\\
+ G=4(B-p_1^2-p_2^2)-3,D_t=1+L(L+k),\\
+ g_a=U^2G,d_b=4U^2D_t,f_c=16U^2F_s,\\
+ Z_c=U(n+2L)+MK_{\rm lo}+H(Y-q_3),\\
+ g_c=g_a+f_c,Z_2=Z_c^2,g_{af}=g_af_c,\\
+ K=(Z_2-g_c-d_b)^2-4(g_{af}+d_bg_c),\\
+ N=K^2-64g_{af}d_bZ_2,u_2=(V+y)^2,\\
+ E_a=u_2-Q(u_2-V^2),P=(N+1)E_a-1.
+\end{gather*}
+The auxiliary identity
+\begin{equation}\label{eq:roots-aux119}
+ E_a=V^2-(Q-1)y(2V+y)
+\end{equation}
+is exact. Reusing $u_2$ saves one binary operation.
+
+\subsection{Whole-polynomial identity and inverse chart}
+Write, for proof only,
+\[
+ Z=Un+MK_{\rm lo}+H(Y-q_3),\quad b=2L+k,\quad
+ A(z)=(z+Uk)^2+4U(Lz-U).
+\]
+The incoming norm uses
+\begin{align*}
+ K_{\rm old}&=(A(Z_{\rm old})-g_a-f_c)^2
+                 -4[g_af_c+d_b(g_a+f_c)],\\
+ N_{\rm old}&=K_{\rm old}^2
+                 -64g_ad_bf_c[A(Z_{\rm old})+d_b].
+\end{align*}
+Under $n_{\rm old}=n-k$ its numerator becomes $Z_{\rm old}=Z-Uk$, and
+\begin{align}
+ A(Z-Uk)&=Z^2+4ULZ-4U^2(1+Lk),\label{eq:roots-cut119}\\
+ A(Z-Uk)+d_b&=(Z+2UL)^2=Z_c^2.\label{eq:roots-square119}
+\end{align}
+Therefore $K=K_{\rm old}$ and $N=N_{\rm old}$ identically. Together with
+\eqref{eq:roots-aux119}, this proves
+$P_{\rm new}(n)=P_{\rm incoming}(n-k)$ as whole polynomials. Since $k$
+is independent of $n$, the inverse is $n_{\rm new}=n_{\rm old}+k$ on every
+integer assignment. Only the degree-five shift $k$ is removed; removing the
+degree-nine $2L$ as well would destroy the degree-$152$ cancellation.
+
+\subsection{All signed roots and all boundary cases}
+We give direct maps to the fifteen-input parent as an additional unbounded
+check. Unconditionally, $q$ is even and nonzero, because $\beta>1$ is odd and
+$\beta(6j+1)=-1$ is impossible. Thus $|q|\ge2$, $|W|\ge4$, $|X|\ge8$,
+and $X$ is even. Since $a=(X+1)Y$ is zero or has absolute value at least $7$,
+\[
+ \Delta=(a+2)^2-1\ge3.
+\]
+$H$ is odd and nonzero, so $U\ne0$. Also $\ell=XY^2$ is even,
+$\ell(\ell+1)\ge0$, and
+\[
+ D_t=1+\ell(\ell+1)k^2\ge1\text{ is odd},\qquad F_s\ge1.
+\]
+$G\equiv1\pmod4$ is odd and nonzero. These facts hold before any guard or
+zero assumption. Since $N$ is a square modulo $4$, $N\ne-2$. At $P=0$ the
+integer factors $N+1,E_a$ are units; the first cannot be $-1$. Thus
+$N=0,E_a=1$, and the converse is immediate.
+
+Put $\rho=Z_c/U\in\mathbb Q$. The universal complex identity is
+\begin{equation}\label{eq:roots-factors119}
+ \frac{N}{U^8}=
+ \prod_{\varepsilon\in\{\pm1\}^3}
+ (\rho-\varepsilon_1\sqrt G-2\varepsilon_2\sqrt{D_t}
+                           -4\varepsilon_3\sqrt{F_s}).
+\end{equation}
+It follows by multiplying all eight factors. If $G<0$, its square root
+is the sole nonreal term of each factor, with nonzero imaginary part; therefore
+$N=0$ is impossible. Hence $G>0$. The case $G=0$ is excluded by oddness;
+$D_t,F_s$ are strictly positive, including their possible value $1$.
+
+Write the three radicands as $u_i^2d_i$ with $u_i>0$ integral and $d_i$
+squarefree. Distinct squarefree radicals, including $\sqrt1$, are independent
+over $\mathbb Q$: in the multiquadratic field generated by all their primes,
+character averaging of the sign-change automorphisms projects onto each radical.
+In any vanishing factor of \eqref{eq:roots-factors119}, group terms by squarefree
+class. An irrational group containing $G$ has an odd coefficient plus even
+coefficients. A group without $G$ but containing $D_t$ has a coefficient of
+exact $2$-adic valuation one plus at most a multiple of four. A group containing
+only $F_s$ is nonzero. None can cancel; $u_i$ for $G,D_t$ are odd. An even
+squarefree class can contain only $F_s$ and is excluded likewise. This explicitly
+handles shared classes; no generic distinctness assumption is used.
+
+Every class is therefore $1$, and the signs of the zero factor give integers
+\begin{equation}\label{eq:roots-integrals119}
+ g^2=G,\quad\tau^2=D_t,\quad f^2=F_s,\qquad
+ \rho=g+2\tau+4f.
+\end{equation}
+In particular $\rho$ is odd and nonzero. No division by $\rho$ was used.
+All eight sign choices are allowed; $f$ and $\tau$ were not assumed positive.
+
+The fifteen-input kernel retains the common coordinates but has additional
+$f,p_3$, and residuals
+\begin{align*}
+ A&=(Z+Uk)^2+4U(LZ-U),& B_s&=f^2-\Delta I^2-1,\\
+ C_a&=V^2-(Q-1)y(2V+y)-1,&&
+ G_b=B-1-p_1^2-p_2^2-p_3(p_3+1),
+\end{align*}
+where its $Q=\Delta(f^2-1)$ and $V=f^2(cT-R)-c$.
+At a new zero restore
+\[
+ f_{\rm old}=f,\quad p_{3,\rm old}=(g-1)/2,\quad
+ n_{\rm old}=n-k-g-4f.
+\]
+All are integral. Its centered carrier satisfies
+\[
+ Z_{\rm old}/U+(2L+k)=\rho-g-4f=2\tau.
+\]
+The identity $A=(Z+U(2L+k))^2-4U^2D_t$ gives $A=0$.
+The equation $f^2=F_s$ gives $B_s=0$ and identifies both versions of $Q,V$;
+then $C_a=0$. Finally
+$p_{3,\rm old}(p_{3,\rm old}+1)=(G-1)/4=B-p_1^2-p_2^2-1$, so $G_b=0$.
+This is an actual parent zero.
+
+Conversely, from any parent zero,
+$(Z_{\rm old}/U+2L+k)^2=4D_t$. A rational square root of an integer is
+integral by reducing its fraction to lowest terms, and this root is even
+because its square is divisible by four. Write it $2\tau$. Set
+$g=2p_{3,\rm old}+1$ and
+\[
+ n_{\rm new}=n_{\rm old}+k+g+4f_{\rm old}.
+\]
+Delete $f_{\rm old},p_{3,\rm old}$ and retain all other inputs. The old guard
+and strong row give $g^2=G$ and $f_{\rm old}^2=F_s$. The new carrier is
+$\rho=g+2\tau+4f_{\rm old}$, so a factor of \eqref{eq:roots-factors119}
+vanishes and $E_a=1$. Hence $P=0$. These constructions apply to every parent
+zero and add no new simultaneous Pell or canonical-witness existence claim.
+
+\subsection{Exact degree and complete leading cancellations}
+Naive max/sum degree propagation on the literal DAG gives only an upper bound
+$172$. Both complete cancellation cuts below are essential.
+With all ports of degree zero, put
+\begin{align*}
+ q_0&=6\beta j,&X_0&=12q_0w,&Y_0&=v,\\
+ F_0&=12wC-q_0z,&R_0&=-q_0^3F_0,&\ell_0&=X_0Y_0^2,\\
+ k_0&=R_0+h\ell_0,&a_0&=X_0Y_0,&U_0&=8q_0^3a_0,\\
+ T_0&=A_c^2Y_0^2F_0^2+4q_0^2Y_0^4+q_0^6.
+\end{align*}
+The entire budget top is $[B]_{16}=-k_0^2T_0$; in particular the
+$h\ell_0$ part of $k_0$ must not be dropped. The scaled radicands have degrees
+$28,30,24$. Although $Z_c^2$ has degree $30$, the complete identity
+\eqref{eq:roots-cut119}--\eqref{eq:roots-square119} shows that $Z_c^2-d_b$
+has degree $26$, with top $-4U_0^2\ell_0k_0^2$. Consequently the first square
+in $K$ has degree $56$, while $-4d_bg_a$ has degree $58$, and
+\begin{align*}
+ [K]_{58}&=64U_0^4\ell_0^2k_0^4T_0,\\
+ [N]_{116}&=4096U_0^8\ell_0^4k_0^8T_0^2.
+\end{align*}
+The outer subtracted product has degree $112$ and cannot cancel this square.
+Independently, with formal weights
+$(Z,U,L,k,G,F_s)=(7,6,9,5,16,12)$, the checker expands the entire norm
+and obtains the full top $256U^8L^4G^2$ of weight $116$.
+
+The second deliberate cancellation is $u_2-V^2=2Vy+y^2$ of degree $18$,
+although $u_2$ itself has degree $34$. It gives
+\[
+ [E_a]_{36}=32a_0^6r^4c^8R_0y.
+\]
+The product of these displayed complete tops is the entire degree-$152$
+output top. In particular, on the authentic coefficient slice,
+\[
+ [j^{90}w^{18}v^{22}z^9r^4c^8y]P
+      =2^{167}3^{108}\beta^{90}>0.
+\]
+The exponents sum to $152$. The symbolic extraction first sets $C=h=0$,
+discarding only terms with variables absent from the target, and then selects
+the $q_0^6$ term in both copies of $T_0$. Thus the degree is attained,
+not merely a syntactic upper bound or a generic-port assertion.
+
+\subsection{Finite evidence and portable closure}
+The independent checker imports neither builder nor circuit implementation.
+It binds all cuts of the incoming $126$-gate and new $119$-gate DAGs, checks
+all topology, liveness, coverage, six fixed ports and costs, proves the whole
+shear and signed-factor identities, expands both leading cancellation cuts,
+and extracts the stated actual coefficient. Each of the $119$ live gates is
+separately corrupted and rejected. Normal and optimized Python runs both pass.
+All six raw coefficient payloads are reconstructed from the inspected retained
+finite recipe in both modes. The $188$ retained files are SHA-256 pinned.
+These are checks of algebra and transcription, not substitutes for the
+unbounded proof above or for the inherited native/compiler theorem.
+
+No twelve-variable breakthrough is claimed. Exploratory denominator-transfer,
+primitive-carrier and strong-scale variants did not produce a verified
+improvement and are not presented as theorems or new global obstructions.

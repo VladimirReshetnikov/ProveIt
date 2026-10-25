@@ -25,32 +25,33 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete two-anchor7691 equation: fifteen positive unknowns, exact
-degree157,66 integer-leaf operations. The new four constants total
-**180987 raw bytes**,26227 fewer than the preceding207214 (12.7%).
-Complete TeX is5083 bytes, extracted nonwhite `pdftotext -layout` text2707
-characters, and PDF159652 bytes; the previous values were5145,2734 and
-159762. Fonts remain9pt/7.7pt on one Letter page.
+the complete Start-marker4177 equation: fifteen positive unknowns, exact
+degree157 and66 integer-leaf operations. Its four constants total**98219
+raw bytes**,43007 fewer than6007 (30.5%). The whole recipe also shrinks:
+TeX5072 bytes, nonwhite extracted text2699 characters and PDF159631 bytes,
+down13,7 and5 respectively. Fonts remain9pt/7.7pt on one Letter page.
 
-The complete [new ordinary proof](research/two-anchor-independent/PROOF.md)
-has separate root and independent mathematical audits. A calibrated Start
-bit replaces the third anchor; weighted flags, global carry29, every copy
-and clause, interior padding, nonzero-top-field slack, actual rank and both
-P66 maps are checked together. The new finite Pc2 certificate uses
-lambda2122441, H residues18/6993/1324284 and lift quotient1096353. Normal
-and optimized checks reproduce the certificate. The complete printed
-recipe reconstructs all four integers and retains the literal66-gate
-all-live evaluator. Two actual visual inspections pass. See the
-[complete candidate](candidates/one-page-two-anchor7691/README.md),
-[mathematical peer review](reviews/two-anchor7691-independent-peer.md) and
-[page review](reviews/two-anchor7691-page-peer.md).
+The complete [ordinary proof](research/start-marker-independent/PROOF.md)
+has separate root and independent mathematical audits. One Start-copy
+monomial replaces the943-term count block. Three parity tests and the
+already-decoded at-most-one-selector condition recover alignment; canonical
+words have one shifted Start marker. Global carry29, all17 copies, the
+actual c0*marker upper-predecessor term,875 tail-padding bits, top resets,
+fresh safe subsets, actual rank and both P66 maps are covered. The new
+Pcs certificate uses lambda224113, orders23/87 and H residues9/2620/158694.
+Normal and optimized finite/materializer checks reproduce every saved file.
+Actual TeX marker deletion is rejected even though weighted Phi stays
+unchanged. Two full-page visual inspections pass. See the
+[complete candidate](candidates/one-page-start-marker4177/README.md),
+[mathematical review](reviews/start-marker4177-independent-peer.md) and
+[page review](reviews/start-marker4177-page-peer.md).
 
-The old47 and55 pages and CURRENT records are preserved. This is a new
-specialization of the uniform66/157 front, with explicit ordinary
-native/Pell/refutation contracts and no new formal-kernel replay or
-consistency decision. Research remains active. Separate rational-leaf65
-checkpoints preserve the same polynomial within their own bound tuples;
-that operation convention does not change the integer-leaf66 label.
+Every previous page and CURRENT record remains preserved. This is a new
+specialization of the uniform66/157 front with explicit ordinary calibration,
+not a new formal-kernel replay or consistency decision. Research remains
+active: a lower marker at1031 has a finite97046-byte candidate, pending its
+complete proof and page. Separate rational-leaf65 graphs retain their own
+fixed tuple bindings and operation convention.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 still saves nineteen operations and171 degree while adding five unknowns.
@@ -312,7 +313,8 @@ FULL nonauthor reviews pass, followed by [separate ROOT conditional acceptance](
 The later [independent controller certificate](research/complemented47-controller-independent/README.md)
 discharges the THREE-anchor conditions for its exact tuple. Its complete
 [page](candidates/one-page-complemented47-independent/README.md) is retained
-as a predecessor of the maintained two-anchor7691 display above.
+as a predecessor of the accepted two-anchor7691 and one-anchor7309
+pages; the current display is identified at the top of this document.
 
 The separate frozen [CODE ONLY probe](research/compact66-complemented-three-anchor-radix47-controller-probe/README.md)
 never ran: upstream retired its required live ZIP after ROOT's first full
@@ -328,8 +330,9 @@ now has TWO complete independent nonauthor reviews and [ROOT conditional
 ordinary acceptance](reviews/compact66-complemented-two-anchor-radix47-mersenne8191-ordinary-acceptance.json).
 Its own H2 residues and controller-prime conditions remain UNKNOWN. The new
 bounded probe and CODE/TEX draft were never executed; they are superseded
-for immediate page work by the smaller, independently constructed L7691
-tuple. No finite certificate transfers between the two specializations.
+for immediate page work by the independently constructed L7691 tuple
+and its accepted one-anchor L7309 successor. No finite certificate
+transfers between these distinct specializations.
 The earlier +1/spacing11 tuple likewise retains its distinct open conditions.
 
 The [seven-archive intake](research/incoming-7a8da41437-codefree-intake/README.md)
@@ -339,9 +342,11 @@ The fresh [literal direct-C222 research](research/direct-c222-one-page-template/
 prints every constructor, eighteen power requests and their full polynomial
 certificate. Its proposed554-natural-variable/332-residual equation removes
 the machine seed and controller assumptions, trading variables and degree
-for a potentially shorter specification. Independent ordinary review and
-physical one-page fit remain open. Lean stays paused; substantial checked
-improvements update the maintained PDF and TeX together.
+for a potentially shorter specification. The [independent ordinary review](reviews/direct-c222-indexed-template-independent.md)
+passes within its explicit inherited Pell/C222 calibration and establishes
+exact degree2097684. Complete circuit size and physical one-page fit remain
+unmeasured; no printed-size win is claimed. Lean stays paused; substantial
+checked improvements update the maintained PDF and TeX together.
 
 The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
 and [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)

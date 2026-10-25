@@ -19,43 +19,47 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **complete two-anchor7691 equation
+[equation.tex](equation.tex) print the **complete Start-marker4177 equation
 in fifteen positive unknowns, exact degree157, with66 integer-leaf binary
 operations**. All four fixed constants, the436-character numeral, alphabet,
-closed decoder and943 tiles fit on one Letter page at the retained9-point
-body and7.7-point seed/footer sizes.
+closed decoder and943 tiles fit on one Letter page at9-point body and
+7.7-point seed/footer sizes.
 
-The [complete candidate](candidates/one-page-two-anchor7691/README.md)
-reduces raw coefficient storage from207214 to**180987 bytes**, saving26227
-(12.7%) from the preceding three-anchor47 tuple and61497 (25.4%) from
-radix55. Complete TeX falls5145 to5083 bytes; nonwhite PDF text extracted
-with `pdftotext -layout` falls2734 to2707 characters. PDF bytes fall159762
-to159652. Degree, variables and integer-leaf operation count are unchanged.
-The entire coherent tuple changes, defining a different specialized
-polynomial while retaining the exact free-port P66 template.
+The [complete candidate](candidates/one-page-start-marker4177/README.md)
+reduces raw coefficient storage from141226 to**98219 bytes**, saving43007
+(30.5%) from zero-weight6007. Complete TeX falls5085 to5072 bytes, nonwhite
+`pdftotext -layout` text2706 to2699 characters and PDF159636 to159631 bytes.
+Variables, degree and integer-leaf operation count stay unchanged. The four
+integers coherently define a new specialization of the same P66 template.
 
-The [whole ordinary proof](research/two-anchor-independent/PROOF.md)
-replaces one anchor by a calibrated Start-label test, uses two differently
-weighted flags, and proves all-phase decoding with global carry bound29.
-Moving every padding test into an interior zero band and bounding the
-nonzero final digit shorten the cell from8807 to7691 fields. The
-[finite certificate](research/two-anchor-independent/certificate.json)
-discharges the new controller condition at lambda2122441, with H residues
-18/6993/1324284. Complete [root](reviews/two-anchor7691-root.md) and
-[independent](reviews/two-anchor7691-independent-peer.md) mathematical
-reviews pass, including every safe dummy subset, actual rank, and both
-positive P66 witness directions. Whole printed-port reconstruction and
-normal/optimized checks pass; the [page review](reviews/two-anchor7691-page-peer.md)
-records the second actual visual inspection. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
-binds the new page and preserves the preceding metadata verbatim.
+The [whole ordinary proof](research/start-marker-independent/PROOF.md)
+replaces the943-term selector-count block by one monomial copying Start.
+The physical marker remains zero-weight in the count clauses and tracks
+a temporal translate of Start. Three existing parity tests recover alignment:
+every nonzero field offset would require two selectors in one cell, after
+the clauses have proved at most one. Global carry29, all875 tail-padding
+bits, predecessor resets, actual rank and both P66 maps are checked.
+The [finite certificate](research/start-marker-independent/certificate.json)
+discharges Pcs with orders23/87, lambda224113 and H residues9/2620/158694.
+Full [root](reviews/start-marker4177-root.md) and
+[independent](reviews/start-marker4177-independent-peer.md) mathematical
+reviews pass. Normal and optimized reconstruction checks reproduce every
+printed integer and reject deletion of the actual zero-weight marker term.
+The [page review](reviews/start-marker4177-page-peer.md) records full source
+agreement and a second actual visual inspection.
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the page and preserves
+the preceding metadata verbatim.
 
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
 proof, consistency decision or global minimum is claimed. Lean remains
-paused. The [three-anchor47 page](candidates/one-page-complemented47-independent/equation.pdf),
-[radix55 page](candidates/one-page-compact66-radix55/equation.pdf), complete
-evidence and all historical conditional/failure records remain preserved.
-The goal continues with shorter layouts and simpler arithmetic circuits.
+paused. The [zero-weight6007](candidates/one-page-zero-weight6007/equation.pdf),
+[one-anchor7309](candidates/one-page-one-anchor7309/equation.pdf),
+[two-anchor7691](candidates/one-page-two-anchor7691/equation.pdf),
+[three-anchor47](candidates/one-page-complemented47-independent/equation.pdf)
+and [radix55](candidates/one-page-compact66-radix55/equation.pdf) pages remain
+preserved. Further work moves the Start marker lower using more of the
+calibrated Start pattern and investigates shorter padding recipes.
 
 The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
 [grouped66 page](candidates/one-page-grouped66/equation.pdf) and
@@ -286,7 +290,8 @@ FULL nonauthor reviews pass, followed by [separate ROOT conditional acceptance](
 The later [independent controller certificate](research/complemented47-controller-independent/README.md)
 discharges the THREE-anchor conditions for its exact tuple. Its complete
 [page](candidates/one-page-complemented47-independent/README.md) is retained
-as a predecessor of the maintained two-anchor7691 display above.
+as a predecessor of the accepted two-anchor7691 and one-anchor7309
+pages; the current display is identified at the top of this document.
 
 The separate frozen [CODE ONLY probe](research/compact66-complemented-three-anchor-radix47-controller-probe/README.md)
 never ran: upstream retired its required live ZIP after ROOT's first full
@@ -302,8 +307,9 @@ now has TWO complete independent nonauthor reviews and [ROOT conditional
 ordinary acceptance](reviews/compact66-complemented-two-anchor-radix47-mersenne8191-ordinary-acceptance.json).
 Its own H2 residues and controller-prime conditions remain UNKNOWN. The new
 bounded probe and CODE/TEX draft were never executed; they are superseded
-for immediate page work by the smaller, independently constructed L7691
-tuple. No finite certificate transfers between the two specializations.
+for immediate page work by the independently constructed L7691 tuple
+and its accepted one-anchor L7309 successor. No finite certificate
+transfers between these distinct specializations.
 The earlier +1/spacing11 tuple likewise retains its distinct open conditions.
 
 The [seven-archive intake](research/incoming-7a8da41437-codefree-intake/README.md)
@@ -313,9 +319,11 @@ The fresh [literal direct-C222 research](research/direct-c222-one-page-template/
 prints every constructor, eighteen power requests and their full polynomial
 certificate. Its proposed554-natural-variable/332-residual equation removes
 the machine seed and controller assumptions, trading variables and degree
-for a potentially shorter specification. Independent ordinary review and
-physical one-page fit remain open. Lean stays paused; substantial checked
-improvements update the maintained PDF and TeX together.
+for a potentially shorter specification. The [independent ordinary review](reviews/direct-c222-indexed-template-independent.md)
+passes within its explicit inherited Pell/C222 calibration and establishes
+exact degree2097684. Complete circuit size and physical one-page fit remain
+unmeasured; no printed-size win is claimed. Lean stays paused; substantial
+checked improvements update the maintained PDF and TeX together.
 
 The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
 and [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)

@@ -1,0 +1,682 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=.78in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,microtype,xcolor,enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\definecolor{ink}{HTML}{18334D}
+\definecolor{accent}{HTML}{226B70}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{ink}Direct Diophantine consistency}
+\fancyhead[R]{\small\sffamily 220 and 218 integer variables}
+\fancyfoot[C]{\small\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Refut}{\operatorname{Ref}}
+\newcommand{\Zero}{\mathcal Z}
+\newcommand{\htp}{\operatorname{ht}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sha}[1]{\texttt{\scriptsize\detokenize{#1}}}
+\hypersetup{pdftitle={Two smaller direct quartics for ZFC consistency},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov},pdfsubject={Exact integral projections, explicit polynomial artifacts, and a scoped Macaulay rank certificate}}
+\begin{document}
+\begin{center}
+{\sffamily\color{accent}\small PROVEIT RESEARCH NOTE\par}
+\vspace{7pt}
+{\LARGE\bfseries\color{ink}Two smaller direct quartics\\for ZFC consistency\par}
+\vspace{7pt}
+{\large Integral projection after pooled power certificates\par}
+\vspace{8pt}
+Prepared for Vladimir Reshetnikov and the ProveIt research program\\
+25 October 2026
+\end{center}
+\begin{abstract}
+We construct two fully materialized integer polynomials whose insolubility
+is provably equivalent in ZFC to syntactic consistency of ZFC. The recommended
+balanced construction is a quartic in 220 unrestricted integer variables,
+with 7,793 collected monomials and coefficient height 45,161. It improves
+the inspected direct 225-variable parent simultaneously in arity, number
+of quadratic residuals, collected support, and coefficient height. A second
+quartic has 218 integer variables, at the cost of more terms and larger
+coefficients. Both equations are printed completely in the appendices and
+supplied as literal sparse integer data.
+
+The new contribution is an exact composition: five common quadratic-kernel
+projections on the pooled-power system expose two further affine relations.
+Integral centering and reversible row operations then improve the resulting
+representations. We give explicit integer restoration maps, independent
+coefficient verification, an authenticated complete parent archive, and a
+finite-field certificate excluding affine consequences with affine
+multipliers for the 218-variable presentation. The general projection method
+is inherited from report 159; the new equations and their measured
+composition are the results of this iteration. Global simplicity and
+literature-wide priority are not asserted.
+\end{abstract}
+
+\section{The equations and the precise result}
+\label{sec:result}
+
+All unknowns in this note range independently over \emph{unrestricted}
+integers. For the 157 explicitly printed quadratic polynomials
+$S_0,\ldots,S_{156}$ in Appendix~\ref{app:220}, define
+\begin{equation}\label{eq:p220}
+\boxed{\displaystyle P_{220}(x_0,\ldots,x_{219})
+       =\sum_{i=0}^{156}S_i(x_0,\ldots,x_{219})^2=0.}
+\end{equation}
+For the 155 quadratic polynomials $R_0,\ldots,R_{154}$ in
+Appendix~\ref{app:218}, define the alternative
+\begin{equation}\label{eq:p218}
+\boxed{\displaystyle P_{218}(x_0,\ldots,x_{217})
+       =\sum_{i=0}^{154}R_i(x_0,\ldots,x_{217})^2=0.}
+\end{equation}
+These are fixed ordinary polynomials with literal integer coefficients.
+The finite sums do not conceal extra unknowns, variable exponents, an
+unbounded computation, or a free program parameter. Every declared
+coordinate occurs in the corresponding polynomial.
+
+\begin{theorem}[Consistency equations]\label{thm:consistency}
+For $n=220$ and $n=218$, the supplied polynomial $P_n$ has exact total
+degree four, and
+\[
+\mathrm{ZFC}\ \vdash\
+\bigl(\neg\exists\mathbf x\in\Z^n\ P_n(\mathbf x)=0\bigr)
+\ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+Here consistency refers to the effective ZFC presentation used by the
+identified inherited calibration. The proof composes the ordinary
+calibration of the exact $P_{225}$ parent with the integral transformations
+proved in Sections~\ref{sec:projection}--\ref{sec:construction}.
+\end{theorem}
+
+The logical conclusion is an equivalence theorem, not a proof of either
+side. In particular, no assumption that ZFC is consistent is used in
+constructing either polynomial. The newly supplied verification consists
+of ordinary mathematical proofs and exact finite computations; it is not
+a new end-to-end Lean or Rocq formalization.
+
+\subsection{Measured comparison}
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Measure & Pooled parent $P_{225}$ & $P_{220}$ & $P_{218}$\\
+\midrule
+Unrestricted integer variables &225&220&218\\
+Quadratic residuals &162&157&155\\
+Residual monomials &1,177&1,132&1,296\\
+Exact polynomial degree &4&4&4\\
+Collected polynomial monomials &7,867&7,793&14,410\\
+Maximum residual coefficient magnitude &256&128&1,920\\
+Maximum polynomial coefficient magnitude &128,446&45,161&5,023,040\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The balanced equation removes five variables and five rows, removes
+74 collected monomials, halves the residual coefficient bound, and reduces
+the expanded coefficient height by approximately 64.8\%. The 218-variable
+equation removes seven variables and seven rows from the same parent.
+Its larger support and height are an explicit tradeoff. Binary arithmetic
+operation counts have not been optimized or claimed.
+
+``Simplest'' depends on the measure. The repository already contains
+constructions with far fewer variables, including a 37-integer quartic
+with a large encoded coefficient tuple and equations of much higher degree
+in fewer variables~\cite{collection}. These new equations improve the
+specific direct C222 family with moderate literal coefficients. They do
+not establish a global minimum or supersede every existing tradeoff.
+The distinction between degree, arity, and coefficient size is also central
+to work on universal pairs~\cite{bayer2026}.
+
+\textbf{Late comparison check.} During preparation, reports 160--165 were
+placed at commit \nolinkurl{897ee2b513fae1e802575abc9f8b6fae896b5014}. We read their
+six READMEs and froze that comparison separately; we did not replay those
+six packages. Their smallest reported unrestricted-integer direct endpoint
+has 234 variables, so none duplicates or dominates either new equation.
+Several have fewer monomials or lower coefficient height and remain useful
+alternatives. Report 164's 206-variable endpoint is over nonnegative
+integers. Report 163 also uses the common-Hessian method, reinforcing the
+attribution of the mechanism as prior or parallel work. The full scoped
+comparison is retained in \nolinkurl{proofs/LATE_ARRIVALS_160_165.md}.
+
+\subsection{Reproducible mathematical objects}
+The ordered sparse residual lists are \texttt{variants/220/equation/equation.json}
+and \texttt{equation/equation.json}. The complete collected polynomials are
+in the neighboring \texttt{expanded\_polynomial.json} files. An entry
+\texttt{[c,[i,j]]} denotes $c x_i x_j$, an empty index list denotes a
+constant, and a repeated index denotes a power. All coefficients and indices
+are integers; no interpretation of a variable's descriptive name is needed
+to evaluate the equation.
+
+For example, the first residual in both final systems is
+$-x_2^2+x_3$. The entire ordered list, rather than a fragment or an
+existence theorem about a polynomial, fixes each equation. The appendix
+exporter reparses every printed mathematical expression and checks its
+coefficients against the JSON data.
+
+\section{The authenticated parent and its proof}
+\label{sec:parent}
+
+The source comparison is fixed at ProveIt commit
+\url{https://github.com/VladimirReshetnikov/ProveIt/commit/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4}.
+At this snapshot the collection extends through report 159; its opening
+summary describes an older frontier. Report 158, \emph{Pooling exact power
+certificates for Diophantine consistency}, is the immediate parent of the
+present construction~\cite{pool158}. Its exact residual-system SHA-256 is
+\begin{center}\sha{fee84c408828aba3e7ceebe9a37f58509327063aa7fd078fd49c80adf3af4e56}.\end{center}
+The input is 29,598 bytes, with Git blob
+\sha{425a70a4960e0c60ebedfcae641f08be15dbdcc0}.
+The unmodified original archive is included under \texttt{inherited/}.
+Its SHA-256 is
+\begin{center}\sha{0e0efbc168fcaac562042778ffcd5bf40f6f74a711ee33915c0ea0750aa10c55}.\end{center}
+
+We use the following identified ordinary theorem from that archive:
+\begin{equation}\label{eq:parent-calibration}
+\mathrm{ZFC}\vdash
+\bigl(\exists\mathbf u\in\Z^{225}\ P_{225}(\mathbf u)=0\bigr)
+\longleftrightarrow \Refut(\mathrm{ZFC}).
+\end{equation}
+This is a substantive imported theorem, not something inferred from a
+finite set of numerical tests. Its arithmetic construction is direct from
+the C222 proof calculus; it uses neither K215 nor Jones's universal
+Diophantine polynomial. The present transformation changes the arithmetic
+presentation and preserves its entire integer zero set up to explicit
+bijections.
+
+\subsection{Why the pooled power certificate is sound}
+The central compression in the parent can be stated cleanly. Fix a nonzero
+integer base $n$, an integer Pell center $A$, and canonical signed Pell
+pairs $(X_i,Y_i)$ at signed indices $k_i$. Existing coordinates represent
+$Z_i=AY_i$. Put
+\[
+T=2An-n^2-1,\qquad
+H=\sum_iY_i(m_i-X_i),\qquad
+S=\sum_i\bigl((m_i-X_i+Z_i)^2-Y_i^2\bigr).
+\]
+Two additional coordinates $K,L$ suffice for the quadratic rows
+\begin{align}
+K-2H-(2A-n)L&=0,\label{eq:pool1}\\
+S-nK+L&=0.\label{eq:pool2}
+\end{align}
+Elimination gives $S-2nH=TL$. Moreover,
+\begin{equation}\label{eq:poolid}
+\sum_i\bigl(m_i-X_i+(A-n)Y_i\bigr)^2
+   =S-2nH-T\sum_iY_i^2.
+\end{equation}
+Thus $T$ divides the sum of the power-congruence errors. The existing square
+frame is
+\[
+W=2+\sum_j a_j^2\ge258,\qquad |A|>W^W,
+\]
+and each actual base, output, and requested index is among its affine
+atoms. For $b=\lfloor\sqrt{W-1}\rfloor$, all their absolute values are
+at most $b$. Since $T\equiv-1\pmod n$, multiplying the Pell congruences
+by $n^b$ clears negative indices. Consequently $T$ divides
+\[
+E=\sum_i\bigl(m_i n^b-n^{b+k_i}\bigr)^2.
+\]
+For at most fifteen requests,
+\[
+0\le E\le4r b^{4b}<W^{2b+1}\le W^W<|T|.
+\]
+Here $4r\le60<W$, $b^2<W$, $2b+1\le W$, and
+$|T|\ge2|A|-W>W^W$. It follows that $E=0$. At nonunit bases this also
+excludes negative indices: an integer $m_i$ could not then satisfy
+$m_i n^{-k_i}=1$. At bases $1$ and $-1$ the correct signed unit values are
+recovered without an unjustified sign claim. Conversely, true powers and
+canonical pairs make the required quotients integral and supply $K,L$.
+
+The parent retains three singleton requests for the initial bootstrap.
+It interprets the $q$ group even in the temporary unit case $q=1$, excludes
+that case using the unchanged divisor identity, and only then invokes
+nonunit power recovery at $q+1$. Its strict horizon is existentially chosen
+from $16+z^2$ before constructing proof encodings. The linear beta base is
+$y=V-1$, with $V=(F^2+1)^t$ and ultimately $F=t!$. Its completeness proof
+uses a horizon larger than every actual local parameter, label, and proof
+length. These choices are cofinal reconstruction arguments; they are not
+assertions that arbitrary earlier witnesses are left unchanged.
+
+\subsection{The logical calibration is an ordinary ZFC proof}
+\label{sec:logical}
+The arithmetic certificate represents refutability in a square-shell
+coding of C222. The inherited shell-recoding proof constructs mutually
+inverse recursive constructor-preserving translations to the original
+coding and fixes truth $0$ and falsity $1$. It reconstructs the numerical
+disequality witness in the guarded bundle after recoding, rather than
+assuming that a code translation preserves arithmetic.
+
+The next two precise inherited interfaces are
+\begin{quote}\small\ttfamily
+KEndpoint.c222\_iff\_zf\_refutation\\
+ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation.
+\end{quote}
+The selected source declarations are included for inspection. The ordinary
+proof uses first-order completeness, tagged and quotient set models,
+definable substructures, and constructible models. The relevant
+well-founded part is \emph{internal to the structure}: its quantifiers range
+over represented sets. An externally well-founded, transitive, or
+$\omega$-standard model is not assumed.
+
+These model constructions, their satisfaction predicates, and the involved
+sets of finite formulas are available in ZFC. Thus the imported argument
+supports~\eqref{eq:parent-calibration} inside ZFC. It should not be described
+merely as a primitive-recursive translator between finite refutations:
+that would be an additional implementation assertion. The new polynomial
+maps below are elementary integer identities and are likewise provable
+inside ZFC. Neither step requires an assumption of consistency.
+
+The included audit records the precise reviewed scope. The entire
+transitive formal-library closure was not rebuilt, and an encoded
+object-language ZFC derivation of the new equivalence was not emitted.
+This distinguishes an ordinary mathematical proof of provability from a
+new proof-assistant certification.
+
+\section{Integral projections that preserve quadratic degree}
+\label{sec:projection}
+
+For an ordered family $F=(F_0,\ldots,F_{m-1})$ of integer polynomials,
+write $\Zero_{\Z}(F)$ for its simultaneous integer zero set.
+
+\begin{lemma}[Common Hessian direction]\label{lem:radical}
+Let $F_i\in\Z[x_0,\ldots,x_{n-1}]$ have degree at most two. Suppose an
+integer vector $d$ satisfies $H_i d=0$ for every Hessian $H_i$, and has a
+coordinate $d_p=1$. Let $\ell_i$ be the linear coefficient vector and
+$a_i=\ell_i\cdot d$. If $a_r\in\{1,-1\}$ for some row $r$, one can remove
+one coordinate and one row, retaining quadratic integer residuals and an
+explicit bijection of simultaneous integer zero sets.
+\end{lemma}
+\begin{proof}
+Use coordinates $x=y+td$ with $y_p=0$. The inverse integral coordinate map
+is $t=x_p$, $y_i=x_i-d_i x_p$ for $i\ne p$. Taylor expansion, or direct
+comparison of coefficients, gives
+\[
+F_i(y+td)=Q_i(y)+a_i t,\qquad Q_i(y)=F_i(y)|_{y_p=0},
+\]
+because both mixed and squared terms in $t$ vanish. The pivot equation
+forces the unique integer value
+\[
+t=-a_r Q_r(y).
+\]
+The remaining residuals are
+\begin{equation}\label{eq:project}
+G_i(y)=Q_i(y)-a_i a_r Q_r(y)\quad(i\ne r).
+\end{equation}
+They have degree at most two. A zero of the $G_i$ restores to
+$x=y-a_r Q_r(y)d$, an integer zero of all original rows. The inverse
+projection just displayed recovers $y$. Conversely, every original zero
+has the forced value of $t$ and hence projects to a zero of the $G_i$.
+\end{proof}
+
+The condition on every Hessian is stronger than asking that a coordinate
+have no square term: all mixed terms must disappear as well. A primitive
+direction alone also does not suffice. A nonunit slope could introduce a
+divisibility condition. The five actual pivots below all have unit slope,
+so that issue does not arise. The general mechanism is credited to
+report 159~\cite{projection159}; it is not claimed as a newly discovered
+general elimination theorem.
+
+\begin{lemma}[Affine consequence]\label{lem:affine}
+Suppose an exact constant integer combination of quadratic residuals is
+$\sum_i c_i F_i=hL$, where $h\ne0$, $L$ is affine with integer
+coefficients, and some coordinate $x_p$ has coefficient $1$ or $-1$ in
+$L$. If $c_r\ne0$, solving $L=0$ for $x_p$, substituting in all remaining
+rows, and dropping row $r$ gives a bijection of integer zero sets and
+preserves degree at most two.
+\end{lemma}
+\begin{proof}
+The equation $L=0$ has an integer affine restoration formula for $x_p$.
+Every old zero satisfies it because $hL=0$. At a new zero, restoration
+sets $L=0$ and every retained $F_i=0$. The displayed identity gives
+$c_r F_r=0$, hence $F_r=0$ in the integers. Substitution is affine, so
+degree cannot increase. The projection and restoration are inverse on
+the zero sets.
+\end{proof}
+
+An affine elimination can work even when the removed coordinate appears
+quadratically in other residuals. It is a different move from
+Lemma~\ref{lem:radical}.
+
+\begin{lemma}[Row operations and sum of squares]\label{lem:sos}
+Replacing row $F_i$ by $F_i+kF_j$ with $i\ne j$ and $k\in\Z$ preserves
+the common zero set; its inverse subtracts $kF_j$. An integral triangular
+affine coordinate shear also has an integral inverse. Finally,
+\[
+\sum_i F_i(\mathbf x)^2=0\quad\Longleftrightarrow\quad
+F_i(\mathbf x)=0\ \text{for all }i
+\]
+for every integer tuple.
+\end{lemma}
+\begin{proof}
+The row and coordinate maps have the stated explicit inverses. Each
+integer square is nonnegative, so their finite sum is zero exactly when
+each summand is zero.
+\end{proof}
+
+\section{The actual reductions}
+\label{sec:construction}
+
+\subsection{Five directions: 225 to 220}
+The following table is a complete index guide to the five applications
+of Lemma~\ref{lem:radical}. Indices are zero based and refer to the system
+\emph{immediately before that row of the table}, not to the initial
+225-coordinate list.
+
+\begin{center}
+\begin{tabular}{crcrr}
+\toprule
+Input arity&Direction $d$&Pivot $p$&Deleted row $r$&Slope $a_r$\\
+\midrule
+225&$e_{44}-e_{45}$&44&29&$1$\\
+224&$e_{60}-e_{61}-2e_{62}$&60&46&$-1$\\
+223&$-e_{62}+e_{64}$&64&49&$1$\\
+222&$e_{31}-e_{32}-2e_{33}$&31&16&$1$\\
+221&$e_{25}-e_{27}-2e_{28}$&25&10&$1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each recorded direction annihilates every actual residual Hessian.
+Every restoration polynomial is printed as a sparse integer expression
+in the certificate. Formula~\eqref{eq:project} specifies the transformed
+rows without any high-degree substitution. The independent checker also
+performs the full restoration substitution directly, using a different
+polynomial representation, and verifies that the resulting identities
+have degree at most two.
+
+The resulting 220-variable system has 157 quadratic rows. Applying the
+38 elementary integer row operations in the sibling certificate produces
+the $S_i$ of Appendix~\ref{app:220}. Their sum of squares is the
+recommended balanced equation $P_{220}$.
+
+\subsection{Two additional affine contractions: 220 to 218}
+For this branch start with the 220-variable system \emph{before} its
+38 final row operations. Its row 81 is exactly
+\begin{align*}
+0={}&x_{95}-9x_9-9x_{10}-4x_{20}-2x_{23}-2x_{27}-2x_{29}
+      -2x_{31}-2x_{33}\\
+ &-4x_{36}-2x_{37}-2x_{40}-2x_{43}-4x_{62}-2x_{63}.
+\end{align*}
+Solve for $x_{95}$ and delete this row. In the resulting 219-variable
+system, the exact row combination is
+\[
+F_{19}-F_6=4+12x_9+16x_{10}+4x_{20}-x_{21}+x_{34}.
+\]
+The previous deletion does not alter these smaller coordinate indices.
+Solve this affine consequence for $x_{34}$ and omit row 6. Its coefficient
+in the combination is $-1$, so recoverability is immediate.
+Lemma~\ref{lem:affine} gives 218 variables and 155 quadratic rows.
+
+Direct substitution at this point increases coefficients substantially.
+The integral triangular shear
+\begin{equation}\label{eq:center}
+x_{21}=z_{21}+2(1+3z_9+4z_{10}+z_{20}),\qquad x_i=z_i\ (i\ne21)
+\end{equation}
+centers the paired affine expressions. Its inverse subtracts the same
+quantity, which does not involve coordinate 21. Finally apply the
+43 elementary integer row operations recorded in the primary certificate.
+Renaming the retained $z$ coordinates to $x$ yields the residuals $R_i$
+of Appendix~\ref{app:218}.
+
+\begin{theorem}[Exact algebraic comparison]\label{thm:bijection}
+The supplied transformations define explicit bijections
+\[
+\Zero_{\Z}(P_{225})\simeq\Zero_{\Z}(P_{220}),\qquad
+\Zero_{\Z}(P_{225})\simeq\Zero_{\Z}(P_{218}).
+\]
+All coordinate maps and restoration maps are integer polynomial maps on
+the relevant zero sets. The two output polynomials have the metrics in
+Section~\ref{sec:result}.
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{lem:radical} successively using the table. For the balanced
+branch apply Lemma~\ref{lem:sos} to its row operations. For the smaller-arity
+branch apply Lemma~\ref{lem:affine} twice, the invertible shear
+\eqref{eq:center}, and its row operations. Lemma~\ref{lem:sos} converts the
+common zero sets into zero sets of the two single polynomials.
+
+All emitted residuals are quadratic, so the degrees are at most four.
+Complete exact collection verifies degree four, all monomials, all
+coefficient heights, and use of every declared coordinate. For $P_{218}$,
+the coefficient of $x_0^4$ is 10, providing a simple explicit nonzero
+quartic coefficient. The independently checked full expansions provide
+the degree witness for both equations.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:consistency}]
+Theorem~\ref{thm:bijection} is an elementary finite algebraic proof
+available in ZFC. Compose its zero-existence equivalences with
+\eqref{eq:parent-calibration}. Taking negations gives the two stated
+insolubility equivalences. This composition uses no consistency assumption.
+\end{proof}
+
+\section{A precise stopping certificate for one class of reductions}
+\label{sec:rank}
+
+The preceding results do not make the arity 218 optimal. Nevertheless,
+one can rigorously identify a class of further moves that cannot work
+on this presentation.
+
+Let $V$ be the rational vector space of polynomials of degree at most
+three modulo its affine subspace. Form the integer coefficient matrix
+whose rows are the images in $V$ of
+\[
+R_i,\quad x_jR_i
+\qquad (0\le i<155,\ 0\le j<218).
+\]
+Equivalently, retain only coefficients of monomials of degrees two and
+three. There are $(218+1)155=33,945$ rows and 137,911 occurring columns.
+
+\begin{proposition}[Affine-multiplier obstruction]\label{prop:rank}
+For the literal final $P_{218}$ residual list, this matrix has full row
+rank over $\Q$. Its common Hessian kernel is also zero. Therefore no
+nonzero family of affine rational polynomials $L_i$ can make
+$\sum_i L_iR_i$ affine.
+\end{proposition}
+\begin{proof}
+The supplied checker first validates the canonical residual format and
+its exact file identity. It verifies primality of $p=1,000,003$ by trial
+division. Gaussian elimination over $\mathbf F_p$ gives rank 218 for the
+vertically stacked Hessians and rank 33,945 for the displayed matrix.
+Every matrix row is processed, with no truncation or skipped row; the
+selected pivot columns and their nonzero leading coefficients are saved.
+
+A full-rank minor modulo $p$ is the reduction of an integer minor whose
+determinant is not divisible by $p$. It is therefore nonzero over $\Q$.
+If a combination with affine multipliers were affine, its coefficient
+vector would give a nonzero rational row dependence in this matrix,
+contradicting full row rank. The Hessian conclusion follows in the same way.
+\end{proof}
+
+The program \texttt{verify\_rank.py} recomputes these certificates using
+only the literal final residuals and standard-library integer arithmetic.
+The rank receipt identifies the equation by SHA-256. This obstruction
+includes constant-multiplier affine consequences, and goes beyond checking
+only the quadratic coefficient matrix.
+
+It excludes neither affine consequences with higher-degree multipliers,
+nor new quadratic consequences, nonlinear coordinate changes, integral
+radical arguments, or changes to the original proof encoding. It is not a
+lower bound for Diophantine equations representing consistency. Exploratory
+quadratic-closure calculations were not lifted to characteristic zero and
+are not claimed as additional theorems here.
+
+\section{Verification, provenance, and reproduction}
+\label{sec:verification}
+
+The construction and independent verifier use different sparse monomial
+representations. The builder stores repeated coordinate indices; the
+verifier uses exponent vectors and performs the actual restoration
+substitutions. It does not import the builder. Their agreement is supported
+by the mathematical projection lemmas, rather than treated as a substitute
+for those lemmas.
+
+The primary verifier checks 2,426 exact symbolic identities; the
+220-variable verifier checks 1,948. Both reject deliberate corruption of
+the direction data, an affine or row-operation certificate, a residual
+coefficient, and a term of the collected quartic. Normal and optimized
+Python receipts agree. Explicit exceptions keep validation active under
+\texttt{python3 -O}.
+
+Both certificates use one documented canonical JSON serialization for
+the complete equation at every stage. Their stage hashes form continuous
+chains, and the builder checks every link. The independent verifier checks
+separate mathematical hashes of the arity and ordered residuals, excluding
+descriptive metadata. The original parent file additionally has its
+authenticated Git blob identity.
+
+The unmodified 225-variable parent was freshly rebuilt in both normal and
+optimized Python. All 20 generated JSON files reproduced byte for byte,
+with 175 forward and 178 reverse private-wire identities, fourteen Pell
+coordinate inverses, and all seventeen power requests checked against the
+36-atom frame. Its immediate 245-variable parent was also rebuilt and
+audited, including 202 integral monic projections. Historical proof
+receipts inside the archive remain historical; the new receipts are named
+separately in \texttt{verification/}.
+
+These are exact finite artifact checks. They do not decide whether the
+equations have roots, prove consistency, or substitute for the inherited
+unbounded arithmetic and logical proofs. Reviews in this package were
+independent tasks within an AI-assisted research session, not external
+human peer review.
+
+\subsection{Commands}
+Python 3.10 or later is sufficient; no third-party Python packages, network
+access, or proof assistant are needed for the new finite checks. From the
+top-level extracted directory:
+\begin{verbatim}
+python3 -B build.py
+python3 -B verify.py
+python3 -B variants/220/build.py
+python3 -B variants/220/verify.py
+python3 -B verify_rank.py
+python3 -B export_equations.py
+\end{verbatim}
+The builder commands regenerate the supplied equation files from the fixed
+source and certificate. The verifier commands audit them independently.
+An explicit tuple may be evaluated with
+\begin{verbatim}
+python3 -B evaluate.py --variant 220 --values tuple.json
+\end{verbatim}
+The evaluator accepts exactly 220 or 218 JSON integers, as selected; it
+rejects booleans, fractional values, and incorrect tuple lengths. It is
+an evaluator, not a procedure for deciding consistency.
+
+For the document, run the exporter first and then run twice from
+\texttt{report/}:
+\begin{verbatim}
+pdflatex -no-shell-escape -interaction=nonstopmode \
+         -halt-on-error -jobname=ConZFC_Integral_Projection report.tex
+\end{verbatim}
+The standard TeX Live packages used are listed in the preamble. The PDF
+has been rendered and visually inspected. PDF bytes can change under
+recompilation; the exact equation bytes are controlled separately.
+
+\section{Further research questions}
+\label{sec:future}
+
+\begin{enumerate}
+\item \textbf{Use higher-degree consequences with certified recovery.}
+Proposition~\ref{prop:rank} resolves the degree-one multiplier search for
+this presentation. A degree-two or targeted higher-degree ideal calculation
+could reveal a primitive affine consequence. Any successful result must
+include an exact polynomial-combination identity and an integral restoration
+map; a rational elimination alone is insufficient.
+
+\item \textbf{Turn new quadratic relations into reversible degree-preserving
+changes.} Shared Pell multiplication wires give quadratic relations of the
+form $Y_iZ_j-Y_jZ_i=0$. Such consequences may permit a better presentation
+even when they imply no immediate affine identity. Deleting a defining row
+requires a proof that it is recovered at every integer solution, including
+zero-coordinate cases.
+
+\item \textbf{Combine structural contraction with semantic changes.}
+The current projections occur mainly in syntax-expression wires. A new
+proof-certificate syntax or a different batching of powers could reduce the
+number of necessary nonlinear wires before algebraic elimination. The
+entire compiler, all sign and range guards, and its logical calibration
+must be counted.
+
+\item \textbf{Reduce the coefficient cost of 218 variables.}
+The two affine contractions raise density and coefficient size. A different
+integral coordinate basis, a more effective reversible row basis, or a
+combined elimination may lower these costs. The 220-variable equation is
+the practical balanced checkpoint while this remains open.
+
+\item \textbf{Formalize the exact new certificates.}
+The elementary lemmas and fixed integer identities are suitable for a small
+verified checker. A separate end-to-end project should connect the literal
+new polynomial to the actual encoded ZFC no-zero sentence and its sealed
+consistency sentence. This would close an implementation gap without
+changing the ordinary mathematical equivalence proved here.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{pool158}
+ProveIt research collection, report 158,
+\emph{Pooling exact power certificates for Diophantine consistency},
+25 October 2026. Immutable inspected directory:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers}.
+The complete authenticated original archive is included in this release.
+
+\bibitem{projection159}
+ProveIt research collection, report 159,
+\emph{Exact projection lemmas and the scope of the rank certificates},
+\texttt{proofs/projection\_scope.md}, with the accompanying projection
+constructors and independent audit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/159-quadratic-projection-234}.
+
+\bibitem{collection}
+Vladimir Reshetnikov, ProveIt,
+\emph{Con(ZFC) in Diophantine form}, collection README and active equation
+metadata, inspected at commit 953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/DiophantineConsistency}.
+
+\bibitem{bayer2026}
+Jonas Bayer, Marco David, Malte Ha\ss ler, Yuri Matiyasevich, and Dierk
+Schleicher, \emph{Diophantine equations over $\mathbb Z$: universal bounds
+and parallel formalization}, arXiv:2506.20909v3, 22 October 2026.
+\url{https://arxiv.org/html/2506.20909v3}.
+This is background on complexity measures, not a dependency of the new
+projection identities.
+\end{thebibliography}
+
+\clearpage\appendix
+\section{The complete balanced 220-variable equation}
+\label{app:220}
+The independent coordinates are $x_0,\ldots,x_{219}\in\Z$.
+Every row below defines the displayed polynomial $S_i$.
+The single equation is $P_{220}=\sum_{i=0}^{156}S_i^2=0$.
+These 157 rows contain 1,132 nonzero residual monomials. The complete
+collected quartic contains 7,793 monomials and has coefficient height
+45,161. No descriptive provenance label imposes an extra condition.
+\begingroup\small\setlength{\jot}{2pt}
+\setlength{\abovedisplayskip}{5pt}\setlength{\belowdisplayskip}{5pt}
+\allowdisplaybreaks[4]
+\input{residuals220.tex}
+\endgroup
+
+\clearpage
+\section{The complete 218-variable alternative}
+\label{app:218}
+The independent coordinates are $x_0,\ldots,x_{217}\in\Z$.
+The single equation is $P_{218}=\sum_{i=0}^{154}R_i^2=0$.
+These 155 rows contain 1,296 nonzero residual monomials. The complete
+collected quartic contains 14,410 monomials and has coefficient height
+5,023,040. The indexing is specific to this branch and should not be
+identified coordinate by coordinate with the preceding appendix.
+\begingroup\small\setlength{\jot}{2pt}
+\setlength{\abovedisplayskip}{5pt}\setlength{\belowdisplayskip}{5pt}
+\allowdisplaybreaks[4]
+\input{residuals218.tex}
+\endgroup
+\end{document}

@@ -1,0 +1,291 @@
+\section{A linear binomial radius and a signed radix in one residue class}
+\label{sec:r20-direct}
+
+All equations in this section are ordinary quartics over independently
+unrestricted integers.  They use the numerical C222 proof calculus directly,
+not a universal-polynomial machine-index substitution.  Relative to the
+incoming factorial-free construction, two semantic edits eliminate two
+coordinates and two residuals:
+\[
+ R=F^2\quad\longrightarrow\quad R=F,
+ \qquad
+ q=(2z+1)^2\quad\longrightarrow\quad q=4z+1,
+ \qquad F=[2(t+1)]^t,\quad t=16+h^2.
+\]
+Here the variable power describes the proved meaning of an unchanged
+quadratic Pell certificate; it is not an operation in the final quartic.
+The first edit uses a classical lcm estimate.  The second allows an
+initially negative radix and then proves its positivity in the necessary
+order.  Exact residual-basis changes subsequently improve the collected
+coefficients without changing the zero set.
+
+Each final equation has the form
+\[
+ P(\boldsymbol x)=\sum_{i=0}^{m-1}R_i(\boldsymbol x)^2=0,
+ \qquad\boldsymbol x\in\mathbb Z^n,
+\]
+with all $R_i$ of degree at most two and $P$ of exact degree four.  Every
+residual and every collected coefficient is supplied, together with
+coordinate and inverse row certificates.  The accompanying endpoint table
+records the measured tradeoffs.  ``Height'' always means the largest
+absolute coefficient after complete collection of $P$.
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Profile & Variables & Rows & Monomials & Height\\
+\midrule
+Dimension & 239 & 175 & 12,658 & 6,144\\
+Balanced & 240 & 176 & 5,232 & 4,096\\
+Sparse & 240 & 176 & 4,927 & 7,596\\
+\bottomrule
+\end{tabular}
+\end{center}
+The 239-coordinate profile improves variables, residuals and collected
+support over the incoming Shared Factorial Error 240-coordinate endpoint,
+while retaining its height 6,144.  All three new profiles have maximum
+residual coefficient 64.  These are achieved tradeoffs, not global minima.
+
+\subsection{A classical lcm estimate makes the radius linear}
+Write $\Lambda_n=\operatorname{lcm}(1,\ldots,n)$.  We recall the classical
+bound $\Lambda_n\le4^n$, including a short proof so that the improvement
+does not depend on an unexplained asymptotic estimate.  For $n\ge2$, set
+$k=\lceil n/2\rceil$.  Then
+\begin{equation}\label{eq:r20-lcm-recur}
+ \Lambda_n\mid\Lambda_k\binom nk.
+\end{equation}
+Indeed, let $p^a$ be the largest power of $p$ not exceeding $n$.
+If $p^a\le k$, it already divides $\Lambda_k$.  Otherwise
+$p^{a-1}\le k$, so only one further factor $p$ is needed.
+The $p^a$ term of Legendre's valuation formula for $\binom nk$ is one:
+$n$ has one multiple of $p^a$, while $k$ and $n-k$ have none.
+All other terms of that formula are nonnegative.
+
+For $n=2m$, the middle binomial coefficient is at most $4^m$.
+For $n=2m+1$, its two equal middle coefficients have sum at most
+$2^{2m+1}$, so each is again at most $4^m$.  Complete induction in
+\eqref{eq:r20-lcm-recur}, starting with $\Lambda_1=1$, yields
+$\Lambda_n\le4^n$ in both cases.  This is a classical theorem, not a
+claimed new number-theoretic result; see Chan and Norrish,
+\emph{Proof Pearl: Bounding Least Common Multiples with Triangles},
+J.~Automated Reasoning 62 (2019), 171--192, Theorem~3,
+\href{https://doi.org/10.1007/s10817-017-9438-0}{doi:10.1007/s10817-017-9438-0}.
+
+The unchanged horizon satisfies $t\ge16$.  Consequently
+\begin{equation}\label{eq:r20-linear-radius}
+ F=[2(t+1)]^t\ge34^t>16^t\ge\Lambda_t^2.
+\end{equation}
+The authoritative factorial-free predecessor, its
+\texttt{report/main.tex}, proves the following two-sided binomial selector
+lemma under the hypothesis $R\ge\Lambda_t^2$:
+for $B=\binom{R+t}{t}$, every row $i\in\{1,\ldots,t\}$ has a prime power
+$p^e$ exactly dividing $B$ with $p^e>t$ and $p^e\mid R+i$; conversely,
+every prime power exactly dividing $B$ divides $R+i$ for some row.
+The first assertion recovers every local proof row.  The second handles
+\emph{all} primes in the reverse CRT construction, including primes not
+selected to isolate a row.  Equation~\eqref{eq:r20-linear-radius} therefore
+permits $R=F$.  An older predecessor review proves only a factorial-square
+threshold; that weaker review is not the theorem used here.
+
+\subsection{What is retained before signs are recovered}
+The complete signed squared frame, semantic anchor, pooled Pell orientation
+conditions, and all eighteen power slots are retained.  Both coordinates
+of every principal Pell pair are oriented at their signed requested
+indices.  No representative subset or frame atom is discarded.
+The inherited signed-power lemma, using the strict frame bound
+$|A|>W^W$, states that at a nonzero integer base $b$ with $|b|\ge2$, a
+requested index $k$ must be nonnegative and its output equals $b^k$.
+For $b=\pm1$, the output is $1$ or $(-1)^k$ even for signed $k$.
+For a negative index at a nonunit base, the same small-error congruence
+would force an integer identity $m b^{-k}=1$, which is impossible.
+We never apply this lemma to the base zero.
+
+The known positive index $t$ and base $2(t+1)$ first give
+$F=[2(t+1)]^t>2^{32}$, independently of any radix sign.  The retained
+beta certificate
+\[
+ v_\beta=(2w+1)^2,\qquad y=Fv_\beta
+\]
+then yields $y\ge F>0$.  The possible boundary $y=F$ is not silently
+excluded; it is addressed after genuine local-row recovery below.
+
+\subsection{The mod-four radix and the acyclic bootstrap}
+The replacement $q=4z+1$ excludes both $q=0$ and $q=-1$.
+It is stronger than oddness alone in precisely the needed respect:
+$q=-1$ would make the numerator base $q+1$ zero.
+We now exclude the only remaining unit, $q=1$.
+In that case the base $q+1=2$ makes all nine actual CRT representative
+exponents nonnegative.  Hence
+\[
+ H=2+\sum_\nu a_\nu\ge2,
+ \qquad C_0\ge0.
+\]
+The retained raw index equation $B\mu=C_0+R+1$ has positive right-hand
+side, so $B\ne0$ and $|BH|\ge2$.
+The self-radix request gives $x\ge0$ and $1=(BH)^x$, forcing $x=0$.
+But the last beta endpoint is
+\[
+ x=1+[1+(t+1)y]u_t.
+\]
+At $x=0$ it would make the integer $1+(t+1)y>1$ divide $-1$.
+This contradiction uses neither a binomial interpretation nor a remainder
+bound.
+
+For every remaining radix, put $Q=|q|$.  Then $Q\ge3$ and
+$|q+1|\ge2$.  The same argument recovers nonnegative representatives,
+$H\ge2$, and $B\ne0$.  The derived label is another requested exponent
+at $q+1$, so it is nonnegative; the unchanged anchor excludes zero.
+The genuine self-radix equality is $q=(BH)^x$ with $x\ge0$.
+Since $x=0$ would give $q=1$, we have $x\ge1$.
+If the first beta quotient were $u_0\le-1$, its endpoint
+\[
+ x=F+1+(y+1)u_0
+\]
+would imply $x\le F-y\le0$.  Thus $u_0\ge0$, $x\ge F+1$, and the
+last endpoint has $u_t\ge1$.  It follows that
+\begin{equation}\label{eq:r20-q-size}
+ x\ge2+(t+1)y\ge2+(t+1)F,\qquad
+ Q=|BH|^x\ge2^x,\quad Q\ge4B^2,\quad |B|\le Q/4.
+\end{equation}
+No sign of $q$ or $B$ has yet been assumed.
+
+All powers at $q$ and $q+1$ now have their genuine meanings at their
+nonnegative indices.  In particular $M=q^x\ne0$ and every digit
+denominator $L_i$ is a nonzero power of $q$; its exponent is one of
+$t,t+1,y+1,x$, all at most $x$.
+For $L_i v_i=M$ and $v_i U_i=M Q_i+R_i$, the nonzero integer $v_i$
+divides $R_i$.  Hence $r_i=R_i/v_i$ is an integer and
+$U_i=L_iQ_i+r_i$.  The unchanged common norm
+\[
+ M^2-1-4\sum_i R_i^2=a^2+b^2+c(c+1)
+\]
+gives $|r_i|<|L_i|/2$ without assuming signs for $L_i,v_i,M$.
+Any congruent canonical tail of magnitude $<|L_i|/32$ must therefore
+coincide with $r_i$: their difference is a multiple of $L_i$ of
+magnitude less than $(1/2+1/32)|L_i|<|L_i|$.
+
+\subsection{Authenticating the binomial at a signed radix}
+Put $n=R+t$ and $C_j=\binom nj$.  The numerator request is exactly
+$U=(q+1)^n$.  For $0\le j\le t$,
+\[
+ C_j\le(R+1)^t\le(F^2+1)^t=:V.
+\]
+The standard uniform binomial bound follows by Pascal induction and the
+last-edge product bound.  Here $R=F\ge1$; the mod-four-only controls
+instead retain $R=F^2$ and satisfy the same upper bound.
+The symbol $V$ is proof notation, not a new power slot.
+For $F\ge7$, $F^2+1\le2^{F-1}$ (the base case and induction are immediate).
+Equation~\eqref{eq:r20-q-size} gives
+\[
+ V/Q\le2^{-F-t-2},\qquad V/(Q-1)<1/32.
+\]
+For either sign of $q$, the signed low polynomial
+\[
+ r^0=\sum_{j=0}^{t-1}C_jq^j
+\]
+has $|r^0|<Q^t/32$ and is congruent to $U$ modulo $q^t$.
+The short-lift argument identifies the digit remainder with $r^0$.
+Dividing the digit equation by $q^t$ and reducing modulo $q$ now gives
+$B\equiv C_t\pmod q$.
+But $0<C_t<Q/32$ and $|B|\le Q/4$, so $|B-C_t|<Q$:
+\[
+ B=\binom{R+t}{t}>0.
+\]
+Since $H>0$, the self-radix equality then proves $q=(BH)^x>0$.
+The initially negative branch has been excluded by arithmetic.
+The request $N=B^x$ now has its ordinary positive nonunit base meaning.
+Also $B\ge R+t>R+1$, so the raw index equation excludes $C_0=0$.
+
+The remaining range and local-congruence arguments are unchanged.
+Their canonical tails are $<L_i/32$; all fixed front indices and local
+majorants are no larger after replacing $F^2$ by $F$.
+The strict endpoint budget $x\ge2+(t+1)F$ is preserved, including the
+derived-label bound.  Applying the two-sided binomial selector theorem
+using~\eqref{eq:r20-linear-radius} recovers every local C222 row.
+
+\subsection{Recovering the proof and constructing all witnesses}
+The recovered beta rows give accumulators $S_0,\ldots,S_t$ and updates
+\[
+ S_{i+1}(1+c_iF)=S_i(1+p_iF)(1+q_iF),
+\]
+whose weights are positive.  If $y=F$, the first endpoint would give
+$S_0=0$, while the last gives $S_t=1$; every update propagates zero,
+a contradiction.  Thus $y>F$, the initial remainder is genuinely
+$F+1$, the final one is $1$, and all accumulators are positive.
+Multiplication of the updates yields the inherited label-product identity.
+The two sides have equal nonunit factor counts $d\le t$: if they differed,
+the side with more factors would be at least $(F+1)^{d+1}$, while the
+other is at most $t^d(F+1)^d$, contradicting $F+1>t^t$.
+Each side is consequently the value at $F$ of a product of at most $t$
+factors $1+jX$, $1\le j\le t$.  Its coefficient sum is at most
+$(t+1)^t<F$.  Reduction modulo $F$ at the least nonzero degree shows
+that a nonzero difference cannot vanish at $F$.
+The products are identical polynomials; their distinct roots $-1/j$
+recover every label multiplicity.  The retained Horn-closure argument
+therefore gives a finite C222 refutation and hence a finite ZFC refutation.
+This proves soundness.
+
+Conversely, begin with a finite C222 refutation and choose a sufficiently
+large padded horizon $t=16+h^2$.  Set $F=[2(t+1)]^t$, $R=F$, and
+$B=\binom{F+t}{t}$.  The two-sided selector theorem applies by
+\eqref{eq:r20-linear-radius}.
+Let $O$ be the odd part of $t!$.  Choose an arbitrarily large odd multiple
+$a_\beta$ of $O$, and put $y=F a_\beta^2$.
+Since $v_2(F)\ge t>v_2(t!)$, this is an even multiple of $t!$ and can
+exceed $F$ and every accumulator.  The beta CRT works as before; its
+moduli are odd, so choose a sufficiently large even beta code $x$.
+
+The smaller-radius binomial is still odd:
+$v_2(F+i)=v_2(i)$ for $1\le i\le t$, since
+$v_2(i)<t\le v_2(F)$.  Thus $v_2(B)=0$ and $N^2=B^{2x}$ is odd.
+The all-primes CRT construction provides the actual representatives.
+Adding $N^2$ permits their parities to be chosen while keeping the old
+bounds.  Choose the dominant $a$ odd and every other representative even;
+then $a,b$ have the required opposite parities, the nonzero semantic
+anchor is even, and $H=2+\sum a_\nu$ is odd.
+The changed front index satisfies $R+t\le B<B^2<N^2$, so every retained
+principal-index and frame bound remains valid.
+Now $q=(BH)^x$ is an odd square, hence $q\equiv1\pmod4$, and
+$z=(q-1)/4$ supplies the new affine radix constraint.
+Canonical normalized tails are $R_i=(M/L_i)r_i^0$ with
+$0\le R_i<M/32$; the strict common norm gap has the usual ternary
+representation.  The unchanged Pell completion supplies all other
+witnesses.  Factorials are used only to select a divisible beta parameter,
+not as an authenticated unknown.  This proves completeness.
+
+\subsection{Literal source edits, exact inverse certificates, and limits}
+In both pinned source equations $F=x_3$, $R=x_4$, and row zero is
+$R-F^2$.  The source-interface audit checks that all previous factoring,
+projection, translation, and row-basis steps retain this row and these
+coordinates without using the row as a premise in an elimination.
+Replacing it by $R-F$ therefore implements exactly the semantic radius
+change.  The centered stored radix has actual value
+$q=\text{stored}_q-1$; its old row is
+$\text{stored}_q-2-4z-4z^2$.  The new row is
+$\text{stored}_q-2-4z$, so its affine restoration is
+$\text{stored}_q=4z+2$, not $4z+1$.
+The second restoration is $R=F$.
+
+These semantic edits preserve \emph{zero existence}, by the two ordinary
+arithmetic directions above.  They are not claimed to be bijections
+between all predecessor witness tuples.  Only after the source edits do
+the two monic affine eliminations give exact restriction/restoration
+bijections.  Every later row operation $R_i\leftarrow R_i+kR_j$ has the
+integer inverse with $-k$ and preserves the common zero set, though it
+generally changes the sum-of-squares polynomial.
+
+The independent checkers import no new producer, verify all restored
+coordinates and pulled-back residuals, reverse every frozen row operation,
+collect every quartic coefficient, and check degree, coordinate liveness,
+and all reported metrics.  Deliberate corruptions must fail, under both
+normal Python and Python~\texttt{-O}.  These are finite artifact checks,
+not replacements for the unbounded arithmetic proof.
+The complete immediate predecessor, its ordinary proofs and calibration
+interface sources, is retained under \texttt{inherited\_factorial\_free}.
+The named logical interfaces are
+\begin{quote}\small\ttfamily
+KEndpoint.c222\_iff\_zf\_refutation\\
+ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation.
+\end{quote}
+Their composition yields the stated equivalence with $\operatorname{Con}(\mathrm{ZFC})$.
+No global minimum, proof of consistency, new proof-assistant closure, or
+literature-wide priority is claimed.

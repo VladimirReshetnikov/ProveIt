@@ -13,19 +13,23 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained page now uses the fully reviewed **two-anchor7691** tuple.
-Its four raw integers total180987 bytes versus207214 for three-anchor47
-and242484 for radix55. Complete TeX shrinks62 bytes and extracted nonwhite
-PDF text27 characters from the immediate parent, at unchanged fonts.
-The15-positive/66-operation/degree157 integer-leaf profile is unchanged.
-The new finite controller condition Pc2 is discharged; see the
-[complete candidate](candidates/one-page-two-anchor7691/README.md).
+The maintained page now uses the fully reviewed **Start-marker4177** tuple.
+Its four raw integers total98219 bytes versus141226 for zero-weight6007,
+172011 for one-anchor7309,180987 for two-anchor7691,207214 for three-anchor47
+and242484 for radix55. Against6007, complete TeX falls13 to5072 bytes,
+nonwhite extracted text falls7 to2699 and PDF falls5 to159631 bytes.
+Fonts and the15-positive/66-operation/degree157 profile are unchanged.
+Pcs is discharged; see the
+[complete candidate](candidates/one-page-start-marker4177/README.md).
 
-The mathematical savings come from using a forced Start-label bit as an
-alignment test, decoding two weighted flags, relocating every padding bit
-into an interior zero band, and replacing a zero-tail requirement with a
-small final-digit bound. The complete global carry29, native inverse,
-canonical subset/rank and P66 witness proofs pass separate review.
+The943-term count-copy block is replaced by one monomial copying selector0.
+The zero-weight physical marker tracks a temporal translate of Start.
+Three calibrated parity tests and the already-proved at-most-one-selector
+condition exclude every nonzero offset. This permits much lower clauses
+and a complete zero top band for all875 padding bits. The full native,
+actual-rank, safe-subset and P66 arguments pass independent review. Every
+printed coefficient and physical support bit is reconstructed; deleting
+the actual marker term is rejected while weighted Phi remains identical.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
 gives65 operations for the same bound three-anchor47 polynomial while
@@ -37,10 +41,13 @@ those specific bindings. Neither is an integer-leaf65 record. The specific
 four-gate tail requiring MC=MF_native is ruled out by odd-d mask parity;
 this is no general lower bound on64-operation evaluators.
 
-Next layout targets move the remaining flag closer to the copy groups,
-or replace the lower flag by a selector-count copy. Those are research
-leads requiring fresh whole support, carry, padding and controller checks.
-They do not replace the reviewed7691 tuple before complete proofs pass.
+The next layout moves the physical Start marker from1048 to1031. All
+eight calibrated south-one tests exclude the extra offsets; the sole
+remaining offset32 would force selector942 and an incompatible south bit.
+A complete finite candidate atL4127 totals97046 bytes,1173 below4177.
+It needs a separately reviewed full ordinary proof and page before promotion.
+Further padding work looks for concise blocks of universally zero upper
+bits within the product, preserving both byte and printed-recipe measures.
 
 The requested neighboring research is relevant at two different interfaces.
 [Hilbert Tenth](../HilbertTenthProblem/README.md) supplies the half-binomial
@@ -59,6 +66,7 @@ zero-set maps, full coefficient recipes and domain/metric distinctions.
 
 | Domain | Variables | Operations | Degree | Use |
 |---|---:|---:|---:|---|
+| Natural / positive integers | 554 | unoptimized | 2097684 | Complete literal direct-C222 template;18 private power certificates and332 squared residuals. Ordinary review passes; complete page and circuit size unmeasured |
 | Integers | **315 / 316** | not optimized | **4** | Accepted corrected second pair-sum R1 charts;217/218 rows,5620/5614 terms,height15109,row height72; nine actual processes and both full ordinary evidence reviews pass |
 | Integers | 315 / 316 | not optimized | 4 | Preserved accepted pair-sum U parents;217/218 rows,5632/5626 terms,height32053,row height96 |
 | Integers | 315 / 316 | not optimized | 4 | Preserved neighbor-shear parents;217/218 rows,5787/5781 terms,height93109,row height160 |
@@ -3238,7 +3246,8 @@ FULL nonauthor reviews pass, followed by [separate ROOT conditional acceptance](
 The later [independent controller certificate](research/complemented47-controller-independent/README.md)
 discharges the THREE-anchor conditions for its exact tuple. Its complete
 [page](candidates/one-page-complemented47-independent/README.md) is retained
-as a predecessor of the maintained two-anchor7691 display above.
+as a predecessor of the accepted two-anchor7691 and one-anchor7309
+pages; the current display is identified at the top of this document.
 
 The separate frozen [CODE ONLY probe](research/compact66-complemented-three-anchor-radix47-controller-probe/README.md)
 never ran: upstream retired its required live ZIP after ROOT's first full
@@ -3254,8 +3263,9 @@ now has TWO complete independent nonauthor reviews and [ROOT conditional
 ordinary acceptance](reviews/compact66-complemented-two-anchor-radix47-mersenne8191-ordinary-acceptance.json).
 Its own H2 residues and controller-prime conditions remain UNKNOWN. The new
 bounded probe and CODE/TEX draft were never executed; they are superseded
-for immediate page work by the smaller, independently constructed L7691
-tuple. No finite certificate transfers between the two specializations.
+for immediate page work by the independently constructed L7691 tuple
+and its accepted one-anchor L7309 successor. No finite certificate
+transfers between these distinct specializations.
 The earlier +1/spacing11 tuple likewise retains its distinct open conditions.
 
 The [seven-archive intake](research/incoming-7a8da41437-codefree-intake/README.md)
@@ -3265,9 +3275,11 @@ The fresh [literal direct-C222 research](research/direct-c222-one-page-template/
 prints every constructor, eighteen power requests and their full polynomial
 certificate. Its proposed554-natural-variable/332-residual equation removes
 the machine seed and controller assumptions, trading variables and degree
-for a potentially shorter specification. Independent ordinary review and
-physical one-page fit remain open. Lean stays paused; substantial checked
-improvements update the maintained PDF and TeX together.
+for a potentially shorter specification. The [independent ordinary review](reviews/direct-c222-indexed-template-independent.md)
+passes within its explicit inherited Pell/C222 calibration and establishes
+exact degree2097684. Complete circuit size and physical one-page fit remain
+unmeasured; no printed-size win is claimed. Lean stays paused; substantial
+checked improvements update the maintained PDF and TeX together.
 
 The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
 and [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)

@@ -1136,8 +1136,8 @@ published to support further work toward 214.
 
 **Diophantine form of the K215 endpoint** (not formalized). The report
 [`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5–16
-(intake batches 221–232; latest placement `d32d28da26`).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–17
+(intake batches 221–233; latest reconciled placement `2a18823cc1`).
 
 Until wave 11, every finished equation turned the K215 calibration behind
 `KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
@@ -1152,9 +1152,9 @@ encodings, provided they prove their own calibration (the report's section
 proof-certificate sources over the C222 calculus, calibrated through
 `KEndpoint.c222_iff_zf_refutation` and
 `ConstructibleChoice.zf_refutation_iff_zfc_refutation`. Wave 11 finishes
-that route: explicit direct quartics with no coefficient tuple, down to 221
-naturals and 252 unrestricted integers after wave 16 (sources 140, 142, 144,
-141), and ones with every coefficient ±1 (sources 120, 127, 135, 144); the
+that route: explicit direct quartics with no coefficient tuple, down to 219
+naturals and 225 unrestricted integers after wave 17 (sources 149, 158), and
+ones with every coefficient ±1 (sources 120, 127, 135, 144, 154); the
 step "polynomial zero iff C222 derivation" is an ordinary proof in each
 package, not a Lean theorem.
 
@@ -1166,7 +1166,8 @@ As the packages state them:
 - 10 unrestricted integers via a cited reduction of Sun, in 467 operations
   at degree 1,245,324;
 - a 14-unknown equation of degree 24, and a 15-unknown one in 66 operations;
-- the smallest coefficient tuple binding an equation has B = 2^429959.
+- the smallest coefficient tuple binding an equation has B = 2^413929 (141's
+  radix-47 P66, if its carry proof holds; otherwise 2^429959).
 
 Materialized coefficient bytes do not by themselves prove the compiler
 theorem. Only the machine endpoint is checked in Lean/Rocq; the Diophantine

@@ -1,0 +1,144 @@
+{
+  "profiles": {
+    "horizon8_difference_frame": {
+      "endpoints": {
+        "balanced": {
+          "maps": {
+            "affine_exposure_operations": 5,
+            "coordinate_shears": 6,
+            "final_row_operations": 35,
+            "unit_affine_projections": 3
+          },
+          "metrics": {
+            "degree": 4,
+            "height": 7968,
+            "monomials": 5479,
+            "row_height": 64,
+            "rows": 174,
+            "variables": 238
+          }
+        },
+        "dimension": {
+          "maps": {
+            "affine_exposure_operations": 5,
+            "coordinate_shears": 6,
+            "final_row_operations": 37,
+            "unit_affine_projections": 4
+          },
+          "metrics": {
+            "degree": 4,
+            "height": 7968,
+            "monomials": 14129,
+            "row_height": 64,
+            "rows": 173,
+            "variables": 237
+          }
+        }
+      },
+      "finite_maps": {
+        "horn_edits": 18,
+        "monic_projections": 206,
+        "unused_removed": 114
+      },
+      "frame": {
+        "bounded_affine_atoms": 37,
+        "coordinate_squares": 33,
+        "exact_identity": "W = C + sum of distinct underlying coordinate squares",
+        "maximum_affine_bound": 18,
+        "pre_sign_lower_bound": 19,
+        "reason": "|c+sum(a_i*x_i)| <= sum(x_i^2)+|c|+sum(floor(a_i^2/4))"
+      },
+      "rejected_corruptions": [
+        "source row 0",
+        "source row 361",
+        "source row 363",
+        "source row 374",
+        "source row 381",
+        "source row 382",
+        "source row 383",
+        "unlisted frame alteration",
+        "affine inverse coefficient",
+        "collected quartic coefficient"
+      ],
+      "source": "PASS",
+      "stage": {
+        "degree": 4,
+        "height": 128446,
+        "monomials": 5532,
+        "row_height": 256,
+        "rows": 177,
+        "variables": 241
+      }
+    },
+    "original_horizon": {
+      "endpoints": {
+        "balanced": {
+          "maps": {
+            "affine_exposure_operations": 5,
+            "coordinate_shears": 6,
+            "final_row_operations": 34,
+            "unit_affine_projections": 3
+          },
+          "metrics": {
+            "degree": 4,
+            "height": 7968,
+            "monomials": 5017,
+            "row_height": 64,
+            "rows": 175,
+            "variables": 239
+          }
+        },
+        "dimension": {
+          "maps": {
+            "affine_exposure_operations": 5,
+            "coordinate_shears": 6,
+            "final_row_operations": 36,
+            "unit_affine_projections": 4
+          },
+          "metrics": {
+            "degree": 4,
+            "height": 7968,
+            "monomials": 12743,
+            "row_height": 64,
+            "rows": 174,
+            "variables": 238
+          }
+        }
+      },
+      "finite_maps": {
+        "horn_edits": 18,
+        "monic_projections": 205,
+        "unused_removed": 114
+      },
+      "frame": {
+        "exact_identity": "W = 2 + sum of the listed integer-atom squares",
+        "pre_sign_lower_bound": 7,
+        "reason": "q=4z+1 gives q^2+(q+1)^2>=5",
+        "squares": 37
+      },
+      "rejected_corruptions": [
+        "source row 0",
+        "source row 382",
+        "source row 383",
+        "unlisted frame alteration",
+        "affine inverse coefficient",
+        "collected quartic coefficient"
+      ],
+      "source": "PASS",
+      "stage": {
+        "degree": 4,
+        "height": 128446,
+        "monomials": 5253,
+        "row_height": 256,
+        "rows": 178,
+        "variables": 242
+      }
+    }
+  },
+  "rebuild": {
+    "comparison": "byte-identical",
+    "files": 37
+  },
+  "scope": "Exact finite source edits, frame SOS identity, inherited Horn identities, monic restorations, integral affine maps, and every quartic coefficient. Unbounded arithmetic and logical calibration are separate.",
+  "status": "PASS"
+}

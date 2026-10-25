@@ -1,0 +1,420 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[letterpaper,margin=0.87in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,multicol}
+\usepackage{xcolor,fancyhdr,enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Lower degree and fewer witnesses for Diophantine consistency},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov and ProveIt}}
+\definecolor{ink}{RGB}{25,46,68}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Diophantine consistency: trace and radical reductions}
+\fancyhead[R]{\small ProveIt}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{0.35em}
+\setlist{nosep,leftmargin=*}
+\emergencystretch=2em
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\lcm}{\operatorname{lcm}}
+
+\title{\color{ink}\bfseries Lower degree and fewer witnesses\\for Diophantine consistency\par\large An explicit strong-trace reduction, integral radical projections,\\and the diagonal power $t^t$}
+\author{AI-assisted mathematical research\\\normalsize Prepared for Vladimir Reshetnikov and the ProveIt project}
+\date{25 October 2026}
+\begin{document}
+\maketitle\thispagestyle{empty}
+\begin{abstract}
+We give two complementary improvements to fixed Diophantine equations whose
+unsolvability is provably equivalent in ZFC to $\Con(\mathrm{ZFC})$.
+The compact construction has ten strictly positive unknowns, exact degree
+$232$, and an $87$-operation arithmetic circuit; its matched predecessor
+has degree $304$ in $87$ operations. Four further compact tradeoffs are
+supplied. The key observation is that the doubled strong Pell trace is
+already a polynomial congruent to one modulo the main ordinate. An
+auxiliary expression can therefore use this trace once instead of twice.
+The proof treats negative intermediate ranks before invoking their
+intended interpretations.
+
+For unrestricted integer unknowns, we give completely expanded quartics
+in $234$, $235$, and $236$ variables. The sparse $236$-variable endpoint
+has $172$ quadratic residuals, $4{,}992$ collected monomials, and coefficient
+height $10{,}722$. A common radical of the quadratic parts exposes
+integral directions that can be eliminated without increasing degree;
+six exact projections are certified in each direct endpoint. A further
+semantic simplification proves that $F=t^t$ suffices for proof-label
+recovery in the factorial-free binomial compiler.
+
+All resulting equations are ordinary polynomials with fixed integer
+coefficients. Complete literal data, exact transformations, executable
+checks, retained arithmetic proofs, and source calibrations accompany the
+paper. These are ordinary mathematical proofs composed with identified
+repository results; no new end-to-end Lean/Rocq or encoded object-ZFC proof
+is claimed. The comparisons concern an immutable inspected snapshot,
+and do not establish a globally simplest equation or literature-wide priority.
+\end{abstract}
+\vfill
+\begin{center}\small
+Source snapshot: \texttt{b7e35224c04fe1031c0a53f80a395e9b32205022}.\\
+Positive and unrestricted integer domains are kept distinct.
+\end{center}
+\newpage\tableofcontents\newpage
+
+\section{The result and the comparison standard}
+
+A small number of unknowns can make a formula short while requiring
+enormous fixed coefficients and high degree. A direct encoding of finite
+proof certificates can keep all coefficients small and the degree four,
+at the cost of more unknowns. We improve both directions without collapsing
+their different measures into a single unsupported minimum claim.
+
+Our two main displayed equations are
+\begin{align}
+ P_{\mathrm{tr}}(J,F,\alpha,i,T,w,s,n,\eta,\zeta)&=0,
+ &\boldsymbol u&\in\Z_{>0}^{10},\label{eq:compact-statement}\\
+ P_{236}(x_0,\ldots,x_{235})
+  =\sum_{j=0}^{171}R_j(\boldsymbol x)^2&=0,
+ &\boldsymbol x&\in\Z^{236}.\label{eq:direct-statement}
+\end{align}
+Section~\ref{sec:compact} defines every polynomial abbreviation in the first
+equation. Appendix~\ref{app:direct} prints every quadratic $R_j$ in the
+second. The archive also contains complete expansions of all three direct
+quartics, with ordered coordinates and integer coefficients. The four fixed
+compact numerals are specified by the retained finite recipe and exact
+binary payloads; they are not adjustable parameters.
+
+\begin{theorem}[Consistency equivalences]\label{thm:calibration}
+For the literal equations supplied in this release, the new proofs below,
+composed with the identified inherited arithmetic and syntactic calibration,
+establish
+\begin{align*}
+ \mathrm{ZFC}&\vdash
+ [\neg\exists\boldsymbol u\in\Z_{>0}^{10}\ P_{\mathrm{tr}}(\boldsymbol u)=0]
+ \longleftrightarrow\Con(\mathrm{ZFC}),\\
+ \mathrm{ZFC}&\vdash
+ [\neg\exists\boldsymbol x\in\Z^{d}\ P_d(\boldsymbol x)=0]
+ \longleftrightarrow\Con(\mathrm{ZFC}),\quad d\in\{234,235,236\}.
+\end{align*}
+The same positive-domain statement holds for the other four supplied
+compact circuits. No consistency assumption is used in deriving these
+equivalences.
+\end{theorem}
+
+This is an equivalence provable in ZFC, not a proof in ZFC of either side.
+Each equation has a solution precisely when a finite refutation exists,
+under its stated encoding. Finite experiments with candidate solutions
+would not establish consistency.
+
+\subsection{Measured changes}
+\input{comparison.tex}
+
+Every operation count charges a live binary addition, subtraction, or
+multiplication, including a square and multiplication by a fixed scalar.
+Repeatedly used named values are shared. Such names are not new existential
+unknowns. Degree means total degree after all abbreviations are substituted,
+and the finite verifier certifies an attained highest homogeneous form,
+not merely a syntactic upper bound. A direct polynomial's term count
+refers to its fully collected sum of squares; its coefficient height is
+the largest absolute coefficient in that expansion.
+
+The compact results keep all four old numerical ports intact. Their
+degree and evaluation improvements therefore do not hide a coefficient
+change. The direct results expose their support/height tradeoffs. The
+$234$-variable endpoint saves the most coordinates among the three direct
+forms, while $236$ is much sparser. Neither comparison changes the domain.
+
+\section{The compact equation}\label{sec:compact}
+
+All ten independent variables in \eqref{eq:compact-statement} are strictly
+positive. Let $\beta,K_0,M_C,M_F$ be the complete inherited BFS943 compact44
+tuple, with its corrected initializer and source convention retained. Its
+fixed numerical bounds include
+\[
+ \beta\ge31\text{ odd},\qquad K_0>0,\qquad
+ 0<M_C<\beta<M_F<2\beta.
+\]
+These bounds help prove the arithmetic reduction, but do not alone select
+the ZFC instance. The full fixed tuple in the archive selects that instance.
+Define
+\begin{gather*}
+ h=\beta J,\qquad q=h+1,\qquad C=q-F-\alpha,\\
+ X=wq,\qquad Y=qs,\qquad k=\eta+\zeta,\qquad c=kY+\eta,\\
+ A=Y(X+1)+1,\qquad \Delta=A^2-1,\qquad H=4A-5,\\
+ v=XY^2,\qquad E=1+v(v+1)k^2,\\
+ R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ B=(K_0+w)C-F,\qquad U=ic^2,\\
+ a=\Delta U^2E,\qquad G=E(1+a),\qquad f=1+2a,\\
+ Q=4\Delta^2U^2G,\qquad b=cT-R,\qquad V=fb-c,\\
+ L=bV,\qquad K=X(3c-2X)+2,\\
+ e_6=6(k-R-1)-v(R+1)(R-1)(R+3),\\
+ D_6=6q^6,\qquad M=hD_6H,\\
+ Z=hD_6[H(n-LB)+K]-H[D_6B+h(e_6-6q^4s)].
+\end{gather*}
+The promised polynomial is
+\begin{equation}\label{eq:compact}
+ \boxed{\quad P_{\mathrm{tr}}
+ =Q\bigl(Z^2-M^2GV^2\bigr)+M^2G-Z^2.\quad}
+\end{equation}
+All these expressions are ordinary polynomial abbreviations. The
+verified circuit evaluates exactly \eqref{eq:compact}, exploiting
+$Q=4\Delta a(1+a)$ and the shared products listed in its JSON definition.
+Its exact count is $87$, and its exact total degree is $232$.
+
+The lower-case $f$ is the explicit strong Pell trace. It differs from
+the independent uppercase variable $F$ in the coefficient mask. Neither
+should be identified with the $F=t^t$ variable in the separate direct
+construction.
+
+\subsection{The algebraic opportunity}
+
+The matched predecessor sets $V=f^2b-c$, evaluating $f^2$ through the
+identity $1+4a(1+a)$. We instead set
+\begin{equation}\label{eq:tracechange}
+                  V=f(cT-R)-c.
+\end{equation}
+Since $U=ic^2$, we have $c\mid a$ and therefore
+\begin{equation}\label{eq:residues}
+ f\equiv1\pmod c,\qquad V\equiv-c\pmod f,\qquad V\equiv-R\pmod c.
+\end{equation}
+The old proof needs precisely the latter two residues at its index-recovery
+stage. The special doubled-trace formula supplies $f\equiv1\pmod c$,
+whereas the previous expression only exploited $f^2\equiv1\pmod c$.
+
+A congruence observation alone would be insufficient. The proof also
+needs absolute size estimates and positive witness construction. Some
+intermediates can be negative at arbitrary positive inputs. The following
+sections verify these obligations for the changed expression.
+
+\section{Soundness of the trace reduction}
+
+We retain the proved Pell folding and native decoding interfaces from the
+identified source packets, and state where they enter. Their supporting
+proofs and calibrations are included in the release. We use
+\[
+ \chi_A(m)+\psi_A(m)\sqrt{A^2-1}
+       =(A+\sqrt{A^2-1})^m\qquad(m\ge0).
+\]
+
+\subsection{Recover roots before interpreting the mask}
+
+Positive inputs imply $q\ge32$, $X,Y\ge q$, $k\ge2$, $c>kY$,
+$A\ge3$, $U\ge c^2$, $a>0$, $f>2c$, $Q>1$, and $M>0$.
+For integral $b$, the value $V=fb-c$ is nonzero: if $b=0$ then
+$V=-c$; otherwise $|V|\ge f-c>1$.
+At a zero of \eqref{eq:compact}, write $z=Z/M$ to obtain
+\begin{equation}\label{eq:productnorm}
+                    (Q-1)z^2=G(QV^2-1).
+\end{equation}
+Since $Q=4\Delta^2U^2G$, both $Q-1$ and $QV^2-1$ are coprime to
+$G$. Prime valuations force each exponent in $G$ to be even. Thus
+$G=g^2$ with $g>0$. Moreover $\gcd(E,1+a)=1$, because $E\mid a$,
+so $E=\tau^2$, $1+a=f_0^2$, and $g=\tau f_0$ for positive integers.
+
+The inherited rational adjacent-Pell descent, applied to
+$QV^2-(Q-1)y^2=1$ with $y=|z|/g$, proves $y\in\Z_{>0}$.
+This is an integrality theorem, not an assumption that a rational square
+root is integral. Thus $z=\varepsilon gy\in\Z$ for
+$\varepsilon\in\{-1,1\}$. Put $I=2Ug$. The exact identities
+\begin{equation}\label{eq:strong}
+ f^2-\Delta I^2=1,\qquad Q=(\Delta I)^2,\qquad c^2\mid I
+\end{equation}
+are unchanged. The signed folding interface uses \eqref{eq:strong},
+the adjacent norm, $c\le I$, and $V\equiv-c\pmod f$; it does not use
+the extra trace factor in the old $V$. It yields
+$c=\psi_A(p)$ for a positive odd $p$.
+The first norm gives $k=2\psi_{2v+1}(m)$ for $m\ge1$.
+Index $m=1$ would force $k=2$, $\eta=\zeta=1$, and
+$c=2Y+1$, strictly between the first two positive main ordinates.
+Hence $m\ge2$ and
+\begin{equation}\label{eq:earlyc}
+              c>kY\ge(8v+4)Y>8XY^3\ge8q^4.
+\end{equation}
+In particular $c>X$ and $K>0$. No positivity of $R,C,B,b$, or $V$
+has been assumed.
+
+\subsection{The absolute estimate needed for transport}
+
+If $b=0$, the adjacent norm would give
+$y^2-c^2=(c^2-1)/(Q-1)$ strictly between zero and one.
+Here $Q=(\Delta I)^2\ge9c^4>c^2$ by \eqref{eq:strong}.
+Thus $b\ne0$, and $b,V$ have the same sign. With $D_0=\Delta U^2$,
+\[
+ \frac{a^2}{g^2}=\frac{D_0a}{1+a}>\frac{D_0}{2}>9.
+\]
+Consequently $a>3g$, $|V|\ge f-c>a>3g$, $|V|>|b|$, and
+$y<3|V|/2$.
+
+The exclusion of main index $p=3$ is independent of the formula for
+$V$. If $c=4A^2-1$ and $m\ge3$, Pell growth gives $k>32v^2$,
+incompatible with $c=kY+\eta$. Thus $m=2$ and $k=8XY^2+4$.
+For $u=X+2-2Y$, expansion gives
+\[
+ \eta=4Y^2(Xu+1)+8Y(X+1)+3-4Y.
+\]
+If $u\le-1$ this is negative; if $u\ge2$ it exceeds $k$.
+Both contradict $0<\eta<k$. The remaining cases force
+$2Y-X\in\{1,2\}$, impossible since $q\mid X,Y$ and $q\ge32$.
+Hence $c>c_3:=4\Delta+3$.
+
+Classification of the adjacent norm, with $S=\Delta I$, gives
+$|V|=\chi_S(j)/S$ for odd $j\ge1$. Index one is excluded.
+Index three would give $|V|=4Q-3$. As $Q=\Delta(f^2-1)$,
+either sign would imply one of
+\[
+ f(b-4\Delta f)=c-c_3,\qquad f(b+4\Delta f)=c+c_3.
+\]
+The right sides are strictly between zero and $2c<f$.
+Thus $j\ge5$ and
+\[
+ |V|\ge16Q^2-20Q+5>8Q^2,\qquad
+ |b|>\frac{8Q^2-c}{f}>8f^3-\frac12>4g.
+\]
+Here $Q>f^2$ follows from $\Delta\ge3$ and $f\ge2$.
+Therefore $L=bV=|b||V|$ satisfies
+\begin{equation}\label{eq:transportbound}
+ L>0,\qquad gy<\frac38L<\frac12L,\qquad
+ \frac{|b|}{q^6}<\frac12L.
+\end{equation}
+
+\subsection{Negative ranks in the Lucas-corrected equation}
+
+For proof only, put
+\[
+ t_0=B/h,\quad W=1+hL,\quad\kappa=K/H,\quad
+ \sigma=s/q^2,\quad\bar e=e_6/6,\quad\rho=\bar e/q^6.
+\]
+The carrier identity gives
+\begin{equation}\label{eq:transport}
+ n=\varepsilon gy-\kappa-\sigma+Wt_0+\rho.
+\end{equation}
+Initially $\bar e$ may be rational. Write $B_R=(R+1)(R-1)(R+3)$.
+Since $cT>k-1$,
+\[
+ \rho<\frac b{q^6}-\frac{vB_R}{6q^6}.
+\]
+If $B_R\ge0$ and $B\le-1$, then $Wt_0<-L$; positivity of
+$\kappa,\sigma$ and \eqref{eq:transportbound} force $n<0$.
+
+The adverse sign $B_R<0$ occurs precisely at integer ranks $R\le-4$
+and $R=0$. For $R=-r\le-4$, the exact mask identity
+\[
+ R=(hC+q\alpha)(q^2-1)+(M_C+qM_F)J
+\]
+gives $C<0$, $|C|>r/q^3$, and $B\le-1-w|C|$.
+The adverse correction is less than $ws^2r^3/(6q^3)$.
+But $b=cT+r>r,c$, so $V>(f-1)b$ and
+$L>(f-1)r^2$, while $f-1=2a>s^2$.
+The additional term $-w|C|L$ therefore dominates this correction.
+The remaining terms again yield $n<0$ by \eqref{eq:transportbound}.
+For $R=0$, we have $|C|\ge1$ and $L>f-1>s^2$; the adverse
+term $ws^2/(2q^3)$ is likewise dominated. This covers every integer rank.
+
+It follows that $B\ge0$ and $C>0$, because the independent $F$ is
+positive. The inherited mask estimate is now licensed:
+$3q<R<q^4-2$. Equation~\eqref{eq:earlyc} gives $c>2R$, so
+$b,V>0$. The residues \eqref{eq:residues} and the strong pair
+\eqref{eq:strong} now meet all hypotheses of the normalized rank and
+signed auxiliary-index lemmas. They yield $p=R$ and the old parity
+conclusions.
+The other size premise $c>2p$ follows from $c=\psi_A(p)$,
+$A\ge3$, and the already established $p\ge5$.
+
+\subsection{The unchanged decoding stages}
+
+The identity
+\[
+ 2\psi_{1+2v}(m)=2m+8v\binom{m+1}{3}+32v^2Z_m,\qquad Z_m\in\N,
+\]
+and the carrier recover the first index and remaining denominators.
+Their data $q,X,Y,k,c,R$ and integral carrier $z$ have not changed.
+The inherited proof first obtains divisibility by $q^4$, bounds the
+index difference by $R<q^4$, and only then obtains divisibility by
+$q^6$. Its valuation calculation covers the primes two and three
+dividing the factor six. The whole-product projection, native witnesses,
+and fixed-source refutation calibration then apply. The retained source
+proof supplies these unchanged stages; no new cancellation modulo a
+possibly nonunit factor is introduced.
+
+\section{A polynomial completeness map}
+
+There is a concrete map from every old positive zero, stronger than
+rebuilding canonical witnesses alone. Define the polynomial
+\[
+ d=\frac{f-1}{c}=2\Delta i^2c^3E.
+\]
+Given an old positive zero with $V_{\rm old}=f^2b_{\rm old}-c$, set
+\begin{equation}\label{eq:Tnew}
+ T_{\rm new}=fT_{\rm old}-dR.
+\end{equation}
+All other independent inputs except $n$ are fixed. Then identically
+\[
+ b_{\rm new}=f b_{\rm old},\qquad V_{\rm new}=V_{\rm old}.
+\]
+For the $L=bV$ charts, set
+\[
+ n_{\rm new}=n_{\rm old}+(f-1)L_{\rm old}B.
+\]
+For the $L=V^2$ chart, leave $n$ unchanged. In either case
+$n_{\rm new}-L_{\rm new}B=n_{\rm old}-L_{\rm old}B$, so the entire
+carrier and final polynomial are preserved under this substitution.
+
+At an old positive zero, the old proof gives $0<R<c/2$ and $B\ge0$.
+Since $T_{\rm old}\ge1$,
+$T_{\rm new}>f-(f-1)/2>0$; it is integral because $d$ is a polynomial.
+The old $b,V,L$ are positive, so $n_{\rm new}>0$ as well.
+This proves completeness on the required domain. Soundness for arbitrary
+new positive zeros was proved separately above. We do not claim an
+integral inverse of this map on every new zero.
+
+The same trace replacement works in four simpler supplied charts.
+Their complete formulas and inherited source proofs are retained in
+the compact component; the altered transport estimates are no stronger
+than those just established. Table~\ref{tab:compact} records all five
+degree/cost tradeoffs.
+
+\input{direct_theory.tex}
+\input{verification_and_outlook.tex}
+
+\appendix
+\section{Complete residuals of the sparse integer equation}\label{app:direct}
+Every $x_0,\ldots,x_{235}$ below ranges over $\Z$. The equation is exactly
+$\sum_{j=0}^{171}R_j^2=0$. This appendix is generated from the canonical
+residual JSON and checked against those literal coefficients. The other
+two residual lists and all three collected quartics are in the archive.
+\input{residuals236.tex}
+
+\section{The compact fixed coefficient specification}\label{app:coefficients}
+\input{coefficient_note.tex}
+
+\section{Exact compact degree certificates}
+\input{degrees.tex}
+
+\begin{thebibliography}{9}
+\bibitem{repo} ProveIt contributors, \emph{DiophantineConsistency research
+collection}, commit
+\texttt{b7e35224c04fe1031c0a53f80a395e9b32205022}, 25 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/b7e35224c04fe1031c0a53f80a395e9b32205022/Computability/DiophantineConsistency}{Pinned research collection on GitHub}.
+\bibitem{lucas} AI-assisted ProveIt research, \emph{Lucas corrections and
+witness elimination}, incoming archive dated 25 October 2026; exact bytes,
+proof, and coefficient closure retained under \texttt{compact/}.
+\bibitem{factorialfree} AI-assisted ProveIt research, \emph{Removing factorial
+authenticity: binomial prime-power certificates for Diophantine consistency},
+incoming archive dated 25 October 2026; source and proof under \texttt{direct/}.
+\bibitem{sharederror} AI-assisted ProveIt research, \emph{Shared factorial
+error}, incoming archive dated 25 October 2026; source and proof under
+\texttt{direct/}.
+\bibitem{farhi} B. Farhi, \emph{An identity involving the least common multiple
+of binomial coefficients and its application}, American Mathematical
+Monthly \textbf{116} (2009), 836--839.
+\url{https://arxiv.org/abs/0906.2295}.
+\end{thebibliography}
+\end{document}

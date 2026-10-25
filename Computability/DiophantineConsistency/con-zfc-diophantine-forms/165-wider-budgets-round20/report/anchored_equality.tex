@@ -1,0 +1,59 @@
+\subsection{Absorbing equality dummies into anchored products}
+A different new operation removes an equality dummy without changing any
+prescribed square label. Suppose two aliases $a,b$ of one non-unit logical
+value are tied by a fresh dummy $d$ through
+\[
+ C(a,b,d)=a^2+b^2+d^2-ab-bd-da.
+\]
+Assume $d$ occurs nowhere else. Let $u$ be an existing unit alias already
+anchored to one by $U$. Substitute $d=au$ and delete the coordinate $d$.
+The new equality penalty is
+\begin{equation}\label{eq:anchored-cycle}
+ \widetilde C(a,b,u)
+ =a^2+b^2+a^2u^2-ab-abu-a^2u.
+\end{equation}
+It has degree four and is the literal polynomial $C(a,b,au)$.
+
+\begin{theorem}\label{thm:anchored-equality}
+Under the stated incidence restrictions, replacing $C(a,b,d)$ by
+\eqref{eq:anchored-cycle} preserves the integer zero set by a polynomial
+bijection after deleting one coordinate. It also preserves the universal
+source lift identity \eqref{eq:networklift}. If the entire resulting
+collected polynomial has height one, exact degree four and all declared
+coordinates present, it is a certified height-one quartic with one fewer
+independent integer variable.
+\end{theorem}
+\begin{proof}
+For arbitrary real $a,b,u$,
+\[
+ 2\widetilde C=(a-b)^2+(b-au)^2+(au-a)^2\ge0.
+\]
+At a zero of the complete energy, its unchanged unit penalty forces
+$u=1$. The new equality penalty then vanishes exactly when $a=b$.
+Thus the old dummy has the unique value $d=a=b$, while every other
+summand is unchanged. Extending with $d=a$ maps a new zero to an old
+zero. Conversely, at an old zero $d=a=b$ and $u=1$, so deleting $d$
+gives a new zero. These maps are inverse polynomial maps on the zero sets.
+
+For a canonical source lift, all unit aliases equal one and all ordinary
+aliases equal their logical values. Consequently $au=a=d$ identically
+on that lift, including away from source zeros. No prescribed incidence
+label or divergence has changed, so the universal lift identity is retained.
+
+Polynomial substitution preserves nonnegativity but not automatically
+coefficient height. The term $a^2u^2$ may collide with graph-energy terms,
+and several absorbed dummies may share a unit alias. The acceptance test
+therefore collects the whole energy after every proposed substitution,
+including all other penalties. It explicitly checks the finite claims
+about coefficients, degree and the live coordinate set. No extra unit
+coordinate is introduced: $u$ was already present and anchored.
+\end{proof}
+
+Several such absorptions can be composed, using the same or different
+existing unit aliases, provided the full polynomial test accepts the
+frozen final choices. Unlike Round~19 polarization, this operation leaves
+the prescribed square monomials in the incidence graph untouched. Unlike
+a formal substitution $d=a$ alone, it does not insert a coefficient $-2$
+into the equality row before the complete energy is considered. Its
+quartic product with an already anchored unit provides additional distinct
+monomials that can retain height one.

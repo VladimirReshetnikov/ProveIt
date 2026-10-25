@@ -15,8 +15,8 @@ universal Diophantine equations by James P. Jones and coauthors:
 
 **Fixed-input specializations for Con(ZFC)** (not formalized). The report
 [`con-zfc-diophantine-forms`](../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5–16
-(batches 221–232, one hundred and seventeen packages).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–17
+(batches 221–233, one hundred and twenty-nine packages).
 
 Until wave 11, every finished equation applied the native-window/Pell
 compiler below, with its input interface removed, to the blank run of the
@@ -25,9 +25,9 @@ compiler below, with its input interface removed, to the blank run of the
 is an explicit polynomial with fixed integer coefficients, and by an ordinary
 argument formalizable in ZFC, ZFC proves "no solution" ↔ Con(ZFC). Wave 11
 adds finished direct quartics in the numerical proof calculus C222, with no
-coefficient tuple and without K215, this compiler or Jones; waves 12–16
-bring them down to 221 naturals and 252 unrestricted integers
-(report sources 140, 142, 144 and 141).
+coefficient tuple and without K215, this compiler or Jones; waves 12–17
+bring them down to 219 naturals and 225 unrestricted integers
+(report sources 149 and 158).
 
 That route is not required. By Vladimir's direction, a proposal is free to
 use another encoding instead of K215, Jones's universal equation or this
@@ -41,7 +41,7 @@ As the packages state them:
 - 10 unrestricted integers at degree 1,245,324 in 467 operations, via a
   cited 2026 preprint of Z.-W. Sun (not formalized, not checked at intake);
 - 11 unrestricted integers without that preprint, in 107 operations or at
-  degree 300, 14 at degree 86 in 112 operations, and 15 at degree 44 in 111;
+  degree 298, 14 at degree 82 in 113 operations, and 15 at degree 44 in 111;
 - eleven positive unknowns at degree 211 in 107 operations;
 - twelve positive unknowns at degree 70, and thirteen at degree 28;
 - fourteen positive unknowns at degree 24;

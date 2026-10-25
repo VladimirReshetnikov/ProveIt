@@ -1,0 +1,264 @@
+\subsection{Nonzero denominators before any sign assumption}
+The weakened norm no longer has a constant one on its right-hand side.
+It therefore does not, by itself, imply $M\ne0$. The correct order is
+as follows. The affine oddness row gives $q\ne0$. Apply
+Lemma~\ref{lem:signed-power} immediately to the request for $M$ at base
+$q$. For $|q|\ge2$ it gives $x\ge0$ and $M=q^x$; for $q=\pm1$
+it gives $M=q^x$ at every signed index. Either way $M\ne0$.
+The request at the already positive index $t$ gives
+$V=(F^2+1)^t\ge1$, including $F=0$.
+
+From $Bv=M$ we obtain $Bv\ne0$. Set $b=|B|$ and $s=BF-V$.
+The other new row gives $S=vs$, and the sphere gives
+\begin{equation}\label{eq:wide-near}
+ |s|\le b/\sqrt2<3b/4.
+\end{equation}
+If $F=0$, then $V=1$ and $s=-1$, so $b\ge2$. If
+$f=|F|\ge1$, opposite signs of $B,F$ would force
+$V=BF-s<-b+3b/4<0$. Thus $BF=bf>0$. Moreover
+$V<b(f+3/4)$. For every integer $f\ge1$,
+\[
+ (f^2+1)^t\ge(f^2+1)^2>(f+1)(f+3/4),
+\]
+since the last difference is $f^4+f^2-7f/4+1/4>0$.
+It follows that $b\ge f+2\ge3$, and therefore
+\begin{equation}\label{eq:early-wide}
+ V<b(f+3/4)\le b(b-5/4)<b^2-b<b^2.
+\end{equation}
+In particular every branch has $b\ge2$.
+
+If $q=\pm1$, its power request gives $|M|=1$, contradicting
+$Bv=M$. Hence $Q:=|q|\ge3$, and $|q+1|\ge2$.
+Every actual representative $a_\nu$ is an exponent requested at base
+$q+1$, so Lemma~\ref{lem:signed-power} gives $a_\nu\ge0$ and
+$H\ge1$. The same argument gives $h\ge0$, while the semantic anchor
+has already excluded $h=0$. The request at base $q$ now gives
+$x\ge0$ and $M=q^x$. The retained denominator-ratio equation
+$q^{t+1}v_{t+1}=M$, interpreted as exact nonzero powers and taken in
+absolute value, forces $x\ge t+1\ge17$. Consequently the self-radix
+request has base $BH$ of magnitude at least two and gives
+\begin{equation}\label{eq:wide-radix}
+ q=(BH)^x,\qquad Q=(bH)^x\ge b^x\ge b^{t+1}.
+\end{equation}
+If $F=0$, we have so far proved only $b\ge2$. But $q$ is odd and
+$x>0$, so $b$ is odd; hence $b\ge3$. This parity step is necessary
+when widening the former radius $1/2$.
+
+\subsection{Exact factorial digits at a signed radix}
+For each normalized row, $L_i v_i=M\ne0$ and
+$v_iU_i=MQ_i+R_i$. Hence $v_i\mid R_i$, and $r_i=R_i/v_i$ is
+an integer satisfying
+\begin{equation}\label{eq:wide-remainder}
+ U_i=L_iQ_i+r_i,\qquad |r_i|\le |L_i|/\sqrt2<3|L_i|/4.
+\end{equation}
+This uses no positivity of $L_i$ or $r_i$.
+
+For the factorial digit, set $n=F^2+t$ and
+$C_j=\binom nj$. Its exact numerator request gives $U=(q+1)^n$,
+while its restored digit row gives
+\[
+ U=q^t(B+q\eta)+r.
+\]
+The signed low polynomial
+$\rho=\sum_{j=0}^{t-1}C_jq^j$ satisfies
+\[
+ |\rho|<Q^t\frac{\max_{j<t}C_j}{Q-1}.
+\]
+For $F\ne0$, the elementary coefficient estimate
+$C_j\le(F^2+1)^t=V$ holds for all $j\le t$. To prove its full
+range, induct on $t$ in
+$\binom{m+t}{j}\le(m+1)^t$, for $m\ge1$ and $0\le j\le t$.
+Pascal's identity handles the next row through $j=t$, since
+$2\le m+1$. Its new edge is bounded by
+\[
+ \binom{m+t+1}{t+1}=\prod_{i=1}^{t+1}(1+m/i)\le(m+1)^{t+1}.
+\]
+The initial case $t=0$ is immediate. Equations
+\eqref{eq:early-wide}--\eqref{eq:wide-radix} now give
+\[
+ |\rho|<Q^t\frac{V}{Q-1}
+       <Q^t\frac{2}{b^{t-1}}<Q^t/32.
+\]
+For $F=0$ one must not use $V=1$ as a coefficient bound.
+Instead $C_j=\binom tj\le2^t$ and $b\ge3$, so
+\[
+ |\rho|<Q^t\frac{2^t}{3^{t+1}-1}
+       <Q^t(2/3)^{t+1}<Q^t/32.
+\]
+The difference $r-\rho$ is divisible by the possibly negative integer
+$q^t$, but its absolute value is less than
+$(3/4+1/32)Q^t=25Q^t/32<Q^t$. Thus $r=\rho$.
+Subtracting, dividing by $q^t$ and reducing modulo $q$ gives
+$B\equiv C_t\pmod q$. For $F\ne0$,
+$|B-C_t|\le b+C_t<b+b^2<Q$; for $F=0$, $C_t=1$ and
+$|B-1|\le b+1<Q$. In both cases,
+\begin{equation}\label{eq:wide-binomial}
+ B=\binom{F^2+t}{t}>0.
+\end{equation}
+The branch $F=0$ would force $B=1$, contrary to $b\ge3$.
+Thus $F\ne0$, the earlier common-sign argument gives $F>0$, and
+\eqref{eq:wide-radix} finally gives $q>0$.
+The negative-radix branch is excluded by the extracted arithmetic,
+not by an initial sign assumption. All other requests, including
+$N=B^x$, now have their ordinary positive meanings.
+
+\subsection{A factorial fixed point with radius three quarters}
+\begin{lemma}\label{lem:wide-factorial}
+For integers $t\ge16$ and $F\ge1$, let
+\[
+ R_t(F)=\frac{(F^2+1)^t}{\binom{F^2+t}{t}}.
+\]
+Then $|F-R_t(F)|<3/4$ if and only if $F=t!$. At that solution,
+$0<F-R_t(F)<1/32$.
+\end{lemma}
+\begin{proof}
+Write $K=t!$ and
+\[
+ R_t(F)=K\prod_{i=1}^t\frac{F^2+1}{F^2+i}.
+\]
+Every factor is nondecreasing with $F$, and
+\[
+ R_t(F)\ge R_t(1)=\frac{2^t}{t+1}>2t^2+3/4.
+\]
+The last inequality holds at $16$ and propagates by induction: if
+$A_t=(t+1)(2t^2+3/4)$, then
+$2A_t-A_{t+1}=2t^3-4t^2-37t/4-4>0$ for $t\ge16$.
+The distance hypothesis therefore gives $F>2t^2$, whence
+$F\ge2t^2+1$. Since $R_t(F)<K$, the same hypothesis implies the
+integer bound $F\le K$.
+
+Furthermore
+$F^2/(F+1)=F-1+1/(F+1)>2t(t-1)$, so
+$F^2>2t(t-1)(F+1)$. For $u_i=(i-1)/(F^2+i)$,
+\[
+ \sum_i u_i<\frac{t(t-1)}{2F^2}<\frac1{4(F+1)}.
+\]
+Using $\prod_i(1-u_i)\ge1-\sum_i u_i$ gives
+$R_t(F)>K(1-1/[4(F+1)])$. If $K\ge F+1$, this is
+strictly greater than $F+3/4$, contradicting the distance hypothesis.
+Thus $F=K$.
+
+Conversely, at $F=K$ the same product estimate gives
+\[
+ 0<K-R_t(K)<\frac{t(t-1)}{2K}<\frac1{32}.
+\]
+The final inequality holds at $16$ and its left side decreases thereafter.
+This proves both the equivalence and the stronger canonical margin.
+\end{proof}
+
+By \eqref{eq:wide-binomial}, estimate \eqref{eq:wide-near} is exactly
+$|F-R_t(F)|<3/4$. Hence $F=t!$ and $0<s=BF-V<B/32$.
+The old ceiling witnesses $s$ and $B-s-1$ are nonnegative integers.
+Also $q\ge B^{t+1}>B$, so $q-B-1\ge0$. Fresh ternary $G$ witnesses
+restore all three deleted initial scalar sign certificates.
+
+\subsection{All remaining digits and the refutation}
+Only now use the true positive factorial front in the beta endpoints.
+Since $y=V(V-1)>F+2$, the first endpoint with $u_0\le-1$ would give
+$x\le F-y<0$. Thus $u_0\ge0$ and $x\ge F+1\ge2$.
+The last endpoint then forces $u_t\ge1$, and
+\begin{equation}\label{eq:wide-endpoint}
+ x\ge2+(t+1)y.
+\end{equation}
+All four denominator levels are now positive divisors of $M=q^x$.
+The strict amplification margin is unchanged. With
+$\mathcal R=2+t+x+y+F$, one has $\mathcal R<2x$ and
+$x\ge16!+1>2^{32}$; therefore
+\[
+ \mathcal R^{2^{23}}<(2x)^{2^{23}}<2^x.
+\]
+For the last inequality, the function $x/\log_2(2x)$ increases for
+$x\ge2^{32}$, and at $2^{32}$ it exceeds $2^{23}$.
+This is precisely the retained local precision margin.
+
+The encoded-index congruence is $B\mid C_0+F^2+1$.
+Since $B>F^2+1$ and $C_0\ge0$, we have $C_0>0$ and $H\ge2$.
+Each ordinary representative $a\ge0$ has
+$\binom aj\le\max(1,a)^k\le H^x$ at its range position $k\le x$,
+including $a=j=0$. The retained constructor degree ledger gives
+$h\le H^{2^{22}}$, while the factorial and endpoint inequalities give
+$2^{22}(t+1)<x$. Thus all needed derived-label coefficients also are
+at most $H^x$. Since $q=B^xH^x$, every genuine remaining low tail obeys
+\[
+ 0\le\rho_i<L_i\frac{H^x}{q-1}
+              <L_i\frac2{B^x}<L_i/32.
+\]
+Equation~\eqref{eq:wide-remainder} and the same divisible-difference
+argument force $r_i=\rho_i$. Every original interval slack
+$L_i-r_i-1$ is nonnegative and admits its old guard witnesses.
+The quotient congruences are exactly the retained $N$-divisibility range
+tests, with $N=B^x\mid q$. The unchanged prime-power extraction,
+constructor equations and Horn-flow theorem therefore recover a finite
+C222 refutation, and the named calibration gives a finite ZFC refutation.
+This recovers a complete calibrated witness, not just some necessary
+arithmetic conditions. Stored representative-minus-one coordinates may
+still be $-1$; only the actual semantic representatives must be nonnegative.
+
+\subsection{Constructive completeness for the wider sphere}
+Start with a finite calibrated refutation. The retained cofinal construction
+chooses a sufficiently large $t=16+d^2$, sets $F=t!$,
+$V=(F^2+1)^t$, $y=V(V-1)$, and chooses a sufficiently large beta-CRT
+code $x$. The true beta quotients are nonnegative and less than $x$,
+since their denominators are at least two. All original strict range
+witnesses therefore exist.
+
+Every factor $1+F^2/i$ is odd because $F$ is even and $i\mid F$.
+Thus $B$, $N=B^x$ and the precision modulus $N^2$ are odd. Adding
+$N^2$ to a representative preserves its CRT residues and reverses parity.
+Choose the dominant representative $a$ in $[2N^2,4N^2)$ with parity
+opposite to $b$, retaining the others in $(0,2N^2]$. The literal
+constructors give $h\ge2a^2$ and $h\equiv1+a+b\pmod2$.
+Consequently $h$ is even and remains a dominant semantic anchor.
+Choose a third independent representative's parity so the sum of all
+nine is even, making $H$ odd. These choices preserve all precision
+bounds. Then $q=(BH)^x$ is odd, and $z=(q-1)/2$ is an integer.
+Affine oddness requires no parity condition on $x$.
+
+For the deterministic comparison center take an admissible positive $A$,
+$C=Y_h(A)$ and $U=X_h(A)$. Since $h$ is even, $C$ is even and $U$ is
+odd. Set $l=hC$. Pell composition gives $J_{\rm p}=Y_l(A)=CY_C(U)$.
+The Pell binomial expansion and $U^2-1=(A^2-1)C^2$ imply
+\[
+ \frac{Y_C(U)}C\equiv U^{C-1}\pmod C.
+\]
+Indeed the zeroth term after division by $C$ is $U^{C-1}$; every
+higher term contains a factor $(U^2-1)^j/C$, hence at least one
+factor $C$. Thus $J_{\rm p}/C^2$ is an odd integer and supplies $e$.
+Set $H_{\rm p}=X_l(A)$, $f=(1-A)H_{\rm p}$ and
+$D=A+H_{\rm p}f$. The pair $(X_h(D),Y_h(D))$ supplies both required
+comparison residues, including when $D<0$. The retained cofinal frame
+and cap construction provides its other witnesses. Canonical pairs have
+residues $(1,k)$ modulo $A-1$, so the full orientation pool holds.
+
+Finally $B\mid q\mid M$. Set $v=M/B$ and $S=v(BF-V)$.
+Lemma~\ref{lem:wide-factorial} gives $0<S<M/32$.
+For each true remainder take $R_i=(M/L_i)r_i$, with
+$0\le R_i<M/32$. Thus
+\[
+ 2\left(S^2+\sum_{i=1}^{11}R_i^2\right)
+       <\frac{24}{1024}M^2=\frac3{128}M^2<M^2.
+\]
+The nonnegative integer difference has a $G$ representation, supplying
+the new sphere row. Every other source witness is retained.
+This constructs a new zero from every finite refutation; it is not a
+bijection between arbitrary old and new ternary-guard assignments.
+
+\subsection{Exact algebra after the arithmetic change}
+The remaining reductions use three finite operations. An integral affine
+coordinate shear has its explicit integral inverse. An elementary row
+change $R_i\leftarrow R_i+gR_j$, $i\ne j$, preserves simultaneous zeros
+and is inverted with $-g$. A unit-pivot row
+$\epsilon x_v+f(\widehat{x_v})=0$, $\epsilon=\pm1$, uniquely restores
+$x_v=-\epsilon f$ and can be deleted after that substitution in every
+other row. The certificate verifies that the proposed pivot is independent
+of $x_v$, that every transformed row remains quadratic when claimed,
+and that all coordinate indices are compacted consistently.
+
+These transformations preserve zero existence but need not preserve the
+value of the sum of squares away from zeros. The final polynomial is the
+sum of squares of the final literal residuals, not an asserted
+coefficientwise identity with an earlier quartic. Combining both arithmetic
+witness directions with the exact finite transformations gives
+\eqref{eq:calibration} for every selected endpoint; negation gives
+\eqref{eq:consistency}. The full source calibration is retained, not
+replaced by the finite coefficient checker.

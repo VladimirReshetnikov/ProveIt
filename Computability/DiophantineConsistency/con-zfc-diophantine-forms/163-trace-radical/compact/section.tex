@@ -1,0 +1,168 @@
+\section{Using the explicit strong trace before squaring it}
+\label{sec:trace-linear}
+
+The doubled Pell construction already exposes its strong trace as the
+polynomial $f=1+2a$. Earlier compact equations nevertheless used
+$f^2(cT-R)-c$ as their auxiliary ordinate. The identity $f\equiv1\pmod c$
+permits the smaller expression
+\[
+ V=f(cT-R)-c.
+\]
+It preserves both residues needed by the index argument. This changes five
+ten-positive-variable equations as follows; every binary addition,
+subtraction and multiplication, including fixed scalar products, is charged.
+The existing register $F_0=1+a$ gives $f=a+F_0$ in one addition, so every
+new circuit has exactly the same operation count as its matched parent.
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Chart and transport & Parent operations/degree & New operations & New degree\\
+\midrule
+$q^3$ scale, $V^2$ & $75/626$ &75&402\\
+$q^3$ scale, $bV$ & $76/464$ &76&352\\
+$q^2$ scale, $bV$ & $79/382$ &79&290\\
+Partial $q$ scale, $bV$ & $80/338$ &80&258\\
+Lucas-corrected $q$ scale, $bV$ & $87/304$ &87&232\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are complete polynomial specifications on the strictly positive
+domain. They do not assert a global minimum or a reduction of the number
+of variables. The fixed coefficient tuple is retained unchanged, including
+its largest port of $592{,}884$ bits.
+
+\subsection{The principal degree-232 equation}
+The only independent unknowns are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+Use the four whole fixed integers $\beta,K_0,M_C,M_F$ specified in the
+coefficient appendix. Define polynomial abbreviations
+\begin{align*}
+ h&=\beta J,&q&=h+1,& C&=q-F-\alpha,\\
+ X&=wq,&Y&=qs,&k&=\eta+\zeta,&c&=kY+\eta,\\
+ A&=Y(X+1)+1,&\Delta&=A^2-1,&H&=4A-5,&v&=XY^2,\\
+ E&=1+v(v+1)k^2,&&&&&
+\end{align*}
+\begin{align*}
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ B&=(K_0+w)C-F,\qquad U=ic^2,\qquad a=\Delta U^2E,\\
+ F_0&=1+a,\qquad G=EF_0,\qquad f=1+2a,\qquad Q=4\Delta aF_0,\\
+ b&=cT-R,\qquad V=fb-c,\qquad L=bV,\qquad K=X(3c-2X)+2,\\
+ D&=6q^6,\qquad
+ N=6(k-R-1-q^4s)-v(R+1)(R-1)(R+3),\\
+ M&=hDH,\\
+ Z&=hD[H(n-LB)+K]-H[DB+hN].
+\end{align*}
+The single equation is
+\begin{equation}
+ \boxed{\ P=Q\bigl(Z^2-M^2GV^2\bigr)+M^2G-Z^2=0.\ }
+ \label{eq:trace232}
+\end{equation}
+No intermediate register is quantified. All operations are addition,
+subtraction and multiplication of integer polynomials.
+
+\subsection{Why the trace replacement is sound}
+The key identities are
+\[
+ f^2=1+4aF_0,\qquad
+ Q=\Delta(f^2-1)=4\Delta^2U^2G,\qquad
+ f-1=2\Delta i^2c^4E.
+\]
+At a positive zero, put $z=Z/M$. The final equation reads
+$(Q-1)z^2=G(QV^2-1)$. Because $G$ is relatively prime to both other
+factors, prime valuations force $G=g^2$; its relatively prime positive
+factors $E$ and $F_0$ are separately squares. The adjacent-coefficient
+Pell descent makes $y=|z|/g$ integral, and
+\[
+ QV^2-(Q-1)y^2=1,\quad
+ f^2-\Delta I^2=1,\quad I=2Ug,\quad c^2\mid I.
+\]
+The signed folding theorem uses $V\equiv-c\pmod f$ to recover
+$c=\psi_A(p)$ with odd $p>0$. The first Pell equation yields
+$k=2\psi_{2XY^2+1}(n_0)$ and $n_0\ge2$, hence
+$c>8XY^3\ge8q^4$. Main index three is excluded by the unchanged
+quotient-strip argument: it would force $2Y-X\in\{1,2\}$ although
+$q\mid X,Y$ and $q\ge32$.
+
+One must also recheck the auxiliary index and both possible signs of $V$.
+Let $c_3=4\Delta+3$. Now $c>c_3$ and $f>2c$. If the auxiliary index
+were three, $V=\pm(4Q-3)$ would give one of
+\[
+ f(b-4\Delta f)=c-c_3,\qquad
+ f(b+4\Delta f)=c+c_3.
+\]
+Each right side is strictly between zero and $f$. Thus the auxiliary
+index is at least five, $|V|>8Q^2$, and
+$|b|>(8Q^2-c)/f>8f^3-1/2>4g$.
+Consequently $L=bV>0$ and $gy<L/2$. These estimates do not assume
+that either $b$ or $V$ is already positive.
+
+Writing $t=B/h$, $\kappa=K/H$, $\sigma=s/q^2$ and
+\[
+ \rho=\frac{k-R-1-v(R+1)(R-1)(R+3)/6}{q^6},
+\]
+the exact rational carrier is
+$z=n+\kappa+\sigma-(1+hL)t-\rho$.
+The signed transport proof first gives $B\ge0$ and $C>0$.
+The only adverse cubic cases are $R=-r\le-4$ and $R=0$.
+For $R=-r\le-4$, the mask gives $|C|>r/q^3$ and
+$B\le-1-w|C|$. Since $b>c,r$, the new trace still gives
+$V>(f-1)b$ and $L>(f-1)r^2$. The inequality
+$f-1=2a>s^2$ makes $w|C|L$ dominate the entire adverse cubic term
+$ws^2r^3/(6q^3)$. At $R=0$ the same estimate dominates
+$ws^2/(2q^3)$. Thus both exceptional cases are covered without
+assuming the signs they are meant to prove.
+
+Only after $C>0$ is established does one use $3q<R<q^4$ and obtain
+$c>2R$. The literal trace congruence gives
+\[
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c.
+\]
+These are exactly the hypotheses of the signed auxiliary-index theorem,
+so $p=R$. The retained Lucas correction then authenticates
+$2n_0=R+1$, restores $q^2\mid s$, and proves that $\rho$ is integral.
+The whole-product Pell projection forces $X=2^R$; the remaining carrier
+gives $h\mid B$. The inherited parity, half-binomial and native proofs now
+have their full hypotheses, and give a finite ZFC refutation. The complete
+argument, including the all-prime corrected-index divisibility, is in
+\texttt{compact/PROOF.md} and its retained pinned sources.
+
+\subsection{An exact polynomial completeness map}
+There is a useful stronger statement than a fresh canonical construction.
+Put $d=2\Delta i^2c^3E$, so $f=1+cd$. From every positive zero of the
+matched parent define
+\[
+ T_{\rm new}=fT_{\rm old}-dR.
+\]
+Then $b_{\rm new}=fb_{\rm old}$ and
+$V_{\rm new}=f^2b_{\rm old}-c=V_{\rm old}$ as polynomial identities.
+For the $bV$ transport choose
+\[
+ n_{\rm new}=n_{\rm old}+(f-1)L_{\rm old}B.
+\]
+This preserves $n-LB$, hence $Z$ and the entire final polynomial.
+For the $V^2$ transport retain $n_{\rm new}=n_{\rm old}$.
+The parent zero theorem gives $R<c/2$, $B\ge0$ and positive
+$b_{\rm old},V_{\rm old}$, so
+$T_{\rm new}>f-(f-1)/2>0$ and $n_{\rm new}\ge n_{\rm old}>0$.
+This is a polynomial map from every parent positive zero; no integral
+inverse on all new zeros is asserted. Combined with the soundness proof,
+it establishes the desired existence equivalence.
+
+\subsection{Attained degree and finite evidence}
+Put $q_0=\beta J$, $k_0=\eta+\zeta$, and
+$B_0=k_0sT-q_0^2(q_0-F)$. The entire highest homogeneous part is
+\[
+ [P]_{232}=-9\,2^{10}q_0^{100}w^{26}s^{58}i^{10}k_0^{32}B_0^2.
+\]
+It is nonzero at the actual coefficient tuple: the coefficient of
+$J^{100}w^{26}s^{60}i^{10}\eta^{34}T^2$ is
+$-9\,2^{10}\beta^{100}\ne0$. The degree tie between $cT$ and $R$ is
+retained in $B_0$.
+The supplied independent algebra checker binds every actual circuit row to
+its formula, authenticates all fixed numerals, proves every whole leading
+form, checks the exact parent transformation, and rejects actual gate
+corruptions. These finite checks supplement the unbounded proof and its
+named native/refutation calibration. They are not a newly compiled
+end-to-end proof-assistant certificate.

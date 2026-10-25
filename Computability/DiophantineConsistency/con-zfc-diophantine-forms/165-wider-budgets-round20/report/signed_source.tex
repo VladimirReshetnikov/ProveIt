@@ -1,0 +1,208 @@
+\subsection{The retained arithmetic interface}
+
+Write \(t=16+d^2\), where \(d\) is an unrestricted integer. The principal
+arithmetic quantities are
+\[
+ F,\quad B,\quad V,\quad x,\quad y,\quad N,\quad q,\quad
+ M,\qquad H=1+\sum_{\nu=1}^{9}a_\nu.
+\]
+The \(a_\nu\) are the nine actual CRT representatives. In the stored source,
+several are a coordinate plus one; it is their actual values, rather than
+their shifted coordinates, that will become nonnegative.
+
+The retained exact-power requests have the intended meanings
+\begin{equation}\label{eq:power-meanings}
+ V=(F^2+1)^t,\qquad N=B^x,\qquad q=(BH)^x,\qquad M=q^x,
+\end{equation}
+together with the powers used in the binomial numerators and denominators.
+There are eighteen requests, sharing fourteen independent principal Pell
+pairs. At this point these displays are requested meanings, not assumptions.
+Their interpretation is recovered in a specified order below.
+
+The beta spacing is left literally unchanged:
+\begin{equation}\label{eq:beta}
+ y=V(V-1).
+\end{equation}
+The endpoint equations include
+\begin{equation}\label{eq:endpoints}
+ x=F+1+(y+1)u_0,\qquad
+ x=1+\bigl(1+(t+1)y\bigr)u_t.
+\end{equation}
+Initially \(u_0,u_t,x,F,B,q\) may have either sign.
+
+The eleven normalized remainder registers fall into four groups:
+\begin{center}
+\begin{tabular}{llr}
+\hline
+Denominator & Meaning & Number\\
+\hline
+\(q^t\) & Factorial digit and encoded index &2\\
+\(q^{t+1}\) & Four syntax representatives and derived label &5\\
+\(q^{y+1}\) & Two pending-multiset representatives &2\\
+\(q^x\) & Two beta quotients &2\\
+\hline
+\end{tabular}
+\end{center}
+The existing ratio equations are
+\begin{equation}\label{eq:ratios}
+ q^t v_t=M,\qquad q^{t+1}v_{t+1}=M,\qquad
+ q^{y+1}v_y=M.
+\end{equation}
+Each displayed power in these equations is a retained output register.
+The quotient for the last group is the constant one.
+
+For clarity, put
+\[
+ G(a,b,c)=a^2+b^2+c(c+1).
+\]
+This form is nonnegative at every integer triple and represents every
+nonnegative integer. The latter is the familiar consequence of the
+three-square theorem applied to \(4n+1\): exactly one square is odd, and
+the two even squares can be divided by four. This is the same guard form
+already used in the parent.
+
+The inherited signed affine-radix core replaces three separate initial
+scalar sign certificates by the first three rows below. This round
+changes only its last row, from $M^2=1+4(S^2+\sum R_i^2)+G$ to
+\begin{align}
+ q&=2z+1,                                                    \label{eq:odd}\\
+ Bv&=M,                                                     \label{eq:factor-ratio}\\
+ MF&=vV+S,                                                  \label{eq:factor-error}\\
+ M^2&=2\left(S^2+\sum_{i=1}^{11}R_i^2\right)+G(a,b,c).
+                                                               \label{eq:common-norm}
+\end{align}
+The integers \(v,S\) normalize the factorial error at the same
+denominator \(M\) as the other remainders. No inequality, division,
+factorial, or variable power has been added to the literal polynomial
+system. Equations \eqref{eq:odd}--\eqref{eq:common-norm} are polynomial
+rows of degree at most two in their actual registers.
+
+\subsection{Pell orientation before arithmetic signs}
+
+For a signed integer center \(A\), define the Pell polynomials by
+\[
+ X_0(A)=1,\quad Y_0(A)=0,\qquad
+ X_{k+1}=AX_k+(A^2-1)Y_k,\quad Y_{k+1}=X_k+AY_k.
+\]
+For negative indices use \(X_{-k}=X_k\), \(Y_{-k}=-Y_k\).
+The retained frame bounds every actual base, requested index, and proposed
+power output in absolute value by an integer \(W\), with
+\begin{equation}\label{eq:frame}
+ W\ge258,\qquad |A|>W^W,\qquad |A-1|>4W^3.
+\end{equation}
+These are consequences of square-based frame equations. Their proof does
+not assume signs for \(F,B,q,x\), or the power outputs.
+
+The deterministic comparison center is retained from the supplied
+predecessor proof. To distinguish its auxiliary pair
+from the arithmetic quantity \(H\), write it as
+\[
+ H_{\rm p}^2-(A^2-1)J_{\rm p}^2=1,\qquad
+ J_{\rm p}=C^2(2e+1),
+\]
+where \((U,C)\) is the principal anchor pair with requested index \(h\).
+The squared cap says
+\[
+ C^2=h^2+1+\sum_{\text{other pairs}}Y_i^2+G(a',b',c').
+\]
+It gives \(C\ne0\), \(|h|<|C|\), and strict domination of all other
+principal ordinates. The comparison center is defined by
+\[
+ f=(1-A)H_{\rm p},\qquad D=A+H_{\rm p}f
+    =1-(A-1)(A^2-1)J_{\rm p}^2.
+\]
+Thus \(|D|>1\), \(D\equiv A\pmod{H_{\rm p}}\), and \(D\equiv1\pmod C\).
+The comparison ordinate residue is \(R=h+Ck\).
+
+Here is the part of its proof that matters for compatibility. Classify
+the anchor and common Pell ordinates at \(|A|\) by positive indices
+\(i,l\). For \(i\ge2\), the squared divisibility condition implies
+\(|C|\mid l\) and \(l>i\). The abscissa comparison gives the comparison
+index \(j\equiv\pm i\pmod{2l}\); the new ordinate residue gives
+\(j\equiv\pm h\pmod{|C|}\). Consequently
+\(i\equiv\pm h\pmod{|C|}\). The growth bound
+\[
+ |C|=Y_i(|A|)\ge i+2|A|-2
+\]
+and \(|h|<W\) imply \(i+|h|<|C|\), so \(i=|h|<W\).
+All other classified indices are smaller by the cap.
+
+The exceptional case \(i=1\) has \(|C|=1\). The cap then forces \(h=0\)
+and every other ordinate to vanish. Reducing the retained orientation
+pool modulo \(A-1\) gives a nonnegative small error sum. Its anchor
+ordinate contributes one, so it is strictly positive, while
+\eqref{eq:frame} makes it strictly smaller than \(|A-1|\).
+Its asserted divisibility is impossible. This exceptional branch
+therefore supplies no zero.
+
+All fourteen principal pairs retain both-coordinate orientation:
+the squared abscissa errors and squared ordinate-index errors remain
+in the pool. After classification their small residues have errors at
+most two and strictly less than \(2W\), respectively. The resulting
+nonnegative residue sum is less than
+\(4\cdot14(W^2+1)<4W^3<|A-1|\). Divisibility forces every error to vanish.
+Thus each principal pair is exactly
+\((X_k(A),Y_k(A))\) at its signed requested index.
+
+This use of all fourteen pairs is deliberate. A separate predecessor
+reduction keeps fewer abscissa tests, but its hypotheses cannot simply
+be assumed in the signed bootstrap below. The present construction
+does not make that deletion. The complete retained center and frame
+proofs are included in the proof closure.
+
+\subsection{A power lemma valid at signed bases}
+
+\begin{lemma}\label{lem:signed-power}
+Assume \eqref{eq:frame}. Let \(|n|,|k|,|m|<W\), with \(|n|\ge2\), and set
+\[
+ T=2An-n^2-1.
+\]
+If the pair is canonically oriented at \(k\) and its power row asserts
+\[
+ X_k(A)+(n-A)Y_k(A)\equiv m\pmod T,
+\]
+then \(k\ge0\) and \(m=n^k\).
+For \(n=\epsilon\in\{1,-1\}\), the same row instead gives
+\(m=\epsilon^k\) for every integer \(k\), including negative \(k\).
+\end{lemma}
+
+\begin{proof}
+For \(|n|\ge2\),
+\[
+ |T|>4W^W-(W-1)^2-1>W^W+W.
+\]
+Modulo \(T\), one has
+\((n-A)^2=A^2-1\) and \(n(2A-n)=1\).
+The Pell identities therefore give \(n^k\) at nonnegative indices
+and its multiplicative inverse at negative indices. If \(k\ge0\),
+the congruence has
+\[
+ |m-n^k|<W+W^W<|T|,
+\]
+so it is equality. If \(k=-j<0\), multiplication by \(n^j\) gives
+\(mn^j\equiv1\pmod T\). But
+\[
+ |mn^j-1|\le(W-1)^W+1<|T|,
+\]
+forcing the impossible integer equality \(mn^j=1\).
+
+For a unit base, \(T=2A\epsilon-2\) and \(2A\equiv2\epsilon\pmod T\).
+The sequence
+\(f_k=X_k(A)+(\epsilon-A)Y_k(A)\) has initial values
+\(f_0=1,f_1=\epsilon\) and satisfies
+\(f_{k+1}=2Af_k-f_{k-1}\). This recurrence runs backwards as well
+as forwards. Hence \(f_k\equiv\epsilon^k\pmod T\) for every signed
+integer \(k\). Finally \(|T|>2W^W-2>W\), whereas
+\(|m-\epsilon^k|\le W\), giving the stated equality.
+\end{proof}
+
+The base \(-1\) case is essential: it cannot be replaced by a lemma
+that presupposes a nonnegative exponent. The literal request for
+\(M=q^x\) has the row
+\[
+ -M+X_x(A)-AY_x(A)+qY_x(A)-T_q\eta=0.
+\]
+Both \(M\) and \(q\), and the actual base \(BH\) of the self-radix
+request, are included in the frame. Thus the lemma applies to the
+unshifted arithmetic values claimed here.
+
