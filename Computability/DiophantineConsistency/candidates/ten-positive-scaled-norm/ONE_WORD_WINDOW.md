@@ -4,7 +4,9 @@ Direction chosen by Vladimir on 24 October 2026 (see NEXT_STEPS.md): make
 the ten-positive kernel a nine-positive equation by changing the compiler's
 window so that the transport reads one tableau word. This brief fixes what
 the present window does, why the kernel cannot absorb a third source
-unknown, and where a redesign has to act. Section 2d records an obstruction to the complement form; nothing else here is a result.
+unknown, and where a redesign has to act. Section 2d records the algebraic
+restriction from complement transport. Section 2e proves a stronger obstruction
+under the retained mask/population interface and states its remaining scope.
 
 ## 1. What the present window is
 
@@ -109,7 +111,7 @@ against south of the temporal predecessor, east against west of the
 spatial neighbour, anchors) folded into C's encoding rather than into a
 derived word. Options 1–3 below are judged against this.
 
-## 2b. The sharpest form of the target: alpha = 1 (24 October, evening)
+## 2b. The historical complement target: alpha = 1 (24 October, evening)
 
 In the current fused ten-positive kernels (packages 113, 116, 119, 121 and
 their research-session descendants down to 86 operations) the three source
@@ -135,11 +137,10 @@ shift, **plus the word itself**, sums to all ones in every cell (no carries
 across cells), exactly when the tiling is valid. The current Wang943 encoding
 does not have this property: its test word F is zero at the test positions
 and unconstrained elsewhere, while here every bit of F would be forced.
-Designing such an encoding (or proving none exists for local tile languages
-with carry-free cells) is the concrete next research step. If it exists, the
-kernel needs no other change, and the 86- to 97-operation ten-positive forms
-become nine-positive forms of about the same size, against 420 operations at
-degree 1,472,168 today.
+This proposal kept the population target and both masks unchanged. Section2e
+now rules out that combination before transport is considered. A different
+one-word encoding would need a changed mask/rank interface or another slack
+expression; no nine-positive circuit follows from fixing alpha=1 here.
 
 ### 2c. First feasibility analysis of the complement form
 
@@ -194,25 +195,57 @@ x0·κ^i mod g with the single fixed multiplier κ = −(K0 + 1), the same for
 every N and h. The tableau rows would have to evolve by a fixed linear map
 modulo g.
 
-*Every digit-wise tie behaves the same way.* Any choice of alpha that is a
-fixed function of the small unknowns (alpha = 1, alpha = J, …) makes C a
-fixed digit-wise function of F, and the transport becomes
-(K0 + w + 1)·F ≡ const (mod M): a coset of the same cyclic group, with
-affine instead of linear row evolution. Only J, F and alpha are below q
-among the kernel's unknowns, so alpha cannot be supplied by another
-unknown either.
+*The coset conclusion has a precise scope.* For alpha=A(J), independent of
+the word variables, put P=K0+B^h. Then
+(P+1)C ≡ 1-A(J) and (P+1)F ≡ P(1-A(J)) modulo M. If consistent these are
+cosets of the subgroup above. Arbitrary deterministic or digit-wise ties need
+not linearize: alpha=F² instead gives PF²+(P+1)F ≡ P. This observation
+supplies no new completeness theorem.
 
-*Consequence.* The K215 blank run is a nonlinear computation. For it to be
-the expansion of x0·κ^i mod g with κ fixed, and for the masks to accept only
-such runs, would need an arithmetic encoding of the machine in iterated
-multiplication by one constant. None is known, and it is not plausible.
-This is an obstruction argument, not an impossibility proof: an unexpected
-choice of K0 and of the masks is not excluded. With that caveat, the
-two-word structure of the present compiler family is necessary. A
-nine-positive form at low degree needs a different source, for example
-Jones's two-unknown gap source at much lower radix degree, rather than a
-one-word variant of this window. Option 1 of section 3 is therefore
-withdrawn. Options 2 and 3 tie no digits and are not affected.
+*Consequence.* This is a substantive algebraic restriction, but the
+nonlinearity of the machine does not by itself prove impossibility. Digit
+blocks are decoded from the modular remainder using floors, carries and
+masks; even an injective encoding need not turn that arithmetic into a
+linear Boolean update. The subgroup argument alone does not establish that
+two word variables are necessary. The narrower alpha=1 proposal does have
+the decisive mask obstruction below. Other one-word or different-source
+designs remain open and require complete compiler proofs.
+
+### 2e. A decisive mask-budget obstruction and its scope
+
+The [independent ordinary review](../../research/one-word-window-review/REVIEW.md)
+proves the following finite-word lemma. Put q=2^u and let C,F,a,b be u-bit
+words with C>=1. If
+
+    C+F=q-1, (C-1) AND a=0, F AND b=0,
+
+then popcount(a)+popcount(b)<=u+1. Indeed every bit of a AND b must be
+set in C and absent from C-1. There is exactly one such bit, the least
+significant set bit of C. The union/intersection population identity gives
+the bound, without any parity or carry-free assumption.
+
+The retained native masks a=MC*J+1 and b=MF_native*J-1 have combined
+population u+2. Their exact repeated-mask identity therefore contradicts
+alpha=1. Changing tile data or K0 cannot repair this while retaining those
+mask conclusions and population budget. More generally the same argument
+gives popcount(a)+popcount(b)<=u+popcount(alpha), so every power-of-two
+slack is excluded. The unchanged low residues also give alpha=3 modulo4,
+which separately excludes alpha=J.
+
+There is a locally consistent selective-gap target: alpha=a AND b. Let
+D=MC AND MF_native; the current coherent compact44/indexed tuple gives
+alpha=D*J-1. This is a positive polynomial in the existing J, but it is
+only a mask-level research lemma. No transport-compatible computation
+encoding or complete nine-positive equation has been constructed from it.
+
+The inherited rank controller is another concrete obligation. At fixed
+N,h and alpha=A(J), two transport-compatible words differing by one safe
+power-of-two dummy toggle would require (K0+B^h+1)*deltaC=0 modulo q-1.
+Since deltaC is a unit modulo odd q-1, this is impossible at the canonical
+padded dimensions. The old freely chosen pre-rank dummy family cannot be
+reused unchanged. Coordinated changes or a new controller would need a
+complete replacement proof. This excludes that inherited proof step,
+not every possible controller or one-word encoding.
 
 ## 3. Where a redesign could act
 
@@ -233,12 +266,11 @@ withdrawn. Options 2 and 3 tie no digits and are not affected.
    second residue class, the test word need not be a rank digit. This
    touches the Pell projection lemmas, not only the window.
 
-Each option needs a new soundness proof of the window (the analogue of
-package 44, Sections 5–7, and `NativeSourceWindow`) and new fixed
-coefficients. The arithmetic kernel downstream (Pell roots, norm, carrier)
-is unchanged and already sits at degree 368 for ten unknowns, so a
-successful one-word window gives nine positive unknowns at degree of order
-400, against 997,810 today.
+Each option needs a new soundness and completeness proof of the window
+(the analogue of package44, Sections5–7, and `NativeSourceWindow`), whole
+fixed coefficients and a rank controller. The current complete ten-positive
+kernel offers92/283 and86/466 operation/degree tradeoffs. No nine-positive
+size or degree bound is established by the proposed window changes.
 
 ## 4. Starting points in the repository
 

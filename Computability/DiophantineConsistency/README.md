@@ -1638,3 +1638,21 @@ This is an ordinary guard-domain result, with no new materialized equation
 or projected count. Existing517/519 quartics and the complete92/283 PDF
 and TeX remain unchanged until separate complete candidate checks pass.
 Lean remains paused.
+
+
+## One-word window: mask obstruction and narrower open target
+
+The [complete ordinary review](research/one-word-window-review/REVIEW.md)
+proves that alpha=1, and every power-of-two slack, contradicts the retained
+native mask population budget before transport is used. The former cyclic
+group heuristic does not exclude arbitrary word ties or nonlinear digit
+decoding. The [corrected active brief](candidates/ten-positive-scaled-norm/ONE_WORD_WINDOW.md)
+now distinguishes those scopes and retains the locally valid selective gap
+alpha=(MC AND MF_native)*J-1 as an open compiler target.
+
+Root and independent peer reviewed the full arguments and exact source bytes;
+the historical and corrected briefs are preserved in a closed ordinary packet.
+See the [root acceptance](reviews/one-word-window-root-peer.md). Transport,
+carry/anchor/alignment and a replacement for the independent dummy controller
+still require complete proofs. No nine-positive equation, new size bound or
+formalization is claimed. The canonical PDF/TeX remain unchanged. Lean stays paused.
