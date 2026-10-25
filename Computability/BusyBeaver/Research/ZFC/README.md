@@ -1136,8 +1136,8 @@ published to support further work toward 214.
 
 **Diophantine form of the K215 endpoint** (not formalized). The report
 [`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5–14
-(intake batches 221–230; latest placement `1c5367452a`).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–15
+(intake batches 221–231; latest placement `1eed4b48cd`).
 
 Until wave 11, every finished equation turned the K215 calibration behind
 `KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
@@ -1152,17 +1152,17 @@ encodings, provided they prove their own calibration (the report's section
 proof-certificate sources over the C222 calculus, calibrated through
 `KEndpoint.c222_iff_zf_refutation` and
 `ConstructibleChoice.zf_refutation_iff_zfc_refutation`. Wave 11 finishes
-that route: explicit direct quartics with no coefficient tuple, down to 233
-naturals and 324 unrestricted integers after wave 14 (sources 129, 131),
-and ones with every coefficient ±1 (sources 120, 127); the
+that route: explicit direct quartics with no coefficient tuple, down to 226
+naturals and 282 unrestricted integers after wave 15 (sources 139, 135),
+and ones with every coefficient ±1 (sources 120, 127, 135); the
 step "polynomial zero iff C222 derivation" is an ordinary proof in each
 package, not a Lean theorem.
 
 As the packages state them:
 
 - nine positive unknowns in 420 operations, or at degree 997,810;
-- ten positive unknowns in 84 operations at degree 436, and eleven
-  unrestricted integers without Sun's reduction in 109 operations;
+- ten positive unknowns in 78 operations at degree 630, and eleven
+  unrestricted integers without Sun's reduction in 107 operations;
 - 10 unrestricted integers via a cited reduction of Sun, in 467 operations
   at degree 1,245,324;
 - a 14-unknown equation of degree 24, and a 15-unknown one in 66 operations;
