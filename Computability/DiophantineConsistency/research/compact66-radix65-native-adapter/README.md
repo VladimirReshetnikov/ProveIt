@@ -352,8 +352,9 @@ not be a unit; no such premise is used.
 
 ## 8. Fresh actual-rank controller and safe Boolean subsets
 
-Choose independently large spatial width w0=lambda^a and height h0=lambda^b
-for the canonical padded halting tiling; N=w0*h0=lambda^n. Require
+Choose fresh independent positive integer exponents r_w,r_h, each variable
+and sufficiently large, and spatial width w0=lambda^r_w and height h0=lambda^r_h
+for the canonical padded halting tiling; n=r_w+r_h,N=w0*h0=lambda^n. Require
 N>d*lambda^2 and h0>lambda. They may be chosen equal or with n even
 when a retained square-scale promise is desired. Set q=B^N and
 T=N/lambda,C0=d*lambda. Then T>C0 and w0<T. Because every order in
