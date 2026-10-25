@@ -2529,3 +2529,20 @@ elementary and preserve degree four and variable count. Actual coefficients,
 heights and term counts must be freshly collected. The plan pins all whole
 parents and gives a small runtime closure without the old search/producer.
 No translated equation, new code, execution or measured gain is accepted.
+
+## Recovering the low mask from the already printed tile polynomial
+
+The [support-decoding identity](research/support-decoded-low-mask/README.md)
+passes [root](reviews/support-decoded-low-mask-root.md) and
+[independent ordinary review](reviews/support-decoded-low-mask-ordinary-peer.md).
+The fixed polynomial Phi has nonnegative coefficients below rho, so its
+base-rho digits reveal the entire low-mask support. A fixed finite sum
+with floors replaces the E union-of-intervals definition and retains
+all four accepted constants exactly.
+
+The complete proposed constant body is121 source bytes shorter; the
+fully charged extracted-text proxy saves73 characters. No new PDF was
+rendered, and no native tuple or arithmetic equation changes. The gain
+is modest and nested floors introduce a readability tradeoff. Further
+recipe simplifications can be combined before actual page preparation;
+the maintained66/157 PDF and TeX remain current.
