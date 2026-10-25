@@ -1,11 +1,19 @@
 # Ordinary and literal mapping for the complete nine-positive page draft
 
-This is a TeX/data PREPARATION checkpoint only. No pdflatex, parent program,
-new emitter/checker or Lean command has run. No PDF, extracted text, page
-count, overflow result, visual audit or independent actual-TeX proof is
-claimed. The intended target is one Letter page at 9-point body type; the
-722-character seed retains 8-point type. Fit is still an empirical rendering
-obligation, and a later reviewed 8-point alternative may be necessary.
+This revised TeX/data checkpoint remains HOLD. The original six-file
+preparation and reviewed tools are preserved byte for byte in history/v1.
+Its first released scratch render failed: two pages, a 37.46252-point
+kernel hbox overflow and a 31.1629-point vertical overflow. No successful
+PDF materialization, actual-TeX auditor or pure rebuild followed that
+failure. The full transcript is archived. No source/parent program or Lean
+command has run.
+
+Root selected the explicit tighter 9-point layout in layout-options: 9.0
+leading, 1-point gaps, a two-line header, shorter D1 groups and combined
+native prose. The 722-character seed remains 8-point. Every mathematical
+formula and coefficient is preserved; the new layout has NOT been rendered
+or passed to the actual auditor. Fit and legibility remain empirical
+obligations, with no automatic font fallback.
 
 ## 1. Exact accepted equation and positive inputs
 

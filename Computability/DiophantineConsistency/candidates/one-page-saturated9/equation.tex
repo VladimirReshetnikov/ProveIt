@@ -5,24 +5,21 @@
 \pdftrailerid{}
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{1.5pt}
+\setlength{\parskip}{1pt}
 \setlength{\jot}{0pt}
 \setlength{\columnsep}{12pt}
-\setlength{\abovedisplayskip}{2pt}
-\setlength{\belowdisplayskip}{2pt}
+\setlength{\abovedisplayskip}{1pt}
+\setlength{\belowdisplayskip}{1pt}
 \let\bigsum\sum
 \renewcommand{\sum}{\bigsum\nolimits}
 \newcommand{\fl}[1]{\left\lfloor #1\right\rfloor}
 \newcommand{\rng}[2]{\{#1,\ldots,#2\}}
 \begin{document}
-\begin{center}
+\noindent\parbox{\textwidth}{\centering
 {\large\bfseries A completely specified nine-positive consistency equation}\\[-1pt]
-{\small Nine positive inputs; accepted evaluator: 433 operations, degree $1{,}628{,}768$.}\\[-1pt]
-{\small All fixed constants and finite exponent lists are defined below.}
-\end{center}
-\vspace{-8pt}
+{\small Nine positive inputs; accepted evaluator: 433 operations, degree $1{,}628{,}768$. All fixed data below.}}\par
 \begin{multicols}{2}
-\fontsize{9}{9.6}\selectfont
+\fontsize{9}{9.0}\selectfont
 The only unknowns are $b,g,h,s,w,C,i,j,n\in\mathbb Z_{>0}$.
 All other letters are polynomial abbreviations or fixed constants.
 The equation is
@@ -68,8 +65,9 @@ the explicitly defined finite-list notation $p$:
 \[
 \begin{aligned}
 D_0(B)={}&2K_0B^{124}-2p(325,384,1450,1627)-6B^{630},\\
-D_1(B)={}&2p(26,33,477,542,570,605,1020,1027,1047,1067,1144)\\
- &+2p(1234,1354,1358,1370,1501,1691,1719,1733,1756,1918,1941)\\
+D_1(B)={}&2p(26,33,477,542,570,605,1020,1027)\\
+ &+2p(1047,1067,1144,1234,1354,1358,1370)\\
+ &+2p(1501,1691,1719,1733,1756,1918,1941)\\
  &-2p(1,493,662,754,982,1698,1796)-8B^{514}-6B^{1023}\\
  &-2K_0B^{63}-2(K_0+1)B^{117}+2\beta(K_0+1)B^{123}\\
  &-2(M_C+M_F)B^{845}-4\beta B^{1260},\\
@@ -83,8 +81,8 @@ D_2(B)={}&-\beta p(0,87,661,843,1795)\\
 \]
 
 \textbf{The complete fixed coefficient tuple.}
-Division and floor below define constants only; the boxed equation is
-polynomial in exactly the nine positive unknowns.
+The divisions and floors below define constants only; the rational
+intermediate defining $K_0$ is an integer.
 \[
 \begin{gathered}
 \rho=2^{89},\quad\mathcal B=\rho^{4831},\quad\beta=\mathcal B-1,\\
@@ -93,7 +91,6 @@ G_t(x)=\sum_{r=0}^{t-1}x^r,\quad
 \mu=510+2^{17}+2^{26}+2^{28}+\lambda(2^{44}-1).
 \end{gathered}
 \]
-Let
 \[
 \begin{aligned}
 \mathcal S={}&\rng0{456}\cup\rng{495}{504}\cup\{507,508\}\\
@@ -101,7 +98,6 @@ Let
  &\cup\rng{567}{583}\cup\{1203,1807\}.
 \end{aligned}
 \]
-Then
 \[
 \begin{aligned}
 M_C={}&\mathcal B-1-\sum_{r\in\mathcal S\setminus\{1\}}\rho^r-2\rho^{507},\\
@@ -112,7 +108,6 @@ K_0={}&\rho^{33}+\rho^{68}+\rho^{664}+\rho^{1268}+\rho^{4877}\\
  &+(\rho^{2409}+\rho^{3015})\Phi(1/\rho),
 \end{aligned}
 \]
-where
 \[
 \begin{aligned}
 \Phi(x)={}&O G_{457}(x)+\lambda\sum_{a=0}^{456}\ell_a x^{r_a}\\
@@ -125,8 +120,6 @@ where
  &+(2^{27}+\lambda(2^{11}+2^{32}))x^{583}.
 \end{aligned}
 \]
-The rational intermediate evaluates to a fixed integer $K_0$.
-
 \textbf{The ranks and labels.}
 The following 457 fixed quadruples are $t_r=(w_r,n_r,e_r,s_r)$.
 From the fixed integer $\mathcal A$ below, for $0\le r<430$ put

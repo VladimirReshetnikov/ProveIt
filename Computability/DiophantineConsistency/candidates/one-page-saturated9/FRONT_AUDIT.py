@@ -701,7 +701,7 @@ def check_pdf(tex, front, native):
     info = subprocess.run(['pdfinfo', str(path)], check=True, capture_output=True, text=True).stdout
     need(re.search(r'Pages:\s+1\b', info) and '612 x 792' in info, 'actual one Letter page')
     need('Overfull' not in (PAGE/'RENDER.txt').read_text() and 'Overfull' not in (PAGE/'TEX_DIAGNOSTICS.txt').read_text(), 'actual retained PDF has no overfull boxes')
-    need(r'\fontsize{9}{9.6}\selectfont' in tex and r'\fontsize{8}{8.8}\selectfont\ttfamily' in tex, 'exact reviewed9pt body and8pt literal recipe')
+    need(r'\fontsize{9}{9.0}\selectfont' in tex and r'\fontsize{8}{8.8}\selectfont\ttfamily' in tex, 'exact reviewed9pt body and8pt literal recipe')
     need((PAGE/'equation.txt').read_text() == text, 'complete retained extracted PDF text')
     return {'pages': 1, 'paper': 'Letter', 'body_font_pt': 9, 'seed_font_pt': 8,
             'whole_front_symbol_operator_numeral_blocks': True,

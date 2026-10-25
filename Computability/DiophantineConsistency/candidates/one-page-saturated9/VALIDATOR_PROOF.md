@@ -1,11 +1,21 @@
 # Complete page validator and renderer: static design
 
-This is a CODE PREPARATION checkpoint. Neither new program has been
-imported, compiled or executed. No pdflatex, PDF extraction, parent program,
-source program or Lean command has run. The six earlier mathematical
-preparation files are preserved byte for byte, including SOURCE_PINS.json.
-TOOL_PINS.json adds a separate versioned closure for the new tools and this
-design. No fit, PDF, corruption-rejection or rebuild result is claimed.
+This revised CODE PREPARATION checkpoint remains HOLD. The entire original
+mathematical preparation and reviewed toolchain are archived byte for byte
+in history/v1, including both original pin files. Both full static reviews
+approved it and root released five commands. The first scratch render
+failed its overflow/fit guard: two pages, a 37.46252-point horizontal and
+31.1629-point vertical overflow. The complete transcript is archived; no
+PDF/success receipt was materialized. No actual auditor or rebuild ran.
+
+Root selected a layout-only revision retaining 9-point arithmetic with
+9.0 leading, shorter D1 groups and tighter gaps/header/prose. Only the two
+font-string assertions change in the executable tools; their arithmetic,
+parsers, controls and process arguments are unchanged. This revised layout
+and toolchain have NOT been imported, compiled or executed. No parent/source
+program or Lean command has run. Current SOURCE_PINS/TOOL_PINS are refreshed
+coherently while the original complete closures remain archived. No revised
+fit, PDF, corruption-rejection or rebuild success is claimed.
 
 ## 1. The exact mathematical object
 
@@ -180,7 +190,8 @@ spaces and the diagnostic wall-clock header normalized.
 A successful materialization must have one 612-by-792-point Letter page,
 no overfull box, the exact nine-positive signature, printed cost/degree,
 the entire alphabet and all 722 literal seed characters. The current
-reviewed design uses 9-point arithmetic and 8-point seed text. An 8-point
+reviewed design uses 9-point arithmetic with 9.0 leading and 8-point seed
+text. The old 9.6-leading design is archived with its actual fit failure. An 8-point
 arithmetic fallback is NOT silently applied. Failure to fit is an actual
 obstacle to report, followed by an explicit layout review and new pins.
 

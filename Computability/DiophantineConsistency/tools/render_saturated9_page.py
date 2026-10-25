@@ -65,7 +65,7 @@ def build():
     tex = (PAGE/'equation.tex').read_bytes()
     text = tex.decode()
     need(r'\usepackage[letterpaper,margin=.38in]{geometry}' in text, 'reviewed Letter geometry')
-    need(r'\fontsize{9}{9.6}\selectfont' in text, 'reviewed9point body')
+    need(r'\fontsize{9}{9.0}\selectfont' in text, 'reviewed9point body')
     need(r'\fontsize{8}{8.8}\selectfont\ttfamily' in text, 'reviewed8point seed')
     need('%%SEED%%' not in text and text.count(ALPHABET) == 1, 'standalone literal constants, no seed slot')
     seed_text = (ROOT/'candidates/one-page-compression/original-base62-collected/SEED.txt').read_text().strip()

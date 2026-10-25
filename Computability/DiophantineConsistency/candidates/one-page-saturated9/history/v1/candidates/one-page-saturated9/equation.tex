@@ -1,0 +1,200 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=.38in]{geometry}
+\usepackage{amsmath,amssymb,multicol}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.5pt}
+\setlength{\jot}{0pt}
+\setlength{\columnsep}{12pt}
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
+\let\bigsum\sum
+\renewcommand{\sum}{\bigsum\nolimits}
+\newcommand{\fl}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\rng}[2]{\{#1,\ldots,#2\}}
+\begin{document}
+\begin{center}
+{\large\bfseries A completely specified nine-positive consistency equation}\\[-1pt]
+{\small Nine positive inputs; accepted evaluator: 433 operations, degree $1{,}628{,}768$.}\\[-1pt]
+{\small All fixed constants and finite exponent lists are defined below.}
+\end{center}
+\vspace{-8pt}
+\begin{multicols}{2}
+\fontsize{9}{9.6}\selectfont
+The only unknowns are $b,g,h,s,w,C,i,j,n\in\mathbb Z_{>0}$.
+All other letters are polynomial abbreviations or fixed constants.
+The equation is
+\[
+\boxed{\bigl[\Theta^2+\Omega^2(a_0-a_1)\bigr]^2
+       -4\Omega^2a_0\Theta^2=0.}
+\]
+\textbf{Source and ratio polynomials.} For any displayed finite list put
+$p(e_1,\ldots,e_t)=\sum_{\nu=1}^{t}B^{e_\nu}$. Define
+\[
+\begin{gathered}
+B=2^{864026}b^2,\quad N_0=B^{117},\quad\ell=p(\mathcal W),\quad Z=p(\mathcal T),\\
+u=\ell+g,\quad G_c=D_2(B)u^2+D_1(B)u+D_0(B),\\
+S_c=g+N_0(Z+2G_c),\\
+T_c=N_0-1-\ell(b-1)+N_0Z(B-2),\\
+L_c=bB^{2200},\quad R=L_c(S_c+T_c+1)-S_c-1,\\
+N=2^{6480184}B^{1162},\quad c_*=bB^{116},\\
+U=N^2w,\quad Y=N^2s,\quad M=RY,\\
+P=2M^2U,\quad k=R+1+h(P-1),\\
+A=M(U+1),\quad B_1=2R+1,\quad W_1=bw,\\
+J_r=4A-5,\quad Q_r=3W_1C-2(W_1^2-1),\\
+m=k^2(4c_*-g)-16c_*(C-kY)^2,\quad\Omega=J_rm,\\
+E_0=J_r(n+W_1^2)+Q_r,\quad V_0=Pk,\\
+\delta=A^2-1,\quad D=1+\delta C^2,\quad e=iJ_rC^2,\quad d_e=De,\\
+F_p=1+(\delta e)d_e,\quad\Lambda=CD+1-A,\quad G_p=A+F_p\Lambda,\\
+H=C+F_p[B_1+(j-1)C],\quad T_m=Ad_e,\quad V_1=T_m(G_pH),\\
+I=1+(G_pH)^2-H^2,\quad a_0=1+V_0^2-k^2,\quad a_1=DF_pI,\\
+\Theta=E_0-\Omega(V_0+V_1).
+\end{gathered}
+\]
+The complete fixed lists, with $p(\mathcal W)$ and $p(\mathcal T)$ meaning
+the sum over all entries, are
+\[
+\begin{aligned}
+\mathcal W={}&(1,7,61,36,16,85,20,67,43,11,34,13,96,80,29,50,\\
+ &2,109,110,112,116,91,53,55,27,101,92,9,107,37,60),\\
+\mathcal T={}&(28,124,325,384,589,630,643,696,846,1073,1082,\\
+ &1159,1251,1261,1450,1510,1627,1756,1793,1807,2028,2050).
+\end{aligned}
+\]
+\textbf{All 85 kernel terms.} Equal-coefficient powers are grouped only by
+the explicitly defined finite-list notation $p$:
+\[
+\begin{aligned}
+D_0(B)={}&2K_0B^{124}-2p(325,384,1450,1627)-6B^{630},\\
+D_1(B)={}&2p(26,33,477,542,570,605,1020,1027,1047,1067,1144)\\
+ &+2p(1234,1354,1358,1370,1501,1691,1719,1733,1756,1918,1941)\\
+ &-2p(1,493,662,754,982,1698,1796)-8B^{514}-6B^{1023}\\
+ &-2K_0B^{63}-2(K_0+1)B^{117}+2\beta(K_0+1)B^{123}\\
+ &-2(M_C+M_F)B^{845}-4\beta B^{1260},\\
+D_2(B)={}&-\beta p(0,87,661,843,1795)\\
+ &-p(29,83,119,135,338,377,393,758,812,845)\\
+ &-p(1076,1176,1256,1295,1512,1632,1794,1807,1843)\\
+ &-2p(105,398,611,858,1452,1542)+2p(299,326,1326,1521)\\
+ &+p(384,400,691,837,1823,1850)-2\beta M_FB^{844}\\
+ &-4B^{907}-2\beta^2B^{1259}.
+\end{aligned}
+\]
+
+\textbf{The complete fixed coefficient tuple.}
+Division and floor below define constants only; the boxed equation is
+polynomial in exactly the nine positive unknowns.
+\[
+\begin{gathered}
+\rho=2^{89},\quad\mathcal B=\rho^{4831},\quad\beta=\mathcal B-1,\\
+\lambda=2^{29},\quad\theta=2^{42},\quad\mathcal Q=2^{40},\\
+G_t(x)=\sum_{r=0}^{t-1}x^r,\quad
+\mu=510+2^{17}+2^{26}+2^{28}+\lambda(2^{44}-1).
+\end{gathered}
+\]
+Let
+\[
+\begin{aligned}
+\mathcal S={}&\rng0{456}\cup\rng{495}{504}\cup\{507,508\}\\
+ &\cup\rng{517}{537}\cup\rng{539}{549}\\
+ &\cup\rng{567}{583}\cup\{1203,1807\}.
+\end{aligned}
+\]
+Then
+\[
+\begin{aligned}
+M_C={}&\mathcal B-1-\sum_{r\in\mathcal S\setminus\{1\}}\rho^r-2\rho^{507},\\
+M_F={}&\mathcal B-1+4+\mu(\rho^{2409}+\rho^{3015})\\
+ &+\rho^{528}G_{10}(\rho)+\rho^{585}G_{11}(\rho)+\rho^{1203}+\rho^{1807}\\
+ &+(2^{87}-1)\rho^{4823}G_4(\rho)+(2^{38}-1)\rho^{4827},\\
+K_0={}&\rho^{33}+\rho^{68}+\rho^{664}+\rho^{1268}+\rho^{4877}\\
+ &+(\rho^{2409}+\rho^{3015})\Phi(1/\rho),
+\end{aligned}
+\]
+where
+\[
+\begin{aligned}
+\Phi(x)={}&O G_{457}(x)+\lambda\sum_{a=0}^{456}\ell_a x^{r_a}\\
+ &-(255\,2^9+2^{27})x^{374}-(255\,2^{18}+2^{27})x^4\\
+ &+\lambda\bigl[(x^{539}+2^{21}x^{517})G_{11}(2x)\\
+ &\qquad +(2^{11}x^{528}+2^{32}x^{495})G_{10}(2x)\\
+ &\qquad +\theta(x^{539}+x^{1203}+x^{1807})\bigr]\\
+ &+\bigl[(2^9+\lambda(2+2^{33}))x^{567}\\
+ &\qquad +(2^{18}+\lambda(2^{22}+2^{33}))x^{575}\bigr]G_8(2x)\\
+ &+(2^{27}+\lambda(2^{11}+2^{32}))x^{583}.
+\end{aligned}
+\]
+The rational intermediate evaluates to a fixed integer $K_0$.
+
+\textbf{The ranks and labels.}
+The following 457 fixed quadruples are $t_r=(w_r,n_r,e_r,s_r)$.
+From the fixed integer $\mathcal A$ below, for $0\le r<430$ put
+\[
+\begin{gathered}
+b_r=\fl{\mathcal A/1024^r}\bmod1024,\quad u_r=b_r\bmod256,\\
+v_r=\fl{b_r/256}\bmod2,\quad d_r=\fl{b_r/512},\\
+t_{2+r}=((1-d_r)(512+u_r),512+r,d_r(256+u_r),v_r).
+\end{gathered}
+\]
+Here $a\bmod b=a-b\fl{a/b}$. The remaining quadruples are
+\[
+\begin{array}{c|c|l}
+\text{index}&\text{range}&t_r\\\hline
+0&& (2,3,3,1)\\
+1&& (5,0,0,0)\\
+432+r&0\le r<2&(0,942+r,0,942+r)\\
+434+r&0\le r<2&(0,r,0,r)\\
+436+r&0\le r<4&(0,(r\bmod2)+942\fl{r/2},0,6)\\
+440&&(2,2,2,0)\\
+441&&(3,4,4,698)\\
+442&&(4,4,4,0)\\
+443+r&0\le r<3&(1,6,1,2+r)\\
+446+3r+t&0\le r,t<3&(r^2,5,t,5)\\
+455&&(256,0,0,512)\\
+456&&(0,0,512,512)
+\end{array}
+\]
+For these bound indices define
+\[
+\begin{aligned}
+\kappa_r&=2^{30}w_r+2^{20}n_r+2^{10}e_r+s_r,\\
+\ell_r&=2w_r+2^{11}n_r+2^{22}e_r+2^{32}s_r,\\
+r_0&=0,\quad r_1=1,\\
+r_t&=2+\sum_{r=2}^{456}\fl{\frac{\mathcal Q+\kappa_t-\kappa_r-1}{\mathcal Q}}
+ \quad(2\le t\le456),\\
+O&=1+255\,2^9+255\,2^{18}+2^{27}+\lambda.
+\end{aligned}
+\]
+Subscripts in the constant recipes are bound indices, not extra unknowns.
+
+\textbf{The integer $\mathcal A$.} Digit values are $0,\ldots,61$ in the alphabet
+\begingroup\fontsize{8}{8.8}\selectfont\ttfamily
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\par
+\endgroup
+For the following 722 characters put
+$\mathcal A=\sum_{r=0}^{721}\epsilon_r62^{721-r}$, where $\epsilon_r$
+is the value of character $r$, starting at zero:
+\begingroup
+\fontsize{8}{8.8}\selectfont\ttfamily
+RCtYkANMQ1gmPqxuKhLmpi1mjCvu243YjyAxv9hbC2UsurRLykLFhuHVBGGUZ5\par
+whVShV0FQcVVQSR2GS6JAW1DGYxGKlA4rJavFCW5i63LLSs8xEGvWTbLjSFULV\par
+ODe48Kw2ghEaa5Q9PZZVHtki7C45jfVYROOzvVT9DAGjL0BlBSHQU8WPUF3SpC\par
+kTfDQF7mUboMEAeyPWARCyClpnxtqgsit318hQgiIdKauxc6memnYNtycB0s7z\par
+K8dMgYaLRxNjlcLvJzZ9Z5wdCG3wjd5P6ZVqC2SXVaimqXrTY5dNxbCH2B5VKA\par
+Sp16kht0JV65p4VclYsI6zi6nIr7elpUCOX7IHdu6qKiu6Kt5MqlYZjChEzG6y\par
+W1WsPdMB7lPL3oOCFqFncCtVEMUounam1fyhduQYoTyTCIEMqcD2BPQfMVaBa9\par
+BZHQ8k7rpS3eiM7Rsak5uUsoP1Tf1uhWshndLuN8yz7UdD5QXM6AJ3ovPdWsqO\par
+HGBeRaR8kch4R9JVbkAxS2ByaeE2O6czIT0sWtpasWDdZB9FuDQUFYhSvPPPr8\par
+nSQmnMkF90CBzWkpeP81azGOWtiT2XTxpaLcR4ecaK1uZyvBleYknk6QTwECl5\par
+XJ3nJBoP4sMTGaV6unoGzq9s1KN4KtXrVRuTpi6EuqizW9njcp9Uikq1VNjVtw\par
+W1AGLJu3eaWg0EEF7vROqLuNbzEheYnyi4SORWVp\par
+\endgroup
+\smallskip
+\normalfont\fontsize{8}{8.8}\selectfont
+Absence of positive integer solutions is equivalent to
+$\mathrm{Con}(\mathrm{ZFC})$ by the inherited source/native calibration and
+the ordinary saturated Pell argument. This page specifies the equation;
+it does not supply an end-to-end formal Lean proof.
+\end{multicols}
+\end{document}
