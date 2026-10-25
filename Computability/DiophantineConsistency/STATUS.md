@@ -161,9 +161,27 @@ Its first materialization exited0, but the first normal checker exited1:
 the row30 new linear coefficient must be−48c, not the printed−24c.
 All later applications stopped; the [complete first-failure packet](research/second-pair-sum-gate-shear-first-failure/README.md)
 preserves original source/reviews, all produced data and captures. Both
-full statics missed that formula error. The produced metrics remain
-provisional; the accepted finite frontier stays32053 until a separately
-reviewed correction and complete endpoint verification pass.
+full statics missed that formula error. Those original produced metrics
+remain provisional historical evidence;32053 remained the accepted finite
+frontier at that failed checkpoint.
+
+The separately corrected [whole R1 evidence](research/second-pair-sum-gate-shear-r1-verification/README.md)
+now passes the [ROOT full ordinary review](reviews/second-pair-sum-gate-shear-r1-verification-ordinary-root.md),
+[independent full ordinary review](reviews/second-pair-sum-gate-shear-r1-verification-ordinary-peer.md)
+and [separate ROOT finite endpoint acceptance](reviews/second-pair-sum-gate-shear-r1-finite-endpoint-acceptance.json).
+The accepted coefficient-height frontier for these charts is now15109,
+with plain316/218/5614 and weighted315/217/5620 variables/rows/terms,
+row height72, degree4 and every coordinate live. Against accepted U,
+height falls32053 to15109 and row height96 to72; each expanded support
+loses12 terms, distinct from the eight fewer residual-monomial occurrences.
+All nine actual applications exit0, all12 fresh capture files match first
+bytes, and each of four checkers retains172 negative/12 valid controls
+(146 artifact and26 source-premise negatives), including the actual
+wrong−24 regression in both profiles. Complete saved forward/inverse/SOS
+identities and composed source/calibration maps remain bound. The original
+failed namespace was not retried, its history and accepted U remain intact,
+and no global minimum, fresh native/Lean replay or page gain is claimed.
+The maintained radix55 PDF/TeX and Lean pause are unchanged.
 
 The [bounded radix65 evidence](research/compact66-radix65-unit-probe-verification/README.md)
 passes [ordinary review](reviews/compact66-radix65-unit-probe-verification-ordinary-peer.md)

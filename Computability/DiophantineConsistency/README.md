@@ -144,7 +144,7 @@ follows full independent evidence review and retains every composed source
 map and calibration boundary. Earlier quartics remain available; this
 degree-four improvement does not shorten the maintained one-page formula.
 
-Two further complete integer shears now reach
+Two preceding complete integer shears reached
 **plain316/218/5626 and weighted315/217/5632**, both at exact degree4,
 height32053 and residual height96. The [pair-sum evidence](research/pair-sum-gate-shear-verification/README.md)
 passes both full ordinary reviews and [ROOT acceptance](reviews/pair-sum-gate-shear-verification-root-peer.md).
@@ -155,14 +155,34 @@ all noncommuting source-restoration maps are retained. The final shear
 removes114 terms and introduces12, net102 against the Pell-output parent;
 this is an accepted quartic tradeoff, with no global minimum claim.
 
-A [second pair-sum shear](research/second-pair-sum-gate-shear/README.md)
+The original [second pair-sum shear](research/second-pair-sum-gate-shear/README.md)
 received both full ordinary reviews and [joint bound acceptance](reviews/second-pair-sum-gate-shear-ordinary-acceptance.json),
 but its first normal checker subsequently caught a row30 linear-term error
 missed by those reviews and both full statics. The sequence stopped after
 materialization; [all original evidence is preserved](research/second-pair-sum-gate-shear-first-failure/README.md).
 The correct substitution gives−48c rather than−24c. Generated metrics
-remain provisional, with no accepted successor endpoint or page gain.
-Any correction needs a separate bounded repair and complete final reviews.
+from that stopped namespace remain provisional; it has no accepted endpoint
+and has not been retried. Correction required a separate bounded repair and
+complete final reviews.
+
+The separately corrected [whole R1 evidence packet](research/second-pair-sum-gate-shear-r1-verification/README.md)
+now supplies the accepted coefficient-height frontier in this315/316-variable
+lineage: **plain316/218/5614 and weighted315/217/5620** variables/rows/terms,
+both at exact degree4, height15109 and residual height72, with every
+coordinate live. Its [sealed manifest](research/second-pair-sum-gate-shear-r1-verification/MANIFEST.json),
+[ROOT full ordinary review](reviews/second-pair-sum-gate-shear-r1-verification-ordinary-root.md),
+[independent full ordinary review](reviews/second-pair-sum-gate-shear-r1-verification-ordinary-peer.md)
+and [separate ROOT endpoint acceptance](reviews/second-pair-sum-gate-shear-r1-finite-endpoint-acceptance.json)
+bind the complete corrected equation and maps. Relative to accepted U,
+height falls32053 to15109 and row height96 to72. Each expanded support
+loses12 terms (66 removed,54 introduced); the separate residual-monomial
+occurrence saving is eight. All nine actual first/fresh processes exit0,
+all12 fresh capture files match first bytes, and each of four checkers
+retains172 negative/12 valid controls, including146 actual artifact and26
+source-premise negatives and the wrong−24 regression in both profiles.
+The accepted U parents and entire original failure history remain preserved.
+No global minimum, fresh native/Lean replay or printed-page gain is claimed;
+the maintained radix55 PDF/TeX and Lean pause are unchanged.
 
 A [bounded65-bit modular probe](research/compact66-radix65-unit-probe-verification/README.md)
 now discharges the three previously unknown controller-bracket unit

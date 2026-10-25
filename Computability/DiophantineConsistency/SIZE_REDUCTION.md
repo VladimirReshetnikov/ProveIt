@@ -15,7 +15,8 @@ not establish the size of a complete consistency equation.
 
 | Domain | Variables | Operations | Degree | Use |
 |---|---:|---:|---:|---|
-| Integers | **315 / 316** | not optimized | **4** | Complete pair-sum shear charts;217/218 rows,5632/5626 terms,height32053,row height96; nine first/fresh processes and both full evidence reviews pass |
+| Integers | **315 / 316** | not optimized | **4** | Accepted corrected second pair-sum R1 charts;217/218 rows,5620/5614 terms,height15109,row height72; nine actual processes and both full ordinary evidence reviews pass |
+| Integers | 315 / 316 | not optimized | 4 | Preserved accepted pair-sum U parents;217/218 rows,5632/5626 terms,height32053,row height96 |
 | Integers | 315 / 316 | not optimized | 4 | Preserved neighbor-shear parents;217/218 rows,5787/5781 terms,height93109,row height160 |
 | Integers | 315 / 316 | not optimized | 4 | Preserved balanced-shear parents;217/218 rows,5809/5803 terms,height98336,row height256 |
 | Integers | 315 / 316 | not optimized | 4 | Complete fixed58-shift parents;217/218 rows,5743/5737 terms,height128446,row height256; separate full fast verification accepted |
@@ -3055,21 +3056,22 @@ The closed external manifest is369d156ca59b03db1873ccd924eebfb371e3f85190cfea011
 76 payloads/77 whole files. The held candidate stays exactly27 files,
 without results or a MANIFEST added inside it. The previous compact,
 grouped, original66/157 and ten-positive pages remain available, as do
-all quartic alternatives, including accepted height32053. This page
+all quartic alternatives, including the preserved height32053 U parents. This page
 update decides no consistency statement, supplies no new Lean theorem
 and claims no global optimum.
 
 ## Accepted ordinary leads after the radix55 page update
 
-The [second pair-sum shear](research/second-pair-sum-gate-shear/README.md)
+The original [second pair-sum shear](research/second-pair-sum-gate-shear/README.md)
 received two full ordinary PASS reviews and [separate joint acceptance](reviews/second-pair-sum-gate-shear-ordinary-acceptance.json).
 Its coordinate25 map is `w25=z25-z11-z12`, composed before the accepted
 U/T/N/S maps. All eleven affected rows and every degree's whole coefficient
 bounds give15109<=height<=24000, strictly below the accepted32053 source.
 Exact row height72, degree4, all316/315 coordinates live and eight fewer
-residual monomial occurrences are proved. Expanded height, support and
-term delta remain unknown. Its fixed finite implementation is under
-CODE ONLY/HOLD; it supplies no generated endpoint or page saving yet.
+residual monomial occurrences were reported. Expanded height, support and
+term delta were unknown before the first finite application. Its fixed
+finite implementation was then under CODE ONLY/HOLD; that checkpoint
+supplied no generated endpoint or page saving.
 
 The later first materialization exited0, then the first normal checker
 exited1 at its full new-row formula comparison. Row30's old linear part
@@ -3079,9 +3081,31 @@ is48, not35; its quadratic part and the quartic witness table are unchanged.
 Both complete ordinary reviews and both full statics missed the defect.
 All subsequent applications stopped, with [the complete first failure](research/second-pair-sum-gate-shear-first-failure/README.md)
 preserved under seal fc8676225660ab9219d5a2ed0c850bbd2ce52db70389da7fdcb50c9b219acba1.
-The13 produced files and their metrics are provisional, not an accepted
-finite endpoint. A bounded correction needs full renewed reviews and new
-runtime authority; the accepted32053 frontier and maintained55 page remain.
+Those13 original produced files and their metrics remain provisional
+historical evidence, not an accepted finite endpoint. A bounded correction
+required full renewed reviews and new runtime authority; at that failed
+checkpoint,32053 remained the accepted finite frontier.
+
+The separately corrected [whole R1 evidence packet](research/second-pair-sum-gate-shear-r1-verification/README.md)
+now passes both full ordinary evidence reviews,
+[ROOT](reviews/second-pair-sum-gate-shear-r1-verification-ordinary-root.md)
+and [independent peer](reviews/second-pair-sum-gate-shear-r1-verification-ordinary-peer.md),
+and [separate ROOT finite endpoint acceptance](reviews/second-pair-sum-gate-shear-r1-finite-endpoint-acceptance.json).
+Plain316/218/5614 and weighted315/217/5620 variables/rows/terms have
+exact height15109, residual height72 and degree4, with every coordinate
+live. This is the current accepted coefficient-height frontier in these
+charts: height falls32053 to15109 and row height96 to72 against accepted U.
+Each expanded support loses12 terms (66 removed,54 introduced); the
+separate residual-monomial occurrence saving is eight. All nine actual
+applications exit0, all12 fresh capture files match first bytes, and each
+of four checkers retains172 negative/12 valid controls:146 actual artifact
+and26 source-premise negatives, including the wrong−24 regression in both
+profiles. Whole saved forward/inverse/SOS identities, complete maps and
+inherited source calibration remain bound. The original failed V packet,
+wrong approvals and accepted U parents remain preserved; the stopped
+namespace was not retried. No global optimum, new native/Lean replay or
+printed-page gain follows. The maintained radix55 PDF/TeX and Lean pause
+are unchanged.
 
 The [conditional radix53 note](research/compact66-radix53-carry-tolerance/README.md)
 also has two full ordinary PASS reviews and [separate conditional acceptance](reviews/compact66-radix53-carry-tolerance-ordinary-acceptance.json).
