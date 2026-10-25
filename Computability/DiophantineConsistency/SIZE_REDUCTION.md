@@ -2247,3 +2247,35 @@ The ordinary proof retains the actual canonical `R>3q` repair and complete
 indexed native/controller/refutation interpretation. Every predecessor,
 including the complete92/283 page, remains preserved. The327-variable
 quartic is unchanged. Lean remains paused and the reduction goal active.
+
+
+## Complete q-cube doubled alternatives accepted at81/750 and82/560
+
+The [materialized finite packet](research/ten-positive-qcube-doubled-finite/RESULTS.md)
+now replaces the earlier manual cost predictions with complete literal
+graphs and actual counts. All five author commands pass first try; the
+four fresh root normal/optimized checks and pure rebuilds reproduce all
+eight complete author JSON/stdout strings byte for byte. Full row maps,
+29 free-port cuts, the q^6 identity, complete leading forms and actual
+corruption controls pass. The [root acceptance](reviews/ten-positive-qcube-doubled-finite-root-peer.md)
+retains the explicit139-direct-pin scope and accepted complete native theorem.
+These higher-degree alternatives leave the maintained85/328 page intact.
+
+
+## Squared radix and repaired sign compression: ordinary proof accepted
+
+The [code-free Round16 proposal](research/round16-square-radix-compression/PROPOSAL.md)
+passes [root review](reviews/round16-square-radix-compression-root.md) and
+[independent ordinary review](reviews/round16-square-radix-compression-ordinary-peer.md).
+The squared majorant is positive before the CRT representative signs are
+known. Eleven explicit residue-one remainder substitutions then permit
+strict-eight compression; a separate signed-power argument permits the
+optional x-fused ninth factor. Both witness maps reconstruct fresh triples.
+The complete actual frame has38 affine atoms covering54 power ports; the
+initial37-atom wording was corrected before acceptance.
+
+This is a new source131 architectural construction with its retained
+square-horizon, beta-CRT and full C222/ZFC calibration. It is not the
+accepted327 source. No new source, projected quartic, variable census or
+runtime closure has yet been accepted. Those complete finite stages remain
+separate work; the main page and Lean are unchanged.
