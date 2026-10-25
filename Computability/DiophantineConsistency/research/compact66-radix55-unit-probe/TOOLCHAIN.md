@@ -1,4 +1,4 @@
-# Held command plan: exactly three unknown units, four invocations
+# Held command plan: knownmod5 zero, two unknown units, four invocations
 
 NO command is authorized by this document. Two full independent static
 approvals at the final held seal and a separate explicit ROOT release
@@ -8,11 +8,12 @@ the fresh two. Stop on a nonzero application exit and report its full
 transcript. Do not repair, retry, overwrite, alter paths, add a modulus
 or run another variant without reviewed authorization.
 
-A PASS with scientific_outcome=controller_unit_obstruction is a verified
+A PASS with scientific_outcome=wrap_controller_unit_obstruction is a verified
 negative scientific result. It is NOT a nonzero application exit and is
-not a reason to change inputs or repair the program. All three candidate
-residues, including modulo5, are unknown before the separately released
-runs. No expected candidate residue appears in the code or proof.
+not a reason to change inputs or repair the program. Only8807 and581197
+remain unknown. The already proved whole-formula zero modulo5 is checked
+as a consistency identity; it is excluded from required_units_nonzero.
+No expected value for either unknown prime appears in the code or proof.
 
 All four JSON and eight stdout/stderr paths must be absent before their
 corresponding first use. They are directly under/tmp, requiring no

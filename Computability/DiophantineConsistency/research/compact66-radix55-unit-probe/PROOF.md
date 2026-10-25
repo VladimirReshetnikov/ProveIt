@@ -1,10 +1,11 @@
 # Exact bounded mathematics and integrity of the held radix55 probe
 
 This is a proof of proposed code, not evidence of any execution or
-candidate residue. All55 Hctrl values remain unknown during preparation.
-The accepted ordinary55 proof is conditional on exactly the three unit
-questions addressed here. Verification and scientific outcome are distinct:
-a correct zero is a PASS obstruction. No new whole four-port tuple,
+candidate run. The complete formula's zero modulo5 is known by hand;
+the values at8807 and581197 remain unknown. The new wrap-controller
+ordinary proof is conditional on exactly those TWO units. Verification
+and scientific outcome are distinct: a correct zero at either unknown
+prime is a PASS obstruction. No new whole four-port tuple,
 native word, arithmetic DAG or page is constructed by this algorithm.
 
 ## 1. Existing whole tuple and formal coefficient association
@@ -77,7 +78,7 @@ The large parsed integer and reversed polynomial value are OLD67-bit
 accepted numbers only. No55-bit K, beta, mask or four-port tuple is
 formed. The ordinary formal Phi coefficients do not depend on rho.
 
-## 3. Two modular routes at exactly three unknown primes
+## 3. Two modular routes at three fixed primes, with only two unknown units
 
 For each FIXED p in{5,8807,581197}, let r=2^55 modp and b=r^8807
 modp. All three primes are odd, so r is invertible. The program does
@@ -103,22 +104,34 @@ NEW55-bit FORMULA's Hctrl55. Neither route substitutes an old K residue.
 All candidate55 powers are modular pow or modular accumulation. The
 program does not form the unmodded new B,K0,beta,MC or MF_source.
 
-There is NO expected value at any of the three primes, including5.
-The old65-bit expectation4 mod5 is not retained. All h residues must
-agree across routes, but zero is permitted. Since the pinned ordinary
-contracts already certify the primes, h!=0 means unit and h=0 means
-that unit condition fails. The report's verification status is PASS if
-the integrity/identities/controls pass; candidate_units_nonzero and
-scientific_outcome separately state the three-unit result. A zero cannot
-trigger a repair, retry, alternate modulus or radix. The unchanged old
-65 probe is a read-only template, not an application or numerical oracle.
+The complete formula proves Hctrl55=0 modulo5 by hand: rho=3,B=2,
+rho^4393+rho^5495=rho+rho^3=0, while the five remaining K powers
+sum2rho^2+2rho+1=0. Thus K0=0 and Hctrl55=1+B^2=0 modulo5,
+independently of every Phi coefficient. This is the ONLY expected
+candidate residue. The old65-bit expectation4 mod5 is not retained.
+Both routes must reproduce that zero as a consistency check.
 
-The accepted ordinary55 proof supplies the two-stage carry bootstrap,
-full coherent masks, automatic rank0 mod11, reduced-modulus controller
-and both positive P66 maps CONDITIONALLY on these exact three units.
-No Hctrl modulo11 is needed: Gamma is nonunit there, and the source's
-symbolic rank class plus CRT handles it. This probe does not rerun the
-native/carry/Pell theorem or replace its retained scope.
+No value or nonvanishing is required at8807 or581197 to obtain
+verification PASS. Since the retained contracts certify the primes,
+a nonzero residue means unit and zero means that condition fails.
+required_units_nonzero uses ONLY these two primes. scientific_outcome
+separately records remaining_two_units_nonzero or wrap_controller_unit_obstruction.
+The known mod5 zero is not counted as a required-unit failure. Neither
+scientific result permits a repair, retry, alternate modulus or radix.
+The unchanged old65 probe is a readonly template, never an application
+or numerical oracle.
+
+The INITIAL55 source's three-unit antecedent is false. Its entire source,
+both complete first reviews/finding/disposition are preserved and bound
+without pretending to accept viable completeness. Its unconditional
+two-stage carry/bootstrap/mask/Pell lemmas are explicitly reused by the
+NEW same-tuple wrap controller. Four wrapping dummy positions tune
+mod5 first; interior Boolean tuning modulo8807*N and automaticmod11
+then give the full rank congruence by CRT. Only the8807/lambda bracket
+units remain conditional. The full new ordinary note, both final reviews
+and joint acceptance must be bound before final probe pins freeze.
+This program does not execute that native/controller/Pell proof or
+materialize the tuple. No Hctrl unit at5 or11 is used.
 
 ## 4. Actual model controls, input purity and deterministic receipts
 
@@ -146,9 +159,11 @@ tile/control/prime numeric data use explicit integer types too. Safe
 relative paths, contained regular files and no-symlink trees are required.
 
 The self inventory closes exactly five payloads and verifies their byte
-total; SOURCE_PINS pins the other four own core files. It flattens six
-complete accepted parent inventories including the final55 ordinary
-packet, and the entire six-file immutable65 template. All direct input
+total; SOURCE_PINS pins the other four own core files. It flattens seven
+complete parent inventories, including the historical initial55 source
+and new final wrap-controller packet, and the entire six-file immutable65
+template. Initial55 is bound as history plus explicit unconditional lemmas,
+not an accepted three-unit completeness route. All direct input
 records, own code/prose, every parent member and nested manifest are
 authenticated before arithmetic AND again before the sole write. The
 external held seal is the trust anchor reviewed by two peers; this is
@@ -167,15 +182,23 @@ creation. No parent or own file is a runtime output.
 ## 5. Release and scientific boundary
 
 This five-payload packet is CODE ONLY. Before its FINAL source pins and
-HOLD freeze, it must bind the complete accepted55 note, both full
-ordinary review pairs and ROOT joint acceptance. Two full exact-final
+HOLD freeze, it must bind the complete NEW accepted wrap-controller note,
+both full ordinary review pairs and ROOT joint acceptance, along with the
+whole initial55 source, its first reports/finding/disposition. Two full exact-final
 code static approvals and a separate ROOT release must then precede the
 four proposed invocations. Nothing here authorizes execution.
 
-A future verified nonzero result at all three primes would close those
-finite conditions; a zero would record the exact obstruction. Neither
+A future verified nonzero result at both unknown primes would close those
+two finite conditions; a zero there would record the exact obstruction.
+The knownmod5 zero is handled by the new ordinary wrapping construction,
+not by numerical repair. Neither
 outcome generates or accepts a numerical55-bit equation or tuple, new
 byte/glyph/page gain or formalization. Accepted native/source/Pell and
 K215/refutation contracts are retained transparently, not freshly replayed
 or kernel-verified. Existing67/65/57/59/55 sealed sources, main compact66
 page and Lean files remain unchanged.
+
+The complete four-file initial unsealed draft is preserved in141a3b40ba;
+the separate scope release da9e4dc8ff authorizes this revised question.
+No code from that draft ran. Final source pins retain both histories and
+the new ordinary proof without relabeling the initial false unit premise.

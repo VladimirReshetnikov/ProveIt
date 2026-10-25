@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Held three-prime modular probe; no new radix55 tuple is constructed."""
+"""Held wrap-controller probe: known mod5 zero and two unknown units."""
 import sys
 
 sys.dont_write_bytecode = True
@@ -18,10 +18,12 @@ INDEXED = ROOT / 'research/indexed-tile-enumeration'
 COMPACT = ROOT / 'candidates/one-page-compact66'
 TEMPLATE = 'research/compact66-radix65-unit-probe'
 MODULI = (5, 8807, 581197)
+REQUIRED_UNIT_MODULI = (8807, 581197)
 PAYLOADS = {'probe.py', 'README.md', 'PROOF.md', 'TOOLCHAIN.md', 'SOURCE_PINS.json'}
 PARENTS = {'candidates/one-page-compact66', 'research/indexed-tile-enumeration',
            'research/compact66-radix-boundary', 'research/compact66-radix65-unit-probe-verification',
-           'research/compact66-radix65-native-adapter', 'research/compact66-radix55-bootstrap'}
+           'research/compact66-radix65-native-adapter', 'research/compact66-radix55-bootstrap',
+           'research/compact66-radix55-wrap-controller'}
 STEM = '/tmp/compact66-radix55-unit-probe-'
 OUTPUTS = {False: (STEM + 'normal.json', STEM + 'root-normal.json'),
            True: (STEM + 'optimized.json', STEM + 'root-optimized.json')}
@@ -98,20 +100,26 @@ def authenticate_hold(folder, schema):
 
 
 def authenticate():
-    authenticate_hold(HERE, 'compact66_radix55_probe_hold_v1')
+    authenticate_hold(HERE, 'compact66_radix55_wrap_probe_hold_v1')
     pins = load(ordinary_path(HERE, 'SOURCE_PINS.json'))
     need(type(pins) is dict and set(pins) == {'schema', 'path_base', 'scope', 'files', 'own_core',
-         'closed_parents', 'held_template', 'candidate'} and pins['schema'] == 'compact66_radix55_probe_pins_v1'
+         'closed_parents', 'held_template', 'candidate'} and pins['schema'] == 'compact66_radix55_wrap_probe_pins_v1'
          and pins['path_base'] == 'Computability/DiophantineConsistency' and type(pins['scope']) is str,
          'strict source pin schema/base')
     candidate = pins['candidate']
-    need(type(candidate) is dict and set(candidate) == {'radix_bits', 'fixed_moduli',
-         'unit_values_unknown_during_preparation', 'unit_nonzero_not_verification_gate'}
+    need(type(candidate) is dict and set(candidate) == {'radix_bits', 'fixed_moduli', 'known_Hctrl_residues',
+         'required_unit_primes', 'required_unit_values_unknown_during_preparation',
+         'required_nonzero_not_verification_gate'}
          and type(candidate['radix_bits']) is int and candidate['radix_bits'] == 55
          and type(candidate['fixed_moduli']) is list and all(type(p) is int for p in candidate['fixed_moduli'])
          and candidate['fixed_moduli'] == list(MODULI)
-         and candidate['unit_values_unknown_during_preparation'] is True
-         and candidate['unit_nonzero_not_verification_gate'] is True, 'exact unknown three-unit question')
+         and type(candidate['known_Hctrl_residues']) is dict and set(candidate['known_Hctrl_residues']) == {'5'}
+         and type(candidate['known_Hctrl_residues']['5']) is int and candidate['known_Hctrl_residues']['5'] == 0
+         and type(candidate['required_unit_primes']) is list
+         and all(type(p) is int for p in candidate['required_unit_primes'])
+         and candidate['required_unit_primes'] == list(REQUIRED_UNIT_MODULI)
+         and candidate['required_unit_values_unknown_during_preparation'] is True
+         and candidate['required_nonzero_not_verification_gate'] is True, 'exact known-zero/two-unit question')
     need(type(pins['own_core']) is dict and set(pins['own_core']) == PAYLOADS - {'SOURCE_PINS.json'},
          'complete own code/prose pin set')
     for name, record in pins['own_core'].items():
@@ -119,7 +127,7 @@ def authenticate():
     need(type(pins['files']) is dict, 'external file mapping')
     for name, record in pins['files'].items():
         need(file_record(ordinary_path(ROOT, name)) == checked_record(record), 'whole external: ' + name)
-    need(type(pins['closed_parents']) is dict and set(pins['closed_parents']) == PARENTS, 'exact six parents')
+    need(type(pins['closed_parents']) is dict and set(pins['closed_parents']) == PARENTS, 'exact seven parents')
     parent_records = {}
     for relative, expected in pins['closed_parents'].items():
         parent = ROOT / relative
@@ -272,9 +280,12 @@ def modular_routes(left, right):
         k_right = (dc_right + b * dr) % prime
         h_right = (1 + b * dc_right + b * b * (dr + 1)) % prime
         need(k_left == k_right and h_left == h_right, 'two complete modular evaluation routes')
+        if prime == 5:
+            need(h_left == 0, 'proved whole-formula mod5 zero consistency')
         results.append({'prime': prime, 'rho_mod': rho, 'B_mod': b, 'K_mod_inverse_route': k_left,
                         'K_mod_positive_route': k_right, 'H0_inverse_route': h_left,
-                        'H0_positive_route': h_right, 'unit': h_left != 0})
+                        'H0_positive_route': h_right, 'unit': h_left != 0,
+                        'required_unit': prime in REQUIRED_UNIT_MODULI})
     return results
 
 
@@ -335,8 +346,8 @@ def main():
     need(len(model['controls']) == 41, 'four literal control groups contain 41 terms')
     phi, residues = verify_model(model)
     controls = artifact_controls(model)
-    all_units = all(row['unit'] for row in residues)
-    report = {'schema': 'compact66_radix55_modular_unit_probe_v1', 'status': 'PASS',
+    required_units = all(row['unit'] for row in residues if row['required_unit'])
+    report = {'schema': 'compact66_radix55_wrap_modular_unit_probe_v1', 'status': 'PASS',
               'optimized_python': bool(sys.flags.optimize), 'provenance': provenance,
               'existing_coherent_ports': ports, 'existing_raw_port_bytes': 295388,
               'phi': {'coefficients': len(phi), 'ordered_tiles': 943, 'literal_control_terms': 41,
@@ -344,8 +355,9 @@ def main():
                       'zero_dummy_indices': [1063, 1064], 'canonical_array_sha256': digest(encode(phi)),
                       'all_coefficients_equal_by_two_routes': True},
               'candidate_radix_bits': 55, 'fixed_moduli': list(MODULI), 'modular_results': residues,
-              'candidate_units_nonzero': all_units, 'all_three_unit_conditions_nonzero': all_units,
-              'scientific_outcome': 'all_three_units_nonzero' if all_units else 'controller_unit_obstruction',
+              'known_Hctrl_residues': {'5': 0}, 'known_mod5_zero_consistency_checked': True,
+              'required_unit_primes': list(REQUIRED_UNIT_MODULI), 'required_units_nonzero': required_units,
+              'scientific_outcome': 'remaining_two_units_nonzero' if required_units else 'wrap_controller_unit_obstruction',
               'scientific_outcome_is_not_a_verification_gate': True, 'controls': controls,
               'new_radix55_tuple_or_native_or_endpoint_claim': False,
               'retained_scope': 'Accepted ordinary native/source contracts only; no fresh transitive/native/Lean audit.'}
