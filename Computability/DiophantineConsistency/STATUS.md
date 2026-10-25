@@ -37,6 +37,14 @@ whole indexed native/controller/refutation calibration. Lean remains paused.
 The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
 remains a different tradeoff.
 
+The complete q-cube doubled forms now reach81 operations/degree750 and
+82/560 in ten positive unknowns. Both full static reviews, all five author
+commands and four fresh independent normal/optimized checks/rebuilds pass;
+all eight complete root receipts/stdout strings match the author bytes.
+The [root acceptance](reviews/ten-positive-qcube-doubled-finite-root-peer.md)
+records the139-direct-pin scope and retained accepted native theorem.
+These higher-degree cost reductions leave the maintained85/328 page intact.
+
 The fused-nine direct quartic now has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
 ordinary source and all finite Horn/projection/translation layers pass four

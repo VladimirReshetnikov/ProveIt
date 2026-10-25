@@ -25,6 +25,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 10 | 91 / 92 / 97 / 98 | 283 / 278 / 258 / 254 | Existing b transport; one-operation minor checkpoint, earlier page preserved |
 | Positive integers | 10 | 92 | 283 | Preserved complete lower-degree saturated page and indexed constants |
 | Positive integers | 10 | 84 / **85** | 436 / **328** | Accepted doubled product square; complete85 maintained page and all constants |
+| Positive integers | 10 | 81 / 82 | 750 / 560 | Complete q-cube doubled graphs; fewer operations, higher degree; all fresh root replays pass |
 | Positive integers | 10 | 93 | 278 | Sharp saturated center; lower-degree tradeoff |
 | Positive integers | 10 | 98 / 99 | 258 / 254 | Direct positive X and upper/sharp saturated centers |
 | Positive integers | 10 | 97 | 368 | Existing-square transport weight; one-operation saving, higher degree |
