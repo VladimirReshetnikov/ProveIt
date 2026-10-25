@@ -2760,3 +2760,38 @@ with [ROOT's finding](reviews/balanced-crt-gate-shear-peer-report-finding.md)
 in8f654b5ba7 before bounded report-only correction. The source formula
 was correct and unchanged; the final complete ordinary recheck passes.
 Main compact66 PDF/TeX and paused Lean work remain unchanged.
+
+## Removing the positive remainder split creates actual-port spurious zeros
+
+The [direct-k obstruction](research/fifteen-direct-k-obstruction/README.md)
+passes [ROOT](reviews/fifteen-direct-k-obstruction-ordinary-root.md) and
+[independent review](reviews/fifteen-direct-k-obstruction-ordinary-peer.md).
+Taking positive k as an input and deleting k=eta+zeta would save one
+addition, but loses eta<k. The note constructs a symbolic positive zero
+of exactly that modified polynomial on the entire actual indexed tuple,
+with eta>k and all normalized factors+1. Its dummy/controller construction
+needs no native high-mask validity; its incomplete Start cell fails that
+mask. Every one of the15 proposed inputs, including gamma and the fresh
+squared-modulus T, is proved positive. No huge witness is materialized.
+
+This blocks the proposed positive-zeta restoration, not every65-operation
+architecture. It changes neither the maintained66-operation equation nor
+its consistency interpretation and decides no Con(ZFC) statement.
+
+## A sharper carry estimate isolates a conditional65-bit radix route
+
+The [bounded radix investigation](research/compact66-radix-boundary/README.md)
+passes [ROOT](reviews/compact66-radix-boundary-ordinary-root.md) and
+[independent review](reviews/compact66-radix-boundary-ordinary-peer.md).
+The current sufficient certificate needs67bits; even66 also contradicts
+the unchanged odd-rank geometry. With literal padding digits retained,65
+is the only smaller eligible width. A coefficientwise cyclic bound uses
+the maximum supported digit3 instead of the coarse988 mass factor and
+proves ample65-bit carry/slack margins, including the upper-dummy spill.
+
+This remains conditional: the13/8807/581197 controller bracket units and
+a complete replacement native binding are open. The symbolic mod5 unit
+and mod13 Phi condition are proved without evaluating the new indexedPhi.
+No new tuple, byte saving, equation or page gain is claimed. All current
+295388 coefficient bytes, compact66 PDF/TeX and paused Lean work remain
+unchanged; neither ordinary note invokes a new application.
