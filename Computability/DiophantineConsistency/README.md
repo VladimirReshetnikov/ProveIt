@@ -234,12 +234,14 @@ UNKNOWN; no numerical51 endpoint or page gain is accepted.
 The [conditional49 shared-marker encoding](research/compact66-shared-marker-radix49/README.md)
 passes both FULL ordinary reviews and [separate conditional acceptance](reviews/compact66-shared-marker-radix49-ordinary-acceptance.json).
 All seven physical markers share clause weight2^44 and are individually
-recovered. Its bounded certificate probe now has [two first actual successes](reviews/compact66-shared-marker-radix49-probe-first-results.json)
-and [two exact fresh successes](reviews/compact66-shared-marker-radix49-probe-fresh-results.json),
-all exit0 with38 negative/four valid controls each. The first candidate
-lambda434011 has certified B-order18870, valuation-one lift and bracket
-units2/3135/6522 at7/8807/lambda. Final closed evidence reviews and separate
-bounded acceptance remain pending; no whole49 tuple or page is yet accepted.
+recovered. Its [closed bounded certificate evidence](research/compact66-shared-marker-radix49-certificate-probe-verification/README.md)
+now passes both FULL ordinary final reviews and [separate ROOT finite acceptance](reviews/compact66-shared-marker-radix49-finite-controller-acceptance.json).
+All four first/fresh normal/optimized applications exit0 with38 negative/four
+valid controls each, and all six fresh capture files equal first bytes.
+The first candidate lambda434011 has exact B-order18870, valuation-one lift
+and bracket units2/3135/6522 at7/8807/lambda. This discharges the base49 finite
+conditions and those of low-bit-padding R1, whose beta/K/controller context is
+identical. No whole49 tuple, specialized source or page endpoint is yet accepted.
 
 The [low-bit-padding R1](research/compact66-radix49-low-bit-padding-r1/README.md)
 now passes two FULL nonauthor ordinary reviews and [separate conditional acceptance](reviews/compact66-radix49-low-bit-padding-r1-ordinary-acceptance.json).
@@ -255,6 +257,28 @@ and [separate conditional acceptance](reviews/compact66-shared-marker-radix49-ke
 Its fixed choice among three harmless terms proves both fixed bracket
 units symbolically. It is a longer fallback; its lambda conditions remain
 open, and it is separate from the successful base49 probe.
+
+The new [complete three-anchor47 proposal](research/compact66-three-anchor-radix47/README.md)
+removes four physical occupancy markers by giving every genuine edge a positive
+label and reserving zero for empty cells. Its11-bit count guard permits a
+184-to22 cyclic-carry proof, including occupied raw rho+1, actual digit1 and
+outgoing1 cleared by explicit resets. It retains15 positive unknowns and the
+uniform66-operation degree157 front, with982 physical positions and870 padding
+bits. The [FULL ROOT lead review](reviews/compact66-three-anchor-radix47-lead-root.md)
+and a [FULL independent review](reviews/compact66-three-anchor-radix47-ordinary-second-peer.md)
+find no gap; another independent full review remains in progress. All new
+bracket values and admissible-prime existence are UNKNOWN. A separate
+[CODE ONLY probe preparation](reviews/compact66-three-anchor-radix47-probe-code-only-preparation-release.md)
+is in progress, with no new application or page-size claim. This encoding
+changes the earlier scoped47 alias's ten-bit guard and seven-marker layout.
+
+The [exact47 layout identities](research/compact66-three-anchor-radix47-layout-identities/README.md)
+also give a geometric low-mask recipe and one common selector bias, preserving
+all four integers pointwise. Their printed gain remains unmeasured. The
+[scale-one unshifted quotient proposal](research/compact134-scale-one-unshifted-quotient/README.md)
+proves inverse positive-zero maps for incoming134 and prospective ten-positive
+77/630 and78/468 layouts. Its whole67 tuple remains separate; no new finite
+materialization, independent endpoint acceptance or main promotion is claimed.
 
 The [read-only intake of incoming134–139](research/incoming134-139-codefree-intake/README.md)
 prioritizes134's reported ten-positive78/630 and79/468 circuits and135's
