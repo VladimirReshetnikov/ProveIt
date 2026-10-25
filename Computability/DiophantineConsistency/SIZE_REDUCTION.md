@@ -2373,3 +2373,20 @@ why neither source presentation alone determines a projected saving:
 one weighted intermediate was previously eliminated quadratically, and the
 orphan N^2 slot was already removed. Full new source and projection checks
 are being prepared; no new quartic count or maintained-page change is claimed.
+
+## A complete constant recipe for the existing37-integer quartic
+
+The [code-free recipe](research/source34-quartic37-page-recipe/PROPOSAL.md)
+removes an external-table obstacle to a possible complete degree-four page.
+An existing722-character seed specifies all430 original actions and all943
+ordered tiles. Fixed sums, floors and radix-four interleaving then specify
+the exact original source34 four ports and two determinant scales. This
+preserves all six constants of the reviewed37-integer/24-row quartic.
+
+The [root review](reviews/source34-quartic37-page-recipe-root.md) independently
+checks the entire seed/action/tile correspondence, all24 compact residual
+identities and all615883 existing raw coefficient bytes. The new recipe
+still needs whole-integer regeneration and actual typesetting/visual checks;
+no page fit or new numerical equation is claimed. This is an unrestricted
+integer, degree-four alternative. The maintained ten-positive85/328 PDF
+and its TeX remain current; Lean stays paused.
