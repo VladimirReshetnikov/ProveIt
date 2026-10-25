@@ -3245,8 +3245,8 @@ FULL nonauthor reviews pass, followed by [separate ROOT conditional acceptance](
 The later [independent controller certificate](research/complemented47-controller-independent/README.md)
 discharges the THREE-anchor conditions for its exact tuple. Its complete
 [page](candidates/one-page-complemented47-independent/README.md) is retained
-as a predecessor of two-anchor7691 and the maintained one-anchor7309
-display above.
+as a predecessor of the accepted two-anchor7691 and one-anchor7309
+pages; the current display is identified at the top of this document.
 
 The separate frozen [CODE ONLY probe](research/compact66-complemented-three-anchor-radix47-controller-probe/README.md)
 never ran: upstream retired its required live ZIP after ROOT's first full
@@ -3263,7 +3263,7 @@ ordinary acceptance](reviews/compact66-complemented-two-anchor-radix47-mersenne8
 Its own H2 residues and controller-prime conditions remain UNKNOWN. The new
 bounded probe and CODE/TEX draft were never executed; they are superseded
 for immediate page work by the independently constructed L7691 tuple
-and its now-maintained one-anchor L7309 successor. No finite certificate
+and its accepted one-anchor L7309 successor. No finite certificate
 transfers between these distinct specializations.
 The earlier +1/spacing11 tuple likewise retains its distinct open conditions.
 
