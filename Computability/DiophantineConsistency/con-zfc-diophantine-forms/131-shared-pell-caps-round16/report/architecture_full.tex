@@ -1,0 +1,175 @@
+% Complete unabridged proof from architecture/UNIFIED_CAP_PROOF.md
+\section{Unified factorial CRT product and one shared Pell cap}
+
+
+
+\subsection{Result and scope}
+
+
+
+The principal composed construction has 249 nonnegative integer variables and 186 quadratic residuals. The polynomial is the sum of the squares of every residual in natural/\allowbreak{}equation.json. It has degree four. At the horizon offset 12, its collected polynomial has 27,078 nonzero monomials and coefficient height 85,178,741. This is a composition, not a claim that the supplied shared Pell cap is new: the incoming cap theorem supplies the shared-index mechanism; round15 supplies the square-output factorial/\allowbreak{}product fusion. The additional radix here is (NH)\textasciicircum{}\allowbreak{}K, where H is one plus the sum of the actual independent CRT representatives. It needs neither a representative upper-bound equation nor the factorial numerator in its base. The amplification budget is K=\allowbreak{}R.
+
+
+
+The retained C222 calculus calibration and Horn-flow argument are dependencies. With those dependencies the natural zero set is nonempty exactly when the calculus has a finite refutation, and ZFC proves the equivalence between unsolvability and Con(ZFC). This work does not prove consistency and does not supply a new machine-checked object-language ZFC derivation.
+
+
+
+All variable powers in this note denote ordinary finite Pell graphs in the emitted arithmetic system. None remains as a primitive in the coefficient artifact. All variables in the natural endpoint range over integers \textgreater{}\allowbreak{}=\allowbreak{}0.
+
+
+
+\subsection{Definitions and order of interpretation}
+
+
+
+Let t=\allowbreak{}t0+\allowbreak{}h, h\textgreater{}\allowbreak{}=\allowbreak{}12, and let F be the proposed factorial. Put
+
+
+
+\begin{verbatim}
+V=(F^2+1)^t, B=choose(F^2+t,t), R=2+t+x+y+F,
+K=R, N=B^K, H=1+C+A1+...+A8, q=(NH)^K.
+\end{verbatim}
+
+The notation B=\allowbreak{}choose(...) is initially only a proposed binomial output. The raw rows are
+
+
+
+\begin{verbatim}
+V+B=BF+u+1, B=u+v+1.
+\end{verbatim}
+
+The nine representatives C,A1,...,A8 are positive by their raw affine offsets. Therefore H\textgreater{}\allowbreak{}=\allowbreak{}10. The raw shared-cap power theorem first applies to every independently positive base. In particular it gives V=\allowbreak{}(F\textasciicircum{}\allowbreak{}2+\allowbreak{}1)\textasciicircum{}\allowbreak{}t\textgreater{}\allowbreak{}=\allowbreak{}1. The second raw row gives B\textgreater{}\allowbreak{}=\allowbreak{}1 and subtracting the rows gives V+\allowbreak{}v=\allowbreak{}BF. Thus F\textgreater{}\allowbreak{}=\allowbreak{}1, V\textgreater{}\allowbreak{}F\textasciicircum{}\allowbreak{}2 and BF\textgreater{}\allowbreak{}=\allowbreak{}V, whence B\textgreater{}\allowbreak{}F and V\textless{}\allowbreak{}B\textasciicircum{}\allowbreak{}2. The positive-base theorem now gives N=\allowbreak{}B\textasciicircum{}\allowbreak{}K and q=\allowbreak{}(NH)\textasciicircum{}\allowbreak{}K. Since K\textgreater{}\allowbreak{}=\allowbreak{}2, N\textgreater{}\allowbreak{}=\allowbreak{}B\textasciicircum{}\allowbreak{}2\textgreater{}\allowbreak{}V and q\textgreater{}\allowbreak{}=\allowbreak{}N\textgreater{}\allowbreak{}V. Moreover N divides q. This argument uses no binomial semantics, decoded representative, or factorial identity, and hence is noncircular.
+
+
+
+For positive r and n, every coefficient choose(r+\allowbreak{}n,j), 0\textless{}\allowbreak{}=\allowbreak{}j\textless{}\allowbreak{}=\allowbreak{}n, is at most (r+\allowbreak{}1)\textasciicircum{}\allowbreak{}n. The proof is induction using Pascal's identity for j\textless{}\allowbreak{}n and the product formula for j=\allowbreak{}n. Applying it with r=\allowbreak{}F\textasciicircum{}\allowbreak{}2,n=\allowbreak{}t shows that all coefficients relevant to B are \textless{}\allowbreak{}=\allowbreak{}V\textless{}\allowbreak{}q. The exact digit graph therefore really gives B=\allowbreak{}choose(F\textasciicircum{}\allowbreak{}2+\allowbreak{}t,t).
+
+
+
+\subsection{The square factorial fixed point at horizon twelve}
+
+
+
+Write T=\allowbreak{}t! and f=\allowbreak{}V/\allowbreak{}B. The two ceiling rows are equivalent to F-1\textless{}\allowbreak{}f\textless{}\allowbreak{}=\allowbreak{}F, so F=\allowbreak{}ceil(f). Also
+
+
+
+\begin{verbatim}
+f=T product_(i=1)^t (F^2+1)/(F^2+i).
+\end{verbatim}
+
+Every factor is \textless{}\allowbreak{}=\allowbreak{}1, hence F\textless{}\allowbreak{}=\allowbreak{}T. Each factor is nondecreasing in F\textasciicircum{}\allowbreak{}2; since F\textgreater{}\allowbreak{}=\allowbreak{}1, f\textgreater{}\allowbreak{}=\allowbreak{}2\textasciicircum{}\allowbreak{}t/\allowbreak{}(t+\allowbreak{}1)\textgreater{}\allowbreak{}t\textasciicircum{}\allowbreak{}2 for t\textgreater{}\allowbreak{}=\allowbreak{}12. The last inequality starts from 4096\textgreater{}\allowbreak{}12\textasciicircum{}\allowbreak{}2\textasteriskcentered{}\allowbreak{}13=\allowbreak{}1872; its induction step uses t\textasciicircum{}\allowbreak{}2\textgreater{}\allowbreak{}=\allowbreak{}3t+\allowbreak{}2. Thus F\textgreater{}\allowbreak{}t\textasciicircum{}\allowbreak{}2. For ai=\allowbreak{}(i-1)/\allowbreak{}(F\textasciicircum{}\allowbreak{}2+\allowbreak{}i),
+
+
+
+\begin{verbatim}
+sum ai<t(t-1)/(2F^2)<1/(2F).
+\end{verbatim}
+
+The finite product bound product(1-ai)\textgreater{}\allowbreak{}=\allowbreak{}1-sum ai gives T(1-1/\allowbreak{}(2F))\textless{}\allowbreak{}f\textless{}\allowbreak{}=\allowbreak{}F. Consequently
+
+
+
+\begin{verbatim}
+T<2F^2/(2F-1)=F+F/(2F-1)<=F+1.
+\end{verbatim}
+
+Integrality gives T\textless{}\allowbreak{}=\allowbreak{}F, so F=\allowbreak{}t!. Conversely for F=\allowbreak{}T the same estimate gives T-1/\allowbreak{}2\textless{}\allowbreak{}f\textless{}\allowbreak{}=\allowbreak{}T. The explicit natural ceiling witnesses therefore exist. This extends round15's stated horizon-16 proof to horizon 12, without changing its identity or introducing a new fixed point.
+
+
+
+\subsection{CRT product and the self-sized radix}
+
+
+
+For 1\textless{}\allowbreak{}=\allowbreak{}i\textless{}\allowbreak{}=\allowbreak{}t set di=\allowbreak{}1+\allowbreak{}F\textasciicircum{}\allowbreak{}2/\allowbreak{}i. Since F=\allowbreak{}t!, every di is an integer congruent to one modulo F. Every prime divisor of di is greater than t. If a prime divided di and dj, it would divide i-j, so the di are pairwise coprime. Their product is exactly B=\allowbreak{}choose(F\textasciicircum{}\allowbreak{}2+\allowbreak{}t,t).
+
+
+
+Every independent representative n is strictly less than H. The lower index of each of its range graphs is t, t+\allowbreak{}1, x+\allowbreak{}1 or y+\allowbreak{}1, and is at most R-1\textless{}\allowbreak{}K. For every 0\textless{}\allowbreak{}=\allowbreak{}j\textless{}\allowbreak{}=\allowbreak{}k,
+
+
+
+\begin{verbatim}
+choose(n,j)<=max(1,n^k)<H^K<=q.
+\end{verbatim}
+
+Coefficients with j\textgreater{}\allowbreak{}n are zero. Thus these digit graphs recover exactly the nine required divisibilities by N. This proof imposes no bound on the actual representative and deletes the round15 aggregate-cap row and slack.
+
+
+
+Let J be the derived nonnegative label sum. The retained literal majorant certificate gives J(A)\textless{}\allowbreak{}=\allowbreak{} (n+\allowbreak{}1)\textasciicircum{}\allowbreak{}ell with ell=\allowbreak{}4,194,304 and n the largest of the four encoded schema parameters. Since n+\allowbreak{}1\textless{}\allowbreak{}=\allowbreak{}H, J(A)\textless{}\allowbreak{}=\allowbreak{}H\textasciicircum{}\allowbreak{}ell. At t=\allowbreak{}12, 3ell(t+\allowbreak{}1)=\allowbreak{}163,577,856\textless{}\allowbreak{}958,003,200=\allowbreak{}2\textasteriskcentered{}\allowbreak{}12!. The inequality persists under increasing t because factorial growth dominates t+\allowbreak{}1. Hence
+
+
+
+\begin{verbatim}
+ell(t+1)<=2F/3<F<K.
+\end{verbatim}
+
+All coefficients through index t+\allowbreak{}1 in the derived-label digit are consequently \textless{}\allowbreak{}q. That graph therefore gives N dividing choose(J(A),t+\allowbreak{}1), without putting J(A) in H or requiring an upper bound on its encoded value.
+
+
+
+The retained local nonnegative source majorant has E=\allowbreak{}8,388,608. For t\textgreater{}\allowbreak{}=\allowbreak{}12, F\textgreater{}\allowbreak{}=\allowbreak{}12!\textgreater{}\allowbreak{}2\textasciicircum{}\allowbreak{}28, 28E=\allowbreak{}234,881,024\textless{}\allowbreak{}2\textasciicircum{}\allowbreak{}28 and 2E\textless{}\allowbreak{}=\allowbreak{}2\textasciicircum{}\allowbreak{}28. At r=\allowbreak{}2\textasciicircum{}\allowbreak{}28 this proves r\textasciicircum{}\allowbreak{}E\textless{}\allowbreak{}2\textasciicircum{}\allowbreak{}r; for successive r, (1+\allowbreak{}1/\allowbreak{}r)\textasciicircum{}\allowbreak{}E\textless{}\allowbreak{}2 follows by bounding the binomial sum by a geometric series with ratio E/\allowbreak{}r\textless{}\allowbreak{}=\allowbreak{}1/\allowbreak{}2. Thus every local source value and local label sum is \textless{}\allowbreak{}R\textasciicircum{}\allowbreak{}E\textless{}\allowbreak{}2\textasciicircum{}\allowbreak{}R=\allowbreak{}2\textasciicircum{}\allowbreak{}K. This is the required no-wrap bound with K=\allowbreak{}R, not 2R.
+
+
+
+\subsection{CRT soundness and completeness}
+
+
+
+The inherited prime-power binomial lemma says that p\textasciicircum{}\allowbreak{}e dividing choose(a,k) forces a modulo p\textasciicircum{}\allowbreak{}e to lie in [0,k-1]. For row i-1 choose p dividing di and m=\allowbreak{}vp(di). The raw B divisibility of C+\allowbreak{}F\textasciicircum{}\allowbreak{}2+\allowbreak{}1 identifies C modulo p with i-1. The index range then identifies its small residue modulo p\textasciicircum{}\allowbreak{}(Km) with exactly that index. The other ranges decode every local coordinate in its prescribed interval. The local divisibility by N and the preceding local bound force the nonnegative local source value to be zero, not merely congruent to zero. The derived-label range and its local bound likewise force J(local)\textless{}\allowbreak{}=\allowbreak{}t. The unchanged beta consistency and pairwise-coprime weight flow then recover a finite C222 refutation.
+
+
+
+Conversely start with a finite refutation, expand to a proof tree, pad the horizon beyond all required parameters and label sums, and choose t\textgreater{}\allowbreak{}=\allowbreak{}h. The inherited beta construction gives x,y and the local source rows. Set F=\allowbreak{}t!, then B,K,N. Choose positive independent representatives by CRT modulo N\textasciicircum{}\allowbreak{}2. There is no restriction on their size. For each range, the precision-2K congruence supplies at least 2Km prime-adic digits in the falling-factorial numerator, while division by k! loses at most k-1\textless{}\allowbreak{}K\textless{}\allowbreak{}=\allowbreak{}Km. Thus N divides every required binomial. The same proof applies to the derived polynomial J because polynomial congruences preserve the local label. Choose H and q afterwards. The carry bounds apply regardless of these representatives' sizes; take Euclidean digit witnesses and the simultaneous positive-power witnesses. This constructs every raw witness without a fixed-point dependence on the radix.
+
+
+
+\subsection{Shared Pell cap interface and logical independence}
+
+
+
+The composed source retains exactly the incoming pooled cap theorem. Its W is 2 plus the sum of distinct actual power bases, exponent atoms and outputs. There are 15 distinct positive independent index atoms and one additive index. Each independent k is \textless{}\allowbreak{}W, and their number is \textless{}\allowbreak{}=\allowbreak{}W-2. The scale equation forces A-1\textgreater{}\allowbreak{}W\textasciicircum{}\allowbreak{}3 before any power has been interpreted. One complete indexed-Pell certificate gives Vcap=\allowbreak{}Y\_\allowbreak{}W(A). The aggregate row
+
+
+
+\begin{verbatim}
+Vcap=W+1+s+sum(Y_i)
+\end{verbatim}
+
+bounds all independent principal ordinates; the pooled congruence is
+
+
+
+\begin{verbatim}
+sum(Y_i-k_i)^2=(A-1)Q.
+\end{verbatim}
+
+Positive Pell classification gives Y\_\allowbreak{}i=\allowbreak{}Y\_\allowbreak{}ji(A) with 0\textless{}\allowbreak{}=\allowbreak{}ji\textless{}\allowbreak{}W. Reduction modulo A-1 identifies the pooled error with sum(ji-ki)\textasciicircum{}\allowbreak{}2, lying in [0,W\textasciicircum{}\allowbreak{}3). Thus every ji=\allowbreak{}ki. All sign/\allowbreak{}domain assumptions here are the natural ones. The incoming cap theorem gives constructive completeness, including a nonnegative Q and the aggregate slack. The single additive index is supplied by exact Pell addition, not by an unchecked seed. Power congruences then recover every requested exponentiation. The cap witnesses do not enter the semantic frame.
+
+
+
+The raw source is therefore equivalent to the retained source theorem. The exact natural-domain contraction restores every eliminated coordinate and preserves existence in both directions. Finite expansion and regression tests verify emitted syntax and examples, not the unbounded source theorem itself.
+
+
+
+\subsection{Alternate radices}
+
+
+
+The builder also emits q=\allowbreak{}(BH)\textasciicircum{}\allowbreak{}K and q=\allowbreak{}N H\textasciicircum{}\allowbreak{}K. Both are multiples of N=\allowbreak{}B\textasciicircum{}\allowbreak{}K, both are \textgreater{}\allowbreak{}=\allowbreak{}N\textgreater{}\allowbreak{}V and \textgreater{}\allowbreak{}H\textasciicircum{}\allowbreak{}K, so all arguments above remain valid. At offset 12 they also have 249 natural variables and 186 rows; the principal (NH)\textasciicircum{}\allowbreak{}K endpoint is less dense. These alternates are recorded as measured comparisons, not additional logical assumptions.
+
+
+
+\subsection{Sparse companion and the density tradeoff}
+
+
+
+The sparse companion retains one inequality Y\_\allowbreak{}i\textless{}\allowbreak{}Vcap and one congruence Y\_\allowbreak{}i-ki=\allowbreak{}(A-1)qi for each independent seed, rather than the aggregate and pooled square rows. It also retains Vcap=\allowbreak{}W+\allowbreak{}margin. Positive Pell classification and the cap give 0\textless{}\allowbreak{}=\allowbreak{}ji\textless{}\allowbreak{}W, while the individual congruence gives ji=\allowbreak{}ki modulo A-1. Since both indices lie in [0,W-1] and W\textless{}\allowbreak{}A-1, they are equal. Canonical pairs supply the nonnegative individual quotients and slacks, so completeness is unchanged. This is the supplied incoming sparse theorem composed with exactly the same fused factorial and pure self-sized radix.
+
+
+
+At offset 12 the sparse endpoint has 278 nonnegative variables, 215 quadratic rows, 5,524 quartic monomials and height 83,852,788. The incoming sparse endpoint had 292 variables, 225 rows, 6,140 monomials and height 83,933,334. The new sparse endpoint improves each of those four measures. The 249-variable principal endpoint saves a further 29 variables but has 27,078 monomials. These are two Pareto alternatives; lower variable count does not mean lower density.

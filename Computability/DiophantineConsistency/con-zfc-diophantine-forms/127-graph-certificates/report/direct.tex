@@ -1,0 +1,349 @@
+\section{Direct C222 equations with one oriented Pell cap}
+\label{sec:direct-cap}
+\label{sec:arithmetic}
+
+The direct proof-calculus route now gives two natural quartics and two
+integer quartics.  Their coefficients are small enough to be supplied as
+complete collected lists.  The integer constructions use a new bounded
+congruence that recovers the signs and indices of fifteen Pell pairs at
+once.  This section proves the new arithmetic and its composition with
+the inherited numerical C222 calculus.  It does not assert a completed
+Lean or Rocq derivation.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Domain and variables & Rows & Degree & Terms & Height\\
+\hline
+$\mathbb N^{240}$ &188&4&25,987&90,589,484\\
+$\mathbb N^{239}$ &187&4&360,097&491,869,488\\
+$\mathbb Z^{381}$ &225&4&13,179&2,445,790,974,704\\
+$\mathbb Z^{391}$ &235&4&10,764&80,496,640\\
+\hline
+\end{tabular}
+\end{center}
+
+Here $\mathbb N=\{0,1,2,\ldots\}$. Each equation is the sum of the
+squares of every quadratic residual in its corresponding literal JSON
+file. Every declared variable occurs, and the collected single
+polynomial has the exact degree and coefficient height shown.  The
+240-variable form improves the inspected 261-variable direct natural
+form by 21 variables, six rows and 5,692 terms, at a 5.9\% increase in
+height. The 381-variable integer form saves 61 variables and 65 rows
+against the inspected 442-variable, 290-row direct integer form, but
+uses more terms and larger coefficients. These are distinct tradeoffs;
+the comparison is confined to the direct C222 architecture.
+
+\subsection{The inherited source and the new composition}
+
+The numerical proof calculus C222 has an inherited, machine-independent
+refutation calibration through the named endpoints
+\nolinkurl{c222_iff_zf_refutation} and
+\nolinkurl{zf_refutation_iff_zfc_refutation}.  The unchanged source
+uses beta coding, a nonnegative Horn-flow polynomial, amplified
+prime-power CRT, and exact binomial digits.  These complete ordinary
+proofs and literal source files are retained in the deliverable.
+The new construction does not simulate a K215 execution or instantiate
+Jones's universal polynomial.
+
+The incoming shared-binomial construction~\cite{binomial} already uses one binomial
+for both a factorial fixed point and a reciprocal CRT product, and
+one common Pell residue for eleven binomial numerators.  It retains
+six exact power requests but fifteen complete indexed-Pell certificates.
+The separate incoming shared-cap construction~\cite{cap} replaces many indexed
+certificates by one cap, assuming every requested index belongs to its
+power-size frame.  Their combination requires a changed frame: the
+modular numerator indices must be included even though their enormous
+power outputs are absent.  The compatibility of that enlarged frame
+with the cofinal common-root parameter is proved below.
+
+The ordinary source has $t=t_0+16$, a proposed natural factorial $F$,
+beta parameters $x,y$, and nine positive encoded CRT representatives.
+Set
+\[
+ B=b_0+2,\quad R=2+t+x+y+F,\quad K=2R,
+ \qquad V_0=(F^2+1)^t,\quad N=B^K,\quad q=N^K.
+\]
+The six exact powers consist of $V_0,N,q$ and
+\[
+ D_t=q^t,\qquad D_y=q^{y+1},\qquad D_x=q^{x+1}.
+\]
+The adjacent denominator is the ordinary product
+$D_{t+1}=qD_t$.  The one exact binomial digit will identify
+$B=\binom{F^2+t}{t}$.  There are ten additional range divisibilities:
+the nine independent CRT ranges and the derived-label range.
+Every upper index is positive before any power or factorial is
+interpreted.  The two raw ceiling rows are
+\begin{equation}
+ V_0+B=BF+r+1,\qquad B=r+s+1,
+ \qquad r,s\in\mathbb N.
+ \label{eq:direct-ceiling}
+\end{equation}
+
+Let $\mathcal A$ be the set of distinct atoms occurring as bases,
+exponents or outputs of the six exact requests, together with the
+upper indices of the eleven modular requests.  Its literal size is 23.
+The natural construction defines
+\begin{equation}
+ W=2+\sum_{a\in\mathcal A}a.
+ \label{eq:direct-natural-frame}
+\end{equation}
+Its fifteen distinct requested indices $k_i$ are positive atoms in
+$\mathcal A$. Thus $k_i<W$ and $m=15\le W-2$.  No private Pell
+coordinate occurs in this definition.
+
+\subsection{A cofinal base above the enlarged frame}
+
+For $a\ge2$, write $(X_j(a),Y_j(a))$ for the Pell sequence defined by
+\[
+ X_0=1,\ Y_0=0,\qquad
+ X_{j+1}=aX_j+(a^2-1)Y_j,\quad Y_{j+1}=X_j+aY_j.
+\]
+Its elementary properties used below are Pell classification,
+strict increase of $Y_j$, and
+\[
+ X_j(a)\equiv1\pmod{a-1},\qquad
+ Y_j(a)\equiv j\pmod{a-1}.
+\]
+Retain natural witnesses $L,\sigma,Z$ with $Z\ge1$ and
+\begin{equation}
+ L^2-\bigl((W+1)^2-1\bigr)(WZ)^2=1,
+ \qquad A=L+\sigma.
+ \label{eq:direct-large-base}
+\end{equation}
+Pell classification writes $L=X_e(W+1)$ and $WZ=Y_e(W+1)$.
+Since $WZ>0$, $e\ge1$; reduction modulo $W$ gives $W\mid e$.
+Consequently
+\[
+ A\ge L\ge X_W(W+1)\ge(W+1)^W.
+\]
+Conversely $e=W$ supplies $L,Z$, while $A$ remains free to be any
+larger integer. This freedom is essential.
+
+Put $b=q+1$ and $M=qD_{t+1}D_xD_y$. The common-root condition is
+\begin{equation}
+ 2Ab=b^2+1+Mh_0.
+ \label{eq:direct-common-root}
+\end{equation}
+For the intended semantic powers, $M$ is a positive power of $q$.
+Thus $\gcd(b,M)=1$ and $\gcd(2b,M)\in\{1,2\}$. In the second case
+$b$ is odd and $b^2+1$ is even. The linear congruence for $A$ is
+soluble, and its solution class has arbitrarily large positive members.
+Choose one above $L$ and large enough that $h_0\ge0$. Hence the
+enlarged frame and the common root admit simultaneous witnesses.
+
+\subsection{The natural shared cap}
+
+One complete inherited indexed-Pell certificate at index $W$ gives
+$V_c=Y_W(A)$. For clarity its polynomial interface is
+\begin{align*}
+ X_c^2-(A^2-1)V_c^2&=1,& U^2-(A^2-1)V^2&=1,\\
+ S^2-(B_c^2-1)T^2&=1,& B_c&=1+4V_c(d+1),\\
+ V&=V_c^2(e+1),&B_c&=A+Uf,\\
+ S&=X_c+Ug,&T&=W+4V_ch.
+\end{align*}
+All cap witnesses here are natural. Its usual condition $W\le V_c$
+is supplied by the aggregate row below. The indexed-Pell criterion and
+its constructive completeness are retained dependencies.
+
+For each of the fifteen other pairs retain only
+\[
+ x_i^2-(A^2-1)y_i^2=1,
+\]
+and impose
+\begin{equation}
+ V_c=W+1+s_c+\sum_i y_i,
+ \qquad \sum_i(y_i-k_i)^2=(A-1)Q,
+ \quad s_c,Q\in\mathbb N.
+ \label{eq:direct-natural-cap}
+\end{equation}
+Classification gives $y_i=Y_{j_i}(A)$ for $j_i\ge0$.
+The first row implies $y_i<V_c$, hence $j_i<W$.
+The second implies that $A-1$ divides
+$E=\sum_i(j_i-k_i)^2$. But
+\[
+ 0\le E\le m(W-1)^2<W^3<A-1,
+\]
+so every $j_i=k_i$. This bounds the decoded indices, not the enormous
+ordinates.
+
+For completeness choose the canonical pairs. Each $y_i-k_i$ is a
+nonnegative multiple of $A-1$. The quotient $Q$ is therefore natural.
+Moreover $\sum_i y_i\le mY_{W-1}(A)$ and
+$Y_W(A)>(2A-1)Y_{W-1}(A)$. Since $m\le W-2$ and $A>W+1$, the
+required slack $s_c=Y_W(A)-W-1-\sum_i y_i$ is nonnegative.
+
+\subsection{The oriented cap over unrestricted integers}
+
+The following is the new sign-removal mechanism. Let $W\ge4$,
+$A-1>4W^3$, $1\le k_i<W$, $m\le W-2$, and suppose
+$V_c=Y_W(A)$ is already certified. Permit $x_i,y_i,Q$ to be arbitrary
+integers, retain their principal norms, and use only
+\begin{align}
+ V_c&=W+1+s_c+\sum_i y_i^2,&s_c&\in\mathbb N,
+ \label{eq:direct-square-cap}\\
+ \sum_i\bigl((y_i-k_i)^2+(x_i-1)^2\bigr)&=(A-1)Q.
+ \label{eq:direct-oriented-error}
+\end{align}
+Then
+\begin{equation}
+ (x_i,y_i)=(X_{k_i}(A),Y_{k_i}(A))
+ \quad\text{for every }i.
+ \label{eq:direct-oriented-conclusion}
+\end{equation}
+
+Indeed signed Pell classification gives
+$x_i=\varepsilon_iX_{j_i}(A)$ and
+$y_i=\delta_iY_{j_i}(A)$ with independent signs in $\{1,-1\}$.
+Equation~\eqref{eq:direct-square-cap} implies $y_i^2<V_c$ and hence
+$|y_i|<V_c$, using $|u|\le u^2$ for nonzero integers.
+Thus $0\le j_i<W$. Reducing~\eqref{eq:direct-oriented-error}
+modulo $A-1$ shows that this modulus divides
+\[
+ E=\sum_i\bigl((\delta_i j_i-k_i)^2+(\varepsilon_i-1)^2\bigr).
+\]
+Every summand is nonnegative, and
+\[
+ 0\le E\le m\bigl(4(W-1)^2+4\bigr)<4W^3<A-1.
+\]
+Therefore $E=0$. It follows that $\varepsilon_i=1$ and
+$\delta_i j_i=k_i>0$, proving~\eqref{eq:direct-oriented-conclusion}.
+The extra $(x_i-1)^2$ terms are essential for recovering abscissa signs.
+There is no sign assumption on the quotient $Q$.
+
+For constructive completeness assume also $2k_i\le W-1$ and $A>W+1$.
+Choose all pairs canonical. Their differences $x_i-1$ and $y_i-k_i$
+are divisible by $A-1$, so~\eqref{eq:direct-oriented-error} supplies
+a natural $Q$. The addition law gives
+\[
+ Y_{k_i}(A)^2<Y_{2k_i}(A)\le Y_{W-1}(A).
+\]
+The same recurrence estimate as before makes
+$Y_W(A)-\sum_iY_{k_i}(A)^2>W+1$, giving the required natural slack.
+
+The integer source replaces~\eqref{eq:direct-natural-frame} by
+\begin{equation}
+ W=2+\sum_{a\in\mathcal A}a^2.
+ \label{eq:direct-square-frame}
+\end{equation}
+Even with signed power outputs this bounds every semantic atom in
+absolute value by $W$. All fifteen requested indices are positive
+before power interpretation, so $m\le W-2$ and
+$W\ge k_i^2+2\ge2k_i+1$. The literal $t\ge16$ gives $W\ge258$.
+Equation~\eqref{eq:direct-large-base} still yields
+\[
+ A-1\ge(W+1)^W-1\ge(W+1)^4-1>4W^3.
+\]
+Thus the square frame proves every hypothesis of the oriented cap.
+If zero indices were permitted in a general formulation, a separate
+count bound would be needed; they do not occur here.
+
+\subsection{Sequential recovery of power and quotient signs}
+
+After the cap has identified every principal pair, an exact power row is
+\begin{equation}
+ X_k(A)+(n-A)Y_k(A)=m+T_nu,
+ \qquad T_n=2An-n^2-1.
+ \label{eq:direct-signed-power}
+\end{equation}
+Allow $m,u,T_n$ initially to be signed, but suppose $n>0$ is already
+known. The square frame gives $1\le n,k<W$ and $|m|<W$.
+The polynomial defining $T_n$ is increasing on $1\le n<W$, so
+\[
+ T_n\ge2A-2>W^W+W,
+ \qquad 0<n^k\le(W-1)^{W-1}<W^W.
+\]
+The usual Pell congruence and~\eqref{eq:direct-signed-power} imply
+$T_n\mid m-n^k$. Since $|m-n^k|<T_n$, they force $m=n^k>0$.
+The quotient is then nonnegative because the Pell expression is positive
+and $m$ is its least positive residue.
+
+The six calls are ordered with bases $F^2+1$, $B$, $N$, and then $q$
+three times. The first two are independently positive; their established
+outputs license the later bases. The sign argument is consequently
+noncircular. It removes the four modulus sign guards and the two output
+sign guards that actually remained in the earlier finite census.
+
+The common-root, CRT-index and local-evaluation quotients are needed
+only as integer divisibility witnesses for soundness. Their natural signs
+follow later from the positive denominators and nonnegative numerators.
+The modular-digit quotients are also unrestricted premises: after
+recovery the Pell residue is positive and the selected low residue is
+least nonnegative, so those quotients are automatically nonnegative.
+
+\subsection{Carry bounds and source calibration}
+
+Equation~\eqref{eq:direct-common-root} gives, for every $n\ge0$,
+\[
+ X_n(A)+(q+1-A)Y_n(A)\equiv(q+1)^n\pmod M.
+\]
+This follows by substituting $q+1-A$ for the square root in the Pell
+polynomial identity. The resulting expression is positive. Every
+required exact-digit modulus $qd$, and every range modulus $Nd$, divides
+$M$; the adjacent denominator $D_{t+1}=qD_t$ is included explicitly.
+The unchanged remainder rows therefore give the intended digits once
+their carry bounds have been established.
+
+The bootstrap is independent of factorial meaning. From $B\ge2$ and
+the recovered exact powers, $q\ge2^{4R^2}$. For $0\le j\le t$,
+\[
+ \binom{F^2+t}{j}\le(F^2+t)^t
+ \le(R^2+R)^t\le2^{2Rt}<2^{2R^2}<q.
+\]
+Thus the exact digit identifies $B=\binom{F^2+t}{t}$.
+Equation~\eqref{eq:direct-ceiling} then forces $F>0$ and its inherited
+square-radius fixed-point theorem gives $F=t!$.
+The retained source proof subsequently establishes every other carry
+bound, the reciprocal moduli
+$d_i=1+F^2/i$ and their pairwise coprimality, the amplified CRT ranges,
+and the finite Horn refutation.  None of these meanings is used before
+the preceding power and binomial recovery.
+
+Conversely a finite C222 refutation supplies a padded horizon, its true
+factorial, beta parameters, CRT representatives and semantic powers.
+Those data determine either enlarged frame before any private Pell
+witness. Choose a large compatible $A$ by
+\eqref{eq:direct-large-base}--\eqref{eq:direct-common-root}, construct
+the one indexed cap and canonical principal pairs, and use the explicit
+slacks above. All power and digit quotients then exist. This proves
+both directions of the arithmetic source equivalence.
+
+\subsection{Guard graphs, finite identities, and the endpoint}
+
+The integer source retains 52 explicit nonnegativity predicates.
+For each selected coordinate $z$, replace its sign condition by the
+quadratic row
+\[
+ z=a^2+b^2+c(c+1),\qquad a,b,c\in\mathbb Z.
+\]
+This expression is nonnegative and represents every natural number:
+apply Legendre's three-square theorem to $4z+1$ and separate the unique
+odd square. Every further required sign follows from 174 literal row
+consequences, each checked using already known signs or an exact affine
+square. The fifteen index-positivity proofs use only the pre-power
+source witnesses. The proof never silently treats an exempt signed
+coordinate as natural.
+
+The 349-coordinate raw quadratic source with its three changed rows and
+52 guard triples has 505 integer variables and 349 residuals. Integral
+monic substitution removes 124 coordinates and rows, leaving the stated
+381-variable, 225-row quartic. Restricting affine support instead gives
+the 391-variable lower-height form. No unconstrained coordinate is
+deleted. All inverse substitutions and complete expansions are supplied.
+
+The independent checker imports no source producer, sign-inference
+routine or optimizer. It reconstructs the three changed rows, compares
+all unchanged rows, checks every guard and sign step, proves the exact
+pre-power positivity cut, replays every monic restoration, and compares
+every collected quartic coefficient. Separate altered-coefficient and
+altered-certificate controls are rejected. These finite checks establish
+the emitted arithmetic syntax; the unbounded proof and inherited logic
+remain the ordinary arguments just identified.
+
+Negating the resulting equivalence between a polynomial zero and a
+finite ZFC refutation gives, for each of the four supplied polynomials,
+\[
+ \mathrm{ZFC}\ \vdash\
+ \bigl(\text{no zero in the stated domain}\bigr)
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]

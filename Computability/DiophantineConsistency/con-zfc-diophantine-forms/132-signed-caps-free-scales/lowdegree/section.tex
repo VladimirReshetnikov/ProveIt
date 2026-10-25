@@ -1,0 +1,239 @@
+\section{A free-scale carrier of degree 44}
+\label{sec:free-scale15}
+This endpoint uses fifteen unrestricted integer variables, has exact degree
+$44$, and a division-free evaluator with $111$ binary arithmetic gates
+($63$ multiplications, $26$ additions, $22$ subtractions).
+It improves the prior degree $48$ at a cost of three gates; it does not
+Pareto-dominate the retained $108$-gate circuit. The same elementary
+projection factorization reduces that old evaluator to $107$ gates,
+so the apples-to-apples evaluation cost is four gates.
+The new device is to release the scale variable, replace premature
+coprimality by a magnitude guard, and recover the exact scale only after
+an amplified whole-product projection.
+
+\subsection{Complete polynomial}
+The variables are
+\[
+ j,C,z,h,r,v,w,T,c,n,f,y,p_1,p_2,p_3\in\mathbb Z.
+\]
+The fixed numerals $\beta,K_0,M_C,M_F,A_c,B_c$ are exactly the six
+pinned source34 coefficient payloads; $M_F$ is already shifted.
+All the following are polynomial abbreviations, not witnesses:
+\begin{gather*}
+ J=6j+1,\quad q_m=\beta J,\quad q=q_m+1,\quad W=12w+4,\\
+ X=qW,\quad Y=v,\quad F=(K_0+W)C-zq_m,\\
+ R=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ E=XY,\quad a=E+Y,\quad H=4a+3,\quad \Delta=a^2+H,\\
+ k=R+1+hE,\quad \eta=c-Yk,\quad L=E(Yk),\\
+ I=(2r+1)c^2,\quad Q=\Delta(f^2-1),\quad V=f^2(cT-R)-c,\\
+ M=2q^3,\quad U=MH,\quad K_{\rm lo}=2X^2-3Xc-2,\\
+ Z=Un+MK_{\rm lo}+H(Y-q^3),\\
+ D_{\rm err}=(A_cF-q)^2+(B_cC-q)^2,\\
+ B_0=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ B_{\rm new}=Y^2B_0-k^2q^8,\qquad
+ P_{\rm os}=1+p_1^2+p_2^2+p_3(p_3+1).
+\end{gather*}
+Define the residuals
+\begin{align*}
+ A&=(Z+Uk)^2+4U(LZ-U),\\
+ B&=f^2-\Delta I^2-1,\\
+ C_{\rm aux}&=V^2-(Q-1)y(2V+y)-1,\\
+ G&=B_{\rm new}-P_{\rm os}.
+\end{align*}
+The evaluator uses the equivalent schedules
+\[
+ K_{\rm lo}=X(2X-3c)-2,\qquad
+ B_{\rm new}=(Yk)^2(q^2-D_{\rm err})
+ -q^2\bigl(4(Y\eta)^2+(kq^3)^2\bigr),
+\]
+reusing $Yk$ and $q^3$. The sole equation is
+\[
+ \boxed{P=A^2+B^2+C_{\rm aux}^2+G^2=0.}
+\]
+
+\subsection{Monicity before coprimality}
+The actual $\beta=2^{1064921}-1$ is odd and $1\pmod3$.
+Consequently $q$ is nonzero, even, and $2\pmod3$.
+The polynomial $H$ is odd and nonzero, so $U\ne0$ on every assignment.
+At a zero, $t=Z/U\in\mathbb Q$ satisfies
+\[
+ t^2+2(2L+k)t+k^2-4=0.
+\]
+Monicity makes $t$ integral. Modulo $2$, $t+k$ is even, so
+$s=(t+k)/2$ is integral and
+\[
+ s^2+(2s-k)L-1=0,\qquad (s+L)^2=1+L(L+k).
+\]
+The same divisibility $U\mid Z$ gives
+\[
+ M\mid H(Y-q^3),\qquad H\mid MK_{\rm lo}.
+\]
+There is deliberately no early assertion that $H$ and $q$ are coprime.
+Since $H$ is odd and $q$ even, the first relation nevertheless gives
+$Y$ even, hence $\Delta$ odd. If
+$K=X(X+2ac)-1$, then $2K-K_{\rm lo}=HXc$, so oddness of $H$ gives
+\[
+ H\mid q^3 K.
+\]
+
+\subsection{The guard replaces the early scale hypothesis}
+The polynomial $P_{\rm os}$ is strictly positive and represents every
+positive integer by the three-square theorem. Hence
+\[
+ Y^2B_0>k^2q^8>0,
+\]
+where $k\ne0$ follows because $k=0$ would make $B_{\rm new}\le0$.
+Since $B_0\le k^2q^2$, this proves
+\[
+ B_0>0,\qquad |Y|>|q|^3.
+\]
+The unchanged centered-budget argument gives common strict signs for
+$q,F,C,\alpha=q-F-C$, and
+\[
+ |\eta/k|<\tfrac12,\qquad
+ |k|(|Y|-\tfrac12)<|c|<|k|(|Y|+\tfrac12),\qquad
+ \operatorname{sgn}(c)=\operatorname{sgn}(kY).
+\]
+Put $q_*=|q|$, $x=|X|$, $m=|Y|$. The authentic packing estimates give
+\[
+ q_*\ge16,\quad q_*(q_*^2-1)<R<q_*^4-2,\quad
+ x\ge4q_*\ge64,\quad |E|>4q_*^4>3R+1.
+\]
+These replace the old literal cubic-scale expression wherever it was
+used before projection. Its remaining parity consequence, $\Delta$ odd,
+was already proved without coprimality.
+
+\subsection{Signed Pell bootstrap: inherited statements and hypotheses}
+The unchanged strong and auxiliary residuals recover the missing main
+Pell ordinate by the predecessor's odd-index folding argument.
+For $B_p=|a+2|$, $c_*=|c|$, and $I_*=|2r+1|c_*^2$, they give
+\[
+ |f|^2-(B_p^2-1)I_*^2=1,\qquad |f|>2I_*.
+\]
+With $S=\Delta I_*$ the auxiliary row is
+\[
+ S^2V^2-(S^2-1)(V+y)^2=1.
+\]
+The auxiliary Pell index is odd. Its polynomial identity, reduced
+modulo $|f|$, gives an ordinate congruent to $\pm c_*$.
+Folding the index into the interval from $0$ to the strong index
+makes the ordinate at most $I_*$. Since $I_*+c_*<|f|$, this
+congruence gives an actual main ordinate $c_*=\psi_{B_p}(p)$.
+
+The first Pell classification gives
+$|k|=2\psi_{|2XY^2+1|}(n_0)$.
+The inequality $|c|>|k|$, the parameter comparison, the congruence
+$k=R+1+hE$, and $|E|>3R+1$ give the same signed first-index lower
+bound as in the source. The unchanged strong-rank lemma and signed
+auxiliary step-down then give
+\[
+ p=R,\qquad 2n_0=R+1,\qquad R=2s_0+1,\quad s_0\ge24.
+\]
+The sign-uniform ratio estimate uses only these classifications,
+$x\ge64$, $m\ge6$, and $|c/k|<m+1$. It proves
+\[
+ m>\frac{(x-3)^{s_0}}2-1,\qquad |H|>x(x-3)^{s_0}.
+\]
+These are precisely the inherited unbounded Pell steps, not conclusions
+of finite testing. Their complete statements and the verified hypotheses
+are detailed in \texttt{PROOF.md}, Sections 3--4, with pinned source texts.
+No main projection or power-of-two property has yet been used.
+
+\subsection{Amplified projection and late scale recovery}
+Let $\sigma=\operatorname{sgn}(c)$ and $x_0=\sigma X$.
+The signed polynomial Pell projections give
+\[
+ 2^R K\equiv(x_0-2^R)(2^Rx_0+1)\pmod H.
+\]
+Thus $H$ divides $q^3$ times this whole product. We bound that
+larger product instead of canceling a possible nonunit modulo $H$.
+For $x\ge64$ and $s_0\ge24$,
+\[
+ (x/32)^{s_0}\ge(x/32)^{24}\ge x^4,
+\]
+since $x^{20}\ge64^{20}=32^{24}$. Therefore
+\[
+ |H|>x(x-3)^{s_0}\ge x(x/2)^{s_0}\ge16^{s_0}x^5.
+\]
+Since $q_*\le x/4$ and $R=2s_0+1$,
+\[
+ q_*^3 2^{2R+2}x^2
+ \le\frac{x^3}{64}16^{s_0+1}x^2
+ =\tfrac14 16^{s_0}x^5<|H|.
+\]
+This strictly bounds the absolute value of the divisible whole product.
+The product is zero. Its factor $2^Rx_0+1$ is odd and cannot vanish,
+so $x_0=2^R$. Because $X\equiv2\pmod3$ and $R$ is odd,
+$\sigma=1$ and $X=2^R$.
+
+The zero whole product and the same Pell congruence now give
+$H\mid2^RK$. Since $H$ is odd, $H\mid K$ and hence $H\mid K_{\rm lo}$.
+Set $g=K_{\rm lo}/H\in\mathbb Z$. Substituting $K_{\rm lo}=Hg$ into
+$MH\mid Z$ and canceling the nonzero integer $H$ gives
+\[
+ M\mid Y-q^3,\qquad v_{\rm scale}=(Y-q^3)/(2q^3)\in\mathbb Z.
+\]
+This is cancellation in the integers, not cancellation of a nonunit
+modulo $H$. In particular, no CRT coprimality claim is needed.
+Thus the exact old cubic scale is recovered after, rather than before,
+the signed bootstrap. The surviving index sign gives $k>0$; with
+$c>0$, this also gives $Y>0$. The inherited centered half-binomial
+extraction now applies without change.
+
+\subsection{Explicit maps and canonical completeness}
+From any new zero construct a degree-$48$ predecessor zero as follows.
+Retain $j,C,z,h,r,w,T,c,f,y$, and set
+\[
+ v_{\rm old}=Y/q,\qquad n_{\rm old}=t-g-v_{\rm scale}.
+\]
+The old carrier's quotient is exactly
+\[
+ \frac{Z_{\rm old}}{U_{\rm old}}
+ =n_{\rm old}+g+\frac{v_{\rm old}-q^2}{2q^2}=t.
+\]
+Its strong and auxiliary rows are unchanged. Represent the positive
+integer $B_0$ by its three Pos coordinates. This restores a literal
+old zero, so the old native/compiler/refutation theorem applies.
+
+Conversely start with a finite syntactic refutation of ZFC and use the
+same authenticated canonical compiler family. It supplies an old zero
+with $q>0$, $X=2^R$, $s_0\ge24$, the exact cubic scale, and
+\[
+ D_{\rm err}\le q^2/2,\quad 0<\eta/k<1/4,\quad
+ B_0>q^2k^2/4,\quad Y\ge X^{s_0}/2>2q^3.
+\]
+Consequently
+\[
+ B_{\rm new}>k^2q^2(Y^2/4-q^6)>0.
+\]
+Retain the arithmetic coordinates, set $v=Y$ and
+$n=t-g-v_{\rm scale}$, and represent $B_{\rm new}$ by the three Pos
+coordinates. Then $Z/U=t$, and all four new rows vanish.
+These constructions prove equivalence of zero existence; a bijection
+of arbitrary zero sets is not asserted.
+
+\subsection{Exact degree, reproducibility, and boundary}
+The four residual degrees are $22,12,16,18$. In degree $22$, the
+first residual contributes only $4ULZ$. With subscript $0$ for
+leading homogeneous forms,
+\begin{gather*}
+ q_0=6\beta j,\quad X_0=12q_0w,\quad Y_0=v,\\
+ R_0=-q_0^3(12wC-q_0z),\quad
+ U_0=8q_0^3X_0Y_0,\quad L_0=X_0Y_0^2R_0,\\
+ Z_0=U_0n+4q_0^3X_0^2,\qquad P_{44}=16U_0^2L_0^2Z_0^2.
+\end{gather*}
+In particular,
+\[
+ [j^{26}w^6v^8z^2n^2]P=2^{54}3^{32}\beta^{26}>0.
+\]
+The exponents sum to $44$, and the other squared rows have smaller
+degree. The exact degree therefore holds after fixing every coefficient.
+
+The accompanying independent cut-register audit authenticates coefficient
+bytes, checks the literal graph, exact identities and leading coefficient,
+and rejects altered arithmetic gates. These finite checks validate the
+transcription and algebra, not the unbounded inherited compiler theorem.
+The result is an ordinary arithmetic equivalence, hence an equivalence
+provable in ordinary ZFC between no integer zeros and syntactic
+$\operatorname{Con}(\mathrm{ZFC})$. It is not a proof of consistency,
+a global optimum, or a new formal-kernel certificate.

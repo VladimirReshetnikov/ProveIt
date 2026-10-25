@@ -1,0 +1,72 @@
+\section{Polynomial radical centering: ten positive unknowns at degree 252}
+The new circuits have respectively $(102,253)$ and $(104,252)$ as
+(live binary operation count, exact total degree). They retain ten strictly
+positive unknowns and the complete original compact44 coefficient tuple.
+This is a new degree--cost tradeoff, not a nine-variable result, a new Lean
+endpoint, or a proof that ZFC is consistent.
+
+Keep all definitions of the retained auxiliary-majorant uncentered
+construction, except set
+\[
+p=\mu Y,\qquad E_0=ic^2,\qquad E=2E_0.
+\]
+Thus $A=p(X+1)+1$, $v_0=p^2X$,
+$D=v_0(v_0+1)k^2+1$, $F_s=1+(A^2-1)DE^2$ and
+$Q=(A^2-1)^2DE^2$. Define
+\[
+Q_1=pv_0k^2,\qquad Q_2=p(v_0-p^2)k^2,
+\qquad S_j=ADE-E_0Q_j.
+\]
+Replace $n$ by $n+S_j$ in the uncentered carrier, keeping the same quartic
+norm. Both resulting expressions are integer polynomials, fully specified
+by \texttt{first.json} and \texttt{second.json}.
+
+\paragraph{Whole-zero-set equivalence.}
+At every integer input there is the polynomial identity
+\[
+N_j(\ldots,i,\ldots,n,\ldots)
+ =N_{\rm old}(\ldots,2i,\ldots,n+S_j,\ldots).
+\]
+For positive inputs, $0<Q_2<Q_1<D$ and hence
+$0<S_j<ADE$. The transformed old coordinates are therefore positive
+without any Pell, parity or transport assumptions. The retained old
+soundness theorem applies directly.
+For completeness, choose the strong Pell recurrence period modulo
+$2\tau c^2$ rather than $\tau c^2$, obtaining
+$I=\tau E=2\tau ic^2$. The old explicit auxiliary witness has
+$h_y=y-V>9Q/4$. The canonical integer carrier is
+\[
+n=Wt+\rho+\tau f-S_j+h_y-\kappa-s_Y+u_X.
+\]
+Here $t,\rho,u_X\geq0$, $\kappa,s_Y<I$, and
+$S_j-\tau f<ADE-\tau f<DE<I^2$. Thus $n>0$, including $t=0$.
+The carrier equals $\tau f+y$, so a norm factor vanishes.
+This proves both directions relative to the unchanged retained
+source61/native/controller calibration.
+
+\paragraph{Exact degrees.}
+For the formal Laurent root $g=\sqrt{DF_s}$ near $ADE$,
+\[
+ADE-g=\frac{DE}{2A}+O_{\deg}(9),\qquad
+S_j-g=\frac{E_0(D-AQ_j)}{A}+O_{\deg}(9).
+\]
+The exact remainders are
+\begin{align*}
+D-AQ_1&=v_0(1-p^2-p)k^2+1,\\
+D-AQ_2&=(p^4-p^3X+p^3+p^2X)k^2+1.
+\end{align*}
+They have degrees 15 and 14; therefore the centered defects have
+degrees 16 and 15. In the exact four-factor norm, the other three
+factors have degrees 38, 38 and 25, while
+$\deg(\delta^2M^4)=2(42)+4(13)=136$. The resulting exact degrees
+are $136+38+38+25+16=253$ and $136+38+38+25+15=252$.
+With $q_0=\beta J$, $X_0=q_0+x$ and $k_0=\eta+\zeta$, the highest
+forms are
+\begin{align*}
+[N_1]_{253}&=-2^{20}q_0^{122}X_0^{27}Y^{60}i^{10}k_0^{32}(q_0-F)^2,\\
+[N_2]_{252}&= 2^{20}q_0^{122}X_0^{26}Y^{60}i^{10}k_0^{32}(q_0-F)^2.
+\end{align*}
+These are nonzero at the authentic fixed ports. The full proof and
+reproducible normal/optimized Python receipts are in the accompanying
+packet. Finite controls check transcription and algebra, not the
+unbounded calibration theorem.

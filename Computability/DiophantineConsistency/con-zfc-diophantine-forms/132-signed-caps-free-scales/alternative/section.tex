@@ -1,0 +1,41 @@
+\section{A signed pooled Pell cap: 352 unrestricted integers}
+The new direct-calculus polynomial is the sum of 219 squared quadratic
+residuals in 352 unrestricted integer variables. Its complete expansion has
+9,355 monomials and coefficient height 15,020,718. Relative to the newly
+reviewed 442-integer direct quartic, this saves 90 coordinates (20.4\%),
+while increasing support and coefficient height. It is not a globally
+smallest-variable quartic; native large-coefficient architectures are much
+smaller.
+
+The key new principle recovers signs and indices together. Suppose
+$A-1>9W^3$, $1\leq k_i<W$, and $m\leq W$. Retain only the signed principal
+norms $x_i^2-(A^2-1)y_i^2=1$. Certify once $V=Y_{2W}(A)$ and impose
+\[
+ V=2W+1+s+\sum_i y_i^2,\quad s\geq0,
+ \qquad \sum_i(y_i-k_i)^2=(A-1)Q.
+\]
+Classification gives $y_i=\epsilon_iY_{j_i}(A)$. The squared cap implies
+$j_i<2W$. Reducing the pooled congruence modulo $A-1$ therefore gives a
+multiple $E=\sum_i(\epsilon_i j_i-k_i)^2$ with
+$0\leq E<9W^3<A-1$. Hence $E=0$, and every ordinate is positive and has
+the intended index. Completeness follows from
+$Y_{2W}=2X_WY_W>2(A-1)Y_W^2$, which dominates all the squared ordinates.
+The old signed-power inverse-branch argument separately orients each
+abscissa; the cap alone asserts only its absolute value.
+
+A single finite indexed-Pell certificate at $2W$ supplies $V$. Its auxiliary
+ordinate can be constrained by $J=V^2(2e+1)$ with signed $e$, without a sign
+guard. Indeed the canonical $V$ is even and its abscissa $U$ is odd. Choosing
+$J=Y_{2WV}(A)=VY_V(U)$ gives
+\[
+ J/V^2=U^{V-1}+(A^2-1)VT,
+\]
+an odd integer. This saves three additional guard witnesses relative to the
+355-integer sibling, which is also supplied.
+
+All variables, coefficients, residuals, and monic restorations are explicit.
+The checker replays 229 projections, verifies the 41-atom frame and all
+19 retained power requests, and expands the complete quartic. The ordinary
+proof inherits the frozen parent's C222/refutation and ZFC calibration;
+it is not a new kernel proof or an assumption of consistency. The squared
+signed cap extends, and credits, the incoming natural-domain pooled cap.

@@ -1,0 +1,871 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{booktabs,longtable,array,multicol,enumitem}
+\usepackage{xcolor,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+ pdftitle={Shared Pell bounds for modular certificates},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=*}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Diophantine consistency: shared index certificates}
+\fancyhead[R]{\small 24 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\degr}{\operatorname{deg}}
+\newcommand{\Height}{\operatorname{ht}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\pathfile}[1]{\nolinkurl{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\input{metrics.tex}
+\title{Shared Pell bounds for modular certificates\\[5pt]
+\large Explicit smaller Diophantine equations for ZFC consistency}
+\author{Research prepared for Vladimir Reshetnikov's ProveIt project\\
+\small AI-assisted derivation, implementation, and independent mathematical checks}
+\date{24 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a completely specified quartic polynomial in \MainVars\ nonnegative
+integer variables, with \MainRows\ quadratic residuals, \MainTerms\ collected
+monomials, and coefficient height \MainHeight.  Its no-zero statement is
+equivalent to $\Con(\ZFC)$ by an ordinary arithmetic proof composed with the
+identified, retained C222--ZF--ZFC refutation calibration.  The construction
+encodes finite proof certificates directly; it does not simulate K215 or
+instantiate Jones's universal polynomial.
+
+The main change is to extend a single indexed Pell bound to a mixed family
+of exact-power and modular-numerator requests.  The enlarged bound is
+defined before either kind of request is interpreted.  A separate bootstrap
+uses the factorial ceiling equations themselves to justify a smaller digit
+radix.  These changes allow one binomial coefficient, one indexed bound,
+and one congruence of squared index errors to serve the whole certificate.
+The resulting quartic improves all four measured size quantities of the
+incoming 261-variable direct quartic.  A smaller-variable, denser companion
+and ten-positive-variable norm equations are also supplied.
+
+Every principal residual is printed in the appendix.  The archive includes
+the expanded polynomial, executable builders, restoration certificates,
+independently written checks, and source proofs.  No consistency assumption
+is used to establish the equivalence.  We claim neither a global simplicity
+minimum nor a newly completed end-to-end proof-assistant certificate.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+
+\section{Results and the meaning of a simpler equation}
+
+The recommended equation in this packet is
+\begin{equation}\label{eq:principal}
+ \boxed{P_{\MainVars}(z_0,\ldots,z_{\MainLast})
+       =\sum_{j=0}^{\MainRowLast} Q_j(\mathbf z)^2=0,
+       \qquad \mathbf z\in\N^{\MainVars}.}
+\end{equation}
+Here and throughout, $\N=\{0,1,2,\ldots\}$.  The symbols $Q_j$ are the
+literal quadratic polynomials in Appendix~\ref{app:residuals}, not
+unspecified representations selected by an existence theorem.  The matching
+JSON file gives the same ordered rows and every coordinate; the expanded
+file gives every coefficient of their collected sum of squares.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Direct quartic over $\N$ & Variables & Rows & Terms & Height\\
+\midrule
+Incoming shared-binomial equation &319&254&10,283&86,842,335\\
+Incoming shared-bound equation &261&194&31,679&85,566,955\\
+\textbf{Principal equation here} &\textbf{\MainVars}&\textbf{\MainRows}&\textbf{\MainTerms}&\textbf{\MainHeight}\\
+Dense companion here &\DenseVars&\DenseRows&\DenseTerms&\DenseHeight\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All four equations have exact degree four.  A ``row'' is one quadratic
+residual before the final sum of squares.  ``Terms'' counts distinct
+nonzero monomials after collecting that single polynomial.  Height is the
+largest absolute value of a collected coefficient.  It is not the
+largest coefficient in a residual.  The principal equation saves 20
+variables, five residuals, 1,621 monomials, and 379,227 units of coefficient
+height relative to the 261-variable equation.  These are reductions of
+about $7.66\%$, $2.58\%$, $5.12\%$, and $0.44\%$, respectively.
+
+The dense companion lowers the variable count to \DenseVars, at a substantial
+cost in expanded support.  It is included so that minimizing variables
+does not silently become minimizing every measure at once.
+
+The comparison is against the complete incoming files at repository commit
+\pathfile{f4d8db99e060339f3306a04d507c35bc1d0d68c5}, including all eight ZIPs
+then present in \pathfile{docs/incoming}.  The two principal parents are
+\emph{Shared Binomial Certificates} and \emph{Shared Pell Bound 261}
+\cite{binomial,cap261}.  The repository already has equations with far
+fewer variables and very large fixed coefficients, including nine-positive
+constructions and a specialized 37-integer quartic.  The results here
+advance the explicit direct-calculus, comparatively small-coefficient
+branch.  They do not supersede those different tradeoffs.
+
+This distinction is also standard in the literature: degree, number of
+unknowns, and the choice between $\N$ and $\Z$ are separate complexity
+parameters \cite{bayerdavid,bayeretal}.  None of the present numerical
+comparisons is a theorem that no better polynomial exists.
+
+\section{The precise logical statement}
+
+Fix the ordinary finite proof calculus for ZFC used by ProveIt's retained
+calibration.  Let $\mathrm{Ref}_{\ZFC}(p)$ be its primitive-recursive
+predicate that $p$ codes a finite refutation.  Thus
+\[
+ \Con(\ZFC)\equiv\neg\exists p\in\N\;\mathrm{Ref}_{\ZFC}(p).
+\]
+The arithmetic argument of this packet, composed with the retained source
+calibration, proves
+\begin{equation}\label{eq:logical}
+ \ZFC\vdash
+ \left(\exists\mathbf z\in\N^{\MainVars}\;P_{\MainVars}(\mathbf z)=0\right)
+ \longleftrightarrow
+ \left(\exists p\in\N\;\mathrm{Ref}_{\ZFC}(p)\right).
+\end{equation}
+Taking negations yields exactly the requested consistency equivalence.
+The proof is uniform finite arithmetic, rather than an argument restricted
+to particular external numerals.  Its ingredients are induction on finite
+sequences, elementary Pell theory, integer divisibility, the Chinese
+remainder theorem, and explicit finite polynomial substitution.  They
+can be carried out on the natural numbers of a model of ZFC.
+
+There are three different levels of evidence, and they should be kept
+separate.  First, the literal polynomial and its exact metrics are checked
+by finite computation.  Second, the new transformations have ordinary
+proofs of soundness and constructive completeness.  Third, the endpoint
+from the numerical C222 calculus to ZFC refutations is imported from the
+identified repository calibration, whose source texts and pins are retained.
+This work does not newly re-prove every transitive calibration dependency
+or construct a complete Lean/Rocq proof term for \eqref{eq:logical}.
+
+The imported endpoint is the ordinary argument associated with
+\pathfile{KEndpoint.c222_iff_zf_refutation} and
+\pathfile{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+We use that calculus endpoint before any machine-specific endpoint.
+Neither the builder nor the definition of the direct quartic reads the
+K215 transition table.  The numerical coefficients in
+\eqref{eq:principal} are fixed by the supplied finite code and data; their
+definition does not branch on whether ZFC is consistent.
+
+\begin{remark}[Unrestricted integer interpretation]
+The principal displayed domain is $\N$, not all of $\Z$.  If an equation
+quantified over unrestricted integers is required, there is an explicit
+quartic conversion without any appeal to a universal polynomial.  Retain
+each $z_i$ as an integer variable and add three integer variables
+$a_i,b_i,c_i$.  Set
+\[
+ \widehat P(\mathbf z,\mathbf a,\mathbf b,\mathbf c)
+ =P_{\MainVars}(\mathbf z)+
+ \sum_{i=0}^{\MainLast}(8z_i+1-a_i^2-b_i^2-c_i^2)^2.
+\]
+Each new row forces $z_i\ge0$.  Conversely every $8z_i+1$, $z_i\ge0$,
+is a sum of three integer squares by the three-squares theorem.  Thus
+$\widehat P=0$ has an integer solution exactly when
+\eqref{eq:principal} has a natural solution.  This is a transparent
+\IntegerVars-variable quartic conversion, not a claimed improvement on the
+repository's specialized unrestricted-integer equations.
+\end{remark}
+
+\section{The direct proof-certificate source}
+
+The inherited source uses finite multisets of numerical proof rules.  Its
+truth label is 0 and its contradiction label is 1.  Formula constructors
+are ordinary polynomials; for example the Cantor-style implication
+constructor is
+\[
+ I(a,b)=2(a+b)(a+b+1)+4b.
+\]
+Membership, universal closure, and equality are the consecutive tags
+$I(a,b)+1$, $I(a,b)+2$, and $I(a,b)+3$.  The precise nine axiom families,
+modus ponens, generalization, and guarded bundle are retained literally
+in the source compiler.  This packet changes the arithmetic certificates
+used to validate the bounded source, not the calculus.
+
+Choose a horizon $t\ge12$ and an integer $F$ later forced to be $t!$.
+Attach weight $1+jF$ to a positive formula label $j\le t$ and weight 1
+to label 0.  For a rule with premises $p_1,p_2$ and conclusion $c$, a
+pending-product accumulator satisfies
+\begin{equation}\label{eq:flow}
+ S'(1+Fc)=S(1+Fp_1)(1+Fp_2).
+\end{equation}
+The endpoints are $S_0=1+F$ and $S_t=1$.  A bounded sequence of such
+relations is encoded using explicit beta remainders.
+
+When $F=t!$, weights attached to distinct positive labels at most $t$
+are pairwise coprime.  A prime common to $1+jF$ and $1+kF$ would divide
+$j-k$, hence be at most $t$ and divide $F$, contradicting its divisibility
+of $1+jF$.  Telescoping \eqref{eq:flow} gives a product identity.  Prime
+valuations recover exact multiplicity balance: there is one excess
+conclusion of label 1 and zero excess for every other positive label.
+
+This balance entails derivability even if the selected rules contain
+cycles.  Let $D$ be the closure of the axioms and truth under the finite
+selected rules.  If label 1 were outside $D$, every selected rule whose
+conclusion lies outside $D$ would have at least one premise outside $D$.
+Counting those premises would contradict the excess of one conclusion
+outside $D$.  Thus an accepted flow yields a finite C222 refutation.
+
+Conversely, expand a finite proof DAG into a proof tree, choose $t$ above
+all labels, parameters, tree size, and prescribed local polynomial
+bounds, and pad with truth rules.  Traversing the pending proof multiset
+backwards constructs the positive accumulator products.  After $t$ is
+fixed, set $F=t!$, choose a sufficiently large multiple $y$ of $F$, and
+use CRT to obtain the beta code $x$.  This ordering matters: the large
+accumulator values do not have to be bounded by $t$.
+
+The local source has eight encoded columns and one encoded index.  Its
+local polynomial $L$ expresses the rule disjunction and beta equations;
+its additional polynomial $J$ bounds all possible rule labels.  Their
+literal definitions, finite majorant certificates, and exact source
+bindings are included.  Their fixed bounds used below are
+\[
+ E_0=2^{23},\qquad \ell_0=2^{22}.
+\]
+These constants concern polynomial growth bounds.  They are not hidden
+free parameters of \eqref{eq:principal}.
+
+\section{One indexed Pell bound for exact and modular requests}
+
+For an integer $A\ge2$, write
+\begin{align*}
+ X_0(A)&=1,&Y_0(A)&=0,\\
+ X_{n+1}(A)&=AX_n(A)+(A^2-1)Y_n(A),&
+ Y_{n+1}(A)&=X_n(A)+AY_n(A).
+\end{align*}
+Then $X_n(A)^2-(A^2-1)Y_n(A)^2=1$.  All nonnegative integer solutions
+of this Pell equation are obtained uniquely in this way.  This follows
+by the usual inverse descent; it is also a retained input to the
+parents' explicit indexed-Pell graphs.  The ordinates $Y_n(A)$ strictly
+increase, and
+\begin{equation}\label{eq:pell-congruence}
+ X_n(A)\equiv1,\qquad Y_n(A)\equiv n\pmod{A-1}.
+\end{equation}
+
+\subsection{The essential change to the bound}
+
+There are two kinds of requests.  An exact-power request has a base $b$,
+an exponent $k$, and an output $m$, intended to mean $m=b^k$.  A modular
+request has an upper index $r$, intended to supply the residue of
+$(q+1)^r$ for a binomial digit.  A bound including only the exact-power
+triples is insufficient: a modular upper index can be arbitrarily larger
+than those exponents.
+
+Define $\mathcal A$ to be the set of distinct actual natural-valued
+atoms in all exact-power triples, together with every modular upper
+index.  The new frame is the literal polynomial equation
+\begin{equation}\label{eq:W}
+ W=2+\sum_{a\in\mathcal A}a.
+\end{equation}
+Every independent positive seed index $k_i$ belongs to $\mathcal A$.
+If there are $m$ such distinct seeds, then
+\[
+ 0<k_i<W,\qquad m\le\sum_i k_i\le W-2.
+\]
+These facts hold before any power or binomial has been interpreted.
+In the selected construction positivity comes from the raw horizon,
+coordinate shifts, and modulus rows.  Indices supplied by an exact Pell
+addition formula are recorded as derived indices rather than unchecked
+extra seeds.
+
+To make the Pell base sufficiently large, use natural $z,L,\sigma,A$ with
+\begin{equation}\label{eq:scale}
+ L^2-((W+1)^2-1)\bigl(W(z+1)\bigr)^2=1,
+ \qquad A=L+\sigma.
+\end{equation}
+Pell classification gives $L=X_e(W+1)$ and
+$W(z+1)=Y_e(W+1)$ for a positive $e$.  Modulo $W$, the latter is
+congruent to $e$, so $W\mid e$ and $e\ge W$.  Therefore
+\begin{equation}\label{eq:large-A}
+ A\ge L\ge(W+1)^W,\qquad A-1>W^3\quad(W\ge3).
+\end{equation}
+Conversely, $e=W$ supplies $L,z$, and every larger $A$ remains available
+through $\sigma$.  This freedom is essential for the later root congruence.
+
+\subsection{The simultaneous index theorem}
+
+\begin{theorem}[Shared bound and one error congruence]\label{thm:cap}
+Let $W\ge3$, $A-1>W^3$, $0<k_i<W$, and $m\le W-2$.  Suppose
+$V=Y_W(A)$ is certified once.  The following equations in nonnegative
+integers force every principal pair to have exactly its requested index:
+\begin{align}
+ x_i^2-(A^2-1)y_i^2&=1 &&(1\le i\le m),\label{eq:norms}\\
+ V&=W+1+s+\sum_{i=1}^m y_i,\label{eq:cap}\\
+ \sum_{i=1}^m(y_i-k_i)^2&=(A-1)u.\label{eq:errors}
+\end{align}
+Specifically, $x_i=X_{k_i}(A)$ and $y_i=Y_{k_i}(A)$.
+Conversely the canonical pairs extend to a solution of these equations.
+\end{theorem}
+\begin{proof}
+Write $y_i=Y_{j_i}(A)$ using Pell classification, initially permitting
+$j_i=0$.  Equation~\eqref{eq:cap} gives $y_i<V$, hence $0\le j_i<W$.
+Reduce \eqref{eq:errors} modulo $A-1$ using \eqref{eq:pell-congruence}:
+\[
+ A-1\mid E:=\sum_i(j_i-k_i)^2.
+\]
+But
+\[
+ 0\le E\le m(W-1)^2\le(W-2)(W-1)^2<W^3<A-1.
+\]
+Consequently $E=0$, and every $j_i=k_i$.  The potentially enormous
+ordinates $y_i$ were not assumed to be small residues; the bound applies
+to their decoded indices.
+
+For completeness, $Y_{k_i}(A)\ge k_i$ and their differences are multiples
+of $A-1$, so the quotient in \eqref{eq:errors} is a nonnegative integer.
+Also $y_i\le Y_{W-1}(A)$ and the recurrence gives
+$Y_W(A)>(2A-1)Y_{W-1}(A)$.  Since $m\le W-2$ and $A>W+1$,
+$Y_W(A)-\sum_i y_i>W$; hence the slack in \eqref{eq:cap} is natural.
+\end{proof}
+
+The theorem is inherited in its original exact-power setting from the
+261-variable packet.  The new application is its extension to the mixed
+family, using the enlarged \eqref{eq:W}.  Omitting the modular upper
+indices would invalidate the size argument and is explicitly detected
+by the independent checker.
+
+\subsection{The bound itself is a polynomial certificate}
+
+The notation $V=Y_W(A)$ is proof notation, not an arithmetic function
+left in the final equation.  Retain one complete indexed-Pell certificate:
+\begin{align*}
+ U^2-(A^2-1)V^2&=1,& H^2-(A^2-1)J^2&=1,\\
+ S^2-(B_c^2-1)R_c^2&=1,& B_c&=1+4V(d+1),\\
+ J&=V^2(e+1),&B_c&=A+Hf,\\
+ S&=U+Hg,&R_c&=W+4Vh.
+\end{align*}
+All letters here are natural; intermediate products are compiled into
+quadratic graph rows.  The hypothesis $W\le V$ of the retained indexed
+Pell lemma follows from \eqref{eq:cap}.  Its soundness gives
+$U=X_W(A)$ and $V=Y_W(A)$, and its constructive completeness supplies
+the comparison and congruence witnesses.  The private witnesses of this
+one anchor are not inserted into $\mathcal A$: doing so would introduce
+an unnecessary circular definition.
+
+\section{A smaller radix justified before factorial semantics}
+
+The shared-binomial parent already identifies the same binomial coefficient
+as both a factorial certificate and the reciprocal CRT product.  The new
+radix uses this sharing together with the raw ceiling rows.
+
+Let $t=t_0+12$ and take the literal source quantities
+\[
+ B=b_0+2,\quad R=2+t+x+y+F,\quad K=R,\quad
+ N=B^K,\quad V_0=(F^2+1)^t.
+\]
+Let $S_0$ be the sum of the nine positive CRT representatives.  Define
+\begin{equation}\label{eq:radix}
+ q=N(S_0+1)^K.
+\end{equation}
+The displayed powers are realized by the simultaneous polynomial
+power graph; they are not variable exponents in the final polynomial.
+Compared with the earlier self-sized radix, the term $V_0$ has disappeared
+from its base.  The aggregate upper bound on the nine representatives is
+also unnecessary: their actual sum sets the radix after they are chosen.
+
+The retained ceiling rows are
+\begin{equation}\label{eq:ceiling}
+ V_0+B=BF+r+1,\qquad B=r+s+1.
+\end{equation}
+Thus $V_0+s=BF$ and $0\le s<B$.  Once the exact powers are decoded,
+$V_0\ge1$, so $F\ge1$.  Since $t\ge12$,
+\begin{equation}\label{eq:bootstrap}
+ F^2<V_0\le BF\quad\Longrightarrow\quad F<B,
+ \qquad V_0<B^2\le B^K=N\le q.
+\end{equation}
+This uses neither $F=t!$ nor the interpretation of $B$ as a binomial.
+The raw inequality $V_0<B^2$ already occurs in the incoming unified-binomial
+packet \cite{unified}; its application to the new self-sized radix and
+mixed-index certificate is the combination used here.
+
+\begin{lemma}[Uniform lower binomial digits]\label{lem:binomial-bound}
+For integers $r\ge1$, $t\ge1$, and $0\le j\le t$,
+\[
+ \binom{r+t}{j}\le(r+1)^t.
+\]
+\end{lemma}
+\begin{proof}
+Induct on $t$.  The case $t=1$ is immediate.  If $j=t$, use
+$\binom{r+t}{t}=\prod_{i=1}^t(1+r/i)\le(r+1)^t$.
+For $1\le j<t$, Pascal's identity and induction bound its two terms by
+$2(r+1)^{t-1}\le(r+1)^t$.  The case $j=0$ is immediate.
+\end{proof}
+Apply the lemma with $r=F^2$.  All digits through place $t$ in
+$(q+1)^{F^2+t}$ are at most $V_0<q$.  The single exact-binomial digit
+certificate therefore forces
+\begin{equation}\label{eq:shared-B}
+ B=\binom{F^2+t}{t}.
+\end{equation}
+No later CRT range estimate is needed to recognize this first binomial.
+
+\begin{lemma}[Squared-radius factorial fixed point]\label{lem:factorial}
+For $t\ge6$ and a positive integer $F$,
+\[
+ F=\ceil{\frac{(F^2+1)^t}{\binom{F^2+t}{t}}}
+ \quad\Longleftrightarrow\quad F=t!.
+\]
+\end{lemma}
+\begin{proof}
+Put $H_t(F)=t!\prod_{i=1}^t(F^2+1)/(F^2+i)$.  Each factor is at most
+one, so the ceiling relation gives $H_t(F)\le F\le t!$.
+If $F<t$, monotonicity in $F^2$ gives
+$H_t(F)\ge2^t/(t+1)>t>F$, impossible for $t\ge6$.
+For $F\ge t$, the product inequality gives
+\[
+ H_t(F)>t!\left(1-\frac{t(t-1)}{2F^2}\right)>\frac{t!}{2}.
+\]
+If $F<t^2$, then $t!/2>t^2$ gives another contradiction.  Thus
+$F\ge t^2$, and
+$H_t(F)>t!(1-1/(2F))$.  If $t!\ge F+1$, the last lower bound is at
+least $(F+1)(1-1/(2F))\ge F$, again impossible.  Hence $F=t!$.
+Conversely at $F=t!$ the same estimates give
+$F-1/2<H_t(F)\le F$, proving the ceiling relation.
+\end{proof}
+This factorial lemma is prior work in the repository and the
+shared-binomial parent; it is reproduced to make the dependency order
+transparent.  Equations~\eqref{eq:ceiling} and \eqref{eq:shared-B} now
+give $F=t!$.
+
+\subsection{All later digits and the smaller amplification}
+
+Every ordinary upper representative $a$ satisfies $a\le S_0$.  Every
+requested lower index $k$ is less than $R=K$.  Thus all its required
+binomial coefficients are bounded by
+\[
+ a^k\le(S_0+1)^k<(S_0+1)^K\le q.
+\]
+For the derived label polynomial, the retained literal positive-DAG
+majorant is $J\le(S_0+1)^{\ell_0}$.  At $t=12$,
+\[
+ \ell_0(t+1)=2^{22}\cdot13<12!=479,001,600.
+\]
+The inequality persists under increasing $t$, so
+$\ell_0(t+1)<t!=F<R=K$.  Hence its digits through place $t+1$ are also
+strictly below $q$.
+
+The local evaluation bound is less than $R^{E_0}$.  For $R\ge12!>2^{28}$,
+\[
+ R^{2^{23}}<2^R.
+\]
+One elementary verification takes $2^m\le R<2^{m+1}$, $m\ge28$.
+The inequality $(m+1)2^{23}<2^m$ holds at $m=28$ and persists by induction.
+It follows that $R^{2^{23}}<2^{(m+1)2^{23}}<2^R$.
+Consequently amplification $K=R$ is sufficient; the former factor of two
+is unnecessary on this horizon.  These estimates occur after the factorial
+has been recovered, while \eqref{eq:bootstrap} occurs before it.
+
+\section{Modular numerators, exact powers, and CRT decoding}
+
+\subsection{Recovering all exact powers}
+
+For a retained request $m=b^k$, introduce the nonnegative modulus
+$T_b=2Ab-b^2-1$ and impose
+\[
+ X_k(A)+bY_k(A)=AY_k(A)+m+T_bh,\qquad h\ge0.
+\]
+The raw modulus row excludes $b=0$.  The mixed frame places $b,k,m<W$,
+and \eqref{eq:large-A} makes $T_b$ larger than both $m$ and $b^k$.
+The Pell recurrence modulo $T_b$ gives
+\[
+ X_k(A)+(b-A)Y_k(A)\equiv b^k\pmod{T_b}.
+\]
+By Theorem~\ref{thm:cap}, this is the actual requested $k$, not an
+unspecified congruent index.  The strict interval then forces $m=b^k$.
+The positive expression on the left also supplies the required natural
+quotient in the constructive converse.  Thus the exact powers can be
+decoded before the first binomial is interpreted.
+
+\subsection{One freely chosen root for every numerator}
+
+Let $b=q+1$.  The retained common modulus $M$ is a product of the digit
+denominator powers and $q$, large enough that every required $qd$ and
+$Nd$ divides $M$.  Its prime divisors divide $q$.  Add
+\begin{equation}\label{eq:root}
+ 2A(q+1)=(q+1)^2+1+Mh_0,\qquad h_0\ge0.
+\end{equation}
+Then $s=q+1-A$ satisfies $s^2\equiv A^2-1\pmod M$.  The identity
+$(A+s)^r=X_r(A)+sY_r(A)$ in the quadratic algebra yields
+\begin{equation}\label{eq:residue}
+ \mathcal R_r:=X_r(A)+(q+1-A)Y_r(A)
+       \equiv(q+1)^r\pmod M.
+\end{equation}
+Moreover $\mathcal R_r>0$ for $r>0$, because
+$X_r(A)>(A-1)Y_r(A)$ and $q>0$.
+
+For the exact binomial at upper index $r=F^2+t$ and denominator $d=q^t$,
+use
+\[
+ \mathcal R_r=r_0+dB+qd h,\qquad
+ d=r_0+s_0+1,\qquad q=B+o+1.
+\]
+For a range request $N\mid\binom{r}{k}$, use
+\[
+ \mathcal R_r=r_0+Nd h,\qquad d=q^k=r_0+s_0+1.
+\]
+The carry bounds of the preceding section and the binomial theorem
+identify these as the desired exact digit and divisibility conditions.
+The upper index of every such request is one of the newly included atoms
+in \eqref{eq:W}, so its Pell pair has already been certified by the same
+single anchor.
+
+Completeness of \eqref{eq:root} is not automatic from its notation.
+Since $\gcd(q+1,M)=1$, the gcd of $2(q+1)$ and $M$ is at most 2.
+If it is 2, $q+1$ is odd and $(q+1)^2+1$ is even.  Thus the linear
+congruence for $A$ is soluble.  Its solution class contains arbitrarily
+large positive integers.  After all semantic data, $W$, and $L$ are fixed,
+choose such an $A\ge L$ large enough that $h_0\ge0$.  All Pell and cap
+witnesses are then constructed at this chosen base.  The positive residues
+are congruent to the least prescribed residues modulo their moduli, so
+the remaining quotients are nonnegative.
+
+\subsection{The reciprocal product and bounded source}
+
+Now $F=t!$ and $B=\binom{F^2+t}{t}$.  For $1\le i\le t$, define
+$d_i=1+F^2/i$.  They are integers, pairwise coprime, their prime factors
+exceed $t$, and
+\[
+ \prod_{i=1}^t d_i=B.
+\]
+The retained CRT source imposes, for its encoded index $C$ and eight
+encoded columns $A_j$,
+\[
+ B\mid C+F^2+1,\qquad N\mid\binom C t,
+ \qquad N\mid\binom{A_j}{b_j+1},
+\]
+\[
+ N\mid L(C,\mathbf A),\qquad
+ N\mid\binom{J(\mathbf A)}{t+1}.
+\]
+The one-way binomial range lemma states that
+$p^e\mid\binom ak$ implies $a\bmod p^e<k$.  For $a\ge k$, its proof
+uses the usual floor-sum valuation formula: if $[a-k+1,a]$ contains no
+multiple of $p^e$, the valuation is at most $e-1$.  The case $a<k$ is
+immediate.  The false converse is never used.
+
+Apply this at a prime factor of each $d_i$, with precision multiplied by
+$K$.  It recovers the index $i-1$ and the bounded local witnesses.  Since
+$2^K>R^{E_0}$, divisibility of the nonnegative local evaluation forces its
+actual value to be zero.  The derived range yields the label bounds.
+This reconstructs every bounded source row and hence the finite refutation
+described in Section~3.
+
+In the converse direction, use CRT at twice the valuation precision.
+For each prime $p$ of $d_i$, the numerator of the relevant falling
+factorial has a factor divisible by $p^{2K v_p(d_i)}$.  Division by $k!$
+loses at most $k-1<K$ in valuation, leaving the required precision.
+Choose positive representatives and only then form their sum $S_0$ and
+the radix \eqref{eq:radix}.  This removes the old need to fit those
+representatives into an independently chosen aggregate bound.
+
+\section{Literal polynomial compilation and verification}
+
+Every formula above is translated into a finite quadratic graph using
+addition and multiplication nodes, norm rows, remainder equations, and
+the fixed local calculus polynomial.  No factorial, exponentiation,
+binomial coefficient, Pell function, bounded quantifier, or divisibility
+symbol remains in the final list of residuals.
+
+The principal source contains 777 semantic coordinates and 725 rows.
+An independently checked affine export restores 428 eliminated coordinates
+by polynomials known to be nonnegative on the natural domain.  This gives
+349 coordinates and 297 quadratic residuals.  A further exact certificate
+eliminates 108 coordinates, leaving \MainVars\ coordinates and \MainRows\
+residuals.  Each elimination has a displayed restoration formula and a
+literal polynomial check.  Preserving natural-valued restorations is
+essential: an arbitrary integer-valued substitution would not preserve
+the stipulated domain.
+
+The compiler's support threshold is an implementation choice controlling
+which quadratic substitutions are retained.  The selected threshold 32
+gives the principal equation.  Larger thresholds give the denser
+\DenseVars-variable companion.  The algorithm is not claimed to find an
+optimal elimination order or a globally minimal graph.
+
+All remaining residuals have degree at most two.  At least one has a
+nonzero quadratic part, so the sum of their squares has exact degree four:
+over the reals a sum of squares of homogeneous quadratic forms cannot
+vanish identically unless every form is zero.  The fully collected
+expansion independently confirms the degree and gives the exact term
+and height counts in Section~1.
+
+The checks supplied with the packet cover the literal source rows, mixed
+frame atom set, anchor certificate, positive independent indices, pooled
+error congruence, ordinary polynomial expansion, and every deleted-variable
+restoration.  Rebuilding the selected files in a fresh directory must give
+the same mathematical artifacts.  Random numerical evaluations are used
+only as supplementary transcription checks where indicated; they are not
+the proof of an unbounded arithmetic claim or of the consistency endpoint.
+
+\section{A short ten-positive-variable companion}\label{sec:positive}
+
+The direct quartic is the principal result.  A separate improvement on the
+compact native branch uses a coordinate condition already forced at every
+zero.  This branch retains the native/K215 calibration and its four large
+fixed coefficients, unlike the direct quartic.
+
+Let $(\beta,K_0,M_C,M_F)$ be the complete original compact44 tuple supplied
+in \pathfile{positive/coefficients}.  These are fixed integers, not
+unknowns.  Their raw binary sizes are 590,069, 592,884, 590,069, and 590,070
+bits respectively; $\beta=2^{590069}-1$.  The entire tuple is retained,
+with $M_F$ already shifted exactly once.  Its payloads and finite
+reconstruction data are supplied together.
+
+The ten unknowns are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\Pos.
+\]
+Define the following polynomial abbreviations:
+\begin{align*}
+ q&=\beta J+1,&g&=q-1,&X&=wq,&Y&=q^3s,\\
+ \mu&=q^2+1,&k&=\eta+\zeta,&c&=kY+\eta,\\
+ A&=\mu Y(X+1)+1,&\Delta&=A^2-1,&H&=4A-5,\\
+ V_1&=X\mu^2Y^2,&D&=V_1(V_1+1)k^2+1,\\
+ C&=q-F-\alpha,&B&=(K_0+w)C-F,\\
+ G&=(q-1)(q-F)+\alpha,&
+ R&=G(q^2-1)+(M_C+qM_F)J,\\
+ e&=k-R-1,&E&=ic^2,\\
+ F_s&=1+\Delta DE^2,&Q&=\Delta^2DE^2,&\delta&=Q-1,\\
+ b&=c(T+\alpha)-R,&V&=F_sb-c,&D_*&=QV^2-1,\\
+ K_+&=X(3c-2X)+2,&M&=g\mu^2H,&a&=DF_s.
+\end{align*}
+For the shortest version put
+\begin{equation}\label{eq:positive-Z}
+ Z=g\mu^2\bigl[H(n+V-bB)+K_+\bigr]
+       -H\bigl(\mu^2B+ge\bigr).
+\end{equation}
+The equation is the explicit polynomial
+\begin{equation}\label{eq:positive-N}
+ \boxed{\mathcal N=
+ \bigl(\delta Z^2-M^2D_*-\delta M^2a\bigr)^2
+       -4\delta M^4aD_*=0.}
+\end{equation}
+Every exponent in these definitions is a fixed nonnegative integer.
+There are no radicals or divisions in the equation.  The fully paid
+division-free schedule takes \textbf{86 binary operations}: 51
+multiplications, 18 additions, and 17 subtractions, including constant
+multiplications and squaring.  Its exact total degree is \textbf{466}.
+
+\subsection{Quotient chart and exact cancellation}
+
+The pinned uncentered gap-fusion parent takes 89 operations and has degree
+288 \cite{gapfusion}.  At every positive zero its proof yields $q^3\mid Y$.
+Substitute $Y=q^3s$ into that polynomial.  Both its carrier numerator and
+denominator acquire a factor $q^3$, so its quartic norm acquires $q^{12}$.
+Canceling that explicit nonzero factor yields a polynomial of degree 466
+with 87 operations.  This version is in exact bijection with the parent's
+positive zero set: it retains $n+s$ in place of $n$ in
+\eqref{eq:positive-Z}.
+
+The shortest 86-operation version absorbs the integer term $s$ into the
+positive padding coordinate.  The exact universal polynomial identity is
+\begin{equation}\label{eq:quotient-identity}
+ N_{\rm parent}(Y=q^3s,\ n_{\rm old}=n-s)
+       =q^{12}\mathcal N.
+\end{equation}
+The identity alone is not enough for soundness because $n-s$ could be
+nonpositive.  The following additional argument handles that point.
+
+\subsection{Why absorbing the padding is sound}
+
+All pre-transport steps of the parent proof are independent of the sign
+of its padding variable.  At a positive zero of \eqref{eq:positive-N}
+they recover positive integer roots $\tau,f,y$ with
+\[
+ D=\tau^2,\quad F_s=f^2,\quad
+ QV^2-(Q-1)y^2=1,
+\]
+and give the early estimates
+\[
+ b>8Q,\qquad \tau f<b/2,\qquad 0<y-V<b/4,
+ \qquad e/\mu^2<b/4,\qquad K_+>0.
+\]
+The fifth-index gap underlying $b>8Q$ is prior work of the parent, not a
+new lemma here.  The two-root norm gives, for signs $\varepsilon,\nu$,
+\[
+ \frac ZM=\varepsilon\tau f+\nu y,
+ \qquad
+ \frac ZM=n+V+\frac{K_+}{H}
+       -\frac{(1+gb)B}{g}-\frac e{\mu^2}.
+\]
+Therefore
+\[
+ n=\varepsilon\tau f+(\nu y-V)-\frac{K_+}{H}
+       +\frac{(1+gb)B}{g}+\frac e{\mu^2}
+   <b+\frac{(1+gb)B}{g}.
+\]
+If $B\le-1$, the right side is at most $-1/g<0$, contradicting
+$n>0$.  Thus the same transport sign $B\ge0$ is forced.
+
+The subsequent rank, index, parity, projection, and source-reconstruction
+arguments use the integral carrier and this sign.  The condition $q^3\mid Y$
+is now built into the coordinates; the remaining denominator is
+$g\mu^2H$, strengthening the relevant $H$-divisibility statement.  The
+whole proof recovers the same native source.  Conversely a canonical
+parent witness has $Y=q^3s$ with $s>0$, and setting
+$n=n_{\rm old}+s$ is positive and satisfies \eqref{eq:quotient-identity}.
+This is an existence-preserving reparameterization.  We do not assert
+that its unshifted inverse sends every zero to a positive old padding
+coordinate.
+
+\subsection{Exact degree and the tradeoff}
+
+All ten unknowns have degree one, while the coefficient ports have degree
+zero.  In the quotient chart the relevant degrees are
+\[
+ \begin{array}{c|rrrrrrrrrrrr}
+ \text{register}&Y&A&\Delta&D&E&F_s&Q&b&V&M&a&Z_0\\\hline
+ \text{degree}&4&8&16&30&11&68&84&6&74&13&98&\le21,
+ \end{array}
+\]
+where $Z=MV+Z_0$.  Expand the norm after this substitution.  Its unique
+highest-degree contribution is
+\[
+ -4\delta^2M^4V^2a,
+\]
+with degree $2\cdot84+4\cdot13+2\cdot74+98=466$.  More explicitly its
+nonzero leading homogeneous form is
+\[
+ -2^{10}(\beta J)^{326}i^{10}w^{30}s^{64}
+       (\eta+\zeta)^{34}(T+\alpha)^2.
+\]
+The leading form of $b$ is
+$(\eta+\zeta)Y_0(T+\alpha)$, not the old leading form $-R_0$; this change
+must be included when checking the new degree.
+
+Adding the sharp product center $ADE$ gives companion schedules with
+degree 450 and 89 operations (absorbed padding) or 90 operations (exact
+parent-positive bijection).  The factor $\Gamma^2-a=D^2E^2-D$ lowers
+the leading contribution by 16.  These are diagnostic controls: the
+89-operation, degree-450 version is dominated by the already existing
+89-operation, degree-288 equation.  The 86-operation equation improves
+arithmetic length at the same ten-positive-variable count.
+
+\IfFileExists{centering.tex}{\input{centering.tex}}{}
+
+\section{What is new, what is inherited, and what remains open}
+
+The contribution of this round is a proved and fully materialized
+combination, together with a new use of a raw bootstrap inequality.  The single anchor
+must include modular indices, the self-sized radix is justified by
+$V_0\le BF$ before factorial semantics, and the complete contracted
+quartic is counted and supplied.  Merely placing two prior algorithms
+next to one another would not establish any of those points.
+
+The factorial fixed-point lemma, common modular Pell residues, binomial
+range method, reciprocal CRT source, one-anchor error-square theorem,
+and natural-variable contraction each have explicit predecessors in
+the retained sources.  The relation-combining and Pell tradition is
+classical.  We make no claim to have invented those general techniques.
+The novelty audit is bounded to the inspected repository snapshot,
+incoming archives, and cited literature; it is not a worldwide
+priority search or a minimum-size proof.
+
+The native companion establishes a different saving: a forced quotient
+condition can be built into the coordinates, a homogeneous clearing
+factor can be removed, and an integer term can be absorbed into a padding
+coordinate after re-proving its sign argument.  The distinction between
+an exact positive-zero bijection and fresh positive completeness is
+essential in that last step.
+
+There are still concrete opportunities.  A better contraction order may
+reduce the direct quartic without changing the number theory.  A smaller
+direct proof calculus may simplify its local source, provided its full
+refutation equivalence is proved.  A common indexed bound tailored to the
+actual modular indices might reduce the remaining anchor overhead.
+None of these possibilities is included in the proved counts above.
+
+The packet establishes an equivalence, not either side of it.  In
+particular it neither finds a refutation nor proves that all tuples fail
+to solve the equation.  A newly checked, end-to-end formal proof remains
+a separate task.  The delivered finite objects and explicit proof
+boundaries are intended to make that task and further optimization
+concrete.
+
+\appendix
+\section{Every residual of the principal quartic}\label{app:residuals}
+
+The following is the complete definition of the polynomials $Q_j$ in
+\eqref{eq:principal}.  Indices are zero-based.  All $z_i$ independently
+range over $\N$.  Line breaks within one $Q_j$ are typographical only.
+The appendix is generated directly from the authoritative equation file
+and checked against it by the release verifier.
+\input{residuals.tex}
+
+\section{Coordinate meanings}
+
+These names identify compiler coordinates; they impose no extra conditions
+on the variables.  The preceding residual list is the complete arithmetic
+definition.  Names of eliminated variables occur only in the supplied
+restoration certificates.
+\input{variables.tex}
+
+\section{Reproduction and dependency map}
+
+The top-level \pathfile{README.md} gives the selected files and exact
+replay command.  The direct subdirectory contains the frozen compiler
+inputs, generator, whole expanded quartics, and elimination certificates.
+The positive subdirectory contains its fixed coefficient payloads,
+source equations, literal schedules, ordinary proof, and independent
+arithmetic checks.  Retained upstream licenses and notices apply to
+their corresponding files.
+
+The release verifier checks the file manifest, reproduces the selected
+mathematical artifacts, checks the complete principal residual appendix,
+and writes its receipt to a separate location.  Source and artifact
+hashes pin the comparison and prevent an accidental mixture of constants
+or compiler versions.  Hashes authenticate finite bytes; they do not
+replace the unbounded mathematical arguments.
+
+\begingroup\small
+\begin{thebibliography}{9}
+\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\bibitem{repo} ProveIt Contributors, \emph{ProveIt}, snapshot
+\pathfile{f4d8db99e060339f3306a04d507c35bc1d0d68c5}, 24 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{binomial} ProveIt incoming research packet,
+\emph{Shared Binomial Certificates and Short Carriers for Con(ZFC)},
+24 October 2026.  Archive
+\pathfile{ConZFC_Shared_Binomial_Certificates_2026-10-24.zip},
+\pathfile{docs/incoming} at the pinned snapshot.  Its direct ordinary
+proof and finite source are retained in this packet.
+\bibitem{cap261} ProveIt incoming research packet,
+\emph{One Pell Bound and One Error Congruence}, 24 October 2026.
+Archive \pathfile{ConZFC_Shared_Pell_Bound_261_2026-10-24.zip},
+same pinned directory.  The one-anchor theorem is retained as
+\pathfile{CAP_THEOREM.md}.
+\bibitem{gapfusion} ProveIt Contributors,
+\emph{Coprime Fusion with the Auxiliary-Index Gap Majorant},
+\pathfile{Computability/DiophantineConsistency/candidates/ten-positive-gap-fusion/PROOF.md},
+same pinned snapshot.
+\bibitem{unified} ProveIt incoming research packet,
+\emph{Round 15 Unified Binomial and Even Pell Index Equations},
+24 October 2026. Archive
+\pathfile{ConZFC_Unified_Binomial_Even_Indices_Round15_2026-10-24.zip},
+same pinned directory. The raw ceiling bound is retained in
+\pathfile{direct/source/UNIFIED_PRODUCT_PROOF.md}.
+\bibitem{bayerdavid} J. Bayer and M. David,
+\emph{A Formal Proof of Complexity Bounds on Diophantine Equations},
+ITP 2025, LIPIcs 352, Article 3, 2025.
+\url{https://doi.org/10.4230/LIPIcs.ITP.2025.3}.
+\bibitem{bayeretal} J. Bayer, M. David, M. Ha{\ss}ler, Y. Matiyasevich,
+and D. Schleicher, \emph{Diophantine Equations over $\Z$: Universal Bounds
+and Parallel Formalization}, arXiv:2506.20909v3, 22 October 2026.
+\url{https://arxiv.org/abs/2506.20909}.
+\end{thebibliography}
+\endgroup
+\end{document}

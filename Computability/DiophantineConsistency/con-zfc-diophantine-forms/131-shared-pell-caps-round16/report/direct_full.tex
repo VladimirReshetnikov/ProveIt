@@ -1,0 +1,371 @@
+% Complete unabridged proof from direct/PROOF.md
+\section{Signed pooled Pell bounds and cofinal direct certificates}
+
+
+
+\subsection{Fixed equation and dependencies}
+
+
+
+The endpoint in \texttt{integer324/\allowbreak{}equation.json} is an ordinary sum of squares of 208 explicitly listed quadratic integer residuals in 324 unrestricted integer unknowns. The companion \texttt{integer338/\allowbreak{}equation.json} replaces one pooled congruence by fifteen individual congruences. Its 338 unknowns and 222 quadratic residuals trade variables for a smaller collected polynomial. The 324-variable polynomial has 5,808 collected monomials; the 338-variable polynomial has 4,493. Both have exact degree four and coefficient height 128,446. The exact collected coefficients are in each endpoint's \texttt{expanded\_\allowbreak{}polynomial.json}. No variable exponent is an operation of either polynomial.
+
+
+
+The source is the pinned round15 direct square-shell, derived-label, unified-factorial/\allowbreak{}product construction. Its 18 power requests have 15 independent indices and one derived index. The natural arithmetic and numerical C222 calibration remain the dependencies described in round15 \texttt{architecture/\allowbreak{}UNIFIED\_\allowbreak{}PRODUCT\_\allowbreak{}PROOF.md} and \texttt{direct/\allowbreak{}PROOF.md}. In particular the named logical interfaces remain \texttt{KEndpoint.c222\_\allowbreak{}iff\_\allowbreak{}zf\_\allowbreak{}refutation} and \texttt{ConstructibleChoice.zf\_\allowbreak{}refutation\_\allowbreak{}iff\_\allowbreak{}zfc\_\allowbreak{}refutation}.
+
+
+
+This note proves a different signed representation of the complete arithmetic interface, plus an existence-preserving cofinal restriction and a self-sized radix. It proves, in ordinary mathematics formalizable in ZFC, that an integer zero exists exactly when a finite ZFC refutation exists. Negation gives the ZFC-provable equivalence of unsolvability with Con(ZFC). It neither proves consistency nor supplies a new end-to-end proof-assistant derivation. No global minimality or literature-wide novelty is claimed.
+
+
+
+The shared-cap idea is inherited from the incoming Shared Pell Bound 261 package. The signed sum-of-squares cap, signed-index recovery, delayed front signs, odd private parameters, and exact composition here are the new signed extension. The cofinal horizon and consecutive-product beta modulus are inherited from the incoming Cofinal Witnesses package, transferred here to the already existing square-output factorial numerator. The self-sized radix is also developed in this round's natural-number construction; the literal signed source here uses q=\allowbreak{}(BH)\textasciicircum{}\allowbreak{}K, not that construction's q=\allowbreak{}(NH)\textasciicircum{}\allowbreak{}K. Both variants have the necessary bounds.
+
+
+
+\subsection{The literal semantic changes}
+
+
+
+All notation in this section names intended values or retained coordinates. Powers are interpreted only in the order proved below.
+
+
+
+The retained front has
+
+
+
+\begin{verbatim}
+t = 16+t0,       rho=F^2,       V0=(rho+1)^t,
+B=binom(rho+t,t),       R0=2+t+x+y+F,       K=2R0,
+N=B^K.
+\end{verbatim}
+
+The cofinal source adds t0=\allowbreak{}h0\textasciicircum{}\allowbreak{}2 and y=\allowbreak{}V0(V0-1). Let a\_\allowbreak{}1,...,a\_\allowbreak{}9 denote the independent positive CRT representatives, including the encoded index, and set
+
+
+
+\begin{verbatim}
+H0=1+sum_i a_i,       q=(B H0)^K.
+\end{verbatim}
+
+The aggregate constraint sum\_\allowbreak{}i a\_\allowbreak{}i+\allowbreak{}slack=\allowbreak{}9N\textasciicircum{}\allowbreak{}2 is removed. Its only purpose was the old radix bound. The semantic base of the third power request is replaced by B H0. The explicit transformation lists the three changed private power-base rows and the new quadratic product gate.
+
+
+
+The old per-index comparison norms, comparison congruences, private ordinate inequalities, and common product over all principal ordinates are removed. Each original principal norm is retained, at its original undoubled requested index k\_\allowbreak{}i. All original power congruences and front remainders are retained without squaring outputs or residue-one restrictions.
+
+
+
+The private square frame is
+
+
+
+\begin{verbatim}
+W=2+sum(a^2 : a is a distinct actual base, exponent, or output atom).
+\end{verbatim}
+
+All atoms include their complete affine restorations. Consequently |a|\textless{}\allowbreak{}W, a\textasciicircum{}\allowbreak{}2\textless{}\allowbreak{}W and W\textgreater{}\allowbreak{}=\allowbreak{}258 because t\textgreater{}\allowbreak{}=\allowbreak{}16. For each original requested index, W\textgreater{}\allowbreak{}=\allowbreak{}2|k\_\allowbreak{}i|+\allowbreak{}1. There are m=\allowbreak{}15 principal pairs, so m\textless{}\allowbreak{}W. No positivity of an unvalidated output or of K is used in these facts.
+
+
+
+The old frame norm is retained, with its ordinate parameter replaced by an odd integer:
+
+
+
+\begin{verbatim}
+A^2-W^3(W+2)(2z+1)^2=1,       A>=0.
+\end{verbatim}
+
+There is no sign guard on z. The source still has an ordinary quadratic multiplication circuit for this displayed higher-degree identity.
+
+
+
+\subsection{Frame and Pell facts}
+
+
+
+For integer a\textgreater{}\allowbreak{}=\allowbreak{}2 let X\_\allowbreak{}j(a),Y\_\allowbreak{}j(a) be the Pell sequences with X\_\allowbreak{}0=\allowbreak{}1,Y\_\allowbreak{}0=\allowbreak{}0 and
+
+
+
+\begin{verbatim}
+X_(j+1)=a X_j+(a^2-1)Y_j,    Y_(j+1)=X_j+a Y_j.
+\end{verbatim}
+
+Every integral norm-one solution at discriminant a\textasciicircum{}\allowbreak{}2-1 has independent signs on X\_\allowbreak{}j(a),Y\_\allowbreak{}j(a), for a unique j\textgreater{}\allowbreak{}=\allowbreak{}0. This follows by elementary descent by the smallest positive unit a+\allowbreak{}sqrt(a\textasciicircum{}\allowbreak{}2-1). In particular Y\_\allowbreak{}j\textgreater{}\allowbreak{}=\allowbreak{}j, and the positive ordinate sequence is strictly increasing.
+
+
+
+The frame norm and 2z+\allowbreak{}1 nonzero give A\textgreater{}\allowbreak{}=\allowbreak{}2. Apply classification at center W+\allowbreak{}1 to (A,|W(2z+\allowbreak{}1)|). Since Y\_\allowbreak{}j(W+\allowbreak{}1)=\allowbreak{}j modulo W, the positive frame index is divisible by W and is at least W. Hence
+
+
+
+\begin{verbatim}
+A>=X_W(W+1)>W^W,       A-1>4W^3.
+\end{verbatim}
+
+The last inequality holds for W\textgreater{}\allowbreak{}=\allowbreak{}258. All following applications use A positive.
+
+
+
+We use two elementary inherited index facts. If Y\_\allowbreak{}i(A)\textasciicircum{}\allowbreak{}2 divides Y\_\allowbreak{}l(A), with i,l\textgreater{}\allowbreak{}=\allowbreak{}1, then i divides l and Y\_\allowbreak{}i(A) divides l. To see this, divide l by i, use the addition law modulo Y\_\allowbreak{}i to force zero remainder, and expand modulo Y\_\allowbreak{}i\textasciicircum{}\allowbreak{}2. Also, for 1\textless{}\allowbreak{}=\allowbreak{}i\textless{}\allowbreak{}=\allowbreak{}l, the congruence X\_\allowbreak{}j(A)=\allowbreak{}+\allowbreak{}/\allowbreak{}-X\_\allowbreak{}i(A) modulo X\_\allowbreak{}l(A) forces j=\allowbreak{}+\allowbreak{}/\allowbreak{}-i modulo 2l. Reduce the Pell unit exponent modulo 2l, use its value -1 at exponent 2l modulo X\_\allowbreak{}l, and reflect about l; strict growth and 2X\_\allowbreak{}(l-1)\textless{}\allowbreak{}X\_\allowbreak{}l distinguish all remaining absolute residues.
+
+
+
+These are unbounded arithmetic arguments, not consequences of finite samples.
+
+
+
+\subsection{One fully certified anchor}
+
+
+
+Introduce the single anchor (U,C), its common pair (H,J), comparison pair (S,Q), and comparison center D. The literal quadratic circuit represents
+
+
+
+\begin{verbatim}
+U^2-(A^2-1)C^2=1,
+H^2-(A^2-1)J^2=1,
+S^2-(D^2-1)Q^2=1,
+J=C^2(e+1),           e>=0,
+D=1+4J(2d+1),
+D=A+Hf,              S=U+Hg,              Q=W+4Ch.
+\end{verbatim}
+
+All letters other than the stated e are unrestricted integers. The cap row is
+
+
+
+\begin{verbatim}
+C=W+1+sum_i y_i^2+u^2+v^2+w(w+1).                 (1)
+\end{verbatim}
+
+Thus C\textgreater{}\allowbreak{}W\textgreater{}\allowbreak{}=\allowbreak{}258. The product gives J\textgreater{}\allowbreak{}0; hence |H|\textgreater{}\allowbreak{}=\allowbreak{}A and |D|\textgreater{}\allowbreak{}=\allowbreak{}3. D is odd and D=\allowbreak{}1 modulo 4C. No sign of D or d is assumed.
+
+
+
+Write |U|=\allowbreak{}X\_\allowbreak{}i(A), C=\allowbreak{}Y\_\allowbreak{}i(A), |H|=\allowbreak{}X\_\allowbreak{}l(A), J=\allowbreak{}Y\_\allowbreak{}l(A), with positive i,l. Squared divisibility gives i\textless{}\allowbreak{}=\allowbreak{}l and C divides l. Classify the comparison norm at |D|. Polynomial base transfer D=\allowbreak{}A modulo H and S=\allowbreak{}U modulo H give comparison index j=\allowbreak{}+\allowbreak{}/\allowbreak{}-i modulo 2l; signs due to a negative D are absorbed by the independent coordinate signs. Since D=\allowbreak{}1 modulo 4C, the ordinate polynomial gives j=\allowbreak{}+\allowbreak{}/\allowbreak{}-W modulo 4C. It follows that i=\allowbreak{}+\allowbreak{}/\allowbreak{}-W modulo 2C. But 1\textless{}\allowbreak{}=\allowbreak{}i\textless{}\allowbreak{}=\allowbreak{}C and W\textless{}\allowbreak{}C, so only i=\allowbreak{}W is possible. Therefore
+
+
+
+\begin{verbatim}
+C=Y_W(A).
+\end{verbatim}
+
+The argument does not need a sign guard on U,H,S or Q. Unlike the old individual certificate, this complete index verification is performed only once.
+
+
+
+\subsection{Bounded signed principal indices}
+
+
+
+Each retained norm gives
+
+
+
+\begin{verbatim}
+x_i=sigma_i X_(j_i)(A),       y_i=epsilon_i Y_(j_i)(A),
+\end{verbatim}
+
+where j\_\allowbreak{}i\textgreater{}\allowbreak{}=\allowbreak{}0 and sigma\_\allowbreak{}i,epsilon\_\allowbreak{}i belong to \{+\allowbreak{}1,-1\}. Equation (1) implies |y\_\allowbreak{}i|\textless{}\allowbreak{}C, hence j\_\allowbreak{}i\textless{}\allowbreak{}W. Reduce the Pell recurrence modulo A-1 to obtain X\_\allowbreak{}j=\allowbreak{}1 and Y\_\allowbreak{}j=\allowbreak{}j modulo A-1.
+
+
+
+The primary source imposes the single quadratic row
+
+
+
+\begin{verbatim}
+sum_i (y_i-k_i)^2=(A-1)q0.                       (2)
+\end{verbatim}
+
+The quotient q0 is unrestricted. Consequently A-1 divides
+
+
+
+\begin{verbatim}
+E=sum_i (epsilon_i j_i-k_i)^2.
+\end{verbatim}
+
+Because j\_\allowbreak{}i\textless{}\allowbreak{}W, |k\_\allowbreak{}i|\textless{}\allowbreak{}W and m\textless{}\allowbreak{}W, one has 0\textless{}\allowbreak{}=\allowbreak{}E\textless{}\allowbreak{}4mW\textasciicircum{}\allowbreak{}2\textless{}\allowbreak{}4W\textasciicircum{}\allowbreak{}3\textless{}\allowbreak{}A-1. Thus E=\allowbreak{}0, and epsilon\_\allowbreak{}i j\_\allowbreak{}i=\allowbreak{}k\_\allowbreak{}i for each i. This statement allows zero or negative proposed k\_\allowbreak{}i: the conclusion is y\_\allowbreak{}i=\allowbreak{}Y\_\allowbreak{}(k\_\allowbreak{}i)(A) in the signed-index convention Y\_\allowbreak{}(-k)=\allowbreak{}-Y\_\allowbreak{}k. No premature positivity of F, K or y is required.
+
+
+
+The sparse source instead imposes fifteen rows
+
+
+
+\begin{verbatim}
+y_i-k_i=(A-1)q_i.
+\end{verbatim}
+
+The signed error epsilon\_\allowbreak{}i j\_\allowbreak{}i-k\_\allowbreak{}i has absolute value below 2W\textless{}\allowbreak{}A-1, so it vanishes directly. The same ordinate conclusion follows. The primary and sparse sources therefore have identical semantic interfaces.
+
+
+
+The conservative \texttt{cap\_\allowbreak{}both} checkpoint additionally pools (x\_\allowbreak{}i-1)\textasciicircum{}\allowbreak{}2; its residual small error includes (sigma\_\allowbreak{}i-1)\textasciicircum{}\allowbreak{}2 and forces sigma\_\allowbreak{}i=\allowbreak{}+\allowbreak{}1 immediately. The smaller-support released variants omit those terms and orient abscissas by their genuine power requests below.
+
+
+
+\subsection{Acyclic power and sign recovery}
+
+
+
+The only front sign premises needed at the start are x\textgreater{}\allowbreak{}=\allowbreak{}0, the nine encoded representatives minus one \textgreater{}\allowbreak{}=\allowbreak{}0, factorial remainder r\textgreater{}\allowbreak{}=\allowbreak{}0, factorial slack s\textgreater{}\allowbreak{}=\allowbreak{}0, and the exact-binomial output slack o\textgreater{}\allowbreak{}=\allowbreak{}0. The literal raw rows give
+
+
+
+\begin{verbatim}
+B=r+s+1>=1,          q=B+o+1>=2.
+\end{verbatim}
+
+The cofinal horizon gives t\textgreater{}\allowbreak{}=\allowbreak{}16. Thus the pooled conclusion already gives the t ordinate Y\_\allowbreak{}t(A)\textgreater{}\allowbreak{}0, although its abscissa might still have either sign.
+
+
+
+For any positive base 2\textless{}\allowbreak{}=\allowbreak{}n\textless{}\allowbreak{}W, exponent 1\textless{}\allowbreak{}=\allowbreak{}k\textless{}\allowbreak{}W and candidate output |m|\textless{}\allowbreak{}W, put T=\allowbreak{}2An-n\textasciicircum{}\allowbreak{}2-1. Then T\textgreater{}\allowbreak{}W\textasciicircum{}\allowbreak{}W+\allowbreak{}W. If the abscissa is positive, the power congruence gives m=\allowbreak{}n\textasciicircum{}\allowbreak{}k modulo T and the size bounds give equality. If it is negative while the ordinate is positive, the Pell norm instead gives m\textasteriskcentered{}\allowbreak{}n\textasciicircum{}\allowbreak{}k=\allowbreak{}-1 modulo T. The absolute value of m\textasteriskcentered{}\allowbreak{}n\textasciicircum{}\allowbreak{}k+\allowbreak{}1 is below T, so equality m\textasteriskcentered{}\allowbreak{}n\textasciicircum{}\allowbreak{}k=\allowbreak{}-1 would follow, impossible for n\textgreater{}\allowbreak{}=\allowbreak{}2. This ordinary signed-output lemma uses no sign of m.
+
+
+
+Apply it first to the genuine request q\textasciicircum{}\allowbreak{}t. It orients the t abscissa positively. The same positive pair now certifies V0=\allowbreak{}(F\textasciicircum{}\allowbreak{}2+\allowbreak{}1)\textasciicircum{}\allowbreak{}t, including the possible base one, by direct small-residue uniqueness. The ceiling identity is FB=\allowbreak{}V0+\allowbreak{}s\textgreater{}\allowbreak{}0. Since B\textgreater{}\allowbreak{}0, F\textgreater{}\allowbreak{}=\allowbreak{}1. Also V0\textgreater{}\allowbreak{}=\allowbreak{}F\textasciicircum{}\allowbreak{}2+\allowbreak{}1 and FB\textgreater{}\allowbreak{}=\allowbreak{}V0, so B\textgreater{}\allowbreak{}F\textgreater{}\allowbreak{}=\allowbreak{}1, B\textgreater{}\allowbreak{}=\allowbreak{}2 and q\textgreater{}\allowbreak{}=\allowbreak{}3. None of these conclusions uses a binomial interpretation.
+
+
+
+Now y=\allowbreak{}V0(V0-1)\textgreater{}\allowbreak{}=\allowbreak{}F+\allowbreak{}1: already V0\textgreater{}\allowbreak{}=\allowbreak{}F\textasciicircum{}\allowbreak{}2+\allowbreak{}1, and if F=\allowbreak{}1, t\textgreater{}\allowbreak{}=\allowbreak{}16 gives V0=\allowbreak{}2\textasciicircum{}\allowbreak{}t\textgreater{}\allowbreak{}=\allowbreak{}3; if F\textgreater{}\allowbreak{}=\allowbreak{}2, V0\textgreater{}\allowbreak{}=\allowbreak{}F+\allowbreak{}2. Hence the deleted endpoint slack r0=\allowbreak{}y-F-1 is nonnegative. R0=\allowbreak{}2+\allowbreak{}t+\allowbreak{}x+\allowbreak{}y+\allowbreak{}F and K=\allowbreak{}2R0 are positive. Every representative exponent is positive from its guarded +\allowbreak{}1 constructor, and the derived label exponent is positive by the inherited monotone constructor circuit. Thus every requested index is now positive.
+
+
+
+The B\textasciicircum{}\allowbreak{}K request has base B\textgreater{}\allowbreak{}=\allowbreak{}2 and orients the K pair, giving N=\allowbreak{}B\textasciicircum{}\allowbreak{}K. Its other request has base B H0\textgreater{}\allowbreak{}=\allowbreak{}2 and gives q=\allowbreak{}(B H0)\textasciicircum{}\allowbreak{}K. Every remaining principal pair supports a request at base q or q+\allowbreak{}1, so the same lemma orients it and certifies its power. The unchanged one-step Pell addition from the oriented t pair certifies the derived t+\allowbreak{}1 request. All eighteen powers have now been recovered.
+
+
+
+For every exact or range digit, replace its two old remainder-sign guards by the one guard r\_\allowbreak{}i\textasteriskcentered{}\allowbreak{}s\_\allowbreak{}i\textgreater{}\allowbreak{}=\allowbreak{}0. Its unchanged bound row is L\_\allowbreak{}i=\allowbreak{}r\_\allowbreak{}i+\allowbreak{}s\_\allowbreak{}i+\allowbreak{}1, where L\_\allowbreak{}i is now a positive power of q. Thus r\_\allowbreak{}i+\allowbreak{}s\_\allowbreak{}i=\allowbreak{}L\_\allowbreak{}i-1\textgreater{}\allowbreak{}=\allowbreak{}0 and r\_\allowbreak{}i\textasteriskcentered{}\allowbreak{}s\_\allowbreak{}i\textgreater{}\allowbreak{}=\allowbreak{}0 imply both are nonnegative: one negative would force the other nonpositive and make the sum negative. This recovery occurs after power semantics and cannot be used to justify the initial t orientation. Our initial t orientation did not use any remainder bound.
+
+
+
+The usual bounded remainder equations then restore all quotient signs: a positive numerator, 0\textless{}\allowbreak{}=\allowbreak{}r\textless{}\allowbreak{}L, and positive divisors exclude a negative high or range quotient. The endpoint quotients are nonnegative because x\textgreater{}\allowbreak{}=\allowbreak{}0, y\textgreater{}\allowbreak{}F, and the two endpoint rows. The front is therefore genuinely natural wherever its inherited arithmetic proof requires it.
+
+
+
+\subsection{Self-sized radix and the unchanged factorial fixed point}
+
+
+
+From the preceding raw ceiling bootstrap, V0\textless{}\allowbreak{}=\allowbreak{}BF\textless{}\allowbreak{}B\textasciicircum{}\allowbreak{}2. Since K\textgreater{}\allowbreak{}=\allowbreak{}2 and H0\textgreater{}\allowbreak{}=\allowbreak{}1,
+
+
+
+\begin{verbatim}
+q=(B H0)^K>=B^K>=B^2>V0.
+\end{verbatim}
+
+For positive rho and t, every binomial coefficient binom(rho+\allowbreak{}t,j) with 0\textless{}\allowbreak{}=\allowbreak{}j\textless{}\allowbreak{}=\allowbreak{}t is at most (rho+\allowbreak{}1)\textasciicircum{}\allowbreak{}t; this is the inherited Pascal/\allowbreak{}product bound, which does not require rho\textgreater{}\allowbreak{}=\allowbreak{}t. Therefore the single digit is exact and B=\allowbreak{}binom(F\textasciicircum{}\allowbreak{}2+\allowbreak{}t,t). The round15 square-output fixed-point proof, valid for t\textgreater{}\allowbreak{}=\allowbreak{}16, then gives F=\allowbreak{}t!. This proof uses F\textgreater{}\allowbreak{}t\textasciicircum{}\allowbreak{}2, obtained from 2\textasciicircum{}\allowbreak{}t/\allowbreak{}(t+\allowbreak{}1)\textgreater{}\allowbreak{}t\textasciicircum{}\allowbreak{}2, to exclude any small additional fixed point.
+
+
+
+The same B is the product of the pairwise coprime d\_\allowbreak{}i=\allowbreak{}1+\allowbreak{}F\textasciicircum{}\allowbreak{}2/\allowbreak{}i, 1\textless{}\allowbreak{}=\allowbreak{}i\textless{}\allowbreak{}=\allowbreak{}t. Thus N=\allowbreak{}B\textasciicircum{}\allowbreak{}K is still the amplified CRT modulus. The new q is N\textasteriskcentered{}\allowbreak{}H0\textasciicircum{}\allowbreak{}K, so N divides q.
+
+
+
+Every independent representative a\_\allowbreak{}i is strictly below H0. For an ordinary lower range index 1\textless{}\allowbreak{}=\allowbreak{}k\textless{}\allowbreak{}R0 and j\textless{}\allowbreak{}=\allowbreak{}k,
+
+
+
+\begin{verbatim}
+binom(a_i,j)<=a_i^k<H0^K<=q,
+\end{verbatim}
+
+with the coefficient zero if j\textgreater{}\allowbreak{}a\_\allowbreak{}i. No aggregate representative bound is needed. For the derived label Jlabel the inherited ledger gives Jlabel\textless{}\allowbreak{}=\allowbreak{}(n+\allowbreak{}1)\textasciicircum{}\allowbreak{}ell, where n is the largest of its four syntax parameters and ell=\allowbreak{}4194304. Since H0 exceeds every positive independent representative, n+\allowbreak{}1\textless{}\allowbreak{}=\allowbreak{}H0 and Jlabel\textless{}\allowbreak{}=\allowbreak{}H0\textasciicircum{}\allowbreak{}ell. The retained padding t\textgreater{}\allowbreak{}=\allowbreak{}16 and F=\allowbreak{}t! give ell(t+\allowbreak{}1)\textless{}\allowbreak{}2F\textless{}\allowbreak{}K, hence every needed derived-label coefficient is below H0\textasciicircum{}\allowbreak{}K\textless{}\allowbreak{}=\allowbreak{}q. The earlier stronger coefficient estimate using 3ell also suffices.
+
+
+
+The local Horn majorant still gives L\textless{}\allowbreak{}R0\textasciicircum{}\allowbreak{}8388608\textless{}\allowbreak{}2\textasciicircum{}\allowbreak{}R0\textless{}\allowbreak{}2\textasciicircum{}\allowbreak{}K. All prime-power range-decoding and multiplicity arguments therefore apply exactly as in the inherited proof. In particular they do not assume that a supplied rule multiset is acyclic, and the truth label still has unit weight.
+
+
+
+\subsection{Cofinal completeness at the new beta modulus}
+
+
+
+Start with a finite C222 refutation, not with an assumed solution or consistency assumption. Expand its DAG into a finite tree. Choose h0 large enough that t=\allowbreak{}16+\allowbreak{}h0\textasciicircum{}\allowbreak{}2 dominates its step count, every local parameter and every full constructor label sum, including the fixed truth-padding tuple. Insert truth steps to reach exactly t rows. This restriction is complete because every sufficiently large horizon is permitted, not merely because an unspecified admissible set is unbounded.
+
+
+
+Set F=\allowbreak{}t!, b=\allowbreak{}F\textasciicircum{}\allowbreak{}2+\allowbreak{}1 and V0=\allowbreak{}b\textasciicircum{}\allowbreak{}t. Each pending multiset has at most t+\allowbreak{}1 members, including multiplicities, and every weight is at most 1+\allowbreak{}tF\textless{}\allowbreak{}=\allowbreak{}F\textasciicircum{}\allowbreak{}2+\allowbreak{}1=\allowbreak{}b because F\textgreater{}\allowbreak{}=\allowbreak{}t. Hence each accumulator is at most b\textasciicircum{}\allowbreak{}(t+\allowbreak{}1). Since t\textgreater{}\allowbreak{}=\allowbreak{}16 and b\textgreater{}\allowbreak{}=\allowbreak{}2,
+
+
+
+\begin{verbatim}
+y=V0(V0-1)=b^t(b^t-1)>b^(t+1).
+\end{verbatim}
+
+Moreover V0=\allowbreak{}1 modulo F, so F divides y, and y\textgreater{}\allowbreak{}=\allowbreak{}F+\allowbreak{}1. These are precisely the inherited first beta-CRT requirements. The moduli 1+\allowbreak{}(i+\allowbreak{}1)y, 0\textless{}\allowbreak{}=\allowbreak{}i\textless{}\allowbreak{}=\allowbreak{}t, are pairwise coprime: a common prime divides i-j, hence is at most t and divides F and y, contradicting its divisibility of either modulus. Choose the CRT code x and its nonnegative endpoint quotients.
+
+
+
+Then fix R0,K,B,N and choose the nine independent positive representatives by the original CRT at precision d\_\allowbreak{}i\textasciicircum{}\allowbreak{}(2K). No aggregate cap is imposed on them. Only afterwards compute H0 and q=\allowbreak{}(B H0)\textasciicircum{}\allowbreak{}K. The bounds above validate all required digits uniformly in these chosen representatives. This dependence order has no fixed-point or future-modulus circularity.
+
+
+
+\subsection{Complete private Pell witnesses}
+
+
+
+For these genuine front values form the exact square frame W. Set A=\allowbreak{}X\_\allowbreak{}W(W+\allowbreak{}1). The recurrence Y\_\allowbreak{}(n+\allowbreak{}2)=\allowbreak{}2(W+\allowbreak{}1)Y\_\allowbreak{}(n+\allowbreak{}1)-Y\_\allowbreak{}n gives Y\_\allowbreak{}n(W+\allowbreak{}1)=\allowbreak{}n modulo 2W, so Y\_\allowbreak{}W(W+\allowbreak{}1)/\allowbreak{}W is a positive odd integer. Set z=\allowbreak{}(Y\_\allowbreak{}W(W+\allowbreak{}1)/\allowbreak{}W-1)/\allowbreak{}2. This supplies the odd frame exactly.
+
+
+
+Choose each main pair canonically at k\_\allowbreak{}i, and choose the anchor U=\allowbreak{}X\_\allowbreak{}W(A), C=\allowbreak{}Y\_\allowbreak{}W(A). Let h=\allowbreak{}max\_\allowbreak{}i k\_\allowbreak{}i. The square frame gives W\textgreater{}\allowbreak{}=\allowbreak{}2h+\allowbreak{}1. Pell doubling and growth imply
+
+
+
+\begin{verbatim}
+Y_(2h)=2X_hY_h>2Y_h^2,
+Y_(2h+1)>(2A-1)Y_(2h)>2(2A-1)Y_h^2.
+\end{verbatim}
+
+Thus C-sum\_\allowbreak{}i Y\_\allowbreak{}(k\_\allowbreak{}i)\textasciicircum{}\allowbreak{}2\textgreater{}\allowbreak{}(4A-2-m)Y\_\allowbreak{}h\textasciicircum{}\allowbreak{}2\textgreater{}\allowbreak{}W. Consequently the slack in (1) is nonnegative. Its ternary witnesses exist by the standard representation n=\allowbreak{}u\textasciicircum{}\allowbreak{}2+\allowbreak{}v\textasciicircum{}\allowbreak{}2+\allowbreak{}w(w+\allowbreak{}1) of every nonnegative integer.
+
+
+
+Choose a positive Pell unit power at A that is one modulo 8C\textasciicircum{}\allowbreak{}2. Its coordinates give H odd, J\textgreater{}\allowbreak{}0 divisible by C\textasciicircum{}\allowbreak{}2 and gcd(H,8J)=\allowbreak{}1. Set e=\allowbreak{}J/\allowbreak{}C\textasciicircum{}\allowbreak{}2-1\textgreater{}\allowbreak{}=\allowbreak{}0. CRT now chooses a sufficiently large positive D with
+
+
+
+\begin{verbatim}
+D=A modulo H,       D=1+4J modulo 8J.
+\end{verbatim}
+
+Hence D=\allowbreak{}1+\allowbreak{}4J(2d+\allowbreak{}1) for an integer d. Choose the comparison pair at index W; polynomial base transfer gives its two required congruences. Fill the three signed quotient witnesses. This constructs the full single anchor, including the strengthened odd multiplier condition.
+
+
+
+For the pooled row, each Y\_\allowbreak{}(k\_\allowbreak{}i)-k\_\allowbreak{}i is divisible by A-1, so its sum of squares is divisible by A-1. The sparse quotients exist individually. Fill every genuine power congruence by the ordinary recurrence identity and every retained sign guard by the ternary representation. This gives a complete zero of the new source. Conversely, the prior soundness argument gives a genuine front refutation; one may reconstruct old natural Pell witnesses afresh. No claim identifies the old and new private witnesses pointwise.
+
+
+
+\subsection{Exact compilation and verification boundary}
+
+
+
+\texttt{build\_\allowbreak{}cap.py} records the full square-frame atom list, removed private constraints, complete new anchor, pooled or individual residues, actual sign guards, front changes, and source hashes. Every guard G\textgreater{}\allowbreak{}=\allowbreak{}0 is the quadratic row G=\allowbreak{}a\textasciicircum{}\allowbreak{}2+\allowbreak{}b\textasciicircum{}\allowbreak{}2+\allowbreak{}c(c+\allowbreak{}1). Products of interval coordinates and the linear-in-anchor sum of squares are themselves quadratic.
+
+
+
+The inherited exact Horn factoring does not alter its external interface. Monic integral projection then removes only equations z-Q=\allowbreak{}0 with integral quadratic Q and substitutions that leave every residual quadratic. Its certificate restores every deleted variable; unconstrained variables may be restored as zero. Integral translations are bijections old=\allowbreak{}new+\allowbreak{}shift. The separately stored collected polynomial is the exact sum of squares, not a numerical sample or a symbolic exponent shorthand.
+
+
+
+For reproduction from the workspace root:
+
+
+
+\begin{verbatim}
+python diophantine_zfc_round16/direct/build_cap.py diophantine_zfc_round16/direct/portable_input diophantine_zfc_round16/direct/rebuilt --strong-cap --odd-frame --odd-comparison --ys-only --cofinal --self-radix
+python diophantine_zfc_round16/direct/center_integer.py diophantine_zfc_round16/direct/rebuilt diophantine_zfc_round16/direct/rebuilt_integer324
+\end{verbatim}
+
+Add --sparse for the 338-variable companion. The separate conservative checkpoints retain stronger sign conditions or omit cofinal restrictions. Their counts must not be confused with the released two endpoints. Literal checks certify syntax, complete expansion and exact algebraic maps. The unbounded Pell, factorial, CRT, Horn-flow and calibration arguments above and in the identified dependencies supply the semantic theorem.

@@ -1,0 +1,528 @@
+\section{Complete ordinary proof of the signed-cap construction}
+\label{sec:direct-signed-cap-full}
+
+\subsection{Literal polynomial and logical scope}
+The preferred polynomial is the fixed polynomial
+\[
+ P_{352}(z_0,\ldots,z_{351})
+   =\sum_{r=0}^{218} R_r(z_0,\ldots,z_{351})^2
+   \quad\text{in }\mathbb Z[z_0,\ldots,z_{351}].
+\]
+Here the ordered list of all 219 quadratic residuals $R_r$, including
+its complete ordered variable list and every integer coefficient, is the
+literal file \texttt{alternative/odd\_cap/equation.json}. A term
+\texttt{[c,[i,j,...]]} means $c z_i z_j\cdots$, and an empty index list
+means a constant. The complete collected coefficient list defining the
+same polynomial is
+\texttt{alternative/odd\_cap/expanded\_polynomial.json}. Its SHA-256 is
+\begin{quote}\small\ttfamily
+ a4b6e1f295015967ebf3cfe8f5bf397b1e1a9987b1d620fcd940f4cef8f1ce84.
+\end{quote}
+Thus the equation is an ordinary fixed polynomial equation, not a formula
+with powers, factorials, Pell functions, or unbounded lists left as
+primitive operations. Every unknown ranges over all of $\mathbb Z$.
+The exact degree is four; there are 9,355 collected monomials and the
+maximum absolute collected coefficient is 15,020,718. The simpler
+355-variable sibling is defined analogously by the 220 residuals in
+\texttt{alternative/signed\_cap/equation.json}. It has 9,370 monomials
+and the same degree and coefficient height.
+
+The proof below establishes the new arithmetic replacement in both
+directions. Composed with the frozen parent's ordinary direct-arithmetic,
+C222/refutation, and ZFC calibration, it gives
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\exists z\in\mathbb Z^{352}\;P_{352}(z)=0\bigr)
+ \longleftrightarrow
+ \bigl(\text{there exists a finite ZFC refutation}\bigr).
+\]
+Consequently its no-zero sentence is equivalent in ZFC to
+$\operatorname{Con}(\mathrm{ZFC})$. This is an ordinary mathematical
+proof with the stated inherited calibration, not a newly completed
+Lean or Rocq kernel proof or a newly printed object-language ZFC
+derivation. Neither consistency nor inconsistency is assumed. The
+construction does not simulate K215 or instantiate Jones's universal
+polynomial. Variable-count comparisons here concern the direct-calculus,
+relatively small-coefficient quartic architecture; other architectures
+have much smaller variable counts and enormous fixed coefficients.
+
+\subsection{The signed squared-cap theorem}
+For $A\geq2$ define the integer Pell sequences by
+\[
+ X_0(A)=1,\qquad Y_0(A)=0,
+\]
+\[
+ \begin{aligned}
+ X_{j+1}(A)&=A X_j(A)+(A^2-1)Y_j(A),\\
+ Y_{j+1}(A)&=X_j(A)+A Y_j(A).
+ \end{aligned}
+\]
+Assume the family is nonempty, so $m\geq1$. Suppose
+\[
+ W\geq4,\qquad A-1>9W^3,\qquad
+ 1\leq k_i<W\ (1\leq i\leq m),\qquad m\leq W.
+\]
+Let $x_i,y_i$ be unrestricted integers satisfying
+\[
+ x_i^2-(A^2-1)y_i^2=1.
+\]
+Certify once that $V=Y_{2W}(A)$, and impose
+\begin{align}
+ V&=2W+1+s+\sum_{i=1}^m y_i^2,
+       &&s\geq0, \label{eq:full-signed-cap}\\
+ \sum_{i=1}^m(y_i-k_i)^2&=(A-1)Q,
+       &&Q\in\mathbb Z. \label{eq:full-signed-pool}
+\end{align}
+Then
+\[
+ y_i=Y_{k_i}(A)>0,\qquad |x_i|=X_{k_i}(A)
+ \quad(1\leq i\leq m).
+\]
+Conversely the canonical positive ordinates and either signs of their
+abscissae extend to solutions of
+\eqref{eq:full-signed-cap}--\eqref{eq:full-signed-pool}.
+
+\paragraph{Soundness.}
+Integer Pell classification gives indices $j_i\geq0$ and signs
+$\epsilon_i\in\{1,-1\}$ such that
+\[
+ |x_i|=X_{j_i}(A),\qquad y_i=\epsilon_iY_{j_i}(A).
+\]
+Either sign may be used when $j_i=0$. Equation
+\eqref{eq:full-signed-cap} gives $y_i^2<V$. Since $V>1$, it follows
+that $|y_i|<V$, and strict monotonicity of $Y_j(A)$ gives
+$j_i<2W$. In particular the endpoint $j_i=2W$ is excluded.
+
+Modulo $A-1$, the recurrence gives $Y_j(A)\equiv j$. Therefore
+\eqref{eq:full-signed-pool} implies
+\[
+ A-1\ \bigm|\ E:=\sum_{i=1}^m(\epsilon_i j_i-k_i)^2.
+\]
+Every absolute difference is less than $3W$, so
+\[
+ 0\leq E<9mW^2\leq9W^3<A-1.
+\]
+Thus $E=0$. Each signed index $\epsilon_i j_i$ equals the positive
+integer $k_i$, which forces $\epsilon_i=1$ and $j_i=k_i$.
+Neither a negative ordinate nor a zero-index solution survives. This
+argument deliberately does not orient the sign of $x_i$; that is a
+separate consequence of the retained power rows below.
+
+\paragraph{Constructive completeness.}
+Set $y_i=Y_{k_i}(A)$. Every difference $y_i-k_i$ is divisible by
+$A-1$, so the quotient $Q$ in \eqref{eq:full-signed-pool} is an
+integer, indeed nonnegative. Put $T=Y_W(A)\geq1$. The norm and
+positivity imply $X_W(A)>(A-1)T$. The double-index identity therefore
+gives
+\[
+ V=Y_{2W}(A)=2X_W(A)T>2(A-1)T^2.
+\]
+Since each $k_i<W$, one has $y_i<T$ and
+$\sum_i y_i^2\leq mT^2$. Consequently
+\[
+ V-\sum_i y_i^2>(2A-2-m)T^2>2W+1,
+\]
+using $A-1>9W^3$ and $m\leq W$. Hence the explicit restoration
+\[
+ s=V-2W-1-\sum_i y_i^2
+\]
+is nonnegative. This proves completeness without extrapolating from
+finite examples or imposing an additional asymptotic assumption.
+
+\subsection{A single ordinary indexed-Pell certificate supplies the cap}
+Initially consider the simpler sibling. All letters below are integers,
+with only $e$ expressly constrained to be nonnegative:
+\begin{align}
+ U^2-(A^2-1)V^2&=1, &
+ H^2-(A^2-1)J^2&=1, \label{eq:full-cap-norms}\\
+ S^2-(B^2-1)R^2&=1, &
+ B&=1+4Vd, \label{eq:full-cap-comparison}\\
+ J&=V^2(e+1), & e&\geq0, \label{eq:full-positive-aux}\\
+ B&=A+Hf, & S&=U+Hg, \label{eq:full-cap-transfers}\\
+ R&=2W+4Vh. && \label{eq:full-cap-index}
+\end{align}
+The aggregate cap gives $V\geq2W+1>0$. Thus $J\geq V^2>1$.
+Auxiliary Pell classification implies $|H|\geq A\geq2$, in fact
+$|H|\geq2A^2-1$.
+
+No positivity guard on $B$ or $d$ is needed. If $d=0$, then $B=1$
+and \eqref{eq:full-cap-transfers} would give $H\mid A-1$, contrary
+to $|H|\geq A$. If $d\ne0$, then $B=1+4Vd$ gives
+$|B|\geq4V-1\geq3$. Thus $|B|\geq2$. The coordinates
+$d,B,f,S,R,g,h,H,U$ may all remain unrestricted.
+
+The inherited signed indexed-Pell criterion applies with requested
+index $2W$, principal ordinate $V$, auxiliary ordinate $J$, and
+moduli $|H|$ and $4V$. Its hypotheses
+\[
+ 1\leq2W\leq V,\qquad V^2\mid J,
+\]
+the three norm equations, and its four congruences are precisely the
+rows above and the aggregate cap. The conclusion is
+\[
+ |U|=X_{2W}(A),\qquad V=Y_{2W}(A).
+\]
+For completeness, the signed extensions used in this application are
+spelled out rather than silently assumed.
+
+For negative $B$, define $X_j(B),Y_j(B)$ by the same polynomial
+recurrence. For $j>0$,
+\[
+ X_j(B)=(-1)^jX_j(|B|),\qquad
+ Y_j(B)=(-1)^{j-1}Y_j(|B|),
+\]
+while $X_0(B)=1$, $Y_0(B)=0$. Thus the classification at $|B|$
+permits independently signed coordinates at the signed base $B$.
+Polynomial base-congruence transfer and
+$Y_j(B)\equiv j\pmod{B-1}$ continue to hold. The usual
+residue-class proof consequently applies for $|B|\geq2$.
+A signed principal $U$ may be replaced by $|U|$ while multiplying
+$S$ by the same sign. Its norm and the congruence $S\equiv U\pmod H$
+are preserved. The sign of $H$ changes no divisibility modulus.
+
+Here is the precise short-interval step. Classification gives a
+principal index $i>0$, an auxiliary index $n>0$, and a comparison
+index $r\geq0$. Squared divisibility $V^2\mid J$ gives $V\mid n$,
+and the size comparison gives $i\leq n$. The abscissa congruence,
+with the independent sign of $S$ and the half-period sign-change
+identity allowed, gives
+\[
+ r\equiv i\text{ or }-i\pmod{2n}.
+\]
+The ordinate congruence gives
+\[
+ r\equiv2W\text{ or }-2W\pmod{4V}.
+\]
+It follows that $i\equiv2W$ or $-2W\pmod{2V}$. Since
+$1\leq i\leq V$ and $1\leq2W\leq V$, this forces $i=2W$,
+including the endpoint case. This is the inherited indexed-Pell
+argument applied to the stated signed domains.
+
+For the simpler sibling's completeness, choose the canonical pair
+at $2W$. The existing indexed-Pell completeness theorem supplies
+$H,J,B,S,R$ and progression witnesses with $B>0$ and $e\geq0$.
+They also satisfy the weaker unrestricted domains here. Only one
+ordinary indexed certificate, not a stronger simultaneous theorem,
+is required for this cap. An explicit strengthened construction for
+the preferred sibling is provided below.
+
+\subsection{The scale and seed premises are established before any powers}
+The retained parent frame is the exact polynomial identity
+\[
+ W=2+\sum_{a\in\mathcal A}a^2,
+\]
+where $\mathcal A$ is the set of distinct actual bases, exponents,
+and outputs of the nineteen retained power requests. The independent
+checker verifies the fully expanded identity against the literal
+41-atom inventory. Consequently every such atom has absolute value
+less than $W$. Since $t=t_0+16$ with $t_0\geq0$, and $t$ is one
+of these atoms, $W\geq258$. In particular the sixteen independent
+seeds satisfy $m=16\leq W$.
+
+The retained scale certificate, with $A,z\geq0$, is
+\[
+ A^2-\bigl((W+1)^2-1\bigr)\bigl(W(z+1)\bigr)^2=1.
+\]
+Its ordinate is positive. Classification at base $W+1$ and
+$Y_\ell(W+1)\equiv\ell\pmod W$ imply a positive index $\ell$
+divisible by $W$. Therefore
+\[
+ A\geq X_W(W+1)\geq(W+1)^W.
+\]
+For every $W\geq4$,
+\[
+ (W+1)^W-1>9W^3.
+\]
+At $W=4$ this is $624>576$. The ratio of successive exponential
+bounds is greater than $W+2$, whereas the cubic ratio is at most
+$(5/4)^3$, so the inequality persists by induction. It follows that
+$A-1>9W^3$ without interpreting any requested power.
+
+All sixteen seed exponents are already positive from retained
+semantic guards and literal source rows. They are $t$, $K=2R$,
+$\rho+t$, $F^2+t$, the nine positive encoded representatives,
+$y+1$, $x+1$, and the positive derived-label expression. The
+presemantic definitions are
+\[
+ \rho=F^2t^2,\qquad y=F^2+r_0+1,
+ \qquad R=2+t+x+y+F^2,
+ \qquad x,r_0,t_0\geq0.
+\]
+The sign of $F$ is not yet assumed. The derived-label expression
+has a positive constant term and nonnegative constructor inputs.
+The fresh literal lower-bound certificate proves every seed from
+retained guards and the actual source rows; it uses neither a
+removed seed-gap sign nor any conclusion of the cap theorem.
+Thus the signed cap theorem applies before any factorial,
+binomial, CRT range, or power output has been interpreted.
+
+\subsection{Exact changed interface and quadratic implementation}
+The frozen source is the square-anchored 489-integer direct
+construction before its monic projection. For each of sixteen
+independent seeds the principal norm and all power-congruence rows
+are retained. The deleted rows are exactly its index-at-most-$Y$
+row, comparison norm, comparison-abscissa congruence and
+comparison-ordinate congruence; the old shared auxiliary norm,
+shared comparison-base congruence and positive-product row are
+also deleted. The sixteen scalar guards on $Y-k$ and two old
+shared auxiliary scalar guards are removed. The precise original
+row numbers and every deleted literal are recorded in
+\texttt{cap\_certificate.json}.
+
+No semantic sign, digit-pair guard, factorial ceiling, range row,
+or Horn-flow source row is deleted. Unused arithmetic gates of
+the old certificates remain temporarily as polynomial definitions,
+then disappear under checked integral monic projection. They are
+not premises of the new proof.
+
+Every nonnegative slack is represented by the ternary form
+\[
+ \mathcal N(a,b,c)=a^2+b^2+c(c+1),\qquad a,b,c\in\mathbb Z.
+\]
+This takes only nonnegative values and represents every nonnegative
+integer. Indeed Legendre's three-square theorem applies to $4n+1$;
+exactly one of the three representing coordinates is odd, and a
+permutation followed by division by four gives this form.
+
+To remove any ambiguity about degree, introduce the four explicit
+wires
+\[
+ a_V=AV,\qquad a_J=AJ,\qquad b_R=BR,\qquad v_2=V^2.
+\]
+For the preferred odd-quotient construction, the entire new cap
+interface consists of the following quadratic residuals:
+\[
+\begin{aligned}
+ &a_V-AV, &&a_J-AJ, &&b_R-BR, &&v_2-V^2,\\
+ &U^2+V^2-a_V^2-1,
+ &&H^2+J^2-a_J^2-1,
+ &&S^2+R^2-b_R^2-1,\\
+ &B-1-4Vd,
+ &&J-v_2-2v_2e,
+ &&B-A-Hf,\\
+ &S-U-Hg,
+ &&R-2W-4Vh,\\
+ &V-2W-1-s-\sum_i y_i^2,\\
+ &\sum_i(y_i-k_i)^2-AQ+Q,\\
+ &s-a^2-b^2-c^2-c.
+\end{aligned}
+\]
+Here $a,b,c$ are the three fresh witnesses for the aggregate
+slack, not the comparison base $B$. Every $k_i$ is affine in
+already existing source wires, so its squared contribution is
+quadratic without extra summand variables. In the simpler sibling,
+replace $J-v_2-2v_2e$ by $J-v_2-v_2e$ and add
+$e-a_e^2-b_e^2-c_e^2-c_e$. All variable names, exact indices and
+fresh guard witnesses are fixed in the supplied finite certificate.
+The projection may subsequently remove some of these wires; their
+restorations are supplied explicitly.
+
+\subsection{All nineteen powers and their abscissa orientations}
+After the cap theorem, each seed has
+\[
+ Y=Y_k(A)>0,\qquad X= X_k(A)\text{ or }-X_k(A).
+\]
+For a retained request at positive base $n$ and index $k$, the
+unchanged row is
+\[
+ X+(n-A)Y=m+T_nu,\qquad T_n=2An-n^2-1.
+\]
+The frame supplies $1\leq n,k<W$ and $|m|<W$; its scale gives
+$T_n>W^W+W$. If $X>0$, standard Pell substitution gives
+$m\equiv n^k\pmod{T_n}$, and the strict interval bound yields
+$m=n^k$.
+
+If $X<0$, multiply the conjugate expressions and use the norm.
+The result is
+\[
+ mn^k\equiv-1\pmod{T_n}.
+\]
+Since $|mn^k+1|<T_n$, this forces the integer identity $mn^k=-1$.
+For $n\geq2$ it is impossible. At $n=1$ the sole inverse branch
+is $m=-1$. Thus a request with base at least two orients its shared
+principal pair. This reasoning uses no nonnegative quotient or
+output assumption: all such quotients remain signed.
+
+The complete noncircular recovery order is as follows.
+\begin{enumerate}
+\item The retained factorial remainder and slack give $D\geq1$.
+The retained exact-binomial output slack gives $q=D+o+1\geq2$.
+The request $q^t$ orients the $t$ pair. The request
+$(\rho+1)^t$ sharing that pair therefore recovers its true value
+$V_0\geq1$, even if $\rho+1$ initially equals one. The unchanged
+ceiling identity $DF=V_0+\text{factorial slack}$ now gives
+$F\geq1$, and consequently $V_0\geq2$.
+\item The retained $B\geq0$ guard and
+$C+F^2+1=B i_q$, with $C\geq1$, imply $B>0$. The request at
+index $K$ for $B^K$ gives either $N=B^K>0$ or the sole inverse
+case $B=1$, $N=-1$. In either case the second base
+$N+V_0+1$ is at least two. That request orients the $K$ pair,
+excludes the inverse branch, and recovers the common radix
+$q=N(N+V_0+1)^K$.
+\item Every other independent seed has a request at base $q$ or
+$q+1$, both at least two. Those requests orient all remaining
+principal pairs. The $t+1$ pair is obtained by the retained exact
+Pell addition from the already oriented $t$ pair, not by an
+unchecked extra seed.
+\end{enumerate}
+In this paragraph $B$ is the retained semantic binomial output;
+it is distinct from the private comparison-base coordinate $B$
+of the cap certificate, whose scope was local to that certificate.
+The literal source assigns distinct variable indices to them.
+
+For completeness, the entire request inventory in original output
+labels is:
+\begin{itemize}
+\item \texttt{pow0}: $(\rho+1)^t$; \texttt{pow4}: $q^t$.
+\item \texttt{pow1}: $B^K$; \texttt{pow2}: $(N+V_0+1)^K$.
+\item \texttt{pow3}: $(q+1)^{\rho+t}$;
+      \texttt{pow5}: $(q+1)^{F^2+t}$.
+\item \texttt{pow6}, \texttt{pow8}, \texttt{pow9}, \texttt{pow10},
+\texttt{pow11}, \texttt{pow13}, \texttt{pow14}, \texttt{pow16},
+\texttt{pow17}: $(q+1)$ raised to the nine shifted encoded
+representatives.
+\item \texttt{pow12}: $q^{y+1}$;
+      \texttt{pow15}: $q^{x+1}$.
+\item \texttt{pow18}: $(q+1)$ raised to the positive
+      derived-label expression.
+\item \texttt{pow7}: $q^{t+1}$, using the derived addition pair.
+\end{itemize}
+This is nineteen requests at sixteen independent indices and one
+derived index. The literal audit checks retention of every row,
+its exact exponent binding, and coverage of every independent seed.
+
+\subsection{Composition with the unchanged direct arithmetic}
+Once the powers are recovered, the twelve paired guards of the
+parent restore all digit remainder and slack signs from their
+nonnegative sums $q^k-1$. The parent's ordered factorial proof
+then gives $F=t!$, identifies the reciprocal binomial product,
+and validates every CRT range digit. Its amplified reciprocal CRT
+argument recovers each bounded local C222/Horn-flow row and the
+derived label bound. The multiplicity-flow argument extracts a
+finite refutation, to which the ordinary C222/ZFC calibration
+applies. These retained arguments are mathematical dependencies,
+not conclusions inferred from finite regression tests.
+
+Conversely, start from a finite refutation and choose the semantic
+data exactly as in the parent's constructive completeness:
+the horizon, factorial, Horn accumulators, beta-CRT data,
+reciprocal product, powers, representatives and digit witnesses.
+These data determine $W$. The retained scale construction supplies
+$A$. Choose every seed canonically at $A$, and derive the $t+1$
+pair by addition. The old positive-power completeness supplies all
+retained power quotients. The signed-cap completeness proved above
+supplies the aggregate slack and pooled quotient, and the single
+cap-index certificate supplies its private witnesses. Add the
+required ternary slack representations and retain all semantic
+guards. Assign unused old witness coordinates arbitrarily, then
+compute their remaining gate definitions. Every new raw residual
+vanishes.
+
+This reconstruction may replace the private old Pell witnesses.
+It claims existence-preserving equivalence, not same-tuple equality
+of discarded coordinates. The Horn factorization is the parent's
+exact polynomial identity, and every subsequent elimination has
+an explicitly checked integral monic restoration. Thus the final
+finite polynomial has exactly the stated existence status in
+both directions.
+
+\subsection{Odd auxiliary quotients: the preferred 352-variable form}
+Replace only \eqref{eq:full-positive-aux} by
+\[
+ J=V^2(2e+1),\qquad e\in\mathbb Z.
+\]
+The single sign predicate for $e$ and its three witnesses are
+removed. The remaining interface is unchanged. The actual emitted
+polynomial, not merely the local count, has 352 variables and
+219 quadratic residuals.
+
+\paragraph{Soundness with a signed auxiliary ordinate.}
+For integer $e$, the number $2e+1$ is nonzero and has absolute
+value at least one. Hence $|J|\geq V^2>1$. The auxiliary norm
+still gives $|H|\geq A$. Every use of $J$ in the signed
+indexed-Pell theorem is through its absolute-value classification
+or the divisibility $V^2\mid J$; its sign is not used. The
+cap proof therefore remains valid with $|J|$ in place of $J$
+in the lower bound, and no other premise changes.
+
+\paragraph{Constructive odd quotient and the full private certificate.}
+Let $r=2W$, and take the canonical cap pair
+\[
+ U=X_r(A),\qquad V=Y_r(A).
+\]
+The doubling identities make $V$ even and $U$ odd. Choose
+\[
+ H=X_{rV}(A),\qquad J=Y_{rV}(A)=VY_V(U),
+\]
+where the last equality is the Pell composition identity.
+Polynomial expansion of $Y_V(U)$ gives an integer $T$ with
+\[
+ Y_V(U)=V U^{V-1}+(U^2-1)T.
+\]
+As $U^2-1=(A^2-1)V^2$, this yields
+\[
+ \frac{J}{V^2}=\frac{Y_V(U)}{V}
+   =U^{V-1}+(A^2-1)VT.
+\]
+The right side is a positive odd integer: $U$ is odd and $V$
+is even. Thus
+\[
+ e=\frac{J/V^2-1}{2}\in\mathbb Z
+\]
+provides the required auxiliary row.
+
+Moreover $H=X_V(U)$ is odd, since $U$ is odd and $U^2-1$ is
+even. The norm gives $\gcd(H,J)=1$; because $V\mid J$, it
+follows that $\gcd(H,4V)=1$. The ordinary Chinese remainder
+theorem therefore supplies arbitrarily large positive $B$ such
+that
+\[
+ B\equiv A\pmod H,\qquad B\equiv1\pmod{4V}.
+\]
+Choose one and set $S=X_r(B)$, $R=Y_r(B)$. Polynomial
+base transfer gives $S\equiv U\pmod H$, and base-one
+reduction gives $R\equiv r\pmod{4V}$. The corresponding
+integers $d,f,g,h$ satisfy every remaining cap row. This is an
+explicit construction of the whole private certificate; no
+unproved odd-quotient version of an inherited completeness
+statement has been assumed.
+
+The saving is precisely three coordinates and one quadratic
+residual. Only the aggregate slack needs a ternary nonnegative
+predicate. The simpler sibling remains independently supplied.
+
+\subsection{Reproduction, finite checks, and attribution}
+The complete local ordinary proof is
+\texttt{alternative/PROOF.md}. To rebuild the preferred endpoint,
+run \texttt{python build\_signed\_cap.py NEW --odd-auxiliary};
+then run \texttt{python check\_signed\_cap.py NEW}.
+Omitting the flag builds the simpler sibling. Both procedures
+also pass with Python optimization enabled. The producer uses
+only standard-library arithmetic and frozen reviewed polynomial
+utilities; no remote state is modified.
+
+The checkers verify the exact parent deletion boundary, strict new
+row and variable inventories, absence of the omitted guard, all
+sixteen presemantic index bounds, the 41-atom frame identity,
+the nineteen request bindings, every integral monic restoration,
+and the full collected quartic. The independent Horn audit checks
+17 affine square roots, 11 product links, 18 literal rewrites,
+and the absence of any escaped factor. Each endpoint has 229
+checked monic restorations. All four fresh builds, comprising
+two endpoints in normal and optimized modes, reproduce every
+producer artifact byte for byte. Altered-input, certificate,
+extra-row and coefficient controls are rejected. Small Pell
+examples and concrete weakened-hypothesis counterexamples
+supplement these checks; they do not decide consistency or
+replace any unbounded mathematical argument.
+
+The natural pooled-cap principle is credited to the incoming
+\path{ConZFC_Shared_Pell_Bound_261_2026-10-24} packet.
+The new step is the squared aggregate at cap index $2W$, which
+recovers the signs and indices jointly and removes all individual
+principal-ordinate sign and index tests. The signed comparison-base
+extension, parent paired guards, square factorial anchor,
+Horn factorization, direct numerical calculus and ordinary ZFC
+calibration retain their original attribution and source pins.
+No claim of a globally minimal equation or literature-wide
+historical priority is made.
