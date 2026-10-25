@@ -3238,18 +3238,39 @@ copies and872 LOW26 padding tests; an occupied clause has raw2^46+1<rho.
 The [first](reviews/compact66-complemented-three-anchor-radix47-ordinary-peer.md)
 and [second](reviews/compact66-complemented-three-anchor-radix47-ordinary-second-peer.md)
 FULL nonauthor reviews pass, followed by [separate ROOT conditional acceptance](reviews/compact66-complemented-three-anchor-radix47-ordinary-acceptance.json).
-Those frozen reviews recorded the new finite conditions as unknown. The
-later [independent controller certificate](research/complemented47-controller-independent/README.md)
-now discharges them for this exact tuple, with lambda1012691 and unit residues
-39/6181/1009404. The [complete verified candidate](candidates/one-page-complemented47-independent/README.md)
-now supplies the maintained PDF/TeX and their measured reductions.
-The separately arriving [CODE ONLY probe](research/compact66-complemented-three-anchor-radix47-controller-probe/README.md)
-and [CODE/TEX draft authority](reviews/compact66-complemented47-page-code-tex-draft-release.md)
-remain preserved at their own historical preparation status; this continuation
-neither ran nor relabeled those separate implementations. The earlier
-+1/spacing11 draft remains a distinct tuple and retains its open conditions.
-A separate two-weighted-anchor proof is under exploration; it changes the
-constants again and inherits no three-anchor finite certificate or acceptance.
+The later [independent controller certificate](research/complemented47-controller-independent/README.md)
+discharges the THREE-anchor conditions for its exact tuple. Its complete
+[page](candidates/one-page-complemented47-independent/README.md) is retained
+as a predecessor of the maintained two-anchor7691 display above.
+
+The separate frozen [CODE ONLY probe](research/compact66-complemented-three-anchor-radix47-controller-probe/README.md)
+never ran: upstream retired its required live ZIP after ROOT's first full
+static. Its [first independent finding and ROOT disposition](reviews/compact66-complemented-three-anchor47-probe-retirement-root-disposition.json)
+remain preserved. The [historical/placed association](reviews/common-remainders47-retired-archive-provenance-association.json)
+authenticates the original archive and four current plaintexts. The separate
+[three-anchor CODE/TEX draft](candidates/one-page-compact66-complemented47/README.md)
+and its unrendered source remain historical preparation, without relabeling
+any failure or importing the later independent numerical results.
+
+The separate [two-weighted-anchor/L8191 proof](research/compact66-complemented-two-anchor-radix47-mersenne8191/README.md)
+now has TWO complete independent nonauthor reviews and [ROOT conditional
+ordinary acceptance](reviews/compact66-complemented-two-anchor-radix47-mersenne8191-ordinary-acceptance.json).
+Its own H2 residues and controller-prime conditions remain UNKNOWN. The new
+bounded probe and CODE/TEX draft were never executed; they are superseded
+for immediate page work by the smaller, independently constructed L7691
+tuple. No finite certificate transfers between the two specializations.
+The earlier +1/spacing11 tuple likewise retains its distinct open conditions.
+
+The [seven-archive intake](research/incoming-7a8da41437-codefree-intake/README.md)
+retains reported/unverified quartic and ten-variable metrics. Those archives
+are now placed as sources149--155; their original Git associations persist.
+The fresh [literal direct-C222 research](research/direct-c222-one-page-template/README.md)
+prints every constructor, eighteen power requests and their full polynomial
+certificate. Its proposed554-natural-variable/332-residual equation removes
+the machine seed and controller assumptions, trading variables and degree
+for a potentially shorter specification. Independent ordinary review and
+physical one-page fit remain open. Lean stays paused; substantial checked
+improvements update the maintained PDF and TeX together.
 
 The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
 and [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)
