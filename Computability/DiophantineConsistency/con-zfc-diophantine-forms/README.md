@@ -89,6 +89,12 @@ it also had 89 / 288 (`90d8b714f9`, page `0ca3812ae9`) and a ten-positive
 86 / 466 (`75f850496c`), which wave-14 package 133's 84 / 436 dominates.
 At 22:03 it accepted 133's 84 / 436 and 85 / 328 (`a223b3e174`) with an
 explicit completeness repair (the canonical bound R > 3q ≥ 96).
+[candidates/ten-positive-qcube-product-square](../candidates/ten-positive-qcube-product-square/README.md)
+applies q-cube normalization to 133's product square: 81 operations at
+degree 750 and 82 at 560. The research session committed the same
+composition first, as a code-free proposal (`a576e152f4`, 22:07); this
+repository's package, written concurrently, supplies the emitted circuits
+and their checks (`a2c20ea419`).
 
 The report holds one hundred and three research packages. All but 60, 66, 68, 97, 102,
 106, 110, 121 and 125 state AI assistance. Some do so only in part: 74
