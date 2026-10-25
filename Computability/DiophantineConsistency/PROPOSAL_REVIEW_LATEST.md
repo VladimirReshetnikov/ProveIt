@@ -2279,3 +2279,23 @@ rendering fit and independent visual checks remain pending; no413PDF
 is claimed. See the [root preparation review](reviews/one-page-shared-odd9-mathematical-preparation-root.md).
 The completed433comparison, canonical92/283 page and Lean pause remain
 preserved while the separate reviewed toolchain is prepared.
+
+
+## Complete413-operation nine-positive page accepted
+
+The preferred [nine-positive comparison PDF](candidates/one-page-shared-odd9/equation.pdf)
+and [standalone TeX](candidates/one-page-shared-odd9/equation.tex) now print
+the entire413-operation, exact-degree1,316,546 equation and every constant
+on one Letter page at9-point mathematics/8-point seed. It saves20operations
+and312,222degrees against the preserved433comparison at the same entire
+original722-character recipe. The first render and all five author commands
+pass, with no retry, layout change or overflow warning.
+
+Both normal/optimized actual auditors prove all43interfaces/every444node/
+all85free-port kernel terms, reconstruct all four whole payloads/eleven
+signed fixed leaves, reject34actual TeX corruptions and accept four
+harmless controls. Both pure rebuilds reproduce all five rendering files;
+all eight fresh root JSON/stdout records match the author byte for byte.
+Both actual PDF visual reviews pass. See the [root acceptance](reviews/one-page-shared-odd9-root-peer.md).
+The main ten-positive92/283 PDF/TeX, all predecessors and the Lean pause
+remain preserved while newer compact proposals undergo separate review.

@@ -32,8 +32,8 @@ not establish the size of a complete consistency equation.
 | Positive integers | 10 | 103 | 332 | Positive index weight and direct positive X; degree tradeoff |
 | Positive integers | 10 | 98 | 368 | Zero-offset scaled base, shared muY and expanded transport |
 | Positive integers | 10 | 103 | 340 | Direct positive X, shared carrier and expanded transport |
-| Positive integers | 9 | 405 / 413 | 1,191,570 / 1,316,546 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
-| Positive integers | 9 | 433 | 1,628,768 | Complete one-page specification including all original compact54 constants |
+| Positive integers | 9 | 405 / 413 | 1,191,570 / 1,316,546 | Tight main folding; original31 / compact54; complete413 one-page specification |
+| Positive integers | 9 | 433 | 1,628,768 | Preserved complete one-page predecessor with all compact54 constants |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Positive integers | 9 | 722 | 1,158,228 | Collected J,D radical evaluator and identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
@@ -2107,3 +2107,23 @@ rendering fit and independent visual checks remain pending; no413PDF
 is claimed. See the [root preparation review](reviews/one-page-shared-odd9-mathematical-preparation-root.md).
 The completed433comparison, canonical92/283 page and Lean pause remain
 preserved while the separate reviewed toolchain is prepared.
+
+
+## Complete413-operation nine-positive page accepted
+
+The preferred [nine-positive comparison PDF](candidates/one-page-shared-odd9/equation.pdf)
+and [standalone TeX](candidates/one-page-shared-odd9/equation.tex) now print
+the entire413-operation, exact-degree1,316,546 equation and every constant
+on one Letter page at9-point mathematics/8-point seed. It saves20operations
+and312,222degrees against the preserved433comparison at the same entire
+original722-character recipe. The first render and all five author commands
+pass, with no retry, layout change or overflow warning.
+
+Both normal/optimized actual auditors prove all43interfaces/every444node/
+all85free-port kernel terms, reconstruct all four whole payloads/eleven
+signed fixed leaves, reject34actual TeX corruptions and accept four
+harmless controls. Both pure rebuilds reproduce all five rendering files;
+all eight fresh root JSON/stdout records match the author byte for byte.
+Both actual PDF visual reviews pass. See the [root acceptance](reviews/one-page-shared-odd9-root-peer.md).
+The main ten-positive92/283 PDF/TeX, all predecessors and the Lean pause
+remain preserved while newer compact proposals undergo separate review.
