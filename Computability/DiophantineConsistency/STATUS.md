@@ -115,6 +115,17 @@ at unchanged dimensions/rows/degree. These are ordinary deductions about
 the specified polynomial; no transformed data or finite endpoint is yet
 accepted. A fixed implementation is being prepared under execution hold.
 
+The [bounded radix65 evidence](research/compact66-radix65-unit-probe-verification/README.md)
+passes [ordinary review](reviews/compact66-radix65-unit-probe-verification-ordinary-peer.md)
+and [ROOT acceptance](reviews/compact66-radix65-unit-probe-verification-root-peer.md).
+H0 is4,5,62,418969 modulo5,13,8807,581197; all are nonzero. All four
+actual processes exit0, retain seven negative/two valid controls, and
+reproduce six complete fresh files with121 inputs unchanged. Both full
+coefficient routes and modular formulas agree. This resolves the three
+finite unit questions, while the complete replacement native/source proof
+and fresh coherent tuple/endpoint verification remain open. Main67-bit
+compact66 PDF/TeX and paused Lean are unchanged.
+
 The lower-row fused-nine direct quartic has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete
 ordinary source and all finite Horn/projection/translation layers pass four

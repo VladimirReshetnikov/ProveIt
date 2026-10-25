@@ -2852,3 +2852,28 @@ optional(3,2) member has14 fewer residual monomial occurrences but a
 reappearing quartic monomial, so its full support remains unresolved and
 it is not combined with this bounded candidate. Main PDF/TeX and paused
 Lean remain unchanged.
+
+## The three finite radix65 controller-unit questions are resolved
+
+The [closed modular evidence](research/compact66-radix65-unit-probe-verification/README.md)
+passes [independent ordinary review](reviews/compact66-radix65-unit-probe-verification-ordinary-peer.md)
+and [ROOT bounded acceptance](reviews/compact66-radix65-unit-probe-verification-root-peer.md).
+For the entire unchanged indexed Phi evaluated at rho=2^65, H0 has exact
+residues4,5,62,418969 at primes5,13,8807,581197. All are nonzero; this
+discharges the three previously unknown bracket units in the conditional
+radix note. K itself need not be a unit and is0 modulo13.
+
+Two complete final statics precede separate first/fresh releases. ROOT
+observed all four actual exit0 results; every receipt equals stdout,
+stderr is empty, and all six fresh files match first bytes. All121 inputs
+and three complete parent trees remain unchanged. All3297 coefficients
+agree between actual ordered tiles/controls and independent old-K recovery;
+both modular formulas agree, retaining seven negative/two valid controls.
+The18-payload evidence closure preserves complete original captures.
+
+This is finite modular progress. The complete65-bit native/source adapter,
+all formal geometry/carry/mask/population/controller obligations and both
+fresh positive witness maps still need a coherent proof and verification.
+No new tuple, coefficient-byte saving, smaller equation or page gain is
+accepted yet. Maintained67-bit compact66 PDF/TeX remain current, minor
+notation gains queued and Lean paused.

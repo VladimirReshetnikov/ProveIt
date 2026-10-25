@@ -117,6 +117,15 @@ in support. Height98336 is an exact minimum in this specified two-parameter
 shear family followed by constant translations, with no global claim.
 This quartic tradeoff leaves the maintained compact66 page unchanged.
 
+A [bounded65-bit modular probe](research/compact66-radix65-unit-probe-verification/README.md)
+now discharges the three previously unknown controller-bracket unit
+conditions: H0 residues5,62,418969 at primes13,8807,581197, respectively.
+Both complete coefficient/modular routes and four first/fresh processes
+pass, with six byte-exact fresh files. See the
+[ROOT bounded acceptance](reviews/compact66-radix65-unit-probe-verification-root-peer.md).
+A complete new native/source proof and coherent tuple verification remain
+separate work; no65-bit equation or page improvement is accepted yet.
+
 A lower-row direct degree-four comparison, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
 now reaches **327 unrestricted integer unknowns**, with216 rows,5,718 terms
 and height128,446. It saves32 variables, six rows and340 terms against the
