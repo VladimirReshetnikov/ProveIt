@@ -2214,3 +2214,39 @@ and complete native/source calibration are checked. See the [root acceptance](re
 The accepted327equation and all predecessors remain preserved while new
 Round16 claims undergo separate review. Canonical92/283 and the Lean pause
 remain unchanged.
+
+
+## Seven new proposal archives: staged compact forms lead the next review
+
+The [closed static intake](research/intake-fd3e384e92/README.md) authenticates
+all seven ZIPs from `fd3e384e92`, their 3,294 members and 26 complete supplied
+quartic vectors. The [root review](reviews/intake-fd3e384e92-root-peer.md)
+independently checks the entire inventories and literal censuses. Data counts
+alone do not establish source correctness or equality to a sum of squares.
+
+The leading compact proposals have ten positive unknowns and 84 operations
+at degree 436, or 85 operations at degree 328. Both retain all four entire
+accepted indexed coefficient payloads. The
+[ordinary review](reviews/staged-certificates-compact-ordinary-peer.md)
+requires an explicit completeness correction: retain the actual canonical
+bound `R>3q` to obtain the positive shifted transport coordinate. The weaker
+generic `R>=3` premise does not suffice. The
+[static checker review](reviews/staged-certificates-compact-verifier-static-peer.md)
+licenses preparation of a separately pinned packet, not execution or endpoint
+acceptance. Six omitted placement files are present in the original ZIP;
+the incoming tree remains untouched.
+
+The [Round16 review](reviews/round16-shared-caps-ordinary-peer.md) records the
+324-variable/208-row/5,808-term proposal and its new source obligations. It
+saves three variables against accepted 327 while adding ninety terms. Its
+positive representative sum needs a new dependency proof before combining
+it with compressed signed guards. The
+[SignedFree review](reviews/signed-free-scales-ordinary-peer.md) repairs an
+incorrect complete leading form without invalidating its degree-44 witness.
+
+No incoming program was run for this intake. The canonical 92/283 PDF,
+complete 413-operation nine-positive page and accepted 327-variable quartic
+remain unchanged while the staged 84/85 finite packet and complete page are
+prepared. A significant verified improvement will be reflected in the
+maintained PDF and TeX, with complete predecessors preserved. Lean remains
+paused and the size-reduction goal remains active.
