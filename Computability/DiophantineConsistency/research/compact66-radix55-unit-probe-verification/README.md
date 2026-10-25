@@ -45,7 +45,7 @@ SOURCE_PINS6701d257f2b4d7f8a425cb319673135b5d5da243ebdbd11626d3147d9f4cf767.
 Both FULL exact-final static approvals precede the first execution release
 6bebb3bb67. The examined first outcomes precede fresh release6818fb472c.
 The separate inert closure release was preserved in f40551bd63 with its
-formatting-only line break fixed in48c51e7d. PROVENANCE retains the whole
+formatting-only line break fixed ined48c51e7d. PROVENANCE retains the whole
 release bytes; this assembly does not create or enlarge runtime authority.
 
 The original radix55 bootstrap's false three-unit premise and mod5
