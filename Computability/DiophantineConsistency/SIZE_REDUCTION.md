@@ -15,7 +15,7 @@ not establish the size of a complete consistency equation.
 
 | Domain | Variables | Operations | Degree | Use |
 |---|---:|---:|---:|---|
-| Positive integers | 15 | 66 | 157 | Short-operation baseline |
+| Positive integers | **15** | **66** | **157** | Maintained complete one-page indexed equation and every constant; all actual-page/replay/visual checks pass |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 96 | 70 | Free positive J and an identical polarized norm tail |
 | Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
@@ -24,9 +24,9 @@ not establish the size of a complete consistency equation.
 | Positive integers | 10 | 89 / 95 | 288 / 262 | Uncentered saturated b transport; fewer-operation tradeoff, earlier page preserved |
 | Positive integers | 10 | 91 / 92 / 97 / 98 | 283 / 278 / 258 / 254 | Existing b transport; one-operation minor checkpoint, earlier page preserved |
 | Positive integers | 10 | 92 | 283 | Preserved complete lower-degree saturated page and indexed constants |
-| Positive integers | 10 | 84 / **85** | 436 / **328** | Accepted doubled product square; complete85 maintained page and all constants |
+| Positive integers | 10 | 84 / 85 | 436 / 328 | Accepted doubled product square; complete85 page and all constants preserved |
 | Positive integers | 10 | 81 / 82 | 750 / 560 | Complete q-cube doubled graphs; fewer operations, higher degree; all fresh root replays pass |
-| Positive integers | 10 | **84** / 83 | **328** / 436 | Complete unshifted-T sources; one addition saved;85/328 maintained page retained for this minor checkpoint |
+| Positive integers | 10 | **84** / 83 | **328** / 436 | Complete unshifted-T sources; one addition saved; complete85/328 ten-variable page preserved |
 | Positive integers | 10 | 80 / 81 | 750 / 560 | Complete unshifted q-cube sources; whole leading forms and all fresh root replays pass |
 | Positive integers | 10 | 93 | 278 | Sharp saturated center; lower-degree tradeoff |
 | Positive integers | 10 | 98 / 99 | 258 / 254 | Direct positive X and upper/sharp saturated centers |
@@ -106,16 +106,16 @@ exclude named polynomial abbreviations. Positive, natural and unrestricted
 integer domains are compared separately. These are useful points, not the
 complete frontier or a global optimality claim.
 
-The maintained [equation.pdf](equation.pdf) displays the 10-positive
-85-operation degree 328 equation in full, including every constant, with
+The maintained [equation.pdf](equation.pdf) displays the15-positive
+66-operation degree157 equation in full, including every constant, with
 standalone [TeX](equation.tex). Its complete436-character fixed numeral,
 alphabet, decoder and 943 tiles fit on one Letter page in 9-point arithmetic.
-It saves seven operations and simplifies the finalizer against the preserved
-[92/283 page](candidates/one-page-saturated10/equation.pdf), with degree 45
-higher. All actual-page checks, byte-exact replays and visual reviews pass.
-The84/436 equation saves one additional operation at higher degree; it is
-preserved separately. Significant checked gains are batched into the
-maintained PDF; all complete predecessors remain available.
+It saves nineteen operations and171 degree against the preserved
+[ten-positive85/328 page](candidates/one-page-doubled85/equation.pdf), with
+five more unknowns. All ten released commands, six fresh byte-exact replays
+and independent actual-page visual reviews pass. The full constant suffix
+is unchanged. Significant checked gains are batched into the maintained
+PDF; all complete predecessors remain available.
 
 ## Work now underway
 
@@ -2459,3 +2459,22 @@ This disproves the proposed pointwise domain-restoration premise
 conditionally on a canonical witness. It neither supplies an unconditional
 extra zero nor rules out a different existence-normalization theorem.
 No65-operation consistency endpoint or maintained-page change is accepted.
+
+## The complete66/157 page replaces the maintained85/328 display
+
+The [accepted indexed page](candidates/one-page-fifteen66/RESULTS.md)
+now prints the entire fifteen-positive66-operation/degree157 equation,
+with every fixed constant, on one Letter page at the existing fonts.
+All ten first-attempt commands and six fresh root source/audit/render
+replays pass; all twelve fresh JSON/stdout strings equal initial bytes.
+All23 actual-TeX cuts, full degree leader, whole native integers,24
+negative/four valid controls per audit and both actual visual reviews pass.
+See the [root acceptance](reviews/one-page-fifteen66-root-peer.md).
+
+This is a significant arithmetic gain: nineteen fewer operations and171
+lower degree, with five more positive unknowns. The entire TeX is90 bytes
+shorter, extracted nonwhite text60 characters shorter and the4066-byte
+constant suffix unchanged. The maintained equation.pdf and equation.tex
+are byte-identical copies of this sealed candidate; CURRENT_EQUATION.json
+binds them. The complete ten-positive85/328 predecessor remains available.
+Ordinary native/Pell/refutation composition is retained; Lean stays paused.

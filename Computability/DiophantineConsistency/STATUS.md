@@ -25,15 +25,16 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf), with standalone
-[TeX](equation.tex), prints ten strictly positive unknowns, exact degree 328
-and 85 operations, including every fixed constant on one Letter page in
-9-point mathematics. The doubled product square simplifies the carrier
-and finalizer, saving seven operations while raising degree by 45 against
-the preserved 92/283 page. Both full static reviews, all five author commands,
-four byte-exact independent root replays and both actual visual reviews pass;
-see the [root acceptance](reviews/one-page-doubled85-root-peer.md). The
-ordinary proof explicitly retains canonical `R>3q` completeness and the
-whole indexed native/controller/refutation calibration. Lean remains paused.
+[TeX](equation.tex), prints fifteen strictly positive unknowns, exact degree157
+and66 operations, including every fixed constant on one Letter page in
+9-point mathematics. Against the preserved ten-positive85/328 page, it
+saves nineteen operations and171 degree while adding five unknowns.
+Both full static reviews, all ten released first-attempt commands,
+six byte-exact fresh root replays and both actual visual reviews pass;
+see the [root acceptance](reviews/one-page-fifteen66-root-peer.md). The
+ordinary proof composes the whole indexed normalized source, canonical
+`R=3 mod4` and squared-modulus reconstruction with both positive maps.
+All predecessor pages remain available. Lean remains paused.
 The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
 remains a different tradeoff.
 
@@ -43,7 +44,7 @@ commands and four fresh independent normal/optimized checks/rebuilds pass;
 all eight complete root receipts/stdout strings match the author bytes.
 The [root acceptance](reviews/ten-positive-qcube-doubled-finite-root-peer.md)
 records the139-direct-pin scope and retained accepted native theorem.
-These higher-degree cost reductions leave the maintained85/328 page intact.
+These higher-degree cost reductions retain their separate ten-variable pages.
 
 The subsequently accepted unshifted-T forms improve every one of their
 four parents by one addition at unchanged degree:83/436,84/328,80/750
@@ -53,7 +54,8 @@ JSON/stdout matches. The [root acceptance](reviews/ten-positive-unshift-t-finite
 binds all actual rows, complete leading forms,184 direct pins, seven closed
 dependencies,80 negative and eight valid controls per mode. The general
 bV soundness proof excludes main index3 before transport using early
-whole-carrier divisibility. This minor checkpoint preserves the85/328 page.
+whole-carrier divisibility. That minor checkpoint preserved the85/328 page;
+the substantial fifteen-positive66/157 update now becomes the main display.
 
 The fused-nine direct quartic now has **327 unrestricted integer unknowns,
 216 rows,5,718 terms and height128,446**, with exact degree4. Its complete

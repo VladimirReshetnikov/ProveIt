@@ -19,22 +19,23 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **entire equation in ten positive
-unknowns, exact degree 328, with an 85-operation evaluator**. All fixed
+[equation.tex](equation.tex) print the **entire equation in fifteen positive
+unknowns, exact degree157, with a66-operation evaluator**. All fixed
 constants remain on the same Letter page, including the full 436-character
-numeral, alphabet, decoder and 943 tiles, in 9-point mathematics. Pell
-doubling replaces the nested norm with one product-square equation and
-simplifies the carrier. This saves seven operations against the preserved
-[92/283 page](candidates/one-page-saturated10/equation.pdf), while increasing
-degree by 45. That lower-degree page and all earlier displays remain preserved.
+numeral, alphabet, decoder and943 tiles, in9-point mathematics. Compared
+with the preserved [ten-positive85/328 page](candidates/one-page-doubled85/equation.pdf),
+this saves nineteen operations and lowers degree by171 while adding five
+unknowns. The complete TeX is90 bytes shorter. The previous ten-variable
+page, lower-degree alternatives and all earlier displays remain preserved.
 
-The [root page acceptance](reviews/one-page-doubled85-root-peer.md) binds
-all actual printed formulas and every constant, both visual reviews and
-four byte-exact fresh replays. The complete ordinary proof retains the
-actual canonical `R>3q` completeness premise and the entire accepted indexed
-native/source interpretation. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
-binds the maintained PDF and TeX. This is a verified cost/degree choice,
-not a global simplicity optimum or a new Lean derivation.
+The [root page acceptance](reviews/one-page-fifteen66-root-peer.md) binds
+all23 actual printed polynomial cuts, every constant, both visual reviews,
+ten first-attempt checks/renders and six byte-exact fresh replays. The
+complete ordinary proof composes the whole indexed normalized-positive
+source and canonical `R=3 mod4` family with the squared-modulus construction,
+including both positive witness maps. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
+binds the maintained PDF and TeX. This is a verified arithmetic/variable
+tradeoff; global optimality and a new Lean derivation are not claimed.
 
 The complete [unshifted-T equations](research/ten-positive-unshift-t-finite/RESULTS.md)
 now reach **84 operations at degree328**, or83/436,80/750 and81/560, in the
@@ -43,7 +44,7 @@ its whole parent. Full ordinary proofs, literal graphs, leading forms and
 coefficient bindings pass separate review; four fresh root check/rebuild
 runs reproduce all author records byte for byte. See the
 [root acceptance](reviews/ten-positive-unshift-t-finite-root-peer.md).
-The maintained85/328 page awaits a larger improvement before replacement.
+Its complete85/328 ten-variable page remains available beside the new66/157 display.
 The preceding [81/750 and82/560 graphs](research/ten-positive-qcube-doubled-finite/RESULTS.md)
 and all complete pages remain preserved.
 
@@ -79,7 +80,7 @@ visual reviews and four byte-exact root replays pass; see the
 and its TeX remain preserved. The new page saves 20 operations and 312,222 degrees
 over that predecessor. Its lower
 variable count carries substantially higher cost and degree, so the
-maintained 85/328 page remains the displayed compact form.
+maintained66/157 page gives a different arithmetic/variable tradeoff.
 
 For direct degree-four equations, the [complete fused-nine form](research/signed-pell-cap-nine-factor-projections/data/centered/equation.json)
 now reaches **327 unrestricted integer unknowns**, with216 rows,5,718 terms
@@ -112,8 +113,9 @@ The preceding [ten-positive degree408 page](candidates/one-page-quadratic10/equa
 is preserved with its [TeX](candidates/one-page-quadratic10/equation.tex),
 as are the earlier [degree816 page](candidates/one-page-scaled10/equation.pdf)
 and [thirteen-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
-with their standalone sources. The13-positive page uses fewer operations
-and lower degree, with three more unknowns; no global optimum is claimed.
+with their standalone sources. Against the older ten-positive degree408
+page, the13-positive page uses fewer operations and lower degree with
+three more unknowns; it remains a separate tradeoff.
 
 The previous [fifteen-positive page](candidates/one-page-compression/merged-mask-base62/equation.pdf)
 and its other notation variants remain available. Its corrected recipe
