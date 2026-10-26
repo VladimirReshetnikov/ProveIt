@@ -61,12 +61,12 @@ Packet names refer to the subdirectories of this directory.
 | `controller/patches/controller_hs_inline.patch`, with dead-tactic cleanup | zh, adapted | `CurrentControllerData2011` | adopted as `7f1081d5c6`; direct modular rewrites replace the private bookkeeping helper, retaining explicit kernel-residue hypotheses and opaque B/K.184→169 lines without helper/import overhead. Four final calls pass: target, unchanged current Units client, existing Data focus and49-old-result comparison; all reports identical. The first candidate passed too, then its new dead-tactic/focus warnings were removed and final scope rerun. Existing Units exponent warning remains; independent full review passes |
 | `research/outer_seed/candidate.patch` | zz | `NativeOuterSeedConstruction` | adopted as `50d7e2133b`; reuse the already imported strict Pell index bound for the local hKr step.279→269 lines without helper/import, every other source byte literal including the31-field Seed structure. The original target was built explicitly before37-public baseline; target, positive-source client, existing focus and final37-report comparison pass (four final calls), all reports identical and no warnings. Exact inert archive candidate and independent full review pass |
 | `arithmetic_candidates/fourblocks_certificate/fourblocks_certificate.patch` and `population/patches/rank_gt_twice_window.patch` | zs + zv, composed | `CurrentPackingRank2011` | adopted as `5187d9cb36`; the negative-q repunit certificate replaces the expanded integer bridge, and2u≤3u<2^(3u) supplies rank growth.138→122 lines without helper/import, all five subtraction guards and the single beta shift retained, including F=0. Five final target/parity-client/two-focus/10-old-result calls pass first try; all reports identical. Before editing,138 distinct named original/prerequisite builds and a separate original audit passed; two earlier missing-object failures remain separate. Independent full review passes |
-
-## Pending
-
-| Proposal | Packet | Target | Note |
-|---|---|---|---|
-| guarded high-color fibers, `wang/proposals/boundary_fibers.patch` | o | `WangTiles942Boundary` | uncompiled proposal; claimed40 lines saved; retain high-color guard, initializer/reset colors and all seam tuples |
+| `rephase/patches/rephase-exact-field-rewrite.patch` | zv | `CurrentWordRephase2011` | adopted as `702687fc33`; rewrite the actual rotation equality directly in the two carry fields, retaining the scalar modular-transport block and the same carries/digits.122→116 lines without helper/import. Original target and baseline plus one unchanged generic-stride prerequisite are separate; five final target/client/two-focus/8-old-result calls pass, all reports identical. Existing focused exponent warning retained; independent full review passes |
+| `safety/patches/positions_combined.patch`, with generic positive-stride cancellation | zv, adapted | `CurrentControllerPositions2011` | adopted with the population cleanup as `81e0f4daed`; the literal affine budget uses linear arithmetic, while injectivity cancels the original positive stride without unfolding dependent val terms.178→173 lines without helper/import or optional-support changes. The supplied injectivity proof failed; a checked coefficient-specific repair was superseded by generic cancellation. All seven joint final calls pass. Of31 old public reports,24 are identical and seven are strict subsets: six drop choice, injectivity drops choice and quotient soundness. The actual stdout comparison exit1 is retained; no artificial dependencies added. Independent full review passes |
+| `population/patches/disjoint_add_lt.patch` | zv | `NativePackingPopulation` | adopted as the other file in `81e0f4daed`; rewrite the existing binary AND/OR sum identity directly.57→55 lines without helper/import, retaining zero width, strict representatives and unrestricted top block. Joint seven-call suite above passes; all four population reports identical. Combined pair235→228 lines, including the repaired generic injectivity proof; independent full review passes |
+| `rank-upper.patch` | zw | `NativePellBootstrap` | adopted as `7e186e0c71`; an explicit nonnegative polynomial deficit replaces loose intermediate rank/mask estimates.671→657 lines without helper/import. All original source/port bounds remain, including negative mask ports allowed by the window theorem; the separate PortBox premises remain unchanged. Four final target/first-index-client/focus/38-old-result calls pass after baseline, all reports identical and no warnings. Entire6-field structure and old data remain literal; independent full review passes |
+| `wang/proposals/boundary_fibers.patch` | o | `WangTiles942Boundary` | adopted as `a32e2a3d81`; two guarded colour-fiber helpers replace eight repeated case splits.201→161 lines including both helpers,84 bytes net. High-colour guard, halt head433, initializer south4, reset targets and nine square-west seam combinations retained. Ten final target/three-client/four-focus/generic-domain/15-old-result calls pass, all reports identical; new helpers standard-three axioms. Independent full review passes |
+| `current-kernel-horner.patch` | zzb | `CurrentKernelResidues2011` | adopted as `276e19a689`; a verified whole-list accumulator replaces58 private length proofs,59 chunk certificates and assembly.426→183 lines,243 net including the new function and two proofs. The actual941 rows, physical reindexing, protected Start, controls and literal K binding remain exact. Six final production/Units-client/two-focus/16-old-result/new-API calls pass; all old reports identical, three new declarations use propext only. Same source limits/imports, existing Units warning retained. Independent full source/data/contracts review passes; no speedup claim |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -184,6 +184,19 @@ independent review. Original/prerequisite builds, baselines, diagnostics, supers
 successful candidates and interrupted/failed attempts are separately recorded
 in the root review. The equation artifacts retain their decimal constant and
 fourteen distinct unsubscripted unknowns.
+
+Five source commits `702687fc33`, `7e186e0c71`, `81e0f4daed`,
+`a32e2a3d81` and `276e19a689` reduce six modules from1655 to1345 lines,
+removing310 net and bringing the reviewed series from3816 to4126. All32
+final Lean calls pass. Of108 old public declaration reports,101 are
+byte-identical and seven strictly reduce their axiom sets; none adds an
+axiom. ROOT independently verifies90 old public theorem headers, ten entire
+definition blocks and the entire6-field `PortBox` structure against immutable
+`180e99fc75`; all are literal. Every exact-final source passed independent
+full review. Preparation, baselines, the failed supplied injectivity proof,
+its superseded checked repair and the intentional stdout difference for
+strictly smaller axiom sets remain separately recorded. Equation artifacts
+retain their checked decimal and distinct-name presentation.
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
