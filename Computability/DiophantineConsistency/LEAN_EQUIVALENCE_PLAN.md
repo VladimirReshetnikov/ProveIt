@@ -42,13 +42,15 @@ No global optimality theorem is requested or inferred from that ledger.
 
 ## Current gaps and implementation order
 
-The live local native modules treat the older 457-mode, 89-bit compact54
-construction. Their strongest local-mask endpoint is
-`NativeLocalMask54.source_local_masks`. The literal decimal decoder and complete length2011 masks now have the
-bindings and proofs recorded below. The remaining current942-tile,
-47-bit encoding work includes the exact K recipe, sorting permutation,
-carry/phase recovery, helical tiling interpretation and canonical controller
-converse. The 1997 proposal
+The older native modules treat the457-mode,89-bit compact54 construction;
+their strongest local-mask endpoint is `NativeLocalMask54.source_local_masks`.
+The current942-tile,47-bit construction now has checked literal decimal
+data, exact K, physical permutation, polynomial-to-word recovery, both
+phase alignments, all-cell occupation and local tile-color matching.
+The detailed checkpoints below record their exact premises and reviews.
+The remaining work includes the global marked-word adapter, actual
+Wang-machine language equivalence, canonical controller converse, other
+equation frontiers and internal-ZFC derivation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
 The first new modules address necessary reusable pieces of that chain:
@@ -401,8 +403,7 @@ The [machine-language plan](reviews/current-wang-machine-language-plan.md)
 states the still missing marked-tiling soundness and cofinal canonical
 converse. Finite classification alone proves neither endpoint.
 
-Independent agents own distinct new Lean modules. The coordinator owns
-the new `CurrentTileColors2011` composition: actual selected neighbors
+`CurrentTileColors2011` proves that actual selected neighbors
 have matching original East/West and South/North colors. Every alignment,
 copy and label premise comes from the same original Facts. Even without
 occupation elsewhere, Start's South1 and North435 exclude zero temporal
@@ -410,14 +411,24 @@ displacement modulo the full word. The [author review and fresh checks](reviews/
 record the precise conditional local-selection scope. Global chosen tile
 assignment and the marked-word composition remain subsequent work.
 
-The coordinator also owns
-integration, documentation and commits. `CurrentCellCycle2011` proves that
+`CurrentCellCycle2011` proves that
 successor by2011 reaches every aligned cell, and therefore propagates any
 successor-preserved predicate from zero. Its canonical coordinate is the
 actual field-base quotient in `ZMod N`, including N=1. See the [root review](reviews/current-cell-cycle2011-lean-root.md)
 for two fresh runs and sixteen standard-only axiom audits. This generic
 cycle theorem has no supplied word or occupation premise.
 
-Each verified checkpoint is
+`CurrentOccupation2011.polynomial_zero_occupied_window` now derives
+exactly one actual selected tile in every aligned cell from the original
+positive polynomial zero. Start initializes the spatial induction; strict
+West-complement positivity and exact copies exclude an empty successor;
+the generic cycle covers the same entire original word. See the [root
+review and fresh replay](reviews/current-occupation2011-lean-root.md).
+No occupation, globally unique Start or supplied marker-value premise
+enters this theorem. Global chosen assignment and machine semantics
+remain separate obligations.
+
+Independent agents own distinct new Lean modules. The coordinator owns
+integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
