@@ -54,6 +54,16 @@ rational-leaf and lower-degree arithmetic tradeoffs. New leads require
 their complete proof, finite certificate and page review before promotion.
 Every earlier native and complete-page checkpoint remains available.
 
+The [complete thirteen-variable carrier](research/thirteen-variable-independent/README.md)
+now has independently reviewed full soundness/fresh-seed maps and two
+materialized integer graphs:69 operations/degree174 and70/140. Both bind
+the full58125-byte2471 tuple. Root-reviewed normal/optimized audits check
+every row, all96/72 leading terms and all four whole ports. The corrected
+odd-Pell recurrence initialization and its review history are preserved.
+These save one positive unknown at the cost of four or five operations;
+no new printed page is claimed. A separately reviewed normalization gives
+a prospective71/128 schedule, still awaiting its complete graph audit.
+
 The [scaled auxiliary replacement](research/scaled-auxiliary118/README.md)
 now has two independent ordinary reviews, a complete sorted2501-bound
 integer graph and an independently reviewed finite audit. It gives 14
