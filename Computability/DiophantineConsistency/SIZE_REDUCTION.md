@@ -13,42 +13,43 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained [decimal reversed2521 page](candidates/one-page-reverse-discovery-carrier65-2521/README.md)
-has**14 positive unknowns,65 integer-leaf operations and exact degree150**.
+The maintained [decimal sorted2501 page](candidates/one-page-sorted-carrier65-2501/README.md)
+has **14 positive unknowns, 65 integer-leaf operations and exact degree 150**.
 The uniform Carrier65 front and its positive maps are unchanged. The new
-native tuple has a complete ordinary proof, discharged Pcrv and full
-root/peer reviews; its four integers total59297 raw bytes,10152 below
-scaled2953, a reduction of about14.6%.
+native tuple has a complete ordinary proof, discharged finite premises and
+full independent proof/code reviews. Its four integers total 58829 raw
+bytes, 468 below the preceding reversed2521 tuple.
 
-The explicit permutation pi(0)=0,pi(i)=942-i keeps the entire abstract
-942-tile table and uses x raised to pi(i) in Phi. The complete high-index
-coefficient sum supplies unconditional resets before marker1004. Clause1515
-recovers one-hotness before the global phase19 exclusion. All916 bit3
-padding tests follow from complete selector-only input arrays and residues
-at most5 modulo2048. The combined low mask is8*G917-4. The entire mask,
-actual rank and safe-subset proof uses the new tuple, with controller
-orders23/1260, prime231841 and H34/1660/56592.
+The full printed weight definition and floor-rank formula fix Start and
+order the other 941 selectors strictly. The initializer becomes physical
+504. The full suffix from 490 resets low fields before marker1004 parity
+and clause1493 count recovery. Both residual offsets are excluded by global
+Start-cycle arguments. The complete proof covers all 916 bit3 padding tests,
+actual mask populations and rank, every safe subset, the entire three-prime
+controller and both positive P66 maps. The auxiliary prime is 118681.
 
-The owner requested base10 and distinct scalar names. Every future maintained
-TeX/PDF must retain those preferences. The page prints all 715 decimal digits,
-uses unsubscripted front names, and keeps every942 indexed tile and430 action.
-The five factors are P,Q,U,W,Z. Fonts stay9pt body/7.7pt numeral/footer.
-The reverse-discovery seed proof and complete page review establish exact
-equality of all 430 actions, the whole polynomial and every fixed integer.
-The numeral saves 66 digits against the preceding reversed2521 page. After
-the complete new decoder, extracted nonwhite PDF text falls 26 to 2846;
-TeX grows 13 to 5230 and PDF grows 723 to 152521. Gzip remains 4172.
-Both full source/PDF digits and prefix endpoint domains are checked.
-The preceding complete page and CURRENT record are preserved exactly.
+The owner requested base10 and distinct scalar names. Every maintained
+TeX/PDF must retain those preferences. The current page prints all 715
+decimal digits with the full reverse-discovery decoder and both endpoint
+domains. Its action table is unchanged. All front scalars have distinct
+unsubscripted names, including factors P,Q,U,W,Z. Fonts stay 9pt body and
+7.7pt numeral/footer. The complete page passed normal/optimized source
+checks, independent full reconstruction, two visual inspections and fresh
+byte-identical rendering.
 
-The sorted2501 construction now has a complete ordinary proof, discharged
-finite premises, independent proof/code reviews and full root acceptance.
-It saves another 468 raw bytes, reaching 58829. Its complete printed-cost
-comparison is under review before adoption. The separately reviewed
-full-suffix exchange bound proves C>=1493 and L>=2501 only within this
-fixed weight/marker/reset/controller family; further reductions must alter
-at least one of those restrictions. The unpromoted scaled2953 P66 page
-and all earlier recipes remain available as separately reviewed checkpoints.
+The sorted page saves 468 raw bytes but adds 132 TeX bytes, 33 extracted
+nonwhite PDF characters, 84 gzip bytes and 526 PDF bytes. Totals are
+5362, 2879, 4256 and 153047 respectively. The preceding complete715-digit2521
+page has a shorter displayed recipe and remains preserved with its exact
+CURRENT record. The specialized polynomials differ because their ports do.
+
+The independently reviewed full-suffix exchange bound proves C>=1493 and
+L>=2501 only within its fixed weight/marker/reset/controller family. Next
+work splits binary phases to seek a sharper reset argument, and develops
+separate rational-leaf and lower-degree arithmetic tradeoffs. Those leads
+are not accepted replacements until their full proof and literal graph
+are reviewed. Every earlier native and complete-page checkpoint remains
+available.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
 gives65 operations for the same bound three-anchor47 polynomial while

@@ -24,45 +24,36 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 [latest review](PROPOSAL_REVIEW_LATEST.md). New complete positive-domain
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
-The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete **715-digit decimal reversed2521 Carrier65** equation:14 positive
-unknowns, degree150,65 integer-leaf operations and59297 raw fixed-integer
-bytes. All 715 base10 digits and distinct unsubscripted polynomial scalar
-names, including factors P,Q,U,W,Z, are preserved. The one Letter page
-retains9pt/7.7pt fonts and every942 tile/430 action.
+The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print the
+complete **715-digit decimal sorted2501 Carrier65** equation: 14 positive
+unknowns, degree 150, 65 integer-leaf operations and 58829 raw fixed-integer
+bytes. The distinct unsubscripted scalar names, full action decoder and
+942-tile table remain on one Letter page at the unchanged fonts.
 
-The [native2521 proof](research/reversed-selector-independent/PROOF.md)
-transports the complete admissible language through an explicit reversal.
-Its full coefficient tail resets fields0..1003 before marker parity and
-count recovery. The global South-color graph excludes offset19; all916
-bit3 padding tests follow from selector residues modulo2048. Every copy,
-mask, rank, safe increment and both positive P66 maps are proved. Pcrv is
-discharged at prime231841 with H34/1660/56592, and full root/peer reviews pass.
+The [native proof and finite certificate](research/sorted-selector-independent/README.md)
+now have complete root and independent reviews. The strict weight ordering
+lowers the clause to 1493. Unconditional resets precede marker parity and
+count decoding; global arguments exclude both exceptional Start offsets.
+All masks, padding, rank, safe subsets and both witness maps use the new
+ports. The full controller has d = 47*41*61 and auxiliary prime 118681.
+The uniform Carrier65 theorem supplies the same complete arithmetic front.
 
-The [Carrier65 proof](research/carrier65-independent/PROOF.md) applies to
-the exact new scalar bounds and canonical parent witnesses. Its entire
-65-row graph, positive-domain maps and exact degree150 are unchanged.
-The four new ports change the specialized polynomial and save10152 raw
-bytes, about14.6%, against decimal2953.
-
-The [candidate](candidates/one-page-reverse-discovery-carrier65-2521/README.md)
-and [page review](reviews/reverse-discovery-carrier65-2521-page-peer.md) bind every
-actual decimal digit, action, printed permutation, tile and whole integer.
-Normal/optimized checks, two full-page inspections and a fresh byte-identical
-PDF rebuild pass. The reverse-discovery numeral saves 66 decimal digits
-while preserving the entire specialized polynomial. Including its complete
-decoder, extracted nonwhite text falls 26 to 2846; TeX grows 13 to 5230 and
-PDF grows 723 to 152521. Gzip remains 4172. CURRENT preserves the exact
-previous record and the 781-digit reversed2521 page.
+The [complete candidate](candidates/one-page-sorted-carrier65-2501/README.md)
+and [independent page review](reviews/sorted-carrier65-2501-page-peer.md)
+check all actual decimal digits, actions, weight/rank definitions, tiles,
+coefficients and four whole integers. Normal/optimized runs, two whole-page
+inspections and independent byte-identical PDF rebuilds pass. Against the
+preceding 715-digit2521 page, raw storage falls 468 bytes. TeX grows 132 to
+5362, extracted nonwhite text grows 33 to 2879, gzip grows 84 to 4256 and
+PDF grows 526 to 153047. The previous complete page and exact CURRENT record
+are preserved. This is a raw-storage improvement with explicit display costs.
 
 All earlier pages and CURRENT records remain preserved, along with reviewed
 [single-clause3037](research/single-clause-independent/README.md) and
 [composite2983](research/composite-length-independent/README.md) checkpoints.
 No new formal-kernel replay or consistency decision is claimed; inherited
-ordinary calibration remains explicit. The separately reviewed
-[sorted2501 proof and certificate](research/sorted-selector-independent/README.md)
-now discharge all new finite premises and save another 468 raw bytes.
-Its complete page is under review. Further work retains decimal notation
+ordinary calibration remains explicit. Further work tests sharper
+phase-dependent resets and arithmetic tradeoffs, preserving decimal notation
 and distinct names. The separately checked
 [weighted-only Psi identity](research/weighted-only-psi/NOTE.md) preserves
 its bound tuple. The [radix note](research/radix-parity-independent/README.md)
