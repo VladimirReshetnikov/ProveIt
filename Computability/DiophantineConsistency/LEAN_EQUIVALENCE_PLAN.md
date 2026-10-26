@@ -429,6 +429,15 @@ enters this theorem. Global chosen assignment and machine semantics
 remain separate obligations.
 
 Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. Each verified checkpoint is
+integration, documentation and commits. `WangTiles942Periodic` defines a
+marked word using only Start at zero and the true spatial/temporal color
+matches, then pulls it back by address -x-s*t to a periodic plane of
+actual tiles. The [root review and fresh replay](reviews/wang-tiles942-periodic-lean-root.md)
+cover matching orientation, arbitrary signed shifts and periods(N,0),
+(0,N),(-s,1). No rectangular quotient, coprimality, unique Start or machine
+run is assumed. Existence from the actual polynomial is the next adapter;
+the geometry itself supplies no machine semantics.
+
+Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
