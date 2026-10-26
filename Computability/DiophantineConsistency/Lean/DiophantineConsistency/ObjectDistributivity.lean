@@ -19,15 +19,7 @@ private def distributiveStage : Form :=
 private theorem distributiveStage_spec (H : ZFAxioms mem) (n x y b : V) (ee : Nat → V) :
     Sat mem (scons n (scons x (scons y (scons b ee)))) distributiveStage ↔
       ∀ a c d, AddRel H y n a → MulRel H x n c → AddRel H b c d → MulRel H x a d := by
-  constructor
-  · intro h a c d ha hc hd
-    exact (mulForm_spec H _ 0 4 2).mp (h a c d
-      ⟨(addForm_spec H _ 2 5 3).mpr ha,
-        (mulForm_spec H _ 1 4 3).mpr hc,(addForm_spec H _ 0 6 1).mpr hd⟩)
-  · intro h a c d hh
-    exact (mulForm_spec H _ 0 4 2).mpr
-      (h a c d ((addForm_spec H _ 2 5 3).mp hh.1)
-        ((mulForm_spec H _ 1 4 3).mp hh.2.1) ((addForm_spec H _ 0 6 1).mp hh.2.2))
+  simp only [distributiveStage, Sat, addForm_spec H, mulForm_spec H, scons, and_imp]
 
 /-- Every intermediate sum and product is explicit; no external numeral bound. -/
 theorem mulRel_distrib_left (H : ZFAxioms mem) {x y n a b c d : V}
@@ -77,13 +69,7 @@ private def associativeStage : Form :=
 private theorem associativeStage_spec (H : ZFAxioms mem) (n x y a : V) (ee : Nat → V) :
     Sat mem (scons n (scons x (scons y (scons a ee)))) associativeStage ↔
       ∀ b z, MulRel H y n b → MulRel H a n z → MulRel H x b z := by
-  constructor
-  · intro h b z hb hz
-    exact (mulForm_spec H _ 0 3 1).mp
-      (h b z ⟨(mulForm_spec H _ 1 4 2).mpr hb,(mulForm_spec H _ 0 5 2).mpr hz⟩)
-  · intro h b z hh
-    exact (mulForm_spec H _ 0 3 1).mpr
-      (h b z ((mulForm_spec H _ 1 4 2).mp hh.1) ((mulForm_spec H _ 0 5 2).mp hh.2))
+  simp only [associativeStage, Sat, mulForm_spec H, scons, and_imp]
 
 theorem mulRel_assoc (H : ZFAxioms mem) {x y n a b z : V}
     (hxy : MulRel H x y a) (hyn : MulRel H y n b) (han : MulRel H a n z) :

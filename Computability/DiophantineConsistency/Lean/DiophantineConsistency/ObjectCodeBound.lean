@@ -145,19 +145,8 @@ def boundAtomForm (c b t : Nat) : Form :=
 
 theorem boundAtomForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c b t : Nat) :
     Sat mem ee (boundAtomForm c b t) ↔ BoundAtom H (ee c) (ee b) t := by
-  constructor
-  · rintro ⟨i, j, si, sj, hi, hj, hc, hsi, hsj, ha⟩
-    have hsi' : si = vsucc H i := (fSuccF_spec H _ 1 3).mp hsi
-    have hsj' : sj = vsucc H j := (fSuccF_spec H _ 0 2).mp hsj
-    have ha' := (addForm_spec H _ (b+4) 1 0).mp ha
-    rw [hsi', hsj'] at ha'
-    exact ⟨i, j, (fNatF_spec H _ 3).mp hi, (fNatF_spec H _ 2).mp hj,
-      (fTagPairF_spec H _ (c+4) t 3 2).mp hc, ha'⟩
-  · rintro ⟨i, j, hi, hj, hc, ha⟩
-    exact ⟨i, j, vsucc H i, vsucc H j, (fNatF_spec H _ 3).mpr hi,
-      (fNatF_spec H _ 2).mpr hj, (fTagPairF_spec H _ (c+4) t 3 2).mpr hc,
-      (fSuccF_spec H _ 1 3).mpr rfl, (fSuccF_spec H _ 0 2).mpr rfl,
-      (addForm_spec H _ (b+4) 1 0).mpr ha⟩
+  simp only [boundAtomForm, Sat, fNatF_spec H, fTagPairF_spec H, fSuccF_spec H, addForm_spec H,
+    scons, exists_and_left, exists_eq_left, BoundAtom]
 
 def boundBinaryForm (c b s t : Nat) : Form :=
   fEx (fEx (fEx (fEx
@@ -167,28 +156,15 @@ def boundBinaryForm (c b s t : Nat) : Form :=
 
 theorem boundBinaryForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c b s t : Nat) :
     Sat mem ee (boundBinaryForm c b s t) ↔ BoundBinary H (ee s) (ee c) (ee b) t := by
-  constructor
-  · rintro ⟨a, d, a', d', hc, m1, m2, ha⟩
-    exact ⟨a, d, a', d', (fTagPairF_spec H _ (c+4) t 3 2).mp hc,
-      (fPairMemF_spec H _ 3 1 (s+4)).mp m1, (fPairMemF_spec H _ 2 0 (s+4)).mp m2,
-      (addForm_spec H _ (b+4) 1 0).mp ha⟩
-  · rintro ⟨a, d, a', d', hc, m1, m2, ha⟩
-    exact ⟨a, d, a', d', (fTagPairF_spec H _ (c+4) t 3 2).mpr hc,
-      (fPairMemF_spec H _ 3 1 (s+4)).mpr m1, (fPairMemF_spec H _ 2 0 (s+4)).mpr m2,
-      (addForm_spec H _ (b+4) 1 0).mpr ha⟩
+  simp only [boundBinaryForm, Sat, fTagPairF_spec H, fPairMemF_spec H, addForm_spec H, scons,
+    BoundBinary]
 
 def boundQuantifierForm (c b s t : Nat) : Form :=
   fEx (fAnd (fTagUnF (c+1) t 0) (fPairMemF 0 (b+1) (s+1)))
 
 theorem boundQuantifierForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c b s t : Nat) :
     Sat mem ee (boundQuantifierForm c b s t) ↔ BoundQuantifier H (ee s) (ee c) (ee b) t := by
-  constructor
-  · rintro ⟨a, hc, hm⟩
-    exact ⟨a, (fTagUnF_spec H _ (c+1) t 0).mp hc,
-      (fPairMemF_spec H _ 0 (b+1) (s+1)).mp hm⟩
-  · rintro ⟨a, hc, hm⟩
-    exact ⟨a, (fTagUnF_spec H _ (c+1) t 0).mpr hc,
-      (fPairMemF_spec H _ 0 (b+1) (s+1)).mpr hm⟩
+  simp only [boundQuantifierForm, Sat, fTagUnF_spec H, fPairMemF_spec H, scons, BoundQuantifier]
 
 def boundStepForm (c b s : Nat) : Form :=
   fOr (boundAtomForm c b 0) (fOr (boundAtomForm c b 1)
@@ -198,15 +174,9 @@ def boundStepForm (c b s : Nat) : Form :=
           (fOr (boundQuantifierForm c b s 6) (boundQuantifierForm c b s 7)))))))
 
 theorem boundStepForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c b s : Nat) :
-    Sat mem ee (boundStepForm c b s) ↔ BoundStep H (ee s) (ee c) (ee b) :=
-  or_congr (boundAtomForm_spec H ee c b 0)
-    (or_congr (boundAtomForm_spec H ee c b 1)
-      (or_congr (and_congr (fTaggedEmptyF_spec H ee c 2) (fEmptyF_spec H ee b))
-        (or_congr (boundBinaryForm_spec H ee c b s 3)
-          (or_congr (boundBinaryForm_spec H ee c b s 4)
-            (or_congr (boundBinaryForm_spec H ee c b s 5)
-              (or_congr (boundQuantifierForm_spec H ee c b s 6)
-                (boundQuantifierForm_spec H ee c b s 7)))))))
+    Sat mem ee (boundStepForm c b s) ↔ BoundStep H (ee s) (ee c) (ee b) := by
+  simp only [boundStepForm, Sat, boundAtomForm_spec H, boundBinaryForm_spec H,
+    boundQuantifierForm_spec H, fTaggedEmptyF_spec H, fEmptyF_spec H, BoundStep, formCode]
 
 def boundClosedForm (s : Nat) : Form :=
   fAll (fAll (fImp (fPairMemF 1 0 (s+2))
@@ -214,26 +184,15 @@ def boundClosedForm (s : Nat) : Form :=
 
 theorem boundClosedForm_spec (H : ZFAxioms mem) (ee : Nat → V) (s : Nat) :
     Sat mem ee (boundClosedForm s) ↔ BoundClosed H (ee s) := by
-  constructor
-  · intro h c b hm
-    obtain ⟨hn, hs⟩ := h c b ((fPairMemF_spec H _ 1 0 (s+2)).mpr hm)
-    exact ⟨(fNatF_spec H _ 0).mp hn, (boundStepForm_spec H _ 1 0 (s+2)).mp hs⟩
-  · intro h c b hm
-    obtain ⟨hn, hs⟩ := h c b ((fPairMemF_spec H _ 1 0 (s+2)).mp hm)
-    exact ⟨(fNatF_spec H _ 0).mpr hn, (boundStepForm_spec H _ 1 0 (s+2)).mpr hs⟩
+  simp only [boundClosedForm, Sat, fPairMemF_spec H, fNatF_spec H, boundStepForm_spec H, scons,
+    BoundClosed]
 
 def boundCodeForm (b c : Nat) : Form :=
   fEx (fAnd (boundClosedForm 0) (fPairMemF (c+1) (b+1) 0))
 
 theorem boundCodeForm_spec (H : ZFAxioms mem) (ee : Nat → V) (b c : Nat) :
     Sat mem ee (boundCodeForm b c) ↔ BoundCodeRel H (ee c) (ee b) := by
-  constructor
-  · rintro ⟨S, hS, hm⟩
-    exact ⟨S, (boundClosedForm_spec H _ 0).mp hS,
-      (fPairMemF_spec H _ (c+1) (b+1) 0).mp hm⟩
-  · rintro ⟨S, hS, hm⟩
-    exact ⟨S, (boundClosedForm_spec H _ 0).mpr hS,
-      (fPairMemF_spec H _ (c+1) (b+1) 0).mpr hm⟩
+  simp only [boundCodeForm, Sat, boundClosedForm_spec H, fPairMemF_spec H, scons, BoundCodeRel]
 
 /-! ## Inversion and functionality -/
 

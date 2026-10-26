@@ -1,4 +1,5 @@
 import DiophantineConsistency.AnnotatedLine
+import DiophantineConsistency.NatIterate
 
 /-! # A supplied numeric scanner for all seventeen original proof rules
 
@@ -32,26 +33,15 @@ def step (state : Nat) : Nat :=
 def scan (fuel initial : Nat) : Nat := fuel.rec initial (fun _ acc => step acc)
 
 @[simp] theorem step_zero : step 0=0 := by simp [step]
-@[simp] theorem scan_zero (fuel : Nat) : scan fuel 0=0 := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih => change step (scan fuel 0)=0; rw [ih,step_zero]
+@[simp] theorem scan_zero (fuel : Nat) : scan fuel 0=0 :=
+  NatIterate.rec_fixed step 0 step_zero fuel
 
-theorem scan_succ (fuel state : Nat) : scan (fuel+1) state=scan fuel (step state) := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih =>
-    change step (scan (fuel+1) state)=step (scan fuel (step state))
-    rw [ih]
+theorem scan_succ (fuel state : Nat) : scan (fuel+1) state=scan fuel (step state) :=
+  NatIterate.rec_succ step state fuel
 
 theorem scan_done (fuel history : Nat) :
-    scan fuel (Nat.pair 0 history)=Nat.pair 0 history := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih =>
-    change step (scan fuel (Nat.pair 0 history))=Nat.pair 0 history
-    rw [ih]
-    simp [step]
+    scan fuel (Nat.pair 0 history)=Nat.pair 0 history :=
+  NatIterate.rec_fixed step _ (by simp [step]) fuel
 
 /-- Every surviving raw state has an actual provable judgment history. This
 invariant begins with the empty list and is independent of any raw parser. -/

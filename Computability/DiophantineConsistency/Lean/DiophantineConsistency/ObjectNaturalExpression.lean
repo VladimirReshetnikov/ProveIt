@@ -46,26 +46,9 @@ theorem evalForm_spec (H : ZFAxioms mem) (e : NatExpr σ)
   induction e generalizing coordinates z ee with
   | constant n => exact fNumF_spec H n z ee
   | var i => rfl
-  | add p q hp hq =>
-      change (∃ a b,
-        Sat mem (scons b (scons a ee)) (evalForm p (fun i => coordinates i + 2) 1) ∧
-        Sat mem (scons b (scons a ee)) (evalForm q (fun i => coordinates i + 2) 0) ∧
-        Sat mem (scons b (scons a ee)) (addForm (z + 2) 1 0)) ↔ _
-      apply exists_congr
-      intro a
-      apply exists_congr
-      intro b
-      exact and_congr (hp _ _ _) (and_congr (hq _ _ _) (addForm_spec H _ _ _ _))
-  | mul p q hp hq =>
-      change (∃ a b,
-        Sat mem (scons b (scons a ee)) (evalForm p (fun i => coordinates i + 2) 1) ∧
-        Sat mem (scons b (scons a ee)) (evalForm q (fun i => coordinates i + 2) 0) ∧
-        Sat mem (scons b (scons a ee)) (mulForm (z + 2) 1 0)) ↔ _
-      apply exists_congr
-      intro a
-      apply exists_congr
-      intro b
-      exact and_congr (hp _ _ _) (and_congr (hq _ _ _) (mulForm_spec H _ _ _ _))
+  | add p q hp hq | mul p q hp hq =>
+    simp only [evalForm, Sat, EvalRel, hp, hq, addForm_spec H, mulForm_spec H,
+      Function.comp_def, scons]
 
 theorem evalRel_result_nat (H : ZFAxioms mem) (v : σ → V)
     (hv : ∀ i, mem (v i) (omegaV H)) (e : NatExpr σ) {z : V} (h : EvalRel H v e z) :

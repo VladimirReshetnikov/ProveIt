@@ -32,15 +32,8 @@ def sealCodeForm (c a : Nat) : Form :=
 
 theorem sealCodeForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c a : Nat) :
     Sat mem ee (sealCodeForm c a) ↔ SealCodeRel H (ee a) (ee c) := by
-  constructor
-  · rintro ⟨ha, b, hb, hc⟩
-    exact ⟨(fIsFormCodeF_spec H _ a).mp ha, b,
-      (boundCodeForm_spec H _ 0 (a+1)).mp hb,
-      (closeCodeForm_spec H _ (c+1) (a+1) 0).mp hc⟩
-  · rintro ⟨ha, b, hb, hc⟩
-    exact ⟨(fIsFormCodeF_spec H _ a).mpr ha, b,
-      (boundCodeForm_spec H _ 0 (a+1)).mpr hb,
-      (closeCodeForm_spec H _ (c+1) (a+1) 0).mpr hc⟩
+  simp only [sealCodeForm, Sat, fIsFormCodeF_spec H, boundCodeForm_spec H, closeCodeForm_spec H,
+    scons, SealCodeRel]
 
 theorem sealCodeRel_total (H : ZFAxioms mem) {a : V} (ha : IsFormCodeSem H a) :
     ∃ c, SealCodeRel H a c := by
@@ -117,13 +110,8 @@ def sealedZFCAxiomCodeForm (c : Nat) : Form :=
 
 theorem sealedZFCAxiomCodeForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c : Nat) :
     Sat mem ee (sealedZFCAxiomCodeForm c) ↔ IsSealedZFCAxiomCode H (ee c) := by
-  constructor
-  · rintro ⟨a, ha, hc⟩
-    exact ⟨a, (fZFCAxiomCodeF_spec H _ 0).mp ha,
-      (sealCodeForm_spec H _ (c+1) 0).mp hc⟩
-  · rintro ⟨a, ha, hc⟩
-    exact ⟨a, (fZFCAxiomCodeF_spec H _ 0).mpr ha,
-      (sealCodeForm_spec H _ (c+1) 0).mpr hc⟩
+  simp only [sealedZFCAxiomCodeForm, Sat, fZFCAxiomCodeF_spec H, sealCodeForm_spec H, scons,
+    IsSealedZFCAxiomCode]
 
 theorem isSealedZFCAxiomCode_quotation (H : ZFAxioms mem) {f : Form}
     (hf : ZFCax_s f) : IsSealedZFCAxiomCode H (formCode H f) := by
@@ -143,13 +131,8 @@ def ctxSealedZFCAxiomsForm (g : Nat) : Form :=
 
 theorem ctxSealedZFCAxiomsForm_spec (H : ZFAxioms mem) (ee : Nat → V) (g : Nat) :
     Sat mem ee (ctxSealedZFCAxiomsForm g) ↔ CtxSealedZFCAxioms H (ee g) := by
-  constructor
-  · intro h x hx
-    exact (sealedZFCAxiomCodeForm_spec H _ 0).mp
-      (h x ((fMemCtxF_spec H _ 0 (g+1)).mpr hx))
-  · intro h x hx
-    exact (sealedZFCAxiomCodeForm_spec H _ 0).mpr
-      (h x ((fMemCtxF_spec H _ 0 (g+1)).mp hx))
+  simp only [ctxSealedZFCAxiomsForm, Sat, fMemCtxF_spec H, sealedZFCAxiomCodeForm_spec H, scons,
+    CtxSealedZFCAxioms]
 
 theorem ctxSealedZFCAxioms_quotation (H : ZFAxioms mem) {G : List Form}
     (hG : ∀ f ∈ G, ZFCax_s f) : CtxSealedZFCAxioms H (ctxCode H G) := by
