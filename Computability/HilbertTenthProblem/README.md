@@ -16,7 +16,8 @@ universal Diophantine equations by James P. Jones and coauthors:
 **Fixed-input specializations for Con(ZFC)** (not formalized). The report
 [`con-zfc-diophantine-forms`](../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
 is now under `Computability/DiophantineConsistency`. It holds waves 5–17
-(batches 221–233, one hundred and twenty-nine packages).
+(batches 221–233, one hundred and twenty-nine packages; waves 18 and 19,
+sources 160–168, are placed and await reconciliation).
 
 Until wave 11, every finished equation applied the native-window/Pell
 compiler below, with its input interface removed, to the blank run of the
