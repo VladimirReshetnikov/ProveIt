@@ -757,6 +757,20 @@ target. No selected support, safety property or unit is assumed. See the
 with four standard-only reports. The actual finite source-word mutation
 and resulting rank congruence still need composition.
 
+`CurrentFiniteDummyMutation2011` constructs the entire finite Boolean update
+and derives ordinary C/F sums relative to one original zero-dummy normalization.
+Every insertion derives its own nonwrapping bound; no aggregate increment or
+sum bound is assumed. `CurrentPackingParity2011` derives the actual rank3
+modulo4 from the adjusted low mask and retains the same rank/population/growth
+witness. `ControllerRankStride` and `CurrentRankStride2011` derive the actual
+positive quotient stride and exact temporal power, preserving a particular
+packing through rephasing. Their adapter keeps R explicitly supplied with
+growth and congruence; it does not yet bind R to that packing's rank.
+See the [root review and precise replay scopes](reviews/finite-mutation-parity-stride-root.md)
+and its linked author/peer receipts. The32 reports are standard-only. Actual
+rank calibration, the halt dimension adapter and remaining positive Pell/source
+assembly remain integration obligations.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
