@@ -27,10 +27,28 @@ publication keep their separate scopes.
 
 ## Current queue
 
-Wave 18 (the six archives of `f635e9185f`, 25 October 16:11; sources
-160–165, placement `897ee2b513`) and wave 19 (two archives of `35fa5f6bc6`,
-16:33, and one of `ee9474c313`, 16:36; sources 166–168, placement
-`7d4af38e5f`) are placed; their reconciliation follows.
+No Con(ZFC)-Diophantine archive is waiting.
+
+## Queue status after batches 234–238
+
+Nineteen Con(ZFC)-Diophantine archives of nine arrival commits (25 October,
+16:11–17:19) are placed as waves 18–22 of
+[con-zfc-diophantine-forms](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md)
+beside waves 5–17, as sources 160–178:
+
+- wave 18, six archives of `f635e9185f`, in `897ee2b513`;
+- wave 19, three of `35fa5f6bc6` and `ee9474c313`, in `7d4af38e5f`;
+- wave 20, four of `9a30ecc41e`, `315154b670`, `5274bc751a` and
+  `38688c5bbc`, staged by the intake, committed by the drop commit
+  `4daba3e49f` and recorded in `cd33982b50`;
+- wave 21, two of `4daba3e49f`, in `9e5095254c`;
+- wave 22, four of `858df49535`, in `9a5c44092b`.
+
+Together 6,938 members = 2,865 staged + 4,043 copies omitted + 30 ignored;
+no placed path exceeds 250 characters. All nineteen ZIPs are retired by
+name. One reconciliation README covers waves 18–22; its audit fixes
+follow. The report is outside the
+research-report collection, which stays at 290. Nothing was rerun.
 
 ## Queue status after batch 233
 
