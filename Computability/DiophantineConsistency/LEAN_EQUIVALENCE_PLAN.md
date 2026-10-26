@@ -744,6 +744,15 @@ record46 standard-axiom audits, the full data binding and exact remaining
 scope. Padding and origin masks remain needed for whole high-mask acceptance;
 the physical cache alone does not discharge the K residues or controller.
 
+`CurrentKernelResidues2011` now discharges all three literal K residue
+premises:26 modulo47,1995 modulo2011 and114787 modulo120199. Its actual
+H residues29/674/36379 are unconditional. The whole semiring identity
+retains Start,941 other selectors,34 controls and all three bare terms;
+177 short checked blocks evaluate the proved physical reindexing. See the
+[root review](reviews/current-kernel-residues2011-root.md) and
+[independent isolated replay](reviews/current-kernel-residues2011-peer.md).
+These finite results do not yet construct the actual power orbit or controller.
+
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
