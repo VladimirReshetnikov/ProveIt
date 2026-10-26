@@ -24,6 +24,18 @@ Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
 
+26 October nonzero spheres: the
+[two new fourteen-variable forms](research/fourteen-nonzero-spheres/README.md)
+have complete profiles14/71/80 and14/72/68 at unchanged current ports.
+Integer descent proves the necessary norm factors cannot vanish; their
+nonzero-square equations preserve every positive Carrier65 assignment by
+identity maps. Four independent root Lean builds pass12 standard-only
+reports, and normal/optimized full finite audits reproduce both exact
+degrees and all47313 coefficient bytes. See the
+[acceptance](reviews/fourteen-nonzero-spheres-root.md). These improve the
+historical15/73/80 and15/75/68 points and trade an extra variable against
+the13-variable frontier. The decimal page and open HA endpoint are unchanged.
+
 26 October unit sphere: the
 [75/96 equation](research/thirteen-unit-sphere96/README.md)
 uses `(PQ)²+U²+Z²−3=0`. The integer sphere theorem and actual negative-unit

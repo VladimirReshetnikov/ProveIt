@@ -1011,6 +1011,17 @@ with13 standard-only reports and identical author/root objects. Separate
 normal/optimized full audits give13/75/96 with unchanged complete ports.
 The new polynomial is different; only its positive zero set is identified.
 
+`NearSquareNormZero` and `CarrierNonzeroSpheres` now add complete14/71/80
+and14/72/68 current-port forms. Generic integer descent and four actual
+nonzero factors justify the two spheres; both preserve the entire original
+positive zero set. Four independent leaves pass12 standard-only reports
+with byte-identical author objects. Full finite normal/optimized checks
+bind every gate, exact degree and all47313 raw coefficient bytes. See
+[root acceptance](reviews/fourteen-nonzero-spheres-root.md). The native
+dependency cache is the current merged361-module selected closure; only
+four new leaves are fresh, not that whole closure. No internal HA/ZFC
+endpoint or displayed-page replacement is asserted.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the

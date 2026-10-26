@@ -239,6 +239,15 @@ passed [independent root review](reviews/thirteen-unit-sphere96-root.md).
 The coefficients are unchanged. This polynomial differs from its predecessor;
 the positive witness maps are the identity. The decimal display is preserved.
 
+Two [fourteen-variable nonzero-sphere forms](research/fourteen-nonzero-spheres/README.md)
+now give **71 operations/degree80** and **72 operations/degree68** with the
+same complete fixed coefficients. Integer descent supplies nonvanishing
+of the norm factors, and the whole positive zero sets match Carrier65 by
+identity. Four independent Lean leaves and full normal/optimized finite
+audits pass [root review](reviews/fourteen-nonzero-spheres-root.md). They
+trade an extra variable for lower degree; no global minimum or HA proof
+of the final equivalence is claimed.
+
 The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 uses **47,313 raw fixed-integer bytes**, 10,812 below the preceding2471
 page. It fixes Start and sorts the other941 selectors by their distinct
