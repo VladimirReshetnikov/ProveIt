@@ -36,6 +36,10 @@ now translates into the actual C254 proof predicate for every internal input
 in every IΣ1 model. Its [independent replay](reviews/validator-growg222-root.md)
 passed seven fresh commands and ten standard-only reports. The changed seed
 and runtime calibration remain open.
+The literal helper-free seed now also has
+[bounded arithmetic graphs](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticSeedTemplates222.lean),
+with [independent replay](reviews/arithmetic-seed-templates222-root.md).
+Representation of its syntax is separate from the pending seed-validity proof.
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence

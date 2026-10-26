@@ -212,6 +212,13 @@ actual C222 definition. Seven fresh main/check/prerequisite commands passed
 [independent root replay](reviews/validator-growg222-root.md), with ten
 standard-only reports and114 authenticated cached prerequisites. The changed
 seed bundle still requires additional internal syntactic interpretation work.
+Its literal helper-free syntax now also has checked
+[bounded circuits](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticSeedTemplates222.lean)
+for req/clos/nks/vrel/bundle222, with exact Nat bindings and arbitrary-internal
+IOpen graph correctness. Two leaves passed [independent root replay](reviews/arithmetic-seed-templates222-root.md)
+with16 standard-only reports and102 authenticated cached prerequisites.
+The repeated matrix/binder c, false code1 and legal a=b,c=0 case are retained.
+These are representation results; they do not prove the seed internally valid.
 None of these missing statements is supplied by standard-Nat simulation.
 
 The [arithmetic translation audit](research/ha-arithmetic-translation-adapter-audit.md)
