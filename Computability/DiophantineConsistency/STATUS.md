@@ -9,6 +9,14 @@ The later pause statements in this chronological record describe earlier
 checkpoints. The maintained decimal display and all size comparisons
 remain documented in [SIZE_REDUCTION.md](SIZE_REDUCTION.md).
 
+The resumed arithmetic checkpoint now checks the literal fourteen-variable
+Carrier65 polynomial in Lean, every norm sign, the rank window from the
+transport factor, and the unique positive omitted witness. The converse
+first-Pell carrier map is also checked. See
+[the exact theorem and review scope](reviews/carrier65-lean-arithmetic-root.md).
+The complete fixed native recipe and its connection to the syntactic
+refutation endpoint remain open; no new end-to-end theorem is claimed.
+
 The first size-only result is a440-operation nine-positive circuit, down
 from443, with the exact same polynomial and degree1,845,940; the natural
 translation uses447 operations. Shared products and rank cancellation are

@@ -68,6 +68,23 @@ auxiliary-Pell residue and fresh-seed maps require their own proofs. The
 old `ShortCircuit` module describes a different 15-variable 69-operation
 graph and cannot serve as the new 13-variable binding.
 
+## Verified arithmetic checkpoint
+
+The first four modules above now compile, together with their focused
+checks. `Carrier65.eval_polynomial_zero_iff_norms` binds the actual
+fourteen-variable polynomial to its five unit equations on every positive
+assignment, without a rank or first-root sign premise.
+`Carrier65Witness.polynomial_zero_restores_index` derives the rank window,
+positivity of the first root, and the unique positive omitted quotient
+directly from an actual zero and the fixed-port box. `FirstPellCarrier`
+also proves the converse positive carrier map and uniqueness. The
+[root review](reviews/carrier65-lean-arithmetic-root.md) and separate
+[front](reviews/carrier65-front-lean-peer.md) and
+[rank/witness](reviews/carrier65-rank-witness-lean-peer.md) reviews record
+the exact scope and reproduction commands. These theorems require the
+scalar port inequalities; the current entire native recipe still must be
+bound and calibrated. The final consistency equivalence remains open.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
