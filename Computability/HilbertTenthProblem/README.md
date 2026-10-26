@@ -45,8 +45,8 @@ As the packages state them:
   degree 298, 14 at degree 82 in 113 operations, and 15 at degree 44 in 111;
 - eleven positive unknowns at degree 174 in 104 operations;
 - twelve positive unknowns at degree 70, and thirteen at degree 28;
-- fourteen positive unknowns at degree 24, at degree 94 in 67 operations, or in 65
-  operations at degree 150;
+- fourteen positive unknowns at degree 24, at degree 94 in 67 operations or 118 in
+  66, or in 65 operations at degree 150;
 - a fifteen-positive equation in 66 operations at degree 157 (dominated across
   counts by the fourteen-positive 65 / 150);
 - a quartic in 37 unrestricted integers, a sextic in 30 and an octic in 25.
