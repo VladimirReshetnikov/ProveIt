@@ -1,0 +1,138 @@
+\section{Measurements, formal checks, and reproducibility}
+\label{sec:validation}
+
+\subsection{Count the complete cost of each abstraction}
+
+The table counts whole affected production files against the pinned source.
+An added helper begins with zero lines on the baseline side. Physical lines
+include comments and blank lines. Code lines are nonblank lines after removing
+Lean line comments and nested block comments, while preserving string literals.
+The accompanying manifest records per-file SHA-256 hashes and byte counts.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Xrrrr@{}}
+\toprule
+Patch group & Before & After & Saved & Code saved\\
+\midrule
+Codec bridge and parent specialization & 360 & 356 & 4 & 6\\
+Optional table-length specialization & 101 & 97 & 4 & 4\\
+Local coefficient fibre and three clients & 413 & 393 & 20 & 25\\
+Pell absolute-coordinate argument & 671 & 663 & 8 & 8\\
+Optional first-failure abstraction & 148 & 161 & $-13$ & $-3$\\
+\midrule
+All five patch groups & 1,693 & 1,670 & 23 & 40\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The coefficient group includes the entire 32-line new module. The
+first-failure group includes the entire 28-line new module. Optional
+architectural prototypes and validation files are not production savings.
+The complete source byte count changes from 76,582 to 75,864.
+
+For immediate reduction with unchanged axiom dependencies of existing
+theorems, use the codec/parent, coefficient, and Pell patches. Their affected
+files change from 1,444 to 1,412 physical lines: \textbf{32 lines saved}, and
+39 code lines saved. Adding the optional table-length patch changes the
+aggregate saving to 36 physical lines and 43 code lines. The modest totals
+are intentional: the report counts the reusable interfaces it introduces.
+
+\subsection{What was compiled}
+
+Validation used Lean 4.32.0, compiler commit
+\code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}, and the repository's Mathlib
+pin \code{81a5d257c8e410db227a6665ed08f64fea08e997}. Required repository
+dependencies were built from the pinned source. The final combined overlay
+compiled all ten complete production modules:
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Xl@{}}
+\toprule
+Module & Result\\
+\midrule
+\code{AnnotatedCodeArithmetic} & exit 0\\
+\code{AnnotatedRenameCode} & exit 0\\
+\code{AnnotatedParents} & exit 0\\
+\code{QuadraticFiber} (new) & exit 0\\
+\code{QuadraticCoding} & exit 0\\
+\code{SelectiveQuadraticCoding} & exit 0\\
+\code{MultiQuadraticCoding} & exit 0\\
+\code{NativePellBootstrap} & exit 0\\
+\code{FirstExit} (new) & exit 0\\
+\code{WangTiles942InitialStrip} & exit 0\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+These checks include the original executable definitions and assertions
+contained in those modules. Separate files checked the zero-start and
+later-exit boundaries of the new first-failure interface, and printed the
+axiom dependencies of the changed and new declarations. Both old and new
+versions of the existing selected theorem declarations were available for
+the axiom comparison. The self-contained combined patch also passed
+\code{git apply --check} against the original source snapshot.
+
+The exact source hashes, commands' exit statuses, elapsed times, and raw
+logs are retained in \code{evidence/final-validation.json} and
+\code{evidence/final-logs}. Elapsed times are execution receipts; they
+are not controlled performance measurements. This was a targeted module
+build, not a repository-wide rebuild, a proof-term-size study, or a claim
+that all reverse dependencies were re-elaborated.
+
+\subsection{Axiom footprint}
+
+Here \(S\) abbreviates the ordinary Lean dependency set
+\[
+  S=\{\text{\code{propext}},\ \text{\code{Classical.choice}},\ \text{\code{Quot.sound}}\}.
+\]
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Xll@{}}
+\toprule
+Declaration group & Baseline & Proposed\\
+\midrule
+Parent \code{check_lists} and unchanged \code{check_raw_iff} & $S$ & $S$\\
+Five existing coefficient declarations & $S$ & $S$\\
+Pell \code{firstUnit_fundamental} & $S$ & $S$\\
+Left and right wall existence & $S$ & $S$\\
+Table \code{length_le_tableCode} & $S\setminus\{\text{\code{Classical.choice}}\}$ & $S$\\
+New codec, coefficient, and first-failure helpers & --- & $S$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+No new axiom is declared. None of these inspected final declarations
+depends on \code{sorryAx}. The optional table-length change is the one
+observed increase in an existing theorem's axiom dependency set. Keeping
+its original proof avoids that increase. The new list bridge itself uses
+the library's proof-bearing encoding instance, even though the project
+encoding remains the same executable definition.
+
+\subsection{How to replay and integrate}
+
+The archive contains targeted patches, reference after-files under
+\code{overlay/}, and a portable \path{validation/replay.py} script. The
+baseline hashes identify the exact files used for the measurements. Replay
+requires a checkout with the recorded Lean toolchain and Mathlib pin; the
+script checks those baseline source hashes and builds the required modules,
+then compiles the overlay into a separate output directory. The baseline
+source files are not overwritten by replay.
+The prepared-environment replay mode was exercised successfully, including
+both optional prototypes. The ordinary Lake launcher is also supplied for
+prepared checkouts; it was not the mode used for the recorded run.
+
+Lean resolves a top-level module namespace through one search-path directory.
+Consequently, the replay script stages unchanged dependency artifacts in a
+complete namespace alongside the new artifacts; merely prepending a sparse
+overlay directory would be insufficient. This implementation detail matters
+for reliable replay but does not alter any theorem statement.
+
+For a branch where all previous proposals have already been applied, rebase
+the relevant patch hunks onto that branch. The full after-files are evidence
+of the pinned experiment, not instructions to replace files wholesale and
+restore unrelated older proofs. A patch that no longer applies cleanly may
+need a routine proof-level adaptation to the already-refactored interface.
+The corpus-relative ideas survive that situation; the exact line totals
+still describe only the pinned experiment.

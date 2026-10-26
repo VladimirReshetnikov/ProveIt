@@ -1,0 +1,118 @@
+--- /dev/null
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FirstExit.lean
+@@ -0,0 +1,28 @@
++import Mathlib.Data.Nat.Find
++import Lean.Elab.Tactic.Omega
++
++/-!
++# Least failure with its interior and predecessor
++
++The predecessor conclusion is deliberately a disjunction: the first failure
++may occur exactly at the starting index, including when that index is zero.
++-/
++
++namespace DiophantineConsistency.FirstExit
++
++theorem exists_first_failure (P : ℕ → Prop) [DecidablePred P] (a b : ℕ)
++    (hab : a ≤ b) (hb : ¬ P b) :
++    ∃ k : ℕ, a ≤ k ∧ k ≤ b ∧ ¬ P k ∧
++      (∀ j : ℕ, a ≤ j → j < k → P j) ∧ (k = a ∨ P (k - 1)) := by
++  have hex : ∃ j : ℕ, a ≤ j ∧ ¬ P j := ⟨b, hab, hb⟩
++  let k := Nat.find hex
++  have hk := Nat.find_spec hex
++  have hi (j : ℕ) (ha : a ≤ j) (hj : j < k) : P j := by
++    by_contra hn
++    exact (Nat.find_min hex hj) ⟨ha, hn⟩
++  refine ⟨k, hk.1, Nat.find_min' hex ⟨hab, hb⟩, hk.2, hi, ?_⟩
++  by_cases hka : k = a
++  · exact Or.inl hka
++  · exact Or.inr (hi (k - 1) (by omega) (by omega))
++
++end DiophantineConsistency.FirstExit
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942InitialStrip.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942InitialStrip.lean
+@@ -1,5 +1,6 @@
+ import DiophantineConsistency.WangTiles942InitialHorizontal
+ import DiophantineConsistency.WangTiles942Periodic
++import DiophantineConsistency.FirstExit
+ 
+ /-!
+ # A finite initialization strip around Start in a periodic horizontal row
+@@ -53,30 +54,22 @@
+     rw [neg_add_cancel, hstart] at hh
+     exact hh.symm
+   have hend : T (-(N : ℤ)) ≠ (⟨2,434,2,0⟩ : Tile) := by rw [hminus]; decide
+-  have hex : ∃ j : ℕ, 1 ≤ j ∧ T (-(j : ℤ)) ≠ (⟨2,434,2,0⟩ : Tile) :=
+-    ⟨N, hN, hend⟩
+-  let L := Nat.find hex
+-  have hL : 1 ≤ L ∧ T (-(L : ℤ)) ≠ (⟨2,434,2,0⟩ : Tile) := Nat.find_spec hex
+-  have hLN : L ≤ N := Nat.find_min' hex ⟨hN,hend⟩
+-  have hinside (j : ℕ) (hj : 1 ≤ j) (hjl : j < L) :
+-      T (-(j : ℤ)) = (⟨2,434,2,0⟩ : Tile) := by
+-    by_contra hnot
+-    have hh : L ≤ j := Nat.find_min' hex ⟨hj,hnot⟩
+-    omega
++  obtain ⟨L, hL, hLN, hExit, hinside, hpred⟩ :=
++    FirstExit.exists_first_failure
++      (fun j => T (-(j : ℤ)) = (⟨2,434,2,0⟩ : Tile)) 1 N hN hend
+   have hright : (T (-(L : ℤ)+1)).west = 2 := by
+-    by_cases he : L = 1
++    rcases hpred with he | hi
+     · rw [he]
+       norm_num only [Nat.cast_one, neg_add_cancel]
+       rw [hstart]
+       rfl
+-    · have hi := hinside (L-1) (by omega) (by omega)
+-      have heq : -((L-1 : ℕ) : ℤ) = -(L : ℤ)+1 := by omega
++    · have heq : -((L-1 : ℕ) : ℤ) = -(L : ℤ)+1 := by omega
+       rw [heq] at hi
+       rw [hi]
+   have heast : (T (-(L : ℤ))).east = 2 := (hH (-(L : ℤ))).symm.trans hright
+   rcases (east_2_iff_initLeft_or_seam (hallowed (-(L : ℤ)))).mp heast with hl | hs
+-  · exact False.elim (hL.2 hl)
+-  · exact ⟨L, hL.1, hLN, hs, hinside⟩
++  · exact False.elim (hExit hl)
++  · exact ⟨L, hL, hLN, hs, hinside⟩
+ 
+ /-- First non-initRight after the head. Periodic head supplies a witness byN+1. -/
+ theorem right_wall_exists (T : ℤ → Tile) (hallowed : ∀ x, Allowed (T x))
+@@ -91,23 +84,15 @@
+     rw [Nat.cast_add, Nat.cast_one, add_comm]
+     exact (hperiod 1).trans hhead
+   have hend : T ((N+1 : ℕ) : ℤ) ≠ (⟨4,436,4,0⟩ : Tile) := by rw [hplus]; decide
+-  have hex : ∃ j : ℕ, 2 ≤ j ∧ T (j : ℤ) ≠ (⟨4,436,4,0⟩ : Tile) :=
+-    ⟨N+1, by omega, hend⟩
+-  let R := Nat.find hex
+-  have hR : 2 ≤ R ∧ T (R : ℤ) ≠ (⟨4,436,4,0⟩ : Tile) := Nat.find_spec hex
+-  have hRN : R ≤ N+1 := Nat.find_min' hex ⟨by omega,hend⟩
+-  have hinside (j : ℕ) (hj : 2 ≤ j) (hjr : j < R) :
+-      T (j : ℤ) = (⟨4,436,4,0⟩ : Tile) := by
+-    by_contra hnot
+-    have hh : R ≤ j := Nat.find_min' hex ⟨hj,hnot⟩
+-    omega
++  obtain ⟨R, hR, hRN, hExit, hinside, hpred⟩ :=
++    FirstExit.exists_first_failure
++      (fun j => T (j : ℤ) = (⟨4,436,4,0⟩ : Tile)) 2 (N+1) (by omega) hend
+   have hleft : (T ((R : ℤ)-1)).east = 4 := by
+-    by_cases he : R = 2
++    rcases hpred with he | hi
+     · rw [he]
+       norm_num only [Nat.cast_ofNat, Int.reduceSub]
+       rw [hhead]
+-    · have hi := hinside (R-1) (by omega) (by omega)
+-      have heq : ((R-1 : ℕ) : ℤ) = (R : ℤ)-1 := by omega
++    · have heq : ((R-1 : ℕ) : ℤ) = (R : ℤ)-1 := by omega
+       rw [heq] at hi
+       rw [hi]
+   have hwest : (T (R : ℤ)).west = 4 := by
+@@ -115,8 +100,8 @@
+     rw [sub_add_cancel] at hh
+     exact hh.trans hleft
+   rcases (west_4_iff_initRight_or_seam (hallowed (R : ℤ))).mp hwest with hr | hs
+-  · exact False.elim (hR.2 hr)
+-  · exact ⟨R, hR.1, hRN, hs, hinside⟩
++  · exact False.elim (hExit hr)
++  · exact ⟨R, hR, hRN, hs, hinside⟩
+ 
+ /-- A horizontally periodic allowed row containing Start has exact finite
+ seam walls and a complete blank-initialization segment between them. -/

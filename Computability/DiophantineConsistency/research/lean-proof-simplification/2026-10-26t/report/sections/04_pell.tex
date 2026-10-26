@@ -1,0 +1,103 @@
+\section{Use the magnitude of the second Pell coordinate}
+\label{sec:pell}
+
+\subsection{The precise target}
+
+In \code{NativePellBootstrap}, the explicit solution
+\[
+  a=(2Q+1,2),\qquad d=Q(Q+1),\qquad Q\in\N,\ Q>0
+\]
+is proved fundamental for the Pell equation
+\[
+  x^2-dy^2=1.
+\]
+The statement \code{firstUnit_fundamental} is used by
+\code{first_norm_classification}; the latter turns actual norm solutions
+into powers of the fundamental unit \cite{pellsource}.
+
+The existing proof establishes \(y^2\ge4\) for a competing solution with
+\(x>1\). Assuming \(y^2<4\), it derives the alternatives
+\(y=-1\), \(y=0\), and \(y=1\), then handles them separately. The two
+nonzero cases have the same norm equation. The zero case is already ruled
+out by a theorem in Mathlib's Pell API.
+
+\subsection{The shorter argument}
+
+For a competing solution \(b=(x,y)\) with \(x>1\), use
+\code{Pell.Solution₁.y_ne_zero_of_one_lt_x}. If \(y^2<4\), this gives
+\[
+  0<|y|<2.
+\]
+Integer discreteness immediately gives \(|y|=1\), hence \(y^2=1\).
+No sign of \(y\) has to be selected. Substitution into the norm equation
+yields
+\[
+  x^2=Q(Q+1)+1=Q^2+Q+1.
+\]
+Because \(Q>0\),
+\[
+  Q^2<x^2<(Q+1)^2.
+\]
+Since \(x>1\), comparison of nonnegative squares implies
+\(Q<x<Q+1\), impossible for integers. Therefore \(4\le y^2\).
+The norm identity now gives
+\[
+  (2Q+1)^2=1+4Q(Q+1)\le 1+Q(Q+1)y^2=x^2,
+\]
+so \(2Q+1\le x\). Together with the positivity of the displayed solution,
+this is exactly the fundamental-unit condition.
+
+\Needspace{9\baselineskip}
+The central replacement fragment is:
+\begin{lean}
+  have hy0 := abs_pos.mpr
+    (Pell.Solution₁.y_ne_zero_of_one_lt_x hb)
+  have hylt := abs_lt_of_sq_lt_sq
+    (by omega : b.y ^ 2 < (2 : Int) ^ 2)
+    (by norm_num : (0 : Int) ≤ 2)
+  have hy : |b.y| = 1 := by omega
+  have hsq : b.y ^ 2 = 1 := by nlinarith [sq_abs b.y]
+\end{lean}
+
+The supplied production patch adds no helper or import. Only the proof of
+\code{firstUnit_fundamental} changes. Its public statement and the
+\code{firstUnit} definition are unchanged. The full file decreases from
+671 to 663 physical lines, with normal blank separation retained.
+
+\subsection{Optional general criterion}
+
+The archive also supplies a checked architectural prototype:
+\begin{lean}
+theorem fundamental_of_minimal_y_sq
+    (a : Pell.Solution₁ d)
+    (hax : 1 < a.x) (hay : 0 < a.y)
+    (hmin : ∀ b : Pell.Solution₁ d,
+      1 < b.x → a.y ^ 2 ≤ b.y ^ 2) :
+    Pell.IsFundamental a
+\end{lean}
+
+Its proof transfers the inequality on second-coordinate squares through
+\code{a.prop_x} and \code{b.prop_x}, then compares positive first
+coordinates. The positivity of \(d\) follows from the existing positive
+nontrivial Pell solution. The hypothesis deliberately concerns \(y^2\)
+for all competing solutions with \(x>1\); it does not silently assume that
+the competitor's \(y\) is positive.
+
+For this single client, the direct patch has the better immediate cost.
+The generic criterion belongs in a shared module only after another client
+justifies its abstraction cost. The optional prototype's helper lines are
+not included in the claimed eight-line production reduction. Its separate
+square-gap helper is explanatory; a future integration should reuse or
+relocate the already existing private square-gap result in
+\code{MinimumNorm}, rather than maintain two equivalent long-term helpers
+\cite{minimumnorm}.
+
+\subsection{Novelty boundary}
+
+Prior Pell proposals address parity, congruence up to sign, source-register
+facts, and rational-root descent. This proposal concerns the different
+minimality obligation defining the fundamental solution. It still applies
+after those other improvements. The mathematical fact about consecutive
+squares is elementary; the new contribution here is the source-specific
+removal of the signed enumeration and identification of the smaller proof
+obligation.

@@ -14,7 +14,7 @@ a report at one of the destinations of section 2.
 
 ## DiophantineConsistency proof-simplification packets
 
-Eighteen proof-simplification packets of 26 October 2026, reviewing commits from `60e9c5d620` onward, are placed under
+Twenty-one proof-simplification packets of 26 October 2026, reviewing commits from `60e9c5d620` onward, are placed under
 [`Computability/DiophantineConsistency/research/lean-proof-simplification/`](../../Computability/DiophantineConsistency/research/lean-proof-simplification/README.md) and retired here:
 
 | Archive | Arrival | Placement |
@@ -37,6 +37,9 @@ Eighteen proof-simplification packets of 26 October 2026, reviewing commits from
 | `lean-proof-simplification-new-2026-10-26.zip` | `03ae12b592` | [2026-10-26p](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26p/PLACEMENT.md) |
 | `diophantine-lean-post-roadmap-2026-10-26.zip` | `03ae12b592` | [2026-10-26q](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26q/PLACEMENT.md) |
 | `lean-simplification-residual-2026-10-26.zip` | `03ae12b592` | [2026-10-26r](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26r/PLACEMENT.md) |
+| `diophantine-lean-further-simplifications-2026-10-26.zip` | `6a7ef347b5` | [2026-10-26s](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26s/PLACEMENT.md) |
+| `diophantine-lean-further-simplifications-2026-10-26 (1).zip` | `6a7ef347b5` | [2026-10-26t](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26t/PLACEMENT.md) |
+| `diophantine-lean-structural-refinements-2026-10-26.zip` | `6a7ef347b5` | [2026-10-26u](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26u/PLACEMENT.md) |
 
 Members byte-identical to a Git blob of the reviewed commit (the bundled source snapshots) are listed in
 each placement's `OMITTED.tsv` instead of being copied. Adopted ideas are tracked in

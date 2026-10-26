@@ -1,0 +1,430 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeHalfBinomial.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeHalfBinomial.lean
+@@ -21,91 +21,9 @@
+     (hξY' : ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r < 2 * (Y + 1))
+     (h72 : 72 * r < U + 1) (h16 : 16 ≤ Y * (U + 1)) :
+     (c : ℝ) / k < ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r + 1 := by
+-  have hk0 : 0 < k := by
+-    rw [hk]; exact lt_of_lt_of_le (Nat.succ_pos r) (Pell.yn_ge_n hP (r + 1))
+-  have hkR : (0 : ℝ) < k := by exact_mod_cast hk0
+-  have hUR : (0 : ℝ) < (U : ℝ) ^ r := by positivity
+-  have hU1 : (0 : ℝ) < (U : ℝ) + 1 := by positivity
+-  have hYR : (1 : ℝ) ≤ Y := by exact_mod_cast hY
+-  have hYU : (0 : ℝ) < (Y : ℝ) * (U + 1) := by positivity
+-  have haR : (a : ℝ) = Y * (U + 1) := by rw [ha]; push_cast; ring
+-  obtain ⟨ξ, hξ⟩ : ∃ ξ : ℝ, ξ = ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r := ⟨_, rfl⟩
+-  have hξdef : ((U : ℝ) + 1) ^ (2 * r) = ξ * (U : ℝ) ^ r := by rw [hξ]; field_simp
+-  rw [← hξ]
+-  -- growth bounds
+-  have hcb : (c : ℝ) ≤ (2 * ((a : ℝ) + 2)) ^ (2 * r) := by
+-    have := ψ_succ_le_pow hA (2 * r)
+-    rw [← hJ, ← hc] at this
+-    exact_mod_cast this
+-  have hkb : ((2 * (2 * (U * Y ^ 2) + 1) - 1 : ℕ) : ℝ) ^ r ≤ k := by
+-    have := pow_le_ψ_succ hP r
+-    rw [← hk] at this
+-    exact_mod_cast this
+-  -- `Z = (2A)² U ≤ X (1 + ε)`, `X = (2P−1)(U+1)²`, `ε = 9/(Y(U+1))`
+-  obtain ⟨X, hX⟩ : ∃ X : ℝ, X = ((2 * (2 * (U * Y ^ 2) + 1) - 1 : ℕ) : ℝ) * ((U : ℝ) + 1) ^ 2 :=
+-    ⟨_, rfl⟩
+-  obtain ⟨Z, hZ⟩ : ∃ Z : ℝ, Z = (2 * ((a : ℝ) + 2)) ^ 2 * U := ⟨_, rfl⟩
+-  obtain ⟨ε, hε⟩ : ∃ ε : ℝ, ε = 9 / ((Y : ℝ) * (U + 1)) := ⟨_, rfl⟩
+-  have hε0 : 0 ≤ ε := by rw [hε]; positivity
+-  have hXpos : 0 < X := by
+-    rw [hX]
+-    have : (1 : ℕ) ≤ 2 * (2 * (U * Y ^ 2) + 1) - 1 := by omega
+-    have : (1 : ℝ) ≤ ((2 * (2 * (U * Y ^ 2) + 1) - 1 : ℕ) : ℝ) := by exact_mod_cast this
+-    positivity
+-  have hZX : Z ≤ X * (1 + ε) := by
+-    have key := Jones1980.Ratio90.upper_key hU hY h16
+-    have keyR : Z * ((Y : ℝ) * (U + 1)) ≤ X * ((Y : ℝ) * (U + 1) + 9) := by
+-      rw [hZ, hX, haR]
+-      exact_mod_cast key
+-    have e : X * (1 + ε) = X * ((Y : ℝ) * (U + 1) + 9) / ((Y : ℝ) * (U + 1)) := by
+-      rw [hε]; field_simp
+-    rw [e, le_div_iff₀ hYU]
+-    exact keyR
+-  -- `c U^r ≤ Z^r` and `X^r ≤ k (U+1)^(2r)`
+-  have hcZ : (c : ℝ) * (U : ℝ) ^ r ≤ Z ^ r := by
+-    have e : Z ^ r = (2 * ((a : ℝ) + 2)) ^ (2 * r) * (U : ℝ) ^ r := by
+-      rw [hZ, mul_pow, ← pow_mul]
+-    rw [e]; exact mul_le_mul_of_nonneg_right hcb hUR.le
+-  have hXk : X ^ r ≤ (k : ℝ) * ((U : ℝ) + 1) ^ (2 * r) := by
+-    have e : X ^ r = ((2 * (2 * (U * Y ^ 2) + 1) - 1 : ℕ) : ℝ) ^ r * ((U : ℝ) + 1) ^ (2 * r) := by
+-      rw [hX, mul_pow, ← pow_mul]
+-    rw [e]; exact mul_le_mul_of_nonneg_right hkb (by positivity)
+-  -- `(1+ε)^r ≤ 1 + 2rε`
+-  have h72R : (72 : ℝ) * r < U + 1 := by exact_mod_cast h72
+-  have hrε : (r : ℝ) * ε ≤ 1 / 2 := by
+-    rw [hε, mul_div_assoc', div_le_iff₀ hYU]
+-    nlinarith
+-  have hpow := Jones1980.Ratio90.one_add_pow_le r hε0 hrε
+-  -- `c U^r ≤ k ξ U^r (1 + 2rε)`, hence `c ≤ k ξ (1 + 2rε)`
+-  have h1 : (c : ℝ) * (U : ℝ) ^ r ≤ (k : ℝ) * ξ * (1 + 2 * (r * ε)) * (U : ℝ) ^ r := by
+-    calc (c : ℝ) * (U : ℝ) ^ r ≤ Z ^ r := hcZ
+-      _ ≤ (X * (1 + ε)) ^ r := pow_le_pow_left₀ (by rw [hZ]; positivity) hZX r
+-      _ = X ^ r * (1 + ε) ^ r := mul_pow _ _ _
+-      _ ≤ (k : ℝ) * ((U : ℝ) + 1) ^ (2 * r) * (1 + 2 * (r * ε)) := by
+-          apply mul_le_mul hXk hpow (by positivity) (by positivity)
+-      _ = (k : ℝ) * ξ * (1 + 2 * (r * ε)) * (U : ℝ) ^ r := by rw [hξdef]; ring
+-  have h1' : (c : ℝ) ≤ (k : ℝ) * ξ * (1 + 2 * (r * ε)) := le_of_mul_le_mul_right h1 hUR
+-  have hξY : ξ < 2 * (Y + 1) := by rw [hξ]; exact hξY'
+-  -- `ξ ⋅ 2rε < 1/2`
+-  have hsmall : ξ * (2 * (r * ε)) < 1 := by
+-    have hε' : (Y + 1 : ℝ) * (2 * (r * ε)) < 1 / 2 := by
+-      rw [hε]
+-      have e : ((Y : ℝ) + 1) * (2 * (r * (9 / ((Y : ℝ) * (U + 1))))) =
+-          18 * r * (Y + 1) / (Y * (U + 1)) := by field_simp; ring
+-      rw [e, div_lt_iff₀ hYU]
+-      nlinarith
+-    have hξ0 : 0 ≤ ξ := by rw [hξ]; positivity
+-    calc ξ * (2 * (r * ε)) ≤ 2 * (Y + 1 : ℝ) * (2 * (r * ε)) :=
+-          mul_le_mul_of_nonneg_right hξY.le (by positivity)
+-      _ < 1 := by nlinarith [hε']
+-  -- conclude
+-  rw [div_lt_iff₀ hkR]
+-  calc (c : ℝ) ≤ k * ξ * (1 + 2 * (r * ε)) := h1'
+-    _ = k * ξ + k * (ξ * (2 * (r * ε))) := by ring
+-    _ < k * ξ + k * 1 := by
+-        have := mul_lt_mul_of_pos_left hsmall hkR
+-        linarith
+-    _ = (ξ + 1) * k := by ring
++  simpa only [show (2 : ℝ) / 2 = 1 by norm_num] using
++    Jones1980.Ratio90.upper_estimate_of_ratio_envelope hU hY hr hJ hA ha hP hc hk
++      (κ := 2) (by norm_num) hξY' h72 h16
+ 
+ /-- The upper bound for the actual doubled first coordinate. -/
+ theorem doubled_upper_estimate {X Y r k c a R η ζ : ℕ}
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
+@@ -462,6 +462,28 @@
+     nlinarith [mul_nonneg (show 0 ≤ (x 3 : ℤ) - 1 by omega) (show 0 ≤ q - 1 by omega)]
+   exact pos_of_mul_pos_right hprod hKw.le
+ 
++/-- A common sharp lower envelope for the native packing target.  The positive
++transport gap gives q-F >= 2, hence its leading factor is at least 2*q-1. -/
++theorem source_native_rank_envelope (ports : Fin 4 → ℤ)
++    (hβ : 0 < ports 0) (hK : 0 ≤ ports 1) (hMC : 0 ≤ ports 2) (hMF : 0 ≤ ports 3)
++    (x : Fin 31 → ℕ) (hx : ∀ i, 0 < x i)
++    (hs : ∀ k, SplitCertificate59.sourceRows ports (fun i => (x i : ℤ)) k = 0) :
++    let q : ℤ := 1 + (x 0 : ℤ) * ports 0
++    3 ≤ q ∧ (2 * q - 1) * (q ^ 2 - 1) ≤ nativeRank x := by
++  let q : ℤ := 1 + (x 0 : ℤ) * ports 0
++  have hC : 0 < q - x 1 - x 2 := source_transport_positive ports hβ hK x hx hs
++  have hF : (0 : ℤ) < x 1 := by exact_mod_cast hx 1
++  have hα : (0 : ℤ) < x 2 := by exact_mod_cast hx 2
++  have hq : 3 ≤ q := by omega
++  have hG : 2 * q - 1 ≤ (q - 1) * (q - x 1) + x 2 := by
++    nlinarith [mul_nonneg (show 0 ≤ q - 1 by omega) (show 0 ≤ q - x 1 - 2 by omega)]
++  have hGL := mul_le_mul_of_nonneg_right hG (show 0 ≤ q ^ 2 - 1 by nlinarith)
++  have hmask : 0 ≤ (ports 2 + ports 3 * q) * x 0 := by positivity
++  have htarget := source_rank_eq_target ports x hs
++  change nativeRank x = ((q - 1) * (q - x 1) + x 2) * (q ^ 2 - 1) +
++    (ports 2 + ports 3 * q) * x 0 at htarget
++  exact ⟨hq, by linarith⟩
++
+ /-- Native rank positivity follows from the OLD positive transport coordinate
+ and nonnegative native mask ports, without importing the outer rank bounds. -/
+ theorem source_native_rank_ge_twentyfour (ports : Fin 4 → ℤ)
+@@ -469,22 +491,10 @@
+     (x : Fin 31 → ℕ) (hx : ∀ i, 0 < x i)
+     (hs : ∀ k, SplitCertificate59.sourceRows ports (fun i => (x i : ℤ)) k = 0) :
+     24 ≤ nativeRank x := by
+-  let q : ℤ := 1 + (x 0 : ℤ) * ports 0
+-  have hC : 0 < q - x 1 - x 2 := source_transport_positive ports hβ hK x hx hs
+-  have hF : (0 : ℤ) < x 1 := by exact_mod_cast hx 1
+-  have hα : (0 : ℤ) < x 2 := by exact_mod_cast hx 2
+-  have hq3 : 3 ≤ q := by omega
+-  have hL8 : 8 ≤ q ^ 2 - 1 := by nlinarith
+-  have hG : q ≤ (q - 1) * (q - x 1) + x 2 := by
+-    nlinarith [mul_nonneg (show 0 ≤ q - 1 by omega) (show 0 ≤ q - x 1 - 1 by omega)]
+-  have hGL := mul_le_mul_of_nonneg_right hG (show 0 ≤ q ^ 2 - 1 by omega)
+-  have hmin : (24 : ℤ) ≤ q * (q ^ 2 - 1) := by
+-    exact mul_le_mul hq3 hL8 (by norm_num) (by omega)
+-  have hmask : 0 ≤ (ports 2 + ports 3 * q) * x 0 := by positivity
+-  have htarget := source_rank_eq_target ports x hs
+-  change nativeRank x = ((q - 1) * (q - x 1) + x 2) * (q ^ 2 - 1) +
+-    (ports 2 + ports 3 * q) * x 0 at htarget
+-  linarith
++  obtain ⟨hq, hR⟩ := source_native_rank_envelope ports hβ hK hMC hMF x hx hs
++  have hq2 : (8 : ℤ) ≤ (1 + (x 0 : ℤ) * ports 0) ^ 2 - 1 := by nlinarith
++  have hm := mul_le_mul_of_nonneg_left hq2 (show 0 ≤ 2 * (1 + (x 0 : ℤ) * ports 0) - 1 by omega)
++  nlinarith
+ 
+ /-- The literal defining rows give E=q^4*w*s. -/
+ theorem source_scale_eq (ports : Fin 4 → ℤ) (x : Fin 31 → ℕ)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellScaleBounds.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellScaleBounds.lean
+@@ -40,30 +40,16 @@
+     (hs : ∀ k, SplitCertificate59.sourceRows ports (fun i => (x i : ℤ)) k = 0) :
+     3 * sourceQ ports x < (nativeRank x).toNat := by
+   let q : ℤ := 1 + (x 0 : ℤ) * ports 0
+-  have hC : 0 < q - x 1 - x 2 :=
+-    source_transport_positive ports hports.beta_pos hports.K_nonneg x hx hs
+-  have hF : (0 : ℤ) < x 1 := by exact_mod_cast hx 1
+-  have hα : (0 : ℤ) < x 2 := by exact_mod_cast hx 2
+-  have hq3 : 3 ≤ q := by omega
+-  have hL8 : 8 ≤ q ^ 2 - 1 := by nlinarith
+-  have hG : q ≤ (q - 1) * (q - x 1) + x 2 := by
+-    nlinarith [mul_nonneg (show 0 ≤ q - 1 by omega) (show 0 ≤ q - x 1 - 1 by omega)]
+-  have hGL := mul_le_mul_of_nonneg_right hG (show 0 ≤ q ^ 2 - 1 by omega)
+-  have hmin : 3 * q < q * (q ^ 2 - 1) := by nlinarith
+-  have hmask : 0 ≤ (ports 2 + ports 3 * q) * x 0 :=
+-    mul_nonneg (add_nonneg hports.MC_nonneg (mul_nonneg hports.MF_nonneg (by omega)))
+-      (by positivity)
+-  have htarget := source_rank_eq_target ports x hs
+-  change nativeRank x = ((q - 1) * (q - x 1) + x 2) * (q ^ 2 - 1) +
+-    (ports 2 + ports 3 * q) * x 0 at htarget
+-  have hR : 3 * q < nativeRank x := by linarith
+-  have hcast : ((nativeRank x).toNat : ℤ) = nativeRank x :=
+-    Int.toNat_of_nonneg (by omega)
+-  have hqcast : (sourceQ ports x : ℤ) = q := sourceQ_cast ports hports.beta_pos.le x
+-  have hz : (3 : ℤ) * (sourceQ ports x : ℤ) < ((nativeRank x).toNat : ℤ) := by
+-    rw [hqcast,hcast]
+-    exact hR
+-  exact_mod_cast hz
++  obtain ⟨hq, hR⟩ := source_native_rank_envelope ports hports.beta_pos hports.K_nonneg
++    hports.MC_nonneg hports.MF_nonneg x hx hs
++  have hq2 : (8 : ℤ) ≤ q ^ 2 - 1 := by change 3 ≤ q at hq; nlinarith
++  have hm := mul_le_mul_of_nonneg_left hq2 (show 0 ≤ 2 * q - 1 by change 3 ≤ q at hq; omega)
++  have hR' : 3 * q < nativeRank x := by
++    change (2 * q - 1) * (q ^ 2 - 1) ≤ nativeRank x at hR
++    change 3 ≤ q at hq
++    nlinarith
++  rw [Int.lt_toNat, Nat.cast_mul, Nat.cast_ofNat, sourceQ_cast ports hports.beta_pos.le x]
++  exact hR'
+ 
+ /-- The source rank dominates three times the binary exponent of q. -/
+ theorem source_binary_exponent_bound (ports : Fin 4 → ℤ) (hports : PortBox ports)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineTraceBounds.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineTraceBounds.lean
+@@ -88,12 +88,7 @@
+ 
+ theorem run_read_of_abs_ge {n : ℕ} (M : Machine n) (t : ℕ) (x : ℤ)
+     (hx : (t : ℤ) ≤ |x|) : Tape.read (M.run t).tape x = false := by
+-  apply run_read_outside M t x
+-  by_cases h : 0 ≤ x
+-  · rw [abs_of_nonneg h] at hx
+-    exact Or.inr hx
+-  · rw [abs_of_neg (lt_of_not_ge h)] at hx
+-    exact Or.inl (by omega)
++  exact run_read_outside M t x (le_abs'.mp hx)
+ 
+ /-- Independent left and right margins may be enlarged arbitrarily. -/
+ theorem finite_trace_box {n : ℕ} (M : Machine n) (T L R : ℕ)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942InitialStrip.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942InitialStrip.lean
+@@ -1,5 +1,6 @@
+ import DiophantineConsistency.WangTiles942InitialHorizontal
+ import DiophantineConsistency.WangTiles942Periodic
++import Mathlib.Data.Nat.Find
+ 
+ /-!
+ # A finite initialization strip around Start in a periodic horizontal row
+@@ -32,6 +33,19 @@
+   left_inside : ∀ j : ℕ, 1 ≤ j → j < L → T (-(j : ℤ)) = ⟨2,434,2,0⟩
+   right_inside : ∀ j : ℕ, 2 ≤ j → j < R → T (j : ℤ) = ⟨4,436,4,0⟩
+ 
++/-- The first failure between an initial index and a known failing endpoint.
++The predicate is arbitrary; no tile classification or periodicity is hidden here. -/
++private theorem first_failure_between (P : ℕ → Prop) (lo hi : ℕ)
++    (hlo : lo ≤ hi) (hfail : ¬ P hi) :
++    ∃ k, (lo ≤ k ∧ ¬ P k) ∧ k ≤ hi ∧
++      ∀ j, lo ≤ j → j < k → P j := by
++  classical
++  have hex : ∃ k, lo ≤ k ∧ ¬ P k := ⟨hi, hlo, hfail⟩
++  refine ⟨Nat.find hex, Nat.find_spec hex,
++    Nat.find_min' hex ⟨hlo, hfail⟩, ?_⟩
++  intro j hj hlt
++  exact Classical.byContradiction (fun hnot => Nat.find_min hex hlt ⟨hj, hnot⟩)
++
+ theorem head_after_start (T : ℤ → Tile) (hallowed : ∀ x, Allowed (T x))
+     (hH : ∀ x, (T (x+1)).west = (T x).east) (hstart : T 0 = start) :
+     T 1 = ⟨3,436,4,4⟩ := by
+@@ -53,16 +67,8 @@
+     rw [neg_add_cancel, hstart] at hh
+     exact hh.symm
+   have hend : T (-(N : ℤ)) ≠ (⟨2,434,2,0⟩ : Tile) := by rw [hminus]; decide
+-  have hex : ∃ j : ℕ, 1 ≤ j ∧ T (-(j : ℤ)) ≠ (⟨2,434,2,0⟩ : Tile) :=
+-    ⟨N, hN, hend⟩
+-  let L := Nat.find hex
+-  have hL : 1 ≤ L ∧ T (-(L : ℤ)) ≠ (⟨2,434,2,0⟩ : Tile) := Nat.find_spec hex
+-  have hLN : L ≤ N := Nat.find_min' hex ⟨hN,hend⟩
+-  have hinside (j : ℕ) (hj : 1 ≤ j) (hjl : j < L) :
+-      T (-(j : ℤ)) = (⟨2,434,2,0⟩ : Tile) := by
+-    by_contra hnot
+-    have hh : L ≤ j := Nat.find_min' hex ⟨hj,hnot⟩
+-    omega
++  obtain ⟨L, hL, hLN, hinside⟩ := first_failure_between
++    (fun j => T (-(j : ℤ)) = (⟨2,434,2,0⟩ : Tile)) 1 N hN hend
+   have hright : (T (-(L : ℤ)+1)).west = 2 := by
+     by_cases he : L = 1
+     · rw [he]
+@@ -91,16 +97,8 @@
+     rw [Nat.cast_add, Nat.cast_one, add_comm]
+     exact (hperiod 1).trans hhead
+   have hend : T ((N+1 : ℕ) : ℤ) ≠ (⟨4,436,4,0⟩ : Tile) := by rw [hplus]; decide
+-  have hex : ∃ j : ℕ, 2 ≤ j ∧ T (j : ℤ) ≠ (⟨4,436,4,0⟩ : Tile) :=
+-    ⟨N+1, by omega, hend⟩
+-  let R := Nat.find hex
+-  have hR : 2 ≤ R ∧ T (R : ℤ) ≠ (⟨4,436,4,0⟩ : Tile) := Nat.find_spec hex
+-  have hRN : R ≤ N+1 := Nat.find_min' hex ⟨by omega,hend⟩
+-  have hinside (j : ℕ) (hj : 2 ≤ j) (hjr : j < R) :
+-      T (j : ℤ) = (⟨4,436,4,0⟩ : Tile) := by
+-    by_contra hnot
+-    have hh : R ≤ j := Nat.find_min' hex ⟨hj,hnot⟩
+-    omega
++  obtain ⟨R, hR, hRN, hinside⟩ := first_failure_between
++    (fun j => T (j : ℤ) = (⟨4,436,4,0⟩ : Tile)) 2 (N+1) (by omega) hend
+   have hleft : (T ((R : ℤ)-1)).east = 4 := by
+     by_cases he : R = 2
+     · rw [he]
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942ResetRows.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942ResetRows.lean
+@@ -1,5 +1,6 @@
+ import DiophantineConsistency.WangTiles942ResetHorizontal
+ import DiophantineConsistency.WangTiles942Boundary
++import Mathlib.Data.Int.Init
+ 
+ /-!
+ # Propagating one actual reset across a seam-free integer interval
+@@ -45,32 +46,20 @@
+     (hnext : ∀ x, l < x → x+1 < r → P x → P (x+1))
+     (hprev : ∀ x, l < x-1 → x < r → P x → P (x-1)) :
+     ∀ x, l < x → x < r → P x := by
+-  have hright (n : ℕ) : x₀+(n : ℤ) < r → P (x₀+(n : ℤ)) := by
+-    induction n with
+-    | zero => intro h; simpa only [Nat.cast_zero, add_zero] using h₀
++  have shifted (z : ℤ) : l < x₀ + z → x₀ + z < r → P (x₀ + z) := by
++    induction z using Int.induction_on with
++    | zero => exact fun _ _ => (show P (x₀ + 0) from (by simpa only [add_zero] using h₀))
+     | succ n ih =>
+-        intro hb
+-        have hp := ih (by omega)
+-        have hs := hnext (x₀+(n : ℤ)) (by omega) (by omega) hp
+-        have he : x₀+((n+1 : ℕ) : ℤ) = (x₀+(n : ℤ))+1 := by omega
+-        simpa only [he] using hs
+-  have hleft (n : ℕ) : l < x₀-(n : ℤ) → P (x₀-(n : ℤ)) := by
+-    induction n with
+-    | zero => intro h; simpa only [Nat.cast_zero, sub_zero] using h₀
+-    | succ n ih =>
+-        intro hb
+-        have hp := ih (by omega)
+-        have hs := hprev (x₀-(n : ℤ)) (by omega) (by omega) hp
+-        have he : x₀-((n+1 : ℕ) : ℤ) = (x₀-(n : ℤ))-1 := by omega
+-        simpa only [he] using hs
++        intro hl hr
++        simpa only [add_assoc] using
++          hnext (x₀ + (n : ℤ)) (by omega) (by omega) (ih (by omega) (by omega))
++    | pred n ih =>
++        intro hl hr
++        simpa only [add_sub_assoc] using
++          hprev (x₀ + -(n : ℤ)) (by omega) (by omega) (ih (by omega) (by omega))
+   intro x hl hr
+-  by_cases hx : x₀ ≤ x
+-  · have he : x₀+((x-x₀).toNat : ℤ) = x := by omega
+-    have hh := hright (x-x₀).toNat (by omega)
+-    simpa only [he] using hh
+-  · have he : x₀-((x₀-x).toNat : ℤ) = x := by omega
+-    have hh := hleft (x₀-x).toNat (by omega)
+-    simpa only [he] using hh
++  have he : x₀ + (x - x₀) = x := by omega
++  simpa only [he] using shifted (x-x₀) (by omega) (by omega)
+ 
+ /-- A reset's east1 forces the next tile to reset when that tile is not a seam. -/
+ theorem reset_next (T : ℤ → Tile) (x : ℤ)
+--- a/Computability/HilbertTenthProblem/Lean/Diophantine/Paper1980/PellRatio90.lean
++++ b/Computability/HilbertTenthProblem/Lean/Diophantine/Paper1980/PellRatio90.lean
+@@ -218,13 +218,15 @@
+     _ = (1 - r * ε)⁻¹ := one_div _
+     _ ≤ 1 + 2 * (r * ε) := h3
+ 
+-/-- The upper estimate `c/k < ξ + 1/2` once `72 r < U + 1`, `U^r ≤ Y` and `16 ≤ Y(U+1)`. -/
+-theorem upper_estimate' {U Y r k c a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr : 1 ≤ r)
++/-- A ratio envelope with factor `κ` gives an additive error `κ / 2`.
++The growth argument is independent of the native source's doubled coordinate. -/
++theorem upper_estimate_of_ratio_envelope {U Y r k c a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr : 1 ≤ r)
+     (hJ : J = 2 * r + 1) (hA : 1 < a + 2) (ha : a = Y * (U + 1))
+     (hP : 1 < 2 * (U * Y ^ 2) + 1) (hc : c = ψ hA J) (hk : k = ψ hP (r + 1))
+-    (hξY' : ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r < Y + 1)
+-    (h72 : 72 * r < U + 1) (hYr : U ^ r ≤ Y) (h16 : 16 ≤ Y * (U + 1)) :
+-    (c : ℝ) / k < ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r + 1 / 2 := by
++    {κ : ℝ} (hκ : 0 < κ)
++    (hξY' : ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r < κ * (Y + 1))
++    (h72 : 72 * r < U + 1) (h16 : 16 ≤ Y * (U + 1)) :
++    (c : ℝ) / k < ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r + κ / 2 := by
+   have hk0 : 0 < k := by
+     rw [hk]; exact lt_of_lt_of_le (Nat.succ_pos r) (Pell.yn_ge_n hP (r + 1))
+   have hkR : (0 : ℝ) < k := by exact_mod_cast hk0
+@@ -233,9 +235,8 @@
+   have hYR : (1 : ℝ) ≤ Y := by exact_mod_cast hY
+   have hYU : (0 : ℝ) < (Y : ℝ) * (U + 1) := by positivity
+   have haR : (a : ℝ) = Y * (U + 1) := by rw [ha]; push_cast; ring
+-  obtain ⟨ξ, hξ⟩ : ∃ ξ : ℝ, ξ = ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r := ⟨_, rfl⟩
++  set ξ : ℝ := ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r with hξ
+   have hξdef : ((U : ℝ) + 1) ^ (2 * r) = ξ * (U : ℝ) ^ r := by rw [hξ]; field_simp
+-  rw [← hξ]
+   -- growth bounds
+   have hcb : (c : ℝ) ≤ (2 * ((a : ℝ) + 2)) ^ (2 * r) := by
+     have := ψ_succ_le_pow hA (2 * r)
+@@ -246,10 +247,9 @@
+     rw [← hk] at this
+     exact_mod_cast this
+   -- `Z = (2A)² U ≤ X (1 + ε)`, `X = (2P−1)(U+1)²`, `ε = 9/(Y(U+1))`
+-  obtain ⟨X, hX⟩ : ∃ X : ℝ, X = ((2 * (2 * (U * Y ^ 2) + 1) - 1 : ℕ) : ℝ) * ((U : ℝ) + 1) ^ 2 :=
+-    ⟨_, rfl⟩
+-  obtain ⟨Z, hZ⟩ : ∃ Z : ℝ, Z = (2 * ((a : ℝ) + 2)) ^ 2 * U := ⟨_, rfl⟩
+-  obtain ⟨ε, hε⟩ : ∃ ε : ℝ, ε = 9 / ((Y : ℝ) * (U + 1)) := ⟨_, rfl⟩
++  set X : ℝ := ((2 * (2 * (U * Y ^ 2) + 1) - 1 : ℕ) : ℝ) * ((U : ℝ) + 1) ^ 2 with hX
++  set Z : ℝ := (2 * ((a : ℝ) + 2)) ^ 2 * U with hZ
++  set ε : ℝ := 9 / ((Y : ℝ) * (U + 1)) with hε
+   have hε0 : 0 ≤ ε := by rw [hε]; positivity
+   have hXpos : 0 < X := by
+     rw [hX]
+@@ -289,9 +289,9 @@
+           apply mul_le_mul hXk hpow (by positivity) (by positivity)
+       _ = (k : ℝ) * ξ * (1 + 2 * (r * ε)) * (U : ℝ) ^ r := by rw [hξdef]; ring
+   have h1' : (c : ℝ) ≤ (k : ℝ) * ξ * (1 + 2 * (r * ε)) := le_of_mul_le_mul_right h1 hUR
+-  have hξY : ξ < Y + 1 := by rw [hξ]; exact hξY'
+-  -- `ξ ⋅ 2rε < 1/2`
+-  have hsmall : ξ * (2 * (r * ε)) < 1 / 2 := by
++  have hξY : ξ < κ * (Y + 1) := hξY'
++  -- The permitted additive error scales with the ratio envelope.
++  have hsmall : ξ * (2 * (r * ε)) < κ / 2 := by
+     have hε' : (Y + 1 : ℝ) * (2 * (r * ε)) < 1 / 2 := by
+       rw [hε]
+       have e : ((Y : ℝ) + 1) * (2 * (r * (9 / ((Y : ℝ) * (U + 1))))) =
+@@ -299,17 +299,29 @@
+       rw [e, div_lt_iff₀ hYU]
+       nlinarith
+     have hξ0 : 0 ≤ ξ := by rw [hξ]; positivity
+-    calc ξ * (2 * (r * ε)) ≤ (Y + 1 : ℝ) * (2 * (r * ε)) :=
++    calc ξ * (2 * (r * ε)) ≤ κ * (Y + 1 : ℝ) * (2 * (r * ε)) :=
+           mul_le_mul_of_nonneg_right hξY.le (by positivity)
+-      _ < 1 / 2 := hε'
++      _ = κ * ((Y + 1 : ℝ) * (2 * (r * ε))) := by ring
++      _ < κ * (1 / 2) := mul_lt_mul_of_pos_left hε' hκ
++      _ = κ / 2 := by ring
+   -- conclude
+   rw [div_lt_iff₀ hkR]
+   calc (c : ℝ) ≤ k * ξ * (1 + 2 * (r * ε)) := h1'
+     _ = k * ξ + k * (ξ * (2 * (r * ε))) := by ring
+-    _ < k * ξ + k * (1 / 2) := by
++    _ < k * ξ + k * (κ / 2) := by
+         have := mul_lt_mul_of_pos_left hsmall hkR
+         linarith
+-    _ = (ξ + 1 / 2) * k := by ring
++    _ = (ξ + κ / 2) * k := by ring
++
++/-- The upper estimate `c/k < ξ + 1/2` once `72 r < U + 1`, `U^r ≤ Y` and `16 ≤ Y(U+1)`. -/
++theorem upper_estimate' {U Y r k c a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr : 1 ≤ r)
++    (hJ : J = 2 * r + 1) (hA : 1 < a + 2) (ha : a = Y * (U + 1))
++    (hP : 1 < 2 * (U * Y ^ 2) + 1) (hc : c = ψ hA J) (hk : k = ψ hP (r + 1))
++    (hξY' : ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r < Y + 1)
++    (h72 : 72 * r < U + 1) (hYr : U ^ r ≤ Y) (h16 : 16 ≤ Y * (U + 1)) :
++    (c : ℝ) / k < ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r + 1 / 2 := by
++  simpa only [one_mul] using upper_estimate_of_ratio_envelope hU hY hr hJ hA ha hP hc hk
++    (κ := 1) (by norm_num) (by simpa only [one_mul] using hξY') h72 h16
+ 
+ theorem upper_estimate {U Y r k c η ζ a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr : 1 ≤ r)
+     (hJ : J = 2 * r + 1) (hA : 1 < a + 2) (ha : a = Y * (U + 1))

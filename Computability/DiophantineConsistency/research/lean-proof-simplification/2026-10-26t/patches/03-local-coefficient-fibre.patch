@@ -1,0 +1,167 @@
+--- /dev/null
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticFiber.lean
+@@ -0,0 +1,32 @@
++import Mathlib.Algebra.Polynomial.Coeff
++import Mathlib.Data.Fintype.Prod
++import Mathlib.Tactic.Ring
++
++open scoped BigOperators
++
++namespace DiophantineConsistency.QuadraticFiber
++open Polynomial
++
++/-- Only the selected exponent fibre matters; all other weights may collide. -/
++theorem coeff_square_at_isolated {I R : Type*} [Fintype I] [DecidableEq I]
++    [CommSemiring R] (w : I → ℕ) (u : I → R) (i j : I)
++    (hiso : ∀ a b, w a + w b = w i + w j ↔
++      (a = i ∧ b = j) ∨ (a = j ∧ b = i)) :
++    ((∑ a, monomial (w a) (u a)) ^ 2).coeff (w i + w j) =
++      if i = j then u i ^ 2 else 2 * u i * u j := by
++  classical
++  simp only [pow_two, Finset.sum_mul, Finset.mul_sum, finsetSum_coeff,
++    monomial_mul_monomial, coeff_monomial]
++  rw [Finset.sum_comm]
++  simp_rw [hiso]
++  by_cases h : i = j
++  · subst j
++    simp [ite_and]
++  · simp only [ite_or, ite_and]
++    simp_rw [Finset.sum_ite_irrel]
++    simp +contextual only [h, if_false, Finset.sum_ite_eq', Finset.mem_univ, if_true]
++    rw [Finset.sum_ite]
++    simp [Ne.symm h, Finset.filter_eq']
++    ring
++
++end DiophantineConsistency.QuadraticFiber
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticCoding.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticCoding.lean
+@@ -1,4 +1,5 @@
+ import DiophantineConsistency.SidonPositions
++import DiophantineConsistency.QuadraticFiber
+ import Mathlib.Algebra.Polynomial.Coeff
+ import Mathlib.Data.Fintype.Prod
+ 
+@@ -36,44 +37,23 @@
+ 
+ theorem coeff_encoded_square_diagonal (u : Fin (m + 1) → R) (i : Fin (m + 1)) :
+     (encoded u ^ 2).coeff (weight m i + weight m i) = u i ^ 2 := by
+-  classical
+-  rw [encoded_square]
+-  simp only [finsetSum_coeff, coeff_monomial, weight_sum_eq_iff, or_self]
+-  simp [ite_and, pow_two]
++  simpa [encoded] using
++    QuadraticFiber.coeff_square_at_isolated (weight m) u i i
++      (fun a b => weight_sum_eq_iff a b i i)
+ 
+ theorem coeff_encoded_square_offDiagonal (u : Fin (m + 1) → R)
+     (i j : Fin (m + 1)) (hij : i ≠ j) :
+     (encoded u ^ 2).coeff (weight m i + weight m j) = 2 * u i * u j := by
+-  classical
+-  rw [encoded_square]
+-  simp only [finsetSum_coeff, coeff_monomial, weight_sum_eq_iff]
+-  have splitTerms (a b : Fin (m + 1)) :
+-      (if (a = i ∧ b = j) ∨ (a = j ∧ b = i) then u a * u b else 0) =
+-        (if a = i ∧ b = j then u a * u b else 0) +
+-          (if a = j ∧ b = i then u a * u b else 0) := by
+-    by_cases h1 : a = i ∧ b = j
+-    · rcases h1 with ⟨rfl, rfl⟩
+-      simp [hij]
+-    · by_cases h2 : a = j ∧ b = i
+-      · rcases h2 with ⟨rfl, rfl⟩
+-        simp [hij, Ne.symm hij]
+-      · simp [h1, h2]
+-  simp_rw [splitTerms]
+-  simp only [Finset.sum_add_distrib]
+-  simp [ite_and]
+-  ring
++  simpa only [encoded, if_neg hij] using
++    QuadraticFiber.coeff_square_at_isolated (weight m) u i j
++      (fun a b => weight_sum_eq_iff a b i j)
+ 
+ /-- The coefficient statement on the supplied canonical unordered-pair domain. -/
+ theorem coeff_encoded_square (u : Fin (m + 1) → R) (p : PairIndex m) :
+     (encoded u ^ 2).coeff (pairWeight p) =
+       if p.val.1 = p.val.2 then u p.val.1 ^ 2 else 2 * u p.val.1 * u p.val.2 := by
+-  by_cases h : p.val.1 = p.val.2
+-  · rw [if_pos h]
+-    change (encoded u ^ 2).coeff (weight m p.val.1 + weight m p.val.2) = _
+-    rw [h]
+-    exact coeff_encoded_square_diagonal u _
+-  · rw [if_neg h]
+-    exact coeff_encoded_square_offDiagonal u _ _ h
++  exact QuadraticFiber.coeff_square_at_isolated (weight m) u p.val.1 p.val.2
++    (fun a b => weight_sum_eq_iff a b p.val.1 p.val.2)
+ 
+ /-- Supplied coefficients of a quadratic form, with constant and linear terms
+ available by assigning coordinate zero the value one. -/
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SelectiveQuadraticCoding.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SelectiveQuadraticCoding.lean
+@@ -36,29 +36,7 @@
+     (p : PairIndex m) (hp : Isolated w p) :
+     (encoded w u ^ 2).coeff (pairWeight w p) =
+       if p.val.1 = p.val.2 then u p.val.1 ^ 2 else 2 * u p.val.1 * u p.val.2 := by
+-  classical
+-  rw [encoded_square]
+-  simp only [finsetSum_coeff, coeff_monomial]
+-  simp only [Isolated] at hp
+-  simp_rw [hp]
+-  by_cases h : p.val.1 = p.val.2
+-  · simp [h, ite_and, pow_two]
+-  · have splitTerms (i j : Fin (m + 1)) :
+-        (if (i = p.val.1 ∧ j = p.val.2) ∨ (i = p.val.2 ∧ j = p.val.1)
+-          then u i * u j else 0) =
+-        (if i = p.val.1 ∧ j = p.val.2 then u i * u j else 0) +
+-          (if i = p.val.2 ∧ j = p.val.1 then u i * u j else 0) := by
+-      by_cases h1 : i = p.val.1 ∧ j = p.val.2
+-      · rcases h1 with ⟨rfl, rfl⟩
+-        simp [h]
+-      · by_cases h2 : i = p.val.2 ∧ j = p.val.1
+-        · rcases h2 with ⟨rfl, rfl⟩
+-          simp [h, Ne.symm h]
+-        · simp [h1, h2]
+-    simp_rw [splitTerms]
+-    simp only [Finset.sum_add_distrib, if_neg h]
+-    simp [ite_and]
+-    ring
++  exact QuadraticFiber.coeff_square_at_isolated w u p.val.1 p.val.2 hp
+ 
+ def rowValue (s : Finset (PairIndex m)) (a : PairIndex m → R)
+     (u : Fin (m + 1) → R) : R :=
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MultiQuadraticCoding.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MultiQuadraticCoding.lean
+@@ -1,4 +1,4 @@
+-import DiophantineConsistency.QuadraticCoding
++import DiophantineConsistency.SelectiveQuadraticCoding
+ 
+ /-!
+ # Simultaneous coefficient extraction for supplied quadratic forms
+@@ -39,24 +39,14 @@
+     (u : Fin (m + 1) → R) (j n : ℕ)
+     (hn : n < target m j - coefficientPosition m ∨ target m j + coefficientPosition m < n) :
+     (encoded u ^ 2 * complementary a (target m j)).coeff n = 0 := by
+-  classical
+-  rw [complementary, Finset.mul_sum]
+-  simp only [finsetSum_coeff]
+-  apply Finset.sum_eq_zero
+-  intro p _
+-  rw [encoded_square]
+-  simp only [Finset.sum_mul, finsetSum_coeff, monomial_mul_monomial]
+-  apply Finset.sum_eq_zero
+-  intro i _
+-  apply Finset.sum_eq_zero
+-  intro k _
+-  rw [coeff_monomial]
++  apply SelectiveQuadraticCoding.coeff_at_other_target (weight m) Finset.univ a u
++    (target m j) n
++  intro p _ i k
+   have hp : pairWeight p ≤ coefficientPosition m := pairWeight_le p
+   have hi : weight m i + weight m k ≤ coefficientPosition m := weight_sum_le i k
+   have ht := coefficientPosition_le_target m j
+-  have hne : weight m i + weight m k + (target m j - pairWeight p) ≠ n := by
+-    omega
+-  exact if_neg hne
++  change weight m i + weight m k + (target m j - pairWeight p) ≠ n
++  omega
+ 
+ /-- Other rows contribute zero at the selected target. -/
+ theorem coeff_row_at_other_target (a : PairIndex m → R)

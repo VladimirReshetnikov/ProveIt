@@ -1,0 +1,8 @@
+import Diophantine.Paper1980.PellRatio90
+import DiophantineConsistency.NativeHalfBinomial
+
+#print axioms Jones1980.Ratio90.upper_estimate_of_ratio_envelope
+#print axioms Jones1980.Ratio90.upper_estimate'
+#print axioms Jones1980.Ratio90.upper_estimate
+#print axioms DiophantineConsistency.NativeHalfBinomial.upper_estimate_scaled
+#print axioms DiophantineConsistency.NativeHalfBinomial.source_half_binomial

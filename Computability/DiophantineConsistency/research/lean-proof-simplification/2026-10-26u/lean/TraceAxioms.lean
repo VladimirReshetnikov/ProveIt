@@ -1,0 +1,3 @@
+import DiophantineConsistency.WangMachineTraceBounds
+#print axioms DiophantineConsistency.WangMachineTraceBounds.run_read_of_abs_ge
+#print axioms DiophantineConsistency.WangMachineTraceBounds.halted_trace_box

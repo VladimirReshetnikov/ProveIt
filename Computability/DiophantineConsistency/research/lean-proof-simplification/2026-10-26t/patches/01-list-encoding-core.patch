@@ -1,0 +1,64 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedCodeArithmetic.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedCodeArithmetic.lean
+@@ -1,6 +1,7 @@
+ import DiophantineConsistency.AnnotatedProofCode
+ import DiophantineConsistency.DirectScalarArithmetic
+ import DiophantineConsistency.ScalarPROptimizer
++import Mathlib.Logic.Equiv.List
+ 
+ /-!
+ # Supplied arithmetic programs for the annotated-checker wire format
+@@ -62,6 +63,12 @@
+ def listCode : List Nat → Nat
+   | [] => 0
+   | x::xs => Nat.pair x (listCode xs)+1
++
++/-- Proof-only bridge to Mathlib's exact natural-list encoding. -/
++theorem listCode_eq_encode (xs : List Nat) : listCode xs=Encodable.encode xs := by
++  induction xs with
++  | nil => rfl
++  | cons x xs ih => exact congrArg (fun n => Nat.pair x n+1) ih
+ 
+ def optionCode : Option Nat → Nat
+   | none => 0
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedParents.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedParents.lean
+@@ -25,24 +25,6 @@
+       referenceCheck (Nat.pair history (Nat.pair parent expected)) *
+         check fuel history (listCode es) (listCode ps) := by
+   simp [check,listCode]
+-
+-theorem check_lists (fuel : Nat) (history expected parents : List Nat)
+-    (hf : expected.length≤fuel) :
+-    check fuel (listCode history) (listCode expected) (listCode parents)=1 ↔
+-      parents.map (fun i => history[i]?)=expected.map some := by
+-  induction expected generalizing fuel parents with
+-  | nil =>
+-    cases parents <;> simp [check_nil,listCode]
+-  | cons e es ih =>
+-    cases fuel with
+-    | zero => simp at hf
+-    | succ fuel =>
+-      cases parents with
+-      | nil => simp [check,listCode]
+-      | cons p ps =>
+-        rw [check_cons,AnnotatedSchemaMaps.mul_eq_one_nat,referenceCheck_listCode,
+-          ih fuel ps (by simpa only [List.length_cons,Nat.succ_le_succ_iff] using hf)]
+-        simp only [List.map_cons,List.cons.injEq]
+ 
+ /-- A fixed bounded checker reconstructs the complete parent spine directly;
+ no recursive formula parser or unbounded list decoder is assumed. -/
+@@ -95,6 +77,13 @@
+             refine ⟨?_,ps,?_,hm.2⟩
+             · simpa only [he,Nat.unpair_pair] using hm.1
+             · simp only [he,Nat.unpair_pair]
++
++theorem check_lists (fuel : Nat) (history expected parents : List Nat)
++    (hf : expected.length≤fuel) :
++    check fuel (listCode history) (listCode expected) (listCode parents)=1 ↔
++      parents.map (fun i => history[i]?)=expected.map some := by
++  rw [check_raw_iff fuel history expected (listCode parents) hf]
++  simp [listCode_eq_encode,Encodable.encode_injective.eq_iff]
+ 
+ attribute [local irreducible] check
+ 

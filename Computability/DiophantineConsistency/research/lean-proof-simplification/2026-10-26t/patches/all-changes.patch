@@ -1,0 +1,422 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedCodeArithmetic.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedCodeArithmetic.lean
+@@ -1,6 +1,7 @@
+ import DiophantineConsistency.AnnotatedProofCode
+ import DiophantineConsistency.DirectScalarArithmetic
+ import DiophantineConsistency.ScalarPROptimizer
++import Mathlib.Logic.Equiv.List
+ 
+ /-!
+ # Supplied arithmetic programs for the annotated-checker wire format
+@@ -62,6 +63,12 @@
+ def listCode : List Nat → Nat
+   | [] => 0
+   | x::xs => Nat.pair x (listCode xs)+1
++
++/-- Proof-only bridge to Mathlib's exact natural-list encoding. -/
++theorem listCode_eq_encode (xs : List Nat) : listCode xs=Encodable.encode xs := by
++  induction xs with
++  | nil => rfl
++  | cons x xs ih => exact congrArg (fun n => Nat.pair x n+1) ih
+ 
+ def optionCode : Option Nat → Nat
+   | none => 0
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedParents.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedParents.lean
+@@ -25,24 +25,6 @@
+       referenceCheck (Nat.pair history (Nat.pair parent expected)) *
+         check fuel history (listCode es) (listCode ps) := by
+   simp [check,listCode]
+-
+-theorem check_lists (fuel : Nat) (history expected parents : List Nat)
+-    (hf : expected.length≤fuel) :
+-    check fuel (listCode history) (listCode expected) (listCode parents)=1 ↔
+-      parents.map (fun i => history[i]?)=expected.map some := by
+-  induction expected generalizing fuel parents with
+-  | nil =>
+-    cases parents <;> simp [check_nil,listCode]
+-  | cons e es ih =>
+-    cases fuel with
+-    | zero => simp at hf
+-    | succ fuel =>
+-      cases parents with
+-      | nil => simp [check,listCode]
+-      | cons p ps =>
+-        rw [check_cons,AnnotatedSchemaMaps.mul_eq_one_nat,referenceCheck_listCode,
+-          ih fuel ps (by simpa only [List.length_cons,Nat.succ_le_succ_iff] using hf)]
+-        simp only [List.map_cons,List.cons.injEq]
+ 
+ /-- A fixed bounded checker reconstructs the complete parent spine directly;
+ no recursive formula parser or unbounded list decoder is assumed. -/
+@@ -95,6 +77,13 @@
+             refine ⟨?_,ps,?_,hm.2⟩
+             · simpa only [he,Nat.unpair_pair] using hm.1
+             · simp only [he,Nat.unpair_pair]
++
++theorem check_lists (fuel : Nat) (history expected parents : List Nat)
++    (hf : expected.length≤fuel) :
++    check fuel (listCode history) (listCode expected) (listCode parents)=1 ↔
++      parents.map (fun i => history[i]?)=expected.map some := by
++  rw [check_raw_iff fuel history expected (listCode parents) hf]
++  simp [listCode_eq_encode,Encodable.encode_injective.eq_iff]
+ 
+ attribute [local irreducible] check
+ 
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRenameCode.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRenameCode.lean
+@@ -48,12 +48,8 @@
+       rfl
+ 
+ theorem length_le_tableCode (rows : List Row) : rows.length≤tableCode rows := by
+-  induction rows with
+-  | nil => exact Nat.zero_le _
+-  | cons r rows ih =>
+-    have hr := Nat.right_le_pair (rowCode r) (tableCode rows)
+-    change rows.length+1≤Nat.pair (rowCode r) (tableCode rows)+1
+-    omega
++  simpa only [tableCode,listCode_eq_encode,List.length_map] using
++    (Encodable.length_le_encode (rows.map rowCode))
+ 
+ def checkCode (mode k depth input output code : Nat) : Bool :=
+   match decodeTable code code with
+--- /dev/null
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticFiber.lean
+@@ -0,0 +1,32 @@
++import Mathlib.Algebra.Polynomial.Coeff
++import Mathlib.Data.Fintype.Prod
++import Mathlib.Tactic.Ring
++
++open scoped BigOperators
++
++namespace DiophantineConsistency.QuadraticFiber
++open Polynomial
++
++/-- Only the selected exponent fibre matters; all other weights may collide. -/
++theorem coeff_square_at_isolated {I R : Type*} [Fintype I] [DecidableEq I]
++    [CommSemiring R] (w : I → ℕ) (u : I → R) (i j : I)
++    (hiso : ∀ a b, w a + w b = w i + w j ↔
++      (a = i ∧ b = j) ∨ (a = j ∧ b = i)) :
++    ((∑ a, monomial (w a) (u a)) ^ 2).coeff (w i + w j) =
++      if i = j then u i ^ 2 else 2 * u i * u j := by
++  classical
++  simp only [pow_two, Finset.sum_mul, Finset.mul_sum, finsetSum_coeff,
++    monomial_mul_monomial, coeff_monomial]
++  rw [Finset.sum_comm]
++  simp_rw [hiso]
++  by_cases h : i = j
++  · subst j
++    simp [ite_and]
++  · simp only [ite_or, ite_and]
++    simp_rw [Finset.sum_ite_irrel]
++    simp +contextual only [h, if_false, Finset.sum_ite_eq', Finset.mem_univ, if_true]
++    rw [Finset.sum_ite]
++    simp [Ne.symm h, Finset.filter_eq']
++    ring
++
++end DiophantineConsistency.QuadraticFiber
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticCoding.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticCoding.lean
+@@ -1,4 +1,5 @@
+ import DiophantineConsistency.SidonPositions
++import DiophantineConsistency.QuadraticFiber
+ import Mathlib.Algebra.Polynomial.Coeff
+ import Mathlib.Data.Fintype.Prod
+ 
+@@ -36,44 +37,23 @@
+ 
+ theorem coeff_encoded_square_diagonal (u : Fin (m + 1) → R) (i : Fin (m + 1)) :
+     (encoded u ^ 2).coeff (weight m i + weight m i) = u i ^ 2 := by
+-  classical
+-  rw [encoded_square]
+-  simp only [finsetSum_coeff, coeff_monomial, weight_sum_eq_iff, or_self]
+-  simp [ite_and, pow_two]
++  simpa [encoded] using
++    QuadraticFiber.coeff_square_at_isolated (weight m) u i i
++      (fun a b => weight_sum_eq_iff a b i i)
+ 
+ theorem coeff_encoded_square_offDiagonal (u : Fin (m + 1) → R)
+     (i j : Fin (m + 1)) (hij : i ≠ j) :
+     (encoded u ^ 2).coeff (weight m i + weight m j) = 2 * u i * u j := by
+-  classical
+-  rw [encoded_square]
+-  simp only [finsetSum_coeff, coeff_monomial, weight_sum_eq_iff]
+-  have splitTerms (a b : Fin (m + 1)) :
+-      (if (a = i ∧ b = j) ∨ (a = j ∧ b = i) then u a * u b else 0) =
+-        (if a = i ∧ b = j then u a * u b else 0) +
+-          (if a = j ∧ b = i then u a * u b else 0) := by
+-    by_cases h1 : a = i ∧ b = j
+-    · rcases h1 with ⟨rfl, rfl⟩
+-      simp [hij]
+-    · by_cases h2 : a = j ∧ b = i
+-      · rcases h2 with ⟨rfl, rfl⟩
+-        simp [hij, Ne.symm hij]
+-      · simp [h1, h2]
+-  simp_rw [splitTerms]
+-  simp only [Finset.sum_add_distrib]
+-  simp [ite_and]
+-  ring
++  simpa only [encoded, if_neg hij] using
++    QuadraticFiber.coeff_square_at_isolated (weight m) u i j
++      (fun a b => weight_sum_eq_iff a b i j)
+ 
+ /-- The coefficient statement on the supplied canonical unordered-pair domain. -/
+ theorem coeff_encoded_square (u : Fin (m + 1) → R) (p : PairIndex m) :
+     (encoded u ^ 2).coeff (pairWeight p) =
+       if p.val.1 = p.val.2 then u p.val.1 ^ 2 else 2 * u p.val.1 * u p.val.2 := by
+-  by_cases h : p.val.1 = p.val.2
+-  · rw [if_pos h]
+-    change (encoded u ^ 2).coeff (weight m p.val.1 + weight m p.val.2) = _
+-    rw [h]
+-    exact coeff_encoded_square_diagonal u _
+-  · rw [if_neg h]
+-    exact coeff_encoded_square_offDiagonal u _ _ h
++  exact QuadraticFiber.coeff_square_at_isolated (weight m) u p.val.1 p.val.2
++    (fun a b => weight_sum_eq_iff a b p.val.1 p.val.2)
+ 
+ /-- Supplied coefficients of a quadratic form, with constant and linear terms
+ available by assigning coordinate zero the value one. -/
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SelectiveQuadraticCoding.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SelectiveQuadraticCoding.lean
+@@ -36,29 +36,7 @@
+     (p : PairIndex m) (hp : Isolated w p) :
+     (encoded w u ^ 2).coeff (pairWeight w p) =
+       if p.val.1 = p.val.2 then u p.val.1 ^ 2 else 2 * u p.val.1 * u p.val.2 := by
+-  classical
+-  rw [encoded_square]
+-  simp only [finsetSum_coeff, coeff_monomial]
+-  simp only [Isolated] at hp
+-  simp_rw [hp]
+-  by_cases h : p.val.1 = p.val.2
+-  · simp [h, ite_and, pow_two]
+-  · have splitTerms (i j : Fin (m + 1)) :
+-        (if (i = p.val.1 ∧ j = p.val.2) ∨ (i = p.val.2 ∧ j = p.val.1)
+-          then u i * u j else 0) =
+-        (if i = p.val.1 ∧ j = p.val.2 then u i * u j else 0) +
+-          (if i = p.val.2 ∧ j = p.val.1 then u i * u j else 0) := by
+-      by_cases h1 : i = p.val.1 ∧ j = p.val.2
+-      · rcases h1 with ⟨rfl, rfl⟩
+-        simp [h]
+-      · by_cases h2 : i = p.val.2 ∧ j = p.val.1
+-        · rcases h2 with ⟨rfl, rfl⟩
+-          simp [h, Ne.symm h]
+-        · simp [h1, h2]
+-    simp_rw [splitTerms]
+-    simp only [Finset.sum_add_distrib, if_neg h]
+-    simp [ite_and]
+-    ring
++  exact QuadraticFiber.coeff_square_at_isolated w u p.val.1 p.val.2 hp
+ 
+ def rowValue (s : Finset (PairIndex m)) (a : PairIndex m → R)
+     (u : Fin (m + 1) → R) : R :=
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MultiQuadraticCoding.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MultiQuadraticCoding.lean
+@@ -1,4 +1,4 @@
+-import DiophantineConsistency.QuadraticCoding
++import DiophantineConsistency.SelectiveQuadraticCoding
+ 
+ /-!
+ # Simultaneous coefficient extraction for supplied quadratic forms
+@@ -39,24 +39,14 @@
+     (u : Fin (m + 1) → R) (j n : ℕ)
+     (hn : n < target m j - coefficientPosition m ∨ target m j + coefficientPosition m < n) :
+     (encoded u ^ 2 * complementary a (target m j)).coeff n = 0 := by
+-  classical
+-  rw [complementary, Finset.mul_sum]
+-  simp only [finsetSum_coeff]
+-  apply Finset.sum_eq_zero
+-  intro p _
+-  rw [encoded_square]
+-  simp only [Finset.sum_mul, finsetSum_coeff, monomial_mul_monomial]
+-  apply Finset.sum_eq_zero
+-  intro i _
+-  apply Finset.sum_eq_zero
+-  intro k _
+-  rw [coeff_monomial]
++  apply SelectiveQuadraticCoding.coeff_at_other_target (weight m) Finset.univ a u
++    (target m j) n
++  intro p _ i k
+   have hp : pairWeight p ≤ coefficientPosition m := pairWeight_le p
+   have hi : weight m i + weight m k ≤ coefficientPosition m := weight_sum_le i k
+   have ht := coefficientPosition_le_target m j
+-  have hne : weight m i + weight m k + (target m j - pairWeight p) ≠ n := by
+-    omega
+-  exact if_neg hne
++  change weight m i + weight m k + (target m j - pairWeight p) ≠ n
++  omega
+ 
+ /-- Other rows contribute zero at the selected target. -/
+ theorem coeff_row_at_other_target (a : PairIndex m → R)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
+@@ -157,36 +157,28 @@
+ is two. This proves the ordinary fundamental-unit assertion unboundedly. -/
+ theorem firstUnit_fundamental {Q : ℕ} (hQ : 0 < Q) :
+     Pell.IsFundamental (firstUnit Q) := by
+-  refine ⟨by change (1 : ℤ) < 2 * Q + 1; omega, by change (0 : ℤ) < 2; norm_num, ?_⟩
++  refine ⟨by change (1 : ℤ) < 2 * Q + 1; omega,
++    by change (0 : ℤ) < 2; norm_num, ?_⟩
+   intro b hb
+   change (2 * Q + 1 : ℤ) ≤ b.x
+   have hQZ : (0 : ℤ) < Q := by exact_mod_cast hQ
+   have hprop := b.prop
+   have hysq : (4 : ℤ) ≤ b.y ^ 2 := by
+-    by_contra hlt
+-    have hsmall : b.y ^ 2 < (2 : ℤ) ^ 2 := by omega
+-    have habs := abs_lt_of_sq_lt_sq hsmall (by norm_num : (0 : ℤ) ≤ 2)
+-    have hycases : b.y = -1 ∨ b.y = 0 ∨ b.y = 1 := by
+-      rw [abs_lt] at habs
+-      omega
+-    have hnotone (hy : b.y ^ 2 = 1) : False := by
+-      have hlow : (Q : ℤ) ^ 2 < b.x ^ 2 := by nlinarith
+-      have hhigh : b.x ^ 2 < ((Q : ℤ) + 1) ^ 2 := by nlinarith
+-      have hlo : (Q : ℤ) < b.x := (sq_lt_sq₀ (by positivity) (by omega)).mp hlow
+-      have hhi : b.x < (Q : ℤ) + 1 := (sq_lt_sq₀ (by omega) (by positivity)).mp hhigh
+-      omega
+-    rcases hycases with hy | hy | hy
+-    · exact hnotone (by rw [hy]; norm_num)
+-    · have hx2 : (1 : ℤ) < b.x ^ 2 := by
+-        simpa using (sq_lt_sq₀ (by norm_num : (0 : ℤ) ≤ 1) (by omega)).mpr hb
+-      rw [hy] at hprop
+-      norm_num at hprop
+-      omega
+-    · exact hnotone (by rw [hy]; norm_num)
+-  have hxsq : (2 * Q + 1 : ℤ) ^ 2 ≤ b.x ^ 2 := by
+-    nlinarith [mul_nonneg (show 0 ≤ (Q : ℤ) * (Q + 1) by positivity)
+-      (show 0 ≤ b.y ^ 2 - 4 by omega)]
+-  exact (sq_le_sq₀ (by positivity) (by omega)).mp hxsq
++    by_contra h
++    have hy0 := abs_pos.mpr (Pell.Solution₁.y_ne_zero_of_one_lt_x hb)
++    have hylt := abs_lt_of_sq_lt_sq (by omega : b.y ^ 2 < (2 : ℤ) ^ 2)
++      (by norm_num : (0 : ℤ) ≤ 2)
++    have hy : |b.y| = 1 := by omega
++    have hsq : b.y ^ 2 = 1 := by nlinarith [sq_abs b.y]
++    rw [hsq] at hprop
++    have hlo : (Q : ℤ) < b.x :=
++      (sq_lt_sq₀ (by positivity) (by omega)).mp (by nlinarith)
++    have hhi : b.x < (Q : ℤ) + 1 :=
++      (sq_lt_sq₀ (by omega) (by positivity)).mp (by nlinarith)
++    omega
++  apply (sq_le_sq₀ (by positivity) (by omega : (0 : ℤ) ≤ b.x)).mp
++  nlinarith [mul_nonneg (show 0 ≤ (Q : ℤ) * (Q + 1) by positivity)
++    (show 0 ≤ b.y ^ 2 - 4 by omega)]
+ 
+ /-- Classification of the actual square first norm, whose second coordinate
+ is twice a Pell sequence value. -/
+--- /dev/null
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FirstExit.lean
+@@ -0,0 +1,28 @@
++import Mathlib.Data.Nat.Find
++import Lean.Elab.Tactic.Omega
++
++/-!
++# Least failure with its interior and predecessor
++
++The predecessor conclusion is deliberately a disjunction: the first failure
++may occur exactly at the starting index, including when that index is zero.
++-/
++
++namespace DiophantineConsistency.FirstExit
++
++theorem exists_first_failure (P : ℕ → Prop) [DecidablePred P] (a b : ℕ)
++    (hab : a ≤ b) (hb : ¬ P b) :
++    ∃ k : ℕ, a ≤ k ∧ k ≤ b ∧ ¬ P k ∧
++      (∀ j : ℕ, a ≤ j → j < k → P j) ∧ (k = a ∨ P (k - 1)) := by
++  have hex : ∃ j : ℕ, a ≤ j ∧ ¬ P j := ⟨b, hab, hb⟩
++  let k := Nat.find hex
++  have hk := Nat.find_spec hex
++  have hi (j : ℕ) (ha : a ≤ j) (hj : j < k) : P j := by
++    by_contra hn
++    exact (Nat.find_min hex hj) ⟨ha, hn⟩
++  refine ⟨k, hk.1, Nat.find_min' hex ⟨hab, hb⟩, hk.2, hi, ?_⟩
++  by_cases hka : k = a
++  · exact Or.inl hka
++  · exact Or.inr (hi (k - 1) (by omega) (by omega))
++
++end DiophantineConsistency.FirstExit
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942InitialStrip.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942InitialStrip.lean
+@@ -1,5 +1,6 @@
+ import DiophantineConsistency.WangTiles942InitialHorizontal
+ import DiophantineConsistency.WangTiles942Periodic
++import DiophantineConsistency.FirstExit
+ 
+ /-!
+ # A finite initialization strip around Start in a periodic horizontal row
+@@ -53,30 +54,22 @@
+     rw [neg_add_cancel, hstart] at hh
+     exact hh.symm
+   have hend : T (-(N : ℤ)) ≠ (⟨2,434,2,0⟩ : Tile) := by rw [hminus]; decide
+-  have hex : ∃ j : ℕ, 1 ≤ j ∧ T (-(j : ℤ)) ≠ (⟨2,434,2,0⟩ : Tile) :=
+-    ⟨N, hN, hend⟩
+-  let L := Nat.find hex
+-  have hL : 1 ≤ L ∧ T (-(L : ℤ)) ≠ (⟨2,434,2,0⟩ : Tile) := Nat.find_spec hex
+-  have hLN : L ≤ N := Nat.find_min' hex ⟨hN,hend⟩
+-  have hinside (j : ℕ) (hj : 1 ≤ j) (hjl : j < L) :
+-      T (-(j : ℤ)) = (⟨2,434,2,0⟩ : Tile) := by
+-    by_contra hnot
+-    have hh : L ≤ j := Nat.find_min' hex ⟨hj,hnot⟩
+-    omega
++  obtain ⟨L, hL, hLN, hExit, hinside, hpred⟩ :=
++    FirstExit.exists_first_failure
++      (fun j => T (-(j : ℤ)) = (⟨2,434,2,0⟩ : Tile)) 1 N hN hend
+   have hright : (T (-(L : ℤ)+1)).west = 2 := by
+-    by_cases he : L = 1
++    rcases hpred with he | hi
+     · rw [he]
+       norm_num only [Nat.cast_one, neg_add_cancel]
+       rw [hstart]
+       rfl
+-    · have hi := hinside (L-1) (by omega) (by omega)
+-      have heq : -((L-1 : ℕ) : ℤ) = -(L : ℤ)+1 := by omega
++    · have heq : -((L-1 : ℕ) : ℤ) = -(L : ℤ)+1 := by omega
+       rw [heq] at hi
+       rw [hi]
+   have heast : (T (-(L : ℤ))).east = 2 := (hH (-(L : ℤ))).symm.trans hright
+   rcases (east_2_iff_initLeft_or_seam (hallowed (-(L : ℤ)))).mp heast with hl | hs
+-  · exact False.elim (hL.2 hl)
+-  · exact ⟨L, hL.1, hLN, hs, hinside⟩
++  · exact False.elim (hExit hl)
++  · exact ⟨L, hL, hLN, hs, hinside⟩
+ 
+ /-- First non-initRight after the head. Periodic head supplies a witness byN+1. -/
+ theorem right_wall_exists (T : ℤ → Tile) (hallowed : ∀ x, Allowed (T x))
+@@ -91,23 +84,15 @@
+     rw [Nat.cast_add, Nat.cast_one, add_comm]
+     exact (hperiod 1).trans hhead
+   have hend : T ((N+1 : ℕ) : ℤ) ≠ (⟨4,436,4,0⟩ : Tile) := by rw [hplus]; decide
+-  have hex : ∃ j : ℕ, 2 ≤ j ∧ T (j : ℤ) ≠ (⟨4,436,4,0⟩ : Tile) :=
+-    ⟨N+1, by omega, hend⟩
+-  let R := Nat.find hex
+-  have hR : 2 ≤ R ∧ T (R : ℤ) ≠ (⟨4,436,4,0⟩ : Tile) := Nat.find_spec hex
+-  have hRN : R ≤ N+1 := Nat.find_min' hex ⟨by omega,hend⟩
+-  have hinside (j : ℕ) (hj : 2 ≤ j) (hjr : j < R) :
+-      T (j : ℤ) = (⟨4,436,4,0⟩ : Tile) := by
+-    by_contra hnot
+-    have hh : R ≤ j := Nat.find_min' hex ⟨hj,hnot⟩
+-    omega
++  obtain ⟨R, hR, hRN, hExit, hinside, hpred⟩ :=
++    FirstExit.exists_first_failure
++      (fun j => T (j : ℤ) = (⟨4,436,4,0⟩ : Tile)) 2 (N+1) (by omega) hend
+   have hleft : (T ((R : ℤ)-1)).east = 4 := by
+-    by_cases he : R = 2
++    rcases hpred with he | hi
+     · rw [he]
+       norm_num only [Nat.cast_ofNat, Int.reduceSub]
+       rw [hhead]
+-    · have hi := hinside (R-1) (by omega) (by omega)
+-      have heq : ((R-1 : ℕ) : ℤ) = (R : ℤ)-1 := by omega
++    · have heq : ((R-1 : ℕ) : ℤ) = (R : ℤ)-1 := by omega
+       rw [heq] at hi
+       rw [hi]
+   have hwest : (T (R : ℤ)).west = 4 := by
+@@ -115,8 +100,8 @@
+     rw [sub_add_cancel] at hh
+     exact hh.trans hleft
+   rcases (west_4_iff_initRight_or_seam (hallowed (R : ℤ))).mp hwest with hr | hs
+-  · exact False.elim (hR.2 hr)
+-  · exact ⟨R, hR.1, hRN, hs, hinside⟩
++  · exact False.elim (hExit hr)
++  · exact ⟨R, hR, hRN, hs, hinside⟩
+ 
+ /-- A horizontally periodic allowed row containing Start has exact finite
+ seam walls and a complete blank-initialization segment between them. -/

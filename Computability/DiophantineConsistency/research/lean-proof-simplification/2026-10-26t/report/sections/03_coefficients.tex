@@ -1,0 +1,117 @@
+\section{Make a local coefficient fibre the foundational theorem}
+\label{sec:coefficients}
+
+\subsection{The mathematical statement}
+
+Let \(I\) be a finite index type, \(R\) a commutative semiring, and
+\(w:I\to\N\), \(u:I\to R\). Define the sparse encoding
+\[
+  E_w(u)=\sum_{a\in I}u_aX^{w(a)}.
+\]
+Fix \(i,j\in I\). Suppose the selected exponent has exactly the expected
+ordered-pair fibre:
+\begin{equation}
+\label{eq:fibre}
+w(a)+w(b)=w(i)+w(j)
+\quad\Longleftrightarrow\quad
+(a=i\land b=j)\lor(a=j\land b=i).
+\end{equation}
+Then
+\begin{equation}
+\label{eq:coefficient}
+[X^{w(i)+w(j)}]E_w(u)^2=
+\begin{cases}
+u_i^2,& i=j,\\
+2u_i u_j,& i\ne j.
+\end{cases}
+\end{equation}
+
+This needs only the fibre of one exponent. The weight map may have arbitrary
+collisions elsewhere. It needs no positivity, cancellation, characteristic
+zero, integral-domain assumption, or ordering on \(R\). In characteristic
+two the off-diagonal coefficient may vanish; equation~\eqref{eq:coefficient}
+still states the correct identity.
+
+\subsection{Why the existing layering repeats work}
+
+The global development in \code{QuadraticCoding} proves coefficient
+extraction from the explicit cubic Sidon weights in \code{SidonPositions}.
+The selective development in \code{SelectiveQuadraticCoding} works with an
+arbitrary weight map and a local \code{Isolated} hypothesis. Both expand a
+square into a double sum and prove essentially the same diagonal/off-diagonal
+calculation \cite{quadratic,selective,sidon}.
+
+The stronger global assumption is useful to establish
+equation~\eqref{eq:fibre} for \emph{every} pair, but it is not needed by the
+coefficient calculation itself. The new low-level module
+\code{QuadraticFiber} states the calculation at its actual level of
+generality. This avoids making the global module import the selective
+module, which already depends on global notation and would create an
+import cycle. Both instead use a common foundation containing only the
+generic coefficient theorem.
+
+\subsection{The checked interface}
+
+The new theorem's hypothesis is local and exact:
+\begin{lean}
+theorem coeff_square_at_isolated
+    [Fintype I] [DecidableEq I] [CommSemiring R]
+    (w : I → Nat) (u : I → R) (i j : I)
+    (hiso : ∀ a b, w a + w b = w i + w j ↔
+      (a = i ∧ b = j) ∨ (a = j ∧ b = i)) :
+    ((∑ a, Polynomial.monomial (w a) (u a)) ^ 2).coeff
+      (w i + w j) = if i = j then u i ^ 2 else 2 * u i * u j
+\end{lean}
+
+The proof expands the finite product once, rewrites the coefficient test by
+\code{hiso}, and separates the diagonal from the two distinct off-diagonal
+terms. Keeping the diagonal case explicit is essential: when \(i=j\), the
+two descriptions of the ordered pair refer to one term, not two.
+
+The global diagonal and off-diagonal theorems specialize this with
+\code{SidonPositions.weight_sum_eq_iff}. The global theorem on canonical
+unordered pairs uses the same specialization directly. The selective
+theorem becomes one application with its existing \code{Isolated} proof.
+The public definitions of \code{encoded}, \code{pairWeight}, and the row
+polynomials are preserved.
+
+\subsection{Reuse the selective zero theorem for separated rows}
+
+The same dependency correction has a useful second application. In
+\code{MultiQuadraticCoding}, the theorem
+\code{coeff_row_eq_zero_of_outside} repeats a nested
+polynomial expansion to show that a coefficient outside a row's permitted
+window is zero. The existing selective theorem
+\code{coeff_at_other_target} already proves this conclusion whenever each
+potential contributing exponent differs from the target
+\cite{multi,selective}.
+
+Specialize that theorem to the explicit Sidon weights and full pair
+support. The client then retains only the arithmetic reason for
+noncollision: the pair-weight bound, the bound on the sum of two weights,
+and the lower bound on the row target. Its closing \code{omega} call checks
+the interval arithmetic. There is no second sum/monomial proof in the
+client.
+
+This is part of the same direction rather than a separate claimed novelty:
+general selective coefficient facts should sit below global special cases.
+
+\subsection{Relation to excluded work and measured effect}
+
+The earlier coefficient proposals concern upper envelopes, naturality,
+support bounds, finite pushforward sums, and degree certificates. Those are
+assumed to exist already. Here the new reusable statement is an \emph{exact}
+coefficient formula from a two-point fibre, including the diagonal
+multiplicity rule, and the proof graph is reorganized around it.
+
+The integration patch adds one 32-line helper module and changes five
+existing proof bodies across three modules. Aggregate source size is
+reported with that helper included in Section~\ref{sec:validation}; blank
+separators between declarations are preserved. The entire four-module
+candidate was compiled, not merely the generic lemma in isolation.
+
+The mathematical advantage outlasts a line-count reduction. A future
+weight construction needs to prove the local fibre condition at its chosen
+targets. It can then reuse the coefficient calculation even if unrelated
+pair sums collide. A new global Sidon theorem is unnecessary for this
+particular proof obligation.

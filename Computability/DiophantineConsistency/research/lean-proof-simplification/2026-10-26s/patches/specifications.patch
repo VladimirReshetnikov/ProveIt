@@ -1,0 +1,347 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectAdditionLaws.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectAdditionLaws.lean
+@@ -36,17 +36,7 @@
+ private theorem successorLeftStage_spec (H : ZFAxioms mem) (n x : V) (ee : Nat → V) :
+     Sat mem (scons n (scons x ee)) successorLeftStage ↔
+       ∀ z, AddRel H x n z → AddRel H (vsucc H x) n (vsucc H z) := by
+-  constructor
+-  · intro h z hz
+-    obtain ⟨z', hz', x', hx', ha⟩ := h z ((addForm_spec H _ 0 2 1).mpr hz)
+-    have ez : z'=vsucc H z := (fSuccF_spec H _ 0 1).mp hz'
+-    have ex : x'=vsucc H x := (fSuccF_spec H _ 0 4).mp hx'
+-    have hh : AddRel H x' n z' := (addForm_spec H _ 1 0 3).mp ha
+-    simpa only [ex,ez] using hh
+-  · intro h z hz
+-    exact ⟨vsucc H z,(fSuccF_spec H _ 0 1).mpr rfl,
+-      vsucc H x,(fSuccF_spec H _ 0 4).mpr rfl,
+-      (addForm_spec H _ 1 0 3).mpr (h z ((addForm_spec H _ 0 2 1).mp hz))⟩
++  simp only [successorLeftStage, Sat, addForm_spec H, fSuccF_spec H, scons, exists_eq_left]
+ 
+ /-- Successor can be moved through the left input, for all internal naturals. -/
+ theorem addRel_succ_left (H : ZFAxioms mem) {x y z : V}
+@@ -77,11 +67,7 @@
+ private theorem commutativeStage_spec (H : ZFAxioms mem) (n x : V) (ee : Nat → V) :
+     Sat mem (scons n (scons x ee)) commutativeStage ↔
+       ∀ z, AddRel H x n z → AddRel H n x z := by
+-  constructor
+-  · intro h z hz
+-    exact (addForm_spec H _ 0 1 2).mp (h z ((addForm_spec H _ 0 2 1).mpr hz))
+-  · intro h z hz
+-    exact (addForm_spec H _ 0 1 2).mpr (h z ((addForm_spec H _ 0 2 1).mp hz))
++  simp only [commutativeStage, Sat, addForm_spec H, scons]
+ 
+ theorem addRel_comm (H : ZFAxioms mem) {x y z : V} (hxy : AddRel H x y z) :
+     AddRel H y x z := by
+@@ -114,13 +100,7 @@
+ private theorem associativeStage_spec (H : ZFAxioms mem) (n x y a : V) (ee : Nat → V) :
+     Sat mem (scons n (scons x (scons y (scons a ee)))) associativeStage ↔
+       ∀ b z, AddRel H y n b → AddRel H a n z → AddRel H x b z := by
+-  constructor
+-  · intro h b z hb hz
+-    exact (addForm_spec H _ 0 3 1).mp
+-      (h b z ⟨(addForm_spec H _ 1 4 2).mpr hb,(addForm_spec H _ 0 5 2).mpr hz⟩)
+-  · intro h b z hbz
+-    exact (addForm_spec H _ 0 3 1).mpr
+-      (h b z ((addForm_spec H _ 1 4 2).mp hbz.1) ((addForm_spec H _ 0 5 2).mp hbz.2))
++  simp only [associativeStage, Sat, addForm_spec H, scons, and_imp]
+ 
+ /-- Associativity with every intermediate value explicit. -/
+ theorem addRel_assoc (H : ZFAxioms mem) {x y n a b z : V}
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectAdditionCancellation.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectAdditionCancellation.lean
+@@ -16,11 +16,7 @@
+ private theorem cancellationStage_spec (H : ZFAxioms mem) (n : V) (ee : Nat → V) :
+     Sat mem (scons n ee) cancellationStage ↔
+       ∀ x x' z, AddRel H x n z → AddRel H x' n z → x=x' := by
+-  constructor
+-  · intro h x x' z hx hx'
+-    exact h x x' z ⟨(addForm_spec H _ 0 2 3).mpr hx,(addForm_spec H _ 0 1 3).mpr hx'⟩
+-  · intro h x x' z hh
+-    exact h x x' z ((addForm_spec H _ 0 2 3).mp hh.1) ((addForm_spec H _ 0 1 3).mp hh.2)
++  simp only [cancellationStage, Sat, addForm_spec H, scons, and_imp]
+ 
+ theorem addRel_cancel_right (H : ZFAxioms mem) {x x' y z : V}
+     (hx : AddRel H x y z) (hx' : AddRel H x' y z) : x=x' := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectMultiplicationLaws.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectMultiplicationLaws.lean
+@@ -48,13 +48,7 @@
+ private theorem successorLeftStage_spec (H : ZFAxioms mem) (n x x' : V) (ee : Nat → V) :
+     Sat mem (scons n (scons x (scons x' ee))) successorLeftStage ↔
+       ∀ u v, MulRel H x n u → AddRel H u n v → MulRel H x' n v := by
+-  constructor
+-  · intro h u v hm ha
+-    exact (mulForm_spec H _ 0 4 2).mp
+-      (h u v ⟨(mulForm_spec H _ 1 3 2).mpr hm,(addForm_spec H _ 0 1 2).mpr ha⟩)
+-  · intro h u v hh
+-    exact (mulForm_spec H _ 0 4 2).mpr
+-      (h u v ((mulForm_spec H _ 1 3 2).mp hh.1) ((addForm_spec H _ 0 1 2).mp hh.2))
++  simp only [successorLeftStage, Sat, addForm_spec H, mulForm_spec H, scons, and_imp]
+ 
+ /-- The left-successor law, with its addition witness explicit. -/
+ theorem mulRel_succ_left (H : ZFAxioms mem) {x y z w : V}
+@@ -105,11 +99,7 @@
+ private theorem commutativeStage_spec (H : ZFAxioms mem) (n x : V) (ee : Nat → V) :
+     Sat mem (scons n (scons x ee)) commutativeStage ↔
+       ∀ z, MulRel H x n z → MulRel H n x z := by
+-  constructor
+-  · intro h z hz
+-    exact (mulForm_spec H _ 0 1 2).mp (h z ((mulForm_spec H _ 0 2 1).mpr hz))
+-  · intro h z hz
+-    exact (mulForm_spec H _ 0 1 2).mpr (h z ((mulForm_spec H _ 0 2 1).mp hz))
++  simp only [commutativeStage, Sat, mulForm_spec H, scons]
+ 
+ theorem mulRel_comm (H : ZFAxioms mem) {x y z : V} (hxy : MulRel H x y z) :
+     MulRel H y x z := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDistributivity.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDistributivity.lean
+@@ -19,15 +19,7 @@
+ private theorem distributiveStage_spec (H : ZFAxioms mem) (n x y b : V) (ee : Nat → V) :
+     Sat mem (scons n (scons x (scons y (scons b ee)))) distributiveStage ↔
+       ∀ a c d, AddRel H y n a → MulRel H x n c → AddRel H b c d → MulRel H x a d := by
+-  constructor
+-  · intro h a c d ha hc hd
+-    exact (mulForm_spec H _ 0 4 2).mp (h a c d
+-      ⟨(addForm_spec H _ 2 5 3).mpr ha,
+-        (mulForm_spec H _ 1 4 3).mpr hc,(addForm_spec H _ 0 6 1).mpr hd⟩)
+-  · intro h a c d hh
+-    exact (mulForm_spec H _ 0 4 2).mpr
+-      (h a c d ((addForm_spec H _ 2 5 3).mp hh.1)
+-        ((mulForm_spec H _ 1 4 3).mp hh.2.1) ((addForm_spec H _ 0 6 1).mp hh.2.2))
++  simp only [distributiveStage, Sat, addForm_spec H, mulForm_spec H, scons, and_imp]
+ 
+ /-- Every intermediate sum and product is explicit; no external numeral bound. -/
+ theorem mulRel_distrib_left (H : ZFAxioms mem) {x y n a b c d : V}
+@@ -77,13 +69,7 @@
+ private theorem associativeStage_spec (H : ZFAxioms mem) (n x y a : V) (ee : Nat → V) :
+     Sat mem (scons n (scons x (scons y (scons a ee)))) associativeStage ↔
+       ∀ b z, MulRel H y n b → MulRel H a n z → MulRel H x b z := by
+-  constructor
+-  · intro h b z hb hz
+-    exact (mulForm_spec H _ 0 3 1).mp
+-      (h b z ⟨(mulForm_spec H _ 1 4 2).mpr hb,(mulForm_spec H _ 0 5 2).mpr hz⟩)
+-  · intro h b z hh
+-    exact (mulForm_spec H _ 0 3 1).mpr
+-      (h b z ((mulForm_spec H _ 1 4 2).mp hh.1) ((mulForm_spec H _ 0 5 2).mp hh.2))
++  simp only [associativeStage, Sat, mulForm_spec H, scons, and_imp]
+ 
+ theorem mulRel_assoc (H : ZFAxioms mem) {x y n a b z : V}
+     (hxy : MulRel H x y a) (hyn : MulRel H y n b) (han : MulRel H a n z) :
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalOrder.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalOrder.lean
+@@ -22,11 +22,7 @@
+ private theorem additionBoundStage_spec (H : ZFAxioms mem) (n x : V) (ee : Nat → V) :
+     Sat mem (scons n (scons x ee)) additionBoundStage ↔
+       ∀ y, AddRel H x n y → LeRel H x y := by
+-  constructor
+-  · intro h y hy
+-    exact h y ((addForm_spec H _ 0 2 1).mpr hy)
+-  · intro h y hy
+-    exact h y ((addForm_spec H _ 0 2 1).mp hy)
++  simp only [additionBoundStage, Sat, addForm_spec H, scons, LeRel]
+ 
+ theorem addRel_le_left (H : ZFAxioms mem) {x n y : V} (hxy : AddRel H x n y) :
+     LeRel H x y := by
+@@ -57,13 +53,7 @@
+ private theorem differenceStage_spec (H : ZFAxioms mem) (n : V) (ee : Nat → V) :
+     Sat mem (scons n ee) differenceStage ↔
+       ∀ x, mem x (omegaV H) → LeRel H x n → ∃ z, AddRel H x z n := by
+-  constructor
+-  · intro h x hx hle
+-    obtain ⟨z,hz⟩ := h x ((fNatF_spec H _ 0).mpr hx) hle
+-    exact ⟨z,(addForm_spec H _ 2 1 0).mp hz⟩
+-  · intro h x hx hle
+-    obtain ⟨z,hz⟩ := h x ((fNatF_spec H _ 0).mp hx) hle
+-    exact ⟨z,(addForm_spec H _ 2 1 0).mpr hz⟩
++  simp only [differenceStage, Sat, fNatF_spec H, addForm_spec H, scons, LeRel]
+ 
+ theorem leRel_exists_add (H : ZFAxioms mem) {x y : V}
+     (hx : mem x (omegaV H)) (hy : mem y (omegaV H)) (hxy : LeRel H x y) :
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalExpression.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalExpression.lean
+@@ -46,26 +46,9 @@
+   induction e generalizing coordinates z ee with
+   | constant n => exact fNumF_spec H n z ee
+   | var i => rfl
+-  | add p q hp hq =>
+-      change (∃ a b,
+-        Sat mem (scons b (scons a ee)) (evalForm p (fun i => coordinates i + 2) 1) ∧
+-        Sat mem (scons b (scons a ee)) (evalForm q (fun i => coordinates i + 2) 0) ∧
+-        Sat mem (scons b (scons a ee)) (addForm (z + 2) 1 0)) ↔ _
+-      apply exists_congr
+-      intro a
+-      apply exists_congr
+-      intro b
+-      exact and_congr (hp _ _ _) (and_congr (hq _ _ _) (addForm_spec H _ _ _ _))
+-  | mul p q hp hq =>
+-      change (∃ a b,
+-        Sat mem (scons b (scons a ee)) (evalForm p (fun i => coordinates i + 2) 1) ∧
+-        Sat mem (scons b (scons a ee)) (evalForm q (fun i => coordinates i + 2) 0) ∧
+-        Sat mem (scons b (scons a ee)) (mulForm (z + 2) 1 0)) ↔ _
+-      apply exists_congr
+-      intro a
+-      apply exists_congr
+-      intro b
+-      exact and_congr (hp _ _ _) (and_congr (hq _ _ _) (mulForm_spec H _ _ _ _))
++  | add p q hp hq | mul p q hp hq =>
++    simp only [evalForm, Sat, EvalRel, hp, hq, addForm_spec H, mulForm_spec H,
++      Function.comp_def, scons]
+ 
+ theorem evalRel_result_nat (H : ZFAxioms mem) (v : σ → V)
+     (hv : ∀ i, mem (v i) (omegaV H)) (e : NatExpr σ) {z : V} (h : EvalRel H v e z) :
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectCodeBound.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectCodeBound.lean
+@@ -145,19 +145,8 @@
+ 
+ theorem boundAtomForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c b t : Nat) :
+     Sat mem ee (boundAtomForm c b t) ↔ BoundAtom H (ee c) (ee b) t := by
+-  constructor
+-  · rintro ⟨i, j, si, sj, hi, hj, hc, hsi, hsj, ha⟩
+-    have hsi' : si = vsucc H i := (fSuccF_spec H _ 1 3).mp hsi
+-    have hsj' : sj = vsucc H j := (fSuccF_spec H _ 0 2).mp hsj
+-    have ha' := (addForm_spec H _ (b+4) 1 0).mp ha
+-    rw [hsi', hsj'] at ha'
+-    exact ⟨i, j, (fNatF_spec H _ 3).mp hi, (fNatF_spec H _ 2).mp hj,
+-      (fTagPairF_spec H _ (c+4) t 3 2).mp hc, ha'⟩
+-  · rintro ⟨i, j, hi, hj, hc, ha⟩
+-    exact ⟨i, j, vsucc H i, vsucc H j, (fNatF_spec H _ 3).mpr hi,
+-      (fNatF_spec H _ 2).mpr hj, (fTagPairF_spec H _ (c+4) t 3 2).mpr hc,
+-      (fSuccF_spec H _ 1 3).mpr rfl, (fSuccF_spec H _ 0 2).mpr rfl,
+-      (addForm_spec H _ (b+4) 1 0).mpr ha⟩
++  simp only [boundAtomForm, Sat, fNatF_spec H, fTagPairF_spec H, fSuccF_spec H, addForm_spec H,
++    scons, exists_and_left, exists_eq_left, BoundAtom]
+ 
+ def boundBinaryForm (c b s t : Nat) : Form :=
+   fEx (fEx (fEx (fEx
+@@ -167,28 +156,15 @@
+ 
+ theorem boundBinaryForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c b s t : Nat) :
+     Sat mem ee (boundBinaryForm c b s t) ↔ BoundBinary H (ee s) (ee c) (ee b) t := by
+-  constructor
+-  · rintro ⟨a, d, a', d', hc, m1, m2, ha⟩
+-    exact ⟨a, d, a', d', (fTagPairF_spec H _ (c+4) t 3 2).mp hc,
+-      (fPairMemF_spec H _ 3 1 (s+4)).mp m1, (fPairMemF_spec H _ 2 0 (s+4)).mp m2,
+-      (addForm_spec H _ (b+4) 1 0).mp ha⟩
+-  · rintro ⟨a, d, a', d', hc, m1, m2, ha⟩
+-    exact ⟨a, d, a', d', (fTagPairF_spec H _ (c+4) t 3 2).mpr hc,
+-      (fPairMemF_spec H _ 3 1 (s+4)).mpr m1, (fPairMemF_spec H _ 2 0 (s+4)).mpr m2,
+-      (addForm_spec H _ (b+4) 1 0).mpr ha⟩
++  simp only [boundBinaryForm, Sat, fTagPairF_spec H, fPairMemF_spec H, addForm_spec H, scons,
++    BoundBinary]
+ 
+ def boundQuantifierForm (c b s t : Nat) : Form :=
+   fEx (fAnd (fTagUnF (c+1) t 0) (fPairMemF 0 (b+1) (s+1)))
+ 
+ theorem boundQuantifierForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c b s t : Nat) :
+     Sat mem ee (boundQuantifierForm c b s t) ↔ BoundQuantifier H (ee s) (ee c) (ee b) t := by
+-  constructor
+-  · rintro ⟨a, hc, hm⟩
+-    exact ⟨a, (fTagUnF_spec H _ (c+1) t 0).mp hc,
+-      (fPairMemF_spec H _ 0 (b+1) (s+1)).mp hm⟩
+-  · rintro ⟨a, hc, hm⟩
+-    exact ⟨a, (fTagUnF_spec H _ (c+1) t 0).mpr hc,
+-      (fPairMemF_spec H _ 0 (b+1) (s+1)).mpr hm⟩
++  simp only [boundQuantifierForm, Sat, fTagUnF_spec H, fPairMemF_spec H, scons, BoundQuantifier]
+ 
+ def boundStepForm (c b s : Nat) : Form :=
+   fOr (boundAtomForm c b 0) (fOr (boundAtomForm c b 1)
+@@ -198,15 +174,9 @@
+           (fOr (boundQuantifierForm c b s 6) (boundQuantifierForm c b s 7)))))))
+ 
+ theorem boundStepForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c b s : Nat) :
+-    Sat mem ee (boundStepForm c b s) ↔ BoundStep H (ee s) (ee c) (ee b) :=
+-  or_congr (boundAtomForm_spec H ee c b 0)
+-    (or_congr (boundAtomForm_spec H ee c b 1)
+-      (or_congr (and_congr (fTaggedEmptyF_spec H ee c 2) (fEmptyF_spec H ee b))
+-        (or_congr (boundBinaryForm_spec H ee c b s 3)
+-          (or_congr (boundBinaryForm_spec H ee c b s 4)
+-            (or_congr (boundBinaryForm_spec H ee c b s 5)
+-              (or_congr (boundQuantifierForm_spec H ee c b s 6)
+-                (boundQuantifierForm_spec H ee c b s 7)))))))
++    Sat mem ee (boundStepForm c b s) ↔ BoundStep H (ee s) (ee c) (ee b) := by
++  simp only [boundStepForm, Sat, boundAtomForm_spec H, boundBinaryForm_spec H,
++    boundQuantifierForm_spec H, fTaggedEmptyF_spec H, fEmptyF_spec H, BoundStep, formCode]
+ 
+ def boundClosedForm (s : Nat) : Form :=
+   fAll (fAll (fImp (fPairMemF 1 0 (s+2))
+@@ -214,26 +184,15 @@
+ 
+ theorem boundClosedForm_spec (H : ZFAxioms mem) (ee : Nat → V) (s : Nat) :
+     Sat mem ee (boundClosedForm s) ↔ BoundClosed H (ee s) := by
+-  constructor
+-  · intro h c b hm
+-    obtain ⟨hn, hs⟩ := h c b ((fPairMemF_spec H _ 1 0 (s+2)).mpr hm)
+-    exact ⟨(fNatF_spec H _ 0).mp hn, (boundStepForm_spec H _ 1 0 (s+2)).mp hs⟩
+-  · intro h c b hm
+-    obtain ⟨hn, hs⟩ := h c b ((fPairMemF_spec H _ 1 0 (s+2)).mp hm)
+-    exact ⟨(fNatF_spec H _ 0).mpr hn, (boundStepForm_spec H _ 1 0 (s+2)).mpr hs⟩
++  simp only [boundClosedForm, Sat, fPairMemF_spec H, fNatF_spec H, boundStepForm_spec H, scons,
++    BoundClosed]
+ 
+ def boundCodeForm (b c : Nat) : Form :=
+   fEx (fAnd (boundClosedForm 0) (fPairMemF (c+1) (b+1) 0))
+ 
+ theorem boundCodeForm_spec (H : ZFAxioms mem) (ee : Nat → V) (b c : Nat) :
+     Sat mem ee (boundCodeForm b c) ↔ BoundCodeRel H (ee c) (ee b) := by
+-  constructor
+-  · rintro ⟨S, hS, hm⟩
+-    exact ⟨S, (boundClosedForm_spec H _ 0).mp hS,
+-      (fPairMemF_spec H _ (c+1) (b+1) 0).mp hm⟩
+-  · rintro ⟨S, hS, hm⟩
+-    exact ⟨S, (boundClosedForm_spec H _ 0).mpr hS,
+-      (fPairMemF_spec H _ (c+1) (b+1) 0).mpr hm⟩
++  simp only [boundCodeForm, Sat, boundClosedForm_spec H, fPairMemF_spec H, scons, BoundCodeRel]
+ 
+ /-! ## Inversion and functionality -/
+ 
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectCodeSeal.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectCodeSeal.lean
+@@ -32,15 +32,8 @@
+ 
+ theorem sealCodeForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c a : Nat) :
+     Sat mem ee (sealCodeForm c a) ↔ SealCodeRel H (ee a) (ee c) := by
+-  constructor
+-  · rintro ⟨ha, b, hb, hc⟩
+-    exact ⟨(fIsFormCodeF_spec H _ a).mp ha, b,
+-      (boundCodeForm_spec H _ 0 (a+1)).mp hb,
+-      (closeCodeForm_spec H _ (c+1) (a+1) 0).mp hc⟩
+-  · rintro ⟨ha, b, hb, hc⟩
+-    exact ⟨(fIsFormCodeF_spec H _ a).mpr ha, b,
+-      (boundCodeForm_spec H _ 0 (a+1)).mpr hb,
+-      (closeCodeForm_spec H _ (c+1) (a+1) 0).mpr hc⟩
++  simp only [sealCodeForm, Sat, fIsFormCodeF_spec H, boundCodeForm_spec H, closeCodeForm_spec H,
++    scons, SealCodeRel]
+ 
+ theorem sealCodeRel_total (H : ZFAxioms mem) {a : V} (ha : IsFormCodeSem H a) :
+     ∃ c, SealCodeRel H a c := by
+@@ -117,13 +110,8 @@
+ 
+ theorem sealedZFCAxiomCodeForm_spec (H : ZFAxioms mem) (ee : Nat → V) (c : Nat) :
+     Sat mem ee (sealedZFCAxiomCodeForm c) ↔ IsSealedZFCAxiomCode H (ee c) := by
+-  constructor
+-  · rintro ⟨a, ha, hc⟩
+-    exact ⟨a, (fZFCAxiomCodeF_spec H _ 0).mp ha,
+-      (sealCodeForm_spec H _ (c+1) 0).mp hc⟩
+-  · rintro ⟨a, ha, hc⟩
+-    exact ⟨a, (fZFCAxiomCodeF_spec H _ 0).mpr ha,
+-      (sealCodeForm_spec H _ (c+1) 0).mpr hc⟩
++  simp only [sealedZFCAxiomCodeForm, Sat, fZFCAxiomCodeF_spec H, sealCodeForm_spec H, scons,
++    IsSealedZFCAxiomCode]
+ 
+ theorem isSealedZFCAxiomCode_quotation (H : ZFAxioms mem) {f : Form}
+     (hf : ZFCax_s f) : IsSealedZFCAxiomCode H (formCode H f) := by
+@@ -143,13 +131,8 @@
+ 
+ theorem ctxSealedZFCAxiomsForm_spec (H : ZFAxioms mem) (ee : Nat → V) (g : Nat) :
+     Sat mem ee (ctxSealedZFCAxiomsForm g) ↔ CtxSealedZFCAxioms H (ee g) := by
+-  constructor
+-  · intro h x hx
+-    exact (sealedZFCAxiomCodeForm_spec H _ 0).mp
+-      (h x ((fMemCtxF_spec H _ 0 (g+1)).mpr hx))
+-  · intro h x hx
+-    exact (sealedZFCAxiomCodeForm_spec H _ 0).mpr
+-      (h x ((fMemCtxF_spec H _ 0 (g+1)).mp hx))
++  simp only [ctxSealedZFCAxiomsForm, Sat, fMemCtxF_spec H, sealedZFCAxiomCodeForm_spec H, scons,
++    CtxSealedZFCAxioms]
+ 
+ theorem ctxSealedZFCAxioms_quotation (H : ZFAxioms mem) {G : List Form}
+     (hG : ∀ f ∈ G, ZFCax_s f) : CtxSealedZFCAxioms H (ctxCode H G) := by

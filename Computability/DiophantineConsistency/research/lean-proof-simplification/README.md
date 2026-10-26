@@ -24,8 +24,11 @@ delivered, with a `PLACEMENT.md` recording its arrival. Nothing here is imported
 | [2026-10-26p](2026-10-26p/PLACEMENT.md) | `lean-proof-simplification-new-2026-10-26.zip` | `03ae12b592` | `6f46a5e348` |
 | [2026-10-26q](2026-10-26q/PLACEMENT.md) | `diophantine-lean-post-roadmap-2026-10-26.zip` | `03ae12b592` | `9bd29079d5` |
 | [2026-10-26r](2026-10-26r/PLACEMENT.md) | `lean-simplification-residual-2026-10-26.zip` | `03ae12b592` | `9bd29079d5` |
+| [2026-10-26s](2026-10-26s/PLACEMENT.md) | `diophantine-lean-further-simplifications-2026-10-26.zip` | `6a7ef347b5` | `23f631ea07` |
+| [2026-10-26t](2026-10-26t/PLACEMENT.md) | `diophantine-lean-further-simplifications-2026-10-26 (1).zip` | `6a7ef347b5` | `6f46a5e348` |
+| [2026-10-26u](2026-10-26u/PLACEMENT.md) | `diophantine-lean-structural-refinements-2026-10-26.zip` | `6a7ef347b5` | `23f631ea07` |
 
-Packets b–r omit members byte-identical to a Git blob of the reviewed commit, of `60e9c5d620` or of the placement parent,
+Packets b–u omit members byte-identical to a Git blob of the reviewed commit, of `60e9c5d620` or of the placement parent,
 mostly bundled source snapshots; each one's `OMITTED.tsv` lists them with a repository path holding the
 same bytes.
 
