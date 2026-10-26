@@ -1,0 +1,60 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePreliminaryCount2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePreliminaryCount2011.lean
+@@ -58,14 +58,14 @@
+ 
+ /-- All phases are covered without assuming the desired one-selector bound.
+ Only the middle phases request the actual483 padding tests and residues. -/
+-theorem total_le_one_all_phases (bit u digit : ℕ → ℕ)
++theorem total_le_one_all_phases (bit digit : ℕ → ℕ)
+     {k b phase epsilon clause : ℕ}
+     (hbit : ∀ j, j < 942 → bit j ≤ 1)
+     (hk : k ≤ 57) (hb : b ≤ 1) (hepsilon : epsilon ≤ 1)
+     (hresidue : clause % 2048 =
+       (2 * prefixSum bit 942 + k + b + 2 ^ phase * epsilon) % 2048)
+     (hmask : clause &&& (2 ^ 45 - 4) = 0)
+-    (hpadding : 7 ≤ phase → phase ≤ 10 →
++    (hpadding : 7 ≤ phase → phase ≤ 10 → ∃ u : ℕ → ℕ,
+       (∀ j, 1 ≤ j → j ≤ 483 → u j ≤ 2) ∧
+       (∀ j, 1 ≤ j → j ≤ 483 →
+         digit j % 16 = (2 * prefixSum bit j + u j) % 16) ∧
+@@ -77,7 +77,7 @@
+   by_cases hsmall : phase ≤ 6
+   · exact count_small_phase hn hk hb hsmall hepsilon hresidue hmask
+   by_cases hmiddle : phase ≤ 10
+-  · obtain ⟨hu, hr, hm⟩ := hpadding (by omega) hmiddle
++  · obtain ⟨u, hu, hr, hm⟩ := hpadding (by omega) hmiddle
+     have hn' := total_le_462 bit u digit hbit hu hr hm
+     have hp : 2 ^ phase ≤ 1024 := Nat.pow_le_pow_right (by decide) hmiddle
+     have ht : 2 ^ phase * epsilon ≤ 1024 := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCount2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCount2011.lean
+@@ -40,27 +40,17 @@
+     (b : ZMod (N * 2011)) (hb : b.val % 2011 = 0)
+     (hpadding : 7 ≤ W % 47 → W % 47 ≤ 10 → MiddlePadding c digits b) :
+     selectorCount c b ≤ 1 := by
+-  classical
+   let bit : ℕ → ℕ := fun j => c (b + (j : ZMod (N * 2011)))
+   let pdigit : ℕ → ℕ := fun j => digits (b + ((63 + j : ℕ) : ZMod (N * 2011)))
+-  obtain ⟨u, hu⟩ : ∃ u : ℕ → ℕ,
+-      7 ≤ W % 47 → W % 47 ≤ 10 →
+-        (∀ j, 1 ≤ j → j ≤ 483 → u j ≤ 2) ∧
+-        (∀ j, 1 ≤ j → j ≤ 483 → pdigit j % 16 = (2 * prefixSum bit j + u j) % 16) ∧
+-        (∀ j, 1 ≤ j → j ≤ 483 → pdigit j &&& 8 = 0) := by
+-    by_cases hm : 7 ≤ W % 47 ∧ W % 47 ≤ 10
+-    · obtain ⟨u, hu⟩ := hpadding hm.1 hm.2
+-      exact ⟨u, fun _ _ => hu⟩
+-    · exact ⟨fun _ => 0, fun h₁ h₂ => False.elim (hm ⟨h₁, h₂⟩)⟩
+   have hr := normalized_clause_residue c (binaryRotation 47 W c) carry digits
+     hsupport hlocal b hb
+   rw [rotation_eq_scaled (by decide : 0 < 47) W c hc (b + 1005),
+     selectorCount_eq_prefix] at hr
+   have hm := normalized_clause_mask digits hmask b hb
+-  have hcount := NativePreliminaryCount2011.total_le_one_all_phases bit u pdigit
++  have hcount := NativePreliminaryCount2011.total_le_one_all_phases bit pdigit
+     (fun j _ => hc (b + (j : ZMod (N * 2011))))
+     (hk (b + 1004)) (hc (b + 1))
+-    (hc ((b + 1005) - ((W / 47 : ℕ) : ZMod (N * 2011)))) hr hm hu
++    (hc ((b + 1005) - ((W / 47 : ℕ) : ZMod (N * 2011)))) hr hm hpadding
+   exact (selectorCount_eq_prefix c b).trans_le hcount
+ 
+ end DiophantineConsistency.CurrentCount2011

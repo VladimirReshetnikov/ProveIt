@@ -1,0 +1,85 @@
+{
+  "repository_commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "toolchain": "leanprover/lean4:v4.32.0",
+  "original_source_modified": false,
+  "checked_files": [
+    {
+      "file": "HalfShiftArithmetic.lean",
+      "exit_code": 0,
+      "log": "HalfShiftArithmetic.check.log",
+      "theorems": [
+        {
+          "name": "DiophantineConsistency.ProofReview.half_shift_formula",
+          "axioms": [
+            "propext"
+          ]
+        },
+        {
+          "name": "DiophantineConsistency.ProofReview.half_shift_bound",
+          "axioms": [
+            "propext",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "DiophantineConsistency.ProofReview.half_shift_parity",
+          "axioms": [
+            "propext",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "NormalizationArithmetic.lean",
+      "exit_code": 0,
+      "log": "NormalizationArithmetic.check.log",
+      "theorems": [
+        {
+          "name": "DiophantineConsistency.ProofReview.quotient_of_decomposition",
+          "axioms": [
+            "propext",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "DiophantineConsistency.ProofReview.residue_of_decomposition",
+          "axioms": [
+            "propext"
+          ]
+        },
+        {
+          "name": "DiophantineConsistency.ProofReview.zero_carry_of_decomposition",
+          "axioms": [
+            "propext",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "uncompiled_candidates": [
+    "ConditionalPadding.lean",
+    "ModulusReuse.lean",
+    "NativePreliminaryCount2011.proposed.lean",
+    "CurrentCount2011.proposed.lean"
+  ],
+  "patches": [
+    {
+      "file": "conditional-padding.patch",
+      "git_apply_check_exit_code": 0,
+      "lean_compiled": false,
+      "original_physical_lines": 155,
+      "proposed_physical_lines": 145
+    },
+    {
+      "file": "modulus-reuse.patch",
+      "git_apply_check_exit_code": 0,
+      "lean_compiled": false,
+      "original_proof_body_physical_lines": 7,
+      "proposed_proof_body_physical_lines": 1
+    }
+  ],
+  "project_validation_limitation": "A direct compilation of the unchanged PaddingStaircase dependency was stopped after prolonged disk/page waits. This is an environment-limited incomplete check, not a reported proof error. The patches and project-importing candidates remain uncompiled.",
+  "notes": "review.md"
+}

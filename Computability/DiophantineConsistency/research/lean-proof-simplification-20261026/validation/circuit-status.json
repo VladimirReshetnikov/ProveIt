@@ -1,0 +1,64 @@
+{
+  "repository_commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "toolchain": "leanprover/lean4:v4.32.0",
+  "compiled": [
+    {
+      "file": "CircuitInvariant.lean",
+      "sha256": "24925fa1a24958b30fe07168a2ad149c9cbb4e072d593bb90c57a469f697c578",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 206.11,
+      "invocation": "Pinned Lean binary, -j1, with LEAN_PATH pointing to pinned repository/package build directories",
+      "log": "CircuitInvariant-direct.log",
+      "checked_declarations": [
+        "DiophantineConsistency.CircuitInvariantReview.run_invariant",
+        "DiophantineConsistency.CircuitInvariantReview.run_eq_of_node_equations",
+        "DiophantineConsistency.CircuitInvariantReview.value_degree_le"
+      ],
+      "axioms_for_each": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "interpretation": "Successful elaboration and kernel checking of this standalone module; elapsed time is not a performance benchmark."
+    }
+  ],
+  "source_only": [
+    {
+      "file": "CircuitRefactoring.lean",
+      "sha256": "ed4071f512c62088eb77b72fc8d891c47a86cc1e27fcbe454d1a5991638a81ef",
+      "status": "NOT_COMPILED_AS_A_WHOLE",
+      "note": "The invariant/equality/degree portions were checked separately in CircuitInvariant.lean; nonnegativity and SOS clients remain source-only."
+    },
+    {
+      "file": "NodeRelCommutative.lean",
+      "sha256": "72726e02968ca96715c001d45957ecea3cde75099dd51e07cc9c0b24b88d0887",
+      "status": "NOT_COMPILED",
+      "note": "Baseline ArithmeticDAGPowers compilation was interrupted during severe I/O contention, before source diagnostics."
+    }
+  ],
+  "generated_steps": {
+    "status": "STATIC_AUDIT_PASS_LEAN_NOT_RUN",
+    "audit": "static-audit.json",
+    "metrics": "generated-candidate/generated-steps-metrics.json",
+    "public_signatures_preserved": 1192,
+    "literal_power_steps_checked": 193,
+    "source_lines": 6567,
+    "candidate_lines": 4917,
+    "source_nonblank_lines": 4985,
+    "candidate_nonblank_lines": 3707,
+    "note": "Candidate-source savings only. Update upstream generators before integration. No compile-time improvement claimed."
+  },
+  "interrupted_dependency_jobs": [
+    {
+      "module": "ArithmeticDAGPowers",
+      "exit_code": 130,
+      "reason": "Stopped to reduce I/O contention; no Lean source diagnostic emitted"
+    },
+    {
+      "module": "QuarticSyntax",
+      "exit_code": 130,
+      "reason": "Stopped to reduce I/O contention; no Lean source diagnostic emitted"
+    }
+  ]
+}

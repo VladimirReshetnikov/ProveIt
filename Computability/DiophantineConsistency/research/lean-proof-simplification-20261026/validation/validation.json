@@ -1,0 +1,137 @@
+{
+  "commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "lean": "4.32.0",
+  "mathlib": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "demonstrations": [
+    {
+      "path": "lean/PRProofChecks.lean",
+      "status": "compiled",
+      "sha256": "8d5384e38cac419cd8de1deaa9038da4d7e887246728a233d1b93f5b55a62263",
+      "log": "validation/PRProofChecks.log"
+    },
+    {
+      "path": "lean/AssignmentChecks.lean",
+      "status": "compiled",
+      "sha256": "46d8e4132d46b55506958f358b66c21e8df65d94dc79912d9b5cd2e0d236699e",
+      "log": "validation/AssignmentChecks.log"
+    },
+    {
+      "path": "lean/ScannerCore.lean",
+      "status": "compiled",
+      "sha256": "9d8b5ed68ec8d2314e6132fcff147f0c37f3ee0888837310e6ba9a031eb5a036",
+      "log": "validation/ScannerCore.log"
+    },
+    {
+      "path": "lean/ListChecks.lean",
+      "status": "compiled",
+      "sha256": "eb03657af96fbefaa2fc0e3eb6f4472c62e7d936dc7b06642d5a61a34c203135",
+      "log": "validation/ListChecks.log"
+    },
+    {
+      "path": "lean/BooleanCore.lean",
+      "status": "compiled",
+      "sha256": "829a48aa9da5b4ca588cda42d78a4507d521d93ba994a4e145cdfd1a56b71488",
+      "log": "validation/BooleanCore.log"
+    },
+    {
+      "path": "lean/RecursorCore.lean",
+      "status": "compiled",
+      "sha256": "6ccc97a7e45cd58aed71b15769ef004b46d324e1aeafafd05eaa616f6f77ad98",
+      "log": "validation/RecursorCore.log"
+    },
+    {
+      "path": "lean/HalfShiftArithmetic.lean",
+      "status": "compiled",
+      "sha256": "29db1a237aa50b1ecdb784de0f24e387b7da70728c8e6b27e63fb1d9c41294a4",
+      "log": "validation/HalfShiftArithmetic.log"
+    },
+    {
+      "path": "lean/NormalizationArithmetic.lean",
+      "status": "compiled",
+      "sha256": "03e16962a93475e7b57b2e70f2468a5a2d5c60442af92389617c6414d2d6cbc6",
+      "log": "validation/NormalizationArithmetic.log"
+    },
+    {
+      "path": "lean/CircuitInvariant.lean",
+      "status": "compiled",
+      "sha256": "24925fa1a24958b30fe07168a2ad149c9cbb4e072d593bb90c57a469f697c578",
+      "log": "validation/CircuitInvariant.log"
+    },
+    {
+      "path": "lean/ResidualSumChecks.lean",
+      "status": "compiled",
+      "sha256": "4efd86d8e3b2bd94813d46d654d8719baa11717d2627da57f1e5c5e63981e5bd",
+      "log": "validation/ResidualSumChecks.log"
+    },
+    {
+      "path": "proposals/ConditionalPadding.lean",
+      "status": "source_only",
+      "sha256": "882960542d7b70face8e0885692da786370bb23377e1fce4ba3f790b79b735ca",
+      "log": null
+    },
+    {
+      "path": "proposals/ModulusReuse.lean",
+      "status": "source_only",
+      "sha256": "e818162b94aa6b84e5898b80e12e8d4f5ae9854733a3ffb327199e6d6a70c65e",
+      "log": null
+    },
+    {
+      "path": "proposals/CircuitRefactoring.lean",
+      "status": "source_only",
+      "sha256": "ed4071f512c62088eb77b72fc8d891c47a86cc1e27fcbe454d1a5991638a81ef",
+      "log": null
+    },
+    {
+      "path": "proposals/NodeRelCommutative.lean",
+      "status": "source_only",
+      "sha256": "72726e02968ca96715c001d45957ecea3cde75099dd51e07cc9c0b24b88d0887",
+      "log": null
+    }
+  ],
+  "patches": [
+    {
+      "path": "patches/pr-congruence.patch",
+      "status": "three complete modified files compiled",
+      "net_physical_lines_saved": 34
+    },
+    {
+      "path": "patches/assignment-map.patch",
+      "status": "complete modified file compiled",
+      "net_physical_lines_saved": 25
+    },
+    {
+      "path": "patches/list-library.patch",
+      "status": "exact generic helper signatures compiled; client integration pending",
+      "net_physical_lines_saved": 40
+    },
+    {
+      "path": "patches/residual-sum.patch",
+      "status": "same-statement demonstration compiled; full patched module not rebuilt",
+      "net_physical_lines_saved": 17
+    },
+    {
+      "path": "patches/conditional-padding.patch",
+      "status": "applies cleanly; Lean integration not performed",
+      "net_physical_lines_saved": 10
+    },
+    {
+      "path": "patches/modulus-reuse.patch",
+      "status": "applies cleanly; Lean integration not performed",
+      "net_physical_lines_saved": 6
+    },
+    {
+      "path": "patches/generated-steps.patch",
+      "status": "static signatures, topology and exponent labels checked; Lean integration not performed",
+      "net_physical_lines_saved": 1650
+    }
+  ],
+  "complete_modified_modules": [
+    "ScalarPRCode",
+    "PRCode",
+    "ScalarPROptimizer",
+    "Representation"
+  ],
+  "scope": "No full subtree or combined downstream integration build; no timing improvement claimed.",
+  "axiom_note": "All checked examples use only standard Lean axioms or none. Scalar and vector simp recursor replacements increase their original standard-axiom footprints; see checker-status.json. RecursorCore.rec_congr is axiom-free; caller adaptation not tested.",
+  "initial_attempts": "An early ResidualSumChecks attempt failed for a missing finite-sum import. Adding Mathlib.Algebra.BigOperators.Fin and Fin.forall_fin_succ produced the delivered passing example. Interrupted optional dependency builds are not successes."
+}

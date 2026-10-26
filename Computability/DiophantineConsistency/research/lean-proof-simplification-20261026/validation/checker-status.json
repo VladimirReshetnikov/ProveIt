@@ -1,0 +1,116 @@
+{
+  "source_commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "lean_version": "4.32.0",
+  "completed_checks": [
+    {
+      "artifact": "ScannerCore.lean",
+      "status": "compiled",
+      "axioms": "none (all three lemmas)"
+    },
+    {
+      "artifact": "ListChecks.lean",
+      "status": "compiled",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "artifact": "BooleanCore.lean",
+      "status": "compiled",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "artifact": "AssignmentChecks.lean",
+      "status": "compiled",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "artifact": "PRProofChecks.lean",
+      "status": "compiled final version, including original/new axiom reports",
+      "data_preservation": "scalarPrec_val and vectorPrec_val proved by rfl",
+      "exit_code": 0
+    },
+    {
+      "artifact": "patched/ScalarPRCode.lean",
+      "status": "compiled complete source file",
+      "exit_code": 0
+    },
+    {
+      "artifact": "patched/PRCode.lean",
+      "status": "compiled complete source file",
+      "exit_code": 0
+    },
+    {
+      "artifact": "patched/ScalarPROptimizer.lean",
+      "status": "compiled complete source file",
+      "exit_code": 0
+    },
+    {
+      "artifact": "RecursorCore.lean",
+      "status": "compiled",
+      "exit_code": 0,
+      "axioms": []
+    },
+    {
+      "artifact": "patched/Representation.lean",
+      "status": "compiled complete source file",
+      "exit_code": 0
+    }
+  ],
+  "patches": [
+    {
+      "artifact": "pr-congruence.patch",
+      "net_line_saving": 34,
+      "status": "complete modified source files checked against baseline imports"
+    },
+    {
+      "artifact": "list-library.patch",
+      "net_line_saving": 40,
+      "status": "generic exact helper signatures checked; no integration build"
+    },
+    {
+      "artifact": "assignment-map.patch",
+      "net_line_saving": 25,
+      "status": "complete modified source file and common lemma compiled"
+    }
+  ],
+  "patch_application": "git apply --check passed for all three patches jointly",
+  "scope_limit": "No whole-repository build or downstream integration build of combined patches.",
+  "axiom_comparison": {
+    "ScalarPRCode.Realizes.prec": {
+      "old": [],
+      "simp_new": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    "PRCode.Realizes.prec": {
+      "old": [
+        "propext"
+      ],
+      "simp_new": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    "ScalarPRCode.eval_optimize": {
+      "old": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "simp_new": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  },
+  "alternative": "RecursorCore.rec_congr is axiom-free; no complete caller-replacement patch using it was tested.",
+  "runtime_note": "Two long-running wrapper-based follow-up audits were terminated before retrying successfully with direct pinned lean -j1 and explicit LEAN_PATH. No proof failure was diagnosed in those canceled attempts."
+}

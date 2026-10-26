@@ -12,6 +12,12 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## DiophantineConsistency proof-simplification packets
+
+`diophantine-lean-proof-simplification-2026-10-26.zip` (arrival `151a732b91`) is placed under
+[research/lean-proof-simplification-20261026/](../../Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/PLACEMENT.md)
+and retired here. Adopted ideas are tracked in that directory's `ADOPTION.md`.
+
 ## Current Lean proof checkpoint
 
 The [fifteenth simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase15/README.md)
