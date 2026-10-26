@@ -1,0 +1,116 @@
+CLOSING REFRESH NOTICE (f00ba53b331833c6cb64707bd90e48489e5610f5):
+The following is a historical baseline review. FINAL_REFRESH_NOVELTY_AUDIT.txt
+and refresh_candidate_decisions.json control the final novelty decisions.
+In particular, the optional PrimeSupport idea is WITHDRAWN as a duplicate of
+2026-10-26zd. Earlier correctness checks remain historical evidence, not a
+recommendation or novelty claim. Final exclusion scope is 36 placed reports.
+
+FINAL SOURCE AND REPORT REVIEW ADDENDUM
+======================================
+
+Reviewed after the first mathematical review:
+- root_research/AffineSubsetCoverage.lean;
+- order_research/PrimePowerAnnihilator.lean;
+- order_research/PrimePowerOrderRefactored.lean;
+- the final 116-line structural_research/RestrictedSubsetSums.lean;
+- the report.tex draft in output/lean-controller-simplifications-2026-10-26.
+Exact hashes and review time are in final_review_manifest.json.
+
+Mathematical conclusion
+----------------------
+No mathematical error was found in these proof statements or constructions.
+The final restricted-subset source replaces nonlinear automation by direct
+arithmetic and retains exactly the reviewed argument. Its successful receipt
+and standard-only printed axiom sets were inspected. No new build was run
+by this independent reviewer.
+
+Affine coordinate endpoint
+--------------------------
+The adapter correctly uses the old representative a0<C0. When a0=0 it
+chooses a=C0 and quotient coordinate u-1. Since the existing additive map L
+satisfies L(1)=C0, C0+L(u-1)=L(u), so the represented target is unchanged.
+The positive-coordinate lemma includes T=1 and C0=1 where appropriate.
+The coverage theorem adds C0<T, ensuring every selected a is a positive
+proper cardinality. Image cardinality and weight sums are transported
+correctly, and the upper bound is explicitly <=C0 rather than <C0.
+
+One wording refinement: the source comment says injectivity remains an
+"essential input". It is retained in the interface, but under positive C0,T
+the exact affine formula itself forces index injectivity. Thus "retained
+input" is more precise than claiming that hypothesis is logically independent.
+The theorem as stated is valid either way.
+
+Uniform annihilator and refactored order module
+-----------------------------------------------
+The extended-multiplicity proof includes m=0 correctly: both relevant
+divisibilities hold and the multiplicity is infinity. Cancellation adds the
+finite value 1, so it remains valid at infinity. The k=0 case is also uniform.
+Natural subtraction is guarded by g>1, derived from not p^2|(g-1).
+
+The two divisibilities used for order equality are sufficient without a
+separate positive-order or finite-order lemma. The exhibited positive period
+supplies order|p^k; pow_orderOf_eq_one and the same equivalence supply the
+reverse divisibility. Antisymmetry gives equality.
+
+PrimePowerOrderRefactored retains all original public names and statements:
+one_lt_of_not_square, not_dvd_of_dvd_sub_one, pow_cast_eq_one_iff, exact_lift,
+order_succ and order_prime_power. It adds pow_divisibility. The comparison
+is 80 to 79 physical lines, including the helper. The report correctly describes
+the contribution as essentially unchanged source size with a stronger
+intermediate interface, rather than a new stronger final endpoint.
+
+Report claim consistency
+------------------------
+The draft correctly separates current source from proposed changes and does
+not re-propose the already implemented CRT order_product theorem. It correctly
+states the novel subset theorem's range 0<a<T, the changed affine cardinality
+bound, actual C0=d*auxiliary, independent Gamma exponents, the one-way n=0
+coprimality transfer and the absence of a physical-safety conclusion.
+
+The actual parameter threshold is correct: with p=120199>d=94517,
+C0=d*p and T=p^k, C0<T holds for k>=2. It does not hold at k=0 or k=1.
+When composing with the separate Gamma modulus d*p^n, use n=k+1, so the
+coverage threshold corresponds to n>=3. The Gamma unit theorem itself
+continues to include n=0; these are different endpoints, not a contradiction.
+
+The report's unit calculation correctly matches the actual prefactor
+radix^977=2^45919, and the numerical modulus is 11360848883. Its conditional
+standalone K-residue adapter is clearly separated from a rebuilt production
+instantiation. The natural-subtraction discussion is correctly about the
+cast identity and does not overclaim necessity of B>=1 for every possible
+alternative proof of the whole expression.
+
+Final validation status
+-----------------------
+The final receipts were inspected after the author resolved the earlier
+in-progress status inconsistencies:
+- AffineSubsetCoverage.compile.json: exit code 0; final source SHA-256
+  61b8a8f5706affb2aa62c74448682326a813ce6bbb98bc871f8c31e2972375d6;
+  both printed theorem axiom sets contain only standard axioms.
+- PrimeSupport.compile.json: exit code 0; three standard-only axiom reports.
+  The final proof uses primeFactorsList_unique to avoid trying to reduce
+  opaque primeFactorsList. The helper plus two selected proof bodies are
+  18 lines, equal to the maintained bodies, so no net deletion is claimed.
+- PrimePowerAnnihilator.compile.json: exit code 0; standard-only reports.
+- PrimePowerOrderRefactored.compile.json: exit code 0.
+- PrimePowerOrderChecks.compile.json: the maintained focused checks pass
+  against the refactored module with exit code 0.
+- RestrictedSubsetSums.log: exit code 0 for the final 116-line source;
+  standard-only reports for both main subset theorems.
+
+These checks establish the recorded Lean proof scopes, not a full production
+integration or project-wide build. No additional compilation was performed
+by this reviewer. The earlier failed PrimeSupport attempts are superseded
+by the final receipt and must not be mistaken for its final validation.
+The source comment now correctly calls injection an explicit input rather
+than an independently essential premise. The report now explicitly states
+n=k+1 and the corresponding n>=3 coverage threshold.
+
+Novelty addendum
+---------------
+The all-exponent annihilator law has no corresponding mechanism in the
+audited 23+5 proof-simplification corpus. It is equivalent to the existing
+exact-order endpoint, however, so its defensible novelty is the direction
+of proof: derive all exponents directly from LTE and recover order uniformly.
+The report makes that distinction explicitly. The fixed-cardinality subset
+theorem and arithmetic Boolean elimination remain the primary new direction.

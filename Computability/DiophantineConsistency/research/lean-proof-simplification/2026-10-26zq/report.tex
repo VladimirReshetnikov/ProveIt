@@ -1,0 +1,758 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,hyperref,xurl,fancyhdr,listings}
+\definecolor{navy}{HTML}{16324F}
+\definecolor{teal}{HTML}{087E8B}
+\definecolor{light}{HTML}{F3F6F8}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=teal,citecolor=navy,pdftitle={Further Lean proof simplification: controller arithmetic and subset coverage},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\emergencystretch}{2em}
+\setlist{topsep=3pt,itemsep=3pt,leftmargin=*}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily ProveIt / Further proof simplification}
+\fancyhead[R]{\small\sffamily 26 October 2026}
+\fancyfoot[C]{\small\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Zm}[1]{\Z/#1\Z}
+\newcommand{\card}[1]{\lvert #1\rvert}
+\newcommand{\repobase}{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e}
+\newcommand{\refreshbase}{https://github.com/VladimirReshetnikov/ProveIt/blob/f00ba53b331833c6cb64707bd90e48489e5610f5}
+\newcommand{\freshleanfile}[1]{\href{\refreshbase/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean}{\nolinkurl{#1.lean}}}
+\newcommand{\leanfile}[1]{\href{\repobase/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean}{\nolinkurl{#1.lean}}}
+\newcommand{\ident}[1]{\nolinkurl{#1}}
+\newcommand{\artifact}[1]{\nolinkurl{#1}}
+\lstset{basicstyle=\small\ttfamily,backgroundcolor=\color{light},frame=single,rulecolor=\color{light},breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,xleftmargin=5pt,xrightmargin=5pt,aboveskip=8pt,belowskip=8pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.65in}
+{\Large\sffamily\color{teal} PROVEIT RESEARCH NOTE\par}
+\vspace{0.25in}
+{\Huge\bfseries\color{navy} Further Lean proof\\[6pt] simplification\par}
+\vspace{0.2in}
+{\Large Controller arithmetic and subset coverage\par}
+\vspace{0.35in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 26 October 2026\par}
+\vspace{0.35in}
+\begin{minipage}{0.94\textwidth}
+\textbf{Main finding.} Allowing one gap in a finite interval gives every
+fixed-cardinality subset sum in a cyclic group, for every cardinality
+$0<a<T$. Coprimality is unnecessary. Applied to the existing affine power
+coordinates, this removes the optional Boolean correction from the arithmetic
+coverage theorem, provided its cardinality bound permits $a=C_0$.
+
+\textbf{Other findings.} The fixed CRT components need periods, while the
+auxiliary prime-power component needs exact order. A single fixed residue
+modulo $94517\cdot120199$ proves the entire two-parameter family of controller
+coefficients is coprime to the required moduli. An all-exponent divisibility
+law reorganizes the prime-power order proof without a zero/successor split.
+
+\textbf{Review baseline.}
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/9f35798db4a63c25e435fca14d75931144657d7e}{\texttt{9f35798db4a63c25e435fca14d75931144657d7e}}.
+The initial audit covered 23 placed packets and five incoming archives.
+A final refresh through commit \texttt{f00ba53b331833c6cb64707bd90e48489e5610f5}
+reviewed the expanded 36-packet corpus and new controller clients. Earlier
+proposals are treated as available even when marked pending or deferred.
+\end{minipage}
+\vfill
+{\small This report proposes proof changes and supplies reproducible Lean
+experiments. It does not assert new mathematical priority, a completed
+Diophantine consistency equivalence, or a measured whole-project speedup.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\pagenumbering{arabic}
+
+\section{Result, scope, and priorities}
+
+The most valuable simplification is to strengthen the finite subset theorem
+that the controller consumes. The existing proof realizes a sum by translating
+a consecutive interval. Translation changes its sum by $a$ times the shift,
+so that particular construction needs $a$ invertible modulo $T$. Changing the
+shape of the subset by just one gap removes that restriction. Consequently,
+the arithmetic coverage proof no longer needs a preliminary Boolean choice
+whose purpose is to make the cardinality coprime to an auxiliary prime power.
+
+This is a concrete improvement over the stipulated prior-work baseline.
+It does not rename an old scanner, coefficient, witness-transport, or
+finite-table abstraction. The new proof applies to cardinalities that the
+old construction cannot handle. Sections~\ref{sec:subset} and~\ref{sec:affine}
+give the explicit witness and its exact interface consequence.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.14\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.43\textwidth}@{}}
+\toprule
+Priority & Proposal & What disappears from the relevant proof path \\
+\midrule
+\endhead
+P1 & Arbitrary proper cardinalities in cyclic subset sums & Cardinality coprimality and, with the endpoint change, the optional Boolean correction. \\
+P2 & Periods for fixed CRT components & Proofs of minimal multiplicative order where consumers only need an annihilating exponent. \\
+P3 & One residue for the complete controller coefficient & Separate dimension, quadratic-factor, coupling-factor, and coprimality arguments at each of three primes. \\
+P4 & Uniform annihilator law for the principal-unit tower & The $k=0$ versus successor split in the exact-order proof. \\
+Companion & Nonzero first lift as the public seed & Repeated natural-subtraction and divisibility bridges at the current-generator boundary. \\
+Optional & Translating a specified seed & Interval-specific triangular arithmetic when a shape constraint makes translation useful. \\
+\bottomrule
+\end{longtable}
+
+P1--P4 are the primary directions. The companions target overlapping code
+and are not counted as additional independent source savings. In particular, the arbitrary-seed translation and unrestricted-cardinality
+constructions target the same interval machinery. Their deletion opportunities
+are not additive. A prime-support diagnostic suggestion was withdrawn after
+the final refresh found it in an earlier submitted packet.
+
+The proof checks are pinned to the original revision; the final novelty and
+client review uses the refreshed revision. The Lean project pins
+Lean~4.32.0 and mathlib commit
+\nolinkurl{81a5d257c8e410db227a6665ed08f64fea08e997} in
+\href{\repobase/lean-toolchain}{\nolinkurl{lean-toolchain}} and
+\href{\repobase/lake-manifest.json}{\nolinkurl{lake-manifest.json}}.
+Validation receipts, source hashes, and the precise replay scope are supplied
+with the archive; Section~\ref{sec:validation} explains their interpretation.
+
+\section{Excluding the previous proposals}
+
+\subsection{Final refresh and a withdrawn candidate}
+
+The final freshness check found 25 additional commits, through
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/f00ba53b331833c6cb64707bd90e48489e5610f5}{\texttt{f00ba53b3318}}.
+The placed corpus now contains 36 packets. Five of the 13 new placements
+are the already-audited incoming archives; the other eight are new reports,
+\texttt{zc} through \texttt{zj}. The final exclusion review covers this
+delta as well. The exact original inventory below is retained as provenance,
+and the additional hashes and comparisons are supplied in the refresh audit.
+That delta contains 34 primary TeX components and 219 searched textual
+members. The five incoming relocations were checked byte-for-byte for their
+retained members; earlier omitted material remains part of the assumed
+baseline. See \artifact{evidence/FINAL_REFRESH_NOVELTY_AUDIT.txt} and
+\artifact{evidence/refresh_delta_inventory.json} for the final decisions.
+
+The refresh identified a real overlap: \href{\refreshbase/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zd/report.tex}{packet \texttt{zd}} already proposes
+finite prime-support certificates for multiplicative-order diagnostics.
+That candidate was therefore removed from this report's recommendations and
+from the delivered Lean experiments, despite its successful local check.
+All 15 source/configuration inputs used by
+the focused replay are unchanged between the two pins. The proof receipts
+remain anchored to the original pin; the novelty and client-impact review
+uses the refreshed corpus.
+
+The newer \texttt{zh} controller proposal still keeps the Boolean adjustment
+and coprime-cardinality path, and its Hs simplification works on the separate
+prime residues. These are assumed available here. They do not supply P1's
+noncoprime subset theorem or P3's whole-coefficient residue transport.
+
+\subsection{What was audited}
+
+At the initial pin, the supplied exclusion locations contain 23 placed packets, named
+\texttt{2026-10-26a} through \texttt{2026-10-26w}, and five additional
+proof-simplification ZIPs in \texttt{docs/incoming}. The inventory records
+74 primary TeX files or components, their paths, SHA-256 hashes, sizes, and
+section headings. Targeted searches cover 1,295 textual members, including
+supporting notes and archived source snapshots. That number describes the
+search scope; it is not a claim that every word of every duplicated snapshot
+was read. Report-section review and mechanism-level comparisons supplement
+the searches.
+
+The five incoming files are:
+\begin{itemize}
+\item \artifact{Lean_Proof_Simplification_Post_Adoption_2026-10-26.zip};
+\item \artifact{ProveIt_Additional_Lean_Simplifications_2026-10-26.zip};
+\item \artifact{diophantine-lean-further-deltas-2026-10-26.zip};
+\item \artifact{diophantine-lean-proof-refinements-2026-10-26.zip};
+\item \artifact{proveit-lean-structural-simplifications-2026-10-26.zip}.
+\end{itemize}
+
+The machine-readable evidence is in \artifact{evidence/exclusion_inventory.json},
+\artifact{evidence/exclusion_taxonomy.json}, and
+\artifact{evidence/prior_report_headings.tsv}. The large incoming README also
+links unrelated historical research; the audit does not claim to reread every
+transitively linked manuscript. The novelty claim is relative to the directly
+audited simplification corpus, not to all mathematical literature.
+
+\subsection{How ``assume already applied'' was interpreted}
+
+Every earlier proposed proof interface is treated as available, including
+optional, deferred, uncompiled, or unselected ideas. This is a conceptual
+union of prior methods. It is not a claim that all competing historical
+patches can be combined into one compiling implementation. Accordingly,
+this report does not subtract lines from the current tree and label the result
+an exact saving against an imaginary fully merged tree.
+
+Excluded families include list and decoder APIs; scanner and history fusion;
+primitive-recursive congruence; assignment naturality; common DAG, gate,
+residual-square, and degree machinery; coefficient fibers and reflection;
+carry and cyclic-word interfaces; Pell sign, minimum, and perturbation
+arguments; internal-model arithmetic specifications; finite inverse
+invariance; Wang-tile fibers, helical periods, shared edges, pulse rows,
+receiver causality, and operating-row recognition. Earlier generic advice to
+use finite checks, weaken an unused premise, or introduce an equivalence is
+also not presented as a discovery here.
+
+The retained proposals have more specific mechanisms: noncoprime
+fixed-cardinality cyclic subset sums; the exact separation between the fixed
+and auxiliary order obligations; erasure of both controller exponents in one
+residue ring; and a uniform all-exponent divisibility interface for LTE.
+The accompanying audit gives the nearest old ideas and the distinction for
+each proposal.
+
+\section{P1: all proper cardinalities realize every cyclic sum}
+\label{sec:subset}
+
+\subsection{The limitation of translated intervals}
+
+\leanfile{ControllerIntervalSums} constructs a subset by translating
+$\{0,1,\ldots,a-1\}$. Its sum is
+\[
+ a\,s+\sigma_a,\qquad \sigma_a=\sum_{i=0}^{a-1}i=\frac{a(a-1)}2.
+\]
+Solving for the shift $s\in\Zm T$ requires multiplication by $a$ to be
+surjective. The existing theorem therefore uses $\gcd(a,T)=1$ and an
+explicit unit inverse. The division by two is correctly performed in the
+naturals, not in the residue ring; that existing safeguard is not itself
+a new proposal.
+
+The unit condition is a restriction on this family of translated subsets,
+not on the existence of a subset with the requested cardinality and sum.
+
+\begin{theorem}[Fixed-cardinality cyclic subset sums]
+For integers $T,a$ with $0<a<T$ and any $u\in\Zm T$, there is a subset
+$S\subseteq\Zm T$ such that
+\[
+ \card S=a,\qquad \sum_{x\in S}x=u.
+\]
+No coprimality, primality, or prime-power hypothesis is required.
+\end{theorem}
+
+\subsection{An explicit witness with one gap}
+
+First prove a natural-number statement. For every
+$0\le\delta\le a(T-a)$, the integer $\sigma_a+\delta$ is the sum of an
+$a$-element subset of $\{0,\ldots,T-1\}$. Write
+\[
+ \delta=aq+r,\qquad 0\le r<a,
+\]
+and take
+\begin{equation}
+ x_i=i+q+\mathbf 1_{\{i\ge a-r\}},\qquad 0\le i<a.
+ \label{eq:staircase}
+\end{equation}
+The sequence is strictly increasing: consecutive entries differ by one,
+except that a single jump may have size two. Its sum is
+\[
+ \sum_{i<a}x_i=\sigma_a+aq+r=\sigma_a+\delta.
+\]
+The bound on $\delta$ implies $q\le T-a$. If $q=T-a$, then $r=0$;
+otherwise $q\le T-a-1$. In the first case the largest entry is $T-1$;
+in the second it is at most $(a-1)+(T-a-1)+1=T-1$. Thus all entries are
+valid distinct representatives below $T$.
+
+For the modular theorem, take $\delta$ to be the canonical representative of
+$u-\sigma_a$ modulo $T$. It is at most $T-1$, and
+\begin{equation}
+ a(T-a)-(T-1)=(a-1)(T-a-1)\ge0.
+ \label{eq:window}
+\end{equation}
+The natural theorem therefore applies. Casting the chosen representatives
+to $\Zm T$ preserves distinctness and gives the desired sum.
+
+This proof is elementary and constructive. It uses a quotient and remainder,
+a finite image, an injectivity proof, and a suffix-cardinality sum. It needs
+no additive-combinatorics theorem and does not infer a field structure on
+\texttt{ZMod T}.
+
+\subsection{A small example that distinguishes the methods}
+
+For $T=4$ and $a=2$, translated consecutive pairs have sums $2s+1$ and
+therefore reach only odd residues. Formula~\eqref{eq:staircase} reaches all
+four residues:
+
+\begin{center}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+Target $u$ & Selected representatives & Sum modulo $4$ \\
+\midrule
+$0$ & $\{1,3\}$ & $0$ \\
+$1$ & $\{0,1\}$ & $1$ \\
+$2$ & $\{0,2\}$ & $2$ \\
+$3$ & $\{1,2\}$ & $3$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This is the relevant gain: an even cardinality modulo four becomes usable.
+The method does not just shorten an inverse calculation that remains
+necessary elsewhere in the same argument.
+
+\subsection{Lean decomposition and exact targets}
+
+\artifact{lean/RestrictedSubsetSums.lean} separates the proof into
+\ident{staircase_strictMono}, \ident{staircase_sum},
+\ident{staircase_lt}, \ident{exists_nat_subset_sum},
+\ident{window_covers_modulus}, and \ident{exists_subset_card_sum}.
+The natural theorem permits $a=T$ with offset zero. The modular theorem
+correctly requires $a<T$: a subset of size $T$ is the whole group and has
+only one possible sum.
+
+The first replacement target is the solver behind
+\ident{ControllerIntervalSums.targetInterval}. In
+\leanfile{ControllerOrbitTransport}, the affine-sum transport remains useful;
+its subset input changes from the inverse-selected interval to the new
+staircase subset. The source search finds that the direct non-check client of
+\ident{targetInterval} is this orbit-transport module. Historical explicit
+interval APIs can be retained as compatibility results if they are still
+wanted, but retaining every one reduces the achievable source deletion.
+
+\section{The affine consequence: remove the Boolean arithmetic correction}
+\label{sec:affine}
+
+\subsection{The new endpoint}
+
+\leanfile{ControllerResidueLift} currently proves
+\ident{exists_subset_boolean_sum}. Its hypotheses include a prime $p$,
+$p\mid C_0$, $T=p^n$, an auxiliary weight with nonzero projection modulo
+$p$, and an injective coordinate map. Its conclusion uses a Boolean
+coefficient $e\le1$ to arrange a cardinality $0<a<C_0$ coprime to $T$.
+
+With the previous section's theorem, the arithmetic endpoint can instead be:
+
+\begin{theorem}[Boolean-free affine coverage]
+Suppose $0<C_0<T$, $\iota:\Zm T\to A$ is injective, and weights satisfy
+\[
+ w(\iota(z))=1+C_0z\quad\text{in }\Zm{(C_0T)}.
+\]
+Then every $t\in\Zm{(C_0T)}$ is the weight sum of an actual finite subset
+$S\subseteq A$ with
+\[
+ 1\le\card S\le C_0.
+\]
+The expression $C_0z$ denotes the well-defined additive map from $\Zm T$
+to $\Zm{(C_0T)}$; it does not require choosing a ring homomorphism between
+these residue rings in the wrong direction.
+\end{theorem}
+
+\begin{proof}
+Let $a$ be the least positive representative of the projection of $t$ to
+$\Zm{C_0}$. Thus $1\le a\le C_0$ and $t-a$ has zero projection. There
+is a coordinate $u\in\Zm T$ with $t=a+C_0u$. Since $a\le C_0<T$,
+the cyclic subset theorem supplies a subset $U\subseteq\Zm T$ of size
+$a$ and sum $u$. Set $S=\iota(U)$. Injectivity preserves cardinality, and
+additivity gives
+\[
+ \sum_{x\in S}w(x)=\sum_{z\in U}(1+C_0z)
+ =a+C_0\sum_{z\in U}z=a+C_0u=t.
+\]
+\end{proof}
+
+\subsection{Why the non-strict endpoint is necessary}
+
+The existing output bound $a<C_0$ cannot be preserved while removing the
+correction term for all targets. Every weight projects to $1$ modulo $C_0$,
+so a subset sum projects to its cardinality. A target with zero projection
+requires $a\equiv0\pmod{C_0}$. Its least positive permitted cardinality is
+therefore $C_0$ itself.
+
+The checked adapter in \artifact{lean/AffineSubsetCoverage.lean} reuses the
+existing \ident{exists_coordinate} and \ident{scaledCoordinate}. The old
+coordinate lift uses a representative $a_0<C_0$. When $a_0=0$, the adapter
+sets $a=C_0$ and replaces the coordinate $u$ by $u-1$; additivity shows
+$C_0+C_0(u-1)=C_0u$. This explicitly handles the endpoint rather than
+asking simplification tactics to hide a change in the theorem statement.
+
+If a downstream capacity theorem truly requires $a<C_0$, keep a Boolean
+choice in that API. The new subset-sum theorem still removes the need to
+make $a$ coprime to $T$, so that weaker migration can eliminate the
+prime-power cardinality-selection argument without changing the output
+bound. The fully Boolean-free endpoint should be adopted only where the
+capacity contract accepts $a\le C_0$.
+
+\subsection{The actual controller parameters and remaining composition}
+
+The existing \leanfile{CurrentPowerCoordinates2011} supplies the relevant
+orbit with
+\[
+ p=120199,\quad d=94517,\quad C_0=dp,\quad T=p^k.
+\]
+The value of $C_0$ is $dp$, not $d$. Since the repository proves $p>d$,
+the inequality $C_0<T$ holds at $k\ge2$. The power-coordinate result also
+has smaller-exponent cases, but that does not make this subset theorem
+applicable when $T\le C_0$.
+The orbit modulus here is $C_0T=dp^{k+1}$. When identifying it with the
+coefficient modulus $dp^n$ in P3, set $n=k+1$; the coverage range is then
+$n\ge3$. P3's separate unit theorem remains valid for every $n$, including
+zero.
+
+For this arithmetic coverage result, the hypotheses $p\mid C_0$, primality,
+the prime-power presentation of $T$, and a separately supplied nonzero
+Boolean weight disappear. They remain where independently needed to prove
+the actual orbit or other controller facts. The new theorem does not show
+that every selected coordinate corresponds to a safe physical dummy
+position, nor that a specific shape constraint is preserved. It also does
+not by itself reduce the variables in the printed Diophantine equation.
+
+The bound $C_0<T$ has content. With $C_0=T=2$, the affine weights are
+$\{1,3\}$ modulo four, whose subset sums miss $2$. Thus simply removing
+that hypothesis would make the proposed statement false.
+
+\subsection{Compatibility with the newer physical-position proofs}
+
+The refreshed source now contains
+\freshleanfile{CurrentControllerSubsets2011}. Its
+\ident{exists_normalized_subset} still calls the Boolean-based residue-lift
+theorem, so it is a direct new client for the proposed endpoint. The
+subsequent normalization by the unit $B^2$ is retained; its separate
+$\varepsilon B^3$ summand disappears when $\varepsilon=0$.
+
+There is a useful compatibility fact in
+\freshleanfile{CurrentControllerPositions2011}:
+\ident{support_safe} and \ident{cyclicSupport_safe} quantify over an
+arbitrary finite subset of orbit indices. They require the geometric
+condition $r_w<k$, but no interval shape, coprimality, or strict cardinality
+cap. Their statements therefore apply to the staircase subset with the
+optional parameter set to zero. This is a source-level compatibility
+deduction from the maintained signatures, not a claim that the complete
+new composition has been rebuilt.
+
+The worst-case physical support size does not increase. The existing
+\ident{support_card} theorem gives $a+\varepsilon$. Under the old bounds,
+$a<C_0$ and $\varepsilon\le1$ imply $a+\varepsilon\le C_0$; under the
+new bounds, $a\le C_0$ and $\varepsilon=0$ give the same cap. Thus allowing
+the arithmetic endpoint $a=C_0$ does not by itself demand more physical
+updates than the old interface already allowed.
+
+The refresh also includes safe single-dummy increments, nonwrapping
+transport, and rank decrements in \freshleanfile{CurrentDummySafety2011}
+and \freshleanfile{CurrentDummyMutation2011}. These are existing ingredients
+to reuse, not missing local bounds to prove again. The unchecked migration
+step for this proposal is the finite-update composition: preserve the
+unused-dummy premise at each selected position, aggregate the increments,
+and bind that sum to the Boolean-free power-subset endpoint. The late-head
+scope addendum records the exact declarations and source identities.
+
+\section{P2: use periods at fixed factors, exact order at the auxiliary factor}
+
+\subsection{The current over-specification}
+
+\leanfile{CurrentControllerData2011} proves the exact orders of $2$ and
+$B=2^{94517}$ modulo $47$ and $2011$. The production consumers of
+\ident{B_order_47} and \ident{B_order_2011} in the reviewed subtree are
+the fixed-prime power reductions in \leanfile{CurrentControllerUnits2011}
+and the projection lemmas in \leanfile{CurrentPowerCoordinates2011}.
+Those consumers only need
+\[
+ B^{23}=1\pmod{47},\qquad B^{402}=1\pmod{2011}.
+\]
+They never use the minimality of $23$ or $402$.
+
+Two short monoid facts supply the appropriate interface:
+\[
+ x^m=1\land m\mid e\ \Longrightarrow\ x^e=1,
+ \qquad
+ x^m=1\ \Longrightarrow\ (x^s)^m=1.
+\]
+The proofs are exponent laws; no group or commutativity assumption is
+needed. The file \artifact{lean/FixedPeriods.lean} proves both and the actual
+fixed-prime certificates. It also contains an alternative direct bounded
+modular certificate for the complete projection modulo $94517\cdot120199$.
+That calculation works in the finite residue ring and does not construct
+the unreduced natural number $2^{11360754366}$.
+
+\subsection{Where exactness must remain}
+
+\leanfile{ControllerPowerCoordinates} proves injectivity of the exponent
+parameter using the exact equation $\operatorname{ord}(g)=T$ and exponent
+representatives below $T$. Here an annihilating exponent is insufficient.
+For example, $1^3=1$ modulo nine, but the order is one and the three powers
+do not define an injection.
+
+The correct division of responsibilities is therefore specific:
+\begin{itemize}
+\item fixed CRT components: prove the generator projects to $1$;
+\item auxiliary prime-power component: prove exact order $p^k$;
+\item CRT composition: reuse the existing least-common-multiple order theorem;
+\item coordinate enumeration: consume the resulting exact full order.
+\end{itemize}
+
+The CRT least-common-multiple theorem is already present as
+\ident{CurrentPowerCoordinates2011.order_product}. Recommending it again
+would not satisfy the user's request. Likewise, the report does not propose
+replacing the auxiliary exact-order premise by a mere period.
+
+There are two distinct implementation goals. Rewriting the consumers removes
+their logical dependence on the fixed-prime minimality proofs. To remove
+the corresponding build dependency as well, move optional exact-order
+diagnostics into a separate module. If they remain in the same imported
+source file, Lean still elaborates them when that file builds. No timing
+claim is inferred from a shorter theorem dependency chain.
+
+\section{P3: one fixed residue proves the whole controller unit family}
+
+\subsection{Erase both exponents in one residue ring}
+
+Set
+\[
+ p=120199,\quad d=94517,\quad M=dp=11360848883,\quad
+ B=2^{94517},\quad r=2^{45919}.
+\]
+The last equality matches the maintained factor
+$\mathrm{radix}^{977}$ because $\mathrm{radix}=2^{47}$ and
+$47\cdot977=45919$. Keep $K$ as the original maintained kernel.
+
+The coefficient in \leanfile{CurrentControllerUnits2011} is
+\[
+ \Gamma(r_w,n)=r\bigl(q^2-1\bigr)
+       \bigl(1+q(K+B^{p^{r_w}})\bigr),\qquad q=B^{p^n}.
+\]
+The width exponent $r_w$ and the cell-count exponent $n$ are independent;
+neither is assumed positive.
+
+In any monoid, a single fixed-point equation $x^p=x$ implies
+\[
+ x^{p^n}=x\quad\text{for every }n\in\N.
+\]
+Induct on $n$ and use $(x^{p^n})^p=x^{p^{n+1}}$. No primality, unit,
+or finite-field hypothesis is needed for this induction. For the actual
+parameters, bounded modular exponentiation verifies
+\[
+ (B:\Zm M)^p=B.
+\]
+Both $B^{p^n}$ and $B^{p^{r_w}}$ therefore reduce to $B$ in the same ring,
+and the whole expression reduces at once:
+\begin{equation}
+ \Gamma(r_w,n)\equiv
+ \Gamma_0:=r(B^2-1)(1+BK+B^2)\pmod M.
+ \label{eq:gamma}
+\end{equation}
+
+The natural subtraction is accounted for before casting to the residue
+ring: $B\ge1$ implies $B^2\ge1$ and $(B^{p^n})^2\ge1$. Rewriting a
+natural subtraction as ring subtraction without those guards would be
+invalid. For example, the natural expression $0^2-1$ is zero, whereas the
+ring expression is $-1$.
+
+\subsection{One coprimality transport lemma}
+
+\begin{lemma}
+If $a\equiv b\pmod{dp}$ and $\gcd(b,dp)=1$, then
+\[
+ \gcd(a,dp^n)=1\quad\text{for every }n\in\N.
+\]
+\end{lemma}
+\begin{proof}
+Congruence preserves the gcd with $dp$, so $a$ is coprime to both $d$ and
+$p$. It is then coprime to $p^n$ and to $dp^n$.
+\end{proof}
+
+This implication does not require $d$ and $p$ to be coprime or $p$ to be
+prime. In the actual application, $M$ is the radical of $dp^n$ for $n>0$.
+At $n=0$ the target modulus has smaller prime support, and the same
+one-way implication still works. An unconditional converse would be false:
+$3$ is coprime to $2\cdot3^0$, but not to $2\cdot3$.
+
+Combining the lemma with~\eqref{eq:gamma} reduces the entire two-parameter
+unit theorem to one finite certificate for $\Gamma_0$.
+
+\subsection{The actual finite certificate}
+
+The current kernel residue facts in \leanfile{CurrentKernelResidues2011}
+are $K\bmod47=26$, $K\bmod2011=1995$, and
+$K\bmod120199=114787$. CRT and finite arithmetic give:
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Quantity modulo $M=11360848883$ & Representative \\
+\midrule
+$K$ & $1491904576$ \\
+$B$ & $10287028452$ \\
+$r$ & $9930929229$ \\
+$\Gamma_0$ & $706142772$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Finally,
+\[
+ \gcd(706142772,11360848883)=1.
+\]
+\artifact{lean/ResidueTower.lean} checks these computations in Lean while
+keeping $K$ symbolic and using exactly the three existing residue facts as
+premises. It does not replace $K$ by the smaller CRT representative as a
+natural number; only its residue is replaced inside modular arithmetic.
+
+The generic theorem \ident{gamma_coprime} and the actual-parameter adapter
+\ident{current_gamma_coprime} include both zero-exponent endpoints. The
+adapter is a checked standalone result conditional on the existing kernel
+facts. A production integration must still apply it to the actual definition
+of $K$, identify the definitions of $r$ and $B$, and rebuild the callers.
+
+\subsection{Expected proof simplification}
+
+The replacement targets four families, each with three prime-specific instances:
+\ident{power_dimension_*}, \ident{quadratic_mod_*},
+\ident{coupling_mod_*}, and \ident{coprime_Gamma_*} lemmas. Their separate
+prime-specific derivations become one fixed-point proof, one whole-expression
+congruence, and one gcd certificate. Existing diagnostic residue statements
+can be recovered as projections if their public names should remain.
+
+This proposal overlaps P2 in the fixed-prime dimension calculations; those
+lines must not be counted twice. The gain established here is the simpler
+dependency structure and the checked replacement core, not an already
+measured global deletion or build-speed improvement. The theorem proves a
+coefficient is a unit. It supplies no physical placement, safe increment,
+or final arbitrary-target rank correction.
+
+\section{P4: make the all-exponent annihilator law the LTE interface}
+
+\subsection{A uniform theorem}
+
+For an odd prime $p$ and a natural $g$ with
+\[
+ p\mid g-1,\qquad p^2\nmid g-1,
+\]
+the maintained \leanfile{PrimePowerOrder} proves exact lifting at exponents
+$p^k$, then derives exact order by splitting $k$ into zero and successor.
+The proposed interface exposes the whole divisibility predicate first:
+\begin{equation}
+ p^{k+1}\mid g^m-1\quad\Longleftrightarrow\quad p^k\mid m,
+ \qquad k,m\in\N.
+ \label{eq:annihilator}
+\end{equation}
+
+For positive $m$, LTE says
+\[
+ v_p(g^m-1)=v_p(g-1)+v_p(m)=1+v_p(m),
+\]
+and comparing valuations gives~\eqref{eq:annihilator}. The formal proof
+uses extended multiplicity so that $m=0$, where both divisibilities hold,
+is included uniformly. The natural-subtraction guard still comes from
+$g>1$, which follows from $p^2\nmid g-1$.
+
+Let $o=\operatorname{ord}(g\bmod p^{k+1})$. Applying the forward direction
+to exponent $o$ gives $p^k\mid o$, and applying the reverse direction to
+exponent $p^k$ gives $o\mid p^k$. Antisymmetry proves
+$o=p^k$. This avoids the specialized prime-power order criterion and the
+$k=0$ case split.
+
+This is not a stronger final mathematical endpoint than the existing
+exact-order theorem: the latter already implies~\eqref{eq:annihilator}
+through the usual order-divides-exponent characterization. The new
+contribution is the organization of the proof from LTE, giving a reusable
+all-exponent interface for essentially the same source size. The supplied
+refactor preserves the original public statements and names; exact
+helper-inclusive size and validation are recorded with the patch.
+
+\subsection{Accept a nonzero first lift directly}
+
+The current auxiliary generator is $g=B^{120199-1}$, and its checked
+remainder is
+\[
+ g\bmod120199^2=7300767062=1+120199\cdot60739.
+\]
+\artifact{lean/LiftSeed.lean} gives a small generic adapter:
+\[
+ 1<p,\quad c>0,\quad g\bmod p^2=1+pc
+ \quad\Longrightarrow\quad
+ g>1,\ p\mid g-1,\ p^2\nmid g-1.
+\]
+The residue lower bound yields $g>1$. Reducing again modulo $p$ gives
+the first divisibility. The second would force the remainder modulo $p^2$
+to be one, contradicting $pc>0$. A separate $c<p$ premise is unnecessary:
+the fact that $1+pc$ is a remainder already supplies that bound.
+
+The target is \leanfile{CurrentAuxiliaryOrder2011}, which currently proves
+the positivity and divisibility bridges separately. This adapter aligns
+the theorem input with the finite certificate already available. The
+generic helper has a real source cost; at its first use alone, a large net
+line reduction is not claimed.
+
+Oddness and primality remain necessary for the order corollary. Taking
+$p=2,g=3$ gives the same nonzero first-lift pattern, but the order modulo
+eight is two instead of four. Taking $p=9,g=28$ likewise shows that an odd
+composite base cannot replace the prime assumption.
+
+\section{A companion interface when a specified subset shape matters}
+
+P1 permits the subset shape to change. If an application instead needs a
+particular seed $S$, translation gives a separate useful interface:
+\[
+ \card(t+S)=\card S,\qquad
+ \sum_{x\in t+S}x=\card S\,t+\sum_{x\in S}x.
+\]
+When multiplication by $\card S$ is surjective, solve for $t$ to prescribe
+the sum. Any translation-invariant property of $S$ is preserved.
+\artifact{lean/SubsetTranslation.lean} proves this for arbitrary additive
+commutative groups, then specializes to $\Zm T$ using coprimality.
+
+This companion avoids the triangular formula and allows a noninterval
+seed, but it does not remove coprimality for translates of that one seed.
+The $T=4$, $S=\{0,1\}$ example explains exactly why. A physical-safety
+property is not automatically translation-invariant; that premise must be
+proved for the intended placement model. This companion and P1 target
+overlapping interval machinery, so their savings should be counted once.
+
+\section{Validation and reproducibility}
+\label{sec:validation}
+
+\input{validation.tex}
+
+\section{Suggested implementation sequence}
+
+\begin{enumerate}
+\item Adopt the general cyclic subset-sum theorem and test its noncoprime
+clients. Keep the old interval constructors temporarily if callers need
+their explicit values.
+\item Add the Boolean-free affine endpoint beside the old one. Make the
+$a\le C_0$ capacity obligation visible at the exact physical composition
+site. Only then retire the old arithmetic Boolean detour where appropriate.
+\item Replace fixed-prime exact-order dependencies by period or projection
+certificates. Split optional diagnostics into a separate module only if
+reducing build dependencies is part of the goal.
+\item Introduce the whole-coefficient residue theorem and instantiate it
+with the three existing literal-kernel residue facts. Preserve $r_w$ and
+$n$ as independent parameters and retain their zero cases.
+\item Apply the small uniform-annihilator patch and its focused checks.
+Choose the first-lift seed adapter when it simplifies the current-generator
+interface enough to justify the helper's maintenance cost.
+\end{enumerate}
+
+For each adoption, measure source size after including helpers and retained
+compatibility declarations. Separately record build time, memory, and axiom
+dependencies. A smaller source file is not evidence of faster elaboration;
+an improved theorem interface can be worthwhile even when its first
+implementation has approximately the same line count.
+
+\section{Source and artifact guide}
+
+The claims about current code are grounded in the pinned source links
+throughout the report. The exclusion locations are
+\href{\repobase/Computability/DiophantineConsistency/research/lean-proof-simplification/README.md}{the placed-packet index},
+\href{\repobase/Computability/DiophantineConsistency/research/lean-proof-simplification/ADOPTION.md}{the adoption record}, and
+\href{\repobase/docs/incoming/README.md}{the incoming index}.
+Standard library support is from the pinned
+\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/GroupTheory/OrderOfElement.lean}{multiplicative-order development},
+\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/NumberTheory/Multiplicity.lean}{LTE and multiplicity development}, and
+\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Data/Nat/PrimeFin.lean}{finite prime-factor interface}.
+
+The archive contains the complete LaTeX source and PDF, Lean experiments,
+the focused patch, proof-check receipts, a replay script, source and exclusion
+inventories, and independent mathematical-review notes. It is a reviewable
+research deliverable; none of these proposals was pushed to the repository.
+
+\end{document}

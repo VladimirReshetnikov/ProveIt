@@ -1,0 +1,54 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentReflectedGeometry2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentReflectedGeometry2011.lean
+@@ -85,34 +85,35 @@
+     simp only [Nat.cast_add, ZMod.natCast_zmod_val, sub_add_cancel]
+   exact ((ZMod.natCast_eq_natCast_iff _ _ _).mp hh).of_dvd ⟨N, by ring⟩
+ 
+-/-- A negative same-cell offset wraps into unsupported residues1006..2010.
+-Otherwise the source is exactly the nonnegative offset h+p−1005. -/
+-theorem reflected_source (c : ZMod (N * 2011) → ℕ)
+-    (hsupport : ∀ k, k.val % 2011 ∉ lowSupport → c k = 0)
+-    (b : ZMod (N * 2011)) (hb : b.val % 2011 = 0)
+-    {h p : ℕ} (hh : h ≤ 1004) (hp : p ≤ 985) :
++/-- Every natural output offset is allowed. A negative source wraps into
++unsupported residues1006..2010; otherwise the source is h+p−1005. -/
++theorem reflected_source_all (c : ZMod (N * 2011) → ℕ)
++    (hsupport : ∀ k, k.val % 2011 ∉ lowSupport → c k = 0)
++    (b : ZMod (N * 2011)) (hb : b.val % 2011 = 0)
++    {h p : ℕ} (hp : p ≤ 1005) :
+     c (b + (h : ZMod (N * 2011)) - ((1005 - p : ℕ) : ZMod (N * 2011))) =
+       if 1005 ≤ h + p then c (b + ((h + p - 1005 : ℕ) : ZMod (N * 2011))) else 0 := by
+   by_cases hv : 1005 ≤ h + p
+   · rw [if_pos hv]
+     congr 1
+-    rw [Nat.cast_sub (by omega : p ≤ 1005), Nat.cast_sub hv, Nat.cast_add]
++    rw [Nat.cast_sub hp, Nat.cast_sub hv, Nat.cast_add]
+     ring
+   · rw [if_neg hv]
+     apply hsupport
+     intro hs
+     have hl := support_le hs
+     have hr := sub_residue (b + (h : ZMod (N * 2011))) (1005 - p)
+-    simp only [add_residue, Nat.add_mod, hb, zero_add, Nat.mod_mod,
+-      Nat.mod_eq_of_lt (by omega : h < 2011)] at hr
+-    have hx := Nat.mod_lt
+-      (b + (h : ZMod (N * 2011)) - ((1005 - p : ℕ) : ZMod (N * 2011))).val
+-      (by decide : 0 < 2011)
+-    have hr' :
+-        (((b + (h : ZMod (N * 2011)) - ((1005 - p : ℕ) : ZMod (N * 2011))).val % 2011)
+-          + (1005 - p)) % 2011 = h := by
+-      simpa only [Nat.add_mod, Nat.mod_mod] using hr
++    simp only [add_residue, Nat.add_mod, hb, zero_add, Nat.mod_mod] at hr
+     omega
++
++/-- The original low-field API, retained for existing callers. -/
++theorem reflected_source (c : ZMod (N * 2011) → ℕ)
++    (hsupport : ∀ k, k.val % 2011 ∉ lowSupport → c k = 0)
++    (b : ZMod (N * 2011)) (hb : b.val % 2011 = 0)
++    {h p : ℕ} (hh : h ≤ 1004) (hp : p ≤ 985) :
++    c (b + (h : ZMod (N * 2011)) - ((1005 - p : ℕ) : ZMod (N * 2011))) =
++      if 1005 ≤ h + p then c (b + ((h + p - 1005 : ℕ) : ZMod (N * 2011))) else 0 :=
++  reflected_source_all c hsupport b hb (hp.trans (by decide))
+ 
+ def source (h : ℕ) (e : Entry) : ℕ := h + position e - 1005
+ 
