@@ -724,6 +724,19 @@ record13 standard-only reports, boundary failures and a fresh two-cell
 construction. A finite-support iteration still needs to accumulate these
 one-dummy changes and compose the modular target into the actual rank.
 
+`NativePackingPopulation` proves the exact converse population calculation
+from both mask equalities, deriving every strict lower-block bound before
+splitting the four blocks. It requires no Pell population lower bound or
+already calibrated rank. `CurrentWordRephase2011` preserves the particular
+source C, carries, digits and F across whole-period stride changes, deriving
+the new transport from actual equal rotations and recomputing positive z.
+See the [root author/independent replay record](reviews/population-rephase-round-root.md),
+[population peer replay](reviews/native-packing-population-lean-peer.md) and
+[rephase author receipt](reviews/current-word-rephase2011-author.md).
+Their12 axiom reports are standard-only. Actual rank population binding,
+rank selection, the required stride congruence and remaining positive Pell
+witnesses still require composition; no complete equation converse is claimed.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
