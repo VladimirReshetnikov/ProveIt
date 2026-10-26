@@ -1,0 +1,119 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,longtable,array,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\setlength{\emergencystretch}{3em}
+\title{Pooled powers and separated radicals for Diophantine consistency}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct explicit polynomial equations whose lack of solutions in their
+specified domains is provably equivalent in ZFC to syntactic consistency
+of ZFC. The principal quartic constructions combine pooled power certificates,
+exact coordinate elimination, and reversible changes of residual basis
+to reduce their numbers of quantified coordinates.
+A separate four-radical construction combines an auxiliary Pell certificate
+with three existing square conditions, using separated powers of three
+to prevent cancellation between equal irrational square classes. This
+provides a twelve-integer alternative with a particularly direct reduction
+proof; it is not a global variable-degree-operation record.
+An inverse Lucas correction is also composed with an unsquared Pell trace
+to shorten a ten-positive-variable evaluator.
+Every result is supplied with literal equations, fixed coefficients,
+ordinary proofs, constructive maps, and reproducible finite checks.
+Inherited logical calibration remains explicit. No consistency decision,
+global optimum, or new end-to-end kernel certificate is claimed.
+\end{abstract}
+\tableofcontents
+\section{The objective and the comparison snapshot}
+For each specified domain $D$ and fixed polynomial $P$ the target is
+\[
+\mathrm{ZFC}\vdash
+\bigl(\neg\exists \boldsymbol{x}\in D^n\;P(\boldsymbol{x})=0\bigr)
+\longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+Our proofs establish solvability equivalent to existence of a finite
+syntactic refutation. Neither consistency nor unsolvability is separately
+asserted. The domains $\Z$, $\N=\{0,1,2,\ldots\}$ and $\Z_{>0}$ are
+part of the theorems and may not be silently interchanged.
+
+The comparison snapshot is
+\texttt{892d73e1ab4bc5fd34ecca1967b06dc47ca95494} of
+\href{https://github.com/VladimirReshetnikov/ProveIt}{ProveIt}.
+It includes the latest pooled-power, quadratic-projection, strict-horizon,
+trace-radical and linear-CRT constructions, as well as our preceding report.
+We compare with actual supplied equations rather than only earlier headline
+records. The accompanying baseline audit records sources and exact metrics.
+
+A bounded late comparison at
+\texttt{fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb} found no newly supplied
+endpoint dominating the new quartic dimensions or ten-positive circuit
+tradeoffs. Its display had moved to the credited zero-weight6007 tuple:
+$15$ positive variables, degree $157$, $66$ integer-leaf operations and
+$141{,}226$ raw coefficient bytes. Our checked one-anchor7309 sidecar
+remains a deliberately frozen earlier specialization, not a claim to the
+latest storage record; no new tuple's calibration is silently substituted.
+
+Operation counts use live binary addition, subtraction and multiplication
+over integer leaves. Squares and fixed scalar multiplications each cost one;
+register reuse is free. Fixed coefficient ports are not variables, but their
+entire coherent integer tuples are part of every equation. Rational-leaf
+counts use a different convention and are not silently compared. Exact total
+degree, collected support, coefficient height and operation count measure
+different costs; a smaller-variable equation need not improve every measure.
+
+\input{results.tex}
+\input{roots_section.tex}
+\input{natural_section.tex}
+\input{integer_section.tex}
+\input{positive_section.tex}
+\section{Verification and inherited calibration}
+The direct quartics are sums of squares of complete lists of quadratic
+integer residuals. Their expanded polynomials are supplied coefficient by
+coefficient. The compact equations are acyclic polynomial circuits over
+exactly the listed free inputs and complete fixed numerals. Powers,
+factorials, inequalities, divisions, Pell recurrences and binomial
+expressions occurring in proofs are not hidden primitives of a final
+polynomial.
+
+Ordinary mathematical proofs and finite verification have distinct roles.
+The former establish unbounded soundness and completeness, including
+signs, denominator integrality, cofinal choices and arithmetic bootstraps.
+The latter bind those arguments to literal rows, gates, coefficient bytes,
+coordinate maps and full highest homogeneous components. Tests at finitely
+many points are not substituted for a universal argument.
+
+The release authenticates its complete inventory and replays its checks in
+fresh disposable directories in normal and optimized Python. It checks
+exact identities, complete expansions, source pins, coefficient recipes,
+actual corruption controls and preservation of sealed bytes. The extracted
+final ZIP is replayed separately before delivery. Detailed receipts state
+which commands were actually run; inherited historical receipts are not
+represented as fresh execution of all formal dependencies.
+
+The direct constructions retain the numerical proof calculus and its
+ZF/ZFC refutation calibration. The compact and root branches retain their
+own specified native calibrations. A coherent alternate coefficient tuple
+usually changes the specialized polynomial. Similar port names, byte sizes
+or elementary numerical bounds never license mixing coefficients from
+different encodings. Storage endianness is recorded explicitly.
+
+The reviews were performed separately within this AI-assisted research
+workflow, not by outside human referees. No upstream repository was changed.
+No new end-to-end Lean or Rocq replay, encoded object-language ZFC proof,
+literature-wide priority, or global minimality is asserted.
+\appendix
+\input{positive_coefficients.tex}
+\input{alternate_coefficients.tex}
+\end{document}

@@ -1,0 +1,127 @@
+{
+  "steps": [
+    {
+      "name": "signed source and exact rebuild normal",
+      "arguments": [
+        "signed/verify.py",
+        "--rebuild"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "retained round20 signed source normal",
+      "arguments": [
+        "inherited_round20/signed/verify.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "retained historical height sources normal",
+      "arguments": [
+        "check_height_sources.py",
+        "--common-parent",
+        "signed/parent252",
+        "--bindings",
+        "HEIGHT_SOURCE_BINDINGS.json"
+      ],
+      "cwd": "inherited_round20"
+    },
+    {
+      "name": "height one complete reconstruction normal",
+      "arguments": [
+        "height_one/verify.py",
+        "--single"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "positive ten reconstruction normal",
+      "arguments": [
+        "scalar/positive10/replay.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "integer eleven reconstruction normal",
+      "arguments": [
+        "scalar/integer11/replay.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "independent arrays and numeral bindings normal",
+      "arguments": [
+        "check_independent.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "signed source and exact rebuild optimized",
+      "arguments": [
+        "-O",
+        "signed/verify.py",
+        "--rebuild"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "retained round20 signed source optimized",
+      "arguments": [
+        "-O",
+        "inherited_round20/signed/verify.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "retained historical height sources optimized",
+      "arguments": [
+        "-O",
+        "check_height_sources.py",
+        "--common-parent",
+        "signed/parent252",
+        "--bindings",
+        "HEIGHT_SOURCE_BINDINGS.json"
+      ],
+      "cwd": "inherited_round20"
+    },
+    {
+      "name": "height one complete reconstruction optimized",
+      "arguments": [
+        "-O",
+        "height_one/verify.py",
+        "--single"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "positive ten reconstruction optimized",
+      "arguments": [
+        "-O",
+        "scalar/positive10/replay.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "integer eleven reconstruction optimized",
+      "arguments": [
+        "-O",
+        "scalar/integer11/replay.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "independent arrays and numeral bindings optimized",
+      "arguments": [
+        "-O",
+        "check_independent.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "printed principal equation",
+      "arguments": [
+        "check_printed_equation.py"
+      ]
+    }
+  ]
+}

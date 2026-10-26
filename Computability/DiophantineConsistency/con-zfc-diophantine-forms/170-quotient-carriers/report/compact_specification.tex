@@ -1,0 +1,59 @@
+This is the complete finite indexed943/radix67 recipe retained from the
+native compiler. In the notation below, $K_0=K$. The value $M_F$ is
+already shifted by $B-1$ exactly once. No controller prime, Diophantine
+witness, or consistency-dependent choice occurs in these definitions.
+All displayed finite powers and sums are evaluated when specifying
+the fixed coefficients; they do not add unknowns to an equation.
+
+The canonical unsigned little-endian payloads have the following sizes:
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Constant & Bits & Raw bytes\\
+\midrule
+$\beta$ &590,069&73,759\\
+$K_0$ &592,884&74,111\\
+$M_C$ &590,069&73,759\\
+$M_F$ &590,070&73,759\\
+\midrule
+Total&&295,388\\
+\bottomrule
+\end{tabular}
+\end{center}
+The package supplies both these complete bytes and an independent
+reconstruction script. The largest fixed input is 592,884 bits;
+coefficients of an expanded high-degree output can be larger.
+The exact equations are the straight-line programs with these fixed
+integer leaves, not merely a family with four unspecified parameters.
+
+\begingroup\small
+\input{constant_recipe.tex}
+\endgroup
+
+The indexed tile recipe is calibrated by the retained native-language
+proofs and their K215/refutation interface. The matching masks, shifted
+port, action decoder and entire tile ordering are preserved together.
+The separate newer radix47 tuple is not substituted into these equations.
+
+\subsection*{An explicit unrestricted-integer companion}
+
+For readers who require an unrestricted integer domain even on the
+small-variable branch, replace each positive coordinate $u$ of
+$P_{12,74}$ by
+\[
+ u=1+a^2+b^2+c(c+1),\qquad a,b,c\in\mathbb Z.
+\]
+Every resulting value is positive. Conversely, for any $u\ge1$,
+the three-square theorem applied to $4(u-1)+1$ gives exactly one
+odd square and two even squares. Dividing by four after subtracting
+the odd square's constant term proves the displayed representation.
+The substitution is therefore surjective onto the positive integers.
+
+It gives a fully explicit equation in 36 unrestricted integer variables,
+of exact degree 876, evaluated in 158 operations under the same model.
+Each substitution costs seven operations; the degree doubles. The
+distinguished degree-438 monomial survives by selecting only the $a^2$
+term in every substituted coordinate, which proves exact attainment.
+This is a standard domain conversion and is not claimed as a new
+variable-count record. The literal lifted graph is included with the
+selected equations and verified by the release checker.

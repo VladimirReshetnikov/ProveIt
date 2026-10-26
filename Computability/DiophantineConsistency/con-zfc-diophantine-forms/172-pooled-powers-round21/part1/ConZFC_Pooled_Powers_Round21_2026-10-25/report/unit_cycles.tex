@@ -1,0 +1,54 @@
+\subsection{Unit homogenized equality cycles}
+The new support reduction generalizes the anchored three-cycle without
+adding a coordinate. Let $a,b$ be the two aliases of one non-unit logical
+class, and let $u_1,\ldots,u_\ell$ be existing unit aliases, already
+anchored by the unchanged unit energy $U$. Choose three expressions
+$f_1,f_2,f_3$, each equal to $a$, $b$, $au_j$ or $bu_j$, with both
+underlying aliases $a$ and $b$ represented. Replace that class's equality
+penalty by
+\begin{equation}\label{eq:unit-cycle}
+ C(f_1,f_2,f_3)=f_1^2+f_2^2+f_3^2-f_1f_2-f_2f_3-f_3f_1.
+\end{equation}
+No other incidence label or unit relation is changed.
+
+\begin{theorem}\label{thm:unit-cycle}
+The replacement preserves the calibrated integer zero set and the
+universal source lift. It introduces no variable and has degree at most
+four. Any frozen instance whose complete coefficient collection has
+height one and exact degree four is a height-one quartic on the same
+independent coordinate set.
+\end{theorem}
+\begin{proof}
+The polynomial is nonnegative for every real tuple because
+\[
+ 2C(f_1,f_2,f_3)=(f_1-f_2)^2+(f_2-f_3)^2+(f_3-f_1)^2.
+\]
+At a zero of the complete energy, the separately nonnegative unit
+summand gives $u_j=1$ for every unit alias. The three expressions then
+reduce to copies of $a$ and $b$, with both present. Their equality is
+therefore exactly $a=b$. Conversely $a=b$ and all $u_j=1$ make the
+new penalty vanish. All other summands and the source-block divergence
+identity are unchanged. The old and new energies have literally the same zero set in the same
+coordinate space, so this step has the identity map as both witness maps.
+The same source projection and unique tree-flow lift also remain inverse
+on zeros.
+
+On the canonical lift of an arbitrary source tuple, all units are one
+and all aliases equal their logical values. Thus the new penalty
+vanishes identically there, not merely over source zeros. This proves
+that \eqref{eq:networklift} is unchanged. Each $f_i$ has degree at most
+two, so the new penalty has degree at most four.
+
+These facts do not by themselves prove height one or decreased support.
+A product $au_j$ can create monomials already present elsewhere. The
+complete energy is therefore collected after each proposed change,
+including incidence, other equality penalties and the unit path.
+The accepted frozen certificate must pass exact checks of every
+coefficient, degree, constant and live coordinate. No choice of
+$f_i$ is assumed universally safe for height.
+\end{proof}
+This changes the polynomial away from its zeros, but retains the same
+source witnesses. The tested cycles save support through actual signed
+monomial collisions in the full energy, not through an uncollected
+count of terms in one penalty. The finite selection procedure is not an
+exhaustive search over height-one equations.

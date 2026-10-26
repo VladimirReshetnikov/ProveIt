@@ -1,0 +1,50 @@
+\subsection{Reproducing and evaluating the deliverables}
+
+The top-level \file{README.md} maps each selected equation to its exact
+source and explains the component layouts. From the archive root,
+run
+\begin{verbatim}
+python3 -B verify_release.py
+python3 -B -O verify_release.py
+\end{verbatim}
+These read-only checks require Python 3.10 or newer and its standard
+library. The optional \file{--receipt PATH} writes a fresh report
+outside the sealed artifacts. The checker authenticates the complete
+manifest and the literal selected equations before replaying the
+component audits. It does not search for solutions.
+
+The script \file{evaluate.py} evaluates a selected direct residual list
+or compact arithmetic program at a supplied integer tuple. A modulus
+can be supplied for manageable arithmetic with the compact constants.
+Such modular evaluations are not tests of consistency. Exact zero
+verification would require the complete candidate tuple in the declared
+domain.
+
+The human-readable principal residuals are generated from the canonical
+equation JSON by \file{code/render_residuals.py}. To rebuild the article,
+use a standard TeX installation:
+\begin{verbatim}
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The supplied PDF was compiled and visually checked. Its source comprises
+\file{report.tex} and the included \file{.tex} fragments. A flattened
+\file{report_standalone.tex} is also supplied for convenient integration.
+PDF metadata and byte layout may differ across TeX installations;
+the literal polynomial data define the mathematical objects.
+
+\subsection{Integration and the remaining formalization task}
+
+The archive is an additive research submission. Existing repository
+equations need not be overwritten. The source ledger pins the compared
+commit, all twelve incoming archives, the immediate parents and the
+retained licenses. Intermediate equations are kept to make each
+restoration and source change reviewable; the selected outputs are
+identified separately.
+
+The next formalization task is to encode the new residue-carrier theorem,
+its $q^4$ refinement, the rational-carrier application, and the concrete
+direct composition against the existing arithmetic and logical interfaces.
+The finite certificate checkers substantially narrow the implementation
+surface, but they do not discharge that unbounded formalization task.

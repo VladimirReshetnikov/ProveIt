@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "site_packages_disabled": true,
+  "clean_copy": true,
+  "commands": [
+    {
+      "command": "python3 -S -B build.py --check",
+      "exit_code": 0,
+      "receipt": "review/CLEAN_BUILD.txt",
+      "sha256": "4127c68a26df591e4d28417fa8ae6263eec9b895bd4267d49ebc2740c8d17a2d"
+    },
+    {
+      "command": "python3 -S -B check.py",
+      "exit_code": 0,
+      "receipt": "review/CLEAN_CHECK.txt",
+      "sha256": "ade8322e6d07a9e9d45f405754bcb4058de2a17b3efc835f7916164206c4fa2b"
+    },
+    {
+      "command": "python3 -S -B -O check.py",
+      "exit_code": 0,
+      "receipt": "review/CLEAN_CHECK_OPTIMIZED.txt",
+      "sha256": "d0cf3e3a0eee916a38d19030472d5a8f1e38531beeaea8cc1ff59de658c352fe"
+    },
+    {
+      "command": "python3 -S -B reconstruct_coefficients.py",
+      "exit_code": 0,
+      "receipt": "review/CLEAN_COEFFICIENTS.txt",
+      "sha256": "4db614b0d2885c40c733c2be66959bafab39ad2cebce1142c69a76620bca5088"
+    },
+    {
+      "command": "python3 -S -B -O reconstruct_coefficients.py",
+      "exit_code": 0,
+      "receipt": "review/CLEAN_COEFFICIENTS_OPTIMIZED.txt",
+      "sha256": "b9af226b19eb0b20b11c3464340d26d80b5c012154726daa7d6a3afb9178b870"
+    }
+  ]
+}
