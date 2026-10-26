@@ -149,10 +149,20 @@ uses no double-negation elimination; imported calibration and arithmetic
 are not thereby internalized. See the
 [root replay](reviews/current-witness-equivalence2011-root.md).
 
-Other candidate refactorings include replacing general complete-lattice
-carry normalization by bounded iteration on the actual finite digit
-space, and replacing real-valued Pell estimates by denominator-cleared
-integer inequalities. Under the PA/negative-translation route, each
+Two bounded arithmetic prerequisites are now checked:
+[NativeFiniteCarry](Lean/DiophantineConsistency/NativeFiniteCarry.lean)
+constructs the actual quotient carries by at most `57*card(ι)` iterations
+in the current radix47 setting, retaining wraparound and reset identities;
+[BoundedPellDivisibility](Lean/DiophantineConsistency/BoundedPellDivisibility.lean)
+finds a positive divisible Pell ordinate at index at most m², including
+the actual fresh-seed shape. Both main/check pairs passed independent
+[root replay](reviews/finite-carry-bounded-pell-root.md), with21 standard-only
+axiom reports. Their bounded algorithms are standard-arithmetic results,
+not yet HA derivations. The frozen current witnesses were not replaced.
+
+Remaining arithmetic refactorings include replacing real-valued Pell
+estimates by denominator-cleared integer inequalities. Under the
+PA/negative-translation route, each
 refactoring should be justified by its contribution to PA formalization;
 surface elimination of `Classical.choice` is not the goal by itself.
 
