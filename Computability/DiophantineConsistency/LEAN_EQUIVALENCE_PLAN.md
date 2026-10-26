@@ -302,6 +302,14 @@ padding facts remain as its conditional interface. See the [root review](reviews
 and [independent replay](reviews/current-count2011-lean-peer.md). The
 following early-padding composition supplies that remaining interface.
 
+`CurrentEarlyPadding2011.padding_bindings` now proves every actual483
+unit bound, normalized prefix residue and bit-three mask. The exact tail
+and cyclic support give early carry resets before counting, and the
+physical permutation identifies each prefix without a supplied onehot
+or alignment premise. See the [root full-source review and fresh replay](reviews/current-early-padding2011-lean-root.md).
+This closes the middle-padding interface of `CurrentCount2011`; Boolean
+rotation supplies its explicit temporal bound/divisibility in phases7..10.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
