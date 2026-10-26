@@ -1137,7 +1137,8 @@ published to support further work toward 214.
 **Diophantine form of the K215 endpoint** (not formalized). The report
 [`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
 is now under `Computability/DiophantineConsistency`. It holds waves 5–17
-(intake batches 221–233; latest reconciled placement `2a18823cc1`).
+(intake batches 221–233; latest reconciled placement `2a18823cc1`; waves 18
+and 19, sources 160–168, are placed and await reconciliation).
 
 Until wave 11, every finished equation turned the K215 calibration behind
 `KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial

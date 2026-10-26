@@ -13,23 +13,21 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained page now uses the fully reviewed **Start-marker4177** tuple.
-Its four raw integers total98219 bytes versus141226 for zero-weight6007,
-172011 for one-anchor7309,180987 for two-anchor7691,207214 for three-anchor47
-and242484 for radix55. Against6007, complete TeX falls13 to5072 bytes,
-nonwhite extracted text falls7 to2699 and PDF falls5 to159631 bytes.
-Fonts and the15-positive/66-operation/degree157 profile are unchanged.
-Pcs is discharged; see the
-[complete candidate](candidates/one-page-start-marker4177/README.md).
+The maintained page now uses the fully reviewed **shared-copy4049** tuple.
+Its four raw integers total95205 bytes versus97046 for4127,98219 for4177,
+141226 for zero-weight6007,172011 for one-anchor7309,180987 for two-anchor7691,
+207214 for three-anchor47 and242484 for radix55. Complete TeX5058 bytes
+saves14 from4127; nonwhite extracted text2693 saves six characters; PDF
+shrinks18 to159618 bytes. Fonts and the15-positive/66-operation/degree157
+profile are unchanged. Pcm18 is discharged; see the
+[complete candidate](candidates/one-page-merged-copy4049/README.md).
 
-The943-term count-copy block is replaced by one monomial copying selector0.
-The zero-weight physical marker tracks a temporal translate of Start.
-Three calibrated parity tests and the already-proved at-most-one-selector
-condition exclude every nonzero offset. This permits much lower clauses
-and a complete zero top band for all875 padding bits. The full native,
-actual-rank, safe-subset and P66 arguments pass independent review. Every
-printed coefficient and physical support bit is reconstructed; deleting
-the actual marker term is rejected while weighted Phi remains identical.
+One rho18 monomial serves both label copies. The marker moves to1008,
+centers to1998/3007 and full product to4015. The whole phase, carry,
+canonical subset, actual-rank, controller and positive P66 arguments pass
+independent review. All3297 printed coefficients and980 physical positions
+are reconstructed, and deleting the actual marker term is rejected even
+though weighted Phi stays identical. Both actual visual inspections pass.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
 gives65 operations for the same bound three-anchor47 polynomial while
@@ -41,13 +39,20 @@ those specific bindings. Neither is an integer-leaf65 record. The specific
 four-gate tail requiring MC=MF_native is ruled out by odd-d mask parity;
 this is no general lower bound on64-operation evaluators.
 
-The next layout moves the physical Start marker from1048 to1031. All
-eight calibrated south-one tests exclude the extra offsets; the sole
-remaining offset32 would force selector942 and an incompatible south bit.
-A complete finite candidate atL4127 totals97046 bytes,1173 below4177.
-It needs a separately reviewed full ordinary proof and page before promotion.
-Further padding work looks for concise blocks of universally zero upper
-bits within the product, preserving both byte and printed-recipe measures.
+The reviewed [single-dummy4027 intermediate](research/single-dummy-independent/README.md)
+removes the spare dummy and saves516 raw bytes, reaching94689. Its exact
+phase46 spill lands on an existing weighted label; the proof accounts for
+its extra2048 predecessor contribution. A Boolean-only refinement removes
+the extra dummy bit and simplifies MC again, with a separate proof and
+certificate now in full review. Deleting the already forbidden selector1
+can shorten the printed table and remove another MC term; that complete
+language bijection is being checked separately.
+
+The [interior upper-bit padding probe](research/start-marker-padding-probe/NOTE.md)
+has independent finite review: all875 bits fit in125 groups of seven zero
+upper bits. It gives96670 raw bytes for the preserved4127 geometry while
+adding eight TeX bytes. A complete new ordinary composition remains
+necessary; this conditional tradeoff does not replace the maintained page.
 
 The requested neighboring research is relevant at two different interfaces.
 [Hilbert Tenth](../HilbertTenthProblem/README.md) supplies the half-binomial

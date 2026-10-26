@@ -27,8 +27,10 @@ publication keep their separate scopes.
 
 ## Current queue
 
-The six archives of arrival `f635e9185f` (25 October, 16:11) are placed as
-wave 18, sources 160–165, in `897ee2b513`; their reconciliation follows.
+Wave 18 (the six archives of `f635e9185f`, 25 October 16:11; sources
+160–165, placement `897ee2b513`) and wave 19 (two archives of `35fa5f6bc6`,
+16:33, and one of `ee9474c313`, 16:36; sources 166–168, placement
+`7d4af38e5f`) are placed; their reconciliation follows.
 
 ## Queue status after batch 233
 
@@ -41,7 +43,8 @@ restored byte for byte; seven from `7a8da41437` (15:13); and four from
 beside waves 5–16, as sources 148–159 (placement `2a18823cc1`): 3,214
 members = 1,497 staged + 1,705 copies omitted + 12 ignored; no placed path
 exceeds 250 characters. The twelve ZIPs are retired by name; the
-reconciliation README covers wave 17. The report is outside the
+reconciliation README covers wave 17 (`4484501de1`, audit fixes in the
+following commit). The report is outside the
 research-report collection, which stays at 290. Nothing was rerun.
 
 ## Queue status after batch 232
@@ -52,7 +55,7 @@ Diophantine form") are placed as wave 16 of
 beside waves 5–15, as sources 140–147 (placement `d32d28da26`): 2,665
 members = 1,255 staged + 1,408 copies omitted + 2 ignored; no placed path
 exceeds 250 characters. All eight ZIPs are retired; the reconciliation README
-covers wave 16 (`3537f1b491`, audit fixes in the following commit). The report is outside the research-report collection, which
+covers wave 16 (`3537f1b491`, audit fixes in `46e47ac260`). The report is outside the research-report collection, which
 stays at 290. Nothing was rerun.
 
 ## Queue status after batch 231
@@ -63,7 +66,7 @@ Diophantine form") are placed as wave 15 of
 beside waves 5–14, as sources 134–139 (placement `1eed4b48cd`): 3,468
 members = 1,258 staged + 2,205 copies omitted + 5 ignored; 17 placed paths
 exceed 250 characters. All six ZIPs are retired; the reconciliation README
-covers wave 15 (`0ecde9dd44`, audit fixes in the following commit). The report is outside the research-report collection, which
+covers wave 15 (`0ecde9dd44`, audit fixes in `20795b3d1c`). The report is outside the research-report collection, which
 stays at 290. Nothing was rerun. The queue is clear.
 
 ## Queue status after batch 230
@@ -74,7 +77,7 @@ Diophantine form") are placed as wave 14 of
 beside waves 5–13, as sources 127–133 (placement `1c5367452a`): 3,294
 members = 1,148 staged + 2,140 copies omitted + 6 ignored; 37 placed paths
 exceed 250 characters. All seven ZIPs are retired; the reconciliation README
-covers wave 14 (`6a842f5abe`, audit fixes in the following commit). The report is outside the research-report collection, which
+covers wave 14 (`6a842f5abe`, audit fixes in `55a1e3a19d`). The report is outside the research-report collection, which
 stays at 290. Nothing was rerun. The queue is clear.
 
 ## Queue status after batches 228–229
@@ -1761,9 +1764,9 @@ ProveIt-era batches (from this directory):
 | 228 | Eight wave-12 archives from `45b399ec51`, placed beside waves 5–11: placement `55fe52f28c` adds sources 111–118 (1,693 members = 1,150 staged + 535 copies omitted + 8 ignored), retiring all eight ZIPs; reconciled in `d2aca4e574` (coprime fusion in 113, 116, 117; direct quartics 517 ℤ and 349 ℕ by 112, height 2 by 114; 11ℤ to 15ℤ forms by 116). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–13 |
 | 229 | Eight wave-13 archives from `5f3379063d`, placed beside waves 5–12: placement `9f7ff01558` adds sources 119–126 (2,686 members = 1,058 staged + 1,624 copies omitted + 4 ignored; 43 paths over 250 characters), retiring all eight ZIPs; reconciled in `d2aca4e574` (ten positive 89 / 288 to 97 / 254 by 119 and 121; 11ℤ 966 / 111 by 123 to 416 / 125 by 125; direct quartics 261 ℕ by 124, 442 ℤ by 125, height 1 by 120). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–13 |
 | 230 | Seven wave-14 archives from `fd3e384e92`, placed beside waves 5–13: placement `1c5367452a` adds sources 127–133 (3,294 members = 1,148 staged + 2,140 copies omitted + 6 ignored; 37 paths over 250 characters), retiring all seven ZIPs; reconciled in `6a842f5abe`, audited in the following commit (ten positive 84 / 436 by 133 and 121 / 246 by 130, operations / degree; 11ℤ 924 / 109 to 352 / 132 by 132; 15ℤ 44 / 111 by 132; direct quartics 233 ℕ by 129, 324 ℤ by 131, height 1 in 2,215 integers by 127). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–14 |
-| 231 | Six wave-15 archives from `e0c98c629b`, placed beside waves 5–14: placement `1eed4b48cd` adds sources 134–139 (3,468 members = 1,258 staged + 2,205 copies omitted + 5 ignored; 17 paths over 250 characters), retiring all six ZIPs; reconciled in `0ecde9dd44`, audited in the following commit (ten positive 78 / 630 and 79 / 468 by 134, operations / degree; 11ℤ 924 / 107 by 138 to 328 / 130 by 135; 13ℤ 156 / 127 and 14ℤ 88 / 119 by 137; direct quartics 226 ℕ by 139, 282 ℤ by 135, height 1 in 793 integers by 135). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–15 |
-| 232 | Eight wave-16 archives from `3ecd6a6cf5`, placed beside waves 5–15: placement `d32d28da26` adds sources 140–147 (2,665 members = 1,255 staged + 1,408 copies omitted + 2 ignored), retiring all eight ZIPs; reconciled in `3537f1b491`, audited in the following commit (ten positive 75 / 626 by 140, operations / degree; fourteen positive 70 / 189 and thirteen positive 72 / 433 by 142; 11ℤ to 300 / 148 by 144 and 14ℤ 86 / 112 by 143, degree / operations; direct quartics 221 ℕ by 140, 142 and 144, 252 ℤ by 141, height 1 in 571 integers by 144). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–16 |
-| 233 | Twelve wave-17 archives from `a0ef2df5bb`, `7a8da41437` and `536c08e791`, placed beside waves 5–16: placement `2a18823cc1` adds sources 148–159 (3,214 members = 1,497 staged + 1,705 copies omitted + 12 ignored), retiring the twelve ZIPs by name; reconciliation README covers wave 17 (ten positive 78 / 454 by 148, 79 / 382 by 149 and 153, 80 / 338 by 149, 87 / 304 by 152, operations / degree; 14ℤ 82 / 113 and 11ℤ 298 / 150 by 153, degree / operations; direct quartics 219 ℕ by 149, 225 ℤ by 158, height 1 in 528 integers by 154; tuple-free forms of higher degree by 152). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–17 |
+| 231 | Six wave-15 archives from `e0c98c629b`, placed beside waves 5–14: placement `1eed4b48cd` adds sources 134–139 (3,468 members = 1,258 staged + 2,205 copies omitted + 5 ignored; 17 paths over 250 characters), retiring all six ZIPs; reconciled in `0ecde9dd44`, audited in `20795b3d1c` (ten positive 78 / 630 and 79 / 468 by 134, operations / degree; 11ℤ 924 / 107 by 138 to 328 / 130 by 135; 13ℤ 156 / 127 and 14ℤ 88 / 119 by 137; direct quartics 226 ℕ by 139, 282 ℤ by 135, height 1 in 793 integers by 135). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–15 |
+| 232 | Eight wave-16 archives from `3ecd6a6cf5`, placed beside waves 5–15: placement `d32d28da26` adds sources 140–147 (2,665 members = 1,255 staged + 1,408 copies omitted + 2 ignored), retiring all eight ZIPs; reconciled in `3537f1b491`, audited in `46e47ac260` (ten positive 75 / 626 by 140, operations / degree; fourteen positive 70 / 189 and thirteen positive 72 / 433 by 142; 11ℤ to 300 / 148 by 144 and 14ℤ 86 / 112 by 143, degree / operations; direct quartics 221 ℕ by 140, 142 and 144, 252 ℤ by 141, height 1 in 571 integers by 144). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–16 |
+| 233 | Twelve wave-17 archives from `a0ef2df5bb`, `7a8da41437` and `536c08e791`, placed beside waves 5–16: placement `2a18823cc1` adds sources 148–159 (3,214 members = 1,497 staged + 1,705 copies omitted + 12 ignored), retiring the twelve ZIPs by name; reconciled in `4484501de1`, audited in the following commit (ten positive 78 / 454 by 148, 79 / 382 by 149 and 153, 80 / 338 by 149, 87 / 304 by 152, operations / degree; 14ℤ 82 / 113 and 11ℤ 298 / 150 by 153, degree / operations; direct quartics 219 ℕ by 149, 225 ℤ by 158, height 1 in 528 integers by 154; tuple-free forms of higher degree by 152). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–17 |
 
 
 
