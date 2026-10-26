@@ -187,6 +187,14 @@ See the [root acceptance](reviews/thirteen-first-norm-correction92-root.md).
 This trades nine operations for four degrees against13/75/96. Its external
 ConZFC equivalence is checked; the HA endpoint remains open.
 
+The [standard-Nat syntax semantics](reviews/foundation-pahf-nat-semantics-root.md)
+now identifies the existing GG/syntax map with the original source
+sentence's truth in natural numbers, retaining all binder environments.
+Two independent builds pass seven standard-only reports. This is a semantic
+comparison in Lean, not an HA derivation. The fixed ZFC proof-convention
+comparison still needs its provider-cache audit; available old source and
+author build reports are kept separate from authenticated objects.
+
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the

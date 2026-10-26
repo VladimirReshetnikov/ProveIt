@@ -1,0 +1,16 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:106:12: error: Function expected at
+  forall_congr' fun d => ?m.291
+but this term has type
+  (∀ (a : ?m.287), ?m.288 a) ↔ ∀ (a : ?m.287), ?m.289 a
+
+Note: Expected a function because this term is being applied to the argument
+  (liftBound bv)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:106:38: error: Type mismatch: After simplification, term
+  hp
+ has type
+  ∀ (bv : Fin (n✝ + 1) → SetTheory.PA.Term) (fv : ξ → SetTheory.PA.Term) (ee : ℕ → ℕ),
+    Formula.Sat natStructure ee (formulaAux bv fv pᴺ) ↔
+      Semiformula.EvalAux (standardModel ℕ) (fun x => Term.eval natStructure ee (fv x))
+        (fun i => Term.eval natStructure ee (bv i)) p
+but is expected to have type
+  ?m.288 d ↔ ?m.289 d

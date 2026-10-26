@@ -555,6 +555,14 @@ Its subset-indexed coverage deliberately retains a free input label; this
 is a resource for the tagged-domain interpretation, not full CP/GIC or
 the pending general proof translation and runtime calibration.
 
+The [standard-Nat syntax semantics](reviews/foundation-pahf-nat-semantics-root.md)
+now identifies the existing GG/syntax map with the original source
+sentence's truth in natural numbers, retaining all binder environments.
+Two independent builds pass seven standard-only reports. This is a semantic
+comparison in Lean, not an HA derivation. The fixed ZFC proof-convention
+comparison still needs its provider-cache audit; available old source and
+author build reports are kept separate from authenticated objects.
+
 ## Next reviewable checkpoints
 
 1. Authentic HA derivability and basic arithmetic/induction interfaces are
