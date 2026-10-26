@@ -85,6 +85,49 @@ the exact scope and reproduction commands. These theorems require the
 scalar port inequalities; the current entire native recipe still must be
 bound and calibrated. The final consistency equivalence remains open.
 
+The bounded cyclic carry and word-identification modules also now compile.
+`NativeCyclicCarryWord.exists_convolution_normalization` derives bounded
+actual carries, normalized digits, their exact local decomposition and
+equality with the positive strict transport representative.
+`transport_mask_digits` transfers the packed mask test to those digits.
+The [root review](reviews/native-cyclic-carry-lean-root.md) records the
+necessary numeric budget and range assumptions. Their discharge from the
+literal current native recipe, followed by staircase and phase recovery,
+remains required.
+
+`Carrier66.exists_positive_polynomial_zero_iff_canonical_parent_zero` now
+checks both full coordinate maps and zero-existence equivalence between
+the actual fourteen-variable polynomial and its canonical positive
+fifteen-variable parent. The parent's canonical conditions are explicit;
+they are not a supplied classification of all parent zeros.
+`ThirteenCarrier.positive_polynomial_zero_sets` binds all three literal
+thirteen-coordinate formulas and proves their entire positive zero sets
+agree. The signed derived y is allowed to be negative. Their fresh-seed
+and native equivalences are still required. See the
+[frontier arithmetic review](reviews/carrier-frontier-lean-root.md).
+
+`DecimalMachine215` now binds the actual complete715-digit page decoder,
+including signed subtraction at the halt target, to the checked dense215
+machine through an explicit state equivalence. Its430 transitions and
+blank-halting equivalence are checked. `PaddingStaircase` proves the
+actual bit-three prefix argument and the full low-clause mask consequence:
+483 tested prefixes plus459 Boolean selectors force total at most462,
+then the derived2006 low bound forces total at mostone. See the
+[decoder/staircase review](reviews/decimal-staircase-lean-root.md).
+The current physical prefix residues, resets and full942-tile language
+remain to be connected. The current machine-to-ZFC dependency closure is
+being rebuilt as described in
+[its build record](reviews/machine215-current-closure-build.md); a live
+build is not a completed endpoint check.
+
+The signed auxiliary-Pell residue needed by the thirteen-variable soundness
+map is now checked in `SignedPellResidue.four_square_dvd_sub_one`. From
+S>=2, the exact auxiliary norm and y congruent to1 modulo4 it derives
+`4*S^2 | y-1`, without sign or size assumptions on V,y. The
+[root review](reviews/signed-pell-residue-lean-root.md) includes signed
+examples and the necessary modulo-four premise. The full transport-witness
+recovery and fresh-seed converse remain separate work items.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
