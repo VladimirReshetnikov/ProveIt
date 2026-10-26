@@ -155,184 +155,184 @@ private theorem length_56 : chunk56.length = 16 := rfl
 private theorem length_57 : chunk57.length = 16 := rfl
 private theorem length_58 : chunk58.length = 13 := rfl
 
-private theorem block_47_00 : evaluate (2 : ZMod 47) chunk00 = 41 := by
+private theorem common_00 : evaluate (10653241607 : ZMod 11360848883) chunk00 = 7326369206 := by
   decide +kernel
 
-private theorem block_47_01 : evaluate (2 : ZMod 47) chunk01 = 46 := by
+private theorem common_01 : evaluate (10653241607 : ZMod 11360848883) chunk01 = 6110553189 := by
   decide +kernel
 
-private theorem block_47_02 : evaluate (2 : ZMod 47) chunk02 = 31 := by
+private theorem common_02 : evaluate (10653241607 : ZMod 11360848883) chunk02 = 6902545051 := by
   decide +kernel
 
-private theorem block_47_03 : evaluate (2 : ZMod 47) chunk03 = 24 := by
+private theorem common_03 : evaluate (10653241607 : ZMod 11360848883) chunk03 = 10397625173 := by
   decide +kernel
 
-private theorem block_47_04 : evaluate (2 : ZMod 47) chunk04 = 0 := by
+private theorem common_04 : evaluate (10653241607 : ZMod 11360848883) chunk04 = 3817337556 := by
   decide +kernel
 
-private theorem block_47_05 : evaluate (2 : ZMod 47) chunk05 = 15 := by
+private theorem common_05 : evaluate (10653241607 : ZMod 11360848883) chunk05 = 2379224615 := by
   decide +kernel
 
-private theorem block_47_06 : evaluate (2 : ZMod 47) chunk06 = 40 := by
+private theorem common_06 : evaluate (10653241607 : ZMod 11360848883) chunk06 = 2967822184 := by
   decide +kernel
 
-private theorem block_47_07 : evaluate (2 : ZMod 47) chunk07 = 7 := by
+private theorem common_07 : evaluate (10653241607 : ZMod 11360848883) chunk07 = 8110940172 := by
   decide +kernel
 
-private theorem block_47_08 : evaluate (2 : ZMod 47) chunk08 = 8 := by
+private theorem common_08 : evaluate (10653241607 : ZMod 11360848883) chunk08 = 5528439351 := by
   decide +kernel
 
-private theorem block_47_09 : evaluate (2 : ZMod 47) chunk09 = 9 := by
+private theorem common_09 : evaluate (10653241607 : ZMod 11360848883) chunk09 = 6898868078 := by
   decide +kernel
 
-private theorem block_47_10 : evaluate (2 : ZMod 47) chunk10 = 2 := by
+private theorem common_10 : evaluate (10653241607 : ZMod 11360848883) chunk10 = 10393948200 := by
   decide +kernel
 
-private theorem block_47_11 : evaluate (2 : ZMod 47) chunk11 = 5 := by
+private theorem common_11 : evaluate (10653241607 : ZMod 11360848883) chunk11 = 5102043269 := by
   decide +kernel
 
-private theorem block_47_12 : evaluate (2 : ZMod 47) chunk12 = 24 := by
+private theorem common_12 : evaluate (10653241607 : ZMod 11360848883) chunk12 = 4710936877 := by
   decide +kernel
 
-private theorem block_47_13 : evaluate (2 : ZMod 47) chunk13 = 17 := by
+private theorem common_13 : evaluate (10653241607 : ZMod 11360848883) chunk13 = 8206016999 := by
   decide +kernel
 
-private theorem block_47_14 : evaluate (2 : ZMod 47) chunk14 = 10 := by
+private theorem common_14 : evaluate (10653241607 : ZMod 11360848883) chunk14 = 340248238 := by
   decide +kernel
 
-private theorem block_47_15 : evaluate (2 : ZMod 47) chunk15 = 18 := by
+private theorem common_15 : evaluate (10653241607 : ZMod 11360848883) chunk15 = 7711375652 := by
   decide +kernel
 
-private theorem block_47_16 : evaluate (2 : ZMod 47) chunk16 = 29 := by
+private theorem common_16 : evaluate (10653241607 : ZMod 11360848883) chunk16 = 9230250317 := by
   decide +kernel
 
-private theorem block_47_17 : evaluate (2 : ZMod 47) chunk17 = 37 := by
+private theorem common_17 : evaluate (10653241607 : ZMod 11360848883) chunk17 = 9701454606 := by
   decide +kernel
 
-private theorem block_47_18 : evaluate (2 : ZMod 47) chunk18 = 39 := by
+private theorem common_18 : evaluate (10653241607 : ZMod 11360848883) chunk18 = 3237367559 := by
   decide +kernel
 
-private theorem block_47_19 : evaluate (2 : ZMod 47) chunk19 = 29 := by
+private theorem common_19 : evaluate (10653241607 : ZMod 11360848883) chunk19 = 8078596016 := by
   decide +kernel
 
-private theorem block_47_20 : evaluate (2 : ZMod 47) chunk20 = 5 := by
+private theorem common_20 : evaluate (10653241607 : ZMod 11360848883) chunk20 = 5034197547 := by
   decide +kernel
 
-private theorem block_47_21 : evaluate (2 : ZMod 47) chunk21 = 1 := by
+private theorem common_21 : evaluate (10653241607 : ZMod 11360848883) chunk21 = 7029031985 := by
   decide +kernel
 
-private theorem block_47_22 : evaluate (2 : ZMod 47) chunk22 = 35 := by
+private theorem common_22 : evaluate (10653241607 : ZMod 11360848883) chunk22 = 336571265 := by
   decide +kernel
 
-private theorem block_47_23 : evaluate (2 : ZMod 47) chunk23 = 46 := by
+private theorem common_23 : evaluate (10653241607 : ZMod 11360848883) chunk23 = 5035704361 := by
   decide +kernel
 
-private theorem block_47_24 : evaluate (2 : ZMod 47) chunk24 = 26 := by
+private theorem common_24 : evaluate (10653241607 : ZMod 11360848883) chunk24 = 2136158627 := by
   decide +kernel
 
-private theorem block_47_25 : evaluate (2 : ZMod 47) chunk25 = 14 := by
+private theorem common_25 : evaluate (10653241607 : ZMod 11360848883) chunk25 = 6001196706 := by
   decide +kernel
 
-private theorem block_47_26 : evaluate (2 : ZMod 47) chunk26 = 31 := by
+private theorem common_26 : evaluate (10653241607 : ZMod 11360848883) chunk26 = 9468789090 := by
   decide +kernel
 
-private theorem block_47_27 : evaluate (2 : ZMod 47) chunk27 = 34 := by
+private theorem common_27 : evaluate (10653241607 : ZMod 11360848883) chunk27 = 9316114105 := by
   decide +kernel
 
-private theorem block_47_28 : evaluate (2 : ZMod 47) chunk28 = 29 := by
+private theorem common_28 : evaluate (10653241607 : ZMod 11360848883) chunk28 = 222052845 := by
   decide +kernel
 
-private theorem block_47_29 : evaluate (2 : ZMod 47) chunk29 = 10 := by
+private theorem common_29 : evaluate (10653241607 : ZMod 11360848883) chunk29 = 9785715145 := by
   decide +kernel
 
-private theorem block_47_30 : evaluate (2 : ZMod 47) chunk30 = 6 := by
+private theorem common_30 : evaluate (10653241607 : ZMod 11360848883) chunk30 = 2742777737 := by
   decide +kernel
 
-private theorem block_47_31 : evaluate (2 : ZMod 47) chunk31 = 12 := by
+private theorem common_31 : evaluate (10653241607 : ZMod 11360848883) chunk31 = 4306931116 := by
   decide +kernel
 
-private theorem block_47_32 : evaluate (2 : ZMod 47) chunk32 = 25 := by
+private theorem common_32 : evaluate (10653241607 : ZMod 11360848883) chunk32 = 2053407606 := by
   decide +kernel
 
-private theorem block_47_33 : evaluate (2 : ZMod 47) chunk33 = 13 := by
+private theorem common_33 : evaluate (10653241607 : ZMod 11360848883) chunk33 = 8364362298 := by
   decide +kernel
 
-private theorem block_47_34 : evaluate (2 : ZMod 47) chunk34 = 26 := by
+private theorem common_34 : evaluate (10653241607 : ZMod 11360848883) chunk34 = 605881256 := by
   decide +kernel
 
-private theorem block_47_35 : evaluate (2 : ZMod 47) chunk35 = 16 := by
+private theorem common_35 : evaluate (10653241607 : ZMod 11360848883) chunk35 = 3131182269 := by
   decide +kernel
 
-private theorem block_47_36 : evaluate (2 : ZMod 47) chunk36 = 7 := by
+private theorem common_36 : evaluate (10653241607 : ZMod 11360848883) chunk36 = 5881669918 := by
   decide +kernel
 
-private theorem block_47_37 : evaluate (2 : ZMod 47) chunk37 = 6 := by
+private theorem common_37 : evaluate (10653241607 : ZMod 11360848883) chunk37 = 8209747566 := by
   decide +kernel
 
-private theorem block_47_38 : evaluate (2 : ZMod 47) chunk38 = 41 := by
+private theorem common_38 : evaluate (10653241607 : ZMod 11360848883) chunk38 = 4184123247 := by
   decide +kernel
 
-private theorem block_47_39 : evaluate (2 : ZMod 47) chunk39 = 46 := by
+private theorem common_39 : evaluate (10653241607 : ZMod 11360848883) chunk39 = 10583740965 := by
   decide +kernel
 
-private theorem block_47_40 : evaluate (2 : ZMod 47) chunk40 = 33 := by
+private theorem common_40 : evaluate (10653241607 : ZMod 11360848883) chunk40 = 9639541408 := by
   decide +kernel
 
-private theorem block_47_41 : evaluate (2 : ZMod 47) chunk41 = 30 := by
+private theorem common_41 : evaluate (10653241607 : ZMod 11360848883) chunk41 = 10557604390 := by
   decide +kernel
 
-private theorem block_47_42 : evaluate (2 : ZMod 47) chunk42 = 9 := by
+private theorem common_42 : evaluate (10653241607 : ZMod 11360848883) chunk42 = 11239206594 := by
   decide +kernel
 
-private theorem block_47_43 : evaluate (2 : ZMod 47) chunk43 = 13 := by
+private theorem common_43 : evaluate (10653241607 : ZMod 11360848883) chunk43 = 4840143626 := by
   decide +kernel
 
-private theorem block_47_44 : evaluate (2 : ZMod 47) chunk44 = 0 := by
+private theorem common_44 : evaluate (10653241607 : ZMod 11360848883) chunk44 = 1394821585 := by
   decide +kernel
 
-private theorem block_47_45 : evaluate (2 : ZMod 47) chunk45 = 38 := by
+private theorem common_45 : evaluate (10653241607 : ZMod 11360848883) chunk45 = 10134098208 := by
   decide +kernel
 
-private theorem block_47_46 : evaluate (2 : ZMod 47) chunk46 = 20 := by
+private theorem common_46 : evaluate (10653241607 : ZMod 11360848883) chunk46 = 285645105 := by
   decide +kernel
 
-private theorem block_47_47 : evaluate (2 : ZMod 47) chunk47 = 38 := by
+private theorem common_47 : evaluate (10653241607 : ZMod 11360848883) chunk47 = 6071868421 := by
   decide +kernel
 
-private theorem block_47_48 : evaluate (2 : ZMod 47) chunk48 = 23 := by
+private theorem common_48 : evaluate (10653241607 : ZMod 11360848883) chunk48 = 2218560951 := by
   decide +kernel
 
-private theorem block_47_49 : evaluate (2 : ZMod 47) chunk49 = 43 := by
+private theorem common_49 : evaluate (10653241607 : ZMod 11360848883) chunk49 = 4233114968 := by
   decide +kernel
 
-private theorem block_47_50 : evaluate (2 : ZMod 47) chunk50 = 23 := by
+private theorem common_50 : evaluate (10653241607 : ZMod 11360848883) chunk50 = 7565311924 := by
   decide +kernel
 
-private theorem block_47_51 : evaluate (2 : ZMod 47) chunk51 = 25 := by
+private theorem common_51 : evaluate (10653241607 : ZMod 11360848883) chunk51 = 1719592738 := by
   decide +kernel
 
-private theorem block_47_52 : evaluate (2 : ZMod 47) chunk52 = 44 := by
+private theorem common_52 : evaluate (10653241607 : ZMod 11360848883) chunk52 = 1660171785 := by
   decide +kernel
 
-private theorem block_47_53 : evaluate (2 : ZMod 47) chunk53 = 19 := by
+private theorem common_53 : evaluate (10653241607 : ZMod 11360848883) chunk53 = 2827828480 := by
   decide +kernel
 
-private theorem block_47_54 : evaluate (2 : ZMod 47) chunk54 = 32 := by
+private theorem common_54 : evaluate (10653241607 : ZMod 11360848883) chunk54 = 650758366 := by
   decide +kernel
 
-private theorem block_47_55 : evaluate (2 : ZMod 47) chunk55 = 39 := by
+private theorem common_55 : evaluate (10653241607 : ZMod 11360848883) chunk55 = 5372229477 := by
   decide +kernel
 
-private theorem block_47_56 : evaluate (2 : ZMod 47) chunk56 = 19 := by
+private theorem common_56 : evaluate (10653241607 : ZMod 11360848883) chunk56 = 7027535852 := by
   decide +kernel
 
-private theorem block_47_57 : evaluate (2 : ZMod 47) chunk57 = 0 := by
+private theorem common_57 : evaluate (10653241607 : ZMod 11360848883) chunk57 = 10411919588 := by
   decide +kernel
 
-private theorem block_47_58 : evaluate (2 : ZMod 47) chunk58 = 0 := by
+private theorem common_58 : evaluate (10653241607 : ZMod 11360848883) chunk58 = 3284910417 := by
   decide +kernel
 
-private theorem rows_47 : evaluate (2 : ZMod 47) rows = 15 := by
+private theorem rows_common : evaluate (10653241607 : ZMod 11360848883) rows = 10463387658 := by
   simp only [rows, evaluate_append,
     length_01, length_02, length_03, length_04,
     length_05, length_06, length_07, length_08, length_09,
@@ -345,469 +345,52 @@ private theorem rows_47 : evaluate (2 : ZMod 47) rows = 15 := by
     length_40, length_41, length_42, length_43, length_44,
     length_45, length_46, length_47, length_48, length_49,
     length_50, length_51, length_52, length_53, length_54,
-    length_55, length_56, length_57, length_58, block_47_00,
-    block_47_01, block_47_02, block_47_03, block_47_04, block_47_05,
-    block_47_06, block_47_07, block_47_08, block_47_09, block_47_10,
-    block_47_11, block_47_12, block_47_13, block_47_14, block_47_15,
-    block_47_16, block_47_17, block_47_18, block_47_19, block_47_20,
-    block_47_21, block_47_22, block_47_23, block_47_24, block_47_25,
-    block_47_26, block_47_27, block_47_28, block_47_29, block_47_30,
-    block_47_31, block_47_32, block_47_33, block_47_34, block_47_35,
-    block_47_36, block_47_37, block_47_38, block_47_39, block_47_40,
-    block_47_41, block_47_42, block_47_43, block_47_44, block_47_45,
-    block_47_46, block_47_47, block_47_48, block_47_49, block_47_50,
-    block_47_51, block_47_52, block_47_53, block_47_54, block_47_55,
-    block_47_56, block_47_57, block_47_58]
-  decide +kernel
-
-private theorem controls_47 : controlReflection (2 : ZMod 47) = 4 := by
-  decide +kernel
-
-private theorem radix_47 : (radix : ZMod 47) = 2 := by
-  change ((2 : ℕ)^47 : ZMod 47) = 2
-  simp only [Nat.cast_ofNat]
-  reduce_mod_char
-
-private theorem block_2011_00 : evaluate (1283 : ZMod 2011) chunk00 = 589 := by
-  decide +kernel
-
-private theorem block_2011_01 : evaluate (1283 : ZMod 2011) chunk01 = 985 := by
-  decide +kernel
-
-private theorem block_2011_02 : evaluate (1283 : ZMod 2011) chunk02 = 717 := by
-  decide +kernel
-
-private theorem block_2011_03 : evaluate (1283 : ZMod 2011) chunk03 = 1048 := by
-  decide +kernel
-
-private theorem block_2011_04 : evaluate (1283 : ZMod 2011) chunk04 = 1048 := by
-  decide +kernel
-
-private theorem block_2011_05 : evaluate (1283 : ZMod 2011) chunk05 = 460 := by
-  decide +kernel
-
-private theorem block_2011_06 : evaluate (1283 : ZMod 2011) chunk06 = 450 := by
-  decide +kernel
-
-private theorem block_2011_07 : evaluate (1283 : ZMod 2011) chunk07 = 15 := by
-  decide +kernel
-
-private theorem block_2011_08 : evaluate (1283 : ZMod 2011) chunk08 = 1262 := by
-  decide +kernel
-
-private theorem block_2011_09 : evaluate (1283 : ZMod 2011) chunk09 = 1863 := by
-  decide +kernel
-
-private theorem block_2011_10 : evaluate (1283 : ZMod 2011) chunk10 = 183 := by
-  decide +kernel
-
-private theorem block_2011_11 : evaluate (1283 : ZMod 2011) chunk11 = 1532 := by
-  decide +kernel
-
-private theorem block_2011_12 : evaluate (1283 : ZMod 2011) chunk12 = 453 := by
-  decide +kernel
-
-private theorem block_2011_13 : evaluate (1283 : ZMod 2011) chunk13 = 784 := by
-  decide +kernel
-
-private theorem block_2011_14 : evaluate (1283 : ZMod 2011) chunk14 = 1115 := by
-  decide +kernel
-
-private theorem block_2011_15 : evaluate (1283 : ZMod 2011) chunk15 = 1085 := by
-  decide +kernel
-
-private theorem block_2011_16 : evaluate (1283 : ZMod 2011) chunk16 = 1637 := by
-  decide +kernel
-
-private theorem block_2011_17 : evaluate (1283 : ZMod 2011) chunk17 = 472 := by
-  decide +kernel
-
-private theorem block_2011_18 : evaluate (1283 : ZMod 2011) chunk18 = 1440 := by
-  decide +kernel
-
-private theorem block_2011_19 : evaluate (1283 : ZMod 2011) chunk19 = 783 := by
-  decide +kernel
-
-private theorem block_2011_20 : evaluate (1283 : ZMod 2011) chunk20 = 917 := by
-  decide +kernel
-
-private theorem block_2011_21 : evaluate (1283 : ZMod 2011) chunk21 = 1784 := by
-  decide +kernel
-
-private theorem block_2011_22 : evaluate (1283 : ZMod 2011) chunk22 = 250 := by
-  decide +kernel
-
-private theorem block_2011_23 : evaluate (1283 : ZMod 2011) chunk23 = 1492 := by
-  decide +kernel
-
-private theorem block_2011_24 : evaluate (1283 : ZMod 2011) chunk24 = 20 := by
-  decide +kernel
-
-private theorem block_2011_25 : evaluate (1283 : ZMod 2011) chunk25 = 671 := by
-  decide +kernel
-
-private theorem block_2011_26 : evaluate (1283 : ZMod 2011) chunk26 = 1623 := by
-  decide +kernel
-
-private theorem block_2011_27 : evaluate (1283 : ZMod 2011) chunk27 = 1758 := by
-  decide +kernel
-
-private theorem block_2011_28 : evaluate (1283 : ZMod 2011) chunk28 = 236 := by
-  decide +kernel
-
-private theorem block_2011_29 : evaluate (1283 : ZMod 2011) chunk29 = 111 := by
-  decide +kernel
-
-private theorem block_2011_30 : evaluate (1283 : ZMod 2011) chunk30 = 980 := by
-  decide +kernel
-
-private theorem block_2011_31 : evaluate (1283 : ZMod 2011) chunk31 = 570 := by
-  decide +kernel
-
-private theorem block_2011_32 : evaluate (1283 : ZMod 2011) chunk32 = 1649 := by
-  decide +kernel
-
-private theorem block_2011_33 : evaluate (1283 : ZMod 2011) chunk33 = 1954 := by
-  decide +kernel
-
-private theorem block_2011_34 : evaluate (1283 : ZMod 2011) chunk34 = 1143 := by
-  decide +kernel
-
-private theorem block_2011_35 : evaluate (1283 : ZMod 2011) chunk35 = 972 := by
-  decide +kernel
-
-private theorem block_2011_36 : evaluate (1283 : ZMod 2011) chunk36 = 1690 := by
-  decide +kernel
-
-private theorem block_2011_37 : evaluate (1283 : ZMod 2011) chunk37 = 946 := by
-  decide +kernel
-
-private theorem block_2011_38 : evaluate (1283 : ZMod 2011) chunk38 = 449 := by
-  decide +kernel
-
-private theorem block_2011_39 : evaluate (1283 : ZMod 2011) chunk39 = 801 := by
-  decide +kernel
-
-private theorem block_2011_40 : evaluate (1283 : ZMod 2011) chunk40 = 1942 := by
-  decide +kernel
-
-private theorem block_2011_41 : evaluate (1283 : ZMod 2011) chunk41 = 1193 := by
-  decide +kernel
-
-private theorem block_2011_42 : evaluate (1283 : ZMod 2011) chunk42 = 1090 := by
-  decide +kernel
-
-private theorem block_2011_43 : evaluate (1283 : ZMod 2011) chunk43 = 452 := by
-  decide +kernel
-
-private theorem block_2011_44 : evaluate (1283 : ZMod 2011) chunk44 = 29 := by
-  decide +kernel
-
-private theorem block_2011_45 : evaluate (1283 : ZMod 2011) chunk45 = 1556 := by
-  decide +kernel
-
-private theorem block_2011_46 : evaluate (1283 : ZMod 2011) chunk46 = 654 := by
-  decide +kernel
-
-private theorem block_2011_47 : evaluate (1283 : ZMod 2011) chunk47 = 1824 := by
-  decide +kernel
-
-private theorem block_2011_48 : evaluate (1283 : ZMod 2011) chunk48 = 1619 := by
-  decide +kernel
-
-private theorem block_2011_49 : evaluate (1283 : ZMod 2011) chunk49 = 188 := by
-  decide +kernel
-
-private theorem block_2011_50 : evaluate (1283 : ZMod 2011) chunk50 = 309 := by
-  decide +kernel
-
-private theorem block_2011_51 : evaluate (1283 : ZMod 2011) chunk51 = 715 := by
-  decide +kernel
-
-private theorem block_2011_52 : evaluate (1283 : ZMod 2011) chunk52 = 790 := by
-  decide +kernel
-
-private theorem block_2011_53 : evaluate (1283 : ZMod 2011) chunk53 = 500 := by
-  decide +kernel
-
-private theorem block_2011_54 : evaluate (1283 : ZMod 2011) chunk54 = 777 := by
-  decide +kernel
-
-private theorem block_2011_55 : evaluate (1283 : ZMod 2011) chunk55 = 1846 := by
-  decide +kernel
-
-private theorem block_2011_56 : evaluate (1283 : ZMod 2011) chunk56 = 1835 := by
-  decide +kernel
-
-private theorem block_2011_57 : evaluate (1283 : ZMod 2011) chunk57 = 1275 := by
-  decide +kernel
-
-private theorem block_2011_58 : evaluate (1283 : ZMod 2011) chunk58 = 236 := by
-  decide +kernel
-
-private theorem rows_2011 : evaluate (1283 : ZMod 2011) rows = 1822 := by
-  simp only [rows, evaluate_append,
-    length_01, length_02, length_03, length_04,
-    length_05, length_06, length_07, length_08, length_09,
-    length_10, length_11, length_12, length_13, length_14,
-    length_15, length_16, length_17, length_18, length_19,
-    length_20, length_21, length_22, length_23, length_24,
-    length_25, length_26, length_27, length_28, length_29,
-    length_30, length_31, length_32, length_33, length_34,
-    length_35, length_36, length_37, length_38, length_39,
-    length_40, length_41, length_42, length_43, length_44,
-    length_45, length_46, length_47, length_48, length_49,
-    length_50, length_51, length_52, length_53, length_54,
-    length_55, length_56, length_57, length_58, block_2011_00,
-    block_2011_01, block_2011_02, block_2011_03, block_2011_04, block_2011_05,
-    block_2011_06, block_2011_07, block_2011_08, block_2011_09, block_2011_10,
-    block_2011_11, block_2011_12, block_2011_13, block_2011_14, block_2011_15,
-    block_2011_16, block_2011_17, block_2011_18, block_2011_19, block_2011_20,
-    block_2011_21, block_2011_22, block_2011_23, block_2011_24, block_2011_25,
-    block_2011_26, block_2011_27, block_2011_28, block_2011_29, block_2011_30,
-    block_2011_31, block_2011_32, block_2011_33, block_2011_34, block_2011_35,
-    block_2011_36, block_2011_37, block_2011_38, block_2011_39, block_2011_40,
-    block_2011_41, block_2011_42, block_2011_43, block_2011_44, block_2011_45,
-    block_2011_46, block_2011_47, block_2011_48, block_2011_49, block_2011_50,
-    block_2011_51, block_2011_52, block_2011_53, block_2011_54, block_2011_55,
-    block_2011_56, block_2011_57, block_2011_58]
-  decide +kernel
-
-private theorem controls_2011 : controlReflection (1283 : ZMod 2011) = 241 := by
-  decide +kernel
-
-private theorem radix_2011 : (radix : ZMod 2011) = 1283 := by
-  change ((2 : ℕ)^47 : ZMod 2011) = 1283
-  simp only [Nat.cast_ofNat]
-  reduce_mod_char
-
-private theorem block_120199_00 : evaluate (4237 : ZMod 120199) chunk00 = 119957 := by
-  decide +kernel
-
-private theorem block_120199_01 : evaluate (4237 : ZMod 120199) chunk01 = 116825 := by
-  decide +kernel
-
-private theorem block_120199_02 : evaluate (4237 : ZMod 120199) chunk02 = 117476 := by
-  decide +kernel
-
-private theorem block_120199_03 : evaluate (4237 : ZMod 120199) chunk03 = 51076 := by
-  decide +kernel
-
-private theorem block_120199_04 : evaluate (4237 : ZMod 120199) chunk04 = 57714 := by
-  decide +kernel
-
-private theorem block_120199_05 : evaluate (4237 : ZMod 120199) chunk05 = 5609 := by
-  decide +kernel
-
-private theorem block_120199_06 : evaluate (4237 : ZMod 120199) chunk06 = 108874 := by
-  decide +kernel
-
-private theorem block_120199_07 : evaluate (4237 : ZMod 120199) chunk07 = 31851 := by
-  decide +kernel
-
-private theorem block_120199_08 : evaluate (4237 : ZMod 120199) chunk08 = 6545 := by
-  decide +kernel
-
-private theorem block_120199_09 : evaluate (4237 : ZMod 120199) chunk09 = 46473 := by
-  decide +kernel
-
-private theorem block_120199_10 : evaluate (4237 : ZMod 120199) chunk10 = 100272 := by
-  decide +kernel
-
-private theorem block_120199_11 : evaluate (4237 : ZMod 120199) chunk11 = 76515 := by
-  decide +kernel
-
-private theorem block_120199_12 : evaluate (4237 : ZMod 120199) chunk12 = 97669 := by
-  decide +kernel
-
-private theorem block_120199_13 : evaluate (4237 : ZMod 120199) chunk13 = 31269 := by
-  decide +kernel
-
-private theorem block_120199_14 : evaluate (4237 : ZMod 120199) chunk14 = 85068 := by
-  decide +kernel
-
-private theorem block_120199_15 : evaluate (4237 : ZMod 120199) chunk15 = 8807 := by
-  decide +kernel
-
-private theorem block_120199_16 : evaluate (4237 : ZMod 120199) chunk16 = 48908 := by
-  decide +kernel
-
-private theorem block_120199_17 : evaluate (4237 : ZMod 120199) chunk17 = 73117 := by
-  decide +kernel
-
-private theorem block_120199_18 : evaluate (4237 : ZMod 120199) chunk18 = 47892 := by
-  decide +kernel
-
-private theorem block_120199_19 : evaluate (4237 : ZMod 120199) chunk19 = 21226 := by
-  decide +kernel
-
-private theorem block_120199_20 : evaluate (4237 : ZMod 120199) chunk20 = 23029 := by
-  decide +kernel
-
-private theorem block_120199_21 : evaluate (4237 : ZMod 120199) chunk21 = 34863 := by
-  decide +kernel
-
-private theorem block_120199_22 : evaluate (4237 : ZMod 120199) chunk22 = 14065 := by
-  decide +kernel
-
-private theorem block_120199_23 : evaluate (4237 : ZMod 120199) chunk23 = 87455 := by
-  decide +kernel
-
-private theorem block_120199_24 : evaluate (4237 : ZMod 120199) chunk24 = 102198 := by
-  decide +kernel
-
-private theorem block_120199_25 : evaluate (4237 : ZMod 120199) chunk25 = 21233 := by
-  decide +kernel
-
-private theorem block_120199_26 : evaluate (4237 : ZMod 120199) chunk26 = 112865 := by
-  decide +kernel
-
-private theorem block_120199_27 : evaluate (4237 : ZMod 120199) chunk27 = 90610 := by
-  decide +kernel
-
-private theorem block_120199_28 : evaluate (4237 : ZMod 120199) chunk28 = 45292 := by
-  decide +kernel
-
-private theorem block_120199_29 : evaluate (4237 : ZMod 120199) chunk29 = 74157 := by
-  decide +kernel
-
-private theorem block_120199_30 : evaluate (4237 : ZMod 120199) chunk30 = 76955 := by
-  decide +kernel
-
-private theorem block_120199_31 : evaluate (4237 : ZMod 120199) chunk31 = 80747 := by
-  decide +kernel
-
-private theorem block_120199_32 : evaluate (4237 : ZMod 120199) chunk32 = 48089 := by
-  decide +kernel
-
-private theorem block_120199_33 : evaluate (4237 : ZMod 120199) chunk33 = 74485 := by
-  decide +kernel
-
-private theorem block_120199_34 : evaluate (4237 : ZMod 120199) chunk34 = 78296 := by
-  decide +kernel
-
-private theorem block_120199_35 : evaluate (4237 : ZMod 120199) chunk35 = 118518 := by
-  decide +kernel
-
-private theorem block_120199_36 : evaluate (4237 : ZMod 120199) chunk36 = 92450 := by
-  decide +kernel
-
-private theorem block_120199_37 : evaluate (4237 : ZMod 120199) chunk37 = 35667 := by
-  decide +kernel
-
-private theorem block_120199_38 : evaluate (4237 : ZMod 120199) chunk38 = 116256 := by
-  decide +kernel
-
-private theorem block_120199_39 : evaluate (4237 : ZMod 120199) chunk39 = 98816 := by
-  decide +kernel
-
-private theorem block_120199_40 : evaluate (4237 : ZMod 120199) chunk40 = 62404 := by
-  decide +kernel
-
-private theorem block_120199_41 : evaluate (4237 : ZMod 120199) chunk41 = 45424 := by
-  decide +kernel
-
-private theorem block_120199_42 : evaluate (4237 : ZMod 120199) chunk42 = 119298 := by
-  decide +kernel
-
-private theorem block_120199_43 : evaluate (4237 : ZMod 120199) chunk43 = 90493 := by
-  decide +kernel
-
-private theorem block_120199_44 : evaluate (4237 : ZMod 120199) chunk44 = 32389 := by
-  decide +kernel
-
-private theorem block_120199_45 : evaluate (4237 : ZMod 120199) chunk45 = 319 := by
-  decide +kernel
-
-private theorem block_120199_46 : evaluate (4237 : ZMod 120199) chunk46 = 52281 := by
-  decide +kernel
-
-private theorem block_120199_47 : evaluate (4237 : ZMod 120199) chunk47 = 15936 := by
-  decide +kernel
-
-private theorem block_120199_48 : evaluate (4237 : ZMod 120199) chunk48 = 48008 := by
-  decide +kernel
-
-private theorem block_120199_49 : evaluate (4237 : ZMod 120199) chunk49 = 66785 := by
-  decide +kernel
-
-private theorem block_120199_50 : evaluate (4237 : ZMod 120199) chunk50 = 107063 := by
-  decide +kernel
-
-private theorem block_120199_51 : evaluate (4237 : ZMod 120199) chunk51 = 25844 := by
-  decide +kernel
-
-private theorem block_120199_52 : evaluate (4237 : ZMod 120199) chunk52 = 103396 := by
-  decide +kernel
-
-private theorem block_120199_53 : evaluate (4237 : ZMod 120199) chunk53 = 26806 := by
-  decide +kernel
-
-private theorem block_120199_54 : evaluate (4237 : ZMod 120199) chunk54 = 980 := by
-  decide +kernel
-
-private theorem block_120199_55 : evaluate (4237 : ZMod 120199) chunk55 = 55371 := by
-  decide +kernel
-
-private theorem block_120199_56 : evaluate (4237 : ZMod 120199) chunk56 = 101317 := by
-  decide +kernel
-
-private theorem block_120199_57 : evaluate (4237 : ZMod 120199) chunk57 = 41810 := by
-  decide +kernel
-
-private theorem block_120199_58 : evaluate (4237 : ZMod 120199) chunk58 = 112145 := by
-  decide +kernel
-
-private theorem rows_120199 : evaluate (4237 : ZMod 120199) rows = 64708 := by
-  simp only [rows, evaluate_append,
-    length_01, length_02, length_03, length_04,
-    length_05, length_06, length_07, length_08, length_09,
-    length_10, length_11, length_12, length_13, length_14,
-    length_15, length_16, length_17, length_18, length_19,
-    length_20, length_21, length_22, length_23, length_24,
-    length_25, length_26, length_27, length_28, length_29,
-    length_30, length_31, length_32, length_33, length_34,
-    length_35, length_36, length_37, length_38, length_39,
-    length_40, length_41, length_42, length_43, length_44,
-    length_45, length_46, length_47, length_48, length_49,
-    length_50, length_51, length_52, length_53, length_54,
-    length_55, length_56, length_57, length_58, block_120199_00,
-    block_120199_01, block_120199_02, block_120199_03, block_120199_04, block_120199_05,
-    block_120199_06, block_120199_07, block_120199_08, block_120199_09, block_120199_10,
-    block_120199_11, block_120199_12, block_120199_13, block_120199_14, block_120199_15,
-    block_120199_16, block_120199_17, block_120199_18, block_120199_19, block_120199_20,
-    block_120199_21, block_120199_22, block_120199_23, block_120199_24, block_120199_25,
-    block_120199_26, block_120199_27, block_120199_28, block_120199_29, block_120199_30,
-    block_120199_31, block_120199_32, block_120199_33, block_120199_34, block_120199_35,
-    block_120199_36, block_120199_37, block_120199_38, block_120199_39, block_120199_40,
-    block_120199_41, block_120199_42, block_120199_43, block_120199_44, block_120199_45,
-    block_120199_46, block_120199_47, block_120199_48, block_120199_49, block_120199_50,
-    block_120199_51, block_120199_52, block_120199_53, block_120199_54, block_120199_55,
-    block_120199_56, block_120199_57, block_120199_58]
-  decide +kernel
-
-private theorem controls_120199 : controlReflection (4237 : ZMod 120199) = 88241 := by
-  decide +kernel
-
-private theorem radix_120199 : (radix : ZMod 120199) = 4237 := by
-  change ((2 : ℕ)^47 : ZMod 120199) = 4237
+    length_55, length_56, length_57, length_58, common_00,
+    common_01, common_02, common_03, common_04, common_05,
+    common_06, common_07, common_08, common_09, common_10,
+    common_11, common_12, common_13, common_14, common_15,
+    common_16, common_17, common_18, common_19, common_20,
+    common_21, common_22, common_23, common_24, common_25,
+    common_26, common_27, common_28, common_29, common_30,
+    common_31, common_32, common_33, common_34, common_35,
+    common_36, common_37, common_38, common_39, common_40,
+    common_41, common_42, common_43, common_44, common_45,
+    common_46, common_47, common_48, common_49, common_50,
+    common_51, common_52, common_53, common_54, common_55,
+    common_56, common_57, common_58]
+  decide +kernel
+
+private theorem controls_common : controlReflection (10653241607 : ZMod 11360848883) = 4297442889 := by
+  decide +kernel
+
+private theorem radix_common : (radix : ZMod 11360848883) = 10653241607 := by
+  change ((2 : ℕ)^47 : ZMod 11360848883) = 10653241607
   simp only [Nat.cast_ofNat]
   reduce_mod_char
 
 private theorem start_weight : selectorWeight start = 34876427265 := by decide +kernel
 
-/-- These are residues of the original literal kernel, not a replacement. -/
-theorem K_cast_47 : (K : ZMod 47) = 26 := by
-  rw [K, rawWord_cast, radix_47, rows_47, controls_47, start_weight]
+/-- One common-modulus certificate, projected to every required factor. -/
+theorem K_cast_common : (K : ZMod 11360848883) = 1491904576 := by
+  rw [K, rawWord_cast, radix_common, rows_common, controls_common, start_weight]
   reduce_mod_char
+
+private theorem cast_factor {m n k a : ℕ} (hd : m ∣ n)
+    (h : (k : ZMod n) = (a : ZMod n)) : (k : ZMod m) = (a : ZMod m) := by
+  have hh := congrArg (ZMod.castHom hd (ZMod m)) h
+  simpa only [map_natCast] using hh
+
+theorem K_cast_47 : (K : ZMod 47) = 26 := by
+  exact (cast_factor (m := 47) (by decide : 47 ∣ 11360848883) K_cast_common).trans
+    (by decide +kernel)
 
 theorem K_cast_2011 : (K : ZMod 2011) = 1995 := by
-  rw [K, rawWord_cast, radix_2011, rows_2011, controls_2011, start_weight]
-  reduce_mod_char
+  exact (cast_factor (m := 2011) (by decide : 2011 ∣ 11360848883) K_cast_common).trans
+    (by decide +kernel)
 
 theorem K_cast_auxiliary : (K : ZMod 120199) = 114787 := by
-  rw [K, rawWord_cast, radix_120199, rows_120199, controls_120199, start_weight]
-  reduce_mod_char
+  exact (cast_factor (m := 120199) (by decide : 120199 ∣ 11360848883) K_cast_common).trans
+    (by decide +kernel)
 
 private theorem mod_of_cast {m : ℕ} [NeZero m] (a b : ℕ)
     (h : (a : ZMod m) = (b : ZMod m)) (hb : b < m) : a % m = b := by
