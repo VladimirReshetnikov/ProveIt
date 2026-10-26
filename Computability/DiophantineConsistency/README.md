@@ -26,22 +26,24 @@ polynomial front has a distinct unsubscripted name; its five factors are
 P,Q,U,W,Z and its two masks are mu,omega. The complete 430-action decoder
 and 942 indexed tiles fit on one Letter page at the unchanged fonts.
 
-The [complete sorted2501 candidate](candidates/one-page-sorted-carrier65-2501/README.md)
-uses **58,829 raw fixed-integer bytes**, 468 below the preceding reversed2521
+The [complete phase-split2471 candidate](candidates/one-page-phase-split-carrier65-2471/README.md)
+uses **58,125 raw fixed-integer bytes**, 704 below the preceding sorted2501
 page. It fixes Start and sorts the other 941 selectors by their distinct
 weights. The full weight definition and floor-rank permutation are printed;
 all 885481 comparisons are checked. The abstract tile table is unchanged,
 and the initializer moves from abstract 928 to physical 504.
 
-The [native proof](research/sorted-selector-independent/PROOF.md) resets
-all low fields before marker parity and count recovery, then excludes
-both residual offsets by global Start-cycle arguments. It accounts for
+The [native proof](research/phase-split-independent/PROOF.md) splits the
+fractional binary phases. Low phases use a full coefficient-tail bound;
+high phases recover at most one selector before resetting the low fields.
+Marker parity then fixes the binary phase, and global Start-cycle arguments
+exclude both residual offsets. The proof accounts for
 the reflected-marker collision, all 916 bit3 padding tests, complete masks,
 actual rank, every safe Boolean subset and both positive P66 maps. Its
-[finite certificate](research/sorted-selector-independent/certificate.json)
-discharges the full controller at d = 47*41*61, with auxiliary prime 118681.
+[finite certificate](research/phase-split-independent/certificate.json)
+discharges the full controller at d = 47*7*353, with auxiliary prime 121441.
 Independent mathematical and verifier reviews and
-[root acceptance](research/sorted-selector-independent/ROOT_REVIEW.md) pass.
+[root acceptance](research/phase-split-independent/ROOT_REVIEW.md) pass.
 
 The [uniform Carrier65 proof](research/carrier65-independent/PROOF.md)
 applies at these exact ports. Its complete 65-row arithmetic graph,
@@ -53,11 +55,12 @@ The complete decoder includes radix-one discoveries, both prefix endpoint
 domains and the necessary halt remainder.
 
 Complete TeX is 5362 bytes, extracted nonwhite PDF text 2879 characters,
-PDF 153047 bytes and gzip integers 4256 bytes. Against the preceding
-715-digit reversed2521 page, raw storage saves 468 bytes while TeX grows
-132 bytes, extracted text 33 characters, gzip 84 bytes and PDF 526 bytes.
-That shorter printed predecessor remains available. The
-[independent page review](reviews/sorted-carrier65-2501-page-peer.md) and
+PDF 153047 bytes and gzip integers 4258 bytes. Against the preceding
+715-digit sorted2501 page, raw storage saves 704 bytes and compressed
+storage grows 2 bytes. Complete TeX, extracted text and PDF sizes stay
+unchanged. Only the cell length, clause center and spatial exponent change
+in the source. Every predecessor remains available. The
+[independent page review](reviews/phase-split-carrier65-2471-page-peer.md) and
 [CURRENT_EQUATION.json](CURRENT_EQUATION.json) bind the whole source, all
 four integers, every actual PDF digit, two visual inspections, fresh
 byte-identical rendering and the exact preceding record.

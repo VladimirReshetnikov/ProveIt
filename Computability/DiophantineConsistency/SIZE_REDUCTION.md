@@ -13,20 +13,22 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained [decimal sorted2501 page](candidates/one-page-sorted-carrier65-2501/README.md)
+The maintained [decimal phase-split2471 page](candidates/one-page-phase-split-carrier65-2471/README.md)
 has **14 positive unknowns, 65 integer-leaf operations and exact degree 150**.
 The uniform Carrier65 front and its positive maps are unchanged. The new
 native tuple has a complete ordinary proof, discharged finite premises and
-full independent proof/code reviews. Its four integers total 58829 raw
-bytes, 468 below the preceding reversed2521 tuple.
+full independent proof/code reviews. Its four integers total 58125 raw
+bytes, 704 below the preceding sorted2501 tuple.
 
 The full printed weight definition and floor-rank formula fix Start and
 order the other 941 selectors strictly. The initializer becomes physical
-504. The full suffix from 490 resets low fields before marker1004 parity
-and clause1493 count recovery. Both residual offsets are excluded by global
+504. Low binary phases use the full suffix from459; high phases recover
+at most one selector before resetting low fields. Marker1004 parity then
+fixes the binary phase before full clause1462 decoding.
+Both residual offsets are excluded by global
 Start-cycle arguments. The complete proof covers all 916 bit3 padding tests,
 actual mask populations and rank, every safe subset, the entire three-prime
-controller and both positive P66 maps. The auxiliary prime is 118681.
+controller and both positive P66 maps. The auxiliary prime is121441.
 
 The owner requested base10 and distinct scalar names. Every maintained
 TeX/PDF must retain those preferences. The current page prints all 715
@@ -37,19 +39,20 @@ unsubscripted names, including factors P,Q,U,W,Z. Fonts stay 9pt body and
 checks, independent full reconstruction, two visual inspections and fresh
 byte-identical rendering.
 
-The sorted page saves 468 raw bytes but adds 132 TeX bytes, 33 extracted
-nonwhite PDF characters, 84 gzip bytes and 526 PDF bytes. Totals are
-5362, 2879, 4256 and 153047 respectively. The preceding complete715-digit2521
-page has a shorter displayed recipe and remains preserved with its exact
-CURRENT record. The specialized polynomials differ because their ports do.
+The phase-split page saves704 raw bytes. Complete TeX remains5362 bytes,
+extracted nonwhite PDF text2879 characters and PDF153047 bytes. Gzip grows
+2 bytes to4258. All715 decimal digits and the whole arithmetic front are
+identical; only three fixed scalar exponents change. The complete sorted2501
+parent and its exact CURRENT record remain preserved. The specialized
+polynomials differ because their ports do.
 
 The independently reviewed full-suffix exchange bound proves C>=1493 and
-L>=2501 only within its fixed weight/marker/reset/controller family. Next
-work splits binary phases to seek a sharper reset argument, and develops
-separate rational-leaf and lower-degree arithmetic tradeoffs. Those leads
-are not accepted replacements until their full proof and literal graph
-are reviewed. Every earlier native and complete-page checkpoint remains
-available.
+L>=2501 only within its fixed weight/marker/reset/controller family. The
+accepted2471 proof changes that reset method. Next work uses consecutive
+padding tests before full decoding to seek a stronger reduction, alongside
+rational-leaf and lower-degree arithmetic tradeoffs. New leads require
+their complete proof, finite certificate and page review before promotion.
+Every earlier native and complete-page checkpoint remains available.
 
 The [scaled auxiliary replacement](research/scaled-auxiliary118/README.md)
 now has two independent ordinary reviews, a complete sorted2501-bound
