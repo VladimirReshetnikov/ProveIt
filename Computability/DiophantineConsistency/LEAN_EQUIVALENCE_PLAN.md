@@ -476,7 +476,17 @@ See the [root review and four fresh replays](reviews/wang-tiles942-strip-foundat
 Finite strip bounds and actual machine-run semantics are subsequent work.
 
 Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. `WangTiles942InputLanguage` now
+integration, documentation and commits. `WangTiles942RowEncoding` now
+identifies row1 of the derived persistent strip with the actual decimal
+machine at clock1, with its head inside the walls and every interior
+north color equal to the actual configuration encoder. `WangTiles942OperatingRow`
+then derives absence of every interior finish while the encoded state is
+operating: one finish would propagate to the forced head transition,
+whose South is Boolean. No clean-row or no-finish premise is introduced.
+See the [author review and four fresh checks](reviews/wang-tiles942-row-encoding-operating-lean-root.md).
+The actual one-row step theorem and eventual-halt extraction remain open.
+
+`WangTiles942InputLanguage` now
 identifies each operating north head input with its exact actual transition
 and retains both pass/finish choices at halt and all pass/finish/receive
 choices at plain inputs. `WangTiles942ResetRows` propagates one actual
