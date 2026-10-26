@@ -42,6 +42,12 @@ post-merge refresh also passed; see the
 [limited refresh](reviews/current-positive-zero2011-refresh-replay.md).
 Neither is an HA proof-existence theorem.
 
+The current-port mixed-carrier13-variable variants at72/124 and74/122
+also have checked entire-positive-zero maps and closed external ConZFC
+equivalences. Their [independent replay](reviews/thirteen-lv-carrier122-root.md)
+passed16 standard-only reports, with separate complete finite metric checks.
+Their HA proof-existence endpoints remain open alongside the maintained page.
+
 [ObjectCurrentEquation2011](Lean/DiophantineConsistency/ObjectCurrentEquation2011.lean)
 supplies a set-theory-language no-solution sentence with exact arbitrary-model
 positive-domain semantics. That work is retained, but the new HA target

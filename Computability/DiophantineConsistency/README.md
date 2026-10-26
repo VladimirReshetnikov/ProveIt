@@ -103,13 +103,17 @@ authenticates both complete files and all 715 digits in a fresh PDF extraction.
 A fresh one-page build is byte-identical, and its whole page was visually checked.
 Subscripts in the fixed tile table and decoder index constant data.
 
-The new [13/73/126 arithmetic variant](research/thirteen-corrected-strong126/README.md)
-preserves the complete positive zero set of the normalized13-variable form
-at the CURRENT2011 ports, spending two operations to reduce degree128 to126.
-Its consistency equivalence is externally Lean-checked, and its complete
-graph/degree/whole-port audit has independent root replay. It remains a
-separate tradeoff; the14/65/150 decimal display is preserved. HA
-proof-existence formalization remains governed by the plan above.
+The new [mixed-carrier variants](research/thirteen-lv-carrier122/README.md)
+have **13 positive variables with72 operations/degree124 and74 operations/degree122**,
+at all four complete CURRENT2011 ports. Explicit inverse polynomial maps
+preserve their entire positive zero sets, with positivity derived from each
+zero. Both consistency equivalences are externally Lean-checked; their
+complete graph/degree/whole-port audits passed independent normal/optimized
+[root replay](reviews/thirteen-lv-carrier122-root.md). The72/124 point
+improves both metrics of the preserved
+[73/126 checkpoint](research/thirteen-corrected-strong126/README.md).
+The71/128 and14/65/150 points remain separate tradeoffs. The decimal display
+is preserved, and HA proof-existence formalization remains open.
 
 The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 uses **47,313 raw fixed-integer bytes**, 10,812 below the preceding2471

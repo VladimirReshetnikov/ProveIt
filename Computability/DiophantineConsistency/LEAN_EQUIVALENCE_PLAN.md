@@ -935,6 +935,20 @@ checks and all72 leading terms. All four actual ports are rebuilt in the
 normal/optimized auditor. This is a two-operation/two-degree tradeoff,
 with no Lean exact-degree or HA proof-existence endpoint claimed.
 
+`ThirteenLVCarrier` now gives both complete current-port mixed-carrier
+variants:72 operations/degree124 and74 operations/degree122. Its inverse
+polynomial maps change only m and preserve every positive zero of their
+respective71/128 and73/126 parents. Positivity of the subtractive map is
+derived from the actual norm equations, including zero transport and
+negative signed ordinates. Both literal current polynomials have closed
+external no-positive-zero iff actual ConZFC theorems. Fresh independent
+main/check replay passed16 standard-only reports; separate normal/optimized
+finite checks reproduce the exact graphs, full ports and complete leading
+polynomials. See the [root review](reviews/thirteen-lv-carrier122-root.md).
+These fresh leaves reuse accepted prerequisites; no new whole-closure,
+Lean exact-degree or HA proof-existence theorem is claimed. The72/124
+profile improves both metrics of73/126; the latter remains preserved.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
