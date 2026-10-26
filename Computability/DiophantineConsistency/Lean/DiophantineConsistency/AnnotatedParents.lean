@@ -67,10 +67,8 @@ attribute [local irreducible] check
 theorem lookup_code_maps_iff (history expected : List Judgment) (parents : List Nat) :
     parents.map (fun i => (history.map judgmentCode)[i]?)=(expected.map judgmentCode).map some ↔
       parents.map (fun i => history[i]?)=expected.map some := by
-  have ho : Function.Injective (Option.map judgmentCode) := by
-    intro a b h
-    cases a <;> cases b <;> simp [judgmentCode_injective.eq_iff] at h ⊢
-    exact h
+  have ho : Function.Injective (Option.map judgmentCode) :=
+    Option.map_injective judgmentCode_injective
   have hl : parents.map (fun i => (history.map judgmentCode)[i]?)=
       (parents.map (fun i => history[i]?)).map (Option.map judgmentCode) := by
     simp only [List.getElem?_map,List.map_map,Function.comp_def]
