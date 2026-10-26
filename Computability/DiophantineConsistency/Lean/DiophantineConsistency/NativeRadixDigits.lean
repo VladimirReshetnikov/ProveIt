@@ -51,10 +51,7 @@ theorem decode_originMask {v C : ℕ} (hv : 1 ≤ v) (hC : 0 < C)
     (hmask : (C - 1) &&& word (2 ^ v) (originMask (2 ^ v) bits) = 0) :
     ∃ c : ZMod n → ℕ, word (2 ^ v) c = C ∧ c 0 = 1 ∧
       ∀ k, c k < 2 ^ bits k := by
-  have hr : 1 < 2 ^ v := by
-    have hp := Nat.pow_le_pow_right (n := 2) (by decide) hv
-    norm_num at hp
-    omega
+  have hr : 1 < 2 ^ v := Nat.one_lt_two_pow (by omega)
   have hg : C - 1 < (2 ^ v) ^ n := by omega
   let d := digitArray (n := n) (2 ^ v) (C - 1)
   have hd (k : ZMod n) : d k < 2 ^ v := digitArray_lt hr hg k
@@ -81,9 +78,8 @@ theorem decode_originMask {v C : ℕ} (hv : 1 ≤ v) (hC : 0 < C)
   · intro k
     by_cases hk : k = 0
     · subst k
-      have hp := Nat.pow_le_pow_right (n := 2) (by decide) hfirst
-      norm_num at hp
-      simpa only [c, hd0, ite_true, zero_add] using (show 1 < 2 ^ bits 0 by omega)
+      simpa only [c, hd0, ite_true, zero_add] using
+        (Nat.one_lt_two_pow (by omega : bits 0 ≠ 0))
     · simpa only [c, hk, if_false, add_zero] using hcapacity k
 
 omit [NeZero n] in

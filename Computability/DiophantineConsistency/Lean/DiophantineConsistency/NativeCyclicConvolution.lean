@@ -76,15 +76,10 @@ theorem word_convolution {ρ : ℕ} (hρ : 1 ≤ ρ) (a c : ZMod n → ℕ) :
       have hp := (pow_mod_length (n := n) hρ (i.val + j.val)).symm
       rw [← ZMod.val_add] at hp
       exact hp.mul_left _
-    _ = ∑ i : ZMod n, (a i * ρ ^ i.val) * word ρ c := by
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [word, Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro j _
-      rw [pow_add]
-      ring
-    _ = word ρ a * word ρ c := by rw [← Finset.sum_mul]; rfl
+    _ = word ρ a * word ρ c := by
+      simp only [word, Finset.sum_mul, Finset.mul_sum, pow_add]
+      rw [Finset.sum_comm]
+      simp only [mul_assoc, mul_left_comm, mul_comm]
 
 theorem finEquiv_val (i : Fin n) : (ZMod.finEquiv n i).val = i.val := by
   cases n with

@@ -23,10 +23,7 @@ def program (body : Nat → Nat → Nat) (bodies : ∀ k : Nat,R (body k)) :
     simp only [value]
     by_cases he : n.unpair.1=count
     · simp only [he,Nat.lt_succ_self,if_true]
-    · by_cases hlt : n.unpair.1<count
-      · have hnext : n.unpair.1<count+1 := by omega
-        simp only [he,hlt,hnext,if_false,if_true]
-      · have hnext : ¬n.unpair.1<count+1 := by omega
-        simp only [he,hlt,hnext,if_false]
+    · have hlt : n.unpair.1 < count + 1 ↔ n.unpair.1 < count := by omega
+      simp only [he, if_false, hlt]
 
 end DiophantineConsistency.ArithmeticFiniteSwitch
