@@ -1,0 +1,495 @@
+\section{The retained proof-calculus architecture}
+
+The numerical calculus has truth code $0$, falsity code $1$, modus ponens,
+generalization, eight logical axiom schemata, and a guarded seed schema.
+Its literal square-shell constructors are
+\begin{align*}
+ I(a,b)&=2((a+b)^2+a),&M(a,b)&=I(a,b)+1,\\
+ A(a,b)&=2((a+b)^2+3a+4b+3),&E(a,b)&=A(a,b)+1.
+\end{align*}
+They encode implication, membership, universal quantification, and
+equality. Put $N(a)=I(a,1)$ and $X(a,b)=N(A(a,N(b)))$.
+The pairing maps $Q_0=(a+b)^2+a$ and
+$Q_1=(a+b)^2+3a+4b+3$ enumerate complementary square shells;
+parity supplies the four constructors. The inherited decoding theorem
+transports finite refutations between these codes and the original
+Cantor-coded $C_{222}$ calculus, fixing $0$ and $1$~\cite{shell}.
+
+For clarity the retained logical codes are
+\begin{align*}
+ r_1&=X(a,E(a,b)),\\
+ r_2&=I(A(a,I(b,c)),I(A(a,b),A(a,c))),\\
+ r_3&=I(E(a,b),I(M(c,a),M(c,b))),\\
+ r_4&=I(A(a,A(b,c)),A(b,A(a,c))),\\
+ r_5&=I(E(c,a),I(M(c,b),M(a,b))),\\
+ r_6&=I(X(a,A(a,b)),b),\\
+ r_G&=I(E(c,a),I(E(c,b),A(M(a,b),E(a,b)))),\\
+ r_8&=I(I(I(c,d),a),I(I(a,c),I(b,c))).
+\end{align*}
+Define
+\begin{align*}
+ \operatorname{Req}(b,k,m)
+ &=A(b,I(m,N(A(b,I(m,N(M(b,k))))))),\\
+ S(a,b,k)&=A(k,I(M(k,a),M(k,b))),\\
+ T(a,b,k,m)&=N(A(a,I(S(a,b,k),\operatorname{Req}(b,k,m)))),\\
+ \operatorname{Clos}(a,b,k,m)
+ &=A(b,I(M(b,k),N(A(a,I(m,T(a,b,k,m)))))),\\
+ \operatorname{nks}(a,b,c)&=A(c,I(\operatorname{Clos}(a,b,c,c),
+                   N(\operatorname{Req}(b,c,c)))),\\
+ \operatorname{RV}(a,b,c)&=I(M(a,b),A(c,M(a,b))),\\
+ r_9&=N(I(\operatorname{RV}(a,b,c),\operatorname{nks}(a,b,c))).
+\end{align*}
+The last schema is allowed when $c\ne a,b$. Its arithmetic guard is
+\[
+ G=(c-a)^2(c-b)^2-(d+1)^2=0,\qquad a,b,c,d\in\N.
+\]
+Such a $d$ exists exactly when the two disequalities hold. The parameter
+$d$ can separately be an ordinary formula parameter in the $r_8$ branch.
+The alternatives do not require both interpretations simultaneously.
+
+The proof transcript is encoded by positive weights $w(j)=1+Fj$.
+A backward axiom step has $S'w(r)=S$, modus ponens has
+$S'w(b)=S w(a)w(I(a,b))$, and generalization has
+$S'w(A(a,b))=S w(b)$. Truth uses $S'=S$.
+Let $D_r=S'w(r)-S$ and define the analogous MP and generalization
+differences. The retained nonnegative local polynomial is
+\[
+ \LL=(S'-S)^2\!\prod_{r\in\mathcal R}D_r^2
+       (D_{r_9}^2+G^2)D_{\rm MP}^2D_{\rm gen}^2+B_0^2+B_1^2.
+\]
+Here $\mathcal R=\{r_1,r_2,r_3,r_4,r_5,r_6,r_G,r_8\}$, and $B_0,B_1$ are the two beta-remainder equations. Thus $\LL=0$
+means that one valid proof-rule branch and both beta equations hold.
+The retained Round22 reference construction uses this local polynomial unchanged.
+The new source deltas below identify precisely which arithmetic rows change.
+
+\section{Formula bounds without a range test}
+
+The old arithmetic source separately required a derived sum of formula
+labels to lie below the proof horizon in every local row. That required
+its own numerator power, binomial divisibility test, and Pell index.
+The replacement needs only a fixed, much more generous syntactic bound.
+
+\begin{lemma}[Constructor-depth bound]\label{lem:depth}
+For $t\ge16$, every formula label needed by a local rule with
+$0\le a,b,c,d<t$ is smaller than $t^{2^{20}-1}$.
+In particular it is at most $L=t^{2^{20}}$.
+\end{lemma}
+\begin{proof}
+For a positive integer $s$, if integer inputs $0\le x,y<s$, then
+$x,y\le s-1$ and each of
+$I(x,y),M(x,y),A(x,y),E(x,y)$ is less than $8s^2$.
+For the largest constructor,
+$A(s-1,s-1)=8s^2-2s$, and $E$ adds one. If the inputs are
+less than $t^e$, $e\ge1$, each output is consequently less than
+$t^{2e+1}$. Starting with exponent one, a term of constructor depth
+$h$ is bounded by $t^{2^{h+1}-1}$.
+
+The exact syntax trees of the nine axiom codes have depths
+\[
+                 4,3,3,3,3,5,4,3,19.
+\]
+The MP and generalization labels have depth one; parameter labels have
+depth zero. The depth certificate checks the trees against the pinned
+literal constructor source, including all occurrences of $N$ and $X$.
+The maximum depth nineteen proves the result. No asymptotic estimate or
+coefficient rounding enters this argument.
+\end{proof}
+
+\begin{lemma}[Sharp product separation]\label{lem:separate}
+Let $L,t,F$ be positive integers with $L\ge t\ge1$ and $F\ge L^t$.
+Consider two finite lists of positive
+integer labels at most $L$. Suppose the first has at most $t$ entries
+and the second at most $2t+1$ entries. If their products of weights
+$1+Fj$ agree, their label multisets agree.
+\end{lemma}
+\begin{proof}
+First the lists have equal length. If their lengths differ, let the
+smaller length be $r\le t$. The product for the smaller list is at most
+$L^r(F+1)^r$, while the larger is at least $(F+1)^{r+1}$.
+But $F+1>L^t\ge L^r$, a contradiction.
+
+Write their common length as $m\le t$. For $1\le k\le m$, each
+elementary symmetric coefficient $e_k$ of the labels satisfies
+\[
+ 1\le e_k\le \binom{m}{k}L^k
+       \le m^{m-k}L^k\le L^m\le F.
+\]
+The middle estimate uses $\binom{m}{k}=\binom{m}{m-k}\le m^{m-k}$.
+Thus the corresponding coefficients of the difference of
+$\prod(1+jX)$ have absolute value strictly less than $F$; the constant
+coefficient is zero. If the polynomial difference were nonzero, divide
+its value at $F$ by the lowest power with nonzero coefficient and reduce
+modulo $F$. A nonzero integer of absolute value less than $F$ would be
+divisible by $F$, impossible. The two polynomials coincide. Their linear
+factors over $\Q$ recover every label with multiplicity. The empty-list
+case is immediate. Labels zero, if present, contribute unit factors and
+are discarded before this argument.
+\end{proof}
+
+The boundary $F=L^t$ is permitted. Bounding coefficient differences by
+twice the largest coefficient would miss this useful fact: both coefficients
+are positive, so their difference has absolute value at most $F-1$.
+
+The Round22 weighted family uses fixed positive integers $c,h$ with
+$h\ge16$, $4\mid h$ and $ch^3\ge2^{20}$, and the semantic choices
+\begin{equation}\label{eq:growth}
+ t=h+4z^2,\qquad T_2=t^2,\qquad K=cT_2^2,\qquad F=t^K.
+\end{equation}
+Then $K\ge2^{20}t$, so $F\ge L^t$ exactly as required. The selected
+weighted source has $(c,h)=(32,32)$. The dimension companion instead uses
+\[
+ t=1024+4z^2,\qquad K=1024t^2,\qquad F=t^K.
+\]
+Again $K\ge2^{20}t$, including equality at the smallest horizon.
+The separate $T_2$ coordinate is not needed in this companion. All horizons
+are cofinal multiples of four; all other arguments need only $t\ge16$
+and $F\ge t^t$. The actual $K$, not an obsolete exponent expression,
+is included in the square frame and orientation ledger. Only the polynomial
+horizon and exponent relations are direct rows; the power relation is
+certified by the retained Pell mechanism.
+
+\section{The factorial-free arithmetic front}
+
+Use the following semantic quantities:
+\begin{align}
+ B&=\binom{F+t}{t},& N&=B^x,\label{eq:BN}\\
+ y&=F(2v+1),& C&=2c_0,\label{eq:betaC}\\
+ H&=2+4(C+a+b+c+d+S+S'+u+v_q),&q&=(BH)^x.\label{eq:radix}
+\end{align}
+The nine large CRT representatives are
+$a,b,c,d,S,S',u,v_q,C$; their local residues encode one proof row.
+The independent names $c_0$ and $v$ in \eqref{eq:betaC} are unrestricted
+integer witnesses, not extra local schema parameters.
+
+The endpoints and row-index congruence are
+\begin{align}
+ x&=F+1+(y+1)u_0,
+ &x&=1+[1+(t+1)y]u_t,\label{eq:endpoints}\\
+ B\eta&=C+F+1.\label{eq:selector}
+\end{align}
+For a local row with index $i=C\bmod p^{ex}$, the beta equations are
+\[
+ x=S+[1+(i+1)y]u,\qquad
+ x=S'+[1+(i+2)y]v_q.
+\]
+The retained ranges are $a,b,c,d,C<t$, $S,S'\le y$, and $u,v_q<x$
+on local decoded residues. There is no longer a range test on a derived
+formula-label sum.
+
+\subsection{Why one binomial modulus covers every row}
+
+Here is the inherited selector theorem in the form used by this
+construction~\cite{factorialfree}. Let $\Lambda_t=\lcm(1,\ldots,t)$.
+If $R\ge\Lambda_t^2$ and $B=\binom{R+t}{t}$, then:
+\begin{enumerate}
+\item for every $1\le i\le t$, some full prime power $p^e\Vert B$
+      divides $R+i$ and satisfies $p^e>t$;
+\item every full prime power $p^e\Vert B$ divides $R+i$ for at least one
+      such row $i$.
+\end{enumerate}
+Both directions matter. The first authenticates each row; the second
+makes the reverse CRT construction compatible at every prime of $B$.
+
+For completeness, the elementary proof is short. The valuation formula
+shows $t\binom{t-1}{i-1}\mid\Lambda_t$. Since $R+i>\Lambda_t^2$,
+some prime has $w=v_p(R+i)>2a$, where
+$a=\lfloor\log_p t\rfloor$. Other factors $R+j$ have the same
+$p$-valuation as $j-i$. Consequently
+\[
+ v_p(B)=w-v_p\left(t\binom{t-1}{i-1}\right)>a,
+ \qquad v_p(B)\le w,
+\]
+which proves the first statement. For the second, let
+$w=\max_i v_p(R+i)$. In Legendre's formula for $v_p(B)$ every summand
+is zero or one, and all levels above $w$ vanish. Hence $v_p(B)\le w$;
+a row attaining the maximum is compatible.
+
+The standard elementary estimate $\Lambda_t\le4^{t-1}$ gives
+$F\ge t^t\ge16^t>\Lambda_t^2$. Therefore $R=F$ is valid. Unlike
+the parent, this construction has no equation requiring a variable to
+equal a factorial.
+
+\subsection{The range lemma and precision}
+
+For a prime $p$, integers $A\ge0$ and $k,e\ge1$,
+\begin{equation}\label{eq:rangelemma}
+ p^e\mid\binom{A}{k}\quad\Longrightarrow\quad A\bmod p^e<k.
+\end{equation}
+If none of the $k$ consecutive factors $A-k+1,\ldots,A$ is divisible
+by $p^e$, the valuation formula has at most $e-1$ nonzero levels, a
+contradiction. A factor divisible by $p^e$ gives the claimed residue.
+The convention $\binom{A}{k}=0$ for $A<k$ covers the boundary.
+
+At a selector $p^e\Vert B$, the range for $C$ and
+\eqref{eq:selector} give the exact local index $i-1$ in $0,\ldots,t-1$.
+The other ranges recover the bounded local tuple modulo $p^{ex}$.
+The retained local bound is
+\begin{equation}\label{eq:localbound}
+ 0\le\LL<(2+t+x+y+F)^{2^{23}}<2^x\le p^{ex}.
+\end{equation}
+Its first inequality is the existing literal $C_{222}$ circuit
+majorant~\cite{strictbudget}; changing the size of $F$ does not change
+that polynomial bound. Once signs are recovered,
+$x\ge2+(t+1)y$ and $y\ge F$ imply $2+t+x+y+F<2x$ and
+$x\ge F+1>2^{32}$. If $2^n\le x<2^{n+1}$, $n\ge32$, then
+$2^{23}(n+2)<2^n\le x$, proving the second strict inequality in
+\eqref{eq:localbound}. Thus $N\mid\LL$ forces each selected local
+value to be zero.
+
+\section{A freely chosen CRT index as the Pell anchor}
+
+The incoming anchor change is independent of the detailed syntax of $C_{222}$.
+An integer used as a CRT representative can be enlarged by whole multiples
+of its modulus without changing the finite transcript it represents.
+We use that freedom to make $C$ the largest requested Pell index.
+
+Write $X_j(A),Y_j(A)$ for the Pell polynomials, defined by
+\[
+ X_0=1,\quad Y_0=0,\qquad
+ X_{j+1}=AX_j+(A^2-1)Y_j,\quad Y_{j+1}=X_j+AY_j.
+\]
+Signed indices have $X_{-j}=X_j$, $Y_{-j}=-Y_j$.
+The square frame is $W=2+\sum\alpha^2$, where every actual power base,
+index, and proposed output occurs among the $\alpha$. The retained odd
+Pell frame proves $|A|>W^W$ and $|A-1|>4W^3$.
+
+The fourteen nominal indices are
+\begin{equation}\label{eq:indices}
+ t,\ F+t,\ a,b,c,d,\ S,\ y+1,\ S',\ u,\ x,\ v_q,\ C,\ K.
+\end{equation}
+The former derived-label pair is reassigned to $K$; the existing $C$
+pair becomes the anchor. With anchor coordinates $(U,Y)$, retain auxiliary
+Pell pairs $(J_X,J_Y)$ and $(V_X,V_Y)$ and comparison center $D$ satisfying
+\begin{align*}
+ U^2-(A^2-1)Y^2&=1,&J_X^2-(A^2-1)J_Y^2&=1,\\
+ V_X^2-(D^2-1)V_Y^2&=1,&J_Y&=Y^2(2e+1),\\
+ D&=1+4J_Y(2d_0+1),&D&=A+J_Xf_0,\\
+ V_X&=U+J_Xg_0,&V_Y&=C+4Yh_0.
+\end{align*}
+The squared bound is
+\begin{equation}\label{eq:cap}
+ Y^2=C^2+1+\sum_{i\ne\mathrm{anchor}}Y_i^2
+             +r^2+s^2+w(w+1).
+\end{equation}
+All these variables are unrestricted integers. Multiplication wires turn
+the displays into quadratic residuals; the final emitted data contain the
+actual wires, not a higher-degree shorthand.
+
+\begin{proposition}[Anchor substitution]\label{prop:anchor}
+The retained signed anchor and pooled orientation proof applies with
+nominal index $C$ in place of the derived formula-label index. No
+monotonicity or syntactic interpretation of $C$ is required in soundness.
+For completeness, $C$ can be chosen even and larger than all other indices
+in \eqref{eq:indices} while preserving every required CRT residue.
+\end{proposition}
+\begin{proof}
+Equation~\eqref{eq:cap} gives $|Y|>|C|$, so $Y\ne0$. Pell
+classification and the retained squared-divisibility argument give an
+absolute index $i>0$ with $|Y|=Y_i(|A|)$ and
+$i=\pm C\pmod{2|Y|}$. Since $1\le i\le|Y|$ and $|C|<|Y|$,
+one obtains $C\ne0$ and $i=|C|$. Every other classified index is
+strictly smaller than $|C|$ by the same squared bound.
+
+The pooled orientation row is, modulo its retained norm identities,
+\[
+ \sum_i\bigl((X_i-1)^2+(Y_i-k_i)^2\bigr)=(A-1)Q_0.
+\]
+Modulo $A-1$, write $s_i\in\{-1,1\}$ and $r_i$ for the small
+abscissa and ordinate residues of each classified pair. The absolute
+value of $r_i$ is its classified index, hence at most $|C|<W$.
+Thus $|s_i-1|\le2$ and $|r_i-k_i|<2W$. For the fourteen pairs their
+squared-error sum satisfies
+\[
+ 0\le\sum_i\bigl((s_i-1)^2+(r_i-k_i)^2\bigr)
+       <4\cdot14(W^2+1)<4W^3<|A-1|.
+\]
+It must vanish, identifying every pair with the canonical signed pair
+at its nominal index. This includes the new $K$ pair and the $C$ anchor.
+These are exactly the hypotheses and steps of the inherited signed-anchor
+proof~\cite{anchor}; the name or origin of the nominal index never enters.
+
+For the reverse construction, first fix $t,K,F,y,x,B,N$ and the
+prescribed residue classes of the nine representatives. None of these
+choices depends on the eventual representative $C$. Since $t$ is
+divisible by four and $F=t^K$, $v_2(F)=K v_2(t)>\lfloor\log_2t\rfloor$.
+Therefore $v_2(F+i)=v_2(i)$ for $1\le i\le t$, and $B$ and $N^2$
+are odd. Each prescribed class modulo $N^2$ has cofinally many positive
+even representatives, with step $2N^2$. Choose the other eight representatives
+first, then choose $C$ in its class above all the other fixed indices.
+This also preserves $B\mid C+F+1$, since $B\mid N^2$.
+Only afterward are $H,q,W,A$ chosen. There is consequently no cyclic
+size requirement.
+
+For canonical pairs at a positive sufficiently large $A$, the strict index
+inequality makes the slack in \eqref{eq:cap} nonnegative. Since $C$ is
+even, $Y_C(A)$ is even and $X_C(A)$ odd. The inherited explicit auxiliary
+choice at index $C Y_C(A)$ makes $J_Y/Y_C(A)^2$ odd; a two-modulus CRT
+then constructs $D$ and the remaining comparison coordinates. Every
+nonnegative slack has the ternary representation
+$r^2+s^2+w(w+1)$. Thus all anchor witnesses exist.
+\end{proof}
+
+\section{Power certificates and the noncircular sign argument}
+
+The polynomial retains sixteen power requests: three individual requests
+for $F=t^K$, $N=B^x$, $q=(BH)^x$; ten at base $q+1$ for the binomial
+numerators; and three at base $q$ for $q^t,q^{y+1},q^x$.
+The incoming square frame has thirty-five actual atoms, including duplicates where
+the same integer has two roles. Its coefficient identity is independently
+checked against every requested base, index, and output.
+
+For a block at nonzero base $n$, let $Z_i=AY_i$ and let $m_i$ be the
+proposed output. The inherited pooling mechanism uses just two rows:
+\begin{align*}
+ K_n-2\sum_iY_i(m_i-X_i)-(2A-n)L_n&=0,\\
+ \sum_i((m_i-X_i+Z_i)^2-Y_i^2)-nK_n+L_n&=0.
+\end{align*}
+They imply divisibility of the sum of squared power errors by
+$T_n=2An-n^2-1$. To handle signed indices, put
+$b=\lfloor\sqrt{W-1}\rfloor$ and multiply by $n^{2b}$. Canonical
+Pell congruences then give
+\[
+ T_n\mid E=\sum_i(m_i n^b-n^{b+k_i})^2,
+ \qquad 0\le E\le4r b^{4b}<W^W<|T_n|.
+\]
+Here $r\le15$, every exponent $b+k_i$ is nonnegative, and
+$\gcd(n,T_n)=1$. Consequently every output is exact; at $|n|\ge2$
+the index is nonnegative, since a negative index would force an integer
+times a positive power of $|n|$ to equal one. The individual requests
+use the same canonical power argument. All displayed exponentials occur
+in this proof, not as operations in the final polynomial.
+
+It remains essential to justify the bases before interpreting these
+requests. The order is as follows.
+\begin{enumerate}
+\item The known $t\ge16$ and positive $K$ give $F=t^K>0$, even.
+      Since $C=2c_0$, equation~\eqref{eq:selector} has odd right side,
+      so $B\ne0$. Independently, $H\equiv2\pmod4$ for every signed
+      representative tuple. Thus $|BH|\ge2$.
+\item The individual $BH$ request gives $x\ge0$ and $q=(BH)^x$.
+      Equation $y=F(2v+1)$ gives $|y|\ge F$. If $x=0$, the last
+      endpoint would make the integer $1+(t+1)y$, whose absolute value
+      exceeds one, divide $-1$. Therefore $x\ge1$, $|q|\ge2$.
+\item The $q$ block is now legitimate. Its $y+1$ index is nonnegative.
+      A negative $y$ would be at most $-F<-1$, so $y\ge F$.
+      The first endpoint excludes $u_0<0$, and the last excludes
+      $u_t\le0$. Thus $x\ge F+1$ and $x\ge2+(t+1)y$.
+\item Hence $|q+1|\ge2$. Its block recovers the nonnegative signs
+      of all nine representatives and all their exact numerator powers.
+      Now $H\ge2$. No earlier step needed these signs.
+\item The first binomial digit authenticates $B>0$, as proved next.
+      It follows that $q>0$ and $N=B^x>0$, completing the sign recovery.
+\end{enumerate}
+
+\subsection{Exact recovery of the digits}
+
+Let $M=q^x$. Ten normalized remainder rows share
+\begin{equation}\label{eq:remaindernorm}
+ M^2=1+4\sum_{i=1}^{10}\rho_i^2+\alpha^2+\beta^2+\gamma(\gamma+1).
+\end{equation}
+For a denominator $D_i=q^{k_i}$, the ratio equation
+$D_i a_i=M$ and normalized digit equation imply
+$r_i=\rho_i/a_i\in\Z$ and the usual unscaled division equation.
+The norm gives $|r_i|<|D_i|/2$, even before signs of the radix
+are known. The retained Round22 reference source uses this coefficient-four
+sphere exactly. Later source variants must authenticate their own literal norm. A true low binomial remainder with absolute value below
+$|D_i|/32$ must equal $r_i$, by congruence and the strict interval width.
+
+For the first digit, every coefficient of $(q+1)^{F+t}$ through degree
+$t$ is at most $(F+t)^t\le2^{t(F-1)}$. On the other hand,
+$|q|\ge2^x\ge2^{(t+1)F+2}$. The true low remainder and the
+$t$-th coefficient are therefore smaller than their needed denominators
+divided by $32$. The normalized first row gives
+$B\equiv \binom{F+t}{t}\pmod q$. Also
+$|B|\le|BH|<|q|/2$, since $x\ge3$; the positive binomial coefficient
+is below $|q|/32$. This proves the exact identity
+$B=\binom{F+t}{t}>0$.
+
+For every other numerator with upper argument $a\ge0$ and requested
+digit level $k\le x$,
+$\binom{a}{j}\le\max(1,a)^x\le H^x$. Since $q=B^xH^x$ and
+$B\ge2$, the same strict remainder bound follows. There is no
+derived-label numerator needing a separate degree estimate here.
+The ratios prove the necessary denominator divisibilities, and the
+decoded digit equations yield the nine retained range predicates.
+
+\section{Soundness and completeness of the retained reference front}
+
+\subsection{From an integer zero to a finite refutation}
+
+The previous sections recover every sign, power, binomial digit, and
+local range from an arbitrary integer zero. The selector theorem and
+\eqref{eq:localbound} supply exactly $t$ valid local proof steps.
+Their beta states join because the same $x,y$ determine the unique
+remainders modulo $1+(i+1)y$.
+
+The possible boundary $y=F$ must not be overlooked. Then the first beta
+remainder is zero, whereas the last is one. Every valid local weight
+equation propagates a zero state to zero, since all weights are positive.
+This contradiction proves $y>F$. Thus the initial and terminal states
+are respectively $F+1=w(1)$ and $1$.
+
+Multiplying the local equations and cancelling the nonzero intermediate
+states gives equality between the multiset of conclusion weights and
+the initial falsity weight together with all premise weights. There are
+at most $t$ nonunit conclusion factors and at most $2t+1$ nonunit premise
+factors. All local labels are at most $L$ by Lemma~\ref{lem:depth}.
+Lemma~\ref{lem:separate} gives equality of the corresponding label
+multisets.
+
+Finally, a balanced single-conclusion rule flow implies a finite
+derivation of its distinguished target. To see this without assuming the
+flow is acyclic, close the finitely many displayed rules under derivability,
+starting with the valid axiom and truth conclusions. If falsity were outside
+that closure, every rule with an outside conclusion would have at least one
+outside premise. Summing ``outside conclusions minus outside premises''
+over all occurrences would be at most zero. The recovered balance makes
+the sum exactly one, contributed by the target falsity. Contradiction.
+The finite closure computation itself extracts a derivation.
+
+\subsection{From a finite refutation to an integer zero}
+
+Start with a finite backward proof-tree expansion. Choose the cofinal
+horizon $t=h+4z^2$ (or $t=1024+4z^2$) larger than its length and every local schema
+parameter, including all freshness witnesses. There is no need to make
+$t$ exceed the full expanded formula codes. Set $K=ct^4$ (or $K=1024t^2$) and $F=t^K$;
+form all finite pending-multiset products with weights $1+Fj$, and pad
+the transcript with truth steps to length $t$.
+
+Let $O$ be the odd part of $t!$. Choose an arbitrarily large positive odd
+multiple $w$ of $O$ and put $y=Fw$. Since
+$v_2(F)=K v_2(t)\ge2t>v_2(t!)$, one has $t!\mid y$.
+Choose $w$ large enough that $y>F$ and every pending state is at most $y$.
+The moduli $1+(i+1)y$, $0\le i\le t$, are pairwise coprime: a
+common prime would divide both $y$ and one of these moduli after taking
+an index difference at most $t$. CRT gives $x$ with the prescribed state
+remainders; its residue class is cofinal, so all needed endpoint and
+quotient inequalities can be met.
+
+Now set $B=\binom{F+t}{t}$ and $N=B^x$. At every full prime power
+$p^e\Vert B$, select one compatible row and choose all nine
+representatives to match that row modulo $p^{2ex}$. The generalized CRT
+theorem justifies this construction at every prime, including primes not
+used as the distinguished selector of any row. Polynomial evaluation
+preserves the local congruences. For a range with local value $w<k$,
+the falling factorial contains the factor $A-w$, divisible by $p^{2ex}$;
+the denominator loses at most $v_p(k!)\le k-1<x\le ex$ powers.
+Thus the required binomial coefficient is divisible by $p^{ex}$.
+
+Choose the eight ordinary representatives first. Then choose $C$ even,
+positive, and larger than every other nominal index, in its unchanged
+class modulo the odd integer $N^2$. Define $H$ and $q$ from their actual
+values, so enlargement of $C$ strengthens the radix bounds. The ten true
+normalized remainders are each less than $M/32$. Their common slack in
+\eqref{eq:remaindernorm} is nonnegative, because
+$4\cdot10/32^2<1$. Every integer $n\ge0$ has the form
+$r^2+s^2+w(w+1)$: apply the three-square theorem to $4n+1$,
+whose representation has one odd and two even coordinates.
+
+Choose the large positive Pell center from the square frame, all canonical
+pairs, and the even-$C$ auxiliary witnesses of Proposition~\ref{prop:anchor}.
+The canonical congruences fill the individual and pooled power quotients.
+This constructs an integer zero of the complete retained quadratic
+source with the chosen growth rows. The exact projections below carry
+it to the selected final equation.
+

@@ -1,0 +1,129 @@
+\section{Pruning and inlining the arithmetic network}
+\label{sec:height23}
+The new height-one improvements change the normalized arithmetic DAG before
+network compilation. They do not require a new incidence-energy identity.
+The graph construction, equality penalties, unit anchoring and universal
+lift~\eqref{eq:networklift} continue to apply to the changed normalization.
+The original four arithmetic source families remain those identified by
+\file{height_one/SOURCE_BINDINGS.json}; a lower direct-quartic dimension
+elsewhere is not silently substituted for one of these source theorems.
+
+\subsection{Fuse source products and prune unused constructors}
+Start with the retained triangular monic constant and scale definitions.
+For a constant source occurrence of value $c$, replace $K_c$ by $K_aK_b$
+when $ab=c$ and both factors are available. For a linear occurrence $cx$,
+use an available $S(c,x)$ or $K_aS(b,x)$ with $ab=c$. Signs are retained.
+The inherited factorization of quadratic source monomials is unchanged.
+Every replacement is one signed monomial of degree at most two and has the
+same exact pullback to the original source coordinates.
+
+These are identities after constructor substitution, not arbitrary-tuple
+identities: $K_6$ and $K_2K_3$ can differ away from constructor zeros.
+Retain only constructors reachable from the newly selected source terms,
+using the actual definition dependencies, and compact in inherited order.
+Every retained dependency is then retained, so monic triangular induction
+still uniquely evaluates all new constructors over every original tuple.
+Every deleted old constructor has a unique intended value as well.
+
+\begin{proposition}\label{prop:network-prune}
+The replacement and pruning preserve the normalized integer zero set by
+inverse projection and canonical restoration maps. The corresponding final
+network zero sets are bijective through their common original source.
+\end{proposition}
+\begin{proof}
+A zero of the old normalization projects to its original tuple, on which
+every replacement has the same pullback. The retained constructors have
+their intended values, so its projection is a new zero. Conversely, at a
+new zero monic induction restores the original source equations and all
+retained constructor values. Evaluate every deleted constructor at its
+unique intended value; then every old row vanishes. These maps are inverse
+on zero sets. Compose them with the already proved unique network lifts and
+projections. No sign restriction, division or congruence condition is added.
+\end{proof}
+
+The finite selector uses product-first ordering, then at most five ordered
+strict improvements of the number of reachable constructors and their total
+occurrence count. Those costs are heuristics, not the final support. The
+actual final collection determines the measured improvement.
+
+\subsection{Inline low use constants by addition}
+Let $K_c$ be retained, and choose $a+b=c$ with $1\le a\le b<c$.
+Use $K_1=1$ as notation, not a new coordinate. Other factors are earlier
+retained constants. Delete the defining row of $K_c$, substitute $K_a+K_b$
+in every other row, and expand distributively.
+
+Every replacement remains degree at most two. If a quadratic monomial
+contains $K_c$ twice, retain all four signed occurrences. In particular
+$a=b$ creates repeated occurrences, not a collected coefficient-one claim.
+Every remaining constructor keeps its own coefficient-one pivot, and its
+new dependencies are earlier, so triangular monic induction still gives its
+original intended value. Each source pullback is unchanged since $a+b=c$.
+A new zero uniquely restores $K_c=c$; all old rows and its deleted definition
+then vanish. Deletion and restoration are inverse over both $\R$ and $\Z$.
+Repeated inlining composes the restorations in reverse deletion order.
+The usage budget and pair order choose valid substitutions but do not prove
+monotone final support or optimality.
+
+\subsection{Expand rare scale coordinates}
+For a retained scale $S(c,x)$, $c>1$, delete its monic defining row and
+replace every occurrence by the linear polynomial $cx$, represented as
+$c$ signed copies of $x$. A quadratic occurrence containing the scale
+twice gives $c^2$ equal signed degree-two occurrences. All source coordinates
+precede constructors, so the other pivots stay monic and triangular.
+Their exact pullbacks are unchanged. Restore the deleted scale uniquely as
+$cx$, for negative, zero and positive $x$ alike. The same inverse zero-set
+maps therefore apply. Prune newly unused constructors by
+Proposition~\ref{prop:network-prune}.
+
+The finite rule tests the precise increase of normalized occurrences against
+a budget. The subsequent graph may have more or fewer monomials; neither
+direction is a theorem. Repeated occurrences are represented as distinct
+bound source occurrences, with factor aliases chosen as needed. They are
+not confused with final collected coefficients. Height one is required and
+checked only for the entire collected polynomial.
+
+\subsection{The new finite catalog}
+Every entry below is a polynomial on unrestricted integers, has exact degree
+four, constant one, coefficient set $\{-1,+1\}$, and is nonnegative on all
+real tuples. There are no equality dummies and every stated coordinate is
+live. Support includes the constant. The source numbers are inherited family
+identifiers, not a claim that the normalized source has that dimension.
+\input{height23_table.tex}
+
+The new $484/24131$ variable/support point improves both dimensions against
+the Round22 minimum $493/24828$. The new $533/11985$ point improves the
+retained $557/11991$ tradeoff in both measures. Likewise $600/8241$ improves
+$605/8305$, and $696/7113$ improves $701/7141$. Every one of the nine selected
+Round22 endpoints is dominated by at least one of the selected Round23
+endpoints in variable count and support, with degree and height fixed.
+At exactly 493 variables, support falls from the old 24828 to 17058,
+a reduction of 7770 monomials (about 31.3\%). This is separate from the
+new minimum of 484 variables. The new $495/16400$ point also improves the
+old $496/20548$ point.
+This is a checked finite comparison, not an exhaustive global frontier.
+Within the new catalog the alternatives trade dimension for support.
+
+\subsection{Independent source semantics and final collection}
+The independent normalizer audit computes each coordinate's intended
+polynomial from metadata without importing the producer. It verifies every
+source row, with its certified sign, has exactly its pinned pullback;
+every constructor has identically zero pullback and exactly one monic
+triangular pivot; and every source row occurs once. A separate factor
+checker verifies all affine pullbacks to the byte-pinned original sources.
+Thus fusion, inlining and pruning are validated without trusting their
+selector algorithms or cost calculations.
+
+The final graph audit independently reconstructs square differences, every
+occurrence and factor binding, every block boundary, each internal tree,
+all aliases and units, and the symbolic lift divergence. Exact expansion
+checks the entire height-one array, degree four, constant one and coordinate
+participation. The literal text form is independently parsed as well.
+Normal and optimized-Python replays, deliberate corruption tests and exact
+same-source/hub/seed controls bind these properties to the delivered bytes.
+A newly generated parameter-matched control is explicitly labelled new; it
+is not called a historical endpoint. Full normalization comparisons are not
+misrepresented as isolated one-operation experiments.
+
+Combining the inverse maps with~\eqref{eq:networklift} and the named original
+source calibration proves~\eqref{eq:calibration} for each selected polynomial.
+Successful coefficient checks are not substituted for that unbounded argument.

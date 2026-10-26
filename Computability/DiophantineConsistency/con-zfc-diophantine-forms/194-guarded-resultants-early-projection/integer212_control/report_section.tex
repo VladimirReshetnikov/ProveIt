@@ -1,0 +1,469 @@
+\section{A scaled dyadic Pell pair: 212 unrestricted integer
+coordinates}\label{a-scaled-dyadic-pell-pair-212-unrestricted-integer-coordinates}
+
+\subsection{Result and boundary}\label{result-and-boundary}
+
+The literal equation \texttt{integer212/equation.json} is the sum of the
+squares of 151 quadratic residuals in 212 independently unrestricted
+integer variables. Its collected quartic has 5,357 nonzero terms and
+height 17,592,186,044,420. The maximum residual coefficient is
+4,194,304. The accompanying coefficient file lists every term. The
+construction has an integer zero exactly when there is a finite
+refutation in the fixed effective ZFC presentation. Consequently ZFC
+proves its nonsolvability equivalent to Con(ZFC); this statement does
+not assert either nonsolvability or consistency.
+
+The immediate literal parent is source173's pre-optimization affine213
+system, at ProveIt commit ecb9a4b4dda617512952525d50f17343700aac52. Its
+complete unchanged original release is retained in
+\texttt{inherited/Source173.zip}, including its ordinary proofs,
+source-to-equation projections and independent verifier. The parent has
+213 variables, 152 rows and, after its optional optimization, 5,402
+quartic terms with height 2,417,851,639,242,452,488,945,685. Thus this
+construction saves one coordinate, one row and 45 terms while lowering
+that height by more than eleven decimal orders. The round22 215-variable
+equation has much smaller coefficients and remains a useful incomparable
+alternative. No global minimum or new proof-assistant compilation is
+claimed.
+
+The source173 anchor replacement, constructor-depth bound,
+factorial-free compiler, Horn-flow argument and six exact projections
+are credited, not new. The fourfold weak-frame pooling estimate comes
+from round22; its proof is retained in
+\texttt{credited/ROUND22\_AFFINE\_WEAK\_FRAME.md}. The new combination
+is a scaled growth Pell pair, a weakened but sufficient cap on that
+pair, and a nondegenerate affine growth base. Their unbounded proofs
+follow here. Finite checks certify every literal algebraic change, not
+these unbounded theorems. The inherited logical endpoints are
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} and
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}, not a
+machine execution or a specialization of Jones' universal polynomial.
+The source closure is an ordinary-proof closure, not a complete
+compilable Lean dependency tree.
+
+\subsection{Changed semantic quantities and literal
+coordinates}\label{changed-semantic-quantities-and-literal-coordinates}
+
+Put D=2\^{}20=1048576. Keep the old coordinate t unrestricted, discard
+the private coordinate that enforced t=16+4h\^{}2, and use
+
+\begin{verbatim}
+d=4t+2,          K=D t,          F=d^K.                 (1)
+\end{verbatim}
+
+The last notation is a theorem about a quadratic power certificate, not
+an exponentiation operation in the literal equation. In particular no
+sign of t or F is assumed here. The integer d is always even, nonzero
+and nonunit.
+
+Keep the thirteen principal Pell pairs with nominal indices
+
+\begin{verbatim}
+t, F+t, a,b,c,d_local,S,y+1,S',u,x,vq,C.
+\end{verbatim}
+
+Here d\_local is a local representative, distinct from growth base
+d.~The reused anchor is the existing pair at C, and C is stored as twice
+an integer. Replace the fourteenth, growth pair by three coordinates
+w,z,Z representing
+
+\begin{verbatim}
+X=1+D w,       Y=D z,       Z=A z.
+\end{verbatim}
+
+Its two literal equations are
+
+\begin{verbatim}
+Z-Az=0,       2w+D(w^2+z^2-Z^2)=0.                    (2)
+\end{verbatim}
+
+Multiplying the second equation by D gives exactly
+X\^{}2-(A\^{}2-1)Y\^{}2-1=0, modulo the first. Thus there is no
+discarded divisibility condition or hidden extra variable. With
+T=d\^{}2-2Ad+1, its power row is
+
+\begin{verbatim}
+F-1-Dw+DZ-dDz+T q_growth=0.                          (3)
+\end{verbatim}
+
+The sign of T is the opposite of the positive-form modulus 2Ad-d\^{}2-1
+used below; divisibility is the same. All terms in (2)-(3) are at most
+quadratic.
+
+In the pooled orientation replace ONLY the growth-pair contribution
+
+\begin{verbatim}
+(X-1)^2+(Y-Dt)^2    by    w^2+(z-t)^2.              (4)
+\end{verbatim}
+
+The literal parent orientation has already had fourteen norm rows
+subtracted. The producer removes its exact old growth contribution
+2-2d\_old-2Z\_old+Z\_old\^{}2+D\^{}2t\^{}2-2DtY\_old, inserts the new
+expression in (4), and later replays explicit integral row operations.
+The checker reconstructs the raw orientation from all actual shifted
+pairs before comparing this edit.
+
+The anchor cap now uses z\^{}2, not Y\^{}2=D\^{}2z\^{}2, for this one
+pair:
+
+\begin{verbatim}
+Y_C^2=C^2+1+sum_(other 12 nonanchor pairs) Y_i^2
+             +z^2+r^2+s^2+v(v+1).                 (5)
+\end{verbatim}
+
+This is a semantic weakening, justified by the scaled-cap argument
+below; it is not an asserted pointwise equivalence of arbitrary old
+witness tuples. The literal cap row is unchanged because its former
+ordinate coordinate now stores z.
+
+\subsection{Weighted weak frame, parity and quantitative
+growth}\label{weighted-weak-frame-parity-and-quantitative-growth}
+
+All 35 actual source atoms (including duplicates) and all 48
+base/index/output ports of the sixteen requests are explicitly listed in
+the certificate. They include d=4t+2, K=Dt, C=2c0, F+t, q,q+1, BH, and
+every power output. They are affine forms L=c+sum a\_j u\_j in
+arithmetic coordinates only. Define w\_j as the largest
+\textbar a\_j\textbar{} among these forms and set
+
+\begin{verbatim}
+W=22+sum_j w_j u_j^2.                              (6)
+\end{verbatim}
+
+In this ledger w\_t=D, w\_c0=2, and every other weight is 1;
+\textbar c\textbar\textless=2. For every integer u,
+\textbar u\textbar\textless=u\^{}2. Therefore each \textbar L\textbar{}
+is at most 2+sum\_j w\_j u\_j\^{}2\textless W. This is an absolute
+bound, NOT the false assertion L\^{}2\textless W. The complete atom and
+coordinate census is checked independently.
+
+Use the same fourfold Pell frame as round22:
+
+\begin{verbatim}
+U=4W(2v_frame-1),    V=(4W+1)U,    A^2+U^2-V^2=1.   (7)
+\end{verbatim}
+
+These are three quadratic rows using the existing coordinates. Since U,V
+are even, A is odd. No sign of A is assumed. Classification of the Pell
+solution (\textbar A\textbar,\textbar U\textbar) at center 4W+1,
+together with U a nonzero multiple of 4W, gives an absolute index at
+least 4W. Consequently
+
+\begin{verbatim}
+|A|>(4W)^(4W),   |A-1|>4W^3,   |A|>D+1.            (8)
+\end{verbatim}
+
+The last inequality already holds at W=22: 88\^{}4\textgreater D+1, a
+fortiori 88\^{}88\textgreater D+1. For completeness choose the frame
+index 4W. The familiar congruence Y\_(4W)(4W+1)=4W modulo 8W ensures
+that U/(4W) is odd, supplying v\_frame. The frame is chosen only after
+all finite arithmetic coordinates and W.
+
+\subsection{Scaled cap and dyadic classification, before arithmetic
+signs}\label{scaled-cap-and-dyadic-classification-before-arithmetic-signs}
+
+The private anchor norm, squared-divisibility and comparison rows are
+unchanged. Equation (5) gives
+\textbar Y\_C\textbar\textgreater\textbar C\textbar{} and Y\_C!=0. The
+source173 signed anchor proof therefore applies verbatim: classify its
+absolute index i\textgreater0; the auxiliary comparison gives i=+/-C
+modulo 2\textbar Y\_C\textbar; since
+1\textless=i\textless=\textbar Y\_C\textbar{} and
+\textbar C\textbar\textless\textbar Y\_C\textbar, C!=0 and
+i=\textbar C\textbar. This uses no sign or interpreted arithmetic
+meaning of C. In particular the possibly degenerate anchor index zero is
+excluded before any comparison requiring a nontrivial pair.
+
+Every unchanged pair has absolute index \textless\textbar C\textbar{} by
+(5). For the scaled pair, (5) gives
+\textbar z\textbar\textless\textbar Y\_C\textbar{} and hence
+\textbar Y\textbar\textless D\textbar Y\_C\textbar. If its absolute
+classified index were at least \textbar C\textbar+1, Pell recurrence at
+a=\textbar A\textbar{} would give
+
+\begin{verbatim}
+|Y|>=Y_(|C|+1)(a)>a Y_|C|(a)>D|Y_C|,
+\end{verbatim}
+
+contradicting the preceding bound. Thus its absolute index is
+\textless=\textbar C\textbar\textless W. Equality here is allowed;
+strictness is unnecessary for orientation.
+
+For odd a, every Pell abscissa X\_n(a) is odd. Reduction modulo 2 gives
+Y\_n(a)=n modulo 2. Repeated doubling Y\_(2n)=2X\_nY\_n therefore
+proves, for nonzero n,
+
+\begin{verbatim}
+v2(Y_n(a))=v2(n).                                 (9)
+\end{verbatim}
+
+Since D divides the scaled ordinate, the classified index is D*l for
+some integer l. The zero ordinate has index zero and is included
+separately. For D\textgreater=4, X\_(D*l)(a)=1 modulo D: use
+X\_(2n)-1=2(a\^{}2-1)Y\_n\^{}2 and D/2 divides Y\_(D*l/2). Our physical
+abscissa is 1 modulo D. It cannot be the negative of this canonical
+abscissa, since +1 and -1 are distinct modulo D. At zero index, X=-1 is
+excluded for the same reason.
+
+These conclusions also handle A\textless0. The index D*l is even;
+X\_(D*l)(A)=X\_(D*l)(\textbar A\textbar), and the ordinate sign chooses
+signed l because Y\_(D*l)(A) changes sign with the sign of l. Thus the
+physical pair is the canonical signed pair at the actual signed
+parameter A.
+
+Crucially we NEVER cancel D modulo the even integer A-1. Instead the
+exact integer polynomial identities from repeated doubling give
+
+Y\_(D*l)(A)/D=Y\_l(A) product\_(j=0,\ldots,19) X\_(2\^{}j*l)(A),
+(X\_(D*l)(A)-1)/D = (D/2)(A\^{}2-1)(Y\_(D*l/2)(A)/(D/2))\^{}2.
+
+The second identity is also valid at l=0. Evaluating these polynomials
+at A=1 proves the genuine congruences
+
+\begin{verbatim}
+z=l mod(A-1),        w=0 mod(A-1).                 (10)
+\end{verbatim}
+
+They are valid at negative A and signed l as well.
+
+The old orientation reductions for the other thirteen pairs have
+abscissa residues +/-1 and signed ordinate residues of absolute value
+\textless W. For the new pair (10) gives residues 0 and l, with
+\textbar l\textbar\textless W. All fourteen ordinate errors have
+absolute value \textless2W; all abscissa errors have absolute value at
+most 2. The modified orientation thus has a nonnegative small residue E
+with
+
+\begin{verbatim}
+0<=E<56W^2+56<4W^3<|A-1|       (W>=22).
+\end{verbatim}
+
+Divisibility by A-1 forces E=0. Every other pair is canonically oriented
+at its nominal index. The new error gives l=t, so the scaled pair has
+physical index Dt. Neither positivity of t nor any arithmetic power was
+used.
+
+\subsection{Power interpretation under the weak
+frame}\label{power-interpretation-under-the-weak-frame}
+
+For a pooled block of r\textless=15 requests at nonzero integer base n,
+let its canonical pairs have indices k\_i, outputs m\_i, and Z\_i=A
+Y\_i. The retained quadratic rows are
+
+K\_n-2H-(2A-n)L\_n=0, S-nK\_n+L\_n=0, H=sum Y\_i(m\_i-X\_i),
+S=sum((m\_i-X\_i+Z\_i)\^{}2-Y\_i\^{}2).
+
+They imply that T\_n=2An-n\^{}2-1 divides
+sum(m\_i-X\_i+Z\_i-nY\_i)\^{}2. Since T\_n=-1 modulo n, n is invertible
+modulo T\_n.~Put b=W-1. Canonical signed-index Pell congruences,
+multiplied by n\^{}(2b), give divisibility of
+
+\begin{verbatim}
+E=sum_i (m_i n^b-n^(b+k_i))^2.
+\end{verbatim}
+
+Every exponent is nonnegative and
+\textbar n\textbar,\textbar m\_i\textbar,\textbar k\_i\textbar\textless=b.
+For \textbar n\textbar\textgreater=2 each summand is
+\textless=4b\^{}(4b); the same loose bound covers n=+/-1. Hence
+
+\begin{verbatim}
+0<=E<=60b^(4b)<(4W)^(4W)<|T_n|.
+\end{verbatim}
+
+The last inequality follows from
+\textbar T\_n\textbar\textgreater=2\textbar A\textbar-(W-1)\^{}2-1\textgreater\textbar A\textbar{}
+and (8). Thus E=0. At a nonunit base this forces k\_i\textgreater=0 and
+m\_i=n\^{}k\_i. At a unit base it proves the signed unit power without
+claiming a nonnegative index. The singleton requests have the same
+conclusion, either directly or by squaring their divisibility error
+(r=1). The scaled pair in (3) is just its physical canonical pair, so it
+is covered. Conversely genuine powers give the two pooled quotient
+witnesses by the identity S-2nH=T\_n L\_n and K\_n=2H+(2A-n)L\_n.~This
+is an integral fresh witness construction, not an inverse on arbitrary
+preliminary tuples.
+
+\subsection{Noncircular horizon and signed arithmetic
+bootstrap}\label{noncircular-horizon-and-signed-arithmetic-bootstrap}
+
+The growth base d=4t+2 is always even and nonunit. The singleton lemma
+first gives Dt\textgreater=0, hence t\textgreater=0, and F=d\^{}(Dt). If
+t=0, then F=1 and y=F(2v+1) is odd. The endpoint equations reduce to
+
+\begin{verbatim}
+x=2+(y+1)u0,      x=1+(y+1)ut,
+\end{verbatim}
+
+which would make the even integer y+1 divide 1. This excludes t=0,
+including y=-1. Therefore t\textgreater=1, d\textgreater=6 and
+F\textgreater=6\^{}D\textgreater2\^{}32; F is positive and even.
+
+Now follow the source173 sign recovery in its proper order. The raw row
+B*eta=C+F+1 has odd right side, because C is even. Thus B!=0. The raw
+radix multiplier H=2+4(C+a+b+c+d\_local+S+S'+u+vq) is 2 modulo 4,
+regardless of representative signs, so
+\textbar BH\textbar\textgreater=2. Its singleton gives x\textgreater=0
+and q=(BH)\^{}x. If x=0, the last endpoint would make 1+(t+1)y divide
+-1, impossible for t\textgreater=1 and \textbar y\textbar\textgreater=F.
+Hence x\textgreater=1 and \textbar q\textbar\textgreater=2.
+
+Interpret the q pool next. Its y+1 index is nonnegative. Since y is a
+nonzero multiple of positive F, this gives y\textgreater=F. The first
+endpoint forces u0\textgreater=0, and the last forces ut\textgreater=1.
+In particular
+
+\begin{verbatim}
+x>=F+1,        x>=2+(t+1)y.                        (11)
+\end{verbatim}
+
+Now \textbar q\textbar\textgreater=2\^{}x and x\textgreater3, so
+\textbar q+1\textbar\textgreater=2. Only now interpret the q+1 pool. All
+nine actual representatives and their numerator powers are nonnegative;
+H\textgreater=2. Normalized signed-remainder recovery authenticates
+B=binom(F+t,t)\textgreater0. Therefore q\textgreater0 and
+N=B\^{}x\textgreater0, as in the parent. No earlier step assumes these
+last signs.
+
+The source173 remainder argument still applies: its first-digit
+coefficient bound (F+t)\^{}t\textless=2\^{}(t(F-1)) and
+\textbar q\textbar\textgreater=2\^{}((t+1)F+2) hold for all the present
+values. The common remainder norm, all ten digit rows, and all retained
+strict local ranges are unchanged. The corner case y=F is excluded after
+local recovery by the parent's positive-accumulator argument, not
+prematurely.
+
+\subsection{Small horizons, local label bounds and
+soundness}\label{small-horizons-local-label-bounds-and-soundness}
+
+Two old thresholds are explicitly replaced rather than silently reused.
+First, Lambda\_t\textless=4\^{}(t-1), while F\textgreater=6\^{}(D
+t)\textgreater16\^{}t for every t\textgreater=1. Thus the all-primes
+binomial selector applies with radius R=F, including t=1. Second put
+R0=2+t+x+y+F. Since F\textgreater=t, y\textgreater=F and
+x\textgreater=2+2y, R0\textless3x. If
+2\^{}s\textless=x\textless2\^{}(s+1), then s\textgreater=32 and
+
+\begin{verbatim}
+2^23 log2(3x)<2^23(s+3)<2^s<=x.
+\end{verbatim}
+
+The strict middle inequality holds at s=32 and persists by induction.
+Consequently the inherited literal local-degree bound is
+L\_local\textless R0\^{}(2\^{}23)\textless2\^{}x\textless=p\^{}(e x),
+supplying exact local recovery.
+
+For the deleted derived-label range, use the pinned source173 depth-19
+constructor ledger with comparison base d=4t+2. At t\textgreater=2 we
+have d\textgreater=10, so its estimate that each constructor on
+arguments below s is \textless8s\^{}2 gives, by the usual exponent
+recurrence, every label \textless d\^{}(D-1). The smallest horizon t=1
+requires a separate argument, not a silent reuse of the hypothesis
+d\textgreater=8: all local parameter leaves are zero, all constant
+leaves are at most one, and we start with s0=2. Iterating sr+1=8sr\^{}2
+gives sr=16\^{}(2\^{}r)/8. For every r\textgreater=0 this is less than
+6\^{}(2\^{}(r+1)-1), since 16\textless36 and 1/8\textless1/6. At depth
+r\textless=19 the label is therefore \textless6\^{}(D-1)=d\^{}(D-1) as
+well. In all cases choose L=d\^{}D. Then
+
+\begin{verbatim}
+L>=t,      F=d^(Dt)=L^t.
+\end{verbatim}
+
+The source173 sharp product-separation lemma therefore applies even at
+the smallest horizon. For clarity: unequal factor counts contradict
+F+1\textgreater L\^{}t; for equal counts m\textless=t, each positive
+elementary symmetric coefficient lies in {[}1,L\^{}m{]} subset
+{[}1,F{]}, so differences have magnitude \textless F. The least nonzero
+coefficient cannot vanish when evaluated at F. Unique factorization
+recovers label multisets. Zero labels contribute units and are omitted.
+
+The unchanged local-row, boundary, range and positive-accumulator
+arguments now produce a balanced finite single-conclusion Horn flow. The
+source173 Horn closure proof extracts a refutation even in the presence
+of cycles. Its literal C222 calibration then yields a finite ZF
+refutation and, by the retained constructible-choice equivalence, a
+finite ZFC refutation. This completes soundness without circular
+arithmetic positivity.
+
+\subsection{Completeness and its order of
+choices}\label{completeness-and-its-order-of-choices}
+
+Start with a finite C222 refutation, all its local parameters and
+padding. Choose an integer t\textgreater=1 sufficiently large to exceed
+those finite parameters and its length. Set d=4t+2, K=Dt, F=d\^{}K.
+Since v2(d)=1,
+
+\begin{verbatim}
+v2(F)=Dt>v2(t!),   v2(F+i)=v2(i) (1<=i<=t).
+\end{verbatim}
+
+The inherited beta CRT construction gives arbitrarily large positive y=F
+a\^{}2 with a odd and divisible by the odd part of t!. It satisfies the
+retained odd-linear equation with v=(a\^{}2-1)/2, and can dominate all
+required finite accumulators. Choose an arbitrarily large positive beta
+code x in its CRT class before defining N=B\^{}x or choosing the
+independent representatives. All beta moduli are odd. The binomial
+B=binom(F+t,t) is odd by the displayed valuations, so N\^{}2 is odd.
+
+Choose the eight ordinary CRT representatives in their required residue
+classes. Choose the remaining representative C even and cofinally large
+in its own class modulo N\^{}2, exceeding every other nominal index
+including Dt. This is possible because N\^{}2 is odd. Only then define H
+and q=(BH)\^{}x and all associated true powers. The actual frame (6) is
+computed after these arithmetic choices. No earlier modulus depends on
+the enlarged C or q.
+
+Choose the positive canonical fourfold frame A and every ordinary
+principal pair. For the growth pair define
+
+\begin{verbatim}
+z=Y_(Dt)(A)/D,  w=(X_(Dt)(A)-1)/D,  Z=A z.
+\end{verbatim}
+
+The doubling identities above make these integers and make w and z-t
+multiples of A-1. Equations (2)-(4), including the orientation quotient,
+therefore have integral witnesses. Because C\textgreater Dt and C
+exceeds the other indices, the parent cap slack remains nonnegative even
+with the smaller scaled term z\^{}2. Its universal ternary
+representation supplies the guard r\^{}2+s\^{}2+v(v+1). Every private
+comparison witness is supplied by the same source173 construction: C
+even gives odd abscissa and even ordinate; take comparison index C Y\_C,
+use its odd squared quotient, and choose the comparison center by CRT.
+This does not require the old horizon equation. Finally true powers
+supply all singleton and pooled quotients and all unchanged local/Horn
+wires. Apply the recorded integral coordinate changes and delete the
+unused horizon-root slot. This yields a literal zero.
+
+\subsection{Exact algebraic maps and
+reproducibility}\label{exact-algebraic-maps-and-reproducibility}
+
+The semantic step has the stated scope of fresh zero-existence
+constructions, not an old-tuple bijection. Its physical pair map is
+exactly
+
+old\_d=1+D(w-Z), old\_Y=D z, old\_Z=D Z.
+
+The weakened cap and discarded old horizon prohibit claiming that this
+map alone lifts every new tuple to every old equation.
+\texttt{base213/equation.json} is an explicitly marked staging array:
+row130 and coordinate184 are inactive placeholders, not an additional
+horizon condition. After the semantic step, every optional optimization
+is genuinely bijective: each coordinate image is x\_i -\textgreater{}
+x\_i+L(other coordinates), inverted by negating L; each row operation
+R\_i -\textgreater{} R\_i+k R\_j is inverted by -k, in reverse order.
+The private old root and its row are then omitted, and all remaining
+indices are renumbered. \texttt{coordinate\_map.json} gives every exact
+image and retained coordinate/row. \texttt{semantic\_certificate.json}
+lists every changed literal coefficient, physical pair map, actual atom
+and weight. No active certificate contains an absolute workspace path.
+Historical path strings inside the unchanged source archive are
+provenance only and are never used to locate new inputs.
+
+\texttt{check.py} independently reconstructs the source identities,
+complete edited system, every forward/inverse optimization, every
+collected quartic term, all metrics and readable residuals.
+\texttt{verify.py} runs it normally or with Python -O, copies the whole
+package to a fresh temporary location, rebuilds there, and compares
+every generated JSON byte. The optional \texttt{-\/-parent} also runs
+the retained source173 verifier. None of these finite checks decides
+consistency, searches for a zero, or substitutes for the ordinary proof.
