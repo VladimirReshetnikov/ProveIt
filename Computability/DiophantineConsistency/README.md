@@ -21,6 +21,13 @@ still required for the recent equations. The
 their ordinary proofs. Later references below to the Lean pause describe
 their historical checkpoints; the resumed plan governs current work.
 
+The checked Lean checkpoints now include the current arithmetic witness
+maps, both complete masks, the literal K recipe and carry budget, the
+actual942-tile physical permutation, and the decimal machine's consistency
+endpoint. The [current plan](LEAN_EQUIVALENCE_PLAN.md) records their fresh
+checks and exact premises. Connecting the polynomial to the complete
+native tile/machine language and an internal-ZFC proof remains open.
+
 The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **complete decimal Carrier65 equation
 in 14 positive unknowns, exact degree 150, with 65 integer-leaf binary
