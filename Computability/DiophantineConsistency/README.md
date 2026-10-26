@@ -46,8 +46,11 @@ an ingredient of the proof transfer; it does not prove the consistency
 equivalence.
 The [Foundation-to-HA syntax bridge](Lean/DiophantineConsistency/FoundationPAHFSyntax.lean)
 also now has an [independent replay](reviews/foundation-pahf-syntax-root.md),
-including nested-binder substitution and variable-shift checks. Actual
-proof-tree transfer and translated arithmetic axioms remain separate work.
+including nested-binder substitution and variable-shift checks. The actual
+[intuitionistic proof-tree map](Lean/DiophantineConsistency/FoundationPAHFLogic.lean)
+now also passes [independent replay](reviews/foundation-pahf-logic-root.md),
+preserving all finite assumptions in `HA.Derives`. Translated arithmetic
+axioms and induction remain separate work.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the

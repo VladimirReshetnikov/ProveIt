@@ -233,8 +233,19 @@ instantiation, free/open and eigenvariable-shift identities are proved.
 Both leaves passed [independent root replay](reviews/foundation-pahf-syntax-root.md)
 with15 standard-only reports; all369 source/trace/object pins for the59
 Foundation and five PAHF cached prerequisites matched. This is a syntax
-checkpoint, not a proof-calculus or arithmetic-axiom transfer. The next leaf
-maps actual intuitionistic Hilbert proof trees to `HA.Derives`.
+checkpoint, separate from arithmetic-axiom transfer.
+
+The logical proof-calculus map is now checked too:
+[FoundationPAHFLogic](Lean/DiophantineConsistency/FoundationPAHFLogic.lean)
+maps actual intuitionistic Hilbert proof trees to `HA.Derives []`, and actual
+finite-context proofs/proof existence to `HA.Derives (Γ.map formula)`.
+The concrete intuitionistic endpoint discharges the generic extra-axiom
+premise using HA's ex-falso rule; it contains no arithmetic-image assumption.
+All shifted quantifier contexts and ordered/duplicate assumptions are
+retained. Both leaves passed [independent root replay](reviews/foundation-pahf-logic-root.md)
+with14 reports using only `propext` and `Quot.sound`, with67 authenticated
+cached prerequisites. Conventional arithmetic axioms, induction and sentence
+closure still require their own derivations and comparison.
 
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and
