@@ -476,7 +476,17 @@ See the [root review and four fresh replays](reviews/wang-tiles942-strip-foundat
 Finite strip bounds and actual machine-run semantics are subsequent work.
 
 Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. `WangTiles942RowEncoding` now
+integration, documentation and commits. `WangMachineStep` proves the
+complete actual color update at the moved head, written old head and all
+other cells. `WangMachineAction` binds that operational step to the actual
+cached tile action and numeric target, including215. `WangTiles942Signals`
+excludes plain-input receive/receive signals and identifies the precise
+actual receiver in both transition directions. It keeps plain finish
+until the separately derived operating-row exclusion is applied. See the
+[root review and six fresh replays](reviews/wang-machine-action-signals-lean-root.md).
+These supply local step components, not a supplied whole-row equivalence.
+
+`WangTiles942RowEncoding` now
 identifies row1 of the derived persistent strip with the actual decimal
 machine at clock1, with its head inside the walls and every interior
 north color equal to the actual configuration encoder. `WangTiles942OperatingRow`
