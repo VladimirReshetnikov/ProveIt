@@ -428,6 +428,16 @@ reports with byte-identical author objects. The remaining three cases are
 mulLtMul, ltIrrefl and ltTri. Full arithmetic proof transfer and the exact
 no-zero/consistency target comparison remain separate obligations.
 
+[FoundationHATheoryTransfer](Lean/DiophantineConsistency/FoundationHATheoryTransfer.lean)
+now constructs the required finite assumption discharge and actual
+intuitionistic-theory proof map. Its classical adapter reuses the existing
+GG theorem with explicit HA proofs of the source images. The concrete
+eight-semiring-axiom corollary has no image-provability premise. Both leaves
+passed author and [independent peer builds](reviews/foundation-ha-theory-transfer-peer.md),
+with seven standard-only reports and byte-identical outputs. This supplies
+proof composition; complete arithmetic instantiation and exact target
+comparison remain open.
+
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and
 the literal `BProv ZFCax_s [] Form.fBot`. Its final negation composition

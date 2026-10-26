@@ -112,6 +112,12 @@ addEqOfLt, addLtAdd, oneLeOfZeroLt and ltTrans, using actual HA witnesses
 and preserving the double-negated order premises. Only mulLtMul, ltIrrefl
 and ltTri remain among the source order axioms. Full arithmetic transfer
 and the HA target equivalence remain open.
+The [proof-transfer adapter](reviews/foundation-ha-theory-transfer-peer.md)
+now composes the existing GG and finite proof maps into actual HA
+derivations, provided each used source axiom image is proved in HA. Its
+concrete semiring corollary discharges that premise for all eight axioms;
+independent builds pass all seven reports. The complete arithmetic
+instantiation and final target comparison remain separate work.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the
