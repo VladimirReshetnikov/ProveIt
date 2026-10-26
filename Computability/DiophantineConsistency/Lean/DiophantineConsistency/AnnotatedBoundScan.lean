@@ -1,5 +1,6 @@
 import DiophantineConsistency.AnnotatedBoundLocal
 import DiophantineConsistency.AnnotatedRenameScanPR
+import DiophantineConsistency.NatIterate
 
 /-! # Complete supplied primitive-recursive bound and sealing validators -/
 namespace DiophantineConsistency.AnnotatedBoundScan
@@ -27,28 +28,16 @@ def scan (fuel initial : Nat) : Nat :=
 
 @[simp] theorem step_zero : step 0=0 := by simp [step]
 
-@[simp] theorem scan_zero (fuel : Nat) : scan fuel 0=0 := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih => simp only [scan] at *; rw [ih,step_zero]
+@[simp] theorem scan_zero (fuel : Nat) : scan fuel 0=0 :=
+  NatIterate.rec_fixed step 0 step_zero fuel
 
 theorem scan_succ (fuel state : Nat) :
-    scan (fuel+1) state=scan fuel (step state) := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih =>
-    change step (scan (fuel+1) state)=
-      step (scan fuel (step state))
-    rw [ih]
+    scan (fuel+1) state=scan fuel (step state) :=
+  NatIterate.rec_succ step state fuel
 
 theorem scan_done (fuel history : Nat) :
-    scan fuel (Nat.pair 0 history)=Nat.pair 0 history := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih =>
-    change step (scan fuel (Nat.pair 0 history))=Nat.pair 0 history
-    rw [ih]
-    simp [step]
+    scan fuel (Nat.pair 0 history)=Nat.pair 0 history :=
+  NatIterate.rec_fixed step _ (by simp [step]) fuel
 
 theorem step_cons (r : Row) (rows seen : List Row) :
     step (Nat.pair (tableCode (r::rows)) (tableCode seen))=

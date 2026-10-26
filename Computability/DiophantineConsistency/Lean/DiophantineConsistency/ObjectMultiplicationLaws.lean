@@ -48,13 +48,7 @@ private def successorLeftStage : Form :=
 private theorem successorLeftStage_spec (H : ZFAxioms mem) (n x x' : V) (ee : Nat → V) :
     Sat mem (scons n (scons x (scons x' ee))) successorLeftStage ↔
       ∀ u v, MulRel H x n u → AddRel H u n v → MulRel H x' n v := by
-  constructor
-  · intro h u v hm ha
-    exact (mulForm_spec H _ 0 4 2).mp
-      (h u v ⟨(mulForm_spec H _ 1 3 2).mpr hm,(addForm_spec H _ 0 1 2).mpr ha⟩)
-  · intro h u v hh
-    exact (mulForm_spec H _ 0 4 2).mpr
-      (h u v ((mulForm_spec H _ 1 3 2).mp hh.1) ((addForm_spec H _ 0 1 2).mp hh.2))
+  simp only [successorLeftStage, Sat, addForm_spec H, mulForm_spec H, scons, and_imp]
 
 /-- The left-successor law, with its addition witness explicit. -/
 theorem mulRel_succ_left (H : ZFAxioms mem) {x y z w : V}
@@ -105,11 +99,7 @@ private def commutativeStage : Form :=
 private theorem commutativeStage_spec (H : ZFAxioms mem) (n x : V) (ee : Nat → V) :
     Sat mem (scons n (scons x ee)) commutativeStage ↔
       ∀ z, MulRel H x n z → MulRel H n x z := by
-  constructor
-  · intro h z hz
-    exact (mulForm_spec H _ 0 1 2).mp (h z ((mulForm_spec H _ 0 2 1).mpr hz))
-  · intro h z hz
-    exact (mulForm_spec H _ 0 1 2).mpr (h z ((mulForm_spec H _ 0 2 1).mp hz))
+  simp only [commutativeStage, Sat, mulForm_spec H, scons]
 
 theorem mulRel_comm (H : ZFAxioms mem) {x y z : V} (hxy : MulRel H x y z) :
     MulRel H y x z := by

@@ -36,29 +36,7 @@ theorem coeff_encoded_square (w : Fin (m + 1) → ℕ) (u : Fin (m + 1) → R)
     (p : PairIndex m) (hp : Isolated w p) :
     (encoded w u ^ 2).coeff (pairWeight w p) =
       if p.val.1 = p.val.2 then u p.val.1 ^ 2 else 2 * u p.val.1 * u p.val.2 := by
-  classical
-  rw [encoded_square]
-  simp only [finsetSum_coeff, coeff_monomial]
-  simp only [Isolated] at hp
-  simp_rw [hp]
-  by_cases h : p.val.1 = p.val.2
-  · simp [h, ite_and, pow_two]
-  · have splitTerms (i j : Fin (m + 1)) :
-        (if (i = p.val.1 ∧ j = p.val.2) ∨ (i = p.val.2 ∧ j = p.val.1)
-          then u i * u j else 0) =
-        (if i = p.val.1 ∧ j = p.val.2 then u i * u j else 0) +
-          (if i = p.val.2 ∧ j = p.val.1 then u i * u j else 0) := by
-      by_cases h1 : i = p.val.1 ∧ j = p.val.2
-      · rcases h1 with ⟨rfl, rfl⟩
-        simp [h]
-      · by_cases h2 : i = p.val.2 ∧ j = p.val.1
-        · rcases h2 with ⟨rfl, rfl⟩
-          simp [h, Ne.symm h]
-        · simp [h1, h2]
-    simp_rw [splitTerms]
-    simp only [Finset.sum_add_distrib, if_neg h]
-    simp [ite_and]
-    ring
+  exact QuadraticFiber.coeff_square_at_isolated w u p.val.1 p.val.2 hp
 
 def rowValue (s : Finset (PairIndex m)) (a : PairIndex m → R)
     (u : Fin (m + 1) → R) : R :=

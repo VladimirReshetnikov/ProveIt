@@ -167,20 +167,8 @@ theorem mulRel_numerals_iff (H : ZFAxioms mem) (a b : Nat) (z : V) :
 
 /-- Public model extraction for subsequent object-language arithmetic modules. -/
 theorem axioms_of_zfc_model {Dom : Type} {m : Dom → Dom → Prop}
-    (v : Nat → Dom) (hmodel : ∀ g, ZFCax_s g → Sat m v g) : ZFAxioms m := by
-  have hx : ∀ f, ZFax_s f → Sat m v f := fun f hf => hmodel f (Or.inl hf)
-  exact
-    { ext := bridge_Ext_fwd (extract ZFax_s v Ext_form hx (Or.inl rfl))
-      sep := bridge_Sep_fwd (fun phi => extract ZFax_s v (Sep_form phi) hx
-        (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨phi, rfl⟩))))))))
-      pair := bridge_Pair_fwd
-        (extract ZFax_s v Pair_form hx (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
-      union := bridge_Union_fwd
-        (extract ZFax_s v Union_form hx (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))))
-      inf := bridge_Inf_fwd v (extract ZFax_s v Inf_form hx
-        (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))) v)
-      repl := bridge_Repl_fwd (fun psi => extract ZFax_s v (Repl_form psi) hx
-        (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr ⟨psi, rfl⟩)))))))) }
+    (v : Nat → Dom) (hmodel : ∀ g, ZFCax_s g → Sat m v g) : ZFAxioms m :=
+  ObjectArithmetic.zfAxioms_of_zfc_model v hmodel
 
 /-- The closed object-language totality sentence. -/
 def multiplicationTotalForm : Form := sealF

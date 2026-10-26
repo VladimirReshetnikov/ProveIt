@@ -140,7 +140,7 @@ theorem addRel_numerals_iff (H : ZFAxioms mem) (a b : Nat) (z : V) :
 
 /-- A model of the repository's sealed ZFC theory supplies the six-axiom
 bundle used by definable internal omega-recursion. -/
-private theorem axioms_of_zfc_model {Dom : Type} {m : Dom → Dom → Prop}
+theorem zfAxioms_of_zfc_model {Dom : Type} {m : Dom → Dom → Prop}
     (v : Nat → Dom) (hmodel : ∀ g, ZFCax_s g → Sat m v g) : ZFAxioms m := by
   have hx : ∀ f, ZFax_s f → Sat m v f := fun f hf => hmodel f (Or.inl hf)
   exact
@@ -181,7 +181,7 @@ first-order natural-deduction calculus. -/
 theorem zfc_proves_addition_total : BProv ZFCax_s [] additionTotalForm := by
   apply completeness_inf_context ZFCax_s [] additionTotalForm Sentences_ZFC
   intro Dom m v hmodel _
-  let H := axioms_of_zfc_model v hmodel
+  let H := zfAxioms_of_zfc_model v hmodel
   apply (seal_valid (mem := m) _).mpr ?_ v
   intro ee x y hxy
   obtain ⟨z, hz⟩ := addRel_total H
@@ -193,7 +193,7 @@ existence or consistency assumption. -/
 theorem zfc_proves_addition_unique : BProv ZFCax_s [] additionUniqueForm := by
   apply completeness_inf_context ZFCax_s [] additionUniqueForm Sentences_ZFC
   intro Dom m v hmodel _
-  let H := axioms_of_zfc_model v hmodel
+  let H := zfAxioms_of_zfc_model v hmodel
   apply (seal_valid (mem := m) _).mpr ?_ v
   intro ee x y z z' h
   exact addRel_unique H ((addForm_spec H _ 1 3 2).mp h.1)

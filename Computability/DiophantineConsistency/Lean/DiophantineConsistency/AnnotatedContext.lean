@@ -1,4 +1,5 @@
 import DiophantineConsistency.AnnotatedSchemaMaps
+import DiophantineConsistency.NatIterate
 
 /-! # Numeric arithmetic certificates for actual contexts and their shifts
 
@@ -97,26 +98,15 @@ def checkNat (input output evidence : Nat) : Nat :=
   finish (scan input (inputCode input output evidence))
 
 @[simp] theorem step_zero : step 0=0 := by simp [step,localCheck]
-@[simp] theorem scan_zero (fuel : Nat) : scan fuel 0=0 := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih => simp only [scan] at *; rw [ih,step_zero]
+@[simp] theorem scan_zero (fuel : Nat) : scan fuel 0=0 :=
+  NatIterate.rec_fixed step 0 step_zero fuel
 
-theorem scan_succ (fuel state : Nat) : scan (fuel+1) state=scan fuel (step state) := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih =>
-    change step (scan (fuel+1) state)=step (scan fuel (step state))
-    rw [ih]
+theorem scan_succ (fuel state : Nat) : scan (fuel+1) state=scan fuel (step state) :=
+  NatIterate.rec_succ step state fuel
 
 theorem scan_done (fuel output evidence : Nat) :
-    scan fuel (inputCode 1 output evidence)=inputCode 1 output evidence := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih =>
-    change step (scan fuel (inputCode 1 output evidence))=inputCode 1 output evidence
-    rw [ih]
-    simp only [step,inputCode,Nat.unpair_pair,if_true]
+    scan fuel (inputCode 1 output evidence)=inputCode 1 output evidence :=
+  NatIterate.rec_fixed step _ (by simp only [step,inputCode,Nat.unpair_pair,if_true]) fuel
 
 /-- Strong raw-code soundness, including untrusted context and witness codes. -/
 theorem scan_sound (fuel state : Nat) (h : finish (scan fuel state)=1) :

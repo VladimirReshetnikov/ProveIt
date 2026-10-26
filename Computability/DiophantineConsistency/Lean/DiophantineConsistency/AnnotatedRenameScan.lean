@@ -1,4 +1,5 @@
 import DiophantineConsistency.AnnotatedRenameLocal
+import DiophantineConsistency.NatIterate
 
 /-!
 # Numeric scan of complete annotated renaming tables
@@ -31,28 +32,16 @@ def scan (fuel mode k initial : Nat) : Nat :=
 
 @[simp] theorem step_zero (mode k : Nat) : step mode k 0=0 := by simp [step]
 
-@[simp] theorem scan_zero (fuel mode k : Nat) : scan fuel mode k 0=0 := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih => simp only [scan] at *; rw [ih,step_zero]
+@[simp] theorem scan_zero (fuel mode k : Nat) : scan fuel mode k 0=0 :=
+  NatIterate.rec_fixed (step mode k) 0 (step_zero mode k) fuel
 
 theorem scan_succ (fuel mode k state : Nat) :
-    scan (fuel+1) mode k state=scan fuel mode k (step mode k state) := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih =>
-    change step mode k (scan (fuel+1) mode k state)=
-      step mode k (scan fuel mode k (step mode k state))
-    rw [ih]
+    scan (fuel+1) mode k state=scan fuel mode k (step mode k state) :=
+  NatIterate.rec_succ (step mode k) state fuel
 
 theorem scan_done (fuel mode k history : Nat) :
-    scan fuel mode k (Nat.pair 0 history)=Nat.pair 0 history := by
-  induction fuel with
-  | zero => rfl
-  | succ fuel ih =>
-    change step mode k (scan fuel mode k (Nat.pair 0 history))=Nat.pair 0 history
-    rw [ih]
-    simp [step]
+    scan fuel mode k (Nat.pair 0 history)=Nat.pair 0 history :=
+  NatIterate.rec_fixed (step mode k) _ (by simp [step]) fuel
 
 theorem step_cons (mode k : Nat) (r : Row) (rows seen : List Row) :
     step mode k (Nat.pair (tableCode (r::rows)) (tableCode seen))=

@@ -1,4 +1,5 @@
 import DiophantineConsistency.SidonPositions
+import DiophantineConsistency.QuadraticFiber
 import Mathlib.Algebra.Polynomial.Coeff
 import Mathlib.Data.Fintype.Prod
 
@@ -36,44 +37,23 @@ theorem encoded_square (u : Fin (m + 1) → R) :
 
 theorem coeff_encoded_square_diagonal (u : Fin (m + 1) → R) (i : Fin (m + 1)) :
     (encoded u ^ 2).coeff (weight m i + weight m i) = u i ^ 2 := by
-  classical
-  rw [encoded_square]
-  simp only [finsetSum_coeff, coeff_monomial, weight_sum_eq_iff, or_self]
-  simp [ite_and, pow_two]
+  simpa [encoded] using
+    QuadraticFiber.coeff_square_at_isolated (weight m) u i i
+      (fun a b => weight_sum_eq_iff a b i i)
 
 theorem coeff_encoded_square_offDiagonal (u : Fin (m + 1) → R)
     (i j : Fin (m + 1)) (hij : i ≠ j) :
     (encoded u ^ 2).coeff (weight m i + weight m j) = 2 * u i * u j := by
-  classical
-  rw [encoded_square]
-  simp only [finsetSum_coeff, coeff_monomial, weight_sum_eq_iff]
-  have splitTerms (a b : Fin (m + 1)) :
-      (if (a = i ∧ b = j) ∨ (a = j ∧ b = i) then u a * u b else 0) =
-        (if a = i ∧ b = j then u a * u b else 0) +
-          (if a = j ∧ b = i then u a * u b else 0) := by
-    by_cases h1 : a = i ∧ b = j
-    · rcases h1 with ⟨rfl, rfl⟩
-      simp [hij]
-    · by_cases h2 : a = j ∧ b = i
-      · rcases h2 with ⟨rfl, rfl⟩
-        simp [hij, Ne.symm hij]
-      · simp [h1, h2]
-  simp_rw [splitTerms]
-  simp only [Finset.sum_add_distrib]
-  simp [ite_and]
-  ring
+  simpa only [encoded, if_neg hij] using
+    QuadraticFiber.coeff_square_at_isolated (weight m) u i j
+      (fun a b => weight_sum_eq_iff a b i j)
 
 /-- The coefficient statement on the supplied canonical unordered-pair domain. -/
 theorem coeff_encoded_square (u : Fin (m + 1) → R) (p : PairIndex m) :
     (encoded u ^ 2).coeff (pairWeight p) =
       if p.val.1 = p.val.2 then u p.val.1 ^ 2 else 2 * u p.val.1 * u p.val.2 := by
-  by_cases h : p.val.1 = p.val.2
-  · rw [if_pos h]
-    change (encoded u ^ 2).coeff (weight m p.val.1 + weight m p.val.2) = _
-    rw [h]
-    exact coeff_encoded_square_diagonal u _
-  · rw [if_neg h]
-    exact coeff_encoded_square_offDiagonal u _ _ h
+  exact QuadraticFiber.coeff_square_at_isolated (weight m) u p.val.1 p.val.2
+    (fun a b => weight_sum_eq_iff a b p.val.1 p.val.2)
 
 /-- Supplied coefficients of a quadratic form, with constant and linear terms
 available by assigning coordinate zero the value one. -/
