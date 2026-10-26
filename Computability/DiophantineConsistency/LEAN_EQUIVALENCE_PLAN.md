@@ -79,7 +79,11 @@ See the [author record](reviews/current-positive-zero2011-root.md) and
 Remaining work includes the encoded internal-ZFC derivation, other equation
 frontiers, further size reduction and source-authenticated current closure
 validation. These fresh endpoint builds reuse prerequisites; they are not
-a fresh full umbrella build. The1997 proposal
+a fresh full umbrella build. The source-authenticated361-module custom
+closure validation is now running with170 authenticated reused modules
+and191 scheduled fresh; see its [plan](reviews/current-positive-zero2011-closure-plan.md)
+and [root launch record](reviews/current-positive-zero2011-closure-launch-root.md).
+No completed-closure claim is made before its terminal checks. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
 The first new modules address necessary reusable pieces of that chain:
