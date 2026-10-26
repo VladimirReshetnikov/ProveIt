@@ -682,11 +682,67 @@ It proves the literal `(K+2^W)*C` transport congruence before any positive
 strict F, high mask or source zero is supplied. Separate helpers require
 one positive digit for positivity and one nonmaximum digit for strictness.
 The assembled source C is positive for a marked word; positivity of F
-is still a local construction obligation. See the [author receipt](reviews/current-carry-construction2011-lean-root.md)
+was left as a local construction obligation, now discharged below for
+whole-cell displacements. See the [author receipt](reviews/current-carry-construction2011-lean-root.md)
 and [independent composition replay](reviews/current-carry-construction2011-lean-peer.md).
 All27 audits for these two packets use only standard Lean axioms.
 These are leaf/module checks reusing dependencies; no fresh full umbrella
 or internal-ZFC derivation is claimed.
+
+`CurrentControllerData2011` checks the literal width94517, base2^94517,
+primes47/2011/120199, orders23/402, spacing9246, base and square residues,
+and the exact nontrivial lift modulo120199². Its final three Hs wrappers
+retain the still-unproved actual K residues as explicit hypotheses;
+this is not a complete Pcst discharge. The [author receipt](reviews/current-controller-data2011-author.md)
+and [independent root replay](reviews/current-controller-data2011-lean-root.md)
+record both final bounded builds and21 standard-only/axiom-free audits.
+
+`CurrentWordClause2011` derives the exact normalized clause, all low carry
+resets, the actual local clause masks and `0<F<q−1` for the same constructed
+transport word. Its raw clause permits arbitrary numeric controls; its
+carry construction needs Boolean controls and a whole-cell displacement.
+No marked matching, positive stride, source zero, global mask or strict
+positive F is supplied. `WangTiles942PowerDimensions` chooses independent
+large power width/height and retains unique Start in the actual quotient.
+`ControllerOrbitTransport` constructs actual finite subsets from affine
+coordinate injections and proves their size and integer-sum congruence.
+The [full root review and six fresh checks](reviews/reverse-construction-round2-lean-root.md)
+record23 standard-axiom audits, prerequisite authorship and remaining scope.
+The dimension composition also has an [independent isolated replay](reviews/wang-tiles942-power-dimensions-peer.md).
+Whole high-mask/copy tests, stronger scalar bounds, actual power-orbit
+identification, safe mutations and the positive equation converse remain open.
+
+`CurrentWordLowMask2011` now constructs the entire scalar low-mask test
+for the same assembled C, including its exact final `+1` origin term,
+and proves `0<C<q`. A generic encoder erases the origin bit and proves
+the ordinary subtraction identity before packing the capacities. Only
+Boolean controls and Start at the origin are needed; no source zero,
+matching, carry or high-mask premise occurs. The [author receipt](reviews/current-word-low-mask2011-lean-root.md)
+and [independent isolated replay](reviews/current-word-low-mask2011-lean-peer.md)
+record four standard-only axiom audits and the omitted-subtraction control.
+
+`ControllerAuxiliaryChoice` constructs the optional Boolean bit and a
+positive cardinality coprime to every auxiliary-prime power. The actual
+quotient in `ControllerResidueLift` then gives the missing affine target
+coordinate and constructs every residue as a subset sum plus the optional
+term, under the explicit affine-injection interface and T=p^n>C0. No desired
+subset is assumed. See the [author receipt](reviews/controller-boolean-subsets-lean-root.md)
+and [independent four-target replay](reviews/controller-auxiliary-choice-residue-lift-lean-peer.md).
+The actual B-power orbit, safe dummy placement and rank correction remain open.
+
+`CurrentWordCopies2011` derives all17 actual color-copy masks and the
+marker-copy mask from the same marked word, choosing the marker at j+s
+and proving its source is the current Start bit. `CurrentWordTopBounds2011`
+derives top-field resets and the stronger bounds F<q/radix and
+C<radix^(N*2011−1006). `WangTiles942PhysicalData/Order` checks every actual
+non-Start coefficient and binds its descending list to all942 printed
+physical positions, exposing a generic exact sum reindexing for modular K.
+The [root review](reviews/constructed-copies-top-physical-order-root.md),
+[TopBounds peer replay](reviews/current-word-top-bounds2011-lean-peer.md)
+and [physical-order peer replay](reviews/wang-tiles942-physical-order-peer.md)
+record46 standard-axiom audits, the full data binding and exact remaining
+scope. Padding and origin masks remain needed for whole high-mask acceptance;
+the physical cache alone does not discharge the K residues or controller.
 
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
