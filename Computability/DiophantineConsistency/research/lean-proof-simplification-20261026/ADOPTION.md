@@ -7,6 +7,11 @@ source builds, representative clients, compiler checks and executable-value
 value. The standard-axiom footprint change is documented in the
 [iteration review](../../reviews/lean-proof-simplification-20261026-root.md).
 
+`patches/assignment-map.patch` is also integrated in `Representation`, and
+the quartic compiler reuses its shared assignment lemma. The two modules
+and representative constructor/size/cost clients pass current-source Lean
+checks. Together they remove26 lines, preserving witness and expression data.
+
 The other patches and generated candidates retain their proposal status
 until a further adoption entry records their current-source validation.
 Original packet files and its archived manifest remain unchanged.

@@ -118,3 +118,21 @@ its earlier `[propext]`; the optimizer retains its three standard axioms.
 This is the documented function-extensionality cost of rewriting under a
 binder. There are no new axiom declarations or unsafe assumptions, and all
 printed axiom sets contain only standard Lean axioms.
+
+## Shared assignment transport
+
+The proposal's `assignment-map.patch` is integrated in `Representation`.
+Its shared `natAssignment_comp_map` lemma replaces five repeated function
+equalities in reindexing, conjunction and disjunction. The quartic compiler's
+private assignment wrapper also delegates to this common lemma. The two
+modules decrease from260/449 to235/448 lines, removing26 lines including
+the new shared lemma. Witness counts, expressions, evaluators and all earlier
+theorem statements are unchanged. The compiler wrapper is49 bytes longer,
+while the combined change removes731 bytes and the duplicated argument.
+
+`alternate_encoding_research` directly observed zero exits for both final
+module/olean checks, the `ArithmeticRepresentation`, `EquationFromRep` and
+`NaturalSimplifier` clients, existing `RepresentationSize` and `QuarticCost`
+checks and two axiom audits. The shared lemma uses only `Quot.sound`; all
+other printed sets are standard axioms. ROOT read the complete final
+representation module, the compiler wrapper in context and both diffs.
