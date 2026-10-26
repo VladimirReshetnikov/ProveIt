@@ -143,8 +143,18 @@ positive zero restores a positive actual Carrier65 zero, with unchanged
 ports. Transport nonnegativity and divisibility are derived; the signed
 ordinate is replaced by its absolute value, and the restored z is positive.
 See the [root review](reviews/thirteen-carrier-soundness-lean-root.md) for the
-fresh replay and exact scope. The fresh-seed converse and native production
-of its outer data remain required.
+fresh replay and exact scope.
+
+`ThirteenFreshSeed` now constructs the private positive f,i,T,m from the
+fixed outer Pell data, rather than assuming compatibility with a parent
+seed. `ThirteenCarrierComplete.polynomial_zero_completes` derives those
+outer data from every actual positive Carrier65 zero, PortBounds, the
+finite mask Interface and MC%4=2, and produces positive zeros of all three
+literal13 polynomials while preserving all nine outer slots. The
+[full root review](reviews/thirteen-fresh-complete-lean-root.md) records
+fresh checks and the necessary extra finite residue. The exact current
+masks must discharge that residue; the full native and internal-ZFC links
+remain required.
 
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
