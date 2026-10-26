@@ -730,6 +730,20 @@ subset is assumed. See the [author receipt](reviews/controller-boolean-subsets-l
 and [independent four-target replay](reviews/controller-auxiliary-choice-residue-lift-lean-peer.md).
 The actual B-power orbit, safe dummy placement and rank correction remain open.
 
+`CurrentWordCopies2011` derives all17 actual color-copy masks and the
+marker-copy mask from the same marked word, choosing the marker at j+s
+and proving its source is the current Start bit. `CurrentWordTopBounds2011`
+derives top-field resets and the stronger bounds F<q/radix and
+C<radix^(N*2011−1006). `WangTiles942PhysicalData/Order` checks every actual
+non-Start coefficient and binds its descending list to all942 printed
+physical positions, exposing a generic exact sum reindexing for modular K.
+The [root review](reviews/constructed-copies-top-physical-order-root.md),
+[TopBounds peer replay](reviews/current-word-top-bounds2011-lean-peer.md)
+and [physical-order peer replay](reviews/wang-tiles942-physical-order-peer.md)
+record46 standard-axiom audits, the full data binding and exact remaining
+scope. Padding and origin masks remain needed for whole high-mask acceptance;
+the physical cache alone does not discharge the K residues or controller.
+
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
