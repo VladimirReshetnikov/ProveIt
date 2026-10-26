@@ -48,7 +48,8 @@ The current942-tile,47-bit construction now has checked literal decimal
 data, exact K, physical permutation, polynomial-to-word recovery, both
 phase alignments, all-cell occupation and local tile-color matching.
 The detailed checkpoints below record their exact premises and reviews.
-The remaining work includes the global marked-word adapter, actual
+The global marked-word adapter now retains every original selected tile
+and the exact positive temporal stride. Remaining work includes actual
 Wang-machine language equivalence, canonical controller converse, other
 equation frontiers and internal-ZFC derivation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
@@ -428,8 +429,7 @@ No occupation, globally unique Start or supplied marker-value premise
 enters this theorem. Global chosen assignment and machine semantics
 remain separate obligations.
 
-Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. `CurrentCellCoordinate2011` now
+`CurrentCellCoordinate2011` now
 transfers exact full-word spatial and temporal subtraction to the canonical
 cell coordinate. Scaling representatives and modulus together justifies
 the cancellation without assuming2011 is invertible moduloN. Arbitrary
@@ -445,6 +445,18 @@ cover matching orientation, arbitrary signed shifts and periods(N,0),
 run is assumed. Existence from the actual polynomial is the next adapter;
 the geometry itself supplies no machine semantics.
 
-Each verified checkpoint is
+`CurrentMarkedWindow2011.polynomial_zero_marked_window`
+now augments the same original N/source/Boolean word/carries/digits with
+an actual marked cyclic942-tile assignment. Its full Selected binding is
+retained at each canonical inverse coordinate, both color matches are
+proved, and the unchanged rank quotient is nonzero moduloN and positive
+as a natural stride. No rectangle, coprimality, globally unique Start or
+machine premise is supplied. See the [root review and fresh replay](reviews/current-marked-window2011-lean-root.md).
+Machine-run extraction, cofinal canonical tilings, arithmetic/controller
+completeness, remaining equation frontiers and internal-ZFC proof remain
+required; the marked-word endpoint is not the final consistency theorem.
+
+Independent agents own distinct new Lean modules. The coordinator owns
+integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
