@@ -72,7 +72,7 @@ all four unchanged ports, two visual inspections, fresh byte-identical
 rendering and the exact preceding metadata.
 
 An independent [decimal conversion checkpoint](research/decimal-seed-stage-A-run/README.md)
-verifies the same complete781-digit integer by a full forward and reverse
+verifies the preceding complete781-digit integer by a full forward and reverse
 conversion, including normal/optimized checks. The separately rendered
 [15-variable decimal/names page](candidates/one-page-decimal-names2963-page/README.md)
 passes two full source reviews and a complete independent visual/digit review.
