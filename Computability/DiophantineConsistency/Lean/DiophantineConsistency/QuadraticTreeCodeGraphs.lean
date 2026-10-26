@@ -80,16 +80,9 @@ def treeLeftRepresentation : Rep (Fin 2) (fun v => v 0 = AnnotatedCodeArithmetic
     simp only [left_holds_iff]
     change (∃ w : Fin 5 → ℕ, w 0 = (v 1).pred ∧
       QuadraticNatPairing.Certificate (w 0) (v 0) (w 1) (w 2) (w 3) (w 4)) ↔ _
-    constructor
-    · rintro ⟨w,hpred,hc⟩
-      have hp := QuadraticNatPairing.certificate_sound hc
-      change v 0 = (Nat.unpair (v 1).pred).1
-      rw [←hpred,hp,Nat.unpair_pair]
-    · intro h
-      change v 0 = (Nat.unpair (v 1).pred).1 at h
-      have hp : (v 1).pred = Nat.pair (v 0) (Nat.unpair (v 1).pred).2 := by rw [h,Nat.pair_unpair]
-      obtain ⟨t,s,m,hc⟩ := QuadraticNatPairing.certificate_complete hp
-      exact ⟨![(v 1).pred,(Nat.unpair (v 1).pred).2,t,s,m],rfl,hc⟩)
+    simp [Fin.exists_fin_succ_pi, exists_and_left,
+      QuadraticNatPairing.exists_certificate_iff, GraphRep.exists_pair_right_iff,
+      AnnotatedCodeArithmetic.treeLeft])
 
 def treeRightRepresentation : Rep (Fin 2) (fun v => v 0 = AnnotatedCodeArithmetic.treeRight (v 1)) :=
   (System.scopedRep (a := 2) (k := 5) rightSystem).ofIff (by
@@ -97,16 +90,9 @@ def treeRightRepresentation : Rep (Fin 2) (fun v => v 0 = AnnotatedCodeArithmeti
     simp only [right_holds_iff]
     change (∃ w : Fin 5 → ℕ, w 0 = (v 1).pred ∧
       QuadraticNatPairing.Certificate (w 0) (w 1) (v 0) (w 2) (w 3) (w 4)) ↔ _
-    constructor
-    · rintro ⟨w,hpred,hc⟩
-      have hp := QuadraticNatPairing.certificate_sound hc
-      change v 0 = (Nat.unpair (v 1).pred).2
-      rw [←hpred,hp,Nat.unpair_pair]
-    · intro h
-      change v 0 = (Nat.unpair (v 1).pred).2 at h
-      have hp : (v 1).pred = Nat.pair (Nat.unpair (v 1).pred).1 (v 0) := by rw [h,Nat.pair_unpair]
-      obtain ⟨t,s,m,hc⟩ := QuadraticNatPairing.certificate_complete hp
-      exact ⟨![(v 1).pred,(Nat.unpair (v 1).pred).1,t,s,m],rfl,hc⟩)
+    simp [Fin.exists_fin_succ_pi, exists_and_left,
+      QuadraticNatPairing.exists_certificate_iff, GraphRep.exists_pair_left_iff,
+      AnnotatedCodeArithmetic.treeRight])
 
 private def graphIndex : Fin 2 → Option (Fin 1) := Fin.cases none (fun _ => some 0)
 

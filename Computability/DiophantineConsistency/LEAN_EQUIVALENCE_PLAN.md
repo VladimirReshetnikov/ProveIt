@@ -64,8 +64,12 @@ external consistency equivalence for the actual finite marked language.
 Its reverse construction works at every independently sufficiently large
 width and height; `WangTiles942BandMarker` derives unique Start in the
 same concrete quotient. See the [native completeness review](reviews/wang-tiles942-native-completeness-root.md).
-Remaining work includes reverse coefficient words/carries, the composite
-rank controller and positive arithmetic witnesses, other equation
+The local Boolean cells now assemble into an actual cyclic source word,
+and the literal kernel admits bounded normalization before a positive
+strict transport representative is supplied. These construction steps
+do not yet establish every high-mask or copy condition. Remaining work
+includes reverse mask conditions, the composite rank controller and
+positive arithmetic witnesses, other equation
 frontiers and internal-ZFC derivation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
@@ -87,7 +91,12 @@ auxiliary-Pell residue and fresh-seed maps require their own proofs. The
 old `ShortCircuit` module describes a different 15-variable 69-operation
 graph and cannot serve as the new 13-variable binding.
 
-## Verified arithmetic checkpoint
+## Verified checkpoints (chronological)
+
+The entries below record the state at each checkpoint. Later entries and
+the current-gap section above supersede earlier lists of open work.
+
+### First arithmetic checkpoint
 
 The first four modules above now compile, together with their focused
 checks. `Carrier65.eval_polynomial_zero_iff_norms` binds the actual
@@ -647,8 +656,70 @@ without inferring it from a congruence. See the [root source review and
 four fresh checks](reviews/current-cell-rank-construction-lean-root.md).
 The [independent cell-construction review](reviews/current-cell-construction2011-lean-peer.md)
 passed fresh isolated main/check replay with the same exact source binding.
-Global word assembly, cyclic carries, composite controller and arithmetic
-witnesses remain work items.
+The next checkpoints address global word assembly and cyclic carries;
+the complete composite controller and arithmetic witnesses remain open.
+
+`ControllerIntervalSums` constructs an actual finite cyclic interval of
+any prescribed coprime length a≤T whose coordinate sum is any given target.
+It proves distinctness, cardinality and the exact natural triangular-sum
+formula, including wrapping intervals and T=1. This is the consecutive
+coordinate step of the controller argument; it does not identify the
+actual power orbit, perform CRT or establish safe dummy increments.
+The [author receipt](reviews/controller-interval-sums-author.md) and
+[independent fresh replay](reviews/controller-interval-sums-peer.md) record
+the eight standard-axiom audits and the even-modulus/endpoint controls.
+
+`CurrentWordConstruction2011` assembles the actual Boolean cyclic word
+from the indexed tiles and two independent control maps. It proves
+physical support, all-period field/cell binding, exact selector/copy data
+and the marked origin, including the last cell and N=1. See its
+[author receipt](reviews/current-word-construction2011-author.md) and
+[independent fresh main/check replay](reviews/current-word-construction2011-lean-peer.md).
+
+`CurrentCarryConstruction2011` then constructs actual bounded carries
+and normalized digits for the fixed K and every binary displacement W.
+It proves the literal `(K+2^W)*C` transport congruence before any positive
+strict F, high mask or source zero is supplied. Separate helpers require
+one positive digit for positivity and one nonmaximum digit for strictness.
+The assembled source C is positive for a marked word; positivity of F
+was left as a local construction obligation, now discharged below for
+whole-cell displacements. See the [author receipt](reviews/current-carry-construction2011-lean-root.md)
+and [independent composition replay](reviews/current-carry-construction2011-lean-peer.md).
+All27 audits for these two packets use only standard Lean axioms.
+These are leaf/module checks reusing dependencies; no fresh full umbrella
+or internal-ZFC derivation is claimed.
+
+`CurrentControllerData2011` checks the literal width94517, base2^94517,
+primes47/2011/120199, orders23/402, spacing9246, base and square residues,
+and the exact nontrivial lift modulo120199². Its final three Hs wrappers
+retain the still-unproved actual K residues as explicit hypotheses;
+this is not a complete Pcst discharge. The [author receipt](reviews/current-controller-data2011-author.md)
+and [independent root replay](reviews/current-controller-data2011-lean-root.md)
+record both final bounded builds and21 standard-only/axiom-free audits.
+
+`CurrentWordClause2011` derives the exact normalized clause, all low carry
+resets, the actual local clause masks and `0<F<q−1` for the same constructed
+transport word. Its raw clause permits arbitrary numeric controls; its
+carry construction needs Boolean controls and a whole-cell displacement.
+No marked matching, positive stride, source zero, global mask or strict
+positive F is supplied. `WangTiles942PowerDimensions` chooses independent
+large power width/height and retains unique Start in the actual quotient.
+`ControllerOrbitTransport` constructs actual finite subsets from affine
+coordinate injections and proves their size and integer-sum congruence.
+The [full root review and six fresh checks](reviews/reverse-construction-round2-lean-root.md)
+record23 standard-axiom audits, prerequisite authorship and remaining scope.
+The dimension composition also has an [independent isolated replay](reviews/wang-tiles942-power-dimensions-peer.md).
+Whole high-mask/copy tests, stronger scalar bounds, actual power-orbit
+identification, safe mutations and the positive equation converse remain open.
+
+`CurrentWordLowMask2011` now constructs the entire scalar low-mask test
+for the same assembled C, including its exact final `+1` origin term,
+and proves `0<C<q`. A generic encoder erases the origin bit and proves
+the ordinary subtraction identity before packing the capacities. Only
+Boolean controls and Start at the origin are needed; no source zero,
+matching, carry or high-mask premise occurs. The [author receipt](reviews/current-word-low-mask2011-lean-root.md)
+and [independent isolated replay](reviews/current-word-low-mask2011-lean-peer.md)
+record four standard-only axiom audits and the omitted-subtraction control.
 
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged

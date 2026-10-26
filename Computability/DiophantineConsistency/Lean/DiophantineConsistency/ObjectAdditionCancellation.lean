@@ -1,3 +1,4 @@
+import BoundedZFCConsistency.InternalSat
 import DiophantineConsistency.ObjectAdditionLaws
 
 /-! # Cancellation for addition over internal omega -/
@@ -56,39 +57,16 @@ theorem addValue_cancel_left (H : ZFAxioms mem) {x y y' : V}
     (he : addValue H x y=addValue H x y') : y=y' := by
   exact addRel_cancel_left H (addValue_rel H hx hy) (he.symm ▸ addValue_rel H hx hy')
 
-private def zeroSumStage : Form :=
-  fAll (fImp (addForm 2 0 1) (fAnd (fEq 0 2) (fEq 1 2)))
-
-private theorem zeroSumStage_spec (H : ZFAxioms mem) (n : V) (ee : Nat → V) :
-    Sat mem (scons n (scons (vempty H) ee)) zeroSumStage ↔
-      ∀ x, AddRel H x n (vempty H) → x=vempty H ∧ n=vempty H := by
-  constructor
-  · intro h x hx
-    exact h x ((addForm_spec H _ 2 0 1).mpr hx)
-  · intro h x hx
-    exact h x ((addForm_spec H _ 2 0 1).mp hx)
-
 /-- There is no cancellation between two internal nonnegative summands. -/
 theorem addRel_zero_iff (H : ZFAxioms mem) (x y : V) :
     AddRel H x y (vempty H) ↔ x=vempty H ∧ y=vempty H := by
   constructor
   · intro hxy
-    let ee : Nat → V := fun _ => vempty H
-    have h : ∀ n, mem n (omegaV H) →
-        Sat mem (scons n (scons (vempty H) ee)) zeroSumStage := by
-      apply omega_ind H zeroSumStage (scons (vempty H) ee)
-      · apply (zeroSumStage_spec H _ ee).mpr
-        intro a ha
-        exact ⟨(addRel_unique H ha (addRel_zero H ha.1)).symm,rfl⟩
-      · intro n hn _
-        apply (zeroSumStage_spec H _ ee).mpr
-        intro a ha
-        obtain ⟨b,hb⟩ := addRel_total H ha.1 hn
-        have he : vempty H=vsucc H b := addRel_unique H ha (addRel_succ H hb)
-        have hmem := vsucc_self H b
-        rw [← he] at hmem
-        exact False.elim (vempty_spec H b hmem)
-    exact (zeroSumStage_spec H y ee).mp (h y hxy.2.1) x hxy
+    rcases nat_zero_or_succ H y hxy.2.1 with rfl | ⟨n, hn, rfl⟩
+    · exact ⟨(addRel_unique H hxy (addRel_zero H hxy.1)).symm, rfl⟩
+    · obtain ⟨b, hb⟩ := addRel_total H hxy.1 hn
+      have he : vempty H = vsucc H b := addRel_unique H hxy (addRel_succ H hb)
+      exact False.elim (vempty_spec H b (he.symm ▸ vsucc_self H b))
   · rintro ⟨rfl,rfl⟩
     exact addRel_zero H (vempty_in_omega H)
 
