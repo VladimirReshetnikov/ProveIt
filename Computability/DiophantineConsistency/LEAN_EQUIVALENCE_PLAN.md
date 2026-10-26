@@ -627,6 +627,11 @@ widthw≥2*T+4 and heightH≥T+2,H≥3 from an actual halt atT. The complete
 marked-language/actual-blank-halting equivalence and
 `no_marked_word_iff_conZFC` are closed. See the [root review and four
 fresh checks](reviews/wang-tiles942-native-completeness-root.md).
+The [independent native-completeness review](reviews/wang-tiles942-native-completeness-peer.md)
+passed fresh isolated CycleBand/Completeness main/check replay. The
+[independent cycle/boundary review](reviews/wang-tiles942-trace-cycle-boundary-peer.md)
+also passed its four fresh isolated builds. Both document exact bindings,
+standard axioms and prerequisite authorship.
 The [independent marker-helper review](reviews/wang-tiles942-marker-construction-peer.md)
 also passed all four isolated fresh builds. Reverse arithmetic/controller
 construction remains necessary for the actual equation equivalence.

@@ -60,6 +60,12 @@ The root check log SHA-256s are
 `ca62ce4d174f6be1604423417763abf28a28e7a8c21130bdc5c854a94bd6d41f`
 and `b176e69e3aa4f9ab900b2350b7112c3d61da7b0b595c327cedd5047066ab66ad`.
 
+The [independent native-completeness review](wang-tiles942-native-completeness-peer.md)
+passed four isolated fresh builds of CycleBand/Completeness and their
+checks. It retained all bindings and recorded22 standard-only axiom
+reports; all four objects were byte-identical to their author objects.
+The review explicitly discloses the reviewer's prerequisite authorship.
+
 The equation's reverse direction still requires constructing the
 global Boolean coefficient word, its cyclic carries, the composite
 rank controller and positive Pell/arithmetic witnesses. This native
