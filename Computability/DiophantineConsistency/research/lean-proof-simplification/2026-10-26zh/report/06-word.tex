@@ -1,0 +1,35 @@
+\pageheading{6 An optional exact marker response on the terminal band}
+\textbf{New conclusion rather than net compression.} The source \src{CurrentWordTopBounds2011}{66}{151} proves the last two convolution fields. Let \(w\) be the actual constructed cyclic word, \(m_j\) its numeric marker at cell \(j\), and \(p_e,\omega_e\) the actual kernel entry position and weight. The proposed stronger result is, for \(1991\le h<2011\),
+\[
+ (\mathrm{folded}*w)(\mathrm{base}(j)+h)
+ =\mathbf1_{h=2008}\,m_j+
+   \sum_{e:\mathrm{Entry}}\mathbf1_{h+p_e=2009}\,2\omega_e m_j.
+\]
+Here the indicators select terms, not new Boolean hypotheses. The tile assignment is arbitrary; dummy and marker maps take arbitrary natural values. Neither marked matching, a controller premise nor bounded carry data is required. The modulus remains \(N\cdot2011\) with \(N>0\), including \(N=1\).
+
+\textbf{Proof of the source restriction.} The constructed local tile digit has no support beyond field 985. The dummy is at 977 and the marker at 1004. Therefore for \(986\le x<2011\),
+\[
+ w(\mathrm{base}(j)+x)=
+ \begin{cases}m_j&x=1004,\\0&x\ne1004.\end{cases}
+\]
+The reflected source for kernel entry \(e\) is \(h-(1005-p_e)=h-1005+p_e\). Since \(0\le p_e\le985\), the terminal band puts it in \([986,1990]\). It survives precisely when \(h-1005+p_e=1004\), equivalently \(h+p_e=2009\). Equality is established in the actual cyclic ring before reading the field; no unchecked linear-index assumption is used.
+
+\textbf{The bare terms cannot all be discarded.} The bare displacement 18 reads fields 1973--1992, outside support. Displacement 2020 reads residues 1982--2001 after crossing the cell boundary, also outside support. Displacement 1004 reads fields 987--1006, meeting the marker exactly when \(h=2008\). That bare contribution must be added even if a reflected entry also survives there.
+
+\begin{lstlisting}
+theorem convolution_marker_tail
+    (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
+    (j : ZMod N) (h : ℕ) (hl : 1991 ≤ h) (hh : h < 2011) :
+    convolution folded (CurrentWordConstruction2011.word a dummy marker)
+      (base j+(h : ZMod (N*2011))) =
+      (if h = 2008 then marker j else 0) +
+        ∑ e : Entry, if h+position e = 2009
+          then 2*weight e*marker j else 0 := by
+  -- Expand convolution_eq; remove the two outer bare terms.
+  -- Rewrite the remaining bare source by word_marker_tail.
+  -- Use top_reflected_source, then Finset.sum_congr.
+  -- Each reflected term is the marker test above.
+\end{lstlisting}
+This is the exact theorem interface and a proof roadmap, not a compilable proof body. The candidate contains the complete proof and preserves all sixteen old theorem signatures. At \(h=2009\), injectivity of position leaves only Start at position zero. At \(h=2010\), no nonnegative position survives; these recover the two existing endpoints.
+
+\textbf{Sharpness and price.} Extending to \(h=1990\) is false: the position-zero term reads supported field 985. The actual Start cell with zero controls gives a nonzero counterexample. The complete candidate grows 259 to 278 physical lines. Its two endpoint clients save 26 code lines, but three new declarations cost 43; after all other edits the net is \emph{plus} 11 code lines and 353 lexical tokens. Adopt only if the full band is a useful consumer-facing contract, not to advertise those client-only savings.

@@ -1,0 +1,59 @@
+% Optional source-only fragment for the round-four report.
+\section{New helical and canonical-band clients}
+\paragraph{H1: reuse integer-multiple periodicity.}
+At the fixed ProveIt commit, \texttt{row\_zero\_of\_helix}
+(\texttt{WangTiles942HelicalQuotient.lean}, lines 22--40) performs separate
+positive- and negative-time induction.  Instead put
+\(F(x,t)=T(x,t)\).  Its premise is exactly periodicity under \((w,-1)\).
+The already available \texttt{Function.Periodic.zsmul} gives
+\[
+ F\bigl((x,t)+t\mathbin{\bullet}(w,-1)\bigr)=F(x,t),
+ \qquad (x,t)+t\mathbin{\bullet}(w,-1)=(x+wt,0).
+\]
+Symmetry proves the original statement.  The pinned mathlib implementation
+is \texttt{Mathlib/Algebra/Ring/Periodic.lean}, lines 155--158, at
+\texttt{81a5d257c8e410db227a6665ed08f64fea08e997}.
+No positivity condition is introduced: \(w=0\), negative widths and negative
+times remain valid.  The candidate body shrinks from 16 to 7 physical lines.
+This is a concrete reuse of an existing group-period theorem, not a claim
+that a generic additive-action framework is novel.
+
+\paragraph{H2: retain the concrete quotient before enriching its properties.}
+The new \texttt{band\_quotient\_properties} in
+\texttt{WangTiles942CycleBand.lean} proves, for the literal existing
+\texttt{quotientWord (extend (band L H) ...)}, both cyclic matching and
+\[
+ \forall x\in[-L,R)\;\forall t\in\mathbb Z,\qquad
+ \operatorname{tile}(a(\operatorname{address}(x,t)))
+   =\operatorname{band}(L,H,x,t).
+\]
+The existing existential endpoint then forgets the witness expression;
+the existing canonical endpoint combines the same certificate with its
+separately established marker uniqueness.  The definition of
+\texttt{canonicalWord} is unchanged, so its identity is preserved by
+reduction rather than a new uniqueness premise.  The actual halt, all
+independent margin/height lower bounds, signed time, the included left wall,
+and the excluded right wall are retained.  No coprimality or square-band
+restriction appears.
+
+The two original endpoints are
+\texttt{CycleBand.marked\_word\_of\_halt}, lines 136--165, and
+\texttt{BandMarker.canonicalWord\_properties}, lines 79--106.
+Their 40 proof-body lines become 21, including all 15 lines of the new
+helper proof.  Charging its complete statement, documentation and spacing
+leaves only a four-line whole-file reduction, not a nineteen-line net
+source reduction.  Combined with H1, the three full modules change from
+438 to 425 lines; selected proof bodies change from 56 to 28.  There is
+one added theorem, no new definition, and no changed original signature.
+
+\paragraph{Incremental novelty and validation.}
+The final baseline audit found no corresponding concrete helical descent
+or integer-period client among all 21 packet manuscripts and technical
+notes.  Generic residue normalization, word wrappers, finite dispatch,
+NorthView classification, translated intervals and prior group-action
+suggestions remain assumed applied and are not counted here.  Ten
+non-Lean tests pass, including source and mathlib blob identity, combined
+patch replay, preserved signatures and word definition, signed transport,
+and independently chosen dimension models.  Another researcher found no
+semantic gap in source review.  All candidate Lean remains
+\textbf{uncompiled}; there is no kernel, axiom-audit or performance claim.

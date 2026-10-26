@@ -1,0 +1,82 @@
+{
+  "status": "pass",
+  "scope": "head-bound verifier behavior and rejection controls, not Lean compilation",
+  "script_sha256": "413cd5aaa03c4df14b86b3476a26c7f72765f97f2f915f533ac98860972f4ec0",
+  "python": "3.12.14",
+  "checks": [
+    {
+      "case": "default_normal_and_optimized",
+      "return_codes": [
+        0,
+        0
+      ],
+      "stdout_identical": true,
+      "all_bundle_files_unchanged": true
+    },
+    {
+      "case": "read_only_portable_inputs",
+      "return_codes": [
+        0,
+        0
+      ],
+      "all_inputs_unchanged": true
+    },
+    {
+      "case": "reject_baseline_hash_mismatch",
+      "results": [
+        {
+          "mode": "normal",
+          "return_code": 1,
+          "diagnostic": "verification failed: wrong source SHA-256"
+        },
+        {
+          "mode": "optimized",
+          "return_code": 1,
+          "diagnostic": "verification failed: wrong source SHA-256"
+        }
+      ]
+    },
+    {
+      "case": "reject_patched_hash_mismatch",
+      "results": [
+        {
+          "mode": "normal",
+          "return_code": 1,
+          "diagnostic": "verification failed: wrong candidate SHA-256"
+        },
+        {
+          "mode": "optimized",
+          "return_code": 1,
+          "diagnostic": "verification failed: wrong candidate SHA-256"
+        }
+      ]
+    },
+    {
+      "case": "reject_patch_drift",
+      "results": [
+        {
+          "mode": "normal",
+          "return_code": 1,
+          "diagnostic": "verification failed: patch does not exactly reproduce shipped candidate"
+        },
+        {
+          "mode": "optimized",
+          "return_code": 1,
+          "diagnostic": "verification failed: patch does not exactly reproduce shipped candidate"
+        }
+      ]
+    },
+    {
+      "case": "explicit_output",
+      "return_code": 0,
+      "output_matches_stdout": true
+    },
+    {
+      "case": "reject_output_overwriting_input",
+      "return_codes": [
+        1,
+        1
+      ]
+    }
+  ]
+}

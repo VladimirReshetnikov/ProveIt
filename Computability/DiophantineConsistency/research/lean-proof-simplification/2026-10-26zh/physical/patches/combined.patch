@@ -1,0 +1,62 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942PhysicalOrder.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942PhysicalOrder.lean
+@@ -39,17 +39,10 @@
+   exact (List.isChain_iff_getElem.mp rows_descending) j.val (by rw [rows_length]; omega)
+ 
+ def nonStartIndex (j : Fin 941) : Fin 941 :=
+-  ⟨(abstractIndex j).val-1, by
+-    have := (abstractIndex j).isLt
+-    have := abstractIndex_ne_zero j
+-    have hp : 0 < (abstractIndex j).val := Fin.pos_iff_ne_zero.mpr this
+-    omega⟩
++  (abstractIndex j).pred (abstractIndex_ne_zero j)
+ 
+-theorem nonStartIndex_succ (j : Fin 941) : (nonStartIndex j).succ = abstractIndex j := by
+-  apply Fin.ext
+-  have hp := Fin.pos_iff_ne_zero.mpr (abstractIndex_ne_zero j)
+-  change (abstractIndex j).val-1+1=(abstractIndex j).val
+-  omega
++theorem nonStartIndex_succ (j : Fin 941) : (nonStartIndex j).succ = abstractIndex j :=
++  Fin.succ_pred (abstractIndex j) (abstractIndex_ne_zero j)
+ 
+ theorem nonStartWeight_eq (j : Fin 941) : nonStartWeight (nonStartIndex j) = value j := by
+   unfold nonStartWeight
+@@ -67,34 +60,10 @@
+ /-- A strictly increasing self-map of a finite ordinal fixes every point. -/
+ theorem strictMono_fin_eq_self {n : ℕ} (f : Fin n → Fin n) (hf : StrictMono f)
+     (i : Fin n) : f i = i := by
+-  have hs := Finite.surjective_of_injective hf.injective
+-  have fixed : ∀ k, ∀ hk : k<n, (f ⟨k,hk⟩).val=k := by
+-    intro k
+-    induction k using Nat.strong_induction_on with
+-    | h k ih =>
+-      intro hk
+-      obtain ⟨j,hj⟩ := hs ⟨k,hk⟩
+-      by_cases hlt : j.val<k
+-      · have hjfix := ih j.val hlt j.isLt
+-        have hjval := congrArg Fin.val hj
+-        change (f j).val=j.val at hjfix
+-        change (f j).val=k at hjval
+-        omega
+-      · by_cases he : j.val=k
+-        · have he' : j=⟨k,hk⟩ := Fin.ext he
+-          simpa only [he'] using congrArg Fin.val hj
+-        · have hl : (⟨k,hk⟩ : Fin n)<j := by
+-            change k<j.val
+-            omega
+-          have hm := hf hl
+-          have hv : (f ⟨k,hk⟩).val<k := by
+-            rw [hj] at hm
+-            exact hm
+-          have hh := ih (f ⟨k,hk⟩).val hv (f ⟨k,hk⟩).isLt
+-          have he' : f (f ⟨k,hk⟩)=f ⟨k,hk⟩ := Fin.ext hh
+-          have hc := congrArg Fin.val (hf.injective he')
+-          omega
+-  exact Fin.ext (fixed i.val i.isLt)
++  let e : Fin n ≃o Fin n :=
++    ⟨Equiv.ofBijective f
++      ⟨hf.injective, Finite.surjective_of_injective hf.injective⟩, hf.le_iff_le⟩
++  exact Fin.ext (Fin.coe_orderIso_apply e i)
+ 
+ def rankMap (j : Fin 941) : Fin 941 :=
+   ⟨strictRank nonStartWeight (nonStartIndex j), strictRank_lt_card _ _⟩

@@ -1,0 +1,48 @@
+{
+  "status": "PASS_NORMAL_OPTIMIZED_READ_ONLY_AND_NEGATIVE_CONTROLS",
+  "scope": "Own integrated textual verifier only; not a Lean checker",
+  "release_strip_flattened_from_head_only": true,
+  "withdrawn_files_absent": [
+    "barrier/",
+    "WangMachineTraceBounds.lean",
+    "WangTiles942InitialStrip.lean",
+    "first-failure-boundary.patch",
+    "WangMachineTraceBounds.patch"
+  ],
+  "cases": [
+    {
+      "test": "normal",
+      "returncode": 0
+    },
+    {
+      "test": "optimized",
+      "returncode": 0
+    },
+    {
+      "test": "reject baseline/WangTiles942RowStep.lean",
+      "mode": "normal",
+      "returncode": 1,
+      "stderr": "FAIL: Pinned source hashes do not match"
+    },
+    {
+      "test": "reject baseline/WangTiles942RowStep.lean",
+      "mode": "optimized",
+      "returncode": 1,
+      "stderr": "FAIL: Pinned source hashes do not match"
+    },
+    {
+      "test": "reject row/combined/WangTiles942RowStep.lean",
+      "mode": "normal",
+      "returncode": 1,
+      "stderr": "FAIL: combined patch is not exact source-to-candidate diff"
+    },
+    {
+      "test": "reject row/combined/WangTiles942RowStep.lean",
+      "mode": "optimized",
+      "returncode": 1,
+      "stderr": "FAIL: combined patch is not exact source-to-candidate diff"
+    }
+  ],
+  "stdout_identical_under_python_O": true,
+  "all_input_files_unchanged": true
+}

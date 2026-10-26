@@ -1,0 +1,23 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942PhysicalOrder.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942PhysicalOrder.lean
+@@ -39,17 +39,10 @@
+   exact (List.isChain_iff_getElem.mp rows_descending) j.val (by rw [rows_length]; omega)
+ 
+ def nonStartIndex (j : Fin 941) : Fin 941 :=
+-  ⟨(abstractIndex j).val-1, by
+-    have := (abstractIndex j).isLt
+-    have := abstractIndex_ne_zero j
+-    have hp : 0 < (abstractIndex j).val := Fin.pos_iff_ne_zero.mpr this
+-    omega⟩
++  (abstractIndex j).pred (abstractIndex_ne_zero j)
+ 
+-theorem nonStartIndex_succ (j : Fin 941) : (nonStartIndex j).succ = abstractIndex j := by
+-  apply Fin.ext
+-  have hp := Fin.pos_iff_ne_zero.mpr (abstractIndex_ne_zero j)
+-  change (abstractIndex j).val-1+1=(abstractIndex j).val
+-  omega
++theorem nonStartIndex_succ (j : Fin 941) : (nonStartIndex j).succ = abstractIndex j :=
++  Fin.succ_pred (abstractIndex j) (abstractIndex_ne_zero j)
+ 
+ theorem nonStartWeight_eq (j : Fin 941) : nonStartWeight (nonStartIndex j) = value j := by
+   unfold nonStartWeight

@@ -1,0 +1,42 @@
+\section{H2 Excluded comparison of concrete band descent}
+
+\textbf{Comparison only, not a new proposal.} The late packet already covers this mechanism. The following original candidate is preserved to make the overlap and earlier source checks auditable; do not apply it as an additional simplification on top of that packet.
+
+\refs\ \src{WangTiles942CycleBand.lean}{136}{165} and \src{WangTiles942BandMarker.lean}{79}{106}. The literal word definition is \src{WangTiles942BandMarker.lean}{47}{52}; the separate marker theorem is at \src{WangTiles942BandMarker.lean}{56}{75}.
+
+Two endpoints rebuild the same extension facts and the same restriction of quotient binding to the original band. The existential endpoint obtains some marked word; the canonical endpoint must prove properties of a particular word. Sharing only an existential theorem is therefore too weak. Share the certificate \emph{before} existential packaging, with the literal existing quotient word in its conclusion.
+
+\textbf{Excluded helper variant.} The initial candidate places this in \code{WangTiles942CycleBand}, before \code{marked_word_of_halt}. The comment and all statement lines are included in the cost.
+\begin{Lean}
+/-- The concrete quotient of the extended band has matching and retains every
+canonical-band tile. Both the existential and uniquely marked endpoints use this
+same descent proof; marker uniqueness is deliberately not a premise. -/
+theorem band_quotient_properties (T L R H : ℕ) [NeZero H]
+    [NeZero ((L+R)*H)]
+    (hh : (DecimalMachine215.machine.run T).state = none)
+    (hL : T+2 ≤ L) (hR : T+2 ≤ R) (hTH : T+2 ≤ H) (hH : 3 ≤ H)
+    (hw : 0 < L+R) :
+    let a := quotientWord (extend (band L H) (L+R) (L : ℤ))
+      (extend_allowed (band L H) (L+R) hw (L : ℤ)
+        (fun x _ t => band_allowed T L H hh hTH x t)) (L+R) H
+    MarkedWord ((L+R)*H) (L+R : ℕ) a ∧
+      ∀ x, -(L : ℤ) ≤ x → x < (R : ℤ) → ∀ t,
+        tile (a (address ((L+R)*H) (L+R : ℕ) x t)) = band L H x t := by
+  have hleft : ((L+R : ℕ) : ℤ)-(L : ℤ)-1 = (R : ℤ)-1 := by push_cast; ring
+  rcases extension_properties (band L H) (L+R) H hw (L : ℤ) (by omega) (by omega)
+      (fun x _ t => band_allowed T L H hh hTH x t)
+      (fun x _ t => band_temporal L H hH x t)
+      (fun x hx _ t => band_horizontal T L H hh hL x t hx)
+      (by simpa only [hleft] using band_twisted T L R H hh hL hR)
+      (fun x _ t => band_period L H x t) (band_start L H (by omega)) with
+    ⟨_,hhoriz,htime,hs,hhel,hvert⟩
+  refine ⟨quotientWord_marked _ _ _ _ hhoriz htime hs hhel hvert,?_⟩
+  intro x hx0 hxR t
+  apply (quotientWord_binding _ _ _ _ hhel hvert x t).trans
+  apply extend_on_band (band L H) (L+R) hw (L : ℤ) x t
+  unfold InBand
+  push_cast
+  omega
+\end{Lean}
+
+The proof assembles horizontal, temporal, start, helical, and vertical properties once. \code{quotientWord_marked} proves matching for that concrete word. \code{quotientWord_binding} identifies its tile with the extended plane, and \code{extend_on_band} identifies that plane with the original band on the half-open interval. No marker-uniqueness hypothesis is used.

@@ -1,0 +1,40 @@
+{
+  "result": "PASS_PACKAGING_STATIC_ONLY",
+  "default_mode": "read inputs and emit stdout only",
+  "optional_output": "--output path writes the same JSON as stdout",
+  "validators": {
+    "audit_receiver_causality.py": {
+      "normal_exit": 0,
+      "optimized_exit": 0,
+      "identical_stdout": true,
+      "stdout_sha256": "1a55661cef98a1ab712218ec8b1c8bf30b3f7695cc92b72fcba4243349e3c573"
+    },
+    "audit_combined_row.py": {
+      "normal_exit": 0,
+      "optimized_exit": 0,
+      "identical_stdout": true,
+      "stdout_sha256": "8d3fe2fb744846b3a58b51a4a9c2183cba046a0bce0426e88896abf2f5d53afb"
+    }
+  },
+  "inputs_hashed_for_immutability": 442,
+  "default_and_optimized_inputs_unchanged": true,
+  "portable_release_layout": "sibling row/, machine/, baseline/ with flat main Lean baseline and no Git metadata",
+  "portable_normal_and_optimized_stdout_identical": true,
+  "portable_inputs_unchanged": true,
+  "negative_controls_under_optimized_python": {
+    "remove_derived_no_finish": {
+      "exit_code": 1,
+      "stderr": "FAIL: far_pass dropped derived no-finish"
+    },
+    "alter_pinned_source": {
+      "exit_code": 1,
+      "stderr": "FAIL: source hash mismatch WangTiles942RowStep.lean"
+    },
+    "alter_combined_candidate": {
+      "exit_code": 1,
+      "stderr": "FAIL: combined candidate hash"
+    }
+  },
+  "lean_elaboration": "NOT RUN",
+  "lean_kernel": "NOT RUN"
+}

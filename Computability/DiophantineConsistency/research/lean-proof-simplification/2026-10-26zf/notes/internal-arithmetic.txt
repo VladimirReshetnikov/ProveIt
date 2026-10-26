@@ -1,0 +1,210 @@
+TWO NEW INTERNAL-ARITHMETIC PROOF SIMPLIFICATIONS
+Source snapshot: 89226e3921bce3e8949fadd12d3efb6914c7630c
+Status: source-level candidates; no Lean compiler was available in this session.
+
+1. SPECIALIZE THE ALREADY PROVED LEFT-SUCCESSOR LAW AT ZERO
+
+Target: ObjectOmegaSemiring.lean, mulRel_one_left, original lines 20-35.
+The current theorem establishes MulRel H (natV H 1) y y for every internal
+natural y. It builds a formula expressing the assertion and applies internal
+omega induction. Its induction hypothesis is used, so this is not the earlier
+proposal to delete vacuous inductions or unused induction hypotheses.
+
+The already imported ObjectMultiplicationLaws.mulRel_succ_left states
+
+  MulRel H x y z -> AddRel H z y w -> MulRel H (vsucc H x) y w.
+
+Specialize x=z=vempty H and w=y. Its two premises are exactly the existing
+mulRel_zero_left H hy and addRel_zero_left H hy. The result is definitionally
+the desired theorem because natV H 1 is vsucc H (vempty H).
+
+The complete replacement body is the single term
+
+  mulRel_succ_left H (mulRel_zero_left H hy) (addRel_zero_left H hy).
+
+An independent shorter route starts from mulRel_zero H hy, applies the
+right-successor law once, rewrites addValue_zero_left, then uses mulRel_comm.
+Both versions are in UnitMultiplicationCandidate.lean. The exact patch uses
+the first, whose premises can be checked directly against the source types.
+
+Why this remains correct for nonstandard models: the arbitrary input y is
+never externally enumerated. The two imported relational laws already hold
+on the entire internal omega. Specializing a law at zero is an ordinary
+logical consequence of those arbitrary-model statements. No identification
+of Natural H with the metatheory's Nat is used.
+
+No dependency cycle is introduced. ObjectOmegaSemiring already imports
+ObjectDistributivity, which imports ObjectMultiplicationLaws; the latter
+imports ObjectAdditionCancellation and then ObjectAdditionLaws. The cited
+laws precede the construction of the CommSemiring instance. In particular,
+the replacement does not appeal to the instance's one_mul field, which is
+itself built using mulRel_one_left. All imports, raw arithmetic relations,
+values, formula generators and instance definitions remain byte-identical.
+
+Measured source delta: 16-line declaration -> 3-line declaration, a net
+13 physical lines and 691 UTF-8 bytes removed. These are prospective source
+metrics, not a checked elaboration-time or compiled proof-size claim.
+
+2. DERIVE DISCRETE ARITHMETIC DIRECTLY FROM SET SUCCESSOR MEMBERSHIP
+
+Main observation: the model already provides the defining semantic law
+
+  mem u (vsucc H v) <-> mem u v OR u=v.
+
+The current internal arithmetic API proves a strict gap statement by first
+extracting an additive difference, proving the difference nonzero, taking
+its predecessor, and converting back to addition. That route reconstructs
+the same discreteness already present in set successor membership.
+
+Add the following exact bridge after the CommSemiring instance, in
+ObjectOmegaSemiring.Natural:
+
+  (x+1).val = vsucc H x.val.
+
+Its four-line proof is just the existing addValue_succ_right and
+addValue_zero_right equations. This is not a new arithmetic definition.
+
+Now for arbitrary internal naturals a and b,
+
+  a < b+1
+  <-> mem a.val (vsucc H b.val)
+  <-> mem a.val b.val OR a.val=b.val
+  <-> a<b OR a=b
+  <-> a<=b.
+
+The equality step uses Subtype.ext and congrArg Subtype.val. The final step
+uses le_iff_lt_or_eq, so the proof does not depend on reducing the current
+implementation of <= to a particular disjunction. This matters because the
+incoming further-deltas packet already proposes reconstructing LinearOrder
+from its strict part. Its < relation remains the same, and the bridge here
+is compatible with either presentation of <=.
+
+Taking complements in the linear order gives
+
+  a+1<=b <-> NOT (b<a+1) <-> NOT (b<=a) <-> a<b.
+
+The old lt_iff_exists_add_one theorem then follows in four body lines: rewrite
+strict comparison as x+1<=y, apply the already proved canonical-additive-order
+characterization, and commute the final +1 past the existential slack.
+Its public statement is preserved exactly.
+
+This is stronger than introducing a helper for the repeated witness code:
+it reverses the mathematical dependency. Discrete successor comparison
+comes directly from the set model, before any predecessor decomposition of
+an additive difference. No external induction, Noetherian property,
+WellFoundedLT instance or standard-Nat identification is introduced.
+
+The exact five-file patch makes these clients shorter:
+
+  ObjectNaturalDiscrete.zero_or_add_one, original lines 16-24:
+    reuse val_add_one when converting the existing nat_zero_or_succ result.
+
+  ObjectNaturalDiscrete.lt_iff_exists_add_one, original lines 30-48:
+    replace the nonzero-gap/predecessor proof by the two comparison bridges
+    and canonical-order witness transport.
+
+  ObjectPairingSurjective.add_one_le_of_lt, original lines 19-22:
+    retain the private wrapper signature and apply add_one_le_iff.
+
+  ObjectPairingSurjective.pair_successor, original lines 45-46:
+    get 0<a+1 directly from lt_add_one_iff and zero_le.
+
+  ObjectPairingSurjective.pair_surjective, original lines 80-84:
+    reuse val_add_one instead of unfolding and rewriting chosen addition.
+
+  ObjectPairingInjective.pair_eq_pair_iff, original lines 96-102:
+    supply the discrete-order callback directly from add_one_le_iff.
+
+  ObjectDivision.successor_step, original lines 59-65:
+    derive r+1<=d directly from r<d; remove the first slack extraction.
+
+  ObjectDivision.division_exists, original lines 79-85:
+    reuse val_add_one for the subtype successor equality.
+
+Measured complete-file deltas, including all added helper lines:
+
+  ObjectOmegaSemiring:       +5 lines (helper cost)
+  ObjectNaturalDiscrete:     -8 lines
+  ObjectPairingSurjective:   -6 lines
+  ObjectPairingInjective:    -2 lines
+  ObjectDivision:            -5 lines
+  Total:                    -16 physical lines, -718 UTF-8 bytes.
+
+These are intentionally modest, exact source reductions. The primary gain
+is that the definition of successor supplies the discrete-order interface;
+it removes several witness-manipulation arguments and isolates representation
+changes to one value bridge. The patch retains all old public theorem types,
+existing definitions, instance definitions and imports.
+
+OPTIONAL STANDARD-API FOLLOW-UP
+
+The verified pinned mathlib API offers SuccOrder.ofSuccLeIff and SuccAddOrder.
+After the local bridges compile, one may register a coherent SuccAddOrder
+instance with successor x+1 and a NoMaxOrder witness x<x+1. This gives the
+standard Order.add_one_le_of_lt, Order.add_one_le_iff, Order.lt_add_one_iff and
+Order.one_le_iff_pos APIs. InternalSuccessorCandidate.lean contains the actual
+prototype with local instances. This optional overhead is excluded from the
+16-line reduction and from the main patch. No PredSubOrder, subtraction,
+well-foundedness or locally finite interval instance is proposed: those would
+need additional structure and could misrepresent nonstandard models.
+
+NOVELTY AND ASSUMED-APPLIED BASELINE
+
+The independent novelty audit checked the 23 archived rounds a-w, their
+substantive notes, and all four current docs/incoming archives. It rejected
+several initially considered candidates: canonical expression witnesses,
+simultaneous ExistsUnique induction for BoundCodeRel, order monotonicity for
+ObjectListHead.listHead_le, and Boolean roots through multiplicative
+cancellation. These are already in the exclusion corpus and are not proposed.
+
+The nearest earlier ideas to proposal 1 remove inductions whose hypotheses
+are unused. The present existing induction uses its hypothesis; a separate
+already proved algebraic law permits specializing at zero instead.
+
+The nearest earlier ideas to proposal 2 are generic object-semiring interfaces,
+the incoming LinearOrder reconstruction, and the incoming removal of
+discreteness from strict multiplication. They do not derive discrete successor
+comparison from vsucc_spec or register SuccAddOrder. The current proposal
+assumes their results available and changes neither the multiplication-order
+argument nor the LinearOrder instance.
+
+Both exact patches are based on the pinned maintained sources. Some earlier
+proposals have not physically landed there, so integration into a hypothetical
+fully adopted tree requires rebasing the narrow hunks. In particular, the
+unchanged old Boolean-root comment is only patch context, not a requested
+rollback of the incoming cancellation simplification. The overlay directories
+are review snapshots; do not copy whole overlay files over a later tree.
+
+VALIDATION AND REPLAY
+
+The build_candidates.py generator verifies each intended replacement occurs
+exactly once, writes isolated overlays and patches, and records source hashes
+and exact file-size metrics. It does not mutate the repository. Neither
+candidate has been compiled in this session. No runtime, theorem-checking,
+compiled axiom-set equality or performance claim is made.
+
+On a complete checkout using the repository's leanprover/lean4:v4.32.0 and
+mathlib v4.32.0, apply the narrow patches, then build the five affected modules
+in dependency order. Rebuild the existing checks/ObjectOmegaSemiring.lean,
+checks/ObjectSharpPairing.lean and checks/ObjectDivision.lean targets with
+lake env lean after their module builds. Compare #print axioms for old and
+new public statements and the two new order bridges. Optional SuccAddOrder
+registration additionally requires checking inferred instance coherence.
+
+The root report should describe these as mathematically justified,
+source-audited proposals awaiting Lean replay, never as checked refactorings.
+
+PRIMARY SOURCES
+
+Repository base:
+https://github.com/VladimirReshetnikov/ProveIt/tree/89226e3921bce3e8949fadd12d3efb6914c7630c/Computability/DiophantineConsistency/Lean/DiophantineConsistency
+
+Current toolchain and library pin were read directly from the same commit's
+lean-toolchain and lakefile.toml. GitHub's v4.32.0 mathlib tag resolves to
+81a5d257c8e410db227a6665ed08f64fea08e997. The optional API was inspected at:
+https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/Order/SuccPred.lean
+https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Order/SuccPred/Basic.lean
+
+The exact linear-order API used in the main patch was inspected at:
+https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Order/Defs/PartialOrder.lean
+https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Order/Defs/LinearOrder.lean

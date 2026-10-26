@@ -1,0 +1,36 @@
+\section{B2 Share one halted color witness}
+
+\refs\ \src{WangTiles942FinishConstruction.lean}{29}{53}; literal color and halted-head equations in \src{WangMachineEncoding.lean}{62}{64} and \src{WangMachineEncoding.lean}{88}{90}; unchanged closing constructors in \src{WangTiles942Language.lean}{128}{136}.
+
+The pass and finish membership proofs independently split head from nonhead and build the same tape-bit witness. Derive that witness once and directly produce both \code{Allowed} facts. Keep the helper private because no broader public color-normal-form API is needed for these two callers.
+
+\textbf{Complete replacement region.}
+\begin{Lean}
+/-- The halted color is derived once for the two literal closing constructors. -/
+private theorem halted_tiles_allowed (cfg : Config 215) (hh : cfg.state = none) (x : ℤ) :
+    Allowed (passTile cfg x) ∧ Allowed (finishTile cfg x) := by
+  let b : Fin 2 := ⟨(Tape.read cfg.tape x).toNat, by
+    have h := bit_le_one (Tape.read cfg.tape x); omega⟩
+  simp only [passTile,finishTile,color,hh,halted_head_color]
+  split_ifs
+  · exact ⟨Allowed.pass (1 : Fin 2) b,Allowed.finish (1 : Fin 2) b⟩
+  · simpa only [Fin.val_zero,Nat.mul_zero,zero_add] using
+      And.intro (Allowed.pass (0 : Fin 2) b) (Allowed.finish (0 : Fin 2) b)
+
+theorem passTile_allowed (cfg : Config 215) (hh : cfg.state = none) (x : ℤ) :
+    Allowed (passTile cfg x) := (halted_tiles_allowed cfg hh x).1
+
+theorem finishTile_allowed (cfg : Config 215) (hh : cfg.state = none) (x : ℤ) :
+    Allowed (finishTile cfg x) := (halted_tiles_allowed cfg hh x).2
+\end{Lean}
+
+\subsection{The exact finite color argument}
+The bit witness $b$ lies in $\operatorname{Fin}2$ by \code{bit_le_one}. At a halted head, the constructor's head flag is $a=1$ and the color is $432+b$. Away from the head, $a=0$ and the color is $b$. Thus the only input colors are $0,1,432,433$. For the same $(a,b)$, \code{Allowed.pass} keeps the color and \code{Allowed.finish} changes the south color to 438.
+
+The conclusion is the conjunction of the two existing facts, not a new external premise or a changed tile language. The actual halt guard is indispensable: the initializer's operating-head color 4 is not included. Every actual configuration, arbitrary tape, and signed position remains allowed by the old quantification; no normalized tape representation is assumed.
+
+\textbf{Full cost.} The replaced 25-line region becomes 16 lines. The new private declaration occupies ten lines including its comment; its separating blank and both two-line public wrappers are included. The complete file falls from 164 to 155 physical lines. Both public statements and every executable definition remain unchanged.
+
+\textbf{Novelty boundary.} Prior high-color fibers characterize \emph{existing} allowed tiles, and prior halt reflection identifies action state. Neither supplies this paired forward construction of the two actual halted closing rows. This result does not claim another finite-language reflection or general dispatch abstraction.
+
+\risk\ Lean must reduce the concrete \code{Fin 2} projections and local bit witness in the restricted simplifier. The four-color sanity model checks the constructor formula only; it is not a fresh exhaustive check of the 942-tile language. \status

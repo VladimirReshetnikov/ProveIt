@@ -1,0 +1,922 @@
+{
+  "commit": "553a5f7a463cbaab8800ff8148fef0bc5a9e1b22",
+  "coverage_entries": [
+    {
+      "id": "EX001",
+      "mechanism": "Seven private optional-list-lookup inductions",
+      "scope": "Use List.mem_of_getElem? and List.getElem?_of_mem or mem_iff_getElem? at AnnotatedRename, Bound, ProofChecker, Assumption, RuleSide; wrappers or direct replacement.",
+      "evidence": "P-e:6; P-b:3; P-d:9.2; P-c:3; P-a:3.2.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX002",
+      "mechanism": "Option map injectivity",
+      "scope": "Replace AnnotatedParents judgment-code option case split by Option.map_injective judgmentCode_injective.",
+      "evidence": "P-e:6.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX003",
+      "mechanism": "Realizer and optimizer recursor congruence",
+      "scope": "Eliminate inner Nat.rec induction in PRCode.Realizes.prec, ScalarPRCode.Realizes.prec and ScalarPROptimizer.eval_optimize by explicit simp or shared axiom-free RecursorCore.rec_congr.",
+      "evidence": "P-a:3.1.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX004",
+      "mechanism": "Assignment naturality",
+      "scope": "Shared natAssignment composed with Sum.map and Expr.eval_rename for reindex/conjunction/disjunction/existsBlock; preserve expression fields and counts.",
+      "evidence": "P-b:4.1-4.2; P-d:2; P-c:4; P-a:3.3.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX005",
+      "mechanism": "Concatenated witness existential",
+      "scope": "Generic equivalence between Fin(m+n) witness and two Fin blocks via Fin.addCases, including zero lengths.",
+      "evidence": "P-b:4.1.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX006",
+      "mechanism": "Early witness-count projections",
+      "scope": "Move existing constructor count projection lemmas from RepresentationSize to constructors or lightweight module to avoid unfolding large data.",
+      "evidence": "P-b:4.3.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX007",
+      "mechanism": "Recursor iteration mechanics",
+      "scope": "Share fixed points, zero/done stability, successor-right/left and invariant or reject-or-good laws across five scanners and ContextLookup; keep executable Nat.rec definitions.",
+      "evidence": "P-e:7; P-b:5.2; P-d:5; P-c:9; P-a:8.1.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX008",
+      "mechanism": "Encoded-step semiconjugacy",
+      "scope": "Share typed/encoded iterator fusion and scan-list/table simulation from exact step_cons/terminal/reject laws; includes AnnotatedClosure coding/execution induction.",
+      "evidence": "P-e:7; P-b:5.2; P-c:9; P-a:8.1.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX009",
+      "mechanism": "Guarded-history fold",
+      "scope": "Share run_append, run_sound, Produces.append and Produces.step for Rename/Bound/ProofChecker with distinct Line/Judgment types and emit function.",
+      "evidence": "P-e:8; P-b:5.1; P-c:9.2.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX010",
+      "mechanism": "Explicit dynamic-seed PR iterator",
+      "scope": "Introduce iterateFrom with realized seed/fuel and parameterized step for scanner PR builders; preserve .val program and single expensive validator.",
+      "evidence": "P-b:5.3; P-c:9.3.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX011",
+      "mechanism": "Exact numeric Boolean reflection",
+      "scope": "Derive check=truth valid from 0-or-1 range and check=1 iff valid=true, then simplify Bound/Rename step_cons.",
+      "evidence": "P-e:8; P-b:5.4; P-a:8.2.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX012",
+      "mechanism": "Common tag threshold dispatcher",
+      "scope": "One arithmetic theorem for 0/1,2,3/4/5,6/7 and >=8 outcomes in BoundLocal/RenameLocal, over all natural tags.",
+      "evidence": "P-e:8; P-b:5.4.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX013",
+      "mechanism": "Carrier finite positivity enumeration",
+      "scope": "After fin_cases infer coordinate via hv _ in Carrier66.drop_pos/restore_pos instead of enumerating exact indices.",
+      "evidence": "P-e:3.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX014",
+      "mechanism": "Carrier canonical zero normalization",
+      "scope": "Replace canonical_zero unfold/rw/ring by narrow simp using canonical equalities.",
+      "evidence": "P-e:3.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX015",
+      "mechanism": "Integer units",
+      "scope": "Use Int.eq_one_or_neg_one_of_mul_eq_one in ShortSystem.unit_eq_one and reuse uniformly in product_eq_one_iff with sign exclusions.",
+      "evidence": "P-e:4.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX016",
+      "mechanism": "Five residual squares",
+      "scope": "ShortSystem.residualSum_zero_iff via nonnegative-add/square-zero lemmas or Finset.sum_mul_self_eq_zero_iff rather than repeated nlinarith.",
+      "evidence": "P-e:4; P-f:report/sections/02_local.tex:55-104; P-a:4.1.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX017",
+      "mechanism": "Common executable residual aggregation",
+      "scope": "Share eval_sumExpressions/sumSquares zero iff, degree <=2d and parameterized (b+1)*length cost bound across DAGQuartic, NaturalDAGQuartic, QuadraticRegisterSystem, QuarticCost.",
+      "evidence": "P-b:6.1; P-d:8.1; P-c:10; P-a:4.2.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX018",
+      "mechanism": "Shared semiring gate induction",
+      "scope": "Extract GatesSyntax/data below generic semiring soundness/completeness then derive natural/integer compiler theorems without import cycle.",
+      "evidence": "P-b:6.2; P-d:8.3.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX019",
+      "mechanism": "Merge identical constructor branches",
+      "scope": "QuarticCompiler.Gates.complete add/mul proof alternatives share one branch.",
+      "evidence": "P-e:5.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX020",
+      "mechanism": "Move syntax degree and rename laws earlier",
+      "scope": "Canonical Expr polynomial_rename, syntaxDegree/polynomial_degree_le at expression layer; weighted degree at constant weight one; keep cancellation-aware normal forms.",
+      "evidence": "P-b:6.2; P-d:8.2; P-a:7.2.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX021",
+      "mechanism": "Generic RHS degree interface",
+      "scope": "Share DAGQuartic/NaturalDAGQuartic node RHS degree <=2 from wire degree <=1 and small degree add/sub helpers.",
+      "evidence": "P-e:11.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX022",
+      "mechanism": "Shorter run_map induction step",
+      "scope": "Use map_append/map_singleton/Node.eval_map directly at recursive boundary in ArithmeticDAG.run_map.",
+      "evidence": "P-e:5.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX023",
+      "mechanism": "Cast Pell conclusion as a whole",
+      "scope": "Replace FirstPellCarrier.first_norm_facts_int final disjunction split by exact_mod_cast hgap, retaining lifts and divisibility guards.",
+      "evidence": "P-e:5.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX024",
+      "mechanism": "Shared DivMod certificate",
+      "scope": "One neutral arithmetic certificate_iff for QuadraticDivMod/RegisterDivMod; retain separate realizers and witness counts 1/23.",
+      "evidence": "P-e:6.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX025",
+      "mechanism": "Identical scalar tail",
+      "scope": "Extract SplitNinePolynomial59/GapNinePolynomial66 ratioValue with common map/cast laws and aliases; keep recipe exponents and b factor distinct.",
+      "evidence": "P-e:9; P-c:8.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX026",
+      "mechanism": "Identical 99-node free-carrier tail",
+      "scope": "Common boundary-port block for Split 416..514 and Gap 385..483 under reference renaming; prove embedding and common ratioValue semantics, no copy gates.",
+      "evidence": "P-c:8.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX027",
+      "mechanism": "Guarded solution transport",
+      "scope": "HasSolution(D,P) congruence/composition via two existential directions, not assignment bijection; Current69/70/71 same-domain examples.",
+      "evidence": "P-e:10.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX028",
+      "mechanism": "Nine-coordinate existence packaging",
+      "scope": "Parameterize evaluator to share SplitSourceExistence/GapSourceExistence66 positive/natural coordinate existential proofs; slot7 unshifted internally.",
+      "evidence": "P-f:report/sections/03_architecture.tex:11-67.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX029",
+      "mechanism": "Named conjunction accessors",
+      "scope": "Derived Canonical.Z_eq_delta/index_eq_one/rank_pos and PortBounds/core positivity accessors without changing conjunction definition.",
+      "evidence": "P-f:report/sections/03_architecture.tex:68-98.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX030",
+      "mechanism": "Coherent restored source and scalar window",
+      "scope": "One actual source assignment and positive N yielding both low/high mask tests, shared Carrier65->66 restoration and radix power normalization.",
+      "evidence": "P-f:report/sections/03_architecture.tex:99-146; P-a:source_notes/digits-review.md:8.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX031",
+      "mechanism": "Base interface below completeness",
+      "scope": "CurrentCarrierBase2011 below ThirteenCarrierComplete, old facade retained, simpler digit clients redirected.",
+      "evidence": "P-f:report/sections/03_architecture.tex:147-171.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX032",
+      "mechanism": "Parameterized Split/Gap degree profile",
+      "scope": "Share source positivity/domination and optional upper packing bound with exact degree gaps, leading coefficients and concrete sharp exponents.",
+      "evidence": "P-f:report/sections/03_architecture.tex:172-213.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX033",
+      "mechanism": "Finite row envelope proof schema",
+      "scope": "Replace NativeCoefficientBounds 22 row proofs with shared positivity/sign basis, abs_ite_le traversal and restricted linarith; preserve sharp transport dependence.",
+      "evidence": "P-d:3; P-c:6.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX034",
+      "mechanism": "Finite coefficient catalog or majorant",
+      "scope": "Encode 25 values or sparse coefficient vectors over nonnegative monomial basis; checked table/evaluation equality derives original sharp envelope.",
+      "evidence": "P-d:3.3; P-c:6.2.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX035",
+      "mechanism": "Coefficient homomorphism compression",
+      "scope": "Focused simp/generated finite-case tactic or single computable ring AST for Native/Gap mapRowCoefficient families; preserve authoritative table, CommRing and support.",
+      "evidence": "P-f:report/sections/03_architecture.tex:214-253; P-c:6.1.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX036",
+      "mechanism": "Sparse row equality checker",
+      "scope": "Small normalized sparse quadratic syntax for Split/Gap/Native source-row identities, linked to independent recipe; not full finalizer expansion.",
+      "evidence": "P-c:12.3.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX037",
+      "mechanism": "Elementary row operations",
+      "scope": "One addAt zero-set equivalence and surjective reindexing theorem for SplitCertificate59 transformed_zero_iff; preserve distinct source/destination.",
+      "evidence": "P-c:13.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX038",
+      "mechanism": "Existing run_power certificate",
+      "scope": "Emit one actual-node exponent label table and PowerStep certificate, specialize run_power, retain all 193 named powers; shard if needed.",
+      "evidence": "P-e:11; P-f:report/sections/04_circuits.tex:50-127; P-b:7.2; P-d:7.2; P-a:5.1.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX039",
+      "mechanism": "Indexed node equation facade",
+      "scope": "Shared per-circuit natural_step/run_node_equation helper or demand-driven generated specialization for 999 node facts; keep valuable cuts/public aliases.",
+      "evidence": "P-e:11; P-f:report/sections/04_circuits.tex:128-166; P-b:7.3; P-d:7.1; P-a:5.2.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX040",
+      "mechanism": "Generator respects semantic cuts",
+      "scope": "Split sourceSRegister/sourceRankRegister use already proved high/S/T/block identities; snapshot cuts dictionary in generator to avoid later/self references.",
+      "evidence": "P-c:7.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX041",
+      "mechanism": "Shared topological invariant",
+      "scope": "One indexed run_invariant strong induction for uniqueness, degree and nonnegativity, instantiating existing node equations/topology.",
+      "evidence": "P-c:11; P-a:6.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX042",
+      "mechanism": "Commutative node relation and translation",
+      "scope": "Extend NodeRel with swapped add/mul, keep subtraction ordered; generic Split/Gap positive-natural simulation with prefix/reference/exception facts.",
+      "evidence": "P-c:12.1; P-a:7.1.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX043",
+      "mechanism": "Local append invariants",
+      "scope": "Share NaturalRegisterProgram.push topology/allowed old-vs-last index splits and eval_old/eval_last append bookkeeping.",
+      "evidence": "P-a:7.3.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX044",
+      "mechanism": "Semantic block certificates",
+      "scope": "Local symbolic value tables/recipe tail proofs linked to full existing DAG and output; retain independent high-level recipe and cutpoints.",
+      "evidence": "P-e:11; P-f:report/sections/04_circuits.tex:167-187.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX045",
+      "mechanism": "Shared ShortSystem degree prefix",
+      "scope": "Factor exact 224-line common prefix of literal/compact degree proofs or existing degree checker with two tails, retaining <=68 and value bridges.",
+      "evidence": "P-f:report/sections/04_circuits.tex:188-210.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX046",
+      "mechanism": "Checked or dependent circuit views",
+      "scope": "Bundle list/topology/bounded output or SafeNode operands Fin earlier with exact erasure equality; not new arithmetic circuit.",
+      "evidence": "P-f:report/sections/04_circuits.tex:211-233.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX047",
+      "mechanism": "Half-radix identity",
+      "scope": "Derive (sa)%(2s)+(sb)/(2s)=s*(a%2)+b/2 for s>0; bound/parity replace NativeCyclicRotation enumeration.",
+      "evidence": "P-b:8.1; P-d:4.1; P-c:5; P-a:9.2.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX048",
+      "mechanism": "Shared full-modulus residues",
+      "scope": "Low-level cyclic addition/subtraction and aligned arbitrary-shift normal forms, support-zero and off-origin mask lookup across current/legacy modules.",
+      "evidence": "P-e:12; P-f:report/sections/02_local.tex:176-209; P-b:8.2; P-d:4.2; P-a:source_notes/digits-review.md:5.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX049",
+      "mechanism": "Weaken reflected residue modulus",
+      "scope": "CurrentEarlyPadding reflected_mod_sixteen from CurrentClause reflected_weight_mod modulo2048 via ModEq.of_dvd; identical selector definitions.",
+      "evidence": "P-b:8.2; P-c:15; P-a:9.1.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX050",
+      "mechanism": "Decode source-register equations once",
+      "scope": "Shared q=1+Jβ,L=q²−1,N=q³,X=qw from literal rows for NativePellBootstrap/Power; separate positivity/rank/port bounds.",
+      "evidence": "P-b:8.3.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX051",
+      "mechanism": "Natural integer rank bridge",
+      "scope": "Shared nativeRank.toNat cast equality/nonnegativity/lower bounds from actual positive source in NativePellFirstIndex and source-window proofs.",
+      "evidence": "P-c:notes/arithmetic.txt:6.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX052",
+      "mechanism": "Scalar decomposition API",
+      "scope": "From raw=d+Bq derive quotient under d<B, residue when m divides B, and zero carry under raw<B; no unwarranted digit premise on residue/reset.",
+      "evidence": "P-e:12; P-a:9.4.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX053",
+      "mechanism": "Derived recurrence and small facts record",
+      "scope": "CarryCertificate/WordFacts or smaller view of existing Facts; recurrence derives from digit bound+decomposition; source/word/mask layers distinct.",
+      "evidence": "P-e:12; P-b:9.1; P-d:9.1; P-c:15; P-a:9.4.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX054",
+      "mechanism": "Conditional padding witness",
+      "scope": "Move existence of padding u inside middle-phase implication to remove dummy zero witness in CurrentCount2011 caller.",
+      "evidence": "P-a:9.3.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX055",
+      "mechanism": "Finite fiber pushforward",
+      "scope": "One sum_fiber_mul identity for mass_foldStencil, convolution_foldStencil and word_foldStencil; allow collisions, retain modular power reasoning.",
+      "evidence": "P-d:6.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX056",
+      "mechanism": "Origin decrement word",
+      "scope": "word_sub_origin with delta<=a 0 for CurrentHighDigits/NativeHighPort54 high_mask_word; preserve no-borrow hypothesis.",
+      "evidence": "P-a:source_notes/digits-review.md:6.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX057",
+      "mechanism": "Direct physical selector sum",
+      "scope": "Expose selectorCount equality to physical Fin942 sum before prefix conversion; CurrentOneHot/FieldOffsets use direct equality.",
+      "evidence": "P-a:source_notes/digits-review.md:7.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX058",
+      "mechanism": "Chunk dispatch and sum assembly",
+      "scope": "WangTiles942Data adjacent-block/balanced or Euclidean dispatcher, final partial block; CurrentKernel finite-sum tree; retain checked leaves.",
+      "evidence": "P-e:13; P-b:9.2.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX059",
+      "mechanism": "Copied-field direction descriptor",
+      "scope": "One copiedFields_bounded or finite west/north/east/south descriptor for four control field offset/width/packed shifts; preserve tuple-order difference and collisions.",
+      "evidence": "P-e:13; P-b:9.3.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX060",
+      "mechanism": "Optional mask block library",
+      "scope": "Reuse lookup/length/bound facts for second mask client; preserve low +1, high origin -1 and scalar beta shift distinctly.",
+      "evidence": "P-e:13.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX061",
+      "mechanism": "Shared direct/native graph builder",
+      "scope": "Parameterize rawStepProgram/boundedRunProgram over small combinator record, retain native/direct realizers and exact costs 1742/6924.",
+      "evidence": "P-e:14.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX062",
+      "mechanism": "All-model sealed completeness bridge",
+      "scope": "Centralize axioms_of_zfc_model extraction, semantic validity and seal_valid before completeness; retain universes, arbitrary/nonstandard models and contexts.",
+      "evidence": "P-b:10.1; P-c:14; P-a:10.2.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX063",
+      "mechanism": "Arity-polymorphic closed transport",
+      "scope": "Generalize ObjectQuarticCompiler local closed helper to any Fin n, reuse at target arity or expose sat_noZeroForm_at_iff.",
+      "evidence": "P-b:10.2; P-c:14.1.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX064",
+      "mechanism": "Definable induction transport",
+      "scope": "omega_ind_of_spec takes actual formula/environment/Sat equivalence; shares semantic transport, not unrestricted external predicate induction.",
+      "evidence": "P-a:10.1.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX065",
+      "mechanism": "Existing internal semiring interfaces",
+      "scope": "Share only model-independent index/renaming or row-conjunction facts between ObjectQuadraticSystem/QuadraticRegisterComposition; preserve unguarded evalRel_unique.",
+      "evidence": "P-d:8.4; P-c:14.2.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX066",
+      "mechanism": "Specialize half_base_bound_31",
+      "scope": "SelectiveCoefficientBounds specialization m=31 directly via half_base_bound and existing equality hypothesis.",
+      "evidence": "P-f:report/sections/02_local.tex:10-54.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX067",
+      "mechanism": "Use Finset intersection",
+      "scope": "LowMaskCoding.sum_range_support and MultiTargetCarry.selectedMask_eq via filter_mem_eq_inter/inter_eq_right rather than ext membership proof.",
+      "evidence": "P-f:report/sections/02_local.tex:105-144.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX068",
+      "mechanism": "Predecessor exponent cancellation",
+      "scope": "Seven hpow bodies use pow_succ' and Nat.sub_add_cancel ht instead of congr+omega; avoid double-counting deleted half_base specialization.",
+      "evidence": "P-f:report/sections/02_local.tex:145-175.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX069",
+      "mechanism": "Convolution distributivity tail",
+      "scope": "NativeCyclicConvolution.word_convolution final factorization via sum_mul/mul_sum/pow_add and controlled AC simplification.",
+      "evidence": "P-f:report/sections/02_local.tex:216-222.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX070",
+      "mechanism": "Exact two-power lower bound",
+      "scope": "NativeRadixDigits hr via Nat.one_lt_two_pow instead of weaker bound+normalization+omega.",
+      "evidence": "P-f:report/sections/02_local.tex:223-228.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX071",
+      "mechanism": "FiniteSwitch boundary normalization",
+      "scope": "ArithmeticFiniteSwitch non-equality branch tag<count+1 iff tag<count eliminates redundant case split.",
+      "evidence": "P-f:report/sections/02_local.tex:229-233.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX072",
+      "mechanism": "cellDigit_lt branch expansion",
+      "scope": "Optional split_ifs/norm_num replacing existing highDigits_lt specialization; report recommends retaining original unless measured benefit.",
+      "evidence": "P-f:report/sections/02_local.tex:234-239.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX073",
+      "mechanism": "Decoder-bound controller certificates",
+      "scope": "Optional local controller invariant certificates bound to actual decoder; distinguish preservation from reachable initial states and all-cycle exclusion requiring ranking/SCC reasoning.",
+      "evidence": "P-e:13.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX074",
+      "mechanism": "Shared generator templates",
+      "scope": "Consolidate Split/Gap generator proof templates while preserving public theorem names and intermediate cuts; generator maintenance rather than semantic circuit change.",
+      "evidence": "P-e:11.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "EX075",
+      "mechanism": "Narrow modules and explicit audits",
+      "scope": "Thematic/light imports, preserve facade names, explicit affected Checks/Audit/checks targets beyond main umbrella; not new proof claim.",
+      "evidence": "P-e:14-16.",
+      "origin": "Earlier Round2 75-family index, cross-checked against placed report headings and technical notes"
+    },
+    {
+      "id": "L01",
+      "mechanism": "Exact recursive decoder graph",
+      "scope": "Fuse quote recovery and depth into one induction; use Option.bind_eq_some_iff to skip impossible failure branches; derive exact arbitrary-code/fuel iff and monotonicity. Separate successful-branch cleanup is also prior.",
+      "evidence": "I-eight: Describe the tree decoder by its exact graph; I-directions: Fuse syntax-decoder correctness; I-review: decoder section; I-round2: 04_decoder.tex",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L02",
+      "mechanism": "Total decoding for parent checker",
+      "scope": "Use decodeTable_total and tableCode_of_decode to rewrite any raw parent list to a typed list, then apply check_lists. No re-encoding induction.",
+      "evidence": "I-round2: 03_parents.tex",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L03",
+      "mechanism": "Exact rational witness descent",
+      "scope": "Take the existing rational root to its integer numerator by denominator-one power lemma; preserve sign and all joint equations; share general separated norm reconstruction below both finalizers.",
+      "evidence": "I-eight: Preserve rational roots; I-additional: Preserve the exact rational root",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L04",
+      "mechanism": "Whole-product unit decomposition",
+      "scope": "Use IsUnit.mul_iff and Int.isUnit_iff once for all factors, resolving conditional sign exclusions without manufacturing complementary products.",
+      "evidence": "I-eight: Decompose the product's units once",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L05",
+      "mechanism": "Finite invariant predecessor/reflection",
+      "scope": "Restrict an injective finite map to a forward-invariant predicate and obtain a predecessor by surjectivity. Offset-19 exclusion avoids full orbit arithmetic.",
+      "evidence": "I-eight: Use finiteness to recover an invariant predecessor; I-six: Idea 6",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L06",
+      "mechanism": "Degree before support",
+      "scope": "Bound natDegree of factors and product, then infer coefficient vanishing. Avoid expanded nested coefficient sums in SelectiveCarry.",
+      "evidence": "I-eight: Prove the support envelope before individual coefficients",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L07",
+      "mechanism": "Point-mass rotation",
+      "scope": "Specialize existing word_convolution at Pi.single t 1; derive rotation congruence without another reindexed exponent sum.",
+      "evidence": "I-eight: Rotation is convolution with a point mass",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L08",
+      "mechanism": "Primrec compositional automation",
+      "scope": "Register extensional Primrec and closure rules for fun_prop; synthesize formula-constructor proofs without changing explicit PR programs or costs.",
+      "evidence": "I-eight: Automate extensional primitive-recursiveness composition",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L09",
+      "mechanism": "Canonical digit/carry normalization",
+      "scope": "Maximum principle proves carry uniqueness with raw vector and digits fixed; fixed-length ofDigits injectivity derives digits from equal full words; canonical window normalization follows only after strict representative is fixed.",
+      "evidence": "I-eight: Canonical normalization from a finite maximum principle",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L10",
+      "mechanism": "Signed modular relation",
+      "scope": "Compose congruence up to sign using symmetry/transitivity/multiplication/powers and natAbs bridges; guarded half-interval uniqueness is also in notes.",
+      "evidence": "I-directions: Treat Pell sign ambiguity; I-ideas: Make congruence up to sign compositional; I-additional: Compose congruence up to sign",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L11",
+      "mechanism": "Internal tagged views and unique existence",
+      "scope": "One constructor-view theorem replaces BoundStep disjunction inversions, and one definable internal ∃! induction replaces separate totality/uniqueness. Preserve nonstandard codes.",
+      "evidence": "I-directions: Constructor views and one internal unique-existence induction",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L12",
+      "mechanism": "Internal recursive-graph laws",
+      "scope": "Prove ThetaG preservation and fusion using totality, functionality and explicit definability of stage invariants; addition, multiplication and closure are clients.",
+      "evidence": "I-directions: Preservation and fusion for internal recursive graphs",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L13",
+      "mechanism": "Depth-budget interpreter",
+      "scope": "Baseline/excess max-plus certificates recover GraphRep depth bounds, with local adapters, AST traversal, let-sharing and memoization; factorial/product plans supplied.",
+      "evidence": "I-directions: Synthesize representation-depth bounds with small certificates",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L14",
+      "mechanism": "Closed cyclic carry formulas",
+      "scope": "Rotated weighted sums give least/greatest carries, exact one/two-solution classification and budget-selected least witness. Explicit construction and uniqueness are prior.",
+      "evidence": "I-directions: An optional structural alternative: explicit cyclic carries",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L15",
+      "mechanism": "Zero-or-singleton finite support",
+      "scope": "Use Finset.sum_le_one_iff for all-zero or one selected index; preserve the empty type case.",
+      "evidence": "I-ideas: Use the existing finite-support classification; I-round2: 05_finite_and_cycle.tex; I-simplification: Use the existing sum-at-most-one API",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L16",
+      "mechanism": "Pell parity reuse",
+      "scope": "Invoke SignedPellResidue.odd_index_of_base_dvd in NativePellStepDown and delete unused local positive-index proof.",
+      "evidence": "I-ideas: Reuse the already proved Pell parity criterion; I-six: Idea 2; I-additional: Reuse the existing odd-index theorem",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L17",
+      "mechanism": "Pairing inverse-graph projections",
+      "scope": "Eliminate a coordinate of forward graph via product equivalence; normalize Fin witnesses then consume existing certificate iff. Includes quadratic pairing/tree graphs and prospective Cantor application.",
+      "evidence": "I-ideas: Derive inverse graphs from a product equivalence; I-additional: pairing graph section",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L18",
+      "mechanism": "Euclidean certificate uniqueness",
+      "scope": "Share positive-denominator quotient/remainder/slack certificate and identify all its witnesses; extend coherence to composed witnesses.",
+      "evidence": "I-ideas: Share the positive-denominator Euclidean certificate and further questions",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L19",
+      "mechanism": "Affine composition budget",
+      "scope": "One witness/depth potential pays composition overhead, including coefficient-six Thin invariant, aggregate child witnesses, and direct-versus-indirect zero-arity distinction.",
+      "evidence": "I-ideas: Factor the arithmetic budget behind composition",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L20",
+      "mechanism": "Support-restricted evaluator/frame rules",
+      "scope": "Propose support-only evaluator congruence and overwrite/frame lemmas; notes acknowledge existing WitnessCompaction.eval_congr. Notes-only still excluded.",
+      "evidence": "I-directions: evidence/prior_ideas.md candidate 7",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L21",
+      "mechanism": "Schema index-map normalization",
+      "scope": "Normalize rsep/rf1/rf2/ri renaming chains through algebra of index maps in AnnotatedSchemaMaps. Notes-only still excluded.",
+      "evidence": "I-directions: evidence/semantic_review.md section 5 and evidence/prior_ideas.md candidate 8",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L22",
+      "mechanism": "Cyclic packing by universal property",
+      "scope": "Represent word packing as monoid-algebra hom into ZMod(radix^n-1); deduce convolution/product and rotation/monomial laws. Notes-only still excluded.",
+      "evidence": "I-directions: evidence/algebra_review.md final optional direction and evidence/prior_ideas.md candidate 9",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L23",
+      "mechanism": "Delete unused internal inductions",
+      "scope": "Use nat_zero_or_succ for ObjectAdditionCancellation.addRel_zero_iff and ObjectNaturalZero.mulRel_zero_iff when successor branches never use induction hypotheses; remove private stage formulas.",
+      "evidence": "I-six: Idea 1; I-roadmap: Delete internal inductions whose hypotheses are unused",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L24",
+      "mechanism": "Abstract signed divisibility witnesses",
+      "scope": "Use closure of divisibility under subtraction/negation and existing ModEq conclusions instead of extracting and reconstructing witnesses for signed endpoints.",
+      "evidence": "I-six: Idea 3",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L25",
+      "mechanism": "Pell base monotonicity",
+      "scope": "Compare bases via positive pair recurrence and simultaneous x/y monotonicity, removing exponential detours in main_index_gt_first. Actual value gap is enough for index comparison.",
+      "evidence": "I-six: Idea 4; I-residual: Compare Pell bases through the positive pair recurrence",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L26",
+      "mechanism": "Integer-domain norm proof",
+      "scope": "Prove norm_ne_zero_of_not_isSquare wholly over integers using square/divisibility facts; avoid rational squarehood detour.",
+      "evidence": "I-six: Idea 5",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L27",
+      "mechanism": "Negative Pell from positive units",
+      "scope": "Square a hypothetical negative-norm solution, classify positive unit powers, and use their first-coordinate congruence to contradict norm -1.",
+      "evidence": "I-roadmap: Derive the negative Pell obstruction from positive units",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L28",
+      "mechanism": "Normalize residue obstructions",
+      "scope": "Reduce multiple three-residue norm obstructions to the existing shifted ShortEquation.strong_ne_neg_one theorem; one shared discriminant normal form.",
+      "evidence": "I-roadmap: Normalize three residue obstructions to one existing theorem",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L29",
+      "mechanism": "Minimum saturation",
+      "scope": "Use equality of a sum with the sum of heterogeneous lower bounds to obtain every block equality, including coupled nonzero minima in MinimumNorm.minima76_zero_iff.",
+      "evidence": "I-roadmap: Extract all block equalities from one minimum-saturation theorem",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L30",
+      "mechanism": "Monotone local-certificate closure",
+      "scope": "One calculus for empty/union/insert certificates over arbitrary internal set carriers, deriving repeated BoundClosed constructors and naturalness.",
+      "evidence": "I-roadmap: Optional: a calculus for monotone local certificates",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L31",
+      "mechanism": "Scale-parametric Pell ratio estimate",
+      "scope": "General real error factor covers upper_estimate and upper_estimate_scaled through the same proof; old interfaces become specializations.",
+      "evidence": "I-five: A: one Pell estimate with an explicit error factor",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L32",
+      "mechanism": "Natural perturbation and power sandwich",
+      "scope": "Replace analytic perturbed powers with natural-number inequality and transfer through Pell growth bounds; expose separate error budget instead of stronger global threshold.",
+      "evidence": "I-residual: A natural-number perturbation kernel for both Pell upper bounds",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L33",
+      "mechanism": "Exact half-binomial quotient",
+      "scope": "Identify lower binomial block as remainder, then recover half-binomial value via exact integer half-quotient rounding under one error inequality.",
+      "evidence": "I-residual: Recover the half-binomial value through an exact integer quotient",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L34",
+      "mechanism": "Arbitrary-premise fragments",
+      "scope": "Collect any list of proof fragments with suffix-history-length parent indices and finish the rule once; preserve reversed history convention and derive old arity wrappers.",
+      "evidence": "I-five: B: construct proof fragments for any number of premises",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L35",
+      "mechanism": "Successor-indexed fork certificate",
+      "scope": "State ForkCertificate(out+1) equivalence first, then isolate impossible zero once; avoid natural predecessor cancellation in each branch.",
+      "evidence": "I-five: C: prove fork certificates at successors first",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L36",
+      "mechanism": "Projected support-difference separation",
+      "scope": "Under additive projection, displacement outside S-S forces one supported factor to vanish; used with actual native support and existing no_difference_606.",
+      "evidence": "I-five: D: separate supports through a quotient homomorphism",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L37",
+      "mechanism": "Canonical square-pairing auxiliary witnesses",
+      "scope": "Characterize selector, slack and max witnesses as well as output pair code; full row equivalence gives deterministic existing witnesses.",
+      "evidence": "I-five: E: pairing certificates have canonical witnesses",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L38",
+      "mechanism": "Shared executable and semantic rule schedules",
+      "scope": "Define ordered tag/rule schedule syntax once, interpret as Boolean validity and PR computation, and certify erasure to existing frozen programs.",
+      "evidence": "I-residual: Define rule schedules once and derive both interpretations",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L39",
+      "mechanism": "Direct South prefix use",
+      "scope": "Apply binaryWord_prefix at (1,8) and (2,7) then normalize addresses inside lambdas; eliminate redundant function equalities for offsets19/20.",
+      "evidence": "I-round2: 06_south_prefix.tex; I-deltas: pageheading 4",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L40",
+      "mechanism": "Hoist binary word congruence",
+      "scope": "Move existing binaryWord_congr to definition layer; horizontal_words and copy_word_translation no longer reopen finite sums.",
+      "evidence": "I-round2: 07_word_congruence.tex",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L41",
+      "mechanism": "Cycle reachability reuse",
+      "scope": "Use theta a.val b as exact difference-cell witness, and derive zero-base propagate from propagate_from; no new coordinate abstraction.",
+      "evidence": "I-deltas: pageheading 5; I-round2: 05_finite_and_cycle.tex",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L42",
+      "mechanism": "Boundary high-color fibers",
+      "scope": "Guarded equality-indexed North/South fibers, or NorthView by color, replace repeated eliminations in eight boundary classifiers while keeping literal initializer/seam tuples.",
+      "evidence": "I-deltas: pageheadings 6–7; I-round2: 08_north_view.tex",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L43",
+      "mechanism": "Selector assignment coherence",
+      "scope": "Characterize alternate assignment from selected bits in the same original word and inverse coordinate; transport facts_marked_word by resulting equality.",
+      "evidence": "I-deltas: pageheading 8",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L44",
+      "mechanism": "Explicit CRT congruence transport",
+      "scope": "Replace gcongr/exact? in BoundedForallCertificate with add_right/mul_right/add_right applied to the existing congruence witness.",
+      "evidence": "I-round2: 09_supplemental.tex S1",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L45",
+      "mechanism": "Binary composition depth helper",
+      "scope": "Factor Fin2 elimination in five BoundedForallDepth wrappers, preserving h+8 bounds; charge support overhead.",
+      "evidence": "I-round2: 09_supplemental.tex S2",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L46",
+      "mechanism": "Small-ordinate Pell fundamental criterion",
+      "scope": "Use classification of fundamental-unit powers to prove any positive solution with y≤3 is fundamental; criterion sharp at y=4.",
+      "evidence": "I-additional: A uniform small-ordinate criterion for Pell minimality",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L47",
+      "mechanism": "Quadratic Boolean existential certificate",
+      "scope": "Consume exists_zero_certificate_iff before conditional branching; eliminate slack via existential/conjunction rearrangement, preserving whole Rep data.",
+      "evidence": "I-additional: Consume the Boolean certificate before constructing a conditional",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L48",
+      "mechanism": "Physical-position injectivity by positive tail",
+      "scope": "Recognize physicalPosition as Fin.cons zero positive strictRank-tail, invoke Fin.cons_injective_iff and compose existing injections.",
+      "evidence": "I-additional: Optional: recognize the physical permutation as a positive tail",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L49",
+      "mechanism": "Finite-word representation boundary",
+      "scope": "Unify ZMod/Fin/List.ofFn and finite-sum conversion; geometry wrapper for range and wrap facts; distinct from proving a new packing theorem.",
+      "evidence": "I-review: Unify modular and finite-word interfaces",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L50",
+      "mechanism": "Decoder codec left inverse",
+      "scope": "Shared parse-then-check and decoder left-inverse→quote injectivity; successful Option bind destructuring is explicit in earlier reports.",
+      "evidence": "I-simplification: Reuse parser and list infrastructure; I-review: Shorten decoder proofs",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L51",
+      "mechanism": "Full invertible row transformations",
+      "scope": "General invertible linear row combinations are already mentioned as a later extension to elementary row-addition zero-set invariance.",
+      "evidence": "P-c: Represent elementary row operations once",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L52",
+      "mechanism": "Sum-index witness regrouping",
+      "scope": "Use Sum.exists_sum plus one cast identity for Sum.rec to regroup DAG input/witness valuations; preserve topology/output/Allowed guards.",
+      "evidence": "I-review: evidence/structural/findings.txt section 3",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L53",
+      "mechanism": "Dedicated natural evaluator option",
+      "scope": "A natural-semiring evaluator with erasure-correctness to ArithmeticDAG is already proposed as an optional alternative to repeated casts/positivity.",
+      "evidence": "I-review: evidence/structural/findings.txt section 7",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L54",
+      "mechanism": "Guarded binary/unary constructor witnesses",
+      "scope": "Move binaryForm/unaryForm early and share code_binaryForm, renamed_binaryForm and bound_binaryForm, avoiding repeated three-tag witnesses in Rename/Bound soundness.",
+      "evidence": "I-review: evidence/syntax/findings.txt section 6",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L55",
+      "mechanism": "Pair-zero and degree-renaming consolidation",
+      "scope": "Publish zero_pair once for three annotated modules and reuse expression syntaxDegree_rename; these local algebra cleanups are notes-only but explicit.",
+      "evidence": "I-review: evidence/syntax/findings.txt section 7",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    },
+    {
+      "id": "L56",
+      "mechanism": "Replace artificial existential lets",
+      "scope": "Use set ... with equality in NativeHalfBinomial.upper_estimate_scaled instead of obtaining trivial existential witnesses. This readability change is already proposed.",
+      "evidence": "I-review: evidence/arithmetic/findings.txt section 8",
+      "origin": "Current combined audit of incoming manuscript proposal sections and notes"
+    }
+  ]
+}

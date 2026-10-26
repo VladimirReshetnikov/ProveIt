@@ -1,0 +1,96 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalOrder.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalOrder.lean
+@@ -1,5 +1,5 @@
+ import DiophantineConsistency.ObjectOmegaSemiring
+-import Mathlib.Order.Defs.LinearOrder
++import Mathlib.Order.RelClasses
+ import Mathlib.Algebra.Order.Monoid.Canonical.Defs
+ import Mathlib.Algebra.Order.Monoid.Defs
+ 
+@@ -95,52 +95,35 @@
+ namespace Natural
+ variable (H : ZFAxioms mem)
+ 
+-noncomputable instance : LinearOrder (ObjectOmegaSemiring.Natural H) where
+-  le x y := LeRel H x.val y.val
+-  lt x y := mem x.val y.val
+-  le_refl x := Or.inr rfl
+-  le_trans x y z hxy hyz := by
+-    rcases hxy with hm | he
+-    · rcases hyz with hm' | he'
+-      · exact Or.inl (nat_transitive H z.val z.property y.val hm' x.val hm)
+-      · exact Or.inl (he' ▸ hm)
+-    · exact he ▸ hyz
+-  le_antisymm x y hxy hyx := by
+-    apply Subtype.ext
+-    rcases hxy with hm | he
+-    · rcases hyx with hm' | he'
+-      · exact False.elim (nat_no_self H x.val x.property
+-          (nat_transitive H x.val x.property y.val hm' x.val hm))
+-      · exact he'.symm
+-    · exact he
+-  le_total x y := by
+-    rcases nat_linear H x.val x.property y.val y.property with hm | he | hm
+-    · exact Or.inl (Or.inl hm)
+-    · exact Or.inl (Or.inr he)
+-    · exact Or.inr (Or.inl hm)
+-  lt_iff_le_not_ge x y := by
+-    constructor
+-    · intro hm
+-      refine ⟨Or.inl hm,?_⟩
+-      rintro (hm' | he)
+-      · exact nat_no_self H x.val x.property
+-          (nat_transitive H x.val x.property y.val hm' x.val hm)
+-      · exact nat_no_self H x.val x.property (he ▸ hm)
+-    · rintro ⟨hm | he,hnot⟩
+-      · exact hm
+-      · exact False.elim (hnot (Or.inr he.symm))
+-  toDecidableLE := Classical.decRel _
++noncomputable instance : LinearOrder (ObjectOmegaSemiring.Natural H) := by
++  classical
++  let r : ObjectOmegaSemiring.Natural H → ObjectOmegaSemiring.Natural H → Prop :=
++    fun x y => mem x.val y.val
++  letI : IsStrictTotalOrder (ObjectOmegaSemiring.Natural H) r := {
++    irrefl := fun x => nat_no_self H x.val x.property
++    trans := fun x y z hxy hyz => nat_transitive H z.val z.property y.val hyz x.val hxy
++    trichotomous := fun x y hxy hyx =>
++      Subtype.ext (((nat_linear H x.val x.property y.val y.property).resolve_left hxy).resolve_right hyx)
++  }
++  exact linearOrderOfSTO r
++
++/-- Bridge to the unchanged model-level nonstrict relation. -/
++theorem le_iff_LeRel (x y : ObjectOmegaSemiring.Natural H) : x≤y ↔ LeRel H x.val y.val := by
++  change (x=y ∨ mem x.val y.val) ↔ mem x.val y.val ∨ x.val=y.val
++  simp only [Subtype.ext_iff,or_comm]
+ 
+ theorem le_iff_exists_add (x y : ObjectOmegaSemiring.Natural H) :
+     x≤y ↔ ∃ z : ObjectOmegaSemiring.Natural H, x+z=y := by
+   constructor
+   · intro h
+-    obtain ⟨z,hz⟩ := leRel_exists_add H x.property y.property h
++    obtain ⟨z,hz⟩ := leRel_exists_add H x.property y.property ((le_iff_LeRel H x y).mp h)
+     exact ⟨⟨z,hz.2.1⟩,(ObjectOmegaSemiring.Natural.addRel_iff H x _ y).mp hz⟩
+   · rintro ⟨z,hz⟩
+-    exact addRel_le_left H ((ObjectOmegaSemiring.Natural.addRel_iff H x z y).mpr hz)
++    exact (le_iff_LeRel H x y).mpr
++      (addRel_le_left H ((ObjectOmegaSemiring.Natural.addRel_iff H x z y).mpr hz))
+ 
+-theorem zero_le (x : ObjectOmegaSemiring.Natural H) : 0≤x := vempty_le_nat H x.val x.property
++theorem zero_le (x : ObjectOmegaSemiring.Natural H) : 0≤x :=
++  (le_iff_LeRel H 0 x).mpr (vempty_le_nat H x.val x.property)
+ 
+ noncomputable instance : AddCancelCommMonoid (ObjectOmegaSemiring.Natural H) where
+   __ := (inferInstance : AddCommMonoid (ObjectOmegaSemiring.Natural H))
+@@ -155,8 +138,10 @@
+   exists_add_of_le h := by
+     obtain ⟨d,hd⟩ := (le_iff_exists_add H _ _).mp h
+     exact ⟨d,hd.symm⟩
+-  le_add_self a b := addRel_le_right H (ObjectOmegaSemiring.Natural.add_graph H b a)
+-  le_self_add a b := addRel_le_left H (ObjectOmegaSemiring.Natural.add_graph H a b)
++  le_add_self a b := (le_iff_LeRel H a (b+a)).mpr
++    (addRel_le_right H (ObjectOmegaSemiring.Natural.add_graph H b a))
++  le_self_add a b := (le_iff_LeRel H a (a+b)).mpr
++    (addRel_le_left H (ObjectOmegaSemiring.Natural.add_graph H a b))
+ 
+ instance : IsOrderedCancelAddMonoid (ObjectOmegaSemiring.Natural H) where
+   add_le_add_left a b hab c := by

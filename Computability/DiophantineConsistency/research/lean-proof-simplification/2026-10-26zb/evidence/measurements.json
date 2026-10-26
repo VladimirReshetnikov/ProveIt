@@ -1,0 +1,62 @@
+[
+  {
+    "module": "WangTiles942HelicalQuotient",
+    "theorem": "row_zero_of_helix",
+    "old_declaration": "theorem row_zero_of_helix {\u03b1 : Type*} (T : \u2124 \u2192 \u2124 \u2192 \u03b1) (w : \u2124)\n    (hhelix : \u2200 x t, T (x+w) (t-1) = T x t) (x t : \u2124) :\n    T x t = T (x+w*t) 0 := by\n  induction t using Int.induction_on generalizing x with\n  | zero => simp\n  | succ n ih =>\n      have hh := hhelix x ((n : \u2124)+1)\n      rw [add_sub_cancel_right] at hh\n      calc\n        T x ((n : \u2124)+1) = T (x+w) n := hh.symm\n        _ = T ((x+w)+w*n) 0 := ih _\n        _ = T (x+w*((n : \u2124)+1)) 0 := by congr 1; ring\n  | pred n ih =>\n      have hh := hhelix (x-w) (-(n : \u2124))\n      rw [sub_add_cancel] at hh\n      calc\n        T x (-(n : \u2124)-1) = T (x-w) (-(n : \u2124)) := hh\n        _ = T ((x-w)+w*(-(n : \u2124))) 0 := ih _\n        _ = T (x+w*(-(n : \u2124)-1)) 0 := by congr 1; ring",
+    "new_declaration": "theorem row_zero_of_helix {\u03b1 : Type*} (T : \u2124 \u2192 \u2124 \u2192 \u03b1) (w : \u2124)\n    (hhelix : \u2200 x t, T (x+w) (t-1) = T x t) (x t : \u2124) :\n    T x t = T (x+w*t) 0 := by\n  have hp : Function.Periodic (fun k : \u2124 => T (x+w*k) (t-k)) 1 := by\n    intro k\n    simpa only [mul_add, mul_one, add_assoc, sub_add_eq_sub_sub] using\n      hhelix (x+w*k) (t-k)\n  simpa using (hp.int_mul t).eq.symm",
+    "old_declaration_lines": 19,
+    "new_declaration_lines": 8,
+    "old_module_lines": 147,
+    "new_module_lines": 136,
+    "baseline_sha256": "dd7e2a20254aba54f57d03cc6690a6c18d3d45d83fe3c44383f53be4c3162481",
+    "proposed_sha256": "4f8f042f1cbdaef119d2bb534b72ab542b3372805dae44628e505a258aa58524"
+  },
+  {
+    "module": "RatioReparameterization",
+    "theorem": "combined_dvd_iff",
+    "old_declaration_lines": 18,
+    "new_declaration_lines": 11,
+    "old_declaration": "theorem combined_dvd_iff {J F Q H C : \u2124} (hJF : J \u2223 F - 1) :\n    J * F \u2223 Q * F + J * (H - C) \u2194 J \u2223 Q \u2227 F \u2223 H - C := by\n  have hcop := isCoprime_of_congruence hJF\n  constructor\n  \u00b7 intro h\n    have hJ : J \u2223 Q * F + J * (H - C) :=\n      dvd_trans (show J \u2223 J * F from \u27e8F, rfl\u27e9) h\n    have hF : F \u2223 Q * F + J * (H - C) :=\n      dvd_trans (show F \u2223 J * F from \u27e8J, by ring\u27e9) h\n    have hQF : J \u2223 Q * F := by\n      simpa using dvd_sub hJ (show J \u2223 J * (H - C) from \u27e8H - C, rfl\u27e9)\n    have hJHC : F \u2223 J * (H - C) := by\n      simpa using dvd_sub hF (show F \u2223 Q * F from \u27e8Q, by ring\u27e9)\n    exact \u27e8hcop.symm.dvd_of_dvd_mul_right hQF, hcop.dvd_of_dvd_mul_left hJHC\u27e9\n  \u00b7 rintro \u27e8\u27e8q, hq\u27e9, \u27e8z, hz\u27e9\u27e9\n    refine \u27e8q + z, ?_\u27e9\n    rw [hq, hz]\n    ring",
+    "new_declaration": "theorem combined_dvd_iff {J F Q H C : \u2124} (hJF : J \u2223 F - 1) :\n    J * F \u2223 Q * F + J * (H - C) \u2194 J \u2223 Q \u2227 F \u2223 H - C := by\n  have hcop := isCoprime_of_congruence hJF\n  constructor\n  \u00b7 intro h\n    exact \u27e8hcop.symm.dvd_of_dvd_mul_right\n      ((dvd_add_left (dvd_mul_right J _)).mp ((dvd_mul_right J F).trans h)),\n      hcop.dvd_of_dvd_mul_left\n      ((dvd_add_right (dvd_mul_left F Q)).mp ((dvd_mul_left F J).trans h))\u27e9\n  \u00b7 rintro \u27e8hQ, hT\u27e9\n    exact dvd_add (mul_dvd_mul_right hQ F) (mul_dvd_mul_left J hT)",
+    "old_module_lines": 180,
+    "new_module_lines": 173,
+    "baseline_sha256": "05c046f532cd9072fe428102f9396d063fbacbd4c60eaf333dc2e1951d215ac6",
+    "proposed_sha256": "ca4358c09b4ca23e220c22b135752bb85b2a984519271040fd1752dd73f6e958"
+  },
+  {
+    "module": "PolynomialRangeBounds",
+    "theorem": "geometric_identity",
+    "old_declaration_lines": 7,
+    "new_declaration_lines": 3,
+    "old_declaration": "theorem geometric_identity (B : \u2124) (d : \u2115) :\n    (B - 1) * (\u2211 i \u2208 range d, B ^ i) = B ^ d - 1 := by\n  induction d with\n  | zero => simp\n  | succ d ih =>\n    rw [sum_range_succ, mul_add, ih, pow_succ]\n    ring",
+    "new_declaration": "theorem geometric_identity (B : \u2124) (d : \u2115) :\n    (B - 1) * (\u2211 i \u2208 range d, B ^ i) = B ^ d - 1 :=\n  mul_geom_sum B d",
+    "old_module_lines": 150,
+    "new_module_lines": 145,
+    "baseline_sha256": "7b867e643280e31eafd8edfed76d3001eb10e32ac1fcd2ccba068f67711a17bb",
+    "proposed_sha256": "de0415663132481a9e3cb97b97e66728bb34e9d5ac799af4db46a818331d78b2"
+  },
+  {
+    "module": "PolynomialRangeBounds",
+    "theorem": "geometric_lt_two_top",
+    "old_declaration_lines": 9,
+    "new_declaration_lines": 7,
+    "old_declaration": "theorem geometric_lt_two_top {B : \u2124} (hB : 2 \u2264 B) (d : \u2115) :\n    (\u2211 i \u2208 range (d + 1), B ^ i) < 2 * B ^ d := by\n  induction d with\n  | zero => norm_num\n  | succ d ih =>\n    rw [sum_range_succ]\n    have hp : 0 < B ^ d := by positivity\n    have hnext : B ^ (d + 1) = B ^ d * B := pow_succ _ _\n    nlinarith",
+    "new_declaration": "theorem geometric_lt_two_top {B : \u2124} (hB : 2 \u2264 B) (d : \u2115) :\n    (\u2211 i \u2208 range (d + 1), B ^ i) < 2 * B ^ d := by\n  have hg := geometric_identity B d\n  have hs : 0 \u2264 \u2211 i \u2208 range d, B ^ i := sum_nonneg (fun _ _ => by positivity)\n  have h := mul_le_mul_of_nonneg_right (show 1 \u2264 B - 1 by omega) hs\n  rw [sum_range_succ]\n  nlinarith",
+    "old_module_lines": 150,
+    "new_module_lines": 145,
+    "baseline_sha256": "7b867e643280e31eafd8edfed76d3001eb10e32ac1fcd2ccba068f67711a17bb",
+    "proposed_sha256": "de0415663132481a9e3cb97b97e66728bb34e9d5ac799af4db46a818331d78b2"
+  },
+  {
+    "module": "MarginSeparation",
+    "theorem": "coordinate_gt_of_margin_pos",
+    "old_declaration_lines": 19,
+    "new_declaration_lines": 11,
+    "old_declaration": "theorem coordinate_gt_of_margin_pos {C K Y cap g : \u2124}\n    (hK : 0 < K) (hY : 2 \u2264 Y) (hcap : 0 < cap) (hg : 0 \u2264 g)\n    (hm : 0 < (K ^ 2 - 4 * (C - K * Y) ^ 2) * cap - 8 * g * K ^ 2) :\n    K < C := by\n  have hgap : 0 < K ^ 2 - 4 * (C - K * Y) ^ 2 := by\n    by_contra h\n    have hmul := mul_nonpos_of_nonpos_of_nonneg (le_of_not_gt h) (le_of_lt hcap)\n    have htail : 0 \u2264 8 * g * K ^ 2 := by positivity\n    linarith\n  by_contra h\n  have hC : C \u2264 K := by omega\n  have hKY : 2 * K \u2264 K * Y := by\n    have := mul_le_mul_of_nonneg_left hY (le_of_lt hK)\n    nlinarith\n  have hCK : K \u2264 -(C - K * Y) := by nlinarith\n  have hsq : K ^ 2 \u2264 (C - K * Y) ^ 2 := by\n    have := mul_self_le_mul_self (le_of_lt hK) hCK\n    nlinarith\n  nlinarith [sq_nonneg K]",
+    "new_declaration": "theorem coordinate_gt_of_margin_pos {C K Y cap g : \u2124}\n    (hK : 0 < K) (hY : 2 \u2264 Y) (hcap : 0 < cap) (hg : 0 \u2264 g)\n    (hm : 0 < (K ^ 2 - 4 * (C - K * Y) ^ 2) * cap - 8 * g * K ^ 2) :\n    K < C := by\n  have hgap : 0 < K ^ 2 - 4 * (C - K * Y) ^ 2 := by\n    apply (mul_pos_iff_of_pos_right hcap).mp\n    exact lt_of_lt_of_le hm (sub_le_self _ (by positivity))\n  have hwindow := abs_lt_of_sq_lt_sq' (a := 2 * (C - K * Y))\n    (b := K) (by nlinarith only [hgap]) hK.le\n  have hKY := mul_le_mul_of_nonneg_left hY hK.le\n  nlinarith only [hwindow.1, hKY, hK]",
+    "old_module_lines": 141,
+    "new_module_lines": 133,
+    "baseline_sha256": "56196ef0c540dcb2ee4e20ff4afef0df7f9ea0a3decb9f9758a96ee582b39355",
+    "proposed_sha256": "12a1e88aaf8107ac1e13a253f41a99396f56a98cb846922882752f3bfc7eb459"
+  }
+]

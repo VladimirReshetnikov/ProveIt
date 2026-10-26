@@ -1,0 +1,126 @@
+FINAL INCOMING AUDIT: further-deltas, frozen 09d
+26 October 2026
+
+Scope
+-----
+Public GitHub snapshot: 09d65a93c9df8684c1a226341d6a5120623d1cdb
+Incoming path: docs/incoming/diophantine-lean-further-deltas-2026-10-26.zip
+URL: https://raw.githubusercontent.com/VladimirReshetnikov/ProveIt/09d65a93c9df8684c1a226341d6a5120623d1cdb/docs/incoming/diophantine-lean-further-deltas-2026-10-26.zip
+ZIP bytes: 587607
+ZIP SHA256: 4a93e2a3b94ef43dcb8dc96d95584d676803a63d982a5bf48f9db54d4a355e09
+ZIP members: 82
+
+The ZIP was downloaded as public inert data and securely extracted: absolute
+paths, parent traversal, backslashes/colon path components and symlink members
+were rejected; total declared expansion was bounded. No archived script was
+executed. Extracted root: further-deltas/diophantine-lean-further-deltas-2026-10-26.
+The complete member SHA256 manifest is further-deltas-hashes.json. This audit
+does not alter candidate package files, code, or the repository.
+
+Read scope and hashes
+---------------------
+The entire principal manuscript was read, together with arithmetic, syntax,
+and geometry proposal notes, README, exclusions, closing audit, and mathematical
+review. Supplementary and future ideas were included. Targeted searches covered
+all extracted text, Lean candidates and patches; exact quotient implementation
+was inspected to distinguish unchanged snapshot content from a proposal.
+
+report/report.tex
+  38904 bytes
+  c0d2ee1579676dcde451a64991cd313b640f96821f4ec82b78c97fd56b85e3a8
+arithmetic/notes/ARITHMETIC_FINDINGS.md
+  5250 bytes
+  03d9e7af2eea51dfddbe0b7d4ab8a343a0ad9e89ce762a1b5e2f587450817ea5
+syntax/FINDINGS.md
+  7363 bytes
+  3e6534b959de60db8fa09a9ba0dfb8d6de45c48e8bbe02275f086fb5dd2b2083
+geometry/proposal-notes.md
+  5489 bytes
+  a194a5e94ef7131aec275ca228434f758212485aad6bd4b240b60b3eafbdbb76
+evidence/CLOSING_AUDIT.md
+  9677 bytes
+  e09b0dbfe5ec5ff793e48cb0b054de25820d02d5322cb15cfa9f80b50259c9bf
+evidence/EXCLUSIONS.md
+  22249 bytes
+  fbed559ff72eb20c44dbdd6a9fa3196a4df77d423ce58555775da35a85d4f838
+evidence/final-mathematical-review.md
+  2868 bytes
+  0d27711e053a8b2f72365100152ac2bc1c5bae8c8df67b240849f6b6264dbc29
+
+Incoming mechanisms
+-------------------
+P1 (report lines139-199): NativeQuadraticPositions.index_span first discards all
+nonextremal rows using the target ceiling, then checks only five final-row
+support entries. It removes 131 of 136 support-dependent obligations.
+
+P2 (201-241): Function.Periodic on Z x Z and Periodic.zsmul replace the custom
+integer induction in WangTiles942HelicalQuotient.row_zero_of_helix. The period
+lattice remark at239 combines (w,-1) and (0,H) into (wH,0).
+
+P3 (243-287): Translate the left seam by a positive horizontal period to prove
+L+R <= N for InitialStrip. Obtain marked period >2 before machine soundness.
+The future-use remark at285 concerns bounds for the whole strip.
+
+P4 (289-345): Max-square pairing branch is determined by whether its output
+lies below m*m+m, where m is the shell maximum. Equal outputs and maxima make
+two mixed injectivity cases impossible.
+
+P5 (347-377): ObjectListHead.listHead_le uses head_cons and order monotonicity
+directly, replacing additive-slack reconstruction.
+
+P6 (379-421): PolynomialRangeBounds.geometric_identity uses mul_geom_sum;
+geometric_lt_two_top follows algebraically from that identity and positivity,
+removing a separate geometric-sum induction.
+
+P7 (423-452): Optional ObjectNaturalOrder order construction via
+linearOrderOfSTO, with explicit LeRel compatibility and five adapters.
+
+Supplement (524 onward; arithmetic findings section2): SidonPositions moment
+polarization directly gives 2(a-c)(a-d)=0 after equal moments, avoiding a
+separate product-reconstruction step and repeated Nat/Int transports.
+
+Unselected direction (arithmetic findings final paragraph): multivariate finite
+interpolation at port values is mentioned but not recommended without an
+independent degree certificate. It is nevertheless treated as prior here.
+
+Overlap decisions
+-----------------
+RETAIN coefficient multiplication-bound composition. None of P1-P7 or the
+supplement proposes composing the existing absolute linear coefficient bound
+twice. The nearest coefficient antecedent cited in this ZIP is packet t's
+exact pair-fibre extraction, which requires local no-collision hypotheses;
+our arbitrary-collision H*(sum |u|)^2 bound has a different proof obligation.
+P1 changes an exponent-span proof and leaves the coefficient-bound mechanism
+untouched. Mixed-product and iterated-power bound follow-ups also have no
+counterpart in this ZIP; distinguish them from exact mixed-product extraction.
+
+RETAIN NativePellPower.sixteen_pow_bound and
+NativeHalfBinomial.seventy_two_mul_lt_two_pow. P6 concerns sums over ranges,
+not these exact scalar thresholds. It neither normalizes all bases to a
+quadratic in 4^r nor shifts r=4+n and invokes Nat.lt_pow_self. It does reinforce
+that generic advice to replace an induction by a library result is not new;
+claim only the concrete checked transformations and their actual consumers.
+The report's threshold-recognition future question is an unimplemented
+follow-up, not an extra measured result.
+
+RETAIN optional explicit quotient constructor. The incoming complete candidate
+still declares noncomputable quotientWord using Classical.choose at lines59-67
+and proves quotientWord_tile by Classical.choose_spec. Its patch changes only
+the periodic row-zero proof and import. No recoveredIndex/indexOfAllowed
+construction or computable replacement is proposed. Mention of the same module
+therefore does not duplicate our optional data-construction change.
+
+ALREADY EXCLUDED row-zero period-group proposal is duplicated by P2. It is not
+part of our delivered recommendations or savings and must remain excluded.
+
+NO OVERLAP IN THIS ZIP for RefinedPair expansion injectivity or finite-sign
+product transport. Those two proposals are withdrawn independently because
+late packet w duplicates them; this no-overlap result does not reinstate them.
+Their generalized radical-combiner follow-up should also be removed with them.
+
+Conclusion and limits
+---------------------
+The retained coefficient mechanism, two scalar proofs, and optional computable
+quotient survive this incoming archive. No code was compiled for this audit.
+Novelty is scoped to the inspected repository corpus, not an assertion of
+mathematical novelty. Other late archives and packet w are audited separately.

@@ -1,0 +1,261 @@
+[
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/diophantine-lean-new-simplifications-2026-10-26/diophantine-lean-new-simplifications-2026-10-26/audit/exclusion_notes.txt",
+    "hits": [
+      {
+        "line": 339,
+        "text": "Describe widths/offsets/packed positions once and share four field bounds, preserving WNES/WENS ordering distinction."
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/diophantine-lean-new-ideas-2026-10-26/diophantine-lean-new-ideas-2026-10-26/native-proofs/modified/CurrentCellLabels2011.lean",
+    "hits": [
+      {
+        "line": 8,
+        "text": "west978, north960, east969, south942. No incoming-zero, occupation or"
+      },
+      {
+        "line": 21,
+        "text": "  t.west + 2 ^ 8 * t.north + 2 ^ 17 * t.east + 2 ^ 25 * t.south"
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/diophantine-lean-additional-simplifications-2026-10-26/diophantine-lean-additional-simplifications-2026-10-26/report.tex",
+    "hits": [
+      {
+        "line": 155,
+        "text": "The two files together shrink from \\textbf{432 to 390 lines}. The first file remains 255 lines because it takes ownership of the shared general result; the second shrinks from 177 to 135. This accounting includes the new helper and compatibility declarations. The original and patched full modules compile, and the audited exported theorem axiom sets agree."
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/additional_lean_simplifications_2026-10-26/additional_lean_simplifications_2026-10-26/report/additional_lean_simplifications.tex",
+    "hits": [
+      {
+        "line": 651,
+        "text": "  tile_weight_injective.comp (Fin.succ_injective 941)"
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/additional_lean_simplifications_2026-10-26/additional_lean_simplifications_2026-10-26/optional/permutation-injectivity.patch",
+    "hits": [
+      {
+        "line": 9,
+        "text": "-  have he : i.succ = j.succ := tile_weight_injective h"
+      },
+      {
+        "line": 14,
+        "text": "+  tile_weight_injective.comp (Fin.succ_injective 941)"
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/additional_lean_simplifications_2026-10-26/additional_lean_simplifications_2026-10-26/optional/WangTiles942Permutation.lean",
+    "hits": [
+      {
+        "line": 80,
+        "text": "theorem tile_injective : Function.Injective tile := by"
+      },
+      {
+        "line": 91,
+        "text": "  have hp : t.west + 256 * (t.north + 512 * (t.east + 256 * t.south)) ="
+      },
+      {
+        "line": 92,
+        "text": "      u.west + 256 * (u.north + 512 * (u.east + 256 * u.south)) := by"
+      },
+      {
+        "line": 103,
+        "text": "theorem tile_weight_injective : Function.Injective (fun i : Fin 942 => selectorWeight (tile i)) := by"
+      },
+      {
+        "line": 105,
+        "text": "  apply tile_injective"
+      },
+      {
+        "line": 175,
+        "text": "  tile_weight_injective.comp (Fin.succ_injective 941)"
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/additional_lean_simplifications_2026-10-26/additional_lean_simplifications_2026-10-26/optional/PermutationClients.lean",
+    "hits": [
+      {
+        "line": 6,
+        "text": "  tile_weight_injective.comp (Fin.succ_injective 941)"
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/additional_lean_simplifications_2026-10-26/additional_lean_simplifications_2026-10-26/audit/novelty_audit.md",
+    "hits": [
+      {
+        "line": 324,
+        "text": "Describe four west/north/east/south blocks once and reindex 34 controls, preserving tile order and summed collisions."
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/ProveIt_Lean_Simplification_Round2_2026-10-26/LeanReview2/wang/NORTH_VIEW_REVIEW.md",
+    "hits": [
+      {
+        "line": 41,
+        "text": "parameters remain `Fin 3`. Neither tile occupation, a unique Start, periodicity,"
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/ProveIt_Lean_Simplification_Round2_2026-10-26/LeanReview2/incoming_audit/EXCLUSION_CATALOG.md",
+    "hits": [
+      {
+        "line": 260,
+        "text": "**Native layout.** One copiedFields_bounded or finite west/north/east/south descriptor for four control field offset/width/packed shifts; preserve tuple-order difference and collisions."
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/Lean_Proof_Simplification_New_Deltas_2026-10-26/Lean_Proof_Simplification_New_Deltas/report/report.tex",
+    "hits": [
+      {
+        "line": 158,
+        "text": "With tuple order \\((\\mathrm{west},\\mathrm{north},\\mathrm{east},\\mathrm{south})\\), the relevant fibers are:"
+      },
+      {
+        "line": 222,
+        "text": "The selection predicate says \\(f(i)=1\\) and \\(f(j)=0\\) for every \\(j\\ne i\\). Its existing \\code{Selected.unique} theorem already identifies any other index with value one: \\src{CurrentCellLabels2011}{128}{129} and \\src{CurrentCellLabels2011}{169}{174}. The new API should use that theorem, not re-prove uniqueness or assume injectivity of the tile table."
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/Lean_Proof_Simplification_New_Deltas_2026-10-26/Lean_Proof_Simplification_New_Deltas/evidence/late_equivalence_plan.md",
+    "hits": [
+      {
+        "line": 3,
+        "text": "The owner resumed Lean formalization on 25 October 2026. The objective is"
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/Lean_Proof_Simplification_New_Deltas_2026-10-26/Lean_Proof_Simplification_New_Deltas/wang/proposals/WangTiles942Boundary.proposed.lean",
+    "hits": [
+      {
+        "line": 146,
+        "text": "determines its exact matching reset tile. -/"
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/Lean_Proof_Simplification_New_Deltas_2026-10-26/Lean_Proof_Simplification_New_Deltas/cyclic/source/CurrentMarkedWindow2011.lean",
+    "hits": [
+      {
+        "line": 87,
+        "text": "/-- The chosen tile at zero is Start; this does not assert a globally unique Start. -/"
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/Lean_Proof_Simplification_New_Deltas_2026-10-26/Lean_Proof_Simplification_New_Deltas/catalog/packet_04/lean-proof-simplification-2026-10-26/report.tex",
+    "hits": [
+      {
+        "line": 86,
+        "text": "  induction has one owner."
+      },
+      {
+        "line": 533,
+        "text": "layer removes duplicate ownership; aliases can retain existing call sites."
+      },
+      {
+        "line": 560,
+        "text": "owner for each induction and short transport results at the boundaries."
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/Lean_Proof_Simplification_New_Deltas_2026-10-26/Lean_Proof_Simplification_New_Deltas/catalog/packet_01/Lean_Proof_Simplification/report/report.tex",
+    "hits": [
+      {
+        "line": 62,
+        "text": "These are source-analysis metrics, not a Lean syntax-tree census. The broader evidence inventory covers 711 Lean files and 104,658 lines, including preserved research/provenance material outside the main Lean directory. Its denominator must not be mixed with the table above. A generator marker is only a lower-bound ownership signal: unmarked files can contain generated material."
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/audit-prior/incoming/Lean_Proof_Simplification_New_Deltas_2026-10-26/Lean_Proof_Simplification_New_Deltas/catalog/late9bd/packet_01/diophantine-lean-additional-simplifications-2026-10-26/report.tex",
+    "hits": [
+      {
+        "line": 155,
+        "text": "The two files together shrink from \\textbf{432 to 390 lines}. The first file remains 255 lines because it takes ownership of the shared general result; the second shrinks from 177 to 135. This accounting includes the new helper and compatibility declarations. The original and patched full modules compile, and the audited exported theorem axiom sets agree."
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/ProveIt/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/report.tex",
+    "hits": [
+      {
+        "line": 86,
+        "text": "  induction has one owner."
+      },
+      {
+        "line": 533,
+        "text": "layer removes duplicate ownership; aliases can retain existing call sites."
+      },
+      {
+        "line": 560,
+        "text": "owner for each induction and short transport results at the boundaries."
+      }
+    ]
+  },
+  {
+    "path": "/workspace/scratch/c7f9ef5b1faa/ProveIt/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26e/report/report.tex",
+    "hits": [
+      {
+        "line": 62,
+        "text": "These are source-analysis metrics, not a Lean syntax-tree census. The broader evidence inventory covers 711 Lean files and 104,658 lines, including preserved research/provenance material outside the main Lean directory. Its denominator must not be mixed with the table above. A generator marker is only a lower-bound ownership signal: unmarked files can contain generated material."
+      }
+    ]
+  },
+  {
+    "path": "/dev/shm/dc-review-c7f9ef5b1faa/audit-refresh/direct-git/2026-10-26u/report.tex",
+    "hits": [
+      {
+        "line": 366,
+        "text": "using the repository's field order: west, north, east, south."
+      }
+    ]
+  },
+  {
+    "path": "/dev/shm/dc-review-c7f9ef5b1faa/audit-refresh/direct-git/Round3/LeanReview3/baseline_audit/ASSUMED_APPLIED_BASELINE.md",
+    "hits": [
+      {
+        "line": 507,
+        "text": "**Virtual subsystem:** V12. **Assumed outcome:** One copiedFields_bounded or finite west/north/east/south descriptor for four control field offset/width/packed shifts; preserve tuple-order difference and collisions."
+      }
+    ]
+  },
+  {
+    "path": "/dev/shm/dc-review-c7f9ef5b1faa/audit-refresh/direct-git/Round3/LeanReview3/rows/proposed/WangTiles942ResetRows.lean",
+    "hits": [
+      {
+        "line": 10,
+        "text": "unique Start, an assumed reset row and machine semantics are not used."
+      },
+      {
+        "line": 79,
+        "text": "/-- A single actual reset determines every tile in a connected seam-free"
+      }
+    ]
+  },
+  {
+    "path": "/dev/shm/dc-review-c7f9ef5b1faa/audit-refresh/direct-git/2026-10-26t/evidence/EXCLUSION_LEDGER.md",
+    "hits": [
+      {
+        "line": 363,
+        "text": "Generic functional-relational evaluator for ObjectNaturalExpression.evalRel_unique preserving arbitrary inputs, and shared standard/internal row-family algebra."
+      }
+    ]
+  }
+]

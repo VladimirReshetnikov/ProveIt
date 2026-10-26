@@ -1,0 +1,111 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentSelectorTail2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentSelectorTail2011.lean
+@@ -234,13 +234,8 @@
+     decide
+   · have hr := physical_lt_iff_weight i 866 hi (by decide)
+     rw [cutoff_position, cutoff_abstract_weight] at hr
+-    constructor
+-    · intro hp
+-      refine ⟨hi, (weight_le_cutoff_iff i).mp ?_⟩
+-      exact le_of_not_gt (fun hw => (not_lt_of_ge hp) (hr.mpr hw))
+-    · intro hs
+-      have hw := (weight_le_cutoff_iff i).mpr hs.2
+-      exact le_of_not_gt (fun hp => (not_lt_of_ge hw) (hr.mp hp))
++    rw [and_iff_right hi, ← weight_le_cutoff_iff]
++    simpa only [Nat.not_lt] using not_congr hr
+ 
+ /-- The literal physical tail of the doubled Phi coefficients. Repeated
+ positions, if present in a stencil representation, would be summed once
+@@ -259,16 +254,8 @@
+ 
+ private theorem selectorTail_succ (j : Fin 941) :
+     selectorTailTerm j.succ = 2 * lowMass (tile j.succ) := by
+-  have hi : j.succ ≠ 0 := by
+-    intro h
+-    have hv : j.val+1 = 0 := congrArg Fin.val h
+-    omega
+-  by_cases hs : (tile j.succ).south ≤ 45
+-  · have hp := (tail_position_iff j.succ).mpr ⟨hi,hs⟩
+-    simp only [selectorTailTerm, if_pos hp, lowMass, if_pos hs]
+-  · have hp : ¬459 ≤ physicalPosition j.succ :=
+-      fun h => hs ((tail_position_iff j.succ).mp h).2
+-    simp only [selectorTailTerm, if_neg hp, lowMass, if_neg hs, mul_zero]
++  simp only [selectorTailTerm, tail_position_iff, ne_eq, Fin.succ_ne_zero,
++    not_false_eq_true, true_and, lowMass, mul_ite, mul_zero]
+ 
+ private theorem sum_zero_succ {n : ℕ} (f : Fin (n+1) → ℕ) (g : Fin n → ℕ)
+     (h₀ : f 0 = 0) (hs : ∀ j, f j.succ = g j) : (∑ i, f i) = ∑ j, g j := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerData2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerData2011.lean
+@@ -1,5 +1,6 @@
+ import DiophantineConsistency.CurrentKernel2011
+ import Mathlib.Data.Nat.Squarefree
++import Mathlib.Data.Nat.PrimeFin
+ import Mathlib.GroupTheory.OrderOfElement
+ import Mathlib.Tactic.NormNum.Prime
+ import Mathlib.Tactic.ReduceModChar
+@@ -59,25 +60,18 @@
+ theorem proper_power_2011_3 : (2 : ZMod 2011)^134 = 205 := by reduce_mod_char
+ theorem proper_power_2011_67 : (2 : ZMod 2011)^6 = 64 := by reduce_mod_char
+ 
+-theorem two_order_47 : orderOf (2 : ZMod 47) = 23 := by
+-  apply orderOf_eq_of_pow_and_pow_div_prime (by decide) two_pow_47
+-  intro p hp hd
+-  have he : p = 23 := (Nat.prime_dvd_prime_iff_eq hp (by norm_num)).mp hd
+-  subst p
+-  reduce_mod_char
+-  decide
++private theorem order_eq_of_factors {M : Type*} [Monoid M] (x : M) {n : ℕ}
++    (hn : 0 < n) (hpow : x^n = 1)
++    (hproper : ∀ p ∈ n.primeFactors, x^(n/p) ≠ 1) : orderOf x = n := by
++  apply orderOf_eq_of_pow_and_pow_div_prime hn hpow
++  intro p hp hpn
++  exact hproper p (Nat.mem_primeFactors.mpr ⟨hp,hpn,Nat.ne_of_gt hn⟩)
+ 
+-theorem two_order_2011 : orderOf (2 : ZMod 2011) = 402 := by
+-  apply orderOf_eq_of_pow_and_pow_div_prime (by decide) two_pow_2011
+-  intro p hp hd
+-  have hd' : p ∣ 2*3*67 := hd
+-  have he : p = 2 ∨ p = 3 ∨ p = 67 := by
+-    rcases hp.dvd_mul.mp hd' with h | h
+-    · rcases hp.dvd_mul.mp h with h | h
+-      · exact Or.inl ((Nat.prime_dvd_prime_iff_eq hp (by norm_num)).mp h)
+-      · exact Or.inr (Or.inl ((Nat.prime_dvd_prime_iff_eq hp (by norm_num)).mp h))
+-    · exact Or.inr (Or.inr ((Nat.prime_dvd_prime_iff_eq hp (by norm_num)).mp h))
+-  rcases he with rfl | rfl | rfl <;> reduce_mod_char <;> decide
++theorem two_order_47 : orderOf (2 : ZMod 47) = 23 :=
++  order_eq_of_factors _ (by decide) two_pow_47 (by decide)
++
++theorem two_order_2011 : orderOf (2 : ZMod 2011) = 402 :=
++  order_eq_of_factors _ (by decide) two_pow_2011 (by decide)
+ 
+ theorem B_order_47 : orderOf (B : ZMod 47) = 23 := by
+   rw [B_eq,Nat.cast_pow,Nat.cast_ofNat]
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentTileColors2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentTileColors2011.lean
+@@ -53,10 +53,8 @@
+     (fun k => c (b + ((969+k : ℕ) : ZMod (N*2011))))
+     (fun k => c (previousCell b + ((978+k : ℕ) : ZMod (N*2011)))) 8
+     (fun k hk => hadj.2.2.1 ⟨k,hk⟩)
+-  obtain ⟨hiw,hie,hin,his⟩ := tile_bounded i
+-  obtain ⟨hjw,hje,hjn,hjs⟩ := tile_bounded j
+-  rw [hl.2.2.1, hr.1] at hw
+-  omega
++  exact (tsub_right_inj (Nat.le_of_lt_succ (tile_bounded i).2.1)
++    (Nat.le_of_lt_succ (tile_bounded j).1)).mp (hl.2.2.1.symm.trans (hw.trans hr.1))
+ 
+ /-- The original temporal orientation is South(current)=North(shifted). -/
+ theorem facts_temporal_colors (v : Fin 14 → ℤ) (x : Fin 31 → ℕ)
+@@ -77,10 +75,8 @@
+       ((Carrier65.core CurrentWindowCarry2011.ports v).rank.toNat - 47*(N*2011)) b +
+         ((960+k : ℕ) : ZMod (N*2011)))) 9
+     (fun k hk => hadj.2.2.2 ⟨k,hk⟩)
+-  obtain ⟨hiw,hie,hin,his⟩ := tile_bounded i
+-  obtain ⟨hjw,hje,hjn,hjs⟩ := tile_bounded j
+-  rw [hl.2.2.2, hr.2.1] at hw
+-  omega
++  exact (tsub_right_inj (Nat.le_of_lt_succ (tile_bounded i).2.2.2)
++    (Nat.le_of_lt_succ (tile_bounded j).2.2.1)).mp (hl.2.2.2.symm.trans (hw.trans hr.2.1))
+ 
+ /-- A zero temporal displacement would match Start's South1 to its
+ North435. This excludes zero modulo the full word, not merely zero as a

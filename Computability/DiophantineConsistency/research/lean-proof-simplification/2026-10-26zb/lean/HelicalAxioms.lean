@@ -1,0 +1,7 @@
+import DiophantineConsistency.WangTiles942HelicalQuotient
+
+#print axioms DiophantineConsistency.WangTiles942HelicalQuotient.row_zero_of_helix
+#print axioms DiophantineConsistency.WangTiles942HelicalQuotient.row_zero_period
+#print axioms DiophantineConsistency.WangTiles942HelicalQuotient.quotientWord_binding
+#print axioms DiophantineConsistency.WangTiles942HelicalQuotient.quotientWord_marked
+#print axioms DiophantineConsistency.WangTiles942HelicalQuotient.exists_marked_word

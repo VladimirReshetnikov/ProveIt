@@ -1,0 +1,26 @@
+/-- A positive horizontal period cannot place the left seam strictly
+inside the initial strip. The two boundary positions may coincide modulo N. -/
+theorem initial_width_le_period {T : ℤ → Tile} {N L R : ℕ}
+    (h : InitialStrip T N L R) (hperiod : Function.Periodic T (N : ℤ)) :
+    L + R ≤ N := by
+  have hN : 0 < N := lt_of_lt_of_le h.left_pos h.left_le
+  by_contra hwidth
+  apply (initial_vertical_nonseam h (-(L : ℤ) + (N : ℤ)) (by omega) (by omega)).1
+  exact (congrArg Tile.north (hperiod (-(L : ℤ)))).trans h.wall_north.1
+
+/-- The initial geometry alone excludes horizontal periods one and two. -/
+theorem marked_period_gt_two {N : ℕ} [NeZero N] {s : ℤ}
+    {a : ZMod N → Fin 942} (h : MarkedWord N s a) : 2 < N := by
+  obtain ⟨L,R,hi⟩ := marked_initial_strip h
+  have hw := initial_width_le_period hi
+    (fun x => plane_horizontal_period N s a x 0)
+  have hl := hi.left_pos
+  have hr := hi.right_min
+  omega
+
+
+-- Existing API alias in WangTiles942SoundnessChecks:
+-- The geometry-only result preserves this existing public theorem name.
+theorem marked_period_gt_two {N : ℕ} [NeZero N] {s : ℤ}
+    {a : ZMod N → Fin 942} (h : MarkedWord N s a) : 2 < N :=
+  WangTiles942StripGeometry.marked_period_gt_two h

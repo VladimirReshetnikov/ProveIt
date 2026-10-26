@@ -1,0 +1,72 @@
+{
+  "status": "STATIC_PATCH_APPLICATION_ONLY_NO_LEAN_EXECUTION",
+  "pin": "22e020937caa81d0cb72a4f63071d6c0bcc1eba9",
+  "execution": "git apply in disposable temporary copies only; source baseline unchanged",
+  "cases": [
+    {
+      "name": "causality_then_canonical",
+      "sequence": [
+        {
+          "patch": "row/receiver_causality.patch",
+          "returncode": 0,
+          "stderr": "Checking patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean...\nApplied patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean cleanly.\n"
+        },
+        {
+          "patch": "machine/canonical-row.patch",
+          "returncode": 1,
+          "stderr": "Checking patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean...\nerror: while searching for:\n    (far_east_zero hA hH hs hrow q hq x hl hr ho hn)\n    (no_south438 hA hH hTime hs hrow q hq x hl hr)\n\n/-- The adjacent receiver uses the exact action target and the original\ndestination bit. The action may enter halt; target215 is not excluded. -/\ntheorem receiver_south\n    (hA : \u2200 x \u03c4, Allowed (T x \u03c4))\n    (hH : \u2200 x \u03c4, (T (x+1) \u03c4).west = (T x \u03c4).east)\n    (hrow : RowEncodes T (-(L : \u2124)) (R : \u2124) t cfg)\n\nerror: patch failed: Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean:121\nerror: Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean: patch does not apply\n"
+        }
+      ],
+      "matches_combined_row_candidate": false
+    },
+    {
+      "name": "canonical_then_causality",
+      "sequence": [
+        {
+          "patch": "machine/canonical-row.patch",
+          "returncode": 0,
+          "stderr": "Checking patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean...\nApplied patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean cleanly.\n"
+        },
+        {
+          "patch": "row/receiver_causality.patch",
+          "returncode": 1,
+          "stderr": "Checking patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean...\nHunk #1 succeeded at 34 (offset 2 lines).\nHunk #2 succeeded at 133 (offset 2 lines).\nHunk #3 succeeded at 148 (offset 2 lines).\nerror: while searching for:\n    (hn : x \u2260 (DecimalMachine215.machine.transition q\n      (Tape.read cfg.tape cfg.head)).move.apply cfg.head) :\n    T x t = \u27e80,(Tape.read cfg.tape x).toNat,0,(Tape.read cfg.tape x).toNat\u27e9 := by\n  exact plain_zero_edges_nonfinish (hA x t) (symbol cfg x) (hrow.plain x hl hr ho)\n    (far_west_zero hA hH hs hrow q hq x hl hr ho hn)\n    (far_east_zero hA hH hs hrow q hq x hl hr ho hn)\n    (no_south438 hA hH hTime hs hrow q hq x hl hr)\n\n/-- The adjacent receiver uses the exact action target and the original\ndestination bit. The action may enter halt; target215 is not excluded. -/\n\nerror: patch failed: Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean:116\nerror: Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean: patch does not apply\n"
+        }
+      ],
+      "matches_combined_row_candidate": false
+    },
+    {
+      "name": "combined",
+      "sequence": [
+        {
+          "patch": "row/combined/causality-and-canonical-row.patch",
+          "returncode": 0,
+          "stderr": "Checking patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean...\nApplied patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean cleanly.\n"
+        }
+      ],
+      "matches_combined_row_candidate": true
+    },
+    {
+      "name": "head_and_combined",
+      "sequence": [
+        {
+          "patch": "strip/WangTiles942HeadBounds.patch",
+          "returncode": 0,
+          "stderr": "Checking patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HeadBounds.lean...\nApplied patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HeadBounds.lean cleanly.\n"
+        },
+        {
+          "patch": "row/combined/causality-and-canonical-row.patch",
+          "returncode": 0,
+          "stderr": "Checking patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean...\nApplied patch Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean cleanly.\n"
+        }
+      ],
+      "matches_combined_row_candidate": true
+    }
+  ],
+  "retained_source_files_unchanged": [
+    "WangTiles942RowStep.lean",
+    "WangTiles942HeadBounds.lean"
+  ],
+  "withdrawn_proposals_excluded": true,
+  "interpretation": "Use the combined patch when selecting both optional RowStep refactors. Their original patch contexts overlap, despite compatible semantic edits. HeadBounds plus combined applies cleanly; aggregate +70 physical lines."
+}

@@ -1,0 +1,29 @@
+\pageheading{3 Reuse rigidity of a finite ordinal}
+\textbf{Target.} \src{WangTiles942PhysicalOrder}{68}{97} proves that a strictly increasing self-map of \(\operatorname{Fin}(n)\) fixes every point. The current proof obtains surjectivity, performs strong induction on the numerical index and splits the preimage into three cases. The exact conclusion follows from the existing rigidity theorem for finite order isomorphisms.
+
+\textbf{Mathematical proof.} A strictly monotone map \(f\) is injective. Since domain and codomain are the same finite set, it is surjective. Strict monotonicity on a linear order gives \(f(i)\le f(j)\iff i\le j\), so this bijection is an order isomorphism. An order isomorphism takes the strict lower segment of \(i\) bijectively onto the strict lower segment of \(f(i)\). These segments have respectively \(i\) and \(f(i)\) elements, hence their values are equal. Extensionality in \(\operatorname{Fin}(n)\) finishes. The empty case is vacuous and no positivity hypothesis on \(n\) is needed.
+
+\textbf{Exact replacement sketch.} All order-isomorphism packaging is included:
+\begin{lstlisting}
+theorem strictMono_fin_eq_self {n : ℕ} (f : Fin n → Fin n)
+    (hf : StrictMono f) (i : Fin n) : f i = i := by
+  let e : Fin n ≃o Fin n :=
+    ⟨Equiv.ofBijective f
+      ⟨hf.injective, Finite.surjective_of_injective hf.injective⟩,
+      hf.le_iff_le⟩
+  exact Fin.ext (Fin.coe_orderIso_apply e i)
+\end{lstlisting}
+The shipped candidate uses the same proof with the original declaration header; its declaration is 30 to 6 physical lines and its body 28 to 4. The whole file is 180 to 156. The wrapping above is for page readability, not the measurement. No helper, import or downstream edit is added. In particular, \code{rankMap_eq}, physical positions and the Start convention are unchanged.
+
+\textbf{Pinned library support.} \href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Order/Fin/Basic.lean\#L394-L399}{Mathlib \code{Order/Fin/Basic.lean}:394--399} contains \code{Fin.coe_orderIso_apply}. Its module is already supplied by the physical-data import. This is exact client reuse, not a proposed new general rigidity lemma. The nearest older ideas are packet i's finite invariant-set surjectivity, packet k's exploratory order embeddings and packet s's prefix-rank/cardinality reasoning. None removes this new explicit induction.
+
+\textbf{Optional definition edit.} At source lines 41--52, use the standard predecessor:
+\begin{lstlisting}
+def nonStartIndex (j : Fin 941) : Fin 941 :=
+  (abstractIndex j).pred (abstractIndex_ne_zero j)
+
+theorem nonStartIndex_succ (j : Fin 941) :
+    (nonStartIndex j).succ = abstractIndex j :=
+  Fin.succ_pred (abstractIndex j) (abstractIndex_ne_zero j)
+\end{lstlisting}
+This saves another seven physical lines, yielding 149 combined. It changes a definition body, so it is separately selectable. Pinned Lean 4.32.0 defines \code{Fin.pred} by subtracting one; the nonzero proof and protected Start remain. A prepared \code{rfl} regression compares it with the old constructor, but has not been compiled. Test the proof-only variant first; if both are adopted use the supplied combined patch, not two overlapping whole-file alternatives.

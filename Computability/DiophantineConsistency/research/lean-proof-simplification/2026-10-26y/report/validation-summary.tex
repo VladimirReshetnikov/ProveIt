@@ -1,0 +1,47 @@
+Lean checks used version 4.32.0 (compiler commit
+\code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}) and the pinned mathlib
+revision where applicable. Every row below has a successful final standalone
+check and a matching source hash. The seven headline production candidates
+have not been compiled as complete production modules. The supplementary
+Sidon candidate is the full-module exception.
+
+\begin{longtable}{@{}p{0.07\linewidth}p{0.28\linewidth}p{0.59\linewidth}@{}}
+\toprule ID & Successful check & Remaining integration scope \\
+\midrule\endhead
+P1 & Exact-data fixture & Full \code{NativeQuadraticPositions} and its numerical-degree consumers. \\
+P2 & Exact theorem statement & Complete helical-quotient module and existing quotient clients. \\
+P3 & Generic integer core & Actual tile adapter and larger exact-definition fixture. The latter timed out; its retry was interrupted. \\
+P4 & Exact generic source segment & Internal-natural instantiation and the complete object-language module. \\
+P5 & Generic equation interface & Complete object-theory dependency chain for \code{ObjectListHead}. \\
+P6 & Both exact statements & Complete polynomial-range module and unchanged range clients. \\
+P7 & Generic order interface & Actual order instance and all reduction-sensitive downstream clients. \\
+Aux. & Sidon theorem and full module & No claim about complete project integration or other modules follows. \\
+\bottomrule
+\end{longtable}
+
+No successful check reports \code{sorryAx}. The printed axiom sets contain
+only the ordinary \code{propext}, \code{Quot.sound}, and, where used,
+\code{Classical.choice}. The full Sidon module compiled without diagnostics;
+its isolated theorem check supplies the corresponding axiom inspection.
+All eight delivered patches passed a joint \code{git apply --check} at the
+source baseline. No patch was applied to the repository.
+
+\subsection{Raw source-size observations}
+
+The following counts include new imports and helper lemmas in the whole-file
+comparisons. They are review aids against the actual pinned source, not
+additive savings after the hypothetical prior roadmap.
+
+\begin{tabularx}{\linewidth}{@{}p{0.07\linewidth}p{0.24\linewidth}X@{}}
+\toprule ID & Physical source lines & More useful structural observation \\
+\midrule
+P1 & 258 to 177 in the file & Private declaration: 92 to 11. Only five of 136 supported pairs remain relevant to this bound. \\
+P2 & 147 to 137 in the file & Replaced declaration block: 19 to 7; no custom integer induction. \\
+P3 & 11 additional lines overall & Old client body: 9 to 1; stronger width theorem and earlier geometric consequence added. \\
+P4 & 104 to 100 in the file & Two actual branch cases replace four combinations; the threshold helper is charged. \\
+P5 & 129 to 121 in the file & The slack-witness and nonzero detour disappear. \\
+P6 & 150 to 144 in the file & Two local inductions replaced by a matching theorem and algebra. \\
+P7 & 175 to 160 in the file & Includes bridge and five local conversions; external conversion cost remains unknown. \\
+Aux. & 168 to 161 in the file & Sidon declaration: 26 to 17, with two explicit imports charged to the file. \\
+\bottomrule
+\end{tabularx}

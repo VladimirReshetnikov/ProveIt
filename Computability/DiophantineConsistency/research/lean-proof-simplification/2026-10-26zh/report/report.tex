@@ -1,0 +1,40 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.78in,top=0.72in,bottom=0.70in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,enumitem,xcolor,listings,hyperref,fancyhdr}
+\definecolor{inkblue}{RGB}{28,67,105}
+\hypersetup{colorlinks=true,urlcolor=inkblue,linkcolor=inkblue,pdftitle={Lean proof simplification after the word and controller constructions},pdfauthor={Proof engineering review}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small DiophantineConsistency proof review round four}\rhead{\small 26 October 2026}\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\emergencystretch=3em
+\setlist[itemize]{label=$\bullet$,leftmargin=*,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=*,itemsep=3pt,topsep=3pt}
+\newcommand{\code}[1]{{\small\texttt{\detokenize{#1}}}}
+\newcommand{\src}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/09d65a93c9df8684c1a226341d6a5120623d1cdb/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean\#L#2-L#3}{\code{#1.lean}:#2--#3}}
+\newcommand{\prior}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/09d65a93c9df8684c1a226341d6a5120623d1cdb/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26#1/#2\#L#3}{packet #1, \code{#2}:#3}}
+\newcommand{\commit}[1]{\href{https://github.com/VladimirReshetnikov/ProveIt/commit/#1}{\code{#1}}}
+\newcommand{\shortcommit}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/commit/#1}{\code{#2}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,breaklines=true,breakatwhitespace=true,showstringspaces=false,aboveskip=6pt,belowskip=6pt,frame=single,framerule=0.25pt,rulecolor=\color{black!22},xleftmargin=4pt,xrightmargin=4pt,framesep=5pt,
+ literate={ℕ}{{$\mathbb N$}}1 {→}{{$\to$}}1 {←}{{$\leftarrow$}}1 {↔}{{$\leftrightarrow$}}1 {∀}{{$\forall$}}1 {∃}{{$\exists$}}1 {≤}{{$\le$}}1 {≠}{{$\ne$}}1 {∧}{{$\land$}}1 {∨}{{$\lor$}}1 {∈}{{$\in$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {·}{{$\cdot$}}1 {▸}{{$\triangleright$}}1 {∘}{{$\circ$}}1 {ℤ}{{$\mathbb Z$}}1 {¬}{{$\neg$}}1 {≃}{{$\simeq$}}1 {∑}{{$\sum$}}1 {ρ}{{$\rho$}}1 {∣}{{$\mid$}}1}
+\newcommand{\pageheading}[1]{\newpage\section*{#1}}
+\begin{document}
+\raggedright
+\begin{center}
+{\LARGE\bfseries Lean proof simplification after\\[3pt] the word and controller constructions}\\[8pt]
+{\large A fourth review with all earlier proposals assumed available}\\[5pt]
+Source commit \code{09d65a93c9df8684c1a226341d6a5120623d1cdb}
+\end{center}
+\input{01-summary.tex}
+\input{02-baseline.tex}
+\input{03-physical.tex}
+\input{04-controller.tex}
+\input{05-hs.tex}
+\input{06-word.tex}
+\input{07-accounting.tex}
+\input{08-validation.tex}
+\input{09-evidence.tex}
+\end{document}

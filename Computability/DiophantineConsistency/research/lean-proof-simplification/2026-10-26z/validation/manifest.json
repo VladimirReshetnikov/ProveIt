@@ -1,0 +1,87 @@
+{
+  "source_pin": "553a5f7a463cbaab8800ff8148fef0bc5a9e1b22",
+  "exclusion_cutoff": "7def5e00ef3593b296eb595add1d955d27121d0c",
+  "lean_version": "4.32.0",
+  "lean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35",
+  "mathlib_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "checks": [
+    {
+      "artifact": "lean/checked/HelicalPeriod.lean",
+      "status": "success",
+      "exit": 0,
+      "scope": "Exact original row_zero_of_helix signature and generic constant_of_period_one helper in an isolated namespace; production modules not rebuilt.",
+      "reported_axioms": [
+        "propext",
+        "Quot.sound"
+      ],
+      "log": "validation/HelicalPeriod.log"
+    },
+    {
+      "artifact": "lean/checked/PellAnchorSmall.lean",
+      "status": "success",
+      "exit": 0,
+      "scope": "Exact original large_of_six_le signature; sole Mathlib Pell import; no project theorem reuse.",
+      "reported_axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "log": "validation/PellAnchorSmall.log"
+    },
+    {
+      "artifact": "patches/helical-period.patch",
+      "status": "applies_cleanly",
+      "scope": "Helical exact-signature proof checked; seam adaptation supported by generic period-one helper but production integration unverified.",
+      "physical_line_reduction": 15,
+      "helix_reduction": 11,
+      "seam_reduction": 4
+    },
+    {
+      "artifact": "patches/pell-fixed-index.patch",
+      "status": "applies_cleanly",
+      "scope": "Exact signature checked; full NativePellBootstrap module not rebuilt.",
+      "physical_line_reduction": 4
+    },
+    {
+      "artifact": "lean/proposals/SignalMomentsCore.lean",
+      "status": "timeout",
+      "timeout_seconds": 300,
+      "scope": "No compiler diagnostics before timeout. Not a completed proof check; no assertion of proof error.",
+      "log": "validation/SignalMomentsCore.log"
+    },
+    {
+      "artifact": "lean/proposals/CanonicalOperatingRow.lean",
+      "status": "not_compiled",
+      "scope": "Source-reviewed additive integration prototype, using original lower-level recognition facts and independently constructed row semantics."
+    },
+    {
+      "artifact": "scripts/moments.py",
+      "status": "arithmetic_verified",
+      "scope": "Python finite arithmetic reproduction of current tile masses; not a Lean proof.",
+      "output": "validation/moments.json"
+    },
+    {
+      "artifact": "scripts/check_tile_determinism.py",
+      "status": "arithmetic_verified",
+      "scope": "942-tile finite reconstruction; exact exceptions to WNE determinism checked; not a Lean proof.",
+      "output": "validation/tile-determinism.json"
+    },
+    {
+      "artifact": "lean/proposals/EdgeRecognition.lean",
+      "status": "not_compiled",
+      "scope": "Boundary-aware recognition of an arbitrary row\u2019s horizontal edges from its head tile; a design prototype for the stronger canonical-recognition route."
+    }
+  ],
+  "line_count_scope": "Physical source counts of the proposed theorem replacements. Total proposed reduction19;15 in exact-signature checked replacements,4 in the seam adaptation. No structural net saving or performance comparison is claimed.",
+  "full_project_build": "not_performed",
+  "optional_production_dependency_rebuild": "stopped before completion after WangTiles942Language; no full production integration certificate",
+  "excluded_after_freshness": [
+    "centered interval induction",
+    "shared-edge/pulse row construction"
+  ],
+  "note": "Prior proposals are assumed applied. The report and FRESHNESS addendum govern novelty, not the historical initial audit alone.",
+  "delivery_recheck": "45ac0dfc366f798d4686070a89d66e8dafdb6879",
+  "delivery_corpus_unchanged": true,
+  "delivery_source_files_compared": 16,
+  "delivery_source_files_changed": 0
+}

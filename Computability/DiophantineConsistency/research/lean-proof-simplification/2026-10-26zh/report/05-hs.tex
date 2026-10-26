@@ -1,0 +1,40 @@
+\pageheading{5 Remove a helper whose three clients are cheaper inline}
+\textbf{Target.} \src{CurrentControllerData2011}{150}{182} has a private helper \code{hs_mod_of} for three conditional residues of
+\[
+ H_s=1+BK+B^2.
+\]
+The helper proves a generic nested-modulus identity; each client supplies all intermediate residue values and the final finite calculation. Here the abstraction does not hide a difficult proof or simplify the total source. Deleting it and applying the modular laws at the three clients saves 15 physical lines, with no new helper or import.
+
+\textbf{Mathematical proof.} For any modulus \(m\), reduction respects addition and multiplication. If \(B\bmod m=b\), \(K\bmod m=k\), and \(B^2\bmod m=s\), then
+\[
+ H_s\bmod m
+ =\bigl((1\bmod m+(bk)\bmod m)\bmod m+s\bigr)\bmod m.
+\]
+No cancellation, primality or invertibility is used in this calculation. The concrete inputs are:
+\begin{center}
+\begin{tabular}{rrrrr}\toprule
+$m$ & $B\bmod m$ & Assumed $K\bmod m$ & $B^2\bmod m$ & $H_s\bmod m$\\\midrule
+47 & 37 & 26 & 6 & 29\\
+2011 & 1283 & 1995 & 1091 & 674\\
+120199 & 37435 & 114787 & 99283 & 36379\\\bottomrule
+\end{tabular}
+\end{center}
+These are conditional results. The \(K\) column is a hypothesis of each public theorem, not a newly checked evaluation of the actual 942-row kernel.
+
+\textbf{Exact proof pattern.} Keep the existing public theorem headers and use:
+\begin{lstlisting}
+attribute [local irreducible] CurrentKernel2011.K B
+
+theorem Hs_mod_47 (hK : CurrentKernel2011.K % 47 = 26) :
+    (1+B*CurrentKernel2011.K+B^2) % 47 = 29 := by
+  rw [Nat.add_mod (1+B*CurrentKernel2011.K), Nat.add_mod 1,
+    Nat.mul_mod B CurrentKernel2011.K,
+    B_mod_47, hK, B_square_mod_47] <;> decide
+\end{lstlisting}
+The 2011 and auxiliary clients use exactly the same operations with their corresponding residue lemmas and \code{hK}. The supplied full-file candidate includes all three replacements and the complete deletion of \code{hs_mod_of}: 184 to 169 physical lines, 153 to 139 nonblank lines. The one-line discrepancy between these deltas is ordinary whitespace, not concealed proof code.
+
+\textbf{The abstraction boundary remains essential.} The local irreducibility guard is preserved. It prevents elementary numeral reduction from unfolding \(B=2^{94517}\) and the literal physical permutation behind \(K\). The direct rewrite must eliminate those symbolic occurrences through their supplied residue facts before \code{decide} is expected to finish. No recommendation is made to replace the guard with more permissive reduction or a larger heartbeat budget.
+
+This is a deliberately narrow counterexample to ``always factor repeated code.'' A shared helper earns its cost only if its total interface and proof are cheaper or materially safer than its clients. Here all three clients already need exact residue inputs, and the general law is standard library rewriting. If further clients arise, recompute the total cost rather than treating this decision as a permanent ban on a modular-expression API.
+
+\textbf{Validation gate.} Compile this change independently after the coprime-cardinality edit, inspect all three theorem statements and axiom output, and confirm the module does not evaluate \(K\). The source delta is established; successful elaboration, runtime and memory behavior are not.

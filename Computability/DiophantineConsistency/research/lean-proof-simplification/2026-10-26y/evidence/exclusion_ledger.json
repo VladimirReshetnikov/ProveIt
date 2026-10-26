@@ -1,0 +1,491 @@
+{
+  "snapshot": "553a5f7a463cbaab8800ff8148fef0bc5a9e1b22",
+  "families": [
+    {
+      "id": "S01",
+      "family": "Replace list lookup/membership inductions with core `List.getElem?` API; Option map injectivity.",
+      "evidence": "A \u00a7Use the core list-lookup API; E \u00a76; H \u00a7Seven list inductions."
+    },
+    {
+      "id": "S02",
+      "family": "Congruence under `Nat.rec`; shared axiom-free recursor congruence; optimizer correctness through recursor equality.",
+      "evidence": "A \u00a7Rewrite under primitive recursion and `lean/RecursorCore.lean`."
+    },
+    {
+      "id": "S03",
+      "family": "Assignment naturality under `Sum.map`, renaming/evaluation transport, witness-block splitting and regrouping.",
+      "evidence": "A assignment patch; B \u00a7Witness layouts; D \u00a7Assignment naturality; G \u00a7Assignment transport; H \u00a7Assignment-transport API."
+    },
+    {
+      "id": "S04",
+      "family": "Move constructor projection/witness-count lemmas earlier in imports.",
+      "evidence": "B \u00a7Move existing projection lemmas to their natural home."
+    },
+    {
+      "id": "S05",
+      "family": "Shared scanners via iterate/fixed point/successor/zero laws, arbitrary raw-code soundness and encoded-list simulation.",
+      "evidence": "A \u00a7Scanner proofs; B \u00a7Checked histories; C \u00a7Share scanner proofs; G common scanner kernel."
+    },
+    {
+      "id": "S06",
+      "family": "Supplied `iterateFrom`/`iterateProgram` combinator with seed/fuel/step, retaining literal programs and counts.",
+      "evidence": "B \u00a7A better primitive-recursive iterator interface; C \u00a7Factor the supplied PR iterator."
+    },
+    {
+      "id": "S07",
+      "family": "Guarded/validated history fold, append/invariant laws, `Produces.append`/`Produces.step`, and certified fragment composition.",
+      "evidence": "C `notes/syntax.txt` \u00a73 explicitly names `ready_binary`, `ready_unary`, `fragment2`, `fragment3`; B \u00a7One invariant-preserving history fold."
+    },
+    {
+      "id": "S08",
+      "family": "Exact numeric Boolean output rather than range + acceptance iff; common finite tag dispatch.",
+      "evidence": "A \u00a7Replace acceptance equivalences by exact numeric values; B \u00a7Share tag dispatch."
+    },
+    {
+      "id": "S09",
+      "family": "Shared sum-of-squares evaluation/zero iff/degree/cost API across compilers; five-square criterion.",
+      "evidence": "A \u00a7Sums of squares; C \u00a7Share residual-system facts; H \u00a7Finite residual and degree arguments."
+    },
+    {
+      "id": "S10",
+      "family": "Generic semiring gate correctness, natural compiler specialization, identical branch merging.",
+      "evidence": "B \u00a7The semiring theorem already subsumes the natural induction; E \u00a75."
+    },
+    {
+      "id": "S11",
+      "family": "Topological `run_invariant` for DAG evaluation, uniqueness, nonnegativity, and degree.",
+      "evidence": "A \u00a7Shared induction for topological circuit semantics; C \u00a7Common DAG invariant; H \u00a7Reusable invariant."
+    },
+    {
+      "id": "S12",
+      "family": "Existing `run_power` with exponent labels; finite certified node dispatch; generated helper templates/indexed facade/lazy node facts.",
+      "evidence": "A/B/F generated circuit sections; H \u00a7Generated circuit interfaces."
+    },
+    {
+      "id": "S13",
+      "family": "Reuse semantic register cuts; common 99-node free-carrier tail; block certificates preserving embedding.",
+      "evidence": "C \u00a7Use established register facts / shared 99-node tail; E \u00a79/11; F \u00a7Certify semantic blocks."
+    },
+    {
+      "id": "S14",
+      "family": "General circuit translation/simulation; commuted add/mul node relations.",
+      "evidence": "A \u00a7Treat commutative swaps; C \u00a7Translation/reflection interfaces."
+    },
+    {
+      "id": "S15",
+      "family": "Register append invariants, old/new-index frame facts.",
+      "evidence": "A \u00a7Package append invariants locally."
+    },
+    {
+      "id": "S16",
+      "family": "Move structural/weighted-degree machinery earlier; shared RHS degree bound; degree profiles/prefix; cancellation-sensitive proofs.",
+      "evidence": "A/B/C compiler sections; F \u00a7Shared degree profiles and ShortSystem prefix."
+    },
+    {
+      "id": "S17",
+      "family": "Checked/typed circuit wrapper with topology/output index; dependent SafeNode operands; erase to unchanged literal list.",
+      "evidence": "F \u00a7Treat typed circuit views as a later design option."
+    },
+    {
+      "id": "S18",
+      "family": "Nine-coordinate existential packaging preserving slot 7, named accessors for long conjunctions, coherent source/window certificate.",
+      "evidence": "F \u00a7Simplify the interfaces between proofs."
+    },
+    {
+      "id": "S19",
+      "family": "Shared direct/native graph-enumerator control-flow builder, preserving different cost models.",
+      "evidence": "E \u00a714 Share control flow without collapsing cost models."
+    },
+    {
+      "id": "S20",
+      "family": "Exact decoder graph, fused quotation/depth induction, Option-based independent constructive variants.",
+      "evidence": "H \u00a7Shorten decoder proofs; J \u00a7Describe tree decoder by exact graph; K \u00a7Fuse syntax-decoder correctness."
+    },
+    {
+      "id": "S21",
+      "family": "Inverse coordinate graph obligations from one product-equivalence/pairing theorem, preserving data.",
+      "evidence": "I \u00a7Derive inverse graphs from a product equivalence."
+    },
+    {
+      "id": "S22",
+      "family": "Shared affine witness/depth budget, automated max-plus representation-depth certificate synthesis.",
+      "evidence": "I \u00a7Factor arithmetic budget; K \u00a7Synthesize representation-depth bounds."
+    },
+    {
+      "id": "S23",
+      "family": "Automate extensional `Primrec` closure with registered `fun_prop` rules.",
+      "evidence": "J \u00a7Automate extensional primitive-recursiveness composition; notes/checker.md."
+    },
+    {
+      "id": "S24",
+      "family": "Support-restricted evaluator congruence plus overwrite/frame rules.",
+      "evidence": "K `evidence/prior_ideas.md`, unselected candidate 7; notes existing `WitnessCompaction.eval_congr`."
+    },
+    {
+      "id": "S25",
+      "family": "Certified normalization of `AnnotatedSchemaMaps.rsep/rf1/rf2/ri` renaming-map composition.",
+      "evidence": "K `evidence/prior_ideas.md`, candidate 8; `evidence/semantic_review.md` \u00a75."
+    },
+    {
+      "id": "A01",
+      "family": "Half-radix/scaled division exact identity replacing finite enumeration; quotient/residue consequences.",
+      "evidence": "A/B/C/D half-radix sections."
+    },
+    {
+      "id": "A02",
+      "family": "Derive weaker modulus facts by divisibility from strongest congruence.",
+      "evidence": "A modulus-reuse patch; C/D cyclic residue sections."
+    },
+    {
+      "id": "A03",
+      "family": "Conditional padding witness, eliminating dummy branch witnesses.",
+      "evidence": "A \u00a7Make the padding witness conditional."
+    },
+    {
+      "id": "A04",
+      "family": "Exact digit/carry decomposition API; derive recurrence/reset rather than store duplicate data.",
+      "evidence": "A \u00a7Use one exact decomposition interface; B \u00a7Derive recurrence; C current-window API."
+    },
+    {
+      "id": "A05",
+      "family": "Common aligned-cell cyclic geometry, wrapped shifts, residue/offset/off-origin mask facts; aligned cells equivalent to `ZMod N`.",
+      "evidence": "A digits-review \u00a75; B \u00a7Share physical-field residues; D scaled division/cyclic residue."
+    },
+    {
+      "id": "A06",
+      "family": "No-borrow origin decrement; origin-correction common lemma for mask families.",
+      "evidence": "A digits-review \u00a76; G \u00a7One origin-correction lemma."
+    },
+    {
+      "id": "A07",
+      "family": "Expose direct physical selector-sum identity; avoid prefix sum round trips.",
+      "evidence": "A digits-review \u00a77."
+    },
+    {
+      "id": "A08",
+      "family": "Restored canonical source/window extraction with coherent shared witness; small WordFacts contexts.",
+      "evidence": "A digits-review \u00a78; E \u00a712; F architecture sections."
+    },
+    {
+      "id": "A09",
+      "family": "Finite-fiber pushforward identity for folded stencils; separate arbitrary folding and injective sparse placement.",
+      "evidence": "D \u00a7One finite-fiber identity; G folding section."
+    },
+    {
+      "id": "A10",
+      "family": "One coefficient-row envelope proof, narrow finite dispatcher, sparse normalizer, nonnegative monomial majorant certificates; row naturality.",
+      "evidence": "C coefficient sections and notes; D coefficient envelopes; H coefficient certificate section."
+    },
+    {
+      "id": "A11",
+      "family": "Elementary row operations and surjective row reindexing preserve simultaneous zero sets.",
+      "evidence": "C \u00a7Represent elementary row operations once."
+    },
+    {
+      "id": "A12",
+      "family": "Decode source/Pell row equations once; share Nat/Int boundary conversion.",
+      "evidence": "B \u00a7Decode source-register equations once."
+    },
+    {
+      "id": "A13",
+      "family": "Generic finite chunk assembly/dispatch retaining checked leaves; copied-field descriptors/bounds; mask block reuse.",
+      "evidence": "B Carry certificates/finite data assembly; E \u00a713."
+    },
+    {
+      "id": "A14",
+      "family": "Guarded existential solution transport and same-domain zero-set congruence, preserving domains rather than demanding inverses.",
+      "evidence": "E \u00a710; G \u00a7Lift pointwise zero-set equivalence once."
+    },
+    {
+      "id": "A15",
+      "family": "Guarded Euclidean quotient/remainder/slack certificate shared across Register/Quadratic backends, including uniqueness.",
+      "evidence": "E \u00a76; I \u00a7Positive-denominator Euclidean certificate."
+    },
+    {
+      "id": "A16",
+      "family": "One-hot finite support classification using `Finset.sum_le_one_iff`.",
+      "evidence": "G \u00a7Use existing sum-at-most-one API; H \u00a7Finite sum at most one; I \u00a7Finite-support classification."
+    },
+    {
+      "id": "A17",
+      "family": "Existing Pell odd-index criterion; remove redundant natural-to-integer cast witnesses in residue uniqueness.",
+      "evidence": "I \u00a7Reuse already proved Pell parity; H \u00a7omega cast interface."
+    },
+    {
+      "id": "A18",
+      "family": "Congruence up to sign as transitive relation/orbit, negation and natAbs transport, deferred half-interval sign resolution.",
+      "evidence": "I \u00a7Make congruence up to sign compositional; K \u00a7Treat Pell sign ambiguity."
+    },
+    {
+      "id": "A19",
+      "family": "Preserve rational roots while proving integrality, descending the full witness tuple without fresh sign choices.",
+      "evidence": "J \u00a7Preserve rational roots when descending to integers."
+    },
+    {
+      "id": "A20",
+      "family": "Decompose a product's units at once instead of sequential factor proofs.",
+      "evidence": "J \u00a7Decompose the product's units once; earlier E includes narrower unit algebra."
+    },
+    {
+      "id": "A21",
+      "family": "Recover invariant predecessor by finite invariant-subset bijectivity.",
+      "evidence": "J \u00a7Use finiteness to recover an invariant predecessor; notes/finite-invariant.md."
+    },
+    {
+      "id": "A22",
+      "family": "Polynomial support envelope/degree bound before individual coefficient arguments.",
+      "evidence": "J \u00a7Prove support envelope before individual coefficients."
+    },
+    {
+      "id": "A23",
+      "family": "Rotation as convolution with a point mass.",
+      "evidence": "J \u00a7Rotation is convolution with a point mass."
+    },
+    {
+      "id": "A24",
+      "family": "Canonical carry normalization uniqueness by finite maximum principle, with entire packed word fixed.",
+      "evidence": "J \u00a7Canonical normalization from finite maximum principle."
+    },
+    {
+      "id": "A25",
+      "family": "Closed-form least/greatest cyclic carries via rotated weighted sums, exact two-solution ambiguity, budget picks least carry.",
+      "evidence": "K \u00a7Explicit cyclic carries; algebra_review/peer_review_carry."
+    },
+    {
+      "id": "A26",
+      "family": "Cyclic packing as algebra homomorphism from additive monoid algebra on `ZMod n` to `ZMod(radix^n-1)`, deriving convolution and rotation.",
+      "evidence": "K `evidence/algebra_review.md` optional direction and `prior_ideas.md` candidate 9."
+    },
+    {
+      "id": "A27",
+      "family": "Definable induction transport with actual formula witness over arbitrary internal naturals.",
+      "evidence": "A \u00a7Definable-induction transport; C/E object sections."
+    },
+    {
+      "id": "A28",
+      "family": "Shared model-to-ZF-axioms and validity/completeness/sealing bridge, arity-polymorphic closed-sentence transport.",
+      "evidence": "A/B/C/D/H object-layer sections."
+    },
+    {
+      "id": "A29",
+      "family": "Internal constructor views/inversion, combining totality and uniqueness into one definable `\u2203!` induction.",
+      "evidence": "K \u00a7Constructor views and one internal unique-existence induction."
+    },
+    {
+      "id": "A30",
+      "family": "Definable recursive graph preservation and fusion (`ThetaG`), stage-formula adapters.",
+      "evidence": "K \u00a7Preservation and fusion for internal recursive graphs."
+    },
+    {
+      "id": "A31",
+      "family": "Share model-independent finite-index/row-family proofs with internal-natural arithmetic, retaining definability.",
+      "evidence": "C notes/syntax \u00a76; G \u00a7Finite-index reasoning in object layer."
+    },
+    {
+      "id": "S26",
+      "family": "Reuse total bounded table decoding to prove the raw parent-checker characterization.",
+      "evidence": "ProveIt_Lean_Simplification_Round2_2026-10-26.zip :: LeanReview2/report/sections/03_parents.tex"
+    },
+    {
+      "id": "S27",
+      "family": "Consume a Boolean certificate before building its conditional, preserving the supplied program.",
+      "evidence": "additional_lean_simplifications_2026-10-26.zip :: report/additional_lean_simplifications.tex, Consume the Boolean certificate before constructing a conditional"
+    },
+    {
+      "id": "S28",
+      "family": "Collect proof fragments for any list of premises, with ambient-history-stable parent indices.",
+      "evidence": "lean-proof-simplification-new-2026-10-26.zip :: report.tex, B: construct proof fragments for any number of premises"
+    },
+    {
+      "id": "S29",
+      "family": "Prove fork-certificate transport at successor outputs, isolating output zero once.",
+      "evidence": "lean-proof-simplification-new-2026-10-26.zip :: report.tex, C: prove fork certificates at successors first"
+    },
+    {
+      "id": "S30",
+      "family": "Strengthen quadratic Nat pairing certificates to canonical selector/slack/maximum witnesses.",
+      "evidence": "lean-proof-simplification-new-2026-10-26.zip :: report.tex, E: pairing certificates have canonical witnesses"
+    },
+    {
+      "id": "S31",
+      "family": "Define one rule-schedule syntax and derive both numeric evaluation and supplied-PR programs.",
+      "evidence": "lean-simplification-residual-2026-10-26.zip :: report.tex, Define rule schedules once and derive both interpretations"
+    },
+    {
+      "id": "S32",
+      "family": "Specialize binary graph composition-depth bookkeeping once for Fin 2.",
+      "evidence": "ProveIt_Lean_Simplification_Round2_2026-10-26.zip :: LeanReview2/report/sections/09_supplemental.tex, S2"
+    },
+    {
+      "id": "S33",
+      "family": "Replace repeated finite support insertion cases by an explicit membership specification or indexed support representation.",
+      "evidence": "2026-10-26f/inventory/INVENTORY.md:53; targets NativeQuadraticPositions"
+    },
+    {
+      "id": "S34",
+      "family": "Centralize common positive-modulus NeZero instances and cast/divisibility normalization.",
+      "evidence": "2026-10-26f/inventory/INVENTORY.md:54"
+    },
+    {
+      "id": "A32",
+      "family": "Compare Pell bases by simultaneous monotonicity of the positive pair recurrence; avoid exponential detours.",
+      "evidence": "diophantine-lean-new-simplifications-2026-10-26.zip :: Idea 4; lean-simplification-residual-2026-10-26.zip :: Compare Pell bases through the positive pair recurrence"
+    },
+    {
+      "id": "A33",
+      "family": "Use a natural-number perturbation kernel and power-sandwich theorem for both Pell upper estimates.",
+      "evidence": "lean-simplification-residual-2026-10-26.zip :: A natural-number perturbation kernel for both Pell upper bounds"
+    },
+    {
+      "id": "A34",
+      "family": "Parameterize the common Pell ratio estimate by its explicit error factor.",
+      "evidence": "lean-proof-simplification-new-2026-10-26.zip :: A: one Pell estimate with an explicit error factor"
+    },
+    {
+      "id": "A35",
+      "family": "Recover the half-binomial through an exact integer quotient and rounding theorem.",
+      "evidence": "lean-simplification-residual-2026-10-26.zip :: Recover the half-binomial value through an exact integer quotient"
+    },
+    {
+      "id": "A36",
+      "family": "Use a general small-ordinate Pell fundamental-unit criterion, with y <= 3 sharp.",
+      "evidence": "additional_lean_simplifications_2026-10-26.zip :: A uniform small-ordinate criterion for Pell minimality"
+    },
+    {
+      "id": "A37",
+      "family": "Replace object-natural zero-sum/product inductions whose hypotheses are unused by internal zero-or-successor decomposition.",
+      "evidence": "diophantine-lean-new-simplifications-2026-10-26.zip :: Idea 1; diophantine-lean-post-roadmap-2026-10-26.zip :: Delete internal inductions whose hypotheses are unused"
+    },
+    {
+      "id": "A38",
+      "family": "Prove nonsquare norm nonvanishing entirely over integers through equal-power divisibility and cancellation.",
+      "evidence": "diophantine-lean-new-simplifications-2026-10-26.zip :: Idea 5: prove the norm fact entirely over the integers"
+    },
+    {
+      "id": "A39",
+      "family": "Exclude a negative Pell unit by squaring it and using positive-unit classification plus a congruence invariant.",
+      "evidence": "diophantine-lean-post-roadmap-2026-10-26.zip :: Derive the negative Pell obstruction from positive units"
+    },
+    {
+      "id": "A40",
+      "family": "Normalize shifted/squared negative-norm obstructions to the existing ShortEquation theorem.",
+      "evidence": "diophantine-lean-post-roadmap-2026-10-26.zip :: Normalize three residue obstructions to one existing theorem"
+    },
+    {
+      "id": "A41",
+      "family": "Extract exact minima of all coupled blocks from equality of aggregate lower bounds.",
+      "evidence": "diophantine-lean-post-roadmap-2026-10-26.zip :: Extract all block equalities from one minimum-saturation theorem"
+    },
+    {
+      "id": "A42",
+      "family": "Share empty/union/insertion/extraction laws of monotone local certificates over an arbitrary model-set membership interface.",
+      "evidence": "diophantine-lean-post-roadmap-2026-10-26.zip :: Optional: a calculus for monotone local certificates"
+    },
+    {
+      "id": "A43",
+      "family": "Recognize a physical shift permutation as the existing positive tail.",
+      "evidence": "additional_lean_simplifications_2026-10-26.zip :: Optional: recognize the physical permutation as a positive tail"
+    },
+    {
+      "id": "A44",
+      "family": "Use binaryWord_prefix directly for the two South shift clients, preserving exact weighted correction.",
+      "evidence": "Lean_Proof_Simplification_New_Deltas_2026-10-26.zip :: section 4; ProveIt_Lean_Simplification_Round2_2026-10-26.zip :: section 06_south_prefix"
+    },
+    {
+      "id": "A45",
+      "family": "Use theta as the exact aligned-cell reachability difference witness and specialize existing propagate_from at zero.",
+      "evidence": "Lean_Proof_Simplification_New_Deltas_2026-10-26.zip :: section 5; ProveIt_Lean_Simplification_Round2_2026-10-26.zip :: section 05_finite_and_cycle"
+    },
+    {
+      "id": "A46",
+      "family": "Consolidate exact high North/South color classifications into equality-indexed fibers or a NorthView.",
+      "evidence": "Lean_Proof_Simplification_New_Deltas_2026-10-26.zip :: sections 6-7; ProveIt_Lean_Simplification_Round2_2026-10-26.zip :: section 08_north_view"
+    },
+    {
+      "id": "A47",
+      "family": "Characterize an alternate marked assignment by selector bits in the same original word, then transport correctness.",
+      "evidence": "Lean_Proof_Simplification_New_Deltas_2026-10-26.zip :: section 8"
+    },
+    {
+      "id": "A48",
+      "family": "Hoist binaryWord_congr beside its definition and use it for copy translation and horizontal bit aggregation.",
+      "evidence": "ProveIt_Lean_Simplification_Round2_2026-10-26.zip :: section 07_word_congruence"
+    },
+    {
+      "id": "A49",
+      "family": "Use the explicit CRT residue already in context instead of search in BoundedForallCertificate.",
+      "evidence": "ProveIt_Lean_Simplification_Round2_2026-10-26.zip :: section 09_supplemental, S1"
+    }
+  ],
+  "note": "Grouping is for navigation; not a claim that every family is independent. Actual adoption status is irrelevant to the user-requested counterfactual.",
+  "closing_exclusion_snapshot": "e652d21c413de59e4821f6e8e9b6a3a077bf5bfe",
+  "closing_additions": [
+    {
+      "id": "C01",
+      "family": "Explicit compositional normalization of exact object-formula Sat specifications under binders, including expression semantic fold.",
+      "evidence": "2026-10-26s/report.tex \u00a7Normalize exact object-formula specifications compositionally",
+      "relationship": null
+    },
+    {
+      "id": "C02",
+      "family": "Integer recovery from two real error budgets whose sum fits one unit interval, using Nat.floor_eq_iff.",
+      "evidence": "2026-10-26s/report.tex \u00a7Optional: isolate integer recovery from two error budgets",
+      "relationship": "Related to A35 integer recovery, but this exact floor interface is additionally excluded."
+    },
+    {
+      "id": "C03",
+      "family": "Observed internal certificate-set closure: abstract pair/triple observation, union and singleton-insertion laws.",
+      "evidence": "2026-10-26s/report.tex \u00a7Optional: share closure of observed internal certificate sets",
+      "relationship": "Reinforces A42 and earlier internal certificate algebra; not counted as a disjoint new family."
+    },
+    {
+      "id": "C04",
+      "family": "Identify exact numeric list encoding extensionally with the library encoding; specialize raw parent correctness to typed parents and reuse list length bound.",
+      "evidence": "2026-10-26t/report/sections/02_encoding.tex",
+      "relationship": null
+    },
+    {
+      "id": "C05",
+      "family": "Exact local two-point ordered-pair fibre theorem for square coefficients, diagonal multiplicity, mixed-product prototype, and selective off-target specialization.",
+      "evidence": "2026-10-26t/report/sections/03_coefficients.tex and 07_next.tex",
+      "relationship": null
+    },
+    {
+      "id": "C06",
+      "family": "Absolute second-coordinate Pell minimality; optional generic y-square minimum criterion.",
+      "evidence": "2026-10-26t/report/sections/04_pell.tex and 07_next.tex",
+      "relationship": "A36 already replaces the exact fundamental-unit target by a stronger small-ordinate criterion; all variants remain excluded."
+    },
+    {
+      "id": "C07",
+      "family": "Bounded first-failure selection with prefix validity and optional initial-versus-predecessor conclusion for both strip walls.",
+      "evidence": "2026-10-26t/report/sections/05_first_exit.tex; 2026-10-26u/report.tex \u00a7Return the first failure together with its valid prefix",
+      "relationship": null
+    },
+    {
+      "id": "C08",
+      "family": "Derive stronger native-rank envelope (2q-1)(q^2-1) <= nativeRank from positive transport gap; reuse for 40-bound and 3q-bound.",
+      "evidence": "2026-10-26u/report.tex \u00a7A sharper common lower envelope for the native rank",
+      "relationship": null
+    },
+    {
+      "id": "C09",
+      "family": "Centered or translated integer induction for ResetRows.interval_propagate, replacing two natural inductions and toNat reconstruction.",
+      "evidence": "2026-10-26u/report.tex \u00a7Use integer induction around the known point",
+      "relationship": null
+    },
+    {
+      "id": "C10",
+      "family": "Wang row defined by one shared horizontal edge field; transition bridge at min(oldHead,newHead); unconditional state-overwrite adapter.",
+      "evidence": "2026-10-26u/report.tex \u00a7Make Wang horizontal matching structural; lean/SharedEdgeRow.lean",
+      "relationship": null
+    },
+    {
+      "id": "C11",
+      "family": "Replace sign split in run_read_of_abs_ge by le_abs'.mp and the existing outside theorem.",
+      "evidence": "2026-10-26u/report.tex \u00a7Small additional cleanup: absolute-value trace bounds",
+      "relationship": null
+    }
+  ],
+  "closing_note": "These 11 supplement entries include related variants/reinforcements; do not add them to 83 and claim 94 disjoint idea families."
+}

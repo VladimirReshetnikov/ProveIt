@@ -1,0 +1,22 @@
+\pageheading{2 Recent commits and the newer maintained endpoint}
+From the preceding review pin \code{b310142330df89e48413c8fce62e7de223e1c7d5} to the proof-source pin, these eight mathematical commits add 32 main-directory Lean files: 16 theorem modules with 2,099 physical lines and 16 check modules with 1,224, totaling 3,323. These are counts of the selected sequence, not every repository change. Exact paths and hashes are in \code{catalog/new_machine_commits.json}.
+
+\begin{tabular}{@{}L{0.18\linewidth}L{0.73\linewidth}@{}}\toprule
+Commit & New interface relevant to the retained proposals\\\midrule
+\commit{72d3198bb} & Finite initialization walls and exact horizontal reset alternatives.\\[3pt]
+\commit{076b953e7} & Persistent walls and a seam-free open strip at every integer time.\\[3pt]
+\commit{90a2ded65} & Actual first step and exact configuration-color semantics.\\[3pt]
+\commit{edf3a19d0} & Exact tile-input grammar; one finish event propagates to a finish/reset row.\\[3pt]
+\commit{218631436} & Actual clock-one row; no premature finish in a live encoded row.\\[3pt]
+\commit{993d6730a} & Actual signals, exact receiver targets and operational color updates.\\[3pt]
+\commit{04267333b} & Strict strip head containment and sharp blank-run trace bounds.\\[3pt]
+\commit{a421ec86e} & Actual row evolution and an independently constructed matching step row.\\\bottomrule
+\end{tabular}
+
+The last commit provides two distinct sides: \code{row_step} extracts the actual step of an encoded configuration, while \code{stepTile} constructs a row from it. Their overlap supports the narrow complete-tile proposal; it does not make a generic simulation framework new. See \src{WangTiles942RowStep}{164}{203} and \src{WangTiles942StepConstruction}{22}{44}.
+
+\textbf{The later maintained source goes further.} Commit \commit{512e0f6a3} adds the actual marked-word halting theorem, using existing row evolution and the origin-color contradiction, and \code{CurrentSoundness2011} proves positive polynomial zero $\Rightarrow$ actual blank halt $\Rightarrow$ syntactic ZFC refutation. Hence ConZFC excludes positive zeros of the maintained polynomial and three thirteen-variable forms. See \latesrc{WangTiles942Soundness}{24}{68} and \latesrc{CurrentSoundness2011}{24}{70}.
+
+Commit \commit{be45083ae} also closes the marked-language equivalence: existence of an actual marked word is equivalent to actual blank halting; absence of marked words is equivalent to ConZFC. The cofinal construction admits independently large width and height. These are maintained external Lean statements, not new proposals here; see \latesrc{WangTiles942Completeness}{28}{79}. The actual polynomial converse and internal-ZFC formalization are still separate obligations.
+
+\textbf{Earlier adoption is not new credit.} Nine groups already remove 264 maintained lines, and the total-degree tactic is maintained. At the proof-source pin, some queued scanner, model-axiom and arithmetic edits were still absent despite adoption prose. All are nevertheless treated as available for novelty. The report does not reuse their savings, mistake queue status for integration, or describe the now-maintained halting endpoint as future work.
