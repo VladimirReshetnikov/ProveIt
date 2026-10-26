@@ -1167,7 +1167,8 @@ As the packages state them:
   at degree 1,245,324;
 - a 14-unknown equation of degree 24, and a 15-unknown one in 66 operations;
 - the smallest coefficient tuple binding an equation has B = 2^193969 (174's
-  P66 tuple, which is also the research session's; then 2^343523 if 171's
+  P66 tuple, which is also the research session's, if its Start-only
+  calibration holds; then 2^343523 if 171's
   calibration holds, 2^413929 if 141's carry proof holds, and 2^429959).
 
 Materialized coefficient bytes do not by themselves prove the compiler

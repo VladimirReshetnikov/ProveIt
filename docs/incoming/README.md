@@ -27,7 +27,9 @@ publication keep their separate scopes.
 
 ## Current queue
 
-No Con(ZFC)-Diophantine archive is waiting.
+The nine Con(ZFC)-Diophantine archives of six arrival commits
+(`ecb9a4b4dd` … `b42c796d1f`, 25 October 17:37–17:59) are placed as wave 23,
+sources 179–187, in `52d80d2df5`; their reconciliation follows.
 
 ## Queue status after batches 234–238
 
@@ -46,8 +48,8 @@ beside waves 5–17, as sources 160–178:
 
 Together 6,938 members = 2,865 staged + 4,043 copies omitted + 30 ignored;
 no placed path exceeds 250 characters. All nineteen ZIPs are retired by
-name. One reconciliation README covers waves 18–22; its audit fixes
-follow. The report is outside the
+name. One reconciliation README covers waves 18–22 (`c8187221a6`, audit
+fixes in the following commit). The report is outside the
 research-report collection, which stays at 290. Nothing was rerun.
 
 ## Queue status after batch 233
