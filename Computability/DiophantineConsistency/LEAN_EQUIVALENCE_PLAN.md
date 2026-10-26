@@ -974,6 +974,14 @@ with eleven standard-only reports and identical author/root objects. Separate
 normal/optimized finite audits cover all76 operations, the exact degree and
 whole coefficient tuple. No new HA endpoint or fresh whole closure is claimed.
 
+`ThirteenUnitSphere96` proves the integer three-square lemma and the exact
+sign sequence needed for `(PQ)²+U²+Z²−3=0`. It preserves the entire positive
+zero set of LV72 and the actual current-port external ConZFC equivalence.
+Both leaves passed [independent root replay](reviews/thirteen-unit-sphere96-root.md),
+with13 standard-only reports and identical author/root objects. Separate
+normal/optimized full audits give13/75/96 with unchanged complete ports.
+The new polynomial is different; only its positive zero set is identified.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the

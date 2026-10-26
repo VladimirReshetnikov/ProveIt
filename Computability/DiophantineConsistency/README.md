@@ -201,6 +201,15 @@ Both fresh Lean leaves and normal/optimized full finite audits passed
 All four complete coefficients are unchanged. The earlier77/96 packet remains
 preserved; the displayed14/65/150 equation and HA target are unchanged.
 
+The [unit-sphere equation](research/thirteen-unit-sphere96/README.md) further
+reduces this to **13 positive variables,75 operations and exact degree96**.
+Its equation `(PQ)²+U²+Z²−3=0` forces three integer unit squares; the actual
+negative-unit exclusions recover the same entire positive zero set in both
+directions. Both Lean leaves and complete normal/optimized finite audits
+passed [independent root review](reviews/thirteen-unit-sphere96-root.md).
+The coefficients are unchanged. This polynomial differs from its predecessor;
+the positive witness maps are the identity. The decimal display is preserved.
+
 The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 uses **47,313 raw fixed-integer bytes**, 10,812 below the preceding2471
 page. It fixes Start and sorts the other941 selectors by their distinct

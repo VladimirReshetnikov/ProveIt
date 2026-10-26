@@ -61,6 +61,11 @@ it computes exactly the grouped polynomial using one fewer operation.
 Its [independent replay](reviews/thirteen-shared-squares96-root.md) passed
 eleven standard-only reports and separate complete normal/optimized finite
 metric checks. Its HA proof-existence endpoint remains open.
+The unit-sphere13/75/96 form now has its own externally checked entire
+positive-zero equivalence, preserving all witnesses while changing the
+polynomial. Its [independent replay](reviews/thirteen-unit-sphere96-root.md)
+passed13 standard-only reports and complete separate finite metrics.
+Its HA endpoint remains open alongside the other selected forms.
 
 [ObjectCurrentEquation2011](Lean/DiophantineConsistency/ObjectCurrentEquation2011.lean)
 supplies a set-theory-language no-solution sentence with exact arbitrary-model

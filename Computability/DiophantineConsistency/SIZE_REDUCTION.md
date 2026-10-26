@@ -24,6 +24,18 @@ Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
 
+26 October unit sphere: the
+[75/96 equation](research/thirteen-unit-sphere96/README.md)
+uses `(PQ)²+U²+Z²−3=0`. The integer sphere theorem and actual negative-unit
+exclusions recover PQ=U=Z=1, preserving every positive zero by identity maps.
+The auxiliary sign is established only after Z=1. The complete profile is
+13 positive unknowns,42 multiplications/18 additions/15 subtractions, degree96,
+and unchanged47313 raw/4230 gzip coefficient bytes. Both Lean leaves and full
+normal/optimized graph/degree/port audits passed
+[independent root review](reviews/thirteen-unit-sphere96-root.md), including
+the actual external ConZFC endpoint. It improves76/96 by one operation;
+the polynomials are different. The decimal14/65/150 page is unchanged.
+
 26 October shared residual: the
 [76/96 presentation](research/thirteen-shared-squares96/README.md)
 shares h=f²−1 between the auxiliary coefficient and strong residual. It
