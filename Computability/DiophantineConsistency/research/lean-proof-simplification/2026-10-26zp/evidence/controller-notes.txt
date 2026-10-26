@@ -1,0 +1,85 @@
+CONTROLLER FINDINGS AT e1c8914bc7064d9a8e7c06171a18069a949badd0
+
+1. Universal LTE divisibility normal form
+Target: PrimePowerOrder.lean, pow_cast_eq_one_iff, exact_lift, order_succ.
+New helper (p odd prime, p | g-1, not p^2 | g-1):
+  p^(n+1) | g^k-1 iff p^n | k, for ALL n,k : Nat.
+Derivation: exact first lift gives v_p(g-1)=1. Existing Mathlib LTE gives
+v_p(g^k-1)=1+v_p(k). Divisibility is a lower bound on emultiplicity;
+cancel finite 1 in ENat. This also covers k=0 because v_p(0)=infinity.
+Apply orderOf_dvd_iff_pow_eq_one in both directions of Nat.dvd_antisymm:
+order divides p^n from k=p^n; p^n divides order from k=orderOf(g).
+Consequences: no zero/successor case split; no Fact p.Prime instance in order_succ;
+exact_lift follows by specializing k to p^j. Preserve every original theorem type.
+Original cast proof is preserved verbatim, retaining1<=g, modulus0 and exponent0.
+Strict final compiler-checked replacement count:80->77 physical lines; bytes3415->3425. Generic cast cleanup is excluded; original cast proof remains verbatim.
+New generic helper is charged. Combined baseline/replacement/all existing checks/new exponent controls passed; six original public axiom sets are identical.
+Novelty auditor cleared arbitrary-exponent LTE + mutual-divisibility order.
+Generic cast cleanup is excluded from the final patch and recommendations.
+
+2. Fixed prime support for variable controller dimensions
+Target: CurrentControllerUnits2011.lean, quadratic_mod_* / coupling_mod_* /
+coprime_Gamma_* / coprime_Gamma_width_cells.
+Let p=120199, d=47*2011, M=d*p. With R=radix^977,
+ F(R,q,K,w)=R*(q^2-1)*(1+q*(K+w)),
+Gamma(rw,n)=F(R,B^(p^n),K,B^(p^rw)).
+The existing three power_dimension lemmas and coprimality of fixed moduli
+imply B^(p^n)=B in ZMod M, independently for n and rw. Thus the entire
+rank-step coefficient has one fixed residue F(R,B,K,B) modulo M.
+ONE fixed coprimality certificate against M then implies coprimality of the
+varying coefficient against d*p^n, for ALL n including0.
+No claim of an iff at n0: modulus d*p^0=d drops p; sufficient direction only.
+The generic checked transport does not require p prime or d squarefree.
+Do not obtain the fixed certificate from width_cells(0,0), whose modulus
+is merely d. It must include the auxiliary-prime factor, e.g. all three
+fixed-prime coprime endpoints at rw=n=0 for a noninvasive prototype.
+When replacing those endpoints, extract separate fixed proofs directly from
+K/Hs/B numerical residue facts first: do not use newly generalized endpoints
+to prove their own fixed certificate. Otherwise the proposed refactor is circular.
+Natural subtraction cannot be moved into ZMod without the lower bounds;
+prototype retains 1<=q^2 and1<=B^2 explicitly.
+Suggested integration: keep numerical diagnostics as optional API; the core
+unit theorem should depend on one family congruence plus one fixed unit.
+No net source deletion measured: preserving all diagnostic public endpoints
+may leave them in place. This is a checked proof kernel and source-level
+integration proposal, not a validated replacement of the 37-module dependency
+closure. No speedup claim.
+Python cross-check only, NOT certified actual-K evaluation: moduli47,2011,120199
+have fixed Gamma residues14,232,93846. ProductM=11360848883, CRT Gamma residue
+706142772, gcd(residue,M)=1. These numbers are unnecessary for the generic proof.
+Novelty auditor cleared prime-support/thickening mechanism. A rejected idea
+(single product-modulus kernel-table evaluation) was too close to older
+stronger-modulus projection proposals and is NOT a new recommendation.
+
+3. Translate a finite seed instead of calculating an interval's triangular sum
+Targets: ControllerIntervalSums and existence-only clients of ControllerOrbitTransport.
+For finite S in an additive commutative group, translate_t(S)={x+t:x in S}.
+Cardinality is unchanged; sum translate_t(S)=sum S+|S|*t.
+If multiplication by a=|S| is onto, solve a*t=u-sum S and reach every target sum.
+For ZMod T, a coprime to T is a unit, so the shift is explicit using unitOfCoprime.
+The resulting existence theorem chooses any a-element subset (a<=T) of univ;
+no order on residues, interval injection, triangular number, or division by2.
+The general lemma works for any additive commutative group with surjective
+nsmul(a), not merely cyclic groups. Checks include even modulus8, arbitrary
+non-interval seed{0,2,5}, wrap-around target, and T1/a0.
+Precise contract: original startFor/targetInterval formulas are preserved in
+the repository; prototype is an alternate existence-only API. Current
+interval_sum itself is already5lines. Do NOT claim those5lines disappear or
+full-module shortening while retaining every exact-interval theorem.
+For existence-only clients, a no-shape seed interface can avoid the interval
+construction dependency altogether. Keep the explicit old interface where
+actual chosen interval coefficients matter. No executable representation change
+is included in the prototype.
+Novelty auditor cleared translation of fixed-cardinality subset sums; this
+is distinct from prior translated-support separation and finite inverse closure.
+
+LATE-HEAD SOURCE REVIEW AT ae736b383e59c32c3c3f81910ef1c1197cbfbd44
+New CurrentControllerSubsets2011 proves actual finite-subset construction; its
+existential endpoints are a concrete shape-free consumer for proposal3.
+CurrentControllerPositions2011 proves physical-support safety when rw<k.
+CurrentDummySafety2011 discharges ordinary nonwrapping from explicit physical
+position bounds and proves safe_normalized_increment / safe_rank_decrement.
+CurrentWordRephase2011 transfers the SAME carries/digits for congruent strides.
+NativePackingPopulation supplies exact population from masks. Do not describe
+these as unresolved proof gaps; they are outside our simplification validation.
+The four direct controller/prime-order target files remain byte-identical.

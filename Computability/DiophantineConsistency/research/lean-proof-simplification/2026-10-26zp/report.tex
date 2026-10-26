@@ -1,0 +1,532 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{multicol}
+\usepackage{enumitem,xcolor,microtype}
+\usepackage{listings}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Further Lean proof simplifications}
+\fancyhead[R]{\small ProveIt / 26 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist[itemize]{topsep=5pt,itemsep=3pt}
+\setlist[enumerate]{topsep=5pt,itemsep=3pt}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\zm}[1]{\Z/#1\Z}
+\newcommand{\repo}{\url{https://github.com/VladimirReshetnikov/ProveIt}}
+\newcommand{\pin}{\texttt{e1c8914bc7064d9a8e7c06171a18069a949badd0}}
+\newcommand{\leanpath}{\texttt{Computability/DiophantineConsistency/Lean/}}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\newtheorem{corollary}[proposition]{Corollary}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+  breaklines=true,frame=single,rulecolor=\color{black!18},
+  backgroundcolor=\color{black!2},aboveskip=9pt,belowskip=9pt,
+  showstringspaces=false}
+\title{Four further directions for shorter Lean proofs\\[5pt]
+  \large Reflection, fixed prime support,\newline
+  translated subset sums, and prime-power order}
+\author{Research and verification packet for Vladimir Reshetnikov}
+\date{26 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This packet examines the pinned ProveIt source after treating every proposal
+in the requested research corpus as already applied. The initial review of
+23 placed packets and five incoming archives was extended to all 36 packets
+at the late audit cutoff. It retains four additional, narrowly described directions. The most
+local one removes an unnecessary upper-field hypothesis from reflected-source
+normalization. The other directions transport controller coprimality through a
+fixed set of prime factors, realize prescribed finite-subset sums by
+translation, and characterize all prime-power divisibility before extracting
+multiplicative order. The accompanying Lean files check mathematical
+interfaces; the validation section distinguishes these from a rebuilt
+production module. No general source-line reduction or whole-project build
+is claimed merely because a client theorem becomes shorter.
+\end{abstract}
+
+\section{Scope, evidence, and the counterfactual baseline}
+
+The source pin is \pin. Its commit timestamp is 26 October 2026,
+18:30:35 UTC. Primary source links identify this immutable snapshot; the late comparison
+below uses its own explicitly recorded head. The requested Lean subtree contains 690 \code{.lean} files,
+including check files, with 86,351 physical lines. These inventory figures
+describe the entire materialized subtree, not the amount of code a proposed
+refactor has removed. The toolchain is Lean 4.32.0; the exact Mathlib revision
+is \code{81a5d257c8e410db227a6665ed08f64fea08e997}.
+
+The novelty comparison includes placed packets \code{2026-10-26a} through
+\code{2026-10-26w} and all five ZIPs in \code{docs/incoming} at the pin.
+The report inventory contains 82 TeX input files, totaling 1,086,021 bytes;
+the five ZIPs contain 1,042 nondirectory members. Several inputs and members
+are duplicates, supporting material, or old source snapshots. These are not
+counts of distinct ideas. The audit read recommendation sections, delivery
+notes, exclusion ledgers, and candidate-specific supporting prose and code.
+It did not execute programs supplied by prior packets, and does not claim
+that every duplicated snapshot was reviewed line by line. The exact inventory
+and a conservative exclusion ledger accompany this report.\cite{prior,incoming}
+
+\paragraph{Late refresh.}
+The final exclusion cutoff is
+\code{ae736b383e59c32c3c3f81910ef1c1197cbfbd44}.
+At that head the research directory contains 36 packets, \code{a} through
+\code{zj}. The five previously audited incoming archives are now placed as
+\code{x} through \code{zb}; eight additional packets, \code{zc} through
+\code{zj}, were screened separately. Their complete recursive tree inventories
+were retrieved. The audit fetched 71 selected report, note, review, and
+candidate-code files, totaling 575,496 bytes, plus both directory indexes;
+all 73 fetched texts match their Git blob hashes. The incoming directory
+contains only its README at this cutoff. The eight direct source targets
+checked at both heads are byte-identical; the new safety, controller-subset,
+position, rephasing, and population modules were inspected separately.
+The precise bounded review and inventory are in
+\code{evidence/late-refresh.md} and
+\code{evidence/late-corpus-manifest.json}.\cite{lateprior,lateincoming}
+
+\paragraph{What ``additional'' means here.}
+An earlier proposal remains excluded if it is pending, uncompiled, optional,
+or recorded only in a further-research section. A new file name, a new tactic,
+or a new successful compilation does not make the old idea additional.
+The claim is a bounded comparison with the specified repository corpus;
+it is not a claim of global mathematical originality.
+The assumed-applied baseline governs which mechanisms are additional.
+Source counts and patch measurements refer to the actual pinned files;
+they are not additive savings after a hypothetical composition of every
+earlier patch, some of which offer alternative interfaces.
+
+\paragraph{Important exclusions.}
+This review does not propose scanner iteration helpers, generic PR closure
+automation, shared circuit tails, exact carry quotient/remainder interfaces,
+fixed-word normalization uniqueness, standard aligned-cell equivalences,
+cyclic packing homomorphisms, or stronger-to-weaker modulus projection again.
+It also excludes the newer helical-coordinate, row-recognition,
+signal-statistics, affine-rank, and signed-prefix ideas in the incoming ZIPs.
+In particular, computing the kernel once modulo a product of three primes
+was considered and rejected as a headline: it is too close to the earlier
+modulus-projection proposal.
+
+The full cell/field-coordinate and numeric control-update direction was
+also dropped. Packet \code{w} already gives the more general band/time
+equivalence, and packet \code{zd} supplies the independent control-slot
+overwrite representation and its invariants. The terminal-band convolution
+consolidation in packet \code{zh} is likewise excluded. Those decisions
+are reflected in the four retained mechanisms below.\cite{updates,terminal}
+
+\begin{longtable}{p{0.03\textwidth}p{0.24\textwidth}p{0.37\textwidth}p{0.26\textwidth}}
+\toprule
+ & Additional obligation & Main current clients & Intended simplification\\
+\midrule
+\endhead
+A & Normalize reflection at every target field & \code{CurrentReflectedGeometry2011}, \code{CurrentWordTopBounds2011} & One source formula handles low, top, and multi-period targets.\\
+B & Keep unit status fixed while a modulus gains prime powers & \code{CurrentControllerUnits2011} & Separate one fixed unit certificate from variable exponents.\\
+C & Translate any finite seed to a desired sum & \code{ControllerIntervalSums}, \code{ControllerOrbitTransport} & Existence clients no longer depend on triangular-sum evaluation.\\
+D & Characterize divisibility at arbitrary exponents & \code{PrimePowerOrder} & Derive order through a single universal characterization.\\
+\bottomrule
+\end{longtable}
+
+\section{A: remove the unnecessary target bound in reflection}
+
+\subsection{The current proof boundary}
+
+The theorem \code{CurrentReflectedGeometry2011.reflected_source} currently
+assumes \(h\leq1004\) and \(p\leq985\). For a base \(b\) aligned modulo 2011
+and a word \(c\) supported in the low fields, it proves
+\begin{equation}\label{eq:reflection}
+c\bigl(b+h-(1005-p)\bigr)=
+\begin{cases}
+c\bigl(b+(h+p-1005)\bigr),&1005\leq h+p,\\
+0,&h+p<1005.
+\end{cases}
+\end{equation}
+Positions on the two sides live in \(\operatorname{ZMod}(2011N)\);
+the subtractions displayed inside natural casts are natural subtraction.
+The bounds are therefore part of the proof, not an invitation to treat
+truncated subtraction as integer subtraction.\cite{reflection}
+
+The upper bound on \(h\) is unnecessary. The proof already splits on
+\(1005\leq h+p\). In the positive branch, the cast identity is valid for
+arbitrarily large \(h\). In the negative branch, the branch hypothesis itself
+implies \(h<1005\), which is stronger than the only needed local bound.
+The coefficient bound can also be weakened to \(p\leq1005\).
+
+\begin{proposition}\label{prop:allfields}
+Let \(N>0\). Suppose \(b\in\operatorname{ZMod}(2011N)\) has field residue zero
+and \(c(k)=0\) whenever \(1004<\operatorname{val}(k)\bmod2011\).
+Then \eqref{eq:reflection} holds for every \(h\in\N\) and every \(p\leq1005\).
+\end{proposition}
+\begin{proof}
+If \(h+p\geq1005\), both natural subtractions are justified by their stated
+inequalities, and the equality is ring arithmetic after casting.
+Otherwise put \(d=1005-p\). Then \(h<d\leq1005\), so the field residue of
+\(b+h-d\) lies between 1006 and 2010. It is outside the permitted support,
+and the source digit is zero. This reasoning needs no global upper bound
+on \(h\).
+\end{proof}
+
+\subsection{How this changes the existing proofs}
+
+First promote the source formula to \code{reflected_source_all} and lift it
+through the existing finite sum to \code{reflected_cell_all}. The old theorem
+types can initially be retained as wrappers. This provides a reversible
+migration path while making the stronger result available to new clients.
+
+Late packet \code{2026-10-26zh} already consolidates the exact terminal-band
+response, including the 2009 and 2010 endpoints in
+\code{CurrentWordTopBounds2011}. That consolidation is assumed
+applied and is not claimed here. Its high-field coordinate helper still
+requires a high-field hypothesis. The remaining change is the all-offset
+guard formula, including arbitrary targets through multiple periods,
+with the weakened input-position bound and compatibility wrapper. Any
+further top-client migration must be measured against the terminal-band
+refactor, not against its older separate endpoint proofs.\cite{topbounds,terminal}
+
+This does not say that every downstream low-field theorem generalizes.
+For example, \code{source_le}, \code{source_nonselector_coefficient}, and
+the low-band coefficient budget in \code{reflected_lt} still use their
+upper bounds for real mathematical reasons. Generalizing those by deleting
+the same hypothesis would be unsound. The change is confined to source
+normalization and its finite-sum lifting.
+
+\paragraph{A useful guard test.}
+The weakened coefficient bound is meaningful: permitting \(p>1005\) is
+generally false because \(1005-p\) truncates to zero. For \(p=1006,h=0\),
+the original source is at the base while the proposed positive-branch
+normal form is one field later. An arbitrary supported word need not have
+equal digits there. The prototype includes this boundary distinction.
+
+\paragraph{Novelty and payoff.}
+Earlier packets centralize field residues and carry projections. Even after
+those are assumed available, the artificial restriction to low target fields
+remains. The additional result is the removal of that restriction and a
+single guarded source identity over all offsets. It is a small interface
+strengthening, not a prediction of a large line-count reduction. Retaining
+all compatibility wrappers increases source initially; deleting the
+redundant top-only path requires an explicit API decision and fresh client
+checks.
+
+\section{B: separate fixed prime support from varying exponents}
+
+\subsection{The repeated controller obligation}
+
+The actual controller uses
+\[
+P=120199,\qquad d=47\cdot2011,\qquad
+q_n=B^{P^n},\qquad A_r=K+B^{P^r},
+\]
+and the coefficient
+\begin{equation}\label{eq:gamma}
+\Gamma_{r,n}=\rho^{977}(q_n^2-1)(1+q_nA_r).
+\end{equation}
+The current proof establishes separate residues and nonzero tests at 47,
+2011, and \(P\), then combines the resulting coprimality statements for the
+modulus \(dP^n\). The width exponent \(r\) and cell exponent \(n\) are
+independent; both can be zero.\cite{units}
+
+The unit question only depends on the prime divisors of the modulus, not
+on their multiplicities. The fixed modulus \(R=dP\) therefore suffices to
+control every \(dP^n\). A useful reusable lemma is even more general:
+
+\begin{proposition}\label{prop:thicken}
+If \(x\equiv b\pmod{dp}\) and \(\gcd(b,dp)=1\), then
+\(\gcd(x,dp^n)=1\) for every natural \(n\).
+No primality or squarefreeness assumption on \(p\) is required.
+\end{proposition}
+\begin{proof}
+Congruence preserves being a unit modulo \(dp\), so \(x\) is coprime to
+both \(d\) and \(p\). Coprimality with \(p\) implies coprimality with
+\(p^n\), and multiplying the two coprime factors gives the conclusion.
+\end{proof}
+
+The direction in this statement matters. When \(n=0\), the target modulus
+is only \(d\); the converse need not hold. Replacing the implication by an
+unqualified equivalence would introduce a boundary-case error.
+
+\subsection{Freeze the coefficient, not the independent dimensions}
+
+The existing power reductions show, at each of the three fixed primes,
+\(q_n\equiv B\) and \(B^{P^r}\equiv B\). Combining these congruences at the
+fixed product modulus gives
+\[
+\Gamma_{r,n}\equiv
+\Gamma_*:=\rho^{977}(B^2-1)(1+B(K+B))\pmod R.
+\]
+Thus the final unit theorem can have one fixed arithmetic certificate
+\(\gcd(\Gamma_*,R)=1\), one parameterized polynomial congruence, and one
+application of Proposition~\ref{prop:thicken}. The existing checked kernel
+and power residues remain the evidence for the fixed certificate and
+congruences. They are not replaced by an unproved coprimality assumption. To avoid a
+circular proof, build the fixed certificate directly from fixed residue
+facts. Do not replace the variable coprimality endpoints with the new
+radical argument and then use those same endpoints to justify its base
+certificate.
+
+The supplied \code{rankFactor_cast_congr} theorem retains explicit guards
+\(1\leq q^2\) and \(1\leq B^2\). They justify casting the natural
+subtractions in \eqref{eq:gamma}. The variables standing for \(q_n\) and
+\(B^{P^r}\) remain distinct throughout the theorem.
+
+\paragraph{Why this goes beyond divisor projection.}
+Earlier packets already recommend deriving a weaker congruence from a
+stronger modulus. Here the conclusion concerns \(dp^n\), which generally
+does not divide \(dp\). The bridge is invariance of unit status under
+raising the exponents of existing prime factors. This is the additional
+mathematical step. Simply fusing three kernel computations into one modulus
+without this step was excluded during the audit.
+
+\paragraph{Expected proof reorganization.}
+Use the fixed-support certificate as the main path to
+\code{coprime_Gamma_width_cells} and \code{isUnit_Gamma_width_cells}.
+Retain individual residue theorems if they have independent clients or
+form part of the public diagnostic API. If they are kept, their source
+cannot be counted as deleted. The generic checked theorem does not by
+itself certify the concrete current \(\Gamma_*\) or the complete integration.
+
+\section{C: translate a finite seed instead of evaluating its triangular sum}
+
+\subsection{The sum changes predictably under translation}
+
+Let \(G\) be an additive commutative group, let \(S\subseteq G\) be finite,
+and write \(S+t=\{x+t:x\in S\}\). Translation is injective, so
+\begin{equation}\label{eq:translate}
+|S+t|=|S|,\qquad
+\sum_{x\in S+t}x=\sum_{x\in S}x+|S|\,t.
+\end{equation}
+Therefore, if multiplication by \(|S|\) is surjective on \(G\), every
+desired sum is realized by a translate of the same seed.
+
+\begin{proposition}\label{prop:seed}
+Let \(S\) be a finite subset of \(\operatorname{ZMod}T\) with cardinality
+\(a\), and assume \(\gcd(a,T)=1\). For every target \(u\) there is a
+translate \(S+t\) of cardinality \(a\) and sum \(u\).
+\end{proposition}
+\begin{proof}
+The residue of \(a\) is a unit. Take
+\(t=a^{-1}(u-\sum S)\) and apply \eqref{eq:translate}.
+\end{proof}
+
+If only the existence of some \(a\)-element subset is required and
+\(a\leq T\), choose any such subset from the finite universe and then
+translate it. There is no need to express its sum as \(a(a-1)/2\), or even
+to choose consecutive coordinates.
+
+\subsection{The precise benefit for the current source}
+
+\code{ControllerIntervalSums} currently constructs an interval, proves its
+injectivity and cardinality, evaluates its triangular sum in \(\N\), defines
+\code{startFor}, and then proves the prescribed-sum result. This is a sound
+explicit construction. The proposed alternate path is for
+\code{exists_subset_card_sum} and downstream clients that consume only
+cardinality and sum.\cite{intervals,orbit}
+
+The distinction is essential for honest accounting. The existing
+\code{exists_subset_card_sum} theorem already has a one-line proof using
+the explicit construction. Replacing that line by a longer standalone
+proof is not a local source shortening. The advantage is that an
+existence-only dependency layer can avoid the interval-specific arithmetic,
+and can accept arbitrary seeds when future constraints make another shape
+more convenient. If the public \code{startFor} and \code{targetInterval}
+formulas must remain, their triangular-sum proof remains too.
+
+The Lean prototype proves the translation statement first over an arbitrary
+additive commutative group, then derives the \code{ZMod} instance. It tests
+an even modulus, a non-interval seed, and the zero-ring boundary \(T=1\).
+It never divides by two in \(\operatorname{ZMod}T\). A unit inverse is used
+only for the coefficient \(a\), whose coprimality premise is explicit.
+
+\paragraph{A limit relevant to future controller work.}
+Translation preserves size and controls the sum. It does not automatically
+preserve membership in an arbitrary allowed-position set, safe mutation,
+absence of carries, or a nonwrapping inequality. Such conditions require
+separate invariance or safety lemmas. The result should not be presented as
+a substitute for the separate safety argument. At the later audited head,
+\code{CurrentDummySafety2011} already proves safe nonwrapping and exact
+normalized mutation under explicit placement bounds. The present
+translation theorem neither re-proves nor removes those premises.\cite{safety}
+
+\section{D: prove arbitrary-exponent divisibility before multiplicative order}
+
+\subsection{The stronger intermediate statement}
+
+\code{PrimePowerOrder.exact_lift} currently specializes the lifting-the-
+exponent calculation to exponents of the form \(p^k\), and
+\code{order_succ} then separates the zero and successor cases of its index.
+A more reusable normal form keeps the exponent arbitrary.\cite{order}
+
+\begin{proposition}\label{prop:lte}
+Let \(p\) be an odd prime, suppose \(p\mid g-1\), and suppose
+\(p^2\nmid g-1\). For all \(n,k\in\N\),
+\begin{equation}\label{eq:lteiff}
+p^{n+1}\mid g^k-1\quad\Longleftrightarrow\quad p^n\mid k.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The assumptions force \(g>1\) and \(p\nmid g\).
+The standard odd-prime LTE identity gives
+\(v_p(g^k-1)=1+v_p(k)\). Express both divisibilities through extended
+multiplicity and cancel the finite summand one. For \(k=0\), both
+divisibilities hold and extended multiplicity is infinite, so the same
+formulation covers the boundary. Natural subtraction is justified by
+\(g\geq1\), rather than silently replaced by integer subtraction.
+\end{proof}
+
+The order statement becomes a characterization of exactly the exponents
+that annihilate the group element:
+\[
+(g\bmod p^{n+1})^k=1
+\quad\Longleftrightarrow\quad p^n\mid k.
+\]
+Using \code{orderOf_dvd_iff_pow_eq_one}, divisibility in both directions
+identifies the order as \(p^n\). The least-exponent argument no longer
+requires a separate zero/successor branch.
+
+\subsection{Compatibility and accounting}
+
+The existing \code{exact_lift} theorem can be recovered by specializing
+\eqref{eq:lteiff} to \(k=p^j\), while the public
+\code{order_prime_power} endpoint can retain its original type. The late corpus already proposes a finite prime-factor certificate for
+exact multiplicative order and a Mersenne exponent classification. Those
+are treated as baseline. The new content here is the universal LTE
+divisibility equivalence for arbitrary exponents, not another finite order
+certificate. The value
+of the new bridge is broader reuse of the full divisibility statement;
+it is not enough to count only the shortened \code{order_succ} body and
+ignore the new theorem or compatibility wrappers. The accompanying patch is a bounded production experiment for this
+direction: the complete original and replacement source, all existing
+module checks, added exponent controls, and public axiom comparisons were
+replayed successfully. Standalone kernels have a different status.\cite{updates,mersenne}
+
+The primary patch preserves the original cast-normalization proof verbatim
+to avoid claiming routine cast cleanup as a new idea. It changes the full
+file from 80 to 77 physical lines, including the new universal lemma.
+UTF-8 size increases from 3,415 to 3,425 bytes. Thus the measured result is
+three fewer lines and a stronger reusable interface, not byte compression.
+All six original public theorem statements and their axiom sets are preserved.
+
+Oddness and exact first-order lifting are indispensable. For example,
+the familiar behavior of units modulo powers of two differs, and a base
+already congruent to one modulo \(p^2\) has a smaller order than this
+formula predicts. No such hypotheses are weakened by the proposed refactor.
+
+\section{Validation, source accounting, and adoption order}
+
+The machine-readable receipt in \code{validation/results.json} is
+authoritative for exact file hashes, compiler invocations, exit codes, and
+the distinction between prototype and production checks. The portable
+replay instructions are in \code{README.txt}. All files labelled checked
+must be checked with the repository-pinned Lean and Mathlib, not merely
+accepted by a Python calculation or a source parser.
+
+\input{validation-summary.tex}
+
+\paragraph{Axioms and executable behavior.}
+The audit records \code{#print axioms} for the new principal theorems.
+Standard Lean/Mathlib axioms such as propositional extensionality,
+classical choice, and quotient soundness are distinguished from an
+unproved project assumption. The bundle does not use \code{sorry},
+\code{admit}, or a new axiom as a substitute for a proof. Any claim that
+a production patch preserves public theorem types is supported separately
+by the patch and signature comparison.
+
+\paragraph{Recommended adoption sequence.}
+Start with A, because it identifies an unnecessary hypothesis at a precise
+existing interface. Next assess D as a standalone Mathlib-only module
+refactor with a complete checked theorem boundary.
+B merits a separate controller integration because the concrete fixed
+unit certificate and the product-modulus congruences must be wired to
+existing facts. C is best introduced when splitting an existence-only
+dependency layer or accepting a seed constrained by another argument.
+
+For every migration, charge new helper definitions, wrapper theorems,
+new imports, and retained compatibility code. Measure source reduction
+on the final touched production files. Compiler time, peak memory, and
+compiled-object size require their own measurements; none follows from
+source length. A stronger and clearer interface may be worthwhile even
+when its first adoption grows the file. The production file targeted by
+the prime-power patch is byte-identical at both audited heads.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Which field bounds are genuinely geometric?} After A,
+classify each use of a low-target bound as either source-coordinate
+normalization, support exclusion, or coefficient budgeting. Can the
+remaining top-bound proofs be obtained from a single reflected support
+description without reintroducing the already-proposed generic support
+framework as a new result?
+\item \textbf{Can fixed prime support become an explicit controller API?}
+Package the fixed unit certificate, the two independent power reductions,
+and the subtraction guards so that future changes in the exponents do not
+reopen the kernel-residue proof. Check whether existing individual residue
+endpoints are needed outside diagnostics before removing any of them.
+\item \textbf{Which seed constraints survive translation?} For C, identify
+the actual controller constraints that are invariant under translating all
+coordinates. An invariant constraint could be imposed on a seed before
+solving its sum. A noninvariant safe-position constraint still needs a
+separate construction.
+\item \textbf{What is the right normalization statement for higher lifts?}
+Generalize D to a known finite value \(v_p(g-1)=s\), maintaining the exact
+natural-subtraction and zero-exponent behavior. Assess whether the current
+auxiliary-order clients actually need that generality before introducing
+another interface.
+\end{enumerate}
+
+\section*{Contents of the packet}
+
+The packet contains this LaTeX manuscript and PDF, checked Lean prototypes,
+the successfully replayed prime-power production experiment, portable
+replay instructions, a source manifest, a novelty ledger, the prior-packet
+inventory, validation logs, and a SHA-256 manifest. It deliberately omits
+large source snapshots, downloaded runtimes, and compiled Mathlib caches.
+The requested source pin and dependency revisions are sufficient to
+reconstruct the validation environment.
+
+\begin{multicols}{2}
+\begin{thebibliography}{99}
+\footnotesize
+\bibitem{prior} ProveIt, \emph{Lean proof-simplification proposals}, pinned
+packet index and adoption record.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/e1c8914bc7064d9a8e7c06171a18069a949badd0/Computability/DiophantineConsistency/research/lean-proof-simplification}{Open pinned source}.
+\bibitem{incoming} ProveIt, \emph{Incoming reports}, pinned archive queue.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/e1c8914bc7064d9a8e7c06171a18069a949badd0/docs/incoming}{Open pinned source}.
+\bibitem{lateprior} ProveIt, late research index at
+\code{ae736b383e59c32c3c3f81910ef1c1197cbfbd44}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/ae736b383e59c32c3c3f81910ef1c1197cbfbd44/Computability/DiophantineConsistency/research/lean-proof-simplification}{Open late pinned index}.
+\bibitem{lateincoming} ProveIt, incoming directory at the late cutoff.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/ae736b383e59c32c3c3f81910ef1c1197cbfbd44/docs/incoming}{Open late pinned directory}.
+\bibitem{updates} ProveIt, packet \code{2026-10-26zd}, especially
+finite prime-factor order certificates and conditional numeric control-slot invariants.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ae736b383e59c32c3c3f81910ef1c1197cbfbd44/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zd/report.tex}{Open late pinned report}.
+\bibitem{terminal} ProveIt, packet \code{2026-10-26zh}, exact terminal-band
+convolution response.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ae736b383e59c32c3c3f81910ef1c1197cbfbd44/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zh/report/06-word.tex}{Open late pinned section}.
+\bibitem{mersenne} ProveIt, packet \code{2026-10-26zg}, Mersenne
+exponent classification and related local arithmetic.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ae736b383e59c32c3c3f81910ef1c1197cbfbd44/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zg/report/sections/03-local.tex}{Open late pinned section}.
+\bibitem{safety} ProveIt, \code{CurrentDummySafety2011.lean} at the late cutoff.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ae736b383e59c32c3c3f81910ef1c1197cbfbd44/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentDummySafety2011.lean}{Open late pinned source}.
+\bibitem{reflection} ProveIt, \code{CurrentReflectedGeometry2011.lean},
+especially \code{reflected_source} and \code{reflected_cell}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e1c8914bc7064d9a8e7c06171a18069a949badd0/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentReflectedGeometry2011.lean}{Open pinned source}.
+\bibitem{topbounds} ProveIt, \code{CurrentWordTopBounds2011.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e1c8914bc7064d9a8e7c06171a18069a949badd0/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordTopBounds2011.lean}{Open pinned source}.
+\bibitem{units} ProveIt, \code{CurrentControllerUnits2011.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e1c8914bc7064d9a8e7c06171a18069a949badd0/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerUnits2011.lean}{Open pinned source}.
+\bibitem{intervals} ProveIt, \code{ControllerIntervalSums.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e1c8914bc7064d9a8e7c06171a18069a949badd0/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerIntervalSums.lean}{Open pinned source}.
+\bibitem{orbit} ProveIt, \code{ControllerOrbitTransport.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e1c8914bc7064d9a8e7c06171a18069a949badd0/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerOrbitTransport.lean}{Open pinned source}.
+\bibitem{order} ProveIt, \code{PrimePowerOrder.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e1c8914bc7064d9a8e7c06171a18069a949badd0/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PrimePowerOrder.lean}{Open pinned source}.
+\end{thebibliography}
+\end{multicols}
+\end{document}
