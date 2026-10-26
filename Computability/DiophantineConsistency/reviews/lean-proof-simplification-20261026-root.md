@@ -1391,3 +1391,17 @@ separate from these final counts. Equation artifacts retain their checked
 hashes,715-digit decimal constant and fourteen distinct unsubscripted
 unknowns; independent inspection confirms the existing PDF remains a
 single legible page. The iterative goal remains active.
+
+Sync merge `39865be62a` incorporates immutable upstream `6c4a3b4391`,
+including its new native/HA proof work and placement of eleven research
+packets. All444 protected files from45 validated roots are byte-identical
+to the checked source commit `5187d9cb36`:439 project sources from the full
+cross-library import closure, three build pins and both equation artifacts.
+Mathlib remains at `81a5d257c8e410db227a6665ed08f64fea08e997` and tracked-clean.
+The upstream source changes lie outside that closure; their validation is
+preserved separately and is not added to this batch's102/56/217 counts.
+No additional Lean invocation is needed for unchanged checked sources and
+dependencies. The formerly incoming proof-deltas, Round6, positions/rank/
+rephase and Round7 packets are now placed as `zr`, `zs`, `zv` and `zz`;
+the adoption rows use those current locations. Historical raw-archive
+references above retain their exact Git pins and remain reproducible.
