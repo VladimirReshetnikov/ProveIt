@@ -29,10 +29,8 @@ theorem abs_coeff_linear_mul_le {m : ℕ} (w : Fin (m+1) → ℕ)
   calc
     |∑ i,(monomial (w i) (y i)*D).coeff n| ≤
         ∑ i,|(monomial (w i) (y i)*D).coeff n| := Finset.abs_sum_le_sum_abs _ _
-    _≤∑ i,|y i| * H := by
-      apply Finset.sum_le_sum
-      intro i _
-      exact abs_coeff_monomial_mul_le D H hH hD (w i) n (y i)
+    _≤∑ i,|y i| * H := Finset.sum_le_sum fun i _ =>
+      abs_coeff_monomial_mul_le D H hH hD (w i) n (y i)
     _=H*∑ i,|y i| := by rw [← Finset.sum_mul]; ring
 
 /-- Uniform coefficient bound for the complete split source polynomial. -/
@@ -89,8 +87,7 @@ theorem abs_coeff_bounded_nat_le_31 (w : Fin 31 → ℕ) (y : Fin 31 → ℕ)
     (hD0 : ∀ i,|D0.coeff i|≤H) (hD1 : ∀ i,|D1.coeff i|≤H)
     (hD2 : ∀ i,|D2.coeff i|≤H) {b : ℕ} (hb : 0<b) (hy : ∀ i,y i≤b) (n : ℕ) :
     |(product w (fun i => (y i:ℤ)) D0 D1 D2).coeff n|≤993*H*(b:ℤ)^2 := by
-  convert abs_coeff_bounded_nat_le (m:=30) w y D0 D1 D2 H hH hD0 hD1 hD2 hb hy n using 1
-  norm_num
+  simpa using abs_coeff_bounded_nat_le (m:=30) w y D0 D1 D2 H hH hD0 hD1 hD2 hb hy n
 
 /-- A possibly rounded-up power-of-two base gives a strict quarter-base bound. -/
 theorem quarter_base_bound_31 (w : Fin 31 → ℕ) (y : Fin 31 → ℕ)
@@ -102,8 +99,7 @@ theorem quarter_base_bound_31 (w : Fin 31 → ℕ) (y : Fin 31 → ℕ)
   have hc := abs_coeff_bounded_nat_le_31 w y D0 D1 D2 H hH.le hD0 hD1 hD2 hb hy n
   have hpos : 0<H*(b:ℤ)^2 := by positivity
   have hpow : (2:ℤ)^t=4*2^(t-2) := by
-    calc (2:ℤ)^t=2^((t-2)+2) := by congr 1; omega
-         _=4*2^(t-2) := by rw [pow_add]; ring
+    simpa [mul_comm] using (pow_sub_mul_pow (2:ℤ) ht).symm
   nlinarith only [hc,hpos,hbase,hpow]
 
 /-- The strict bound in the exact division notation of `SparseBorrowCarry`. -/
@@ -115,8 +111,7 @@ theorem quarter_base_div_bound_31 (w : Fin 31 → ℕ) (y : Fin 31 → ℕ)
     |(product w (fun i => (y i:ℤ)) D0 D1 D2).coeff n|<(2:ℤ)^t/4 := by
   have hc := quarter_base_bound_31 w y D0 D1 D2 hH hD0 hD1 hD2 hb ht hy hbase n
   have hpow : (2:ℤ)^t=4*2^(t-2) := by
-    calc (2:ℤ)^t=2^((t-2)+2) := by congr 1; omega
-         _=4*2^(t-2) := by rw [pow_add]; ring
+    simpa [mul_comm] using (pow_sub_mul_pow (2:ℤ) ht).symm
   omega
 
 end DiophantineConsistency.SplitCoefficientBounds

@@ -206,29 +206,6 @@ theorem half_base_bound_31 (w : Fin 32 → ℕ) (u : Fin 31 → ℕ) (p : ℤ[X]
     (hbase : (2 : ℤ) ^ t = 4096 * H * (b : ℤ) ^ 2) (n : ℕ) :
     |(encoded w (Fin.cases 1 (fun i => (u i : ℤ))) ^ 2 * p).coeff n| <
       2 ^ (t - 1) := by
-  have hsum : (∑ i, (u i : ℤ)) ≤ 31 * (b : ℤ) := by
-    calc
-      (∑ i, (u i : ℤ)) ≤ ∑ _i : Fin 31, (b : ℤ) := by
-        apply Finset.sum_le_sum
-        intro i _
-        exact_mod_cast (hu i).le
-      _ = _ := by simp
-  have hbZ : 1 ≤ (b : ℤ) := by exact_mod_cast hb
-  have hs0 : 0 ≤ 1 + ∑ i, (u i : ℤ) :=
-    add_nonneg (by decide) (Finset.sum_nonneg (fun i _ => Int.natCast_nonneg (u i)))
-  have hs : 1 + (∑ i, (u i : ℤ)) ≤ 32 * (b : ℤ) := by omega
-  have hsq : (1 + ∑ i, (u i : ℤ)) ^ 2 ≤ (32 * (b : ℤ)) ^ 2 :=
-    pow_le_pow_left₀ hs0 hs 2
-  have hc := (abs_coeff_padded_square_mul_le w u p H hH.le hp n).trans
-    (mul_le_mul_of_nonneg_left hsq hH.le)
-  have hb2 : 0 < (b : ℤ) ^ 2 := by positivity
-  have hgap : 2 * (H * (32 * (b : ℤ)) ^ 2) < 4096 * H * (b : ℤ) ^ 2 := by
-    nlinarith [mul_pos hH hb2]
-  have hpow : (2 : ℤ) ^ t = 2 * 2 ^ (t - 1) := by
-    rw [← pow_succ']
-    congr 1
-    omega
-  rw [← hbase, hpow] at hgap
-  linarith
+  exact half_base_bound w u p hH hp hb ht hu (by norm_num [hbase]) n
 
 end DiophantineConsistency.SelectiveCoefficientBounds
