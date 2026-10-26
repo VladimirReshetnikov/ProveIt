@@ -71,10 +71,8 @@ theorem run_map {R S : Type*} [CommRing R] [CommRing S]
   induction nodes generalizing values with
   | nil => rfl
   | cons n ns ih =>
-    simp only [run,Node.eval_map]
-    have he : values.map φ ++ [φ (n.eval p x values)] =
-        (values ++ [n.eval p x values]).map φ := by simp
-    rw [he,ih]
+    simpa only [run, List.map_append, List.map_singleton, Node.eval_map] using
+      ih (values ++ [n.eval p x values])
 
 /-- Total semantics use zero for invalid references; topology excludes them. -/
 def value {R : Type*} [CommRing R] (nodes : List (Node inputs fixed)) (output : ℕ)

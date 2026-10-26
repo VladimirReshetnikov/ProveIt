@@ -75,37 +75,8 @@ def parse (code : Nat) : Option Tree := decode code code
 @[simp] theorem parse_quote (t : Tree) : parse t.quote=some t :=
   decode_quote t t.quote (depth_le_quote t)
 
-theorem decoded_depth_le {fuel code : Nat} {t : Tree} (h : decode fuel code=some t) :
-    t.depth≤fuel := by
-  induction fuel generalizing code t with
-  | zero => simp [decode] at h
-  | succ fuel ih =>
-    cases code with
-    | zero => simp [decode] at h
-    | succ code =>
-      simp only [decode] at h
-      cases hp : (Nat.unpair code).1 with
-      | zero =>
-        simp only [hp] at h
-        cases h
-        simp [depth]
-      | succ left =>
-        simp only [hp] at h
-        cases ha : decode fuel left with
-        | none => simp [ha] at h
-        | some a =>
-          cases hb : decode fuel (Nat.unpair code).2 with
-          | none => simp [ha,hb] at h
-          | some b =>
-            simp only [ha,hb,Option.pure_def] at h
-            cases h
-            have h1 := ih ha
-            have h2 := ih hb
-            simp only [depth]
-            omega
-
-theorem quote_of_decode {fuel code : Nat} {t : Tree} (h : decode fuel code=some t) :
-    t.quote=code := by
+theorem decode_spec {fuel code : Nat} {t : Tree}
+    (h : decode fuel code = some t) : t.quote = code ∧ t.depth ≤ fuel := by
   induction fuel generalizing code t with
   | zero => simp [decode] at h
   | succ fuel ih =>
@@ -118,18 +89,28 @@ theorem quote_of_decode {fuel code : Nat} {t : Tree} (h : decode fuel code=some 
       | zero =>
         simp only [he] at h hp
         cases h
-        simp only [quote,hp]
+        exact ⟨by simp only [quote, hp], by simp [depth]⟩
       | succ left =>
         simp only [he] at h hp
         cases ha : decode fuel left with
         | none => simp [ha] at h
         | some a =>
           cases hb : decode fuel (Nat.unpair code).2 with
-          | none => simp [ha,hb] at h
+          | none => simp [ha, hb] at h
           | some b =>
-            simp only [ha,hb,Option.pure_def] at h
+            simp only [ha, hb, Option.pure_def] at h
             cases h
-            simp only [quote,ih ha,ih hb,hp]
+            obtain ⟨hqa, hda⟩ := ih ha
+            obtain ⟨hqb, hdb⟩ := ih hb
+            exact ⟨by simp only [quote, hqa, hqb, hp], by simp only [depth]; omega⟩
+
+theorem decoded_depth_le {fuel code : Nat} {t : Tree}
+    (h : decode fuel code = some t) : t.depth ≤ fuel :=
+  (decode_spec h).2
+
+theorem quote_of_decode {fuel code : Nat} {t : Tree}
+    (h : decode fuel code = some t) : t.quote = code :=
+  (decode_spec h).1
 
 theorem quote_injective : Function.Injective quote := by
   intro a b h

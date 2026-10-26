@@ -23,19 +23,18 @@ Packet names refer to the subdirectories of this directory.
 | shared signed-root recovery, `patches/main.patch` | m | `NearSquareFinalizer`, `MarginFinalizer` | adopted; both rebuilt modules, three direct clients, three focused checks and old/new axiom audits pass;46 net lines removed including both helpers and wrappers; all nonzero/separation premises retained |
 | reuse `nat_zero_or_succ`, `patches/new-simplifications.patch` | l | `ObjectAdditionCancellation`, `ObjectNaturalZero` | adopted; two rebuilt modules, two direct clients, two focused checks and theorem/inferred-instance axiom audit pass;42 lines removed including unused private induction scaffolding, while public formulas and arbitrary internal-omega semantics remain unchanged |
 | shared pairing certificate projections, `patches/main.patch` | m | `PairingRepresentation`, `QuadraticNatPairing`, `QuadraticTreeCodeGraphs` | adopted; three rebuilt modules, six direct clients, two focused checks, seven original-constructor `rfl` equalities and old/new axiom audits pass;27 net lines removed including both helper proofs; complete representation data unchanged |
+| `patches/native-coefficient-bounds.patch` (duplicates c `coefficient-refactoring`) | d | `NativeCoefficientBounds` | adopted as the complete127-line candidate; named module build, existing focused check, both native source/equation clients and all eight public axiom comparisons pass;552 lines removed. Local2M-heartbeat proof took160.69s and2139032KiB RSS; compiled object grew from1372672 to3686520 bytes. This is a source-maintenance tradeoff, not a speedup |
+| parent/tree decoder invariants, `annotated/proposed.patch` | n | `AnnotatedParents`, `AnnotatedProofCode` | adopted; five fresh builds, five existing focused checks and two axiom audits pass, with26 true controls;53 physical lines removed including `decode_spec`. Raw input/fuel and executable definitions are unchanged; `decoded_depth_le` now also uses standard `Classical.choice`, while checker-soundness axiom sets are unchanged |
+| `algebra_examples/ArithmeticDAG.patch`, `FirstPellCarrier.patch`, `Carrier66.patch` | e | `ArithmeticDAG`, `FirstPellCarrier`, `Carrier66` | adopted as proof-body changes; six builds including three missing prerequisites, three direct clients, five focused checks and final axiom audit pass;31 lines removed; evaluator data and all positivity/rank premises unchanged |
+| `checker_examples/standard_library_cleanup.patch`, `AnnotatedParents` hunk only | e | `AnnotatedParents` | adopted after the separate decoder refactor; module/client builds, existing focused check and baseline/final axiom comparison pass; two further lines removed by `Option.map_injective` |
 | scanner iteration lemmas (a §4, b, c, d, e) | a | `AnnotatedRenameScan`, `AnnotatedBoundScan`, `AnnotatedLineScan`, `AnnotatedContext` | new axiom-free module `NatIterate`; `scan_zero`, `scan_succ`, `scan_done` are one-line applications; rebuild queued |
 | one `axioms_of_zfc_model` (a §7, b) | a | `ObjectArithmetic`, `ObjectMultiplication` and 13 callers | the private copy in `ObjectArithmetic` is made public and the duplicate in `ObjectMultiplication` deleted; rebuild queued |
-| `algebra_examples/ArithmeticDAG.patch`, `FirstPellCarrier.patch` | e | `ArithmeticDAG`, `FirstPellCarrier` | applied; rebuild queued |
-| `checker_examples/standard_library_cleanup.patch`, `AnnotatedParents` hunk only | e | `AnnotatedParents` | applied (`Option.map_injective`); rebuild queued |
 
 ## Pending
 
 | Proposal | Packet | Target | Note |
 |---|---|---|---|
 | `patches/residual-sum.patch`, e `ShortSystem.patch` | a, e | `ShortSystem` | after the current `ShortSystem` dependents finish building |
-| `algebra_examples/Carrier66.patch` | e | `Carrier66` | after the `Carrier66Checks` build finishes |
-| `patches/native-coefficient-bounds.patch` (duplicates c `coefficient-refactoring`) | d | `NativeCoefficientBounds` | not integrated: maintained source is still the679-line original; d's complete127-line candidate compiled in the packet, with a local2M-heartbeat budget. A552-line reduction is available; fresh maintained module/client checks and elaboration-cost assessment remain necessary. Do not conflate h's distinct122-line/4M variant or its timings with d |
-| parent/tree decoder invariants, `annotated/proposed.patch` | n | `AnnotatedParents`, `AnnotatedProofCode` | uncompiled proposal; claimed54 nonblank declaration lines saved; check actual fuel and raw-input contracts |
 | guarded high-color fibers, `wang/proposals/boundary_fibers.patch` | o | `WangTiles942Boundary` | uncompiled proposal; claimed40 lines saved; retain high-color guard, initializer/reset colors and all seam tuples |
 
 ## Deferred or not adopted
@@ -57,6 +56,13 @@ The [26 October iteration review](../../reviews/lean-proof-simplification-202610
 records the adopted changes above, exact checking scope, authorship and review.
 The remaining queued rows retain the separate upstream session's pending
 validation status; this merge does not certify those proposed implementations.
+
+Commits `4de06108b3`, `2ed7cc3ebb`, `2924138249` and `4261a5e353` remove638
+physical lines across six modules (1909 to1271), bringing the reviewed series
+to2788 net lines removed. A separately checked147-line coefficient-proof
+prototype was not adopted: it took170.32s and produced a4953664-byte object,
+with longer source and a larger object than the adopted d candidate. These
+individual build timings are not controlled performance comparisons.
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
