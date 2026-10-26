@@ -100,6 +100,17 @@ The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
 preserves its bound tuple; [radix obstructions](research/radix-parity-independent/README.md)
 explain why direct46/45 substitutions need different proof interfaces.
 
+The [tile-biased single-clause family](research/tile-biased-single-clause-family/README.md)
+has two full independent ordinary reviews and
+[conditional root acceptance](reviews/tile-biased-family-composite2033-ROOT-conditional-acceptance.json).
+Fixed corrections to the third and fourth tile components permit count
+recovery before phase recovery, with a single clause at 1006 and a last
+product at 2011. The [49-bit, length-2033 controller note](research/tile-biased49-composite2033-controller/README.md)
+proves whole-modulus order 954, including the repeated factor in
+49*2033 = 7^2*19*107. Its new kernel residues and auxiliary-prime lift
+conditions remain unresolved. This is a conditional construction, with no
+accepted finite tuple or measured saving yet; the maintained page is unchanged.
+
 The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
 [grouped66 page](candidates/one-page-grouped66/equation.pdf) and
 [original66/157 page](candidates/one-page-fifteen66/equation.pdf) remain

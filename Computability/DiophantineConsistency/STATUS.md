@@ -60,6 +60,17 @@ its bound tuple. The [radix note](research/radix-parity-independent/README.md)
 and earlier [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
 remain scoped obstacles/tradeoffs, without a global lower-bound claim.
 
+The [tile-biased family](research/tile-biased-single-clause-family/README.md)
+now passes two full independent ordinary reviews, with
+[conditional root acceptance](reviews/tile-biased-family-composite2033-ROOT-conditional-acceptance.json).
+It places the sole clause at 1006 and last product at 2011. A separate
+[49/2033 reduction](research/tile-biased49-composite2033-controller/README.md)
+proves exact B-order 954 modulo the entire 7^2*19*107. Every new kernel-unit
+and auxiliary-prime lift condition is still open; a bounded finite check is
+being prepared. No successful tuple, measured saving or page replacement is
+claimed. The frozen family retains its15/66/157 front; any Carrier65
+composition needs its own explicit binding.
+
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 saves twenty operations and178 degree while adding four unknowns.
 Every predecessor page and its entire history remains available; Lean
