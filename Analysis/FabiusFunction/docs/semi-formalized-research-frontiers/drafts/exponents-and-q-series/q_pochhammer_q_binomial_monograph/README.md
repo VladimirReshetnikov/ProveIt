@@ -202,7 +202,8 @@ and log
 Both passed their recorded gates. The merged q-series source is newer than
 every retained receipt, so a fresh synchronized render is pending.
 
-The current source includes exhaustive crosswalks for `QPochhammerEntire`
+The source at that historical checkpoint includes exhaustive crosswalks for
+`QPochhammerEntire`
 (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two

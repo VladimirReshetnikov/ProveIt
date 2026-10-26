@@ -59,7 +59,7 @@ def generalizedNorlundKernel (α : A) : A⟦X⟧ :=
 /-- Order zero gives the unit kernel. -/
 @[simp] theorem generalizedNorlundKernel_zero :
     generalizedNorlundKernel (0 : A) = 1 := by
-  rw [generalizedNorlundKernel, zero_smul, subst_zero_eq_C_constantCoeff,
+  simp only [generalizedNorlundKernel, zero_smul, subst_zero_eq_C_constantCoeff,
     constantCoeff_exp, map_one]
 
 /-- Order one gives the original Bernoulli kernel. -/

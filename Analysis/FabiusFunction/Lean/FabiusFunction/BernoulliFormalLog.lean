@@ -130,8 +130,13 @@ variable {A D : Type*} [CommRing A] [Algebra ℚ A] [CommRing D] [Algebra ℚ D]
 The unit constant coefficient makes its defining substitution admissible. -/
 theorem map_logOf (f : A →+* D) {s : A⟦X⟧} (hs : constantCoeff s = 1) :
     (PowerSeries.logOf s).map f = PowerSeries.logOf (s.map f) := by
-  rw [PowerSeries.logOf_eq, PowerSeries.map_subst (hasSubst_sub_one hs),
-    PowerSeries.map_log, map_sub, map_one, ← PowerSeries.logOf_eq]
+  rw [PowerSeries.logOf_eq]
+  calc
+    ((log A).subst (s - 1)).map f =
+        ((log A).map f).subst ((s - 1).map f) :=
+      PowerSeries.map_subst (hasSubst_sub_one hs) (log A)
+    _ = PowerSeries.logOf (s.map f) := by
+      rw [PowerSeries.map_log, map_sub, map_one, ← PowerSeries.logOf_eq]
 
 /-- The Bernoulli kernel is preserved by coefficient homomorphisms between
 commutative rational algebras. -/

@@ -60,19 +60,19 @@ theorem stirlingFirst_eq_sum_powersetCard (n r : ℕ) (h : r ≤ n) :
 after passage to positive characteristic. -/
 theorem stirlingFirst_eq_esymm (n r : ℕ) (h : r ≤ n) :
     (Nat.stirlingFirst n (n - r) : R) =
-      ((Finset.range n).val.map (fun i => (i : R))).esymm r := by
+      ((Finset.range n).val.map (fun i : ℕ => (i : R))).esymm r := by
   rw [Finset.esymm_map_val]
   exact stirlingFirst_eq_sum_powersetCard n r h
 
 /-- The homogeneous first-kind formula remains valid when all variables are
 scaled, including a zero or nilpotent scale. -/
 theorem esymm_scaled_range (a : R) (n r : ℕ) (h : r ≤ n) :
-    ((Finset.range n).val.map (fun i => a * (i : R))).esymm r =
+    ((Finset.range n).val.map (fun i : ℕ => a * (i : R))).esymm r =
       a ^ r * (Nat.stirlingFirst n (n - r) : R) := by
   rw [stirlingFirst_eq_esymm n r h]
   simpa only [smul_eq_mul, Multiset.map_map, Function.comp_apply] using
     (Multiset.pow_smul_esymm a r
-      ((Finset.range n).val.map (fun i => (i : R)))).symm
+      ((Finset.range n).val.map (fun i : ℕ => (i : R)))).symm
 
 end
 
