@@ -140,6 +140,14 @@ improves both metrics of the preserved
 The71/128 and14/65/150 points remain separate tradeoffs. The decimal display
 is preserved, and HA proof-existence formalization remains open.
 
+The further [grouped-square variant](research/thirteen-grouped-squares96/README.md)
+gives **13 positive variables,77 operations and exact degree96**, at the same
+complete coefficients. Its identity witness map preserves every positive zero
+of the72/124 parent. Both fresh Lean leaves and the complete normal/optimized
+finite audit passed [independent root review](reviews/thirteen-grouped-squares96-root.md).
+The extra five operations lower degree by28; the earlier tradeoffs and displayed
+equation are preserved.
+
 The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 uses **47,313 raw fixed-integer bytes**, 10,812 below the preceding2471
 page. It fixes Start and sorts the other941 selectors by their distinct

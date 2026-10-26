@@ -956,6 +956,16 @@ These fresh leaves reuse accepted prerequisites; no new whole-closure,
 Lean exact-degree or HA proof-existence theorem is claimed. The72/124
 profile improves both metrics of73/126; the latter remains preserved.
 
+`ThirteenGroupedSquares96` composes a three-square residual presentation with
+LV72 at the exact current ports. It proves pointwise identical positive zero
+sets and the closed external ConZFC endpoint, using the actual parent norm
+theorem rather than assuming factor signs. Both leaves passed
+[independent root replay](reviews/thirteen-grouped-squares96-root.md), with nine
+standard-only reports against the accepted post-merge objects. Separate finite
+normal/optimized audits prove the complete77-operation/degree96 profile and
+reconstruct every coefficient. No fresh whole closure, Lean exact-degree or
+HA derivation is asserted by this packet.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the

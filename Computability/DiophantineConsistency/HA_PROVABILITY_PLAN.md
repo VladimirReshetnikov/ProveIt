@@ -52,6 +52,10 @@ also have checked entire-positive-zero maps and closed external ConZFC
 equivalences. Their [independent replay](reviews/thirteen-lv-carrier122-root.md)
 passed16 standard-only reports, with separate complete finite metric checks.
 Their HA proof-existence endpoints remain open alongside the maintained page.
+The grouped-square13/77/96 variant likewise has a checked external endpoint
+and exact positive identity map to LV72; its
+[root replay](reviews/thirteen-grouped-squares96-root.md) retains the separate
+finite metric and cached-prerequisite scopes. Its HA endpoint is also open.
 
 [ObjectCurrentEquation2011](Lean/DiophantineConsistency/ObjectCurrentEquation2011.lean)
 supplies a set-theory-language no-solution sentence with exact arbitrary-model
