@@ -1,0 +1,71 @@
+                                           A complete fifteen-variable consistency equation
+                                     Strictly positive integer unknowns; exact degree 157; a 66-operation evaluator.
+
+The only unknowns are                                                         An interval ending at −1 is empty. The table defines ti for 0 ≤ i ≤
+                                                                              941; all index ranges are fixed:
+               J, F, α, z, f, h, i, T, s, w, τ, η, ζ, y, γ ∈ Z>0 .
+                                                                                            index i             tile ti = (wi , ni , pi , si )
+All other symbols in the equation are polynomial abbreviations:                                0                (2, 435, 3, 1)
+                                                                                   j + 1 (j = 2q + b < 430)     ((1 − dj )r0,uj , θ(q, b), dj r1,uj , vj )
+                b = βJ, q = b + 1, C = q − F − α,                                  433 − 2a + b (a, b = 0, 1)   (0, 432a + b, 0, 432a + b)
+                                                                                          423+2rd,q +b
+             X = wq, Y = sq 3 , E = XY, k = η + ζ,                                       q∈Sd , d,b=0,1         (drd,q , b, (1 − d)rd,q , θ(q, b))
+                ℓ = EkY, c = kY + η, a = E + Y,                                    923 + 2a + b (a, b = 0, 1) (0, 432a + b, 0, 438)
+           H = 4a + 3, ∆ = a2 + H, D = X + ac + γH,                                           927               (2, 434, 2, 0)
+                                                                                              928               (3, 436, 4, 4)
+              R = [b(q − F ) + α](q 2 − 1) + (M + qN )J,
+                                                                                              929               (4, 436, 4, 0)
+                  V = f 2 (cT − R) − c, S = i∆c2 ,                                496 + t (t = 434, 435, 436) (1, 438, 1, t)
+                 P = τ 2 − ℓ(ℓ + k), Q = D2 − ∆c2 ,                               933 + 3a + b (a, b = 0, 1, 2) (a2 , 437, b, 437)
+             U = S 2 (V 2 − y 2 ) + y 2 , W = k − hE − R,
+           Z = (K + w)C + (q − F ) − zb, G = ∆f 2 − S 2 .                     A
+                                                                               closed     decoder for the 430 actions. Put digit(A, b, k) =
+                                                                               A/bk mod b, where a mod b = a − b ⌊a/b⌋. For 0 ≤ q < 215,
+                                                                                     
+
+The single equation is                                                        b = 0, 1, j = 2q + b:
+
+                          P Q U W Z G − ∆ = 0.                                                         mask = A mod 2636 ,
+                                                                                                 targets = A/2636 mod 21675 ,
+                                                                                                                     
+
+                                                                                                       moves = A/22311 ,
+                                                                                                                           
+The four fixed integers. Every index, set, sum, product and floor                                                              Xj−1
+below defines a constant, not another unknown. Put                                          νj = digit(mask, 2, j), σj =               νk ,
+                                                                                                                                  k=0
+                                                                                                                                 X    q−1
+                  ρ = 247 ,  B = ρ2963 ,        β = B − 1,                               mq = digit(mask, 2, 430 + q), δq =                 mk ,
+                                                                                                                                      k=0
+                             Xm−1 j                                                         ωq = 14 + mq (digit(moves, 16, δq ) − 14),
+                   g(m, x) =        x ,         Λ = ρ1956 .
+                                     j=0                                                        uj = νj (1 + σj ) + (1 − νj )
+                                                                                                       · digit(targets, 216, j − σj ),
+                                                                                         vj = digit(ωq , 2, 2b), dj = digit(ωq , 2, 2b + 1).
+               M = β − g(951, ρ)
+                   − ρ960 g(26, ρ) − ρ1005 ,                                  Empty sums are zero. Here (v0 , d0 , u0 ) = (1, 1, 1); the constructor
+               N = β + 4g(917, ρ) + (244 − 2)Λ                                tile uses this actual first target, including its state renaming.
+                   + ρ960 g(9, ρ) + ρ987 g(8, ρ) + ρ1005 ,                    The integer A in base 10. Concatenate these thirteen lines, from
+                                                                              top to bottom, to obtain its 781 decimal digits (there are no omitted
+               K = ρ18 + ρ1005 + ρ2972                                        digits):
+                   + ΛΦ(1/ρ),                                                 5860725087898678188912673742632546324025172298353855272995683176
+                                                                              4969949406333919315323872375782477466725463011528567718294055076
+where                                                                         3006124739855037353655204691391414186758883217097375044976429465
+                           X941                                               8270944142085505376842559029102693041085562540684690710604079067
+                 Φ(x) =              [1 + 210 (1 + wi + 28 ni                 3724763129630582855384181944414973901733570469173085418871671744
+                               i=0
+                           + 2 pi + 225 si )]xi
+                               17                                             2048170942517613524282407203789879020689779835988780400299936946
+                                                                              5274600673267211886931165288781352441481875991871486564767549564
+                           + 210 x969 (x9 + 217 )g(8, 2x)
+                                                                              1498891563641180775282772787179257559378852323557013970506009282
+                           + 218 x942 (x18 + 217 )g(9, 2x).                   7980034336115111037194604982010168556898406861821168844529953973
+                                                                              3329097089832109899184569780832475009429376795970989537956914018
+The rational intermediate in K cancels exactly; all four results are          6560751892408082293940602808596063442474573309002707517217784697
+positive integers.                                                            0890324537666784074933609456239656992860826945102893145422737549
+The 942 indexed fixed tiles. Use the actions uj , vj , dj decoded             3204418786549
+below. For d = 0, 1, let                                                      The ordinary complemented-color, native and Pell arguments give unsolv-
+                                                                              ability iff Con(ZFC). Native calibration and internal-ZFC formalization
+        θ(q, b) = 2q + b + 2, Sd = {uj : dj = d, 0 ≤ j < 430},                remain open in Lean. This page is a complete finite specification, not an
+                rd,q = 205 − 199d + |Sd ∩ {0, . . . , q − 1}|.                unsolvability proof.
+

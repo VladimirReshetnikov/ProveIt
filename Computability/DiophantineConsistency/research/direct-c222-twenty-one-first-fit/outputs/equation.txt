@@ -1,0 +1,92 @@
+                                                           A complete C222 Diophantine equation
+                                                    446 natural unknowns; degree 2,097,684. Unrendered layout plan.
+
+Unknowns and front.                         Every free coordinate is in N =            Only LC is used. The guarded branch retains both disequalities
+{0, 1, 2, . . .}:                                                                      c ̸= a, c ̸= b through its natural witness d and the printed G.
+                                                                                       The 21-coordinate power polynomial. Every letter here is lo-
+                  h, e, g, β, F, x, N, ℓ, z0 , zt , zB ,        (ξi )8i=0 ,            cal to its copy, independent of the front and all other copies:
+            (Di )3i=0 ,     (Pj )10
+                                 j=0 ,        (rj , sj , wj )10
+                                                             j=0 ,   (θj )17
+                                                                          j=0 .
+                                                                                                            θ = (Y, Z, X, U, S, R, a0 , y0 , f, d,
+Each θj is the 21-tuple below. Every other name is a polynomial                                       b+ , b− , s+ , s− , r+ , r− , x+ , x− , g, wn , wk ).
+abbreviation; all bound indices are local to their displayed fixed
+ranges.                                                                                For arguments (n, k, m) define only
+
+                            t = 16 + h,                                            y = F + 1 +A
+                                                                                              e, = qa =+22,+ g,          B = 1 + β,
+                                                                                                                                 V = Y 2 (d + 1),
+                                                                                                       0
+(C, a, b, c, d, S, T, u, v) = (1 + ξi )8i=0 ,                                                  B = 1 + 4Y (f + 1),                     τ = m + g + 1,      W = n + wn ,
+                          H = 2 + C + a + b + c + d + S + T + u + v.                                   2        2
+                                                                                       N (a, x, y) = x + y − 1 − a y .       2 2
+
+
+The whole numerical calculus. Define                                                   In particular Y is free. Let (R1 , . . . , R11 ) be exactly
+     I(a, b) = 2(a + b)(a + b + 1) + 4b,
+                                                                                                                              Y − k − y0 ,
+    M (a, b) = I(a, b) + 1,                               A(a, b) = I(a, b) + 2,
+    E(a, b) = I(a, b) + 3,                                  ν(a) = I(a, 1),                           N (A, X, Y ), N (A, U, V ), N (B, S, R),
+    X(a, b) = ν(A(a, ν(b))),                               Θa (z) = ν(A(a, z)).                     B + U b+ − A − U b− , S + U s+ − X − U s− ,
+                                                                                                             R + 4Y r+ − k − 4Y r− ,
+The first eight code polynomials are                                                                    X + Y n + τ x+ − Y A − m − τ x− ,
+                                                                                              2An − τ − n2 − 1, W − k − wk , N (W + 1, A, W Z) .
+                                                                                                                                                                  
+             c1 = X(a, E(a, b)),
+             c2 = I(A(a, I(b, c)), I(A(a, b), A(a, c))),                                                            P11
+             c3 = I(E(a, b), I(M (c, a), M (c, b))),                                   Set P(n, k, m; θ) =    i=1
+                                                                                                                  Ri2 . All private coordinates, including
+                                                                                       both signs of every quotient, are natural.
+             c4 = I(A(a, A(b, c)), A(b, A(a, c))),
+                                                                                       Every argument slot. The full ordered table is
+             c5 = I(E(c, a), I(M (c, b), M (a, b))),
+             c6 = I(X(a, A(a, b)), b),                                                            (ki )3i=0 = (t, t + 1, y + 1, x),
+             c7 = I(E(c, a), I(E(c, b), A(M (a, b), E(a, b)))),                                  (Uj )10      2
+                                                                                                      j=0 = (F + t, C, a, b, c, d, S, T, u, v, J),
+             c8 = I(I(I(c, d), a), I(I(a, c), I(b, c))).
+                                                                                                  (σj )10
+                                                                                                       j=0 = (0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 1),
+
+The entire ninth code is                                                                                   T = (2(t + 1), t, F ), (B, x, N ), (BH, x, q),
+                                                                                                                     (q, ki , Di )3i=0 , (q + 1, Uj , Pj )10
+                                                                                                                                                              
+              R(b, k, z) = A(b, I(z, Θb (I(z, ν(M (b, k)))))),                                                                                            j=0 .
+             Q(a, b, k) = A(k, I(M (k, a), M (k, b))),
+          C0 (a, b, k, z) = I(Q(a, b, k), R(b, k, z)),                                 For 0 ≤ j ≤ 17, write (nj , kj′ , mj ) = Tj in this order and pair it
+                                                                                       with θj . No variable exponent occurs.
+          C∗ (a, b, k, z) = A b, I(M (b, k),                                           The single equation.
+                                                                              
+                                        Θa (I(z, Θa (C0 (a, b, k, z))))) ,
+                                                                                                            17
+              V (a, b, c) = I(M (a, b), A(c, M (a, b))),                                                    X
+                                                                                                    Q=              P(nj , kj′ , mj ; θj )
+              K(a, b, c) = A(c, I(C∗ (a, b, c, c), ν(R(b, c, c)))),
+                                                                                                            j=0
+                       c9 = ν(I(V (a, b, c), K(a, b, c))).
+                                                                                                            + (x − F − 1 − (y + 1)z0 )2
+Evaluate every ci at (a, b, c, d), ignoring unused arguments. Put                                           + (x − 1 − (1 + (t + 1)y)zt )2
+               Wz = 1 + F z,                                                                                + (BzB − C − F 2 − 1)2 + (LC − N ℓ)2
+                       9
+                       X                                                                                    + (P0 − D0 (qw0 + B) − r0 )2
+                 J=             ci + a + b + I(a, b) + A(a, b) + 1,                                             10
+                                                                                                                X
+                          i=1                                                                               +         (Pj − Dσj N wj − rj )2
+                                   2            2              2 2
+                G = ((c − a) (c − b) − (d + 1) ) ,                                                              j=1
+
+                                        8                                                                       10
+                                                                                                                X
+                                       Y
+                H = (T − S)2                 (T Wci − S)2                                                   +         (Dσj − rj − sj − 1)2 = 0.
+                                       i=1                                                                      j=0
+
+                      · (T Wc9 − S)2 + G
+                                                      
+                                                                                       This prints the entire integer-coefficient polynomial: 224 squared
+                      · (T Wb − SWa WI(a,b) )2                                         residuals on 446 natural unknowns, of exact degree 2,097,684. For
+                      · (T WA(a,b) − SWb )2 ,                                          446 positive unknowns, replace every free z independently by pz −1,
+                                                                                       pz ≥ 1. Relative to the retained ordinary Pell and C222/ZF/ZFC
+                Li = H + (x − S − (1 + (i + 1)y)u)2                                    calibrations, absence of zeros is equivalent to syntactic Con(ZFC).
+                                + (x − T − (1 + (i + 2)y)v)2 .                         No page fit has been tested.
+

@@ -62,6 +62,15 @@ That shorter printed predecessor remains available. The
 four integers, every actual PDF digit, two visual inspections, fresh
 byte-identical rendering and the exact preceding record.
 
+An independent [decimal conversion checkpoint](research/decimal-seed-stage-A-run/README.md)
+verifies the preceding complete781-digit integer by a full forward and reverse
+conversion, including normal/optimized checks. The separately rendered
+[15-variable decimal/names page](candidates/one-page-decimal-names2963-page/README.md)
+passes two full source reviews and a complete independent visual/digit review.
+It is preserved as an alternative while the newer14-variable equation above
+remains the maintained display. All original source, output and review records
+are retained; the formatting work does not replace a newer mathematical result.
+
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
 proof, consistency decision or global minimum is claimed. Lean remains
@@ -369,14 +378,17 @@ within their explicit standard Pell-index and C222/ZF/ZFC foundations:
 The successor maps preserve every coordinate of each full zero in both
 directions. Retaining the independent Y coordinate avoids the degree increase
 of the smaller20-coordinate power graph. These are ordinary hand degree
-proofs; expanded support, height, operation counts and physical one-page fit
-remain unmeasured. The [complete446-variable TeX plan](research/direct-c222-twenty-one-page-plan/equation.tex)
-now has two full independent presentation reviews and [separate ROOT acceptance](reviews/direct-c222-twenty-one-page-plan-presentation-acceptance.json):
-it prints the entire accepted polynomial with every coefficient defined.
-Its proposed9-point two-column layout has not yet been rendered. The
+proofs; expanded support, height and operation counts remain unmeasured.
+The [complete446-variable equation](candidates/one-page-direct-c222-446/README.md)
+has an actual one-page [PDF](candidates/one-page-direct-c222-446/equation.pdf)
+and [TeX](candidates/one-page-direct-c222-446/equation.tex), with every coefficient
+defined and no packed machine seed. Its formula-preserving layout repair passed
+two full independent statics; ROOT and the [independent reviewer](reviews/direct-c222-twenty-one-fit-v2-visual-second-peer.md)
+opened the whole successful page and found no overlap or clipping. The original
+failed fit and all nineteen successful outputs remain preserved. The
 [original554-variable plan](research/direct-c222-one-page-template-page-plan/equation.tex)
-remains preserved. Neither has demonstrated a shorter complete page than the
-maintained15-positive/66-operation/degree157 display.
+is still available. This446-variable/degree2097684 equation is a separate
+tradeoff alongside the maintained14-positive/65-operation/degree150 display.
 Lean stays paused; substantial checked improvements update the maintained
 PDF and TeX together.
 

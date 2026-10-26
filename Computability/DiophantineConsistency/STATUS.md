@@ -369,14 +369,17 @@ within their explicit standard Pell-index and C222/ZF/ZFC foundations:
 The successor maps preserve every coordinate of each full zero in both
 directions. Retaining the independent Y coordinate avoids the degree increase
 of the smaller20-coordinate power graph. These are ordinary hand degree
-proofs; expanded support, height, operation counts and physical one-page fit
-remain unmeasured. The [complete446-variable TeX plan](research/direct-c222-twenty-one-page-plan/equation.tex)
-now has two full independent presentation reviews and [separate ROOT acceptance](reviews/direct-c222-twenty-one-page-plan-presentation-acceptance.json):
-it prints the entire accepted polynomial with every coefficient defined.
-Its proposed9-point two-column layout has not yet been rendered. The
+proofs; expanded support, height and operation counts remain unmeasured.
+The [complete446-variable equation](candidates/one-page-direct-c222-446/README.md)
+has an actual one-page [PDF](candidates/one-page-direct-c222-446/equation.pdf)
+and [TeX](candidates/one-page-direct-c222-446/equation.tex), with every coefficient
+defined and no packed machine seed. Its formula-preserving layout repair passed
+two full independent statics; ROOT and the [independent reviewer](reviews/direct-c222-twenty-one-fit-v2-visual-second-peer.md)
+opened the whole successful page and found no overlap or clipping. The original
+failed fit and all nineteen successful outputs remain preserved. The
 [original554-variable plan](research/direct-c222-one-page-template-page-plan/equation.tex)
-remains preserved. Neither has demonstrated a shorter complete page than the
-maintained15-positive/66-operation/degree157 display.
+is still available. This446-variable/degree2097684 equation is a separate
+tradeoff alongside the maintained14-positive/65-operation/degree150 display.
 Lean stays paused; substantial checked improvements update the maintained
 PDF and TeX together.
 
