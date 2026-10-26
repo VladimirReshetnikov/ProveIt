@@ -60,6 +60,11 @@ The first Soundness development attempt needed `rfl` after an option
 case split because Lean had already rewritten the existential target;
 the final source passed without warnings or weakened premises.
 
+The [independent current-polynomial review](current-soundness2011-lean-peer.md)
+also passed isolated fresh main/check replay, including exact port binding,
+derived nonzero moduli, the original marked assignment and all three
+thirteen-variable restoration maps. Its34 pinned inputs were unchanged.
+
 Existing imported objects were reused. This receipt does not claim a
 fresh rebuild of the full arithmetic/machine closure or of incoming
 upstream proof simplifications. Their earlier receipts remain scoped to

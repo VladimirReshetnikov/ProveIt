@@ -56,6 +56,9 @@ an actual blank-run halt t<N from the marked word alone, and
 unsolvability of the actual maintained polynomial. All three accepted
 13-variable forms inherit that implication at the exact fixed ports.
 See the [source binding and fresh checks](reviews/current-soundness2011-lean-root.md).
+The [independent current-polynomial soundness review](reviews/current-soundness2011-lean-peer.md)
+also passed isolated fresh main/check builds, retaining every literal port
+and all three thirteen-variable restoration paths.
 Remaining work includes the converse canonical tiling and controller
 construction, other equation frontiers and internal-ZFC derivation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
@@ -579,6 +582,14 @@ binding from an Allowed matching plane with periods(w,−1),(0,H).
 No coprimality, unique Start, machine run or quotient factorization is
 assumed. See the [root review and four fresh checks](reviews/wang-tiles942-closing-helical-lean-root.md).
 A complete cofinal trace plane and controller converse remain open.
+
+`WangTiles942HelicalExtension` now extends any actual twisted canonical
+band by Euclidean signed coordinates, deriving global matching and both
+helical periods. Its composition with the quotient retains every band
+tile in the actual marked word. See the [root source review and fresh
+checks](reviews/wang-tiles942-helical-extension-lean-root.md). The actual
+computation band remains to be constructed; none is assumed by the final
+consistency soundness theorem.
 
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
