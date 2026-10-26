@@ -1,0 +1,42 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ShortSystem.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ShortSystem.lean
+@@ -1,3 +1,5 @@
++import Mathlib.Algebra.Order.BigOperators.Ring.Finset
++import Mathlib.Algebra.BigOperators.Fin
+ import DiophantineConsistency.ShortCircuit
+ import DiophantineConsistency.ConsecutivePell
+ import Mathlib.Algebra.MvPolynomial.CommRing
+@@ -63,29 +65,10 @@
+ theorem residualSum_zero_iff (n0 n1 na ns nk nt : ℤ) :
+     residualSum n0 n1 na ns nk nt = 0 ↔
+       n0 = 1 ∧ n1 = 1 ∧ na = 1 ∧ ns = 1 ∧ nk * nt = 1 := by
+-  unfold residualSum
+-  constructor
+-  · intro h
+-    have h0 : (n0 - 1) ^ 2 = 0 := by
+-      nlinarith [sq_nonneg (n1 - 1), sq_nonneg (na - 1), sq_nonneg (ns - 1),
+-        sq_nonneg (nk * nt - 1), sq_nonneg (n0 - 1)]
+-    have h1 : (n1 - 1) ^ 2 = 0 := by
+-      nlinarith [sq_nonneg (n0 - 1), sq_nonneg (na - 1), sq_nonneg (ns - 1),
+-        sq_nonneg (nk * nt - 1), sq_nonneg (n1 - 1)]
+-    have ha : (na - 1) ^ 2 = 0 := by
+-      nlinarith [sq_nonneg (n0 - 1), sq_nonneg (n1 - 1), sq_nonneg (ns - 1),
+-        sq_nonneg (nk * nt - 1), sq_nonneg (na - 1)]
+-    have hs : (ns - 1) ^ 2 = 0 := by
+-      nlinarith [sq_nonneg (n0 - 1), sq_nonneg (n1 - 1), sq_nonneg (na - 1),
+-        sq_nonneg (nk * nt - 1), sq_nonneg (ns - 1)]
+-    have hkt : (nk * nt - 1) ^ 2 = 0 := by
+-      nlinarith [sq_nonneg (n0 - 1), sq_nonneg (n1 - 1), sq_nonneg (na - 1),
+-        sq_nonneg (ns - 1), sq_nonneg (nk * nt - 1)]
+-    exact ⟨sub_eq_zero.mp (sq_eq_zero_iff.mp h0), sub_eq_zero.mp (sq_eq_zero_iff.mp h1),
+-      sub_eq_zero.mp (sq_eq_zero_iff.mp ha), sub_eq_zero.mp (sq_eq_zero_iff.mp hs),
+-      sub_eq_zero.mp (sq_eq_zero_iff.mp hkt)⟩
+-  · rintro ⟨rfl, rfl, rfl, rfl, hkt⟩
+-    simp only [hkt, sub_self, zero_pow (by decide : 2 ≠ 0), add_zero]
++  simpa [residualSum, Fin.sum_univ_succ, Fin.forall_fin_succ, pow_two, sub_eq_zero,
++    add_assoc] using
++    (Finset.sum_mul_self_eq_zero_iff (Finset.univ : Finset (Fin 5))
++      ![n0 - 1, n1 - 1, na - 1, ns - 1, nk * nt - 1])
+ 
+ variable {R S : Type*} [CommRing R] [CommRing S]
+ 

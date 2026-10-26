@@ -1,0 +1,20 @@
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{p{0.34\textwidth}Y}
+\toprule
+Artifact & Validation scope\\
+\midrule
+PR congruence patch & Three complete modified files compiled; separate program-value equality checks passed.\\
+List lookup replacements & Exact generic helper types compiled; five-file patch applies cleanly; complete client rebuild pending.\\
+Assignment transport & Generic lemma and complete modified Representation module compiled; 25 net lines saved.\\
+Scanner and Boolean helpers & Core-only Lean examples compiled; full scanner migrations are proposals.\\
+Digit/carry scalar helpers & Six arithmetic theorems compiled; integration into current window modules remains a proposal.\\
+Circuit candidate & All 1,192 signatures and literal power labels statically checked; full Lean integration not run.\\
+Circuit invariant & Generic invariant and same-statement uniqueness/degree clients compiled; nonnegativity extension remains proposed.\\
+Five-residual sum of squares & Same-statement replacement compiled against the original definition; full patched module not rebuilt.\\
+Remaining integration proposals & Conditional padding, modulus reuse, full compiler SOS and commutative node relation are source-only.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Ten demonstration files and four complete modified source modules passed the recorded checks. The scalar and vector recursor replacements add standard extensionality dependencies relative to their original proofs: the scalar changes from no axioms to \code{propext, Quot.sound}; the vector adds \code{Quot.sound} to its existing \code{propext}. The optimizer's footprint is unchanged. The separate \code{rec_congr} alternative is axiom-free, but its caller adaptation is not part of the checked patch.

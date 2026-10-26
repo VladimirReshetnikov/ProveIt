@@ -1,0 +1,117 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofChecker.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofChecker.lean
+@@ -175,16 +175,8 @@
+   line.rule.side && decide (line.parents.map (fun i => seen[i]?)=line.rule.premises.map some)
+ 
+ private theorem mem_of_lookup {seen : List Judgment} {i : Nat} {j : Judgment}
+-    (h : seen[i]?=some j) : j∈seen := by
+-  induction seen generalizing i with
+-  | nil => simp at h
+-  | cons a seen ih =>
+-    cases i with
+-    | zero =>
+-      simp only [List.getElem?_cons_zero,Option.some.injEq] at h
+-      subst j
+-      exact List.mem_cons_self
+-    | succ i => exact List.mem_cons_of_mem a (ih h)
++    (h : seen[i]?=some j) : j∈seen :=
++  List.mem_of_getElem? h
+ 
+ theorem Line.sound (line : Line) (seen : List Judgment)
+     (hseen : ∀ j ∈ seen,j.Provable) (h : line.valid seen=true) : line.rule.output.Provable := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRename.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRename.lean
+@@ -108,13 +108,8 @@
+   ∃ f : Form,r.input=formCode f ∧ r.output=formCode (renamed mode k r.depth f)
+ 
+ private theorem lookup_mem {α : Type} {xs : List α} {i : Nat} {a : α}
+-    (h : xs[i]?=some a) : a∈xs := by
+-  induction xs generalizing i with
+-  | nil => simp at h
+-  | cons x xs ih =>
+-    cases i with
+-    | zero => simp only [List.getElem?_cons_zero,Option.some.injEq] at h; subst x; simp
+-    | succ i => exact List.mem_cons_of_mem x (ih h)
++    (h : xs[i]?=some a) : a∈xs :=
++  List.mem_of_getElem? h
+ 
+ theorem binary_sound (mode k : Nat) (r : Row) (seen : List Row)
+     (hs : ∀ a∈seen,a.Good mode k) (ht : r.tag=3 ∨ r.tag=4 ∨ r.tag=5)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRuleSide.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRuleSide.lean
+@@ -16,23 +16,12 @@
+     (Nat.pair r.context (Nat.pair membershipIndex r.a)) else 1
+ 
+ private theorem lookup_mem {G : List Form} {index : Nat} {f : Form}
+-    (h : G[index]?=some f) : f∈G := by
+-  induction G generalizing index with
+-  | nil => simp at h
+-  | cons a G ih =>
+-    cases index with
+-    | zero => simp only [List.getElem?_cons_zero,Option.some.injEq] at h; subst a; simp
+-    | succ index => exact List.mem_cons_of_mem a (ih h)
++    (h : G[index]?=some f) : f∈G :=
++  List.mem_of_getElem? h
+ 
+ private theorem exists_lookup (G : List Form) (f : Form) (h : f∈G) :
+-    ∃ index : Nat,G[index]?=some f := by
+-  induction G with
+-  | nil => simp at h
+-  | cons a G ih =>
+-    rcases List.mem_cons.mp h with rfl | hf
+-    · exact ⟨0,rfl⟩
+-    · obtain ⟨index,hi⟩ := ih hf
+-      exact ⟨index+1,by simpa only [List.getElem?_cons_succ] using hi⟩
++    ∃ index : Nat,G[index]?=some f :=
++  List.getElem?_of_mem h
+ 
+ private theorem exists_reference (G : List Form) (a : Form) :
+     (∃ index,AnnotatedContextLookup.referenceValue
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedAssumption.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedAssumption.lean
+@@ -38,23 +38,12 @@
+   simp only [inputCode,value,decodeRow_rowCode]
+ 
+ private theorem lookup_mem {G : List Form} {index : Nat} {f : Form}
+-    (h : G[index]?=some f) : f∈G := by
+-  induction G generalizing index with
+-  | nil => simp at h
+-  | cons a G ih =>
+-    cases index with
+-    | zero => simp only [List.getElem?_cons_zero,Option.some.injEq] at h; subst a; simp
+-    | succ index => exact List.mem_cons_of_mem a (ih h)
++    (h : G[index]?=some f) : f∈G :=
++  List.mem_of_getElem? h
+ 
+ private theorem exists_lookup (G : List Form) (f : Form) (h : f∈G) :
+-    ∃ index : Nat,G[index]?=some f := by
+-  induction G with
+-  | nil => simp at h
+-  | cons a G ih =>
+-    rcases List.mem_cons.mp h with rfl | hf
+-    · exact ⟨0,rfl⟩
+-    · obtain ⟨index,hi⟩ := ih hf
+-      exact ⟨index+1,by simpa only [List.getElem?_cons_succ] using hi⟩
++    ∃ index : Nat,G[index]?=some f :=
++  List.getElem?_of_mem h
+ 
+ /-- Raw accepted codes determine an actual context and a member formula. -/
+ theorem program_sound (context conclusion shifted evidence index : Nat)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedBound.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedBound.lean
+@@ -48,13 +48,8 @@
+ def Good (r : Row) : Prop := ∃ f : Form,r.input=formCode f ∧ r.output=bound f
+ 
+ private theorem lookup_mem {α : Type} {xs : List α} {i : Nat} {a : α}
+-    (h : xs[i]?=some a) : a∈xs := by
+-  induction xs generalizing i with
+-  | nil => simp at h
+-  | cons x xs ih =>
+-    cases i with
+-    | zero => simp only [List.getElem?_cons_zero,Option.some.injEq] at h; subst x; simp
+-    | succ i => exact List.mem_cons_of_mem x (ih h)
++    (h : xs[i]?=some a) : a∈xs :=
++  List.mem_of_getElem? h
+ 
+ theorem binary_sound (r : Row) (seen : List Row)
+     (hs : ∀ a∈seen,Good a) (ht : r.tag=3 ∨ r.tag=4 ∨ r.tag=5)

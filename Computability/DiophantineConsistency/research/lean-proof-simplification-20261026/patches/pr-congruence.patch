@@ -1,0 +1,67 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ScalarPRCode.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ScalarPRCode.lean
+@@ -66,18 +66,7 @@
+       n.rec (f z) (fun i acc => g (Nat.pair z (Nat.pair i acc))))) := by
+   refine ⟨.prec p.val q.val, ?_⟩
+   intro packed
+-  have h (n : ℕ) :
+-      Nat.rec (motive := fun _ => ℕ) (p.val.eval packed.unpair.1)
+-          (fun i acc => q.val.eval (Nat.pair packed.unpair.1 (Nat.pair i acc))) n =
+-        Nat.rec (motive := fun _ => ℕ) (f packed.unpair.1)
+-          (fun i acc => g (Nat.pair packed.unpair.1 (Nat.pair i acc))) n := by
+-    induction n with
+-    | zero => exact p.property _
+-    | succ n ih =>
+-        change q.val.eval (Nat.pair packed.unpair.1 (Nat.pair n _)) =
+-          g (Nat.pair packed.unpair.1 (Nat.pair n _))
+-        rw [q.property, ih]
+-  exact h packed.unpair.2
++  simp only [eval, Nat.unpaired, p.property, q.property]
+ 
+ def ofEq {f g : ℕ → ℕ} (p : Realizes f) (h : ∀ n, f n = g n) : Realizes g :=
+   ⟨p.val, fun n => (p.property n).trans (h n)⟩
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRCode.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRCode.lean
+@@ -91,17 +91,7 @@
+       v.head.rec (f v.tail) (fun i acc => g (i ::ᵥ acc ::ᵥ v.tail))) := by
+   refine ⟨.prec p.val q.val, ?_⟩
+   intro v
+-  have h (k : ℕ) :
+-      Nat.rec (motive := fun _ => ℕ) (p.val.eval v.tail)
+-          (fun i acc => q.val.eval (i ::ᵥ acc ::ᵥ v.tail)) k =
+-        Nat.rec (motive := fun _ => ℕ) (f v.tail)
+-          (fun i acc => g (i ::ᵥ acc ::ᵥ v.tail)) k := by
+-    induction k with
+-    | zero => exact p.property _
+-    | succ k ih =>
+-        change q.val.eval (k ::ᵥ _ ::ᵥ v.tail) = g (k ::ᵥ _ ::ᵥ v.tail)
+-        rw [q.property, ih]
+-  exact h v.head
++  simp only [eval, p.property, q.property]
+ 
+ /-- Keep program data and transport its specification using a supplied proof. -/
+ def ofEq {n : ℕ} {f g : List.Vector ℕ n → ℕ} (p : Realizes f)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ScalarPROptimizer.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ScalarPROptimizer.lean
+@@ -117,20 +117,7 @@
+   | pair f g hf hg => simp only [optimize, eval_smartPair, eval, hf, hg]
+   | comp f g hf hg => simp only [optimize, eval_smartComp, eval, hf, hg]
+   | prec f g hf hg =>
+-      rw [optimize, eval_smartPrec]
+-      simp only [eval]
+-      have h (k : ℕ) :
+-          Nat.rec (motive := fun _ => ℕ) (f.optimize.eval n.unpair.1)
+-              (fun i acc => g.optimize.eval (Nat.pair n.unpair.1 (Nat.pair i acc))) k =
+-          Nat.rec (motive := fun _ => ℕ) (f.eval n.unpair.1)
+-              (fun i acc => g.eval (Nat.pair n.unpair.1 (Nat.pair i acc))) k := by
+-        induction k with
+-        | zero => exact hf _
+-        | succ k ih =>
+-            change g.optimize.eval (Nat.pair n.unpair.1 (Nat.pair k _)) =
+-              g.eval (Nat.pair n.unpair.1 (Nat.pair k _))
+-            rw [hg, ih]
+-      exact h _
++      simp only [optimize, eval_smartPrec, eval, hf, hg]
+ 
+ /-- The optimizer never increases the finite program tree. -/
+ theorem nodeCount_optimize_le (c : ScalarPRCode) : c.optimize.nodeCount ≤ c.nodeCount := by
