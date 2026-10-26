@@ -3276,22 +3276,43 @@ ordinary acceptance](reviews/compact66-complemented-two-anchor-radix47-mersenne8
 Its own H2 residues and controller-prime conditions remain UNKNOWN. The new
 bounded probe and CODE/TEX draft were never executed; they are superseded
 for immediate page work by the independently constructed L7691 tuple
-and its accepted one-anchor L7309 successor. No finite certificate
+and its accepted7309,6007 and current4177 successors. No finite certificate
 transfers between these distinct specializations.
 The earlier +1/spacing11 tuple likewise retains its distinct open conditions.
 
 The [seven-archive intake](research/incoming-7a8da41437-codefree-intake/README.md)
 retains reported/unverified quartic and ten-variable metrics. Those archives
 are now placed as sources149--155; their original Git associations persist.
-The fresh [literal direct-C222 research](research/direct-c222-one-page-template/README.md)
+The separate [early two-anchor/composite6445 proof](research/compact66-complemented-two-anchor-radix47-block6445/README.md)
+has two FULL independent nonauthor reviews and [conditional ROOT acceptance](reviews/compact66-two-anchor47-block6445-ordinary-acceptance.json).
+Its new units and controller prime remain unknown. The later verified4177
+construction superseded it before any new probe files or runtime captures
+were created; the [disposition](reviews/compact66-block6445-superseded-root-disposition.json)
+preserves that distinction. Its frozen sources, first reviews and conditional
+theorem remain research history.
+
+The [literal direct-C222 research](research/direct-c222-one-page-template/README.md)
 prints every constructor, eighteen power requests and their full polynomial
-certificate. Its proposed554-natural-variable/332-residual equation removes
-the machine seed and controller assumptions, trading variables and degree
-for a potentially shorter specification. The [independent ordinary review](reviews/direct-c222-indexed-template-independent.md)
-passes within its explicit inherited Pell/C222 calibration and establishes
-exact degree2097684. Complete circuit size and physical one-page fit remain
-unmeasured; no printed-size win is claimed. Lean stays paused; substantial
-checked improvements update the maintained PDF and TeX together.
+certificate without a machine seed, hidden coefficient table or finite
+controller premise. All three complete families now have TWO FULL independent
+nonauthor reviews and [separate ROOT ordinary acceptance](reviews/direct-c222-three-families-ordinary-acceptance.json),
+within their explicit standard Pell-index and C222/ZF/ZFC foundations:
+
+| Printed family | Natural unknowns (or uniformly translated positive unknowns) | Squared residuals | Exact total degree |
+| --- | ---: | ---: | ---: |
+| [Original27](research/direct-c222-one-page-template/README.md) | 554 | 332 | 2097684 |
+| [Successor20](research/direct-c222-twenty-power-template/README.md) | 428 | 206 | 4194312 |
+| [Successor21](research/direct-c222-twenty-one-power-template/README.md) | 446 | 224 | 2097684 |
+
+The successor maps preserve every coordinate of each full zero in both
+directions. Retaining the independent Y coordinate avoids the degree increase
+of the smaller20-coordinate power graph. These are ordinary hand degree
+proofs; expanded support, height, operation counts and physical one-page fit
+remain unmeasured. The original [complete TeX page plan](research/direct-c222-one-page-template-page-plan/equation.tex)
+is unrendered. None of these tradeoffs has demonstrated a shorter complete
+page than the maintained15-positive/66-operation/degree157 display.
+Lean stays paused; substantial checked improvements update the maintained
+PDF and TeX together.
 
 The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
 and [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)
