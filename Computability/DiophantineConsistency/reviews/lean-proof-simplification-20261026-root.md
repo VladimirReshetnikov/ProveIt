@@ -464,14 +464,118 @@ were retired during placement, so current adoption references now use the
 placed h/l/m/n/o/p directories. The equation artifacts remain unchanged and
 the iterative goal stays active.
 
-The next-target audit found a stale upstream adoption row:
+The historical next-target audit, before `4de06108b3`, found a stale upstream adoption row:
 `NativeCoefficientBounds` is still the679-line original, byte-identical to
 packet d's baseline (`82f03eecd673b5f72a02d1b2c27ea194f46f94b6bcb445cfd26073d9593bf365`).
 `intake_e13` read the whole maintained source, d's full candidate and the
 coefficient/mask contracts. The127-line d candidate was compiled in the packet
 and preserves all eight public headers and data; its integration and fresh
 dependent checks remain pending. The adoption row now states the actual
-maintained status. Its local2M-heartbeat proof and recorded128.05-second
+maintained status at that checkpoint. Its local2M-heartbeat proof and recorded128.05-second
 packet run should not be confused with h's distinct122-line/4M alternative
 or h's single-host24.42/111.37-second before/after measurements. A source
 maintenance reduction is available; no speed improvement is claimed.
+
+## Shared coefficient-envelope proof
+
+`intake_e13` subsequently ported packet d's complete127-line candidate,
+adopted as `4de06108b3`. The module decreases from679 to127 lines, removing552
+lines. The envelope definition, all coefficient/mask/support constants, all
+eight public theorem signatures and the four nonnegativity assumptions are
+unchanged. One generic proof handles the22 row cases with the same seven
+scalar inequalities and a local2000000-heartbeat allowance. ROOT read the
+complete changed proof and data contracts.
+
+The named module build, existing `NativeCoefficientBounds` focused check,
+and fresh `NativeNineSource52` / `NativeNineEquation52` client builds all
+returned zero. Baseline/final audits of all eight public theorems returned
+zero with identical axiom sets: `published_height_eq` uses `propext`, and
+the other seven use the standard three. No cache gap or proof repair arose.
+The module build took160.69 seconds and peaked at2139032KiB RSS; its olean
+grew from1372672 to3686520 bytes. The adopted source SHA256 is
+`159c50406a6a4745121f8d1aff2dce77ff459a8e6c187d95516d81effae159fc`.
+This reduces maintained source duplication while increasing compiled size;
+no elaboration-speed improvement is claimed.
+
+A separate `/tmp` prototype proved the repeated scalar bounds once and
+reused them across rows. Its147-line source passed one kernel build in170.32
+seconds, peaking at1974072KiB RSS and producing a4953664-byte olean. An earlier
+invocation was rejected by the source-root check before elaboration. The
+prototype is not adopted: it has longer source and a larger proof object,
+with no demonstrated checking advantage. Its observed lower RSS and longer
+build time are individual measurements, not controlled comparisons.
+Maintained source/cache bytes
+were unchanged during this experiment; no further prototype build followed.
+
+## Shared raw-parent and tree-decoder invariants
+
+`v_finite_full_static` implemented packet n as `2ed7cc3ebb`. `check_raw_iff`
+reconstructs an arbitrary raw parent code inside `Prop` with the existing
+total decoder, then reuses `check_lists` at the original fuel. The shared
+`decode_spec` proves both requoting and the depth bound; the two old results
+are projections. No raw-input, fuel or well-formedness premise is added.
+All32 executable definitions, tree data, imports and old public statements
+are unchanged. The two files decrease from165/461 to131/442 lines, removing53
+physical lines (54 nonblank lines), including the new invariant.
+
+All five fresh source/olean builds, five existing focused checks and two
+axiom audits returned zero; all26 existing runtime controls are true.
+Malformed-input, rejection and insufficient-fuel behavior are retained.
+The shared proof causes `decoded_depth_le` to inherit standard
+`Classical.choice` through `Nat.pair_unpair`; its former
+`[propext, Quot.sound]` set becomes the standard three. The other12 audited
+old results are unchanged, including the choice-free standard axiom sets of
+`check_sound` and `checkWithFuel_sound`. ROOT read the complete changed proofs
+and reviewed the independent exact-final source/decoder-contract review.
+
+## Evaluator transport, carrier wrappers and Option injectivity
+
+ROOT applied packet e's proof-body cleanups as
+`2924138249`. `ArithmeticDAG.run_map` uses its induction hypothesis on the
+same appended buffer; `first_norm_facts_int` casts the whole gap disjunction;
+`Carrier66` simplifies canonical zero and infers retained coordinates in the
+positive drop/restore proofs. The `n`, `h` and `tau` branches remain
+explicit. The three modules decrease from604 to573 lines, removing31 lines;
+all arithmetic definitions, evaluators, coordinate maps, signatures and
+positivity/rank assumptions remain exact.
+
+All15 final calls returned zero: six module builds including the three
+previously uncached `Carrier65`, `CarrierRankBounds` and `Carrier65Witness`
+prerequisites; `ArithmeticDAGSemantics`, `ArithmeticDAGPowers` and
+`Carrier66Source` clients; five existing focused checks; and the final axiom
+audit. The earlier baseline audit and final evaluator reports agree; all
+printed axiom sets are standard, with `canonical_zero` using only `propext`.
+Controls retain invalid references, both coordinate maps and the excluded
+rank-one Pell witness. ROOT read all changes and the independent final review.
+
+ROOT then adopted the remaining packet-e parent lookup hunk as `4261a5e353`:
+`Option.map_injective judgmentCode_injective` replaces the repeated Option
+case split. This removes two more lines, taking `AnnotatedParents` from131
+to129. The named module and `AnnotatedLine` client rebuilds, existing
+`AnnotatedParents` check and axiom comparison all returned zero; the
+`lookup_code_maps_iff` baseline/final report is byte-identical. No import,
+definition, premise or executable checker value changes.
+
+Together these four commits remove638 lines across six modules, from1909
+to1271. The reviewed series now removes2788 net Lean lines. ROOT's ordered
+header comparison confirms all145 old public headers are unchanged,
+including attributed and equation-style declarations; `decode_spec` is the
+sole added public declaration. The source commits and reported compiler
+observations were reviewed for this documentation update; no new build or
+project script was run to prepare it. Other queued proposals remain
+uncertified at their separately recorded scope.
+
+`alternate_encoding_research` independently reviewed the complete final
+coefficient, decoder and three small algebra/carrier sources and their
+library contracts, returning PASS on the exact final source hashes. ROOT
+implemented and checked the later two-line Option cleanup separately.
+
+ROOT also freshly rebuilt the unchanged maintained decimal equation in
+`/tmp/diophantine-decimal-page-check.FRoZyK`: the one-page153046-byte PDF is
+byte-identical, with no overfull/underfull diagnostics, and was visually
+inspected. Its715 printed decimal digits and fourteen distinct unsubscripted
+unknowns (`J,F,α,z,f,i,T,s,w,n,η,ζ,y,γ`) satisfy the latest format
+request. TeX/PDF SHA256s remain
+`a48ac1f5bc498bfdbf300c7050332ecaa28af1fc43f27d86b0879a79bd38714e` /
+`417c2fa109cacf99d0e83af35d06cbdc8fed1179054d7245e07f3e51ebfff978`.
+No equation edit was needed or made.

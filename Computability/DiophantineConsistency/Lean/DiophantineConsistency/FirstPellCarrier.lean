@@ -71,10 +71,7 @@ theorem first_norm_facts_int {E Y tau k : ℤ} (hE : 0 < E) (hY : 0 < Y)
       linarith only [hnorm]
     exact_mod_cast he
   obtain ⟨htrace, hkt, hgap⟩ := first_norm_facts hE' hY' hk' hn
-  refine ⟨htrace, by exact_mod_cast hkt, ?_⟩
-  rcases hgap with htwo | hlarge
-  · exact Or.inl (by exact_mod_cast htwo)
-  · exact Or.inr (by exact_mod_cast hlarge)
+  exact ⟨htrace, by exact_mod_cast hkt, by exact_mod_cast hgap⟩
 
 /-- Every positive new carrier satisfying the first norm restores a
 strictly positive omitted quotient `h`; its trace is also positive.

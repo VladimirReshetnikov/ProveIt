@@ -64,12 +64,13 @@ external consistency equivalence for the actual finite marked language.
 Its reverse construction works at every independently sufficiently large
 width and height; `WangTiles942BandMarker` derives unique Start in the
 same concrete quotient. See the [native completeness review](reviews/wang-tiles942-native-completeness-root.md).
-The local Boolean cells now assemble into an actual cyclic source word,
-and the literal kernel admits bounded normalization before a positive
-strict transport representative is supplied. These construction steps
-do not yet establish every high-mask or copy condition. Remaining work
-includes reverse mask conditions, the composite rank controller and
-positive arithmetic witnesses, other equation
+The actual marked word now constructs the cyclic source, bounded carries,
+the complete low and high scalar masks, positive alpha and z, strong slack,
+and the exact unit transport factor. No desired mask, carry or strict F
+is supplied. The literal kernel residues are also proved. Remaining work
+includes the composite rank controller, safe dummy mutations and the
+rank-dependent temporal multiplier, the remaining positive Pell/source
+witnesses, other equation
 frontiers and internal-ZFC derivation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
@@ -743,6 +744,34 @@ and [physical-order peer replay](reviews/wang-tiles942-physical-order-peer.md)
 record46 standard-axiom audits, the full data binding and exact remaining
 scope. Padding and origin masks remain needed for whole high-mask acceptance;
 the physical cache alone does not discharge the K residues or controller.
+
+`CurrentKernelResidues2011` now discharges all three literal K residue
+premises:26 modulo47,1995 modulo2011 and114787 modulo120199. Its actual
+H residues29/674/36379 are unconditional. The whole semiring identity
+retains Start,941 other selectors,34 controls and all three bare terms;
+177 short checked blocks evaluate the proved physical reindexing. See the
+[root review](reviews/current-kernel-residues2011-root.md) and
+[independent isolated replay](reviews/current-kernel-residues2011-peer.md).
+These finite results do not yet construct the actual power orbit or controller.
+
+`CurrentWordOrigin2011` derives both cell-boundary carries and the exact
+shifted Start digit, using temporal matching to pass the exceptional
+global mask3 without unique Start. `CurrentWordPadding2011` proves all916
+padding masks from the full reflected residue and actual carry equations.
+`CurrentWordHighMask2011` exhausts every field of every canonical cell
+and packs the actual scalar highPort*J−1 mask for the same normalized word.
+Its endpoint constructs the carries and positive F<q/radix from MarkedWord
+and Boolean dummy choices alone. `CurrentWordScalarWitness2011` separately
+constructs positive alpha and z, balance, strong slack, signed source
+recovery and the exact printed transport factor1, together with the full
+low mask. These are partial native/scalar witnesses, not all31 source
+coordinates or a positive polynomial zero. See the [root review and six
+fresh checks](reviews/current-native-mask-construction-lean-root.md),
+[origin peer replay](reviews/current-word-origin2011-lean-peer.md) and
+[complete high-mask peer replay](reviews/current-word-high-mask2011-lean-peer.md).
+The next required bridge makes the printed rank force the same temporal
+rotation through safe dummy choices and then constructs the remaining
+positive Pell witnesses. Internal-ZFC derivation remains open.
 
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
