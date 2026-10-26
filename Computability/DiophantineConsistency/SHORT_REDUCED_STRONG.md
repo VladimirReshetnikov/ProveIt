@@ -91,8 +91,9 @@ python3 Computability/DiophantineConsistency/tools/build_reduced_strong.py
 python3 Computability/DiophantineConsistency/tools/audit_reduced_strong.py
 ```
 
-The generator emits the JSON and literal Lean/degree certificates only in
-this new module. The independent stdlib audit checks all operands,
+The generator emits the JSON and the literal Lean evaluator only in this
+new module. The degree bound is proved by the `total_degree_bound` tactic
+after one ring identity for the cancelling strong coefficient. The independent stdlib audit checks all operands,
 coordinate and coefficient bindings, source hashes, every gate's
 liveness, the operation count and exact leading form. Its saved ledger is
 [`circuits/p76_sos.audit.json`](circuits/p76_sos.audit.json).

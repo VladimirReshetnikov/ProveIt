@@ -19,6 +19,6 @@ def render():
 if __name__=='__main__':
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--check',action='store_true');a=ap.parse_args()
  p=ROOT/'Lean/DiophantineConsistency/GapCircuitSteps66.lean';s=render()
- if a.check:g.require(p.read_text()==s,'generated local steps differ')
- else:p.write_text(s)
+ if a.check:g.require(p.read_text(encoding='utf-8')==s,'generated local steps differ')
+ else:p.write_text(s,encoding='utf-8',newline='\n')
  print(json.dumps({'status':'PASS'if a.check else'GENERATED','parent':g.PINS['natural'],'equations':len(nodes),'powers':sum(e!=0 for e in labels)-1,'base':base},sort_keys=True))

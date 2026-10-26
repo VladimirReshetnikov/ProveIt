@@ -89,6 +89,6 @@ private theorem natural_power (p : Fin 12 → R) (x : Fin 9 → R)
 if __name__=='__main__':
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--check',action='store_true');a=ap.parse_args()
  p=ROOT/'Lean/DiophantineConsistency/SplitCircuitSteps59.lean';text=render()
- if a.check:g.require(p.read_text()==text,'generated local equations differ')
- else:p.write_text(text)
+ if a.check:g.require(p.read_text(encoding='utf-8')==text,'generated local equations differ')
+ else:p.write_text(text,encoding='utf-8',newline='\n')
  print(json.dumps({'status':'PASS'if a.check else'GENERATED','parent':g.PINS['natural'],'equations':len(nodes),'powers':sum(e!=0 for e in labels)-1},sort_keys=True))
