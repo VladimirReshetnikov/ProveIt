@@ -847,6 +847,23 @@ internal witnesses. The [next-bridge audit](research/current-equivalence-next-br
 records that separate obligation; its arithmetic-composition status predates
 this final checkpoint. Decimal notation and distinct unknown names are retained.
 
+`ObjectCurrentEquation2011` now supplies the literal current expression,
+proves equality to the entire maintained polynomial, and gives the actual
+closed sentence for its positive-domain unsolvability. P(x+1) is used on
+natural variables; its external inverse and every internal positive
+predecessor are checked. Generic split-natural syntax induction avoids
+expanding the enormous specialized tree while preserving every signed
+coefficient. The exact sentence semantics covers all internal naturals
+of an arbitrary model, including nonstandard tuples. See its
+[author record](reviews/object-current-equation2011-author.md) and
+[independent fresh root main/check replay](reviews/object-current-equation2011-root.md),
+with ten standard-only reports. Six post-merge object-language prerequisites
+were freshly built by the author and reused by root; old native objects
+remain explicitly pinned with two current-source dependency gaps. The
+separate source-authenticated closure refresh addresses those gaps.
+The encoded iff between this sentence and sealed internal consistency
+remains OPEN; constructing the sentence is not that calibration proof.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
