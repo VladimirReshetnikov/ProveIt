@@ -51,50 +51,16 @@ theorem check_raw_iff (fuel : Nat) (history expected : List Nat) (parents : Nat)
     check fuel (listCode history) (listCode expected) parents=1 ↔
       ∃ indices : List Nat,parents=listCode indices ∧
         indices.map (fun i => history[i]?)=expected.map some := by
-  induction expected generalizing fuel parents with
-  | nil =>
-    rw [show listCode ([] : List Nat)=0 from rfl,check_nil]
-    constructor
-    · intro h
-      exact ⟨[],h,rfl⟩
-    · rintro ⟨indices,hi,hm⟩
-      have hn : indices=[] := List.map_eq_nil_iff.mp hm
-      simpa only [hn,listCode] using hi
-  | cons e es ih =>
-    cases fuel with
-    | zero => simp at hf
-    | succ fuel =>
-      have hff : es.length≤fuel := by
-        simpa only [List.length_cons,Nat.succ_le_succ_iff] using hf
-      cases parents with
-      | zero =>
-        constructor
-        · simp [check,listCode]
-        · rintro ⟨indices,hi,hm⟩
-          cases indices with
-          | nil => simp at hm
-          | cons p ps => simp [listCode] at hi
-      | succ raw =>
-        have hs : check (fuel+1) (listCode history) (listCode (e::es)) (raw+1)=
-            referenceCheck (Nat.pair (listCode history) (Nat.pair raw.unpair.1 e)) *
-              check fuel (listCode history) (listCode es) raw.unpair.2 := by
-          simp [check,listCode]
-        rw [hs,AnnotatedSchemaMaps.mul_eq_one_nat,referenceCheck_listCode,
-          ih fuel raw.unpair.2 hff]
-        constructor
-        · rintro ⟨hp,indices,hi,hm⟩
-          refine ⟨raw.unpair.1::indices,?_,?_⟩
-          · simp only [listCode,←hi,Nat.pair_unpair]
-          · simp only [List.map_cons,hp,hm]
-        · rintro ⟨indices,hi,hm⟩
-          cases indices with
-          | nil => simp [listCode] at hi
-          | cons p ps =>
-            have he : raw=Nat.pair p (listCode ps) := Nat.add_right_cancel hi
-            simp only [List.map_cons,List.cons.injEq] at hm
-            refine ⟨?_,ps,?_,hm.2⟩
-            · simpa only [he,Nat.unpair_pair] using hm.1
-            · simp only [he,Nat.unpair_pair]
+  constructor
+  · intro h
+    obtain ⟨rows, hr⟩ :=
+      AnnotatedRenameScan.decodeTable_total parents parents (Nat.le_refl _)
+    have he : AnnotatedCodeArithmetic.listCode (rows.map AnnotatedRename.rowCode) = parents :=
+      AnnotatedRenameScan.tableCode_of_decode hr
+    refine ⟨rows.map AnnotatedRename.rowCode, he.symm, ?_⟩
+    exact (check_lists fuel history expected _ hf).mp (by simpa only [he] using h)
+  · rintro ⟨indices, rfl, h⟩
+    exact (check_lists fuel history expected indices hf).mpr h
 
 attribute [local irreducible] check
 
