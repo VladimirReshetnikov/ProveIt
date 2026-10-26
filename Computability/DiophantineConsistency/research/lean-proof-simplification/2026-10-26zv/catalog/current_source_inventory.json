@@ -1,0 +1,779 @@
+[
+  {
+    "path": "Computability/DiophantineConsistency/LEAN_EQUIVALENCE_PLAN.md",
+    "git_blob": "a1da220aabc6e82f0a25189dce47f0fdb0308a60",
+    "sha256": "9c6e21e982515f79364313e23193496863c1b9524242b78a169840419182481c",
+    "lines": 879,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency.lean",
+    "git_blob": "3da07800c4281df51c93fcafad08c5d1a61aecf5",
+    "sha256": "57e529a74ab377106c6e656048a6ec8b7de70fa6a99f735bb63c7b6e0442f16f",
+    "lines": 358,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerPositions2011.lean",
+    "git_blob": "779f72b283b44a1947f9083b9f887dbc7cb97b41",
+    "sha256": "aab00b74d13e24bb78dda62c5c5a5fa55990f414821fef7b56d02c8fee675acf",
+    "lines": 178,
+    "declarations": [
+      {
+        "line": 13,
+        "header": "def position (k : \u2115) (j : ZMod (auxiliary^k)) : \u2115 :="
+      },
+      {
+        "line": 16,
+        "header": "def cell (k : \u2115) (j : ZMod (auxiliary^k)) : ZMod (auxiliary^(k+1)) :="
+      },
+      {
+        "line": 19,
+        "header": "theorem position_pos (k : \u2115) (j : ZMod (auxiliary^k)) : 0 < position k j := by"
+      },
+      {
+        "line": 24,
+        "header": "theorem position_budget (k : \u2115) (j : ZMod (auxiliary^k)) :"
+      },
+      {
+        "line": 33,
+        "header": "theorem position_max (k : \u2115) (j : ZMod (auxiliary^k)) :"
+      },
+      {
+        "line": 38,
+        "header": "theorem position_next_lt (k : \u2115) (j : ZMod (auxiliary^k)) :"
+      },
+      {
+        "line": 45,
+        "header": "theorem position_lt (k : \u2115) (j : ZMod (auxiliary^k)) :"
+      },
+      {
+        "line": 50,
+        "header": "theorem stride_lt_orbit {rw k : \u2115} (hrw : rw < k) : auxiliary^rw < auxiliary^k :="
+      },
+      {
+        "line": 53,
+        "header": "theorem position_stride_lt {rw k : \u2115} (hrw : rw < k) (j : ZMod (auxiliary^k)) :"
+      },
+      {
+        "line": 60,
+        "header": "theorem optional_next_lt (k : \u2115) : 3+1 < auxiliary^(k+1) := by"
+      },
+      {
+        "line": 67,
+        "header": "theorem optional_lt (k : \u2115) : 3 < auxiliary^(k+1) := by"
+      },
+      {
+        "line": 71,
+        "header": "theorem optional_stride_lt {rw k : \u2115} (hrw : rw < k) :"
+      },
+      {
+        "line": 79,
+        "header": "theorem position_injective (k : \u2115) : Function.Injective (position k) := by"
+      },
+      {
+        "line": 86,
+        "header": "theorem position_ne_three (k : \u2115) (j : ZMod (auxiliary^k)) : position k j \u2260 3 := by"
+      },
+      {
+        "line": 95,
+        "header": "theorem cell_val (k : \u2115) (j : ZMod (auxiliary^k)) : (cell k j).val = position k j :="
+      },
+      {
+        "line": 98,
+        "header": "theorem cell_injective (k : \u2115) : Function.Injective (cell k) := by"
+      },
+      {
+        "line": 103,
+        "header": "theorem cell_ne_three (k : \u2115) (j : ZMod (auxiliary^k)) : cell k j \u2260 3 := by"
+      },
+      {
+        "line": 112,
+        "header": "def support (k : \u2115) (s : Finset (ZMod (auxiliary^k))) (\u03b5 : \u2115) : Finset \u2115 :="
+      },
+      {
+        "line": 115,
+        "header": "theorem three_not_mem_image (k : \u2115) (s : Finset (ZMod (auxiliary^k))) :"
+      },
+      {
+        "line": 121,
+        "header": "theorem support_card (k : \u2115) (s : Finset (ZMod (auxiliary^k)))"
+      },
+      {
+        "line": 130,
+        "header": "theorem support_mem (k : \u2115) (s : Finset (ZMod (auxiliary^k))) (\u03b5 n : \u2115) :"
+      },
+      {
+        "line": 134,
+        "header": "theorem support_basic (k : \u2115) (s : Finset (ZMod (auxiliary^k))) (\u03b5 n : \u2115)"
+      },
+      {
+        "line": 142,
+        "header": "theorem support_safe {rw k : \u2115} (hrw : rw < k)"
+      },
+      {
+        "line": 151,
+        "header": "def cyclicSupport (k : \u2115) (s : Finset (ZMod (auxiliary^k))) (\u03b5 : \u2115) :"
+      },
+      {
+        "line": 155,
+        "header": "theorem support_cast_injective (k : \u2115) (s : Finset (ZMod (auxiliary^k))) (\u03b5 : \u2115) :"
+      },
+      {
+        "line": 163,
+        "header": "theorem cyclicSupport_card (k : \u2115) (s : Finset (ZMod (auxiliary^k)))"
+      },
+      {
+        "line": 169,
+        "header": "theorem cyclicSupport_safe {rw k : \u2115} (hrw : rw < k)"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerPositions2011Checks.lean",
+    "git_blob": "524be356f15f9505a3aab685832c4f73ec4f1a35",
+    "sha256": "7723e5c1bd82e7711aa47930c219ff967ae3e0de8e9b180db85aa431c55f84ea",
+    "lines": 48,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentDummySafety2011.lean",
+    "git_blob": "682d07cfe3cb1cf79db277e491e7a569119a1505",
+    "sha256": "31f92f372076071c75ece964cb418c118fa051694057556c004d74a7353e7c00",
+    "lines": 213,
+    "declarations": [
+      {
+        "line": 22,
+        "header": "theorem kernel_exponent_le (t : CurrentKernel2011.Term) :"
+      },
+      {
+        "line": 29,
+        "header": "private theorem weighted_powers_le {\u03b1 : Type*} [Fintype \u03b1]"
+      },
+      {
+        "line": 38,
+        "header": "theorem kernel_upper_bound : CurrentKernel2011.K < radix^2022 := by"
+      },
+      {
+        "line": 51,
+        "header": "theorem displacement_power (s : \u2115) : 2^(displacement s) = radix^(2011*s) := by"
+      },
+      {
+        "line": 55,
+        "header": "theorem dummyIncrement_power {N : \u2115} (j : ZMod N) :"
+      },
+      {
+        "line": 59,
+        "header": "theorem temporal_dummy_power {N : \u2115} (s : \u2115) (j : ZMod N) :"
+      },
+      {
+        "line": 65,
+        "header": "theorem kernel_dummy_bound {N : \u2115} (j : ZMod N) :"
+      },
+      {
+        "line": 76,
+        "header": "theorem safe_exponent_bounds {N : \u2115} (s : \u2115) (j : ZMod N)"
+      },
+      {
+        "line": 84,
+        "header": "theorem safe_increment_bound {N : \u2115} (s : \u2115) (j : ZMod N)"
+      },
+      {
+        "line": 110,
+        "header": "theorem safe_increment_div_bound {N : \u2115} (s : \u2115) (j : ZMod N)"
+      },
+      {
+        "line": 121,
+        "header": "private theorem nonwrap_of_short {\u03c1 m F \u03b4 : \u2115} (h\u03c1 : 2 \u2264 \u03c1) (hm : 2 \u2264 m)"
+      },
+      {
+        "line": 139,
+        "header": "theorem normalized_nonwrap_of_safe (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+      },
+      {
+        "line": 154,
+        "header": "theorem safe_normalized_increment (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+      },
+      {
+        "line": 169,
+        "header": "theorem exists_safe_normalized_increment (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+      },
+      {
+        "line": 192,
+        "header": "theorem safe_rank_decrement (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentDummySafety2011Checks.lean",
+    "git_blob": "8ae457024237808f7aeda080b567f78e192e078c",
+    "sha256": "0ff01ecb9c436f6f7043449c666d2473687725067e9aa5bd7729af39a6f7efe7",
+    "lines": 81,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPackingRank2011.lean",
+    "git_blob": "d71fff2ced7817e3d3278bbdb3724a48f9e2e22a",
+    "sha256": "614f47e52f31dfc199f98387e5c720f1ae51fb0725ce8d9f21223b540a30c546",
+    "lines": 138,
+    "declarations": [
+      {
+        "line": 16,
+        "header": "theorem q_binary (N : \u2115) : q N = 2^(width*N) := by"
+      },
+      {
+        "line": 23,
+        "header": "def rank (N C F : \u2115) : \u2124 :="
+      },
+      {
+        "line": 27,
+        "header": "def fourBlocks (N C F : \u2115) : \u2115 :="
+      },
+      {
+        "line": 33,
+        "header": "theorem repeated_mask_bounds :"
+      },
+      {
+        "line": 41,
+        "header": "theorem repeated_mask_population :"
+      },
+      {
+        "line": 51,
+        "header": "theorem fourBlocks_cast (C F : \u2115) (hC : 0<C) (hCF : C+F<q N) :"
+      },
+      {
+        "line": 80,
+        "header": "theorem fourBlocks_ge_cube (C F : \u2115) (hC : 0<C) (hCF : C+F<q N) :"
+      },
+      {
+        "line": 88,
+        "header": "theorem rank_gt_twice_window (C F : \u2115) (hC : 0<C) (hCF : C+F<q N) :"
+      },
+      {
+        "line": 102,
+        "header": "theorem fourBlocks_population (C F : \u2115) (hC : 0<C) (hCF : C+F<q N)"
+      },
+      {
+        "line": 123,
+        "header": "theorem packing_rank_population (a : ZMod N \u2192 Fin 942) (dummy : ZMod N \u2192 \u2115)"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPackingRank2011Checks.lean",
+    "git_blob": "73c44e67b2d20bdfe429ed000144c5714c50c6b4",
+    "sha256": "ba9e6e57d6a608b25064c1adea6dda5dc7d30bc5c958f8b363688d32348e7e42",
+    "lines": 49,
+    "declarations": [
+      {
+        "line": 20,
+        "header": "private theorem one_lt_q_one : 1 < q 1 := by"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordRephase2011.lean",
+    "git_blob": "8e9d639eb91c399bff13cec90cc528d97dae26f7",
+    "sha256": "7a1df92104c40f502cc7b62fb1ac04327ce5c842be95172a5483d511a0b99332",
+    "lines": 122,
+    "declarations": [
+      {
+        "line": 23,
+        "header": "theorem normalization_of_rotation_eq {n : \u2115} [NeZero n]"
+      },
+      {
+        "line": 52,
+        "header": "theorem physical_shift_eq (s t : \u2115) (hst : (s : ZMod N) = (t : ZMod N)) :"
+      },
+      {
+        "line": 60,
+        "header": "theorem constructedWord_eq (a : ZMod N \u2192 Fin 942) (dummy : ZMod N \u2192 \u2115)"
+      },
+      {
+        "line": 67,
+        "header": "theorem rotation_eq (c : ZMod (N*2011) \u2192 \u2115) (hc : \u2200 i, c i \u2264 1)"
+      },
+      {
+        "line": 77,
+        "header": "theorem normalization_rephase (a : ZMod N \u2192 Fin 942) (dummy : ZMod N \u2192 \u2115)"
+      },
+      {
+        "line": 89,
+        "header": "theorem markedWord_rephase (a : ZMod N \u2192 Fin 942) (s t : \u2115)"
+      },
+      {
+        "line": 98,
+        "header": "theorem marked_packing_rephase (a : ZMod N \u2192 Fin 942) (dummy : ZMod N \u2192 \u2115)"
+      },
+      {
+        "line": 115,
+        "header": "theorem packing_rephase (a : ZMod N \u2192 Fin 942) (dummy : ZMod N \u2192 \u2115)"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordRephase2011Checks.lean",
+    "git_blob": "758ca2379f8eb565147b5a222fcd81a1cb05f11d",
+    "sha256": "698241ca903127bd4d84bd3a855b007058d76613169b4f4e8a26d5f81a37c5d7",
+    "lines": 80,
+    "declarations": [
+      {
+        "line": 45,
+        "header": "private def originBit (i : ZMod (2*2011)) : \u2115 := if i = 0 then 1 else 0"
+      },
+      {
+        "line": 46,
+        "header": "private theorem originBit_boolean (i : ZMod (2*2011)) : originBit i \u2264 1 := by"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeCyclicRotation.lean",
+    "git_blob": "d393766e1f4fc63c86fcdb2aec011b02dbc0ff08",
+    "sha256": "c99b77ade816ff64c0870899bd11b405220a36bb80f9b6fa7243a0d2f81e57a6",
+    "lines": 159,
+    "declarations": [
+      {
+        "line": 16,
+        "header": "def rotate (c : ZMod n \u2192 \u2115) (t k : ZMod n) : \u2115 := c (k - t)"
+      },
+      {
+        "line": 18,
+        "header": "theorem word_rotate {\u03c1 : \u2115} (h\u03c1 : 1 \u2264 \u03c1) (c : ZMod n \u2192 \u2115) (t : ZMod n) :"
+      },
+      {
+        "line": 26,
+        "header": "def shiftDigits (\u03c1 s : \u2115) (c : ZMod n \u2192 \u2115) (k : ZMod n) : \u2115 :="
+      },
+      {
+        "line": 29,
+        "header": "theorem word_mul (\u03c1 s : \u2115) (c : ZMod n \u2192 \u2115) :"
+      },
+      {
+        "line": 33,
+        "header": "theorem word_shiftDigits {\u03c1 s : \u2115} (h\u03c1 : 1 \u2264 \u03c1) (c : ZMod n \u2192 \u2115) :"
+      },
+      {
+        "line": 55,
+        "header": "def binaryRotation (v W : \u2115) (c : ZMod n \u2192 \u2115) : ZMod n \u2192 \u2115 :="
+      },
+      {
+        "line": 58,
+        "header": "theorem word_binaryRotation (v W : \u2115) (c : ZMod n \u2192 \u2115) :"
+      },
+      {
+        "line": 76,
+        "header": "theorem shiftDigits_of_small {\u03c1 s : \u2115} (c : ZMod n \u2192 \u2115)"
+      },
+      {
+        "line": 83,
+        "header": "theorem shiftDigits_half_bound {s : \u2115} (hs : 0 < s) (c : ZMod n \u2192 \u2115)"
+      },
+      {
+        "line": 102,
+        "header": "theorem binaryRotation_bound_89 (W : \u2115) (c : ZMod n \u2192 \u2115) (hc : \u2200 i, c i \u2264 3)"
+      },
+      {
+        "line": 125,
+        "header": "theorem binaryRotation_even_89 (W : \u2115) (c : ZMod n \u2192 \u2115) (hc : \u2200 i, c i \u2264 3)"
+      },
+      {
+        "line": 143,
+        "header": "theorem shiftDigits_half_parity_89 (c : ZMod n \u2192 \u2115) (hc : \u2200 i, c i \u2264 3)"
+      },
+      {
+        "line": 151,
+        "header": "theorem binaryRotation_half_parity_89 (W : \u2115) (c : ZMod n \u2192 \u2115)"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePackingPopulation.lean",
+    "git_blob": "d86e94f290cd26966407e0350bdabf4919c47886",
+    "sha256": "bc4526d0e9f267df6d027b6f7ec38e5374ecc4f1627d556f4cffd41b0f1cd3ac",
+    "lines": 57,
+    "declarations": [
+      {
+        "line": 12,
+        "header": "theorem disjoint_add_lt {u A M : \u2115} (hA : A < 2^u) (hM : M < 2^u)"
+      },
+      {
+        "line": 20,
+        "header": "theorem four_block_exact {u A B C : \u2115} (D : \u2115)"
+      },
+      {
+        "line": 31,
+        "header": "theorem mask_population {u A F M H : \u2115}"
+      },
+      {
+        "line": 48,
+        "header": "theorem calibrated_population {u A F M H : \u2115}"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePackingPopulationChecks.lean",
+    "git_blob": "f7d0bc704130d92acdc3ce401f5b22c7ba638297",
+    "sha256": "731d76f53e21c2ac58117ac0bf2eb8a1c77b1d26cfe5bb643d3433ad90a278d3",
+    "lines": 32,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellPower.lean",
+    "git_blob": "aef13769f3036dd7364b9130a561762a10c51fb1",
+    "sha256": "0023e5b08860b86b147833810af60a138adfdae6bf9663a7e0c163eb6b9f3489",
+    "lines": 163,
+    "declarations": [
+      {
+        "line": 17,
+        "header": "theorem lower_key {X Y : \u2115} (hX : 1 \u2264 X) (hY : 1 \u2264 Y) :"
+      },
+      {
+        "line": 24,
+        "header": "theorem doubled_ratio_lower {X Y r k c a R : \u2115}"
+      },
+      {
+        "line": 37,
+        "header": "theorem power_lt_twice_Y {X Y r k c a R \u03b7 \u03b6 : \u2115}"
+      },
+      {
+        "line": 59,
+        "header": "theorem sixteen_pow_bound {r : \u2115} (hr : 2 \u2264 r) :"
+      },
+      {
+        "line": 71,
+        "header": "theorem two_pow_rank_lt_Y {X Y r R : \u2115} (hX : 16 \u2264 X) (hr : 2 \u2264 r)"
+      },
+      {
+        "line": 81,
+        "header": "theorem power_of_main_congruence {X Y a c D \u03b3 R : \u2115}"
+      },
+      {
+        "line": 108,
+        "header": "theorem source_X_ge_sixteen (ports : Fin 4 \u2192 \u2124) (h\u03b2 : 15 \u2264 ports 0)"
+      },
+      {
+        "line": 128,
+        "header": "theorem source_main_root_formula (ports : Fin 4 \u2192 \u2124)"
+      },
+      {
+        "line": 142,
+        "header": "theorem source_X_eq_two_pow_rank (ports : Fin 4 \u2192 \u2124) (hports : PortBox ports)"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean",
+    "git_blob": "c4c1ee4fa5601bfc93a7a772df05f8614c39bc61",
+    "sha256": "8fc2fb01654786bf8d7a9e104e84593dc43f74f73de53862ff411433fb482814",
+    "lines": 210,
+    "declarations": [
+      {
+        "line": 18,
+        "header": "theorem index_residues {A c f I J p m y u : \u2115}"
+      },
+      {
+        "line": 103,
+        "header": "theorem signed_index_residues {A c f I J p m y : \u2115} {V : \u2124}"
+      },
+      {
+        "line": 130,
+        "header": "theorem eq_of_residues {c J p : \u2115} (hp : 0 < p) (hJ : 0 < J)"
+      },
+      {
+        "line": 144,
+        "header": "theorem source_index {A c f I J p m y : \u2115} {V j o : \u2124}"
+      },
+      {
+        "line": 164,
+        "header": "theorem source_index_of_strong {A c f i J p y : \u2115} {V j o : \u2124}"
+      },
+      {
+        "line": 199,
+        "header": "theorem quotient_dvd {c f o J : \u2124}"
+      },
+      {
+        "line": 206,
+        "header": "theorem quotient_identity {c f o J T : \u2124} (hT : c * T = o + J * f) :"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/RefinedPair.lean",
+    "git_blob": "c7987e114303d7463fbd31cbdfa584c3d696c5ba",
+    "sha256": "c06b1328baf3edb891ea3c92eda644e4bf4b13d535725b08a2dd5c4ea9ad1c36",
+    "lines": 86,
+    "declarations": [
+      {
+        "line": 23,
+        "header": "def value {R : Type*} [Add R] [Sub R] [Mul R] [Pow R \u2115]"
+      },
+      {
+        "line": 31,
+        "header": "private def pairSigns : (Fin 2 \u2192 Bool) \u2243 Bool \u00d7 Bool where"
+      },
+      {
+        "line": 37,
+        "header": "private theorem prod_signs {S : Type*} [CommMonoid S] (f : (Fin 2 \u2192 Bool) \u2192 S) :"
+      },
+      {
+        "line": 51,
+        "header": "theorem radicalProduct_eq (V r : Fin 2 \u2192 R) (n B C D : R) :"
+      },
+      {
+        "line": 63,
+        "header": "theorem core_eq : RefinedRelationCombiningPolynomial.core 2 ="
+      },
+      {
+        "line": 77,
+        "header": "theorem value_eq (A V : Fin 2 \u2192 \u2124) (n B C D : \u2124) :"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/RegisterNatPairing.lean",
+    "git_blob": "9dbe2a602ff6d7d772827560d5f276d19e87b9e8",
+    "sha256": "f31c27c34f6711cde684c4fd560e1030a5c8fb5a8f6ed8cfd644fe15507259c4",
+    "lines": 148,
+    "declarations": [
+      {
+        "line": 19,
+        "header": "def leftA (z a b s : \u2115) := andLeft (a + s + 1) b z (b * b + a)"
+      },
+      {
+        "line": 20,
+        "header": "def leftB (z a b s : \u2115) := andRight (a + s + 1) b z (b * b + a)"
+      },
+      {
+        "line": 21,
+        "header": "def rightA (z a b s : \u2115) := andLeft (b + s) a z (a * a + a + b)"
+      },
+      {
+        "line": 22,
+        "header": "def rightB (z a b s : \u2115) := andRight (b + s) a z (a * a + a + b)"
+      },
+      {
+        "line": 24,
+        "header": "def certificateLeft (z a b s : \u2115) := orLeft (leftA z a b s) (leftB z a b s)"
+      },
+      {
+        "line": 26,
+        "header": "def certificateRight (z a b s : \u2115) := orRight (leftA z a b s) (leftB z a b s)"
+      },
+      {
+        "line": 29,
+        "header": "theorem certificate_iff (z a b s : \u2115) :"
+      },
+      {
+        "line": 36,
+        "header": "theorem exists_certificate_iff (z a b : \u2115) :"
+      },
+      {
+        "line": 52,
+        "header": "def program (left right : Fin 4) : Program 4 where"
+      },
+      {
+        "line": 66,
+        "header": "private def lhsWire (left right : Fin 4) : Fin (program left right).nodes.length :="
+      },
+      {
+        "line": 68,
+        "header": "private def rhsWire (left right : Fin 4) : Fin (program left right).nodes.length :="
+      },
+      {
+        "line": 71,
+        "header": "private theorem program_lhs (left right : Fin 4) (x : Fin 4 \u2192 \u2115) :"
+      },
+      {
+        "line": 81,
+        "header": "private theorem program_rhs (left right : Fin 4) (x : Fin 4 \u2192 \u2115) :"
+      },
+      {
+        "line": 92,
+        "header": "def leftRelation : Relation 2 (fun v => v 0 = (Nat.unpair (v 1)).1) where"
+      },
+      {
+        "line": 106,
+        "header": "def rightRelation : Relation 2 (fun v => v 0 = (Nat.unpair (v 1)).2) where"
+      },
+      {
+        "line": 119,
+        "header": "private def graphIndex : Fin 2 \u2192 Option (Fin 1) :="
+      },
+      {
+        "line": 123,
+        "header": "def leftGraph : GraphRep (fun v : Fin 1 \u2192 \u2115 => (Nat.unpair (v 0)).1) :="
+      },
+      {
+        "line": 126,
+        "header": "def rightGraph : GraphRep (fun v : Fin 1 \u2192 \u2115 => (Nat.unpair (v 0)).2) :="
+      },
+      {
+        "line": 132,
+        "header": "theorem leftGraph_binaryOps : leftGraph.expression.binaryOps \u2264 238 := by"
+      },
+      {
+        "line": 136,
+        "header": "theorem rightGraph_binaryOps : rightGraph.expression.binaryOps \u2264 238 := by"
+      },
+      {
+        "line": 140,
+        "header": "theorem leftGraph_degree : leftGraph.expression.toPolynomial.totalDegree \u2264 4 := by"
+      },
+      {
+        "line": 144,
+        "header": "theorem rightGraph_degree : rightGraph.expression.toPolynomial.totalDegree \u2264 4 := by"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/SelectiveCarry.lean",
+    "git_blob": "25b0ee4bc41d9eb5ad20d41c66f1f905e40fd0a0",
+    "sha256": "767c0d3166768c34664ec2fd89b0bfc0f30fcd62bfd8f5514736cd669dc0b4c3",
+    "lines": 176,
+    "declarations": [
+      {
+        "line": 27,
+        "header": "theorem combined_degree_le {m r : \u2115} (w : Fin (m + 1) \u2192 \u2115)"
+      },
+      {
+        "line": 37,
+        "header": "theorem rowProduct_degree_lt {m r : \u2115} (w : Fin (m + 1) \u2192 \u2115)"
+      },
+      {
+        "line": 53,
+        "header": "theorem coeff_rowProduct_eq_zero {m r : \u2115} (w : Fin (m + 1) \u2192 \u2115)"
+      },
+      {
+        "line": 63,
+        "header": "theorem doubled_shifted_polynomial_cast (p : \u2124[X]) {t n : \u2115} (ht : 1 \u2264 t)"
+      },
+      {
+        "line": 76,
+        "header": "theorem shiftedValue_lt {t n : \u2115} (ht : 1 \u2264 t) (h : \u2115 \u2192 \u2124)"
+      },
+      {
+        "line": 95,
+        "header": "theorem selectedMask_lt {t n : \u2115} (ht : 1 \u2264 t) (positions : Finset \u2115) :"
+      },
+      {
+        "line": 107,
+        "header": "theorem doubled_blocks_lt {t n : \u2115} (ht : 1 \u2264 t) (positions : Finset \u2115)"
+      },
+      {
+        "line": 117,
+        "header": "theorem tau_selected_rows_iff {r t n : \u2115} (ht : 1 \u2264 t)"
+      },
+      {
+        "line": 134,
+        "header": "def packTwo (L a b : \u2115) : \u2115 := a + b * L"
+      },
+      {
+        "line": 136,
+        "header": "theorem packTwo_lt {L H a b : \u2115} (ha : a < L) (hb : b < H) : packTwo L a b < L * H := by"
+      },
+      {
+        "line": 144,
+        "header": "theorem tau_packTwo_iff {ell a c : \u2115} (ha : a < 2 ^ ell) (hc : c < 2 ^ ell)"
+      },
+      {
+        "line": 151,
+        "header": "theorem central_blocks_iff {ell h a b c d : \u2115}"
+      },
+      {
+        "line": 167,
+        "header": "theorem centralCode_factorization {N : \u2115} (hN : 1 \u2264 N) (S T : \u2115) :"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/ADOPTION.md",
+    "git_blob": "f80e3dec5edf7318dbf660fe81bbc45a490e5756",
+    "sha256": "75dc068866246c09d17d2556cd518dc48ed6dd9583bd5c3f1729923a6c895133",
+    "lines": 95,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/reviews/current-controller-positions2011-author.md",
+    "git_blob": "576074c2457fab5c4d2ae34304023bf048b67f5c",
+    "sha256": "c611f1dbfb897c8501e20636ec462d535e7f8c74e56deab44cf609361928b2e1",
+    "lines": 51,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/reviews/current-controller-positions2011-lean-peer.md",
+    "git_blob": "bb73f700f7fe3ae66d70bfe6ac893546f30ba7bd",
+    "sha256": "01d8eec5c95ba9d0c1bdfc96f7f9443c45666ec1a91a52739dccec9f5dab569d",
+    "lines": 80,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/reviews/current-dummy-safety2011-author.md",
+    "git_blob": "8f7ab4ddd533bfa5cddf485e2d2d7b2d18e0171b",
+    "sha256": "512d04ac550dcafe130f768cb6f58ae7758aec90dbd857e4fda582601c2f6661",
+    "lines": 139,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/reviews/current-dummy-safety2011-lean-peer.md",
+    "git_blob": "f8df51cd700e05a8979e44eee76b3742c4acf03a",
+    "sha256": "09ff227d3bacff594ea937190b9e548fb6970290c45c3601c99963756567428d",
+    "lines": 88,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/reviews/current-packing-rank2011-lean-peer.md",
+    "git_blob": "5643042c92e6010556e784eac35a8f81678b7a63",
+    "sha256": "d54b6d4d7200fed945b397093217b5f4f73b38997f2f63b9512230a785c76ff1",
+    "lines": 104,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/reviews/current-packing-rank2011-root.md",
+    "git_blob": "37f93f971080e6dde21a4527a5d2595854de1877",
+    "sha256": "12bb04e09e95ee6e330217d6ed9ad775ec03905b1e155ba722b1f44a5c14b4a8",
+    "lines": 23,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/reviews/current-word-rephase2011-author.md",
+    "git_blob": "c3b9f7d01507b582007abc0c0d2fdfa5f5f993dd",
+    "sha256": "7c8dc3397a81e5e2d16187db4f0be71d8d3047f942b7dd97fc82ab8ec0b97962",
+    "lines": 106,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/reviews/lean-proof-simplification-20261026-root.md",
+    "git_blob": "927e3d0780fabd5d95d11222462a56cb4a73c87f",
+    "sha256": "358de25baf9bfc7940fe5c3d1a8c38d00f7950f4ad4ede33ad862397a3ede0e9",
+    "lines": 836,
+    "declarations": [
+      {
+        "line": 130,
+        "header": "theorem statements are unchanged. The compiler wrapper is49 bytes longer,"
+      },
+      {
+        "line": 281,
+        "header": "theorem statements, coordinate ordering and positivity premises are unchanged."
+      },
+      {
+        "line": 731,
+        "header": "theorem uses the standard three, and all63 existing compiler endpoints print"
+      }
+    ]
+  },
+  {
+    "path": "Computability/DiophantineConsistency/reviews/native-packing-population-lean-peer.md",
+    "git_blob": "a0874987daf7319538529c6913cd295ebce83796",
+    "sha256": "30712bd23f6238a36c6b49d1f5051ed2f59f5ae2d0952b6d8160b2c9a900d6e9",
+    "lines": 95,
+    "declarations": []
+  },
+  {
+    "path": "Computability/DiophantineConsistency/reviews/population-rephase-round-root.md",
+    "git_blob": "7be6475e39b9637f09a20271df6c7619aab7e4af",
+    "sha256": "af0ca87dccb61b141ae5e8ea0221515f11f7026030d7f088605b15c877ba17b1",
+    "lines": 25,
+    "declarations": []
+  }
+]

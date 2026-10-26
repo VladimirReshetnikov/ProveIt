@@ -1,0 +1,23 @@
+\section{Source and artifact guide}
+\label{sec:references}
+All repository links below are immutable source references. The archive's evidence directory records exact file hashes and the closing comparison, so these references do not rely on the moving \code{main} branch.
+\begin{enumerate}
+\item \src{SignedPellResidue}{signed_residue_cases}, original lines 51--74: the natural square identity, temporary subtraction equation, and call to \code{Pell.eq_pell}.
+\item \src{ThirteenFreshSeed}{auxiliary_exists}, original lines 74--150: both constructive integer norm goals. The linked complete file also shows the unchanged public theorem and imports.
+\item \src{BoundedForallCertificate}{boundedForallCertificate}, original lines 21--63: the exact certificate type and the forward decoder. Its lower-level duplicate is \href{https://github.com/VladimirReshetnikov/ProveIt/blob/96520cd1a5179f470b4da127bd47bc26a8d808ff/Computability/HilbertTenthProblem/Lean/Diophantine/Common/MRDPCore.lean}{\code{Diophantine.Common.MRDPCore}}.
+\item \href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/NumberTheory/PellMatiyasevic.lean}{Pinned Mathlib: \code{PellMatiyasevic.lean}}, especially \code{xz}, \code{yz}, \code{dz_val} at line 167 and \code{pell_eqz} at line 222.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/96520cd1a5179f470b4da127bd47bc26a8d808ff/Computability/DiophantineConsistency/research/lean-proof-simplification}{The 43 baseline proposal packets}; the archive contains separate early, middle, and latest exclusion ledgers with precise manuscript anchors.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/3b51c69d42ff99bc420698532af3fe1d1f9bd356/docs/incoming}{The incoming directory at the closing audit pin}. The late-head audit identifies each additional archive and the reason for the withdrawn candidate.
+\end{enumerate}
+
+\subsection{Contents of the delivery}
+\begin{description}[style=nextline]
+\item[\code{report.tex} and \code{sections/}] Complete editable LaTeX source. Build with XeLaTeX; no network access or generated image asset is needed.
+\item[\code{report.pdf}] Compiled and visually inspected report.
+\item[\code{lean/}] Checked standalone arithmetic sources, a focused decoder, and complete modified Pell modules. The README states which files are integration candidates rather than checked production modules.
+\item[\code{patches/}] Exact unified patches against the source baseline, including both canonical-decoder clients and the shared helper placement.
+\item[\code{validation/}] Compiler output, status receipts, source hashes, and dependency provenance. A failed full MRDP import attempt is identified separately from successful focused checks.
+\item[\code{evidence/}] Novelty ledgers, independent review, source manifest, and closing-head comparison.
+\item[\code{screened_out/}] The withdrawn aggregate-support candidate and its explicit non-recommendation notice.
+\item[\code{scripts/}, \code{README.md}, \code{SHA256SUMS}] Reproduction instructions, report build script, validation replay script, and integrity manifest.
+\end{description}

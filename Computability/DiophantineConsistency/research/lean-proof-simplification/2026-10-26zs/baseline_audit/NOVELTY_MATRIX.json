@@ -1,0 +1,58 @@
+{
+  "source_pin": "9d9d1123b39927d30363f1dcd53c23f0575c30ee",
+  "closing_pin": "451b548a198c791e81abc40435979c89edb40b23",
+  "all_prior_outcomes_assumed_applied": true,
+  "decisions": [
+    {
+      "id": "F",
+      "target": "CurrentPackingRank2011.fourBlocks_cast",
+      "decision": "RETAIN_ONLY_AS_OPTIONAL_LOCAL_DETOUR_DELETION",
+      "credited_current_source_lines": 11,
+      "old_body_lines": 23,
+      "new_body_lines": 12,
+      "source_sha256": "614f47e52f31dfc199f98387e5c720f1ae51fb0725ce8d9f21223b540a30c546",
+      "candidate_sha256": "e702cc6554f32c83d142b1b3ea594a0e7924ae19b8b085f6deff1302ba38740b",
+      "patch_sha256": "5239292bb333a390ecfa88ef19640d1732ea5571b3b00dedd00795574e2d81de",
+      "nearest_prior": [
+        "V10/EX051 Nat-Int nativeRank.toNat source facts",
+        "A04 exact affine native-rank comparison",
+        "Existing maintained NativeSourceMask.packing_four_block, itself using linear_combination q*h"
+      ],
+      "reason": "The prior proposed rank bridge supplies toNat/nonnegativity/source-window conversions; the exact new constructed four-block binding is a different local client. This patch removes hbeta/hh/hB equation rebinding and a second normalization pass, retaining every Nat.cast_sub domain proof. It merely inlines/reuses the existing exact polynomial certificate; neither that certificate, cast normalization, nor algebra is new.",
+      "tradeoff": "Loses an explicit named packing-theorem application and expands windowRank; optional maintainability choice, not architectural or mathematical progress.",
+      "validation": "UNCOMPILED; novelty decision only, no speed/axiom claim."
+    },
+    {
+      "id": "G",
+      "target": "CurrentPackingRank2011.rank_gt_twice_window",
+      "decision": "EXCLUDE_PRIOR_NORMALIZED_GROWTH_MECHANISM",
+      "credited_current_source_lines": 0,
+      "nearest_prior": [
+        "C02 zc/report.tex:349-375",
+        "zc/report.tex:570-583 systematic threshold recognition"
+      ],
+      "reason": "Normalizing q³ to 2^(3u), applying standard Nat.lt_two_pow_self, and omega is the previously advertised normalization-to-standard-growth/linear-arithmetic route. A new argument 3u or exact client does not make this a new mechanism under the strict rule."
+    },
+    {
+      "id": "S",
+      "target": "CurrentControllerSubsets2011.shifted_sum",
+      "decision": "EXCLUDE_PRIOR_FINITE_DISTRIBUTIVITY_MECHANISM",
+      "credited_current_source_lines": 0,
+      "nearest_prior": [
+        "V10/E53 packet f report/sections/02_local.tex:210-223",
+        "packet f tactics/before_after.md:T04"
+      ],
+      "reason": "Replacing sum_congr/pow_add/ring scaffolding by sum_mul/mul_sum/pow_add+AC is precisely the existing proposed finite-convolution factorization route."
+    },
+    {
+      "id": "P",
+      "target": "CurrentControllerPositions2011.position_ne_three",
+      "decision": "NOT_DELIVERED_TOO_SMALL_GENERIC",
+      "credited_current_source_lines": 0,
+      "reason": "Literal-coefficient Presburger replacement was not retained as a substantive proposal; no candidate delivered."
+    }
+  ],
+  "surviving_families": 1,
+  "new_mathematical_mechanisms_claimed": 0,
+  "claimed_current_source_reduction": 11
+}

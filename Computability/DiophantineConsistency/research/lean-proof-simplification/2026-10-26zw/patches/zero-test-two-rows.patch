@@ -1,0 +1,43 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticBoolean.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticBoolean.lean
+@@ -15,16 +15,9 @@
+ 
+ theorem zero_certificate_sound {bit n slack : ℕ} (h : ZeroCertificate bit n slack) :
+     bit = if n = 0 then 1 else 0 := by
+-  rcases h with ⟨hb,hn,hs⟩
+-  rcases mul_eq_zero.mp hb with hb | hb
+-  · have hb0 : bit = 0 := by exact_mod_cast hb
+-    subst bit
+-    have hn0 : n ≠ 0 := by simp only [Nat.cast_zero,sub_zero,one_mul] at hs; omega
+-    simp [hn0]
+-  · have hb1 : bit = 1 := by omega
+-    subst bit
+-    have hn0 : n = 0 := by simpa using hn
+-    simp [hn0]
++  rcases h with ⟨-, hn, hs⟩
++  by_cases hz : n = 0 <;> simp_all [mul_eq_zero]
++  omega
+ 
+ theorem zero_certificate_complete (n : ℕ) :
+     ZeroCertificate (if n = 0 then 1 else 0) n n.pred := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectZeroTest.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectZeroTest.lean
+@@ -25,15 +25,9 @@
+ 
+ theorem certificate_sound {bit n slack : N H} (h : Certificate H bit n slack) :
+     bit=if n=0 then 1 else 0 := by
+-  obtain ⟨hb,hn,hs⟩ := h
+-  rcases (ObjectNaturalDiscrete.mul_self_eq_self_iff H bit).mp hb with hb | hb
+-  · subst bit
+-    have hn' : n=slack+1 := by simpa only [zero_mul,add_zero] using hs
+-    have hn0 : n≠0 := hn' ▸ ObjectNaturalDiscrete.add_one_ne_zero H slack
+-    exact (if_neg hn0).symm
+-  · subst bit
+-    have hn0 : n=0 := by simpa only [one_mul] using hn
+-    simp [hn0]
++  rcases h with ⟨-, hn, hs⟩
++  have hunit := ObjectNaturalDiscrete.add_one_ne_zero H slack
++  by_cases hz : n = 0 <;> simp_all [mul_eq_zero, mul_eq_right₀ hunit]
+ 
+ theorem certificate_complete (n : N H) :
+     Certificate H (if n=0 then 1 else 0) n (ObjectPredecessor.pred H n) := by

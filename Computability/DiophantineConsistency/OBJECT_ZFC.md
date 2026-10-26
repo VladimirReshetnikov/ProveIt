@@ -1,5 +1,12 @@
 # The object-language ZFC obligation
 
+Status update26 October2026: the owner has strengthened the remaining
+target to a Lean proof that the equivalence has a proof in intuitionistic
+Heyting Arithmetic. Existence is sufficient; no literal HA proof needs
+printing. See [HA_PROVABILITY_PLAN.md](HA_PROVABILITY_PLAN.md). The material
+below records completed ZFC-language interfaces and the former target;
+it is retained without making ZFC-only model work the primary next task.
+
 `ExplicitZFC.noSyntaxZero_iff_conZFC` is an external Lean theorem about the
 actual predicate `BProv ZFCax_s [] Form.fBot`. It is not a derivation in that
 calculus of a sentence expressing the same equivalence. The requested
@@ -31,12 +38,27 @@ actual external `ZFCax_s` convention. The equivalence between these two
 sentences is still open. The separate unsealed consistency sentence remains
 available for the canonical bounded-consistency development.
 
-That displayed target concerns the older nine-variable equation. For the
-maintained14-variable equation a separate literal expression and guarded
-positive-domain sentence must be bound to the actual current four ports.
-The planned natural encoding is P(x+1)=0, so all14 original unknowns are
-strictly positive; it must quantify over every model's internal naturals,
-not merely external numeral tuples. The
+That displayed target concerns the older nine-variable equation. The
+maintained14-variable equation now has its own checked target:
+
+```lean
+BProv ZFCax_s [] (fIff ObjectCodeSeal.consistencySentence
+  ObjectCurrentEquation2011.unsolvabilitySentence)
+```
+
+[`ObjectCurrentEquation2011`](Lean/DiophantineConsistency/ObjectCurrentEquation2011.lean)
+defines the literal expression with the actual current four ports and
+proves equality with the entire maintained multivariate polynomial. Its
+natural encoding is P(x+1)=0, so all14 original unknowns are strictly
+positive. The closed no-zero sentence has checked satisfaction exactly
+when every strictly positive internal-natural tuple fails the original
+signed expression. This includes nonstandard tuples and uses their
+internal predecessors; it is not restricted to external numerals. The
+[author record](reviews/object-current-equation2011-author.md) and
+[independent root replay](reviews/object-current-equation2011-root.md)
+record ten standard-only axiom audits and precise dependency-reuse scope.
+The native current-source closure refresh remains separately in progress.
+The displayed `BProv` equivalence itself is still OPEN. The
 [current-expression/internal-bridge audit](research/current-equivalence-next-bridge-20261026.md)
 identifies the exact API and remaining sealed-refutation/machine/native
 interpretation work. The new external theorem does not identify the older

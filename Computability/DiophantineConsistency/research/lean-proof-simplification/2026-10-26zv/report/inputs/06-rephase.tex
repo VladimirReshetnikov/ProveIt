@@ -1,0 +1,28 @@
+\pageheading{6 Rewrite the two normalization fields directly}
+\textbf{Delete a local function equality that only serves two fields.} The source theorem \code{normalization_of_rotation_eq} transfers the same carry and digit functions across an equality of actual binary rotations. For any $n>0$, source function $c:\operatorname{ZMod}(n)\to\N$, and natural shifts $W,W'$, assume
+\[
+ \operatorname{rotation}_{47}(W',c)=\operatorname{rotation}_{47}(W,c).
+\]
+The raw recurrence input is a fixed cyclic convolution plus that rotation. Consequently the recurrence and decomposition fields can each be reused after one exact rewrite. The candidate replaces the auxiliary function-extensionality proof and both subsequent \code{rw} steps with:
+\begin{lstlisting}
+  refine ⟨hf.carry_bound,hf.digit_bound,?_,?_,hf.word_bound,?_⟩
+  · intro i
+    simpa only [CurrentCarryConstruction2011.raw,hr]
+      using hf.recurrence i
+  · intro i
+    simpa only [CurrentCarryConstruction2011.raw,hr]
+      using hf.decomposition i
+\end{lstlisting}
+These are restricted simplifications at the two exact consumers; the same raw definition is unfolded twice instead of once in a function equality. This does not claim a new normalization-uniqueness theorem. The source range is \src{CurrentWordRephase2011}{23}{47}.
+
+\textbf{The scalar transport proof is intentionally retained.} Put $M=\rho^n-1$. Equality of rotations and the existing \code{word_binaryRotation} congruences give
+\[
+ 2^{W'}\operatorname{word}(c)\equiv2^W\operatorname{word}(c)\pmod M.
+\]
+Adding $K\operatorname{word}(c)$ and composing with the old transport establishes the new transport congruence. The ordinary multipliers $K+2^{W'}$ and $K+2^W$ need not be equal; the proof never identifies them. Keeping this field derivation is necessary even though the recurrence data is unchanged.
+
+\textbf{Downstream rephasing retains the particular witnesses.} The actual stride condition $(s:\operatorname{ZMod}N)=(t:\operatorname{ZMod}N)$ gives equal markers, equal complete source functions and equal physical rotations. The existing \code{normalization_rephase} reuses the same carries and digit function. The packing theorem then recalculates the positive scalar quotient for the new ordinary multiplier while retaining those functions, the same tiles and the same dummy data. See \src{CurrentWordRephase2011}{51}{120}.
+
+The generic theorem changed here has no Boolean-source assumption; its source function remains an arbitrary natural-valued function. Booleanity is used only by the existing constructed-word client to establish rotation equality. No new normalization is chosen, no rank-growth or rank-congruence hypothesis is inserted, and no $s,t<N$ restriction is introduced.
+
+\textbf{Cost and risk.} The whole module shrinks from 122 to 116 physical lines and from 6023 to 5925 bytes; no helper, import, public declaration or theorem type changes. The exact remaining elaboration risk is the orientation and definitional unfolding of the two \code{simpa only} calls. Generic source views, carry uniqueness, modular projections and same-data reset interfaces were already available and are not counted as new work.

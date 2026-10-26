@@ -1,0 +1,26 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/Computability.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/Computability.lean
+@@ -18,19 +18,10 @@
+     Nat.Primrec' (fun v : List.Vector ℕ 1 => haltingTest v.head) :=
+   Nat.Primrec'.prim_iff₁.mpr (Primrec.nat_iff.mpr haltingTest_natPrimrec)
+ 
+-/-- Syntactic inconsistency is semidecidable by the actual scalar test. -/
++/-- The constant input set is classically r.e. The executable enumerator is
++certified separately by `haltingTest_natPrimrec` and `exists_haltingTest_eq_one_iff`. -/
+ theorem refutationInputs_re : REPred refutationInputs := by
+-  have ht : Primrec (fun v : ℕ × ℕ => decide (haltingTest v.2 = 1)) :=
+-    (Primrec.eq.comp
+-      ((Primrec.nat_iff.mpr haltingTest_natPrimrec).comp Primrec.snd)
+-      (Primrec.const 1)).decide
+-  have hsearch : Partrec (fun _ : ℕ => Nat.rfind
+-      (fun t => Part.some (decide (haltingTest t = 1)))) :=
+-    Partrec.rfind ht.to_comp.partrec
+-  apply hsearch.dom_re.of_eq
+-  intro _
+-  simp only [Nat.rfind_dom, Part.mem_some_iff, true_eq_decide_iff,
+-    Part.some_dom, implies_true, and_true]
+-  exact exists_haltingTest_eq_one_iff
++  classical
++  exact (Computable.const (decide (refutationInputs 0))).computablePred.to_re
+ 
+ end DiophantineConsistency

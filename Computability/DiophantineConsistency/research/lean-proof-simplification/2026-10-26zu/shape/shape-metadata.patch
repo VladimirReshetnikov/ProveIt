@@ -1,0 +1,49 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean
+@@ -28,34 +28,25 @@
+ 
+ end SplitSize
+ 
+-/-- Structural size interpretation; its values do not depend on coefficients. -/
+-def splitSize {σ : Type*} : Expr σ → SplitSize
+-  | .constant _ => .leaf
+-  | .var _ => .leaf
+-  | .add p q => .add (splitSize p) (splitSize q)
+-  | .sub p q => .sub (splitSize p) (splitSize q)
+-  | .mul p q => .mul (splitSize p) (splitSize q)
++/-- The common node count of the two raw natural trees. -/
++def halfSize {σ : Type*} : Expr σ → ℕ
++  | .constant _ | .var _ => 1
++  | .add p q | .sub p q => 1 + halfSize p + halfSize q
++  | .mul p q => 3 + 2 * halfSize p + 2 * halfSize q
++
++/-- Raw signed splitting reaches only the diagonal of `SplitSize`. -/
++def splitSize {σ : Type*} (e : Expr σ) : SplitSize :=
++  ⟨halfSize e, halfSize e⟩
+ 
+ theorem splitSize_correct {σ : Type*} (e : Expr σ) :
+     QuarticCompiler.Gates.count e.splitNatural.1 = (splitSize e).positive ∧
+     QuarticCompiler.Gates.count e.splitNatural.2 = (splitSize e).negative := by
+-  induction e with
+-  | constant a => exact ⟨rfl, rfl⟩
+-  | var i => exact ⟨rfl, rfl⟩
+-  | add p q hp hq =>
+-    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.add,
+-      hp.1, hp.2, hq.1, hq.2, Nat.add_assoc]
+-  | sub p q hp hq =>
+-    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.sub,
+-      hp.1, hp.2, hq.1, hq.2, Nat.add_assoc]
+-  | mul p q hp hq =>
+-    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.mul,
+-      hp.1, hp.2, hq.1, hq.2, Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
+-    omega
++  induction e <;>
++    simp_all [splitSize, halfSize, Expr.splitNatural, QuarticCompiler.Gates.count] <;> omega
+ 
+ @[simp] theorem splitSize_rename {σ τ : Type*} (e : Expr σ) (f : σ → τ) :
+     splitSize (e.rename f) = splitSize e := by
+-  induction e <;> simp_all [Expr.rename, splitSize]
++  induction e <;> simp_all [Expr.rename, splitSize, halfSize]
+ 
+ theorem graphAdd_witnessCount {σ : Type*} {f g : (σ → ℕ) → ℕ}
+     (r : GraphRep f) (s : GraphRep g) :

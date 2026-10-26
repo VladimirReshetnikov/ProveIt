@@ -1,0 +1,13 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePackingPopulation.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePackingPopulation.lean
+@@ -11,9 +11,7 @@
+ /-- Disjoint binary words below one window have an ordinary sum below it. -/
+ theorem disjoint_add_lt {u A M : ℕ} (hA : A < 2^u) (hM : M < 2^u)
+     (hm : A &&& M = 0) : A+M < 2^u := by
+-  have he := JM1984.add_eq_land_add_lor A M
+-  rw [hm,zero_add] at he
+-  rw [he]
++  rw [JM1984.add_eq_land_add_lor, hm, zero_add]
+   exact Nat.or_lt_two_pow hA hM
+ 
+ /-- The top block is unrestricted; all lower blocks are strict representatives. -/

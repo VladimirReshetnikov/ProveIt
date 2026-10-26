@@ -1,0 +1,77 @@
+{
+  "source_pin": "9d9d1123b39927d30363f1dcd53c23f0575c30ee",
+  "variants": [
+    {
+      "name": "literal_affine_positions",
+      "patch": "safety/patches/positions_combined.patch",
+      "files": {
+        "CurrentControllerPositions2011.lean": {
+          "candidate": "safety/candidate/CurrentControllerPositions2011.lean",
+          "changed": [
+            "position_budget",
+            "position_injective"
+          ]
+        }
+      }
+    },
+    {
+      "name": "exact_rephase_fields",
+      "patch": "rephase/patches/rephase-exact-field-rewrite.patch",
+      "files": {
+        "CurrentWordRephase2011.lean": {
+          "candidate": "rephase/candidate/CurrentWordRephase2011.lean",
+          "changed": [
+            "normalization_of_rotation_eq"
+          ]
+        }
+      }
+    },
+    {
+      "name": "direct_rank_growth",
+      "patch": "population/patches/rank_gt_twice_window.patch",
+      "files": {
+        "CurrentPackingRank2011.lean": {
+          "candidate": "population/candidates/CurrentPackingRank2011.lean",
+          "changed": [
+            "rank_gt_twice_window"
+          ]
+        }
+      }
+    },
+    {
+      "name": "disjoint_add_housekeeping",
+      "patch": "population/patches/disjoint_add_lt.patch",
+      "files": {
+        "NativePackingPopulation.lean": {
+          "candidate": "population/candidates/NativePackingPopulation.lean",
+          "changed": [
+            "disjoint_add_lt"
+          ]
+        }
+      }
+    }
+  ],
+  "isolated_alternatives": [
+    {
+      "name": "position_budget",
+      "patch": "safety/patches/position_budget.patch"
+    },
+    {
+      "name": "position_injective",
+      "patch": "safety/patches/position_injective.patch"
+    }
+  ],
+  "compositions": {
+    "main": [
+      "literal_affine_positions",
+      "exact_rephase_fields",
+      "direct_rank_growth"
+    ],
+    "all": [
+      "literal_affine_positions",
+      "exact_rephase_fields",
+      "direct_rank_growth",
+      "disjoint_add_housekeeping"
+    ]
+  }
+}

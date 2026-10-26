@@ -1,0 +1,11 @@
+Source: /workspace/scratch/ce29ab924f1c/lean_simplification_round4_20261026/baseline_audit/placed/2026-10-26g/report.tex
+SHA256: 08d8d0d680c9a7d7fa9c8a794b9ee9b02409b5e2bb951395522b5c992f3d4a2e
+
+427: \subsection{Separate arbitrary folding from injective sparse placement}
+428: 
+429: \module{NativeCyclicConvolution} already has \code{foldStencil}, \code{mass_foldStencil}, \code{word_foldStencil}, and \code{convolution_foldStencil}. \module{CurrentKernel2011} already uses them effectively. Rebuilding that API would add machinery without addressing the actual repetition.
+430: 
+431: The remaining opportunity is the injective-placement specialization used in \module{NativeHighPort54} and \module{NativeWordPopulation}. A sparse table with an embedding into digit positions can expose lookup at an image, lookup outside the image, coefficient bounds, word evaluation, and population additivity. Natural positions already known to lie below $n$ can be stored as \code{Fin n} and sent through \code{ZMod.finEquiv n}, avoiding repeated cast-injectivity proofs.
+432: 
+433: Do not assume injectivity for arbitrary folded stencils: exponents may collide and their coefficients must add. Also distinguish exact word evaluation at bounded positions from evaluation at arbitrary exponents modulo $r^n-1$. The latter generally gives a congruence, not equality of natural representatives.
+434: 

@@ -1,0 +1,185 @@
+# Structural candidate: prove the zero test from its last two rows
+
+## Recommendation
+
+Retain one concrete new mechanism: the Boolean/idempotence row is unnecessary
+for the soundness argument of the existing zero-test certificate. Prove the
+selector from annihilation and balance. Apply this to both the external
+natural-number certificate and the entire internal omega of an arbitrary model.
+
+The proposed patch changes only the bodies of
+`QuadraticBoolean.zero_certificate_sound` and
+`ObjectZeroTest.certificate_sound`. All certificate definitions, literal
+polynomial rows, public theorem statements, witness counts, generated syntax,
+and downstream interfaces remain byte-for-byte unchanged. In particular this
+is a proof simplification, not a proposal to change the represented equation.
+
+The starting source was fetched at
+`3299f4aa4c9ae38b0f5a1c00a1f0d23f6cbdb114`. The separate novelty auditor also
+checked the later `zp`/`zq` packets at the root's closing exclusion cutoff
+`60fcb2a69b7f1fdd4c3592ea5f164223cad50abe`; neither adds this mechanism. Read-only GitHub fetches confirm both target files
+have identical Git blob identities at the source pin and this closing cutoff;
+the exact blob hashes are recorded in `analysis/zero_test/metrics.json`.
+
+## Mathematical reason
+
+Let R be a commutative semiring with multiplicative cancellation away from
+zero, and let u be nonzero. Suppose
+
+    b*n = 0,        n + b*u = u.
+
+If n is nonzero, the first equation gives b = 0. If n = 0, the second becomes
+b*u = u = 1*u, so cancellation gives b = 1. Therefore
+
+    b = if n = 0 then 1 else 0.
+
+The equation b*b = b has not been used. Indeed it follows from the displayed
+conclusion. No natural-number induction, discreteness theorem, or enumeration
+of an internal model's elements is involved. For the internal certificate,
+take R = `ObjectOmegaSemiring.Natural H` and u = slack + 1. The existing theorem
+`ObjectNaturalDiscrete.add_one_ne_zero H slack` supplies the exact nonzero
+premise for arbitrary internal slack, including nonstandard slack.
+
+For the external certificate its last polynomial row is
+
+    n - (1-b)*(slack+1) = 0
+
+over integers. Ring normalization gives the same balance equation. The natural
+slack guarantees that its integer cast plus one is nonzero. In the direct
+external replacement, `simp_all [mul_eq_zero]` handles the factor equations
+after splitting n = 0; `omega` excludes a natural slack whose integer cast is
+-1. The unused Boolean row is explicitly cleared by the `-` pattern in `rcases`,
+so `simp_all` cannot use it as an inaccessible hypothesis.
+
+The nonzero multiplier premise is essential. With u = n = 0 the two equations
+hold for b = 2, but the zero-test output should be 1. The checked kernel includes
+this boundary counterexample. Likewise `NoZeroDivisors` alone in an arbitrary
+semiring is not asserted to give cancellation. The generic kernel states
+`IsCancelMulZero` explicitly. Nontriviality need not be a separate hypothesis:
+the supplied nonzero multiplier already rules out the trivial situation.
+
+## Exact source changes
+
+The source paths below are relative to
+`Computability/DiophantineConsistency/Lean/DiophantineConsistency/`.
+
+### External natural certificate
+
+`QuadraticBoolean.lean:16–27` currently splits roots of the first polynomial,
+casts the two possible values back to naturals, then inspects the tested
+number. Replace only its proof body by:
+
+```lean
+  rcases h with ⟨-, hn, hs⟩
+  by_cases hz : n = 0 <;> simp_all [mul_eq_zero]
+  omega
+```
+
+The exact `ZeroCertificate` predicate is copied into the checked standalone
+fixture. Both the generic derivation and this literal direct replacement have
+been elaborated successfully. The complete production module, including its
+full dependency closure, has not been rebuilt by this subtask.
+
+### Internal natural certificate
+
+`ObjectZeroTest.lean:26–36` currently invokes
+`ObjectNaturalDiscrete.mul_self_eq_self_iff` on the first field, then handles
+the two resulting bit values. Replace only its proof body by:
+
+```lean
+  rcases h with ⟨-, hn, hs⟩
+  have hunit := ObjectNaturalDiscrete.add_one_ne_zero H slack
+  by_cases hz : n = 0 <;> simp_all [mul_eq_zero, mul_eq_right₀ hunit]
+```
+
+The checked abstract fixture uses the exact three-field certificate shape and
+retains the unneeded first field. It verifies the direct simplifier proof with
+an explicit nonzero-multiplier premise. The actual object's imported algebraic
+classes are checked against the needed cancellation contract as follows:
+
+- `ObjectZeroTest` imports `ObjectNumericWire`.
+- Its transitive chain includes `ObjectPredecessorSyntax`, `ObjectPredecessor`,
+  `ObjectUnpair`, `ObjectPairingInjective`, and `ObjectNaturalOrderedSemiring`.
+- The latter installs `IsStrictOrderedRing (Natural H)`.
+- `Mathlib/Algebra/Order/Ring/Defs.lean:157` supplies
+  `IsStrictOrderedRing.isDomain` using `ExistsAddOfLE`, which the existing
+  `CanonicallyOrderedAdd` supplies; its parent structure supplies cancellation.
+- A standalone `inferInstance` example under exactly
+  `[CommSemiring R] [LinearOrder R] [CanonicallyOrderedAdd R] [IsStrictOrderedRing R]` checks
+  `IsCancelMulZero R`.
+
+This is source-faithful abstract verification plus an import/typeclass audit,
+not a claim that the complete object-model module has been compiled anew.
+
+## Measured scope
+
+| Module | Original physical lines | Replacement physical lines | Removed |
+|---|---:|---:|---:|
+| QuadraticBoolean.lean | 136 | 129 | 7 |
+| ObjectZeroTest.lean | 91 | 85 | 6 |
+| Total | 227 | 214 | 13 |
+
+The exact external proof body changes from 10 lines to 3; the exact internal
+proof body changes from 9 lines to 3. No production helper or import is added,
+so these reductions already charge all changes in the supplied patch. The
+separate generic kernel is a review artifact, not an uncharged production
+dependency. These are source-size measurements against the pinned files, not
+a runtime or memory improvement claim and not an extrapolation across earlier
+alternative proposals.
+
+## Novelty boundary
+
+The closest earlier material is:
+
+1. Packet `2026-10-26x` derives the Boolean root theorem from cancellation
+   and moves strict multiplication ahead of successor discreteness. That
+   still assumes the idempotence equation. This proposal establishes that the
+   zero-test soundness proof needs no idempotence equation at all.
+2. Packet `2026-10-26m` (also listed under the subsequent packet index) consumes
+   `exists_zero_certificate_iff` before constructing conditional witnesses.
+   It simplifies clients after zero-test correctness has been established;
+   it does not weaken the premises needed by zero-test correctness.
+3. Packet `2026-10-26zg` normalizes actual zero-test polynomial rows through
+   the cancellative-semiring split-zero interpretation. It retains the Boolean
+   row in the resulting arithmetic certificate.
+4. Generic elementary row operations preserve common zero sets, but those
+   proposals do not identify this nonzero-multiplier consequence at these
+   concrete zero-test targets.
+
+The novelty claim is narrow: discharge this exact redundant mathematical
+premise in the two current soundness proofs. Cancellation, factorization,
+Boolean reasoning, and general semantic normalization are prior infrastructure.
+
+## Delivered working artifacts
+
+- `analysis/ZeroTestTwoRows.lean`: generic kernel; integer and natural adapters;
+  literal external and abstract internal certificate fixtures; direct proof
+  variants; nonzero guard counterexample; axiom reports; typeclass bridge.
+- `analysis/ZeroTestTwoRows.log`: final successful checker output.
+- `analysis/zero_test/zero_test_two_rows.patch`: proof-only production patch.
+- `analysis/zero_test/replacement/`: complete proposed replacement modules.
+- `analysis/zero_test/metrics.json`: SHA-256 identities and exact line counts.
+
+## Further research questions
+
+Can the omitted row be removed from a separately versioned zero-test system
+while preserving every compiler-level count and the exact downstream
+equiconsistency statement? This is additional encoding work and is deliberately
+outside this proof-only patch. It would require updating the literal row
+family, sum-of-squares expression, cost theorems, and object interpretations.
+
+More broadly, which other small certificates contain an equation that follows
+only after cancelling a separately certified nonzero factor? The relevant
+criterion is a concrete guarded consequence, not generic row deletion. The
+pairing certificate's Boolean row should not be presumed redundant: the other
+rows can admit non-Boolean selectors, so every prospective elimination needs
+its own argument or counterexample search.
+
+## Other screened structural directions
+
+Generic parser/Option simplification, recursive graph uniqueness/fusion,
+finite witness regrouping, exact inverse-pairing graphs, internal definable
+induction wrappers, formula-satisfaction normalization, rule-schedule syntax,
+canonical pairing witnesses, and graph-composition witness elimination were
+all rejected as already proposed. No second structural idea is retained merely
+to enlarge the list.

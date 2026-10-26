@@ -1,0 +1,14 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerPositions2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerPositions2011.lean
+@@ -79,9 +79,8 @@
+ theorem position_injective (k : ℕ) : Function.Injective (position k) := by
+   intro i j hij
+   apply ZMod.val_injective
+-  have hp : 0 < auxiliary-1 := by decide
+-  unfold position at hij
+-  nlinarith
++  unfold position auxiliary at hij
++  omega
+ 
+ theorem position_ne_three (k : ℕ) (j : ZMod (auxiliary^k)) : position k j ≠ 3 := by
+   intro h

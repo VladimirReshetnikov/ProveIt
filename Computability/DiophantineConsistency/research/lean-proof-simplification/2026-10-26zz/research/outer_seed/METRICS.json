@@ -1,0 +1,16 @@
+{
+  "source_pin": "7ba7d102822df1eff376cbca913727d9d588ab4e",
+  "source_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeOuterSeedConstruction.lean",
+  "source_sha256": "fd437b7d7d64c3371f4d0f2bc234d9e620526b0b1b3c4558ab6fbb47d6573159",
+  "source_git_blob": "c02b1abb2c0b9c9c75b63ddd618c5ff678f0911b",
+  "target": "exists_outer_seed local hKr",
+  "old_fragment": "  have hKr : r+1 < K := by\n    have hp : 2*P-1 \u2264 K := by\n      calc\n        2*P-1 = (2*P-1)^1 := (pow_one _).symm\n        _ \u2264 (2*P-1)^r := Nat.pow_le_pow_right (by omega) (by omega)\n        _ \u2264 K := pow_le_\u03c8_succ hP r\n    have hXY : X \u2264 Q := by\n      dsimp [Q]\n      exact Nat.le_mul_of_pos_right _ (pow_pos hY _)\n    have hXP : 2*X+1 \u2264 P := by dsimp [P]; omega\n    omega\n",
+  "new_fragment": "  have hKr : r+1 < K := lt_yn_of_two_le hP (by omega)\n",
+  "old_fragment_lines": 11,
+  "new_fragment_lines": 1,
+  "old_module_lines": 279,
+  "new_module_lines": 269,
+  "new_sha256": "201491d6c852eb0d5debf5ed3f852e4a640efe3dae636acd7c77ced3d7edaec5",
+  "public_statements_and_definitions": "Byte-identical outside one local proof replacement",
+  "status": "UNCOMPILED_OPTIONAL_LOCAL_REUSE"
+}

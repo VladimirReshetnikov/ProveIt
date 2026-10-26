@@ -1,0 +1,11 @@
+\subsection{Completed Lean checks}
+
+\begin{itemize}
+\item \textbf{Horner evaluator.} The generic accumulator invariant and exact 941-row numerical certificate compile successfully. The recorded axioms are \code{propext} for \code{run\_eq}, and \code{propext, Quot.sound} for \code{rows\_common}. The numerical command is \code{decide +kernel}, not \code{native\_decide}.
+\item \textbf{Option cleanup.} The complete cleaned 76-line semantic module compiles. The check re-elaborates the original 85-line incoming source in a separate namespace and proves \code{baseline\_eq\_cleaned} by \code{rfl}. This compares the actual old and new \code{haltingTest} definitions, including instance selection. The actual acceptance and calibration endpoints were audited. Fourteen unchanged semantic dependency modules were freshly compiled from sources whose hashes match the reviewed repository. The exact prior-baseline patch also passes its apply check.
+\item \textbf{Rank prefix.} The signed residue theorem, its natural-number adapter, and both closed stress examples compile successfully. Their reported axioms are \code{propext, Classical.choice, Quot.sound}.
+\end{itemize}
+
+The generic Option constructor observation is axiom-free. The concrete Option comparison and semantic endpoints use the ordinary axioms \code{propext, Classical.choice, Quot.sound}, inherited through the actual definitions. None of the retained checked proofs introduces a new axiom or reports \code{sorryAx}. A proof by \code{rfl} is a definitional compatibility check; it is not used to claim that its referenced definitions have no axioms.
+
+The checks do not include a full repository build. In particular, the complete Horner production module and all downstream consumers have not been rebuilt, and the rank pilot has not been integrated into its production consumer. The Option target itself was compiled, but the entire already-proposed computability migration and its downstream tree were not replayed. These scopes are preserved in the archive's validation records.

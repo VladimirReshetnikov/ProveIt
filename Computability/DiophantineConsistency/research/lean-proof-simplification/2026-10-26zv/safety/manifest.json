@@ -1,0 +1,69 @@
+{
+  "source_pin": "9d9d1123b39927d30363f1dcd53c23f0575c30ee",
+  "source_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerPositions2011.lean",
+  "lean_status": "UNCOMPILED",
+  "new_helpers": 0,
+  "new_imports": 0,
+  "changes": [
+    {
+      "theorem": "position_budget",
+      "before_body": "  have hv : j.val+1 \u2264 auxiliary^k := ZMod.val_lt j\n  have hm := Nat.mul_le_mul_left (auxiliary-1) hv\n  have hp : auxiliary^(k+1) = auxiliary^k*auxiliary := pow_succ _ _\n  have ha : auxiliary-1+1 = auxiliary := by decide\n  unfold position\n  nlinarith\n",
+      "after_body": "  have hv : j.val+1 \u2264 auxiliary^k := ZMod.val_lt j\n  simp only [position, pow_succ, auxiliary] at hv \u22a2\n  omega\n",
+      "physical_before": 6,
+      "physical_after": 3,
+      "patch": "patches/position_budget.patch"
+    },
+    {
+      "theorem": "position_injective",
+      "before_body": "  intro i j hij\n  apply ZMod.val_injective\n  have hp : 0 < auxiliary-1 := by decide\n  unfold position at hij\n  nlinarith\n",
+      "after_body": "  intro i j hij\n  apply ZMod.val_injective\n  unfold position auxiliary at hij\n  omega\n",
+      "physical_before": 5,
+      "physical_after": 4,
+      "patch": "patches/position_injective.patch"
+    }
+  ],
+  "reference_files": {
+    "CurrentControllerData2011.lean": {
+      "sha256": "a86aa5cc6b523bd659df8681012a1a39307ea340c27a7785629d30699ca151ae",
+      "git_blob": "07a4e37ee6cfb6a4d7ba514cebb3c821cd259ff3",
+      "physical": 184
+    },
+    "CurrentControllerPositions2011Checks.lean": {
+      "sha256": "7723e5c1bd82e7711aa47930c219ff967ae3e0de8e9b180db85aa431c55f84ea",
+      "git_blob": "524be356f15f9505a3aab685832c4f73ec4f1a35",
+      "physical": 48
+    },
+    "CurrentDummySafety2011.lean": {
+      "sha256": "31f92f372076071c75ece964cb418c118fa051694057556c004d74a7353e7c00",
+      "git_blob": "682d07cfe3cb1cf79db277e491e7a569119a1505",
+      "physical": 213
+    },
+    "CurrentDummySafety2011Checks.lean": {
+      "sha256": "0ff01ecb9c436f6f7043449c666d2473687725067e9aa5bd7729af39a6f7efe7",
+      "git_blob": "8ae457024237808f7aeda080b567f78e192e078c",
+      "physical": 81
+    }
+  },
+  "baseline": {
+    "sha256": "aab00b74d13e24bb78dda62c5c5a5fa55990f414821fef7b56d02c8fee675acf",
+    "git_blob": "779f72b283b44a1947f9083b9f887dbc7cb97b41",
+    "physical": 178,
+    "nonblank": 148,
+    "bytes": 7345
+  },
+  "candidate": {
+    "sha256": "b76c4621db790f9bf780a0d68defffcfb8aeba56f6c1f91936edda2c1cc08fa0",
+    "git_blob": "753cb632faa8399ef41dd93e503ce789ffe4f2f0",
+    "physical": 174,
+    "nonblank": 144,
+    "bytes": 7173
+  },
+  "physical_saved": 4,
+  "nonblank_saved": 4,
+  "withdrawn_optional_branch": [
+    "optional_next_lt",
+    "optional_stride_lt",
+    "position_ne_three"
+  ],
+  "withdrawal_reason": "late zq retires optional-support branch; all proposals assumed applied"
+}

@@ -1,0 +1,16 @@
+{
+  "baseline": "incoming proposal A reference/certificate-migration/EnumeratorSemantics.lean",
+  "baseline_sha256": "4d9cc3b56f5a5d7a07bc443fbe0eee2a2201f2e8cd5ddbb0cfd3f7ce1b30b11d",
+  "new_sha256": "161a84683152b9e92bd268accb1841bbc684cc6f8ed7ca48be42242e463e2bfe",
+  "old_lines": 85,
+  "new_lines": 76,
+  "removed_declarations": [
+    "private stateEquiv",
+    "private Primcodable St instance",
+    "private DecidableEq St instance"
+  ],
+  "removed_import": "Mathlib.Computability.Primrec.Basic",
+  "scope": "Incremental deletion AFTER prior certificate-dependency proposal; no dependency-reversal changes included",
+  "replacement_import": "Mathlib.Logic.Encodable.Basic",
+  "note": "The semantic definitions still require Encodable Bool and iteration notation; outright removal of all Mathlib imports is invalid. The narrower Encodable import supplies them."
+}

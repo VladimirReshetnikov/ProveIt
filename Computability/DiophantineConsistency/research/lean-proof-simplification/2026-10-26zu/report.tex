@@ -1,0 +1,376 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=0.82]
+\usepackage{amsmath,amssymb,booktabs,tabularx,array,enumitem}
+\usepackage{xcolor,fvextra,fancyhdr,microtype}
+\usepackage[hidelinks,breaklinks]{hyperref}
+\usepackage{xurl}
+\definecolor{ink}{HTML}{16364C}
+\definecolor{muted}{HTML}{52616B}
+\definecolor{shade}{HTML}{F3F5F6}
+\hypersetup{pdftitle={Further Lean proof simplifications: shape balance, ordered windows, and full-exponent growth},pdfauthor={Research assistance for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily ProveIt / Further Lean proof simplifications}
+\fancyhead[R]{\small 26 October 2026}
+\fancyfoot[C]{\small\thepage}
+\setlength{\headheight}{15pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{4em}
+\sloppy
+\setlist{itemsep=3pt,topsep=4pt}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt}
+\newcommand{\pin}{9d9d1123b39927d30363f1dcd53c23f0575c30ee}
+\newcommand{\source}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9d9d1123b39927d30363f1dcd53c23f0575c30ee/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean}{\code{#1.#2}}}
+\newcommand{\sourceNamed}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9d9d1123b39927d30363f1dcd53c23f0575c30ee/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean}{\code{#2}}}
+\DefineVerbatimEnvironment{Lean}{Verbatim}{fontsize=\small,breaklines=true,breakanywhere=true,frame=single,rulecolor=\color{shade},framesep=5pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\begin{document}
+\begin{titlepage}
+\vspace*{0.6in}
+{\sffamily\color{muted}\large RESEARCH NOTE / LEAN 4.32.0\par}
+\vspace{0.3in}
+{\sffamily\bfseries\color{ink}\LARGE Three further proof simplifications\par}
+\vspace{0.15in}
+{\sffamily\Large Shape balance, ordered windows,\par and full-exponent growth\par}
+\vspace{0.35in}
+{\large For Vladimir Reshetnikov's ProveIt repository\par}
+\vspace{0.2in}
+26 October 2026
+\vspace{0.5in}
+
+\textbf{Scope.} Existing proofs in \code{Computability/DiophantineConsistency}, after treating the earlier proposals as already available. The final exclusion corpus contains 43 placed packets, including the five initially incoming archives.
+
+\textbf{Repository snapshot.} \href{https://github.com/VladimirReshetnikov/ProveIt/commit/9d9d1123b39927d30363f1dcd53c23f0575c30ee}{\texttt{9d9d1123b39927d30363f1dcd53c23f0575c30ee}}.
+
+\textbf{Freshness cutoff.} \href{https://github.com/VladimirReshetnikov/ProveIt/commit/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe}{\texttt{60fcb2a69b7f1fdd4c3592ea5f164223cad50abe}}, committed at 19:10:07 UTC on 26 October. The direct target files are unchanged.
+
+\textbf{Main result.} Raw signed-expression splitting produces two natural-expression trees with identical operation-labelled shapes after leaf labels are erased. This gives a scalar replacement for paired size metadata. A second proposal shares index uniqueness for monotone half-open windows between square pairing and division. A third removes a growth-proof detour in the newly added constructed-rank module.
+
+\textbf{Evidence discipline.} The packet distinguishes checked proof cores, complete candidate source files, patch applicability, and remaining integration work. The ordered-window proposal increases the marginal source total by 16 lines and is offered for structural simplification. It is not counted as a line reduction.
+\vfill
+{\small\color{muted}This note proposes local proof and metadata changes. It makes no claim of a smaller Diophantine equation, fewer equation variables, a new consistency result, or a measured compilation speedup.}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Findings and recommended order}
+
+The strongest new structural observation is an invariant of the \emph{existing} executable translation \code{Expr.splitNatural}. Its positive and negative trees can have different values, coefficients, and variable occurrences, but their shapes agree exactly after erasing every leaf label. In particular, both trees have the same node count and depth. The current two-component size recurrence therefore visits only diagonal pairs.
+
+The smallest immediate edit is the full-exponent growth proof. It replaces a chain through positivity of a window, a lower bound on its radix, and a lower bound on the radix square by the universal inequality $n<2^n$ at the exponent actually present in the final cube.
+
+The ordered-window interface is useful when a common mathematical explanation is more valuable than immediate source reduction. It removes a duplicated index-comparison argument from square pairing, but its complete helper costs more lines than that one remaining client saves. Prior generic division-uniqueness work is already assumed applied and contributes no fresh saving here.
+
+\begin{table}[h]
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.12\textwidth}YY@{}}
+\toprule
+Direction & Concrete change & Recommendation\\
+\midrule
+A: Shape & Prove a polymorphic fold equality; use a scalar recurrence and retain the public pair at the boundary. & The main reusable invariant. Test metadata consumers before adoption.\\
+B: Windows & Recover a unique index from adjacent monotone windows; use it after the prior square-shell improvement. & Optional architecture. The measured post-prior package grows by 16 lines.\\
+C: Growth & Use $2u\le 3u<2^{3u}=q^3$ in the constructed-rank theorem. & First small patch to integrate: five physical lines removed, no helper.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The supplied numerical counts refer to physical source lines in explicitly identified files. They are not estimates of proof-term size or execution cost. They also do not purport to measure a hypothetical repository obtained by merging every historical proposal, because those proposals are not all a mutually compatible patch series.
+
+\section{Baseline and non-repetition audit}
+
+\subsection{What was treated as already available}
+
+The review is pinned to the commit above, whose root configuration selects Lean 4.32.0 and Mathlib revision \code{81a5d257c8e410db227a6665ed08f64fea08e997}. The maintained DiophantineConsistency module directory contains 519 Lean files and 81,677 physical lines at that snapshot. These figures include check modules and are not a measure of mathematical complexity.
+
+The exclusion review covered all 36 placed packet directories, labelled a through zj, and the five ZIPs present in \code{docs/incoming}. Those ZIPs contain 1,933 non-directory members, including 1,899 searchable text members, and no nested ZIPs. The focused checkout materialized 2,068 research text/code files. Packet READMEs and manuscript proposal indexes were read, and candidate-specific comparisons included technical notes and rejected or exploratory ideas. The inventory and exact supporting paths are in \path{audit/}.
+
+A final refresh at commit \code{60fcb2a69b7f1fdd4c3592ea5f164223cad50abe} found 43 placed packets, a through zq, with only a README remaining in \code{docs/incoming}. The original 36 packet trees are unchanged. Packets zk--zo relocate the five audited archives: all 328 retained substantive files match the original archive members byte-for-byte. The two additional packets, zp and zq, were reviewed through 40 blob-verified text/code files, including reports, candidates, and exploratory notes. Their controller, subset-sum, reflected-source, and LTE proposals are also treated as already available. None covers the three narrow contributions retained here.
+
+An untruncated comparison of all 519 maintained module blobs found five changes outside the direct targets and no added or removed modules. The six direct target files are byte-identical between the proof snapshot and final cutoff. The source comparison does not establish a fresh build of the newer dependency closure. Full evidence and refresh limits are in \path{audit/prior_art_refresh.md} and its JSON companion.
+
+Already-covered families include scanner induction, decoder invariants, formula semantic specifications, witness transport, generated circuit proofs, common circuit tails, coefficient envelopes, sparse-sum naturality, Pell parity and growth arguments, source-row consequences, controller residue interfaces, periodicity, finite-order rigidity, and representation-depth certificates. Recommending one of those families again would not satisfy this iteration.
+
+\subsection{The exact novelty boundary}
+
+For A, the contribution is \emph{exact shape balance and the resulting diagonal invariant}. A general suggestion to fold metadata or expose witness-count projections is prior work. In fact, the incoming additional-certificates taxonomy explicitly excludes merely moving or reusing count projections in \code{ExpressionSize}. The present theorem equates every leaf-insensitive structural interpretation of the two raw trees, including interpretations into noncommutative algebras.
+
+For B, generic ordered-semiring division uniqueness is explicitly mentioned as an exploratory direction in the incoming additional-certificates taxonomy. It is excluded as a new endpoint. The retained proposal is the \emph{shared monotone-boundary theorem} and its use in the square-pairing proof after packet y's shell-cut changes. Division illustrates reuse of the same interface. The paired applications count as one architectural idea.
+
+For C, earlier exponential-threshold machinery is assumed available. The new contribution is a precise application to \source{CurrentPackingRank2011}{rank\_gt\_twice\_window}, introduced by commit \code{493d46d498}. This theorem concerns a constructed packing before source-zero and Pell hypotheses are available. Earlier source-rank bounds cannot simply be substituted for it.
+
+\subsection{Rejected alternatives and audit limits}
+
+The review rejected a direct \code{fourBlocks\_cast} eliminant. Its apparent new polynomial identity is exactly the reversed identity already proved by \code{NativeSourceMask.packing\_four\_block}; packet zj also explicitly excludes the associated cast-cleanup direction. Direct elimination of the source rows giving $N=q^3$, a second fixed-point scanner abstraction, and joint simplifier correctness/cost induction were excluded for similar reasons.
+
+This is a documented non-repetition review, not a proof that no equivalent thought occurs anywhere in the repository. Historical PDFs were not visually reread when their TeX sources were available. Some provenance TSVs, build configuration files, and checksum metadata were inventoried by path rather than fetched. Old proofs and logs were not all semantically replayed. Historical non-simplification dossiers linked from the large incoming README were not recursively audited. The final candidate matrix records these limits and 20 exact evidence records with hashes and pinned repository paths.
+
+\section{A: exploit exact balance of the two split trees}
+
+\subsection{The current translation}
+
+The translation \sourceNamed{NaturalExpression}{Expr.splitNatural} represents an integer expression $e$ by natural expressions $(e^+,e^-)$ such that
+\[
+ e(v)=e^+(v)-e^-(v)
+\]
+after casting the natural values to integers. At leaves, an integer constant becomes two natural constants; a variable becomes that variable and zero. Addition and subtraction combine or swap the two components. Multiplication uses
+\[
+ (pq)^+=p^+q^++p^-q^-,\qquad
+ (pq)^-=p^+q^-+p^-q^+.
+\]
+Those expressions differ semantically. Nevertheless, their tree structure has a stronger invariant than the numerical upper bounds currently needed by the compiler.
+
+\subsection{A theorem for every shape algebra}
+
+Let $A$ be any type, choose an element $\ell\in A$, and choose two completely arbitrary operations
+\[
+ a,m:A\times A\longrightarrow A.
+\]
+Define $F$ on natural-expression syntax by sending \emph{both} constants and variables to $\ell$, addition nodes to $a$, and multiplication nodes to $m$. Then
+\begin{equation}\label{eq:shape}
+ F(e^+)=F(e^-)
+\end{equation}
+for every signed expression $e$.
+
+No associativity, commutativity, cancellation, or order hypothesis is needed. This is significant: equality of sizes alone would hide how much structure survives. Taking $A$ to be operation-labelled trees with one anonymous leaf shows that the two shapes themselves agree, including child order and the distinction between addition and multiplication.
+
+The proof is structural induction. At leaves, the two interpretations are $\ell$. At addition or subtraction, the induction hypotheses identify the corresponding child interpretations. At multiplication, write the common values for the two children as $P$ and $Q$. Both outputs then have interpretation
+\[
+ a(m(P,Q),m(P,Q)).
+\]
+This is syntactic congruence, so an algebraic normalizer is unnecessary.
+
+The supplied Lean theorem has the following form:
+\begin{Lean}
+theorem splitNatural_shapeFold_eq {σ A : Type*} (leaf : A)
+    (add mul : A → A → A) (e : Expr σ) :
+    NatExpr.shapeFold leaf add mul e.splitNatural.1 =
+      NatExpr.shapeFold leaf add mul e.splitNatural.2 := by
+  induction e <;> simp_all [splitNatural, NatExpr.shapeFold]
+\end{Lean}
+
+\subsection{Useful consequences}
+
+Choose $A=\N$, $\ell=1$, and both operations equal to $(x,y)\mapsto 1+x+y$. Equation~\eqref{eq:shape} gives
+\[
+ \operatorname{count}(e^+)=\operatorname{count}(e^-).
+\]
+Choose instead $\ell=0$ and both operations $(x,y)\mapsto 1+\max(x,y)$. It gives
+\[
+ \operatorname{depth}(e^+)=\operatorname{depth}(e^-).
+\]
+The count and depth declarations used by the extracted-definition check come from the pinned source. The bridge from either concrete recursion to the corresponding generic fold is another structural induction; the mathematical equality is not inferred from a finite sample of expressions.
+
+The existing graph compiler satisfies a count identity of the form
+\[
+ \operatorname{witnessCount}(t.\mathrm{graphRep})+1
+   =\operatorname{count}(t).
+\]
+Consequently the two raw graphs also have equal witness counts. This is a consequence of the shape invariant plus an existing identity. It is not a proposal to add another redundant witness-count framework.
+
+Other valid instances include the number of addition nodes, the number of multiplication nodes, or a structural cost charging the same amount for every leaf. Operations for the two internal node kinds may differ. This makes the result usable beyond one particular numerical size recurrence.
+
+\subsection{Collapse the reachable metadata to one number}
+
+The current \source{ExpressionSize}{splitSize} returns a record with \code{positive} and \code{negative} fields. Its leaf value is $(1,1)$. Its addition and subtraction operations preserve diagonal pairs, while its multiplication operation returns a diagonal pair by construction. Hence every reachable state lies in the diagonal
+\[
+ D=\{(h,h):h\in\N\}.
+\]
+Define the scalar recurrence
+\begin{align*}
+ H(c)&=H(x)=1,\\
+ H(p+q)&=H(p-q)=1+H(p)+H(q),\\
+ H(pq)&=3+2H(p)+2H(q).
+\end{align*}
+Then both raw tree counts equal $H(e)$, and the old pair-valued result is exactly $(H(e),H(e))$.
+
+The candidate retains the public record and its operations, including their behavior on arbitrary off-diagonal inputs. It changes only the expression fold to compute $H$ and package the result at the boundary:
+\begin{Lean}
+def halfSize {σ : Type*} : Expr σ → ℕ
+  | .constant _ | .var _ => 1
+  | .add p q | .sub p q => 1 + halfSize p + halfSize q
+  | .mul p q => 3 + 2 * halfSize p + 2 * halfSize q
+
+def splitSize {σ : Type*} (e : Expr σ) : SplitSize :=
+  ⟨halfSize e, halfSize e⟩
+\end{Lean}
+
+The whole candidate \code{ExpressionSize} file has 81 physical lines, compared with 90 in the pinned version. That nine-line difference includes the scalar recurrence and the revised proof. It excludes the optional explanatory shape-theorem module and the validation-only legacy comparison. If those explanatory declarations are installed as additional production API, they must be charged separately. The line difference is also not claimed to arise solely from the invariant: the candidate uses a compact induction script for its correctness theorem.
+
+\subsection{Compatibility and integration requirements}
+
+This candidate changes a \emph{computational metadata definition}, rather than only a theorem body. Its values agree with the previous implementation for every input; the extracted check proves this by retaining the original fold under a legacy namespace and establishing equality with the replacement. Equality of values is distinct from preservation of every old definitional reduction path.
+
+This matters most for clients that explicitly unfold \code{ExpressionSize.splitSize}. Check \code{BoundedForallSize} and \code{BoundedForallDepth} after adoption. Rewriting through a public equation is generally more stable than depending on the arrangement of the old pair recurrence. Concrete reductions still calculate the same numbers, but some symbolic \code{rfl}, \code{change}, or unfolding scripts may require adjustment.
+
+No claim is made that the metadata refactor speeds up compilation. That would require a controlled comparison of the actual consuming modules. The reliable benefit is that the representation of the invariant becomes explicit and only one structural count is propagated internally.
+
+\subsection{Where the theorem stops applying}
+
+The equality requires every leaf to receive the same interpretation. It does not equate semantic values, variable supports, polynomial degrees, or costs that depend on a literal's magnitude. For a variable $x$, the positive half is $x$ and the negative half is zero; their polynomials and supports already differ.
+
+The theorem also concerns \emph{raw} splitting. Separate simplification may destroy the shape equality. For example, split $x\cdot x$ and simplify each half. The positive half becomes $x\cdot x$ and the negative half becomes zero. A consumer of simplified syntax must use its own cost theorem; it must not reuse raw shape balance after normalization.
+
+\section{B: share uniqueness of monotone windows}
+
+\subsection{The common proof obligation}
+
+Several encodings locate an index by putting a value between two consecutive boundaries. Division locates a quotient in a multiple-of-divisor interval. The maximum coordinate of square pairing is located in a square shell. The underlying uniqueness argument does not depend on either multiplication or squares.
+
+Let $I$ be linearly ordered and $C$ be preordered. Suppose
+\[
+ B:I\to C\quad\text{is monotone},\qquad
+ s:I\to I,\qquad a<b\Longrightarrow s(a)\le b.
+\]
+If
+\[
+ B(a)\le x<B(s(a)),\qquad B(b)\le x<B(s(b)),
+\]
+then $a=b$.
+
+To prove it, assume $a<b$. The successor condition and monotonicity give
+\[
+ x<B(s(a))\le B(b)\le x,
+\]
+a contradiction. The opposite strict inequality is symmetric, and linearity finishes the proof.
+
+The codomain needs no antisymmetry. The boundary map needs no strict monotonicity. The indices need no well-foundedness, external finiteness, or Archimedean property. These weak assumptions are useful for the repository's internal-natural constructions, where replacing an internal carrier with external \code{Nat} would be invalid.
+
+\begin{Lean}
+theorem index_unique (succ : I → I)
+    (step_le : ∀ {a b : I}, a < b → succ a ≤ b)
+    (base : I → C) (mono : Monotone base)
+    {a b : I} {x : C}
+    (ha : base a ≤ x) (ha' : x < base (succ a))
+    (hb : base b ≤ x) (hb' : x < base (succ b)) : a = b := by
+  apply le_antisymm
+  · exact le_of_not_gt (fun h =>
+      (not_lt_of_ge ha) (hb'.trans_le (mono (step_le h))))
+  · exact le_of_not_gt (fun h =>
+      (not_lt_of_ge hb) (ha'.trans_le (mono (step_le h))))
+\end{Lean}
+
+\subsection{The residual square-pairing application}
+
+Write $m=\max(a,b)$. The prior shell argument gives
+\[
+ m^2\le \operatorname{pair}(a,b)<(m+1)^2.
+\]
+For two pairs with the same code, use the shared theorem with $B(m)=m^2$ and $s(m)=m+1$. Monotonicity of squaring holds on the nonnegative semiring carrier. The needed successor comparison is supplied by the existing discrete-order bridge. Thus the two maxima agree.
+
+Packet y's sharper \code{pair\_lt\_shell\_cut} argument already handles the subsequent branch decision. The new candidate preserves that theorem and its two-branch argument. It replaces only the common-maximum step that previously compared two possible maxima by contradiction.
+
+The main patch is deliberately rebased onto the \emph{packet-y candidate}, not advertised as though its shell improvement were new. The exact prior file is included under \path{windows/prior_baseline/}, together with its hash. Preservation checks confirm that the shell-cut section and the later branch/internal-wrapper text are unchanged.
+
+\subsection{Division as reuse evidence}
+
+For division, set $B(q)=qd$ and $s(q)=q+1$. From $n=qd+r$ and $0\le r<d$ one obtains
+\[
+ qd\le n<(q+1)d.
+\]
+The window theorem identifies $q$; additive cancellation then identifies $r$. The compatible generic example is checked over an ordered semiring. It has no external-natural induction hypothesis.
+
+Generic ordered-semiring division uniqueness itself is already discussed in prior material, so this report credits it with \emph{zero} fresh reduction. It is included to explain why the new abstraction has more than one mathematical client, not to increase the headline count of new ideas.
+
+\subsection{Honest source accounting}
+
+Against packet y, the pairing module decreases from 100 to 94 lines. The complete helper module adds 22 lines, including its import, documentation, namespace, and theorem. The marginal package therefore grows from 100 to 116 lines: \textbf{16 additional lines}. The new import in the pairing candidate is included in that count.
+
+This is an optional architectural choice. Adopt it when a common interval contract makes subsequent proofs clearer, or when another genuine residual client amortizes the helper. Keep the local proof if the immediate objective is only the fewest source lines. No conjectural future reuse is subtracted from the present total.
+
+The strict upper boundary is essential. Replacing both upper inequalities by weak inequalities permits adjacent closed intervals to share an endpoint. Conversely, a constant boundary map simply yields empty strict windows; no special nondegeneracy premise is needed to keep the theorem correct.
+
+\section{C: apply the growth theorem at the full exponent}
+
+\subsection{The exact current endpoint}
+
+In \source{CurrentPackingRank2011}{rank\_gt\_twice\_window}, put
+\[
+ u=\mathrm{width}\cdot N,\qquad q=2^u.
+\]
+The module has already proved a natural four-block lower bound $q^3\le R$ and an integer cast equality identifying $R$ with the constructed rank. The remaining numerical task is $2u<q^3$.
+
+The current proof first obtains $u<q$, then establishes positivity of $u$, $2\le q$, and $2\le q^2$, and finally compares $2u$ with $2q$ and then $q^3$. This is correct, but the final expression already suggests a shorter argument.
+
+\subsection{The replacement}
+
+The universal natural inequality $n<2^n$, applied at $n=3u$, gives
+\[
+ 2u\le 3u<2^{3u}=(2^u)^3=q^3.
+\]
+The Lean proof uses the exponent ordering produced directly by \code{Nat.pow\_mul}:
+\begin{Lean}
+have hc : 2*(width*N) < q N^3 := by
+  rw [q_binary, ← Nat.pow_mul]
+  exact Nat.lt_of_le_of_lt (by omega)
+    (Nat.lt_two_pow_self (n := (width*N)*3))
+\end{Lean}
+
+The library theorem's natural argument is implicit in the pinned Lean version. The named argument \code{(n := ...)} is required; a positional placeholder is not the checked code.
+
+After this step, the original calls to the four-block lower bound and the cast equality finish the proof. The complete module decreases from 138 to 133 physical lines. There is no new helper or import in the proposed production patch.
+
+\subsection{Why this is a valid residual change}
+
+The arithmetic core even covers $u=0$: $0<1$. It therefore avoids unnecessary positivity reasoning for this subgoal. The public theorem keeps its existing hypotheses because other parts of the constructed-packing interface use them; the patch does not claim those surrounding assumptions have all become redundant.
+
+Earlier native-rank growth proposals concern ranks recovered from source equations and, in some cases, later Pell or positivity information. This endpoint precedes those obligations. The present proof uses only the exact binary-power identity and the already-proved constructive lower bound, so it does not create a circular dependence on the eventual source-system correctness.
+
+This is a modest use of an existing library theorem, not a new exponential estimate. Its value is a smaller dependency chain in a newly added client.
+
+\section{Validation and what remains to be checked}
+
+\input{validation-summary.tex}
+
+Kernel-checked generic theorems and an applicable patch do not by themselves establish that all consumers in a large development rebuild. In particular, the scalar metadata change can alter symbolic reduction paths, and the ordered-window patch is based on the supplied post-y file rather than a fictional merge of all prior submissions.
+
+The evidence files retain source hashes, compiler versions, logs, and the exact scope of successful checks. A successful generic core is described as a core check. A stopped exploratory invocation is not converted into a successful build claim. No benchmark or whole-repository success is inferred from these results.
+
+\section{Integration sequence and further questions}
+
+\subsection{Suggested sequence}
+
+\begin{enumerate}
+\item Apply the five-line growth reduction first. Rebuild \code{CurrentPackingRank2011} and its focused check module. It changes one theorem body and adds no shared API.
+\item Review the scalar metadata fold and its proof of equality with the original fold. Rebuild \code{ExpressionSize}, then \code{BoundedForallSize} and \code{BoundedForallDepth}; inspect any client that unfolds the metadata definition. The generic shape theorem can be retained as a reusable interface or left as checked supporting evidence.
+\item Consider the window abstraction separately. Apply it after packet y's shell-cut change. Use the included post-prior baseline and patch to avoid accidentally reintroducing old proof branches. Count its 16-line overhead explicitly.
+\end{enumerate}
+
+The replay scripts distinguish standard-library cores from checks requiring the configured repository and Mathlib. They do not push commits or change a remote repository. Patch applicability checks are separate from compilation.
+
+\subsection{Further research questions}
+
+\textbf{Which other paired metadata recurrences are constrained to a proper subset of their declared state type?} The diagonal invariant here is stronger than a numerical estimate. Similar exact constraints may let a future metadata producer compute fewer components. Each proposed collapse should come with an equality to its old implementation and a consumer inventory; superficial similarity of two formulas is insufficient.
+
+\textbf{Can resource interfaces depend only on shape?} A small generic structural interpretation could derive count, depth, and operation-sensitive costs from the same exact theorem. The tradeoff is API overhead. A useful next experiment is to compare the smallest shared interface against the actual remaining consumers, charging every helper and avoiding duplication of the older depth-certificate work.
+
+\textbf{Where should raw and simplified split certificates separate?} Raw symmetry supplies exact equalities, whereas independent simplification supplies inequalities. A clear interface between those stages could prevent invalid rewrites and make later cost arguments shorter. The $x\cdot x$ counterexample should remain a regression example for any such interface.
+
+\textbf{Does a third residual encoding use the same monotone-window contract?} Division is already prior work and cannot justify a new savings claim by itself. A genuine additional client with independently proved window bounds would determine whether the abstraction earns back its current overhead. Decoders based on disjoint shells are a natural place to inspect, but no unreviewed client is counted in this packet.
+
+\textbf{Are other new growth clients using an exponent in stages when a single application suffices?} The relevant search pattern is a final term $b^{ku}$ together with a desired linear bound in $u$. A full-exponent argument can sometimes remove positivity and intermediate-power lemmas. Each use must be screened against the older threshold proposals and checked at zero and boundary exponents.
+
+\section*{Sources and artifact map}
+\addcontentsline{toc}{section}{Sources and artifact map}
+
+\begingroup\raggedright
+\begin{enumerate}[label={[\arabic*]}]
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/commit/9d9d1123b39927d30363f1dcd53c23f0575c30ee}{Pinned ProveIt commit}. Root \code{lean-toolchain}, \code{lakefile.toml}, and \code{lake-manifest.json} supply the compiler and dependency pins.
+\item \sourceNamed{NaturalExpression}{Expr.splitNatural}, \source{ExpressionSize}{splitSize}, and \sourceNamed{RepresentationSize}{Expr.splitNatural\_depth\_le}: the exact syntax and metadata motivating A.
+\item \source{ObjectPairingInjective}{pair\_eq\_pair\_iff} and \source{ObjectDivision}{division\_unique}: the two mathematical interval clients. The main new patch uses packet y's \code{syntax/candidates/ObjectPairingInjective.lean} as its comparison baseline.
+\item \source{CurrentPackingRank2011}{rank\_gt\_twice\_window}: the new constructed-rank endpoint. Its introducing commit is \href{https://github.com/VladimirReshetnikov/ProveIt/commit/493d46d498af45840085ef8c170a9db6289157f9}{\code{493d46d498}}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/9d9d1123b39927d30363f1dcd53c23f0575c30ee/Computability/DiophantineConsistency/research/lean-proof-simplification}{Prior proposal collection} and \href{https://github.com/VladimirReshetnikov/ProveIt/tree/9d9d1123b39927d30363f1dcd53c23f0575c30ee/docs/incoming}{incoming archives}. Exact evidence members, line locations, and hashes appear in \path{audit/prior_art_final_novelty.json}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/research/lean-proof-simplification/README.md}{Final 43-packet registry}. The refresh includes the newly placed \href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zp/report.tex}{zp report} and \href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zq/report.tex}{zq report}. The source inventories in zq mention the constructed-rank theorem but do not propose its full-exponent proof.
+\item \href{https://github.com/leanprover-community/mathlib4/tree/81a5d257c8e410db227a6665ed08f64fea08e997}{Pinned Mathlib source}. The compiler is Lean 4.32.0, commit \code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}.
+\end{enumerate}
+\endgroup
+
+The archive contains this PDF and its complete LaTeX source, the three proposal directories, proof cores and logs, exact baseline/candidate source files, patch applicability evidence, an exclusion audit, and portable replay guidance. It omits repository-wide source snapshots and compiled dependency caches.
+
+\end{document}

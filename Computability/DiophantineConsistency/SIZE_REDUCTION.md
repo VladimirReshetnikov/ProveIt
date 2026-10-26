@@ -12,7 +12,44 @@ A smaller formula must retain a complete ordinary proof chain, including
 its coefficient tuple and witness domain. Local gadget counts alone do
 not establish the size of a complete consistency equation.
 
+The accepted scaled auxiliary-coefficient replacement now also has a
+uniform Lean proof on all fourteen Carrier65 coordinates, including
+noncanonical positive zeros, and a closed external consistency equivalence
+at the exact CURRENT2011 ports. See
+[`CarrierScaledAuxiliary118`](Lean/DiophantineConsistency/CarrierScaledAuxiliary118.lean)
+and its [independent replay](reviews/carrier-scaled-auxiliary118-lean-peer.md).
+This extends formal coverage; its separate older66/118 graph and degree
+certificate retain their sorted2501 binding. A new current-port graph or
+Lean exact-degree theorem is not claimed by that algebraic transfer.
+
 ## 25 October continuation
+
+26 October new tradeoff: the
+[corrected thirteen-variable strong factor](research/thirteen-corrected-strong126/README.md)
+gives **13 positive unknowns,73 integer-leaf operations and exact degree126**
+at the complete CURRENT2011 ports (47313 raw bytes). Compared with71/128,
+it spends two operations to lower the degree by two. The correction adapts
+the existing fifteen-variable strong-factor idea; no novelty or global
+minimum is claimed. Its entire positive zero set is preserved by the
+identity witness map, and its actual current-port consistency equivalence
+is Lean-checked. The complete finite graph/degree audit passes normally
+and under optimized Python, including both cancellation sites and all72
+leading terms. See the [independent root review](reviews/thirteen-corrected-strong126-root.md).
+This metric proof is separate from the Lean zero-set proof; an HA
+proof-existence endpoint remains open. The maintained decimal14/65/150
+page is unchanged.
+
+26 October formalization checkpoint: the maintained14/65/150 equation and
+the generic accepted13/69/174,13/70/140 and13/71/128 forms instantiated at
+the CURRENT2011 coefficient tuple now have closed external Lean no-positive-zero
+iff actual `DiophantineConsistency.ConZFC` theorems. See
+[`CurrentPositiveZero2011`](Lean/DiophantineConsistency/CurrentPositiveZero2011.lean),
+the [author receipt](reviews/current-positive-zero2011-root.md) and
+[independent fresh endpoint replay](reviews/current-positive-zero2011-lean-peer.md).
+This instantiation does not relabel the older frozen2471 graph artifacts
+described below. Strictly positive integer domains and all four actual ports
+are explicit. The encoded proof inside ZFC, source-authenticated current
+closure validation and iterative equation-size reduction remain ongoing.
 
 The maintained [decimal padding-staircase2011 page](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 has **14 positive unknowns,65 integer-leaf operations and exact degree150**.

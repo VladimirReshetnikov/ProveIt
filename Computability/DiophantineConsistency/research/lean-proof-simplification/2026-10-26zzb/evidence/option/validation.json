@@ -1,0 +1,38 @@
+{
+  "closing_snapshot": "3b51c69d42ff99bc420698532af3fe1d1f9bd356",
+  "dependency_source_snapshot": "7ba7d102822df1eff376cbca913727d9d588ab4e",
+  "lean_version": "Lean 4.32.0, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35",
+  "mathlib_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "baseline": {
+    "baseline": "incoming proposal A reference/certificate-migration/EnumeratorSemantics.lean",
+    "baseline_sha256": "4d9cc3b56f5a5d7a07bc443fbe0eee2a2201f2e8cd5ddbb0cfd3f7ce1b30b11d",
+    "new_sha256": "161a84683152b9e92bd268accb1841bbc684cc6f8ed7ca48be42242e463e2bfe",
+    "old_lines": 85,
+    "new_lines": 76,
+    "removed_declarations": [
+      "private stateEquiv",
+      "private Primcodable St instance",
+      "private DecidableEq St instance"
+    ],
+    "removed_import": "Mathlib.Computability.Primrec.Basic",
+    "scope": "Incremental deletion AFTER prior certificate-dependency proposal; no dependency-reversal changes included",
+    "replacement_import": "Mathlib.Logic.Encodable.Basic",
+    "note": "The semantic definitions still require Encodable Bool and iteration notation; outright removal of all Mathlib imports is invalid. The narrower Encodable import supplies them."
+  },
+  "kernel_checks": {
+    "cleaned_production_module": 0,
+    "original_vs_cleaned_rfl_comparison": 0,
+    "actual_endpoint_audit": 0
+  },
+  "patch_apply_check_against_exact_prior_baseline": 0,
+  "whole_repository_build": false,
+  "source_hashes": {
+    "DiophantineConsistency/EnumeratorSemantics.lean": "161a84683152b9e92bd268accb1841bbc684cc6f8ed7ca48be42242e463e2bfe",
+    "TagOnlyDecision.lean": "8404c4ca9c3dc3bd8321c70901000025f67cf3cf1e2676b40ab9d0078c5919c8",
+    "TargetAudit.lean": "9136ec5c047a16dab11b8849a6d4778c2740e532d4ac56fdad072fb4ab8834f1",
+    "remove-unused-state-encoding.patch": "ec5100fc08b5e09e3fb9f5dd3422deb5470512d367a2b27ceb19bf4f69d8a73a"
+  },
+  "actual_target_axioms": "'DiophantineConsistency.haltingTest' depends on axioms: [propext, Classical.choice, Quot.sound]\n'DiophantineConsistency.haltingTest_eq_one_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\n'DiophantineConsistency.exists_haltingTest_eq_one_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\n'actual_haltingTest_tag_only' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+  "comparison_axioms": "'TagOnlyDecision.baseline_eq_cleaned' depends on axioms: [propext, Classical.choice, Quot.sound]\n'TagOnlyDecision.old_test_eq_tagOnly' depends on axioms: [propext, Classical.choice, Quot.sound]\n'TagOnlyDecision.no_payload_instance_needed' does not depend on any axioms\n",
+  "scope": "New production delta is only the post-prior nine-line deletion/narrower import. Earlier certificate dependency reversal remains excluded."
+}

@@ -1,0 +1,53 @@
+\section{Two small Pell proof reductions}
+\label{sec:pell}
+These are the recommended first changes. Both preserve theorem statements and use already imported infrastructure. Neither adds a helper, an import, a stronger hypothesis, or new executable data.
+
+\subsection{Feed the square identity directly to Pell classification}
+The target is \src{SignedPellResidue}{signed_residue_cases}, especially the block beginning at baseline line 62. The preceding argument already proves
+\[
+ (A\,|V|)^2=(A^2-1)|y|^2+1
+\]
+as an equality of natural numbers. The current proof then creates another equality with explicit multiplication, calls \code{nlinarith}, uses \code{omega} to turn addition into truncated subtraction, and finally passes that fact to \code{Pell.eq_pell}.
+
+The additive equality is exactly the premise of \code{Nat.sub_eq_of_eq_add'}. It already contains the information that makes the natural subtraction exact. Normalize squares and multiplication association at the point of use:
+\begin{lean}
+obtain ⟨n, hx, hy⟩ := Pell.eq_pell hA
+    (x := A * V.natAbs) (y := y.natAbs) (by
+  change (A * V.natAbs) * (A * V.natAbs) -
+    (A * A - 1) * y.natAbs * y.natAbs = 1
+  simpa only [pow_two, mul_assoc] using
+    Nat.sub_eq_of_eq_add' hn)
+\end{lean}
+
+The apostrophe is significant: it selects the orientation of the addition equation used here. The explicit \code{change} exposes the discriminant hidden behind the imported \code{Pell.d} definition; restricted simplification alone does not unfold that interface. Both details are present in the successfully checked patch.
+
+The change removes the local \code{hp} bridge and three physical source lines: the complete module goes from 102 to 99 lines. It leaves the absolute-value conversion that produces \code{hn}, the index-parity argument, and all subsequent sign/congruence cases intact. Those later stages are adjacent to earlier proposals and receive no new credit here.
+
+A possible alternative was to import an existing \code{eq_pell_of_sq} wrapper from a heavier module. That route is not recommended: this short adapter already exposes the exact mathematical step, while the heavier dependency would outweigh the small convenience. The supplied patch adds no dependency.
+
+\subsection{Use the integer Pell norm theorem where the goal is integer-valued}
+The target is \src{ThirteenFreshSeed}{auxiliary_exists}. Two local goals assert an integer norm identity for Pell sequence values. The baseline starts from \code{χ_sq}, an identity over natural numbers, casts it with \code{congrArg}, proves or supplies a guard for natural subtraction, and normalizes the resulting integer expression.
+
+Pinned Mathlib already provides the integer invariant \code{Pell.pell_eqz}. Its discriminant conversion is \code{Pell.dz_val}. These are available through the module's existing imports. For the first norm identity, the entire proof becomes:
+\begin{lean}
+have hp : f ^ 2 - delta * (yn hA t : ℤ) ^ 2 = 1 := by
+  simpa only [f, delta, xz, yz, dz_val, az,
+    pow_two, mul_assoc] using pell_eqz hA t
+\end{lean}
+
+For the second, use the same integer invariant, substitute the existing coordinate equation \code{hx}, and retain the short polynomial normalization needed for the chosen sign of \code{y}:
+\begin{lean}
+have hnorm : (S : ℤ) ^ 2 * V ^ 2 -
+    ((S : ℤ) ^ 2 - 1) * y ^ 2 = 1 := by
+  have h := pell_eqz hS R
+  simp only [xz, yz, dz_val, az, hx] at h
+  dsimp [y]
+  nlinarith only [h]
+\end{lean}
+
+This removes four lines at the first site and three at the second. The complete module goes from 217 to 210 physical lines. The local \code{hSS} subtraction guard disappears because the direct integer theorem already packages the correct discriminant. Other guards and casts used elsewhere in the construction remain necessary and are not removed.
+
+The useful principle here is specific: choose the invariant in the scalar domain of the target equation. It is not a new general casting framework. Earlier integer-norm proposals address a different obligation, such as avoiding rational square arguments or minimizing a fundamental unit. This change substitutes an existing theorem for two constructive sequence-norm bridges. The earlier fresh-seed replacement itself retains those bridges, which provides a particularly close counterfactual comparison.
+
+\subsection{Expected effect and limits}
+Taken together, these two patches remove ten physical lines with no helper overhead. They reduce intermediate facts and two uses of natural-subtraction cast machinery. No compile-time, memory, or object-size improvement has been established. The validation section distinguishes complete modified-module checks from a project rebuild, and records the dependencies used. Their small scope makes these the best initial adoption candidates even though their absolute line savings are modest.

@@ -6,6 +6,14 @@ metrics have no solutions exactly when the repository's syntactic
 `ConZFC`. This supersedes the earlier pause. Decimal notation and distinct
 unsubscripted scalar names remain requirements for the maintained page.
 
+On26 October the owner strengthened the target to a Lean theorem that
+the equivalence is PROVABLE IN INTUITIONISTIC HEYTING ARITHMETIC (HA).
+Only existence of an HA proof must be proved; printing or serializing the
+literal proof is unnecessary. The [HA provability plan](HA_PROVABILITY_PLAN.md)
+now governs the remaining foundational work. Existing external endpoints
+and ZFC-sentence work are retained at their precise scopes; an encoded
+ZFC derivation is superseded as the primary remaining target.
+
 ## Required endpoints and evidence
 
 `DiophantineConsistency.ConZFC` is
@@ -28,9 +36,11 @@ For each selected frontier equation, completion requires:
    closed Lean theorem for that particular equation.
 5. Kernel-checked builds and audits of the theorem axioms. Python finite
    certificates and ordinary proofs guide this work but do not replace it.
-6. For the original assertion of provability *in ZFC*, the internal
-   interpretation and object-language derivation, including nonstandard
-   internal codes. The older external Lean endpoints alone do not supply it.
+6. A closed Lean theorem asserting existence of an HA derivation of the
+   literal arithmetic equivalence, including its proof-checker convention.
+   A general verified translation/existence argument is sufficient; a
+   literal expanded HA proof need not be produced. The external Lean iff
+   and the older set-theory sentence endpoints alone do not supply this.
 
 The target collection includes the maintained 14-positive/65-operation/
 degree-150 page; the accepted 13-positive 69/174, 70/140 and 71/128
@@ -76,11 +86,32 @@ external Lean equivalence for the maintained polynomial.
 13-coordinate solution under negated consistency are checked as well.
 See the [author record](reviews/current-positive-zero2011-root.md) and
 [independent fresh replay](reviews/current-positive-zero2011-lean-peer.md).
-Remaining work includes the encoded internal-ZFC derivation, other equation
+Remaining work includes the HA proof-existence theorem, other equation
 frontiers, further size reduction and source-authenticated current closure
 validation. These fresh endpoint builds reuse prerequisites; they are not
-a fresh full umbrella build. The1997 proposal
+a fresh full umbrella build. The source-authenticated361-module custom
+closure validation has now passed at09eaa with170 authenticated reused
+modules and191 freshly compiled; see its
+[completed replay](reviews/current-positive-zero2011-closure-replay.md).
+After merging the five upstream proof changes at8d1729, a separate
+[15-command refresh](reviews/current-positive-zero2011-refresh-replay.md)
+passed with54 standard-only axiom reports. It retained355 unchanged
+objects, including intermediate clients, and is not a fresh full merged
+closure validation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
+
+`CurrentWitnessEquivalence2011` now exposes both external witness maps
+directly: positive zero iff `BProv ZFCax_s [] Form.fBot`. Its final negation
+equivalence has no outer double-negation-elimination step. Root independently
+rebuilt both new leaves and checked all five standard-only axiom reports;
+see the [receipt](reviews/current-witness-equivalence2011-root.md).
+`HAProofs` separately defines genuine intuitionistic first-order arithmetic
+derivability and full formula induction, with independent fresh replay of
+its main/check leaves and authenticated five-module prerequisite reuse.
+Neither checkpoint proves HA's desired consistency equivalence. The
+[HA plan](HA_PROVABILITY_PLAN.md) now records the existing internal IΣ₂/PA
+validator and Rotation240 results and the exact215/coding adapters still
+needed.
 
 The first new modules address necessary reusable pieces of that chain:
 
@@ -846,6 +877,51 @@ An encoded proof inside the ZFC calculus remains open, including nonstandard
 internal witnesses. The [next-bridge audit](research/current-equivalence-next-bridge-20261026.md)
 records that separate obligation; its arithmetic-composition status predates
 this final checkpoint. Decimal notation and distinct unknown names are retained.
+
+`ObjectCurrentEquation2011` now supplies the literal current expression,
+proves equality to the entire maintained polynomial, and gives the actual
+closed sentence for its positive-domain unsolvability. P(x+1) is used on
+natural variables; its external inverse and every internal positive
+predecessor are checked. Generic split-natural syntax induction avoids
+expanding the enormous specialized tree while preserving every signed
+coefficient. The exact sentence semantics covers all internal naturals
+of an arbitrary model, including nonstandard tuples. See its
+[author record](reviews/object-current-equation2011-author.md) and
+[independent fresh root main/check replay](reviews/object-current-equation2011-root.md),
+with ten standard-only reports. Six post-merge object-language prerequisites
+were freshly built by the author and reused by root; old native objects
+remain explicitly pinned with two current-source dependency gaps. The
+separate source-authenticated closure refresh addresses those gaps.
+The encoded iff between this sentence and sealed internal consistency
+remains OPEN; constructing the sentence is not that calibration proof.
+
+`CarrierScaledAuxiliary118` now checks the accepted auxiliary-coefficient
+replacement directly on Carrier65. Nonzero discriminant is enough for
+the identity witness map to preserve the entire integer zero set; the
+positive specialization derives that condition from the actual beta and
+coordinate signs. The new literal current-port polynomial therefore has
+a closed external no-positive-zero iff actual ConZFC theorem. See the
+[author record](reviews/carrier-scaled-auxiliary118-root.md) and
+[independent fresh replay](reviews/carrier-scaled-auxiliary118-lean-peer.md),
+with six standard-only reports. This extends the Lean-covered arithmetic
+frontier using an existing ordinary reduction; the separate frozen
+sorted2501 graph's66-operation/degree118 proof is not relabeled as a new
+current2011 graph or as a Lean metric theorem. The65-operation page stays
+unchanged, and the internal-ZFC obligation remains separate.
+
+`ThirteenCorrectedStrong` adds the first-norm residual inside the normalized
+strong factor. At a zero of EITHER product polynomial it independently
+derives P=1 from the integer-unit property and the actual consecutive-Pell
+negative-unit exclusion. Thus the identity map preserves the entire
+positive thirteen-coordinate zero set, without a supplied norm or native
+witness. The exact current2011 specialization has a closed external
+no-positive-zero iff ConZFC theorem. Its [author receipt](reviews/thirteen-corrected-strong126-author.md)
+and [independent root source/replay/finite review](reviews/thirteen-corrected-strong126-root.md)
+record eleven standard-only reports. The separate complete graph gives
+73 operations and exact degree126, after full323/353-term cancellation
+checks and all72 leading terms. All four actual ports are rebuilt in the
+normal/optimized auditor. This is a two-operation/two-degree tradeoff,
+with no Lean exact-degree or HA proof-existence endpoint claimed.
 
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now

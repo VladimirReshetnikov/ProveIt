@@ -1,0 +1,26 @@
+{\raggedright All successful checks below used Lean 4.32.0, compiler commit
+\code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}. The Mathlib-dependent checks used the pinned revision recorded in the repository.\par}
+
+\begin{tabularx}{\textwidth}{@{}p{0.22\textwidth}Y@{}}
+\toprule
+Artifact & Successful checking scope\\
+\midrule
+\code{ShapeCore.lean} & Hash-verified extraction of the actual syntax, splitting, count, depth, old metadata, and candidate metadata declarations. Proves the generic fold theorem, erased-tree equality, count/depth equality, candidate correctness, and equality to the original metadata for every expression.\\
+\addlinespace
+\code{SplitShape.lean} & Complete repository-importing theorem module elaborated and emitted an object file. Both named shape theorems report only \code{propext}.\\
+\addlinespace
+\code{ExpressionSize.lean} & The complete 81-line candidate elaborated and emitted an object file. This was a cached-prerequisite check, not a freshly rebuilt pinned dependency closure.\\
+\addlinespace
+Window helper and pairing & Complete new 22-line helper compiled. The complete generic \code{MaxSquarePairing} namespace from the post-y candidate compiled; the internal-model wrapper was not rebuilt.\\
+\addlinespace
+Growth core & Standard-library arithmetic core compiled, including the final natural-to-integer transport with explicit lower/cast hypotheses and zero/one exponent examples. The complete packing-rank module was not rebuilt.\\
+\bottomrule
+\end{tabularx}
+
+The shape extractor checks SHA-256 hashes before extracting declarations. It changes only the spellings \code{ℕ} to \code{Nat}, \code{ℤ} to \code{Int}, and \code{Type*} to \code{Type \_}, and places the original metadata function under a legacy namespace. Its comparison theorem is universal, rather than a test on a finite selection of examples. The generated file and its manifest are included, so extraction can be reproduced independently.
+
+The repository-importing shape checks reused compiled prerequisites. Source comparison found the two cached files \code{Representation} and \code{QuarticCompiler} predated existing assignment-proof refactors at the pinned commit. The pertinent datatype, split, and count definitions agree; the extracted-definition checker independently uses the exact pinned files. These observations support the stated core/candidate checks but do not establish a fresh build of the full dependency tree.
+
+The generic shape, count, and depth equalities use only \code{propext}. The scalar correctness and legacy-equality checks use \code{propext} and \code{Quot.sound}; the new positive/negative projection equality is axiom-free. The window helper uses \code{propext}; the generic pairing checks report the standard set \code{propext}, \code{Classical.choice}, and \code{Quot.sound}. The growth core uses \code{propext} and \code{Quot.sound}. None of the delivered successful theorem audits reports \code{sorryAx}.
+
+The shape and growth patches pass applicability checks against the pinned source. The window patch passes against its included exact post-y baseline. No full repository build, fresh full-baseline axiom comparison, controlled timing comparison, or simultaneous integration of all historical proposals is claimed.
