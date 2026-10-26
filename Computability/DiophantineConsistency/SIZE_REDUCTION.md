@@ -13,22 +13,23 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained [decimal phase-split2471 page](candidates/one-page-phase-split-carrier65-2471/README.md)
-has **14 positive unknowns, 65 integer-leaf operations and exact degree 150**.
-The uniform Carrier65 front and its positive maps are unchanged. The new
-native tuple has a complete ordinary proof, discharged finite premises and
-full independent proof/code reviews. Its four integers total 58125 raw
-bytes, 704 below the preceding sorted2501 tuple.
+The maintained [decimal padding-staircase2011 page](candidates/one-page-padding-staircase-carrier65-2011/README.md)
+has **14 positive unknowns,65 integer-leaf operations and exact degree150**.
+The uniform Carrier65 front and positive maps are unchanged. The new native
+tuple has a complete ordinary proof, discharged finite premises and full
+independent proof/code reviews. Its four integers total47313 raw bytes,
+10812 below the preceding2471 tuple.
 
-The full printed weight definition and floor-rank formula fix Start and
-order the other 941 selectors strictly. The initializer becomes physical
-504. Low binary phases use the full suffix from459; high phases recover
-at most one selector before resetting low fields. Marker1004 parity then
-fixes the binary phase before full clause1462 decoding.
-Both residual offsets are excluded by global
-Start-cycle arguments. The complete proof covers all 916 bit3 padding tests,
-actual mask populations and rank, every safe subset, the entire three-prime
-controller and both positive P66 maps. The auxiliary prime is121441.
+The printed weight definition and floor-rank formula fix Start and order
+the other941 selectors strictly; the initializer stays physical504. For
+the difficult binary phases7..10,483 consecutive bit3 padding tests bound
+the first483 selectors by3. This forces at most one selector globally;
+other phases give the preliminary bound directly. Conditional low-carry
+resets and marker1004 parity then fix the binary phase before full
+clause1005 decoding. Global Start-cycle arguments exclude both residual
+offsets. The proof covers every padding test, mask and rank, all safe
+subsets, the controller at47*2011 with auxiliary prime120199, and both
+positive P66 maps.
 
 The owner requested base10 and distinct scalar names. Every maintained
 TeX/PDF must retain those preferences. The current page prints all 715
@@ -39,20 +40,22 @@ unsubscripted names, including factors P,Q,U,W,Z. Fonts stay 9pt body and
 checks, independent full reconstruction, two visual inspections and fresh
 byte-identical rendering.
 
-The phase-split page saves704 raw bytes. Complete TeX remains5362 bytes,
-extracted nonwhite PDF text2879 characters and PDF153047 bytes. Gzip grows
-2 bytes to4258. All715 decimal digits and the whole arithmetic front are
-identical; only three fixed scalar exponents change. The complete sorted2501
-parent and its exact CURRENT record remain preserved. The specialized
-polynomials differ because their ports do.
+The staircase page saves10812 raw bytes and28 compressed bytes, giving
+47313 and4230 respectively. TeX remains5362 bytes and extracted nonwhite
+PDF text2879 characters; PDF serialization falls one byte to153046.
+All715 decimal digits and the whole arithmetic front are identical; only
+three fixed scalar exponents change. The complete2471 parent and exact
+CURRENT record remain preserved. The specialized polynomials differ
+because their ports do.
 
-The independently reviewed full-suffix exchange bound proves C>=1493 and
-L>=2501 only within its fixed weight/marker/reset/controller family. The
-accepted2471 proof changes that reset method. Next work uses consecutive
-padding tests before full decoding to seek a stronger reduction, alongside
-rational-leaf and lower-degree arithmetic tradeoffs. New leads require
-their complete proof, finite certificate and page review before promotion.
-Every earlier native and complete-page checkpoint remains available.
+The full-suffix exchange bound proves C>=1493 and L>=2501 only within its
+fixed weight/marker/reset/controller family. The2471 and2011 proofs change
+that reset method. Further length reduction must change the final occupied
+field or marker geometry: with the fixed physical marker1004 and a zero
+top field, the present odd-length template already needs L>=2011. This is
+a template bound, not a general minimum. Next work tests different marker
+positions and arithmetic tradeoffs. Every new tuple still needs its complete
+proof, finite certificate and page review before promotion.
 
 The [complete thirteen-variable carrier](research/thirteen-variable-independent/README.md)
 now has independently reviewed full soundness/fresh-seed maps and two

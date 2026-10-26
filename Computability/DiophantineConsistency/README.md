@@ -26,24 +26,25 @@ polynomial front has a distinct unsubscripted name; its five factors are
 P,Q,U,W,Z and its two masks are mu,omega. The complete 430-action decoder
 and 942 indexed tiles fit on one Letter page at the unchanged fonts.
 
-The [complete phase-split2471 candidate](candidates/one-page-phase-split-carrier65-2471/README.md)
-uses **58,125 raw fixed-integer bytes**, 704 below the preceding sorted2501
-page. It fixes Start and sorts the other 941 selectors by their distinct
+The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
+uses **47,313 raw fixed-integer bytes**, 10,812 below the preceding2471
+page. It fixes Start and sorts the other941 selectors by their distinct
 weights. The full weight definition and floor-rank permutation are printed;
-all 885481 comparisons are checked. The abstract tile table is unchanged,
-and the initializer moves from abstract 928 to physical 504.
+all885481 comparisons are checked. The abstract tile table is unchanged,
+and the initializer remains at physical504.
 
-The [native proof](research/phase-split-independent/PROOF.md) splits the
-fractional binary phases. Low phases use a full coefficient-tail bound;
-high phases recover at most one selector before resetting the low fields.
-Marker parity then fixes the binary phase, and global Start-cycle arguments
-exclude both residual offsets. The proof accounts for
-the reflected-marker collision, all 916 bit3 padding tests, complete masks,
-actual rank, every safe Boolean subset and both positive P66 maps. Its
-[finite certificate](research/phase-split-independent/certificate.json)
-discharges the full controller at d = 47*7*353, with auxiliary prime 121441.
+The [native proof](research/padding-staircase-independent/PROOF.md) uses
+consecutive padding tests before full decoding. For binary phases7..10,
+483 tests bound the first483 selectors by3, forcing at most one selector
+globally; other phases give that bound directly. Low-carry resets and
+marker parity then fix the binary phase, and global Start-cycle arguments
+exclude both residual offsets. The complete proof includes the reflected
+marker collision, all916 padding tests, masks, rank, safe subsets and both
+positive P66 maps. Its
+[finite certificate](research/padding-staircase-independent/certificate.json)
+discharges the full controller at d = 47*2011, with auxiliary prime120199.
 Independent mathematical and verifier reviews and
-[root acceptance](research/phase-split-independent/ROOT_REVIEW.md) pass.
+[root acceptance](research/padding-staircase-independent/ROOT_REVIEW.md) pass.
 
 The [uniform Carrier65 proof](research/carrier65-independent/PROOF.md)
 applies at these exact ports. Its complete 65-row arithmetic graph,
@@ -54,15 +55,15 @@ preserves all 430 actions while printing 715 decimal digits instead of 781.
 The complete decoder includes radix-one discoveries, both prefix endpoint
 domains and the necessary halt remainder.
 
-Complete TeX is 5362 bytes, extracted nonwhite PDF text 2879 characters,
-PDF 153047 bytes and gzip integers 4258 bytes. Against the preceding
-715-digit sorted2501 page, raw storage saves 704 bytes and compressed
-storage grows 2 bytes. Complete TeX, extracted text and PDF sizes stay
-unchanged. Only the cell length, clause center and spatial exponent change
+Complete TeX is5362 bytes, extracted nonwhite PDF text2879 characters,
+PDF153046 bytes and gzip integers4230 bytes. Against the preceding2471
+page, raw storage saves10812 bytes and compressed storage saves28 bytes.
+Printed specification length stays unchanged; PDF serialization saves
+one byte. Only the cell length, clause center and spatial exponent change
 in the source. Every predecessor remains available. The
-[independent page review](reviews/phase-split-carrier65-2471-page-peer.md) and
-[CURRENT_EQUATION.json](CURRENT_EQUATION.json) bind the whole source, all
-four integers, every actual PDF digit, two visual inspections, fresh
+[independent page review](reviews/padding-staircase-carrier65-2011-page-peer.md)
+and [CURRENT_EQUATION.json](CURRENT_EQUATION.json) bind the whole source,
+all four integers, every actual PDF digit, two visual inspections, fresh
 byte-identical rendering and the exact preceding record.
 
 An independent [decimal conversion checkpoint](research/decimal-seed-stage-A-run/README.md)

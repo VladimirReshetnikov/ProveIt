@@ -25,29 +25,30 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print the
-complete **715-digit decimal phase-split2471 Carrier65** equation: 14 positive
-unknowns, degree 150, 65 integer-leaf operations and 58125 raw fixed-integer
-bytes. The distinct unsubscripted scalar names, full action decoder and
-942-tile table remain on one Letter page at the unchanged fonts.
+complete **715-digit decimal padding-staircase2011 Carrier65** equation:
+14 positive unknowns, degree150,65 integer-leaf operations and47313 raw
+fixed-integer bytes. Distinct unsubscripted scalar names, the full action
+decoder and942-tile table remain on one Letter page at unchanged fonts.
 
-The [native proof and finite certificate](research/phase-split-independent/README.md)
-have complete root and independent reviews. Splitting the fractional binary
-phases lowers the clause to 1462. Low phases use a full suffix reset; high
-phases recover at most one selector before resetting low fields. Marker
-parity and global arguments then exclude nonzero phases and both Start offsets.
-All masks, padding, rank, safe subsets and both witness maps use the new
-ports. The full controller has d = 47*7*353 and auxiliary prime 121441.
-The uniform Carrier65 theorem supplies the same complete arithmetic front.
+The [native proof and finite certificate](research/padding-staircase-independent/README.md)
+have complete root and independent reviews. In binary phases7..10,483
+padding tests bound a selector prefix before full decoding; this forces
+at most one selector and lowers the clause to1005. Conditional resets,
+marker parity and global Start-cycle arguments then exclude nonzero phases
+and both residual offsets. Every mask, padding test, rank, safe subset
+and both witness maps use the new ports. The full controller has
+d = 47*2011 and auxiliary prime120199. The uniform Carrier65 theorem
+supplies the same complete arithmetic front.
 
-The [complete candidate](candidates/one-page-phase-split-carrier65-2471/README.md)
-and [independent page review](reviews/phase-split-carrier65-2471-page-peer.md)
+The [complete candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
+and [independent page review](reviews/padding-staircase-carrier65-2011-page-peer.md)
 check all actual decimal digits, actions, weight/rank definitions, tiles,
 coefficients and four whole integers. Normal/optimized runs, two whole-page
 inspections and independent byte-identical PDF rebuilds pass. Against the
-preceding 715-digit2501 page, raw storage falls 704 bytes. TeX stays at5362,
-extracted nonwhite text at2879 and PDF at153047 bytes; gzip grows2 to4258.
-Only three scalar exponents change in the complete source. The previous
-complete page and exact CURRENT record are preserved.
+preceding2471 page, raw storage falls10812 bytes and gzip falls28 to4230.
+TeX stays5362 bytes and extracted nonwhite text2879 characters; PDF saves
+one serialization byte to153046. Only three scalar exponents change.
+The previous complete page and exact CURRENT record are preserved.
 
 All earlier pages and CURRENT records remain preserved, along with reviewed
 [single-clause3037](research/single-clause-independent/README.md) and
