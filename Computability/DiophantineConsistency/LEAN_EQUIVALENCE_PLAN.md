@@ -655,6 +655,15 @@ and [independent four-target root replay](reviews/prime-power-current-auxiliary-
 All14 axiom reports are standard-only; no full closure is claimed. The
 full CRT coordinates and their safe physical realization remain separate.
 
+`ControllerPowerCoordinates` constructs an affine coordinate equivalence
+from actual projection1 and exact order. `CurrentPowerCoordinates2011`
+proves the full CRT order and projection at the maintained constants and
+constructs the entire B-power affine orbit modulo94517*120199^(k+1).
+No supplied orbit or coordinates remain. The [author receipt](reviews/current-power-coordinates2011-author.md)
+and [independent four-target root replay](reviews/current-power-coordinates2011-root.md)
+record14 standard-only axiom reports and the k=0 boundary. Actual target
+subsets and safe physical dummy placement still require composition.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
