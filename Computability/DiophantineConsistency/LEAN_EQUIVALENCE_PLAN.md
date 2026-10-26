@@ -310,6 +310,16 @@ or alignment premise. See the [root full-source review and fresh replay](reviews
 This closes the middle-padding interface of `CurrentCount2011`; Boolean
 rotation supplies its explicit temporal bound/divisibility in phases7..10.
 
+`CurrentOneHot2011.polynomial_zero_count_phase` now proves that every
+positive zero of the actual fixed14-variable polynomial has at most one
+physical selector in every cell and zero fractional temporal phase.
+The exact483 padding bindings are discharged before counting; origin-marker
+parity is applied only afterward. No padding, count or phase premise remains
+at this endpoint. See the [root review](reviews/current-onehot2011-lean-root.md)
+and [independent composition replay](reviews/current-onehot2011-lean-peer.md).
+Only the origin is proved occupied here; whole-field alignment, all-cell
+occupation, label/adjacency and native semantics remain subsequent work.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
