@@ -16,8 +16,7 @@ universal Diophantine equations by James P. Jones and coauthors:
 **Fixed-input specializations for Con(ZFC)** (not formalized). The report
 [`con-zfc-diophantine-forms`](../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
 is now under `Computability/DiophantineConsistency`. It holds waves 5–25
-(batches 221–241, one hundred and sixty-five packages; wave 25, sources
-194–195, is placed and awaits reconciliation).
+(batches 221–241, one hundred and sixty-five packages).
 
 Until wave 11, every finished equation applied the native-window/Pell
 compiler below, with its input interface removed, to the blank run of the
@@ -27,8 +26,8 @@ is an explicit polynomial with fixed integer coefficients, and by an ordinary
 argument formalizable in ZFC, ZFC proves "no solution" ↔ Con(ZFC). Wave 11
 adds finished direct quartics in the numerical proof calculus C222, with no
 coefficient tuple and without K215, this compiler or Jones; waves 12–24
-bring them down to 202 naturals and 208 unrestricted integers
-(report sources 171, 179 and 191).
+bring them down to 201 naturals and 208 unrestricted integers
+(report sources 194 and 191).
 
 That route is not required. By Vladimir's direction, a proposal is free to
 use another encoding instead of K215, Jones's universal equation or this

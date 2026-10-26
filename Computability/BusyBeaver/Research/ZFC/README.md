@@ -1137,8 +1137,7 @@ published to support further work toward 214.
 **Diophantine form of the K215 endpoint** (not formalized). The report
 [`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
 is now under `Computability/DiophantineConsistency`. It holds waves 5–25
-(intake batches 221–241; latest reconciled placement `740f48e10d`; wave 25,
-sources 194–195, is placed and awaits reconciliation).
+(intake batches 221–241; latest reconciled placement `d421bf078f`).
 
 Until wave 11, every finished equation turned the K215 calibration behind
 `KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
@@ -1153,9 +1152,9 @@ encodings, provided they prove their own calibration (the report's section
 proof-certificate sources over the C222 calculus, calibrated through
 `KEndpoint.c222_iff_zf_refutation` and
 `ConstructibleChoice.zf_refutation_iff_zfc_refutation`. Wave 11 finishes
-that route: explicit direct quartics with no coefficient tuple, down to 202
-naturals and 208 unrestricted integers after wave 24 (sources 171, 179, 191), and
-ones with every coefficient ±1 (sources 120, 127, 135, 144, 154, 165, 172, 186); the
+that route: explicit direct quartics with no coefficient tuple, down to 201
+naturals and 208 unrestricted integers after wave 25 (sources 194, 191), and
+ones with every coefficient ±1 (sources 120, 127, 135, 144, 154, 165, 172, 186, 195); the
 step "polynomial zero iff C222 derivation" is an ordinary proof in each
 package, not a Lean theorem.
 
