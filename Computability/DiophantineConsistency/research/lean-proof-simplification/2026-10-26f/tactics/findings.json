@@ -1,0 +1,161 @@
+{
+  "commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "mathlib": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "compiled": false,
+  "findings": [
+    {
+      "id": "T09",
+      "file": "SelectiveCoefficientBounds.lean",
+      "theorem": "half_base_bound_31",
+      "lines": [
+        209,
+        232
+      ],
+      "before_lines": 24,
+      "after_lines": 2,
+      "status": "UNCOMPILED",
+      "priority": "High",
+      "note": "Existing half_base_bound (166–199); specializes m=31 and 4*(31+1)^2=4096.",
+      "source": "https://github.com/VladimirReshetnikov/ProveIt/blob/60e9c5d620c6c387d932876cfa2d9376f64ea56c/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SelectiveCoefficientBounds.lean#L209-L232",
+      "before": "  have hsum : (∑ i, (u i : ℤ)) ≤ 31 * (b : ℤ) := by\n    calc\n      (∑ i, (u i : ℤ)) ≤ ∑ _i : Fin 31, (b : ℤ) := by\n        apply Finset.sum_le_sum\n        intro i _\n        exact_mod_cast (hu i).le\n      _ = _ := by simp\n  have hbZ : 1 ≤ (b : ℤ) := by exact_mod_cast hb\n  have hs0 : 0 ≤ 1 + ∑ i, (u i : ℤ) :=\n    add_nonneg (by decide) (Finset.sum_nonneg (fun i _ => Int.natCast_nonneg (u i)))\n  have hs : 1 + (∑ i, (u i : ℤ)) ≤ 32 * (b : ℤ) := by omega\n  have hsq : (1 + ∑ i, (u i : ℤ)) ^ 2 ≤ (32 * (b : ℤ)) ^ 2 :=\n    pow_le_pow_left₀ hs0 hs 2\n  have hc := (abs_coeff_padded_square_mul_le w u p H hH.le hp n).trans\n    (mul_le_mul_of_nonneg_left hsq hH.le)\n  have hb2 : 0 < (b : ℤ) ^ 2 := by positivity\n  have hgap : 2 * (H * (32 * (b : ℤ)) ^ 2) < 4096 * H * (b : ℤ) ^ 2 := by\n    nlinarith [mul_pos hH hb2]\n  have hpow : (2 : ℤ) ^ t = 2 * 2 ^ (t - 1) := by\n    rw [← pow_succ']\n    congr 1\n    omega\n  rw [← hbase, hpow] at hgap\n  linarith",
+      "after": "  refine half_base_bound w u p hH hp hb ht hu ?_ n\n  norm_num [hbase]"
+    },
+    {
+      "id": "T01",
+      "file": "ShortSystem.lean",
+      "theorem": "residualSum_zero_iff",
+      "lines": [
+        66,
+        88
+      ],
+      "before_lines": 23,
+      "after_lines": 2,
+      "status": "UNCOMPILED",
+      "priority": "High",
+      "note": "Existing lightweight order API; explicit fallback in SourceCandidates.lean; alternatives, not cumulative.",
+      "source": "https://github.com/VladimirReshetnikov/ProveIt/blob/60e9c5d620c6c387d932876cfa2d9376f64ea56c/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ShortSystem.lean#L66-L88",
+      "before": "  unfold residualSum\n  constructor\n  · intro h\n    have h0 : (n0 - 1) ^ 2 = 0 := by\n      nlinarith [sq_nonneg (n1 - 1), sq_nonneg (na - 1), sq_nonneg (ns - 1),\n        sq_nonneg (nk * nt - 1), sq_nonneg (n0 - 1)]\n    have h1 : (n1 - 1) ^ 2 = 0 := by\n      nlinarith [sq_nonneg (n0 - 1), sq_nonneg (na - 1), sq_nonneg (ns - 1),\n        sq_nonneg (nk * nt - 1), sq_nonneg (n1 - 1)]\n    have ha : (na - 1) ^ 2 = 0 := by\n      nlinarith [sq_nonneg (n0 - 1), sq_nonneg (n1 - 1), sq_nonneg (ns - 1),\n        sq_nonneg (nk * nt - 1), sq_nonneg (na - 1)]\n    have hs : (ns - 1) ^ 2 = 0 := by\n      nlinarith [sq_nonneg (n0 - 1), sq_nonneg (n1 - 1), sq_nonneg (na - 1),\n        sq_nonneg (nk * nt - 1), sq_nonneg (ns - 1)]\n    have hkt : (nk * nt - 1) ^ 2 = 0 := by\n      nlinarith [sq_nonneg (n0 - 1), sq_nonneg (n1 - 1), sq_nonneg (na - 1),\n        sq_nonneg (ns - 1), sq_nonneg (nk * nt - 1)]\n    exact ⟨sub_eq_zero.mp (sq_eq_zero_iff.mp h0), sub_eq_zero.mp (sq_eq_zero_iff.mp h1),\n      sub_eq_zero.mp (sq_eq_zero_iff.mp ha), sub_eq_zero.mp (sq_eq_zero_iff.mp hs),\n      sub_eq_zero.mp (sq_eq_zero_iff.mp hkt)⟩\n  · rintro ⟨rfl, rfl, rfl, rfl, hkt⟩\n    simp only [hkt, sub_self, zero_pow (by decide : 2 ≠ 0), add_zero]",
+      "after": "  simp only [residualSum, add_eq_zero_iff_of_nonneg, add_nonneg,\n    sq_nonneg, sq_eq_zero_iff, sub_eq_zero, and_assoc]"
+    },
+    {
+      "id": "T02",
+      "file": "LowMaskCoding.lean",
+      "theorem": "sum_range_support",
+      "lines": [
+        42,
+        46
+      ],
+      "before_lines": 5,
+      "after_lines": 2,
+      "status": "UNCOMPILED",
+      "priority": "Medium",
+      "note": "Existing Finset filter/intersection API.",
+      "source": "https://github.com/VladimirReshetnikov/ProveIt/blob/60e9c5d620c6c387d932876cfa2d9376f64ea56c/Computability/DiophantineConsistency/Lean/DiophantineConsistency/LowMaskCoding.lean#L42-L46",
+      "before": "  have hf : (range len).filter (fun j => j ∈ S) = S := by\n    ext j\n    simp only [mem_filter]\n    exact and_iff_right_of_imp (fun hj => hS hj)\n  rw [← Finset.sum_filter, hf]",
+      "after": "  rw [← Finset.sum_filter, Finset.filter_mem_eq_inter,\n    Finset.inter_eq_right.mpr hS]"
+    },
+    {
+      "id": "T02b",
+      "file": "MultiTargetCarry.lean",
+      "theorem": "selectedMask_eq",
+      "lines": [
+        62,
+        67
+      ],
+      "before_lines": 6,
+      "after_lines": 3,
+      "status": "UNCOMPILED",
+      "priority": "Medium",
+      "note": "Same existing API as T02, converting the pointwise bound to subset membership.",
+      "source": "https://github.com/VladimirReshetnikov/ProveIt/blob/60e9c5d620c6c387d932876cfa2d9376f64ea56c/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MultiTargetCarry.lean#L62-L67",
+      "before": "  rw [← Finset.sum_filter]\n  have hf : (range n).filter (fun i => i ∈ positions) = positions := by\n    ext i\n    simp only [mem_filter, mem_range]\n    exact ⟨fun h => h.2, fun hi => ⟨hp i hi, hi⟩⟩\n  rw [hf, Finset.mul_sum]",
+      "after": "  rw [← Finset.sum_filter, Finset.filter_mem_eq_inter,\n    Finset.inter_eq_right.mpr (fun i hi => Finset.mem_range.mpr (hp i hi)),\n    Finset.mul_sum]"
+    },
+    {
+      "id": "T03",
+      "file": "MultiTargetCarry.lean",
+      "theorem": "shifted_digit_bounds: local hpow proof",
+      "lines": [
+        41,
+        43
+      ],
+      "before_lines": 3,
+      "after_lines": 1,
+      "status": "UNCOMPILED",
+      "priority": "Medium",
+      "note": "Representative of seven sites; one overlaps eliminated T09 proof.",
+      "source": "https://github.com/VladimirReshetnikov/ProveIt/blob/60e9c5d620c6c387d932876cfa2d9376f64ea56c/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MultiTargetCarry.lean#L41-L43",
+      "before": "    rw [← pow_succ']\n    congr 1\n    omega",
+      "after": "    rw [← pow_succ', Nat.sub_add_cancel ht]"
+    },
+    {
+      "id": "T04",
+      "file": "NativeCyclicConvolution.lean",
+      "theorem": "word_convolution: final factorization",
+      "lines": [
+        79,
+        87
+      ],
+      "before_lines": 9,
+      "after_lines": 3,
+      "status": "UNCOMPILED",
+      "priority": "Medium",
+      "note": "Existing distributivity + AC simplification; profile before claiming performance improvement.",
+      "source": "https://github.com/VladimirReshetnikov/ProveIt/blob/60e9c5d620c6c387d932876cfa2d9376f64ea56c/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeCyclicConvolution.lean#L79-L87",
+      "before": "    _ = ∑ i : ZMod n, (a i * ρ ^ i.val) * word ρ c := by\n      apply Finset.sum_congr rfl\n      intro i _\n      rw [word, Finset.mul_sum]\n      apply Finset.sum_congr rfl\n      intro j _\n      rw [pow_add]\n      ring\n    _ = word ρ a * word ρ c := by rw [← Finset.sum_mul]; rfl",
+      "after": "    _ = word ρ a * word ρ c := by\n      simp only [word, Finset.sum_mul, Finset.mul_sum, pow_add,\n        mul_assoc, mul_left_comm, mul_comm]"
+    },
+    {
+      "id": "T06",
+      "file": "NativeRadixDigits.lean",
+      "theorem": "decode_originMask: hr",
+      "lines": [
+        54,
+        57
+      ],
+      "before_lines": 4,
+      "after_lines": 1,
+      "status": "UNCOMPILED",
+      "priority": "Medium",
+      "note": "Reuse existing power fact already used by NativeWindowCarry:63.",
+      "source": "https://github.com/VladimirReshetnikov/ProveIt/blob/60e9c5d620c6c387d932876cfa2d9376f64ea56c/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeRadixDigits.lean#L54-L57",
+      "before": "  have hr : 1 < 2 ^ v := by\n    have hp := Nat.pow_le_pow_right (n := 2) (by decide) hv\n    norm_num at hp\n    omega",
+      "after": "  have hr : 1 < 2 ^ v := Nat.one_lt_two_pow (by omega)"
+    },
+    {
+      "id": "T07",
+      "file": "ArithmeticFiniteSwitch.lean",
+      "theorem": "program: step branch",
+      "lines": [
+        24,
+        30
+      ],
+      "before_lines": 7,
+      "after_lines": 4,
+      "status": "UNCOMPILED",
+      "priority": "Low",
+      "note": "Retain equality split, normalize the less-than interface once.",
+      "source": "https://github.com/VladimirReshetnikov/ProveIt/blob/60e9c5d620c6c387d932876cfa2d9376f64ea56c/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticFiniteSwitch.lean#L24-L30",
+      "before": "    by_cases he : n.unpair.1=count\n    · simp only [he,Nat.lt_succ_self,if_true]\n    · by_cases hlt : n.unpair.1<count\n      · have hnext : n.unpair.1<count+1 := by omega\n        simp only [he,hlt,hnext,if_false,if_true]\n      · have hnext : ¬n.unpair.1<count+1 := by omega\n        simp only [he,hlt,hnext,if_false]",
+      "after": "    by_cases he : n.unpair.1 = count\n    · simp only [he, Nat.lt_succ_self, if_true]\n    · have hlt : n.unpair.1 < count + 1 ↔ n.unpair.1 < count := by omega\n      simp only [he, if_false, hlt]"
+    },
+    {
+      "id": "T08",
+      "file": "CurrentHighDigits2011.lean",
+      "theorem": "cellDigit_lt",
+      "lines": [
+        80,
+        86
+      ],
+      "before_lines": 7,
+      "after_lines": 2,
+      "status": "UNCOMPILED",
+      "priority": "Cosmetic only",
+      "note": "May be slower or less clear than reusing highDigits_lt; not recommended by default.",
+      "source": "https://github.com/VladimirReshetnikov/ProveIt/blob/60e9c5d620c6c387d932876cfa2d9376f64ea56c/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentHighDigits2011.lean#L80-L86",
+      "before": "  by_cases hj : j < 2011\n  · unfold cellDigit\n    rw [List.getD_eq_getElem highDigits 0 (by rwa [highDigits_length])]\n    exact highDigits_lt (List.getElem_mem _)\n  · unfold cellDigit\n    rw [List.getD_eq_default highDigits 0 (by rw [highDigits_length]; omega)]\n    decide",
+      "after": "  rw [cellDigit_formula]\n  split_ifs <;> norm_num [radix]"
+    }
+  ],
+  "nonadditive_warning": "T03 has seven sites; one is removed by T09. T01 concise and explicit variants are alternatives. No timing measured."
+}

@@ -1,0 +1,303 @@
+# Circuit, representation, and quartic proof review
+
+Snapshot: `60e9c5d620c6c387d932876cfa2d9376f64ea56c`.
+All source paths below are relative to
+`Computability/DiophantineConsistency/Lean/DiophantineConsistency/`.
+Status of executable examples belongs to their check logs; this review does
+not infer Lean acceptance from a successful Python computation.
+
+Validation obtained in this review: the import-free
+`AssignmentTransportCore.lean` compiles with Lean 4.32.0, exit 0; its theorem
+`sumElim_comp_sumMap` uses only `[Quot.sound]`. The separate
+project-dependent `AssignmentTransport.lean` did not complete validation:
+direct checking aborted at the explicitly imposed 1 GiB Lean memory cap,
+without a theorem diagnostic. The circuit patch, DAG prototypes, and
+sum-of-squares prototypes have not been kernel-replayed in this review.
+Their source-data checks and the exact shared-tail comparison succeeded.
+
+## 1. Fix the generator to respect previously established semantic cuts
+
+The most concrete immediate improvement is in
+`SplitCircuitRegisters59.lean:103-110,130-137`. The theorem
+`natural_sourceSRegister` expands register 393 to individual kernel registers,
+although `natural_sourceHighRegister` was already proved at lines 94-101.
+The theorem `natural_sourceRankRegister` similarly expands the circuits for
+block length, source S, and source T despite their immediately preceding
+semantic interface theorems. This is unnecessary re-proving of already named
+expressions. The corresponding Gap66 proofs already use the better discipline.
+
+The supplied `split-register-cuts.patch` changes the generator and regenerated
+proof file together. When building the list of entries, it snapshots the
+current map of known semantic cuts and then adds the theorem just scheduled:
+
+```python
+entries.append((name, idx, expr, dict(cuts), False, defs))
+cuts[idx] = name
+```
+
+The copy is essential. Saving a reference to the same mutable `cuts` dictionary
+would let an earlier entry see its own theorem or a later theorem. Proofs must
+only depend on cuts emitted earlier. The patch also removes the obsolete
+unfolding of `sourceHigh`, `sourceS`, `sourceT`, and `blockLength` from consumers
+that now use their established register equations.
+
+Measured source changes:
+
+| Existing theorem | Rewrite rules before | After | UTF-8 bytes before | After |
+| --- | ---: | ---: | ---: | ---: |
+| `natural_sourceSRegister` | 19 | 7 | 744 | 487 |
+| `natural_sourceRankRegister` | 36 | 9 | 1,142 | 555 |
+
+The generated Lean source decreases by 844 bytes, from 14,604 to 13,760.
+Each theorem still occupies eight physical lines, because the existing file
+prints each rewrite list on one very long line. Claiming a line-count reduction
+here would be misleading. The meaningful reduction is the number of facts and
+definitions exposed to the algebraic normalizer. No circuit data, theorem
+statement, assumptions, or witness counts change. Generator source grows by
+one physical line; generated source byte savings exceed that small addition.
+
+The patch should be replayed by compiling the regenerated module, checking
+its downstream clients, and running the generator's `--check` mode in an
+isolated patched tree. A regeneration check alone is not a proof check.
+
+## 2. Extract the genuinely shared 99-node free-carrier tail
+
+This is a stronger architectural opportunity than shortening rewrite lists.
+The `ratioValue` definitions in `SplitNinePolynomial59.lean:58-81` and
+`GapNinePolynomial66.lean:59-82` are exactly equal as source text: 24 lines and
+612 UTF-8 bytes. They describe the same free-carrier finalizer with twelve
+ring-valued inputs. Their source/rank front ends differ.
+
+More strongly, source-data inspection establishes that the complete suffix
+of the Split natural circuit at indices 416 through 514 and the complete
+suffix of the Gap natural circuit at indices 385 through 483 are the same
+99 nodes after changing references. Internal references decrease by 31.
+The external boundary references are mapped as follows:
+
+| Split register | Gap register | Interpretation |
+| --- | --- | --- |
+| 7 | 7 | Internal j input |
+| 9 | 9 | One |
+| 10 through 17 | Same index | Shifted input values |
+| 21 | 87 | Two |
+| 409 | 378 | Threshold N |
+| 414 | 383 | Rank |
+| 415 | 384 | Margin scale |
+
+The supplied `inspect_shared_tail.py` repeats this equality test from the
+pinned inert generator node dictionaries. It first checks the repository
+commit, loads the two existing read-only generators (which check the JSON
+SHA256 pins), confirms byte-for-byte regeneration of both circuit files and
+both step files, extracts the suffixes, renames references, and checks exact
+dictionary equality. All four regeneration comparisons pass. The JSON receipt
+is `shared-tail-evidence.json`. This establishes a concrete refactoring
+target; it is not yet a Lean theorem that the refactoring preserves evaluation.
+
+Proposed interface:
+
+1. Define a small arithmetic block syntax whose operand is either a named
+   boundary port or an earlier local node. The 99-node block has 14 boundary
+   ports, including one and two, and no dependence on the source encodings.
+2. Define its interpretation over an arbitrary commutative ring, and prove
+   once that insertion into a parent DAG preserves its interpretation when
+   the boundary-register values agree.
+3. Prove once that this block evaluates to the shared `ratioValue` function.
+   This replaces the duplicated sequence of 24 named tail-register identities
+   in `SplitCircuitRecipe59.naturalValue_eq_recipe` and
+   `GapCircuitRecipe66.naturalValue_eq_recipe`.
+4. Certify by closed kernel checking that each existing parent suffix is an
+   instantiation of this block. Reuse the current front-end source-register
+   facts to discharge the 14 boundary bindings.
+
+The insertion operation should instantiate references directly, adding no
+copy gates. Otherwise the refactor would change the carefully counted circuit
+data. Include an equality theorem between the generated parent node list and
+the pinned original list, not only an equality of sampled outputs. The block
+proof should live below both Split and Gap specializations, importing only
+the generic DAG machinery and common free-carrier algebra. Do not make either
+specialization import the other solely to reuse its tail theorem.
+
+There is a typing detail worth treating explicitly: Split has 12 fixed
+coefficient inputs whereas Gap has 11. The existing `NodeRel` assumes the same
+input and fixed-input counts on both sides. The shared tail has no fixed-input
+leaf reads, so a boundary-port block avoids pretending the two parent `Node`
+types are identical. It also makes the dependency on front-end values precise.
+
+This proposal does not claim to remove 99 nodes or to reduce the Diophantine
+equation size. It removes duplicated reasoning about a 99-node subprogram.
+The source and checking-time savings need to be measured after implementation.
+
+## 3. Reuse the existing circuit abstraction; do not rebuild it in a tactic
+
+`ArithmeticDAGSemantics.lean` already provides the crucial facts:
+
+- `run_node_equation` at lines 58-94 gives a local equation for every valid
+  node of a topological circuit.
+- `run_eq_of_node_equations` at lines 97-109 proves uniqueness of a proposed
+  evaluation table satisfying the local equations.
+- `value_eq_of_node_equations` at lines 111-117 gives the output version.
+
+`ArithmeticDAGPowers.lean` already contains an actual small certificate
+checker: `PowerStep`, `run_power`, `NodeRel`, `PowerRewriteStep`, and
+`value_eq_of_powerRewrite`. `SplitJointPower59` instantiates this checker.
+The project is therefore already pursuing the right separation between
+finite data and generic proof. An effective next refactor expands this
+existing architecture to reusable blocks and semantic cuts.
+
+The two generated step files contain 6,567 physical lines and 323,610 bytes:
+
+| File | Lines | Ordinary step theorems | Power theorems |
+| --- | ---: | ---: | ---: |
+| `SplitCircuitSteps59.lean` | 3,445 | 515 | 107 |
+| `GapCircuitSteps66.lean` | 3,122 | 484 | 86 |
+
+These are mechanically generated specializations of existing generic facts,
+not 1,192 independent mathematical arguments. Avoid reporting deletion of
+generated lines as an equivalent reduction of hand-maintained proof logic.
+A generic indexed API or lazy proof-producing command could avoid emitting
+unused specializations, but should be benchmarked against the current named
+lemmas: the named lemmas provide efficient rewrite boundaries and stable
+dependency granularity. A global simp rule that unfolds every register can
+destroy sharing and expose a very large expression tree.
+
+## 4. One assignment-transport law replaces repeated Sum/Fin bookkeeping
+
+`Representation.lean` repeatedly proves that renaming an expression's input
+and witness coordinates is equivalent to precomposing its assignments. The
+same `rw [Expr.eval_rename]; congrArg; funext; cases` proof occurs in
+`Rep.reindex`, both witness sides of `Rep.conjunction`, and both witness sides
+of `Rep.disjunction` (roughly lines 157-220).
+
+The supplied `AssignmentTransport.lean` isolates the general identity
+
+```lean
+natAssignment v w ∘ Sum.map f g =
+  natAssignment (v ∘ f) (w ∘ g)
+```
+
+and its semantic consequence
+
+```lean
+(e.rename (Sum.map f g)).eval (natAssignment v w) =
+  e.eval (natAssignment (v ∘ f) (w ∘ g))
+```
+
+The first proof is just function extensionality and a case split on the sum;
+the second uses `Expr.eval_rename`. This is a good stable simp direction:
+move renamings out of the expression evaluator and into the assignment.
+Do not also install the converse as a simp rule. `Fin.castAdd` and `Fin.natAdd`
+become instances of the generic law, with no repeated coordinate proof.
+
+The immediate number of deleted lines is modest, especially after charging
+the helper statements themselves. The useful change is that witness layout
+is certified in one place. The representation data and witness counts remain
+definitionally the same. This is preferable to replacing executable `Rep`
+constructors by existentially chosen representations.
+
+## 5. Centralize sum-of-squares facts and parameterize the existing cost bound
+
+The same private three-line `eval_sumExpressions` lemma occurs verbatim in
+`DAGQuartic.lean:83-85`, `NaturalDAGQuartic.lean:110-112`, and
+`QuadraticRegisterSystem.lean:70-72`. Each then repeats the same passage from
+a finite sum of squared residuals to pointwise vanishing.
+
+Publish `QuarticSyntax.eval_sumExpressions` and a single theorem for an
+arbitrary finite residual family. The supplied `CircuitCoreRefactors.lean`
+contains this exact general statement and proof. Each existing
+`expression_zero_iff` becomes a direct application after unfolding only its
+expression constructor. The reduction is an ordinary mathematical interface,
+not a new tactic or trusted evaluator.
+
+Keep the codomain assumption honest. Sum of squares implies pointwise zero
+over the integers in these files; it is false for a general commutative ring.
+The separate internal-omega reasoning in `ObjectResidualSquares` cannot be
+replaced by an integer theorem without proving the required transfer. It
+operates on positive/negative semiring interpretations in the actual object
+theory, a stronger and different requirement.
+
+`QuarticCost.sumExpressions_binaryOps_le` is currently specialized to residual
+squares costing at most five operations, while `DAGQuartic.sumExpressions_cost`
+reproves the parameterized result privately. Publish the parameterized bound
+once and keep the old specialized theorem as a compatibility corollary.
+The existing sharp output contributions should remain separate: uniformly
+bounding every residual would weaken `12 * nodes.length + 4` to a larger
+constant and would discard information unnecessarily.
+
+The private `degree_add` and `degree_sub` helpers are also duplicated between
+the signed and nonnegative DAG quartic compilers. A shared degree API should
+serve both. Their different wire encodings and witness counts remain distinct.
+
+## 6. Factor the topology induction only when it earns its place
+
+`ArithmeticDAGSemantics.run_eq_of_node_equations`,
+`NaturalDAGQuartic.run_nonnegative`, and
+`ArithmeticDAGDegree.value_degree_le` each repeat strong induction, a call
+to `run_node_equation`, and conversion of dependency membership to a smaller
+node index. A general `run_invariant` lemma captures exactly this argument:
+if each gate preserves a property from its predecessor values, then every
+evaluated register has the property.
+
+`CircuitCoreRefactors.lean` includes the helper and three same-statement
+replacement proofs. It retains the topology hypothesis. It can be used for
+additional range bounds, algebraic invariants, and semantic-table uniqueness.
+
+This is not currently a net source-shortening result. Under the supplied
+formatting, the three original declarations occupy 42 lines/2,083 UTF-8 bytes;
+the helper plus three proposed versions occupy 45 lines/2,296 bytes, including
+the longer `_short` names. The benefit is one induction proof instead of
+three. A fourth useful client would better amortize the interface. Treat it
+as a maintainability option, below the direct reuse and shared-tail changes.
+
+## 7. Share the positive/natural circuit-translation proof
+
+`SplitCircuitTranslation59.lean` and `GapCircuitTranslation66.lean` are both
+79 lines. Their proofs have the same structure: handle eleven initial
+registers, exclude the stored unshifted register 7, handle one swapped
+multiplication, and use a closed finite reference certificate for the rest.
+The special multiplication index is 452 in Split and 421 in Gap.
+
+A generic input-translation/reference-simulation theorem can expose these
+parameters and consume the existing finite certificate. An extension of
+`NodeRel` that allows operand swapping for addition and multiplication would
+eliminate the one ad hoc `ring` case in each instantiation. Subtraction must
+retain ordered operands.
+
+The existing `ArithmeticDAG.run_map` and `value_map` are already the correct
+tools for changing the *ring of values*, and are used to obtain polynomial
+identities. They cannot by themselves prove positive/natural translation:
+the two node lists differ, and `x ↦ x - 1` is not a ring homomorphism. Use
+the semantic reference certificate to relate the lists, and naturality only
+for transporting the resulting identity between coefficient rings.
+
+## 8. Preserve the distinction between natural inputs and nonnegative wires
+
+The names `SplitCircuit59.naturalNodes` and `GapCircuit66.naturalNodes` refer
+to external input conventions. Those circuits contain negative literal
+coefficients and subtraction. They do not meet
+`NaturalDAGQuartic.NodeAllowed`, which excludes subtraction and requires
+nonnegative constants. Reusing the one-natural-variable-per-gate compiler
+requires its actual `Allowed` proof. Names are not such a proof.
+
+Similarly, `NaturalRegisterProgram.Op` deliberately has only natural literals,
+inputs, addition, and multiplication. It is an excellent foundation for
+nonnegative register programs, but simply forcing signed finalizers through
+it would change semantics or assumptions. A common block interface should be
+ring-valued for the Split/Gap tail and keep the positive compiler as a
+specialization with explicit nonnegativity evidence.
+
+## Suggested priority
+
+1. Apply the semantic-cut generator patch and replay it.
+2. Add assignment-transport and sum-of-squares helper APIs with compatibility
+   wrappers; simplify their existing clients.
+3. Extract the common `ratioValue` algebra and certify the 99-node shared tail.
+4. Generalize positive/natural reference simulation, including commutative
+   operand swaps in the finite relation.
+5. Consider generic `run_invariant` only with clear additional clients.
+6. Benchmark indexed/lazy step theorem generation before replacing the current
+   generated named facts.
+
+For every phase, compare exact theorem statements, axiom footprints, actual
+compiled circuit data, clean checking time, and proof-source size including
+new helpers. Separate source-data checks, kernel proof checks, and performance
+measurements in the report.

@@ -1,0 +1,71 @@
+\majorbreak
+\section{Scope and evidence}
+\label{sec:scope}
+
+This review concerns shortening and simplifying the \emph{existing} Lean proofs in
+\pathcode{Computability/DiophantineConsistency}, not changing the polynomial
+construction, finishing its open mathematical links, or proving consistency.
+Each recommendation requires preservation of the public theorem's full type, including its
+parameters, witness domain, explicit hypotheses, and direction of implication.
+
+\subsection{The snapshot is fixed and inspectable}
+
+All source references target the immutable repository commit
+\begin{center}
+\small\code{60e9c5d620c6c387d932876cfa2d9376f64ea56c}.
+\end{center}
+The archive includes the inspected source material and a manifest recording each
+selected blob's Git object hash, SHA256, repository path, and immutable source
+URL. The acquisition verified all 944 selected blob hashes.
+This fixes what was reviewed; it does not certify that Lean accepts a proposed
+replacement.
+
+The active inventory is the \code{Lean/} tree at that commit. Its distinction
+between modules and checks is directory-based: some audit modules also reside
+in the module directory. Historical \code{con-zfc-diophantine-forms} copies and
+candidate-side provenance files are excluded from the active totals.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Source group & Files & Physical lines & Nonblank code lines\\
+\midrule
+Namespace module directory & 363 & 68,308 & 55,127\\
+Umbrella import file & 1 & 283 & 283\\
+\code{checks/} directory & 182 & 5,380 & 4,422\\
+\midrule
+Active total & 546 & 73,971 & 59,832\\
+\bottomrule
+\end{tabularx}
+\caption{Measured source size, not proof-term or compilation size. Code-line
+counts mask nested block comments, line comments, and string literals.}
+\end{table}
+
+The namespace directory contains 4,626 lexical theorem or lemma declarations
+and 2,010 definitions or abbreviations. The inventory also flags 20 files with
+explicit generated-header patterns; this is a conservative heuristic, not a
+claim that every other file is handwritten. Declaration spans end at the next
+recognized declaration and are \emph{not} exact proof-body measurements.
+
+A second, naming-based classification separates 325 implementation-named
+files (66,574 lines) from 220 check or audit files (7,114 lines), plus the
+umbrella. It treats the 38 \code{*Checks} or \code{*Audit} files in the module
+directory as audits. These labels describe filenames, not Lean semantics.
+
+\subsection{What was and was not checked}
+
+The analysis used source inspection, comment-aware lexical checks, import-graph
+analysis, independently reproduced finite arithmetic checks where stated,
+source-diff measurements, and visual inspection of this PDF. Neither
+\code{lean} nor \code{lake} was available in the review environment. Consequently,
+\textbf{no proposed Lean snippet or patch in this archive has been compiled},
+and no theorem-equivalence, kernel-replay, axiom-set, build-time, or proof-term
+improvement is reported as verified.
+
+The delivered snapshot is not a standalone Lean project. Dependencies outside
+the inspected subtree and the complete Mathlib checkout are not included.
+Replay belongs in a \emph{full} checkout of the pinned repository with its
+pinned dependencies; see Section~\ref{sec:validation}.
+
