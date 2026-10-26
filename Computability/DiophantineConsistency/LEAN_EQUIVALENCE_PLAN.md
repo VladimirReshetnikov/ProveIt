@@ -664,6 +664,18 @@ and [independent four-target root replay](reviews/current-power-coordinates2011-
 record14 standard-only axiom reports and the k=0 boundary. Actual target
 subsets and safe physical dummy placement still require composition.
 
+`CurrentControllerUnits2011` proves that the actual rank-step coefficient
+Gamma=radix^977*(q²−1)*(1+q*(K+B^width)) is positive and coprime to the
+complete modulus94517*120199^n, for independent power exponents rw,n.
+It uses the proved literal K residues, orders23/402 and auxiliary-prime
+Frobenius; every unit premise is discharged. Natural subtraction is justified
+and the coefficient is identified with the actual signed rank variation.
+The [author receipt](reviews/current-controller-units2011-author.md) and
+[independent isolated main/check replay](reviews/current-controller-units2011-lean-peer.md)
+record14 standard-only reports, both zero-exponent endpoints and the benign
+symbolic exponent977 notice. This establishes units, not safe increments
+or arbitrary-target rank correction.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
