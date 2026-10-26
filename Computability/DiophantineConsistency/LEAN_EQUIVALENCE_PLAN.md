@@ -184,6 +184,18 @@ bit. The full MC*repunit+1 identity is proved. See the [root review](reviews/cur
 for the exact source/check replay and cache scope. This fixes the Start bit;
 at-most-one selector occupation and native interpretation are still required.
 
+`NativeBooleanRotation` now proves the exact scaled permutation at every
+binary phase of a Boolean word, including the last fractional phase. Its
+half-radix bound and origin anchor require no prior temporal alignment.
+`NativeWindowCarry.source_convolution_carries` derives the transport
+congruence from the actual positive31-row source solution and constructs
+bounded cyclic carries, the exact F digit word, and all local mask tests
+under an explicit coefficient-mass budget and word bindings. See the
+[root review](reviews/native-window-carry-lean-root.md) and [independent
+peer replay](reviews/native-window-carry-lean-peer.md). The current coefficient
+recipe and budget still need specialization; phase and native semantics
+remain separate obligations.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
