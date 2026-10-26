@@ -52,6 +52,13 @@ No global optimality theorem is requested or inferred from that ledger.
 
 ## Current gaps and implementation order
 
+After merging the next13 upstream proof simplifications at891c86e0b2,
+the explicit [post-merge refresh](reviews/ha-postmerge-refresh-20261026.md)
+passed94 fresh commands and191 standard-only reports, including the
+maintained and mixed-carrier endpoints. Its447-module inventory contains
+353 authenticated reuses and twelve unchanged clients of fresh modules;
+this is a scoped refresh, not a new fresh whole-closure validation.
+
 The exact215 machine now also has an independent arithmetic graph/step/run
 specialization, including total unique evaluation at every internal IΣ1
 time and exact standard whole-tape semantics. See its

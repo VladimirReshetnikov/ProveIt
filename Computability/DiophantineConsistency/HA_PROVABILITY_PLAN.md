@@ -41,6 +41,11 @@ post-merge refresh also passed; see the
 [original replay](reviews/current-positive-zero2011-closure-replay.md) and
 [limited refresh](reviews/current-positive-zero2011-refresh-replay.md).
 Neither is an HA proof-existence theorem.
+The later13-source upstream merge also passed a separately scoped
+[94-command refresh](reviews/ha-postmerge-refresh-20261026.md), with191
+standard-only reports and353 authenticated reused objects. It includes
+the maintained and mixed-carrier endpoints, and preserves the twelve
+explicit unchanged-client reuse boundaries.
 
 The current-port mixed-carrier13-variable variants at72/124 and74/122
 also have checked entire-positive-zero maps and closed external ConZFC

@@ -83,6 +83,10 @@ has now passed at09eaa:191 fresh compilations and170 authenticated reuses.
 After merging the five upstream proof changes, a separate
 [15-command refresh](reviews/current-positive-zero2011-refresh-replay.md)
 also passed with54 standard-only reports; unchanged intermediate objects
+were explicitly reused. After the next13 upstream proof simplifications,
+a [94-command refresh](reviews/ha-postmerge-refresh-20261026.md) passed
+with191 standard-only reports, including the maintained and new mixed-carrier
+endpoints;353 prerequisite objects and twelve unchanged intermediate clients
 were explicitly reused. Further frontier equations,
 size reductions and the HA proof-existence theorem remain active work.
 The new [direct witness interface](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
