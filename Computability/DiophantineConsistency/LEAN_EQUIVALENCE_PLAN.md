@@ -737,6 +737,16 @@ Their12 axiom reports are standard-only. Actual rank population binding,
 rank selection, the required stride congruence and remaining positive Pell
 witnesses still require composition; no complete equation converse is claimed.
 
+`CurrentPackingRank2011` binds the current once-shifted rank polynomial to
+the ordinary four-block natural integer, with all subtraction domains proved.
+The same packing's actual masks then give its exact population3*(94517*N)+2,
+without a source zero or Pell lower bound. Its positive upper complement also
+proves rank≥q³>2*(94517*N) independently of masks. The [author receipt](reviews/current-packing-rank2011-root.md)
+and [independent isolated replay](reviews/current-packing-rank2011-lean-peer.md)
+record eight standard-only reports and exact current-port binding. Rank
+congruence selection, forced temporal exponentiation and remaining positive
+Pell witnesses remain open.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
