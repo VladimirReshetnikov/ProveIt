@@ -72,6 +72,24 @@ its bound tuple. The [radix note](research/radix-parity-independent/README.md)
 and earlier [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
 remain scoped obstacles/tradeoffs, without a global lower-bound claim.
 
+The [tile-biased family](research/tile-biased-single-clause-family/README.md)
+now passes two full independent ordinary reviews, with
+[conditional root acceptance](reviews/tile-biased-family-composite2033-ROOT-conditional-acceptance.json).
+It places the sole clause at 1006 and last product at 2011. A separate
+[49/2033 reduction](research/tile-biased49-composite2033-controller/README.md)
+proves exact B-order 954 modulo the entire 7^2*19*107. The separately
+released [five-run check](research/tile-biased49-2033-first-run/README.md)
+reproduces H=0mod19 for the new whole kernel, rejecting that controller
+for every auxiliary prime. All production controls pass; no prime search
+occurs, and every first output/capture and the conditional .tex draft are
+preserved. The separately reviewed
+[Carrier65 corollary](research/tile-biased-carrier65-corollary/README.md)
+gives the same family a14/65/150 front without changing its four ports.
+The [four short-length obstructions](research/tile-biased49-short-length-obstructions/README.md)
+have [two full reviews and scoped root acceptance](reviews/tile-biased49-short-length-ROOT-two-peer-acceptance.json).
+The2039 whole-modulus probe remains unexecuted under CODE_ONLY/HOLD.
+No successful tuple, validated saving or page replacement is claimed.
+
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 saves twenty operations and178 degree while adding four unknowns.
 Every predecessor page and its entire history remains available; Lean
