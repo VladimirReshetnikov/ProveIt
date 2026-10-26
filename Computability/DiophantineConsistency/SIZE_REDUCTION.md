@@ -65,6 +65,12 @@ every accepted local mask word and the complete conditional reset band.
 Deleting the marker still leaves whole-field offsets 1 and 18 unresolved;
 this local result does not replace the current native theorem. Work is
 now testing a smaller physical marker while retaining the global checks.
+The [marker-996 exploration](research/marker996-probe/CORRECTION.md) exposed
+a physical-coordinate error: slot978 encodes packed West bit0, so Start253
+sets it and cancels the assumed marker parity. Its proposed proof and
+canonical map are not accepted despite passing the miscalibrated finite
+check. A separate marker-997 proposal must use the actual coefficient-to-bit
+map and undergo fresh complete review; the main 2011 page is unchanged.
 
 The [complete thirteen-variable carrier](research/thirteen-variable-independent/README.md)
 now has independently reviewed full soundness/fresh-seed maps and two

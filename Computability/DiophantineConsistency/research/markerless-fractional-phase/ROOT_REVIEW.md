@@ -1,3 +1,8 @@
+> Scope correction: the local fractional-phase lemma and its finite
+> checks remain accepted. The later endorsement of the prospective
+> marker-996 argument in PROOF.md section 6 is withdrawn; see the complete
+> [coordinate correction](../marker996-probe/CORRECTION.md).
+
 # Root review of the conditional fractional-phase lemma
 
 ROOT read the entire 170-line auditor and 108-line explanatory note before

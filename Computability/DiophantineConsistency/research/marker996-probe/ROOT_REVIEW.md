@@ -1,3 +1,8 @@
+> Subsequent semantic correction: the marker-coordinate calibration in
+> this historical review was wrong. Acceptance of the marker transition
+> and canonical flag is withdrawn; see [CORRECTION.md](CORRECTION.md).
+> The original review text below records what was checked at that time.
+
 # Root review of the complete marker-996 finite exploration
 
 ROOT read all 278 probe lines and all 167 explanatory-note lines before
