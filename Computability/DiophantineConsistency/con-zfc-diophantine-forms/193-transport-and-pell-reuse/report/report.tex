@@ -1,0 +1,1702 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.88in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype,xcolor,enumitem,fancyhdr}
+\usepackage{hyperref,xurl}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Two Routes to Smaller Diophantine Consistency Equations},
+ pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Zpos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\vp}{\nu_p}
+\newcommand{\yb}{\overline Y}
+\newcommand{\PellX}{\mathsf X}
+\newcommand{\PellY}{\mathsf Y}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Diophantine consistency}
+\rhead{\small Weighted transport and Pell witnesses}
+\cfoot{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\allowdisplaybreaks
+
+% BEGIN retained input: direct_metrics.tex
+\newcommand{\DirectVariables}{83}
+\newcommand{\DirectDegree}{624}
+
+% END retained input: direct_metrics.tex
+
+
+\title{\textbf{Two Routes to Smaller Diophantine\\Consistency Equations}\\[6pt]
+ \large Weighted transport and reuse of Pell witnesses}
+\author{Research prepared for Vladimir Reshetnikov and ProveIt\\
+ \small AI-assisted mathematical development with separate internal audits}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We construct an explicit equation in \(\DirectVariables\) unrestricted
+integers of exact degree \(\DirectDegree\), through a direct numerical
+proof calculus, and an explicit equation in ten strictly positive integers
+of exact degree \(190\). Using the named inherited logical calibrations,
+ZFC proves that each equation's insolubility in its stated domain is
+equivalent to \(\Con(\ZFC)\).
+The direct construction reuses the quotient of a large Pell solution as
+its modular center witness, then applies certified acyclic unit
+elimination. It uses neither K215 simulation nor Jones's universal
+polynomial. Its factored evaluator uses \(1{,}789\) binary operations
+and integer literals of absolute value at most \(64\).
+The ten-variable construction changes a positive transport
+weight so that a center for an entire Pell product works in a newer
+free-quotient chart. It retains the native/K215 coefficient ancestry and
+uses \(118\) live binary arithmetic operations. A companion has degree
+\(202\) and \(99\) operations.
+
+The archive supplies literal equations, all fixed coefficients, finite
+reconstruction, exact algebra checks, and reproducible code.
+The proofs are ordinary mathematical arguments composed with identified
+inherited interfaces; no new end-to-end Lean/Rocq formalization is claimed.
+The results establish neither consistency nor an actual zero, and do
+not establish a global simplicity minimum.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+
+\section{Results, comparison, and logical scope}
+
+Fix the effective syntactic presentation of ZFC used by the repository's
+refutation calibration. Its consistency sentence says that no finite proof
+in that presentation derives a contradiction. Every quantified integer
+below is an integer internal to the ambient theory; no restriction to
+externally standard proof codes is made.
+
+There are two main outputs, with different domains and costs.
+The direct route produces the polynomial
+\(D_{\DirectVariables}\) described in Section~\ref{sec:direct-results} and
+fully specified in Appendix~\ref{app:direct83-definition} and its literal
+electronic appendix. It has
+\(\DirectVariables\) unrestricted integer inputs and exact degree
+\(\DirectDegree\). The second route gives the following theorem.
+
+\begin{theorem}[Ten positive variables]\label{thm:principal}
+Let \(P_{190}\) be the polynomial defined in Section~\ref{sec:equation},
+with the four fixed integers specified in Appendix~\ref{app:constants}.
+Then
+\[
+ \ZFC\vdash
+ \left(\neg\exists\boldsymbol x\in\Zpos^{10}\;
+                      P_{190}(\boldsymbol x)=0\right)
+ \ \longleftrightarrow\ \Con(\ZFC).
+\]
+Its exact total degree is \(190\). Its supplied literal circuit uses
+\(73\) multiplications, \(24\) additions, and \(21\) subtractions.
+\end{theorem}
+
+The proof composes the new arithmetic arguments with the inherited
+calibration identified in Section~\ref{sec:boundary}.
+The coefficient specification is independent of the truth of consistency.
+For the direct route the analogous theorem quantifies over
+\(\Z^{\DirectVariables}\); that domain distinction is substantive.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Ten-positive-variable construction & Degree & Operations & Root scale\\
+\midrule
+Source 172, free quotient and inverse correction & 214 & 87 & 1\\
+Source 178, whole-product center in older chart & 208 & 116 & 4\\
+Incoming Affine Horizons, centered free chart & 206 & 90 & 1\\
+This report, quotient-center companion & 202 & 99 & 2\\
+\textbf{This report, weighted whole-product center} & \textbf{190} &
+ \textbf{118} & \textbf{4}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The comparison snapshot is the immutable repository commit
+\path{cdfea7d90176775d74c1c30afbe49fa78ade9897}.
+The incoming archives at that snapshot were inspected as well as the
+placed packages. Thus degree \(206\), rather than the placed
+degree \(208\), is the relevant preceding ten-variable degree benchmark
+\cite{source172,source178,incomingAffine}.
+The drop \(206\to190\) is \(16\) degrees, approximately \(7.77\%\).
+The operation count rises \(90\to118\); neither point dominates the
+other under both measures.
+
+The word \emph{simplest} requires a comparison rule. The same repository
+already contains nine-positive-variable equations of much higher degree,
+ten-unrestricted-integer equations using a different reduction, and
+quartics with more variables and large fixed coefficients.
+For example, package 101 supplies a nine-positive degree-\(997{,}810\)
+equation, and package 82 a quartic in \(37\) unrestricted integers.
+The new results therefore establish measured improvements in identified
+families, not minimum variable counts or global optimality.
+For the ten-positive route the coefficient cost is explicit:
+the largest port has \(592{,}884\) bits. Counting multiplication by that
+integer as one operation is not a bit-complexity assertion.
+
+To obtain a ten-variable equation over nonnegative integers without
+changing total degree, replace every input \(x_j\) by \(x_j+1\).
+That translated circuit has ten additional additions. The positive-domain
+theorem cannot simply be relabeled as an unrestricted-integer theorem.
+
+\section{The ten-positive-variable polynomial}\label{sec:equation}
+
+The independent inputs and their entire domain are
+\[
+ (J,F,\alpha,i,T,w,s,n,\eta,\zeta)\in\Zpos^{10}.
+\]
+The symbols \(\beta,K_0,M_C,M_F\) denote the four fixed integers of
+Appendix~\ref{app:constants}. Every other letter in this section is a
+polynomial abbreviation, not an additional unknown.
+
+\subsection{Common arithmetic registers}
+Define
+\begin{align}
+ h&=\beta J,&q&=h+1,&C&=q-F-\alpha, \nonumber\\
+ X&=qw,&Y&=s,&\yb&=qY, \nonumber\\
+ k&=\eta+\zeta,&c&=kY+\eta,&
+ A&=\yb(X+1)+1, \label{eq:front}\\
+ \Delta&=A^2-1,&H&=4A-5,&v&=X\yb^2,\nonumber\\
+ \ell&=vk,&E&=1+\ell(\ell+k).&&\nonumber
+\end{align}
+The remaining shared registers are
+\begin{align}
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J, \nonumber\\
+ B&=(K_0+w)C-F,&U&=ic^2, \nonumber\\
+ a&=\Delta U^2E,&F_0&=1+a,&G&=EF_0, \label{eq:pellregs}\\
+ f&=1+2a,&Q&=4\Delta aF_0,&b&=cT-R,\nonumber\\
+ V&=fb-c,&K&=X(3c-2X)+2,&&\nonumber\\
+ e_6&=6(k-R-1)-\ell(k^2-4),&
+ D&=6q^7,&M&=hDH.\nonumber
+\end{align}
+The subscript on \(K_0\) distinguishes the fixed coefficient from the
+polynomial \(K\). The numeral \(6\) in \(D\) is part of the literal equation.
+
+\subsection{The center and the transport}
+Set
+\begin{align}
+ e_2&=(k\yb)^2,\nonumber\\
+ S&=(k\yb)\bigl[\ell+k-(k\yb)(\yb+1)\bigr],\nonumber\\
+ \theta&=U^2b,\qquad
+ R_c=\theta(3E+e_2)-(b-c),\nonumber\\
+ S_c&=4E^2+3S^2+e_2^2,\label{eq:center}\\
+ \Omega&=U\bigl[2SR_c+A(4EV-\theta S_c)\bigr],\nonumber\\
+ L&=AU^3b^2.\nonumber
+\end{align}
+The useful folded evaluation is
+\[
+ \Omega_{\mathrm f}
+   =U\bigl[2SR_c+A\{4EV-\theta(S_c-bB)\}\bigr].
+ \tag{F}
+\]
+It satisfies the exact identity
+\[
+ \Omega_{\mathrm f}=\Omega+LB.
+ \tag{F1}
+\]
+One can therefore compute the carrier directly as
+\begin{align}
+ Z&=hD\bigl[H(n-\Omega_{\mathrm f})+K\bigr]
+      -H\bigl[DB+h(e_6-6q^4s)\bigr],             \label{eq:Z}\\
+ P_{190}&=Q\bigl(Z^2-16M^2GV^2\bigr)+16M^2G-Z^2.
+                                                        \label{eq:P}
+\end{align}
+\begin{center}
+\fbox{\(\displaystyle
+ P_{190}(J,F,\alpha,i,T,w,s,n,\eta,\zeta)=0,
+ \quad J,F,\alpha,i,T,w,s,n,\eta,\zeta>0. \)}
+\end{center}
+Equations \eqref{eq:front}--\eqref{eq:P}, together with the coefficient
+appendix, specify one ordinary polynomial with integer coefficients.
+Quotients, modular arithmetic, Pell sequences, and roots used below belong
+only to the proof. They are not primitives in this polynomial.
+
+\section{What is inherited and what changes}\label{sec:boundary}
+
+Source 172 supplies the free chart \(Y=s,\ \yb=qY\), the inverse-Lucas
+correction \(e_6\), the denominator \(6q^7\), and the signed analysis that
+permits auxiliary Pell index three. Its complete local proof and the
+selected underlying proof files are retained in the archive.
+Source 178 supplies the center for the whole product and its
+polynomial-quotient identity. The incoming Affine Horizons archive supplies
+the degree-\(206\) comparison \cite{source172,source178,incomingAffine}.
+
+The new contribution is the positive weight \(L=AU^3b^2\), its independent
+bound in the free chart, the folding identity (F1), and the literal
+degree-\(190\) equation. These ingredients are needed together.
+An older unweighted \(b^2\) estimate relied on excluding an auxiliary index
+that the free chart allows. Importing that exclusion would invalidate
+the argument.
+
+After root extraction and sign recovery, the inherited Pell authentication
+and ratio projector recover
+\[
+ X=2^R,\qquad q^3\mid Y,\qquad C>0,\qquad
+ \frac{(K_0+w)C-F}{h}\in\N.
+ \tag{N}
+\]
+The entire calibrated four-number tuple then reconstructs the native
+words at the source base \(Y(X+1)+2\); the inherited native/K215 refutation
+calibration produces a finite syntactic ZFC refutation.
+Conversely, a refutation gives canonical positive outer data, compatible
+Pell witnesses, and the completeness bound used below.
+Neither direction permits replacing the actual four integers by arbitrary
+integers satisfying the same size inequalities.
+
+The direct construction in Section~\ref{sec:recycle} uses a different
+calibration: the numerical C222 calculus, then ZF refutation and ZFC
+refutation through the named
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} and
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}
+interfaces. It does not use the four-number tuple.
+
+These are mathematical dependency boundaries. No newly compiled complete
+Lean/Rocq import closure or object-language ZFC derivation is claimed.
+The new arguments use integer algebra, finite factorization, induction,
+and the inherited theorems, and can be carried out internally in ZFC.
+Finite checks validate emitted arithmetic; they do not prove unbounded
+semantic assertions by sampling. The archive's \texttt{calibration/} folder
+also records an inspection of the actual unconditional endpoint declarations,
+their mathematical source dependencies, and selected archived assumption logs.
+It retains precise source pins and distinguishes those historical logs from
+a fresh proof-assistant build.
+
+\section{Soundness of the degree-190 equation}
+
+\subsection{Root extraction before sign recovery}
+At every positive input, \(q\ge32,\ X\ge q,\ Y\ge1,\ k\ge2,\ c\ge3\),
+\(U\ge c^2\), and
+\[
+ A\ge32(32+1)+1=1057.                              \tag{B0}
+\]
+The identities
+\[
+ f^2=1+4aF_0,\qquad
+ Q=\Delta(f^2-1)=4\Delta^2U^2G,\qquad
+ \gcd(E,F_0)=1                                    \tag{I}
+\]
+are independent of the carrier. Since \(f>2c\), \(V=fb-c\)
+is nonzero for every integral \(b\).
+Suppose \(P_{190}=0\). Rewriting the final norm gives
+\[
+ (Q-1)Z^2=16M^2G(QV^2-1).                         \tag{R}
+\]
+A prime dividing \(G\) divides neither \(Q-1\) nor \(QV^2-1\).
+Valuations in (R) make \(G\) a square. Coprimality in (I)
+gives positive integers \(\tau,f_0,g\) with
+\[
+ E=\tau^2,\quad F_0=f_0^2,\quad G=g^2,\quad g=\tau f_0. \tag{R1}
+\]
+The factor \(16\) changes no valuation parity.
+The inherited adjacent-coefficient Pell descent applies initially to the
+rational number \(|Z|/(4Mg)\) and proves it integral. Thus
+\[
+ QV^2-(Q-1)y^2=1,\qquad Z/M=\epsilon\,4gy,\qquad
+ y\in\Zpos,\quad\epsilon\in\{-1,1\}.              \tag{R2}
+\]
+One does not assume numerator divisibility in advance.
+
+The inherited signed all-index folding, applied to
+\[
+ I=2Ug,\quad f^2-\Delta I^2=1,\quad
+ Q=(\Delta I)^2,\quad c^2\mid I,\quad V\equiv-c\pmod f,
+\]
+gives \(c=\PellY_p(A)\) for positive odd \(p\).
+As \(c\ge3\), \(p\ge3\), and
+\[
+ c\ge4A^2-1=4\Delta+3,\qquad c>X,\qquad K>0.      \tag{R3}
+\]
+No sign of \(B,C,R,b,V\), and no divisibility of \(Y\) by \(q\), has
+been used.
+The same parent analysis proves that \(b,V\) are nonzero with the same
+sign, including the auxiliary-index-three case, and
+\[
+ |b|>4\Delta f-1>3\Delta f,\qquad
+ y<\tfrac32|V|,\qquad |V|<\tfrac32f|b|,\qquad f>6g. \tag{R4}
+\]
+These signed bounds are the appropriate input to the new argument.
+
+\subsection{An absolute bound for the polynomial center}
+For proof only, replace \(A\) by a formal indeterminate \(t\), keeping
+\(\yb,k,U,b,c\) fixed. Put
+\begin{align*}
+ E(t)&=e_2t^2+e_1t+e_0,\\
+ e_1&=k^2\yb(1-2\yb-2\yb^2),\\
+ e_0&=1+k^2\yb(\yb+1)\bigl[\yb(\yb+1)-1\bigr],\\
+ V(t)&=\bigl[1+2(t^2-1)U^2E(t)\bigr]b-c,\qquad
+ F(t)=E(t)V(t).
+\end{align*}
+Let \(\mathcal Q_j\) be the ordinary polynomial quotient of \(F(t)\) by
+\(t^j\), evaluated at \(A\). Exact algebra gives
+\[
+ \Omega=U\left(4AEV-2\mathcal Q_1-\frac{\mathcal Q_3}{2}\right).
+ \tag{C1}
+\]
+The quotient \(\mathcal Q_3\) is coefficientwise even: the term
+\(E(t)(b-c)\) has degree at most two and the remaining term has factor
+\(2U^2b\). Equation (C1) is proof notation for the division-free center
+in \eqref{eq:center}, not numerical polynomial division in the equation.
+
+Let \(F^\#(A)\) mean evaluation at positive \(A\) after replacing every
+coefficient by its absolute value. The bound
+\(\delta=(\yb+1)/A<1/16\) follows from \(\yb,X\ge32\).
+Using \(|e_1|<2e_2(\yb+1)\) and \(0<e_0\le e_2(\yb+1)^2\) gives
+\[
+ E^\#(A)<2E,\qquad
+ F^\#(A)<2E(|b|+c)+8(A^2+1)U^2E^2|b|.
+\]
+Since \(c+1<2U^2E\) and \(|V|>\Delta U^2E|b|\),
+\[
+ \frac{F^\#(A)}{|EV|}<8+\frac{20}{\Delta}<10.      \tag{C2}
+\]
+Deletion of low coefficients yields
+\(|\mathcal Q_j|\le F^\#(A)/A^j\). Hence
+\[
+ |\Omega-4AUEV|
+ <10U|EV|\left(\frac2A+\frac1{2A^3}\right)<AUE|V|.
+\]
+We obtain
+\[
+ \operatorname{sgn}(\Omega)=\operatorname{sgn}(V),\qquad
+ 3AUE|V|<|\Omega|<5AUE|V|.                        \tag{C3}
+\]
+No premature assumption \(V>0\) is hidden in this estimate.
+
+\subsection{The weighted transport inequality}
+\begin{lemma}\label{lem:transport}
+At every positive zero of \(P_{190}\),
+\[
+ E<U^2,\qquad 4gy+|\Omega|<\tfrac12L,\qquad L=AU^3b^2>0.
+\]
+\end{lemma}
+\begin{proof}
+From \(v=X\yb^2\), \(A=\yb(X+1)+1\), and (R3),
+\[
+ v+1<A^2<c,\qquad k<c.
+\]
+These quantities are integers, so
+\[
+ E=1+k^2v(v+1)\le1+(c-1)^4<c^4\le U^2.
+\]
+Also \((AUE)^2-G=U^2E^2-E>0\), so \(g<AUE\).
+Combine this with (C3) and (R4):
+\begin{align*}
+ 4gy+|\Omega|
+  &<6g|V|+5AUE|V|\\
+  &<11AUE|V|<\frac{33}{2}AUEf|b|\\
+  &<\frac{11E}{2\Delta U^2}\,AU^3b^2
+   <\frac{11}{2\Delta}L<L/2.
+\end{align*}
+The last inequality uses \(\Delta>11\).
+All estimates precede recovery of the sign of \(B\).
+\end{proof}
+
+The weight fits both the signed estimate and a factor already present in
+the center. Identity (F1) absorbs it into the literal evaluator.
+
+\subsection{Recover the arithmetic sign}
+The following are rational abbreviations used only in the proof:
+\[
+ e^*=e_6/6,\quad \rho=e^*/q^7,\quad
+ \sigma=s/q^3,\quad t=B/h,\quad\kappa=K/H,\quad
+ z=Z/M,\quad W_c=1+hL.
+\]
+Expansion gives the exact identity
+\[
+ z=n+\kappa+\sigma-W_ct-\rho-\Omega.              \tag{T}
+\]
+We have \(\kappa,\sigma>0\). Since \(k\ge2\), the inverse correction obeys
+\[
+ e^*\le k-R-1<b,\qquad \rho<|b|/q^7.             \tag{T1}
+\]
+This remains valid for negative \(R\).
+If \(B\le-1\), then \(W_ct<-L\). As \(L\ge|b|\),
+Lemma~\ref{lem:transport} and (R2) give
+\[
+ n=\epsilon4gy+\Omega-\kappa-\sigma+W_ct+\rho
+       <L/2-L+|b|/q^7<0.
+\]
+This contradicts the independent condition \(n>0\).
+Thus \(B\ge0\), and then \(C>0\).
+
+\subsection{Authentication and native recovery}
+Only now may one invoke the calibrated mask estimate \(3q<R<q^4-2\).
+It gives \(b,V>0\); the unchanged signed index argument yields
+\(p=R\), \(R\) odd, \(q\) even, and \(J\) odd.
+The carrier changes do not affect
+\(V\equiv-c\pmod f\) or \(V\equiv-R\pmod c\).
+
+The center shift \(M\Omega\) is an integer multiple of \(D\) and \(H\),
+and \(L\) is an integer polynomial. The parent numerator reductions
+and fractional-part argument therefore remain valid, in this order:
+\begin{enumerate}
+\item The first Pell pair gives \(k=2\PellY_m(1+2v)\).
+Literal cancellation of \(6\) supplies \(q^4\mid e^*\).
+\item The retained cubic-difference identity, including its prime-\(3\)
+valuation argument, yields \(m=(R+1)/2\).
+One does not yet infer \(q^7\mid e^*\).
+\item Reduction modulo \(H\) gives \(H\mid6hK\).
+The \(\lambda=q\) ratio theorem and universal projector give \(X=2^R\).
+Since \(X=qw\), \(q\) is a power of two.
+\item The stronger resulting valuation of \(v=Xq^2Y^2\) yields
+\(q^7\mid e^*\). Now \(\rho,\kappa\) are integral, and (T) gives
+\(q^3\mid Y\) and \(h\mid B\).
+\end{enumerate}
+These are the calibrated endpoint (N). Fresh native reconstruction
+produces a finite ZFC refutation. This completes soundness.
+
+\section{Completeness and the consistency equivalence}
+Start with a finite syntactic ZFC refutation. The inherited construction
+gives canonical positive outer data, compatible positive Pell witnesses,
+and a positive trace-linear coordinate \(T\), with
+\[
+ b,V,y>0,\quad t=B/h\in\N,\quad
+ \rho,\kappa,\sigma\in\Z,\quad |\rho|+\kappa+\sigma<g. \tag{E}
+\]
+The last bound is proved independently of the carrier weight.
+Retain every input except \(n\) and set
+\[
+ n=4gy+\Omega+(1+hL)t+\rho-\kappa-\sigma.          \tag{E1}
+\]
+It is an integer. Since \(\Omega>0\), \(t\ge0\), and \(y\ge1\),
+(E) proves it positive. Equation (T) says \(Z/M=4gy\), and the final
+norm vanishes.
+
+A positive zero therefore exists if and only if a finite syntactic ZFC
+refutation exists. Negation proves Theorem~\ref{thm:principal}.
+The argument does not assume consistency or assert insolubility.
+
+\begin{remark}
+Completeness constructs canonical witnesses. It is not a pointwise
+bijection of all old and new positive zero sets. The inverse of a polynomial
+translation of a positive coordinate need not remain positive.
+The separate signed soundness argument is essential.
+\end{remark}
+
+\section{Exact degree and a cheaper companion}
+
+\subsection{The degree-190 certificate}
+Let \(Z_0\) be the carrier with transport \(L\), before subtraction of
+\(M\Omega\). Thus \(Z=Z_0-M\Omega\).
+Regard \((A,\yb,k,U,b,c)\) as free variables of weights
+\((4,2,1,5,4,2)\). Exact collection gives \(594\) nonzero terms in the
+unfolded center defect, weighted degree \(94\), and top part
+\[
+ [\Omega^2-16GV^2]_{94}
+       =8A^6\yb^8k^8U^6b^2(A^2-6\yb^4).         \tag{D1}
+\]
+Using the folded center instead gives \(679\) terms, with the same top
+part; its additional transport terms have lower weight.
+In the ten actual inputs,
+\[
+ \deg(Q,M,G,V,\Omega,Z_0)=(72,12,46,36,59,41).
+\]
+The cancellation-sensitive expansion is
+\[
+ P_{190}
+ =Q\{Z_0^2-2MZ_0\Omega+M^2(\Omega^2-16GV^2)\}
+       +16M^2G-(Z_0-M\Omega)^2.                  \tag{D2}
+\]
+The five degree bounds are \(154,184,190,70,142\); only the third term
+can contribute in degree \(190\).
+Put \(q_0=\beta J\), \(k_0=\eta+\zeta\). Substitution in (D1) gives
+the entire top homogeneous form
+\[
+ [P_{190}]_{190}
+  =9\,2^{11}q_0^{74}w^{18}s^{52}i^{10}k_0^{32}
+       (q_0-F)^2(w^2-6s^2).                      \tag{D3}
+\]
+It is nonzero for the actual \(\beta>0\), proving exact degree.
+The literal graph specifies the whole polynomial without expansion.
+
+\subsection{A 99-operation companion}
+Keep the common definitions \eqref{eq:front}--\eqref{eq:pellregs} and \(S\).
+For this alternative only, put
+\[
+ L=bV,\quad C_2=2AUE-US,\quad
+ Z=hD[H\{n-V(bB+C_2)\}+K]-H[DB+h(e_6-6q^4s)]
+\]
+and
+\[
+ P_{202}=Q(Z^2-4M^2GV^2)+4M^2G-Z^2.              \tag{C202}
+\]
+These definitions replace the principal carrier; there remain ten positive
+inputs. The positive remainder
+\[
+ R_E=1+k^2\yb(\yb+1)\{\yb(\yb+1)-1\}
+\]
+satisfies \(E=AS+R_E\), \(0<S<E/A\), and
+\(0<C_2<2AUE<3g\). The inherited bound gives \(|b|>16g\), so
+\[
+ 2gy+C_2|V|<6g|V|<L/2.
+\]
+The same bootstrap and completeness construction work with root scale two.
+The identity
+\[
+ C_2^2-4G=4U^2ER_E+U^2S^2-4E
+\]
+has degree \(34\). The output has exact degree \(202\), with top form
+\[
+ [P_{202}]_{202}
+  =9\,2^{12}q_0^{80}w^{22}s^{56}i^{10}k_0^{32}(q_0-F)^2.
+\]
+Its evaluator uses \(60\) multiplications, \(21\) additions, and
+\(18\) subtractions.
+
+\section{Reusing a Pell quotient as a center witness}\label{sec:recycle}
+
+The preceding construction retains a native coefficient calibration.
+The following mechanism operates in the direct C222 proof-calculus branch
+and removes a private witness by changing how a large center is chosen.
+Use standard Pell polynomials
+\[
+ (a+\sqrt{a^2-1})^j
+   =\PellX_j(a)+\PellY_j(a)\sqrt{a^2-1},
+ \qquad a\ge2,\quad j\ge0.
+\]
+Their recurrences and addition laws are polynomial identities.
+
+\begin{theorem}[The quotient supplies the center]\label{thm:reuse}
+Let \(q,\mathcal M\) be positive odd integers with
+\(\rad(\mathcal M)\mid q\), and let \(W_0\ge2\).
+Set
+\[
+ W=q^2W_0,\quad \mathcal K=W^3(W+2),\quad
+ A_0\equiv1+\frac{q^2}{2(q+1)}\pmod{\mathcal M}.
+\]
+There are arbitrarily large positive odd \(j\) for which
+\[
+ L_0=\PellX_{Wj}(W+1),\quad
+ r=\frac{\PellY_{Wj}(W+1)}{W},\quad A_*=L_0^2+2r^2
+\]
+satisfy
+\[
+ r\in\Zpos\text{ is odd},\quad
+ L_0^2-\mathcal K r^2=1,\quad A_*\equiv A_0\pmod{\mathcal M}.
+\]
+In particular \(A_*\ge L_0^2\), and these centers are cofinal.
+\end{theorem}
+The quotient \(r=2z+1\) is already a source witness.
+No extra coordinate stores \(j\), a modular root, or a CRT choice.
+
+\subsection{A local unit and a permutation of indices}
+\begin{lemma}\label{lem:unit}
+If \(p\) is odd and \(p^2\mid W\), then
+\[
+ b_0=\PellY_W(W+1)/W\in\Z,\quad b_0\equiv1\pmod p,\quad
+ c_0=\PellX_W(W+1)\equiv1\pmod{p^6}.
+\]
+\end{lemma}
+\begin{proof}
+The recurrence gives \(\PellY_j(W+1)\equiv j\pmod W\).
+With \(a=W+1\), \(d=W(W+2)\), binomial expansion gives
+\[
+ b_0=\sum_{2t+1\le W}
+       \frac{\binom W{2t+1}}{W}\,a^{W-2t-1}d^t.
+\]
+The \(t=0\) term is \(1\) modulo \(p\). For \(t\ge1\),
+\[
+ \vp\left(\binom W{2t+1}/W\right)\ge-\vp(2t+1).
+\]
+Each whole term has valuation at least \(2t-\vp(2t+1)\ge1\).
+Although the displayed coefficients can be rational, each whole term
+is \(p\)-integral, and these valuation bounds are legitimate.
+Thus \(b_0\equiv1\pmod p\). Also \(c_0\equiv1\pmod p\).
+The norm identity \(c_0^2-1=dW^2b_0^2\) has right side divisible by
+\(p^6\), while \(c_0+1\) is a unit. This proves the claim.
+\end{proof}
+
+\begin{lemma}[Index permutation]\label{lem:permutation}
+If \(p\) is odd and \(c_0\equiv1\pmod{p^2}\), then, for \(a,j\ge0\),
+\[
+ \PellY_{j+p^a}(c_0)-\PellY_j(c_0)
+       \equiv p^a\pmod{p^{a+1}}.                 \tag{Perm}
+\]
+Hence \(j\mapsto\PellY_j(c_0)\) is a permutation modulo every power of \(p\).
+\end{lemma}
+\begin{proof}
+Put \(h=p^a\), \(d'=c_0^2-1\).
+The elementary bound \(\vp\binom h t\ge a-\vp(t)\) and
+\(\vp(d')\ge2\) give
+\[
+ \PellX_h(c_0)\equiv1\pmod{p^{a+1}},\qquad
+ \PellY_h(c_0)\equiv p^a\pmod{p^{a+1}}.
+\]
+Every nonleading ordinate term has valuation at least
+\(a+2t-\vp(2t+1)\ge a+1\).
+The scalar expansion is similar; its leading power \(c_0^h\) is
+\(1\) modulo \(p^{a+1}\).
+The addition law
+\[
+ \PellY_{j+h}(c_0)=\PellX_h(c_0)\PellY_j(c_0)
+                         +\PellX_j(c_0)\PellY_h(c_0)
+\]
+proves (Perm), using \(\PellX_j(c_0)\equiv1\pmod p\).
+Modulo \(p\) the map is the identity. At the next lift, adding \(tp^a\)
+changes the new base-\(p\) digit by \(t\). Induction proves bijectivity.
+\end{proof}
+
+\subsection{Proof of the center theorem}
+If \(\mathcal M=1\), every odd positive \(j\) suffices.
+Otherwise \(p^2\mid W\) for each \(p\mid\mathcal M\).
+The composition law
+\[
+ r(j)=\PellY_{Wj}(W+1)/W=b_0\PellY_j(c_0)
+\]
+and the lemmas make \(j\mapsto r(j)\) a permutation modulo every prime
+power dividing \(\mathcal M\). CRT gives a permutation modulo \(\mathcal M\).
+For each such prime,
+\[
+ 2(q+1)(\mathcal K+2)\equiv4\pmod p.
+\]
+The simple roots \(2,-2\) lift to all required prime powers by
+\(d\mapsto d+tp^a\), since \(2d\) is invertible.
+CRT supplies a unit \(d\pmod{\mathcal M}\) with
+\[
+ d^2\equiv2(q+1)(\mathcal K+2)\pmod{\mathcal M}.
+\]
+Choose \(j\) with \(r(j)\equiv q/d\pmod{\mathcal M}\).
+Because \(\mathcal M\) is odd, this class has odd positive representatives;
+adding \(2\mathcal M\) gives arbitrarily large ones.
+The norm identity now gives
+\[
+ A_*=1+(\mathcal K+2)r^2
+       \equiv1+\frac{q^2}{2(q+1)}\pmod{\mathcal M}.
+\]
+For odd \(W\), \(\PellY_W(W+1)/W\) is odd by reduction modulo two.
+For even \(W\), all abscissae at \(W+1\) are odd, and
+\(\PellY_{2t}=2\PellX_t\PellY_t\) proves
+\(\nu_2(\PellY_W)=\nu_2(W)\). The quotient is again odd.
+Finally \(\PellY_j(c_0)\) is odd for odd \(j\), regardless of \(c_0\)'s
+parity. Positivity and cofinal growth follow from the positive recurrence.
+
+\subsection{Why this identifies a new pair of witness roles}
+The incoming cofinal-center archive already proves that an even cofinal
+frame permits a separate witness \(A_*=L_0^2+2u^2\)
+\cite{incomingCofinal}. Here the existing \(r\) replaces \(u\).
+The changed frame lets that quotient cover the required residue classes.
+The hypothesis matters: at \(W=3,p=3\),
+\[
+ \PellY_3(4)/3=21
+\]
+is not a local unit. Requiring merely \(p\mid W\) would not justify the proof.
+
+In package 166 take \(W_0=2+\sum a_i^2\), using exactly its old affine atoms.
+Replace
+\[
+ W-W_0=0,\qquad A_*-L_0^2-u^2-v^2=0
+\]
+by
+\[
+ W-q^2W_0=0,\qquad A_*-L_0^2-2(2z+1)^2=0.       \tag{Reuse}
+\]
+Delete the now private \(u,v\); all other source rows are unchanged.
+Soundness first uses the affine radix row \(q=6t+3\), hence
+\(W=q^2W_0\ge W_0\), and \(A_*\ge L_0^2\).
+It does not assume \(\mathcal M\ne0\) before power recovery.
+Completeness first constructs the semantic positive odd \(q,\mathcal M\)
+with the required prime support, and then applies Theorem~\ref{thm:reuse}.
+
+This is an equivalence of zero existence, not a map from every preselected
+old center. The raw frame row has degree four, giving a degree-eight
+sum of squares. A signed-frame refinement and exact elimination give
+the stronger direct endpoints below.
+
+
+% BEGIN retained input: direct_results.tex
+\section{A direct equation in 83 unrestricted integers}\label{sec:direct-results}
+
+The modular witness-reuse theorem leads to a concrete second construction.
+Its source is the unmodified direct numerical-calculus polynomial in
+package 166, followed by the two semantic changes just proved and explicit
+integral coordinate elimination. The main endpoint is
+\[
+ D_{83}(x_0,\ldots,x_{82})
+       =\sum_{j=0}^{30}R_j(x_0,\ldots,x_{82})^2.
+ \tag{Direct}
+\]
+Appendix~\ref{app:direct83-definition} prints every free assignment, every
+ordered substitution, and every residual. The electronic appendix also
+supplies the corresponding literal arithmetic circuit and source coefficients.
+All \(83\) inputs range independently over \(\Z\).
+There are no hidden inequalities or extra witnesses.
+
+\begin{theorem}[Direct C222 route]\label{thm:direct}
+For the fixed polynomial (Direct), with the inherited C222/ZF/ZFC
+refutation calibration identified in Section~\ref{sec:boundary},
+\[
+ \ZFC\vdash
+ \left(\neg\exists\boldsymbol x\in\Z^{83}\;D_{83}(\boldsymbol x)=0\right)
+       \longleftrightarrow\Con(\ZFC).
+\]
+The exact total degree is \(624\), and the preferred factored evaluator has
+\(1{,}789\) live binary arithmetic operations. Its integer literal scalars
+have absolute value at most \(64\).
+\end{theorem}
+
+This route does not simulate K215 or specialize Jones's universal
+polynomial. It retains a specific direct proof calculus and its previously
+identified consistency calibration. Compared with the \(2{,}428\)-operation \(92\)-integer, degree-\(692\) equation
+\cite{source175}, the new point improves dimension \(92\to83\), degree
+\(692\to624\), and operation count \(2{,}428\to1{,}789\) together.
+The latter count uses the exact factorizations described below; the
+canonical evaluator retained for the projection audit has \(2{,}939\) operations.
+
+\subsection{A signed frame lowers the source degree}
+
+For the source used in this endpoint, one may replace \(q^2W_0\) by
+\(qW_0\). During completeness, the semantic construction gives
+\(q=(BH)^x\), with \(x\ge2\), and every prime dividing the odd modulus
+\(\mathcal M=Nq^x\) divides \(q\). Thus every such prime has square
+dividing \(W=qW_0\). The proof of Theorem~\ref{thm:reuse} only needs
+that local square divisibility, so the same modular construction works.
+The positivity of the semantic \(q\) gives a positive completeness frame.
+
+Soundness must also cover a negative value of the unclassified input \(q\).
+The affine source row gives \(|q|\ge3\), so \(F=|W|\ge3W_0\).
+The new \(A_*=L_0^2+2r^2\) is positive and at least \(L_0^2\).
+When \(W=-F\), the frame equation becomes
+\[
+ L_0^2-F^3(F-2)r^2=1.
+\]
+This is the Pell equation at parameter \(F-1\), with ordinate \(F|r|\).
+The congruence
+\[
+ \PellY_j(F-1)\equiv(-1)^{j-1}j\pmod F
+\]
+forces its positive classified index to be a multiple of \(F\).
+As \(r\) is odd, it is nonzero, so that index is at least \(F\).
+Consequently
+\[
+ A_*\ge L_0^2\ge(F-1)^{2F}>F^F\qquad(F\ge3).
+\]
+For \(W>0\) the retained positive-frame argument gives the required
+bound. Every old bounded atom has absolute value below \(F\).
+The source's only uses of \(W\) and its private frame wires are the frame
+equations and its definition, checked by an occurrence audit.
+The inherited signed power recognition therefore applies with \(F=|W|\).
+
+The signed-frame row has degree three, rather than four.
+Replaying the inherited integral coordinate changes, with the two private
+center inputs deleted, gives an explicit equation in \(227\) integers,
+the sum of \(175\) residual squares, of exact degree six.
+Its collected polynomial has \(32{,}328\) monomials and height \(221{,}184\).
+The archive also retains the positive-frame degree-eight alternative.
+The \(227\)-variable intermediate is a proof source, not a global quartic
+or low-dimensional record.
+
+\subsection{Acyclic unit elimination}
+
+Let \(S_0,\ldots,S_{174}\) be the literal residuals in that \(227\)-variable
+source. A selected row has the form
+\[
+ S_r=\epsilon x_v+H,\qquad \epsilon\in\{1,-1\},
+ \qquad H\in\Z[x_0,\ldots,\widehat{x_v},\ldots,x_{226}].
+ \tag{Pivot}
+\]
+Set \(x_v=-\epsilon H\) and remove that row.
+The dependence graph of the selected definitions is acyclic, so the
+removed coordinates are restored as integer polynomials in the retained
+ones, in a finite order. No division by a nonunit is performed.
+
+For the principal endpoint the certificate contains \(144\) such
+definitions, leaving \(83\) coordinates and \(31\) residuals.
+If \(\Phi:\Z^{83}\to\Z^{227}\) is the resulting reconstruction, exact
+polynomial substitution gives
+\[
+ S_r(\Phi(\boldsymbol x))=0
+ \quad\text{for every removed row},\qquad
+ D_{227}(\Phi(\boldsymbol x))=D_{83}(\boldsymbol x).
+ \tag{Restore}
+\]
+Projection and reconstruction are inverse on the integer zero sets.
+The signed-frame and witness-reuse changes earlier preserve existence;
+the acyclic elimination itself gives this stronger zero-set bijection.
+The method of unit elimination is inherited from the repository's prior
+projection work. The new semantic source, selected dependency orientation,
+literal certificates, and measured endpoints are supplied here.
+
+\subsection{Exact degree and cost certificates}
+
+The circuit gives an upper bound \(312\) on each retained residual degree.
+A univariate specialization \(x_i=d_i t\), with explicitly supplied
+integer \(d_i\), has a nonzero \(t^{312}\) coefficient in a retained
+residual modulo \(1{,}000{,}003\). This proves that residual has exact
+degree \(312\) over \(\Z\).
+The sum of squares has degree \(624\): highest real homogeneous squares
+cannot cancel. Independent finite-field nonzero partial derivatives
+certify that every one of the \(83\) declared inputs actually occurs.
+
+Exact propagation of coefficient-norm upper bounds through the circuit
+gives the rigorous bound
+\[
+ \max |\text{expanded coefficient of }D_{83}|<2^{1568}.
+\]
+This is a bound, not an exact expanded height. A literal scalar bound
+of \(64\) in the factored evaluator is a different measure. The complete expanded degree-\(624\)
+polynomial was not collected; the circuit is its exact finite definition.
+
+
+% BEGIN retained input: factored_evaluator.tex
+\subsection{A factored evaluator for the same polynomial}
+\label{sec:factored-evaluator}
+
+The expanded source-coordinate presentation contains two long expressions
+that share a quadratic form. Factoring these expressions changes neither
+the source, the projection, nor the polynomial. It gives a second literal
+evaluator with \textbf{1,789 live binary operations}, comprising 955
+multiplications and 834 additions. The largest absolute literal is 64.
+The canonical evaluator has 2,939 operations and largest literal 324.
+Both define exactly the same polynomial in 83 unrestricted integers, of
+degree 624, with 31 residual squares and expanded coefficient height below
+$2^{1568}$.
+
+Use the source coordinates $z_0,\ldots,z_{226}$ from the projection appendix,
+and introduce the following polynomial abbreviations:
+\begin{align*}
+ H_*={}&z_8+z_9+4(z_{19}+z_{24}+z_{30}+z_{36}+z_{65})\\
+       &+2(z_{22}+z_{27}+z_{29}+z_{32}+z_{34}
+                    +z_{37}+z_{40}+z_{44}+z_{66}),\\
+ q_*={}&3+6z_{220},\\
+ \mathcal I={}&\{1,2,10,11,12,13,14,15,16,17,103,121,127,195\},\\
+ \mathcal J={}&\{145,153,158,161,164,167,170,173,
+                  177,180,183,187,190,214,215,216\},\\
+ Q_*={}&z_0^2+(z_0+z_4)^2+\sum_{j\in\mathcal I}z_j^2,\\
+ N_*={}&z_{193}^2+2z_{158}-z_{216}-\sum_{j\in\mathcal J}z_j^2.
+\end{align*}
+The long restoration of $z_{139}$ has the exact factorization
+\begin{align}
+ z_{139}={}&
+ q_*\bigl[Q_*-2z_8+4z_{225}(z_{225}+1)+q_*^2+4\bigr]\notag\\
+ &+2(1+3z_{220})(H_*^2+z_8^2+z_9^2)
+       -2z_8z_9+z_{19}+N_*-3.\label{eq:factored-z139}
+\end{align}
+The corresponding retained residual is
+\begin{equation}
+ R_{28}=N_*-1-z_{19}-H_*^2+(z_8+z_9)^2.
+ \label{eq:factored-R28}
+\end{equation}
+Here residual indexing is zero based: $R_{28}$ is retained source row 170.
+These letters denote expression abbreviations, not additional unknowns.
+
+The independent checker expands~\eqref{eq:factored-z139} and
+\eqref{eq:factored-R28} in the free polynomial ring
+$\mathbb Z[z_0,\ldots,z_{226}]$ and compares all 336 and 154 nonzero
+coefficients, respectively, with the frozen definitions. It then checks
+every restoration, every retained residual, and the sum-of-squares output
+in both complete arithmetic DAGs. Thus the equality holds at every integer
+tuple, not only on their zero sets. The original degree and occurrence
+certificates also replay for the alternate evaluator. Exact propagation
+of coefficient $\ell_1$ majorants again gives the strict bound $2^{1568}$;
+this is distinct from the largest literal 64.
+
+The alternate graph, formulas, byte-reproducible builder, independent
+standard-library checker, and receipt are in
+\texttt{direct/factored83/}. The canonical graph and certificates remain
+in \texttt{direct/P83/}. No semantic theorem is changed by this evaluator
+optimization.
+
+% END retained input: factored_evaluator.tex
+
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+Integer variables & Exact degree & Residual squares & Interpretation\\
+\midrule
+79 & 8,388,620 & 27 & Fewest coordinates in this family\\
+81 & 2,048 & 29 & Smaller dimension, higher degree\\
+82 & 764 & 30 & Intermediate point\\
+\textbf{83} & \textbf{624} & \textbf{31} & \textbf{Principal direct endpoint}\\
+87 & 268 & 35 & Lower-degree alternative\\
+89 & 128 & 37 & Lower-degree alternative\\
+91 & 80 & 39 & Lower-degree alternative\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each row is an independently specified ordinary polynomial over unrestricted
+integers, with its own literal circuit and exact degree certificate.
+The \(79\)-variable equation improves on the \(87\)-variable coordinate
+count in the inspected oriented-power family, at a slightly higher
+degree than its \(8{,}388{,}612\) endpoint \cite{source177}.
+The table makes the degree cost explicit. It is not a claim that an
+equation in \(79\) variables is simpler than every equation in fewer
+variables using the large native coefficient tuple.
+
+% END retained input: direct_results.tex
+
+
+\section{Verification, reproducibility, and remaining work}
+The archive distinguishes three kinds of evidence:
+\begin{enumerate}
+\item \textbf{Literal arithmetic.} JSON circuits and residual lists specify
+every polynomial, input, fixed coefficient, and operation.
+The four native integers are supplied as bytes and by a finite reconstruction.
+\item \textbf{Finite certificates.} Exact sparse algebra checks the center
+identity, its norm defect, highest forms, and gate counts.
+Separate code checks source edits, acyclic unit eliminations, reconstruction
+identities, and the supplied collected coefficients.
+Finite Pell examples exercise the lemma and a counterexample; they are
+diagnostics, not the proof of the theorem.
+\item \textbf{Unbounded reasoning.} The signed transport, index permutation,
+cofinal completeness, and inherited refutation calibrations are ordinary
+mathematical proofs. No finite search or successful test suite establishes
+these universal statements by itself.
+\end{enumerate}
+
+Run \texttt{verify.py} for the release checks and
+\texttt{build\_report.sh} to compile the report.
+The single-file \texttt{report.tex} assembles the readable article and
+coefficient specification. Electronic appendices contain the direct
+polynomials, complete restoration data, source snapshots, and receipts.
+The finite code does not search for an actual refutation or integer zero.
+
+The results give concrete new equations and a reusable way to identify
+two witness roles. Formalization of the new bridge end to end, and
+further improvements under a specified simplicity objective, remain open.
+No worldwide novelty priority is asserted.
+The independent reviews were performed by separately assigned AI agents
+and the primary assistant, not by external human peer reviewers.
+
+\appendix
+\section{The complete four-integer coefficient specification}\label{app:constants}
+This is the retained directly indexed BFS943/radix67 tuple.
+It makes \(P_{190}\) and \(P_{202}\) fully specified without an unspecified
+machine, oracle coefficient, or consistency-dependent search.
+Finite sums, floors, and the fixed seed below define four constants once
+and for all. They do not add primitives to the polynomial in ten variables.
+
+% BEGIN retained input: coefficient_recipe.tex
+% Exact finite recipe extracted from the retained indexed_constants.tex.
+% In this appendix K denotes the fixed port K_0, and all other symbols are constants.
+\begingroup
+\providecommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\providecommand{\rg}[2]{\{#1,\ldots,#2\}}
+In this appendix $K$ denotes the port $K_0$ in the new equations.
+Every symbol introduced here is a fixed constant, independent of the ten
+quantified variables. The formulas and 436-character seed are the retained
+indexed BFS943 radix67 specification; they reconstruct the exact supplied
+payloads, with $\beta=2^{590069}-1$.
+
+\textbf{The four fixed integers.}
+Every index, set, sum, product and floor below defines a constant, not
+another unknown. Put
+\[
+\rho=2^{67},\quad B=\rho^{8807},\quad\beta=B-1,\quad
+G_m(x)=\sum_{j=0}^{m-1}x^j.
+\]
+Define
+\[
+\begin{split}
+\mathcal E={}&\rg0{942}\cup\rg{983}{992}\cup\rg{1003}{1011}\\
+&\cup\rg{1013}{1031}\cup\{1063,1064,1095,2195,3296\}.
+\end{split}
+\]
+Then
+\begin{align*}
+M_C={}&B-1-\sum_{e\in\mathcal E\setminus\{1\}}\rho^e-2\rho^{1063},\\
+M_F={}&B-1+4+(2^{51}-2)(\rho^{4393}+\rho^{5495})\\
+&+\rho^{1013}G_{10}(\rho)+\rho^{1065}G_9(\rho)
+  +\rho^{2195}+\rho^{3296}\\
+&+(2^{65}-1)\rho^{8792}G_{13}(\rho)+(2^{19}-1)\rho^{8805},\\
+K={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}+\rho^{8849}\\
+&+(\rho^{4393}+\rho^{5495})\Phi(1/\rho),
+\end{align*}
+where
+\[
+\begin{split}
+\Phi(x)={}&(1+2^{51})G_{943}(x)
+ -2^{10}\sum_{i=0}^{942}v(t_i)x^i\\
+&+\sum_{(b,e,m)\in\mathcal C}2^b x^e G_m(2x),\\
+\mathcal C={}&\{(10,1023,8),(18,1013,9),(27,1003,8),\\
+&(35,983,9),(44,1031,1),(45,1022,1),(46,1011,1),\\
+&(47,992,1),(48,1095,1),(49,2195,1),(50,3296,1)\}.
+\end{split}
+\]
+The rational intermediate in K cancels exactly; all four results are positive integers.
+
+\textbf{The 943 indexed fixed tiles.}
+Use the actions $u_j,v_j,d_j$ decoded below. Let
+\[
+\begin{gathered}
+h(q,b)=2(q+1)+b,\quad
+\mathcal R=\{u_j:d_j=1,\ 0\le j<430\},\\
+\mathcal L=\{u_j:d_j=0,\ 0\le j<430\},\\
+r_q=6+|\mathcal R\cap\rg0{q-1}|,\quad
+l_q=205+|\mathcal L\cap\rg0{q-1}|.
+\end{gathered}
+\]
+An interval ending at $-1$ is empty. The table defines $t_i$ for
+$0\le i\le942$; all index ranges are fixed:
+\[
+\setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
+\text{index }i&\text{tile }t_i=(w,n,e,s)\\\hline
+0,1&(2,435,3,1),\ (5,0,0,0)\\
+j+2\ (j=2q+b<430)&((1-d_j)l_{u_j},h(q,b),d_jr_{u_j},v_j)\\
+432+b\ (b=0,1)&(0,h(215,b),0,h(215,b))\\
+434+b\ (b=0,1)&(0,b,0,b)\\
+424+2r_q+b\ (q\in\mathcal R,b=0,1)&(r_q,b,0,h(q,b))\\
+424+2l_q+b\ (q\in\mathcal L,b=0,1)&(0,b,l_q,h(q,b))\\
+924+j\ (0\le j<4)&(0,j+430\fl{j/2},0,438)\\
+928&(2,434,2,0)\\
+929&(3,436,4,4)\\
+930&(4,436,4,0)\\
+497+t\ (t=434,435,436)&(1,438,1,t)\\
+\substack{934+3a+b-6\fl{a/4}\\a\in\{0,1,4\},\ b=0,1,2}&(a,437,b,437)
+\end{array}
+\]
+For $t=(w,n,e,s)$ put
+\[
+v(t)=w+2^8n+2^{17}e+2^{25}s+127\,2^{34}.
+\]
+
+\textbf{A closed decoder for the 430 actions.}
+Put $D_b(A,k)=\fl{A/b^k}\bmod b$, where
+$a\bmod b=a-b\fl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
+\[
+\begin{gathered}
+N=\mathcal A\bmod2^{636},\quad
+T_0=\fl{\mathcal A/2^{636}}\bmod2^{1675},\\
+E_0=\fl{\mathcal A/2^{2311}},\\
+\nu_j=D_2(N,j),\quad \sigma_j=\sum_{k=0}^{j-1}\nu_k,\\
+m_q=D_2(N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14(1-m_q)+m_qD_{16}(E_0,\tau_q),\\
+u_j=\nu_j(1+\sigma_j)+(1-\nu_j)D_{216}(T_0,j-\sigma_j),\\
+v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
+\end{gathered}
+\]
+Empty sums are zero. Here $(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
+uses this actual first target, including its state renaming.
+
+\textbf{The integer $\mathcal A$.}
+The alphabet, in order of digit values $0,\ldots,61$, is:\par
+\noindent{\fontsize{7.7}{8.2}\selectfont\ttfamily 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}\par
+Concatenate the following 436 characters as digits $e_0,\ldots,e_{435}$;
+put $\mathcal A=\sum_{j=0}^{435}e_j62^{435-j}$.\par
+\begingroup\fontsize{7.7}{8.2}\selectfont\ttfamily
+BxEnhvy6NipzkWmROo0GsA3uK3twWLxscLq20UTumy5Cdu461LwD6g7RDNzF8Y\par
+iYDFTpB8ehAypd7d6OsOL4APamnJeNXQypUezCmW9n4oXP6XfgmiWuAWZ8ZJ7U\par
+OP7gu4kVdlGZqZHULQMar1dXNeJW4i7oNVI8usp8BlovjjZbwPCovZI328fRUq\par
+4q92R81s5GjWQaQfGhkq9UYMK3rRMaBmsOIBkJqc2cj2VRIZ6mjzkBIOkW9SjZ\par
+FzeA6J5u4j3sBL3SdgwXzM9mHvQivu8EJ1TBTpRhHDqZIbmYgwQ8VqTAFotl6F\par
+We1YC554GKrVHsA8oUGKSA6F6k5KREBSD0Tgd7bFALY84LLbpw574BQyvdoHrl\par
+0Oe35uwDf15DpT6VJWZBjSbHPpPAINYTte0eUxnTFTKBlGj8Am6sb1gLldh8WZ\par
+8P\par
+\endgroup
+
+\endgroup
+
+% END retained input: coefficient_recipe.tex
+
+
+\section{Literal ten-variable circuit}
+The following generated table prints the principal circuit in order.
+Names denote local polynomial registers; the four fixed ports do not count
+as inputs. Every row is one binary operation, and all \(118\) rows are live.
+
+% BEGIN retained input: circuit.tex
+\begingroup\fontsize{8.5}{10.5}\selectfont
+\begin{longtable}{rll}
+\toprule
+Row & Register & Definition\\
+\midrule\endhead
+1 & \texttt{bJ} & $\mathtt{beta} \mathbin{\cdot} \mathtt{J}$ \\
+2 & \texttt{q} & $\mathtt{bJ} + \mathtt{1}$ \\
+3 & \texttt{q2} & $\mathtt{q} \mathbin{\cdot} \mathtt{q}$ \\
+4 & \texttt{q4} & $\mathtt{q2} \mathbin{\cdot} \mathtt{q2}$ \\
+5 & \texttt{q6} & $\mathtt{q4} \mathbin{\cdot} \mathtt{q2}$ \\
+6 & \texttt{q7} & $\mathtt{q6} \mathbin{\cdot} \mathtt{q}$ \\
+7 & \texttt{sixq7} & $\mathtt{6} \mathbin{\cdot} \mathtt{q7}$ \\
+8 & \texttt{qY} & $\mathtt{q} \mathbin{\cdot} \mathtt{s}$ \\
+9 & \texttt{qmF} & $\mathtt{q} - \mathtt{F}$ \\
+10 & \texttt{C} & $\mathtt{qmF} - \mathtt{alpha}$ \\
+11 & \texttt{X} & $\mathtt{w} \mathbin{\cdot} \mathtt{q}$ \\
+12 & \texttt{k} & $\mathtt{eta} + \mathtt{zeta}$ \\
+13 & \texttt{kY} & $\mathtt{k} \mathbin{\cdot} \mathtt{s}$ \\
+14 & \texttt{c} & $\mathtt{kY} + \mathtt{eta}$ \\
+15 & \texttt{XY} & $\mathtt{X} \mathbin{\cdot} \mathtt{qY}$ \\
+16 & \texttt{v0} & $\mathtt{XY} \mathbin{\cdot} \mathtt{qY}$ \\
+17 & \texttt{Am1} & $\mathtt{XY} + \mathtt{qY}$ \\
+18 & \texttt{4Am1} & $\mathtt{4} \mathbin{\cdot} \mathtt{Am1}$ \\
+19 & \texttt{Hp} & $\mathtt{4Am1} - \mathtt{1}$ \\
+20 & \texttt{Ap1} & $\mathtt{Am1} + \mathtt{2}$ \\
+21 & \texttt{V0k} & $\mathtt{v0} \mathbin{\cdot} \mathtt{k}$ \\
+22 & \texttt{V0kk} & $\mathtt{V0k} + \mathtt{k}$ \\
+23 & \texttt{V0k2} & $\mathtt{V0k} \mathbin{\cdot} \mathtt{V0kk}$ \\
+24 & \texttt{Dtau} & $\mathtt{V0k2} + \mathtt{1}$ \\
+25 & \texttt{G1} & $\mathtt{bJ} \mathbin{\cdot} \mathtt{qmF}$ \\
+26 & \texttt{G} & $\mathtt{G1} + \mathtt{alpha}$ \\
+27 & \texttt{q2m1} & $\mathtt{q2} - \mathtt{1}$ \\
+28 & \texttt{Gq} & $\mathtt{G} \mathbin{\cdot} \mathtt{q2m1}$ \\
+29 & \texttt{qMF} & $\mathtt{q} \mathbin{\cdot} \mathtt{MF}$ \\
+30 & \texttt{MCqMF} & $\mathtt{MC} + \mathtt{qMF}$ \\
+31 & \texttt{RJ} & $\mathtt{MCqMF} \mathbin{\cdot} \mathtt{J}$ \\
+32 & \texttt{R} & $\mathtt{Gq} + \mathtt{RJ}$ \\
+33 & \texttt{Rp1} & $\mathtt{R} + \mathtt{1}$ \\
+34 & \texttt{e} & $\mathtt{k} - \mathtt{Rp1}$ \\
+35 & \texttt{ksq} & $\mathtt{k} \mathbin{\cdot} \mathtt{k}$ \\
+36 & \texttt{ksqm4} & $\mathtt{ksq} - \mathtt{4}$ \\
+37 & \texttt{inverse\_cubic} & $\mathtt{V0k} \mathbin{\cdot} \mathtt{ksqm4}$ \\
+38 & \texttt{q4s} & $\mathtt{q4} \mathbin{\cdot} \mathtt{s}$ \\
+39 & \texttt{e\_sigma} & $\mathtt{e} - \mathtt{q4s}$ \\
+40 & \texttt{six\_e\_sigma} & $\mathtt{6} \mathbin{\cdot} \mathtt{e\_sigma}$ \\
+41 & \texttt{eclear} & $\mathtt{six\_e\_sigma} - \mathtt{inverse\_cubic}$ \\
+42 & \texttt{K0w} & $\mathtt{K0} + \mathtt{w}$ \\
+43 & \texttt{K0wC} & $\mathtt{K0w} \mathbin{\cdot} \mathtt{C}$ \\
+44 & \texttt{Bt} & $\mathtt{K0wC} - \mathtt{F}$ \\
+45 & \texttt{c2} & $\mathtt{c} \mathbin{\cdot} \mathtt{c}$ \\
+46 & \texttt{U} & $\mathtt{i} \mathbin{\cdot} \mathtt{c2}$ \\
+47 & \texttt{UE} & $\mathtt{U} \mathbin{\cdot} \mathtt{Dtau}$ \\
+48 & \texttt{Delta} & $\mathtt{Am1} \mathbin{\cdot} \mathtt{Ap1}$ \\
+49 & \texttt{SE} & $\mathtt{Delta} \mathbin{\cdot} \mathtt{UE}$ \\
+50 & \texttt{DpI2} & $\mathtt{SE} \mathbin{\cdot} \mathtt{U}$ \\
+51 & \texttt{Df} & $\mathtt{DpI2} + \mathtt{1}$ \\
+52 & \texttt{aF0} & $\mathtt{DpI2} \mathbin{\cdot} \mathtt{Df}$ \\
+53 & \texttt{fouraF0} & $\mathtt{4} \mathbin{\cdot} \mathtt{aF0}$ \\
+54 & \texttt{trace\_f} & $\mathtt{DpI2} + \mathtt{Df}$ \\
+55 & \texttt{Q} & $\mathtt{Delta} \mathbin{\cdot} \mathtt{fouraF0}$ \\
+56 & \texttt{cT} & $\mathtt{c} \mathbin{\cdot} \mathtt{T}$ \\
+57 & \texttt{cTR} & $\mathtt{cT} - \mathtt{R}$ \\
+58 & \texttt{DfcTR} & $\mathtt{trace\_f} \mathbin{\cdot} \mathtt{cTR}$ \\
+59 & \texttt{V} & $\mathtt{DfcTR} - \mathtt{c}$ \\
+60 & \texttt{V2} & $\mathtt{V} \mathbin{\cdot} \mathtt{V}$ \\
+61 & \texttt{P1mu2} & $\mathtt{bJ} \mathbin{\cdot} \mathtt{sixq7}$ \\
+62 & \texttt{new\_A} & $\mathtt{Am1} + \mathtt{1}$ \\
+63 & \texttt{new\_kZ} & $\mathtt{k} \mathbin{\cdot} \mathtt{qY}$ \\
+64 & \texttt{new\_Zp1} & $\mathtt{qY} + \mathtt{1}$ \\
+65 & \texttt{new\_kZZp1} & $\mathtt{new\_kZ} \mathbin{\cdot} \mathtt{new\_Zp1}$ \\
+66 & \texttt{new\_Sinner} & $\mathtt{V0kk} - \mathtt{new\_kZZp1}$ \\
+67 & \texttt{new\_S} & $\mathtt{new\_kZ} \mathbin{\cdot} \mathtt{new\_Sinner}$ \\
+68 & \texttt{new\_e2} & $\mathtt{new\_kZ} \mathbin{\cdot} \mathtt{new\_kZ}$ \\
+69 & \texttt{new\_U2} & $\mathtt{U} \mathbin{\cdot} \mathtt{U}$ \\
+70 & \texttt{new\_theta} & $\mathtt{new\_U2} \mathbin{\cdot} \mathtt{cTR}$ \\
+71 & \texttt{new\_threeE} & $\mathtt{3} \mathbin{\cdot} \mathtt{Dtau}$ \\
+72 & \texttt{new\_3Ee2} & $\mathtt{new\_threeE} + \mathtt{new\_e2}$ \\
+73 & \texttt{new\_theta3Ee2} & $\mathtt{new\_theta} \mathbin{\cdot} \mathtt{new\_3Ee2}$ \\
+74 & \texttt{new\_bmc} & $\mathtt{cTR} - \mathtt{c}$ \\
+75 & \texttt{new\_Rc} & $\mathtt{new\_theta3Ee2} - \mathtt{new\_bmc}$ \\
+76 & \texttt{new\_E2} & $\mathtt{Dtau} \mathbin{\cdot} \mathtt{Dtau}$ \\
+77 & \texttt{new\_fourE2} & $\mathtt{4} \mathbin{\cdot} \mathtt{new\_E2}$ \\
+78 & \texttt{new\_S2} & $\mathtt{new\_S} \mathbin{\cdot} \mathtt{new\_S}$ \\
+79 & \texttt{new\_threeS2} & $\mathtt{3} \mathbin{\cdot} \mathtt{new\_S2}$ \\
+80 & \texttt{new\_e22} & $\mathtt{new\_e2} \mathbin{\cdot} \mathtt{new\_e2}$ \\
+81 & \texttt{new\_sc1} & $\mathtt{new\_fourE2} + \mathtt{new\_threeS2}$ \\
+82 & \texttt{new\_Sc} & $\mathtt{new\_sc1} + \mathtt{new\_e22}$ \\
+83 & \texttt{new\_bB} & $\mathtt{cTR} \mathbin{\cdot} \mathtt{Bt}$ \\
+84 & \texttt{new\_ScShift} & $\mathtt{new\_Sc} - \mathtt{new\_bB}$ \\
+85 & \texttt{new\_EV} & $\mathtt{Dtau} \mathbin{\cdot} \mathtt{V}$ \\
+86 & \texttt{new\_fourEV} & $\mathtt{4} \mathbin{\cdot} \mathtt{new\_EV}$ \\
+87 & \texttt{new\_thetaSc} & $\mathtt{new\_theta} \mathbin{\cdot} \mathtt{new\_ScShift}$ \\
+88 & \texttt{new\_Vdiff} & $\mathtt{new\_fourEV} - \mathtt{new\_thetaSc}$ \\
+89 & \texttt{new\_Apart} & $\mathtt{new\_A} \mathbin{\cdot} \mathtt{new\_Vdiff}$ \\
+90 & \texttt{new\_SRc} & $\mathtt{new\_S} \mathbin{\cdot} \mathtt{new\_Rc}$ \\
+91 & \texttt{new\_twoSRc} & $\mathtt{2} \mathbin{\cdot} \mathtt{new\_SRc}$ \\
+92 & \texttt{new\_omegainner} & $\mathtt{new\_Apart} + \mathtt{new\_twoSRc}$ \\
+93 & \texttt{new\_Omega} & $\mathtt{U} \mathbin{\cdot} \mathtt{new\_omegainner}$ \\
+94 & \texttt{center} & $\mathtt{n} - \mathtt{new\_Omega}$ \\
+95 & \texttt{Hn} & $\mathtt{Hp} \mathbin{\cdot} \mathtt{center}$ \\
+96 & \texttt{threec} & $\mathtt{3} \mathbin{\cdot} \mathtt{c}$ \\
+97 & \texttt{twoX} & $\mathtt{2} \mathbin{\cdot} \mathtt{X}$ \\
+98 & \texttt{gap} & $\mathtt{threec} - \mathtt{twoX}$ \\
+99 & \texttt{Kpos0} & $\mathtt{X} \mathbin{\cdot} \mathtt{gap}$ \\
+100 & \texttt{Kpos} & $\mathtt{Kpos0} + \mathtt{2}$ \\
+101 & \texttt{lin} & $\mathtt{Hn} + \mathtt{Kpos}$ \\
+102 & \texttt{Zpart1} & $\mathtt{P1mu2} \mathbin{\cdot} \mathtt{lin}$ \\
+103 & \texttt{mu2inner} & $\mathtt{sixq7} \mathbin{\cdot} \mathtt{Bt}$ \\
+104 & \texttt{P1e} & $\mathtt{bJ} \mathbin{\cdot} \mathtt{eclear}$ \\
+105 & \texttt{brk} & $\mathtt{mu2inner} + \mathtt{P1e}$ \\
+106 & \texttt{Zpart2} & $\mathtt{Hp} \mathbin{\cdot} \mathtt{brk}$ \\
+107 & \texttt{Znum} & $\mathtt{Zpart1} - \mathtt{Zpart2}$ \\
+108 & \texttt{Mtot} & $\mathtt{P1mu2} \mathbin{\cdot} \mathtt{Hp}$ \\
+109 & \texttt{M2} & $\mathtt{Mtot} \mathbin{\cdot} \mathtt{Mtot}$ \\
+110 & \texttt{Dg} & $\mathtt{Dtau} \mathbin{\cdot} \mathtt{Df}$ \\
+111 & \texttt{new\_scaledG} & $\mathtt{16} \mathbin{\cdot} \mathtt{Dg}$ \\
+112 & \texttt{Z2} & $\mathtt{Znum} \mathbin{\cdot} \mathtt{Znum}$ \\
+113 & \texttt{RG} & $\mathtt{M2} \mathbin{\cdot} \mathtt{new\_scaledG}$ \\
+114 & \texttt{RGV2} & $\mathtt{RG} \mathbin{\cdot} \mathtt{V2}$ \\
+115 & \texttt{inside} & $\mathtt{Z2} - \mathtt{RGV2}$ \\
+116 & \texttt{Qinside} & $\mathtt{Q} \mathbin{\cdot} \mathtt{inside}$ \\
+117 & \texttt{correction} & $\mathtt{RG} - \mathtt{Z2}$ \\
+118 & \texttt{N} & $\mathtt{Qinside} + \mathtt{correction}$ \\
+\bottomrule\end{longtable}
+\endgroup
+
+% END retained input: circuit.tex
+
+
+
+% BEGIN retained input: P83_definition.tex
+\section{Complete finite definition of the direct polynomial}\label{app:direct83-definition}
+The only independent unknowns in this appendix are $x_0,\ldots,x_{82}\in\mathbb Z$. Every $z_i$ below is an abbreviation for an integer polynomial in these unknowns. First make the free-coordinate assignments, then evaluate the acyclic definitions in their printed order. Finally evaluate the 31 residuals and add their squares. This is a complete ordinary polynomial definition using fixed integer coefficients, addition, and multiplication.
+\begingroup\small\allowdisplaybreaks
+\subsection*{Free-coordinate assignments}
+\begin{align*}
+z_{5}&=x_{0},\qquad z_{6}&=x_{1},\qquad z_{8}&=x_{2},\qquad z_{9}&=x_{3}\\
+z_{10}&=x_{4},\qquad z_{11}&=x_{5},\qquad z_{12}&=x_{6},\qquad z_{13}&=x_{7}\\
+z_{14}&=x_{8},\qquad z_{15}&=x_{9},\qquad z_{18}&=x_{10},\qquad z_{48}&=x_{11}\\
+z_{53}&=x_{12},\qquad z_{62}&=x_{13},\qquad z_{72}&=x_{14},\qquad z_{101}&=x_{15}\\
+z_{104}&=x_{16},\qquad z_{109}&=x_{17},\qquad z_{111}&=x_{18},\qquad z_{112}&=x_{19}\\
+z_{115}&=x_{20},\qquad z_{118}&=x_{21},\qquad z_{121}&=x_{22},\qquad z_{122}&=x_{23}\\
+z_{124}&=x_{24},\qquad z_{125}&=x_{25},\qquad z_{128}&=x_{26},\qquad z_{131}&=x_{27}\\
+z_{132}&=x_{28},\qquad z_{134}&=x_{29},\qquad z_{136}&=x_{30},\qquad z_{137}&=x_{31}\\
+z_{141}&=x_{32},\qquad z_{144}&=x_{33},\qquad z_{145}&=x_{34},\qquad z_{147}&=x_{35}\\
+z_{149}&=x_{36},\qquad z_{151}&=x_{37},\qquad z_{152}&=x_{38},\qquad z_{153}&=x_{39}\\
+z_{156}&=x_{40},\qquad z_{157}&=x_{41},\qquad z_{158}&=x_{42},\qquad z_{161}&=x_{43}\\
+z_{163}&=x_{44},\qquad z_{164}&=x_{45},\qquad z_{166}&=x_{46},\qquad z_{167}&=x_{47}\\
+z_{169}&=x_{48},\qquad z_{170}&=x_{49},\qquad z_{173}&=x_{50},\qquad z_{175}&=x_{51}\\
+z_{177}&=x_{52},\qquad z_{179}&=x_{53},\qquad z_{180}&=x_{54},\qquad z_{183}&=x_{55}\\
+z_{185}&=x_{56},\qquad z_{187}&=x_{57},\qquad z_{189}&=x_{58},\qquad z_{190}&=x_{59}\\
+z_{193}&=x_{60},\qquad z_{196}&=x_{61},\qquad z_{197}&=x_{62},\qquad z_{202}&=x_{63}\\
+z_{203}&=x_{64},\qquad z_{204}&=x_{65},\qquad z_{205}&=x_{66},\qquad z_{206}&=x_{67}\\
+z_{210}&=x_{68},\qquad z_{211}&=x_{69},\qquad z_{212}&=x_{70},\qquad z_{213}&=x_{71}\\
+z_{214}&=x_{72},\qquad z_{215}&=x_{73},\qquad z_{216}&=x_{74},\qquad z_{217}&=x_{75}\\
+z_{218}&=x_{76},\qquad z_{219}&=x_{77},\qquad z_{220}&=x_{78},\qquad z_{222}&=x_{79}\\
+z_{223}&=x_{80},\qquad z_{225}&=x_{81},\qquad z_{226}&=x_{82}
+\end{align*}
+\subsection*{Acyclic unit definitions}
+\begin{align*}
+z_{0}&=16+z_{196}^{2}\\[3pt]
+z_{209}&=z_{193}^{2}\\[3pt]
+z_{198}&=2z_{203} z_{209}+z_{209}\\[3pt]
+z_{201}&=4z_{198}+8z_{198} z_{202}\\[3pt]
+z_{140}&=-6-z_{197} z_{204}+z_{201}\\[3pt]
+z_{146}&=z_{140} z_{145}+7z_{145}\\[3pt]
+z_{4}&=1-32z_{140} z_{147}+z_{144}+16z_{145}-z_{146}+33z_{147}\\[3pt]
+z_{3}&=z_{4}+2z_{4} z_{225}
+\end{align*}
+\begin{align*}
+z_{221}&=1+4z_{222}+4z_{222}^{2}\\[3pt]
+z_{2}&=1+z_{3} z_{221}\\[3pt]
+z_{7}&=-z_{0}+z_{0} z_{2}+z_{2}\\[3pt]
+z_{1}&=1+z_{6} z_{7}\\[3pt]
+z_{16}&=-1-z_{4}+z_{18}+2z_{18} z_{225}\\[3pt]
+z_{148}&=12+2z_{140}+4z_{140} z_{225}+24z_{225}-4z_{225}^{2}\\[3pt]
+z_{224}&=3+2z_{0}+2z_{4}-2z_{8}+z_{8}^{2}+z_{9}^{2}+z_{10}^{2}+z_{11}^{2}+z_{12}^{2}+z_{13}^{2}+z_{14}^{2}+z_{15}^{2}\\*
+&\quad{}+z_{16}^{2}\\[3pt]
+z_{195}&=z_{224}+2z_{224} z_{225}
+\end{align*}
+\begin{align*}
+z_{150}&=-1+2z_{140} z_{195}+14z_{195}-z_{195}^{2}\\[3pt]
+z_{184}&=-1+z_{140} z_{183}+7z_{183}\\[3pt]
+z_{182}&=3+z_{150} z_{151}-z_{183} z_{195}+z_{184}+6z_{220}\\[3pt]
+z_{17}&=-z_{148} z_{149}+z_{182}+z_{183}+2z_{183} z_{225}-z_{184}\\[3pt]
+z_{19}&=1+z_{8}^{2}+2z_{8} z_{9}+z_{9}^{2}\\[3pt]
+z_{20}&=10z_{8}-z_{8}^{2}+6z_{8} z_{9}+8z_{8} z_{19}+20z_{9}+11z_{9}^{2}+16z_{9} z_{19}+15z_{19}+4z_{19}^{2}\\[3pt]
+z_{21}&=2-2z_{8}+z_{8}^{2}+4z_{8} z_{20}+4z_{20}+4z_{20}^{2}\\[3pt]
+z_{22}&=-1-6z_{8}+36z_{8}^{2}+24z_{8} z_{21}-2z_{21}+4z_{21}^{2}
+\end{align*}
+\begin{align*}
+z_{23}&=2+z_{9}+z_{9}^{2}+2z_{9} z_{10}+z_{10}+z_{10}^{2}\\[3pt]
+z_{46}&=1+8z_{10}+4z_{10}^{2}-8z_{10} z_{23}-8z_{23}+4z_{23}^{2}\\[3pt]
+z_{24}&=8-7z_{8}+z_{8}^{2}-4z_{8} z_{10}+4z_{8} z_{23}+4z_{10}-4z_{23}+z_{46}\\[3pt]
+z_{25}&=1-z_{8}+z_{8}^{2}+2z_{8} z_{10}-z_{10}+z_{10}^{2}\\[3pt]
+z_{31}&=-19+25z_{8}+7z_{8}^{2}+8z_{8} z_{9}+30z_{8} z_{10}+16z_{8} z_{25}-3z_{9}-5z_{9}^{2}+4z_{9} z_{25}+27z_{10}\\*
+&\quad{}+21z_{10}^{2}+24z_{10} z_{25}+6z_{23}+17z_{25}+4z_{25}^{2}\\[3pt]
+z_{26}&=-23-16z_{8}+8z_{8} z_{9}+8z_{8} z_{10}+16z_{8} z_{19}+8z_{8} z_{25}-19z_{9}-9z_{9}^{2}+36z_{9} z_{10}\\*
+&\quad{}+12z_{9} z_{25}-16z_{10}-8z_{10}^{2}+24z_{10} z_{19}+8z_{19} z_{25}+z_{20}+z_{31}\\[3pt]
+z_{27}&=4z_{24}^{2}+8z_{24} z_{26}+4z_{26}^{2}\\[3pt]
+z_{28}&=2+8z_{8}-8z_{8} z_{23}-8z_{8} z_{25}+8z_{9}-8z_{9} z_{23}-8z_{9} z_{25}+4z_{19}-8z_{23}+4z_{23}^{2}\\*
+&\quad{}+8z_{23} z_{25}-8z_{25}+4z_{25}^{2}
+\end{align*}
+\begin{align*}
+z_{29}&=-6-4z_{8}-32z_{8} z_{9}-16z_{8} z_{19}-16z_{8} z_{25}-8z_{8} z_{28}-24z_{9}+32z_{9} z_{25}+16z_{9} z_{28}\\*
+&\quad{}-12z_{19}+16z_{19} z_{25}+8z_{19} z_{28}+z_{20}-8z_{25}+16z_{25}^{2}+16z_{25} z_{28}-4z_{28}+4z_{28}^{2}\\[3pt]
+z_{30}&=-22+5z_{8}+z_{8}^{2}+8z_{8} z_{9}+12z_{8} z_{10}+4z_{8} z_{23}+8z_{9}+16z_{9} z_{10}+16z_{9} z_{23}+20z_{10}\\*
+&\quad{}+20z_{10}^{2}+24z_{10} z_{23}+28z_{23}+4z_{23}^{2}\\[3pt]
+z_{32}&=-2+4z_{30}^{2}+8z_{30} z_{31}+4z_{31}^{2}\\[3pt]
+z_{33}&=19z_{8}-8z_{8}^{2}-8z_{8} z_{19}-8z_{8} z_{23}+46z_{9}+24z_{9}^{2}-24z_{9} z_{19}-24z_{9} z_{23}+2z_{10}\\*
+&\quad{}-4z_{19}+4z_{19}^{2}+8z_{19} z_{23}-14z_{23}+4z_{23}^{2}+z_{25}\\[3pt]
+z_{34}&=3+6z_{8}+4z_{10}+2z_{25}+4z_{33}+4z_{33}^{2}\\[3pt]
+z_{38}&=6+2z_{8}+4z_{9}+14z_{19}+16z_{19}^{2}\\[3pt]
+z_{35}&=-8-42z_{8}-7z_{8}^{2}-28z_{8} z_{20}-48z_{9}+32z_{9}^{2}+32z_{9} z_{19}-64z_{9} z_{20}+40z_{19}^{2}\\*
+&\quad{}-32z_{19} z_{20}-14z_{20}+4z_{20}^{2}-2z_{38}\\[3pt]
+z_{36}&=-1-6z_{8}+36z_{8}^{2}+24z_{8} z_{35}-2z_{35}+4z_{35}^{2}
+\end{align*}
+\begin{align*}
+z_{37}&=z_{9}^{2}+4z_{9} z_{36}+4z_{36}^{2}\\[3pt]
+z_{39}&=-24-21z_{9}+21z_{9}^{2}+18z_{9} z_{10}+24z_{9} z_{23}+24z_{9} z_{38}-3z_{10}+9z_{10}^{2}+16z_{10} z_{38}\\*
+&\quad{}-3z_{23}+12z_{23}^{2}+8z_{23} z_{38}-4z_{38}+4z_{38}^{2}-2z_{46}\\[3pt]
+z_{40}&=-16+10z_{8}+20z_{8}^{2}+16z_{8} z_{10}+24z_{8} z_{25}+24z_{8} z_{39}+12z_{10}+16z_{10} z_{25}\\*
+&\quad{}+16z_{10} z_{39}+14z_{25}+4z_{25}^{2}+8z_{25} z_{39}-4z_{39}+4z_{39}^{2}\\[3pt]
+z_{41}&=z_{10}^{2}+2z_{10} z_{11}+z_{11}^{2}\\[3pt]
+z_{42}&=-2-z_{8}^{2}+4z_{8} z_{41}-2z_{10}+2z_{10}^{2}+8z_{10} z_{41}+2z_{25}-4z_{41}+4z_{41}^{2}\\[3pt]
+z_{43}&=31+16z_{10}+16z_{10} z_{23}-16z_{10} z_{25}+8z_{23}-12z_{23}^{2}+8z_{23} z_{25}-24z_{25}+4z_{25}^{2}+4z_{46}\\[3pt]
+z_{44}&=4z_{10}+16z_{25}^{2}+32z_{25} z_{41}+16z_{25} z_{42}+16z_{25} z_{43}+4z_{41}+16z_{41}^{2}+16z_{41} z_{42}\\*
+&\quad{}+16z_{41} z_{43}+2z_{42}+4z_{42}^{2}+8z_{42} z_{43}+4z_{43}^{2}\\[3pt]
+z_{45}&=16z_{8}^{2}-8z_{8} z_{10}-32z_{8} z_{25}-16z_{8} z_{28}-z_{10}+z_{10}^{2}+8z_{10} z_{25}+4z_{10} z_{28}\\*
+&\quad{}+16z_{25}^{2}+16z_{25} z_{28}+4z_{28}^{2}
+\end{align*}
+\begin{align*}
+z_{47}&=1+9z_{10}^{2}-24z_{10} z_{23}-12z_{10} z_{46}+16z_{23}^{2}+16z_{23} z_{46}+4z_{46}^{2}\\[3pt]
+z_{49}&=1+4z_{48}+4z_{48}^{2}\\[3pt]
+z_{50}&=1+z_{10}^{2}+8z_{10} z_{48}+4z_{10} z_{49}+16z_{48}^{2}+16z_{48} z_{49}+4z_{49}^{2}\\[3pt]
+z_{51}&=-2-z_{9}+z_{9}^{2}+4z_{9} z_{10}+4z_{9} z_{50}+4z_{10}^{2}+8z_{10} z_{50}+4z_{50}^{2}\\[3pt]
+z_{52}&=4z_{45}^{2}+8z_{45} z_{51}+4z_{51}^{2}\\[3pt]
+z_{54}&=1+4z_{53}+4z_{53}^{2}\\[3pt]
+z_{55}&=z_{10}^{2}+8z_{10} z_{53}+4z_{10} z_{54}+16z_{53}^{2}+16z_{53} z_{54}+4z_{54}^{2}\\[3pt]
+z_{56}&=z_{8}+z_{8}^{2}+4z_{8} z_{10}+4z_{8} z_{55}+4z_{10}+4z_{10}^{2}+8z_{10} z_{55}+4z_{55}+4z_{55}^{2}
+\end{align*}
+\begin{align*}
+z_{57}&=10+12z_{56}+4z_{56}^{2}\\[3pt]
+z_{58}&=-2-4z_{10}-16z_{10} z_{56}-8z_{10} z_{57}+4z_{23}+16z_{23} z_{56}+8z_{23} z_{57}+z_{46}-8z_{56}+16z_{56}^{2}\\*
+&\quad{}+16z_{56} z_{57}-4z_{57}+4z_{57}^{2}\\[3pt]
+z_{59}&=-z_{9}+z_{9}^{2}-8z_{9} z_{10}+8z_{9} z_{23}+4z_{9} z_{58}+16z_{10}^{2}-32z_{10} z_{23}-16z_{10} z_{58}\\*
+&\quad{}+16z_{23}^{2}+16z_{23} z_{58}+4z_{58}^{2}\\[3pt]
+z_{60}&=10+12z_{51}+4z_{51}^{2}\\[3pt]
+z_{61}&=-1+16z_{51}^{2}+16z_{51} z_{59}+16z_{51} z_{60}+4z_{59}^{2}+8z_{59} z_{60}+4z_{60}^{2}\\[3pt]
+z_{76}&=z_{8} z_{9}-z_{8} z_{10}-z_{9}-z_{9} z_{10}+z_{10}+z_{10}^{2}\\[3pt]
+z_{63}&=6z_{8}+3z_{8}^{2}+18z_{8} z_{9}+16z_{9}+27z_{9}^{2}-4z_{9} z_{10}-3z_{10}-3z_{10}^{2}+4z_{10} z_{19}\\*
+&\quad{}+19z_{19}+8z_{19}^{2}-z_{20}+4z_{76}\\[3pt]
+z_{64}&=-1+8z_{8}+4z_{8} z_{10}-8z_{8} z_{63}+16z_{9}+8z_{9} z_{10}-16z_{9} z_{63}-z_{10}-z_{10}^{2}-4z_{10} z_{19}\\*
+&\quad{}-8z_{19}+8z_{19} z_{63}-3z_{63}+4z_{63}^{2}
+\end{align*}
+\begin{align*}
+z_{65}&=2+12z_{8}+16z_{8} z_{10}-16z_{8} z_{62}-16z_{8} z_{64}+24z_{9}+32z_{9} z_{10}-32z_{9} z_{62}-32z_{9} z_{64}\\*
+&\quad{}-4z_{10}-4z_{10}^{2}-16z_{10} z_{19}-12z_{19}+16z_{19} z_{62}+16z_{19} z_{64}+4z_{62}^{2}+8z_{62} z_{64}\\*
+&\quad{}+4z_{63}+2z_{64}+4z_{64}^{2}\\[3pt]
+z_{66}&=2+4z_{65}+4z_{65}^{2}\\[3pt]
+z_{67}&=z_{13}+2z_{13} z_{225}\\[3pt]
+z_{68}&=z_{12}-z_{13}-2z_{22} z_{67}\\[3pt]
+z_{69}&=z_{12}-z_{13}-4z_{24} z_{67}-2z_{27} z_{67}\\[3pt]
+z_{75}&=z_{12}-z_{13}-2z_{44} z_{67}-4z_{67}\\[3pt]
+z_{70}&=-2z_{29} z_{67}+2z_{44} z_{67}-2z_{67}+z_{75}\\[3pt]
+z_{71}&=z_{12}-z_{13}-4z_{30} z_{67}-2z_{32} z_{67}
+\end{align*}
+\begin{align*}
+z_{73}&=z_{12}-z_{13}-4z_{36} z_{67}-2z_{37} z_{67}\\[3pt]
+z_{74}&=z_{12}-z_{13}-2z_{40} z_{67}\\[3pt]
+z_{77}&=-1-2z_{11}-z_{11}^{2}+z_{76}^{2}\\[3pt]
+z_{78}&=z_{77}^{2}\\[3pt]
+z_{79}&=4z_{65} z_{67}+2z_{66} z_{67}-2z_{67}\\[3pt]
+z_{80}&=z_{12}^{2}-2z_{12} z_{13}-2z_{12} z_{79}+z_{13}^{2}+2z_{13} z_{79}+z_{79}^{2}\\[3pt]
+z_{81}&=1+z_{9}+2z_{9} z_{225}\\[3pt]
+z_{82}&=z_{8}+2z_{8} z_{225}-2z_{225}
+\end{align*}
+\begin{align*}
+z_{83}&=-1-2z_{8}-4z_{8} z_{225}-4z_{9}-8z_{9} z_{225}+2z_{19}+4z_{19} z_{225}-4z_{225}\\[3pt]
+z_{84}&=z_{12} z_{82}\\[3pt]
+z_{85}&=z_{13} z_{81}-z_{83} z_{84}\\[3pt]
+z_{86}&=-z_{12} z_{81}-6z_{13}+8z_{13} z_{81}+4z_{13} z_{82}+z_{13} z_{83}+12z_{13} z_{225}\\[3pt]
+z_{87}&=z_{12} z_{68}-z_{13} z_{68}\\[3pt]
+z_{88}&=z_{69} z_{87}\\[3pt]
+z_{89}&=z_{70} z_{88}\\[3pt]
+z_{90}&=z_{71} z_{89}
+\end{align*}
+\begin{align*}
+z_{91}&=z_{72} z_{90}\\[3pt]
+z_{92}&=z_{73} z_{91}\\[3pt]
+z_{93}&=z_{74} z_{92}\\[3pt]
+z_{94}&=z_{75} z_{93}\\[3pt]
+z_{95}&=z_{85} z_{94}\\[3pt]
+z_{96}&=z_{86} z_{95}\\[3pt]
+z_{97}&=z_{96}^{2}\\[3pt]
+z_{98}&=z_{2}+z_{2} z_{16}-z_{16}
+\end{align*}
+\begin{align*}
+z_{99}&=z_{14} z_{98}\\[3pt]
+z_{100}&=z_{2} z_{15}-z_{15}+z_{15} z_{98}\\[3pt]
+z_{102}&=1-z_{140} z_{153}+z_{152}-3z_{153}+6z_{153} z_{220}\\[3pt]
+z_{127}&=z_{121} z_{213}\\[3pt]
+z_{130}&=z_{17} z_{127}\\[3pt]
+z_{155}&=-7+z_{130} z_{226}-2z_{140}+12z_{220}\\[3pt]
+z_{103}&=1+z_{144}+3z_{145}+6z_{145} z_{220}-z_{146}-z_{155} z_{156}\\[3pt]
+z_{106}&=3z_{104}+6z_{104} z_{220}
+\end{align*}
+\begin{align*}
+z_{105}&=z_{102} z_{211}-z_{106} z_{127}-z_{127}-2z_{127} z_{225}\\[3pt]
+z_{107}&=4+z_{140}-z_{140} z_{158}+z_{157}-3z_{158}+6z_{158} z_{220}-6z_{220}\\[3pt]
+z_{108}&=3z_{103}+6z_{103} z_{220}\\[3pt]
+z_{110}&=z_{107} z_{212}-z_{109} z_{130}\\[3pt]
+z_{113}&=z_{111} z_{212}-z_{112} z_{130}\\[3pt]
+z_{114}&=1-z_{140} z_{164}+z_{163}-3z_{164}+6z_{164} z_{220}\\[3pt]
+z_{116}&=z_{114} z_{212}-z_{115} z_{130}\\[3pt]
+z_{117}&=1-z_{140} z_{167}+z_{166}-3z_{167}+6z_{167} z_{220}
+\end{align*}
+\begin{align*}
+z_{119}&=z_{117} z_{212}-z_{118} z_{130}\\[3pt]
+z_{120}&=1-z_{140} z_{170}+z_{169}-3z_{170}+6z_{170} z_{220}\\[3pt]
+z_{123}&=z_{120} z_{213}-z_{122} z_{130}\\[3pt]
+z_{126}&=z_{124} z_{213}-z_{125} z_{130}\\[3pt]
+z_{129}&=1-z_{128} z_{130}-z_{140} z_{180}+z_{179}-3z_{180}+6z_{180} z_{220}\\[3pt]
+z_{133}&=1-z_{140} z_{190}+z_{189}-3z_{190}+6z_{190} z_{220}\\[3pt]
+z_{135}&=-z_{130} z_{134}+z_{133} z_{211}\\[3pt]
+z_{138}&=-z_{130} z_{137}+z_{136} z_{212}
+\end{align*}
+\begin{align*}
+z_{139}&=36+6z_{0}^{2}+12z_{0}^{2} z_{220}+6z_{0} z_{4}+12z_{0} z_{4} z_{220}+3z_{1}^{2}+6z_{1}^{2} z_{220}\\
+&\quad{}+3z_{2}^{2}+6z_{2}^{2} z_{220}+3z_{4}^{2}+6z_{4}^{2} z_{220}-6z_{8}+4z_{8}^{2}+12z_{8}^{2} z_{220}\\
+&\quad{}+2z_{8} z_{9}+12z_{8} z_{9} z_{220}+16z_{8} z_{19}+48z_{8} z_{19} z_{220}+8z_{8} z_{22}\\
+&\quad{}+24z_{8} z_{22} z_{220}+16z_{8} z_{24}+48z_{8} z_{24} z_{220}+8z_{8} z_{27}+24z_{8} z_{27} z_{220}\\
+&\quad{}+8z_{8} z_{29}+24z_{8} z_{29} z_{220}+16z_{8} z_{30}+48z_{8} z_{30} z_{220}+8z_{8} z_{32}\\
+&\quad{}+24z_{8} z_{32} z_{220}+8z_{8} z_{34}+24z_{8} z_{34} z_{220}+16z_{8} z_{36}+48z_{8} z_{36} z_{220}\\
+&\quad{}+8z_{8} z_{37}+24z_{8} z_{37} z_{220}+8z_{8} z_{40}+24z_{8} z_{40} z_{220}+8z_{8} z_{44}\\
+&\quad{}+24z_{8} z_{44} z_{220}+16z_{8} z_{65}+48z_{8} z_{65} z_{220}+8z_{8} z_{66}+24z_{8} z_{66} z_{220}\\
+&\quad{}-12z_{8} z_{220}+4z_{9}^{2}+12z_{9}^{2} z_{220}+16z_{9} z_{19}+48z_{9} z_{19} z_{220}+8z_{9} z_{22}\\
+&\quad{}+24z_{9} z_{22} z_{220}+16z_{9} z_{24}+48z_{9} z_{24} z_{220}+8z_{9} z_{27}+24z_{9} z_{27} z_{220}\\
+&\quad{}+8z_{9} z_{29}+24z_{9} z_{29} z_{220}+16z_{9} z_{30}+48z_{9} z_{30} z_{220}+8z_{9} z_{32}\\
+&\quad{}+24z_{9} z_{32} z_{220}+8z_{9} z_{34}+24z_{9} z_{34} z_{220}+16z_{9} z_{36}+48z_{9} z_{36} z_{220}\\
+&\quad{}+8z_{9} z_{37}+24z_{9} z_{37} z_{220}+8z_{9} z_{40}+24z_{9} z_{40} z_{220}+8z_{9} z_{44}\\
+&\quad{}+24z_{9} z_{44} z_{220}+16z_{9} z_{65}+48z_{9} z_{65} z_{220}+8z_{9} z_{66}+24z_{9} z_{66} z_{220}\\
+&\quad{}+3z_{10}^{2}+6z_{10}^{2} z_{220}+3z_{11}^{2}+6z_{11}^{2} z_{220}+3z_{12}^{2}+6z_{12}^{2} z_{220}+3z_{13}^{2}\\
+&\quad{}+6z_{13}^{2} z_{220}+3z_{14}^{2}+6z_{14}^{2} z_{220}+3z_{15}^{2}+6z_{15}^{2} z_{220}+3z_{16}^{2}\\
+&\quad{}+6z_{16}^{2} z_{220}+3z_{17}^{2}+6z_{17}^{2} z_{220}+z_{19}+32z_{19}^{2}+96z_{19}^{2} z_{220}\\
+&\quad{}+32z_{19} z_{22}+96z_{19} z_{22} z_{220}+64z_{19} z_{24}+192z_{19} z_{24} z_{220}+32z_{19} z_{27}\\
+&\quad{}+96z_{19} z_{27} z_{220}+32z_{19} z_{29}+96z_{19} z_{29} z_{220}+64z_{19} z_{30}+192z_{19} z_{30} z_{220}\\
+&\quad{}+32z_{19} z_{32}+96z_{19} z_{32} z_{220}+32z_{19} z_{34}+96z_{19} z_{34} z_{220}+64z_{19} z_{36}\\
+&\quad{}+192z_{19} z_{36} z_{220}+32z_{19} z_{37}+96z_{19} z_{37} z_{220}+32z_{19} z_{40}+96z_{19} z_{40} z_{220}\\
+&\quad{}+32z_{19} z_{44}+96z_{19} z_{44} z_{220}+64z_{19} z_{65}+192z_{19} z_{65} z_{220}+32z_{19} z_{66}\\
+&\quad{}+96z_{19} z_{66} z_{220}+8z_{22}^{2}+24z_{22}^{2} z_{220}+32z_{22} z_{24}+96z_{22} z_{24} z_{220}\\
+&\quad{}+16z_{22} z_{27}+48z_{22} z_{27} z_{220}+16z_{22} z_{29}+48z_{22} z_{29} z_{220}+32z_{22} z_{30}\\
+&\quad{}+96z_{22} z_{30} z_{220}+16z_{22} z_{32}+48z_{22} z_{32} z_{220}+16z_{22} z_{34}+48z_{22} z_{34} z_{220}\\
+&\quad{}+32z_{22} z_{36}+96z_{22} z_{36} z_{220}+16z_{22} z_{37}+48z_{22} z_{37} z_{220}+16z_{22} z_{40}\\
+&\quad{}+48z_{22} z_{40} z_{220}+16z_{22} z_{44}+48z_{22} z_{44} z_{220}+32z_{22} z_{65}+96z_{22} z_{65} z_{220}\\
+&\quad{}+16z_{22} z_{66}+48z_{22} z_{66} z_{220}+32z_{24}^{2}+96z_{24}^{2} z_{220}+32z_{24} z_{27}\\
+&\quad{}+96z_{24} z_{27} z_{220}+32z_{24} z_{29}+96z_{24} z_{29} z_{220}+64z_{24} z_{30}+192z_{24} z_{30} z_{220}\\
+&\quad{}+32z_{24} z_{32}+96z_{24} z_{32} z_{220}+32z_{24} z_{34}+96z_{24} z_{34} z_{220}+64z_{24} z_{36}\\
+&\quad{}+192z_{24} z_{36} z_{220}+32z_{24} z_{37}+96z_{24} z_{37} z_{220}+32z_{24} z_{40}+96z_{24} z_{40} z_{220}\\
+&\quad{}+32z_{24} z_{44}+96z_{24} z_{44} z_{220}+64z_{24} z_{65}+192z_{24} z_{65} z_{220}+32z_{24} z_{66}\\
+&\quad{}+96z_{24} z_{66} z_{220}+8z_{27}^{2}+24z_{27}^{2} z_{220}+16z_{27} z_{29}+48z_{27} z_{29} z_{220}\\
+&\quad{}+32z_{27} z_{30}+96z_{27} z_{30} z_{220}+16z_{27} z_{32}+48z_{27} z_{32} z_{220}+16z_{27} z_{34}\\
+&\quad{}+48z_{27} z_{34} z_{220}+32z_{27} z_{36}+96z_{27} z_{36} z_{220}+16z_{27} z_{37}+48z_{27} z_{37} z_{220}\\
+&\quad{}+16z_{27} z_{40}+48z_{27} z_{40} z_{220}+16z_{27} z_{44}+48z_{27} z_{44} z_{220}+32z_{27} z_{65}\\
+&\quad{}+96z_{27} z_{65} z_{220}+16z_{27} z_{66}+48z_{27} z_{66} z_{220}+8z_{29}^{2}+24z_{29}^{2} z_{220}\\
+&\quad{}+32z_{29} z_{30}+96z_{29} z_{30} z_{220}+16z_{29} z_{32}+48z_{29} z_{32} z_{220}+16z_{29} z_{34}\\
+&\quad{}+48z_{29} z_{34} z_{220}+32z_{29} z_{36}+96z_{29} z_{36} z_{220}+16z_{29} z_{37}+48z_{29} z_{37} z_{220}\\
+&\quad{}+16z_{29} z_{40}+48z_{29} z_{40} z_{220}+16z_{29} z_{44}+48z_{29} z_{44} z_{220}+32z_{29} z_{65}\\
+&\quad{}+96z_{29} z_{65} z_{220}+16z_{29} z_{66}+48z_{29} z_{66} z_{220}+32z_{30}^{2}+96z_{30}^{2} z_{220}\\
+&\quad{}+32z_{30} z_{32}+96z_{30} z_{32} z_{220}+32z_{30} z_{34}+96z_{30} z_{34} z_{220}+64z_{30} z_{36}\\
+&\quad{}+192z_{30} z_{36} z_{220}+32z_{30} z_{37}+96z_{30} z_{37} z_{220}+32z_{30} z_{40}+96z_{30} z_{40} z_{220}\\
+&\quad{}+32z_{30} z_{44}+96z_{30} z_{44} z_{220}+64z_{30} z_{65}+192z_{30} z_{65} z_{220}+32z_{30} z_{66}\\
+&\quad{}+96z_{30} z_{66} z_{220}+8z_{32}^{2}+24z_{32}^{2} z_{220}+16z_{32} z_{34}+48z_{32} z_{34} z_{220}\\
+&\quad{}+32z_{32} z_{36}+96z_{32} z_{36} z_{220}+16z_{32} z_{37}+48z_{32} z_{37} z_{220}+16z_{32} z_{40}\\
+&\quad{}+48z_{32} z_{40} z_{220}+16z_{32} z_{44}+48z_{32} z_{44} z_{220}+32z_{32} z_{65}+96z_{32} z_{65} z_{220}\\
+&\quad{}+16z_{32} z_{66}+48z_{32} z_{66} z_{220}+8z_{34}^{2}+24z_{34}^{2} z_{220}+32z_{34} z_{36}\\
+&\quad{}+96z_{34} z_{36} z_{220}+16z_{34} z_{37}+48z_{34} z_{37} z_{220}+16z_{34} z_{40}+48z_{34} z_{40} z_{220}\\
+&\quad{}+16z_{34} z_{44}+48z_{34} z_{44} z_{220}+32z_{34} z_{65}+96z_{34} z_{65} z_{220}+16z_{34} z_{66}\\
+&\quad{}+48z_{34} z_{66} z_{220}+32z_{36}^{2}+96z_{36}^{2} z_{220}+32z_{36} z_{37}+96z_{36} z_{37} z_{220}\\
+&\quad{}+32z_{36} z_{40}+96z_{36} z_{40} z_{220}+32z_{36} z_{44}+96z_{36} z_{44} z_{220}+64z_{36} z_{65}\\
+&\quad{}+192z_{36} z_{65} z_{220}+32z_{36} z_{66}+96z_{36} z_{66} z_{220}+8z_{37}^{2}+24z_{37}^{2} z_{220}\\
+&\quad{}+16z_{37} z_{40}+48z_{37} z_{40} z_{220}+16z_{37} z_{44}+48z_{37} z_{44} z_{220}+32z_{37} z_{65}\\
+&\quad{}+96z_{37} z_{65} z_{220}+16z_{37} z_{66}+48z_{37} z_{66} z_{220}+8z_{40}^{2}+24z_{40}^{2} z_{220}\\
+&\quad{}+16z_{40} z_{44}+48z_{40} z_{44} z_{220}+32z_{40} z_{65}+96z_{40} z_{65} z_{220}+16z_{40} z_{66}\\
+&\quad{}+48z_{40} z_{66} z_{220}+8z_{44}^{2}+24z_{44}^{2} z_{220}+32z_{44} z_{65}+96z_{44} z_{65} z_{220}\\
+&\quad{}+16z_{44} z_{66}+48z_{44} z_{66} z_{220}+32z_{65}^{2}+96z_{65}^{2} z_{220}+32z_{65} z_{66}\\
+&\quad{}+96z_{65} z_{66} z_{220}+8z_{66}^{2}+24z_{66}^{2} z_{220}+3z_{103}^{2}+6z_{103}^{2} z_{220}+3z_{121}^{2}\\
+&\quad{}+6z_{121}^{2} z_{220}+3z_{127}^{2}+6z_{127}^{2} z_{220}-z_{145}^{2}-z_{153}^{2}+2z_{158}-z_{158}^{2}\\
+&\quad{}-z_{161}^{2}-z_{164}^{2}-z_{167}^{2}-z_{170}^{2}-z_{173}^{2}-z_{177}^{2}-z_{180}^{2}-z_{183}^{2}-z_{187}^{2}\\
+&\quad{}-z_{190}^{2}+z_{193}^{2}+3z_{195}^{2}+6z_{195}^{2} z_{220}-z_{214}^{2}-z_{215}^{2}-z_{216}-z_{216}^{2}\\
+&\quad{}+186z_{220}+324z_{220}^{2}+216z_{220}^{3}+24z_{220} z_{225}+24z_{220} z_{225}^{2}+12z_{225}+12z_{225}^{2}\\[3pt]
+z_{142}&=-z_{139}+2z_{139} z_{141}\\[3pt]
+z_{143}&=z_{139} z_{142}+z_{142}\\[3pt]
+z_{154}&=z_{140} z_{153}+7z_{153}\\[3pt]
+z_{159}&=-7-z_{140}+z_{140} z_{158}+7z_{158}\\[3pt]
+z_{160}&=-1+z_{111}+z_{140} z_{161}+3z_{161}-6z_{161} z_{220}\\[3pt]
+z_{162}&=z_{140} z_{161}+7z_{161}\\[3pt]
+z_{165}&=z_{140} z_{164}+7z_{164}
+\end{align*}
+\begin{align*}
+z_{168}&=z_{140} z_{167}+7z_{167}\\[3pt]
+z_{171}&=z_{140} z_{170}+7z_{170}\\[3pt]
+z_{174}&=z_{140} z_{173}+7z_{173}\\[3pt]
+z_{172}&=-1+z_{121}+z_{155} z_{175}-3z_{173}-6z_{173} z_{220}+z_{174}\\[3pt]
+z_{176}&=-1+z_{124}+z_{140} z_{177}+3z_{177}-6z_{177} z_{220}\\[3pt]
+z_{178}&=z_{140} z_{177}+7z_{177}\\[3pt]
+z_{181}&=z_{140} z_{180}+7z_{180}\\[3pt]
+z_{186}&=-1+z_{130} z_{131}+z_{132}+z_{140} z_{187}+3z_{187}-6z_{187} z_{220}
+\end{align*}
+\begin{align*}
+z_{188}&=z_{140} z_{187}+7z_{187}\\[3pt]
+z_{191}&=z_{140} z_{190}+7z_{190}\\[3pt]
+z_{192}&=-1+z_{136}+z_{140} z_{193}+3z_{193}-6z_{193} z_{220}\\[3pt]
+z_{194}&=z_{140} z_{193}+7z_{193}\\[3pt]
+z_{199}&=1+z_{192}+z_{197} z_{205}\\[3pt]
+z_{200}&=z_{8}+z_{9}+4z_{19}+2z_{22}+4z_{24}+2z_{27}+2z_{29}+4z_{30}+2z_{32}+2z_{34}+4z_{36}+2z_{37}+2z_{40}+2z_{44}\\*
+&\quad{}+4z_{65}+2z_{66}+4z_{193} z_{206}\\[3pt]
+z_{207}&=z_{140} z_{198}+7z_{198}\\[3pt]
+z_{208}&=z_{200}+z_{200} z_{201}
+\end{align*}
+\subsection*{Retained residuals}
+\begin{align*}
+R_{0}&=-1-z_{2} z_{5}+z_{6} z_{7}-2z_{225}
+\end{align*}
+\begin{align*}
+R_{1}&=1+z_{9}-z_{9}^{2}-4z_{9} z_{10}-4z_{9} z_{47}-4z_{10}^{2}-8z_{10} z_{47}-4z_{47}^{2}+z_{48}
+\end{align*}
+\begin{align*}
+R_{2}&=-9+7z_{8}-z_{8}^{2}-8z_{8} z_{45}-4z_{8} z_{52}+24z_{45}-16z_{45}^{2}-16z_{45} z_{52}+12z_{52}-4z_{52}^{2}\\*
+&\quad{}+z_{53}
+\end{align*}
+\begin{align*}
+R_{3}&=z_{10}-z_{10}^{2}-8z_{10} z_{59}-4z_{10} z_{61}-16z_{59}^{2}-16z_{59} z_{61}-4z_{61}^{2}+z_{62}
+\end{align*}
+\begin{align*}
+R_{4}&=z_{12}-z_{13}-2z_{34} z_{67}+6z_{67}-z_{72}
+\end{align*}
+\begin{align*}
+R_{5}&=-2z_{1}^{2}+2z_{1} z_{12}+2z_{1} z_{13}+2z_{1} z_{99}+2z_{1} z_{100}-z_{12}^{2}-2z_{12} z_{99}-z_{13}^{2}\\*
+&\quad{}-2z_{13} z_{100}+z_{17} z_{101}-z_{78} z_{97}-z_{80} z_{97}-z_{99}^{2}-z_{100}^{2}
+\end{align*}
+\begin{align*}
+R_{6}&=-1+z_{142}^{2}-z_{143}^{2}+z_{223}^{2}
+\end{align*}
+\begin{align*}
+R_{7}&=2z_{144}+z_{144}^{2}+z_{145}^{2}-z_{146}^{2}
+\end{align*}
+\begin{align*}
+R_{8}&=2z_{152}+z_{152}^{2}+z_{153}^{2}-z_{154}^{2}
+\end{align*}
+\begin{align*}
+R_{9}&=-39+z_{130} z_{226}-8z_{140}-12z_{140} z_{220}-36z_{220}+36z_{220}^{2}
+\end{align*}
+\begin{align*}
+R_{10}&=1+2z_{157}+z_{157}^{2}-2z_{158}+z_{158}^{2}-z_{159}^{2}
+\end{align*}
+\begin{align*}
+R_{11}&=2z_{160}+z_{160}^{2}+z_{161}^{2}-z_{162}^{2}
+\end{align*}
+\begin{align*}
+R_{12}&=2z_{163}+z_{163}^{2}+z_{164}^{2}-z_{165}^{2}
+\end{align*}
+\begin{align*}
+R_{13}&=2z_{166}+z_{166}^{2}+z_{167}^{2}-z_{168}^{2}
+\end{align*}
+\begin{align*}
+R_{14}&=2z_{169}+z_{169}^{2}+z_{170}^{2}-z_{171}^{2}
+\end{align*}
+\begin{align*}
+R_{15}&=2z_{172}+z_{172}^{2}+z_{173}^{2}-z_{174}^{2}
+\end{align*}
+\begin{align*}
+R_{16}&=2z_{176}+z_{176}^{2}+z_{177}^{2}-z_{178}^{2}
+\end{align*}
+\begin{align*}
+R_{17}&=2z_{179}+z_{179}^{2}+z_{180}^{2}-z_{181}^{2}
+\end{align*}
+\begin{align*}
+R_{18}&=-1+2z_{182}+z_{182}^{2}+z_{183}^{2}-2z_{184}-z_{184}^{2}
+\end{align*}
+\begin{align*}
+R_{19}&=z_{127}+z_{155} z_{185}-z_{182}-3z_{183}-6z_{183} z_{220}+z_{184}
+\end{align*}
+\begin{align*}
+R_{20}&=2z_{186}+z_{186}^{2}+z_{187}^{2}-z_{188}^{2}
+\end{align*}
+\begin{align*}
+R_{21}&=2z_{189}+z_{189}^{2}+z_{190}^{2}-z_{191}^{2}
+\end{align*}
+\begin{align*}
+R_{22}&=2z_{192}+z_{192}^{2}+z_{193}^{2}-z_{194}^{2}
+\end{align*}
+\begin{align*}
+R_{23}&=-1+z_{197}^{2}+z_{198}^{2}-z_{207}^{2}
+\end{align*}
+\begin{align*}
+R_{24}&=-1+z_{199}^{2}+z_{200}^{2}-z_{208}^{2}
+\end{align*}
+\begin{align*}
+R_{25}&=-2+2z_{0}^{2}+2z_{0} z_{4}-2z_{0} z_{145}-2z_{0} z_{153}+z_{1}^{2}-2z_{1} z_{183}+z_{2}^{2}-2z_{2} z_{173}\\*
+&\quad{}+z_{4}^{2}-2z_{4} z_{153}+z_{8}^{2}-2z_{8} z_{158}-2z_{8} z_{193}+z_{9}^{2}-2z_{9} z_{161}-2z_{9} z_{193}\\*
+&\quad{}+z_{10}^{2}-2z_{10} z_{164}+z_{11}^{2}-2z_{11} z_{167}+z_{12}^{2}-2z_{12} z_{170}+z_{13}^{2}-2z_{13} z_{177}\\*
+&\quad{}+z_{14}^{2}-2z_{14} z_{180}+z_{15}^{2}-2z_{15} z_{187}+z_{16}^{2}-2z_{16} z_{190}-8z_{19} z_{193}\\*
+&\quad{}-4z_{22} z_{193}-8z_{24} z_{193}-4z_{27} z_{193}-4z_{29} z_{193}-8z_{30} z_{193}-4z_{32} z_{193}\\*
+&\quad{}-4z_{34} z_{193}-8z_{36} z_{193}-4z_{37} z_{193}-4z_{40} z_{193}-4z_{44} z_{193}-8z_{65} z_{193}\\*
+&\quad{}-4z_{66} z_{193}-z_{140} z_{210}+z_{144}^{2}+z_{152}^{2}+z_{157}^{2}+2z_{158}+z_{160}^{2}+z_{163}^{2}\\*
+&\quad{}+z_{166}^{2}+z_{169}^{2}+z_{172}^{2}+z_{176}^{2}+z_{179}^{2}+z_{182}^{2}+z_{186}^{2}+z_{189}^{2}+z_{192}^{2}\\*
+&\quad{}+2z_{193}^{2}-6z_{210}-z_{214}^{2}-z_{215}^{2}-z_{216}-z_{216}^{2}
+\end{align*}
+\begin{align*}
+R_{26}&=-z_{103} z_{211}+z_{127}
+\end{align*}
+\begin{align*}
+R_{27}&=-z_{108} z_{212}+z_{127}
+\end{align*}
+\begin{align*}
+R_{28}&=-1-8z_{8} z_{19}-4z_{8} z_{22}-8z_{8} z_{24}-4z_{8} z_{27}-4z_{8} z_{29}-8z_{8} z_{30}-4z_{8} z_{32}\\*
+&\quad{}-4z_{8} z_{34}-8z_{8} z_{36}-4z_{8} z_{37}-4z_{8} z_{40}-4z_{8} z_{44}-8z_{8} z_{65}-4z_{8} z_{66}\\*
+&\quad{}-8z_{9} z_{19}-4z_{9} z_{22}-8z_{9} z_{24}-4z_{9} z_{27}-4z_{9} z_{29}-8z_{9} z_{30}-4z_{9} z_{32}\\*
+&\quad{}-4z_{9} z_{34}-8z_{9} z_{36}-4z_{9} z_{37}-4z_{9} z_{40}-4z_{9} z_{44}-8z_{9} z_{65}-4z_{9} z_{66}-z_{19}\\*
+&\quad{}-16z_{19}^{2}-16z_{19} z_{22}-32z_{19} z_{24}-16z_{19} z_{27}-16z_{19} z_{29}-32z_{19} z_{30}\\*
+&\quad{}-16z_{19} z_{32}-16z_{19} z_{34}-32z_{19} z_{36}-16z_{19} z_{37}-16z_{19} z_{40}-16z_{19} z_{44}\\*
+&\quad{}-32z_{19} z_{65}-16z_{19} z_{66}-4z_{22}^{2}-16z_{22} z_{24}-8z_{22} z_{27}-8z_{22} z_{29}-16z_{22} z_{30}\\*
+&\quad{}-8z_{22} z_{32}-8z_{22} z_{34}-16z_{22} z_{36}-8z_{22} z_{37}-8z_{22} z_{40}-8z_{22} z_{44}-16z_{22} z_{65}\\*
+&\quad{}-8z_{22} z_{66}-16z_{24}^{2}-16z_{24} z_{27}-16z_{24} z_{29}-32z_{24} z_{30}-16z_{24} z_{32}-16z_{24} z_{34}\\*
+&\quad{}-32z_{24} z_{36}-16z_{24} z_{37}-16z_{24} z_{40}-16z_{24} z_{44}-32z_{24} z_{65}-16z_{24} z_{66}-4z_{27}^{2}\\*
+&\quad{}-8z_{27} z_{29}-16z_{27} z_{30}-8z_{27} z_{32}-8z_{27} z_{34}-16z_{27} z_{36}-8z_{27} z_{37}-8z_{27} z_{40}\\*
+&\quad{}-8z_{27} z_{44}-16z_{27} z_{65}-8z_{27} z_{66}-4z_{29}^{2}-16z_{29} z_{30}-8z_{29} z_{32}-8z_{29} z_{34}\\*
+&\quad{}-16z_{29} z_{36}-8z_{29} z_{37}-8z_{29} z_{40}-8z_{29} z_{44}-16z_{29} z_{65}-8z_{29} z_{66}-16z_{30}^{2}\\*
+&\quad{}-16z_{30} z_{32}-16z_{30} z_{34}-32z_{30} z_{36}-16z_{30} z_{37}-16z_{30} z_{40}-16z_{30} z_{44}\\*
+&\quad{}-32z_{30} z_{65}-16z_{30} z_{66}-4z_{32}^{2}-8z_{32} z_{34}-16z_{32} z_{36}-8z_{32} z_{37}-8z_{32} z_{40}\\*
+&\quad{}-8z_{32} z_{44}-16z_{32} z_{65}-8z_{32} z_{66}-4z_{34}^{2}-16z_{34} z_{36}-8z_{34} z_{37}-8z_{34} z_{40}\\*
+&\quad{}-8z_{34} z_{44}-16z_{34} z_{65}-8z_{34} z_{66}-16z_{36}^{2}-16z_{36} z_{37}-16z_{36} z_{40}-16z_{36} z_{44}\\*
+&\quad{}-32z_{36} z_{65}-16z_{36} z_{66}-4z_{37}^{2}-8z_{37} z_{40}-8z_{37} z_{44}-16z_{37} z_{65}-8z_{37} z_{66}\\*
+&\quad{}-4z_{40}^{2}-8z_{40} z_{44}-16z_{40} z_{65}-8z_{40} z_{66}-4z_{44}^{2}-16z_{44} z_{65}-8z_{44} z_{66}\\*
+&\quad{}-16z_{65}^{2}-16z_{65} z_{66}-4z_{66}^{2}-z_{145}^{2}-z_{153}^{2}+2z_{158}-z_{158}^{2}-z_{161}^{2}\\*
+&\quad{}-z_{164}^{2}-z_{167}^{2}-z_{170}^{2}-z_{173}^{2}-z_{177}^{2}-z_{180}^{2}-z_{183}^{2}-z_{187}^{2}-z_{190}^{2}\\*
+&\quad{}+z_{193}^{2}-z_{214}^{2}-z_{215}^{2}-z_{216}-z_{216}^{2}
+\end{align*}
+\begin{align*}
+R_{29}&=-1-4z_{105}^{2}-4z_{110}^{2}-4z_{113}^{2}-4z_{116}^{2}-4z_{119}^{2}-4z_{123}^{2}-4z_{126}^{2}+z_{127}^{2}\\*
+&\quad{}-4z_{129}^{2}-4z_{132}^{2}-4z_{135}^{2}-4z_{138}^{2}-z_{217}^{2}-z_{218}^{2}-z_{219}-z_{219}^{2}
+\end{align*}
+\begin{align*}
+R_{30}&=5+z_{140}+8z_{141}-8z_{141}^{2}-z_{223}^{2}
+\end{align*}
+\endgroup
+The required equation is therefore exactly
+\[D_{83}(x_0,\ldots,x_{82})=\sum_{j=0}^{30}R_j^2=0.\]
+The electronic source preserves the source-row indices, unit-pivot witnesses and binary graph, so these printed definitions can be checked independently against the literal coefficient files.
+
+% END retained input: P83_definition.tex
+
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{source172}
+ProveIt, package 172, \emph{Pooled Powers, Round 21}, positive-ten component,
+25 October 2026. Frozen proof and equation retained in this archive.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/cdfea7d90176775d74c1c30afbe49fa78ade9897/Computability/DiophantineConsistency/con-zfc-diophantine-forms/172-pooled-powers-round21}.
+\bibitem{source178}
+ProveIt, package 178, \emph{Polynomial Centers for Diophantine Consistency},
+25 October 2026. Whole-product center and fixed coefficient recipe.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/cdfea7d90176775d74c1c30afbe49fa78ade9897/Computability/DiophantineConsistency/con-zfc-diophantine-forms/178-polynomial-centers}.
+\bibitem{incomingAffine}
+ProveIt incoming archive, \emph{Affine Horizons and Centered Certificates},
+file \path{ConZFC_Affine_Horizons_Centered_Certificates_2026-10-26.zip},
+at the pinned snapshot. The filename's date is retained as source metadata.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/cdfea7d90176775d74c1c30afbe49fa78ade9897/docs/incoming}.
+\bibitem{source166}
+ProveIt, package 166, \emph{Fixed-Base Modular Construction}, including
+common modular numerators, frame, and C222 calibration sources.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/cdfea7d90176775d74c1c30afbe49fa78ade9897/Computability/DiophantineConsistency/con-zfc-diophantine-forms/166-fixed-base-modular}.
+\bibitem{incomingCofinal}
+ProveIt incoming archive, \emph{Cofinal Pell Compression},
+\path{ConZFC_Cofinal_Pell_Compression_2026-10-25.zip},
+at the same snapshot. One scaled square and exact source replay.
+\bibitem{source177}
+ProveIt, package 177, \emph{Oriented Power Pooling and Polynomial Root
+Centering}, 25 October 2026. Direct profiles and acyclic unit elimination.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/cdfea7d90176775d74c1c30afbe49fa78ade9897/Computability/DiophantineConsistency/con-zfc-diophantine-forms/177-oriented-powers}.
+\bibitem{source175}
+ProveIt, package 175, \emph{Exact Integer Projections for Diophantine
+Consistency}, 25 October 2026. The \(92\)-integer, degree-\(692\) comparison.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/cdfea7d90176775d74c1c30afbe49fa78ade9897/Computability/DiophantineConsistency/con-zfc-diophantine-forms/175-exact-contractions}.
+\end{thebibliography}
+\end{document}

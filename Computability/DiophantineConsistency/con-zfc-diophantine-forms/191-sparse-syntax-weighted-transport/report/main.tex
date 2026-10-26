@@ -1,0 +1,676 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={Sparse syntax and weighted Pell transport for Diophantine consistency},pdfauthor={Research prepared with ChatGPT for Vladimir Reshetnikov and ProveIt}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\RefZ}{\operatorname{Ref}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small ProveIt research memorandum}
+\fancyhead[R]{\small Sparse syntax and Pell transport}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true}
+\input{metrics.tex}
+
+\title{Sparse syntax and weighted Pell transport\\
+\large Explicit Diophantine equations for the consistency of ZFC}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt project\\
+\small Mathematical development and independent internal reviews assisted by ChatGPT}
+\date{26 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give two explicit improvements to the inspected ProveIt constructions.
+The direct construction uses a sparse, non-surjective coding of its numerical
+proof calculus. A finite-marker substitution theorem proves that the unused
+numeric codes do not change finite refutability. Combining this coding with
+a signed affine horizon and divisibility-forced Pell growth produces a
+quartic in \DirectVariables{} unrestricted integer variables, specified by
+\DirectRows{} quadratic residuals. The separate compact construction gives a
+polynomial of exact degree 190 in ten strictly positive integer variables,
+with 120 binary arithmetic operations and a completely specified fixed
+coefficient tuple. Its new weight $b^2UE$ permits a whole-product Pell center
+in a smaller arithmetic chart, including an auxiliary index previously
+excluded in the other chart. For each construction, ordinary proofs of the
+new steps compose with explicitly identified inherited calibrations to prove
+in ZFC that absence of solutions is equivalent to syntactic $\Con(\mathrm{ZFC})$.
+All coefficients, evaluators, exact finite checks, source bindings, and
+editable article sources accompany the paper. Neither global minimality nor
+a new end-to-end proof-assistant verification is claimed.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Results, comparison, and the precise logical claim}
+
+Fix the effective ZFC presentation used in the repository's retained
+calibration: its axiom predicate is \code{ZFCax_s}, its finite derivation
+relation is \code{BProv}, and its false formula is \code{Form.fBot}.
+Write $\RefZ_{\mathrm{ZFC}}$ for the arithmetic assertion that a finite
+refutation in this presentation exists, and put
+$\Con(\mathrm{ZFC})=\neg\RefZ_{\mathrm{ZFC}}$.
+
+Our comparison snapshot is the public ProveIt commit
+\code{d123610bc98fef2006bff1c9466bc3f1221003e7}. We inspected the supplied
+Hilbert Tenth Problem directory, the numbered consistency constructions
+through package 178, and the seven archives then in \code{docs/incoming}.
+The incoming Pell Growth 210 archive supplies the immediate direct parent\cite{growth210}.
+Packages 172 and 178, together with the incoming affine-horizon archive,
+supply the compact comparison and its two principal ingredients\cite{free172,center178}.
+These are comparisons against identified files; they are not a proof of
+priority or an exhaustive worldwide search.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Construction and domain&Variables&Degree&Rows or operations&Height\\
+\midrule
+Incoming Pell Growth, $\Z$&210&4&150 rows&$2^{40}$\\
+Affine-horizon companion here, $\Z$&209&4&149 rows&$2^{44}$\\
+\textbf{Sparse syntax here, $\Z$}&\textbf{\DirectVariables}&\textbf{4}&\textbf{\DirectRows{} rows}&\DirectHeightMath\\
+\addlinespace
+Incoming free chart, $\Z_{>0}$&10&206&90 operations&fixed tuple\\
+Package 178 whole center, $\Z_{>0}$&10&208&116 operations&fixed tuple\\
+\textbf{Weighted transport here, $\Z_{>0}$}&\textbf{10}&\textbf{190}&\textbf{120 operations}&fixed tuple\\
+\bottomrule
+\end{tabular}
+\end{center}
+Height for the direct constructions means the largest absolute coefficient after the
+single quartic has been expanded and like monomials collected. The new
+direct quartic has \DirectMonomials{} collected monomials; its parent has
+5,282. The companion has 5,486. The displayed tradeoffs are intentional:
+dimension, degree, expanded height, support, and arithmetic-circuit length
+are different measures of simplicity.
+
+\begin{theorem}[Delivered equations]\label{thm:main}
+Let $R_0,\ldots,R_{\DirectLastRow}$ be the literal quadratic residuals in
+Appendix~\ref{app:residuals}, and define
+\[
+ Q_{\DirectVariables}(x_0,\ldots,x_{\DirectLastVariable})
+       =\sum_{j=0}^{\DirectLastRow}R_j(x_0,\ldots,x_{\DirectLastVariable})^2.
+\]
+Let $P$ be the ten-variable polynomial in
+Section~\ref{sec:weighted-positive}, using the four fixed integers completely
+defined in Appendix~\ref{app:coefficients}. Then ordinary mathematics
+formalizable in ZFC proves
+\begin{align*}
+ \exists\boldsymbol x\in\Z^{\DirectVariables}\;
+       Q_{\DirectVariables}(\boldsymbol x)=0
+       &\quad\longleftrightarrow\quad\RefZ_{\mathrm{ZFC}},\\
+ \exists\boldsymbol u\in\Z_{>0}^{10}\;P(\boldsymbol u)=0
+       &\quad\longleftrightarrow\quad\RefZ_{\mathrm{ZFC}}.
+\end{align*}
+Their negations are therefore ZFC-provably equivalent to
+$\Con(\mathrm{ZFC})$. The first equation has exact degree four and the
+second has exact degree 190.
+\end{theorem}
+
+The quantifiers in the first assertion range independently over all
+integers. The second assertion has a strictly positive domain. Its named
+registers are abbreviations for polynomials in ten inputs, so they are not
+extra existential witnesses. The fixed coefficient recipe uses finite
+sums, digit extraction, and fixed powers only to name four particular
+integers. No variable exponentiation or floor occurs in either delivered
+polynomial.
+
+The direct route evaluates the numerical calculus C222 itself and uses its
+identified C222/ZF/ZFC calibration. It does not simulate K215 or specialize
+Jones's universal polynomial. The compact route retains its existing
+native/K215 ancestry. Allowing alternative sources is useful, but replacing
+an already effective source is not automatically a simplification.
+
+\paragraph{Proof status.}
+The new results are ordinary mathematical arguments, supported by exact
+coefficient checks. We have not emitted an object-language ZFC derivation
+or rebuilt a complete transitive Lean/Rocq dependency closure. The retained
+logical endpoints are \code{KEndpoint.c222_iff_zf_refutation} and
+\code{ConstructibleChoice.zf_refutation_iff_zfc_refutation} on the direct
+side, and the explicitly named whole-tuple native/refutation calibration on
+the compact side. Finite checks authenticate formulas and transformations;
+they do not prove unbounded Pell or logical theorems by sampling. The result
+assumes neither consistency nor inconsistency and proves neither one.
+
+\section{Sparse syntax: a finite proof does not need a surjective coding}
+\label{sec:sparse}
+
+The earlier square-shell coding makes every natural number a constructor
+value. That property simplifies global recoding, but it is stronger than
+what is needed to preserve the existence of a finite refutation. Define
+\begin{equation}\label{eq:sparse-constructors}
+ \begin{aligned}
+ \pi(x,y)&=(x+y)^2+x,\\
+ I(x,y)&=4\pi(x,y),& M(x,y)&=4\pi(x,y)+1,\\
+ A(x,y)&=4\pi(x,y)+2,& E(x,y)&=4\pi(x,y)+3.
+ \end{aligned}
+\end{equation}
+Here $I,M,A,E$ name the implication, membership, quantifier, and equality
+constructors of the same numerical rule schemata. They are polynomials,
+not syntactic predicates. Their arguments may be any natural numbers.
+
+For $x+y=s$, $\pi(x,y)$ runs injectively through
+$[s^2,s^2+s]$. Different shells have disjoint intervals. The four
+constructor ranges are disjoint by their residues modulo four. The first
+unused values are $12,13,14,15$, because the quotient 3 is not in the range
+of $\pi$. Every nonzero constructor value is greater than both arguments.
+The only zero case is $I(0,0)=0$, and $M(0,0)=1$.
+
+\subsection{Normalized trees and finite markers}
+
+Decode a numeral recursively: zero is a distinguished leaf; a nonzero
+constructor value is its uniquely determined constructor node; a number
+outside all constructor ranges is a new atomic leaf. Strict descent of
+the arguments makes this recursion terminate. Trees are normalized by
+identifying $I(0,0)$ with zero. Apart from this convention, injectivity
+and disjointness give unique trees.
+
+The reference Cantor constructors are
+\[
+ I_o(x,y)=2(x+y)(x+y+1)+4y,\qquad
+ M_o=I_o+1,\quad A_o=I_o+2,\quad E_o=I_o+3.
+\]
+They partition $\N$ and have the same descent and zero convention. Every
+reference numeral therefore has a normalized tree built from zero alone.
+
+\begin{lemma}[Finite-marker substitution]\label{lem:markers}
+Let $\mathcal S$ be a finite, subtree-closed set of normalized sparse-code
+trees. There is a substitution of reference-code numerals for the extra
+atomic leaves that is injective on $\mathcal S$, fixes 0 and 1, and
+preserves every constructor occurrence represented in $\mathcal S$.
+\end{lemma}
+\begin{proof}
+Let $D$ be the maximum height in $\mathcal S$ and let there be $k$ distinct
+extra leaves. If $k=0$, evaluate the same trees in the reference coding.
+Otherwise put $L=\max(D,k)$ and define
+\[
+ W_0=0,\qquad W_{r+1}=A_o(0,W_r),\qquad
+ m_j=I_o(W_L,W_j)\quad(0\le j<k).
+\]
+The markers $m_j$ are distinct and all have height $L+1>D$. Substitute
+the $j$th marker for the $j$th extra leaf.
+
+A tree without extra leaves has height at most $D$. The image of one
+extra leaf has height $L+1$. The image of a constructor tree containing
+an extra leaf has height greater than $L+1$, with height determined by
+the deepest occurrence of an extra leaf. Thus a marker cannot collide
+with a constant-only tree or a nontrivial tree containing markers.
+If two remaining nonzero constructor trees have equal images, disjoint
+constructor ranges identify the root symbol and injectivity identifies
+both child images. Induction then identifies the original trees. The
+normalization $I(0,0)=0$ is imposed on both sides, so it introduces no
+new collision. Substitution fixes zero and $1=M(0,0)$ and commutes with
+the constructors by definition.
+\end{proof}
+
+\begin{proposition}[Finite refutation equivalence]\label{prop:recoding}
+The sparse C222 calculus derives 1 if and only if the reference C222
+calculus derives 1. ZFC proves the equivalence by effective finite proof
+transformations.
+\end{proposition}
+\begin{proof}
+For a finite sparse derivation, collect every parameter, premise,
+conclusion, and intermediate value of every instantiated constructor
+term. Decode these values and include all subtrees. Lemma~\ref{lem:markers}
+transfers each instantiated rule to a reference rule. It preserves truth
+at zero, modus ponens, generalization, and all constructor-term axioms.
+Its injectivity preserves the guarded bundle's two disequalities
+$c\ne a$ and $c\ne b$. The concluding numeral remains 1.
+
+Conversely, evaluate the unique zero-generated tree of each reference
+numeral with the sparse constructors. Uniqueness of sparse decoding
+makes this a global injection on reference numerals. It commutes with
+all constructors, fixes 0 and 1, and transports every finite derivation
+and its guards to the sparse calculus.
+
+The arithmetic bundle guard uses the existential identity
+$((c-a)(c-b))^2=(d+1)^2$. After translating a guarded instance, choose
+$d=|(c-a)(c-b)|-1\ge0$. One must not assume that a numeral recoding
+commutes with addition or preserves the old $d$. In other rule branches,
+$d$ is simply a schema parameter and is translated in the ordinary way.
+These are alternative local branches, so the choices do not conflict.
+\end{proof}
+
+There is generally no global injective homomorphism in the reverse
+direction fixing zero: the reference constructor closure of zero already
+exhausts the reference numerals. The dependence on the finite derivation
+is essential. It is also sufficient, because inconsistency is the
+existence of one finite refutation. This is the principal conceptual
+change in the direct construction.
+
+\section{Signed horizons and a compatible Pell growth certificate}
+\label{sec:growth}
+
+For an integer $a\ge2$, use the canonical Pell notation
+\[
+ (a+\sqrt{a^2-1})^n=X_n(a)+Y_n(a)\sqrt{a^2-1}
+ \qquad(n\in\Z).
+\]
+In the compact construction's inherited notation, $\psi_a(n)=Y_n(a)$.
+
+The arithmetic source uses a horizon $t$, a growth value $F$, a beta
+spacing $y$, a beta code $x$, and an even CRT index representative $C$.
+They are ordinary integer witnesses before their signs have been proved.
+Write $d=2^{19}$. Replace the old positive square slice by the affine
+slice
+\begin{equation}\label{eq:affine-horizon}
+ t=2+4z,\qquad z\in\Z.
+\end{equation}
+For the sparse syntax use the three quadratic growth equations
+\begin{equation}\label{eq:sparse-growth}
+ Z_g=tF,\qquad X_g^2-64Z_g^2-16Z_gF=1,
+ \qquad F=dt(2u+1).
+\end{equation}
+The changed center is $8t+1$. Keeping the old center $4t+1$ without
+updating the label bound would leave a proof gap; the literal final
+equation contains the new coefficients 64 and 16.
+
+\subsection{Recover the sign before classifying the growth Pell equation}
+
+The retained source has a common square frame and a largest-index
+certificate for $C$. Its inherited theorem recovers each principal Pell
+pair at its signed nominal index before the front variables are oriented.
+For a requested base with absolute value at least two, its signed power
+lemma then forces the exponent to be nonnegative and the output to be
+the exact power. The actual frame is retained with every requested base,
+output, and nominal exponent included.
+
+Equation~\eqref{eq:affine-horizon} gives even $t\ne0$, $|t|\ge2$.
+The last row of~\eqref{eq:sparse-growth}, without using its norm row,
+already gives
+\[
+ F\ne0,\qquad F\equiv0\pmod2,\qquad |F|\ge d|t|\ge2^{20}.
+\]
+In particular the existing square frame exceeds its required threshold
+258, because it includes $F^2$.
+
+The affine radix is $D_r=2(C+F+1)$. Since $C$ and $F$ are even,
+$|D_r|\ge2$. The retained request $q=D_r^x$ gives $x\ge0$.
+The beta equations are
+\begin{equation}\label{eq:beta-endpoints}
+ y=F(2v+1),\qquad
+ x=F+1+(y+1)r_0,\qquad
+ x=1+[1+(t+1)y]r_t.
+\end{equation}
+They imply $|y|\ge|F|$ and
+\[
+ |1+(t+1)y|\ge|t+1|\,|y|-1\ge|F|-1>1.
+\]
+Consequently $x=0$ would express $-1$ as a multiple of a nonunit,
+which is impossible. Thus $x\ge1$, $|q|\ge2$, and the existing request
+at base $q$ with exponent $t$ forces $t\ge0$. The affine slice excludes
+zero, so $t\ge2$.
+
+This bootstrap uses the elementary divisibility lower bound before the
+standalone Pell center has been oriented. It never assumes a growth
+estimate at a negative center. It is the new composition of the signed
+horizon and the incoming divisibility-growth construction.
+
+\subsection{Label bound and growth}
+
+For $0\le r,s\le M$, each sparse constructor satisfies
+\[
+ C(r,s)+1\le16M^2+4M+4\le16(M+1)^2.
+\]
+Every leaf of a local constructor term is below $t$ or is 0 or 1.
+Induction on depth gives the bound
+$16^{2^h-1}t^{2^h}$ for a term's value plus one. The deepest source
+term has depth 19; the eight ordinary axiom terms have depth at most
+five. Define
+\[
+ L=16^{d-1}t^d.
+\]
+Every required local formula label is less than $L$.
+
+After the sign bootstrap, $a=8t+1\ge17$ and the norm row is
+$X_g^2-(a^2-1)F^2=1$. Write $|F|=Y_n(a)$ with $n>0$ for its canonical
+Pell ordinate. The retained elementary identities give
+\[
+ Y_n(a)\equiv n\pmod{a-1},\qquad
+ v_2(Y_n(a))=v_2(n)\quad(a\text{ odd}).
+\]
+Since $8t\mid F$, one has $8t\mid n$. The exact valuation of
+$F=dt(2u+1)$ then shows that $n/(8t)$ is divisible by $2^{16}$,
+and hence $n\ge dt$. The recurrence growth estimate yields
+\[
+ |F|\ge(16t+1)^{dt-1}\ge(16t)^{dt-1}\ge L^t,
+\]
+because the ratio in the last comparison is $16^{t-1}/t\ge1$.
+In particular $|F|>t$.
+
+The retained requests at exponents $y+1$ and $F+t$, together with
+\eqref{eq:beta-endpoints}, now recover
+\[
+ F>0,\quad y\ge F,\quad x\ge2+(t+1)y,\quad C>F+t,
+ \quad D_r>2C,\quad q=D_r^x>0.
+\]
+The common bound $F\ge L^t$ is exactly what is needed by the inherited
+finite-product separation and Horn-flow argument. It also gives
+$F\ge t^{2t}\ge\operatorname{lcm}(1,\ldots,t)^2$, as required by
+the generalized factorial-free CRT selector.
+
+\subsection{An explicit new bound for the changed local polynomial}
+
+The syntax change must also respect the modulus used to recover the
+local row. Put $R_0=2+t+x+y+F$. Every decoded local atom is less than
+$R_0$, and $R_0\ge16$. If two inputs are below $R_0^e$, a sparse
+constructor is below $16R_0^{2e}\le R_0^{2e+1}$. Thus a depth-19
+label is below $R_0^{2^{20}-1}$ and a depth-five label is below
+$R_0^{63}$.
+
+The eleven unsquared factors in the local axiom/inference product have
+the following valid exponent bounds: 1 for the truth factor, 66 for
+each of eight ordinary axiom factors, 10 for modus ponens, and 7 for
+generalization. Their squared product is below $R_0^{1092}$. The
+squared bundle factor is below $R_0^{2097156}$ and its squared guard
+defect is below $R_0^{10}$. The joint factor is therefore below
+$R_0^{2097157}$. Each of the two beta squares is below $R_0^{12}$.
+Including them gives
+\[
+ \mathrm{Local}<R_0^{2098250}<R_0^{2^{23}}.
+\]
+For $t\ge2$, one has $L\ge2^{5d-4}$ and hence
+$F\ge L^t\ge2^{10d-8}>2^{32}$. The recovered inequalities imply
+$R_0<2x$ and $x>2^{32}$. The function
+$x/\log_2(2x)$ is increasing beyond this threshold, and at $2^{32}$
+one has $2^{23}\cdot33<2^{32}$. Hence
+\[
+ \mathrm{Local}<(2x)^{2^{23}}<2^x.
+\]
+This supplies a fresh bound for the changed constructors rather than
+silently reusing the old coefficients' bound. All remaining low-digit
+estimates use $D_r>2C$ and the same authenticated index cap.
+
+\subsection{Cofinal completeness}
+
+Translate a finite ZFC refutation to a finite sparse-C222 refutation by
+Proposition~\ref{prop:recoding} and the inherited calibration. Choose
+a sufficiently large positive horizon with
+\[
+ t\equiv2\pmod{2^{23}}.
+\]
+This progression is cofinal and lies in \eqref{eq:affine-horizon}.
+It has $v_2(t)=1$ and its binary digit in position 20 is zero. Set
+\[
+ n_0=dt,\quad y_0=Y_{n_0}(8t+1),\quad
+ a_0=X_{n_0}(8t+1).
+\]
+The congruence gives $t\mid y_0$, and the exact valuation gives
+$v_2(y_0)=20$. Together these facts, including the odd part of $t$,
+show that $b_0=y_0/(dt)$ is an odd integer. Also $a_0\equiv1\pmod4$.
+
+The incoming proof establishes that $s\mapsto Y_s(a_0)$ permutes
+residues modulo every power of two when $a_0\equiv1\pmod4$.
+Choose $N>23$ with $2^N>t$ and an arbitrarily large positive odd $s$
+such that
+\[
+ (t/2)b_0Y_s(a_0)\equiv1\pmod{2^{N-20}}.
+\]
+Composition gives a positive ordinate
+\[
+ F=Y_{n_0s}(8t+1)=y_0Y_s(a_0)
+       \equiv2^{20}\pmod{2^N},
+\]
+Complete its witnesses with
+$X_g=X_{n_0s}(8t+1)$, $Z_g=tF$, and $u=(F/(dt)-1)/2$.
+The latter is integral because the quotient is odd, so all three growth
+rows hold. The binary supports of $F$ and
+$t$ are disjoint, so $\binom{F+t}{t}$ is odd. This is the required
+parity for an even CRT anchor, not an optional heuristic property.
+
+Choose the odd multiplier in $y=F(2v+1)$ to contain every odd prime at
+most $t$ and to be sufficiently large for the finite pending states.
+The beta moduli, indexed by $1\le i<j\le t+1$, are pairwise coprime:
+a common prime of $1+iy$ and
+$1+jy$ would divide $i-j$, hence be at most $t$, and would also divide
+$y$, a contradiction. The subsequent choice order is the beta code
+$x$, the selector and CRT moduli, the ordinary CRT representatives,
+an arbitrarily large even representative $C$, the radix $D_r$, its
+power $q$, and finally the shared Pell frame. No later choice determines
+a parameter on which an earlier modulus depends.
+
+The retained arithmetic completeness theorem then supplies every
+remaining witness. The local syntax block is regenerated with its new
+constructors, its labels are covered by $L$, and its modulus bound was
+proved above. This establishes the sparse source's existence equivalence
+with the same finite refutation predicate.
+
+\section{From a semantic source to the literal quartic}
+\label{sec:compilation}
+
+The source change and the polynomial reductions perform different jobs.
+The former changes the numeric proof coding and horizon; its justification
+is the unbounded mathematics of Sections~\ref{sec:sparse}--\ref{sec:growth}.
+The latter are exact finite transformations of the newly defined residuals.
+
+The local compiler represents every required constructor polynomial by
+quadratic multiplication equations. Its common-expression rule is slightly
+stronger than syntactic equality. If two quadratic expressions have
+proportional homogeneous quadratic parts, with integer ratio $c$, then
+\[
+ q_2=cp_2,\qquad w=p_2+p_1
+ \quad\Longrightarrow\quad q_2+q_1=cw+(q_1-cp_1).
+\]
+Here the subscripts 2 and 1 indicate the quadratic and affine parts.
+The right side is affine in the existing wire. It therefore saves a
+wire without division or a new integrality condition. The constructor
+terms and all retained beta, CRT, and Pell rows are separately bound
+by exact source certificates.
+
+The graft's boundary is especially small: only the joint bundle/guard
+square and the square of the eleven-factor axis product are passed
+from the local block to the retained local-row equation. The independent
+audit checks all nine axiom constructor expressions, the two inference
+factors, both boundary values, and the retained-row partition. A stale
+unused definition of $FS$ can be deleted or projected away; it cannot
+be counted as a necessary witness.
+
+The affine horizon eliminates its own $t$ coordinate. The common-Hessian
+projections and subsequent integer coordinate/row changes have exact
+restoration certificates. Coordinate shears and translations preserve
+integer solutions bijectively. An invertible change of residual basis
+preserves their simultaneous zero set and therefore preserves the zero
+set of their sum of squares, although it need not preserve the sum-of-squares
+polynomial itself. All these distinctions are recorded in the artifacts.
+
+The final definition is the complete residual list, not merely the
+existence of an algorithm that could someday print it. The file
+\code{direct208/equations/principal208/equation.json} declares each input and each integer
+coefficient. Its adjacent expansion lists every coefficient of the
+single quartic. Appendix~\ref{app:residuals} prints the residuals.
+
+The simpler 209-variable companion uses the original square-shell
+syntax and changes only the horizon. Its exact parent-to-child
+substitution is $t=2+4z$, deleting the unique horizon row and the
+coordinate $t$. Three threshold choices, 2, 8, and 16, are retained in
+\code{affine209/profiles}; the minimum-2 version has the smallest
+coefficient height among those three. This companion isolates the
+horizon improvement from the new sparse-syntax theorem.
+
+\input{../positive190/section.tex}
+
+\section{Verification, interpretation, and further research}
+\label{sec:verification}
+
+\subsection{What the executable checks establish}
+
+The archive supplies literal polynomial data, pure Python evaluators,
+producers, and independent finite checkers. The direct checks collect
+every quartic coefficient, verify all declared coordinates occur, bind
+the source changes, and replay the exact projection and coordinate
+certificates. The compact checks reconstruct the four fixed integers,
+check the entire arithmetic graph, collect the free center and norm
+defect, and prove the exact degree through a nonzero full leading
+homogeneous polynomial. Both ordinary and optimized Python modes are
+used; substantive acceptance conditions do not vanish with assertions.
+Targeted corruptions exercise the relevant mathematical comparisons.
+
+The main compact center has 84 monomials in its free polynomial ring.
+Its norm defect has 594, and weighted degree 94. The resulting
+degree-190 leading homogeneous form has 198 monomials when expanded
+in the independent highest-degree inputs. These counts are finite
+algebraic facts, not probabilistic tests. Auxiliary Pell residue tests,
+when retained from a parent, are examples and are not zeros of a
+consistency polynomial.
+
+The immediate incoming direct archive is retained byte for byte under
+\code{dependencies/Pell_Growth_210_original.zip}. It supplies the original
+proofs, source equations, and prior certificates. The new component
+directories include the specific inputs they need. Their source ledgers
+pin the snapshot and file hashes, and the release manifest authenticates
+the delivered bytes. Selected proof-assistant sources are evidence for
+the named calibration boundary; they are not represented as a newly
+compiled complete dependency closure.
+
+\subsection{Why these are improvements, and what they do not settle}
+
+The new direct equation reduces the number of unrestricted integer
+unknowns while retaining degree four. The new compact equation lowers
+the exact degree at ten positive unknowns. Its extra operations pay
+for a stronger signed transport bound and an exact center; they are
+included in the count. Both are concrete tradeoffs against inspected
+predecessors. Earlier ProveIt files already contain fewer-variable
+representations in other regimes, so the direct count must not be
+described as a record over all Diophantine encodings.
+
+The finite-marker theorem is useful beyond this particular count. It
+separates finite proof transport from a global bijection of all codes.
+It permits the arithmetic of the constructors to be optimized while
+unused numbers are handled uniformly as temporary atoms in each finite
+proof. This is a rigorously justified design freedom, even when one
+particular sparse code yields only a modest numerical improvement.
+
+\subsection{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Optimize proof syntax under finite-marker equivalence.}
+Can a sparse constructor family create more shared quadratic expressions
+than the four offsets in \eqref{eq:sparse-constructors}? An injective
+partial coding with strict argument descent is enough; surjectivity
+need not be restored. Any new family must still preserve the designated
+truth and false codes, the guarded schemata, and the updated growth bounds.
+\item \textbf{Change the calculus, not just its numeral coding.}
+The largest term is the guarded seed bundle. A shorter calibrated
+schema could reduce its depth and the surrounding arithmetic at once.
+This requires an actual two-way finite-refutation proof; a smaller
+local expression alone is insufficient.
+\item \textbf{Couple the transport weight to a sharper center.}
+For the free chart, can one lower the weighted norm-defect degree below
+94 while keeping both the early signed bound and positive completeness?
+Merely removing the index-three case by assumption would invalidate
+the present proof. Higher quotient corrections should be compared
+with the extra degree they introduce through the carrier.
+\item \textbf{Improve the small-coefficient quartic tradeoff.}
+The affine slice removes a coordinate but increases coefficient height.
+Different primitive affine charts or shared divisibility coordinates
+may retain the reduction with a smaller height. A successful change
+should report the collected polynomial's height, not only circuit literals.
+\item \textbf{Reduce verification dependencies.}
+The new sparse recoding is a short finite-tree argument and is a suitable
+isolated formalization target if proof-assistant work is resumed.
+The weighted transport inequality can also be formalized separately
+from the much larger inherited native calibration.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{repo} Vladimir Reshetnikov, \emph{ProveIt}, snapshot
+\code{d123610bc98fef2006bff1c9466bc3f1221003e7},
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/d123610bc98fef2006bff1c9466bc3f1221003e7}.
+\bibitem{growth210} \emph{Pell growth from divisibility: an explicit quartic
+for Con(ZFC)}, incoming archive \code{ConZFC_Pell_Growth_210_2026-10-25.zip}
+at the snapshot above; the complete archive is retained with this paper.
+Its standalone growth and affine-radix proofs are the immediate arithmetic
+dependencies of the direct construction.
+\bibitem{anchor173} \emph{A reused CRT index: an explicit Diophantine
+consistency equation}, package 173 in
+\code{Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+This supplies the sharp label-product separation and reused-index anchor.
+\bibitem{free172} \emph{Pooled powers, round 21}, package 172, free-chart
+and Lucas-correction proofs, with the complete pinned native coefficient
+tuple. The relevant original text and literal parent are retained under
+\code{positive190/inherited}.
+\bibitem{center178} \emph{Polynomial centers for Diophantine consistency},
+package 178, whole-product center and polynomial quotient identity.
+The relevant original proof and algebra are retained under
+\code{positive190/inherited}.
+\bibitem{signed} \emph{Signed horizons and residue-encoded Pell witnesses},
+incoming archive \code{ConZFC_Signed_Horizons_and_Residue_Carriers_2026-10-25.zip}
+at the snapshot above. Signed affine horizons are credited to this
+predecessor; their composition with the divisibility-growth sign bootstrap
+is proved here.
+\end{thebibliography}
+
+\appendix
+\section{Complete literal residuals of the direct quartic}
+\label{app:residuals}
+
+Every coordinate $x_0,\ldots,x_{\DirectLastVariable}$ is an unrestricted
+integer. The single equation is
+\[
+ \sum_{j=0}^{\DirectLastRow}R_j^2=0.
+\]
+All coefficients below are integers. This list and the machine-readable
+residual file define exactly the same polynomial. Subscripts are coordinate
+indices and fixed exponents are literal exponents.
+\input{residuals.tex}
+
+\section{Complete fixed coefficients for the ten-variable polynomial}
+\label{app:coefficients}
+\input{../positive190/coefficient_recipe.tex}
+
+\section{Reproduction and artifact map}
+
+From the extracted package root, run
+\begin{lstlisting}
+python3 -B verify_all.py
+python3 -O -B verify_all.py
+\end{lstlisting}
+The programs require Python 3.10 or later and its standard library. They
+do not search for roots. An evaluator accepts an explicitly provided
+integer tuple in the order declared by its equation file. Exact evaluation
+may produce large integers; a modular diagnostic is not a proof of an
+integer zero. The paper can be rebuilt with a normal TeX Live installation:
+\begin{lstlisting}
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+\end{lstlisting}
+Mathematical data are deterministic. PDF bytes can vary with TeX version,
+font metadata, or timestamps. The release manifest records the actual
+delivered files and should be regenerated after an intentional edit.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.30\linewidth}p{0.64\linewidth}@{}}
+\toprule
+Path&Contents\\\midrule
+\code{report/}&This paper, its editable LaTeX, printed residuals, and metrics.\\
+\code{direct208/}&New literal quartic, expansion, constructor producer, projection
+and optimization certificates, exact source audit, and evaluator.\\
+\code{positive190/}&Ten-variable graph, whole coefficient payloads and reconstruction,
+complete new proof, selected parent proofs, and independent finite checker.\\
+\code{affine209/}&Three isolated affine-horizon profiles, parent coefficients,
+source commutation certificates, and independent checks.\\
+\code{reviews/}&Separately assigned internal mathematical and algebraic reviews;
+these are AI-assisted reviews, not external human peer review.\\
+\code{dependencies/}&Unchanged incoming Pell Growth 210 archive.\\
+\code{verify_all.py}&Ordered, offline verification of the delivered components.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{document}

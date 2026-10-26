@@ -1,0 +1,158 @@
+\section{A direct equation in 83 unrestricted integers}\label{sec:direct-results}
+
+The modular witness-reuse theorem leads to a concrete second construction.
+Its source is the unmodified direct numerical-calculus polynomial in
+package 166, followed by the two semantic changes just proved and explicit
+integral coordinate elimination. The main endpoint is
+\[
+ D_{83}(x_0,\ldots,x_{82})
+       =\sum_{j=0}^{30}R_j(x_0,\ldots,x_{82})^2.
+ \tag{Direct}
+\]
+Appendix~\ref{app:direct83-definition} prints every free assignment, every
+ordered substitution, and every residual. The electronic appendix also
+supplies the corresponding literal arithmetic circuit and source coefficients.
+All \(83\) inputs range independently over \(\Z\).
+There are no hidden inequalities or extra witnesses.
+
+\begin{theorem}[Direct C222 route]\label{thm:direct}
+For the fixed polynomial (Direct), with the inherited C222/ZF/ZFC
+refutation calibration identified in Section~\ref{sec:boundary},
+\[
+ \ZFC\vdash
+ \left(\neg\exists\boldsymbol x\in\Z^{83}\;D_{83}(\boldsymbol x)=0\right)
+       \longleftrightarrow\Con(\ZFC).
+\]
+The exact total degree is \(624\), and the preferred factored evaluator has
+\(1{,}789\) live binary arithmetic operations. Its integer literal scalars
+have absolute value at most \(64\).
+\end{theorem}
+
+This route does not simulate K215 or specialize Jones's universal
+polynomial. It retains a specific direct proof calculus and its previously
+identified consistency calibration. Compared with the \(2{,}428\)-operation \(92\)-integer, degree-\(692\) equation
+\cite{source175}, the new point improves dimension \(92\to83\), degree
+\(692\to624\), and operation count \(2{,}428\to1{,}789\) together.
+The latter count uses the exact factorizations described below; the
+canonical evaluator retained for the projection audit has \(2{,}939\) operations.
+
+\subsection{A signed frame lowers the source degree}
+
+For the source used in this endpoint, one may replace \(q^2W_0\) by
+\(qW_0\). During completeness, the semantic construction gives
+\(q=(BH)^x\), with \(x\ge2\), and every prime dividing the odd modulus
+\(\mathcal M=Nq^x\) divides \(q\). Thus every such prime has square
+dividing \(W=qW_0\). The proof of Theorem~\ref{thm:reuse} only needs
+that local square divisibility, so the same modular construction works.
+The positivity of the semantic \(q\) gives a positive completeness frame.
+
+Soundness must also cover a negative value of the unclassified input \(q\).
+The affine source row gives \(|q|\ge3\), so \(F=|W|\ge3W_0\).
+The new \(A_*=L_0^2+2r^2\) is positive and at least \(L_0^2\).
+When \(W=-F\), the frame equation becomes
+\[
+ L_0^2-F^3(F-2)r^2=1.
+\]
+This is the Pell equation at parameter \(F-1\), with ordinate \(F|r|\).
+The congruence
+\[
+ \PellY_j(F-1)\equiv(-1)^{j-1}j\pmod F
+\]
+forces its positive classified index to be a multiple of \(F\).
+As \(r\) is odd, it is nonzero, so that index is at least \(F\).
+Consequently
+\[
+ A_*\ge L_0^2\ge(F-1)^{2F}>F^F\qquad(F\ge3).
+\]
+For \(W>0\) the retained positive-frame argument gives the required
+bound. Every old bounded atom has absolute value below \(F\).
+The source's only uses of \(W\) and its private frame wires are the frame
+equations and its definition, checked by an occurrence audit.
+The inherited signed power recognition therefore applies with \(F=|W|\).
+
+The signed-frame row has degree three, rather than four.
+Replaying the inherited integral coordinate changes, with the two private
+center inputs deleted, gives an explicit equation in \(227\) integers,
+the sum of \(175\) residual squares, of exact degree six.
+Its collected polynomial has \(32{,}328\) monomials and height \(221{,}184\).
+The archive also retains the positive-frame degree-eight alternative.
+The \(227\)-variable intermediate is a proof source, not a global quartic
+or low-dimensional record.
+
+\subsection{Acyclic unit elimination}
+
+Let \(S_0,\ldots,S_{174}\) be the literal residuals in that \(227\)-variable
+source. A selected row has the form
+\[
+ S_r=\epsilon x_v+H,\qquad \epsilon\in\{1,-1\},
+ \qquad H\in\Z[x_0,\ldots,\widehat{x_v},\ldots,x_{226}].
+ \tag{Pivot}
+\]
+Set \(x_v=-\epsilon H\) and remove that row.
+The dependence graph of the selected definitions is acyclic, so the
+removed coordinates are restored as integer polynomials in the retained
+ones, in a finite order. No division by a nonunit is performed.
+
+For the principal endpoint the certificate contains \(144\) such
+definitions, leaving \(83\) coordinates and \(31\) residuals.
+If \(\Phi:\Z^{83}\to\Z^{227}\) is the resulting reconstruction, exact
+polynomial substitution gives
+\[
+ S_r(\Phi(\boldsymbol x))=0
+ \quad\text{for every removed row},\qquad
+ D_{227}(\Phi(\boldsymbol x))=D_{83}(\boldsymbol x).
+ \tag{Restore}
+\]
+Projection and reconstruction are inverse on the integer zero sets.
+The signed-frame and witness-reuse changes earlier preserve existence;
+the acyclic elimination itself gives this stronger zero-set bijection.
+The method of unit elimination is inherited from the repository's prior
+projection work. The new semantic source, selected dependency orientation,
+literal certificates, and measured endpoints are supplied here.
+
+\subsection{Exact degree and cost certificates}
+
+The circuit gives an upper bound \(312\) on each retained residual degree.
+A univariate specialization \(x_i=d_i t\), with explicitly supplied
+integer \(d_i\), has a nonzero \(t^{312}\) coefficient in a retained
+residual modulo \(1{,}000{,}003\). This proves that residual has exact
+degree \(312\) over \(\Z\).
+The sum of squares has degree \(624\): highest real homogeneous squares
+cannot cancel. Independent finite-field nonzero partial derivatives
+certify that every one of the \(83\) declared inputs actually occurs.
+
+Exact propagation of coefficient-norm upper bounds through the circuit
+gives the rigorous bound
+\[
+ \max |\text{expanded coefficient of }D_{83}|<2^{1568}.
+\]
+This is a bound, not an exact expanded height. A literal scalar bound
+of \(64\) in the factored evaluator is a different measure. The complete expanded degree-\(624\)
+polynomial was not collected; the circuit is its exact finite definition.
+
+\input{factored_evaluator.tex}
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+Integer variables & Exact degree & Residual squares & Interpretation\\
+\midrule
+79 & 8,388,620 & 27 & Fewest coordinates in this family\\
+81 & 2,048 & 29 & Smaller dimension, higher degree\\
+82 & 764 & 30 & Intermediate point\\
+\textbf{83} & \textbf{624} & \textbf{31} & \textbf{Principal direct endpoint}\\
+87 & 268 & 35 & Lower-degree alternative\\
+89 & 128 & 37 & Lower-degree alternative\\
+91 & 80 & 39 & Lower-degree alternative\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each row is an independently specified ordinary polynomial over unrestricted
+integers, with its own literal circuit and exact degree certificate.
+The \(79\)-variable equation improves on the \(87\)-variable coordinate
+count in the inspected oriented-power family, at a slightly higher
+degree than its \(8{,}388{,}612\) endpoint \cite{source177}.
+The table makes the degree cost explicit. It is not a claim that an
+equation in \(79\) variables is simpler than every equation in fewer
+variables using the large native coefficient tuple.

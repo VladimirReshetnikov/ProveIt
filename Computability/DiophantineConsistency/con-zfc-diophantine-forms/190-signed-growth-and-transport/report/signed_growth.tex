@@ -1,0 +1,292 @@
+\section{A signed horizon and an integral rescaling}
+\label{sec:signed}
+
+\subsection{The exact arithmetic interface}
+
+We retain the 210-variable parent's literal signed Pell, binomial, and
+Chinese remainder construction~\cite{growth210}. Its horizon, originally
+\(t=16+4z^2\), is changed to
+\begin{equation}\label{eq:horizon}
+ t=2+4z,\qquad z\in\Z.
+\end{equation}
+Write \(d=2^{19}\). The three standalone growth equations remain
+\begin{equation}\label{eq:growthrows}
+ Z=tF,\qquad X^2-16Z^2-8ZF=1,\qquad F=dt(2u+1).
+\end{equation}
+At this stage \(t,F,X,Z,u\) are signed. Every displayed equation has degree
+at most two. The Pell equation obtained by substituting the first row is
+\(X^2-((4t+1)^2-1)F^2=1\); this substituted expression is for the proof,
+not an additional higher-degree residual in the quartic.
+
+The parent also retains an even anchor \(C\), a binomial selector \(B\),
+and the identities
+\begin{equation}\label{eq:radix}
+ B\eta=C+F+1,\qquad D=2(C+F+1).
+\end{equation}
+Its ordinary polynomial power certificates have the semantic consequences
+\begin{equation}\label{eq:power-interface}
+ q=D^x,\qquad q^t,\qquad q^{y+1},\qquad
+ (q+1)^{F+t},\qquad (q+1)^C,
+\end{equation}
+as well as the other requested powers in the exact source. A notation
+such as \(q^t\) in this interface means that the retained polynomial
+certificate has a proposed integral output for this base and exponent.
+It is not a variable-exponent expression in the final polynomial.
+For \(\abs q\ge2\), the certificate forces its exponent to be nonnegative
+and its output to be the true power.
+
+The beta endpoints are
+\begin{equation}\label{eq:beta-endpoints}
+ \begin{aligned}
+ y&=F(2v+1),\\
+ x&=F+1+(y+1)r_0,\\
+ x&=1+\bigl(1+(t+1)y\bigr)r_t.
+ \end{aligned}
+\end{equation}
+The letters in this interface are semantic names for fixed source
+coordinates or polynomial abbreviations. The final variable list is
+given independently in the literal equation data.
+
+\subsection{Recover the signs before applying a sharp growth bound}
+
+\begin{lemma}[Preliminary bound]\label{lem:preliminary}
+Every integer solution of \eqref{eq:horizon} and the last row of
+\eqref{eq:growthrows} satisfies
+\[
+ t\ne0,-1,\quad \abs t\ge2,\quad F\ne0,\quad
+ 2^{20}\mid F,\quad \abs F\ge d\abs t>\abs t.
+\]
+\end{lemma}
+\begin{proof}
+The progression in \eqref{eq:horizon} is exactly the integers congruent to
+2 modulo 4. Thus \(\vTwo(t)=1\). The integer \(2u+1\) is nonzero and
+odd, so \(\vTwo(F)=20\), and its absolute value is at least one.
+\end{proof}
+
+The parent's square frame includes the actual growth coordinate \(F\).
+Consequently its parameter \(W\) is at least \(2+F^2>258\), even though
+\(t^2\) is now permitted to be smaller than 256. This supplies the
+original common-frame threshold before signs are recovered. The cap and
+orientation proof uses squares and absolute values: it classifies the
+anchor and all principal Pell pairs at their canonical signed indices
+without assuming \(t>0\) or \(F>0\). The new standalone pair in
+\eqref{eq:growthrows} is independent of this common frame and needs no
+new frame atom. All actual bases, nominal indices, and outputs retained
+from the parent remain in the frame.
+
+\begin{lemma}[Noncircular sign recovery]\label{lem:signs}
+With the retained canonical-index and exact-power interface, every zero
+of the changed source has
+\[
+ t\ge2,\quad x\ge2,\quad y\ge F>0,\quad C>0,
+ \quad D>2C>0,\quad q>0.
+\]
+\end{lemma}
+\begin{proof}
+Both \(C\) and \(F\) are even. Thus \(C+F+1\) is odd and nonzero;
+\eqref{eq:radix} makes \(B,\eta\) odd and nonzero, and
+\(\abs D\ge2\). The request \(q=D^x\) gives \(x\ge0\).
+
+Set \(g=1+(t+1)y\). By Lemma~\ref{lem:preliminary} and
+\eqref{eq:beta-endpoints},
+\[
+ \abs g\ge\abs{t+1}\abs y-1
+       \ge\abs F-1>1,
+\]
+because \(t\ne-1\). If \(x=0\), the last endpoint would give
+\(gr_t=-1\), a contradiction. Therefore \(x\ge1\), and
+\(\abs q\ge2\). The retained request with exponent \(t\), exactly
+\(t\) rather than \(t+1\), now forces \(t\ge0\). The progression
+excludes zero, so \(t\ge2\).
+
+The request with exponent \(y+1\) gives \(y+1\ge0\). A negative \(y\)
+would have \(y\le-\abs F<-1\). Hence \(y\ge\abs F>0\). If \(x=1\),
+the first endpoint says \((y+1)r_0=-F\), impossible since
+\(0<\abs F\le y<y+1\). Thus \(x\ge2\), \(\abs q\ge4\), and
+\(\abs{q+1}\ge3\).
+
+The requested \((q+1)\)-powers now imply \(F+t\ge0\), \(C\ge0\),
+and nonnegativity of every other actual CRT index. A negative \(F\)
+would give \(F+t=t-\abs F<0\), so \(F>0\). The anchor proof already
+excludes \(C=0\), yielding \(C>0\). Formula~\eqref{eq:radix} gives
+\(D>2C>0\) and then \(q=D^x>0\).
+\end{proof}
+
+This order matters. On a negative branch the positive Pell center would
+be \(\abs{4t+1}=4\abs t-1\). One cannot apply a lower bound proved for
+\(4\abs t+1\) there. The elementary inequality
+\(\abs F\ge d\abs t\) supplies all the initial sign information we need.
+
+\subsection{The sharp positive-center estimate works at the smallest horizon}
+
+For \(a\ge2\), write \(X_n(a),Y_n(a)\) for the ordinary Pell sequences
+\[
+ X_n(a)+Y_n(a)\sqrt{a^2-1}
+       =\bigl(a+\sqrt{a^2-1}\bigr)^n.
+\]
+The recurrence, rather than the radical notation, gives their integer
+definition. It implies
+\begin{equation}\label{eq:pellfacts}
+ \begin{gathered}
+ Y_n(a)\equiv n\pmod{a-1},\qquad
+ \vTwo(Y_n(a))=\vTwo(n)\quad(a\text{ odd},\ n>0),\\
+ Y_n(a)\ge(2a-1)^{n-1}\quad(n\ge1).
+ \end{gathered}
+\end{equation}
+The valuation identity follows by repeatedly using
+\(Y_{2m}=2X_mY_m\), since every \(X_m\) is odd and \(Y_m\) is odd
+exactly for odd \(m\). The last inequality follows from
+\(Y_{n+1}=2aY_n-Y_{n-1}\) and monotonicity.
+
+By Lemma~\ref{lem:signs}, \(a=4t+1\ge9\). Classification of integral
+Pell solutions gives \(F=Y_n(a)\) for a positive \(n\). Since
+\(4t\mid F\), the congruence in \eqref{eq:pellfacts} yields \(4t\mid n\).
+The exact valuation of \(F=dt(2u+1)\) yields
+\(\vTwo(n)=19+\vTwo(t)\). Therefore
+\begin{equation}\label{eq:indexbound}
+ n\ge dt.
+\end{equation}
+
+The unchanged square-shell constructors are
+\[
+ \begin{aligned}
+ I(a,b)&=2((a+b)^2+a),& M(a,b)&=I(a,b)+1,\\
+ A(a,b)&=2((a+b)^2+3a+4b+3),&E(a,b)&=A(a,b)+1.
+ \end{aligned}
+\]
+For arguments at most \(m\), each output plus one is at most
+\(8(m+1)^2\). All local parameters, and the constants 0 and 1, are
+strictly below \(t\) when \(t\ge2\). The source's authenticated maximum
+constructor depth is 19. Induction therefore bounds every local label
+strictly below
+\begin{equation}\label{eq:labelbound}
+ L=8^{d-1}t^d,\qquad d=2^{19}.
+\end{equation}
+Combining \eqref{eq:pellfacts}--\eqref{eq:labelbound},
+\begin{equation}\label{eq:sharpbound}
+ F\ge(8t+1)^{n-1}\ge(8t)^{dt-1}\ge L^t.
+\end{equation}
+The last ratio is \(8^{t-1}/t\ge1\), including \(t=2\).
+
+Two older numerical uses of \(t\ge16\) deserve explicit replacement.
+For \(\Lambda_t=\operatorname{lcm}(1,\ldots,t)\),
+\[
+ \Lambda_t\le t!\le t^t,\qquad
+ F\ge L^t\ge t^{2t}\ge\Lambda_t^2.
+\]
+Thus the actual hypothesis of the factorial-free binomial CRT theorem
+still holds. Also
+\(F\ge L^2\ge2^{8d-6}>2^{32}\), so all coarse lower bounds on the
+later radix and beta code remain available. Finally the positive endpoint
+gives \(x\ge2+(t+1)y\). Since \(y\ge F\),
+\[
+ 2+t+y+F<x,
+\]
+already for \(t\ge2\), because \((t-1)y>t\). This validates the
+parent's local bound \(2+t+x+y+F<2x\).
+
+With these replacements, the finite-product separation theorem uses
+precisely \(F\ge L^t\); the binomial decoder uses \(D>2C\), the
+canonical common frame, and the retained remainder bound; and the beta
+and Horn-flow arguments recover a finite \(\Ccal\) refutation. The
+logical calibration then supplies a finite syntactic ZFC refutation.
+
+\subsection{Completeness on a cofinal progression}
+
+Starting from a finite calibrated refutation, choose a sufficiently large
+positive horizon
+\begin{equation}\label{eq:cofinalt}
+ t\equiv2\pmod{2^{23}}.
+\end{equation}
+This is a cofinal subprogression of \eqref{eq:horizon}; it has
+\(\vTwo(t)=1\), and binary digit 20 of \(t\) is zero. All finite proof
+length and parameter bounds can be met.
+
+Put \(n_0=dt\), \(y_0=Y_{n_0}(4t+1)\),
+\(a_0=X_{n_0}(4t+1)\), and \(b_0=y_0/(dt)\).
+The preceding congruence and valuation facts show that \(b_0\) is an
+odd integer. Since \(n_0\) is even, \(a_0\equiv1\pmod4\).
+
+For every integer \(a_0\equiv1\pmod4\), the map
+\(s\mapsto Y_s(a_0)\) permutes the residue classes modulo each power
+of two. Here is the needed induction: for \(h=2^r\), the norm and
+valuation identities give
+\[
+ X_h(a_0)\equiv1\pmod{2^{2r+2}},\qquad
+ Y_h(a_0)\equiv2^r\pmod{2^{r+1}}.
+\]
+The addition formula yields
+\(Y_{s+2^r}(a_0)-Y_s(a_0)\equiv2^r\pmod{2^{r+1}}\).
+Thus the two lifts of every index class produce the two different lifts
+of its image. Starting modulo two proves the assertion, together with
+periodicity and arbitrarily large indices in a prescribed class.
+
+Choose \(\ell>23\) with \(2^\ell>t\). The two odd integers \(t/2\)
+and \(b_0\) are invertible modulo \(2^{\ell-20}\). Choose an arbitrarily
+large positive odd \(s\) satisfying
+\[
+ (t/2)b_0Y_s(a_0)\equiv1\pmod{2^{\ell-20}}.
+\]
+Then set
+\[
+ F=Y_{n_0s}(4t+1)=y_0Y_s(a_0),\quad
+ X=X_{n_0s}(4t+1),\quad Z=tF,\quad
+ u=\frac{F/(dt)-1}{2}.
+\]
+All witnesses are integral, \eqref{eq:growthrows} holds, and
+\(F\equiv2^{20}\pmod{2^\ell}\). The binary supports of \(F\) and \(t\)
+are disjoint. The elementary binary-carry criterion consequently gives
+\(B=\binom{F+t}{t}\) odd.
+
+Keep the beta multiplier independent. Choose \(2v+1\) to be a positive
+odd multiple of every odd prime at most \(t\), and sufficiently large
+that \(y=F(2v+1)\) exceeds all finitely many proof-state values. Every
+prime at most \(t\) divides \(y\). If a prime divided both \(1+iy\)
+and \(1+jy\), \(1\le i<j\le t+1\), it would divide \(j-i\) and be
+coprime to \(y\), a contradiction. Hence the beta moduli are pairwise
+coprime. Full factorial divisibility of \(y\) is unnecessary.
+
+The witness order is now acyclic: choose beta code \(x\), then \(B\) and
+\(N=B^x\), the nonanchor CRT representatives, an admissible even anchor
+\(C\) larger than all other nominal indices, the affine radix \(D\),
+the true power outputs, and finally the common Pell frame and cap.
+The retained CRT theorem applies by \eqref{eq:sharpbound}. This constructs
+a zero from every finite refutation and proves completeness of the changed
+source.
+
+\subsection{From the semantic source to the two literal quartics}
+
+The preceding horizon change is an existence-preserving semantic change.
+It is not asserted to be a bijection with the old square slice.
+After that change, all remaining transformations are explicit bijections
+on integer zero sets.
+
+In the parent ordering, replace row 125 by \(x_0-2-4x_{178}=0\).
+Delete that row, use the new coordinate \(\xi_0=x_{178}\), and substitute
+\(x_0=2+4\xi_0\). Keep the other coordinate order, deleting old coordinate
+178. For the sparse profile additionally substitute \(F=64\xi_2\) and
+divide the last growth-divisibility residual by 64. Lemma~\ref{lem:preliminary}
+guarantees the inverse \(\xi_2=F/64\) is integral at every zero.
+All residuals remain quadratic. The final growth residual is
+\begin{equation}\label{eq:lastgrowth}
+ \xi_2-16384-32768\xi_0-32768\xi_{208}
+                   -65536\xi_0\xi_{208}.
+\end{equation}
+Its square contributes coefficient \(2^{32}\) at
+\(\xi_0^2\xi_{208}^2\). The last coordinate occurs in no other residual,
+so this coefficient cannot cancel. Exact collection verifies that no
+coefficient is larger and that precisely 5,486 monomials remain.
+
+For the lower-height companion use \(F=128\xi_2\), whose inverse is
+likewise integral. A retained residual with coefficient \(16384\) at
+\(\xi_2^2\) is used to remove the corresponding square terms from two
+other rows by integer row additions. With zero-based final row indices, the operations are
+\[
+ R_{98}\leftarrow R_{98}+4R_{135},\qquad
+ R_{124}\leftarrow R_{124}+6R_{135},
+\]
+with \(R_{135}\) retained. The certificate lists every coefficient. Such a triangular residual-basis operation has an integer
+inverse; it changes the sum-of-squares polynomial while preserving its
+zero set. The resulting polynomial has 6,654 monomials and height
+\(2^{30}\). Both statements are established by full coefficient
+collection, not by estimates of input literals.

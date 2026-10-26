@@ -1,0 +1,736 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=0.83in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\definecolor{inkblue}{HTML}{173B57}
+\hypersetup{colorlinks=true,linkcolor=inkblue,urlcolor=inkblue,citecolor=inkblue,
+ pdftitle={Pell Centers and Fused Bounds for Diophantine Consistency},
+ pdfauthor={Research note prepared for Vladimir Reshetnikov, with AI assistance}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textsc{ProveIt / Diophantine consistency}}
+\fancyhead[R]{\small 25 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=4pt,leftmargin=*}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\vp}{\nu_2}
+\newcommand{\pathtext}[1]{\nolinkurl{#1}}
+\allowdisplaybreaks[2]
+
+\begin{document}
+\begin{center}
+{\Large\bfseries\color{inkblue} Pell Centers and Fused Bounds}\\[5pt]
+{\large Explicit Diophantine presentations of $\Con(\ZFC)$}\\[9pt]
+Prepared for Vladimir Reshetnikov and the ProveIt research program\\
+Research and artifact development with AI assistance\\[4pt]
+25 October 2026
+\end{center}
+
+\begin{abstract}
+We give three arithmetic reductions of explicit consistency equations in
+the pinned ProveIt snapshot. A polynomial Pell center replaces a large
+constant in the growth certificate and yields a quartic in 212 unrestricted
+integer variables. Its small-coefficient version has 152 quadratic residual
+squares, 21,556 collected monomials, and coefficient height 6,432; a sparse
+version has 5,290 monomials and height 277,420. A certificate shared between
+the Pell-index cap and the binomial-remainder bound removes three integer
+variables. Combining it with a linear Pell-orientation numerator gives an
+82-variable equation of exact degree 16,964 with 1,723 live binary arithmetic
+operations; companions have 81 variables at degree 2,097,732 and 106 variables
+at degree 32. Separately, an odd-index Pell residue eliminates a native
+transport quotient, giving a 13-positive-variable equation of degree 174
+with a 69-operation evaluator.
+
+Complete new ordinary proofs, literal equations, finite algebraic certificates,
+independent checkers, and reproducible construction programs accompany this
+report. Composed with the explicitly identified inherited logical
+calibrations, the proofs are formalizable in ZFC and establish that the
+respective equations have a zero exactly when ZFC has a finite refutation.
+Global minimality and a fresh end-to-end proof-assistant compilation remain
+open.
+\end{abstract}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Results and their exact scope}
+
+Throughout, $\Con(\ZFC)$ means absence of a finite syntactic refutation in
+the fixed effective ZFC presentation used by ProveIt. Effective translations
+between the standard presentations give the usual consistency statement.
+All polynomial coefficients are integers. A named register in a circuit is
+an abbreviation for a polynomial, never an additional quantified variable.
+
+\begin{theorem}[Consistency equations]
+For each integer-domain polynomial $P$ in Table~\ref{tab:new}, with its
+indicated number $n$ of inputs, the ordinary proofs in this report,
+composed with the inherited calibration identified in
+Section~\ref{sec:calibration}, establish
+\[
+ \ZFC\vdash
+ \bigl(\neg\exists\boldsymbol x\in\Z^n\;P(\boldsymbol x)=0\bigr)
+ \longleftrightarrow\Con(\ZFC).
+\]
+For the positive-domain polynomials, replace $\Z^n$ by
+$\Z_{>0}^{13}$. Their explicit 39-integer lifts have the same
+nonsolvability equivalence over $\Z^{39}$.
+\end{theorem}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}llrrl@{}}
+\toprule
+Polynomial & Domain & Inputs & Exact degree & Further size data\\
+\midrule
+$P_{212}^{\rm small}$ & $\Z$ &212&4&152 squares; height 6,432\\
+$P_{212}^{\rm sparse}$ & $\Z$ &212&4&5,290 monomials; height 277,420\\
+$P_{106}$ & $\Z$ &106&32&47 squares; 1,830 operations\\
+$P_{82}$ & $\Z$ &82&16,964&23 squares; 1,723 operations\\
+$P_{81}$ & $\Z$ &81&2,097,732&22 squares; 1,711 operations\\
+$C_{13}$ & $\Z_{>0}$ &13&174&69 operations\\
+$C_{13}^{\rm oriented}$ & $\Z_{>0}$ &13&170&70 operations\\
+$\widetilde C_{39}$ & $\Z$ &39&348&160 operations\\
+$\widetilde C_{39}^{\rm oriented}$ & $\Z$ &39&340&161 operations\\
+\bottomrule
+\end{tabular}
+\caption{Explicit equations supplied in this submission. Operations count
+live binary $+,-,\times$ gates with integer leaves.}
+\label{tab:new}
+\end{table}
+
+The principal quartic is literally
+\begin{equation}\label{eq:mainquartic}
+ P_{212}^{\rm small}(x_0,\ldots,x_{211})
+ =\sum_{j=0}^{151}R_j(x_0,\ldots,x_{211})^2=0,
+ \qquad (x_0,\ldots,x_{211})\in\Z^{212}.
+\end{equation}
+Every $R_j$ is printed in Appendix~\ref{app:literal}, and the JSON file
+\pathtext{quartic212/reduced/equation.json} gives the same 152 literal
+quadratic polynomials. The full collected quartic is also supplied. Thus
+the definition contains no implicit universal polynomial, unspecified
+search procedure, or variable exponent.
+
+The high-degree direct equations are supplied as acyclic arithmetic graphs,
+with independent input lists and fixed residual outputs. Their specification
+is just as finite and literal, while avoiding expansion of very large
+polynomials. The 13-positive-variable formula is short enough to print in
+full in the main text.
+
+\subsection{What improves, and what remains a tradeoff}
+
+The inspected repository revision is
+\pathtext{b42c796d1f5de9912a576bc2fd77b778ae7402bf}.
+It includes the latest incoming archives, not only the current root display.
+The comparisons below refer to actual domain and arithmetic data.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Matched direct family & Integer inputs & Degree & Operations & Squares\\
+\midrule
+Incoming projected source &109&32&1,895&48\\
+New fused and oriented &106&32&1,830&47\\
+Incoming projected source &85&16,964&1,788&24\\
+New fused and oriented &82&16,964&1,723&23\\
+Incoming projected source &84&2,097,732&1,775&23\\
+New fused and oriented &81&2,097,732&1,711&22\\
+\bottomrule
+\end{tabular}
+\caption{The three-variable reduction preserves the matched exact degree.}
+\end{table}
+
+The incoming growth quartic~\cite{growth} has 210 variables, 150 squares, 5,282 monomials,
+and coefficient height $2^{40}$. Our polynomial-center replacement uses two
+additional variables and two additional squares. After exact integral row
+reduction, it has height 6,432. The sparse companion preserves a much smaller
+support at the larger height 277,420. An existing balanced 214-variable
+quartic has height 91,679, whereas recent 215-variable proposals reach
+height 2,304. Those alternatives remain useful. The new quartic improves
+the low-variable, small-coefficient tradeoff; it does not subsume every
+existing point on the frontier.
+
+The new positive carrier is compared with the exact incoming Carrier65~\cite{carrier}:
+14 positive variables, degree 150, 65 operations. It removes one variable
+at the cost of four operations and degree 174. Its alternative lowers the
+degree to 170 with one further operation. Other repository equations have
+fewer variables, different degrees, or fewer operations. In particular,
+81 is not a global variable-count record, and the 39-integer translation
+of the compact equation is a transparent domain conversion rather than
+a claim of optimality.
+
+The phrase ``simplest equation'' needs a chosen metric. Variables, degree,
+expanded support, coefficient height, circuit size, coefficient-description
+length, and proof length can move in different directions. This report
+records those distinctions instead of assigning an unsupported universal
+ordering. The new ideas are concrete improvements relative to the inspected
+families. A claim of historical priority across all literature would require
+a separate investigation.
+
+\section{The arithmetic and logical dependency boundary}\label{sec:calibration}
+
+The two direct families use the repository's numerical calculus C222.
+Their semantic chain is
+\[
+\begin{gathered}
+\text{integer zero}\quad\Longleftrightarrow\quad
+\text{finite square-shell C222 refutation}\\
+\Longleftrightarrow\quad\text{finite original C222 refutation}
+\quad\Longleftrightarrow\quad\text{finite ZF refutation}\\
+\Longleftrightarrow\quad\text{finite ZFC refutation}.
+\end{gathered}
+\]
+The square-shell recoding is an explicit recursive bijection on numerical
+syntax. It fixes truth 0 and falsity 1 and transports the guarded schema.
+The next two logical endpoints are the identified repository results
+\pathtext{KEndpoint.c222_iff_zf_refutation} and
+\pathtext{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+Their source review and exact provenance are retained in the archive~\cite{calibration}.
+The direct equations do not require a Turing-machine simulation or Jones'
+universal polynomial. The separate compact family retains its native
+coefficient/compiler ancestry, including the inherited machine-to-refutation
+calibration.
+
+On the arithmetic side, the inherited direct source proves finite
+Horn-flow extraction, beta-CRT reconstruction, factorial-free binomial
+selection, and signed Pell index classification. This submission changes
+three specifically identified arithmetic interfaces and proves their new
+soundness and completeness. It does not infer those unbounded facts from
+sample computations.
+
+The proof status has three distinct parts. First, exact finite polynomial
+identities and source bindings are checked by executable verifiers. Second,
+the new unbounded arithmetic lemmas are ordinary mathematical proofs,
+reviewed independently in this work. Third, the C222/ZF/ZFC and native
+calibrations are credited inherited results. The selected Lean source
+evidence is not a full newly compiled transitive import closure, and this
+release makes no new end-to-end Lean or Rocq claim.
+
+All recursions and completeness constructions concern finite internally
+coded syntax, natural numbers, finite rings, and finite lists. Their
+induction, integer arithmetic, finite CRT, and Pell arguments are available
+in ZFC. Consequently the intended biconditional concerns each model's
+internal integers and finite derivations. It does not impose an external
+``standard proof code'' restriction or assume omega-consistency. The
+equivalence proves neither $\Con(\ZFC)$ nor its negation.
+
+\section{A polynomial Pell center with small coefficients}
+
+\subsection{The growth interface}
+
+The square-shell constructors used by the direct source are
+\begin{align*}
+ I(u,v)&=2((u+v)^2+u),& M(u,v)&=I(u,v)+1,\\
+ A(u,v)&=2((u+v)^2+3u+4v+3),& E(u,v)&=A(u,v)+1.
+\end{align*}
+The authenticated local axiom terms have depths
+$4,3,3,3,3,5,4,3,19$. Every local leaf parameter is below the horizon $t$.
+For $0\le u,v\le m$, the largest constructor satisfies
+\[
+ E(m,m)+1=8m^2+14m+8\le8(m+1)^2.
+\]
+Induction on depth therefore bounds every local formula label strictly by
+\begin{equation}\label{eq:labelbound}
+ L=8^{d-1}t^d,\qquad d=2^{19}.
+\end{equation}
+Indeed the recurrence $H_0=t$, $H_{j+1}=8H_j^2$ has solution
+$H_j=8^{2^j-1}t^{2^j}$.
+
+Weighted-label separation needs a sufficiently large scale $F$, eventually
+positive, with $|F|\ge L^t$. The incoming standalone certificate obtains
+this from a Pell center $4t+1$ and the divisibility condition
+$F=2^{19}t(2u+1)$. That large coefficient dominates its collected quartic.
+We move the growth into the Pell center itself.
+
+\subsection{Five new coordinates and a cofinal horizon}
+
+Retain the front coordinates $t,F$ and impose
+\begin{equation}\label{eq:newgrowth}
+\boxed{\begin{aligned}
+ t&=64+4z^2, & S&=t^2, & T&=S^2,\\
+ Z&=TF, & X^2-Z^2-2ZF&=1, & F&=T(2u+1).
+\end{aligned}}
+\end{equation}
+The five growth witnesses are $S,T,Z,X,u$; $z$ is the existing horizon
+witness. Each displayed residual is quadratic. Eliminating the polynomial
+abbreviations in the proof, rather than in the literal quartic, gives
+\[
+ X^2-\bigl((T+1)^2-1\bigr)F^2=1,\qquad T=t^4.
+\]
+Thus the center is $a=t^4+1$.
+
+\begin{lemma}[Elementary Pell facts]\label{lem:pell}
+For $a\ge2$, define $X_n(a),Y_n(a)$ by
+\[
+ X_0=1,\quad Y_0=0,\quad
+ X_{n+1}=aX_n+(a^2-1)Y_n,\quad Y_{n+1}=X_n+aY_n.
+\]
+Every integral solution of $X^2-(a^2-1)Y^2=1$ with $Y\ne0$ satisfies
+$(|X|,|Y|)=(X_n(a),Y_n(a))$ for a unique $n\ge1$. Moreover
+\[
+ Y_n(a)\equiv n\pmod{a-1},\qquad
+ Y_n(a)\ge(2a-1)^{n-1}.
+\]
+If $a$ is odd, $\vp(Y_n(a))=\vp(n)$.
+\end{lemma}
+\begin{proof}
+For positive $X,Y$ with $Y>1$, multiply the Pell unit by
+$a-\sqrt{a^2-1}$. The new ordinate $aY-X$ is positive because $X<aY$,
+and smaller than $Y$ because $X>(a-1)Y$. The new abscissa
+$aX-(a^2-1)Y$ is positive by squaring the two positive sides. Descent
+ends at $(a,1)$, proving classification and uniqueness. The index
+congruence follows by evaluating the integer recurrence at $a=1$.
+The second-order recurrence and monotonicity give
+$Y_{n+1}=2aY_n-Y_{n-1}\ge(2a-1)Y_n$. For odd $a$, every $X_n$ is odd
+and $Y_n$ has the parity of $n$. The duplication identity
+$Y_{2n}=2X_nY_n$ then proves the valuation formula.
+\end{proof}
+
+\begin{theorem}[Growth without a large fixed multiplier]\label{thm:growth}
+Every integer solution of \eqref{eq:newgrowth} has even nonzero $F$ and
+\[
+ |F|>\bigl(8^{2^{19}-1}t^{2^{19}}\bigr)^t=L^t.
+\]
+In particular $|F|>t$.
+\end{theorem}
+\begin{proof}
+We have $t\ge64$, $4\mid t$, and $T=t^4>0$.
+The odd factor in $F=T(2u+1)$ excludes $F=0$ and makes $F$ even.
+Apply Lemma~\ref{lem:pell} at $a=T+1$: $|F|=Y_n(a)$ for $n\ge1$.
+Since $T\mid F$ and $Y_n(a)\equiv n\pmod T$, the positive index
+satisfies $T\mid n$, hence $n\ge T=t^4$. Therefore
+\[
+ |F|\ge(2t^4+1)^{t^4-1}>(2t^4)^{t^4-1}.
+\]
+Put $d=2^{19}$. Since $t^3\ge64^3=d/2$,
+$t^4-1>t(d/2-1)$. Also
+\[
+ (2t^4)^{d/2-1}=2^{d/2-1}t^{2d-4}
+   >2^{3d-3}t^d=L.
+\]
+For the last inequality it suffices that
+$t^{d-4}>2^{(5/2)d-2}$; already $t\ge16$ gives the stronger lower
+bound $t^{d-4}\ge2^{4d-16}$. Raising to $t$ proves the claim.
+The argument makes no assumption about the sign of $F$.
+\end{proof}
+
+\subsection{Completeness: the residue condition must survive}
+
+A large Pell solution alone would be insufficient. The subsequent selector
+needs $B=\binom{F+t}{t}$ odd, so the completeness construction must select
+a large ordinate with a compatible binary residue.
+
+\begin{lemma}[Pell permutation modulo powers of two]\label{lem:permutation}
+If $a\equiv1\pmod4$, then $s\mapsto Y_s(a)$ induces a permutation
+modulo $2^r$ for every $r\ge1$. Every residue class is attained at
+arbitrarily large nonnegative indices; odd residues have odd indices.
+\end{lemma}
+\begin{proof}
+Modulo two, $Y_s\equiv s$. All $X_s$ are $1\pmod4$.
+For $h=2^r$, the valuation formula gives $\vp(Y_h)=r$.
+The Pell norm and $8\mid a^2-1$ imply
+$X_h\equiv1\pmod{2^{2r+2}}$, because $X_h+1$ has valuation one.
+The addition formula then gives
+\[
+ Y_{s+2^r}-Y_s=(X_{2^r}-1)Y_s+X_sY_{2^r}
+       \equiv2^r\pmod{2^{r+1}}.
+\]
+The two lifts of each index class give the two distinct residue lifts.
+Induction proves bijectivity. The same identity gives periodicity at each
+modulus, and adding periods gives arbitrarily large indices.
+\end{proof}
+
+Choose $z$ divisible by $2^{12}$, sufficiently large to accommodate a
+given finite refutation and its padded arithmetic trace. Such horizons
+are cofinal, and
+\[
+ t\equiv64\pmod{2^{26}},\qquad \vp(t)=6,
+ \qquad \vp(T)=24.
+\]
+In particular the bit of $t$ at position 24 is zero. Set
+\[
+ a=T+1,\quad n_0=T,\quad y_0=Y_T(a),\quad a_0=X_T(a),
+ \quad b_0=y_0/T.
+\]
+The index congruence makes $b_0$ integral, and the valuation formula makes
+it odd. Since $T$ is even, the duplication formula gives $a_0\equiv1\pmod4$.
+Choose $\ell>26$ with $t<2^\ell$. Both $T/2^{24}$ and $b_0$ are
+invertible modulo $2^{\ell-24}$. Lemma~\ref{lem:permutation} supplies an
+arbitrarily large positive odd $s$ satisfying
+\[
+ (T/2^{24})b_0Y_s(a_0)\equiv1\pmod{2^{\ell-24}}.
+\]
+Define
+\[
+ F=Y_{Ts}(a)=y_0Y_s(a_0),\quad X=X_{Ts}(a),\quad Z=TF,
+ \quad u=(F/T-1)/2.
+\]
+Then $u\in\Z$, every growth row holds, and
+\begin{equation}\label{eq:targetresidue}
+ F\equiv2^{24}\pmod{2^\ell}.
+\end{equation}
+The binary supports of $F$ and $t$ are disjoint: below $\ell$, the only
+nonzero bit of $F$ is 24, and $t$ has no bits at or above $\ell$.
+Consequently addition has no carries. The identity
+\[
+ \vp\binom{F+t}{t}=s_2(F)+s_2(t)-s_2(F+t)
+\]
+shows that $B$ is odd.
+
+The remaining canonical construction now applies. Choose an arbitrarily
+large odd multiplier containing every odd prime at most $t$ and set
+$y=F(2v+1)$. Then every prime at most $t$ divides $y$, so the beta moduli
+$1+iy$ for $1\le i\le t+1$ are pairwise coprime. This requires prime
+support, not the stronger assertion $t!\mid y$. Finite CRT supplies the
+beta code $x$. With $N=B^x$ odd, choose the independent selector
+representatives first, and choose the even anchor $C$ last, larger than
+every other actual exponent. Its retained congruence gives
+$B\mid C+F+1$. Set the actual radix $D=2(C+F+1)$ and $q=D^x$;
+then $N\mid q$ and $D>2C$. The inherited digit estimates and main Pell
+frame complete the remaining witnesses.
+
+\subsection{The horizon change and the signed bootstrap}
+
+Changing $t=16+4z^2$ to $t=64+4z^2$ changes the allowed horizons. It is
+a semantic cofinal replacement, not a coordinatewise map between every
+old and new zero. The emitted source audit verifies that the horizon
+helper occurs only in its defining row. The retained arithmetic uses
+$t\ge16$, $4\mid t$, and the ability to choose a sufficiently large
+horizon. All are preserved, and the residue construction above establishes
+the needed new cofinal completeness.
+
+Soundness retains the incoming delayed sign proof. The new growth block
+first supplies only $|F|>t$ and even nonzero $F$. The even anchor and
+even $F$ make $D=2(C+F+1)$ nonzero. The signed exact-power request
+$q=D^x$, followed by the beta endpoints, forces $x\ge1$.
+The request at exponent $y+1$ then forces $y>0$; the endpoints further
+give $x\ge2+(t+1)y$. Now all bases $q+1$ have magnitude at least three.
+Their retained requested exponent $F+t$ must be nonnegative, and
+$|F|>t$ excludes $F<0$. Thus $F>0$, and the full separation bound is
+available. The anchor becomes positive as well. The old radix and binomial
+decoding therefore proceed in the original noncircular order.
+
+\subsection{Literal graft and reversible row reduction}
+
+The new raw equation is obtained from the pinned principal210 polynomial
+by changing exactly four old rows and appending two rows. The source
+coordinates are
+\[
+ t=x_0,\quad F=x_2,\quad z=x_{178},\quad X=x_{207},
+ \quad Z=x_{208},\quad u=x_{209},\quad S=x_{210},\quad T=x_{211}.
+\]
+The six affected rows are
+\begin{align*}
+ r_{125}&=x_0-64-4x_{178}^2,\\
+ r_{147}&=x_{208}-x_2x_{211},\\
+ r_{148}&=x_{207}^2-x_{208}^2-2x_2x_{208}-1,\\
+ r_{149}&=x_2-x_{211}-2x_{209}x_{211},\\
+ r_{150}&=x_{210}-x_0^2,\\
+ r_{151}&=x_{211}-x_{210}^2.
+\end{align*}
+The other 146 rows are retained literally. This gives
+$P_{212}^{\rm sparse}=\sum r_j^2$.
+
+The small-coefficient version is obtained by 465 elementary integral row
+operations $r_i\leftarrow r_i+kr_j$, $i\ne j$. Reverse the order and
+negate $k$ to invert them. Therefore the transformed rows vanish
+simultaneously exactly when the original rows do. Their sums of squares
+have exactly the same integer zero set. No variable is added or removed
+in this step, and no sign or divisibility condition is introduced.
+
+The independent checker collects the complete quartics and obtains
+\[
+\begin{array}{c|rrr}
+&\text{monomials}&\text{height}&\text{largest residual coefficient}\\\hline
+P_{212}^{\rm sparse}&5,290&277,420&226\\
+P_{212}^{\rm small}&21,556&6,432&60.
+\end{array}
+\]
+For example the collected coefficient of $x_8x_{10}x_{23}x_{31}$ in
+$P_{212}^{\rm small}$ is 6,432. It both witnesses the height and proves
+that the degree is exactly four. The denser support is an explicit cost
+of the smaller coefficients.
+
+\input{../projected/proofs/report_section.tex}
+
+\subsection{Full bounded-error argument for the linear orientation}
+
+Here is the unbounded estimate underlying the orientation substitution.
+It applies at the raw-classification stage, before requested indices have
+been authenticated. Put $D=A-1$, assume $|A|>W^W$, $W\ge258$, and write
+$b=\lfloor\sqrt{W-1}\rfloor$. The retained anchor and comparison rows
+classify at most 15 principal pairs as
+\[
+ (X_i,Y_i)=\epsilon_i(X_{\nu_i}(A),Y_{\nu_i}(A)),
+ \quad\epsilon_i\in\{1,-1\},\quad |\nu_i|,|k_i|\le b.
+\]
+Signed-index Pell polynomials satisfy $X_n(A)\equiv1$ and
+$Y_n(A)\equiv n\pmod D$. Therefore
+\[
+ \Omega_1\equiv o:=\sum_i
+       \bigl(1-\epsilon_i+(\epsilon_i\nu_i-k_i)^2\bigr)\pmod D.
+\]
+Every summand of $o$ is nonnegative, and it vanishes exactly at
+$\epsilon_i=1$, $\nu_i=k_i$. Moreover $0\le o\le90b^2$.
+In the standalone orientation certificate this bound already proves that
+$D\mid\Omega_1$ is equivalent to the desired canonical orientation.
+Notice that $\Omega_1$ itself need not be nonnegative; its bounded residue
+$o$ has the required sign.
+
+For joint power authentication, let $n_j$ be the at most five bases,
+and let $(m_i,k_i)$ be their at most seventeen requests. Every base,
+requested output, and index has absolute value at most $b$. Define
+\begin{align*}
+ T_j&=2An_j-n_j^2-1,\\
+ E_j&=\sum_{i\in j}\bigl((m_i-X_i+AY_i)^2-Y_i^2
+                    -2n_jY_i(m_i-X_i)\bigr).
+\end{align*}
+The literal joint residual is
+\begin{equation}\label{eq:jointlinear}
+ \Omega_1\prod_jT_j
+ +D\sum_j n_jE_j\prod_{\ell\ne j}T_\ell
+ -zD\prod_jT_j=0.
+\end{equation}
+All denominators in its mathematical interpretation are nonzero. A zero
+base gives $T_j=-1$; otherwise $|T_j|>W^W$ and $n_j/T_j$ has the sign
+of $A$. Also $D$ has the sign of $A$ and $|D|\ge W^W$.
+
+For clarity, the relevant power congruence follows from the identity
+\[
+ (m-X+AY)^2-Y^2-2nY(m-X)
+   =(m-X+(A-n)Y)^2+(2An-n^2-1)Y^2.
+\]
+Modulo $T=2An-n^2-1$, the expression $X_{\nu}(A)+(n-A)Y_{\nu}(A)$
+is $n^{\nu}$; this follows from its recurrence, starting at $1,n$.
+For negative indices this is a modular inverse, permitted because
+$\gcd(n,T)=1$. Equivalently one may clear all powers before stating the
+congruence.
+
+Use the latter form by taking the mathematical clearing integer
+\[
+ B_* =\prod_{j:n_j\ne0}n_j^b,\qquad
+ \delta_i=B_*m_i-\epsilon_i(B_*/n_j^b)n_j^{b+\nu_i}.
+\]
+These are integers since $b+\nu_i\ge0$. The congruences and
+\eqref{eq:jointlinear} imply that
+\[
+ \frac{B_*^2o}{D}
+   +\sum_{j:n_j\ne0}\sum_{i\in j}\frac{n_j\delta_i^2}{T_j}
+\]
+is an integer. Every nonzero summand has the same sign, that of $A$.
+Since $|B_*|\le b^{5b}$ and $|\delta_i|\le2b^{6b}$, its total absolute
+numerator estimate is
+\[
+ B_*^2o+\sum_i|n_j|\delta_i^2
+ \le90b^{10b+2}+68b^{12b+1}
+ \le158b^{12b+2}<W^{6b+2}\le W^W.
+\]
+Here $b\ge16$, so $158<b^2$, and $6b+2\le W$. Dividing by the lower
+denominator bound shows that the displayed integer has absolute value
+strictly below one. It must be zero. Its same-sign terms vanish
+separately, giving $o=0$ and every $\delta_i=0$. Thus the indices and
+signs are canonical and every nonzero-base request is the exact signed
+power. In particular a base of absolute value at least two cannot have
+a negative requested exponent with an integral output.
+
+The source's zero-base bootstrap is retained until the front equations
+exclude those temporary cases. Conversely, canonical pairs make
+$D\mid\Omega_1$, and exact powers make $T_j\mid E_j$ for nonzero bases;
+zero-base denominators are units. Their quotient sum supplies the new $z$.
+This proves completeness without a pairwise-coprimality assumption on the
+different $T_j$. The entire argument uses bounded classified indices
+before canonicality, so it does not assume its own conclusion.
+
+\input{../compact13/report_section.tex}
+
+\section{Reproduction, evidence, and integration}
+
+\subsection{Files that define the equations}
+
+The archive is organized around three independently usable components:
+\begin{itemize}
+\item \pathtext{quartic212/} contains both literal 212-variable systems,
+their collected quartics, the frozen principal210 input, the source-change
+certificate, the reversible row ledger, builders, evaluator, and an
+independent checker.
+\item \pathtext{projected/} contains the 106-, 82-, and 81-variable direct
+graphs, their exact input and reconstruction maps, frozen parent graphs,
+the immediate parent archive, and separate construction and verification
+programs.
+\item \pathtext{compact13/} contains the two 13-positive-variable graphs,
+their 39-integer lifts, the fixed coefficient tuple and its reconstruction,
+the exact incoming Carrier65, and ordinary proofs and checkers.
+\end{itemize}
+The top-level \pathtext{verify.py} runs the supplied finite checks. It does
+not search for roots. The checksum manifest authenticates the delivered
+bytes. The report source and all included equation definitions are editable.
+
+\subsection{What was actually checked}
+
+For the quartic, a checker independent of the producer verifies the pinned
+source hash, all 146 unchanged residuals, the six displayed affected rows,
+all 212 live coordinates, and the horizon helper's sole occurrence. It
+replays all 465 row operations forward and backward and independently
+collects both polynomials. Its seven targeted corruption checks reject
+changed growth coefficients and a changed row operation. Pell recurrence
+fixtures are auxiliary tests only.
+
+For the projected equations, source predicate identities identify the two
+old guards, structural substitutions identify every retained residual,
+and acyclic unit-pivot certificates reconstruct the eliminated coordinates.
+The linear-orientation replacement is checked as an exact residual change,
+with a separate ordinary proof of existential equivalence. Nonzero
+homogeneous terms certify the exact degrees; derivative certificates
+establish dependence on each listed input. Rebuilding the component
+reproduces its new JSON artifacts byte for byte.
+
+For the compact equations, an independent checker verifies the formal
+cuts in the evaluator, the full 96-term leading homogeneous forms, the
+actual fixed coefficient bytes, and source bindings. The report gives
+explicit nonzero leading coefficients after specialization. The
+39-integer lifts are checked substitutions of the positive parametrization.
+All substantive verifiers retain their checks under Python's \pathtext{-O}
+mode; none relies on disabled assertions for correctness.
+
+No finite check asserts that one of these consistency equations has a
+root. An evaluation of a test tuple, or a modular recurrence fixture, is
+an arithmetic test and does not constitute a ZFC refutation. The
+unbounded theorems remain the mathematical arguments given here and in
+the named inherited sources.
+
+\subsection{Suggested repository placement}
+
+This package can be incorporated under the repository's
+\pathtext{Computability/DiophantineConsistency/} subtree, in its
+\pathtext{con-zfc-diophantine-forms/} collection.
+The directory name should be assigned by the repository's intake process,
+since numbering may have advanced after the pinned snapshot. The supplied
+\pathtext{INTEGRATION.md} records the recommended claims and their
+qualification. The work creates a reviewable submission and does not
+modify the remote repository.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Combine the new growth center with the projected family.}
+The quartic construction and the 82-variable construction currently descend
+from different exact immediate sources. A fully authenticated composition
+could replace the projected family's large growth literals, then rerun its
+unit-pivot search. The required work is a source-port and frame audit,
+followed by degree certificates. Counts cannot be obtained safely by merely
+subtracting the separate savings.
+
+\item \textbf{Reduce the coefficient cost of the quartic without excessive
+support growth.} The 465-step row reduction has a clear certificate but
+optimizes a quadratic coefficient-vector norm rather than final support
+or expanded coefficient height. Search over small integral row operations,
+with a lexicographic or Pareto objective, may improve the 212-variable
+tradeoff. A further reduction must publish its reversible ledger and
+recollected polynomial.
+
+\item \textbf{Generalize the shared-bound certificate.}
+The expression $UV-UE-VR-1$ combines two relative deficits because the
+canonical completeness construction has substantial spare margin.
+For several positive scales $U_i$ and nonnegative deficits $E_i$, clearing
+denominators in $1-\sum_i E_i/U_i$ suggests further pooling. The main
+challenge is to exclude all zero-scale cases and recover each original
+inequality before any dependent decoding. The resulting degree and gate
+cost may outweigh the saved guard variables.
+
+\item \textbf{Lower degree after the quotient deletion.}
+The 13-positive-variable carrier removes one quotient using a second Pell
+ordinate, but its positive shift raises the degree. The $bV$ companion
+already reduces degree by four. A different positive multiplier bounded
+below by $|V|$, with a lower total degree and no new quantified coordinate,
+could improve this point. Soundness must handle the sign of $b$ and the
+case $b=0$ before using the native decoder.
+
+\item \textbf{Formalize the new arithmetic lemmas and seal the full bridge.}
+The general fused-bound lemma, the odd-Pell congruence modulo $4S^2$, and
+the polynomial-center growth lemma are compact formalization targets.
+Afterward, bind the emitted coefficient files to a closed theorem about
+the fixed object-language ZFC proof predicate. The existing ordinary
+calibration and finite checker receipts are useful inputs to that work;
+they do not themselves constitute the completed new formal endpoint.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+V. Reshetnikov and contributors, \emph{ProveIt}, pinned revision
+\pathtext{b42c796d1f5de9912a576bc2fd77b778ae7402bf}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/b42c796d1f5de9912a576bc2fd77b778ae7402bf/Computability/DiophantineConsistency}{Repository arithmetic directory}.
+
+\bibitem{growth}
+\emph{Pell growth from divisibility: an explicit quartic for Con(ZFC)},
+incoming \pathtext{ConZFC_Pell_Growth_210_2026-10-25.zip}, same snapshot.
+The exact principal210 JSON has SHA-256
+\pathtext{20a2108353a3756ed7d1ddfdc71695131dcf0b6d94039988d9565ac48e6e1f0a}.
+Selected ordinary proofs and attribution are reproduced in
+\pathtext{quartic212/upstream/}.
+
+\bibitem{direct}
+\emph{Direct integer elimination}, incoming
+\pathtext{ConZFC_Direct_Integer_Elimination_2026-10-25.zip}, same snapshot.
+The exact immediate archive is retained in
+\pathtext{projected/sources/parent_archive.zip}.
+
+\bibitem{carrier}
+\emph{A first Pell carrier: 65 operations}, incoming
+\pathtext{ConZFC_Pell_Carrier65_2026-10-25.zip}, same snapshot.
+Its exact admissible942 coefficient tuple and carrier65 input are retained
+with the compact component.
+
+\bibitem{pool}
+ProveIt packages 135 (cofinal anchors), 151 (factorial-free binomial CRT),
+157 (linear CRT), 173 (CRT index anchor), and 176 (oriented pooling).
+These supply the inherited arithmetic interfaces cited in the respective
+component proof maps. Exact source hashes and retained paths appear in
+the provenance files.
+
+\bibitem{calibration}
+ProveIt, \pathtext{KEndpoint.lean} and
+\pathtext{ConstructibleChoice.lean}, identified calibration endpoints.
+See the retained ordinary dependency audit for their pinned URLs, proof
+terms, immediate dependencies, and source-review limitations.
+
+\bibitem{legendre}
+P. Pollack and P. Schorn, \emph{Dirichlet's proof of the three-square
+theorem: an algorithmic perspective}, Mathematics of Computation 88
+(2019), no.\ 316, 1007--1019,
+\href{https://doi.org/10.1090/mcom/3349}{doi:10.1090/mcom/3349}.
+The only representation fact used here is
+the standard consequence $n=a^2+b^2+c(c+1)$ for $n\ge0$; its reduction to
+three squares is given in the text.
+\end{thebibliography}
+
+\clearpage\appendix
+\section{The complete small-coefficient quartic}\label{app:literal}
+
+All 212 coordinates $x_0,\ldots,x_{211}$ range independently over $\Z$.
+The equation is $\sum_{j=0}^{151}R_j^2=0$. The following literal rows are
+generated from \pathtext{quartic212/reduced/equation.json}; a separate
+parser verifies every printed coefficient and variable index against that
+file. Their semantic names before row reduction are in the variable table
+supplied with the equation. Row reduction changes the residual basis but
+does not change the coordinate domain.
+
+\input{quartic212_residuals.tex}
+
+\end{document}

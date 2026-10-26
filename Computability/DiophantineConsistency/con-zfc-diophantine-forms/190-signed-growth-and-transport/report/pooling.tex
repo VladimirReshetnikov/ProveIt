@@ -1,0 +1,168 @@
+\section{Four oriented power blocks and three integer profiles}
+\label{sec:pooling}
+
+The signed growth interface of Section~\ref{sec:signed} composes with the
+oriented-pooling theorem of~\cite{signedhorizons}. The standalone growth
+certificate leaves fifteen ordinary power requests at four bases:
+\(B,D,q,q+1\), with respective multiplicities \(1,1,3,10\).
+Pooling their private certificates and performing checked unit-pivot
+substitutions gives the following complete polynomial circuits over
+unrestricted integers.
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+Variables & Exact degree & Residual squares & Binary operations & Height bound\\
+\midrule
+130 & 12 & 70 & 2475 & \(<2^{54}\)\\
+116 & 16 & 56 & 2433 & \(<2^{84}\)\\
+107 & 32 & 47 & 2419 & \(<2^{107}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+Binary operations count additions, subtractions, and multiplications in the
+specified circuit. The last column bounds the absolute coefficients after
+full expansion; these are rigorous upper bounds, not measured exact heights.
+The largest literal integer constant is \(2^{20}\). The first two profiles
+use the staged partition described below, with different elimination lists;
+the third uses one four-base pool. Each saves one variable at its matched
+degree relative to the inspected \(131,117,108\)-variable predecessors.
+The degree-16 and degree-32 predecessors use smaller literal constants,
+so the new forms do not improve every size measure.
+
+\subsection{The exact identity and the strict rational-error argument}
+
+Use \(A\) for the common Pell center, distinct from the standalone growth
+center \(4t+1\). The retained frame and anchor supply
+\[
+ W\ge258,\qquad \abs A>W^W,\qquad
+ n^2,m_i^2,k_i^2<W,
+\]
+and the canonical signed Pell pair \((X_i,Y_i)\) at each requested index
+\(k_i\). Here \(n\) is the actual base and \(m_i\) its proposed power
+output. Set \(U_i=X_i-AY_i\), using the retained multiplication wire,
+and, within a block of common base \(n\), define
+\begin{align}
+ T_n&=2An-n^2-1,&
+ H_n&=\sum_iY_i(m_i-X_i),\label{eq:pool-T-H}\\
+ E_n&=\sum_i\bigl((m_i-U_i)^2-Y_i^2\bigr)-2nH_n,&
+ \delta_i&=m_i-U_i-nY_i.\label{eq:pool-E}
+\end{align}
+Expansion gives the exact polynomial identity
+\begin{equation}\label{eq:pool-identity}
+ E_n-T_n\sum_iY_i^2=\sum_i\delta_i^2.
+\end{equation}
+For any selected blocks \(J\), the weighted pool is the single residual
+\begin{equation}\label{eq:weighted-pool}
+ R_J=\sum_{j\in J}n_jE_{n_j}
+              \prod_{\ell\in J\setminus\{j\}}T_{n_\ell}
+       -z_J\prod_{j\in J}T_{n_j}.
+\end{equation}
+All products are finite. This residual and its circuit contain no divisions
+or variable exponentiation.
+
+Here is a proof of its unbounded arithmetic meaning. Put
+\(b=\lfloor\sqrt{W-1}\rfloor\ge16\). If \(n\ne0\), then
+\[
+ \abs{T_n}\ge2\abs A-W>W^W,\qquad
+ \operatorname{sign}(n/T_n)=\operatorname{sign}(A).
+\]
+For \(n=0\), \(T_n=-1\), and the block's weighted contribution is
+zero. Dividing \(R_J=0\) by its nonzero denominator product and using
+\eqref{eq:pool-identity} makes
+\(Q=\sum_{j,i}n_j\delta_i^2/T_{n_j}\) an integer.
+Let \(J_*\) contain the nonzero bases and put
+\[
+ G=\prod_{j\in J_*}n_j^b,\qquad
+ e_i=Gm_i-(G/n_j^b)n_j^{b+k_i}\quad(j\in J_*).
+\]
+These are integers; \(G=1\) for an empty product. Since
+\(T_n\equiv-1\pmod n\), the canonical Pell congruence also permits
+negative indices, interpreted by modular inverses, and yields
+\(G\delta_i\equiv e_i\pmod{T_{n_j}}\). Therefore
+\[
+ Q'=\sum_{j\in J_*}\sum_i n_je_i^2/T_{n_j}
+\]
+differs from \(G^2Q\) by an integer. No coprimality between different
+\(T_n\)'s is used. There are at most four blocks and fifteen requests,
+so \(\abs{e_i}\le2b^{5b}\) and
+\[
+ \sum_{j,i}\abs{n_j}e_i^2
+ \le60b^{10b+1}<W^{5b+2}\le W^W.
+\]
+The last step uses \(5b+2\le b^2+1\le W\). Thus \(\abs{Q'}<1\).
+Its integrality forces \(Q'=0\), and the common sign of every
+\(n_j/T_{n_j}\) forces every \(e_i=0\). Hence every nonzero-base
+request is exact in \(\mathbb Q\): \(m_i=n_j^{k_i}\). If
+\(\abs{n_j}\ge2\), integrality further forces \(k_i\ge0\).
+At the unit bases \(\pm1\), negative indices remain allowed.
+
+Conversely, exact nonzero-base powers give \(T_n\mid\delta_i\),
+then \(T_n\mid E_n\), by \eqref{eq:pool-identity}. The integer
+\(z_J=\sum_{j\in J_*}n_jE_{n_j}/T_{n_j}\) completes the pool.
+Zero-base blocks remain deliberately unconstrained until the bootstrap
+excludes them.
+
+\subsection{The two partitions and the order of sign recovery}
+
+The 107-variable profile uses \eqref{eq:weighted-pool} for all four
+bases. The staged profiles instead use it for \(B,D\), followed by
+the unweighted residual
+\begin{equation}\label{eq:unweighted-pool}
+ E_qT_{q+1}+E_{q+1}T_q-z_*T_qT_{q+1}.
+\end{equation}
+The unweighted argument is the same integer-error proof with weights one,
+provided the two denominators have the same sign. Its numerator bound is
+no larger than the bound above.
+
+This condition is recovered in the required order. The literal horizon
+and growth-divisibility row make \(F\) even and nonzero; \(C\) is even.
+Thus \(B\eta=C+F+1\) makes \(B\ne0\), while
+\(D=2(C+F+1)\equiv2\pmod4\) gives \(\abs D\ge2\).
+The weighted block therefore recovers \(q=D^x\) and \(x\ge0\).
+Consequently \(q\notin\{0,-1\}\): for \(x=0\) it is one, and
+otherwise its absolute value is at least two. Hence \(q,q+1\) are
+nonzero and have the same sign, as do \(T_q,T_{q+1}\).
+Equation~\eqref{eq:unweighted-pool} is now legitimate; in the all-base
+profile the two previously conditional blocks are now active. Every
+retained power is exact. The endpoint argument in
+Section~\ref{sec:signed} then gives \(x\ge1\), uses the literal request
+\(q^t\) to force \(t\ge2\), and recovers all remaining signs.
+No power at a zero base, nor a nonnegative-index conclusion at a unit
+base, is used along this route.
+
+\subsection{Integral restoration and what the finite checks establish}
+
+Pooling removes eight private coordinates and eight rows from the pinned
+216-variable source, then adds two pool quotients for the staged form or
+one for the all-base form. The deleted singleton certificates restore
+their modulus as \(T_n\) and their old quotient as
+\(-\delta_i/T_n\). A deleted common-base pair restores as
+\[
+ L_n=E_n/T_n,\qquad K_n=2H_n+(2A-n)L_n.
+\]
+The exact-power congruence proves that these quotients are integral on
+zeros. These restoration maps are not asserted to be polynomials on all
+integer tuples. Conversely, every original certificate supplies the new
+integer pool quotients, so the old and pooled systems have the same
+projection onto retained coordinates.
+
+The final profiles apply respectively 80, 94, and 102 acyclic unit pivots.
+Each pivot has the form \(\varepsilon v+f=0\),
+\(\varepsilon\in\{1,-1\}\), and is restored by the integer polynomial
+\(v=-\varepsilon f\) in the certified reverse order. This step gives
+actual polynomial zero-set bijections. The output circuit is the sum of
+the squares of all remaining residuals.
+
+The independent checker binds the actual 34 frame atoms, 13 principal
+Pell pairs, 15 requests, historical affine offsets, private-coordinate
+deletions, and every local polynomial identity and pivot. The complete
+request table and restoration data are in \artifact{pooling/PROOF.md}
+and \artifact{pooling/certificates/}. Nonzero homogeneous specializations
+prove the exact degrees; coefficient-norm propagation proves the stated
+height bounds. Both ordinary and optimized-Python verification pass,
+including fifteen deliberately corrupted profiles that are rejected.
+These finite checks authenticate the literal equations. The unbounded
+pooling proof, the signed-horizon soundness and cofinal completeness,
+and the named inherited logical calibration supply the equivalence with
+\(\Con(\ZFC)\); no new end-to-end proof-assistant build is claimed.
