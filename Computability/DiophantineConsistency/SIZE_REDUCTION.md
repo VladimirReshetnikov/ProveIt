@@ -73,8 +73,13 @@ the full58125-byte2471 tuple. Root-reviewed normal/optimized audits check
 every row, all96/72 leading terms and all four whole ports. The corrected
 odd-Pell recurrence initialization and its review history are preserved.
 These save one positive unknown at the cost of four or five operations;
-no new printed page is claimed. A separately reviewed normalization gives
-a prospective71/128 schedule, still awaiting its complete graph audit.
+no new printed page is claimed. The separately accepted
+[normalized graph](research/thirteen-variable-normalized-independent/README.md)
+now materializes 71 operations at exact degree 128, with full proof,
+independent graph/code reviews and matching normal/optimized receipts.
+Its exact identity p70=Delta*p71 preserves every positive zero because
+Delta is positive throughout the domain. All 72 leading terms and every
+fixed-port byte are checked; it retains the frozen 2471 binding.
 
 The [scaled auxiliary replacement](research/scaled-auxiliary118/README.md)
 now has two independent ordinary reviews, a complete sorted2501-bound
