@@ -155,6 +155,14 @@ graph and cannot serve as the new 13-variable binding.
 The entries below record the state at each checkpoint. Later entries and
 the current-gap section above supersede earlier lists of open work.
 
+After merging upstream8e13da9d92, the latest
+[native/client refresh](reviews/ha-native-merge-refresh-20261026.md)
+passes47 fresh builds and155 standard-only reports. It authenticates the
+469-source inventory and422 cached objects, including the new upstream
+native proofs, and freshly checks the affected local equation endpoints
+through the exact arithmetic sentence/HA stability. This is scoped current
+source validation, not a fresh whole-closure replay or the final HA theorem.
+
 The current HA track now includes the actual C222 equality core and four
 further actual source order images. The former internally derives the
 helper, specialization, rho7 and gated membership vacuity; seed semantics

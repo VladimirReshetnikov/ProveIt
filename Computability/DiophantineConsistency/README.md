@@ -17,6 +17,9 @@ The owner now additionally requires a Lean theorem that this equivalence
 is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
+The latest [post-merge refresh](reviews/ha-native-merge-refresh-20261026.md)
+passes47 current equation/client builds and155 standard-only reports over
+the469-source inventory, with422 explicitly authenticated cached objects.
 A genuine HA derivability relation is now independently checked in
 [HAProofs](Lean/DiophantineConsistency/HAProofs.lean). Existing IΣ₂/PA
 validator and Rotation240 consistency theorems provide reusable arithmetic
