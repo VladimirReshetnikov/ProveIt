@@ -215,6 +215,15 @@ and numeric reconstruction](reviews/wang-tiles942-lean-peer.md). This is
 index uniqueness; tuple/weight distinctness, the physical-rank bijection,
 and native machine semantics still require proofs.
 
+`NativePreliminaryCount2011.total_le_one_all_phases` now completes the
+arithmetic preliminary-count argument across all temporal phases. Only
+phases7..10 request the483 staircase bindings; other phases use the low
+clause bits directly. The [root review](reviews/native-preliminary-count2011-lean-root.md)
+and [independent replay](reviews/native-preliminary-count2011-lean-peer.md)
+include the full-mask phase10 counterexample showing why those middle
+premises matter. Literal physical clause/padding residues and carry
+bindings remain to be discharged from the current native recipe.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
