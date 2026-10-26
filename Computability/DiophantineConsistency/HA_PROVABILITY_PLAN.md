@@ -262,6 +262,17 @@ Whole-code Nat agreement with the literal decoder is still separate, as
 are the logical seed and exact-runtime consistency calibrations. Total
 evaluation alone proves neither acceptance soundness nor HA equivalence.
 
+The [all-code Nat adapter](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticHistory222Nat.lean)
+now proves exact agreement with the actual decoder/checker for every code,
+including malformed inputs, by strong induction generalized over parser fuel.
+It defines no duplicate evaluator and imports old History254 only for generic
+div/rem/numeral facts. It binds actual C222 derivability to a witness for the
+same fixed represented formula. Both leaves passed
+[independent replay](reviews/arithmetic-history222-nat-root.md), with eight
+standard-only reports over120 cached prerequisites. Internal seed and exact
+runtime calibration remain open; the represented formula now has its actual
+whole-code standard interpretation.
+
 The [arithmetic translation audit](research/ha-arithmetic-translation-adapter-audit.md)
 also fixes the next proof-transfer interface: translate Foundation ordered
 arithmetic syntax into the existing conventional PAHF HA, then map actual
@@ -339,6 +350,26 @@ passed22 reports using only `propext` and `Quot.sound`, with88 cached
 prerequisites. All76 Foundation records exactly match the already accepted
 arithmetic215 inventory. Equality-theory cases, nine order/geometric axioms,
 arbitrary induction and the source's parameter closure remain separate.
+
+[FoundationHAEquality](Lean/DiophantineConsistency/FoundationHAEquality.lean)
+now discharges every actual source equality-theory axiom's literal GG image,
+including all four functions and both relations. HA's proved equality
+decidability supplies equality-specific stability; order congruence transports
+the whole double-negated existential formula without order decidability.
+The source's implication conversion reuses the actual Foundation theorem and
+checked intuitionistic proof map, retaining its metatheoretic choice dependency.
+Both leaves passed [independent replay](reviews/foundation-ha-equality-root.md),
+with31 reports restricted to the standard three Lean axioms.
+
+[FoundationHAClosure](Lean/DiophantineConsistency/FoundationHAClosure.lean)
+proves the exact identity between the actual source `univCl` GG image and
+`closeN φ.fvSup (formula φᴺ)`. A proved canonical-environment identity covers
+all `fixitr` counts, including counts below a sparse free variable. Its HA
+proof constructor closes an actual proof of the open body, using genuine
+universal introduction. The [independent peer replay](reviews/foundation-ha-closure-peer.md)
+passed both leaves and six standard-only reports. This closes the parameter
+closure comparison; the arbitrary induction body, nine order/geometric
+axioms and final target equivalence still require proofs.
 
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and

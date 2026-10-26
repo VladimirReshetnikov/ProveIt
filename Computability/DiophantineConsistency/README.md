@@ -49,8 +49,9 @@ proves unique evaluation and lookup at all internal IΣ1 indices, retaining
 the explicit represented-step premise. Its
 [actual C222 instantiation](reviews/arithmetic-history222-root.md) now proves
 the exact recurrence and a closed IΣ1 theorem of unique Boolean evaluation.
-Agreement with the concrete Nat decoder and seed/runtime calibration remain
-separate work.
+[Agreement with the concrete Nat decoder](reviews/arithmetic-history222-nat-root.md)
+now holds for every code, including malformed inputs. Internal seed validity
+and exact runtime calibration remain open.
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence
@@ -85,6 +86,12 @@ are now discharged by actual HA proofs of their literal GG images.
 Both leaves pass independent compilation and22 standard-only reports;
 the remaining equality/order axioms and arbitrary induction are explicit
 separate obligations.
+The [whole source equality theory](reviews/foundation-ha-equality-root.md)
+is now discharged too, including congruence of the interpreted order relation.
+The [actual source parameter closure](reviews/foundation-ha-closure-peer.md)
+also has its exact syntax identity and a checked HA proof constructor.
+These results retain the existing source encodings; the remaining order
+axioms and arbitrary induction body still need proofs.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the
