@@ -11,12 +11,15 @@ witness domain, whose absence of zeros is equivalent to the absence of a
 finite derivation of falsity from the repository's ZFC axiom predicate.
 Neither consistency nor inconsistency is assumed.
 
-The current priority is equation size and complexity. At the repository
-owner's request, Lean formalization is paused. Research continues on
-smaller arithmetic circuits, simpler complete printed coefficient recipes,
-and alternative encodings. Completed proof checkpoints are retained;
-unfinished formalization files are not being extended during this phase.
-See [the active size-reduction plan](SIZE_REDUCTION.md).
+The current priority is Lean proofs that the smallest constructed equations
+under the different size metrics have no solutions exactly when `Con(ZFC)`.
+The owner resumed formalization on 25 October 2026. The
+[formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
+older endpoints from the literal arithmetic and native compiler links
+still required for the recent equations. The
+[size-reduction record](SIZE_REDUCTION.md) preserves the constructions and
+their ordinary proofs. Later references below to the Lean pause describe
+their historical checkpoints; the resumed plan governs current work.
 
 The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **complete decimal Carrier65 equation
@@ -45,6 +48,10 @@ positive P66 maps. Its
 discharges the full controller at d = 47*2011, with auxiliary prime120199.
 Independent mathematical and verifier reviews and
 [root acceptance](research/padding-staircase-independent/ROOT_REVIEW.md) pass.
+The separate [directional terminology amendment](reviews/padding-staircase2011-directional-terminology-amendment.md)
+corrects two inherited East/West slot names and verifies the actual packed
+coordinates and directed helical orientation. All frozen coefficients,
+copy equalities and proof artifacts remain unchanged.
 
 The [uniform Carrier65 proof](research/carrier65-independent/PROOF.md)
 applies at these exact ports. Its complete 65-row arithmetic graph,

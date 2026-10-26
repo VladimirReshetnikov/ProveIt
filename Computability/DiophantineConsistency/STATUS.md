@@ -2,10 +2,12 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
-**Current direction:** Lean formalization is paused at the owner's request.
-The active goal continues with equation-size and complexity reduction;
-see [SIZE_REDUCTION.md](SIZE_REDUCTION.md). The Lean statuses below record
-completed checkpoints, rather than instructions to continue formalization.
+**Current direction:** On 25 October 2026 the owner resumed Lean
+formalization, requesting proofs for the simplest equations constructed
+under the different metrics. See [LEAN_EQUIVALENCE_PLAN.md](LEAN_EQUIVALENCE_PLAN.md).
+The later pause statements in this chronological record describe earlier
+checkpoints. The maintained decimal display and all size comparisons
+remain documented in [SIZE_REDUCTION.md](SIZE_REDUCTION.md).
 
 The first size-only result is a440-operation nine-positive circuit, down
 from443, with the exact same polynomial and degree1,845,940; the natural
