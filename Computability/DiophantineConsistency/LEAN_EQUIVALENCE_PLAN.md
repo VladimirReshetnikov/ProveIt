@@ -712,6 +712,15 @@ The dimension composition also has an [independent isolated replay](reviews/wang
 Whole high-mask/copy tests, stronger scalar bounds, actual power-orbit
 identification, safe mutations and the positive equation converse remain open.
 
+`CurrentWordLowMask2011` now constructs the entire scalar low-mask test
+for the same assembled C, including its exact final `+1` origin term,
+and proves `0<C<q`. A generic encoder erases the origin bit and proves
+the ordinary subtraction identity before packing the capacities. Only
+Boolean controls and Start at the origin are needed; no source zero,
+matching, carry or high-mask premise occurs. The [author receipt](reviews/current-word-low-mask2011-lean-root.md)
+and [independent isolated replay](reviews/current-word-low-mask2011-lean-peer.md)
+record four standard-only axiom audits and the omitted-subtraction control.
+
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
