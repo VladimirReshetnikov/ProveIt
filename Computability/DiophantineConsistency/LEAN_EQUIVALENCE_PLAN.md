@@ -747,6 +747,16 @@ record eight standard-only reports and exact current-port binding. Rank
 congruence selection, forced temporal exponentiation and remaining positive
 Pell witnesses remain open.
 
+`CurrentSafeController2011` joins actual target selection, the injective
+physical support and the proved Gamma unit. For every full-modulus target,
+it constructs a nonempty safe cyclic cell set, with cardinality at most
+94517*120199, whose actual B-power sum or Gamma-weighted sum equals that
+target. No selected support, safety property or unit is assumed. See the
+[author receipt](reviews/current-safe-controller2011-author.md) and
+[independent fresh root replay](reviews/current-safe-controller2011-root.md)
+with four standard-only reports. The actual finite source-word mutation
+and resulting rank congruence still need composition.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
