@@ -336,6 +336,15 @@ incoming carry and temporal bit remain present during decoding. See the
 Its explicit count/phase premises are supplied by the unconditional
 polynomial count result; whole-field alignment and adjacency remain open.
 
+`CurrentDecodedWindow2011.polynomial_zero_decoded_window` now supplies
+decoded actual cell labels and zero clause carry from only a positive
+zero of the fixed polynomial, deriving count and fractional phase first
+on the same Facts. It also derives actual StartSouth510 and the fixed
+physical941 South calibration, retaining the real511 possibility. See the
+[root review](reviews/current-decoded-window2011-lean-root.md) and [independent
+composition replay](reviews/current-decoded-window2011-lean-peer.md).
+Empty cells, whole-field alignment and native/machine semantics remain open.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
