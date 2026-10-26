@@ -68,9 +68,8 @@ The actual marked word now constructs the cyclic source, bounded carries,
 the complete low and high scalar masks, positive alpha and z, strong slack,
 and the exact unit transport factor. No desired mask, carry or strict F
 is supplied. The literal kernel residues are also proved. Remaining work
-includes the composite rank controller, safe dummy mutations and the
-rank-dependent temporal multiplier, the remaining positive Pell/source
-witnesses, other equation
+now includes the remaining positive Pell/source
+witnesses and their polynomial composition, other equation
 frontiers and internal-ZFC derivation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
@@ -770,6 +769,30 @@ See the [root review and precise replay scopes](reviews/finite-mutation-parity-s
 and its linked author/peer receipts. The32 reports are standard-only. Actual
 rank calibration, the halt dimension adapter and remaining positive Pell/source
 assembly remain integration obligations.
+
+`CurrentRankCalibration2011` closes the controller composition for the
+actual marked word. Safe finite mutation changes its ordinary C/F values,
+and the exact rank decrement selects the required full-modulus congruence.
+The rank of that same packing supplies population, residue and growth;
+the derived positive stride preserves its source, carries and digits and
+forces `multiplier t = 2^(R-width*N)`. No rank or successful mask is supplied.
+See the [author record](reviews/current-rank-calibration2011-root.md) and
+[independent fresh main/check replay](reviews/current-rank-calibration2011-lean-peer.md),
+with six standard-only reports.
+
+`WangTiles942ControllerDimensions` derives every quantitative controller
+hypothesis from an actual blank-machine halt, with independently cofinal
+width and height and the same uniquely marked word. `CurrentHaltPacking2011`
+then constructs the rank-forced native packing from a literal halt or from
+the actual negation of `DiophantineConsistency.ConZFC`. Its transparent
+existential keeps the same word, support, carries, normalized digits, rank
+and forced multiplier together. These are native/scalar witnesses; this
+checkpoint alone does not yet supply a polynomial zero. See the
+[root review](reviews/halt-controller-packing-root.md), dimension
+[author receipt](reviews/wang-tiles942-controller-dimensions-author.md), and
+halt-packing [independent replay](reviews/current-halt-packing2011-lean-peer.md).
+Their eight reports are standard-only; these are fresh leaf checks with
+reused prerequisites, not a fresh full umbrella build or internal ZFC proof.
 
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
