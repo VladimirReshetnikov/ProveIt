@@ -1,4 +1,4 @@
-import DiophantineConsistency.QuadraticCoding
+import DiophantineConsistency.SelectiveQuadraticCoding
 
 /-!
 # Simultaneous coefficient extraction for supplied quadratic forms
@@ -39,24 +39,14 @@ theorem coeff_row_eq_zero_of_outside (a : PairIndex m → R)
     (u : Fin (m + 1) → R) (j n : ℕ)
     (hn : n < target m j - coefficientPosition m ∨ target m j + coefficientPosition m < n) :
     (encoded u ^ 2 * complementary a (target m j)).coeff n = 0 := by
-  classical
-  rw [complementary, Finset.mul_sum]
-  simp only [finsetSum_coeff]
-  apply Finset.sum_eq_zero
-  intro p _
-  rw [encoded_square]
-  simp only [Finset.sum_mul, finsetSum_coeff, monomial_mul_monomial]
-  apply Finset.sum_eq_zero
-  intro i _
-  apply Finset.sum_eq_zero
-  intro k _
-  rw [coeff_monomial]
+  apply SelectiveQuadraticCoding.coeff_at_other_target (weight m) Finset.univ a u
+    (target m j) n
+  intro p _ i k
   have hp : pairWeight p ≤ coefficientPosition m := pairWeight_le p
   have hi : weight m i + weight m k ≤ coefficientPosition m := weight_sum_le i k
   have ht := coefficientPosition_le_target m j
-  have hne : weight m i + weight m k + (target m j - pairWeight p) ≠ n := by
-    omega
-  exact if_neg hne
+  change weight m i + weight m k + (target m j - pairWeight p) ≠ n
+  omega
 
 /-- Other rows contribute zero at the selected target. -/
 theorem coeff_row_at_other_target (a : PairIndex m → R)
