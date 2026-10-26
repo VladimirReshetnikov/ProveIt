@@ -66,18 +66,7 @@ def prec {f g : ℕ → ℕ} (p : Realizes f) (q : Realizes g) :
       n.rec (f z) (fun i acc => g (Nat.pair z (Nat.pair i acc))))) := by
   refine ⟨.prec p.val q.val, ?_⟩
   intro packed
-  have h (n : ℕ) :
-      Nat.rec (motive := fun _ => ℕ) (p.val.eval packed.unpair.1)
-          (fun i acc => q.val.eval (Nat.pair packed.unpair.1 (Nat.pair i acc))) n =
-        Nat.rec (motive := fun _ => ℕ) (f packed.unpair.1)
-          (fun i acc => g (Nat.pair packed.unpair.1 (Nat.pair i acc))) n := by
-    induction n with
-    | zero => exact p.property _
-    | succ n ih =>
-        change q.val.eval (Nat.pair packed.unpair.1 (Nat.pair n _)) =
-          g (Nat.pair packed.unpair.1 (Nat.pair n _))
-        rw [q.property, ih]
-  exact h packed.unpair.2
+  simp only [eval, Nat.unpaired, p.property, q.property]
 
 def ofEq {f g : ℕ → ℕ} (p : Realizes f) (h : ∀ n, f n = g n) : Realizes g :=
   ⟨p.val, fun n => (p.property n).trans (h n)⟩

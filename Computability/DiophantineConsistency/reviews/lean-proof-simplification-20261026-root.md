@@ -95,3 +95,26 @@ ROOT read all changed proof hunks and checked the final source hashes.
 `v_finite_full_static` independently reviewed every changed hunk in context,
 including all four divisibility sign cases and the natAbs alternatives,
 and reported PASS. These checks do not assert a complete library rebuild.
+
+## Primitive-recursion congruence
+
+The placed proposal's `patches/pr-congruence.patch` is now integrated in
+the maintained `PRCode`, `ScalarPRCode` and `ScalarPROptimizer` modules.
+Their lengths decrease from115/87/153 to105/76/140, removing34 lines.
+Explicit `simp only` rewrites the supplied base and step equalities under
+`Nat.rec`, replacing three repeated congruence inductions. Program syntax,
+evaluators, optimizer definitions and the two returned `.prec` program values
+are unchanged; only their correctness proofs change.
+
+`intake_e13` directly observed zero exits for all three final module/olean
+checks in dependency order, the `ScalarPRRepresentation` client, existing
+`ProgramOptimization` and `CompilerAxioms` checks, and two focused `rfl`
+checks of the returned program values. ROOT read all three complete final
+modules and the patch, including its source note and validation caveat.
+
+The shorter scalar constructor proof uses `[propext, Quot.sound]` instead of
+the original empty axiom set. The vector constructor adds `Quot.sound` to
+its earlier `[propext]`; the optimizer retains its three standard axioms.
+This is the documented function-extensionality cost of rewriting under a
+binder. There are no new axiom declarations or unsafe assumptions, and all
+printed axiom sets contain only standard Lean axioms.
