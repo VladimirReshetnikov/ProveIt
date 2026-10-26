@@ -251,6 +251,16 @@ remain explicit. The [root full-source review and fresh replay](reviews/current-
 record the exact endpoint. Polynomial-to-word composition and physical
 decoding remain required.
 
+`CurrentReflectedGeometry2011` now proves the literal same-cell reflected
+sources, entry-position injection, evenness and all coefficient bounds.
+Under an explicit physical selector count<=1, arbitrary Boolean controls
+give reflected value<2^46−2048 and force every bounded carry recurrence
+to reset through marker1004. Copy/marker incoming carries are therefore
+zero without decoded labels or temporal alignment. See the [independent
+root review and fresh replay](reviews/current-reflected-geometry2011-lean-root.md).
+The preliminary one-selector premise must still be supplied from actual
+padding and clause tests before using these conditional resets.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
