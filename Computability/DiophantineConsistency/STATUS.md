@@ -25,37 +25,39 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete single-clause2999 equation: fifteen positive unknowns,
-degree157,66 integer-leaf operations and**70533 raw integer bytes**.
-Compared with admissible942, raw storage falls24156 bytes, gzip3819 to4193,
-complete TeX12 to5013, nonwhite extracted text6 to2665 and PDF16 to159705.
-The same9pt/7.7pt fonts and one Letter page are retained.
+the complete block-mask2963 equation: fifteen positive unknowns,
+degree157,66 integer-leaf operations and**69685 raw integer bytes**.
+Its four constants and specialized polynomial are identical to low-padding2963.
+The exact block-mask/inline-Phi identity saves26 TeX bytes to4970,
+19 extracted nonwhite characters to2638 and432 PDF bytes to159270.
+Gzip stays4202, with the same9pt/7.7pt fonts and one Letter page.
 
-The [ordinary proof](research/parity-clause-independent/PROOF.md) uses
-one clause at1956. All reflected low-field overlaps are included: they
-are even label weights and remain below the carry bound. Marker parity
-first forces fractional phase zero; the Boolean temporal clause bit is
-then absorbed into the count lemma. Decoded Start labels recover full
-alignment. The exact predecessor,916 padding bits, actual rank, ordinary
-safe increments and both P66 maps pass full root and independent review.
-Pcpc uses prime965357, orders23/1499 and new H45/2747/650665.
-Normal/optimized checks reproduce all942 printed tiles,3297 coefficients,
-physical support and integer ports. Actual initializer/marker corruptions
-are rejected; two actual full-page visual inspections pass. See the
-[candidate](candidates/one-page-parity-clause2999/README.md),
-[math review](reviews/parity-clause2999-independent-peer.md) and
-[page review](reviews/parity-clause2999-page-peer.md).
+The [identity audit](research/block-mask-recipe/NOTE.md) checks every
+weighted and physical coefficient independently. The new actual-source
+reader rejects marker/dummy deletion, inline-weight and initializer
+corruptions. Full integer equality, the entire66-row graph and all942
+printed tiles pass normal/optimized checks. Root and peer viewed the whole
+actual PNG. See the [candidate](candidates/one-page-block-mask2963/README.md)
+and [page review](reviews/block-mask2963-page-peer.md).
 
-All earlier pages and CURRENT records remain preserved, along with the
-reviewed [single-clause3037 checkpoint](research/single-clause-independent/README.md).
+The unchanged [ordinary proof](research/low-padding-independent/PROOF.md)
+uses916 low bit2 padding tests and the combined4*G917 mask. The final
+product2961 resets and the top zero field supplies strict representatives
+and safe increments. Phase, count, alignment, actual rank, controller and
+both P66 maps retain their full reviews. Pclp uses prime1362521,
+orders23/2962 and H29/2938/492699. The exact identity needs no new native
+or controller premise, and CURRENT records literal polynomial equality.
+
+All earlier pages and CURRENT records remain preserved, along with reviewed
+[single-clause3037](research/single-clause-independent/README.md) and
+[composite2983](research/composite-length-independent/README.md) checkpoints.
 No new formal-kernel replay or consistency decision is claimed; inherited
-ordinary calibration remains explicit. Next work tests squarefree composite
-block lengths and alternative padding placements. The separately checked
+ordinary calibration remains explicit. Next work reviews doubled clause
+weights and tests further complete coefficient layouts. The separately checked
 [weighted-only Psi identity](research/weighted-only-psi/NOTE.md) preserves
-its bound tuple while shortening the recipe blocks. The
-[radix note](research/radix-parity-independent/README.md) and
-[interior-padding probe](research/start-marker-padding-probe/NOTE.md)
-remain scoped obstacles/tradeoffs, with no global lower-bound claim.
+its bound tuple. The [radix note](research/radix-parity-independent/README.md)
+and earlier [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
+remain scoped obstacles/tradeoffs, without a global lower-bound claim.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 still saves nineteen operations and171 degree while adding five unknowns.
