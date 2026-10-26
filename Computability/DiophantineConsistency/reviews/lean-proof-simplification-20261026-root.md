@@ -216,3 +216,125 @@ and reported PASS.
 Across all nine groups, this series removes264 maintained Lean source lines,
 including36 lines for the new shared helper. Larger generated-steps and
 scanner refactors remain under review; the iterative goal is active.
+
+## Generated Steps: maintained generator integration
+
+ROOT ported packet a's checked indexed helpers into the maintained shared
+`generate_split_recipe_steps59.py` renderer. The existing Gap wrapper, exported
+Python globals, input loading, `rhs` function, public theorem headers and
+`naturalRegister` definition are retained. Labels come from the pinned natural
+DAGs, with zero meaning no asserted power specification. Each circuit gets one
+closed `PowerStep` certificate and applies the existing `run_power` theorem;
+the certificate alone has a scoped12000000-heartbeat allowance.
+
+Before any project Python execution, `intake_e13` and `v_finite_full_static`
+independently read the full exact-final four-file executable closure, both
+pinned raw natural inputs and the available read/write routes. Both returned
+static PASS with no findings. ROOT separately read the whole closure, the
+generic Lean contracts and the register-generator consumers. Reviewed SHA256s:
+
+| File | SHA256 |
+|---|---|
+| `tools/generate_split_recipe_steps59.py` | `d0a99e733af59177d9fe24624bcf6fa50fe11bef700ed025d05cf252bb7510c4` |
+| `tools/generate_gap_recipe_steps66.py` | `bbffdc727abbc33002b32df1b1cdb1fb4bbc01fba0653271cf812083ef716e08` |
+| `tools/generate_split_circuit59.py` | `ac616ed886bf8616a8f671e8af3382e148226a1958eef7b03b043bed7ce5a789` |
+| `tools/generate_gap_circuit66.py` | `2e9459e55f527e093af47b4be09a293f79b56e1668799c7123e25c989dd17621` |
+
+The raw natural input pins are `cb0caa3a14370e9a5d43be9cabbfef86f92481301b09f4fd7bc7c19f550804db`
+(Split,515 nodes,base36) and `be7d9e1285a1cf674978058c3b1be2f27a17af9c0d0bdc6e4f8310481a40d001`
+(Gap,484 nodes,base20). Imported circuit writers remain behind `__main__`
+guards. Gap imports the Split template and therefore reads both raw inputs.
+
+ROOT releases the exact reviewed Steps entrypoints for `python -B SCRIPT`
+generation and `python -B SCRIPT --check` / `python -B -O SCRIPT --check`.
+Generation may write only the respective existing maintained Steps Lean file;
+the checks compare its complete text. `-B` prevents import-cache writes, and
+explicit `require` checks remain effective under `-O`. No archive application,
+source-rewriting candidate script or circuit generator entrypoint is released.
+This static release does not claim that the regenerated maintained Lean files
+or their clients have passed; those checks follow generation.
+
+Both actual generations and all four normal/optimized `--check` invocations
+returned zero. The regenerated Split/Gap files decrease from3445/3122 to
+2565/2356 lines, removing1646 lines and98239 bytes including all helpers and
+label tables. All1192 public theorem statement texts are unchanged modulo
+whitespace; both `naturalRegister` definitions are exact-equal. The maintained
+proof code equals packet a's kernel-checked full candidates modulo provenance
+comment and whitespace. Neither DAG, raw JSON nor evaluator data is changed.
+
+Both final maintained Steps modules were rebuilt with `lean -j1` and named
+oleans, returning zero with empty diagnostics. ROOT's fresh all1192-theorem
+`#print axioms` audit also returned zero: every result uses exactly the
+standard `[propext, Classical.choice, Quot.sound]` set. The prechange existing
+focused checks report the same set for their representative results.
+The generator and two regenerated modules are committed as `79bc166a51`.
+Downstream client validation is recorded below once complete; no compile-time
+speedup is claimed. Full candidate checks peaked at4568828/4828612KiB RSS.
+
+## Nine-coordinate source-existence transport
+
+`alternate_encoding_research` extracted a39-line `FreeCarrierCoordinates`
+module with an evaluator-parametric positive tuple theorem and a
+predicate-parametric successor/predecessor theorem. Both Split and Gap source
+existence modules reuse these facts. Including the entire helper,295 lines
+become269, removing26 lines and30 bytes. All existing definitions, public
+theorem statements, coordinate ordering and positivity premises are unchanged.
+The internal CRT index remains an unrestricted natural number; its positive
+external coordinate is `j+1`. No additional coordinate wrapper definitions
+are introduced. ROOT read the full helper and both changed proof sections.
+
+All eight final checks returned zero: three module/olean builds, the two
+existing focused check files, both `SplitNineSource59` / `GapNineSource66`
+direct-client sources and a six-result axiom audit. The focused checks retain
+the all-one positive/all-zero natural tuple identities and the internal
+`j=0` case. The rewritten public results retain the standard-three axiom set;
+the generic successor theorem uses only `propext` and `Quot.sound`.
+The source change is committed as `32b108f214`.
+
+The complete generated-Steps validation chain subsequently passed26/26 calls:
+14 maintained module/olean builds and12 existing focused checks. Builds cover
+both Steps, Registers, Translations, Recipes and PositiveRecipes, plus
+`GapCircuitTail66`, `GapCircuitDegree66`, `GapFinalizerDegree66` and
+`GapPolynomialDegree66`. Checks cover both Steps/Registers/Translations/
+Recipes/PositiveRecipes, `GapCircuitTail66` and `GapDegree66`.
+`v_finite_full_static` observed every zero exit; ROOT independently read all26
+time receipts and the89 focused axiom reports (including one axiom-free
+result). All reported axioms are standard. Unchanged register/recipe sources
+emit existing style warnings; no substantive failure or retry occurred.
+Final maintained Steps runs took52.88/45.91 seconds and peaked at4828064/
+4567316KiB RSS, respectively. No performance improvement is asserted.
+
+`v_finite_full_static` also independently read immutable `32b108f214`, the
+whole coordinate helper and all four changed proof contracts, returning PASS
+with no findings. This review required no additional source edits or rebuilds.
+
+## Local radix, convolution and finite-selector proofs
+
+`intake_e13` adapted the remaining packet f proposals in `SelectiveCarry`,
+`NativeCyclicConvolution`, `NativeRadixDigits` and `ArithmeticFiniteSwitch`.
+ROOT suggested the two additional `Nat.one_lt_two_pow` applications in the
+carry module and read all final changed proofs in context. The four modules
+decrease from204/258/108/32 to194/253/104/29 lines, removing22 lines.
+Every original signature, import, bound/mask premise and executable program
+constructor is retained. The selector changes only the `ofEq` proof.
+
+The packet's combined convolution simplifier initially failed twice on the
+nested-sum ordering. The final proof explicitly distributes the sums, applies
+`Finset.sum_comm` and then normalizes multiplication. All four final named
+module/olean builds, four existing focused checks and four direct clients
+(`SelectiveCoefficientBounds`, `NativeStencil54`, `NativeVariableMask`,
+`AnnotatedAxiomDispatch`) returned zero. Generic zero/successor selector
+`.val` constructor equalities are still `rfl`. Baseline/final axiom sets of
+the six audited declarations are identical standard Lean axioms.
+The source changes are committed as `2effe6f291`.
+
+`alternate_encoding_research` independently read all580 final source lines,
+the changed proof contexts and the `Realizes.ofEq` / `DirectScalar.ifEq`
+definitions. It returned static PASS with no findings and reauthenticated all
+four final hashes. In particular, `ofEq` returns the supplied program's `.val`
+verbatim; the changed certificate cannot alter either selector constructor.
+
+These three additional groups remove1694 maintained Lean lines, including
+every new helper and label table. Together with the previous nine groups,
+this iteration series removes1958 lines. The decimal equation artifacts
+are unchanged. The iterative proof-simplification goal remains active.

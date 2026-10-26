@@ -59,8 +59,14 @@ See the [source binding and fresh checks](reviews/current-soundness2011-lean-roo
 The [independent current-polynomial soundness review](reviews/current-soundness2011-lean-peer.md)
 also passed isolated fresh main/check builds, retaining every literal port
 and all three thirteen-variable restoration paths.
-Remaining work includes the converse canonical tiling and controller
-construction, other equation frontiers and internal-ZFC derivation. The1997 proposal
+`WangTiles942Completeness.no_marked_word_iff_conZFC` now also closes the
+external consistency equivalence for the actual finite marked language.
+Its reverse construction works at every independently sufficiently large
+width and height; `WangTiles942BandMarker` derives unique Start in the
+same concrete quotient. See the [native completeness review](reviews/wang-tiles942-native-completeness-root.md).
+Remaining work includes reverse coefficient words/carries, the composite
+rank controller and positive arithmetic witnesses, other equation
+frontiers and internal-ZFC derivation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
 The first new modules address necessary reusable pieces of that chain:
@@ -612,6 +618,18 @@ quotient, without coprimality. See the [author receipt and four fresh
 checks](reviews/wang-tiles942-marker-construction-root.md). This helper
 keeps its local classification explicit until it is proved for the
 actual band; general marked-word soundness never assumes unique Start.
+
+That local classification is now discharged by
+`WangTiles942BandMarker.band_eq_start_iff`. Its concrete `canonicalWord`
+has full marked matching, exact band binding and unique literal Start
+index. `WangTiles942Completeness.cofinal_marked_word` permits every
+widthw≥2*T+4 and heightH≥T+2,H≥3 from an actual halt atT. The complete
+marked-language/actual-blank-halting equivalence and
+`no_marked_word_iff_conZFC` are closed. See the [root review and four
+fresh checks](reviews/wang-tiles942-native-completeness-root.md).
+The [independent marker-helper review](reviews/wang-tiles942-marker-construction-peer.md)
+also passed all four isolated fresh builds. Reverse arithmetic/controller
+construction remains necessary for the actual equation equivalence.
 
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged

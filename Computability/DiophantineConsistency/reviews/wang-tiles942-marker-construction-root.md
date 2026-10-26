@@ -7,7 +7,7 @@ main/check pairs, completely read before capped Lean execution.
 |---|---|
 | WangTiles942CycleMarker.lean (70 lines) | 2806b219857cfc334bc502fc15eccbebf0f6206a381c2e809029905e7d9076c5 |
 | WangTiles942CycleMarkerChecks.lean (40 lines) | 837a916c03a244f7ad535d1fa27e5fab0729beeb7c92d5b077bc746606822873 |
-| WangTiles942HelicalMarker.lean (59 lines) | 55962b759130f61cb138afde6a87796da4a12ddf7b0bc891a2d2417da2c788c7 |
+| WangTiles942HelicalMarker.lean (60 lines) | 55962b759130f61cb138afde6a87796da4a12ddf7b0bc891a2d2417da2c788c7 |
 | WangTiles942HelicalMarkerChecks.lean (34 lines) | e32e73c910ef7e6b676ce4a0c3e6d15ad7427f998bf81ba5082f6d7db090830b |
 
 The initializer has north435 exactly at spatial coordinate0. All actual
@@ -41,3 +41,8 @@ Existing prerequisites were reused, without a whole-closure replay
 claim. Development corrections exposed false-if simplification,
 explicit finite-index check arguments, zero-add normalization and
 the standard ZMod value injectivity API; theorem premises were unchanged.
+
+The [independent marker review](wang-tiles942-marker-construction-peer.md)
+passed four isolated fresh builds, with unchanged31 pinned inputs and
+byte-identical main objects. It found no additional premise or marker
+assumption in either proof.
