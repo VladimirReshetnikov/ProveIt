@@ -1,0 +1,86 @@
+/-- A receive tile in a live encoded row is caused by its actual head.
+No temporal matching or exclusion of finishes is needed. -/
+theorem receive_at_next_head
+    (hA : ∀ x τ, Allowed (T x τ))
+    (hH : ∀ x τ, (T (x+1) τ).west = (T x τ).east)
+    (hs : PersistentStrip T N L R)
+    (hrow : RowEncodes T (-(L : ℤ)) (R : ℤ) t cfg)
+    (q : Fin 215) (hq : cfg.state = some q)
+    (x : ℤ) (hl : -(L : ℤ) < x) (hr : x < (R : ℤ))
+    (d : Bool) (p : ℕ) (hp : p ∈ targets d) (b : Fin 2)
+    (ht : T x t = ⟨d.toNat * rail d p,b.val,
+      (1-d.toNat) * rail d p,headColor p b.val⟩) :
+    x = (DecimalMachine215.machine.transition q
+      (Tape.read cfg.tape cfg.head)).move.apply cfg.head := by
+  have hpos := (valid_rail_range hp).1
+  have hnorth : (T x t).north = b.val := congrArg Tile.north ht
+  have hhead := head_transition hA hrow q hq
+  have hmove := WangMachineAction.transition_moved_head q
+    (Tape.read cfg.tape cfg.head) cfg.head
+  cases d with
+  | false =>
+      have he : (T x t).east = rail false p := by
+        simpa only [Bool.toNat_false, Nat.sub_zero, Nat.one_mul] using congrArg Tile.east ht
+      have hm := hH x t
+      have hnbr : x+1 = cfg.head := by
+        by_contra hh
+        by_cases hb : x+1 = (R : ℤ)
+        · have hw := right_wall_west_le_four hs t
+          rw [hb] at hm
+          omega
+        · have hz := plain_pair_edge_zero (hA x t) (hA (x+1) t)
+            b (symbol cfg (x+1)) hnorth
+            (hrow.plain (x+1) (by omega) (by omega) hh) hm.symm
+          omega
+      rw [hnbr, hhead, he] at hm
+      cases hd : (action (WangMachineAction.inputIndex q
+          (Tape.read cfg.tape cfg.head))).2.1 with
+      | false => simp only [hd, Bool.false_eq_true, if_false] at hmove; omega
+      | true =>
+          simp only [transitionRow, hd, Bool.toNat_true, Nat.sub_self, Nat.zero_mul] at hm
+          omega
+  | true =>
+      have hw : (T x t).west = rail true p := by
+        simpa only [Bool.toNat_true, Nat.one_mul] using congrArg Tile.west ht
+      have hm := hH (x-1) t
+      rw [sub_add_cancel] at hm
+      have hnbr : x-1 = cfg.head := by
+        by_contra hh
+        by_cases hb : x-1 = -(L : ℤ)
+        · have he := left_wall_east_le_two hs t
+          rw [hb] at hm
+          omega
+        · have hz := plain_pair_edge_zero (hA (x-1) t) (hA x t)
+            (symbol cfg (x-1)) b
+            (hrow.plain (x-1) (by omega) (by omega) hh) hnorth hm.symm
+          omega
+      rw [hnbr, hhead, hw] at hm
+      cases hd : (action (WangMachineAction.inputIndex q
+          (Tape.read cfg.tape cfg.head))).2.1 with
+      | false =>
+          simp only [transitionRow, hd, Bool.toNat_false, Nat.zero_mul] at hm
+          omega
+      | true => simp only [hd, if_true] at hmove; omega
+
+/-- Before using time matching, an unchanged plain cell may still finish.
+The only excluded local alternative is a causally impossible receiver. -/
+theorem far_pass_or_finish
+    (hA : ∀ x τ, Allowed (T x τ))
+    (hH : ∀ x τ, (T (x+1) τ).west = (T x τ).east)
+    (hs : PersistentStrip T N L R)
+    (hrow : RowEncodes T (-(L : ℤ)) (R : ℤ) t cfg)
+    (q : Fin 215) (hq : cfg.state = some q)
+    (x : ℤ) (hl : -(L : ℤ) < x) (hr : x < (R : ℤ))
+    (ho : x ≠ cfg.head)
+    (hn : x ≠ (DecimalMachine215.machine.transition q
+      (Tape.read cfg.tape cfg.head)).move.apply cfg.head) :
+    T x t = ⟨0,(Tape.read cfg.tape x).toNat,0,(Tape.read cfg.tape x).toNat⟩ ∨
+      T x t = ⟨0,(Tape.read cfg.tape x).toNat,0,438⟩ := by
+  have hp : (T x t).north = (symbol cfg x).val := hrow.plain x hl hr ho
+  rcases (WangTiles942InputLanguage.north_plain_iff (hA x t) (symbol cfg x)).mp hp with
+    hp | hf | ⟨d,p,hp,ht⟩
+  · exact Or.inl hp
+  · exact Or.inr hf
+  · exact False.elim (hn (receive_at_next_head hA hH hs hrow q hq x hl hr
+      d p hp (symbol cfg x) ht))
+

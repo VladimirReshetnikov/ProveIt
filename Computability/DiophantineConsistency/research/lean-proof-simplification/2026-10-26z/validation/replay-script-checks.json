@@ -1,0 +1,40 @@
+{
+  "scope": "Quick replay of source identities, patch checks and finite arithmetic; Lean checks already recorded separately.",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "/dev/shm/dc-review-c7f9ef5b1faa/output/proveit-lean-structural-simplifications-2026-10-26/scripts/verify.py",
+        "/dev/shm/dc-review-c7f9ef5b1faa/ProveIt",
+        "--patches-only"
+      ],
+      "exit": 0,
+      "stderr": "",
+      "stdout_bytes": 294
+    },
+    {
+      "command": [
+        "python3",
+        "/dev/shm/dc-review-c7f9ef5b1faa/output/proveit-lean-structural-simplifications-2026-10-26/scripts/moments.py",
+        "/dev/shm/dc-review-c7f9ef5b1faa/ProveIt",
+        "--output",
+        "/dev/shm/dc-review-c7f9ef5b1faa/output/proveit-lean-structural-simplifications-2026-10-26/validation/moments-replay.json"
+      ],
+      "exit": 0,
+      "stderr": "",
+      "stdout_bytes": 1693
+    },
+    {
+      "command": [
+        "python3",
+        "/dev/shm/dc-review-c7f9ef5b1faa/output/proveit-lean-structural-simplifications-2026-10-26/scripts/check_tile_determinism.py",
+        "/dev/shm/dc-review-c7f9ef5b1faa/ProveIt",
+        "/dev/shm/dc-review-c7f9ef5b1faa/output/proveit-lean-structural-simplifications-2026-10-26/validation/tile-determinism-replay.json"
+      ],
+      "exit": 0,
+      "stderr": "",
+      "stdout_bytes": 3492
+    }
+  ],
+  "numeric_outputs_equal_recorded": true
+}

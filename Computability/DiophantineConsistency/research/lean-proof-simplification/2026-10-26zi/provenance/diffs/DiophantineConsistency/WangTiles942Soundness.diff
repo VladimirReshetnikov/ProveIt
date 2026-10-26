@@ -1,0 +1,73 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942Soundness.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942Soundness.lean
+@@ -0,0 +1,70 @@
++import DiophantineConsistency.WangTiles942RowStep
++
++/-!
++# A marked periodic word forces the actual decimal machine to halt
++
++Initialization and every operating step are derived from the literal tile
++language. If the machine remained operating up to the vertical period, its
++encoded colors would meet Start's incompatible north color435 at the origin.
++No run, clean-row, no-finish or tiling/machine equivalence is assumed.
++-/
++
++namespace DiophantineConsistency.WangTiles942Soundness
++
++open SetTheory.BusyBeaver SetTheory.BusyBeaver.ZFC
++open WangTiles942 WangTiles942Periodic WangTiles942RowEncoding
++  WangTiles942StripGeometry WangTiles942RowStep
++
++set_option Elab.async false
++set_option maxHeartbeats 1000000
++set_option maxRecDepth 10000
++
++/-- Halting occurs strictly before the word's (not necessarily least)
++vertical period. The stride is arbitrary and the marker need not be unique. -/
++theorem marked_halts_before_period {N : ℕ} [NeZero N] {s : ℤ}
++    {a : ZMod N → Fin 942} (h : MarkedWord N s a) :
++    ∃ t : ℕ, t < N ∧ (DecimalMachine215.machine.run t).state = none := by
++  classical
++  by_contra hn
++  have live : ∀ t : ℕ, t < N →
++      ∃ q : Fin 215, (DecimalMachine215.machine.run t).state = some q := by
++    intro t ht
++    cases he : (DecimalMachine215.machine.run t).state with
++    | none => exact False.elim (hn ⟨t,ht,he⟩)
++    | some q => exact ⟨q,rfl⟩
++  obtain ⟨L,R,hs,hi⟩ := marked_initialized_strip h
++  have rows : ∀ k : ℕ, k+1 ≤ N →
++      RowEncodes (plane N s a) (-(L : ℤ)) (R : ℤ) ((k+1 : ℕ) : ℤ)
++        (DecimalMachine215.machine.run (k+1)) := by
++    intro k
++    induction k with
++    | zero => intro _; exact hi
++    | succ k ih =>
++        intro hk
++        obtain ⟨q,hq⟩ := live (k+1) (by omega)
++        have he := row_step (plane_allowed N s a) (plane_east_matching h)
++          (plane_time_matching h) hs (ih (by omega)) q hq
++        simpa only [Nat.cast_add, Nat.cast_one, Machine.run] using he
++  have hN : 0 < N := NeZero.pos N
++  have he := rows (N-1) (by omega)
++  have hk : N-1+1 = N := by omega
++  rw [hk] at he
++  have hl := hs.initial.left_pos
++  have hr := hs.initial.right_min
++  have hc := he.color_bound 0 (by omega) (by omega)
++  have hp : plane N s a 0 (N : ℤ) = start := by
++    simpa only [zero_add] using
++      (plane_vertical_period N s a 0 0).trans (plane_start h)
++  rw [hp] at hc
++  change 435 ≤ 433 at hc
++  omega
++
++/-- The extracted halt is for the actual blank run, without a calibration
++premise or an independently supplied initial configuration. -/
++theorem marked_blank_halts {N : ℕ} [NeZero N] {s : ℤ}
++    {a : ZMod N → Fin 942} (h : MarkedWord N s a) :
++    KDenseBridge.BlankHalts DecimalMachine215.machine := by
++  obtain ⟨t,_,ht⟩ := marked_halts_before_period h
++  exact ⟨t,ht⟩
++
++end DiophantineConsistency.WangTiles942Soundness

@@ -1,0 +1,13 @@
+-- UNCOMPILED audit target; import patched modules in a separately authorized checkout.
+import DiophantineConsistency.WangTiles942HelicalQuotient
+import DiophantineConsistency.WangTiles942BandMarker
+
+#check DiophantineConsistency.WangTiles942HelicalQuotient.row_zero_of_helix
+#check DiophantineConsistency.WangTiles942CycleBand.band_quotient_properties
+#check DiophantineConsistency.WangTiles942CycleBand.marked_word_of_halt
+#check DiophantineConsistency.WangTiles942BandMarker.canonicalWord_properties
+
+#print axioms DiophantineConsistency.WangTiles942HelicalQuotient.row_zero_of_helix
+#print axioms DiophantineConsistency.WangTiles942CycleBand.band_quotient_properties
+#print axioms DiophantineConsistency.WangTiles942CycleBand.marked_word_of_halt
+#print axioms DiophantineConsistency.WangTiles942BandMarker.canonicalWord_properties

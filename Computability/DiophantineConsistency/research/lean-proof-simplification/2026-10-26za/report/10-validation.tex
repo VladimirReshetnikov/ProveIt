@@ -1,0 +1,23 @@
+\pageheading{8 What was checked and what still requires Lean}
+\textbf{Static evidence is reproducible but deliberately weaker than a proof check.} The retained wall patch preserves all nine public headers in HeadBounds. Each RowStep alternative and the combined candidate preserve its seven existing exported statements; unrelated proof bodies remain unchanged. The canonical audit checks that its added import creates no cycle back to RowStep and introduces no \code{sorry}, \code{admit}, \code{axiom} or \code{native_decide}. Source hashes bind each audit to the original pin, and the final comparison confirms retained target-source identity at the later pin.
+
+Independent finite checks cover these concrete semantic surfaces:
+\begin{itemize}
+\item Causality: all 430 cached actions, 488 receive tuples, 242,064 plain/plain pairs, 4,392 receive/seam incoming interfaces, and 209,840 action/receiver interfaces. The 37,788 matching plain pairs have zero matching edge; 860 actual action/receiver matches remain, including both halt-target receiver cases.
+\item Canonical row: 82,560 local configuration/tape cases and 577,920 color/horizontal point checks, including 192 entering-halt cases; 6,880 five-cell rows under the finite test's explicit zero-boundary and no-finish restrictions. Those restrictions are test-model conditions, not new production premises.
+\item Composition: the standalone RowStep patches fail sequential application in both orders because their contexts overlap. The supplied combined patch applies to the original source and agrees exactly with the composed candidate, retaining all existing statements.
+\end{itemize}
+These checks do not validate the universal Lean proof, coercion inference, exact simplifier behavior or an axiom footprint. Original upstream check receipts apply to original code only. The portable audits use explicit failures rather than relying on removable Python \code{assert} statements; ordinary and optimized-mode results and rejection controls are recorded separately.
+
+\textbf{Replay the retained source checks.} From the extracted archive root, with its supplied frozen sources, run:
+\begin{lstlisting}
+python3 strip/verify_static.py
+python3 row/audit_receiver_causality.py
+python3 row/audit_combined_row.py
+python3 machine/audit.py
+\end{lstlisting}
+These audits print JSON to stdout by default; output files require an explicit option. Row/machine audits use the supplied \code{baseline/}; the wall verifier uses its own source snapshot. The catalog verification has separate corpus-input requirements. No compiler is installed and no patch is applied to the original checkout by these commands.
+
+\textbf{The remaining adoption gate.} Use a disposable checkout with the pinned project toolchain. Compile the wall patch and its existing HeadBounds checks first. Trial each RowStep alternative independently, or use the supplied composition. Compile RowStep, StepConstruction, existing check modules and supplied prototype checks; inspect \texttt{\#print axioms} and rebuild reverse dependencies, including the newer maintained soundness consumers. Check the receiver tuple \code{simpa} and definitional \code{nextHead}/\code{sourceIndex} reductions early.
+
+\textbf{Exact blocker.} Target: changed Lean modules and downstream checks in the pinned Lean 4.32.0 project. Action: elaboration, kernel checking and axiom inspection. Reason: no Lean executable is available in this review environment. Status: \textbf{not run}. No compiler success or failure is inferred; the new proof texts remain proposals.

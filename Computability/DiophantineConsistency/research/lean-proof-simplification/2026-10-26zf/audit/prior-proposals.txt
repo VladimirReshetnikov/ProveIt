@@ -1,0 +1,153 @@
+# Non-repetition audit for the 26 October 2026 review
+
+## Scope and decision rule
+
+The candidate source snapshot is ProveIt commit
+`89226e3921bce3e8949fadd12d3efb6914c7630c`. The exclusion corpus was refreshed
+through `7df43cdfacb490cd3ca3acd23e39027efebf8801`. The eight candidate target
+files are unchanged between these commits; `freshness-compare.json` records
+the comparison. This freshness check is not a new compiler run.
+
+The directly reviewed proposal corpus consists of **23 placed packets, a through w,
+and five current incoming ZIP archives: 28 packets in total**. These counts are
+packet counts, not counts of independent ideas. Many packets overlap.
+
+The review treats every substantive prior suggestion as already available,
+including optional, uncompiled, deferred, withdrawn-for-overlap and notes-only
+directions. Implementing an old suggestion, moving it to a new helper, or checking
+it for the first time does not create a new recommendation. Mutually exclusive
+old patches are interpreted through their common mathematical outcome; this
+audit does not pretend they form a simultaneously compiled tree.
+
+Packet README files and principal manuscript sections were read; cumulative
+exclusion ledgers and proposal-bearing notes were inspected; candidate terms and
+nearby concepts were searched across all materialized text. The five incoming
+archives were read as ZIPs without executing their programs. Copied baseline
+source trees were excluded from the extraction because they are source evidence,
+not thousands of separate proposals. Relevant Lean candidates and patches were
+retained for checking precise overlaps. `corpus-manifest.json` records file hashes
+and the incoming archive/member identities. This is a scoped semantic audit, not
+a global originality claim or a claim to have reread every historical paper
+transitively linked by the large incoming index.
+
+In the table below, **P** abbreviates
+`Computability/DiophantineConsistency/research/lean-proof-simplification`.
+
+## Already available mechanisms: grouped taxonomy
+
+| Family | Assumed result; do not recommend it again | Representative prior source |
+|---|---|---|
+| Lookup and parsing | Library list lookup/membership; Option.map injectivity; successful bind elimination; total parent-code decoding and parse-then-check composition | a/b/c/e/h; n sections 03_parents and 04_decoder; t list encoding |
+| Exact decoder graph | One quote/depth product invariant, exact successful-decoding iff graph, preserved raw-input/fuel contracts | i/j/n |
+| Primitive recursion | Congruence under Nat.rec; optimizer congruence; supplied iterator program factoring | a; c syntax notes |
+| Scanners | Shared zero/successor/fixed-state laws, semiconjugacy, dynamic seed, raw-code soundness, encoded-list simulation | a–h |
+| Histories and fragments | Validated history fold, append/step laws, typed/encoded stages, arbitrary-premise backward-index collection | b/c notes; p variadic collector |
+| Finite dispatch | Exact numeric Boolean values; Boolean-certificate elimination before conditional graph; common finite tag dispatch | a/b/e; m |
+| Rule schedules | One syntax for 17 actual rules plus invalid default; numerical and supplied-PR interpretations with unchanged executable trees/counts | r section 5 |
+| Extensional computability | Primrec closure through scoped fun_prop; common direct/native enumeration frontend with distinct realizer/cost models | i; e section 14 |
+| Assignment transport | natAssignment/Sum.map naturality, expression rename semantics, finite witness splitting, early constructor projections | a–h |
+| Pairing and div/mod certificates | Inverse graph by forward equivalence/existential projection; neutral guarded Euclidean certificate; canonical quadratic pairing selector/slack/max | k/m/p; e |
+| Fork and depth budgets | Successor-first fork transport; affine witness/depth estimates; proof-producing max-plus budget certificates with GraphRep adapters | p; j/k/n |
+| Evaluator support | Support-restricted evaluator congruence and overwrite/frame rules | j supplementary prior_ideas candidate 7 |
+| Schema renaming | Certified normalization of rsep/rf1/rf2/ri renaming chains | j supplementary candidate 8 / semantic review |
+| Residual systems | Executable finite sum-of-squares semantics; zero extraction; generic degree and operation counts | a–h |
+| DAG semantics | Generic topological invariants, semiring gate semantics, commuted add/mul NodeRel, append/frame facts | a–h |
+| Generated proofs | run_power labels, indexed node facts, stable public wrappers/cuts, synchronized generator templates | a/b/c/f/g |
+| Circuit representation | Shared 99-node tail; semantic block certificates; typed SafeNode/erasure views; sharp degree profiles and sparse row normalization | c/e/f/g |
+| Coefficients | Common monomial/sign majorant certificate or sparse catalog; coefficient naturality; finite weighted fiber pushforward; factor degree implies coefficient vanishing | c/d/h/i |
+| Carrier/finalizer algebra | Retain chosen rational roots during integral descent; shared separated-root argument; whole-product units; nine-coordinate packaging; elementary row operations | i/m; a–h |
+| Native source facts | Decode Pell/source constraints once; coherent source and scalar window record; lightweight base interface; named conjunction projections | b/e/f |
+| Cyclic arithmetic | Half-radix identity; modular residue transport; stronger-to-weaker modulus; aligned-cell equivalence; no-borrow origin correction | a–h |
+| Words and masks | Injective sparse placement versus collision-preserving folding; direct physical selector sums; full-word/digit injectivity; binaryWord congruence/prefix reuse | a notes; d/g/i/n/o |
+| Cyclic carries | Derive recurrence from normalization; carry records; conditional padding; fixed-digit uniqueness; closed-form least/greatest carries and exact ambiguity | a–j |
+| Packing algebra | Monoid-algebra homomorphism into ZMod(radix^n−1), convolution and rotation from it | j supplementary algebra review |
+| Finite invariants | Finite injective forward-invariant subset admits invariant predecessors; offset-19 consequence | i/l |
+| Sparse displacement | Project support differences through quotient homomorphism; actual 606 obstruction | p |
+| Pell congruences | Existing odd-index lemma; transitive congruence up to sign; natAbs transport; delayed quotient witnesses | j/k/l/m |
+| Pell classification | Small positive ordinate ≤3 implies fundamental unit; integer norm arguments; negative norm excluded by positive-unit classification | l/m/q |
+| Pell growth and ratios | Simultaneous base/index monotonicity; positive error factor and common scaled ratio envelope; exact quotient extraction of half-binomial | l/p/r/s/u |
+| Native rank | Strong lower envelope (2q−1)(q²−1), rank≥40 and rank>3q from shared source facts | u |
+| Minima | Normalize discriminant obstructions; equality at heterogeneous finite-sum minima with coupled norm block preserved | q |
+| Object-model bridge | Model-to-ZF extraction, all-model completeness/sealing, arity-polymorphic closed transport | a–h |
+| Definable induction | Exact formula/satisfaction transport; constructor views; one definable ∃! bound-code induction; ThetaG preservation/fusion | a/c/e/j |
+| Internal evaluators | Semiring witness for guarded evaluator totality; generic relational uniqueness preserving arbitrary inputs; standard/internal finite-row abstractions | c notes/syntax:129–133; b/h; l screened candidate |
+| Internal certificates | Monotone union/insertion or observed-set closure for BoundClosed certificates | q/s |
+| Object formula specs | Compositional Sat rewriting under binders in arithmetic, expression and bound/seal formulas | s |
+| Unused inductions | Replace zero-sum and zero-product inductions whose IH is discarded by zero/successor decomposition | l/q |
+| Rank and rail API | Existing finite order/rank infrastructure for rail prefixes, strict monotonicity/injectivity; physical permutation as zero plus injective positive tail | n screening N08; o screening X3; m; s explicitly withdrew finite-cut family |
+| Wang boundary views | Guarded high-color fibers, exact color specializations, direction descriptors, finite controller certificates | b/e/n/o |
+| Machine encodings | Last-slot Option–Fin equivalence; reflect halt encoding equality; split only on written location; absolute-value interval API | v/u |
+| Strip proofs | Centered or translated integer induction; first failing point with valid prefix; small wall-bound order rewrites | t/u/v; incoming Post-Adoption |
+| Row representation | Shared edge fields/bond pulse; certified rows with exact boundaries; composition of rows/stages for TraceCycle | u/v/w; w audit/prior-art-audit:188–192 |
+| Periods and coordinates | Lattice-vector period closure, period-one rigidity, canonical twisted-band coordinates/equivariance | w; three incoming reports |
+| Formal polynomial descent | Injective exponent dilation proves RefinedPair polynomial identity before evaluating, avoiding complex root choices | w |
+| Methodology | Profiling, controlled simp, import facades, checked generators, audit/axiom gates, helper-inclusive metrics | all; supporting practice, not new proposal |
+
+## Additional exclusions from the five current incoming archives
+
+| Archive | Substantive directions beyond the earlier broad taxonomy |
+|---|---|
+| `Lean_Proof_Simplification_Post_Adoption_2026-10-26.zip` | Fin 3 wall-bound cleanup; receiver causality for actual operating rows; full interior equality to canonical stepTile. Optional stronger interfaces grow code and remain prior ideas. |
+| `diophantine-lean-further-deltas-2026-10-26.zip` | Prune nonextremal index_span rows (only row 21 support matters); geometric strip width L+R≤N; pairing branch threshold pair(a,b)<m²+m iff a<b; listHead_le via head_cons and add_le_add; mul_geom_sum and algebraic geometric bound; reconstruct internal LinearOrder from strict total order; supplementary Sidon polarization. |
+| `diophantine-lean-proof-refinements-2026-10-26.zip` | formCode_ge from outer-constructor minima; strict multiplication from additive gaps/no-zero-divisors before discreteness; Boolean root by cancellation; canonical band quotient properties before existential packaging and reuse in BandMarker; period-one rigidity. Also suggests looking for further root-constructor threshold clients and exact-witness completeness clients. |
+| `proveit-lean-structural-simplifications-2026-10-26.zip` | Fixed index-six Pell anchor chain; symbolic signal masses from target counts/sums/ranks; recognize allowed operating row as stepTile; stronger local tile determinism with exact exceptions. Shared pulse and centered induction drafts were withdrawn as already covered. |
+| `ProveIt_Additional_Lean_Simplifications_2026-10-26.zip` | Helical row-zero proof by a period-one diagonal orbit; coprime cancellation in combined_dvd_iff; geometric range bound from mul_geom_sum; positive quadratic margin as a linear interval; optional finite signed-prefix quotient/remainder contract; native-rank equality/order through C+qF. Notes also propose signed-prefix concatenation, exact potential comparison clients, further helical orbits, margin endpoints and local simp orientation. |
+
+## Candidate-specific screening in this review
+
+These decisions concern the exact candidate mechanisms discussed by the review
+team. A provisional clearance is conditional on the eventual proof doing what
+its stated distinction says; it is not compilation evidence.
+
+| Candidate | Decision | Closest precedent and residual boundary |
+|---|---|---|
+| Canonical semiring evaluator replaces EvalRel inductions | Exclude | c notes/syntax:133; l explicitly screened out canonical evaluation. Unguarded uniqueness must survive. |
+| Fuse boundCodeRel_total and boundCodeRel_unique into ∃! | Exclude | j report §3.2 explicitly gives this exact invariant. |
+| listHead_le by direct additive monotonicity | Exclude | further-deltas report §P5 and syntax/FINDINGS contain this exact change. |
+| Library order rank for GenericRank/permutation | Exclude conservatively | n N08/o X3 and s late audits already cover finite-cut/rank reuse; physical injective tail is m. |
+| Indexed certified row/category composition for TraceCycle | Exclude | w supplementary audit explicitly proposes certified run row and boundary-to-boundary composition; further-deltas exclusion notes list seam gluing. |
+| Single canonical band construction shared by CycleBand/BandMarker | Exclude | proof-refinements §D exact witness before existential erasure. |
+| ConsecutivePell negative norm via fundamental unit | Exclude | q §positive-unit classification. |
+| mulRel_one_left from mulRel_succ_left and existing zero laws | Provisionally distinct | l/q delete vacuous inductions only. This specializes an already proved left-successor recursion equation at zero to remove a genuine induction. All guards and downward imports are preserved. The longer alternative through right successor and commutativity has the same residual mechanism. |
+| Direct successor membership and SuccAddOrder/SuccOrder for internal Natural | Provisionally distinct | Derive a<b+1 iff a≤b directly from vsucc_spec, then complementary successor inequality and additive-gap characterization. further-deltas P7 changes LinearOrder construction; proof-refinements P2 removes discreteness dependency for multiplication. Neither derives/registers this discrete successor/addition API. Keep existing ≤/< and no well-foundedness assumption. |
+| Iterated ℓ1/ℓ∞ convolution bound | Provisionally distinct with concrete targets | SelectiveCoefficientBounds.abs_coeff_square_mul_le and SplitCoefficientBounds.abs_coeff_linear_mul_le have no matching prior proposal. d finite-fiber identity and c/h majorant certificates are prior, but the latter bound eight-entry literal coefficient rows; they do not give the iterative operator bound H*(sum abs y)^r. Preserve collision allowance and original constants. |
+| NativePellPower.sixteen_pow_bound by shared-base normalization | Provisionally distinct | Set t=4^r≥16, rewrite the target as 4t+2≤t², and remove its induction. f's exact two-power bound concerns Nat.one_lt_two_pow in NativeRadixDigits; incoming fixed-index Pell anchor concerns large_of_six_le. Neither replaces this target. |
+| Modular unit descent in ThirteenFreshSeed.quotient_exists | Provisionally distinct | No exact target/mechanism found; generic CRT or div/mod certificate factoring is prior and must not be claimed new. |
+| Explicit finite allowed-tile inverse using recoveredIndex | Provisionally distinct | e praises existing decoder; w explicit inverse concerns band addresses, not tile indices. Count only new exact AllowedTile equivalence/quotientWord clients beyond old decoding and canonical-band contracts. |
+| Live-until-bound trace invariant and endpoint contradiction | Pending exact source review | Generic invariant and certified-row mechanisms are prior; a concrete stronger simulation/halting eliminator must remove a distinct residual argument. |
+| Full horizontal-pair compatibility automaton | Pending exact source review | Finite controller certificates, static fibers and incoming local tile determinism are prior. Need a new global language/semantic property beyond recoding classification. |
+
+## Important examples of strict screening
+
+The latest incoming files invalidate several attractive candidates that would
+appear new from the maintained Lean files alone. For example, the list-head
+order simplification and the canonical band proof sharing are already concrete
+proposals in those archives. Notes-only proposals also matter: finite rank reuse
+and certified trace-row composition were found in supplementary audits rather
+than main recommendation lists. The new report should cite these as excluded
+ideas, not count their implementation as progress beyond the user's baseline.
+
+No prior packet's successful Lean checks validate a new replacement produced in
+this review. New compiler status must be reported separately, and any source
+reduction must charge its new imports, helper statements and compatibility
+adapters.
+
+### Final focused comparison of the leading four candidates
+
+The proposed unit calculation, direct successor-membership route, iterated
+convolution estimate, and shared-base power inequality were additionally checked
+against all five incoming manuscript bodies, their proposal code/patches, and
+targeted terms across the placed supplementary notes. No matching substantive
+proposal was located. This conclusion is relative to the pinned direct corpus.
+The closest earlier methods and the residual obligations are specified above;
+these candidates should not be advertised as new mathematical discoveries.
+
+The fifth incoming packet was added during the final freshness check. Its full
+manuscript, proposal-bearing arithmetic/helical review notes, nonduplication audit,
+and six-idea candidate code were examined. None adds a direct successor-membership
+order bridge, a zero-specialized multiplication-by-one calculation, a repeated
+linear coefficient operator bound, or the shared-base proof of sixteen_pow_bound.
+Its geometric-series change is in PolynomialRangeBounds and leaves coefficient
+bounds unchanged; its square-to-interval change is in MarginSeparation and does
+not normalize exponential bases. These concrete distinctions preserve all four
+recommendations after the refreshed exclusion baseline is assumed applied.

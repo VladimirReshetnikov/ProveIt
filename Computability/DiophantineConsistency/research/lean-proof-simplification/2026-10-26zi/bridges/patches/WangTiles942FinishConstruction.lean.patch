@@ -1,0 +1,47 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942FinishConstruction.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942FinishConstruction.lean
+@@ -26,31 +26,22 @@
+ def finishTile (cfg : Config 215) (x : ℤ) : Tile :=
+   ⟨0,color cfg x,0,438⟩
+ 
++/-- The halted color is derived once for the two literal closing constructors. -/
++private theorem halted_tiles_allowed (cfg : Config 215) (hh : cfg.state = none) (x : ℤ) :
++    Allowed (passTile cfg x) ∧ Allowed (finishTile cfg x) := by
++  let b : Fin 2 := ⟨(Tape.read cfg.tape x).toNat, by
++    have h := bit_le_one (Tape.read cfg.tape x); omega⟩
++  simp only [passTile,finishTile,color,hh,halted_head_color]
++  split_ifs
++  · exact ⟨Allowed.pass (1 : Fin 2) b,Allowed.finish (1 : Fin 2) b⟩
++  · simpa only [Fin.val_zero,Nat.mul_zero,zero_add] using
++      And.intro (Allowed.pass (0 : Fin 2) b) (Allowed.finish (0 : Fin 2) b)
++
+ theorem passTile_allowed (cfg : Config 215) (hh : cfg.state = none) (x : ℤ) :
+-    Allowed (passTile cfg x) := by
+-  unfold passTile
+-  by_cases hx : x = cfg.head
+-  · subst x
+-    rw [color_at_head,hh,halted_head_color]
+-    exact Allowed.pass (1 : Fin 2)
+-      ⟨(Tape.read cfg.tape cfg.head).toNat, by have h := bit_le_one (Tape.read cfg.tape cfg.head); omega⟩
+-  · rw [color_of_ne_head cfg x hx]
+-    simpa only [Fin.val_zero, Nat.mul_zero, zero_add] using
+-      Allowed.pass (0 : Fin 2)
+-        ⟨(Tape.read cfg.tape x).toNat, by have h := bit_le_one (Tape.read cfg.tape x); omega⟩
++    Allowed (passTile cfg x) := (halted_tiles_allowed cfg hh x).1
+ 
+ theorem finishTile_allowed (cfg : Config 215) (hh : cfg.state = none) (x : ℤ) :
+-    Allowed (finishTile cfg x) := by
+-  unfold finishTile
+-  by_cases hx : x = cfg.head
+-  · subst x
+-    rw [color_at_head,hh,halted_head_color]
+-    exact Allowed.finish (1 : Fin 2)
+-      ⟨(Tape.read cfg.tape cfg.head).toNat, by have h := bit_le_one (Tape.read cfg.tape cfg.head); omega⟩
+-  · rw [color_of_ne_head cfg x hx]
+-    simpa only [Fin.val_zero, Nat.mul_zero, zero_add] using
+-      Allowed.finish (0 : Fin 2)
+-        ⟨(Tape.read cfg.tape x).toNat, by have h := bit_le_one (Tape.read cfg.tape x); omega⟩
++    Allowed (finishTile cfg x) := (halted_tiles_allowed cfg hh x).2
+ 
+ theorem passTile_colors (cfg : Config 215) (x : ℤ) :
+     (passTile cfg x).north = color cfg x ∧ (passTile cfg x).south = color cfg x ∧

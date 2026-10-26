@@ -1,0 +1,96 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942CycleBand.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942CycleBand.lean
+@@ -130,6 +130,37 @@
+     fun x hx t => band_horizontal T L H hh hL x t hx,
+     band_twisted T L R H hh hL hR,band_period L H,band_start L H (by omega)⟩
+ 
++/-- Matching and band binding for the exact quotient, before hiding it
++existentially. Marker uniqueness later reuses this same construction. -/
++theorem band_quotient_properties (T L R H : ℕ) [NeZero H]
++    [NeZero ((L+R)*H)]
++    (hh : (DecimalMachine215.machine.run T).state = none)
++    (hL : T+2 ≤ L) (hR : T+2 ≤ R) (hTH : T+2 ≤ H) (hH : 3 ≤ H)
++    (hw : 0 < L+R) :
++    let a := quotientWord (extend (band L H) (L+R) (L : ℤ))
++      (extend_allowed (band L H) (L+R) hw (L : ℤ)
++        (fun x _ t => band_allowed T L H hh hTH x t)) (L+R) H
++    MarkedWord ((L+R)*H) (L+R : ℕ) a ∧
++      ∀ x, -(L : ℤ) ≤ x → x < (R : ℤ) → ∀ t,
++        tile (a (address ((L+R)*H) (L+R : ℕ) x t)) = band L H x t := by
++  have hL0 : 0 ≤ (L : ℤ) := by omega
++  have hLw : (L : ℤ) < ((L+R : ℕ) : ℤ) := by omega
++  have hleft : ((L+R : ℕ) : ℤ)-(L : ℤ)-1 = (R : ℤ)-1 := by push_cast; ring
++  rcases extension_properties (band L H) (L+R) H hw (L : ℤ) hL0 hLw
++      (fun x _ t => band_allowed T L H hh hTH x t)
++      (fun x _ t => band_temporal L H hH x t)
++      (fun x hx _ t => band_horizontal T L H hh hL x t hx)
++      (by simpa only [hleft] using band_twisted T L R H hh hL hR)
++      (fun x _ t => band_period L H x t) (band_start L H (by omega)) with
++    ⟨_,hhoriz,htime,hs,hhel,hvert⟩
++  refine ⟨quotientWord_marked _ _ _ _ hhoriz htime hs hhel hvert, ?_⟩
++  intro x hx0 hxR t
++  apply (quotientWord_binding _ _ _ _ hhel hvert x t).trans
++  apply extend_on_band (band L H) (L+R) hw (L : ℤ) x t
++  unfold InBand
++  push_cast
++  omega
++
+ /-- A halting actual blank run gives an actual finite marked word of
+ length (L+R)*H and stride L+R, retaining every canonical-band tile.
+ There is no additional premise about trace boundaries or clean runs. -/
+@@ -143,25 +174,6 @@
+         tile (a (address ((L+R)*H) (L+R : ℕ) x t)) = band L H x t := by
+   letI : NeZero H := ⟨by omega⟩
+   letI : NeZero ((L+R)*H) := ⟨Nat.ne_of_gt (Nat.mul_pos (by omega) (by omega))⟩
+-  have hw : 0 < L+R := by omega
+-  have hL0 : 0 ≤ (L : ℤ) := by omega
+-  have hLw : (L : ℤ) < ((L+R : ℕ) : ℤ) := by omega
+-  have hleft : ((L+R : ℕ) : ℤ)-(L : ℤ)-1 = (R : ℤ)-1 := by push_cast; ring
+-  rcases extension_properties (band L H) (L+R) H hw (L : ℤ) hL0 hLw
+-      (fun x _ t => band_allowed T L H hh hTH x t)
+-      (fun x _ t => band_temporal L H hH x t)
+-      (fun x hx _ t => band_horizontal T L H hh hL x t hx)
+-      (by simpa only [hleft] using band_twisted T L R H hh hL hR)
+-      (fun x _ t => band_period L H x t) (band_start L H (by omega)) with
+-    ⟨ha,hhoriz,htime,hs,hhel,hvert⟩
+-  rcases exists_marked_word (extend (band L H) (L+R) (L : ℤ)) ha
+-      (L+R) H hw (by omega) hhoriz htime hs hhel hvert with ⟨a,hm,hbind⟩
+-  refine ⟨a,hm,?_⟩
+-  intro x hx0 hxR t
+-  apply (hbind x t).trans
+-  apply extend_on_band (band L H) (L+R) hw (L : ℤ) x t
+-  unfold InBand
+-  push_cast
+-  omega
++  exact ⟨_, band_quotient_properties T L R H hh hL hR hTH hH (by omega)⟩
+ 
+ end DiophantineConsistency.WangTiles942CycleBand
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942BandMarker.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942BandMarker.lean
+@@ -86,24 +86,8 @@
+     (∀ x, -(L : ℤ) ≤ x → x < (R : ℤ) → ∀ t,
+       tile (canonicalWord T L R H hh hTH hw (address ((L+R)*H) (L+R : ℕ) x t)) =
+         band L H x t) := by
+-  have hL0 : 0 ≤ (L : ℤ) := by omega
+-  have hLw : (L : ℤ) < ((L+R : ℕ) : ℤ) := by omega
+-  have hleft : ((L+R : ℕ) : ℤ)-(L : ℤ)-1 = (R : ℤ)-1 := by push_cast; ring
+-  rcases extension_properties (band L H) (L+R) H hw (L : ℤ) hL0 hLw
+-      (fun x _ t => band_allowed T L H hh hTH x t)
+-      (fun x _ t => band_temporal L H hH x t)
+-      (fun x hx _ t => band_horizontal T L H hh hL x t hx)
+-      (by simpa only [hleft] using band_twisted T L R H hh hL hR)
+-      (fun x _ t => band_period L H x t) (band_start L H (by omega)) with
+-    ⟨_,hhoriz,htime,hs,hhel,hvert⟩
+-  refine ⟨quotientWord_marked _ _ _ _ hhoriz htime hs hhel hvert,
+-    canonicalWord_marker_iff T L R H hh hTH (by omega) (by omega) hw,?_⟩
+-  intro x hx0 hxR t
+-  apply (quotientWord_binding _ _ _ _ hhel hvert x t).trans
+-  apply extend_on_band (band L H) (L+R) hw (L : ℤ) x t
+-  unfold InBand
+-  push_cast
+-  omega
++  obtain ⟨hm, hbind⟩ := band_quotient_properties T L R H hh hL hR hTH hH hw
++  exact ⟨hm, canonicalWord_marker_iff T L R H hh hTH (by omega) (by omega) hw, hbind⟩
+ 
+ /-- An actual halting time supplies a uniquely marked concrete word for
+ all sufficiently large independent left/right margins and heights. -/

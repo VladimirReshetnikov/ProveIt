@@ -1,0 +1,54 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942StripGeometry.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942StripGeometry.lean
+@@ -47,6 +47,26 @@
+   rw [initial_tile h x hl hr]
+   split_ifs <;> decide
+ 
++/-- A positive horizontal period cannot place the left seam strictly
++inside the initial strip. The two boundary positions may coincide modulo N. -/
++theorem initial_width_le_period {T : ℤ → Tile} {N L R : ℕ}
++    (h : InitialStrip T N L R) (hperiod : Function.Periodic T (N : ℤ)) :
++    L + R ≤ N := by
++  have hN : 0 < N := lt_of_lt_of_le h.left_pos h.left_le
++  by_contra hwidth
++  apply (initial_vertical_nonseam h (-(L : ℤ) + (N : ℤ)) (by omega) (by omega)).1
++  exact (congrArg Tile.north (hperiod (-(L : ℤ)))).trans h.wall_north.1
++
++/-- The initial geometry alone excludes horizontal periods one and two. -/
++theorem marked_period_gt_two {N : ℕ} [NeZero N] {s : ℤ}
++    {a : ZMod N → Fin 942} (h : MarkedWord N s a) : 2 < N := by
++  obtain ⟨L,R,hi⟩ := marked_initial_strip h
++  have hw := initial_width_le_period hi
++    (fun x => plane_horizontal_period N s a x 0)
++  have hl := hi.left_pos
++  have hr := hi.right_min
++  omega
++
+ /-- This is the seeded tape after the actual blank-machine first action:
+ one written1 at zero, state1 on blank0 at position1, and plain0 elsewhere. -/
+ theorem initial_south {T : ℤ → Tile} {N L R : ℕ}
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942SoundnessChecks.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942SoundnessChecks.lean
+@@ -25,19 +25,10 @@
+     {N : ℕ} [NeZero N] (s : ℤ) (a : ZMod N → Fin 942) : ¬ MarkedWord N s a :=
+   fun h => hn (marked_blank_halts h)
+ 
+--- The initialized machine at clock1 is live, so even periods1 and2
+--- are excluded without assuming any least-period or unique-marker property.
++-- The geometry-only result preserves this existing public theorem name.
+ theorem marked_period_gt_two {N : ℕ} [NeZero N] {s : ℤ}
+-    {a : ZMod N → Fin 942} (h : MarkedWord N s a) : 2 < N := by
+-  obtain ⟨t,ht,hh⟩ := marked_halts_before_period h
+-  by_contra hn
+-  have hc : t = 0 ∨ t = 1 := by omega
+-  rcases hc with rfl | rfl
+-  · change some (0 : Fin 215) = none at hh
+-    contradiction
+-  · rw [DecimalMachineInitialization.run_one] at hh
+-    change some (1 : Fin 215) = none at hh
+-    contradiction
++    {a : ZMod N → Fin 942} (h : MarkedWord N s a) : 2 < N :=
++  WangTiles942StripGeometry.marked_period_gt_two h
+ 
+ #print axioms marked_halts_before_period
+ #print axioms marked_blank_halts

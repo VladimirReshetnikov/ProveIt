@@ -1,0 +1,19 @@
+\pageheading{8 What is checked and how to adopt sequentially}
+\textbf{Completed evidence.} Candidate diffs replay exactly against the frozen source. Static checks preserve imports, public headers and relevant context commands; the only selected definition change is the optional \code{nonStartIndex}. The three stronger word declarations are explicit, and the sole removed private declaration is \code{hs_mod_of}. Scans find no new axiom, \code{sorry}, \code{admit} or \code{native_decide}. These scans do not inspect elaborated axiom dependencies.
+
+Finite checks cover all 50,070 self-maps of sizes zero through six; the strict maps are identities. Physical data checks parse all 941 non-Start indices and 940 adjacent recorded-weight comparisons, but do not independently decode selector weights. Controller checks exercise finite coprimality cases and the three displayed scalar residues, not the unknown actual \(K\) residues. Word checks cover cyclic geometry, \(N=1\), numeric controls and counterexamples to the lower-threshold and omitted-bare-term mistakes. No finite test proves the universal Lean statements.
+
+\textbf{Required environment.} Use an authorized complete checkout at the source pin, Lean \code{v4.32.0}, and the manifest-pinned Mathlib revision \code{81a5d257c8e410db227a6665ed08f64fea08e997}. Do not assume an existing successful \code{.olean} validates edited source. No dependency installation or Lean execution was performed here.
+
+\begin{enumerate}
+\item \textbf{Establish the baseline.} Verify the Git pin and source hashes. Build the unmodified target modules and existing check modules with the pinned dependencies. Record any pre-existing failure separately before attributing it to a patch.
+\item \textbf{Try finite-order rigidity alone.} Apply \code{physical/patches/order_iso.patch}; rebuild \code{WangTiles942PhysicalOrder}, then its existing checks and the prepared regression. Check the order-isomorphism constructor and definitional forward map first if elaboration fails.
+\item \textbf{Try the two controller edits separately.} Apply \code{controller_coprime_cardinality.patch}, rebuild \code{ControllerAuxiliaryChoice} and its checks, then its dependent residue-lift modules. Apply \code{controller_hs_inline.patch}; rebuild \code{CurrentControllerData2011} and its checks. Preserve irreducibility and all \code{hK} premises.
+\item \textbf{Decide the predecessor change independently.} In a clean variant use \code{physical/patches/combined.patch} instead of the order-only patch. Compile the exact old-constructor \code{rfl} regression, the successor law, rank/position facts and existing consumers.
+\item \textbf{Only then consider the stronger word API.} Apply \code{word/patches/marker_tail.patch}, rebuild \code{CurrentWordTopBounds2011}, its existing checks. Confirm the two endpoint wrappers, raw bounds, top carries and whole-word bounds still elaborate unchanged. Keep the bare 2008 term and test \(N=1\).
+\item \textbf{Close integration rather than stopping at a leaf.} Rebuild affected downstream modules and the project umbrella. Inspect \texttt{\#print axioms} for each changed/new theorem and compare with the project's policy. Record commands, exit codes, dependency revisions and source hashes. Only then label a variant Lean-validated.
+\end{enumerate}
+
+Build sequentially: one process and one module only after its dependencies are ready. \code{LAKE_JOBS=1} does not enforce this; never use \code{LEAN_NUM_THREADS=0}. Rebuild changed imports before checks, and avoid umbrella fanout until the affected dependency chain is ready.
+
+\textbf{Stopping rule.} Repair source/type-shape errors, refresh cost/hash receipts and rebuild. With Lean unavailable, leave the compilation gate explicitly open. If a positive-cost API has no actual downstream use, leave it optional rather than expanding scope to manufacture one.

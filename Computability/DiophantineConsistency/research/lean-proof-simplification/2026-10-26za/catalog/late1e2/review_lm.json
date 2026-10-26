@@ -1,0 +1,224 @@
+{
+  "review": "Late packets l and m: semantic novelty screen",
+  "reviewed_at_utc": "2026-10-26T17:34:30Z",
+  "repository_pin": "1e2a853935a6155cbcf2aa199aaca51946c4fff9",
+  "artifact_root": "lean_simplification_round3/catalog/late1e2/research",
+  "scope": {
+    "reports_read_in_full": [
+      "2026-10-26l/report/report.tex:1-705",
+      "2026-10-26l/report/metrics.tex",
+      "2026-10-26l/report/validation-status.tex",
+      "2026-10-26m/report/additional_lean_simplifications.tex:1-937"
+    ],
+    "prototype_coverage": "All l report snippets and all three l standalone experiments; all five m standalone experiments, SignedModEq module, optional PermutationClients and optional patch; exact changed declaration regions in complete replacement/proposed modules; both main patches (a combined display truncated part of m, but all changed m declaration regions were subsequently read separately).",
+    "method": "Static reading of already-extracted public repository objects, semantic comparison of statements and actual changed proof mechanisms. Complete-file copies were not automatically counted as proposals.",
+    "execution": "No Lean, TeX, repository scripts, builds, installs, new fetches, or upstream edits performed. Shell was used only for local file listing and text inspection; apply_patch creates this review ledger only.",
+    "report_locator_convention": "Exact source-line locators and report section titles are supplied. PDF page numbers have not been independently extracted; do not invent PDF pagination from source positions.",
+    "prior_validation_claims": "The packets report successful pinned Lean validation for main edits, but this review has not rerun it. m's optional complete WangTiles942 client is explicitly uncompiled in its own report."
+  },
+  "remaining_round3_screen": [
+    {
+      "candidate": "Receiver causality: any receive tile occurs at the actual moved head, preserving finish",
+      "decision": "No duplicate or substantive overlap in l/m reports or inspected candidate code",
+      "reason": "Neither packet proposes operating-row receiver classification or a transition-to-receiver location invariant. m's pairing graph projection concerns existential certificate coordinates, not tile equality or machine-step causality."
+    },
+    {
+      "candidate": "Canonical complete interior tile equals rowstepTile",
+      "decision": "No duplicate or substantive overlap in l/m reports or inspected candidate code",
+      "reason": "No l/m proposal identifies a tile from complete interior conditions or replaces local operating-row tile construction. The full-value rfl equalities in m compare representation constructors and do not supply this theorem."
+    },
+    {
+      "candidate": "HeadBounds finite-bound cleanup with Nat.le_of_lt_succ and Nat.pow_le_pow_left",
+      "decision": "No duplicate or substantive overlap in l/m reports or inspected candidate code",
+      "reason": "l's Pell-base monotonicity removes an exponential comparison using a simultaneous recurrence invariant; it neither proposes these HeadBounds lemmas nor the direct finite-range endpoint cleanup. m's optional finite-tail injection is a different statement and proof obligation."
+    },
+    {
+      "candidate": "First-failure walls",
+      "decision": "Already excluded by parent baseline T1/T3; not reintroduced",
+      "evidence_origin": "Parent task specifies prior duplicate; l/m do not add a new claim."
+    },
+    {
+      "candidate": "le_abs' trace bound",
+      "decision": "Already excluded by parent baseline T3; not reintroduced",
+      "evidence_origin": "Parent task specifies prior duplicate; l/m do not add a new claim."
+    },
+    {
+      "candidate": "Periodic 435/433 barrier",
+      "decision": "Already implemented upstream per parent; exclude",
+      "additional_caution": "l additionally proposes finite forward-invariant-set inverse closure in place of period witnesses, including a general follow-up search for analogous finite-state consumers."
+    }
+  ],
+  "assumed_baseline_mechanisms": [
+    {
+      "id": "L1",
+      "title": "Delete vacuous internal-natural induction using nat_zero_or_succ",
+      "report": "2026-10-26l/report/report.tex:223-278, section 3 Idea 1: remove two specialized inductions",
+      "distinctive_text": "The successor case begins intro n hn _: its induction hypothesis is discarded.",
+      "actual_scope": [
+        "2026-10-26l/replacements/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectAdditionCancellation.lean:61-71 addRel_zero_iff",
+        "2026-10-26l/replacements/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalZero.lean:13-27 mulRel_zero_iff",
+        "2026-10-26l/experiments/NoVacuousInduction.lean:22-48"
+      ],
+      "mechanism": "Delete private zeroSumStage/zeroProductStage formulas and their specs; split y into internal zero or successor, use relation functionality and successor laws, not arbitrary external Nat induction.",
+      "followup_already_suggested": "report.tex:617-625 explicitly proposes surveying other omega_ind proofs with discarded induction hypotheses.",
+      "relation_to_remaining_round3": "None; neither HeadBounds induction nor receiver causality is this internal-model decomposition."
+    },
+    {
+      "id": "L2_M3",
+      "title": "Reuse SignedPellResidue.odd_index_of_base_dvd exactly",
+      "report": [
+        "2026-10-26l/report/report.tex:280-313, section 4 Idea 2: reuse the exact Pell parity theorem",
+        "2026-10-26m/report/additional_lean_simplifications.tex:371-413, section 4 Reuse the existing odd-index theorem"
+      ],
+      "distinctive_text": "The classified equality Iu = X_I(s) supplies I dividing X_I(s) directly.",
+      "actual_scope": [
+        "2026-10-26l/replacements/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean:34-39 within index_residues",
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean:34-37 within index_residues"
+      ],
+      "mechanism": "Replace local even-index residue/divides-one contradiction and remove unused s-positive argument; add acyclic SignedPellResidue import.",
+      "cross_packet_overlap": "Exact duplicate between l and m; count once in the assumed baseline."
+    },
+    {
+      "id": "L3",
+      "title": "Keep sign-transport divisibility witnesses abstract",
+      "report": "2026-10-26l/report/report.tex:315-376, section 5 Idea 3: keep divisibility witnesses abstract",
+      "actual_scope": [
+        "2026-10-26l/report/snippets/sign-transport-new.lean:1-11",
+        "2026-10-26l/replacements/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean:89-103 hJp_of_sign and callers",
+        "2026-10-26l/replacements/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean:116-130 signed_index_residues square and sign blocks"
+      ],
+      "mechanism": "After Int.modEq_iff_dvd, combine facts using dvd_sub, dvd_add, dvd_neg and Or.imp rather than extracting four quotient pairs. Supporting edits use Int.natCast_natAbs/sq_abs and directly transport supplied congruence or its negation.",
+      "followup_already_suggested": "report.tex:627-634 explicitly suggests a public divisibility-up-to-sign theorem if multiple consumers are found.",
+      "cross_packet_overlap": "m's SignedModEq gives the larger public compositional interface over this same sign-transport work; treat both local and public versions as assumed, not separate future novelty."
+    },
+    {
+      "id": "L4",
+      "title": "Compare Pell bases by simultaneous coordinate monotonicity",
+      "report": "2026-10-26l/report/report.tex:378-457, section 6 Idea 4: compare Pell bases instead of exponentials",
+      "actual_scope": [
+        "2026-10-26l/replacements/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean:308-325 coordinates_mono_base and main_index_gt_first",
+        "2026-10-26l/experiments/PellBaseMonotonicity.lean:10-41"
+      ],
+      "mechanism": "Induct simultaneously on X_a(n) and Y_a(n) through positive first-order recurrences for A <= B, then use strictMono_y to infer n < p. Deletes exponential envelopes, predecessor-index subtraction, and positivity subarguments in the consumer; retains public compatibility signature.",
+      "followup_already_suggested": "report.tex:600-615 discusses moving projections to a lower Pell API and auditing source_base_separation clients for weaker A <= P assumptions.",
+      "relation_to_remaining_round3": "No duplicate of Nat.pow_le_pow_left finite-bound cleanup: this proposal removes Pell exponential reasoning using a different invariant."
+    },
+    {
+      "id": "L5",
+      "title": "Integer-only nonsquare norm proof",
+      "report": "2026-10-26l/report/report.tex:459-496, section 7 Idea 5: prove the norm fact entirely over the integers",
+      "actual_scope": [
+        "2026-10-26l/replacements/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MinimumNorm.lean:26-34 norm_ne_zero_of_not_isSquare",
+        "2026-10-26l/report/snippets/norm-new.lean:1-9"
+      ],
+      "mechanism": "From x^2 = y^2*d, apply Int.pow_dvd_pow_iff to get y divides x, write x = y*k, cancel nonzero y^2, contradict nonsquareness. Removes direct Rat.Lemmas and FieldSimp imports."
+    },
+    {
+      "id": "L6",
+      "title": "Finite forward invariance implies predecessor invariance",
+      "report": "2026-10-26l/report/report.tex:498-555, section 8 Idea 6: use inverse invariance of a finite set",
+      "distinctive_text": "The restriction of an injective map to the finite set E is surjective.",
+      "actual_scope": [
+        "2026-10-26l/replacements/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeFieldCycles2011.lean:68-87 offset19_excludes_510, changed final block 79-87",
+        "2026-10-26l/experiments/FiniteInvariant.lean:68-87",
+        "2026-10-26l/report/snippets/finite-invariant-new.lean:1-9"
+      ],
+      "mechanism": "Show even S is forward invariant; use Equiv.Perm.perm_symm_on_of_perm_on_finite to prove the predecessor of a hypothetical 510 state is even; successor_mod_four then contradicts 510 mod 4. Deletes iterate induction, positive period, p-1 arithmetic. Preserves finite type and allowed 511 self-loop.",
+      "followup_already_suggested": "report.tex:636-642 expressly generalizes the search to any finite-permutation proof whose period witness only returns a forward-invariant property to a predecessor.",
+      "rank_search_boundary": "Do not advertise finite invariant-predicate backward transport as new in CurrentCellConstruction2011 or NativeRankVariation merely because its predicate or constants differ. A genuinely different mathematical invariant/endpoint would need a specific argument for novelty."
+    },
+    {
+      "id": "M1",
+      "title": "Preserve exact signed rational roots during integral descent and share separated reconstruction",
+      "report": "2026-10-26m/report/additional_lean_simplifications.tex:171-281, section 2 Preserve the exact rational root during integral descent",
+      "actual_scope": [
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NearSquareFinalizer.lean:94-97 rat_intCast_num_of_pow",
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NearSquareFinalizer.lean:122-153 integer_roots_of_separated_norm_zero, exact descent 146-153",
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NearSquareFinalizer.lean:156-162 integer_roots_of_norm_zero specialization",
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MarginFinalizer.lean:48-52 wrapper",
+        "2026-10-26m/checks/standalone/RationalRootDescent.lean:7-16"
+      ],
+      "mechanism": "congrArg Rat.den on q^n = integer plus n != 0 forces denominator one; Rat.coe_int_num_of_den_eq_one retains the exact signed q via q.num. Eliminates four sign combinations. General separated norm theorem lives below both clients; bounded hypotheses establish separation and call it.",
+      "followup_already_suggested": "report:822-830 proposes other nonzero-power integrality clients and cautiously considers an integrally closed-domain API."
+    },
+    {
+      "id": "M2",
+      "title": "Small-ordinate Pell fundamentality criterion",
+      "report": "2026-10-26m/report/additional_lean_simplifications.tex:283-369, section 3 A uniform small-ordinate criterion for Pell minimality",
+      "actual_scope": [
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean:159-181 isFundamental_of_y_le_three and firstUnit_fundamental",
+        "2026-10-26m/checks/standalone/SmallPell.lean:9-40 including sharpness witness"
+      ],
+      "mechanism": "For any Pell solution with x > 1 and 0 < y <= 3, classify as f^n for a fundamental f; n >= 2 implies y >= 2*f.x*f.y >= 4, contradiction. Apply to (2Q+1,2), replacing discriminant-specific ordinate case analysis. Threshold sharp by (7,4) at d=3.",
+      "followup_already_suggested": "report:832-840 proposes stronger lower bounds or discriminant-dependent thresholds and actual other minimality consumers."
+    },
+    {
+      "id": "M4",
+      "title": "SignedModEq relation and composition",
+      "report": "2026-10-26m/report/additional_lean_simplifications.tex:415-497, section 5 Compose congruence up to sign as a relation",
+      "actual_scope": [
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SignedModEq.lean:5-40 abbreviation, symm, trans, of_sign_mul, iff_dvd_sub_or_add, natAbs",
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean:79-82 index_residues composition",
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean:104-106 signed_index_residues",
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SignedPellResidue.lean:81 signed_residue_cases final step"
+      ],
+      "mechanism": "Abbreviate a congruent to b or -b modulo arbitrary integer m, prove symmetry and transitivity once, compose J~u~s~p and convert to divisibility. natAbs bridge avoids repeated sign cases in two clients. Covers zero and negative modulus.",
+      "cross_packet_overlap": "Broader implementation of l's local sign-transport family and exactly the reusable direction l suggests at lines 627-634; parity reuse separately duplicates L2.",
+      "followup_already_suggested": "report:842-849 mentions additional signed-residue clients and finite-group/root-of-unity ambiguity as a possible more expensive abstraction."
+    },
+    {
+      "id": "M5",
+      "title": "Existential projection of invertible pairing graphs and certificate elimination",
+      "report": "2026-10-26m/report/additional_lean_simplifications.tex:499-575, section 6 Derive inverse pairing graphs by existential projection",
+      "actual_scope": [
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PairingRepresentation.lean:46-82 two projection lemmas and two inverse-coordinate constructors",
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticNatPairing.lean:92-111 pairRepresentation, leftRepresentation, rightRepresentation",
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticTreeCodeGraphs.lean:77-95 treeLeftRepresentation and treeRightRepresentation",
+        "2026-10-26m/checks/standalone/PairingProjection.lean:8-53"
+      ],
+      "mechanism": "Hide one pair coordinate using Nat.pair_unpair/Nat.unpair_pair, normalize finite witness functions via Fin.exists_fin_succ_pi, consume existing exists_certificate_iff instead of reconstructing slack vectors. Tree versions also eliminate predecessor conjunction. Preserve original constructor computational data, with reported rfl equality checks for seven complete values.",
+      "followup_already_suggested": "report:851-859 explicitly proposes systematic data-preserving certificate-consumer review."
+    },
+    {
+      "id": "M6",
+      "title": "Eliminate existing zero certificate before conditional representation construction",
+      "report": "2026-10-26m/report/additional_lean_simplifications.tex:577-617, section 7 Consume the Boolean certificate before constructing a conditional",
+      "actual_scope": [
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticBoolean.lean:60-65 zeroRepresentation",
+        "2026-10-26m/proposed/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticBoolean.lean:94-103 conditionalRepresentation",
+        "2026-10-26m/checks/standalone/BooleanProjection.lean:6-13 conditional_certificate_vector"
+      ],
+      "mechanism": "Use Fin.exists_fin_succ_pi plus exists_zero_certificate_iff; move slack existential across the independent selection equation via exists_and_right. Split only the semantic n=0 conditional branch. No new encoding or fewer variables; two reported complete-value rfl checks preserve system and witness counts."
+    },
+    {
+      "id": "M7",
+      "title": "Physical-position injection as zero-head positive strictRank tail",
+      "report": "2026-10-26m/report/additional_lean_simplifications.tex:619-665, section 8 Optional: recognize the physical permutation as a positive tail",
+      "actual_scope": [
+        "2026-10-26m/optional/WangTiles942Permutation.lean:174-175 nonStartWeight_injective",
+        "2026-10-26m/optional/WangTiles942Permutation.lean:198-204 physicalPosition_injective",
+        "2026-10-26m/optional/PermutationClients.lean:5-14 exact two clients",
+        "2026-10-26m/checks/standalone/ZeroExtension.lean:7-25 generic zeroExtension_injective and named_zeroExtension_injective",
+        "2026-10-26m/optional/permutation-injectivity.patch"
+      ],
+      "mechanism": "Express physicalPosition as Fin.cons 0 (fun i => 1 + strictRank nonStartWeight i) using existing zero/succ equations. Fin.cons_injective_iff handles zero-vs-positive disjointness and tail injectivity via Nat.add_left_cancel; nonStartWeight injection is tile_weight_injective.comp (Fin.succ_injective 941).",
+      "validation_boundary": "Report says generic schema compiled but complete WangTiles942/K215 chain not rebuilt; still an existing proposal and therefore excluded under assumed adoption.",
+      "rank_search_boundary": "This does not newly propose strictUpper/strictRank/cardinality rank formulas or recoveredIndex: those are unchanged baseline source in the complete optional file. Do not treat all copied strictRank declarations as proposed edits, but do exclude the exact Fin.cons injection/composition packaging in any new rank search."
+    }
+  ],
+  "additional_exclusion_notes": [
+    {
+      "report": "2026-10-26l/report/report.tex:199-206 and 691-696",
+      "item": "Canonical semiring relational witness for ObjectNaturalSemiring.evalRel_iff was developed and excluded because prior notes already suggested evaluator totality witness. Not a new l contribution; remains assumed prior work. An unused constructor-algebra design was not delivered."
+    },
+    {
+      "report": "2026-10-26l/report/report.tex:188-197; 2026-10-26m/report/additional_lean_simplifications.tex:105-127",
+      "item": "Both reports list older exclusions such as assignment transport, witness layouts, scanners, Boolean outputs, coefficient envelopes and source records. This bounded review does not re-establish those older packets; parent catalog owns them."
+    },
+    {
+      "item": "Complete NativePellBootstrap replacement copies include nativeRank and numerous source_* declarations that neither l nor m changes. Presence in a copied full module is not evidence those declarations or all adjacent proof strategies were proposed. The actual l edit is coordinates_mono_base/main_index_gt_first; m edit is small-ordinate fundamentality."
+    }
+  ],
+  "bottom_line": "l/m add no duplicate of the three surviving round3 ideas. They expand assumed baseline with the exact mechanisms above; L2 and m odd-index reuse are exact duplicates, and m SignedModEq subsumes l's local sign-transport direction. For CurrentCellConstruction2011/NativeRankVariation, especially exclude already-proposed finite predecessor invariance and the zero-head/positive-tail injectivity packaging, but do not conflate unchanged copied rank source with new proposals.",
+  "blocked": []
+}

@@ -1,0 +1,29 @@
+\pageheading{4 Direct wall bounds and complete cost accounting}
+\textbf{The remaining immediate deletion needs no helper.} In \src{WangTiles942HeadBounds}{59}{74}, the seam parameters already lie in \code{Fin 3}. After the existing tuple extraction and rewrite, the left wall needs only $b\leq2$ and the right wall needs $a^2\leq4$. Replace their remaining tails with:
+\begin{lstlisting}
+-- left_wall_east_le_two, after obtain and rw [h]
+  exact Nat.le_of_lt_succ b.isLt
+
+-- right_wall_west_le_four, after obtain and rw [h]
+  exact Nat.pow_le_pow_left (Nat.le_of_lt_succ a.isLt) 2
+\end{lstlisting}
+The second proof converts the stored $a<3$ into $a\leq2$, then applies natural-power monotonicity; $2^2$ reduces to 4. Existing uses in \src{SidonPositions}{33}{35} and \src{NativePellPower}{70}{72} confirm the argument order. The complete module changes from \textbf{135 to 130 physical lines}, removing 117 UTF-8 bytes. All nine public headers remain unchanged.
+
+The wall asymmetry remains essential: the left-facing bound is 2, the right-facing bound is 4, and an active transition rail is at least 6. No symmetry of the full tile language is introduced and neither proof claims both transition edges are active. This is a small concrete cleanup, not architecture-level novelty.
+
+\begin{tabular}{@{}L{0.36\linewidth}L{0.25\linewidth}L{0.15\linewidth}L{0.10\linewidth}@{}}\toprule
+Candidate and measurement & Scope & Before / after & Delta\\\midrule
+Wall bounds & Whole file, physical & 135 / 130 & $-5$\\[4pt]
+Receiver causality & Affected proof bodies & 47 / 64 & $+17$\\[4pt]
+Receiver causality & Whole file, physical & 205 / 252 & $+47$\\[4pt]
+Complete tile coherence & Affected proof bodies & 38 / 41 & $+3$\\[4pt]
+Complete tile coherence & Whole file, physical & 205 / 233 & $+28$\\[4pt]
+Complete tile coherence & Whole file, nonblank & 191 / 217 & $+26$\\[4pt]
+Both row interfaces & Whole file, physical & 205 / 280 & $+75$\\\bottomrule
+\end{tabular}
+
+Physical lines include blanks and comments; nonblank lines retain comments but omit blanks; affected proof-body counts include all new helpers. The separately composed row candidate has $+20$ affected proof-body lines and $+71$ nonblank lines. Its unified patch must be used if both interfaces are wanted: the standalone patches have overlapping contexts and do not apply sequentially in either order.
+
+These are measured changes, not a promise about an unknown tree implementing all earlier proposals. The complete-tile file also grows by 1,275 bytes; the combined row file grows by 3,199 bytes. No compiler timing, heartbeat, proof-term-size or compiled-size measurements were made. Shorter wrappers alone are not a source-size win when their moved proof and helper bodies are included.
+
+Adopt the direct wall patch first after compilation. Treat either row interface as a deliberate semantic investment, justified by its exact downstream consumer rather than attractive client-only counts. The excluded trace and first-failure patches contribute zero to the final saving.

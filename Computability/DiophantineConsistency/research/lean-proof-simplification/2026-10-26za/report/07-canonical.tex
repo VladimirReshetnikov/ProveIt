@@ -1,0 +1,29 @@
+\pageheading{6 An optional equality between extraction and construction}
+\textbf{Preserve complete tuple equalities before projecting south colors.} The current receiver proof obtains an exact receiving tile in each direction, then immediately discards three edges with \code{congrArg Tile.south}. Later, \code{south_step} repeats the operational old-head, moved-head and unchanged-cell partition. The reverse construction already owns that same partition in \code{stepTile}.
+
+The proposed new conclusion is deliberately restricted to the open strip:
+\[
+ -L<x<R\quad\Longrightarrow\quad
+ T(x,t)=\mathrm{stepTile}(\mathrm{cfg},q,x).
+\]
+Its hypotheses are the original \code{south_step} hypotheses: allowedness, horizontal and temporal matching, persistent walls, the same encoded configuration, and its live state. There is no replacement configuration and no added premise that the successor remains live.
+
+\textbf{Separate the two proof responsibilities.} The actual-row argument owns identification of the full tile. The independent constructor owns the operational read/write/move interpretation of that tile. The equality proof has only three cases:
+\begin{enumerate}
+\item At the old head, \code{head_transition} identifies the literal cached transition tile, the first branch of \code{stepTile}.
+\item At the moved head, a new \code{receiver_tile} retains the complete equality already obtained in the old \code{receiver_south} proof. Simplification matches the constructor's \code{receiveTile}.
+\item Everywhere else in the interior, the existing \code{far_pass} identifies the exact pass tuple. The original temporal no-finish reasoning is still required there.
+\end{enumerate}
+Then \code{south_step} becomes a projection followed by the independent constructor theorem:
+\begin{lstlisting}
+  exact (congrArg Tile.south
+    (row_tile_eq_stepTile hA hH hTime hs hrow q hq x hl hr)).trans
+    (stepTile_south cfg q hq x)
+\end{lstlisting}
+The supplied candidate adds the StepConstruction import; the inspected import graph has no path back to RowStep. \code{receiver_south} remains as a compatibility projection, and \code{row_step} retains its existing statement and proof.
+
+\textbf{Do not mistake moved proof text for deleted proof text.} The old receiver and south proofs total 38 nonblank body lines; their new wrappers total seven. The two new proofs cost 34, making \textbf{41 lines overall, a net increase of three}. The complete file grows from 205 to 233 physical lines; nonblank lines rise from 191 to 217, and bytes from 9,481 to 10,756. The case for adoption is an exact semantic boundary, not a claimed 31-line saving.
+
+The same equality does \emph{not} identify the seam tiles, exterior plane, complete configurations or tile indices. The source observation interval is explicit in \src{WangTiles942RowEncoding}{21}{26}. The receiver/source anchors are \src{WangTiles942RowStep}{124}{186}, the constructor at \src{WangTiles942StepConstruction}{22}{44}, and its independent south theorem at \src{WangTiles942StepConstruction}{98}{114}.
+
+This patch and receiver causality both edit RowStep. Use the separately supplied combined patch rather than applying the standalone patches sequentially: their unified-diff contexts overlap. The canonical candidate can consume the unchanged \code{far_pass}; it does not require the causal helper.

@@ -1,0 +1,186 @@
+# Two residual algebraic proof simplifications
+
+Baseline: ProveIt `89226e3921bce3e8949fadd12d3efb6914c7630c`, retrieved 2026-10-26.
+Every prior proposal in the specified research directory and the four current
+incoming archives is treated as assumed applied. Both mechanisms below were
+cross-checked by the independent novelty auditor. Neither was found there.
+No compiler is installed in this session, so all Lean replacements are
+**uncompiled candidates**. The ordinary mathematical arguments are complete.
+
+## A. Iterate the existing linear coefficient estimate
+
+### Exact surviving target
+
+`SelectiveCoefficientBounds.lean:124-153`, `abs_coeff_square_mul_le`, proves
+
+    |coeff_n(encoded(w,u)^2 * p)| <= H * (sum_i |u_i|)^2
+
+under `H >= 0` and `forall n, |coeff_n(p)| <= H`. Its current proof opens the
+square as an ordered-pair sum, applies the triangle inequality twice, applies
+a bound on each monomial product, and reconstructs the square of a sum.
+
+`SplitCoefficientBounds.lean:22-35`, `abs_coeff_linear_mul_le`, already proves
+
+    |coeff_n(encoded(w,u) * p)| <= H * sum_i |u_i|.
+
+This is the useful mathematical object: a bound on the action of multiplication
+by the encoded word on all coefficient envelopes. Apply it first to `p`, then
+to `encoded(w,u)*p`. Writing `L = sum_i |u_i| >= 0`, the first application gives
+an envelope `H L`; the second gives `(H L) L = H L^2`. Associativity identifies
+the resulting product with the desired square product. No support injectivity,
+monomial separation, degree premise, or sign premise on `u` is required.
+
+### Concrete implementation
+
+Move the existing 13-line linear theorem, under the new common-layer name
+`SelectiveCoefficientBounds.abs_coeff_encoded_mul_le`, to the file that
+already owns the monomial multiplication bound. Keep the old public
+`SplitCoefficientBounds.abs_coeff_linear_mul_le` name as a one-line wrapper.
+Then the square proof is:
+
+```lean
+  have hs : 0 ≤ ∑ i, |u i| := Finset.sum_nonneg fun i _ => abs_nonneg (u i)
+  have hlinear := abs_coeff_encoded_mul_le w u p H hH hp
+  have htwice := abs_coeff_encoded_mul_le w u (encoded w u * p)
+    (H * ∑ i, |u i|) (mul_nonneg hH hs) hlinear n
+  simpa only [pow_two, mul_assoc] using htwice
+```
+
+The exact candidate Lean notation is in `convolution-powers.patch` and the full
+candidate source files. There is no import from SelectiveCoefficientBounds
+back to SplitCoefficientBounds; the dependency direction stays acyclic.
+
+The two affected files total 328 physical lines at the pinned snapshot.
+The supplied candidate totals 315: **13 prospective physical lines removed,
+including the common helper, preserved public wrapper, and comments**. The
+square declaration itself is 29 -> 9 lines. This is a textual candidate metric,
+not a compiled or measured production saving and not an aggregate saving over
+all earlier proposed patches.
+
+### Extension if a third or higher power becomes a client
+
+A single induction gives
+
+    |coeff_n(encoded(w,u)^k * p)| <= H * L^k
+
+for every natural `k`. The base is the original envelope; the step applies the
+linear theorem at envelope `H L^k`. `ConvolutionPowers.lean` supplies the
+uncompiled exact theorem candidate against the current module interface. Do
+not put this generalization in the minimal patch merely to make the abstraction
+look larger: its helper cost should be justified by a new client.
+
+### Why this survives the excluded corpus
+
+Earlier proposals simplify finite support classification, coefficient fibers,
+row catalogs, majorant coefficients, and concrete coefficient bound tables.
+Those mechanisms remain assumed available. This candidate concerns the
+*iterated multiplication* estimate after such an envelope has already been
+proved. It composes a linear operator bound instead of rebuilding an ordered
+pair sum. It does not claim that the mathematical inequality itself is new;
+the new recommendation is this concrete dependency reversal and proof reuse.
+
+Closest examined prior material: c/d/h finite majorants and row bounds; d finite
+pushforward; t local coefficient fibers. The novelty auditor found no prior
+power/action factorization and no recommendation for either target declaration.
+
+### Validation gate
+
+Compile the complete SelectiveCoefficientBounds and SplitCoefficientBounds
+candidate files, then their existing focused checks and
+`NativeQuadraticPositions` / Split and Gap source clients. Compare the old and
+new public theorem statements and axiom sets. The patch preserves the literal
+statements and definitions; no source data or numerical constants change.
+
+## B. Replace a power induction by one quadratic inequality
+
+### Exact target and algebra
+
+`NativePellPower.lean:76-85`, `sixteen_pow_bound`, states that for `r >= 2`,
+
+    2^(2r+2) + 2 <= 16^r.
+
+Its current proof inducts on `r` starting at two and performs exponent
+arithmetic in the successor case. This is unnecessary because both powers have
+a common algebraic parameter. Set `t = 4^r`. Monotonicity gives `t >= 16`, and
+
+    2^(2r+2) + 2 = 4t + 2,
+    16^r = t^2.
+
+From `t >= 16`, multiplying by nonnegative `t` gives `t^2 >= 16t`; hence
+`4t+2 <= t^2`. Equivalently the polynomial certificate
+`t^2 - 4t - 2 = (t-16)(t+12) + 190` is manifestly nonnegative.
+This ordinary proof has no inductive hypothesis and preserves the exact
+original threshold and result.
+
+### Candidate
+
+```lean
+  have ht : 16 <= 4 ^ r := by
+    simpa using Nat.pow_le_pow_right (by decide : 1 <= 4) hr
+  calc
+    2 ^ (2 * r + 2) + 2 = 4 * 4 ^ r + 2 := by
+      rw [pow_add, pow_mul]; ring
+    _ <= (4 ^ r) ^ 2 := by
+      nlinarith [Nat.mul_le_mul_left (4 ^ r) ht]
+    _ = 16 ^ r := by
+      rw [<- pow_mul, mul_comm r 2, pow_mul]; norm_num
+```
+
+The production candidate uses compact formatting and exact Unicode Lean
+notation. The whole file goes from 180 to 178 lines: **2 prospective physical
+lines removed**. Its main benefit is deleting the induction, not its line count.
+The theorem declaration goes from 10 to 8 lines. The existing client
+`two_pow_rank_lt_Y` continues to consume the same statement.
+
+### Novelty boundary
+
+The incoming structural report replaces `NativePellBootstrap.large_of_six_le`
+by a fixed Pell index-six anchor. That earlier idea must remain excluded.
+This candidate instead treats an elementary relation among powers of 2 and 16
+inside `NativePellPower`; it is algebraic common-base normalization, not a Pell
+sequence anchor or a new growth estimate. Searches across all 23 reports,
+notes, and incoming code/patches found no occurrence of `sixteen_pow_bound`
+or this precise mechanism. A prior `Nat.one_lt_two_pow` cleanup addresses a
+different small radix bound and does not subsume this deletion of induction.
+
+### Validation gate
+
+Compile the full `NativePellPower` candidate, its existing focused check, and
+`NativePellScaleBounds` / `NativeSourceWindow` clients. Compare public statement
+and axiom output. Nothing in the candidate has been kernel checked in this
+session, and no performance claim is made.
+
+## Files and reproducibility
+
+- `convolution-powers.patch`: the minimal two-file coefficient patch.
+- `shared-base-power.patch`: independent one-file power patch.
+- `candidate-source/`: complete versions of the three changed source files.
+- `ConvolutionPowers.lean`: optional all-exponent generalization, not needed by
+  the minimal patch and excluded from its line-saving count.
+- `metrics.json`: source and candidate hashes, exact physical-line counts,
+  explicit not-run compiler status.
+- `make_candidates.py`: reconstructs both patches and metrics from the pinned
+  snapshot. Use `python3 make_candidates.py --repo /path/to/ProveIt` (with optional
+  `--out /path/to/output`). The script does not alter the checkout.
+
+All copied source is from the user-designated public repository. No repository
+mutation, commit, push, or PR was performed. No new axiom or proof hole is added
+to the proposed Lean text.
+
+## Verified source APIs
+
+The repository pins mathlib commit
+`81a5d257c8e410db227a6665ed08f64fea08e997` with Lean 4.32.0.
+The signatures used in the power candidate were retrieved from
+[Lean core Basic.lean at v4.32.0](https://github.com/leanprover/lean4/blob/v4.32.0/src/Init/Data/Nat/Basic.lean):
+`Nat.pow_le_pow_right` (line 808) consumes a positive natural base and a
+comparison of natural exponents; `Nat.mul_le_mul_left` (line 751) preserves
+order under left multiplication. The positive-base argument `1 ≤ 4` is
+definitionally equivalent to `0 < 4` in `Nat`; the maintained project's
+`NativeLowPort54.removedWord_bound` uses the same API with a `1 ≤ r` premise.
+This verifies the interface, not elaboration of the complete replacement.
+
+The boundary premise is necessary: at `r=1`, the proposed conclusion would be
+`18 ≤ 16`, which is false. All the power-target inequalities are over `ℕ`;
+the convolution estimates are over integer polynomial coefficients and allow
+negative input coordinates. No conversion to `ℤ` is needed for the power proof.

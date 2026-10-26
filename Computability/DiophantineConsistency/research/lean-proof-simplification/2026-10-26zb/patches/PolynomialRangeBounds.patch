@@ -1,0 +1,38 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PolynomialRangeBounds.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PolynomialRangeBounds.lean
+@@ -1,4 +1,5 @@
+ import DiophantineConsistency.SelectiveCoefficientBounds
++import Mathlib.Algebra.Ring.GeomSum
+ 
+ /-!
+ # Polynomial range bounds before binary digit recovery
+@@ -14,22 +15,16 @@
+ open scoped BigOperators
+ 
+ theorem geometric_identity (B : ℤ) (d : ℕ) :
+-    (B - 1) * (∑ i ∈ range d, B ^ i) = B ^ d - 1 := by
+-  induction d with
+-  | zero => simp
+-  | succ d ih =>
+-    rw [sum_range_succ, mul_add, ih, pow_succ]
+-    ring
++    (B - 1) * (∑ i ∈ range d, B ^ i) = B ^ d - 1 :=
++  mul_geom_sum B d
+ 
+ theorem geometric_lt_two_top {B : ℤ} (hB : 2 ≤ B) (d : ℕ) :
+     (∑ i ∈ range (d + 1), B ^ i) < 2 * B ^ d := by
+-  induction d with
+-  | zero => norm_num
+-  | succ d ih =>
+-    rw [sum_range_succ]
+-    have hp : 0 < B ^ d := by positivity
+-    have hnext : B ^ (d + 1) = B ^ d * B := pow_succ _ _
+-    nlinarith
++  have hg := geometric_identity B d
++  have hs : 0 ≤ ∑ i ∈ range d, B ^ i := sum_nonneg (fun _ _ => by positivity)
++  have h := mul_le_mul_of_nonneg_right (show 1 ≤ B - 1 by omega) hs
++  rw [sum_range_succ]
++  nlinarith
+ 
+ theorem abs_eval_lt {B H : ℤ} (hB : 2 ≤ B) (hH : 0 < H)
+     (p : ℤ[X]) {d : ℕ} (hd : p.natDegree ≤ d) (hc : ∀ i, |p.coeff i| ≤ H) :

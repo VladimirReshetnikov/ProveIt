@@ -1,0 +1,155 @@
+# Independent mathematical and interface review
+
+Source pin: `89226e3921bce3e8949fadd12d3efb6914c7630c`.
+Exclusion freshness cutoff: `7df43cdfacb490cd3ca3acd23e39027efebf8801`.
+The eight target modules are unchanged at that cutoff; this does not extend
+compiler evidence, since no new candidates have been compiled.
+
+This is a source-level mathematical review of the four proposed change groups.
+No Lean compiler was available in this session. The conclusions below establish
+that the proof routes are mathematically sound on inspection and preserve the
+displayed contracts; they do not establish elaboration, kernel acceptance,
+actual axiom sets, or downstream build compatibility.
+
+## Recommendation
+
+**Retain all four as concrete source candidates, with an explicit uncompiled
+status.** The unit calculation is the lowest-risk first replay. Next replay the
+two-file coefficient change, the shared-base power proof, and the five-file
+successor bridge. The optional all-exponent theorem and optional SuccAddOrder
+registration should remain separate from the minimal patches and their source
+reduction counts.
+
+## 1. Multiplication by one
+
+Reviewed: `patches/01-unit-multiplication.patch` and
+`UnitMultiplicationCandidate.lean`, against the exact statements in
+`ObjectMultiplicationLaws`, `ObjectAdditionLaws` and `ObjectOmegaSemiring`.
+
+The proposed term is
+
+```lean
+mulRel_succ_left H (mulRel_zero_left H hy) (addRel_zero_left H hy)
+```
+
+Its instantiation is x=0, z=0, w=y. The first premise supplies
+MulRel(0,y,0), the second AddRel(0,y,y), and the conclusion is
+MulRel(succ 0,y,y). The source's numeral one is definitionally succ 0, as
+already used by its original proof. The existing natural-membership premise
+`hy` is passed to both premisses. No guard is added or removed.
+
+The dependency chain is downward: ObjectOmegaSemiring already imports
+ObjectDistributivity, which imports ObjectMultiplicationLaws, whose prerequisite
+chain already includes ObjectAdditionLaws. The new proof does not invoke the
+CommSemiring instance being constructed later in ObjectOmegaSemiring. Therefore
+there is no algebra-instance circularity or new import cycle. It works for all
+members of every model's internal omega, including nonstandard members.
+
+The alternative via right successor plus commutativity is also mathematically
+valid, but need not be included in the production replacement.
+
+## 2. Direct internal successor order
+
+Reviewed: `patches/02-internal-successor.patch`, its five
+overlays, and `InternalSuccessorCandidate.lean`. The production patch introduces
+no new import or instance; SuccAddOrder is only an optional separate prototype.
+
+The first bridge `(x+1).val = vsucc H x.val` follows from the existing defining
+addition graph at successor zero. The next bridge uses the literal successor
+membership specification:
+
+`mem a.val (vsucc H b.val) ↔ mem a.val b.val ∨ a.val=b.val`.
+
+Subtype equality turns the last branch into a=b, and the existing linear-order
+equivalence gives `a < b+1 ↔ a≤b`. Complementing this law yields
+`a+1≤b ↔ a<b`. The new proof of `lt_iff_exists_add_one` then applies the existing
+canonical additive-order witness theorem to x+1≤y and reorders addition.
+
+This route does not call `zero_or_add_one`, `lt_iff_exists_add_one`, or a theorem
+depending on either while establishing the two new order bridges. It does not
+assert external induction, well-foundedness of the model's membership relation,
+or identification of internal omega with external Nat. It preserves the public
+strict and non-strict comparison relations. The exact source's `<` field is
+membership; if the optional earlier strict-order reconstruction changes its
+definitional unfolding, its advertised compatibility bridge should be used at
+the initial `change` without altering this mathematical argument.
+
+The pairing and division clients use precisely the successor comparison they
+previously derived by opening an additive gap. The proof of zero/successor
+decomposition still depends on the actual internal decomposition theorem; it
+only shares the conversion from set successor to addition by one. Natural
+membership remains carried by the subtype in every client.
+
+Optional registration of SuccAddOrder/NoMaxOrder is mathematically appropriate
+but requires actual API and instance-coherence checks. It is correctly excluded
+from the minimal patch and from the claimed source savings.
+
+## 3. Coefficient bounds by repeated linear convolution
+
+Reviewed: `patches/03-convolution-factorization.patch`, the complete Selective and
+Split coefficient candidates, and `ConvolutionPowers.lean`.
+
+Write E=encoded(w,u), S=sum |u_i|. The existing linear estimate states that a
+coefficientwise H bound for p gives a coefficientwise HS bound for E*p. The
+new square proof first obtains this estimate for p, then applies it to E*p
+with budget HS. Nonnegativity is discharged explicitly by H≥0 and S≥0.
+Associativity identifies E*(E*p) with E²*p and (HS)S with HS².
+
+The moved helper retains the existing triangle-inequality proof, so it permits
+negative coordinates and colliding exponent positions. No Sidon, isolation,
+injectivity, positivity of S, or positivity of H hypothesis is introduced.
+H=0 and S=0 are valid: the inequalities remain non-strict and neither proof
+divides or cancels by H or S. The source's index type remains Fin(m+1); the
+candidate does not claim an additional arbitrary/empty-index-type theorem.
+
+The optional k-fold theorem has the correct base k=0: E⁰*p=p and HS⁰=H,
+including S=0. Its successor step uses a nonnegative budget HS^k and the
+same linear operator bound. It has no immediate measured saving in the current
+production sources and should be described as an optional extension.
+
+Dependency movement is safe at the source graph level: the linear helper is
+moved into SelectiveCoefficientBounds, which already contains the monomial
+bound it uses. SplitCoefficientBounds imports SelectiveCoefficientBounds and
+keeps the old linear theorem as a wrapper. The old Selective module does not
+import Split, so this removes a layering obstacle without making a cycle.
+
+## 4. Shared-base power inequality
+
+Reviewed: `patches/04-shared-base-power.patch` and the full NativePellPower
+candidate.
+
+For r≥2, t=4^r satisfies t≥16. The exact identities are
+`2^(2r+2)+2 = 4t+2` and `16^r=t²`. Multiplying t≥16 by the nonnegative t gives
+t²≥16t, and 16t≥4t+2 follows from t≥16. Thus the proposed nonlinear arithmetic
+step has sufficient premises; it is not relying on exponent monotonicity in an
+unstated base range.
+
+The boundary r=2 is preserved (66≤256). The discarded r=1 case would be false
+(18≤16), so retaining `hr : 2≤r` is essential. The actual patch retains it
+verbatim. The first and last calculation steps are standard pow_add/pow_mul
+normalizations; the variable exponent is never evaluated. No other Pell theorem
+or source interpretation is changed.
+
+## Source accounting and remaining checks
+
+The supplied per-group raw source reductions are 13, 16, 13 and 2 physical
+lines, including helper definitions and wrappers. The unit and successor groups
+touch different regions of ObjectOmegaSemiring and are logically compatible.
+Their total prospective deletion is 44 lines across eight distinct maintained
+modules, subject to successful composition/replay. These are candidate source
+measurements, not verified performance or kernel-size improvements.
+
+The compiler replay must still confirm implicit arguments/definitional
+reductions, tactic syntax, preserved public declaration types, actual axiom
+footprints and affected client modules. All four directions survived the
+separate mechanism-level novelty audit against 28 directly inspected proposal
+packets (23 placed and five incoming). None is claimed to be globally novel mathematics.
+
+## Fresh incoming packet review
+
+The final-added ProveIt_Additional_Lean_Simplifications_2026-10-26 archive was
+reviewed at the new exclusion cutoff. Its helical orbit, coprime divisibility,
+geometric-sum, quadratic-margin, signed-prefix and native-rank comparison
+proposals do not duplicate these four mechanisms. Its forward-looking notes
+were included in that comparison. No candidate changes or new proof assumptions
+are needed because of this refresh.

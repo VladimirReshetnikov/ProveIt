@@ -1,0 +1,310 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedClosure.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedClosure.lean
+@@ -52,62 +52,43 @@
+ 
+ theorem program_primrec : Nat.Primrec program.val.eval := program.val.primrec
+ 
+-private theorem right_square_le_pair (a b : Nat) : b*b≤Nat.pair a b := by
+-  unfold Nat.pair
+-  split_ifs with h
+-  · omega
+-  · have hb : b≤a := by omega
+-    have hm : b*b≤a*a := Nat.mul_self_le_mul_self hb
+-    omega
++private theorem pair_mono {a a' b b' : Nat} (ha : a≤a') (hb : b≤b') :
++    Nat.pair a b≤Nat.pair a' b' :=
++  ((show StrictMono (fun a => Nat.pair a b) from fun _ _ h =>
++    Nat.pair_lt_pair_left b h).monotone ha).trans
++      ((show StrictMono (Nat.pair a') from fun _ _ h =>
++        Nat.pair_lt_pair_right a' h).monotone hb)
++
++private theorem fork_mono {a a' b b' : Nat} (ha : a≤a') (hb : b≤b') :
++    forkCode a b≤forkCode a' b' :=
++  Nat.add_le_add_right (pair_mono (Nat.add_le_add_right ha 1) hb) 1
+ 
+ private theorem atom_pos (n : Nat) : 1≤atomCode n := by
+   change 1≤Nat.pair 0 n+1
+   omega
+ 
+-private theorem fork_ge_eight (a b : Nat) (ha : 1≤a) (hb : 1≤b) :
+-    8≤forkCode a b := by
+-  unfold forkCode Nat.pair
+-  split_ifs with h
+-  · have hbb : 9≤b*b := by nlinarith
+-    omega
+-  · have haa : 4≤(a+1)*(a+1) := by nlinarith
+-    omega
++private theorem variable_min (tag i j : Nat) :
++    44≤variableCode tag i j :=
++  (by decide : 44≤forkCode 1 (forkCode 1 1)).trans
++    (fork_mono (atom_pos tag) (fork_mono (atom_pos i) (atom_pos j)))
+ 
+-private theorem fork_ge_right_square (a b : Nat) : b*b+1≤forkCode a b := by
+-  exact Nat.add_le_add_right (right_square_le_pair (a+1) b) 1
++private theorem connective_min (tag payload : Nat) (htag : 3≤tag) :
++    44≤forkCode (atomCode tag) payload :=
++  (by decide : 44≤forkCode (atomCode 3) 0).trans
++    (fork_mono (Nat.add_le_add_right (pair_mono le_rfl htag) 1) (Nat.zero_le _))
+ 
+-/-- Valid formula codes lie above the fixed universal-tag code. -/
++/-- The bottom code 44 is a lower bound determined by the outer constructor;
++no induction hypothesis about subformula codes is needed. -/
+ theorem formCode_ge (f : Form) : 44≤formCode f := by
+-  induction f with
+-  | fMem i j =>
+-    have h := fork_ge_eight (atomCode i) (atomCode j) (atom_pos i) (atom_pos j)
+-    have hh := fork_ge_right_square (atomCode 0) (forkCode (atomCode i) (atomCode j))
+-    change 44≤forkCode (atomCode 0) (forkCode (atomCode i) (atomCode j))
+-    nlinarith
+-  | fEq i j =>
+-    have h := fork_ge_eight (atomCode i) (atomCode j) (atom_pos i) (atom_pos j)
+-    have hh := fork_ge_right_square (atomCode 1) (forkCode (atomCode i) (atomCode j))
+-    change 44≤forkCode (atomCode 1) (forkCode (atomCode i) (atomCode j))
+-    nlinarith
++  cases f with
++  | fMem i j => exact variable_min 0 i j
++  | fEq i j => exact variable_min 1 i j
+   | fBot => decide
+-  | fImp a b ha hb | fAnd a b ha hb | fOr a b ha hb =>
+-    first
+-    | change 44≤forkCode (atomCode 3) (forkCode (formCode a) (formCode b))
+-    | change 44≤forkCode (atomCode 4) (forkCode (formCode a) (formCode b))
+-    | change 44≤forkCode (atomCode 5) (forkCode (formCode a) (formCode b))
+-    have h := fork_ge_right_square (formCode a) (formCode b)
+-    first
+-    | have hh := fork_ge_right_square (atomCode 3) (forkCode (formCode a) (formCode b)); nlinarith
+-    | have hh := fork_ge_right_square (atomCode 4) (forkCode (formCode a) (formCode b)); nlinarith
+-    | have hh := fork_ge_right_square (atomCode 5) (forkCode (formCode a) (formCode b)); nlinarith
+-  | fAll a ha =>
+-    have h := fork_ge_right_square (atomCode 6) (formCode a)
+-    change 44≤forkCode (atomCode 6) (formCode a)
+-    nlinarith
+-  | fEx a ha =>
+-    have h := fork_ge_right_square (atomCode 7) (formCode a)
+-    change 44≤forkCode (atomCode 7) (formCode a)
+-    nlinarith
++  | fImp a b => exact connective_min 3 _ (by decide)
++  | fAnd a b => exact connective_min 4 _ (by decide)
++  | fOr a b => exact connective_min 5 _ (by decide)
++  | fAll a => exact connective_min 6 _ (by decide)
++  | fEx a => exact connective_min 7 _ (by decide)
+ 
+ theorem unary_six_eq_quadratic (c : Nat) (hc : 38<c) :
+     unaryCode 6 c=c*c+39 := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalOrderedSemiring.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalOrderedSemiring.lean
+@@ -1,5 +1,5 @@
+-import DiophantineConsistency.ObjectNaturalDiscrete
+-import Mathlib.Algebra.Order.Ring.Defs
++import DiophantineConsistency.ObjectResidualSquares
++import Mathlib.Algebra.Order.Ring.Canonical
+ 
+ /-! # Multiplication respects the internal natural order -/
+ noncomputable section
+@@ -11,13 +11,13 @@
+ abbrev N := Natural H
+ 
+ private theorem mul_strict_left (a b c : N H) (ha : 0<a) (hbc : b<c) : a*b<a*c := by
+-  obtain ⟨t,ht⟩ := (ObjectNaturalDiscrete.lt_iff_exists_add_one H 0 a).mp ha
+-  obtain ⟨s,hs⟩ := (ObjectNaturalDiscrete.lt_iff_exists_add_one H b c).mp hbc
+-  have ha' : a=t+1 := by simpa only [zero_add] using ht
+-  apply (ObjectNaturalDiscrete.lt_iff_exists_add_one H _ _).mpr
+-  refine ⟨a*s+t,?_⟩
+-  rw [hs,ha']
+-  ring
++  obtain ⟨d,hd⟩ := exists_add_of_le hbc.le
++  have hd0 : d≠0 := by
++    intro hz
++    apply hbc.ne
++    simpa only [hz,add_zero] using hd.symm
++  rw [hd,mul_add]
++  exact lt_add_of_pos_right _ (pos_iff_ne_zero.mpr (mul_ne_zero ha.ne' hd0))
+ 
+ instance : IsStrictOrderedRing (N H) where
+   __ := (inferInstance : IsOrderedCancelAddMonoid (N H))
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalDiscrete.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalDiscrete.lean
+@@ -1,4 +1,5 @@
+-import DiophantineConsistency.ObjectResidualSquares
++import DiophantineConsistency.ObjectNaturalOrderedSemiring
++import Mathlib.Algebra.GroupWithZero.Idempotent
+ import BoundedZFCConsistency.InternalSat
+ import BoundedZFCConsistency.CodedDerivation
+ 
+@@ -47,24 +48,10 @@
+         simpa only [add_zero,add_assoc] using he.symm)
+       exact add_one_ne_zero H s hz
+ 
+-/-- This uses zero/successor decomposition on all internal naturals; algebra
+-alone would not force an idempotent in an arbitrary semiring to be Boolean. -/
+-theorem mul_self_eq_self_iff (x : N H) : x*x=x ↔ x=0 ∨ x=1 := by
+-  constructor
+-  · intro hx
+-    rcases zero_or_add_one H x with hz | ⟨s,hs⟩
+-    · exact Or.inl hz
+-    · have hprod : x*s=0 := by
+-        apply add_right_cancel (b := x)
+-        calc
+-          x*s+x=x*(s+1) := by ring
+-          _ = x*x := by rw [← hs]
+-          _ = x := hx
+-          _ = 0+x := (zero_add x).symm
+-      rcases mul_eq_zero.mp hprod with hx0 | hs0
+-      · exact Or.inl hx0
+-      · exact Or.inr (by simpa only [hs0,zero_add] using hs)
+-  · rintro (rfl | rfl) <;> simp
++/-- Multiplicative cancellation suffices for Boolean roots; successor
++    decomposition is not needed for this algebraic fact. -/
++theorem mul_self_eq_self_iff (x : N H) : x*x=x ↔ x=0 ∨ x=1 :=
++  IsIdempotentElem.iff_eq_zero_or_one
+ 
+ theorem cast_lt_cast (n m : ℕ) : (n : N H)<(m : N H) ↔ n<m := by
+   have hm : StrictMono (fun k : ℕ => (k : N H)) := fun a b h => natV_lt H a b h
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalQuotient.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalQuotient.lean
+@@ -22,22 +22,11 @@
+ theorem row_zero_of_helix {α : Type*} (T : ℤ → ℤ → α) (w : ℤ)
+     (hhelix : ∀ x t, T (x+w) (t-1) = T x t) (x t : ℤ) :
+     T x t = T (x+w*t) 0 := by
+-  induction t using Int.induction_on generalizing x with
+-  | zero => simp
+-  | succ n ih =>
+-      have hh := hhelix x ((n : ℤ)+1)
+-      rw [add_sub_cancel_right] at hh
+-      calc
+-        T x ((n : ℤ)+1) = T (x+w) n := hh.symm
+-        _ = T ((x+w)+w*n) 0 := ih _
+-        _ = T (x+w*((n : ℤ)+1)) 0 := by congr 1; ring
+-  | pred n ih =>
+-      have hh := hhelix (x-w) (-(n : ℤ))
+-      rw [sub_add_cancel] at hh
+-      calc
+-        T x (-(n : ℤ)-1) = T (x-w) (-(n : ℤ)) := hh
+-        _ = T ((x-w)+w*(-(n : ℤ))) 0 := ih _
+-        _ = T (x+w*(-(n : ℤ)-1)) 0 := by congr 1; ring
++  have hp : Function.Periodic (fun s : ℤ => T (x+w*s) (t-s)) 1 := by
++    intro s
++    simpa only [mul_add, mul_one, ← add_assoc, sub_add_eq_sub_sub] using
++      hhelix (x+w*s) (t-s)
++  simpa using (hp.int_mul_eq t).symm
+ 
+ /-- A generic integer periodic function agrees with its remainder values. -/
+ theorem periodic_emod {α : Type*} {f : ℤ → α} {n : ℤ}
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942SeamColumns.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942SeamColumns.lean
+@@ -38,15 +38,11 @@
+   rw [hTime x t]
+   exact (north_437_iff_south_437 (hAllowed x t)).symm
+ 
+-/-- Integer induction covers both future and past; there is no period premise. -/
++/-- The step equivalence gives period one, hence constant status on integer time. -/
+ theorem seam_iff_zero (x t : ℤ) : SeamAt T x t ↔ SeamAt T x 0 := by
+-  induction t using Int.induction_on with
+-  | zero => rfl
+-  | succ n ih => exact (seam_successor_iff hAllowed hTime x (n : ℤ)).trans ih
+-  | pred n ih =>
+-      have hs := seam_successor_iff hAllowed hTime x (-(n : ℤ)-1)
+-      simp only [sub_add_cancel] at hs
+-      exact hs.symm.trans ih
++  have hp : Function.Periodic (SeamAt T x) 1 :=
++    fun u => propext (seam_successor_iff hAllowed hTime x u)
++  simpa only [Int.cast_id, mul_one, eq_iff_iff] using hp.int_mul_eq t
+ 
+ theorem seam_iff_time (x t u : ℤ) : SeamAt T x t ↔ SeamAt T x u :=
+   (seam_iff_zero hAllowed hTime x t).trans (seam_iff_zero hAllowed hTime x u).symm
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942CycleBand.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942CycleBand.lean
+@@ -130,6 +130,37 @@
+     fun x hx t => band_horizontal T L H hh hL x t hx,
+     band_twisted T L R H hh hL hR,band_period L H,band_start L H (by omega)⟩
+ 
++/-- Matching and band binding for the exact quotient, before hiding it
++existentially. Marker uniqueness later reuses this same construction. -/
++theorem band_quotient_properties (T L R H : ℕ) [NeZero H]
++    [NeZero ((L+R)*H)]
++    (hh : (DecimalMachine215.machine.run T).state = none)
++    (hL : T+2 ≤ L) (hR : T+2 ≤ R) (hTH : T+2 ≤ H) (hH : 3 ≤ H)
++    (hw : 0 < L+R) :
++    let a := quotientWord (extend (band L H) (L+R) (L : ℤ))
++      (extend_allowed (band L H) (L+R) hw (L : ℤ)
++        (fun x _ t => band_allowed T L H hh hTH x t)) (L+R) H
++    MarkedWord ((L+R)*H) (L+R : ℕ) a ∧
++      ∀ x, -(L : ℤ) ≤ x → x < (R : ℤ) → ∀ t,
++        tile (a (address ((L+R)*H) (L+R : ℕ) x t)) = band L H x t := by
++  have hL0 : 0 ≤ (L : ℤ) := by omega
++  have hLw : (L : ℤ) < ((L+R : ℕ) : ℤ) := by omega
++  have hleft : ((L+R : ℕ) : ℤ)-(L : ℤ)-1 = (R : ℤ)-1 := by push_cast; ring
++  rcases extension_properties (band L H) (L+R) H hw (L : ℤ) hL0 hLw
++      (fun x _ t => band_allowed T L H hh hTH x t)
++      (fun x _ t => band_temporal L H hH x t)
++      (fun x hx _ t => band_horizontal T L H hh hL x t hx)
++      (by simpa only [hleft] using band_twisted T L R H hh hL hR)
++      (fun x _ t => band_period L H x t) (band_start L H (by omega)) with
++    ⟨_,hhoriz,htime,hs,hhel,hvert⟩
++  refine ⟨quotientWord_marked _ _ _ _ hhoriz htime hs hhel hvert, ?_⟩
++  intro x hx0 hxR t
++  apply (quotientWord_binding _ _ _ _ hhel hvert x t).trans
++  apply extend_on_band (band L H) (L+R) hw (L : ℤ) x t
++  unfold InBand
++  push_cast
++  omega
++
+ /-- A halting actual blank run gives an actual finite marked word of
+ length (L+R)*H and stride L+R, retaining every canonical-band tile.
+ There is no additional premise about trace boundaries or clean runs. -/
+@@ -143,25 +174,6 @@
+         tile (a (address ((L+R)*H) (L+R : ℕ) x t)) = band L H x t := by
+   letI : NeZero H := ⟨by omega⟩
+   letI : NeZero ((L+R)*H) := ⟨Nat.ne_of_gt (Nat.mul_pos (by omega) (by omega))⟩
+-  have hw : 0 < L+R := by omega
+-  have hL0 : 0 ≤ (L : ℤ) := by omega
+-  have hLw : (L : ℤ) < ((L+R : ℕ) : ℤ) := by omega
+-  have hleft : ((L+R : ℕ) : ℤ)-(L : ℤ)-1 = (R : ℤ)-1 := by push_cast; ring
+-  rcases extension_properties (band L H) (L+R) H hw (L : ℤ) hL0 hLw
+-      (fun x _ t => band_allowed T L H hh hTH x t)
+-      (fun x _ t => band_temporal L H hH x t)
+-      (fun x hx _ t => band_horizontal T L H hh hL x t hx)
+-      (by simpa only [hleft] using band_twisted T L R H hh hL hR)
+-      (fun x _ t => band_period L H x t) (band_start L H (by omega)) with
+-    ⟨ha,hhoriz,htime,hs,hhel,hvert⟩
+-  rcases exists_marked_word (extend (band L H) (L+R) (L : ℤ)) ha
+-      (L+R) H hw (by omega) hhoriz htime hs hhel hvert with ⟨a,hm,hbind⟩
+-  refine ⟨a,hm,?_⟩
+-  intro x hx0 hxR t
+-  apply (hbind x t).trans
+-  apply extend_on_band (band L H) (L+R) hw (L : ℤ) x t
+-  unfold InBand
+-  push_cast
+-  omega
++  exact ⟨_, band_quotient_properties T L R H hh hL hR hTH hH (by omega)⟩
+ 
+ end DiophantineConsistency.WangTiles942CycleBand
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942BandMarker.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942BandMarker.lean
+@@ -86,24 +86,8 @@
+     (∀ x, -(L : ℤ) ≤ x → x < (R : ℤ) → ∀ t,
+       tile (canonicalWord T L R H hh hTH hw (address ((L+R)*H) (L+R : ℕ) x t)) =
+         band L H x t) := by
+-  have hL0 : 0 ≤ (L : ℤ) := by omega
+-  have hLw : (L : ℤ) < ((L+R : ℕ) : ℤ) := by omega
+-  have hleft : ((L+R : ℕ) : ℤ)-(L : ℤ)-1 = (R : ℤ)-1 := by push_cast; ring
+-  rcases extension_properties (band L H) (L+R) H hw (L : ℤ) hL0 hLw
+-      (fun x _ t => band_allowed T L H hh hTH x t)
+-      (fun x _ t => band_temporal L H hH x t)
+-      (fun x hx _ t => band_horizontal T L H hh hL x t hx)
+-      (by simpa only [hleft] using band_twisted T L R H hh hL hR)
+-      (fun x _ t => band_period L H x t) (band_start L H (by omega)) with
+-    ⟨_,hhoriz,htime,hs,hhel,hvert⟩
+-  refine ⟨quotientWord_marked _ _ _ _ hhoriz htime hs hhel hvert,
+-    canonicalWord_marker_iff T L R H hh hTH (by omega) (by omega) hw,?_⟩
+-  intro x hx0 hxR t
+-  apply (quotientWord_binding _ _ _ _ hhel hvert x t).trans
+-  apply extend_on_band (band L H) (L+R) hw (L : ℤ) x t
+-  unfold InBand
+-  push_cast
+-  omega
++  obtain ⟨hm, hbind⟩ := band_quotient_properties T L R H hh hL hR hTH hH hw
++  exact ⟨hm, canonicalWord_marker_iff T L R H hh hTH (by omega) (by omega) hw, hbind⟩
+ 
+ /-- An actual halting time supplies a uniquely marked concrete word for
+ all sufficiently large independent left/right margins and heights. -/

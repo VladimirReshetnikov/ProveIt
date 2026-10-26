@@ -1,0 +1,44 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellPower.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellPower.lean
+@@ -75,14 +75,11 @@
+ /-- A small uniform comparison suffices once X is at least sixteen. -/
+ theorem sixteen_pow_bound {r : ℕ} (hr : 2 ≤ r) :
+     2 ^ (2 * r + 2) + 2 ≤ 16 ^ r := by
+-  induction r, hr using Nat.le_induction with
+-  | base => norm_num
+-  | succ r hr ih =>
+-    have h2 : 2 ^ (2 * (r + 1) + 2) = 2 ^ (2 * r + 2) * 4 := by
+-      rw [show 2 * (r + 1) + 2 = (2 * r + 2) + 2 by omega,pow_add]
+-      norm_num
+-    rw [h2,show 16 ^ (r + 1) = 16 ^ r * 16 by rw [pow_succ]]
+-    nlinarith [Nat.two_pow_pos (2 * r + 2)]
++  have ht : 16 ≤ 4 ^ r := by
++    simpa using (Nat.pow_le_pow_right (by decide : 0 < 4) hr)
++  rw [pow_add, pow_mul, show (2 : ℕ) ^ 2 = 4 from rfl]
++  rw [show (16 : ℕ) = 4 ^ 2 from rfl, ← pow_mul, Nat.mul_comm 2 r, pow_mul]
++  nlinarith
+ 
+ /-- The native ratio gives Y greater than 2 to the native rank. -/
+ theorem two_pow_rank_lt_Y {X Y r R : ℕ} (hX : 16 ≤ X) (hr : 2 ≤ r)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeHalfBinomial.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeHalfBinomial.lean
+@@ -179,14 +179,11 @@
+ /-- The source-sized exponential base dominates the error coefficient. -/
+ theorem seventy_two_mul_lt_two_pow {r : ℕ} (hr : 4 ≤ r) :
+     72 * r < 2 ^ (2 * r + 1) := by
+-  induction r,hr using Nat.le_induction with
+-  | base => norm_num
+-  | succ r hr ih =>
+-    have hstep : 2 ^ (2 * (r + 1) + 1) = 2 ^ (2 * r + 1) * 4 := by
+-      rw [show 2 * (r + 1) + 1 = (2 * r + 1) + 2 by omega,pow_add]
+-      norm_num
+-    rw [hstep]
+-    nlinarith
++  obtain ⟨n, rfl⟩ := Nat.exists_eq_add_of_le hr
++  have h : n < 4 ^ n := Nat.lt_pow_self (by decide : 1 < 4)
++  rw [show 2 * (4 + n) + 1 = 9 + 2 * n by omega, pow_add, pow_mul]
++  norm_num
++  omega
+ 
+ /-- The complete native half-binomial identity, derived from the literal
+ positive source with the same ordinary coefficient box as power recovery. -/

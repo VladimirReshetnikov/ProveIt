@@ -1,0 +1,28 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentTileColors2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentTileColors2011.lean
+@@ -53,10 +53,8 @@
+     (fun k => c (b + ((969+k : ℕ) : ZMod (N*2011))))
+     (fun k => c (previousCell b + ((978+k : ℕ) : ZMod (N*2011)))) 8
+     (fun k hk => hadj.2.2.1 ⟨k,hk⟩)
+-  obtain ⟨hiw,hie,hin,his⟩ := tile_bounded i
+-  obtain ⟨hjw,hje,hjn,hjs⟩ := tile_bounded j
+-  rw [hl.2.2.1, hr.1] at hw
+-  omega
++  exact (tsub_right_inj (Nat.le_of_lt_succ (tile_bounded i).2.1)
++    (Nat.le_of_lt_succ (tile_bounded j).1)).mp (hl.2.2.1.symm.trans (hw.trans hr.1))
+ 
+ /-- The original temporal orientation is South(current)=North(shifted). -/
+ theorem facts_temporal_colors (v : Fin 14 → ℤ) (x : Fin 31 → ℕ)
+@@ -77,10 +75,8 @@
+       ((Carrier65.core CurrentWindowCarry2011.ports v).rank.toNat - 47*(N*2011)) b +
+         ((960+k : ℕ) : ZMod (N*2011)))) 9
+     (fun k hk => hadj.2.2.2 ⟨k,hk⟩)
+-  obtain ⟨hiw,hie,hin,his⟩ := tile_bounded i
+-  obtain ⟨hjw,hje,hjn,hjs⟩ := tile_bounded j
+-  rw [hl.2.2.2, hr.2.1] at hw
+-  omega
++  exact (tsub_right_inj (Nat.le_of_lt_succ (tile_bounded i).2.2.2)
++    (Nat.le_of_lt_succ (tile_bounded j).2.2.1)).mp (hl.2.2.2.symm.trans (hw.trans hr.2.1))
+ 
+ /-- A zero temporal displacement would match Start's South1 to its
+ North435. This excludes zero modulo the full word, not merely zero as a

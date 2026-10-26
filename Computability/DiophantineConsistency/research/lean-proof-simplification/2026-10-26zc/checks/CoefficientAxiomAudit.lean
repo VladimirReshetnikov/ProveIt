@@ -1,0 +1,8 @@
+import DiophantineConsistency.SplitCoefficientBounds
+
+#print axioms DiophantineConsistency.SelectiveCoefficientBounds.abs_coeff_square_mul_le
+#print axioms DiophantineConsistency.SelectiveCoefficientBounds.abs_coeff_padded_square_mul_le
+#print axioms DiophantineConsistency.SelectiveCoefficientBounds.half_base_bound_31
+#print axioms DiophantineConsistency.SplitCoefficientBounds.abs_coeff_linear_mul_le
+#print axioms DiophantineConsistency.SplitCoefficientBounds.abs_coeff_product_le
+#print axioms DiophantineConsistency.SplitCoefficientBounds.quarter_base_div_bound_31

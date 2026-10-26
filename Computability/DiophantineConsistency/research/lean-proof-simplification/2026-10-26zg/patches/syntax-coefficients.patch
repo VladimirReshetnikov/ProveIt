@@ -1,0 +1,88 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SyntaxCoefficients.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SyntaxCoefficients.lean
+@@ -1,5 +1,6 @@
+ import DiophantineConsistency.Representation
+ import Mathlib.Data.Finsupp.Fintype
++import Mathlib.Algebra.BigOperators.Ring.List
+ 
+ /-!
+ # Executable coefficient extraction from stored arithmetic syntax
+@@ -48,46 +49,36 @@
+   ext i; simp
+ 
+ @[simp] theorem exponent_inj {n : ℕ} (a b : Fin n → ℕ) :
+-    exponent a = exponent b ↔ a = b := by
+-  constructor
+-  · intro h; funext i; simpa using congrArg (fun d => d i) h
+-  · rintro rfl; rfl
++    exponent a = exponent b ↔ a = b :=
++  Finsupp.equivFunOnFinite.symm.injective.eq_iff
+ 
+ /-- The ordinary polynomial denoted by the expanded list. -/
+ noncomputable def interpret {n : ℕ} : List (Term n) → MvPolynomial (Fin n) ℤ
+   | [] => 0
+   | t :: ts => MvPolynomial.monomial (exponent t.1) t.2 + interpret ts
+ 
++private theorem interpret_eq_sum {n : ℕ} (terms : List (Term n)) :
++    interpret terms = (terms.map fun t => MvPolynomial.monomial (exponent t.1) t.2).sum := by
++  induction terms with
++  | nil => rfl
++  | cons a as ih => simp only [interpret, List.map_cons, List.sum_cons, ih]
++
+ @[simp] theorem interpret_append {n : ℕ} (left right : List (Term n)) :
+     interpret (left ++ right) = interpret left + interpret right := by
+-  induction left with
+-  | nil => simp [interpret]
+-  | cons a as ih => simp [interpret, ih, add_assoc]
++  simp only [interpret_eq_sum, List.map_append, List.sum_append]
+ 
+ @[simp] theorem interpret_negate {n : ℕ} (terms : List (Term n)) :
+     interpret (negate terms) = -interpret terms := by
+-  induction terms with
+-  | nil => simp [negate, interpret]
+-  | cons a as ih =>
+-    simp only [negate, List.map_cons, interpret] at *
+-    rw [ih, map_neg, neg_add_rev, add_comm]
+-
+-private theorem interpret_leftMul {n : ℕ} (a : Term n) (right : List (Term n)) :
+-    interpret (right.map fun b => (a.1 + b.1, a.2 * b.2)) =
+-      MvPolynomial.monomial (exponent a.1) a.2 * interpret right := by
+-  induction right with
+-  | nil => simp [interpret]
+-  | cons b bs ih =>
+-    simp only [List.map_cons, interpret, exponent_add, mul_add, ih]
+-    rw [MvPolynomial.monomial_mul]
++  simp only [interpret_eq_sum, negate, List.map_map, Function.comp_def, map_neg]
++  simpa only [List.map_map, Function.comp_def] using
++    (List.sum_neg (terms.map fun t =>
++      (MvPolynomial.monomial (exponent t.1) t.2 : MvPolynomial (Fin n) ℤ))).symm
+ 
+ @[simp] theorem interpret_multiply {n : ℕ} (left right : List (Term n)) :
+     interpret (multiply left right) = interpret left * interpret right := by
+-  induction left with
+-  | nil => simp [multiply, interpret]
+-  | cons a as ih =>
+-    simp only [multiply, List.flatMap_cons, interpret_append, interpret_leftMul] at *
+-    rw [ih, interpret, add_mul]
++  simp only [interpret_eq_sum, multiply, List.flatMap_def, List.map_flatten,
++    List.sum_flatten, List.map_map, Function.comp_def, exponent_add,
++    ← MvPolynomial.monomial_mul, List.sum_map_mul_left, List.sum_map_mul_right]
+ 
+ /-- Sparse expansion denotes exactly the polynomial of the supplied syntax. -/
+ theorem interpret_expand {n : ℕ} (e : Expr (Fin n)) :
+@@ -105,11 +96,10 @@
+ /-- The executable list reader agrees with the standard coefficient map. -/
+ theorem coefficient_interpret {n : ℕ} (terms : List (Term n)) (d : Fin n → ℕ) :
+     coefficient terms d = MvPolynomial.coeff (exponent d) (interpret terms) := by
+-  induction terms with
+-  | nil => simp [coefficient, interpret]
+-  | cons a as ih =>
+-    simp only [coefficient] at ih ⊢
+-    simp [interpret, exponent_inj, ih]
++  rw [interpret_eq_sum]
++  change _ = (MvPolynomial.coeffAddMonoidHom (exponent d)) _
++  simp only [map_list_sum, List.map_map, Function.comp_def,
++    MvPolynomial.coeffAddMonoidHom_apply, MvPolynomial.coeff_monomial, exponent_inj, coefficient]
+ 
+ theorem coefficient_expand {n : ℕ} (e : Expr (Fin n)) (d : Fin n → ℕ) :
+     coefficient (expand e) d = MvPolynomial.coeff (exponent d) e.toPolynomial := by

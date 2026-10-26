@@ -1,0 +1,172 @@
+{
+  "pin": "09d65a93c9df8684c1a226341d6a5120623d1cdb",
+  "manuscripts": 27,
+  "scope": "Mechanism-level review with exact narrower interface after full Lean-prototype search; lexical absence is not by itself novelty.",
+  "records": [
+    {
+      "id": "physical_rigidity",
+      "decision": "retain_exact_new_client",
+      "target": "WangTiles942PhysicalOrder.strictMono_fin_eq_self",
+      "reason": "Finite order-isomorphism rigidity replaces new custom30-line declaration; does not propose finite surjectivity/embedding abstractions again.",
+      "nearest_prior": [
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26i/report.tex",
+          "sha256": "818781ca070b95d7093164aa1f281efa628596b76d19234507e4ae2224347b14",
+          "lines": [
+            222,
+            249
+          ],
+          "excerpt": "\\section{Use finiteness to recover an invariant predecessor}\n\n\\subsection{The generic mathematical principle}\n\nLet \\(A\\) be finite, \\(f:A\\to A\\) injective, and \\(P\\) a forward-invariant predicate:\n\\[\n P(x)\\Longrightarrow P(f(x)).\n\\]\nThe restriction of \\(f\\) to \\(\\{x:P(x)\\}\\) is an injection from a finite set to itself, hence is surjective. Therefore \\(P(f(x))\\Rightarrow P(x)\\). More usefully, every point satisfying \\(P\\) has a predecessor satisfying \\(P\\).\n\nMathlib already packages the required result in\n\\code{Set.Finite.injOn_iff_bijOn_of_mapsTo}; see\n\\mathsrc{Data/Set/Finite/Basic}{restricted injections and bijections}. The production patch uses this theorem directly, so no extra generic helper has to be added to the library.\n\n\\subsection{Application to the offset-19 exclusion}\n\nThe target is \\src{NativeFieldCycles2011}{65--91}. After the existing argument identifies the exceptional source value as 511, put\n\\[\n P(i)\\ :\\!\\iff\\ S(i)\\equiv0\\pmod2.\n\\]\nThe existing \\code{successor_mod_four} implies forward invariance of \\(P\\). The proposed proof restricts the given finite permutation to the even-value subset and obtains a predecessor \\(j\\) of the allegedly 510-valued point \\(i\\), with \\(S(j)\\) even. Applying \\code{successor_mod_four} to \\(j\\) yields \\(S(i)\\equiv0\\pmod4\\), contradicting \\(510\\equiv2\\pmod4\\).\n\nThe current proof obtains the same predecessor indirectly: it proves evenness along all iterates, finds a positive period, constructs the iterate at period minus one, and proves that one successor returns to the starting point. None of that orbit arithmetic is required once restricted surjectivity is available.\n\nThe complete file shrinks from \\textbf{111 to 104 lines}. Its periodic-points import is replaced by the finite-set API import. Both complete versions compile, public theorem statements agree, and the audited axiom sets agree.\n\n\\textbf{Sharp limits.} The finite and injective hypotheses are essential to the generic reflection principle. Successor on the infinite natural numbers preserves positivity but does not reflect it at zero. A noninjective map on a finite set can enter an invariant subset from outside. The patch retains all needed assumptions. It also leaves the legitimate 511 self-loop and the separate offset-20 theorem unchanged; the latter still needs no finiteness or permutation hypothesis.\n"
+        },
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26k/novelty-audit.md",
+          "sha256": "32e3fdf939169bb1462d504a89cfec37ebcf135b2ce0f88e23c34022fa58132a",
+          "lines": [
+            67,
+            69
+          ],
+          "excerpt": "## Provisional gaps worth checking in maintained sources\n\nThe two packets are concentrated on representation layouts, scanners, DAG certificates, native field/carry geometry and object-model administration. They do not specifically analyze (a) proof by uniqueness of functional arithmetic graphs to eliminate repeated existential witnesses; (b) reconstruction/projection equivalences for split encodings beyond ordinary witness concatenation; (c) deriving feasibility/zero-set equivalence endpoints by relation algebra rather than fresh bidirectional witness proofs; (d) generic natural-difference bounds or order embeddings used outside the discussed cyclic field geometry; or (e) specialized induction principles for syntax-recursive pair encodings. These are search directions, not verified proposals or novelty claims. Every chosen concrete implementation still needs comparison with the exclusion matrix and its actual upstream source."
+        },
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26s/evidence/novelty-audit-initial.txt",
+          "sha256": "c85792a1eb8d3ddd091927597101cb4875548973bcbbf49cfce25913c06e2bef",
+          "lines": [
+            254,
+            260
+          ],
+          "excerpt": "\n2. A shared finite-prefix cardinality/rank theorem for strictUpper/strictRank\nand target_prefix_card_lt/rail_strict_mono was not found as a concrete proposal.\nD:612-625 and E:348 praise the existing structural rank/inverse as good and\nwarn against expensive sorting caches. I's broad order-embedding search direction\nis the nearest mention. A defensible incremental claim is eliminating duplicated\nfinite cardinality inclusions while retaining the original structural rank."
+        }
+      ],
+      "lean_status": "Not run; remains uncompiled pending permission."
+    },
+    {
+      "id": "physical_predecessor",
+      "decision": "optional_new_client_definition_expression_change",
+      "target": "WangTiles942PhysicalOrder.nonStartIndex/nonStartIndex_succ",
+      "reason": "Fin.pred plus successor inverse; no proposed prior match. Preserve definition-value regression; not proof-only. Bundled Fin library occurrence is evidence, not prior recommendation.",
+      "nearest_prior": [
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26v/encoding/evidence/EquivFinBasic.lean",
+          "sha256": "f7c0134405bfd7d8447117d9f8b8eeb06f45c03846b659e6ba7fc24414cad912",
+          "lines": [
+            110,
+            125
+          ],
+          "excerpt": "\ntheorem finSuccEquiv'_symm_coe_above {i : Fin (n + 1)} {m : Fin n} (h : i \u2264 Fin.castSucc m) :\n    (finSuccEquiv' i).symm m = m.succ :=\n  finSuccEquiv'_symm_some_above h\n\n/-- Equivalence between `Fin (n + 1)` and `Option (Fin n)`.\nThis is a version of `Fin.pred` that produces `Option (Fin n)` instead of\nrequiring a proof that the input is not `0`. -/\ndef finSuccEquiv (n : \u2115) : Fin (n + 1) \u2243 Option (Fin n) :=\n  finSuccEquiv' 0\n\n@[simp]\ntheorem finSuccEquiv_zero : (finSuccEquiv n) 0 = none :=\n  rfl\n\n@[simp]"
+        }
+      ],
+      "lean_status": "Not run; remains uncompiled pending permission."
+    },
+    {
+      "id": "controller_coordinate",
+      "decision": "withdrawn_duplicate_exact_interface",
+      "target": "ControllerResidueLift.exists_coordinate",
+      "reason": "Exact castHom projection chain already present in p residue_val. Candidate withdrawn entirely; no candidate code, patch or savings delivered. ControllerResidueLift remains an unchanged reference/dependency source only.",
+      "nearest_prior": [
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26p/lean/DiophantineConsistency/SupportDifference.lean",
+          "sha256": "8b0f3ce3cb42cfce819de428f14c9f8d12e4fc77cf6dcba68affc4d4feb0d3f0",
+          "lines": [
+            27,
+            34
+          ],
+          "excerpt": "\n/-- Quotienting a cyclic word by its cell length is a ring homomorphism. -/\ndef residue {N L : \u2115} : ZMod (N * L) \u2192+* ZMod L :=\n  ZMod.castHom (Nat.dvd_mul_left L N) (ZMod L)\n\ntheorem residue_val {N L : \u2115} [NeZero (N * L)] (k : ZMod (N * L)) :\n    (residue k).val = k.val % L := by\n  simp only [residue, ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast]"
+        },
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26p/report.tex",
+          "sha256": "0694a945fa51f366c56df2f7ab957fc7942cc300c4faab8b9097e643208a82b9",
+          "lines": [
+            283,
+            323
+          ],
+          "excerpt": "\\section{D: separate supports through a quotient homomorphism}\\label{sec:support}\n\n\\subsection{A reusable mathematical statement}\n\nLet \\(G,H\\) be additive commutative groups, \\(\\pi:G\\to H\\) an additive homomorphism, \\(S\\subseteq H\\), and \\(t\\in G\\). Suppose the function \\(f\\) has support contained in the translated preimage of \\(S\\):\n\\[\n \\pi(x-t)\\notin S\\ \\Longrightarrow\\ f(x)=0.\n\\]\nDefine\n\\[\n S-S=\\{b-a:a,b\\in S\\}.\n\\]\nIf \\(y=x+\\delta\\) and \\(\\pi(\\delta)\\notin S-S\\), then\n\\[\n f(x)=0\\quad\\lor\\quad f(y)=0.\n\\]\nIndeed, if both values were nonzero, both projected locations would belong to \\(S\\), and their difference would be\n\\[\n \\pi(y-t)-\\pi(x-t)=\\pi(y-x)=\\pi(\\delta),\n\\]\ncontradicting the excluded difference. The common translation cancels in the group before any natural-number remainder reasoning is performed.\n\n\\subsection{The actual native client}\n\nThe checked application uses the quotient\n\\[\n \\Z/(4831N)\\Z\\longrightarrow\\Z/4831\\Z\n\\]\nand the coarse support\n\\[\n S=\\{j:j.\\mathrm{val}\\le583\\ \\lor\\ j.\\mathrm{val}=1203\\ \\lor\\ j.\\mathrm{val}=1807\\}.\n\\]\nThe exact displacement certificate is \\(606\\notin S-S\\). Applying the generic theorem to the temporal rotation produces the original conclusion of\n\\code{NativeTemporalSupport54.clause_pair_one_zero}. The full temporal shift remains in the ambient cyclic group; only the support test is projected to the cell quotient.\n\nThe source already proves a natural-number \\code{no_difference_606} obstruction. Its discovery is not new. The contribution here is the projected group interface that packages this obstruction and removes repeated translation/residue bookkeeping from prospective clients.\n\n\\subsection{When to adopt it}\n\nThe generic theorem, the modular certificate, and the complete native module compile. The existing public theorem header is unchanged. However, counting the helper increases the source from 82 to 125 physical lines and from 4,190 to 5,499 bytes. The candidate is therefore best retained until a second or third support-separation theorem can reuse it. If there is only this client, the existing direct proof is smaller.\n"
+        }
+      ],
+      "lean_status": "Not run; remains uncompiled pending permission.",
+      "delivered_candidate_code": false,
+      "delivered_patch": false,
+      "credited_savings": 0
+    },
+    {
+      "id": "controller_coprimality",
+      "decision": "retain_exact_new_client",
+      "target": "ControllerAuxiliaryChoice.exists_coprime_cardinality",
+      "reason": "Delete reconstructed nondivisibility/positivity via natCast_eq_zero_iff and natCast_val; unchanged prime-power/quotient obligations. No exact prior proposal found.",
+      "nearest_prior": [
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26a/source_notes/digits-review.md",
+          "sha256": "f46ce0eec8f09fa5b0b02801695bd9be8cfdb240bbeedf2df9d832d90f16ac79",
+          "lines": [
+            166,
+            202
+          ],
+          "excerpt": "\n## 5. Put field-coordinate and off-origin mask lemmas below the clause layer\n\n**Priority: medium; architectural proposal, not yet implemented.**\n\nThe source repeats two steps: compute the field residue of an aligned cell plus\nan offset, then prove the point cannot be the global origin before using the\nhigh-mask lookup.\n\n- `CurrentClause2011.clause_target_residue` / `clause_mask`: lines 41--54.\n- `CurrentPhaseParity2011.marker_target_residue` / `marker_mask`: 27--41.\n- `CurrentEarlyPadding2011.padding_target_residue` / `padding_mask`: 263--281.\n\nIntroduce a shared lemma for `b.val % 2011 = 0` and `e < 2011`:\n\n```lean\n(b + (e : ZMod (N * 2011))).val % 2011 = e\n```\n\nand a high-mask specialization for `0 < e`:\n\n```lean\nmaskDigits (b + (e : ZMod (N * 2011))) = cellDigit e\n```\n\nThe three masks become a shared lookup plus `cellDigit_clause`,\n`cellDigit_marker`, or `cellDigit_padding`. A generic source-offset residue\nlemma also replaces the parallel `he`, `h18`, `h2020` derivations in\n`clause_convolution` (65--90) and `marker_convolution` (51--76).\n\nThe dependency placement is essential: `CurrentCellTranslation2011` currently\nimports `CurrentClause2011`, so importing its existing `source_residue` into the\nclause module would create a cycle. Move only the low-level residue/coordinate\ndefinitions into a small upstream module; keep decoding and coefficient data\nabove it. `source_residue` already handles arbitrary temporal shifts and both\nwrap regimes, so reuse its mathematics. Do not add an artificial `t < N*2011`\nrestriction. Retain the nonzero full cyclic modulus, the distinction between"
+        },
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/report.tex",
+          "sha256": "9c606a8955fcd2ceb15c462ff30bc4e265f7a60a09eaa3b278f1b566dde58fdb",
+          "lines": [
+            583,
+            616
+          ],
+          "excerpt": "\nThe addition/subtraction residue proofs in\n\\src{CurrentClause2011}{27--39} are repeated privately in\n\\src{CurrentReflectedGeometry2011}{74--86}. A small\n\\code{CyclicFieldArithmetic} module should own these facts for total\nlength \\(NL\\) and field width \\(L\\). For an aligned base \\(b\\), field\noffset \\(e<L\\), and arbitrary natural shift \\(t\\), a useful normal form is\n\\[\n(b+e-t).\\operatorname{val}\\bmod L\n=\\bigl(L+e-(t\\bmod L)\\bigr)\\bmod L.\n\\]\nThe positional subtraction on the left is in \\(\\mathbb Z/(NL)\\mathbb Z\\).\nThe bounded natural subtraction on the right is safe because\n\\(t\\bmod L<L\\). This is already the substance of\n\\src{CurrentCellTranslation2011}{84--94}; extract it downward instead\nof importing that later module backward and creating a cycle.\n\nThe clause and marker convolution proofs both calculate the residues\nof shifts 18 and 2020, then use support exclusion. A shared residue\nnormal form and support-zero helper would replace repeated arithmetic\nwith one instantiation and a small numerical check. The origin-exclusion\nstep in the corresponding mask lemmas can also be shared.\n\nA particularly direct reuse is available for reflected coefficients.\n\\src{CurrentClause2011}{122--130} proves the residue modulo 2048.\n\\src{CurrentEarlyPadding2011}{95--107} reproves the corresponding\nmodulo-16 result by cases. After sharing the identical selector-unit\ndefinition, project the stronger congruence using\n\\code{.of_dvd (by decide : 16 \u2223 2048)}.\n\nPreserve arbitrary shifts, wraparound, and \\(N=1\\). A later equivalence\nbetween aligned cells and \\code{ZMod N} could simplify reindexing, but\nthe immediate extraction does not require a new coordinate representation.\n"
+        }
+      ],
+      "lean_status": "Not run; remains uncompiled pending permission."
+    },
+    {
+      "id": "controller_modular_wrappers",
+      "decision": "retain_exact_new_client",
+      "target": "CurrentControllerData2011.Hs_mod_47/Hs_mod_2011/Hs_mod_auxiliary",
+      "reason": "Inline exact-operand add/mul modulo laws and remove hs_mod_of only if complete helper/client accounting shrinks. hK conditional premises and local irreducibility retained.",
+      "nearest_prior": [
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26a/source_notes/digits-review.md",
+          "sha256": "f46ce0eec8f09fa5b0b02801695bd9be8cfdb240bbeedf2df9d832d90f16ac79",
+          "lines": [
+            61,
+            90
+          ],
+          "excerpt": "`CurrentClause2011.reflected_weight_mod` (lines 122--130) already classifies\nevery reflected coefficient modulo 2048. `CurrentEarlyPadding2011` repeats\nthe same five-way constructor split and finite label-position case checks in\nits private `reflected_mod_sixteen` (lines 99--107).\n\nSince 16 divides 2048, use\n\n```lean\nexact (CurrentClause2011.reflected_weight_mod e).of_dvd\n  (by decide : 16 \u2223 2048)\n```\n\nThe local `selectorUnit` definitions have identical equations, so this proposal\nuses definitional equality and does not require making the older private\ndefinition public. A small shared public definition would also work, but is\nnot necessary for this patch. The old proof body has seven physical lines; the\nreplacement has one. `modulus-reuse.patch` and `ModulusReuse.lean` provide the\nexact patch and a standalone candidate theorem. At the time of this note's\ninitial preparation, this integration has not been compiled because it needs\nthe full `CurrentClause2011` dependency chain.\n\nThe same principle suggests proving coefficient residues once at the largest\nrelevant power of two, then using `Nat.ModEq.of_dvd` for lower phases. This\navoids independently maintained finite classifications. It does not justify\ndiscarding higher coefficients, collisions, or carries from the actual word.\n\n## 3. Normalize exact digit/carry equations through a small scalar API\n\n**Priority: high; generic arithmetic helpers compiled.**\n"
+        }
+      ],
+      "lean_status": "Not run; remains uncompiled pending permission."
+    },
+    {
+      "id": "word_marker_tail",
+      "decision": "retain_stronger_new_contract_pending_helper_accounting",
+      "target": "CurrentWordTopBounds2011 upper band1991..2010",
+      "reason": "Exact marker-only product-tail response adds a new band conclusion; residue/support-zero/fiber mechanics old. Include h2008 bare-marker exception and cyclic/N=1 scope.",
+      "nearest_prior": [
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26a/source_notes/digits-review.md",
+          "sha256": "f46ce0eec8f09fa5b0b02801695bd9be8cfdb240bbeedf2df9d832d90f16ac79",
+          "lines": [
+            166,
+            202
+          ],
+          "excerpt": "\n## 5. Put field-coordinate and off-origin mask lemmas below the clause layer\n\n**Priority: medium; architectural proposal, not yet implemented.**\n\nThe source repeats two steps: compute the field residue of an aligned cell plus\nan offset, then prove the point cannot be the global origin before using the\nhigh-mask lookup.\n\n- `CurrentClause2011.clause_target_residue` / `clause_mask`: lines 41--54.\n- `CurrentPhaseParity2011.marker_target_residue` / `marker_mask`: 27--41.\n- `CurrentEarlyPadding2011.padding_target_residue` / `padding_mask`: 263--281.\n\nIntroduce a shared lemma for `b.val % 2011 = 0` and `e < 2011`:\n\n```lean\n(b + (e : ZMod (N * 2011))).val % 2011 = e\n```\n\nand a high-mask specialization for `0 < e`:\n\n```lean\nmaskDigits (b + (e : ZMod (N * 2011))) = cellDigit e\n```\n\nThe three masks become a shared lookup plus `cellDigit_clause`,\n`cellDigit_marker`, or `cellDigit_padding`. A generic source-offset residue\nlemma also replaces the parallel `he`, `h18`, `h2020` derivations in\n`clause_convolution` (65--90) and `marker_convolution` (51--76).\n\nThe dependency placement is essential: `CurrentCellTranslation2011` currently\nimports `CurrentClause2011`, so importing its existing `source_residue` into the\nclause module would create a cycle. Move only the low-level residue/coordinate\ndefinitions into a small upstream module; keep decoding and coefficient data\nabove it. `source_residue` already handles arbitrary temporal shifts and both\nwrap regimes, so reuse its mathematics. Do not add an artificial `t < N*2011`\nrestriction. Retain the nonzero full cyclic modulus, the distinction between"
+        },
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/report.tex",
+          "sha256": "9c606a8955fcd2ceb15c462ff30bc4e265f7a60a09eaa3b278f1b566dde58fdb",
+          "lines": [
+            583,
+            616
+          ],
+          "excerpt": "\nThe addition/subtraction residue proofs in\n\\src{CurrentClause2011}{27--39} are repeated privately in\n\\src{CurrentReflectedGeometry2011}{74--86}. A small\n\\code{CyclicFieldArithmetic} module should own these facts for total\nlength \\(NL\\) and field width \\(L\\). For an aligned base \\(b\\), field\noffset \\(e<L\\), and arbitrary natural shift \\(t\\), a useful normal form is\n\\[\n(b+e-t).\\operatorname{val}\\bmod L\n=\\bigl(L+e-(t\\bmod L)\\bigr)\\bmod L.\n\\]\nThe positional subtraction on the left is in \\(\\mathbb Z/(NL)\\mathbb Z\\).\nThe bounded natural subtraction on the right is safe because\n\\(t\\bmod L<L\\). This is already the substance of\n\\src{CurrentCellTranslation2011}{84--94}; extract it downward instead\nof importing that later module backward and creating a cycle.\n\nThe clause and marker convolution proofs both calculate the residues\nof shifts 18 and 2020, then use support exclusion. A shared residue\nnormal form and support-zero helper would replace repeated arithmetic\nwith one instantiation and a small numerical check. The origin-exclusion\nstep in the corresponding mask lemmas can also be shared.\n\nA particularly direct reuse is available for reflected coefficients.\n\\src{CurrentClause2011}{122--130} proves the residue modulo 2048.\n\\src{CurrentEarlyPadding2011}{95--107} reproves the corresponding\nmodulo-16 result by cases. After sharing the identical selector-unit\ndefinition, project the stronger congruence using\n\\code{.of_dvd (by decide : 16 \u2223 2048)}.\n\nPreserve arbitrary shifts, wraparound, and \\(N=1\\). A later equivalence\nbetween aligned cells and \\code{ZMod N} could simplify reindexing, but\nthe immediate extraction does not require a new coordinate representation.\n"
+        },
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/report.tex",
+          "sha256": "300b5dda869234b76c6be13f3478670131ca4f4a722ba4e46a979446d7a9344b",
+          "lines": [
+            415,
+            445
+          ],
+          "excerpt": "\\section{One finite-fiber identity for folded stencils}\n\n\\src{NativeCyclicConvolution} proves \\code{mass_foldStencil},\n\\code{convolution_foldStencil}, and the finite-sum step inside\n\\code{word_foldStencil} by repeatedly swapping sums and collapsing an equality\nfilter. All are instances of\n\\begin{equation}\\label{eq:pushforward}\n \\sum_{k\\in K}\\left(\\sum_{i\\in I:p(i)=k}a_i\\right)w_k\n =\\sum_{i\\in I}a_iw_{p(i)}.\n\\end{equation}\nThe supplied \\code{FinitePushforward.sum_fiber_mul} proves this for finite\nindex types, an arbitrary map $p:I\\to K$, and a semiring. Multiplication need\nnot be commutative, because the order $a_iw_{p(i)}$ is retained. Decidable\nequality on $K$ is used to express the finite filter.\n\nThree specializations are immediate: $w_k=1$ for mass,\n$w_k=c(q-k)$ for convolution at $q$, and $w_k=\\rho^{\\operatorname{val}(k)}$\nfor a word. For the last specialization, the existing\n\\code{pow_mod_length} argument is still required to replace the reduced\nexponent by the original exponent modulo $\\rho^n-1$.\n\n\\checked: the generic identity compiles. It assumes no injectivity of $p$,\nso all collisions are retained. It does not establish no-carry bounds, mask\ncompatibility, or uniqueness of a word representation. A safe integration\nreplaces the repeated finite-sum rearrangement and preserves those separate\narithmetic obligations.\n\nThis is a useful example of a small abstraction with several interpretations.\nIt makes the collision behavior obvious at the interface instead of requiring\neach proof reader to reconstruct it from a double sum.\n"
+        }
+      ],
+      "lean_status": "Not run; remains uncompiled pending permission."
+    }
+  ]
+}

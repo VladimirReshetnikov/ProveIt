@@ -1,0 +1,387 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.88in]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{DejaVu Sans}
+\setmonofont[Scale=0.82]{DejaVu Sans Mono}
+\usepackage{amsmath,amssymb,mathtools,amsthm}
+\usepackage{booktabs,tabularx,longtable,array,enumitem,fancyvrb,xcolor,microtype}
+\usepackage[unicode,colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr,needspace}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{146C78}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Further Lean proof simplifications}\fancyhead[R]{\small ProveIt / 26 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{15pt}
+\emergencystretch=3em
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlength{\parskip}{5pt}\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pin}{553a5f7a463cbaab8800ff8148fef0bc5a9e1b22}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/553a5f7a463cbaab8800ff8148fef0bc5a9e1b22/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean}{\texttt{#1}, #2}}
+\newcommand{\mathsrc}[2]{\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/#1}{#2}}
+\newcommand{\status}[1]{\textcolor{accent}{\textbf{#1}}}
+\input{results.tex}
+\title{\color{ink}\LARGE Further Lean Proof Simplifications\\[6pt]\large Integer geometry, fixed-index Pell estimates,\\color moments, and canonical Wang rows}
+\author{Research and checked prototypes for Vladimir Reshetnikov}
+\date{26 October 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+This report proposes four further directions for simplifying the maintained Lean development of Diophantine consistency. Its baseline is deliberately counterfactual: every simplification in the two excluded collections is treated as available, whether adopted upstream or not. The initial eighteen-packet audit was extended to four newly added packets at the final exclusion cutoff. The remaining opportunities concern different proof obligations: integer-period normalization, a fixed Pell index instead of a variable-exponent argument, sufficient color statistics for packed coefficients, and a canonical recognition theorem connecting an arbitrary allowed Wang row to its existing explicit construction. Exact local proof replacements are distinguished from reusable infrastructure and architectural proposals. No global line-saving or build-speed claim is extrapolated from a small prototype.
+\end{abstract}
+
+\textbf{Repository pin.} \href{https://github.com/VladimirReshetnikov/ProveIt/commit/553a5f7a463cbaab8800ff8148fef0bc5a9e1b22}{\texttt{553a5f7a463c}}. The complete SHA is recorded in the evidence files. The repository specifies Lean \code{v4.32.0} and Mathlib commit \code{81a5d257c8e410db227a6665ed08f64fea08e997}.
+
+\textbf{Recommendation.} Start with the helical period proof and the index-six Pell lemma. Pilot exact recognition of operating rows before extending it to other row families. Develop the moment method around its four concrete signal-mass clients; do not count the already-proposed generic chunk assembler as a new saving.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{0.07\textwidth}Y>{\raggedright\arraybackslash}p{0.29\textwidth}@{}}\toprule
+ID & Targeted simplification & Evidence in this packet\\\midrule
+P1 & Bilateral integer induction for a helical orbit and seam invariant & \GeometryStatus\\
+P2 & Variable-index power comparison above a fixed threshold & \PellStatus\\
+P3 & Repeated evaluation of bit-packed signal coefficients & \MomentsStatus\\
+P4 & Separate tile construction and recognition calculations & \RowsStatus\\\bottomrule
+\end{tabularx}
+\end{center}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{What was reviewed, and what counts as additional}
+
+The source pin contains 445 Lean files in the maintained \code{DiophantineConsistency} module directory. This count includes checks and audits there; it is not a count of independent mathematical modules. The review concentrated on the exact source targets identified below and their proof dependencies, rather than claiming a line-by-line review of all 445 files.
+
+The initial exclusion corpus consists of the six packets \code{2026-10-26a} through \code{2026-10-26f}, their adoption record and surrounding index, all twelve incoming ZIPs, and the incoming README. There are 323 files in the placed packets and 2,405 members in the incoming archives; 2,084 textual archive members were extracted. The current 336 repository files comprising the placed collection, the twelve ZIPs and the incoming README were checked against the pinned Git blob identities with zero mismatches. The ZIPs total 11,021,773 bytes. No nested ZIPs or additional DOCX-only reports were found.
+
+The audit indexed 35 principal manuscript or section units and 590 headings. It also reviewed supplementary technical notes, prior detailed exclusion catalogs, candidate-code inventories, and searches targeted to each new proposal. Unchanged bundled source snapshots were treated as evidence about implementations, not as thousands of separate proposals. The audit does not claim semantic verification of every snapshot or every historical paper linked remotely from the incoming index.
+
+\textbf{The operative test is mechanism, not terminology.} Renaming a generic fold, specializing a previously proposed transport lemma, or implementing an earlier suggestion more neatly does not make an additional idea. Each section therefore identifies the closest prior proposal and the exact new obligation it removes. A proposed benefit must remain after the older infrastructure is assumed installed.
+
+\textbf{Final exclusion cutoff.} The repository advanced during review. The exclusion audit was therefore extended to \href{https://github.com/VladimirReshetnikov/ProveIt/commit/7def5e00ef3593b296eb595add1d955d27121d0c}{\texttt{7def5e00ef35}}, containing twenty-one placed packets (a--u) and one incoming ZIP. Twelve previously incoming packets had been relocated into g--r. The genuinely additional material is s, t, u, and \code{ProveIt_Lean_Simplification_Round3_2026-10-26.zip}. The supplementary audit and exact identities are in \code{audit/FRESHNESS.md}.
+
+This final check removed two initially selected directions: centered integer induction and shared-edge row construction. Both are already present in the new material. They are discussed only as exclusions or assumed infrastructure, and their prototypes, patches and measured reductions are not included as recommendations. All source targets retained here have the same contents at the source pin and the final exclusion cutoff; the broader repository does have unrelated source changes.
+
+The accompanying \code{audit/EXCLUSIONS.md} and \code{audit/exclusions.json} contain 131 overlapping coverage records. These initial records comprise 75 earlier coverage families, attributed and cross-checked, followed by 56 refinements and notes-only exclusions. The final-cutoff addendum records the additional exclusions separately. They are not 131 disjoint inventions.
+
+\textbf{Delivery recheck.} At \href{https://github.com/VladimirReshetnikov/ProveIt/commit/45ac0dfc366f798d4686070a89d66e8dafdb6879}{\texttt{45ac0dfc366f}}, Round3 has been relocated to packet v and the incoming directory contains only its README. The substantive twenty-two-packet corpus is unchanged: a--u have identical Git tree identities, and every Round3 member is accounted for by identical content, one newline-only normalization, or the placement's recorded omission manifest. Sixteen retained source/dependency files also have unchanged Git blobs at this delivery revision. See \code{audit/DELIVERY_CHECK.md} and \code{audit/delivery-source-blobs.json}.
+
+\subsection{Important exclusions}
+
+The following mechanisms are already covered and are not recommendations of this report: generic scanner/fixed-point iteration; successful decoder branches and fused decoder invariants; assignment and renaming transport; generic circuit folds and metadata certificates; sum-of-squares packaging; finite support classification; cyclic carry uniqueness and explicit extremal carries; Pell base monotonicity and small-ordinate fundamental-unit criteria; finite boundary-color fibers; aligned-cell coordinate equivalences; and physical selector coherence.
+
+Several less visible exclusions matter. Technical notes already propose cyclic packing through a monoid-algebra homomorphism, support-restricted evaluation/frame rules, arbitrary invertible linear transformations of residual rows, shared guarded constructor witnesses, and natural-semiring evaluator interfaces. None is reintroduced here.
+
+\subsection{Validation vocabulary}
+
+\begin{description}[style=unboxed,leftmargin=0pt,labelindent=0pt]
+\item[Exact local replacement.] The theorem statement is preserved and its new proof is checked in Lean. A standalone exact-signature check is distinguished from rebuilding the whole production module.
+\item[Checked helper or pilot.] A new mathematical core or a concrete production-data example compiles. This does not certify an unimplemented migration of all clients.
+\item[Architectural proposal.] The report gives a mathematical construction and a noncircular dependency plan. Estimated opportunity is not reported as achieved source saving.
+\end{description}
+
+\ValidationSummary
+
+\section{P1: normalize helical orbits using the algebra of periods}
+\label{sec:periods}
+
+\subsection{Target and existing argument}
+
+The theorem \code{row_zero_of_helix} in \src{WangTiles942HelicalQuotient}{lines 22--40} assumes
+\[
+ T(x+w,t-1)=T(x,t)
+\]
+for every integer pair and proves
+\[
+ T(x,t)=T(x+wt,0).
+\]
+Its present proof performs induction over both positive and negative integer times, generalizes the horizontal coordinate, and normalizes a ring identity in each branch. The argument is valid but duplicates a closure property that the library already proves for periods in arbitrary additive groups.
+
+\subsection{The replacement}
+
+Let \(F:\mathbb Z^2\to\alpha\) be the uncurried function \(F(x,t)=T(x,t)\). The hypothesis says that \((w,-1)\) is a period of \(F\). Every integer multiple of a period is a period. Applying the multiple \(t(w,-1)\) at \((x,t)\) gives
+\[
+ F\bigl((x,t)+t(w,-1)\bigr)=F(x,t),
+ \qquad (x,t)+t(w,-1)=(x+tw,0).
+\]
+This proves the target after reversing the equality. The reasoning includes negative \(t\), zero \(w\), and negative \(w\); it needs no finite modulus, positivity, division, or coprimality assumption.
+
+\Needspace{10\baselineskip}
+The replacement proof is short enough to show in full, with the theorem's existing variables in scope:
+\begin{Verbatim}[fontsize=\small]
+  have hp : Function.Periodic (Function.uncurry T) (w, -1) := by
+    intro p
+    simpa only [Function.uncurry, Prod.fst_add, Prod.snd_add,
+      sub_eq_add_neg] using hhelix p.1 p.2
+  simpa [Function.uncurry, zsmul_eq_mul, mul_comm]
+    using (hp.zsmul t (x,t)).symm
+\end{Verbatim}
+
+The API is \mathsrc{Mathlib/Algebra/Ring/Periodic.lean}{\code{Function.Periodic.zsmul}} at the pinned Mathlib revision. This is a direct use of an existing theorem, not a proposed new quotient framework.
+
+\subsection{A second client: seams at every integer time}
+
+In \src{WangTiles942SeamColumns}{\code{seam_iff_zero}}, the already-proved one-step equivalence
+\[
+ \operatorname{SeamAt}(x,t+1)\ \longleftrightarrow\ \operatorname{SeamAt}(x,t)
+\]
+is extended to all integer times with another bilateral induction. Turn this equivalence into equality of propositions using \code{propext}; the predicate as a function of time has period one. The library's \code{Periodic.int_mul_eq} immediately gives equality with its value at zero.
+
+This adds no period assumption: period one is derived from the existing successor equivalence. It also does not assert that the tile itself is constant. Only seam status is constant, exactly as in the old theorem.
+
+\subsection{Evidence and cost}
+
+\GeometryResults
+
+The standard propositional/extensional axioms used by a helper must be recorded rather than silently described as axiom-free. In particular, the seam adaptation explicitly uses \code{propext}. The supplied validation evidence states the scope of each axiom printout.
+
+\textbf{Difference from previous proposals.} Earlier cell-cycle propagation and full-modulus geometric normal forms concern finite aligned cells and residue arithmetic. This proof instead removes an external signed-time induction by using one vector period in \(\mathbb Z^2\). No prior matching proposal was found in the inspected corpus.
+
+\section{P2: replace the index-six Pell threshold by a fixed anchor}
+\label{sec:pell}
+
+\subsection{Target and counterfactual baseline}
+
+The target is \code{large_of_six_le} in \src{NativePellBootstrap}{the index-six size lemma}. It proves, for \(A>1\), \(6\le p\), and \(c=y_A(p)\),
+\[
+ A(A^2-1)^2<c.
+\]
+The current argument uses variable powers and lower growth bounds for the Pell sequence. Earlier proposals already simplify scale-dependent estimates and compare different Pell bases. Their patched versions retain this particular threshold argument. The new reduction keeps the base fixed and uses only a fixed-index comparison at six.
+
+\subsection{The minimal fixed-index proof}
+
+The library already supplies the lower bound \(A^n\le x_A(n)\), the positive recurrence
+\[
+ y_A(n+1)=x_A(n)+A y_A(n),
+\]
+and strict monotonicity of \(y_A\) in its index. Their fixed-index consequences give the chain
+\begin{equation}\label{eq:anchor}
+ A(A^2-1)^2<A^5\le x_A(5)\le y_A(6)\le y_A(p)=c.
+\end{equation}
+The first inequality uses \(A>1\), hence \(0<A\) and \(A^2-1<A^2\), and the strict monotonicity of the square on natural numbers. The second is \code{xn_ge_a_pow} at the literal index five. The third is the positive recurrence at five. The fourth uses \code{(strictMono_y hA).monotone hp}.
+
+Only the fixed exponents two and five occur in the proof. The old intermediate quantity \((2A-1)^{p-1}\), the subtraction \(p-1\), its restoration to \(p\), and the comparison between variable powers disappear. The index \(p\) is handled once, by monotonicity.
+
+\subsection{Why an exact polynomial is optional}
+
+For mathematical context, put \(D=A^2-1\). Expanding \((A+u)^6\) under \(u^2=D\) gives
+\[
+ y_A(6)=6A^5+20A^3D+6AD^2.
+\]
+This positive-coefficient expression also proves the threshold immediately, since \(AD^2>0\). It is preferable to the subtraction-heavy equivalent expression \(32A^5-32A^3+6A\) if one actually needs an exact value.
+
+However, the production target only asks for an inequality. The shorter implementation in this packet uses~\eqref{eq:anchor}; it does not add an exact-polynomial helper or make clients unfold six recurrence steps. The exact expansion is an explanatory mathematical identity here, not an additional claimed compiled deliverable.
+
+\subsection{Lean interface and cost}
+
+The supplied \code{PellAnchorSmall.lean} preserves the original \code{large_of_six_le} signature. Its proof uses \code{xn_ge_a_pow hA 5}, the definitional successor equation through \code{Nat.le_add_right}, and index monotonicity. No new theorem is needed in the production import graph. This is intentionally a small deletion of variable-exponent administration, not a general library of Pell threshold estimates.
+
+\PellResults
+
+\textbf{Difference from previous proposals.} Base monotonicity transports \(y_A(p)\) between different \(A\). A small-ordinate fundamental-unit criterion identifies the least positive unit. Neither replaces this arbitrary-index growth proof by a fixed anchor followed by index monotonicity. That distinction remains after those earlier improvements are assumed applied.
+
+\section{P3: certify signal masses through sufficient color statistics}
+\label{sec:moments}
+
+\subsection{Why another chunking proposal would be redundant}
+
+\src{CurrentKernel2011}{\code{selector_mass} and the signal-family masses} currently certifies large sums of packed selector weights. A generic checked chunk assembler has already been proposed. Its adoption must be assumed here. Deleting the visible ladder of weighted chunk lemmas is therefore \emph{not} a saving attributable to this report.
+
+The additional observation is mathematical: the packed selector weight is affine in four color coordinates. Consequently a whole family's mass is determined by its cardinality and four small color sums. For the signal families those statistics have symbolic formulas, reusable for both full and cutoff families. This changes what must be certified, rather than hiding the same weighted computation behind another tactic.
+
+\subsection{The affine factorization}
+
+For a tile \(t=(w,n,e,s)\), the actual weight satisfies
+\[
+ \operatorname{weight}(t)=1025+1024w+262144n
+              +134217728e+34359738368s.
+\]
+For a finite list of tiles \(L\), define its five moments
+\[
+ (m,W,N,E,S)=\left(|L|,\sum_L w,\sum_L n,\sum_L e,\sum_L s\right).
+\]
+Then
+\begin{equation}\label{eq:mass}
+ \sum_{t\in L}\operatorname{weight}(t)
+ =1025m+1024W+262144N+134217728E+34359738368S.
+\end{equation}
+This is a list-additivity theorem proved once. It is a theorem about actual selector weights, not an unverified external numeric calculation.
+
+\subsection{Signal-family formula}
+
+Let \(d\in\{0,1\}\) be the movement direction and let \(S_0\) be its actual target set, including the halting target when present. Write
+\[
+ n=|S_0|,\qquad Q=\sum_{q\in S_0}q,\qquad
+ R=\sum_{q\in S_0}\operatorname{rail}(d,q).
+\]
+There are two receiver tiles per target, one for each tape bit \(b=0,1\). Their colors are
+\[
+ \bigl(d\operatorname{rail}(d,q),\ b,\
+       (1-d)\operatorname{rail}(d,q),\ 2+2q+b\bigr).
+\]
+Summing the two values of \(b\) first gives
+\begin{equation}\label{eq:signal-moments}
+ (m,W,N,E,S)=\bigl(2n,\ 2dR,\ n,\ 2(1-d)R,\ 4Q+5n\bigr).
+\end{equation}
+Substitution into~\eqref{eq:mass} gives
+\begin{equation}\label{eq:signal-mass}
+ \operatorname{mass}_d(S_0)=171798956034\,n+137438953472\,Q+
+ \begin{cases}2048R,&d=1,\\268435456R,&d=0.\end{cases}
+\end{equation}
+
+For the actual rank-based rails, a generic rank-sum identity can further replace \(R\) by
+\[
+ R=c_d n+\frac{n(n-1)}2,
+\]
+where \(c_d\) is the direction-specific rail offset: \(c_1=6\) and \(c_0=205\). The integrality of the triangular term should be proved through the finite sum of ranks, avoiding ad hoc natural-division rewrites.
+
+\subsection{A concrete pilot and four consumers}
+
+For the full right-signal family, the proposed moment certificate is
+\[
+ (m,W,N,E,S)=(398,41790,199,0,91723),
+\]
+which reconstructs the existing mass
+\[
+ 3151578377695630.
+\]
+The numeric pilot reconstructs the actual source data in Python. The separate proposed Lean adapter imports the production \code{WangTiles942Core}; it does not redefine the tile type or selector-weight function. That adapter did not complete its compiler check, so the numeric equality above is not presented as a certified new Lean theorem.
+
+There are four concrete consumers: the full right/left masses in \code{CurrentKernel2011}, and the cutoff right/left masses in \src{CurrentSelectorTail2011}{\code{right_low_mass} and \code{left_low_mass}}. The cutoff \(2+2q+b\le45\), with \(b\in\{0,1\}\), selects exactly \(q\le21\). This is an initial segment of the target order, so its global ranks agree with its ranks in that segment. After the proposed rank-sum lemma is installed, the same symbolic formulas apply and only the target count and target sum change. Until then, the rail sum remains a third statistic to certify.
+
+\MomentsResults
+
+\subsection{Cost discipline}
+
+The reusable implementation must include the bit-pair formula, enumeration bridge, rail-rank sum, and cutoff equivalence in its cost. Four closed moment certificates in place of one already-short weighted certificate could make the source longer. The credible benefit comes from symbolic sharing across full and cutoff families and reuse of the same moments if packing weights change. No faster kernel checking is claimed without an equal-scope measurement.
+
+\textbf{Difference from previous proposals.} Checked chunk assembly evaluates weighted data, and packed-field descriptors describe layouts. This proposal proves a sufficient-statistics factorization and symbolic signal-family moments, so, once the rank bridge is installed, the remaining authenticated data are target counts and sums. It is narrower than a generic linear-algebra framework and does not rely on a new numerical encoding.
+
+\section{P4: recognize operating rows by their canonical form}
+\label{sec:rows}
+
+The largest structural opportunity retained here concerns recognition. The earlier packets already propose constructing rows from shared edge values, including the operating-step pulse and the live-state adapter. Those ideas are part of the assumed baseline and receive no novelty or line-saving credit here.
+
+The additional invariant goes in the other direction: an arbitrary allowed, horizontally matching operating row which encodes a given configuration is the already-defined explicit \code{stepTile} row on the strip interior. Construction semantics can then interpret that row once, rather than being duplicated in the soundness proof. The literal tiles, selector encoding and 942-element language are unchanged.
+
+\subsection{Retain the whole receiver tile in the recognition proof}
+
+On the recognition side, \src{WangTiles942RowStep}{\code{receiver_south}} already obtains an equality identifying the complete receiver tile in each direction branch, then immediately applies \code{congrArg Tile.south}. The additional invariant is to keep that equality as \code{receiver_tile}.
+
+Together with the existing exact \code{head_transition} and \code{far_pass} theorems, it gives the canonical-row statement
+\begin{equation}\label{eq:canonical}
+ T(x,t)=\operatorname{stepTile}(\mathrm{cfg},q,x)
+ \qquad\text{for every interior position }-L<x<R.
+\end{equation}
+The proof partitions the positions once. At the old head use \code{head_transition}; at the new head use \code{receiver_tile}; everywhere else use \code{far_pass}. The moved-head inequality rules out overlap.
+
+Now the soundness statement becomes a projection:
+\[
+ \operatorname{south}(T(x,t))
+ =\operatorname{south}(\operatorname{stepTile}(\mathrm{cfg},q,x))
+ =\operatorname{color}(\mathrm{step}(\mathrm{cfg}),x).
+\]
+It reuses the construction-side semantics instead of redoing the machine's color case analysis in \code{south_step}.
+
+\subsection{A stronger recognition route: local tile determinism}
+
+The minimal route above preserves the old three-way position split. A more ambitious implementation can share the classification work itself. For an allowed row, first recover its east-edge function from the head tile. With \(h=\mathrm{cfg.head}\), the candidate invariant on strip edges \(-L\le x<R\) is
+\[
+ E_T(x):=(T(x,t)).\mathrm{east}=
+ \begin{cases}
+ (T(h,t)).\mathrm{east},&x=h,\\
+ (T(h,t)).\mathrm{west},&x+1=h,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+The second case is horizontal matching. In the third case neither endpoint carries a head. Prove one boundary-aware adjacent-pair lemma: both interior endpoints are plain, or one is the strip wall. The existing literal boundary-color classification then forces their shared edge to zero. State the lemma with its exact wall hypotheses; a theorem about two interior cells alone does not cover the wall-adjacent edge.
+
+The remaining local fact is that an allowed tile is determined by its west, north and east colors once the exact reset/finish exceptions are excluded. The independently reconstructed literal data give the following complete ambiguity table:
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}\toprule
+West--north--east key & Possible south colors & Cause\\\midrule
+\((0,n,0)\), \(n\in\{0,1,432,433\}\) & \(n\) or \(438\) & pass or finish\\
+\((1,438,1)\) & \(434,435,436\) & reset alternatives\\\bottomrule
+\end{tabular}
+\end{center}
+There are 942 distinct tiles and 936 distinct west--north--east keys. Exactly five keys are ambiguous, accounting for seven unequal unordered tile pairs. Requiring north \(\ne438\) and south \(\ne438\) leaves 935 tiles with 935 distinct keys. Thus the proposed local theorem is:
+\[
+\begin{gathered}
+ \operatorname{Allowed}(a),\ \operatorname{Allowed}(b),\qquad
+ (a.w,a.n,a.e)=(b.w,b.n,b.e),\\
+ a.n\ne438,\quad a.s\ne438,\quad b.s\ne438
+ \quad\Longrightarrow\quad a=b.
+\end{gathered}
+\]
+The common north equality supplies \(b.n\ne438\). The non-finish premise is essential, not merely a convenient tactic condition. The operating-row invariant excludes reset inputs; the independent \code{no_south438} theorem excludes finish outputs. Halting receiver tiles remain admitted: entering target 215 is not the excluded finish transition.
+
+Compare the arbitrary row and the canonical \code{stepTile} row using their equal head tile, equal north colors, the edge-shape invariant, and this local determinism theorem. Horizontal matching supplies the west-color equality from the preceding east edge. This offers a way to replace both \code{far_west}/\code{far_east} analyses and the direction-specific receiver analysis with one shared recognition argument. It should be tested against the existing body and helper costs before any saving is quoted.
+
+The candidate boundary-aware edge proof is included as \code{EdgeRecognition.lean}; it too remains uncompiled. The 942-tile ambiguity calculation is supplied as \code{scripts/check_tile_determinism.py} and \code{validation/tile-determinism.json}. It verifies the authenticated action, target and rail data before enumerating the tiles. This is reproducible finite arithmetic evidence, \emph{not} a new Lean proof of the local theorem. Earlier boundary-fiber machinery may be used to prove that theorem; the new proposal is its composition with edge recognition and canonical-row soundness, not another finite-classification technique.
+
+\Needspace{13\baselineskip}
+\subsection{Noncircular dependency plan}
+
+The required order is:
+\begin{enumerate}
+\item Keep the local language/signal classification and machine operational semantics below both row directions.
+\item Use the explicit \code{stepTile} realization and its independently proved color semantics. The previous shared-edge construction can supply this layer if already installed.
+\item Strengthen \code{receiver_south} to \code{receiver_tile} using its existing direction-local proofs. Keep the former name as a projection if clients need it.
+\item Combine that whole-tile receiver fact with \code{head_transition} and \code{far_pass} to prove~\eqref{eq:canonical}.
+\item Derive \code{south_step} and then \code{row_step}. Do not use either theorem while proving the canonical-row equality.
+\end{enumerate}
+
+The \code{far_pass} argument still needs exclusion of finish tiles, obtained through the existing \code{no_south438} theorem. It is not valid to drop temporal matching, persistent-wall assumptions, or the no-finish derivation merely because a canonical row has been introduced. The equality is only asserted on the strip interior; wall/seam tiles have different roles.
+
+\RowsResults
+
+\textbf{Difference from previous proposals.} Boundary fibers classify which literal tiles have a color. Selector coherence proves that two decoders choose the same tile index for one word. The new interface identifies the complete operating row from its upper configuration and couples soundness to the existing explicit construction. The earlier shared-edge mechanism generates a matching row from chosen data; it does not prove that every admissible operating row equals that row. This converse recognition obligation is the proposed addition.
+
+\section{Implementation priorities and acceptance criteria}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{0.08\textwidth}Y>{\raggedright\arraybackslash}p{0.33\textwidth}@{}}\toprule
+Order & Change & Acceptance criterion\\\midrule
+1 & P1 period proofs and P2 index-six Pell anchor & Same public statements; exact local checks; axiom scope recorded; source patches apply to the source pin.\\
+2 & P4 canonical operating-row recognition & Strong receiver fact and canonical equality checked without \code{south_step}; construction and soundness clients share the semantic theorem.\\
+3 & P3 symbolic signal moments & Full and cutoff rank/count/sum bridges included; compare against the already-shortened chunk baseline.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+The stages are small enough to review independently. No full-program size certificate should be changed by these proof-only local replacements. For the structural changes, preserve the existing literal definitions and initially add equality theorems and corollaries. If a later refactor changes a data-producing definition, its syntax-sensitive certificates require their own review; semantic equivalence alone does not establish a literal node count.
+
+Source line counts are useful only when the measurement boundary is explicit. The report counts entire affected theorem blocks or entire files where stated. It does not add together overlapping counts, claim that new named lemmas are free, or take credit for previous proposals. Elaboration time is especially environment-dependent here; the supplied logs record actual checks, but no speedup claim is made.
+
+\section{Deliverables and reproduction}
+
+\begin{itemize}
+\item \code{report.tex}, \code{results.tex}, and \code{report.pdf}: the complete article and its compiled PDF.
+\item \code{lean/}: exact-signature replacements, mathematical helper prototypes, and structural prototypes whose status is recorded alongside them.
+\item \code{patches/}: reviewable source patches against the pinned repository; a patch's existence is not itself a whole-project build claim.
+\item \code{audit/}: exclusion catalog, corpus identities, precise source references, and peer-review notes.
+\item \code{validation/}: successful command outcomes, relevant compiler output, measured source sizes, and validation-scope metadata.
+\item \code{scripts/}: replay and source-audit helpers. Local cache paths used in this session are not required for normal replay in a built checkout.
+\end{itemize}
+
+Use the repository's pinned toolchain. Reproduction should first build the specified production imports, then run the prototype files through \code{lake env lean}. The supplied script documents exact module roots and keeps candidate outputs separate. A complete \code{lake build} of all repository targets is outside the validation claim of this packet.
+
+\ReproductionNotes
+
+\section*{Source and evidence references}
+\addcontentsline{toc}{section}{Source and evidence references}
+
+\begin{enumerate}[label={[\arabic*]}]
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/commit/553a5f7a463cbaab8800ff8148fef0bc5a9e1b22}{ProveIt commit \texttt{553a5f7a463c}}, including \code{lean-toolchain} and \code{lake-manifest.json}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/7def5e00ef3593b296eb595add1d955d27121d0c/Computability/DiophantineConsistency/research/lean-proof-simplification}{Placed proposal packets a--u and adoption record at the final cutoff}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/7def5e00ef3593b296eb595add1d955d27121d0c/docs/incoming}{Incoming proposal archive and README at the final cutoff}. The initial twelve archive identities are in \code{audit/corpus-summary.json}; final additions are recorded in \code{audit/FRESHNESS.md}.
+\item \src{WangTiles942HelicalQuotient}{\code{row_zero_of_helix}}; \src{WangTiles942SeamColumns}{\code{seam_iff_zero}}.
+\item \src{NativePellBootstrap}{\code{large_of_six_le}}; \mathsrc{Mathlib/NumberTheory/PellMatiyasevic.lean}{Mathlib's positive Pell sequence and index monotonicity}.
+\item \src{CurrentKernel2011}{signal-family and selector masses}; \src{CurrentSelectorTail2011}{low signal masses}; \src{WangTiles942Core}{literal selector weights and tile families}.
+\item \src{WangTiles942StepConstruction}{explicit operating-row construction}; \src{WangTiles942RowStep}{recognized row evolution}; \src{WangTiles942Signals}{receiver classification}.
+\item \mathsrc{Mathlib/Algebra/Ring/Periodic.lean}{Mathlib period multiplication}. 
+\end{enumerate}
+
+\end{document}

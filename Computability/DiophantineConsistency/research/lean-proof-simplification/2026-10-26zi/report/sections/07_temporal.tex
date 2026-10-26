@@ -1,0 +1,38 @@
+\section{B1 Excluded comparison of temporal seam normalization}
+
+\textbf{Comparison only.} Packet w already proposes cyclic shared-edge grids that remove this temporal matching obligation, including its last-row reset. The local variant below is not additional work under the all-applied baseline.
+
+\refs\ \src{WangTiles942TraceCycle.lean}{154}{168}. The existing north/south interface equations are at \src{WangTiles942TraceCycle.lean}{129}{151}; wrapped-index equations are at \src{WangTiles942TraceCycle.lean}{74}{79}.
+
+The current proof first separates the initializer, then wrap, then finish. Its last two branches are the same computation with opposite finish hypotheses. The interface equations already retain the finish condition on both sides. Match the wrapped successor first, then leave identical conditionals intact.
+
+\textbf{Complete replacement theorem.}
+\begin{Lean}
+theorem cycleTile_temporal {H : ℕ} (hH : 3 ≤ H) (k : Fin H) (x : ℤ) :
+    (cycleTile (nextIndex (by omega) k) x).north = (cycleTile k x).south := by
+  rw [cycleTile_north,cycleTile_south]
+  by_cases hlast : k.val+1 = H
+  · rw [nextIndex_val_of_last (by omega) k hlast]
+    simp only [if_pos rfl,if_neg (show k.val ≠ 0 by omega),if_pos hlast]
+  · rw [nextIndex_val_of_lt (by omega) k (by have hk := k.isLt; omega)]
+    have hsucc : k.val+1 ≠ 0 := by omega
+    by_cases h0 : k.val = 0
+    · simp only [h0,hsucc,hlast,Nat.zero_add,↓reduceIte,show 2 ≠ H by omega]
+    · simp only [h0,hsucc,hlast,↓reduceIte,Nat.add_assoc]
+\end{Lean}
+
+\subsection{Why the remaining cases are sufficient}
+On wrap, $k+1=H$, the successor index is zero. The current row is reset, whose south edge is the initializer's north edge. Since $H\ge3$, the current index cannot itself be zero.
+
+Off wrap, the successor index is $k+1\ne0$. If $k=0$, the initializer's south edge is the actual run-time-1 color; $H\ge3$ excludes confusing that successor with reset. Otherwise the successor's north edge and the current south edge both reduce to
+\[
+  \text{if }k+2=H\text{ then }438
+  \text{ else }\operatorname{color}(\operatorname{run}(k+1),x).
+\]
+Associativity aligns $(k+1)+1$ with $k+2$. The finish/nonfinish split has disappeared because its result was already the same expression, not because a row class was ignored.
+
+\textbf{Contract preservation.} The theorem still quantifies over all heights $H\ge3$, all $k:\operatorname{Fin}H$, and signed positions $x$. It introduces no halt assumption. The proof consumes independently proved interface equations; it does not assume temporal matching as a premise. The machine run, row definitions, wrapped successor, and height guard are untouched.
+
+\textbf{Excluded cost comparison.} The complete module shrinks from 182 to 178 physical lines, with no new helper, import, or definition. Its four-line saving is not counted after granting the later cyclic shared-edge proposal.
+
+\risk\ Restricted simplification must align numerals and \code{Nat.add_assoc} exactly. A symbolic chronology model checks 525 seams at heights 3 through 32 and retains failing-height controls 1 and 2. It tests branch timing, not Lean elaboration or the actual machine. \status

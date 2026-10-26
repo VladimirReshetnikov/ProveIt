@@ -1,0 +1,162 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordTopBounds2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordTopBounds2011.lean
+@@ -63,14 +63,36 @@
+ 
+ variable {N : ℕ} [NeZero N]
+ 
++/-- Above the final copied-color block, the marker is the only possible
++nonzero digit. Neither control map is assumed Boolean. -/
++theorem word_marker_tail (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
++    (j : ZMod N) (e : ℕ) (hl : 986 ≤ e) (hh : e < 2011) :
++    CurrentWordConstruction2011.word a dummy marker (base j+(e : ZMod (N*2011))) =
++      if e = 1004 then marker j else 0 := by
++  rw [word_at_base a dummy marker j e hh,if_neg (by omega : e ≠ 977)]
++  have hz : CurrentCellConstruction2011.localDigit (a j) e = 0 := by
++    unfold CurrentCellConstruction2011.localDigit
++    split_ifs <;> omega
++  rw [hz]
++
+ theorem word_zero_high (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
+     (j : ZMod N) (e : ℕ) (hl : 1004 < e) (hh : e < 2011) :
+     CurrentWordConstruction2011.word a dummy marker (base j+(e : ZMod (N*2011))) = 0 := by
++  rw [word_marker_tail a dummy marker j e (by omega) hh,if_neg (by omega)]
++
++/-- Only the bare displacement1004 can contribute in this terminal band. -/
++theorem tail_outer_bare_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
++    (j : ZMod N) (h d : ℕ) (hl : 1991 ≤ h) (hh : h < 2011)
++    (hd : d = 18 ∨ d = 2020) :
++    CurrentWordConstruction2011.word a dummy marker
++      (base j+(h : ZMod (N*2011))-(d : ZMod (N*2011))) = 0 := by
+   apply word_support
+   intro hs
+   have hle := support_le hs
+-  rw [base_add_field j e hh] at hle
+-  omega
++  have hr := (subtraction_residue (base j+(h : ZMod (N*2011))) d).trans
++    (base_add_field j h hh)
++  simp only [Nat.add_mod,Nat.mod_mod] at hr
++  rcases hd with rfl | rfl <;> omega
+ 
+ /-- Eliminate the three bare sources at either final field by their
+ actual residues, including the spatial term from the preceding cell. -/
+@@ -79,16 +101,14 @@
+     (hd : d = 18 ∨ d = 1004 ∨ d = 2020) :
+     CurrentWordConstruction2011.word a dummy marker
+       (base j+(h : ZMod (N*2011))-(d : ZMod (N*2011))) = 0 := by
+-  apply word_support
+-  intro hs
+-  have hle := support_le hs
+-  have hr := subtraction_residue (base j+(h : ZMod (N*2011))) d
+-  have ht := base_add_field j h (by omega)
+-  rw [ht] at hr
+-  have hm :
+-      (((base j+(h : ZMod (N*2011))-(d : ZMod (N*2011))).val%2011)+d)%2011 = h := by
+-    simpa only [Nat.add_mod,Nat.mod_mod] using hr
+-  rcases hh with rfl | rfl <;> rcases hd with rfl | rfl | rfl <;> omega
++  rcases hd with rfl | rfl | rfl
++  · exact tail_outer_bare_zero a dummy marker j h 18 (by omega) (by omega) (Or.inl rfl)
++  · have he : base j+(h : ZMod (N*2011))-(1004 : ZMod (N*2011)) =
++        base j+((h-1004 : ℕ) : ZMod (N*2011)) := by
++      rw [Nat.cast_sub (by omega : 1004 ≤ h),Nat.cast_ofNat]
++      ring
++    rw [he,word_zero_high a dummy marker j _ (by omega) (by omega)]
++  · exact tail_outer_bare_zero a dummy marker j h 2020 (by omega) (by omega) (Or.inr rfl)
+ 
+ omit [NeZero N] in
+ theorem top_reflected_source (j : ZMod N) (h : ℕ) (hh : 1005 ≤ h) (e : Entry) :
+@@ -98,57 +118,56 @@
+   rw [Nat.cast_sub (by omega : position e ≤ 1005),Nat.cast_add,Nat.cast_sub hh]
+   ring
+ 
++/-- Exact marker-only response on the entire terminal twenty-field band.
++The bare1004 collision at field2008 is retained separately. -/
++theorem convolution_marker_tail (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
++    (j : ZMod N) (h : ℕ) (hl : 1991 ≤ h) (hh : h < 2011) :
++    convolution folded (CurrentWordConstruction2011.word a dummy marker)
++      (base j+(h : ZMod (N*2011))) =
++      (if h = 2008 then marker j else 0) +
++        ∑ e : Entry, if h+position e = 2009 then 2*weight e*marker j else 0 := by
++  have he : base j+(h : ZMod (N*2011))-(1004 : ZMod (N*2011)) =
++      base j+((h-1004 : ℕ) : ZMod (N*2011)) := by
++    rw [Nat.cast_sub (by omega : 1004 ≤ h),Nat.cast_ofNat]
++    ring
++  have hm : h-1004 = 1004 ↔ h = 2008 := by omega
++  rw [convolution_eq,
++    tail_outer_bare_zero a dummy marker j h 18 hl hh (Or.inl rfl),
++    tail_outer_bare_zero a dummy marker j h 2020 hl hh (Or.inr rfl),
++    zero_add,add_zero,he,word_marker_tail a dummy marker j _ (by omega) (by omega),hm]
++  congr 1
++  apply Finset.sum_congr rfl
++  intro e _
++  have hp := position_le e
++  have hm : h-1005+position e = 1004 ↔ h+position e = 2009 := by omega
++  rw [top_reflected_source j h (by omega) e,
++    word_marker_tail a dummy marker j _ (by omega) (by omega),hm,mul_ite,mul_zero]
++
+ /-- Exact highest product coefficient, for arbitrary numeric control maps. -/
+ theorem convolution_2009 (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
+     (j : ZMod N) :
+     convolution folded (CurrentWordConstruction2011.word a dummy marker) (base j+2009) =
+       2*weight (.inl (0 : Fin 942))*marker j := by
+   classical
+-  rw [convolution_eq]
+-  have hz (d : ℕ) (hd : d = 18 ∨ d = 1004 ∨ d = 2020) :=
+-    top_bare_zero a dummy marker j 2009 d (Or.inl rfl) hd
+-  have h18 := hz 18 (Or.inl rfl)
+-  have h1004 := hz 1004 (Or.inr (Or.inl rfl))
+-  have h2020 := hz 2020 (Or.inr (Or.inr rfl))
+-  simp only [Nat.cast_ofNat] at h18 h1004 h2020
+-  rw [h18,h1004,h2020,zero_add,zero_add,zero_add]
+-  rw [Finset.sum_eq_single (.inl (0 : Fin 942))]
+-  · rw [show position (.inl (0 : Fin 942)) = 0 from physicalPosition_zero]
+-    have he : base j+(2009 : ZMod (N*2011))-((1005-0 : ℕ) : ZMod (N*2011)) =
+-        base j+1004 := by norm_num; ring
+-    rw [he,word_marker]
+-  · intro e _ hne
+-    have hp := position_le e
+-    have hp0 : position e ≠ 0 := by
+-      intro he
+-      apply hne
++  have hp (e : Entry) : 2009+position e = 2009 ↔ e = .inl (0 : Fin 942) := by
++    constructor
++    · intro he
+       apply position_injective
+-      simpa only [position,physicalPosition_zero] using he
+-    have he := top_reflected_source j 2009 (by decide) e
+-    simp only [Nat.cast_ofNat] at he
+-    rw [he]
+-    rw [word_zero_high a dummy marker j _ (by omega) (by omega),mul_zero]
+-  · simp
++      simpa only [position,physicalPosition_zero] using (show position e = 0 by omega)
++    · rintro rfl
++      simp only [position,physicalPosition_zero,add_zero]
++  simpa only [Nat.cast_ofNat,show ¬(2009 : ℕ) = 2008 by decide,ite_false,zero_add,
++    hp,Finset.sum_ite_eq',Finset.mem_univ,ite_true] using
++    convolution_marker_tail a dummy marker j 2009 (by decide) (by decide)
+ 
+ /-- There is no surviving kernel input at the top field. -/
+ theorem convolution_2010 (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
+     (j : ZMod N) :
+     convolution folded (CurrentWordConstruction2011.word a dummy marker) (base j+2010) = 0 := by
+-  rw [convolution_eq]
+-  have hz (d : ℕ) (hd : d = 18 ∨ d = 1004 ∨ d = 2020) :=
+-    top_bare_zero a dummy marker j 2010 d (Or.inr rfl) hd
+-  have h18 := hz 18 (Or.inl rfl)
+-  have h1004 := hz 1004 (Or.inr (Or.inl rfl))
+-  have h2020 := hz 2020 (Or.inr (Or.inr rfl))
+-  simp only [Nat.cast_ofNat] at h18 h1004 h2020
+-  rw [h18,h1004,h2020,zero_add,zero_add,zero_add]
+-  apply Finset.sum_eq_zero
+-  intro e _
+-  have hp := position_le e
+-  have he := top_reflected_source j 2010 (by decide) e
+-  simp only [Nat.cast_ofNat] at he
+-  rw [he,
+-    word_zero_high a dummy marker j _ (by omega) (by omega),mul_zero]
++  have hp (e : Entry) : ¬2010+position e = 2009 := by omega
++  simpa only [Nat.cast_ofNat,show ¬(2010 : ℕ) = 2008 by decide,hp,ite_false,
++    Finset.sum_const_zero,add_zero] using
++    convolution_marker_tail a dummy marker j 2010 (by decide) (by decide)
+ 
+ theorem rotation_high_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
+     (hd : ∀ j, dummy j ≤ 1) (hm : ∀ j, marker j ≤ 1) (s : ℕ)

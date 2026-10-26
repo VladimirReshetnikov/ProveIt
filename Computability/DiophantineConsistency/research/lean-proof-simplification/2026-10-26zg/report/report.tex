@@ -1,0 +1,78 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.83in,headheight=15pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Bitstream Charter}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=0.82]
+\usepackage{amsmath,amssymb,mathtools,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,fancyhdr,titlesec,fvextra}
+\usepackage{hyperref,xurl}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{167568}
+\definecolor{muted}{HTML}{546477}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=accent,pdftitle={Four Further Lean Proof Simplifications},pdfauthor={Prepared for Vladimir Reshetnikov}}
+\titleformat{\section}{\Large\sffamily\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily Further Lean proof simplification}
+\fancyhead[R]{\small\sffamily 26 October 2026}
+\fancyfoot[C]{\small\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}
+\setlist{nosep,leftmargin=1.6em}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\urlstyle{tt}
+\setlength{\emergencystretch}{2em}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt}
+\newcommand{\pin}{7df43cdfacb490cd3ca3acd23e39027efebf8801}
+\newcommand{\src}[2]{\href{\repo/blob/\pin/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean}{\code{#1}: #2}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\SZ}{\operatorname{SZ}}
+\DefineVerbatimEnvironment{Lean}{Verbatim}{fontsize=\small,samepage=true,breaklines=true,breakanywhere=true,frame=single,rulecolor=\color{muted},framesep=6pt}
+\begin{document}
+\begin{titlepage}
+\vspace*{0.5in}
+{\Large\sffamily\color{accent} PROVEIT / DIOPHANTINE CONSISTENCY\par}
+\vspace{0.28in}
+{\Huge\sffamily\bfseries\color{ink} Four Further Lean\\[4pt] Proof Simplifications\par}
+\vspace{0.25in}
+{\Large Polynomial identities, list sums,\\assignment restriction, and exponent divisibility\par}
+\vspace{0.35in}
+{\large Prepared for Vladimir Reshetnikov\par}
+26 October 2026
+\vspace{0.35in}
+\hrule
+\vspace{0.18in}
+\textbf{Main result.} A checked transport theorem lets equality of integer polynomials
+justify equality-of-splits semantics over every additively cancellative commutative
+semiring. It supports arbitrary internal naturals without identifying them with
+external natural numbers.
+
+\textbf{Concrete companions.} A complete sparse-coefficient module refactor removes
+four of five list inductions and ten source lines. A smaller exponent proof removes
+four lines. An environment proof proposes twelve fewer lines; its abstract
+mechanism is checked, while its full object-model integration remains uncompiled.
+
+\textbf{Exclusion boundary.} Earlier proposals are treated as already applied,
+including optional and uncompiled ones. The audit covers 23 placed packets and
+five incoming ZIPs. A late packet caused a coprime-divisibility candidate to be
+withdrawn.
+\vfill
+{\small\color{muted}
+Source and compiler baseline: \code{89226e3921bc}.\\
+Closing novelty review: \code{7df43cdfacb4}.\\
+Lean 4.32.0, with the repository's pinned Mathlib.\\
+Source, patches, compiler receipts, and exclusion evidence are bundled.\\
+No whole-project build or global source-size reduction is claimed.}
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\input{sections/01-findings.tex}
+\input{sections/02-polynomial.tex}
+\input{sections/03-local.tex}
+\input{sections/04-validation.tex}
+\end{document}

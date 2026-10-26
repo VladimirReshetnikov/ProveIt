@@ -1,0 +1,32 @@
+The checked source pin is \path{29936089835c0c55cca81edc86b4fb0c70ce34d5},
+using Lean 4.32.0 (compiler commit \path{8c9756b28d64dab099da31a4c09229a9e6a2ef35})
+and mathlib \path{81a5d257c8e410db227a6665ed08f64fea08e997}.
+The relevant project dependency closure was rebuilt from source: 62 project modules
+and one otherwise missing mathlib module. The remaining mathlib and package objects
+were reused from a cache matching the pinned dependency manifest. All 63 recorded
+compilations completed successfully and produced nonempty objects.
+
+The archive's own replay script then completed the following checks:
+\begin{itemize}
+\item All four complete proposed production modules compiled successfully in a fresh
+object overlay of that baseline.
+\item The five changed theorem headers matched their original headers exactly, and
+baseline and replacement \code{\#print axioms} reports were identical.
+\item The existing \code{WangTiles942HelicalQuotientChecks} and
+\code{RatioMarginFinalizer} clients compiled against the proposed modules.
+\item The two optional modules, \code{SignedPrefix} and \code{RankPotentialActual},
+compiled against the actual production definitions. The signed-prefix file checks
+a negative total and an empty prefix; the rank file includes the equal-rank family
+and the degenerate base-one case.
+\item The separate helical and arithmetic proof examples also compiled. No checked
+axiom report contains \code{sorryAx}. The extra helical endpoint audit retained its
+original axiom lists as well.
+\end{itemize}
+
+The periodic-orbit and coprime-divisibility results depend on \code{propext} and
+\code{Quot.sound}. The geometric and margin results also use
+\code{Classical.choice}; these are exactly their original axiom lists.
+The full command receipts, source hashes, output logs, and line counts are included.
+Recorded elapsed times describe these runs only and are not before/after performance
+measurements. Validation is against the stated source pin, not against the newer
+freshness-check commit described in Section~1.

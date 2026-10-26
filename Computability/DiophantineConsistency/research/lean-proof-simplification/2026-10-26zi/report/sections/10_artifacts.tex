@@ -1,0 +1,44 @@
+\begingroup\small
+\section{Artifacts and focused next questions}
+
+Paths are relative to the archive root. TeX caches and page-preview images are not required deliverables.
+
+\begin{tabularx}{\linewidth}{@{}L{2.35in}Y@{}}
+\toprule
+Artifact & Purpose \\
+\midrule
+\pathcode{report/proof_simplification_report.tex} and \pathcode{.pdf} & Editable manuscript and rendered report; companion preamble and section files are included. \\
+\pathcode{report/build.sh} & XeLaTeX build script with local-cache fallback; rebuilds the report only. \\
+\pathcode{helical/patches/} and \pathcode{helical/proposed/} & H1/H2 excluded comparison diffs and modules, not selected changes. \\
+\pathcode{bridges/patches/} and \pathcode{bridges/candidate/} & B2 selected diff/module; B1 excluded comparison. \\
+\pathcode{helical/README.md} and \pathcode{bridges/README.md} & Mechanisms, source anchors, full-cost accounting, exclusions, and unexecuted Lean gates. \\
+\pathcode{baseline_audit/} & All-applied semantic ledger, source bindings, packet coverage, and candidate novelty decisions. The late supplement overrides H1/H2/B1 retention; historical bulk archives are not needed. \\
+\pathcode{provenance/} and \pathcode{sources/} & Pinned manifests, commit/delta accounting, integrity checks, and selected authenticated sources. \\
+\pathcode{dependencies/}, \pathcode{comparison_sources/} & Current lower dependencies and earlier files used for exact observed-adoption metrics. \\
+\pathcode{validation/} & Independent replay, ordered same-world Lean audit material, and static validation receipts. Audit commands remain unexecuted. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Reproduce the non Lean checks}
+Run from the extracted archive root, using Python 3 and the recorded scripts:
+\begin{Lean}
+python provenance/verify_snapshot.py
+python validation/source_validate.py
+python helical/validation/test_candidates.py
+python bridges/validate_static.py
+bash report/build.sh
+\end{Lean}
+The Python commands check evidence or candidates without Lean. The last command needs XeLaTeX and rebuilds only the PDF. Read each component README before rerunning candidate generators; their inputs are the pinned snapshot, not a moving branch.
+
+\subsection{Questions worth resolving after elaboration}
+These are research questions, not additional selected ideas or savings.
+\begin{enumerate}
+\item Does the retained proof elaborate unchanged after all compatible prior APIs are integrated? Preserve the halting guard, and charge any repair or helper overhead.
+\item Does the shared halted-color helper remain worthwhile if future pass and finish constructors diverge? Its private status permits a local adjustment without changing the public API.
+\end{enumerate}
+
+
+\subsection{Additional directions screened but not selected}
+A closing screen examined \code{CurrentWordTopBounds2011}, \code{CurrentWordCopies2011}, \code{CurrentWordLowMask2011}, and \code{ControllerResidueLift}. Prefix/support bounds, copy/parity adapters, and origin-erasure or no-borrow interfaces are already granted by prior proposals. The residue lift already uses a direct quotient/remainder argument; local cast cleanup did not justify another recommendation. Exact source hashes and reasons are recorded in \pathcode{late_novelty_review/BOUNDED_RESIDUAL_SCREEN.json}. This bounded search found no robust second candidate; it is not a proof that no further simplification exists.
+
+\endgroup

@@ -1,0 +1,93 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedClosure.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedClosure.lean
+@@ -52,62 +52,43 @@
+ 
+ theorem program_primrec : Nat.Primrec program.val.eval := program.val.primrec
+ 
+-private theorem right_square_le_pair (a b : Nat) : b*b≤Nat.pair a b := by
+-  unfold Nat.pair
+-  split_ifs with h
+-  · omega
+-  · have hb : b≤a := by omega
+-    have hm : b*b≤a*a := Nat.mul_self_le_mul_self hb
+-    omega
++private theorem pair_mono {a a' b b' : Nat} (ha : a≤a') (hb : b≤b') :
++    Nat.pair a b≤Nat.pair a' b' :=
++  ((show StrictMono (fun a => Nat.pair a b) from fun _ _ h =>
++    Nat.pair_lt_pair_left b h).monotone ha).trans
++      ((show StrictMono (Nat.pair a') from fun _ _ h =>
++        Nat.pair_lt_pair_right a' h).monotone hb)
++
++private theorem fork_mono {a a' b b' : Nat} (ha : a≤a') (hb : b≤b') :
++    forkCode a b≤forkCode a' b' :=
++  Nat.add_le_add_right (pair_mono (Nat.add_le_add_right ha 1) hb) 1
+ 
+ private theorem atom_pos (n : Nat) : 1≤atomCode n := by
+   change 1≤Nat.pair 0 n+1
+   omega
+ 
+-private theorem fork_ge_eight (a b : Nat) (ha : 1≤a) (hb : 1≤b) :
+-    8≤forkCode a b := by
+-  unfold forkCode Nat.pair
+-  split_ifs with h
+-  · have hbb : 9≤b*b := by nlinarith
+-    omega
+-  · have haa : 4≤(a+1)*(a+1) := by nlinarith
+-    omega
++private theorem variable_min (tag i j : Nat) :
++    44≤variableCode tag i j :=
++  (by decide : 44≤forkCode 1 (forkCode 1 1)).trans
++    (fork_mono (atom_pos tag) (fork_mono (atom_pos i) (atom_pos j)))
+ 
+-private theorem fork_ge_right_square (a b : Nat) : b*b+1≤forkCode a b := by
+-  exact Nat.add_le_add_right (right_square_le_pair (a+1) b) 1
++private theorem connective_min (tag payload : Nat) (htag : 3≤tag) :
++    44≤forkCode (atomCode tag) payload :=
++  (by decide : 44≤forkCode (atomCode 3) 0).trans
++    (fork_mono (Nat.add_le_add_right (pair_mono le_rfl htag) 1) (Nat.zero_le _))
+ 
+-/-- Valid formula codes lie above the fixed universal-tag code. -/
++/-- The bottom code 44 is a lower bound determined by the outer constructor;
++no induction hypothesis about subformula codes is needed. -/
+ theorem formCode_ge (f : Form) : 44≤formCode f := by
+-  induction f with
+-  | fMem i j =>
+-    have h := fork_ge_eight (atomCode i) (atomCode j) (atom_pos i) (atom_pos j)
+-    have hh := fork_ge_right_square (atomCode 0) (forkCode (atomCode i) (atomCode j))
+-    change 44≤forkCode (atomCode 0) (forkCode (atomCode i) (atomCode j))
+-    nlinarith
+-  | fEq i j =>
+-    have h := fork_ge_eight (atomCode i) (atomCode j) (atom_pos i) (atom_pos j)
+-    have hh := fork_ge_right_square (atomCode 1) (forkCode (atomCode i) (atomCode j))
+-    change 44≤forkCode (atomCode 1) (forkCode (atomCode i) (atomCode j))
+-    nlinarith
++  cases f with
++  | fMem i j => exact variable_min 0 i j
++  | fEq i j => exact variable_min 1 i j
+   | fBot => decide
+-  | fImp a b ha hb | fAnd a b ha hb | fOr a b ha hb =>
+-    first
+-    | change 44≤forkCode (atomCode 3) (forkCode (formCode a) (formCode b))
+-    | change 44≤forkCode (atomCode 4) (forkCode (formCode a) (formCode b))
+-    | change 44≤forkCode (atomCode 5) (forkCode (formCode a) (formCode b))
+-    have h := fork_ge_right_square (formCode a) (formCode b)
+-    first
+-    | have hh := fork_ge_right_square (atomCode 3) (forkCode (formCode a) (formCode b)); nlinarith
+-    | have hh := fork_ge_right_square (atomCode 4) (forkCode (formCode a) (formCode b)); nlinarith
+-    | have hh := fork_ge_right_square (atomCode 5) (forkCode (formCode a) (formCode b)); nlinarith
+-  | fAll a ha =>
+-    have h := fork_ge_right_square (atomCode 6) (formCode a)
+-    change 44≤forkCode (atomCode 6) (formCode a)
+-    nlinarith
+-  | fEx a ha =>
+-    have h := fork_ge_right_square (atomCode 7) (formCode a)
+-    change 44≤forkCode (atomCode 7) (formCode a)
+-    nlinarith
++  | fImp a b => exact connective_min 3 _ (by decide)
++  | fAnd a b => exact connective_min 4 _ (by decide)
++  | fOr a b => exact connective_min 5 _ (by decide)
++  | fAll a => exact connective_min 6 _ (by decide)
++  | fEx a => exact connective_min 7 _ (by decide)
+ 
+ theorem unary_six_eq_quadratic (c : Nat) (hc : 38<c) :
+     unaryCode 6 c=c*c+39 := by

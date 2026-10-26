@@ -1,0 +1,69 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.78in,headheight=15pt,headsep=18pt,footskip=26pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=0.83]
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{linkblue}{HTML}{153E63}
+\definecolor{softgray}{HTML}{EDEFF1}
+\usepackage{booktabs,array,tabularx,longtable}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=1.5em,topsep=4pt}
+\setlist[description]{leftmargin=0pt,labelsep=0pt,style=nextline,font=\normalfont\bfseries}
+\usepackage{fvextra}
+\usepackage{etoolbox}
+\DefineVerbatimEnvironment{Lean}{Verbatim}{fontsize=\small,breaklines=true,breakanywhere=true,tabsize=2,xleftmargin=0pt,baselinestretch=1.03,samepage=true}
+\BeforeBeginEnvironment{Lean}{\par\noindent\begin{minipage}{\linewidth}}
+\AfterEndEnvironment{Lean}{\end{minipage}\par}
+\usepackage[obeyspaces,spaces]{url}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=linkblue,urlcolor=linkblue,citecolor=linkblue,pdftitle={Further Lean proof simplification of Wang tile constructions},pdfauthor={Static source review},pdfsubject={Source-specific refactoring proposals at commit e652d21c413de59e4821f6e8e9b6a3a077bf5bfe}}
+\usepackage{bookmark}
+\usepackage{titlesec}
+\usepackage{needspace}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.65em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{17pt}{8pt}
+\titlespacing*{\subsection}{0pt}{13pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{10pt}{3pt}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily ProveIt\quad DiophantineConsistency}
+\fancyhead[R]{\small\sffamily Fourth simplification review}
+\fancyfoot[L]{\footnotesize Static analysis\quad 26 October 2026}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{2.5em}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\setcounter{tocdepth}{1}
+\newcommand{\code}[1]{\begingroup\def\UrlBreaks{\do\.\do\_\do\/\do\-}\expandafter\nolinkurl\expandafter{\detokenize{#1}}\endgroup}
+\newcommand{\pathcode}[1]{\nolinkurl{#1}}
+\newcommand{\commit}{e652d21c413de59e4821f6e8e9b6a3a077bf5bfe}
+\newcommand{\src}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e652d21c413de59e4821f6e8e9b6a3a077bf5bfe/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1\#L#2-L#3}{\nolinkurl{#1}\,lines #2--#3}}
+\newcommand{\rootsrc}[4]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e652d21c413de59e4821f6e8e9b6a3a077bf5bfe/#1\#L#2-L#3}{#4}}
+\newcommand{\docsrc}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e652d21c413de59e4821f6e8e9b6a3a077bf5bfe/Computability/DiophantineConsistency/#1\#L#2-L#3}{\nolinkurl{#1}\,lines #2--#3}}
+\newcommand{\status}{\textbf{Candidate only.} The Lean code in this report has not been compiled.}
+\newcommand{\recommendation}[2]{\subsection{#1}\textbf{Priority #2.}}
+\newcommand{\existing}{\textbf{Already present.}}
+\newcommand{\proposed}{\textbf{Proposed.}}
+\newcommand{\risk}{\textbf{Tradeoff and gate.}}
+\newcommand{\refs}{\textbf{Source anchors.}}
+\newcommand{\bodylines}{\textit{Nonblank physical source lines; not proof-term size.}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\majorbreak}{\Needspace{12\baselineskip}}
+
+\newcommand{\mlsrc}[4]{\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/#1\#L#2-L#3}{#4}}
+\newcommand{\ghcommit}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/commit/#1}{\texttt{#2}}}
+\newcommand{\artifact}[1]{\pathcode{#1}}

@@ -1,0 +1,256 @@
+\section{P2: give sparse-list expansion one monomial-sum view}
+
+\subsection{The repeated reasoning}
+
+\src{SyntaxCoefficients}{the interpretation lemmas} keeps sparse expansions
+as executable lists. A term consists of an exponent vector and an integer
+coefficient. Multiplication distributes through \code{flatMap} and
+\code{map}, and duplicate monomials remain in the list.
+
+The recursive \code{interpret} function denotes the corresponding ordinary
+polynomial sum. The original proof layer independently inducts over lists
+for append, coefficient negation, multiplication by one term, full
+multiplication, and coefficient extraction. These are all algebraic facts
+about list sums.
+
+Keep the representation and every executable definition. Add just one
+private view:
+\[
+ \operatorname{interpret}(L)=
+ \sum_{t\in L}\operatorname{monomial}(\operatorname{exponent}(t_1),t_2),
+ \tag{5}
+\]
+where the sum is an occurrence-sensitive list sum, not a finite set sum.
+
+\subsection{The new proof structure}
+
+Prove (5) once by list induction. Then use the following interfaces:
+
+\begin{itemize}
+\item Append: \code{List.map_append} and \code{List.sum_append}.
+\item Negation: the additive-map law for monomial coefficients and
+\code{List.sum_neg}.
+\item Multiplication: flatten a list of lists, then use
+\code{List.map_flatten}, \code{List.sum_flatten}, and distribution over sums.
+\item Coefficient extraction: apply the bundled
+\code{MvPolynomial.coeffAddMonoidHom} to the list sum.
+\end{itemize}
+
+The complete multiplication proof becomes
+\begin{Lean}
+  simp only [interpret_eq_sum, multiply, List.flatMap_def,
+    List.map_flatten, List.sum_flatten, List.map_map,
+    Function.comp_def, exponent_add,
+    ← MvPolynomial.monomial_mul,
+    List.sum_map_mul_left, List.sum_map_mul_right]
+\end{Lean}
+
+The private left-multiplication induction is no longer needed. The structural
+induction proving \code{interpret_expand} remains: it is the correct connection
+between expression constructors and the established list algebra.
+
+A small companion derives \code{exponent_inj} from the injectivity of
+\code{Finsupp.equivFunOnFinite.symm}. It replaces a local extensionality proof,
+and is counted within this module change rather than as a separate proposal.
+
+\subsection{Why the executable behavior stays exact}
+
+Replacing the list by a finite set would discard duplicate occurrences.
+This refactor does not do that. Empty lists, repeated exponent vectors,
+negative coefficients, and coefficients that later cancel are still processed
+by the original list operations.
+
+Even the existing recursive \code{interpret} definition is retained, although
+it is used only for mathematical interpretation. Equation (5) is a theorem
+about it, so its definitional behavior is preserved.
+
+\subsection{Measurements and checking scope}
+
+The production candidate is 110 physical lines instead of 120, and 87
+nonblank lines instead of 97. These counts include the new private theorem
+and the explicit list-algebra import. Five list inductions become one; the
+expression induction remains unchanged.
+
+Both complete modules compile with Lean 4.32.0, using a freshly rebuilt
+current \code{Representation} module. Both public
+\code{coefficient_expand} endpoints report
+\[
+ \{\text{\texttt{propext}},\ \text{\texttt{Classical.choice}},\ \text{\texttt{Quot.sound}}\}.
+\]
+There is no downstream-build or speedup claim. The compiler times in the logs
+are execution receipts from a shared environment, not benchmarks.
+
+The exact patch is \code{patches/syntax-coefficients.patch}. Complete before
+and after sources are also included.
+
+\section{P3: transport quantification by restriction surjectivity}
+
+\subsection{The actual environment-extension problem}
+
+\src{ObjectPolynomial}{\code{sat_noZeroForm_iff}} relates validity of a sealed
+no-zero formula over environments $\N\to V$ to a predicate over finite tuples
+$\operatorname{Fin}(n)\to V$. Its original proof constructs an environment by
+hand: use the tuple below $n$, and a default object elsewhere. It then proves
+restriction recovers the tuple and transports guards and equation
+satisfaction separately.
+
+The content is simply surjectivity of restriction. For an injection
+$j:I\hookrightarrow J$ and a default $d\in V$, the map
+\[
+ \rho:(J\to V)\longrightarrow(I\to V),\qquad
+ \rho(e)=e\circ j
+\]
+is surjective. Thus every predicate $P$ on assignments satisfies
+\[
+       (\forall e,\ P(e\circ j))
+       \quad\Longleftrightarrow\quad
+       (\forall a,\ P(a)).
+ \tag{6}
+\]
+Include the naturalness guard and unsolvability conclusion in $P$.
+
+\subsection{Use the existing extension principle}
+
+The checked generic mechanism uses Mathlib's
+\code{Function.Injective.surjective_comp_right'} and
+\code{Function.Surjective.forall}:
+
+\begin{Lean}
+theorem forall_assignments
+    (coordinates : ι → I)
+    (hinj : Function.Injective coordinates)
+    (default : V) (P : (ι → V) → Prop) :
+    (∀ env : I → V, P (env ∘ coordinates)) ↔
+      ∀ assignment, P assignment :=
+  (hinj.surjective_comp_right' (fun _ => default)).forall.symm
+\end{Lean}
+
+For the actual theorem, the injection is \code{Fin.val} and the default is
+\code{vempty}~\code{H}. No new production helper is necessary: invoke the library
+fact after the existing satisfaction equivalences.
+
+\begin{Lean}
+  refine (seal_valid (mem := mem) _).trans ?_
+  change (∀ ee : Nat → V,
+    Sat mem ee (inputsNaturalForm (Fin.val : Fin n → Nat)) →
+      ¬ Sat mem ee (equationForm e Fin.val)) ↔ NoZeroRel H e
+  simp only [inputsNaturalForm_spec H, equationForm_spec H]
+  exact
+    (Fin.val_injective.surjective_comp_right'
+      (fun _ => vempty H)).forall.symm
+\end{Lean}
+
+The displayed source is wrapped for the page; the supplied patch contains
+the exact eight-line declaration.
+
+\subsection{Boundary cases and distinctness}
+
+Injectivity matters. If two tuple coordinates map to the same environment
+coordinate, arbitrary distinct tuple values cannot be recovered. The
+universal assignment conclusion would then be stronger.
+
+The explicit default handles the empty coordinate type without silently
+assuming a nonempty target type in the abstract theorem. In the model
+application, the empty set already provides this value. No standardness,
+arithmetic, well-foundedness, or induction property of $V$ is used.
+
+Earlier sentence-transport proposals consume the no-zero equivalence.
+P3 instead simplifies the environment extension inside that equivalence,
+so the benefit remains after those earlier wrappers have been applied.
+
+\subsection{Evidence and outstanding integration}
+
+The generic assignment theorem, its \code{Fin.val} specialization, and the
+guarded-unsolvability specialization compile. Their only audited axiom
+dependencies are the usual \code{propext}, \code{Classical.choice}, and
+\code{Quot.sound}.
+
+The production declaration changes from 20 to 8 lines, a proposed
+twelve-line reduction with no added helper. However, the complete
+\code{ObjectPolynomial} module was not compiled: its deep object-model
+dependency closure was unavailable in the local cache. The production patch
+is marked \emph{integration pending}. Success of the abstract mechanism is
+not presented as a complete object-module check.
+
+\section{P4: use the order obstruction on a residual exponent}
+
+\subsection{A smaller proof of the existing theorem}
+
+\src{NativeBinaryScale}{\code{width_dvd_exponent}} proves
+\[
+      2^d-1\mid 2^u-1\quad\Longrightarrow\quad d\mid u
+\]
+with its retained public assumption $0<d$. Put $r=u\bmod d$. The existing
+modular-power identity reduces the divisibility hypothesis to
+\[
+      2^r-1=0.
+\]
+The old proof turns this into $2^r=1$, rewrites $1$ as $2^0$, and invokes
+injectivity of exponentiation.
+
+The replacement uses the order obstruction:
+\[
+      2^r-1=0\Longrightarrow 2^r\le1.
+\]
+If $r\ne0$, \code{Nat.pow_le_one_iff} would force $2\le1$.
+So $r=0$, and hence $d\mid u$.
+
+\begin{Lean}
+  have hm := Nat.mod_eq_zero_of_dvd hdiv
+  rw [Nat.pow_sub_one_mod_pow_sub_one] at hm
+  apply Nat.dvd_of_mod_eq_zero
+  by_contra hn
+  have hsmall :=
+    (Nat.pow_le_one_iff hn).mp (Nat.sub_eq_zero_iff_le.mp hm)
+  omega
+\end{Lean}
+
+The public signature is unchanged, including \code{hd}. The supplied source
+formats the body in six lines; the page breaks one long line.
+The declaration shrinks from twelve to eight lines. Both exact declarations
+compile with identical axiom sets. Their unused-\code{hd} warning is also
+identical.
+
+\subsection{Optional arithmetic API: recover a block power directly}
+
+The independently checked \code{PrimeRadix.lean} proves
+\[
+\begin{gathered}
+ p\text{ prime},\quad 1<q,\quad q\mid p^R,\quad p^d-1\mid q-1\\
+ \Longrightarrow\quad
+ \exists N>0,\quad dN\le R,\quad q=(p^d)^N .
+\end{gathered}
+\tag{7}
+\]
+Classify a divisor of a prime power as $q=p^u$ with $u\le R$.
+The generalized exponent-divisibility fact yields $u=dN$, and $q>1$
+forces $N>0$.
+
+An affine adapter accepts $q=1+J(p^d-1)$, matching \code{sourceQ}.
+A source client can then supply its divisibility certificate and recover
+the cell-count exponent and budget together, rather than exposing an
+intermediate binary exponent.
+
+The generic core needs no separate $d>0$ hypothesis: for $d=0$ the other
+premises force $q=1$, contradicting $q>1$. The public source wrapper can
+still keep its original parameter.
+
+This optional API is not counted as additional removed lines. Its shared
+proof cost may exceed its benefit for a single current client. Adopt it
+if the arithmetic classification becomes a reused boundary.
+
+\subsection{Necessary guards}
+
+The $q>1$ premise is required for a positive exponent. Primality is also
+substantive. For
+\[
+       p=6,\quad d=2,\quad q=4096,\quad R=12,
+\]
+one has $4096\mid6^{12}$ and $35\mid4095$, but $4096$ is not a positive power
+of $36$. Thus (7) cannot be generalized to arbitrary bases larger than one.
+Exponent divisibility alone needs only $p>1$; primality is needed to
+classify divisors of $p^R$.
+
+The exact declaration checks and the optional general prototype are
+included. The modified complete \code{NativeBinaryScale} module and its
+downstream clients were not rebuilt.

@@ -1,0 +1,23 @@
+\section{Evidence and the remaining Lean gate}
+
+\subsection{What has actually been checked}
+The snapshot contains 914 selected current repository files, including all 637 active Lean files; six selected lower dependencies; and 11 prior-pin comparison files. Every selected file is bound by Git blob SHA-1 and SHA-256. These are selected-source and dependency snapshots, not a full checkout. The Mathlib periodicity excerpt is separately bound to its recorded dependency commit.
+
+The original comparison replay applies all four patches together in one disposable source copy and reproduces all five complete candidate modules. The three supplied generators reproduce their 21 outputs byte-for-byte. Lexical declaration checks preserve old public signatures and complete executable definitions, with comments and whitespace normalized; the canonical word definition also has an exact byte-preservation check. These checks do not establish definitional equality in Lean for the new proof terms.
+
+\begin{tabularx}{\linewidth}{@{}L{1.45in}Y@{}}
+\toprule
+Evidence & Scope and limitation \\
+\midrule
+H1 and H2 tests & Ten passing source/replay/API/model tests. Signed translation and independent-dimension quotient models do not prove actual tile membership or matching. \\
+B1 chronology & 525 symbolic seams for heights 3--32. Distinct actual-run times stay opaque; failing-height controls 1 and 2 remain. This is branch chronology, not machine execution. \\
+B2 colors & Formula sanity check for $0,1,432,433$; operating color 4 excluded. Not an enumeration or verification of the entire tile language. \\
+Independent suite & 60 passing tests include signed/zero-width cases, right-wall exclusion, height-0/1/2 controls, tampering, missing or empty axiom output, overlay order, and safe replay refusal. No Lean execution. \\
+Independent review & No semantic gap found in the one retained and three now-excluded mechanisms. Original four-patch composition is a comparison check, not a recommendation to reapply prior work. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Required integration checks not performed here}
+Use an authorized complete checkout with the recorded toolchain. Apply only B2 to the assumed-updated baseline, compile its module and downstream checks, then compare baseline and patched \code{#print axioms} at the existing endpoints. Record commands, outputs, exit status and any repair overhead. No supplied script installs or fetches this environment.
+
+For comparison reproducibility, the original route orders nine modules: five edited files (including excluded H1/H2/B1) and four unchanged connectors. It appends 96 public-theorem axiom commands. This is not the selected one-patch integration plan, nor 96 observed axiom results. All new candidates remain uncompiled; historical receipts and PDF rendering do not establish their elaboration, axioms, or performance.

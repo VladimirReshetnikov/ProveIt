@@ -1,0 +1,104 @@
+\clearpage
+\section{Validation, costs, and adoption gates}
+
+\begin{longtable}{L{0.20\linewidth}L{0.39\linewidth}L{0.30\linewidth}}
+\toprule Artifact & What was checked & What remains\\ \midrule
+P1 core & Actual syntax, split coefficient identity, injective coefficient
+map, semiring evaluation, and cancellation. Current lower dependencies rebuilt. &
+Production wrapper and full internal-model clients.\\
+P1 clients & Literal conditional row, exact input slots, and Boolean
+noncancellation counterexample. &
+Complete \code{ObjectConditional} integration.\\
+P2 & Complete original and patched sparse-coefficient modules;
+current representation dependency rebuilt; endpoint axioms matched. &
+Downstream clients and project checks.\\
+P3 & Generic restriction theorem, finite specialization, guarded predicate. &
+Complete object-polynomial elaboration.\\
+P4 local & Exact old and new declarations; signature and axiom preservation. &
+Enclosing module and downstream checks.\\
+P4 optional & Prime-power and block-radix arithmetic statements. &
+Source adapter and helper-cost comparison.\\
+\bottomrule
+\end{longtable}
+
+The checked compiler is Lean 4.32.0,
+commit \code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}.
+The repository lock records Mathlib
+\code{81a5d257c8e410db227a6665ed08f64fea08e997}.
+Current representation and natural-expression dependencies were rebuilt for
+P1 and P2.
+
+The supplied replay script was run successfully: four current production
+dependencies, six prototype files, and two complete sparse-coefficient
+modules give twelve successful compiler invocations. All three production
+patches also apply to their exact recorded baseline sources; patch application
+is not a replacement for the outstanding module checks.
+
+Successful compiler receipts are included. The checked candidates contain
+no \code{sorry} declarations or new axioms. The usual Lean/Mathlib axioms
+appear in the semantic and coefficient endpoints; the Boolean evaluation
+counterexamples themselves have no axiom dependencies.
+
+No timing is treated as a speedup, and no finite sample replaces a universal
+proof. Source-size figures are physical and nonblank lines, not a measure of
+semantic complexity.
+
+\subsection{Before adoption}
+
+Use a disposable complete repository checkout with the pinned toolchain.
+Check each patch against its recorded baseline bytes, rebuild the affected
+module and direct clients, and inspect relevant endpoint axioms.
+
+For P1, pilot a small group of algebraic row proofs. Keep integer-polynomial
+equality an explicit certificate; avoid unrestricted polynomial expansion
+as a global simplification rule. Preserve the literal expression, witness
+data, degree claims, and model assumptions.
+
+Retain duplicate-preserving list operations (P2), the coordinate injection
+and default object (P3), and the public signature and optional classifier
+assumptions (P4).
+
+\section{Archive guide and reproduction}
+
+The packet is a focused research deliverable, not a repository mirror:
+
+\begin{itemize}
+\item \code{report/}: this PDF and its complete editable LaTeX source.
+\item \code{lean/}: checked semantic kernels, the exact conditional client,
+Boolean negative control, and exponent before/after checks.
+\item \code{patches/}: production edits for sparse interpretation, environment
+restriction, and exponent divisibility.
+\item \code{baseline/}, \code{candidates/}: small source snapshots for review.
+\item \code{evidence/}: compiler receipts, line counts, source identities,
+closing GitHub comparison, and exclusion evidence.
+\item \code{scripts/}: static archive verification and compiler replay for a
+complete configured checkout.
+\end{itemize}
+
+Replay does not install a toolchain or silently modify the original
+repository. The standalone source checks and optional production-patch
+integration are separate steps. The object-model replacement remains
+explicitly uncompiled in this delivery.
+
+\section*{Primary sources}
+\addcontentsline{toc}{section}{Primary sources}
+
+\begin{enumerate}
+\item \href{\repo/tree/\pin/Computability/DiophantineConsistency}
+{Maintained DiophantineConsistency subtree}, closing pin \code{7df43cdfacb4}.
+\item \src{Representation}{integer syntax and polynomial interpretation};
+\src{NaturalExpression}{natural positive/negative syntax};
+\src{NaturalExpressionSemiring}{semiring evaluation}.
+\item \src{GatesSemiring}{signed zero semantics};
+\src{ObjectConditional}{literal selection-row semantics}.
+\item \src{SyntaxCoefficients}{executable expansion and coefficient correctness}.
+\item \src{ObjectPolynomial}{sealed no-zero semantics on finite internal tuples}.
+\item \src{NativeBinaryScale}{binary and block-radix recovery}.
+\item \href{\repo/tree/\pin/Computability/DiophantineConsistency/research/lean-proof-simplification}
+{Placed proposal corpus a--w}, including substantive supplementary notes.
+\item \href{\repo/tree/\pin/docs/incoming}{Five incoming ZIPs}, including
+the final additional interfaces report.
+\item \href{https://github.com/leanprover-community/mathlib4/tree/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib}
+{Mathlib at the repository lock}: function restriction, list sums,
+polynomial maps, and natural-power arithmetic.
+\end{enumerate}

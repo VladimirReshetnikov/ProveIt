@@ -1,0 +1,40 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.78in,top=0.70in,bottom=0.70in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,enumitem,xcolor,listings,hyperref,fancyhdr}
+\definecolor{inkblue}{RGB}{28,67,105}
+\hypersetup{colorlinks=true,urlcolor=inkblue,linkcolor=inkblue,pdftitle={Lean proof simplification after the actual Wang row commits},pdfauthor={Proof engineering review}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small DiophantineConsistency proof review round three}\rhead{\small 26 October 2026}\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\emergencystretch=3em
+\setlist[itemize]{label=$\bullet$,leftmargin=*,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=3pt}
+\newcommand{\code}[1]{{\small\texttt{\detokenize{#1}}}}
+\newcommand{\src}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/22e020937caa81d0cb72a4f63071d6c0bcc1eba9/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean\#L#2-L#3}{\code{#1.lean}:#2--#3}}
+\newcommand{\latesrc}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e2a853935a6155cbcf2aa199aaca51946c4fff9/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean\#L#2-L#3}{\code{#1.lean}:#2--#3 (late)}}
+\newcommand{\docsrc}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/22e020937caa81d0cb72a4f63071d6c0bcc1eba9/Computability/DiophantineConsistency/#1\#L#2-L#3}{\code{#1}:#2--#3}}
+\newcommand{\commit}[1]{\href{https://github.com/VladimirReshetnikov/ProveIt/commit/#1}{\code{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,breaklines=true,breakatwhitespace=true,showstringspaces=false,aboveskip=6pt,belowskip=6pt,frame=single,framerule=0.25pt,rulecolor=\color{black!22},xleftmargin=4pt,xrightmargin=4pt,framesep=5pt,
+ literate={ℕ}{{$\mathbb N$}}1 {→}{{$\to$}}1 {←}{{$\leftarrow$}}1 {↔}{{$\leftrightarrow$}}1 {∀}{{$\forall$}}1 {∃}{{$\exists$}}1 {≤}{{$\le$}}1 {≠}{{$\ne$}}1 {∧}{{$\land$}}1 {∨}{{$\lor$}}1 {∈}{{$\in$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {·}{{$\cdot$}}1 {▸}{{$\triangleright$}}1 {∘}{{$\circ$}}1 {ℤ}{{$\mathbb Z$}}1 {τ}{{$\tau$}}1 {¬}{{$\neg$}}1}
+\newcommand{\pageheading}[1]{\newpage\section*{#1}}
+\begin{document}
+\raggedright
+\begin{center}
+{\LARGE\bfseries Lean proof simplification after\\[3pt] the actual Wang row commits}\\[8pt]
+{\large A third review assuming all earlier proposals are available}\\[5pt]
+Proof-source commit \code{22e020937caa81d0cb72a4f63071d6c0bcc1eba9}
+\end{center}
+\input{01-summary.tex}
+\input{02-commits.tex}
+\input{03-baseline.tex}
+\input{08-accounting.tex}
+\input{06-causality.tex}
+\input{07-canonical.tex}
+\input{09-guards.tex}
+\input{10-validation.tex}
+\input{11-evidence.tex}
+\end{document}

@@ -1,0 +1,10 @@
+import DiophantineConsistency.WangTiles942HelicalQuotient
+import DiophantineConsistency.RatioReparameterization
+import DiophantineConsistency.PolynomialRangeBounds
+import DiophantineConsistency.MarginSeparation
+
+#print axioms DiophantineConsistency.WangTiles942HelicalQuotient.row_zero_of_helix
+#print axioms DiophantineConsistency.RatioReparameterization.combined_dvd_iff
+#print axioms DiophantineConsistency.PolynomialRangeBounds.geometric_identity
+#print axioms DiophantineConsistency.PolynomialRangeBounds.geometric_lt_two_top
+#print axioms DiophantineConsistency.MarginSeparation.coordinate_gt_of_margin_pos

@@ -1,0 +1,563 @@
+{
+  "review": "Bounded late novelty review of complete n and p reports and relevant candidate proofs",
+  "review_pin": "1e2a853935a6155cbcf2aa199aaca51946c4fff9",
+  "scope": "2026-10-26n and 2026-10-26p only; negative novelty findings are bounded to those packets, not a substitute for other packet reviews.",
+  "user_constraint": "All prior ideas are assumed applied, regardless of their reported validation/adoption status. They are not new recommendations.",
+  "method": "Read every n report section and entire p manuscript/results; inspect relevant complete candidate proofs and all four p patches. PDF pages verified with locally installed pdftotext. Read latest CurrentCellConstruction2011, NativeRankVariation, and HeadBounds from existing immutable Git objects. No incoming scripts/build recipes executed, no Lean/TeX/tool installation/network fetch, and no repository source edits.",
+  "report_receipts": [
+    {
+      "path": "research/2026-10-26p/report.tex",
+      "sha256": "0694a945fa51f366c56df2f7ab957fc7942cc300c4faab8b9097e643208a82b9",
+      "physical_lines": 409
+    },
+    {
+      "path": "research/2026-10-26p/results.tex",
+      "sha256": "91ca8ef433540e257ae183b8a1dc5b9798449d0bcdb34869a67d6756139cb2bd",
+      "physical_lines": 21
+    },
+    {
+      "path": "research/2026-10-26n/report/proof_simplification_report.tex",
+      "sha256": "8e2de48e7db89addc3ce6735a13759d83da05b51800c1a029d3cd23607b4583c",
+      "physical_lines": 26
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/00_results.tex",
+      "sha256": "7e89cd6e2f2f74d179799b70f3a4cf8e8580febb249af572b0b006c5593d018e",
+      "physical_lines": 56
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/01_recent_commits.tex",
+      "sha256": "a6b84822a44eb29fdfbad5457be11a54acde37e211964010fea31d18f66b6866",
+      "physical_lines": 66
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/02_novelty.tex",
+      "sha256": "9e5c1126871796190ecbf11cca55c2ac030665029d091aa4f95636ee7a14919d",
+      "physical_lines": 44
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/03_parents.tex",
+      "sha256": "34861f7063dbc97ad1b394c4cc17931ce28c8f34242a9e3a6902f69d1470a60e",
+      "physical_lines": 68
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/04_decoder.tex",
+      "sha256": "039751c3a188c23c061d1693d64ec3ac7346165d12eb3d628830c12b330deecf",
+      "physical_lines": 61
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/05_finite_and_cycle.tex",
+      "sha256": "caeeb97fb6daa705d50666b6c9ef6ee2cb6e2f7d19c33c0f7be4e7dd6ad204c3",
+      "physical_lines": 63
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/06_south_prefix.tex",
+      "sha256": "ec36c7ae3b0438373c5c0d026888ed7c1ae964337eda4b05d7e102d555e21d8c",
+      "physical_lines": 63
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/07_word_congruence.tex",
+      "sha256": "8ae484290a0c3c76eab4d7d281b643c37de15d40b97d26c6a900fa1fe514e28b",
+      "physical_lines": 71
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/08_north_view.tex",
+      "sha256": "427685f9f827a4e7b0481318d75230b11cbf392dc0de8a2f02e6aebc02d984c5",
+      "physical_lines": 65
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/09_supplemental.tex",
+      "sha256": "7c4c05a9f12f25bebd8ef7c95bac5f441494b2246a95ff2915aa8f54a12d4f19",
+      "physical_lines": 63
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/10_metrics_validation.tex",
+      "sha256": "4e27429bc0110b748cea09999c07bfe59919add0e1afd4849c742bed35a7cab1",
+      "physical_lines": 65
+    },
+    {
+      "path": "research/2026-10-26n/report/sections/11_corpus_artifacts.tex",
+      "sha256": "50da0aeaffd1aa5eae99a3dfc7a41e736b1deed9ffef19baf5775075dda7bf22",
+      "physical_lines": 55
+    }
+  ],
+  "assumed_contracts": [
+    {
+      "packet": "n",
+      "id": "A1",
+      "title": "Raw-parent total decoding",
+      "assumed_contract": "Choose decoded six-field rows, recode their rowCode map exactly, and apply check_lists without a new induction.",
+      "report_section": "3",
+      "tex_path": "research/2026-10-26n/report/sections/03_parents.tex",
+      "tex_lines": [
+        4,
+        68
+      ],
+      "pdf_physical_pages": [
+        4
+      ],
+      "pdf_printed_pages": [
+        4
+      ],
+      "code_path": "research/2026-10-26n/annotated/AnnotatedCandidates.lean",
+      "code_lines": [
+        14,
+        29
+      ],
+      "inspected_proof_mechanism": "decodeTable_total parents parents yields rows; tableCode_of_decode yields exact equality; check_lists proves each direction.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "n",
+      "id": "A2",
+      "title": "Joint tree decoder invariant",
+      "assumed_contract": "decode fuel code = some t implies both t.quote = code and t.depth ≤ fuel, with old results as projections.",
+      "report_section": "4",
+      "tex_path": "research/2026-10-26n/report/sections/04_decoder.tex",
+      "tex_lines": [
+        4,
+        61
+      ],
+      "pdf_physical_pages": [
+        5
+      ],
+      "pdf_printed_pages": [
+        5
+      ],
+      "code_path": "research/2026-10-26n/annotated/AnnotatedCandidates.lean",
+      "code_lines": [
+        36,
+        80
+      ],
+      "inspected_proof_mechanism": "One induction on fuel and code handles tag/Option branches; child quotation and depth facts are destructured together. Optional iff uses decode_quote for converse.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "n",
+      "id": "C1",
+      "title": "Finite sum at most one",
+      "assumed_contract": "For arbitrary finite index type, sum ≤ 1 yields all-zero or Selected; retain empty-type case.",
+      "report_section": "5.1",
+      "tex_path": "research/2026-10-26n/report/sections/05_finite_and_cycle.tex",
+      "tex_lines": [
+        4,
+        40
+      ],
+      "pdf_physical_pages": [
+        6
+      ],
+      "pdf_printed_pages": [
+        6
+      ],
+      "code_path": "research/2026-10-26n/current/CurrentSimplificationCandidates.lean",
+      "code_lines": [
+        28,
+        39
+      ],
+      "inspected_proof_mechanism": "Split every-entry-zero; otherwise choose nonzero i, apply Finset.sum_le_one_iff to i/i and j/i.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "n",
+      "id": "C2",
+      "title": "South prefix specializations",
+      "assumed_contract": "Specialize binaryWord_prefix at (1,8)/(2,7) after copy_word_translation; retain exact full-coordinate and Boolean hypotheses.",
+      "report_section": "6",
+      "tex_path": "research/2026-10-26n/report/sections/06_south_prefix.tex",
+      "tex_lines": [
+        4,
+        63
+      ],
+      "pdf_physical_pages": [
+        7
+      ],
+      "pdf_printed_pages": [
+        7
+      ],
+      "code_path": "research/2026-10-26n/current/CurrentSimplificationCandidates.lean",
+      "code_lines": [
+        41,
+        78
+      ],
+      "inspected_proof_mechanism": "Existing binaryWord_one/two plus focused simp normalize offsets 941/940, powers and addition; no new arithmetic invariant.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "n",
+      "id": "C3",
+      "title": "Hoist binary-word extensionality",
+      "assumed_contract": "binaryWord_congr belongs beside binaryWord in CurrentCellLabels2011; earlier/later clients consume it and old namespace may forward.",
+      "report_section": "7",
+      "tex_path": "research/2026-10-26n/report/sections/07_word_congruence.tex",
+      "tex_lines": [
+        4,
+        71
+      ],
+      "pdf_physical_pages": [
+        8
+      ],
+      "pdf_printed_pages": [
+        8
+      ],
+      "code_path": "research/2026-10-26n/current/CurrentSimplificationCandidates.lean",
+      "code_lines": [
+        80,
+        103
+      ],
+      "inspected_proof_mechanism": "Definition unfolds to Finset.sum_congr and range membership; candidate copy translation and horizontal_words apply existing theorem. Report lines 8–15 supplies complete generic proof.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "n",
+      "id": "C4",
+      "title": "Specialize zero-base propagation",
+      "assumed_contract": "Reorder propagate_from before propagate, and define zero-base proof by propagate_from P 0 hzero hnext.",
+      "report_section": "5.2",
+      "tex_path": "research/2026-10-26n/report/sections/05_finite_and_cycle.tex",
+      "tex_lines": [
+        42,
+        63
+      ],
+      "pdf_physical_pages": [
+        6
+      ],
+      "pdf_printed_pages": [
+        6
+      ],
+      "code_path": "research/2026-10-26n/current/CurrentSimplificationCandidates.lean",
+      "code_lines": [
+        105,
+        107
+      ],
+      "inspected_proof_mechanism": "One exact application of general reachable-from theorem; no strengthening of P or modulus premises.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "n",
+      "id": "W1",
+      "title": "Indexed NorthView",
+      "assumed_contract": "Index six semantic high-north shapes by numeric north color; existing five classifications become projections.",
+      "report_section": "8",
+      "tex_path": "research/2026-10-26n/report/sections/08_north_view.tex",
+      "tex_lines": [
+        4,
+        65
+      ],
+      "pdf_physical_pages": [
+        9
+      ],
+      "pdf_printed_pages": [
+        9
+      ],
+      "code_path": "research/2026-10-26n/wang/NorthViewCandidates.lean",
+      "code_lines": [
+        13,
+        70
+      ],
+      "inspected_proof_mechanism": "high_north_cases performs exactly six cases; five wrappers use simp only [hn, NorthView], with reflexive converses. Neither row causality nor arbitrary-row equality is asserted.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "n",
+      "id": "S1",
+      "title": "Explicit CRT congruence",
+      "assumed_contract": "Transport hIndex_residue by add_right 1, mul_right T, add_right 1; compose modulus-zero fact.",
+      "report_section": "9.1",
+      "tex_path": "research/2026-10-26n/report/sections/09_supplemental.tex",
+      "tex_lines": [
+        4,
+        27
+      ],
+      "pdf_physical_pages": [
+        10
+      ],
+      "pdf_printed_pages": [
+        10
+      ],
+      "code_path": "research/2026-10-26n/supplemental/crt-explicit-congruence.patch",
+      "code_lines": [
+        7,
+        12
+      ],
+      "inspected_proof_mechanism": "Replaces gcongr/exact? search with exact existing residue chain; witnesses and truncated-subtraction argument unchanged.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "n",
+      "id": "S2",
+      "title": "Binary graph depth bookkeeping",
+      "assumed_contract": "compose_two_depth_le packages Fin 2 case elimination under existing h+8 bound.",
+      "report_section": "9.2",
+      "tex_path": "research/2026-10-26n/report/sections/09_supplemental.tex",
+      "tex_lines": [
+        29,
+        63
+      ],
+      "pdf_physical_pages": [
+        10
+      ],
+      "pdf_printed_pages": [
+        10
+      ],
+      "code_path": "research/2026-10-26n/supplemental/DepthCandidates.lean",
+      "code_lines": [
+        11,
+        33
+      ],
+      "inspected_proof_mechanism": "Apply GraphRep.compose_depth_le, transitive arithmetic simplification, fin_cases i; pow and binomial pilots use the helper.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "p",
+      "id": "A",
+      "title": "Scale-parametric Pell estimate",
+      "assumed_contract": "Positive real factor λ turns ξ < λ(Y+1) into c/k < ξ+λ/2 under common Pell/growth hypotheses; factors 1 and 2 retain old interfaces.",
+      "report_section": "3",
+      "tex_path": "research/2026-10-26p/report.tex",
+      "tex_lines": [
+        124,
+        190
+      ],
+      "pdf_physical_pages": [
+        6,
+        7
+      ],
+      "pdf_printed_pages": [
+        5,
+        6
+      ],
+      "code_path": "research/2026-10-26p/lean/Diophantine/Paper1980/PellRatio90.lean",
+      "code_lines": [
+        222,
+        318
+      ],
+      "inspected_proof_mechanism": "Retain common X,Z,ε estimates; multiply small (Y+1) error by positive factor and cancel positive k. Native wrapper is NativeHalfBinomial.lean:18–25.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "p",
+      "id": "B",
+      "title": "Variadic backward references",
+      "assumed_contract": "For any list of premises with HasFragment witnesses, collect lines/history/parent indices satisfying lookup for every appended ambient history; finish any arity rule once.",
+      "report_section": "4",
+      "tex_path": "research/2026-10-26p/report.tex",
+      "tex_lines": [
+        192,
+        245
+      ],
+      "pdf_physical_pages": [
+        7,
+        8
+      ],
+      "pdf_printed_pages": [
+        6,
+        7
+      ],
+      "code_path": "research/2026-10-26p/lean/DiophantineConsistency/AnnotatedProofChecker.lean",
+      "code_lines": [
+        253,
+        296
+      ],
+      "inspected_proof_mechanism": "List induction chooses head fragment p and tail collector q; combined history is history++(a::tail), head index history.length, tail references stable under ambient suffix. Old arities wrap fragment.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "p",
+      "id": "C",
+      "title": "Successor fork-certificate transport",
+      "assumed_contract": "ForkCertificate (out+1) a b t s m iff QuadraticNatPairing.Certificate out (a+1) b t s m, preserving all witnesses.",
+      "report_section": "5",
+      "tex_path": "research/2026-10-26p/report.tex",
+      "tex_lines": [
+        247,
+        281
+      ],
+      "pdf_physical_pages": [
+        9
+      ],
+      "pdf_printed_pages": [
+        8
+      ],
+      "code_path": "research/2026-10-26p/lean/DiophantineConsistency/AnnotatedSyntaxGraphs.lean",
+      "code_lines": [
+        29,
+        60
+      ],
+      "inspected_proof_mechanism": "Successor equation simplifies casts; output zero contradicted by nonnegative square/product. Soundness applies congrArg Nat.succ; completeness transports original witnesses.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "p",
+      "id": "D",
+      "title": "Projected support separation",
+      "assumed_contract": "For group homomorphism π and support S, exclusion πδ ∉ S−S forces f x=0 or f(x+δ)=0, uniformly over translation.",
+      "report_section": "6",
+      "tex_path": "research/2026-10-26p/report.tex",
+      "tex_lines": [
+        283,
+        324
+      ],
+      "pdf_physical_pages": [
+        10
+      ],
+      "pdf_printed_pages": [
+        9
+      ],
+      "code_path": "research/2026-10-26p/lean/DiophantineConsistency/SupportDifference.lean",
+      "code_lines": [
+        8,
+        34
+      ],
+      "inspected_proof_mechanism": "If both projected positions lie in S their difference equals πδ using map_sub and abel. Native client at NativeTemporalSupport54.lean:56–87 discharges residue 606 and support premises.",
+      "status": "assumed applied; excluded as fresh proposal"
+    },
+    {
+      "packet": "p",
+      "id": "E",
+      "title": "Canonical arithmetic pairing witnesses",
+      "assumed_contract": "QuadraticNatPairing.Certificate fixes z=pair a b and its selector, slack, maximum; completeness uses explicit witnesses and any two certificates have equal witnesses.",
+      "report_section": "7",
+      "tex_path": "research/2026-10-26p/report.tex",
+      "tex_lines": [
+        326,
+        363
+      ],
+      "pdf_physical_pages": [
+        11
+      ],
+      "pdf_printed_pages": [
+        10
+      ],
+      "code_path": "research/2026-10-26p/prototypes/CanonicalPairingIntegration.lean",
+      "code_lines": [
+        7,
+        80
+      ],
+      "inspected_proof_mechanism": "Boolean equation forces t=0 or 1; branch equations determine m, slack and z. certificate_normal_form is NOT equality of an arbitrary Wang tile to a constructor.",
+      "status": "assumed applied; excluded as fresh proposal"
+    }
+  ],
+  "screening_decisions": [
+    {
+      "candidate": "Actual receiver causality: receive_at_next_head, retaining plain finish alternative and halt target 215",
+      "decision": "No duplicate found in n/p",
+      "nearest_prior": [
+        "n W1",
+        "p D"
+      ],
+      "reason": "NorthView classifies six north-boundary shapes; projected support separation concerns numeric sparse rotated digits. Neither proves location of a receive tuple in an arbitrary live RowEncodes tiling. Preserve target 215 and defer finish exclusion to temporal proof."
+    },
+    {
+      "candidate": "Canonical arbitrary-interior T(x,t)=stepTile(cfg,q,x)",
+      "decision": "No duplicate found in n/p",
+      "nearest_prior": [
+        "n W1",
+        "p E"
+      ],
+      "reason": "n NorthView retains literal boundary tile cases but has no operational row comparison. p E is uniqueness of selector/slack/max in arithmetic pairing. Neither claims equality for an arbitrary allowed horizontally/temporally matched row in the open strip; constructor-only shared-edge equalities would not establish that obligation."
+    },
+    {
+      "candidate": "HeadBounds Nat.le_of_lt_succ / Nat.pow_le_pow_left microproofs",
+      "decision": "No duplicate found in n/p",
+      "source": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HeadBounds.lean",
+      "source_lines": [
+        59,
+        74
+      ],
+      "reason": "Full n/p proposals do not target these wall inequalities. p Pell/NativeTemporalSupport source has ordinary existing power monotonicity uses, not a recommendation to replace finite seam enumeration in HeadBounds. Generic usage of a theorem is not this target-specific prior proposal.",
+      "proposed_terms": [
+        "exact Nat.le_of_lt_succ b.isLt",
+        "exact Nat.pow_le_pow_left (Nat.le_of_lt_succ a.isLt) 2"
+      ]
+    }
+  ],
+  "new_source_findings": [
+    {
+      "source": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCellConstruction2011.lean",
+      "lines": [
+        138,
+        143
+      ],
+      "finding": "EXCLUDE sharing/deleting binaryWord_congr_local as fresh novelty: exact finite-sum proof already in n C3.",
+      "prior": "n report §7 PDF p8; sections/07_word_congruence.tex:8–21",
+      "affected_client_lines": [
+        [
+          151,
+          158
+        ],
+        [
+          219,
+          230
+        ]
+      ],
+      "required_post_adoption_contract": "CurrentCellLabels2011.binaryWord_congr"
+    },
+    {
+      "source": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeRankVariation.lean",
+      "lines": [
+        1,
+        112
+      ],
+      "finding": "Full module read. No same-target n/p proposal found. Its ordinary ring variation identity and strict-decrease positivity are not equivalent to p Pell factor or support-difference contracts. No new refactor is asserted by this finding."
+    }
+  ],
+  "preexcluded_by_parent": [
+    "First-failure wall helper (T1/T3)",
+    "le_abs trace shortcut (T3)",
+    "Periodic barrier (upstream 512e)"
+  ],
+  "validation": "Source-level review only. Prior p compilation claims are prior artifact claims, not reproduced. n expressly marks its code uncompiled. Neither status changes the assumed-applied exclusion rule.",
+  "blockers": [],
+  "additional_assumed_designs": [
+    {
+      "id": "n-N08",
+      "contract": "Target-prefix rail bound via existing finite rank infrastructure",
+      "source": "research/2026-10-26n/incoming_audit/NOVELTY_DECISIONS.json",
+      "lines": [
+        54,
+        60
+      ],
+      "status": "assumed applied as a stated design even though not promoted to final report",
+      "distinction": "Target-prefix cardinal/rank bound is not the Fin 3 seam projection inequalities in HeadBounds. No corresponding candidate proof supplied in this packet."
+    },
+    {
+      "id": "n-N09",
+      "contract": "TileFamily / row-witness sharing for Allowed iff indexedRows membership",
+      "source": "research/2026-10-26n/incoming_audit/NOVELTY_DECISIONS.json",
+      "lines": [
+        61,
+        67
+      ],
+      "status": "assumed applied as a stated design even though not promoted to final report",
+      "distinction": "Exact table membership witness does not identify an arbitrary matched live row tile with the independent operational stepTile constructor. No corresponding candidate proof supplied in this packet."
+    },
+    {
+      "id": "n-N10",
+      "contract": "Signed-address period lattice with closure/generator obligations",
+      "source": "research/2026-10-26n/incoming_audit/NOVELTY_DECISIONS.json",
+      "lines": [
+        68,
+        74
+      ],
+      "status": "assumed applied as a stated design even though not promoted to final report",
+      "distinction": "Period lattice does not determine a receive tile location or canonical arbitrary interior row tile. No corresponding candidate proof supplied in this packet."
+    },
+    {
+      "id": "n-N12",
+      "contract": "Pair existential projection via Nat.unpair and bounded Fin witness assembly",
+      "source": "research/2026-10-26n/incoming_audit/NOVELTY_DECISIONS.json",
+      "lines": [
+        82,
+        88
+      ],
+      "status": "assumed applied as a stated design even though not promoted to final report",
+      "distinction": "Arithmetic witness assembly, unrelated to operational row causality. No corresponding candidate proof supplied in this packet."
+    }
+  ],
+  "additional_exclusion_audits_read": [
+    "research/2026-10-26n/incoming_audit/NOVELTY_DECISIONS.json (entire)",
+    "research/2026-10-26n/wang/NORTH_VIEW_REVIEW.md (entire)",
+    "research/2026-10-26p/evidence/novelty_audit.md (entire)"
+  ],
+  "inherited_prior_mechanism_index": "research/2026-10-26p/evidence/novelty_matrix.json records 58 preexisting families. Their referenced sources belong to the broader catalog review; none is reclassified as novel here."
+}

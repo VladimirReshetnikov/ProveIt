@@ -1,0 +1,43 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942CycleMarkerChecks.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942CycleMarkerChecks.lean
+@@ -0,0 +1,40 @@
++import DiophantineConsistency.WangTiles942CycleMarker
++
++namespace DiophantineConsistency.WangTiles942CycleMarkerChecks
++
++open WangTiles942 WangTiles942TraceCycle WangTiles942CycleMarker
++
++set_option Elab.async false
++set_option maxRecDepth 10000
++
++example {H : ℕ} (k : Fin H) (x : ℤ) :
++    cycleTile k x = start ↔ k.val = 0 ∧ x = 0 := cycleTile_eq_start_iff k x
++
++-- Marker uniqueness does not require the stronger temporal-cycle bound.
++-- It holds even at height1; valid temporal matching is a separate fact.
++example : cycleTile (0 : Fin 1) 0 = start :=
++  (cycleTile_eq_start_iff _ _).mpr ⟨rfl,rfl⟩
++
++example : cycleTile (0 : Fin 1) (-1) ≠ start := by
++  intro h
++  have hx := ((cycleTile_eq_start_iff (0 : Fin 1) (-1)).mp h).2
++  omega
++
++example : cycleTile (1 : Fin 3) 0 ≠ start ∧ cycleTile (2 : Fin 3) 0 ≠ start := by
++  constructor
++  · intro h
++    have hk := ((cycleTile_eq_start_iff (1 : Fin 3) 0).mp h).1
++    contradiction
++  · intro h
++    have hk := ((cycleTile_eq_start_iff (2 : Fin 3) 0).mp h).1
++    contradiction
++
++example {H : ℕ} (k : Fin H) (x : ℤ) (h : cycleTile k x = start) :
++    k.val = 0 ∧ x = 0 := (cycleTile_eq_start_iff k x).mp h
++
++#print axioms initialTile_north_start_iff
++#print axioms initialTile_eq_start_iff
++#print axioms cycleTile_north_start_iff
++#print axioms cycleTile_eq_start_iff
++
++end DiophantineConsistency.WangTiles942CycleMarkerChecks
