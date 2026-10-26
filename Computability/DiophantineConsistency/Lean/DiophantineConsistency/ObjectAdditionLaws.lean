@@ -36,17 +36,7 @@ private def successorLeftStage : Form :=
 private theorem successorLeftStage_spec (H : ZFAxioms mem) (n x : V) (ee : Nat → V) :
     Sat mem (scons n (scons x ee)) successorLeftStage ↔
       ∀ z, AddRel H x n z → AddRel H (vsucc H x) n (vsucc H z) := by
-  constructor
-  · intro h z hz
-    obtain ⟨z', hz', x', hx', ha⟩ := h z ((addForm_spec H _ 0 2 1).mpr hz)
-    have ez : z'=vsucc H z := (fSuccF_spec H _ 0 1).mp hz'
-    have ex : x'=vsucc H x := (fSuccF_spec H _ 0 4).mp hx'
-    have hh : AddRel H x' n z' := (addForm_spec H _ 1 0 3).mp ha
-    simpa only [ex,ez] using hh
-  · intro h z hz
-    exact ⟨vsucc H z,(fSuccF_spec H _ 0 1).mpr rfl,
-      vsucc H x,(fSuccF_spec H _ 0 4).mpr rfl,
-      (addForm_spec H _ 1 0 3).mpr (h z ((addForm_spec H _ 0 2 1).mp hz))⟩
+  simp only [successorLeftStage, Sat, addForm_spec H, fSuccF_spec H, scons, exists_eq_left]
 
 /-- Successor can be moved through the left input, for all internal naturals. -/
 theorem addRel_succ_left (H : ZFAxioms mem) {x y z : V}
@@ -77,11 +67,7 @@ private def commutativeStage : Form :=
 private theorem commutativeStage_spec (H : ZFAxioms mem) (n x : V) (ee : Nat → V) :
     Sat mem (scons n (scons x ee)) commutativeStage ↔
       ∀ z, AddRel H x n z → AddRel H n x z := by
-  constructor
-  · intro h z hz
-    exact (addForm_spec H _ 0 1 2).mp (h z ((addForm_spec H _ 0 2 1).mpr hz))
-  · intro h z hz
-    exact (addForm_spec H _ 0 1 2).mpr (h z ((addForm_spec H _ 0 2 1).mp hz))
+  simp only [commutativeStage, Sat, addForm_spec H, scons]
 
 theorem addRel_comm (H : ZFAxioms mem) {x y z : V} (hxy : AddRel H x y z) :
     AddRel H y x z := by
@@ -114,13 +100,7 @@ private def associativeStage : Form :=
 private theorem associativeStage_spec (H : ZFAxioms mem) (n x y a : V) (ee : Nat → V) :
     Sat mem (scons n (scons x (scons y (scons a ee)))) associativeStage ↔
       ∀ b z, AddRel H y n b → AddRel H a n z → AddRel H x b z := by
-  constructor
-  · intro h b z hb hz
-    exact (addForm_spec H _ 0 3 1).mp
-      (h b z ⟨(addForm_spec H _ 1 4 2).mpr hb,(addForm_spec H _ 0 5 2).mpr hz⟩)
-  · intro h b z hbz
-    exact (addForm_spec H _ 0 3 1).mpr
-      (h b z ((addForm_spec H _ 1 4 2).mp hbz.1) ((addForm_spec H _ 0 5 2).mp hbz.2))
+  simp only [associativeStage, Sat, addForm_spec H, scons, and_imp]
 
 /-- Associativity with every intermediate value explicit. -/
 theorem addRel_assoc (H : ZFAxioms mem) {x y n a b z : V}

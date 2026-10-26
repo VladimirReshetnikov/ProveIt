@@ -17,11 +17,7 @@ private def cancellationStage : Form :=
 private theorem cancellationStage_spec (H : ZFAxioms mem) (n : V) (ee : Nat → V) :
     Sat mem (scons n ee) cancellationStage ↔
       ∀ x x' z, AddRel H x n z → AddRel H x' n z → x=x' := by
-  constructor
-  · intro h x x' z hx hx'
-    exact h x x' z ⟨(addForm_spec H _ 0 2 3).mpr hx,(addForm_spec H _ 0 1 3).mpr hx'⟩
-  · intro h x x' z hh
-    exact h x x' z ((addForm_spec H _ 0 2 3).mp hh.1) ((addForm_spec H _ 0 1 3).mp hh.2)
+  simp only [cancellationStage, Sat, addForm_spec H, scons, and_imp]
 
 theorem addRel_cancel_right (H : ZFAxioms mem) {x x' y z : V}
     (hx : AddRel H x y z) (hx' : AddRel H x' y z) : x=x' := by

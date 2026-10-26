@@ -22,11 +22,7 @@ private def additionBoundStage : Form :=
 private theorem additionBoundStage_spec (H : ZFAxioms mem) (n x : V) (ee : Nat → V) :
     Sat mem (scons n (scons x ee)) additionBoundStage ↔
       ∀ y, AddRel H x n y → LeRel H x y := by
-  constructor
-  · intro h y hy
-    exact h y ((addForm_spec H _ 0 2 1).mpr hy)
-  · intro h y hy
-    exact h y ((addForm_spec H _ 0 2 1).mp hy)
+  simp only [additionBoundStage, Sat, addForm_spec H, scons, LeRel]
 
 theorem addRel_le_left (H : ZFAxioms mem) {x n y : V} (hxy : AddRel H x n y) :
     LeRel H x y := by
@@ -57,13 +53,7 @@ private def differenceStage : Form :=
 private theorem differenceStage_spec (H : ZFAxioms mem) (n : V) (ee : Nat → V) :
     Sat mem (scons n ee) differenceStage ↔
       ∀ x, mem x (omegaV H) → LeRel H x n → ∃ z, AddRel H x z n := by
-  constructor
-  · intro h x hx hle
-    obtain ⟨z,hz⟩ := h x ((fNatF_spec H _ 0).mpr hx) hle
-    exact ⟨z,(addForm_spec H _ 2 1 0).mp hz⟩
-  · intro h x hx hle
-    obtain ⟨z,hz⟩ := h x ((fNatF_spec H _ 0).mp hx) hle
-    exact ⟨z,(addForm_spec H _ 2 1 0).mpr hz⟩
+  simp only [differenceStage, Sat, fNatF_spec H, addForm_spec H, scons, LeRel]
 
 theorem leRel_exists_add (H : ZFAxioms mem) {x y : V}
     (hx : mem x (omegaV H)) (hy : mem y (omegaV H)) (hxy : LeRel H x y) :
