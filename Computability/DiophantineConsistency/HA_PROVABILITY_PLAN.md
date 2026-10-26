@@ -300,7 +300,11 @@ interpretation is exactly actual C222. The
 leaves and ten standard-only reports over122 cached prerequisites. GrowG
 is the actual changed equality rule; rho7 is not assumed. The encoded
 calculus's classical logic is separate from HA's intuitionistic proof rules.
-Internal equality helpers, seed interpretation and runtime remain open.
+The [internal equality core](reviews/validator-equality-core222-root.md)
+now derives reflexivity, the helper and specialization, rho7 from growG,
+and membership vacuity from the gated seed. Both leaves pass independent
+compilation and eight standard-only reports over123 cached prerequisites.
+Semantic seed interpretation and runtime remain open.
 
 The [arithmetic translation audit](research/ha-arithmetic-translation-adapter-audit.md)
 also fixes the next proof-transfer interface: translate Foundation ordered
@@ -415,9 +419,14 @@ also proves the literal zeroLtOne and zeroLe GG images, with a constructive
 arbitrary-term zero/predecessor proof and the exact negative disjunction
 encoding. Its [independent peer replay](reviews/foundation-ha-order-base-lean-peer.md)
 passed both leaves and ten reports using only `propext` and `Quot.sound`.
-Seven order/geometric cases remain: addEqOfLt, oneLeOfZeroLt, addLtAdd,
-mulLtMul, ltIrrefl, ltTrans and ltTri. Full arithmetic proof transfer and
-the exact no-zero/consistency target comparison remain separate obligations.
+The [Additive and Witnesses packets](reviews/foundation-ha-order-witnesses-root.md)
+now discharge addEqOfLt, addLtAdd, oneLeOfZeroLt and ltTrans too. Ordinary
+HA derivations construct actual predecessors under fully shifted contexts;
+the negative images lift those implications while retaining double-negated
+order premises. Four independent fresh leaves passed50 standard-only
+reports with byte-identical author objects. The remaining three cases are
+mulLtMul, ltIrrefl and ltTri. Full arithmetic proof transfer and the exact
+no-zero/consistency target comparison remain separate obligations.
 
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and

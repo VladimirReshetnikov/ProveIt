@@ -3556,3 +3556,13 @@ norm, packed R, transport or native calibration; it is not a full false
 zero. Those additional simultaneous constraints could still prove this
 chart sound. Its consistency equivalence remains open, so no new degree
 frontier or maintained-page change is claimed.
+
+## Read-only alternatives after the 13/75/96 unit sphere
+
+The [next-reduction note](research/thirteen-unit-sphere96-next-reductions.md)
+records two sound algebraic schedules at74 operations, of degrees152 and
+164. Both are dominated by the accepted13/72/124 point, so they are not
+materialized as new candidate packets. Replacing the signed ordinate's
+L*V carrier by V would suggest74/80, but the positive witness maps require
+a sign bound that the accepted proofs do not establish. This remains an
+unproved lead; the verified degree96 point remains13/75/96.

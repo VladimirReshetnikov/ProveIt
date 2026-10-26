@@ -155,6 +155,18 @@ graph and cannot serve as the new 13-variable binding.
 The entries below record the state at each checkpoint. Later entries and
 the current-gap section above supersede earlier lists of open work.
 
+The current HA track now includes the actual C222 equality core and four
+further actual source order images. The former internally derives the
+helper, specialization, rho7 and gated membership vacuity; seed semantics
+remain open. The latter covers addEqOfLt, addLtAdd, oneLeOfZeroLt and
+ltTrans by actual HA predecessor constructions followed by negative proof
+maps. Six independent root leaf invocations passed58 standard-only reports,
+all objects byte-identical to the authors'. See the
+[C222 review](reviews/validator-equality-core222-root.md) and
+[order review](reviews/foundation-ha-order-witnesses-root.md). Only mulLtMul,
+ltIrrefl and ltTri remain among the source order axioms. These checkpoints
+do not yet prove the final HA consistency equivalence.
+
 ### First arithmetic checkpoint
 
 The first four modules above now compile, together with their focused
