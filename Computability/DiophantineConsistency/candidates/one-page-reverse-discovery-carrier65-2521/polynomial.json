@@ -1,0 +1,483 @@
+{
+  "arithmetic_proof": "../../research/carrier65-independent/PROOF.md",
+  "arithmetic_proof_sha256": "53ec75050c7f4a00386d9738f8c515f3a816d8e4d94afcebb54b3497d972e749",
+  "coefficient_binding": {
+    "certificate": "../../research/reversed-selector-independent/certificate.json",
+    "certificate_sha256": "e778823a2ff489789db769189e6e217c8e8d1db955b15232eddd8d473b3e36ed",
+    "ordinary_proof": "../../research/reversed-selector-independent/PROOF.md",
+    "ordinary_proof_sha256": "81e9dc739834d385a0134b23cdb6744ad7df2228af05a3ad66956fb17cdb28e8",
+    "path": "coefficients/",
+    "ports": {
+      "K0": {
+        "bits": 118911,
+        "file": "K.bin.gz",
+        "gzip_sha256": "27eddd2af6668964f6b9bea14aea508c0b7795d3710f65cbcbbe903fcb2a870e",
+        "raw_bytes": 14864,
+        "raw_sha256": "05862bb738b9ec0e25739a0286f23db1bff4130d8d915df60d96d34f691684bc"
+      },
+      "MC": {
+        "bits": 118487,
+        "file": "MC.bin.gz",
+        "gzip_sha256": "138575515d720fd9587f87f04a3f74a470453aaec7e40ac4e65759eb812c95ac",
+        "raw_bytes": 14811,
+        "raw_sha256": "d16c2b7baa32be42de7cc2c90352230c56c05bf42c94086723ec042424c15e93"
+      },
+      "MF": {
+        "bits": 118488,
+        "file": "MF_source.bin.gz",
+        "gzip_sha256": "945f272117e1242c826e9b1b05e85708bcaf2cf09d4a45457411f3675a04e845",
+        "raw_bytes": 14811,
+        "raw_sha256": "72d134ca88b90d419900344cfbcb1db2c1f75d01c53dcd3fd577ff3b7a501334"
+      },
+      "beta": {
+        "bits": 118487,
+        "file": "beta.bin.gz",
+        "gzip_sha256": "b2825dbc5a01153f6df943d72107303264538bc02e83a382e4d59feb9a8c7f81",
+        "raw_bytes": 14811,
+        "raw_sha256": "b4a60833a4b9a15626af6d0672cda5a644e10707d4d93e528af471048311eea3"
+      }
+    },
+    "raw_bytes": 59297,
+    "schema": "reversed2521_materialized_v1"
+  },
+  "display_scalar_names": {
+    "MC": "\\mu",
+    "MF": "\\omega",
+    "N0": "P",
+    "N1": "Q",
+    "Na": "U",
+    "Nt": "W",
+    "main_root": "D",
+    "normalized_S": "S",
+    "qm": "b",
+    "scaled_Ns": "Z"
+  },
+  "exact_degree": 150,
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "name": "decimal_reversed_carrier65_2521_degree150",
+  "operation_counts": {
+    "*": 37,
+    "+": 16,
+    "-": 12
+  },
+  "operations": 65,
+  "output": "polynomial",
+  "parent_polynomial_sha256": "0691be13bf9b678de0ce067be4accd637a49200518846a79982346c709570248",
+  "proof": "README.md",
+  "proof_boundary": "Complete reversed-selector2521 native/P66 proof and discharged Pcrv, followed by uniform Carrier65 positive-zero maps; retained syntactic calibration, no new formal-kernel replay.",
+  "schema": "literal_integer_arithmetic_dag_v1",
+  "source": [
+    [
+      "qm",
+      "*",
+      "beta",
+      "J"
+    ],
+    [
+      "q",
+      "+",
+      "qm",
+      1
+    ],
+    [
+      "q2",
+      "*",
+      "q",
+      "q"
+    ],
+    [
+      "q3",
+      "*",
+      "q2",
+      "q"
+    ],
+    [
+      "X",
+      "*",
+      "w",
+      "q"
+    ],
+    [
+      "Y",
+      "*",
+      "s",
+      "q3"
+    ],
+    [
+      "E",
+      "*",
+      "X",
+      "Y"
+    ],
+    [
+      "k",
+      "+",
+      "eta",
+      "zeta"
+    ],
+    [
+      "kY",
+      "*",
+      "k",
+      "Y"
+    ],
+    [
+      "ell",
+      "*",
+      "E",
+      "kY"
+    ],
+    [
+      "c",
+      "+",
+      "kY",
+      "eta"
+    ],
+    [
+      "a",
+      "+",
+      "E",
+      "Y"
+    ],
+    [
+      "four_a",
+      "*",
+      4,
+      "a"
+    ],
+    [
+      "H",
+      "+",
+      "four_a",
+      3
+    ],
+    [
+      "a2",
+      "*",
+      "a",
+      "a"
+    ],
+    [
+      "Delta",
+      "+",
+      "a2",
+      "H"
+    ],
+    [
+      "ac",
+      "*",
+      "a",
+      "c"
+    ],
+    [
+      "main_base",
+      "+",
+      "X",
+      "ac"
+    ],
+    [
+      "gammaH",
+      "*",
+      "gamma",
+      "H"
+    ],
+    [
+      "main_root",
+      "+",
+      "main_base",
+      "gammaH"
+    ],
+    [
+      "c2",
+      "*",
+      "c",
+      "c"
+    ],
+    [
+      "Dc2",
+      "*",
+      "Delta",
+      "c2"
+    ],
+    [
+      "main_square",
+      "*",
+      "main_root",
+      "main_root"
+    ],
+    [
+      "N1",
+      "-",
+      "main_square",
+      "Dc2"
+    ],
+    [
+      "qF",
+      "-",
+      "q",
+      "F"
+    ],
+    [
+      "C",
+      "-",
+      "qF",
+      "alpha"
+    ],
+    [
+      "gap_product",
+      "*",
+      "qm",
+      "qF"
+    ],
+    [
+      "gap",
+      "+",
+      "gap_product",
+      "alpha"
+    ],
+    [
+      "q2minus1",
+      "-",
+      "q2",
+      1
+    ],
+    [
+      "rproduct",
+      "*",
+      "gap",
+      "q2minus1"
+    ],
+    [
+      "qMF",
+      "*",
+      "q",
+      "MF"
+    ],
+    [
+      "maskfactor",
+      "+",
+      "MC",
+      "qMF"
+    ],
+    [
+      "mask",
+      "*",
+      "maskfactor",
+      "J"
+    ],
+    [
+      "R",
+      "+",
+      "rproduct",
+      "mask"
+    ],
+    [
+      "En",
+      "*",
+      "E",
+      "n"
+    ],
+    [
+      "tau_partial",
+      "+",
+      "En",
+      "k"
+    ],
+    [
+      "tau",
+      "-",
+      "tau_partial",
+      "R"
+    ],
+    [
+      "tau2",
+      "*",
+      "tau",
+      "tau"
+    ],
+    [
+      "ell_plus_k",
+      "+",
+      "ell",
+      "k"
+    ],
+    [
+      "first_product",
+      "*",
+      "ell",
+      "ell_plus_k"
+    ],
+    [
+      "N0",
+      "-",
+      "tau2",
+      "first_product"
+    ],
+    [
+      "Kw",
+      "+",
+      "K0",
+      "w"
+    ],
+    [
+      "transport",
+      "*",
+      "Kw",
+      "C"
+    ],
+    [
+      "transport_partial",
+      "+",
+      "transport",
+      "qF"
+    ],
+    [
+      "zqm",
+      "*",
+      "z",
+      "qm"
+    ],
+    [
+      "Nt",
+      "-",
+      "transport_partial",
+      "zqm"
+    ],
+    [
+      "f2",
+      "*",
+      "f",
+      "f"
+    ],
+    [
+      "cT",
+      "*",
+      "c",
+      "T"
+    ],
+    [
+      "cTminusR",
+      "-",
+      "cT",
+      "R"
+    ],
+    [
+      "f2inner",
+      "*",
+      "f2",
+      "cTminusR"
+    ],
+    [
+      "V",
+      "-",
+      "f2inner",
+      "c"
+    ],
+    [
+      "normalized_S",
+      "*",
+      "i",
+      "Dc2"
+    ],
+    [
+      "normalized_S2",
+      "*",
+      "normalized_S",
+      "normalized_S"
+    ],
+    [
+      "V2",
+      "*",
+      "V",
+      "V"
+    ],
+    [
+      "y2",
+      "*",
+      "y",
+      "y"
+    ],
+    [
+      "V2minusY2",
+      "-",
+      "V2",
+      "y2"
+    ],
+    [
+      "aux_product",
+      "*",
+      "normalized_S2",
+      "V2minusY2"
+    ],
+    [
+      "Na",
+      "+",
+      "aux_product",
+      "y2"
+    ],
+    [
+      "scaled_f2",
+      "*",
+      "Delta",
+      "f2"
+    ],
+    [
+      "scaled_Ns",
+      "-",
+      "scaled_f2",
+      "normalized_S2"
+    ],
+    [
+      "product0",
+      "*",
+      "N0",
+      "N1"
+    ],
+    [
+      "product1",
+      "*",
+      "product0",
+      "Na"
+    ],
+    [
+      "product3",
+      "*",
+      "product1",
+      "Nt"
+    ],
+    [
+      "product4",
+      "*",
+      "product3",
+      "scaled_Ns"
+    ],
+    [
+      "polynomial",
+      "-",
+      "product4",
+      "Delta"
+    ]
+  ],
+  "witness_domain": "strictly positive integers",
+  "witnesses": [
+    "J",
+    "F",
+    "alpha",
+    "z",
+    "f",
+    "i",
+    "T",
+    "s",
+    "w",
+    "n",
+    "eta",
+    "zeta",
+    "y",
+    "gamma"
+  ]
+}

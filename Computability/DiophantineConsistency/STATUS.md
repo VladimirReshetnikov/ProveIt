@@ -25,9 +25,9 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete **decimal reversed2521 Carrier65** equation:14 positive
+the complete **715-digit decimal reversed2521 Carrier65** equation:14 positive
 unknowns, degree150,65 integer-leaf operations and59297 raw fixed-integer
-bytes. All781 base10 digits and distinct unsubscripted polynomial scalar
+bytes. All 715 base10 digits and distinct unsubscripted polynomial scalar
 names, including factors P,Q,U,W,Z, are preserved. The one Letter page
 retains9pt/7.7pt fonts and every942 tile/430 action.
 
@@ -45,20 +45,25 @@ the exact new scalar bounds and canonical parent witnesses. Its entire
 The four new ports change the specialized polynomial and save10152 raw
 bytes, about14.6%, against decimal2953.
 
-The [candidate](candidates/one-page-reversed-carrier65-2521/README.md)
-and [page review](reviews/reversed-carrier65-2521-page-peer.md) bind every
+The [candidate](candidates/one-page-reverse-discovery-carrier65-2521/README.md)
+and [page review](reviews/reverse-discovery-carrier65-2521-page-peer.md) bind every
 actual decimal digit, action, printed permutation, tile and whole integer.
 Normal/optimized checks, two full-page inspections and a fresh byte-identical
-PDF rebuild pass. TeX5217 and extracted nonwhite text2872 grow58/32 because
-of the complete permutation recipe; PDF151798 grows810. Gzip falls49 to4172.
-CURRENT preserves the exact previous record and the decimal2953 page.
+PDF rebuild pass. The reverse-discovery numeral saves 66 decimal digits
+while preserving the entire specialized polynomial. Including its complete
+decoder, extracted nonwhite text falls 26 to 2846; TeX grows 13 to 5230 and
+PDF grows 723 to 152521. Gzip remains 4172. CURRENT preserves the exact
+previous record and the 781-digit reversed2521 page.
 
 All earlier pages and CURRENT records remain preserved, along with reviewed
 [single-clause3037](research/single-clause-independent/README.md) and
 [composite2983](research/composite-length-independent/README.md) checkpoints.
 No new formal-kernel replay or consistency decision is claimed; inherited
-ordinary calibration remains explicit. Next work tests shorter decimal seed recipes and
-further selector layouts, retaining decimal and distinct-name displays. The separately checked
+ordinary calibration remains explicit. The separately reviewed
+[sorted2501 proof and certificate](research/sorted-selector-independent/README.md)
+now discharge all new finite premises and save another 468 raw bytes.
+Its complete page is under review. Further work retains decimal notation
+and distinct names. The separately checked
 [weighted-only Psi identity](research/weighted-only-psi/NOTE.md) preserves
 its bound tuple. The [radix note](research/radix-parity-independent/README.md)
 and earlier [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
