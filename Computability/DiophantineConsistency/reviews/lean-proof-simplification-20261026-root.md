@@ -1040,3 +1040,16 @@ padding cleanup is unedited because of its larger uncached construction
 closure; optional zo LTE-spectrum and Pell ports remain for later iterations.
 Equation artifacts and their decimal, distinct-name presentation are unchanged.
 The iterative goal remains active.
+
+Sync merge `b36663f62c` incorporates immutable upstream `09eaa57ae5` and
+retains both sides' adoption-table additions. Of159 protected source,
+dependency, pin and equation files, only `AnnotatedProofChecker` changes:
+upstream inlines its existing list-membership wrapper. The five simplified
+modules retain their exact checked hashes, and mathlib remains unchanged and
+tracked-clean. ROOT freshly rebuilds the checker and its three affected
+ancestors (`AnnotatedProofCode`, `AnnotatedCodeArithmetic`, `AnnotatedCodeGraphs`),
+then their four existing focused sources. All eight additional calls pass
+without warnings/errors; all eight runtime controls return true. These merge
+checks are separate from the24 final port checks above. Upstream's other
+proof/calibration work and its validation remain separately recorded; it is
+preserved and is not added to this batch's461-line count or the reviewed series.
