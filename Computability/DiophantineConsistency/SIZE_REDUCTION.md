@@ -57,6 +57,15 @@ a template bound, not a general minimum. Next work tests different marker
 positions and arithmetic tradeoffs. Every new tuple still needs its complete
 proof, finite certificate and page review before promotion.
 
+A [conditional fractional-phase argument](research/markerless-fractional-phase/NOTE.md)
+now excludes every nonzero binary phase using the forced Start South bits
+and nine copy tests, provided preliminary one-hot recovery and low-carry
+resets have been proved. Root-reviewed normal/optimized checks enumerate
+every accepted local mask word and the complete conditional reset band.
+Deleting the marker still leaves whole-field offsets 1 and 18 unresolved;
+this local result does not replace the current native theorem. Work is
+now testing a smaller physical marker while retaining the global checks.
+
 The [complete thirteen-variable carrier](research/thirteen-variable-independent/README.md)
 now has independently reviewed full soundness/fresh-seed maps and two
 materialized integer graphs:69 operations/degree174 and70/140. Both bind
