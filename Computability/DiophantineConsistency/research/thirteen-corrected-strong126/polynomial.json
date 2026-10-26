@@ -1,0 +1,528 @@
+{
+  "arithmetic_proof": "../../Lean/DiophantineConsistency/ThirteenCorrectedStrong.lean",
+  "arithmetic_proof_sha256": "57729066535acf1909d30ea5de0b4b78e1ac6f1ae11a126e1c2c4526cc546efe",
+  "coefficient_binding": {
+    "certificate": "../../research/padding-staircase-independent/certificate.json",
+    "certificate_sha256": "fae49c56a9c57d394335c8a47da395f000a0c25cb8267d1330104eddbbc7850f",
+    "ordinary_proof": "../../research/padding-staircase-independent/PROOF.md",
+    "ordinary_proof_sha256": "69ce844ef80894251f4bd9510d9f60468585b4a004f4a624d3b347ce3e144fb8",
+    "path": "../../candidates/one-page-padding-staircase-carrier65-2011/coefficients/",
+    "ports": {
+      "K0": {
+        "bits": 94941,
+        "file": "K.bin.gz",
+        "gzip_sha256": "cfc3229f5281580358370e198b433936161b732a7229a1f8dc4f8839a701f4ab",
+        "raw_bytes": 11868,
+        "raw_sha256": "64a62b9e1eb8642492a159fc5c3a2e1c131a99c0e2f1e3b8b90fac9241166ec7"
+      },
+      "MC": {
+        "bits": 94517,
+        "file": "MC.bin.gz",
+        "gzip_sha256": "b178777ae605e6d0073c824c48237e89e9b28911a2583bce7c6689a50ce3cdfd",
+        "raw_bytes": 11815,
+        "raw_sha256": "2b5c9296e32616260e64a051c92892645b9aa1bf0bf4c0d931e464080702ca9f"
+      },
+      "MF": {
+        "bits": 94518,
+        "file": "MF_source.bin.gz",
+        "gzip_sha256": "f04d074f8413c49581f262bcbb030c616f00745935010afc0d30050771627c3a",
+        "raw_bytes": 11815,
+        "raw_sha256": "5c15fc24e4978b878ed531abf30b2dcfe255083372034612b759b65eee1f0c25"
+      },
+      "beta": {
+        "bits": 94517,
+        "file": "beta.bin.gz",
+        "gzip_sha256": "a94c07b25b9c185fa920d5c76ab04ea4de69b0a6a439995cf5ee390be225c719",
+        "raw_bytes": 11815,
+        "raw_sha256": "a22ea3808ae016284c057d90f1bf2b76db1be2d34d11c0856f3315f6577d4b27"
+      }
+    },
+    "raw_bytes": 47313,
+    "schema": "padding_staircase2011_materialized_v1"
+  },
+  "display_scalar_names": {
+    "B": "G",
+    "N0": "P",
+    "N1": "Q",
+    "Na": "U",
+    "main_root": "D",
+    "normalized_Ns": "Z",
+    "qm": "b"
+  },
+  "exact_degree": 126,
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "name": "thirteen_positive2011_corrected_strong73_degree126",
+  "operation_counts": {
+    "*": 40,
+    "+": 17,
+    "-": 16
+  },
+  "operations": 73,
+  "output": "polynomial",
+  "parent_polynomial": "../thirteen-variable-normalized-independent/polynomial.json",
+  "parent_polynomial_sha256": "50c7d99e5a1abb19f83c9c3b243995d965ecb3d1d39d509d13fd3b18dcec95d4",
+  "proof": "README.md",
+  "proof_boundary": "Same strictly positive integer zero set at identical coordinates; first factor is proved one separately from either zero. External Lean current2011 consistency endpoint; no internal ZFC proof or minimum claim.",
+  "schema": "literal_integer_arithmetic_dag_v1",
+  "source": [
+    [
+      "qm",
+      "*",
+      "beta",
+      "J"
+    ],
+    [
+      "q",
+      "+",
+      "qm",
+      1
+    ],
+    [
+      "q2",
+      "*",
+      "q",
+      "q"
+    ],
+    [
+      "q3",
+      "*",
+      "q2",
+      "q"
+    ],
+    [
+      "X",
+      "*",
+      "w",
+      "q"
+    ],
+    [
+      "Y",
+      "*",
+      "s",
+      "q3"
+    ],
+    [
+      "E",
+      "*",
+      "X",
+      "Y"
+    ],
+    [
+      "k",
+      "+",
+      "eta",
+      "zeta"
+    ],
+    [
+      "kY",
+      "*",
+      "k",
+      "Y"
+    ],
+    [
+      "ell",
+      "*",
+      "E",
+      "kY"
+    ],
+    [
+      "c",
+      "+",
+      "kY",
+      "eta"
+    ],
+    [
+      "a",
+      "+",
+      "E",
+      "Y"
+    ],
+    [
+      "four_a",
+      "*",
+      4,
+      "a"
+    ],
+    [
+      "H",
+      "+",
+      "four_a",
+      3
+    ],
+    [
+      "a2",
+      "*",
+      "a",
+      "a"
+    ],
+    [
+      "Delta",
+      "+",
+      "a2",
+      "H"
+    ],
+    [
+      "ac",
+      "*",
+      "a",
+      "c"
+    ],
+    [
+      "main_base",
+      "+",
+      "X",
+      "ac"
+    ],
+    [
+      "gammaH",
+      "*",
+      "gamma",
+      "H"
+    ],
+    [
+      "main_root",
+      "+",
+      "main_base",
+      "gammaH"
+    ],
+    [
+      "c2",
+      "*",
+      "c",
+      "c"
+    ],
+    [
+      "Dc2",
+      "*",
+      "Delta",
+      "c2"
+    ],
+    [
+      "main_square",
+      "*",
+      "main_root",
+      "main_root"
+    ],
+    [
+      "N1",
+      "-",
+      "main_square",
+      "Dc2"
+    ],
+    [
+      "qF",
+      "-",
+      "q",
+      "F"
+    ],
+    [
+      "C",
+      "-",
+      "qF",
+      "alpha"
+    ],
+    [
+      "gap_product",
+      "*",
+      "qm",
+      "qF"
+    ],
+    [
+      "gap",
+      "+",
+      "gap_product",
+      "alpha"
+    ],
+    [
+      "q2minus1",
+      "-",
+      "q2",
+      1
+    ],
+    [
+      "rproduct",
+      "*",
+      "gap",
+      "q2minus1"
+    ],
+    [
+      "qMF",
+      "*",
+      "q",
+      "MF"
+    ],
+    [
+      "maskfactor",
+      "+",
+      "MC",
+      "qMF"
+    ],
+    [
+      "mask",
+      "*",
+      "maskfactor",
+      "J"
+    ],
+    [
+      "R",
+      "+",
+      "rproduct",
+      "mask"
+    ],
+    [
+      "En",
+      "*",
+      "E",
+      "n"
+    ],
+    [
+      "tau_partial",
+      "+",
+      "En",
+      "k"
+    ],
+    [
+      "tau",
+      "-",
+      "tau_partial",
+      "R"
+    ],
+    [
+      "tau2",
+      "*",
+      "tau",
+      "tau"
+    ],
+    [
+      "ell_plus_k",
+      "+",
+      "ell",
+      "k"
+    ],
+    [
+      "first_product",
+      "*",
+      "ell",
+      "ell_plus_k"
+    ],
+    [
+      "N0",
+      "-",
+      "tau2",
+      "first_product"
+    ],
+    [
+      "Kw",
+      "+",
+      "K0",
+      "w"
+    ],
+    [
+      "transport",
+      "*",
+      "Kw",
+      "C"
+    ],
+    [
+      "B",
+      "-",
+      "transport",
+      "F"
+    ],
+    [
+      "f2",
+      "*",
+      "f",
+      "f"
+    ],
+    [
+      "cT",
+      "*",
+      "c",
+      "T"
+    ],
+    [
+      "cTminusR",
+      "-",
+      "cT",
+      "R"
+    ],
+    [
+      "f2inner",
+      "*",
+      "f2",
+      "cTminusR"
+    ],
+    [
+      "V",
+      "-",
+      "f2inner",
+      "c"
+    ],
+    [
+      "hi",
+      "*",
+      "qm",
+      "i"
+    ],
+    [
+      "hi2",
+      "*",
+      "hi",
+      "hi"
+    ],
+    [
+      "residual_first",
+      "-",
+      "N0",
+      1
+    ],
+    [
+      "corrected_Dc2",
+      "+",
+      "Dc2",
+      "residual_first"
+    ],
+    [
+      "intermediate",
+      "*",
+      "hi2",
+      "corrected_Dc2"
+    ],
+    [
+      "strong_term",
+      "*",
+      "intermediate",
+      "c2"
+    ],
+    [
+      "V2",
+      "*",
+      "V",
+      "V"
+    ],
+    [
+      "LB",
+      "*",
+      "V2",
+      "B"
+    ],
+    [
+      "mLB",
+      "-",
+      "m",
+      "LB"
+    ],
+    [
+      "h_mLB",
+      "*",
+      "qm",
+      "mLB"
+    ],
+    [
+      "carrier",
+      "-",
+      "h_mLB",
+      "B"
+    ],
+    [
+      "four_carrier",
+      "*",
+      4,
+      "carrier"
+    ],
+    [
+      "y",
+      "+",
+      "four_carrier",
+      1
+    ],
+    [
+      "y2",
+      "*",
+      "y",
+      "y"
+    ],
+    [
+      "V2minusY2",
+      "-",
+      "V2",
+      "y2"
+    ],
+    [
+      "scaled_f2",
+      "*",
+      "Delta",
+      "f2"
+    ],
+    [
+      "Theta",
+      "-",
+      "scaled_f2",
+      "Delta"
+    ],
+    [
+      "aux_product",
+      "*",
+      "Theta",
+      "V2minusY2"
+    ],
+    [
+      "Na",
+      "+",
+      "aux_product",
+      "y2"
+    ],
+    [
+      "normalized_Ns",
+      "-",
+      "f2",
+      "strong_term"
+    ],
+    [
+      "product0",
+      "*",
+      "N0",
+      "N1"
+    ],
+    [
+      "product1",
+      "*",
+      "product0",
+      "Na"
+    ],
+    [
+      "product4",
+      "*",
+      "product1",
+      "normalized_Ns"
+    ],
+    [
+      "polynomial",
+      "-",
+      "product4",
+      1
+    ]
+  ],
+  "witness_domain": "strictly positive integers",
+  "witnesses": [
+    "J",
+    "F",
+    "alpha",
+    "f",
+    "i",
+    "T",
+    "s",
+    "w",
+    "n",
+    "eta",
+    "zeta",
+    "m",
+    "gamma"
+  ]
+}
