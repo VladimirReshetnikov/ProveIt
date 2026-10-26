@@ -233,6 +233,16 @@ fresh replay](reviews/wang-tiles942-permutation-lean-root.md). This closes
 the physical-permutation obligation while retaining the exact printed
 map; native convolution and computation semantics remain to be connected.
 
+`CurrentKernel2011` now binds the complete printed Phi and rational K
+recipe to its positive natural stencil, proves every cancellation, the
+exact coefficient mass7659829036801887, all folded-word congruences and
+the strict carry57 budget. The actual942 selectors,34 packed controls
+and all three unit terms are retained even at collisions. The [root
+review](reviews/current-kernel2011-lean-root.md) records fresh module/check
+replay and full-byte K reconstruction. This closes the literal coefficient
+binding; source/polynomial composition, physical decoding and internal-ZFC
+equivalence remain to be completed.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged

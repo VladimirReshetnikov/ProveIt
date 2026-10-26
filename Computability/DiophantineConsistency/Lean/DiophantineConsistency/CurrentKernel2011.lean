@@ -1,0 +1,537 @@
+import DiophantineConsistency.WangTiles942Core
+import DiophantineConsistency.CurrentMasks2011
+import DiophantineConsistency.NativeWindowCarry
+
+/-!
+# The literal positive kernel on the maintained length2011 page
+
+The finite stencil is indexed by abstract tiles and the34 true packed
+color bits. Folding accounts for all collisions; no physical-rank
+injectivity or tableau interpretation is assumed. The rational printed
+recipe equals a natural-number sum by finite exponent cancellation.
+-/
+
+namespace DiophantineConsistency.CurrentKernel2011
+
+open WangTiles942 NativeCyclicConvolution
+open scoped BigOperators
+
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 20000000
+
+abbrev radix : ℕ := CurrentMasks2011.radix
+
+/-- A coarse bound sufficient for cancellation, without a permutation premise. -/
+theorem physicalPosition_le (i : Fin 942) : physicalPosition i ≤ 942 := by
+  rw [physicalPosition_eq_printed]
+  split_ifs
+  · omega
+  · have hb (j : Fin 941) :
+        (2 ^ 44 - 1 + selectorWeight (tile ⟨j.val + 1, by omega⟩) -
+          selectorWeight (tile i)) / 2 ^ 44 ≤ 1 := by
+      have hj := weight_small (⟨j.val + 1, by omega⟩ : Fin 942)
+      have hn : 2 ^ 44 - 1 + selectorWeight (tile ⟨j.val + 1, by omega⟩) -
+          selectorWeight (tile i) < 2 * 2 ^ 44 := by omega
+      have hd := (Nat.div_lt_iff_lt_mul (by decide : 0 < (2 : ℕ) ^ 44)).mpr hn
+      omega
+    have hs := Finset.sum_le_sum (fun j (_ : j ∈ (Finset.univ : Finset (Fin 941))) => hb j)
+    simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one] at hs
+    omega
+
+/-- The34 control entries use the actual packed west/north/east/south order. -/
+abbrev Entry := Fin 942 ⊕ (Fin 8 ⊕ (Fin 9 ⊕ (Fin 8 ⊕ Fin 9)))
+
+def position : Entry → ℕ
+  | .inl i => physicalPosition i
+  | .inr (.inl j) => 978 + j.val -- west
+  | .inr (.inr (.inl j)) => 960 + j.val -- north
+  | .inr (.inr (.inr (.inl j))) => 969 + j.val -- east
+  | .inr (.inr (.inr (.inr j))) => 942 + j.val -- south
+
+def weight : Entry → ℕ
+  | .inl i => selectorWeight (tile i)
+  | .inr (.inl j) => 2 ^ (10 + j.val)
+  | .inr (.inr (.inl j)) => 2 ^ (18 + j.val)
+  | .inr (.inr (.inr (.inl j))) => 2 ^ (27 + j.val)
+  | .inr (.inr (.inr (.inr j))) => 2 ^ (35 + j.val)
+
+theorem position_le (e : Entry) : position e ≤ 985 := by
+  rcases e with i | j | j | j | j
+  · have := physicalPosition_le i
+    simpa only [position] using (show physicalPosition i ≤ 985 by omega)
+  all_goals simp only [position]; omega
+
+theorem entry_count : Fintype.card Entry = 976 := by simp [Entry]
+
+def geometric {R : Type*} [Semiring R] (x : R) (n : ℕ) : R :=
+  ∑ j ∈ Finset.range n, x ^ j
+
+/-- The coefficient expansion, with no integer division or truncated exponent. -/
+def phi {R : Type*} [Semiring R] (x : R) : R :=
+  ∑ e : Entry, (weight e : R) * x ^ position e
+
+private theorem bit_sum {R : Type*} [CommSemiring R] (x : R) (a b n : ℕ) :
+    (∑ j : Fin n, ((2 ^ (a + j.val) : ℕ) : R) * x ^ (b + j.val)) =
+      (2 : R) ^ a * x ^ b * geometric (2 * x) n := by
+  rw [Fin.sum_univ_eq_sum_range
+    (fun j => ((2 ^ (a + j) : ℕ) : R) * x ^ (b + j)) n]
+  simp only [geometric, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro j _
+  push_cast
+  simp only [pow_add, mul_pow]
+  ring
+
+/-- Exactly the complete compact Phi expression printed on the page. -/
+theorem phi_printed {R : Type*} [CommSemiring R] (x : R) :
+    phi x = (∑ i : Fin 942, (selectorWeight (tile i) : R) * x ^ physicalPosition i) +
+      2 ^ 10 * x ^ 969 * (x ^ 9 + 2 ^ 17) * geometric (2 * x) 8 +
+      2 ^ 18 * x ^ 942 * (x ^ 18 + 2 ^ 17) * geometric (2 * x) 9 := by
+  simp only [phi, Fintype.sum_sum_type, position, weight]
+  rw [bit_sum, bit_sum, bit_sum, bit_sum]
+  ring
+
+abbrev Term := Fin 3 ⊕ Entry
+
+def exponent : Term → ℕ
+  | .inl j => ![18, 1004, 2020] j
+  | .inr e => 1005 - position e
+
+def coefficient : Term → ℕ
+  | .inl _ => 1
+  | .inr e => 2 * weight e
+
+def rawWord (r : ℕ) : ℕ := ∑ t : Term, coefficient t * r ^ exponent t
+def K : ℕ := rawWord radix
+
+theorem term_count : Fintype.card Term = 979 := by simp [Term, Entry]
+
+theorem reflected_even (e : Entry) : Even (coefficient (.inr e)) := by
+  exact ⟨weight e, by simp only [coefficient, two_mul]⟩
+
+theorem rawWord_eq (r : ℕ) : rawWord r = r ^ 18 + r ^ 1004 + r ^ 2020 +
+    ∑ e : Entry, 2 * weight e * r ^ (1005 - position e) := by
+  simp only [rawWord, Fintype.sum_sum_type, coefficient, exponent]
+  rw [Fin.sum_univ_three]
+  simp only [one_mul]
+  rfl
+
+theorem K_pos : 0 < K := by
+  rw [K, rawWord_eq]
+  have : 0 < radix ^ 18 := pow_pos (by decide) _
+  omega
+
+private theorem cancel_exponent (r : ℚ) (hr : r ≠ 0) (e : ℕ) (he : e ≤ 1005) :
+    r ^ 1005 * (r⁻¹) ^ e = r ^ (1005 - e) := by
+  rw [inv_pow]
+  exact (pow_sub₀ r hr he).symm
+
+/-- All Laurent denominators cancel before the port is used as an integer. -/
+theorem rawWord_printed (r : ℕ) (hr : 0 < r) : (rawWord r : ℚ) =
+    (r : ℚ) ^ 18 + (r : ℚ) ^ 1004 + (r : ℚ) ^ 2020 +
+      2 * (r : ℚ) ^ 1005 * phi ((r : ℚ)⁻¹) := by
+  rw [rawWord_eq]
+  push_cast
+  unfold phi
+  rw [Finset.mul_sum]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro e _
+  have hb : position e ≤ 1005 := le_trans (position_le e) (by decide)
+  have hc := cancel_exponent (r : ℚ) (by exact_mod_cast (ne_of_gt hr)) (position e) hb
+  calc
+    2 * (weight e : ℚ) * (r : ℚ) ^ (1005 - position e) =
+        2 * (weight e : ℚ) * ((r : ℚ) ^ 1005 * ((r : ℚ)⁻¹) ^ position e) := by rw [hc]
+    _ = _ := by ring
+
+theorem K_printed : (K : ℚ) =
+    (radix : ℚ) ^ 18 + (radix : ℚ) ^ 1004 + (radix : ℚ) ^ 2020 +
+      2 * (radix : ℚ) ^ 1005 * phi ((radix : ℚ)⁻¹) :=
+  rawWord_printed radix (by decide)
+
+
+/- The exact mass is proved on unsorted row families in16-entry kernel
+   batches. No large floor-rank computation is evaluated for this bound. -/
+private theorem sum_block (l : List ℕ) (k : ℕ) :
+    (l.drop k).sum = ((l.drop k).take 16).sum + (l.drop (k + 16)).sum := by
+  have h := congrArg List.sum (List.take_append_drop 16 (l.drop k))
+  simpa only [List.sum_append, List.drop_drop, Nat.add_comm] using h.symm
+
+private theorem sum_step (l : List ℕ) (k v w : ℕ)
+    (h : ((l.drop k).take 16).sum = v) (ht : (l.drop (k + 16)).sum = w) :
+    (l.drop k).sum = v + w :=
+  (sum_block l k).trans (congrArg₂ (· + ·) h ht)
+
+private theorem sum_finish (l : List ℕ) (v : ℕ) (h : (l.drop 0).sum = v) : l.sum = v := by
+  simpa only [List.drop_zero] using h
+
+private def transitionWeights : List ℕ := ((List.ofFn transitionRow).map (fun row => selectorWeight row.2))
+
+private theorem transitionWeights_0 : ((transitionWeights.drop 0).take 16).sum = 315453641744 := by
+  decide +kernel
+
+private theorem transitionWeights_16 : ((transitionWeights.drop 16).take 16).sum = 210563192848 := by
+  decide +kernel
+
+private theorem transitionWeights_32 : ((transitionWeights.drop 32).take 16).sum = 282839278608 := by
+  decide +kernel
+
+private theorem transitionWeights_48 : ((transitionWeights.drop 48).take 16).sum = 250960346128 := by
+  decide +kernel
+
+private theorem transitionWeights_64 : ((transitionWeights.drop 64).take 16).sum = 307667354640 := by
+  decide +kernel
+
+private theorem transitionWeights_80 : ((transitionWeights.drop 80).take 16).sum = 200092520464 := by
+  decide +kernel
+
+private theorem transitionWeights_96 : ((transitionWeights.drop 96).take 16).sum = 378534092816 := by
+  decide +kernel
+
+private theorem transitionWeights_112 : ((transitionWeights.drop 112).take 16).sum = 316324896784 := by
+  decide +kernel
+
+private theorem transitionWeights_128 : ((transitionWeights.drop 128).take 16).sum = 276797749264 := by
+  decide +kernel
+
+private theorem transitionWeights_144 : ((transitionWeights.drop 144).take 16).sum = 364374589456 := by
+  decide +kernel
+
+private theorem transitionWeights_160 : ((transitionWeights.drop 160).take 16).sum = 405914983440 := by
+  decide +kernel
+
+private theorem transitionWeights_176 : ((transitionWeights.drop 176).take 16).sum = 299279195152 := by
+  decide +kernel
+
+private theorem transitionWeights_192 : ((transitionWeights.drop 192).take 16).sum = 493558448144 := by
+  decide +kernel
+
+private theorem transitionWeights_208 : ((transitionWeights.drop 208).take 16).sum = 303439466512 := by
+  decide +kernel
+
+private theorem transitionWeights_224 : ((transitionWeights.drop 224).take 16).sum = 396788148240 := by
+  decide +kernel
+
+private theorem transitionWeights_240 : ((transitionWeights.drop 240).take 16).sum = 523690328080 := by
+  decide +kernel
+
+private theorem transitionWeights_256 : ((transitionWeights.drop 256).take 16).sum = 495571714064 := by
+  decide +kernel
+
+private theorem transitionWeights_272 : ((transitionWeights.drop 272).take 16).sum = 511476753424 := by
+  decide +kernel
+
+private theorem transitionWeights_288 : ((transitionWeights.drop 288).take 16).sum = 463762865168 := by
+  decide +kernel
+
+private theorem transitionWeights_304 : ((transitionWeights.drop 304).take 16).sum = 315117126672 := by
+  decide +kernel
+
+private theorem transitionWeights_320 : ((transitionWeights.drop 320).take 16).sum = 507517323280 := by
+  decide +kernel
+
+private theorem transitionWeights_336 : ((transitionWeights.drop 336).take 16).sum = 571069186064 := by
+  decide +kernel
+
+private theorem transitionWeights_352 : ((transitionWeights.drop 352).take 16).sum = 599993359376 := by
+  decide +kernel
+
+private theorem transitionWeights_368 : ((transitionWeights.drop 368).take 16).sum = 560600700944 := by
+  decide +kernel
+
+private theorem transitionWeights_384 : ((transitionWeights.drop 384).take 16).sum = 652069584912 := by
+  decide +kernel
+
+private theorem transitionWeights_400 : ((transitionWeights.drop 400).take 16).sum = 622340613136 := by
+  decide +kernel
+
+private theorem transitionWeights_tail : (transitionWeights.drop 416).sum = 514001221646 := by
+  decide +kernel
+
+private theorem transitionWeights_sum : transitionWeights.sum = 11139798681006 :=
+  sum_finish transitionWeights 11139798681006
+    (sum_step transitionWeights 0 315453641744 10824345039262 transitionWeights_0
+    (sum_step transitionWeights 16 210563192848 10613781846414 transitionWeights_16
+    (sum_step transitionWeights 32 282839278608 10330942567806 transitionWeights_32
+    (sum_step transitionWeights 48 250960346128 10079982221678 transitionWeights_48
+    (sum_step transitionWeights 64 307667354640 9772314867038 transitionWeights_64
+    (sum_step transitionWeights 80 200092520464 9572222346574 transitionWeights_80
+    (sum_step transitionWeights 96 378534092816 9193688253758 transitionWeights_96
+    (sum_step transitionWeights 112 316324896784 8877363356974 transitionWeights_112
+    (sum_step transitionWeights 128 276797749264 8600565607710 transitionWeights_128
+    (sum_step transitionWeights 144 364374589456 8236191018254 transitionWeights_144
+    (sum_step transitionWeights 160 405914983440 7830276034814 transitionWeights_160
+    (sum_step transitionWeights 176 299279195152 7530996839662 transitionWeights_176
+    (sum_step transitionWeights 192 493558448144 7037438391518 transitionWeights_192
+    (sum_step transitionWeights 208 303439466512 6733998925006 transitionWeights_208
+    (sum_step transitionWeights 224 396788148240 6337210776766 transitionWeights_224
+    (sum_step transitionWeights 240 523690328080 5813520448686 transitionWeights_240
+    (sum_step transitionWeights 256 495571714064 5317948734622 transitionWeights_256
+    (sum_step transitionWeights 272 511476753424 4806471981198 transitionWeights_272
+    (sum_step transitionWeights 288 463762865168 4342709116030 transitionWeights_288
+    (sum_step transitionWeights 304 315117126672 4027591989358 transitionWeights_304
+    (sum_step transitionWeights 320 507517323280 3520074666078 transitionWeights_320
+    (sum_step transitionWeights 336 571069186064 2949005480014 transitionWeights_336
+    (sum_step transitionWeights 352 599993359376 2349012120638 transitionWeights_352
+    (sum_step transitionWeights 368 560600700944 1788411419694 transitionWeights_368
+    (sum_step transitionWeights 384 652069584912 1136341834782 transitionWeights_384
+    (sum_step transitionWeights 400 622340613136 514001221646 transitionWeights_400
+    transitionWeights_tail))))))))))))))))))))))))))
+
+/-- The complete transition-family mass, available without another closed evaluation. -/
+theorem transition_mass :
+    ((List.ofFn transitionRow).map (fun row => selectorWeight row.2)).sum = 11139798681006 :=
+  transitionWeights_sum
+
+private def leftWeights : List ℕ := ((signalRows false).map (fun row => selectorWeight row.2))
+
+private theorem leftWeights_0 : ((leftWeights.drop 0).take 16).sum = 10343357104144 := by
+  decide +kernel
+
+private theorem leftWeights_16 : ((leftWeights.drop 16).take 16).sum = 19981263716368 := by
+  decide +kernel
+
+private theorem leftWeights_32 : ((leftWeights.drop 32).take 16).sum = 39102458118160 := by
+  decide +kernel
+
+private theorem leftWeights_48 : ((leftWeights.drop 48).take 16).sum = 74441449029648 := by
+  decide +kernel
+
+private theorem leftWeights_64 : ((leftWeights.drop 64).take 16).sum = 109368123080720 := by
+  decide +kernel
+
+private theorem leftWeights_tail : (leftWeights.drop 80).sum = 126259960227850 := by
+  decide +kernel
+
+private theorem leftWeights_sum : leftWeights.sum = 379496611276890 :=
+  sum_finish leftWeights 379496611276890
+    (sum_step leftWeights 0 10343357104144 369153254172746 leftWeights_0
+    (sum_step leftWeights 16 19981263716368 349171990456378 leftWeights_16
+    (sum_step leftWeights 32 39102458118160 310069532338218 leftWeights_32
+    (sum_step leftWeights 48 74441449029648 235628083308570 leftWeights_48
+    (sum_step leftWeights 64 109368123080720 126259960227850 leftWeights_64
+    leftWeights_tail)))))
+
+private def rightWeights : List ℕ := ((signalRows true).map (fun row => selectorWeight row.2))
+
+private theorem rightWeights_0 : ((rightWeights.drop 0).take 16).sum = 9758167965712 := by
+  decide +kernel
+
+private theorem rightWeights_16 : ((rightWeights.drop 16).take 16).sum = 30511450071056 := by
+  decide +kernel
+
+private theorem rightWeights_32 : ((rightWeights.drop 32).take 16).sum = 39307543224336 := by
+  decide +kernel
+
+private theorem rightWeights_48 : ((rightWeights.drop 48).take 16).sum = 48103636377616 := by
+  decide +kernel
+
+private theorem rightWeights_64 : ((rightWeights.drop 64).take 16).sum = 56899729530896 := by
+  decide +kernel
+
+private theorem rightWeights_80 : ((rightWeights.drop 80).take 16).sum = 65695822684176 := by
+  decide +kernel
+
+private theorem rightWeights_96 : ((rightWeights.drop 96).take 16).sum = 74491915837456 := by
+  decide +kernel
+
+private theorem rightWeights_112 : ((rightWeights.drop 112).take 16).sum = 83288008990736 := by
+  decide +kernel
+
+private theorem rightWeights_128 : ((rightWeights.drop 128).take 16).sum = 92084102144016 := by
+  decide +kernel
+
+private theorem rightWeights_144 : ((rightWeights.drop 144).take 16).sum = 100880195297296 := by
+  decide +kernel
+
+private theorem rightWeights_160 : ((rightWeights.drop 160).take 16).sum = 109676288450576 := by
+  decide +kernel
+
+private theorem rightWeights_176 : ((rightWeights.drop 176).take 16).sum = 118472381603856 := by
+  decide +kernel
+
+private theorem rightWeights_192 : ((rightWeights.drop 192).take 16).sum = 127268474757136 := by
+  decide +kernel
+
+private theorem rightWeights_208 : ((rightWeights.drop 208).take 16).sum = 136064567910416 := by
+  decide +kernel
+
+private theorem rightWeights_224 : ((rightWeights.drop 224).take 16).sum = 144860661063696 := by
+  decide +kernel
+
+private theorem rightWeights_240 : ((rightWeights.drop 240).take 16).sum = 154481387937808 := by
+  decide +kernel
+
+private theorem rightWeights_256 : ((rightWeights.drop 256).take 16).sum = 163552358998032 := by
+  decide +kernel
+
+private theorem rightWeights_272 : ((rightWeights.drop 272).take 16).sum = 172348452151312 := by
+  decide +kernel
+
+private theorem rightWeights_288 : ((rightWeights.drop 288).take 16).sum = 181144545304592 := by
+  decide +kernel
+
+private theorem rightWeights_304 : ((rightWeights.drop 304).take 16).sum = 189940638457872 := by
+  decide +kernel
+
+private theorem rightWeights_320 : ((rightWeights.drop 320).take 16).sum = 198736731611152 := by
+  decide +kernel
+
+private theorem rightWeights_336 : ((rightWeights.drop 336).take 16).sum = 207532824764432 := by
+  decide +kernel
+
+private theorem rightWeights_352 : ((rightWeights.drop 352).take 16).sum = 216328917917712 := by
+  decide +kernel
+
+private theorem rightWeights_368 : ((rightWeights.drop 368).take 16).sum = 225125011070992 := by
+  decide +kernel
+
+private theorem rightWeights_tail : (rightWeights.drop 384).sum = 205024563572750 := by
+  decide +kernel
+
+private theorem rightWeights_sum : rightWeights.sum = 3151578377695630 :=
+  sum_finish rightWeights 3151578377695630
+    (sum_step rightWeights 0 9758167965712 3141820209729918 rightWeights_0
+    (sum_step rightWeights 16 30511450071056 3111308759658862 rightWeights_16
+    (sum_step rightWeights 32 39307543224336 3072001216434526 rightWeights_32
+    (sum_step rightWeights 48 48103636377616 3023897580056910 rightWeights_48
+    (sum_step rightWeights 64 56899729530896 2966997850526014 rightWeights_64
+    (sum_step rightWeights 80 65695822684176 2901302027841838 rightWeights_80
+    (sum_step rightWeights 96 74491915837456 2826810112004382 rightWeights_96
+    (sum_step rightWeights 112 83288008990736 2743522103013646 rightWeights_112
+    (sum_step rightWeights 128 92084102144016 2651438000869630 rightWeights_128
+    (sum_step rightWeights 144 100880195297296 2550557805572334 rightWeights_144
+    (sum_step rightWeights 160 109676288450576 2440881517121758 rightWeights_160
+    (sum_step rightWeights 176 118472381603856 2322409135517902 rightWeights_176
+    (sum_step rightWeights 192 127268474757136 2195140660760766 rightWeights_192
+    (sum_step rightWeights 208 136064567910416 2059076092850350 rightWeights_208
+    (sum_step rightWeights 224 144860661063696 1914215431786654 rightWeights_224
+    (sum_step rightWeights 240 154481387937808 1759734043848846 rightWeights_240
+    (sum_step rightWeights 256 163552358998032 1596181684850814 rightWeights_256
+    (sum_step rightWeights 272 172348452151312 1423833232699502 rightWeights_272
+    (sum_step rightWeights 288 181144545304592 1242688687394910 rightWeights_288
+    (sum_step rightWeights 304 189940638457872 1052748048937038 rightWeights_304
+    (sum_step rightWeights 320 198736731611152 854011317325886 rightWeights_320
+    (sum_step rightWeights 336 207532824764432 646478492561454 rightWeights_336
+    (sum_step rightWeights 352 216328917917712 430149574643742 rightWeights_352
+    (sum_step rightWeights 368 225125011070992 205024563572750 rightWeights_368
+    rightWeights_tail))))))))))))))))))))))))
+
+private theorem sum_indexed {α : Type*} (l : List α) (f : α → ℕ)
+    (n : ℕ) (h : l.length = n) :
+    (∑ i : Fin n, f (l[i.val]'(by omega))) = (l.map f).sum := by
+  subst n
+  rw [← List.sum_ofFn, List.ofFn_getElem_eq_map]
+
+private theorem sum_family_eq {α : Type*} (f : α → ℕ) (a : α)
+    (l₁ l₂ l₃ l₄ l₅ : List α) (v₀ v₁ v₂ v₃ v₄ v₅ : ℕ)
+    (h₀ : f a = v₀) (h₁ : (l₁.map f).sum = v₁)
+    (h₂ : (l₂.map f).sum = v₂) (h₃ : (l₃.map f).sum = v₃)
+    (h₄ : (l₄.map f).sum = v₄) (h₅ : (l₅.map f).sum = v₅) :
+    (([a] ++ l₁ ++ l₂ ++ (l₃ ++ l₄) ++ l₅).map f).sum =
+      v₀ + v₁ + v₂ + (v₃ + v₄) + v₅ := by
+  simp only [List.map_append, List.sum_append, List.map_cons,
+    List.sum_cons, List.map_nil, List.sum_nil, add_zero]
+  rw [h₀, h₁, h₂, h₃, h₄, h₅]
+
+private theorem copy_mass :
+    ((copyRows 1 ++ copyRows 0).map (fun row => selectorWeight row.2)).sum =
+      29755760447492 := by decide +kernel
+
+private theorem tail_mass : (tailRows.map (fun row => selectorWeight row.2)).sum =
+      240316907829267 := by decide +kernel
+
+private theorem ordered_mass :
+    (orderedRows.map (fun row => selectorWeight row.2)).sum = 3812322332357550 :=
+  (sum_family_eq (fun row : ℕ × Tile => selectorWeight row.2) (0, start)
+    (List.ofFn transitionRow) (copyRows 1 ++ copyRows 0)
+    (signalRows true) (signalRows false) tailRows
+    34876427265 11139798681006 29755760447492 3151578377695630
+    379496611276890 240316907829267
+    (by decide) transitionWeights_sum copy_mass rightWeights_sum leftWeights_sum tail_mass).trans
+    (by decide)
+
+theorem selector_mass : (∑ i : Fin 942, selectorWeight (tile i)) = 3812322332357550 :=
+  (sum_indexed orderedRows (fun row => selectorWeight row.2) 942 ordered_count).trans ordered_mass
+
+private theorem sum_sum_mass {α β : Type*} [Fintype α] [Fintype β]
+    (w : α ⊕ β → ℕ) (f : α → ℕ) (g : β → ℕ) (a b : ℕ)
+    (hw : w = Sum.elim f g) (hf : (∑ i, f i) = a) (hg : (∑ j, g j) = b) :
+    (∑ e, w e) = a + b := by
+  rw [hw, Fintype.sum_sum_type]
+  simp only [Sum.elim_inl, Sum.elim_inr, hf, hg]
+
+private theorem sum_double_mass {α : Type*} [Fintype α] (f : α → ℕ) (a : ℕ)
+    (h : (∑ i, f i) = a) : (∑ i, 2 * f i) = 2 * a := by
+  rw [← Finset.mul_sum, h]
+
+private theorem control_mass :
+    (∑ e : Fin 8 ⊕ (Fin 9 ⊕ (Fin 8 ⊕ Fin 9)), weight (.inr e)) =
+      17592186043392 := by decide +kernel
+
+theorem entry_mass : (∑ e : Entry, weight e) = 3829914518400942 :=
+  sum_sum_mass weight (fun i => selectorWeight (tile i)) (fun e => weight (.inr e))
+    3812322332357550 17592186043392
+    (by funext e; cases e <;> rfl) selector_mass control_mass
+
+theorem coefficient_mass : (∑ t : Term, coefficient t) = 7659829036801887 :=
+  sum_sum_mass coefficient (fun _ : Fin 3 => 1) (fun e => 2 * weight e)
+    3 (2 * 3829914518400942) (by funext t; cases t <;> rfl)
+    (by decide) (sum_double_mass weight 3829914518400942 entry_mass)
+
+variable {n : ℕ} [NeZero n]
+
+def folded : ZMod n → ℕ := foldStencil exponent coefficient
+
+theorem folded_mass : mass (folded (n := n)) = 7659829036801887 := by
+  rw [folded, mass_foldStencil, coefficient_mass]
+
+theorem folded_word : word radix (folded (n := n)) ≡ K [MOD radix ^ n - 1] := by
+  exact word_foldStencil (by decide : 1 ≤ radix) exponent coefficient
+
+/-- Every original monomial acts once, including reflected/bare collisions. -/
+theorem convolution_terms (c : ZMod n → ℕ) (k : ZMod n) :
+    convolution folded c k = ∑ t : Term, coefficient t * c (k - (exponent t : ZMod n)) :=
+  convolution_foldStencil exponent coefficient c k
+
+/-- The two bare current copies and the spatial copy occur exactly once. -/
+theorem convolution_eq (c : ZMod n → ℕ) (k : ZMod n) :
+    convolution folded c k = c (k - 18) + c (k - 1004) + c (k - 2020) +
+      ∑ e : Entry, 2 * weight e * c (k - ((1005 - position e : ℕ) : ZMod n)) := by
+  rw [convolution_terms]
+  simp only [Fintype.sum_sum_type, coefficient, exponent]
+  rw [Fin.sum_univ_three]
+  simp only [one_mul]
+  rfl
+
+/-- A mass bound before count recovery, alignment, or any label semantics. -/
+theorem raw_bound (c r : ZMod n → ℕ) (hc : ∀ i, c i ≤ 1)
+    (hr : ∀ i, r i ≤ 2 ^ 46) (k : ZMod n) :
+    convolution folded c k + r k ≤ 7730197780979551 := by
+  have hh := convolution_le_mass (folded (n := n)) c hc k
+  rw [folded_mass, mul_one] at hh
+  have ht := hr k
+  omega
+
+theorem carry_budget (c r : ZMod n → ℕ) (hc : ∀ i, c i ≤ 1)
+    (hr : ∀ i, r i ≤ 2 ^ 46) (k : ZMod n) :
+    convolution folded c k + r k + 57 < 58 * radix := by
+  have hh := raw_bound c r hc hr k
+  exact lt_of_le_of_lt (Nat.add_le_add_right hh 57) (by decide)
+
+/-- Normalize the actual K product, preserving arbitrary temporal digits
+within the Boolean rotation bound and the positive strict transport residue. -/
+theorem exists_normalization {F : ℕ} (c r : ZMod n → ℕ)
+    (hc : ∀ i, c i ≤ 1) (hr : ∀ i, r i ≤ 2 ^ 46)
+    (htransport : K * word radix c + word radix r ≡ F [MOD radix ^ n - 1])
+    (hFpos : 0 < F) (hF : F < radix ^ n - 1) :
+    ∃ k digits : ZMod n → ℕ, (∀ i, k i ≤ 57) ∧ (∀ i, digits i < radix) ∧
+      (∀ i, k i = (convolution folded c i + r i + k (i - 1)) / radix) ∧
+      (∀ i, convolution folded c i + r i + k (i - 1) = digits i + radix * k i) ∧
+      word radix digits = F := by
+  apply NativeCyclicCarryWord.exists_convolution_normalization
+    (by decide : 1 < radix) folded c r (carry_budget c r hc hr) _ hFpos hF
+  exact (((folded_word (n := n)).mul_right (word radix c)).add_right (word radix r)).trans htransport
+
+end DiophantineConsistency.CurrentKernel2011
