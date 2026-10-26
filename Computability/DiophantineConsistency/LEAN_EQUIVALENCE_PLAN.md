@@ -48,10 +48,25 @@ The current942-tile,47-bit construction now has checked literal decimal
 data, exact K, physical permutation, polynomial-to-word recovery, both
 phase alignments, all-cell occupation and local tile-color matching.
 The detailed checkpoints below record their exact premises and reviews.
-The global marked-word adapter now retains every original selected tile
-and the exact positive temporal stride. Remaining work includes actual
-Wang-machine language equivalence, canonical controller converse, other
-equation frontiers and internal-ZFC derivation. The1997 proposal
+The global marked-word adapter retains every original selected tile
+and the exact positive temporal stride. The forward native direction is
+now closed: `WangTiles942Soundness.marked_halts_before_period` extracts
+an actual blank-run halt t<N from the marked word alone, and
+`CurrentSoundness2011.conZFC_no_positive_zero` proves ConZFC implies
+unsolvability of the actual maintained polynomial. All three accepted
+13-variable forms inherit that implication at the exact fixed ports.
+See the [source binding and fresh checks](reviews/current-soundness2011-lean-root.md).
+The [independent current-polynomial soundness review](reviews/current-soundness2011-lean-peer.md)
+also passed isolated fresh main/check builds, retaining every literal port
+and all three thirteen-variable restoration paths.
+`WangTiles942Completeness.no_marked_word_iff_conZFC` now also closes the
+external consistency equivalence for the actual finite marked language.
+Its reverse construction works at every independently sufficiently large
+width and height; `WangTiles942BandMarker` derives unique Start in the
+same concrete quotient. See the [native completeness review](reviews/wang-tiles942-native-completeness-root.md).
+Remaining work includes reverse coefficient words/carries, the composite
+rank controller and positive arithmetic witnesses, other equation
+frontiers and internal-ZFC derivation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
 The first new modules address necessary reusable pieces of that chain:
@@ -501,7 +516,12 @@ strict next-head containment are derived rather than supplied. The
 reverse `WangTiles942StepConstruction.step_row` explicitly constructs
 an actual matching row from every operating configuration, including
 actions entering halt215. See the [root review and four fresh replays](reviews/wang-tiles942-row-step-construction-lean-root.md).
-Eventual-halt extraction and the complete converse remain further work.
+`WangTiles942Soundness` now iterates that actual step from clock1 up to
+the full vertical periodN. Without an earlier halt, the origin's encoded
+north would be at most433, contradicting the returned Start north435.
+Its actual blank-run halt occurs at t<N. The [independent soundness
+review](reviews/wang-tiles942-soundness-peer.md) passed isolated fresh
+main/check builds. The complete converse remains further work.
 
 An [independent row-encoding and operating-row review](reviews/wang-tiles942-row-encoding-operating-lean-peer.md)
 passed four isolated fresh builds, retaining the actual clock1 and the
@@ -515,6 +535,10 @@ enlargeable blank margins around any given finite or halted trace.
 See the [root review and four fresh checks](reviews/wang-machine-strip-trace-bounds-lean-root.md).
 These support the row evolution and reverse tiling constructions;
 neither assumes a tiling/run equivalence.
+
+An [independent step-construction and trace-bounds review](reviews/wang-step-construction-trace-bounds-peer.md)
+also passed all four isolated fresh builds, checking actual halt entry,
+both directions, old destination bits and the sharp inclusive tape bound.
 
 `WangTiles942InputLanguage` now
 identifies each operating north head input with its exact actual transition
@@ -555,6 +579,57 @@ the stated hypothesis needed to recover the reset tuple. See the [root
 review and four fresh replays](reviews/wang-tiles942-initial-reset-lean-root.md).
 Reset propagation, full row semantics and actual run extraction remain
 subsequent steps.
+
+`WangTiles942FinishConstruction` constructs actual halted pass/finish,
+initializer and reset rows with all horizontal and vertical interfaces,
+including actual initialized South4. `WangTiles942HelicalQuotient`
+derives an actual marked word of lengthw*H and its full signed-address
+binding from an Allowed matching plane with periods(w,−1),(0,H).
+No coprimality, unique Start, machine run or quotient factorization is
+assumed. See the [root review and four fresh checks](reviews/wang-tiles942-closing-helical-lean-root.md).
+A complete cofinal trace plane and controller converse remain open.
+
+`WangTiles942HelicalExtension` now extends any actual twisted canonical
+band by Euclidean signed coordinates, deriving global matching and both
+helical periods. Its composition with the quotient retains every band
+tile in the actual marked word. See the [root source review and fresh
+checks](reviews/wang-tiles942-helical-extension-lean-root.md). The actual
+computation band remains to be constructed; none is assumed by the final
+consistency soundness theorem.
+
+The [independent helical-geometry review](reviews/wang-tiles942-helical-geometry-peer.md)
+passed four isolated fresh builds for both geometry modules and checks.
+
+`WangTiles942TraceCycle` now constructs actual run/wait rows and closes
+them through finish/reset/initializer at every sufficiently large height.
+`WangTiles942CycleBoundary` derives literal blank outer cells from actual
+old and next head bounds. `WangTiles942CycleBand.marked_word_of_halt`
+therefore constructs a marked word of length(L+R)*H and strideL+R from
+an actual halt atT and independent bounds T+2≤L,R,H,3≤H. All boundary
+matching is derived; no cleanliness or run-calibration premise is supplied.
+See the [root review and six fresh checks](reviews/wang-tiles942-trace-band-lean-root.md).
+The native construction is now available; controller and arithmetic
+witness construction remain open.
+
+`WangTiles942CycleMarker` derives that the explicit cycle has Start
+exactly at row0/position0. `WangTiles942HelicalMarker` transports a local
+canonical-band marker classification to uniqueness in the exact cyclic
+quotient, without coprimality. See the [author receipt and four fresh
+checks](reviews/wang-tiles942-marker-construction-root.md). This helper
+keeps its local classification explicit until it is proved for the
+actual band; general marked-word soundness never assumes unique Start.
+
+That local classification is now discharged by
+`WangTiles942BandMarker.band_eq_start_iff`. Its concrete `canonicalWord`
+has full marked matching, exact band binding and unique literal Start
+index. `WangTiles942Completeness.cofinal_marked_word` permits every
+widthw≥2*T+4 and heightH≥T+2,H≥3 from an actual halt atT. The complete
+marked-language/actual-blank-halting equivalence and
+`no_marked_word_iff_conZFC` are closed. See the [root review and four
+fresh checks](reviews/wang-tiles942-native-completeness-root.md).
+The [independent marker-helper review](reviews/wang-tiles942-marker-construction-peer.md)
+also passed all four isolated fresh builds. Reverse arithmetic/controller
+construction remains necessary for the actual equation equivalence.
 
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged

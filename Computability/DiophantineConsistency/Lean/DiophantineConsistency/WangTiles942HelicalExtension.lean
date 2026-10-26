@@ -1,0 +1,187 @@
+import DiophantineConsistency.WangTiles942HelicalQuotient
+
+/-!
+# Extending a twisted finite band to a helical plane
+
+The representative of x lies in [-L,w-L), and crossing the right boundary
+advances the row by one. The boundary condition is therefore twisted by
+one positive time step. This is geometry only, with no machine semantics.
+-/
+
+namespace DiophantineConsistency.WangTiles942HelicalExtension
+
+open WangTiles942 WangTiles942Language WangTiles942Periodic
+
+set_option Elab.async false
+set_option maxRecDepth 10000
+
+def InBand (w : ℕ) (L x : ℤ) : Prop := -L ≤ x ∧ x < (w : ℤ)-L
+
+def representative (w : ℕ) (L x : ℤ) : ℤ := (x+L) % (w : ℤ)-L
+
+def quotient (w : ℕ) (L x : ℤ) : ℤ := (x+L) / (w : ℤ)
+
+def extend {α : Type*} (C : ℤ → ℤ → α) (w : ℕ) (L x t : ℤ) : α :=
+  C (representative w L x) (t+quotient w L x)
+
+theorem representative_in_band (w : ℕ) (hw : 0 < w) (L x : ℤ) :
+    InBand w L (representative w L x) := by
+  have hw' : 0 < (w : ℤ) := by exact_mod_cast hw
+  have h0 := Int.emod_nonneg (x+L) (ne_of_gt hw')
+  have h1 := Int.emod_lt_of_pos (x+L) hw'
+  unfold InBand representative
+  omega
+
+theorem coordinates_of_decomposition (w : ℕ) (hw : 0 < w)
+    (L x m q : ℤ) (hm0 : 0 ≤ m) (hmw : m < (w : ℤ))
+    (hx : x+L = m+(w : ℤ)*q) :
+    representative w L x = m-L ∧ quotient w L x = q := by
+  have hw' : (w : ℤ) ≠ 0 := by exact_mod_cast Nat.ne_of_gt hw
+  unfold representative quotient
+  rw [hx, Int.add_mul_emod_self_left, Int.add_mul_ediv_left _ _ hw',
+    Int.emod_eq_of_lt hm0 hmw, Int.ediv_eq_zero_of_lt hm0 hmw, zero_add]
+  exact ⟨rfl, rfl⟩
+
+theorem coordinates_in_band (w : ℕ) (hw : 0 < w) (L x : ℤ)
+    (hx : InBand w L x) :
+    representative w L x = x ∧ quotient w L x = 0 := by
+  rcases hx with ⟨hx0,hxw⟩
+  simpa using coordinates_of_decomposition w hw L x (x+L) 0
+    (by omega) (by omega) (by ring)
+
+theorem extend_on_band {α : Type*} (C : ℤ → ℤ → α)
+    (w : ℕ) (hw : 0 < w) (L x t : ℤ) (hx : InBand w L x) :
+    extend C w L x t = C x t := by
+  rcases coordinates_in_band w hw L x hx with ⟨hr,hq⟩
+  simp only [extend, hr, hq, add_zero]
+
+theorem coordinates_add_width (w : ℕ) (hw : 0 < w) (L x : ℤ) :
+    representative w L (x+w) = representative w L x ∧
+      quotient w L (x+w) = quotient w L x+1 := by
+  have hw' : (w : ℤ) ≠ 0 := by exact_mod_cast Nat.ne_of_gt hw
+  have he : x+(w : ℤ)+L = (x+L)+(w : ℤ)*1 := by ring
+  unfold representative quotient
+  rw [he, Int.add_mul_emod_self_left, Int.add_mul_ediv_left _ _ hw']
+  exact ⟨rfl,rfl⟩
+
+/-- The nonwrapping successor stays at the same row quotient. -/
+theorem coordinates_succ_inside (w : ℕ) (hw : 0 < w) (L x : ℤ)
+    (hi : representative w L x+1 < (w : ℤ)-L) :
+    representative w L (x+1) = representative w L x+1 ∧
+      quotient w L (x+1) = quotient w L x := by
+  have hw' : 0 < (w : ℤ) := by exact_mod_cast hw
+  have hm := Int.emod_nonneg (x+L) (ne_of_gt hw')
+  have hd := Int.emod_add_mul_ediv (x+L) (w : ℤ)
+  have hi' : (x+L) % (w : ℤ)+1 < (w : ℤ) := by
+    unfold representative at hi
+    omega
+  have he : x+1+L = ((x+L) % (w : ℤ)+1)+(w : ℤ)*quotient w L x := by
+    unfold quotient
+    linarith
+  simpa only [representative, sub_add_eq_add_sub] using
+    coordinates_of_decomposition w hw L (x+1) ((x+L) % (w : ℤ)+1)
+      (quotient w L x) (by omega) hi' he
+
+/-- At the rightmost site the successor returns to the left wall and
+advances the row quotient by one. -/
+theorem coordinates_succ_wrap (w : ℕ) (hw : 0 < w) (L x : ℤ)
+    (hi : representative w L x = (w : ℤ)-L-1) :
+    representative w L (x+1) = -L ∧
+      quotient w L (x+1) = quotient w L x+1 := by
+  have hw' : 0 < (w : ℤ) := by exact_mod_cast hw
+  have hd := Int.emod_add_mul_ediv (x+L) (w : ℤ)
+  have hm : (x+L) % (w : ℤ) = (w : ℤ)-1 := by
+    unfold representative at hi
+    omega
+  have he : x+1+L = 0+(w : ℤ)*(quotient w L x+1) := by
+    unfold quotient
+    rw [hm] at hd
+    nlinarith
+  simpa using coordinates_of_decomposition w hw L (x+1) 0
+    (quotient w L x+1) (by omega) hw' he
+
+theorem extend_helical {α : Type*} (C : ℤ → ℤ → α)
+    (w : ℕ) (hw : 0 < w) (L x t : ℤ) :
+    extend C w L (x+w) (t-1) = extend C w L x t := by
+  rcases coordinates_add_width w hw L x with ⟨hr,hq⟩
+  unfold extend
+  rw [hr,hq]
+  congr 1
+  ring
+
+/-- Periodicity is needed only at the canonical band sites. -/
+theorem extend_vertical {α : Type*} (C : ℤ → ℤ → α)
+    (w : ℕ) (hw : 0 < w) (L H : ℤ)
+    (hp : ∀ x, InBand w L x → ∀ t, C x (t+H) = C x t) (x t : ℤ) :
+    extend C w L x (t+H) = extend C w L x t := by
+  unfold extend
+  have ht : t+H+quotient w L x = (t+quotient w L x)+H := by ring
+  rw [ht]
+  exact hp _ (representative_in_band w hw L x) _
+
+theorem extend_allowed (C : ℤ → ℤ → Tile) (w : ℕ) (hw : 0 < w) (L : ℤ)
+    (hA : ∀ x, InBand w L x → ∀ t, Allowed (C x t)) (x t : ℤ) :
+    Allowed (extend C w L x t) :=
+  hA _ (representative_in_band w hw L x) _
+
+theorem extend_time_matching (C : ℤ → ℤ → Tile)
+    (w : ℕ) (hw : 0 < w) (L : ℤ)
+    (hTime : ∀ x, InBand w L x → ∀ t, (C x (t+1)).north = (C x t).south)
+    (x t : ℤ) :
+    (extend C w L x (t+1)).north = (extend C w L x t).south := by
+  unfold extend
+  have ht : t+1+quotient w L x = (t+quotient w L x)+1 := by ring
+  rw [ht]
+  exact hTime _ (representative_in_band w hw L x) _
+
+theorem extend_horizontal_matching (C : ℤ → ℤ → Tile)
+    (w : ℕ) (hw : 0 < w) (L : ℤ)
+    (hH : ∀ x, -L ≤ x → x+1 < (w : ℤ)-L →
+      ∀ t, (C (x+1) t).west = (C x t).east)
+    (hTwist : ∀ t, (C (-L) (t+1)).west = (C ((w : ℤ)-L-1) t).east)
+    (x t : ℤ) :
+    (extend C w L (x+1) t).west = (extend C w L x t).east := by
+  have hb := representative_in_band w hw L x
+  by_cases hi : representative w L x+1 < (w : ℤ)-L
+  · rcases coordinates_succ_inside w hw L x hi with ⟨hr,hq⟩
+    unfold extend
+    rw [hr,hq]
+    exact hH _ hb.1 hi _
+  · have he : representative w L x = (w : ℤ)-L-1 := by
+      rcases hb with ⟨hb0,hb1⟩
+      omega
+    rcases coordinates_succ_wrap w hw L x he with ⟨hr,hq⟩
+    unfold extend
+    rw [hr,hq,he]
+    simpa only [add_assoc] using hTwist (t+quotient w L x)
+
+theorem extend_start (C : ℤ → ℤ → Tile) (w : ℕ) (hw : 0 < w)
+    (L : ℤ) (hL0 : 0 ≤ L) (hLw : L < (w : ℤ)) (hStart : C 0 0 = start) :
+    extend C w L 0 0 = start := by
+  rw [extend_on_band C w hw L 0 0 (by constructor <;> omega)]
+  exact hStart
+
+/-- A finite twisted band supplies exactly the global geometric premises
+for the helical quotient. No run or cofinal construction is asserted. -/
+theorem extension_properties (C : ℤ → ℤ → Tile)
+    (w H : ℕ) (hw : 0 < w) (L : ℤ) (hL0 : 0 ≤ L) (hLw : L < (w : ℤ))
+    (hA : ∀ x, InBand w L x → ∀ t, Allowed (C x t))
+    (hTime : ∀ x, InBand w L x → ∀ t, (C x (t+1)).north = (C x t).south)
+    (hH : ∀ x, -L ≤ x → x+1 < (w : ℤ)-L →
+      ∀ t, (C (x+1) t).west = (C x t).east)
+    (hTwist : ∀ t, (C (-L) (t+1)).west = (C ((w : ℤ)-L-1) t).east)
+    (hPeriod : ∀ x, InBand w L x → ∀ t, C x (t+(H : ℤ)) = C x t)
+    (hStart : C 0 0 = start) :
+    (∀ x t, Allowed (extend C w L x t)) ∧
+    (∀ x t, (extend C w L (x+1) t).west = (extend C w L x t).east) ∧
+    (∀ x t, (extend C w L x (t+1)).north = (extend C w L x t).south) ∧
+    extend C w L 0 0 = start ∧
+    (∀ x t, extend C w L (x+w) (t-1) = extend C w L x t) ∧
+    (∀ x t, extend C w L x (t+(H : ℤ)) = extend C w L x t) := by
+  exact ⟨extend_allowed C w hw L hA,
+    extend_horizontal_matching C w hw L hH hTwist,
+    extend_time_matching C w hw L hTime,
+    extend_start C w hw L hL0 hLw hStart,
+    extend_helical C w hw L, extend_vertical C w hw L H hPeriod⟩
+
+end DiophantineConsistency.WangTiles942HelicalExtension

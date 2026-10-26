@@ -1,0 +1,79 @@
+import DiophantineConsistency.WangTiles942BandMarker
+
+namespace DiophantineConsistency.WangTiles942BandMarkerChecks
+
+open WangTiles942 WangTiles942Periodic WangTiles942CycleBand WangTiles942BandMarker
+open WangTiles942HelicalQuotient WangTiles942HelicalExtension
+
+set_option Elab.async false
+set_option maxRecDepth 10000
+
+-- Signed time, including negative whole periods, is handled literally.
+example : band 2 3 0 (-6) = start :=
+  (band_eq_start_iff 2 3 (by decide) 0 (-6)).mpr (by decide)
+
+example : band 2 3 0 (-5) ≠ start := by
+  intro h
+  have he := ((band_eq_start_iff 2 3 (by decide) 0 (-5)).mp h).2
+  norm_num at he
+
+-- Seam and initialization markers cannot be confused.
+example (H : ℕ) [NeZero H] (t : ℤ) : band 2 H (-2) t ≠ start := by
+  intro h
+  have he := ((band_eq_start_iff 2 H (by decide) (-2) t).mp h).1
+  omega
+
+-- Positive L is material: at L=0 the seam replaces the origin Start.
+example (H : ℕ) [NeZero H] : band 0 H 0 0 ≠ start := by
+  intro h
+  have hs : band 0 H 0 0 = seam H 0 := by simp only [band,Nat.cast_zero,neg_zero,ite_true]
+  rw [hs] at h
+  have he := congrArg Tile.north h
+  change (437 : ℕ) = 435 at he
+  omega
+
+-- Local marker uniqueness has no height3 or halt requirement.
+example : band 1 1 0 17 = start :=
+  (band_eq_start_iff 1 1 (by decide) 0 17).mpr (by decide)
+
+-- The exposed word is the exact extended-band quotient definition.
+example (T L R H : ℕ) [NeZero H]
+    (hh : (DecimalMachine215.machine.run T).state = none)
+    (hTH : T+2 ≤ H) (hw : 0 < L+R) :
+    canonicalWord T L R H hh hTH hw =
+      quotientWord (extend (band L H) (L+R) (L : ℤ))
+        (extend_allowed (band L H) (L+R) hw (L : ℤ)
+          (fun x _ t => band_allowed T L H hh hTH x t)) (L+R) H := rfl
+
+-- The global uniqueness conclusion is about actual indices, not only colors.
+example (T L R H : ℕ) [NeZero H] [NeZero ((L+R)*H)]
+    (hh : (DecimalMachine215.machine.run T).state = none)
+    (hTH : T+2 ≤ H) (hL : 0 < L) (hR : 0 < R) (hw : 0 < L+R)
+    (z : ZMod ((L+R)*H)) (hz : z ≠ 0) :
+    canonicalWord T L R H hh hTH hw z ≠ 0 := by
+  intro h
+  exact hz ((canonicalWord_marker_iff T L R H hh hTH hL hR hw z).mp h)
+
+-- Independent extra margins/heights need no coprimality or divisibility.
+example (T p q r : ℕ)
+    (hh : (DecimalMachine215.machine.run T).state = none) :
+    let L := T+2+p
+    let R := T+2+q
+    let H := T+3+r
+    letI : NeZero H := ⟨by dsimp [H]; omega⟩
+    letI : NeZero ((L+R)*H) := ⟨Nat.ne_of_gt (Nat.mul_pos (by dsimp [L,R]; omega)
+      (by dsimp [H]; omega))⟩
+    let a := canonicalWord T L R H hh (by dsimp [H]; omega) (by dsimp [L,R]; omega)
+    MarkedWord ((L+R)*H) (L+R : ℕ) a ∧ (∀ z, a z = 0 ↔ z = 0) := by
+  dsimp only
+  have hp := canonical_unique_word_of_halt T (T+2+p) (T+2+q) (T+3+r) hh
+    (by omega) (by omega) (by omega) (by omega)
+  exact ⟨hp.1,hp.2.1⟩
+
+#print axioms timeIndex_val_zero_iff
+#print axioms band_eq_start_iff
+#print axioms canonicalWord_marker_iff
+#print axioms canonicalWord_properties
+#print axioms canonical_unique_word_of_halt
+
+end DiophantineConsistency.WangTiles942BandMarkerChecks
