@@ -40,3 +40,8 @@ The metric theorem remains separate finite evidence, not a Lean totalDegree
 claim. This13/84/92 point trades nine operations for four degrees against
 13/75/96. No global minimum, HA/PA/internal-ZFC proof or display promotion
 is claimed. The decimal maintained page is unchanged.
+
+The [independent peer review](thirteen-first-norm-correction92-peer.md)
+checks the whole proof and finite recipe and authenticates1129 recorded
+observations. It found no correction, discloses parent authorship and
+claims no extra compiler or auditor execution.
