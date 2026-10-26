@@ -26,6 +26,7 @@ import DiophantineConsistency.CurrentPhaseParity2011
 import DiophantineConsistency.CurrentCount2011
 import DiophantineConsistency.CurrentEarlyPadding2011
 import DiophantineConsistency.CurrentOneHot2011
+import DiophantineConsistency.DoubledClause2011
 import DiophantineConsistency.ThirteenCarrier
 import DiophantineConsistency.SignedPellResidue
 import DiophantineConsistency.ThirteenCarrierSoundness

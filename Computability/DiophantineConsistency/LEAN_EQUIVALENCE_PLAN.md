@@ -320,6 +320,13 @@ and [independent composition replay](reviews/current-onehot2011-lean-peer.md).
 Only the origin is proved occupied here; whole-field alignment, all-cell
 occupation, label/adjacency and native semantics remain subsequent work.
 
+`DoubledClause2011` now proves full34-bit mask decoding, both converses
+and zero outgoing carry from the bounded raw ranges. Incoming carry,
+temporal bit and bare bit remain present during decoding. The [root
+review and fresh replay](reviews/doubled-clause2011-lean-root.md) record
+symbolic acceptance/rejection controls. The following physical-label
+binding connects this arithmetic to the literal current clause.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
