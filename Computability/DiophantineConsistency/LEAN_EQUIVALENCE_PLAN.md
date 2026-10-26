@@ -106,6 +106,20 @@ agree. The signed derived y is allowed to be negative. Their fresh-seed
 and native equivalences are still required. See the
 [frontier arithmetic review](reviews/carrier-frontier-lean-root.md).
 
+`DecimalMachine215` now binds the actual complete715-digit page decoder,
+including signed subtraction at the halt target, to the checked dense215
+machine through an explicit state equivalence. Its430 transitions and
+blank-halting equivalence are checked. `PaddingStaircase` proves the
+actual bit-three prefix argument and the full low-clause mask consequence:
+483 tested prefixes plus459 Boolean selectors force total at most462,
+then the derived2006 low bound forces total at mostone. See the
+[decoder/staircase review](reviews/decimal-staircase-lean-root.md).
+The current physical prefix residues, resets and full942-tile language
+remain to be connected. The current machine-to-ZFC dependency closure is
+being rebuilt as described in
+[its build record](reviews/machine215-current-closure-build.md); a live
+build is not a completed endpoint check.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
