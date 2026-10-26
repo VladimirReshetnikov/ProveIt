@@ -58,32 +58,8 @@ noncomputable def positiveValue (d : Parameters) (a : ℕ) (x : Fin 9 → ℕ) :
 
 /-- The positive tuple contains exactly nine coordinates, including j_plus. -/
 theorem exists_positive_zero_iff_hasZero (d : Parameters) (a : ℕ) :
-    (∃ x : Fin 9 → ℕ,(∀ i,0<x i) ∧ positiveValue d a x=0) ↔ HasZero d a := by
-  constructor
-  · rintro ⟨x,hpos,hzero⟩
-    exact ⟨x 0,x 1,hpos 0,hpos 1,positiveVars x,hpos 2,hpos 3,hpos 4,hpos 5,hpos 6,
-      x 8,hpos 8,hzero⟩
-  · rintro ⟨b,g,hb,hg,v,hh,hs,hw,hC,hi,n,hn,hzero⟩
-    let x : Fin 9 → ℕ := ![b,g,v.h,v.s,v.w,v.C,v.i,v.j+1,n]
-    have hp : ∀ i,0<x i := by
-      intro i
-      fin_cases i
-      · exact hb
-      · exact hg
-      · exact hh
-      · exact hs
-      · exact hw
-      · exact hC
-      · exact hi
-      · exact Nat.succ_pos _
-      · exact hn
-    have hv : positiveVars x=v := by
-      cases v
-      rfl
-    refine ⟨x,hp,?_⟩
-    change value d a b g (positiveVars x) n=0
-    rw [hv]
-    exact hzero
+    (∃ x : Fin 9 → ℕ,(∀ i,0<x i) ∧ positiveValue d a x=0) ↔ HasZero d a :=
+  FreeCarrierCoordinates.exists_positive_zero (value d a)
 
 /-- All positive coordinates are shifted by one; the internal CRT index is x7. -/
 def naturalVars (x : Fin 9 → ℕ) : FreeCarrierRatio.FreeVars :=
@@ -98,18 +74,9 @@ theorem positiveValue_successors (d : Parameters) (a : ℕ) (x : Fin 9 → ℕ) 
 /-- The exact bijective nine-natural-coordinate translation. -/
 theorem exists_natural_zero_iff_hasZero (d : Parameters) (a : ℕ) :
     (∃ x : Fin 9 → ℕ,naturalValue d a x=0) ↔ HasZero d a := by
-  rw [← exists_positive_zero_iff_hasZero d a]
-  constructor
-  · rintro ⟨x,hzero⟩
-    exact ⟨fun i => x i+1,fun i => Nat.succ_pos _,by rw [positiveValue_successors]; exact hzero⟩
-  · rintro ⟨x,hpos,hzero⟩
-    let y : Fin 9 → ℕ := fun i => x i-1
-    have he : (fun i => y i+1)=x := by
-      funext i
-      exact Nat.sub_add_cancel (by have h:=hpos i; omega)
-    refine ⟨y,?_⟩
-    rw [← positiveValue_successors,he]
-    exact hzero
+  exact (FreeCarrierCoordinates.exists_positive_iff_successors
+    (fun x : Fin 9 → ℕ => positiveValue d a x = 0)).symm.trans
+      (exists_positive_zero_iff_hasZero d a)
 
 theorem exists_natural_zero_iff_source {d : Parameters} {a : ℕ} (hd : Valid d a) :
     (∃ x : Fin 9 → ℕ,naturalValue d a x=0) ↔
