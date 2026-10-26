@@ -402,6 +402,15 @@ states the still missing marked-tiling soundness and cofinal canonical
 converse. Finite classification alone proves neither endpoint.
 
 Independent agents own distinct new Lean modules. The coordinator owns
+the new `CurrentTileColors2011` composition: actual selected neighbors
+have matching original East/West and South/North colors. Every alignment,
+copy and label premise comes from the same original Facts. Even without
+occupation elsewhere, Start's South1 and North435 exclude zero temporal
+displacement modulo the full word. The [author review and fresh checks](reviews/current-tile-colors2011-lean-root.md)
+record the precise conditional local-selection scope. Global chosen tile
+assignment and the marked-word composition remain subsequent work.
+
+The coordinator also owns
 integration, documentation and commits. `CurrentCellCycle2011` proves that
 successor by2011 reaches every aligned cell, and therefore propagates any
 successor-preserved predicate from zero. Its canonical coordinate is the
