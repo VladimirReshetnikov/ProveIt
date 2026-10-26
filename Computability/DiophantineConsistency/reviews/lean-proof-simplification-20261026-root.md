@@ -1222,3 +1222,96 @@ independent full review. The maintained equation artifacts retain their exact
 checked hashes, decimal constant and fourteen distinct unsubscripted unknowns.
 Packing-rank simplification is still establishing its original dependency
 baseline and contributes no claimed saving or final validation here.
+
+## Padding bits from low residues
+
+`v_finite_full_static` adopted the deferred zl mask proof as `57dcc2a5ec`
+after the shared rank preparation compiled its original word prerequisites.
+The existing bit-mask and modulo-power bit identities now read the tested
+bit directly from `x % 2048 ≤ 5`. This retains arbitrary large natural `x`;
+the argument is about its low residue, not a bound on the original digit.
+All13 old theorem headers, including two private lemmas, two entire private
+definitions, imports, options and word/carry/normalization premises remain
+literal. No helper/import is added;224 lines become221, removing3.
+
+A fresh11-public baseline was captured before the edit. Five final calls pass
+on the first attempt: target, `CurrentWordHighMask2011` client, both existing
+focused modules and11-public final comparison. All reports are byte-identical;
+the changed bit lemma still uses `propext` and `Quot.sound` without choice.
+The focuses retain eighteen examples, including large high multiples,
+wrong-residue/wrong-mask controls, band and cell endpoints, numeric controls,
+zero stride and marked-word scalar existence. There are no failed attempts,
+warnings or additional prerequisite builds by this author. The shared original
+prerequisite builds are attributed to rank preparation, not counted again.
+`alternate_encoding_research` independently read all221 final lines, complete
+diff and actual bit/remainder contracts, returning PASS at unchanged hashes.
+
+## Direct arithmetic in the controller residue wrappers
+
+`alternate_encoding_research` adapted zh's Hs-inline patch as `7f1081d5c6`.
+The three elementary wrappers rewrite natural addition and multiplication
+remainders using the existing base/square residues and their explicit actual
+kernel-residue premises. The private bookkeeping lemma is deleted. The base
+and literal kernel remain locally irreducible; no physical tuple or large
+unreduced power is evaluated. All45 old public theorem headers, four entire
+definitions, two instances, imports and options remain literal. Including all
+changes,184 lines become169, removing15.
+
+The fresh49-public baseline passed before mutation. The supplied candidate
+and its Units client both compiled, but introduced two unreachable `decide`
+tails and an unnecessarily focused tactic. Their sources and warning logs
+are preserved separately. Removing those dead tails and replacing the
+auxiliary focus with sequential tactics retained the15-line reduction.
+The complete final scope was then rerun: target, unchanged current Units
+client, existing Data focus and49-public final comparison all pass. Every
+old report is byte-identical. The target is warning-free; the unchanged
+Units client retains its existing large-exponent warning. There were no
+compiler failures or option changes. `v_finite_full_static` independently
+read all169 final lines, the complete diff, first checked source/log,
+actual modular contracts and all opacity/premise boundaries, returning PASS
+at the exact final hash. No reviewer compiler runs are attributed.
+
+## Strict Pell index bound in the outer seed
+
+ROOT adopted the new Round7 client cleanup as `50d7e2133b`. The already
+imported `Diophantine.lt_yn_of_two_le` gives `r + 1 < K` from the existing
+`1 < P` and population-derived `4 ≤ r`. It replaces the client's power,
+base and rank comparison without another helper or hypothesis. Every other
+source byte is literal, including all four theorem headers and the entire
+31-field `Seed` structure. The witness construction, positive width,
+population premise, doubled first ordinate and exact main rank remain
+unchanged.279 lines become269, removing10.
+
+The candidate is byte-identical to
+`LeanReview7/research/outer_seed/NativeOuterSeedConstruction.lean` in
+`docs/incoming/ProveIt_Lean_Simplification_Round7_2026-10-26.zip` at immutable
+upstream `9c3d0366ed`. The patch, README and actual existing Pell helper were
+read inertly; no supplied archive executable ran. The full tracked project
+import closure has41 members and only the target object was missing, so
+the exact original target was compiled explicitly before the fresh baseline.
+An earlier file lookup found the absent object; there was no Lean failure.
+
+Four final calls pass on the first attempt without warnings: target,
+`NativePositiveSourceConstruction` client, existing outer-seed focus and
+37-public comparison. These reports cover four old theorems, the structure,
+its constructor and all31 projections; they are byte-identical. The focus's
+eight examples retain both mod-four rank classes, the q-cubed scale,
+positivity and exact norm/index bindings, the doubled-ordinate negative
+control, zero-width counterexample and actual main ordinate.
+`v_finite_full_static` independently read the complete269-line source,
+diff and actual strict Pell helper proof/import/domain contracts, verified
+the entire old source by reversing the one replacement, and authenticated
+the exact archive candidate and old/new reports. The exact-final review
+passes; no extra compiler execution is attributed to it.
+
+The padding, data and seed commits remove28 net lines. Together with the
+preceding58, twelve modules fall from1958 lines to1872, removing86 net
+lines and bringing the reviewed series from3714 to3800. The final suites
+have51 successful calls, counting shared evidence once; original builds,
+prerequisites, baselines and superseded successful candidates are separate.
+All207 old public declaration reports are byte-identical. ROOT freshly
+verifies153 old public theorem headers,25 complete definition blocks and
+the entire31-field `Seed` structure against immutable `40183b4bdc`; all are
+unchanged. Every final source has independent full review. Packing-rank
+source validation is now in progress after its complete original baseline;
+it still contributes no saving or final validation to this checkpoint.
