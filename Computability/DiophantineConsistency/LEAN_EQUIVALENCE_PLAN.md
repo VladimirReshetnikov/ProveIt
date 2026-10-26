@@ -966,6 +966,14 @@ normal/optimized audits prove the complete77-operation/degree96 profile and
 reconstruct every coefficient. No fresh whole closure, Lean exact-degree or
 HA derivation is asserted by this packet.
 
+`ThirteenSharedSquares96` now proves exact polynomial equality with the
+grouped variant over every commutative ring, then inherits its current-port
+external endpoint. Sharing f²−1 reduces the complete profile to13/76/96.
+Both leaves passed [independent root replay](reviews/thirteen-shared-squares96-root.md),
+with eleven standard-only reports and identical author/root objects. Separate
+normal/optimized finite audits cover all76 operations, the exact degree and
+whole coefficient tuple. No new HA endpoint or fresh whole closure is claimed.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the

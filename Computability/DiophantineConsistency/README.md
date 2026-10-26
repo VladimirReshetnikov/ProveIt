@@ -180,6 +180,15 @@ finite audit passed [independent root review](reviews/thirteen-grouped-squares96
 The extra five operations lower degree by28; the earlier tradeoffs and displayed
 equation are preserved.
 
+The [shared-residual presentation](research/thirteen-shared-squares96/README.md)
+improves this to **13 positive variables,76 operations and exact degree96**.
+Sharing `f²−1` computes exactly the same polynomial over every commutative
+ring, preserving all assignments and the current-port external ConZFC endpoint.
+Both fresh Lean leaves and normal/optimized full finite audits passed
+[independent root review](reviews/thirteen-shared-squares96-root.md).
+All four complete coefficients are unchanged. The earlier77/96 packet remains
+preserved; the displayed14/65/150 equation and HA target are unchanged.
+
 The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 uses **47,313 raw fixed-integer bytes**, 10,812 below the preceding2471
 page. It fixes Start and sorts the other941 selectors by their distinct

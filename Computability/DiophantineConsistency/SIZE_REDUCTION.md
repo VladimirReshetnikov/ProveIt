@@ -24,6 +24,18 @@ Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
 
+26 October shared residual: the
+[76/96 presentation](research/thirteen-shared-squares96/README.md)
+shares h=f²−1 between the auxiliary coefficient and strong residual. It
+computes exactly the same polynomial as the preserved77/96 presentation,
+over every commutative ring, with one fewer subtraction. The complete count
+is42 multiplications,18 additions and16 subtractions, with the same13 positive
+unknowns and47313 raw/4230 gzip coefficient bytes. Both fresh Lean leaves
+and full normal/optimized finite graph/degree/port checks passed
+[independent root review](reviews/thirteen-shared-squares96-root.md), including
+the actual external ConZFC endpoint. This improves77/96 at unchanged degree;
+the decimal14/65/150 display and remaining HA proof-existence goal are unchanged.
+
 26 October grouped residuals: the
 [77/96 equation](research/thirteen-grouped-squares96/README.md)
 keeps the13 positive variables and all47313 raw coefficient bytes of LV72.

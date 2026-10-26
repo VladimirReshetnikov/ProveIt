@@ -56,6 +56,11 @@ The grouped-square13/77/96 variant likewise has a checked external endpoint
 and exact positive identity map to LV72; its
 [root replay](reviews/thirteen-grouped-squares96-root.md) retains the separate
 finite metric and cached-prerequisite scopes. Its HA endpoint is also open.
+The shared-residual13/76/96 presentation is now externally checked too:
+it computes exactly the grouped polynomial using one fewer operation.
+Its [independent replay](reviews/thirteen-shared-squares96-root.md) passed
+eleven standard-only reports and separate complete normal/optimized finite
+metric checks. Its HA proof-existence endpoint remains open.
 
 [ObjectCurrentEquation2011](Lean/DiophantineConsistency/ObjectCurrentEquation2011.lean)
 supplies a set-theory-language no-solution sentence with exact arbitrary-model
