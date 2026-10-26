@@ -35,8 +35,12 @@ The current scaled auxiliary replacement is also covered by
 [CarrierScaledAuxiliary118](Lean/DiophantineConsistency/CarrierScaledAuxiliary118.lean).
 Their independent endpoint replays and axiom reports are documented in
 the [formalization plan](LEAN_EQUIVALENCE_PLAN.md). A source-authenticated
-361-module custom dependency validation is running separately; it is not
-an HA proof-existence theorem.
+361-module custom dependency validation has passed at the pinned09eaa
+snapshot:191 fresh and170 authenticated reuses. A separate15-command
+post-merge refresh also passed; see the
+[original replay](reviews/current-positive-zero2011-closure-replay.md) and
+[limited refresh](reviews/current-positive-zero2011-refresh-replay.md).
+Neither is an HA proof-existence theorem.
 
 [ObjectCurrentEquation2011](Lean/DiophantineConsistency/ObjectCurrentEquation2011.lean)
 supplies a set-theory-language no-solution sentence with exact arbitrary-model

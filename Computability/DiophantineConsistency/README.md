@@ -57,8 +57,13 @@ consistency it constructs one positive13-coordinate assignment solving all
 three simultaneously. The [author record](reviews/current-positive-zero2011-root.md)
 and [independent fresh endpoint replay](reviews/current-positive-zero2011-lean-peer.md)
 record six standard-only axiom audits and the exact domain and coefficient
-binding. These leaf builds reused prerequisites; source-authenticated
-post-merge closure validation remains separate. Further frontier equations,
+binding. The source-authenticated
+[361-module validation](reviews/current-positive-zero2011-closure-replay.md)
+has now passed at09eaa:191 fresh compilations and170 authenticated reuses.
+After merging the five upstream proof changes, a separate
+[15-command refresh](reviews/current-positive-zero2011-refresh-replay.md)
+also passed with54 standard-only reports; unchanged intermediate objects
+were explicitly reused. Further frontier equations,
 size reductions and the HA proof-existence theorem remain active work.
 The new [direct witness interface](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 also proves positive zero iff an actual syntactic ZFC refutation. Negating

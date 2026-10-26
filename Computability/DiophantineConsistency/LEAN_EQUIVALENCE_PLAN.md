@@ -90,10 +90,14 @@ Remaining work includes the HA proof-existence theorem, other equation
 frontiers, further size reduction and source-authenticated current closure
 validation. These fresh endpoint builds reuse prerequisites; they are not
 a fresh full umbrella build. The source-authenticated361-module custom
-closure validation is now running with170 authenticated reused modules
-and191 scheduled fresh; see its [plan](reviews/current-positive-zero2011-closure-plan.md)
-and [root launch record](reviews/current-positive-zero2011-closure-launch-root.md).
-No completed-closure claim is made before its terminal checks. The1997 proposal
+closure validation has now passed at09eaa with170 authenticated reused
+modules and191 freshly compiled; see its
+[completed replay](reviews/current-positive-zero2011-closure-replay.md).
+After merging the five upstream proof changes at8d1729, a separate
+[15-command refresh](reviews/current-positive-zero2011-refresh-replay.md)
+passed with54 standard-only axiom reports. It retained355 unchanged
+objects, including intermediate clients, and is not a fresh full merged
+closure validation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
 `CurrentWitnessEquivalence2011` now exposes both external witness maps
