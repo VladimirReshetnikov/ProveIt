@@ -40,6 +40,14 @@ The literal helper-free seed now also has
 [bounded arithmetic graphs](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticSeedTemplates222.lean),
 with [independent replay](reviews/arithmetic-seed-templates222-root.md).
 Representation of its syntax is separate from the pending seed-validity proof.
+An [actual C222 Nat checker](reviews/code222-proof-root.md) is now checked
+in both directions against the calculus, and the changed
+[bounded row](reviews/arithmetic-row222-root.md) has exact internal graph
+semantics and standard one-step parser agreement. A separate
+[generic represented history](reviews/arithmetic-sequence-history-root.md)
+proves unique evaluation and lookup at all internal IΣ1 indices, retaining
+the explicit represented-step premise. Instantiating it with the actual
+C222 row and calibrating the seed/runtime remain separate work.
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence

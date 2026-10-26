@@ -225,6 +225,30 @@ The repeated matrix/binder c, false code1 and legal a=b,c=0 case are retained.
 These are representation results; they do not prove the seed internally valid.
 None of these missing statements is supplied by standard-Nat simulation.
 
+The actual calculus now has a checked
+[Nat proof checker](../BusyBeaver/Lean/BusyBeaver/ZFC/Code222Proof.lean),
+including `C222 n ↔ ∃code, check222 code n=true`. Old raw-tree parsing and
+quoting are reused as syntax; new recursive validity and conclusions bind
+both changed leaves and MP to the actual C222 definitions. Its
+[independent replay](reviews/code222-proof-root.md) passed nine reports.
+The [bounded row](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticRow222.lean)
+then represents exactly those numeric rule semantics in every IOpen model,
+with arbitrary-child standard parser agreement and invalid-tag rejection.
+Its [independent replay](reviews/arithmetic-row222-root.md) passed ten reports.
+Neither packet assumes old C254 semantic agreement for the changed calculus.
+
+[ArithmeticSequenceHistory](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticSequenceHistory.lean)
+separately reuses Foundation's generic primitive recursion. Its fixed
+history/value syntax has Sigma1/Delta1 graphs, unique totality, exact
+sequence length and all-index lookup equations in every IΣ1 model,
+conditional on an explicitly represented total step. Both totality
+statements retain that premise. Its
+[independent replay](reviews/arithmetic-sequence-history-root.md) passed15
+reports. Actual C222 instantiation, whole-code Nat binding, internal seed
+calibration and exact counter4 runtime simulation are the next obligations.
+These three packets total six fresh leaves over pinned cached prerequisites;
+they do not establish the final arithmetic consistency equivalence.
+
 The [arithmetic translation audit](research/ha-arithmetic-translation-adapter-audit.md)
 also fixes the next proof-transfer interface: translate Foundation ordered
 arithmetic syntax into the existing conventional PAHF HA, then map actual
