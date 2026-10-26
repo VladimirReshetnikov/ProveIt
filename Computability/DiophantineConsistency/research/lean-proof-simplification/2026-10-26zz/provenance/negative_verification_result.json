@@ -1,0 +1,63 @@
+{
+  "optimized_python": true,
+  "all_negative_tests_detected": true,
+  "cases": [
+    {
+      "case": "missing active candidate source",
+      "invocation": "python -O provenance/verify_snapshot.py",
+      "exit_code": 1,
+      "failure_count": 5,
+      "detected": true
+    },
+    {
+      "case": "modified active candidate source",
+      "invocation": "python -O provenance/verify_snapshot.py",
+      "exit_code": 1,
+      "failure_count": 6,
+      "detected": true
+    },
+    {
+      "case": "missing selected imported theorem bytes",
+      "invocation": "python -O provenance/verify_snapshot.py",
+      "exit_code": 1,
+      "failure_count": 3,
+      "detected": true
+    },
+    {
+      "case": "tree completeness denial",
+      "invocation": "python -O provenance/verify_snapshot.py",
+      "exit_code": 1,
+      "failure_count": 1,
+      "detected": true
+    },
+    {
+      "case": "wrong root Git tree SHA",
+      "invocation": "python -O provenance/verify_snapshot.py",
+      "exit_code": 1,
+      "failure_count": 3,
+      "detected": true
+    },
+    {
+      "case": "incorrect closing target blob",
+      "invocation": "python -O provenance/verify_snapshot.py",
+      "exit_code": 1,
+      "failure_count": 2,
+      "detected": true
+    },
+    {
+      "case": "omitted timeline commit",
+      "invocation": "python -O provenance/verify_snapshot.py",
+      "exit_code": 1,
+      "failure_count": 1,
+      "detected": true
+    },
+    {
+      "case": "omitted dependency manifest entry",
+      "invocation": "python -O provenance/verify_snapshot.py",
+      "exit_code": 1,
+      "failure_count": 3,
+      "detected": true
+    }
+  ],
+  "restored_positive_exit_code": 0
+}

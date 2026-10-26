@@ -1,0 +1,57 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{fontspec}
+\setmainfont{P052}
+\setsansfont{Nimbus Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=0.78]
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,longtable,array,enumitem}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{xcolor,fancyhdr,hyperref,xurl,fvextra,microtype}
+\definecolor{ink}{HTML}{18354B}
+\definecolor{accent}{HTML}{087E8B}
+\definecolor{shade}{HTML}{F1F5F7}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=accent,pdftitle={Further Lean proof simplifications},pdfauthor={Prepared for Vladimir Reshetnikov}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\headheight}{15pt}
+\setlist{nosep,leftmargin=1.5em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily DIOPHANTINE CONSISTENCY}
+\fancyhead[R]{\small\sffamily PROOF SIMPLIFICATION REVIEW}
+\fancyfoot[L]{\small 26 October 2026}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\sourcepin}{96520cd1a5179f470b4da127bd47bc26a8d808ff}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/96520cd1a5179f470b4da127bd47bc26a8d808ff/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean}{\code{#1.#2}}}
+\newcommand{\packet}[1]{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/96520cd1a5179f470b4da127bd47bc26a8d808ff/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26#1}{packet #1}}
+\DefineVerbatimEnvironment{lean}{Verbatim}{fontsize=\small,breaklines=true,breakanywhere=true,frame=single,rulecolor=\color{accent},framesep=6pt}
+\begin{document}
+\begin{titlepage}
+\vspace*{1.1in}
+{\sffamily\color{accent}\large A SOURCE-BASED REVIEW}\par
+\vspace{0.3in}
+{\sffamily\color{ink}\Huge Further Lean proof\\ simplifications}\par
+\vspace{0.25in}
+{\sffamily\LARGE Pell proof reductions and\\ canonical residue witnesses}\par
+\vspace{0.65in}
+{\large Prepared for Vladimir Reshetnikov\\26 October 2026}\par
+\vfill
+\textbf{Scope.} ProveIt / Computability / DiophantineConsistency. Earlier proposals in the requested research and incoming directories are treated as already applied, including optional or uncompiled proposals.\par
+\textbf{Source baseline.} \url{https://github.com/VladimirReshetnikov/ProveIt/commit/96520cd1a5179f470b4da127bd47bc26a8d808ff}. A closing comparison is documented separately.\par
+\textbf{Delivery.} This manuscript, its compiled PDF, Lean prototypes, exact source patches, novelty ledgers, validation receipts, and replay instructions.\par
+\end{titlepage}
+\tableofcontents
+\newpage
+\input{sections/results}
+\input{sections/scope}
+\input{sections/pell}
+\input{sections/residue}
+\input{sections/screened_out}
+\input{sections/validation}
+\input{sections/adoption}
+\input{sections/references}
+\end{document}

@@ -1,0 +1,29 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenFreshSeed.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenFreshSeed.lean
+@@ -103,11 +103,7 @@
+     push_cast at h
+     nlinarith only [h]
+   have hp : f ^ 2 - delta * (yn hA t : ℤ) ^ 2 = 1 := by
+-    have h := congrArg (fun x : ℕ => (x : ℤ)) (χ_sq hA t)
+-    simp only [χ, ψ] at h
+-    push_cast [Nat.cast_sub hAA] at h
+-    dsimp [f, delta]
+-    nlinarith only [h]
++    simpa only [f, delta, xz, yz, dz_val, az, pow_two, mul_assoc] using pell_eqz hA t
+   let S : ℕ := (A * A - 1) * yn hA t
+   have hS : 1 < S := by
+     have hD : 2 ≤ A * A - 1 := by
+@@ -138,11 +134,8 @@
+     dsimp [y]
+     exact neg_neg_of_pos (by exact_mod_cast this)
+   have hnorm : (S : ℤ) ^ 2 * V ^ 2 - ((S : ℤ) ^ 2 - 1) * y ^ 2 = 1 := by
+-    have hSS : 1 ≤ S * S := by nlinarith
+-    have h := congrArg (fun x : ℕ => (x : ℤ)) (χ_sq hS R)
+-    simp only [χ, ψ] at h
+-    push_cast [Nat.cast_sub hSS] at h
+-    rw [hx] at h
++    have h := pell_eqz hS R
++    simp only [xz, yz, dz_val, az, hx] at h
+     dsimp [y]
+     nlinarith only [h]
+   have hRf : (S : ℤ) ^ 2 ≡ 1 - (A : ℤ) ^ 2 [ZMOD f ^ 2] := by

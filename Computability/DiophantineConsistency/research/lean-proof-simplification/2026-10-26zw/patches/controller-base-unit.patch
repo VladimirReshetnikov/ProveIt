@@ -1,0 +1,22 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerSubsets2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerSubsets2011.lean
+@@ -21,15 +21,12 @@
+ 
+ attribute [local irreducible] CurrentControllerData2011.B
+ 
+-/-- The actual B is a unit, derived from the positive order of its power. -/
++/-- The actual B is a power of two and the entire block modulus is odd. -/
+ theorem block_base_isUnit (k : ℕ) :
+     IsUnit (B : ZMod ((d*auxiliary)*auxiliary^k)) := by
+-  have ho : 0 < orderOf
+-      ((B : ZMod ((d*auxiliary)*auxiliary^k))^(auxiliary-1)) := by
+-    rw [block_order]
+-    exact pow_pos (NeZero.pos auxiliary) k
+-  exact (isUnit_pow_iff (by decide : auxiliary-1 ≠ 0)).mp
+-    (orderOf_pos_iff.mp ho).isUnit
++  rw [B_eq, Nat.cast_pow]
++  exact ((ZMod.isUnit_iff_coprime 2 _).mpr (Nat.coprime_two_left.mpr
++    ((d_odd.mul auxiliary_odd).mul auxiliary_odd.pow))).pow 94517
+ 
+ /-- All normalized targets have a genuine subset of actual power indices.
+ No orbit equivalence, affine-weight identity or subset is supplied. -/

@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-26",
+  "proof_snapshot": "9d9d1123b39927d30363f1dcd53c23f0575c30ee",
+  "freshness_cutoff": "60fcb2a69b7f1fdd4c3592ea5f164223cad50abe",
+  "freshness_commit_time_utc": "2026-10-26T19:10:07Z",
+  "exclusion_packets_at_cutoff": 43,
+  "lean_version": "4.32.0",
+  "lean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35",
+  "mathlib_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "replay_cores": {
+    "script": "checks/replay_cores.py",
+    "exit_code": 0,
+    "sources": [
+      {
+        "path": "shape/ShapeCore.lean",
+        "sha256": "57945f5d09611f1e27d9953d633bc23903d907e621b50967fa890361d84d88c1",
+        "exit_code": 0
+      },
+      {
+        "path": "growth/FullExponentGrowth.lean",
+        "sha256": "00fe5b32a1b4e9ae466829b6b4571dcaa1e4735e9e2c448b9745b60677d4ff88",
+        "exit_code": 0
+      }
+    ],
+    "scope": "Delivered standard-library core files; no repository import graph."
+  },
+  "patch_consistency": {
+    "script": "checks/check_patches.py",
+    "exit_code": 0,
+    "cases": [
+      {
+        "proposal": "shape",
+        "baseline": "Pinned maintained source",
+        "applicable": true,
+        "candidate_matches_bytes": true
+      },
+      {
+        "proposal": "growth",
+        "baseline": "Pinned maintained source",
+        "applicable": true,
+        "candidate_matches_bytes": true
+      },
+      {
+        "proposal": "windows",
+        "baseline": "Included post-y proposal candidate",
+        "applicable": true,
+        "candidate_matches_bytes": true
+      }
+    ]
+  },
+  "replay_windows_script": {
+    "script": "checks/replay_windows.py",
+    "python_syntax_checked": true,
+    "end_to_end_script_replay_performed": false,
+    "underlying_proofs_previously_checked": "windows/validation.json",
+    "note": "Requires a user-configured checkout. Original helper and kernel were checked separately; this portability wrapper was not itself replayed in a fresh Lake environment."
+  },
+  "full_repository_build": false,
+  "downstream_metadata_build": false,
+  "performance_comparison": false,
+  "source_line_deltas": {
+    "metadata_candidate_only": -9,
+    "growth_candidate": -5,
+    "post_y_windows_with_helper": 16
+  }
+}

@@ -1,0 +1,19 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPackingRank2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPackingRank2011.lean
+@@ -87,14 +87,9 @@
+ 
+ theorem rank_gt_twice_window (C F : ℕ) (hC : 0<C) (hCF : C+F<q N) :
+     (2*(width*N) : ℕ) < rank N C F := by
+-  have hu : width*N < q N := by rw [q_binary]; exact Nat.lt_two_pow_self
+-  have hw : 0 < width*N := Nat.mul_pos (by decide) (NeZero.pos N)
+-  have hq : 2 ≤ q N := by omega
+-  have hsq : 2 ≤ q N^2 := by nlinarith
+   have hc : 2*(width*N) < q N^3 := by
+-    calc
+-      2*(width*N) < 2*q N := Nat.mul_lt_mul_of_pos_left hu (by decide)
+-      _ ≤ q N^3 := by rw [pow_succ]; exact Nat.mul_le_mul_right (q N) hsq
++    rw [q_binary, ← Nat.pow_mul]
++    exact Nat.lt_of_le_of_lt (by omega) (Nat.lt_two_pow_self (n := (width*N)*3))
+   have hn := hc.trans_le (fourBlocks_ge_cube C F hC hCF)
+   have hz : ((2*(width*N) : ℕ) : ℤ) < (fourBlocks N C F : ℤ) := by exact_mod_cast hn
+   rwa [fourBlocks_cast C F hC hCF] at hz

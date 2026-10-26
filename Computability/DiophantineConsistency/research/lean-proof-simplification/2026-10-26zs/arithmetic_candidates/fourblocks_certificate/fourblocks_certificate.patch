@@ -1,0 +1,30 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPackingRank2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPackingRank2011.lean
+@@ -57,22 +57,11 @@
+   have hb := congrArg (fun n : ℕ => (n : ℤ))
+     (CurrentNativePacking2011.repunit_balance (N:=N))
+   push_cast at hb
+-  have hbeta : (beta : ℤ)*repunit width N = (q N : ℤ)-1 := by omega
+-  have hh := NativeSourceMask.packing_four_block (C:=(C:ℤ)) (F:=(F:ℤ))
+-    (MC:=(lowPort:ℤ)) (MF:=(highPort:ℤ)) hbeta
+-  have hB : (fourBlocks N C F : ℤ) =
+-      ((C : ℤ)-1)+((lowPort : ℤ)*repunit width N+1)+
+-      (q N : ℤ)*(F+((highPort : ℤ)*repunit width N-1))+
+-      (q N : ℤ)^2*((q N : ℤ)-C)+(q N : ℤ)^3*((q N : ℤ)-F-1) := by
+-    unfold fourBlocks
+-    push_cast [Nat.cast_sub (by omega : 1 ≤ C),Nat.cast_sub hHJ,
+-      Nat.cast_sub hCq,Nat.cast_sub (by omega : 1 ≤ q N-F),
+-      Nat.cast_sub (by omega : F ≤ q N)]
+-    ring
+-  rw [hB,← hh]
+-  unfold rank NativeRankVariation.windowRank
+-  push_cast
+-  ring
++  unfold fourBlocks rank NativeRankVariation.windowRank
++  push_cast [Nat.cast_sub (by omega : 1 ≤ C),Nat.cast_sub hHJ,
++    Nat.cast_sub hCq,Nat.cast_sub (by omega : 1 ≤ q N-F),
++    Nat.cast_sub (by omega : F ≤ q N)]
++  linear_combination -(q N : ℤ) * hb
+ 
+ omit [NeZero N] in
+ /-- The positive complement in the top block supplies a large rank before

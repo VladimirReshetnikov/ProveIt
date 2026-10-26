@@ -1,0 +1,93 @@
+\input{preamble}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries A local simplification of the constructed rank proof}\par\medskip
+{\large DiophantineConsistency sixth review}\par\smallskip
+26 October 2026\quad Frozen source \texttt{9d9d1123b399}
+\end{center}
+
+\textbf{Result.} One small client refactor shortens \texttt{CurrentPackingRank2011} from 138 to 127 physical lines by removing an expanded-polynomial detour. It preserves all public statements, definitions, imports, and hypotheses. This is a proposed eleven-line cleanup, not a new rank identity, a new growth theorem, or an improvement to the Diophantine equation. \textbf{The Lean candidate is uncompiled.}
+
+\begin{tabularx}{\linewidth}{@{}lXrr@{}}\toprule
+ID & Local change & Proof body & Net saved\\\midrule
+C & Inline the already-known repunit-balance certificate after one cast normalization & $23\to12$ & 11\\
+\midrule
+ & Complete module & $138\to127$ & 11\\\bottomrule
+\end{tabularx}
+
+\textbf{Recommendation.} C is an optional source-shortening tradeoff. It is shorter but repeats a one-line algebraic certificate already encapsulated in \texttt{NativeSourceMask.packing\_four\_block}. Keeping the longer existing proof is reasonable if shared-lemma reuse matters more than source length.
+
+\textbf{Assumed-applied baseline.} All proposals in the requested research and incoming collections, including optional mechanisms and promised real-client adapters, are treated as already available. The five earlier reports in this series are also excluded. In particular, the previous Sidon, controller order-zero, and definitional-depth cleanups are not revisited. The present edit concerns the new concrete rank client, not new generic casting or polynomial-normalization infrastructure.
+
+\textbf{Validation boundary.} Lean and Lake are unavailable in this environment and were not installed. Source identity, patch scope, algebraic identities and bounded models can be checked; those checks do not establish Lean elaboration, axiom-set equality, full-project integration or performance. No upstream file was changed.
+
+\section{Recent commits and the source boundary}
+The source is frozen at \texttt{\commit}, 19:00:19 UTC. It is 27 commits beyond the previous source pin and 17 beyond the previous closing screen. The complete, untruncated Lean tree contains 702 files, compared with 690 at the preceding source pin: twelve files were added, seven modified, none removed. Comparison uses full trees, not a capped GitHub compare-file list.
+
+The new work includes controller-position safety, dummy mutation safety, exact packing population, whole-period word rephasing and the constructed rank. Six already-adopted simplification commits remove 81 net lines according to the adoption record, including the cost of the formal polynomial combiner. Those prior savings are not attributed to this report. The exact source and commit ledger are supplied under \artifact{provenance/}.
+
+\input{closing_note}
+\newpage
+\section{C Remove the expanded polynomial detour}
+\refs{} \src{CurrentPackingRank2011.lean}{50}{76}.\par
+Existing certificate: \src{NativeSourceMask.lean}{87}{94}.\par
+Rank definition: \src{NativeRankVariation.lean}{20}{22}.
+
+The original proof first establishes the natural-subtraction domains, casts the repunit balance, derives a separate $\beta J=q-1$ fact, instantiates the shared packing lemma, spells out a second long casted polynomial, and finally identifies the rank expression. The proposed proof keeps the domain reasoning but closes the normalized equality directly:
+
+\begin{Lean}
+  have hJ := CurrentNativePacking2011.repunit_pos (N:=N)
+  have hHJ : 1 ≤ highPort*repunit width N := Nat.mul_pos highPort_pos hJ
+  have hCq : C ≤ q N := by omega
+  have hFq : F+1 ≤ q N := by omega
+  have hb := congrArg (fun n : ℕ => (n : ℤ))
+    (CurrentNativePacking2011.repunit_balance (N:=N))
+  push_cast at hb
+  unfold fourBlocks rank NativeRankVariation.windowRank
+  push_cast [Nat.cast_sub (by omega : 1 ≤ C),Nat.cast_sub hHJ,
+    Nat.cast_sub hCq,Nat.cast_sub (by omega : 1 ≤ q N-F),
+    Nat.cast_sub (by omega : F ≤ q N)]
+  linear_combination -(q N : ℤ) * hb
+\end{Lean}
+
+\subsection{Why the equality is unchanged}
+Write $L,H,J,q,C,F,\beta$ for the corresponding integer quantities. The natural four-block expression becomes
+\[
+ (C-1)+(LJ+1)+q(F+HJ-1)+q^2(q-C)+q^3(q-F-1).
+\]
+The rank is
+\[
+ (q(q-F)-C)(q^2-1)+(L+q(H+\beta))J.
+\]
+Their difference is exactly $-q(\beta J+1-q)$, zero by the cast repunit balance. This is the \emph{same} identity as the existing shared packing lemma, with the orientation reversed; no new algebraic discovery is claimed.
+
+The cast is valid only after the bounds for $C-1$, $HJ-1$, $q-C$, $q-F$, and $(q-F)-1$ have been proved. All original domain facts remain. In particular, the high-port product is positive and $C>0$, $C+F<q$ remain explicit. Replacing natural subtraction by integer subtraction without these facts would be unsound. The source's once-shifted fourth port $H+\beta$ is not altered or shifted twice.
+
+\risk{} This removes eleven physical lines and no import or helper is added. It bypasses the shared theorem, so future changes to that theorem's normal form will not automatically update this client. Prefer the existing proof when that maintenance benefit outweighs brevity. Exact \texttt{push\_cast} and \texttt{linear\_combination} elaboration remains a future compile gate.
+\newpage
+\section{What was deliberately not proposed}
+The new controller-subset power-shift sum can be shortened by finite-sum distributivity and controlled simplification, but an earlier packet already proposes that mechanism and its real clients. It is excluded. Generic cast transport, rank-to-natural bridging, word-prefix support, copied-field descriptors, carry uniqueness, fixed-modulus residue certificates, controller order-zero endpoints and finite-order rigidity likewise remain prior work.
+
+The fresh five-module arithmetic pass found that most new proofs are already compact. Cosmetic rewriting of numeric bounds or record constructors was not counted as an independent idea. The selected edit is therefore modest and local. A shorter source proof need not elaborate faster, and C may have worse maintenance characteristics despite its line saving. The initial growth candidate, replacing intermediate square bounds by $3u<2^{3u}$, is excluded: packet zc already advertises power normalization followed by a standard growth inequality and linear arithmetic. Its artifacts are comparison evidence only and receive zero new credit.
+\section{Reproducibility and integration gates}
+The ZIP contains a focused source snapshot, not a complete Lake checkout. The original source manifest binds the 702 active Lean files and eight context/configuration files. Direct external repository dependencies and old comparison sources are separately bound. Reused validation tools are supporting artifacts, not additional simplification proposals.
+
+\begin{enumerate}
+\item Run \texttt{python3 verify\_bundle.py --strict} to detect added, missing or changed delivered files.
+\item Run \texttt{python3 provenance/verify\_snapshot.py} to replay source identities and complete-tree delta checks.
+\item Run the candidate builders and arithmetic checks under \artifact{arithmetic_candidates/}. They reproduce exact proof-text replacements, patches and metrics, not Lean proof terms.
+\item Run the independent source/guard checks under \artifact{independent_review/}; preserve their stated source-only scope.
+\item In a separate complete authorized checkout at the pinned revision, compile the selected replacement module, existing checks and affected reverse dependencies; compare old and new endpoint axiom reports. No such execution occurred here.
+\item Rebuild the report with \texttt{bash report/build.sh}. The release replay compares every page's extracted text and rendered pixels after an isolated rebuild, rather than expecting identical PDF metadata.
+\end{enumerate}
+
+\subsection{What the non-Lean checks establish}
+Source checks establish exact immutable input bytes, unchanged theorem interfaces and definitions, and reproducible patch composition. A symbolic polynomial expansion checks the sign and coefficient of the repunit-balance residual. Bounded natural samples exercise subtraction domains; negative controls retain cases where dropping a guard changes the value. The growth check includes the zero-window numerical boundary. None of these tests establishes that Lean accepts the proposed tactic scripts.
+
+\subsection{Further research questions}
+\begin{enumerate}
+\item Does C preserve the original endpoint's axiom footprint and elaboration cost? Does bypassing the shared packing lemma make future maintenance worse?
+\item Does the exact selected script elaborate with the existing imports and current simplifier behavior, without auxiliary conversion facts?
+\end{enumerate}
+
+\end{document}

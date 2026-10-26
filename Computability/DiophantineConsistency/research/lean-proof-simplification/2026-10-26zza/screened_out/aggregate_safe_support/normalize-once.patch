@@ -1,0 +1,93 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentFiniteDummyMutation2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentFiniteDummyMutation2011.lean
+@@ -1,11 +1,12 @@
++import DiophantineConsistency.AggregateSafeSupport
+ import DiophantineConsistency.CurrentDummySafety2011
+ 
+ /-!
+ # Finite sets of actual safe dummy updates
+ 
+-The original zero-dummy normalization is fixed. Each insertion constructs an
+-actual new Boolean word and derives its ordinary increment from physical
+-safety. No aggregate nonwrapping bound or desired F increment is supplied.
++The original zero-dummy normalization is fixed. A geometric support bound
++controls the complete ordinary increment. The final Boolean word is normalized
++once, and its actual transports determine the exact ordinary increment.
+ This module does not choose the finite support or a modular target.
+ -/
+ 
+@@ -83,37 +84,6 @@
+       rw [enabled_insert,source_increment a (enabled S) marker j (enabled_not_mem hj),ih,
+         totalIncrement_insert S j hj,Nat.add_assoc]
+ 
+-private theorem exists_normalization_sum (a : ZMod N → Fin 942) (marker : ZMod N → ℕ)
+-    (hm : ∀ j, marker j ≤ 1) (s : ℕ) (S : Finset (ZMod N))
+-    (hsafe : ∀ j ∈ S, j.val+1 < N ∧ j.val+s < N)
+-    (carry0 digits0 : ZMod (N*2011) → ℕ)
+-    (hf0 : CurrentCarryConstruction2011.Facts
+-      (CurrentWordConstruction2011.word a (fun _ => 0) marker) (displacement s) carry0 digits0) :
+-    ∃ carry digits : ZMod (N*2011) → ℕ,
+-      CurrentCarryConstruction2011.Facts
+-        (CurrentWordConstruction2011.word a (enabled S) marker) (displacement s) carry digits ∧
+-      NativeCyclicConvolution.word radix digits = NativeCyclicConvolution.word radix digits0+
+-        (CurrentKernel2011.K+2^(displacement s))*totalIncrement S := by
+-  revert hsafe
+-  induction S using Finset.induction_on with
+-  | empty =>
+-      intro _
+-      refine ⟨carry0,digits0,?_,?_⟩
+-      · simpa only [enabled_empty] using hf0
+-      · rw [totalIncrement_empty,Nat.mul_zero,Nat.add_zero]
+-  | @insert j S hj ih =>
+-      intro hsafe
+-      have hsub : ∀ i ∈ S, i.val+1 < N ∧ i.val+s < N :=
+-        fun i hi => hsafe i (Finset.mem_insert_of_mem hi)
+-      obtain ⟨carry,digits,hf,he⟩ := ih hsub
+-      have hjbounds := hsafe j (Finset.mem_insert_self j S)
+-      obtain ⟨carry',digits',hf',_,hstep⟩ := exists_safe_normalized_increment
+-        a (enabled S) marker (enabled_boolean S) hm s j (enabled_not_mem hj)
+-        hjbounds.1 hjbounds.2 carry digits hf
+-      refine ⟨carry',digits',?_,?_⟩
+-      · simpa only [enabled_insert] using hf'
+-      · rw [hstep,he,totalIncrement_insert S j hj,Nat.mul_add,Nat.add_assoc]
+-
+ /-- The same original F determines every actual normalization of the final
+ enabled word. No desired sum identity or nonwrapping hypothesis is supplied. -/
+ theorem finite_normalized_increment (a : ZMod N → Fin 942) (marker : ZMod N → ℕ)
+@@ -126,13 +96,16 @@
+       (CurrentWordConstruction2011.word a (enabled S) marker) (displacement s) carry digits) :
+     NativeCyclicConvolution.word radix digits = NativeCyclicConvolution.word radix digits0+
+       (CurrentKernel2011.K+2^(displacement s))*totalIncrement S := by
+-  obtain ⟨k',f',hf',he⟩ := exists_normalization_sum a marker hm s S hsafe carry0 digits0 hf0
+-  have hlt := (normalized_word_strict a (enabled S) marker
+-    (enabled_boolean S) hm s carry digits hf).2
+-  have hlt' := (normalized_word_strict a (enabled S) marker
+-    (enabled_boolean S) hm s k' f' hf').2
+-  have hh := (hf.transport.symm.trans hf'.transport).eq_of_lt_of_lt hlt hlt'
+-  exact hh.trans he
++  simp only [totalIncrement, powerSum, displacement_power]
++  apply AggregateSafeSupport.normalized_endpoint (ρ := radix) (K := CurrentKernel2011.K)
++    (s := s) (by decide) kernel_upper_bound S hsafe
++  · exact source_enabled_sum a marker S
++  · simpa only [displacement_power] using hf0.transport
++  · simpa only [displacement_power] using hf.transport
++  · exact CurrentWordTopBounds2011.normalized_word_top_bound a (fun _ => 0) marker
++      (fun _ => by omega) hm s carry0 digits0 hf0
++  · exact (normalized_word_strict a (enabled S) marker
++      (enabled_boolean S) hm s carry digits hf).2
+ 
+ /-- Construct the complete finite update and both ordinary word equalities. -/
+ theorem exists_finite_normalized_increment (a : ZMod N → Fin 942) (marker : ZMod N → ℕ)
+@@ -149,8 +122,10 @@
+           totalIncrement S ∧
+       NativeCyclicConvolution.word radix digits = NativeCyclicConvolution.word radix digits0+
+         (CurrentKernel2011.K+2^(displacement s))*totalIncrement S := by
+-  obtain ⟨carry,digits,hf,he⟩ := exists_normalization_sum a marker hm s S hsafe carry0 digits0 hf0
+-  exact ⟨carry,digits,hf,source_enabled_sum a marker S,he⟩
++  obtain ⟨carry,digits,hf⟩ := CurrentCarryConstruction2011.exists_assembled_normalization
++    a (enabled S) marker (enabled_boolean S) hm (displacement s)
++  exact ⟨carry,digits,hf,source_enabled_sum a marker S,
++    finite_normalized_increment a marker hm s S hsafe carry0 digits0 carry digits hf0 hf⟩
+ 
+ /-- Exact rank change for any two actual endpoint normalizations, retaining
+ the original source-mask port and the complete sum of physical place values. -/

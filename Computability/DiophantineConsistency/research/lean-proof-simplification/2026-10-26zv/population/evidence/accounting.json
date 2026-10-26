@@ -1,0 +1,61 @@
+{
+  "pin": "9d9d1123b39927d30363f1dcd53c23f0575c30ee",
+  "lean_status": "Uncompiled: no Lean elaboration, kernel check, axiom audit or benchmark performed.",
+  "production_helpers_added": 0,
+  "production_imports_added": 0,
+  "changes": [
+    {
+      "file": "NativePackingPopulation.lean",
+      "repository_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePackingPopulation.lean",
+      "theorem": "disjoint_add_lt",
+      "classification": "optional_housekeeping_only",
+      "before": "  have he := JM1984.add_eq_land_add_lor A M\n  rw [hm,zero_add] at he\n  rw [he]\n  exact Nat.or_lt_two_pow hA hM\n",
+      "after": "  rw [JM1984.add_eq_land_add_lor, hm, zero_add]\n  exact Nat.or_lt_two_pow hA hM\n",
+      "source_span": [
+        14,
+        17
+      ],
+      "source_sha256": "bc4526d0e9f267df6d027b6f7ec38e5374ecc4f1627d556f4cffd41b0f1cd3ac",
+      "candidate_sha256": "e6e96b771938bbe3655ab78b1615e5b0afa14591e1b1d367085d72161cc71283",
+      "patch": "disjoint_add_lt.patch",
+      "patch_sha256": "cec51fa642d216c9e545d1b1559ec1dce9c9555ac8fa6f803346f468d6779a09",
+      "whole_file_physical_before": 57,
+      "whole_file_physical_after": 55,
+      "target_span_before": 4,
+      "target_span_after": 2,
+      "net_physical_deleted": 2,
+      "public_statement_unchanged": true,
+      "context_imports_unchanged": true,
+      "new_helper_lines": 0
+    },
+    {
+      "file": "CurrentPackingRank2011.lean",
+      "repository_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPackingRank2011.lean",
+      "theorem": "rank_gt_twice_window",
+      "classification": "routine_residual_deletion",
+      "before": "  have hu : width*N < q N := by rw [q_binary]; exact Nat.lt_two_pow_self\n  have hw : 0 < width*N := Nat.mul_pos (by decide) (NeZero.pos N)\n  have hq : 2 ≤ q N := by omega\n  have hsq : 2 ≤ q N^2 := by nlinarith\n  have hc : 2*(width*N) < q N^3 := by\n    calc\n      2*(width*N) < 2*q N := Nat.mul_lt_mul_of_pos_left hu (by decide)\n      _ ≤ q N^3 := by rw [pow_succ]; exact Nat.mul_le_mul_right (q N) hsq\n",
+      "after": "  have hc : 2*(width*N) < q N^3 := by\n    rw [q_binary, ← pow_mul]\n    exact (show 2*(width*N) ≤ (width*N)*3 by omega).trans_lt Nat.lt_two_pow_self\n",
+      "source_span": [
+        90,
+        97
+      ],
+      "source_sha256": "614f47e52f31dfc199f98387e5c720f1ae51fb0725ce8d9f21223b540a30c546",
+      "candidate_sha256": "c00ce4a282ba5e09665135ec7f075443c0dd6483a8cc3364416d5a850e9ab5fb",
+      "patch": "rank_gt_twice_window.patch",
+      "patch_sha256": "55407b288ee22813895432a46df9486d2db1a45e1577e6b8a18e18bdeab1ff89",
+      "whole_file_physical_before": 138,
+      "whole_file_physical_after": 133,
+      "target_span_before": 8,
+      "target_span_after": 3,
+      "net_physical_deleted": 5,
+      "public_statement_unchanged": true,
+      "context_imports_unchanged": true,
+      "new_helper_lines": 0
+    }
+  ],
+  "total_physical_before": 195,
+  "total_physical_after": 188,
+  "total_physical_deleted": 7,
+  "default_primary_physical_deleted": 5,
+  "optional_housekeeping_physical_deleted": 2
+}

@@ -1,0 +1,24 @@
+The checked kernels use Lean 4.32.0. The source-row client was freshly
+elaborated against the production \code{SplitCertificate59} import; the
+imported module's complete source is byte-identical to the reviewed snapshot.
+The current source of both \code{NativeCyclicConvolution} and \code{NativeCyclicRotation} was freshly compiled before the final rotation checks. Their direct project dependency \code{Diophantine.Paper1982.Master2} was authenticated against the pinned Git blob. Deeper imported dependencies were supplied by the available cache.
+
+\begin{longtable}{@{}p{0.29\textwidth}p{0.22\textwidth}p{0.42\textwidth}@{}}
+\toprule
+Artifact & Status & Exact scope\\
+\midrule
+\endhead
+\code{SourceGuardRecovery.lean} & Checked, exit 0 & Two generic integer guard and scale theorems.\\[3pt]
+\code{SourceGuardClient.lean} & Checked, exit 0 & Two clients of the actual current source-row definition.\\[3pt]
+\code{DivisionInterval.lean} & Checked, exit 0 & Abstract interval argument, uniqueness theorem, exact local proof skeleton, and ordered-interface variant.\\[3pt]
+\code{RotationCongruence.lean} & Checked, exit 0 & Parameter congruence, whole-field specialization, the actual numerical displacement pattern, and digit-boundary examples.\\[3pt]
+\code{RotationPeriod.lean} & Checked, exit 0 & Reduction of displacement modulo the bit period, modular congruence, and periodicity.\\[3pt]
+Rephase candidate patch & Application checked & Two Boolean premises removed; complete rephase module and downstream clients not rebuilt.\\[3pt]
+Internal division patch & Application checked & One private theorem changed; complete object module not rebuilt.\\[3pt]
+Beta-input migration & Proposed & Concrete stronger client checked; signature migration across bootstrap consumers not performed.\\
+\bottomrule
+\end{longtable}
+
+The fifteen printed axiom reports for the checked endpoints use only
+\code{propext}, \code{Classical.choice}, and \code{Quot.sound}, or subsets thereof.
+No full repository build or aggregate production speedup is claimed.

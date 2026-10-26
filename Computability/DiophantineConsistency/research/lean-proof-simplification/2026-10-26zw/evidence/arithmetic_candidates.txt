@@ -1,0 +1,139 @@
+# Two residual arithmetic proof simplifications
+
+## Scope and evidence
+
+The source files were read at ProveIt commit `3299f4aa4c9ae38b0f5a1c00a1f0d23f6cbdb114`. Root's later refresh through `60fcb2a6` found the maintained Lean files unchanged. The novelty audit covered the original 41 packets and then new packets `zp` and `zq`. These are scoped proof-engineering recommendations, not claims of new arithmetic theorems in the mathematical literature.
+
+Both proposed patches preserve every existing public theorem statement, every executable definition, and all imports. They add no private helper to the production file. Independent kernels and exact proof-body fixtures compiled with Lean 4.32.0 and mathlib commit `81a5d257c8e410db227a6665ed08f64fea08e997`. No full repository rebuild is claimed.
+
+## A. Replace the native window estimate by a sharp upper deficit identity
+
+**Target:** `Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean`, `source_window_bound`, baseline lines 514–563.
+
+The existing proof spends most of its body bounding the coefficient `G`, each mask contribution, their sum, and finally a fourth-degree expression. The older packet `u` concerns a sharper *lower* rank envelope. It leaves this upper-window argument in place, so the present target remains after that proposal is assumed applied.
+
+Write the actual source-derived quantities as
+
+\[
+ q=1+J\beta,\quad C=q-F-\alpha,\quad
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J.
+\]
+
+All values here are integers. The existing theorem already supplies
+
+\[
+F,\alpha,J,C\ge1,\qquad M_C<\beta,\qquad M_F<2\beta.
+\]
+
+In particular, `q ≥ 3`. There is no need to add nonnegativity assumptions on either mask port.
+
+The useful new exact identity is
+
+\[
+\begin{aligned}
+q^4-q^3-q-1-R={}&q(q^2-1)(F-1)
+ +(q^2-1)(C-1)\\
+&+(q+1)(J-1)\\
+&+J\big((\beta-M_C-1)+q(2\beta-M_F-1)\big).
+\end{aligned}
+\]
+
+Every term on the right is nonnegative. Thus
+
+\[
+R\le q^4-q^3-q-1.
+\]
+
+The already established scale identity is
+
+\[
+E=q^4ws,\qquad w,s\ge1,
+\]
+
+so `q⁴ ≤ E`. The window inequality `R+1<E` now follows from `q³+q>0`. This removes the old sequence of mask upper bounds and the auxiliary `q²<q³` comparison.
+
+### Why the identity is the right abstraction
+
+The rank coefficient simplifies to `q(q−F)−C`. Its maximal value at fixed `q` occurs when `F=C=1`. The largest mask contribution occurs at `J=1` and the two greatest integral port values. The four summands in the deficit are precisely the losses from these boundary values. Thus the proof gives a transparent reason for the bound and needs one polynomial identity instead of several interacting nonlinear inequalities.
+
+The upper envelope is sharp for the **reduced arithmetic box**. For any integer `q≥3`, take
+
+\[
+J=F=C=1,\quad \alpha=q-2,\quad \beta=q-1,
+\quad M_C=q-2,\quad M_F=2q-3.
+\]
+
+These assignments attain equality. They do not demonstrate a solution to the complete Diophantine source system. Integrality matters: the strict port bounds yield integer slacks of at least one. No analogous real-variable claim is made.
+
+### Implementation and size
+
+The production patch in `rank-upper.patch` keeps the identity inline inside `source_window_bound`. Its proof calls the unchanged `source_transport_positive`, `source_rank_eq_target`, and `source_scale_eq`. It explicitly unfolds `nativeTarget` after rewriting the source equality. That explicit unfold is important: testing only an already-expanded equality would not verify the actual source binding.
+
+Measured against the pinned source, the full declaration shrinks from **50 to 36 physical lines**, and the proof body from **44 to 30**. The full file shrinks by **14 lines**. No helper or import has been omitted from this accounting. This is a concrete patch measurement, not a predicted cumulative saving after all independent historical patches are jointly merged, nor a build-time claim.
+
+`RankUpperEnvelope.lean` proves the identity, upper envelope, strict window, sharp value, and feasibility of the sharp arithmetic box. `RankWindowClient.lean` checks the finite-index arithmetic boundary with an expanded target equality. More decisively, `RankSourceFixture.lean` copies the source definitions of `nativeRank` and `nativeTarget` and pastes the exact proposed proof body. Its three upstream source theorems are **explicit hypotheses**, not axioms. This checks source-body elaboration and those interfaces; it does not re-prove those upstream theorems or rebuild their dependency closure.
+
+### Novelty boundary
+
+The audit explicitly compared:
+
+- `2026-10-26u/report.tex`, the lower envelope `(2q−1)(q²−1)≤R` and its 40-bound and `3q<R` clients;
+- `2026-10-26zb`, the exact affine comparison of two ranks;
+- untouched `source_window_bound` snapshots in packets `l`, `m`, `q`, `t`, and `u`;
+- all later report/note/prototype text through `zq`.
+
+No proposal of this upper envelope or its deficit identity was found. Earlier source-fact packaging and native-rank cast cleanup are assumed available and are not counted as new ideas.
+
+### Further questions
+
+Could the stronger integral gap `E−R≥q³+q+1` remove additional bootstrap side inequalities? The next audit should inspect consumers of `source_window_bound`, retaining the distinction between the inner native rank and unrelated outer encodings. Export a reusable upper-envelope theorem only if those additional clients justify its source cost. The current inline patch already improves the existing endpoint without that API expansion.
+
+## B. Derive the actual controller base unit from oddness
+
+**Target:** `Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerSubsets2011.lean`, `block_base_isUnit`, baseline lines 25–32.
+
+The current proof obtains positive multiplicative order of `B^(auxiliary−1)`, turns that into an `IsUnit` fact, and then cancels the power. The desired statement only needs the much simpler facts already proved in `CurrentControllerData2011`:
+
+\[
+B=2^{94517},\qquad d\text{ is odd},\qquad \text{auxiliary is odd}.
+\]
+
+Therefore `(d*auxiliary)*auxiliary^k` is odd for every natural `k`, including `k=0`, and two is coprime to it. The existing mathlib theorem `ZMod.isUnit_iff_coprime` gives that two is a unit; `.pow 94517` gives the required base unit.
+
+The exact production replacement is:
+
+```lean
+  rw [B_eq, Nat.cast_pow]
+  exact ((ZMod.isUnit_iff_coprime 2 _).mpr (Nat.coprime_two_left.mpr
+    ((d_odd.mul auxiliary_odd).mul auxiliary_odd.pow))).pow 94517
+```
+
+Rewriting `Nat.cast_pow` before applying the unit theorem deliberately leaves the enormous exponentiation in `ZMod`; it avoids attempting to evaluate the natural number `2^94517`. The checked exact fixture produced no exponentiation-threshold warning.
+
+The proof body shrinks from **6 to 3 lines**, with a full declaration decrease **8 to 5**, and a full-file decrease **3 lines**. The descriptive comment is also corrected: the unit now follows from parity, not positive order. There is no new production helper or import.
+
+### What this changes and what it does not establish
+
+This is a local dependency simplification. `block_base_isUnit` no longer uses the auxiliary exact-order/LTE chain. The containing file still imports and uses power-coordinate results elsewhere; no file-level import-removal or global speedup is claimed. The proof does not construct an orbit, a finite subset, or a safe arithmetic mutation.
+
+The parity guard is essential for this route. For an even modulus, a positive power of two need not be a unit. At `k=0` the actual modulus is still odd and positive, so no special case or stronger exponent assumption is needed.
+
+### Novelty boundary
+
+Prior packets `zl`, `zn`, `zo`, and later `zp`/`zq` already contain composite-modulus unit assembly and fixed-reference Gamma certificates. Those ideas are excluded. The retained recommendation is only the newly available exact endpoint `block_base_isUnit`: replace its order-dependent proof with the actual power-of-two/odd-modulus facts. The later `zq/late_head_scope_addendum.md` explicitly retains that base-unit proof after its new Boolean-free subset coverage, so this residual obligation survives the assumed prior changes.
+
+`ControllerBaseUnit.lean` checks the generic parity theorem and the literal modulus shape. `ControllerBaseSourceFixture.lean` checks the **byte-identical production proof body** with `B_eq`, `d_odd`, and `auxiliary_odd` as explicit theorem hypotheses. Again, this is a checked source-body adapter, not a complete repository rebuild.
+
+## Validation receipt
+
+Successful compiler logs:
+
+- `rank-upper-kernel.log`: five theorem axiom reports;
+- `rank-window-client.log`: expanded finite-index contract;
+- `rank-source-fixture.log`: exact production body with copied source definitions;
+- `controller-base-unit.log`: generic and literal-shape unit kernels;
+- `controller-base-source-fixture.log`: exact final production body.
+
+All final logs report only the standard axioms `propext`, `Classical.choice`, and `Quot.sound` as applicable. No final file contains `sorry`, `admit`, or a declared axiom. Initial failed elaboration attempts were repaired before these logs were recorded; only the final passed logs are the validation evidence.
+
+Both patches pass `git apply --check` together against the pinned source. `arithmetic_source_checks.json` records target source hashes, candidate hashes, unchanged declaration-prefix checks, and equality of the proposed proof bodies with the checked fixture bodies. `arithmetic_metrics.json` records the complete-file and declaration measurements. Production patch totals are **17 physical lines removed across two files**, with zero new helpers and zero import changes. No full-project build or runtime measurement has been performed.

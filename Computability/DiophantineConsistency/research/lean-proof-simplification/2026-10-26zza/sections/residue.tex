@@ -1,0 +1,67 @@
+\section{Decode bounded witnesses by canonical residues}
+\label{sec:residue}
+The target is the forward direction of \src{BoundedForallCertificate}{boundedForallCertificate}, baseline lines 32--63. Its arithmetic argument is also present in the lower-level \code{MRDP.boundedForall_dioph}, in the sibling HilbertTenthProblem source tree. That second site matters for the placement and cost of a shared helper; it is not an additional independent proposal.
+
+\subsection{The unnecessary choice}
+The certificate contains, for every witness coordinate $i$, a divisibility condition
+\[
+ P\mid\prod_{t=0}^{u_i}(a_i-t),
+\]
+where subtraction and the product are over natural numbers. After choosing a prime $p$ dividing the row modulus, the proof knows that $p$ divides this descending product. It currently selects an arbitrary factor divisible by $p$, obtains an index $t$, and uses $\min(a_i,t)$ to repair the effect of truncated subtraction. A \code{choose} then assembles these choices into a witness function.
+
+The downstream proof needs just two properties of this function: its coordinates are bounded by $u$, and each coordinate is congruent to the corresponding $a_i$ modulo $p$. There is a distinguished value with the congruence property: the least nonnegative residue $a_i\bmod p$. The product condition says exactly that this distinguished value lies inside the required interval.
+
+\subsection{The precise arithmetic contract}
+For a prime $p$ and arbitrary natural numbers $a,u$, prove
+\begin{equation}
+\label{eq:residue}
+p\mid\prod_{t=0}^{u}(a-t)
+\quad\Longleftrightarrow\quad
+ a\bmod p\le u.
+\end{equation}
+There is no assumption $u<p$, no positivity condition on $a$, and no conversion of natural subtraction to integer subtraction in the theorem statement. The supplied kernel-checked theorem is:
+\begin{lean}
+theorem prime_dvd_descendingProduct_iff {p a u : ℕ}
+    (hp : p.Prime) :
+    p ∣ ∏ t ∈ Finset.range (u + 1), (a - t) ↔
+      a % p ≤ u
+\end{lean}
+
+For the forward direction, primality gives some $t\le u$ with $p\mid a-t$. Set $b=\min(a,t)$. Natural subtraction gives $a-t=a-b$, and $b\le a$ permits the congruence step. Therefore
+\[
+ a\bmod p=b\bmod p\le b\le t\le u.
+\]
+The minimum is used only inside this small arithmetic lemma. It disappears from the certificate decoder and its chosen witness.
+
+For the reverse direction, let $r=a\bmod p\le u$. The factor at index $r$ occurs in the product, and the standard remainder identity gives $p\mid a-r$. Divisibility of the product follows immediately. This also explains why the canonical residue is the right witness: it identifies a specific factor when the interval test holds.
+
+\subsection{The client becomes deterministic after choosing the row prime}
+The replacement block is:
+\begin{lean}
+let j := fun i => a i % p
+have hWitness_bound i : j i ≤ u i :=
+  (prime_dvd_descendingProduct_iff hp).mp
+    (hPrime_product.trans (hWitness_product i))
+have hWitness_congruence i : a i ≡ j i [MOD p] :=
+  (mod_modEq _ _).symm
+\end{lean}
+
+The rest of the argument keeps its structure. Monotonicity of the nonnegative polynomial evaluations supplies the row bound. Coprimality with the factorial scale puts that bound below $p$. Cancelling the scale recovers the row-index congruence, polynomial congruence transports evaluations, and the below-$p$ bounds turn congruence into equality. The supplied focused decoder check retains these downstream steps so that the replacement is tested beyond the standalone number-theoretic fact.
+
+The phrase ``deterministic decoder'' has a limited meaning here: once the row prime $p$ has been selected, $j$ is a concrete residue function. The proof still chooses a prime divisor of the row modulus. It still uses the existing CRT construction in the reverse direction. This is not a claim that the whole certificate development becomes constructive, choice-free, or computationally cheaper.
+
+The polynomial certificate, quantifier arity, number of witnesses, products, and stored syntax stay unchanged. In particular, the proposal does not replace the falling-factorial condition with a modulo expression in the Diophantine formula. The modulo operation appears only in the mathematical decoding proof. This distinction preserves the representation and depth/cost obligations that other parts of the development depend on.
+
+\subsection{Boundary cases and why primality is essential}
+For $u=0$, the product has one factor $a$, and the equivalence reduces to $p\mid a$ if and only if $a\bmod p=0$. If $a\le u$, the product contains a zero factor, and the residue bound holds because $a\bmod p\le a$. If $u\ge p-1$, every least residue lies in the interval, exactly as the statement predicts. No large-prime side condition is being smuggled into the helper.
+
+Primality cannot be replaced by mere nonzeroness. For $p=6$, $a=3$, and $u=1$, the product is $3\cdot2=6$, so $p$ divides it, but $a\bmod p=3>1$. This small counterexample catches the tempting but invalid composite-modulus version. The prime-selection step in the original decoder is therefore retained for a mathematical reason.
+
+The finite coordinate type can be empty: a residue function on \code{Fin 0} is well-defined and its coordinate obligations are vacuous. If the outer row range is empty, the original bounded-universal statement already handles that case. The change adds no special-case branch.
+
+\subsection{Placement and cost}
+A shared helper belongs at the lower arithmetic layer already imported by the certificate theorem, or in a small dependency imported by that layer. Placing it only above \code{BoundedForallCertificate} would prevent the lower \code{MRDP.boundedForall_dioph} copy from using it without reversing the dependency direction. The candidate therefore includes the lower-layer edit and the requested target edit together.
+
+This is a simplification of witness selection and proof interfaces, not an immediate net source reduction. In the supplied formatting, the helper costs 17 lines, and each of the two client blocks shrinks by three lines, for eleven extra lines overall. A single-client adoption would cost fourteen lines. The complete iff is useful as a clean arithmetic contract, but only its forward implication is required by the two clients. If minimizing source lines is the sole objective, these overheads argue for postponing the helper until its interface value or another client justifies it.
+
+The stronger reason to adopt is stability: every later reference to the decoded coordinate has a definitional description, rather than depending on an arbitrary factor witness and an index correction. Earlier CRT simplifications in \packet{n} address congruence composition and explicitly leave this falling-factorial branch in place. Earlier canonical pairing or division witnesses do not establish equivalence~\eqref{eq:residue}. The remaining obligation after those proposals is therefore identifiable and different.

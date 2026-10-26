@@ -1,0 +1,28 @@
+\section{Scope and the novelty standard}
+\label{sec:scope}
+The review uses the source at commit \code{96520cd1a5179f470b4da127bd47bc26a8d808ff}. The main source directory contains 541 direct Lean modules. The requested research directory contains 43 dated proposal packets, a through z and za through zq, at that baseline. The incoming directory also contains a substantive ZIP in addition to its routing README. Its five proposals were extracted and included in the exclusion set. The closing comparison described in the validation section extends this screen to the later inspected head.
+
+The language version is pinned by the repository to Lean 4.32.0. Its manifest pins Mathlib to \code{81a5d257c8e410db227a6665ed08f64fea08e997}. These pins matter: theorem names, simplifier behavior, and import costs are properties of this environment, not generic assurances about any Lean installation. The source manifest and validation receipts in the archive make the inspected and checked files identifiable.
+
+\subsection{What was counted as already available}
+The exclusion rule is deliberately stronger than ``not yet merged.'' A previous optional interface, incomplete prototype, rejected-but-already-described direction, or a mechanism proposed for a nearby client is prior work for this task. Renaming a helper, adding a parameter, moving a tactic proof into a wrapper, or applying the same abstraction to another file does not establish a fresh idea.
+
+Three parallel audits reviewed the primary manuscripts and substantive notes for packets a--m, n--z, and za--zq plus incoming. The archive retains those ledgers. Searches were used to locate close comparisons, followed by review of the relevant proposal and source context; an absent identifier alone was not treated as proof of novelty. The historical incoming README also discusses unrelated equation and K215 research. The audit covers its relevant Lean simplification content and the tracked incoming archive, not every manuscript transitively linked from that historical queue.
+
+Several initially attractive directions were discarded on this basis: generic finite-sum rigidity; additional carry uniqueness or reset locality; scanner fusion; source-register decoding abstractions; aligned-word equivalences; shared Pell growth/error estimates; finite-controller synthesis; native coefficient envelopes; stronger arbitrary-subset coverage; and standard import/profiling advice. They would repeat earlier work.
+
+\subsection{Nearest prior proposals and the remaining obligation}
+\begin{longtable}{@{}L{0.17\linewidth}L{0.36\linewidth}L{0.41\linewidth}@{}}
+\toprule
+Candidate & Already assumed available & Distinct remaining change \\
+\midrule
+\endhead
+Pell input equation & Whole-conclusion casts, signed congruence composition, and odd-index reuse (\packet{k}, \packet{m}). & Consume the existing natural square identity at entry to \code{Pell.eq_pell}; the old subtraction bridge survives the prior edits. \\
+Integer Pell norm & Integer-only norm reasoning, fundamental-unit criteria, and \packet{ze}\textquotesingle s fresh-seed changes. & Reuse \code{pell_eqz} for two constructed integer norms. Packet ze\textquotesingle s source retains both cast bridges. \\
+Canonical residue & CRT congruence cleanup in \packet{n}; canonical division and pairing witnesses elsewhere. & The exact prime-product interval criterion yields \texttt{a i \% p}. Packet n leaves the falling-factorial branch unchanged. \\
+\bottomrule
+\end{longtable}
+
+The screened-out support-bound candidate is discussed in Section~\ref{sec:withdrawn}; its advertised simplification is already supplied by the closing incoming conservation proposal.
+
+These distinctions support narrow claims about the supplied exclusion corpus. They are not claims of global mathematical originality. In particular, geometric series, least nonnegative residues, and direct reuse of a library invariant are familiar mathematics. The contribution here is identifying the exact unnecessary obligations in these proofs after the earlier suggestions are assumed present.

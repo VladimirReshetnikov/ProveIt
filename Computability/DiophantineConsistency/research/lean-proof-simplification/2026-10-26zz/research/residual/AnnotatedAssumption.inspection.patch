@@ -1,0 +1,38 @@
+--- round6_closing/DiophantineConsistency/AnnotatedAssumption.lean
++++ round7_source/DiophantineConsistency/AnnotatedAssumption.lean
+@@ -37,14 +37,6 @@
+   rw [program.property]
+   simp only [inputCode,value,decodeRow_rowCode]
+ 
+-private theorem lookup_mem {G : List Form} {index : Nat} {f : Form}
+-    (h : G[index]?=some f) : f∈G :=
+-  List.mem_of_getElem? h
+-
+-private theorem exists_lookup (G : List Form) (f : Form) (h : f∈G) :
+-    ∃ index : Nat,G[index]?=some f :=
+-  List.getElem?_of_mem h
+-
+ /-- Raw accepted codes determine an actual context and a member formula. -/
+ theorem program_sound (context conclusion shifted evidence index : Nat)
+     (h : program.val.eval (inputCode context conclusion shifted evidence index)=1) :
+@@ -54,7 +46,7 @@
+   have hm := h.2
+   rw [hG] at hm
+   obtain ⟨f,hf,hcode⟩ := AnnotatedContextLookup.reference_raw G index conclusion hm
+-  exact ⟨G,f,hG,hcode,lookup_mem hf⟩
++  exact ⟨G,f,hG,hcode,List.mem_of_getElem? hf⟩
+ 
+ theorem exists_program_iff (G : List Form) (f : Form) :
+     (∃ shifted evidence index,program.val.eval
+@@ -62,9 +54,9 @@
+   constructor
+   · rintro ⟨shifted,evidence,index,h⟩
+     rw [program_input,AnnotatedSchemaMaps.mul_eq_one_nat] at h
+-    exact lookup_mem ((AnnotatedContextLookup.reference_context G index f).mp h.2)
++    exact List.mem_of_getElem? ((AnnotatedContextLookup.reference_context G index f).mp h.2)
+   · intro h
+-    obtain ⟨index,hi⟩ := exists_lookup G f h
++    obtain ⟨index,hi⟩ := List.getElem?_of_mem h
+     obtain ⟨evidence,he⟩ := (AnnotatedContext.exists_check_iff G
+       (contextCode (G.map (rename Nat.succ)))).mpr rfl
+     refine ⟨contextCode (G.map (rename Nat.succ)),evidence,index,?_⟩

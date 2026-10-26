@@ -1,0 +1,68 @@
+--- a/Computability/HilbertTenthProblem/Lean/Diophantine/Common/MRDPCore.lean
++++ b/Computability/HilbertTenthProblem/Lean/Diophantine/Common/MRDPCore.lean
+@@ -206,6 +206,23 @@
+ 
+ /-! ## Eliminating bounded universal quantifiers -/
+ 
++/-- A prime divides a truncated descending product exactly when the least residue lies in its interval. -/
++theorem prime_dvd_descendingProduct_iff {p a u : ℕ} (hp : p.Prime) :
++    p ∣ ∏ t ∈ range (u + 1), (a - t) ↔ a % p ≤ u := by
++  constructor
++  · intro h
++    obtain ⟨t, ht, hpt⟩ := hp.prime.exists_mem_finset_dvd h
++    have heq : a % p = min a t % p :=
++      (modEq_sub (min_le_left ..)).of_dvd (Nat.sub_eq_sub_min .. ▸ hpt)
++    calc
++      a % p = min a t % p := heq
++      _ ≤ min a t := Nat.mod_le _ _
++      _ ≤ t := min_le_right _ _
++      _ ≤ u := Nat.le_of_lt_succ (Finset.mem_range.mp ht)
++  · intro h
++    exact (Nat.dvd_sub_mod a).trans
++      (dvd_prod_of_mem _ (mem_range_succ_iff.mpr h))
++
+ /-- Diophantine predicates are closed under an input-coordinate bounded universal quantifier.
+ 
+ The main certificate packs the witnesses for all rows into CRT residues. The scale
+@@ -235,14 +252,11 @@
+       have ⟨p, hp, hpk⟩ := @exists_prime_and_dvd (crtModulus T k) <| by lia
+       have hPrime_product := hpk.trans <|
+         encodedModuliProduct_eq_prod hScale_pos ▸ dvd_prod_of_mem _ <| Finset.mem_range.mpr hk
+-      -- A prime divisor of the product divides one falling-factorial factor.
+-      -- Truncated subtraction requires min(a i, j), not necessarily j itself.
+-      choose j _ _ using fun i =>
+-        show ∃ j ≤ u i, _ from
+-          have ⟨j, _, hpj⟩ :=
+-            hp.prime.exists_mem_finset_dvd <| hPrime_product.trans <| hWitness_product i
+-          ⟨min (a i) j, by grind,
+-            (modEq_sub (min_le_left ..)).of_dvd (Nat.sub_eq_sub_min .. ▸ hpj)⟩
++      -- Decode every witness coordinate by the same canonical residue operation.
++      let j := fun i => a i % p
++      have hWitness_bound i : j i ≤ u i :=
++        (prime_dvd_descendingProduct_iff hp).mp (hPrime_product.trans (hWitness_product i))
++      have hWitness_congruence i : a i ≡ j i [MOD p] := (mod_modEq _ _).symm
+       have hCoprime : p.Coprime T := Nat.Coprime.of_dvd_left hpk (by simp)
+       -- A prime coprime to (bound N u)! exceeds both decoded polynomial values.
+       have hRow_bound : bound k j < p :=
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallCertificate.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallCertificate.lean
+@@ -36,14 +36,11 @@
+     have ⟨p, hp, hpk⟩ := @exists_prime_and_dvd (crtModulus T k) <| by lia
+     have hPrime_product := hpk.trans <|
+       encodedModuliProduct_eq_prod hScale_pos ▸ dvd_prod_of_mem _ <| Finset.mem_range.mpr hk
+-    -- A prime divisor of the product divides one falling-factorial factor.
+-    -- Truncated subtraction requires min(a i, j), not necessarily j itself.
+-    choose j _ _ using fun i =>
+-      show ∃ j ≤ u i, _ from
+-        have ⟨j, _, hpj⟩ :=
+-          hp.prime.exists_mem_finset_dvd <| hPrime_product.trans <| hWitness_product i
+-        ⟨min (a i) j, by grind,
+-          (modEq_sub (min_le_left ..)).of_dvd (Nat.sub_eq_sub_min .. ▸ hpj)⟩
++    -- Decode every witness coordinate by the same canonical residue operation.
++    let j := fun i => a i % p
++    have hWitness_bound i : j i ≤ u i :=
++      (prime_dvd_descendingProduct_iff hp).mp (hPrime_product.trans (hWitness_product i))
++    have hWitness_congruence i : a i ≡ j i [MOD p] := (mod_modEq _ _).symm
+     have hCoprime : p.Coprime T := Nat.Coprime.of_dvd_left hpk (by simp)
+     -- A prime coprime to (bound N u)! exceeds both decoded polynomial values.
+     have hRow_bound : bound k j < p :=

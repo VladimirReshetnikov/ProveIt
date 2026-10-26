@@ -1,0 +1,41 @@
+{
+  "baseline_commit": "9d9d1123b39927d30363f1dcd53c23f0575c30ee",
+  "lean_version": "4.32.0",
+  "lean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35",
+  "mathlib_revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "checks": [
+    {
+      "source": "lean/DiophantineConsistency/OrderedWindow.lean",
+      "sha256": "0af3646db29b862e876757dca222d1ba3124c601718314263fcb638ebeae8c0d",
+      "exit_code": 0,
+      "log": "logs/OrderedWindow.integration.log",
+      "scope": "New low-level helper"
+    },
+    {
+      "source": "kernels/PairingKernel.lean",
+      "sha256": "d12054727ac72c261a0571786ca9b4ce88e0af953c69e648455bbff1547d8288",
+      "exit_code": 0,
+      "log": "logs/IntegrationPairingKernel.integration.log",
+      "scope": "Exact generic production MaxSquarePairing namespace; imports replaced, internal-model wrapper excluded"
+    },
+    {
+      "source": "kernels/GenericAlgebraKernel.lean",
+      "sha256": "9a29b252b9ec18e52319caf435d420695b69c8caf13b8f5448eba2d70c5191a3",
+      "exit_code": 0,
+      "log": "logs/GenericAlgebraKernel.log",
+      "scope": "Generic ordered-semiring prototypes; supporting algebra checks, not whole production ObjectDivision module"
+    }
+  ],
+  "patch_check": {
+    "command": "git apply --check ordered-windows.patch",
+    "exit_code": 0
+  },
+  "not_checked": [
+    "Whole ObjectDivision module",
+    "Whole ObjectPairingInjective module including internal-natural wrapper",
+    "Full repository build",
+    "Axiom comparison against original whole production modules",
+    "Performance improvement"
+  ],
+  "line_metrics": "metrics.json"
+}

@@ -1,0 +1,134 @@
+{
+  "scope": "Source and independent integer models only; Lean was not executed.",
+  "source_pin": "9d9d1123b39927d30363f1dcd53c23f0575c30ee",
+  "source_sha256": "614f47e52f31dfc199f98387e5c720f1ae51fb0725ce8d9f21223b540a30c546",
+  "failure_guards": "Explicit require checks; failure path exercised; active under -O and -OO",
+  "novelty_decisions": {
+    "fourblocks_certificate": "NARROW_CLIENT_DETOUR_REMOVAL_ONLY; existing certificate, no new algebra or casting mechanism",
+    "rank_growth": "EXCLUDE; prior zc report 349-369 and 570-582 reserves this normalized-growth mechanism",
+    "combined": "DO_NOT_RECOMMEND; includes excluded rank-growth edit"
+  },
+  "variants": {
+    "fourblocks_certificate": {
+      "patch_replay_exact": true,
+      "outside_target_bodies_byte_identical": true,
+      "imports_unchanged": true,
+      "candidate_sha256": "e702cc6554f32c83d142b1b3ea594a0e7924ae19b8b085f6deff1302ba38740b",
+      "metrics": {
+        "fourBlocks_cast": {
+          "header_unchanged": true,
+          "old_body_lines": 23,
+          "new_body_lines": 12,
+          "old_body_bytes": 1037,
+          "new_body_bytes": 586,
+          "all_five_cast_sub_guards_unchanged": true
+        }
+      }
+    },
+    "rank_growth": {
+      "patch_replay_exact": true,
+      "outside_target_bodies_byte_identical": true,
+      "imports_unchanged": true,
+      "candidate_sha256": "e9e16858b2c4a83e61bf7967b620d08eef01bc8d45d75caf0ae7167b8b392459",
+      "metrics": {
+        "rank_gt_twice_window": {
+          "header_unchanged": true,
+          "old_body_lines": 11,
+          "new_body_lines": 7,
+          "old_body_bytes": 597,
+          "new_body_bytes": 333,
+          "final_bound_and_cast_chain_unchanged": true
+        }
+      }
+    },
+    "combined": {
+      "patch_replay_exact": true,
+      "outside_target_bodies_byte_identical": true,
+      "imports_unchanged": true,
+      "candidate_sha256": "a2d1bbb8432ac7617a800a1dad583c26b63954186ee1ad6e087627d1972ff6bf",
+      "metrics": {
+        "fourBlocks_cast": {
+          "header_unchanged": true,
+          "old_body_lines": 23,
+          "new_body_lines": 12,
+          "old_body_bytes": 1037,
+          "new_body_bytes": 586,
+          "all_five_cast_sub_guards_unchanged": true
+        },
+        "rank_gt_twice_window": {
+          "header_unchanged": true,
+          "old_body_lines": 11,
+          "new_body_lines": 7,
+          "old_body_bytes": 597,
+          "new_body_bytes": 333,
+          "final_bound_and_cast_chain_unchanged": true
+        }
+      }
+    }
+  },
+  "polynomial_identity": {
+    "method": "Independent exact integer coefficient dictionaries, not SymPy",
+    "fourBlocks_minus_rank": "-q * (beta * J + 1 - q)",
+    "existing_packing_four_block_same_polynomial": true
+  },
+  "bounded_natural_model": {
+    "guarded_cases": 13230,
+    "status": "PASS, finite samples are not a proof"
+  },
+  "negative_guard_control": {
+    "guard_violated": "1 <= MF*J",
+    "fourBlocks_nat": 241,
+    "rank_int": 237,
+    "status": "Mismatch expected and observed"
+  },
+  "rank_growth_model": {
+    "tested_u": "0 through 512 inclusive",
+    "status": "PASS, finite samples are not a proof",
+    "general_reason": "For every natural u, 2*u <= 3*u; Nat.lt_two_pow_self at 3*u gives 3*u < 2^(3*u)."
+  },
+  "dependency_evidence": {
+    "existing_import_paths": {
+      "DiophantineConsistency.NativeSourceMask": [
+        "DiophantineConsistency.CurrentPackingRank2011",
+        "DiophantineConsistency.CurrentNativePacking2011",
+        "DiophantineConsistency.CurrentWordScalarWitness2011",
+        "DiophantineConsistency.CurrentWordLowMask2011",
+        "DiophantineConsistency.CurrentSparseDigits2011",
+        "DiophantineConsistency.NativeVariableMask",
+        "DiophantineConsistency.NativeSourceMask"
+      ],
+      "Mathlib.Tactic": [
+        "DiophantineConsistency.CurrentPackingRank2011",
+        "DiophantineConsistency.CurrentNativePacking2011",
+        "DiophantineConsistency.WangTiles942PowerDimensions",
+        "DiophantineConsistency.WangTiles942Completeness",
+        "DiophantineConsistency.DecimalMachineZFC",
+        "DiophantineConsistency.DecimalMachine215",
+        "Mathlib.Tactic"
+      ]
+    },
+    "source_files_missing_in_selective_mirror": [
+      "BusyBeaver.ZFC.KEndpoint215",
+      "Diophantine.Paper1982.Master2",
+      "Diophantine.Paper1982.Carries",
+      "BusyBeaver.ZFC.KDense215",
+      "BusyBeaver.ZFC.KEndpoint",
+      "BusyBeaver.ZFC.EnumPerm",
+      "BusyBeaver.Core",
+      "Diophantine.Paper1980.PellHalf90",
+      "Diophantine.Paper1980.PellRatio90",
+      "Diophantine.Common.PellInt"
+    ],
+    "new_import_edges": 0,
+    "new_helpers": 0,
+    "new_cycle_possible_from_patch": false
+  },
+  "verification_limits": {
+    "lean_executable": null,
+    "lake_executable": null,
+    "Lean_elaboration": "NOT RUN",
+    "Lean_kernel": "NOT RUN",
+    "downstream_build": "NOT RUN",
+    "timing_or_proof_term_improvement": "NOT MEASURED"
+  }
+}

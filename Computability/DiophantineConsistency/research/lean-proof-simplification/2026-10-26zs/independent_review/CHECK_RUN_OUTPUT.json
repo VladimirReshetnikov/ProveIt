@@ -1,0 +1,57 @@
+{
+  "status": "PASS: explicit guards execute identically with normal, -O, and -OO; injected failures rejected normally and under -O",
+  "script_sha256": "376a95e7bc9b82d85644a1b35a0cf148b20a2d007c21ea91cffaa76c5424eb0a",
+  "runtime_assert_statements": 0,
+  "explicit_require_calls": 21,
+  "runs": {
+    "normal": {
+      "exit_code": 0,
+      "stdout_sha256": "650438d87940544b4840e1395fc17be0b929d00204b7755590feffbd676fe2a5",
+      "stderr": ""
+    },
+    "optimized": {
+      "exit_code": 0,
+      "stdout_sha256": "650438d87940544b4840e1395fc17be0b929d00204b7755590feffbd676fe2a5",
+      "stderr": ""
+    },
+    "fully_optimized": {
+      "exit_code": 0,
+      "stdout_sha256": "650438d87940544b4840e1395fc17be0b929d00204b7755590feffbd676fe2a5",
+      "stderr": ""
+    }
+  },
+  "all_successful_stdout_byte_identical": true,
+  "negative_guard_tests": {
+    "incorrect_source_hash": {
+      "normal": {
+        "exit_code": 1,
+        "diagnostic": "AssertionError: Audit check failed: sha(source) == '614f47e52f31dfc199f98387e5c720f1ae51fb0725ce8d9f21223b540a30c546'",
+        "rejected_as_expected": true
+      },
+      "optimized": {
+        "exit_code": 1,
+        "diagnostic": "AssertionError: Audit check failed: sha(source) == '614f47e52f31dfc199f98387e5c720f1ae51fb0725ce8d9f21223b540a30c546'",
+        "rejected_as_expected": true
+      }
+    },
+    "incorrect_polynomial_sign": {
+      "normal": {
+        "exit_code": 1,
+        "diagnostic": "AssertionError: Audit check failed: not four-rank-(-q*(beta*J+1-q))",
+        "rejected_as_expected": true
+      },
+      "optimized": {
+        "exit_code": 1,
+        "diagnostic": "AssertionError: Audit check failed: not four-rank-(-q*(beta*J+1-q))",
+        "rejected_as_expected": true
+      }
+    }
+  },
+  "model_guard_control": {
+    "guard_violated": "1 <= MF*J",
+    "fourBlocks_nat": 241,
+    "rank_int": 237,
+    "status": "Mismatch expected and observed"
+  },
+  "scope": "Python source/model checks only; no Lean compilation"
+}

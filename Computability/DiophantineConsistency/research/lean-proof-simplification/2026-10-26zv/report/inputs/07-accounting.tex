@@ -1,0 +1,24 @@
+\pageheading{7 Charge full source cost and preserve the contracts}
+\textbf{Count complete production files, not just shortened proof snippets.} The main batch changes two position proof bodies, one rank proof body and one rephasing proof body. The secondary mask cleanup changes one more. All four files together shrink from 495 to 478 physical lines. There are no new production helpers, imports, definitions or structures; the total therefore needs no hidden helper allowance. Supplied check scripts, source snapshots and report text are evidence, not reductions in the maintained Lean source.
+
+\begin{tabular}{@{}L{0.34\linewidth}L{0.28\linewidth}L{0.29\linewidth}@{}}\toprule
+Source module & Measured change & Invariant to retain\\\midrule
+\code{CurrentControllerPositions2011} & $178\to174$ lines; $7345\to7173$ bytes & Same $p$, positions, optional cell and support\\[6pt]
+\code{CurrentPackingRank2011} & $138\to133$ lines; $6099\to5843$ bytes & Same integer rank and natural representative\\[6pt]
+\code{CurrentWordRephase2011} & $122\to116$ lines; $6023\to5925$ bytes & Same carries, digits and scalar proof\\[6pt]
+\code{NativePackingPopulation} & $57\to55$ lines; $2168\to2137$ bytes & Same strict bounds and disjointness\\\bottomrule
+\end{tabular}
+
+\textbf{The savings are source facts, not performance measurements.} Replacing \code{nlinarith} by \code{omega}, or a named equality by \code{simpa only}, may change elaboration behavior. No timing, heartbeat reduction, memory saving or proof-term size reduction has been measured. These candidates are worth trying because their proof dependencies and mathematical steps are simpler at the exact client, not because text length predicts runtime.
+
+\textbf{Independent arithmetic evidence is deliberately limited.}
+\begin{tabular}{@{}L{0.39\linewidth}L{0.53\linewidth}@{}}\toprule
+Check family & Recorded finite scope\\\midrule
+Actual-position formulas & 141,460 affine points; 2,940 injectivity pairs; unchanged-baseline regressions include 250 support sets and 352 safe-exponent triples\\[6pt]
+Population and rank models & 66,430 exact-population cases; 2,340 unrestricted-top cases; 13,869 cast and strict-rank cases\\[6pt]
+Same-data rephasing model & 32,832 reduced-radix cases; 242,568 recurrence and decomposition instances; 30,916 cases with changed quotient\\\bottomrule
+\end{tabular}
+
+The population and rephasing models do not evaluate the complete literal 2011/47 construction. They test the arithmetic contracts and their edge cases, not universal quantifiers or Lean syntax. The models include $u=0$, unrestricted top blocks, non-Boolean source digits, and one-cell cyclic wrap where applicable; they do not enlarge the public hypotheses.
+
+Negative controls reject missing disjointness or strict block bounds, unsafe final/temporal positions, a nonperiodic rephase, and identifying ordinary multipliers across equal rotations. One reduced-radix example has $\rho=4$, $n=1$, $K=C=1$, $F=2$, and the same carry $0$: rephasing $W=0$ to $W'=2$ keeps the rotation and words but changes $2^W$ from $1$ to $4$ and the positive quotient from $1$ to $2$. This illustrates why the retained transport and quotient logic cannot be deleted.

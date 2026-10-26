@@ -1,0 +1,35 @@
+diff --git a/Computability/DiophantineConsistency/research/lean-proof-simplification/ADOPTION.md b/Computability/DiophantineConsistency/research/lean-proof-simplification/ADOPTION.md
+index f80e3dec5..3cb500c4b 100644
+--- a/Computability/DiophantineConsistency/research/lean-proof-simplification/ADOPTION.md
++++ b/Computability/DiophantineConsistency/research/lean-proof-simplification/ADOPTION.md
+@@ -38,6 +38,10 @@ Packet names refer to the subdirectories of this directory.
+ | inverse-pairing certificate reuse | k, adapted using the already adopted m helpers | `RegisterNatPairing` | adopted as `4fc484d4c8`; target, existing `RegisterRelations` client/focus, 13-old-result comparison and whole-old-source equality audit pass (four final calls after baseline); 12 lines removed without helpers or imports. Complete relation/graph records and the all-input program are equal by `rfl`; witness slots and all public signatures are unchanged. Independent full review passes; the reviewer suggested this reuse during the census but did not author the implementation |
+ | `patches/NativeCyclicRotation.patch` | i | `NativeCyclicRotation` | adopted as `afbec38df7`; 17 lines removed by specializing existing convolution to a single impulse, with no helper or import. In the joint rotation/degree batch, both targets, five source/client builds including the planned unchanged `NativeCyclicCarry` prerequisite, four focused checks and 22-old-result comparison pass (12 final calls after baseline). Radix-one and length-one cases and all definitions/premises remain unchanged; independent full review passes |
+ | `patches/SelectiveCarry.patch`, adapted to reuse the degree theorem | i | `SelectiveCarry` | adopted as `8274c8f6b2`; 18 net lines removed after charging the added polynomial big-operators import, with no helper. Existing degree/coefficient lemmas are reordered so coefficient vanishing follows from the shared degree bound. The joint 12-call validation above passes; polynomial data, truncated exponents and all public statements remain unchanged, including empty/zero cases; independent full review passes |
++| last-row native span bound | y | `NativeQuadraticPositions` | adopted as `39a52d6353`; rows 0–20 use the general subtraction bound, leaving only five actual supported entries of row 21. Target, both direct clients, three focused checks and 15-old-result axiom comparison pass (seven final calls after baseline); 81 lines removed with no helper/import/data change. Independent complete-source review passes |
++| `patches/01-jones-evaluation-api.patch` | ze | `JonesSyntax`, `ExecutableJones` | adopted as `80eabc57c8`; five existing semantic bridges become public and replace five duplicated private proofs. Both targets, four direct clients, 63-endpoint compiler check, 26-old-result comparison and five-bridge audit pass (nine final calls after baseline); 49 net lines removed, all executable definitions unchanged. Independent complete-source review passes |
++| `patches/syntax-coefficients.patch` | zg | `SyntaxCoefficients` | adopted as `ed32381986`; one private interpretation-as-list-sum bridge replaces repeated algebraic inductions. Charging the helper and added import, 10 net lines removed. Joint nine-call validation with the object port passes: two targets, three direct clients, three existing focused checks and 15-old-result axiom comparison. Sparse syntax/coefficient data and all old public statements unchanged; independent complete-source review passes |
++| `patches/environment-restriction.patch`, with explicit predicate and direct equation semantics | zg, adapted | `ObjectPolynomial` | adopted as `be154fa93b`; injective coordinate restriction and the existing empty-set default cover every internal tuple, including zero variables and nonstandard naturals. The initial unannotated candidate failed motive inference; adding the explicit predicate fixed it. All nine joint final calls above pass, old axiom reports are identical, and formula/binder data are unchanged. 16 net lines removed; independent complete-source review passes |
+ 
+ ## Pending
+ 
+@@ -91,5 +95,19 @@ describe their authors' actual compiler observations, not additional review
+ runs. Equation artifacts are unchanged; the pending Wang proposal and other
+ deferrals retain their separate scope.
+ 
++Four further source commits `39a52d6353`, `80eabc57c8`, `ed32381986` and
++`be154fa93b` reduce five modules from955 to799 lines, removing156 net lines
++and bringing the reviewed series to3253. ROOT checks all56 old public headers
++and35 complete definition regions against the immutable previous checkpoint;
++they are unchanged. The five newly public Jones bridges expose existing proofs,
++and the coefficient helper and its import are included in the line total.
++The three validation groups have25 successful final Lean calls plus three
++successful baseline audits; the one initial object-port inference failure is
++recorded above. `intake_e13` authored the native span port,
++`v_finite_full_static` the Jones reuse, and ROOT the coefficient and object
++ports. All groups passed independent exact-final source review. The maintained
++equation page was separately rechecked for decimal notation and distinct
++unsubscripted unknowns; a fresh build reproduces its committed PDF byte for byte.
++
+ The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
+ independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

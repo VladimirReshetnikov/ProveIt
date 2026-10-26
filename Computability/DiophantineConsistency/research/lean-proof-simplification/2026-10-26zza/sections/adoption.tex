@@ -1,0 +1,16 @@
+\section{Adoption order and review obligations}
+\label{sec:adoption}
+\textbf{First: the integer norm replacement.} Apply \code{ThirteenFreshSeed.patch} as an isolated proof edit. It has the clearest dependency story: both replacement theorems are already imported, the exact goals are integer-valued, and the two old cast bridges are visibly redundant. Compile the module and its ordinary downstream checks in the intended checkout. The supplied complete-module check is good local evidence, but does not substitute for the repository's own integration gates.
+
+\textbf{Second: the direct Pell-entry adapter.} Apply \code{SignedPellResidue.patch} separately. Keep the explicit change of target needed to expose the discriminant before the restricted simplification. The small reduction comes from using the additive natural equality already present. Avoid introducing a broad global simp attribute or a heavier wrapper import for this one use.
+
+\textbf{Third: decide whether a canonical decoding contract is worth its source cost.} Review the arithmetic equivalence and the focused decoder first. If the deterministic witness improves maintainability, place the helper at the shared lower layer, apply both clients together, and rebuild their actual imports and checks. Check that the public theorem types and the polynomial/certificate expressions remain byte-for-byte unchanged outside the intended proof bodies. The patch is intentionally a proof-side change; adopting a new modulo-based certificate would be a different project.
+
+Do not apply the screened-out normalization adapter as another recommended simplification. Its mathematical estimate can be retained separately if a future quantitative result requires it, but the newly available conservation interface is already assumed in this task's baseline.
+
+\subsection{What to measure after integration}
+The reported line counts are physical lines in the exact baseline and candidate files, with helpers charged in full. They are useful for checking the narrow compression claim. They do not measure proof-term size, elaboration work, conceptual simplicity, or the downstream cost of an import. No runtime improvement is promised.
+
+For these small edits, normal module compilation and the repository's existing checks are appropriate. A separate benchmark campaign is unnecessary unless elaboration actually regresses. For the canonical helper, review the semantic interface and the two real clients before adding more generic variants. The supplied composite-modulus counterexample is a more useful guard against an incorrect generalization than a collection of tests mirroring the proof text.
+
+The arithmetic source statements, literal large constants, generated programs, certificate dimensions, and theorem hypotheses are not changed by the proposed patches. Preserving them is a concrete part of the design, because changes to executable data or representation cost would invalidate unrelated downstream equalities even if the high-level mathematics stayed true.

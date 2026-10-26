@@ -1,0 +1,33 @@
+\pageheading{4 Keep the existing physical no wrap theorem}
+\textbf{The one-dummy no-wrap obligation is already discharged at this pin.} It is not a new missing theorem. The previous page shortens the position arithmetic that feeds the safety interface; it does not replace or take credit for the safety construction itself.
+
+Let $\rho=2^{47}$, $m=2011N$, $W=47\cdot2011s$, and
+\[
+ D_j=\rho^{977+2011j.\operatorname{val}},\qquad
+ \Delta=(K+2^W)D_j.
+\]
+The literal exponents are at most $2020$ and the total coefficient mass is $7659829036801887<\rho^2$, so $K<\rho^{2022}$. Thus
+\[
+ KD_j<\rho^{2999+2011j.\operatorname{val}},\qquad
+ 2^WD_j=\rho^{977+2011(j.\operatorname{val}+s)}.
+\]
+See \src{CurrentDummySafety2011}{22}{72}. The canonical-position hypotheses are
+\[
+ j.\operatorname{val}+1<N,\qquad j.\operatorname{val}+s<N.
+\]
+They imply $m\ge4022$ and leave far more than the two high fields required by
+\code{safe_increment_bound}: $0<\Delta<\rho^{m-2}$. They allow $s=0$, but exclude $N=1$ and a last-cell update. Dropping either condition is not an equivalent simplification. See \src{CurrentDummySafety2011}{74}{119}.
+
+\textbf{Why the ordinary bound follows.} The actual original normalized word $F$ satisfies $F<\rho^{m-1}$. Set $Q=\rho^{m-2}$. Since $m\ge2$, $\rho\ge2$, and both inequalities are strict natural bounds,
+\[
+ F+\Delta+2\le Q(\rho+1)<Q\rho^2=\rho^m.
+\]
+The middle inequality uses $Q>0$ and $\rho+1<\rho^2$. Therefore
+\[
+ F+\Delta<\rho^m-1.
+\]
+This is an ordinary inequality, not merely a congruence. It is the premise required to turn normalized transport into the exact natural increment. The source's generic \code{nonwrap_of_short} and actual \code{normalized_nonwrap_of_safe} already implement this argument; see \src{CurrentDummySafety2011}{121}{150}.
+
+\textbf{The same data must remain attached.} With the original $a$, dummy and marker functions, Boolean bounds, a safe unused cell with $\mathrm{dummy}(j)=0$, and the old normalization facts, the existing construction obtains a new normalization for the updated dummy function. It preserves the ordinary source increment $C'=C+D_j$ and the ordinary normalized increment $F'=F+\Delta$. Its rank equality is then about those same old and new words, carries and digits, not a fresh unrelated word. See \src{CurrentDummySafety2011}{152}{211}.
+
+\textbf{What is deliberately not proposed.} Replacing the explicit physical guards by a new abstract safe-position record would add an already familiar interface, not reduce the residual proof. Deriving only a modular update would weaken the ordinary equality. Generalizing the fixed coefficient arithmetic to a parameterized base would reintroduce positivity and multiplication lemmas. The existing small safety proof is kept unchanged, including its no-high-mask-premise design.

@@ -1,0 +1,326 @@
+{
+  "base": "9d9d1123b39927d30363f1dcd53c23f0575c30ee",
+  "head": "7ba7d102822df1eff376cbca913727d9d588ab4e",
+  "ahead_by": 23,
+  "commit_count": 23,
+  "method": "Pinned100-commit parent graph set difference, corroborated against compare metadata; no compare file array used",
+  "commits": [
+    {
+      "sha": "7ba7d102822df1eff376cbca913727d9d588ab4e",
+      "parents": [
+        {
+          "sha": "96520cd1a5179f470b4da127bd47bc26a8d808ff"
+        }
+      ],
+      "tree": "3d4c4989af0d7e80ea0e631a7ca5ce5a7b9aad39",
+      "author_date": "2026-10-26T19:25:35Z",
+      "committer_date": "2026-10-26T19:25:35Z",
+      "message": "Proof simplification proposal(s)",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/7ba7d102822df1eff376cbca913727d9d588ab4e"
+    },
+    {
+      "sha": "96520cd1a5179f470b4da127bd47bc26a8d808ff",
+      "parents": [
+        {
+          "sha": "31d750f4cd53eebd58e5eaa1bc33ed69d118b263"
+        },
+        {
+          "sha": "09eaa57ae5b80130ddb0aa5344f71e638ebb3e97"
+        }
+      ],
+      "tree": "9f2d3d0a201cf5f54f8e70426bcbe95703ca7bb3",
+      "author_date": "2026-10-26T19:22:19Z",
+      "committer_date": "2026-10-26T19:22:19Z",
+      "message": "Merge branch 'main' of https://github.com/VladimirReshetnikov/ProveIt",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/96520cd1a5179f470b4da127bd47bc26a8d808ff"
+    },
+    {
+      "sha": "31d750f4cd53eebd58e5eaa1bc33ed69d118b263",
+      "parents": [
+        {
+          "sha": "726ea9af9d9b079361b8e7de703e9c5e24fb7755"
+        }
+      ],
+      "tree": "8a1f9b2d99ec66a71e615d81831335c0eb5b35d5",
+      "author_date": "2026-10-26T19:22:03Z",
+      "committer_date": "2026-10-26T19:22:03Z",
+      "message": "Proof simplification proposal(s)",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/31d750f4cd53eebd58e5eaa1bc33ed69d118b263"
+    },
+    {
+      "sha": "09eaa57ae5b80130ddb0aa5344f71e638ebb3e97",
+      "parents": [
+        {
+          "sha": "8873af40594599c6c7024e074c6f531471027746"
+        },
+        {
+          "sha": "726ea9af9d9b079361b8e7de703e9c5e24fb7755"
+        }
+      ],
+      "tree": "8d46559e7732e5f8cc362cb2d9232d67972765f7",
+      "author_date": "2026-10-26T19:20:44Z",
+      "committer_date": "2026-10-26T19:20:44Z",
+      "message": "Merge remote-tracking branch 'origin/main' into codex/zfc-equation-reduction-46be",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/09eaa57ae5b80130ddb0aa5344f71e638ebb3e97"
+    },
+    {
+      "sha": "8873af40594599c6c7024e074c6f531471027746",
+      "parents": [
+        {
+          "sha": "b96d387147f0b0e2659446e3a7ff11447286affc"
+        }
+      ],
+      "tree": "71b699a82ad8575cf6369f5c0ae20071b37c1358",
+      "author_date": "2026-10-26T19:19:50Z",
+      "committer_date": "2026-10-26T19:19:50Z",
+      "message": "Record reviewed upstream merge after closing the external current-equation iff\n\nPreserve the independent11-module proof-source audit, exact old interface/data checks and scoped upstream build evidence. Record the clean merge of origin60fcb2a69b, including two additional inert packet placements, without executing or adopting their proposals. Confirm decimal/distinct-name artifacts and separate pre-merge leaf checks from the planned authenticated post-merge closure validation.",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/8873af40594599c6c7024e074c6f531471027746"
+    },
+    {
+      "sha": "726ea9af9d9b079361b8e7de703e9c5e24fb7755",
+      "parents": [
+        {
+          "sha": "60fcb2a69b7f1fdd4c3592ea5f164223cad50abe"
+        }
+      ],
+      "tree": "082d601195ee6bd5ab4b483d655d607bbce2a41b",
+      "author_date": "2026-10-26T19:19:29Z",
+      "committer_date": "2026-10-26T19:19:29Z",
+      "message": "Inline list-lookup wrappers and finish the intake session's simplifications\n\nThese are the intake session's last queued proof simplifications, left\nafter the research session adopted the overlapping proposals.\n\n- Annotated{ProofChecker,Rename,RuleSide,Assumption,Bound}: the seven\n  private one-line wrappers around List.mem_of_getElem? and\n  List.getElem?_of_mem are deleted, and their twelve call sites call\n  the core lemmas directly.\n- SelectiveCoefficientBounds.half_base_bound: the 2^t = 2 * 2^(t-1)\n  step is `rw [\u2190 pow_succ', Nat.sub_add_cancel ht]` instead of a\n  three-line congr/omega proof (packet f, T03).\n- tools/generate_{split,gap}_recipe_steps*.py: both Steps generators\n  now read and write UTF-8 with LF. On Windows the default cp1252\n  write had truncated a Lean file to 0 bytes and emitted CRLF, and the\n  split generator's --check misread the file. Both --check runs pass.\n- SHORT_REDUCED_STRONG.md: the generator no longer emits a degree\n  certificate. The bound is proved by total_degree_bound after one\n  ring identity.\n- ADOPTION.md records these rows as adopted.\n\nChecked serially with LAKE_JOBS=1 and LEAN_NUM_THREADS=0, one module\nper lake invocation, against the current tree: 25 lake builds, among\nthem all six edited modules and the annotated scanner, context and\nrule modules that depend on them. All are green.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/726ea9af9d9b079361b8e7de703e9c5e24fb7755"
+    },
+    {
+      "sha": "b96d387147f0b0e2659446e3a7ff11447286affc",
+      "parents": [
+        {
+          "sha": "13389f141ac1490be88d0ddb75ba925795dda857"
+        },
+        {
+          "sha": "60fcb2a69b7f1fdd4c3592ea5f164223cad50abe"
+        }
+      ],
+      "tree": "f359d25f016d7be9b79d0228c4bc413d5fd0461d",
+      "author_date": "2026-10-26T19:19:11Z",
+      "committer_date": "2026-10-26T19:19:11Z",
+      "message": "Merge remote-tracking branch 'origin/main' into codex/zfc-equation-reduction-46be",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/b96d387147f0b0e2659446e3a7ff11447286affc"
+    },
+    {
+      "sha": "13389f141ac1490be88d0ddb75ba925795dda857",
+      "parents": [
+        {
+          "sha": "7e74c557c87387823b90aa8d736fc3f631bd4315"
+        }
+      ],
+      "tree": "606de1960bbf801eec96973979f4fbe202ac135b",
+      "author_date": "2026-10-26T19:18:34Z",
+      "committer_date": "2026-10-26T19:18:34Z",
+      "message": "Prove the current four frontier equations equivalent to actual ConZFC in Lean\n\nConstruct positive coordinates of the literal maintained14-variable polynomial from negated syntactic consistency, with every scalar supplied by the same calibrated packing and both Pell seeds freshly derived. Compose the exact current soundness endpoint to prove no-positive-zero iff DiophantineConsistency.ConZFC, with no tiling, mask, rank or desired-zero premise.\n\nTransfer the closed equivalence to all three accepted13-variable forms at the actual fixed ports, and construct one positive13-coordinate assignment solving all three simultaneously under negated consistency. Add focused pointwise-domain checks, six standard-only axiom audits, independent private replay and precise source/object receipts. Update the proof plan and preserve the separate encoded internal-ZFC/nonstandard obligation and ongoing size-reduction goal.",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/13389f141ac1490be88d0ddb75ba925795dda857"
+    },
+    {
+      "sha": "7e74c557c87387823b90aa8d736fc3f631bd4315",
+      "parents": [
+        {
+          "sha": "3708c37a131fb2b47c65e2de8796f05fb3809f64"
+        }
+      ],
+      "tree": "67b08e7b5e971aab4df4310fda54d31f7c05d4fe",
+      "author_date": "2026-10-26T19:15:51Z",
+      "committer_date": "2026-10-26T19:15:51Z",
+      "message": "Construct both native Pell seeds and all positive source coordinates\n\nDerive the exact outer seed from odd rank and binary population, including the q-cubed scale, strict doubled-ordinate interval, both norms and positive quotient witnesses. Combine it with a fresh compatible private seed, prove every canonical block, restore all 31 positive natural coordinates and all 22 literal rows, and obtain the actual positive Carrier65 zero from explicit scalar data.\n\nRecord independent capped leaf replay and twelve standard-only axiom reports. Authenticate the fresh current Ratio90/Half prerequisite objects while preserving the stale shared cache and documenting reused closure scope. Add the packets to the umbrella and maintain the proof plan without claiming the separate internal-ZFC equivalence.",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/7e74c557c87387823b90aa8d736fc3f631bd4315"
+    },
+    {
+      "sha": "3708c37a131fb2b47c65e2de8796f05fb3809f64",
+      "parents": [
+        {
+          "sha": "c77fd6aca2a05e4da34a2b87d5f41a27666db316"
+        }
+      ],
+      "tree": "e96054bb5d32e15728d4c8865533d4d91d775164",
+      "author_date": "2026-10-26T19:14:46Z",
+      "committer_date": "2026-10-26T19:14:46Z",
+      "message": "Calibrate the actual packing rank and force its temporal multiplier\n\nCompose safe finite dummy mutation with the literal full-modulus controller. Bind the resulting signed rank to the same source and normalization, derive its population/residue/growth, and rephase the same carries and digits to the positive quotient stride. Prove the ordinary temporal multiplier equals 2^(R-width*N).\n\nDerive the controller size hypotheses from independently cofinal actual Wang dimensions, then construct the transparent native packing from an actual blank halt or negated syntactic ConZFC. No desired masks, support, calibrated rank, source zero or tiling is supplied. Add author, root and independent capped Lean replay receipts; all fourteen packet axiom reports are standard-only. Positive Pell assembly and internal ZFC remain separate. Preserve decimal/distinct-name equation artifacts.",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/3708c37a131fb2b47c65e2de8796f05fb3809f64"
+    },
+    {
+      "sha": "60fcb2a69b7f1fdd4c3592ea5f164223cad50abe",
+      "parents": [
+        {
+          "sha": "451b548a198c791e81abc40435979c89edb40b23"
+        }
+      ],
+      "tree": "3c20be4a75ec2da41e83cb6d354ddc6d560fcf92",
+      "author_date": "2026-10-26T19:10:07Z",
+      "committer_date": "2026-10-26T19:10:07Z",
+      "message": "Place two more DiophantineConsistency Lean simplification packets\n\nDrop-zone archives of 26 October are placed in arrival order as\nresearch/lean-proof-simplification/2026-10-26zp through zq:\n- 2026-10-26zp: lean-controller-word-refinements-2026-10-26.zip\n- 2026-10-26zq: lean-controller-simplifications-2026-10-26.zip\n\nEach PLACEMENT.md names the latest commit its README pins. Members\nbyte-identical to a Git blob of that commit, of 60e9c5d620 or of the\nplacement parent are listed in each OMITTED.tsv instead of copied. The\ndirectory index and the docs/incoming README table now list 43 packets,\nand the ZIPs are retired. Adoption is left to the research session. No\nsupplied script or Lean file was run.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe"
+    },
+    {
+      "sha": "451b548a198c791e81abc40435979c89edb40b23",
+      "parents": [
+        {
+          "sha": "f127cbd69bfe882759952bed1f0c730340195624"
+        },
+        {
+          "sha": "3299f4aa4c9ae38b0f5a1c00a1f0d23f6cbdb114"
+        }
+      ],
+      "tree": "c8efeadeffe31f8970e246009c74c930e40deb46",
+      "author_date": "2026-10-26T19:08:25Z",
+      "committer_date": "2026-10-26T19:08:25Z",
+      "message": "Merge remote-tracking branch 'origin/main'",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/451b548a198c791e81abc40435979c89edb40b23"
+    },
+    {
+      "sha": "f127cbd69bfe882759952bed1f0c730340195624",
+      "parents": [
+        {
+          "sha": "7259983e8bd79393f49e02fd2ee9ff02b74cf79c"
+        }
+      ],
+      "tree": "838cd236695a008f09ee5c6627e639d411264865",
+      "author_date": "2026-10-26T19:06:36Z",
+      "committer_date": "2026-10-26T19:06:36Z",
+      "message": "Proof simplification proposal(s)",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/f127cbd69bfe882759952bed1f0c730340195624"
+    },
+    {
+      "sha": "3299f4aa4c9ae38b0f5a1c00a1f0d23f6cbdb114",
+      "parents": [
+        {
+          "sha": "fe6d8ee0ddcd04f2084060c17ffb057644f02feb"
+        },
+        {
+          "sha": "7259983e8bd79393f49e02fd2ee9ff02b74cf79c"
+        }
+      ],
+      "tree": "9f37d5974d1e0e5c3bc0ca81b2fd64e159285543",
+      "author_date": "2026-10-26T19:04:20Z",
+      "committer_date": "2026-10-26T19:04:20Z",
+      "message": "Merge commit '7259983e8bd79393f49e02fd2ee9ff02b74cf79c' into codex/zfc-diophantine-consistency",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/3299f4aa4c9ae38b0f5a1c00a1f0d23f6cbdb114"
+    },
+    {
+      "sha": "fe6d8ee0ddcd04f2084060c17ffb057644f02feb",
+      "parents": [
+        {
+          "sha": "1bc84bdaaf318ed187f62dc8b1398f2450de35ea"
+        },
+        {
+          "sha": "9d9d1123b39927d30363f1dcd53c23f0575c30ee"
+        }
+      ],
+      "tree": "2a666759fc72f3d053900d27c45105b6c73f98ad",
+      "author_date": "2026-10-26T19:03:24Z",
+      "committer_date": "2026-10-26T19:03:24Z",
+      "message": "Merge commit '9d9d1123b39927d30363f1dcd53c23f0575c30ee' into codex/zfc-diophantine-consistency",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/fe6d8ee0ddcd04f2084060c17ffb057644f02feb"
+    },
+    {
+      "sha": "1bc84bdaaf318ed187f62dc8b1398f2450de35ea",
+      "parents": [
+        {
+          "sha": "be154fa93b94d2b887826cb5cb8cffcfaf0d11ee"
+        }
+      ],
+      "tree": "e728f287bea0c52a70ce40973fa3252aae981ead",
+      "author_date": "2026-10-26T19:03:15Z",
+      "committer_date": "2026-10-26T19:03:15Z",
+      "message": "Record 156 checked proof lines removed and decimal page verification\n\nDocument the native span frontier, shared Jones evaluations, list-sum coefficients and arbitrary internal-environment restriction ports, with exact final and baseline checking scope and the repaired object predicate inference failure. Independent full-source reviews pass for every port; all 56 old public types and 35 complete definition regions are unchanged. The reviewed cumulative reduction is 3253 lines.\n\nRecheck the user-facing equation notation: all 715 packed digits are decimal, all 14 unknowns are distinct and unsubscripted, and PDF text agrees with the TeX. A fresh pdflatex build reproduces the committed one-page PDF byte for byte. Both maintained artifacts remain unchanged.",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/1bc84bdaaf318ed187f62dc8b1398f2450de35ea"
+    },
+    {
+      "sha": "7259983e8bd79393f49e02fd2ee9ff02b74cf79c",
+      "parents": [
+        {
+          "sha": "9d9d1123b39927d30363f1dcd53c23f0575c30ee"
+        }
+      ],
+      "tree": "471ffbdfc4c6ec5da288946dbbcfa5c8a4c8857c",
+      "author_date": "2026-10-26T19:02:41Z",
+      "committer_date": "2026-10-26T19:02:41Z",
+      "message": "Place five more DiophantineConsistency Lean simplification packets\n\nFive drop-zone archives of 26 October (drop commits c40fb84615,\ncec7d7871e and 71a89b3beb) are placed in arrival order as\nresearch/lean-proof-simplification/2026-10-26zk through zo. Each\nPLACEMENT.md names the latest commit its README pins.\n\nOf 1,933 members, 1,587 are byte-identical to a Git blob of the packet's\nreviewed commit, of 60e9c5d620 or of the placement parent, mostly bundled\nsource snapshots. They are listed in each OMITTED.tsv instead of copied;\none remaining member is excluded by an ignore rule. The directory index\nand the docs/incoming README table now list forty-one packets, and the\nfive ZIPs are retired. Adoption is left to the research session. No\nsupplied script or Lean file was run.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/7259983e8bd79393f49e02fd2ee9ff02b74cf79c"
+    },
+    {
+      "sha": "c77fd6aca2a05e4da34a2b87d5f41a27666db316",
+      "parents": [
+        {
+          "sha": "583efd781fb6d93bd0a5b6193cdbf2f343859b99"
+        }
+      ],
+      "tree": "3e124ac986dc97128e3025c8dd0e78c1cf7f7c42",
+      "author_date": "2026-10-26T19:00:55Z",
+      "committer_date": "2026-10-26T19:00:55Z",
+      "message": "Prove finite Boolean accumulation, actual rank parity and the derived temporal stride\n\nConstruct every finite safe update from the original normalization and derive exact ordinary C/F and rank sums. Derive rank three modulo four from the literal adjusted low mask while retaining one coherent rank/population/growth witness.\n\nDerive divisibility, positive quotient stride, cyclic equality and exact temporal power from the explicit rank congruence; preserve the same source, carries and normalized F under rephasing. Record precise author/root/independent replay scopes and thirty-two standard-only audits. Leave actual rank binding into the stride adapter and remaining Pell/source assembly to integration.",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/c77fd6aca2a05e4da34a2b87d5f41a27666db316"
+    },
+    {
+      "sha": "be154fa93b94d2b887826cb5cb8cffcfaf0d11ee",
+      "parents": [
+        {
+          "sha": "ed32381986ad6da5580cf3a373b09fe150de122b"
+        }
+      ],
+      "tree": "7d075af9ba1a57a744855e02b0edd58ecc218c9a",
+      "author_date": "2026-10-26T19:00:05Z",
+      "committer_date": "2026-10-26T19:00:05Z",
+      "message": "Transport internal polynomial satisfaction through environment restriction\n\nUse surjectivity of restriction along injective Fin.val to quantify over every finite internal tuple. Supply the existing empty-set value as the default extension, covering zero variables without any new model assumption. An explicit guarded predicate makes elaboration reliable. Also derive equationForm semantics directly from evalForm_spec and the unchanged shifted binder environment. Formula data and all public statements are preserved; 98 lines become 82.\n\nValidation: refreshed target and the shared syntax target, all three direct clients, three existing compiler/object checks and all 15 public axiom comparisons pass in the joint nine-call final suite. All old reports are byte-identical. The first unannotated environment-restriction proof failed motive inference; adding the explicit predicate fixed the target, with no cache or import adjustment. Independent full-source review confirms arbitrary internal/nonstandard tuples and the zero-variable case.",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/be154fa93b94d2b887826cb5cb8cffcfaf0d11ee"
+    },
+    {
+      "sha": "ed32381986ad6da5580cf3a373b09fe150de122b",
+      "parents": [
+        {
+          "sha": "80eabc57c80292b8d2f9f08c2d70fae3103d92fe"
+        }
+      ],
+      "tree": "a30a6b73e26d85301c523a6ccd2bd3c68403959f",
+      "author_date": "2026-10-26T18:59:55Z",
+      "committer_date": "2026-10-26T18:59:55Z",
+      "message": "Use list-sum algebra for sparse syntax coefficient proofs\n\nRelate the existing recursive interpretation to its list sum once. Derive append, negation, multiplication and coefficient transport from standard list sum and monomial laws, and reuse equivalence injectivity for exponent vectors. This replaces repeated inductions without changing the executable sparse expansion, coefficient reader or any old public statement. Charging the private helper and added import, the module shrinks from 120 to 110 lines.\n\nValidation with the ObjectPolynomial port: two refreshed targets, three direct clients, CompilerAxioms/ObjectAxioms/ObjectOmegaSemiring and all 15 old public axiom reports pass (nine final calls after baseline). All old reports are byte-identical. Independent full-source review checks empty lists, duplicate and cancelling terms and actual library contracts. The separate ObjectPolynomial first attempt needed an explicit predicate annotation; no SyntaxCoefficients repair was needed.",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/ed32381986ad6da5580cf3a373b09fe150de122b"
+    },
+    {
+      "sha": "80eabc57c80292b8d2f9f08c2d70fae3103d92fe",
+      "parents": [
+        {
+          "sha": "39a52d6353e7794daaafcd28f69e1f1e2c1507d7"
+        }
+      ],
+      "tree": "14cdcecbf2be0725d0fb4967f3ec7fd5c554f2e1",
+      "author_date": "2026-10-26T18:58:52Z",
+      "committer_date": "2026-10-26T18:58:52Z",
+      "message": "Reuse the existing Jones syntax evaluation bridges\n\nExpose the five established radicand, weight, divisor, dividend and margin evaluation lemmas in JonesSyntax. ExecutableJones uses those same generic lemmas instead of repeating their proofs. All existing public statement types, imports and 21 executable definition regions are unchanged; no new helper proof is added. The two modules shrink from 479 to 430 lines.\n\nValidation: both refreshed modules, all four direct production clients, the existing 63-endpoint CompilerAxioms check, 26-old-result axiom comparison and five newly public bridge audits pass (nine final calls after the baseline). Old reports are byte-identical; bridges use only standard Lean axioms. All ten total calls passed first try. Independent complete-source review passes for both frozen files.",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/80eabc57c80292b8d2f9f08c2d70fae3103d92fe"
+    },
+    {
+      "sha": "39a52d6353e7794daaafcd28f69e1f1e2c1507d7",
+      "parents": [
+        {
+          "sha": "f00ba53b331833c6cb64707bd90e48489e5610f5"
+        }
+      ],
+      "tree": "32856f881d32fd85c33b711055acd05371127f57",
+      "author_date": "2026-10-26T18:58:38Z",
+      "committer_date": "2026-10-26T18:58:38Z",
+      "message": "Simplify the native quadratic position bound to its last-row frontier\n\nUse the generic natural subtraction bound for rows 0 through 20, whose targets are already below 7516. Only row 21 needs its actual supported entries checked: retain its five exact decide cases. Preserve the 22-row table, weights, coefficients, public statements and all four ports unchanged. The complete module shrinks from 258 to 177 lines without a helper or import.\n\nValidation: refreshed named module, both direct production clients, three existing focused checks and all 15 old public axiom reports pass (seven final Lean calls plus the baseline). Reports are byte-identical. Independent complete-source review confirms the generic bound and all five frontier values. No failures, cache gaps or retries.",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/39a52d6353e7794daaafcd28f69e1f1e2c1507d7"
+    },
+    {
+      "sha": "583efd781fb6d93bd0a5b6193cdbf2f343859b99",
+      "parents": [
+        {
+          "sha": "493d46d498af45840085ef8c170a9db6289157f9"
+        }
+      ],
+      "tree": "f7ba340723766a495516ccf023d35ff46b3526ab",
+      "author_date": "2026-10-26T18:49:37Z",
+      "committer_date": "2026-10-26T18:49:37Z",
+      "message": "Construct safe physical supports for arbitrary Gamma-weighted controller targets\n\nProve the generic natural-to-cyclic support power-sum identity with exact optional-cell multiplicity, then combine actual subset selection, canonical safe positions and the literal Gamma unit. Return a nonempty bounded-cardinality safe set for every full-modulus target without a supplied support, safety or unit premise.\n\nRecord full independent root review and fresh main/check replay with four standard-only audits, matching objects, optional-bit controls and target zero. Keep actual finite word mutation and final rank calibration as separate compositions.",
+      "html_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/583efd781fb6d93bd0a5b6193cdbf2f343859b99"
+    }
+  ]
+}

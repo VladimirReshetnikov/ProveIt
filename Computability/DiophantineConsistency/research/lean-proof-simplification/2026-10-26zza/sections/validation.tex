@@ -1,0 +1,39 @@
+\section{Verification, reproducibility, and limits}
+\label{sec:validation}
+\subsection{Two snapshots, one unchanged set of target files}
+The main audit and patches use \code{96520cd1a5179f470b4da127bd47bc26a8d808ff}. A closing comparison inspected \code{3b51c69d42ff99bc420698532af3fe1d1f9bd356}, committed at 19:32:32 UTC on 26 October 2026. The interval contains thirteen commits and thirteen changed paths, including five maintained Lean files and six new incoming ZIPs. None of the three recommended target modules changed; their separately fetched closing blobs match the original local bytes.
+
+The six new archives were integrity-checked and their substantive proposal sections reviewed. Their exact Git blob hashes, SHA-256 hashes, manuscript members, and the resulting novelty decisions appear in \code{evidence/late-head-audit.json} and its readable companion. The most consequential result was the withdrawal in Section~\ref{sec:withdrawn}. This is a frozen closing audit, not a claim about commits added after that snapshot.
+
+Unchanged target bytes support applicability of the local edits at those locations. They do not establish a full build against all changed dependencies. Nor do they establish a build of the hypothetical combined tree in which every prior suggestion has been implemented; that tree was not supplied. The earlier proposals are used as the semantic exclusion baseline, while actual checking is against the identified source and available dependency objects.
+
+\subsection{Exactly what the Lean checks establish}
+The compiler is Lean 4.32.0, release commit \code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}. Its available dependency cache follows the repository's pinned Mathlib revision. The direct project import sources used by the Pell checks were compared with the pinned Git tree; all matched. This is explicitly a cached-dependency validation, not a clean rebuild of the full transitive dependency graph.
+
+\begin{longtable}{@{}L{0.31\linewidth}L{0.16\linewidth}L{0.47\linewidth}@{}}
+\toprule
+Artifact & Result & Scope \\
+\midrule
+\endhead
+\code{ThirteenFreshSeedAudit.lean} & Pass & Complete modified current module, followed by axiom queries for \code{auxiliary_exists} and \code{fresh_private_seed}. \\
+\code{SignedPellResidueAudit.lean} & Pass & Complete modified current module, followed by axiom queries for \code{signed_residue_cases} and \code{four_square_dvd_sub_one}. \\
+\code{CanonicalResidue.lean} & Pass & Standalone prime descending-product iff, with no project imports. \\
+\code{CanonicalDecoder.lean} & Pass & Focused forward decoder, including factorial bounds and polynomial congruence; the existing encoded-moduli product identity is an explicit input. \\
+\bottomrule
+\end{longtable}
+
+\textbf{Actual-module integration remains unverified.} The complete lower \code{MRDPCore} module stopped at a missing cached \code{Mathlib.NumberTheory.Dioph} import. Both real-module canonical sources are integration candidates, not full-module passes. The withdrawn aggregate result was checked only as a standalone kernel; its project adapter was not compiled.
+
+The focused decoder abstracts only the existing encoded-moduli product equality, exposed as a premise. It retains the witness bounds, factorial separation, row-index cancellation, polynomial evaluation congruence, and final equality of bounded evaluations. It does not check the reverse CRT construction, the outer Diophantine syntax theorem, or the complete actual-module import graph. An unchanged small Mathlib prime/factorial source needed for this focused check was compiled locally; its provenance and receipt are included.
+
+The successful inspected endpoint axiom sets are \code{propext}, \code{Classical.choice}, and \code{Quot.sound}. No \code{sorryAx} is accepted in a successful final receipt. This records absence of an admitted proof at those checked endpoints; it is not a stronger foundational or dependency-minimality claim. Exact checked source hashes and complete compiler output are included, so a source file cannot be silently substituted for the one actually checked.
+
+\subsection{Source accounting and what was not measured}
+All physical line counts include comments and blank lines in the exact files. Displayed code excerpts may be wrapped for page layout; measurements count the delivered source files. The Pell patches add no helper or import and save ten lines altogether. For the canonical decoder, \code{MRDPCore} changes from 391 to 405 lines, while \code{BoundedForallCertificate} changes from 98 to 95: the combined change is +11. These are measurements of the literal pinned source, not invented counts for a hypothetical merged tree after all prior proposals.
+
+No timing comparison with the unmodified modules was run. Recorded compiler durations are execution receipts, not performance benchmarks. No claim is made about memory, object size, generated equation size, or runtime speed. No complete project build or downstream release gate was run. These limits are material to integration but do not diminish the exact small-module and focused arithmetic evidence reported above.
+
+\subsection{Reproduction}
+Use a checkout with the stated Lean and Mathlib pins and build its normal dependencies. The archive's \code{scripts/replay_checks.sh} invokes the four recommended checked sources through \code{lake env lean}; it does not apply patches or alter the checkout's source. Actual integration requires applying the relevant patch and running the repository's normal module/check targets. The canonical pair still needs that real-module integration check.
+
+Run \code{scripts/build_report.sh} from an environment with XeLaTeX and the documented fonts to regenerate the PDF. The archive includes \code{SHA256SUMS} for every delivered file other than the checksum file itself. The PDF was rendered and inspected after compilation; the source is included so the report remains editable.

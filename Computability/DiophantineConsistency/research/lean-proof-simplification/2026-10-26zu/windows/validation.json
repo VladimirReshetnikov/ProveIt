@@ -1,0 +1,51 @@
+{
+  "repository_pin": "9d9d1123b39927d30363f1dcd53c23f0575c30ee",
+  "marginal_baseline": "research/lean-proof-simplification/2026-10-26y/syntax/candidates/ObjectPairingInjective.lean",
+  "baseline_source_sha256": "4e6a75bc8eaee4b13311d32bed3bc69584b55f54c63326762c3d3613bbc6c046",
+  "lean_version": "4.32.0",
+  "lean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35",
+  "mathlib_revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "checks": [
+    {
+      "source": "lean/DiophantineConsistency/OrderedWindow.lean",
+      "sha256": "0af3646db29b862e876757dca222d1ba3124c601718314263fcb638ebeae8c0d",
+      "exit_code": 0,
+      "log": "logs/OrderedWindow.integration.log",
+      "scope": "Complete new helper"
+    },
+    {
+      "source": "kernels/PairingKernel.lean",
+      "sha256": "1661194bcf6f64bb307639c145de552c39f6cc29749bd59c050240a51e00883f",
+      "exit_code": 0,
+      "log": "logs/PairingPostPrior.log",
+      "scope": "Complete generic MaxSquarePairing namespace from post-prior pairing candidate; only imports replaced; internal-model wrapper excluded",
+      "reported_axioms": {
+        "pair_lt_shell_cut": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "pair_eq_pair_iff": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    }
+  ],
+  "patch_check": {
+    "against": "Included exact post-y baseline",
+    "command": "git apply --check ordered-windows.patch",
+    "exit_code": 0
+  },
+  "net_marginal_line_growth": 16,
+  "division_savings_counted": 0,
+  "not_checked": [
+    "Complete ObjectPairingInjective module including internal-natural wrapper",
+    "All hypothetical prior proposals merged together",
+    "Full repository build",
+    "Axiom comparison against freshly rebuilt full baseline",
+    "Performance improvement"
+  ],
+  "compatibility_evidence": "compatibility_current_head/validation.json; this is not marginal novelty or savings"
+}

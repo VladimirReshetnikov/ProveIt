@@ -1,0 +1,23 @@
+\section{Results and recommendations}
+\label{sec:results}
+\textbf{Three recommendations survive the final novelty screen.} Two are small, immediately useful Pell proof reductions. Together they remove ten physical lines, without introducing helpers or imports. The third replaces arbitrary bounded-witness selection with a canonical residue function; it simplifies the proof contract but adds eleven lines across its shared helper and two clients.
+
+The largest initially promising candidate was withdrawn after a closing review found a newly added incoming proposal that already supplies its architectural payoff. It is retained only as screened-out evidence. This is intentional: the requested assumption that all earlier proposals are already applied takes priority over producing a longer list.
+
+\begin{longtable}{@{}L{0.23\linewidth}L{0.25\linewidth}L{0.21\linewidth}L{0.23\linewidth}@{}}
+\toprule
+Recommendation & Exact change & Source accounting & Validation scope \\
+\midrule
+\endhead
+1. Integer Pell norm & Use \code{pell_eqz}/\code{dz_val} for two integer norm goals in \code{ThirteenFreshSeed}. & 217 to 210 lines; 7 removed; no helper/import cost. & Complete modified module passed with cached dependencies. \\
+2. Direct Pell-entry adapter & Use \code{Nat.sub_eq_of_eq_add'} on the existing square identity in \code{SignedPellResidue}. & 102 to 99 lines; 3 removed; no helper/import cost. & Complete modified module passed with cached dependencies. \\
+3. Canonical residue witness & Prove the prime descending-product criterion; set \code{j i := a i mod p}. & Shared helper +17; two clients each $-3$; net +11 lines. & Arithmetic helper passed; focused decoder and actual-module scope are detailed in Section~\ref{sec:validation}. \\
+\bottomrule
+\end{longtable}
+
+All three retain the existing public theorem statements and certificate data. No source-size saving is claimed by adding the negative and positive counts across unrelated optional changes. The eleven-line cost of the canonical interface remains a cost even though the two Pell changes save ten lines elsewhere.
+
+\subsection{What makes the proposals useful}
+The Pell changes consume facts in the form already available: an additive natural square identity on entry to classification, and an integer norm invariant for integer-valued goals. The residue change gives the decoder a named arithmetic contract with a concrete witness. These eliminate identifiable proof obligations, rather than just making tactic scripts more opaque.
+
+The report supplies exact replacements, mathematical justifications, the closest earlier proposals, counterexamples to an overgeneralized statement, measured source costs, and explicit verification limits. Read Section~\ref{sec:pell} for the two low-cost edits, Section~\ref{sec:residue} for the canonical decoder, and Section~\ref{sec:validation} before applying any patch. The repository was inspected and candidate copies were checked; no upstream files or branches were changed.

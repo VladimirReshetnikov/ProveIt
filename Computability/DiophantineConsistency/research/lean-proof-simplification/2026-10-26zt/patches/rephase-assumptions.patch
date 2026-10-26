@@ -1,0 +1,54 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordRephase2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordRephase2011.lean
+@@ -64,18 +64,16 @@
+   rw [hst]
+ 
+ /-- The actual pointwise binary rotations agree, including all cell wraps. -/
+-theorem rotation_eq (c : ZMod (N*2011) → ℕ) (hc : ∀ i, c i ≤ 1)
++theorem rotation_eq (c : ZMod (N*2011) → ℕ)
+     (s t : ℕ) (hst : (s : ZMod N) = (t : ZMod N)) :
+     binaryRotation 47 (displacement s) c = binaryRotation 47 (displacement t) c := by
+-  funext i
+-  rw [rotation_zero_phase (by decide : 0 < 47) _ c hc (by simp [displacement]),
+-    rotation_zero_phase (by decide : 0 < 47) _ c hc (by simp [displacement])]
+-  simp only [displacement,Nat.mul_div_cancel_left _ (by decide : 0 < 47)]
++  simp only [binaryRotation,displacement,Nat.mul_mod_right,pow_zero,
++    Nat.mul_div_cancel_left _ (by decide : 0 < 47)]
+   rw [physical_shift_eq s t hst]
+ 
+ /-- The same source, carries, and digit function satisfy the new normalization. -/
+ theorem normalization_rephase (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
+-    (hd : ∀ j, dummy j ≤ 1) (s t : ℕ) (hst : (s : ZMod N) = (t : ZMod N))
++    (s t : ℕ) (hst : (s : ZMod N) = (t : ZMod N))
+     (carry digits : ZMod (N*2011) → ℕ)
+     (hf : CurrentCarryConstruction2011.Facts
+       (constructedWord a dummy s) (displacement s) carry digits) :
+@@ -83,7 +81,7 @@
+       (constructedWord a dummy t) (displacement t) carry digits := by
+   rw [← constructedWord_eq a dummy s t hst]
+   exact normalization_of_rotation_eq _ carry digits _ _ hf
+-    (rotation_eq _ (constructed_boolean a dummy hd s) s t hst).symm
++    (rotation_eq _ s t hst).symm
+ 
+ /-- Matching uses only the residue of the temporal cell stride. -/
+ theorem markedWord_rephase (a : ZMod N → Fin 942) (s t : ℕ)
+@@ -101,7 +99,7 @@
+     (hf : CurrentCarryConstruction2011.Facts
+       (constructedWord a dummy s) (displacement s) carry digits) :
+     CurrentNativePacking2011.Facts a dummy t carry digits := by
+-  have hf' := normalization_rephase a dummy hd s t hst carry digits hf
++  have hf' := normalization_rephase a dummy s t hst carry digits hf
+   have ha' := markedWord_rephase a s t hst ha
+   obtain ⟨hscalar,hlow⟩ := scalar_witness a dummy _ hd (shiftedStartMarker_boolean a _)
+     ha.start_at_zero t carry digits hf'
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordRephase2011Checks.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordRephase2011Checks.lean
+@@ -38,7 +38,7 @@
+       (constructedWord a (fun _ => 1) 0) (displacement 0) k digits) :
+     CurrentCarryConstruction2011.Facts
+       (constructedWord a (fun _ => 1) 17) (displacement 17) k digits :=
+-  normalization_rephase a _ (fun _ => by decide) 0 17 (Subsingleton.elim _ _) k digits hf
++  normalization_rephase a _ 0 17 (Subsingleton.elim _ _) k digits hf
+ 
+ -- The stride congruence matters. At two cells, a single origin bit moves
+ -- away from physical0 under stride1 but not under stride0.
