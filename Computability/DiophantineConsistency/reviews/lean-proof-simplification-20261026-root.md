@@ -1053,3 +1053,172 @@ without warnings/errors; all eight runtime controls return true. These merge
 checks are separate from the24 final port checks above. Upstream's other
 proof/calibration work and its validation remain separately recorded; it is
 preserved and is not added to this batch's461-line count or the reviewed series.
+
+## Constructor bounds and native binary width
+
+ROOT adopted x's formula-code proof as `9c37c0868c`. Monotonicity of the
+existing pairing/fork constructors gives the uniform lower bound44 directly:
+variable atom codes are positive, and connective tags are at least3 even with
+payload zero. No induction hypothesis about a subformula is needed. This is
+a uniform lower bound, not a claim that variable codes attain44. All formula,
+closing-program and node-count definitions remain literal. Including all five
+private supporting lemmas,148 lines become129, removing19.
+
+ROOT adopted zg's width proof as `7f35ee6786`. The natural power-minus-one
+remainder identity makes divisibility force a zero exponent remainder: a
+nonzero remainder would give2≤1. No separate power equality or injectivity
+argument is needed. The positive-width premise stays in the API, although
+the stronger proof does not use it; its existing unused-`hd` warning remains.
+Natural modulo and truncated subtraction remain valid at zero as well.
+No helper/import is added;105 lines become101, removing4.
+
+All eleven final calls pass after the separate23-public-declaration baseline:
+both targets, `AnnotatedClosureGraphs`, `AnnotatedBound` and
+`NativePellScaleBounds` clients, their five corresponding existing focused
+sources including both targets, and the23-public final audit. All reports
+are byte-identical; closure/bound runtime controls return fourteen true values.
+The Binary and scale calls also provide direct-client evidence for the Pell
+port below, and are counted once in the aggregate. `v_finite_full_static`
+independently read all230 final lines, the full diffs and actual constructor,
+pairing and natural-remainder contracts, returning PASS on unchanged hashes.
+No additional compiler run is attributed to that review.
+
+## Internal division and zero-test cancellation
+
+`v_finite_full_static` adopted the incoming proof-deltas arithmetic patch as
+`5bb366fcb8`, omitting its redundant import because the provider is already
+in the maintained import chain. Quotient uniqueness cancels the common product
+and compares the remainder with the divisor directly. The zero-test proof
+uses internal multiplication cancellation and zero-product laws. All values
+remain in the model's entire internal natural semiring; no identification
+with external `Nat` is introduced. All24 original theorem headers, including
+private lemmas, and nine complete definition/abbreviation blocks remain literal.
+There is no helper overhead;270 lines become263, removing7.
+
+The initial target build failed on stale imported anonymous order-instance
+names, including unchanged source lines. A separate diagnostic probe also
+contained an unsupported command; it is not a production proof check. Fourteen
+unchanged dependent modules were refreshed individually. Both immutable original
+target sources were then restored, compiled and audited, before the exact
+candidates were restored. The pre-refresh and coherent old reports agree, but
+the rebuilt originals establish the actual coherent baseline.
+
+All eight final calls pass: both targets, `ObjectDivModSyntax` and
+`ObjectConditional` clients, existing `ObjectDivision`, `ObjectNumericWire`
+and `ObjectGuardedWire` checks, and23-public final axiom audit. The coherent
+old/new reports are byte-identical and use only standard axioms. Neither
+candidate proof needed repair or a budget increase. `intake_e13` independently
+read both full final sources, the complete diff and actual internal-semiring
+contracts, returning PASS at the unchanged final hashes.
+
+## Arbitrary-exponent LTE and a quadratic Pell comparison
+
+`alternate_encoding_research` composed zo's LTE spectrum over the already
+adopted guarded-cast proof as `25feb7f728`. The new `lift_dvd_iff` covers every
+exponent, including zero via infinite multiplicity. Exact lifting becomes a
+corollary, and two divisibilities determine the original exact order without
+separate zero/successor cases. All six old public statements and the fused
+cast bridge remain literal. Including the new helper,73 lines become68;
+source bytes grow17, so this is a proof-structure reduction rather than a
+byte-compression claim. The helper uses the standard three axioms.
+
+The same author adopted zo's Pell inequality as `88ebe8f66b`. For `r ≥ 2`,
+set `u = 4^r`; then `u ≥ 16` gives `4u + 2 ≤ u²`, and the original power
+comparison follows by rewriting.
+All nine old statements, doubled coordinate and source-recovery formulas remain
+literal. No helper/import is added;163 lines become159, removing4.
+
+Two target `lake build` calls started a broader trace refresh than needed,
+including duplicate unchanged geometry work. They were stopped with actual
+exit143, with no surviving owned children; they are not validation passes.
+The subsequent narrow target/client calls exposed missing `SplitCertificate59`
+and `WangTiles942Data` objects before elaboration. The former was restored
+explicitly by this author and the latter by `intake_e13` in its shared baseline
+preparation. Both narrow retries then pass without a source repair.
+
+Seven final calls pass after the separate baseline and unchanged prerequisite
+restoration: both targets, `CurrentAuxiliaryOrder2011` client, existing prime/Pell
+focuses, a new three-case arbitrary-exponent/helper focus and the15-public axiom
+comparison. All old reports are byte-identical, including the two choice-free
+prime helpers. ROOT's already-counted Binary/scale builds and focuses provide
+additional dependent-client coverage. `intake_e13` independently read all227
+final lines, the full diffs and actual LTE, infinite-multiplicity cancellation,
+order-divisibility and Pell contracts, returning PASS on unchanged hashes.
+
+These five source commits reduce759 lines to720, removing39 net lines and
+bringing this reviewed series from3714 to3753. The final suites have26
+successful calls when shared client evidence is counted once; cache refreshes,
+rebuilt originals, baselines and unsuccessful/interrupted attempts remain
+separate. All61 old public declaration axiom reports are byte-identical, and
+all final source groups passed independent full review. ROOT separately verifies
+all49 old public theorem headers and14 complete definition blocks against
+immutable `40183b4bdc`; they are unchanged. Equation artifacts
+remain unchanged. Packing-rank work is still establishing its complete original
+dependency baseline; it contributes no claimed saving or final validation here.
+The iterative goal remains active.
+
+## Monoid fixed-point propagation in the controller units
+
+`v_finite_full_static` adopted zn's fixed-power proposal as `a9f8201893`.
+A private lemma for an arbitrary monoid proves that a fixed point of the
+power map stays fixed under all iterates, including exponent zero. Three
+checked one-step literal residues then supply the existing controller
+dimension theorems. The direct finite-field import is removed, although
+finite-field facts can still be imported transitively. The original natural
+subtraction guard, elementary positivity proof, opaque base/kernel protection,
+all27 old public theorem headers and four entire definitions remain literal.
+Including the helper,201 lines become196, removing5.
+
+Five final calls pass: target, `CurrentSafeController2011` client, both
+existing focused modules and31-public final audit. The baseline audit and
+unchanged missing `CurrentControllerPositions2011` prerequisite are separate
+successful calls. All31 old reports are byte-identical, including two
+axiom-free congruence lemmas. The existing large-exponent warning remains;
+no proof repair or option change was needed. Both `intake_e13` and
+`alternate_encoding_research` independently read the complete final source,
+diff and actual monoid/residue contracts, returning PASS at the same hash.
+
+## Reusing source reflection and finite-update summation
+
+`alternate_encoding_research` adopted zn's origin proposal as `fc26c5f371`.
+The origin coefficient is a direct instance of `reflected_source` at zero;
+the existing word support and aligned-position bounds exclude the other
+branch. No separate modular subtraction calculation is needed. All original
+tuple domains, nonwrapping premises and support bounds remain unchanged.
+There is no helper/import overhead;118 lines become111, removing7.
+
+The same author adapted zn's dummy-mutation proposal as `733d023d0a`.
+Applying the finite-sum update lemma directly replaces a pointwise expanded
+word equality. Booleanity is still proved by constructive equality cases.
+The packet's `Function.forall_update_iff` shortcut would introduce the standard
+three axioms into this previously axiom-free result; a separately kernel-checked
+three-line constructive proof avoids that change. The actual reduction is7
+lines rather than the proposed8:193 lines become186. Across both modules,
+all17 old public theorem headers, the entire `dummyIncrement` definition, imports and
+options remain literal. The same support, mutation and strict range guards
+are retained; there is no extra helper/import cost.
+
+Before editing, the absent original dummy object was compiled explicitly;
+the unchanged origin object had been freshly compiled in the shared rank
+baseline preparation. The separate18-public baseline then passed. Seven
+final calls pass: both targets, `CurrentWordHighMask2011` and
+`CurrentDummySafety2011` clients, both existing focused modules and the same
+18-public audit. All old reports are byte-identical. Two separate successful
+diagnostic controls audit the library update facts and the constructive
+Boolean proof; these are not added to the final-suite count. There were no
+failed attempts or source repairs in this group. `v_finite_full_static`
+independently read all297 final lines, complete diffs and actual reflection,
+finite-sum and update contracts, returning PASS at unchanged hashes.
+
+These three source commits reduce512 lines to493, removing19 net lines.
+Together with the preceding five commits, nine modules fall from1271 to1213,
+removing58 net lines and bringing this reviewed series from3714 to3772.
+The final suites have38 successful calls, counting shared client evidence
+once; preparation, original-source builds, baselines and diagnostic controls
+remain separate. All110 old public axiom reports are byte-identical. ROOT
+freshly verifies93 old public theorem headers and19 complete definition blocks
+against immutable `40183b4bdc`; they are unchanged. All final sources passed
+independent full review. The maintained equation artifacts retain their exact
+checked hashes, decimal constant and fourteen distinct unsubscripted unknowns.
+Packing-rank simplification is still establishing its original dependency
+baseline and contributes no claimed saving or final validation here.
