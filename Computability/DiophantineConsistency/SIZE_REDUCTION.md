@@ -13,24 +13,23 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained page uses the fully reviewed **single-clause2999** tuple.
-Its four raw integers total70533 bytes, down24156 from admissible942's94689,
-versus95205 for4049,97046 for4127,98219 for4177,141226 for6007,
-172011 for7309,180987 for7691,207214 for three-anchor47 and242484 for radix55.
-Gzip falls3819 bytes to4193. Complete TeX5013 saves12; nonwhite extracted
-text2665 saves6; PDF159705 saves16. Fonts and the15-positive/66-operation/
-degree157 profile are unchanged. Pcpc is discharged; see the
-[candidate](candidates/one-page-parity-clause2999/README.md).
+The maintained page uses the fully reviewed **low-padding2963** tuple.
+Its four raw integers total69685 bytes, down848 from2999 and25004 from
+admissible942, versus95205 for4049,97046 for4127,98219 for4177,
+141226 for6007,172011 for7309,180987 for7691,207214 for three-anchor47
+and242484 for radix55. Complete TeX4996 saves17 from2999; nonwhite
+extracted text2657 saves8; PDF159702 saves3. Gzip grows9 to4202.
+Fonts and the15-positive/66-operation/degree157 profile are unchanged.
+Pclp is discharged; see the [candidate](candidates/one-page-low-padding2963/README.md).
 
-Replace the two clauses by one at1956. Reflected label contributions now
-overlap several low tests; all are even and their complete bound resets
-carry. The forced marker first excludes fractional phases, making every
-temporal digit Boolean. The count lemma absorbs its temporal bit and
-decodes every cell; Start labels then recover full field alignment.
-Every copy, predecessor,916 padding bits, actual-rank identity, ordinary
-safe increment, controller and P66 map has a complete reviewed proof.
-Every printed tile and fixed integer is reconstructed; actual initializer
-and marker corruption controls pass, as do two actual visual inspections.
+Every padding field1..916 has at most three aligned Boolean contributions
+and zero incoming carry, so bit2 is zero. These916 tests combine with the
+origin as4*G917(rho). Native population978, the actual first-origin borrow
+and rank identities are preserved. Last product2961 resets; the untested
+top field2962 supplies strict representatives and safe-increment bounds.
+Full marker-first phase, Boolean temporal count, alignment, canonical
+subset/controller and P66 arguments pass review. Complete printed constants,
+actual source corruptions and two whole-page inspections pass separately.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
 gives65 operations for the same bound three-anchor47 polynomial while
@@ -42,14 +41,16 @@ those specific bindings. Neither is an integer-leaf65 record. The specific
 four-gate tail requiring MC=MF_native is ruled out by odd-d mask parity;
 this is no general lower bound on64-operation evaluators.
 
-The reviewed [single-clause3037 proof](research/single-clause-independent/README.md)
-is preserved as an intermediate checkpoint at71425 raw bytes. Its marker
-range makes the sole clause temporally clean before decoding. The current
-2999 proof replaces that stronger condition by the Boolean temporal-bit
-lemma and permits even low reflected overlaps, saving a further892 bytes.
-Next work permits squarefree composite block lengths with controllers at
-every prime divisor, and tests lower padding placements. Each new tuple
-requires its complete proof, finite certificate and separate page review.
+Reviewed intermediate checkpoints preserve
+[single-clause3037](research/single-clause-independent/README.md) at71425
+raw bytes and [composite2983](research/composite-length-independent/README.md)
+at70157. The latter proves the controller for all47/19/157 divisors of
+its squarefree d, removing the former prime-length restriction. The low
+padding argument then shortens the tuple to2963 while simplifying the
+source mask. Next work uses exact block descriptions of physical support,
+inlines the sole weighted polynomial helper, and tests lower clauses.
+Every new tuple requires a complete proof and finite certificate; exact
+recipe identities require whole-port equality and separate page review.
 
 The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
 removes the zero-weight marker from Psi and subtracts it explicitly in MC.

@@ -19,33 +19,33 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **complete single-clause2999 equation
+[equation.tex](equation.tex) print the **complete low-padding2963 equation
 in fifteen positive unknowns, exact degree157, with66 integer-leaf binary
 operations**. All four fixed constants, the436-character numeral, alphabet,
 closed430-action decoder and942 admissible tiles fit on one Letter page
 at9-point body and7.7-point seed/footer sizes.
 
-The [complete candidate](candidates/one-page-parity-clause2999/README.md)
-uses**70533 raw integer bytes**,24156 fewer than the preceding admissible942
-page. Gzip integer storage falls3819 bytes to4193. Complete TeX falls12 bytes
-to5013; nonwhite `pdftotext -layout` text falls6 characters to2665; the actual
-PDF falls16 bytes to159705. Fonts, variable count, operation count and degree
-remain unchanged. These are separately measured size metrics.
+The [complete candidate](candidates/one-page-low-padding2963/README.md)
+uses**69685 raw integer bytes**,848 fewer than the preceding2999 page and
+25004 fewer than admissible942. Complete TeX falls17 bytes to4996;
+nonwhite `pdftotext -layout` text falls8 characters to2657; the actual PDF
+falls3 bytes to159702. Gzip storage grows9 bytes to4202. Fonts, variables,
+operations and degree remain unchanged; the size metrics are kept distinct.
 
-The [whole ordinary proof](research/parity-clause-independent/PROOF.md)
-uses one count clause at1956. Extra reflected label terms at low copy
-and marker tests are even and bounded, preserving parity and resetting
-carry. The forced Start marker first excludes fractional binary phases;
-the resulting Boolean temporal clause bit is absorbed into the count
-lemma. Only then do decoded Start labels force full alignment. The complete
-predecessor,916 padding tests, actual rank, safe increments and both positive
-P66 maps are included. The [finite certificate](research/parity-clause-independent/certificate.json)
-discharges Pcpc with orders23/1499, prime965357 and H45/2747/650665.
-Full [root](reviews/parity-clause2999-root.md) and
-[independent](reviews/parity-clause2999-independent-peer.md) reviews pass.
+The [whole ordinary proof](research/low-padding-independent/PROOF.md)
+moves all916 padding tests to bit2 in fields1..916. Each aligned digit
+is a sum of at most three Boolean units, with zero incoming carry. Combining
+these tests with the origin gives4*G917(rho), shortening the complete source
+mask. The final product2961 resets, leaving one untested zero top field.
+The marker-first phase argument, Boolean temporal count, full alignment,
+actual rank, safe increments and both positive P66 maps are retained.
+The [finite certificate](research/low-padding-independent/certificate.json)
+discharges Pclp with orders23/2962, prime1362521 and H29/2938/492699.
+Full [root](reviews/low-padding2963-root.md) and
+[independent](reviews/low-padding2963-independent-peer.md) reviews pass.
 Normal/optimized checks reconstruct all942 printed tuples,3297 coefficients,
 978 physical positions and four integers. Actual initializer and marker
-corruptions are rejected. The [page review](reviews/parity-clause2999-page-peer.md)
+corruptions are rejected. The [page review](reviews/low-padding2963-page-peer.md)
 records a second actual full-page inspection.
 [CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the complete page and
 preserves the preceding metadata verbatim.
@@ -53,7 +53,8 @@ preserves the preceding metadata verbatim.
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
 proof, consistency decision or global minimum is claimed. Lean remains
-paused. The [admissible942](candidates/one-page-admissible942/equation.pdf),
+paused. The [single-clause2999](candidates/one-page-parity-clause2999/equation.pdf),
+[admissible942](candidates/one-page-admissible942/equation.pdf),
 [Boolean4027](candidates/one-page-boolean-dummy4027/equation.pdf),
 [shared-copy4049](candidates/one-page-merged-copy4049/equation.pdf),
 [Start-marker4127](candidates/one-page-start-marker4127/equation.pdf),
@@ -63,11 +64,11 @@ paused. The [admissible942](candidates/one-page-admissible942/equation.pdf),
 [two-anchor7691](candidates/one-page-two-anchor7691/equation.pdf),
 [three-anchor47](candidates/one-page-complemented47-independent/equation.pdf)
 and [radix55](candidates/one-page-compact66-radix55/equation.pdf) pages remain
-preserved. The reviewed [single-clause3037 proof](research/single-clause-independent/README.md)
-is an intermediate checkpoint. Next work tests squarefree composite block
-lengths and alternative padding placements. The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
-preserves its bound tuple while shortening two recipe blocks; full-page
-promotion is separate. [Radix obstructions](research/radix-parity-independent/README.md)
+preserved. Reviewed [single-clause3037](research/single-clause-independent/README.md)
+and [composite2983](research/composite-length-independent/README.md) proofs
+are intermediate checkpoints. Next work simplifies complete block-mask
+recipes and tests further clause layouts. The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
+preserves its bound tuple; [radix obstructions](research/radix-parity-independent/README.md)
 explain why direct46/45 substitutions need different proof interfaces.
 
 The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),

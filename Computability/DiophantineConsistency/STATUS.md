@@ -25,37 +25,36 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete single-clause2999 equation: fifteen positive unknowns,
-degree157,66 integer-leaf operations and**70533 raw integer bytes**.
-Compared with admissible942, raw storage falls24156 bytes, gzip3819 to4193,
-complete TeX12 to5013, nonwhite extracted text6 to2665 and PDF16 to159705.
+the complete low-padding2963 equation: fifteen positive unknowns,
+degree157,66 integer-leaf operations and**69685 raw integer bytes**.
+Compared with2999, raw storage falls848 bytes, complete TeX17 to4996,
+nonwhite extracted text8 to2657 and PDF3 to159702. Gzip grows9 to4202.
 The same9pt/7.7pt fonts and one Letter page are retained.
 
-The [ordinary proof](research/parity-clause-independent/PROOF.md) uses
-one clause at1956. All reflected low-field overlaps are included: they
-are even label weights and remain below the carry bound. Marker parity
-first forces fractional phase zero; the Boolean temporal clause bit is
-then absorbed into the count lemma. Decoded Start labels recover full
-alignment. The exact predecessor,916 padding bits, actual rank, ordinary
-safe increments and both P66 maps pass full root and independent review.
-Pcpc uses prime965357, orders23/1499 and new H45/2747/650665.
-Normal/optimized checks reproduce all942 printed tiles,3297 coefficients,
-physical support and integer ports. Actual initializer/marker corruptions
-are rejected; two actual full-page visual inspections pass. See the
-[candidate](candidates/one-page-parity-clause2999/README.md),
-[math review](reviews/parity-clause2999-independent-peer.md) and
-[page review](reviews/parity-clause2999-page-peer.md).
+The [ordinary proof](research/low-padding-independent/PROOF.md) moves
+all916 padding tests to uniformly zero bit2 in low fields1..916. Their
+aligned digits are at most3 with zero incoming carry. The combined origin
+mask4*G917 retains978 native bits and the exact first-origin borrow.
+One untested zero top field after product2961 retains strict representatives
+and safe increments. Full phase, count, alignment, actual rank, controller
+and both P66 maps pass root and independent review. Pclp uses prime1362521,
+orders23/2962 and H29/2938/492699. Normal/optimized checks reproduce every
+printed tile, coefficient, physical position and integer port. Actual
+initializer/marker corruptions are rejected; two whole-page inspections pass.
+See the [candidate](candidates/one-page-low-padding2963/README.md),
+[math review](reviews/low-padding2963-independent-peer.md) and
+[page review](reviews/low-padding2963-page-peer.md).
 
-All earlier pages and CURRENT records remain preserved, along with the
-reviewed [single-clause3037 checkpoint](research/single-clause-independent/README.md).
+All earlier pages and CURRENT records remain preserved, along with reviewed
+[single-clause3037](research/single-clause-independent/README.md) and
+[composite2983](research/composite-length-independent/README.md) checkpoints.
 No new formal-kernel replay or consistency decision is claimed; inherited
-ordinary calibration remains explicit. Next work tests squarefree composite
-block lengths and alternative padding placements. The separately checked
+ordinary calibration remains explicit. Next work simplifies complete block
+mask recipes and tests further clause layouts. The separately checked
 [weighted-only Psi identity](research/weighted-only-psi/NOTE.md) preserves
-its bound tuple while shortening the recipe blocks. The
-[radix note](research/radix-parity-independent/README.md) and
-[interior-padding probe](research/start-marker-padding-probe/NOTE.md)
-remain scoped obstacles/tradeoffs, with no global lower-bound claim.
+its bound tuple. The [radix note](research/radix-parity-independent/README.md)
+and earlier [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
+remain scoped obstacles/tradeoffs, without a global lower-bound claim.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 still saves nineteen operations and171 degree while adding five unknowns.
