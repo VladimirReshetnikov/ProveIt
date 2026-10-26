@@ -196,6 +196,15 @@ peer replay](reviews/native-window-carry-lean-peer.md). The current coefficient
 recipe and budget still need specialization; phase and native semantics
 remain separate obligations.
 
+`CurrentHighDigits2011` now proves every high-mask field and gap, all
+digit bounds, and the full repeated MF*J−1 word. Its origin subtraction
+changes4 to3 only at the global origin. `polynomial_zero_mask_test`
+derives that complete mask test from every actual positive current65
+zero and K>0, with no supplied F word or native premise. See the
+[root whole-source review and replay](reviews/current-high-digits2011-lean-root.md).
+The exact coefficient recipe, physical count and phase recovery remain
+to be composed with the mask and carry results.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
