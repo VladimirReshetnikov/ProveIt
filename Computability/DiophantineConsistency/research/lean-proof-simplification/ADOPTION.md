@@ -198,5 +198,27 @@ its superseded checked repair and the intentional stdout difference for
 strictly smaller axiom sets remain separately recorded. Equation artifacts
 retain their checked decimal and distinct-name presentation.
 
+After merging upstream `cbfdd02ce4` as `0ac0f529bf`, the narrowed decoder
+import exposed an impractically slow tile certificate. `927256e3a5` makes
+the old broad tactic dependency explicit in `WangTiles942Core`, preserving
+the upstream arithmetic route and every other Core byte. This costs one
+line: the final seven-module checkpoint is1885→1576,309 net removed, and
+the reviewed series is4125. The earlier310-line/32-call figures describe
+the pre-merge source batch above.
+
+The repaired refresh completes96 successful scope commands: two preserved
+fresh successes plus94 R1 calls, including88 affected project modules,
+decoder focus,109 old-report comparisons and five new API reports. All109
+comparisons are byte-identical, including Core's seven axiom-free reports.
+Together with the unaffected bootstrap branch,147 old reports comprise140
+identical reports and seven strict axiom subsets, with no additions. ROOT
+also verifies116 complete old theorem headers,23 whole definitions, the
+six-field PortBox and all Core structures/instances remain literal. The
+three deliberate interruptions, malformed diagnostic-marker input and
+pre-execution report-counter repair remain separate. The installed package
+boundary and262 primary project objects are reused; this is not a whole
+project replay. Durable inputs, results and original/corrected receipts are
+in [the refresh bundle](../../reviews/lean-proof-simplification-309-refresh-20261026/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

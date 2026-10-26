@@ -1,0 +1,91 @@
+from pathlib import Path
+import hashlib,json,re,subprocess,time
+
+ROOT=Path.cwd()
+OUT=Path('/tmp/diophantine-310-postmerge-refresh-r1')
+SETUP=json.loads((OUT/'setup.json').read_text())
+PREFIX='Computability/DiophantineConsistency/Lean/DiophantineConsistency/'
+
+def digest(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+def file_record(path):
+    p=Path(path)
+    return {'path':str(p),'bytes':p.stat().st_size,'sha256':digest(p)}
+
+def check_source_pins():
+    for path,expected in SETUP['protected'].items():
+        assert digest(path)==expected,('protected source changed',path)
+    mathlib=Path('.lake/packages/mathlib')
+    head=subprocess.check_output(['git','-C',str(mathlib),'rev-parse','HEAD'],text=True).strip()
+    assert head==SETUP['original_protected_receipt']['mathlib_head']
+    assert not subprocess.check_output(['git','-C',str(mathlib),'status','--porcelain','--untracked-files=no'],text=True).strip()
+
+def check_reused_objects():
+    for previous in SETUP['previous_successes']:
+        assert previous['actual_exit_code']==0
+        for key in ['source','object','log','timing']:
+            assert digest(previous[key]['path'])==previous[key]['sha256'],('previous fresh success changed',previous[key]['path'])
+    for entry in SETUP['reused_objects']:
+        assert digest(entry['object'])==entry['sha256'],('reused object changed',entry['object'])
+
+check_source_pins()
+check_reused_objects()
+subprocess.run(['git','merge-base','--is-ancestor',SETUP['upstream'],'HEAD'],check=True)
+steps=[]
+for source in SETUP['ordered_sources']:
+    assert source.startswith(PREFIX)
+    name=source[len(PREFIX):-5]
+    output=Path('.lake/build/lib/lean/DiophantineConsistency')/(name+'.olean')
+    steps.append({'kind':'affected-source','tag':name,'source':source,'output':str(output)})
+steps.append({'kind':'decoder-focus','tag':'DecimalMachine215Checks','source':PREFIX+'DecimalMachine215Checks.lean'})
+for tag,query,baseline,count in SETUP['audit_specs']:
+    dest=OUT/(tag+'-old-axioms.lean')
+    dest.write_bytes(Path(query).read_bytes())
+    steps.append({'kind':'old-public-audit','tag':tag+'-old-axioms','source':str(dest),'expected_log':file_record(baseline),'report_count':count})
+for tag,query in [('boundary-generic','/tmp/diophantine-boundary-fibers-generic.lean'),('horner-new-api','/tmp/lean-zzb-horner-new-api-axioms.lean')]:
+    dest=OUT/(tag+'.lean')
+    dest.write_bytes(Path(query).read_bytes())
+    steps.append({'kind':'generic-domain-and-new-api' if tag=='boundary-generic' else 'new-api-audit','tag':tag,'source':str(dest)})
+assert len(steps)==94
+for step in steps:
+    assert Path(step['source']).is_file(),step['source']
+    step['source_record']=file_record(step['source'])
+manifest={'scope':'86 affected project sources fresh in R1, plus two successful sources from the first attempt authenticated unchanged: 88 affected sources total. R1 additionally runs decoder focus, 109 old reports and five new API reports/generic domains (94 actual calls); first two successes make 96 successful scope calls. Three interruptions and a malformed progress-marker diagnostic retain separate records. Preexisting 262 project ancestor objects are authenticated reuse, not fresh elaborations. New upstream HA/carrier leaves retain separate earlier receipts. No whole-project claim.','merged_HEAD':SETUP['merged_HEAD'],'upstream':SETUP['upstream'],'previous_successes':SETUP['previous_successes'],'previous_interruption':SETUP['previous_interruption'],'additional_source_repair':SETUP['additional_source_repair'],'protected':SETUP['protected'],'selected_roots':SETUP['original_protected_receipt']['roots'],'affected_selected_roots':SETUP['affected']['affected_selected_roots'],'reused_objects':SETUP['reused_objects'],'driver':file_record(__file__),'steps':steps}
+(OUT/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+state={'records':[],'complete':False,'source_pins_before':True,'reused_object_pins_before':True}
+(OUT/'execution.json').write_text(json.dumps(state,indent=2)+'\n')
+started=time.monotonic()
+for number,step in enumerate(steps,1):
+    assert digest(step['source'])==step['source_record']['sha256']
+    argv=['lake','env','lean','-M6000','-j1','-DElab.async=false',step['source']]
+    if 'output' in step:
+        Path(step['output']).parent.mkdir(parents=True,exist_ok=True)
+        argv+=['-o',step['output']]
+    log=OUT/(f'{number:03d}-'+step['tag']+'.log')
+    timing=OUT/(f'{number:03d}-'+step['tag']+'.time')
+    began=time.monotonic()
+    with log.open('wb') as stream:
+        result=subprocess.run(['/usr/bin/time','-f','elapsed_seconds=%e max_rss_kib=%M exit_status=%x','-o',str(timing),*argv],stdout=stream,stderr=subprocess.STDOUT,cwd=ROOT)
+    record={'number':number,'kind':step['kind'],'tag':step['tag'],'argv':argv,'actual_exit_code':result.returncode,'elapsed_monotonic_seconds':time.monotonic()-began,'log':file_record(log),'timing':file_record(timing),'source':step['source_record']}
+    if 'output' in step and result.returncode==0:
+        record['object']=file_record(step['output'])
+    if step['kind']=='old-public-audit':
+        record['byte_equal_to_expected_baseline']=log.read_bytes()==Path(step['expected_log']['path']).read_bytes()
+        record['report_count']=len(re.findall(r"'[^']+' (?:depends on axioms:\s*\[[^\]]*\]|does not depend on any axioms)",log.read_text(),re.S))
+    state['records'].append(record)
+    (OUT/'execution.json').write_text(json.dumps(state,indent=2)+'\n')
+    print(f'{number}/{len(steps)} {step["tag"]}: exit {result.returncode}',flush=True)
+    if result.returncode!=0:
+        raise SystemExit(result.returncode)
+    if step['kind']=='old-public-audit':
+        assert record['byte_equal_to_expected_baseline']
+        assert record['report_count']==step['report_count']
+check_source_pins()
+check_reused_objects()
+for record in state['records']:
+    assert digest(record['source']['path'])==record['source']['sha256']
+    if 'object' in record:assert digest(record['object']['path'])==record['object']['sha256']
+state.update({'complete':True,'source_pins_after':True,'reused_object_pins_after':True,'elapsed_monotonic_seconds':time.monotonic()-started,'actual_zero_exits':len(state['records'])})
+(OUT/'execution.json').write_text(json.dumps(state,indent=2)+'\n')
+print('PASS all94 R1 commands plus2 authenticated first-attempt successes; protected sources and reused objects unchanged',flush=True)

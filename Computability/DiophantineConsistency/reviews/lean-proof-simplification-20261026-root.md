@@ -1575,3 +1575,91 @@ six-module comparison with exact, depth-aware header boundaries: all90
 complete headers, ten whole definitions and PortBox remain identical.
 This corrects metadata only; no source, proof, build result or validation
 count changed.
+
+## Synchronization and explicit certificate import
+
+ROOT fetched immutable upstream `cbfdd02ce4dee136d1344e3d65cda6fcb6551700`
+and merged it cleanly as `0ac0f529bf8f3e21af449a172b6bd0da579895fa`.
+The86 incoming changed paths include separate arithmetic/Foundation and
+carrier work, whose earlier validation remains separately attributed.
+Against the26 selected roots, the full tracked import graph has352 project
+sources; adding the three configuration/toolchain pins and both equation
+artifacts protects357 files. Only `DecimalMachine215` changes in that
+protected incoming set: its broad tactic import becomes the specific Finset
+import, with all decoder declarations, proof bodies and data unchanged.
+All six cleanup sources and the decimal equation artifacts survive the merge
+byte-for-byte. `alternate_encoding_research` independently confirms this
+import-only delta and its exact88-node affected cone, including20 roots.
+
+The initial refresh compiled the decoder and tile data successfully, then
+ROOT deliberately interrupted Core after904.76 seconds. The
+[earlier closure record](current-positive-zero2011-closure/execution-state.json)
+reports a successful10.44-second run of the same source; ROOT also
+authenticates its archived timing against that record. A profiler
+run and a complete narrow-import copy were also interrupted, after122.63
+and95.33 seconds. A complete temporary copy with an explicit broad import
+passes in13.95 seconds. Narrow/broad queries select identical top-level
+Nat/List equality instances, so no particular instance or tactic replacement
+is asserted as the cause, and no smallest corrective import is claimed.
+One earlier instrumented copy failed with three parse errors because its
+progress markers split documentation/declaration boundaries; the clean
+full-body copy corrects that diagnostic input. These observations are
+separate from final scope commands and are not a controlled speed benchmark.
+
+`927256e3a5` explicitly imports `Mathlib.Tactic` in Core, leaving every
+other byte literal and retaining the upstream decoder's narrow import for
+the arithmetic/Foundation route. The actual repaired production Core
+passes in12.28 seconds. This one-line dependency repair changes the final
+whole-scope saving to309: seven modules1885→1576, with all helper/API costs
+included, and the reviewed series3816→4125. The preceding310-line/32-call
+checkpoint remains the accurate pre-merge history.
+
+`v_finite_full_static` independently read the complete refresh driver,
+reconstructed the352-node import graph, authenticated all357 source pins,
+262 reused primary object hashes and both first-attempt successful
+source/object/log/time bindings, and verified the86 remaining sources are
+ordered by dependencies. Before execution, review caught a counter that
+would omit Core's seven axiom-free reports; the original draft is preserved
+and both driver and verifier count the two report forms. This was a
+pre-execution accounting correction, not a Lean failure. The corrected
+driver and verifier passed full independent readback before ROOT executed
+either. No reviewer compiler execution is attributed.
+
+R1 passes all94 actual calls, taking533.40 observed seconds. The two
+unchanged successful fresh sources from the first attempt give96 successful
+scope commands in total:88 affected project sources, an additional decoder
+focus, five old-public audit calls and two generic/new-API calls. This
+freshly checks every affected intermediate source, beyond just the20
+affected selected roots. All109 old-report comparisons are byte-identical
+to their respective baselines; Core contributes39, comprising32 reports
+with standard axioms and seven axiom-free reports. The two boundary helpers
+retain the standard three axioms and the three Horner declarations retain
+`propext` only. The three existing exponent warnings in Units, NativePacking
+and the Rephase focus match earlier logs. No source limits were increased;
+all scope commands use `-M6000 -j1 -DElab.async=false`.
+
+The unaffected bootstrap branch retains its earlier38-report validation.
+Across all147 old public reports,140 report texts are byte-identical and
+seven axiom sets strictly shrink; none adds an axiom. ROOT's new exact
+comparison against immutable `180e99fc75` preserves116 complete old theorem
+headers,23 whole definition blocks, the entire6-field PortBox and every
+Core structure/instance byte. All source/object pins hold before and after
+execution, and ROOT separately reauthenticates every final command record.
+
+The262 project ancestor objects remain authenticated reuse. Installed
+package/toolchain objects remain a trusted precompiled boundary. The two
+unaffected nonimported focus leaves retain their earlier checks. The new
+upstream HA and carrier leaves
+retain their own receipts. This is not a new fresh replay of all352 sources,
+the whole library umbrella or the external package closure. Both equation
+artifacts remain exactly the checked one-page decimal/distinct-name version.
+The iterative goal remains active.
+
+The [durable bundle](lean-proof-simplification-309-refresh-20261026/BUNDLE.json)
+contains the exact source/import pins, corrected driver and verifier,
+96 successful scope observations, interrupted first attempt, seven separate
+diagnostic/baseline calls, source/API integrity comparisons and all retained
+pre-merge author receipts and logs. Its archive has344 entries; ROOT checks
+the archive integrity and every entry against its retained bytes. Historical
+Core input records resolve to the archived original source snapshot, rather
+than the subsequently repaired path.
