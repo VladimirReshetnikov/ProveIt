@@ -382,3 +382,4 @@ import DiophantineConsistency.ObjectDivision
 import DiophantineConsistency.ObjectDivModSyntax
 import DiophantineConsistency.AnnotatedSharedSyntax
 import DiophantineConsistency.CarrierNormalizedProduct106
+import DiophantineConsistency.ThirteenFirstNormCorrection92

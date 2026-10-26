@@ -169,6 +169,16 @@ now also has a complete current-port graph and independently checked
 external consistency equivalence. Its identity maps retain every positive
 assignment. The [root replay](reviews/fourteen-normalized-product106-root.md)
 uses the refreshed current data owners and passes all six reports.
+The [first-norm auxiliary correction](research/thirteen-first-norm-correction92/README.md)
+now gives13 positive variables,84 operations and exact degree92. Either
+sphere equation first forces P=1, so the correction vanishes; every
+positive assignment is retained in both directions. Independent fresh
+Lean builds pass eight standard-only reports, and complete normal/optimized
+finite audits verify the two leading cancellations and all fixed ports.
+See the [root acceptance](reviews/thirteen-first-norm-correction92-root.md).
+This trades nine operations for four degrees against13/75/96. Its external
+ConZFC equivalence is checked; the HA endpoint remains open.
+
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the

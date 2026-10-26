@@ -24,6 +24,16 @@ Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
 
+The [first-norm auxiliary correction](research/thirteen-first-norm-correction92/README.md)
+now gives13 positive variables,84 operations and exact degree92. Either
+sphere equation first forces P=1, so the correction vanishes; every
+positive assignment is retained in both directions. Independent fresh
+Lean builds pass eight standard-only reports, and complete normal/optimized
+finite audits verify the two leading cancellations and all fixed ports.
+See the [root acceptance](reviews/thirteen-first-norm-correction92-root.md).
+This trades nine operations for four degrees against13/75/96. Its external
+ConZFC equivalence is checked; the HA endpoint remains open.
+
 The [complete normalized product](research/fourteen-normalized-product106/README.md)
 now supplies14 positive variables,67 operations and degree106 with the
 unchanged current ports. The exact scaled identity and positive delta
