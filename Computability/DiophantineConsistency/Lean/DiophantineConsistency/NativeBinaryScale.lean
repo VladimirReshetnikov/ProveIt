@@ -60,16 +60,12 @@ theorem source_q_power_two (ports : Fin 4 → ℤ) (hports : PortBox ports)
 /-- The order of two modulo 2^d−1 is exactly d. -/
 theorem width_dvd_exponent {d u : ℕ} (hd : 0 < d)
     (hdiv : 2 ^ d - 1 ∣ 2 ^ u - 1) : d ∣ u := by
-  have hm : 2 ^ (u % d) - 1 = 0 := by
-    rw [← Nat.pow_sub_one_mod_pow_sub_one 2 d u]
-    exact Nat.mod_eq_zero_of_dvd hdiv
-  have hpow : 2 ^ (u % d) = 1 := by
-    have : 1 ≤ 2 ^ (u % d) := Nat.one_le_two_pow
-    omega
-  have hzero : u % d = 0 := by
-    exact (Nat.pow_right_injective (by decide : 1 < 2))
-      (by simpa using hpow : 2 ^ (u % d) = 2 ^ 0)
-  exact Nat.dvd_of_mod_eq_zero hzero
+  have hm := Nat.mod_eq_zero_of_dvd hdiv
+  rw [Nat.pow_sub_one_mod_pow_sub_one] at hm
+  apply Nat.dvd_of_mod_eq_zero
+  by_contra hn
+  have hsmall := (Nat.pow_le_one_iff hn).mp (Nat.sub_eq_zero_iff_le.mp hm)
+  omega
 
 /-- The source base is a power of the fixed radix, with a positive number
 of native cells. -/
