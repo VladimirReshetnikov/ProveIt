@@ -48,7 +48,8 @@ The current942-tile,47-bit construction now has checked literal decimal
 data, exact K, physical permutation, polynomial-to-word recovery, both
 phase alignments, all-cell occupation and local tile-color matching.
 The detailed checkpoints below record their exact premises and reviews.
-The remaining work includes the global marked-word adapter, actual
+The global marked-word adapter now retains every original selected tile
+and the exact positive temporal stride. Remaining work includes actual
 Wang-machine language equivalence, canonical controller converse, other
 equation frontiers and internal-ZFC derivation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
@@ -409,7 +410,8 @@ copy and label premise comes from the same original Facts. Even without
 occupation elsewhere, Start's South1 and North435 exclude zero temporal
 displacement modulo the full word. The [author review and fresh checks](reviews/current-tile-colors2011-lean-root.md)
 record the precise conditional local-selection scope. Global chosen tile
-assignment and the marked-word composition remain subsequent work.
+assignment follows below. The [independent color-composition review](reviews/current-tile-colors2011-lean-peer.md)
+also passed fresh main/check replay in an isolated import overlay.
 
 `CurrentCellCycle2011` proves that
 successor by2011 reaches every aligned cell, and therefore propagates any
@@ -428,8 +430,14 @@ No occupation, globally unique Start or supplied marker-value premise
 enters this theorem. Global chosen assignment and machine semantics
 remain separate obligations.
 
-Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. `WangTiles942Periodic` defines a
+`CurrentCellCoordinate2011` now
+transfers exact full-word spatial and temporal subtraction to the canonical
+cell coordinate. Scaling representatives and modulus together justifies
+the cancellation without assuming2011 is invertible moduloN. Arbitrary
+large shifts, singleton cells and nonzero-stride transfer are covered.
+See the [root review and fresh replay](reviews/current-cell-coordinate2011-lean-root.md).
+
+`WangTiles942Periodic` defines a
 marked word using only Start at zero and the true spatial/temporal color
 matches, then pulls it back by address -x-s*t to a periodic plane of
 actual tiles. The [root review and fresh replay](reviews/wang-tiles942-periodic-lean-root.md)
@@ -437,6 +445,26 @@ cover matching orientation, arbitrary signed shifts and periods(N,0),
 (0,N),(-s,1). No rectangular quotient, coprimality, unique Start or machine
 run is assumed. Existence from the actual polynomial is the next adapter;
 the geometry itself supplies no machine semantics.
+
+`CurrentMarkedWindow2011.polynomial_zero_marked_window`
+now augments the same original N/source/Boolean word/carries/digits with
+an actual marked cyclic942-tile assignment. Its full Selected binding is
+retained at each canonical inverse coordinate, both color matches are
+proved, and the unchanged rank quotient is nonzero moduloN and positive
+as a natural stride. No rectangle, coprimality, globally unique Start or
+machine premise is supplied. See the [root review and fresh replay](reviews/current-marked-window2011-lean-root.md).
+Machine-run extraction, cofinal canonical tilings, arithmetic/controller
+completeness, remaining equation frontiers and internal-ZFC proof remain
+required; the marked-word endpoint is not the final consistency theorem.
+
+Independent agents own distinct new Lean modules. The coordinator owns
+integration, documentation and commits. `WangTiles942Boundary` proves the
+exact local cases for vertical colors434..438, including north437 iff
+south437 and the nine actual seam tuples. Transition input heads stop
+at431 while actual receiving outputs include halt215 and stop at433.
+The [root review and fresh replay](reviews/wang-tiles942-boundary-lean-root.md)
+retain the true initializer color4 and reject its old188 lookalike.
+These are local table facts, with no strip, run or halting premise.
 
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
