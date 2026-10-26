@@ -85,6 +85,16 @@ the exact scope and reproduction commands. These theorems require the
 scalar port inequalities; the current entire native recipe still must be
 bound and calibrated. The final consistency equivalence remains open.
 
+The bounded cyclic carry and word-identification modules also now compile.
+`NativeCyclicCarryWord.exists_convolution_normalization` derives bounded
+actual carries, normalized digits, their exact local decomposition and
+equality with the positive strict transport representative.
+`transport_mask_digits` transfers the packed mask test to those digits.
+The [root review](reviews/native-cyclic-carry-lean-root.md) records the
+necessary numeric budget and range assumptions. Their discharge from the
+literal current native recipe, followed by staircase and phase recovery,
+remains required.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
