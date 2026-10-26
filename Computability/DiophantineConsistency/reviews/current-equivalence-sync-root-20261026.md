@@ -36,3 +36,21 @@ is reported by Git, not inferred from this pre-push receipt.
 The unbounded goal remains active: internal-ZFC derivation and further
 equation-size reduction continue. The unrelated marker997 proposal is
 not promoted, staged or discarded by this synchronization.
+
+## Remote race and successful ordinary push
+
+The first push was rejected because the remote advanced to726ea9af9d.
+Root fetched it and read its entire ten-path diff. Five annotated modules
+only inline deleted one-line private list-lookup wrappers with the exact
+same `List.mem_of_getElem?` / `List.getElem?_of_mem` calls. The sixth Lean
+module replaces arithmetic index normalization by `Nat.sub_add_cancel ht`,
+retaining ht≥1 and every declaration/data field. The two generator changes
+specify UTF-8 and LF I/O; they were read but not executed here. The other
+two files update explanatory/adoption documentation. No equation, machine,
+port, witness domain or public theorem statement changed.
+
+Root merged that `origin/main` cleanly into09eaa57ae5 and the ordinary
+non-force push succeeded: `726ea9af9d..09eaa57ae5 HEAD -> main`.
+The current-closure plan now pins the post-race source snapshot. This
+addendum reports the actual successful push; it does not upgrade either
+upstream-reported builds or old cached objects to fresh local validation.

@@ -14,6 +14,18 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
+26 October formalization checkpoint: the maintained14/65/150 equation and
+the generic accepted13/69/174,13/70/140 and13/71/128 forms instantiated at
+the CURRENT2011 coefficient tuple now have closed external Lean no-positive-zero
+iff actual `DiophantineConsistency.ConZFC` theorems. See
+[`CurrentPositiveZero2011`](Lean/DiophantineConsistency/CurrentPositiveZero2011.lean),
+the [author receipt](reviews/current-positive-zero2011-root.md) and
+[independent fresh endpoint replay](reviews/current-positive-zero2011-lean-peer.md).
+This instantiation does not relabel the older frozen2471 graph artifacts
+described below. Strictly positive integer domains and all four actual ports
+are explicit. The encoded proof inside ZFC, source-authenticated current
+closure validation and iterative equation-size reduction remain ongoing.
+
 The maintained [decimal padding-staircase2011 page](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 has **14 positive unknowns,65 integer-leaf operations and exact degree150**.
 The uniform Carrier65 front and positive maps are unchanged. The new native

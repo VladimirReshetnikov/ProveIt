@@ -15,8 +15,8 @@ The current priority is Lean proofs that the smallest constructed equations
 under the different size metrics have no solutions exactly when `Con(ZFC)`.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
-older endpoints from the literal arithmetic and native compiler links
-still required for the recent equations. The
+older endpoints from each literal current-equation theorem and the
+separate internal-ZFC obligation. The
 [size-reduction record](SIZE_REDUCTION.md) preserves the constructions and
 their ordinary proofs. Later references below to the Lean pause describe
 their historical checkpoints; the resumed plan governs current work.
@@ -38,8 +38,18 @@ language now has a closed external equivalence with machine halting,
 hence no marked word iff ConZFC. Its construction permits independently
 large widths/heights and derives unique Start in the exact quotient.
 See the [native completeness receipt](reviews/wang-tiles942-native-completeness-root.md).
-The equation's reverse arithmetic/controller construction, remaining
-frontier equations and an internal-ZFC derivation remain open.
+The reverse arithmetic/controller construction is now closed too.
+[`CurrentPositiveZero2011.no_positive_zero_iff_conZFC`](Lean/DiophantineConsistency/CurrentPositiveZero2011.lean)
+proves **no positive zero iff actual syntactic ConZFC** for the maintained
+polynomial. Its companion theorem proves the same equivalence for all
+three accepted13-variable forms at the actual current ports. Under negated
+consistency it constructs one positive13-coordinate assignment solving all
+three simultaneously. The [author record](reviews/current-positive-zero2011-root.md)
+and [independent fresh endpoint replay](reviews/current-positive-zero2011-lean-peer.md)
+record six standard-only axiom audits and the exact domain and coefficient
+binding. These leaf builds reused prerequisites; source-authenticated
+post-merge closure validation remains separate. Further frontier equations,
+size reductions and an encoded internal-ZFC derivation remain active work.
 
 The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **complete decimal Carrier65 equation
@@ -109,10 +119,13 @@ It is preserved as an alternative while the newer14-variable equation above
 remains the maintained display. All original source, output and review records
 are retained; the formatting work does not replace a newer mathematical result.
 
-The proof remains ordinary mathematics composed with the retained explicit
-K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
-proof, consistency decision or global minimum is claimed. Lean formalization
-is active under the plan above. The [decimal2953](candidates/one-page-decimal-carrier65-2953/equation.pdf),
+The ordinary proof is now accompanied by the closed external Lean
+equivalence above, composed with the actual decimal-machine/refutation
+calibration. An encoded object-ZFC proof, consistency decision or global
+minimum is not claimed. The one-page footer retains its earlier conservative
+native-calibration status; the current checked endpoint and validation scope
+are recorded here and in the formalization plan. Lean formalization remains
+active. The [decimal2953](candidates/one-page-decimal-carrier65-2953/equation.pdf),
 [block-mask2963](candidates/one-page-block-mask2963/equation.pdf),
 [low-padding2963](candidates/one-page-low-padding2963/equation.pdf),
 [single-clause2999](candidates/one-page-parity-clause2999/equation.pdf),
