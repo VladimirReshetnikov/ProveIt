@@ -1,0 +1,164 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=.38in]{geometry}
+\usepackage{amsmath,amssymb,multicol}
+\pdfinfoomitdate=1\pdftrailerid{}
+\pagestyle{empty}\setlength{\parindent}{0pt}\setlength{\parskip}{2pt}
+\setlength{\columnsep}{13pt}\setlength{\jot}{0pt}
+\setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{3pt}
+\let\bigsum\sum\renewcommand{\sum}{\bigsum\nolimits}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\begin{document}
+\begin{center}
+{\large\bfseries A conditional fourteen-variable consistency equation}\\[-1pt]
+{\small Strictly positive integer unknowns; exact degree 150; a 65-operation evaluator.}
+\end{center}\vspace{-8pt}
+\begin{multicols}{2}
+\fontsize{9}{9.5}\selectfont
+The only unknowns are
+\[
+J,F,\alpha,z,f,i,T,s,w,n,\eta,\zeta,y,\gamma\in\mathbb Z_{>0}.
+\]
+All other symbols in the equation are polynomial abbreviations:
+\[
+\begin{gathered}
+b=\beta J,\quad q=b+1,\quad C=q-F-\alpha,\\
+X=wq,\quad Y=sq^3,\quad E=XY,\quad k=\eta+\zeta,\\
+\ell=EkY,\quad c=kY+\eta,\quad a=E+Y,\\
+H=4a+3,\quad\Delta=a^2+H,\quad D=X+ac+\gamma H,\\
+R=[b(q-F)+\alpha](q^2-1)+(\mu+q\omega)J,\\
+\tau=En+k-R,\quad V=f^2(cT-R)-c,\\
+P=\tau^2-\ell(\ell+k),\quad Q=D^2-\Delta c^2,\\
+S=i\Delta c^2,\quad U=S^2(V^2-y^2)+y^2,\\
+W=(K+w)C+(q-F)-zb,\quad Z=\Delta f^2-S^2.
+\end{gathered}
+\]
+The single equation is
+\[
+\boxed{PQUWZ-\Delta=0.}
+\]
+
+\textbf{The four fixed integers.}
+Every index, set, sum, product and floor below defines a constant, not
+another unknown. Put
+\[
+\begin{gathered}
+\rho=2^{49},\quad B=\rho^{2033},\quad\beta=B-1,\\
+G_m(x)=\sum_{j=0}^{m-1}x^j.
+\end{gathered}
+\]
+\begin{align*}
+\mu={}&\beta-G_{951}(\rho)\\
+&-\rho^{960}G_{26}(\rho)-\rho^{1005},\\
+\omega={}&B+3+(2^{46}-2)\rho^{1006}\\
+&+\rho^{960}G_9(\rho)+\rho^{987}G_8(\rho)
+  +\rho^{1005}\\
+&+2^{32}\rho^{2030}-\rho^{2012},\\
+K={}&\rho^{18}+\rho^{2042}+\rho^{1006}\Phi(1/\rho).
+\end{align*}
+For fixed integers $t\ge0$ and $r\ge0$, put
+\[
+\begin{gathered}
+\operatorname{bit}_r(t)=\fl{t/2^r}-2\fl{t/2^{r+1}},\\
+a\mathbin\oplus b=a+b-2ab\quad(a,b\in\{0,1\}),\\
+\epsilon_h(j)=\fl{\frac{h+877-j}{942}}\quad(0\le j\le941),\\
+h\in\rg{960}{968}\cup\rg{987}{994}.
+\end{gathered}
+\]
+For $0\le j\le941$ define the fixed encoded word
+\[
+\begin{split}
+\xi_j={}&255-w_j+2^8(511-n_j)\\
+&+\sum_{r=0}^{7}2^{17+r}\bigl(\operatorname{bit}_r(255-p_j)
+ \mathbin\oplus\epsilon_{987+r}(j)\bigr)\\
+&+\sum_{r=0}^{8}2^{25+r}\bigl(\operatorname{bit}_r(511-s_j)
+ \mathbin\oplus\epsilon_{960+r}(j)\bigr).
+\end{split}
+\]
+\[
+\begin{split}
+\Phi(x)={}&\sum_{j=0}^{941}[1+2^{12}(2^{34}-\xi_j)]x^j\\
+&+2^{12}x^{969}(x^9+2^{17})G_8(2x)\\
+&+2^{20}x^{942}(x^{18}+2^{17})G_9(2x).
+\end{split}
+\]
+These specify all coefficients through index3296; unlisted powers have
+coefficient zero. The rational intermediate in K cancels exactly;
+all four results are positive integers.
+
+\textbf{The 942 indexed fixed tiles.}
+Use the actions $u_j,v_j,d_j$ decoded below. For $d=0,1$, let
+\[
+\begin{gathered}
+h(q,b)=2q+b+2,\quad
+\mathcal S_d=\{u_j:d_j=d,\ 0\le j<430\},\\
+r_{d,q}=205-199d+|\mathcal S_d\cap\rg0{q-1}|.
+\end{gathered}
+\]
+An interval ending at $-1$ is empty. The table defines $t_i$ for
+$0\le i\le941$; all index ranges are fixed:
+\[
+\setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
+\text{index }i&\text{tile }t_i=(w_i,n_i,p_i,s_i)\\\hline
+0&(2,435,3,1)\\
+j+1\ (j=2q+b<430)&((1-d_j)r_{0,u_j},h(q,b),d_jr_{1,u_j},v_j)\\
+433-2a+b\ (a,b=0,1)&(0,432a+b,0,432a+b)\\
+\substack{423+2r_{d,q}+b\\q\in\mathcal S_d,\ d,b=0,1}&(dr_{d,q},b,(1-d)r_{d,q},h(q,b))\\
+923+2a+b\ (a,b=0,1)&(0,432a+b,0,438)\\
+927&(2,434,2,0)\\
+928&(3,436,4,4)\\
+929&(4,436,4,0)\\
+496+t\ (t=434,435,436)&(1,438,1,t)\\
+933+3a+b\ (a,b=0,1,2)&(a^2,437,b,437)
+\end{array}
+\]
+\textbf{A closed decoder for the 430 actions.}
+Put $D_b(A,k)=\fl{A/b^k}\bmod b$, where
+$a\bmod b=a-b\fl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
+\[
+\begin{gathered}
+\mathcal N=\mathcal A\bmod2^{636},\quad
+\mathcal T=\fl{\mathcal A/2^{636}},\\
+\nu_j=D_2(\mathcal N,j),\quad \kappa_j=(\sigma_j+2)^{1-\nu_j}\quad(0\le j<430),\\
+\sigma_j=\sum_{k=0}^{j-1}\nu_k,\quad
+\Pi_j=\prod_{k=0}^{j-1}\kappa_k\quad(0\le j\le430),\\
+m_q=D_2(\mathcal N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14+m_q(D_{16}(\fl{\mathcal T/\Pi_{430}},\tau_q)-14),\\
+u_j=(\sigma_{j+1}-(\fl{\mathcal T/\Pi_j}\bmod\kappa_j))\bmod216,\\
+v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
+\end{gathered}
+\]
+Empty sums/products are $0/1$. Here $(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
+uses this actual first target, including its state renaming.
+
+\textbf{The integer $\mathcal A$ in base 10.}
+Its complete decimal expansion is the concatenation of these lines:\par
+\begingroup\fontsize{7.7}{8.2}\selectfont\ttfamily
+12889260410359561746736540743515845134244260640012702033212621\par
+95398074180784058571518488282119861023093355389406939414042892\par
+97455773992193784795705001618777025966369137954859764532832722\par
+75411843410809038713502633204617333246733616940964578272360901\par
+56186216508504953649192752154519268024509952082950238865468307\par
+22999632482769253980274091217460707829023970817244790340704449\par
+09085581271192071656170732004937337082171141082486384269072884\par
+72778087419663417942892520175630649792329265834490253035577533\par
+96449689808375788457488971017043689875433162972390177936123032\par
+89025657757489526342497438772045714099661532481123050235898973\par
+27443609903800541199351405985754278307227777584454508422717998\par
+334113564409335346074892680328437\par
+\endgroup
+\normalfont\fontsize{7.7}{8.2}\selectfont
+\textbf{Conditional draft; no finite certificate or rendered-page approval.}
+The proposed ordinary equivalence with $\mathrm{Con}(\mathrm{ZFC})$
+requires an odd prime $\lambda>99617$ such that
+\[
+\begin{gathered}
+B^{\lambda-1}\equiv1\pmod{99617},\qquad
+\lambda^2\nmid B^{\lambda-1}-1,\\
+\gcd\bigl((B^2-1)(1+BK+B^2),99617\lambda\bigr)=1.
+\end{gathered}
+\]
+This is a complete coefficient recipe, not an unsolvability proof.
+Native calibration and internal-ZFC formalization remain open in Lean.
+\end{multicols}
+\end{document}
