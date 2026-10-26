@@ -17,26 +17,9 @@ def rotate (c : ZMod n → ℕ) (t k : ZMod n) : ℕ := c (k - t)
 
 theorem word_rotate {ρ : ℕ} (hρ : 1 ≤ ρ) (c : ZMod n → ℕ) (t : ZMod n) :
     word ρ (rotate c t) ≡ ρ ^ t.val * word ρ c [MOD ρ ^ n - 1] := by
-  have he : word ρ (rotate c t) = ∑ i : ZMod n, c i * ρ ^ (t + i).val := by
-    symm
-    apply Fintype.sum_equiv (Equiv.addLeft t)
-    intro i
-    simp only [rotate, Equiv.coe_addLeft, add_sub_cancel_left]
-  rw [he]
-  calc
-    (∑ i : ZMod n, c i * ρ ^ (t + i).val) ≡
-        ∑ i : ZMod n, c i * ρ ^ (t.val + i.val) [MOD ρ ^ n - 1] := by
-      apply Nat.ModEq.sum
-      intro i _
-      have hp := (pow_mod_length (n := n) hρ (t.val + i.val)).symm
-      rw [← ZMod.val_add] at hp
-      exact hp.mul_left _
-    _ = ρ ^ t.val * word ρ c := by
-      rw [word, Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [pow_add]
-      ring
+  classical
+  simpa [word, convolution, rotate, Pi.single_apply, ite_mul] using
+    word_convolution hρ (Pi.single t 1) c
 
 /-- Carry the high part of each scaled radix digit into its successor,
 including the last-to-first cyclic carry. -/

@@ -705,6 +705,48 @@ and [independent fresh root replay](reviews/current-controller-subsets2011-root.
 with four standard-only reports. Physical safety and ordinary finite-word
 mutation remain separate from this modular subset equality.
 
+`CurrentControllerPositions2011` now embeds the actual selected exponents
+and optional cell3 injectively into the physical cyclic cells. Its exact
+finite support preserves cardinality and, under rw<k, every member satisfies
+both unreduced successor bounds needed by the mutation theorem. The
+[author receipt](reviews/current-controller-positions2011-author.md) and
+[independent isolated replay](reviews/current-controller-positions2011-lean-peer.md)
+record13 standard-only audits, k=0, optional-cell separation and no-wrap values.
+
+`CurrentDummySafety2011` derives K<radix^2022 from every literal term and
+the checked complete coefficient mass. The two physical successor bounds
+then imply the required ordinary nonwrapping inequality for the same F.
+Its endpoint constructs the updated normalization with both ordinary source
+and F increments; no desired increment or nonwrapping bound is supplied.
+The [author receipt](reviews/current-dummy-safety2011-author.md) and
+[independent isolated replay](reviews/current-dummy-safety2011-lean-peer.md)
+record13 standard-only reports, boundary failures and a fresh two-cell
+construction. A finite-support iteration still needs to accumulate these
+one-dummy changes and compose the modular target into the actual rank.
+
+`NativePackingPopulation` proves the exact converse population calculation
+from both mask equalities, deriving every strict lower-block bound before
+splitting the four blocks. It requires no Pell population lower bound or
+already calibrated rank. `CurrentWordRephase2011` preserves the particular
+source C, carries, digits and F across whole-period stride changes, deriving
+the new transport from actual equal rotations and recomputing positive z.
+See the [root author/independent replay record](reviews/population-rephase-round-root.md),
+[population peer replay](reviews/native-packing-population-lean-peer.md) and
+[rephase author receipt](reviews/current-word-rephase2011-author.md).
+Their12 axiom reports are standard-only. Actual rank population binding,
+rank selection, the required stride congruence and remaining positive Pell
+witnesses still require composition; no complete equation converse is claimed.
+
+`CurrentPackingRank2011` binds the current once-shifted rank polynomial to
+the ordinary four-block natural integer, with all subtraction domains proved.
+The same packing's actual masks then give its exact population3*(94517*N)+2,
+without a source zero or Pell lower bound. Its positive upper complement also
+proves rank≥q³>2*(94517*N) independently of masks. The [author receipt](reviews/current-packing-rank2011-root.md)
+and [independent isolated replay](reviews/current-packing-rank2011-lean-peer.md)
+record eight standard-only reports and exact current-port binding. Rank
+congruence selection, forced temporal exponentiation and remaining positive
+Pell witnesses remain open.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the

@@ -99,14 +99,8 @@ def leftRelation : Relation 2 (fun v => v 0 = (Nat.unpair (v 1)).1) where
     simp only [program_lhs,program_rhs]
     change v 0 = (Nat.unpair (v 1)).1 ↔ ∃ w : Fin 2 → ℕ,
       certificateLeft (v 1) (v 0) (w 0) (w 1) = certificateRight (v 1) (v 0) (w 0) (w 1)
-    constructor
-    · intro h
-      have hp : v 1 = Nat.pair (v 0) (Nat.unpair (v 1)).2 := by rw [h,Nat.pair_unpair]
-      obtain ⟨s,hs⟩ := (exists_certificate_iff _ _ _).mpr hp
-      exact ⟨![(Nat.unpair (v 1)).2,s],hs⟩
-    · rintro ⟨w,hw⟩
-      have hp := (exists_certificate_iff _ _ _).mp ⟨w 1,hw⟩
-      rw [hp,Nat.unpair_pair]
+    symm
+    simp [Fin.exists_fin_succ_pi, exists_certificate_iff, GraphRep.exists_pair_right_iff]
 
 /-- The second projection uses the identical branch circuit with swapped inputs. -/
 def rightRelation : Relation 2 (fun v => v 0 = (Nat.unpair (v 1)).2) where
@@ -119,14 +113,8 @@ def rightRelation : Relation 2 (fun v => v 0 = (Nat.unpair (v 1)).2) where
     simp only [program_lhs,program_rhs]
     change v 0 = (Nat.unpair (v 1)).2 ↔ ∃ w : Fin 2 → ℕ,
       certificateLeft (v 1) (w 0) (v 0) (w 1) = certificateRight (v 1) (w 0) (v 0) (w 1)
-    constructor
-    · intro h
-      have hp : v 1 = Nat.pair (Nat.unpair (v 1)).1 (v 0) := by rw [h,Nat.pair_unpair]
-      obtain ⟨s,hs⟩ := (exists_certificate_iff _ _ _).mpr hp
-      exact ⟨![(Nat.unpair (v 1)).1,s],hs⟩
-    · rintro ⟨w,hw⟩
-      have hp := (exists_certificate_iff _ _ _).mp ⟨w 1,hw⟩
-      rw [hp,Nat.unpair_pair]
+    symm
+    simp [Fin.exists_fin_succ_pi, exists_certificate_iff, GraphRep.exists_pair_left_iff]
 
 private def graphIndex : Fin 2 → Option (Fin 1) :=
   Fin.cases none (fun _ => some 0)

@@ -1,6 +1,5 @@
 import Mathlib.Algebra.BigOperators.Fin
 import Diophantine.Common.RefinedRelationCombiningPolynomial
-import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.Ring
@@ -11,8 +10,8 @@ import Mathlib.Tactic.Ring
 Jones's nine-variable construction uses exactly two radicands. Expanding
 its four signed factors gives the literal formula below, so this case
 needs no polynomial selected from an existence theorem or exponent-halving
-algorithm. Complex square roots occur only in the proof of the polynomial
-identity, never in the coefficient construction or evaluation formula.
+algorithm. Injective exponent dilation proves the identity in the formal
+polynomial ring before evaluation, without choosing square roots.
 -/
 
 namespace DiophantineConsistency.RefinedPair
@@ -57,27 +56,31 @@ theorem radicalProduct_eq (V r : Fin 2 → R) (n B C D : R) :
     Fin.prod_univ_two, Fin.sum_univ_two, RelationCombiningPolynomial.signed, value]
   ring
 
-/-- The existing ordinary two-radicand polynomial evaluates to this literal formula. -/
+open MvPolynomial
+open RefinedRelationCombiningPolynomial (Coeff RootPoly)
+
+/-- An identity of polynomials, established by injective exponent dilation. -/
+theorem core_eq : RefinedRelationCombiningPolynomial.core 2 =
+    value (X 0 : RootPoly 2) (X 1)
+      (C (X (Sum.inl 0))) (C (X (Sum.inl 1)))
+      (C (X (Sum.inr 0))) (C (X (Sum.inr 1)))
+      (C (X (Sum.inr 2))) (C (X (Sum.inr 3))) := by
+  apply expand_injective (by decide : 0 < (2 : ℕ))
+  rw [RefinedRelationCombiningPolynomial.expand_two_core]
+  have h := RefinedRelationCombiningPolynomial.eval₂_rawProduct 2
+    (C : Coeff 2 →+* RootPoly 2) (fun i => X i)
+  rw [eval₂_eta, radicalProduct_eq] at h
+  simpa only [value, map_sub, map_mul, map_add, map_pow, map_ofNat, map_one,
+    expand_C, expand_X] using h
+
+/-- No algebraically closed field or chosen square roots are used. -/
 theorem value_eq (A V : Fin 2 → ℤ) (n B C D : ℤ) :
     RefinedRelationCombiningPolynomial.value 2 A V n B C D =
       value (A 0) (A 1) (V 0) (V 1) n B C D := by
-  obtain ⟨r0, hr0⟩ := IsAlgClosed.exists_pow_nat_eq (A 0 : ℂ) (by decide : 0 < (2 : ℕ))
-  obtain ⟨r1, hr1⟩ := IsAlgClosed.exists_pow_nat_eq (A 1 : ℂ) (by decide : 0 < (2 : ℕ))
-  have hr : ∀ i : Fin 2, (![r0, r1] i) ^ 2 = (A i : ℂ) := by
-    intro i
-    fin_cases i
-    · exact hr0
-    · exact hr1
-  have h := RefinedRelationCombiningPolynomial.value_eq_product 2 A V n B C D ![r0, r1] hr
-  rw [radicalProduct_eq] at h
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, hr0, hr1] at h
-  have he : value (A 0 : ℂ) (A 1) (V 0) (V 1) n B C D =
-      (value (A 0) (A 1) (V 0) (V 1) n B C D : ℤ) := by
-    simp only [value]
-    push_cast
-    rfl
-  exact_mod_cast h.trans he
+  unfold RefinedRelationCombiningPolynomial.value
+  rw [core_eq]
+  simp [value, RefinedRelationCombiningPolynomial.coeffEval]
 
+#print axioms core_eq
 #print axioms value_eq
-
 end DiophantineConsistency.RefinedPair
