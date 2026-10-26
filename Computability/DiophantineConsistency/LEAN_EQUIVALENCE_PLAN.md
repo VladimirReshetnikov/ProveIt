@@ -429,7 +429,14 @@ enters this theorem. Global chosen assignment and machine semantics
 remain separate obligations.
 
 Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. `WangTiles942Periodic` defines a
+integration, documentation and commits. `CurrentCellCoordinate2011` now
+transfers exact full-word spatial and temporal subtraction to the canonical
+cell coordinate. Scaling representatives and modulus together justifies
+the cancellation without assuming2011 is invertible moduloN. Arbitrary
+large shifts, singleton cells and nonzero-stride transfer are covered.
+See the [root review and fresh replay](reviews/current-cell-coordinate2011-lean-root.md).
+
+`WangTiles942Periodic` defines a
 marked word using only Start at zero and the true spatial/temporal color
 matches, then pulls it back by address -x-s*t to a periodic plane of
 actual tiles. The [root review and fresh replay](reviews/wang-tiles942-periodic-lean-root.md)
