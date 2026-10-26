@@ -191,7 +191,7 @@ Write A=a+2 and R=2*j+1; j is odd by(8). The odd-index polynomials
 give `chi_S(R)=S*Q_j(S^2)`, `Q_j(0)=(-1)^j*R`, and
 `Q_j(1-A^2)=(-1)^j*psi_A(R)`. The last identity follows from the same
 recurrence: the signed odd psi subsequence has coefficients2-4*A^2
-and initial values1,3-4*A^2.
+and initial values1,1-4*A^2.
 
 Set `Vstar=chi_S(R)/S>0` and `ystar=psi_S(R)>0`. These are integers.
 Since `S^2=Delta*(f^2-1)=1-A^2 modf^2` and c divides S, the identities
