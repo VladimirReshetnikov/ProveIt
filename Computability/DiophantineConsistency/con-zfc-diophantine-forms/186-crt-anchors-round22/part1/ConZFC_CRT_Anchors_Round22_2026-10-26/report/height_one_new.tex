@@ -1,0 +1,63 @@
+\subsection{Square polarization removes equality dummies}
+Suppose a logical value currently has exactly two factor aliases $a,b$,
+and its equality penalty uses a fresh dummy $d$:
+\[
+ C(a,b,d)=a^2+b^2+d^2-ab-bd-da.
+\]
+The reason for retaining this dummy can be a prescribed square $a^2$
+inside the incidence graph: directly substituting the two-alias penalty
+$Q(a,b)$ may collide with its degree-four diagonal contribution. The retained Round~19
+operation first changes selected prescribed squares into products of
+same-logical aliases, $a^2\mapsto ab$ (or $b^2\mapsto ab$). It then replaces
+$C(a,b,d)$ by $Q(a,b)$ and deletes the dummy coordinate $d$.
+
+\begin{theorem}\label{thm:polarization}
+Make any finite selection of such same-logical prescribed-square changes,
+and replace each affected two-alias equality cycle by $Q$. If the full
+collected final polynomial has coefficient height one, it is a height-one
+quartic with an integer zero set bijective to the original arithmetic
+source. Each deleted equality dummy reduces its dimension by one.
+\end{theorem}
+\begin{proof}
+Changing a prescribed edge's label from $a^2$ to $ab$ leaves its two
+incidence endpoints and orientation unchanged. The graph energy therefore
+remains exactly $\frac12\sum_v d_v^2$, with its divergences evaluated using
+the modified labels. It is still nonnegative, and all labels still have
+degree at most two. Also
+\[
+ Q(a,b)=(a-b)^2(a^2+ab+b^2)\ge0,
+\]
+and $Q(a,b)=0$ if and only if $a=b$: the second factor equals
+$(a+b/2)^2+3b^2/4$ and vanishes only at $a=b=0$.
+
+At any zero of the final energy, every nonnegative equality term is zero,
+so same-logical aliases agree and units equal one. Consequently every
+polarized label $ab$ has exactly the value previously specified by $a^2$.
+The occurrence-boundary identity is unchanged after logical substitution.
+Vanishing vertex divergences therefore give all normalized source rows,
+and monic reconstruction gives an actual arithmetic source zero.
+
+Conversely, for an original source zero assign both $a$ and $b$ their
+common logical value. All polarized edge labels then have their old values,
+all new $Q$ terms vanish, and the same unique subtree flow assignment makes
+every vertex divergence zero. Deleted dummies have unique old value $d=a=b$,
+so extension and deletion are inverse on the zero sets. This also proves
+that the source-polynomial lift identity \eqref{eq:networklift} survives
+universally, not only at source zeros.
+
+The degree is at most four by construction. Exact degree four and
+coefficient height one are finite properties of the entire collected
+polynomial and are explicitly checked. They do not follow merely from the
+simplicity of the incidence graph after monomial substitution. The operation
+is accepted only after this full collection check, including all equality
+and unit terms. Thus possible collisions do not invalidate the claim.
+\end{proof}
+The theorem makes no assertion that an arbitrary polarization is safe for
+height one, nor that a chosen finite sequence is optimal. It separates the
+unconditional witness proof from the coefficient test selecting a particular
+literal endpoint.
+
+\input{anchored_equality.tex}
+\input{contraction.tex}
+\input{unit_cycles.tex}
+

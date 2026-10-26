@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "exact_cause": "Credited check_parent_frame returned its absolute runtime input path, which build.py embedded as semantic_certificate.old_frame.path. Only that field differed after relocation.",
+  "fix": "New builder normalizes the provenance locator to sources/parent217.json. Independent checker requires that canonical relative locator. Default verifier now copies the entire package and executes the copied builder, so every replay exercises relocation.",
+  "mathematics_changed": false,
+  "inherited_files_changed": false,
+  "separate_relocated_full_parent_runs": [
+    {
+      "mode": "normal",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/integer215-relocation-fixed-3_jaxl7r/completely-unrelated-normal/verify.py",
+        "--parent"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "rebuild_from_relocated_package": true,
+      "parent_status": "PASS",
+      "grandparent_status": "PASS",
+      "stdout_sha256": "6bc4246abcc8fbb8a595a226eda0bc014fe446f74e9fd93a1aa07a2f03c971ff"
+    },
+    {
+      "mode": "optimized",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "-O",
+        "/tmp/integer215-relocation-fixed-3_jaxl7r/completely-unrelated-optimized/verify.py",
+        "--parent"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "rebuild_from_relocated_package": true,
+      "parent_status": "PASS",
+      "grandparent_status": "PASS",
+      "stdout_sha256": "42d9599e256fcc4d6b5dfe028ba164f2bafc2468f7deadfbcbca41c888e9d4cd"
+    }
+  ],
+  "failure_evidence": "review/PORTABILITY_FAILURE.json",
+  "proof_sha256": "79b359bd92214d3dc18448c4d568259914e904c85a8267422787ffb784db8390",
+  "equations": {
+    "integer215": "29775495ef5ecda1492c36383b6b329283219cab51e40441d01b228a8c70c6c7",
+    "integer215_sparse": "31705868370b4ac94db07772126508b0e172eeeb937052772b5715f86b631d4e"
+  },
+  "semantic_certificate_sha256": "a7e1a54cb759f98e6336ff74d974e3393ca81b412071c1c0785d5d7b312f57ad"
+}

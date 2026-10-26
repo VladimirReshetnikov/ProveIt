@@ -1,0 +1,245 @@
+\section{Affine pooled quartics in 215 unrestricted integers}
+\label{sec:affine-pooled215}
+
+\paragraph{Literal results.}
+The two fully collected integer polynomials supplied with this section are
+\[
+ P_{215}(\boldsymbol x)=\sum_{i=0}^{151}R_i(\boldsymbol x)^2,
+ \qquad \boldsymbol x\in\mathbb Z^{215}.
+\]
+The complete quadratic residuals, all collected quartic coefficients, and every
+coordinate map are included in the accompanying packet.  The two residual
+bases give the following measured tradeoff:
+\begin{center}
+\begin{tabular}{lrrrrr}
+\hline
+Profile & Variables & Rows & Degree & Terms & Height\\\hline
+Sparse principal &215&152&4&14\,578&16\,866\\
+Low-height alternative&215&152&4&34\,700&4\,512\\\hline
+\end{tabular}
+\end{center}
+Each residual coefficient has magnitude at most 64.  All coordinates occur.
+The sparse form improves the prior 217-variable sparse equation in dimension,
+rows, and support at unchanged height.  It also improves the incoming
+Pooled Projection 216-variable point, with 15\,158 terms and height 334\,952,
+in all four measures.  The low-height form trades additional support for
+smaller coefficients.  No global optimum is claimed.
+
+\paragraph{Theorem and scope.}
+For either literal polynomial, the ordinary proof below, composed with the
+retained numerical C222/ZF/ZFC refutation calibration, establishes in ZFC
+\[
+ \neg\exists\boldsymbol x\in\mathbb Z^{215}\;P_{215}(\boldsymbol x)=0
+ \quad\longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+This does not assert either side separately.  The construction is direct
+through the numerical proof calculus, not K215 simulation or Jones
+specialization.  The named logical interfaces are
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} and
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+No new end-to-end proof-assistant compilation is claimed.
+
+\paragraph{Attribution and new compatibility step.}
+The immediate input is the retained Round21 \texttt{beta217} equation.
+Source 160 already proves the affine-horizon, weak affine-frame,
+difference-error, and small-horizon estimates used here.
+Source 158 supplies fixed-base pooling and the shared-private-consumer
+mechanism; source 159 supplies the inherited radical projections.
+The new compatibility argument strengthens the Pell frame enough to make
+fixed-base pools work with absolute atom bounds instead of squared-atom
+bounds.  The resulting composition saves two further coordinates and rows.
+
+\subsection*{Weak atom bounds with a fourfold Pell frame}
+Set
+\[
+ t=8h,\qquad d=t+2,\qquad F=d^t,
+ \qquad q=4z+1,\qquad y=F(2v+1).
+\]
+The powers here describe meanings of retained ordinary polynomial
+certificates, not primitive operations in the final equation.
+Change the old growth request from base $t$ to base $d$, retaining its index $t$;
+replace the old square-horizon condition by the affine parameterization.
+
+The 35 affine atoms consisting of the 34 retained actual atoms and the new base
+$d$ use 43 pre-Pell coordinates $u_j$.  They cover all bases, indices and outputs
+of all 17 requests.  For integers $a,u$,
+\[
+ |au|\le u^2+\lfloor a^2/4\rfloor.
+\]
+Consequently $L=c+\sum a_ju_j$ satisfies
+$|L|\le\sum_{a_j\ne0}u_j^2+|c|+\sum\lfloor a_j^2/4\rfloor$.
+The exact maximum overhead is 21, attained by the affine derived-label
+expression; the new growth base has overhead 18.  Thus the single row
+\[
+ W=22+\sum_{j=1}^{43}u_j^2
+ \tag{AF}
+\]
+gives $W\ge22$ and $|L|<W$ for every actual request atom.  The full atom/port
+ledger is checked independently.  No private Pell coordinate occurs in it.
+Importantly, this does \emph{not} assert $L^2<W$.
+
+Replace the two old frame multiplication rows by
+\[
+ U=4W(2z_f-1),\qquad V=(4W+1)U,
+\]
+and retain $A^2+U^2-V^2=1$.  Pell classification at center $4W+1$ and
+$Y_\ell(4W+1)\equiv\ell\pmod{4W}$ force a nonzero index of magnitude at least
+$4W$.  Hence
+\[
+ |A|>(4W)^{4W},\qquad |A-1|>4W^3.\tag{PG}
+\]
+For completeness, the choice $\ell=4W$ has $Y_{4W}(4W+1)/(4W)$ odd and supplies
+an integral $z_f$.  The finite arithmetic front determines $W$ before this
+private Pell choice, so there is no circular frame dependence.
+
+Retain the entire signed semantic-anchor cap and every principal-pair norm.
+In the orientation pool replace only
+\[
+ (Y_{F+t}-F-t)^2\quad\hbox{by}\quad(Y_{F+t}-Y_t-F)^2,
+\]
+retaining $(Y_t-t)^2$ and all abscissa errors.  The two error systems have the
+same zero set.  As in source 160, first exclude the exceptional unit anchor
+ordinate by the cap and its nonzero orientation residue; only then apply the
+comparison-index theorem.  Classified indices have magnitude below $W$.
+The reduced nonnegative orientation error satisfies
+\[
+ 0\le E_{\rm or}<65W^2+60<4W^3<|A-1|.
+\]
+Its divisibility by $A-1$ forces every reduced original orientation error to vanish.
+Thus canonical signed Pell pairs are available before any arithmetic sign is
+assumed.  This argument applies to either sign of $A$.
+
+\subsection*{Pooling with absolute bounds}
+Let $r\le15$, let $n\ne0$, and suppose
+$|n|,|m_i|,|k_i|<W$, with canonical signed Pell pairs $X_i,Y_i$ at $A$ and
+retained gates $Z_i=AY_i$.  Write
+\[
+\begin{split}
+ T&=2An-n^2-1,\\
+ H&=\sum_iY_i(m_i-X_i),\\
+ S&=\sum_i\bigl((m_i-X_i+Z_i)^2-Y_i^2\bigr).
+\end{split}
+\]
+Use only the two existing pooled coordinates $K,L$ and quadratic rows
+\[
+ K-2H-(2A-n)L=0,\qquad S-nK+L=0.\tag{PP}
+\]
+The exact polynomial identity modulo the retained $AY$ gates is
+\[
+ \sum_i(m_i-X_i+Z_i-nY_i)^2=S-2nH-T\sum_iY_i^2.
+\]
+Thus $T$ divides the squared-error sum.  Since $T\equiv-1\pmod n$,
+negative indices can be cleared modulo $T$.  Put $b=W-1$.  Then $T$ divides
+\[
+ E=\sum_i\bigl(m_i n^b-n^{b+k_i}\bigr)^2\ge0,
+\]
+and every exponent displayed is nonnegative.  The elementary bounds are
+\[
+ E\le60b^{4b}<(4W)^{4W},\qquad
+ |T|\ge2|A|-(W-1)^2-1>|A|>(4W)^{4W}.
+\]
+Hence $E=0$.  At $|n|\ge2$ this gives $k_i\ge0$ and $m_i=n^{k_i}$; a negative
+index would imply $m_i n^{-k_i}=1$.  At $n=\pm1$ it gives the exact signed
+unit value without asserting a nonnegative index.  The $r=1$ argument also
+revalidates all three singleton requests under the new weak frame.
+The converse uses the exact quotients
+$L=(S-2nH)/T$ and $K=2H+(2A-n)L$.
+
+The two blocks have eleven requests at $q+1$ and three at $q$.
+This is a new size-bound composition of the credited pooling rows, not a
+new claim to those rows themselves.
+
+\subsection*{Horizon, signs, and the inherited arithmetic budgets}
+For every integer $h$, the base $d=8h+2$ is nonzero and nonunit.  Its canonical
+singleton certificate forces $t\ge0$ and $F=d^t$.  If $t=0$, then $F=1$ and $y$
+is odd.  The endpoints read
+\[
+ x=2+(y+1)u_0,\qquad x=1+(y+1)u_t,
+\]
+so $1=(y+1)(u_t-u_0)$ would be even.  Therefore $t\ge8$ and $F\ge10^8$.
+
+The retained signed bootstrap is used in its noncircular order.
+Since $q=4z+1$, first $|q+1|\ge2$, so the $q+1$ pool gives nonnegative actual
+representatives and the nonzero semantic-anchor label.  Hence $H\ge2$;
+the row $B\mu=C+F+1$ gives $B\ne0$; the singleton at $BH$ gives $x\ge0$.
+Because $y$ is a nonzero multiple of $F$, the last endpoint excludes $x=0$.
+Thus $|q|\ge2$, and only now the $q$ pool gives $y+1\ge0$, whence $y\ge F>0$.
+The endpoints yield
+\[
+ x\ge F+1,\qquad x\ge2+(t+1)y\ge2+(t+1)F.
+\]
+Short signed-binomial recovery subsequently gives $B>0$ and $q>0$.
+
+At the new smallest horizon one must not reuse $x>2^{32}$.
+Instead $x\ge900000002>2^{29}$; for $E_0=2^{23}$ and
+$2^s\le x<2^{s+1}$, $s\ge29$,
+\[
+ E_0\log_2(2x)<2^{23}(s+2)<2^s\le x.
+\]
+Thus the retained local-polynomial bound still lies below $2^x<N$.
+Also $F>2^{22}$ supplies the derived-label budget.
+The selector inequality holds directly at $t=8$ because
+$840^2<10^8$; at every other positive multiple of eight,
+$\Lambda_t^2\le16^{t-1}<(t+2)^t=F$.
+The strict local ranges, all-primes CRT coverage and positive Horn-flow
+extraction therefore remain valid.  Label multiplicities are recovered at
+the still-larger evaluation base $F>t^t$.  The inherited $y=F$ boundary is
+excluded after local recovery, not prematurely.
+
+Conversely choose a cofinally large positive multiple of eight $t$ beyond
+all finite proof parameters.  Then $v_2(F)=t>v_2(t!)$; the inherited CRT
+construction supplies arbitrarily large admissible odd-square beta
+multipliers, which are allowed by the retained odd-linear condition.
+Choose even $x$ and the parent's parity-prescribed representatives.  The
+binomial $B$ and $H$ are odd, so $q=(BH)^x\equiv1\pmod4$.
+After constructing all arithmetic wires, choose the weak frame and strong
+Pell frame, canonical principal witnesses, and the pooled quotients.
+This is a fresh completeness construction, not a map preserving the old
+square horizon or growth value.
+
+\subsection*{An additional exact shared-consumer contraction}
+In the pinned 217-coordinate chart put
+\[
+ F=x_3,\ S=x_{12},\ S'=x_{13},\ a=x_8,\ b=x_9,\ s=x_{19},\ K=x_{62},
+\]
+and $p=x_{75},r=x_{76},g=x_{77},v=x_{78},e_1=x_{79},e_2=x_{80}$.
+The old rows include
+\[
+ r_K=K-FS',\quad r_p=p-1-Fb,\quad
+ r_r=r-1-F(a-1),\quad
+ r_g=g-1+2F+2Fa+4Fb-2Fs.
+\]
+Delete $p,r$ and their defining rows, and introduce only $J_{\rm prod}=FS$.
+Replace the three consumers by
+\[
+\begin{aligned}
+ C_{61}&=-S'-Kb+gv+e_1,\\
+ C_{64}&=-S-J_{\rm prod}(a-1)+v,\\
+ C_{65}&=S+J_{\rm prod}b-S'-K(2a+4b+2s)+e_2.
+\end{aligned}
+\]
+Writing $r_J=J_{\rm prod}-FS$ and $D=2a+4b+2s$, the exact identities are
+\[
+\begin{aligned}
+ C_{61}&=R_{61}+S'r_p-br_K,\\
+ C_{64}&=R_{64}+Sr_r-(a-1)r_J,\\
+ C_{65}&=R_{65}+br_J+(8S'-S)r_p+4S'r_r+S'r_g-Dr_K.
+\end{aligned}
+\]
+The forward map adjoins $J_{\rm prod}=FS$ and drops $p,r$; the inverse restores
+$p=1+Fb$ and $r=1+F(a-1)$.  No other row uses the deleted coordinates.
+These maps are mutually inverse on integer zero sets.  This is a specialized
+application of source 158's consumer method after earlier contractions,
+not a second credit for the already removed joint-square or third factor.
+Together with the affine horizon it changes 217/154 to 215/152.
+
+\paragraph{Finite certification.}
+The packet retains the complete parent archive, explicit source edits,
+all forward and backward maps, literal coefficients and frozen row operations.
+A separate checker uses only the standard library, imports no producer, and
+verifies complete ideal identities, all 17 actual request ports, the 43-coordinate
+majorant, every inverse row operation, all collected coefficients and
+coordinate occurrence.  Corrupted frame, growth and restoration cases must
+fail.  Both normal and optimized Python, read-only reconstruction and retained
+parent replay are supplied.  These finite checks do not replace the unbounded
+proof or decide consistency.

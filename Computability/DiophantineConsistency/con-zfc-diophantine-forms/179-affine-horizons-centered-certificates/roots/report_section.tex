@@ -1,0 +1,274 @@
+\section{Even strong traces and unweighted first roots}
+\label{sec:even-strong-roots}
+Two new fixed ordinary polynomials have fourteen unrestricted integer unknowns:
+\[
+ (\deg,\mathrm{ops})=(85,110),\qquad (87,108).
+\]
+The charged binary-operation counts are respectively $(63,24,23)$ and
+$(62,23,23)$ for multiplication, addition and subtraction. They strictly improve
+the matched $(86,112)$ and $(88,110)$ points; $(82,113)$ remains a separate tradeoff.
+All six full fixed numeral payloads and their finite reconstruction recipe are
+retained. These are ordinary reductions through the inherited native/compiler/
+refutation theorem, not a consistency assertion, global optimum, or new
+end-to-end proof-assistant certificate.
+
+\subsection{Complete polynomial definitions}
+The unknowns are
+\[
+ j,C,z,h,r,v,w,T,c,n,f,y,p_2,p_3\in\mathbb Z.
+\]
+Use the authentic ports $\beta,K_0,M_C,M_F,A_c,B_c$, with $M_F$ already shifted,
+$\beta=2^{1064921}-1$, $A_c=2^{1113}$ and $B_c=2^{666104}$. Define
+\begin{gather*}
+ J=6j+1,\quad q_m=\beta J,\quad q=q_m+1,\quad W=12w+4,\quad X=qW,\quad Y=v,\\
+ F=(K_0+W)C-zq_m,\quad
+ R=[q(q-F)-C](q^2-1)+(M_C+qM_F)J,\\
+ E=XY,\quad a=E+Y,\quad H=4a+3,\quad\Delta=a^2+H,\quad\ell=XY^2,\\
+ \eta=c-Yk,\quad L=\ell k,\quad I=(8r+4)c^2,\quad Q=\Delta(f^2-1),\\
+ V=f(cT-R)-c,\quad M=2q^3,\quad U=MH,\quad K=X(2X-3c)-2,\\
+ Z_0=Un+MK+H(Y-q^3),\quad
+ D_{\rm err}=(A_cF-q)^2+(B_cC-q)^2.
+\end{gather*}
+Choose the chart
+\[
+\begin{array}{c|c|c|c}
+\deg&k&\mathcal B&Z\\\hline
+85&R+1+h\ell&(Yk)^2(q^2-D_{\rm err})-q^2[4(Y\eta)^2+(kq^2)^2]&Z_0+UL\\
+87&R+1+hE&(Yk)^2(q^2-D_{\rm err})-q^2[4(Y\eta)^2+(kq^3)^2]&Z_0
+\end{array}
+\]
+and finish with
+\begin{align*}
+ G&=\mathcal B-1-p_2^2-p_3(p_3+1),&S&=f^2-\Delta I^2,\\
+ u_u&=(V+y)^2,&E_a&=u_u-Q(u_u-V^2),\\
+ D_\tau&=1+L(L+k),\\
+ A&=U^2G,&B&=U^2D_\tau,\\
+ N&=(Z^2-A-B)^2-4AB,&P&=(N+1)SE_a-1.
+\end{align*}
+The identity $E_a=V^2-(Q-1)y(2V+y)$ shows that sharing $u_u$ saves one
+charged multiplication without changing the polynomial. Every name denotes a
+polynomial abbreviation, not an additional unknown. The
+87-chart evaluator uses $L=E(Yk)$ and does not separately compute $\ell$.
+
+\subsection{Unweighted extraction, including all exceptional branches}
+Unconditionally $q$ is even and nonzero, $|W|\ge4$, $|X|\ge8$, $H$ is odd and
+nonzero, and $U\ne0$. Since $a=(X+1)Y$ is zero or has $|a|\ge7$,
+$\Delta=(a+2)^2-1\ge3$. Also $\ell$ is even, so
+$D_\tau=1+\ell(\ell+1)k^2\ge1$.
+
+At $P=0$ the three integer factors are units. As $N$ is a square modulo four,
+$N+1\ne-1$; as $4\mid I$, $S\equiv f^2\pmod {16}$ and $S\ne-1$.
+Therefore $N=0$, $S=1$, $E_a=1$. With $\rho=Z/U$,
+\[
+ (\rho^2-G-D_\tau)^2=4GD_\tau.
+\]
+This forces $G\ge0$, including $G=0$. Hence $\mathcal B>0$ and $Yk\ne0$.
+Since $|\ell|\ge8$ and $|X|\ge4|q|$,
+\[
+ D_\tau\ge1+\tfrac12X^2Y^4k^2
+ \ge1+8q^2Y^4k^2>q^2Y^2k^2\ge\mathcal B>G.
+\]
+Thus $\rho\ne0$ before any division by it. The rationals
+\[
+ p=\frac{\rho^2+G-D_\tau}{2\rho},\qquad \tau=\rho-p
+\]
+satisfy $p^2=G$, $\tau^2=D_\tau$. Each is integral because a rational with
+integral square is integral. This proof covers zero and coincident square classes;
+no generic independence hypothesis occurs. The universal signed factorization is
+\[
+ (x^2-A-B)^2-4AB=\prod_{\epsilon_1,\epsilon_2\in\{\pm1\}}
+ (x-\epsilon_1\sqrt A-\epsilon_2\sqrt B).
+\]
+
+Write $s=1$ for degree 85 and $s=0$ for degree 87. Restore the even-trace
+fifteen-variable kernel by
+\[
+ p_1=p,\qquad n_{\rm old}=n+sL-(2L+k)-p+\tau.
+\]
+Its carrier is
+\[
+ \mathcal A=(Z_{\rm old}+Uk)^2+4U(LZ_{\rm old}-U)
+           =(Z_{\rm old}+U(2L+k))^2-4U^2D_\tau,
+\]
+and therefore vanishes. The remaining rows are $S-1=0$, $E_a-1=0$ and
+$\mathcal B-1-p_1^2-p_2^2-p_3(p_3+1)=0$. Conversely any zero of this kernel
+has an integral $\tau$ with $Z_{\rm old}/U+2L+k=2\tau$: the rational on the
+left has square $4D_\tau$, so is an even integer. Delete $p_1$ and set
+\[
+ n=n_{\rm old}-sL+(2L+k)+p_1-\tau.
+\]
+Then $\rho=p_1+\tau$ and $P=0$. These are total maps on zeros, not claimed
+polynomial automorphisms; the root-dependent integral shift removes one gate.
+
+\subsection{Signed unsquared trace: the new parity argument}
+The comparison signed kernel has odd strong scale $(2r_{\rm old}+1)c^2$ and
+squared trace $f_{\rm old}^2(cT_{\rm old}-R)-c$. Its retained proof is
+\texttt{inherited\_round20/inherited/PROOF.md} for the $q^6/XY^2$ chart, and
+\texttt{FREE\_SCALE15\_PROOF.md} in its inherited roots source for $q^8/XY$.
+The normalized rank and auxiliary lemmas are in the same source's
+\texttt{06\_PROOF.md}. We verify the changed hypotheses before restoring a
+literal old zero.
+
+The unchanged carrier and guard give $c\ne0$, the strict centered strip,
+$q_0=|q|\ge16$, $x=|X|\ge4q_0$ and
+\[
+ q_0(q_0^2-1)<R<q_0^4-2.
+\]
+They give $|Y|>q_0^2$, $|XY^2|>3R+1$ in the 85 chart, and $|Y|>q_0^3$,
+$|XY|>3R+1$ in the 87 chart. Carrier integrality gives even $Y$ and the exact
+divisibilities $M\mid H(Y-q^3)$, $H\mid MK$ without premature cancellation.
+Put $B_0=|a+2|$, $c_0=|c|$, $I_+=|8r+4|c_0^2$ and $f_+=|f|$.
+Then $I_+>0$ is even, $B_0\ge3$, and
+\[
+ f_+^2-(B_0^2-1)I_+^2=1,\qquad f_+>2I_+.
+\]
+Pell classification gives $f_+=\chi_{B_0}(m)$, $I_+=\psi_{B_0}(m)$.
+The residue $V\equiv-c\pmod {f_+}$ is unchanged. The ordinary odd auxiliary
+index and folding lemma therefore recover $c_0=\psi_{B_0}(p)$ before any
+residue modulo $c_0$ is needed: fold the auxiliary index to $0\le p\le m$,
+and use $\psi_{B_0}(p)+c_0\le2I_+<f_+$ to turn its signed congruence into
+equality. The first Pell classification and centered bounds give $p>n_0\ge24$
+and $c_0>2p,2R$.
+
+The normalized rank lemma gives $m=p\nu$ and $c_0\mid\nu$. Indeed, strong
+divisibility gives $p\mid m$; with $D=\chi_{B_0}(p)$, composition gives
+$I_+=c_0\psi_D(\nu)$, and
+$\psi_D(\nu)\equiv \nu D^{\nu-1}\pmod {c_0}$ with $\gcd(D,c_0)=1$ gives $c_0\mid\nu$.
+Now $\psi_{B_0}(m)\equiv m\pmod2$, so $m$ is even. If $c_0$ is even,
+$\nu$ is even; if $c_0$ is odd, $p$ is odd and $m=p\nu$ again makes $\nu$ even.
+As $D^2\equiv1\pmod {c_0}$ and $\chi_D(\nu)\equiv D^\nu\pmod {c_0}$,
+\[
+ |f|=\chi_D(\nu)\equiv1\pmod {c_0}.
+\]
+Consequently the unsquared trace has exactly the required signed residues
+\[
+ V\equiv-c\pmod {|f|},\qquad V\equiv\pm R\pmod {c_0}.
+\]
+The signed auxiliary step-down gives an odd index $\lambda$ with
+$\lambda\equiv\pm p\pmod m$ and $\lambda\equiv\pm R\pmod {c_0}$.
+Since $c_0\mid m$ and $0<p,R<c_0/2$, it follows that $p=R$.
+Thus the extra sign does not invalidate the argument. The unchanged surviving
+first-index branch gives $2n_0=R+1$. Whole-product projection, the modulo-three
+orientation and late integer cancellation then give
+\[
+ c,k,Y>0,\quad X=2^R,\quad R\ \text{odd},\quad
+ Y=(2v_{\rm scale}+1)q^3,\quad H\mid K,\quad0<\eta/k<1/4.
+\]
+These steps use only the already established indices, carrier and strip, not the
+old square on $f$. In particular $B_0=a+2\equiv2\pmod8$ and $c$ is odd.
+
+\subsection{Fresh strong witnesses: soundness and completeness}
+One cannot keep $f,T$ when returning to an odd-scale source. Let
+\[
+ m_0=Rc,\qquad f_0=\chi_{B_0}(m_0),\qquad I_0=\psi_{B_0}(m_0).
+\]
+Composition gives $c^2\mid I_0$; as $R,c,m_0$ are odd, $I_0/c^2$ is odd.
+Thus $r_{\rm old}=(I_0/c^2-1)/2$ restores the old strong row.
+For every odd $R=2d+1$, the integer quotient polynomials obey
+\[
+ \chi_Z(2d+1)=ZQ_d(Z^2),\quad Q_d(0)=(-1)^d(2d+1),\quad
+ Q_d(1-B_0^2)=(-1)^d\psi_{B_0}(2d+1).
+\]
+They follow from $Q_0=1$, $Q_1=4x-3$ and
+$Q_{d+1}=(4x-2)Q_d-Q_{d-1}$. Set $S_0=\Delta I_0$ and
+\[
+ V_0=(-1)^{d+1}Q_d(S_0^2),\qquad u_0=\psi_{S_0}(R).
+\]
+Then $S_0^2V_0^2-(S_0^2-1)u_0^2=1$, while
+$V_0\equiv-c\pmod {f_0^2}$ and $V_0\equiv-R\pmod c$.
+Since $\gcd(c,f_0)=1$ and $f_0^2\equiv1\pmod c$,
+\[
+ T_{\rm old}=\frac{V_0+c+Rf_0^2}{cf_0^2},\qquad y_{\rm old}=u_0-V_0
+\]
+are integers and restore the squared auxiliary trace. Every outer, carrier and
+guard coordinate is unchanged. This is a literal zero of the correct old signed
+kernel (separately for each chart), not an assumed $R\equiv3\pmod4$ branch.
+Its authenticated native/compiler theorem applies.
+
+Conversely every old zero has the same established outer data. Double the seed:
+\[
+ f=2f_0^2-1,\qquad I=2f_0I_0.
+\]
+Because $B_0\equiv2\pmod4$ and $m_0$ is odd, $f_0\equiv2\pmod4$.
+Hence $I/(4c^2)=(f_0/2)(I_0/c^2)$ is odd, so
+$r=(I/(4c^2)-1)/2$ is integral and $I=(8r+4)c^2$.
+The doubled pair has norm one; $f_0^2\equiv1\pmod c$ directly gives $f\equiv1\pmod c$.
+Using the same signed quotient construction at $S=\Delta I$ yields $V_*,u_*$;
+now
+\[
+ T=\frac{V_*+c+Rf}{cf},\qquad y=u_*-V_*
+\]
+are integers because the numerator is divisible by the coprime integers $c,f$.
+This gives $V=f(cT-R)-c=V_*$ and the new auxiliary row. No positivity of $T$
+is required on the unrestricted-integer domain. Apply the unweighted root map
+to finish. Both directions are defined on all zeros using fresh witnesses.
+
+\subsection{Attained degrees and exact coefficients}
+Put
+\[
+ q_0=6\beta j,\ X_0=12q_0w,\ Y_0=v,\ a_0=X_0Y_0,\
+ F_0=12wC-q_0z,\ R_0=-q_0^3F_0,\ \ell_0=X_0Y_0^2,\ U_0=8q_0^3a_0.
+\]
+Both complete strong/auxiliary tops are
+\[
+ [S]_{12}=-64a_0^2r^2c^4,\qquad [E_a]_{15}=2a_0^2f^3R_0y.
+\]
+For degree 87,
+\[
+ [N]_{60}=U_0^4R_0^4(q_0^8+\ell_0^2)^2,
+\qquad
+ [j^{56}w^8v^8z^5r^2c^4f^3y]P_{87}=-2^{91}3^{64}\beta^{56}\ne0.
+\]
+For degree 85 retain $k_0=R_0+h\ell_0$ and define
+\[
+ T_0=A_c^2Y_0^2F_0^2+4q_0^2Y_0^4+q_0^6.
+\]
+The entire cancellation
+\[
+ (Z_0+UL)^2-U^2D_\tau=Z_0^2+2ULZ_0-U^2(1+Lk)
+\]
+has degree 26. Thus the square in $N$ has degree 56 and the other term has top
+\[
+ [N]_{58}=4U_0^4\ell_0^2k_0^4T_0,
+\qquad
+ [j^{48}w^{10}v^{12}z^5r^2c^4f^3y]P_{85}=-2^{89}3^{58}\beta^{48}\ne0.
+\]
+These full leading forms, with respectively 18 and 70 monomials after expansion,
+prove the exact degrees on the supplied fixed numeral slice, not merely generic
+or sampled degrees.
+
+\subsection{A separate correlated-root separation lemma}
+Let $F,D\equiv1\pmod3$, $G\in\mathbb Z$, $3\mid Q$ and $b,c\in\mathbb Z$.
+For algebraic roots
+\[
+ f^2=F,\quad\tau^2=D,\quad
+ t^2=\frac{Q(fb-c)^2-1}{Q-1},\quad g^2=G,
+\]
+a rational $\rho=f+3\tau+9t+27g$ forces all four roots rational.
+Work in the integral closure of $\mathbb Z_{(3)}$ in a normal field containing
+all roots. They are integral over this ring, since $Q-1$ is a unit and
+$t^2=\alpha+\beta f$ with $\alpha,\beta\in\mathbb Z_{(3)}$.
+If an automorphism flips $f$, subtract the trace equations to obtain $f=3u$
+with integral $u$. But $u^2=F/9$ is rational and integral over $\mathbb Z_{(3)}$,
+hence lies in that ring, contradicting $F\equiv1\pmod3$. Thus all automorphisms
+fix $f$, so $f$ is rational. Divide the conjugate difference by three to repeat
+for $\tau$; then $t^2$ is rational and a three-adic unit, so divide by nine and
+repeat for $t$. Finally $g$ is rational. This includes imaginary roots and
+dependent square classes. A valid norm must use the different auxiliary roots
+associated to each sign of $f$; the independent four-root norm cannot simply be
+reused. The explored twelve-variable evaluators remained dominated, so no new
+twelve-variable frontier claim is made.
+
+\subsection{Verification and dependency boundary}
+The standard-library checker binds every literal register independently, all
+inputs and six ports, topology, coverage, liveness, exact operation counts,
+four-factor identity, root maps, doubling, full leading cancellations and
+attained coefficients. It rejects individual mutations of all 110 and 108 live
+gates. Normal and optimized Python runs pass the same explicit conditions.
+The finite reconstruction recomputes all 615883 coefficient bytes, 943 tiles and
+69230 basis convolution checks. All 212 inherited source files are pinned.
+Recurrence samples are diagnostics, not proofs of the unbounded lemmas above.
+The current comparison snapshot is
+\texttt{5274bc751a1566879ddc028a2d2a2af3c031654a}; original source attributions
+and licenses are preserved. The ordinary native/compiler/refutation theorem
+remains the named inherited dependency, not a claim inferred from finite checks.

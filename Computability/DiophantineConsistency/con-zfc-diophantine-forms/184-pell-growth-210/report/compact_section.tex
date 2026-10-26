@@ -1,0 +1,278 @@
+\label{sec:constant-dilation}
+The direct quartic and the compact construction in this section have different
+coefficient architectures. Here the coefficients are the complete retained
+BFS943/radix67 tuple $(\beta,K_0,M_C,M_F)$, whose largest member has
+$592884$ bits. The new equation has eleven strictly positive integer
+unknowns, exact degree $174$, and $104$ live binary arithmetic operations.
+It retains the native/compiler/refutation calibration. Its full ordinary
+proof and all coefficient bytes are included in the companion directory.
+No equality with the direct quartic is asserted.
+
+The inspected source-115 comparator has eleven positive unknowns, degree
+$211$, and $107$ operations. Its four coefficient bit lengths agree but its
+whole-tuple $K_0$ differs. Thus the comparison concerns domain and size,
+not an identity between the specialized polynomials. The source-172 equation
+with ten positive unknowns, degree $214$, and $87$ operations uses the same
+complete tuple as the present construction and remains a distinct tradeoff.
+
+\subsection{The complete polynomial}
+All symbols in this section are local. The independent inputs are
+\[
+ J,F,\alpha,i,T,w,Y,n,\eta,\zeta,\kappa\in\mathbb Z_{>0}.
+\]
+The circuit JSON retains the historical input name \texttt{s} for $Y$;
+this is a renaming of one input, not an additional variable.
+Every other symbol below is a polynomial abbreviation. Set $\lambda=210$ and
+\begin{align*}
+ h&=\beta J,& q&=h+1,\\
+ C&=q-F-\alpha,&X&=qw,\\
+ k&=\eta+\zeta,&c&=kY+\eta,\\
+ A&=\lambda Y(X+1)+1,&\Delta&=A^2-1,\\
+ H&=4A-5,&v_0&=XY^2,\\
+ v&=\lambda^2v_0,&\ell&=vk,\\
+ E&=1+\ell(\ell+k),&B&=(K_0+w)C-F.
+\end{align*}
+\[
+ R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J.
+\]
+\begin{align*}
+ U&=ic^2,&a&=\Delta U^2E,\\
+ F_0&=1+a,&G&=EF_0,\\
+ f&=1+2a,&Q&=4\Delta aF_0,\\
+ b&=cT-R,&V&=fb-c,\\
+ L&=bV,&K&=X(3c-2X)+2.
+\end{align*}
+Define the fixed integer polynomial
+\begin{align*}
+ \mathcal T(k,x)={}&k-7350xk(k^2-4)\\
+ &+5402250x^2k(k^2-4)(27k^2+8)\\
+ &-5672362500x^3k(k^2-4)(675k^4-324k^2+160).
+\end{align*}
+The final registers are
+\begin{align*}
+ e_*&=\mathcal T(k,v_0)-R-1,&D&=q^7,&M&=hD,\\
+ Z&=M(n+\kappa-LB)-DB-h(e_*-q^4Y),\\
+ P_0&=Q(Z^2-M^2GV^2)+(M^2G-Z^2),&N&=K-\kappa H.
+\end{align*}
+The equation is
+\[
+ \boxed{\quad P=(P_0+1)(3N+1)-1=0.\quad}
+\]
+There are no extra quantified registers, radicals, variable exponents or
+division gates. Since $P_0,N$ are integers, $P=0$ forces both displayed
+factors to be units. The second factor is $1$ modulo $3$, and therefore
+cannot be $-1$. Consequently
+\[
+ P=0\quad\Longleftrightarrow\quad P_0=N=0.
+\]
+The independently integral projector quotient $\kappa$ is essential.
+
+\subsection{An inverse recurrence with integral coefficients}
+Let $\psi_b(0)=0$, $\psi_b(1)=1$ and
+$\psi_b(m+2)=2b\psi_b(m+1)-\psi_b(m)$. Direct recurrence induction gives
+\[
+ 2\psi_{1+2v}(m)
+ =2\sum_{j=0}^{m-1}\binom{m+j}{2j+1}(4v)^j.
+\]
+Put
+\begin{align*}
+ C_1(k)&=-\frac{k(k^2-4)}6,\\
+ C_2(k)&=\frac{k(k^2-4)(27k^2+8)}{360},\\
+ C_3(k)&=-\frac{k(k^2-4)(675k^4-324k^2+160)}{15120}.
+\end{align*}
+These are the first three corrections in the formal inverse
+$k+C_1(k)v+C_2(k)v^2+C_3(k)v^3$. With $\lambda=210$, their denominators
+clear before any congruence argument:
+\[
+ \lambda^2/6=7350,\qquad
+ \lambda^4/360=5402250,\qquad
+ \lambda^6/15120=5672362500.
+\]
+For every integer $m\ge1$ the following is divisibility in
+$\mathbb Z[x]$:
+\begin{equation}\label{eq:inverse-third}
+ \mathcal T\bigl(2\psi_{1+2\lambda^2x}(m),x\bigr)-2m
+ \in x^4\mathbb Z[x].
+\end{equation}
+Indeed, the first four recurrence coefficients are
+\[
+ 2m+8\lambda^2\binom{m+1}{3}x
+ +32\lambda^4\binom{m+2}{5}x^2
+ +128\lambda^6\binom{m+3}{7}x^3.
+\]
+Substitution makes the coefficients of $x,x^2,x^3$ vanish as exact
+polynomials in $\mathbb Q[m]$. Both full polynomials have integer
+coefficients for each integer $m$, proving \eqref{eq:inverse-third}.
+The supplied finite certificate checks these polynomial identities; it
+does not replace the all-index recurrence proof by sampled values.
+
+The transport argument needs a sign bound valid before index recovery.
+For $k\ge2$ and $x\ge1$,
+\begin{equation}\label{eq:inverse-third-sign}
+ \mathcal T(k,x)\le k.
+\end{equation}
+To verify it, set $t=k^2\ge4$ and $v=\lambda^2x\ge1$. The expression
+subtracted from $k$ is $k(k^2-4)$ times
+\[
+ \frac v6-\frac{v^2(27t+8)}{360}
+ +\frac{v^3(675t^2-324t+160)}{15120}.
+\]
+The last two terms have nonnegative sum because
+\[
+ (675t^2-324t+160)-42(27t+8)
+ =675(t-4)^2+3942(t-4)+4792>0.
+\]
+
+\subsection{Soundness in the required order}
+The complete proof is retained in
+\texttt{compact11/PROOF\_constant\_dilation.md}; the key dependencies are given here.
+At $P_0=0$, write $z=Z/M$. Prime valuations in
+\[
+ (Q-1)z^2=G(QV^2-1)
+\]
+give positive integral roots $E=\tau^2$, $F_0=f_0^2$ and
+$G=g^2$ with $g=\tau f_0$. This uses $Q=4\Delta^2U^2G$ and
+$\gcd(E,F_0)=1$. Adjacent-coefficient Pell descent then gives
+$y=|z|/g\in\mathbb Z_{>0}$, so $z=\pm gy$ is integral.
+The explicit strong pair has
+\[
+ I=2Ug,\qquad f^2-\Delta I^2=1,\qquad Q=(\Delta I)^2,\qquad c^2\mid I.
+\]
+The retained signed all-index folding lemma yields
+$c=\psi_A(p)$ for an odd $p\ge3$. The first norm yields
+$k=2\psi_{1+2v}(m)$. Its index is at least two: $m=1$ would give
+$k=2$ and $c=2Y+1$ strictly between the first two positive main Pell
+ordinates. Since $1+2v>A$ and $c>k$, one also has $m<p$.
+
+The free chart no longer has the parent's automatic bound $A>q^2$.
+A separate argument supplies the needed replacement $c>2q^4$.
+If $p\ge5$, then $c\ge16A^4-12A^2+1>4A^4>4q^4$.
+If $p=3$, then $m=2$ and
+\[
+ k=8\lambda^2XY^2+4,\qquad c=4A^2-1,\qquad
+ \frac ck>\frac{(X+1)^2}{2X+1}>\frac{X+1}{2}.
+\]
+Together with $c/k<Y+1$, integrality gives $2Y\ge X$, whence
+$c>\lambda^2X^4-1>2q^4$.
+
+Before the sign of $R$ is known, the uniform auxiliary estimate gives
+\[
+ L=bV>0,\qquad gy<3L/8,\qquad |b|/q^7<L/2.
+\]
+For completeness, $b=0$ would imply
+$0<y^2-c^2=(c^2-1)/(Q-1)<1$. The auxiliary Pell index is odd and at
+least three, so $|V|\ge4Q-3$. With $c_3=4\Delta+3\le c$ and $f>2c$,
+\[
+ |b|\ge4\Delta f-\frac{c+c_3}{f}>4\Delta f-1>4g,
+\]
+while $y<3|V|/2$. These prove the estimates.
+
+Use the proof-only quantities
+\[
+ \sigma=Y/q^3,\quad \rho=e_*/q^7,\quad W=1+hL,\quad t=B/h.
+\]
+The carrier identity is
+\[
+ z=n+\kappa+\sigma-Wt-\rho.
+\]
+By \eqref{eq:inverse-third-sign}, $e_*\le k-R-1<b$.
+If $B\le-1$, the identity gives
+$n<L/2-L+|b|/q^7<0$. Thus $B\ge0$ and $C>0$.
+The retained mask estimate now gives $3q<R<q^4-2$.
+Hence $c>2R$, and the normalized strong-rank and signed auxiliary-index
+lemmas apply to $V\equiv-c\pmod f$ and $V\equiv-R\pmod c$.
+They give $p=R$.
+
+Integral $z$ implies $q^7\mid h(e_*-q^4Y)$. Since $\gcd(q,h)=1$,
+$q^4\mid e_*$. Equation \eqref{eq:inverse-third}, together with $q\mid v_0$,
+gives $q^4\mid e_*-(2m-R-1)$. But $1\le m<R<q^4$, and therefore
+\[
+ 2m=R+1.
+\]
+No coprimality between $q$ and $H$ has been used.
+
+Write $R=2r+1$, so $r\ge48$. The inherited ratio theorem is uniform for
+every $\lambda\ge1$, $Y\ge1$:
+\[
+ \frac{(X+1)^{2r}}{X^r}
+ <\frac{\psi_A(2r+1)}{\psi_{1+2v}(r+1)}
+ <\frac{(X+1)^{2r}}{X^r}
+      \left(1+\frac1{Y(X+1)}\right)^{2r}.
+\]
+It implies $Y>X^r/3$ and $H>X^{r+1}$.
+The independent equation $N=0$ gives $H\mid K$; the universal Pell
+projector then gives
+\[
+ H\mid (X-2^R)(2^RX+1).
+\]
+The entire product has absolute value below
+$4\cdot4^rX^2+8\cdot16^rX<X^{r+1}<H$, so it vanishes and $X=2^R$.
+
+Since $q\mid X$, write $q=2^a$ with $a\ge5$. The inequality
+$R>3q\ge7a$ gives $q^7\mid X$, hence $q^7\mid v_0$.
+Equation \eqref{eq:inverse-third} now gives $q^7\mid e_*$.
+Thus $\rho$ is integral, and the carrier gives
+$Y/q^3-WB/h\in\mathbb Z$. Coprimality and $W\equiv1\pmod h$ yield
+\[
+ q^3\mid Y,\qquad h\mid B,\qquad B/h\ge0.
+\]
+The retained fixed-minus parity, half-binomial rounding and fresh native
+reconstruction apply. At the entire supplied fixed tuple they produce a
+finite syntactic ZFC refutation.
+
+\subsection{Positive completeness and exact size}
+Conversely, a refutation supplies the retained canonical outer data,
+including $X=2^R$, $R\equiv3\pmod4$, $q^3\mid Y$ and $B/h\ge0$.
+Form the new bases with $\lambda=210$ and set
+\[
+ c=\psi_A(R),\quad k=2\psi_{1+2v}((R+1)/2),\quad
+ \tau=\chi_{1+2v}((R+1)/2).
+\]
+The uniform ratio theorem gives positive integers
+$\eta=c-kY$ and $\zeta=k-\eta$. Projection gives positive integral
+$\kappa=K/H$, while \eqref{eq:inverse-third} gives integral $\rho$.
+
+A positive period of the determinant-one Pell matrix modulo $c^2\tau$
+provides arbitrarily large pairs $(f_0,I_0)$ with $c^2\tau\mid I_0$.
+Take $i=I_0/(c^2\tau)$, so $g=\tau f_0$, and choose the period multiple
+large enough that $g>\kappa+\sigma+|\rho|$.
+The doubled pair gives $f=2f_0^2-1$, $I=2f_0I_0$ and $S=\Delta I$.
+Put
+\[
+ V=\chi_S(R)/S,\qquad y=\psi_S(R),\qquad
+ T=\frac{V+c+Rf}{cf}.
+\]
+The odd quotient identities at $R\equiv3\pmod4$ make $T$ a positive
+integer and give $V=f(cT-R)-c$. Finally
+\[
+ n=gy+(1+hL)(B/h)+\rho-\kappa-\sigma>0.
+\]
+These witnesses satisfy both $P_0=0$ and $N=0$.
+The cofinal choice of the strong period is essential because the new
+inverse correction may be negative and is larger than the old correction.
+
+The complete highest homogeneous part, with $q_0=\beta J$ and
+$k_0=\eta+\zeta$, is
+\[
+ [P]_{174}=
+ -48\lambda^{36}q_0^{47}w^{25}Y^{56}i^{10}k_0^{32}(q_0-F)^2
+ \bigl(3k_0Y-2q_0w-4\lambda\kappa Y\bigr).
+\]
+In particular,
+\[
+ [J^{49}w^{25}Y^{57}i^{10}\eta^{32}\kappa]P
+ =192\lambda^{37}\beta^{49}>0.
+\]
+This proves exact degree $174$ at the actual fixed coefficients.
+The independent checker verifies all $104$ live gates by exact polynomial
+cuts, the inverse identity in $\mathbb Q[m,x]/(x^4)$, the complete
+$300$-monomial leading form, all four reconstructed coefficient payloads,
+and rejection of $208$ operator mutations. These finite checks support
+the emitted artifacts; the preceding unbounded argument supplies the
+zero-existence equivalence.
+
+Deleting $\kappa$ and restoring $K/H$ inside the shared carrier would
+suggest a ten-variable degree-$176$ formula. That shortcut is rejected:
+fixed $\lambda$ and free $Y$ do not guarantee $\gcd(q,H)=1$, so its first-index
+recovery is not proved.
+

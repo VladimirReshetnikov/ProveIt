@@ -1,0 +1,278 @@
+\section{The complete retained Start only native proof}
+\label{sec:native-source-proof}
+This appendix retains the complete incoming ordinary native proof, dated
+25 October 2026. Its fifteen-positive P66 equation is an inherited bridge,
+not an additional new endpoint. Historical relative paths refer to the
+retained native source subtree. The Round22 ten-positive transfer is proved
+in Section~\ref{sec:start4127-positive10}.
+
+This note is an ordinary mathematical construction, composed with the retained K215 / native / positive-P66 / syntactic-refutation calibration. It changes all four fixed integer coefficients coherently. It does not assert consistency, global minimality, an end-to-end proof-assistant certificate, or worldwide novelty. The idea of trying a Start-only marker is explicitly suggested by the active repository SIZE\_REDUCTION.md; this note completes a particular shorter layout, its complete proof and its finite controller certificate.
+
+\subsection{Exact source and result}
+The immutable comparison commit is \nolinkurl{fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb} of \nolinkurl{VladimirReshetnikov/ProveIt}. The immediate whole ordinary source is \nolinkurl{Computability/DiophantineConsistency/research/zero-weight-flag-independent/PROOF.md}. The full 943-tile language, 430 actions, 436-character numeral and decoder are exactly those printed in \nolinkurl{Computability/DiophantineConsistency/equation.tex} at that commit. Local copies are retained in \nolinkurl{inherited/}.
+
+The same fifteen-variable P66 free-port polynomial now has a coherent tuple with cell length 4127 instead of 6007 and binary cell size
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+d = 47 * 4127 = 193969,    B = 2^193969,    beta = B-1.
+\end{Verbatim}
+
+Its four minimal unsigned big-endian coefficient payloads occupy 97046 bytes, versus 141226, a reduction of 44180 bytes (about31.28\%). There are 66 live integer-leaf arithmetic operations and exact degree157, as before. The new DC kernel has1957 nonzero rho-adic coefficients, versus2899: it deletes942 unit-kernel terms. These constant-recipe counts are distinct from the66-gate evaluation cost. No unknown or equation is hidden in the coefficient recipe.
+
+Every assertion below uses the new tuple. Old6007 K/controller residues are never reused.
+
+\subsection{The whole language, support and coefficients}
+Put rho=2\textasciicircum{}47, M=2\textasciicircum{}44 and mu=M-2. Retain the old tile list \texttt{t\_j=(w\_j,n\_j,p\_j,s\_j)}, j=0,...,942. Colors interpreted by the native clauses are the positive complements of these old labels: eight-bit east/west and nine-bit north/south. In particular the forced Start tile is \texttt{(2,435,3,1)}, so its complemented south label is510. Its bits1 through8 are all one. All genuine complemented colors are positive; empty cells have zero colors.
+
+The physical positions in one rho-cell are exactly
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+E = {0,...,942} union {943,...,951} union {973,...,981}
+    union {992,...,999} union {1002,...,1009} union {990,991,1031}.
+\end{Verbatim}
+
+There are980 positions. The low dummy990 can carry digits0,...,3; all other physical digits are Boolean. Position1031 is a separate zero-weight physical flag. The flag has no clause weight. Define every coefficient c\_e, for 0<=e<=3296, by
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+c_j = 1 + 2^10(1+w_j+2^8 n_j+2^17 p_j+2^25 s_j), 0<=j<=942;
+c_(1002+j)=2^(10+j), c_(992+j)=2^(27+j), 0<=j<8;
+c_(973+j)=2^(18+j), c_(943+j)=2^(35+j), 0<=j<9;
+all remaining coefficients are zero.
+\end{Verbatim}
+
+Thus c\_990=c\_991=c\_1031=0. These3297 coefficients are pointwise identical to the old zero-weight6007 coefficient vector: changing the physical flag does not change that vector. There are977 nonzero coefficients, each<M, and the34 label coefficients sum to M-1024. The checker independently decodes every action and tile from the436-character numeral before comparing all3297 weights with the frozen parent vector.
+
+Let G\_m(x)=sum\_(j=0)\textasciicircum{}(m-1)x\textasciicircum{}j and define
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+Psi(x,t)=x^992(x^10+t^17)G_8(tx)
+         +t^8 x^943(x^30+t^17)G_9(tx)
+         +t^34(2-t)x^1031,
+Phi(x)=sum_(j=0)^942 c_j x^j + 2^10 Psi(x,2),
+Lambda=rho^2042+rho^3074.
+\end{Verbatim}
+
+At t=1, Psi specifies35 physical label/flag positions. At t=2, its flag term vanishes and it gives the same weighted Phi as before. Physical support must not be inferred from nonzero Phi coefficients.
+
+\subsection{Four fixed integers, completely specified}
+Take L=4127 and B=rho\textasciicircum{}L. Define
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+DC = rho^20 + rho^30 + rho^1031 + Lambda*Phi(1/rho),
+K = DC + B*rho^10,
+MC = beta + rho - (rho+3)rho^990 - G_943(rho) - Psi(rho,1),
+MF = B+3+(M-2)Lambda + rho^973 G_9(rho)
+     +rho^1012 G_8(rho)+rho^1031
+     +2^29 rho^4124-rho^4106.
+\end{Verbatim}
+
+Every reflected exponent is nonnegative: the first reflected coefficient is at2042-1009=1033. Hence the apparently rational expression in DC is an integer specified by a finite sum. In the P66 graph use the four ports \texttt{beta,K0=K,MC,MF}. This MF is the source mask, already shifted once by beta. Write MF\_native=MF-beta only in the proof.
+
+The core mask consists of two43-bit clause masks,17 label-copy tests, one flag-copy test and the origin test, for105 bits. The zero padding is 18 complete rho-fields4106,...,4123 and29 bits at4124, for875 more bits. The positive padding identity is
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+2^29 rho^4124-rho^4106
+  = (rho-1)sum_(j=4106)^4123 rho^j + (2^29-1)rho^4124.
+\end{Verbatim}
+
+The full finite integer computation verifies
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+0<DC<B,    0<MC<beta,    0<MF_native<beta,
+pc(MF_native)=980,    pc(MC)=d-980,
+MC=2 mod4,    MF_native=4 mod8.
+\end{Verbatim}
+
+No carries or borrows in these explicit mask calculations are left to an informal picture. They are checked on the complete integers. These are the same numerical interface conditions used by the inherited outer arithmetic.
+
+\subsection{The initial clause lemma and bounded cyclic carries}
+The zero-weight clause lemma of the immediate source is unchanged. For a selector population n, the complemented-label word W and selected tile words u\_j, write
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+Q = 2^34 n + W - sum_selected u_j.
+\end{Verbatim}
+
+The clause raw value is n+2\textasciicircum{}10 Q. With incoming carry in0,...,29 and the mask mu, the source's integer inequalities force n=0 or1. For n=0 all labels are zero; for n=1 exactly one selected tile determines all34 complemented labels. A flag is not recovered or used by this lemma.
+
+The new DC has three bare unit terms, at20,30,1031, and two reflected coefficient blocks. The block separation is1032, larger than max(E)=1031. Therefore a given output has at most one predecessor for each reflected coefficient, even though two full blocks occur in DC. The shifted low-dummy extra0/2 is treated separately. It meets at most one reflected block, since their separation is again absent from E. Its unit hit2021 precedes every reflected extra-dummy hit, whose first possible field is2023. Its bare and spatial extra hits are1010,1020,1000, all distinct.
+
+One may use the inherited hand bound on the full coefficient sum and obtain the same29 carry bound. The finite certificate also supplies an independent stronger direct check: form the full nonnegative convolution DC*1\_E, add twice the translated DC at dummy990, and take the exact maximum Hmax. This is a finite array containing every permitted non-temporal raw value. The complete arithmetic check is
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+Hmax + 3 + 3rho/4 + 29 < 30rho.
+\end{Verbatim}
+
+Here3 bounds the spatial source digit; 3rho/4 bounds the temporal digit in any fractional binary phase. At phase46 the only extra odd spill is from low dummy990 into991, already in E. This bound is independent of alignment, the flag value, or a solution to the clause tests.
+
+The monotone cyclic carry map preserves the finite box0,...,29. Iterating from zero stabilizes and telescoping identifies its digit word with the transport residue. The strict representative supplied by the inherited outer inequalities rules out the zero/all-ones ambiguity, exactly as in the source. Since the clause centers differ by1032, they cannot both have a temporal physical predecessor in any cell or fractional phase. At least one clean clause applies. Thus every cell has zero or one selector and its correct complemented labels before any alignment assertion.
+
+\subsection{A nine-target alignment lemma}
+The new singleton rho\textasciicircum{}1031 copies only selector0 (Start) to field1031. It does not copy all943 selectors. Below1033 there is no reflected term. There are at most three Boolean bare contributions and the bounded dummy contribution; the safe bound9 suffices. Hence
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+9 + 3rho/4 + 29 < rho
+\end{Verbatim}
+
+makes every outgoing carry in fields0,...,1032 zero. This includes every incoming carry at targets974,...,981 and1031.
+
+In the forced Start cell, the eight targets974,...,981 each receive one from the corresponding south label. Target1031 also receives one from the Start selector. Each of their low-bit tests requires an odd temporal contribution. Fractional phases1,...,45 have only even temporal digits. Phase46 has at most one odd low-dummy spill, and cannot meet nine targets. Thus the fractional phase is zero.
+
+Let r be the remaining rho-digit offset moduloL, and put u=974-r moduloL. The eight temporal preimages u,...,u+7 must be physical. They cannot wrap across the long unsupported top interval. Within each predecessor cell at most one of them may be a selector, by the already established clause lemma. The complete possible starts are therefore exactly
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+u in {942,943,944,973,974,990,991,992,1002}.
+\end{Verbatim}
+
+This is also immediate by inspecting the five physical intervals: at most one selector permits only942,...,944 at the end of0,...,951. The ninth temporal preimage is u+57. Among the nine displayed starts, only u=942 and u=974 have u+57 in E, namely999 and1031. The first case would require selector942 to be one and also the south low bit at943 to be one in the same predecessor cell. The clean clause already forces that cell's labels to be those of tile942. The complete decoder gives tile942=(4,437,2,437), whose complemented south label is511-437=74. Its low bit is zero, a contradiction. Therefore u=974 and r=0 moduloL. No value of the physical flag was assumed, and no uniqueness of Start outside the forced cell was assumed. The finite checker additionally tests every r=0,...,L-1, partitioning possible wrapped preimages by their actual predecessor cells. Support and selector capacity leave offsets0,32; the decoded labels exclude32, leaving only0.
+
+\subsection{Exact copies, all resets and soundness}
+The full convolution identities are
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+target973+j: current943+j, 0<=j<9;
+target1012+j: current992+j plus spatial1002+j, 0<=j<8;
+target1031: currentselector0;
+targets2042 and3074: sum_e c_e current_e.
+\end{Verbatim}
+
+The singleton cannot contaminate a clause: its would-be predecessors are 1011 and2043, both absent. Its would-be predecessor at2041 is1010, also absent. Reflection starts above all copy tests. The bare/spatial sources at all clause targets and predecessors are absent. These identities are checked as complete coefficient lists, not just at intended witnesses.
+
+After alignment, the17 ordinary copies force every temporal/spatial color equality. The flag copy gives precisely
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+flag_(temporal predecessor of i) = StartSelector_i.
+\end{Verbatim}
+
+Since temporal rotation is a permutation, this uniquely determines all flags from Start selectors. Occupation is instead forced by color equality: empty cells have zero colors, genuine tiles have positive complemented colors, and spatial one-cell rotation propagates occupancy from the forced Start to every cell. Thus every cell contains exactly one genuine tile. The flag is never required to equal occupancy.
+
+Let Aadj=sum\_(e,e+1 in E)c\_(e+1)x\_e. The two complete clause predecessor values are
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+field2041: Aadj;
+field3073: Aadj+c_0*x_1031.
+\end{Verbatim}
+
+The extra term comes from the unique pair1031-0=1031; difference1033 is absent. With at most one selected tile, Aadj<=2M-1024, including selector-to-label adjacency942/943 and dummy-to- label adjacency991/992. The flag has no adjacent nonzero coefficient. Since c\_0<M, both predecessors plus incoming29 are<rho and reset carry. The actual occupied clause value is M+1<rho.
+
+The maximum raw product field is3074+1031=4105. Its entire value is c\_0*x\_1031<M; it resets incoming29. All fields4106,...,4126 are raw zero, and aligned temporal/spatial support is absent there. This proves every875 padding bit and a terminal zero field. Each B-cell origin is reset. Origin behavior is identical to the source: DC and the spatial shift have positive exponents, so only the temporal Start selector can meet an origin.
+
+The forced Start's complemented north76 differs from its south510, so the temporal stride is nonzero. Inverse complementation now gives exactly the retained genuine marked blank computation and syntactic ZFC refutation. Soundness uses no finite controller or prime-existence assumption.
+
+\subsection{Fresh canonical encoding and strict inequalities}
+From a finite syntactic refutation, the retained helical-padding theorem gives genuine one-Start rectangles with independently cofinal width and height. Complement the colors and encode all cells on the new E. Define each flag by the unique permutation rule in Section6. Supply both dummies initially zero. Every Boolean subset of safe low990 dummy bits leaves all selectors, colors and the flag relation unchanged.
+
+The same bounded cyclic carry construction is valid before choosing a strict representative. The exact aligned resets proved above apply to every such subset. Occupied clauses make F positive, and the terminal zero field gives
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+0<F<q/rho<q/7,
+0<C<q/rho^(L-1032),
+2C+F<q*(1/7+2/rho^(L-1032))<q/3.
+\end{Verbatim}
+
+Thus alpha=q-F-C is positive, and0<F<q-1. The flags have been encoded afresh; the old6007 word with all flags one is not reused.
+
+\subsection{Actual rank and the new controller}
+Set t=dN, q=2\textasciicircum{}t, J=(q-1)/beta and
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+S'=(C-1)+qF,
+Tmask=(MC*J+1)+q*(MF_native*J-1).
+\end{Verbatim}
+
+The inherited outer mask theorem gives disjoint S' and Tmask belowq\textasciicircum{}2. The explicit populations and origin changes give pc(Tmask)=t+2. With exactly one source-mask shift, the actual P66 rank is
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+R=[q(q-F)-C](q^2-1)+(MC+qMF)J
+  =(q^2-1-S')q^2+(S'+Tmask).
+\end{Verbatim}
+
+It follows that pc(R)=3t+2. The unchanged origin residues C=1 mod4, F=0 mod4 and J=1 mod4 give R=3 mod4.
+
+A safe bit at cellj changes C by rho\textasciicircum{}990 B\textasciicircum{}j. The complete DC/dummy maximum exponent is3074+990=4064. Its other later-cell exponents are1000 (spatial) and990 (temporal). All remain belowL with at least three free rho-digits. Different later cells or distinct later exponents prevent coefficient collisions. Exactly as in the source, for j+1<N and j+width<N one obtains a positive ordinary increment deltaRaw<q/7 and, uniformly over intermediate subsets, F\_old+deltaRaw<2q/7<q-1. Thus no modular wrap is hidden in
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+deltaR=-Gamma B^j,
+Gamma=rho^990(q^2-1)[1+q(K+B^width)].
+\end{Verbatim}
+
+The new finite certificate gives the following exact controller data:
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+L=4127 prime, d=193969,
+ord_47(2)=ord_47(B)=23,
+ord_4127(2)=ord_4127(B)=2063,
+spacing=lcm(23,2063)=47449,
+lambda=474491=10*47449+1 prime > d.
+\end{Verbatim}
+
+All orders are checked by their full exponent and every distinct prime factor of that exponent. Both orders are coprime to d. Also B\textasciicircum{}2!=1 modulo each of47,4127,lambda, and the certificate gives
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+H0=1+B*K+B^2 = 9 mod47,
+H0 = 3487 mod4127,
+H0 = 153928 mod474491,
+B^(lambda-1) = 1+135285*lambda mod lambda^2,
+0 < 135285 < lambda.
+\end{Verbatim}
+
+The precise last residue is in \texttt{start\_only\_certificate.json}. Primality here is established by full trial division up to the square root, so no probabilistic primality or unsupported prime assertion is used. The dense Phi evaluation, sparse DC evaluation and complete integer K agree at all three primes.
+
+For completeness choose independent large width=lambda\textasciicircum{}r\_w and height=lambda\textasciicircum{}r\_h, with N=width*height=lambda\textasciicircum{}n, N>d*lambda\textasciicircum{}2 and height>lambda. Put T\_orbit=N/lambda and C0=d*lambda. Every power of lambda is1 modulo lambda-1, so q=B\textasciicircum{}N=B\textasciicircum{}width=B at every prime divisor ofd*lambda. The new units above make Gamma a unit modulodN. The valuation-one lift gives exact orderT\_orbit ofB\textasciicircum{}(lambda-1) modulo lambda\textasciicircum{}n, while that power is1 modulod. CRT gives its orbit as1+C0*z, 0<=z<T\_orbit.
+
+For clarity, the source's subset construction is complete with these new parameters: normalize a target byB\textasciicircum{}-2 and choose epsilon in\{0,1\} so that subtracting epsilon*B leaves a nonzero residue modulo lambda. Its least representative a0 moduloC0 lies in1,...,C0-1 and is a unit moduloT\_orbit. Write the target a0+C0*u and solve
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+a0*z0+a0*(a0-1)/2 = u modT_orbit.
+\end{Verbatim}
+
+The a0 consecutive distinct orbit coordinates sum to the target. Use the safe bit indices2+(lambda-1)j and the additional index3 exactly when epsilon=1. Their largest index is N-T\_orbit-lambda+3; adding1 or width stays belowN. Applying this subset to (R0-d*width)*Gamma\textasciicircum{}-1 modulo dN gives
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+R=d*width mod dN.
+\end{Verbatim}
+
+All masks and inequalities are preserved. The source's rank growth yields R>q(q\textasciicircum{}2-1)>dN+d*width. Hence the required positive outer power and transport witnesses are constructed exactly as before with the actual new K.
+
+\subsection{P66 and the final consistency equivalence}
+Use precisely the fifteen independent positive integer variables
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+J,F,alpha,z,f,h,i,T,s,w,tau,eta,zeta,y,gamma.
+\end{Verbatim}
+
+All other names in the following display are polynomial abbreviations:
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+q_-=beta*J, q=q_-+1, C=q-F-alpha,
+X=wq, Y=sq^3, E=XY, k=eta+zeta,
+ell=EkY, c=kY+eta, a=E+Y, H=4a+3,
+Delta=a^2+H, D=X+ac+gamma*H,
+R=[q_-(q-F)+alpha](q^2-1)+(MC+qMF)J,
+V=f^2(cT-R)-c, S=i*Delta*c^2,
+N0=tau^2-ell(ell+k), N1=D^2-Delta*c^2,
+Na=S^2(V^2-y^2)+y^2, Nk=k-hE-R,
+Nt=(K+w)C+(q-F)-z*q_-, Ns=Delta*f^2-S^2,
+P=N0*N1*Na*Nk*Nt*Ns-Delta.
+\end{Verbatim}
+
+The single Diophantine equation is P=0. The complete source's Section12 establishes both P66 witness maps for any coherent native tuple with the scalar boxes, masks, genuine native soundness and cofinal controller completeness proved in Sections3--8 above. None of its Pell constructions depends on the old flag location or on setting all flags one. Its proof uses the exact rank identities pc(R)=3t+2, R=3 mod4, its canonical bounds and the actual native transport; all have just been reconstructed for this tuple. Its signed unit analysis, main/strong/auxiliary index recovery, half-binomial projection and positive completeness maps therefore apply unchanged, with the new four coefficients together.
+
+Consequently ordinary ZFC proves
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={}]
+(there exist fifteen positive integers with P=0)
+   iff (there exists a finite syntactic ZFC refutation).
+\end{Verbatim}
+
+Negating yields unsolvability iff Con(ZFC). The ordinary proof does not decide either side. It composes the retained explicit foundational and machine calibration, rather than replacing them by the numerical box conditions alone.
+
+The literal free-port P66 graph is unchanged. Its66 live integer gates, fifteen live positive inputs and exact factor degrees (22,18,62,7,2,46) are retained. The full leading form has the nonzero monomial coefficient8*beta\textasciicircum{}92, so the output degree remains exactly157 at the new positive beta. Different fixed tuples give different specialized polynomials; no equality with the old6007 specialization is claimed.
+
+\subsection{Verification and useful next questions}
+The previously retained4159 construction uses physical flag1042 and a support-only nine-target alignment argument. This4127 refinement additionally uses the actual decoded color of tile942; it saves752 further raw bytes. The two coefficient tuples and their controller certificates are distinct.
+
+\texttt{python3 start\_only.py --write} deterministically creates the complete four binary coefficients, all943 tiles, all3297 weights and the finite certificate. \texttt{python3 start\_only.py} reconstructs them without writing. Python optimization does not remove guards: every check uses an explicit exception. The checker reads the frozen coefficient vector as data, but imports no inherited implementation and separately decodes the whole seed. It checks full convolution lists at every designated field, every possible digit-offset alignment, the actual carry envelope, all mask bits, every controller order/unit/lift and every coefficient byte.
+
+The unbounded proof is Sections4--9, not the finite tests. An independent review should especially challenge the order: clean clauses first, then at-most-one-selector, then nine-target alignment, then flag interpretation and occupied-cell propagation. Treating the flag as occupancy before alignment would reinstate the unnecessary943-term kernel.
+
+Further genuine opportunities are a shorter separated label layout, a smaller guaranteed-zero padding cost, or another physical alignment pattern with fewer marker tests. They require complete new geometric and controller proofs. This note supplies no global lower bound for cell length, coefficient storage, polynomial degree, variable count or arithmetic operations.

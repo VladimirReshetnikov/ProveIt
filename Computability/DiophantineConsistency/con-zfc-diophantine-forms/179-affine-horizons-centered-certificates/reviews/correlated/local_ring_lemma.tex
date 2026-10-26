@@ -1,0 +1,53 @@
+\subsection*{A correlated-radical separation lemma}
+Let $F,D,Q,G,b,c\in\mathbb Z$, with $F\equiv D\equiv1\pmod3$ and
+$Q\equiv0\pmod3$, and put $\delta=Q-1$. Suppose algebraic numbers satisfy
+\[
+ f^2=F,\qquad \tau^2=D,\qquad g^2=G,\qquad
+ \delta t^2=Q(fb-c)^2-1.
+\]
+If $\rho=f+3\tau+9t+27g\in\mathbb Q$, then all four roots are rational.
+Thus $f,\tau,g$ are integers; if $Q=0$ or $Q>1$, then $t$ is also an
+integer. The signs are unrestricted, and the dependence of $t$ on $f$
+is intentional. No independence of square classes is assumed.
+
+\paragraph{Proof.}
+Let $R=\mathbb Z_{(3)}$ and let $S$ be its integral closure in a finite
+normal extension of $\mathbb Q$ containing all four roots. The ring $S$
+is invariant under conjugation and $S\cap\mathbb Q=R$. Indeed, a reduced
+rational with denominator divisible by $3$ cannot satisfy a monic equation
+with coefficients whose denominators are prime to $3$: clearing denominators
+would contradict reduction modulo $3$. The elements $f,\tau,g$ are integral
+over $R$. Since $\delta$ is a unit of $R$, the radicand of $t$ belongs to
+$S$; transitivity of integrality then gives $t\in S$.
+
+If $f$ is irrational, an automorphism $\sigma$ of the normal extension
+sends $f$ to $-f$. Subtracting the conjugate rational relation gives
+\[
+ 2f=3(\sigma\tau-\tau)+9(\sigma t-t)+27(\sigma g-g).
+\]
+Consequently $f/3\in S$, since $2$ is a unit in $R$. Squaring gives
+$F/9\in S\cap\mathbb Q=R$, contradicting $F\equiv1\pmod3$.
+Thus $f\in\mathbb Q$, hence $f\in\mathbb Z$. Apply the same argument to
+$(\rho-f)/3=\tau+3t+9g$ to obtain $\tau\in\mathbb Z$.
+Now $t^2=[Q(fb-c)^2-1]/\delta\in R$ is rational and congruent to $1$
+modulo $3$. Applying the argument once more to
+$(\rho-f-3\tau)/9=t+3g$ gives $t\in\mathbb Q$, and then
+$g\in\mathbb Q$, hence $g\in\mathbb Z$.
+
+For the final integrality assertion, $Q=0$ gives $t^2=1$. If $Q>1$, set
+$u=fb-c\in\mathbb Z$ and write $|t|=a/m$ in lowest terms. The equation
+$Qu^2-(Q-1)t^2=1$ gives $m^2\mid Q-1$. The cases $u=0$ and $|u|=1$
+are respectively impossible and integral. Otherwise reflect signs so
+$u>1,t>0$; then $u<t<Qu/(Q-1)$. The norm-preserving transformation
+\[
+ u'=(2Q-1)u-2(Q-1)t,\qquad t'=(2Q-1)t-2Qu
+\]
+has $u'\in\mathbb Z$, $0<|u'|<u$, and leaves the reduced denominator
+$m$ unchanged, since $2Q-1\equiv1\pmod m$. Descent to $|u|=1$ proves
+$m=1$.\hfill$\square$
+
+\paragraph{Scope.}
+This is an ordinary algebraic lemma, including repeated or negative roots.
+It is not a new end-to-end consistency calibration. An elimination product
+must use the two $t$ roots belonging to \emph{each} selected sign of $f$;
+a four-independent-radical formula with a fixed $t$ radicand would be wrong.
