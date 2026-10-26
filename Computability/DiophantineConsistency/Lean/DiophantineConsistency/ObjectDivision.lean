@@ -91,13 +91,9 @@ private theorem quotient_not_lt {q r q' r' n d : N H}
     (h : DivisionRel H q r n d) (h' : DivisionRel H q' r' n d) : ¬ q<q' := by
   intro hq
   obtain ⟨s,hs⟩ := (ObjectNaturalDiscrete.lt_iff_exists_add_one H q q').mp hq
-  obtain ⟨t,ht⟩ := (ObjectNaturalDiscrete.lt_iff_exists_add_one H r d).mp h.2
-  have hn : n<n := (ObjectNaturalDiscrete.lt_iff_exists_add_one H n n).mpr ⟨s*d+t+r',by
-    calc
-      n = (q+s+1)*d+r' := by rw [← hs,← h'.1]
-      _ = (q*d+r)+(s*d+t+r')+1 := by rw [ht]; ring
-      _ = n+(s*d+t+r')+1 := by rw [← h.1]⟩
-  exact lt_irrefl n hn
+  have he : r=s*d+d+r' := add_left_cancel (a := q*d)
+    (h.1.symm.trans (h'.1.trans (by rw [hs]; ring)))
+  exact not_le_of_gt h.2 (he.symm ▸ (le_add_self.trans le_self_add))
 
 theorem division_unique {q r q' r' n d : N H}
     (h : DivisionRel H q r n d) (h' : DivisionRel H q' r' n d) : q=q' ∧ r=r' := by

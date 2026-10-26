@@ -25,15 +25,12 @@ def Certificate (bit n slack : N H) : Prop :=
 
 theorem certificate_sound {bit n slack : N H} (h : Certificate H bit n slack) :
     bit=if n=0 then 1 else 0 := by
-  obtain ⟨hb,hn,hs⟩ := h
-  rcases (ObjectNaturalDiscrete.mul_self_eq_self_iff H bit).mp hb with hb | hb
-  · subst bit
-    have hn' : n=slack+1 := by simpa only [zero_mul,add_zero] using hs
-    have hn0 : n≠0 := hn' ▸ ObjectNaturalDiscrete.add_one_ne_zero H slack
-    exact (if_neg hn0).symm
-  · subst bit
-    have hn0 : n=0 := by simpa only [one_mul] using hn
-    simp [hn0]
+  by_cases hn : n=0
+  · have he : bit*(slack+1)=1*(slack+1) := by
+      simpa only [hn,zero_add,one_mul] using h.2.2
+    simpa only [if_pos hn] using
+      mul_right_cancel₀ (ObjectNaturalDiscrete.add_one_ne_zero H slack) he
+  · simpa only [if_neg hn] using (mul_eq_zero.mp h.2.1).resolve_right hn
 
 theorem certificate_complete (n : N H) :
     Certificate H (if n=0 then 1 else 0) n (ObjectPredecessor.pred H n) := by
