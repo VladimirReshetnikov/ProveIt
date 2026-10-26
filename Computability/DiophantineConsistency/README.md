@@ -128,6 +128,11 @@ concrete semiring corollary discharges that premise for all eight axioms;
 independent builds pass all seven reports. The complete arithmetic
 instantiation is now checked in FoundationHAPeano; final target comparison
 remains separate work.
+The [generic no-zero bridge](reviews/foundation-ha-nozero-root.md) now proves
+both sentence implications in HA, including successor/add-one conversion
+and exact quantifier counts. Its literal current instantiation still needs
+a compatible import split; the generic theorem supplies no source PA
+equivalence or internal calibration.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the

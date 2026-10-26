@@ -447,6 +447,17 @@ and byte-identical objects over112 cached prerequisites (85 Foundation).
 The actual source PA theorem of the equation/Con(ZFC) equivalence, its
 literal target comparison and the C222 seed/runtime bridges remain open.
 
+[FoundationHANoZero](Lean/DiophantineConsistency/FoundationHANoZero.lean)
+now proves both HA implications between the existing compiled no-zero
+sentence and an explicit Foundation negative-equation sentence's GG image,
+for every Expr(Fin n). It constructs HA equalities for source add-one versus
+successor and retains exactly n binders. Both
+[independent root leaves](reviews/foundation-ha-nozero-root.md) pass27
+reports using only propext/Quot.sound. The literal current binding still
+requires splitting its wide native imports from canonical syntax/data:
+Foundation and the matrix library declare different global Matrix.map
+constants. The generic theorem does not discharge source PA equivalence.
+
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and
 the literal `BProv ZFCax_s [] Form.fBot`. Its final negation composition
