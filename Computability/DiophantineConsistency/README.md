@@ -60,6 +60,15 @@ now cover the six actual axioms, equality, safe closure operations and formula
 induction, including genuine proofs of0+t=t and t+1=S t. Their
 [independent replay](reviews/ha-basic-arithmetic-root.md) passed19 reports
 using only `propext` and `Quot.sound`; full arithmetic translation remains open.
+The subsequent [HA semiring proofs](reviews/ha-semiring-arithmetic-root.md)
+now derive addition/multiplication associativity and commutativity, both
+distributive laws and the zero/one laws using actual formula induction.
+Four independently compiled leaves passed36 standard-only reports.
+HA also proves the [zero-or-successor decomposition](reviews/ha-natural-cases-root.md)
+and [equality decidability](reviews/ha-equality-decidable-root.md), with
+capture-safe arbitrary-term instances and explicit finite contexts.
+These supply arithmetic ingredients for the translation; the full HA
+equivalence remains open.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the

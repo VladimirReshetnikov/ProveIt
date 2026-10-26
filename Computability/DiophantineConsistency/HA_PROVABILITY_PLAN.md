@@ -269,6 +269,27 @@ reports using only `propext` and `Quot.sound`. Seven cached prerequisites
 were explicitly reused. Further semiring/order axioms and their translated
 induction/parameter closures remain separate work.
 
+The conventional arithmetic library now also includes
+[HAAdditiveArithmetic](Lean/DiophantineConsistency/HAAdditiveArithmetic.lean)
+and [HAMultiplicativeArithmetic](Lean/DiophantineConsistency/HAMultiplicativeArithmetic.lean).
+They derive the semiring identities using HA formula induction and explicit
+HA equality chains. Their four-leaf [independent replay](reviews/ha-semiring-arithmetic-root.md)
+passed36 reports using only `propext` and `Quot.sound`, with eight/nine cached
+prerequisites reused for the two respective pairs. These are actual HA
+proofs, not equalities supplied as proof-transfer hypotheses.
+
+[HANaturalCases](Lean/DiophantineConsistency/HANaturalCases.lean) proves
+`t=0 ∨ ∃z t=S z` by actual formula induction. Its
+[independent replay](reviews/ha-natural-cases-root.md) passed11 reports.
+[HAEqualityDecidable](Lean/DiophantineConsistency/HAEqualityDecidable.lean)
+then proves `∀x∀y (x=y ∨ ¬x=y)` by one formula induction and the predecessor
+split, with arbitrary-term instances and full context shifts through
+existential elimination. Its [independent replay](reviews/ha-equality-decidable-root.md)
+passed14 reports. Both packets use only `propext` and `Quot.sound` (or no
+axioms); equality decidability supplies no general excluded-middle rule.
+Translated Foundation arithmetic axioms, induction and the final target
+comparison still require explicit derivations.
+
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and
 the literal `BProv ZFCax_s [] Form.fBot`. Its final negation composition
