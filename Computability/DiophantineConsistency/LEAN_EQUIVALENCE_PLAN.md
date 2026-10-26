@@ -591,6 +591,28 @@ checks](reviews/wang-tiles942-helical-extension-lean-root.md). The actual
 computation band remains to be constructed; none is assumed by the final
 consistency soundness theorem.
 
+The [independent helical-geometry review](reviews/wang-tiles942-helical-geometry-peer.md)
+passed four isolated fresh builds for both geometry modules and checks.
+
+`WangTiles942TraceCycle` now constructs actual run/wait rows and closes
+them through finish/reset/initializer at every sufficiently large height.
+`WangTiles942CycleBoundary` derives literal blank outer cells from actual
+old and next head bounds. `WangTiles942CycleBand.marked_word_of_halt`
+therefore constructs a marked word of length(L+R)*H and strideL+R from
+an actual halt atT and independent bounds T+2≤L,R,H,3≤H. All boundary
+matching is derived; no cleanliness or run-calibration premise is supplied.
+See the [root review and six fresh checks](reviews/wang-tiles942-trace-band-lean-root.md).
+The native construction is now available; controller and arithmetic
+witness construction remain open.
+
+`WangTiles942CycleMarker` derives that the explicit cycle has Start
+exactly at row0/position0. `WangTiles942HelicalMarker` transports a local
+canonical-band marker classification to uniqueness in the exact cyclic
+quotient, without coprimality. See the [author receipt and four fresh
+checks](reviews/wang-tiles942-marker-construction-root.md). This helper
+keeps its local classification explicit until it is proved for the
+actual band; general marked-word soundness never assumes unique Start.
+
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
