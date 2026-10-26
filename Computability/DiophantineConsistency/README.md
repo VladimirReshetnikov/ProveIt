@@ -31,8 +31,9 @@ and 942 indexed tiles fit on one Letter page at the unchanged fonts.
 
 Decimal notation and distinct unsubscripted scalar unknowns are maintained
 display requirements. Future replacements must preserve them and update
-TeX and PDF together. The latest [format continuity check](reviews/current-decimal-distinct-names-9989-ROOT-continuity.json)
-authenticates both complete files, all 715 digits and the saved page image.
+TeX and PDF together. The latest [format continuity check](reviews/current-decimal-distinct-names-2026-10-25-recheck.json)
+authenticates both complete files and all 715 digits in a fresh PDF extraction.
+A fresh one-page build is byte-identical, and its whole page was visually checked.
 Subscripts in the fixed tile table and decoder index constant data.
 
 The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
