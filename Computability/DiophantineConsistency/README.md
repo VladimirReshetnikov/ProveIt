@@ -77,6 +77,11 @@ and [equality decidability](reviews/ha-equality-decidable-root.md), with
 capture-safe arbitrary-term instances and explicit finite contexts.
 These supply arithmetic ingredients for the translation; the full HA
 equivalence remains open.
+The first [eight translated Foundation arithmetic axioms](reviews/foundation-ha-arithmetic-root.md)
+are now discharged by actual HA proofs of their literal GG images.
+Both leaves pass independent compilation and22 standard-only reports;
+the remaining equality/order axioms and arbitrary induction are explicit
+separate obligations.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the

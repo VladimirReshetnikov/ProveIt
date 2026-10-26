@@ -314,6 +314,19 @@ axioms); equality decidability supplies no general excluded-middle rule.
 Translated Foundation arithmetic axioms, induction and the final target
 comparison still require explicit derivations.
 
+The first concrete translated-axiom checkpoint is now proved in
+[FoundationHAArithmetic](Lean/DiophantineConsistency/FoundationHAArithmetic.lean).
+Each of the eight semiring equation axioms has an actual
+`HA.Proves (FoundationPAHFSyntax.sentence PeanoMinus.Axiom.<name>ᴺ)` endpoint.
+Constructive double-negation introduction precedes universal closure;
+the fixed source list's membership and every literal syntax image are
+checked. No arithmetic-image predicate or desired-provability hypothesis
+is supplied. Its [independent replay](reviews/foundation-ha-arithmetic-root.md)
+passed22 reports using only `propext` and `Quot.sound`, with88 cached
+prerequisites. All76 Foundation records exactly match the already accepted
+arithmetic215 inventory. Equality-theory cases, nine order/geometric axioms,
+arbitrary induction and the source's parameter closure remain separate.
+
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and
 the literal `BProv ZFCax_s [] Form.fBot`. Its final negation composition
