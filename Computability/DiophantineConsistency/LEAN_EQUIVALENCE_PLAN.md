@@ -476,7 +476,16 @@ See the [root review and four fresh replays](reviews/wang-tiles942-strip-foundat
 Finite strip bounds and actual machine-run semantics are subsequent work.
 
 Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. `DecimalMachineInitialization`
+integration, documentation and commits. `WangTiles942InputLanguage` now
+identifies each operating north head input with its exact actual transition
+and retains both pass/finish choices at halt and all pass/finish/receive
+choices at plain inputs. `WangTiles942ResetRows` propagates one actual
+reset through the seam-free interval. A single interior south438 edge
+therefore forces an entire finish row followed by a reset row, without
+assuming either uniform row. See the [root review and four fresh replays](reviews/wang-tiles942-input-reset-rows-lean-root.md).
+Neither packet supplies a run or assumes existence of a finish event.
+
+`DecimalMachineInitialization`
 proves the literal decimal machine's first transition, exact post-step
 configuration, all integer tape readings and the clock shift for runs
 started there. `WangMachineEncoding` defines the actual vertical colors
