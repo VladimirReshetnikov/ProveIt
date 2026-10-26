@@ -410,7 +410,8 @@ copy and label premise comes from the same original Facts. Even without
 occupation elsewhere, Start's South1 and North435 exclude zero temporal
 displacement modulo the full word. The [author review and fresh checks](reviews/current-tile-colors2011-lean-root.md)
 record the precise conditional local-selection scope. Global chosen tile
-assignment and the marked-word composition remain subsequent work.
+assignment follows below. The [independent color-composition review](reviews/current-tile-colors2011-lean-peer.md)
+also passed fresh main/check replay in an isolated import overlay.
 
 `CurrentCellCycle2011` proves that
 successor by2011 reaches every aligned cell, and therefore propagates any
@@ -457,6 +458,14 @@ completeness, remaining equation frontiers and internal-ZFC proof remain
 required; the marked-word endpoint is not the final consistency theorem.
 
 Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. Each verified checkpoint is
+integration, documentation and commits. `WangTiles942Boundary` proves the
+exact local cases for vertical colors434..438, including north437 iff
+south437 and the nine actual seam tuples. Transition input heads stop
+at431 while actual receiving outputs include halt215 and stop at433.
+The [root review and fresh replay](reviews/wang-tiles942-boundary-lean-root.md)
+retain the true initializer color4 and reject its old188 lookalike.
+These are local table facts, with no strip, run or halting premise.
+
+Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
