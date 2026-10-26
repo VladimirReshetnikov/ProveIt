@@ -1,0 +1,242 @@
+\section{Natural quartics: shared syntax wires and pooled powers}
+\label{sec:natural21}
+
+All coordinates in this section range independently over
+$\mathbb N=\{0,1,2,\ldots\}$. The new principal equation is
+\[
+ P_{202}(x_0,\ldots,x_{201})=\sum_{j=0}^{153}R_j(x)^2=0,
+\]
+where every $R_j$ is the literal quadratic polynomial in
+\texttt{natural202/equation.json}; all collected coefficients and all
+rendered residuals are supplied alongside it. The complete ordinary proof
+is \texttt{PROOF.md}. Relative to the explicitly retained C222/ZF/ZFC
+calibration, ZFC proves
+\[
+ \neg\exists x\in\mathbb N^{202}\;P_{202}(x)=0
+ \quad\longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+This is not a consistency proof, a global optimality claim, or a newly
+kernel-checked end-to-end formal derivation.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Endpoint & Variables & Rows & Monomials & Coefficient height\\
+\hline
+Inherited natural endpoint &206&158&8210&130686376\\
+New dimension/support form &202&154&9818&239204765\\
+New low-height form &202&154&12706&31145294\\
+New sparse companion &203&155&6834&228943870\\
+New sparse companion &204&156&6756&225656347\\
+\hline
+\end{tabular}
+\end{center}
+
+The four-coordinate reduction precedes optional residual-basis changes.
+The latter are explicit invertible integer row shears, not coordinate
+transformations: they preserve the common zero set on the same natural
+orthant. The low-height endpoint trades additional monomials for smaller
+coefficients. No search or optimality claim is implicit in these choices.
+
+\subsection{Three exact syntax-wire savings}
+Let $b=\texttt{crt.encoded.b}$, $M=\texttt{mul.36}$ and $L=2b+M$.
+Three literal parent definitions share the shifted square
+\[
+ G=(2L+6)(2L+7)=4L^2+26L+42:
+\]
+\begin{align*}
+ \texttt{mul.43}&=G+8L+30,\\
+ \texttt{mul.143}&=G+4L+14,\\
+ \texttt{mul.166}&=4G-4L-12.
+\end{align*}
+Replace the three coordinates by $G$ and its one quadratic defining row.
+The last restoration is natural on that row because
+$4G-4L-12=16L^2+100L+156\ge0$; it is not asserted to be
+unconditionally nonnegative on arbitrary $(G,L)$. In the sparse parent
+charts the third retained coordinate is instead
+\[
+ \texttt{add.171}=8G+4b+2\texttt{mul.60}+13,
+\]
+with the same two-coordinate saving. Conversely an arbitrary parent zero
+supplies the natural $G$ by its displayed polynomial. Exact substitution
+turns the three old defining rows into multiples $1,1,4$ (or $1,1,8$)
+of the one new row. All remaining rows are preserved by substitution.
+
+Finally,
+\[
+ \texttt{mul.366}=F(4+4b+2M),\qquad
+ \texttt{mul.370}=F(6+4b+2M)
+\]
+allow the unconditional natural restoration
+$\texttt{mul.370}=\texttt{mul.366}+2F$ and deletion of its duplicate row.
+These changes save three genuine coordinates and rows. They leave every
+syntax label, local source value, and inherited numerical majorant exactly
+unchanged.
+
+\subsection{A doubled lower Pell frame at no coordinate cost}
+The retained semantic frame $W$ is fixed after the intended powers and
+representatives. Write $A=\ell+\sigma$, with $\ell,\sigma\ge0$. Its lower
+graph originally used
+\[
+ P=W(z_{\rm old}+1),\qquad R=(W+1)P,\qquad
+ \ell^2+P^2-R^2=1.
+\]
+Substitute $z_{\rm old}=2z+1$. Thus $P=2W(z+1)>0$ with the same
+coordinates and degree. Classification of the lower Pell norm gives
+\[
+ \ell=X_e(W+1),\qquad P=Y_e(W+1),\qquad e>0.
+\]
+The second-order recurrence for $Y_e$ reduces modulo $2W$ to the recurrence
+for $e$, since $2(W+1)\equiv2\pmod{2W}$. Hence
+$Y_e(W+1)\equiv e\pmod{2W}$, so $e\ge2W$. For $W\ge2$,
+\[
+ A\ge\ell\ge(W+1)^{2W}>4W^{2W}.                 \tag{N1}
+\]
+Indeed, the first three binomial terms of $(1+1/W)^{2W}$ already sum to
+$5-1/W>4$. For completeness choose $e=2W$; the quotient
+$Y_{2W}(W+1)/(2W)$ is a positive integer. The subsequent common-root
+congruence still permits choosing $A$ arbitrarily large above $\ell$.
+This is a cofinal auxiliary-witness strengthening, not a bijection on all
+old lower Pell tuples.
+
+\subsection{A three-coordinate natural pool}
+The three exact requests at base $n=q$ have indices and outputs
+\[
+ (k_0,k_1,k_2)=(t,c,x),\qquad c=y+1,\qquad
+ (m_0,m_1,m_2)=(D_t,D_y,D_x).
+\]
+In the emitted charts each $m_i$ is the affine sum of its pooled remainders,
+its pooled slack, and $1$. Their natural consecutive pairs $(Y_i,Z_i)$
+retain all three norms. The old rows used a modulus coordinate
+$T=2An-n^2-1$ and three natural quotients $h_i$:
+\[
+ nY_i-Z_i=m_i+Th_i.                                      \tag{N2}
+\]
+Delete these four coordinates and four rows. Introduce only three natural
+coordinates $U,M_p,K$ with
+\begin{align}
+ U&=\sum_iY_i^2,\nonumber\\
+ K&=2\sum_iY_i(m_i+Z_i)+(2A-n)M_p-nU,\nonumber\\
+ \sum_i(m_i+Z_i)^2+M_p&=nK.                              \tag{N3}
+\end{align}
+All three rows are quadratic. They imply the exact polynomial identity
+\[
+ \sum_i(m_i+Z_i-nY_i)^2=T M_p.                           \tag{N4}
+\]
+If their residuals are $S_0,S_1,S_2$ in displayed order, the left side
+minus $TM_p$ equals $S_2+nS_1-n^2S_0$.
+
+For canonical true powers define
+\[
+ U=\sum_iY_i^2,\qquad M_p=T\sum_i h_i^2,
+\]
+and define $K$ by the middle row of (N3). It is an integer, and the final
+row yields
+\[
+ nK=\sum_i(m_i+Z_i)^2+M_p\ge0.
+\]
+Thus $K$ is natural when $n,T>0$. No signed-coordinate relaxation is
+hidden in the pooling construction.
+
+\subsection{The orientation issue and its exact repair}
+Deleting (N2) removes the sole predecessor-orientation incidence for the
+$c=y+1$ seed. It is therefore invalid simply to assume all three consecutive
+pairs remain predecessors. Here is the noncircular repair.
+
+The stronger frame first authenticates the complete semantic anchor.
+For any consecutive pair, $X=AY-Z$ satisfies
+$X^2-(A^2-1)Y^2=1$. Classification applied to $(|X|,Y)$ supplies
+$Y=Y_j(A)$ even when the sign of $X$ is unknown. The retained merged
+error-square cap depends only on these ordinates; its original small-error
+argument still proves $j=k$. The anchor itself retains positive ordinary
+coordinates and every private witness.
+
+The $t$ and $x$ pairs retain their individual positive-output rows at bases
+$F^2-1$ and $B$, respectively. A row $bY=Z+R$ with $R\ge0$ and
+$1\le b<A$ excludes $Y=0$ and implies $AY-Z>0$. Their predecessor
+orientations therefore survive. The three unpooled power requests recover
+$V,N,q$ by the old argument, so $n=q\ge1$ before the pool is interpreted.
+The unchanged literal frame bounds $n,m_i,k_i\le W$, giving
+\[
+ T\ge2A-W^2-1>A>4W^{2W}>0.                              \tag{N5}
+\]
+
+The decisive additive, rather than merely maximum, bounds are
+\[
+ c+t\le W-1,\qquad c+x\le W-1,\qquad
+ 2c\le W-1,\qquad c+1\le W-1.                          \tag{N6}
+\]
+The independent verifier checks all four as exact coefficientwise
+nonnegative differences in the literal frame. For the sparse charts it
+first expands the retained \texttt{add.594} row and uses the retained
+cofinal/floor identity $F+Fr+Fs+r=y+1$. No factorial or power interpretation
+is used in checking these inequalities.
+
+Modulo $T$, the standard Pell recurrence gives
+$X_k+(n-A)Y_k\equiv n^k$. Its conjugate is the inverse, because
+$(n-A)^2\equiv A^2-1\pmod T$. Thus the actual pair has
+\[
+ nY-Z\equiv
+ \begin{cases}
+ n^k&\text{if }X=X_k,\\
+ -n^{-k}&\text{if }X=-X_k.
+ \end{cases}
+ \pmod T
+\]
+Here inverses exist since $T\equiv-1\pmod n$. Multiply (N4)'s errors by
+$n^c$. Their ordinary integer residues are
+\begin{align*}
+ \delta_0&=m_0n^c-n^{c+t},&
+ \delta_2&=m_2n^c-n^{c+x},\\
+ \delta_1&=m_1n^c-n^{2c}&&\text{in the predecessor case},\\
+ \delta_1&=m_1n^c+1&&\text{in the reversed case}.
+\end{align*}
+Consequently $T$ divides $E=\delta_0^2+\delta_1^2+\delta_2^2$.
+By (N6), each displayed power and each $m_i n^c$ is at most $W^{W-1}$.
+Therefore
+\[
+ 0\le E\le12W^{2W-2}\le3W^{2W}<T.
+\]
+It follows that $E=0$. The reversed case is impossible because
+$m_1n^c+1>0$. Cancellation of the positive $n^c$ now gives all three
+exact powers and the missing predecessor orientation.
+
+The old quotients are genuinely natural, not merely integral: the standard
+positive-power identity is
+\[
+ nY_k-Y_{k-1}-n^k
+ =T\sum_{j=0}^{k-1}n^{k-1-j}Y_j\ge0.
+\]
+Thus all four deleted coordinates in (N2) can be restored, as can the
+old frame coordinate and the syntax wires. Every parent residual,
+including the local nonnegative evaluation row, is recovered.
+
+\subsection{Completeness, logical inheritance, and finite evidence}
+Starting from a finite refutation, the parent's constructive proof chooses
+the even horizon, factorial, beta representative, precision-$N^2$ CRT
+lifts, canonical local signs, semantic label anchor, self-sized radix and
+denominators in its unchanged order. Choose the stronger auxiliary lower
+Pell witness only after these semantic values, then choose $A$ in its same
+root-congruence class and all canonical Pell witnesses afresh. Larger $A$
+only strengthens the merged-error completeness bound. The formulas above
+supply $G,U,M_p,K\in\mathbb N$. This proves refutation-to-zero without
+asserting that every arbitrary old auxiliary tuple lifts.
+
+Soundness restores the complete parent, whose retained acyclic proof then
+recovers the descending factorial, carry-free binomial ranges, reciprocal
+CRT, unchanged local source, factorial-weight Horn flow and calibrated
+finite syntactic ZFC refutation. No consistency or arithmetic-soundness
+assumption is used. The full proof closure and notices are retained, and
+its ordinary theorem is distinguished from the finite Python evidence.
+
+The standard-library commands
+\begin{quote}\ttfamily
+python3 -B verify.py --rebuild\\
+python3 -B -O verify.py --rebuild
+\end{quote}
+check the pinned inherited source, every new source row, the exact natural
+restoration identities, the pooled identity and additive frame bounds,
+all inverse row shears, every collected coefficient and parsed printed
+residual, and byte-identical rebuilding. Deleting the source-evaluation
+row is an explicit rejected negative control. These exact finite audits
+complement, rather than replace, the ordinary unbounded proof.

@@ -1,0 +1,91 @@
+\subsection{Contracting an internal flow edge}
+The retained operation changes the divergence energy rather than only the
+alias penalties. It removes a flow coordinate on an internal tree edge
+and identifies its endpoints. It is therefore not an alias identification
+or an instance of square polarization. Its soundness is unconditional;
+coefficient height one is a separate exact acceptance test.
+
+\begin{theorem}\label{thm:contraction}
+Let an incidence presentation have the energy form
+\eqref{eq:networkenergy}, with every internal edge belonging to a tree
+inside one row block or the hub block. Choose an internal edge from $u$
+to $v$, with its own flow coordinate $w$. Delete that edge, identify its
+vertices, and replace their two divergences by their sum. Retain all
+prescribed occurrence labels and equality and unit penalties. Then the
+old and new integer zero sets are in polynomial bijection, preserving
+the original arithmetic coordinates. The new presentation has one fewer
+flow coordinate and degree at most four. If full collection of its
+polynomial has height one, exact degree four, and every listed variable
+occurs, it is a certified height-one quartic on that smaller coordinate set.
+\end{theorem}
+\begin{proof}
+Write the old two divergences as
+\[
+ d_u=a_u+\epsilon w,\qquad d_v=a_v-\epsilon w,
+ \qquad \epsilon\in\{-1,1\},
+\]
+where $a_u,a_v$ are integer polynomials independent of $w$. No other
+divergence or penalty depends on $w$, because it is the independent
+flow coordinate of this one edge. The merged divergence is
+$d_{uv}=a_u+a_v$. Thus the new polynomial is exactly
+\[
+ P'=\frac12\left((a_u+a_v)^2+
+           \sum_{t\ne u,v}d_t^2\right)+\sum C+\sum Q+U.
+\]
+This expression proves nonnegativity and the degree bound without any
+claim that the old and new polynomials themselves agree.
+
+At an old zero, nonnegativity forces $d_u=d_v=0$ and every other
+summand to vanish. Deleting $w$ therefore gives $a_u+a_v=0$ and a new
+zero. Conversely, at a new zero all its displayed summands vanish.
+Set
+\[
+ w=\epsilon a_v.
+\]
+Then $d_v=0$, while $d_u=a_u+a_v=0$; all other old summands are unchanged.
+Indeed the stronger identity $P|_{w=\epsilon a_v}=P'$
+holds for every remaining tuple: the two old divergences become
+$a_u+a_v$ and zero. This is an integral polynomial restoration, and
+it is unique on zeros because
+$\epsilon$ is a unit. Restoration and deletion are mutually inverse on
+the zero sets. All equality and unit arguments, and hence all recovered
+logical coordinates, are identical on the two sides.
+
+The edge's endpoints belong to one block. Summing the contracted
+vertex divergences in that block therefore gives the same boundary sum
+as before contraction. In particular \eqref{eq:networkboundary}
+continues to recover exactly the same normalized source row; no source
+occurrence is deleted. Contracting an edge of a tree leaves a tree.
+The remaining flows are still uniquely recovered by leaf elimination,
+or equivalently by composing the one-edge restoration above.
+
+Finally, degrees and coefficient heights concern the polynomial after
+all monomial collisions, including equality and unit terms. Contracting
+vertices can create parallel prescribed incidences, so the initial simple
+graph argument alone is no longer a sufficient height certificate. The
+selection test reconstructs and collects the entire new energy and checks
+its actual integer coefficients. This establishes the stated height,
+exact degree and coordinate census only for the accepted finite instance.
+\end{proof}
+
+\begin{corollary}\label{cor:contractionsequence}
+Any finite certified sequence of accepted internal-edge contractions
+preserves the calibrated integer zero set. Its inverse is obtained by
+restoring the deleted flows in reverse order. If all $k$ deleted flows
+were distinct live coordinates and no other coordinate is removed, its
+independent-variable count decreases by exactly $k$.
+\end{corollary}
+\begin{proof}
+Compose the polynomial deletion and restoration maps of
+Theorem~\ref{thm:contraction}. Every step preserves the block boundary
+identity and leaves internal blocks as trees. The final independently
+collected array fixes the actual coordinate count and all measured
+polynomial invariants.
+\end{proof}
+
+This argument does not predict which edges pass the height test or
+minimize the support. A contraction can save a variable while creating
+more monomials; it can also fail the height test entirely. Adaptive
+selection is a construction method, not a proof of optimality. The
+released certificate freezes each accepted edge, so reproduction requires
+no heuristic search.

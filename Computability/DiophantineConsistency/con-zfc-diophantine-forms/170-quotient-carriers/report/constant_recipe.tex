@@ -1,0 +1,105 @@
+\textbf{The four fixed integers.}
+Every index, set, sum, product and floor below defines a constant, not
+another unknown. Put
+\[
+\rho=2^{67},\quad B=\rho^{8807},\quad\beta=B-1,\quad
+G_m(x)=\sum_{j=0}^{m-1}x^j.
+\]
+Define
+\[
+\begin{split}
+\mathcal E={}&\rg0{942}\cup\rg{983}{992}\cup\rg{1003}{1011}\\
+&\cup\rg{1013}{1031}\cup\{1063,1064,1095,2195,3296\}.
+\end{split}
+\]
+Then
+\begin{align*}
+M_C={}&B-1-\sum_{e\in\mathcal E\setminus\{1\}}\rho^e-2\rho^{1063},\\
+M_F={}&B-1+4+(2^{51}-2)(\rho^{4393}+\rho^{5495})\\
+&+\rho^{1013}G_{10}(\rho)+\rho^{1065}G_9(\rho)
+  +\rho^{2195}+\rho^{3296}\\
+&+(2^{65}-1)\rho^{8792}G_{13}(\rho)+(2^{19}-1)\rho^{8805},\\
+K={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}+\rho^{8849}\\
+&+(\rho^{4393}+\rho^{5495})\Phi(1/\rho),
+\end{align*}
+where
+\[
+\begin{split}
+\Phi(x)={}&(1+2^{51})G_{943}(x)
+ -2^{10}\sum_{i=0}^{942}v(t_i)x^i\\
+&+\sum_{(b,e,m)\in\mathcal C}2^b x^e G_m(2x),\\
+\mathcal C={}&\{(10,1023,8),(18,1013,9),(27,1003,8),\\
+&(35,983,9),(44,1031,1),(45,1022,1),(46,1011,1),\\
+&(47,992,1),(48,1095,1),(49,2195,1),(50,3296,1)\}.
+\end{split}
+\]
+The rational intermediate in K cancels exactly; all four results are positive integers.
+
+\textbf{The 943 indexed fixed tiles.}
+Use the actions $u_j,v_j,d_j$ decoded below. Let
+\[
+\begin{gathered}
+h(q,b)=2(q+1)+b,\quad
+\mathcal R=\{u_j:d_j=1,\ 0\le j<430\},\\
+\mathcal L=\{u_j:d_j=0,\ 0\le j<430\},\\
+r_q=6+|\mathcal R\cap\rg0{q-1}|,\quad
+l_q=205+|\mathcal L\cap\rg0{q-1}|.
+\end{gathered}
+\]
+An interval ending at $-1$ is empty. The table defines $t_i$ for
+$0\le i\le942$; all index ranges are fixed:
+\[
+\setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
+\text{index }i&\text{tile }t_i=(w,n,e,s)\\\hline
+0,1&(2,435,3,1),\ (5,0,0,0)\\
+j+2\ (j=2q+b<430)&((1-d_j)l_{u_j},h(q,b),d_jr_{u_j},v_j)\\
+432+b\ (b=0,1)&(0,h(215,b),0,h(215,b))\\
+434+b\ (b=0,1)&(0,b,0,b)\\
+424+2r_q+b\ (q\in\mathcal R,b=0,1)&(r_q,b,0,h(q,b))\\
+424+2l_q+b\ (q\in\mathcal L,b=0,1)&(0,b,l_q,h(q,b))\\
+924+j\ (0\le j<4)&(0,j+430\fl{j/2},0,438)\\
+928&(2,434,2,0)\\
+929&(3,436,4,4)\\
+930&(4,436,4,0)\\
+497+t\ (t=434,435,436)&(1,438,1,t)\\
+\substack{934+3a+b-6\fl{a/4}\\a\in\{0,1,4\},\ b=0,1,2}&(a,437,b,437)
+\end{array}
+\]
+For $t=(w,n,e,s)$ put
+\[
+v(t)=w+2^8n+2^{17}e+2^{25}s+127\,2^{34}.
+\]
+
+\textbf{A closed decoder for the 430 actions.}
+Put $D_b(A,k)=\fl{A/b^k}\bmod b$, where
+$a\bmod b=a-b\fl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
+\[
+\begin{gathered}
+N=\mathcal A\bmod2^{636},\quad
+T_0=\fl{\mathcal A/2^{636}}\bmod2^{1675},\\
+E_0=\fl{\mathcal A/2^{2311}},\\
+\nu_j=D_2(N,j),\quad \sigma_j=\sum_{k=0}^{j-1}\nu_k,\\
+m_q=D_2(N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14(1-m_q)+m_qD_{16}(E_0,\tau_q),\\
+u_j=\nu_j(1+\sigma_j)+(1-\nu_j)D_{216}(T_0,j-\sigma_j),\\
+v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
+\end{gathered}
+\]
+Empty sums are zero. Here $(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
+uses this actual first target, including its state renaming.
+
+\textbf{The integer $\mathcal A$.}
+The alphabet, in order of digit values $0,\ldots,61$, is:\par
+{\fontsize{9}{11}\selectfont\ttfamily 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}.\par
+Concatenate the following 436 characters as digits $e_0,\ldots,e_{435}$;
+put $\mathcal A=\sum_{j=0}^{435}e_j62^{435-j}$.\par
+\begingroup\fontsize{9}{11}\selectfont\ttfamily
+BxEnhvy6NipzkWmROo0GsA3uK3twWLxscLq20UTumy5Cdu461LwD6g7RDNzF8Y\par
+iYDFTpB8ehAypd7d6OsOL4APamnJeNXQypUezCmW9n4oXP6XfgmiWuAWZ8ZJ7U\par
+OP7gu4kVdlGZqZHULQMar1dXNeJW4i7oNVI8usp8BlovjjZbwPCovZI328fRUq\par
+4q92R81s5GjWQaQfGhkq9UYMK3rRMaBmsOIBkJqc2cj2VRIZ6mjzkBIOkW9SjZ\par
+FzeA6J5u4j3sBL3SdgwXzM9mHvQivu8EJ1TBTpRhHDqZIbmYgwQ8VqTAFotl6F\par
+We1YC554GKrVHsA8oUGKSA6F6k5KREBSD0Tgd7bFALY84LLbpw574BQyvdoHrl\par
+0Oe35uwDf15DpT6VJWZBjSbHPpPAINYTte0eUxnTFTKBlGj8Am6sb1gLldh8WZ\par
+8P\par
+\endgroup

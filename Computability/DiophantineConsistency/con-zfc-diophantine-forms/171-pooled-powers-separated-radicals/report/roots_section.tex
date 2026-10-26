@@ -1,0 +1,199 @@
+\section{A four-root elimination in twelve unrestricted integers}
+\label{sec:round21-four-roots}
+
+\paragraph{Result and comparison.}
+The literal equation \texttt{integer12\_degree512.json} has twelve independent
+integer unknowns, exact total degree $512$, and $132$ live binary operations
+($82$ multiplications, $25$ additions, $25$ subtractions). Squares and scalar
+multiplications are charged. This is a new witness-elimination proof and a
+fixed-twelve-variable tradeoff, not a variable-count or degree record. Against
+the catalogued $12/500/139$ point it saves seven operations at twelve more
+degrees; against $12/1084/123$ it saves $572$ degrees at nine more operations.
+The catalogue already contains the eleven-integer point $11/398/121$,
+which dominates it across all three metrics. The retained
+$13/152/119$ remains a separate lower-degree tradeoff. All triples here are
+variables/degree/operations.
+
+The ordinary signed kernel and its native/compiler/syntactic-refutation
+calibration are inherited explicitly, not reproved by a finite checker.
+Composing that calibration with the total zero-set maps below proves in
+ordinary ZFC that this polynomial's universal integer nonvanishing is
+equivalent to syntactic $\operatorname{Con}(\mathrm{ZFC})$. No consistency
+assumption, consistency proof, new end-to-end proof-assistant certificate or
+global minimum is claimed.
+
+\subsection{Complete polynomial and tuple}
+The unrestricted variables, in literal order, are
+\[
+ j,C,z,h,r,v,w,T,c,n,p_1,p_2\in\mathbb Z.
+\]
+The six complete fixed integers are
+$\beta,K_0,M_C,M_F,A_{\rm cone},B_{\rm cone}$, where $M_F$ is already shifted,
+$\beta=2^{1064921}-1$, $A_{\rm cone}=2^{1113}$ and
+$B_{\rm cone}=2^{666104}$. All six byte payloads and their finite construction
+are supplied under \texttt{inherited\_round20/inherited/coefficients}; no
+coefficient port is left unspecified. Define polynomial abbreviations
+\begin{gather*}
+ J=6j+1,\quad q_-=\beta J,\quad q=q_-+1,\\
+ W=12w+4,\quad X=qW,\quad Y=v,\\
+ F=(K_0+W)C-zq_-,\quad 
+ R=[q(q-F)-C](q^2-1)+(M_C+qM_F)J,\\
+ E=XY,\quad a=E+Y,\quad H=4a+3,\quad \Delta=a^2+H,\\
+ \ell=EY,\quad k=R+1+h\ell,\quad \eta=c-Yk,\quad L=\ell k,\\
+ I=(2r+1)c^2,\quad D_s=\Delta I^2,\quad F_s=1+D_s,\quad Q=\Delta D_s,\\
+ V=F_s(cT-R)-c,\quad q_3=q^3,\quad M=2q_3,\quad U=MH,\\
+ K_{\rm lo}=X(2X-3c)-2,\quad 
+ D_{\rm err}=(A_{\rm cone}F-q)^2+(B_{\rm cone}C-q)^2,\\
+ B_0=(Yk)^2(q^2-D_{\rm err})
+      -q^2[4(Y\eta)^2+(kq^2)^2],\quad 
+ G=4(B_0-p_1^2-p_2^2)-3,\\
+ D_t=1+L(L+k),\quad U_2=U^2,\quad 
+ Z_c=U(n+2L)+MK_{\rm lo}+H(Y-q_3),\\
+ \delta=Q-1,\quad C_y=QV^2-1,\quad D_U=\delta U_2.
+\end{gather*}
+The five inputs to a homogeneous norm are
+\[
+ S=\delta Z_c^2,\qquad A=D_UF_s,\qquad B=9D_UD_t,
+ \qquad C_*=729D_UG,\qquad D=81U_2C_y.
+\]
+The following schedule defines the entire output:
+\begin{gather*}
+ s_+=S+D,\quad a_+=A+C_*,\quad a_\times=AC_*,\\
+ e_2=a_\times+Ba_+,\quad m=s_+-a_+-B,\quad m_2=m^2,\\
+ d_2=SD,\quad h_2=m_2+4(d_2-e_2),\quad e_3=a_\times B,\\
+ n_0=h_2^2+16(d_2m_2-4e_3s_+),\quad 
+ \boxed{P=n_0^2-64d_2(mh_2-16e_3)^2.}
+\end{gather*}
+Every displayed register is an abbreviation. The literal DAG uses only
+integer leaves, addition, subtraction and multiplication.
+
+\subsection{The four-root identity and denominator clearing}
+Let $\mathcal H_4(S,A,B,C_*,D)$ denote the final schedule. It is homogeneous
+of degree eight in its five arguments and satisfies the formal identity
+\[
+ \mathcal H_4(z^2,A,B,C_*,D)=
+ \prod_{\epsilon\in\{-1,1\}^4}
+ (z-\epsilon_1\sqrt A-\epsilon_2\sqrt B
+       -\epsilon_3\sqrt{C_*}-\epsilon_4\sqrt D).
+\]
+This holds for arbitrary complex roots, including coincident square classes.
+The independent standard-library checker multiplies all sixteen factors
+exactly and compares all $495$ coefficients.
+
+Unconditionally, $q$ is even and nonzero, $|X|\ge8$, and
+$a=(X+1)Y$ is zero or has absolute value at least seven. Thus
+$\Delta=(a+2)^2-1\ge3$, $H$ is odd and nonzero, and $U\ne0$.
+Moreover $D_t,F_s\ge1$ because
+$D_t=1+\ell(\ell+1)k^2$ and $\ell$ is even.
+As $Q=(\Delta I)^2$, either $Q=0$ or $Q\ge9$;
+hence $\delta,C_y$ never vanish. Also $G\equiv1\pmod4$, so $G\ne0$.
+With $\rho=Z_c/U$, the exact proof identity is
+\[
+ P=\delta^8U^{16}\!\prod_{\epsilon\in\{-1,1\}^4}
+ \left(\rho-\epsilon_1\sqrt{F_s}-3\epsilon_2\sqrt{D_t}
+       -27\epsilon_3\sqrt G-9\epsilon_4\sqrt{C_y/\delta}\right).
+\]
+The factor $\delta^8$ is already cleared in the literal polynomial; the
+quotient above is proof notation, not a division gate.
+
+\subsection{Separation and rational Pell integrality}
+The authentic $\beta$ is $1\pmod3$. For every integer assignment,
+\[
+ q=X=-1,\quad W=1,\quad a=H=\Delta=0\pmod3,
+\]
+so $F_s=D_t=1$ and $\delta=C_y=-1\pmod3$. For $D_t$, use
+$\ell=-Y^2$ and $Y^4-Y^2=0\pmod3$. In the order
+\[
+ \sqrt{F_s},\quad3\sqrt{D_t},\quad
+ 9\sqrt{C_y/\delta},\quad27\sqrt G,
+\]
+the squared $3$-adic valuations are $0,2,4,6+v_3(G)\ge6$.
+
+Write each nonzero rational radicand as $du^2$ with $d$ a signed squarefree
+integer and $u\in\mathbb Q^\times$. Distinct $\sqrt d$ are linearly independent
+over $\mathbb Q$, by sign-change character projections in a multiquadratic
+extension (including $\sqrt{-1}$). Consider only an irrational class $d\ne1$;
+the rational carrier belongs to class $1$. Any class meeting the first three
+roots has $v_3(d)=0$, and its coefficients have a unique least valuation among
+$0,1,2,\ge3$. Their signed sum cannot vanish. A class containing only the guard
+cannot vanish either. Consequently every root in a vanishing norm factor is
+rational. This includes negative radicands and dependent square classes; it
+does not assume that at most one term is imaginary.
+
+At a zero there are signed rationals $f,\tau,t,g$ such that
+\[
+ f^2=F_s,\quad\tau^2=D_t,\quad t^2=C_y/\delta,\quad g^2=G,
+ \qquad \rho=f+3\tau+9t+27g.
+\]
+The first, second and fourth are integers, and $g$ is odd. For the third,
+$QV^2-(Q-1)t^2=1$. If $Q=0$, then $t=\pm1$. If $Q>1$, rational Pell
+integrality follows by descent. Indeed, write $t=r/m$ in lowest terms;
+$m^2\mid Q-1$. After sign reflection, $u=|V|>1$ implies
+$u<t<Qu/(Q-1)$. The norm-preserving map
+\[
+ u'=(2Q-1)u-2(Q-1)t,\qquad t'=(2Q-1)t-2Qu
+\]
+has $u'\in\mathbb Z\setminus\{0\}$, $|u'|<u$, and retains the reduced
+denominator $m$ because $2Q-1\equiv1\pmod m$. Descent reaches $u=1,t=1$,
+forcing $m=1$. Thus all four extracted witnesses are integers.
+
+\subsection{Total semantic maps}
+In the inherited fifteen-variable kernel put
+$Z_o=Un_o+MK_{\rm lo}+H(Y-q_3)$. Its residuals are
+\begin{gather*}
+ (Z_o+Uk)^2+4U(LZ_o-U)=0,\qquad f_o^2-\Delta I^2-1=0,\\
+ V_o^2-(Q_o-1)y_o(2V_o+y_o)-1=0,\qquad
+ B_0-1-p_1^2-p_2^2-p_3(p_3+1)=0,
+\end{gather*}
+where $Q_o=\Delta(f_o^2-1)$ and $V_o=f_o^2(cT-R)-c$.
+From every new zero restore
+\[
+ f_o=f,\quad y_o=t-V,\quad p_3=(g-1)/2,\quad
+ n_o=n-k-f-\tau-9t-27g.
+\]
+Then $Z_o/U+2L+k=2\tau$, and
+\[
+ (Z+Uk)^2+4U(LZ-U)=(Z+U(2L+k))^2-4U^2D_t
+\]
+proves the first residual. The remaining three follow from the extracted
+square and Pell equations. Conversely, every old zero gives the integer
+\[
+ \tau=\tfrac12(Z_o/U+2L+k)
+\]
+(the rational square is $4D_t$), together with $g=2p_3+1$ and $t=V_o+y_o$.
+Set $n=n_o+k+f_o+\tau+9t+27g$ and delete $f_o,y_o,p_3$.
+Then a factor of the new norm vanishes. No canonical-witness restriction or
+unproved quotient integrality is introduced.
+
+\subsection{Exact degree and reproducibility}
+Let
+\[
+ q_0=6\beta j,\quad a_0=12q_0wv,\quad
+ F_0=12wC-q_0z,\quad R_0=-q_0^3F_0,\quad U_0=8q_0^3a_0.
+\]
+Also $Q_0=4a_0^4r^2c^4$ and $V_0=-4a_0^2r^2c^4R_0$.
+The degrees of $(S,A,B,C_*,D)$ are bounded by $(48,42,48,46,64)$.
+The last is attained, with entire leading form
+\[
+ D_0=81U_0^2Q_0V_0^2
+     =2^{12}3^4q_0^6a_0^{10}r^6c^{12}R_0^2.
+\]
+Homogeneity and the coefficient $[D^8]\mathcal H_4=1$ show that
+$[P]_{512}=D_0^8$. Every other norm monomial has strictly smaller weighted
+degree. In particular
+\[
+ [j^{192}w^{80}v^{80}r^{48}c^{96}z^{16}]P
+       =2^{448}3^{304}\beta^{192}>0.
+\]
+This authentic fixed-coefficient witness has total degree $512$.
+
+The portable commands \texttt{build.py --check}, \texttt{check.py},
+and \texttt{reconstruct\_coefficients.py} require only the Python standard
+library. Normal and optimized runs authenticate all twelve live variables,
+all six coefficient ports, the complete $495$-term norm, the restore identities,
+the leading form, $729$ modulus-three fixtures, and rejection of all $132$
+live-gate corruptions. All six full numerals ($615{,}883$ raw bytes) are rebuilt
+from the retained finite recipe. Source pins distinguish current comparison
+commit \texttt{892d73e1ab4bc5fd34ecca1967b06dc47ca95494} from the immediate
+round20 parent and its source153 signed packet. Finite checks do not replace
+the unbounded separation/descent proof or inherited compiler calibration.

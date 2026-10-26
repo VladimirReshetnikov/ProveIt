@@ -1,0 +1,396 @@
+The compact contribution consists of four new descendants of the complete
+indexed943/radix67 equations in package~142 \cite{coprime}. The inherited
+Pell identities, coprime square extraction, and rational adjacent-Pell
+descent are prior work. The new steps are the particular residue and
+rational carriers which remove an index quotient, and the smaller modulus
+which reduces the degree of one of the residue constructions.
+
+\subsection{The complete polynomial definitions}
+
+The four fixed positive integers $\beta,K_0,M_C,M_F$ are specified in
+Appendix~\ref{app:compact} and supplied as complete finite byte strings.
+They satisfy
+\[
+ \beta\ge31,\qquad K_0>0,\qquad 0<M_C<\beta<M_F<2\beta.
+\]
+These inequalities suffice for some early estimates. The full calibrated
+tuple, rather than these inequalities alone, is required for the theorem.
+For the first three equations the independent coordinates, all strictly
+positive integers, are
+\[
+ (J,F,\alpha,z,f,n,i,T,s,w,\eta,\zeta,\gamma).
+\]
+Define the following polynomial abbreviations:
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,& X&=wq,&Y&=sq^3,\\
+ E&=XY,&k&=\eta+\zeta,&\ell&=EkY,&c&=kY+\eta,\\
+ a&=E+Y,&a_0&=a+2,&H&=4a+3,&\Delta&=a^2+H=a_0^2-1,\\
+ D&=X+ac+\gamma H,&A&=1+\ell(\ell+k),
+ \end{align*}
+and
+\begin{align*}
+ R&=\bigl[(q-1)(q-F)+\alpha\bigr](q^2-1)+(M_C+qM_F)J,\\
+ N_1&=D^2-\Delta c^2,\\
+ N_t&=(K_0+w)C+(q-F)-z(q-1).
+\end{align*}
+The parent has an additional positive coordinate $h$ and factor
+$N_k=k-hE-R$. Our new equations omit both. Every letter introduced by a
+definition is an abbreviation, not a further quantified unknown.
+
+\paragraph{The 70-operation equation.}
+Put
+\begin{align*}
+ t&=En-k+R,& I&=Ei c^2,\\
+ W&=\Delta A I^2,&Q&=\Delta W,&N_s&=f^2-W,\\
+ V&=f^2(cT-R)-c,&B&=Q(t^2-AV^2)-t^2+A.
+\end{align*}
+Then
+\begin{equation}\label{eq:p13raw}
+ \boxed{P_{13,70}=N_1N_t(3B+1)N_s-1=0.}
+\end{equation}
+This is a polynomial in exactly thirteen positive unknowns, of exact
+total degree 206. Its literal straight-line program uses 70 binary
+additions, subtractions and multiplications.
+
+\paragraph{The 71-operation equation.}
+Retain $t=En-k+R$, and instead put
+\begin{align*}
+ m&=AEi,& I&=mc^2,& W&=\Delta I^2,\\
+ N_s&=f^2-W,& Q&=\Delta(f^2-1),\\
+ V&=f^2(cT-R)-c,&B&=Q(t^2-AV^2)-t^2+A.
+\end{align*}
+With these definitions use the same expression
+\begin{equation}\label{eq:p13reduced}
+ \boxed{P_{13,71}=N_1N_t(3B+1)N_s-1=0.}
+\end{equation}
+Its exact degree is 162, and its complete program has 71 operations.
+
+\paragraph{The smaller-modulus equation.}
+In \eqref{eq:p13reduced}, make just the two substitutions
+\begin{equation}\label{eq:smallmod}
+ t=q^4n-k+R,\qquad m=Aq^2i.
+\end{equation}
+Call the resulting polynomial $P_{13,72}$. Its exact degree is 154,
+and its complete program has 72 operations. The extra operation computes
+$q^4$ from the already present $q^2$.
+
+\paragraph{The twelve-variable equation.}
+Drop $f$ from the independent coordinate list. Keep all common outer
+definitions, and define
+\begin{align*}
+ m&=a_0Di,& I&=mc^2,&W&=\Delta A I^2,\\
+ F_2&=1+W,&Q&=\Delta W,&G&=AF_2,\\
+ V&=F_2(cT-R)-c,&e&=k-R-1,&Z&=En+e,\\
+ B_{12}&=Q(Z^2-E^2GV^2)-Z^2+E^2G.
+\end{align*}
+The equation is
+\begin{equation}\label{eq:p12}
+ \boxed{P_{12,74}=N_1N_t(3B_{12}+1)-1=0.}
+\end{equation}
+It has twelve positive unknowns, 74 operations and exact degree 438.
+There is no rational operation in this definition. Rational quantities
+will appear only in its proof.
+
+\subsection{Recovering the first three Pell pairs}
+
+At a zero of any of the three thirteen-variable equations, each factor
+of the product in \eqref{eq:p13raw} or \eqref{eq:p13reduced} is an integer
+unit. The factor $3B+1$ is 1 modulo 3, so it is $+1$ and $B=0$.
+Furthermore $\Delta=a_0^2-1$ is 0 or 3 modulo 4. A norm
+$u^2-\Delta v^2$ cannot be $-1$ modulo 4. Thus $N_1=1$.
+
+The exact folded identity is
+\begin{equation}\label{eq:fold}
+ (Q-1)t^2=A(QV^2-1).
+\end{equation}
+In the raw construction, $A\mid Q$ and $Q>1$ hold unconditionally.
+Equation~\eqref{eq:fold} excludes $t=0$. Both $Q-1$ and $QV^2-1$
+are $-1$ modulo $A$. At each prime dividing $A$, valuation in
+\eqref{eq:fold} therefore gives
+$2v_p(t)=v_p(A)$. Consequently $A=\tau^2$ with $\tau>0$ integral,
+and $\tau\mid t$. Only now may we write
+$W=\Delta(\tau I)^2$ and exclude $N_s=-1$ modulo 4. Hence $N_s=1$.
+
+In the reduced constructions, $W=\Delta I^2$ from the beginning, so
+$N_s=1$ follows first. It gives $Q=(\Delta I)^2>1$. As $A\mid I$,
+the same valuation argument again recovers $A=\tau^2$ and $\tau\mid t$.
+In all cases $N_t=1$, since it is the only remaining factor.
+
+Put $y=|t|/\tau$. With the positive strong ordinate $I_*$ and $S$ defined by
+\[
+ I_*=
+ \begin{cases}
+   \tau Ei c^2,&P_{13,70},\\
+   AEi c^2,&P_{13,71},\\
+   Aq^2i c^2,&P_{13,72},
+ \end{cases}
+ \qquad S=\Delta I_*,
+\]
+we have recovered
+\begin{align}
+ \tau^2&=1+\ell(\ell+k),& D^2-\Delta c^2&=1,\label{eq:firstmain}\\
+ f^2-\Delta I_*^2&=1,&Q&=S^2,\label{eq:strong}\\
+ QV^2-(Q-1)y^2&=1,&y&>0.\label{eq:aux}
+\end{align}
+Both signs of $t$ and $V$ have been allowed. Also $c^2\mid I_*$.
+
+Before interpreting any index, $N_t=1$ gives
+\[
+ (K_0+w)C=1+z(q-1)-(q-F)\ge F>0.
+\]
+Thus $C>0$. Set $G_0=(q-1)(q-F)+\alpha=q\alpha+(q-1)C$.
+The fixed constant bounds give
+\[
+ q\le G_0\le q(q-1),\qquad
+ 0<(M_C+qM_F)J<(2q+1)(q-1),
+\]
+and therefore
+\begin{equation}\label{eq:Rbounds}
+ 3q<R<q^4-q^3+q^2-1<q^4-2\le E-2.
+\end{equation}
+In particular none of these bounds has used the omitted $h$.
+
+\subsection{Authenticating the main index without that quotient}
+
+For $b\ge2$, define the Pell sequences by
+\[
+ \chi_b(0)=1,\quad\chi_b(1)=b,\qquad
+ \psi_b(0)=0,\quad\psi_b(1)=1,
+ \qquad u_{r+2}=2bu_{r+1}-u_r.
+\]
+The standard solution classification, addition formulas, monotonicity,
+and strong divisibility of $\psi_b$ are retained ordinary lemmas.
+For clarity, the particular signed-index argument needed here is included.
+
+Write $v=EY=XY^2$ and $P_0=2v+1$. The first equation in
+\eqref{eq:firstmain} is $\tau^2-v(v+1)k^2=1$. Its fundamental
+positive solution is $(2v+1,2)$: an ordinate of one would require a
+square strictly between $v^2$ and $(v+1)^2$. Hence, for some $r\ge1$,
+\[
+ \tau=\chi_{P_0}(r),\qquad k=2\psi_{P_0}(r).
+\]
+The main norm gives $D=\chi_{a_0}(p)$ and $c=\psi_{a_0}(p)$ for
+some $p\ge1$. If $r=1$, then $k=2$, $\eta=\zeta=1$, and
+$c=2Y+1$ lies strictly between $\psi_{a_0}(1)=1$ and
+$\psi_{a_0}(2)=2a_0$. This is impossible. Therefore
+\begin{equation}\label{eq:largec}
+ r\ge2,\qquad k\ge8XY^2+4,\qquad c>kY>8XY^3>2R.
+\end{equation}
+Since $P_0>a_0$ and $c>k$, monotonicity also gives $p>r$ and $c>2p$.
+
+The strong norm yields $f=\chi_{a_0}(m)$ and $I_*=\psi_{a_0}(m)$.
+From $c^2\mid I_*$, strong divisibility gives $p\mid m$. Writing $m=pu$
+and using composition gives
+\[
+ I_*=c\psi_D(u),\qquad D^2\equiv1\pmod c.
+\]
+The recurrence implies $\psi_D(u)\equiv uD^{u-1}\pmod c$.
+Because $D$ is a unit modulo $c$, one gets $c\mid u$, so
+\begin{equation}\label{eq:rank}
+ pc\mid m,\qquad c\mid m,\qquad m>2p.
+\end{equation}
+
+The auxiliary equation gives an index $\nu\ge1$ with
+$S|V|=\chi_S(\nu)$ and $y=\psi_S(\nu)$. It is odd: the even-index
+abscissas are $\pm1$ modulo $S$, whereas $S|V|$ is divisible by $S$.
+Write $\nu=2u+1$. The integer polynomials
+\[
+ L_0(Z)=1,\quad L_1(Z)=4Z-3,\quad
+ L_{u+1}(Z)=(4Z-2)L_u(Z)-L_{u-1}(Z)
+\]
+satisfy, by induction,
+\begin{align*}
+ \chi_b(2u+1)&=bL_u(b^2),&L_u(0)&=(-1)^u(2u+1),\\
+ L_u(1-a_0^2)&=(-1)^u\psi_{a_0}(2u+1).
+\end{align*}
+Here $Q\equiv1-a_0^2\pmod f$, $V\equiv-c\pmod f$,
+$Q\equiv0\pmod c$ and $V\equiv-R\pmod c$.
+It follows that $\psi_{a_0}(\nu)\equiv\pm c\pmod f$.
+Squaring and using $\chi_{a_0}(2j)=1+2\Delta\psi_{a_0}(j)^2$ gives
+\[
+ \chi_{a_0}(2\nu)\equiv\chi_{a_0}(2p)\pmod{\chi_{a_0}(m)}.
+\]
+
+The signed step-down lemma says that, for $0<j<m$, a congruence
+$\chi_{a_0}(t)\equiv\chi_{a_0}(j)\pmod{\chi_{a_0}(m)}$
+forces $t\equiv\pm j\pmod{2m}$. To see this, use the addition
+identities to reduce and reflect the index to a signed
+$\chi_{a_0}(s)$, $0\le s\le m$. The endpoint $s=m$ has residue zero.
+A negative representative cannot equal the specified positive one,
+since $2\chi_{a_0}(m-1)<\chi_{a_0}(m)$; among positive
+representatives strict monotonicity forces $s=j$.
+Apply it with $j=2p<m$. Then $\nu\equiv\pm p\pmod m$, hence
+modulo $c$. Reducing $L_u(Q)$ modulo $c$ separately gives
+$\nu\equiv\pm R\pmod c$. Thus $p\equiv\pm R\pmod c$.
+The strict inequalities $0<p,R<c/2$ force
+\begin{equation}\label{eq:pR}
+ p=R.
+\end{equation}
+This is the point at which the old main index is recovered; the omitted
+quotient has not appeared in any premise.
+
+\subsection{How the residue carrier restores the quotient}
+
+For $P_{13,70}$ and $P_{13,71}$, let $M=E$; for $P_{13,72}$, let
+$M=q^4$. In each case $t=Mn-k+R$, $P_0\equiv1\pmod M$, and
+$M\mid S^2$. The odd-ordinate recurrence gives
+\begin{equation}\label{eq:oddres}
+ \psi_S(2u+1)\equiv(-1)^u\pmod{4S^2}.
+\end{equation}
+Also $\tau\equiv1\pmod M$ and $k\equiv2r\pmod M$.
+Consequently $t=\pm\tau y\equiv\pm1\pmod M$, and for a sign
+$\varepsilon\in\{1,-1\}$,
+\[
+ 2r-R\equiv\varepsilon\pmod M.
+\]
+Equations~\eqref{eq:largec}--\eqref{eq:pR} give $1\le r<R<M$.
+Thus $|2r-R-\varepsilon|<R<M$, forcing the exact equality
+$2r=R+\varepsilon$.
+
+The negative sign is impossible. If $R=2r+1$, put $B_0=2a_0^2-1>P_0$.
+Composition and monotonicity give
+\[
+ \psi_{a_0}(2r)=2a_0\psi_{B_0}(r)
+     \ge2a_0\psi_{P_0}(r)=a_0k>k(Y+1).
+\]
+Then $c=\psi_{a_0}(R)>k(Y+1)$, contradicting
+$c=kY+\eta<k(Y+1)$. Therefore $2r=R+1$.
+
+The full first-Pell recurrence supplies $k\equiv2r\pmod{4EY}$,
+even in the smaller-modulus variant. In every case we can restore
+\begin{equation}\label{eq:hrestore}
+ h=\frac{k-R-1}{E}\in\mathbb Z_{>0}.
+\end{equation}
+Positivity follows from $k\ge8XY^2+4>R+1$.
+Together with $|t|$ and the appropriate positive rescaled multiplier,
+these are a zero of the exact retained parent. Its native/refutation
+calibration gives a finite syntactic ZFC refutation.
+
+Conversely, a refutation supplies canonical outer parent witnesses with
+$R\equiv3\pmod4$, $A=\tau^2$, $c=\psi_{a_0}(R)$ and $N_k=N_t=N_1=1$.
+The finite matrix-period argument permits the strong multiplier to be
+chosen divisible by $\tau E$, $AE$, or $Aq^2$, respectively. Choose
+fresh auxiliary witnesses for this new strong pair:
+\[
+ V_*=\frac{\chi_S(R)}{S},\qquad y_*=\psi_S(R),\qquad
+ T_*=\frac{V_*+c+Rf^2}{cf^2}.
+\]
+The odd quotient identities give $V_*\equiv-c\pmod{f^2}$ and
+$V_*\equiv-R\pmod c$. Since $\gcd(f,c)=1$ and $f^2\equiv1\pmod c$,
+$T_*$ is a positive integer.
+Equation~\eqref{eq:oddres} gives $y_*\equiv-1\pmod M$.
+Thus $t_*:=\tau y_*$ is $-1$ modulo $M$, while $k-R$ is 1 modulo $M$.
+The number $n=(t_*+k-R)/M$ is a positive integer, and every factor
+in the new equation is $+1$. This proves the converse existence map.
+
+\subsection{The rational carrier and twelve positive unknowns}
+
+The following inherited descent is included because it is the exact
+integrality mechanism required by \eqref{eq:p12}. It is substantially
+stronger than merely clearing a denominator in an arbitrary Pell equation.
+
+\begin{lemma}[Adjacent-coefficient integrality]\label{lem:integral}
+Let $Q\ge2$ and $V$ be integers. If $y\in\mathbb Q$ satisfies
+$QV^2-(Q-1)y^2=1$, then $y\in\mathbb Z$.
+\end{lemma}
+\begin{proof}
+Replace $V,y$ by their absolute values and write $y=b/d>0$ in lowest
+terms. Neither coordinate is zero, and $d^2\mid Q-1$. If $V=1$, then
+$y=1$. Otherwise $y>V>1$. Put $D_0=Q-1$ and
+\[
+ V'=(2Q-1)V-2D_0y,\qquad
+ y'=\bigl|(2Q-1)y-2QV\bigr|.
+\]
+The first coordinate is integral. The identity
+\[
+ ((2Q-1)V)^2-(2D_0y)^2=V^2+4D_0>0
+\]
+shows $V'>0$, while $y>V$ gives $V'<V$.
+Direct expansion preserves the same norm equation. The reduced
+denominator remains exactly $d$, since $2Q-1\equiv1\pmod d$.
+Descent in the positive integer $V$ reaches $V=1$, where the denominator
+is one. Thus the original $d$ was one.
+\end{proof}
+
+At a zero of \eqref{eq:p12}, the unit arguments give $N_1=N_t=1$
+and $B_{12}=0$. Therefore \eqref{eq:Rbounds} holds. Since
+$e=k-R-1\ge1-R>-E$ and $n\ge1$, we have $Z>0$.
+The positive rational $t=Z/E=n+e/E$ satisfies
+\begin{equation}\label{eq:ratfold}
+ (Q-1)t^2=AF_2(QV^2-1).
+\end{equation}
+Here $A\mid Q$ and $F_2\equiv1\pmod A$. Also
+\[
+ Q-1=\Delta F_2-a_0^2,
+ \qquad QV^2-1\equiv-D^2\pmod{F_2}.
+\]
+The anchors in $m=a_0Di$ ensure $F_2\equiv1\pmod{a_0}$ and
+$F_2\equiv1\pmod D$. Consequently
+\[
+ \gcd(A,F_2)=1,\qquad
+ \gcd\bigl(AF_2,(Q-1)(QV^2-1)\bigr)=1.
+\]
+Prime valuations in \eqref{eq:ratfold} show that both $A$ and $F_2$
+have even valuations. This use of valuations is valid for rational
+$t$, whose prime valuations are still integers. Hence
+$A=\tau^2$ and $F_2=f^2$ for positive integers $\tau,f$.
+
+Now $Q=(\Delta\tau mc^2)^2>1$, and
+$y=t/(\tau f)>0$ satisfies the hypothesis of
+Lemma~\ref{lem:integral}. It follows that $y$, and hence $t$, is an
+integer. Thus $E\mid e$. Since $e>-E$, one has $e\ge0$.
+The possibility $e=0$ would give $k=R+1$. The first Pell equation
+forces either $k=2$ or $k\ge8XY^2+4$, both incompatible with
+\eqref{eq:Rbounds}. Therefore $h=e/E>0$. These restored $h,t$ give
+an exact zero of the anchored thirteen-variable parent, proving soundness.
+
+For completeness, retain the canonical outer data of a refutation,
+so $e=hE$ with $h>0$. The parent's matrix-period construction supplies
+arbitrarily large strong multipliers divisible by $\tau a_0D$.
+Recompute the auxiliary pair after this choice. Its combined root
+$t=\tau f y$ can be made larger than $h$. Then $n=t-h>0$, $Z=Et$,
+and $B_{12}$ is exactly $E^2$ times the vanishing parent residual.
+Thus \eqref{eq:p12} has a positive zero.
+
+\subsection{Exact degrees, operation counts, and logical conclusion}
+
+Deleting the old $N_k$ removes its three operations and one multiplication
+in the final product. The first two residue carriers add one multiplier
+scaling and three operations for $t$, preserving the parent operation
+counts. The third uses a new $q^4$ gate and a lower-degree multiplier.
+The twelve-variable formula clears the single rational carrier by $E^2$;
+its literal graph has 74 gates. Counts concern the supplied complete
+programs, with fixed integer leaves and reused values free.
+
+Exact degree verification accounts for the cancellation
+\[
+ N_1=2ac(X+\gamma H)+(X+\gamma H)^2-Hc^2,
+\]
+which makes $\deg N_1=18$. Merely propagating syntactic degrees
+through $D^2-\Delta c^2$ would overestimate it. Each output has a
+nonzero coefficient at the claimed top degree:
+\begin{center}\small
+\begin{tabular}{@{}lrl@{}}
+\toprule
+Equation & Degree & One attained coefficient\\
+\midrule
+$P_{13,70}$ &206&$-24\beta^{124}$\\
+$P_{13,71}$ &162&$-24\beta^{96}$\\
+$P_{13,72}$ &154&$-24\beta^{92}$\\
+$P_{12,74}$ &438&$+24\beta^{272}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The full monomials, homogeneous leading forms, exact graph checks and
+coefficient bindings are included in the verification artifacts.
+
+For each of these four fixed polynomials $P$, the existence maps and
+the retained native/refutation calibration prove, in ordinary arithmetic
+formalizable in ZFC,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\mathbf x\in\mathbb Z_{>0}^{\,d}\;P(\mathbf x)=0\bigr)
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+The positive domain is part of the statement. It is not a claim about
+unrestricted integer zeros of the same unmodified expression.

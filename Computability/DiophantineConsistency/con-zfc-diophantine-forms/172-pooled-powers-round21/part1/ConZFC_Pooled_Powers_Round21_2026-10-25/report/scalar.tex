@@ -1,0 +1,163 @@
+\section{Two shorter circuits in eleven unrestricted integers}
+\label{sec:scalar}
+The independent coordinates are exactly
+$(j,C,z,h,r,v,w,T,c,n,s)\in\Z^{11}$, with the six authentic source34
+ports specified in Section~\ref{sec:foundation}. This round saves one
+binary operation from each frozen Round~20 endpoint. The degree-298
+polynomial is literally unchanged; the degree-300 polynomial is changed
+by an explicit integral shear. The earlier degree reduction from the
+Nearest Factorial incoming frame is credited to that source.
+
+\subsection{Complete formulas and distinct arithmetic frames}
+Define
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+ X&=qW,&Y&=v,&E&=XY,\\
+ \ell&=XY^2,&a&=E+Y,&A&=a+2,\\
+ H&=4a+3,&\Delta&=a^2+H=A^2-1,\\
+ F&=(K_0+W)C-z(q-1),\\
+ R&=[q(q-F)-C](q^2-1)+(M_C+qM_F)J.
+\end{align*}
+For the degree-298 frame use $k=R+1+h\ell$ and $b_*=6$.
+For the degree-300 frame use $k=R+1+hE$ and $b_*=8$.
+Then put
+\begin{align*}
+ \eta&=c-Yk,\\
+ D_{\rm err}&=(\mathrm{cone\_A}F-q)^2+(\mathrm{cone\_B}C-q)^2,\\
+ B_0&=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ \mathcal B&=Y^2B_0-k^2q^{b_*},&D_t&=1+\ell(\ell+1)k^2,\\
+ P&=D_t[1+(\mathcal B-4)D_ts^2],&D_m&=1+\Delta c^2,\\
+ B&=rAD_m,&U&=rc^2D_m,\\
+ I_2&=c^4B=Ac^2U,&D_f&=1+\Delta I_2,\\
+ Q&=\Delta^2I_2,&\delta&=Q-1,\\
+ V&=D_f(c-R+4AUT)-c,&C_y&=QV^2-1,\\
+ K&=X(3c-2X)+2,&M&=2q^3,\\
+ D_c&=HM,&S&=srHM^5,\\
+ z_c&=D_cT+MK+H(v-q^3),\\
+ A_c&=(z_c^2+3D_c^2)(z_c^3-19D_c^3),\\
+ \gamma&=8\Delta+4,&\lambda&=4(\gamma U-rc^4).
+\end{align*}
+Use the center matching the selected frame:
+\begin{align}
+ \Psi_{298}&=\lambda V+U^2T
+ \{rc^4[\gamma(c^2-2)-c^2]+64A\Delta\},\nonumber\\
+ \Psi_{300}&=\lambda V+U^2T
+ \{(\gamma-1)[rc^4(c^2-2)+8A]\}.\label{eq:new-integer-centers}
+\end{align}
+Finally define the ordinary polynomial
+\begin{align}
+ Z&=S(n+\Psi)-A_c,\nonumber\\
+ p_a&=\delta Z^2,\quad p_b=\delta S^2P,\quad
+ p_c=1024S^2BD_fC_y,\nonumber\\
+ \mathcal N&=(p_a+p_b-p_c)^2-4p_ap_b.\label{eq:new-integer-norm}
+\end{align}
+The equation is $\mathcal N=0$. There are no extra quantified registers,
+division gates or radical gates. In particular the exponent $b_*$ is
+one of two fixed integers, not a variable exponent.
+
+\subsection{The complete new zero set proof}
+The Round~20 degree-298 center used
+$rc^4[(\gamma-1)(c^2-2)-2]+64A\Delta$ in its brace.
+The elementary identity
+\[
+ (\gamma-1)(c^2-2)-2=\gamma(c^2-2)-c^2
+\]
+removes one subtraction without changing any coefficient of the
+complete polynomial.
+The Round~20 degree-300 brace was
+$rc^4(\gamma-1)(c^2-2)+64A\Delta$.
+Since $\gamma-1=8\Delta+3$, the new brace exceeds it by $24A$.
+Therefore
+\[
+ \Psi_{300}^{\rm new}-\Psi_{300}^{20}=24AU^2T=:\epsilon.
+\]
+The polynomial $\epsilon$ is integral and independent of $n$.
+Keeping the ten other coordinates and setting
+$n_{20}=n_{21}+\epsilon$ makes the old and new $Z$, hence their
+entire polynomials, equal. The inverse is $n_{21}=n_{20}-\epsilon$.
+This is a bijection of the full unrestricted-integer zero sets.
+No positive-domain shear or unproved arithmetic condition is used.
+The changed factorization removes one multiplication.
+
+For clarity, the earlier center compression is retained but not claimed
+anew. Relative to the incoming calibrated centers it uses the exact
+identities $U=rc^2+\Delta rc^4$ and $A^3=A\Delta+A$.
+The center differences to those parents are
+\[
+ U^2T(16rc^2-64A),\qquad
+ U^2T(16rc^2-40A-14rc^4)
+\]
+for the present degree-298 and degree-300 equations respectively.
+They too are integral $n$-shears. The full parent proofs and exact source
+pins remain in the package, so the new calibration reduces to actual
+old zeros in both directions, not merely to necessary Pell properties.
+
+\subsection{The inherited arithmetic boundary stays unchanged}
+The degree-298 frame retains both its first-index modulus
+$\ell=XY^2$ and its budget $\mathcal B_6=Y^2B_0-k^2q^6$.
+It does not delete a guard by assuming early $q^3\mid Y$.
+The parent even-weight norm, coprime-product arguments and integral
+denominator descent recover the positive individual square roots,
+$S\ne0$, $S\mid A_c$, $\mathcal B_6\ge12$, and $c^2\mid I$.
+The budget gives $|Y|>|q|^2$ and the authentic packing interval
+$|q|(|q|^2-1)<R<|q|^4-2$. Hence
+$|\ell|>4|q|^5>3R+1$. Signed rank and root folding recover the
+main index and then $X=2^R$ before the cubic scale is extracted.
+Only then is $q$ a signed power of two and odd $H$ coprime to the
+carrier's $2q^3$ factor.
+
+Soundness restores the earlier $B_0$-only native source, not the stronger
+old $q^8$ budget. The native first-index coordinate is rebuilt as
+$h_{\rm old}=Yh$, giving the same $k$ exactly. Fresh strong and
+auxiliary witnesses are regenerated with their required parity.
+In completeness, the guard is chosen first, then one sufficiently
+divisible strong pair is fixed, then the intersective-quintic residue
+and supported-modulus interpolation are chosen with that same pair.
+Neither pair reselection nor an assumed odd incoming multiplier is used.
+The present one-gate changes touch only the final center evaluation and
+add no new sign, scale or interpolation hypothesis.
+
+\subsection{Exact attained degrees and retained restricted floors}
+In the free ring on $(A,c,r,T,R)$ with weights $(3,1,1,1,5)$,
+put
+\[
+ D_\Psi=\Psi^2-1024BD_fV^2,\qquad
+ E_\Psi=(Q-1)D_\Psi-1024BD_f(V^2-1).
+\]
+Complete collection gives weights $80,108$ for the degree-298 pair,
+and $82,110$ for the degree-300 pair. The full leading forms are
+\begin{align*}
+ [D_{298}]_{80}&=512A^{15}c^{24}r^5TR-8192A^{17}c^{22}r^5T^2,\\
+ [E_{298}]_{108}&=512A^{22}c^{30}r^6TR-24576A^{24}c^{28}r^6T^2,\\
+ [D_{300}]_{82}&=512A^{16}c^{26}r^6T^2,\\
+ [E_{300}]_{110}&=512A^{23}c^{32}r^7T^2.
+\end{align*}
+The independent checker collects every remainder coefficient, not just
+these forms. The extra $24AU^2T$ has weight 26, below the decisive
+center terms, and does not change these complete leaders.
+
+For $W_0=Sn-A_c$ the exact cancellation cut is
+\[
+ p_a+p_b-p_c=\delta W_0^2+2\delta S\Psi W_0+
+ \delta S^2P+S^2E_\Psi.
+\]
+The degrees of $S,W_0,\delta,\Psi$ are $20,35,28,54$.
+The first three terms have degree at most $98,137,122$ in the rebased
+frame, with $124$ for the third in the old frame. The last term has
+degree $148$ or $150$. For the rebased frame, the inner square has
+degree $296$ while $-4p_ap_b$ has degree $298$. In the old frame
+both final contributions can have degree $300$, but their leading
+$T$-degrees are four and two, so they do not cancel. Attained actual
+coefficients are
+\begin{align*}
+ [j^{136}w^{46}v^{50}z^6s^6r^{12}c^{40}T^2]\mathcal N_{298}
+ &=2^{272}3^{182}\beta^{136}>0,\\
+ [j^{110}w^{50}v^{50}s^4r^{18}c^{64}T^4]\mathcal N_{300}
+ &=2^{256}3^{160}\beta^{110}>0.
+\end{align*}
+The two literal graphs have $29+23+94=146$ and
+$29+23+92=144$ live additions, subtractions and multiplications.
+The retained degree floors are 298 and 300 only within their respective
+fixed arithmetic frames with a constant nonzero radical weight and an
+integer polynomial center independent of $n$. They are not operation
+minima or bounds for other consistency-equation architectures.

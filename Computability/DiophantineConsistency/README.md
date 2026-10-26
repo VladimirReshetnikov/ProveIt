@@ -19,32 +19,33 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **complete shared-copy4049 equation
+[equation.tex](equation.tex) print the **complete Boolean-dummy4027 equation
 in fifteen positive unknowns, exact degree157, with66 integer-leaf binary
 operations**. All four fixed constants, the436-character numeral, alphabet,
 closed decoder and943 tiles fit on one Letter page at9-point body and
 7.7-point seed/footer sizes.
 
-The [complete candidate](candidates/one-page-merged-copy4049/README.md)
-reduces raw coefficient storage from97046 to**95205 bytes**, saving1841
-from Start-marker4127. Complete TeX shrinks14 bytes to5058; nonwhite
-`pdftotext -layout` text shrinks six characters to2693; PDF shrinks18
-bytes to159618. Variables, degree, operation count and fonts are unchanged.
-Four coherent new integers specialize the same P66 template.
+The [complete candidate](candidates/one-page-boolean-dummy4027/README.md)
+reduces raw coefficient storage from95205 to**94689 bytes**, saving516
+from shared-copy4049. Complete TeX shrinks eight bytes to5050; nonwhite
+`pdftotext -layout` text shrinks five characters to2688; PDF shrinks23
+bytes to159595. Gzip integer storage grows11 bytes. Variables, degree,
+operation count and fonts remain unchanged at four coherent new ports.
 
-The [whole ordinary proof](research/merged-copy-independent/PROOF.md)
-uses exactly one rho18 monomial for both label-copy roles. It moves the
-marker to1008 and rebuilds every copy, predecessor, carry29 bound and875
-padding tests. The full934-case phase classification uses Start's eight
-positive south bits and the decoded tile942 obstruction. Fresh canonical
-subsets, actual rank and both P66 witness maps are covered.
-The [finite certificate](research/merged-copy-independent/certificate.json)
-discharges Pcm18 with orders23/506, lambda190763 and H34/3240/43425.
-Full [root](reviews/merged-copy4049-root.md) and
-[independent](reviews/merged-copy4049-independent-peer.md) reviews pass.
-Normal and optimized reconstruction reproduces every printed integer and
-rejects actual deletion of the zero-weight marker term.
-The [page review](reviews/merged-copy4049-page-peer.md) records complete
+The [whole ordinary proof](research/boolean-dummy-independent/PROOF.md)
+uses one Boolean controller dummy. Every canonical subset already uses
+only0/1, so removing the extra bit preserves completeness and simplifies
+the mask. Every nonzero fractional phase is now even without a spill.
+The979 physical positions give978 allowed mask positions; core105 plus873
+padding bits gives matching native population. The actual rank,935-case
+field-phase classification, all resets and both P66 maps are covered.
+The [finite certificate](research/boolean-dummy-independent/certificate.json)
+discharges Pcbd18 with orders23/1342, lambda246929 and H18/2634/79912.
+Full [root](reviews/boolean-dummy4027-root.md) and
+[independent](reviews/boolean-dummy4027-independent-peer.md) reviews pass.
+Normal and optimized reconstruction reproduces every printed integer,
+actual dummy-mask/rank checks and targeted printed-marker deletion.
+The [page review](reviews/boolean-dummy4027-page-peer.md) records complete
 source agreement and a second actual visual inspection.
 [CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the page and preserves
 the preceding metadata verbatim.
@@ -52,16 +53,19 @@ the preceding metadata verbatim.
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
 proof, consistency decision or global minimum is claimed. Lean remains
-paused. The [Start-marker4127](candidates/one-page-start-marker4127/equation.pdf),
+paused. The [shared-copy4049](candidates/one-page-merged-copy4049/equation.pdf),
+[Start-marker4127](candidates/one-page-start-marker4127/equation.pdf),
 [Start-marker4177](candidates/one-page-start-marker4177/equation.pdf),
 [zero-weight6007](candidates/one-page-zero-weight6007/equation.pdf),
 [one-anchor7309](candidates/one-page-one-anchor7309/equation.pdf),
 [two-anchor7691](candidates/one-page-two-anchor7691/equation.pdf),
 [three-anchor47](candidates/one-page-complemented47-independent/equation.pdf)
 and [radix55](candidates/one-page-compact66-radix55/equation.pdf) pages remain
-preserved. A fully reviewed [single-dummy4027 intermediate](research/single-dummy-independent/README.md)
-reaches94689 raw bytes. Its Boolean-only simplification and deletion of an
-already forbidden tile are the next printed-recipe reductions under review.
+preserved. The reviewed [single-dummy intermediate](research/single-dummy-independent/README.md)
+is also retained. Next work deletes the already forbidden selector from
+the finite table and removes a redundant marker-recipe factor. Exact
+[radix obstructions](research/radix-parity-independent/README.md) explain
+why direct46/45 substitutions require different proof interfaces.
 
 The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
 [grouped66 page](candidates/one-page-grouped66/equation.pdf) and

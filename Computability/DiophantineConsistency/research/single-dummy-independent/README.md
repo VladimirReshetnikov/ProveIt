@@ -42,8 +42,11 @@ remains preserved. Exact orders are23 and1342=2*11*61, spacing30866, auxiliary p
 lift `45579142537=1+lambda*184584`. All935 support-compatible offsets
 are classified: zero,933 multiple-selector exclusions and offset20
 excluded by tile942. The whole four-port tuple costs94689 raw bytes,
-516 fewer than merged-copy4049's95205. Independent full review is pending;
-printed-page measurements are a separate check.
+516 fewer than merged-copy4049's95205. The
+[independent whole-proof and finite review](../../reviews/single-dummy4027-independent-peer.md)
+reports no unresolved new gap, including an independent reconstruction
+of the changed physical layout and whole ports. Printed-page measurements
+remain a separate check.
 
 | Port | Bits | Minimal unsigned bytes | SHA256 |
 | --- | ---: | ---: | --- |

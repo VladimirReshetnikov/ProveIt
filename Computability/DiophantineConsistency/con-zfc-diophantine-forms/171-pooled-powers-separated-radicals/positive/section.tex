@@ -1,0 +1,182 @@
+\section{An inverse correction composed with the explicit Pell trace}
+\label{sec:inverse-trace}
+The supplied polynomial has ten independently strictly positive integer
+unknowns, exact total degree $232$, and an evaluator with $85$ live binary
+operations: $51$ multiplications, $18$ additions and $16$ subtractions.
+Squares and fixed scalar multiplications are charged; all leaves are
+integers.  The matched incoming \emph{Trace Radical} graph has $87$
+operations at the same degree.  This is an ordinary proof composition at
+the explicitly retained native/syntactic-refutation calibration, not a
+consistency proof, global minimum theorem, or new formal-kernel object.
+
+\subsection{Complete equation}
+The inputs are $J,F,\alpha,i,T,w,s,n,\eta,\zeta>0$.  The four fixed
+integers $\beta,K_0,M_C,M_F$ are supplied as complete payloads and by a
+finite seed recipe.  Every following symbol is a polynomial abbreviation,
+not an additional unknown:
+\begin{gather*}
+h=\beta J,\qquad q=h+1,\qquad C=q-F-\alpha,\\
+X=qw,\qquad Y=qs,\qquad k=\eta+\zeta,\qquad c=kY+\eta,\\
+A=Y(X+1)+1,\qquad \Delta=A^2-1,\qquad H=4A-5,\\
+\ell=(XY)(kY),\qquad E=1+\ell(\ell+k),\\
+R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+B=(K_0+w)C-F,\qquad U=ic^2,\qquad a=\Delta U^2E,\\
+F_0=1+a,\qquad G=EF_0,\qquad f=a+F_0,\qquad Q=4\Delta aF_0,\\
+b=cT-R,\qquad V=fb-c,\qquad L=bV,\qquad K=X(3c-2X)+2,\\
+e_6=6(k-R-1)-\ell(k^2-4),\qquad D_6=6q^6,\qquad M=hD_6H,\\
+Z=hD_6[H(n-LB)+K]-H[D_6B+h(e_6-6q^4s)].
+\end{gather*}
+The single ordinary integer polynomial equation is
+\[
+ \boxed{\quad P=Q(Z^2-M^2GV^2)+(M^2G-Z^2)=0.\quad}
+\]
+There are no division gates, variable powers, binomial primitives or
+hidden quantified variables.  For proof only put
+\[
+v=XY^2,\quad e_*=k-R-1-\frac{vk(k^2-4)}6,\quad
+\rho=\frac{e_*}{q^6},\quad \sigma=\frac{s}{q^2},\quad
+\kappa=\frac KH,\quad t=\frac Bh,\quad W=1+hL.
+\]
+Before assuming any divisibility, the literal carrier identity is
+\begin{equation}\label{eq:inverse-carrier}
+ z:=Z/M=n+\kappa+\sigma-Wt-\rho.
+\end{equation}
+
+\subsection{Signed soundness and the corrected index}
+The inherited trace-linear root extraction uses
+\[
+f^2=1+4aF_0,\quad Q=4\Delta^2U^2G,\quad \gcd(E,F_0)=1.
+\]
+At a zero it yields $G=g^2$, $E=\tau^2$, $F_0=f_0^2$, integral
+$z=\varepsilon gy$, and $QV^2-(Q-1)y^2=1$.  The pair
+$(f,I)=(1+2a,2Ug)$ satisfies $f^2-\Delta I^2=1$ and $c^2\mid I$.
+Moreover $f\equiv1\pmod c$ identically.  Signed folding gives
+$c=\psi_A(p)$ with positive odd $p$, and
+$k=2\psi_{1+2v}(m)$ with $m\ge2$.  Thus
+$c>8XY^3\ge8q^4$ and $K>0$.
+
+The retained main-index-three exclusion gives $c>c_3=4\Delta+3$.
+The trace-linear auxiliary-index-three identities are
+\[
+f(b-4\Delta f)=c-c_3\qquad\hbox{or}\qquad
+f(b+4\Delta f)=c+c_3.
+\]
+Their right sides are strictly between $0$ and $2c<f$; hence the
+auxiliary index is at least five.  The consequent bounds give
+$bV>0$, $gy<L/2$ and $|b|/q^6<L/2$.
+Because $k\ge2$, the inverse correction is nonnegative before its
+subtraction: $e_*\le k-R-1<b$, regardless of the sign of $R$.
+If $B\le-1$, then $Wt<-L$ and \eqref{eq:inverse-carrier} forces
+$n<L/2-L+|b|/q^6<0$.  Therefore $B\ge0$ and $C>0$.
+Only now use the calibrated mask estimate $3q<R<q^4-2$.
+The residues $V\equiv-c\pmod f$ and $V\equiv-R\pmod c$ give $p=R$;
+then $R$ is odd and $q$ is even.
+
+The unbounded Lucas expansion is
+\[
+k=2m+8vC_m+32v^2Z_m,\qquad C_m=\binom{m+1}{3},\quad Z_m\ge0.
+\]
+Since $k$ is even, $k(k^2-4)/6$ and $e_*$ are integral.
+Reduce the literal $Z$ modulo $D_6$, using $Z=Mz$; cancel the common
+ordinary integer factor $6$, not a residue-ring unit.  Since
+$\gcd(q,hH)=1$, this proves
+\[
+q^6\mid e_*-q^4s,\qquad q^4\mid e_*.
+\]
+For $t_0=2m$, $d=2m-R-1$, $A_m=C_m+4vZ_m$ and
+$S_m=k^2+kt_0+t_0^2-4$, the exact cubic difference identity gives
+\[
+3(e_*-d)=4v^2(24Z_m-A_mS_m).
+\]
+As $v=q^3ws^2$, every prime of $q$ gives
+$\operatorname{ord}_p(e_*-d)\ge6\operatorname{ord}_p(q)
+-\operatorname{ord}_p(3)\ge4\operatorname{ord}_p(q)$.
+Monotonicity yields $m<R$; consequently $|d|<R<q^4$ and $d=0$.
+It is not yet legitimate to infer $q^6\mid e_*$.
+
+\subsection{Project before recovering the full denominator}
+Reduction modulo $H$ gives $H\mid6hK$.  Write $R=2r+1$.
+The authenticated ratio theorem gives $r\ge48$, $Y>X^r/3$ and
+$X^{r+1}<H$.  Universal projection yields
+\[
+H\mid6h(X-2^R)(2^RX+1).
+\]
+With $u=2^R=2\cdot4^r$, the whole product satisfies
+\[
+6h|(X-u)(uX+1)|
+ <X^4(X+u)(uX+1)
+ \le4\cdot4^rX^6+8\cdot16^rX^5<X^{r+1}<H.
+\]
+The last strict inequality follows at the minimum $(X,r)=(32,48)$
+from $2^{-117}+2^{-25}<1$, and improves thereafter.
+Thus $X=2^R$, $H\mid K$, and $q$ is a power of two.
+Now $3$ is coprime to $q$, so the corrected-index identity proves
+$q^6\mid e_*$.  The carrier then gives $q^2\mid s$ and $h\mid B$.
+Hence $q^3\mid Y$ and $t\ge0$ is integral, exactly the retained
+native reconstruction interface at source base $Y(X+1)+2$.
+
+\subsection{Strictly positive completeness}
+A finite refutation supplies fresh canonical outer data.  Choose a
+positive Pell period seed with $c^2\tau\mid I_0$ and set
+$i=I_0/(c^2\tau)$.  The inherited positive auxiliary pair can be kept
+while replacing its old input by
+\[
+ T=\frac{V+c+Rf}{cf}
+   =fT_{\rm old}-\frac{f-1}{c}R>0.
+\]
+It is integral because $c\mid f-1$ and satisfies $V=f(cT-R)-c$.
+The inverse correction can make $\rho$ negative, but the explicit bounds
+\[
+ |\rho|<vk^3/3<g/3,\qquad
+ \kappa+\sigma<g/2
+\]
+show that
+\[
+ n=gy+(1+hL)t+\rho-\kappa-\sigma
+\]
+is a strictly positive integer.  The carrier is $z=gy$, proving $P=0$.
+Both existential directions compose with the retained calibrated
+syntactic-refutation theorem; negation gives the equivalence with
+$\operatorname{Con}(\mathrm{ZFC})$.
+
+\subsection{Exact cost, coefficients and reproducibility}
+Deleting $v=(XY)Y$, sharing $\ell=(XY)(kY)$, and replacing the rank
+cubic by $k^2$, $k^2-4$, $\ell(k^2-4)$ saves two multiplications.
+For $q_0=\beta J$, $k_0=\eta+\zeta$ and
+$B_0=k_0sT-q_0^2(q_0-F)$, the complete leading component is
+\[
+ [P]_{232}=-9\cdot2^{10}q_0^{100}w^{26}s^{58}i^{10}k_0^{32}B_0^2.
+\]
+It is nonzero, not merely nonzero along a tested ray.  The standard-library
+checker verifies $37$ exact cuts covering all $85$ gates, all $202$
+leading monomials, the full coefficient bytes and $171$ rejected
+operator/missing-correction mutations.  Normal and optimized receipts
+agree; finite recurrence diagnostics are separately labelled.
+
+The principal tuple retains the incoming radix67 calibration.  A second
+complete specialization uses the upstream one-anchor7309 tuple, credited
+rather than newly claimed: $172011$ minimal raw bytes and largest port
+$345498$ bits.  Its complete native proof and finite Pc1 certificate are
+replayed with the new tuple; no old controller is substituted.  The
+specialization is explicitly big-endian, unlike the principal
+little-endian payloads.  All four ports are replaced together.
+
+\subsection{A small admissible-denominator interpolation}
+There is also a separate $77$-operation,degree-$348$ graph in
+\texttt{q4\_interpolation/}.  It composes the retained $q^4$-denominator
+parent with the same unsquared trace; no new index correction is needed.
+Use the preceding definitions with $Y=q^3s$, $D=q^4$, $e=k-R-1$ and
+\[
+ M=hDH,\qquad Z=hD[H(n-bVB)+K]-H[DB+he].
+\]
+The final polynomial is unchanged in form.  Here $q^4\mid e$ authenticates
+$2m=R+1$; the full recurrence gives $4XY^2\mid e$, and
+$q^4\mid4XY^2$ makes $\rho=e/q^4$ integral.  The trace-linear signed
+bootstrap,projection and positive completeness then apply with $\sigma=0$
+and $\rho\ge0$.  The complete leading form is
+\[
+ [P]_{348}=-2^8q_0^{216}w^{26}s^{60}i^{10}k_0^{34}T^2.
+\]
+The independent checker verifies all $77$ gates through $33$ exact cuts
+and rejects $154$ operator mutations.  This is a composition/interpolation
+between the incoming $76/352$ and $79/290$ points,not a priority claim.

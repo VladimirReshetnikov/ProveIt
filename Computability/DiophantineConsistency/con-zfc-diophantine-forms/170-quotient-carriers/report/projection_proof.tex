@@ -1,0 +1,149 @@
+The direct branch keeps every quantified coordinate unrestricted over
+$\mathbb Z$ and uses only small integer coefficients. Its principal
+equation is
+\begin{equation}\label{eq:principal}
+ \boxed{\displaystyle
+ P_{\DirectVars}(x_0,\ldots,x_{\DirectLast})
+   =\sum_{j=0}^{\DirectRowLast}r_j(\mathbf x)^2=0,
+ \qquad\mathbf x\in\mathbb Z^{\DirectVars}.}
+\end{equation}
+Every residual is the explicit integer quadratic printed in
+Appendix~\ref{app:rows}. The archive also supplies every coefficient of
+the fully collected quartic. A JSON term $[c,[i_1,\ldots,i_k]]$ means
+$cx_{i_1}\cdots x_{i_k}$; an empty index list means a constant.
+The list contains all quantified coordinates. There are no unnamed
+existential witnesses.
+
+This construction combines three separately attributed ingredients:
+the factorial-free arithmetic source with the affine radix described
+below, the strict local ranges and fixed-base pooling of the incoming
+Pooled Powers manuscript \cite{pooled}, and the integral quadratic
+projection of the incoming 234-variable manuscript \cite{projection}.
+The new deliverable is their compatible, fully emitted composition.
+The earlier methods and the already submitted diagonal growth choice
+are not presented as discoveries of this report.
+
+\subsection{Two quadratic rows certify a block of powers}
+
+The inherited signed Pell frame provides integers $W\ge258$ and $A$
+with $|A|>W^W$. For a block of $r\le15$ requests with the same
+nonzero integer base $n$, it supplies canonical signed Pell pairs
+$(X_i,Y_i)$ at signed indices $k_i$ and coordinates $Z_i=AY_i$.
+Every base, proposed output and index has square less than $W$.
+Put
+\[
+ T=2An-n^2-1,\qquad D_i=m_i-X_i+Z_i,
+\]
+and use the following quantities only in the proof:
+\[
+ H=\sum_iY_i(m_i-X_i),\qquad
+ S=\sum_i(D_i^2-Y_i^2).
+\]
+Instead of a separate quotient for every requested power, introduce
+just two integer coordinates $K,L$, with the quadratic rows
+\begin{align}
+ K-2\sum_iY_i(m_i-X_i)-(2A-n)L&=0,\label{eq:pool1}\\
+ \sum_i\bigl((m_i-X_i+Z_i)^2-Y_i^2\bigr)-nK+L&=0.
+ \label{eq:pool2}
+\end{align}
+No coordinate for $H$, $S$, or $T$ is needed.
+
+Eliminating $K$ in the proof gives $S-2nH=TL$. The exact identity
+\[
+ \sum_i(D_i-nY_i)^2=S-2nH-T\sum_iY_i^2
+\]
+therefore makes the left side divisible by $T$.
+Let $b=\lfloor\sqrt{W-1}\rfloor$. Then
+$|n|,|m_i|,|k_i|\le b$, and the Pell congruence, multiplied by
+$n^b$ to clear every negative index, makes $T$ divide
+\[
+ E_*:=\sum_i\bigl(m_i n^b-n^{b+k_i}\bigr)^2.
+\]
+All exponents here are nonnegative proof notation. The estimates
+\[
+ 0\le E_*\le4r b^{4b}<W^{2b+1}\le W^W<|T|
+\]
+force $E_*=0$. Each square is zero. If $|n|\ge2$, a negative
+$k_i$ would give the impossible integer identity $m_i n^{-k_i}=1$.
+Thus all $k_i\ge0$ and $m_i=n^{k_i}$.
+
+Conversely, genuine powers and canonical Pell pairs make each
+$D_i-nY_i$ divisible by $T$. The identity makes
+$L=(S-2nH)/T$ integral, and \eqref{eq:pool1} defines integral $K$.
+This proves both directions of the pooled certificate. Its proof uses
+the existing frame; no larger frame or new variable-exponent operation
+has been inserted into the polynomial.
+
+\subsection{Strict local ranges and the sign order}
+
+The incoming strict-horizon argument chooses a cofinal proof horizon
+strictly larger than all finitely many local labels and parameters.
+Consequently its local binomial range tests may enforce $0\le u<t$
+instead of $0\le u\le t$. In the literal source, the local range
+denominator is changed from $q^{t+1}$ to the already required $q^t$.
+The four now private coordinates and their rows can be removed with
+the stated restoration identities. This is an existential completeness
+change justified by choosing a larger horizon; it is not an equality
+of arbitrary old and new coordinate tuples.
+
+After this change the source has eleven requests at $q+1$ and three at
+$q$. The three other requests remain individual. Applying
+\eqref{eq:pool1}--\eqref{eq:pool2} to the two blocks gives a literal
+223-coordinate system of 160 quadratic residuals. The finite certificate
+authenticates the exact affine offsets of all 14 requests, all retained
+$AY$ and Pell norm rows, and every base/index/output in the square frame.
+
+In our arithmetic source $q=6z+3$ holds before any sign inference.
+Hence $|q|\ge3$ and $|q+1|\ge2$ for every integer $z$. The block
+theorem immediately restores all 14 individual powers and their
+nonnegative indices, after the inherited orientation-first theorem
+has supplied the canonical pairs. Thus the sign bootstrap in the next
+sections remains acyclic. Completeness starts from genuine powers and
+uses the converse part of the block theorem to construct the four new
+pooled coordinates.
+
+\subsection{Integral projection along a common quadratic direction}
+
+Here is the exact algebra behind the final six projections. It also
+applies to the separately retained unchanged 225-variable source.
+
+\begin{lemma}[Quadratic projection with a unit slope]\label{lem:projection}
+Let $Q_0,\ldots,Q_{r-1}\in\mathbb Z[x_0,\ldots,x_{n-1}]$ have
+degree at most two. Suppose $v\in\mathbb Z^n$ is in the common kernel
+of their quadratic Hessians, $v_p=1$, and
+$\partial_vQ_j=a_j\in\mathbb Z$ for every $j$.
+If $a_s=\pm1$, the common integer zero set is in polynomial bijection
+with the common zero set in $n-1$ variables of
+\[
+ R_j(y)=\left.(Q_j-a_sa_jQ_s)\right|_{y_p=0},\qquad j\ne s.
+\]
+Every $R_j$ still has degree at most two.
+\end{lemma}
+\begin{proof}
+The common-kernel condition gives $Q_j(y+vt)=Q_j(y)+a_jt$.
+For $y_p=0$, set $T(y)=-a_sQ_s(y)$ and $x=y+vT(y)$.
+All $Q_j(x)$ vanish whenever all $R_j(y)$ vanish.
+Conversely, for a common integer zero $x$ put $y=x-vx_p$.
+Then $y_p=0$, and $Q_s(x)=0$ forces $x_p=T(y)$.
+The two polynomial maps are inverse on the zero sets. No division,
+positivity condition, or unproved divisibility is involved.
+\end{proof}
+
+The six literal certificates apply Lemma~\ref{lem:projection} to the
+223-coordinate source and give \DirectVars\ coordinates and
+\DirectRows\ residuals. Their independently written checker obtains
+each reduced row directly by the displayed subtraction identity,
+rather than invoking the producer's change-of-coordinates code.
+It checks the full direction, every slope, the unit condition, every
+new coefficient, and the inverse maps.
+
+Finally elementary integer row operations $Q_i\leftarrow Q_i+kQ_j$
+reduce coefficient height and select useful support/height tradeoffs.
+The inverse uses $-k$ in reverse order. Such changes preserve
+simultaneous vanishing, while changing the sum-of-squares polynomial
+itself. The selected polynomial is consequently identified by its own
+full coefficient file and cryptographic hash.
+
+Because a sum of integer squares vanishes exactly when every residual
+vanishes, these explicit zero-set maps and the arithmetic/refutation
+calibration prove the equivalence claimed for \eqref{eq:principal}.

@@ -1,0 +1,42 @@
+\subsection{Six matched source improvements}
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Endpoint & Variables & Prior terms & New terms & Reduction\\\midrule
+\file{minimum503}&503&24193&24183&10\\
+\file{compact505}&505&20491&20405&86\\
+\file{compact512}&512&18255&18184&71\\
+\file{balanced557}&557&11999&11991&8\\
+\file{sparse617}&617&8318&8314&4\\
+\file{sparser713}&713&7176&7172&4\\\bottomrule
+\end{tabular}
+\end{center}
+All six have exact degree four, coefficient height one, constant coefficient
+one, no equality dummy coordinates, and every declared unrestricted
+coordinate present. Each new point strictly improves support over its
+matched Round~20 arithmetic source and dimension, with height unchanged. These
+small support gains are not described as new dimension records.
+
+The first source is the retained 241-variable shared-error source;
+the next two use the separate 242-variable power-base source. The last
+three retain the grouped 263-variable or sparse 285-variable sources.
+Their original source bindings and affine refactorizations are
+unchanged. The refined 505- and 512-variable points use the new split-factor
+normalization, with 342 normalized coordinates instead of 343; their
+final graph counts remain 505 and 512. The other four retain their
+constructor chains. In particular none is silently relabeled as the new pooled
+principal. Trials of a transfer to newer arithmetic sources did not give
+a selected improvement and are not counted as delivered equations.
+
+To isolate the cycle change from normalization, the frozen cycle-only
+controls at 505 and 512 variables have 20483 and 18247 terms. Together
+with the other four endpoints these give the six matched cycle-only
+reductions $10,8,8,8,4,4$. The refined selected graphs further save
+78 and 63 terms against those two controls. Controls are replay evidence,
+not extra selected deliverables.
+
+The release contains each literal full coefficient array, graph
+certificate, explicit source binding and frozen operation sequence.
+Independent reconstruction checks the new cycle identity and universal
+source lift as well as every expanded coefficient. The variable/support
+tradeoffs among these six selected outputs remain distinct; no exhaustive
+Pareto frontier or graph optimum is claimed.
