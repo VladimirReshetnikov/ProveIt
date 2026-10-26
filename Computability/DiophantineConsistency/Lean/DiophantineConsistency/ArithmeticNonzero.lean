@@ -23,15 +23,12 @@ def nonzero (e : Expr σ) : Rep σ (fun v => e.eval (fun i => (v i : ℤ)) ≠ 0
     change z ≠ 0 ↔ ∃ w : Fin 1 → ℕ, z * z - 1 - (w 0 : ℤ) = 0
     constructor
     · intro hz
-      have hs : 1 ≤ z * z := by
-        have h : z ≤ -1 ∨ 1 ≤ z := by omega
-        rcases h with h | h <;> nlinarith
-      refine ⟨fun _ => (z * z - 1).toNat, ?_⟩
-      rw [Int.toNat_of_nonneg (by omega : 0 ≤ z * z - 1)]
-      ring
-    · rintro ⟨w, hw⟩ hz
+      obtain ⟨n, hn⟩ := Int.eq_ofNat_of_zero_le
+        (Int.sub_nonneg.mpr (Int.add_one_le_iff.mpr (mul_self_pos.mpr hz)))
+      exact ⟨fun _ => n, sub_eq_zero.mpr hn⟩
+    · rintro ⟨w, hw⟩
+      apply mul_self_pos.mp
       have := Int.natCast_nonneg (w 0)
-      rw [hz] at hw
       omega
 
 end DiophantineConsistency.Rep
