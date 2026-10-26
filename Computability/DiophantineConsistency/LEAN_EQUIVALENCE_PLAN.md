@@ -205,6 +205,16 @@ zero and K>0, with no supplied F word or native premise. See the
 The exact coefficient recipe, physical count and phase recovery remain
 to be composed with the mask and carry results.
 
+`WangTiles942Data`, `WangTiles942Core` and `WangTiles942` now bind all430
+actual decimal machine actions, both complete target sets and every rail
+to all942 printed indexed tiles. They prove the full index coverage,
+printed-order permutation, color bounds, exact physical floor formula
+and initializer position504 with its actual first target1. See the
+[root review](reviews/wang-tiles942-lean-root.md) and [independent replay
+and numeric reconstruction](reviews/wang-tiles942-lean-peer.md). This is
+index uniqueness; tuple/weight distinctness, the physical-rank bijection,
+and native machine semantics still require proofs.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged

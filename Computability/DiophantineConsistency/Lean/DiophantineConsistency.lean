@@ -213,6 +213,7 @@ import DiophantineConsistency.QuadraticRegisterComposition
 import DiophantineConsistency.QuadraticTreeCodeGraphs
 import DiophantineConsistency.NativePackedMachine54
 import DiophantineConsistency.DecimalMachine215
+import DiophantineConsistency.WangTiles942
 import DiophantineConsistency.DecimalMachineZFC
 import DiophantineConsistency.PaddingStaircase
 import DiophantineConsistency.NativeLowPort54
