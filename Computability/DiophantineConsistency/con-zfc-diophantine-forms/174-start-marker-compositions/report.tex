@@ -1,0 +1,833 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,xurl,hyperref,fancyvrb}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+pdftitle={A Start-only marker and compositional reductions for Diophantine consistency of ZFC},
+pdfauthor={Research prepared for Vladimir Reshetnikov and ProveIt with ChatGPT assistance},
+pdfsubject={Explicit Diophantine consistency equations, ordinary proofs, and reproducible coefficient certificates}}
+\setlength{\parindent}{1.1em}
+\setlength{\parskip}{0.25em}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=*}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\title{A Start-only marker and compositional reductions\\for Diophantine consistency of ZFC}
+\author{Research prepared for Vladimir Reshetnikov and ProveIt\\\small Mathematical development and checking assisted by ChatGPT}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give three explicit improvements to the constructions in ProveIt at the
+fixed comparison commit \texttt{fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb}.
+First, a physical flag can track the predecessor of the distinguished Start
+tile instead of tracking every occupied cell. A nine-position alignment
+argument removes 942 terms from a constant-defining kernel and reduces a
+native cell from 6007 to 4127 radix digits. The four fixed integer
+coefficients then occupy 97,046 minimal unsigned bytes rather than 141,226,
+with the same 15 positive variables, 66 arithmetic operations and degree 157.
+Second, combining an explicit Pell trace with an inverse Lucas correction
+gives a ten-positive-variable equation using 85 operations at exact degree
+232. A square-transport variant also settles a previously stated local open
+step and reduces its carrier degree from 57 to 21.
+Third, a linear binomial selector at a self-power horizon, followed by exact
+integer projections, gives a quartic in 233 unrestricted integer variables
+with 169 quadratic residuals. Its balanced form has coefficient height 5632.
+All equations and fixed constants are supplied explicitly. The new proofs
+compose with identified ordinary source calibrations to prove, in ZFC, that
+unsolvability in each stated domain is equivalent to $\Con(\mathrm{ZFC})$.
+Finite artifact checks and inherited unbounded proofs are distinguished;
+no global minimality, worldwide priority, or new end-to-end formal-kernel
+certificate is asserted.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{Results and the meaning of ``simplest''}
+
+The requested objective has several independent size measures. A polynomial
+with fewer variables can require much higher degree or very large fixed
+coefficients; a small evaluation circuit need not have a short expanded
+monomial list. We therefore give explicit improvements in three relevant
+directions rather than assert a global minimum for an unspecified simplicity measure.
+The domain is part of every theorem.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.3cm}rrrr>{\raggedright\arraybackslash}p{3.4cm}}
+\toprule
+Construction & Variables & Degree & Gates & Height & Main improvement\\
+\midrule
+Start-only compact form & $15$ positive &157&66& large &97,046 coefficient bytes\\
+Trace/inverse-Lucas form &$10$ positive&232&85& large &87/232 and 85/304 combined\\
+Direct balanced quartic &$233$ integer&4&---&5632&169 explicit residuals\\
+Direct sparse quartic &$233$ integer&4&---&8880&10,182 collected monomials\\
+Sparse companion &$234$ integer&4&---&8880&5,018 collected monomials\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here a gate is one binary addition, subtraction or multiplication, including
+a multiplication by a fixed scalar. Repeated squaring is charged. Fixed
+integer leaves are specified separately by a finite recipe and actual bytes.
+Height denotes the largest absolute coefficient of the fully collected
+polynomial, not the largest coefficient of a residual. The direct balanced
+quartic has 18,482 collected monomials; its 169 residuals have 1822 terms
+in total and maximum residual coefficient 40.
+
+The maintained compact equation at the comparison commit used a cell of
+6007 radix digits and 141,226 coefficient bytes \cite{current,native}.
+The direct 234-variable construction of package 159 had 171 residuals,
+19,050 monomials and height 4480 \cite{radical}. Our 233-variable forms
+reduce dimension and residual count, with an explicit height tradeoff.
+Other repository branches already have fewer than 233 integer variables;
+our direct result concerns the small-coefficient C222 branch and does not
+supersede those other tradeoffs.
+
+For a fixed ordinary proof predicate $\mathrm{Prf}_{\mathrm{ZFC}}$, put
+\[
+ \Con(\mathrm{ZFC})\equiv
+ \neg\exists p\in\N\;\mathrm{Prf}_{\mathrm{ZFC}}(p,\bot).
+\]
+Each calibration below proves existence of a polynomial zero equivalent to
+existence of a finite syntactic refutation. Negation gives the requested
+unsolvability equivalence; it does not prove either side separately.
+
+\section{The compact equation: all 15 unknowns and 66 gates}
+\label{sec:compact}
+
+Let the only unknowns be
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma\in\Pos.
+\]
+The following are polynomial abbreviations, not additional unknowns:
+\begin{align*}
+ q_-&=\beta J,&q&=q_-+1,& C&=q-F-\alpha,\\
+ X&=wq,&Y&=sq^3,&E&=XY,\\
+ k&=\eta+\zeta,&\ell&=EkY,&c&=kY+\eta,\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ D&=X+ac+\gamma H,&&&\\[-2pt]
+ R&=[q_-(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,&&&\\
+ V&=f^2(cT-R)-c,& S&=i\Delta c^2.&&
+\end{align*}
+Define six factors
+\begin{align*}
+ N_0&=\tau^2-\ell(\ell+k),&
+ N_1&=D^2-\Delta c^2,\\
+ N_a&=S^2(V^2-y^2)+y^2,&
+ N_k&=k-hE-R,\\
+ N_t&=(K+w)C+(q-F)-zq_-,&
+ N_s&=\Delta f^2-S^2.
+\end{align*}
+The preferred compact equation is
+\begin{equation}\label{eq:p66}
+ \boxed{P_{66}=N_0N_1N_aN_kN_tN_s-\Delta=0.}
+\end{equation}
+Its literal graph uses 38 multiplications, 15 additions and 13 subtractions.
+The new work changes the complete fixed tuple $(\beta,K,M_C,M_F)$, coherently,
+while retaining this graph and its positive-domain arithmetic theorem.
+
+\subsection{A finite definition of the four coefficients}
+Put
+\[
+ \rho=2^{47},\quad M=2^{44},\quad L=4127,\quad
+ B=\rho^L=2^{193969},\quad\beta=B-1,
+ \qquad G_m(x)=\sum_{j=0}^{m-1}x^j.
+\]
+Appendix~\ref{app:language} defines the entire fixed list of 943 tiles
+$t_j=(w_j,n_j,p_j,s_j)$, including the full 436-character numeral and
+decoder. No externally chosen machine index is left unspecified. Define
+\begin{align*}
+ \Psi(x,t)&=x^{992}(x^{10}+t^{17})G_8(tx)
+       +t^8x^{943}(x^{30}+t^{17})G_9(tx)
+       +t^{34}(2-t)x^{1031},\\
+ \Phi(x)&=\sum_{j=0}^{942}
+ [1+2^{10}(1+w_j+2^8n_j+2^{17}p_j+2^{25}s_j)]x^j
+       +2^{10}\Psi(x,2),\\
+ \Lambda&=\rho^{2042}+\rho^{3074}.
+\end{align*}
+The four fixed integers are
+\begin{align}
+ K&=\rho^{20}+\rho^{30}+\rho^{1031}+\rho^{4137}
+             +\Lambda\Phi(1/\rho),\label{eq:K}\\
+ M_C&=\beta+\rho-(\rho+3)\rho^{990}-G_{943}(\rho)-\Psi(\rho,1),\\
+ M_F&=B+3+(M-2)\Lambda+\rho^{973}G_9(\rho)
+       +\rho^{1012}G_8(\rho)+\rho^{1031}
+       +2^{29}\rho^{4124}-\rho^{4106}.\label{eq:MF}
+\end{align}
+The reciprocal in \eqref{eq:K} is only finite notation: all its exponents
+after reflection are nonnegative. The first reflected nonzero term is at
+$2042-1009=1033$. Thus all four leaves are ordinary explicit integers.
+$M_F$ is already shifted by $\beta$ once; it must not be shifted again.
+
+\begin{theorem}\label{thm:compact}
+For the four integers just specified, ordinary mathematics formalizable in
+ZFC proves
+\[
+ \bigl(\forall\mathbf x\in\Pos^{15},\ P_{66}(\mathbf x)\ne0\bigr)
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+The exact degree is 157 and the complete evaluator has 66 live gates.
+The four minimal unsigned big-endian coefficient strings total 97,046 bytes.
+\end{theorem}
+
+The proof of the new native interface follows in the next section. The
+unchanged ordinary P66 arithmetic theorem converts that interface to a
+positive zero. Its normalized Pell and signed-recovery arguments are
+retained explicitly in the source packet. In particular it retains the
+possibility of two negative unit factors until the rank argument resolves
+their signs; it does not assume that all factors are positive at the outset.
+
+For the degree statement, the six factors have exact degrees
+$22,18,62,7,2,46$. The apparent top cancellation in $N_1$ is accounted for
+by writing $Z_0=X+\gamma H$ and
+\[
+ N_1=2acZ_0+Z_0^2-Hc^2.
+\]
+Writing $q_0=\beta J$ and $k_0=\eta+\zeta$, the complete top homogeneous
+part of the product is
+\[
+ -8q_0^{91}h\gamma i^4k_0^{13}w^{13}s^{26}T^2f^4
+       [w(q_0-F-\alpha)-zq_0].
+\]
+It is nonzero at the actual $\beta>0$, so degree 157 is attained.
+
+\section{The new idea: the flag tracks Start}
+\label{sec:native}
+
+The repository's active \texttt{SIZE\_REDUCTION.md} already suggests trying
+a Start-only marker. The contribution here is a complete working layout,
+the semantic exclusion of its last false alignment, and a new authenticated
+controller for the actual shorter coefficients.
+
+In the immediate predecessor, a block of 943 unit coefficients copies the
+number of selected tiles into a physical flag test. Our new singleton term
+$\rho^{1031}$ copies only selector 0, which denotes Start. All other cells
+can have flag zero. This is sufficient to align the temporal shift because
+Start also has eight consecutive prescribed label bits.
+
+The physical support is
+\[
+ \begin{split}
+ \mathcal E={}&\{0,\ldots,951\}\cup\{973,\ldots,981\}
+ \cup\{992,\ldots,999\}\cup\{1002,\ldots,1009\}\\
+ &\cup\{990,991,1031\}.
+ \end{split}
+\]
+It has 980 positions. Apart from the low dummy at 990, whose digit can be
+$0,1,2,3$, physical digits are Boolean. The flag at 1031 has coefficient
+zero in both arithmetic clauses. It must remain in the physical support
+even though it is absent from the nonzero weight support.
+
+Let $c_e$ denote the coefficients of $\Phi$. They consist of the 943
+selector weights in the preceding section and the 34 powers of two for
+copied labels. Every $c_e<M$, there are 977 nonzero $c_e$, and the label
+weights sum to $M-1024$. The two reflected clause centers are 2042 and 3074.
+Their separation, 1032, exceeds the largest physical position, 1031.
+
+\subsection{Clauses are decoded before alignment}
+
+The unchanged local clause lemma uses a selector count $n$, a copied
+34-bit word $W$, and complemented tile words $u_j$. Its raw value is
+\[
+ n+2^{10}\left(2^{34}n+W-\sum_{j\text{ selected}}u_j\right).
+\]
+With incoming carry between 0 and 29, avoiding the mask $M-2$ forces either
+no selector and all-zero labels, or exactly one selector and its correct
+complemented labels. The flag is not used by this argument.
+
+For the full cyclic convolution, the two reflected copies cannot both use
+the same weight at one output. The extra 0/2 at the low dummy is included
+separately in the exact convolution envelope. Its maximum, together with
+the spatial contribution and a temporal contribution in any fractional
+binary phase, satisfies
+\[
+ H_{\max}+3+\frac{3\rho}{4}+29<30\rho.
+\]
+Thus the monotone cyclic carry map preserves the finite box $0,\ldots,29$.
+Iteration from zero stabilizes; cyclic telescoping identifies its digit
+word with the required transport residue. The inherited strict outer
+representative excludes the zero/all-ones ambiguity. Since the clause
+centers differ by a missing support difference, at least one clause is
+clean in each cell. The local lemma therefore decodes every cell before
+alignment is used.
+
+\subsection{The decisive nine-position lemma}
+
+The forced Start tile has complemented south label $510$, whose bits
+1 through 8 are one. Its eight copy tests at positions
+$974,\ldots,981$, and the singleton Start test at 1031, all require odd
+temporal contributions. Below the first reflected coefficient, the
+non-temporal digits are bounded by 9, so
+\[
+ 9+3\rho/4+29<\rho
+\]
+resets every carry relevant to those tests. Fractional binary phases
+1 through 45 have only even temporal digits. Phase 46 can produce only
+one odd low-dummy spill, which cannot meet all nine targets. The phase
+is therefore zero.
+
+Let $u$ be the preimage of position 974 under the remaining radix-digit
+shift. The eight consecutive preimages must be physical and must include
+at most one selector in each predecessor cell. A direct interval argument
+gives exactly
+\[
+ u\in\{942,943,944,973,974,990,991,992,1002\}.
+\]
+The ninth preimage is $u+57$. Physical support leaves only $u=942$ and
+$u=974$. In the first case the bit at selector 942 must be one, so the
+decoded tile is exactly
+\[
+ t_{942}=(4,437,2,437).
+\]
+Its complemented south label is $511-437=74$, whose low bit is zero.
+But the temporal target requires the physical bit at 943 to be one.
+This contradiction eliminates $u=942$. Thus $u=974$ and the whole
+radix-digit shift is zero. This final use of one authenticated tile is
+what permits moving the flag from the intermediate position 1042 to 1031.
+
+\subsection{Resetting carries and recovering a computation}
+
+After alignment, the 17 ordinary copy tests impose all temporal and
+spatial edge equalities. The new flag test imposes exactly
+\[
+ \mathrm{flag}_{\text{temporal predecessor of }i}
+     =\mathrm{StartSelector}_i.
+\]
+Temporal rotation is a permutation, so these equations uniquely determine
+the flags. Occupation follows separately: empty cells have zero colors,
+genuine tiles have positive complemented colors, and spatial one-cell
+rotation propagates occupation from Start to every cell.
+
+Put $A_{\rm adj}=\sum_{e,e+1\in\mathcal E}c_{e+1}x_e$. The complete
+clause predecessor values are
+\[
+ A_{\rm adj}\quad\text{at 2041},\qquad
+ A_{\rm adj}+c_0x_{1031}\quad\text{at 3073}.
+\]
+The second summand is essential: it comes from the unique difference
+$1031-0$. At most one selector and the label-weight bound give
+$A_{\rm adj}\le2M-1024$. Since $c_0<M$, adding incoming carry 29 cannot
+overflow $\rho$. Both clauses reset. The maximum raw product field is
+$3074+1031=4105$; its value is only $c_0x_{1031}<M$, and it also resets.
+All fields 4106 through 4126 are raw zero. They contain the 875 padding
+tests and a terminal zero field.
+
+Start's north and south colors differ, so the temporal stride is nonzero.
+Inverse complementation therefore recovers the unchanged calibrated
+marked blank computation and finite refutation. This proves soundness of
+the new layout without any controller-prime assumption.
+
+\subsection{Completeness uses a fresh controller}
+
+A finite refutation supplies independently padded one-Start rectangles
+by the retained helical theorem. Encode their selectors and complemented
+labels on the new support; set each flag according to the displayed
+Start equation. The 990-dummy bits remain freely selectable. Every
+simultaneous subset preserves the masks and carry resets. In particular
+the terminal zero field gives $0<F<q/\rho$, while the support bound gives
+$0<C<q/\rho^{L-1032}$. Consequently $2C+F<q/3$ and
+$\alpha=q-F-C>0$.
+
+For a safe dummy bit at cell $j$, the ordinary change of the actual rank is
+\[
+ \delta R=-\Gamma B^j,\qquad
+ \Gamma=\rho^{990}(q^2-1)[1+q(K+B^{\mathrm{width}})].
+\]
+It is an ordinary equality, not only a congruence: every intermediate
+subset obeys the same strict representative bounds. The new actual
+$K$ is used in every controller calculation. The supplied finite
+certificate proves primality, all required exact orders, a valuation-one
+lift and nonzero controller residues. The principal residues are
+\begin{center}
+\begin{tabular}{rr}
+\toprule
+Prime $p$ & $1+BK+B^2\pmod p$\\\midrule
+47&9\\4127&3487\\474491&153928\\\bottomrule
+\end{tabular}
+\end{center}
+Here $474491>193969$, and $474490$ is a multiple of $47449$, the least
+common multiple of the two fixed orders. The certificate supplies the
+exact nontrivial lift modulo $474491^2$.
+
+The inherited prescribed-dimension padding contract permits fresh width
+and height to be sufficiently large powers of this auxiliary prime;
+mere abstract cofinality would not be enough here.
+The retained elementary orbit/CRT argument then makes
+$\Gamma$ a unit modulo the whole rank modulus and expresses every desired
+rank residue as a Boolean subset sum of safe dummy increments. This
+restores the authentic power rank, not a surrogate index. Explicitly, with
+$d=47L$ and $M_F^{\rm native}=M_F-\beta$, the masks obey
+\[
+ 0<M_C,M_F^{\rm native}<\beta,\qquad
+ \pc(M_C)=d-980,\qquad\pc(M_F^{\rm native})=980,
+\]
+\[
+ M_C\equiv2\pmod4,\qquad M_F^{\rm native}\equiv4\pmod8.
+\]
+For a canonical tableau with $N$ cells and $t=dN$, the actual rank satisfies
+$\pc(R)=3t+2$ and $R\equiv3\pmod4$.
+Together these supply the entire positive native interface.
+The ordinary P66 theorem gives all
+remaining positive witnesses, completing Theorem~\ref{thm:compact}.
+
+\paragraph{An intermediate with a simpler alignment proof.}
+The archive also retains the independently checked flag-1042, cell-4159
+construction. It needs only physical support and one-selector information
+for the ninth target, without examining tile 942. Its four coefficients
+occupy 97,798 bytes. The preferred flag-1031 refinement saves 752 additional
+bytes. Both are complete coherent tuples; their coefficients must not be mixed.
+
+\section{Ten positive variables: 85 gates and degree 232}
+\label{sec:85}
+
+This result composes the trace construction of package 163 with the inverse
+Lucas correction of package 164 \cite{trace,inverse}. Their full four-port
+coefficient bindings are byte-identical. The archive includes those actual
+four integers, the complete printed recipe in Appendix~\ref{app:85constants}, and a standalone
+standard-library generator that reproduces every raw and compressed hash.
+Here $\beta=2^{590069}-1$. These are the retained radix-67 coefficients,
+not the new tuple of Section~\ref{sec:native}.
+
+The only unknowns are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\Pos.
+\]
+Define
+\begin{align*}
+ h&=\beta J,&q&=h+1,& C&=q-F-\alpha,\\
+ X&=qw,&Y&=qs,&k&=\eta+\zeta,\\
+ c&=kY+\eta,&A&=Y(X+1)+1,&\Delta&=A^2-1,\\
+ H&=4A-5,&v&=XY^2,&\ell&=vk=(XY)(kY),\\
+ E&=1+\ell(\ell+k),&&&\\
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,&&&\\
+ B_t&=(K_0+w)C-F,&U&=ic^2,&a&=\Delta U^2E,\\
+ F_0&=1+a,&G&=EF_0,&f&=a+F_0,\\
+ Q&=4\Delta aF_0,&b&=cT-R,&V&=fb-c,\\
+ L_t&=bV,&K_t&=X(3c-2X)+2,&&\\
+ e_6&=6(k-R-1)-\ell(k^2-4),&D_6&=6q^6,&M_t&=hD_6H,\\
+ Z&=hD_6[H(n-L_tB_t)+K_t]
+       -H[D_6B_t+h(e_6-6q^4s)].&&&
+\end{align*}
+The polynomial is
+\begin{equation}\label{eq:p85}
+ \boxed{P_{85}=Q(Z^2-M_t^2GV^2)+(M_t^2G-Z^2)=0.}
+\end{equation}
+The literal graph does not compute $v$ separately; $\ell=(XY)(kY)$ reuses
+already live registers. Fixed powers are repeated multiplications.
+
+\begin{theorem}
+With the included calibrated four-port tuple, ZFC proves absence of
+positive integer zeros of \eqref{eq:p85} equivalent to $\Con(\mathrm{ZFC})$.
+Its 85 live gates comprise 51 multiplications, 18 additions and 16
+subtractions. Its exact degree is 232.
+\end{theorem}
+
+\subsection{Why these two reductions can be combined}
+
+For the proof only, write
+\[
+ e^*=e_6/6,\quad\rho_*=e^*/q^6,\quad\sigma=s/q^2,
+ \quad t=B_t/h,\quad\kappa=K_t/H,\quad z=Z/M_t,
+ \quad W=1+hL_t.
+\]
+The exact rational identity is
+\begin{equation}\label{eq:carrier}
+ z=n+\kappa+\sigma-Wt-\rho_*.
+\end{equation}
+No quotient in this proof notation is an operation in the polynomial.
+
+The root extraction and signed folding argument of package 163 does not
+use the cubic correction. At any positive zero it gives
+\[
+ E=\tau^2,\quad F_0=f_0^2,\quad G=g^2,\quad
+ z=\varepsilon gy,\quad QV^2-(Q-1)y^2=1,
+ \qquad\varepsilon\in\{-1,1\}.
+\]
+It uses the exact identities
+\[
+ f^2=1+4aF_0,\quad Q=4\Delta^2U^2G,
+ \quad f-1=2\Delta i^2c^4E,
+\]
+prime valuations, and the rational adjacent-Pell descent. Put $I=2Ug$.
+Then $f^2-\Delta I^2=1$, $Q=(\Delta I)^2$, and $c^2\mid I$.
+Signed folding yields $c=\psi_A(p)$ for odd positive $p$, while the first
+Pell norm gives $k=2\psi_{1+2v}(m)$, $m\ge2$ and $c>8XY^3\ge8q^4$.
+
+The main and auxiliary index-three exclusions are unchanged. In particular
+an auxiliary index three would force one of
+\[
+ f(b-4\Delta f)=c-(4\Delta+3),\qquad
+ f(b+4\Delta f)=c+(4\Delta+3).
+\]
+Both right-hand sides are strictly between zero and $f$, a contradiction.
+The resulting signed estimates are
+\[
+ b\ne0,\quad\sgn V=\sgn b,\quad L_t>0,
+ \qquad gy<L_t/2,\quad |b|/q^6<L_t/2.
+\]
+They are proved before the signs of $B_t,C,R,V$ are assumed.
+
+The inverse correction now makes the sign step particularly short:
+\[
+ e^*=k-R-1-\frac{vk(k^2-4)}6\le k-R-1<b,
+\]
+because $k\ge2$ and $cT-k+1>0$. If $B_t\le-1$, then $Wt<-L_t$;
+\eqref{eq:carrier} would give
+\[
+ n< L_t/2-L_t+|b|/q^6<0.
+\]
+Thus $B_t\ge0$, then $C>0$. Only now is the mask bound
+$3q<R<q^4-2$ licensed. It gives $c>2R$, hence $b,V>0$.
+Since the explicit trace satisfies $f\equiv1\pmod c$, both residues
+$V\equiv-c\pmod f$ and $V\equiv-R\pmod c$ survive the trace replacement.
+The retained rank theorem gives $p=R$.
+
+\subsection{The denominator of the inverse correction}
+
+Write the exact Lucas expansion
+\[
+ k=2m+8vC_m+32v^2Z_m,\qquad C_m=\binom{m+1}{3},
+ \quad A_m=C_m+4vZ_m,
+\]
+where $Z_m$ is a nonnegative integer. For $d=2m-R-1$ and
+$S_m=k^2+2mk+4m^2-4$, direct algebra gives
+\begin{equation}\label{eq:inverseidentity}
+ 3(e^*-d)=4v^2(24Z_m-A_mS_m).
+\end{equation}
+Since $k$ is even, $k(k^2-4)/6$ is integral, hence $e^*\in\Z$.
+Clearing the integral carrier and using $\gcd(q,hH)=1$ gives
+$q^6\mid e^*-q^4s$. Since $v=q^3ws^2$,
+the valuation of the right side of \eqref{eq:inverseidentity} at every
+prime dividing $q$ gives $q^4\mid e^*-d$, including the prime 3.
+Monotonicity of the first Pell base gives $m<R$, so
+$|d|<R<q^4$ and $d=0$.
+
+It would be incorrect to infer $q^6\mid e^*$ at this stage. The carrier
+first gives $H\mid6hK_t$. The inherited strict whole-product projection,
+using the authenticated index, forces $X=2^R$. Since $q\mid X$, $q$ is
+a power of two. Only then can the factor 3 be canceled in
+\eqref{eq:inverseidentity}. This yields $q^6\mid e^*$, $q^2\mid s$ and
+$h\mid B_t$. These are precisely the fixed-minus parity, half-binomial
+rounding and native reconstruction interfaces in the retained sources.
+
+\subsection{Completeness is constructive and positive}
+
+At an old package-164 positive zero, put
+$d_0=2\Delta i^2c^3E$, so $f=1+cd_0$, and define
+\[
+ T_{\rm new}=fT_{\rm old}-d_0R,\qquad
+ n_{\rm new}=n_{\rm old}+(f-1)L_{\rm old}B_t.
+\]
+Then $b_{\rm new}=fb_{\rm old}$, $V_{\rm new}=V_{\rm old}$ and
+$n_{\rm new}-L_{\rm new}B_t=n_{\rm old}-L_{\rm old}B_t$.
+The entire polynomial value is preserved by this polynomial substitution.
+The old proof gives $0<R<c/2$, $B_t\ge0$ and $b_{\rm old},V_{\rm old}>0$,
+so both new inputs are strictly positive. This supplies completeness.
+Soundness was proved separately; an integral inverse to this map is not
+assumed.
+
+For exact degree, put $q_0=\beta J$, $k_0=\eta+\zeta$, and
+$B_0=k_0sT-q_0^2(q_0-F)$. The full leading homogeneous part is
+\[
+ [P_{85}]_{232}=-9\cdot2^{10}q_0^{100}w^{26}s^{58}i^{10}k_0^{32}B_0^2.
+\]
+The unique dominant final term is $-QM_t^2GV^2$, of degree
+$80+22+50+80=232$. The displayed leader has 202 collected terms and a
+nonzero coefficient $-9216\beta^{100}$ at
+$J^{100}w^{26}s^{60}i^{10}\eta^{34}T^2$.
+
+\subsection{A resolved local open step: square transport}
+
+Replace $L_t=bV$ by $L_t=b^2$. The index exclusion already gives
+$|b|>8f^3-1/2$, $g<f/2$, $|V|<(3/2)f|b|$, and
+$y<(3/2)|V|$; hence $gy<b^2/2$.
+The inverse correction still has $e^*<b$, so the signed bootstrap works
+without the adverse negative-rank cubic estimates that obstructed this
+variant in package 163. Completeness uses its canonical positive auxiliary
+pair and the retained inverse-correction bound
+$g>\kappa+\sigma+|\rho_*|$ to choose positive $n$ directly.
+The variant retains 85 gates and degree 232, but the carrier numerator
+$Z$ has exact degree 21 instead of 57. It is included as a proved
+structural alternative, not counted as a separate headline Pareto gain.
+
+\section{A direct quartic in 233 unrestricted integers}
+\label{sec:direct}
+
+Let $r_0,\ldots,r_{168}\in\Z[x_0,\ldots,x_{232}]$ be the literal quadratic
+residuals printed in Appendix~\ref{app:residuals} and supplied as sparse
+coefficient arrays. Define
+\begin{equation}\label{eq:direct}
+ \boxed{P_{233}(x_0,\ldots,x_{232})=
+              \sum_{j=0}^{168}r_j(x_0,\ldots,x_{232})^2=0.}
+\end{equation}
+Every coordinate is unrestricted. In particular no positivity condition
+is being silently placed outside this equation.
+
+\begin{theorem}
+The integer polynomial \eqref{eq:direct} has exact degree four, 233 live
+variables, 169 quadratic residuals, 18,482 collected monomials and height
+5632. ZFC proves
+\[
+ \bigl(\forall\mathbf x\in\Z^{233},\ P_{233}(\mathbf x)\ne0\bigr)
+       \longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+\end{theorem}
+
+Its arithmetic source is the direct C222 construction of package 165,
+specifically the literal 239-coordinate power branch \cite{wide}. This
+route uses neither a K215 simulation nor Jones's universal polynomial.
+The inherited logical calibration is the named C222-to-ZF refutation
+theorem followed by the ZF/ZFC refutation equivalence. The new construction
+combines the linear-radius and affine-radix arguments of package 164 with
+the self-power horizon and relaxed remainder sphere of package 165.
+
+\subsection{The new selector radius}
+
+The source has the cofinal even horizon and genuine power request
+\[
+ t=16+2h^2,\qquad F=t^t.
+\]
+Here $F=t^t$ is the meaning of existing quadratic power certificates;
+it is not a variable-exponent operation in the final polynomial.
+Change the two source equations
+\[
+ R=F^2\quad\hbox{to}\quad R=F,
+ \qquad q=(2z+1)^2\quad\hbox{to}\quad q=4z+1.
+\]
+Every power request, frame condition, orientation condition and local
+Horn relation is retained. The already relaxed sphere is also retained:
+\[
+ M^2=2\sum_{j=1}^{11}R_j^2+G(a,b,c),\qquad
+ G(a,b,c)=a^2+b^2+c(c+1).
+\]
+The polynomial $G$ is nonnegative on $\Z^3$ and represents every
+nonnegative integer; this standard consequence of the three-square theorem
+is also independently formalized in \cite{threesquares}.
+
+\begin{lemma}
+If $t\ge16$ and $F=t^t$, then
+$F\ge\lcm(1,\ldots,t)^2$.
+\end{lemma}
+\begin{proof}
+Write $\Lambda_n=\lcm(1,\ldots,n)$ and $k=\lceil n/2\rceil$.
+Prime valuations in the central binomial coefficient give
+$\Lambda_n\mid\Lambda_k\binom nk$.
+For $n=2m$, the binomial coefficient is at most $4^m$;
+for $n=2m+1$, the two equal middle coefficients together are at most
+$2^{2m+1}$, so either is at most $4^m$.
+Induction gives $\Lambda_n\le4^n$. Thus
+$t^t\ge16^t\ge\Lambda_t^2$.
+\end{proof}
+
+This is the exact threshold required by the binomial CRT selector at
+$B=\binom{R+t}{t}$. To make both directions explicit, for each
+$i\in[1,t]$, the integer $R+i>\Lambda_t^2$ has a prime $p$ with
+$v_p(R+i)>2v_p(\Lambda_t)$. Subtracting the valuations at the other
+positions gives an exact prime power $p^e\Vert B$ with $p^e>t$ and
+$p^e\mid R+i$. Conversely each exact prime power dividing $B$ divides
+some $R+i$, by the zero-one summands in Legendre's formula. This supplies
+both the local-row extraction and reverse CRT completeness at $R=F$.
+
+\subsection{Signed radix recovery before using the sphere}
+
+The retained beta endpoints and index row are
+\[
+ y=F(2w+1)^2,\quad x=F+1+(y+1)u_0,\quad
+ x=1+[1+(t+1)y]u_t,\quad B\mu=C_0+R+1.
+\]
+The genuine horizon power gives $F\ge2^{64}$, hence $y\ge F>0$.
+The affine equation $q=4z+1$ excludes $q=0,-1$. The retained signed
+power theorem authenticates the requests at $q$ and $q+1$. If $q=1$,
+the requests at base 2 first make all actual representatives nonnegative.
+The literal offset in this branch is
+$H=2+\sum$ of the nine actual representatives, so $H\ge2$.
+The index row gives $B\ne0$. The self-radix relation $q=(BH)^x$ would
+then force $x=0$, contradicting the last beta endpoint. Hence $q\ne1$.
+
+For the remaining signed branches, $|q|\ge3$, the same argument gives
+$H\ge2$, $B\ne0$ and $x>0$. The two beta endpoints imply
+\[
+ x\ge F+1,\qquad x\ge2+(t+1)y,\qquad
+ |q|=|BH|^x\ge2^x,\qquad |B|\le |q|/4.
+\]
+Thus $M=q^x\ne0$ before dividing any remainder row. Normalized rows and
+the sphere give integral remainders with
+$|r_j|\le|L_j|/\sqrt2<3|L_j|/4$.
+
+For $n=F+t$, all coefficients $\binom nj$, $j\le t$, are bounded by
+$(F^2+1)^t$. The endpoint growth makes every genuine low tail smaller
+than $|L_j|/32$. The difference between a recovered remainder and its
+true tail is a multiple of $L_j$ with magnitude below
+$(3/4+1/32)|L_j|<|L_j|$, so it vanishes. In particular the binomial
+digit gives $B=\binom{F+t}{t}>0$; hence $q=(BH)^x>0$.
+All remaining digits, local rows and labels are then recovered at their
+original precision. The complete ordinary argument is retained in
+\texttt{direct233/PROOF.md}.
+
+\subsection{The self-power label argument}
+
+The older inequality $(t+1)^t<F$ cannot be used when $F=t^t$.
+Instead, suppose equal products of weights $1+jF$, $1\le j\le t$,
+have at least one side with at most $t$ factors. Unequal counts would
+contradict $F+1>t^d$ for the smaller count $d\le t$. Thus both counts
+are the same $d\le t$. Regard the two products as degree-$d$ polynomials
+in a new indeterminate. All their coefficients are positive and at most
+$\binom dk t^k\le t^d\le F$. Their corresponding differences have
+absolute value less than $F$. The lowest nonzero coefficient therefore
+cannot vanish after evaluation at $F$, by reduction modulo $F$.
+The polynomials agree, and their distinct roots $-1/j$ recover all
+label multiplicities. This restores the exact Horn-closure interface.
+
+\subsection{Completeness and the four algebraic projections}
+
+Pad a finite refutation to an allowed even horizon. Because
+$v_2(F)\ge t>v_2(t!)$, an arbitrarily large odd factor can make the
+existing beta spacing $y=F(2w+1)^2$ an even multiple of $t!$.
+The beta moduli are then pairwise coprime and odd; their code $x$ can
+be chosen even. Also
+\[
+ v_2\binom{F+t}{t}=0,
+\]
+since $v_2(F+i)=v_2(i)$ for $1\le i\le t$. The retained CRT
+representative lifts can therefore make $H$ odd while preserving
+dominance and parity. The resulting $q=(BH)^x$ is an odd square and
+$z=(q-1)/4$ is integral. The canonical remainders are below $M/32$,
+so the nonnegative sphere gap has a $G$ representation. This constructs
+a zero of the edited source from every refutation.
+
+The two edited rows are monic affine equations. Delete them after their
+exact substitutions to obtain 237 variables. Three directions in the
+common kernel of the residual Hessians permit integral polynomial
+elimination without increasing degree. A further affine label-definition
+row removes one coordinate, giving 233 variables and 169 residuals.
+Each projection has its recorded integral inverse; every row-basis
+operation has its elementary inverse. These transformations preserve
+integer zero sets, though they need not preserve the value of the sum
+of squares away from zeros. The final polynomial is the literal sum
+of the new squared residuals, and all its coefficients are included.
+
+\section{What was verified and what is inherited}
+
+The release contains actual coefficient payloads, complete equation graphs
+or residual lists, proofs, provenance, and standard-library checkers. It
+does not require network access to reconstruct its new finite artifacts.
+The following are different kinds of evidence and are kept separate.
+
+\begin{enumerate}
+\item \textbf{Ordinary unbounded arguments.} These prove the new alignment,
+carry, controller, signed-Pell, selector, and completeness claims for
+arbitrary witnesses. The proofs compose with specifically identified
+native or C222 source calibrations. All are ordinary finitary arithmetic
+arguments formalizable in ZFC; no standard-witness-only inference is used.
+\item \textbf{Exact finite checks.} These reconstruct the full constants,
+authenticate their bytes, check all support identities and controller
+conditions, verify graph liveness and exact top homogeneous parts, and
+verify every new projection, inverse row operation and expanded quartic
+coefficient. Independent reviews found and checked the actual stored-to-
+semantic representative offsets and the order of denominator recovery.
+\item \textbf{Inherited logical proofs.} K215/native calibration is used
+only on the two compact branches; the direct branch uses the existing
+C222, ZF and ZFC refutation theorems. Those entire historical developments
+were not rebuilt here. Some historical dependency files advertised by
+package 165 are absent from the inspected tree; no unavailable old checker
+is claimed to have run. The new finite source-interface commutation and
+all new algebra were checked from the supplied literal source.
+\end{enumerate}
+
+The distinction is substantive. A circuit checker cannot prove an
+unbounded Pell classification, and an exact polynomial identity cannot
+supply a missing positivity theorem. Conversely, inheriting a valid source
+calibration does not prevent a new local transformation from being a
+complete mathematical proof when its interfaces and both directions are
+checked. This is the status of the constructions in this article.
+
+\paragraph{A rejected transfer.}
+The trace substitution in Section~\ref{sec:85} uses the literal identity
+$f\equiv1\pmod c$. P66 has a free strong Pell root for which only
+$f^2\equiv1\pmod c$ is immediate. That does not imply $f\equiv1\pmod c$.
+The archive includes a general Pell-family obstruction to this proposed
+shortcut. We do not claim that simply replacing P66's $f^2(cT-R)-c$
+by $f(cT-R)-c$ is sound.
+
+\section{Further research questions}
+
+The improvements suggest several concrete next problems.
+\begin{enumerate}
+\item Can the Start-only layout be shortened using a larger authenticated
+label pattern, while retaining a transparent all-offset alignment proof?
+The new layout already uses one specific tile to eliminate the last
+false offset; a general search must certify semantic patterns, not merely
+physical support.
+\item Can square transport's carrier-degree reduction from 57 to 21
+lower the number of quadratic witnesses in a direct compilation, even
+though it leaves the total degree 232 unchanged?
+\item Can the low-variable trace form be specialized to the new complete
+Start-only native tuple with a separately documented full interface?
+The present ten-variable release deliberately retains its authenticated
+radix-67 tuple; the coherent new specialization is not silently assumed.
+\item Can the direct selector radius be lowered below $t^t$ while preserving
+both prime-power coverage and exact recovery of label multiplicities?
+Any proposed bound must establish the two properties together.
+\item Can additional nonlinear, integrally invertible projections reduce
+the direct 233-coordinate system? The current common-radical and affine
+certificates give exact local reductions, not a lower bound on all
+possible transformations.
+\item An end-to-end formal derivation inside the repository's object-ZFC
+calculus would strengthen the deliverable's verification status. Its
+remaining work includes the complete native or C222 arithmetic calibration,
+not merely rechecking the finite JSON arrays.
+\end{enumerate}
+
+\appendix
+\section{Complete fixed language for the compact equation}
+\label{app:language}
+\input{appendices/language.tex}
+
+\section{Complete coefficient recipe for the ten-variable equation}
+\label{app:85constants}
+\input{appendices/positive85_coefficients.tex}
+
+\section{Every quadratic residual of the balanced direct equation}
+\label{app:residuals}
+The following list is generated directly from the verified sparse arrays.
+All coordinates $x_0,\ldots,x_{232}$ range over $\Z$. The indexing of the
+printed residuals begins at zero; summing their squares gives
+\eqref{eq:direct}. Numerical subscripts are part of variable names, not
+extra parameters.
+\input{appendices/direct233_residuals.tex}
+
+\begin{thebibliography}{99}
+\bibitem{current} V. Reshetnikov et al., \emph{ProveIt: DiophantineConsistency},
+commit \path{fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb},
+\texttt{CURRENT\_EQUATION.json} and \texttt{equation.tex}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb/Computability/DiophantineConsistency}.
+\bibitem{native} ProveIt, \emph{A zero-weight physical flag and shorter separated clause blocks},
+\texttt{research/zero-weight-flag-independent/PROOF.md}, same commit.
+The frozen text and numerical source data are included in this release.
+\bibitem{trace} ProveIt package 163, \emph{Use the explicit Pell trace before squaring it},
+\texttt{163-trace-radical/compact/PROOF.md}, same commit.
+\bibitem{inverse} ProveIt package 164, \emph{Inverse-Lucas correction with projection before denominator recovery},
+\texttt{164-unsquared-factors-linear-selectors/positive/PROOF.md};
+and its signed linear-selector proof, same commit.
+\bibitem{wide} ProveIt package 165, \emph{Wider budgets, round 20},
+\texttt{165-wider-budgets-round20/report/power\_base.tex},
+\texttt{report/signed\_new.tex}, and the literal
+\texttt{signed/power239/equation.json}, same commit.
+\bibitem{radical} ProveIt package 159, \emph{A direct quartic for Con(ZFC) in 234 integer variables},
+\texttt{159-quadratic-projection-234}, same commit.
+\bibitem{threesquares} A. Danilkin and L. Chevalier,
+\emph{Three Squares Theorem}, Archive of Formal Proofs, 3 May 2023.
+\url{https://isa-afp.org/entries/Three_Squares.html}.
+\end{thebibliography}
+\end{document}

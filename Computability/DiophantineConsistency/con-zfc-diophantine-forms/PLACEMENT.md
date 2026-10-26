@@ -20183,3 +20183,100 @@ Total: 2648 members = 1016 staged + 1613 omitted copies + 19 ignored.
 | `ConZFC_Pooled_Powers_Round21_2026-10-25_part1/ConZFC_Pooled_Powers_Round21_2026-10-25/report/qa/compile_logs/pass-1.log` | not staged: log file (`*.log`) |
 | `ConZFC_Pooled_Powers_Round21_2026-10-25_part1/ConZFC_Pooled_Powers_Round21_2026-10-25/report/qa/compile_logs/pass-2.log` | not staged: log file (`*.log`) |
 | `ConZFC_Pooled_Powers_Round21_2026-10-25_part1/ConZFC_Pooled_Powers_Round21_2026-10-25/report/qa/compile_logs/pass-3.log` | not staged: log file (`*.log`) |
+
+## Placement record: batch 237 (wave 21)
+
+Intake record, not a delivered file. The two archives of the arrival
+commit `4daba3e49f` (25 October 2026, 17:02, "Con(ZFC) in Diophantine form")
+were extracted straight from the committed ZIPs into numbered directories
+173–174, in archive-name order, with the single wrapper directory removed.
+Nothing was edited and nothing was run at intake.
+
+**Waves 5–20 are kept.** By Vladimir's direction, wave 21 is placed beside
+them (sources 31–172), not instead of them; this section is appended to the
+earlier records above.
+
+Members not in this tree:
+
+- **Copies of repository files.** A member byte-identical (up to line ends)
+  to a blob at the placement parent in a stable place is omitted: this
+  collection, another tracked tree outside the active research session's
+  volatile directories, or an earlier arrival ZIP. A member whose only
+  copies lie in `Computability/DiophantineConsistency/` outside this report
+  (the research session's `candidates/`, `research/`, `tools/`), or in
+  `.claude/` worktree copies, is kept, as in batches 227–236 (the rule of
+  `c16a89ad94`). The tables below name the repository path holding the same
+  bytes. Licence, notice and attribution files are always kept.
+- **Checksum ledgers, logs, bytecode and TeX build artifacts** are excluded
+  by the root `.gitignore`; they were not verified.
+
+To rerun a package, extract its archive from the arrival commit into a
+scratch directory and run it there:
+
+```sh
+git show 4daba3e49f:'docs/incoming/<archive>.zip' > /tmp/<archive>.zip
+```
+
+| Dir | Archive | Members | Placed | Omitted copies | Ignored | Wrapper |
+|---|---|---:|---:|---:|---:|---|
+| `173-crt-index-anchor-215/` | `ConZFC_CRT_Index_Anchor_215_2026-10-25.zip` | 197 | 162 | 34 | 1 | `ConZFC_CRT_Index_Anchor_215_2026-10-25/` |
+| `174-start-marker-compositions/` | `ConZFC_Start_Marker_Compositions_2026-10-25.zip` | 122 | 110 | 12 | 0 | `conzfc_start_marker_compositions/` |
+
+Total: 319 members = 272 staged + 46 omitted copies + 1 ignored.
+
+### `173-crt-index-anchor-215/` (`ConZFC_CRT_Index_Anchor_215_2026-10-25.zip`)
+
+| Delivered member | Same bytes in the repository |
+|---|---|
+| `code/affine_project.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/168-reciprocal-pooling/inherited/projection159/code/affine_project.py` |
+| `code/affine_search.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/168-reciprocal-pooling/inherited/projection159/code/affine_search.py` |
+| `code/audit_projection.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/168-reciprocal-pooling/inherited/projection159/code/audit_projection.py` |
+| `code/reduce_radical.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/168-reciprocal-pooling/inherited/projection159/code/reduce_radical.py` |
+| `inherited/calibration/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
+| `inherited/calibration/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
+| `inherited/calibration/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
+| `inherited/calibration/KEind222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean` |
+| `inherited/calibration/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
+| `inherited/calibration/KEqCodes222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEqCodes222.lean` |
+| `inherited/calibration/KLowerQHyp.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean` |
+| `inherited/calibration/KQ1Model.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Model.lean` |
+| `inherited/calibration/KQ1ZF.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ZF.lean` |
+| `inherited/calibration/KSeed222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeed222.lean` |
+| `inherited/calibration/KSeedDirect222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean` |
+| `inherited/calibration/KSeedInterface222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedInterface222.lean` |
+| `inherited/calibration/KThmK.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean` |
+| `inherited/calibration/KUpper222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KUpper222.lean` |
+| `inherited/calibration/WFModelCore.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean` |
+| `inherited/factorial_free151/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/README.md` |
+| `inherited/factorial_free151/main.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/report/main.tex` |
+| `inherited/linear_crt157/INDEPENDENT_DERIVATION.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/proofs/INDEPENDENT_DERIVATION.md` |
+| `inherited/linear_crt157/MAIN_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt/proofs/MAIN_PROOF.md` |
+| `inherited/parent135/ORIENTATION_FIRST_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/ORIENTATION_FIRST_PROOF.md` |
+| `inherited/parent135/PROOF_315.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/PROOF_315.md` |
+| `inherited/parent135/STRICT_BUDGET_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/STRICT_BUDGET_PROOF.md` |
+| `inherited/pooled225/INDEPENDENT_POOL_REVIEW.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/proofs/INDEPENDENT_POOL_REVIEW.md` |
+| `inherited/pooled225/POOLED_POWERS.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/proofs/POOLED_POWERS.md` |
+| `inherited/pooled225/STRICT_HORIZON_AND_BETA.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/proofs/STRICT_HORIZON_AND_BETA.md` |
+| `inherited/syntax/SHELL_ENCODING_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/intake/ConZFC_Shell_Reciprocal_660_2026-10-24/ConZFC_Shell_Reciprocal_660/proofs/shell_encoding_proof.md` |
+| `inherited/syntax/shell_source.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/intake/ConZFC_Shell_Reciprocal_660_2026-10-24/ConZFC_Shell_Reciprocal_660/code/shell_source.py` |
+| `source/parent225/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/README.md` |
+| `source/parent225/equation.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/equation.json` |
+| `source/parent225/residuals.txt` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/residuals.txt` |
+| `SHA256SUMS` | not staged: checksum ledger |
+
+### `174-start-marker-compositions/` (`ConZFC_Start_Marker_Compositions_2026-10-25.zip`)
+
+| Delivered member | Same bytes in the repository |
+|---|---|
+| `compact66/calibration/INHERITED_P67_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
+| `direct233/code/audit_parent_stage.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/165-wider-budgets-round20/signed/verify.py` |
+| `direct233/code/audit_projection.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/159-quadratic-projection-234/code/audit_projection.py` |
+| `direct233/source/linear_radius_proof164.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/integer/PROOF.md` |
+| `direct233/source/power239.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/165-wider-budgets-round20/signed/power239/equation.json` |
+| `direct233/source/power239_stages.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/165-wider-budgets-round20/signed/certificates/power239.json` |
+| `direct233/source/power245.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/165-wider-budgets-round20/signed/power_majorant245/equation.json` |
+| `direct233/source/self_power_proof165.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/165-wider-budgets-round20/signed/POWER_MAJORANT_PROOF.md` |
+| `positive85/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/139-graph-digits/compact/coefficients/K.bin.gz` |
+| `positive85/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MC.bin.gz` |
+| `positive85/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MF_source.bin.gz` |
+| `positive85/coefficients/beta.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/beta.bin.gz` |

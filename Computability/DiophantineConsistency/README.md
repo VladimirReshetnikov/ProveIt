@@ -19,41 +19,44 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **complete Boolean-dummy4027 equation
+[equation.tex](equation.tex) print the **complete admissible942 equation
 in fifteen positive unknowns, exact degree157, with66 integer-leaf binary
 operations**. All four fixed constants, the436-character numeral, alphabet,
-closed decoder and943 tiles fit on one Letter page at9-point body and
-7.7-point seed/footer sizes.
+closed430-action decoder and942 admissible tiles fit on one Letter page
+at9-point body and7.7-point seed/footer sizes.
 
-The [complete candidate](candidates/one-page-boolean-dummy4027/README.md)
-reduces raw coefficient storage from95205 to**94689 bytes**, saving516
-from shared-copy4049. Complete TeX shrinks eight bytes to5050; nonwhite
-`pdftotext -layout` text shrinks five characters to2688; PDF shrinks23
-bytes to159595. Gzip integer storage grows11 bytes. Variables, degree,
-operation count and fonts remain unchanged at four coherent new ports.
+The [complete candidate](candidates/one-page-admissible942/README.md)
+retains**94689 raw integer bytes** and shortens the complete TeX by25 bytes
+to5025. Nonwhite `pdftotext -layout` text falls17 characters to2671.
+The actual PDF grows126 bytes to159721 and gzip integer storage grows22;
+these distinct metrics are recorded explicitly. Fonts, variable count,
+operation count and degree remain unchanged.
 
-The [whole ordinary proof](research/boolean-dummy-independent/PROOF.md)
-uses one Boolean controller dummy. Every canonical subset already uses
-only0/1, so removing the extra bit preserves completeness and simplifies
-the mask. Every nonzero fractional phase is now even without a spill.
-The979 physical positions give978 allowed mask positions; core105 plus873
-padding bits gives matching native population. The actual rank,935-case
-field-phase classification, all resets and both P66 maps are covered.
-The [finite certificate](research/boolean-dummy-independent/certificate.json)
-discharges Pcbd18 with orders23/1342, lambda246929 and H18/2634/79912.
-Full [root](reviews/boolean-dummy4027-root.md) and
-[independent](reviews/boolean-dummy4027-independent-peer.md) reviews pass.
-Normal and optimized reconstruction reproduces every printed integer,
-actual dummy-mask/rank checks and targeted printed-marker deletion.
-The [page review](reviews/boolean-dummy4027-page-peer.md) records complete
-source agreement and a second actual visual inspection.
-[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the page and preserves
-the preceding metadata verbatim.
+The [whole ordinary proof](research/admissible942-independent/PROOF.md)
+deletes exactly old selector1, already forbidden in every native cell.
+The explicit bijection g(0)=0,g(j)=j+1 preserves the entire admissible
+language, computations and cofinal canonical rectangles. The initializer
+moves to928 with unchanged colors. All978 physical positions are now
+allowed, so the exceptional +rho mask term disappears without changing
+binary origin residues. The marker recipe loses t^34, whose only used
+evaluations1 and2 were redundant. Every moved copy,934-case phase
+classification, reset,873 padding tests, actual rank and P66 map is covered.
+The [finite certificate](research/admissible942-independent/certificate.json)
+discharges Pca942 with orders23/1342, lambda246929 and new H38/3031/56296.
+Full [root](reviews/admissible942-root.md) and
+[independent](reviews/admissible942-independent-peer.md) reviews pass.
+Normal/optimized checks reconstruct all942 printed tuples,3297 coefficients,
+978 physical positions and four integers; actual initializer and marker
+corruptions are rejected. The [page review](reviews/admissible942-page-peer.md)
+records a second actual full-page inspection.
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the complete page and
+preserves the preceding metadata verbatim.
 
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
 proof, consistency decision or global minimum is claimed. Lean remains
-paused. The [shared-copy4049](candidates/one-page-merged-copy4049/equation.pdf),
+paused. The [Boolean4027](candidates/one-page-boolean-dummy4027/equation.pdf),
+[shared-copy4049](candidates/one-page-merged-copy4049/equation.pdf),
 [Start-marker4127](candidates/one-page-start-marker4127/equation.pdf),
 [Start-marker4177](candidates/one-page-start-marker4177/equation.pdf),
 [zero-weight6007](candidates/one-page-zero-weight6007/equation.pdf),
@@ -61,11 +64,11 @@ paused. The [shared-copy4049](candidates/one-page-merged-copy4049/equation.pdf),
 [two-anchor7691](candidates/one-page-two-anchor7691/equation.pdf),
 [three-anchor47](candidates/one-page-complemented47-independent/equation.pdf)
 and [radix55](candidates/one-page-compact66-radix55/equation.pdf) pages remain
-preserved. The reviewed [single-dummy intermediate](research/single-dummy-independent/README.md)
-is also retained. Next work deletes the already forbidden selector from
-the finite table and removes a redundant marker-recipe factor. Exact
-[radix obstructions](research/radix-parity-independent/README.md) explain
-why direct46/45 substitutions require different proof interfaces.
+preserved. Next work tests a single-clause layout using marker parity before
+count decoding. The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
+preserves all four integers exactly while shortening two recipe blocks;
+its full-page promotion is separate. [Radix obstructions](research/radix-parity-independent/README.md)
+explain why direct46/45 substitutions need different proof interfaces.
 
 The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
 [grouped66 page](candidates/one-page-grouped66/equation.pdf) and
