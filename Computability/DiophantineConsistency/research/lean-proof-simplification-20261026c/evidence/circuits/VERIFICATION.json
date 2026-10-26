@@ -1,0 +1,42 @@
+{
+  "base_commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "lean_version": "4.32.0",
+  "results": [
+    {
+      "artifact": "AssignmentTransportCore.lean",
+      "status": "KERNEL_CHECKED",
+      "exit_code": 0,
+      "axioms": [
+        "Quot.sound"
+      ],
+      "command": "lean -j1 -M1024 AssignmentTransportCore.lean",
+      "log": "AssignmentTransportCore-check.log"
+    },
+    {
+      "artifact": "AssignmentTransport.lean",
+      "status": "NOT_VERIFIED_RESOURCE_LIMIT",
+      "exit_code": -6,
+      "reason": "Pinned Lean interpreter aborted at explicit -M1024 memory cap; no theorem diagnostic.",
+      "log": "AssignmentTransport-direct.log"
+    },
+    {
+      "artifact": "CircuitCoreRefactors.lean",
+      "status": "NOT_REPLAYED"
+    },
+    {
+      "artifact": "DAGInvariant.lean",
+      "status": "NOT_REPLAYED"
+    },
+    {
+      "artifact": "split-register-cuts.patch",
+      "status": "SOURCE_TRANSFORMATION_CHECKED_ONLY",
+      "notes": "Statements compared unchanged; changed generator output reproduced. Lean replay still required."
+    },
+    {
+      "artifact": "inspect_shared_tail.py",
+      "status": "SOURCE_DATA_CHECK_PASS",
+      "receipt": "shared-tail-evidence.json",
+      "notes": "Exact 99-node suffix equality after explicit reference renaming; not Lean evaluation-equivalence theorem."
+    }
+  ]
+}

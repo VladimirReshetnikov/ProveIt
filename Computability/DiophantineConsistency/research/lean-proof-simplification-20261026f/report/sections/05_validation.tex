@@ -1,0 +1,219 @@
+\majorbreak
+\section{Preserve trust and verify the migration}
+\label{sec:validation}
+
+A shorter proof is acceptable only if it proves the same proposition about
+the same objects under the same trust policy. Static checks narrow the search
+for good edits; they do not close that obligation. This section separates
+the evidence obtained here from the gates still required before adoption.
+
+\subsection{What the static audit actually establishes}
+
+The comment/string-masked scan covers all 546 active Lean files. It found
+no code-token hits for \code{sorry}, \code{admit}, \code{sorryAx}, explicit
+\code{axiom} declarations, \code{native_decide}, \code{decide +native},
+\code{bv_decide}, native-reflection symbols, or
+\code{unsafe}/\code{extern}/\code{implemented_by}. It counted 2,163
+\code{#print axioms} commands, zero \code{#guard_msgs} commands, and 525
+\code{decide +kernel} occurrences.
+
+These are \emph{lexical} findings. The scanner is not a Lean parser, and the
+result says nothing conclusive about macro expansion, imported dependencies,
+or the elaborated proof's transitive axiom set. External imports include
+\code{Diophantine}, \code{BusyBeaver.ZFC}, \code{BoundedZFCConsistency},
+\code{FirstOrder}, and Mathlib. Nor does the word \code{Native} in a module
+name indicate use of Lean's native evaluator.
+
+The finite circuit analysis independently checked list lengths, input and
+fixed-leaf bounds, strictly earlier references, and every positive exponent
+transition. An altered exponent and a forward/non-earlier edge were
+rejected in disposable Python fixtures for both circuits. These are useful
+data-consistency and checker-coverage tests, \textbf{not Lean proofs}.
+
+The validation helpers passed 16 Python tests, including malformed/missing
+axiom-report cases. The shell replay harness passed syntax checking and its
+unavailable-toolchain branch returned the intended exit code 69. Its actual
+Lean success branch was not run. Neither this evidence nor a successful
+PDF build is a candidate elaboration result.
+
+\subsection{Turn the existing audit output into a failing policy gate}
+\label{sec:axiomgate}
+
+The repository documents the intended standard-axiom policy and reproduction
+commands at \docsrc{README.md}{908}{939}. Preserve it: an accepted endpoint
+may depend on a subset of
+\[
+ \{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}.
+\]
+Reject every other axiom rather than checking only a few known bad names.
+This catches custom assumptions, \code{sorryAx}, and native-evaluation
+dependencies irrespective of their spelling in a particular Lean release.
+
+\code{#print axioms} reports dependencies but does not itself reject a
+violation. No failure-producing axiom policy was found in the inspected
+committed locations: the pinned repository root has no \code{.github}
+entry, and the inspected root scripts contain no such gate. This does not
+establish that external or private CI is absent.
+
+The supplied \pathcode{validation/check_axiom_log.py} rejects missing
+expected targets, an empty target list, malformed/incomplete reports,
+unexpected axioms, compiler-error text, and sorry warnings. It requires an
+explicit endpoint list and accepts wrapped axiom lists and apostrophes in
+names. Its successful status is deliberately \code{PASS_LOG_ONLY}: it
+does not authenticate the log or establish a successful compiler exit.
+Capture merged stdout/stderr and preserve Lean's exit code separately.
+
+Apply the policy to both baseline and candidate endpoints, and to new helpers
+on which they depend. Retain proof-producing finite methods, including the
+project's \code{decide +kernel} convention. Replacing them with
+\code{native_decide} to shorten source would change the trust boundary,
+not achieve a like-for-like simplification.
+
+\subsection{Consolidate pure audit wrappers but keep the regression proofs}
+
+\textbf{Priority 2 for audit maintenance.} Of the 220 filename/path-defined
+check or audit files, only 60 consist purely of import/open/namespace/end
+commands and \code{#print axioms}. Those wrappers occupy 739 lines and
+33,098 bytes and contain 530 print sites. A declarative manifest of fully
+qualified endpoint names, required imports, test group, and axiom policy
+could generate their scaffolding.
+
+This does not eliminate 739 lines of mathematical proof: the names and all
+530 checks must survive. The 217 already fully qualified printed targets
+observed in the current source are all distinct, so no measured duplicated
+target removal is claimed. Resolve unqualified names in their existing
+namespace before centralizing them. Keep small audit shards for targeted
+rebuilds rather than defaulting to one expensive umbrella test.
+
+Do not delete the other checks as boilerplate. The full check/audit group
+contains \textbf{835 examples and 85 theorem or lemma declarations}.
+In particular:
+
+\begin{itemize}
+\item \src{NativeCyclicCarryAudit.lean}{34}{70} tests wraparound, a reset,
+and genuine nonuniqueness; the last protects against an invalid uniqueness
+assumption about cyclic carries.
+\item \src{CurrentHighDigits2011Checks.lean}{10}{36} tests boundary cells
+and origin subtraction. Its check at
+\src{CurrentHighDigits2011Checks.lean}{48}{54} preserves the implication
+from polynomial zero rather than assuming the desired mask property.
+\item \src{Carrier65Checks.lean}{18}{49} fixes coordinate slots and
+negative-tau behavior.
+\end{itemize}
+
+The selected \pathcode{EndpointAudit.lean} in this archive contains 35
+additional target probes. It is uncompiled and not exhaustive; it does not
+replace these existing behavioral checks.
+
+\subsection{An incremental acceptance roadmap}
+\label{sec:roadmap}
+
+\textbf{Stage 0\quad Establish the baseline.}
+Use a full checkout at the pinned commit, Lean 4.32.0, and Mathlib
+\code{81a5d257c8e410db227a6665ed08f64fea08e997}. Build the original target
+and run its existing audits, recording exact source/configuration hashes,
+compiler exits, and raw logs. The presence of an old \code{.olean} file
+is not evidence of a fresh trustworthy build. The focused archive lacks
+the full dependency tree and cannot substitute for this baseline.
+
+\textbf{Stage 1\quad Pilot the local reuse edits.}
+Start with \code{half_base_bound_31}, finite-set support, and the
+sum-of-squares proof. Keep every public declaration statement unchanged.
+Then try the tuple helper and named accessors. Compile new generic modules
+first, compatibility modules second, and every affected reverse dependency
+afterward. This stage establishes the workflow before touching generators.
+
+\textbf{Stage 2\quad Test the conservative circuit certificate.}
+Compile the API-preserving power candidates against the unchanged literal
+DAGs. Confirm all original public endpoints and recipe consumers, not just
+the new private theorem. Compare the baseline and candidate axiom sets and
+record actual certificate cost. Only then pilot the indexed facade on one
+consumer. Update the authoritative generator if adopted; hand-editing only
+generated output would lose the refactor on regeneration.
+
+\textbf{Stage 3\quad Extract the shared semantic interfaces.}
+Introduce the source/scalar-window certificate, refactor the two simple
+digit clients, then the full window proof. Perform the base-module import
+split only after that interface is stable. Next parameterize lower-layer
+degree profiles, retaining concrete wrappers and all sharp constants.
+Try the smaller coefficient-map cleanup before an AST migration.
+
+\textbf{Stage 4\quad Accept or reject on evidence.}
+Build the explicit main library target, the full affected import closure,
+and all 220 existing check/audit files. Compare exported types, preserved
+definitions or semantic bridges, axiom sets, boundary/negative tests, and
+generator reproducibility. Keep the old names as aliases until consumers
+pass. Reject a shorter edit if it hides a changed assumption, worsens
+maintainability, or creates unacceptable replay cost.
+
+\subsection{The invariants that a line-count target must not erase}
+
+\begin{enumerate}
+\item \textbf{Statement and definition preservation.}
+Keep fully qualified public names, universe parameters, implicit/explicit
+binders, typeclasses, hypotheses, and conclusions. Identical theorem text
+is insufficient if referenced definitions change; freeze them or prove an
+explicit bridge to the old semantics.
+\item \textbf{Concrete representation preservation.}
+For circuits retain input dimensions, fixed-leaf dimensions, register bases,
+outputs, literal node order, topology, liveness, zero-default semantics,
+and operation-count definitions. For witness maps retain coordinate order,
+positivity, source binding, row permutations, and origin corrections.
+\item \textbf{Strict arithmetic interfaces.}
+Preserve natural-subtraction side conditions, strict digit/carry bounds,
+and the exceptional all-maximum cyclic representation. Do not change
+\code{word < radix^n - 1} into a non-strict inequality, or assume local
+no-carry when the proof establishes a quotient fixed point instead.
+\item \textbf{Independent specifications.}
+The certified data must remain linked to the actual source polynomial,
+literal DAG, and high-level recipe. A data hash proves identity, not
+correctness; a table defined from itself proves neither independent
+transcription nor specification agreement.
+\end{enumerate}
+
+Several useful simplifications are already present. The generic cyclic-carry
+API and the periodicity/mod-four argument in
+\src{NativeFieldCycles2011.lean}{49}{95} should be reused, not presented as
+new refactors. Likewise the existing source-window, DAG soundness, power,
+and degree interfaces are assets of the baseline, not deliverables of this
+review.
+
+\subsection{Reproduction commands and their limits}
+
+The source-only checks below can be rerun from the extracted archive root:
+
+\begin{Lean}
+python3 verify_evidence.py
+python3 validation/test_tools.py
+python3 provenance/verify_sources.py
+\end{Lean}
+
+The upstream baseline commands, to run later in a configured full checkout,
+include:
+
+\begin{Lean}
+lake build DiophantineConsistency
+lake env lean Computability/DiophantineConsistency/Lean/checks/ZFCAxioms.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/CompilerAxioms.lean
+\end{Lean}
+
+The supplied future replay harness takes a full clean pinned checkout,
+an existing direct toolchain binary directory, and optionally a new output
+directory. It installs nothing and keeps candidate outputs outside the
+checkout:
+
+\begin{Lean}
+bash validation/replay_candidates.sh \
+  /path/to/full/ProveIt /path/to/lean-4.32.0/bin /path/to/new-output
+\end{Lean}
+
+It targets Linux/WSL with GNU utilities. Even if it later succeeds, it only
+establishes candidate elaboration and selected axiom checks, not a complete
+downstream integration build or full regression pass. Its prerequisites and
+the complete acceptance contract are in \pathcode{validation/README.md}.
+
+When measuring performance, hold the toolchain, dependencies, machine,
+parallelism, and cache state fixed. Record clean and incremental wall time,
+peak resident memory, and generated bytes separately. An \code{.olean}
+file's size is not proof-term size. No runtime, heartbeat, memory,
+kernel-proof-size, or build-time saving was measured in this review.

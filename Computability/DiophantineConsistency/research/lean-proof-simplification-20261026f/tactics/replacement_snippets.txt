@@ -1,0 +1,66 @@
+UNCOMPILED source replacement snippets (not a compilable module).
+All line references are at ProveIt 60e9c5d620c6c387d932876cfa2d9376f64ea56c.
+
+T01 / ShortSystem.lean / residualSum_zero_iff / replace lines 66–88:
+  simp only [residualSum, add_eq_zero_iff_of_nonneg, add_nonneg,
+    sq_nonneg, sq_eq_zero_iff, sub_eq_zero, and_assoc]
+
+Conservative alternative using the separately proposed generic lemma:
+  simpa only [residualSum, sub_eq_zero] using
+    five_squares_zero_explicit (n0 - 1) (n1 - 1) (na - 1)
+      (ns - 1) (nk * nt - 1)
+
+T02 / LowMaskCoding.lean / sum_range_support / replace lines 42–46:
+  rw [← Finset.sum_filter, Finset.filter_mem_eq_inter,
+    Finset.inter_eq_right.mpr hS]
+
+T02b / MultiTargetCarry.lean / selectedMask_eq / replace lines 62–67:
+  rw [← Finset.sum_filter, Finset.filter_mem_eq_inter,
+    Finset.inter_eq_right.mpr (fun i hi => Finset.mem_range.mpr (hp i hi)),
+    Finset.mul_sum]
+
+T03 / MultiTargetCarry.lean / local hpow calculations at 40–43,132–135,226–229;
+SelectiveCarry.lean at 89–92,111–114;
+SelectiveCoefficientBounds.lean at 194–197,227–230.
+Replace each three-line hpow proof body, preserving the existing statement:
+  rw [← pow_succ', Nat.sub_add_cancel ht]
+
+T04 / NativeCyclicConvolution.lean / word_convolution / replace calc steps 79–87:
+    _ = word ρ a * word ρ c := by
+      simp only [word, Finset.sum_mul, Finset.mul_sum, pow_add,
+        mul_assoc, mul_left_comm, mul_comm]
+
+T05 / CurrentClause2011.lean / addition_residue 27–32 and subtraction_residue 34–39;
+CurrentReflectedGeometry2011.lean / add_residue 74–79 and sub_residue 81–86.
+Move generic (n,L,hL) lemmas from PortableCandidates.lean into a low-level
+shared module; preserve existing public names as specializations. E.g.:
+  exact SharedResidues.addition_residue (show 2011 ∣ N * 2011 from ⟨N, by ring⟩) b e
+  exact SharedResidues.subtraction_residue (show 2011 ∣ N * 2011 from ⟨N, by ring⟩) k e
+`SharedResidues` is a proposed namespace, not an existing API.
+
+T06 / NativeRadixDigits.lean / decode_originMask / replace lines 54–57:
+  have hr : 1 < 2 ^ v := Nat.one_lt_two_pow (by omega)
+At 84–86 replace hp/norm_num/omega by:
+      simpa only [c, hd0, ite_true, zero_add] using
+        (Nat.one_lt_two_pow (by omega : bits 0 ≠ 0))
+
+T07 / ArithmeticFiniteSwitch.lean / program / replace lines 24–30:
+    by_cases he : n.unpair.1 = count
+    · simp only [he, Nat.lt_succ_self, if_true]
+    · have hlt : n.unpair.1 < count + 1 ↔ n.unpair.1 < count := by omega
+      simp only [he, if_false, hlt]
+
+T08 / CurrentHighDigits2011.lean / cellDigit_lt / replace lines 80–86:
+  rw [cellDigit_formula]
+  split_ifs <;> norm_num [radix]
+OPTIONAL COSMETIC ONLY. This expands branches and large numerals rather than
+reusing highDigits_lt. Prefer the existing proof if profiling/readability favors
+sharing; the shorter source is not evidence of faster elaboration.
+
+T09 / SelectiveCoefficientBounds.lean / half_base_bound_31 / replace lines 209–232:
+  refine half_base_bound w u p hH hp hb ht hu ?_ n
+  norm_num [hbase]
+Uses EXISTING half_base_bound (166–199), not a proposed abstraction.
+The only specialized obligation is 4*(31+1)^2=4096; no bound is weakened.
+If the numeral-normalization command closes the goal automatically in the
+actual simp environment, use `norm_num [hbase]` as the second/final line.

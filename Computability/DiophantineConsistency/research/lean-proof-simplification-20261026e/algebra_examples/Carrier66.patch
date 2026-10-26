@@ -1,0 +1,54 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/Carrier66.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/Carrier66.lean
+@@ -158,28 +158,14 @@
+ theorem canonical_zero (p : Fin 4 → ℤ) (v : Fin 15 → ℤ) (hc : Canonical p v) :
+     value p v = 0 := by
+   obtain ⟨hP, hQ, hU, hi, hW, hZ, _⟩ := hc
+-  dsimp only [value]
+-  rw [hP, hQ, hU, hi, hW, hZ]
+-  ring
++  simp only [value, hP, hQ, hU, hi, hW, hZ, one_mul, sub_self]
+ 
+ theorem drop_pos (v : Fin 15 → ℤ) (n : ℤ)
+     (hv : ∀ j, 0 < v j) (hn : 0 < n) : ∀ j, 0 < drop v n j := by
+   intro j
+   fin_cases j <;> first
+     | exact hn
+-    | exact hv 0
+-    | exact hv 1
+-    | exact hv 2
+-    | exact hv 3
+-    | exact hv 4
+-    | exact hv 6
+-    | exact hv 7
+-    | exact hv 8
+-    | exact hv 9
+-    | exact hv 11
+-    | exact hv 12
+-    | exact hv 13
+-    | exact hv 14
++    | exact hv _
+ 
+ theorem restore_pos (p : Fin 4 → ℤ) (v : Fin 14 → ℤ) (h : ℤ)
+     (hv : ∀ j, 0 < v j) (hh : 0 < h) (ht : 0 < (Carrier65.core p v).tau) :
+@@ -188,19 +174,7 @@
+   fin_cases j <;> first
+     | exact hh
+     | exact ht
+-    | exact hv 0
+-    | exact hv 1
+-    | exact hv 2
+-    | exact hv 3
+-    | exact hv 4
+-    | exact hv 5
+-    | exact hv 6
+-    | exact hv 7
+-    | exact hv 8
+-    | exact hv 10
+-    | exact hv 11
+-    | exact hv 12
+-    | exact hv 13
++    | exact hv _
+ 
+ /-- Every positive actual Carrier65 zero restores a canonical positive parent. -/
+ theorem positive_zero_restores_canonical (p : Fin 4 → ℤ)

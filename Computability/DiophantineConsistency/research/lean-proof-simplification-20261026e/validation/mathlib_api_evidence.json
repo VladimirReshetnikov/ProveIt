@@ -1,0 +1,53 @@
+{
+  "status": "source-inspected, not compiler-validated",
+  "records": [
+    {
+      "path": "Mathlib/Logic/Function/Iterate.lean",
+      "source_url": "https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Logic/Function/Iterate.lean",
+      "revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+      "excerpts": [
+        {
+          "start_line": 89,
+          "end_line": 113,
+          "text": "variable {f}\n\ntheorem iterate_fixed {x} (h : f x = x) (n : ℕ) : f^[n] x = x :=\n  Nat.recOn n rfl fun n ihn ↦ by rw [iterate_succ_apply, h, ihn]\n\n/-- If a function `g` is invariant under composition with a function `f` (i.e., `g ∘ f = g`), then\n`g` is invariant under composition with any iterate of `f`. -/\ntheorem iterate_invariant {g : α → β} (h : g ∘ f = g) (n : ℕ) : g ∘ f^[n] = g := match n with\n  | 0 => by rw [iterate_zero, comp_id]\n  | m + 1 => by rwa [iterate_succ, ← comp_assoc, iterate_invariant h m]\n\ntheorem Injective.iterate (Hinj : Injective f) (n : ℕ) : Injective f^[n] :=\n  Nat.recOn n injective_id fun _ ihn ↦ ihn.comp Hinj\n\ntheorem Surjective.iterate (Hsurj : Surjective f) (n : ℕ) : Surjective f^[n] :=\n  Nat.recOn n surjective_id fun _ ihn ↦ ihn.comp Hsurj\n\ntheorem Bijective.iterate (Hbij : Bijective f) (n : ℕ) : Bijective f^[n] :=\n  ⟨Hbij.1.iterate n, Hbij.2.iterate n⟩\n\nnamespace Semiconj\n\ntheorem iterate_right {f : α → β} {ga : α → α} {gb : β → β} (h : Semiconj f ga gb) (n : ℕ) :\n    Semiconj f ga^[n] gb^[n] :=\n  Nat.recOn n id_right fun _ ihn ↦ ihn.comp_right h"
+        }
+      ]
+    },
+    {
+      "path": "Mathlib/Algebra/GroupWithZero/Basic.lean",
+      "source_url": "https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/GroupWithZero/Basic.lean",
+      "revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+      "excerpts": [
+        {
+          "start_line": 236,
+          "end_line": 262,
+          "text": "lemma zero_pow_eq_zero [Nontrivial M₀] : (0 : M₀) ^ n = 0 ↔ n ≠ 0 :=\n  ⟨by rintro h rfl; simp at h, zero_pow⟩\n\nlemma pow_mul_eq_zero_of_le {a b : M₀} {m n : ℕ} (hmn : m ≤ n)\n    (h : a ^ m * b = 0) : a ^ n * b = 0 := by\n  rw [show n = n - m + m by lia, pow_add, mul_assoc, h]\n  simp\n\ninstance (priority := 900) isReduced_of_noZeroDivisors [NoZeroDivisors M₀] :\n    IsReduced M₀ :=\n  ⟨fun a ⟨n, ha⟩ ↦ by\n    induction n with\n    | zero => simpa using congr_arg (a * ·) ha\n    | succ n ih => rw [pow_succ, mul_eq_zero] at ha; exact ha.elim ih id⟩\n\nvariable [IsReduced M₀]\n\n@[simp] lemma pow_eq_zero_iff (hn : n ≠ 0) : a ^ n = 0 ↔ a = 0 :=\n  ⟨eq_zero_of_pow_eq_zero, (·.symm ▸ zero_pow hn)⟩\n\nlemma pow_ne_zero_iff (hn : n ≠ 0) : a ^ n ≠ 0 ↔ a ≠ 0 := (pow_eq_zero_iff hn).not\n\nlemma pow_ne_zero (n : ℕ) (h : a ≠ 0) : a ^ n ≠ 0 := mt eq_zero_of_pow_eq_zero h\n\ninstance NeZero.pow [NeZero a] : NeZero (a ^ n) := ⟨pow_ne_zero n NeZero.out⟩\n\nlemma sq_eq_zero_iff : a ^ 2 = 0 ↔ a = 0 := pow_eq_zero_iff two_ne_zero"
+        }
+      ]
+    },
+    {
+      "path": "Mathlib/Algebra/Order/Monoid/Unbundled/Basic.lean",
+      "source_url": "https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/Order/Monoid/Unbundled/Basic.lean",
+      "revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+      "excerpts": [
+        {
+          "start_line": 1054,
+          "end_line": 1081,
+          "text": "    (h : a < b * c) (hle : b ≤ 1) :\n    a < c :=\n  h.trans_le (mul_le_of_le_one_left' hle)\n\n@[to_additive]\ntheorem le_of_le_mul_of_le_one_right [MulRightMono α] {a b c : α}\n    (h : a ≤ b * c) (hle : b ≤ 1) :\n    a ≤ c :=\n  h.trans (mul_le_of_le_one_left' hle)\n\nend Preorder\n\nsection PartialOrder\n\nvariable [PartialOrder α]\n\n@[to_additive]\ntheorem mul_eq_one_iff_of_one_le [MulLeftMono α]\n    [MulRightMono α] {a b : α} (ha : 1 ≤ a) (hb : 1 ≤ b) :\n    a * b = 1 ↔ a = 1 ∧ b = 1 :=\n  Iff.intro\n    (fun hab : a * b = 1 =>\n      have : a ≤ 1 := hab ▸ le_mul_of_le_of_one_le le_rfl hb\n      have : a = 1 := le_antisymm this ha\n      have : b ≤ 1 := hab ▸ le_mul_of_one_le_of_le ha le_rfl\n      have : b = 1 := le_antisymm this hb\n      And.intro ‹a = 1› ‹b = 1›)\n    (by rintro ⟨rfl, rfl⟩; rw [mul_one])"
+        }
+      ]
+    },
+    {
+      "path": "Mathlib/Algebra/Order/Ring/Unbundled/Basic.lean",
+      "source_url": "https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/Order/Ring/Unbundled/Basic.lean",
+      "revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+      "excerpts": [
+        {
+          "start_line": 635,
+          "end_line": 640,
+          "text": "/-- The sum of two squares is zero iff both elements are zero. -/\nlemma mul_self_add_mul_self_eq_zero [NoZeroDivisors R]\n    [ExistsAddOfLE R] [PosMulMono R] [AddLeftMono R] :\n    a * a + b * b = 0 ↔ a = 0 ∧ b = 0 := by\n  rw [add_eq_zero_iff_of_nonneg, mul_self_eq_zero (M₀ := R), mul_self_eq_zero (M₀ := R)] <;>\n    apply mul_self_nonneg"
+        }
+      ]
+    }
+  ]
+}

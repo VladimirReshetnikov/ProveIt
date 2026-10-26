@@ -1,0 +1,44 @@
+--- a/Computability/DiophantineConsistency/tools/generate_split_circuit_registers59.py
++++ b/Computability/DiophantineConsistency/tools/generate_split_circuit_registers59.py
+@@ -58,11 +58,12 @@
+  cuts={81:'natural_kernel0Register',180:'natural_kernel1Register',279:'natural_kernel2Register',324:'natural_ellRegister',378:'natural_targetsRegister'}
+  for name,idx,expr,defs in [
+  ('natural_sourceHighRegister',393,f'SplitNinePolynomial59.sourceHigh ports ({B}) (x 1+1)',['sourceHigh']),
+- ('natural_sourceSRegister',395,f'SplitNinePolynomial59.sourceS ports ({B}) (x 1+1)',['sourceS','sourceHigh']),
++ ('natural_sourceSRegister',395,f'SplitNinePolynomial59.sourceS ports ({B}) (x 1+1)',['sourceS']),
+  ('natural_sourceTRegister',386,f'SplitNinePolynomial59.sourceT ({B}) (x 0+1)',['sourceT']),
+  ('natural_blockLengthRegister',403,f'SplitNinePolynomial59.blockLength ({B}) (x 0+1)',['blockLength']),
+- ('natural_sourceRankRegister',414,f'SplitNinePolynomial59.sourceRank ports ({B}) (x 0+1) (x 1+1)',['sourceRank','blockLength','sourceS','sourceT','sourceHigh'])]:
+-  entries.append((name,idx,expr,cuts,False,defs))
++ ('natural_sourceRankRegister',414,f'SplitNinePolynomial59.sourceRank ports ({B}) (x 0+1) (x 1+1)',['sourceRank'])]:
++  entries.append((name,idx,expr,dict(cuts),False,defs))
++  cuts[idx]=name
+  for name,idx,expr,cuts,force,defs in entries:
+   rs=rules(idx,cuts,force)
+   ds=['SplitNinePolynomial59.'+d if'.'not in d else d for d in defs]
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SplitCircuitRegisters59.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SplitCircuitRegisters59.lean
+@@ -104,9 +104,9 @@
+     naturalRegister (fixedLeaves ports height scale) x 395 =
+       SplitNinePolynomial59.sourceS ports (naturalRegister (fixedLeaves ports height scale) x 36) (x 1+1) := by
+   simp only [
+-natural_step_395,natural_step_11,natural_step_1,natural_step_9,natural_step_394,natural_power_353,natural_step_393,natural_targetsRegister,natural_step_392,natural_step_21,natural_step_391,natural_kernel0Register,natural_step_390,natural_step_387,natural_ellRegister,natural_step_389,natural_kernel1Register,natural_step_388,natural_kernel2Register]
++natural_step_395,natural_step_11,natural_step_1,natural_step_9,natural_step_394,natural_power_353,natural_sourceHighRegister]
+ 
+-  simp [fixedLeaves,SplitNinePolynomial59.sourceS,SplitNinePolynomial59.sourceHigh,Fin.sum_univ_succ]
++  simp [fixedLeaves,SplitNinePolynomial59.sourceS,Fin.sum_univ_succ]
+   <;> ring
+ 
+ theorem natural_sourceTRegister (ports : Fin 4 → R) (height scale : R) (x : Fin 9 → R) :
+@@ -131,9 +131,9 @@
+     naturalRegister (fixedLeaves ports height scale) x 414 =
+       SplitNinePolynomial59.sourceRank ports (naturalRegister (fixedLeaves ports height scale) x 36) (x 0+1) (x 1+1) := by
+   simp only [
+-natural_step_414,natural_step_413,natural_step_412,natural_step_403,natural_step_10,natural_step_0,natural_step_9,natural_power_402,natural_step_411,natural_step_410,natural_step_386,natural_step_382,natural_step_379,natural_power_353,natural_step_381,natural_ellRegister,natural_step_380,natural_step_385,natural_step_384,natural_targetsRegister,natural_step_383,natural_step_21,natural_step_395,natural_step_11,natural_step_1,natural_step_394,natural_step_393,natural_step_392,natural_step_391,natural_kernel0Register,natural_step_390,natural_step_387,natural_step_389,natural_kernel1Register,natural_step_388,natural_kernel2Register]
++natural_step_414,natural_step_413,natural_step_412,natural_blockLengthRegister,natural_step_411,natural_step_9,natural_step_410,natural_sourceTRegister,natural_sourceSRegister]
+ 
+-  simp [fixedLeaves,SplitNinePolynomial59.sourceRank,SplitNinePolynomial59.blockLength,SplitNinePolynomial59.sourceS,SplitNinePolynomial59.sourceT,SplitNinePolynomial59.sourceHigh,Fin.sum_univ_succ]
++  simp [fixedLeaves,SplitNinePolynomial59.sourceRank,Fin.sum_univ_succ]
+   <;> ring
+ 
+ end DiophantineConsistency.SplitCircuitRegisters59

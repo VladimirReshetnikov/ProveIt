@@ -1,0 +1,87 @@
+\thispagestyle{empty}
+{\sffamily\small PROVEIT\quad SOURCE REVIEW\par}
+\vspace{10pt}
+{\fontsize{25}{29}\selectfont\bfseries\raggedright Simplifying Lean proofs\\in DiophantineConsistency\par}
+\vspace{8pt}
+{\large Source specific refactoring proposals\par}
+\vspace{7pt}
+26 October 2026\qquad Pinned static review
+\vspace{15pt}
+
+\textbf{Start with reuse, not stronger automation.} The clearest first edit
+is \code{half_base_bound_31} in \code{SelectiveCoefficientBounds}: it repeats the
+generic theorem immediately above it. Specializing that existing result at
+31 produces a two-line candidate for the current 24-line proof body, with
+the same strict conclusion and assumptions. Next remove exact duplicated
+coordinate-packaging arguments and give long conjunction certificates named
+accessors. These changes make the intended mathematics more visible.
+
+For the large generated proofs, the necessary DAG soundness, power, and
+degree APIs already exist. The useful next step is to route generated
+instances through them, retaining the literal circuit and public theorem
+contracts. The supplied conservative experiment replaces 193 individual
+power \code{ring} proofs with shared finite-label certificates while keeping
+all 1,192 public gate/power theorem header strings unchanged.
+
+\textbf{The measured circuit tradeoff is honest rather than spectacular:}
+660 fewer physical lines, but 2,360 more UTF-8 bytes in the final candidates.
+This is less repeated proof scripting, not byte compression, a smaller
+circuit, or a demonstrated speedup. More compact indexed facades are
+included as experiments, not advertised as drop-in replacements.
+
+\textbf{Status and trust.} No Lean or Lake executable was available.
+\textbf{Every proposed Lean candidate is uncompiled.} This report supplies
+source-specific designs, exact pinned references, practical before/after
+edits, complete candidate artifacts, static evidence, and a replay roadmap.
+It does not claim an accepted patch, kernel verification, faster builds,
+or smaller elaborated proofs. The original source snapshot is unchanged.
+
+\textbf{Mathematical scope.} Preserve the project's standard-axiom policy
+and every theorem's witness domain and hypotheses. This is not a proof of
+\(\operatorname{Con}(\mathrm{ZFC})\), a consistency decision, or completion
+of the open polynomial/native-machine or internal-ZFC links identified in
+\docsrc{README.md}{14}{31}.
+
+\vspace{8pt}
+\textbf{Recommended first patch.} Try the generic-bound specialization
+(Section~\ref{sec:halfbase}), the finite-set support identities, and the
+sum-of-squares proof (Section~\ref{sec:squares}). Replay them against the
+pinned baseline. Then compile all four compatibility tests for the shared
+nine-coordinate helper (Section~\ref{sec:nine}). Leave representation
+changes and global automation until these small pilots establish the
+validation workflow.
+
+\newpage
+\section*{Recommendation map}
+
+Priority 1 means a small interface-preserving pilot. Priority 2 is the next
+maintenance/refactoring batch. Priority 3 needs a measured consumer or
+abstraction experiment. Priority 4 is a later design option, not an immediate
+rewrite recommendation.
+
+\small
+\begin{tabularx}{\linewidth}{@{}L{0.42in}YL{1.35in}L{0.56in}@{}}
+\toprule
+Rank & Change & Main caution & Section\\
+\midrule
+1 & Specialize the existing 31-variable coefficient bound & Compile the exact statement & \ref{sec:halfbase}\\[4pt]
+1 & Use sum-of-squares and finite-set identities & Conditional simp needs replay & \ref{sec:local}\\[4pt]
+1 & Share nine-coordinate packaging and add named projections & Preserve slot 7 and positivity & \ref{sec:nine}, \ref{sec:accessors}\\[4pt]
+2 & Reuse \code{run_power}, keep public wrappers & Certificate cost is unmeasured & \ref{sec:powercert}\\[4pt]
+2 & Share source/window and modular-residue interfaces & Same source and parameters & \ref{sec:window}, \ref{sec:residue}\\[4pt]
+2 & Generate pure audit wrappers and enforce axiom policy & Keep behavioral checks & \ref{sec:axiomgate}\\[4pt]
+3 & Pilot indexed gates, shared degree profiles, and degree prefixes & Keep semantic cut points & \ref{sec:indexed}, \ref{sec:profiles}, \ref{sec:shortdegree}\\[4pt]
+4 & Unify coefficient syntax or add typed circuit views & Representation bridges required & \ref{sec:coefficients}, \ref{sec:circuits}\\
+\bottomrule
+\end{tabularx}
+\normalsize
+
+The archive's before/after comparisons are measured text spans, not additive
+project-wide forecasts. In particular, the predecessor-exponent cleanup
+overlaps the 31-variable specialization, and the concise/explicit
+sum-of-squares proofs are alternatives. The 60-line tuple duplicate is an
+opportunity for shared maintenance, not a guaranteed net deletion after
+adding a helper and compatibility wrappers.
+
+\vspace{5pt}
+{\small\setlength{\parskip}{1pt}\tableofcontents}

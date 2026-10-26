@@ -1,0 +1,105 @@
+Independent mathematical/source review of compiler prototypes
+
+Reviewed files:
+  review-work/compiler/WitnessLayout.lean
+  review-work/compiler/GapPowerCertificate.lean
+  review-work/compiler/SplitPowerCertificate.lean
+  review-work/compiler/CircuitDispatch.lean
+
+Compared against pinned source commit
+60e9c5d620c6c387d932876cfa2d9376f64ea56c, specifically Representation.lean,
+ArithmeticDAGSemantics.lean, ArithmeticDAGPowers.lean, GapCircuit66.lean,
+and SplitCircuit59.lean. This is an independent source/mathematical review;
+the compiler agent owns compilation and axiom audit results.
+
+Verdict: I found no mathematical circularity, changed circuit data, or lost
+assumption in the four reviewed prototypes. The claims are appropriately
+local. They do not establish any new end-to-end consistency equivalence.
+
+1. WitnessLayout
+
+The renaming lemma is just a pointwise equality of the same natAssignment
+functions. The witness-splitting equivalence is constructive: restrictions
+use Fin.castAdd and Fin.natAdd, and combination uses Fin.addCases. It does
+not invoke choice or assume represented predicates are decidable.
+
+conjunctionCompact builds precisely the old witnessCount r+s and the same
+sum of two squares after the same renamings. disjunctionCompact builds the
+same product after the same renamings. The proofs use only r.correct and
+s.correct, not correctness of the old conjunction/disjunction constructors.
+The examples comparing expression fields by rfl substantiate literal
+expression preservation; witness-count preservation is also apparent from
+the constructor definitions. Zero-filled unused witness blocks are valid
+because Rep quantifies natural witnesses, including zero. The helper also
+handles an empty witness block.
+
+Permissible claim: these two representation constructors have factored
+proofs with definitionally unchanged expression data and unchanged witness
+counts. Do not claim they reduce polynomial degree or variable counts.
+
+2. GapPowerCertificate and SplitPowerCertificate
+
+Both certificates refer directly to the original naturalNodes, with no new
+node list, index map, output expression, or rewiring. The imported literal
+circuit modules do not import their corresponding generated Steps files.
+label_steps is a finite kernel-checked proposition about the actual nodes.
+It is therefore independent of the old pure-power proof chains.
+
+The existing run_power theorem performs strong induction on node index.
+Actual Topological evidence makes both multiplication operands earlier
+than the current node. A positive label at a non-base node requires two
+nonzero operand labels and an additive exponent equation. No power value
+identity is assumed as an input. At the base, exponent one gives a
+tautological identity. Hence the certificate is not circular.
+
+Label zero means 'not certified as a power', not exponent zero. The public
+power theorem correctly retains hp : label i != 0. No identity is claimed
+for any zero-labelled node. The exact bounds i<484 and i<515 are converted
+using each original natural_length theorem. This blocks default getD
+behavior from introducing an out-of-range node into the conclusion.
+
+The Gap example proves value(node375)=value(node20)^2200. The Split
+example proves value(node407)=value(node36)^1201. These identities are
+valid over every commutative ring with the same symbolic fixed parameters
+and inputs as the original circuits. They do not specialize or calibrate
+the fixed parameters and do not identify the entire output with a target
+Diophantine equation.
+
+Permissible claim: a checked finite exponent certificate derives the
+same local pure-power facts for the literal naturalNodes, replacing the
+need for their repeated algebraic chains. Do not claim every generated
+step or semantic recipe theorem can be deleted: non-power nodes, named
+semantic cut points, and final recipe correctness still need proofs.
+
+3. CircuitDispatch
+
+reg is an abbreviation through the existing value evaluator, not a freely
+chosen value assignment. step specializes the already-proved
+run_node_equation to the original Gap naturalNodes and its topology proof.
+It therefore assumes neither the desired node equation nor the candidate
+base identity. The i<484 bound rules out out-of-range nodes.
+
+base_identity selectively expands nodes 20,18,19,10,0,9 and uses ring. This
+is a local algebraic identity for the literal circuit. The step theorem is
+not globally registered as a simp lemma, which avoids silently expanding
+the entire DAG recursively.
+
+Permissible claim: named local step lemmas can be obtained on demand from
+the generic evaluator theorem, and the illustrated base identity follows
+without a pre-generated theorem for every intermediate node. This alone
+does not replace all semantic cut points or prove the full circuit recipe.
+
+4. Remaining presentation/validation boundaries
+
+- Cite the compiler agent's replay/axiom logs separately; this review did
+  not rebuild the files.
+- Count the new certificate lists and helpers when reporting net source
+  reduction. Short local proof bodies are not automatically a net project
+  reduction.
+- Distinguish proof-only changes from expression/DAG transformations. All
+  four prototypes reviewed here preserve the original relevant data.
+- A coefficient/source snapshot hash records provenance but is not itself
+  a proof. Soundness here comes from literal-node checks, topology, and
+  Lean's theorem checking.
+- No consistency, ZFC interpretation, positivity calibration, machine
+  simulation, or end-to-end Diophantine equivalence is newly proved here.

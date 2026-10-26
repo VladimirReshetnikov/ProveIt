@@ -1,0 +1,59 @@
+Six supplied Lean files passed with Lean 4.32.0. The successful audited
+declarations use only \code{propext}, \code{Classical.choice}, and
+\code{Quot.sound}; several use fewer, and the generic scanner recurrence
+lemmas use none. No successful audit contains \code{sorryAx} or a
+native-evaluation axiom.
+
+\begin{longtable}{@{}P{0.31\textwidth}P{0.59\textwidth}@{}}
+\toprule
+File & What was checked\\\midrule
+\endfirsthead
+\toprule File & What was checked\\\midrule
+\endhead
+\code{LookupAPI.lean} & Two generic replacements for list-lookup induction,
+using the pinned core library.\\
+\code{ValidatedFold.lean} & Checked-history append and soundness, fragment
+composition, and two generic iterator laws.\\
+\code{NativeRefactorCore.lean} & Exact half-radix arithmetic, bounds/parity,
+finite chunk dispatch, quotient/remainder consequences, and carry recurrence.\\
+\code{WitnessLayout.lean} & Compact constructors importing the original
+\code{Representation}; expression fields agree with the originals by
+\code{rfl}.\\
+\code{SplitPowerCertificate.lean} & Original compiled \code{SplitCircuit59};
+107 local power labels, the uniform power theorem, and exponent-1201 example.\\
+\code{GapExactDataFixture.lean} & Exact original 484-node data, topology,
+86 power labels, uniform power theorem, exponent-2200 example, and scoped
+node dispatch/base identity.\\
+\bottomrule
+\end{longtable}
+
+The original \code{GapCircuit66} module was terminated with exit code 137
+during the focused dependency build. The original \code{SplitCircuit59}
+module and the generic DAG semantic/power modules completed successfully.
+For Gap, the fallback fixture copies the complete \code{naturalNodes}
+definition byte-for-byte: 8,078 definition bytes, with extraction offsets
+and SHA-256 hashes recorded in \code{evidence/gap_fixture_source.json}.
+Only the length, topology, power and dispatch obligations needed by the
+prototype are replayed there. This is a narrower validation than building
+the full original module.
+
+The production-import Gap power and dispatch candidates therefore have
+exact-data fixture validation, not a successful replay through the full
+original Gap import. \code{CompilerCommon.lean},
+\code{NativeRotationWrappers.lean}, and
+\code{SemiringSpecialization.lean} remain integration proposals without
+full module replay. They are kept in a separate \code{proposals/} folder.
+The exact lookup patch passes applicability checking; the five entire
+patched project modules have not been compiled.
+
+The final checked witness code supplies the existential-layout predicate
+explicitly to rewriting. An initially implicit higher-order rewrite did
+not match. Similarly, the dispatch prototype needs scoped node-table,
+\code{Node.evalAt}, list-index and \code{Fin.mk_zero} reductions, while
+leaving the evaluator itself opaque. These are concrete elaboration
+details resolved in the successful prototypes, not reasons to introduce
+unrestricted global simplification.
+
+All per-file logs and the machine-readable validation manifest are included.
+Reported wall times are environment-specific observations; they do not
+establish a performance improvement over the old proofs.

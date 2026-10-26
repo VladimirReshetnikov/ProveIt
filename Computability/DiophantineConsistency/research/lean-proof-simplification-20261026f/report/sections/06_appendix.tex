@@ -1,0 +1,74 @@
+\majorbreak
+\appendix
+\section{Reproducibility and artifact guide}
+
+The archive deliberately separates original material, review evidence,
+uncompiled candidates, and this report. Start with the PDF or its TeX source,
+then use the following supporting material when selecting an implementation
+pilot. None of the candidate files was applied to the source snapshot.
+
+\begin{description}
+\item[\pathcode{report/}]
+This report's TeX sources, PDF, build script, and typesetting requirements.
+The report is editable; \code{bash build.sh} rebuilds it with XeLaTeX. Its
+successful PDF build is independent of the unavailable Lean replay.
+\item[\pathcode{sources/}]
+The inspected, unmodified repository material. This is a focused review
+snapshot, not a replacement for a full repository checkout.
+\item[\pathcode{provenance/}]
+The selected-source manifest, source-fetch records, SHA checks, and scripts
+for materializing and authenticating the snapshot.
+\item[\pathcode{inventory/}]
+Per-module source metrics, declaration-span triage, import edges, scope-aware
+totals, and the inventory narrative. CSV data are suitable for sorting;
+JSON records preserve the measurement definitions.
+\item[\pathcode{tactics/}]
+Local proof candidates, source replacement excerpts, pinned upstream API
+evidence, and source-diff measurements. The portable experiment imports
+\code{Mathlib}; that broad import is not a production recommendation.
+\item[\pathcode{architecture/}]
+Abstraction and dependency proposals, coordinate-packaging candidates,
+compatibility tests, and the static import-graph/repetition evidence.
+\item[\pathcode{circuits/}]
+The two indexed circuit facade candidates, extracted exponent labels,
+generated-proof census, static arithmetic checks, and analysis script.
+\item[\pathcode{validation/}]
+The comment-aware static audit, endpoint list and uncompiled audit module,
+axiom-log checker, validation tests, and replay instructions. These helpers
+are not substitutes for the actual Lean compiler and kernel.
+\end{description}
+
+\subsection{Three measurements that must stay distinct}
+
+\textbf{Physical source size} counts newline-delimited text. A generated list
+can be wrapped in many ways without changing its information content, so a
+line reduction should be accompanied by byte counts and an explanation of
+which old names or data it retains. \textbf{Maintenance surface} concerns how
+many independently maintained arguments, public declarations, and duplicated
+normal forms exist. It can improve even when compatibility wrappers prevent
+a net line reduction. \textbf{Kernel and elaborator cost} must be measured by
+building both revisions in the same pinned environment; this review did not
+measure it.
+
+The static scripts are explicit about scope. Lexical token counts suppress
+comments and strings but do not parse Lean. Import reachability follows only
+the selected local source graph; it does not model Lake's glob selection or
+external modules. Certificate arithmetic checks validate finite numerical
+relations independently but do not establish that the corresponding Lean
+declaration elaborates or uses only the intended axioms.
+
+\subsection{Reference conventions}
+
+All source links in the report are immutable GitHub blob links at the full
+commit above. Unless a path is explicitly rooted elsewhere, file references
+are relative to
+\pathcode{Computability/DiophantineConsistency/Lean/DiophantineConsistency/}.
+Line ranges refer to the original snapshot, not to candidate files.
+Supporting Markdown reviews contain additional anchors and full reasoning;
+the main report selects the changes with the clearest maintenance payoff.
+
+\textbf{Bottom line.} Preserve the literal objects and theorem contracts,
+reuse the project's existing semantic infrastructure, and remove repeated
+presentation proofs in small replayable steps. A shorter source file is a
+useful result only when the same theorem still checks under the same trust
+boundary and remains easier to maintain.

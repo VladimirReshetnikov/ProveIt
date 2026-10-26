@@ -1,0 +1,253 @@
+\majorbreak
+\section{Simplify the interfaces between proofs}
+\label{sec:architecture}
+
+The strongest abstractions here follow repeated mathematical boundaries:
+coordinate packing, source-window extraction, and degree-layer estimates.
+They should reduce the number of arguments a maintainer has to understand,
+not merely hide an unchanged long proof behind a new name. The proposed
+helpers in this section are not existing declarations.
+
+\subsection{Prove the nine coordinate packaging equivalence once}
+\label{sec:nine}
+
+\textbf{Priority 1.} The blocks in
+\src{SplitSourceExistence.lean}{98}{157} and
+\src{GapSourceExistence66.lean}{53}{112} are byte-identical: each is 60 lines
+and 2,292 UTF-8 bytes, excluding a trailing newline. They define positive and
+natural coordinate interpretations and prove the two existence equivalences.
+The scalar evaluator comes from the surrounding namespace; the packing
+argument does not inspect its arithmetic.
+
+\existing{} Gap already reuses Split's cofinal-cap lemmas at
+\src{GapSourceExistence66.lean}{12}{15}. That is a successful abstraction to
+preserve. The remaining duplicate is specifically the coordinate packaging.
+
+\proposed{} Parameterize one helper by the evaluator below, with a predicate
+\code{HasZero} expressing the same positive-coordinate existential. Retain
+the old public definitions and theorem types; specialize the generic proof
+inside their bodies.
+
+\begin{Lean}
+-- Proposed helper boundary, UNCOMPILED.
+abbrev Evaluator :=
+  ℕ → ℕ → FreeCarrierRatio.FreeVars → ℕ → ℤ
+
+def positiveVars (x : Fin 9 → ℕ) : FreeCarrierRatio.FreeVars :=
+  ⟨x 2, x 3, x 4, x 5, x 6, x 7 - 1⟩
+
+def naturalVars (x : Fin 9 → ℕ) : FreeCarrierRatio.FreeVars :=
+  ⟨x 2 + 1, x 3 + 1, x 4 + 1, x 5 + 1, x 6 + 1, x 7⟩
+\end{Lean}
+
+This captures an important asymmetry. The positive tuple stores
+\code{b,g,h,s,w,C,i,j+1,n}, whereas the internal \code{FreeVars.j} is an
+unrestricted natural. In the natural tuple, slot 7 is \code{j}, not
+\code{j+1}. The generic theorem must not add \code{0 < v.j}, or omit
+positivity of \code{g} or \code{n}.
+
+The supplied \pathcode{architecture/NineCoordinatePackaging.lean} contains
+the complete proposed helper, including the successor/predecessor bridge.
+The companion compatibility file states four examples matching the two
+existing positive/natural existence interfaces in each source package.
+A conceptual replacement is:
+
+\begin{Lean}
+-- Schematic specialization; helper name is proposed.
+exact NineCoordinatePackaging.exists_natural_zero_iff_hasZero
+  (GapSourceExistence66.value d a)
+\end{Lean}
+
+\risk{} This is a good first abstraction because it moves no number theory
+and assumes no source correctness. Put it below both packages with only the
+needed foundational imports. Compile the helper and all four compatibility
+examples first. The 60-line duplicate is an observed opportunity, not a net
+60-line saving: the generic interface and compatibility wrappers also cost
+source text. The main gain is one maintained coordinate-bijection proof.
+
+\subsection{Give long conjunctions names without changing their definitions}
+\label{sec:accessors}
+
+\textbf{Priority 1.} \code{Carrier66.Canonical} is a seven-part conjunction
+at \src{Carrier66.lean}{153}{163}. A consumer in
+\code{canonical_strong_error} reaches a fact through six positional
+projections at \src{Carrier66Source.lean}{167}{191}. The fragility is not
+proof search; it is that a new conjunct can silently make every positional
+access harder to read or maintain.
+
+\begin{Lean}
+-- Current source, Carrier66Source.lean:180.
+rw [hc.2.2.2.2.2.1, sub_self] at hid
+
+-- Proposed accessor, after proving Canonical.Z_eq_delta.
+rw [hc.Z_eq_delta, sub_self] at hid
+\end{Lean}
+
+Add derived projection lemmas such as \code{Canonical.Z_eq_delta},
+\code{Canonical.index_eq_one}, and \code{Canonical.rank_pos}. Initially
+keep \code{Canonical} itself unchanged, so existing destructuring patterns
+and constructors continue to work. A later \code{Prop} structure is optional,
+with a proved equivalence; it is not required to obtain readable accesses.
+
+The same restrained approach can expose \code{PortBounds.beta_pos} and a
+small core-positivity interface. Reuse \code{Carrier65.scales_pos} at
+\src{Carrier65.lean}{175}{183} rather than turning derived positivity into
+new assumptions. The existing \code{CurrentPolynomialWindow2011.Facts}
+record at \src{CurrentPolynomialWindow2011.lean}{27}{68} is the local
+precedent for coherent named fields.
+
+\subsection{Share one coherent source and scalar window certificate}
+\label{sec:window}
+
+\textbf{Priority 2.} The low-digit and high-digit consumers repeat the same
+restoration and normalization pipeline. Compare
+\code{polynomial_zero_reconstructs} at
+\src{CurrentSparseDigits2011.lean}{111}{138} with
+\code{polynomial_zero_mask_test} at
+\src{CurrentHighDigits2011.lean}{135}{159}. Their 13-line preambles turn a
+polynomial zero into a \code{Carrier65.value} zero, restore a canonical
+parent, call the scalar-window theorem, rewrite the restored core, and
+normalize powers into the current radix. The fuller
+\code{polynomial_zero_window} repeats the parent/source bridge because it
+also needs the actual source assignment
+(\src{CurrentPolynomialWindow2011.lean}{78}{119}).
+
+\existing{} \code{Carrier66Source.canonical_window} at
+\src{Carrier66Source.lean}{376}{394} already proves the generic scalar
+window. \code{positive_carrier_zero_source} at
+\src{Carrier66Source.lean}{398}{416} already supplies a source lift.
+The proposal is to compose and expose these results once, not to replace
+them with a second theory of windows.
+
+\proposed{} First expose a direct positive \code{Carrier65} zero-to-source
+certificate containing the natural source, positivity, rows, preserved outer
+coordinates, and the existing \code{sourceQ_eq}, \code{gap_eq}, and
+\code{nativeRank_eq} equalities. Then add one current-mask specialization
+that normalizes width/radix and presents both mask tests together.
+
+\begin{Lean}
+-- Interface sketch only; names and record are proposed.
+obtain ⟨N, hN, facts⟩ := current_zero_window_facts K hK v hv hz
+-- Low decoder consumes facts.C_pos, facts.C_split, facts.low_mask.
+-- High decoder consumes facts.high_mask.
+-- Both use the same facts.q_window and facts.J_window.
+\end{Lean}
+
+The record must carry one \emph{shared} \code{N} and source assignment.
+Separate existential choices for different fields would weaken the usable
+interface. Keep source lift, scalar window, and later carry/digit facts in
+distinct layers so the low-level helper does not import its consumers.
+
+\risk{} Preserve the high port's single beta shift and both origin
+corrections, low \code{+1} and high \code{-1}. The public theorem must still
+derive the certificate from positivity and the actual polynomial zero.
+Adding a canonical-parent, source-zero, no-carry, or decoded-window
+hypothesis would shorten the proof by changing its theorem, not simplify it.
+
+\subsection{Put the current base interface below completeness}
+
+\textbf{Priority 3, after the window interface.}
+\src{CurrentCarrierArithmetic2011.lean}{1}{2} imports both
+\code{CurrentMasks2011} and \code{ThirteenCarrierComplete}. Its low/high
+digit clients need the four-port bounds, \code{polynomial65}, and the
+carrier-to-source arithmetic bridge, not the thirteen-coordinate completeness
+layer. The latter's definitions and equivalences occur at
+\src{CurrentCarrierArithmetic2011.lean}{45}{132}.
+
+Extract a proposed \code{CurrentCarrierBase2011} below completeness,
+importing \code{CurrentMasks2011} and \code{Carrier66Source}. Keep the old
+arithmetic module as a compatibility facade and redirect only the simpler
+clients to the base. The static local import closure changes from 37 existing
+modules to 31 existing modules plus the proposed base. The five avoided
+existing dependencies, apart from replacing the old facade itself, are
+\code{SignedPellResidue}, \code{ThirteenCarrier},
+\code{ThirteenCarrierComplete}, \code{ThirteenCarrierSoundness}, and
+\code{ThirteenFreshSeed}.
+
+This is a measured graph comparison, \emph{not} a build-time improvement.
+External transitive imports were not traversed. Preserve the facade's names
+and avoid a dependency cycle by never importing the digit/window consumers
+back into the base.
+
+\subsection{Abstract the degree profile but retain sharp hypotheses}
+\label{sec:profiles}
+
+\textbf{Priority 3.} The source-positivity arguments in
+\src{SplitWordBounds.lean}{76}{123} and
+\src{GapWordBounds66.lean}{31}{78} share the same numerical proof structure.
+Their upper-scale calculations likewise appear at
+\src{SplitWordBounds.lean}{149}{200} and
+\src{GapWordBounds66.lean}{81}{132}. Gap already aliases several source and
+packing definitions and imports common geometric lemmas at
+\src{GapWordBounds66.lean}{11}{20}; preserve that reuse.
+
+The proposed generalization is a small degree profile $(d_0,d_1,d_2)$ with
+the two actual gap inequalities
+\[
+ d_1 < d_2 + 116,\qquad d_0 < d_2 + 232.
+\]
+Retain the leading-coefficient condition \code{D2.coeff d2 = 1}, each
+degree and height bound, the scale $B=4096Hb^2$, and $B^{116}\le U$.
+Prove lower-layer domination and positivity once. Instantiate the profile
+with $(1719,2027,1929)$ for Split and $(1627,1941,1850)$ for Gap.
+
+\begin{Lean}
+-- Schematic proposed API, not an existing theorem.
+exact degreeProfile_negative_layers hk.profile hH hb hscale hU
+  (by decide : 1941 < 1850 + 116)
+  (by decide : 1627 < 1850 + 232)
+\end{Lean}
+
+Only after this lower-bound interface proves useful should it absorb the
+upper packing estimate. A target exponent $d_2+233$ gives the existing
+concrete exponents 2162 and 2083. Do not replace either sharp bound by a
+larger one simply to make the abstraction easier.
+
+\risk{} Gap's \code{KernelBounds} is not a stronger version of Split's:
+its leading coefficient is at 1850 rather than 1929. Compare
+\src{SplitWordBounds.lean}{20}{27} and
+\src{GapWordBounds66.lean}{22}{29}. An attempted coercion between them
+would be mathematically wrong. Store degree data and elementary inequalities,
+not the final conclusions. Symbolic exponents can also increase elaboration
+cost, so benchmark both concrete specializations, not only the new theorem.
+
+\subsection{Remove duplicated coefficient expressions in stages}
+\label{sec:coefficients}
+
+\textbf{Priority 4.} The region
+\src{NativeNinePolynomial52.lean}{93}{404} contains 22
+\code{mapRowCoefficient*} helpers and their dispatch, with repeated
+\code{hleft}/\code{hright} spellings of original and mapped coefficients.
+The authoritative table is only
+\src{NativeQuadraticParent.lean}{155}{177}. Gap has analogous transport
+cases at \src{GapNinePolynomial66.lean}{99}{283}.
+
+The reviewed native table uses fixed port indices, integer numerals,
+negation, ring addition, subtraction and multiplication, and the fixed natural
+exponent 2. Its branches compare a fixed pair index, not ring values. That
+specific fragment admits a ring-homomorphism interpretation. It does not
+justify transporting arbitrary natural evaluators, truncated subtraction,
+division, or \code{toNat}. The natural exponent subtraction in
+\code{kernelValue} at \src{NativeQuadraticParent.lean}{64}{64} is fixed
+layout metadata and must remain fixed.
+
+\existing{} Generic evaluator naturality already exists in
+\src{ArithmeticDAG.lean}{48}{103}; the carrier and polynomial files already
+use \code{value_map} and \code{eval_polynomial}, for example
+\src{Carrier65.lean}{155}{167} and
+\src{NativeNinePolynomial52.lean}{406}{454}.
+
+\proposed{} Try the cheaper change first: a focused local simp interface
+or generated case tactic that keeps the coefficient table and removes the
+duplicated intermediate expressions. Only if measured maintenance savings
+warrant it, encode these small coefficients once as computable ring syntax
+and prove its evaluator naturality once. Reuse the existing DAG evaluator
+where it helps; do not force a tiny coefficient into a large framework.
+
+\risk{} Keep a proved equality to the old authoritative table, preserve
+the general \code{CommRing} theorem, and retain row order, support,
+repeated-term accumulation, and corrections. Do not define both the source
+and certificate from the same replacement table and treat reflexivity as
+independent verification. Replacing the ordinary integer evaluator with
+noncomputable polynomial evaluation would cross the intentional boundary
+documented at \src{NativeNinePolynomial52.lean}{9}{13}.

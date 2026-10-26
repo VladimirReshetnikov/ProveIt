@@ -1,0 +1,245 @@
+\majorbreak
+\section{Local changes worth trying first}
+\label{sec:local}
+
+These edits keep the mathematical interfaces in place. They are deliberately
+more specific than advice to replace proofs with \code{simp}, \code{aesop},
+or \code{omega}. Each proposed simplification identifies an existing fact
+or a repeated invariant. All after blocks remain \textbf{uncompiled}.
+
+\subsection{Specialize the generic coefficient bound already in the file}
+\label{sec:halfbase}
+
+\textbf{Priority 1 and the best first pilot.}
+\code{SelectiveCoefficientBounds.half_base_bound_31} at
+\src{SelectiveCoefficientBounds.lean}{203}{232} reproves a result already
+available as \code{half_base_bound} at
+\src{SelectiveCoefficientBounds.lean}{166}{199}. The generic theorem has
+\code{m} bounded input digits and assumes
+\[
+ 4(m+1)^2Hb^2\le 2^t.
+\]
+With $m=31$, the scale is exactly $4096Hb^2$, and the specialized theorem's
+equality hypothesis supplies the required inequality.
+
+The existing 24-line proof body repeats the sum bound, square bound,
+coefficient estimate, strict gap, and predecessor-power calculation. For
+example, it ends with this source excerpt:
+
+\begin{Lean}
+  have hb2 : 0 < (b : ℤ) ^ 2 := by positivity
+  have hgap : 2 * (H * (32 * (b : ℤ)) ^ 2) <
+      4096 * H * (b : ℤ) ^ 2 := by
+    nlinarith [mul_pos hH hb2]
+  have hpow : (2 : ℤ) ^ t = 2 * 2 ^ (t - 1) := by
+    rw [← pow_succ']
+    congr 1
+    omega
+  rw [← hbase, hpow] at hgap
+  linarith
+\end{Lean}
+
+Replace the \emph{whole proof body}, keeping the theorem statement intact:
+
+\begin{Lean}
+  refine half_base_bound w u p hH hp hb ht hu ?_ n
+  norm_num [hbase]
+\end{Lean}
+
+\textbf{Measured candidate comparison:} 24 physical proof-body lines become
+2. This is a textual comparison, not an executed proof reduction. No new
+API is needed, and the strict conclusion \code{< 2 ^ (t - 1)}, the exact
+encoded polynomial, and all positivity/boundedness hypotheses remain.
+This is preferable to separately optimizing the duplicated proof's tactics.
+
+\subsection{State the sum of squares invariant directly}
+\label{sec:squares}
+
+\textbf{Priority 1.} \code{ShortSystem.residualSum_zero_iff} at
+\src{ShortSystem.lean}{63}{88} proves that five integer squares sum to zero
+exactly when all five residuals vanish. It currently makes five similar
+\code{nlinarith} calls, one for each square. The first is:
+
+\begin{Lean}
+  have h0 : (n0 - 1) ^ 2 = 0 := by
+    nlinarith [sq_nonneg (n1 - 1), sq_nonneg (na - 1),
+      sq_nonneg (ns - 1), sq_nonneg (nk * nt - 1),
+      sq_nonneg (n0 - 1)]
+\end{Lean}
+
+\existing{} The order API already provides
+\code{add_eq_zero_iff_of_nonneg}; the pinned Mathlib source generates this
+additive lemma from
+\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/Order/Monoid/Unbundled/Basic.lean\#L1070-L1081}{the multiplicative analogue with both factors at least one}.
+Together with \code{sq_eq_zero_iff} and \code{sub_eq_zero}, it describes
+the proof's actual invariant.
+
+The concise candidate replaces the complete 23-line body by two lines:
+
+\begin{Lean}
+  simp only [residualSum, add_eq_zero_iff_of_nonneg, add_nonneg,
+    sq_nonneg, sq_eq_zero_iff, sub_eq_zero, and_assoc]
+\end{Lean}
+
+Its main replay uncertainty is whether conditional simplification discharges
+the nonnegativity premises as intended in this exact context. A more explicit
+fallback proves the generic five-square fact with the partial sums named:
+
+\begin{Lean}
+  have hab := add_nonneg (sq_nonneg a) (sq_nonneg b)
+  have habc := add_nonneg hab (sq_nonneg c)
+  have habcd := add_nonneg habc (sq_nonneg d)
+  rw [add_eq_zero_iff_of_nonneg habcd (sq_nonneg e),
+    add_eq_zero_iff_of_nonneg habc (sq_nonneg d),
+    add_eq_zero_iff_of_nonneg hab (sq_nonneg c),
+    add_eq_zero_iff_of_nonneg (sq_nonneg a) (sq_nonneg b)]
+  simp only [sq_eq_zero_iff, and_assoc]
+\end{Lean}
+
+The archive also gives a direct, explicit source-statement fallback. Choose
+one proof, not both. \code{compactResidualSum_zero_iff} already reuses the
+original result, so it is not a second independent reduction. Do not import
+the heavier \code{Mathlib.NumberTheory.Dioph} module merely for an analogous
+sum-of-squares theorem. The lightweight order facts suffice.
+
+\subsection{Use finite set intersection instead of reproving membership}
+
+\textbf{Priority 1 for a small isolated edit.}
+\code{LowMaskCoding.sum_range_support} at
+\src{LowMaskCoding.lean}{39}{46} first proves that filtering a range by
+membership in a contained set gives the set itself. The existing body is:
+
+\begin{Lean}
+  have hf : (range len).filter (fun j => j ∈ S) = S := by
+    ext j
+    simp only [mem_filter]
+    exact and_iff_right_of_imp (fun hj => hS hj)
+  rw [← Finset.sum_filter, hf]
+\end{Lean}
+
+The proposed two-line body uses the existing finite-set API:
+
+\begin{Lean}
+  rw [← Finset.sum_filter, Finset.filter_mem_eq_inter,
+    Finset.inter_eq_right.mpr hS]
+\end{Lean}
+
+\code{Finset.filter_mem_eq_inter} is explicitly present in the
+\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Data/Finset/Basic.lean\#L357-L358}{pinned Mathlib source}.
+The same change applies to \code{MultiTargetCarry.selectedMask_eq} at
+\src{MultiTargetCarry.lean}{55}{67}, converting the pointwise bound
+\code{hp i hi} to range membership:
+
+\begin{Lean}
+  rw [← Finset.sum_filter, Finset.filter_mem_eq_inter,
+    Finset.inter_eq_right.mpr
+      (fun i hi => Finset.mem_range.mpr (hp i hi)),
+    Finset.mul_sum]
+\end{Lean}
+
+The candidate files measure the changed spans as $5\to2$ and $6\to3$
+physical lines; the latter is wrapped more generously here for readability.
+The mathematical gain is eliminating a second implementation of a standard
+set identity, not teaching the simplifier an extra global rule.
+
+\subsection{Remove the repeated predecessor exponent calculation}
+
+\textbf{Priority 2.} Seven local \code{hpow} proofs show
+\code{a ^ t = a * a ^ (t - 1)} under \code{1 ≤ t}. They share this
+three-line body:
+
+\begin{Lean}
+  rw [← pow_succ']
+  congr 1
+  omega
+\end{Lean}
+
+The existing power and natural-subtraction APIs give the proposed body:
+
+\begin{Lean}
+  rw [← pow_succ', Nat.sub_add_cancel ht]
+\end{Lean}
+
+The occurrences are in
+\src{MultiTargetCarry.lean}{40}{43},
+\src{MultiTargetCarry.lean}{132}{135},
+\src{MultiTargetCarry.lean}{226}{229},
+\src{SelectiveCarry.lean}{89}{92},
+\src{SelectiveCarry.lean}{111}{114},
+\src{SelectiveCoefficientBounds.lean}{194}{197}, and
+\src{SelectiveCoefficientBounds.lean}{227}{230}.
+One disappears entirely if the 31-variable specialization is adopted, so
+its saving must not be counted twice. An extra project lemma is optional;
+it is not needed to write this one-line replacement. Keep the \code{ht}
+premise: natural subtraction is not cancellative without the bound.
+
+\subsection{Centralize the modular residue interface}
+\label{sec:residue}
+
+\textbf{Priority 2 for maintenance rather than raw compression.}
+\code{CurrentClause2011.addition_residue} and
+\code{subtraction_residue} at
+\src{CurrentClause2011.lean}{27}{39} are duplicated privately as
+\code{add_residue} and \code{sub_residue} at
+\src{CurrentReflectedGeometry2011.lean}{74}{86}.
+
+The arithmetic only needs a divisor \code{L} of the ambient modulus
+\code{n}, not the concrete value 2011. A proposed low-level shared module
+can expose these exact interfaces:
+
+\begin{Lean}
+-- Proposed generic statements; full proofs are in PortableCandidates.lean.
+theorem addition_residue {n L : ℕ} [NeZero n] (hL : L ∣ n)
+    (b : ZMod n) (e : ℕ) :
+    (b + (e : ZMod n)).val % L = (b.val + e) % L := by
+  -- Proof omitted here; UNCOMPILED full candidate in the archive.
+
+theorem subtraction_residue {n L : ℕ} [NeZero n] (hL : L ∣ n)
+    (k : ZMod n) (e : ℕ) :
+    ((k - (e : ZMod n)).val + e) % L = k.val % L := by
+  -- Proof omitted here; UNCOMPILED full candidate in the archive.
+\end{Lean}
+
+The full candidates use \code{ZMod.natCast_eq_natCast_iff} followed by
+\code{Nat.ModEq.of_dvd}, keeping the coercion normalization in one place.
+Keep the existing public names as concrete specializations. Do not make
+geometry import the clause layer merely to borrow these lemmas, and retain
+the positive-modulus instance. The helper-plus-wrapper cost means no large
+net line saving is asserted.
+
+\subsection{Smaller opportunities and a reason to keep an existing proof}
+
+The archive contains several further local experiments; they are useful
+after the higher-value reuse changes, not a mandate to minimize every proof.
+
+\begin{itemize}
+\item \textbf{Convolution factorization.}
+In \code{NativeCyclicConvolution.word_convolution}, the final distributivity
+step at \src{NativeCyclicConvolution.lean}{79}{87} can be expressed using
+\code{Finset.sum_mul}, \code{Finset.mul_sum}, \code{pow_add}, and controlled
+associative/commutative simplification. The candidate changes that span from
+9 to 3 lines. Preserve the preceding modular-congruence argument; a global
+\code{ring} call does not replace it.
+\item \textbf{Use the exact power fact.}
+At \src{NativeRadixDigits.lean}{54}{57}, replace a weaker power inequality,
+normalization, and \code{omega} with
+\code{Nat.one_lt_two_pow (by omega)}. The same existing lemma is already
+used at \src{NativeWindowCarry.lean}{63}{63}. The candidate changes the
+four-line \code{hr} declaration to one line.
+\item \textbf{Normalize a finite-switch boundary once.}
+At \src{ArithmeticFiniteSwitch.lean}{24}{30}, keep the equality case and
+then prove \code{tag < count + 1 ↔ tag < count} in its complement. This
+removes the redundant second case split; the supplied candidate span is
+7 to 4 lines.
+\item \textbf{Do not prefer branch expansion just because it is shorter.}
+The optional \code{cellDigit_lt} candidate at
+\src{CurrentHighDigits2011.lean}{80}{86} is two lines using
+\code{split_ifs} and \code{norm_num}, but duplicates finite/numeral work
+already packaged by \code{highDigits_lt}. Keep the original unless actual
+readability and profiling favor the replacement.
+\end{itemize}
+
+Across these changes, retain explicit \code{simp only} boundaries for large
+kernel, stencil, and mask definitions. A project-wide collection of new
+\code{[simp]} tags would trade short source for unpredictable expansion in
+downstream proofs.
