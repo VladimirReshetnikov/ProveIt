@@ -377,6 +377,17 @@ There is no occupation, unique-Start, supplied marker-value or calibration
 premise. All-cell occupation, neighboring color matching, native-machine
 semantics, the converse/controller and internal-ZFC proof remain open.
 
+`CurrentAdjacency2011` now proves all eight current-East/previous-West
+and nine current-South/temporal-North physical bit equalities. It retains
+the full reflected sum until its evenness is used and derives the incoming
+carry reset from the actual selector count. Whole-field alignment removes
+the unsupported horizontal temporal term; fractional phase alone would
+not suffice. Its Facts specialization derives count and fractional phase
+internally and takes whole-field alignment from the preceding theorem.
+See the [root review and fresh replay](reviews/current-adjacency2011-lean-root.md).
+Occupation and conversion of these bit equalities to actual matching tile
+colors remain subsequent composition steps.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
