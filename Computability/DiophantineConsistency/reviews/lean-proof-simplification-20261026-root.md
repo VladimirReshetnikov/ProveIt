@@ -1315,3 +1315,79 @@ the entire31-field `Seed` structure against immutable `40183b4bdc`; all are
 unchanged. Every final source has independent full review. Packing-rank
 source validation is now in progress after its complete original baseline;
 it still contributes no saving or final validation to this checkpoint.
+
+## Direct packing-rank certificate and full-exponent growth
+
+`intake_e13` composed the two rank proposals as `5187d9cb36`. After the
+five original natural-subtraction guards, the ordinary integer bridge is
+exactly the negative-q multiple of `beta * J + 1 = q`. Unfolding the actual
+definitions and using that certificate removes the intermediate integer
+expansion and source-mask theorem application. The high port retains its
+single beta shift. Every guard is still established from the original
+`0 < C`, `C + F < q` and repunit/mask positivity; `F = 0` remains allowed.
+
+The newer positions/rank/rephase proposal gives the strict growth comparison
+through `2u ≤ 3u < 2^(3u) = q³`, including zero u. This saves five lines,
+one more than the earlier proposed normalization, without a new positivity
+or population premise. Combined with the eleven-line bridge reduction,
+138 lines become122, removing16. All eight old public theorem headers, two
+entire definitions, imports, options and section scopes remain literal;
+there is no helper/import overhead or executable data change.
+
+The bridge patch is
+`LeanReview6/arithmetic_candidates/fourblocks_certificate/fourblocks_certificate.patch`
+in `docs/incoming/ProveIt_Lean_Simplification_Round6_2026-10-26.zip` at
+`40183b4bdc`. The growth patch is
+`Lean_Proof_Simplification_Positions_Rank_Rephase/population/patches/rank_gt_twice_window.patch`
+in `docs/incoming/Lean_Proof_Simplification_Positions_Rank_Rephase_2026-10-26.zip`
+at `9c3d0366ed`. Both were read as inert archive text; no supplied executable ran.
+
+The original baseline required the full tracked project graph, including
+the BusyBeaver endpoint rather than only the local library. The first
+preparation stopped before elaboration at `CurrentClause2011` because the
+`WangTiles942Data` object was absent. Restoring that object allowed the
+unchanged local chain to continue until `DecimalMachineZFC` exposed the
+absent `BusyBeaver.ZFC.KEndpoint215` object. These are two unsuccessful
+preparation attempts, not candidate proof failures. Traversing all project
+libraries through their configured source roots found322 source members;
+the remaining gap consisted of64 endpoint modules, eight local prerequisites
+and the original rank target. All73 named builds then pass. Together with
+the65 already completed,138 distinct named builds pass:137 prerequisites
+and the exact original target. No passed module was needlessly restarted,
+no broad Lake build was used in this preparation, and no source repair or
+limit increase was needed. Two existing unused-simp warnings in
+`L2Control222` and one existing exponent warning in
+`CurrentNativePacking2011` remain separately recorded.
+Other approved proof-only dependency ports were validated during this long
+preparation. The aggregate receipt distinguishes immutable baseline Git
+metadata from assembly-observed current metadata; it does not invent a
+whole-tree source snapshot for each individual build.
+
+Only after the original target and separate10-public baseline passed were
+the two approved proof bodies edited. Five final calls pass on the first
+attempt without warnings: target, `CurrentPackingParity2011` client, both
+existing focused modules and10-public final comparison. All reports are
+byte-identical, including the choice-free binary-exponent theorem. The
+twelve focused examples retain exponent zero, one-cell mask bounds,
+ordinary signed/natural binding at `F = 0`, exact population and growth,
+actual constructed source witnesses, mod-four calibration and the control
+showing evenness alone is insufficient. `v_finite_full_static` independently
+read the complete122-line source, full diff, exact patches and actual
+window, repunit, scalar, cast and growth contracts, returning PASS at
+unchanged hashes. In particular, the certificate sign and single beta
+shift were checked by hand. No additional compiler run is attributed to
+that review.
+
+This final source commit brings the batch to twelve source commits across
+thirteen modules,2096→1994 lines:102 removed, bringing the reviewed series
+from3714 to3816. The final suites contain56 successful calls, counting
+shared evidence once. All217 old public declaration reports are
+byte-identical. ROOT's fresh comparison against immutable `40183b4bdc`
+verifies161 old public theorem headers,27 entire definition blocks and
+the entire31-field `Seed` structure; all are literal. Every exact-final
+source passed independent full review. Original/prerequisite builds,
+baselines and all unsuccessful/interrupted/superseded attempts are
+separate from these final counts. Equation artifacts retain their checked
+hashes,715-digit decimal constant and fourteen distinct unsubscripted
+unknowns; independent inspection confirms the existing PDF remains a
+single legible page. The iterative goal remains active.

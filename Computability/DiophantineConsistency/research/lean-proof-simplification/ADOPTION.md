@@ -5,6 +5,7 @@ How each proposal stands against the maintained tree `Computability/DiophantineC
 repository-pinned Lean compiler, through `lake build` or explicit
 `lake env lean SOURCE -o OBJECT` checks. Validation scope is recorded separately.
 Packet names refer to the subdirectories of this directory.
+Rows explicitly marked as incoming archives refer to `docs/incoming` instead.
 
 ## Adopted or in validation
 
@@ -59,7 +60,8 @@ Packet names refer to the subdirectories of this directory.
 | `patches/03-weighted-updates.patch` | zn, adapted | `CurrentDummyMutation2011` | adopted as `733d023d0a`; use `Function.apply_update` and the finite-sum update lemma directly, while retaining constructive equality cases for the Boolean bound.193→186 lines; the proposed shorter `forall_update_iff` proof was not used because it would add axioms to this previously axiom-free result. Joint seven-call suite above passes, all18 old reports identical; separate kernel controls confirm the constructive proof is axiom-free. Independent full review passes |
 | `masks/patches/bit3_clear_of_residue.patch` | zl | `CurrentWordPadding2011` | adopted as `57dcc2a5ec` after the shared rank baseline made its original word dependencies available. Existing bit/remainder identities reduce224→221 lines without helper/import; arbitrary high multiples and the exact residue guard remain. Target, HighMask client, both existing focuses and11-old-result comparison pass (five final calls after separate baseline); all reports identical, changed bit lemma still choice-free. No failures/warnings or new prerequisite builds in this group; independent full review passes |
 | `controller/patches/controller_hs_inline.patch`, with dead-tactic cleanup | zh, adapted | `CurrentControllerData2011` | adopted as `7f1081d5c6`; direct modular rewrites replace the private bookkeeping helper, retaining explicit kernel-residue hypotheses and opaque B/K.184→169 lines without helper/import overhead. Four final calls pass: target, unchanged current Units client, existing Data focus and49-old-result comparison; all reports identical. The first candidate passed too, then its new dead-tactic/focus warnings were removed and final scope rerun. Existing Units exponent warning remains; independent full review passes |
-| `research/outer_seed/candidate.patch` in the incoming Round7 archive | Round7 | `NativeOuterSeedConstruction` | adopted as `50d7e2133b`; reuse the already imported strict Pell index bound for the local hKr step.279→269 lines without helper/import, every other source byte literal including the31-field Seed structure. The original target was built explicitly before37-public baseline; target, positive-source client, existing focus and final37-report comparison pass (four final calls), all reports identical and no warnings. Exact inert archive candidate and independent full review pass |
+| `research/outer_seed/candidate.patch` in the incoming Round7 archive | Round7 (incoming) | `NativeOuterSeedConstruction` | adopted as `50d7e2133b`; reuse the already imported strict Pell index bound for the local hKr step.279→269 lines without helper/import, every other source byte literal including the31-field Seed structure. The original target was built explicitly before37-public baseline; target, positive-source client, existing focus and final37-report comparison pass (four final calls), all reports identical and no warnings. Exact inert archive candidate and independent full review pass |
+| `arithmetic_candidates/fourblocks_certificate/fourblocks_certificate.patch` and `population/patches/rank_gt_twice_window.patch` | Round6 + positions/rank/rephase (incoming), composed | `CurrentPackingRank2011` | adopted as `5187d9cb36`; the negative-q repunit certificate replaces the expanded integer bridge, and2u≤3u<2^(3u) supplies rank growth.138→122 lines without helper/import, all five subtraction guards and the single beta shift retained, including F=0. Five final target/parity-client/two-focus/10-old-result calls pass first try; all reports identical. Before editing,138 distinct named original/prerequisite builds and a separate original audit passed; two earlier missing-object failures remain separate. Independent full review passes |
 
 ## Pending
 
@@ -170,6 +172,19 @@ byte-identical. ROOT separately verifies93 old public theorem headers and19
 complete definition blocks against immutable `40183b4bdc`; they are unchanged.
 Every final source has independent full review. Packing-rank baseline work
 still contributes no saving or final validation to these totals.
+
+Four more source commits `57dcc2a5ec`, `7f1081d5c6`, `50d7e2133b` and
+`5187d9cb36` remove44 net lines. The complete twelve-commit batch reduces
+thirteen modules from2096 lines to1994, removing102 and bringing the reviewed
+series from3714 to3816. All56 final validation calls pass, counting shared
+evidence once. All217 old public declaration reports are byte-identical;
+161 old public theorem headers,27 entire definition blocks and the entire
+31-field `Seed` structure remain literal against immutable `40183b4bdc`.
+Every final source and the contracts used by its changed proofs passed
+independent review. Original/prerequisite builds, baselines, diagnostics, superseded
+successful candidates and interrupted/failed attempts are separately recorded
+in the root review. The equation artifacts retain their decimal constant and
+fourteen distinct unsubscripted unknowns.
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
