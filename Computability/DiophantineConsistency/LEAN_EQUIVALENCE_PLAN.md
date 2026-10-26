@@ -277,6 +277,16 @@ and [independent replay/source challenge](reviews/current-clause2011-lean-peer.m
 The complete preliminary-count argument can now use these literal
 clause interfaces; the middle-phase padding bindings remain required.
 
+`CurrentPolynomialWindow2011.polynomial_zero_window` now derives the
+entire arithmetic word window from only a positive zero of the actual
+fixed fourteen-variable polynomial. One coherent N supplies the exact
+q/J window, all positive source coordinates and rows, sparse Boolean C
+with origin1, carry<=57, exact normalized F digits and actual mask tests.
+The original coordinate/rank/temporal identities remain exposed in Facts.
+See the [independent root review and fresh replay](reviews/current-polynomial-window2011-lean-root.md).
+This closes the forward polynomial-to-word composition; physical native
+decoding, converse/controller witnesses and internal-ZFC proof remain open.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
