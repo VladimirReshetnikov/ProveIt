@@ -13,21 +13,22 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained page now uses the fully reviewed **shared-copy4049** tuple.
-Its four raw integers total95205 bytes versus97046 for4127,98219 for4177,
-141226 for zero-weight6007,172011 for one-anchor7309,180987 for two-anchor7691,
-207214 for three-anchor47 and242484 for radix55. Complete TeX5058 bytes
-saves14 from4127; nonwhite extracted text2693 saves six characters; PDF
-shrinks18 to159618 bytes. Fonts and the15-positive/66-operation/degree157
-profile are unchanged. Pcm18 is discharged; see the
-[complete candidate](candidates/one-page-merged-copy4049/README.md).
+The maintained page uses the fully reviewed **Boolean-dummy4027** tuple.
+Its four raw integers total94689 bytes versus95205 for4049,97046 for4127,
+98219 for4177,141226 for zero-weight6007,172011 for one-anchor7309,
+180987 for two-anchor7691,207214 for three-anchor47 and242484 for radix55.
+Complete TeX5050 bytes saves eight from4049; nonwhite extracted text2688
+saves five characters; PDF shrinks23 to159595 bytes. Gzip storage grows11.
+Fonts and the15-positive/66-operation/degree157 profile remain unchanged.
+Pcbd18 is discharged; see the [complete candidate](candidates/one-page-boolean-dummy4027/README.md).
 
-One rho18 monomial serves both label copies. The marker moves to1008,
-centers to1998/3007 and full product to4015. The whole phase, carry,
-canonical subset, actual-rank, controller and positive P66 arguments pass
-independent review. All3297 printed coefficients and980 physical positions
-are reconstructed, and deleting the actual marker term is rejected even
-though weighted Phi stays identical. Both actual visual inspections pass.
+Canonical safe subsets only use0/1 at the sole controller dummy, so its
+extra clearing can be removed. Native population978 equals core105 plus873
+padding bits, and actual rank remains pc(R)=3t+2 with R=3 modulo4.
+The complete carry,935-case phase, reset, canonical subset, controller and
+positive P66 maps pass independent review. Every printed coefficient and
+physical position is reconstructed; targeted actual marker deletion is
+rejected. Both actual visual inspections pass.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
 gives65 operations for the same bound three-anchor47 polynomial while
@@ -40,13 +41,19 @@ four-gate tail requiring MC=MF_native is ruled out by odd-d mask parity;
 this is no general lower bound on64-operation evaluators.
 
 The reviewed [single-dummy4027 intermediate](research/single-dummy-independent/README.md)
-removes the spare dummy and saves516 raw bytes, reaching94689. Its exact
-phase46 spill lands on an existing weighted label; the proof accounts for
-its extra2048 predecessor contribution. A Boolean-only refinement removes
-the extra dummy bit and simplifies MC again, with a separate proof and
-certificate now in full review. Deleting the already forbidden selector1
-can shorten the printed table and remove another MC term; that complete
-language bijection is being checked separately.
+is preserved as the preceding proof checkpoint. The current Boolean-only
+refinement simplifies its MC recipe and removes the exceptional spill case.
+Next, the already forbidden selector1 can be deleted by the exact bijection
+g(0)=0,g(j)=j+1 for1..941. This shortens the complete table and removes
+another MC term while preserving every admissible old tile. The marker
+factor t^34 is also redundant at the only used Psi evaluations1 and2.
+Each complete specialization receives separate proof, finite and page review.
+
+The independently checked [radix note](research/radix-parity-independent/README.md)
+records two precise obstacles: radix46 violates the retained square converse
+by parity, and radix45 admits an explicit local counterexample to the current
+clean-count lemma at the available carry bound. Neither establishes a
+cyclic native counterexample or a general equation/radix lower bound.
 
 The [interior upper-bit padding probe](research/start-marker-padding-probe/NOTE.md)
 has independent finite review: all875 bits fit in125 groups of seven zero

@@ -25,31 +25,34 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete shared-copy4049 equation: fifteen positive unknowns, exact
-degree157 and66 integer-leaf operations. Its constants total**95205 raw
-bytes**,1841 fewer than4127. Complete TeX5058 bytes and nonwhite extracted
-text2693 characters save14 bytes and six characters; PDF shrinks18 to159618.
-Fonts remain9pt/7.7pt on one Letter page.
+the complete Boolean-dummy4027 equation: fifteen positive unknowns,
+exact degree157 and66 integer-leaf operations. Its constants total
+**94689 raw bytes**,516 fewer than4049. Complete TeX5050 bytes and
+nonwhite extracted text2688 characters save eight bytes and five characters;
+PDF shrinks23 to159595. Gzip integer storage grows11 bytes. Fonts remain
+9pt/7.7pt on one Letter page.
 
-The complete [ordinary proof](research/merged-copy-independent/PROOF.md)
-and finite Pcm18 discharge pass root and independent review. Exactly one
-rho18 supplies both label copies. Every changed carry, predecessor,
-934-case phase classification,875 padding tests, safe subset and both
-P66 maps is covered. The controller uses prime190763, orders23/506 and
-H34/3240/43425. Normal and optimized checks reproduce all source/port
-files, including actual TeX marker-deletion rejection. Two actual full-page
-visual inspections pass. See the [complete candidate](candidates/one-page-merged-copy4049/README.md),
-[mathematical review](reviews/merged-copy4049-independent-peer.md) and
-[page review](reviews/merged-copy4049-page-peer.md).
+The [ordinary proof](research/boolean-dummy-independent/PROOF.md) and finite
+Pcbd18 discharge pass root and independent review. Canonical controller
+subsets need only a Boolean dummy, so its second bit can be removed.
+Every nonzero fractional phase becomes even without spill. Complete
+mask populations978,873 padding tests, actual rank, safe subsets and both
+P66 maps are covered. The controller has prime246929, orders23/1342 and
+H18/2634/79912. Normal/optimized source and finite checks pass, including
+actual dummy-domain/rank controls and printed marker deletion. Two actual
+full-page visual inspections pass. See the [candidate](candidates/one-page-boolean-dummy4027/README.md),
+[math review](reviews/boolean-dummy4027-independent-peer.md) and
+[page review](reviews/boolean-dummy4027-page-peer.md).
 
 Every previous page and CURRENT record is preserved. No new formal-kernel
 replay or consistency decision is claimed; inherited ordinary calibration
-remains explicit. The reviewed [single-dummy intermediate](research/single-dummy-independent/README.md)
-saves another516 raw bytes. Its Boolean-only mask simplifies the printed
-recipe further; complete review is ongoing. Deleting the already forbidden
-selector is the next language simplification. The separately reviewed
+remains explicit. Work now deletes the already forbidden selector through
+an exact finite-language bijection and removes a marker factor whose two
+used evaluations are unchanged. The independently checked
+[radix obstacles](research/radix-parity-independent/README.md) concern
+specific proof interfaces, not general equation lower bounds. The
 [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
-remains a conditional tradeoff tied to the preserved4127 layout.
+remains a conditional tradeoff tied to preserved4127 geometry.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 still saves nineteen operations and171 degree while adding five unknowns.
