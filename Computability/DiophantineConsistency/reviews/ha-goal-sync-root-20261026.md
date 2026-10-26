@@ -37,4 +37,7 @@ names are unchanged. Their hashes remain
 and `417c2fa109cacf99d0e83af35d06cbdc8fed1179054d7245e07f3e51ebfff978`.
 The external equivalence is checked in both directions; the strengthened HA
 proof-existence goal and further reductions remain active. This is the
-pre-push integration record; a push result must be observed separately.
+pre-push integration record. The subsequent ordinary `git push origin
+HEAD:main` succeeded, advancing remote main from9c3d0366ed to62584fab3a.
+No force option was used. Later HA checkpoints continue from that published
+state and require their own ordinary synchronization.

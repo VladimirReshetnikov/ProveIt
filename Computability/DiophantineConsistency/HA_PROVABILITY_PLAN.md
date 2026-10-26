@@ -48,6 +48,19 @@ positive-domain semantics. That work is retained, but the new HA target
 needs an arithmetic sentence and intuitionistic derivability. No further
 ZF-model-only completion is required merely to satisfy the new goal.
 
+The arithmetic equation sentence is now supplied by
+[ArithmeticCurrentEquation2011](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean).
+Its `unsolvabilitySentence` compiles the exact current fourteen-variable
+successor-shifted expression into the ordinary `0,S,+,*` language. All four
+complete coefficient ports are actual compact binary numerals, not free
+symbols. Exactly fourteen universal binders close the no-zero formula.
+The generic compiler has exact semantics over every commutative semiring;
+its natural-number interpretation is precisely no positive integral zero
+of the displayed polynomial. Three fresh leaves and ten standard-only
+axiom reports passed [independent review/replay](reviews/arithmetic-expression-lean-peer.md).
+This binds the equation side. The arithmetic ZFC-checker sentence and the
+HA equivalence derivation remain open.
+
 ## Two viable proof routes to audit
 
 One route proves, within HA, both positive-witness implications:
@@ -174,8 +187,9 @@ surface elimination of `Classical.choice` is not the goal by itself.
 
 1. Authentic HA derivability and basic arithmetic/induction interfaces are
    checked, with one-way classical embedding and focused binder checks.
-2. Supply the literal arithmetic equation sentence and exact arithmetized
-   ZFC-refutation sentence, retaining every current constant and domain.
+2. The literal arithmetic equation sentence is checked. Supply the exact
+   arithmetized ZFC-refutation sentence and its coding comparison, retaining
+   the actual proof convention.
 3. Establish the applicable proof-translation/stability theorem or the two
    direct internal witness transformations. Record which remaining native,
    Pell and machine lemmas need PA/HA proof-existence witnesses.

@@ -23,6 +23,10 @@ validator and Rotation240 consistency theorems provide reusable arithmetic
 machinery; adapting it to the exact215 machine remains open. The
 [source audit](research/ha-current-equation-constructive-audit-20261026.md)
 also covers the owner's K215 verification pointer.
+The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
+is now independently checked, with compact numerals for every fixed port
+and the exact positive-domain semantics. The HA consistency-equivalence
+proof remains open.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the
