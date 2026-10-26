@@ -1,0 +1,60 @@
+import DiophantineConsistency.WangTiles942Completeness
+
+/-! Cofinal dimension controls and exact literal machine/consistency
+endpoints. No unconditional halting or consistency assertion is made. -/
+
+namespace DiophantineConsistency.WangTiles942CompletenessChecks
+
+open SetTheory.BusyBeaver.ZFC WangTiles942Periodic WangTiles942Completeness
+
+set_option Elab.async false
+set_option maxRecDepth 10000
+
+example (T : ℕ) : (T+2)+((2*T+4)-(T+2)) = 2*T+4 ∧
+    T+2 ≤ (2*T+4)-(T+2) := width_split T (2*T+4) (Nat.le_refl _)
+
+/-- One less unit of total width fails the stated independent margin allocation. -/
+example (T : ℕ) : ¬ T+2 ≤ (2*T+3)-(T+2) := by omega
+
+/-- The separate three-row condition cannot be dropped from the supplied bounds. -/
+example : 0+2 ≤ (2 : ℕ) ∧ ¬ 3 ≤ (2 : ℕ) := by decide
+
+/-- Noncoprime width and height satisfy the cofinal dimension inequalities. -/
+example : 2*2+4 ≤ (8 : ℕ) ∧ 2+2 ≤ (4 : ℕ) ∧ 3 ≤ (4 : ℕ) ∧ Nat.gcd 8 4 = 4 := by decide
+
+example (T w H : ℕ)
+    (hh : (DecimalMachine215.machine.run T).state = none)
+    (hw : 2*T+4 ≤ w) (hTH : T+2 ≤ H) (hH : 3 ≤ H) :
+    letI : NeZero (w*H) := ⟨Nat.ne_of_gt (Nat.mul_pos (by omega) (by omega))⟩
+    ∃ a : ZMod (w*H) → Fin 942, MarkedWord (w*H) (w : ℤ) a :=
+  cofinal_marked_word T w H hh hw hTH hH
+
+/-- Arbitrary extra width and extra height are independent. -/
+example (T u v : ℕ) (hh : (DecimalMachine215.machine.run T).state = none) :
+    let w := 2*T+4+u
+    let H := T+3+v
+    letI : NeZero (w*H) := ⟨Nat.ne_of_gt (Nat.mul_pos (by omega) (by omega))⟩
+    ∃ a : ZMod (w*H) → Fin 942, MarkedWord (w*H) (w : ℤ) a := by
+  exact cofinal_marked_word T (2*T+4+u) (T+3+v) hh
+    (by omega) (by omega) (by omega)
+
+example (N : ℕ) [NeZero N] (s : ℤ) (a : ZMod N → Fin 942)
+    (ha : MarkedWord N s a) : ExistsMarked :=
+  ⟨N,NeZero.pos N,s,a,ha⟩
+
+example : ExistsMarked ↔ KDenseBridge.BlankHalts DecimalMachine215.machine :=
+  existsMarked_iff_blank_halts
+
+example (h : ConZFC) : ¬ ExistsMarked := conZFC_iff_no_marked_word.mp h
+
+example (h : ¬ ExistsMarked) : ConZFC := no_marked_word_iff_conZFC.mp h
+
+#print axioms width_split
+#print axioms cofinal_marked_word
+#print axioms existsMarked_of_blank_halts
+#print axioms blank_halts_of_existsMarked
+#print axioms existsMarked_iff_blank_halts
+#print axioms no_marked_word_iff_conZFC
+#print axioms conZFC_iff_no_marked_word
+
+end DiophantineConsistency.WangTiles942CompletenessChecks
