@@ -212,8 +212,8 @@ printed-order permutation, color bounds, exact physical floor formula
 and initializer position504 with its actual first target1. See the
 [root review](reviews/wang-tiles942-lean-root.md) and [independent replay
 and numeric reconstruction](reviews/wang-tiles942-lean-peer.md). This is
-index uniqueness; tuple/weight distinctness, the physical-rank bijection,
-and native machine semantics still require proofs.
+index uniqueness; the separate physical-map extension below supplies the
+stronger tuple/weight and rank claims. Native machine semantics remain open.
 
 `NativePreliminaryCount2011.total_le_one_all_phases` now completes the
 arithmetic preliminary-count argument across all temporal phases. Only
@@ -223,6 +223,15 @@ and [independent replay](reviews/native-preliminary-count2011-lean-peer.md)
 include the full-mask phase10 counterexample showing why those middle
 premises matter. Literal physical clause/padding residues and carry
 bindings remain to be discharged from the current native recipe.
+
+`WangTiles942Permutation` now proves distinctness of every actual tile
+and packed weight, the actual floor-rank bijection on Fin942, and strictly
+descending non-Start physical weights. A structural recovered-index map
+and generic strict-upper-set rank argument avoid a sorting cache or
+quadratic finite comparison proof. See the [independent root review and
+fresh replay](reviews/wang-tiles942-permutation-lean-root.md). This closes
+the physical-permutation obligation while retaining the exact printed
+map; native convolution and computation semantics remain to be connected.
 
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
