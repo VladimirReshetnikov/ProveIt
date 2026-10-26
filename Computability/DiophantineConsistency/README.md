@@ -91,8 +91,8 @@ are retained; the formatting work does not replace a newer mathematical result.
 
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
-proof, consistency decision or global minimum is claimed. Lean remains
-paused. The [decimal2953](candidates/one-page-decimal-carrier65-2953/equation.pdf),
+proof, consistency decision or global minimum is claimed. Lean formalization
+is active under the plan above. The [decimal2953](candidates/one-page-decimal-carrier65-2953/equation.pdf),
 [block-mask2963](candidates/one-page-block-mask2963/equation.pdf),
 [low-padding2963](candidates/one-page-low-padding2963/equation.pdf),
 [single-clause2999](candidates/one-page-parity-clause2999/equation.pdf),

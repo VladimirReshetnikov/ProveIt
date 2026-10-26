@@ -125,8 +125,16 @@ map is now checked in `SignedPellResidue.four_square_dvd_sub_one`. From
 S>=2, the exact auxiliary norm and y congruent to1 modulo4 it derives
 `4*S^2 | y-1`, without sign or size assumptions on V,y. The
 [root review](reviews/signed-pell-residue-lean-root.md) includes signed
-examples and the necessary modulo-four premise. The full transport-witness
-recovery and fresh-seed converse remain separate work items.
+examples and the necessary modulo-four premise.
+
+`ThirteenCarrierSoundness.polynomial_zero_restores` now proves the complete
+forward map for all three literal thirteen-variable polynomials. Every
+positive zero restores a positive actual Carrier65 zero, with unchanged
+ports. Transport nonnegativity and divisibility are derived; the signed
+ordinate is replaced by its absolute value, and the restored z is positive.
+See the [root review](reviews/thirteen-carrier-soundness-lean-root.md) for the
+fresh replay and exact scope. The fresh-seed converse and native production
+of its outer data remain required.
 
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
