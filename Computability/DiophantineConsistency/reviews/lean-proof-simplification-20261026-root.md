@@ -918,3 +918,125 @@ the source, and a fresh `pdflatex` build reproduces the committed one-page,
 153046-byte PDF exactly. Neither artifact needed an edit. Their SHA-256 hashes
 remain `a48ac1f5bc498bfdbf300c7050332ecaa28af1fc43f27d86b0879a79bd38714e`
 and `417c2fa109cacf99d0e83af35d06cbdc8fed1179054d7245e07f3e51ebfff978`.
+
+## Integer disequality and finite physical-order rigidity
+
+ROOT adopted zj's signed-square proof as `91bb6ff650`. A nonzero integer
+has positive square, hence square at least one; its square-minus-one is
+therefore exactly a natural slack. Conversely, the supplied natural slack
+forces positive square. The proof allows negative values and zero slack,
+including values1 and−1, and rejects zero. Only the correctness field changes;
+the one witness, expression tree and both conditional graph constructors are
+unchanged. The module shrinks from68 to65 lines without a helper or import.
+
+Six final calls pass: target, `AnnotatedCodeGraphs` and `NativeFormulaGraphs`
+clients, existing `ProposalAxioms`, four-old-declaration axiom comparison and
+the complete original `nonzero` record equality audit. The earlier separate
+baseline is additional; all four reports are byte-identical. The kernel checks
+`rfl` for the actual immutable old record, compiled under a separate namespace,
+for every supplied expression. `alternate_encoding_research` independently
+read all65 final lines, the full diff and actual signed-square/cast contracts,
+returning PASS on the unchanged final hash.
+
+ROOT adopted zj's finite-order proof as `52519f1cd6`. Strict monotonicity gives
+an injective order homomorphism on the same finite linear order; the library's
+finite-order identity theorem yields pointwise identity directly. Empty,
+singleton and arbitrary finite ordinals retain the same statement. All row,
+rank, Start-at-zero, coverage and enumeration data remain literal. Including
+the new lower Mathlib import,180 lines become155, removing25.
+
+The first combined baseline query stopped before elaboration because the
+physical-order object was absent. ROOT then built exactly the six missing
+unchanged prerequisites (`DecimalMachine215`, `WangTiles942Data`,
+`WangTiles942Core`, `WangTiles942`, `WangTiles942Permutation` and
+`WangTiles942PhysicalData`), the original target and the23-public baseline
+audit. All pass. The refreshed target, existing `WangTiles942PhysicalOrderChecks`
+and23-public final audit pass; all old reports are byte-identical. The direct
+`CurrentKernelResidues2011` client also passes against the refreshed object,
+in the shared common-modulus target run below. No proof repair or budget
+increase was needed. `alternate_encoding_research` independently read all155
+final lines and the complete actual finite-order contracts, returning PASS.
+
+## Guarded prime-power casts and exact-order clients
+
+`intake_e13` adopted zl's cast-fusion patch as `8772c3b3a9`. The characteristic
+cast-zero and subtraction equivalences establish the iff in one rewrite
+chain, retaining the explicit lower bound before natural subtraction. Zero
+modulus, modulus one and exponent zero remain in the domain. All six old
+statements and imports remain unchanged;80 lines become73, removing7.
+
+The same author adapted zl's coordinate patch as `bd12ef208c`. The actual CRT
+map preserves the product/lcm order calculation. Existing exact-order theorems
+at level zero supply the two endpoint identities; direct rewriting transports
+the block modulus, removing a private one-use helper. This reuses stronger
+existing exact-order results rather than the earlier lower-level endpoint
+proofs; no new assumption is supplied. The opaque large-base barrier remains.
+
+The supplied91-line candidate failed elaboration at three dependent-`ZMod`
+`simpa` steps. Its earlier static review is superseded and is not a compiler
+receipt. A kernel-checked explicit-rewrite prototype guided the repair:
+rewrite the indexed modulus in the local endpoint theorem, and rewrite the
+whole goal modulus before applying the block order theorem. The actual final
+source is96 lines, so the saving is9 after charging all five repair lines.
+
+Baseline preparation comprised five narrowly planned unchanged generic
+prerequisites, both original targets and the auxiliary-order baseline, before
+capturing all19 old public axiom reports. All nine final calls pass: both changed targets,
+`CurrentAuxiliaryOrder2011` and `CurrentControllerSubsets2011` clients, their
+four corresponding existing focused modules and the19-public axiom comparison.
+Reports are byte-identical, with no final warnings or budget changes.
+`alternate_encoding_research` independently reread the repaired96-line source,
+its complete final diff and actual dependent transport contracts, returning
+PASS at the new hash; its complete73-line prime-power review also remains
+bound to the unchanged final hash. No claim is made that the original
+uncompiled candidate passed.
+
+## One common kernel-residue certificate
+
+`v_finite_full_static` adopted zn's common-modulus patch as `1eb5d15000`.
+The same941 selector rows, protected Start and34 controls are evaluated once
+modulo47·2011·120199=11360848883. The59 chunk certificates replace the old177
+certificates. Existing cast homomorphisms project the common result to each
+factor, using divisibility alone; no CRT converse, prime assumption or raw
+residue input is introduced. Every old residue and unconditional H wrapper
+remains. Both executable definitions and the entire original physical-order,
+reindexing and `rawWord_cast` prefix are byte-identical. Including the new
+`K_cast_common` theorem and private projection helper,843 lines become426,
+removing417 lines and14157 bytes.
+
+An initial baseline audit stopped before elaboration on the absent target
+object. Baseline preparation used four additional missing unchanged controller
+prerequisites and ROOT's shared physical-order chain above. The original target
+and15-declaration baseline audit pass before modification. A separate unchanged
+`NativeRankVariation` prerequisite was later built for the final units client.
+All six final
+calls pass on the first attempt: target, `CurrentControllerUnits2011` client,
+their two existing focused modules,15-old-declaration comparison and the new
+common-residue audit. All old reports are byte-identical; the new theorem uses
+the standard three axioms. The final target run also supplies the physical-order
+direct-client evidence above and is counted once in the aggregate.
+
+The existing focused checks retain non-field semiring and empty-list cases,
+Start omission and marker/scale mutation controls, independent zero exponents,
+wrong literal width and `q=1` controls. The two old exponent-threshold
+warnings in unchanged `CurrentMasks2011` and one in the unchanged units client
+remain; no options or limits were increased. The author's five preparation,
+two baseline and six final calls all pass; the early cache failure is separate.
+Raw timings are descriptive, not a speedup claim for the larger modulus.
+`intake_e13` independently read all426 final lines, the full original diff,
+every chunk assembly and actual data/cast contracts, returning PASS at the
+unchanged final hash. No additional compiler run is attributed to that review.
+
+These five source commits reduce1276 lines to815, removing461 net lines and
+bringing the reviewed series from3253 to3714. ROOT verifies all56 old public
+theorem headers and13 definition headers against immutable `3299f4aa4c`;
+twelve complete definition bodies are byte-identical, and the changed
+correctness record is kernel-equal to its original as recorded above. All61
+old declaration axiom reports are identical. The final suites have24 successful
+calls when the shared residue target is counted once; unchanged prerequisite,
+original-source, baseline and prototype checks remain separately described.
+All final sources passed independent full review. The unrelated three-line
+padding cleanup is unedited because of its larger uncached construction
+closure; optional zo LTE-spectrum and Pell ports remain for later iterations.
+Equation artifacts and their decimal, distinct-name presentation are unchanged.
+The iterative goal remains active.
