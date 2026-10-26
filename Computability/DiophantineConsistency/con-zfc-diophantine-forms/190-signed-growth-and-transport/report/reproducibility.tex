@@ -1,0 +1,131 @@
+\section{Logical calibration and the proof boundary}
+\label{sec:boundary}
+
+The direct quartic and pooled constructions encode the numerical calculus
+$\Ccal$.  Their new arithmetic proofs establish, in both directions,
+equivalence between an integer zero and a finite refutation in that
+calculus.  The final logical step uses the repository's explicitly named
+inherited endpoints
+\begin{quote}\small
+\path{KEndpoint.c222_iff_zf_refutation},\\
+\path{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\end{quote}
+The first identifies numerical-calculus refutability with the fixed ZF
+refutation presentation; the second transfers refutability between the
+identified ZF and ZFC presentations.  Together they supply the stated
+syntactic ZFC endpoint.  The arithmetic reductions in this article preserve
+that endpoint rather than introducing a new interpretation of
+$\Con(\ZFC)$.
+
+The ten-positive-variable construction has a different inherited boundary.
+It retains the entire authenticated BFS943/radix67 coefficient tuple and
+the ordinary native/compiler/refutation calibration used by source 172.
+The selected ordinary proof closure is in
+\path{compact/source/upstream172/}.  Its
+\path{inherited/strict/upstream_lucas/parent/proof_sources/} directory
+contains the Pell classification and signed-index arguments in
+\path{universal_pell.tex}, the uniform projector in
+\path{uniform_ratio.md}, the named source theorem in
+\path{scaled_native.md}, and the coherent-tuple calibration in
+\path{indexed_native.md}.  The local source ledger
+\path{compact/source/SELECTED_PROOF_SOURCES.json} and
+\path{compact/SOURCE_LINKS.json} identify those retained texts and their
+immutable repository sources.  Reconstructing the coefficient bytes
+authenticates which instance is used; it does not independently prove its
+machine or native calibration.
+
+Three kinds of evidence must therefore be distinguished.  The new
+unbounded proofs establish sign recovery, the cofinal existence of
+witnesses, growth, exact-power interpretation, and the arithmetic
+restorations.  Finite exact checks authenticate the literal equations,
+substitutions, fixed numerals, degree certificates, and measured size
+claims.  The named inherited calibrations supply the logical meaning of
+the numerical or native endpoint.  Neither finite sampling nor successful
+coefficient reconstruction replaces an unbounded proof.
+
+All new deductions are ordinary mathematics formalizable in ZFC.  This
+package does not supply a newly compiled proof object for the complete
+chain, rebuild the entire historical Lean/Rocq import closure, or emit an
+object-language ZFC derivation.  Historical replay statements inside
+preserved source documents belong to their original releases.  The new
+internal reviews, including
+\path{reviews/QUARTIC_ALGEBRA_REVIEW.md} and
+\path{reviews/SIGNED_HORIZON_SECOND_REVIEW.md}, are AI-assisted mathematical
+checks, not external human peer review.  No consistency assumption is
+used to select a coefficient or witness family.
+
+\section{Artifacts and reproducibility}
+\label{sec:reproduce}
+
+The JSON specifications are complete finite definitions of the
+polynomials.  Named gates are shared expressions, not additional
+quantified variables.  The principal artifact locations are as follows.
+\begin{itemize}
+\item The two quartic directories are
+  \path{quartic/equations/affine209_F64/} and
+  \path{quartic/equations/affine209_F128_basis/}.
+  Each contains \path{equation.json},
+  \path{expanded_polynomial.json}, \path{residuals.txt},
+  \path{metrics.json}, and \path{certificate.json}.
+  The exact affine-source and scaling argument is in
+  \path{quartic/ALGEBRA_PROOF.md}.
+\item The principal pooled circuits are
+  \path{pooling/equations/integer116_degree16_staged.json} and
+  \path{pooling/equations/integer107_degree32_all4.json}.
+  The degree-12 companion is
+  \path{pooling/equations/integer130_degree12_staged.json}.
+  Their literal source bindings and acyclic restoration certificates are
+  under \path{pooling/sources/} and \path{pooling/certificates/};
+  \path{pooling/PROOF.md} gives the unbounded arithmetic argument.
+\item The compact circuit is \path{compact/equation.json}, with its proof
+  in \path{compact/PROOF.md}.  All center and norm-defect coefficients are
+  recorded in \path{compact/exact_center_polynomials.json}.
+  The four complete fixed numerical payloads are under
+  \path{compact/source/coefficients/};
+  \path{compact/source/rebuild_coefficients.py} reconstructs them by the
+  printed finite recipe.  They are not represented only by checksums.
+\end{itemize}
+
+Python 3.10 or later and its standard library suffice for the exact
+checks.  From the extracted package root, run
+\begin{lstlisting}
+python3 -B verify_all.py
+\end{lstlisting}
+The component entry points can also be run separately:
+\begin{lstlisting}
+python3 -B quartic/verify.py
+python3 -B pooling/verify.py
+python3 -B compact/verify.py
+\end{lstlisting}
+The same component commands accept Python's \path{-O} switch before the
+script name; their acceptance conditions do not depend on removable
+\path{assert} statements.  The root verifier and retained receipts state
+which checks were actually replayed.
+
+The quartic verifier independently expands each coordinate substitution
+and residual-basis identity, collects the sums of squares, and checks
+every coefficient, support count, and height-attaining quartic monomial.
+The pooling verifier checks the actual request/frame bindings, cleared
+denominator identities, and acyclic polynomial restoration maps; exact
+nonzero homogeneous specializations certify degree.  The compact verifier
+imports no circuit producer: it checks all center gates, the complete norm
+defect, the actual highest form, and the four fixed numerals by independent
+finite reconstruction.  Nonzero modular derivatives certify genuine
+occurrence of the circuit inputs.  These modular checks are finite
+algebraic certificates, not evidence for or against an integer zero.
+
+The main article source is \path{report/main.tex}; every included
+\path{.tex} fragment is supplied.  With a standard TeX Live installation,
+change into the \path{report/} directory and run
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+\end{lstlisting}
+PDF metadata can vary between TeX installations.  The literal equation
+data, integer coefficients, and exact certificates are the stable
+mathematical definitions.
+
+For repository integration, retain this package as an additive submission
+and cite the specific profile, domain, degree, and cost being compared.
+Preserve the source notices and the distinction between the two calibration
+routes.  The results support the measured comparisons in this article;
+they do not establish a global simplicity minimum or historical priority.

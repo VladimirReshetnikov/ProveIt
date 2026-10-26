@@ -1,0 +1,17 @@
+The release-level \pathcode{verify.py} runs the independent direct circuit audit, the separately written orientation/source audit, and the native companion audit. It also checks the exact report tables against the delivered data. The principal direct graph has 2351 live binary operations, 23 residuals, and 84 free integer inputs. Its matched control has 2382 operations, 24 residuals, and 85 inputs at the same exact degree.
+
+For the direct equation, the checks establish the exact original and replacement orientation rows; all 14 product and Pell-norm bindings; the source-input map; every unit coefficient and acyclic inverse definition; local polynomial equality of every circuit block; the complete sum-of-squares suffix; all-node liveness; the exact degree upper bound and nonzero leading specialization; and dependence on every declared variable. The retained source pool is expanded independently to authenticate its 25,144-term literal parent residual.
+
+For the native equations, the independent verifier checks 24 display-cut identities per circuit, the full 323-term main norm, the complete 40-term leading forms, all input and coefficient ports, all four fixed coefficient payloads, the closed mask formulas, and 19 retained source records. It certifies the operation counts and the nonzero coefficient witnesses proving degrees 118 and 94.
+
+From the extracted release directory, run
+\begin{verbatim}
+python3 -B verify.py
+\end{verbatim}
+The programs use Python 3's standard library. They require no network access. To rebuild the report, run
+\begin{verbatim}
+python3 -B build_report.py
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The exact evaluator accepts a user-supplied tuple; optional modular evaluation is a finite diagnostic. Documentation states the selected equation's domain. Very large exact intermediate values are expected for the high-degree direct equation, so a modular evaluation is the practical first check of an arbitrary tuple.

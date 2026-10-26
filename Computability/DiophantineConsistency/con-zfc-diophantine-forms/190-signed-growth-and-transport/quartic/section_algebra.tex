@@ -1,0 +1,80 @@
+\subsection{A literal quartic in 209 unrestricted integers}
+
+Write $d=2^{19}$.  The signed-horizon argument permits the source horizon
+$t=2+4z$.  The old horizon parameter occurs only in its defining equation,
+so replacing $t$ everywhere by $2+4z$ eliminates one coordinate and one
+residual.  There remain 209 independently quantified integer coordinates and
+149 residuals of degree at most two.
+
+The retained divisibility equation gives
+\[
+ F=d\,t(2u+1),\qquad \nu_2(t)=1,\qquad \nu_2(F)=20.
+\]
+Consequently, for every $s=2^k$ with $0\leq k\leq20$, the substitution
+$F=sf$ has an integral inverse on every zero of the source system.  Normalize
+the growth-divisibility residual by dividing it by $s$.  This is an integral
+coefficientwise division after the horizon substitution.  All other
+residuals undergo only linear or affine coordinate substitutions, so every
+residual remains quadratic.
+
+For complete coordinate precision, number the source coordinates from 0 to
+209 and its residuals from 0 to 149.  The source coordinates 0, 2 and 178 are
+$t,F,z$, respectively.  Let $I=\{0,\ldots,149\}\setminus\{125\}$ and
+define $\Phi_s:\mathbb Z^{209}\longrightarrow\mathbb Z^{210}$ by
+\[
+ (\Phi_s(\boldsymbol x))_0=2+4x_0,\qquad
+ (\Phi_s(\boldsymbol x))_2=sx_2,\qquad
+ (\Phi_s(\boldsymbol x))_{178}=x_0.
+\]
+For $1\leq i\leq177$ with $i\ne2$, its $i$th coordinate is $x_i$; for
+$179\leq i\leq209$, it is $x_{i-1}$.  The numbered source rows here refer
+to the frozen affine-horizon source.  Put $c_{149,s}=s$ and $c_{j,s}=1$
+otherwise.  The sparse principal is the explicit polynomial
+\[
+ \boxed{\displaystyle
+ P_{209}(\boldsymbol x)=
+ \sum_{j\in I}\left(\frac{R_j(\Phi_{64}(\boldsymbol x))}
+ {c_{j,64}}\right)^2=0,
+ \qquad\boldsymbol x\in\mathbb Z^{209}.}
+\]
+The displayed divisions are divisions of fixed integer coefficient vectors,
+not additional predicates or rational-function operations.  The literal
+expanded residuals and all collected polynomial coefficients are supplied.
+
+This equation has 5,486 collected monomials and coefficient height $2^{32}$.
+The coefficient of $x_0^2x_{208}^2$ is exactly $2^{32}$, proving that degree
+four is attained.  Its largest residual coefficient has absolute value
+$2^{16}$.  All 209 coordinates occur.
+
+\subsection{A companion with coefficient height $2^{30}$}
+
+Perform the same substitution with $s=128$ and number its 149 residuals
+$S_0,\ldots,S_{148}$.  Only two further row operations are needed:
+\[
+ S_{98}\longmapsto S_{98}+4S_{135},\qquad
+ S_{124}\longmapsto S_{124}+6S_{135}.
+\]
+Leave $S_{135}$ unchanged.  These operations remove the repeated $f^2$
+terms from the two indicated rows.  Their inverse subtracts the same
+multiples of the unchanged carrier row, so they constitute an integral
+determinant-one change of residual basis.  Squaring and summing the resulting
+149 rows gives an equivalent equation with 6,654 monomials and coefficient
+height $2^{30}$.  Its coefficient of $x_0^2x_{208}^2$ is $2^{30}$, again
+certifying exact degree four.
+
+Relative to the incoming 210-coordinate quartic, the sparse equation saves
+one coordinate and one residual and reduces height by a factor of 256,
+while using 204 additional monomials.  The companion reduces height by a
+factor of 1,024 and uses 1,372 additional monomials.  These are explicit
+tradeoffs; they do not establish global minimality.  A finite search over
+ten power-of-two coordinate scales is retained solely as a reproducible
+comparison within the two specified residual bases.
+
+\paragraph{Verification boundary.}
+An independent checker, which does not import the producer, verifies every
+substitution and row identity and recomputes each collected sum of squares.
+All 15 new equation artifacts and both source stages also rebuild byte for
+byte.  These checks establish finite algebraic identities and exact metrics.
+The signed-horizon lemma and the inherited Pell, binomial, CRT, Horn-flow and
+logical-calibration theorems supply the separate unbounded mathematical
+proof of the consistency equivalence.

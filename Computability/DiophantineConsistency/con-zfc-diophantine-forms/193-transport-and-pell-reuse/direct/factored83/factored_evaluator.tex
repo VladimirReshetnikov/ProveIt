@@ -1,0 +1,57 @@
+\subsection{An exact factored evaluator for $D_{83}$}
+\label{sec:factored-evaluator}
+
+The expanded source-coordinate presentation contains two long expressions
+that share a quadratic form. Factoring these expressions changes neither
+the source, the projection, nor the polynomial. It gives a second literal
+evaluator with \textbf{1,789 live binary operations}, comprising 955
+multiplications and 834 additions. The largest absolute literal is 64.
+The canonical evaluator has 2,939 operations and largest literal 324.
+Both define exactly the same polynomial in 83 unrestricted integers, of
+degree 624, with 31 residual squares and expanded coefficient height below
+$2^{1568}$.
+
+Use the source coordinates $z_0,\ldots,z_{226}$ from the projection appendix,
+and introduce the following polynomial abbreviations:
+\begin{align*}
+ H_*={}&z_8+z_9+4(z_{19}+z_{24}+z_{30}+z_{36}+z_{65})\\
+       &+2(z_{22}+z_{27}+z_{29}+z_{32}+z_{34}
+                    +z_{37}+z_{40}+z_{44}+z_{66}),\\
+ q_*={}&3+6z_{220},\\
+ \mathcal I={}&\{1,2,10,11,12,13,14,15,16,17,103,121,127,195\},\\
+ \mathcal J={}&\{145,153,158,161,164,167,170,173,
+                  177,180,183,187,190,214,215,216\},\\
+ Q_*={}&z_0^2+(z_0+z_4)^2+\sum_{j\in\mathcal I}z_j^2,\\
+ N_*={}&z_{193}^2+2z_{158}-z_{216}-\sum_{j\in\mathcal J}z_j^2.
+\end{align*}
+The long restoration of $z_{139}$ has the exact factorization
+\begin{align}
+ z_{139}={}&
+ q_*\bigl[Q_*-2z_8+4z_{225}(z_{225}+1)+q_*^2+4\bigr]\notag\\
+ &+2(1+3z_{220})(H_*^2+z_8^2+z_9^2)
+       -2z_8z_9+z_{19}+N_*-3.\label{eq:factored-z139}
+\end{align}
+The corresponding retained residual is
+\begin{equation}
+ R_{28}=N_*-1-z_{19}-H_*^2+(z_8+z_9)^2.
+ \label{eq:factored-R28}
+\end{equation}
+Here residual indexing is zero based: $R_{28}$ is retained source row 170.
+These letters denote expression abbreviations, not additional unknowns.
+
+The independent checker expands~\eqref{eq:factored-z139} and
+\eqref{eq:factored-R28} in the free polynomial ring
+$\mathbb Z[z_0,\ldots,z_{226}]$ and compares all 336 and 154 nonzero
+coefficients, respectively, with the frozen definitions. It then checks
+every restoration, every retained residual, and the sum-of-squares output
+in both complete arithmetic DAGs. Thus the equality holds at every integer
+tuple, not only on their zero sets. The original degree and occurrence
+certificates also replay for the alternate evaluator. Exact propagation
+of coefficient $\ell_1$ majorants again gives the strict bound $2^{1568}$;
+this is distinct from the largest literal 64.
+
+The alternate graph, formulas, byte-reproducible builder, independent
+standard-library checker, and receipt are in
+\texttt{direct/factored83/}. The canonical graph and certificates remain
+in \texttt{direct/P83/}. No semantic theorem is changed by this evaluator
+optimization.

@@ -1,0 +1,307 @@
+\section{Two Pell roots carry two quotients}
+\label{sec:two-pell-carriers}
+
+This section gives an independent compact improvement, retaining the exact
+admissible942 coefficient tuple of the incoming \emph{Pell Carrier65}
+package.  That package removes the first-index quotient by using the first
+Pell root.  We now use a second Pell root to remove the native transport
+quotient.  The factor four in an odd-ordinate congruence is what makes the
+second reduction work without a parity restriction on the auxiliary base.
+The resulting ordinary polynomial has thirteen strictly positive variables,
+69 live binary arithmetic operations, and exact degree~174.  Its standard
+unrestricted-integer presentation has~39 variables, 160 operations, and
+degree~348.  A companion trades one extra operation for degrees170 and340.
+
+The parent and its current calibration are retained under the compact
+component's \texttt{inherited/} directory.  In particular the complete
+admissible942 proof, rather than an arbitrary four-number tuple satisfying
+elementary inequalities, gives these equations their consistency meaning.
+The general use of a Pell ordinate as a quotient carrier already occurs
+in package~170.  The present contribution is the stronger residue, its
+use for native sign recovery before rank decoding, and its composition
+with the first-root construction.
+
+\subsection{The entire polynomial}
+
+There are exactly thirteen independent positive integer inputs,
+in the order used by the machine-readable equation:
+\[
+ J,F,\alpha,f,i,T,s,w,n,\eta,\zeta,m,\gamma>0.
+\]
+Retain the four fixed integers $\beta,K_0,M_C,M_F$ from the exact parent.
+Their unsigned big-endian byte strings total~94,689 bytes, and their
+largest bit length is~189,693.  The compact component includes their complete
+finite reconstruction, its~399-character seed, and all four literal
+byte strings.  The polynomial below contains no variable exponent,
+division, floor, factorial, or unspecified predicate.  Every other letter
+is a polynomial abbreviation:
+\begin{align*}
+ h&=\beta J,& q&=h+1,& C&=q-F-\alpha,\\
+ X&=wq,&Y&=sq^3,&E&=XY,\\
+ k&=\eta+\zeta,&\ell&=EkY,&c&=kY+\eta,\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,\\
+ D&=X+ac+\gamma H,&\tau&=En+k-R,&B&=(K_0+w)C-F,
+\end{align*}
+where
+\[
+ R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J.
+\]
+The last definitions are
+\begin{align*}
+ b&=cT-R,& V&=f^2b-c,&S&=hi\Delta c^2,\\
+ L&=V^2,& y&=1+4\bigl[h(m-LB)-B\bigr],\\
+ N_0&=\tau^2-\ell(\ell+k),&
+ N_1&=D^2-\Delta c^2,\\
+ N_a&=S^2(V^2-y^2)+y^2,&
+ N_s&=\Delta f^2-S^2.
+\end{align*}
+The single equation is
+\begin{equation}
+ \boxed{P=N_0N_1N_aN_s-\Delta=0.}
+ \label{eq:second-carrier}
+\end{equation}
+The companion changes only $L$ to $bV$.  Notice that $y$ is a signed
+polynomial value, not an additional positive unknown.
+
+\subsection{A residue with a factor of four}
+
+For an integer $S\ge2$, write
+\[
+ \chi_S(r)+\psi_S(r)\sqrt{S^2-1}
+   =(S+\sqrt{S^2-1})^r.
+\]
+The odd subsequence $u_j=\psi_S(2j+1)$ satisfies
+\[
+ u_0=1,\quad u_1=4S^2-1,\quad
+ u_{j+2}=(4S^2-2)u_{j+1}-u_j.
+\]
+Induction modulo $4S^2$ therefore proves
+\begin{equation}
+ \psi_S(2j+1)\equiv(-1)^j\pmod{4S^2}.
+ \label{eq:odd-four-residue}
+\end{equation}
+This holds for odd as well as even $S$.  The weaker congruence modulo
+$S^2$ would be insufficient for the sign selection used below.
+
+Suppose that integers $V,y$ satisfy
+\begin{equation}
+ S^2V^2-(S^2-1)y^2=1.\label{eq:second-adjacent}
+\end{equation}
+Neither coordinate is zero.  The positive solutions of
+$x^2-(S^2-1)u^2=1$ are exactly
+$(\chi_S(r),\psi_S(r))$, $r\ge1$.  One can prove this directly by
+descent: for $u>1$, multiplication by $S-\sqrt{S^2-1}$ sends the
+ordinate to $Su-x$, which is positive and smaller than $u$, because
+$S-1<\sqrt{S^2-1}<x/u<S$.  The new abscissa is positive as well.
+The terminal positive pair is $(S,1)$, and reversing the descent gives
+the stated powers.
+
+Apply this to $x=S|V|$ and $u=|y|$.  Modulo $S$, the even-index
+$\chi$ values are $+1$ or $-1$, whereas the odd-index values are zero.
+The index is consequently odd.  Equation\eqref{eq:odd-four-residue}
+then gives
+\[
+ y\equiv+1\text{ or }-1\pmod{4S^2}.
+\]
+If $y\equiv1\pmod4$, the minus sign is impossible.  Thus
+\begin{equation}
+ y\equiv1\pmod4\quad\Longrightarrow\quad4S^2\mid y-1.
+ \label{eq:carrier-full-divisibility}
+\end{equation}
+Also, directly from\eqref{eq:second-adjacent},
+\begin{equation}
+ |y|<2|V|.\label{eq:carrier-root-bound}
+\end{equation}
+No packed-rank interpretation or positivity of $V$ or $y$ was used.
+
+\subsection{Soundness before rank recovery}
+
+On the entire positive domain, $h\ge31$, $c>1$, $\Delta>1$ and
+$S>c$.  At a zero of\eqref{eq:second-carrier}, cancellation of
+the positive integer $\Delta$ gives
+\[
+ N_0N_1N_a\bigl[f^2-\Delta(hi c^2)^2\bigr]=1.
+\]
+All four factors are integer units.  Each negative sign is excluded
+independently.  The consecutive-product negative-Pell obstruction excludes
+$N_0=-1$, since
+$\ell(\ell+k)=EY(EY+1)k^2$ and $EY\ge2$.  For completeness, if
+$x^2-t(t+1)u^2=-1$ with $t\ge2$ and least positive $u$, then
+$tu<x<(t+\tfrac12)u$ after taking absolute values; multiplication by
+$(2t+1)-2\sqrt{t(t+1)}$ gives a positive smaller ordinate
+$(2t+1)u-2x$, a contradiction.  This does not assume $\tau>0$.
+
+Because $\Delta$ is zero or three modulo four, neither $N_1$ nor the
+normalized strong norm can be $-1$.  Finally $N_a$ is congruent modulo
+four to either $y^2$ or $V^2$, and cannot be $-1$.  Hence
+\begin{equation}
+ N_0=N_1=N_a=1,\qquad N_s=\Delta.
+ \label{eq:four-unit-signs}
+\end{equation}
+In particular $N_a=1$ is\eqref{eq:second-adjacent}.  Our definition
+of $y$ gives $y\equiv1\pmod4$, so
+\eqref{eq:carrier-full-divisibility}, together with $h\mid S$, yields
+\[
+ h^2\mid h(m-LB)-B,\qquad\text{and therefore }h\mid B.
+\]
+No primality or parity assumption on $h$ enters this deduction.
+
+For the main profile, $L=V^2\ge|V|\ge1$.  For the companion
+$L=bV$, the same inequality holds at a zero.  Indeed $b=0$ would give
+$V=-c$ and
+\[
+ y^2-c^2=\frac{c^2-1}{S^2-1}\in(0,1),
+\]
+impossible for integers.  Equation\eqref{eq:four-unit-signs} gives
+$f^2=1+\Delta h^2i^2c^4>c$, so $V=f^2b-c$ has the sign of nonzero
+$b$.  Therefore $bV=|b||V|\ge|V|$.
+
+Set $W=1+hL>0$.  If $B\le-1$, positivity of $m$ forces
+\[
+ y=1+4(hm-WB)\ge1+4(h+W)>4hL\ge4|V|,
+\]
+contradicting\eqref{eq:carrier-root-bound}.  Thus $B\ge0$.
+The omitted native quotient is consequently recovered as the positive
+integer
+\[
+ z=B/h+1.
+\]
+Its parent factor is exactly
+\[
+ N_t=(K_0+w)C+(q-F)-zh=B+q-zh=1.
+\]
+Keep the other parent inputs, replace its strong multiplier by $hi$,
+and replace its positive auxiliary ordinate by $|y|$.  Every parent
+factor now has the required value, and the Carrier65 polynomial vanishes.
+This is the complete soundness map.  It uses no conclusion about $C$,
+$R$, or the first Pell index before reaching the already proved parent.
+
+\subsection{Completeness with a fresh strong seed}
+
+A finite syntactic ZFC refutation supplies the parent's canonical outer
+data.  Among their properties are
+\[
+ N_0=N_1=1,\quad R\equiv3\pmod4,\quad
+ c=\psi_{a+2}(R),\quad X=2^R,
+\]
+as well as $C>0$, $F<q$, $h\mid B$, and $R>3q$.  The inherited
+first-root coordinate $n$ is positive.  These data are independent of
+the private strong seed and the auxiliary coordinates.
+
+There is actually a strict native surplus: $2^R>q^2$ gives $w=X/q>q$,
+and hence
+\begin{equation}
+ B=(K_0+w)C-F>w-q>0.\label{eq:strict-native-surplus}
+\end{equation}
+Choose a positive solution
+\[
+ f^2-\Delta I^2=1,\qquad hc^2\mid I.
+\]
+Such solutions exist cofinally.  In the finite ring
+$(\mathbb Z/(hc^2)\mathbb Z)[t]/(t^2-\Delta)$, the element $a+2+t$
+is a unit of norm one and therefore has finite order.  Any positive
+multiple of that order gives $I\equiv0\pmod{hc^2}$; its positive
+powers give arbitrarily large choices.  Set $i=I/(hc^2)>0$ and
+$S=\Delta I$.  Then $N_s=\Delta$ for our definitions.
+
+Put
+\[
+ V_*=\frac{\chi_S(R)}{S},\qquad y_* =\psi_S(R).
+\]
+The quotient is a positive integer because $R$ is odd.  Write $R=2j+1$
+and $\chi_S(R)/S=Q_j(S^2)$.  The elementary identities retained in
+the parent proof are
+\[
+ Q_j(0)=(-1)^jR,\qquad
+ Q_j(1-A^2)=(-1)^j\psi_A(R),\quad A=a+2.
+\]
+Since $j$ is odd, $S^2=1-A^2\pmod{f^2}$ and $c\mid S$, they give
+$V_*\equiv-c\pmod{f^2}$ and $V_*\equiv-R\pmod c$.
+Moreover $\gcd(c,f)=1$ and $f^2\equiv1\pmod c$.  Thus
+\[
+ T=\frac{V_*+c+Rf^2}{cf^2}>0
+\]
+is an integer and our polynomial value $V$ is $V_*$.  These quotients
+construct witnesses; none is an operation in the delivered polynomial.
+
+Equation\eqref{eq:odd-four-residue} gives
+$y_*\equiv-1\pmod{4S^2}$.  Use the signed value $y=-y_*$, so
+$y\equiv1\pmod{4S^2}$, and define
+\begin{equation}
+ m=\frac{y-1}{4h}+\frac{(1+hL)B}{h}.
+ \label{eq:new-positive-carrier-witness}
+\end{equation}
+It is an integer.  It is positive because $B$ is a positive multiple of
+$h$ by\eqref{eq:strict-native-surplus}, $L\ge V\ge1$, and
+$|y|<2V$:
+\[
+ m> -\frac{2V+1}{4h}+1+hL>0.
+\]
+Equation\eqref{eq:new-positive-carrier-witness} makes the literal
+carrier equal the chosen signed $y$, and all four factors in
+\eqref{eq:four-unit-signs} have their required values.  Thus $P=0$.
+This is an existence construction that refreshes the private Pell seed;
+it is not a bijection on every old and new zero.
+
+\subsection{Exact size and unrestricted integer variables}
+
+Relative to the~65-operation parent, remove the three final native-factor
+rows, add the one subtraction defining $B$, remove one product
+multiplication, scale the strong multiplier by $h$ using one multiplication,
+and compute $y$ with six operations.  The count is therefore
+$65-3+1-1+1+6=69$.  The companion requires one extra multiplication for
+$bV$.  Squares and scalar multiplications are charged as binary operations.
+
+The respective factor degrees are
+\[
+\begin{array}{c|rrrr|r}
+ &N_0&N_1&N_a&N_s&P\\\hline
+L=V^2&22&18&86&48&174\\
+L=bV&22&18&82&48&170
+\end{array}
+\]
+The main-norm degree uses the exact cancellation, with $Z=X+\gamma H$,
+\[
+ (ac+Z)^2-(a^2+H)c^2=2acZ+Z^2-Hc^2.
+\]
+Let $q_0=\beta J$ and $k_0=\eta+\zeta$.  The complete leading
+homogeneous form of the main equation is
+\[
+ -128q_0^{99}\gamma i^4k_0^{15}w^{14}s^{27}f^8T^4
+          (q_0-F-\alpha)^2.
+\]
+The companion replaces $f^8$ by $f^4$.  The coefficient selecting
+$\eta^{15}$ and $F^2$ is $-128\beta^{99}$, which is nonzero on the
+actual fixed tuple.  These are exact degrees, not only graph estimates.
+
+To obtain unrestricted integer equations, replace each positive input by
+\[
+ 1+u^2+v^2+w(w+1),\qquad u,v,w\in\mathbb Z.
+\]
+The classical three-square theorem applied to $4N+1$ proves that every
+$N\ge0$ is $u^2+v^2+w(w+1)$: exactly one of the three squares is odd,
+and subtracting its1 and dividing by4 gives the representation.
+Conversely this expression is nonnegative on all integer triples.
+The substitution uses seven operations per coordinate.  It gives
+$39$ integer variables and respectively $160$ or $161$ operations.
+Degrees double to348 and340.  Nonzero highest homogeneous terms survive:
+setting each second and third new coordinate to zero doubles the
+monomial exponents injectively.
+
+The independent compact checker verifies~25 or~26 exact formula cuts,
+the full~96-term leading forms, all coordinate and coefficient bindings,
+the actual fixed-tuple degree witnesses, four coefficient reconstructions,
+and~1,278 finite Pell-carrier fixtures.  Targeted changed gates are rejected.
+These finite checks complement the preceding unbounded proof.  They do
+not replace the inherited native/K215/refutation calibration or provide a
+fresh end-to-end proof-assistant derivation.  Composing that calibration
+with the two witness maps and the exact domain translation proves in ZFC
+that the integer equation has no zero if and only if
+$\operatorname{Con}(\mathrm{ZFC})$.
+
+The result is a tradeoff against the matched parent and inspected compact
+family.  Package~170 has a~13-positive-variable, 70-operation degree~206
+point and a~71-operation degree~162 point, with a different~295,388-byte
+tuple.  The present~69-operation degree~174 point does not assert a
+minimum over all Diophantine equations, all integer domains, or all
+coefficient architectures.

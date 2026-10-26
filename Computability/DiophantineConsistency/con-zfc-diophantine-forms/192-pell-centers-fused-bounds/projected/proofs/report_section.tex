@@ -1,0 +1,163 @@
+\section{One certificate across two arithmetic stages}
+\label{sec:reciprocal-guard}
+
+The direct source has two distinct uses for nonnegativity. A Pell cap
+bounds all classified indices before their signs are recovered. A common
+digit budget selects the canonical representatives of ten binomial
+remainders. Both were represented by the universal ternary polynomial
+\[
+ \mathcal G(a,b,c)=a^2+b^2+c(c+1).
+\]
+For integer inputs this is nonnegative, and it represents every
+nonnegative integer. Indeed, the three-square theorem applied to $4n+1$
+gives one odd and two even roots; division by four gives the displayed
+representation.
+
+The new construction shares the certificate across these two stages.
+It uses the stronger budget to recover both original inequalities before
+either arithmetic stage is interpreted.
+
+\subsection{A general lemma}
+
+Let $U,V\ge0$, $E\ge1$, and $R\ge0$ be integers, and put
+\[
+ H=UV-UE-VR-1.
+\]
+If $H\ge0$, then $U,V>0$: setting either to zero makes $H<0$.
+The identities
+\[
+ U(V-E)=VR+1+H>0,\qquad
+ V(U-R)=UE+1+H>0
+\]
+give $V>E$ and $U>R$. Thus
+\[
+ V-E\ge0,\qquad U-R-1\ge0.                 \tag{RG1}
+\]
+Conversely, with positive $U,V$,
+\[
+ \frac{H}{UV}=1-\frac EV-\frac RU-\frac1{UV}. \tag{RG2}
+\]
+Consequently one equation $H=\mathcal G(a,b,c)$ can replace two separate
+ternary certificates for (RG1), if the completeness construction satisfies
+the joint bound in (RG2). The $-1$ excludes the simultaneous zero-scale
+case, so it must be retained.
+
+\subsection{The literal application}
+
+Here the source subscripts are those of the frozen $219$-coordinate
+arithmetic source retained in the archive. Define
+\[
+ C=2x_{16},\quad Q=x_{126},\quad Y=x_{184},\quad
+ U=Q^2,\quad V=Y^2,
+\]
+and let
+\begin{align*}
+ (y_i)_{i=1}^{13}={}&(x_{142},x_{151},x_{154}-1,x_{157},x_{160},x_{163},
+ x_{166},x_{169},x_{172},x_{175},x_{178},x_{181},x_{187}),\\
+ (r_j)_{j=1}^{10}={}&(x_{104},x_{108},x_{111},x_{114},x_{117},
+ x_{121},x_{124},x_{128},x_{132},x_{135}),\\
+ E={}&C^2+1+\sum_{i=1}^{13}y_i^2,
+ \qquad R=4\sum_{j=1}^{10}r_j^2.
+\end{align*}
+The translated ordinate $x_{154}-1$ is essential. Exact coefficient
+comparison verifies that source rows $150$ and $151$ are
+\[
+ V-E-\mathcal G(x_{207},x_{208},x_{209}),\qquad
+ U-R-1-\mathcal G(x_{210},x_{211},x_{212}).
+\]
+All six guard coordinates occur only in these two rows. Delete
+$x_{210},x_{211},x_{212}$, reuse the other triple, and replace both rows by
+\[
+ \boxed{UV-UE-VR-1-\mathcal G(x_{207},x_{208},x_{209})=0.} \tag{RG3}
+\]
+Every other residual is retained. The finite source-coordinate
+reconstructions supplied by the parent are substituted into these
+expressions; their gates are abbreviations, not additional variables.
+
+\subsection{Soundness}
+
+The nonnegativity premises of the general lemma follow immediately from
+the displayed sums of squares, without Pell classification or digit
+decoding. A zero of (RG3) therefore supplies both old inequalities.
+Represent their nonnegative slacks by two fresh ternary triples and
+restore the old six guard coordinates. All other rows remain valid,
+because those coordinates are private. The certified acyclic unit-pivot
+reconstruction restores the parent's eliminated coordinates. Its Pell
+cap and subsequent sign bootstrap can then be invoked in their original
+order. This proves that every new zero yields a finite syntactic
+refutation under the identified inherited calibration.
+
+\subsection{Completeness with a quantitative margin}
+
+Starting from a finite refutation, the inherited canonical construction
+chooses a positive even anchor $C$ strictly larger than every other
+principal index $k_i$, and then a positive main Pell center $A$ with
+\[
+ W\ge258,\qquad A>W^W,\qquad C^2<W.
+\]
+It supplies $Y=Y_C(A)$, $y_i=Y_{k_i}(A)$, $Q=q^x\ge2$, and the ten
+normalized remainders $0\le r_j<Q/32$. Write $Z=Y_{C-1}(A)\ge1$.
+The recurrence and monotonicity give
+\[
+ Y_C(A)\ge(2A-1)Z,\qquad y_i\le Z.
+\]
+Therefore
+\[
+ \frac EV\le\frac{W+13Z^2}{(2A-1)^2Z^2}
+ \le\frac{W+13}{(2A-1)^2}<\frac12,
+ \qquad \frac RU<\frac{40}{32^2}=\frac5{128}.
+\]
+The first strict inequality follows already from $A>W\ge258$.
+Also $C\ge2$, so $Y_C(A)\ge Y_2(A)=2A\ge4$. Hence $U\ge4$,
+$V\ge16$, and
+\[
+ \frac EV+\frac RU+\frac1{UV}
+ <\frac12+\frac5{128}+\frac1{64}
+ =\frac{71}{128}<1.
+\]
+Thus $H>0$. Its ternary representation supplies the new triple. The
+CRT representatives and powers are chosen first, the main Pell frame
+after them, and this final representation last. There is no circular
+witness choice.
+
+This is an equivalence of existence of zeros, established by
+canonical-witness completeness. It is not a pointwise bijection between
+every old zero and every new zero.
+
+\subsection{Composing the linear orientation numerator}
+
+The independent orientation improvement replaces
+\[
+ \Omega_0=\sum_i\bigl((X_i-1)^2+(Y_i-k_i)^2\bigr)
+ \quad\hbox{by}\quad
+ \Omega_1=\sum_i\bigl(1-X_i+(Y_i-k_i)^2\bigr).
+\]
+Under the bounded raw Pell classification,
+$(X_i,Y_i)=\epsilon_i(X_{\nu_i}(A),Y_{\nu_i}(A))$, reduction modulo
+$A-1$ gives the nonnegative error
+\[
+ \sum_i\bigl(1-\epsilon_i+(\epsilon_i\nu_i-k_i)^2\bigr).
+\]
+It vanishes precisely when every $\epsilon_i=1$ and $\nu_i=k_i$.
+The same signed rational-integrality argument authenticates this error
+simultaneously with all power requests. The complete bound and
+restoration proof are retained in the accompanying orientation proof.
+The two changes concern disjoint private rows and therefore compose.
+
+The recommended resulting polynomial has $82$ unrestricted integer
+variables, $23$ residual squares, exact degree $16\,964$, and $1\,723$
+live binary arithmetic operations. Its lower-dimensional companion has
+$81$ variables, $22$ residual squares, degree $2\,097\,732$, and
+$1\,711$ operations. A lower-degree companion has $106$ variables,
+degree $32$, $47$ residual squares, and $1\,830$ operations. All three
+retain maximum absolute literal $1\,099\,511\,627\,780$; this is not
+the expanded coefficient height. Conservative height bounds remain
+$2^{59\,805}$, $2^{7\,342\,557}$, and $2^{308}$, respectively.
+
+Exact sparse identities bind the source predicates, structural
+substitution checks bind all retained expressions and unit pivots, and
+nonzero top homogeneous coefficients establish the stated degrees.
+Nonzero derivative certificates establish genuine dependence on every
+input. These finite certificates complement the unbounded proof; the
+consistency equivalence still uses the explicitly identified inherited
+C222/ZF/ZFC calibration.

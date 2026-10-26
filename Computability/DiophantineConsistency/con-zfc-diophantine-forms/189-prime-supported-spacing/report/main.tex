@@ -1,0 +1,895 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={Prime-supported Pell growth and binomial sequence spacing},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Prime-supported spacing for Diophantine consistency}
+\fancyhead[R]{\small 25 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\vval}{\nu}
+\newcommand{\Ccal}{\mathcal C_{222}}
+\input{metrics.tex}
+\title{Prime-supported Pell growth\\and binomial sequence spacing\\[0.4em]\large An explicit quartic in 209 unrestricted integers\\whose unsolvability is equivalent to $\Con(\ZFC)$}
+\author{Research prepared for Vladimir Reshetnikov and ProveIt\\\small AI-assisted construction, proof, and independent arithmetic review}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We give a fully specified polynomial $P\in\Z[x_0,\ldots,x_{208}]$ of
+degree four and an ordinary proof, using the explicitly identified inherited
+calibration of the numerical calculus $\Ccal$, that ZFC proves
+$\neg\exists\boldsymbol x\in\Z^{209}\,P(\boldsymbol x)=0$
+equivalent to $\Con(\ZFC)$. The polynomial is a sum of 150 squares of
+quadratic residuals; all residuals are printed in this report. Its collected
+expansion has 5,283 nonzero monomials and coefficient height
+274,899,927,541.
+
+The new construction couples two previously separate witnesses. A Pell
+ordinate supplies both a large growth scale and divisibility by every small
+prime. An already present binomial selector then supplies the capacity needed
+for the spacing of a G\"odel sequence code. This removes the independent
+spacing multiplier. The key completeness argument chooses the proof horizon
+from the cofinal family $t=32c^{2k}$, with the fixed prime $c=524309$;
+finite-field bounds on Pell annihilating indices make the necessary
+congruences compatible.
+
+Relative to the frozen incoming 210-variable quartic, the construction saves
+one unrestricted integer variable and reduces coefficient height by almost
+a factor of four, while adding one collected monomial. It does not establish
+a globally simplest equation or worldwide priority. The unbounded proof is
+distinct from the supplied exact coefficient checks. No new end-to-end
+Lean/Rocq verification or proof of consistency is claimed.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Result, comparison, and meaning of simplicity}
+
+The primary result is the concrete equation
+\begin{equation}\label{eq:main}
+ \boxed{\quad P(x_0,\ldots,x_{208})
+       :=\sum_{j=0}^{149}R_j(x_0,\ldots,x_{208})^2=0,
+       \qquad \boldsymbol x\in\Z^{209}.\quad}
+\end{equation}
+Appendix~\ref{app:residuals} specifies every $R_j$ as a literal polynomial
+with integer coefficients. These 209 coordinates are all unrestricted
+integers and all occur in the collected polynomial. Auxiliary letters used
+in the mathematical explanation are abbreviations or proof parameters;
+they do not enlarge the variable list in~\eqref{eq:main}.
+
+\begin{theorem}[Main result]\label{thm:main}
+For the literal polynomial in Appendix~\ref{app:residuals}, using the
+retained ordinary arithmetic and $\Ccal$/ZF/ZFC calibration described in
+Section~\ref{sec:inherited}, there is a proof formalizable in ZFC of
+\[
+ \bigl(\exists\boldsymbol x\in\Z^{209}\ P(\boldsymbol x)=0\bigr)
+ \quad\longleftrightarrow\quad
+ \exists p\,\operatorname{Proof}_{\ZFC}(p,\bot).
+\]
+Consequently,
+\[
+ \ZFC\ \vdash\
+ \bigl(\neg\exists\boldsymbol x\in\Z^{209}\ P(\boldsymbol x)=0\bigr)
+ \longleftrightarrow\Con(\ZFC).
+\]
+\end{theorem}
+
+Here $\operatorname{Proof}_{\ZFC}$ refers to the fixed effective presentation
+used by the inherited calibration. The assertion is internal: the proof
+codes and integers are those quantified over in ZFC. No restriction to
+externally standard codes, transitive models, or externally well-founded
+models is added. The equivalence does not assume consistency or
+inconsistency, and does not decide which side holds.
+
+The immediate comparison is the incoming package
+\texttt{ConZFC\_Pell\_Growth\_210\_2026-10-25.zip} at the pinned repository
+commit~\cite{parent,repo}. Its complete bytes are retained in this release.
+Both columns below were independently collected from their literal
+residual lists.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Measure & Frozen parent & This report\\
+\midrule
+Unrestricted integer variables & 210 & \textbf{209}\\
+Quadratic residual squares & 150 & 150\\
+Exact total degree & 4 & 4\\
+Collected monomials & 5,282 & 5,283\\
+Collected coefficient height & 1,099,511,627,776 & 274,899,927,541\\
+Largest residual coefficient & 1,048,576 & 524,309\\
+Residual monomials before squaring & 999 & 999\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The new height is about $25.0020\%$ of the old one. The single extra
+collected monomial is an explicit cost. We report the expanded coefficient
+height, not just the largest scalar in a circuit.
+
+There is no single established ordering called ``simplest'' that combines
+variable count, degree, coefficient height, support, circuit size, domain,
+and proof complexity. The inspected repository already contains equations
+with many fewer variables at other degrees and coefficient costs, including
+the incoming fourteen-positive-variable, 65-operation carrier equation
+\cite{carrier}. This work improves the direct quartic family. It uses the
+numerical proof calculus, without a K215 simulation or an instantiation of
+Jones's universal polynomial. It does not show that 209 is a minimum, or
+that degree four is necessary for this particular consistency statement.
+
+\section{The new idea in arithmetic terms}\label{sec:idea}
+
+The direct compiler needs two kinds of size. First, $F$ must be large enough
+to separate products of formula weights $1+Fj$. Second, a spacing $y$ must
+be large enough to store the intermediate pending-multiset products in a
+G\"odel $\beta$ code. For completeness the moduli
+\[
+ 1+y,\ 1+2y,\ \ldots,\ 1+(t+1)y
+\]
+must be pairwise coprime. A sufficient condition is that every prime at most
+$t$ divide $y$.
+
+The parent uses a freely chosen odd multiplier:
+\[
+ y=F(2v+1).
+\]
+It chooses $v$ sufficiently large and with appropriate divisibility. We
+replace this by
+\begin{equation}\label{eq:spacing}
+ \boxed{\ y=FB,\qquad B=\binom{F+t}{t}.\ }
+\end{equation}
+The coordinate $B$ and its exact polynomial authentication already exist.
+The new equation for $y$ is quadratic and the coordinate $v$ disappears.
+The binomial notation occurs in the proof, not as a primitive operation in
+the final polynomial.
+
+This substitution has two independent obligations. The value $FB$ must
+exceed every state of the selected finite proof. Also $FB$ must have enough
+small prime divisors for the beta moduli. The binomial supplies the first
+property through its degree in $F$. We arrange the second directly in $F$.
+
+Put
+\begin{equation}\label{eq:constants}
+ d=2^{19}=524288,\qquad c=524309.
+\end{equation}
+The constant $c$ is prime: exact trial division by every prime not exceeding
+$\lfloor\sqrt c\rfloor=724$ verifies this finite fact. Impose
+\begin{align}
+ t&=32(2z+1)^2,\label{eq:horizon}\\
+ Z&=ctF,\label{eq:g1}\\
+ X^2-Z^2-2ZF&=1,\label{eq:g2}\\
+ F+t&=ctu.\label{eq:g3}
+\end{align}
+All four residuals have degree at most two. The middle pair gives
+\begin{equation}\label{eq:pell}
+ X^2-\bigl((ct+1)^2-1\bigr)F^2=1.
+\end{equation}
+The congruence $F\equiv-t\pmod{ct}$ will force a sufficiently large
+positive Pell index, once the existing signed arithmetic front has
+established $F>0$.
+
+For completeness we may select horizons from the particular cofinal family
+\begin{equation}\label{eq:cofinal}
+ t=32c^{2k},\qquad z=(c^k-1)/2,\qquad k\ge1.
+\end{equation}
+An arbitrary zero of the final polynomial need not have this special form.
+It only satisfies~\eqref{eq:horizon}. The stronger choice is made when
+constructing a zero from a finite refutation. This distinction is essential.
+
+The role of the prime $c$ is structural. The modulus $ct$ contains one more
+factor of $c$ than $t$ does, but every small-prime Pell annihilating index
+has fewer than $2k+1$ factors of $c$. Therefore its required divisibility
+can coexist with the residue $n\equiv-t\pmod{ct}$. This is the new
+compatibility argument that lets the growth witness absorb the prime
+support formerly delegated to $v$.
+
+\section{What is inherited and what is proved here}\label{sec:inherited}
+
+The retained parent package contains the literal polynomial source, exact
+integer projections, arithmetic proofs, the relevant calibration sources,
+and its own earlier source archive. It is cited as a proved predecessor,
+with the following boundaries made explicit.
+
+\subsection{Arithmetic interfaces retained from the predecessor}
+
+The unchanged rows provide the following facts and constructions
+\cite{parent,anchor,linearcrt}.
+\begin{enumerate}
+\item A shared signed Pell frame authenticates the retained power requests.
+The principal pairs are oriented before the signs of the arithmetic front
+are inferred. At any authenticated base of absolute value at least two,
+an integral power output forces its nominal exponent to be nonnegative and
+equals the intended power.
+\item The actual CRT index representative $C$ is even and nonzero. Its
+Pell pair is the reused anchor. The cap bounds all other retained nominal
+indices strictly below $C$ after nonnegativity is recovered.
+\item The arithmetic front retains
+\begin{align}
+ B\eta&=C+F+1,& D&=2(C+F+1),& q&=D^x,\label{eq:front1}\\
+ x&=F+1+(y+1)r_0,&
+ x&=1+\bigl(1+(t+1)y\bigr)r_t.\label{eq:endpoints}
+\end{align}
+The powers with base $q$ and exponent $y+1$, and with base $q+1$ and
+exponents $C$ and $F+t$, are among the retained requests.
+\item Exact digit extraction authenticates $B=\binom{F+t}{t}$ and the
+range-binomial predicates. The shared remainder bound and the affine radix
+$D$ suffice because all relevant upper indices are at most $C$ and
+$q=D^x>(2C)^x$.
+\item The factorial-free binomial CRT construction encodes the local
+calculus constraints. Its completeness requires the established growth
+bound on $F$, an odd selector $B$, a suitable positive beta spacing and
+cofinal choices of the CRT representatives.
+\end{enumerate}
+
+We do not delete or weaken an anchor, orientation, cap, range, or remainder
+row. The new $X,Z,u$ are private growth coordinates; they are not new
+requested atoms of the shared power frame. The old actual front atoms
+$F,B,t,y+1$ are already present in that frame.
+
+\subsection{Logical calibration}
+
+The direct arithmetic source uses an inherited square-shell recoding of
+the numerical calculus $\Ccal$. Its syntax translation fixes truth code 0
+and falsity code 1 and transports every guarded rule instance. The displayed
+square-shell constructors are not literally the original Lean constructors.
+Compose this recoding with the retained original-calculus interfaces
+\nolinkurl{KEndpoint.c222_iff_zf_refutation} and
+\nolinkurl{ConstructibleChoice.zf_refutation_iff_zfc_refutation}
+\cite{anchor}. Their ordinary proofs supply the connection with the fixed
+ZFC presentation. The first interface is a statement about the numerical
+calculus itself; the occurrence of ``KEndpoint'' in a file or namespace
+does not insert a Turing-machine simulation into this construction.
+
+The source includes a depth certificate for the square-shell constructor
+trees, and a Horn-flow proof extracting a finite refutation from the
+authenticated local arithmetic. These are inherited mathematical inputs.
+This report proves the new growth, prime-support, capacity, sign, and
+completeness arguments in full. It does not reprove the entire logical
+calibration or package a complete fresh Lean dependency closure.
+
+Thus the result is an ordinary mathematical proof using named predecessor
+lemmas, together with exact finite verification of the delivered polynomial.
+It is not a newly checked object-language ZFC derivation. The successful
+Python checks are not a substitute for the unbounded arithmetic or logical
+theorems.
+
+\section{Elementary Pell facts}\label{sec:pellfacts}
+
+For an integer $a\ge2$, define
+\[
+ X_0(a)=1,\quad Y_0(a)=0,
+\]
+and
+\begin{align*}
+ X_{n+1}(a)&=aX_n(a)+(a^2-1)Y_n(a),\\
+ Y_{n+1}(a)&=X_n(a)+aY_n(a).
+\end{align*}
+Equivalently,
+\[
+ X_n(a)+Y_n(a)\sqrt{a^2-1}
+   =\bigl(a+\sqrt{a^2-1}\bigr)^n.
+\]
+The recurrence, rather than real exponentiation, suffices for all subsequent
+formalization claims.
+
+\begin{lemma}[Classification and elementary bounds]\label{lem:pell}
+For $a\ge2$, every integral solution of
+$X^2-(a^2-1)Y^2=1$ with $Y\ne0$ has
+$|X|=X_n(a)$ and $|Y|=Y_n(a)$ for some positive integer $n$.
+Moreover,
+\begin{align}
+ Y_n(a)&\equiv n\pmod{a-1},\label{eq:baseone}\\
+ Y_n(a)&\ge(2a-1)^{n-1}\quad(n\ge1).\label{eq:pellgrowth}
+\end{align}
+If $a$ is odd, then
+\begin{equation}\label{eq:v2}
+ \vval_2(Y_n(a))=\vval_2(n)\quad(n\ge1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For classification take $x=|X|$, $y=|Y|>0$. If $y=1$, then $x=a$.
+In general $(a-1)y<x\le ay$, and multiplying $x+y\sqrt{a^2-1}$ by
+$a-\sqrt{a^2-1}$ gives another nonnegative integral norm-one pair with
+ordinate $ay-x$ strictly smaller than $y$. Descent reaches $(1,0)$.
+Reversing the descent proves classification and uniqueness of the positive
+index.
+
+The recurrence defines integer polynomials in $a$. At $a=1$ it gives
+$X_n(1)=1$ and $Y_n(1)=n$, proving~\eqref{eq:baseone}. The second-order
+recurrence
+$Y_{n+1}=2aY_n-Y_{n-1}$ and strict increase imply
+$Y_{n+1}\ge(2a-1)Y_n$; use $Y_1=1$ for~\eqref{eq:pellgrowth}.
+
+When $a$ is odd, the recurrence modulo two makes every $X_n$ odd and
+$Y_n\equiv n\pmod2$. The doubling identity
+$Y_{2m}=2X_mY_m$ then proves~\eqref{eq:v2} by writing $n=2^r s$ with
+$s$ odd.
+\end{proof}
+
+\begin{lemma}[A bounded annihilating index]\label{lem:annihilator}
+Let $a\ge2$, $\delta=a^2-1$, and let $p$ be an odd prime. Set
+\[
+ \rho_p=
+ \begin{cases}
+  p,&p\mid\delta,\\
+  p-\left(\dfrac{\delta}{p}\right),&p\nmid\delta,
+ \end{cases}
+\]
+where the second line uses the Legendre symbol. Then
+$1\le\rho_p\le p+1$ and $p\mid Y_{\rho_p}(a)$. Any positive multiple
+of $\rho_p$ has the same vanishing property. If $a$ is odd, we may take
+$\rho_2=2$.
+\end{lemma}
+\begin{proof}
+If $p\mid\delta$, the recurrence modulo $p$ gives
+$Y_n(a)\equiv n a^{n-1}$ and $a\equiv\pm1$, so $n=p$ works.
+Otherwise let $s^2=\delta$ in $\mathbb F_p$ when $\delta$ is a square,
+or in $\mathbb F_{p^2}$ when it is a nonsquare. Put $w=a+s$; its
+inverse is $a-s$. In the split case $w^{p-1}=1$. In the nonsplit case
+Frobenius sends $s$ to $-s$, so $w^p=w^{-1}$ and $w^{p+1}=1$.
+In either case
+\[
+ Y_n(a)=\frac{w^n-w^{-n}}{2s}
+\]
+vanishes at the stated index. The denominator is nonzero. The addition
+identities, or powers of $w$, give vanishing at all multiples.
+For $p=2$ and odd $a$, use $Y_2(a)=2a$ and the addition identities.
+\end{proof}
+
+The lemma does not assert that $\rho_p$ is the smallest possible index.
+Only its explicit upper bound is needed; no theorem about minimal ranks of
+apparition is required.
+
+\section{Growth and the signed arithmetic front}\label{sec:soundness}
+
+\subsection{The inherited label bound}
+
+The square-shell constructors are
+\begin{align*}
+ I(u,v)&=2\bigl((u+v)^2+u\bigr),& M(u,v)&=I(u,v)+1,\\
+ A(u,v)&=2\bigl((u+v)^2+3u+4v+3\bigr),& E(u,v)&=A(u,v)+1.
+\end{align*}
+For $0\le u,v\le M_0$, each constructor value plus one is at most
+\[
+ E(M_0,M_0)+1=8M_0^2+14M_0+8\le8(M_0+1)^2.
+\]
+With each local parameter below $t$, a depth-$r$ tree therefore has value
+plus one at most $8^{2^r-1}t^{2^r}$. The retained source certificate has
+maximum constructor depth 19. Hence its local labels satisfy
+\begin{equation}\label{eq:labelbound}
+ 0\le j<L,\qquad L=8^{d-1}t^d,\qquad d=2^{19}.
+\end{equation}
+This is a bound on decoded local values. It is not an upper bound on their
+large CRT representatives.
+
+\subsection{A sign-free bound comes first}
+
+By~\eqref{eq:horizon}, $t\ge32$ and $t$ is even. Equation~\eqref{eq:g3}
+says $F=t(cu-1)$, so $F\ne0$ because $c\nmid1$, and $F$ is even.
+Apply Lemma~\ref{lem:pell} at $a=ct+1$. There is $n\ge1$ with
+$|F|=Y_n(a)$. The congruence~\eqref{eq:baseone} and
+$F\equiv-t\pmod{ct}$ imply
+\[
+ n\equiv t\text{ or }-t\pmod{ct}.
+\]
+Both least positive residues are at least $t$. Thus
+\begin{equation}\label{eq:weakgrowth}
+ |F|\ge(2ct+1)^{t-1}>t.
+\end{equation}
+No assertion about the sign of $F$ has been used.
+
+The shared frame establishes its canonical-index conclusions independently
+of these new private coordinates. Since $C$ and $F$ are even,
+$C+F+1$ is odd. The selector relation in~\eqref{eq:front1} makes $B$
+and $\eta$ odd and nonzero. Therefore the new relation $y=FB$ gives
+\begin{equation}\label{eq:weakspacing}
+ |y|\ge|F|>t.
+\end{equation}
+
+\subsection{Recovering signs without a circular assumption}
+
+Here is the complete order needed from the retained power and endpoint
+interfaces.
+\begin{enumerate}
+\item $D=2(C+F+1)$ is even and nonzero, so $|D|\ge2$. The request
+$q=D^x$ implies $x\ge0$.
+\item If $x=0$, the second endpoint in~\eqref{eq:endpoints} makes
+$1+(t+1)y$ divide $-1$. But its absolute value exceeds one
+by~\eqref{eq:weakspacing}. Hence $x\ge1$ and $|q|\ge2$.
+\item The request at base $q$ and exponent $y+1$ forces $y+1\ge0$.
+A negative $y$ would have $y\le-|F|<-t$, which is impossible.
+Thus $y\ge|F|>0$.
+\item If $x=1$, the first endpoint gives $-F=(y+1)r_0$, contrary to
+$0<|F|\le y<y+1$. Hence $x\ge2$.
+The second endpoint now yields $r_t\ge1$ and
+\begin{equation}\label{eq:xbound}
+ x\ge2+(t+1)y.
+\end{equation}
+\item Consequently $|q|\ge4$ and $|q+1|\ge3$. The retained requests
+at base $q+1$ force their nominal indices nonnegative. In particular
+$F+t\ge0$. Together with~\eqref{eq:weakgrowth} this gives $F>0$.
+The same argument gives $C\ge0$; the anchor already excluded $C=0$.
+Thus $C>0$, $D>0$, and $q>0$.
+\item Since $y=FB$ and $y,F>0$, also $B>0$. The first endpoint gives
+$r_0\ge0$ and $x\ge F+1$.
+\end{enumerate}
+
+Because $B$ is odd, the old spacing multiplier could now be reconstructed as
+$v=(B-1)/2\in\Z$ if needed to invoke a retained beta lemma. It is not a
+quantified coordinate of the new polynomial. All sign and remainder
+arguments used by the old arithmetic front therefore retain their premises.
+
+\subsection{Recovering the full separation budget}
+
+Now $F>0$, so the ambiguous congruence resolves to
+\[
+ n\equiv-t\pmod{ct},\qquad n\ge(c-1)t>dt.
+\]
+Since $2c\ge8$, Lemma~\ref{lem:pell} gives
+\begin{align*}
+ F&\ge(2ct+1)^{(c-1)t-1}
+   \ge(8t)^{dt-1},\\
+ \frac{(8t)^{dt-1}}{L^t}
+   &=\frac{8^{t-1}}t\ge1.
+\end{align*}
+Therefore
+\begin{equation}\label{eq:fullgrowth}
+ F\ge L^t.
+\end{equation}
+This is precisely the inherited product-separation hypothesis. It is
+derived after the sign bootstrap, not used to justify that bootstrap.
+
+The unchanged affine-radix and digit arguments now authenticate the binomial
+selector and local range predicates. For example, $D>2C$ and the cap imply
+that every required binomial coefficient is bounded by $C^x<q/2^x$.
+The selector relation also gives $|B|\le D/2<q/2$ before its digit is
+identified. The retained common remainder bounds select the exact digit.
+The inherited separation and Horn-flow arguments then recover a finite
+$\Ccal$ refutation. This proves soundness of the modified source.
+
+\newpage
+\section{The prime-support completeness theorem}\label{sec:prime}
+
+\begin{theorem}[Cofinal Pell ordinates with small-prime support]
+\label{thm:primesupport}
+Let $c=524309$ and $t=32c^{2k}$ with $k\ge1$. Put $a=ct+1$.
+For any integer $\ell\ge1$, there are arbitrarily large positive integers
+$n$ satisfying
+\[
+ n\equiv-t\pmod{ct},\qquad 2^\ell\mid Y_n(a),\qquad
+ p\mid Y_n(a)\quad\text{for every prime }p\le t.
+\]
+Consequently the new growth equations have cofinally large positive
+solutions $F$ with all those divisibility properties.
+\end{theorem}
+\begin{proof}
+For each prime $p\le t$ choose the explicit $\rho_p$ of
+Lemma~\ref{lem:annihilator}, including $\rho_2=2$. Set
+\[
+ M=\lcm\bigl(2^\ell,\{\rho_p:p\le t\}\bigr).
+\]
+Since $c>33$,
+\[
+ \rho_p\le p+1\le t+1=32c^{2k}+1<c^{2k+1}.
+\]
+Thus $\vval_c(\rho_p)\le2k$, and $\vval_c(M)\le2k$.
+The only prime factors of $ct=2^5c^{2k+1}$ are 2 and $c$. Its
+intersection with $M$ has 2-adic valuation at most five and $c$-adic
+valuation at most $2k$. Therefore
+\begin{equation}\label{eq:crtcompat}
+ \gcd(M,ct)\mid 2^5c^{2k}=t.
+\end{equation}
+The two congruences
+\[
+ n\equiv0\pmod M,\qquad n\equiv-t\pmod{ct}
+\]
+are compatible by the generalized Chinese remainder theorem. Their
+solutions form an arithmetic progression with positive period, so positive
+solutions are cofinal.
+
+For such $n$, every $\rho_p$ divides $n$; Lemma~\ref{lem:annihilator}
+gives $p\mid Y_n(a)$. Also $a$ is odd and $2^\ell\mid n$, so
+Lemma~\ref{lem:pell} gives $2^\ell\mid Y_n(a)$. Put
+\[
+ F=Y_n(a),\quad X=X_n(a),\quad Z=ctF,\quad
+ u=\frac{F+t}{ct}.
+\]
+The last quotient is integral by~\eqref{eq:baseone}; all three growth
+rows hold. Strict increase of $Y_n(a)$ makes the resulting positive
+ordinates cofinal as well.
+\end{proof}
+
+\begin{corollary}[Odd selector and coprime beta moduli]\label{cor:beta}
+Choose $\ell$ with $2^\ell>t$, take a positive $F$ from
+Theorem~\ref{thm:primesupport}, and define
+\[
+ B=\binom{F+t}{t},\qquad y=FB.
+\]
+Then $B$ is odd and the integers $1+iy$, $1\le i\le t+1$, are
+pairwise coprime.
+\end{corollary}
+\begin{proof}
+For $1\le i\le t<2^\ell$, divisibility $2^\ell\mid F$ implies
+$\vval_2(F+i)=\vval_2(i)$. Subtracting valuations in
+\[
+ B=\frac{\prod_{i=1}^{t}(F+i)}{t!}
+\]
+gives $\vval_2(B)=0$.
+
+Every prime at most $t$ divides $F$, and hence $y$. If a prime $p$
+divided both $1+iy$ and $1+jy$ for $i<j$, it would be coprime to $y$
+and divide $j-i$. Thus $p\le j-i\le t$, contradicting $p\mid y$.
+\end{proof}
+
+The proof requires only prime support in $y$, not $t!\mid y$. It also
+does not require every solution of the new polynomial to have the
+small-prime divisibility properties. Those are choices in the completeness
+construction; soundness already follows from the retained exact arithmetic.
+
+\section{Why the binomial selector has enough capacity}\label{sec:capacity}
+
+The number of available proof rows can be chosen strictly larger than the
+number of genuine backward-expansion steps. Starting from one pending
+formula, each step replaces one formula by at most two premises. A proof
+with $h$ such steps therefore has at most $h+1$ pending formulas at any
+time. The retained truth padding leaves the pending product unchanged
+\cite{parent}. Choose the horizon $t$ with $t>h+1$ and above all finite
+local parameter requirements. The family~\eqref{eq:cofinal} permits this.
+
+\begin{lemma}[Binomial capacity]\label{lem:capacity}
+Let $t\ge2$, $L\ge t$, and $F\ge L^t$ be integers. Suppose a state is
+a product of at most $t-1$ weights $1+Fj$, where $0\le j<L$. Then
+\[
+ S<F\binom{F+t}{t}.
+\]
+\end{lemma}
+\begin{proof}
+Since the labels are integers,
+$1+Fj\le1+F(L-1)\le FL$. Thus
+$S\le(FL)^{t-1}$, including the empty product. On the other hand,
+\[
+ F\binom{F+t}{t}\ge\frac{F^{t+1}}{t!}.
+\]
+The ratio of the latter lower bound to the former upper bound is
+\[
+ \frac{F^2}{t!L^{t-1}}
+ \ge\frac{L^{2t}}{L^t L^{t-1}}=L>1,
+\]
+where $t!\le t^t\le L^t$. This proves the strict inequality.
+\end{proof}
+
+Apply the lemma to~\eqref{eq:labelbound} and~\eqref{eq:fullgrowth}.
+Every actual pending state is below $y=FB$, so it is a valid remainder
+for each relevant beta modulus. No additional growth request, inequality
+coordinate, or free spacing multiplier is needed.
+
+There is also a useful alternative proof of the existence needed here.
+For any fixed proof and horizon, its pending states are polynomials in $F$
+of degree at most $t-1$, while $F\binom{F+t}{t}$ is a polynomial of
+degree $t+1$ with positive leading coefficient. The cofinal Pell
+progression eventually dominates them. The explicit estimate above is
+stronger: the already authenticated lower bound on $F$ suffices.
+
+\section{Completeness and the internal consistency equivalence}
+\label{sec:complete}
+
+Start with a finite $\Ccal$ refutation. Unfold it to a finite backward
+proof schedule if necessary, and let $h$ be its number of genuine expansion
+steps. This may enlarge the proof, but the construction has no imposed
+resource bound.
+
+Choose $k$ sufficiently large that $t=32c^{2k}$ is greater than $h+1$
+and all required finite local parameters. Then set $z=(c^k-1)/2$.
+Choose $\ell$ with $2^\ell>t$ and use
+Theorem~\ref{thm:primesupport} to construct $n,F,X,Z,u$.
+Define the already intended selector and spacing by
+\[
+ B=\binom{F+t}{t},\qquad y=FB.
+\]
+Corollary~\ref{cor:beta} makes the beta moduli pairwise coprime and $B$
+odd. Lemma~\ref{lem:capacity} bounds every required pending state. Truth
+steps pad the proof to the selected horizon without enlarging those states.
+
+Ordinary finite CRT now supplies a positive beta code $x$ with the
+prescribed states and endpoints, and permits $x$ to be arbitrarily large
+in its residue class. Set $N=B^x$. The unchanged factorial-free
+binomial CRT construction provides the residue classes for the ordinary
+representatives and $C$ at precision $N^2$. The growth hypothesis is
+stronger than its lower-bound requirement.
+
+Because $N$ is odd, the prescribed class for $C$ has arbitrarily large
+even positive representatives. Choose the other representatives first,
+then choose $C$ even and larger than all other retained nominal indices,
+including $F+t$, $x$, and $y+1$. The retained selector congruence gives
+$B\mid C+F+1$. Set
+\[
+ \eta=(C+F+1)/B,\qquad D=2(C+F+1),\qquad q=D^x.
+\]
+The same binomial-digit bounds and $N\mid q$ properties as in the
+predecessor follow. Choose the common frame center and the canonical
+principal Pell pairs last. The inherited cap, orientation, power,
+remainder, and local arithmetic completeness constructions supply all
+remaining coordinates.
+
+The order is explicit and acyclic: the finite proof fixes $t$; then the
+growth construction fixes $F,B,y$; then beta CRT fixes $x$ and $N$; then
+the local CRT representatives and $C$ are chosen; finally $D,q$ and the
+shared frame are completed. No modulus is chosen using a coordinate that
+was required to have been fixed earlier.
+
+Soundness was established in Section~\ref{sec:soundness}; completeness is
+the construction just given. Compose them with the retained
+$\Ccal\leftrightarrow\text{ZF refutation}\leftrightarrow
+\text{ZFC refutation}$ calibration to obtain Theorem~\ref{thm:main}.
+Every new step is finite arithmetic, induction, CRT, or elementary finite
+field algebra, and is formalizable in ZFC. The cofinal choices are proved
+existence claims inside that same theory.
+
+\section{From the semantic change to the literal polynomial}
+\label{sec:literal}
+
+The retained parent equation has 210 coordinates and 150 residuals.
+Its exact SHA-256 is
+\begin{quote}\small\ttfamily
+\nolinkurl{20a2108353a3756ed7d1ddfdc71695131dcf0b6d94039988d9565ac48e6e1f0a}.
+\end{quote}
+The new equation is obtained by the following finite specification.
+All indices in this list are \emph{parent} indices until the final
+renumbering.
+\begin{enumerate}
+\item Undo the parent's optimization $R_3\gets R_3+R_{146}$ by
+replacing row 3 with $R_3-R_{146}$. This is an invertible integer row
+operation and restores the literal selector relation before beta is changed.
+\item Replace row 125 by
+$x_0-32-128x_{178}-128x_{178}^2$.
+\item Replace row 146 by $x_4-1-x_2x_3$.
+\item Replace rows 147--149 by
+\begin{align*}
+ x_{208}-c x_0x_2,&\\
+ x_{207}^2-x_{208}^2-2x_2x_{208}-1,&\\
+ x_2+x_0-cx_0x_{209}.&
+\end{align*}
+\item Delete the now-unused coordinate 206. Keep coordinates 0--205
+unchanged and send old coordinates 207, 208, 209 to new coordinates
+206, 207, 208.
+\end{enumerate}
+No other residual is changed. Exactly the following semantic coordinates
+are relevant to the modification.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Quantity & Parent coordinate & Final coordinate\\
+\midrule
+$t$ & $x_0$ & $x_0$\\
+$F$ & $x_2$ & $x_2$\\
+$B$ & $x_3$ & $x_3$\\
+$y+1$ & $x_4$ & $x_4$\\
+$C$ & $2x_{16}$ & $2x_{16}$\\
+$z$ & $x_{178}$ & $x_{178}$\\
+Old free multiplier & $x_{206}$ & deleted\\
+$X$ & $x_{207}$ & $x_{206}$\\
+$Z$ & $x_{208}$ & $x_{207}$\\
+$u$ & $x_{209}$ & $x_{208}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The new equation JSON has SHA-256
+\begin{quote}\small\ttfamily
+\nolinkurl{b0413e587c595c6813f8eb67ef1581a507cee6155a38b8d091ca064f3e29b9f6}.
+\end{quote}
+The separate collected expansion fixes all 5,283 coefficients. In its
+term format, $[a,[i,j,k]]$ means $a x_ix_jx_k$; repeated indices mean
+powers and an empty list means a constant. The equation file fixes the
+residual squares instead, and is substantially easier to audit.
+
+The semantic replacements are not asserted to be invertible maps on all
+parent zeros. In particular an arbitrary old refutation witness need not
+already have prime-supported $F$. The completeness proof constructs an
+appropriate new witness from the underlying finite refutation.
+Only the initial row operation and final unused-coordinate deletion are
+pure algebraic operations of the elementary kind stated above.
+
+\section{Verification, reproducibility, and scope}\label{sec:verify}
+
+The release provides separate implementations for production and finite
+verification. The verifier does not import the producer's polynomial code
+or the predecessor's polynomial helpers. It authenticates the parent
+bytes, reconstructs the six changed rows, checks the renumbering and
+variable occurrence, independently collects every square, and compares
+the full expansion and metrics. It also verifies the fixed prime by trial
+division. Its checks remain active with Python optimization enabled.
+
+Normal and \texttt{-O} runs pass. Seven deliberate residual corruptions
+and one collected-coefficient corruption are rejected. A separate parser
+checks every one of the 150 printed residuals and all 999 printed
+coefficients against the equation JSON, with a deliberate print-corruption
+control. The parent package's complete release verifier was freshly run;
+its 352-file manifest, inherited checks, source/projection chain, printed
+equations, and fresh reconstruction passed. The receipt records the
+actual scope rather than relabeling an old receipt as a new run.
+
+The arithmetic regression program checks 1,248 local Pell annihilating
+cases, including 126 ramified cases. A smaller-prime completeness fixture
+uses $c=37$, $t=43,808$, 4,564 prime constraints, and a 10,420-bit index.
+It checks the congruences by modular powering rather than attempting to
+print the enormous Pell ordinate. These are finite debugging checks;
+the proof for all horizons is Theorem~\ref{thm:primesupport}.
+
+Two independently assigned AI review tasks checked the new mathematical
+arguments. Their notes are retained. This is not external human peer review.
+No numerical search for a root can validate the consistency equivalence,
+and none is presented as doing so.
+
+From the extracted package root, Python 3.10 or later suffices for the
+finite checks:
+\begin{verbatim}
+python3 -B code/verify.py
+python3 -B -O code/verify.py
+python3 -B code/check_printed.py
+python3 -B code/check_arithmetic.py
+\end{verbatim}
+The literal equation can be regenerated with
+\begin{verbatim}
+python3 -B code/build.py
+\end{verbatim}
+The evaluator accepts a JSON array containing exactly 209 integers:
+\begin{verbatim}
+python3 -B code/evaluate.py tuple.json --residuals
+\end{verbatim}
+To rebuild the standalone article and PDF with a standard TeX Live
+installation, run
+\begin{verbatim}
+python3 -B code/build_report.py
+\end{verbatim}
+PDF metadata or TeX versions can change PDF bytes. The finite equation
+identity checks are independent of such changes. \texttt{SHA256SUMS}
+authenticates the delivered files; it is not a theorem about the arithmetic.
+
+\section{What this adds, and the remaining research problem}
+
+The contribution is the proved reuse of a selector for sequence spacing,
+made possible by a cofinal Pell construction with controlled prime support.
+It couples two arithmetic tasks that were independent in the parent.
+The prime-supported ordinate supplies the coprimality requirement; the
+binomial selector supplies capacity; the existing front supplies sign
+recovery and the exact selector interpretation. None of these roles is
+left to an unspecified universal polynomial or an uncompiled variable
+exponent.
+
+The quantitative gain is modest and exact: one fewer unrestricted
+integer unknown, unchanged degree and residual count, nearly four times
+smaller coefficient height, and one additional collected monomial. The
+argument supplies a reusable arithmetic lemma, which may have value beyond
+this one-coordinate saving. It does not establish that its proof complexity
+is smaller than the parent's.
+
+Several possible shortcuts remain unproved and are not used. Taking
+$y=B$ loses the guaranteed small-prime support. Enforcing divisibility
+only by the common growth modulus does not make all beta moduli coprime.
+Choosing a generic horizon does not automatically solve the new index CRT
+compatibility problem. Dropping $F+t$ from the retained power requests
+would remove the stated sign-recovery argument. Treating the new source
+as pointwise equivalent to every old witness would also be unjustified.
+
+The next substantive target is to apply the same prime-support principle
+to another already authenticated arithmetic quantity, so that another
+independent witness can be removed without raising degree. This report
+delivers the completed 209-variable construction; no further count is
+claimed without a literal polynomial and proof.
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+Vladimir Reshetnikov, \emph{ProveIt}, inspected snapshot
+\nolinkurl{32e9e9eb5999c96b0efe80c80a4018afd33d44ae}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/32e9e9eb5999c96b0efe80c80a4018afd33d44ae}.
+
+\bibitem{parent}
+\emph{Pell growth from divisibility: an explicit quartic for Con(ZFC)},
+incoming package \texttt{ConZFC\_Pell\_Growth\_210\_2026-10-25.zip},
+same pinned snapshot. Relevant components are
+\texttt{proofs/growth\_proof.md}, \texttt{proofs/AFFINE\_RADIX\_PROOF.md},
+\texttt{equations/principal210/equation.json}, and the inherited anchor
+package. Exact archive retained in \texttt{inherited/}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/32e9e9eb5999c96b0efe80c80a4018afd33d44ae/docs/incoming/ConZFC_Pell_Growth_210_2026-10-25.zip}.
+
+\bibitem{anchor}
+\emph{A reused CRT index: an explicit Diophantine consistency equation},
+ProveIt source 173, \texttt{173-crt-index-anchor-215}, 25 October 2026.
+In particular \texttt{C\_ANCHOR\_THEOREM.md},
+\nolinkurl{LABEL_SEPARATION_WITHOUT_DERIVED_RANGE.md},
+\texttt{CONSTRUCTOR\_DEPTH.md}, and
+\nolinkurl{ORDINARY_PROOF_DEPENDENCY_BOUNDARY.md}.
+Selected files and the relevant calibration sources are retained within
+the parent archive.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/32e9e9eb5999c96b0efe80c80a4018afd33d44ae/Computability/DiophantineConsistency/con-zfc-diophantine-forms/173-crt-index-anchor-215}.
+
+\bibitem{linearcrt}
+\emph{Linear CRT}, ProveIt source 157, \texttt{157-linear-crt}.
+The retained \texttt{MAIN\_PROOF.md} supplies the factorial-free binomial
+CRT and signed arithmetic interfaces. See also the retained source-151
+factorial-free report and source-158 pooled-power proofs within the parent
+archive.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/32e9e9eb5999c96b0efe80c80a4018afd33d44ae/Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt}.
+
+\bibitem{carrier}
+\emph{ConZFC Pell Carrier65}, incoming package
+\texttt{ConZFC\_Pell\_Carrier65\_2026-10-25.zip}, same pinned snapshot.
+Used only to describe the broader comparison frontier, not as a logical
+dependency of the new quartic.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/32e9e9eb5999c96b0efe80c80a4018afd33d44ae/docs/incoming/ConZFC_Pell_Carrier65_2026-10-25.zip}.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{The complete literal polynomial}\label{app:residuals}
+
+All variables in the following list range independently over $\Z$.
+The polynomial is exactly $P=R_0^2+\cdots+R_{149}^2$. Every residual
+has total degree at most two. This list is independently parsed back into
+integer coefficient dictionaries and compared with the machine-readable
+equation. The source contains no omitted rows, variable exponents, special
+function symbols, or externally supplied coefficients.
+
+\input{residuals.tex}
+
+\clearpage
+\section{Artifact map and integration notes}
+
+\begin{longtable}{p{0.38\textwidth}p{0.56\textwidth}}
+\toprule
+Path & Purpose\\
+\midrule
+\endhead
+\texttt{equations/equation.json} & Complete quadratic residual system defining the one quartic.\\
+\nolinkurl{equations/expanded_polynomial.json} & All collected integer coefficients of $P$.\\
+\texttt{equations/residuals.txt} & Readable literal residual list.\\
+\texttt{equations/variables.tsv} & All 209 coordinate names and source roles.\\
+\texttt{equations/transformation.json} & Exact changed rows, parent hash, and index map.\\
+\texttt{code/build.py} & Deterministic standard-library producer.\\
+\texttt{code/verify.py} & Independent exact coefficient verifier.\\
+\texttt{code/check\_printed.py} & Parser verifying the printed polynomial.\\
+\texttt{code/check\_arithmetic.py} & Independent modular arithmetic regression.\\
+\texttt{code/evaluate.py} & Exact evaluation on a supplied integer tuple.\\
+\texttt{proofs/} & Independent mathematical review notes.\\
+\texttt{verification/} & Fresh finite verification receipts, including the parent replay.\\
+\texttt{inherited/} & Exact P210 parent archive, its equation bytes, and license.\\
+\texttt{PROVENANCE.json} & Snapshot, source identities, and file hashes.\\
+\texttt{SHA256SUMS} & Delivered-file integrity manifest.\\
+\bottomrule
+\end{longtable}
+
+Suggested additive placement is a new source directory under
+\nolinkurl{Computability/DiophantineConsistency/con-zfc-diophantine-forms/},
+with a new source number assigned by the repository maintainer. The archive
+is suitable for the \texttt{docs/incoming/} intake flow. Existing reports
+and their historical metrics should be preserved. This release has not
+written to the remote repository.
+
+\end{document}

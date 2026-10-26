@@ -1,0 +1,215 @@
+\section{A companion equation of degree 190 in ten positive integers}
+\label{sec:compact}
+
+The compact companion has ten strictly positive integer variables, exact
+total degree $190$, and $119$ live binary arithmetic operations
+($74$ multiplications, $24$ additions, and $21$ subtractions).
+Its coefficient tuple is unchanged from source 172.  This is a
+positive-domain result, separate from the unrestricted-integer principal
+construction.  It lowers the inspected ten-positive-variable degrees
+$214$, $208$, and $206$, at a higher arithmetic cost than the $87$- and
+$90$-operation alternatives.  It does not establish global minimality.
+
+The new step is a transport polynomial $L=UEb^2$ that combines the
+free-quotient chart with the whole-product center.  Transport by $bV$
+would leave a degree-$197$ cross term.  Bare $b^2$ does not have the needed
+uniform bound when the main Pell index is three.  The additional factor
+$UE$ handles this exceptional index while keeping the cross term below
+degree $190$.
+
+\subsection{Complete formula}
+
+The independent variables are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta>0.
+\]
+Use the complete inherited fixed tuple $(\beta,K_0,M_C,M_F)$, with
+$\beta=2^{590069}-1$.  Its four full numerical payloads and finite
+reconstruction recipe accompany the equation.  Define
+\begin{align*}
+ h&=\beta J,&q&=h+1,&C&=q-F-\alpha,\\
+ X&=qw,&Y&=s,&Y'&=qY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&A&=Y'(X+1)+1,\\
+ \Delta&=A^2-1,&H&=4A-5,&v&=X(Y')^2,\\
+ \ell&=vk,&E&=1+\ell(\ell+k),&U&=ic^2,\\
+ a&=\Delta U^2E,&F_0&=1+a,&G&=EF_0,\\
+ f&=1+2a,&Q&=4\Delta aF_0,&K&=X(3c-2X)+2.
+\end{align*}
+Also set
+\begin{align*}
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ B&=(K_0+w)C-F,\qquad b=cT-R,\qquad V=fb-c,\\
+ e_{\rm clr}&=6(k-R-1-q^4Y)-\ell(k^2-4),\\
+ D&=6q^7,\qquad M=hDH.
+\end{align*}
+The center is the following division-free polynomial:
+\begin{align*}
+ e_2&=(kY')^2,\\
+ S&=(kY')[\ell+k-(kY')(Y'+1)],\\
+ \theta&=U^2b,\qquad R_c=\theta(3E+e_2)-(b-c),\\
+ S_c&=4E^2+3S^2+e_2^2,\\
+ \Omega&=U\{2SR_c+A(4EV-\theta S_c)\}.
+\end{align*}
+Finally put
+\begin{align*}
+ L&=UEb^2,\\
+ Z&=hD\{H(n-LB-\Omega)+K\}-H(DB+h e_{\rm clr}),\\
+ \mathcal P_{190}&=Q(Z^2-16M^2GV^2)+(16M^2G-Z^2).
+\end{align*}
+Set $P_{10}=\mathcal P_{190}$. The equation is $P_{10}=0$.  All named registers are
+polynomial abbreviations, not extra quantified variables.  There is no
+variable exponent, quotient, factorial, or hidden predicate in this
+definition.
+
+\subsection{Uniform transport and soundness}
+
+The unchanged strong-root and all-index folding argument gives, at a zero,
+positive integers $g,y$ with
+\[
+ G=g^2,\quad QV^2-(Q-1)y^2=1,\quad Z/M=\pm4gy,
+ \quad c=\psi_A(p),\quad p\ge3\text{ odd}.
+\]
+These conclusions precede every sign assertion concerning $B,C,R,b,V$.
+Indeed $Q=4\Delta^2U^2G$ and
+$(Q-1)Z^2=16M^2G(QV^2-1)$ force the square class of $G$ by prime
+valuations; the fixed square factor $16$ changes no valuation parity.
+The retained adjacent-coefficient descent proves the initially rational
+$y=|Z/M|/(4g)$ integral.  The signed folding then gives
+$c\ge c_3=4\Delta+3$.
+
+The case $b=0$ would give
+$0<y^2-c^2=(c^2-1)/(Q-1)<1$, which is impossible.  Thus $b\ne0$,
+$V$ has its sign, and the auxiliary odd-index classification gives
+$|V|\ge4Q-3$.  Since $2c<f$ and $c_3\le c$,
+\[
+ |b|\ge\frac{|V|-c}{f}
+ \ge4\Delta f-\frac{c+c_3}{f}
+ >4\Delta f-1>3\Delta f.
+\]
+This explicitly permits auxiliary index three.  Also
+\[
+ y<\tfrac32|V|,\qquad |V|<\tfrac32f|b|,
+ \qquad (AUE)^2-G=E(U^2E-1)>0,
+\]
+so $g<AUE$.
+
+For the signed center estimate, temporarily regard $A$ as an indeterminate.
+Then
+\begin{align*}
+ E&=e_2A^2+e_1A+e_0,\\
+ e_1&=k^2Y'(1-2Y'-2(Y')^2),\\
+ e_0&=1+k^2Y'(Y'+1)[Y'(Y'+1)-1].
+\end{align*}
+Let $Q_j$ be the formal polynomial quotient of $EV$ by $A^j$.  Exact
+polynomial algebra gives
+\[
+ \Omega=U(4AEV-2Q_1-Q_3/2).
+\]
+Every coefficient of $Q_3$ is even, because
+$EV=(b-c)E+2U^2b(A^2-1)E^2$ and $E$ has $A$-degree two.
+The formula above is proof notation for the displayed division-free center.
+
+Put $\delta=(Y'+1)/A<1/16$.  Absolute-coefficient evaluation gives
+$E^\#(A)<2E$ and
+\[
+ (EV)^\#(A)
+ <2E(|b|+c)+8(A^2+1)U^2E^2|b|<10|EV|.
+\]
+For the last inequality use $c+1<2U^2E$ and
+$|V|>(f-c)|b|>\Delta U^2E|b|$; the resulting ratio is at most
+$8+20/\Delta<10$.  Hence
+\[
+ |\Omega-4AUEV|
+ <10U|EV|\left(\frac2A+\frac1{2A^3}\right)<AUE|V|.
+\]
+In particular $\Omega$ has the sign of $V$ and
+$|\Omega|<5AUE|V|$.  Combining these estimates,
+\[
+ 4gy+|\Omega|
+ <\frac{33}{2}AUEf|b|
+ <\frac{11A}{2\Delta}L<\frac L4.
+\]
+The final inequality follows from $A>q^2\ge1024$, and is independent
+of the signs still to be recovered.
+
+For proof only define
+\[
+ \rho=\frac{k-R-1-vk(k^2-4)/6}{q^7},\quad
+ \sigma=\frac{Y}{q^3},\quad\kappa=\frac KH,
+ \quad t=\frac Bh,\quad W=1+hL.
+\]
+The literal carrier satisfies
+\[
+ Z/M=n+\kappa+\sigma-Wt-\rho-\Omega.
+\]
+Since $k\ge2$ and $k-R-1<b$, one has $\rho<|b|/q^7$ for every
+integer $R$.  If $B\le-1$, then $Wt<-L$, and therefore
+\[
+ n=\pm4gy+\Omega-\kappa-\sigma+Wt+\rho
+ <L/4-L+|b|/q^7<0,
+\]
+contrary to $n>0$.  This proves $B\ge0$, hence $C>0$.
+
+The authenticated mask now gives $3q<R<q^4-2$.  The unchanged normalized
+index and signed auxiliary-index lemmas identify $p=R$.  Because $\Omega$
+is an integer polynomial, $Z/M+\Omega$ is integral; because $W=1+hL$,
+its residue modulo $h$ is unchanged.  The source-172 inverse Lucas argument
+thus gives $m=(R+1)/2$, followed by the strict Pell projection $X=2^R$.
+Only then is $q$ known to be a power of two, licensing the full
+$q^7$ divisibility of the inverse correction.  The carrier finally yields
+$q^3\mid Y$ and $h\mid B$.  The retained native reconstruction and the
+whole coherent tuple's refutation calibration finish soundness.  In
+particular no factor of three is canceled before the dyadic conclusion.
+
+\subsection{Completeness and exact degree}
+
+A finite refutation supplies the source-172 canonical positive outer data,
+with $b,V>0$, integral $t\ge0$, integral $\rho,\kappa,\sigma$, and
+$g>\kappa+\sigma+|\rho|$.  The center is positive on these data.
+Choose
+\[
+ n=4gy+\Omega+(1+hL)t+\rho-\kappa-\sigma>0.
+\]
+Then $Z/M=4gy$, so $\mathcal P_{190}=0$.  This constructs fresh positive
+witnesses; it does not assume that an arbitrary integer shear preserves
+positivity.  Both directions are ordinary arguments formalizable in ZFC,
+using the explicitly retained arithmetic and refutation calibration.
+
+Let $Z_0$ be the carrier with $\Omega$ omitted and
+$D_{\rm norm}=\Omega^2-16GV^2$.  The exact decomposition is
+\[
+ \mathcal P_{190}
+ =Q[Z_0^2-2MZ_0\Omega+M^2D_{\rm norm}]
+   +16M^2G-(Z_0-M\Omega)^2.
+\]
+In $\mathbb Z[A,Y',k,U,b,c]$ with weights $(4,2,1,5,4,2)$, the center
+has $84$ monomials and weight $59$; the norm defect has $594$ monomials
+and weight $94$, with complete highest part
+\[
+ [D_{\rm norm}]_{94}
+ =8A^6(Y')^8k^8U^6b^2[A^2-6(Y')^4].
+\]
+The actual degrees of $(Q,M,G,V,Z_0,\Omega,L)$ are
+$(72,12,46,36,41,59,27)$.  The five summands in the decomposition have
+bounds $154,184,190,70,142$, respectively.  Put $q_0=\beta J$ and
+$k_0=\eta+\zeta$.  The complete actual highest form is
+\[
+ [\mathcal P_{190}]_{190}
+ =9\cdot2^{11}q_0^{74}w^{18}s^{52}i^{10}k_0^{32}
+   (q_0-F)^2(w^2-6s^2).
+\]
+Its coefficient at $J^{74}w^{20}s^{52}i^{10}\eta^{32}F^2$ is
+$9\cdot2^{11}\beta^{74}\ne0$.  Thus the degree is exactly $190$ for
+the actual fixed tuple.  The independent checker collects all center and
+defect coefficients, verifies the graph transformation and the leading
+form, reconstructs all four fixed numerals, and proves genuine input
+occurrence by nonzero modular derivatives.  These finite checks supplement
+the unbounded proof and do not decide consistency.
+
+For an explicit unrestricted-integer conversion of this companion, replace
+each positive variable $x_j$ by $1+a_j^2+b_j^2+c_j(c_j+1)$.  The
+three-square theorem makes this a surjection from $\mathbb Z^3$ onto the
+positive integers: represent $4m+1$ by three squares and separate its
+unique odd coordinate.  The resulting polynomial has $30$ unrestricted
+variables and degree $380$.  This corollary is not an unrestricted-arity
+record.

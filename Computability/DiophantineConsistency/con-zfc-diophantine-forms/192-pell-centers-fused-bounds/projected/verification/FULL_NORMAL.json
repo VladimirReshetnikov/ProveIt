@@ -1,0 +1,408 @@
+{
+  "new_checks": {
+    "verify.py": {
+      "corruptions_rejected": 15,
+      "profiles": [
+        {
+          "file": "integer106_degree32_linear.json",
+          "fused_residual_terms": 32,
+          "metrics": {
+            "coefficient_height_bound_exponent": 308,
+            "degree": 32,
+            "live_binary_operations": 1830,
+            "maximum_literal_absolute_value": 1099511627780,
+            "residuals": 47,
+            "variables": 106
+          },
+          "semantic_ports": 29,
+          "sha256": "319cd825b1114566ab6b6c4307b49d5c8ad363866d336aa14112e6e77ac94acf"
+        },
+        {
+          "file": "integer81_degree2097732_linear.json",
+          "fused_residual_terms": 32,
+          "metrics": {
+            "coefficient_height_bound_exponent": 7342557,
+            "degree": 2097732,
+            "live_binary_operations": 1711,
+            "maximum_literal_absolute_value": 1099511627780,
+            "residuals": 22,
+            "variables": 81
+          },
+          "semantic_ports": 29,
+          "sha256": "32feaf1f531189aa23ae85eee85e9d5e05c8b69e683fc24ef0f7f05963cabd59"
+        },
+        {
+          "file": "integer82_degree16964_linear.json",
+          "fused_residual_terms": 32,
+          "metrics": {
+            "coefficient_height_bound_exponent": 59805,
+            "degree": 16964,
+            "live_binary_operations": 1723,
+            "maximum_literal_absolute_value": 1099511627780,
+            "residuals": 23,
+            "variables": 82
+          },
+          "semantic_ports": 29,
+          "sha256": "6b4182da8bd7cc0ca742ae21a2f19f8f4aa46259f71b2ae9921c7125042f4c70"
+        }
+      ],
+      "scope": "Finite source identities, private guard binding, exact circuit changes, degree, height bound, input dependence; unbounded completeness is the separate proof.",
+      "status": "pass"
+    },
+    "verify_orientation_projection.py": {
+      "profiles": [
+        {
+          "file": "integer109_degree32_linear.json",
+          "inputs": 109,
+          "pivots": 100,
+          "residuals": 48
+        },
+        {
+          "file": "integer84_degree2097732_linear.json",
+          "inputs": 84,
+          "pivots": 125,
+          "residuals": 23
+        },
+        {
+          "file": "integer85_degree16964_linear.json",
+          "inputs": 85,
+          "pivots": 124,
+          "residuals": 24
+        }
+      ],
+      "scope": "Exact pullback of the new joint seed and unchanged certified monic substitutions",
+      "status": "pass"
+    },
+    "verify_orientation_seed.py": {
+      "joint_degree": 13,
+      "joint_residual_terms": 52044,
+      "new_sha256": "0c89151c6968f84c030935cc5e536c96235216b5544aa4e46de7348636888c3e",
+      "old_joint_residual_terms": 66371,
+      "pairs": 14,
+      "polynomial_degree": 26,
+      "recurrence_fixtures": 6936,
+      "rows": 148,
+      "status": "PASS",
+      "variables": 209
+    }
+  },
+  "parent_archive_sha256": "f18a92527300eee08a6e3d0c4a0ee38f2156bffabc5dfbf2f418e50ae72a521b",
+  "parent_replay": {
+    "checks": [
+      {
+        "check": "code/verify_joint.py",
+        "details": {
+          "all_old_private_rows_bound": true,
+          "complete_joint_residual_bound": true,
+          "distinct_frame_atoms": 33,
+          "exact_orientation_identity": true,
+          "frame_remainder": [
+            [
+              2,
+              []
+            ],
+            [
+              2,
+              [
+                0
+              ]
+            ],
+            [
+              2,
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "joint_polynomial_exact_degree": 26,
+          "joint_residual_exact_degree": 13,
+          "joint_residual_terms": 66371,
+          "joint_sha256": "9bd9f942016c0966b7b73c82fe4ecf394732ebecfd2469484429f7294fde9156",
+          "request_count": 16,
+          "source_sha256": "507ffcdf7d90ef5e892c62b0e35139453de8f02ed482e9f17c14d92cbacb2cfb",
+          "status": "PASS",
+          "unique_pairs": 14
+        },
+        "status": "PASS"
+      },
+      {
+        "check": "code/verify_projection.py",
+        "details": {
+          "method": "exact structural substitution, integer monic pivots, homogeneous coefficients, reverse derivatives",
+          "programs": [
+            {
+              "file": "integer100_degree64.json",
+              "metrics": {
+                "coefficient_height_bound_exponent": 390,
+                "degree": 64,
+                "eliminated_variables": 109,
+                "live_binary_operations": 1872,
+                "maximum_literal_absolute_value": 1099511627780,
+                "residuals": 39,
+                "source_variables": 209,
+                "stored_nodes": 3421,
+                "variables": 100
+              },
+              "rejected_mutations": 8,
+              "sha256": "caf6294a39a300f8b4edd0db5a5436e00b9a97f2b57e13a9f676d8a57c818a1b"
+            },
+            {
+              "file": "integer109_degree32.json",
+              "metrics": {
+                "coefficient_height_bound_exponent": 308,
+                "degree": 32,
+                "eliminated_variables": 100,
+                "live_binary_operations": 1895,
+                "maximum_literal_absolute_value": 1099511627780,
+                "residuals": 48,
+                "source_variables": 209,
+                "stored_nodes": 3444,
+                "variables": 109
+              },
+              "rejected_mutations": 8,
+              "sha256": "9ac1ef995d8a19e4b83937fe605e740fea6fe4c00129ea311545ca3a3ee6bbd1"
+            },
+            {
+              "file": "integer84_degree2097732.json",
+              "metrics": {
+                "coefficient_height_bound_exponent": 7342557,
+                "degree": 2097732,
+                "eliminated_variables": 125,
+                "live_binary_operations": 1775,
+                "maximum_literal_absolute_value": 1099511627780,
+                "residuals": 23,
+                "source_variables": 209,
+                "stored_nodes": 3569,
+                "variables": 84
+              },
+              "rejected_mutations": 8,
+              "sha256": "31b374b3ba2c17cf2d9b76e0a2293972fba89ea982156ceee303341ad25aae5a"
+            },
+            {
+              "file": "integer85_degree16964.json",
+              "metrics": {
+                "coefficient_height_bound_exponent": 59805,
+                "degree": 16964,
+                "eliminated_variables": 124,
+                "live_binary_operations": 1788,
+                "maximum_literal_absolute_value": 1099511627780,
+                "residuals": 24,
+                "source_variables": 209,
+                "stored_nodes": 3559,
+                "variables": 85
+              },
+              "rejected_mutations": 8,
+              "sha256": "27b1b23d44646fcb39e018927926aab9ccaf1c7201bab06eb35ce83fc64b6489"
+            },
+            {
+              "file": "integer86_degree1092.json",
+              "metrics": {
+                "coefficient_height_bound_exponent": 5341,
+                "degree": 1092,
+                "eliminated_variables": 123,
+                "live_binary_operations": 1797,
+                "maximum_literal_absolute_value": 1099511627780,
+                "residuals": 25,
+                "source_variables": 209,
+                "stored_nodes": 3550,
+                "variables": 86
+              },
+              "rejected_mutations": 8,
+              "sha256": "d58f09ba7237dcd6c7a2e78c40d256b19d9c2df58a0b51cf1003fe5a9fabd76a"
+            },
+            {
+              "file": "integer87_degree956.json",
+              "metrics": {
+                "coefficient_height_bound_exponent": 5093,
+                "degree": 956,
+                "eliminated_variables": 122,
+                "live_binary_operations": 1804,
+                "maximum_literal_absolute_value": 1099511627780,
+                "residuals": 26,
+                "source_variables": 209,
+                "stored_nodes": 3547,
+                "variables": 87
+              },
+              "rejected_mutations": 8,
+              "sha256": "a0d0f6591557dc8d12d389e64516bdf7e667c595d3cce076a32d9d02124d6a44"
+            },
+            {
+              "file": "integer88_degree444.json",
+              "metrics": {
+                "coefficient_height_bound_exponent": 2149,
+                "degree": 444,
+                "eliminated_variables": 121,
+                "live_binary_operations": 1807,
+                "maximum_literal_absolute_value": 1099511627780,
+                "residuals": 27,
+                "source_variables": 209,
+                "stored_nodes": 3516,
+                "variables": 88
+              },
+              "rejected_mutations": 8,
+              "sha256": "d17a09fe7cbd4203a7f9164df26925439524755d71458e3807226ce478fa0eff"
+            },
+            {
+              "file": "integer90_degree256.json",
+              "metrics": {
+                "coefficient_height_bound_exponent": 1297,
+                "degree": 256,
+                "eliminated_variables": 119,
+                "live_binary_operations": 1819,
+                "maximum_literal_absolute_value": 1099511627780,
+                "residuals": 29,
+                "source_variables": 209,
+                "stored_nodes": 3521,
+                "variables": 90
+              },
+              "rejected_mutations": 8,
+              "sha256": "e7b3320da564e3ca875d942fd4ca36e96a945be97a51390ad0d7b1199e8ed7af"
+            }
+          ],
+          "status": "PASS",
+          "unbounded_consistency_proof": "not supplied by finite verifier; inherited arithmetic theorem required"
+        },
+        "status": "PASS"
+      },
+      {
+        "check": "code/verify_report.py",
+        "details": {
+          "definition": {
+            "free_variables": 85,
+            "ordered_unit_pivots": 124,
+            "profiles": 8,
+            "requests": 16,
+            "source_rows": 147
+          },
+          "files": {
+            "free_indices.tex": "b08ac91a3fa5b06ec3b504c9c378e4e2d23bd91a70c7fb612b5990fc05ef58ac",
+            "metrics_table.tex": "c00d1ede908c75f1748ae5ac6526ea45da8b767402f2e5fa8065ee8ec2a2223a",
+            "pivot_table.tex": "514187a7726bf1d15052752f33f449a3258c8d683921dad0adc8db0660b5ff11",
+            "requests_table.tex": "48fc499283cc69c56274db39197fffb0ec74f42c2e0f55b47af253d34ea7df7b",
+            "source_rows.tex": "b7be4fc04ff6d83478ddbf289aed917c22d359f83d62fe06390e93faa52eb205"
+          },
+          "rejected_mutations": 4,
+          "status": "PASS"
+        },
+        "status": "PASS"
+      },
+      {
+        "check": "research/affine_center_obstruction/verify_series.py",
+        "details": {
+          "affine_X_plus_one_first_nonpolynomial_component": [
+            [
+              [
+                -1,
+                6,
+                4,
+                3,
+                1,
+                0
+              ],
+              "-3"
+            ]
+          ],
+          "affine_X_plus_one_first_nonpolynomial_weight": 39,
+          "critical_nonpolynomial_components": {
+            "37": [
+              [
+                [
+                  -3,
+                  7,
+                  4,
+                  3,
+                  1,
+                  0
+                ],
+                "3"
+              ],
+              [
+                [
+                  -2,
+                  6,
+                  4,
+                  3,
+                  1,
+                  0
+                ],
+                "-15"
+              ],
+              [
+                [
+                  -1,
+                  5,
+                  4,
+                  3,
+                  1,
+                  0
+                ],
+                "15"
+              ]
+            ],
+            "39": [
+              [
+                [
+                  -2,
+                  7,
+                  4,
+                  3,
+                  1,
+                  0
+                ],
+                "-3"
+              ],
+              [
+                [
+                  -1,
+                  6,
+                  4,
+                  3,
+                  1,
+                  0
+                ],
+                "12"
+              ]
+            ],
+            "41": [
+              [
+                [
+                  -1,
+                  7,
+                  4,
+                  3,
+                  1,
+                  0
+                ],
+                "3"
+              ]
+            ]
+          },
+          "proved_restricted_lower_bound": 106,
+          "ring": "Q[X,Y,k,U,b,c]",
+          "root_leading_weight": 65,
+          "scope": "For any nonzero affine r in Q[X,Y] and polynomial C in Q[X,Y,k,U,b,c], the weighted degree of C^2-16*r^2*G*V^2 is at least 106. This says nothing about other encodings or arbitrary nonlinear scales.",
+          "status": "PASS",
+          "target": "16*G*V^2",
+          "target_monomials": 543,
+          "weights": {
+            "U": 7,
+            "X": 2,
+            "Y": 2,
+            "b": 4,
+            "c": 3,
+            "k": 1
+          }
+        },
+        "status": "PASS"
+      }
+    ],
+    "semantic_scope": "ordinary proof in PROOF.md; inherited C222/ZF/ZFC calibration",
+    "source": "pinned and exact polynomial source bindings",
+    "status": "PASS"
+  },
+  "parent_source_bindings": 5,
+  "python_optimized": false,
+  "scope": "Finite replay of the exact source/polynomial chain. Unbounded theorems are separately proved; no consistency decision.",
+  "status": "pass"
+}

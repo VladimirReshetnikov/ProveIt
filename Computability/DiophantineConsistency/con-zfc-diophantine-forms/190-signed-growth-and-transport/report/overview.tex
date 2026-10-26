@@ -1,0 +1,137 @@
+\section{Results, meaning, and comparison}
+\label{sec:overview}
+
+The central unrestricted-integer deliverable is a fully specified polynomial
+\begin{equation}\label{eq:Q209}
+ Q_{209}(\xi_0,\ldots,\xi_{208})
+   =\sum_{j=0}^{148}R_j(\boldsymbol\xi)^2.
+\end{equation}
+Every \(R_j\) is an explicitly listed polynomial in \(\Z[\boldsymbol\xi]\)
+of degree at most two. Appendix~\ref{app:residuals} prints every residual;
+\artifact{quartic/equations/affine209_F64/equation.json} and its collected
+expansion are the corresponding exact data. No parameter remains to be
+chosen by an undecidable procedure.
+
+\begin{theorem}[Consistency equivalence]\label{thm:main}
+For the fixed polynomial \(Q_{209}\) in \eqref{eq:Q209},
+\[
+ \ZFC\vdash
+ \left(\neg\exists\boldsymbol\xi\in\Z^{209}\;
+                    Q_{209}(\boldsymbol\xi)=0\right)
+       \longleftrightarrow\Con(\ZFC).
+\]
+The same statement holds for the delivered second quartic and the three
+pooled polynomials, in their respective unrestricted-integer dimensions.
+The separately specified polynomial \(P_{10}\) of
+Section~\ref{sec:compact} satisfies
+\[
+ \ZFC\vdash
+ \left(\neg\exists\boldsymbol x\in\Zp^{10}\;
+                    P_{10}(\boldsymbol x)=0\right)
+       \longleftrightarrow\Con(\ZFC).
+\]
+\end{theorem}
+
+The proof composes the new arithmetic reductions below with the precise
+inherited calibrations in Section~\ref{sec:boundary}. The consistency
+predicate is the absence of a finite syntactic refutation in the
+repository's fixed effective presentation \code{ZFCax_s}, with proof
+relation \code{BProv} and contradiction \code{Form.fBot}. The quantifiers
+are internal to ZFC; the assertion does not restrict proof codes to
+externally standard integers. It assumes neither consistency nor
+inconsistency and proves neither one.
+
+\subsection{The delivered profiles}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrrl@{}}
+\toprule
+Profile & Variables & Degree & Squares & Monomials & Height / cost\\
+\midrule
+Sparse quartic, \(\Z\) & 209 & 4 & 149 & 5,486 & height \(2^{32}\)\\
+Lower-height quartic, \(\Z\) & 209 & 4 & 149 & 6,654 & height \(2^{30}\)\\
+Pooled, \(\Z\) & 130 & 12 & 70 & circuit & 2,475 operations\\
+Pooled, \(\Z\) & 116 & 16 & 56 & circuit & 2,433 operations\\
+Pooled, \(\Z\) & 107 & 32 & 47 & circuit & 2,419 operations\\
+Centered transport, \(\Zp\) & 10 & 190 & -- & circuit & 119 operations\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For the quartics, height is the largest absolute coefficient of the
+\emph{collected final polynomial}, not a literal in its evaluator.
+All monomial counts also refer to collected final polynomials. For the
+circuit profiles, the finite straight-line program is the complete
+polynomial specification; a full expanded monomial count is not claimed.
+An operation is one live binary addition, subtraction, or multiplication;
+squaring and multiplication by a fixed integer are charged, while reuse is
+free. This is an arithmetic count, not a bit-complexity estimate.
+
+The inspected repository snapshot is
+\begin{center}\small
+\code{d123610bc98fef2006bff1c9466bc3f1221003e7}.
+\end{center}
+It contains placed packages through \code{178-polynomial-centers}, together
+with seven incoming ZIP archives. Comparisons below include those incoming
+archives rather than treating the last placed package as the only baseline.
+
+The immediate unrestricted quartic parent has 210 variables, 150 squared
+quadratics, 5,282 monomials, and height \(2^{40}\). The sparse new quartic
+saves one variable and one square and divides the height by 256, at the
+cost of 204 additional monomials. The second new quartic divides the
+parent's height by 1,024, at a larger support cost. These are explicit
+tradeoffs, not simultaneous improvements in every measure.
+
+The corresponding older pooled profiles have 131 variables at degree 12,
+117 variables at degree 16, and 108 variables at degree 32. The new composition saves one variable
+in each case, with unchanged degrees. For ten positive variables the
+relevant points are source 172's degree 214 at 87 operations, source 178's
+degree 208 at 116 operations, and the incoming affine-centering result's
+degree 206 at 90 operations. Our degree 190 costs 119 operations. It
+reduces the lowest degree among these inspected ten-positive-variable
+constructions by 16, approximately 7.77\%, while using more operations.
+
+There is no claim that 209 is the least possible integer dimension, that
+190 is the least possible degree with ten positive variables, or that
+these constructions are globally simplest. The repository already contains
+much smaller-variable representations in other degree and coefficient
+regimes. The word ``simplest'' requires a choice among dimension, degree,
+coefficient height, support, evaluation length, and proof complexity.
+
+\subsection{What is new in this iteration}
+
+The first reduction replaces a separate positive square horizon by
+\(t=2+4z\), and recovers its sign from the remaining exponent and endpoint
+certificates. A large \emph{absolute} lower bound suffices before the sign
+is known. This allows the sharp positive-center Pell bound to be applied
+only after \(t>0\), avoiding an incorrect estimate on negative centers.
+The retained divisibility then permits an integral rescaling of the growth
+coordinate. A change of residual basis yields a second height tradeoff.
+
+The compact reduction uses an integer polynomial approximation to an
+entire Pell expression. The free quotient in its source admits a small
+auxiliary index that invalidates a naive transport estimate. The new
+transport \(L=UEb^2\) gives a uniform bound including that index, while
+keeping the cross term below the degree of the centered norm defect.
+
+The pooled reductions compose the corrected signed growth interface with
+four-base reciprocal pooling and explicit acyclic eliminations. The pool
+does not need pairwise coprime moduli. Its soundness comes from a strict
+bound on a signed rational sum of squared errors.
+
+\subsection{Why a different formal calculus alone is insufficient}
+
+The direct branch uses the numerical calculus \(\Ccal\) through its
+independent refutation calibration; it does not simulate the K215 machine
+or instantiate Jones's universal polynomial. The compact branch retains
+its native/compiler/K215 ancestry. These are different constructions.
+
+Alternative logical encodings remain relevant, but they need a complete
+unbounded compiler and explicit coefficients before yielding a competitive
+equation. Formisano, Gavazzi, and Omodeo explore a relation-algebra
+presentation of NBG in this direction~\cite{fgo}. General variable-count
+theorems, including Sun's recent ten-integer-variable representation,
+likewise do not by themselves specify a particularly small fixed
+consistency instance~\cite{sun10}. The present report measures actual
+emitted polynomials.

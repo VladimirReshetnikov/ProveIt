@@ -1,0 +1,181 @@
+\section{Complete fixed coefficients of the ten-variable equation}
+\label{app:compact-coefficients}
+
+This appendix defines the four integers $\beta,K_0,M_C,M_F$ used in the
+degree-190 equation.  Every index, digit, tile, finite set, sum, product and
+floor appearing below is part of a fixed finite recipe.  None introduces
+an additional quantified unknown.  The recipe does not inspect whether
+ZFC is consistent and does not search for a polynomial zero.
+
+\paragraph{Provenance and notation.}
+These are the unchanged BFS943/radix67 constants retained by source~172
+at the inspected ProveIt commit
+\texttt{d123610bc98fef2006bff1c9466bc3f1221003e7}.
+The archived finite specification is
+\path{compact/source/upstream172/inherited/strict/upstream_lucas/parent/proof_sources/indexed_constants.tex}.
+The operative reconstruction is
+\path{compact/source/rebuild_coefficients.py}.
+Only the fixed-coefficient recipe is reproduced here; the historical
+equation surrounding that recipe is not part of the present definition.
+Its constant $K$ is denoted $K_0$ to match the body of this paper.
+All other notation in this appendix is local to the finite recipe.
+
+\subsection{The four integers}
+
+Put
+\[
+ \rho=2^{67},\qquad B=\rho^{8807},\qquad
+ \beta=B-1=2^{590069}-1,\qquad
+ G_m(x)=\sum_{j=0}^{m-1}x^j.
+\]
+Define the finite exponent set
+\begin{align*}
+ \mathcal E={}&\{0,\ldots,942\}\cup\{983,\ldots,992\}
+                 \cup\{1003,\ldots,1011\}\\
+ &\cup\{1013,\ldots,1031\}
+                 \cup\{1063,1064,1095,2195,3296\}.
+\end{align*}
+Then the other three fixed integers are
+\begin{align*}
+ M_C={}&B-1-\sum_{e\in\mathcal E\setminus\{1\}}\rho^e
+                     -2\rho^{1063},\\
+ M_F={}&B-1+4+(2^{51}-2)(\rho^{4393}+\rho^{5495})\\
+       &+\rho^{1013}G_{10}(\rho)+\rho^{1065}G_9(\rho)
+                     +\rho^{2195}+\rho^{3296}\\
+       &+(2^{65}-1)\rho^{8792}G_{13}(\rho)
+                     +(2^{19}-1)\rho^{8805},\\
+ K_0={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}
+                     +\rho^{8849}\\
+       &+(\rho^{4393}+\rho^{5495})\Phi(1/\rho),
+\end{align*}
+where
+\begin{align*}
+ \Phi(x)={}&(1+2^{51})G_{943}(x)
+           -2^{10}\sum_{i=0}^{942}v(t_i)x^i
+           +\sum_{(b,e,m)\in\mathcal C}2^b x^eG_m(2x),\\
+ \mathcal C={}&\{(10,1023,8),(18,1013,9),(27,1003,8),
+                  (35,983,9),\\
+             &\quad(44,1031,1),(45,1022,1),(46,1011,1),
+                  (47,992,1),\\
+             &\quad(48,1095,1),(49,2195,1),(50,3296,1)\}.
+\end{align*}
+The tiles $t_i$ and their integer values $v(t_i)$ are specified next.
+The largest exponent in $\Phi$ is 3296, smaller than both 4393 and 5495.
+Consequently the displayed rational intermediate in $K_0$ expands into
+integer powers of $\rho$.  The four resulting integers are positive.
+
+\subsection{The 943 indexed fixed tiles}
+
+Use the 430 actions $(u_j,v_j,d_j)$ defined in the next subsection.  Set
+\begin{align*}
+ h(q,b)&=2(q+1)+b,\\
+ \mathcal R&=\{u_j:d_j=1,\ 0\leq j<430\},
+ &\mathcal L&=\{u_j:d_j=0,\ 0\leq j<430\},\\
+ r_q&=6+|\mathcal R\cap\{0,\ldots,q-1\}|,
+ &l_q&=205+|\mathcal L\cap\{0,\ldots,q-1\}|.
+\end{align*}
+An interval ending at $-1$ is empty.  The following table defines every
+$t_i=(w,n,e,s)$ for $0\leq i\leq942$.  The index ranges and the actions
+are fixed data, not parameters of the Diophantine equation.
+
+\begingroup
+\renewcommand{\arraystretch}{1.35}
+\begin{longtable}{@{}p{0.45\linewidth}p{0.51\linewidth}@{}}
+\toprule
+Index $i$ and fixed range & Tile $t_i=(w,n,e,s)$\\
+\midrule
+\endfirsthead
+\toprule
+Index $i$ and fixed range & Tile $t_i=(w,n,e,s)$\\
+\midrule
+\endhead
+$0$ & $(2,435,3,1)$\\
+$1$ & $(5,0,0,0)$\\
+$j+2$, where $j=2q+b<430$ &
+ $((1-d_j)l_{u_j},\ h(q,b),\ d_jr_{u_j},\ v_j)$\\
+$432+b$, $b\in\{0,1\}$ & $(0,h(215,b),0,h(215,b))$\\
+$434+b$, $b\in\{0,1\}$ & $(0,b,0,b)$\\
+$424+2r_q+b$, $q\in\mathcal R$, $b\in\{0,1\}$ &
+ $(r_q,b,0,h(q,b))$\\
+$424+2l_q+b$, $q\in\mathcal L$, $b\in\{0,1\}$ &
+ $(0,b,l_q,h(q,b))$\\
+$924+j$, $0\leq j<4$ &
+ $(0,j+430\lfloor j/2\rfloor,0,438)$\\
+$928$ & $(2,434,2,0)$\\
+$929$ & $(3,436,4,4)$\\
+$930$ & $(4,436,4,0)$\\
+$497+t$, $t\in\{434,435,436\}$ & $(1,438,1,t)$\\
+$934+3a+b-6\lfloor a/4\rfloor$,\newline
+ $a\in\{0,1,4\}$, $b\in\{0,1,2\}$ & $(a,437,b,437)$\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+For each tile $t=(w,n,e,s)$, define
+\[
+ v(t)=w+2^8n+2^{17}e+2^{25}s+127\cdot2^{34}.
+\]
+
+\subsection{A closed decoder for the 430 actions}
+
+For fixed nonnegative integers define
+\[
+ D_b(A,k)=\left\lfloor\frac{A}{b^k}\right\rfloor\bmod b,
+ \qquad
+ a\bmod b=a-b\left\lfloor\frac{a}{b}\right\rfloor.
+\]
+Let $\mathcal A$ be the single fixed integer specified in the next
+subsection.  First split it into three fixed blocks:
+\[
+ N=\mathcal A\bmod2^{636},\qquad
+ T_0=\left\lfloor\frac{\mathcal A}{2^{636}}\right\rfloor
+          \bmod2^{1675},\qquad
+ E_0=\left\lfloor\frac{\mathcal A}{2^{2311}}\right\rfloor.
+\]
+For $0\leq q<215$, $b\in\{0,1\}$ and $j=2q+b$, put
+\begin{align*}
+ \nu_j&=D_2(N,j),
+ &\sigma_j&=\sum_{k=0}^{j-1}\nu_k,\\
+ m_q&=D_2(N,430+q),
+ &\tau_q&=\sum_{k=0}^{q-1}m_k,\\
+ F_q&=14(1-m_q)+m_qD_{16}(E_0,\tau_q),\\
+ u_j&=\nu_j(1+\sigma_j)
+              +(1-\nu_j)D_{216}(T_0,j-\sigma_j),\\
+ v_j&=D_2(F_q,2b),
+ &d_j&=D_2(F_q,2b+1).
+\end{align*}
+Empty sums are zero.  In particular,
+$(v_0,d_0,u_0)=(1,1,1)$; the constructor tile uses this actual first
+target, including its state renaming.
+
+\subsection{The 436-character numeral}
+
+The alphabet, in increasing order of digit values $0,\ldots,61$, is
+\begin{center}
+\texttt{0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}.
+\end{center}
+Concatenate the following eight lines without spaces or line breaks.
+Interpret their 436 characters as digit values $e_0,\ldots,e_{435}$ in
+that alphabet, and set
+\[
+ \mathcal A=\sum_{j=0}^{435}e_j62^{435-j}.
+\]
+\begin{lstlisting}[basicstyle=\small\ttfamily,breaklines=false]
+BxEnhvy6NipzkWmROo0GsA3uK3twWLxscLq20UTumy5Cdu461LwD6g7RDNzF8Y
+iYDFTpB8ehAypd7d6OsOL4APamnJeNXQypUezCmW9n4oXP6XfgmiWuAWZ8ZJ7U
+OP7gu4kVdlGZqZHULQMar1dXNeJW4i7oNVI8usp8BlovjjZbwPCovZI328fRUq
+4q92R81s5GjWQaQfGhkq9UYMK3rRMaBmsOIBkJqc2cj2VRIZ6mjzkBIOkW9SjZ
+FzeA6J5u4j3sBL3SdgwXzM9mHvQivu8EJ1TBTpRhHDqZIbmYgwQ8VqTAFotl6F
+We1YC554GKrVHsA8oUGKSA6F6k5KREBSD0Tgd7bFALY84LLbpw574BQyvdoHrl
+0Oe35uwDf15DpT6VJWZBjSbHPpPAINYTte0eUxnTFTKBlGj8Am6sb1gLldh8WZ
+8P
+\end{lstlisting}
+
+These data close the coefficient definitions: they determine the actions,
+then all 943 tiles, then $\Phi$, and finally the four integers.
+The supplied reconstruction checks the exact integers against the
+authoritative payloads, independently of the gate evaluator.  The finite
+decoder, tile indices, exponent ranges and numeral above agree with that
+reconstruction.  This appendix supplies fixed coefficients; the proof
+of their connection to refutations is the separately identified inherited
+calibration.
