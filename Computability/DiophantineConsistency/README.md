@@ -23,6 +23,14 @@ validator and Rotation240 consistency theorems provide reusable arithmetic
 machinery; adapting it to the exact215 machine remains open. The
 [source audit](research/ha-current-equation-constructive-audit-20261026.md)
 also covers the owner's K215 verification pointer.
+The [exact215 arithmetic run](Lean/DiophantineConsistency/ArithmeticMachineRun215.lean)
+is now represented and total at every internal time in every IΣ1 model,
+with exact standard-machine semantics. Its
+[independent replay](reviews/arithmetic-machine215-root.md) passed all eight
+machine leaves and24 standard-only axiom reports. The
+[C222 calibration audit](research/ha-c222-internalization-audit.md) separates
+the remaining seed-axiom and counter4 runtime bridges to the existing internal
+validator theorem; run totality alone does not prove that equivalence.
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence
@@ -31,6 +39,10 @@ HA now also [proves double-negation stability](Lean/DiophantineConsistency/HAEqu
 of that exact no-zero sentence, by a purely logical derivation. This is
 an ingredient of the proof transfer; it does not prove the consistency
 equivalence.
+The [Foundation-to-HA syntax bridge](Lean/DiophantineConsistency/FoundationPAHFSyntax.lean)
+also now has an [independent replay](reviews/foundation-pahf-syntax-root.md),
+including nested-binder substitution and variable-shift checks. Actual
+proof-tree transfer and translated arithmetic axioms remain separate work.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the
@@ -71,6 +83,10 @@ has now passed at09eaa:191 fresh compilations and170 authenticated reuses.
 After merging the five upstream proof changes, a separate
 [15-command refresh](reviews/current-positive-zero2011-refresh-replay.md)
 also passed with54 standard-only reports; unchanged intermediate objects
+were explicitly reused. After the next13 upstream proof simplifications,
+a [94-command refresh](reviews/ha-postmerge-refresh-20261026.md) passed
+with191 standard-only reports, including the maintained and new mixed-carrier
+endpoints;353 prerequisite objects and twelve unchanged intermediate clients
 were explicitly reused. Further frontier equations,
 size reductions and the HA proof-existence theorem remain active work.
 The new [direct witness interface](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
@@ -95,13 +111,17 @@ authenticates both complete files and all 715 digits in a fresh PDF extraction.
 A fresh one-page build is byte-identical, and its whole page was visually checked.
 Subscripts in the fixed tile table and decoder index constant data.
 
-The new [13/73/126 arithmetic variant](research/thirteen-corrected-strong126/README.md)
-preserves the complete positive zero set of the normalized13-variable form
-at the CURRENT2011 ports, spending two operations to reduce degree128 to126.
-Its consistency equivalence is externally Lean-checked, and its complete
-graph/degree/whole-port audit has independent root replay. It remains a
-separate tradeoff; the14/65/150 decimal display is preserved. HA
-proof-existence formalization remains governed by the plan above.
+The new [mixed-carrier variants](research/thirteen-lv-carrier122/README.md)
+have **13 positive variables with72 operations/degree124 and74 operations/degree122**,
+at all four complete CURRENT2011 ports. Explicit inverse polynomial maps
+preserve their entire positive zero sets, with positivity derived from each
+zero. Both consistency equivalences are externally Lean-checked; their
+complete graph/degree/whole-port audits passed independent normal/optimized
+[root replay](reviews/thirteen-lv-carrier122-root.md). The72/124 point
+improves both metrics of the preserved
+[73/126 checkpoint](research/thirteen-corrected-strong126/README.md).
+The71/128 and14/65/150 points remain separate tradeoffs. The decimal display
+is preserved, and HA proof-existence formalization remains open.
 
 The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 uses **47,313 raw fixed-integer bytes**, 10,812 below the preceding2471

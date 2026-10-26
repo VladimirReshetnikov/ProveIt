@@ -1,6 +1,6 @@
 import BusyBeaver.ZFC.KDense215
 import Mathlib.Data.Fin.Basic
-import Mathlib.Tactic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 /-!
 # The displayed decimal decoder and the checked 215-state machine

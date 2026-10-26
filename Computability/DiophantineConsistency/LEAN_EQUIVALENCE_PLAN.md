@@ -52,6 +52,25 @@ No global optimality theorem is requested or inferred from that ledger.
 
 ## Current gaps and implementation order
 
+After merging the next13 upstream proof simplifications at891c86e0b2,
+the explicit [post-merge refresh](reviews/ha-postmerge-refresh-20261026.md)
+passed94 fresh commands and191 standard-only reports, including the
+maintained and mixed-carrier endpoints. Its447-module inventory contains
+353 authenticated reuses and twelve unchanged clients of fresh modules;
+this is a scoped refresh, not a new fresh whole-closure validation.
+
+The exact215 machine now also has an independent arithmetic graph/step/run
+specialization, including total unique evaluation at every internal IΣ1
+time and exact standard whole-tape semantics. See its
+[root replay](reviews/arithmetic-machine215-root.md): eight fresh leaves,
+24 standard-only reports and124 authenticated cached prerequisites.
+The one-line decoder import repair retains all proof bodies and machine
+data; a separate native endpoint regression passed. This does not establish
+the missing internal consistency calibration or an HA proof. The
+[C222 audit](research/ha-c222-internalization-audit.md) and
+[HA arithmetic adapter audit](research/ha-arithmetic-translation-adapter-audit.md)
+state the remaining concrete interfaces.
+
 The older native modules treat the457-mode,89-bit compact54 construction;
 their strongest local-mask endpoint is `NativeLocalMask54.source_local_masks`.
 The current942-tile,47-bit construction now has checked literal decimal
@@ -922,6 +941,20 @@ record eleven standard-only reports. The separate complete graph gives
 checks and all72 leading terms. All four actual ports are rebuilt in the
 normal/optimized auditor. This is a two-operation/two-degree tradeoff,
 with no Lean exact-degree or HA proof-existence endpoint claimed.
+
+`ThirteenLVCarrier` now gives both complete current-port mixed-carrier
+variants:72 operations/degree124 and74 operations/degree122. Its inverse
+polynomial maps change only m and preserve every positive zero of their
+respective71/128 and73/126 parents. Positivity of the subtractive map is
+derived from the actual norm equations, including zero transport and
+negative signed ordinates. Both literal current polynomials have closed
+external no-positive-zero iff actual ConZFC theorems. Fresh independent
+main/check replay passed16 standard-only reports; separate normal/optimized
+finite checks reproduce the exact graphs, full ports and complete leading
+polynomials. See the [root review](reviews/thirteen-lv-carrier122-root.md).
+These fresh leaves reuse accepted prerequisites; no new whole-closure,
+Lean exact-degree or HA proof-existence theorem is claimed. The72/124
+profile improves both metrics of73/126; the latter remains preserved.
 
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now

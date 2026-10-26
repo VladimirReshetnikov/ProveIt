@@ -24,6 +24,21 @@ Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
 
+26 October mixed-carrier improvement: the complete current-port
+[thirteen-variable variants](research/thirteen-lv-carrier122/README.md)
+give **72 operations/degree124 and74 operations/degree122**, with the same
+47313 raw fixed-integer bytes. Replacing V² by L*V in the signed carrier
+spends one multiplication and reduces its degree. Explicit inverse changes
+of m preserve every positive zero; the subtractive map's positivity is
+derived from the actual norm equations. Both closed external ConZFC
+equivalences passed fresh independent Lean replay with16 standard-only
+reports. Independent normal/optimized finite checks reconstruct all ports,
+verify both entire graphs and resolve every degree cancellation. See the
+[root review](reviews/thirteen-lv-carrier122-root.md). The72/124 point
+improves the earlier73/126 point in both metrics;74/122 is another tradeoff.
+The underlying mixed-product lead is credited, without a novelty or minimum
+claim. The maintained decimal14/65/150 page and HA target are unchanged.
+
 26 October new tradeoff: the
 [corrected thirteen-variable strong factor](research/thirteen-corrected-strong126/README.md)
 gives **13 positive unknowns,73 integer-leaf operations and exact degree126**
@@ -214,6 +229,7 @@ zero-set maps, full coefficient recipes and domain/metric distinctions.
 | Integers | 315 / 316 | not optimized | 4 | Complete fixed58-shift parents;217/218 rows,5743/5737 terms,height128446,row height256; separate full fast verification accepted |
 | Integers | 315 / 316 | not optimized | 4 | Preserved raw parents;217/218 rows,7999/7987 terms,height14250071 |
 | Positive integers | **14** | **65** | **150** | Maintained complete decimal page and every constant; full positive maps, exact graph, source and visual checks pass |
+| Positive integers | 13 | 72 / 74 | 124 / 122 | Complete CURRENT2011 mixed-carrier graphs; all-positive inverse maps and external Lean ConZFC endpoints, independent finite degree/whole-port checks |
 | Positive integers | 15 | 66 | 157 | Preserved complete P66 pages and coefficient checkpoints |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 96 | 70 | Free positive J and an identical polarized norm tail |
