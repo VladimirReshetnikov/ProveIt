@@ -38,9 +38,7 @@ private theorem shifted_digit_bounds {t : ℕ} (ht : 1 ≤ t) {z : ℤ}
     have := (abs_lt.mp hz).1
     linarith
   have hpow : (2 : ℤ) ^ t = 2 * 2 ^ (t - 1) := by
-    rw [← pow_succ']
-    congr 1
-    omega
+    rw [← pow_succ', Nat.sub_add_cancel ht]
   have hlt : z + 2 ^ (t - 1) < 2 ^ t := by
     have := (abs_lt.mp hz).2
     linarith
@@ -59,12 +57,8 @@ theorem selectedMask_eq {n : ℕ} (t : ℕ) (positions : Finset ℕ)
       (2 ^ (t - 1) - 1) * ∑ i ∈ positions, (2 ^ t) ^ i := by
   rw [selectedMask, ofDigits_map_range]
   simp only [ite_mul, zero_mul]
-  rw [← Finset.sum_filter]
-  have hf : (range n).filter (fun i => i ∈ positions) = positions := by
-    ext i
-    simp only [mem_filter, mem_range]
-    exact ⟨fun h => h.2, fun hi => ⟨hp i hi, hi⟩⟩
-  rw [hf, Finset.mul_sum]
+  rw [← Finset.sum_filter,
+    Finset.filter_mem_eq_of_subset (fun i hi => mem_range.mpr (hp i hi)), Finset.mul_sum]
 
 /-- No-carry of one mask is exactly the conjunction of the selected signed zeros. -/
 theorem tau_shifted_selected_iff {t n : ℕ} (ht : 1 ≤ t)
@@ -130,9 +124,7 @@ theorem doubledMask_eq {t n : ℕ} (ht : 1 ≤ t) (positions : Finset ℕ)
     (hp : ∀ i ∈ positions, i < n) :
     2 * selectedMask t n positions = (2 ^ t - 2) * ∑ i ∈ positions, (2 ^ t) ^ i := by
   have hpow : 2 ^ t = 2 * 2 ^ (t - 1) := by
-    rw [← pow_succ']
-    congr 1
-    omega
+    rw [← pow_succ', Nat.sub_add_cancel ht]
   have hhalf : 1 ≤ 2 ^ (t - 1) := Nat.one_le_two_pow
   have hfactor : 2 ^ t - 2 = 2 * (2 ^ (t - 1) - 1) := by omega
   rw [selectedMask_eq t positions hp, hfactor]
@@ -224,9 +216,7 @@ theorem doubled_shifted_rowProduct_cast {m r t : ℕ} (hr : 0 < r) (ht : 1 ≤ t
   push_cast
   rw [shifted_rowProduct_cast hr t a u hb]
   have hpow : (2 : ℤ) ^ t = 2 * 2 ^ (t - 1) := by
-    rw [← pow_succ']
-    congr 1
-    omega
+    rw [← pow_succ', Nat.sub_add_cancel ht]
   rw [hpow]
   ring
 

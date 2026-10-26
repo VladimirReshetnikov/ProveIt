@@ -171,3 +171,19 @@ ROOT read the sources and authored this change. Both module/olean rebuilds
 and both existing focused check files returned zero; all printed theorem
 axioms are standard. `v_finite_full_static` independently read the helper
 contracts and complete changed packing proofs and reported PASS.
+
+## Mask lookup and predecessor powers
+
+`LowMaskCoding` decreases from405 to395 lines and `MultiTargetCarry` from273
+to263, removing20 lines. Support sums reuse `Finset.filter_mem_eq_of_subset`,
+the unique-coordinate proof uses the supplied injectivity directly, and three
+predecessor-power identities use `Nat.sub_add_cancel` with their existing
+positive-exponent hypothesis. Definitions, imports, theorem statements and
+all range, support and injectivity premises are unchanged.
+
+`v_finite_full_static` directly observed nine zero exits: both rebuilt modules,
+both existing focused checks and five clients (`MaskPopulation`,
+`NativeQuadraticSource52`, `NativeSparseBounds52`, `SelectiveCarry`,
+`SparseBorrowCarry`). All printed axioms are standard. ROOT read all six
+changed proof bodies; `alternate_encoding_research` independently reviewed
+the changes in context and reported PASS.

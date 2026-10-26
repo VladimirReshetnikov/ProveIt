@@ -39,11 +39,7 @@ def codeList (len : ℕ) (S : Finset ℕ) (x : ℕ → ℕ) : List ℕ :=
 private theorem sum_range_support {S : Finset ℕ} {len : ℕ}
     (hS : S ⊆ range len) (f : ℕ → ℕ) :
     (∑ j ∈ range len, if j ∈ S then f j else 0) = ∑ j ∈ S, f j := by
-  have hf : (range len).filter (fun j => j ∈ S) = S := by
-    ext j
-    simp only [mem_filter]
-    exact and_iff_right_of_imp (fun hj => hS hj)
-  rw [← Finset.sum_filter, hf]
+  rw [← Finset.sum_filter, Finset.filter_mem_eq_of_subset hS]
 
 theorem maskList_length (B b len : ℕ) (S : Finset ℕ) :
     (maskList B b len S).length = len := by simp [maskList]
@@ -314,13 +310,7 @@ theorem indexedMask_eq {n : ℕ} (B b len : ℕ) (w : Fin n → ℕ)
 
 theorem coordinateAt_weight {n : ℕ} (w : Fin n → ℕ) (hw : Function.Injective w)
     (x : Fin n → ℕ) (i : Fin n) : coordinateAt w x (w i) = x i := by
-  unfold coordinateAt
-  rw [Finset.sum_eq_single i]
-  · simp
-  · intro j _ hji
-    rw [if_neg (fun h => hji (hw h))]
-  · intro hi
-    exact (hi (mem_univ i)).elim
+  simp [coordinateAt, hw.eq_iff]
 
 theorem indexedCode_eq_linearCode {n : ℕ} (B : ℕ) (w : Fin n → ℕ)
     (hw : Function.Injective w) (x : Fin n → ℕ) :
