@@ -1,4 +1,5 @@
 import DiophantineConsistency.WangTiles942PhysicalData
+import Mathlib.Data.Finset.Sort
 
 /-! Exact binding of the checked physical-order data to the printed floor rank.
 Only adjacent numerical inequalities are checked; all pairwise and coverage
@@ -67,34 +68,8 @@ theorem nonStartIndex_bijective : Function.Bijective nonStartIndex :=
 /-- A strictly increasing self-map of a finite ordinal fixes every point. -/
 theorem strictMono_fin_eq_self {n : ℕ} (f : Fin n → Fin n) (hf : StrictMono f)
     (i : Fin n) : f i = i := by
-  have hs := Finite.surjective_of_injective hf.injective
-  have fixed : ∀ k, ∀ hk : k<n, (f ⟨k,hk⟩).val=k := by
-    intro k
-    induction k using Nat.strong_induction_on with
-    | h k ih =>
-      intro hk
-      obtain ⟨j,hj⟩ := hs ⟨k,hk⟩
-      by_cases hlt : j.val<k
-      · have hjfix := ih j.val hlt j.isLt
-        have hjval := congrArg Fin.val hj
-        change (f j).val=j.val at hjfix
-        change (f j).val=k at hjval
-        omega
-      · by_cases he : j.val=k
-        · have he' : j=⟨k,hk⟩ := Fin.ext he
-          simpa only [he'] using congrArg Fin.val hj
-        · have hl : (⟨k,hk⟩ : Fin n)<j := by
-            change k<j.val
-            omega
-          have hm := hf hl
-          have hv : (f ⟨k,hk⟩).val<k := by
-            rw [hj] at hm
-            exact hm
-          have hh := ih (f ⟨k,hk⟩).val hv (f ⟨k,hk⟩).isLt
-          have he' : f (f ⟨k,hk⟩)=f ⟨k,hk⟩ := Fin.ext hh
-          have hc := congrArg Fin.val (hf.injective he')
-          omega
-  exact Fin.ext (fixed i.val i.isLt)
+  exact DFunLike.congr_fun
+    (OrderHom.eq_id_of_injective (⟨f, hf.monotone⟩ : Fin n →o Fin n) hf.injective) i
 
 def rankMap (j : Fin 941) : Fin 941 :=
   ⟨strictRank nonStartWeight (nonStartIndex j), strictRank_lt_card _ _⟩

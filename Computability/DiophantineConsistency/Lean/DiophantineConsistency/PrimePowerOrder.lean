@@ -26,15 +26,8 @@ theorem not_dvd_of_dvd_sub_one {p g : ℕ} (hp : Nat.Prime p)
 /-- Natural subtraction is used only after proving the needed lower bound. -/
 theorem pow_cast_eq_one_iff {g m : ℕ} (hg : 1 ≤ g) (k : ℕ) :
     (g : ZMod m)^k = 1 ↔ m ∣ g^k-1 := by
-  have hk : 1 ≤ g^k := one_le_pow₀ hg
-  constructor
-  · intro h
-    apply (CharP.cast_eq_zero_iff (ZMod m) m (g^k-1)).mp
-    rw [Nat.cast_sub hk, Nat.cast_pow, Nat.cast_one, h, sub_self]
-  · intro h
-    have hz := (CharP.cast_eq_zero_iff (ZMod m) m (g^k-1)).mpr h
-    rw [Nat.cast_sub hk, Nat.cast_pow, Nat.cast_one] at hz
-    exact sub_eq_zero.mp hz
+  rw [← CharP.cast_eq_zero_iff (ZMod m) m (g^k-1),
+    Nat.cast_sub (one_le_pow₀ hg), Nat.cast_pow, Nat.cast_one, sub_eq_zero]
 
 /-- LTE gives exact valuation k+1, not merely a divisibility lower bound. -/
 theorem exact_lift {p g : ℕ} (hp : Nat.Prime p) (ho : Odd p)
