@@ -1,0 +1,430 @@
+\section{The incoming Pell growth arithmetic interface}\label{sec:incoming210}\label{g210:sec:interface}
+
+This section retains the complete incoming Pell Growth 210 arithmetic
+argument, rather than claiming it as a new result of this round~\cite{growth210}. Its source
+and independent fresh replay are identified in Section~\ref{sec:comparison}.
+The later Round23 affine horizon and coefficient changes compose with this
+argument at explicitly checked rows.
+
+We describe the semantic coordinates before the exact projections. They are
+not all separate coordinates after projection; the incoming finite residual array is supplied in its source closure.
+
+The positive horizon has the cofinal form
+\begin{equation}\label{g210:eq:horizon}
+t=16+4z^2.
+\end{equation}
+The coordinate $F$ provides formula weights $1+jF$. The quantity
+$B=\binom{F+t}{t}$ will be recovered from a radix digit, and $N=B^x$ is the
+generalized CRT modulus. The beta spacing is $y=F(2v+1)$ and the beta code
+$x$ satisfies
+\begin{equation}\label{g210:eq:betaend}
+x=F+1+(y+1)r_0,
+\qquad x=1+[1+(t+1)y]r_t.
+\end{equation}
+Eight independent CRT representatives encode the four local parameters, two
+pending states, and two beta quotients. The ninth representative $C$ encodes
+the row index. It is explicitly even and satisfies
+\begin{equation}\label{g210:eq:selector}
+B\eta=C+F+1.
+\end{equation}
+
+The shared Pell machinery has its own large center $A_*$ and a square frame
+containing every actual requested base, exponent and output. Its inherited
+signed index theorem first authenticates the principal Pell pairs at their
+nominal, initially signed indices. Its distinguished anchor is the pair for
+$C$, and its cap proves
+\begin{equation}\label{g210:eq:cap}
+C\ne0,\qquad |k|<|C|\quad\hbox{for every other retained nominal index }k.
+\end{equation}
+After the new growth pair is removed there are 13 retained principal pairs
+and 15 exact-power requests. These include the requests at base $q+1$ with
+indices $F+t$, all eight ordinary representatives, and $C$; the requests at
+base $q$ with indices $t$, $y+1$, and $x$; and the two singleton requests
+with exponent $x$ and bases $B$ and the radix base.
+
+For any integer base $b$ with $|b|\ge2$, the inherited signed power theorem
+forces a nonnegative requested exponent $k$ and the exact output $b^k$.
+This theorem is used only after the main pairs have been oriented. The frame
+and anchor theorem does not require the front coordinates to have recovered
+their arithmetic signs. The new independent Pell witnesses will not be
+members of this frame; their existing output coordinate $F$ remains a frame
+atom.
+
+The incoming source changes to this interface are checked by independently
+reconstructing all 34 retained square-frame atoms, all 13 principal norms and
+multiplication wires, the whole orientation sum and the anchor cap.
+
+\subsection{A sharper bound for the same local syntax}
+
+The source-bound constructor audit gives maximum depth 19 for a local formula
+label. The nine axiom terms have depths
+\[
+4,3,3,3,3,5,4,3,19.
+\]
+Every leaf parameter is strictly below $t$. The following sharper majorant
+uses the same expression trees; it does not change the calculus.
+
+\begin{lemma}[A capacity bound for constructor trees]\label{g210:lem:capacity}
+Put $d=2^{19}$ and $L=8^{d-1}t^d$. Every local formula label is strictly
+less than $L$.
+\end{lemma}
+\begin{proof}
+For $0\le u,v\le m$, the largest constructor is bounded by $E(m,m)$, and
+\[
+E(m,m)+1=8m^2+14m+8\le8(m+1)^2.
+\]
+A depth-zero leaf has value plus one at most $t$. The recurrence
+$H_0=t$, $H_{r+1}=8H_r^2$ therefore bounds value plus one at depth $r$.
+Its explicit solution is $H_r=8^{2^r-1}t^{2^r}$. At depth 19 it equals
+$L$. Unequal child depths are handled by monotonicity. Thus a label has value
+at most $L-1$, as asserted.
+\end{proof}
+
+\section{Growth from three quadratic equations}\label{g210:sec:growth}
+
+The old exact request $F=t^{2^{20}t}$ is stronger than the proof extraction
+needs. The required interface is a sufficiently large even nonzero $F$,
+eventually positive, with a cofinal completeness construction. Introduce
+three integer coordinates $X,Z,u$ and impose
+\begin{equation}\label{g210:eq:growth}
+\boxed{\quad Z=tF,\qquad X^2-16Z^2-8ZF=1,\qquad
+F=2^{19}t(2u+1).\quad}
+\end{equation}
+These are quadratic equations. They replace five coordinates of the old
+growth request: its principal Pell triple, its modulus and its quotient.
+The obsolete growth index is removed from the frame. The old principal pair's
+norm, multiplication wire, orientation term and cap term are removed exactly
+as specified by the source certificate; $F$ remains a frame atom.
+
+\subsection{Pell recurrence facts}
+
+For $a\ge2$ define $X_n(a),Y_n(a)$ by
+\begin{align*}
+X_0&=1,&Y_0&=0,\\
+X_{n+1}&=aX_n+(a^2-1)Y_n,&Y_{n+1}&=X_n+aY_n.
+\end{align*}
+The least positive Pell unit at discriminant $a^2-1$ is
+$a+\sqrt{a^2-1}$: the ordinate of a nontrivial positive integral solution
+is at least one, and $(a,1)$ is a solution. The standard Pell classification
+therefore gives, for every integer solution with $Y\ne0$,
+$|X|=X_n(a)$ and $|Y|=Y_n(a)$ at a unique $n\ge1$.
+
+We need three elementary consequences:
+\begin{align}
+Y_n(a)&\equiv n\pmod{a-1},\label{g210:eq:indexcong}\\
+\vp(Y_n(a))&=\vp(n) &&(a\hbox{ odd},\ n\ge1),\label{g210:eq:valuation}\\
+Y_n(a)&\ge(2a-1)^{n-1} &&(n\ge1).\label{g210:eq:pellgrowth}
+\end{align}
+The first follows by specializing the integer polynomial recurrence at
+$a=1$. For the second, all $X_n(a)$ are odd and $Y_n(a)$ has the parity of
+$n$ when $a$ is odd; the duplication identity
+$Y_{2m}=2X_mY_m$ adds exactly one factor of two at each doubling. For the
+third, $Y_n$ is increasing and
+$Y_{n+1}=2aY_n-Y_{n-1}\ge(2a-1)Y_n$.
+
+\begin{theorem}[Sign-free growth]\label{g210:thm:growth}
+Every integer solution of \eqref{g210:eq:horizon} and \eqref{g210:eq:growth} has even
+nonzero $F$ and
+\[
+|F|\ge L^t,\qquad L=8^{2^{19}-1}t^{2^{19}}.
+\]
+In particular $|F|\ge t^t>t$.
+\end{theorem}
+\begin{proof}
+The last equation makes $F$ nonzero. Eliminating $Z$ gives
+\[
+X^2-((4t+1)^2-1)F^2=1.
+\]
+Pell classification at the odd center $a=4t+1$ gives
+$|F|=Y_n(a)$ for $n\ge1$. Put $d=2^{19}$. Since $4t\mid F$,
+\eqref{g210:eq:indexcong} gives $4t\mid n$. Moreover,
+\[
+\vp(n)=\vp(F)=19+\vp(t).
+\]
+Consequently the positive integer $n/(4t)$ has exact valuation 17, and
+$n\ge dt$. Formula \eqref{g210:eq:pellgrowth} gives
+\[
+|F|\ge(8t+1)^{n-1}\ge(8t)^{dt-1}\ge
+\bigl(8^{d-1}t^d\bigr)^t.
+\]
+The last ratio is exactly $8^{t-1}/t\ge1$. This proves the result with no
+assumption about the sign of $F$.
+\end{proof}
+
+The flexibility of this certificate is useful. It does not insist that $F$
+be one specified power. Section~\ref{g210:sec:cofinal} will choose among its Pell
+ordinates to meet an additional binary-residue condition. Without that
+choice, merely proving a growth lower bound would not establish completeness.
+
+\section{The dominant CRT index supplies the radix}\label{g210:sec:radix}
+
+Replace the old base $B[2+4(C+\sum A_i)]$ by
+\begin{equation}\label{g210:eq:newradix}
+D=2(C+F+1),\qquad q=D^x.
+\end{equation}
+The power in this display is still represented by the retained polynomial
+certificate. It is not an operation in the final polynomial. The definition
+of $D$ is affine, so its old multiplication coordinate and defining residual
+can be eliminated without raising degree. Crucially, the actual affine
+expression is substituted into the main square frame as well.
+
+Equation \eqref{g210:eq:selector} gives $B\mid D$ directly. Once the signs have
+been established, the existing anchor supplies $D>2C$ and bounds every
+needed binomial upper argument by $C$. These two roles replace the old
+explicit factor $B$ and the old sum-majorant.
+
+\subsection{Recovering the signs in the correct order}\label{g210:sec:signs}
+
+The main shared-Pell frame and $C$-anchor theorem apply first, while the front
+coordinates are signed. Theorem~\ref{g210:thm:growth} independently gives even
+nonzero $F$ with $|F|>t$. Because $C$ is even, $C+F+1$ is odd and nonzero;
+thus $|D|\ge2$ and the request $q=D^x$ forces $x\ge0$.
+
+Since $y=F(2v+1)$, $|y|\ge|F|$. If $x=0$, the terminal endpoint in
+\eqref{g210:eq:betaend} would make $1+(t+1)y$ divide $-1$. This is impossible:
+\[
+|1+(t+1)y|\ge(t+1)|y|-1>1.
+\]
+Hence $x\ge1$ and $|q|\ge2$. The retained power at base $q$ and exponent
+$y+1$ now forces $y+1\ge0$. Negative $y$ would be at most $-|F|<-1$.
+Therefore $y\ge|F|>0$.
+
+The value $x=1$ needs a separate exclusion. The first endpoint would give
+$-F=(y+1)r_0$, whereas $0<|F|\le y<y+1$. This is impossible. Thus
+$x\ge2$, and the terminal endpoint gives
+\begin{equation}\label{g210:eq:xbound}
+x\ge2+(t+1)y.
+\end{equation}
+It follows that $|q|\ge2^x\ge4$ and $|q+1|\ge3$. The base-$(q+1)$
+requests now force all actual CRT representatives and $F+t$ to be
+nonnegative. If $F$ were negative, then $F+t\le t-|F|<0$; hence $F>0$.
+The already nonzero $C$ is positive as well. Thus $D>0$ and $q>0$.
+
+Finally, if $r_0\le-1$, the first endpoint gives $x\le F-y\le0$.
+Therefore $r_0\ge0$ and $x\ge F+1$. We have recovered every required sign
+without adding a sign witness. In particular, the old assumption of a positive
+growth output has been replaced by a proved consequence of retained equations.
+
+\subsection{One binomial bound for the whole front}
+
+By \eqref{g210:eq:cap}, the initial upper argument $F+t$ and all ordinary
+representatives are below $C$; the anchor argument itself is $C$.
+The lower cutoffs $t,y+1,x$ are at most $x$. Also
+\[
+D=2(C+F+1)>2C,\qquad q=D^x>(2C)^x.
+\]
+For every binomial coefficient in any required low digit, including $B$,
+\begin{equation}\label{g210:eq:uniformbin}
+0\le\binom{a}{j}\le C^x<q/2^x
+\quad(0\le a\le C,\ 0\le j\le k\le x).
+\end{equation}
+Coefficients with $j>a$ are zero; $j=0$ is included since $C>t\ge16$.
+As $x\ge F+1$, this implies $C^x/(q-1)<1/32$.
+
+For clarity, the retained remainder certificate uses $M=q^x$, denominators
+$q^k$, integer ratios $a_k=M/q^k$, and normalized remainders $\rho_k$.
+Its exact division equations imply $a_k\mid\rho_k$. Its ternary norm budget
+\[
+M^2=1+4\sum_k\rho_k^2+r^2+s^2+w(w+1)
+\]
+gives $|\rho_k|<M/2$, hence the actual integer remainder
+$r_k=\rho_k/a_k$ satisfies $|r_k|<q^k/2$. The genuine binomial low tail is
+less than $q^k/32$ by \eqref{g210:eq:uniformbin}. Congruence modulo $q^k$
+therefore forces the two remainders to agree exactly. This is an equality
+argument, not an approximation.
+
+The first digit consequently gives $B\equiv\binom{F+t}{t}\pmod q$.
+Equation \eqref{g210:eq:selector}, with nonzero integer $\eta$, also gives
+\[
+|B|\le C+F+1=D/2<q/2.
+\]
+The true binomial coefficient is positive and below $q/32$, so
+\begin{equation}\label{g210:eq:Bexact}
+B=\binom{F+t}{t}>0.
+\end{equation}
+It is at least two. The retained request authenticates $N=B^x$, and
+\[
+q=D^x=(2B\eta)^x=N(2\eta)^x.
+\]
+Thus $N\mid q$, the exact modulus relation required by the generalized
+range compiler. The same tail argument authenticates all remaining range
+digits. The inherited local arithmetic bound below $2^x$ continues to hold:
+it needs $F\ge t^t$, $t\ge16$ and \eqref{g210:eq:xbound}, all now proved.
+
+\section{A cofinal choice with an odd binomial selector}\label{g210:sec:cofinal}
+
+Soundness alone is not enough. The old exact power supplied high powers of
+two automatically. The new ordinate has a prescribed finite valuation in our
+completeness construction, so we must choose its other binary digits.
+
+\begin{lemma}[Pell permutation modulo powers of two]\label{g210:lem:permutation}
+If $a\equiv1\pmod4$, the map $s\mapsto Y_s(a)$ induces a permutation of
+$\Z/2^r\Z$ for every $r\ge1$. Each odd residue has arbitrarily large
+positive odd indices realizing it.
+\end{lemma}
+\begin{proof}
+All $X_s(a)\equiv1\pmod4$ and $Y_s(a)\equiv s\pmod2$. Put $h=2^r$.
+Equation \eqref{g210:eq:valuation} gives $\vp(Y_h)=r$. The norm and
+$8\mid a^2-1$ imply $\vp(X_h^2-1)\ge2r+3$. Since $X_h+1$ has valuation
+one, $X_h\equiv1\pmod{2^{2r+2}}$. The addition identity then gives
+\[
+Y_{s+h}-Y_s=(X_h-1)Y_s+X_sY_h\equiv2^r\pmod{2^{r+1}}.
+\]
+The two index lifts $s$ and $s+2^r$ produce the two distinct output lifts.
+Induction from modulo two proves bijectivity and periodicity. Positive lifts
+in the resulting residue class are cofinal and preserve odd parity.
+\end{proof}
+
+\begin{theorem}[Compatible cofinal growth witnesses]\label{g210:thm:cofinal}
+There are cofinally many horizons of the form \eqref{g210:eq:horizon} for which
+\eqref{g210:eq:growth} has arbitrarily large positive solutions $F$ such that
+$\binom{F+t}{t}$ is odd.
+\end{theorem}
+\begin{proof}
+Choose the free horizon parameter $z$ divisible by $2^{12}$. These horizons
+remain cofinal and satisfy $t\equiv16\pmod{2^{26}}$. Thus $\vp(t)=4$ and
+the binary digit of $t$ at position 23 is zero.
+
+Put $d=2^{19}$, $n_0=dt$, $y_0=Y_{n_0}(4t+1)$ and
+$a_0=X_{n_0}(4t+1)$. The congruence modulo $4t$ and
+\eqref{g210:eq:valuation} show that $b_0=y_0/(dt)$ is an odd integer.
+Moreover $a_0\equiv1\pmod4$, since $n_0$ is even and
+$X_{2m}=2X_m^2-1$ with $X_m$ odd.
+
+Choose $\ell>26$ with $2^\ell>t$, and set $r=\ell-23$. The odd factors
+$t/16$ and $b_0$ are units modulo $2^r$. By Lemma~\ref{g210:lem:permutation},
+choose a positive odd $s$, as large as desired, such that
+\[
+(t/16)b_0Y_s(a_0)\equiv1\pmod{2^r}.
+\]
+Set $n=n_0s$ and
+\[
+F=Y_n(4t+1)=y_0Y_s(a_0),\quad X=X_n(4t+1),\quad Z=tF,
+\quad u=\frac{F/(dt)-1}{2}.
+\]
+Composition of Pell units proves the displayed identity for $F$, and the odd
+quotient makes $u$ integral. These values satisfy all three equations and
+\begin{equation}\label{g210:eq:binarytarget}
+F\equiv2^{23}\pmod{2^\ell}.
+\end{equation}
+Since $t<2^\ell$ and its bit 23 is zero, the binary supports of $F$ and $t$
+are disjoint. There are no carries in their addition. Writing $s_2(m)$ for
+the binary digit sum, the elementary factorial identity gives
+\[
+\vp\binom{F+t}{t}=s_2(F)+s_2(t)-s_2(F+t)=0.
+\]
+Thus the binomial is odd. Cofinal positive lifts of $s$ give arbitrarily
+large $F$ at each chosen horizon.
+\end{proof}
+
+The congruence proof is finite arithmetic at an arbitrarily chosen modulus;
+no analytic inverse theorem or computation of an infinite 2-adic object is
+needed. The retained executable modular examples check this construction
+at the actual $d=2^{19}$, but the theorem follows from the recurrence proof
+for every modulus.
+
+\subsection{The beta moduli need only prime support}
+
+The new construction has $\vp(F)=23$ at the selected horizons. We must not
+reuse the old sufficient condition $t!\mid F(2v+1)$ for arbitrary large $t$.
+Fortunately the beta CRT needs only every prime at most $t$ to divide $y$.
+
+Choose a sufficiently large positive odd $w$ divisible by all odd primes at
+most $t$, and put $y=Fw$. The integer $y$ is divisible by every prime at
+most $t$. If a prime $p$ divided both $1+iy$ and $1+jy$ for
+$1\le i<j\le t+1$, it would be coprime to $y$ and divide $j-i$.
+Then $p\le t$, contradicting $p\mid y$. Thus the beta moduli are pairwise
+coprime. The odd multiplier can also make $y$ exceed every finite pending
+state and $F$, and it has exactly the required form $2v+1$.
+
+This replacement of an unnecessarily strong factorial divisibility is part
+of the completeness proof. Keeping the old assertion would leave a real gap.
+
+\section{From a zero to a refutation, and back}\label{g210:sec:calibration}
+
+\subsection{Sharp separation of the weighted labels}
+
+Apply Lemma~\ref{lem:separate} to the sharper capacity bound.
+The equality case $F=L^t$ is permitted by its strict coefficient-difference
+argument.
+
+The decoded local Horn rows have weighted updates
+\[
+S_{i+1}(1+Fv_i)=S_i(1+Fp_i)(1+Fq_i),
+\]
+with missing premises filled by the truth label zero. The endpoint $y=F$
+would give an initial beta residue zero and terminal residue one. Positive
+weights propagate a zero initial state to zero at every row, so this case
+is impossible. Hence $y>F$, the actual initial state is $F+1$ and the final
+state is one. All states are positive. Multiplying the updates and cancelling
+states gives the equality between the conclusion multiset and the premise
+multiset plus the target label one. Theorem~\ref{g210:thm:growth} and
+Lemma~\ref{g210:lem:capacity} give precisely the hypotheses of
+Lemma~\ref{lem:separate}.
+
+Cycles in a selected multiset of Horn rules do not cause a gap. Let $U$ be
+the labels not derivable from the available axioms using those rules. Every
+selected rule whose conclusion belongs to $U$ has at least one premise in
+$U$. If the target one belonged to $U$, multiplicity balance would say
+that the number of conclusions in $U$ is one more than the number of
+premises in $U$, contradicting the preceding inequality. Thus there is a
+finite $\Ccal$ refutation.
+
+\subsection{Soundness of the full arithmetic source}
+
+From an arbitrary integer zero, first classify the standalone Pell pair to
+obtain even, nonzero large $F$. Independently use the retained main frame,
+anchor and orientation theorem to recover the canonical signed indices.
+Section~\ref{g210:sec:signs} then proves the front signs. The uniform digit
+argument recovers $B$, $N$, and all range binomials. The inherited generalized
+binomial-CRT theorem applies because $F\ge L^t\ge t^t$ and hence
+$F\ge\operatorname{lcm}(1,\ldots,t)^2$. Its two required conclusions are
+retained: each row has a full prime-power selector exceeding $t$, and every
+full prime power of $B$ is assigned to some row. The local arithmetic bound
+below $2^x$ converts those congruences into actual local equations.
+
+This decodes the beta states, valid local rules, and their strict parameter
+ranges. The preceding product and Horn-flow argument yields a finite
+$\Ccal$ refutation. All semantic source changes have now been accounted for;
+the rest of the source decoding is the identified inherited theorem.
+
+\subsection{Constructive completeness and the order of choices}
+
+Start with a finite $\Ccal$ refutation. The choices must be made in the
+following order; this prevents a circular size or congruence argument.
+\begin{enumerate}[leftmargin=*,itemsep=0.35em]
+\item Choose a cofinal horizon as in Theorem~\ref{g210:thm:cofinal}, exceeding
+the refutation length and all finite local parameters; pad by truth steps.
+Choose positive $F$ and its standalone Pell witnesses with the odd binomial
+selector property. This fixes $B=\binom{F+t}{t}$.
+\item Form the finite weighted pending-state path. Choose the odd multiplier
+of $F$ so $y$ bounds this path and every prime at most $t$ divides $y$.
+Finite CRT chooses an arbitrarily large positive beta code $x$ satisfying the
+state residues and endpoints. Put $N=B^x$.
+\item The generalized binomial CRT supplies the nine representative classes
+modulo $N^2$. Choose the eight ordinary representatives positive first.
+Because $N$ is odd, the ninth class has cofinally many even representatives.
+Choose $C$ even and larger than every other nominal index and representative.
+The prescribed index class gives $B\mid C+F+1$.
+\item Set $D=2(C+F+1)$ and $q=D^x$ only now. Then $N\mid q$ and $D>2C$.
+Evaluate the true requested power outputs, then choose the main square frame
+and the positive canonical main Pell pairs after all requested atoms have
+been fixed. The inherited cofinal anchor
+completion supplies the private comparison witnesses, orientation quotient
+and cap slack with one fewer principal pair.
+\item Take the normalized low remainders. The estimates of
+Section~\ref{g210:sec:radix} satisfy the retained common norm budget. Every
+nonnegative slack has the inherited representation
+$r^2+s^2+w(w+1)$, supplying the remaining integer witnesses.
+\end{enumerate}
+This constructs a zero of the changed arithmetic source from every finite
+refutation. No guessed universal-machine parameter or unknown constant is
+required.
+
+\subsection{The precise logical dependency}
+Combining the two directions with the square-shell numerical-calculus
+calibration of Section~\ref{sec:foundation} proves the same syntactic
+ZFC-refutation equivalence. The model-theoretic bridge is internal to the
+background theory; it does not assume an externally well-founded transitive
+model. Selected logical sources are retained, but no complete transitive
+Lean or Rocq build is claimed.

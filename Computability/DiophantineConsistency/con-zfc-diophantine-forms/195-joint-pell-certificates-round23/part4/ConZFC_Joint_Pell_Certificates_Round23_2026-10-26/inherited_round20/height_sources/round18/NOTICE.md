@@ -1,0 +1,9 @@
+# Attribution and scope
+
+This research contribution was prepared with AI assistance for Vladimir Reshetnikov and the ProveIt repository. New material is offered under the repository's MIT No Attribution terms. Imported mathematical text, code, numerical sources and licenses retain their original attribution and terms; the root LICENSE is not a claim of ownership over inherited results.
+
+The incoming sources supply numerical-calculus and native-compiler calibrations, Pell certificates, the square-radius factorial fixed point, factorial/CRT fusion, cofinal representative choices, the self-sized radix, semantic-anchor reuse, signed rank and interpolation, source34 numerical constants, shared-incidence energy, coefficient normalization, cycle equalities and unit paths. Component proofs and notices explicitly identify these dependencies.
+
+This round combines inherited low-digit pooling with the aligned self-sized radix, adds weighted adjacent-denominator and output-bound absorption, replaces signed interval guards by spherical batches, and proves an odd-square radix substitution. It also adds whole-expression scalar centers with even radical weights, and a signed-network compiler with direct cancellation edges, row orientations, coefficient-specific scale sharing and shorter certified addition chains. The cofinal anchor, strict K=x amplification, orientation-first schedule, linear cofactor saturation, affine refactorization, alias contraction and quartic two-alias pin are inherited contributions, not new inventions of this round. Exact finite implementations and ordinary unbounded proofs are distinguished throughout from a new formal logical calibration.
+
+Comparisons are limited to the pinned inspected ProveIt source collection. No proof of consistency, global minimum or literature-wide novelty is asserted. Nothing in the delivered archive changes or publishes the upstream repository.

@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "scope": "kernel mount/PID namespace, no researcher filesystem mounted",
+  "network_namespace": false,
+  "input": "/workspace/scratch/ce29ab924f1c/diophantine_zfc_round23/release_audit/height_snapshot",
+  "input_archive_sha256": null,
+  "archive_inputs": [],
+  "commands": [
+    {
+      "name": "isolation_preflight",
+      "argv": [
+        "python3",
+        "-B",
+        "-c",
+        "import pathlib,json,os; denied=[]\nfor p in [\"/workspace\",\"/all\",\"/home\",\"/proc/1/root/workspace\"]:\n try: pathlib.Path(p).stat()\n except FileNotFoundError: denied.append(p)\n else: raise RuntimeError(\"Researcher path visible: \"+p)\nprint(json.dumps({\"missing_researcher_paths\":denied,\"pid\":os.getpid()}))"
+      ],
+      "exit_code": 0,
+      "seconds": 0.024,
+      "log": "00_isolation_preflight.log",
+      "stdout_bytes": 98,
+      "stderr_bytes": 0
+    },
+    {
+      "name": "height_normal_full",
+      "argv": [
+        "python3",
+        "-B",
+        "verify.py",
+        "--single"
+      ],
+      "exit_code": 0,
+      "seconds": 412.472,
+      "log": "01_height_normal_full.log",
+      "stdout_bytes": 62436,
+      "stderr_bytes": 0
+    },
+    {
+      "name": "height_optimized_full",
+      "argv": [
+        "env",
+        "PYTHONOPTIMIZE=1",
+        "python3",
+        "-O",
+        "-B",
+        "verify.py",
+        "--single"
+      ],
+      "exit_code": 0,
+      "seconds": 427.774,
+      "log": "02_height_optimized_full.log",
+      "stdout_bytes": 62435,
+      "stderr_bytes": 0
+    }
+  ],
+  "initial_files": 141,
+  "modified_files": [],
+  "created_files": [],
+  "original_files_unchanged": true
+}

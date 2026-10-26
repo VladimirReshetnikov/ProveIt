@@ -1,0 +1,207 @@
+\section{Unweighted joint index authentication and power pooling}
+\label{sec:reciprocal23}
+This theorem combines the incoming source 176 raw-index orientation argument
+with the mixed-base two-integrality argument~\cite{joint176,mixed}. Neither ingredient is credited
+as new here. The new synthesis removes the base weights from a joint
+orientation and power certificate. It needs no common sign or pairwise
+coprimality of the bases, and remains valid at zero and unit bases.
+The emitted source instances separately authenticate their actual ports.
+
+\subsection{The complete joint residual}
+Let $W\ge258$, $|A|>W^W$, and let $b\ge16$ be an integer
+with $12b+10\le W$.
+Suppose $p\le15$ raw principal Pell pairs have classified representations
+\[
+ (X_i,Y_i)=\varepsilon_i(X_{\nu_i}(A),Y_{\nu_i}(A)),
+ \qquad\varepsilon_i\in\{-1,1\},\quad |\nu_i|\le b.
+\]
+The requested signed indices obey $|k_i|\le b$. There are at most five
+base blocks and at most 17 total requests. Every actual base $n_j$ and
+proposed output $m_i$ has absolute value at most $b$. Requests may reuse a
+principal pair. The retained gates give $Z_i=AY_i$. Define
+\begin{align*}
+ d&=A-1,\qquad T_j=2An_j-n_j^2-1,\\
+ \Omega&=\sum_{i=1}^{p}\bigl[(X_i-1)^2+(Y_i-k_i)^2\bigr],\\
+ H_j&=\sum_{i\text{ in block }j}Y_i(m_i-X_i),\\
+ S_j&=\sum_{i\text{ in block }j}\bigl[(m_i-X_i+Z_i)^2-Y_i^2\bigr],
+ \qquad E_j=S_j-2n_jH_j.
+\end{align*}
+The unweighted joint residual, with one new unrestricted integer $z$, is
+\begin{equation}\label{eq:unweighted-joint}
+ \Omega\prod_jT_j
+ +d\sum_j E_j\prod_{h\ne j}T_h
+ -zd\prod_jT_j=0.
+\end{equation}
+Products and sums here are fixed finite polynomial operations. The display
+introduces no reciprocal gate or unspecified integer parameter.
+
+\begin{theorem}\label{thm:unweighted-joint}
+Under these hypotheses, an integer $z$ satisfying
+\eqref{eq:unweighted-joint} exists if and only if every principal pair is
+canonical at its requested signed index and every request at a nonzero
+base satisfies $m_i=n_j^{k_i}$ in $\Q$. A base with $|n_j|\ge2$ forces $k_i\ge0$.
+Unit bases allow signed indices. Zero-base requests impose no condition.
+\end{theorem}
+\begin{proof}
+Put $M_0=W^W$. As $A$ is integral and $|A|>M_0$, $|d|\ge M_0$ and
+$d$ has the sign of $A$. At $n_j=0$, $T_j=-1$. Otherwise
+\[
+ \frac{|T_j|}{|n_j|}
+ \ge2|A|-\frac{n_j^2+1}{|n_j|}
+ \ge2|A|-b-1>M_0,
+\]
+and $n_jT_j$ has the sign of $A$. In particular all denominators used
+in this proof are nonzero.
+
+Modulo $d$, the signed Pell recurrence gives $X_\nu\equiv1$ and
+$Y_\nu\equiv\nu$. Therefore $\Omega\equiv o\pmod d$, where
+\[
+ o=\sum_i[(\varepsilon_i-1)^2+(\varepsilon_i\nu_i-k_i)^2],
+ \qquad0\le o\le60(1+b^2)\le120b^2.
+\]
+The indices here are bounded \emph{classified} indices, not the requested
+ones whose authenticity remains to be proved.
+
+For each request put $\delta_i=m_i-X_i+(A-n_j)Y_i$. Exact expansion gives
+\begin{equation}\label{eq:joint-error-identity}
+ \sum_{i\text{ in }j}\delta_i^2=E_j-T_j\sum_{i\text{ in }j}Y_i^2.
+\end{equation}
+The Pell recurrence, evaluated at the square root $n_j-A$ modulo $T_j$,
+gives for nonzero $n_j$
+\[
+ X_i+(n_j-A)Y_i\equiv\varepsilon_i n_j^{\nu_i}\pmod{T_j}.
+\]
+Negative powers exist in this residue ring because $\gcd(n_j,T_j)=1$.
+
+\textbf{First integrality step.}
+Divide~\eqref{eq:unweighted-joint} by $d\prod_jT_j$ and use
+\eqref{eq:joint-error-identity}. It follows that
+$\Omega/d+\sum_j\sum_i\delta_i^2/T_j$ is integral.
+Remove the zero-base blocks; those summands are already integers.
+Let $J$ be the remaining blocks and define
+\[
+ C_*=(\prod_{j\in J}n_j)^b,
+ \qquad L_*=\prod_{j\in J}n_j,
+\]
+with empty products one. For a request in $J$, define the integer
+\[
+ e_i=C_*m_i-\varepsilon_i(C_*/n_j^b)n_j^{b+\nu_i},
+ \qquad D_j=\sum_{i\text{ in }j}e_i^2,\quad D=\sum_{j\in J}D_j.
+\]
+All exponents are nonnegative. The recurrence congruence makes
+$C_*\delta_i\equiv e_i\pmod{T_j}$. Hence
+\[
+ R_*=C_*^2o/d+\sum_{j\in J}D_j/T_j
+\]
+is an integer. Since $|C_*|\le b^{5b}$ and $|e_i|\le2b^{6b}$,
+\begin{align*}
+ C_*^2o+D
+ &\le120b^{10b+2}+68b^{12b}\le188b^{12b+2}\\
+ &<b^{12b+5}<W^{12b+5}\le W^W=M_0.
+\end{align*}
+Here $188<b^3$, $b<W$, and $12b+5\le W$ by hypothesis.
+Each active denominator has magnitude at least $M_0$, so $|R_*|<1$.
+Thus $R_*=0$, although its summands may have different signs.
+
+\textbf{Second integrality step.}
+The two exact rational identities
+\[
+ \frac{2A}{d}=2+\frac2d,
+ \qquad\frac{2A}{T_j}=\frac1{n_j}+
+             \frac{n_j^2+1}{n_jT_j}
+\]
+split $2AR_*=0$ as $U_*+V_*=0$, where
+\begin{align*}
+ U_*&=2C_*^2o+\sum_{j\in J}D_j/n_j,\\
+ V_*&=2C_*^2o/d+
+       \sum_{j\in J}\frac{D_j(n_j^2+1)}{n_jT_j}.
+\end{align*}
+The integer $L_*U_*$ makes $L_*V_*=-L_*U_*$ integral. The denominator
+estimate also gives
+\[
+ \frac{n_j^2+1}{|n_jT_j|}
+ \le\frac{1+n_j^{-2}}{2|A|-b-1}<\frac2{M_0}.
+\]
+Using $|L_*|\le b^5$ yields
+\begin{align*}
+ |L_*V_*|
+ &\le\frac{240b^{10b+7}+136b^{12b+5}}{M_0}
+ \le\frac{376b^{12b+7}}{M_0}\\
+ &<\frac{b^{12b+10}}{M_0}
+ <\frac{W^{12b+10}}{M_0}\le1.
+\end{align*}
+We used $376<b^3$, $b<W$, and $12b+10\le W$.
+Thus $L_*V_*=0$; since $L_*\ne0$, $V_*=0$.
+Every nonzero summand of $V_*$ has the sign of $A$: $o,D_j\ge0$,
+$d$ has that sign, and so does $n_jT_j$. Consequently $o=0$ and every
+$D_j=0$. The first forces $\varepsilon_i=1$ and $\nu_i=k_i$ for every
+principal pair. The second gives $e_i=0$, hence $m_i=n_j^{k_i}$.
+For $|n_j|\ge2$, negative $k_i$ would force the impossible integer equation
+$m_in_j^{-k_i}=1$. If $J$ is empty, the same proof has $C_*=L_*=1$
+and $V_*=2o/d$, so it still authenticates every pair.
+
+Conversely, canonical pairs give $d\mid\Omega$. True nonzero-base powers
+make every $\delta_i$ divisible by $T_j$, so~\eqref{eq:joint-error-identity}
+gives $T_j\mid E_j$. At zero bases this is automatic because $T_j=-1$.
+Thus $z=\Omega/d+\sum_jE_j/T_j$ is integral and satisfies the residual.
+\end{proof}
+
+\subsection{Square and affine frame corollaries}
+For the exact square frame, $b=\lfloor\sqrt{W-1}\rfloor$ has
+$b\ge16$ and $12b+10\le b^2+1\le W$: the first difference is
+$b^2-12b-9$, positive at 16 and increasing thereafter. The original
+square-frame interface is therefore a special case.
+
+A centered frame could instead supply $b\le14\sqrt W$ and
+$W\ge2^{42}$. Then $12b+10\le168\sqrt W+10\le W$.
+This is a conditional extension: every actual base, output, nominal index
+and raw classified index must be independently bounded at that same $b$.
+It is not an automatic port transfer to an unaudited weak frame. The selected
+reciprocal endpoints retain the conservative exact-square source.
+
+\subsection{Restore the source before recovering its signs}
+The source's orientation quotient is $\Omega/d$, with any explicitly recorded
+retained-row correction restored. For a singleton whose rows are
+$T=T_j$ and $\delta_i+TQ=0$, restore $T=T_j$, $Q=-\delta_i/T_j$.
+For an aggregate restore
+\[
+ L_j=E_j/T_j,\qquad K_j=2H_j+(2A-n_j)L_j.
+\]
+These are integers also at zero or unit bases. Substitution in the exact
+identities restores every original row. Only then apply the original
+semantic bootstrap, which proves the actual arithmetic bases nonzero and
+positive in its own established order. No circular assumption that $q$ is
+already positive is needed for the joint theorem.
+
+One may partition the base blocks and fuse orientation into one part using
+\eqref{eq:unweighted-joint}. That part authenticates \emph{all} principal
+pairs, even if it contains only some requests. The other parts then use the
+incoming unweighted mixed-base theorem at already canonical pairs. Its
+proof is the two integrality steps above with $o=0$, so no new sign or
+coprimality premise is introduced. All quotient restorations are performed
+before source decoding.
+
+\subsection{Authenticating actual ports and the retained frame}
+The weighted reference has 14 principal pairs, three singleton requests and
+two aggregate blocks. Its certificate checks every norm and multiplication
+gate, all private coordinates, and the exact orientation identity
+\[
+ \Omega-(R_{\rm orient}+(A-1)q_{\rm orient})
+       =\sum_{i=1}^{14}R_{{\rm norm},i}.
+\]
+The original squared $C$ cap bounds every raw classified index by $|C|\le b$
+\emph{before} orientation. Its frame contains the actual growth index and
+all requested bases, indices and outputs. Its inherited $q\equiv1\pmod3$
+restriction belongs to that frozen source's completeness construction, not
+to Theorem~\ref{thm:unweighted-joint} itself.
+
+The new affine-source instance instead binds the conservative $m=16$
+209-coordinate source of Section~\ref{sec:quartic23}, with 13 principal
+pairs and four remaining power blocks. It checks the actual affine ports
+and all retained-row corrections from the centered norm/orientation chart.
+This is the same theorem with fewer active pairs, not an assumption that
+similar coordinate names denote equal polynomials. In particular, the
+weak affine-atom frame discussed there is \emph{not} substituted into the
+square-frame hypothesis of the joint theorem.
+
+\input{reciprocal23_instances.tex}

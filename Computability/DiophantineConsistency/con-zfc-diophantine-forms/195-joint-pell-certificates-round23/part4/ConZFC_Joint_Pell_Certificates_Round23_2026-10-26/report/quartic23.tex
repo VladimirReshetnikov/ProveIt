@@ -1,0 +1,197 @@
+\section{Signed affine horizons and smaller frame coefficients}
+\label{sec:quartic23}
+The starting point is the fully authenticated incoming Pell Growth 210
+system described above. This round changes its cofinal horizon, and for
+explicitly selected profiles also changes the frame and one orientation
+error. These are semantic source changes with proofs in both directions;
+they are not asserted to be pointwise bijections with the old quadratic
+horizon. Later elimination, factor splitting and chart operations are exact
+integer zero-set bijections.
+
+\subsection{Recover the sign of an affine horizon}
+Write $d_0=2^{19}$ and replace the horizon by
+\begin{equation}\label{eq:affine-horizon}
+ t=m(2z+1),\qquad m\in\{4,16\},\quad z\in\Z.
+\end{equation}
+Before classifying the standalone Pell equation, its divisibility row gives
+$F=d_0t(2u+1)$, hence
+\[
+ |F|\ge d_0|t|\ge d_0m,
+ \qquad F\ne0,\quad2\mid F,
+ \qquad |y|\ge|F|.
+\]
+The conservative square frame contains the actual $F$, so
+$W\ge F^2+2>258$. The retained anchor theorem therefore supplies canonical
+signed main Pell pairs before recovering front signs. Since $C,F$ are even,
+$D=2(C+F+1)$ is nonzero and even. Its retained power request gives
+$x\ge0$ and $q=D^x$.
+
+As $|t+1|\ge m-1$ and $m\ge4$,
+\[
+ |1+(t+1)y|\ge(m-1)d_0m-1>1.
+\]
+The terminal beta equation excludes $x=0$. Thus $x\ge1$, $|q|\ge2$.
+The retained request at base $q$ and nominal index $t$ now forces $t\ge0$,
+so~\eqref{eq:affine-horizon} gives $t\ge m$. This is the literal
+\file{pow4.output} request at \file{index0}, not an imagined $q^{t+1}$
+request. Nothing used the sign of $t$ before this step.
+
+For $m=16$ all remaining incoming arithmetic inequalities apply unchanged.
+Completeness uses the incoming cofinal horizons $t\equiv16\pmod{2^{26}}$,
+which belong to the new progression $t\equiv16\pmod{32}$. This gives the
+conservative 209-coordinate source used independently by the reciprocal
+family.
+
+\subsection{The smaller threshold has its own estimates}
+For $m=4$, positivity gives $t\ge4$ and $4\mid t$. The constructor
+inequality $E(a,a)+1\le8(a+1)^2$ is valid for every $a\ge0$, and constants
+zero and one are below $t$. The same literal depth-19 trees are therefore
+bounded by
+\[
+ L=8^{d_0-1}t^{d_0}.
+\]
+Pell classification at $4t+1$, the congruence $Y_n(4t+1)\equiv n\pmod{4t}$,
+and the exact valuation $v_2(Y_n)=v_2(n)$ again give $n\ge d_0t$. Hence
+\[
+ |F|\ge(8t+1)^{d_0t-1}\ge L^t.
+\]
+The last comparison uses $(8t)^{d_0t-1}/L^t=8^{t-1}/t\ge1$.
+These actual bounds give $|F|>2^{64}$ and $|F|>16^t$ already at $t=4$.
+The remaining incoming bootstrap proves $F>0$, $y\ge F$ and
+$x\ge2+(t+1)y$. Therefore $x>2^{32}$ and
+\[
+ 2+t+x+y+F<2x.
+\]
+The original literal local bound
+$\LL<(2x)^{2^{23}}<2^x$ is valid with these repaired hypotheses.
+Also $\lcm(1,\ldots,t)\le4^{t-1}$ and $F>16^t$ supply the selector
+radius. No use of an unproved $t\ge16$ remains in these steps. The radix
+parity and remainder norm are unchanged.
+
+\subsection{A cofinal binary residue construction at threshold four}
+Choose arbitrarily large $t\equiv4\pmod{2^{24}}$ above the finite proof's
+length and local parameters. Such a $t$ belongs to~\eqref{eq:affine-horizon},
+has valuation two, and has binary bit 21 equal to zero. Put
+\[
+ n_0=d_0t,\quad y_0=Y_{n_0}(4t+1),\quad
+ a_0=X_{n_0}(4t+1),\quad b_0=y_0/(d_0t).
+\]
+The incoming congruence and valuation proof gives odd integral $b_0$ and
+$a_0\equiv1\pmod4$. Choose $\ell>24$ with $2^\ell>t$, and set
+$r=\ell-21$. The Pell permutation lemma gives a positive odd $s$, as
+large as desired, for which
+\[
+ (t/4)b_0Y_s(a_0)\equiv1\pmod{2^r}.
+\]
+Set
+\[
+ F=y_0Y_s(a_0),\quad X=X_{n_0s}(4t+1),\quad Z=tF,
+ \quad u=(F/(d_0t)-1)/2.
+\]
+All growth rows hold, and $F\equiv2^{21}\pmod{2^\ell}$. Since
+$t<2^\ell$ and bit 21 of $t$ is zero, $F+t$ has no binary carries;
+$B=\binom{F+t}{t}$ is odd. The prime-support beta spacing, finite CRT,
+even cofinal $C$, collapsed radix and final main-Pell completion now follow
+in the same acyclic order as the incoming construction. Thus threshold four
+has full completeness, not just a sign or growth argument.
+
+\subsection{An optional compressed affine frame}
+This further source change is used only where the endpoint certificate says
+so. A literal 34-atom ledger first checks the exact incoming frame
+$W=2+\sum_ja_j^2$, containing every actual base, index and proposed output
+of the fifteen requests. After substituting~\eqref{eq:affine-horizon},
+each $a_j$ is an integer affine form in ordinary front coordinates, not
+private Pell coordinates.
+
+For an affine form $L=c+\sum_ia_iu_i$, the integer inequality
+$|a_iu_i|\le u_i^2+\lfloor a_i^2/4\rfloor$ yields
+\[
+ |L|\le\sum_{a_i\ne0}u_i^2+|c|+\sum_i\lfloor a_i^2/4\rfloor.
+\]
+The largest constant in the complete ledger is $m^2+m+1$, from $t+1$.
+Replace the frame by
+\begin{equation}\label{eq:compressed-frame}
+ W=m^2+m+2+\sum_{\text{distinct underlying front coordinates }u_i}u_i^2.
+\end{equation}
+All actual affine forms stay in their power and index requests. The ledger
+proves $|a_j|<W$ and the stronger bound
+$|a_j|\le(3m+1)\sqrt W$, since $3m+1$ is the maximum absolute coefficient
+sum including the constant, attained at $t+1$ or $F+t$. The underlying
+coordinate $F$ is retained, so already $W>(d_0m)^2\ge2^{42}$.
+
+The old squared-atom power theorem is not reused silently. Set
+$s_0=\lceil\sqrt W\rceil$, $b_0=(3m+2)s_0$. Then every actual atom has
+absolute value at most $b_0$, and
+\[
+ b_0<W,\qquad4b_0+1\le W,\qquad b_0^2\le10000W.
+\]
+These follow from $s_0\le2\sqrt W$, $m\le16$ and $W\ge2^{42}$;
+for example $4b_0+1\le400\sqrt W+1<W$.
+The exact negative-index clearing used in Theorem~\ref{thm:pooled-exactness}
+now gives, for at most fifteen requests,
+\[
+ 0\le E_*\le60b_0^{4b_0}<W^{4b_0+1}\le W^W.
+\]
+The modulus still satisfies
+$|T_n|\ge2|A|-b_0^2-1>W^W$, because $|A|>W^W$ and
+$W^W>10000W+1$. Thus $E_*=0$, giving exact powers and excluding negative
+indices at bases of absolute value at least two. The same argument with one summand proves each
+singleton request. No fourfold enlargement of the center is required.
+
+\subsection{Use a difference error in orientation}
+The anchor comparison first identifies the classified index $|C|$, using
+$|C|<W$; the cap bounds every other classified index by $|C|$.
+Replace only the orientation square
+\[
+ (Y_{F+t}-(F+t))^2
+ \quad\hbox{by}\quad (Y_{F+t}-Y_t-F)^2,
+\]
+retaining $(Y_t-t)^2$ and every abscissa error. The common zero set of the
+nonnegative error forms is unchanged: the retained $t$ error vanishes first,
+then the difference error gives the original $F+t$ equality.
+
+Modulo $A-1$, the changed error has absolute value below $3W$, each other
+ordinate error below $2W$, and each abscissa error at most two. For thirteen
+principal pairs the nonnegative error sum is therefore
+\[
+ <57W^2+52<4W^3<|A-1|.
+\]
+Its divisibility forces every error to vanish, recovering the canonical
+orientation. The exceptional anchor branch is handled by the retained cap
+and nonzero anchor error before invoking a comparison at an exceptional
+modulus. The exact quadratic delta is propagated through the literal emitted
+basis and independently checked; it is not merely an informal replacement
+of a proof expression.
+
+Completeness fixes all arithmetic-front values first, then the new $W$ and
+a sufficiently large positive shared center with its private anchor witnesses.
+Canonical errors are divisible by $A-1$, and the exact power identities
+supply their quotients. No earlier CRT modulus depends on the eventual $W$.
+Thus both the frame and orientation changes preserve the ordinary source
+calibration.
+
+\subsection{Exact elimination and coefficient splitting}
+In the modified source, substitute $t=m+2mz$ everywhere and delete its
+monic horizon row and coordinate. The inverse inserts that same affine
+expression. This exact integral bijection includes the frame, cap,
+orientation, power and growth rows, not just the visible arithmetic front.
+
+For nonnegative integers $a_1,\ldots,a_r$ summing to 19, replace the growth
+divisibility row by successive monic definitions
+\[
+ w_1=2^{a_1}t,\quad w_2=2^{a_2}w_1,\quad\ldots,\quad
+ F=2^{a_r}w_{r-1}(2u+1).
+\]
+The wires have unique integer values. Forgetting and restoring them in order
+are inverse zero-set maps, and every residual stays quadratic. The chosen
+splits are finite certificate data, not new equation parameters. Subsequent
+integer shears, translations and row additions have their recorded integral
+inverses. These operations can lower coefficient height at a variable cost;
+there is no general monotonicity claim.
+
+\input{quartic23_table.tex}
+
+The unbounded source proofs and exact finite maps compose with the named
+C222/ZF/ZFC calibration to prove~\eqref{eq:calibration} for each final
+quartic. This does not assume consistency, restrict codes to externally
+standard ones, or claim a fresh end-to-end formal-kernel derivation.
