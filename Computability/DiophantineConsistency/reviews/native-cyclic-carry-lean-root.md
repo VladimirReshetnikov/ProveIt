@@ -47,7 +47,8 @@ This uses the prepared pinned dependency environment documented in the
 Carrier65 arithmetic review, rather than a claimed full-repository replay.
 
 The checks exhibit genuine last-to-first carry, the distinction between
-incoming and outgoing reset, raw word2009 normalizing to11 modulo999,+a one-field cyclic word, and the exceptional all-maximum/zero residue.
+incoming and outgoing reset, raw word2009 normalizing to11 modulo999,
+a one-field cyclic word, and the exceptional all-maximum/zero residue.
 The final example proves why positivity of F cannot be silently omitted.
 
 The literal current kernel, support and mass bounds, complete transport

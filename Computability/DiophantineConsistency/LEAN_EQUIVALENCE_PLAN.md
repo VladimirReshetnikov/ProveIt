@@ -95,6 +95,17 @@ necessary numeric budget and range assumptions. Their discharge from the
 literal current native recipe, followed by staircase and phase recovery,
 remains required.
 
+`Carrier66.exists_positive_polynomial_zero_iff_canonical_parent_zero` now
+checks both full coordinate maps and zero-existence equivalence between
+the actual fourteen-variable polynomial and its canonical positive
+fifteen-variable parent. The parent's canonical conditions are explicit;
+they are not a supplied classification of all parent zeros.
+`ThirteenCarrier.positive_polynomial_zero_sets` binds all three literal
+thirteen-coordinate formulas and proves their entire positive zero sets
+agree. The signed derived y is allowed to be negative. Their fresh-seed
+and native equivalences are still required. See the
+[frontier arithmetic review](reviews/carrier-frontier-lean-root.md).
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
