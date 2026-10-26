@@ -109,9 +109,11 @@ also discharges the literal zeroLtOne and zeroLe source images. These results
 retain the existing source encodings. Four more
 [order images](reviews/foundation-ha-order-witnesses-root.md) now cover
 addEqOfLt, addLtAdd, oneLeOfZeroLt and ltTrans, using actual HA witnesses
-and preserving the double-negated order premises. Only mulLtMul, ltIrrefl
-and ltTri remain among the source order axioms. Full arithmetic transfer
-and the HA target equivalence remain open.
+and preserving the double-negated order premises. The
+[final order packet](reviews/foundation-ha-order-final-root.md) now proves
+mulLtMul, ltIrrefl and ltTri too, using actual HA witness construction and
+formula induction. All nine source order images are independently checked.
+Full arithmetic transfer and the HA target equivalence remain open.
 The [proof-transfer adapter](reviews/foundation-ha-theory-transfer-peer.md)
 now composes the existing GG and finite proof maps into actual HA
 derivations, provided each used source axiom image is proved in HA. Its

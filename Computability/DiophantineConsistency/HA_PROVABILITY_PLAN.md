@@ -424,9 +424,12 @@ now discharge addEqOfLt, addLtAdd, oneLeOfZeroLt and ltTrans too. Ordinary
 HA derivations construct actual predecessors under fully shifted contexts;
 the negative images lift those implications while retaining double-negated
 order premises. Four independent fresh leaves passed50 standard-only
-reports with byte-identical author objects. The remaining three cases are
-mulLtMul, ltIrrefl and ltTri. Full arithmetic proof transfer and the exact
-no-zero/consistency target comparison remain separate obligations.
+reports with byte-identical author objects. The
+[final three order cases](reviews/foundation-ha-order-final-root.md)
+mulLtMul, ltIrrefl and ltTri now pass six more independent builds and53
+standard-only reports, also byte-identical to the author. Thus all nine
+source order images are discharged. Full arithmetic proof transfer and the
+exact no-zero/consistency target comparison remain separate obligations.
 
 [FoundationHATheoryTransfer](Lean/DiophantineConsistency/FoundationHATheoryTransfer.lean)
 now constructs the required finite assumption discharge and actual

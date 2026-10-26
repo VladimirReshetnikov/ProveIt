@@ -163,8 +163,10 @@ ltTrans by actual HA predecessor constructions followed by negative proof
 maps. Six independent root leaf invocations passed58 standard-only reports,
 all objects byte-identical to the authors'. See the
 [C222 review](reviews/validator-equality-core222-root.md) and
-[order review](reviews/foundation-ha-order-witnesses-root.md). Only mulLtMul,
-ltIrrefl and ltTri remain among the source order axioms. These checkpoints
+[order review](reviews/foundation-ha-order-witnesses-root.md). The
+[final order review](reviews/foundation-ha-order-final-root.md) now also
+discharges mulLtMul, ltIrrefl and ltTri with six independent builds and53
+standard-only reports. No source order case remains. These checkpoints
 do not yet prove the final HA consistency equivalence.
 
 ### First arithmetic checkpoint
