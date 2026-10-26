@@ -688,6 +688,14 @@ All27 audits for these two packets use only standard Lean axioms.
 These are leaf/module checks reusing dependencies; no fresh full umbrella
 or internal-ZFC derivation is claimed.
 
+`CurrentControllerData2011` checks the literal width94517, base2^94517,
+primes47/2011/120199, orders23/402, spacing9246, base and square residues,
+and the exact nontrivial lift modulo120199². Its final three Hs wrappers
+retain the still-unproved actual K residues as explicit hypotheses;
+this is not a complete Pcst discharge. The [author receipt](reviews/current-controller-data2011-author.md)
+and [independent root replay](reviews/current-controller-data2011-lean-root.md)
+record both final bounded builds and21 standard-only/axiom-free audits.
+
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
