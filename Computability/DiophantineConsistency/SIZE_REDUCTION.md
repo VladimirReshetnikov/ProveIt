@@ -3283,7 +3283,7 @@ ordinary acceptance](reviews/compact66-complemented-two-anchor-radix47-mersenne8
 Its own H2 residues and controller-prime conditions remain UNKNOWN. The new
 bounded probe and CODE/TEX draft were never executed; they are superseded
 for immediate page work by the independently constructed L7691 tuple
-and its accepted7309,6007 and current4177 successors. No finite certificate
+and its accepted7309,6007 and4177 successors; the current display is described above. No finite certificate
 transfers between these distinct specializations.
 The earlier +1/spacing11 tuple likewise retains its distinct open conditions.
 
