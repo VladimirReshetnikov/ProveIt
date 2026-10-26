@@ -88,6 +88,14 @@ labels and explicit input-binder vacuity. No self-label vacuity is assumed.
 The full native container/GIC axioms, arbitrary proof interpretation and
 exact runtime calibration remain open.
 
+The [uniform C222 matrix projection](reviews/validator-seed-image222-root.md)
+now retains arbitrary internal matrices, including0, without a matrix-
+vacuity premise. Explicit finite congruence handles double-negation padding
+at fixed roles1/3. Two independent builds pass14 standard-only reports.
+Its subset-indexed coverage deliberately retains a free input label; this
+is a resource for the tagged-domain interpretation, not full CP/GIC or
+the pending general proof translation and runtime calibration.
+
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence
