@@ -261,6 +261,14 @@ root review and fresh replay](reviews/current-reflected-geometry2011-lean-root.m
 The preliminary one-selector premise must still be supplied from actual
 padding and clause tests before using these conditional resets.
 
+`CurrentSelectorTail2011` now proves the exact physical459 cutoff by
+the complete South<=45 threshold and strict-upper count, then the
+literal doubled Entry tail137820284543942. Its Boolean confined-source
+bound gives the early reset margin with temporal<=1024 and carry<=57.
+See the [root full-source review and fresh replay](reviews/current-selector-tail2011-lean-root.md).
+The physical source confinement and all483 padding residues/masks still
+need composition with the actual reflected geometry.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
