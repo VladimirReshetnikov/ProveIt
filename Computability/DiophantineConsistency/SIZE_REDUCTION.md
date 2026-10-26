@@ -13,23 +13,23 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained page uses the fully reviewed **low-padding2963** tuple.
-Its four raw integers total69685 bytes, down848 from2999 and25004 from
+The maintained page uses the fully reviewed **block-mask2963** recipe,
+which describes literally the same polynomial as low-padding2963. Its
+four raw integers total69685 bytes:848 below2999 and25004 below
 admissible942, versus95205 for4049,97046 for4127,98219 for4177,
 141226 for6007,172011 for7309,180987 for7691,207214 for three-anchor47
-and242484 for radix55. Complete TeX4996 saves17 from2999; nonwhite
-extracted text2657 saves8; PDF159702 saves3. Gzip grows9 to4202.
+and242484 for radix55. Complete TeX4970 saves26 from low-padding2963;
+nonwhite extracted text2638 saves19 and PDF159270 saves432. Gzip stays4202.
 Fonts and the15-positive/66-operation/degree157 profile are unchanged.
-Pclp is discharged; see the [candidate](candidates/one-page-low-padding2963/README.md).
+Pclp remains discharged; see the [candidate](candidates/one-page-block-mask2963/README.md).
 
-Every padding field1..916 has at most three aligned Boolean contributions
-and zero incoming carry, so bit2 is zero. These916 tests combine with the
-origin as4*G917(rho). Native population978, the actual first-origin borrow
-and rank identities are preserved. Last product2961 resets; the untested
-top field2962 supplies strict representatives and safe-increment bounds.
-Full marker-first phase, Boolean temporal count, alignment, canonical
-subset/controller and P66 arguments pass review. Complete printed constants,
-actual source corruptions and two whole-page inspections pass separately.
+The exact physical support0..950,960..985 and1005 gives two geometric
+blocks and one isolated marker. Inlining the two weighted label sums
+removes Psi while preserving every coefficient and all four whole integers.
+The [identity audit](research/block-mask-recipe/NOTE.md), actual source
+corruption checks, whole66-row graph and two actual page inspections pass.
+The inherited916 low-padding tests and combined origin4*G917, complete
+phase/count/rank/controller proof and both P66 witness maps are unchanged.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
 gives65 operations for the same bound three-anchor47 polynomial while
@@ -47,8 +47,8 @@ raw bytes and [composite2983](research/composite-length-independent/README.md)
 at70157. The latter proves the controller for all47/19/157 divisors of
 its squarefree d, removing the former prime-length restriction. The low
 padding argument then shortens the tuple to2963 while simplifying the
-source mask. Next work uses exact block descriptions of physical support,
-inlines the sole weighted polynomial helper, and tests lower clauses.
+source mask. The accepted exact block recipe then shortens the printed
+definition. Next work tests doubled clause weights and lower clauses.
 Every new tuple requires a complete proof and finite certificate; exact
 recipe identities require whole-port equality and separate page review.
 

@@ -19,41 +19,42 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **complete low-padding2963 equation
+[equation.tex](equation.tex) print the **complete block-mask2963 equation
 in fifteen positive unknowns, exact degree157, with66 integer-leaf binary
 operations**. All four fixed constants, the436-character numeral, alphabet,
 closed430-action decoder and942 admissible tiles fit on one Letter page
 at9-point body and7.7-point seed/footer sizes.
 
-The [complete candidate](candidates/one-page-low-padding2963/README.md)
-uses**69685 raw integer bytes**,848 fewer than the preceding2999 page and
-25004 fewer than admissible942. Complete TeX falls17 bytes to4996;
-nonwhite `pdftotext -layout` text falls8 characters to2657; the actual PDF
-falls3 bytes to159702. Gzip storage grows9 bytes to4202. Fonts, variables,
-operations and degree remain unchanged; the size metrics are kept distinct.
+The [complete candidate](candidates/one-page-block-mask2963/README.md)
+defines exactly the same polynomial as low-padding2963, with**69685 raw
+integer bytes** and4202 gzip bytes. Two contiguous physical-mask blocks
+and an inline weighted polynomial remove a helper definition. Complete
+TeX falls26 bytes to4970, nonwhite `pdftotext -layout` text19 characters
+to2638 and actual PDF432 bytes to159270. Fonts and all equation data remain.
+The [exact identity audit](research/block-mask-recipe/NOTE.md) checks every
+physical/weighted coefficient and the four whole integers. Actual printed
+marker, dummy, inline-weight and initializer corruptions are rejected.
+The [page review](reviews/block-mask2963-page-peer.md) records an independent
+whole-page inspection; root acceptance and complete manifests close the bundle.
 
-The [whole ordinary proof](research/low-padding-independent/PROOF.md)
-moves all916 padding tests to bit2 in fields1..916. Each aligned digit
-is a sum of at most three Boolean units, with zero incoming carry. Combining
-these tests with the origin gives4*G917(rho), shortening the complete source
-mask. The final product2961 resets, leaving one untested zero top field.
-The marker-first phase argument, Boolean temporal count, full alignment,
-actual rank, safe increments and both positive P66 maps are retained.
+The inherited [whole ordinary proof](research/low-padding-independent/PROOF.md)
+places all916 padding tests at bit2 in fields1..916. Their aligned digits
+are at most3 with zero incoming carry; the origin and padding combine as
+4*G917(rho). The final product2961 resets and top field2962 is zero.
+The marker-first phase, Boolean count, full alignment, actual rank, safe
+increments and both positive P66 maps remain unchanged.
 The [finite certificate](research/low-padding-independent/certificate.json)
 discharges Pclp with orders23/2962, prime1362521 and H29/2938/492699.
 Full [root](reviews/low-padding2963-root.md) and
-[independent](reviews/low-padding2963-independent-peer.md) reviews pass.
-Normal/optimized checks reconstruct all942 printed tuples,3297 coefficients,
-978 physical positions and four integers. Actual initializer and marker
-corruptions are rejected. The [page review](reviews/low-padding2963-page-peer.md)
-records a second actual full-page inspection.
-[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the complete page and
-preserves the preceding metadata verbatim.
+[independent](reviews/low-padding2963-independent-peer.md) math reviews pass.
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) explicitly records polynomial
+identity and preserves the preceding metadata verbatim.
 
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
 proof, consistency decision or global minimum is claimed. Lean remains
-paused. The [single-clause2999](candidates/one-page-parity-clause2999/equation.pdf),
+paused. The [low-padding2963](candidates/one-page-low-padding2963/equation.pdf),
+[single-clause2999](candidates/one-page-parity-clause2999/equation.pdf),
 [admissible942](candidates/one-page-admissible942/equation.pdf),
 [Boolean4027](candidates/one-page-boolean-dummy4027/equation.pdf),
 [shared-copy4049](candidates/one-page-merged-copy4049/equation.pdf),
@@ -66,8 +67,8 @@ paused. The [single-clause2999](candidates/one-page-parity-clause2999/equation.p
 and [radix55](candidates/one-page-compact66-radix55/equation.pdf) pages remain
 preserved. Reviewed [single-clause3037](research/single-clause-independent/README.md)
 and [composite2983](research/composite-length-independent/README.md) proofs
-are intermediate checkpoints. Next work simplifies complete block-mask
-recipes and tests further clause layouts. The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
+are intermediate checkpoints. Next work tests doubled clause weights and
+further complete coefficient layouts. The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
 preserves its bound tuple; [radix obstructions](research/radix-parity-independent/README.md)
 explain why direct46/45 substitutions need different proof interfaces.
 
