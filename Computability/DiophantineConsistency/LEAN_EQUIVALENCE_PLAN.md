@@ -296,6 +296,12 @@ Supplying that count from the full padding/clause argument will make the
 result unconditional for polynomial zeros; whole-field alignment remains
 an independent native obligation.
 
+`CurrentCount2011` now discharges every literal clause/count/carry/temporal
+binding of the preliminary-count theorem. Only the exact483 middle-phase
+padding facts remain as its conditional interface. See the [root review](reviews/current-count2011-lean-root.md)
+and [independent replay](reviews/current-count2011-lean-peer.md). The
+following early-padding composition supplies that remaining interface.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
