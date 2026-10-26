@@ -31,6 +31,11 @@ machine leaves and24 standard-only axiom reports. The
 [C222 calibration audit](research/ha-c222-internalization-audit.md) separates
 the remaining seed-axiom and counter4 runtime bridges to the existing internal
 validator theorem; run totality alone does not prove that equivalence.
+The [C222 equality leaf](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean)
+now translates into the actual C254 proof predicate for every internal input
+in every IΣ1 model. Its [independent replay](reviews/validator-growg222-root.md)
+passed seven fresh commands and ten standard-only reports. The changed seed
+and runtime calibration remain open.
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence

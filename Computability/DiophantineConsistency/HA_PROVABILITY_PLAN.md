@@ -204,8 +204,14 @@ The [C222 audit](research/ha-c222-internalization-audit.md) gives the missing
 all-model witness equivalence explicitly: exact215 halting iff the old C254
 history checker accepts falsity. It separates represented C222 checking,
 internal logical/seed calibration and actual counter4 runtime simulation.
-The changed equality leaf has a small prospective C254 adapter; the changed
-seed bundle requires additional internal syntactic interpretation work.
+The changed equality leaf now has a checked
+[C254 adapter](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean):
+for every internal a,b,c in every IΣ1 model it constructs an actual old-checker
+proof code for the literal `growG` formula. Its Sigma0 graph agrees with the
+actual C222 definition. Seven fresh main/check/prerequisite commands passed
+[independent root replay](reviews/validator-growg222-root.md), with ten
+standard-only reports and114 authenticated cached prerequisites. The changed
+seed bundle still requires additional internal syntactic interpretation work.
 None of these missing statements is supplied by standard-Nat simulation.
 
 The [arithmetic translation audit](research/ha-arithmetic-translation-adapter-audit.md)
