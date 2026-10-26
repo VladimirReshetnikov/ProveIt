@@ -1,0 +1,82 @@
+import DiophantineConsistency.WangTiles942CycleBand
+
+/-! Actual seam chronology, signed time, independent margins, and the
+complete halt-to-marked-word endpoint. No halt of the seeded machine is asserted. -/
+
+namespace DiophantineConsistency.WangTiles942CycleBandChecks
+
+open SetTheory.BusyBeaver WangTiles942 WangTiles942Language WangTiles942Periodic
+open WangTiles942CycleBand WangTiles942CycleBoundary
+
+set_option Elab.async false
+set_option maxRecDepth 10000
+
+example : (timeIndex 5 (-1)).val = 4 := by decide
+example : (timeIndex 5 (-6)).val = 4 := by decide
+example : (timeIndex 1 (-123)).val = 0 := by decide
+
+/-- At the initializer, the previous row is reset: west1, east2. -/
+example : seam 5 0 = (⟨1,437,2,437⟩ : Tile) := by decide
+
+/-- Immediately after initialization, the previous right edge is4. -/
+example : seam 5 1 = (⟨4,437,0,437⟩ : Tile) := by decide
+example : (seam 5 1).west ≠ (edgeCode (timeIndex 5 1))^2 := by decide
+
+/-- Reset has left code1; its preceding finish row has right code0. -/
+example : seam 5 4 = (⟨0,437,1,437⟩ : Tile) := by decide
+example : seam 5 (-1) = seam 5 4 := by decide
+
+example : Allowed (seam 5 0) := seam_allowed 5 0
+example : band 3 5 (-3) 0 = (⟨1,437,2,437⟩ : Tile) := by decide
+example : band 3 5 (-2) 0 = (⟨2,434,2,0⟩ : Tile) := by decide
+example : band 3 5 0 0 = start := band_start 3 5 (by decide)
+
+example (T L R H : ℕ) [NeZero H]
+    (hh : (DecimalMachine215.machine.run T).state = none)
+    (hL : T+2 ≤ L) (hR : T+2 ≤ R) (t : ℤ) :
+    (band L H (-(L : ℤ)) (t+1)).west = (band L H ((R : ℤ)-1) t).east :=
+  band_twisted T L R H hh hL hR t
+
+example (T L R H : ℕ)
+    (hh : (DecimalMachine215.machine.run T).state = none)
+    (hL : T+2 ≤ L) (hR : T+2 ≤ R) (hTH : T+2 ≤ H) (hH : 3 ≤ H) :
+    letI : NeZero H := ⟨by omega⟩
+    letI : NeZero ((L+R)*H) := ⟨Nat.ne_of_gt (Nat.mul_pos (by omega) (by omega))⟩
+    ∃ a : ZMod ((L+R)*H) → Fin 942, MarkedWord ((L+R)*H) (L+R : ℕ) a ∧
+      ∀ x, -(L : ℤ) ≤ x → x < (R : ℤ) → ∀ t,
+        tile (a (address ((L+R)*H) (L+R : ℕ) x t)) = band L H x t :=
+  marked_word_of_halt T L R H hh hL hR hTH hH
+
+/-- Left/right/height padding are independently arbitrary. The actual halt
+is the sole computational premise, retained explicitly. -/
+example (T u v z : ℕ) (hh : (DecimalMachine215.machine.run T).state = none) :
+    let L := T+2+u
+    let R := T+2+v
+    let H := T+3+z
+    letI : NeZero ((L+R)*H) := ⟨Nat.ne_of_gt (Nat.mul_pos (by omega) (by omega))⟩
+    ∃ a : ZMod ((L+R)*H) → Fin 942, MarkedWord ((L+R)*H) (L+R : ℕ) a := by
+  dsimp only
+  letI : NeZero (T+3+z) := ⟨by omega⟩
+  letI : NeZero (((T+2+u)+(T+2+v))*(T+3+z)) :=
+    ⟨Nat.ne_of_gt (Nat.mul_pos (by omega) (by omega))⟩
+  obtain ⟨a,hm,_⟩ := marked_word_of_halt T (T+2+u) (T+2+v) (T+3+z) hh
+    (by omega) (by omega) (by omega) (by omega)
+  exact ⟨a,hm⟩
+
+#print axioms timeIndex_zero
+#print axioms timeIndex_period
+#print axioms timeIndex_succ
+#print axioms seam_allowed
+#print axioms seam_period
+#print axioms band_seam
+#print axioms band_interior
+#print axioms band_allowed
+#print axioms band_temporal
+#print axioms band_horizontal
+#print axioms band_twisted
+#print axioms band_period
+#print axioms band_start
+#print axioms band_properties
+#print axioms marked_word_of_halt
+
+end DiophantineConsistency.WangTiles942CycleBandChecks

@@ -1,0 +1,60 @@
+import DiophantineConsistency.WangTiles942HelicalExtension
+
+/-! A single canonical-band marker remains a single marker in the exact
+helical quotient. This helper assumes the local marker classification;
+the actual computation construction must separately establish it. -/
+
+namespace DiophantineConsistency.WangTiles942HelicalMarker
+
+open WangTiles942 WangTiles942Language WangTiles942HelicalExtension
+  WangTiles942HelicalQuotient
+
+set_option Elab.async false
+set_option maxRecDepth 10000
+
+theorem zero_of_marker_coordinates (w H : ℕ) (L x : ℤ)
+    (hx0 : 0 ≤ x) (hxN : x < ((w*H : ℕ) : ℤ))
+    (hr : representative w L (-x) = 0)
+    (hq : quotient w L (-x) % (H : ℤ) = 0) : x = 0 := by
+  have hd := Int.emod_add_mul_ediv (-x+L) (w : ℤ)
+  have he : -x = (w : ℤ)*quotient w L (-x) := by
+    unfold representative at hr
+    unfold quotient
+    linarith
+  obtain ⟨k,hk⟩ := Int.dvd_of_emod_eq_zero hq
+  have hdiv : ((w*H : ℕ) : ℤ) ∣ x := by
+    refine ⟨-k,?_⟩
+    rw [hk] at he
+    push_cast
+    linear_combination -he
+  exact Int.eq_zero_of_dvd_of_nonneg_of_lt hx0 hxN hdiv
+
+/-- The original band marker classification is preserved pointwise in
+the finite quotient, without coprimality or a supplied unique-word premise. -/
+theorem quotientWord_marker_iff (C : ℤ → ℤ → Tile)
+    (w H : ℕ) (hw : 0 < w) (hHp : 0 < H) (L : ℤ)
+    (hL0 : 0 ≤ L) (hLw : L < (w : ℤ))
+    (hA : ∀ x, InBand w L x → ∀ t, Allowed (C x t))
+    (hm : ∀ x, InBand w L x → ∀ t,
+      C x t = start ↔ x = 0 ∧ t % (H : ℤ) = 0) :
+    letI : NeZero (w*H) := ⟨Nat.ne_of_gt (Nat.mul_pos hw hHp)⟩
+    ∀ z : ZMod (w*H),
+      tile (quotientWord (extend C w L) (extend_allowed C w hw L hA) w H z) = start ↔ z = 0 := by
+  letI : NeZero (w*H) := ⟨Nat.ne_of_gt (Nat.mul_pos hw hHp)⟩
+  intro z
+  rw [quotientWord_tile]
+  simp only [extend, zero_add]
+  rw [hm _ (representative_in_band w hw L _) _]
+  constructor
+  · rintro ⟨hr,hq⟩
+    have hz := zero_of_marker_coordinates w H L z.val (by positivity)
+      (by exact_mod_cast z.val_lt) hr hq
+    have hzv : z.val = 0 := by exact_mod_cast hz
+    apply ZMod.val_injective
+    simpa only [ZMod.val_zero] using hzv
+  · rintro rfl
+    have hb : InBand w L 0 := by constructor <;> omega
+    rcases coordinates_in_band w hw L 0 hb with ⟨hr,hq⟩
+    simp only [ZMod.val_zero, Nat.cast_zero, neg_zero, hr, hq, Int.zero_emod, and_self]
+
+end DiophantineConsistency.WangTiles942HelicalMarker
