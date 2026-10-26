@@ -64,8 +64,12 @@ external consistency equivalence for the actual finite marked language.
 Its reverse construction works at every independently sufficiently large
 width and height; `WangTiles942BandMarker` derives unique Start in the
 same concrete quotient. See the [native completeness review](reviews/wang-tiles942-native-completeness-root.md).
-Remaining work includes reverse coefficient words/carries, the composite
-rank controller and positive arithmetic witnesses, other equation
+The local Boolean cells now assemble into an actual cyclic source word,
+and the literal kernel admits bounded normalization before a positive
+strict transport representative is supplied. These construction steps
+do not yet establish every high-mask or copy condition. Remaining work
+includes reverse mask conditions, the composite rank controller and
+positive arithmetic witnesses, other equation
 frontiers and internal-ZFC derivation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
@@ -87,7 +91,12 @@ auxiliary-Pell residue and fresh-seed maps require their own proofs. The
 old `ShortCircuit` module describes a different 15-variable 69-operation
 graph and cannot serve as the new 13-variable binding.
 
-## Verified arithmetic checkpoint
+## Verified checkpoints (chronological)
+
+The entries below record the state at each checkpoint. Later entries and
+the current-gap section above supersede earlier lists of open work.
+
+### First arithmetic checkpoint
 
 The first four modules above now compile, together with their focused
 checks. `Carrier65.eval_polynomial_zero_iff_norms` binds the actual
@@ -647,8 +656,18 @@ without inferring it from a congruence. See the [root source review and
 four fresh checks](reviews/current-cell-rank-construction-lean-root.md).
 The [independent cell-construction review](reviews/current-cell-construction2011-lean-peer.md)
 passed fresh isolated main/check replay with the same exact source binding.
-Global word assembly, cyclic carries, composite controller and arithmetic
-witnesses remain work items.
+The next checkpoints address global word assembly and cyclic carries;
+the complete composite controller and arithmetic witnesses remain open.
+
+`ControllerIntervalSums` constructs an actual finite cyclic interval of
+any prescribed coprime length a≤T whose coordinate sum is any given target.
+It proves distinctness, cardinality and the exact natural triangular-sum
+formula, including wrapping intervals and T=1. This is the consecutive
+coordinate step of the controller argument; it does not identify the
+actual power orbit, perform CRT or establish safe dummy increments.
+The [author receipt](reviews/controller-interval-sums-author.md) and
+[independent fresh replay](reviews/controller-interval-sums-peer.md) record
+the eight standard-axiom audits and the even-modulus/endpoint controls.
 
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
