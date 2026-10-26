@@ -94,40 +94,21 @@ def pairRepresentation : Rep (Fin 3) (fun v => v 1 = Nat.pair (v 0) (v 2)) :=
     intro v
     simp only [holds_iff]
     change (∃ w : Fin 3 → ℕ, Certificate (v 1) (v 0) (v 2) (w 0) (w 1) (w 2)) ↔ _
-    constructor
-    · rintro ⟨w,hw⟩
-      exact certificate_sound hw
-    · intro h
-      obtain ⟨t,s,m,hc⟩ := certificate_complete h
-      exact ⟨![t,s,m],hc⟩)
+    simpa [Fin.exists_fin_succ_pi] using exists_certificate_iff (v 1) (v 0) (v 2))
 
 def leftRepresentation : Rep (Fin 2) (fun v => v 0 = (Nat.unpair (v 1)).1) :=
   (System.scopedRep (a := 2) (k := 4) (system 0 2)).ofIff (by
     intro v
     simp only [holds_iff]
     change (∃ w : Fin 4 → ℕ, Certificate (v 1) (v 0) (w 0) (w 1) (w 2) (w 3)) ↔ _
-    constructor
-    · rintro ⟨w,hw⟩
-      have hp := certificate_sound hw
-      rw [hp,Nat.unpair_pair]
-    · intro h
-      have hp : v 1 = Nat.pair (v 0) (Nat.unpair (v 1)).2 := by rw [h,Nat.pair_unpair]
-      obtain ⟨t,s,m,hc⟩ := certificate_complete hp
-      exact ⟨![(Nat.unpair (v 1)).2,t,s,m],hc⟩)
+    simp [Fin.exists_fin_succ_pi, exists_certificate_iff, GraphRep.exists_pair_right_iff])
 
 def rightRepresentation : Rep (Fin 2) (fun v => v 0 = (Nat.unpair (v 1)).2) :=
   (System.scopedRep (a := 2) (k := 4) (system 2 0)).ofIff (by
     intro v
     simp only [holds_iff]
     change (∃ w : Fin 4 → ℕ, Certificate (v 1) (w 0) (v 0) (w 1) (w 2) (w 3)) ↔ _
-    constructor
-    · rintro ⟨w,hw⟩
-      have hp := certificate_sound hw
-      rw [hp,Nat.unpair_pair]
-    · intro h
-      have hp : v 1 = Nat.pair (Nat.unpair (v 1)).1 (v 0) := by rw [h,Nat.pair_unpair]
-      obtain ⟨t,s,m,hc⟩ := certificate_complete hp
-      exact ⟨![(Nat.unpair (v 1)).1,t,s,m],hc⟩)
+    simp [Fin.exists_fin_succ_pi, exists_certificate_iff, GraphRep.exists_pair_left_iff])
 
 private def graphIndex : Fin 2 → Option (Fin 1) := Fin.cases none (fun _ => some 0)
 

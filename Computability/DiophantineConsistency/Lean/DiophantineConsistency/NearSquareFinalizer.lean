@@ -90,6 +90,12 @@ theorem full_majorant_bounds {t D F G H I : ℤ}
   have heq := full_majorant_defect t D F G H I hDF hI
   exact ⟨hV, ha, by linarith⟩
 
+/-- Preserve the actual signed rational root when an integral power is known. -/
+theorem rat_intCast_num_of_pow {q : ℚ} {z : ℤ} {n : ℕ}
+    (hn : n ≠ 0) (h : q ^ n = (z : ℚ)) : (q.num : ℚ) = q := by
+  apply Rat.coe_int_num_of_den_eq_one
+  simpa [hn] using congrArg Rat.den h
+
 /-- A nonzero rational norm root reconstructs two rational square roots. -/
 theorem rational_roots_of_norm_zero {a b w q : ℚ} (hw : w ≠ 0) (hq : q ≠ 0)
     (hz : norm q 1 a w b = 0) :
@@ -112,15 +118,11 @@ theorem rational_roots_of_norm_zero {a b w q : ℚ} (hw : w ≠ 0) (hq : q ≠ 0
   field_simp
   ring
 
-/-- A norm zero with the first radicand strictly below the separating square
-forces both integer radicands to be squares and supplies signed integer roots. -/
-theorem integer_roots_of_norm_zero {theta omega a b w : ℤ}
-    (homega : omega ≠ 0) (hw : 0 < w) (ha : a < w ^ 2) (hb : 0 < b)
+/-- Separated integer radicands reconstruct the actual signed rational roots. -/
+theorem integer_roots_of_separated_norm_zero {theta omega a b w : ℤ}
+    (homega : omega ≠ 0) (hw : w ≠ 0) (hsep : a ≠ w ^ 2 * b)
     (hz : norm theta omega a w b = 0) :
     ∃ r s : ℤ, r ^ 2 = a ∧ s ^ 2 = b ∧ theta = omega * (r + w * s) := by
-  have hsep : a ≠ w ^ 2 * b := by
-    have := mul_nonneg (sq_nonneg w) (show 0 ≤ b - 1 by omega)
-    nlinarith
   have htheta : theta ≠ 0 := by
     intro ht
     rw [ht] at hz
@@ -130,7 +132,7 @@ theorem integer_roots_of_norm_zero {theta omega a b w : ℤ}
     rcases mul_eq_zero.mp he with he | he
     · exact (pow_ne_zero 4 homega) he
     · exact hsep (sub_eq_zero.mp (eq_zero_of_pow_eq_zero he))
-  have hwQ : (w : ℚ) ≠ 0 := by exact_mod_cast ne_of_gt hw
+  have hwQ : (w : ℚ) ≠ 0 := by exact_mod_cast hw
   have hoQ : (omega : ℚ) ≠ 0 := by exact_mod_cast homega
   have htQ : (theta : ℚ) ≠ 0 := by exact_mod_cast htheta
   have hzQ : norm ((theta : ℚ) / omega) 1 a w b = 0 := by
@@ -141,29 +143,23 @@ theorem integer_roots_of_norm_zero {theta omega a b w : ℤ}
     field_simp
     nlinarith [h]
   obtain ⟨r, s, hr, hs, hsum⟩ := rational_roots_of_norm_zero hwQ (div_ne_zero htQ hoQ) hzQ
-  have hsa : IsSquare a := Rat.isSquare_intCast_iff.mp ⟨r, by nlinarith [hr]⟩
-  have hsb : IsSquare b := Rat.isSquare_intCast_iff.mp ⟨s, by nlinarith [hs]⟩
-  obtain ⟨r₀, hr₀⟩ := hsa
-  obtain ⟨s₀, hs₀⟩ := hsb
-  have hr₀' : r₀ ^ 2 = a := by nlinarith [hr₀]
-  have hs₀' : s₀ ^ 2 = b := by nlinarith [hs₀]
-  have hrootsr : r = (r₀ : ℚ) ∨ r = -(r₀ : ℚ) := by
-    have : r ^ 2 = (r₀ : ℚ) ^ 2 := by exact_mod_cast hr.trans (by exact_mod_cast hr₀'.symm)
-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
-  have hrootss : s = (s₀ : ℚ) ∨ s = -(s₀ : ℚ) := by
-    have : s ^ 2 = (s₀ : ℚ) ^ 2 := by exact_mod_cast hs.trans (by exact_mod_cast hs₀'.symm)
-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
-  rcases hrootsr with hrsgn | hrsgn <;> rcases hrootss with hssgn | hssgn
-  all_goals
-    rw [hrsgn, hssgn] at hsum
-  · refine ⟨r₀, s₀, hr₀', hs₀', ?_⟩
-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
-  · refine ⟨r₀, -s₀, hr₀', by simpa using hs₀', ?_⟩
-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
-  · refine ⟨-r₀, s₀, by simpa using hr₀', hs₀', ?_⟩
-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
-  · refine ⟨-r₀, -s₀, by simpa using hr₀', by simpa using hs₀', ?_⟩
-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+  have hrInt := rat_intCast_num_of_pow (by decide : 2 ≠ 0) hr
+  have hsInt := rat_intCast_num_of_pow (by decide : 2 ≠ 0) hs
+  rw [← hrInt] at hr hsum
+  rw [← hsInt] at hs hsum
+  refine ⟨r.num, s.num, ?_, ?_, ?_⟩
+  · exact_mod_cast hr
+  · exact_mod_cast hs
+  · exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+
+/-- The bounded-radicand form is a specialization of separated root recovery. -/
+theorem integer_roots_of_norm_zero {theta omega a b w : ℤ}
+    (homega : omega ≠ 0) (hw : 0 < w) (ha : a < w ^ 2) (hb : 0 < b)
+    (hz : norm theta omega a w b = 0) :
+    ∃ r s : ℤ, r ^ 2 = a ∧ s ^ 2 = b ∧ theta = omega * (r + w * s) := by
+  apply integer_roots_of_separated_norm_zero homega (ne_of_gt hw) ?_ hz
+  have h := mul_nonneg (sq_nonneg w) (show 0 ≤ b - 1 by omega)
+  nlinarith
 
 /-- The strict square bounds become one-unit root bounds after integrality. -/
 theorem root_abs_le {a V r : ℤ} (hV : 0 < V) (ha : a < V ^ 2)

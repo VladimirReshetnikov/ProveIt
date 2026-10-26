@@ -48,50 +48,8 @@ theorem norm_pos_of_nonpositive_scale {a b U V omega E : ℤ}
 theorem integer_roots_of_separated_norm_zero {theta omega a b w : ℤ}
     (homega : omega ≠ 0) (hw : w ≠ 0) (hsep : a ≠ w ^ 2 * b)
     (hz : norm theta omega a w b = 0) :
-    ∃ r s : ℤ, r ^ 2 = a ∧ s ^ 2 = b ∧ theta = omega * (r + w * s) := by
-  have htheta : theta ≠ 0 := by
-    intro ht
-    rw [ht] at hz
-    dsimp [NearSquareFinalizer.norm] at hz
-    have he : omega ^ 4 * (a - w ^ 2 * b) ^ 2 = 0 := by
-      linear_combination hz
-    rcases mul_eq_zero.mp he with he | he
-    · exact (pow_ne_zero 4 homega) he
-    · exact hsep (sub_eq_zero.mp (eq_zero_of_pow_eq_zero he))
-  have hwQ : (w : ℚ) ≠ 0 := by exact_mod_cast hw
-  have hoQ : (omega : ℚ) ≠ 0 := by exact_mod_cast homega
-  have htQ : (theta : ℚ) ≠ 0 := by exact_mod_cast htheta
-  have hzQ : norm ((theta : ℚ) / omega) 1 a w b = 0 := by
-    have h : norm (theta : ℚ) omega a w b = 0 := by
-      dsimp [NearSquareFinalizer.norm] at hz ⊢
-      exact_mod_cast hz
-    dsimp [NearSquareFinalizer.norm] at h ⊢
-    field_simp
-    nlinarith [h]
-  obtain ⟨r, s, hr, hs, hsum⟩ :=
-    rational_roots_of_norm_zero hwQ (div_ne_zero htQ hoQ) hzQ
-  have hsa : IsSquare a := Rat.isSquare_intCast_iff.mp ⟨r, by nlinarith [hr]⟩
-  have hsb : IsSquare b := Rat.isSquare_intCast_iff.mp ⟨s, by nlinarith [hs]⟩
-  obtain ⟨r₀, hr₀⟩ := hsa
-  obtain ⟨s₀, hs₀⟩ := hsb
-  have hr₀' : r₀ ^ 2 = a := by nlinarith [hr₀]
-  have hs₀' : s₀ ^ 2 = b := by nlinarith [hs₀]
-  have hrootsr : r = (r₀ : ℚ) ∨ r = -(r₀ : ℚ) := by
-    have : r ^ 2 = (r₀ : ℚ) ^ 2 := by exact_mod_cast hr.trans (by exact_mod_cast hr₀'.symm)
-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
-  have hrootss : s = (s₀ : ℚ) ∨ s = -(s₀ : ℚ) := by
-    have : s ^ 2 = (s₀ : ℚ) ^ 2 := by exact_mod_cast hs.trans (by exact_mod_cast hs₀'.symm)
-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
-  rcases hrootsr with hrsgn | hrsgn <;> rcases hrootss with hssgn | hssgn
-  all_goals rw [hrsgn, hssgn] at hsum
-  · refine ⟨r₀, s₀, hr₀', hs₀', ?_⟩
-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
-  · refine ⟨r₀, -s₀, hr₀', by simpa using hs₀', ?_⟩
-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
-  · refine ⟨-r₀, s₀, by simpa using hr₀', hs₀', ?_⟩
-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
-  · refine ⟨-r₀, -s₀, by simpa using hr₀', by simpa using hs₀', ?_⟩
-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+    ∃ r s : ℤ, r ^ 2 = a ∧ s ^ 2 = b ∧ theta = omega * (r + w * s) :=
+  NearSquareFinalizer.integer_roots_of_separated_norm_zero homega hw hsep hz
 
 /-- Literal package-52 finalizer with one natural witness. -/
 def value (a b V₀ V₁ J Q m n : ℤ) : ℤ :=
