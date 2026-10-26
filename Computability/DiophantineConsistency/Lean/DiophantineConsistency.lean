@@ -10,6 +10,7 @@ import DiophantineConsistency.CarrierRankBounds
 import DiophantineConsistency.FirstPellCarrier
 import DiophantineConsistency.Carrier65Witness
 import DiophantineConsistency.Carrier66
+import DiophantineConsistency.Carrier66Source
 import DiophantineConsistency.ThirteenCarrier
 import DiophantineConsistency.SignedPellResidue
 import DiophantineConsistency.ThirteenCarrierSoundness

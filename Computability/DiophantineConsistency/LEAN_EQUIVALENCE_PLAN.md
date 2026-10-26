@@ -100,6 +100,13 @@ checks both full coordinate maps and zero-existence equivalence between
 the actual fourteen-variable polynomial and its canonical positive
 fifteen-variable parent. The parent's canonical conditions are explicit;
 they are not a supplied classification of all parent zeros.
+`Carrier66Source` now restores all31 positive literal source coordinates,
+proves all22 source equations, and identifies the exact rank, q and C.
+Its `canonical_window` exposes the complete native arithmetic window under
+the finite coefficient interface; `positive_carrier_zero_source` starts at
+the actual Carrier65 zero. See the [independent root review](reviews/carrier66-source31-lean-root.md)
+and full row ledger. The current full coefficient binding and native
+computation equivalence are still required.
 `ThirteenCarrier.positive_polynomial_zero_sets` binds all three literal
 thirteen-coordinate formulas and proves their entire positive zero sets
 agree. The signed derived y is allowed to be negative. Their fresh-seed
