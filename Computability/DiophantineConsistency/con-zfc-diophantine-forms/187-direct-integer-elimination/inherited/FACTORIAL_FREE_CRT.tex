@@ -1,0 +1,844 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,multicol}
+\usepackage{xcolor,fancyhdr,enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{
+ pdftitle={Removing Factorial Authenticity: Binomial Prime-Power Certificates for Diophantine Consistency},
+ pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov and ProveIt},
+ pdfsubject={An explicit quartic Diophantine equation equivalent to ZFC inconsistency},
+ pdfkeywords={Diophantine equations, ZFC consistency, binomial coefficients, Chinese remainder theorem}
+}
+\usepackage{url}
+\definecolor{ink}{RGB}{24,43,65}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Factorial-free binomial CRT}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\allowdisplaybreaks
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\vp}{v_p}
+\newcommand{\PP}{\mathcal P}
+\newcommand{\LL}{\mathcal L}
+\input{results.tex}
+
+\title{\color{ink}\bfseries Removing Factorial Authenticity\par
+\large Binomial prime-power certificates for Diophantine consistency}
+\author{AI-assisted mathematical research\smallskip\\
+\normalsize Prepared for Vladimir Reshetnikov and the ProveIt project}
+\date{25 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We construct a fixed, fully emitted quartic polynomial over the unrestricted
+integers whose unsolvability is provably equivalent in ZFC to
+$\Con(\mathrm{ZFC})$, using the repository's numerical proof calculus
+$C_{222}$. The principal endpoint has \NewVars{} variables,
+\NewRows{} quadratic residuals, \NewTerms{} collected monomials, and
+coefficient height \NewHeight{}. Every residual is printed in this report;
+the accompanying JSON files also supply the complete collected polynomial.
+
+The principal mathematical change is to remove the assertion that a
+certificate variable equals $t!$. For a sufficiently large ordinary integer
+$R$, the binomial coefficient $B=\binom{R+t}{t}$ itself retains a prime-power
+selector for every one of $t$ rows. Its factors need not be pairwise coprime.
+Conversely, every prime of $B$ can be assigned a compatible row, which closes
+the completeness direction. A separate large-evaluation argument recovers
+proof-label multiplicities without coprime numerical label weights. Thus an
+explicit power replaces both uses of the old factorial. An odd-square radix,
+a cofinal square choice for the beta base, and exact quadratic projections
+complete the smaller equation.
+
+The new arithmetic arguments are ordinary unbounded proofs. Finite programs
+check the literal source edits, elimination identities, coordinate changes,
+residual transformations, and every collected coefficient. The logical
+$C_{222}$ calibration and unchanged Pell compiler are identified inherited
+results. This release is not an end-to-end proof-assistant formalization,
+a proof of consistency, or a claim of a global simplicity optimum.
+\end{abstract}
+\vfill
+\begin{center}\small
+Comparison snapshot: \texttt{3ecd6a6cf53d47519228328567f45fb7ee9781d9}.\\
+All final unknowns in the principal equation range over $\Z$.
+\end{center}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The result and the meaning of ``simpler''}
+
+The primary mathematical object is
+\begin{equation}\label{eq:principal}
+ \boxed{\quad P(x_0,\ldots,x_{\NewLast})
+       =\sum_{j=0}^{\NewLastRow} R_j(x_0,\ldots,x_{\NewLast})^2=0,
+       \qquad \boldsymbol x\in\Z^{\NewVars}.\quad}
+\end{equation}
+Appendix~\ref{sec:residuals} gives every coefficient of every quadratic
+$R_j$. The delivered \nolinkurl{direct/principal/equation.json}
+is the machine-readable definition; the neighboring
+\nolinkurl{expanded_polynomial.json} is its completely collected expansion.
+An intermediate register in the construction is a genuine variable only
+when it remains in this final coordinate list.
+
+\begin{theorem}[Consistency calibration]\label{thm:main}
+For the fixed polynomial \eqref{eq:principal}, the new arithmetic proofs in
+this report, composed with the pinned $C_{222}$/ZF/ZFC calibration, establish
+\[
+ \mathrm{ZFC}\vdash
+ \left(\neg\exists\boldsymbol x\in\Z^{\NewVars}\;
+ P(\boldsymbol x)=0\right)\ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+No consistency assumption is used to prove this equivalence.
+\end{theorem}
+
+The direct route compiles numerical proof rules. It does not simulate
+K215, specialize Jones's universal polynomial, or contain a large hidden
+machine coefficient. The coefficients are the ordinary small integers
+printed in the residual appendix. This distinction matters for inspection
+and formalization, even though existing native constructions use many fewer
+variables.
+
+\subsection{Exact comparison}
+
+\input{comparison.tex}
+
+The baseline is the latest common-remainder direct quartic in the eight
+incoming submissions present at the comparison commit~\cite{common,repo}.
+The separate centered-residue and residual-basis submissions supply useful
+independent transformations~\cite{centered,bases}. We credit these
+transformations rather than presenting their composition as a new theorem.
+The factorial-free source is a change to the arithmetic architecture, and
+is the principal contribution of this report.
+
+There is no metric-independent smallest equation. The inspected repository
+already has nine-positive-variable equations, ten-integer equations using a
+different reduction, and a fifteen-positive-variable 66-operation circuit.
+Those are different tradeoffs in domain, degree, coefficient description,
+and evaluation cost. Our improvement concerns the direct small-coefficient
+quartic family. The lower-dimensional dense companion deliberately spends
+more support to remove one coordinate. Neither a global minimum nor
+literature-wide priority is asserted.
+
+\section{Why the old factorial can be removed}
+
+In the inherited direct architecture one integer $F=t!$ serves two jobs.
+First, the weights $1+jF$, for labels $1\le j\le t$, are pairwise coprime,
+so their prime valuations recover proof-label multiplicities. Second,
+$\binom{F^2+t}{t}$ decomposes into pairwise coprime reciprocal factors
+$1+F^2/i$, providing a CRT slot for each proof row. Certifying $F=t!$
+requires a self-referential ceiling identity and its supporting bounds.
+
+We replace the two jobs independently. The label product contains only
+boundedly many factors, so equality at a sufficiently large integer can be
+lifted to an identity of polynomials. For row selection, pairwise coprime
+reciprocal factors are stronger than needed: appropriate prime powers
+inside one binomial coefficient already provide all row selectors. The
+remaining issue is completeness at \emph{every} prime of that coefficient;
+Lemma~\ref{lem:all-primes} handles it explicitly.
+
+The centered-residue predecessor already considered coefficient separation
+for the label product, but identified the independent factorial dependence
+of the CRT carrier as an obstacle~\cite{centered}. The prime-power compiler
+below removes that remaining dependence. This is the substantive new
+architectural step.
+
+The new arithmetic choice is
+\begin{equation}\label{eq:power-F}
+ d=2(t+1),\qquad F=d^t=2^t(t+1)^t.
+\end{equation}
+The product argument below first recovers equal factor counts, so the
+smaller bound $F>(t+1)^t$ suffices.
+This is a semantic description of an ordinary polynomial certificate.
+The old power request at index $t$ is reused, so the number of power
+requests remains eighteen. Variable exponentiation is not an operation
+in the final polynomial.
+
+\section{Prime powers in a binomial modulus}
+
+Set $\Lambda_t=\lcm(1,\ldots,t)$ for $t\ge1$. Write $v_p(n)$ for
+the exponent of the prime $p$ in a positive integer $n$.
+
+\begin{lemma}[A classical denominator bound]\label{lem:lcm}
+For $1\le i\le t$,
+\[
+ t\binom{t-1}{i-1}\mid\Lambda_t.
+\]
+\end{lemma}
+\begin{proof}
+For $d=p^a$, the summand in the factorial valuation of the left side is
+\[
+ \left\lfloor\frac{t}{d}\right\rfloor
+ -\left\lfloor\frac{i-1}{d}\right\rfloor
+ -\left\lfloor\frac{t-i}{d}\right\rfloor.
+\]
+It is zero or one, because $(i-1)+(t-i)=t-1$, and it vanishes for $d>t$.
+The valuation is therefore at most $\lfloor\log_p t\rfloor$, exactly
+the valuation of $\Lambda_t$.
+\end{proof}
+
+This divisibility is classical and follows also from the lcm identity for
+binomial rows discussed by Farhi~\cite{farhi}. Its use below is credited
+accordingly; it is not claimed as a new number-theoretic identity.
+
+\begin{lemma}[Every prime has a compatible row]\label{lem:all-primes}
+Let $R,t\ge1$, $B=\binom{R+t}{t}$, and $p^e\Vert B$. There is an
+$i\in\{1,\ldots,t\}$ for which $p^e\mid R+i$.
+\end{lemma}
+\begin{proof}
+Let $v=\max_{1\le i\le t}v_p(R+i)$. Legendre's formula gives
+\[
+ e=\sum_{a\ge1}\left(
+ \left\lfloor\frac{R+t}{p^a}\right\rfloor
+ -\left\lfloor\frac{R}{p^a}\right\rfloor
+ -\left\lfloor\frac{t}{p^a}\right\rfloor\right).
+\]
+Each summand is zero or one. Above $a=v$ the interval contains no
+multiple of $p^a$; necessarily $p^a>t$, since any $t$ consecutive
+integers contain such a multiple if $p^a\le t$. All those summands
+are zero, so $e\le v$. A row attaining the maximum works.
+\end{proof}
+
+\begin{lemma}[Every row has a sufficiently large selector]\label{lem:each-row}
+Let $R\ge\Lambda_t^2$ and $B=\binom{R+t}{t}$. For each
+$i\in\{1,\ldots,t\}$ there is a prime power $p^e\Vert B$ such that
+\[
+                 p^e\mid R+i,\qquad p^e>t.
+\]
+\end{lemma}
+\begin{proof}
+Because $R+i>\Lambda_t^2$, the integer $R+i$ does not divide
+$\Lambda_t^2$. Hence some prime $p$ has
+$v=v_p(R+i)>2a$, where $a=v_p(\Lambda_t)=\lfloor\log_p t\rfloor$.
+In particular $p^v>t$. For $j\ne i$, the valuation of $R+j$ is
+therefore the valuation of $j-i$. Put
+\[
+ d=v_p\!\left(t\binom{t-1}{i-1}\right).
+\]
+The valuation of $B$ is exactly
+\[
+ e=v+v_p((i-1)!(t-i)!)-v_p(t!)=v-d.
+\]
+Lemma~\ref{lem:lcm} gives $0\le d\le a$. Consequently
+$e\ge v-a>a$, so $p^e>t$, while $e\le v$ gives $p^e\mid R+i$.
+This also covers $p>t$, for which $a=d=0$.
+\end{proof}
+
+The two lemmas have different purposes. A row selector proves soundness
+for that row. Lemma~\ref{lem:all-primes} supplies a compatible assignment
+at every prime of $B$ in the converse construction, including primes
+that were not chosen as row selectors. Omitting the latter step would
+leave a real completeness gap.
+
+\subsection{A small example}
+
+Take $t=3$, $R=37$. Here $\Lambda_3^2=36$ and
+\[
+ B=\binom{40}{3}=9880=2^3\cdot5\cdot13\cdot19.
+\]
+The consecutive factors are $38,39,40$, which are not pairwise coprime.
+Their full prime powers in $B$ can be assigned as follows:
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+Prime power in $B$ & Compatible factor & Row index $i$\\
+\midrule
+$19$ & $38$ & $1$\\
+$13$ & $39$ & $2$\\
+$8$ and $5$ & $40$ & $3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every row has a selector greater than $3$, and all primes of $B$ have
+a compatible row. No factorization into $1+F^2/i$ is used.
+
+\section{A bounded-row certificate without factorial authenticity}
+
+We first recall the exact one-sided range fact used in the repository.
+\begin{lemma}[Binomial range]\label{lem:range}
+If $p$ is prime, $A\in\N$, $k,e\ge1$, and $p^e\mid\binom{A}{k}$, then
+$A\bmod p^e<k$. The convention is $\binom{A}{k}=0$ for $A<k$.
+\end{lemma}
+\begin{proof}
+The case $A<k$ is immediate. Otherwise, if none of the $k$ consecutive
+integers $A-k+1,\ldots,A$ is divisible by $p^e$, none is divisible by
+a higher power either. The valuation formula for the binomial is a sum
+of zero-one terms, with all terms from level $e$ onward zero. The total
+is at most $e-1$, a contradiction. Thus $A-r$ is divisible by $p^e$
+for some $0\le r<k$; its ordinary residue is at most $r$ and hence
+is less than $k$.
+\end{proof}
+
+\begin{theorem}[Binomial CRT compiler]\label{thm:crt}
+Let $t\ge1$, $R\ge\Lambda_t^2$, $B=\binom{R+t}{t}$, and $N=B^K$.
+Let $b_1,\ldots,b_d\in\N$, with
+$K\ge\max(t,b_1+1,\ldots,b_d+1,1)$.
+Suppose a fixed integer polynomial $\LL$ satisfies
+\[
+ 0\le\LL(i,\boldsymbol w)<2^K
+ \quad(0\le i<t,\ 0\le w_j\le b_j).
+\]
+Then the following are equivalent:
+\begin{enumerate}
+\item Every row $i<t$ has a bounded tuple $\boldsymbol w$ with
+      $\LL(i,\boldsymbol w)=0$.
+\item There are nonnegative $C,A_1,\ldots,A_d$ satisfying
+\begin{align}
+ B&\mid C+R+1,\label{eq:raw-index}\\
+ N&\mid\binom{C}{t},\label{eq:range-index}\\
+ N&\mid\binom{A_j}{b_j+1}\quad(1\le j\le d),\label{eq:range-columns}\\
+ N&\mid\LL(C,\boldsymbol A).\label{eq:local-congruence}
+\end{align}
+\end{enumerate}
+In the forward construction the representatives may all be chosen in
+$[1,N^2]$. Soundness does not require that upper bound.
+\end{theorem}
+
+\begin{proof}
+For soundness fix $i\in\{1,\ldots,t\}$ and choose $p^e$ from
+Lemma~\ref{lem:each-row}. By Lemma~\ref{lem:range}, the index range
+gives $C\equiv s\pmod{p^{Ke}}$ with $0\le s<t$. Reduction of
+\eqref{eq:raw-index} modulo $p^e$ gives
+$s\equiv i-1\pmod{p^e}$. Since $p^e>t$, we have $s=i-1$ exactly.
+Each other range condition supplies $A_j\equiv w_j\pmod{p^{Ke}}$
+with $0\le w_j\le b_j$. Therefore $p^{Ke}$ divides
+$\LL(i-1,\boldsymbol w)$. The latter lies in $[0,2^K)$ and
+$p^{Ke}\ge2^K$, so it is zero.
+
+Conversely choose a valid tuple for each row. For \emph{every} prime
+$p\mid B$, write $e=v_p(B)$ and choose a compatible $i$ by
+Lemma~\ref{lem:all-primes}. Prescribe, modulo $p^{2Ke}$,
+\[
+ C\equiv i-1,\qquad A_j\equiv w_j^{(i-1)}.
+\]
+These moduli are pairwise coprime and have product $N^2$. CRT supplies
+positive representatives at most $N^2$. The raw index and local
+congruences follow. For a range lower index $k\le K$, its selected
+residue $w$ is in $[0,k-1]$. If $A<k$ its binomial is zero; otherwise
+the falling factorial for $\binom{A}{k}$ has the factor $A-w$ divisible
+by $p^{2Ke}$. Division by $k!$ loses at most
+$v_p(k!)\le k-1<K\le Ke$. Thus the binomial is divisible by
+$p^{Ke}$. This holds for every prime of $B$ and for every range.
+\end{proof}
+
+\paragraph{Why a size hypothesis cannot simply be dropped.}
+Let $t=2$, $R=1$, $B=3$, $K=2$, $N=9$, $C=1$, and
+$\LL(i)=(i-1)^2$. Then all three applicable global congruences hold:
+$3\mid C+2$, $9\mid\binom C2=0$, and $9\mid\LL(C)=0$.
+But row $0$ is false. The missing row's prime factor was cancelled by
+the binomial denominator. This explicit counterexample is included in
+the finite regression script.
+
+\section{Proof-label balance from a polynomial identity}
+
+Let a calibrated Horn rule have one conclusion and at most two premises.
+Pad unused premise slots by the freely derivable truth code $0$. Suppose
+there are $t$ rows and all their labels lie in $[0,t]$. For a fixed
+positive integer $F$ put
+\[
+ W_j=1+jF,\qquad W_0=1.
+\]
+
+\begin{lemma}[Large evaluation recovers multiplicities]\label{lem:labels}
+If $F>(t+1)^t$, then
+\begin{equation}\label{eq:label-product}
+ \prod_{i<t}W_{v_i}=(1+F)\prod_{i<t}W_{p_i}W_{q_i}
+\end{equation}
+implies, at each positive label $j$, that its conclusion multiplicity
+minus its premise multiplicity is $1$ for $j=1$ and $0$ otherwise.
+\end{lemma}
+\begin{proof}
+First discard all unit factors with label zero. The left side has at
+most $t$ nonunit factors; the right side has at most $2t+1$. If these
+counts differ, their minimum $r$ is at most $t$. The side with more
+factors is at least $(F+1)^{r+1}$, whereas the side with fewer is at
+most $(1+tF)^r\le t^r(F+1)^r$. Since $F+1>t^t\ge t^r$, this is
+impossible. Thus the factor counts agree and both are at most $t$.
+
+Replace $F$ by an indeterminate $z$. Each side now has nonnegative
+coefficients and coefficient sum at most $(t+1)^t<F$. Thus every
+coefficient of the difference has absolute value less than $F$.
+
+A nonzero integer polynomial with that coefficient bound cannot vanish
+at $F$: take its lowest nonzero coefficient $a_r$, divide its evaluation
+by $F^r$, and reduce modulo $F$. This would force $F\mid a_r$ with
+$0<|a_r|<F$. Therefore \eqref{eq:label-product} is an identity in
+$\Z[z]$. Distinct positive labels give distinct irreducible linear
+factors $1+jz$ over $\Q$, with roots $-1/j$. Unique factorization
+gives the required multiplicities. Label $0$ contributes only the unit.
+\end{proof}
+
+Pairwise coprimality of the \emph{evaluated} integers $W_j$ is not
+required. The choice \eqref{eq:power-F} has the needed strict bound.
+
+\begin{lemma}[Single-conclusion flow]
+If the balance in Lemma~\ref{lem:labels} is supplied by valid
+single-conclusion Horn rules and truth is derivable, then label $1$ is
+derivable.
+\end{lemma}
+\begin{proof}
+Take the finite closure of truth under the finitely many rule instances
+in the certificate. If $1$ is outside this closure, every rule whose
+conclusion is outside has at least one premise outside. Summing
+conclusions minus premises over outside labels is therefore at most
+zero. The balance makes that sum one. This contradiction gives a finite
+derivation. Repeated premises and cyclic rule multisets cause no problem.
+\end{proof}
+
+This last lemma is the inherited commutative-certificate argument, included
+to make clear why an unordered balance does not permit circular false
+proofs~\cite{flow}. The single-conclusion restriction is essential.
+
+\section{The selected arithmetic front}
+
+All expressions in this section describe values of explicitly certified
+polynomial registers. The final system itself is entirely quadratic.
+Let $t=16+h^2$ and retain the same $C_{222}$ local rule polynomial, range
+columns, semantic anchor, and eighteen power requests as the parent.
+The selected changes are
+\begin{align}
+ d&=2(t+1),&F&=d^t,\label{eq:new-F}\\
+ s&=(2v+1)^2,&y&=Fs,\label{eq:new-y}\\
+ q&=(2z+1)^2,&H&=2+C+\sum_{j=1}^{8}A_j.\label{eq:new-q}
+\end{align}
+Here $C$ and the eight $A_j$ are the actual CRT representatives; some
+stored source coordinates are these values minus one. The distinction
+is retained explicitly in the mutation ledger. The former factorial
+ceiling rows and $y=V_0(V_0-1)$ are deleted. The variable $x$ is unrestricted;
+there is \emph{no} parity equation for $x$ in the selected source.
+
+The unchanged endpoint and arithmetic requests include
+\begin{align}
+ x&=F+1+(y+1)u_0,\label{eq:first-end}\\
+ x&=1+[1+(t+1)y]u_t,\label{eq:last-end}\\
+ B h_B&=C+F^2+1,\label{eq:index-row}\\
+ N&=B^x,&q&=(BH)^x.\label{eq:two-powers}
+\end{align}
+The digit called the ``factorial digit'' in old filenames now has only
+the intended meaning
+\begin{equation}\label{eq:new-binomial}
+                     B=\binom{F^2+t}{t}.
+\end{equation}
+It no longer authenticates a factorial. Old variable names retained in
+data provenance do not change this mathematical interpretation.
+
+\subsection{The unchanged Pell interface and signed bases}
+
+For an integer center $A$, let $X_k(A),Y_k(A)$ be the Pell polynomials
+defined by
+\[
+ X_0=1,\quad Y_0=0,\qquad
+ X_{k+1}=AX_k+(A^2-1)Y_k,\quad Y_{k+1}=X_k+AY_k,
+\]
+and $X_{-k}=X_k$, $Y_{-k}=-Y_k$. The retained signed square frame,
+semantic anchor, and pooled small-residue proof establish these exact
+coordinates at every requested signed index. They bound every actual
+base, index, and output atom in absolute value strictly below $W$, with
+$W\ge258$ and $|A|>W^W$. These are properties of the unchanged graph;
+the new base $2(t+1)$ is explicitly inserted into its atom list.
+The relevant ordinary proofs are retained in \nolinkurl{direct/parent/}
+and identified in the source ledger~\cite{common,centered}.
+
+For a nonzero signed base $n$ define $T_n=2An-n^2-1$. The certified
+power congruence and the recurrence imply
+\[
+ m\equiv n^k\pmod{T_n}\quad(k\ge0),\qquad
+ mn^{-k}\equiv1\pmod{T_n}\quad(k<0).
+\]
+The modulus satisfies $|T_n|>W^W+W$. For $|n|\ge2$ the corresponding
+absolute errors are less than the modulus. A negative $k$ would force
+the impossible integer equality $mn^{-k}=1$. Thus $k\ge0$ and
+$m=n^k$. For $n=\pm1$ the same recurrence gives exactly
+$m=(\pm1)^k$ for signed $k$. A base of zero is not covered by this
+argument, and is excluded explicitly below when needed.
+
+\section{Soundness without a circular sign argument}\label{sec:soundness}
+
+The order of recovery is essential. In particular, neither the sign of
+$B$ nor the meaning of its binomial digit is assumed in an earlier step.
+
+\subsection{Recover the power, representatives, and positive exponent}
+
+The request \eqref{eq:new-F} has known positive base and $t\ge16$, so
+it gives
+$F=(2(t+1))^t>2^{32}$ independently of every digit. Equation
+\eqref{eq:new-y} gives $y\ge F>0$. Equation \eqref{eq:new-q} gives
+$q\ge1$, so every numerator request at base $q+1\ge2$ forces its
+actual upper index to be nonnegative. Hence $C,A_j\ge0$ and $H\ge2$.
+The raw index row \eqref{eq:index-row} excludes $B=0$ because its
+right side is positive. Therefore $|BH|\ge2$.
+
+The signed-base request $q=(BH)^x$ now forces $x\ge0$ and the actual
+power equality, even if the tentative value of $B$ is negative. The case
+$x=0$ is impossible in \eqref{eq:last-end}: its coefficient
+$1+(t+1)y$ is greater than one and cannot divide $-1$. Thus $x>0$.
+If $u_0\le-1$, \eqref{eq:first-end} gives
+$x\le F-y\le0$, also impossible. Consequently
+\begin{equation}\label{eq:x-bound}
+             x\ge F+1\ge3,
+       \qquad x\ge2+(t+1)y\ge2+(t+1)F.
+\end{equation}
+The second inequality follows from $u_t\ge1$ in the last endpoint.
+
+Since $q>0$ and $q=(BH)^x$, we now know
+\begin{equation}\label{eq:q-growth}
+ q=|BH|^x\ge2^x>1,\qquad |B|\le |BH|<q/2.
+\end{equation}
+All powers at base $q$ are therefore genuine, and $t,t+1,y+1\le x$.
+The exact digit for $B$ uses no range factor $N$, so the latter's positive
+interpretation can wait until $B>0$ has been proved.
+
+\subsection{Authenticate the binomial from small residues}
+
+For $0\le j\le t$ a convenient elementary bound is
+\[
+ \binom{F^2+t}{j}\le(F^2+t)^t\le(F^2+F)^t
+                         \le2^{t(F-1)}.
+\]
+Here $F\ge t$ and $F^2+F\le2^{F-1}$ for $F\ge7$, by a direct
+base case and induction. Combining with \eqref{eq:x-bound} gives
+\[
+ \frac{2^{t(F-1)}}{q}\le2^{-F-t-2},\qquad
+ \frac{2^{t(F-1)}}{q-1}<\frac1{32}.
+\]
+Thus the actual low remainder of $(q+1)^{F^2+t}$ modulo $q^t$ is
+less than $q^t/32$, and the coefficient
+$C_* = \binom{F^2+t}{t}$ is less than $q/32$.
+
+The retained common-remainder construction uses $M=q^x$. For each
+digit denominator $D_i\mid M$, it replaces a remainder $r_i$ by
+$\rho_i=(M/D_i)r_i$ and imposes
+\begin{equation}\label{eq:common-norm}
+ M^2=1+4\sum_{i=1}^{11}\rho_i^2+\alpha^2+\beta^2+\gamma(\gamma+1).
+\end{equation}
+The last three terms are nonnegative for integers, so $|r_i|<D_i/2$.
+The scaled digit row makes $r_i$ an integer congruent to its actual
+remainder. If that actual remainder is in $[0,D_i/32)$, the difference
+has absolute value below $D_i$, and therefore is zero. This also explains
+why the normalizing ratio variables do not introduce rational solutions.
+
+Apply this first to the exact digit for $B$. It gives
+$B\equiv C_*\pmod q$. By \eqref{eq:q-growth},
+$|B-C_*|<q/2+q/32<q$. Therefore
+\[
+                         B=C_*>0.
+\]
+Only at this point do we use $B\ge2$, $N=B^x>0$, and the usual range
+interpretation. This signed reconstruction replaces the old output-slack
+positivity guard.
+
+\subsection{Authenticate every remaining range}
+
+For an ordinary upper representative $a\ge0$ and a required index
+$0\le j\le k\le x$,
+\[
+ \binom aj\le\max(1,a)^k\le H^x.
+\]
+This includes $a=j=0$, a case that an $a^k$ bound would miss. The
+derived label has the inherited bound $h_*\le H^{\ell}$ with
+$\ell=4194304$. The constant shift in $H$ still gives the required
+bound for zero representatives. The growth in \eqref{eq:x-bound}
+implies $\ell(t+1)<x$, so the derived-label coefficients also lie below
+$H^x$. Because $q=B^xH^x$ and $B\ge2$,
+\[
+                  \frac{H^x}{q-1}<\frac2{2^x}<\frac1{32}.
+\]
+Every remaining low remainder is therefore selected correctly by
+\eqref{eq:common-norm}. The independent-column divisibilities are those
+of Theorem~\ref{thm:crt}. There is also a range for a polynomially derived
+label $J(\boldsymbol A)$, rather than a new independent column.
+For a selected prime power, that range gives
+$J(\boldsymbol A)\equiv r\pmod{p^{xe}}$ with $0\le r\le t$.
+The column congruences imply
+$J(\boldsymbol w)\equiv r\pmod{p^{xe}}$.
+The inherited local ledger bounds this nonnegative derived value strictly
+below $2^x\le p^{xe}$; hence $J(\boldsymbol w)=r\le t$.
+This is the precise extension of the compiler used for the derived label.
+
+The unchanged local majorant is
+$0\le\LL<\mathcal R^E$, where
+$\mathcal R=2+t+x+y+F$ and $E=8388608=2^{23}$.
+From $y\ge F$ and \eqref{eq:x-bound}, $\mathcal R<2x$.
+Also $x>2^{32}$, and the elementary dyadic estimate
+$2^{23}\log_2(2x)<x$ gives
+\[
+                  \LL<(2x)^E<2^x.
+\]
+The exponent $K=x$ therefore satisfies every range and evaluation budget.
+Since $F>t!\ge\Lambda_t$, the radius $R=F^2$ satisfies the new
+CRT hypothesis. Every local row is recovered.
+
+\subsection{The boundary case \texorpdfstring{$y=F$}{y = F}}
+
+The cofinal square parametrization permits $y=F$ algebraically. It must
+not be silently treated as the old strict bound. After bounded row
+decoding, the first endpoint has remainder zero modulo $y+1$, because
+$F+1=y+1$. Thus the initial accumulator is zero. Each local update is
+\[
+ S_{i+1}W_{v_i}=S_iW_{p_i}W_{q_i},
+\]
+with every weight positive, so zero propagates to the final accumulator.
+The last endpoint has ordinary remainder one and forces that final
+accumulator to be one, a contradiction. Hence every actual zero has
+$y>F$. Now $F+1\le y$, and the first endpoint restores the intended
+initial accumulator $S_0=F+1$.
+
+All accumulators are positive by induction. Multiplying their updates
+and cancelling gives \eqref{eq:label-product}. Lemma~\ref{lem:labels}
+and the single-conclusion flow argument yield a finite $C_{222}$
+refutation. The retained logical calibration then yields a finite
+syntactic ZFC refutation.
+
+\section{Constructive completeness}
+
+Start with a finite calibrated $C_{222}$ refutation. Expand it to a finite
+proof tree, and choose a horizon $t=16+h^2$ beyond its size, all its
+schema parameters, and all required local label sums. This choice precedes
+all large arithmetic witnesses. Define $F$ by \eqref{eq:power-F}, and
+construct the pending-multiset accumulators using weights $1+jF$.
+Truth padding gives exactly $t$ rows.
+
+Let $O$ be the odd part of $t!$. Choose an arbitrarily large odd multiple
+$w$ of $O$ and set $y=Fw^2$. Because
+\[
+ v_2(F)=t\bigl(1+v_2(t+1)\bigr)\ge t>v_2(t!),
+\]
+$y$ is an even multiple of $t!$. Choose $w$ large enough that $y>F$
+and every accumulator is at most $y$. The beta moduli
+$1+(i+1)y$, $0\le i\le t$, are then pairwise coprime: a common
+prime would divide $j-i\le t$ and hence $y$, while also dividing
+$1+(i+1)y$, impossible. They are all odd. CRT supplies a common beta
+code $x$; adding their product changes its parity, so choose $x$ even.
+The genuine endpoint quotients satisfy \eqref{eq:x-bound}, and the local
+beta quotients are strictly below $x$ because their moduli are at least two.
+
+Define $R=F^2$, $B=\binom{R+t}{t}$, and $N=B^x$. The new binomial
+CRT construction supplies all actual representatives modulo $N^2$.
+The integer $B$ is odd: for $1\le i\le t$,
+$v_2(R)>\lfloor\log_2t\rfloor$ gives $v_2(R+i)=v_2(i)$, so their
+valuations cancel exactly against $t!$.
+
+Consequently the representative classes modulo $N^2$ have free parity.
+Choose the dominant schema representative $a$ odd, and the other eight
+representatives even. Take $a$ in $[2N^2,4N^2)$ by adding suitable
+multiples of the odd modulus. The inherited shell constructors give
+$h_*=1+a+b\pmod2$ and $h_*\ge2a^2$, so the semantic anchor is even
+and dominates the other indices. More explicitly, choose the other eight
+positive representatives at most $2N^2$. The front indices satisfy
+$F^2+t\le B<N^2$ and $x,y+1,t<N^2$, whereas
+$h_*\ge8N^4>2\max(\text{other indices})$.
+The derived-label range is preserved because polynomial evaluation
+respects the CRT congruences modulo $p^{2xe}$, and its denominator loses
+at most $v_p((t+1)!)\le t<x$ powers of $p$.
+Meanwhile $H=2+\sum a_j$ is odd.
+Since $B$ is odd and $x$ is even,
+\[
+                  q=(BH)^x
+\]
+is an odd square and has the parametrization in \eqref{eq:new-q}.
+All four denominator groups divide $q^x$. The genuine normalized
+remainders satisfy $0\le\rho_i<q^x/32$, so
+\[
+ 4\sum_{i=1}^{11}\rho_i^2<\frac{44}{1024}(q^x)^2<(q^x)^2.
+\]
+The nonnegative integer gap in \eqref{eq:common-norm} is represented by
+$\alpha^2+\beta^2+\gamma(\gamma+1)$, using the standard three-square
+representation retained in the parent. Explicitly, for any gap $g\ge0$,
+Legendre's three-square theorem represents $4g+1$; reduction modulo four
+makes exactly one of its three squares odd. Writing the even roots as
+$2\alpha,2\beta$ and the odd root as $2\gamma+1$ gives the stated form.
+
+The unchanged constructive Pell frame and anchor supply the finite
+family of genuine powers. The new request has index $t$, which was
+already present; no new index-compatibility premise has appeared.
+This constructs a zero of the changed arithmetic source. Exact integral
+projections and reversible row/coordinate operations transport it to
+\eqref{eq:principal}. Completeness uses factorials in the \emph{proof of
+existence of a suitable multiple}; no unknown is required to equal a
+factorial in the certificate.
+
+\section{From the arithmetic source to a literal quartic}
+
+The new source keeps the calibrated local $C_{222}$ polynomial, its
+eighteen power slots, and the common-remainder transformation. All new
+definitions are quadratic register rows. The single variable power in
+\eqref{eq:new-F} is compiled by the retained Pell graph at the existing
+index $t$. Thus every final residual is an ordinary integer polynomial
+of degree at most two; summing their squares gives degree at most four.
+The emitted expansion has nonzero degree-four coefficients, so its
+degree is exactly four.
+
+The compiler performs three kinds of finite transformations. First, it
+substitutes variables whose defining row is monic and whose substitution
+keeps every remaining row quadratic. The deleted variable is restored
+uniquely by its integer polynomial. Second, it exposes three already
+valid affine consequences by exact row identities and projects their
+variables. A fourth such projection gives the denser companion. Third,
+it applies recorded integral coordinate translations and elementary
+residual-row operations. A row operation replacing $R_i$ by
+$R_i+nR_j$ is reversed by subtracting $nR_j$; it preserves the common
+zero set even though it changes the sum-of-squares polynomial.
+
+These facts are checked coefficient by coefficient. The row-reduction
+search is a heuristic used only to find a useful basis; its frozen finite
+operation list is the certificate. Reproducing that list does not require
+rerunning the search. No random modular agreement is treated as an
+identity proof.
+
+\section{Logical calibration and verification boundary}
+
+The logical target is the repository's fixed numerical calculus
+$C_{222}$ with truth code $0$ and falsity code $1$. The retained named
+interfaces are
+\begin{center}\small
+\nolinkurl{KEndpoint.c222_iff_zf_refutation},\\
+\nolinkurl{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\end{center}
+The first calibrates the numerical rules with syntactic ZF refutability;
+the second uses constructible choice for ZF/ZFC equiconsistency. Ordinary
+proof sources and the relevant interface source files are retained with
+their provenance. Their complete transitive proof-assistant closure was
+not rebuilt in this task.
+
+The new proofs above establish, in finite arithmetic formalizable in ZFC,
+both implications between a zero of the emitted polynomial and a finite
+$C_{222}$ refutation. Composing the identified calibration gives
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\exists\boldsymbol x\;P(\boldsymbol x)=0\bigr)
+ \longleftrightarrow
+ \bigl(\exists n\;\operatorname{Proof}_{\mathrm{ZFC}}(n,\bot)\bigr).
+\]
+Negation gives Theorem~\ref{thm:main}. This is an ordinary mathematical
+provability argument, not an emitted object-language proof string. The
+distinction between an unbounded proof and a finite artifact check is
+preserved throughout the release.
+
+\input{verification.tex}
+
+\section{What is new, inherited, and still open}
+
+The new contribution is the explicit replacement of factorial
+authenticity by a binomial prime-power compiler with two-sided row coverage,
+together with the compatible proof-label and signed-source changes.
+The sharpened $\Lambda_t^2$ threshold is proved here using a classical
+lcm divisibility. The polynomial-evaluation device itself is elementary;
+its use with the bounded $C_{222}$ label product removes the need for
+coprime evaluated weights. The cofinal odd-square beta base adds a further
+semantic saving, with the $y=F$ exceptional branch explicitly excluded.
+
+The numerical calculus, signed Pell frame, range lemma, common-remainder
+normalization, and affine residual exposures have identified predecessors.
+The archive records their exact source boundaries. This report does not
+claim that an exhaustive literature search establishes worldwide novelty.
+It establishes a complete new arithmetic source relative to the inspected
+repository and an exact smaller direct quartic.
+
+Several questions remain worthwhile. The selector threshold
+$R\ge\Lambda_t^2$ is sufficient and need not be optimal. A row-specific
+threshold using $\Lambda_t\,t\binom{t-1}{i-1}$ may reduce it further,
+although this would not presently lower the emitted graph size. The
+largest remaining arithmetic cost is the shared Pell certification, so a
+new finite equation for its simultaneous powers would have greater impact
+than another local row-basis search. Finally, an end-to-end formalization
+should start with the prime-power coverage theorem and signed bootstrap:
+they are compact statements with explicit exceptional cases and clear
+interfaces to the existing graph.
+
+\section{Files, reproduction, and integration}
+
+The archive is intended as a new contribution under
+\nolinkurl{Computability/DiophantineConsistency/con-zfc-diophantine-forms},
+or initially in \nolinkurl{docs/incoming}. It includes this source and its
+compiled PDF, the literal principal and companion equations, all collected
+coefficients, construction and checking programs, frozen transformation
+certificates, mathematical reviews, retained ordinary proof dependencies,
+licenses, and a checksum manifest.
+
+Run \texttt{python3 -B verify.py} from the archive root for the selected
+finite checks. They use Python's standard library and do not need a network
+or a consistency oracle. The evaluator accepts a supplied integer tuple;
+it does not attempt a root search. Rebuild this report with two runs of
+\texttt{pdflatex -interaction=nonstopmode -halt-on-error main.tex}
+from the \nolinkurl{report/} directory. Different TeX versions can change
+PDF bytes without changing the polynomial or mathematics.
+
+\begingroup
+\raggedright
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov and ProveIt contributors,
+\emph{ProveIt: DiophantineConsistency}, comparison commit
+\texttt{3ecd6a6cf53d47519228328567f45fb7ee9781d9}, 25 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3ecd6a6cf53d47519228328567f45fb7ee9781d9/Computability/DiophantineConsistency}.
+
+\bibitem{common} ProveIt incoming research,
+\emph{Common remainder certificates for Diophantine consistency},
+\nolinkurl{ConZFC_Common_Remainders_Radix47_2026-10-25.zip},
+\nolinkurl{direct/proofs/NORMALIZED_REMAINDERS_PROOF.md} and its retained
+orientation/strict-budget proof sources. Available in \texttt{docs/incoming}
+at the comparison commit; exact hashes are in this archive's source ledger.
+
+\bibitem{centered} ProveIt incoming research,
+\emph{Centered residue certificates and reusable Pell denominators},
+\nolinkurl{ConZFC_Centered_Residues_2026-10-25.zip}, 25 October 2026.
+The odd-square radix and compatible parity construction are predecessors
+to the changed bootstrap in this report.
+
+\bibitem{bases} ProveIt incoming research,
+\emph{Residual bases and denominator engineering},
+\nolinkurl{ConZFC_Residual_Bases_Denominator_Engineering_2026-10-25.zip},
+25 October 2026. Source of the exact affine residual exposures used here.
+
+\bibitem{flow} ProveIt direct-calculus source,
+\emph{Commutative refutation certificates}; retained
+\nolinkurl{COMMUTATIVE_CERTIFICATES.md}, numerical-calculus proofs and
+calibration interfaces in the source closure of \cite{common}.
+
+\bibitem{farhi} B. Farhi, \emph{An identity involving the least common
+multiple of binomial coefficients and its application}, 2009,
+\href{https://arxiv.org/abs/0906.2295}{arXiv:0906.2295v2}.
+
+\bibitem{universal} J. Bayer, M. David, M. Hassler, Y. Matiyasevich,
+and D. Schleicher, \emph{Diophantine equations over $\Z$: universal bounds
+and parallel formalization},
+\href{https://arxiv.org/abs/2506.20909}{arXiv:2506.20909v3},
+22 October 2026. Background on the domain/degree/variable tradeoff and the
+distinction between ordinary and formal verification.
+\end{thebibliography}
+\endgroup
+
+\appendix
+\section{Complete quadratic residuals}\label{sec:residuals}
+
+All coordinates below are unrestricted integers. An empty monomial in the
+JSON definition denotes the constant one; repeated coordinate indices
+denote repeated factors. The list below is generated from the final
+canonical JSON, and the release verifier checks their agreement. The
+single equation is exactly the sum of the squares of these residuals.
+
+\input{residuals.tex}
+
+\end{document}
+

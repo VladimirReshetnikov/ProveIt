@@ -1,0 +1,240 @@
+\section{A signed horizon removes a quartic variable}
+\label{sec:quartic}
+
+The old direct source imposed a positive quadratic horizon such as
+$t=16+4z^2$ or $t=128+4z^2$. This guaranteed positivity at the cost of
+a coordinate that could not be removed affinely. The power machinery
+already contains enough information to recover the sign. We use
+that information and replace the square progression by a signed
+affine progression.
+
+\subsection{A uniform signed-horizon lemma}
+
+Put $\ell=2^{20}$. Fix an integer $m\ge8$ divisible by four and impose
+\[
+ t=m(2z+1),\qquad z\in\Z.
+\]
+Then $t\ne0$, $|t|\ge m$ and $4\mid t$. Retain the source's signed
+Pell frame, its reused even CRT index $C$, all orientation rows and
+all actual power requests. Two growth choices will be used:
+\begin{align}
+ K&=\ell t, \label{eq:linear-growth}\\
+ U&=a t^2,\qquad K=bU^2
+ \quad(a,b\in\Z_{>0},\;ba^2m^3\ge\ell).
+ \label{eq:quartic-growth}
+\end{align}
+The retained Pell request expresses $F=t^K$. This exponentiation
+is part of the \emph{proof interpretation}, not the final polynomial.
+
+\begin{lemma}\label{lem:signed-horizon}
+At every integer zero of either modified source, $t\ge m$ and
+$K\ge\ell t$. Every finite C222 refutation can be represented using
+the new positive branch of the horizon progression.
+\end{lemma}
+
+\begin{proof}
+The source's preliminary signed anchor argument uses squares and
+absolute values. It recovers the canonical signed Pell pairs before
+decoding arithmetic signs. Its actual frame includes the squares of
+all requested bases, outputs and indices, in particular the changed
+index $K$. Thus it still gives
+\[
+ W\ge258,\qquad |A|>W^W.
+\]
+For the affine index this lower bound on $W$ already follows from
+$K^2\ge\ell^2m^2$; for the quartic index it follows from
+$K=ba^2t^4$. The signed power lemma therefore applies at a nonzero
+base. At a base of absolute value at least two, an integral exact
+signed-index power must have nonnegative exponent.
+
+For \eqref{eq:linear-growth}, $|t|\ge8$ makes the first power
+force $K\ge0$. Since $K=\ell t$ and $t\ne0$, this proves $t\ge m$
+immediately.
+
+For \eqref{eq:quartic-growth}, the index $K=ba^2t^4$ is positive
+and even before the sign of $t$ is known. The first power gives
+$F=t^K>0$, with $F$ even and $F>|t|$. The retained CRT row is
+\[
+ Bj=C+F+1,\qquad C=2c.
+\]
+Its right side is odd, so $B$ is odd and nonzero. The self-radix
+multiplier has the form $H=2+4S$ for an integer $S$, hence
+$|BH|\ge2$. The exact power at that base gives
+$x\ge0$ and $q=(BH)^x$.
+
+It remains to rule out $x=0$. The beta endpoint rows, which were
+never deleted, give
+\[
+ y=F(2v+1),\qquad g=1+(t+1)y,\qquad x=1+gu_t.
+\]
+Because $|y|\ge F$ and $|t+1|\ge m-1\ge7$,
+\[
+ |g|\ge(m-1)F-1>1.
+\]
+Thus $x=0$ would imply $gu_t=-1$, impossible in integers.
+We have $x\ge1$ and consequently $|q|\ge2$. The literal retained
+request is $q^t$. Its signed exactness forces $t\ge0$, and the
+progression then gives $t\ge m$. Notice that the proof does not
+replace the digit row by a statement about $B$ alone; its unrestricted
+high quotient would invalidate that shortcut.
+
+For either growth choice, positivity now yields $K\ge\ell t$.
+Completeness uses the cofinal positive progression $m(2z+1)$:
+choose $t$ above the finite proof length and the local free parameters,
+then use the source construction with this $t$. The numerical
+estimates and the order of the subsequent choices are justified below.
+\end{proof}
+
+\subsection{The estimates needed at minimum eight}
+
+The literal square-shell constructors obey a sharper bound than
+the earlier conservative $t\ge16$ presentation. For integers
+$0\le r,s<T$,
+\[
+ E(r,s)\le8T^2-2T+1<8T^2,
+\]
+and the other three constructors are no larger. Thus, if both
+arguments are strictly below $t^e$ and $t\ge8$, every constructor
+output is strictly below $t^{2e+1}$. With
+$e_0=1$ and $e_{d+1}=2e_d+1$, one obtains
+$e_d=2^{d+1}-1$.
+
+The authenticated source constructor depths are
+\[
+ 4,\;3,\;3,\;3,\;3,\;5,\;4,\;3,\;19.
+\]
+Consequently every local formula label is below
+$t^{2^{20}-1}$. Set $L=t^\ell$. Then $L\ge t$ and
+$F=t^K\ge L^t$. No bound on the deleted sum of derived labels is
+needed here.
+
+\begin{lemma}[Boundary-valid label separation]\label{lem:label}
+Let $t,L,F$ be positive integers with $L\ge t$ and $F\ge L^t$.
+If two multisets of labels in $[1,L]$, with at most $t$ and
+$2t+1$ entries respectively, satisfy
+\[
+ \prod_{j\in U}(1+jF)=\prod_{j\in V}(1+jF),
+\]
+then their label multiplicities agree.
+\end{lemma}
+
+\begin{proof}
+If the factor counts differ, let $r$ be the smaller count.
+Then $r\le t$, and comparison of the two products gives
+\[
+ (F+1)^{r+1}\le(1+LF)^r\le L^r(F+1)^r,
+\]
+contradicting $F+1>L^t$. Their common count $s$ is therefore
+at most $t$. If $s=0$, both multisets are empty; assume henceforth
+$s\ge1$. Each coefficient of either product polynomial
+in an indeterminate lies between $1$ and
+\[
+ \binom{s}{k}L^k\le s^{s-k}L^k\le L^s\le F.
+\]
+Thus every coefficient of their difference has absolute value
+strictly below $F$, even when one coefficient equals $F$.
+The least nonzero coefficient of a difference vanishing at $F$
+would have to be divisible by $F$, a contradiction.
+The product polynomials agree. Their roots $-1/j$ recover
+the multiplicities.
+\end{proof}
+
+Truth has label zero and hence weight $1+0F=1$; its factors are
+omitted before applying the positive-label lemma.
+The source's multiplicative Horn updates therefore recover the
+same finite rule-flow balance. If falsity were outside the closure
+of truth under the selected rules, every outside conclusion would
+require an outside premise. Summing that balance over outside labels
+would be nonpositive, whereas the target falsity contributes one.
+This yields a finite C222 refutation even if the selected rules have
+cycles.
+
+Two other conservative numerical estimates have explicit replacements.
+Since $K\ge\ell t$ and $t\ge8$,
+\[
+ F\ge8^{8\ell}>2^{64}.
+\]
+After the unchanged beta sign recovery, $y\ge F$ and
+$x\ge2+(t+1)y$. Therefore
+$2+t+x+y+F<2x$, $x>2^{32}$ and the retained local polynomial budget
+gives
+\[
+ \mathrm{Local}<(2x)^{2^{23}}<2^x.
+\]
+Also
+\[
+ F\ge8^{2t}>16^t>
+   \operatorname{lcm}(1,\ldots,t)^2.
+\]
+This supplies the radius for the inherited factorial-free binomial
+CRT selector. No factorial-rounding lemma is being applied outside
+its range.
+
+Finally
+$v_2(F)=K v_2(t)\ge\ell t$ exceeds both
+$\lfloor\log_2t\rfloor$ and $v_2(t!)$. Hence
+$\binom{F+t}{t}$ is odd. Multiplying $F$ by a suitable positive
+odd multiple supplies a beta spacing divisible by $t!$ and larger
+than all finite pending states. After choosing the beta code and
+the every-prime CRT residues, choose the encoded index $C$ even
+and larger than all other requested indices. Only then choose
+$H,q$ and the Pell frame. The choices are cofinal and noncircular.
+These facts complete the soundness and completeness assertions
+in Lemma~\ref{lem:signed-horizon}.
+
+\subsection{Two literal quartics}
+
+The dimension-focused choice is
+\[
+ t=8+16z,\qquad K=1048576t.
+\]
+Affine elimination of $t$ gives $Q_{212}$ with 212 integer
+coordinates, 151 quadratic residuals and 5,706 collected monomials.
+Its exact expanded coefficient height is
+\[
+ 316912650058804747029598371840.
+\]
+
+The balanced choice is
+\[
+ t=8+16z,\qquad U=2t^2,\qquad K=512U^2=2048t^4.
+\]
+At $t=8$ the inequality $2048t^3\ge2^{20}$ is already an equality.
+This gives $Q_{214}$ with 214 integer coordinates, 153 residuals,
+5,875 collected monomials and exact coefficient height 655,360.
+Its maximum residual coefficient is 512.
+
+For each profile, replace the source's horizon row by
+$t-m-2mz=0$, substitute $t=m+2mz$ into every other row, and
+delete this row and the coordinate $t$. This is a polynomial
+bijection on zeros of the \emph{modified} source, with inverse
+restoring the displayed $t$. Affine substitution keeps every
+residual quadratic.
+
+For the balanced profile, change only the two protected growth
+rows to $U-2t^2$ and $K-512U^2$ before eliminating $t$.
+Subtract twice the square-definition row from the frame row,
+and add the square-definition row to the orientation row.
+These integral row operations have explicit inverses and remove
+duplicated $t^2$ terms.
+
+The finite checker also verifies that these edits commute with
+the inherited six coordinate eliminations and optimization chain.
+The radical directions vanish on the protected coordinates;
+the affine projection uses only the stated local constructor
+rows; later charts leave the horizon and growth coordinates
+unchanged; and row operations do not modify their defining rows.
+Thus the emitted equations implement the stated arithmetic
+source change, rather than an unsupported edit to an optimized
+polynomial.
+
+\begin{corollary}
+For $r=212,214$, ZFC proves
+\[
+ \neg\exists\mathbf x\in\Z^r\;Q_r(\mathbf x)=0
+ \quad\longleftrightarrow\quad\Con(\mathrm{ZFC}).
+\]
+\end{corollary}
+The complete $Q_{214}$ residual list appears in
+Appendix~\ref{app:quartic}; both collected polynomials are in
+\texttt{quartic/}.

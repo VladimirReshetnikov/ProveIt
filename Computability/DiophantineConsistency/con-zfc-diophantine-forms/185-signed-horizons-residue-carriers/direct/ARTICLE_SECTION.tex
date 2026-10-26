@@ -1,0 +1,152 @@
+\section{Composing signed horizons with oriented power pools}
+
+The reused CRT anchor and the oriented power theorem have complementary
+strengths. The former removes a derived-label range request; the latter
+combines the remaining power certificates. Their composition requires a new
+sign argument, because the factorial normalization used in the earlier
+pooling proof is absent after the anchor reduction.
+
+\subsection{The common arithmetic interface}
+
+The five bases are
+\[
+ n_0=t,\qquad n_1=B,\qquad n_2=BH,\qquad n_3=q,\qquad n_4=q+1,
+\]
+with respectively $1,1,1,3,10$ power requests. The retained canonical signed
+Pell data at center $A$ satisfy
+\[
+ |A|>W^W,\qquad n_j^2,m_i^2,k_i^2<W,\qquad W\ge258.
+\]
+This interface is established before the signs of the arithmetic coordinates
+are decoded. Every requested index has a canonical signed Pell pair
+$(X_i,Y_i)$, with $D_i=X_i-AY_i$.
+
+Define, for each block,
+\begin{align*}
+ T_j&=2An_j-n_j^2-1,\\
+ E_j&=\sum_{i\in j}\bigl((m_i-D_i)^2-Y_i^2\bigr)
+       -2n_j\sum_{i\in j}Y_i(m_i-X_i).
+\end{align*}
+The five-base residual is the ordinary polynomial
+\[
+ R=\sum_{j=0}^4 n_jE_j\prod_{\ell\ne j}T_\ell
+       -z\prod_{j=0}^4T_j.
+\]
+The inherited oriented-pooling theorem makes $R=0$ equivalent to exactness
+of every request at a nonzero actual base. Zero-base blocks are temporarily
+unconstrained, and are excluded by the argument below. For nonzero bases,
+$\operatorname{sgn}(n_j/T_j)=\operatorname{sgn}(A)$; this common sign is what
+prevents cancellation of the squared power errors.
+
+Two smaller-degree alternatives use three and two quotient coordinates.
+The paired version retains the direct $t$ singleton, pools $B,BH$ with base
+weights, and pools $q,q+1$ without weights. The staged version pools
+$t,B,BH$ with base weights and again uses the unweighted $q,q+1$ pool.
+All final equations remain sums of squares of polynomial residuals.
+
+\subsection{A parity argument replaces the removed factorial certificate}
+
+For the moderate-coefficient source set
+\[
+ t=128+256u,\qquad K=t^4,
+\]
+and retain the request $F=t^K$. The smaller-source alternative sets
+\[
+ t=16+32u,\qquad K=2^{20}t.
+\]
+All parameters here range over all integers. In both cases $t$ is a nonzero
+multiple of four. In the first case $K$ is positive and even; in the second,
+the signed-power theorem forces $K\ge0$ and thus $t>0$. In either case the
+first power gives a positive even $F$ with $F>|t|$.
+
+The retained CRT row reads
+\[
+ Bv=C+F+1,\qquad C=2c.
+\]
+Its right-hand side is odd. Consequently $B$ is odd and nonzero, independently
+of its eventual binomial interpretation. Also $H=2+4S$ for an integer $S$,
+so $|BH|\ge2$. Its exact power gives
+\[
+ x\ge0,\qquad q=(BH)^x.
+\]
+Hence $q\ne0,-1$, and all five bases are nonzero. This proves that every
+one of the old power requests is recovered by the new pools. It also justifies
+the unweighted two-base variants, because the nonzero consecutive integers
+$q$ and $q+1$ have the same sign.
+
+\subsection{The endpoint removes the remaining negative horizon}
+
+For the moderate-coefficient source, the sign of $t$ has not yet been
+recovered. The retained beta endpoint rows give
+\[
+ y=F(2v+1),\qquad g=1+(t+1)y,\qquad x=1+g u_t.
+\]
+Since $|t|\ge128$ and $|y|\ge F$,
+\[
+ |g|\ge |t+1|F-1\ge127F-1>1.
+\]
+Thus $x=0$ would force $g u_t=-1$, a contradiction. It follows that $x\ge1$
+and $|q|\ge2$. The literal retained request is $q^t$, with nominal index
+$t$; its signed exactness forces $t\ge0$. Therefore $t\ge128$.
+
+This argument uses neither a missing factorial row nor a false conclusion
+from the binomial high quotient. In particular, setting $q=1$ in the digit
+row does not identify $B$ alone: the high quotient remains. The endpoint
+factorization is the required noncircular exclusion of $x=0$.
+
+\subsection{Completeness and literal polynomial projections}
+
+The positive branches of both affine progressions are cofinal and divisible
+by four. Package 173's completeness construction can choose its horizon in
+either progression. It needs precisely these properties and
+$K\ge2^{20}t$, rather than the earlier square representation. The CRT anchor
+$C$ can still be chosen positive, even, and larger than every other nominal
+index. All subsequent cap and arithmetic witnesses can be completed.
+
+Conversely the preceding sign deductions restore the hypotheses of the
+retained arithmetic decoding theorem. The same label-separation and Horn-flow
+arguments yield a finite C222 refutation, and the identified inherited
+C222/ZF/ZFC calibration gives a finite ZFC refutation. Thus the new sources
+have a zero exactly when the fixed ZFC presentation has a finite refutation.
+
+Every subsequent projection uses a residual
+$\epsilon v+f=0$ with $\epsilon\in\{1,-1\}$ and $v$ absent from $f$.
+The supplied definition lists are acyclic. Substitution therefore gives a
+bijection on integer zero sets, with the integral polynomial reconstruction
+$v=-\epsilon f$. Registers in the final circuits are abbreviations and do
+not add quantified variables.
+
+The retained profiles are as follows. The last column bounds literal circuit
+constants, not fully expanded polynomial coefficients.
+\begin{center}
+\begin{tabular}{rrrrr}
+\hline
+Variables & Exact degree & Residuals & Operations & Literal constant bound\\
+\hline
+131&12&70&2475&1099511627780\\
+132&12&71&2484&256\\
+117&16&56&2439&256\\
+108&32&47&2434&256\\
+97&128&36&2418&256\\
+91&256&30&2400&256\\
+87&32768&26&2388&256\\
+86&2097780&25&2385&256\\
+\hline
+\end{tabular}
+\end{center}
+
+The immediate Oriented Powers comparisons include $137$ variables at degree
+$12$, $121$ at degree $16$, $111$ at degree $32$, $99$ at degree $128$, and
+$87$ at degree $8388612$. These are matched construction improvements, not
+claims of global minimality. Exact degrees are certified by nonzero leading
+homogeneous specializations; propagated coefficient-norm estimates provide
+separate explicit upper bounds on expanded coefficient height.
+
+The source checker independently binds all sixteen actual requests, fourteen
+canonical Pell pairs, their shifted multiplication wires and norms, the
+complete orientation row, and every squared frame atom. The circuit checker
+verifies local polynomial expansions, acyclic unit pivots, source-row
+coverage, degree certificates, and a nonzero derivative witness for each
+quantified variable. These finite checks authenticate the construction;
+they do not replace its unbounded arithmetic proof or the inherited logical
+calibration.

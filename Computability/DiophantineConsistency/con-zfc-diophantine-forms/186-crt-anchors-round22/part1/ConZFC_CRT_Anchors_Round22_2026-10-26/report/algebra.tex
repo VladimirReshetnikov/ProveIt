@@ -1,0 +1,152 @@
+\section{Exact power pooling and integral algebra}
+\subsection{The inherited two row certificate}
+For $|A|>1$ let $(\chi_A(k),\psi_A(k))$, $k\in\Z$, be the canonical
+signed Pell pair. Its recurrence matrix is
+$\left(\begin{smallmatrix}A&A^2-1\\1&A\end{smallmatrix}\right)$,
+with initial pair $(1,0)$. Its determinant is one, so all signed indices
+are defined. Given a nonzero base $n$, put
+\[
+ T_n=2An-n^2-1.
+\]
+Then $\gcd(n,T_n)=1$, and
+\begin{equation}\label{eq:pooled-congruence}
+ \chi_A(k)+(n-A)\psi_A(k)\equiv n^k\pmod{T_n}
+ \qquad(k\in\Z).
+\end{equation}
+Indeed $(n-A)^2\equiv A^2-1\pmod{T_n}$; evaluating the fundamental
+unit at $n-A$ gives $n$. Positive powers follow by multiplication,
+and negative powers by invertibility. The Pell functions are proof
+notation, not primitives in the final polynomial.
+
+For $r$ requests $(k_i,m_i)$ at this base, retain the existing coordinates
+$X_i=\chi_A(k_i)$, $Y_i=\psi_A(k_i)$ and $Z_i=AY_i$.
+Introduce only two new integer coordinates $K,L$, and impose
+\begin{align}
+ K-2\sum_iY_i(m_i-X_i)-(2A-n)L&=0,\label{eq:pool-row1}\\
+ \sum_i\bigl((m_i-X_i+Z_i)^2-Y_i^2\bigr)-nK+L&=0.
+ \label{eq:pool-row2}
+\end{align}
+Every term has degree at most two. Neither $T_n$ nor any displayed
+summation abbreviation introduces another independent coordinate.
+
+\begin{lemma}\label{lem:pooled-identity}
+The two rows imply
+\[
+ \sum_i\bigl(m_i-X_i+(A-n)Y_i\bigr)^2
+ =T_n\left(L-\sum_iY_i^2\right).
+\]
+Conversely, when each error on the left is divisible by nonzero $T_n$,
+there are integers $K,L$ satisfying both rows.
+\end{lemma}
+\begin{proof}
+Set $D_i=m_i-X_i+AY_i$ and $H=\sum_iY_i(m_i-X_i)$.
+Eliminating $K$ gives
+$\sum_i(D_i^2-Y_i^2)-2nH=T_nL$.
+Expanding $\sum_i(D_i-nY_i)^2$ subtracts exactly
+$T_n\sum_iY_i^2$, proving the identity. For the converse choose
+\[
+ L=\sum_iY_i^2+T_n^{-1}\sum_i(D_i-nY_i)^2,
+ \qquad K=2H+(2A-n)L.
+\]
+The divisibility assumption makes $L$ integral and direct substitution
+proves both rows. No sign of $K$ or $L$ is required.
+\end{proof}
+
+\begin{theorem}[Simultaneous exactness from a square frame]
+\label{thm:pooled-exactness}
+Suppose $W\ge258$, $1\le r\le15$, $n\ne0$, $|A|>W^W$, and
+$n^2,k_i^2,m_i^2<W$. If the pairs are the specified canonical signed
+Pell pairs, the two quadratic rows force $m_i=n^{k_i}$ for every $i$.
+For $|n|\ge2$ they also force $k_i\ge0$; for $n=\pm1$ all signed
+indices are allowed. Conversely all these exact powers admit $K,L$.
+\end{theorem}
+\begin{proof}
+Put $b=\lfloor\sqrt{W-1}\rfloor\ge16$. Every absolute base, index
+and proposed output is at most $b$. Multiply the aggregate congruence
+by $n^{2b}$, using \eqref{eq:pooled-congruence}, to get
+\[
+ T_n\mid E,\qquad
+ E=\sum_i(m_in^b-n^{b+k_i})^2\ge0.
+\]
+All exponents are nonnegative. Since $b\ge2$,
+$|m_in^b-n^{b+k_i}|\le b^{b+1}+b^{2b}\le2b^{2b}$.
+Consequently
+\[
+ E\le4rb^{4b}<W^{2b+1}\le W^W,
+\]
+because $4r\le60<W$, $b^2<W$ and $2b+1\le b^2+1\le W$.
+On the other hand
+$|T_n|\ge2|A|-W>|A|>W^W$. Divisibility forces $E=0$,
+so every summand vanishes. A nonnegative $k_i$ gives the asserted power
+by cancelling $n^b$. If $k_i=-j<0$, cancellation gives $m_in^j=1$;
+this excludes nonunit bases and gives the stated power at the two units.
+For the converse each exact error is divisible by $T_n$, so apply
+Lemma~\ref{lem:pooled-identity}.
+\end{proof}
+The absolute-value argument includes negative radices and the unit case;
+assuming a positive radix before decoding its sign would not suffice.
+The actual square-frame ledger, canonical-pair classification and
+request ports are bound to the literal source by the finite checker.
+A different affine frame that only gives $|a|<W$ cannot silently be
+substituted for this square-frame hypothesis.
+
+\subsection{Exact integral projections along quadratic radicals}
+Write each residual as $Q_i=q_i+\ell_i+c_i$, with homogeneous quadratic
+part $q_i$, linear part $\ell_i$, and integer Hessian $H_i$.
+For an integer vector $v$ with $H_iv=0$ for every $i$, exact expansion gives
+\begin{equation}\label{eq:radical-slope}
+ Q_i(y+sv)=Q_i(y)+s\ell_i(v).
+\end{equation}
+The mixed term is $sy^TH_iv=0$ and the pure term vanishes since
+$2q_i(v)=v^TH_iv=0$.
+
+\begin{theorem}\label{thm:radical-projection}
+Suppose $v_p=1$ and one slope $a_r=\ell_r(v)$ is $\pm1$.
+With $y_p=0$, let
+\[
+ R_i(y)=Q_i(y)-a_ia_rQ_r(y),\quad i\ne r,
+ \qquad a_i=\ell_i(v).
+\]
+These integer quadratics have a common zero set in bijection with that
+of all $Q_i$, with one fewer variable and residual. The lift is
+$x=y-a_rQ_r(y)v$, and the inverse is $y=x-x_pv$.
+\end{theorem}
+\begin{proof}
+Put $s=-a_rQ_r(y)$. Equation~\eqref{eq:radical-slope} gives
+$Q_r(y+sv)=0$ and $Q_i(y+sv)=R_i(y)$ for $i\ne r$.
+Conversely an old zero gives $y_p=0$ and
+$Q_r(y)=-x_pa_r$, so the displayed lift restores precisely $x_p$.
+All other $R_i(y)$ vanish by the same formula. The two maps are inverse
+and integral; the new rows are constant combinations of restricted
+quadratics. No division condition remains.
+\end{proof}
+A primitive direction alone would not justify division by a nonunit
+slope. The actual certificates require the two literal unit conditions.
+These unrestricted-integer coordinate changes need not preserve a
+positive domain.
+
+\begin{lemma}[Affine consequence elimination]\label{lem:affine-elimination}
+Suppose a nonzero constant integer combination $L=\sum_i\lambda_iQ_i$
+has degree at most one and its primitive affine normalization has
+coefficient $\pm1$ on $x_p$. Solve it as $x_p=S(\widehat{x_p})$.
+Substitute in every row and omit any row $r$ with $\lambda_r\ne0$.
+The resulting quadratic system has an integer zero set in bijection
+with the original system.
+\end{lemma}
+\begin{proof}
+Every original zero satisfies $L=0$, hence $x_p=S$ and every retained
+substituted row. Conversely, the substitution makes $L$ identically
+zero. At a zero of the retained rows, $\lambda_rQ_r=0$; the integers
+have no zero divisors, so $Q_r=0$. Insertion of $S$ and deletion of
+$x_p$ are inverse. A unit $\lambda_r$ is not needed; a unit solved
+variable coefficient after primitive normalization is essential.
+\end{proof}
+
+An elementary integer row operation $Q_i\leftarrow Q_i+kQ_j$,
+$i\ne j$, has inverse with $-k$. A triangular integral affine coordinate
+change has its explicit integral inverse. A monic quadratic definition
+can be eliminated only when its complete substitution retains the claimed
+degree. Each released certificate records these conditions and the exact
+index compaction. A sum of squares of the final rows is generally a
+\emph{different} polynomial, with the same zero-existence statement.
+
