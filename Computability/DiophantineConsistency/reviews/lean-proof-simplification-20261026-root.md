@@ -50,3 +50,19 @@ The environment is the repository's Lean 4.32.0 and pinned mathlib
 `81a5d257c8e410db227a6665ed08f64fea08e997`, using its existing dependency cache.
 The changes introduce no axiom declarations, `sorry`, `admit`, or native-decide
 trust extension. A complete library rebuild is not claimed.
+
+## Input specialization and positive domains
+
+`Polynomial` decreases from125 to116 lines and `PositiveDomain` from34 to32,
+removing11 proof-body lines. `Fin.comp_cons` and `Fin.cons_self_tail` replace
+coordinate-by-coordinate function equalities. The positive-domain proof uses
+the integer-to-natural cast equality pointwise. All existing definitions,
+imports, statements and premises are unchanged.
+
+`intake_e13` authored this separate chunk and directly observed zero exits
+for both changed module/olean checks, the `ZFC` and `PositiveZFC` clients,
+and a focused axiom audit of the specialization and positive-domain results.
+The printed axioms are standard Lean axioms only. ROOT read both complete
+final files and every changed hunk, confirming the interface and witness maps.
+These are author tool observations; no separate raw log files or complete
+library rebuild are asserted.
