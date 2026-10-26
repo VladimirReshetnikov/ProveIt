@@ -627,9 +627,28 @@ widthw≥2*T+4 and heightH≥T+2,H≥3 from an actual halt atT. The complete
 marked-language/actual-blank-halting equivalence and
 `no_marked_word_iff_conZFC` are closed. See the [root review and four
 fresh checks](reviews/wang-tiles942-native-completeness-root.md).
+The [independent native-completeness review](reviews/wang-tiles942-native-completeness-peer.md)
+passed fresh isolated CycleBand/Completeness main/check replay. The
+[independent cycle/boundary review](reviews/wang-tiles942-trace-cycle-boundary-peer.md)
+also passed its four fresh isolated builds. Both document exact bindings,
+standard axioms and prerequisite authorship.
 The [independent marker-helper review](reviews/wang-tiles942-marker-construction-peer.md)
 also passed all four isolated fresh builds. Reverse arithmetic/controller
 construction remains necessary for the actual equation equivalence.
+
+Each verified checkpoint is
+preceded by bounded source/check replay. The reverse arithmetic work now
+has `CurrentCellConstruction2011`: an actual local Boolean cell with the
+physical selector, exact complemented labels, full clause balance and
+literal Start data. Dummy977 and marker1004 remain free in its adapters.
+`NativeRankVariation` binds the actual Carrier65 rank and proves the
+ordinary increment/decrement identity with its explicit F increment,
+without inferring it from a congruence. See the [root source review and
+four fresh checks](reviews/current-cell-rank-construction-lean-root.md).
+The [independent cell-construction review](reviews/current-cell-construction2011-lean-peer.md)
+passed fresh isolated main/check replay with the same exact source binding.
+Global word assembly, cyclic carries, composite controller and arithmetic
+witnesses remain work items.
 
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
