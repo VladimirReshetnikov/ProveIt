@@ -695,6 +695,16 @@ its required equality with the printed-rank multiplier and the remaining
 positive Pell/source witnesses remain open. These partial witnesses do not
 yet assert a positive polynomial zero or the converse consistency endpoint.
 
+`CurrentControllerSubsets2011` constructs every target modulo the complete
+94517*120199^(k+1) as a finite subset of actual B^(2+(120199−1)*j.val),
+plus an optional Boolean B³. The subset has positive cardinality below
+94517*120199. Its actual coordinates, B unit, target inverse and nonzero
+auxiliary projection are all derived. Only the explicit orbit-size condition
+94517*120199<120199^k remains. See the [author receipt](reviews/current-controller-subsets2011-author.md)
+and [independent fresh root replay](reviews/current-controller-subsets2011-root.md)
+with four standard-only reports. Physical safety and ordinary finite-word
+mutation remain separate from this modular subset equality.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
