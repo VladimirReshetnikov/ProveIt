@@ -1,0 +1,24 @@
+\pageheading{5 An optional causal statement for actual receive tiles}
+\textbf{Move the spatial exclusion into one reusable theorem only if its conclusion has value to later clients.} The current \code{far_west_zero} and \code{far_east_zero} proofs independently inspect the neighboring wall, plain tile or head transition. A stronger statement packages the reason behind both arguments: every receive tile inside a live encoded row is located exactly at the actual moved head.
+
+Let $p=\mathrm{cfg.head}$, let $a$ be the actual transition at $p$, and let $n=a.\mathrm{move.apply}(p)$. The proposed \code{receive_at_next_head} assumes allowed tiles, horizontal matching, \code{PersistentStrip}, the original \code{RowEncodes}, a live state, and an actual directional receive tuple at an interior position $x$. It concludes $x=n$. It has \textbf{no temporal-matching or no-finish hypothesis}. Its target assumption is membership in \code{targets d}, which retains target 215.
+
+\textbf{The argument is spatial.}
+\begin{enumerate}
+\item A receive tile has a nonzero incoming rail, at least 6. Inspect its incoming-side neighbor, one integer cell away.
+\item That neighbor is either interior or exactly the wall. A wall is impossible because its facing edge is at most 2 on the left or 4 on the right.
+\item If it is an interior non-head cell, both north inputs are plain. The existing \code{plain_pair_edge_zero} forces the matching rail to zero, a contradiction.
+\item The neighbor is therefore the actual head. Its forced transition has one inactive zero edge. Matching the positive rail identifies the move direction, and the adjacent-coordinate equation gives $x=n$.
+\end{enumerate}
+This proof needs positivity and the inactive edge, not rail injectivity. Exact target identification remains owned by the existing directional receiver theorems; it is not claimed as an additional result of this helper.
+
+The second helper, \code{far_pass_or_finish}, eliminates only the receive case of the exact plain-input grammar. Away from $p$ and $n$, with $b$ the original tape bit, it concludes
+\[
+ T(x,t)=\langle0,b,0,b\rangle\quad\lor\quad
+ T(x,t)=\langle0,b,0,438\rangle.
+\]
+Both zero-edge clients become projections of this disjunction. Only \code{far_pass} invokes the independently derived \code{no_south438} result to remove the finish alternative. This keeps the temporal premise exactly where it belongs.
+
+\textbf{Cost and decision.} The two edge proofs shrink from 22 and 21 proof lines to two each. But the new causal and disjunction proofs cost 49 and 7 lines. Including the unchanged four-line \code{far_pass}, the affected bodies grow from \textbf{47 to 64 lines}; the full file grows from \textbf{205 to 252 physical lines}. Thus this is an optional semantic API, not a current net-shortening recommendation. Prefer it only when future spatial-only consumers need receiver location, or when centralizing this invariant is worth the source cost.
+
+The seven existing exported statements remain unchanged. The supplied candidate is concrete Lean source, not pseudocode that assumes a future direction API. Its sources are \src{WangTiles942RowStep}{35}{122}, \src{WangTiles942Signals}{54}{104}, and the full new declarations in \code{row/helper.lean}. The novelty is this exact row-level causal conclusion; constructor views and direction abstraction are already credited to the baseline.

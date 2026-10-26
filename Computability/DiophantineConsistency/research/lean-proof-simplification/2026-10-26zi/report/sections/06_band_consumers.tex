@@ -1,0 +1,44 @@
+\subsection{Excluded comparison of the two consumers}
+
+The original theorem statements stay unchanged. After introducing their existing nonzero instances, replace the body of \code{marked_word_of_halt} with:
+\begin{Lean}
+  letI : NeZero H := ⟨by omega⟩
+  letI : NeZero ((L+R)*H) := ⟨Nat.ne_of_gt (Nat.mul_pos (by omega) (by omega))⟩
+  have hp := band_quotient_properties T L R H hh hL hR hTH hH (by omega)
+  exact ⟨_,hp.1,hp.2⟩
+\end{Lean}
+
+The canonical endpoint keeps its existing marker characterization and adds it to the shared matching/binding pair:
+\begin{Lean}
+  have hp := band_quotient_properties T L R H hh hL hR hTH hH hw
+  exact ⟨hp.1,canonicalWord_marker_iff T L R H hh hTH (by omega) (by omega) hw,hp.2⟩
+\end{Lean}
+
+\textbf{The witness is not replaced.} The \code{canonicalWord} definition remains byte-for-byte identical. Its body is the same quotient of the same extended band used in the helper's leading \code{let}. The proposed identification is definitional reduction, with routine proof-argument differences handled by proof irrelevance. There is no new choice operator, propositional replacement of the word, or arbitrary representative selected from the existential endpoint.
+
+\subsection{Geometry and hypotheses remain exact}
+\begin{itemize}
+\item The premise is an actual halted run at time $T$. It is not an abstract clean-trace or boundary assumption.
+\item The lower bounds $T+2\le L$, $T+2\le R$, $T+2\le H$ and $3\le H$ remain separate. Widths and height remain independent.
+\item The binding is for every integer time and every $x\in[-L,R)$. The left boundary is included and the right boundary excluded.
+\item The twisted edge remains $(R-1,t)$ to $(-L,t+1)$. The cast identity \code{hleft} is retained explicitly.
+\item Finite height and modulus remain nonzero, and total width remains positive. No condition $L=R$, $H=L+R$, coprimality, or unique start is added.
+\end{itemize}
+
+\subsection{Full cost is much smaller than the body saving}
+The old endpoint bodies total 40 physical lines. The replacements use six lines and the new helper proof 15, so proof bodies fall to 21. But the helper adds 11 statement lines, three comment lines, and one separating blank line. Those 15 non-body lines must be charged.
+
+\begin{tabularx}{\linewidth}{@{}Y R{0.8in}R{0.8in}R{0.8in}@{}}
+\toprule
+Complete module & Before & After & Change \\
+\midrule
+\code{WangTiles942CycleBand} & 167 & 179 & $+12$ \\
+\code{WangTiles942BandMarker} & 124 & 108 & $-16$ \\
+\midrule
+\textbf{Total including helper API} & \textbf{291} & \textbf{287} & $\mathbf{-4}$ \\
+\bottomrule
+\end{tabularx}
+
+\textbf{Why retain comparison evidence.} The late packet supplies this same concrete certificate. The original implementation and cost table remain useful for checking the overlap, but neither the helper nor its four-line saving is a new contribution here.
+
+\risk\ Verify reduction of the leading \code{let}, projection into the unchanged \code{canonicalWord} goal, and existential witness inference in Lean. If a proof needs an explicit witness or \code{change}, update the full cost. \status

@@ -1,0 +1,121 @@
+\section{Findings and recommended order}
+
+The remaining opportunities are narrower than the earlier broad refactors.
+After treating the prior scanner, compiler, coefficient, geometry, and
+object-language interfaces as available, four distinct mechanisms survive
+the exclusion audit. The first is a reusable semantic theorem; the other
+three simplify specific maintained proofs.
+
+\begin{longtable}{L{0.06\linewidth}L{0.43\linewidth}L{0.40\linewidth}}
+\toprule ID & Change and target & Evidence and cost\\ \midrule
+P1 & Transfer integer polynomial identities to natural split semantics;
+target algebraic row proofs in the object layer. &
+Core and literal selection-row client checked. New shared lemmas with an
+up-front proof cost; no measured project-wide saving.\\
+P2 & View the existing sparse-list interpreter as a monomial sum;
+target \code{SyntaxCoefficients}. &
+Complete original and candidate modules checked. 120 to 110 physical lines;
+97 to 87 nonblank lines.\\
+P3 & Replace manual environment extension by restriction surjectivity;
+target \code{sat_noZeroForm_iff}. &
+Generic mechanism checked. Production declaration proposed at 20 to 8 lines;
+full object-model integration uncompiled.\\
+P4 & Prove the residual exponent is zero from an order obstruction;
+target \code{width_dvd_exponent}. &
+Exact old and new declarations checked, with identical signatures and axiom
+sets. 12 to 8 lines. Optional prime-radix API checked separately.\\
+\bottomrule
+\end{longtable}
+
+For immediate adoption, begin with P2: its entire touched module was checked
+against the freshly rebuilt current representation module. P4 is also small,
+but its enclosing module and clients still need an integration build.
+P3 is a reviewable proof replacement whose final object-language elaboration
+is explicitly outstanding. P1 deserves a pilot across several algebraic rows
+before deciding how much shared infrastructure to retain.
+
+The local changes sum to 26 \emph{proposed} removed lines across P2--P4.
+That total mixes validation scopes: ten lines come from a complete checked
+module, four from checked exact declarations, and twelve from a proposed
+production integration. P1 adds new lemmas, whose cost must not be hidden
+inside that total. There is no claim that the packet makes the repository
+smaller immediately.
+
+\subsection{Source baseline and closing refresh}
+
+The initial GitHub main branch was
+\href{\repo/commit/89226e3921bce3e8949fadd12d3efb6914c7630c}{\code{89226e3921bce3e8949fadd12d3efb6914c7630c}}.
+All 653 blobs in its maintained Lean subtree were matched to the GitHub tree
+using Git blob SHA-1. The detailed inspection and candidate construction use
+that snapshot.
+
+A bounded final comparison through
+\href{\repo/commit/7df43cdfacb490cd3ca3acd23e39027efebf8801}{\code{7df43cdfacb490cd3ca3acd23e39027efebf8801}}
+found eleven added Lean modules, aggregate imports, research reviews, and
+one more incoming ZIP. None of the existing target modules changed.
+The added report was read and included in the exclusion audit.
+The comparison receipt is bundled.
+
+This is a snapshot review, not a claim about every later state of a moving
+branch. The patches identify their exact original bytes.
+
+\section{What has already been proposed}
+
+The exclusion baseline is the union of all proposals in
+\href{\repo/tree/\pin/Computability/DiophantineConsistency/research/lean-proof-simplification}
+{the 23 placed packets a--w} and the five ZIPs in
+\href{\repo/tree/\pin/docs/incoming}{the refreshed incoming directory}.
+The audit reads main reports and substantive supplementary notes, including
+optional designs, rather than only adoption records. The incoming README
+was used for routing and relevant searches; unrelated historical manuscripts
+transitively linked from it were not all reread.
+
+The following families receive no new credit here:
+
+\begin{itemize}
+\item Optional-list lookup, exact decoder graphs, scanner iteration,
+validated histories, Boolean reflection, and rule-schedule interfaces.
+\item Assignment naturality, witness-block layouts, finite residual sums,
+generic degree and resource bounds, circuit generation, and topological
+evaluation invariants.
+\item Coefficient envelopes, finite sparse reflection, coefficient fibres,
+row operations, and the earlier semiring gate interpreters.
+\item Canonical carries, cyclic packing, aligned-cell subgroups, helical
+periods and coordinates, fixed Pell anchors, and coherent word windows.
+\item Internal definable induction, unique-existence and graph fusion,
+shared model bridges, internal order constructors, and sentence transport.
+\end{itemize}
+
+\subsection{Nearest-precedent comparison}
+
+\begin{longtable}{L{0.06\linewidth}L{0.40\linewidth}L{0.43\linewidth}}
+\toprule ID & Closest excluded mechanism & Distinct remaining obligation\\ \midrule
+P1 & Standard-natural specialization of semiring gates; reuse of internal
+evaluators. &
+Reflect integer-polynomial equality to a natural cross-sum identity and
+preserve signed zero semantics in arbitrary cancellative commutative semirings.\\
+P2 & Finite row coefficient tables and sparse row reflection. &
+Interpret the existing executable duplicate-preserving list expansion via
+one sum theorem, replacing several list inductions.\\
+P3 & Arity-polymorphic closed-sentence transport. &
+Simplify the environment-extension proof inside the semantic equivalence
+consumed by those wrappers.\\
+P4 & Coherent source/window APIs assuming recovered powers. &
+Simplify the exact exponent-remainder proof; optionally recover a block
+power directly from arithmetic divisibility certificates.\\
+\bottomrule
+\end{longtable}
+
+Several apparent opportunities were rejected. Root-constructor minima for
+\code{AnnotatedClosure.formCode_ge} are already in the proof-refinements ZIP.
+Periodic-orbit and lattice descriptions of helices occur in several packets.
+Signed-prefix borrowing occurs in the last additional interfaces report.
+That last report also contains the exact
+\code{RatioReparameterization.combined_dvd_iff} simplification first considered
+during this session; its candidate code and claimed savings are omitted.
+
+The final ledger contains 115 inherited contract rows and 61 later overlapping
+commitments, with 68 report or section-file records across 28 packets.
+These are audit records, not 176 independent mathematical ideas.
+The appropriate novelty claim is that no matching mechanism was found in
+this explicitly audited corpus, not global originality.

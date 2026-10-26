@@ -1,0 +1,29 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
+@@ -216,19 +216,15 @@
+ the degree-five bootstrap polynomial. -/
+ theorem large_of_six_le {A c p : ℕ} (hA : 1 < A) (hp : 6 ≤ p)
+     (hcp : c = yn hA p) : A * (A ^ 2 - 1) ^ 2 < c := by
+-  have h1 : (2 * A - 1) ^ (p - 1) ≤ c := by
+-    rw [hcp]
+-    have h := pow_le_ψ_succ hA (p - 1)
+-    rwa [Nat.sub_add_cancel (by omega : 1 ≤ p)] at h
+-  have h2 : A ^ 5 < (2 * A - 1) ^ (p - 1) :=
+-    calc A ^ 5 < (2 * A - 1) ^ 5 := Nat.pow_lt_pow_left (by omega) (by decide)
+-      _ ≤ (2 * A - 1) ^ (p - 1) := Nat.pow_le_pow_right (by omega) (by omega)
+   have hlt : (A ^ 2 - 1) ^ 2 < (A ^ 2) ^ 2 :=
+     Nat.pow_lt_pow_left (by have := Nat.one_le_pow 2 A (by omega); omega) two_ne_zero
+-  have h3 : A * (A ^ 2 - 1) ^ 2 < A ^ 5 := by
+-    convert Nat.mul_lt_mul_of_pos_left hlt (by omega : 0 < A) using 1
+-    ring
+-  omega
++  calc
++    A * (A ^ 2 - 1) ^ 2 < A * (A ^ 2) ^ 2 :=
++      Nat.mul_lt_mul_of_pos_left hlt (by omega)
++    _ = A ^ 5 := by simp [pow_succ, mul_assoc]
++    _ ≤ xn hA 5 := xn_ge_a_pow hA 5
++    _ ≤ yn hA 6 := Nat.le_add_right _ _
++    _ ≤ c := by rw [hcp]; exact (strictMono_y hA).monotone hp
+ 
+ /-- The first norm's parameter Q, without subtracting natural coordinates. -/
+ def firstQ (x : Fin 31 → ℕ) : ℕ := x 21 * (x 16 * x 9) ^ 2

@@ -1,0 +1,69 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalOrderedSemiring.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalOrderedSemiring.lean
+@@ -1,5 +1,5 @@
+-import DiophantineConsistency.ObjectNaturalDiscrete
+-import Mathlib.Algebra.Order.Ring.Defs
++import DiophantineConsistency.ObjectResidualSquares
++import Mathlib.Algebra.Order.Ring.Canonical
+ 
+ /-! # Multiplication respects the internal natural order -/
+ noncomputable section
+@@ -11,13 +11,13 @@
+ abbrev N := Natural H
+ 
+ private theorem mul_strict_left (a b c : N H) (ha : 0<a) (hbc : b<c) : a*b<a*c := by
+-  obtain ⟨t,ht⟩ := (ObjectNaturalDiscrete.lt_iff_exists_add_one H 0 a).mp ha
+-  obtain ⟨s,hs⟩ := (ObjectNaturalDiscrete.lt_iff_exists_add_one H b c).mp hbc
+-  have ha' : a=t+1 := by simpa only [zero_add] using ht
+-  apply (ObjectNaturalDiscrete.lt_iff_exists_add_one H _ _).mpr
+-  refine ⟨a*s+t,?_⟩
+-  rw [hs,ha']
+-  ring
++  obtain ⟨d,hd⟩ := exists_add_of_le hbc.le
++  have hd0 : d≠0 := by
++    intro hz
++    apply hbc.ne
++    simpa only [hz,add_zero] using hd.symm
++  rw [hd,mul_add]
++  exact lt_add_of_pos_right _ (pos_iff_ne_zero.mpr (mul_ne_zero ha.ne' hd0))
+ 
+ instance : IsStrictOrderedRing (N H) where
+   __ := (inferInstance : IsOrderedCancelAddMonoid (N H))
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalDiscrete.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalDiscrete.lean
+@@ -1,4 +1,5 @@
+-import DiophantineConsistency.ObjectResidualSquares
++import DiophantineConsistency.ObjectNaturalOrderedSemiring
++import Mathlib.Algebra.GroupWithZero.Idempotent
+ import BoundedZFCConsistency.InternalSat
+ import BoundedZFCConsistency.CodedDerivation
+ 
+@@ -47,24 +48,10 @@
+         simpa only [add_zero,add_assoc] using he.symm)
+       exact add_one_ne_zero H s hz
+ 
+-/-- This uses zero/successor decomposition on all internal naturals; algebra
+-alone would not force an idempotent in an arbitrary semiring to be Boolean. -/
+-theorem mul_self_eq_self_iff (x : N H) : x*x=x ↔ x=0 ∨ x=1 := by
+-  constructor
+-  · intro hx
+-    rcases zero_or_add_one H x with hz | ⟨s,hs⟩
+-    · exact Or.inl hz
+-    · have hprod : x*s=0 := by
+-        apply add_right_cancel (b := x)
+-        calc
+-          x*s+x=x*(s+1) := by ring
+-          _ = x*x := by rw [← hs]
+-          _ = x := hx
+-          _ = 0+x := (zero_add x).symm
+-      rcases mul_eq_zero.mp hprod with hx0 | hs0
+-      · exact Or.inl hx0
+-      · exact Or.inr (by simpa only [hs0,zero_add] using hs)
+-  · rintro (rfl | rfl) <;> simp
++/-- Multiplicative cancellation suffices for Boolean roots; successor
++    decomposition is not needed for this algebraic fact. -/
++theorem mul_self_eq_self_iff (x : N H) : x*x=x ↔ x=0 ∨ x=1 :=
++  IsIdempotentElem.iff_eq_zero_or_one
+ 
+ theorem cast_lt_cast (n m : ℕ) : (n : N H)<(m : N H) ↔ n<m := by
+   have hm : StrictMono (fun k : ℕ => (k : N H)) := fun a b h => natV_lt H a b h

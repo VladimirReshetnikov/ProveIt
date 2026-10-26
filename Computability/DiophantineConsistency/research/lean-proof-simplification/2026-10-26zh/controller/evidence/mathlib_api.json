@@ -1,0 +1,46 @@
+{
+  "repository": "leanprover-community/mathlib4",
+  "revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "path": "Mathlib/Data/ZMod/Basic.lean",
+  "github_blob_sha": "492558652011b060b49c7adbcff1b4e8731e09ee",
+  "url": "https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Data/ZMod/Basic.lean",
+  "excerpts": [
+    {
+      "name": "val_natCast",
+      "start_line": 89,
+      "end_line": 93,
+      "text": "theorem val_natCast (n a : ℕ) : (a : ZMod n).val = a % n := by\n  cases n\n  · rw [Nat.mod_zero]\n    exact Int.natAbs_natCast a\n  · apply Fin.val_natCast",
+      "sha256": "941c2235a56252a4f92be7b1a5e9205a387a231901c82cfeef322927e5745f0d"
+    },
+    {
+      "name": "cast_eq_val",
+      "start_line": 182,
+      "end_line": 186,
+      "text": "theorem cast_eq_val [NeZero n] (a : ZMod n) : (cast a : R) = a.val := by\n  cases n\n  · cases NeZero.ne 0 rfl\n  rfl\n",
+      "sha256": "03e5b75f1641b8df18c27255c84d32ea62d04c5439575be8c1734fec38c8b311"
+    },
+    {
+      "name": "natCast_val",
+      "start_line": 263,
+      "end_line": 267,
+      "text": "theorem natCast_val [NeZero n] (i : ZMod n) : (i.val : R) = cast i :=\n  congr_fun (natCast_comp_val R) i\n\n@[simp]\ntheorem intCast_cast (i : ZMod n) : ((cast i : ℤ) : R) = cast i :=",
+      "sha256": "60e94d92b360688e5e44c43708d206c812aa61061217bd5fb4a4d574eff1a725"
+    },
+    {
+      "name": "castHom_apply",
+      "start_line": 338,
+      "end_line": 342,
+      "text": "theorem castHom_apply {h : m ∣ n} (i : ZMod n) : castHom h R i = cast i :=\n  rfl\n\n@[simp]\ntheorem cast_sub (h : m ∣ n) (a b : ZMod n) : (cast (a - b : ZMod n) : R) = cast a - cast b :=",
+      "sha256": "82fe94cf37995bef7b17056ba5a6778c964d7c3b26e42b4f2641e464c9649f6a"
+    },
+    {
+      "name": "natCast_eq_zero_iff",
+      "start_line": 518,
+      "end_line": 522,
+      "text": "theorem natCast_eq_zero_iff (a b : ℕ) : (a : ZMod b) = 0 ↔ b ∣ a := by\n  rw [← Nat.cast_zero, ZMod.natCast_eq_natCast_iff, Nat.modEq_zero_iff_dvd]\n\nset_option backward.isDefEq.respectTransparency false in\ntheorem coe_intCast (a : ℤ) : cast (a : ZMod n) = a % n := by",
+      "sha256": "e4679f83d25a3b05e08ad45b1d284edb5f051653a07932b9e61e5da134fba2f7"
+    }
+  ],
+  "source_sha256": "9a57047615cf4231f3561aef5c75ededf5a6ed6559308f31e241d1d27b2bc00c",
+  "local_snapshot": "Mathlib_Data_ZMod_Basic.lean"
+}

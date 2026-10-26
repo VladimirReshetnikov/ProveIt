@@ -1,0 +1,486 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.92in,headheight=16pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=0.78]
+\usepackage{amsmath,amssymb,mathtools,amsthm}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{xcolor,fancyhdr,fvextra,enumitem,microtype,ragged2e}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,urlcolor=teal!65!black,citecolor=teal!65!black]{hyperref}
+\definecolor{accent}{HTML}{176B72}
+\definecolor{muted}{HTML}{53616C}
+\definecolor{pale}{HTML}{EEF4F5}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily ProveIt / Further Lean proof simplifications}
+\fancyhead[R]{\small\sffamily 26 October 2026}
+\fancyfoot[L]{\small\color{muted}Baseline: \texttt{efa64ca941cd}}
+\fancyfoot[R]{\small\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist{nosep,leftmargin=1.5em}
+\setcounter{tocdepth}{2}
+\urlstyle{tt}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\setlength{\emergencystretch}{1.5em}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt}
+\newcommand{\pin}{efa64ca941cdae37bb6f7fc5093ae8bb69296ca3}
+\newcommand{\source}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/efa64ca941cdae37bb6f7fc5093ae8bb69296ca3/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean}{\code{#1.#2}}}
+\DefineVerbatimEnvironment{Lean}{Verbatim}{breaklines=true,breakanywhere=true,fontsize=\small,frame=leftline,rulecolor=\color{accent},framesep=7pt,baselinestretch=1.06}
+\newtheorem{proposition}{Proposition}
+\hypersetup{pdftitle={Further Lean proof simplifications after the 22-packet baseline},pdfauthor={OpenAI / prepared for Vladimir Reshetnikov},pdfsubject={ProveIt DiophantineConsistency: incremental proof simplification, checked kernels, and exact patches}}
+
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\color{accent}\large RESEARCH AND REFACTORING NOTE\par}
+\vspace{0.6em}
+{\LARGE\bfseries Further simplifications for the\par DiophantineConsistency Lean development\par}
+\vspace{0.5em}
+{\large After assuming the previous 22 proposal packets have been applied\par}
+\vspace{0.8em}
+Prepared for Vladimir Reshetnikov\hfill 26 October 2026
+
+\begin{abstract}
+Five further directions survive a comparison with the current research collection and incoming index. They comprise six concrete mechanisms: reuse five hidden Jones evaluation lemmas; replace an auxiliary norm bound by a positive polynomial gap; share an affine domination bound between carrier soundness and completeness; derive the helical row theorem from a one-dimensional periodic function; interpret monomial lists through ordinary list sums; and eliminate function-valued witnesses whose values are already fixed.
+
+The supplied patches remove \textbf{94 physical Lean source lines across eight files}, including the new helper and import costs. Three complete replacement modules were compiled. The other changes were checked through exact theorem bodies or a harness using the actual source definitions, with static checks binding those kernels to the proposed files. No complete project or downstream dependency rebuild is claimed. Existing executable definitions and public theorem statements are preserved; five previously private theorem names and one new helper become available to clients. The packet contains the source, PDF, full replacement files, patches, novelty ledger, compiler logs, source hashes, and replay scripts.
+\end{abstract}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\textwidth}{@{}>{\RaggedRight\arraybackslash}X r >{\RaggedRight\arraybackslash}p{0.36\textwidth}@{}}
+\toprule
+Direction & Lines removed & Strongest completed check \\
+\midrule
+Jones evaluation API reuse & 49 & Actual-definition harness; full-file static comparison \\
+Carrier norm gap and affine domination & 16 & Exact three replacement theorems and helper compiled \\
+Helical orbit periodicity & 10 & Exact theorem and unique factorization compiled \\
+Monomial-list sum interface & 9 & Complete replacement module compiled \\
+Deterministic function witnesses & 10 & Both complete modules; whole-record \code{rfl} checks \\
+\midrule
+\textbf{Total} & \textbf{94} & \textbf{19 lines in complete-module checks; 75 in narrower checks} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\vfill
+{\small\color{muted}Repository snapshot: \href{https://github.com/VladimirReshetnikov/ProveIt/commit/efa64ca941cdae37bb6f7fc5093ae8bb69296ca3}{\code{efa64ca941cdae37bb6f7fc5093ae8bb69296ca3}}.\par
+Toolchain: Lean 4.32.0; mathlib \code{81a5d257c8e410db227a6665ed08f64fea08e997}.\par
+These are proposal artifacts against a pinned snapshot, with explicitly delimited validation.}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Scope, baseline, and what counts as additional}
+
+The question is about work remaining after earlier simplifications, including proposals that have not yet been integrated. Accordingly, the adopted/pending distinction in the repository was not used to decide novelty. A pending idea was excluded just as an adopted one was. For example, the large existing proposal for \code{NativeCoefficientBounds} was not presented again merely because its shorter implementation is still pending in the maintained tree.
+
+The review inspected the 470 top-level maintained Lean modules as an inventory, read the relevant proof blocks and their dependencies, and reviewed all 22 placed simplification packets \code{2026-10-26a} through \code{2026-10-26v}. The novelty inventory contains 637 text, Lean, and patch files, totaling 6,484,226 bytes. This is a corpus inventory, not a claim that every line of every implementation was manually reread. Main reports, relevant supplementary notes, existing audit ledgers, and targeted full-corpus searches were used together.
+
+At this snapshot, \code{docs/incoming} contains a README rather than the retired archive bytes. Its current entries map the 22 Diophantine proof packets into the research directory. The complete index and the relevant retirement summaries were reviewed, including summaries of older K215 work. No claim is made to have recursively re-audited all historical material linked from unrelated projects. This boundary is recorded in \code{evidence/novelty_audit.md} and the independent review.
+
+The source snapshot was authenticated independently of the initial download: GitHub tree metadata at the pinned commit was compared with the Git blob hashes of 1,763 retained files from the Lean tree and proposal packets. There were no mismatches. The toolchain and mathlib revisions agree with the repository's \code{lean-toolchain} and \code{lake-manifest.json}. The detailed source manifests and the smaller authentication receipt accompany the report.
+
+\subsection{The counterfactual baseline is semantic}
+
+Some previous packets offer competing implementations or sketches of the same interface. Treating them as applied means assuming their promised proof obligations and usable interfaces are already available. It does not mean pretending that every historical patch can be applied simultaneously without adaptation.
+
+The distinction matters here. Earlier assignment-naturality and finite-witness splitting work is assumed finished before the final function-witness substitution in Section~\ref{sec:function}. Earlier integer-unit work receives no credit in the carrier example: the supplied patch preserves the original nonzero-ordinate proof verbatim and replaces only the remaining root-bound tail. Earlier coefficient-table naturality does not remove the separate list-interpreter proofs treated in Section~\ref{sec:list}.
+
+The literal patches are against the observed commit. Their claimed novelty concerns the residual obligations after the earlier interfaces are granted. This report does not claim to have built a hypothetical checkout containing all competing older proposals.
+
+\subsection{What is measured and preserved}
+
+The line counts are whole-file physical line counts, not estimated percentages of the repository or reductions in proof-term size. Helpers, imports, comments, and blank lines are included. The affected files contain 1,401 lines before the patch set and 1,307 afterward. The larger benefit in several cases is that one mathematical obligation has one proof and one place to change.
+
+The proposals preserve existing executable definitions, expression trees, coordinate maps, polynomial definitions, witness layouts, and public theorem conclusions. They do not lower the number of unknowns in a Diophantine equation. The two composition changes have particularly strong evidence: the original complete constructors were reconstructed and proved definitionally equal to the replacements by \code{rfl}. No timing improvement is inferred from the source reductions.
+
+\section{Reuse the five hidden Jones evaluation lemmas}
+\label{sec:jones}
+
+\subsection{The remaining duplication}
+
+\source{JonesSyntax}{eval_rad} and its four companion lemmas already show that evaluating a Jones syntax field agrees with the corresponding field of the evaluated integer record. However, those lemmas are private. \code{ExecutableJones} imports \code{JonesSyntax} and then proves the same five facts again before its own \source{ExecutableJones}{eval_withInput} theorem.
+
+The duplicated proof is not merely a short cast. The radicand proof unfolds a substantial collection of named intermediate expressions, and the divisor, dividend, and margin proofs each list their own dependencies. A change to a common field can therefore require editing two long, nearly parallel unfolding lists.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Existing private theorem & Mathematical field transported by evaluation \\
+\midrule
+\code{eval_rad} & Each of the two radicands \\
+\code{eval_wt} & The corresponding radical weight \\
+\code{eval_dvsr} & Divisor expression \\
+\code{eval_dvnd} & Dividend expression \\
+\code{eval_marg} & Margin expression \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+For a field operation $F$, the common content is
+\[
+  \operatorname{eval}_a(F(v))
+    = F\bigl(\operatorname{evalExprVars}_a(v)\bigr).
+\]
+The right-hand $F$ acts on the existing integer record; the left-hand $F$ builds arithmetic syntax. The source already contains the exact bridge needed by the executable client.
+
+\subsection{Proposed change}
+
+Remove \code{private} from the five theorems in \code{JonesSyntax}. Delete their duplicate block in \code{ExecutableJones}. In the executable client's existing \texttt{simp only} call, use the qualified shared names:
+
+\begin{Lean}
+JonesSyntax.eval_rad, JonesSyntax.eval_wt,
+JonesSyntax.eval_dvsr, JonesSyntax.eval_dvnd,
+JonesSyntax.eval_marg
+\end{Lean}
+
+Do not add global simplifier attributes. The existing explicit rewrite boundary is appropriate: it lets the client choose when to cross from syntax to the semantic record, while keeping the large field expansions behind named theorems. No new dependency edge is needed because the client already imports the provider.
+
+Some existing statements write evaluation as \texttt{(fun e => e.eval a) v.dvsr}, while the duplicate writes \texttt{v.dvsr.eval a}. These are definitionally equal by beta reduction. The difference does not call for an adapter theorem or a stronger hypothesis.
+
+\subsection{Why this remains new and useful}
+
+Earlier proposals covered coefficient-row homomorphisms, shared scalar tails, and moving degree or renaming lemmas to earlier modules. They do not provide these five hidden \code{RingVars} evaluation lemmas to the executable Jones client. This proposal closes that specific remaining API gap.
+
+The implementation saves 49 lines: \code{JonesSyntax} remains 179 lines and \code{ExecutableJones} changes from 300 to 251. It also makes future changes to the five field semantics local to the shared proof. The syntax constructors, the executable coefficient extraction, and both final equation expressions remain untouched.
+
+\subsection{Validation boundary}
+
+The supplied harness contains the actual pinned \code{RingVars}, integer \code{Vars}, and evaluation definitions used by these statements. It checks all five client-shaped statements through the shared proofs. Source hashes identify the extracted definitions, including the two HilbertTenthProblem dependencies. The candidate files and patch were independently compared with the originals.
+
+The complete \code{JonesSyntax} and \code{ExecutableJones} modules, and the complete \code{eval_withInput} client in its original dependency graph, were not rebuilt in this session. Thus this is a checked semantic reuse proposal with source-level compatibility evidence, awaiting a full integration build. That is a narrower claim than a completed module refactor.
+
+\section{Two further reductions in the thirteen-coordinate carrier}
+\label{sec:carrier}
+
+The next two changes concern scalar obligations in \code{ThirteenCarrierSoundness} and \code{ThirteenFreshSeed}. They use different mathematical observations, but belong in one carrier section because the same soundness/completeness boundary benefits from both.
+
+\subsection{A positive gap replaces the auxiliary norm contradiction}
+\label{sec:gap}
+
+The existing \source{ThirteenCarrierSoundness}{auxiliary_estimates} assumes
+\begin{equation}
+ S\ge 2,\qquad S^2V^2-(S^2-1)y^2=1,
+ \label{eq:norm}
+\end{equation}
+with $S,V,y\in\Z$, and proves $y\ne0$ and $|y|<2|V|$. Its root-bound tail first argues by contradiction to bound $y^2$, then argues by contradiction again to pass to absolute values.
+
+The additional observation is the exact identity
+\begin{equation}
+ \boxed{\ (S^2-1)(4V^2-y^2)=(3S^2-4)V^2+1.\ }
+ \label{eq:gap}
+\end{equation}
+To verify it, expand the left-hand side and replace
+$S^2V^2-(S^2-1)y^2$ with $1$ using \eqref{eq:norm}. Since $S^2\ge4$, the right-hand side of \eqref{eq:gap} is strictly positive. The factor $S^2-1$ is nonnegative, so $4V^2-y^2$ must be positive. Hence
+\[
+ y^2<(2|V|)^2,
+\]
+and the standard absolute-square comparison theorem proves the desired bound.
+
+After the original proof of $y\ne0$, the replacement is:
+
+\begin{Lean}
+  refine ⟨hy, abs_lt_of_sq_lt_sq ?_ (by positivity)⟩
+  have hnonneg := mul_nonneg
+    (show 0 ≤ 3 * S ^ 2 - 4 by omega) (sq_nonneg V)
+  have hprod : 0 < (S ^ 2 - 1) * (4 * V ^ 2 - y ^ 2) := by
+    nlinarith only [hn, hnonneg]
+  have hlt := pos_of_mul_pos_right hprod
+    (show 0 ≤ S ^ 2 - 1 by omega)
+  nlinarith only [hlt, sq_abs V]
+\end{Lean}
+
+The restricted arithmetic calls have an explicit polynomial certificate behind them. They do not need to discover sign cases for $V$ or $y$, and the result applies to negative signed ordinates exactly as before.
+
+The statement and the entire original nonzero-$y$ prefix are unchanged. This is deliberate: integer-unit extraction was already proposed elsewhere, so using it here must not be advertised as another new saving. The remaining bound tail is independent of how the nonzero fact is proved. Its declaration decreases from 28 to 23 lines, a five-line incremental reduction.
+
+The scale premise is substantive. At $S=1,V=1$, equation \eqref{eq:norm} holds for every $y$, so the claimed bound would fail, for example, at $y=100$. The refactor preserves the scale guard rather than weakening it because the new algebra looks shorter.
+
+\subsection{One affine domination theorem serves both directions}
+\label{sec:affine}
+
+The literal carrier equation is
+\begin{equation}
+ y=1+4\bigl(b(m-V^2G)-G\bigr).
+ \label{eq:carrier}
+\end{equation}
+The original soundness and completeness proofs separately establish several estimates involving $V^2$, $bV^2$, a quotient witness, and a large coefficient. Their common source becomes visible after setting
+\[
+ K=1+bV^2.
+\]
+Equation \eqref{eq:carrier} then becomes the affine equation
+\begin{equation}
+ \boxed{\ 4bm=y-1+4KG.\ }
+ \label{eq:affine}
+\end{equation}
+
+The useful shared theorem is
+\begin{equation}
+ b\in\Z,\quad b>0
+ \quad\Longrightarrow\quad
+ 2|V|+1<4(1+bV^2).
+ \label{eq:domination}
+\end{equation}
+It has a direct positive certificate. With $r=|V|$,
+\begin{equation}
+ 4(1+bV^2)-(2r+1)
+   =(2r-1)^2+2r+2+4(b-1)V^2.
+ \label{eq:domination-cert}
+\end{equation}
+All terms on the right are nonnegative and the constant contribution is positive. Integrality gives $b\ge1$ from $b>0$. The implemented helper is four declaration lines:
+
+\begin{Lean}
+theorem carrier_step_dominates {b : ℤ} (hb : 0 < b) (V : ℤ) :
+    2 * |V| + 1 < 4 * (1 + b * V ^ 2) := by
+  have h := mul_nonneg (show 0 ≤ b - 1 by omega) (sq_nonneg V)
+  nlinarith [sq_abs V, sq_nonneg (2 * |V| - 1), abs_nonneg V]
+\end{Lean}
+
+\paragraph{Soundness.}
+In \source{ThirteenCarrierSoundness}{transport_nonneg}, assume $b,m>0$ and $|y|<2|V|$. If $G<0$, then $G\le-1$ because $G$ is an integer. The right-hand side of \eqref{eq:affine} satisfies
+\[
+ y-1+4KG\le y-1-4K<0
+\]
+by \eqref{eq:domination}, whereas the left-hand side is positive. This contradiction proves $G\ge0$.
+
+No divisibility premise on $G$ is needed for this direction. Introducing $b\mid G$ to imitate the completeness proof would unnecessarily strengthen the soundness theorem. The candidate retains its original weaker hypotheses.
+
+\paragraph{Completeness.}
+In \source{ThirteenFreshSeed}{carrier_exists}, the hypotheses give
+\[
+ G=bg,\qquad y-1=4be
+\]
+for integer witnesses $g,e$. Keep the existing witness exactly:
+\begin{equation}
+ m=e+(1+bV^2)g=e+Kg.
+ \label{eq:witness}
+\end{equation}
+It satisfies \eqref{eq:affine} by a linear polynomial identity. Since $G>0$, integrality gives $G\ge1$. Since $V>0$ and $y>-2V$, the right-hand side obeys
+\[
+ y-1+4KG\ge y-1+4K>0.
+\]
+The last inequality uses $4K>2V+1$. Therefore $m>0$. The same normalized equality then closes the literal witness equation, so a second expansion of the quotient witnesses is unnecessary.
+
+This removes a separate proof that $g>0$ and the chain of coefficient inequalities depending on $g$. It does not choose a different witness, change the transport coordinate, or require a two-sided bound on $y$ in the completeness theorem. The existing one-sided hypothesis is sufficient.
+
+\subsection{Boundary cases and measured cost}
+
+The two directions have intentionally different endpoint conditions. With
+\[
+ b=m=1,\quad G=0,\quad V=3,\quad y=5,
+\]
+equation \eqref{eq:carrier} and $|y|<2|V|$ hold. Thus soundness cannot be strengthened to $G>0$. Conversely, take
+\[
+ b=1,\quad G=0,\quad V=2,\quad y=-3.
+\]
+The completeness hypotheses other than $G>0$ hold, including $b\mid G$, $4b\mid y-1$, and $-2V<y$. But the equation forces $m=-1$. Strict positivity of $G$ remains necessary there.
+
+The three declarations change from 28, 14, and 32 lines to 23, 9, and 20 lines. After charging the helper, its documentation, and spacing, the two complete files shrink by 16 lines. Five lines come from the norm-gap tail; the affine changes account for the other eleven. All four exact theorem blocks, including the helper, compiled under the pinned toolchain. The complete carrier modules and their dependency graph were not rebuilt.
+
+\section{Replace the helical integer induction by periodicity}
+\label{sec:helix}
+
+The theorem \source{WangTiles942HelicalQuotient}{row_zero_of_helix} assumes
+\begin{equation}
+ T(x+w,t-1)=T(x,t)
+ \qquad(x,t,w\in\Z)
+ \label{eq:helix}
+\end{equation}
+and concludes
+\begin{equation}
+ T(x,t)=T(x+wt,0).
+ \label{eq:rowzero}
+\end{equation}
+The existing proof performs separate forward and backward integer induction steps. Both branches repeat the same address arithmetic, with different signs.
+
+For fixed $x,t$, define
+\[
+ f(s)=T(x+ws,t-s).
+\]
+The helical hypothesis says exactly that $f(s+1)=f(s)$. Existing integer-periodicity machinery then gives $f(0)=f(t)$, which is \eqref{eq:rowzero}. The same argument covers positive and negative times.
+
+\begin{Lean}
+  let f : ℤ → α := fun s => T (x+w*s) (t-s)
+  have hp : Function.Periodic f 1 := by
+    intro s
+    dsimp [f]
+    convert hhelix (x+w*s) (t-s) using 1; congr 1 <;> ring
+  simpa [f] using hp.sub_int_mul_eq (x := t) t
+\end{Lean}
+
+The mathematical invariant is $x+wt$. Indeed, moving from $(x,t)$ to $(x+w,t-1)$ preserves that quantity. This gives a useful stronger statement, also proved in the supplied kernel:
+\begin{equation}
+ \eqref{eq:helix}
+ \quad\Longleftrightarrow\quad
+ \exists! F:\Z\to\alpha,\ \forall x,t,\ T(x,t)=F(x+wt).
+ \label{eq:factor}
+\end{equation}
+For existence take $F(z)=T(z,0)$. For uniqueness specialize any candidate factorization to $t=0$. The reverse implication follows by the equality
+$(x+w)+w(t-1)=x+wt$.
+
+The replacement is valid for an arbitrary codomain, arbitrary integer width, and every integer time. It does not assume a positive width, a vertical period, a tiling compatibility condition, or a nonzero finite modulus. Those assumptions belong to later finite-quotient theorems and remain where they are required.
+
+Earlier work on centered interval induction and guarded row propagation concerns extending local information through a bounded spatial interval. Here a global translation law is reduced along its exact orbit. This different remaining obligation is why the proposal survives the earlier induction-related exclusions.
+
+The candidate file changes from 147 to 137 lines. The exact theorem and the stronger unique-factorization result compiled. The full tile-dependent file and subsequent finite-quotient clients were not rebuilt. The stronger result is a demonstrated semantic interface; the production patch only replaces the original theorem body and does not charge an unrequested new public factorization API to the line savings.
+
+\section{Use one list-sum bridge for executable monomial semantics}
+\label{sec:list}
+
+\source{SyntaxCoefficients}{interpret} recursively interprets a list of monomials as an ordinary multivariate polynomial. The executable expansion deliberately retains repeated terms. Its multiplication is a nested \code{flatMap}/\code{map}, and coefficient lookup sums all entries with the requested exponent vector.
+
+Five existing list inductions prove append semantics, negation semantics, multiplication by a fixed monomial, general multiplication, and coefficient interpretation. These are different presentations of ordinary additive sum laws.
+
+Introduce a single private, proof-only bridge:
+
+\begin{Lean}
+private theorem interpret_eq_sum {n : ℕ} (terms : List (Term n)) :
+    interpret terms =
+      (terms.map fun t => MvPolynomial.monomial (exponent t.1) t.2).sum := by
+  induction terms <;> simp_all [interpret]
+\end{Lean}
+
+The public proofs can then use the library's exact list operations. Append uses \code{List.map_append} and \code{List.sum_append}. Negation uses \code{List.sum_neg}. Multiplication uses \code{List.map_flatMap}, \code{List.flatMap_def}, \code{List.sum_flatten}, and the two list-sum distributivity laws. The private fixed-monomial induction disappears entirely.
+
+For coefficient interpretation, the essential fact is that a coefficient at a fixed exponent is additive. Use \code{MvPolynomial.coeffAddMonoidHom} and \code{map_list_sum}; the monomial coefficient theorem and \code{exponent_inj} complete the calculation. This is a direct expression of
+\[
+ [X^d]\!\left(\sum_{t\in L} c_tX^{e_t}\right)
+   =\sum_{t\in L}\begin{cases}c_t,&e_t=d,\\0,&e_t\ne d.\end{cases}
+\]
+Here $t\in L$ denotes occurrences in the list, including repeated occurrences.
+
+\subsection{Why the list representation should remain}
+
+Replacing the executable list with a finite set would lose multiplicities unless an additional collection procedure were introduced. Replacing it with a canonical sparse polynomial would also change executable data and could introduce new equality, normalization, and computability obligations. Neither change is necessary for the proof reduction.
+
+The bridge preserves the actual list. If the same monomial occurs twice, both contributions remain; opposite coefficients cancel only in the interpreted sum; zero coefficients remain harmless; and the empty list and zero-variable case need no special exception. The theorem is not marked globally \code{simp}, so clients retain control of when the recursive interpreter is exposed as a sum.
+
+\subsection{Increment and validation}
+
+Prior coefficient work concerns finite row catalogs, coefficient envelopes, table naturality, and sparse row-identity checkers. It does not discharge these five monomial-list semantic inductions. The proposed bridge is a small remaining interface between an executable list representation and the existing additive API.
+
+The full file changes from 120 to 111 lines, including the new import and bridge. Five list inductions become one; the syntax induction proving that expansion denotes the original polynomial remains appropriate and is unchanged. The entire replacement module compiled against a freshly compiled pinned \code{Representation}. The original and replacement \code{coefficient_expand} axiom sets agree. Other callers of the coefficient module were not rebuilt, so no broader integration claim is made.
+
+\section{Eliminate function witnesses that are already determined}
+\label{sec:function}
+
+After the previously proposed witness-block and assignment normalizations, two composition proofs still have a final goal of the form
+\begin{equation}
+ \left(\exists a:\iota\to A,\ P(a)\ \land\ \forall i,\ a(i)=f(i)\right)
+ \quad\Longleftrightarrow\quad P(f).
+ \label{eq:function}
+\end{equation}
+The implementation manually destructs the existential, constructs function equality by extensionality, substitutes it, and then reconstructs the canonical function in the reverse direction.
+
+There is a direct proof using only the intended logical normal form:
+
+\begin{Lean}
+  simp only [← funext_iff, exists_eq_right]
+\end{Lean}
+
+First turn pointwise equality into equality of functions. Then eliminate the existential whose value is fixed. This is an exact deterministic substitution rule, requiring no choice principle, finite enumeration, or nonempty-domain hypothesis. In particular, it covers the zero-arity function space without an extra case.
+
+The two concrete sites are \source{ComposeRepresentation}{Rep.compose} and \source{DirectComposition}{GraphRep.composeDirect}. Each already ends with a \code{change} presenting the desired existential shape. The patch changes only the following proof tail. It does not revisit finite witness concatenation, assignment reindexing, arithmetic graph construction, or the earlier representation interfaces.
+
+This distinction also explains what is \emph{not} reduced: the represented equation still has the same stored witnesses and expression syntax. The existential disappears inside the semantic correctness proof, not from the compiled representation. The two full constructors are definitionally equal to the originals, as checked by \code{rfl} in the compatibility file.
+
+The complete files shrink from 71 to 66 and from 77 to 72 lines. Both were compiled after freshly compiling the pinned \code{Representation} and \code{ArithmeticRepresentation}. The exact original constructors were reconstructed, both record-equality checks passed, and their paired axiom reports agree. This is the smallest implementation change in the packet and a suitable first integration step.
+
+\section{Validation, accounting, and a practical adoption order}
+\label{sec:validation}
+
+\subsection{Evidence has several scopes}
+
+The Lean compiler used here reports version 4.32.0, commit
+\code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}. The checked library sources and repository manifest use mathlib revision
+\code{81a5d257c8e410db227a6665ed08f64fea08e997}. Existing compiled dependencies were reused. This was not a rebuild of mathlib from source.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}>{\RaggedRight\arraybackslash}p{0.25\textwidth}>{\RaggedRight\arraybackslash}X >{\RaggedRight\arraybackslash}X@{}}
+\toprule
+Group & Completed & Still required for integration \\
+\midrule
+Composition & Two full replacements; fresh immediate project dependencies; exact whole-record equalities; paired axiom reports & Rebuild further callers in the target checkout \\
+Monomial lists & Full replacement and original baseline; identical endpoint axiom sets & Rebuild coefficient-extraction clients \\
+Carrier arithmetic & Exact three replacement statements/bodies plus helper; unchanged prefix and witness checks & Full two modules and their callers \\
+Helical theorem & Exact original statement with new body; stronger factorization & Full tile-dependent module and quotient clients \\
+Jones evaluation & Five exact client statements using actual source definitions and shared proofs; full-source comparison & Both complete modules and their callers \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The final standalone carrier reports contain only \code{propext}, \code{Classical.choice}, and \code{Quot.sound}. The generic helical and deterministic-witness results use \code{propext} and \code{Quot.sound}. The coefficient endpoint has the same standard three-axiom set before and after. The supplied successful checks contain no \code{sorryAx}. These observations do not substitute for an axiom audit of every endpoint in the full repository.
+
+The independent review compared final source hashes, theorem headers, unchanged definitions, patch output, and kernel bodies. It also checked the mathematical endpoint guards. One initial attempt to save the successful original coefficient-module compiler output encountered a temporary storage error after the compiler had exited successfully; the evidence file explicitly records that its transcript was persisted from the observed tool output. No additional compiler success is inferred from that persistence step.
+
+\subsection{Exact file-level accounting}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+File & Before & After & Removed \\
+\midrule
+\code{JonesSyntax.lean} & 179 & 179 & 0 \\
+\code{ExecutableJones.lean} & 300 & 251 & 49 \\
+\code{ThirteenCarrierSoundness.lean} & 290 & 286 & 4 \\
+\code{ThirteenFreshSeed.lean} & 217 & 205 & 12 \\
+\code{WangTiles942HelicalQuotient.lean} & 147 & 137 & 10 \\
+\code{SyntaxCoefficients.lean} & 120 & 111 & 9 \\
+\code{ComposeRepresentation.lean} & 71 & 66 & 5 \\
+\code{DirectComposition.lean} & 77 & 72 & 5 \\
+\midrule
+\textbf{Total} & \textbf{1401} & \textbf{1307} & \textbf{94} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The carrier helper is counted once in \code{ThirteenCarrierSoundness}; it is not treated as free infrastructure. The unchanged nonzero-ordinate prefix ensures no overlap with the older unit-extraction proposal. The optional stronger helical factorization is included as a checked research artifact, but is not silently added to the production patch while claiming the original ten-line saving.
+
+\subsection{Suggested adoption order}
+
+Start with the two composition tails: the edits are local and the complete data records have definitional equality evidence. Next adopt the monomial-list bridge and check its direct coefficient clients. Then promote the Jones semantic API and rebuild the executable client; this gives the largest maintenance reduction with no new import edge.
+
+The carrier changes form a coherent arithmetic commit. The shared helper must be added with its two clients, and the original strict/non-strict sign hypotheses should remain visible in review. The helical replacement is independent and can be integrated separately after the tile module rebuild. No change to a polynomial artifact, published equation, or stored program is needed for any group.
+
+The archive's kernel replay script uses an existing repository environment and a temporary output directory for the three complete-module checks. It also replays the isolated kernels and compatibility checks. The source verifier checks file hashes, source-line totals, patch application to the included baseline copies, and final replacement identity. A later full integration build should use the repository's own build and check targets after applying the selected patches on a working branch.
+
+\section{Ideas deliberately excluded during this iteration}
+
+A non-repetition review should document rejected candidates as well as successful ones. A proposed cleanup of \code{RatioReparameterization.combined_dvd_iff} initially looked promising because the exact theorem name is absent from prior report prose. Its mechanism, however, is the same as packet l's instruction to keep divisibility witnesses abstract and combine \code{dvd_add}, \code{dvd_sub}, and related closure laws rather than unpacking and repacking witnesses. It was dropped and contributes no savings.
+
+A smaller \code{ExecutableJones.eval_vectorSum} cleanup was also considered. It would save only a few presentation lines around finite-function enumeration and offered less benefit than exposing the already available field-evaluation API. It is not included as an additional headline or as a speculative saving.
+
+The much larger familiar proposals are excluded too: scanner iteration and simulation libraries; finite witness splitting and assignment naturality; shared residual sums; generated circuit certificates; coefficient-envelope tables; signed Pell congruences; integer-unit and rational-root descent; definable internal induction and recursive-graph fusion; automatic depth budgets; cyclic-word quotient interfaces; and the previously proposed Wang controller/row abstractions. The detailed ledger names the relevant packets and preserves the distinction between a general technique already proposed and a genuinely different remaining proof obligation.
+
+\section{Archive guide and source references}
+
+\begin{description}[style=nextline]
+\item[\code{report.tex}, \code{report.pdf}] This complete article and its compiled output.
+\item[\code{patches/}] Four component patches and their combined patch, against the pinned snapshot.
+\item[\code{replacements/}, \code{baseline/}] The eight complete candidate sources and their corresponding original files, allowing exact offline comparisons.
+\item[\code{lean/}] Carrier and helical kernels, the literal-source Jones harness, and the composition compatibility checks.
+\item[\code{evidence/}] Novelty and independent-review notes, compiler transcripts, line-count metrics, source provenance, and source-authentication receipts.
+\item[\code{scripts/}] Archive verification, Lean replay through an existing project environment, and PDF compilation instructions.
+\end{description}
+
+All repository links below are pinned to the reviewed commit. Counts and checking outcomes are original observations recorded in the accompanying evidence files.
+
+\begin{enumerate}[label={[S\arabic*]},leftmargin=2.8em]
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/efa64ca941cdae37bb6f7fc5093ae8bb69296ca3/Computability/DiophantineConsistency/research/lean-proof-simplification}{Prior simplification packets a--v}, including \href{https://github.com/VladimirReshetnikov/ProveIt/blob/efa64ca941cdae37bb6f7fc5093ae8bb69296ca3/Computability/DiophantineConsistency/research/lean-proof-simplification/ADOPTION.md}{the adoption record}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/efa64ca941cdae37bb6f7fc5093ae8bb69296ca3/docs/incoming/README.md}{Current incoming index and retirement summaries}.
+\item \source{JonesSyntax}{eval_rad}; \source{ExecutableJones}{eval_withInput}, with their companion field-evaluation lemmas.
+\item \source{ThirteenCarrierSoundness}{auxiliary_estimates}; \source{ThirteenCarrierSoundness}{transport_nonneg}; \source{ThirteenFreshSeed}{carrier_exists}.
+\item \source{WangTiles942HelicalQuotient}{row_zero_of_helix}.
+\item \source{SyntaxCoefficients}{interpret}; \source{SyntaxCoefficients}{coefficient_interpret}.
+\item \source{ComposeRepresentation}{compose}; \source{DirectComposition}{composeDirect}.
+\item \href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/Ring/Periodic.lean}{Mathlib integer periodicity}; \href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/BigOperators/Ring/List.lean}{list-sum distributivity}; \href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/MvPolynomial/Basic.lean}{coefficient additive homomorphism}.
+\end{enumerate}
+
+\end{document}

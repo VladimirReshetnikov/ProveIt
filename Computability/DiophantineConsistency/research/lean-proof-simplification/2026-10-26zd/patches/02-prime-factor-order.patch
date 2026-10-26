@@ -1,0 +1,46 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerData2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerData2011.lean
+@@ -1,5 +1,6 @@
+ import DiophantineConsistency.CurrentKernel2011
+ import Mathlib.Data.Nat.Squarefree
++import Mathlib.Data.Nat.PrimeFin
+ import Mathlib.GroupTheory.OrderOfElement
+ import Mathlib.Tactic.NormNum.Prime
+ import Mathlib.Tactic.ReduceModChar
+@@ -59,25 +60,18 @@
+ theorem proper_power_2011_3 : (2 : ZMod 2011)^134 = 205 := by reduce_mod_char
+ theorem proper_power_2011_67 : (2 : ZMod 2011)^6 = 64 := by reduce_mod_char
+ 
+-theorem two_order_47 : orderOf (2 : ZMod 47) = 23 := by
+-  apply orderOf_eq_of_pow_and_pow_div_prime (by decide) two_pow_47
+-  intro p hp hd
+-  have he : p = 23 := (Nat.prime_dvd_prime_iff_eq hp (by norm_num)).mp hd
+-  subst p
+-  reduce_mod_char
+-  decide
++private theorem order_eq_of_factors {M : Type*} [Monoid M] (x : M) {n : ℕ}
++    (hn : 0 < n) (hpow : x^n = 1)
++    (hproper : ∀ p ∈ n.primeFactors, x^(n/p) ≠ 1) : orderOf x = n := by
++  apply orderOf_eq_of_pow_and_pow_div_prime hn hpow
++  intro p hp hpn
++  exact hproper p (Nat.mem_primeFactors.mpr ⟨hp,hpn,Nat.ne_of_gt hn⟩)
+ 
+-theorem two_order_2011 : orderOf (2 : ZMod 2011) = 402 := by
+-  apply orderOf_eq_of_pow_and_pow_div_prime (by decide) two_pow_2011
+-  intro p hp hd
+-  have hd' : p ∣ 2*3*67 := hd
+-  have he : p = 2 ∨ p = 3 ∨ p = 67 := by
+-    rcases hp.dvd_mul.mp hd' with h | h
+-    · rcases hp.dvd_mul.mp h with h | h
+-      · exact Or.inl ((Nat.prime_dvd_prime_iff_eq hp (by norm_num)).mp h)
+-      · exact Or.inr (Or.inl ((Nat.prime_dvd_prime_iff_eq hp (by norm_num)).mp h))
+-    · exact Or.inr (Or.inr ((Nat.prime_dvd_prime_iff_eq hp (by norm_num)).mp h))
+-  rcases he with rfl | rfl | rfl <;> reduce_mod_char <;> decide
++theorem two_order_47 : orderOf (2 : ZMod 47) = 23 :=
++  order_eq_of_factors _ (by decide) two_pow_47 (by decide)
++
++theorem two_order_2011 : orderOf (2 : ZMod 2011) = 402 :=
++  order_eq_of_factors _ (by decide) two_pow_2011 (by decide)
+ 
+ theorem B_order_47 : orderOf (B : ZMod 47) = 23 := by
+   rw [B_eq,Nat.cast_pow,Nat.cast_ofNat]

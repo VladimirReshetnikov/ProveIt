@@ -1,0 +1,48 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerData2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerData2011.lean
+@@ -147,38 +147,23 @@
+   rw [auxiliary_lift]
+   decide
+ 
+-/-- These final arithmetic wrappers explicitly require the still-separate
++/- These final arithmetic wrappers explicitly require the still-separate
+ actual kernel residues. They do not discharge those finite premises. -/
+-private theorem hs_mod_of {b k m bm km bs r : ℕ}
+-    (hb : b%m=bm) (hk : k%m=km) (hbs : b^2%m=bs)
+-    (hr : ((1%m+(bm*km)%m)%m+bs)%m=r) : (1+b*k+b^2)%m=r := by
+-  have hmul : b*k%m=(bm*km)%m := by rw [Nat.mul_mod,hb,hk]
+-  have hadd : (1+b*k)%m=(1%m+(bm*km)%m)%m := by rw [Nat.add_mod,hmul]
+-  calc
+-    (1+b*k+b^2)%m = ((1+b*k)%m+b^2%m)%m := Nat.add_mod _ _ _
+-    _ = ((1%m+(bm*km)%m)%m+bs)%m := by rw [hadd,hbs]
+-    _ = r := hr
+-
+ -- This interface uses K symbolically; it must not evaluate the literal
+ -- 942-row physical permutation while checking elementary modular algebra.
+ attribute [local irreducible] CurrentKernel2011.K B
+ 
+ theorem Hs_mod_47 (hK : CurrentKernel2011.K % 47 = 26) : (1+B*CurrentKernel2011.K+B^2) % 47 = 29 := by
+-  have h := hs_mod_of (b:=B) (k:=CurrentKernel2011.K) (m:=47)
+-    (bm:=37) (km:=26) (bs:=6) (r:=29) B_mod_47 hK B_square_mod_47 (by decide)
+-  exact h
++  rw [Nat.add_mod (1+B*CurrentKernel2011.K),Nat.add_mod 1,
++    Nat.mul_mod B CurrentKernel2011.K,B_mod_47,hK,B_square_mod_47] <;> decide
+ 
+ theorem Hs_mod_2011 (hK : CurrentKernel2011.K % 2011 = 1995) : (1+B*CurrentKernel2011.K+B^2) % 2011 = 674 := by
+-  have h := hs_mod_of (b:=B) (k:=CurrentKernel2011.K) (m:=2011)
+-    (bm:=1283) (km:=1995) (bs:=1091) (r:=674)
+-    B_mod_2011 hK B_square_mod_2011 (by decide)
+-  exact h
++  rw [Nat.add_mod (1+B*CurrentKernel2011.K),Nat.add_mod 1,
++    Nat.mul_mod B CurrentKernel2011.K,B_mod_2011,hK,B_square_mod_2011] <;> decide
+ 
+ theorem Hs_mod_auxiliary (hK : CurrentKernel2011.K % auxiliary = 114787) :
+     (1+B*CurrentKernel2011.K+B^2) % auxiliary = 36379 := by
+-  have h := hs_mod_of (b:=B) (k:=CurrentKernel2011.K) (m:=auxiliary)
+-    (bm:=37435) (km:=114787) (bs:=99283) (r:=36379)
+-    B_mod_auxiliary hK B_square_mod_auxiliary (by decide)
+-  exact h
++  rw [Nat.add_mod (1+B*CurrentKernel2011.K),Nat.add_mod 1,
++    Nat.mul_mod B CurrentKernel2011.K,B_mod_auxiliary,hK,B_square_mod_auxiliary] <;> decide
+ 
+ end DiophantineConsistency.CurrentControllerData2011

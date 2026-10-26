@@ -1,0 +1,532 @@
+{
+  "previous_pin": "b310142330df89e48413c8fce62e7de223e1c7d5",
+  "pin": "22e020937caa81d0cb72a4f63071d6c0bcc1eba9",
+  "commits": [
+    {
+      "commit": "72d3198bbfe1bad124371795ed0eb5ba6b34e832",
+      "subject": "Derive finite initialization strip walls and exact horizontal reset alternatives",
+      "modules": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942InitialStrip.lean",
+          "change": "A",
+          "physical_lines": 148,
+          "sha256": "b20872f398fc330069ba8eec137d295bc6f6418b6c215a53afcff6334128a100",
+          "module_doc": "# A finite initialization strip around Start in a periodic horizontal row\n\nThe two first departures from the respective initializer tails must be\nseams. Horizontal periodicity supplies finite departure witnesses using\nStart on the left and the head initializer on the right. No unique Start,\ntime evolution, machine run, or rectangular tiling premise is used.",
+          "declaration_names": [
+            "InitialStrip",
+            "head_after_start",
+            "left_wall_exists",
+            "right_wall_exists",
+            "periodic_initial_strip",
+            "InitialStrip",
+            "marked_initial_strip"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942InitialStripChecks.lean",
+          "change": "A",
+          "physical_lines": 66,
+          "sha256": "76f7e6be2f41bac54a1399dd40c4ee6875fedf34eb10da111ebce72168c1c442",
+          "module_doc": null,
+          "declaration_names": []
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942ResetHorizontal.lean",
+          "change": "A",
+          "physical_lines": 92,
+          "sha256": "1cba7e914d13a2d6053b5d35b7b308f08093ae99d36c8963952f0de05f663ebc",
+          "module_doc": "# Exact horizontal reset color in the actual finite tile language\n\nA horizontal color 1 belongs only to a reset tile or an explicit seam\ntile. The seam exception is retained in both directions. These are local\nfinite-table statements, not a claim that any whole row is a reset row.",
+          "declaration_names": [
+            "horizontal_one_cases",
+            "west_1_iff_reset_or_seam",
+            "east_1_iff_reset_or_seam",
+            "west_1_nonseam",
+            "east_1_nonseam",
+            "horizontal_one_nonseam",
+            "north_438_of_horizontal_one_nonseam"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942ResetHorizontalChecks.lean",
+          "change": "A",
+          "physical_lines": 69,
+          "sha256": "c15cc9f8fd6844b4d0f8f8169f2ba0912709a5bc91522aae219614d6c1651254",
+          "module_doc": "Checks of every reset alternative and indispensable seam exceptions.\nNo propagation to a whole row, computation, or halting is asserted.",
+          "declaration_names": []
+        }
+      ]
+    },
+    {
+      "commit": "076b953e7717a87744e94694cb34603f35c05dce",
+      "subject": "Derive fixed strip walls and a seam-free interior through all integer times",
+      "modules": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942StripGeometry.lean",
+          "change": "A",
+          "physical_lines": 90,
+          "sha256": "2439e3e5bd3b9f4eeea38013e4a2e237444626cc5864b0244463be8a88ce4e7a",
+          "module_doc": "# Fixed finite strip walls and a seam-free interior\n\nThe initial row determines the two walls and every interior tile. Actual\nvertical matching preserves the wall columns and excludes seams at every\ninterior integer coordinate and time. No machine-run premise is used.",
+          "declaration_names": [
+            "initial_tile",
+            "initial_vertical_nonseam",
+            "initial_south",
+            "PersistentStrip",
+            "persistent_of_initial",
+            "marked_persistent_strip"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942StripGeometryChecks.lean",
+          "change": "A",
+          "physical_lines": 42,
+          "sha256": "2c68d346ff2075c41fab3e96b1e106bd4034ac33300a5b779419a59aac7a8aaf",
+          "module_doc": null,
+          "declaration_names": []
+        }
+      ]
+    },
+    {
+      "commit": "90a2ded65d09cb88a29b89a60b6752c56d6c7d1d",
+      "subject": "Bind the actual first machine step and exact configuration color semantics",
+      "modules": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/DecimalMachineInitialization.lean",
+          "change": "A",
+          "physical_lines": 139,
+          "sha256": "748587f903a4a1cc0d0c475ebc0ba9628887eaff0584e6d3a7944f4115b6b82f",
+          "module_doc": "# The actual decimal machine's first blank-tape step\n\nThe authenticated action-cache theorem supplies the first decoded action;\nthe large decimal numeral is not reevaluated here. The resulting concrete\nconfiguration writes a one at zero and moves right into state one. This is\nthe configuration represented by the initialization boundary components,\nnot the all-blank configuration before the first machine transition.\nNo tiling, machine-run extraction or consistency equivalence is assumed.",
+          "declaration_names": [
+            "first_action",
+            "first_transition",
+            "initialized",
+            "step_initial",
+            "run_one",
+            "initialized_not_halted",
+            "initialized_read_true_iff",
+            "initialized_read_false_iff",
+            "initialized_read_origin",
+            "initialized_read_head",
+            "runFrom_initialized",
+            "blank_initial_not_halted",
+            "blank_halts_iff_initialized",
+            "start_south",
+            "initialized_head_color",
+            "initializer_south",
+            "initialization_rows",
+            "initialization_side_south",
+            "initialization_components"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/DecimalMachineInitializationChecks.lean",
+          "change": "A",
+          "physical_lines": 85,
+          "sha256": "60cf20b9b63f90a53e03b9250130c57c9c5769a955b865d917baf941c63a5ee9",
+          "module_doc": "Exact first-step, integer tape, clock-shift and boundary-component checks.\nNo tiling premise and no second evaluation of the decimal numeral occur.",
+          "declaration_names": []
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineEncoding.lean",
+          "change": "A",
+          "physical_lines": 171,
+          "sha256": "0cb7f88e2cbc8fce77aed656a508d1154cb31c96d3ca2764c970591fc050806e",
+          "module_doc": "# Literal vertical colors of an actual machine configuration\n\nPlain tape cells carry 0 or 1. The unique head carries `2*q+b+2`,\nwhere operating states have q < 215 and the halted state has q = 215.\nAn action entering halt still writes and moves before this encoding is\napplied; its final head has color 432 or 433 at the moved position.\nThis module defines no tiling or machine-run correspondence premise.",
+          "declaration_names": [
+            "stateNumber",
+            "stateNumber_le",
+            "stateNumber_injective",
+            "bit_le_one",
+            "headColor",
+            "operating_head_color",
+            "halted_head_color",
+            "headColor_bounds",
+            "headColor_injective",
+            "color",
+            "color_at_head",
+            "color_of_ne_head",
+            "plain_color_le_one",
+            "color_le_433",
+            "head_iff",
+            "step_enter_halt",
+            "step_enter_halt_color",
+            "initialized_color_zero",
+            "initialized_color_one",
+            "initialized_color_other",
+            "initialized_color"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineEncodingChecks.lean",
+          "change": "A",
+          "physical_lines": 91,
+          "sha256": "eb23dd938d3e890fa6578f50911266ff15e8fd6fd975e70b527bb38b7397ed23",
+          "module_doc": "Checks for literal head-state colors, entering-halt write/move semantics,\nand the exact actual initialization boundary. No tiling hypotheses occur.",
+          "declaration_names": [
+            "haltLeftWrite",
+            "haltLeftErase",
+            "readOneAtDestination"
+          ]
+        }
+      ]
+    },
+    {
+      "commit": "edf3a19d0cc57787c078d344015a91bebac38c2a",
+      "subject": "Decode exact tile inputs and derive uniform finish rows from one event",
+      "modules": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942InputLanguage.lean",
+          "change": "A",
+          "physical_lines": 137,
+          "sha256": "a28c66e285b3fc652392bc9d58c04135a4fef1f11b4a7e4378a0e02a4416307c",
+          "module_doc": "# Exact local input grammar of the actual 942 Wang tiles\n\nAn operating head input selects exactly its indexed transition. Halt\ninputs admit pass and finish, and plain inputs admit pass, finish, or a\nreceive tile with an actual directional target. These are finite-language\nstatements, not machine-step or unique-head semantics for a whole row.",
+          "declaration_names": [
+            "inputIndex",
+            "inputIndex_val",
+            "inputIndex_components",
+            "transition_north_eq_index",
+            "operating_head_bounds",
+            "indexed_transition_input",
+            "north_operating_iff_transition",
+            "halt_head_eq",
+            "north_halt_iff_pass_or_finish",
+            "north_plain_iff"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942InputLanguageChecks.lean",
+          "change": "A",
+          "physical_lines": 79,
+          "sha256": "a5aaa22ade8ea6d6edb6a230006d39149af0a6862dc720656fab763acb11e514",
+          "module_doc": "Checks of exact input indices, the actual halt transition, and all\nnondeterministic local plain/halt alternatives that must remain present.",
+          "declaration_names": []
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942ResetRows.lean",
+          "change": "A",
+          "physical_lines": 162,
+          "sha256": "c12f1209b1a90e967859a10e989b7fde9ae32bbcf8b6245f99ca267adcdf7513",
+          "module_doc": "# Propagating one actual reset across a seam-free integer interval\n\nColor1 propagates in both horizontal directions. The exact local tile\nclassification then forces a reset at each interior position. The only\ngeometry input is explicit absence of seams in that interval; periodicity,\nunique Start, an assumed reset row and machine semantics are not used.",
+          "declaration_names": [
+            "ResetTile",
+            "ResetTile",
+            "ResetTile",
+            "FinishTile",
+            "FinishTile",
+            "interval_propagate",
+            "reset_next",
+            "reset_previous",
+            "row_reset",
+            "row_reset_of_north438",
+            "strip_reset_row",
+            "strip_finish_and_reset_of_south438",
+            "strip_finish_and_reset_of_finish"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942ResetRowsChecks.lean",
+          "change": "A",
+          "physical_lines": 82,
+          "sha256": "53df3940ba01e30572b97ddeaa879b1b670401badd29dc09bae0a70da2b82f8b",
+          "module_doc": "Focused checks: arbitrary signed intervals, singleton interiors,\nall local reset/finish variants, indispensable seam exclusion, and the\nactual marked-plane geometry supplied without a uniform-row premise.",
+          "declaration_names": [
+            "marked_finish_trigger"
+          ]
+        }
+      ]
+    },
+    {
+      "commit": "218631436cd407e7ce79b817ccb744764c4acb09",
+      "subject": "Identify the actual clock1 row and rule out premature finishes in operating rows",
+      "modules": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942OperatingRow.lean",
+          "change": "A",
+          "physical_lines": 71,
+          "sha256": "f92a15534d5bfdfedb124aef9dac8cc2660b4eacd78562be25066ce66c02e443",
+          "module_doc": "# An operating encoded row cannot finish anywhere inside its strip\n\nThe unique head input forces its actual transition tile. A finish at any\ninterior position would force finish at the head through the next reset\nrow, contradicting the transition's Boolean South output. Absence of\nfinishes is a conclusion, never an added row-encoding premise.",
+          "declaration_names": [
+            "symbol",
+            "operating_head_tile",
+            "operating_head_south_le_one",
+            "no_south438",
+            "no_finish"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942OperatingRowChecks.lean",
+          "change": "A",
+          "physical_lines": 39,
+          "sha256": "6534650b8a59d225db8aa0fd64067fcf795560c33942e64dd33febaf3f4cae88",
+          "module_doc": null,
+          "declaration_names": [
+            "halted"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowEncoding.lean",
+          "change": "A",
+          "physical_lines": 76,
+          "sha256": "d9c24628856b55b6e91b843208539982810d84fbb6f2b5882382b61f4a3cb9df",
+          "module_doc": "# The first machine configuration in the derived finite strip\n\nRow encoding means actual north colors in the open interval and an\ninterior machine head. It asserts no transition or halting theorem.\nThe marked-word initialization theorem derives this encoding for the\nactual machine after its first blank-tape step.",
+          "declaration_names": [
+            "RowEncodes",
+            "RowEncodes",
+            "RowEncodes",
+            "RowEncodes",
+            "RowEncodes",
+            "initialized_row",
+            "marked_initialized_strip"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowEncodingChecks.lean",
+          "change": "A",
+          "physical_lines": 41,
+          "sha256": "bd4ffcc7b65d3200f610168ec69108ffc75df19e18d17113e85aab12da7ed6c5",
+          "module_doc": null,
+          "declaration_names": []
+        }
+      ]
+    },
+    {
+      "commit": "993d6730a283f78b6b92cb197abc3b5200faa003",
+      "subject": "Bind operational color updates to actual transition signals and receiver targets",
+      "modules": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineAction.lean",
+          "change": "A",
+          "physical_lines": 119,
+          "sha256": "1776d84d82ae32ec58287779e639ce163bf0e10dec24056effc3aa4c2f1d3bd5",
+          "module_doc": "# Actual decimal transitions and literal Wang-table actions\n\nThe input index is `2*q+b`. The existing complete decoder/cache theorem\nbinds its literal action to the actual machine transition. Target bounds\ncome from the already proved actual direction-specific target sets, so\nthe target215 is exactly the optional halt state and not an out-of-range\noperating state. No decimal numeral or full table is reevaluated here.",
+          "declaration_names": [
+            "inputIndex",
+            "inputIndex_div_two",
+            "inputIndex_mod_two",
+            "inputIndex_north",
+            "action_target_lt",
+            "act_stateNumber",
+            "act_next_none_iff",
+            "transition_eq_cached",
+            "transition_write",
+            "transition_move",
+            "transition_moved_head",
+            "transition_stateNumber",
+            "transition_next_none_iff",
+            "transition_headColor"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineActionChecks.lean",
+          "change": "A",
+          "physical_lines": 98,
+          "sha256": "f34414842cee2e898bd17712d5db800ca527d6408b1bb7be7328afac3bfe062c",
+          "module_doc": "Actual input indexing, target-state and action-color binding checks.\nThe only concrete target computation is over the proved small action cache.",
+          "declaration_names": [
+            "cached_halt_125"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineStep.lean",
+          "change": "A",
+          "physical_lines": 125,
+          "sha256": "479ef25344a09804f3eeb6bd980e947941af55965ac48291349f90de14c3f100",
+          "module_doc": "# Actual operational step in vertical colors\n\nA live-state action writes at the old head and moves exactly one cell.\nThe destination therefore reads its old tape bit. Its new head color uses\nthe action's actual optional next state, including entry into halt.\nNo tile-row, run-calibration, or consistency premise is used.",
+          "declaration_names": [
+            "moved_head_left_or_right",
+            "moved_head_ne",
+            "read_written_at_moved",
+            "step_eq",
+            "step_head_left_or_right",
+            "step_head_ne",
+            "step_read_at_new_head",
+            "color_action",
+            "color_step",
+            "color_step_new_head",
+            "color_step_old_head",
+            "color_step_elsewhere",
+            "color_step_enter_halt"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineStepChecks.lean",
+          "change": "A",
+          "physical_lines": 87,
+          "sha256": "7857b6376beb1fa12c47f4f4cb8f550edb666394d2f524e772a92d1e0fc73cf6",
+          "module_doc": "Direction, write/erase, entering-halt, and unchanged-cell checks for\nthe actual operational three-way color formula.",
+          "declaration_names": [
+            "sample",
+            "leftErase",
+            "rightWriteHalt"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942Signals.lean",
+          "change": "A",
+          "physical_lines": 128,
+          "sha256": "c678e98715e3ef8fa32f179275ba299f3d49256176510821c17056686ba76650",
+          "module_doc": "# Local signal matching in the actual 942-tile language\n\nPlain-input neighbors cannot match a nonzero signal to one another. A\ntransition's outgoing signal forces the appropriate receive tile with exactly\nits actual target, including target 215. No whole-row or run assumption is used.",
+          "declaration_names": [
+            "plain_east_eq_zero_or_left_receive",
+            "plain_west_eq_zero_or_right_receive",
+            "plain_east_small_eq_zero",
+            "plain_west_small_eq_zero",
+            "plain_pair_edge_zero",
+            "right_transition_receiver",
+            "left_transition_receiver",
+            "plain_zero_edges_iff_pass_or_finish",
+            "plain_zero_edges_nonfinish"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942SignalsChecks.lean",
+          "change": "A",
+          "physical_lines": 86,
+          "sha256": "01aae495b5eb8645d783473ebce3f21c2c68283a5641db6987864689988a0db9",
+          "module_doc": "Exact direction, target, halt reception, and retained finish checks.",
+          "declaration_names": []
+        }
+      ]
+    },
+    {
+      "commit": "04267333bd0424603bc8fba043bf7944d1e53c54",
+      "subject": "Prove strict Wang-strip head containment and sharp actual trace bounds",
+      "modules": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineTraceBounds.lean",
+          "change": "A",
+          "physical_lines": 142,
+          "sha256": "2a4c16552c74a33445f8aa5302d5ab108f327708a08f468c4e61e6afcd85e718",
+          "module_doc": "# Explicit finite bounds for actual blank machine traces\n\nThe bounds follow directly from the repository's write-before-move operational\nsemantics. They include entry into halt and stationary halted steps. No tape\nnormalization, tiling, or run-calibration hypothesis is used.",
+          "declaration_names": [
+            "step_head_bounds",
+            "step_read_of_ne",
+            "runFrom_head_bounds",
+            "runFrom_read_outside",
+            "run_eq_runFrom_initial",
+            "run_head_bounds",
+            "run_head_abs_le",
+            "run_read_outside",
+            "run_read_of_abs_ge",
+            "finite_trace_box",
+            "finite_trace_margins",
+            "run_eq_of_halted",
+            "halted_trace_box"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineTraceBoundsChecks.lean",
+          "change": "A",
+          "physical_lines": 85,
+          "sha256": "22e106989ecf6d9958fc6b86c650797d489b4b2734ca076391c8b2dedcae944c",
+          "module_doc": "Sharp endpoint, halt-entry, stationary-halt, and unnormalized-tape checks.",
+          "declaration_names": [
+            "enterHalt"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HeadBounds.lean",
+          "change": "A",
+          "physical_lines": 135,
+          "sha256": "bed402c366871656a605ebef749451631c88b34ce57118fa6bea583fce700754",
+          "module_doc": "# The actual stepped head remains strictly inside the strip\n\nA transition's active rail has color at least6. The right wall's west\ncolor is at most4 and the left wall's east color is at most2. Actual\nhorizontal matching therefore prevents either move from entering a wall.\nThe proof uses no absence-of-finish or time-matching premise.",
+          "declaration_names": [
+            "inputIndex_eq",
+            "head_transition",
+            "right_active_edge",
+            "left_active_edge",
+            "left_wall_east_le_two",
+            "right_wall_west_le_four",
+            "right_move_not_wall",
+            "left_move_not_wall",
+            "next_head_inside"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HeadBoundsChecks.lean",
+          "change": "A",
+          "physical_lines": 74,
+          "sha256": "9787951e938a1b510d180b767e6359affbb9c460364bde2cd92f94b63742e538",
+          "module_doc": "The next-head result uses only allowedness, horizontal matching,\nthe existing strip and live row encoding; no time or no-finish premise.",
+          "declaration_names": []
+        }
+      ]
+    },
+    {
+      "commit": "a421ec86eb86377f62fe9dd2d807561bcae8ddc2",
+      "subject": "Prove actual Wang row evolution and construct its reverse step row",
+      "modules": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean",
+          "change": "A",
+          "physical_lines": 205,
+          "sha256": "f4b6f60e4dece143de6d45120c8aa8ae84691d50b1b888e6e0dcb0226f17f84b",
+          "module_doc": "# Actual machine steps in the derived Wang strip\n\nThe operating head writes, its adjacent receiver gets the exact next head\ncolor, and every other interior tile passes its old bit. Signals cannot\nappear between two plain inputs or enter from a seam wall. Absence of a\nfinish row is derived from the operating head, never supplied as a premise.",
+          "declaration_names": [
+            "head_south",
+            "far_west_zero",
+            "far_east_zero",
+            "far_pass",
+            "receiver_south",
+            "south_step",
+            "row_step"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStepChecks.lean",
+          "change": "A",
+          "physical_lines": 86,
+          "sha256": "29cd6e8dc012c9d0d65fc9f18d2b58fcea3de8fc996d38b4499c68bf74b65fe9",
+          "module_doc": "Focused composition checks for actual row evolution, including entry\ninto halt, the original destination bit, the marked plane and clock1.",
+          "declaration_names": [
+            "entering_halt_north",
+            "marked_row_step",
+            "marked_second_row"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942StepConstruction.lean",
+          "change": "A",
+          "physical_lines": 159,
+          "sha256": "935bfb4b2762bd099185350f3869114c81f11140a823951e6319a33ce292138f",
+          "module_doc": "# Construct the exact Wang row of an actual operating machine step\n\nThe old head uses its literal transition tile, the moved head uses the receive\ntile for its actual target and old tape bit, and every other cell passes its bit.\nEntry into halt is included. This constructs a whole-integer matching row; it\nassumes no row/step equivalence or finite-rectangle calibration.",
+          "declaration_names": [
+            "sourceIndex",
+            "nextHead",
+            "receiveTile",
+            "stepTile",
+            "nextHead_ne",
+            "nextHead_eq",
+            "stepTile_old_head",
+            "stepTile_new_head",
+            "stepTile_elsewhere",
+            "receiveTile_allowed",
+            "stepTile_allowed",
+            "stepTile_north",
+            "stepTile_south",
+            "stepTile_west",
+            "stepTile_east",
+            "stepTile_horizontal",
+            "step_row"
+          ]
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942StepConstructionChecks.lean",
+          "change": "A",
+          "physical_lines": 114,
+          "sha256": "5e8c6382fceabcf880ca431af455cb71d90350b107c10f5c748eb3a4dd688a92",
+          "module_doc": "Whole-row, actual first action, left move, and halt-entry reception checks.",
+          "declaration_names": [
+            "blank_index",
+            "blank_next",
+            "haltCfg",
+            "halt_index",
+            "halt_next",
+            "leftCfg",
+            "left_index",
+            "left_next"
+          ]
+        }
+      ]
+    }
+  ]
+}

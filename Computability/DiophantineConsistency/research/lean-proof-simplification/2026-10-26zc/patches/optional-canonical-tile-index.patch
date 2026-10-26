@@ -1,0 +1,37 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalQuotient.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalQuotient.lean
+@@ -64,16 +64,29 @@
+     Function.Periodic (fun z => T (-z) 0) ((w*H : ℕ) : ℤ) := by
+   simpa only [zero_sub] using (row_zero_period T w H hhelix hvertical).const_sub 0
+ 
+-/-- Choose actual literal indices only after the quotient's tile values
+-have been fixed by the canonical representatives. -/
+-noncomputable def quotientWord (T : ℤ → ℤ → Tile) (hA : ∀ x t, Allowed (T x t))
++/-- The literal decoder supplies the value; allowedness supplies only the bound. -/
++theorem recoveredIndex_lt_of_allowed {t : Tile} (ht : Allowed t) :
++    recoveredIndex t < 942 := by
++  obtain ⟨i, rfl⟩ := (allowed_iff_tile t).mp ht
++  simpa only [recovered_tile] using i.isLt
++
++def indexOfAllowed (t : Tile) (ht : Allowed t) : Fin 942 :=
++  ⟨recoveredIndex t, recoveredIndex_lt_of_allowed ht⟩
++
++theorem tile_indexOfAllowed (t : Tile) (ht : Allowed t) :
++    tile (indexOfAllowed t ht) = t := by
++  obtain ⟨i, rfl⟩ := (allowed_iff_tile t).mp ht
++  exact congrArg tile (Fin.ext (recovered_tile i))
++
++/-- Compute actual literal indices from canonical representative tiles. -/
++def quotientWord (T : ℤ → ℤ → Tile) (hA : ∀ x t, Allowed (T x t))
+     (w H : ℕ) (z : ZMod (w*H)) : Fin 942 :=
+-  Classical.choose ((allowed_iff_tile (T (-(z.val : ℤ)) 0)).mp (hA _ _))
++  indexOfAllowed (T (-(z.val : ℤ)) 0) (hA _ _)
+ 
+ theorem quotientWord_tile (T : ℤ → ℤ → Tile) (hA : ∀ x t, Allowed (T x t))
+     (w H : ℕ) (z : ZMod (w*H)) :
+     tile (quotientWord T hA w H z) = T (-(z.val : ℤ)) 0 :=
+-  Classical.choose_spec ((allowed_iff_tile (T (-(z.val : ℤ)) 0)).mp (hA _ _))
++  tile_indexOfAllowed _ _
+ 
+ theorem quotientWord_cast (T : ℤ → ℤ → Tile) (hA : ∀ x t, Allowed (T x t))
+     (w H : ℕ) [NeZero (w*H)]

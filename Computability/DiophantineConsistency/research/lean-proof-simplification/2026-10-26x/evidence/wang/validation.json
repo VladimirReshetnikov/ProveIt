@@ -1,0 +1,66 @@
+[
+  {
+    "name": "baseline-focused-checks",
+    "command": [
+      "python3",
+      "/workspace/scratch/ed94fdd95945/work/validation/build_modules.py",
+      "DiophantineConsistency.WangTiles942HelicalQuotientChecks",
+      "DiophantineConsistency.WangTiles942SeamColumnsChecks",
+      "DiophantineConsistency.WangTiles942CycleBandChecks",
+      "DiophantineConsistency.WangTiles942BandMarkerChecks",
+      "--out",
+      "/dev/shm/proveit-lean-ed94fdd95945/wang-base"
+    ],
+    "returncode": 0,
+    "seconds": 12.068248335001044,
+    "log": "/dev/shm/proveit-lean-ed94fdd95945/incoming-review/baseline-focused-checks.log"
+  },
+  {
+    "name": "axioms-baseline",
+    "command": [
+      "/workspace/scratch/ed94fdd95945/work/runtime/bin/lean",
+      "/dev/shm/proveit-lean-ed94fdd95945/incoming-review/AxiomAudit.lean"
+    ],
+    "returncode": 0,
+    "seconds": 2.566359497999656,
+    "log": "/dev/shm/proveit-lean-ed94fdd95945/incoming-review/axioms-baseline.log"
+  },
+  {
+    "name": "candidate-focused-checks",
+    "command": [
+      "python3",
+      "/workspace/scratch/ed94fdd95945/work/validation/build_modules.py",
+      "DiophantineConsistency.WangTiles942HelicalQuotientChecks",
+      "DiophantineConsistency.WangTiles942SeamColumnsChecks",
+      "DiophantineConsistency.WangTiles942CycleBandChecks",
+      "DiophantineConsistency.WangTiles942BandMarkerChecks",
+      "--out",
+      "/dev/shm/proveit-lean-ed94fdd95945/wang-candidate",
+      "--overlay",
+      "/workspace/scratch/ed94fdd95945/work/incoming_review/overlay/Computability/DiophantineConsistency/Lean"
+    ],
+    "returncode": 0,
+    "seconds": 28.734660389000055,
+    "log": "/dev/shm/proveit-lean-ed94fdd95945/incoming-review/candidate-focused-checks.log"
+  },
+  {
+    "name": "axioms-candidate",
+    "command": [
+      "/workspace/scratch/ed94fdd95945/work/runtime/bin/lean",
+      "/dev/shm/proveit-lean-ed94fdd95945/incoming-review/AxiomAudit.lean"
+    ],
+    "returncode": 0,
+    "seconds": 2.0933473729983234,
+    "log": "/dev/shm/proveit-lean-ed94fdd95945/incoming-review/axioms-candidate.log"
+  },
+  {
+    "name": "axioms-new-helper",
+    "command": [
+      "/workspace/scratch/ed94fdd95945/work/runtime/bin/lean",
+      "/dev/shm/proveit-lean-ed94fdd95945/incoming-review/AxiomAuditNew.lean"
+    ],
+    "returncode": 0,
+    "seconds": 2.5543730660010624,
+    "log": "/dev/shm/proveit-lean-ed94fdd95945/incoming-review/axioms-new-helper.log"
+  }
+]

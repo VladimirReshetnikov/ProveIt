@@ -1,0 +1,29 @@
+{
+  "status": "pass",
+  "scope": "Independent static review of README reproduction commands, replay.py, check_sources.py, validation-summary.tex, and existing compiler receipts; no Lean tests rerun.",
+  "required_changes": [],
+  "checked": {
+    "source_guard": "check_sources.py requires exact HEAD 29936089835c0c55cca81edc86b4fb0c70ce34d5, matching baseline target bytes, and successful git apply --check.",
+    "reproduction": "README lake targets supply baseline imports for the four replacement modules and two actual-source extensions; replay arguments/default object locations match documentation.",
+    "isolation": "Replay refuses a nonempty work directory and materializes writable overlay paths before replacing symlinks for Lean outputs.",
+    "dependencies": {
+      "total": 63,
+      "project": 62,
+      "mathlib": 1,
+      "all_exit_zero": true,
+      "all_objects_present_nonempty": true,
+      "all_object_hashes_match_receipts": true
+    },
+    "replay": {
+      "entries": 12,
+      "all_exit_zero": true,
+      "proposed_modules": 4,
+      "focused_clients": 2,
+      "extension_and_example_files": 4,
+      "all_recorded_output_sizes_positive": true
+    },
+    "axioms": "Baseline and proposed changed-theorem axiom logs agree byte for byte and match the standard-axiom descriptions.",
+    "version_boundary": "README and validation summary attribute compilation to299360 and distinguish later45ac freshness-only inspection.",
+    "pdf_rebuild": "README fonts match current fontspec settings and both TeX inputs are documented."
+  }
+}

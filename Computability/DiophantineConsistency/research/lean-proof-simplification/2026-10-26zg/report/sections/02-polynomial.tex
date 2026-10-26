@@ -1,0 +1,174 @@
+\section{P1: transport polynomial identities into internal arithmetic}
+
+\subsection{The proof obligation left by a semiring evaluator}
+
+The maintained development has three relevant layers.
+\src{Representation}{\code{Expr}} stores integer arithmetic syntax and its
+ordinary integer polynomial.
+\src{NaturalExpression}{\code{splitNatural}} translates a signed expression
+into two natural-coefficient expressions.
+\src{GatesSemiring}{\code{SemiringZero}} interprets vanishing as equality of
+their natural values.
+
+If $e$ has split $(e^+,e^-)$, write
+\[
+ \SZ_R(e,v)\quad:\Longleftrightarrow\quad
+ [\![ e^+]\!]_R(v)=[\![ e^-]\!]_R(v).
+\]
+Subtraction need not exist on $R$. An existing semiring evaluator does not
+automatically permit replacing $e$ by another expression $f$ with the same
+integer polynomial: their positive and negative syntax pieces can look quite
+different. Repeatedly unfolding \code{splitNatural} exposes this implementation
+to every client.
+
+The proposed interface is
+\[
+ \boxed{\quad e.\mathrm{toPolynomial}=f.\mathrm{toPolynomial}
+ \ \Longrightarrow\
+ \bigl(\SZ_R(e,v)\leftrightarrow\SZ_R(f,v)\bigr).\quad}
+\]
+It holds for every additively cancellative commutative semiring $R$.
+A proof can establish a finite algebraic normalization in an ordinary integer
+polynomial ring and then reuse it on any appropriate internal-natural carrier.
+The stored expression itself remains unchanged.
+
+\subsection{Proof by a natural cross-sum identity}
+
+Let $P_e,N_e,P_f,N_f\in\N[\mathbf X]$ be the natural-coefficient polynomials
+of the four split expressions. Let
+\[
+ \iota:\N[\mathbf X]\longrightarrow\Z[\mathbf X]
+\]
+be the homomorphism induced by the natural-to-integer coefficient map.
+
+One structural induction proves
+\[
+ \iota(P_e)-\iota(N_e)=e.\mathrm{toPolynomial}.
+ \tag{1}
+\]
+The constant case is the integer identity
+$a.\mathrm{toNat}-(-a).\mathrm{toNat}=a$.
+For multiplication, the positive split is $P_eP_f+N_eN_f$ and the negative
+split is $P_eN_f+N_eP_f$, so the invariant is the product-of-differences
+identity. No semantic model occurs in this induction.
+
+If $e$ and $f$ have equal integer polynomials, (1) gives
+\[
+ \iota(P_e)-\iota(N_e)=\iota(P_f)-\iota(N_f),
+\]
+hence
+\[
+ \iota(P_e+N_f)=\iota(P_f+N_e).
+\]
+Injectivity of the coefficient map, and therefore its multivariate-polynomial
+map, reflects this to
+\[
+             P_e+N_f=P_f+N_e\quad\text{in }\N[\mathbf X].
+ \tag{2}
+\]
+Evaluate (2) through the homomorphism induced by \code{Nat.castRingHom}~\code{R}:
+\[
+             p_e+n_f=p_f+n_e.
+ \tag{3}
+\]
+If $p_e=n_e$, substitute and cancel a common additive term to obtain
+$p_f=n_f$. The converse is symmetric.
+
+The proof does not embed the semantic carrier in a ring or construct its
+Grothendieck completion. It translates a finite coefficient identity once
+and retains the original semiring semantics.
+
+\subsection{Checked Lean interface}
+
+The archive's \code{PolynomialZeroTransport.lean} proves four facts about
+the actual repository syntax:
+
+\begin{Lean}
+map_splitNatural_sub
+splitNatural_cross_sum
+splitNatural_eval_cross_sum
+splitNatural_zero_iff_of_polynomial_eq
+\end{Lean}
+
+Its main theorem is:
+
+\begin{Lean}
+theorem splitNatural_zero_iff_of_polynomial_eq
+    [CommSemiring R] [IsCancelAdd R]
+    (e f : Expr σ)
+    (h : e.toPolynomial = f.toPolynomial) (v : σ → R) :
+    (e.splitNatural.1.evalSemiring v =
+       e.splitNatural.2.evalSemiring v) ↔
+    (f.splitNatural.1.evalSemiring v =
+       f.splitNatural.2.evalSemiring v)
+\end{Lean}
+
+A production wrapper using the existing \code{SemiringZero} name is
+definitionally the same statement. The core belongs below the gate and
+object-model layers to avoid an import cycle. Its checked file imports
+\code{NaturalExpressionSemiring}, not the deep object-model closure.
+
+\subsection{Concrete client: the conditional selection row}
+
+The literal row in
+\src{ObjectConditional}{\code{literal_selection}} is
+\[
+       e=o-\bigl(bz+(1-b)p\bigr).
+\]
+The object-level goal is the balanced equality
+\[
+       o+bp=bz+p.
+ \tag{4}
+\]
+Normalize to
+\[
+       f=(o+bp)-(bz+p).
+\]
+The equality of their ordinary integer polynomials follows by \code{ring}.
+P1 transfers the zero predicate from $e$ to $f$; the latter has immediate
+split semantics (4).
+
+The checked client leaves all four variable indices abstract and then
+instantiates the exact slots used by \code{ObjectConditional}: output $0$,
+bit $4$, zero-branch $2$, and positive-branch $3$, with an empty register
+block. This checks the actual row shape, not a numerical analogue.
+
+This row already has a short direct proof. It demonstrates the interface,
+not a net saving by itself. The useful adoption experiment is a group of
+algebraically normalized rows in the zero-test, conditional, pairing, and
+division syntax layers. Purely structural gates can retain their current
+cheap specialized lemmas.
+
+\subsection{The hypotheses are substantive}
+
+Additive cancellation cannot be removed. In the Boolean semiring, with
+addition OR and multiplication AND, consider
+\[
+              e=1,\qquad f=2-1.
+\]
+Their integer polynomials are both $1$. But $\SZ(e)$ asks $1=0$, which is
+false, while $\SZ(f)$ asks $2=1$, which is true in this semiring.
+The supplied client file constructs the Boolean semiring and checks both
+evaluations. This is an explicit negative control on the theorem's scope.
+
+Commutative multiplication also matters. Equality in a commutative
+polynomial ring cannot justify $xy=yx$ in a noncommutative matrix semiring.
+
+Conversely, P1 requires no order, characteristic-zero hypothesis, absence of
+zero divisors, or multiplicative cancellation. The intended internal-natural
+application uses the repository's existing semiring and additive-cancellation
+structure. It never identifies a possibly nonstandard model with external
+\code{Nat}.
+
+\subsection{Adoption cost and limits}
+
+The supplied core has 72 physical lines, including comments and three axiom
+print commands. It is an added interface, whose whole cost belongs in the
+accounting. Adopt it when several clients can state their desired balanced
+equation and discharge only a polynomial identity, with less dependence on
+the recursive split implementation.
+
+Retain the literal expression, polynomial, witness counts, degree
+certificates, and all object-model assumptions. The checked core and client
+prove the semantic mechanism; they do not certify a full rebuild of the
+internal ZFC proof chain. No project-wide line saving is claimed for P1.

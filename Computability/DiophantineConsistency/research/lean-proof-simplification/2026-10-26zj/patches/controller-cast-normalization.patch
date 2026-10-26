@@ -1,0 +1,58 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerIntervalSums.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerIntervalSums.lean
+@@ -25,11 +25,8 @@
+ theorem interval_injOn {T : ℕ} [NeZero T] (start : ZMod T) (a : ℕ) (ha : a ≤ T) :
+     Set.InjOn (fun j : ℕ => start+(j : ZMod T)) (Finset.range a) := by
+   intro j hj k hk he
+-  have hjT : j < T := (Finset.mem_range.mp hj).trans_le ha
+-  have hkT : k < T := (Finset.mem_range.mp hk).trans_le ha
+-  have hc : (j : ZMod T) = (k : ZMod T) := add_left_cancel he
+-  have hv := congrArg ZMod.val hc
+-  simpa only [ZMod.val_natCast,Nat.mod_eq_of_lt hjT,Nat.mod_eq_of_lt hkT] using hv
++  exact ((ZMod.natCast_eq_natCast_iff j k T).mp (add_left_cancel he)).eq_of_lt_of_lt
++    ((Finset.mem_range.mp hj).trans_le ha) ((Finset.mem_range.mp hk).trans_le ha)
+ 
+ theorem interval_card {T : ℕ} [NeZero T] (start : ZMod T) (a : ℕ) (ha : a ≤ T) :
+     (interval start a).card = a := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerAuxiliaryChoice.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerAuxiliaryChoice.lean
+@@ -34,16 +34,11 @@
+   let r : ZMod C0 := t-(e : ZMod C0)*b
+   have hr : phi r ≠ 0 := by
+     simpa only [r,map_sub,map_mul,map_natCast,nsmul_eq_mul] using hne
+-  have hc : (r.val : ZMod p) = phi r := by
+-    rw [← map_natCast phi r.val,ZMod.natCast_zmod_val]
+   have hnd : ¬ p ∣ r.val := by
+-    intro hd
+-    have hz : (r.val : ZMod p) = 0 := (CharP.cast_eq_zero_iff (ZMod p) p r.val).mpr hd
+-    exact hr (hc.symm.trans hz)
+-  have hpos : 0 < r.val := by
+-    by_contra h
+-    have hz : r.val = 0 := by omega
+-    exact hnd (hz ▸ dvd_zero p)
++    apply (ZMod.natCast_eq_zero_iff r.val p).not.mp
++    simpa only [phi, ZMod.castHom_apply, ZMod.cast_eq_val] using hr
++  have hpos : 0 < r.val :=
++    ZMod.val_pos.mpr (fun hz => hr (by rw [hz, map_zero]))
+   exact ⟨e,r.val,he,hpos,ZMod.val_lt r,ZMod.natCast_zmod_val r,
+     hp.coprime_pow_of_not_dvd hnd⟩
+ 
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerResidueLift.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerResidueLift.lean
+@@ -22,14 +22,9 @@
+     (hz : ZMod.castHom (dvd_mul_right C0 T) (ZMod C0) z = (a : ZMod C0)) :
+     ∃ u : ZMod T,
+       z = (a : ZMod (C0*T))+(C0 : ZMod (C0*T))*(u.val : ZMod (C0*T)) := by
+-  let phi : ZMod (C0*T) →+* ZMod C0 := ZMod.castHom (dvd_mul_right C0 T) (ZMod C0)
+-  have hc : phi z = (z.val : ZMod C0) := by
+-    calc
+-      phi z = phi (z.val : ZMod (C0*T)) := congrArg phi (ZMod.natCast_zmod_val z).symm
+-      _ = (z.val : ZMod C0) := map_natCast phi z.val
+   have hm : z.val%C0 = a := by
+-    have he := congrArg ZMod.val (hc.symm.trans hz)
+-    simpa only [ZMod.val_natCast,Nat.mod_eq_of_lt ha] using he
++    simpa only [ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast,
++      Nat.mod_eq_of_lt ha] using congrArg ZMod.val hz
+   have hq : z.val/C0 < T :=
+     (Nat.div_lt_iff_lt_mul (NeZero.pos C0)).mpr (by
+       simpa only [Nat.mul_comm] using ZMod.val_lt z)

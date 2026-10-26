@@ -1,0 +1,656 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,listings,hyperref,fancyhdr}
+\definecolor{navy}{HTML}{17334D}
+\definecolor{blue}{HTML}{1F527B}
+\definecolor{shade}{HTML}{F3F6F8}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,
+  pdftitle={Additional Lean Proof Simplifications after the Prior Proposal Corpus},
+  pdfauthor={Research note prepared for Vladimir Reshetnikov}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1pt}
+\setlength{\headheight}{15pt}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.5em}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\color{navy}ProveIt / DiophantineConsistency}
+\rhead{\small 26 October 2026}
+\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\name}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\breakname}[1]{\nolinkurl{#1}}
+\newcommand{\sourcepin}{\texttt{89226e3921bc}}
+\newcommand{\freshpin}{\texttt{e429ae09c367}}
+\newcommand{\repo}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/89226e3921bce3e8949fadd12d3efb6914c7630c/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean}{#2}}
+\lstdefinestyle{lean}{basicstyle=\small\ttfamily,backgroundcolor=\color{shade},
+  frame=single,rulecolor=\color{shade},framerule=0.4pt,framesep=6pt,
+  columns=fullflexible,keepspaces=true,breaklines=true,showstringspaces=false,
+  aboveskip=10pt,belowskip=9pt,
+  literate={ℕ}{{$\mathbb N$}}1 {ℤ}{{$\mathbb Z$}}1
+  {∀}{{$\forall$}}1 {∈}{{$\in$}}1 {≠}{{$\ne$}}1
+  {→}{{$\to$}}1 {←}{{$\leftarrow$}}1 {↔}{{$\leftrightarrow$}}1 {≤}{{$\le$}}1
+  {∧}{{$\land$}}1 {¬}{{$\neg$}}1 {∣}{{$\mid$}}1
+  {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {ι}{{$\iota$}}1 {α}{{$\alpha$}}1}
+\lstset{style=lean}
+
+\begin{document}
+\thispagestyle{empty}
+{\Large\color{navy}\bfseries Additional Lean Proof Simplifications\par}
+\vspace{4pt}
+{\large After the prior proposal corpus\par}
+\vspace{9pt}
+Three proof-only integration candidates and one conditional structural direction\par
+Prepared for Vladimir Reshetnikov\hfill 26 October 2026
+\vspace{12pt}
+\hrule
+\vspace{10pt}
+
+\textbf{Main result.} Three small, source-grounded candidates remain after
+treating the earlier proposals as available. They remove \textbf{23 physical
+lines} across three complete modules, including every added production helper
+and import. They preserve the six affected theorem statements and the executable
+definitions. A fourth idea gives a common proof interface for numeric control
+overwrites, but its infrastructure is not yet justified by measured savings.
+
+\textbf{Validation boundary.} Four standalone files compile with Lean 4.32.0.
+They check the central mathematical arguments and exact proof patterns, with
+empty axiom sets or \name{propext} only. All three patches apply cleanly at the
+source pin. The Mathlib-dependent production modules have \textbf{not} been
+compiled in this review. The distinction is maintained throughout the packet.
+
+\textbf{Non-repetition boundary.} The comparison covers 23 placed proposal
+packets and five incoming archives through \freshpin. It includes optional,
+deferred, and uncompiled proposals. The measured source pin is \sourcepin;
+the three patch targets and the control-word target are unchanged at the
+freshness pin. These are additional applications in this repository, not
+claims of new mathematics or new Lean library techniques.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.37\linewidth}rrrp{0.20\linewidth}}
+\toprule
+Candidate module & Before & After & Saved & Production cost added\\
+\midrule
+\breakname{CurrentSelectorTail2011} & 335 & 322 & 13 & None\\
+\breakname{CurrentControllerData2011} & 184 & 178 & 6 & One helper; one import\\
+\breakname{CurrentTileColors2011} & 104 & 100 & 4 & None\\
+\midrule
+\textbf{Total} & \textbf{623} & \textbf{600} & \textbf{23} & Included above\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The numbers are physical-line measurements of the supplied source candidates.
+They are neither a speed measurement nor a count for a hypothetical checkout
+containing every alternative design in the old reports. The full diffs,
+candidate modules, source identities, comparison inventories, and reproducible
+checks accompany this article.
+
+\vspace{8pt}
+\textbf{Reading guide.} Sections 2--4 explain the three concrete patches.
+Section 5 develops the conditional control-slot idea. Section 6 separates
+the completed checks from the production integration gate, and Section 7
+gives specific further questions. The archive README maps every supporting
+artifact and its replay command.
+\newpage
+
+\section{Scope, source state, and the exclusion standard}
+
+The requested tree is unusually well covered by its existing proposal corpus.
+The obvious large refactors are already recorded: shared residual-square
+arguments, generator-backed circuit proofs, scanner iteration laws, coefficient
+envelopes, decoder invariants, internal arithmetic interfaces, cyclic residue
+maps, carry uniqueness, Pell growth kernels, canonical helical coordinates,
+and constructed Wang rows. Presenting another version of any of these as a new
+recommendation would not satisfy the request.
+
+The initial review therefore indexed the complete placed collection,
+\name{2026-10-26a} through \name{2026-10-26w}, and the actual incoming archives,
+rather than relying on the incoming README's queue description. At the initial
+pin there were 1,286 files under the placed collection and four ZIPs containing
+911 non-directory members. The report and supplementary-text index contains
+2,028 heading occurrences. These counts describe artifacts and repeated
+discussion; they are not counts of independent ideas or verified theorems.
+
+A detailed refresh found twelve additional commits through \texttt{663fb267f614},
+including a fifth incoming archive with 131 members. The final comparison
+corpus therefore contains \textbf{28 packets}: 23 placed packets and five
+incoming archives, with 1,042 incoming members in total. The new archive was
+read and checked against all four retained ideas. Its topics include periodic
+helices, mixed-sum divisibility, geometric-series bounds, quadratic margins,
+signed prefix borrow arithmetic, and scalar rank comparisons. None proposes
+the four changes developed here. A final tree comparison through \freshpin
+found three further commits with no changes in either proposal root or any
+of the four target files. The freshness records include both comparisons.
+
+The source measurements use the full commit
+\begin{center}\small\texttt{89226e3921bce3e8949fadd12d3efb6914c7630c}.\end{center}
+The closing comparison uses
+\begin{center}\small\texttt{e429ae09c367c28602613d1d7351a96968aa2f93}.\end{center}
+The target files are unchanged between these commits. Other recent commits
+adopted earlier coefficient, decoder, evaluator, carrier, and option-map
+refactors. Those changes are treated as existing work and are not counted here.
+
+\subsection{What ``assume the earlier ideas applied'' means}
+
+The earlier packets contain mutually alternative designs as well as concrete
+patches. There is no single meaningful operation that mechanically applies
+every packet into one compiling checkout. The comparison is instead at the
+level of the mathematical contract and the proof burden it removes. For each
+new candidate, this report identifies the closest earlier contract and asks
+what work remains after that contract is available.
+
+For example, an earlier binary-word congruence interface already gives the
+word equality used by the color proof. The additional candidate addresses only
+the subsequent cancellation of bounded natural complements. Likewise, an
+earlier physical-permutation injectivity proposal is assumed available; the
+tail candidate addresses two clients of an already established strict-order
+equivalence. This prevents the same abstraction from being counted again
+under a new theorem name.
+
+Several apparently attractive candidates were discarded for this reason.
+A residue ring homomorphism from \(\mathbb Z/(N L)\mathbb Z\) to
+\(\mathbb Z/L\mathbb Z\), including its representative formula, is already
+explicit in packet p. The marker and clause applications already appear in
+packet a. Shared parity extraction from carry balance is also old, and packet
+o explicitly withdraws that proposal as repetition. The origin-mask
+encode/decode direction largely follows from the earlier no-borrow identity
+and word canonicality. None is included as a new direction in this article.
+
+\section{Derive the selector-tail cutoff by logical duality}
+
+\subsection{Existing proof burden}
+
+The relevant source is
+\repo{CurrentSelectorTail2011}{\name{CurrentSelectorTail2011.lean}}.
+Its physical positions are sorted in decreasing selector-weight order, with
+Start at the exceptional position zero. Comparing a non-Start tile \(i\) to
+the fixed cutoff tile 866 gives an existing theorem of the form
+\[
+  p(i)<459\quad\longleftrightarrow\quad q<w(i),
+\]
+where \(p\) is the physical position, \(w\) is the selector weight, and \(q\)
+is the cutoff weight. The source also already proves
+\[
+  w(i)\le q\quad\longleftrightarrow\quad \operatorname{south}(i)\le45.
+\]
+The desired suffix classifier is
+\[
+ 459\le p(i)\quad\longleftrightarrow\quad
+ i\ne0\ \land\ \operatorname{south}(i)\le45.
+\]
+
+After handling Start, the existing proof manually builds both directions.
+Each direction assumes the opposite strict inequality and obtains a
+contradiction using the strict-order iff. This is precisely the content of
+negating that iff. No new ranking theorem or finite-table fact is needed.
+
+\subsection{Replacement and its proof}
+
+For natural numbers, negating \(p<c\leftrightarrow q<w\) gives
+\(c\le p\leftrightarrow w\le q\). This is an ordinary consequence of linear
+order, and Lean can express it directly:
+
+\begin{lstlisting}
+theorem cutoff_duality (p c q w : Nat)
+    (h : p < c ↔ q < w) : c ≤ p ↔ w ≤ q := by
+  simpa only [Nat.not_lt] using not_congr h
+\end{lstlisting}
+
+This standalone theorem is explanatory evidence, not a new production helper.
+In the production proof, retain the exceptional Start branch and the two
+existing lines which construct and normalize \name{hr}. Replace the
+handwritten implication pair by:
+
+\begin{lstlisting}
+    rw [and_iff_right hi, ← weight_le_cutoff_iff]
+    simpa only [Nat.not_lt] using not_congr hr
+\end{lstlisting}
+
+The guard \name{hi} is still \(i\ne0\). The rewrite removes the redundant
+conjunct under that hypothesis. The second rewrite changes the South-bound
+predicate back to the weight cutoff, so the goal is exactly the negation of
+\name{hr}. This proof depends on the same ordering and cutoff facts as before.
+
+There is a second payoff in \name{selectorTail_succ}. Its two branches merely
+transport an already-proved equivalence into an \name{if}. The nonzero fact for
+a finite successor is a library theorem. The complete replacement body is:
+
+\begin{lstlisting}
+  simp only [selectorTailTerm, tail_position_iff, ne_eq, Fin.succ_ne_zero,
+    not_false_eq_true, true_and, lowMass, mul_ite, mul_zero]
+\end{lstlisting}
+
+Here \name{mul_ite} moves multiplication by two through the conditional. The
+\name{ne_eq} rewrite is intentional: with this restricted simplifier set, the
+standalone check found that omitting it left the nonzero guard unresolved.
+The final patch includes it.
+
+\subsection{Incremental benefit and preserved boundaries}
+
+The declaration for \name{tail_position_iff} changes from 15 to 10 physical
+lines, and \name{selectorTail_succ} from 12 to 4. The complete module changes
+from 335 to 322 lines. No helper, import, data table, or rank definition is
+added. The literal cutoff position 459, cutoff tile 866, South threshold 45,
+exceptional Start slot, exact mass calculations, and coefficient bounds all
+remain as they were.
+
+Packet m's physical-permutation proposal addresses injectivity. The incoming
+signal-mass proposal addresses how counts and weighted masses are derived.
+Neither removes these two logical conversions. The candidate is therefore a
+small additional application after those proposals, rather than a replacement
+for either of them.
+
+The standalone \name{TailCutoffCore.lean} checks the exact non-Start proof, the
+exceptional Start branch with \name{Fin 942}, and the successor conditional
+normalization. The upstream table and strict-order results are explicit
+hypotheses in that file. It checks how those facts are used; it does not
+re-prove their repository implementations. The production candidate remains
+subject to the normal imported-module check.
+
+\section{Replace prime-divisor case trees with finite order certificates}
+
+\subsection{The mathematical criterion already exists}
+
+The source
+\repo{CurrentControllerData2011}{\name{CurrentControllerData2011.lean}}
+proves that 2 has order 23 modulo 47 and order 402 modulo 2011. It already
+uses Mathlib's \name{orderOf_eq_of_pow_and_pow_div_prime}. The cumbersome
+part is the proof that a prime dividing 402 must be one of 2, 3, or 67.
+The current source repeatedly splits divisibility of products and converts
+prime divisibility into equality.
+
+For an element \(x\) of a monoid, a positive candidate order \(n\) is exact if
+\[
+ x^n=1,\qquad
+ \forall p\in\operatorname{primeFactors}(n),\quad x^{n/p}\ne1.
+\]
+The mathematical reason is that \(x^n=1\) makes the actual order divide
+\(n\). If the actual order were a proper divisor, some prime divisor of the
+quotient would yield a smaller exponent \(n/p\) at which \(x\) is already 1.
+Mathlib supplies the criterion; this proposal changes the finite interface
+for its remaining premise.
+
+The exact membership theorem in the pinned Mathlib version is
+\[
+ p\in n.\name{primeFactors}\quad\longleftrightarrow\quad
+ \operatorname{Prime}(p)\land p\mid n\land n\ne0.
+\]
+Thus the finite certificate is complete, not just a list of convenient tests.
+This distinction matters: listing a few proper powers without proving that
+the list contains every relevant prime divisor would not establish the order.
+
+\subsection{A small adapter with an accounted cost}
+
+The candidate adds \name{Mathlib.Data.Nat.PrimeFin} and one private theorem:
+
+\begin{lstlisting}
+private theorem order_eq_of_factors {M : Type*} [Monoid M] (x : M) {n : ℕ}
+    (hn : 0 < n) (hpow : x^n = 1)
+    (hproper : ∀ p ∈ n.primeFactors, x^(n/p) ≠ 1) : orderOf x = n := by
+  apply orderOf_eq_of_pow_and_pow_div_prime hn hpow
+  intro p hp hpn
+  exact hproper p (Nat.mem_primeFactors.mpr ⟨hp,hpn,Nat.ne_of_gt hn⟩)
+\end{lstlisting}
+
+The two public clients then reuse their existing power-equals-one facts:
+
+\begin{lstlisting}
+theorem two_order_47 : orderOf (2 : ZMod 47) = 23 :=
+  order_eq_of_factors _ (by decide) two_pow_47 (by decide)
+
+theorem two_order_2011 : orderOf (2 : ZMod 2011) = 402 :=
+  order_eq_of_factors _ (by decide) two_pow_2011 (by decide)
+\end{lstlisting}
+
+The final calls use ordinary \name{decide} on closed finite propositions.
+Their concrete Mathlib elaboration and reduction cost still need to be
+measured. An earlier
+prototype that explicitly rewrote each prime-factor set and then split its
+members did not repay the helper cost as well. The delivered patch uses the
+closed certificate directly and includes its full cost in the measurement.
+
+The complete module changes from 184 to 178 physical lines: 18 deleted and
+12 added, including the import and the six-line private theorem. Existing
+named proper-power residues remain in the module, as do the order facts for
+the large base, the auxiliary lift, and the conditional kernel-residue wrappers.
+There is no new claim that the actual kernel residues have been discharged.
+
+\subsection{Guards and edge cases}
+
+The premise \(n>0\) must remain. At \(n=0\), the prime-factor set is empty and
+\(x^0=1\) holds automatically. Removing the positivity guard would therefore
+turn an empty finite check into a false general order assertion. At \(n=1\),
+the prime-factor check is correctly empty: \(x^1=1\) itself proves that the
+order is one.
+
+No primality of the ambient modulus is used by the adapter. The finite tests
+concern prime divisors of the \emph{candidate order}, not the modulus. This is
+why the adapter is stated for a monoid, with no finite-group instance. The two
+particular moduli happen to be prime, but that fact is not smuggled into the
+criterion as an unnecessary assumption.
+
+The nearest prior finite-certificate proposals concern tile tables, chunks,
+coefficient fibres, or decoder bounds. This candidate concerns the completeness
+of the exact-order test family. It is a new local application of an existing
+order theorem, with a small measured payoff, not a new certificate engine.
+
+\subsection{Independent kernel evidence for the concrete numbers}
+
+The supplied \name{FiniteOrderCore.lean} uses a small recursive evaluator that
+reduces modulo \(m\) after each multiplication:
+\[
+ r_0=1\bmod m,\qquad r_{k+1}=r_k b\bmod m.
+\]
+It proves \(r_k=b^k\bmod m\) for every \(b,m,k\), then checks the positive
+return time and \emph{every} smaller positive exponent for the two candidates.
+Consequently it establishes the ordinary arithmetic statements
+\[
+ \begin{aligned}
+ 2^{23}&\equiv1\pmod{47}, &
+ 0<k<23&\Longrightarrow 2^k\not\equiv1\pmod{47},\\
+ 2^{402}&\equiv1\pmod{2011}, &
+ 0<k<402&\Longrightarrow 2^k\not\equiv1\pmod{2011}.
+ \end{aligned}
+\]
+It also checks the three residues relevant to the smaller factor certificate:
+\[
+2^{201}\bmod2011=2010,\quad
+2^{134}\bmod2011=205,\quad
+2^6\bmod2011=64.
+\]
+
+The finite certificate declarations and the three residue computations have
+empty axiom sets. The evaluator correctness and the resulting ordinary
+first-return theorems use only \name{propext}. This evidence rules out an
+incorrect numerical order or missing smaller return. It does \emph{not}
+certify the imported \name{primeFactors} adapter, its typeclass elaboration,
+or the proposed production \name{decide} calls. Those remain a distinct gate.
+
+\section{Cancel bounded color complements directly}
+
+\subsection{The remaining step after word congruence}
+
+The source
+\repo{CurrentTileColors2011}{\name{CurrentTileColors2011.lean}}
+first derives equality of the binary words carrying adjacent labels. Each
+word is known to be the complement of a tile color. For horizontal colors
+the resulting equality has the form
+\[
+255-\operatorname{east}(i)=255-\operatorname{west}(j),
+\]
+and for temporal colors it is
+\[
+511-\operatorname{south}(i)=511-\operatorname{north}(j).
+\]
+The current proofs unpack all four color bounds for each of two tiles, rewrite
+the word equalities, and let \name{omega} finish. Only two of the eight bounds
+are needed in either proof.
+
+The relevant existing Mathlib result is \name{tsub_right_inj}:
+\[
+ b\le a\ \land\ c\le a
+ \quad\Longrightarrow\quad
+ (a-b=a-c\ \longleftrightarrow\ b=c).
+\]
+The candidate applies it using just the needed projections of
+\name{tile_bounded}. For example, the horizontal final step becomes:
+
+\begin{lstlisting}
+  exact (tsub_right_inj (Nat.le_of_lt_succ (tile_bounded i).2.1)
+    (Nat.le_of_lt_succ (tile_bounded j).1)).mp
+      (hl.2.2.1.symm.trans (hw.trans hr.1))
+\end{lstlisting}
+
+The displayed version is wrapped for readability; the candidate file uses two
+physical lines. The equality chain first moves from the left color complement
+to its word, then across the already-proved word equality, then to the right
+color complement. The temporal proof uses the South and North bound projections
+in exactly the same manner.
+
+\subsection{Why the bounds are essential}
+
+Natural subtraction truncates at zero. Thus equality of two unbounded
+complements does not imply equality of the underlying numbers. The standalone
+check includes the counterexample
+\[
+255-256=255-257=0,\qquad256\ne257.
+\]
+The proof therefore retains both bounds explicitly. Given \(a,b\le c\),
+apply \(v\mapsto c-v\) to \(c-a=c-b\), then use
+\(c-(c-a)=a\) and \(c-(c-b)=b\). This exact argument is compiled in
+\name{BoundedComplementCore.lean}.
+
+The complete module changes from 104 to 100 physical lines, with no helper or
+import added. The two final four-line proof blocks become two lines each.
+All decoded-word equalities, copy orientation, temporal shift information,
+and tile bounds remain in use. The core theorem's axiom set is
+\name{[propext]}; the production module is uncompiled in this review.
+
+This is deliberately the lowest-priority patch. It makes the cancellation
+principle explicit and avoids eight named inequalities, but the nested
+projection and equality-chain notation may be less pleasant than \name{omega}
+to some maintainers. Its case rests on making the two required guards visible,
+not on a four-line count alone. Keeping the original proof is reasonable if
+the local style favors the original arithmetic conclusion.
+
+Earlier proposals already supply binary-word congruence and color-fibre
+interfaces. Those give the equality consumed here. The candidate addresses
+only bounded-complement recovery, so it remains a distinct, modest residual
+cleanup after those interfaces are assumed available.
+
+\section{Conditional direction: numeric control-slot invariants}
+
+\subsection{An exact proof-side view of the current word}
+
+The source
+\repo{CurrentWordConstruction2011}{\name{CurrentWordConstruction2011.lean}}
+assembles a cell from a tile's local digit function and two independent numeric
+controls. At field 977 the value is the dummy control; at field 1004 it is the
+marker control; elsewhere it is the local tile digit. The same function can
+be viewed on the proof side as
+\[
+ f[1004\mapsto\mathrm{marker}][977\mapsto\mathrm{dummy}].
+\]
+The order is deliberate: the final update has the same priority as the first
+branch of the original nested conditional. The actual two positions differ,
+but the general update law should also be correct for repeated positions.
+
+Mathlib already supplies \name{Function.forall_update_iff}. In the
+nondependent case it expresses exactly the invariant rule
+\[
+\bigl(\forall j,\ P(j,f(j))\bigr)\ \land\ P(i,a)
+\quad\Longrightarrow\quad
+\forall j,\ P\bigl(j,f[i\mapsto a](j)\bigr).
+\]
+The update view is a proof interface. There is no reason to change the public
+executable definition of \name{word} to adopt the argument.
+
+\subsection{Three distinct invariant instances}
+
+Boolean range uses \(P(e,v)\equiv v\le1\). The base certificate comes from
+\name{localDigit_boolean}; each overwrite requires its own Boolean bound.
+This reproduces the intended independence of the dummy and marker maps.
+
+Support preservation uses
+\[
+P(e,v)\equiv(e\notin\mathrm{lowSupport}\Longrightarrow v=0).
+\]
+Since both control positions belong to \name{lowSupport}, the overwritten
+values can be \emph{arbitrary natural numbers}. There is no Boolean premise
+in the original \name{word_support} theorem, and none may be added by this
+refactor. A combined invariant such as Booleanity plus support is useful for
+some clients, but cannot replace the stronger support theorem by a weaker
+statement with extra assumptions.
+
+Capacity preservation uses \(P(e,v)\equiv v<\mathrm{capacity}(e)\). Its update
+obligations are the two local capacity inequalities. This gives a possible
+common interface if future assembled-word proofs repeatedly need Boolean,
+support, and varying bit-capacity predicates. It does not eliminate the
+separate arithmetic facts needed to establish those capacities.
+
+\subsection{Evidence, novelty, and the reason for deferring adoption}
+
+\name{ControlSlotCore.lean} checks the general overwrite law and the three
+invariant instances with Lean 4.32.0. It also checks both actual control
+positions, an unaffected position, and repeated-position last-write priority.
+The four audited theorems use only \name{propext}. The core representation
+uses an explicit conditional and has a definitional equality to the literal
+two-branch expression.
+
+\name{ControlSlotInvariant.lean} supplies the proposed Mathlib update view and
+its binding to the actual production word. That binding is uncompiled. The
+nearest earlier proposal, locality of expression evaluation under agreement
+of valuations, solves a different problem: it transports an evaluator between
+environments. Here the invariant belongs to the numeric digit function being
+overwritten. The narrow application was not found in the comparison corpus.
+
+Nevertheless, the full update facade adds definitions, a binding theorem, and
+an invariant adapter. For only the current Boolean and support clients, that
+cost has not been shown to pay back. It would be misleading to count a short
+projection proof without charging the facade that makes it possible. The
+prototype is therefore supplied as a conditional direction, excluded from
+the 23-line total and from the combined patch.
+
+The sensible adoption test is concrete: implement all intended clients,
+preserve the unconditional support statement, keep the executable word
+unchanged, and measure the entire production diff. If the total increases
+without a substantial reduction in repeated proof obligations, retain the
+current local proofs. A new abstraction is optional even when its law is
+correct and reusable.
+
+\section{Validation, accounting, and integration}
+
+\subsection{What was actually checked}
+
+The compiler is the repository-pinned Lean 4.32.0 release. The delivered
+\name{verify_core.py} checks its version, compiles the four standalone files,
+records their SHA-256 identities and actual exit codes, and retains complete
+compiler output. The successful final logs contain no \name{sorryAx}. Across
+the four files there are 16 printed axiom reports; each is empty or contains
+only \name{propext}. Compilation time in these logs is evidence about those
+standalone checks only.
+
+The supplied \name{check_candidates.py} performs different, textual checks:
+it compares the pinned source bytes to the local checkout, compares all six
+edited statement headers, counts the complete-module changes, and runs
+\name{git apply --check} on each patch and on their combination. These checks
+passed. They establish that the artifacts are internally consistent and
+applicable at the pin; they do not establish Lean elaboration.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.37\linewidth}p{0.49\linewidth}}
+\toprule
+Evidence & What it establishes\\
+\midrule
+Tail core compilation & Logical duality, exceptional Start branch, and conditional normalization under stated upstream hypotheses.\\
+Finite-order core compilation & Ordinary modular first-return statements, all smaller positive exponents, and the three proper-power residues.\\
+Complement core compilation & Bounded natural-complement cancellation and a counterexample without the guards.\\
+Control-slot core compilation & General overwrite invariant, Boolean/support/capacity instances, and update priority.\\
+Patch and header checks & Applicable textual edits, measured line counts, and unchanged six theorem headers.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The complete Mathlib-dependent import graph was not available for a production
+replay. Therefore no changed production module, downstream client, concrete
+update binding, or production axiom closure is reported as compiled here.
+There is also no claim of a compile-time speedup. In particular, the concise
+factor certificates could elaborate differently from the explicit
+\name{reduce_mod_char} steps they replace.
+
+\subsection{Recommended order of adoption}
+
+The selector-tail patch has the clearest balance: it adds no infrastructure,
+retains the full exceptional case, and removes a duplicated logical
+conversion. Check it first, with its existing check module and the early
+padding consumer.
+
+The order-certificate patch should come next. Check the two closed finite
+certificates in the real Mathlib environment, retain the existing explicit
+proper-power facts, and compare both axiom reports and actual elaboration
+cost. If \name{decide} performs poorly, the same factor-set interface can
+enumerate the three modular exclusions explicitly, but the source cost must
+then be recalculated. The supplied six-line saving is attached to the exact
+delivered candidate, not to every implementation of the idea.
+
+The bounded-complement patch is a style-sensitive final cleanup. Its normal
+integration gate is the color check module and the marked-window consumer.
+The overwrite facade should be considered only after a full set of concrete
+clients justifies it.
+
+In a disposable pinned checkout, apply the small diffs and build the changed
+modules, their existing checks, and the affected direct consumers. The exact
+command is in the README. Compare the public axiom reports with the original
+checkout. The full candidate files are reference artifacts; if other proposals
+have reorganized the same modules, rebase these proof bodies instead of
+overwriting the updated files with the older snapshots.
+
+\subsection{Scope of the proof edits}
+
+These edits concern proof presentation and reuse, with the local statements
+and their hypotheses preserved. Results added by the surrounding research
+program must be assessed from their own evidence. The present packet supplies
+no additional mathematical result about the global controller, equation
+construction, or consistency equivalence.
+
+\section{Further questions with specific acceptance criteria}
+
+\textbf{Does a shared exact-order certificate earn its cost across more
+controller constants?} The current pair pays for the private adapter by six
+physical lines. Further clients could improve that balance, but should be
+counted only after the constants, factor-set completeness, and proper powers
+are explicit. Compare actual checking cost with the existing modular
+exponentiation tactic; do not infer speed from shorter source.
+
+\textbf{Can the numeric-control invariant replace three independently
+maintained families of obligations?} A useful experiment would cover support,
+Boolean range, and bit capacities together while keeping the unrestricted
+support theorem. Its acceptance condition is a complete diff with either a
+net reduction or an independently defensible maintenance benefit. A short
+client built on a large uncounted facade is insufficient.
+
+\textbf{Are there more non-strict classifiers already implied by strict
+order comparisons?} Search specifically for pairs of handwritten
+contraposition branches after an existing iff. Each candidate should retain
+its exceptional elements, ties, and boundary conventions. This is a focused
+search for new clients, not another proposal for a global rank or order API.
+
+\textbf{When should explicit cancellation replace arithmetic automation?}
+The tile-color example suggests a useful local criterion: use the library
+lemma when it makes the exact two guards easier to see. Keep automation when
+the explicit projection chain obscures the statement. A maintainable result
+need not be the version with the fewest printed lines.
+
+\appendix
+\section{Primary sources}
+
+All repository claims use pinned source rather than the moving main branch.
+The article's new contribution is the proposed simplification and its stated
+reasoning. The following links support the inspected source and library APIs.
+
+\begin{enumerate}
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/e429ae09c367c28602613d1d7351a96968aa2f93/Computability/DiophantineConsistency/research/lean-proof-simplification}{Placed proposal corpus},
+including its index and adoption record.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/e429ae09c367c28602613d1d7351a96968aa2f93/docs/incoming}{Incoming archives at the closing comparison pin}.
+\item \repo{CurrentSelectorTail2011}{Selector-tail source};
+\repo{CurrentSelectorTail2011Checks}{existing selector-tail checks}.
+\item \repo{CurrentControllerData2011}{Controller arithmetic source};
+\repo{CurrentControllerData2011Checks}{existing controller checks}.
+\item \repo{CurrentTileColors2011}{Tile-color source};
+\repo{CurrentTileColors2011Checks}{existing color checks}.
+\item \repo{CurrentWordConstruction2011}{Assembled-word source};
+\repo{CurrentWordLowMask2011}{capacity and low-mask clients}.
+\item \href{https://github.com/leanprover-community/mathlib4/blob/v4.32.0/Mathlib/Data/Nat/PrimeFin.lean}{Mathlib v4.32.0, PrimeFin}: exact prime-factor membership interface.
+\item \href{https://github.com/leanprover-community/mathlib4/blob/v4.32.0/Mathlib/GroupTheory/OrderOfElement.lean}{Mathlib v4.32.0, OrderOfElement}: exact-order criterion with positive candidate order.
+\item \href{https://github.com/leanprover-community/mathlib4/blob/v4.32.0/Mathlib/Algebra/Order/Sub/Basic.lean}{Mathlib v4.32.0, ordered subtraction}: \name{tsub_right_inj}.
+\item \href{https://github.com/leanprover-community/mathlib4/blob/v4.32.0/Mathlib/Logic/Function/Basic.lean}{Mathlib v4.32.0, Function.Basic}: update application and pointwise invariant interface.
+\item \href{https://github.com/leanprover/lean4/blob/v4.32.0/src/Init/Data/Fin/Lemmas.lean}{Lean v4.32.0 finite-index lemmas}: \name{Fin.succ_ne_zero}.
+\end{enumerate}
+
+\end{document}

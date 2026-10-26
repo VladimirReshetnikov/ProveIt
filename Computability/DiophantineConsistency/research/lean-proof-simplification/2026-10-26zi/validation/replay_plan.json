@@ -1,0 +1,220 @@
+{
+  "commit": "e652d21c413de59e4821f6e8e9b6a3a077bf5bfe",
+  "status": "UNEXECUTED",
+  "purpose": "One ordered output world; rebuilt connectors prevent stale baseline dependencies.",
+  "private_helper_audit": "halted_tiles_allowed is checked transitively through passTile_allowed and finishTile_allowed; private compiler names are not guessed.",
+  "probes": [
+    {
+      "source": "validation/replay/WangTiles942FinishConstruction.lean",
+      "module": "DiophantineConsistency.WangTiles942FinishConstruction",
+      "group": "composed",
+      "origin": "bridges/candidate/WangTiles942FinishConstruction.lean",
+      "origin_sha256": "a411284d9a2ad9efe02bed35320a9e6a131863276ee5aba74b492f3e9f84220a",
+      "expected": [
+        "DiophantineConsistency.WangTiles942FinishConstruction.passTile_allowed",
+        "DiophantineConsistency.WangTiles942FinishConstruction.finishTile_allowed",
+        "DiophantineConsistency.WangTiles942FinishConstruction.passTile_colors",
+        "DiophantineConsistency.WangTiles942FinishConstruction.finishTile_colors",
+        "DiophantineConsistency.WangTiles942FinishConstruction.passTile_horizontal",
+        "DiophantineConsistency.WangTiles942FinishConstruction.finishTile_horizontal",
+        "DiophantineConsistency.WangTiles942FinishConstruction.initialTile_negative",
+        "DiophantineConsistency.WangTiles942FinishConstruction.initialTile_zero",
+        "DiophantineConsistency.WangTiles942FinishConstruction.initialTile_one",
+        "DiophantineConsistency.WangTiles942FinishConstruction.initialTile_right",
+        "DiophantineConsistency.WangTiles942FinishConstruction.initialTile_allowed",
+        "DiophantineConsistency.WangTiles942FinishConstruction.initialTile_north_mem",
+        "DiophantineConsistency.WangTiles942FinishConstruction.initialTile_south",
+        "DiophantineConsistency.WangTiles942FinishConstruction.initialTile_horizontal",
+        "DiophantineConsistency.WangTiles942FinishConstruction.resetTile_allowed",
+        "DiophantineConsistency.WangTiles942FinishConstruction.resetTile_colors",
+        "DiophantineConsistency.WangTiles942FinishConstruction.resetTile_horizontal",
+        "DiophantineConsistency.WangTiles942FinishConstruction.pass_finish_matching",
+        "DiophantineConsistency.WangTiles942FinishConstruction.finish_reset_initial_matching",
+        "DiophantineConsistency.WangTiles942FinishConstruction.closing_rows"
+      ],
+      "requires_probes": [],
+      "role": "changed_candidate"
+    },
+    {
+      "source": "validation/replay/WangTiles942TraceCycle.lean",
+      "module": "DiophantineConsistency.WangTiles942TraceCycle",
+      "group": "composed",
+      "origin": "bridges/candidate/WangTiles942TraceCycle.lean",
+      "origin_sha256": "5dc3f6a1b9f22685b7130079735d563a1ac5c315072699dd0c91131913f334ac",
+      "expected": [
+        "DiophantineConsistency.WangTiles942TraceCycle.runTile_allowed",
+        "DiophantineConsistency.WangTiles942TraceCycle.runTile_north",
+        "DiophantineConsistency.WangTiles942TraceCycle.runTile_south",
+        "DiophantineConsistency.WangTiles942TraceCycle.runTile_horizontal",
+        "DiophantineConsistency.WangTiles942TraceCycle.runTile_after_halt",
+        "DiophantineConsistency.WangTiles942TraceCycle.nextIndex_val_of_lt",
+        "DiophantineConsistency.WangTiles942TraceCycle.nextIndex_val_of_last",
+        "DiophantineConsistency.WangTiles942TraceCycle.cycleTile_zero",
+        "DiophantineConsistency.WangTiles942TraceCycle.cycleTile_last",
+        "DiophantineConsistency.WangTiles942TraceCycle.cycleTile_finish",
+        "DiophantineConsistency.WangTiles942TraceCycle.cycleTile_run",
+        "DiophantineConsistency.WangTiles942TraceCycle.cycleTile_allowed",
+        "DiophantineConsistency.WangTiles942TraceCycle.cycleTile_horizontal",
+        "DiophantineConsistency.WangTiles942TraceCycle.cycleTile_north",
+        "DiophantineConsistency.WangTiles942TraceCycle.cycleTile_south",
+        "DiophantineConsistency.WangTiles942TraceCycle.cycleTile_temporal",
+        "DiophantineConsistency.WangTiles942TraceCycle.trace_cycle"
+      ],
+      "requires_probes": [
+        "validation/replay/WangTiles942FinishConstruction.lean"
+      ],
+      "role": "changed_candidate"
+    },
+    {
+      "source": "validation/replay/WangTiles942CycleBoundary.lean",
+      "module": "DiophantineConsistency.WangTiles942CycleBoundary",
+      "group": "composed",
+      "origin": "sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942CycleBoundary.lean",
+      "origin_sha256": "a2f992dbfd4c14d70b8daf423c0b598d714131c5605cf29c833bc7dc2b808f8f",
+      "expected": [
+        "DiophantineConsistency.WangTiles942CycleBoundary.runTile_outer_blank",
+        "DiophantineConsistency.WangTiles942CycleBoundary.runTile_left_blank",
+        "DiophantineConsistency.WangTiles942CycleBoundary.runTile_right_blank",
+        "DiophantineConsistency.WangTiles942CycleBoundary.edgeCode_le_two",
+        "DiophantineConsistency.WangTiles942CycleBoundary.cycleTile_left_west",
+        "DiophantineConsistency.WangTiles942CycleBoundary.cycleTile_right_east",
+        "DiophantineConsistency.WangTiles942CycleBoundary.cycleTile_outer_edges"
+      ],
+      "requires_probes": [
+        "validation/replay/WangTiles942TraceCycle.lean"
+      ],
+      "role": "unchanged_connector"
+    },
+    {
+      "source": "validation/replay/WangTiles942CycleMarker.lean",
+      "module": "DiophantineConsistency.WangTiles942CycleMarker",
+      "group": "composed",
+      "origin": "sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942CycleMarker.lean",
+      "origin_sha256": "2806b219857cfc334bc502fc15eccbebf0f6206a381c2e809029905e7d9076c5",
+      "expected": [
+        "DiophantineConsistency.WangTiles942CycleMarker.initialTile_north_start_iff",
+        "DiophantineConsistency.WangTiles942CycleMarker.initialTile_eq_start_iff",
+        "DiophantineConsistency.WangTiles942CycleMarker.cycleTile_north_start_iff",
+        "DiophantineConsistency.WangTiles942CycleMarker.cycleTile_eq_start_iff"
+      ],
+      "requires_probes": [
+        "validation/replay/WangTiles942TraceCycle.lean"
+      ],
+      "role": "unchanged_connector"
+    },
+    {
+      "source": "validation/replay/WangTiles942HelicalQuotient.lean",
+      "module": "DiophantineConsistency.WangTiles942HelicalQuotient",
+      "group": "composed",
+      "origin": "helical/proposed/WangTiles942HelicalQuotient.lean",
+      "origin_sha256": "f9fb285bdb2ed8d3c2a007e04baedb7ab1ee8939a6037373160099310787c01b",
+      "expected": [
+        "DiophantineConsistency.WangTiles942HelicalQuotient.row_zero_of_helix",
+        "DiophantineConsistency.WangTiles942HelicalQuotient.periodic_emod",
+        "DiophantineConsistency.WangTiles942HelicalQuotient.periodic_zmod_val",
+        "DiophantineConsistency.WangTiles942HelicalQuotient.row_zero_period",
+        "DiophantineConsistency.WangTiles942HelicalQuotient.signed_row_period",
+        "DiophantineConsistency.WangTiles942HelicalQuotient.quotientWord_tile",
+        "DiophantineConsistency.WangTiles942HelicalQuotient.quotientWord_cast",
+        "DiophantineConsistency.WangTiles942HelicalQuotient.quotientWord_binding",
+        "DiophantineConsistency.WangTiles942HelicalQuotient.address_row_zero",
+        "DiophantineConsistency.WangTiles942HelicalQuotient.quotientWord_marked",
+        "DiophantineConsistency.WangTiles942HelicalQuotient.exists_marked_word"
+      ],
+      "requires_probes": [],
+      "role": "changed_candidate"
+    },
+    {
+      "source": "validation/replay/WangTiles942HelicalExtension.lean",
+      "module": "DiophantineConsistency.WangTiles942HelicalExtension",
+      "group": "composed",
+      "origin": "sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalExtension.lean",
+      "origin_sha256": "1ca88d926e0002f2ee0eb7974176ebbe0f400c473e3b7ab742a44421b834bdc6",
+      "expected": [
+        "DiophantineConsistency.WangTiles942HelicalExtension.representative_in_band",
+        "DiophantineConsistency.WangTiles942HelicalExtension.coordinates_of_decomposition",
+        "DiophantineConsistency.WangTiles942HelicalExtension.coordinates_in_band",
+        "DiophantineConsistency.WangTiles942HelicalExtension.extend_on_band",
+        "DiophantineConsistency.WangTiles942HelicalExtension.coordinates_add_width",
+        "DiophantineConsistency.WangTiles942HelicalExtension.coordinates_succ_inside",
+        "DiophantineConsistency.WangTiles942HelicalExtension.coordinates_succ_wrap",
+        "DiophantineConsistency.WangTiles942HelicalExtension.extend_helical",
+        "DiophantineConsistency.WangTiles942HelicalExtension.extend_vertical",
+        "DiophantineConsistency.WangTiles942HelicalExtension.extend_allowed",
+        "DiophantineConsistency.WangTiles942HelicalExtension.extend_time_matching",
+        "DiophantineConsistency.WangTiles942HelicalExtension.extend_horizontal_matching",
+        "DiophantineConsistency.WangTiles942HelicalExtension.extend_start",
+        "DiophantineConsistency.WangTiles942HelicalExtension.extension_properties"
+      ],
+      "requires_probes": [
+        "validation/replay/WangTiles942HelicalQuotient.lean"
+      ],
+      "role": "unchanged_connector"
+    },
+    {
+      "source": "validation/replay/WangTiles942CycleBand.lean",
+      "module": "DiophantineConsistency.WangTiles942CycleBand",
+      "group": "composed",
+      "origin": "helical/proposed/WangTiles942CycleBand.lean",
+      "origin_sha256": "a6aac84ab63c5c12465a357ad06c59b977b55eb4f5dc771c3d7d75a4cf2d9c95",
+      "expected": [
+        "DiophantineConsistency.WangTiles942CycleBand.timeIndex_zero",
+        "DiophantineConsistency.WangTiles942CycleBand.timeIndex_period",
+        "DiophantineConsistency.WangTiles942CycleBand.timeIndex_succ",
+        "DiophantineConsistency.WangTiles942CycleBand.seam_allowed",
+        "DiophantineConsistency.WangTiles942CycleBand.seam_period",
+        "DiophantineConsistency.WangTiles942CycleBand.band_seam",
+        "DiophantineConsistency.WangTiles942CycleBand.band_interior",
+        "DiophantineConsistency.WangTiles942CycleBand.band_allowed",
+        "DiophantineConsistency.WangTiles942CycleBand.band_temporal",
+        "DiophantineConsistency.WangTiles942CycleBand.band_horizontal",
+        "DiophantineConsistency.WangTiles942CycleBand.band_twisted",
+        "DiophantineConsistency.WangTiles942CycleBand.band_period",
+        "DiophantineConsistency.WangTiles942CycleBand.band_start",
+        "DiophantineConsistency.WangTiles942CycleBand.band_properties",
+        "DiophantineConsistency.WangTiles942CycleBand.band_quotient_properties",
+        "DiophantineConsistency.WangTiles942CycleBand.marked_word_of_halt"
+      ],
+      "requires_probes": [
+        "validation/replay/WangTiles942CycleBoundary.lean",
+        "validation/replay/WangTiles942HelicalExtension.lean"
+      ],
+      "role": "changed_candidate"
+    },
+    {
+      "source": "validation/replay/WangTiles942HelicalMarker.lean",
+      "module": "DiophantineConsistency.WangTiles942HelicalMarker",
+      "group": "composed",
+      "origin": "sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalMarker.lean",
+      "origin_sha256": "55962b759130f61cb138afde6a87796da4a12ddf7b0bc891a2d2417da2c788c7",
+      "expected": [
+        "DiophantineConsistency.WangTiles942HelicalMarker.zero_of_marker_coordinates",
+        "DiophantineConsistency.WangTiles942HelicalMarker.quotientWord_marker_iff"
+      ],
+      "requires_probes": [
+        "validation/replay/WangTiles942HelicalExtension.lean"
+      ],
+      "role": "unchanged_connector"
+    },
+    {
+      "source": "validation/replay/WangTiles942BandMarker.lean",
+      "module": "DiophantineConsistency.WangTiles942BandMarker",
+      "group": "composed",
+      "origin": "helical/proposed/WangTiles942BandMarker.lean",
+      "origin_sha256": "b65978af05459cc9bacca0f11ae96f3d5bccfeac14e5833de9c53a85c0dac27e",
+      "expected": [
+        "DiophantineConsistency.WangTiles942BandMarker.timeIndex_val_zero_iff",
+        "DiophantineConsistency.WangTiles942BandMarker.band_eq_start_iff",
+        "DiophantineConsistency.WangTiles942BandMarker.canonicalWord_marker_iff",
+        "DiophantineConsistency.WangTiles942BandMarker.canonicalWord_properties",
+        "DiophantineConsistency.WangTiles942BandMarker.canonical_unique_word_of_halt"
+      ],
+      "requires_probes": [
+        "validation/replay/WangTiles942CycleBand.lean",
+        "validation/replay/WangTiles942CycleMarker.lean",
+        "validation/replay/WangTiles942HelicalMarker.lean"
+      ],
+      "role": "changed_candidate"
+    }
+  ]
+}

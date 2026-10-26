@@ -1,0 +1,34 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCarryConstruction2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCarryConstruction2011.lean
+@@ -94,15 +94,12 @@
+   letI : NeZero (N*2011) := ⟨Nat.ne_of_gt CurrentWordConstruction2011.wordLength_pos⟩
+   exact exists_normalization _ (CurrentWordConstruction2011.word_boolean a dummy marker hd hm) W
+ 
+-/-- A marked tile word already makes the assembled source positive. This
+-does not assert positivity of the normalized transport word. -/
++/-- Every assembled tile word has a selected digit, so its source is positive.
++This does not assert positivity of the normalized transport word. -/
+ theorem assembled_source_pos {N : ℕ} [NeZero N]
+-    (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ) (s : ℤ)
+-    (ha : WangTiles942Periodic.MarkedWord N s a) :
++    (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ) :
+     0 < word radix (CurrentWordConstruction2011.word a dummy marker) := by
+-  letI : NeZero (N*2011) := ⟨Nat.ne_of_gt CurrentWordConstruction2011.wordLength_pos⟩
+-  apply word_pos_of_digit _ 0
+-  rw [CurrentWordConstruction2011.word_origin_of_marked a dummy marker s ha]
+-  decide
++  apply word_pos_of_digit _ _
++  exact (CurrentWordConstruction2011.word_selected a dummy marker 0).1.symm ▸ Nat.zero_lt_one
+ 
+ end DiophantineConsistency.CurrentCarryConstruction2011
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCarryConstruction2011Checks.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCarryConstruction2011Checks.lean
+@@ -41,7 +41,7 @@
+ example {N : ℕ} [NeZero N] (a : ZMod N → Fin 942)
+     (dummy marker : ZMod N → ℕ) (s : ℤ) (h : WangTiles942Periodic.MarkedWord N s a) :
+     0 < word radix (CurrentWordConstruction2011.word a dummy marker) :=
+-  assembled_source_pos a dummy marker s h
++  assembled_source_pos a dummy marker
+ 
+ #print axioms CurrentCarryConstruction2011.exists_normalization
+ #print axioms word_pos_of_digit

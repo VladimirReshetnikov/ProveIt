@@ -1,0 +1,19 @@
+# Candidate novelty decisions
+
+Comparison pin: `89226e3921bce3e8949fadd12d3efb6914c7630c`.
+Scope: all 23 placed packets a–w and four current incoming ZIPs. “Retain” below means a bounded non-repetition judgment, not a compiler validation or mathematical-priority claim.
+
+| Candidate | Decision | Exact reason |
+|---|---|---|
+| Shared residue ring hom `ZMod (N*L) →+* ZMod L` and value bridge | Exclude | p/lean/DiophantineConsistency/SupportDifference.lean already defines `residue` by `ZMod.castHom` and `residue_val`. a/source_notes/digits-review.md:175–202 explicitly names shared source-offset residues for clause/marker convolution and mask lookup, including the import-cycle caveat. |
+| Shared parity balance after carry decomposition | Exclude | a digits notes §3 already specializes modular projection to marker digit parity. o/report/report.tex:89 explicitly withdraws generic reflected-parity/carry as overlapping earlier exact decomposition and projection. |
+| Injective finite weighted-image/selector transfer for controller subsets | Exclude | d's finite-fibre pushforward and g's injective sparse-placement specialization already cover the mechanism. A newly written client does not alone create a new abstraction. |
+| Full origin-mask encode/decode iff or bijection | Do not retain as a headline without stronger residual evidence | No literal full iff was found, but a/g already supply no-borrow origin decrement, i supplies bounded full-word canonicality, and existing mask_word_iff/mask_capacity do the digit calculation. A narrow shared mask-capacity proof may be new; most claimed benefit must first be removed as prior baseline. |
+| Supported cell-digit invariants preserved by two numeric control-slot updates | Retain provisionally as a narrow new application | No proposal for Function.update/finite overriding of the constructed word at slots 977/1004 was found. j's support-local frame rules concern expression evaluation under valuation agreement, not proving numeric digit support and Boolean capacities after controlled replacement. Count the proof-only view and all adapter/helper costs. |
+| Prime-factor set certificate for exact multiplicative order | Retain as a concrete controller-arithmetic delta | No prior proposal for `orderOf`/`primeFactors` controller proof was found. Earlier finite certificate/chunking proposals concern tile tables and signal masses. Preserve the exact power equality and all prime-divisor exclusions; count the generic bridge if added. |
+| Derive selector cutoff by negating strict rank comparison; normalize tail conditional | Retain as a small exact patch | m's physical-position injectivity packaging does not change cutoff clients. Incoming affine signal statistics concern count/mass computation. No earlier target `tail_position_iff` or `selectorTail_succ` proposal found. This is ordinary logical duality applied at two additional declarations, not new order theory. |
+| Bounded complement cancellation in horizontal/temporal color equality | Retain as an optional four-line application | Earlier binaryWord_congr is assumed available; it yields the word identity before cancellation. No `tsub_right_inj` proposal or these cancellation clients found. k's notes mention generic natural-difference/order-embedding exploration outside cyclic geometry, so claim only the exact local deletion, not a new subtraction API. |
+
+## Closing refresh
+
+A separate check through `663fb267f6142ca4c0ea5bcd2d4f607f9a4b0eda` includes one additional incoming packet, bringing coverage to 28 packets (23 placed and five incoming). All four retained deltas survive the comparison. See `freshness/FRESHNESS_SUPPLEMENT.md` and `freshness/refresh_corpus_manifest.json`; initial source measurements and hashes remain tied to `89226e3921bce3e8949fadd12d3efb6914c7630c`.

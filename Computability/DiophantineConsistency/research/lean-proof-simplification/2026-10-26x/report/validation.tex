@@ -1,0 +1,29 @@
+All four proposals were checked with Lean \code{4.32.0}. The nine external package revisions match the repository's \code{lake-manifest.json}; mathlib is pinned to \code{81a5d257c8e410db227a6665ed08f64fea08e997}.
+
+For proposals A and B, the integration closure has \textbf{73 successful module records}. Forty-seven prerequisites were reused from this task's fresh compilations after checking source, direct-dependency, and output SHA-256 hashes; 26 additional compilations completed successfully. No repository object from an older task was used. This closure includes all three modified modules and the unchanged downstream \code{ObjectNatPairing}, \code{ObjectPairingSyntax}, \code{ObjectPairingGraph}, \code{ObjectPairingSurjective}, and \code{ObjectPairingInjective}.
+
+For proposals C and D, \textbf{34 repository modules} were freshly compiled, including four original focused check modules. The candidate build then recompiled nine modules after source/dependency hash invalidation. All four modified production modules and all four existing focused checks passed. Both patches also passed a combined \code{git apply --check} against the pinned source bytes.
+
+The before/after axiom reports are identical for the seven audited existing endpoints listed below. Here the standard three are \code{propext}, \code{Classical.choice}, and \code{Quot.sound}; the new exact-witness helper uses exactly these. No audited endpoint contains \code{sorryAx}.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.62\linewidth}p{0.30\linewidth}}
+\toprule
+Audited endpoint & Axioms, unchanged unless new\\
+\midrule
+\code{AnnotatedClosure.formCode_ge} & Standard three\\
+\code{ObjectNaturalDiscrete.mul_self_eq_self_iff} & Same three\\
+\code{WangTiles942HelicalQuotient.row_zero_of_helix} & \code{propext}, \code{Quot.sound}\\
+\code{WangTiles942SeamColumns.seam_iff_zero} & Standard three\\
+\code{WangTiles942CycleBand.marked_word_of_halt} & Standard three\\
+\code{WangTiles942BandMarker.canonicalWord_properties} & Standard three\\
+\code{WangTiles942BandMarker.canonical_unique_word_of_halt} & Standard three\\
+\code{WangTiles942CycleBand.band_quotient_properties} (new) & Standard three\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Standalone kernels check constructor minima, canonical-order strictness/idempotence, and both period-one arguments independently of the large repository import closures. Those smaller checks complement the complete-module checks; they are not used as substitutes for checking the actual source bindings.
+
+The supplied receipts preserve exact commands, source hashes, dependency hashes, successful return codes, and axiom output. Paths in these historical receipts describe the validation environment; \code{scripts/replay.py} is the portable entry point for a local checkout. The packet includes the final successful receipts and preserves their original paths for provenance.

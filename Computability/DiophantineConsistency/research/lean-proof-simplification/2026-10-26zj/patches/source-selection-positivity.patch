@@ -1,0 +1,33 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCarryConstruction2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCarryConstruction2011.lean
+@@ -94,15 +94,25 @@
+   letI : NeZero (N*2011) := ⟨Nat.ne_of_gt CurrentWordConstruction2011.wordLength_pos⟩
+   exact exists_normalization _ (CurrentWordConstruction2011.word_boolean a dummy marker hd hm) W
+ 
++/-- Any assembled tile word is positive: cell zero already has its selected
++physical digit. Marking, matching and Boolean control bounds are unnecessary. -/
++theorem assembled_source_pos_unmarked {N : ℕ} [NeZero N]
++    (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ) :
++    0 < word radix (CurrentWordConstruction2011.word a dummy marker) := by
++  letI : NeZero (N*2011) := ⟨Nat.ne_of_gt CurrentWordConstruction2011.wordLength_pos⟩
++  apply word_pos_of_digit _ (CurrentWordConstruction2011.base 0 +
++    (WangTiles942.physicalPosition (a 0) : ZMod (N*2011)))
++  change 0 < CurrentCellLabels2011.selectorValue
++    (CurrentWordConstruction2011.word a dummy marker) (CurrentWordConstruction2011.base 0) (a 0)
++  rw [(CurrentWordConstruction2011.word_selected a dummy marker 0).1]
++  decide
++
+ /-- A marked tile word already makes the assembled source positive. This
+ does not assert positivity of the normalized transport word. -/
+ theorem assembled_source_pos {N : ℕ} [NeZero N]
+     (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ) (s : ℤ)
+     (ha : WangTiles942Periodic.MarkedWord N s a) :
+-    0 < word radix (CurrentWordConstruction2011.word a dummy marker) := by
+-  letI : NeZero (N*2011) := ⟨Nat.ne_of_gt CurrentWordConstruction2011.wordLength_pos⟩
+-  apply word_pos_of_digit _ 0
+-  rw [CurrentWordConstruction2011.word_origin_of_marked a dummy marker s ha]
+-  decide
++    0 < word radix (CurrentWordConstruction2011.word a dummy marker) :=
++  assembled_source_pos_unmarked a dummy marker
+ 
+ end DiophantineConsistency.CurrentCarryConstruction2011

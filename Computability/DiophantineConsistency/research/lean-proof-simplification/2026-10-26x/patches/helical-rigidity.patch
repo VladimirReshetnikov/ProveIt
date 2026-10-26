@@ -1,0 +1,52 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalQuotient.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalQuotient.lean
+@@ -22,22 +22,11 @@
+ theorem row_zero_of_helix {α : Type*} (T : ℤ → ℤ → α) (w : ℤ)
+     (hhelix : ∀ x t, T (x+w) (t-1) = T x t) (x t : ℤ) :
+     T x t = T (x+w*t) 0 := by
+-  induction t using Int.induction_on generalizing x with
+-  | zero => simp
+-  | succ n ih =>
+-      have hh := hhelix x ((n : ℤ)+1)
+-      rw [add_sub_cancel_right] at hh
+-      calc
+-        T x ((n : ℤ)+1) = T (x+w) n := hh.symm
+-        _ = T ((x+w)+w*n) 0 := ih _
+-        _ = T (x+w*((n : ℤ)+1)) 0 := by congr 1; ring
+-  | pred n ih =>
+-      have hh := hhelix (x-w) (-(n : ℤ))
+-      rw [sub_add_cancel] at hh
+-      calc
+-        T x (-(n : ℤ)-1) = T (x-w) (-(n : ℤ)) := hh
+-        _ = T ((x-w)+w*(-(n : ℤ))) 0 := ih _
+-        _ = T (x+w*(-(n : ℤ)-1)) 0 := by congr 1; ring
++  have hp : Function.Periodic (fun s : ℤ => T (x+w*s) (t-s)) 1 := by
++    intro s
++    simpa only [mul_add, mul_one, ← add_assoc, sub_add_eq_sub_sub] using
++      hhelix (x+w*s) (t-s)
++  simpa using (hp.int_mul_eq t).symm
+ 
+ /-- A generic integer periodic function agrees with its remainder values. -/
+ theorem periodic_emod {α : Type*} {f : ℤ → α} {n : ℤ}
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942SeamColumns.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942SeamColumns.lean
+@@ -38,15 +38,11 @@
+   rw [hTime x t]
+   exact (north_437_iff_south_437 (hAllowed x t)).symm
+ 
+-/-- Integer induction covers both future and past; there is no period premise. -/
++/-- The step equivalence gives period one, hence constant status on integer time. -/
+ theorem seam_iff_zero (x t : ℤ) : SeamAt T x t ↔ SeamAt T x 0 := by
+-  induction t using Int.induction_on with
+-  | zero => rfl
+-  | succ n ih => exact (seam_successor_iff hAllowed hTime x (n : ℤ)).trans ih
+-  | pred n ih =>
+-      have hs := seam_successor_iff hAllowed hTime x (-(n : ℤ)-1)
+-      simp only [sub_add_cancel] at hs
+-      exact hs.symm.trans ih
++  have hp : Function.Periodic (SeamAt T x) 1 :=
++    fun u => propext (seam_successor_iff hAllowed hTime x u)
++  simpa only [Int.cast_id, mul_one, eq_iff_iff] using hp.int_mul_eq t
+ 
+ theorem seam_iff_time (x t u : ℤ) : SeamAt T x t ↔ SeamAt T x u :=
+   (seam_iff_zero hAllowed hTime x t).trans (seam_iff_zero hAllowed hTime x u).symm

@@ -1,0 +1,33 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectPolynomial.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectPolynomial.lean
+@@ -52,24 +52,12 @@
+ /-- Exact semantics in every ZF model, including its nonstandard natural tuples. -/
+ theorem sat_noZeroForm_iff (H : ZFAxioms mem) (e : Expr (Fin n)) :
+     (∀ ee : Nat → V, Sat mem ee (noZeroForm e)) ↔ NoZeroRel H e := by
+-  have hs := seal_valid (mem := mem)
+-    (fImp (inputsNaturalForm (Fin.val : Fin n → Nat)) (fImp (equationForm e Fin.val) fBot))
+-  constructor
+-  · intro h v hv heq
+-    let ee : Nat → V := fun j => if hj : j < n then v ⟨j, hj⟩ else vempty H
+-    have hee : ee ∘ Fin.val = v := by
+-      funext i
+-      simp only [Function.comp_apply, ee, dif_pos i.isLt]
+-    have hguard : Sat mem ee (inputsNaturalForm (Fin.val : Fin n → Nat)) :=
+-      (inputsNaturalForm_spec H _ ee).mpr (by simpa only [← hee, Function.comp_apply] using hv)
+-    have heq' : Sat mem ee (equationForm e Fin.val) :=
+-      (equationForm_spec H e _ ee).mpr (by simpa only [hee] using heq)
+-    exact hs.mp h ee hguard heq'
+-  · intro h
+-    apply hs.mpr
+-    intro ee hguard heq
+-    exact h (ee ∘ Fin.val) ((inputsNaturalForm_spec H _ ee).mp hguard)
+-      ((equationForm_spec H e _ ee).mp heq)
++  refine (seal_valid (mem := mem) _).trans ?_
++  change (∀ ee : Nat → V,
++    Sat mem ee (inputsNaturalForm (Fin.val : Fin n → Nat)) →
++      ¬ Sat mem ee (equationForm e Fin.val)) ↔ NoZeroRel H e
++  simp only [inputsNaturalForm_spec H, equationForm_spec H]
++  exact (Fin.val_injective.surjective_comp_right' (fun _ => vempty H)).forall.symm
+ 
+ /-- Numeral tuples satisfy the object-language equation exactly when the
+ supplied integer expression vanishes on the corresponding external naturals. -/

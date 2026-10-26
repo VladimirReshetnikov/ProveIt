@@ -1,0 +1,34 @@
+\section{H1 Excluded comparison of signed period closure}
+
+\textbf{Comparison only, not a new proposal.} The late packet already covers this mechanism. The following original candidate is preserved to make the overlap and earlier source checks auditable; do not apply it as an additional simplification on top of that packet.
+
+\refs\ \src{WangTiles942HelicalQuotient.lean}{22}{40}; supporting consumers \src{WangTiles942HelicalQuotient.lean}{53}{59} and \src{WangTiles942HelicalQuotient.lean}{87}{95}. The reused API is \mlsrc{Algebra/Ring/Periodic.lean}{155}{158}{\code{Function.Periodic.zsmul}}, at the exact Mathlib pin in \code{lake-manifest.json}.
+
+The current \code{row_zero_of_helix} proof performs integer induction on time, with separate successor and predecessor transport and a ring normalization in each branch. Its hypothesis already states periodicity of the uncurried plane under the translation vector $(w,-1)$. Mathlib closes such a period under every integer multiple.
+
+Put $F(x,t)=T\,x\,t$. The given law says $F(p+(w,-1))=F(p)$. Taking the multiple $t$ at $p=(x,t)$ gives
+\[
+ F\big((x,t)+t\,(w,-1)\big)=F(x,t),\qquad
+ (x,t)+t\,(w,-1)=(x+wt,0).
+\]
+Symmetry is exactly the desired conclusion. Negative time and negative or zero width need no special branch because the library theorem is for integer multiples in an additive group.
+
+\textbf{Excluded replacement variant.}
+\begin{Lean}
+theorem row_zero_of_helix {α : Type*} (T : ℤ → ℤ → α) (w : ℤ)
+    (hhelix : ∀ x t, T (x+w) (t-1) = T x t) (x t : ℤ) :
+    T x t = T (x+w*t) 0 := by
+  have hp : Function.Periodic (fun p : ℤ × ℤ => T p.1 p.2) (w, -1) := by
+    rintro ⟨a,b⟩
+    change T (a+w) (b+(-1)) = T a b
+    simpa only [sub_eq_add_neg] using hhelix a b
+  have h := hp.zsmul t (x,t)
+  change T (x+t • w) (t+t • (-1 : ℤ)) = T x t at h
+  simpa only [zsmul_eq_mul, mul_neg, mul_one, add_neg_cancel, mul_comm] using h.symm
+\end{Lean}
+
+\textbf{Exact increment.} The old proof body has 16 physical lines and the replacement seven. The complete file goes from 147 to 138 lines. No import, definition, or theorem is added; the old public signature is unchanged. The dependent remainder and quotient-binding results are not rewritten or counted again.
+
+\textbf{Why it is excluded.} Late proposal C removes the same induction using period one on the orbit $s\mapsto T(x+ws,t-s)$. The product-period variant above is a different proof term, not a distinct simplification. Its nine-line saving is excluded from the selected total.
+
+\risk\ The two \code{change} steps depend on product addition and scalar multiplication reducing as expected; the final restricted \code{simpa} must normalize the integer endpoint. Those library names and statements were inspected in pinned source, but Lean elaboration remains untested. If explicit annotations are needed, their lines must be charged in revised metrics. \status

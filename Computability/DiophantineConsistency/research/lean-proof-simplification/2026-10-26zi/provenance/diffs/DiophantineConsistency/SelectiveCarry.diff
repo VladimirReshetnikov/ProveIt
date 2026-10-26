@@ -1,0 +1,46 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SelectiveCarry.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SelectiveCarry.lean
+@@ -87,18 +87,13 @@
+   simp_rw [add_mul]
+   rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← eval_eq_sum_range' hd]
+   have hpow : (2 : ℤ) ^ t = 2 * 2 ^ (t - 1) := by
+-    rw [← pow_succ']
+-    congr 1
+-    omega
++    rw [← pow_succ', Nat.sub_add_cancel ht]
+   rw [hpow]
+   ring
+ 
+ theorem shiftedValue_lt {t n : ℕ} (ht : 1 ≤ t) (h : ℕ → ℤ)
+     (hb : ∀ i < n, |h i| < 2 ^ (t - 1)) : shiftedValue t n h < (2 ^ t) ^ n := by
+-  have hbase : 1 < 2 ^ t := by
+-    have hp := Nat.pow_le_pow_right (by decide : 1 ≤ 2) ht
+-    norm_num at hp
+-    omega
++  have hbase : 1 < 2 ^ t := Nat.one_lt_two_pow (by omega)
+   rw [shiftedValue]
+   have hd : ∀ x ∈ (List.range n).map (fun i => (h i + 2 ^ (t - 1)).toNat), x < 2 ^ t := by
+     intro x hx
+@@ -109,9 +104,7 @@
+       linarith
+     rw [Int.toNat_lt hpos]
+     have hpow : (2 : ℤ) ^ t = 2 * 2 ^ (t - 1) := by
+-      rw [← pow_succ']
+-      congr 1
+-      omega
++      rw [← pow_succ', Nat.sub_add_cancel ht]
+     push_cast
+     have := (abs_lt.mp (hb i hi')).2
+     linarith
+@@ -119,10 +112,7 @@
+ 
+ theorem selectedMask_lt {t n : ℕ} (ht : 1 ≤ t) (positions : Finset ℕ) :
+     selectedMask t n positions < (2 ^ t) ^ n := by
+-  have hbase : 1 < 2 ^ t := by
+-    have hp := Nat.pow_le_pow_right (by decide : 1 ≤ 2) ht
+-    norm_num at hp
+-    omega
++  have hbase : 1 < 2 ^ t := Nat.one_lt_two_pow (by omega)
+   rw [selectedMask]
+   apply (Nat.ofDigits_lt_base_pow_length hbase ?_).trans_le (by simp)
+   intro x hx

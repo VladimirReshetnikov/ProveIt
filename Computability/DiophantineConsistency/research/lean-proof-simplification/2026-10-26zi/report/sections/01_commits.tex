@@ -1,0 +1,30 @@
+\section{Recent source changes}
+
+The reviewed head is \ghcommit{e652d21c413de59e4821f6e8e9b6a3a077bf5bfe}{e652d21c413d}, recorded at 17:28:55 UTC on 26 October 2026. The comparison pin is \ghcommit{22e020937caa81d0cb72a4f63071d6c0bcc1eba9}{22e020937caa}. GitHub reports 33 commits ahead and none behind. Subtracting the previous pin's ancestors from the returned commit DAG independently yields the same 33. Date-order truncation would miss two newly incorporated proposal commits whose timestamps precede the earlier pin.
+
+Those commits comprise 12 merges, eight proposal intakes, four adopted refactors, five new-construction commits, and four verification or review records. An intake or archived check is not maintained-source adoption. Upstream records of Lean checks are historical evidence; this review did not rerun them.
+
+\subsection{Adoptions already present and excluded from new credit}
+\begin{tabularx}{\linewidth}{@{}L{1.05in}Y R{0.8in}@{}}
+\toprule
+Commit & Observed refactor & Net lines removed \\
+\midrule
+\ghcommit{79bc166a515bd0f07cac826ad1a1bc1e486c88d2}{79bc166a51} & Checked-label generated Steps & 1,646 \\
+\ghcommit{32b108f2146dc7d6ce1e0c55af9a541a0204a190}{32b108f214} & Shared nine-coordinate transport & 26 \\
+\ghcommit{2effe6f2916bbbe6308b2b2ea674369a490901d9}{2effe6f291} & Radix, convolution, selector and carry cleanup & 22 \\
+\ghcommit{8ca645582907208196b539bf72a8022db4975b67}{8ca6455829} & Ordinary and doubled Pell ratio estimate & 77 \\
+\midrule
+ & \textbf{Net including helper costs} & \textbf{1,771} \\
+\bottomrule
+\end{tabularx}
+
+The nine modified proof modules remove 1,816 physical lines. The new coordinate helper costs 39, leaving 1,777 within the active subtree. The lower-level \code{PellRatio90.lean} dependency grows by six lines, giving the 1,771 net total. The generated Steps figure counts Lean source, not the Python generator changes. None is a compilation-speed measurement.
+
+\subsection{New construction expands the review surface}
+Complete old and current active Lean trees contain 608 and 637 files respectively: 29 additions, ten modifications, and no deletions. Additions comprise 14 construction modules, their 14 check modules, and the coordinate helper. New construction/check modules add 2,836 lines, and the umbrella adds 14 imports. Thus the complete active subtree grows by 1,073 lines despite the refactors.
+
+The relevant fresh modules construct helical quotients and extensions, actual halted trace cycles, finite computation bands, marked canonical words, and soundness/completeness bridges. All five candidate target files are additions in this delta. Their newness helps locate untouched work but does not by itself establish novelty; the next sections impose the stronger semantic baseline.
+
+\textbf{Inventory caveat.} The compare response contains exactly 300 repository file records and is capped. Active-source coverage instead comes from complete, untruncated Git trees. All 39 active changes appear in the capped list without discrepancy; no completeness claim is made for its other repository paths.
+
+\textbf{Replay evidence.} \artifact{provenance/RECENT_COMMITS.md} provides the full commit list; \artifact{active_tree_delta.json}, \artifact{active_delta_crosscheck.json}, and \artifact{recent_adoption_metrics.json} in that directory record the authoritative accounting.

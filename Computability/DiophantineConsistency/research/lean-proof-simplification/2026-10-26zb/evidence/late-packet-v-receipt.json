@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "kind": "supplemental exclusion audit; original 21-packet audit unchanged",
+  "tested_source_commit": "29936089835c0c55cca81edc86b4fb0c70ce34d5",
+  "freshness_commit": "45ac0dfc366f798d4686070a89d66e8dafdb6879",
+  "packet_path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26v",
+  "packet_reviewed_source_commit": "22e020937caa81d0cb72a4f63071d6c0bcc1eba9",
+  "packet_arrival_commit_prefix": "74c3273be4",
+  "git_subtree_file_count": 109,
+  "placement_claim": {
+    "original_archive_members": 985,
+    "placed_archive_members": 107,
+    "omitted_identical_members": 878
+  },
+  "selectively_read_file_count": 29,
+  "selectively_read_bytes": 92189,
+  "scope": "All substantive report sections, candidate mechanisms, actual standalone candidate Lean, local reviews, independent/final review notes, and placed patches; full packet binaries and duplicate omitted baselines not materialized.",
+  "packet_lean_validation": "All new candidates labelled uncompiled in the packet; this audit did not compile or run them.",
+  "decision": "retain all six directions; no overlap found with packet v",
+  "candidate_decisions": [
+    {
+      "id": "A",
+      "target": "WangTiles942HelicalQuotient.row_zero_of_helix",
+      "decision": "retain",
+      "closest_v": [
+        "R1",
+        "R2"
+      ],
+      "reason": "The retained proof makes a diagonal orbit period one and consumes the integer-multiple periodicity API. R1 retains guarded Int.induction_on for an open interval; R2 derives translated horizontal edge fields from tile constructors. Neither states a helix-orbit periodicity adapter or removes the signed helix induction by periodicity."
+    },
+    {
+      "id": "B",
+      "target": "RatioReparameterization.combined_dvd_iff",
+      "decision": "retain",
+      "closest_v": [
+        "M1"
+      ],
+      "reason": "Coprime extraction and cancellation for J*F dividing Q*F+J*T is a divisibility theorem. M1 reflects equality through the finite machine-state encoder. The shared word cancellation does not identify the obligation or adapter."
+    },
+    {
+      "id": "C",
+      "target": "PolynomialRangeBounds.geometric_identity; geometric_lt_two_top",
+      "decision": "retain",
+      "closest_v": [
+        "E1",
+        "M3"
+      ],
+      "reason": "The retained client uses the geometric-series multiplication identity and derives its inequality without a second induction. Standard-library reuse in E1 and M3 advertises specific finite-state and absolute-value clients, not this finite-sum algebra."
+    },
+    {
+      "id": "D",
+      "target": "MarginSeparation.coordinate_gt_of_margin_pos",
+      "decision": "retain",
+      "closest_v": [
+        "M3"
+      ],
+      "reason": "The retained argument derives an open interval from a positive quadratic margin and a square comparison. M3 uses le_abs' to reflect an exterior condition into a disjunction for a machine trace. It provides no square-window interval lemma or margin client."
+    },
+    {
+      "id": "E",
+      "target": "SparseBorrowCarry signed finite-prefix divmod interface",
+      "decision": "retain",
+      "closest_v": [],
+      "reason": "The retained optional interface identifies final borrow with Euclidean quotient of the signed prefix and normalized word with remainder, including negative prefixes. Packet v contains no borrow, finite signed prefix, quotient/remainder, or radix-normalization proposal."
+    },
+    {
+      "id": "F",
+      "target": "NativeRankVariation fixed-parameter comparison through C+q*F",
+      "decision": "retain",
+      "closest_v": [],
+      "reason": "The retained optional interface factors actual rank order/equality through C+q*F at fixed ports, q and J, and q>1. Packet v concerns machine colors and row construction, and contains no scalar rank comparison or rank-potential theorem."
+    }
+  ],
+  "additional_notes_only_exclusion": "machine/MACHINE_REVIEW.md:81-83 direct derivation of step_head_ne from step_eq and moved_head_ne",
+  "reviewed_files": [
+    {
+      "path": "PLACEMENT.md",
+      "bytes": 813,
+      "sha256": "b5b9d94f2751c743345efb59e0a2c39fd05ddec121a297d4b83e3758b88b1e09",
+      "git_blob_sha1": "2549d31b3209187336c7112873263eb8050f9bbf"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4003,
+      "sha256": "e8fc5788c2f3c093853c6b37e981980886158cb0fefe0ff0cf21beb09bf5cae0",
+      "git_blob_sha1": "8cabadada23fdcd0719908aa16f237d243bb0a82"
+    },
+    {
+      "path": "baseline_audit/NOVELTY_DECISIONS.md",
+      "bytes": 6427,
+      "sha256": "67e7766c9d0c44948874aa5bf7d0ae786382237402b1eaebf790bf6e2692a1d2",
+      "git_blob_sha1": "527069d229425de6536f53fe11403844c699688a"
+    },
+    {
+      "path": "encoding/ENCODING_REVIEW.md",
+      "bytes": 3985,
+      "sha256": "c0a47b2c78b1a9e11eeeb374201a3558dfe36ef7373117dae8148eb8b65353a6",
+      "git_blob_sha1": "3ff3002109f9fcdf9ee79660849425095bc77166"
+    },
+    {
+      "path": "encoding/StateNumberCandidate.lean",
+      "bytes": 1202,
+      "sha256": "bae0c2cf5765a804a7842e7477eadb01f11330f4d212e3e6ec2e6b7ff8d9f07b",
+      "git_blob_sha1": "8f57d1054193bfe9a353dba4b40dd768addcced9"
+    },
+    {
+      "path": "encoding/StateNumber.patch",
+      "bytes": 1219,
+      "sha256": "14eba30044428729b7d30d3a7d488b8f215d13a68e13f0d20eb3a2df492dce85",
+      "git_blob_sha1": "d6638dd07498e8be66eaddeb066c589352cb5dcf"
+    },
+    {
+      "path": "encoding/WangMachineEncodingCandidate.lean",
+      "bytes": 6081,
+      "sha256": "f80a4df84fe60cfb42635326fd718f0a94081bb5312d80c5058e681ddbae9191",
+      "git_blob_sha1": "5880fcd46a9760bebde9d2a2275b64b41976497d"
+    },
+    {
+      "path": "machine/MACHINE_REVIEW.md",
+      "bytes": 8076,
+      "sha256": "724ae29fefb62028a2e299e2f2c4e508ff4b1cd9c199dcb66933a7ae3f71b5ad",
+      "git_blob_sha1": "b1e7bb4251dea7ab1eb70a09d670222b2fc26622"
+    },
+    {
+      "path": "machine/MachineCandidates.lean",
+      "bytes": 3133,
+      "sha256": "3ee77bba54b14452666b5e8f217e3d65754658fca31629fb71430d299565faf4",
+      "git_blob_sha1": "aa6cd27cc7b4e386f285187cabd9e35afff02ecf"
+    },
+    {
+      "path": "machine/M1-act_next_none_iff.patch",
+      "bytes": 776,
+      "sha256": "0ba9504aa37832509f295c1432bc6cdc1f7e259e5de9064f9b2eed94d09e4077",
+      "git_blob_sha1": "9932d1fd877a6d0cdce4faa955838ee213e44ce3"
+    },
+    {
+      "path": "machine/M2-color_action.patch",
+      "bytes": 1006,
+      "sha256": "7e5f2ef5ff7f217ea7a3fd6d3383c4698f2807561529a4d6568c3d5a774b1a8e",
+      "git_blob_sha1": "4fa2ebf320015d35c3dd138ed0226fa6f64346f6"
+    },
+    {
+      "path": "rows/README.md",
+      "bytes": 6363,
+      "sha256": "e287c9b131133e44d531cee346a387be2fa0ca7e0c0e50a5fd9d03087b4375d8",
+      "git_blob_sha1": "fec0519819bc931eccf3670389d8ef582248d1b0"
+    },
+    {
+      "path": "rows/IntervalPropagationCandidate.lean",
+      "bytes": 1500,
+      "sha256": "d85d6d9ada785b4ddcc251180aec974694ff2f38dbba7aaf24e6dfd4156e1c9d",
+      "git_blob_sha1": "bcc05afdba4e0a4743d2889d9b5bd9b15bbedb89"
+    },
+    {
+      "path": "rows/BondPulseCandidate.lean",
+      "bytes": 2594,
+      "sha256": "c7c619650868899f7b4196e87a94593c0dfcb6dd07aac7640e8efafc25cf5e34",
+      "git_blob_sha1": "ba21d634e9b570ed592010360ca87f3a69f7f9cd"
+    },
+    {
+      "path": "rows/WangTiles942ResetRows.lean.patch",
+      "bytes": 2326,
+      "sha256": "50505952e43a7af8f482f027ab6115a45095d615ac65ceb56bd62924b5e3725d",
+      "git_blob_sha1": "04feba91accb108b7587ac2205ffd196dcca9dff"
+    },
+    {
+      "path": "rows/WangTiles942StepConstruction.lean.patch",
+      "bytes": 3628,
+      "sha256": "c2c990e561cbadb5724b4ea0d6a52c715a50eb07a0f74d4bfd75baccea1637cb",
+      "git_blob_sha1": "f8c0287c3c57db81d42f0437f0de4be7b35163da"
+    },
+    {
+      "path": "validation/INDEPENDENT_REVIEW.md",
+      "bytes": 7171,
+      "sha256": "d3bc836f608452c050e7242ea1770c78f457d86ec8490f45b2c6669dec47bc75",
+      "git_blob_sha1": "6569db590183af88bc53e0fa0b9f1e48b10b354d"
+    },
+    {
+      "path": "validation/FINAL_REPORT_REVIEW.md",
+      "bytes": 1261,
+      "sha256": "30f619ca9014e51c7fba4963b55170a86c99585c76db7324b5f7d95c724db25f",
+      "git_blob_sha1": "183c6b4f3940ed18358778b21abbc2b29d13184e"
+    },
+    {
+      "path": "report/proof_simplification_report.tex",
+      "bytes": 433,
+      "sha256": "f75cdfc280ceb8285ab6031f688e7074cb38b7cc965fbd9243e0993dad0b5852",
+      "git_blob_sha1": "c3f4710215407eeb1ab4ccfe432054548bb2fdea"
+    },
+    {
+      "path": "report/sections/00_results.tex",
+      "bytes": 3003,
+      "sha256": "fdb2ea06bcf357a950dc6a1efb035efdd33febf316270d614c84fabbbf58618f",
+      "git_blob_sha1": "5759a0e8dfc72d06f52e548c30bb64d334263e28"
+    },
+    {
+      "path": "report/sections/01_commits.tex",
+      "bytes": 3742,
+      "sha256": "3ab50d421cd74471eecbd2ab0137f3acd511e5b1167d1ad28e05c9ba8268a51c",
+      "git_blob_sha1": "42d6eb6cd5fb700e623ba1d68e6025f46db7e1c3"
+    },
+    {
+      "path": "report/sections/02_baseline.tex",
+      "bytes": 2953,
+      "sha256": "5c42bd751addc45c7aae04c357dd7384f050002d043ccb2d9214c4dd0ca99485",
+      "git_blob_sha1": "fc01a221d2eb53b7691cf0069435dbb9aae3179b"
+    },
+    {
+      "path": "report/sections/03_novelty.tex",
+      "bytes": 3057,
+      "sha256": "bb7dd8945965b3f036d0b8a6d90e2861f174d98ae5191610c195d5f47761a4f3",
+      "git_blob_sha1": "cbaf2305e502ce370787defb5bb5b57e0d5f338b"
+    },
+    {
+      "path": "report/sections/04_encoding_action.tex",
+      "bytes": 2828,
+      "sha256": "85e53244fb5e9aa5abaf4b3cd945cdd8b893558f58ce028e3bd5126321197585",
+      "git_blob_sha1": "a4637a4a76d7b50cd6930f90dc9737f9a0a99ae6"
+    },
+    {
+      "path": "report/sections/05_machine.tex",
+      "bytes": 2838,
+      "sha256": "ff79cb3725a9143ed7d639cc517e4c9df12b5cf3c449a745a76a025ad0fbbbf2",
+      "git_blob_sha1": "f1916ad40fa785f4261e07faabbf01245ad8604a"
+    },
+    {
+      "path": "report/sections/06_interval.tex",
+      "bytes": 2662,
+      "sha256": "904646c4074c982d9a1e136c39c7ff2625c05924a0fce46820e547d2726e90db",
+      "git_blob_sha1": "1b22756f7481d5a4e3e84cf10c45ebe89f1b4ed6"
+    },
+    {
+      "path": "report/sections/07_pulse.tex",
+      "bytes": 2925,
+      "sha256": "6e0ae45e09388b762db646d7f9167c1ffbae7689d3197200fd5953cfd83cba89",
+      "git_blob_sha1": "9e7642db93abbc443718569453b277a77ffbf462"
+    },
+    {
+      "path": "report/sections/08_validation.tex",
+      "bytes": 3192,
+      "sha256": "5d0cc5c19c4c33089f5fcf3b9ead0d3351cd88e4dbc760162a45c8ca2a223215",
+      "git_blob_sha1": "e20b0c782da1ee90ba20143a987ac72559406836"
+    },
+    {
+      "path": "report/sections/09_artifacts_questions.tex",
+      "bytes": 2992,
+      "sha256": "8fe971880ce510339c538a14d3fe78b80f9d9cd2ac7a8e93a7234c19070a5dba",
+      "git_blob_sha1": "8f54601f227885b7f3ae8550b3a6c27960562789"
+    }
+  ],
+  "manifest_file": "late-packet-v-manifest.json",
+  "manifest_sha256": "e099c9bf3859072c18fae25489b4d469c32a37a8aa667e3411486edf64ae702c",
+  "audit_file": "late-packet-v-audit.md",
+  "audit_sha256": "5eb09e7b62cd1e666f6cdf3f8750354f2a4aeae41309f597da6bb2dbe8fb38d8",
+  "limitations": [
+    "No worldwide novelty claim.",
+    "No compiler validation of freshness commit45ac0dfc or packet-v candidates.",
+    "No full-byte SHA256 manifest for unread packet binaries; Git blob identities are recorded for every subtree entry."
+  ]
+}

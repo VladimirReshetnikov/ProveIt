@@ -1,0 +1,160 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942PhysicalOrder.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942PhysicalOrder.lean
+@@ -1,4 +1,5 @@
+ import DiophantineConsistency.WangTiles942PhysicalData
++import Mathlib.Data.Finset.Sort
+ 
+ /-! Exact binding of the checked physical-order data to the printed floor rank.
+ Only adjacent numerical inequalities are checked; all pairwise and coverage
+@@ -67,34 +68,8 @@
+ /-- A strictly increasing self-map of a finite ordinal fixes every point. -/
+ theorem strictMono_fin_eq_self {n : ℕ} (f : Fin n → Fin n) (hf : StrictMono f)
+     (i : Fin n) : f i = i := by
+-  have hs := Finite.surjective_of_injective hf.injective
+-  have fixed : ∀ k, ∀ hk : k<n, (f ⟨k,hk⟩).val=k := by
+-    intro k
+-    induction k using Nat.strong_induction_on with
+-    | h k ih =>
+-      intro hk
+-      obtain ⟨j,hj⟩ := hs ⟨k,hk⟩
+-      by_cases hlt : j.val<k
+-      · have hjfix := ih j.val hlt j.isLt
+-        have hjval := congrArg Fin.val hj
+-        change (f j).val=j.val at hjfix
+-        change (f j).val=k at hjval
+-        omega
+-      · by_cases he : j.val=k
+-        · have he' : j=⟨k,hk⟩ := Fin.ext he
+-          simpa only [he'] using congrArg Fin.val hj
+-        · have hl : (⟨k,hk⟩ : Fin n)<j := by
+-            change k<j.val
+-            omega
+-          have hm := hf hl
+-          have hv : (f ⟨k,hk⟩).val<k := by
+-            rw [hj] at hm
+-            exact hm
+-          have hh := ih (f ⟨k,hk⟩).val hv (f ⟨k,hk⟩).isLt
+-          have he' : f (f ⟨k,hk⟩)=f ⟨k,hk⟩ := Fin.ext hh
+-          have hc := congrArg Fin.val (hf.injective he')
+-          omega
+-  exact Fin.ext (fixed i.val i.isLt)
++  exact DFunLike.congr_fun
++    (OrderHom.eq_id_of_injective (⟨f, hf.monotone⟩ : Fin n →o Fin n) hf.injective) i
+ 
+ def rankMap (j : Fin 941) : Fin 941 :=
+   ⟨strictRank nonStartWeight (nonStartIndex j), strictRank_lt_card _ _⟩
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerIntervalSums.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerIntervalSums.lean
+@@ -25,11 +25,8 @@
+ theorem interval_injOn {T : ℕ} [NeZero T] (start : ZMod T) (a : ℕ) (ha : a ≤ T) :
+     Set.InjOn (fun j : ℕ => start+(j : ZMod T)) (Finset.range a) := by
+   intro j hj k hk he
+-  have hjT : j < T := (Finset.mem_range.mp hj).trans_le ha
+-  have hkT : k < T := (Finset.mem_range.mp hk).trans_le ha
+-  have hc : (j : ZMod T) = (k : ZMod T) := add_left_cancel he
+-  have hv := congrArg ZMod.val hc
+-  simpa only [ZMod.val_natCast,Nat.mod_eq_of_lt hjT,Nat.mod_eq_of_lt hkT] using hv
++  exact ((ZMod.natCast_eq_natCast_iff j k T).mp (add_left_cancel he)).eq_of_lt_of_lt
++    ((Finset.mem_range.mp hj).trans_le ha) ((Finset.mem_range.mp hk).trans_le ha)
+ 
+ theorem interval_card {T : ℕ} [NeZero T] (start : ZMod T) (a : ℕ) (ha : a ≤ T) :
+     (interval start a).card = a := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerAuxiliaryChoice.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerAuxiliaryChoice.lean
+@@ -34,16 +34,11 @@
+   let r : ZMod C0 := t-(e : ZMod C0)*b
+   have hr : phi r ≠ 0 := by
+     simpa only [r,map_sub,map_mul,map_natCast,nsmul_eq_mul] using hne
+-  have hc : (r.val : ZMod p) = phi r := by
+-    rw [← map_natCast phi r.val,ZMod.natCast_zmod_val]
+   have hnd : ¬ p ∣ r.val := by
+-    intro hd
+-    have hz : (r.val : ZMod p) = 0 := (CharP.cast_eq_zero_iff (ZMod p) p r.val).mpr hd
+-    exact hr (hc.symm.trans hz)
+-  have hpos : 0 < r.val := by
+-    by_contra h
+-    have hz : r.val = 0 := by omega
+-    exact hnd (hz ▸ dvd_zero p)
++    apply (ZMod.natCast_eq_zero_iff r.val p).not.mp
++    simpa only [phi, ZMod.castHom_apply, ZMod.cast_eq_val] using hr
++  have hpos : 0 < r.val :=
++    ZMod.val_pos.mpr (fun hz => hr (by rw [hz, map_zero]))
+   exact ⟨e,r.val,he,hpos,ZMod.val_lt r,ZMod.natCast_zmod_val r,
+     hp.coprime_pow_of_not_dvd hnd⟩
+ 
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerResidueLift.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerResidueLift.lean
+@@ -22,14 +22,9 @@
+     (hz : ZMod.castHom (dvd_mul_right C0 T) (ZMod C0) z = (a : ZMod C0)) :
+     ∃ u : ZMod T,
+       z = (a : ZMod (C0*T))+(C0 : ZMod (C0*T))*(u.val : ZMod (C0*T)) := by
+-  let phi : ZMod (C0*T) →+* ZMod C0 := ZMod.castHom (dvd_mul_right C0 T) (ZMod C0)
+-  have hc : phi z = (z.val : ZMod C0) := by
+-    calc
+-      phi z = phi (z.val : ZMod (C0*T)) := congrArg phi (ZMod.natCast_zmod_val z).symm
+-      _ = (z.val : ZMod C0) := map_natCast phi z.val
+   have hm : z.val%C0 = a := by
+-    have he := congrArg ZMod.val (hc.symm.trans hz)
+-    simpa only [ZMod.val_natCast,Nat.mod_eq_of_lt ha] using he
++    simpa only [ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast,
++      Nat.mod_eq_of_lt ha] using congrArg ZMod.val hz
+   have hq : z.val/C0 < T :=
+     (Nat.div_lt_iff_lt_mul (NeZero.pos C0)).mpr (by
+       simpa only [Nat.mul_comm] using ZMod.val_lt z)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticNonzero.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticNonzero.lean
+@@ -23,15 +23,12 @@
+     change z ≠ 0 ↔ ∃ w : Fin 1 → ℕ, z * z - 1 - (w 0 : ℤ) = 0
+     constructor
+     · intro hz
+-      have hs : 1 ≤ z * z := by
+-        have h : z ≤ -1 ∨ 1 ≤ z := by omega
+-        rcases h with h | h <;> nlinarith
+-      refine ⟨fun _ => (z * z - 1).toNat, ?_⟩
+-      rw [Int.toNat_of_nonneg (by omega : 0 ≤ z * z - 1)]
+-      ring
+-    · rintro ⟨w, hw⟩ hz
++      obtain ⟨n, hn⟩ := Int.eq_ofNat_of_zero_le
++        (Int.sub_nonneg.mpr (Int.add_one_le_iff.mpr (mul_self_pos.mpr hz)))
++      exact ⟨fun _ => n, sub_eq_zero.mpr hn⟩
++    · rintro ⟨w, hw⟩
++      apply mul_self_pos.mp
+       have := Int.natCast_nonneg (w 0)
+-      rw [hz] at hw
+       omega
+ 
+ end DiophantineConsistency.Rep
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCarryConstruction2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCarryConstruction2011.lean
+@@ -94,15 +94,12 @@
+   letI : NeZero (N*2011) := ⟨Nat.ne_of_gt CurrentWordConstruction2011.wordLength_pos⟩
+   exact exists_normalization _ (CurrentWordConstruction2011.word_boolean a dummy marker hd hm) W
+ 
+-/-- A marked tile word already makes the assembled source positive. This
+-does not assert positivity of the normalized transport word. -/
++/-- Every assembled tile word has a selected digit, so its source is positive.
++This does not assert positivity of the normalized transport word. -/
+ theorem assembled_source_pos {N : ℕ} [NeZero N]
+-    (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ) (s : ℤ)
+-    (ha : WangTiles942Periodic.MarkedWord N s a) :
++    (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ) :
+     0 < word radix (CurrentWordConstruction2011.word a dummy marker) := by
+-  letI : NeZero (N*2011) := ⟨Nat.ne_of_gt CurrentWordConstruction2011.wordLength_pos⟩
+-  apply word_pos_of_digit _ 0
+-  rw [CurrentWordConstruction2011.word_origin_of_marked a dummy marker s ha]
+-  decide
++  apply word_pos_of_digit _ _
++  exact (CurrentWordConstruction2011.word_selected a dummy marker 0).1.symm ▸ Nat.zero_lt_one
+ 
+ end DiophantineConsistency.CurrentCarryConstruction2011
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCarryConstruction2011Checks.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCarryConstruction2011Checks.lean
+@@ -41,7 +41,7 @@
+ example {N : ℕ} [NeZero N] (a : ZMod N → Fin 942)
+     (dummy marker : ZMod N → ℕ) (s : ℤ) (h : WangTiles942Periodic.MarkedWord N s a) :
+     0 < word radix (CurrentWordConstruction2011.word a dummy marker) :=
+-  assembled_source_pos a dummy marker s h
++  assembled_source_pos a dummy marker
+ 
+ #print axioms CurrentCarryConstruction2011.exists_normalization
+ #print axioms word_pos_of_digit

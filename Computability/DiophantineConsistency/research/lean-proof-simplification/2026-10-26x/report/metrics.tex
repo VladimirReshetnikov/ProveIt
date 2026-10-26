@@ -1,0 +1,16 @@
+\subsection{Measured source changes}
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Proposal / source files & Before & After & Reduction\\
+\midrule
+A: AnnotatedClosure & 148 & 129 & 19\\
+B: OrderedSemiring + Discrete & 103 & 90 & 13\\
+C: HelicalQuotient + SeamColumns & 253 & 238 & 15\\
+D: CycleBand + BandMarker & 291 & 287 & 4\\
+\midrule
+Total, seven complete files & 795 & 744 & 51\\
+\bottomrule
+\end{tabular}
+\end{center}
+Counts are physical lines of complete source files, including imports, statements, comments, blank lines, and newly introduced helpers. They are not proof-term-size measurements. The aggregate reduction is approximately 6.4\% on these seven files. Proposal B's strictness proof is not shorter by itself; it enables the later cancellation-based deletion. Proposal D's interface and documentation costs are included.

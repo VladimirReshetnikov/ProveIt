@@ -1,0 +1,76 @@
+import DiophantineConsistency.WangTiles942TraceCycle
+
+/-!
+# The constructed trace cycle has exactly one Start coordinate
+
+This is a property of the explicit construction. General marked-word
+soundness does not assume that its marker is unique.
+-/
+
+namespace DiophantineConsistency.WangTiles942CycleMarker
+
+open WangTiles942 WangMachineEncoding WangTiles942FinishConstruction WangTiles942TraceCycle
+
+set_option Elab.async false
+set_option maxRecDepth 10000
+
+theorem initialTile_north_start_iff (x : ℤ) : (initialTile x).north = 435 ↔ x = 0 := by
+  by_cases hn : x < 0
+  · rw [initialTile_negative x hn]
+    constructor
+    · intro h; contradiction
+    · intro h; omega
+  · by_cases h0 : x = 0
+    · subst x
+      rw [initialTile_zero]
+      decide
+    · by_cases h1 : x = 1
+      · subst x
+        rw [initialTile_one]
+        decide
+      · rw [initialTile_right x (by omega)]
+        constructor
+        · intro h; contradiction
+        · exact fun h => False.elim (h0 h)
+
+theorem initialTile_eq_start_iff (x : ℤ) : initialTile x = start ↔ x = 0 := by
+  constructor
+  · intro h
+    exact (initialTile_north_start_iff x).mp (congrArg Tile.north h)
+  · rintro rfl
+    exact initialTile_zero
+
+/-- Even an uncalibrated finish branch cannot create Start: its input
+remains an actual machine color at most433. Reset has north438. -/
+theorem cycleTile_north_start_iff {H : ℕ} (k : Fin H) (x : ℤ) :
+    (cycleTile k x).north = 435 ↔ k.val = 0 ∧ x = 0 := by
+  rw [cycleTile_north]
+  by_cases h0 : k.val = 0
+  · simp only [h0, ↓reduceIte, true_and]
+    exact initialTile_north_start_iff x
+  · simp only [h0, ↓reduceIte, false_and, iff_false]
+    by_cases hl : k.val+1 = H
+    · rw [if_pos hl]
+      decide
+    · rw [if_neg hl]
+      have hb := color_le_433 (DecimalMachine215.machine.run k.val) x
+      omega
+
+/-- The unique marker is derived for the constructed cycle, with no halt,
+height or width premise required by this local statement. -/
+theorem cycleTile_eq_start_iff {H : ℕ} (k : Fin H) (x : ℤ) :
+    cycleTile k x = start ↔ k.val = 0 ∧ x = 0 := by
+  constructor
+  · intro h
+    exact (cycleTile_north_start_iff k x).mp (congrArg Tile.north h)
+  · rintro ⟨hk,rfl⟩
+    have he : k = (⟨0,by have := k.isLt; omega⟩ : Fin H) := Fin.ext hk
+    rw [he,cycleTile_zero,initialTile_zero]
+
+end DiophantineConsistency.WangTiles942CycleMarker
+
+-- UNEXECUTED audit commands, excluded from every candidate size metric.
+#print axioms DiophantineConsistency.WangTiles942CycleMarker.initialTile_north_start_iff
+#print axioms DiophantineConsistency.WangTiles942CycleMarker.initialTile_eq_start_iff
+#print axioms DiophantineConsistency.WangTiles942CycleMarker.cycleTile_north_start_iff
+#print axioms DiophantineConsistency.WangTiles942CycleMarker.cycleTile_eq_start_iff

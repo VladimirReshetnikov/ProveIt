@@ -1,0 +1,348 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/JonesSyntax.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/JonesSyntax.lean
+@@ -43,7 +43,7 @@
+   ⟨v.R.eval a, v.N.eval a, v.b.eval a, v.g.eval a, v.G.eval a,
+     v.h.eval a, v.s.eval a, v.w.eval a, v.φ.eval a, v.i.eval a, v.j.eval a⟩
+ 
+-private theorem eval_rad {σ : Type*} (a : σ → ℤ)
++theorem eval_rad {σ : Type*} (a : σ → ℤ)
+     (v : RingVars (Expr σ)) (k : Fin 2) :
+     (fun e : Expr σ => e.eval a) (v.rad k) = Jones1982.Nine.rad (evalExprVars a v) k := by
+   fin_cases k <;>
+@@ -59,12 +59,12 @@
+       Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F, Jones1982.Nine.Vars.Gp,
+       Jones1982.Nine.Vars.H, Jones1982.Nine.Vars.I]
+ 
+-private theorem eval_wt {σ : Type*} (a : σ → ℤ)
++theorem eval_wt {σ : Type*} (a : σ → ℤ)
+     (v : RingVars (Expr σ)) (k : Fin 2) :
+     (v.wt k).eval a = Jones1982.Nine.wt (evalExprVars a v) k := by
+   simp [RingVars.wt, Jones1982.Nine.wt, Expr.eval_pow, eval_rad, Expr.eval]
+ 
+-private theorem eval_dvsr {σ : Type*} (a : σ → ℤ)
++theorem eval_dvsr {σ : Type*} (a : σ → ℤ)
+     (v : RingVars (Expr σ)) :
+     (fun e : Expr σ => e.eval a) v.dvsr = Jones1982.Nine.dvsr (evalExprVars a v) := by
+   simp [Expr.eval, RingVars.dvsr, Jones1982.Nine.dvsr, evalExprVars,
+@@ -75,7 +75,7 @@
+     Jones1982.Nine.Vars.C, Jones1982.Nine.Vars.J, Jones1982.Nine.Vars.D,
+     Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F]
+ 
+-private theorem eval_dvnd {σ : Type*} (a : σ → ℤ)
++theorem eval_dvnd {σ : Type*} (a : σ → ℤ)
+     (v : RingVars (Expr σ)) :
+     (fun e : Expr σ => e.eval a) v.dvnd = Jones1982.Nine.dvnd (evalExprVars a v) := by
+   simp [Expr.eval, RingVars.dvnd, Jones1982.Nine.dvnd, evalExprVars,
+@@ -86,7 +86,7 @@
+     Jones1982.Nine.Vars.C, Jones1982.Nine.Vars.J, Jones1982.Nine.Vars.Q,
+     Jones1982.Nine.Vars.D, Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F, Jones1982.Nine.Vars.H]
+ 
+-private theorem eval_marg {σ : Type*} (a : σ → ℤ)
++theorem eval_marg {σ : Type*} (a : σ → ℤ)
+     (v : RingVars (Expr σ)) :
+     (fun e : Expr σ => e.eval a) v.marg = Jones1982.Nine.marg (evalExprVars a v) := by
+   simp [Expr.eval, RingVars.marg, Jones1982.Nine.marg, evalExprVars,
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean
+@@ -165,56 +165,6 @@
+   simp [syntaxVars, JonesSyntax.evalExprVars, Jones1982.Nine.varsOf,
+     rankCode, Jones1982.Nine.rZ, Expr.eval_pow, Expr.eval]
+ 
+-private theorem eval_rad {σ : Type*} (a : σ → ℤ)
+-    (v : RingVars (Expr σ)) (k : Fin 2) :
+-    (v.rad k).eval a = Jones1982.Nine.rad (JonesSyntax.evalExprVars a v) k := by
+-  fin_cases k <;>
+-    simp [Expr.eval, RingVars.rad, Jones1982.Nine.rad, JonesSyntax.evalExprVars,
+-      RingVars.U, RingVars.Y, RingVars.M, RingVars.P, RingVars.K,
+-      RingVars.A, RingVars.B', RingVars.W, RingVars.C, RingVars.J,
+-      RingVars.D, RingVars.E, RingVars.F, RingVars.Gp,
+-      RingVars.H, RingVars.I,
+-      Jones1982.Nine.Vars.U, Jones1982.Nine.Vars.Y, Jones1982.Nine.Vars.M,
+-      Jones1982.Nine.Vars.P, Jones1982.Nine.Vars.K, Jones1982.Nine.Vars.A,
+-      Jones1982.Nine.Vars.B', Jones1982.Nine.Vars.W, Jones1982.Nine.Vars.C,
+-      Jones1982.Nine.Vars.J, Jones1982.Nine.Vars.D,
+-      Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F, Jones1982.Nine.Vars.Gp,
+-      Jones1982.Nine.Vars.H, Jones1982.Nine.Vars.I]
+-
+-private theorem eval_wt {σ : Type*} (a : σ → ℤ)
+-    (v : RingVars (Expr σ)) (k : Fin 2) :
+-    (v.wt k).eval a = Jones1982.Nine.wt (JonesSyntax.evalExprVars a v) k := by
+-  simp [RingVars.wt, Jones1982.Nine.wt, Expr.eval_pow, eval_rad, Expr.eval]
+-
+-private theorem eval_dvsr {σ : Type*} (a : σ → ℤ) (v : RingVars (Expr σ)) :
+-    v.dvsr.eval a = Jones1982.Nine.dvsr (JonesSyntax.evalExprVars a v) := by
+-  simp [Expr.eval, RingVars.dvsr, Jones1982.Nine.dvsr, JonesSyntax.evalExprVars,
+-    RingVars.U, RingVars.Y, RingVars.M, RingVars.A, RingVars.B', RingVars.W,
+-    RingVars.C, RingVars.J, RingVars.D, RingVars.E, RingVars.F,
+-    Jones1982.Nine.Vars.U, Jones1982.Nine.Vars.Y, Jones1982.Nine.Vars.M,
+-    Jones1982.Nine.Vars.A, Jones1982.Nine.Vars.B', Jones1982.Nine.Vars.W,
+-    Jones1982.Nine.Vars.C, Jones1982.Nine.Vars.J, Jones1982.Nine.Vars.D,
+-    Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F]
+-
+-private theorem eval_dvnd {σ : Type*} (a : σ → ℤ) (v : RingVars (Expr σ)) :
+-    v.dvnd.eval a = Jones1982.Nine.dvnd (JonesSyntax.evalExprVars a v) := by
+-  simp [Expr.eval, RingVars.dvnd, Jones1982.Nine.dvnd, JonesSyntax.evalExprVars,
+-    RingVars.U, RingVars.Y, RingVars.M, RingVars.A, RingVars.B', RingVars.W,
+-    RingVars.C, RingVars.J, RingVars.Q, RingVars.D, RingVars.E, RingVars.F, RingVars.H,
+-    Jones1982.Nine.Vars.U, Jones1982.Nine.Vars.Y, Jones1982.Nine.Vars.M,
+-    Jones1982.Nine.Vars.A, Jones1982.Nine.Vars.B', Jones1982.Nine.Vars.W,
+-    Jones1982.Nine.Vars.C, Jones1982.Nine.Vars.J, Jones1982.Nine.Vars.Q,
+-    Jones1982.Nine.Vars.D, Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F, Jones1982.Nine.Vars.H]
+-
+-private theorem eval_marg {σ : Type*} (a : σ → ℤ) (v : RingVars (Expr σ)) :
+-    v.marg.eval a = Jones1982.Nine.marg (JonesSyntax.evalExprVars a v) := by
+-  simp [Expr.eval, RingVars.marg, Jones1982.Nine.marg, JonesSyntax.evalExprVars,
+-    RingVars.U, RingVars.Y, RingVars.M, RingVars.P, RingVars.K,
+-    RingVars.B', RingVars.W, RingVars.C,
+-    Jones1982.Nine.Vars.U, Jones1982.Nine.Vars.Y, Jones1982.Nine.Vars.M,
+-    Jones1982.Nine.Vars.P, Jones1982.Nine.Vars.K, Jones1982.Nine.Vars.B',
+-    Jones1982.Nine.Vars.W, Jones1982.Nine.Vars.C]
+-
+ def withInput {ν : ℕ} (seed : Expr (Fin (ν + 1))) (z y : ℕ) : Expr (Fin 10) :=
+   let v := syntaxVars seed z y
+   RefinedPair.value (v.rad 0) (v.rad 1) (v.wt 0) (v.wt 1) (.var 9)
+@@ -227,7 +177,8 @@
+   rw [RefinedPair.value_eq]
+   simp only [withInput, RefinedPair.value, Expr.eval_add, Expr.eval_sub, Expr.eval_mul,
+     Expr.eval_pow, Expr.eval_var,
+-    eval_rad, eval_wt, eval_dvsr, eval_dvnd, eval_marg, eval_syntaxVars]
++    JonesSyntax.eval_rad, JonesSyntax.eval_wt, JonesSyntax.eval_dvsr,
++    JonesSyntax.eval_dvnd, JonesSyntax.eval_marg, eval_syntaxVars]
+   rfl
+ 
+ /-- Executable nine-unknown syntax from a supplied seed expression. -/
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenCarrierSoundness.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenCarrierSoundness.lean
+@@ -170,33 +170,29 @@
+     have hm := mul_le_mul_of_nonneg_right hS2 (sq_nonneg V)
+     norm_num at hn
+     nlinarith
+-  refine ⟨hy, ?_⟩
+-  have hsq : y ^ 2 < 4 * V ^ 2 := by
+-    by_contra h
+-    have h1 := mul_nonneg (by omega : 0 ≤ S ^ 2 - 1)
+-      (by omega : 0 ≤ y ^ 2 - 4 * V ^ 2)
+-    have h2 := mul_nonneg (by omega : 0 ≤ 3 * S ^ 2 - 4) (sq_nonneg V)
+-    nlinarith only [hn, h1, h2]
+-  by_contra h
+-  have h1 := mul_nonneg (by omega : 0 ≤ |y| - 2 * |V|)
+-    (show 0 ≤ |y| + 2 * |V| by positivity)
+-  nlinarith [sq_abs y, sq_abs V]
++  refine ⟨hy, abs_lt_of_sq_lt_sq ?_ (by positivity)⟩
++  have hnonneg := mul_nonneg (show 0 ≤ 3 * S ^ 2 - 4 by omega) (sq_nonneg V)
++  have hprod : 0 < (S ^ 2 - 1) * (4 * V ^ 2 - y ^ 2) := by
++    nlinarith only [hn, hnonneg]
++  have hlt := pos_of_mul_pos_right hprod (show 0 ≤ S ^ 2 - 1 by omega)
++  nlinarith only [hlt, sq_abs V]
++
++/-- The affine carrier step dominates the entire allowed signed-root band. -/
++theorem carrier_step_dominates {b : ℤ} (hb : 0 < b) (V : ℤ) :
++    2 * |V| + 1 < 4 * (1 + b * V ^ 2) := by
++  have h := mul_nonneg (show 0 ≤ b - 1 by omega) (sq_nonneg V)
++  nlinarith [sq_abs V, sq_nonneg (2 * |V| - 1), abs_nonneg V]
+ 
+ /-- The positive carrier m forces the recovered transport to be nonnegative. -/
+ theorem transport_nonneg {b m G V y : ℤ} (hb : 0 < b) (hm : 0 < m)
+     (hy : y = 1 + 4 * (b * (m - V ^ 2 * G) - G))
+     (hsmall : |y| < 2 * |V|) : 0 ≤ G := by
+   by_contra hG
+-  have hG : G ≤ -1 := by omega
+-  have hV : 1 ≤ |V| := by have := abs_nonneg y; omega
+-  have hVs : |V| ≤ V ^ 2 := by
+-    have hh := mul_nonneg (abs_nonneg V) (by omega : 0 ≤ |V| - 1)
+-    nlinarith [sq_abs V]
+-  have hbm : 1 ≤ b * m := mul_pos hb hm
+-  have hterm := mul_le_mul_of_nonneg_right (show 1 ≤ b from hb) (sq_nonneg V)
+-  have hprod := mul_nonneg (show 0 ≤ 1 + b * V ^ 2 by positivity)
+-    (by omega : 0 ≤ -G - 1)
+-  nlinarith [le_abs_self y]
++  have hstep := mul_le_mul_of_nonneg_left (show G ≤ -1 by omega)
++    (show 0 ≤ 4 * (1 + b * V ^ 2) by positivity)
++  have hdom := carrier_step_dominates hb V
++  have hbm := mul_pos hb hm
++  nlinarith only [hy, hsmall, le_abs_self y, hstep, hdom, hbm]
+ 
+ theorem base_dvd_transport (p : Fin 4 → ℤ) (v : Fin 13 → ℤ) (hb : 0 < p 0)
+     (hv : ∀ j, 0 < v j) (hu : auxiliary p v = 1) : b p v ∣ G p v := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenFreshSeed.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenFreshSeed.lean
+@@ -42,32 +42,20 @@
+     ∃ m : ℤ, 0 < m ∧ y = 1 + 4 * (b * (m - V ^ 2 * G) - G) := by
+   obtain ⟨g, hg⟩ := hd
+   obtain ⟨e, he⟩ := hy
+-  have hg0 : 0 < g := by
+-    have : 0 < b * g := by rwa [← hg]
+-    exact pos_of_mul_pos_right this hb.le
+   let m := e + (1 + b * V ^ 2) * g
+-  have hm : 4 * b * m = y - 1 + 4 * b * (1 + b * V ^ 2) * g := by
++  have hm : 4 * b * m = y - 1 + 4 * (1 + b * V ^ 2) * G := by
+     dsimp [m]
++    rw [hg]
+     linear_combination -he
+-  have hVs : V ≤ V ^ 2 := by nlinarith
+-  have hbVs : V ^ 2 ≤ b * V ^ 2 := by
+-    have := mul_nonneg (show 0 ≤ b - 1 by omega) (sq_nonneg V)
+-    nlinarith only [this]
+-  have hcoef : 4 * (1 + V) ≤ 4 * b * (1 + b * V ^ 2) := by
+-    have := mul_nonneg (show 0 ≤ b - 1 by omega)
+-      (show 0 ≤ 1 + b * V ^ 2 by positivity)
+-    nlinarith only [this, hVs, hbVs]
+-  have hgcoef : 4 * b * (1 + b * V ^ 2) ≤ 4 * b * (1 + b * V ^ 2) * g := by
+-    have := mul_nonneg (show 0 ≤ g - 1 by omega)
+-      (show 0 ≤ 4 * b * (1 + b * V ^ 2) by positivity)
+-    nlinarith only [this]
++  have hdom := ThirteenCarrierSoundness.carrier_step_dominates hb V
++  rw [abs_of_pos hV] at hdom
++  have hstep := mul_le_mul_of_nonneg_left (show 1 ≤ G from hG)
++    (show 0 ≤ 4 * (1 + b * V ^ 2) by positivity)
+   have hm0 : 0 < m := by
+-    have hprod : 0 < 4 * b * m := by linarith
++    have hprod : 0 < 4 * b * m := by
++      nlinarith only [hm, hsmall, hdom, hstep]
+     exact pos_of_mul_pos_right hprod (by positivity)
+-  refine ⟨m, hm0, ?_⟩
+-  dsimp [m]
+-  rw [hg]
+-  linear_combination he
++  exact ⟨m, hm0, by nlinarith only [hm]⟩
+ 
+ /-- A fresh strong seed and an auxiliary pair at any rank congruent to 3 modulo 4.
+ The returned signed ordinate is negative; it is not an independent unknown. -/
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SyntaxCoefficients.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SyntaxCoefficients.lean
+@@ -1,5 +1,6 @@
+ import DiophantineConsistency.Representation
+ import Mathlib.Data.Finsupp.Fintype
++import Mathlib.Algebra.BigOperators.Ring.List
+ 
+ /-!
+ # Executable coefficient extraction from stored arithmetic syntax
+@@ -58,36 +59,26 @@
+   | [] => 0
+   | t :: ts => MvPolynomial.monomial (exponent t.1) t.2 + interpret ts
+ 
++/-- Proof-only bridge from the recursive interpreter to the library sum API. -/
++private theorem interpret_eq_sum {n : ℕ} (terms : List (Term n)) :
++    interpret terms =
++      (terms.map fun t => MvPolynomial.monomial (exponent t.1) t.2).sum := by
++  induction terms <;> simp_all [interpret]
++
+ @[simp] theorem interpret_append {n : ℕ} (left right : List (Term n)) :
+     interpret (left ++ right) = interpret left + interpret right := by
+-  induction left with
+-  | nil => simp [interpret]
+-  | cons a as ih => simp [interpret, ih, add_assoc]
++  simp only [interpret_eq_sum, List.map_append, List.sum_append]
+ 
+ @[simp] theorem interpret_negate {n : ℕ} (terms : List (Term n)) :
+     interpret (negate terms) = -interpret terms := by
+-  induction terms with
+-  | nil => simp [negate, interpret]
+-  | cons a as ih =>
+-    simp only [negate, List.map_cons, interpret] at *
+-    rw [ih, map_neg, neg_add_rev, add_comm]
+-
+-private theorem interpret_leftMul {n : ℕ} (a : Term n) (right : List (Term n)) :
+-    interpret (right.map fun b => (a.1 + b.1, a.2 * b.2)) =
+-      MvPolynomial.monomial (exponent a.1) a.2 * interpret right := by
+-  induction right with
+-  | nil => simp [interpret]
+-  | cons b bs ih =>
+-    simp only [List.map_cons, interpret, exponent_add, mul_add, ih]
+-    rw [MvPolynomial.monomial_mul]
++  simpa [interpret_eq_sum, negate, List.map_map, Function.comp_def] using
++    (List.sum_neg (terms.map fun t => MvPolynomial.monomial (exponent t.1) t.2)).symm
+ 
+ @[simp] theorem interpret_multiply {n : ℕ} (left right : List (Term n)) :
+     interpret (multiply left right) = interpret left * interpret right := by
+-  induction left with
+-  | nil => simp [multiply, interpret]
+-  | cons a as ih =>
+-    simp only [multiply, List.flatMap_cons, interpret_append, interpret_leftMul] at *
+-    rw [ih, interpret, add_mul]
++  rw [interpret_eq_sum, multiply, List.map_flatMap, List.flatMap_def, List.sum_flatten]
++  simp only [interpret_eq_sum, List.map_map, Function.comp_def, exponent_add,
++    ← MvPolynomial.monomial_mul, List.sum_map_mul_left, List.sum_map_mul_right]
+ 
+ /-- Sparse expansion denotes exactly the polynomial of the supplied syntax. -/
+ theorem interpret_expand {n : ℕ} (e : Expr (Fin n)) :
+@@ -105,11 +96,11 @@
+ /-- The executable list reader agrees with the standard coefficient map. -/
+ theorem coefficient_interpret {n : ℕ} (terms : List (Term n)) (d : Fin n → ℕ) :
+     coefficient terms d = MvPolynomial.coeff (exponent d) (interpret terms) := by
+-  induction terms with
+-  | nil => simp [coefficient, interpret]
+-  | cons a as ih =>
+-    simp only [coefficient] at ih ⊢
+-    simp [interpret, exponent_inj, ih]
++  rw [interpret_eq_sum]
++  simpa [coefficient, List.map_map, Function.comp_def, MvPolynomial.coeffAddMonoidHom,
++    exponent_inj] using
++    (map_list_sum (MvPolynomial.coeffAddMonoidHom (R := ℤ) (exponent d))
++      (terms.map fun t => MvPolynomial.monomial (exponent t.1) t.2)).symm
+ 
+ theorem coefficient_expand {n : ℕ} (e : Expr (Fin n)) (d : Fin n → ℕ) :
+     coefficient (expand e) d = MvPolynomial.coeff (exponent d) e.toPolynomial := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ComposeRepresentation.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ComposeRepresentation.lean
+@@ -40,12 +40,7 @@
+   refine joined.ofIff ?_
+   intro v
+   change (∃ a : Fin n → ℕ, P a ∧ ∀ i, a i = f i v) ↔ P (fun i => f i v)
+-  constructor
+-  · rintro ⟨a, ha, hg⟩
+-    have he : a = fun i => f i v := funext hg
+-    simpa only [he] using ha
+-  · intro h
+-    exact ⟨fun i => f i v, h, fun i => rfl⟩
++  simp only [← funext_iff, exists_eq_right]
+ 
+ end DiophantineConsistency.Rep
+ 
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectComposition.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectComposition.lean
+@@ -49,12 +49,7 @@
+   intro v
+   change (∃ a : Fin n → ℕ, v none = f a ∧
+     ∀ i, a i = g i (v ∘ some)) ↔ v none = f (fun i => g i (v ∘ some))
+-  constructor
+-  · rintro ⟨a, ha, hg⟩
+-    have he : a = fun i => g i (v ∘ some) := funext hg
+-    simpa only [he] using ha
+-  · intro h
+-    exact ⟨fun i => g i (v ∘ some), h, fun _ => rfl⟩
++  simp only [← funext_iff, exists_eq_right]
+ 
+ theorem composeDirect_witnessCount (r : GraphRep f) (s : ∀ i, GraphRep (g i)) :
+     (composeDirect r s).witnessCount = n + (r.witnessCount + ∑ i, (s i).witnessCount) := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalQuotient.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalQuotient.lean
+@@ -22,22 +22,12 @@
+ theorem row_zero_of_helix {α : Type*} (T : ℤ → ℤ → α) (w : ℤ)
+     (hhelix : ∀ x t, T (x+w) (t-1) = T x t) (x t : ℤ) :
+     T x t = T (x+w*t) 0 := by
+-  induction t using Int.induction_on generalizing x with
+-  | zero => simp
+-  | succ n ih =>
+-      have hh := hhelix x ((n : ℤ)+1)
+-      rw [add_sub_cancel_right] at hh
+-      calc
+-        T x ((n : ℤ)+1) = T (x+w) n := hh.symm
+-        _ = T ((x+w)+w*n) 0 := ih _
+-        _ = T (x+w*((n : ℤ)+1)) 0 := by congr 1; ring
+-  | pred n ih =>
+-      have hh := hhelix (x-w) (-(n : ℤ))
+-      rw [sub_add_cancel] at hh
+-      calc
+-        T x (-(n : ℤ)-1) = T (x-w) (-(n : ℤ)) := hh
+-        _ = T ((x-w)+w*(-(n : ℤ))) 0 := ih _
+-        _ = T (x+w*(-(n : ℤ)-1)) 0 := by congr 1; ring
++  let f : ℤ → α := fun s => T (x+w*s) (t-s)
++  have hp : Function.Periodic f 1 := by
++    intro s
++    dsimp [f]
++    convert hhelix (x+w*s) (t-s) using 1; congr 1 <;> ring
++  simpa [f] using hp.sub_int_mul_eq (x := t) t
+ 
+ /-- A generic integer periodic function agrees with its remainder values. -/
+ theorem periodic_emod {α : Type*} {f : ℤ → α} {n : ℤ}

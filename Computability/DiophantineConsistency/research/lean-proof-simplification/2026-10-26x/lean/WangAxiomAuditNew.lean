@@ -1,0 +1,6 @@
+import DiophantineConsistency.WangTiles942HelicalQuotient
+import DiophantineConsistency.WangTiles942SeamColumns
+import DiophantineConsistency.WangTiles942CycleBand
+import DiophantineConsistency.WangTiles942BandMarker
+
+#print axioms DiophantineConsistency.WangTiles942CycleBand.band_quotient_properties

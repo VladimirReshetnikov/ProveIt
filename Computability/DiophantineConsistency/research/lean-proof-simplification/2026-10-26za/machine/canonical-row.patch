@@ -1,0 +1,131 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942RowStep.lean
+@@ -1,5 +1,6 @@
+ import DiophantineConsistency.WangTiles942HeadBounds
+ import DiophantineConsistency.WangTiles942Signals
++import DiophantineConsistency.WangTiles942StepConstruction
+ 
+ /-!
+ # Actual machine steps in the derived Wang strip
+@@ -15,6 +16,7 @@
+ open SetTheory.BusyBeaver
+ open WangTiles942 WangTiles942Language WangTiles942Signals WangTiles942RowEncoding
+   WangTiles942StripGeometry WangTiles942OperatingRow WangTiles942HeadBounds
++open WangTiles942StepConstruction
+ 
+ set_option Elab.async false
+ set_option maxHeartbeats 1000000
+@@ -121,9 +123,9 @@
+     (far_east_zero hA hH hs hrow q hq x hl hr ho hn)
+     (no_south438 hA hH hTime hs hrow q hq x hl hr)
+ 
+-/-- The adjacent receiver uses the exact action target and the original
+-destination bit. The action may enter halt; target215 is not excluded. -/
+-theorem receiver_south
++/-- Retain the complete receiver equality instead of discarding three edges.
++The action may enter halt; target215 and arbitrary destination bits remain. -/
++theorem receiver_tile
+     (hA : ∀ x τ, Allowed (T x τ))
+     (hH : ∀ x τ, (T (x+1) τ).west = (T x τ).east)
+     (hrow : RowEncodes T (-(L : ℤ)) (R : ℤ) t cfg)
+@@ -131,15 +133,12 @@
+     (x : ℤ) (hl : -(L : ℤ) < x) (hr : x < (R : ℤ))
+     (hx : x = (DecimalMachine215.machine.transition q
+       (Tape.read cfg.tape cfg.head)).move.apply cfg.head) :
+-    (T x t).south = WangMachineEncoding.headColor
+-      (DecimalMachine215.machine.transition q (Tape.read cfg.tape cfg.head)).next
+-      (Tape.read cfg.tape x) := by
++    T x t = receiveTile cfg q x := by
+   have ho : x ≠ cfg.head := hx ▸ WangMachineStep.moved_head_ne _ _
+   have hp : (T x t).north = (symbol cfg x).val := hrow.plain x hl hr ho
+   have hh := head_transition hA hrow q hq
+   have hmove := WangMachineAction.transition_moved_head q
+     (Tape.read cfg.tape cfg.head) cfg.head
+-  rw [WangMachineAction.transition_headColor]
+   cases hd : (action (WangMachineAction.inputIndex q
+       (Tape.read cfg.tape cfg.head))).2.1 with
+   | false =>
+@@ -150,7 +149,7 @@
+       have hrx := left_transition_receiver
+         (WangMachineAction.inputIndex q (Tape.read cfg.tape cfg.head)) hd
+         (hA x t) (symbol cfg x) hp hm.symm
+-      exact congrArg Tile.south hrx
++      simpa [receiveTile, sourceIndex, hd, symbol] using hrx
+   | true =>
+       simp only [hd, if_true] at hmove
+       have he : cfg.head+1 = x := by omega
+@@ -159,10 +158,49 @@
+       have hrx := right_transition_receiver
+         (WangMachineAction.inputIndex q (Tape.read cfg.tape cfg.head)) hd
+         (hA x t) (symbol cfg x) hp hm.symm
+-      exact congrArg Tile.south hrx
+-
+-/-- Every south color is exactly the actual stepped configuration's
+-color, by the moved-head / old-head / unchanged three-way partition. -/
++      simpa [receiveTile, sourceIndex, hd, symbol] using hrx
++
++/-- The adjacent receiver uses the exact action target and the original
++destination bit. The action may enter halt; target215 is not excluded. -/
++theorem receiver_south
++    (hA : ∀ x τ, Allowed (T x τ))
++    (hH : ∀ x τ, (T (x+1) τ).west = (T x τ).east)
++    (hrow : RowEncodes T (-(L : ℤ)) (R : ℤ) t cfg)
++    (q : Fin 215) (hq : cfg.state = some q)
++    (x : ℤ) (hl : -(L : ℤ) < x) (hr : x < (R : ℤ))
++    (hx : x = (DecimalMachine215.machine.transition q
++      (Tape.read cfg.tape cfg.head)).move.apply cfg.head) :
++    (T x t).south = WangMachineEncoding.headColor
++      (DecimalMachine215.machine.transition q (Tape.read cfg.tape cfg.head)).next
++      (Tape.read cfg.tape x) := by
++  rw [receiver_tile hA hH hrow q hq x hl hr hx]
++  change WangTiles942.headColor (action (sourceIndex cfg q)).2.2
++    (Tape.read cfg.tape x).toNat = _
++  rw [WangMachineAction.transition_headColor]
++  rfl
++
++/-- Forward extraction agrees with the independently constructed reverse row,
++on the actual open strip. This asserts complete tiles, not only south colors. -/
++theorem row_tile_eq_stepTile
++    (hA : ∀ x τ, Allowed (T x τ))
++    (hH : ∀ x τ, (T (x+1) τ).west = (T x τ).east)
++    (hTime : ∀ x τ, (T x (τ+1)).north = (T x τ).south)
++    (hs : PersistentStrip T N L R)
++    (hrow : RowEncodes T (-(L : ℤ)) (R : ℤ) t cfg)
++    (q : Fin 215) (hq : cfg.state = some q)
++    (x : ℤ) (hl : -(L : ℤ) < x) (hr : x < (R : ℤ)) :
++    T x t = stepTile cfg q x := by
++  by_cases ho : x = cfg.head
++  · subst x
++    rw [stepTile_old_head]
++    exact head_transition hA hrow q hq
++  · by_cases hn : x = nextHead cfg q
++    · rw [stepTile, if_neg ho, if_pos hn]
++      exact receiver_tile hA hH hrow q hq x hl hr hn
++    · rw [stepTile_elsewhere cfg q x ho hn]
++      exact far_pass hA hH hTime hs hrow q hq x hl hr ho hn
++
++/-- The operational south profile is now a projection of canonical row equality. -/
+ theorem south_step
+     (hA : ∀ x τ, Allowed (T x τ))
+     (hH : ∀ x τ, (T (x+1) τ).west = (T x τ).east)
+@@ -172,18 +210,8 @@
+     (q : Fin 215) (hq : cfg.state = some q)
+     (x : ℤ) (hl : -(L : ℤ) < x) (hr : x < (R : ℤ)) :
+     (T x t).south = WangMachineEncoding.color (DecimalMachine215.machine.step cfg) x := by
+-  by_cases hn : x = (DecimalMachine215.machine.transition q
+-      (Tape.read cfg.tape cfg.head)).move.apply cfg.head
+-  · rw [WangMachineStep.color_step _ cfg q hq]
+-    simp only [if_pos hn]
+-    exact receiver_south hA hH hrow q hq x hl hr hn
+-  · by_cases ho : x = cfg.head
+-    · subst x
+-      rw [WangMachineStep.color_step_old_head _ cfg q hq]
+-      exact head_south hA hrow q hq
+-    · rw [WangMachineStep.color_step_elsewhere _ cfg q hq x ho hn,
+-        WangMachineEncoding.color_of_ne_head cfg x ho]
+-      exact congrArg Tile.south (far_pass hA hH hTime hs hrow q hq x hl hr ho hn)
++  exact (congrArg Tile.south (row_tile_eq_stepTile hA hH hTime hs hrow q hq x hl hr)).trans
++    (stepTile_south cfg q hq x)
+ 
+ /-- Actual marked-strip row evolution. All native geometry and absence of
+ finishes are derived through the frozen component theorems; only actual
