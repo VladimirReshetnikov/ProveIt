@@ -61,6 +61,24 @@ axiom reports passed [independent review/replay](reviews/arithmetic-expression-l
 This binds the equation side. The arithmetic ZFC-checker sentence and the
 HA equivalence derivation remain open.
 
+[HADeduction](Lean/DiophantineConsistency/HADeduction.lean) now composes
+actual finite HA proofs by concatenating their supporting axiom lists.
+[HANegativeStability](Lean/DiophantineConsistency/HANegativeStability.lean)
+constructs intuitionistic stability proofs for negations, conjunctions and
+universals, with the full context shifted at universal introduction.
+Four leaves passed [independent replay](reviews/ha-deduction-stability-lean-peer.md)
+and sixteen reports using only `propext` and `Quot.sound`.
+
+[HAEquationStability2011](Lean/DiophantineConsistency/HAEquationStability2011.lean)
+binds this to the literal current sentence: HA proves `¬¬NoZero → NoZero`.
+Its derivation has an empty context and an empty arithmetic axiom list.
+Both leaves passed [independent replay](reviews/ha-equation-stability2011-lean-peer.md)
+and four standard-only reports. This proves a particular logical property
+inside HA. It does not prove NoZero itself or the consistency equivalence.
+In particular, double-negation stability alone does not identify a formula
+with its full Gödel–Gentzen translation. The translation comparison for
+the complete no-zero/consistency equivalence remains to be proved.
+
 ## Two viable proof routes to audit
 
 One route proves, within HA, both positive-witness implications:

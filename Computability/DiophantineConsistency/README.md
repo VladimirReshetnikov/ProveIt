@@ -27,6 +27,10 @@ The [literal arithmetic equation sentence](Lean/DiophantineConsistency/Arithmeti
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence
 proof remains open.
+HA now also [proves double-negation stability](Lean/DiophantineConsistency/HAEquationStability2011.lean)
+of that exact no-zero sentence, by a purely logical derivation. This is
+an ingredient of the proof transfer; it does not prove the consistency
+equivalence.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the
