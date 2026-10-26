@@ -67,11 +67,19 @@ same concrete quotient. See the [native completeness review](reviews/wang-tiles9
 The actual marked word now constructs the cyclic source, bounded carries,
 the complete low and high scalar masks, positive alpha and z, strong slack,
 and the exact unit transport factor. No desired mask, carry or strict F
-is supplied. The literal kernel residues are also proved. Remaining work
-includes the composite rank controller, safe dummy mutations and the
-rank-dependent temporal multiplier, the remaining positive Pell/source
-witnesses, other equation
-frontiers and internal-ZFC derivation. The1997 proposal
+is supplied. The literal kernel residues, complete rank-forced converse
+construction and positive Pell/source assembly are now composed:
+`CurrentPositiveZero2011.no_positive_zero_iff_conZFC` proves the closed
+external Lean equivalence for the maintained polynomial.
+`no_thirteen_positive_zero_iff_conZFC` proves it for all three accepted
+13-variable forms. The pointwise no-solution statement and one simultaneous
+13-coordinate solution under negated consistency are checked as well.
+See the [author record](reviews/current-positive-zero2011-root.md) and
+[independent fresh replay](reviews/current-positive-zero2011-lean-peer.md).
+Remaining work includes the encoded internal-ZFC derivation, other equation
+frontiers, further size reduction and source-authenticated current closure
+validation. These fresh endpoint builds reuse prerequisites; they are not
+a fresh full umbrella build. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
 The first new modules address necessary reusable pieces of that chain:
@@ -746,6 +754,98 @@ and [independent isolated replay](reviews/current-packing-rank2011-lean-peer.md)
 record eight standard-only reports and exact current-port binding. Rank
 congruence selection, forced temporal exponentiation and remaining positive
 Pell witnesses remain open.
+
+`CurrentSafeController2011` joins actual target selection, the injective
+physical support and the proved Gamma unit. For every full-modulus target,
+it constructs a nonempty safe cyclic cell set, with cardinality at most
+94517*120199, whose actual B-power sum or Gamma-weighted sum equals that
+target. No selected support, safety property or unit is assumed. See the
+[author receipt](reviews/current-safe-controller2011-author.md) and
+[independent fresh root replay](reviews/current-safe-controller2011-root.md)
+with four standard-only reports. The actual finite source-word mutation
+and resulting rank congruence still need composition.
+
+`CurrentFiniteDummyMutation2011` constructs the entire finite Boolean update
+and derives ordinary C/F sums relative to one original zero-dummy normalization.
+Every insertion derives its own nonwrapping bound; no aggregate increment or
+sum bound is assumed. `CurrentPackingParity2011` derives the actual rank3
+modulo4 from the adjusted low mask and retains the same rank/population/growth
+witness. `ControllerRankStride` and `CurrentRankStride2011` derive the actual
+positive quotient stride and exact temporal power, preserving a particular
+packing through rephasing. Their adapter keeps R explicitly supplied with
+growth and congruence; it does not yet bind R to that packing's rank.
+See the [root review and precise replay scopes](reviews/finite-mutation-parity-stride-root.md)
+and its linked author/peer receipts. The32 reports are standard-only. Actual
+rank calibration, the halt dimension adapter and remaining positive Pell/source
+assembly remain integration obligations.
+
+`CurrentRankCalibration2011` closes the controller composition for the
+actual marked word. Safe finite mutation changes its ordinary C/F values,
+and the exact rank decrement selects the required full-modulus congruence.
+The rank of that same packing supplies population, residue and growth;
+the derived positive stride preserves its source, carries and digits and
+forces `multiplier t = 2^(R-width*N)`. No rank or successful mask is supplied.
+See the [author record](reviews/current-rank-calibration2011-root.md) and
+[independent fresh main/check replay](reviews/current-rank-calibration2011-lean-peer.md),
+with six standard-only reports.
+
+`WangTiles942ControllerDimensions` derives every quantitative controller
+hypothesis from an actual blank-machine halt, with independently cofinal
+width and height and the same uniquely marked word. `CurrentHaltPacking2011`
+then constructs the rank-forced native packing from a literal halt or from
+the actual negation of `DiophantineConsistency.ConZFC`. Its transparent
+existential keeps the same word, support, carries, normalized digits, rank
+and forced multiplier together. These are native/scalar witnesses; this
+checkpoint alone does not yet supply a polynomial zero. See the
+[root review](reviews/halt-controller-packing-root.md), dimension
+[author receipt](reviews/wang-tiles942-controller-dimensions-author.md), and
+halt-packing [independent replay](reviews/current-halt-packing2011-lean-peer.md).
+Their eight reports are standard-only; these are fresh leaf checks with
+reused prerequisites, not a fresh full umbrella build or internal ZFC proof.
+
+`NativeOuterSeedConstruction` constructs the literal native outer Pell
+seed from positive u, odd R and its exact population3*u+2. It derives the
+q-cubed scale, strict Pell interval, doubled first ordinate, both norms and
+all positive quotient witnesses. No interval, divisibility, norm or source
+zero is supplied. See the [author receipt](reviews/native-outer-seed-construction-author.md)
+and [independent root replay](reviews/native-outer-seed-construction-root.md).
+The latter freshly checks both new modules against authenticated current
+Ratio90/Half prerequisites, with four standard-only reports. The two
+prerequisite objects were freshly rebuilt by the author and reused by
+root; the recorded stale shared dependency objects were preserved.
+
+`NativePositiveSourceConstruction` composes that seed with a fresh private
+auxiliary Pell seed. Its `Data` keeps the actual scalar balance, exact
+window rank, temporal product and signed unit transport together. The
+population endpoint derives both seeds, all31 strictly positive natural
+source coordinates and all22 literal rows, and the actual positive
+fourteen-variable polynomial zero. The private negative ordinate is safely
+negated because its equation uses only its square; every other sign and
+integrality obligation is proved before conversion. See the
+[author receipt](reviews/native-positive-source-construction-author.md) and
+[independent fresh replay](reviews/native-positive-source-construction-lean-peer.md)
+with eight standard-only reports. Supplying its Data from the calibrated
+current packing and composing the actual consistency endpoint remain the
+next checkpoint. These are scoped leaf builds, not an internal ZFC proof.
+
+`CurrentPositiveZero2011` supplies all scalar Data fields from ONE actual
+rank-forced packing and closes the external converse from the exact
+negation of syntactic ConZFC to a positive zero of the maintained polynomial.
+Rank growth justifies exponent subtraction; the ordinary forced multiplier
+therefore gives w*q=2^R. Signed transport retains W=1, and the exact rank
+uses the source high port shifted by beta once. The literal fixed-port
+soundness theorem gives the other direction. The resulting no-positive-zero
+iff is closed for the14-variable polynomial and all three accepted13-variable
+frontiers; one positive13-coordinate assignment solves all three whenever
+the actual axiom predicate is inconsistent. No consistency assertion follows.
+The [author record](reviews/current-positive-zero2011-root.md) and
+[independent fresh main/check replay](reviews/current-positive-zero2011-lean-peer.md)
+record six standard-only axiom reports and exact statement/data binding.
+This closes the external Lean endpoint, with strict positive integer domains.
+An encoded proof inside the ZFC calculus remains open, including nonstandard
+internal witnesses. The [next-bridge audit](research/current-equivalence-next-bridge-20261026.md)
+records that separate obligation; its arithmetic-composition status predates
+this final checkpoint. Decimal notation and distinct unknown names are retained.
 
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
