@@ -1,0 +1,39 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineEncoding.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineEncoding.lean
+@@ -1,4 +1,5 @@
+ import DiophantineConsistency.DecimalMachineInitialization
++import Mathlib.Logic.Equiv.Fin.Basic
+ 
+ /-!
+ # Literal vertical colors of an actual machine configuration
+@@ -32,23 +33,13 @@
+   | some q => exact Nat.le_of_lt q.isLt
+ 
+ theorem stateNumber_injective : Function.Injective stateNumber := by
+-  intro s t h
+-  cases s with
+-  | none =>
+-      cases t with
+-      | none => rfl
+-      | some q =>
+-          simp only [stateNumber] at h
+-          have hq := q.isLt
+-          omega
+-  | some p =>
+-      cases t with
+-      | none =>
+-          simp only [stateNumber] at h
+-          have hp := p.isLt
+-          omega
+-      | some q =>
+-          exact congrArg some (Fin.ext h)
++  have hcode : stateNumber = fun s : Option (Fin 215) =>
++      ((finSuccEquivLast.symm s : Fin 216) : ℕ) := by
++    funext s
++    cases s <;> simp [stateNumber]
++  rw [hcode]
++  exact Fin.val_injective.comp finSuccEquivLast.symm.injective
++
+ 
+ theorem bit_le_one (b : Bool) : b.toNat ≤ 1 := by cases b <;> decide
+ 

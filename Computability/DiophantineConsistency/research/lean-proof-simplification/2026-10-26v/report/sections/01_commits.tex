@@ -1,0 +1,31 @@
+\section{Recent commits and the source boundary}
+
+The comparison starts at \ghcommit{b310142330df89e48413c8fce62e7de223e1c7d5}{b310142330df8} and ends at \ghcommit{22e020937caa81d0cb72a4f63071d6c0bcc1eba9}{22e020937caa8}, timestamped 26 October 2026 at 16:54:45 UTC. Its 27 commits form a Git DAG difference, not a claim that development proceeded in a single chronological chain.
+
+\subsection{Already implemented proof reductions}
+
+The current tree contains \code{CompilerSupport.lean}; the two DAG quartic backends and quadratic register system delegate finite-residual facts to it. It also contains \code{TotalDegreeBound.lean}; the ShortSystem, ShortFrontier, and ShortReducedStrong files use the total-degree tactic instead of large generated degree proofs. These are baseline facts, not new recommendations.
+
+The same interval includes reuse of population/coefficient bounds, polynomial specialization, positive-domain transport, signed Pell facts, primitive-recursion equations, natural-assignment maps, optional list lookup, unconditional weak-cap bounds, and mask-support arithmetic. The upstream adoption review reports selected compilation checks and distinguishes queued rebuilds. Those are \emph{upstream reports}, not tests reproduced here. See the \href{https://github.com/VladimirReshetnikov/ProveIt/blob/22e020937caa81d0cb72a4f63071d6c0bcc1eba9/Computability/DiophantineConsistency/reviews/lean-proof-simplification-20261026-root.md}{upstream review} and \href{https://github.com/VladimirReshetnikov/ProveIt/blob/22e020937caa81d0cb72a4f63071d6c0bcc1eba9/Computability/DiophantineConsistency/research/lean-proof-simplification/ADOPTION.md}{adoption record}.
+
+\subsection{New semantics that leave new local proof work}
+
+\begin{tabularx}{\linewidth}{@{}L{1.14in}Y@{}}
+\toprule
+Commit & Relevant development \\
+\midrule
+\ghcommit{90a2ded65d09cb88a29b89a60b6752c56d6c7d1d}{90a2ded65d09} & Actual first machine step and configuration-color semantics \\
+\ghcommit{edf3a19d0cc57787c078d344015a91bebac38c2a}{edf3a19d0cc5} & Exact tile inputs and uniform finish rows from one event \\
+\ghcommit{993d6730a283f78b6b92cb197abc3b5200faa003}{993d6730a283} & Operational color updates and receiver targets \\
+\ghcommit{04267333bd0424603bc8fba043bf7944d1e53c54}{04267333bd04} & Strict strip head containment and sharp actual trace bounds \\
+\ghcommit{a421ec86eb86377f62fe9dd2d807561bcae8ddc2}{a421ec86eb86} & Actual row evolution and construction of the reverse step row \\
+\bottomrule
+\end{tabularx}
+
+There are sixteen new semantic modules with sixteen paired Checks modules, plus the two shared proof-support modules. The new candidates preserve the actual decimal machine, the 942-tile language, live versus halted state interpretation, write-before-move semantics, and strict interval boundaries.
+
+\subsection{Coverage that does not depend on a capped comparison}
+
+GitHub's repository-wide comparison returned exactly 300 files. It is capped and is not a complete repository-change inventory. Instead, the untruncated old and new Lean trees contain 574 and 608 files. Comparing paths and Git blob identities gives \textbf{66 changed active Lean paths: 34 added and 32 modified, with none removed}. This independently matches all active Lean entries in the comparison response.
+
+The 860-file source inventory was materialized at the pin: 782 files were reused only after matching their current Git blob identities, and 78 were fetched afresh. Five directly imported BusyBeaver files are separately recorded. All supplied-byte checks pass. This is a selected source snapshot, \emph{not} a complete checkout or build dependency closure. The complete timeline, tree difference, counts, and verification scripts are in \artifact{provenance/}.

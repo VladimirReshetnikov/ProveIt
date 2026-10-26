@@ -1,0 +1,34 @@
+\section{Reflect state information through existing injectivity}
+
+\subsection{E1 Use the equivalence that puts halt last}
+
+\refs\ \src{WangMachineEncoding.lean}{20}{51}. The current \code{stateNumber_injective} compares both Options, uses bounds to exclude the two mixed cases, and applies \code{Fin.ext} in the live/live case. The executable map is exactly the inverse of Mathlib's \code{finSuccEquivLast}, followed by \code{Fin.val}.
+
+\begin{Lean}
+theorem stateNumber_injective : Function.Injective stateNumber := by
+  have hcode : stateNumber = fun s : Option (Fin 215) =>
+      ((finSuccEquivLast.symm s : Fin 216) : ℕ) := by
+    funext s
+    cases s <;> simp [stateNumber]
+  rw [hcode]
+  exact Fin.val_injective.comp finSuccEquivLast.symm.injective
+\end{Lean}
+
+Add \code{import Mathlib.Logic.Equiv.Fin.Basic}. The pinned library defines this equivalence and its simp laws for \code{some} and \code{none} in \mlsrc{Logic/Equiv/Fin/Basic.lean}{186}{204}{Mathlib lines 186--204}. The source and its Git blob/hash binding are supplied in \artifact{encoding/evidence/}.
+
+\textbf{Why this is safe in intent.} \code{stateNumber} itself stays unchanged: \code{none} is 215 and \code{some q} is \code{q.val}. The ordinary zero-slot \code{finSuccEquiv} is \emph{not} a substitute; it would encode the sentinel differently. This is proof reuse for the actual concrete adapter, not a redesign of state encodings or another generic inverse-graph API.
+
+\risk\ The local equality and composed injectivity must elaborate under the pinned toolchain. Check direct import cost and compare \code{#print axioms}; do not assume the use of \code{funext} and \code{simp} preserves the old axiom footprint. The candidate includes the actual sentinel and live-state regression statements.
+
+\subsection{M1 Reflect action halt through that map}
+
+\refs\ \src{WangMachineAction.lean}{60}{69}. This proof needs only the \emph{existing} injectivity theorem; it does not depend on accepting E1. Keep its original statement and replace its two-direction equality transport by:
+
+\begin{Lean}
+  rw [← stateNumber_injective.eq_iff,
+    act_stateNumber a ha, stateNumber_none]
+\end{Lean}
+
+Reflecting equality through \code{stateNumber} gives the encoded equality. The action lemma identifies the next-state code with the target, and the sentinel lemma identifies halt with 215. The complete patch uses one physical proof line; it is wrapped above only for readability.
+
+\textbf{Preserve the premise.} The bound \code{ha : a.2.2 < 216} is essential. The raw adapter also maps an invalid target of 216 to \code{none}; dropping the bound would make the equivalence false. No action table, decoder theorem, direction-specific target set, or terminal convention changes. This is a 10-to-3-line declaration replacement, with no new definition, import, or helper.

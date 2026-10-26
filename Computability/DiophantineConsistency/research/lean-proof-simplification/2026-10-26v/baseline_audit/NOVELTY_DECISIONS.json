@@ -1,0 +1,78 @@
+{
+  "pin": "22e020937caa81d0cb72a4f63071d6c0bcc1eba9",
+  "standard": "Pass only if new mechanism eliminates an additional obligation after all relevant prior variants/outcomes are available. A prior proposal is not novel merely because missing from source.",
+  "decisions": [
+    {
+      "id": "M1",
+      "target": "WangMachineAction.act_next_none_iff",
+      "decision": "PASS: mechanism remains additional under the full assumed-applied outcome baseline",
+      "new_mechanism": "Reflect equality through the existing injective stateNumber encoding.",
+      "nearest_prior": "NF004; EX008; EX073",
+      "nonduplication_reason": "NF004 requires finite dynamics and a forward-invariant predicate to recover predecessors. EX008 is scanner semiconjugacy, EX073 controller invariants. None eliminates pointwise equality transport for this new machine adapter.",
+      "consumed_available_api": "stateNumber_injective.eq_iff; act_stateNumber; stateNumber_none",
+      "counterfactual_residual_burden": "No finite-surjectivity, periodicity or new invariant proof is needed. The two-direction equality transport remains after all prior APIs are applied.",
+      "integration_constraints": "Keep target <216; invalid target216 also decodes to none. This composes with the new sentinel-equivalence proof without duplicating its benefit.",
+      "proof_validation": "Novelty/source reasoning only; no Lean compilation in this audit"
+    },
+    {
+      "id": "M2",
+      "target": "WangMachineStep.color_action",
+      "decision": "PASS: mechanism remains additional under the full assumed-applied outcome baseline",
+      "new_mechanism": "Split only at the old head/write location; keep the new-head conditional symbolic.",
+      "nearest_prior": "EX012; NF028; NF010",
+      "nonduplication_reason": "Previous constructor/tag views concern annotated formula syntax or internal codes, not spatial tape-write support.",
+      "consumed_available_api": "Tape.read_write_of_ne; Tape.read_write_same; moved_head_ne",
+      "counterfactual_residual_burden": "Prior APIs do not remove the redundant moved-head branch here. Normalizing the changed tape component before the color conditional removes one local branch.",
+      "integration_constraints": "Preserve three-way result, write-before-move and halted target behavior; this changes proof case order, not operational semantics.",
+      "proof_validation": "Novelty/source reasoning only; no Lean compilation in this audit"
+    },
+    {
+      "id": "M3",
+      "target": "WangMachineTraceBounds.run_read_of_abs_ge",
+      "decision": "PASS: mechanism remains additional under the full assumed-applied outcome baseline",
+      "new_mechanism": "Use le_abs' to convert the sharp absolute-value exterior condition directly.",
+      "nearest_prior": "EX001; EX067; NF018",
+      "nonduplication_reason": "General encouragement to reuse library lemmas is not an advertised simplification of every later theorem. None of the eleven packets targets this new trace-support conversion.",
+      "consumed_available_api": "run_read_outside; le_abs'",
+      "counterfactual_residual_burden": "The underlying support theorem remains available and its final sign split remains redundant in the counterfactual checkout.",
+      "integration_constraints": "Keep inclusive threshold |x|>=t, including t=0; no positive-time or stronger exterior assumption.",
+      "proof_validation": "Novelty/source reasoning only; no Lean compilation in this audit"
+    },
+    {
+      "id": "E1",
+      "target": "WangMachineEncoding.stateNumber_injective",
+      "decision": "PASS: mechanism remains additional under the full assumed-applied outcome baseline",
+      "new_mechanism": "Identify unchanged terminal-slot encoding with Fin.val after finSuccEquivLast.symm.",
+      "nearest_prior": "NF014; NF004",
+      "nonduplication_reason": "NF014 removes existential missing-coordinate arguments for product pairing equivalences. NF004 assumes injectivity and uses finite invariant dynamics. Neither constructs Option(Fin215) terminal-slot injectivity.",
+      "consumed_available_api": "Pinned Mathlib finSuccEquivLast and its some/none simplification laws; Fin.val_injective",
+      "counterfactual_residual_burden": "No baseline proposal identifies this new state encoding with the exact last-slot equivalence. The four Option cases can still be replaced by composition of existing injections.",
+      "integration_constraints": "none must map to215 and some q to q, not the alternative zero-slot convention. Preserve executable stateNumber definition and all public statements.",
+      "proof_validation": "Novelty/source reasoning only; no Lean compilation in this audit"
+    },
+    {
+      "id": "R2",
+      "target": "WangTiles942StepConstruction.stepTile_west/east/horizontal",
+      "decision": "PASS: mechanism remains additional under the full assumed-applied outcome baseline",
+      "new_mechanism": "Represent both horizontal edge fields by one spatial bond signal E.",
+      "nearest_prior": "EX059; EX073; R2-07; V12",
+      "nonduplication_reason": "Direction descriptors share field offsets/width/bounds; NorthView classifies high north colors; controller certificates concern local state dynamics. None establishes the translated spatial bond equation.",
+      "consumed_available_api": "Existing sourceIndex/action, nextHead_eq/ne, stepTile, transitionRow, receiveTile",
+      "counterfactual_residual_burden": "Simultaneous west(x)=E(x-1) and east(x)=E(x) removes separate geometry in horizontal matching after all north/direction APIs are assumed present.",
+      "integration_constraints": "Derived from actual constructors, not assumed matching; left/right moved-head bond orientation must be exact. Count signal/helper/wrapper cost. Treat as structural clarity, not guaranteed line saving.",
+      "proof_validation": "Novelty/source reasoning only; no Lean compilation in this audit"
+    },
+    {
+      "id": "R1",
+      "target": "WangTiles942ResetRows.interval_propagate",
+      "decision": "PASS: mechanism remains additional under the full assumed-applied outcome baseline",
+      "new_mechanism": "Use guarded Int induction on translated displacement x-x0.",
+      "nearest_prior": "EX007; R2-06; NF004",
+      "nonduplication_reason": "Prior Nat scanner/cycle propagation and finite invariant predecessor APIs do not cover two-sided integer intervals.",
+      "consumed_available_api": "Int.induction_on; existing hnext/hprev; strict seed bounds",
+      "counterfactual_residual_burden": "The two Nat recursions, two toNat bridges and final sign split are absent only after this additional refactor. All promised prior iteration APIs still leave this two-sided interval proof.",
+      "integration_constraints": "Guard the motive by both strict interval bounds. Do not assume propagation outside the interval; preserve both local step premises and all theorem binders.",
+      "proof_validation": "Novelty/source reasoning only; no Lean compilation in this audit"
+    }
+  ]
+}

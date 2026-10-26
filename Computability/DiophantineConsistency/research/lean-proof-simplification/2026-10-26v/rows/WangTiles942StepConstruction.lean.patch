@@ -1,0 +1,66 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942StepConstruction.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942StepConstruction.lean
+@@ -113,39 +113,39 @@
+     · rw [stepTile_elsewhere cfg q x ho hn,
+         color_step_elsewhere _ cfg q hq x ho hn, color_of_ne_head cfg x ho]
+ 
+-/-- The only west signal is at the old head for left moves, or the new head for right moves. -/
+-theorem stepTile_west (cfg : Config 215) (q : Fin 215) (x : ℤ) :
+-    (stepTile cfg q x).west =
+-      if (WangTiles942.action (sourceIndex cfg q)).2.1 then
+-        if x = nextHead cfg q then rail true (WangTiles942.action (sourceIndex cfg q)).2.2 else 0
+-      else if x = cfg.head then rail false (WangTiles942.action (sourceIndex cfg q)).2.2 else 0 := by
++def bondSignal (cfg : Config 215) (q : Fin 215) (x : ℤ) : ℕ :=
++  let a := WangTiles942.action (sourceIndex cfg q)
++  if x = (if a.2.1 then cfg.head else nextHead cfg q)
++    then rail a.2.1 a.2.2 else 0
++
++theorem stepTile_edges (cfg : Config 215) (q : Fin 215) (x : ℤ) :
++    (stepTile cfg q x).west = bondSignal cfg q (x-1) ∧
++      (stepTile cfg q x).east = bondSignal cfg q x := by
++  have hm := nextHead_eq cfg q
++  have hshift :
++      (x-1 = (if (WangTiles942.action (sourceIndex cfg q)).2.1
++        then cfg.head else nextHead cfg q)) ↔
++      (x = (if (WangTiles942.action (sourceIndex cfg q)).2.1
++        then nextHead cfg q else cfg.head)) := by
++    cases hd : (WangTiles942.action (sourceIndex cfg q)).2.1 <;>
++      simp only [hd, Bool.false_eq_true, ↓reduceIte] at hm ⊢ <;> omega
++  simp only [bondSignal, hshift]
+   have hne := nextHead_ne cfg q
+   by_cases ho : x = cfg.head <;> by_cases hn : x = nextHead cfg q <;>
+     cases hd : (WangTiles942.action (sourceIndex cfg q)).2.1 <;>
+     simp_all [stepTile, transitionRow, receiveTile]
+ 
+-/-- The only east signal is at the new head for left moves, or the old head for right moves. -/
++theorem stepTile_west (cfg : Config 215) (q : Fin 215) (x : ℤ) :
++    (stepTile cfg q x).west = bondSignal cfg q (x-1) :=
++  (stepTile_edges cfg q x).1
++
+ theorem stepTile_east (cfg : Config 215) (q : Fin 215) (x : ℤ) :
+-    (stepTile cfg q x).east =
+-      if (WangTiles942.action (sourceIndex cfg q)).2.1 then
+-        if x = cfg.head then rail true (WangTiles942.action (sourceIndex cfg q)).2.2 else 0
+-      else if x = nextHead cfg q then rail false (WangTiles942.action (sourceIndex cfg q)).2.2 else 0 := by
+-  have hne := nextHead_ne cfg q
+-  by_cases ho : x = cfg.head <;> by_cases hn : x = nextHead cfg q <;>
+-    cases hd : (WangTiles942.action (sourceIndex cfg q)).2.1 <;>
+-    simp_all [stepTile, transitionRow, receiveTile]
++    (stepTile cfg q x).east = bondSignal cfg q x :=
++  (stepTile_edges cfg q x).2
+ 
+-/-- All horizontal edges match with the actual plane orientation. -/
+ theorem stepTile_horizontal (cfg : Config 215) (q : Fin 215) (x : ℤ) :
+     (stepTile cfg q (x+1)).west = (stepTile cfg q x).east := by
+-  rw [stepTile_west, stepTile_east]
+-  have hn := nextHead_eq cfg q
+-  cases hd : (WangTiles942.action (sourceIndex cfg q)).2.1 <;>
+-    simp only [hd, Bool.false_eq_true, ↓reduceIte] at hn ⊢
+-  · have he : x+1 = cfg.head ↔ x = nextHead cfg q := by omega
+-    simp only [he]
+-  · have he : x+1 = nextHead cfg q ↔ x = cfg.head := by omega
+-    simp only [he]
++  simp only [stepTile_west, stepTile_east, add_sub_cancel_right]
+ 
+ /-- The constructed row realizes an actual operating step over every integer position. -/
+ theorem step_row (cfg : Config 215) (q : Fin 215) (hq : cfg.state = some q) :
