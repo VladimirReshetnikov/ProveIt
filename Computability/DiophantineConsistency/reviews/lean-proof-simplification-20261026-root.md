@@ -579,3 +579,135 @@ request. TeX/PDF SHA256s remain
 `a48ac1f5bc498bfdbf300c7050332ecaa28af1fc43f27d86b0879a79bd38714e` /
 `417c2fa109cacf99d0e83af35d06cbdc8fed1179054d7245e07f3e51ebfff978`.
 No equation edit was needed or made.
+
+## Continuation: shared model extraction and scanner recursion
+
+This continuation starts at `663fb267f6142ca4c0ea5bcd2d4f607f9a4b0eda`.
+The model/scanner adoption rows were ahead of the actual maintained source:
+both still contained duplicate proofs. They now describe checked changes.
+
+`intake_e13` implemented the model extraction as `3814a1da29`. The unchanged
+six-axiom extraction proof is public in `ObjectArithmetic` under the distinct
+name `zfAxioms_of_zfc_model`. The old `ObjectMultiplication` public theorem
+delegates to it, preserving all thirteen external callers and avoiding an
+ambiguous shared basename. Only the two local addition references change.
+There is no new model-existence, consistency or standardness premise.
+The two files shrink from419 to407 lines, removing12 lines with the wrapper
+included. ROOT read both full sources and the extraction contracts;
+`alternate_encoding_research` independently reviewed the exact final407
+lines and the sealed-ZFC/six-axiom/completeness bridge, returning PASS.
+
+All ten final Lean calls returned zero: both module builds, three clients
+(`ObjectAdditionLaws`, `ObjectMultiplicationLaws`, `ObjectNaturalExpression`),
+three existing checks (`ObjectAdditionLaws`, `ObjectMultiplicationLaws`,
+`ObjectAxioms`), final public audit and new-helper/wrapper audit. The five
+old public axiom reports are byte-identical. The new helper, like the old
+public bridge, uses only `propext` and `Quot.sound`; the wrapper equality is
+`rfl`. There were no source repairs or missing-cache retries.
+
+`v_finite_full_static` implemented the scanner extraction as `dbc6446fa7`.
+Two direct `Nat.rec` facts replace twelve endpoint inductions in the four
+scanners. The complete new `NatIterate` module is19 lines, imports only
+`Init`, and defines no new iteration function. Both facts are axiom-free;
+the four old `scan_succ` results remain axiom-free. The existing52 executable
+definition bodies and69 theorem headers remain exact, including raw-state,
+fuel, rejecting-zero and completed-state behavior. Including all helper and
+import costs,914 lines become891, removing23 lines.
+
+The first helper invocation failed because Lean could not infer the constant
+eliminator motive in the `rec_succ` statement. Explicit motive annotations
+on its two `Nat.rec` terms resolved this; the original source and diagnostic
+are retained separately. All23 final commands then returned zero: eleven
+fresh source/client builds, ten existing focused checks and public/helper
+audits. All49 runtime controls are true, and the20 old axiom reports are
+byte-identical. There were no subsequent source failures or cache gaps.
+ROOT read the full helper and all four changed proof contexts;
+`alternate_encoding_research` independently read all891 final source lines,
+the diff and pinned recursor contracts, returning PASS on all five hashes.
+
+## Integer unit, square-zero and norm-obstruction reuse
+
+ROOT combined packet e's `ShortSystem` cleanup with packet q's negative-norm
+reuse as `f1b8c4abc3`. Integer unit classification and commutative product
+reordering replace repeated local certificates. Nonnegativity of the five
+squares lets the existing additive zero law replace five separate nonlinear
+deductions. Three residue obstructions specialize
+`ShortEquation.strong_ne_neg_one`: the auxiliary substitutions use
+`(t-2, t*h, y)` and `(I-2, I*V, V+e)`, without imposing signs on these values.
+Only one lower-layer import is added. The two modules shrink from866 to826
+lines, removing40; all evaluator/polynomial definitions and old signatures
+remain unchanged.
+
+All nine final Lean calls returned zero: the planned unchanged
+`TotalDegreeBound` cache prerequisite, two changed modules, `ShortFrontier`,
+`ShortReducedStrong` and `Carrier65` clients, the existing
+`ShortEquationAxioms` / `ProposalAxioms` checks and final audit. All49 old
+public axiom reports are byte-identical. No proof budget was raised or
+source repair needed. `intake_e13` independently read all826 final lines,
+the exact two patches and the integer/unit/nonnegative-sum contracts,
+returning PASS on both final hashes.
+
+## Shared isolated quadratic coefficient calculation
+
+ROOT applied packet t's complete coefficient-fibre patch as `fad90f705b`.
+The generic proof sits below both ordinary and selective encodings and
+requires isolation only at the tested ordered-pair sum. It proves the
+diagonal coefficient once and the two off-diagonal orientations once;
+unselected sums may collide. Its `CommSemiring` hypothesis adds no sign,
+characteristic or global-injectivity restriction. The multi-row outside
+proof reuses selective vanishing while retaining the literal natural
+subtraction and all three position/target bounds.
+
+All encoding, complementary, correction, weight, support, stride and target
+definitions are unchanged. The three old modules plus the complete32-line
+helper shrink from413 to393 lines, removing20. All fourteen final calls
+returned zero: four modules; `DegreeSeparatedCoding`, `SelectiveCertificate46`,
+`SelectiveCertificate52`, `SelectiveCarry` and `MultiTargetCarry` clients;
+three existing coefficient checks; and public/helper audits. The checks
+retain diagonal/off-diagonal coefficients, unused collisions, overlapping
+supports, signed rows, empty families and constant-only dimension. All24
+old public axiom reports are byte-identical; the new helper uses the
+standard three. `alternate_encoding_research` independently read all393
+final lines and the full coefficient/conditional-sum/Sidon contracts,
+returning PASS on all four exact hashes.
+
+## Direct formula-semantics specifications
+
+`intake_e13` applied packet s's `patches/specifications.patch` to all eight
+modules, committed as `4ae1ff991a`. Its twenty specification proofs use the existing `Sat`, `scons`
+and formula-graph equivalences directly, replacing manual existential
+unpacking and reconstruction. Every formula, binder slot, coordinate shift,
+conjunction order and model premise remains literal unchanged. The proofs
+cover arbitrary internal naturals of arbitrary models, as before. There is
+no new helper or import overhead:1691 lines become1558, removing133 lines.
+
+All eighteen final calls returned zero on the first attempt: eight module
+builds, `ObjectOmegaSemiring`, `ObjectPolynomial` and `ObjectResidualSquares`
+clients, six existing checks and the final107-public-theorem axiom audit.
+The six checks are `ObjectAdditionLaws`, `ObjectAdditionCancellation`,
+`ObjectMultiplicationLaws`, `ObjectDistributivity`, `ObjectOmegaSemiring`
+and `ObjectAxioms`. The entire107-result baseline/final audit logs are
+byte-identical. There were no warnings, source retries, cache gaps or
+proof-budget changes. `v_finite_full_static` independently read all1558
+final source lines, the full patch/diff and actual formula/semantic contracts,
+returning PASS on all eight hashes. Its review verified all120 theorem
+headers and57 definition/instance regions unchanged and traced the nested
+successor witnesses, expression offsets, all eight bound tags and sealing
+witness shifts. ROOT read the whole patch and independently compared all
+nineteen retained baseline/final zero-exit receipts and the107-result logs.
+
+Together these five groups remove228 maintained Lean lines across21 files,
+including both new helpers:4303 lines become4075. The reviewed iteration
+series now removes3016 net lines. ROOT's ordered comparison verifies all420
+old public headers and all158 existing data-definition bodies unchanged.
+The equation artifacts retain their checked decimal format and distinct
+unknown names. The iterative goal remains active.
+
+The next-target census corrected several advertised savings before adoption:
+q's single-client minimum-saturation helper adds7 whole-file lines, u's
+first-failure helper saves only2, and t's first-exit alternative adds13.
+The w formal-polynomial `RefinedPair` proof removes chosen complex roots but
+adds3 lines and has no successful maintained-tree compiler replay yet.
+These remain possible complexity improvements, with no new validation claim.
+Wang interval/periodicity refactors are deferred while the other session
+is actively extending the surrounding machine and tiling construction.
