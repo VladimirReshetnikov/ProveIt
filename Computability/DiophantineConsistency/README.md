@@ -39,6 +39,10 @@ HA now also [proves double-negation stability](Lean/DiophantineConsistency/HAEqu
 of that exact no-zero sentence, by a purely logical derivation. This is
 an ingredient of the proof transfer; it does not prove the consistency
 equivalence.
+The [Foundation-to-HA syntax bridge](Lean/DiophantineConsistency/FoundationPAHFSyntax.lean)
+also now has an [independent replay](reviews/foundation-pahf-syntax-root.md),
+including nested-binder substitution and variable-shift checks. Actual
+proof-tree transfer and translated arithmetic axioms remain separate work.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the

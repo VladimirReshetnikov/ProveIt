@@ -213,6 +213,18 @@ For the literal universal negative equality, a direct syntax comparison can
 remove the translation; arbitrary negative formulas require more than the
 already proved double-negation stability.
 
+The syntax portion of that adapter is now checked in
+[FoundationPAHFSyntax](Lean/DiophantineConsistency/FoundationPAHFSyntax.lean).
+It translates the actual ordered arithmetic symbols into PAHF `0,S,+,*`,
+using a capture-avoiding existential definition of strict order. Generic
+environment substitution/rewriting and the exact canonical binder,
+instantiation, free/open and eigenvariable-shift identities are proved.
+Both leaves passed [independent root replay](reviews/foundation-pahf-syntax-root.md)
+with15 standard-only reports; all369 source/trace/object pins for the59
+Foundation and five PAHF cached prerequisites matched. This is a syntax
+checkpoint, not a proof-calculus or arithmetic-axiom transfer. The next leaf
+maps actual intuitionistic Hilbert proof trees to `HA.Derives`.
+
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and
 the literal `BProv ZFCax_s [] Form.fBot`. Its final negation composition
