@@ -1,0 +1,162 @@
+% Typography-only revision of the preserved first fit. New fit pending.
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,multicol,geometry}
+\geometry{margin=0.43in}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.5pt}
+\setlength{\columnsep}{13pt}
+\setlength{\abovedisplayskip}{2.5pt}
+\setlength{\belowdisplayskip}{2.5pt}
+\setlength{\abovedisplayshortskip}{1.5pt}
+\setlength{\belowdisplayshortskip}{1.5pt}
+\setlength{\multicolsep}{3pt}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\PP}{\mathcal P}
+\newcommand{\QQ}{\mathcal Q}
+\newcommand{\HH}{\mathcal H}
+\begin{document}
+\fontsize{9}{10.2}\selectfont
+\begin{center}
+{\fontsize{11}{12}\selectfont\bfseries A complete C222 Diophantine equation}\par
+446 natural unknowns; degree $2{,}097{,}684$.
+\end{center}
+\vspace{-4pt}
+\begin{multicols}{2}
+\textbf{Unknowns and front.} Every free coordinate is in
+$\NN=\{0,1,2,\ldots\}$:
+\[
+\begin{gathered}
+h,e,g,\beta,F,x,N,\ell,z_0,z_t,z_B,\quad(\xi_i)_{i=0}^8,\\
+(D_i)_{i=0}^3,\quad(P_j)_{j=0}^{10},\quad
+(r_j,s_j,w_j)_{j=0}^{10},\quad(\theta_j)_{j=0}^{17}.
+\end{gathered}
+\]
+Each $\theta_j$ is the 21-tuple below. Every other name is a polynomial
+abbreviation; all bound indices are local to their displayed fixed ranges.
+\[
+\begin{gathered}
+t=16+h,\quad y=F+1+e,\\
+q=2+g,\quad B=1+\beta,\\
+(C,a,b,c,d,S,T,u,v)=(1+\xi_i)_{i=0}^8,\\
+H=2+C+a+b+c+d+S+T+u+v.
+\end{gathered}
+\]
+
+\textbf{The whole numerical calculus.} Define
+\[
+\begin{aligned}
+I(a,b)&=2(a+b)(a+b+1)+4b,\\
+M(a,b)&=I(a,b)+1,&A(a,b)&=I(a,b)+2,\\
+E(a,b)&=I(a,b)+3,&\nu(a)&=I(a,1),\\
+X(a,b)&=\nu(A(a,\nu(b))),&\Theta_a(z)&=\nu(A(a,z)).
+\end{aligned}
+\]
+The first eight code polynomials are
+\[
+\begin{aligned}
+c_1&=X(a,E(a,b)),\\
+c_2&=I(A(a,I(b,c)),I(A(a,b),A(a,c))),\\
+c_3&=I(E(a,b),I(M(c,a),M(c,b))),\\
+c_4&=I(A(a,A(b,c)),A(b,A(a,c))),\\
+c_5&=I(E(c,a),I(M(c,b),M(a,b))),\\
+c_6&=I(X(a,A(a,b)),b),\\
+c_7&=I(E(c,a),I(E(c,b),A(M(a,b),E(a,b)))),\\
+c_8&=I(I(I(c,d),a),I(I(a,c),I(b,c))).
+\end{aligned}
+\]
+The entire ninth code is
+\[
+\begin{aligned}
+R(b,k,z)&=A(b,I(z,\Theta_b(I(z,\nu(M(b,k)))))),\\
+Q(a,b,k)&=A(k,I(M(k,a),M(k,b))),\\
+C_0(a,b,k,z)&=I(Q(a,b,k),R(b,k,z)),\\
+C_*(a,b,k,z)&=A\bigl(b,I(M(b,k),\\[-2pt]
+&\hspace{34pt}\Theta_a(I(z,\Theta_a(C_0(a,b,k,z)))))\bigr),\\
+V(a,b,c)&=I(M(a,b),A(c,M(a,b))),\\
+K(a,b,c)&=A(c,I(C_*(a,b,c,c),\nu(R(b,c,c)))),\\
+c_9&=\nu(I(V(a,b,c),K(a,b,c))).
+\end{aligned}
+\]
+Evaluate every $c_i$ at $(a,b,c,d)$, ignoring unused arguments. Put
+\[
+\begin{aligned}
+W_z&=1+Fz,\\
+J&=\sum_{i=1}^9c_i+a+b+I(a,b)+A(a,b)+1,\\
+G&=((c-a)^2(c-b)^2-(d+1)^2)^2,\\
+\HH&=(T-S)^2\prod_{i=1}^8(TW_{c_i}-S)^2\\
+&\quad\cdot\bigl((TW_{c_9}-S)^2+G\bigr)\\
+&\quad\cdot(TW_b-SW_aW_{I(a,b)})^2\\
+&\quad\cdot(TW_{A(a,b)}-SW_b)^2,\\
+L_i&=\HH+(x-S-(1+(i+1)y)u)^2\\
+&\hspace{29pt}+(x-T-(1+(i+2)y)v)^2.
+\end{aligned}
+\]
+Only $L_C$ is used. The guarded branch retains both disequalities
+$c\ne a,c\ne b$ through its natural witness $d$ and the printed $G$.
+
+\textbf{The 21-coordinate power polynomial.} Every letter here is local
+to its copy, independent of the front and all other copies:
+\[
+\begin{gathered}
+\theta=(Y,Z,X,U,S,R,a_0,y_0,f,d,\\
+b_+,b_-,s_+,s_-,r_+,r_-,x_+,x_-,g,w_n,w_k).
+\end{gathered}
+\]
+For arguments $(n,k,m)$ define only
+\[
+\begin{gathered}
+A=a_0+2,\quad V=Y^2(d+1),\\
+B=1+4Y(f+1),\quad \tau=m+g+1,\\
+W=n+w_n,\\
+\mathcal N(a,x,y)=x^2+y^2-1-a^2y^2.
+\end{gathered}
+\]
+In particular $Y$ is free. Let $(R_1,\ldots,R_{11})$ be exactly
+\[
+\begin{gathered}
+\bigl(Y-k-y_0,\\
+\mathcal N(A,X,Y),\ \mathcal N(A,U,V),\ \mathcal N(B,S,R),\\
+B+Ub_+-A-Ub_-,\ S+Us_+-X-Us_-,\\
+R+4Yr_+-k-4Yr_-,\\
+X+Yn+\tau x_+-YA-m-\tau x_-,\\
+2An-\tau-n^2-1,\ W-k-w_k,\ \mathcal N(W+1,A,WZ)\bigr).
+\end{gathered}
+\]
+Set $\PP(n,k,m;\theta)=\sum_{i=1}^{11}R_i^2$.
+All private coordinates, including both signs of every quotient, are natural.
+
+\textbf{Every argument slot.} The full ordered table is
+\[
+\begin{aligned}
+(k_i)_{i=0}^3&=(t,t+1,y+1,x),\\
+(U_j)_{j=0}^{10}&=(F^2+t,C,a,b,c,d,S,T,u,v,J),\\
+(\sigma_j)_{j=0}^{10}&=(0,0,1,1,1,1,2,2,3,3,1),\\
+\mathcal T&=\bigl((2(t+1),t,F),(B,x,N),(BH,x,q),\\
+&\qquad(q,k_i,D_i)_{i=0}^3,\ (q+1,U_j,P_j)_{j=0}^{10}\bigr).
+\end{aligned}
+\]
+For $0\le j\le17$, write $(n_j,k'_j,m_j)=\mathcal T_j$ in this
+order and pair it with $\theta_j$. No variable exponent occurs.
+
+\textbf{The single equation.}
+\[
+\boxed{\begin{aligned}
+\QQ={}&\sum_{j=0}^{17}\PP(n_j,k'_j,m_j;\theta_j)\\
+&+(x-F-1-(y+1)z_0)^2\\
+&+(x-1-(1+(t+1)y)z_t)^2\\
+&+(Bz_B-C-F^2-1)^2+(L_C-N\ell)^2\\
+&+(P_0-D_0(qw_0+B)-r_0)^2\\
+&+\sum_{j=1}^{10}(P_j-D_{\sigma_j}Nw_j-r_j)^2\\
+&+\sum_{j=0}^{10}(D_{\sigma_j}-r_j-s_j-1)^2=0.
+\end{aligned}}
+\]
+This prints the entire integer-coefficient polynomial: 224 squared
+residuals on 446 natural unknowns, of exact degree $2{,}097{,}684$.
+For 446 positive unknowns, replace every free $z$ independently by
+$p_z-1$, $p_z\ge1$. Relative to the retained ordinary Pell and
+C222/ZF/ZFC calibrations, absence of zeros is equivalent to syntactic
+$\operatorname{Con}(\mathrm{ZFC})$.
+\end{multicols}
+\end{document}
