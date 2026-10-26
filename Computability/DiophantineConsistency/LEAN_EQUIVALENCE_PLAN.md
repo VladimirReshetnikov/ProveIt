@@ -8,7 +8,7 @@ unsubscripted scalar names remain requirements for the maintained page.
 
 ## Required endpoints and evidence
 
-`DiophantineConsistency.Bridge.ConZFC` is
+`DiophantineConsistency.ConZFC` is
 `¬ BProv ZFCax_s [] Form.fBot`, for the actual repository axiom predicate.
 `NativeZFC.noPositiveZero_iff_conZFC`, `ExplicitZFC` and `DirectQuarticZFC`
 already prove external Lean equivalences for their own generic compiled
@@ -353,6 +353,17 @@ minimal generic19/20 exclusions while preserving the real511 self-loop.
 See the [root review and six fresh replays](reviews/current-field-geometry2011-lean-root.md).
 Actual copy/Start/terminal-word bindings and nine-bit aggregation remain
 explicit composition steps for whole-field alignment.
+
+`CurrentCopyParity2011.copy_marker_equalities` now derives all nine actual
+South-copy equalities and the shifted marker equality from the complete
+kernel, carry reset and mask tests. Fractional phase and the physical
+selector bound remain explicit inputs, supplied by the polynomial count
+result. The actual full cyclic sources and cross-cell terms are retained.
+`CurrentSouthShift2011` aggregates those equalities into the exact nine-bit
+offset19/20 recurrences, with the offset20 error bound derived from the
+physical selector count. See the [root review and four fresh replays](reviews/current-copy-south2011-lean-root.md).
+No occupation, whole-field alignment or decoded color premise is used by
+these two supporting packets.
 
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
