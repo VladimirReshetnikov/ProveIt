@@ -706,8 +706,131 @@ unknown names. The iterative goal remains active.
 The next-target census corrected several advertised savings before adoption:
 q's single-client minimum-saturation helper adds7 whole-file lines, u's
 first-failure helper saves only2, and t's first-exit alternative adds13.
-The w formal-polynomial `RefinedPair` proof removes chosen complex roots but
-adds3 lines and has no successful maintained-tree compiler replay yet.
+At that checkpoint the w formal-polynomial `RefinedPair` proof removed chosen
+complex roots but added3 lines and had no successful maintained-tree replay.
 These remain possible complexity improvements, with no new validation claim.
 Wang interval/periodicity refactors are deferred while the other session
 is actively extending the surrounding machine and tiling construction.
+
+## Formal polynomial identity for the two-radicand combiner
+
+This continuation starts at `9f35798db4a63c25e435fca14d75931144657d7e`.
+`v_finite_full_static` subsequently ported w's complete
+`patches/refined-pair-algebraic.patch` as `57a5eed4d8`. Injectivity of
+`MvPolynomial.expand 2` proves the formal `core_eq` identity before
+evaluation. This replaces the two chosen complex roots and the cast argument;
+`value_eq` becomes a specialization of a polynomial identity. The old value,
+sign equivalence, sign-product proof and public theorem signatures remain
+unchanged. The complete source grows from83 to86 lines, a three-line cost
+for simpler mathematical prerequisites and the new formal theorem.
+
+Seven final Lean calls pass on the first attempt: target, `JonesSyntax`,
+`ExecutableJones` and `EquationFromRep` clients, existing `CompilerAxioms`,
+old-public comparison and new-core audit. The earlier baseline audit is
+separate. Both old public axiom reports are byte-identical, the new core
+theorem uses the standard three, and all63 existing compiler endpoints print
+only standard axioms. No dependency adjustment or elaboration repair was
+needed. The direct complex-polynomial import is removed; `Complex` remains
+available through transitive imports, so no global dependency-removal claim
+is made. ROOT read the complete final proof and receipts. `intake_e13`
+independently read all86 final lines and the full expand/evaluation contracts,
+returning PASS on the exact source hash.
+
+## Native Pell lower-ratio and odd-index reuse
+
+`intake_e13` adopted only s's `NativePellPower` hunk as `f1949d7be7`.
+The lower estimate specializes the ordinary undoubled result, multiplies
+the strict natural inequality by positive two, then rewrites the original
+doubled coordinate. No ratio, rank or positivity premise changes. All nine
+old headers are unchanged, as is the later source-recovery argument.
+Including the lower HTP import,180 lines become163, removing17 lines.
+
+All nine final calls pass: target, `NativeBinaryScale`,
+`NativePellScaleBounds` and `NativePopulationLower` clients, their four
+existing focused checks including `NativePellPower`, and the nine-public
+axiom audit. The complete old/new reports are byte-identical. The existing
+unused-`hd` warning in `NativeBinaryScale` remains; no target proof repair or
+cache gap arose. `alternate_encoding_research` independently read all163
+final lines and both actual lower-estimate contracts, returning PASS.
+
+The same author adopted k's oddness-only patch as `f3b6ad87d0`.
+`SignedPellResidue.odd_index_of_base_dvd` applies to the classified first
+root using exactly `I ∣ I*u`. It replaces the repeated even-index modular
+contradiction. The unused positive-index intermediate is deleted; all seven
+public theorem statements, sign alternatives and the `hy` premise remain.
+Including the added import,230 lines become210, removing20 lines.
+
+The first target invocation stopped before elaboration because the newly
+imported, unchanged `SignedPellResidue` had no cached object. Building that
+one prerequisite resolved the gap. An audit launched before the target
+refresh read the old cache and is explicitly excluded from final evidence.
+All ten final calls then pass: prerequisite, refreshed target,
+`NativePellBootstrap`, `NativePellFirstIndex` and `NativePellPower` clients,
+four existing focused checks and refreshed seven-public axiom audit.
+The whole final audit equals baseline. The retained `hy` premise now emits
+an unused-variable warning because its dead intermediate was removed;
+neither the API premise nor linter settings were changed. The signed negative
+quotient and sum-residue controls remain. ROOT read the changed proofs and
+actual logs. `alternate_encoding_research` independently read all210 final
+lines, the full shared residue module and underlying Pell index-congruence
+contracts, returning PASS.
+
+## Shared-register pairing projection certificates
+
+`v_finite_full_static` reused the already imported pair-existence helpers in
+the two `RegisterNatPairing` correctness fields, committed as `4fc484d4c8`.
+The two natural witness slots retain the missing pair component first and
+the inequality slack second. There is no new helper or import:160 lines
+become148, removing12 lines. Four final calls pass on the first attempt:
+target, existing `RegisterRelations` client/focused check, thirteen-public
+axiom comparison and complete old-source equality audit. The earlier baseline
+audit is separate, and all thirteen old axiom reports are byte-identical.
+
+The equality audit compiles the actual immutable old source under a separate
+namespace. The kernel accepts `rfl` for both complete relation records,
+both graph records and `program left right` for every parameter. Thus the
+whole program, wire choices, witness layout and graph expression are preserved,
+including41 graph witnesses,238 operations and degree at most4. ROOT read
+both full sources and the complete audit. `alternate_encoding_research`
+independently read all148 final lines and the certificate/finite-witness
+contracts, returning PASS. That reviewer suggested the reuse during the
+census but did not author the implementation or its checks.
+
+## Cyclic rotation and selective support from existing algebra
+
+ROOT ported i's rotation proof as `afbec38df7`: convolution with the single
+impulse at `t` is exactly rotation by `t`, and its word is the required power
+of the radix. The old word/convolution theorem already proves the congruence.
+No digit-size or temporal-alignment hypothesis is added, including at radix
+one or length one. The module shrinks from176 to159 lines, removing17.
+
+ROOT extended i's selective degree idea as `8274c8f6b2`. Standard bounds on
+finite sums of monomials give the kernel degree directly; product/power
+bounds give the row-product degree once. Coefficient vanishing then follows
+from that degree theorem. The two existing public lemmas are reordered to
+share this argument, preserving their statement set. Zero polynomials,
+empty row families, cancellations and unused collisions remain allowed;
+the actual truncated complementary exponents are unchanged. Including the
+new big-operators import,194 lines become176, removing18 with no helper.
+
+All twelve final calls pass on the first attempt: both changed modules,
+four fresh clients (`NativeBooleanRotation`, `NativeCyclicCarryWord`,
+`SelectiveCoefficientBounds`, `NativeQuadraticPositions`), the planned
+uncached `NativeCyclicCarry` prerequisite, four existing focused sources and
+the final22-public axiom comparison. The focused sources are
+`NativeBooleanRotationChecks`, `NativeCyclicCarryWordAudit`,
+`checks/SelectiveCarry` and `checks/NativeQuadraticPositions`. They retain
+Boolean fractional/whole-phase and non-Boolean carry controls, signed packing,
+rejected low blocks and the actual native top-exponent bound. All22 old
+axiom reports are byte-identical; all logs are free of warnings/errors.
+`intake_e13` independently read all335 final lines and the full convolution,
+degree and zero-coefficient contracts, returning PASS on both final hashes.
+
+Together the six source commits reduce1023 lines to942, removing81 net lines
+after fully charging the three-line formal-identity increase. The reviewed
+series now removes3097 net lines. ROOT verifies the unchanged set of65 old
+public headers, allowing the intentional selective-lemma reordering. Nineteen
+definition bodies remain byte-identical; the two changed proof-record fields
+retain identical data fields and the complete records are kernel-equal as
+described above. Equation artifacts are unchanged. The iterative goal remains
+active.
