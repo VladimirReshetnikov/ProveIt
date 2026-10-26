@@ -1,0 +1,86 @@
+{
+  "base_commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "lean_toolchain": "leanprover/lean4:v4.32.0",
+  "mathlib_revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "full_project_rebuild": false,
+  "repository_modified": false,
+  "checks": [
+    {
+      "artifact": "lean/checked/ScannerCore.lean",
+      "status": "KERNEL_CHECKED",
+      "sha256": "71b98f8089b3c22760e5cde861081fb070a4b9cee770f4f2591f613abcab9037",
+      "receipt": "evidence/core-replay/verification.json"
+    },
+    {
+      "artifact": "lean/checked/ScannerAudit.lean",
+      "status": "KERNEL_CHECKED",
+      "sha256": "7c7427da4fcfc5d894453eb6cba951f14c7b81f84cc10660fd77ccdd6b5fba86",
+      "receipt": "evidence/core-replay/verification.json"
+    },
+    {
+      "artifact": "lean/checked/LookupCleanup.lean",
+      "status": "KERNEL_CHECKED",
+      "sha256": "c4bd7010a1d149d8a48f40a4fc83825e1dac0fea1a839e7534c13c499695f851",
+      "receipt": "evidence/core-replay/verification.json"
+    },
+    {
+      "artifact": "lean/checked/HalfRadix.lean",
+      "status": "KERNEL_CHECKED",
+      "sha256": "d3038b56892a7a9b8e24ff0ae91518579c6536b2964ce411f57c6ccb5b4d308d",
+      "receipt": "evidence/core-replay/verification.json"
+    },
+    {
+      "artifact": "lean/checked/AssignmentTransportCore.lean",
+      "status": "KERNEL_CHECKED",
+      "sha256": "cdd0a327580fbccaf2a93fa30964f12818407495ea478cb4c37e87da218bcfa1",
+      "receipt": "evidence/core-replay/verification.json"
+    },
+    {
+      "artifact": "lean/checked/RowOperations.lean",
+      "status": "KERNEL_CHECKED",
+      "sha256": "b14cc5b21e6a24a269b21758121c0ef407d7171709d903d7e5519393256bfc72",
+      "receipt": "evidence/arithmetic/RowOperations.verification.json"
+    },
+    {
+      "artifact": "scripts/inspect_shared_tail.py",
+      "status": "EXACT_SOURCE_DATA_CHECK_PASS",
+      "receipt": "evidence/circuits/shared-tail-replay.json",
+      "scope": "four pinned generated Lean files match;99node suffix equality after explicit renaming; not a Lean block semantics theorem"
+    },
+    {
+      "artifact": "patches/lookup-cleanup.patch",
+      "status": "APPLIES_CLEANLY_AND_REPLACEMENT_TERMS_CHECKED",
+      "full_module_replay": false,
+      "net_lines_removed": 40
+    },
+    {
+      "artifact": "patches/split-register-cuts.patch",
+      "status": "SOURCE_TRANSFORMATION_CHECKED_AND_APPLIES_CLEANLY",
+      "full_module_replay": false,
+      "generated_lean_bytes_removed": 844
+    },
+    {
+      "artifact": "patches/coefficient-refactoring.patch",
+      "status": "UNVERIFIED_CANDIDATE_APPLIES_CLEANLY",
+      "net_lines_removed_candidates": {
+        "NativeCoefficientBounds.lean": 549,
+        "NativeNinePolynomial52.lean": 303
+      },
+      "receipt": "evidence/arithmetic/verification.json"
+    },
+    {
+      "artifact": "lean/candidates/AssignmentTransport.lean",
+      "status": "NOT_VERIFIED_RESOURCE_LIMIT",
+      "receipt": "evidence/circuits/VERIFICATION.json"
+    },
+    {
+      "artifact": "lean/candidates/CircuitCoreRefactors.lean",
+      "status": "NOT_REPLAYED"
+    },
+    {
+      "artifact": "lean/candidates/DAGInvariant.lean",
+      "status": "NOT_REPLAYED"
+    }
+  ],
+  "no_global_savings_or_speedup_claim": true
+}

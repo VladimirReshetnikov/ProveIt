@@ -1,0 +1,29 @@
+{
+  "status": "source-inspected, not compiler-validated",
+  "records": [
+    {
+      "path": "Mathlib/Algebra/Group/Int/Units.lean",
+      "revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+      "source_url": "https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/Group/Int/Units.lean",
+      "excerpts": [
+        {
+          "start_line": 45,
+          "end_line": 52,
+          "text": "lemma isUnit_iff : IsUnit u ↔ u = 1 ∨ u = -1 := by\n  refine ⟨fun h ↦ isUnit_eq_one_or h, fun h ↦ ?_⟩\n  rcases h with (rfl | rfl)\n  · exact isUnit_one\n  · exact ⟨⟨-1, -1, by decide, by decide⟩, rfl⟩\n\nlemma eq_one_or_neg_one_of_mul_eq_one (h : u * v = 1) : u = 1 ∨ u = -1 :=\n  isUnit_iff.1 (.of_mul_eq_one v h)"
+        }
+      ]
+    },
+    {
+      "path": "src/Init/Data/List/Lemmas.lean",
+      "revision": "v4.32.0",
+      "source_url": "https://github.com/leanprover/lean4/blob/v4.32.0/src/Init/Data/List/Lemmas.lean",
+      "excerpts": [
+        {
+          "start_line": 479,
+          "end_line": 486,
+          "text": "theorem mem_of_getElem? {l : List α} {i : Nat} {a : α} (e : l[i]? = some a) : a ∈ l :=\n  let ⟨_, e⟩ := getElem?_eq_some_iff.1 e; e ▸ getElem_mem ..\n\ntheorem mem_iff_getElem {a} {l : List α} : a ∈ l ↔ ∃ (i : Nat) (h : i < l.length), l[i]'h = a :=\n  ⟨getElem_of_mem, fun ⟨_, _, e⟩ => e ▸ getElem_mem ..⟩\n\ntheorem mem_iff_getElem? {a} {l : List α} : a ∈ l ↔ ∃ i : Nat, l[i]? = some a := by\n  simp [getElem?_eq_some_iff, mem_iff_getElem]"
+        }
+      ]
+    }
+  ]
+}

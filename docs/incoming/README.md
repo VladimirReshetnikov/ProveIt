@@ -14,9 +14,21 @@ a report at one of the destinations of section 2.
 
 ## DiophantineConsistency proof-simplification packets
 
-`diophantine-lean-proof-simplification-2026-10-26.zip` (arrival `151a732b91`) is placed under
-[research/lean-proof-simplification-20261026/](../../Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/PLACEMENT.md)
-and retired here. Adopted ideas are tracked in that directory's `ADOPTION.md`.
+Six proof-simplification packets of 26 October 2026, all reviewing commit `60e9c5d620`, are placed under
+`Computability/DiophantineConsistency/research/` and retired here:
+
+| Archive | Arrival | Placement |
+|---|---|---|
+| `diophantine-lean-proof-simplification-2026-10-26.zip` | `151a732b91` | [lean-proof-simplification-20261026](../../Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/PLACEMENT.md) |
+| `diophantine-lean-simplification-2026-10-26.zip` | `e73fa2e916` | [lean-proof-simplification-20261026b](../../Computability/DiophantineConsistency/research/lean-proof-simplification-20261026b/PLACEMENT.md) |
+| `lean-proof-simplification-2026-10-26.zip` | `5cec32d593` | [lean-proof-simplification-20261026c](../../Computability/DiophantineConsistency/research/lean-proof-simplification-20261026c/PLACEMENT.md) |
+| `lean-proof-simplification-2026-10-26 (2).zip` | `3eba4845d8` | [lean-proof-simplification-20261026d](../../Computability/DiophantineConsistency/research/lean-proof-simplification-20261026d/PLACEMENT.md) |
+| `Lean_Proof_Simplification_2026-10-26.zip` | `b310142330` | [lean-proof-simplification-20261026e](../../Computability/DiophantineConsistency/research/lean-proof-simplification-20261026e/PLACEMENT.md) |
+| `ProveIt_Lean_Proof_Simplification_2026-10-26.zip` | `b310142330` | [lean-proof-simplification-20261026f](../../Computability/DiophantineConsistency/research/lean-proof-simplification-20261026f/PLACEMENT.md) |
+
+Members byte-identical to a Git blob of the reviewed commit (the bundled source snapshots) are listed in
+each placement's `OMITTED.tsv` instead of being copied. Adopted ideas are tracked in
+[ADOPTION.md](../../Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/ADOPTION.md).
 
 ## Current Lean proof checkpoint
 

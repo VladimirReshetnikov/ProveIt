@@ -1,0 +1,300 @@
+# Arithmetic and finite-certificate proof simplification
+
+Snapshot: ProveIt commit `60e9c5d620c6c387d932876cfa2d9376f64ea56c`.
+All source paths below are relative to
+`Computability/DiophantineConsistency/Lean/DiophantineConsistency/`.
+This review is source based. Prototype verification is explicitly scoped below;
+it is not a replay of the complete DiophantineConsistency development.
+
+## 1. Replace repeated coefficient-envelope proofs by one finite-row proof
+
+**Target:** `NativeCoefficientBounds.lean:57-628`.
+
+The source contains a private `abs_ite_le`, 22 `rowEnvelope_0` through
+`rowEnvelope_21` lemmas, and a 22-way dispatcher
+`abs_rowCoefficient_le_envelope`. There are exactly 158 occurrences of the
+identical proof leaf
+
+```lean
+rw [abs_le]; constructor <;>
+  linarith only [h0, h1, h2, h3, hsq, hmf, hkp]
+```
+
+Every row establishes the same three nonnegative monomials and then repeats
+an explicit copy of the coefficient function from
+`NativeQuadraticParent.rowCoefficient`. This is direct proof-schema repetition.
+The coefficient data itself must remain unchanged.
+
+The proposed replacement is:
+
+```lean
+theorem abs_rowCoefficient_le_envelope (ports : Fin 4 → ℤ)
+    (h0 : 0 ≤ ports 0) (h1 : 0 ≤ ports 1)
+    (h2 : 0 ≤ ports 2) (h3 : 0 ≤ ports 3)
+    (k : Fin 22) (p : PairIndex 31) :
+    |rowCoefficient ports k p| ≤ envelope ports := by
+  have hsq := sq_nonneg (ports 0)
+  have hmf := mul_nonneg h3 h0
+  have hkp := mul_nonneg h1 h0
+  unfold envelope
+  fin_cases k <;>
+    dsimp only [rowCoefficient, Fin.reduceFinMk, Matrix.cons_val]
+  all_goals repeat' apply abs_ite_le
+  all_goals
+    rw [abs_le]
+    constructor <;> linarith only [h0, h1, h2, h3, hsq, hmf, hkp]
+```
+
+The current candidate full file `NativeCoefficientBounds.refactored.lean`
+retains all public statements and all later proofs and reduces 679 physical
+lines to 130, a reduction of 549 lines. This is a source-size measurement,
+not a build-time or proof-term-size measurement. The final isolated-data compiler attempt was stopped by its 90-second
+timeout without diagnostics, so this remains an unverified integration
+candidate. No full downstream build or validated 549-line removal is
+claimed.
+
+The reduction order matters: select the concrete row and reduce the vector
+projection before decomposing the conditional envelope goals. The existing small
+`abs_ite_le` helper is retained; applying it recursively avoids building
+case hypotheses for every pair equality. In Lean 4.32,
+`Matrix.cons_val` is an available definitional simplification procedure for
+vector notation. A bare unfolding of the entire table is not a substitute
+for selecting its row first. Keep the arithmetic solver restricted to the
+seven relevant facts rather than passing all source-system hypotheses.
+
+The constant envelope preserves the linear dependence on the large
+transport port. Replacing it with a coarser squared envelope might make a
+proof easier while invalidating the published radix bound; that is not an
+acceptable simplification.
+
+## 2. Collapse the 22 coefficient homomorphism proofs
+
+**Target:** `NativeNinePolynomial52.lean:93-404`.
+
+The file repeats two explicit copies of each row's conditional expression
+in `mapRowCoefficient0` through `mapRowCoefficient21`, then dispatches with
+`map_rowCoefficient`. All 22 proofs end with the same list of ring-homomorphism
+simp lemmas.
+
+A single theorem with the existing public statement can use the same
+controlled row reduction as above, followed by
+
+```lean
+simp only [mapIte, map_add, map_sub, map_mul, map_pow,
+  map_neg, map_ofNat, map_one, map_zero]
+```
+
+`MapRowCoefficient.lean` contains the candidate, retaining the existing
+RingHom-specific `mapIte` helper. The corresponding full-file proposal is
+`NativeNinePolynomial52.refactored.lean`: 456 to 153 physical lines, or
+303 lines removed. Both replacement proofs remain unverified because
+the combined isolated check did not finish within its timeout. The fixed coefficient
+functions and all four coefficient ports are still present. The simplification
+does not change the polynomial, restrict the coefficient rings, or select a
+polynomial by choice.
+
+For a larger follow-up, the repository already has suitable syntax:
+`Expr.evalRing` in `WeightedExpressionDegree.lean:10-15` and
+`ArithmeticDAG.Node.eval_map`, `run_map`, and `value_map`. The missing generic
+`Expr.map_evalRing` is a five-constructor induction. Representing each small
+coefficient recipe by the existing `Expr (Fin 4)` would make its naturality
+an application of this theorem. Do not introduce an additional arithmetic
+AST just to recover a theorem already implicit in these implementations.
+Moving generic ring interpretation out of the degree-specific module would
+also make its intended role clearer. For the large source powers, preserve
+DAG sharing rather than expanding `Expr.pow` into a huge tree.
+
+Neither the bounds file nor the map file has a checked-in generator identified
+by this review. `NativeQuadraticParent.lean` itself explicitly identifies
+`scripts/generate_native_quadratic_parent.py`; do not label every repetitive
+file generated merely because it looks mechanical.
+
+## 3. Express row transformations as elementary row operations
+
+**Target:** `SplitCertificate59.lean:175-451`, especially
+`transformed_zero_iff`; generated by
+`tools/generate_split_certificate59.py:310-347`.
+
+Only two source rows are changed:
+
+\[
+\rho_{13}=r_{13}+r_1,\qquad \rho_{14}=r_{14}+r_2.
+\]
+
+Nevertheless, the source contains 22 private row-equality proofs and two
+22-way proof branches for simultaneous vanishing. A generic operation
+
+```lean
+def addAt (dst src : ι) (r : ι → R) (k : ι) : R :=
+  if k = dst then r dst + r src else r k
+```
+
+preserves the proposition `∀ k, r k = 0` when `dst ≠ src`. The supplied
+`RowOperations.lean` proves this for any `AddZeroClass R`, without even
+requiring a ring. Its mathematical reason is simple: the source row is
+unchanged and hence is zero; the changed destination row then equals its
+original value.
+
+The concrete migration is to prove one function identity
+
+```lean
+transformedRows ports x =
+  addAt 14 2 (addAt 13 1 (sourceRows ports x))
+```
+
+and apply the generic equivalence twice. This identity must still be checked
+against the independently written literal transformed table. Defining the
+source table to agree with its encoding would remove an essential
+verification obligation. The concrete identity is a proposal here; the
+generic helper is separately checked.
+
+The following `delivered_zero_iff` also has a standard-library replacement:
+`Function.Surjective.forall` states exactly invariance of a universal
+predicate under surjective reindexing. With the appropriate predicate,
+`rowOrder_surjective.forall.symm` composes with `transformed_zero_iff`.
+No new permutation proof is needed.
+
+Because this family is generated, change the generator together with the
+emitted file. An incremental patch can first replace the large equivalence
+proof while retaining its old local row identities, then consolidate the
+literal table identity separately.
+
+## 4. Use one exact half-radix identity instead of finite digit cases
+
+**Target:** `NativeCyclicRotation.lean:110-129` and `:159-165`.
+
+For `s > 0`, natural-number quotient and remainder laws give
+
+\[
+(sa)\bmod(2s)=s(a\bmod 2),\qquad
+\left\lfloor\frac{sb}{2s}\right\rfloor=\lfloor b/2\rfloor.
+\]
+
+Equivalently, the shifted digit is exactly
+
+\[
+\operatorname{step}(s,a,b)=s(a\bmod 2)+\lfloor b/2\rfloor.
+\]
+
+The executable Lean statement in `HalfRadix.lean` is unambiguous:
+
+```lean
+step s a b = s * (a % 2) + b / 2
+```
+
+It follows that `step s a b ≤ s+1` whenever `b≤3`, and, if `s` is even,
+`step s a b % 2 = b/2`. Neither consequence needs an upper bound on the
+current digit `a`. The original bound assumes a global upper bound on both
+the current and predecessor digits; its statement remains a valid wrapper.
+
+`HalfRadix.lean` is checked with Lean 4.32 using core imports only, with no
+`sorry`, custom axiom, or native-decision trust assumption. The exact formula
+uses `Nat.mul_mod_mul_left` and `Nat.mul_div_mul_left`. The bound and parity
+proofs are elementary consequences verified by Lean. The original API is
+recovered by taking `a = c k` and `b = c (k - 1)`.
+
+This most directly improves the legacy radix-89, digits-at-most-three
+route. The current Boolean route already has the stronger general theorem
+`NativeBooleanRotation.rotation_eq_scaled`; reuse that theorem first instead
+of forcing the half-radix argument onto current length-2011 proofs.
+
+## 5. Descend modular information through divisibility
+
+**Target:** `CurrentEarlyPadding2011.reflected_mod_sixteen:99-108` versus
+`CurrentClause2011.reflected_weight_mod:122-131`.
+
+Both inspect the same coefficient `2 * CurrentKernel2011.weight e` and the
+same selector/nonselector partition. The clause theorem proves the result
+modulo 2048; the early-padding theorem reproves it modulo 16. Since
+`16 ∣ 2048`, `Nat.ModEq.of_dvd` should derive the latter directly from the
+former. The early-padding file already imports the clause file, so no
+import cycle or new dependency is needed.
+
+A candidate replacement body is
+
+```lean
+exact (CurrentClause2011.reflected_weight_mod e).of_dvd
+  (by decide : 16 ∣ 2048)
+```
+
+The two private `selectorUnit` functions have the same defining equations;
+Lean should recognize them definitionally, or they can be moved to one
+shared public definition. This concrete wrapper has been source-inspected
+but not replayed with the full current import chain here. The general lesson
+is to retain the strongest useful congruence and derive weaker moduli through
+divisibility, without repeating finite coefficient enumeration.
+
+## 6. Normalize Nat/Int transitions at explicit semantic boundaries
+
+**Targets:** `NativePellFirstIndex.source_first_index_exact:40-92`,
+`source_first_pair:103-125`, and the source-window family.
+
+Several proofs repeat a local name `R := (nativeRank x).toNat`, a proof
+`(R : ℤ) = nativeRank x`, and conversions of rank inequalities between
+natural numbers and integers. Establish these once in a source-facts API
+whose constructor is proved from the actual positive source rows. Its fields
+can include nonnegativity, the cast equality, and the lower bounds that are
+already consequences of the source.
+
+The project already demonstrates this style in
+`CurrentPolynomialWindow2011.Facts:26-66`: its constructor derives a coherent
+source, cyclic window, carries, and masks from an actual polynomial zero.
+Extend this existing pattern where it removes repeated derivations. Keep
+small theorems taking only the facts they really need; do not force every
+helper to import the entire current polynomial endpoint.
+
+For natural subtraction, a normalization lemma must retain its ordering
+premise. In particular, casting `a-b` requires `b≤a`; `ring` is appropriate
+after that premise is used, not before. Do not replace a natural subtraction
+by an integer subtraction without proving this bridge. The current
+`source_eq_of_remainder_le` and `source_eq_wrapped` already handle this
+correctly; their exact full-modulus semantics should be preserved.
+
+## 7. A reusable symbolic majorant can go beyond tactic compression
+
+The envelope proof's seven relevant monomials form a nonnegative basis:
+`β²`, `MF*β`, `MC`, `MF`, `β`, `K*β`, `K`, together with a constant term.
+A coefficient is an integer linear combination of these basis values.
+Prove once that componentwise bounds on the absolute coefficient vector
+imply a bound by the corresponding positive linear combination. Then
+checking an envelope reduces to checking a finite table of small integers.
+
+This is a medium-term design proposal, not an implemented result. It can
+share more work across `NativeCoefficientBounds`, `SplitCoefficientBounds`,
+and later parameter packages than a compact tactic script alone. Preserve
+the original symbolic dependence, especially linearity in `K`; do not
+replace the sharp envelope by a convenient but oversized bound.
+
+## 8. Keep computational finite proofs as certificates with explicit bindings
+
+`CurrentKernel2011` deliberately sums finite transition weights in blocks
+of 16 and then composes the block sums. Its comments explain that it avoids
+expanding the large sorting/floor-rank computation. This is a useful
+architecture to keep, even though a single `decide` looks shorter in source.
+A generic block-sum theorem can remove repeated plumbing, but its concrete
+input list, block totals, and final checked equality must remain.
+
+Similarly, `CurrentClause2011`, `CurrentEarlyPadding2011`, and
+`CurrentFieldOffsets2011` carefully derive count and phase information
+before semantic tile decoding. Refactoring must not package a conclusion
+such as one-hot occupation or phase alignment as an input to an earlier
+proof. Keep raw arithmetic facts, decoded labels, and the remaining
+machine-language link distinguishable in the type-level interfaces.
+
+## Verification and reproducibility
+
+- `HalfRadix.lean` and `RowOperations.lean` contain independently checked
+  reusable lemmas and axiom audits.
+- `IsolatedCoefficientChecks.lean` contains byte-for-byte extracted
+  `rowCoefficient` and `envelope` definitions; `extraction_manifest.json`
+  records their source locations and SHA-256 hashes.
+- `coefficient_verification.json` and `IsolatedCoefficientChecks.log`
+  record the 90-second timeout of the final scoped attempt. This is an
+  incomplete check, not evidence that the theorem is false or its tactics
+  are intrinsically slow.
+- `NativeCoefficientBounds.refactored.lean` and `MapRowCoefficient.lean`
+  are integration candidates with preserved public mathematical statements.
+- No full-repository build, end-to-end ZFC equivalence, or compile-time
+  speedup is claimed. Resource contention prevents useful timing comparison;
+  a bare import probe exceeded a 1 GiB cap, so that failure cannot be
+  attributed to the replacement tactics.

@@ -1,0 +1,72 @@
+Independent source review of NativeRefactorCore.lean
+Reviewer: annotated/object-layer review agent
+Compared against ProveIt 60e9c5d620c6c387d932876cfa2d9376f64ea56c
+No new build performed; this is a source/interface review.
+
+Conclusion: no hidden hypothesis strengthening or invalid generalization found
+in the half-radix lemmas or CarryCertificate.recurrence. The generic lemmas are
+appropriate helper interfaces. They remain proposals until the existing client
+theorems are instantiated and replayed.
+
+1. halfRadix_exact (prototype lines 13-16)
+   The identity follows by factoring the same positive s out of both the
+   remainder and quotient. The condition 0 < s is necessary for the quotient
+   cancellation: at s = 0 the proposed right side would still contain b / 2.
+   The prototype states that condition explicitly. No digit bound is needed.
+
+2. halfRadix_bound (19-24)
+   This is a valid strengthening of NativeCyclicRotation.shiftDigits_half_bound
+   (original lines 100-116): instantiate a = c k and b = c (k - 1). The original
+   hypothesis hc supplies b <= 3. The current digit a need not be bounded,
+   because a % 2 <= 1 for every natural a. The bound s + 1 is unchanged.
+   No cyclic-size, NeZero, or phase-alignment hypothesis is added.
+
+3. halfRadix_parity (27-32)
+   Valid: even s removes the first term modulo 2; b <= 3 ensures b / 2 < 2,
+   which is exactly why the final remainder can be removed. For the original
+   shiftDigits_half_parity_89 (160-165), take s = 2^88, a = c k, b = c (k - 1).
+   Positivity and evenness follow numerically, and 2 * 2^88 = 2^89 is the only
+   radix normalization needed. The new evenness premise is not an extra
+   assumption in the original fixed-radix theorem; it is already true of its
+   concrete scale. A wrapper should discharge it rather than expose it to
+   existing callers. The current 2011 window uses radix 2^47, so analogous use
+   there requires s = 2^46; do not silently substitute the old 89-bit constants.
+
+4. quotient_of_decomposition / remainder_of_decomposition (51-61)
+   digit < radix supplies radix > 0, so there is no missing zero-radix case.
+   The equation total = digit + radix * carry fixes both quotient and remainder
+   by the usual natural division identities. These lemmas do not prove that a
+   decomposition exists, nor that different cyclic carry assignments coincide.
+
+5. CarryCertificate.recurrence (65-75)
+   Its assumptions are a subset/repackaging of the original Facts fields:
+     radix := CurrentKernel2011.radix
+     budget := 57
+     raw i := convolution folded c i + binaryRotation 47 W c i
+     prev i := i - 1
+     carry := k
+   Facts.digit_bound (line 59) and Facts.carry_equation (63-66) imply the exact
+   existing Facts.carry_recurrence (60-62). Facts.carry_bound supplies carry_le
+   if the nested certificate is used, but is not needed for recurrence itself.
+   Therefore dropping the stored recurrence and restoring it as a theorem
+   projection is mathematically sound. The abstraction over arbitrary I adds no
+   injectivity, finiteness, nonemptiness, or cyclic-permutation assumption.
+
+Integration cautions:
+- Preserve the theorem name/accessor Facts.carry_recurrence so downstream code
+  can keep using f.carry_recurrence i after the field becomes a derived theorem.
+- The existing endpoint polynomial_zero_window has positional record assembly
+  at lines 140-141. Removing or nesting fields requires updating that assembly;
+  named fields would make future changes safer.
+- Do not make CarryCertificate an added hypothesis of polynomial_zero_window.
+  It must still be constructed from the actual positive polynomial zero using
+  the existing source_carries extraction. Otherwise the endpoint would be
+  weakened by moving its conclusion into a premise.
+- Keep digit bounds and the global word/mask/source facts. The quotient lemma
+  only makes the recurrence field redundant; it does not replace normalization
+  existence, mask semantics, or the entire Facts record.
+- Claims should concern redundancy of the proof field and source reuse, not
+  a reduction in polynomial coordinates or computational witness size.
+
+Secondary check: forall_lt_by_chunks is valid without r < B. Its tail hypothesis
+explicitly covers all j < r, so allowing a longer tail does not leave a gap.

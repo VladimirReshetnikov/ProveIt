@@ -1,0 +1,144 @@
+# Annotated checkers and object-level proofs: refactoring audit
+
+Baseline: ProveIt commit `60e9c5d620c6c387d932876cfa2d9376f64ea56c`, Lean `v4.32.0`, mathlib commit `81a5d257c8e410db227a6665ed08f64fea08e997`. All source anchors below are under `Computability/DiophantineConsistency/Lean/DiophantineConsistency/` unless stated otherwise.
+
+## 1. Immediate small patch: use existing list facts
+
+The archive candidate `lookup-cleanup.patch` replaces seven inductive proofs in five files without changing any theorem statement, definition, supplied program, node count, or public name. The net change is **40 physical source lines removed**.
+
+| Target | Baseline lines | Replacement |
+|---|---:|---|
+| `AnnotatedRename.lookup_mem` | 110–117 | `exact List.mem_of_getElem? h` |
+| `AnnotatedBound.lookup_mem` | 50–57 | same |
+| `AnnotatedProofChecker.mem_of_lookup` | 177–187 | same |
+| `AnnotatedRuleSide.lookup_mem` | 18–25 | same |
+| `AnnotatedAssumption.lookup_mem` | 40–47 | same |
+| `AnnotatedRuleSide.exists_lookup` | 27–35 | `exact List.getElem?_of_mem h` |
+| `AnnotatedAssumption.exists_lookup` | 49–57 | same |
+
+Both library lemmas are in the exact toolchain's `Init/Data/List/Lemmas.lean`, at lines 469 and 479. `LookupCleanup.lean` kernel-checks both polymorphic replacement statements with no project assumptions. Both depend only on `propext` according to `#print axioms`. The `List.getElem?_of_mem` form is preferable here to `(List.mem_iff_getElem?).mp`: the latter happens to include `Quot.sound` in its dependency closure in this toolchain, while the direct lemma does not.
+
+`git apply --check` succeeds against the pinned repository. The full five patched modules have **not** been rebuilt. The scope of evidence is exact polymorphic statement checking plus patch applicability, not an integration build. This is a modest, genuinely measured reduction; do not extrapolate it to an overall percentage.
+
+## 2. Consolidate the scanner proof pattern
+
+Five modules define the same `fuel.rec initial (fun _ state => step state)` iterator and separately prove `scan_zero`, `scan_succ`, and `scan_done`:
+
+| Family | Iterator lemma block |
+|---|---:|
+| `AnnotatedRenameScan` | 34–55 |
+| `AnnotatedBoundScan` | 30–51 |
+| `AnnotatedLineScan` | 35–54 |
+| `AnnotatedContext` | 100–119 |
+| `AnnotatedAxiomContext` | 32–50 |
+
+These 15 proof bodies contain **72 physical lines**, excluding signatures. They express generic iteration facts. Mathlib already provides `Function.iterate_succ_apply`, `Function.iterate_fixed`, and `Function.iterate_succ_apply'` in `Mathlib/Logic/Function/Iterate.lean` (lines 65, 91, 174). Production should reuse them after proving one bridge for the current `Nat.rec` convention, or use a small prelude-only helper matching that convention exactly. The supplied `ScannerCore.lean` implements the latter so its proof does not depend on obtaining the whole project build.
+
+The more useful abstraction goes beyond those small lemmas. The following simulation appears repeatedly:
+
+* `AnnotatedRenameScan.scan_table`, lines 71–87;
+* `AnnotatedBoundScan.scan_table`, lines 67–83;
+* `AnnotatedLineScan.scan_list`, lines 135–159;
+* `AnnotatedAxiomContext.scan_list`, lines 130–151.
+
+All four consume one encoded list cell per step, move to an updated history when validation succeeds, absorb rejection at zero, and stop changing after the list is exhausted. `ScannerCore.Encoding` isolates precisely three obligations for each concrete encoding:
+
+1. the rejecting state is fixed;
+2. the encoded empty-list state is fixed;
+3. the step on an encoded cons agrees with a supplied typed transition `next : Row -> History -> Option History`.
+
+The proved theorem is:
+
+```lean
+scan_run (e : Encoding next step) (rows : List A) (history : H)
+    (fuel : Nat) (enough : rows.length ≤ fuel) :
+  iterate step fuel (e.state rows history) = e.result (run next rows history)
+```
+
+This lets the row-specific `step_cons` and validator correctness theorem retain the mathematical content, while one induction handles list consumption, sufficient fuel, rejection, and the terminal state. Existing numeric definitions need not change; a bridge to the generic `run` or a variant of `Encoding` carrying the existing runner equations suffices. The file has not yet been integrated, so no net source reduction or runtime improvement is claimed for this framework. Count helper code and adapters as well as removed inductions when evaluating the migration.
+
+The generic core is **kernel-checked with Lean 4.32.0**. Its seven theorems all have an empty axiom dependency list. There is no `sorry`, added axiom, `native_decide`, or custom evaluator.
+
+### Preserve raw-input soundness
+
+`scan_run` is about encoded typed inputs. It does not itself establish correctness for arbitrary natural codes. The current project carefully proves that stronger fact separately, especially in `AnnotatedLineScan.scan_sound` (58–86), `AnnotatedAxiomContext.scan_sound` (53–85), and `AnnotatedContext.scan_sound` (122–145). Keep that distinction.
+
+For LineScan and AxiomContext, use the generic forward iteration invariant
+
+```text
+P(state) := state = reject OR
+  there exist a remaining raw code and a genuine, semantically good history
+  whose encoding is state.
+```
+
+The checker-specific local soundness theorem supplies the one-step preservation proof. `ScannerCore.iterate_invariant` supplies the induction. For Context, where the step consumes two sides of a relation, use the checked `iterate_preimage` theorem: if `P(step s)` implies `P(s)`, terminal validity pulls back along any fuel bound. Do not replace these all-code statements with claims only about successfully parsed syntax.
+
+## 3. Share typed execution and proof-fragment composition
+
+The duplication starts before numeric encoding. Compare:
+
+* `AnnotatedRename.lean`, `run`, `run_append`, `run_sound`, `Produces`, `Produces.append`, `Produces.step`, lines 192–235;
+* `AnnotatedBound.lean`, the same pattern, lines 132–175;
+* `AnnotatedProofChecker.lean`, corresponding definitions and lemmas, lines 201–250.
+
+They differ mainly in the row validator, the semantic predicate on accepted outputs, and the function selecting the new history entry. A generic `run next` plus a one-step invariant proves all the repeated `run_sound` inductions; `ScannerCore.run_invariant` and `run_append` are checked versions of these two general facts.
+
+The fragment predicate `Produces p h := forall seen, run p seen = some (h ++ seen)` has an identical append law in all three families. Factor it in a separate, small list-history layer rather than putting syntax-specific assumptions in the scanner core. Preserve the **reversed order of histories**: executing `p ++ q` prepends `hq ++ hp`, not `hp ++ hq`. Backward parent references depend on this order. This is an easy place for an aesthetically cleaner API to change behavior accidentally.
+
+The per-rule completeness constructions (`ready_binary`, `ready_unary`, `fragment2`, `fragment3`) can then use a single certified fragment-composition interface. Start by eliminating the duplicated infrastructure; do not encode the seventeen original rules into a new calculus solely to save lines.
+
+## 4. Keep program data while sharing the primitive-recursion combinator
+
+`AnnotatedBoundScan.P`, `AnnotatedLineScan.P`, and `AnnotatedAxiomContext.P` repeat `scannerBase`, `scannerBaseProgram`, `scannerRecursion`, `scannerRecursionProgram`, and `scannerProgram`. The key blocks are BoundScan 144–158, LineScan 231–245, AxiomContext 218–232. Their base history differs (zero for judgment tables, one for the encoded empty axiom context), and the chosen fuel projection also differs.
+
+A generic `iterateProgram` should accept supplied base/step/fuel programs and build their `.prec` composition once. Its correctness proof can reuse `Realizes.prec` and the iterator bridge. This is a program-construction refactor, not merely a proof refactor: retain or reprove exact `.val` equality and node-count equalities before claiming the same concrete supplied checker. A bare proof that a function is primitive recursive would discard the data needed for later polynomial and size constructions.
+
+The existing `ScalarPRCode.Realizes`, `.comp`, `.pair`, `.prec`, and `.ofEq` are already the right basis (`ScalarPRCode.lean`, lines 48–91). Do not propose rebuilding that existing abstraction.
+
+## 5. Extract object-model proof wrappers; generalize the arity of local transport
+
+The exact string `completeness_inf_context ZFCax_s []` occurs **26 times in 17 `Object*.lean` files**. The repeated shell obtains a model, extracts `ZFAxioms`, invokes `seal_valid`, and finally performs a local semantic argument. Good targets include:
+
+* `ObjectNaturalExpression.zfc_proves_total` and `.zfc_proves_unique`, lines 182–202;
+* `ObjectCodeClosure` lines 153–167;
+* `ObjectCodeBound` lines 458–472;
+* `ObjectCodeSeal` lines 93–106;
+* `ObjectPairingGraph` lines 92–117;
+* `ObjectResidualSquares.zfc_proves_residual_conjunction`, lines 170–182.
+
+A proved wrapper for obtaining `BProv ZFCax_s [] (sealF phi)` from validity of `phi` in every relevant model would remove the same four setup lines repeatedly. Keep the model-universe quantification and the existing completeness theorem explicit. It is a logical transport lemma, not permission to infer internal ZFC statements from an arbitrary external theorem about standard naturals.
+
+A particularly small local improvement is in `ObjectQuarticCompiler.zfc_proves_compiler`, lines 106–116. The local helper
+
+```lean
+have closed (f : Expr (Fin m)) : ...
+```
+
+forces a duplicate `closedTarget` proof because the compiled expression has a different arity. Generalize it to
+
+```lean
+have closed {n : ℕ} (f : Expr (Fin n)) : ...
+```
+
+and use it for both `e` and `compiledExpression e`. This preserves the theorem and removes an entire repeated environment-invariance argument. The generalized helper body uses the same `ObjectPolynomial.sat_noZeroForm_iff` and `Sat_sentence_inv` lemmas. This local edit has been source-inspected but not compiled in the project.
+
+## 6. Build on the algebraic interface that already exists
+
+The repository already proves that the entire internal omega forms a commutative semiring (`ObjectOmegaSemiring`), adds an order/cancellation layer (`ObjectNaturalOrder`), and provides semiring gate/compiler semantics (`GatesSemiring`, `QuarticSemiring`). A proposal to add those interfaces from scratch would miss the current state of the project.
+
+The next consolidation opportunity is to move model-independent downstream statements into the existing algebraic layer. For example, `ObjectQuadraticSystem.conjunction_rows_zero_iff` (22–32) repeats the finite-index argument in `QuadraticRegisterComposition.System.conjunction_holds` (33–46), and the instantiation proofs have the same renaming/composition structure. A generic predicate over a family of rows, together with a general evaluation/renaming lemma, can serve both standard-natural assignments and arbitrary internal-natural assignments.
+
+`ObjectResidualSquares` similarly contains an algebraic argument about a cancellative, canonically ordered semiring with no zero divisors, after the necessary model-specific facts are already installed. Its proof is not allowed to identify internal omega with external `Nat`. Also, do not import `ObjectNaturalOrderedSemiring` directly into it: the current dependency goes through `ObjectNaturalDiscrete` back to `ObjectResidualSquares`, so that would introduce a cycle. Extract a lower-level algebraic lemma with only the needed assumptions, or reorganize the dependency graph deliberately.
+
+Finally, be careful with `ObjectNaturalExpression.evalRel_unique`: its current statement has **no assumption that every input lies in omega**. Replacing it by a semiring-evaluation argument that requires all inputs to be natural would weaken the API. The totality theorem can profit from a semiring witness under its existing natural-input hypotheses; uniqueness needs either the existing proof or a generic functional-relational evaluator lemma that retains its stronger statement.
+
+## Implementation order
+
+1. Apply the seven list-library replacements and run the affected checks.
+2. Share iteration lemmas across all five scanners without modifying numeric programs.
+3. Integrate `Encoding`/`scan_run` into RenameScan and BoundScan, then LineScan and AxiomContext; compare total source and elaboration cost.
+4. Factor typed-run/fragment infrastructure and the PR iterator constructor, preserving supplied program data and exact size facts.
+5. Extract object-model validity transport and arity-polymorphic sentence helpers.
+6. Consolidate downstream algebraic proofs only after drawing the import graph and checking that theorem hypotheses are unchanged.
+
+The supplied `verification.log` and `verified-files.sha256` describe exactly the checked artifacts. They do not certify a full-project migration or prove the project's still-separate consistency calibration.

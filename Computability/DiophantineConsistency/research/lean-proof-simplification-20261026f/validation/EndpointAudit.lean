@@ -1,0 +1,42 @@
+import DiophantineConsistency
+import DiophantineConsistency.NativeCyclicCarryAudit
+
+/-! Proposed regression probe: not compiled during this source-only review.
+Run after a successful pinned build; validate captured output with
+check_axiom_log.py and expected_endpoints.txt. -/
+
+#print axioms DiophantineConsistency.refutationInputs_re
+#print axioms DiophantineConsistency.zfcRefutationInputs_re
+#print axioms DiophantineConsistency.halts_iff_refutation
+#print axioms DiophantineConsistency.haltingTest_natPrimrec
+#print axioms DiophantineConsistency.exists_haltingTest_eq_one_iff_refutation
+#print axioms DiophantineConsistency.zfcNinePolynomial_hasZero_iff_refutation
+#print axioms DiophantineConsistency.zfcNinePolynomial_noZero_iff_conZFC
+#print axioms DiophantineConsistency.zfcQuarticPolynomial_degree_le_four
+#print axioms DiophantineConsistency.zfcQuarticPolynomial_noZero_iff_conZFC
+#print axioms DiophantineConsistency.ZFCFromProgram.noNaturalZero_iff_conZFC
+#print axioms DiophantineConsistency.ZFCFromProgram.noSyntaxZero_iff_conZFC
+#print axioms DiophantineConsistency.ZFCFromProgram.noExecutableZero_iff_conZFC
+#print axioms DiophantineConsistency.ZFCFromProgram.noSimplifiedZero_iff_conZFC
+#print axioms DiophantineConsistency.ZFCFromProgram.eval_executableExpression
+#print axioms DiophantineConsistency.DirectEnumerator.program
+#print axioms DiophantineConsistency.ExplicitZFC.eval_polynomial
+#print axioms DiophantineConsistency.ExplicitZFC.syntax_hasZero_iff_refutation
+#print axioms DiophantineConsistency.ExplicitZFC.noSyntaxZero_iff_conZFC
+#print axioms DiophantineConsistency.ExplicitZFC.noNaturalZero_iff_conZFC
+#print axioms DiophantineConsistency.NativeZFC.noNaturalZero_iff_conZFC
+#print axioms DiophantineConsistency.NativeZFC.noPositiveZero_iff_conZFC
+#print axioms DiophantineConsistency.PositiveZFC.noPolynomialZero_iff_conZFC
+#print axioms DiophantineConsistency.ArithmeticDAG.run_node_equation
+#print axioms DiophantineConsistency.ArithmeticDAG.run_eq_of_node_equations
+#print axioms DiophantineConsistency.GapCertificate66.rowOrder_surjective
+#print axioms DiophantineConsistency.GapCertificate66.delivered_zero_iff
+#print axioms DiophantineConsistency.GapCertificate66.rowValue_eq_source
+#print axioms DiophantineConsistency.GapCertificate66.coeff_source_rows
+#print axioms DiophantineConsistency.GapCertificate66.coeff_zero_iff_source_zero
+#print axioms DiophantineConsistency.CurrentHighDigits2011.cellDigit_formula
+#print axioms DiophantineConsistency.CurrentHighDigits2011.maskDigits_lt
+#print axioms DiophantineConsistency.CurrentHighDigits2011.high_mask_word
+#print axioms DiophantineConsistency.CurrentHighDigits2011.polynomial_zero_mask_test
+#print axioms DiophantineConsistency.NativeCyclicCarryAudit.cyclic_digits
+#print axioms DiophantineConsistency.NativeCyclicCarryAudit.nonunique

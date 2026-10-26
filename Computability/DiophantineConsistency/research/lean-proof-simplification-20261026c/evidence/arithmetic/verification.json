@@ -1,0 +1,70 @@
+{
+  "commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "checked": [
+    {
+      "source": "HalfRadix.lean",
+      "sha256": "d3038b56892a7a9b8e24ff0ae91518579c6536b2964ce411f57c6ccb5b4d308d",
+      "toolchain": "leanprover/lean4:v4.32.0",
+      "imports": [
+        "Lean.Elab.Tactic.Omega"
+      ],
+      "exit_code": 0,
+      "scope": "Standalone scalar quotient/remainder facts, no repository import chain",
+      "axioms": {
+        "step_eq": [
+          "propext"
+        ],
+        "step_le": [
+          "propext",
+          "Quot.sound"
+        ],
+        "step_mod_two": [
+          "propext",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "source": "RowOperations.lean",
+      "sha256": "b14cc5b21e6a24a269b21758121c0ef407d7171709d903d7e5519393256bfc72",
+      "toolchain": "leanprover/lean4:v4.32.0",
+      "arguments": [
+        "-j1",
+        "-M1024"
+      ],
+      "timeout_seconds": 30,
+      "scope": "Generic row-operation and reindexing lemmas",
+      "exit_code": 0,
+      "timed_out": false
+    }
+  ],
+  "unverified": {
+    "coefficient_check": {
+      "source": "IsolatedCoefficientChecks.lean",
+      "sha256": "3233f73952c46c704f1844b73b7dc109454b4df06e128bad2e302ba8ddf745eb",
+      "toolchain": "leanprover/lean4:v4.32.0",
+      "arguments": [
+        "-j1",
+        "-M2048"
+      ],
+      "timeout_seconds": 90,
+      "scope": "Exact extracted coefficient and envelope definitions",
+      "exit_code": null,
+      "timed_out": true
+    },
+    "candidate_source_lines": {
+      "NativeCoefficientBounds": {
+        "before": 679,
+        "after": 130,
+        "removed": 549
+      },
+      "NativeNinePolynomial52": {
+        "before": 456,
+        "after": 153,
+        "removed": 303
+      }
+    },
+    "patch_applicability": "git apply --check succeeded; no source mutation performed"
+  },
+  "measurement_limit": "Static line counts only; no full downstream build or reliable benchmark."
+}

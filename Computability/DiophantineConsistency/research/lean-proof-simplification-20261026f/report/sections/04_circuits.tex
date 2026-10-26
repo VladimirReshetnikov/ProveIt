@@ -1,0 +1,233 @@
+\majorbreak
+\section{Reduce generated proof repetition without changing the circuits}
+\label{sec:circuits}
+
+The largest source concentration is the pair \code{SplitCircuitSteps59}
+and \code{GapCircuitSteps66}: 6,567 physical lines, comprising 999 gate
+wrappers and 193 power lemmas. This is a strong source-maintenance target,
+but it does not mean 1,192 independent mathematical ideas need to be replaced.
+The gate family already consists of instances of one generic theorem.
+
+\subsection{Use the semantic infrastructure already present}
+
+The project has the key reusable results now. A proposal to introduce its
+first generic DAG soundness or degree checker would miss these interfaces:
+
+\begin{description}
+\item[Gate and register equations]
+\code{run_node_equation}, followed by \code{run_eq_of_node_equations}
+and \code{value_eq_of_node_equations}, at
+\src{ArithmeticDAGSemantics.lean}{58}{116}.
+\item[Power labels and circuit rewrites]
+\code{run_power} at \src{ArithmeticDAGPowers.lean}{24}{42}, and
+\code{value_eq_of_powerRewrite} at
+\src{ArithmeticDAGPowers.lean}{86}{131}.
+\item[Degree certificates]
+\code{DegreeCertificate} at \src{ArithmeticDAGDegree.lean}{21}{23},
+with \code{value_degree_le} and \code{polynomial_degree_le} at
+\src{ArithmeticDAGDegree.lean}{65}{90}.
+\end{description}
+
+\begin{table}[h]
+\small
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Existing generated module & Total lines & Gate wrappers & Power lemmas\\
+\midrule
+\code{SplitCircuitSteps59} & 3,445 & 515 & 107\\
+\code{GapCircuitSteps66} & 3,122 & 484 & 86\\
+\bottomrule
+\end{tabularx}
+\caption{Gate spans are Split lines 16--2590 and Gap lines 16--2435.
+Power spans are Split lines 2591--3444 and Gap lines 2436--3121.}
+\end{table}
+
+The measured gate spans occupy 4,995 lines and the power spans 1,540,
+including blank lines. Together they cover 6,535 of the 6,567 lines.
+These figures locate the repetition; they are not a deletion budget, because
+clients currently use the generated names.
+
+\subsection{Consolidate power proofs while retaining every public theorem}
+\label{sec:powercert}
+
+\textbf{Priority 2 and the safest circuit experiment.} Preserve the gate
+wrappers, every public theorem header, and the literal DAG. Replace the
+individual pure-power \code{ring} proofs with a finite exponent-label
+certificate and the existing \code{run_power} theorem.
+
+The current \code{GapCircuitSteps66.natural_power_25} at
+\src{GapCircuitSteps66.lean}{2442}{2448} is:
+
+\begin{Lean}
+theorem natural_power_25 (p : Fin 11 → R) (x : Fin 9 → R) :
+    naturalRegister p x 25 = naturalRegister p x 20 ^ 4 := by
+  rw [natural_step_25]
+  simp only [natural_power_24]
+  ring
+\end{Lean}
+
+After adding the shared private certificate and generic specialization, the
+candidate keeps that public proposition and changes only its proof:
+
+\begin{Lean}
+theorem natural_power_25 (p : Fin 11 → R) (x : Fin 9 → R) :
+    naturalRegister p x 25 = naturalRegister p x 20 ^ 4 :=
+  natural_power_all p x ⟨25, by decide⟩ (by decide +kernel)
+\end{Lean}
+
+The label table uses zero to mean \emph{not certified as a power}, not
+exponent zero. The base has label one: register 36 in Split, register 20 in
+Gap. Every positive non-base label belongs to a multiplication node whose
+positive operand labels add to the result label. The existing topology
+argument supports induction over register number, uniformly for every
+\code{CommRing}.
+
+For example, the proposed closed Gap obligation is:
+
+\begin{Lean}
+private theorem naturalPowerSteps : ∀ i : Fin 484,
+    i.val ≠ 20 → naturalPowerLabel i.val ≠ 0 →
+      PowerStep GapCircuit66.naturalNodes naturalPowerLabel i.val := by
+  decide +kernel
+\end{Lean}
+
+The full \code{natural_power_all} proof invokes \code{run_power} and this
+certificate. The archive contains the full label tables and complete
+API-preserving candidate modules, not just the abbreviated listing here.
+
+\begin{table}[h]
+\small
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Final candidate & Physical lines & UTF-8 bytes & Per-power \code{ring} calls\\
+\midrule
+Split before & 3,445 & 169,808 & 107\\
+Split candidate & 3,074 & 171,042 & 0\\
+Gap before & 3,122 & 153,802 & 86\\
+Gap candidate & 2,833 & 154,928 & 0\\
+\bottomrule
+\end{tabularx}
+\caption{Static measurements of the final, audit-inclusive, uncompiled
+candidate files. All 1,192 public theorem header strings were compared
+byte-for-byte; this is not an elaborated theorem-type comparison.}
+\end{table}
+
+\textbf{The result is 660 fewer physical lines but 2,360 more bytes.}
+It demonstrates less tactic repetition, not byte compression or a speedup.
+Much of the line change removes proof-body layout. The cost of one finite
+certificate could exceed that of the old local proofs; benchmark before
+adoption, and split it into checked chunks if a monolithic check is costly.
+
+There is an additional reuse opportunity, not a new data format: the Split
+labels extracted for this review are exactly the integer list already stored
+as \code{SplitJointPower59.natural_oldLabelsData} at
+\src{SplitJointPower59.lean}{64}{78}. Extract that table and its certificate
+into a small shared parent module rather than duplicate it or import the
+joint child circuit merely to obtain parent metadata.
+
+\subsection{Offer an indexed facade before removing named wrappers}
+\label{sec:indexed}
+
+\textbf{Priority 3.} Each gate wrapper specializes
+\code{run_node_equation}. Instead of materializing every instance, expose
+one theorem indexed by \code{Fin nodeCount}. The proposed Gap facade is:
+
+\begin{Lean}
+theorem natural_step (p : Fin 11 → R) (x : Fin 9 → R) (i : Fin 484) :
+    naturalRegister p x i.val =
+      (GapCircuit66.naturalNodes.getD i.val (.literal 0)).evalAt p x
+        (naturalRegister p x) :=
+  run_node_equation p x GapCircuit66.naturalNodes
+    GapCircuit66.natural_topological i.val
+    (by simpa only [GapCircuit66.natural_length] using i.isLt)
+\end{Lean}
+
+The supplied compact facades are 94 lines for Split and 92 for Gap. They
+contain the register evaluator, indexed step theorem, complete label data,
+power theorem, concrete examples, and axiom probes. \textbf{They are not
+drop-in replacements}: their namespaces differ and the 1,192 old named
+theorems are absent. Their size is not a measured project-wide saving.
+
+Start with one genuine consumer such as
+\code{GapCircuitRegisters66.natural_baseRegister} at
+\src{GapCircuitRegisters66.lean}{18}{22}. Check that a concrete indexed
+instance rewrites without unfolding the whole evaluator. Then retain useful
+semantic boundary names such as \code{natural_kernel0Register},
+\code{natural_sourceHighRegister}, and \code{natural_sourceRankRegister}
+while gradually retiring only the mechanical wrappers.
+
+The direct Split consumers are Registers59 and Translation59. The direct
+Gap consumers are Degree66, Tail66, Translation66, and Registers66; recipes
+depend on them transitively. Rebuild the reverse dependency closure, not
+just these direct imports. In particular, the long, selective rewrite lists
+at \src{GapCircuitRegisters66.lean}{30}{40} maintain deliberate cut points
+in a shared expression graph. Replacing them with \code{simp [all definitions]}
+can expand shared subexpressions repeatedly.
+
+\subsection{Certify semantic blocks instead of globally normalizing the DAG}
+
+\textbf{Priority 3, only after a consumer pilot.} The existing Gap Registers
+file already establishes 13 semantic register facts at
+\src{GapCircuitRegisters66.lean}{18}{94}, and the recipe composes them at
+\src{GapCircuitRecipe66.lean}{15}{211}. This is the right proof structure.
+Generalize it only where the kernel-block argument truly repeats.
+
+A possible next layer is a block certificate with an input/base register,
+sparse coefficient/exponent data, and an output register. A local
+symbolic-value table can use \code{value_eq_of_node_equations} to establish
+the block's meaning. It must also prove that the certified block embeds into
+the \emph{existing full DAG} and has the claimed output register. Proving a
+freshly generated, similar-looking circuit correct is not enough.
+
+Keep the independently transcribed high-level recipe as the specification.
+Defining the specification to be the same generated DAG would make agreement
+vacuous. \code{SplitJointPower59} already demonstrates genuine certificate
+reasoning between distinct literal circuits: the natural parent has 515
+nodes and the joint child 498. Those are intentionally different objects.
+
+\subsection{Share the ShortSystem degree prefix before changing representation}
+\label{sec:shortdegree}
+
+\textbf{Priority 3.} The two generated degree sections in
+\code{ShortSystem} are at \src{ShortSystem.lean}{565}{842} and
+\src{ShortSystem.lean}{844}{1115}. They contain respectively 96 and 94
+local \code{let}/\code{have} pairs and share an exact 224-line prefix
+beginning at the first local binding.
+
+The least disruptive change is a common core-degree lemma exposing only
+the boundary facts needed by the two output tails. A larger alternative uses
+the existing \code{ArithmeticDAGDegree} checker for a shared literal prefix
+and two residual/output tails. Either way, retain the bridges to
+\code{literalValue}/\code{compactLiteralValue} and the original polynomial
+values at \src{ShortSystem.lean}{348}{359} and
+\src{ShortSystem.lean}{487}{498}.
+
+The public bound is degree \emph{at most} 68, not exact degree 68. Preserve
+that bound. A syntactic degree checker can miss cancellations; the explicit
+warning at \src{GapCircuitDegree66.lean}{67}{67} documents this limitation
+elsewhere in the same development. A weaker bound is not an acceptable
+substitute merely because it is easier to certify.
+
+\subsection{Treat typed circuit views as a later design option}
+
+\textbf{Priority 4.} \code{ArithmeticDAG.Node} already uses \code{Fin} for
+input and fixed-leaf indices, but natural numbers for operand registers
+(\src{ArithmeticDAG.lean}{11}{18}). Invalid register access returns zero
+(\src{ArithmeticDAG.lean}{79}{81}); a separate topology certificate excludes
+invalid edges for well-formed circuits
+(\src{ArithmeticDAG.lean}{105}{112}).
+
+A small checked-circuit wrapper can bundle the existing list, its topology
+proof, and a bounded output index. A dependent \code{SafeNode} view with
+operands in \code{Fin earlier} is possible later. In both cases prove that
+erasing the view returns \emph{exactly} the original literal list in its
+original order. That equality is the bridge preserving operation counts,
+liveness, data audits, and the existing semantics.
+
+This does not verify a Python importer or prove specification equivalence
+by itself. Dependent equalities can increase elaboration cost. It is lower
+priority than the direct reuse of \code{run_power}, and no timing benefit is
+claimed. In particular, none of the circuit proposals changes the original
+natural operation counts, 480 for Split at
+\src{SplitCircuit59.lean}{1246}{1246} and 450 for Gap at
+\src{GapCircuit66.lean}{1186}{1186}.
