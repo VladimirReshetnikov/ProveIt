@@ -1,0 +1,180 @@
+% Report-ready component excerpt. Requires amsmath, amssymb and booktabs.
+\section{Compact equations from polynomial centers}
+
+This component retains ten strictly positive unknowns and the complete
+four-integer coefficient tuple of the inspected native construction.
+It composes the explicit trace of package~163 with the inverse Lucas
+correction of package~164, resolves the former package's stated open
+$b^2$ transport case, and introduces polynomial centers that lower the
+degree of the final norm. The following are literal ordinary polynomials;
+the intermediate symbols are abbreviations, not additional unknowns.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Variant & Operations & Exact degree & Weight $L$ & Root scale $\lambda$\\
+\midrule
+Trace and inverse correction &85&232&$bV$&1\\
+Square transport &85&232&$b^2$&1\\
+Lower center &87&228&$bV$&1\\
+Symmetric center &88&224&$bV$&1\\
+Quotient center &96&220&$bV$&2\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Literal formula}
+
+Let $J,F,\alpha,i,T,w,s,n,\eta,\zeta>0$ be the independent integer
+variables. The fixed integers are $\beta,K_0,M_C,M_F$ from the whole
+directly indexed BFS943/radix67 tuple. Define
+\begin{align*}
+ h&=\beta J,&q&=h+1,& C&=q-F-\alpha,\\
+ X&=qw,&Y&=qs,&k&=\eta+\zeta,&c&=kY+\eta,\\
+ A&=Y(X+1)+1,&\Delta&=A^2-1,&H&=4A-5,\\
+ \ell&=(XY)(kY),&E&=1+\ell(\ell+k),\\
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ B&=(K_0+w)C-F,&U&=ic^2,&a&=\Delta U^2E,\\
+ F_0&=1+a,&G&=EF_0,&f&=1+2a,&Q&=4\Delta aF_0,\\
+ b&=cT-R,&V&=fb-c,&K&=X(3c-2X)+2,\\
+ e_6&=6(k-R-1)-\ell(k^2-4),&D&=6q^6,&M&=hDH.
+\end{align*}
+For the quotient center also put
+\[
+ Q_E=(kY)\bigl[\ell+k-(kY)(Y+1)\bigr].
+\]
+The centers $C_*$ in the table's order are
+\[
+ 0,\qquad0,\qquad(A-1)UE,\qquad AUE,
+ \qquad 2AUE-UQ_E.
+\]
+For the corresponding $L$ and $\lambda$, set
+\begin{align*}
+ Z&=hD\bigl[H(n-LB-C_*V)+K\bigr]
+       -H\bigl[DB+h(e_6-6q^4s)\bigr],\\
+ P&=Q\bigl(Z^2-\lambda^2M^2GV^2\bigr)
+       +\bigl(\lambda^2M^2G-Z^2\bigr).
+\end{align*}
+The single equation is $P=0$. Each displayed exponent is a fixed integer.
+The literal graphs use only binary addition, subtraction and multiplication.
+
+\subsection{Why the new centers preserve the calibration}
+
+At any positive zero, the inherited root extraction and signed folding
+give $G=g^2$ and an integer $y>0$ satisfying
+\[
+ QV^2-(Q-1)y^2=1,\qquad Z/M=\pm\lambda gy.
+\]
+The strong trace and the exclusion of the auxiliary indices one and three
+give, before the signs of $B$ and $R$ are known,
+\[
+ g<f/6,\qquad |b|>8f^3-\tfrac12>4f^2,
+ \qquad y<\tfrac32|V|,\qquad |V|<\tfrac32f|b|.
+\]
+The two unscaled nonzero centers lie between zero and $3g/2$; the scaled
+center lies between zero and $3g$. Thus every selected variant satisfies
+\[
+ \lambda gy+|C_*V|<3L/8.
+\]
+This bound treats both signs of $V$.
+
+For proof notation only, put
+\[
+ \rho=\frac{k-R-1-XY^2k(k^2-4)/6}{q^6},\quad
+ \sigma=\frac{s}{q^2},\quad
+ \kappa=\frac KH,\quad t=\frac Bh,\quad W=1+hL.
+\]
+The inverse correction gives $\rho<|b|/q^6$ uniformly in the integer $R$.
+The carrier identity is
+\[
+ Z/M=n+\kappa+\sigma-Wt-\rho-C_*V.
+\]
+If $B\le-1$, then $Wt<-L$, so
+\[
+ n<3L/8-L+|b|/q^6<3L/8-L+L/2<0,
+\]
+a contradiction. This establishes the positive native branch without
+assuming a rank sign or canceling a denominator prematurely.
+
+The center $C_*V$ is an integer polynomial. Consequently the subsequent
+index congruences and the projection-before-denominator argument are
+unchanged: first recover the main index, then $X=2^R$, then the dyadic
+radix, and only then the full divisibilities. Conversely, the retained
+canonical witnesses satisfy
+$g>\kappa+\sigma+|\rho|$. Choosing
+\[
+ n=\lambda gy+C_*V+(1+hL)t+\rho-\kappa-\sigma
+\]
+gives a strictly positive integer and makes the new polynomial vanish.
+With the named inherited native/refutation calibration this proves in ZFC
+that each polynomial has a positive zero exactly when there is a finite
+syntactic ZFC refutation. Negation gives the requested consistency
+equivalence; consistency itself is not asserted.
+
+\subsection{Exact cancellation and degree}
+
+Let $Z_0$ be the carrier with its center removed, put
+$\overline G=\lambda^2G$, and $S=C_*^2-\overline G$. The free polynomial
+identity
+\[
+ P=(Q-1)Z_0^2-2(Q-1)MC_*VZ_0
+   +M^2\bigl[(Q-1)S-\overline G\bigr]V^2+M^2\overline G
+\]
+exposes the degree cancellation. For the three nonzero centers,
+\begin{align*}
+ ((A-1)UE)^2-G&=-2(A-1)(UE)^2-E,\\
+ (AUE)^2-G&=(UE)^2-E,\\
+ (2AUE-UQ_E)^2-4G&=4U^2ER_E+U^2Q_E^2-4E,
+\end{align*}
+where the exact positive-remainder identity is
+\[
+ E=AQ_E+R_E,\qquad
+ R_E=1+k^2Y(Y+1)\bigl(Y(Y+1)-1\bigr)>0.
+\]
+The three defects have degrees $46,42,38$, respectively. In the literal
+ten-variable polynomial,
+\[
+ \deg(Q,M,G,V,UE,Z_0)=(80,11,50,40,21,57).
+\]
+The unique dominant terms in the centered outputs therefore have degrees
+$228,224,220$.
+
+For complete leading components, let
+$q_0=\beta J$, $k_0=\eta+\zeta$, and
+$B_0=k_0sT-q_0^2(q_0-F)$. Then
+\begin{align*}
+ [P_{232}]_{232}&=-9\cdot2^{10}q_0^{100}w^{26}s^{58}i^{10}k_0^{32}B_0^2,\\
+ [P_{228}]_{228}&=-9\cdot2^{11}q_0^{98}w^{25}s^{57}i^{10}k_0^{32}B_0^2,\\
+ [P_{224}]_{224}&= 9\cdot2^{10}q_0^{96}w^{24}s^{56}i^{10}k_0^{32}B_0^2,\\
+ [P_{220}]_{220}&= 9\cdot2^{12}q_0^{94}w^{22}s^{56}i^{10}k_0^{32}B_0^2.
+\end{align*}
+These are nonzero for the actual positive $\beta$ and certify exact total
+degrees. The full tie between the top terms of $cT$ and $R$ is retained.
+
+\subsection{Constants, costs and finite checks}
+
+The four fixed numeral payloads have the following bit lengths:
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Port &$\beta$&$K_0$&$M_C$&$M_F$\\
+\midrule
+Bits&590069&592884&590069&590070\\
+\bottomrule
+\end{tabular}
+\end{center}
+All raw bytes are supplied and reconstructed from the pinned finite recipe.
+The bit lengths measure the supplied numeral ports, not the height of the
+fully expanded final polynomial. Arithmetic counts treat these fixed
+integers as constants and count every live binary operation thereafter.
+
+Sharing $V$ through
+$n-bVB-C_*V=n-V(bB+C_*)$ saves one multiplication. Hence the three
+centered costs are exactly $87$, $88$ and $96$. The independent checker
+covers all five graphs with 199 free-polynomial cuts, authenticates the
+four actual numeral payloads and 35 inherited source files, verifies the
+complete leading components, and rejects 73 deliberate operator
+corruptions. Normal and optimized Python receipts agree. The separate
+finite recipe reconstructs all four integers, including the required native
+$M_F$ shift. These are artifact and algebra checks; the unbounded arithmetic
+proof and inherited logical calibration remain explicit dependencies.

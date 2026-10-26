@@ -1,0 +1,263 @@
+\section{A compact positive-domain companion}
+\label{sec:compact-center}
+
+This companion has ten strictly positive integer variables.  Its domain
+must be kept separate from the unrestricted-integer equations in the main
+construction.  It combines the unsquared strong trace of the pinned
+\texttt{163-trace-radical} contribution with the inverse-Lucas correction
+of \texttt{164-unsquared-factors-linear-selectors}~\cite{trace163,inverse164}.  A new square transport
+weight then permits a polynomial root center and lowers the exact degree.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Circuit & Variables & Degree & Binary operations\\
+\hline
+Trace parent & 10 & 232 & 87\\
+Inverse correction with trace & 10 & 232 & 85\\
+Square transport with trace & 10 & 232 & 85\\
+Centered companion & 10 & 224 & 90\\
+\hline
+\end{tabular}
+\end{center}
+
+The degree 224 point is a measured degree/cost tradeoff.  The claimed result
+is neither a global minimum nor an assertion of literature-wide priority.
+This compact branch retains its inherited native/K215 calibration.  Its
+ordinary proof is separate from its finite algebraic checker.
+
+\subsection{Entire polynomial}
+
+The independent variables are
+\[
+J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+The four fixed coefficients \(\beta,K_0,M_C,M_F\) are the whole
+indexed BFS943/radix67 tuple, with \(\beta=2^{590069}-1\).  Their complete
+finite recipe, 436-character seed, numerical payloads, and independent
+reconstruction program are included.  All raw and compressed hashes agree
+with the pinned parent.  The largest port has 592,884 bits; the four raw
+payloads occupy 295,388 bytes.  Every symbol below is a polynomial
+abbreviation, not another quantified variable:
+\begin{gather*}
+h=\beta J,\quad q=h+1,\quad C_0=q-F-\alpha,\\
+X=qw,\quad Y=qs,\quad k=\eta+\zeta,\quad c=kY+\eta,\\
+A=Y(X+1)+1,\quad \Delta=A^2-1,\quad H=4A-5,\\
+v=XY^2,\quad \ell=vk=(XY)(kY),\quad E=1+\ell(\ell+k),\\
+R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+B=(K_0+w)C_0-F,\quad U=ic^2,\quad a=\Delta U^2E,\\
+F_0=1+a,\quad f=1+2a,\quad G=EF_0,\quad Q=4\Delta aF_0,\\
+b=cT-R,\quad V=fb-c,\quad K=X(3c-2X)+2,\\
+e_6=6(k-R-1)-\ell(k^2-4),\quad D=6q^6,\quad M=hDH.
+\end{gather*}
+For a weight \(L\), set
+\[
+Z_0=hD\bigl[H(n-LB)+K\bigr]-H\bigl[DB+h(e_6-6q^4s)\bigr].
+\]
+The centered companion uses
+\[
+L=b^2,\qquad C=AUE,\qquad S=CV,\qquad Z=Z_0-MS
+\]
+and the single equation
+\begin{equation}
+\boxed{\ P=Q\bigl(Z^2-M^2GV^2\bigr)+(M^2G-Z^2)=0.\ }
+\label{eq:compact-centered}
+\end{equation}
+The two 85-operation controls use \(Z=Z_0\) and respectively
+\(L=bV\) or \(L=b^2\).  All three literal DAGs are supplied.  Fixed
+powers are multiplication gates; no variable exponent, recurrence, floor,
+or unspecified coefficient occurs in the polynomial.
+
+For proof notation only, put
+\[
+e_*=\frac{e_6}{6},\quad \rho=\frac{e_*}{q^6},\quad
+\sigma=\frac{s}{q^2},\quad t=\frac{B}{h},\quad W=1+hL,
+\quad\kappa=\frac{K}{H},\quad z=\frac{Z}{M}.
+\]
+Without yet asserting integrality, the centered carrier identity is
+\begin{equation}
+z=n-S+\kappa+\sigma-Wt-\rho.
+\label{eq:compact-carrier}
+\end{equation}
+For an uncentered control, omit \(S\).
+
+\subsection{The square transport theorem}
+
+The root extraction, rational adjacent-Pell descent, signed folding, and
+third-index exclusions in the trace source do not use the old cubic, the
+weight, or the carrier center.  Before assuming any sign for
+\(B,C_0,R,b,V\), their outputs are
+\begin{gather*}
+G=g^2,\quad E=\tau^2,\quad F_0=f_0^2,\quad
+z=\varepsilon gy,\quad QV^2-(Q-1)y^2=1,\\
+c=\psi_A(p),\quad p\ge5\text{ odd},\quad
+k=2\psi_{1+2v}(m),\quad m\ge2,\\
+c>8XY^3\ge8q^4,\quad c>X,\quad K>0,\quad
+b\ne0,\quad \operatorname{sgn}V=\operatorname{sgn}b,\\
+Q>f^2,\quad c<f/2,\quad |V|>8Q^2,\quad
+|b|>8f^3-\tfrac12.
+\end{gather*}
+Here \(g,\tau,f_0,y\) are positive integers and
+\(\varepsilon\in\{1,-1\}\).  The sequence \(\psi_A\) has initial
+values 0,1 and recurrence \(\psi_A(j+2)=2A\psi_A(j+1)-\psi_A(j)\).
+If the auxiliary index were 3, its two sign cases would give, respectively,
+\[
+f(b-4\Delta f)=c-(4\Delta+3),\qquad
+f(b+4\Delta f)=c+(4\Delta+3):
+\]
+Both right sides lie strictly between 0 and \(2c<f\), whereas each
+left side is a multiple of $f$, a contradiction.
+
+We now establish the new bound needed for the center.  The identities give
+\[
+\frac{a^2}{g^2}=\Delta U^2\frac{a}{1+a}>9,
+\qquad \frac{C^2}{G}<\frac{A^2}{A^2-1}<4.
+\]
+Thus \(g<f/6\) and \(C<2g\).  Also
+\(y<\tfrac32|V|\) and \(|V|<\tfrac32f|b|\).  For either root sign,
+\begin{align*}
+|\varepsilon gy+CV|
+&\le gy+C|V|<\tfrac72g|V|
+ <\tfrac78 f^2|b|\\
+&<\tfrac7{32}b^2<\tfrac14b^2.
+\end{align*}
+We used \(|b|>4f^2\), a consequence of the stronger bound above.
+
+The inverse-Lucas correction is nonnegative before rank sign recovery:
+\(vk(k^2-4)/6\ge0\), because \(k\ge2\).  Consequently
+\[
+e_*\le k-R-1<b,\qquad \rho<\frac{|b|}{q^6}<\tfrac14b^2.
+\]
+If \(B\le-1\), then \(Wt<-L\).  Solving
+\eqref{eq:compact-carrier} for positive \(n\) gives
+\[
+n<\tfrac14L-L+\tfrac14L<0,
+\]
+a contradiction.  Therefore \(B\ge0\), and then \(C_0>0\).
+This treats all integer ranks \(R\), including negative and zero ranks.
+The missing adverse-cubic estimate identified in the trace source's open
+\(b^2\) question is unnecessary for the inverse correction.
+
+\subsection{Soundness and the prime 3 ordering}
+
+After recovering \(C_0>0\), the calibrated mask bound gives
+\(3q<R<q^4-2\), hence \(c>2R\) and \(b,V>0\).  Since
+\[
+f-1=2\Delta i^2c^4E,\qquad V\equiv-c\pmod f,
+\qquad V\equiv-R\pmod c,
+\]
+the same normalized-rank theorem gives \(p=R\).  In particular \(R\)
+is positive odd, \(q\) is even, and \(J\) is odd.  The new center
+\(S\) is an integer polynomial, so integrality of \(z\) implies
+integrality of \(z+S\).  The remaining carrier argument is therefore
+the one in the inverse-Lucas source; the weight enters only through
+\(W\equiv1\pmod h\).
+
+For clarity, its essential arithmetic is the recurrence expansion
+\[
+k=2m+8vC_m+32v^2Z_m,
+\qquad C_m=\binom{m+1}{3},\qquad Z_m\in\mathbb Z_{\ge0}.
+\]
+Writing \(d=2m-R-1\) and \(A_m=C_m+4vZ_m\), one obtains
+\[
+3(e_*-d)=4v^2\bigl[24Z_m-A_m\{k^2+2mk+(2m)^2-4\}\bigr].
+\]
+The integer $k$ is even, so $k(k^2-4)/6$ and hence $e_*$ are integers.
+Carrier integrality gives \(q^6\mid e_*-q^4s\), hence
+\(q^4\mid e_*\).  Prime-by-prime valuations of the last identity give
+\(q^4\mid e_*-d\), including the possible loss of one factor 3.
+The bound \(1\le m<R<q^4\) forces \(d=0\).
+
+One must not yet conclude \(q^6\mid e_*\).  First the whole-product
+projection from \(H\mid6hK\), with its retained strict size bound,
+gives \(X=2^R\).  Since \(q\mid X\), \(q\) is a power of 2.  Only
+then can the factor 3 be canceled and \(q^6\mid e_*\) recovered.
+The remaining congruences give \(q^2\mid s\), \(h\mid B\), and
+integral positive \(\kappa\).  Thus
+\[
+X=2^R,\quad q^3\mid Y,\quad t=B/h\in\mathbb Z_{\ge0},\quad
+(K_0+w)C_0-F=t(q-1).
+\]
+The inherited whole-tuple native/refutation calibration now yields a
+finite syntactic ZFC refutation.  This step retains the entire calibrated
+tuple, not merely its elementary coefficient inequalities.
+
+\subsection{A cofinal positive lift of the centered equation}
+
+Conversely a finite refutation supplies the canonical outer witnesses in
+the two pinned source theorems.  In particular \(q\) is a power of 2,
+\(R\equiv3\pmod4\), \(X=2^R\), \(q^3\mid Y\), \(C_0>0\),
+and \(t\ge0\), while \(\rho,\sigma,\kappa\) are integers.
+Their exact Pell-ratio interval supplies positive \(\eta,\zeta\).
+Choose the strong seed with \(c^2\tau\mid I_0\), so
+\(i=I_0/(c^2\tau)>0\), \(g=\tau f_0\), and \(f=2f_0^2-1\).
+
+The retained adjacent-Pell completeness theorem supplies positive
+\(V_*,y\) such that \(V_*+c+Rf^2\) is divisible by \(cf^2\).
+The unsquared-trace coordinate
+\[
+T=\frac{V_*+c+Rf}{cf}
+\]
+is a positive integer, because \(c\mid f-1\).  For an uncentered
+control take \(n=gy+Wt+\rho-\kappa-\sigma\).  The inherited bounds
+\(|\rho|<g/3\) and \(\kappa+\sigma<g/2\) prove positivity.
+
+For the centered equation the negative root is useful.  Put
+\(u_0=U^2E\ge2\).  The exact identity
+\[
+(Q-1)C^2-QG=E\bigl[Q(u_0-1)-A^2u_0\bigr]
+\]
+is positive: \(Q>4\Delta^2u_0\) and \(4\Delta^2>A^2\).
+Therefore \(C>g\sqrt{Q/(Q-1)}\).  If
+\(D_0=(Q-1)C^2-QG\), then \(D_0\) is a positive integer and
+\[
+CV_*-gy>\frac{D_0V_*}{2C(Q-1)}\ge\frac{V_*}{2C(Q-1)}.
+\]
+There are cofinally many permissible \(V_*\).  The matrix
+\[
+\begin{pmatrix}2Q-1&2(Q-1)\\2Q&2Q-1\end{pmatrix}
+\]
+preserves the adjacent Pell norm, has determinant 1, and strictly
+increases positive pairs.  A power of it is the identity modulo
+\(cf^2\); iterating that power preserves the required congruence and
+makes \(V_*\) unbounded.  No additional polynomial variable is used.
+
+Choose \(V_*>2C(Q-1)(\kappa+\sigma+|\rho|)\) and set
+\[
+n=CV_*-gy+(1+hb^2)t+\rho-\kappa-\sigma.
+\]
+Then \(n\) is a strictly positive integer, the centered carrier is
+\(z=-gy\), and \eqref{eq:compact-centered} vanishes.  This proves
+positive zero-existence equivalence; it does not mistake an arbitrary
+integer shear for an automorphism of the positive domain.
+
+\subsection{Exact degree and independent finite verification}
+
+The cancellation is an identity over a free polynomial ring:
+\begin{align*}
+P={}&(Q-1)Z_0^2-2(Q-1)MCVZ_0\\
+&+M^2V^2\bigl[QE(U^2E-1)-C^2\bigr]+M^2G.
+\end{align*}
+The degrees of \(Q,M,V,U,E,Z_0,C,G\) are respectively
+\(80,11,40,7,14,21,25,50\).  Its unique degree 224 term is
+\(QM^2V^2U^2E^2\); all other summands have strictly lower degree.
+With \(q_0=\beta J\), \(k_0=\eta+\zeta\), and
+\(B_0=k_0sT-q_0^2(q_0-F)\), the complete highest homogeneous part is
+\[
+[P]_{224}=9\,2^{10}q_0^{96}w^{24}s^{56}i^{10}k_0^{32}B_0^2.
+\]
+The coefficient of
+\(J^{96}w^{24}s^{58}i^{10}\eta^{34}T^2\) is
+\(9\,2^{10}\beta^{96}>0\), proving the exact degree on the authentic
+coefficient slice.  The uncentered controls have complete top
+\[
+[P]_{232}=-9\,2^{10}q_0^{100}w^{26}s^{58}i^{10}k_0^{32}B_0^2.
+\]
+
+The checker imports no producer.  It verifies every actual DAG gate by
+independently specified polynomial cuts, all live inputs and coefficient
+ports, the exact cancellation identity, and the complete leading forms.
+Both alternative operators at every gate are deliberately introduced and
+rejected:180 controls for the centered circuit and170 for each control.
+Normal and optimized Python runs pass.  This authenticates the finite
+artifacts; the unbounded mathematical arguments above remain essential.
