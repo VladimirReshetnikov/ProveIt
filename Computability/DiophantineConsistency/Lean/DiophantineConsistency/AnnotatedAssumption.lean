@@ -38,23 +38,12 @@ theorem program_input (context conclusion shifted evidence index : Nat) :
   simp only [inputCode,value,decodeRow_rowCode]
 
 private theorem lookup_mem {G : List Form} {index : Nat} {f : Form}
-    (h : G[index]?=some f) : f∈G := by
-  induction G generalizing index with
-  | nil => simp at h
-  | cons a G ih =>
-    cases index with
-    | zero => simp only [List.getElem?_cons_zero,Option.some.injEq] at h; subst a; simp
-    | succ index => exact List.mem_cons_of_mem a (ih h)
+    (h : G[index]?=some f) : f∈G :=
+  List.mem_of_getElem? h
 
 private theorem exists_lookup (G : List Form) (f : Form) (h : f∈G) :
-    ∃ index : Nat,G[index]?=some f := by
-  induction G with
-  | nil => simp at h
-  | cons a G ih =>
-    rcases List.mem_cons.mp h with rfl | hf
-    · exact ⟨0,rfl⟩
-    · obtain ⟨index,hi⟩ := ih hf
-      exact ⟨index+1,by simpa only [List.getElem?_cons_succ] using hi⟩
+    ∃ index : Nat,G[index]?=some f :=
+  List.getElem?_of_mem h
 
 /-- Raw accepted codes determine an actual context and a member formula. -/
 theorem program_sound (context conclusion shifted evidence index : Nat)

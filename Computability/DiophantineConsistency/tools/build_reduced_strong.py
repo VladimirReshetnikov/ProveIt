@@ -53,77 +53,11 @@ def literal_block(circuit):
     return '\n'.join(lines)
 
 
-def degree_block(circuit):
-    degrees = {name: 1 for name in circuit['witnesses']}
-    degrees.update({name: 0 for name in circuit['fixed_numerals']})
-    lines = ['-- BEGIN GENERATED P76 DEGREE CERTIFICATE',
-             '/-- A checked cancellation lowers the strong residual to degree32. -/',
-             'theorem polynomial_totalDegree_le (p : Fin 4 → ℤ) :',
-             '    (polynomial p).totalDegree ≤ 64 := by']
-    for names, port in [(circuit['witnesses'], 'v'), (circuit['fixed_numerals'], 'p')]:
-        for i, name in enumerate(names):
-            expression = f'MvPolynomial.X ({i} : Fin 15)' if port == 'v' else f'MvPolynomial.C (p {i})'
-            proof = f'by simp only [{name}, MvPolynomial.totalDegree_X, le_refl]' if port == 'v' else '(MvPolynomial.totalDegree_C _).le'
-            lines.extend([f'  let {name} : MvPolynomial (Fin 15) ℤ := {expression}',
-                          f'  have h_{name} : {name}.totalDegree ≤ {degrees[name]} := {proof}'])
-    def gate(name, op, a, b, special=False):
-        da, db = (0 if type(x) is int else degrees[x] for x in (a, b))
-        degree = da + db if op == '*' else max(da, db)
-        degrees[name] = degree
-        lemma = {'+': 'degree_add', '-': 'degree_sub', '*': 'degree_mul'}[op]
-        proofs = ['(degree_numeral ' + str(x) + ')' if type(x) is int else 'h_' + x for x in (a, b)]
-        lines.append(f'  let {name} := {a} {op} {b}')
-        if not special:
-            lines.extend([f'  have h_{name} : {name}.totalDegree ≤ {degree} :=',
-                          f'    {lemma} {proofs[0]} {proofs[1]}'])
-    for name, op, a, b in circuit['source']:
-        gate(name, op, a, b, name == 'strong_corrected_main')
-        if name == 'strong_corrected_main':
-            expansion = [
-                ('degree_two_x', '*', 2, 'wn2'),
-                ('degree_two_x_plus_one', '+', 'degree_two_x', 1),
-                ('degree_y_square', '*', 'sn2', 'sn2'),
-                ('degree_xy_square', '*', 'degree_two_x_plus_one', 'degree_y_square'),
-                ('degree_inner', '+', 'degree_xy_square', 'a4m5'),
-                ('degree_first', '*', 'degree_inner', 'c2'),
-                ('degree_E_square', '*', 'UM', 'UM'),
-                ('degree_E_eta', '*', 'degree_E_square', 'eta'),
-                ('degree_two_kY', '*', 2, 'ksn2'),
-                ('degree_two_kY_eta', '+', 'degree_two_kY', 'eta'),
-                ('degree_second', '*', 'degree_E_eta', 'degree_two_kY_eta'),
-                ('degree_n', '*', 'wn2', 'degree_y_square'),
-                ('degree_k_square', '*', 'R10b', 'R10b'),
-                ('degree_third', '*', 'degree_n', 'degree_k_square'),
-                ('degree_sum', '+', 'degree_first', 'degree_second'),
-                ('degree_diff', '-', 'degree_sum', 'degree_third'),
-                ('degree_plus_tau', '+', 'degree_diff', 'tau_square'),
-                ('degree_corrected', '-', 'degree_plus_tau', 1),
-            ]
-            for spec in expansion:
-                gate(*spec)
-            lines.extend(['  have correction_identity : strong_corrected_main = degree_corrected := by',
-                          '    dsimp [strong_corrected_main, Ac2, A, a_square, a4m5, a4, R12, c2, R10a,',
-                          '      residual_first, norm_first, first_product, first_root_base, first_next,',
-                          '      ksn2, UM, tau_square, degree_corrected, degree_plus_tau, degree_diff,',
-                          '      degree_sum, degree_first, degree_inner, degree_xy_square, degree_two_x_plus_one,',
-                          '      degree_two_x, degree_y_square, degree_second, degree_E_eta, degree_E_square,',
-                          '      degree_two_kY_eta, degree_two_kY, degree_third, degree_n, degree_k_square]',
-                          '    ring',
-                          '  have h_strong_corrected_main : strong_corrected_main.totalDegree ≤ 20 := by',
-                          '    rw [correction_identity]', '    exact h_degree_corrected'])
-            degrees[name] = 20
-    lines.extend(['  change (value (fun j => MvPolynomial.C (p j)) MvPolynomial.X).totalDegree ≤ 64',
-                  '  rw [← literalValue_eq_value]', '  change polynomial.totalDegree ≤ 64',
-                  '  exact h_polynomial', '-- END GENERATED P76 DEGREE CERTIFICATE'])
-    return '\n'.join(lines)
-
-
 def main():
     circuit = build()
     DESTINATION.write_text(json.dumps(circuit, indent=2) + '\n')
     source = LEAN.read_text()
-    for label, block in [('LITERAL EVALUATOR', literal_block(circuit)),
-                         ('DEGREE CERTIFICATE', degree_block(circuit))]:
+    for label, block in [('LITERAL EVALUATOR', literal_block(circuit))]:
         begin, end = (f'-- {part} GENERATED P76 {label}' for part in ('BEGIN', 'END'))
         a, b = source.index(begin), source.index(end) + len(end)
         source = source[:a] + block + source[b:]

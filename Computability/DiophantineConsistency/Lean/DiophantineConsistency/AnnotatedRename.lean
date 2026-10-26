@@ -108,13 +108,8 @@ def Row.Good (mode k : Nat) (r : Row) : Prop :=
   ∃ f : Form,r.input=formCode f ∧ r.output=formCode (renamed mode k r.depth f)
 
 private theorem lookup_mem {α : Type} {xs : List α} {i : Nat} {a : α}
-    (h : xs[i]?=some a) : a∈xs := by
-  induction xs generalizing i with
-  | nil => simp at h
-  | cons x xs ih =>
-    cases i with
-    | zero => simp only [List.getElem?_cons_zero,Option.some.injEq] at h; subst x; simp
-    | succ i => exact List.mem_cons_of_mem x (ih h)
+    (h : xs[i]?=some a) : a∈xs :=
+  List.mem_of_getElem? h
 
 theorem binary_sound (mode k : Nat) (r : Row) (seen : List Row)
     (hs : ∀ a∈seen,a.Good mode k) (ht : r.tag=3 ∨ r.tag=4 ∨ r.tag=5)

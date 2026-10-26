@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Emit P73 and its literal Lean evaluator and degree-80 certificate."""
+"""Emit P73 and its literal Lean evaluator; ShortFrontier proves its degree bound."""
 import hashlib
 import json
 from pathlib import Path
@@ -63,45 +63,11 @@ def literal(circuit):
                      ['  polynomial', '-- END GENERATED P73 LITERAL EVALUATOR'])
 
 
-def degree(circuit):
-    bounds = {name: 1 for name in circuit['witnesses']}
-    bounds.update({name: 0 for name in circuit['fixed_numerals']})
-    lines = ['-- BEGIN GENERATED P73 DEGREE CERTIFICATE',
-             'theorem polynomial_totalDegree_le (p : Fin 4 → ℤ) :',
-             '    (polynomial p).totalDegree ≤ 80 := by'] + bindings(circuit, True)
-    for name, op, left, right in circuit['source']:
-        a, b = (0 if type(x) is int else bounds[x] for x in (left, right))
-        bound = a + b if op == '*' else max(a, b)
-        lines.append(f'  let {name} := {left} {op} {right}')
-        if name == 'norm_main':
-            bound = 18
-            lines.extend([
-                '  have h_norm_main : norm_main.totalDegree ≤ 18 := by',
-                '    have hform : norm_main = (R12 * R10a + wn2 + gam) ^ 2 - (R12 ^ 2 + a4m5) * R10a ^ 2 := by',
-                '      dsimp only [norm_main, L15, R14, D1, cam2, Ac2, A, a_square, c2]',
-                '      ring',
-                '    rw [hform]',
-                '    exact degree_main_norm h_R12 h_R10a h_wn2 h_gam h_a4m5',
-            ])
-        else:
-            lemma = {'+': 'degree_add', '-': 'degree_sub', '*': 'degree_mul'}[op]
-            proofs = ['(degree_numeral ' + str(x) + ')' if type(x) is int else 'h_' + x for x in (left, right)]
-            lines.extend([f'  have h_{name} : {name}.totalDegree ≤ {bound} :=',
-                          f'    {lemma} {proofs[0]} {proofs[1]}'])
-        bounds[name] = bound
-    assert bounds['polynomial'] == 80
-    lines.extend(['  change (value (fun j => MvPolynomial.C (p j)) MvPolynomial.X).totalDegree ≤ 80',
-                  '  rw [← literalValue_eq_value]',
-                  '  change polynomial.totalDegree ≤ 80',
-                  '  exact h_polynomial', '-- END GENERATED P73 DEGREE CERTIFICATE'])
-    return '\n'.join(lines)
-
-
 if __name__ == '__main__':
     circuit = build()
     DESTINATION.write_text(json.dumps(circuit, indent=2) + '\n')
     text = LEAN.read_text()
-    for kind, block in [('LITERAL EVALUATOR', literal(circuit)), ('DEGREE CERTIFICATE', degree(circuit))]:
+    for kind, block in [('LITERAL EVALUATOR', literal(circuit))]:
         begin, end = '-- BEGIN GENERATED P73 ' + kind, '-- END GENERATED P73 ' + kind
         a, b = text.index(begin), text.index(end) + len(end)
         text = text[:a] + block + text[b:]

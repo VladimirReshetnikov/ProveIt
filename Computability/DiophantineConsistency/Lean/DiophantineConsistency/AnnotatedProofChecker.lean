@@ -175,16 +175,8 @@ def Line.valid (line : Line) (seen : List Judgment) : Bool :=
   line.rule.side && decide (line.parents.map (fun i => seen[i]?)=line.rule.premises.map some)
 
 private theorem mem_of_lookup {seen : List Judgment} {i : Nat} {j : Judgment}
-    (h : seen[i]?=some j) : j∈seen := by
-  induction seen generalizing i with
-  | nil => simp at h
-  | cons a seen ih =>
-    cases i with
-    | zero =>
-      simp only [List.getElem?_cons_zero,Option.some.injEq] at h
-      subst j
-      exact List.mem_cons_self
-    | succ i => exact List.mem_cons_of_mem a (ih h)
+    (h : seen[i]?=some j) : j∈seen :=
+  List.mem_of_getElem? h
 
 theorem Line.sound (line : Line) (seen : List Judgment)
     (hseen : ∀ j ∈ seen,j.Provable) (h : line.valid seen=true) : line.rule.output.Provable := by

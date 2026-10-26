@@ -272,36 +272,21 @@ theorem lift_zero_iff (ports : Fin 4 → R) (v : Fin 16 → R) :
 /-- Every zero fixes all fifteen lifting registers uniquely. -/
 theorem eq_lift_of_zero (ports : Fin 4 → R) (x : Fin 31 → R)
     (h : ∀ k, sourceRows ports x k = 0) : x = lift ports (restrict x) := by
-  have h0 := h 0
-  have h1 := h 1
-  have h2 := h 2
-  have h3 := h 3
-  have h4 := h 4
-  have h5 := h 5
-  have h6 := h 6
-  have h8 := h 8
-  have h9 := h 9
-  have h10 := h 10
-  have h15 := h 15
-  have h16 := h 16
-  have h17 := h 17
-  have h18 := h 18
-  have h19 := h 19
-  change 1+x 24-(1+x 0*ports 0)*(1+x 0*ports 0)=0 at h0
-  change x 16-(1+x 0*ports 0)*(1+x 24)=0 at h1
-  change x 21-(1+x 0*ports 0)*x 10=0 at h2
-  change (x 20-x 17)-x 16*x 9=0 at h3
-  change x 17-x 21*(x 20-x 17)=0 at h4
-  change (x 19-x 12)-(x 12+x 13)*(x 20-x 17)=0 at h5
-  change (x 18-(x 12+x 13))-x 17*(x 19-x 12)=0 at h6
-  change x 22-(x 21+x 20*x 19+(3+4*x 20)*x 15)=0 at h8
-  change x 30-(x 20*x 20+(3+4*x 20))=0 at h9
-  change x 23-x 19*x 19=0 at h10
-  change x 25-x 4*x 4=0 at h15
-  change x 26-(x 4*x 7-x 19)=0 at h16
-  change x 27-(x 14*x 14-x 26*x 26)=0 at h17
-  change x 28-x 23*x 6=0 at h18
-  change x 29-x 28*x 28=0 at h19
+  have h0 : 1+x 24-(1+x 0*ports 0)*(1+x 0*ports 0)=0 := h 0
+  have h1 : x 16-(1+x 0*ports 0)*(1+x 24)=0 := h 1
+  have h2 : x 21-(1+x 0*ports 0)*x 10=0 := h 2
+  have h3 : (x 20-x 17)-x 16*x 9=0 := h 3
+  have h4 : x 17-x 21*(x 20-x 17)=0 := h 4
+  have h5 : (x 19-x 12)-(x 12+x 13)*(x 20-x 17)=0 := h 5
+  have h6 : (x 18-(x 12+x 13))-x 17*(x 19-x 12)=0 := h 6
+  have h8 : x 22-(x 21+x 20*x 19+(3+4*x 20)*x 15)=0 := h 8
+  have h9 : x 30-(x 20*x 20+(3+4*x 20))=0 := h 9
+  have h10 : x 23-x 19*x 19=0 := h 10
+  have h15 : x 25-x 4*x 4=0 := h 15
+  have h16 : x 26-(x 4*x 7-x 19)=0 := h 16
+  have h17 : x 27-(x 14*x 14-x 26*x 26)=0 := h 17
+  have h18 : x 28-x 23*x 6=0 := h 18
+  have h19 : x 29-x 28*x 28=0 := h 19
   let c := registers ports (restrict x)
   have hL : x 24 = c.L := by
     change x 24 = (1+x 0*ports 0)*(1+x 0*ports 0)-1
@@ -351,38 +336,7 @@ theorem eq_lift_of_zero (ports : Fin 4 → R) (x : Fin 31 → R)
     rw [hI] at h19
     exact sub_eq_zero.mp h19
   funext i
-  fin_cases i
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · rfl
-  · exact hN
-  · exact hE
-  · exact hP
-  · exact hc
-  · exact ha
-  · exact hX
-  · exact hD
-  · exact hC2
-  · exact hL
-  · exact hF2
-  · exact hV
-  · exact hg
-  · exact hI
-  · exact hB
-  · exact hdelta
+  fin_cases i <;> first | rfl | assumption
 
 /-- Exact algebraic elimination, over every commutative ring. -/
 theorem source_zero_iff (ports : Fin 4 → R) (x : Fin 31 → R) :

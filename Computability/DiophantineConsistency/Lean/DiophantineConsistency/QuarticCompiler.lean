@@ -94,8 +94,7 @@ def values : (e : NatExpr σ) → (σ → ℕ) → Wire e → ℕ
 
 private theorem assignment_comp {τ ι : Type*} (v : σ → ℕ) (w : τ → ℕ) (f : ι → τ) :
     natAssignment v w ∘ Sum.map id f = natAssignment v (fun i => w (f i)) := by
-  funext i
-  cases i <;> rfl
+  simpa only [Function.comp_def, id_eq] using natAssignment_comp_map v w id f
 
 /-- The explicit node evaluation satisfies every gate residual. -/
 theorem complete (e : NatExpr σ) (v : σ → ℕ) :

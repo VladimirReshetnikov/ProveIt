@@ -45,9 +45,7 @@ theorem totalDegree_specializeOne_le {n : ℕ} (p : MvPolynomial (Fin (n + 1)) �
   refine (MvPolynomial.totalDegree_finsetProd _ _).trans ?_
   refine le_trans (Finset.sum_le_sum (fun i hi => ?_)) (MvPolynomial.le_totalDegree hd)
   change (((Fin.cons (C 1) X : Fin (n + 1) → MvPolynomial (Fin n) ℤ) i) ^ d i).totalDegree ≤ d i
-  refine Fin.cases ?_ (fun j => ?_) i
-  · simp
-  · simp
+  refine Fin.cases ?_ (fun j => ?_) i <;> simp
 
 /-- Natural solutions of an integer polynomial. -/
 def HasNaturalZero {n : ℕ} (p : MvPolynomial (Fin n) ℤ) : Prop :=
@@ -56,8 +54,7 @@ def HasNaturalZero {n : ℕ} (p : MvPolynomial (Fin n) ℤ) : Prop :=
 private theorem cast_cons_one {n : ℕ} (a : Fin n → ℕ) :
     (fun i => ((Fin.cons 1 a : Fin (n + 1) → ℕ) i : ℤ)) =
       Fin.cons 1 (fun i => (a i : ℤ)) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> rfl
+  exact Fin.comp_cons (fun t : ℕ => (t : ℤ)) 1 a
 
 /-- The nine-variable polynomial selected from the representation of the
 constant recursively enumerable predicate with truth value `A`. -/
@@ -70,8 +67,7 @@ theorem hasNaturalZero_ninePolynomial (A : Prop) (hA : REPred (fun _ : ℕ => A)
     HasNaturalZero (ninePolynomial A hA) ↔ A := by
   have h := Classical.choose_spec (Jones1982.nine_unknowns hA) 1 (by decide)
   change A ↔ _ at h
-  symm
-  simpa only [ninePolynomial, HasNaturalZero, eval_specializeOne, cast_cons_one] using h
+  simpa only [ninePolynomial, HasNaturalZero, eval_specializeOne, cast_cons_one] using h.symm
 
 theorem noNaturalZero_ninePolynomial (A : Prop) (hA : REPred (fun _ : ℕ => A)) :
     (¬ HasNaturalZero (ninePolynomial A hA)) ↔ ¬ A :=
@@ -98,17 +94,12 @@ private theorem wset_specializeOne {n : ℕ} (p : MvPolynomial (Fin (n + 1)) ℤ
   constructor
   · rintro ⟨zs, h0, hz⟩
     refine ⟨Fin.tail zs, ?_⟩
-    rw [eval_specializeOne]
-    have he : Fin.cons 1 (fun i => ((Fin.tail zs) i : ℤ)) = fun i => (zs i : ℤ) := by
-      funext i
-      refine Fin.cases ?_ (fun j => ?_) i
-      · simpa using congrArg (fun t : ℕ => (t : ℤ)) h0.symm
-      · rfl
-    rwa [he]
+    have he : Fin.cons 1 (Fin.tail zs) = zs := by
+      simpa only [h0] using Fin.cons_self_tail zs
+    simpa only [eval_specializeOne, ← cast_cons_one, he] using hz
   · rintro ⟨a, ha⟩
     refine ⟨Fin.cons 1 a, rfl, ?_⟩
-    rw [cast_cons_one]
-    simpa only [eval_specializeOne] using ha
+    simpa only [cast_cons_one, eval_specializeOne] using ha
 
 theorem hasNaturalZero_quarticPolynomial (A : Prop)
     (hA : REPred (fun _ : ℕ => A)) :
