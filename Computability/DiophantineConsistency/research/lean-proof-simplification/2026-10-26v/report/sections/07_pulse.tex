@@ -1,0 +1,33 @@
+\section{R2 Describe both horizontal edges by one pulse}
+
+\refs\ \src{WangTiles942StepConstruction.lean}{116}{148}. The current west and east theorems duplicate the same old-head/new-head/direction case proof. The horizontal theorem then redoes direction-dependent arithmetic. Give the single nonzero bond a spatial coordinate instead: index each bond by its \emph{left endpoint}.
+
+For a right move, the bond begins at the old head. For a left move, it begins at the new head. The value is the actual action's rail, not a new transition relation. In the following excerpt, \code{a} is the existing literal-table action at \code{sourceIndex cfg q}.
+
+\begin{Lean}
+def bondSignal (cfg : Config 215) (q : Fin 215) (x : ℤ) : ℕ :=
+  let a := WangTiles942.action (sourceIndex cfg q)
+  if x = (if a.2.1 then cfg.head else nextHead cfg q)
+    then rail a.2.1 a.2.2 else 0
+\end{Lean}
+
+Prove a \emph{paired} edge theorem from \code{stepTile}, \code{transitionRow}, and \code{receiveTile}, not from a horizontal-compatibility assumption:
+
+\begin{Lean}
+  (stepTile cfg q x).west = bondSignal cfg q (x-1) ∧
+    (stepTile cfg q x).east = bondSignal cfg q x
+\end{Lean}
+
+The proof first uses \code{nextHead_eq} to identify the west endpoint after shifting by one. It then performs the existing finite constructor case split \emph{once} for the pair of edge equations. The west/east projections give:
+
+\begin{Lean}
+theorem stepTile_horizontal (cfg : Config 215) (q : Fin 215) (x : ℤ) :
+    (stepTile cfg q (x+1)).west = (stepTile cfg q x).east := by
+  simp only [stepTile_west, stepTile_east, add_sub_cancel_right]
+\end{Lean}
+
+The point is not a more aggressive tactic. Both sides now evaluate the same function at the same bond; compatibility follows from the invariant's indexing. The plane orientation remains \(\operatorname{west}(x+1)=\operatorname{east}(x)\), including left moves and entry into halt.
+
+\textbf{Cost and interface.} The measured replacement span is 28 to 29 nonblank code lines and 1,912 to 1,553 bytes, with all helper overhead included. This is an architectural alternative, not a LOC reduction. It changes the statement shapes of \code{stepTile_west} and \code{stepTile_east}. It leaves the actual constructors and \code{stepTile} definition unchanged, and preserves the statements of \code{stepTile_horizontal} and \code{step_row}. Retaining the old statement shapes as compatibility wrappers would add further cost, which is not hidden in the metric.
+
+\risk\ Compile the paired case proof and search all consumers of the two normalized edge APIs. The invariant does not establish row-step semantics by itself; north/south interpretation still uses its existing live-state premises. Earlier rail descriptors and NorthView classify local data, while this result derives an equation across spatial endpoints. Complete proof, candidate module, proposed source, patch, and static metrics are in \artifact{rows/}.

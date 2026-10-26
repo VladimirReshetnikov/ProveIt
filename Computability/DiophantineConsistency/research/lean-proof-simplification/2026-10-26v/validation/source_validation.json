@@ -1,0 +1,260 @@
+{
+  "status": "PASS_SOURCE_ONLY_UNCOMPILED",
+  "pin": "22e020937caa81d0cb72a4f63071d6c0bcc1eba9",
+  "source_counts": {
+    "selected": 860,
+    "separate_BusyBeaver_dependencies": 5,
+    "active_DiophantineConsistency_Lean_files": 608
+  },
+  "source_hashes_before": [
+    {
+      "manifest": "source_manifest.json",
+      "checked": 860,
+      "errors": []
+    },
+    {
+      "manifest": "dependency_manifest.json",
+      "checked": 5,
+      "errors": []
+    }
+  ],
+  "source_hashes_after": [
+    {
+      "manifest": "source_manifest.json",
+      "checked": 860,
+      "errors": []
+    },
+    {
+      "manifest": "dependency_manifest.json",
+      "checked": 5,
+      "errors": []
+    }
+  ],
+  "library_evidence": {
+    "entries": [
+      {
+        "path": "encoding/evidence/EquivFinBasic.lean",
+        "git_blob_sha1": "5bea2e2b9b043ee10e3c903f73e5dc48cc806753",
+        "sha256": "f7c0134405bfd7d8447117d9f8b8eeb06f45c03846b659e6ba7fc24414cad912",
+        "status": "PASS"
+      },
+      {
+        "path": "encoding/evidence/LICENSE.mathlib",
+        "git_blob_sha1": "8dada3edaf50dbc082c9a125058f25def75e625a",
+        "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+        "status": "PASS"
+      },
+      {
+        "path": "machine/evidence/MathlibAbs.lean",
+        "git_blob_sha1": "91700fe5dec73de7938f0d03425407418f5db188",
+        "sha256": "8202da6c6bf6f5e4f82af7f19398fb9f1e06adf241edc664ecc42806867778d3",
+        "status": "PASS"
+      }
+    ],
+    "errors": []
+  },
+  "plan": {
+    "status": "PASS_SOURCE_PLAN_ONLY",
+    "errors": [],
+    "probes": [
+      {
+        "source": "machine/MachineCandidates.lean",
+        "module": "MachineCandidates",
+        "group": "machine",
+        "imports": [
+          "DiophantineConsistency.WangMachineAction",
+          "DiophantineConsistency.WangMachineStep",
+          "DiophantineConsistency.WangMachineTraceBounds"
+        ],
+        "expected": [
+          "DiophantineConsistency.Round3MachineCandidates.act_next_none_iff_candidate",
+          "DiophantineConsistency.Round3MachineCandidates.color_action_candidate",
+          "DiophantineConsistency.Round3MachineCandidates.run_read_of_abs_ge_candidate"
+        ],
+        "requires_probes": []
+      },
+      {
+        "source": "encoding/StateNumberCandidate.lean",
+        "module": "StateNumberCandidate",
+        "group": "encoding",
+        "imports": [
+          "DiophantineConsistency.WangMachineEncoding",
+          "Mathlib.Logic.Equiv.Fin.Basic"
+        ],
+        "expected": [
+          "DiophantineConsistency.Round3StateEncoding.stateNumber_injective_candidate"
+        ],
+        "requires_probes": []
+      },
+      {
+        "source": "rows/BondPulseCandidate.lean",
+        "module": "BondPulseCandidate",
+        "group": "bond",
+        "imports": [
+          "DiophantineConsistency.WangTiles942StepConstruction"
+        ],
+        "expected": [
+          "DiophantineConsistency.WangRowsRound3.stepTile_edges_candidate",
+          "DiophantineConsistency.WangRowsRound3.stepTile_west_pulse",
+          "DiophantineConsistency.WangRowsRound3.stepTile_east_pulse",
+          "DiophantineConsistency.WangRowsRound3.stepTile_horizontal_candidate"
+        ],
+        "requires_probes": []
+      },
+      {
+        "source": "rows/IntervalPropagationCandidate.lean",
+        "module": "IntervalPropagationCandidate",
+        "group": "interval",
+        "imports": [
+          "DiophantineConsistency.WangTiles942ResetRows"
+        ],
+        "expected": [
+          "DiophantineConsistency.WangRowsRound3.interval_propagate_candidate"
+        ],
+        "requires_probes": []
+      }
+    ],
+    "expected_endpoint_count": 9
+  },
+  "candidates": [
+    {
+      "source": "machine/MachineCandidates.lean",
+      "sha256": "3ee77bba54b14452666b5e8f217e3d65754658fca31629fb71430d299565faf4",
+      "expected_endpoints": 3
+    },
+    {
+      "source": "encoding/StateNumberCandidate.lean",
+      "sha256": "bae0c2cf5765a804a7842e7477eadb01f11330f4d212e3e6ec2e6b7ff8d9f07b",
+      "expected_endpoints": 1
+    },
+    {
+      "source": "rows/BondPulseCandidate.lean",
+      "sha256": "c7c619650868899f7b4196e87a94593c0dfcb6dd07aac7640e8efafc25cf5e34",
+      "expected_endpoints": 4
+    },
+    {
+      "source": "rows/IntervalPropagationCandidate.lean",
+      "sha256": "d85d6d9ada785b4ddcc251180aec974694ff2f38dbba7aaf24e6dfd4156e1c9d",
+      "expected_endpoints": 1
+    }
+  ],
+  "patches": [
+    {
+      "path": "encoding/StateNumber.patch",
+      "sha256": "14eba30044428729b7d30d3a7d488b8f215d13a68e13f0d20eb3a2df492dce85",
+      "git_apply_check_passed": true,
+      "applied_in_disposable_copy": true,
+      "check_exit": 0,
+      "check_stderr": "",
+      "apply_exit": 0,
+      "apply_stderr": "",
+      "resulting_target_sha256": {
+        "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineEncoding.lean": "f80a4df84fe60cfb42635326fd718f0a94081bb5312d80c5058e681ddbae9191"
+      },
+      "matches_complete_proposed_modules": {
+        "encoding/WangMachineEncodingCandidate.lean": true
+      },
+      "added_physical_lines": 8,
+      "removed_physical_lines": 17
+    },
+    {
+      "path": "machine/M1-act_next_none_iff.patch",
+      "sha256": "0ba9504aa37832509f295c1432bc6cdc1f7e259e5de9064f9b2eed94d09e4077",
+      "git_apply_check_passed": true,
+      "applied_in_disposable_copy": true,
+      "check_exit": 0,
+      "check_stderr": "",
+      "apply_exit": 0,
+      "apply_stderr": "",
+      "resulting_target_sha256": {
+        "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineAction.lean": "bf484056fff1a848d12c648c20cce802529eee927b4225a5cba2b655cef6215d"
+      },
+      "matches_complete_proposed_modules": {
+        "machine/patched/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineAction.lean": true
+      },
+      "added_physical_lines": 1,
+      "removed_physical_lines": 8
+    },
+    {
+      "path": "machine/M2-color_action.patch",
+      "sha256": "7e5f2ef5ff7f217ea7a3fd6d3383c4698f2807561529a4d6568c3d5a774b1a8e",
+      "git_apply_check_passed": true,
+      "applied_in_disposable_copy": true,
+      "check_exit": 0,
+      "check_stderr": "",
+      "apply_exit": 0,
+      "apply_stderr": "",
+      "resulting_target_sha256": {
+        "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineStep.lean": "347b90022b1e9478c706f91497d17b59bc22cf37e9377be77a28d14c5435abf6"
+      },
+      "matches_complete_proposed_modules": {
+        "machine/patched/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineStep.lean": true
+      },
+      "added_physical_lines": 3,
+      "removed_physical_lines": 7
+    },
+    {
+      "path": "machine/M3-run_read_of_abs_ge.patch",
+      "sha256": "147b5b4274de81059ebe95998d646d721dbfba1d90f721da5e83b3af5f899360",
+      "git_apply_check_passed": true,
+      "applied_in_disposable_copy": true,
+      "check_exit": 0,
+      "check_stderr": "",
+      "apply_exit": 0,
+      "apply_stderr": "",
+      "resulting_target_sha256": {
+        "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineTraceBounds.lean": "aab01d68e14deff73cd0d56f13d2f1fde21b3cd90220c0001d33f2e15f6f96da"
+      },
+      "matches_complete_proposed_modules": {
+        "machine/patched/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineTraceBounds.lean": true
+      },
+      "added_physical_lines": 1,
+      "removed_physical_lines": 6
+    },
+    {
+      "path": "rows/WangTiles942ResetRows.lean.patch",
+      "sha256": "50505952e43a7af8f482f027ab6115a45095d615ac65ceb56bd62924b5e3725d",
+      "git_apply_check_passed": true,
+      "applied_in_disposable_copy": true,
+      "check_exit": 0,
+      "check_stderr": "",
+      "apply_exit": 0,
+      "apply_stderr": "",
+      "resulting_target_sha256": {
+        "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942ResetRows.lean": "f41da11eaea5c4eaa3e3c043cb8efa79dea1353fa0cedd47eca9f59620d04550"
+      },
+      "matches_complete_proposed_modules": {
+        "rows/proposed/WangTiles942ResetRows.lean": true
+      },
+      "added_physical_lines": 16,
+      "removed_physical_lines": 24
+    },
+    {
+      "path": "rows/WangTiles942StepConstruction.lean.patch",
+      "sha256": "c2c990e561cbadb5724b4ea0d6a52c715a50eb07a0f74d4bfd75baccea1637cb",
+      "git_apply_check_passed": true,
+      "applied_in_disposable_copy": true,
+      "check_exit": 0,
+      "check_stderr": "",
+      "apply_exit": 0,
+      "apply_stderr": "",
+      "resulting_target_sha256": {
+        "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942StepConstruction.lean": "63b23d0dd19b34103195ce570e7dc66c5af7d3e885896a897fe658087204124b"
+      },
+      "matches_complete_proposed_modules": {
+        "rows/proposed/WangTiles942StepConstruction.lean": true
+      },
+      "added_physical_lines": 24,
+      "removed_physical_lines": 24
+    }
+  ],
+  "errors": [],
+  "not_established": [
+    "Lean elaboration",
+    "kernel checking",
+    "transitive axiom results",
+    "composite assumed-adopted baseline build",
+    "integration correctness",
+    "performance improvement"
+  ]
+}

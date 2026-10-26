@@ -1,0 +1,31 @@
+\section{Artifacts and further research questions}
+
+\subsection{Archive map}
+
+\begin{tabularx}{\linewidth}{@{}L{1.60in}Y@{}}
+\toprule
+Location & Contents and purpose \\
+\midrule
+\artifact{report/} & This editable TeX manuscript, PDF, and reproducible XeLaTeX build script \\
+\artifact{machine/} & Three isolated candidates, independent proof-body patches, proposed modules, metrics, static validation, pinned absolute-value source \\
+\artifact{encoding/} & Sentinel-preserving injectivity candidate and pinned finite-equivalence source evidence \\
+\artifact{rows/} & Interval and pulse candidates, proposed modules, patches, metric script and supporting checks \\
+\artifact{baseline_audit/} & Prior-corpus identity records, full assumed-applied API ledger, conflict/novelty decisions and audit scripts \\
+\artifact{validation/} & Replay plan, isolated-probe runner, source-only audit, 48-test suite, explicit unavailable-runtime preflight \\
+\artifact{provenance/} & Source manifest, full Lean-tree delta, 27-commit timeline, metric and verification evidence \\
+\artifact{sources/} and \artifact{dependencies/} & Source snapshot and separately verified direct BusyBeaver imports; not a complete build closure \\
+\bottomrule
+\end{tabularx}
+
+The source links in this report all target the reviewed pin or the pinned Mathlib dependency, rather than moving \code{main}. The source manifests distinguish reused, hash-matched bytes from fresh downloads. The prior ledger preserves exact packet/section locators so an apparent novelty claim can be audited without accepting a keyword-only search.
+
+\subsection{Questions worth resolving next}
+
+\textbf{Does E1 pay for its import?} Its mathematical reuse is exact, but the explicit finite-equivalence import can cost more than a small local injectivity proof. Compile and profile both versions before adopting it. A new project-wide encoding abstraction is not justified by this single client.
+
+\textbf{Does R2 have more consumers?} Its strongest case is maintainability: one spatial edge invariant replaces duplicate proofs and exposes why matching works. If no subsequent construction uses that view, keeping the old public west/east statements may be preferable. Search actual consumers first; do not count hypothetical applications as savings.
+
+\textbf{How stable are the two normalization sites?} The finite-equivalence identity uses \code{simp}; the interval proof uses \code{convert} and \code{omega}. Lean replay should establish whether explicit simp lemmas or small arithmetic equalities improve robustness without restoring the old scaffolding.
+
+\textbf{What remains beyond already proposed abstractions?} Future work should identify a concrete proof obligation that survives the ledger. A shared trace-envelope record, a broader controller simulation, or another generated-certificate layer is not recommended here: previous proposals already cover much of that territory, and no additional current consumer saving has been demonstrated.
+

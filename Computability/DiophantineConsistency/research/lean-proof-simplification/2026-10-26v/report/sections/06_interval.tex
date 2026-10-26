@@ -1,0 +1,32 @@
+\section{R1 Induct over a translated integer interval}
+
+\refs\ \src{WangTiles942ResetRows.lean}{41}{73}. The existing theorem proves rightward and leftward propagation by separate natural inductions, then chooses a direction and converts a distance with \code{Int.toNat}. Use one motive over an integer displacement instead. Retain the original statement, including strict boundaries and both local propagation premises.
+
+\begin{Lean}
+  have hshift (z : ℤ) : l < x₀+z → x₀+z < r → P (x₀+z) := by
+    induction z using Int.induction_on with
+    | zero =>
+        intro hl hr
+        simpa only [add_zero] using h₀
+    | succ n ih =>
+        intro hl hr
+        have hs := hnext (x₀+(n : ℤ)) (by omega) (by omega)
+          (ih (by omega) (by omega))
+        convert hs using 1 <;> omega
+    | pred n ih =>
+        intro hl hr
+        have hs := hprev (x₀+(-(n : ℤ))) (by omega) (by omega)
+          (ih (by omega) (by omega))
+        convert hs using 1 <;> omega
+  intro x hl hr
+  have he : x₀+(x-x₀) = x := by omega
+  simpa only [he] using hshift (x-x₀) (by omega) (by omega)
+\end{Lean}
+
+\textbf{Why the motive includes both bounds.} In a positive step, the induction hypothesis applies to the point one cell before the target; in a negative step, it applies to the point one cell after it. The fixed interior seed supplies the missing bound in each direction. The two bounds must remain implications in the induction motive, not be fixed prematurely as hypotheses about the final target.
+
+At the end, instantiate the displacement by \(x-x_0\). This removes the final order split and both natural-distance conversions. The \code{Int.induction_on} pattern already occurs in \code{WangTiles942SeamColumns}; this proposal specializes that existing induction API, not a new interval-connectivity library.
+
+\textbf{Incremental benefit.} The declaration changes from 31 to 23 nonblank code lines; the proof body changes from 26 to 18. There is no external helper, import, or changed client. The pre-existing \code{row_reset}, \code{row_reset_of_north438}, and strip specializations retain the same assumptions and statements. Unlike earlier Nat scanner or finite-cycle propagation proposals, this removes arithmetic transport in a two-sided, strictly bounded integer interval.
+
+\risk\ The induction case binder types and normalization in each \code{convert} must be checked by Lean. Test intervals with one interior point, negative endpoints, and seeds adjacent to either boundary. No finiteness, periodicity, unique Start, or machine-run premise is introduced. A proposed replay module and a proof-body-only patch are in \artifact{rows/}.

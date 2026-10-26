@@ -1,0 +1,33 @@
+\section{Validation and adoption gates}
+
+\subsection{Completed evidence versus checks still needed}
+
+\begin{tabularx}{\linewidth}{@{}L{2.15in}Y@{}}
+\toprule
+Check & Status and scope \\
+\midrule
+Pinned source identity & 860 selected source files verified; five BusyBeaver dependencies separately verified \\
+Prior corpus identity & Six placed packets and five fresh incoming archives bound to source evidence; previous study also included \\
+Active change coverage & Full Lean-tree comparison yields 66 paths, exactly cross-checked against active comparison entries \\
+Candidate source metrics & Independently recounted; helper and import costs distinguished \\
+Patch and statement checks & All six patches apply together to a disposable copy; five target headers retained; R2 changes explicit \\
+Lean elaboration and kernel checks & \textbf{Not run}; no Lean or Lake runtime available \\
+Axiom footprint comparison & \textbf{Not run}; candidate audit commands are supplied, not claimed output \\
+Downstream rebuild and performance & \textbf{Not run}; no compile-time or proof-term-size result \\
+\bottomrule
+\end{tabularx}
+
+The source-only suite passes 48 Python tests and checks four replay probes with nine expected audit endpoints. A separate bounded model check samples 30,960 spatial edge/matching cases and 2,582 interval/predicate/seed instances. Only 84 interval instances satisfy all premises; all satisfy the conclusion. These are finite QA, not Lean proofs or all-integer verification.
+
+\subsection{Replay in a complete pinned checkout}
+
+Use the repository's \code{leanprover/lean4:v4.32.0} and locked Mathlib revision \href{https://github.com/leanprover-community/mathlib4/commit/81a5d257c8e410db227a6665ed08f64fea08e997}{\texttt{81a5d257c8e4}}. The archive is not a standalone build environment. First obtain a \emph{complete} checkout with its submodules and dependencies; do not infer build readiness from this source snapshot.
+
+\begin{enumerate}
+\item Re-run the snapshot and corpus verification scripts. Inspect each patch against the pin and apply it only in a throwaway worktree. Keep R2 independent from the five local replacements so its API cost is visible.
+\item Compile the isolated candidate modules. Confirm they prove their own statements rather than calling the original target theorem. Run every supplied regression statement, especially target 215 versus invalid 216, old/new write positions, time zero, and both movement directions.
+\item Rebuild changed source modules and paired Checks modules. For E1 and M1, rebuild the action, step, and row-construction consumers; for R1 rebuild reset and strip clients; for R2 rebuild all users of west/east projection theorems and row construction.
+\item Compare \code{#print axioms} for old and proposed declarations and relevant public endpoints. A shorter tactic proof may introduce standard axioms even when the old proof did not. Do not treat their absence from source text as an axiom audit.
+\item Measure elaboration and memory only after successful checking, using comparable clean/cached conditions. Keep the less fragile proof if the shorter one imposes substantial import or simplifier cost.
+\end{enumerate}
+
