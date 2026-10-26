@@ -20280,3 +20280,178 @@ Total: 319 members = 272 staged + 46 omitted copies + 1 ignored.
 | `positive85/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MC.bin.gz` |
 | `positive85/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MF_source.bin.gz` |
 | `positive85/coefficients/beta.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/beta.bin.gz` |
+
+## Placement record: batch 238 (wave 22)
+
+Intake record, not a delivered file. The four archives of the arrival
+commit `858df49535` (25 October 2026, 17:19, "Con(ZFC) in Diophantine form")
+were extracted straight from the committed ZIPs into numbered directories
+175–178, in archive-name order, with the single wrapper directory removed.
+Nothing was edited and nothing was run at intake.
+
+**Waves 5–21 are kept.** By Vladimir's direction, wave 22 is placed beside
+them (sources 31–174), not instead of them; this section is appended to the
+earlier records above.
+
+Members not in this tree:
+
+- **Copies of repository files.** A member byte-identical (up to line ends)
+  to a blob at the placement parent in a stable place is omitted: this
+  collection, another tracked tree outside the active research session's
+  volatile directories, or an earlier arrival ZIP. A member whose only
+  copies lie in `Computability/DiophantineConsistency/` outside this report
+  (the research session's `candidates/`, `research/`, `tools/`), or in
+  `.claude/` worktree copies, is kept, as in batches 227–237 (the rule of
+  `c16a89ad94`). The tables below name the repository path holding the same
+  bytes. Licence, notice and attribution files are always kept.
+- **Checksum ledgers, logs, bytecode and TeX build artifacts** are excluded
+  by the root `.gitignore`; they were not verified.
+
+To rerun a package, extract its archive from the arrival commit into a
+scratch directory and run it there:
+
+```sh
+git show 858df49535:'docs/incoming/<archive>.zip' > /tmp/<archive>.zip
+```
+
+| Dir | Archive | Members | Placed | Omitted copies | Ignored | Wrapper |
+|---|---|---:|---:|---:|---:|---|
+| `175-exact-contractions/` | `ConZFC_Exact_Contractions_2026-10-25.zip` | 191 | 139 | 52 | 0 | `ConZFC_Exact_Contractions_2026-10-25/` |
+| `176-oriented-pooling/` | `ConZFC_Oriented_Pooling_2026-10-25.zip` | 111 | 105 | 6 | 0 | `ConZFC_Oriented_Pooling_2026-10-25/` |
+| `177-oriented-powers/` | `ConZFC_Oriented_Powers_2026-10-25.zip` | 97 | 86 | 11 | 0 | `ConZFC_Oriented_Powers_2026-10-25/` |
+| `178-polynomial-centers/` | `ConZFC_Polynomial_Centers_2026-10-25.zip` | 166 | 122 | 44 | 0 | `ConZFC_Polynomial_Centers_2026-10-25/` |
+
+Total: 565 members = 452 staged + 113 omitted copies + 0 ignored.
+
+### `175-exact-contractions/` (`ConZFC_Exact_Contractions_2026-10-25.zip`)
+
+| Delivered member | Same bytes in the repository |
+|---|---|
+| `compact/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/139-graph-digits/compact/coefficients/K.bin.gz` |
+| `compact/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MC.bin.gz` |
+| `compact/coefficients/MF_source.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MF_source.bin.gz` |
+| `compact/coefficients/beta.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/beta.bin.gz` |
+| `compact/inherited/coefficient_recipe.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/coefficient_recipe.tex` |
+| `compact/inherited/inverse_lucas_proof.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/positive/PROOF.md` |
+| `compact/inherited/late_inverse_trace_bV.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/171-pooled-powers-separated-radicals/positive/equation_bV.json` |
+| `compact/inherited/late_inverse_trace_proof.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/171-pooled-powers-separated-radicals/positive/PROOF.md` |
+| `compact/inherited/polynomial.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/polynomial.py` |
+| `compact/inherited/rebuild_coefficients_149.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/149-cofinal-witnesses-centered-carriers/positive/rebuild_coefficients.py` |
+| `compact/inherited/trace87_degree232.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/equations/trace87_degree232.json` |
+| `compact/inherited/trace_proof.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/PROOF.md` |
+| `compact/polynomial.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/polynomial.py` |
+| `compact/radix47/coefficient_recipe.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/positive/radix47/coefficients.tex` |
+| `compact/radix47/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/radix47/radix47/coefficients/K0.bin.gz` |
+| `compact/radix47/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/radix47/radix47/coefficients/MC.bin.gz` |
+| `compact/radix47/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/radix47/radix47/coefficients/MF.bin.gz` |
+| `compact/radix47/coefficients/beta.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/radix47/radix47/coefficients/beta.bin.gz` |
+| `compact/radix47/inherited/inverse_bV164.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/positive/radix47/equation_bV.json` |
+| `compact/radix47/inherited/inverse_binding_proof164.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/positive/radix47/PROOF.md` |
+| `compact/radix47/inherited/native_bridge149.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/149-cofinal-witnesses-centered-carriers/positive_radix47/PROOF.md` |
+| `compact/radix47/inherited/provenance/radix47/radix47/native_geometry.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/radix47/radix47/native_geometry.json` |
+| `compact/radix47/inherited/provenance/radix47/radix47/phi_coefficients.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/radix47/radix47/phi_coefficients.json` |
+| `compact/radix47/inherited/provenance/radix47/radix47/polynomial.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/radix47/radix47/polynomial.json` |
+| `compact/radix47/inherited/provenance/radix47/radix47/radix47_proof.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/141-common-remainders-radix47/radix47/radix47/radix47_proof.md` |
+| `compact/radix47/inherited/rebuild_coefficients_149.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/149-cofinal-witnesses-centered-carriers/positive_radix47/rebuild_coefficients.py` |
+| `inherited/ConZFC_Integral_Projection_2026-10-25.zip` | `docs/incoming/ConZFC_Integral_Projection_2026-10-25.zip (arrival 35fa5f6bc6)` |
+| `inherited/ConZFC_Pooled_Powers_Separated_Radicals_2026-10-25.zip` | `docs/incoming/ConZFC_Pooled_Powers_Separated_Radicals_2026-10-25.zip (arrival 5274bc751a)` |
+| `inherited/ConZFC_Reciprocal_Pooling_2026-10-25.zip` | `docs/incoming/ConZFC_Reciprocal_Pooling_2026-10-25.zip (arrival ee9474c313)` |
+| `inherited/calibration_review/EXTRACTION_LEDGER.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/167-integral-projection/inherited/calibration_review/EXTRACTION_LEDGER.json` |
+| `inherited/calibration_review/c222_internalization_audit.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/145-shared-residue-bounds/review/c222_internalization_audit.md` |
+| `inherited/calibration_review/calibration_sources/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
+| `inherited/calibration_review/calibration_sources/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
+| `inherited/calibration_review/calibration_sources/KEind222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean` |
+| `inherited/calibration_review/calibration_sources/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
+| `inherited/calibration_review/calibration_sources/KLowerQHyp.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean` |
+| `inherited/calibration_review/calibration_sources/KQ1Collect.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Collect.lean` |
+| `inherited/calibration_review/calibration_sources/KQ1Model.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Model.lean` |
+| `inherited/calibration_review/calibration_sources/KQ1ZF.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ZF.lean` |
+| `inherited/calibration_review/calibration_sources/KQHyp.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQHyp.lean` |
+| `inherited/calibration_review/calibration_sources/KSeedDirect222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean` |
+| `inherited/calibration_review/calibration_sources/KUpper222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KUpper222.lean` |
+| `inherited/calibration_review/calibration_sources/SOURCE_MANIFEST.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/145-shared-residue-bounds/review/calibration_sources/SOURCE_MANIFEST.json` |
+| `inherited/calibration_review/calibration_sources/WFModelCore.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean` |
+| `inherited/calibration_review/calibration_sources/WFRelativization.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean` |
+| `inherited/calibration_review/calibration_sources/WellFoundedPartCore.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPartCore.lean` |
+| `principal92/sources/source220.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/167-integral-projection/variants/220/equation/equation.json` |
+| `research/oriented_pooling209/source/affine218.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/168-reciprocal-pooling/stages/affine218/equation.json` |
+| `research/oriented_pooling209/source/basis_operations.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/168-reciprocal-pooling/equations/quartic218/row_certificate.json` |
+| `sources/p217_sparse.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/171-pooled-powers-separated-radicals/integer/integer217_sparse/equation.json` |
+| `sources/p220.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/167-integral-projection/variants/220/equation/equation.json` |
+| `sources/p225.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/equation.json` |
+
+### `176-oriented-pooling/` (`ConZFC_Oriented_Pooling_2026-10-25.zip`)
+
+| Delivered member | Same bytes in the repository |
+|---|---|
+| `higher_degree/source216.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/169-pooled-projection/algebra/equation216.json` |
+| `source/ConZFC_Pooled_Projection_2026-10-25.zip` | `docs/incoming/ConZFC_Pooled_Projection_2026-10-25.zip (arrival 9a30ecc41e)` |
+| `source/anchor135/ORIENTATION_FIRST_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/ORIENTATION_FIRST_PROOF.md` |
+| `source/anchor135/PROOF_315.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/135-cofinal-anchors-round17/direct/PROOF_315.md` |
+| `source/equation216.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/169-pooled-projection/algebra/equation216.json` |
+| `verification/PARENT_REPLAY.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/169-pooled-projection/verification/ROOT_NORMAL.json` |
+
+### `177-oriented-powers/` (`ConZFC_Oriented_Powers_2026-10-25.zip`)
+
+| Delivered member | Same bytes in the repository |
+|---|---|
+| `compact/163-trace-radical/compact/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/PROOF.md` |
+| `compact/163-trace-radical/compact/coefficient_recipe.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/coefficient_recipe.tex` |
+| `compact/163-trace-radical/compact/polynomial.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/polynomial.py` |
+| `compact/164-unsquared-factors-linear-selectors/positive/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/positive/PROOF.md` |
+| `compact/164-unsquared-factors-linear-selectors/positive/equation_bV.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/positive/equation_bV.json` |
+| `compact/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/139-graph-digits/compact/coefficients/K.bin.gz` |
+| `compact/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MC.bin.gz` |
+| `compact/coefficients/MF_source.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MF_source.bin.gz` |
+| `compact/coefficients/beta.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/beta.bin.gz` |
+| `proofs/PARENT_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/173-crt-index-anchor-215/inherited/joint_norm245/BOOTSTRAP_PROOF.md` |
+| `sources/parent225.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers/equation/equation.json` |
+
+### `178-polynomial-centers/` (`ConZFC_Polynomial_Centers_2026-10-25.zip`)
+
+| Delivered member | Same bytes in the repository |
+|---|---|
+| `compact/coefficient_recipe.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/coefficient_recipe.tex` |
+| `compact/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/139-graph-digits/compact/coefficients/K.bin.gz` |
+| `compact/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MC.bin.gz` |
+| `compact/coefficients/MF_source.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MF_source.bin.gz` |
+| `compact/coefficients/beta.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/beta.bin.gz` |
+| `compact/parents/inherited_lucas/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/152-lucas-corrections/compact/PROOF.md` |
+| `compact/parents/inherited_lucas/parent/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/140-centered-residues/compact/PROOF.md` |
+| `compact/parents/inherited_lucas/parent/proof_sources/denominator_parent.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/134-certificate-reductions/compact/PROOF.md` |
+| `compact/parents/inherited_lucas/parent/proof_sources/indexed_constants.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/121-paired-guards-centered/baseline/Computability/DiophantineConsistency/research/indexed-tile-enumeration/equation.tex` |
+| `compact/parents/inherited_lucas/parent/proof_sources/indexed_native.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/121-paired-guards-centered/baseline/Computability/DiophantineConsistency/research/indexed-tile-enumeration/PROOF.md` |
+| `compact/parents/inherited_lucas/parent/proof_sources/product_review.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/133-staged-certificates/compact/REVIEW.md` |
+| `compact/parents/inherited_lucas/parent/proof_sources/product_square.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/133-staged-certificates/compact/PROOF.md` |
+| `compact/parents/inherited_lucas/parent/proof_sources/saturation.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/133-staged-certificates/compact/provenance/saturated_parent_proof.md` |
+| `compact/parents/inherited_lucas/parent/proof_sources/scaled_native.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/107-dyadic-pell/dyadic10/upstream/PROOF816.md` |
+| `compact/parents/inherited_lucas/parent/proof_sources/uncentered.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/133-staged-certificates/compact/provenance/uncentered_parent_proof.md` |
+| `compact/parents/inherited_lucas/parent/proof_sources/uniform_ratio.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/116-coprime-projection/positive/source/ZERO_PROOF.md` |
+| `compact/parents/inherited_lucas/parent/proof_sources/universal_pell.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers/report/congruence_carriers.tex` |
+| `compact/parents/inherited_lucas/parent/proof_sources/unshift_bv.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/143-residual-bases/compact/provenance/unshift_general.md` |
+| `compact/parents/inherited_lucas/parent/proof_sources/unshift_square.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/140-centered-residues/compact/proof_sources/unshift_square.md` |
+| `compact/parents/inverse85.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/positive/equation_bV.json` |
+| `compact/parents/inverse_proof.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/positive/PROOF.md` |
+| `compact/parents/rebuild_coefficients_source.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/140-centered-residues/compact/rebuild_coefficients.py` |
+| `compact/parents/trace87.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/equations/trace87_degree232.json` |
+| `compact/parents/trace_proof.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/PROOF.md` |
+| `compact/polynomial.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/polynomial.py` |
+| `direct/SOURCE164_INTEGER_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/integer/PROOF.md` |
+| `direct/SOURCE164_NATURAL_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/natural/PROOF.md` |
+| `direct/calibration_source_extracts/ConstructibleChoice.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/156-integral-projection-lattice/sources/calibration/ConstructibleChoice.lean` |
+| `direct/calibration_source_extracts/KCode222.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/156-integral-projection-lattice/sources/calibration/KCode222.lean` |
+| `direct/calibration_source_extracts/KEind222.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/156-integral-projection-lattice/sources/calibration/KEind222.lean` |
+| `direct/calibration_source_extracts/KEndpoint.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/156-integral-projection-lattice/sources/calibration/KEndpoint.lean` |
+| `direct/calibration_source_extracts/KEqCodes222.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/156-integral-projection-lattice/sources/calibration/KEqCodes222.lean` |
+| `direct/calibration_source_extracts/KSeedDirect222.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/156-integral-projection-lattice/sources/calibration/KSeedDirect222.lean` |
+| `direct/calibration_source_extracts/KSeedInterface222.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/156-integral-projection-lattice/sources/calibration/KSeedInterface222.lean` |
+| `direct/integer_source239.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/integer/integer239/equation.json` |
+| `direct/integer_source240_sparse.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/integer/integer240_sparse/equation.json` |
+| `direct/natural_source206.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors/natural/natural206/equation.json` |
+| `direct/reduce_basis.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/159-quadratic-projection-234/code/reduce_basis.py` |
+| `direct/reduce_radical.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/159-quadratic-projection-234/code/reduce_radical.py` |
+| `whole_product/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/139-graph-digits/compact/coefficients/K.bin.gz` |
+| `whole_product/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MC.bin.gz` |
+| `whole_product/coefficients/MF_source.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/MF_source.bin.gz` |
+| `whole_product/coefficients/beta.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/coefficients/beta.bin.gz` |
+| `whole_product/review_poly.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical/compact/polynomial.py` |

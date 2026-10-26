@@ -3319,11 +3319,24 @@ The successor maps preserve every coordinate of each full zero in both
 directions. Retaining the independent Y coordinate avoids the degree increase
 of the smaller20-coordinate power graph. These are ordinary hand degree
 proofs; expanded support, height, operation counts and physical one-page fit
-remain unmeasured. The original [complete TeX page plan](research/direct-c222-one-page-template-page-plan/equation.tex)
-is unrendered. None of these tradeoffs has demonstrated a shorter complete
-page than the maintained15-positive/66-operation/degree157 display.
+remain unmeasured. The [complete446-variable TeX plan](research/direct-c222-twenty-one-page-plan/equation.tex)
+now has two full independent presentation reviews and [separate ROOT acceptance](reviews/direct-c222-twenty-one-page-plan-presentation-acceptance.json):
+it prints the entire accepted polynomial with every coefficient defined.
+Its proposed9-point two-column layout has not yet been rendered. The
+[original554-variable plan](research/direct-c222-one-page-template-page-plan/equation.tex)
+remains preserved. Neither has demonstrated a shorter complete page than the
+maintained15-positive/66-operation/degree157 display.
 Lean stays paused; substantial checked improvements update the maintained
 PDF and TeX together.
+
+The [normalized strong-factor equation](research/compact67-normalized-strong-degree145/README.md)
+has two full independent ordinary reviews and [separate ROOT acceptance](reviews/compact67-normalized-strong-degree145-ordinary-acceptance.json).
+It retains15 positive unknowns and lowers the exact degree from157 to145,
+using67 integer operations rather than66. The identity `P157=Delta*Q145`,
+with `Delta>0` before any equation, gives identical whole positive zero sets
+at the pinned4177 coefficient tuple. The disclosed older normalization gains
+no new variable or printed-page saving; it remains a degree/circuit tradeoff.
+The maintained942-tile page is unchanged by this separate acceptance.
 
 The [eight newest archive intake](research/incoming-3ecd6a6cf5-codefree-intake/README.md)
 and [FULL incoming structural review](reviews/incoming-common-remainders-radix47-ordinary-peer.md)

@@ -1,0 +1,623 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{booktabs,longtable,array,microtype,xcolor,enumitem,fancyhdr}
+\usepackage{xurl,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black,
+ pdftitle={Exact Integer Projections for Diophantine Consistency},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Exact integer projections for Diophantine consistency}
+\fancyhead[R]{\small 25 October 2026}\fancyfoot[C]{\thepage}
+\allowdisplaybreaks[3]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\Ht}{\operatorname{ht}}
+\newcommand{\normone}[1]{\left\lVert#1\right\rVert_1}
+\title{Exact Integer Projections\\for Diophantine Consistency}
+\author{Research report prepared for Vladimir Reshetnikov\\\small Explicit equations, proofs, and independently checked finite artifacts}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a completely specified ordinary polynomial in 92 unrestricted
+integer variables, of exact total degree 692, whose absence of integer
+zeros is provably equivalent in ZFC to syntactic consistency of ZFC.
+The new construction is obtained by exact integral projections of an
+authenticated direct encoding of the C222 numerical proof calculus.
+It uses neither a K215 simulation nor an instance of Jones's universal
+polynomial. Every eliminated coordinate has a unique polynomial
+restoration with integer coefficients.
+
+The inspected direct predecessor has 94 variables and degree 65,540.
+The new equation improves both of those measures, while using 29
+residual squares instead of 28. Its expanded coefficient height is
+proved strictly below $2^{1655}$; no full expansion of the principal
+polynomial is needed or claimed. The complete finite polynomial
+definition is printed in this report and supplied as a binary
+arithmetic graph. Lower-degree companions include a sextic in 191
+integers and a sextic in 193 integers with coefficient height 16,866.
+
+We also close a previously stated transport question for a ten-positive-
+variable Pell construction, and give an explicit signed, multiple-base
+certificate theorem. The report distinguishes new endpoints, inherited
+methods, a late-arriving exact duplicate, and research changes that do
+not improve the measured frontier. The new finite algebra is independently
+checked; the inherited unbounded arithmetic and logical calibration is
+identified rather than represented as a newly compiled proof-assistant
+development. Global minimality is not asserted.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The result and the meaning of simplicity}
+
+\subsection{The principal equation}
+
+All unqualified variables in the principal construction range over
+$\Z$. Let $S_0,\ldots,S_{127}\in\Z[v_0,\ldots,v_{190}]$ be the 128
+literal residuals printed in Appendix~\ref{app:source}. Let $F$ be the
+ordered set of 92 free coordinate indices, let $J$ be the set of 29
+retained residual indices, and let the 99 acyclic unit definitions be
+those printed in Appendix~\ref{app:definition}. These finite data define
+polynomials $V_0(\boldsymbol x),\ldots,V_{190}(\boldsymbol x)$ in exactly
+the free inputs $\boldsymbol x=(x_0,\ldots,x_{91})$. Define
+\begin{equation}\label{eq:principal}
+ \boxed{\displaystyle
+ P_{92}(\boldsymbol x)=\sum_{r\in J}
+       S_r\bigl(V_0(\boldsymbol x),\ldots,V_{190}(\boldsymbol x)\bigr)^2=0.}
+\end{equation}
+The symbols $V_j$ are polynomial abbreviations. They are not additional
+quantified unknowns. The two appendices give a complete coefficient
+specification of one fixed ordinary polynomial; a finite acyclic arithmetic
+graph provides the same specification in executable form.
+
+\begin{theorem}[Principal endpoint]\label{thm:main}
+The polynomial in \eqref{eq:principal} has integer coefficients and exact
+total degree $692$. Its expanded coefficient height satisfies
+$\Ht(P_{92})<2^{1655}$. Composing the explicit integer projections below
+with the retained C222/ZF/ZFC calibration gives
+\[
+ \ZFC\ \vdash\
+ \left(\neg\exists\boldsymbol x\in\Z^{92}\;
+                 P_{92}(\boldsymbol x)=0\right)
+       \ \longleftrightarrow\ \Con(\ZFC).
+\]
+Here $\Con(\ZFC)$ means that the specified effective ZFC presentation
+has no finite syntactic refutation.
+\end{theorem}
+
+The theorem is an equivalence. It does not settle which side holds.
+The coefficients, coordinate lists, and arithmetic graph are chosen by
+finite construction and do not depend on a consistency assumption.
+The formalization boundary is explained in Section~\ref{sec:logic}.
+
+\subsection{The comparison that is actually improved}
+
+Package 152's direct-calculus family contains a 94-integer polynomial
+of exact degree 65,540, presented by 28 residual squares, with the
+reported expanded-height bound $2^{164870}$~\cite{p152}.
+The comparison is therefore:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Measure & Inspected 94-variable form & New principal form\\
+\midrule
+Independent integer variables & 94 & 92\\
+Exact total degree & 65,540 & 692\\
+Residual squares & 28 & 29\\
+Certified expanded-height bound & $<2^{164870}$ & $<2^{1655}$\\
+Largest literal scalar in definition & 256 & 46,656\\
+\bottomrule
+\end{tabular}
+\end{center}
+The degree is about $94.71$ times smaller. The height entries are bounds,
+not two measured exact heights; a comparison of upper bounds is not a
+proof that one actual expanded height is smaller. The larger literal
+scalar and the extra residual are explicit costs of this particular
+choice of source and projection.
+
+This is an improvement within the directly compiled proof-calculus
+family. The repository also contains ten-integer constructions through
+Sun's reduction, a 37-integer quartic, and nine-positive-variable forms
+with different coefficient, degree, or ancestry costs~\cite{catalogue}.
+Consequently 92 is not a global minimum for the task. No argument here
+establishes a globally optimal polynomial under any total ordering of
+variables, degree, coefficient height, or description length.
+
+\subsection{Other completed endpoints}
+
+The lower-degree alternatives are fixed ordinary polynomials in
+unrestricted integers. Every residual coefficient is supplied, and every
+collected coefficient is supplied for the first six entries below.
+\input{profiles_table.tex}
+For the 115-variable degree-24 form, the full residual lists are supplied
+but their sum of squares was not collected. Its exact degree follows
+from the maximum residual degree and the sum-of-squares argument below.
+
+The 193-variable sextic is a useful alternative when small literal
+coefficients matter: all of its cubic residual coefficients have
+absolute value at most $64$, and the fully collected polynomial has
+height $16,866$. The 191-variable sextic uses fewer variables and fewer
+collected monomials, with larger coefficients. These two points are
+different tradeoffs. The 92-variable graph should be used when the
+lower dimension and degree-692 profile are the desired objective.
+
+\section{Exact elimination over the integers}\label{sec:elimination}
+
+\subsection{A unit coefficient supplies a polynomial inverse}
+
+\begin{lemma}[Integral monic projection]\label{lem:projection}
+Let $\epsilon\in\{-1,1\}$, let $f\in\Z[\boldsymbol x]$, and let
+$R_i\in\Z[\boldsymbol x,y]$. Put
+\[
+ A(\boldsymbol x,y)=(\epsilon y+f(\boldsymbol x))^2+
+                    \sum_iR_i(\boldsymbol x,y)^2,
+\qquad
+ B(\boldsymbol x)=\sum_iR_i(\boldsymbol x,-\epsilon f(\boldsymbol x))^2.
+\]
+Then the integer zero sets of $A$ and $B$ are in bijection. The map from
+the smaller zero set is the integral polynomial map
+$\boldsymbol x\mapsto(\boldsymbol x,-\epsilon f(\boldsymbol x))$,
+and its inverse is coordinate projection. In fact
+\[
+ A(\boldsymbol x,-\epsilon f(\boldsymbol x))=B(\boldsymbol x)
+\]
+as a polynomial identity.
+\end{lemma}
+\begin{proof}
+At an integer zero of $A$, every square is nonnegative, so each residual
+is zero. The distinguished row uniquely gives $y=-\epsilon f$.
+Conversely this value makes that row zero, and substitution gives the
+displayed identity. All restored coordinates are integers because
+$\epsilon$ is an integer unit. The two maps are inverse on the stated
+zero sets.
+\end{proof}
+
+There is no division by an arbitrary coefficient in this lemma. A row
+$2y-f=0$, for example, cannot be handled by silently inserting $f/2$.
+Nor does the lemma authorize choosing a square root, restricting the
+sign of an unrestricted coordinate, or assuming that a modulus is nonzero.
+The checker rejects such changes by requiring the literal pivot unit.
+
+A small example explains why degree and dimension move in opposite
+directions. Eliminating $y$ from
+\[
+ (y-ab)^2+(z-yc)^2=0
+\]
+gives the sextic $(z-abc)^2=0$. One quantified coordinate disappears,
+and its multiplication becomes part of the remaining polynomial.
+The same operation on an actual compiled proof certificate can remove
+many auxiliary coordinates while preserving the complete set of integer
+witnesses through explicit maps.
+
+\subsection{Composition and the importance of acyclicity}
+
+Suppose several selected source rows have the form
+$\epsilon_v v+f_v=0$, where $f_v$ does not explicitly contain $v$.
+It is not enough to inspect these rows separately: the definitions
+could contain a cycle. For example, using both $u=v+1$ and $v=u-1$
+as though they eliminate both coordinates would leave an unspecified
+free parameter.
+
+For the principal construction the complete graph of dependencies is
+acyclic. Give the free coordinates their specified values, evaluate
+the 99 definitions in topological order, and obtain a unique integer
+tuple in the 191-coordinate source. The retained residuals then have
+their exact source values. Conversely every source zero satisfies all
+of these definitions. Thus the composite map is a polynomial bijection
+of integer zero sets, with coordinate projection as inverse.
+
+This graph proof is independent of the heuristic that found the list of
+pivots. The release contains two separate checks: sequential replay of
+the unit eliminations and a check of the final simultaneous definitions
+using topological sorting. Both are exact finite algebra checks.
+
+\subsection{Degree-bounded searches and factored definitions}
+
+The lower-degree profiles were found by considering unit pivots whose
+actual substituted residuals remain below a specified degree bound.
+The search compares coordinate count, support, and coefficient costs.
+It uses exact integer polynomial arithmetic; randomized choices only
+decide which eligible pivot to try first. The final certificate fixes
+every choice, so verification and reconstruction are deterministic.
+
+For larger degree bounds, fully expanding intermediate polynomials
+is unnecessary and can be expensive. The 92-variable definition retains
+the finite arithmetic graph. Degree upper bounds propagate through
+addition and multiplication, and a separate nonvanishing certificate
+proves the exact final degree. There are no variable exponents or
+unbounded recursion in this graph. Every node is an integer constant,
+a free input, an addition, a subtraction, or a multiplication.
+
+These are applications and improvements of the repository's existing
+monic-elimination method~\cite{p152,p159}; the general method is not
+claimed as a new discovery. The new work consists of the selected
+source combinations, optimized literal endpoints, complete restoration
+certificates, and their independent checks.
+
+An initially smaller source need not lead to the best result after a
+degree bound is imposed. In the inspected searches, the 220-variable
+source exposed a better sextic projection than its more contracted
+218-variable sibling. Earlier eliminations can obscure inexpensive
+unit pivots or increase the degree of later substitutions. The search
+results establish constructions, not lower bounds on what other
+coordinate systems could achieve.
+
+\section{The exact degree and coefficient bound}\label{sec:degree}
+
+\subsection{Why the principal degree is exactly 692}
+
+Propagation through the verified arithmetic graph gives maximum
+residual degree at most $346$. Therefore $\deg P_{92}\le692$.
+The release supplies an explicit integer ray
+$x_j=a_jt$, with all 92 values $a_j$ recorded. On that ray, source
+residual 61 has coefficient
+\[
+ [t^{346}]\,S_{61}(V(\boldsymbol a t))
+          \equiv 613639\pmod{1000003}.
+\]
+The residue is nonzero, so the integer coefficient is nonzero.
+That residual has exact degree $346$.
+
+One must not now assume that the highest squares cannot cancel modulo
+the chosen modulus. The conclusion is instead made over the integers:
+if $L_r$ is the leading degree-346 homogeneous part of a residual, then
+the degree-692 homogeneous part of $P_{92}$ is $\sum_r L_r^2$.
+At least one $L_r$ is nonzero, so this sum is a nonzero real polynomial.
+For an entirely coefficient-based proof, take the largest monomial in
+a multiplicative monomial order among the $L_r$. Its squared monomial
+has a positive sum of squared integer leading coefficients.
+Thus $\deg P_{92}=692$.
+
+The same argument proves exact degree $2d$ for each expanded
+sum-of-squares profile having a nonzero residual of maximum degree $d$.
+Nonzero modular derivative witnesses separately authenticate the use
+of every free variable in the principal polynomial.
+
+\subsection{Three different coefficient measures}
+
+For a polynomial $A=\sum_\alpha a_\alpha\boldsymbol x^\alpha$, put
+$\normone{A}=\sum_\alpha|a_\alpha|$. Then
+\[
+ \normone{A+B}\le\normone A+\normone B,
+ \qquad \normone{AB}\le\normone A\normone B,
+ \qquad \Ht(A)\le\normone A.
+\]
+Apply these inequalities to every acyclic definition and then to the
+sum of residual squares. The resulting explicit positive integer
+upper bound has 1655 bits. Hence
+\[
+                       \Ht(P_{92})<2^{1655}.
+\]
+This is a rigorous upper bound on the expanded height. The number
+$46,656$ is instead the largest absolute literal scalar in the
+delivered finite definition. Neither number is a measured exact
+expanded height of $P_{92}$, and the full expanded monomial count of
+$P_{92}$ is not asserted.
+
+For the expanded companion equations the distinction is simpler:
+their complete collected coefficient lists are supplied, so their
+reported term counts and heights are exact. This is why the report
+labels the principal height as a bound and the companion heights as
+measured values.
+
+\section{Logical calibration and proof scope}\label{sec:logic}
+
+The direct route starts with the retained polynomial in 225 unrestricted
+integers in package 158~\cite{p158}. Its source arithmetic encodes the
+numerical C222 proof calculus, including signed Pell certificates,
+finite proof-label conditions, and the associated bounded arithmetic
+interfaces. It does not introduce a universal-machine program number
+as an unspecified coefficient.
+
+Package 167 supplies exact integer projections to the 220-variable
+source used here~\cite{p167}. The new sparse certificate eliminates
+29 coordinates to obtain the printed 191-variable sextic. The new
+factored certificate then eliminates 99 more coordinates to give
+$P_{92}$. The two new stages are unconditional integral polynomial
+maps. The separately included 193-variable sextic comes from the
+late 217-variable direct quartic, with its own retained parent archive.
+
+The named logical interfaces in the inherited development include
+\begin{center}\small
+\texttt{KEndpoint.c222\_iff\_zf\_refutation}\\
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+\end{center}
+The supplied calibration audit checks the relation to the effective
+ZFC presentation and the internalizability of the argument in ZFC.
+That argument uses semantic model constructions, completeness,
+well-founded-part constructions, and the constructible inner model
+for the Choice bridge. This report does not replace that argument by
+a claim that the entire calibration is merely finite arithmetic or
+has been proved in PA. No external transitivity or standardness
+assumption is added to the statement of Theorem~\ref{thm:main}.
+
+For the new projection layer, only the elementary unit-elimination
+argument is needed. If the inherited source polynomial is called $Q$,
+the explicitly checked restoration gives
+\[
+ (\exists\boldsymbol x\in\Z^{92}\ P_{92}=0)
+ \ \longleftrightarrow\
+ (\exists\boldsymbol y\ Q=0)
+ \ \longleftrightarrow\
+ \text{there is a finite syntactic ZFC refutation}.
+\]
+Negating the equivalence yields the stated consistency assertion.
+
+The new package supplies ordinary mathematical proofs formalizable
+in ZFC and exact executable checks of the finite polynomials and maps.
+It does not supply a newly compiled end-to-end Lean or Rocq proof,
+nor a serialized object-language derivation inside ZFC. The original
+archives and named source interfaces are retained so that these
+dependencies can be audited. The finite checkers do not search for a
+zero, prove consistency, or replace an unbounded arithmetic theorem
+by testing small examples.
+
+\section{A squared transport coordinate in the compact family}
+
+\input{compact_section.tex}
+
+\section{Oriented rational error certificates}\label{sec:pooling}
+
+The incoming reciprocal-pooling construction combines two consecutive
+bases~\cite{p168}. Its final research paragraph already suggests
+oriented weights for several signed bases. The following result closes
+the size and zero-base details for five blocks and is implemented in
+the supporting 209-variable degree-24 equation. That endpoint is not
+competitive with all the exact-projection profiles above; its value
+here is the completed arithmetic certificate and its explicit compiler.
+
+\begin{theorem}[Five signed blocks]\label{thm:pooling}
+Suppose $W\ge258$, $|A|>W^W$, and there are at most five integer bases
+$n_j$, each satisfying $n_j^2<W$, and at most 17 requests altogether.
+For each request let $m_i,k_i\in\Z$ satisfy $m_i^2,k_i^2<W$, and let $(X_i,Y_i)$ be
+the canonical signed Pell coordinates at parameter $A$ and index $k_i$.
+Set
+\[
+ T_j=2An_j-n_j^2-1,\quad D_i=m_i-X_i+AY_i,
+\]
+\[
+ H_j=\sum_{i\in I_j}Y_i(m_i-X_i),\qquad
+ E_j=\sum_{i\in I_j}(D_i^2-Y_i^2)-2n_jH_j.
+\]
+Then the existence of an integer $z$ satisfying
+\begin{equation}\label{eq:oriented}
+ \sum_j n_jE_j\prod_{\ell\ne j}T_\ell
+                  -z\prod_jT_j=0
+\end{equation}
+implies $m_i=n_j^{k_i}$ for every block with $n_j\ne0$.
+At nonunit bases it also implies $k_i\ge0$. Conversely, these true
+powers in all nonzero-base blocks imply the existence of such a $z$.
+Zero-base blocks impose no condition in this theorem.
+\end{theorem}
+\begin{proof}
+For a nonzero base, $|T_j|>W^W$ and
+$\operatorname{sign}(T_j)=\operatorname{sign}(An_j)$.
+For a zero base, $T_j=-1$, so none of the denominators is zero.
+Put $\delta_i=D_i-n_jY_i$. Direct expansion gives
+\[
+ \sum_{i\in I_j}\delta_i^2=E_j-T_j\sum_{i\in I_j}Y_i^2.
+\]
+Consequently \eqref{eq:oriented} makes
+$\sum_j n_j\sum_i\delta_i^2/T_j$ an integer.
+
+Let $b=\lfloor\sqrt{W-1}\rfloor\ge16$ and take the product only over
+nonzero bases in
+$C=\prod_{n_j\ne0}n_j^b$. For each request in such a block define
+\[
+ d_i=Cm_i-(C/n_j^b)n_j^{b+k_i}\in\Z.
+\]
+The exponents are nonnegative and the indicated quotient is an integer.
+The canonical Pell congruence gives $C\delta_i\equiv d_i\pmod{T_j}$.
+It remains valid for negative indices because $\gcd(n_j,T_j)=1$.
+It follows that $\sum_j n_j\sum_i d_i^2/T_j$ is an integer.
+
+There are at most five nonzero factors in $C$. Thus
+$|d_i|\le2b^{6b}$ and
+\[
+ \sum_j |n_j|\sum_{i\in I_j}d_i^2
+ \le68b^{12b+1}<W^{6b+2}\le W^W.
+\]
+Here $b^2<W$, $68b<W^2$, and $6b+2\le W$ for $b\ge16$.
+The integer rational sum has absolute value below one. Moreover every
+nonzero weight $n_j/T_j$ has the same sign, namely the sign of $A$.
+Hence that integer is zero and every $d_i$ is zero. Dividing in $\mathbb Q$
+by the nonzero integer $C$ proves the power identities. Negative indices
+at a nonunit base cannot give an integer output.
+
+Conversely true powers give $T_j\mid\delta_i$, whence $T_j\mid E_j$.
+The value $z=\sum_{n_j\ne0}n_jE_j/T_j$ is an integer and satisfies
+\eqref{eq:oriented}. The terms from zero bases are zero.
+\end{proof}
+
+The actual five bases are $F^2+1$, $B$, $BH$, $q$, and $q+1$.
+Their nonvanishing is recovered in a checked order: the retained norm
+forces $M\ne0$; the relation $Bv=M$ forces $B\ne0$; oddness gives
+$H\ne0$. The first three blocks can now be interpreted. The retained
+rounding bound gives $|B|\ge2$, and the exact powers give
+$q=(BH)^x\ne0,-1$. Therefore the two remaining blocks are also covered.
+This avoids assuming the later radix positivity in order to authenticate
+the earlier power conditions.
+
+The supporting compiler removes ten private certificate coordinates
+and introduces one integer $z$ in the protected 218-variable source.
+The resulting 209-variable polynomial has 145 quadratic residuals and
+one residual of degree 12, hence exact total degree 24. The independent
+checker authenticates the protected row basis and every replacement.
+No expanded support or coefficient-height record is claimed for it.
+
+\section{A sound semantic alternative that does not improve the frontier}
+
+The supplementary factored-radix construction replaces the request
+$q=(BH)^x$ by
+\[
+                  N=B^x,\qquad P=H^x,\qquad q=NP.
+\]
+Its changed frame uses 35 semantic atom squares. The outputs and indices
+retain squared bounds by $W$, while the two bases $q,q+1$ need only the
+weaker bounds $|q|,|q+1|<W$. The same-base certificate remains sound:
+with $b=\lfloor\sqrt{W-1}\rfloor$, the cleared error bound becomes
+\[
+ 60W^{4b}<W^{4b+1}\le W^W,
+ \qquad |2An-n^2-1|\ge2|A|-W^2>W^W.
+\]
+The full proof checks the signed cases and the ordering of witness choices.
+In particular the new frame contains only semantic coordinates chosen
+before the large Pell parameter, not private Pell witnesses whose size
+depends on that parameter.
+
+The literal source has 224 variables, 161 residuals, and degree six;
+five rechecked radical projections give a 219-variable source. The
+subsequent searches reached 193-variable sextics, so this changed
+semantics has not improved the frozen 191-variable sextic frontier.
+It is included as completed research with that limitation, not counted
+as an unachieved 190-variable result.
+
+\section{Verification, provenance, and integration}\label{sec:verification}
+
+\subsection{What was checked}
+
+The principal component binds its 191-variable source to the exact
+220-to-191 endpoint, checks all 99 unit definitions and their acyclic
+dependencies, checks all retained residuals, and supplies a literal
+binary arithmetic graph. It independently verifies the degree witness,
+the height bound, and actual occurrence of the free coordinates.
+The integer restoration can be evaluated at arbitrary supplied tuples.
+The resulting value of the source sum of squares agrees exactly with
+the value of the projected polynomial.
+
+For the sparse companions, a separately implemented verifier uses
+exponent maps rather than the producer's repeated-index representation.
+It substitutes through every remaining row, checks the full endpoint,
+renumbers coordinates, and compares every collected coefficient where
+an expansion is supplied. Deliberate pivot, restoration, and endpoint
+corruptions must be rejected, including under optimized Python.
+The compact and rational-pooling components have their own exact
+identity and source-binding checks. Repeated small numerical tests
+are not offered as proof of an unbounded assertion.
+
+The arithmetic-parent replays and the exact scope of each fresh run
+are recorded in the verification receipts. Included historical receipts
+are not represented as fresh runs of their entire transitive proof
+development. Independent reviews in this report are separate tasks
+within an AI-assisted research workflow, not outside human refereeing.
+
+\subsection{Immutable comparison boundaries}
+
+The initial inspection was pinned to commit
+\texttt{35fa5f6bc659e83f2b2034126c4bcf8e023fbe1c}.
+The repository changed during the work. A late inspection at
+\texttt{0d75e561a8cefc8c30fc4224605a8984c810ad1c}
+covered newly placed packages 166--168 and three new incoming archives.
+It found direct quartics with 216 or 217 variables and an exact duplicate
+of the compact $bV$ 85-operation degree-232 graph. Those findings are
+included in the comparisons and source ledger.
+
+In particular the compact 85/232 metric is not claimed as a new record,
+and the smaller historical radix47 coefficient tuple is not described
+as the current storage record. The distinct compact result here is
+the proved $b^2$ carrier. The new direct projection endpoints are
+compared with the identified sources, rather than an unspecified
+moving repository head.
+
+\subsection{Using the archive}
+
+The principal equation, its binary graph, source, certificates,
+evaluator, and independent checker are under \texttt{principal92/}.
+The lower-degree ordinary equations are under \texttt{equations/}.
+All these definitions use literal integers and finite operations.
+The original archives retained under \texttt{inherited/} preserve
+the arithmetic and logical proof dependencies and their notices.
+
+From the extracted release directory, the principal commands are:
+\begin{verbatim}
+python3 -B principal92/verify.py
+python3 -B verify.py
+python3 -B -O verify.py
+python3 -B verify.py --components
+\end{verbatim}
+Each successful command checks a finite artifact. It is not a procedure
+for deciding whether the polynomial has an integer zero. The README
+gives exact evaluation and restoration commands, the report build
+instructions, and optional parent-replay commands.
+
+For additive integration into ProveIt, keep the literal equation and
+the source-binding certificates together. A useful formalization target
+is the generic integral monic-projection theorem plus a checked
+interpreter for the finite graph. The inherited C222 and ZF/ZFC
+calibration remains a separately identifiable dependency.
+
+\appendix
+\section{Complete finite definition of the 92-variable polynomial}
+\label{app:definition}
+
+The next data, together with the source rows in Appendix~\ref{app:source},
+specify \eqref{eq:principal} without a coefficient oracle or an
+unspecified program parameter. Let the increasing free list be
+$F=(F_0,\ldots,F_{91})$. Set $V_{F_j}=x_j$. For each listed triple
+$(r,v,\epsilon)$ define the polynomial
+\[
+ f_{r,v}(\boldsymbol u)=-\epsilon
+       \bigl(S_r(\boldsymbol u)-\epsilon u_v\bigr),\qquad
+ V_v=f_{r,v}(V_0,\ldots,V_{190}).
+\]
+The displayed source row contains $u_v$ only as the term
+$\epsilon u_v$. The table is ordered so that dependencies on other
+defined coordinates precede their use. It therefore specifies
+polynomial abbreviations, not simultaneous existential equations.
+Finally square and sum the rows indexed by $J$.
+\input{factored92_definition.tex}
+
+\section{All 128 literal source residuals}\label{app:source}
+
+These are the complete residuals $S_r(\boldsymbol v)$ of the
+191-variable sextic source, indexed from zero. Every coefficient
+and exponent below is literal. The source equation is
+$\sum_{r=0}^{127}S_r(\boldsymbol v)^2=0$.
+\input{source191_residuals.tex}
+
+\begin{thebibliography}{20}
+\bibitem{p152} ProveIt, package 152, \emph{Lucas corrections and elimination
+of arithmetic witnesses}. Pinned commit 35fa5f6bc659e83f2b2034126c4bcf8e023fbe1c.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/35fa5f6bc659e83f2b2034126c4bcf8e023fbe1c/Computability/DiophantineConsistency/con-zfc-diophantine-forms/152-lucas-corrections}.
+\bibitem{p158} ProveIt, package 158, \emph{Pooling exact power certificates
+for Diophantine consistency}. Literal parent P225, retained with original
+proofs and notices. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/35fa5f6bc659e83f2b2034126c4bcf8e023fbe1c/Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers}.
+\bibitem{p159} ProveIt, package 159, \emph{Quadratic projection 234}.
+The general integral radical and unit-projection methods are inherited.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/35fa5f6bc659e83f2b2034126c4bcf8e023fbe1c/Computability/DiophantineConsistency/con-zfc-diophantine-forms/159-quadratic-projection-234}.
+\bibitem{p163} ProveIt, package 163, \emph{Lower degree and fewer witnesses
+for Diophantine consistency}; especially compact proof Sections 3--9.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/35fa5f6bc659e83f2b2034126c4bcf8e023fbe1c/Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical}.
+\bibitem{p164} ProveIt, package 164, \emph{Unsquared factors and linear
+selectors}; inverse Lucas correction and complemented-label radix47 bridge.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/35fa5f6bc659e83f2b2034126c4bcf8e023fbe1c/Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors}.
+\bibitem{p167} ProveIt, package 167, \emph{Two smaller direct quartics for
+ZFC consistency}. Original Integral Projection archive retained verbatim.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/0d75e561a8cefc8c30fc4224605a8984c810ad1c/Computability/DiophantineConsistency/con-zfc-diophantine-forms/167-integral-projection}.
+\bibitem{p168} ProveIt, package 168, \emph{Reciprocal pooling and integral
+projections for Con(ZFC)}. Original archive retained verbatim.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/0d75e561a8cefc8c30fc4224605a8984c810ad1c/Computability/DiophantineConsistency/con-zfc-diophantine-forms/168-reciprocal-pooling}.
+\bibitem{late} ProveIt incoming archives at commit
+0d75e561a8cefc8c30fc4224605a8984c810ad1c:
+\emph{Pooled Powers Separated Radicals}, \emph{Pooled Projection},
+and \emph{Quotient Carriers}, 25 October 2026. Exact archive hashes and
+inspection scope are retained in the late-comparison ledger.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/0d75e561a8cefc8c30fc4224605a8984c810ad1c/docs/incoming}.
+\bibitem{catalogue} ProveIt, \emph{Con-ZFC Diophantine forms catalogue},
+inspected snapshot retained under \texttt{sources/}; the catalogue is a
+source index, not a new independent proof of every listed endpoint.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/35fa5f6bc659e83f2b2034126c4bcf8e023fbe1c/Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+\end{thebibliography}
+\end{document}

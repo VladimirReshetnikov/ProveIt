@@ -1,0 +1,782 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,xcolor}
+\usepackage{enumitem,fancyhdr,xurl,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+ pdftitle={Joint arithmetic certificates for ZFC consistency},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Joint arithmetic certificates for ZFC consistency}\fancyhead[R]{\small 25 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\allowdisplaybreaks[4]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pair}[2]{\bigl(X_{#1}(#2),Y_{#1}(#2)\bigr)}
+
+\title{\textbf{Joint arithmetic certificates for ZFC consistency}\\[6pt]
+\large Signed Pell indices and exact powers in one polynomial condition}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt repository\\
+\small AI-assisted mathematical research, with separate internal reviews}
+\date{25 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct explicit ordinary integer polynomials whose lack of integer zeros
+is provably equivalent in ZFC to its syntactic consistency. The new arithmetic
+step combines two formerly separate tasks: authenticating the signs and indices
+of Pell solutions, and recovering seventeen exact powers at five bases. A
+single rational sum is forced to be an integer, then represented by a same-sign
+sum of bounded errors of absolute value below one. Its polynomial numerator
+replaces eleven private coordinates by one. Zero bases are handled before the
+source's sign bootstrap, and the power congruences use bounded classified
+indices before the requested indices are authenticated. This avoids a circular
+application of the canonical-power lemma.
+
+Applied to the pinned incoming 216-variable quartic, the construction gives a
+literal 206-variable polynomial of exact degree 26. A 207-variable degree-24
+intermediate and several partitions expose other tradeoffs. Certified monic
+substitution then reduces the variable counts substantially; the measured
+family is listed in Section~\ref{sec:results}. Every final equation is supplied
+as a finite arithmetic circuit with literal integer constants, together with
+reproducible construction and independent exact checks. The calibration to
+ZFC refutations is the explicitly identified inherited C222 calibration.
+No global minimum, literature-wide priority, new proof of consistency, or
+newly compiled end-to-end proof-assistant derivation is asserted.
+\end{abstract}
+\tableofcontents
+
+\section{The outcome and the comparison being made}
+\label{sec:scope}
+
+The requested target is a \emph{fixed} polynomial $P\in\Z[x_1,\ldots,x_n]$
+for which
+\begin{equation}\label{eq:target}
+\mathrm{ZFC}\vdash
+ \left(\neg\exists\boldsymbol{x}\in\Z^n\;P(\boldsymbol{x})=0\right)
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+\end{equation}
+Here $\Con(\mathrm{ZFC})$ means that the effective syntactic presentation
+named by the inherited calibration has no finite proof of contradiction.
+The equivalence is proved without assuming either consistency or
+inconsistency. Its two constructive directions translate a zero into a
+refutation and a refutation into a zero.
+
+There is no single established meaning of ``simplest'' across variable count,
+degree, coefficient size, expanded support, and evaluation cost. The repository
+already contains equations in very few variables using large fixed coefficient
+encodings. In particular its 37-integer quartic belongs to a different
+coefficient architecture from the direct construction considered here.
+The direct branch instead encodes the numerical calculus C222 with small
+literal constants; it does not specialize Jones's universal polynomial or
+encode a run of K215. We improve and explicitly compare that branch.
+
+The comparison snapshot is ProveIt commit
+\code{315154b670d7bdb1679554734e417410c9b8187b}.
+The exact parent is the $P_{216}$ equation in the incoming archive
+\code{ConZFC_Pooled_Projection_2026-10-25.zip}~\cite{parent}.
+Its SHA-256 is
+\begin{quote}\small\ttfamily\sloppy
+a91308bd0c82182ea15080763cb23cb4fa0aa45a812eabb7a6cbcd21c0b95a06.
+\end{quote}
+It has 216 unrestricted integer variables, 153 quadratic residuals,
+15,158 collected quartic monomials, and coefficient height 334,952.
+The archive's finite verifier was rerun successfully for this research.
+The retained original archive contains its ordinary arithmetic proof,
+construction, algebra certificates, and named calibration sources.
+
+Three earlier ingredients must receive precise credit. Source 158 developed
+same-base power pooling. Source 168 combined two consecutive bases and
+suggested using base weights to align signs in larger pools~\cite{pool168}.
+Source 152 developed the monic substitution method used in our subsequent
+variable elimination~\cite{elim152}. The new contribution here is the
+complete simultaneous treatment of the signed-index pool and all power pools,
+including zero-base tolerance, its acyclic application to the actual source,
+and the emitted equations and certified reductions. We have not established
+that this general idea is absent from all mathematical literature.
+
+For context, universal constructions with very few integer unknowns have
+also been studied independently, including a recent formalized analysis of
+eleven-unknown universal pairs~\cite{bayer}. Their variable-degree bounds
+address a different optimization problem and do not imply minimality of any
+particular consistency equation.
+
+\section{Pell coordinates, signed indices, and the source frame}
+\label{sec:pell}
+
+For an integer $A$, define the canonical Pell polynomials by
+\[
+ X_0(A)=1,\qquad Y_0(A)=0,
+\]
+\[
+ X_{k+1}=AX_k+(A^2-1)Y_k,\qquad Y_{k+1}=X_k+AY_k.
+\]
+For negative indices set $X_{-k}=X_k$ and $Y_{-k}=-Y_k$.
+Then $X_k^2-(A^2-1)Y_k^2=1$. This notation permits negative $A$ and
+negative indices; neither raw coordinate is assumed positive.
+
+\begin{lemma}[Two simultaneous residue identities]\label{lem:residues}
+Let $|A|>1$, $L=A-1$, and $T_n=2An-n^2-1$. Then for every signed integer
+index $k$,
+\[
+ X_k(A)\equiv1\pmod L,\qquad Y_k(A)\equiv k\pmod L.
+\]
+If $n\ne0$, then $\gcd(n,T_n)=1$ and
+\begin{equation}\label{eq:pellpower}
+ X_k(A)+(n-A)Y_k(A)\equiv n^k\pmod{T_n},
+\end{equation}
+where a negative power denotes the inverse of the unit $n$ in the residue
+ring.
+\end{lemma}
+\begin{proof}
+The first two congruences follow by induction from the recurrences modulo
+$A-1$, and by the definitions at negative indices. Also $T_n\equiv-1\pmod n$.
+For the power congruence, work in the ring
+$\Z[u]/(u^2-(A^2-1))$. The element $A+u$ is a unit with inverse $A-u$,
+and its signed $k$th power is $X_k+uY_k$. The substitution $u\mapsto n-A$
+defines a map to $\Z/T_n\Z$, since
+$(n-A)^2-(A^2-1)=-T_n$. It sends $A+u$ to $n$, proving the claim
+for positive, zero, and negative $k$ at once.
+\end{proof}
+
+The source has fourteen principal norm-one pairs and seventeen power
+requests. Some requests share a pair. Its actual parameter is
+$A=x_{134}+1$, and its explicit square frame is
+\begin{equation}\label{eq:frame}
+ W=2+\sum_{a\in\mathcal A}a^2,
+\end{equation}
+where the 36 affine atoms in $\mathcal A$ include every requested base,
+index, and output, together with the nominal anchor index $h$.
+The horizon is $t=16+4d^2$. Consequently
+\begin{equation}\label{eq:bounds}
+ W\ge258,\qquad
+ b:=\lfloor\sqrt{W-1}\rfloor\ge16,\qquad
+ |n_j|,|m_r|,|k_i|,|h|\le b.
+\end{equation}
+The symbol $b$ occurs only in the proof; it is not an extra variable or
+a floor operation in the polynomial.
+
+The final parent row basis combines the frame with other equations. It
+would be incorrect to interpret its row 129 alone as \eqref{eq:frame}.
+The independent port audit reconstructs exactly
+\begin{equation}\label{eq:framecomb}
+ W-2-\sum_{a\in\mathcal A}a^2
+ =22Q_4+Q_7-5Q_{20}+Q_{21}-Q_{46}+Q_{129}+Q_{146}.
+\end{equation}
+Every row on the right is retained in both new constructions. All row and
+coordinate numbers in this article refer to the original 216-coordinate
+parent, unless explicitly stated otherwise.
+
+\subsection{The large parameter is available before power recovery}
+
+Rows 92--94, also retained, give
+\[
+ U=W(2z_0-1),\qquad V=(W+1)U,\qquad A^2+U^2-V^2=1.
+\]
+Thus $A^2-W(W+2)U^2=1$, and $U$ is nonzero and divisible by $W$.
+The elementary classification of solutions to this Pell equation gives
+$|A|=X_m(W+1)$ and $|U|=Y_m(W+1)$ for some $m\ge1$.
+The recurrence modulo $W$ gives $Y_m(W+1)\equiv m\pmod W$, so $W\mid m$.
+The standard growth estimate $X_m(a)\ge a^m$ for $a\ge2$ now yields
+\begin{equation}\label{eq:largeA}
+ |A|\ge(W+1)^W>W^W.
+\end{equation}
+This argument uses neither an exact-power certificate nor the orientation
+quotient that will be deleted.
+
+\subsection{Bounded classified indices precede orientation}
+\label{sec:rawindex}
+
+The second needed ingredient is stronger than a bound on the requested
+indices: it bounds the actual indices of the raw Pell solutions before
+those indices have been authenticated. Write $a=|A|$. The retained squared
+anchor and comparison equations give an anchor ordinate $C$ and
+\begin{equation}\label{eq:strictcap}
+ C^2=1+h^2+\sum_{i\ne\mathrm{anchor}}Y_i^2
+          +u^2+v^2+w(w+1).
+\end{equation}
+All coordinates are integers, so the last three terms are nonnegative.
+In particular $C\ne0$ and $|C|>|h|$.
+
+The signed anchor theorem established in the inherited proof~\cite{anchor135}
+applies before the global orientation row. Its Pell classification and
+comparison residues imply, for the anchor's positive classified index $j$,
+\[
+ 1\le j\le |C|,\qquad j\equiv\pm h\pmod{2|C|}.
+\]
+The case $h=0$ is impossible. Since $|h|<|C|$, the congruence gives
+$j=|h|$, hence $|C|=Y_{|h|}(a)$. Equation~\eqref{eq:strictcap} and
+monotonicity give smaller classified indices for all other pairs.
+
+Therefore each raw pair has a representation
+\begin{equation}\label{eq:rawclass}
+ (X_i,Y_i)=\varepsilon_i\pair{\nu_i}{A},\qquad
+ \varepsilon_i\in\{1,-1\},\quad \nu_i\in\Z,\quad |\nu_i|\le b.
+\end{equation}
+This representation includes $(1,0)$ and $(-1,0)$. The signed parameter
+and independent original signs are absorbed into $\varepsilon_i$ and
+the sign of $\nu_i$.
+
+The raw-index bound is an inherited unbounded theorem, not inferred from
+testing examples. Its application here was independently checked against
+the literal current anchor, norm, cap, and comparison rows. The audit
+records their exact integer row combinations and verifies that none uses
+the deleted orientation row 142 or any deleted power row. This dependency
+order is the reason the next joint argument is legitimate.
+
+\section{A single certificate for all power requests}
+\label{sec:powerpool}
+
+First suppose the raw pairs already have their requested signed indices.
+For at most five base groups $I_j$, with at most seventeen requests in
+total, put
+\begin{align}
+ T_j&=2An_j-n_j^2-1,\label{eq:T}\\
+ H_j&=\sum_{r\in I_j}Y_{i(r)}(m_r-X_{i(r)}),\label{eq:H}\\
+ S_j&=\sum_{r\in I_j}\left((m_r-X_{i(r)}+Z_{i(r)})^2-Y_{i(r)}^2\right),\label{eq:S}\\
+ E_j&=S_j-2n_jH_j,\qquad Z_i=AY_i.\label{eq:E}
+\end{align}
+The symbols in these definitions are polynomial abbreviations, not extra
+quantified variables. In the literal source the $Z_i$ values are already
+represented by retained coordinates and their defining equations.
+
+\begin{theorem}[Oriented pooling with zero-base tolerance]\label{thm:power}
+Assume \eqref{eq:bounds}, \eqref{eq:largeA}, canonical signed pairs at
+the requested indices, and $Z_i=AY_i$. Then there is an integer $z$ with
+\begin{equation}\label{eq:R}
+ \mathcal R=
+ \sum_{j=0}^4 n_jE_j\prod_{\ell\ne j}T_\ell
+       -z\prod_{j=0}^4T_j=0
+\end{equation}
+if and only if every request at every nonzero base has the exact value
+$m_r=n_j^{k_{i(r)}}$. At a base with $|n_j|\ge2$, the requested index must be
+nonnegative. Unit bases permit signed indices. Zero bases impose no power
+condition.
+\end{theorem}
+
+\begin{proof}
+For a zero base, $T_j=-1$. For a nonzero base,
+\begin{equation}\label{eq:Tbounds}
+ |T_j|\ge2|A|-W>W^W,
+ \qquad\sgn(T_j)=\sgn(An_j).
+\end{equation}
+In particular every denominator in the proof is nonzero, including those
+at zero bases. Put $\delta_r=m_r-X_{i(r)}+(A-n_j)Y_{i(r)}$.
+Direct expansion gives
+\begin{equation}\label{eq:squareidentity}
+ \sum_{r\in I_j}\delta_r^2
+       =E_j-T_j\sum_{r\in I_j}Y_{i(r)}^2.
+\end{equation}
+Dividing \eqref{eq:R} by $\prod T_j$ shows that
+$\sum_jn_jE_j/T_j$ is an integer, so
+$\sum_j\sum_{r\in I_j}n_j\delta_r^2/T_j$ is an integer.
+
+Let $J$ be the set of nonzero base groups, let $s=|J|\le5$, and define
+\[
+ C_0=\prod_{j\in J}n_j^b,\qquad
+ d_r=C_0m_r-\frac{C_0}{n_j^b}n_j^{b+k_{i(r)}}\quad(j\in J).
+\]
+The empty product is one. In particular $C_0\ne0$; including a zero base
+in this clearing product would invalidate the proof. The exponents and
+quotients in this display define integers, and are proof notation only.
+Lemma~\ref{lem:residues} gives $C_0\delta_r\equiv d_r\pmod{T_j}$.
+Thus the rational number
+\[
+ V=\sum_{j\in J}\sum_{r\in I_j}\frac{n_jd_r^2}{T_j}
+\]
+is an integer. This follows by multiplying the previous integral rational
+sum by $C_0^2$ and changing each numerator by a multiple of its own
+denominator. It does not require different denominators to be coprime.
+
+Since all bounded ports have absolute value at most $b$,
+\[
+ |d_r|\le b^{sb+1}+b^{(s+1)b}\le2b^{(s+1)b}.
+\]
+Hence
+\[
+ \sum_{j\in J}\sum_{r\in I_j}|n_j|d_r^2
+ \le68b^{12b+1}<W^{6b+2}\le W^W.
+\]
+Here $68<W$, $b^2<W$, and $6b+2\le b^2+1\le W$ because $b\ge16$.
+Together with \eqref{eq:Tbounds}, this gives $|V|<1$. Every summand has
+the common sign $\sgn(A)$ or is zero, because $n_j/T_j$ has that sign.
+The integer $V$ is therefore zero, and each $d_r$ is zero. Divide by the
+nonzero $C_0$ in $\mathbb Q$ to obtain the claimed powers. If $|n_j|\ge2$
+and $k=-u<0$, the resulting equation $m_rn_j^u=1$ is impossible over
+$\Z$.
+
+Conversely, exact powers at a nonzero base give $T_j\mid\delta_r$ and
+then $T_j\mid E_j$ by \eqref{eq:squareidentity}. The integer
+$z=\sum_{j\in J}n_jE_j/T_j$ supplies \eqref{eq:R}. Zero bases contribute
+zero. This proves both directions.
+\end{proof}
+
+\section{Authenticating indices and powers together}
+\label{sec:joint}
+
+The larger gain in proof structure is that canonicality need not be
+established in a separate divisibility certificate. Let
+\begin{equation}\label{eq:Omega}
+ L=A-1,\qquad
+ \Omega=\sum_{i=1}^{14}\bigl((X_i-1)^2+(Y_i-k_i)^2\bigr).
+\end{equation}
+The sum is over distinct pairs, not over the seventeen requests; a pair
+used at several bases occurs only once.
+
+\begin{theorem}[Joint index and power authentication]\label{thm:joint}
+Assume the bounds \eqref{eq:bounds}--\eqref{eq:largeA}, the norm and
+$Z_i=AY_i$ equations, and the raw classification bound \eqref{eq:rawclass}.
+No correctness of the requested indices is assumed. There is an integer
+$z$ satisfying the single polynomial condition
+\begin{equation}\label{eq:G}
+ \boxed{\mathcal G=
+ \Omega\prod_jT_j+
+ L\sum_j n_jE_j\prod_{\ell\ne j}T_\ell
+       -zL\prod_jT_j=0}
+\end{equation}
+if and only if all fourteen pairs are canonical at their requested signed
+indices and every request at a nonzero base is its exact power value.
+\end{theorem}
+
+\begin{proof}
+The denominator $L$ has sign $\sgn(A)$ and $|L|\ge W^W$. For the raw
+representation \eqref{eq:rawclass}, Lemma~\ref{lem:residues} gives
+\[
+ \Omega\equiv o:=\sum_i\bigl((\varepsilon_i-1)^2+
+                     (\varepsilon_i\nu_i-k_i)^2\bigr)\pmod L.
+\]
+The integer $o$ is nonnegative. For a nonzero base, the raw power residue is
+\[
+ X_i+(n_j-A)Y_i\equiv\varepsilon_i n_j^{\nu_i}\pmod{T_j}.
+\]
+The exponent here is the classified $\nu_i$, whose bound is already
+known, rather than the as-yet unauthenticated $k_i$.
+
+As before, let $C_0$ be the product of $n_j^b$ over the nonzero base
+groups, and put
+\[
+ d_r=C_0m_r-\varepsilon_{i(r)}\frac{C_0}{n_j^b}n_j^{b+\nu_{i(r)}}.
+\]
+Dividing \eqref{eq:G} by its nonzero common denominator, using
+\eqref{eq:squareidentity}, multiplying by $C_0^2$, and taking the small
+residue representatives shows that
+\begin{equation}\label{eq:jointsmall}
+ V=\frac{C_0^2o}{L}+
+       \sum_{j:n_j\ne0}\sum_{r\in I_j}\frac{n_jd_r^2}{T_j}
+       \quad\hbox{is an integer}.
+\end{equation}
+Every summand has the common sign $\sgn(A)$ or is zero. Sharing factors
+between $C_0$, $L$, and the $T_j$ causes no difficulty: only integrality
+of a rational sum and congruent numerators have been used.
+
+Bound fourteen by fifteen in the elementary estimate
+$o\le60(1+b^2)\le120b^2$. Then
+\begin{align*}
+ C_0^2o+\sum |n_j|d_r^2
+ &\le120b^{10b+2}+68b^{12b+1}\\
+ &\le188b^{12b+2}<W^{6b+2}\le W^W.
+\end{align*}
+The strict inequality uses $188<W$ and $b^2<W$. Every active denominator
+in \eqref{eq:jointsmall} has magnitude at least $W^W$, so $|V|<1$.
+Consequently $V=0$, $o=0$, and every $d_r=0$.
+The vanishing of $o$ gives $\varepsilon_i=1$ and $\nu_i=k_i$ for every
+pair. The other vanishing errors give the exact powers at precisely those
+authenticated indices. This proves soundness without presupposing
+canonicality.
+
+For completeness, canonical pairs make $L\mid\Omega$, and exact
+nonzero-base powers make $T_j\mid E_j$. Choose
+\[
+ z=\frac{\Omega}{L}+\sum_{j:n_j\ne0}\frac{n_jE_j}{T_j}.
+\]
+This is an integer and satisfies \eqref{eq:G}.
+\end{proof}
+
+The rational expressions above are exclusively part of the proof.
+Equation~\eqref{eq:G} is an ordinary polynomial with finite sums and
+products. In particular it contains no variable exponent, division,
+inequality predicate, or quantified coefficient parameter.
+
+\subsection{Partial fusion and partitions}
+
+One can partition the five base groups and give each part one quotient.
+For a singleton part, use $E_j-z_jT_j=0$; the one-denominator argument
+permits a zero base since then $T_j=-1$. For a larger part, use the
+oriented numerator in \eqref{eq:R} restricted to that part. Each quotient
+has a precise cost in variables, while its denominator product controls
+degree.
+
+The orientation term can be fused with just one part. If that part is
+the growth base $t$, which is positive before any power interpretation,
+use the particularly economical residual
+\begin{equation}\label{eq:tfusion}
+ \Omega T_t+L(E_t-z_tT_t)=0.
+\end{equation}
+Here $1/T_t$ and $1/L$ have the same sign. The proof of
+Theorem~\ref{thm:joint}, with the clearing factor $t^b$, authenticates
+all fourteen indices and the growth power. The remaining parts can then
+use Theorem~\ref{thm:power}. Thus the family includes a 210-variable
+degree-at-most-eight seed with five singleton power parts, and a
+208-variable degree-at-most-twelve seed with parts
+$\{t\},\{B,BH\},\{q,q+1\}$ and fusion at $t$.
+
+For consecutive bases $q,q+1$, a two-base part may use unit weights:
+the denominators attached to nonzero bases have a common sign. At $q=0$ or $q=-1$,
+the zero-base contribution has denominator $-1$ and can be removed as
+an integer before the small-error argument. This is another valid
+partition choice; it does not assume $q>0$ prematurely.
+
+\section{The literal consistency polynomial and its bootstrap}
+\label{sec:literal}
+
+Let $Q_0,\ldots,Q_{152}$ be the exact parent quadratic residuals.
+All retained ones are printed in Appendix~\ref{app:rows}; their coefficients
+are also in \code{source/equation216.json}. For the main fused construction,
+delete the coordinates
+\[
+ 141,142,143,144,145,146,201,212,213,214,215
+\]
+and the rows
+\[
+ 97,98,99,100,101,102,142,149,150,151,152.
+\]
+The ten power coordinates occur only in the ten specified power rows,
+and coordinate 201 occurs only in row 142. The remaining 205 coordinates
+are independently quantified integers; add one integer $z$. Define
+\begin{equation}\label{eq:P206}
+ \boxed{P_{206}=\mathcal G^2+
+  \sum_{r\in\{0,\ldots,96\}\cup\{103,\ldots,141\}\cup\{143,\ldots,148\}}
+  Q_r^2.}
+\end{equation}
+This is a complete finite definition, using the literal port table in
+Appendix~\ref{app:ports} and \eqref{eq:T}--\eqref{eq:G}.
+The JSON circuit renumbers the retained coordinates increasingly and
+places $z$ last; original indices in the paper are names, not additional
+unknowns.
+
+The exact degree is 26. The residual $\mathcal R$ has degree at most 12,
+and the monomial
+\[
+ x_0^2x_4^2x_{94}^4x_{130}x_{184}x_{186}^2
+\]
+has coefficient $-2$. Its unique degree-12 contribution involving this
+output comes from the request with output $x_{130}$ in the $q+1$ group.
+Multiplying by the $x_{134}$ term of $L$ gives the degree-13 monomial
+\[
+ x_0^2x_4^2x_{94}^4x_{130}x_{134}x_{184}x_{186}^2
+\]
+with coefficient $-2$ in $\mathcal G$. The other summands in
+\eqref{eq:G} have degree at most 12. The square of this nonzero leading
+homogeneous polynomial is nonzero, while all other squares in
+\eqref{eq:P206} have degree at most four. The independent checker also
+computes this coefficient exactly in a truncated polynomial ring.
+
+The intermediate $P_{207}$ retains coordinate 201 and row 142, replaces
+only the ten power coordinates and rows, and uses $\mathcal R^2$ in
+place of $\mathcal G^2$. It has exact degree 24.
+
+\subsection{Why the zero-base clause is sufficient}
+
+The five actual bases are
+\[
+ t=x_0,\quad B=x_4,\quad BH=x_{186},\quad q=x_{94}-1,
+ \quad q+1=x_{94}.
+\]
+Neither $B$ nor $q$ may be assumed nonzero at the start. The joint
+theorem first gives canonical indices and exactness at whichever bases
+are nonzero. This is enough for the following acyclic deductions.
+
+\begin{enumerate}
+\item The horizon $t=16+4d^2\ge16$ is nonzero. Its request gives
+ $F=t^t$, so $F$ is positive and even, with $F\ge2^{64}$.
+\item The retained row $Bh_B=C_{\rm crt}+F+1$ has an odd right side,
+ since $C_{\rm crt}=2c$. Thus $B$ is odd and nonzero. The actual
+ $H=2+4(C_{\rm crt}+a_1+\cdots+a_8)$ is 2 modulo 4 for any signed
+ representatives, so $|BH|\ge2$.
+\item The request at $BH$ gives $x\ge0$ and $q=(BH)^x$. The beta
+ spacing is $y=F(2v+1)$, hence $|y|\ge F$. Set $L_0=1+(t+1)y$;
+ then $|L_0|>1$. The terminal endpoint is $x-1=L_0u_t$.
+ If $x=0$ it would make $L_0$ divide $-1$, a contradiction.
+ Thus $x\ge1$ and $|q|\ge2$.
+\item The $q$ request with index $y+1$ forces $y+1\ge0$.
+ A negative $y$ would satisfy $y\le-F<-1$, so $y\ge F>0$.
+\item From $x=F+1+(y+1)u_0$, a negative $u_0$ would imply
+ $x\le F-y\le0$. Hence $u_0\ge0$ and $x\ge F+1$.
+ The terminal endpoint now gives $u_t\ge1$ and
+ $x\ge2+(t+1)y$. Thus $|q|\ge2^x$ and $q+1$ is a nonzero nonunit.
+\item Every request is therefore exact at a nonzero base. The unchanged
+ signed binomial-digit argument authenticates
+ $B=\binom{F+t}{t}>0$ and recovers the nonnegative CRT representatives.
+ It then gives $H>0$ and $q>0$. The inherited local range and
+ positive-weight proof-flow decoding produces a finite C222 refutation.
+\end{enumerate}
+
+All elementary rows in this schedule were independently recovered as
+combinations of retained rows. The last step imports the stated parent
+binomial/CRT and proof-calculus theorems; it is not inferred from numerical
+testing or from an unspecified appeal to DPRM.
+
+\subsection{Restoring the parent and composing the logical calibration}
+
+After this bootstrap all bases are nonzero. For each old singleton,
+restore its modulus as $T_j$ and its quotient as $-\delta_r/T_j$.
+For each old multi-request pool, restore
+\[
+ L_j=E_j/T_j,\qquad K_j=2H_j+(2A-n_j)L_j.
+\]
+For the orientation row, restore $Q=\Omega/(A-1)$.
+These divisions yield integers by the theorems above. The orientation
+row in the centered source is not literally $\Omega-(A-1)Q$; its
+recorded combination with retained norm and frame rows is. Since those
+other rows vanish, the restored quotient makes the actual row vanish.
+Thus a new zero extends to an actual zero of the original $P_{216}$.
+
+Conversely a parent zero supplies canonical pairs and exact powers, so
+the displayed formulas supply the new quotient $z$. This proves an
+existential equivalence over $\Z$; the restorations need not be polynomial
+maps on arbitrary tuples. Composing it with the inherited declarations
+\begin{quote}\small
+\code{KEndpoint.c222_iff_zf_refutation}\\
+\code{ConstructibleChoice.zf_refutation_iff_zfc_refutation}
+\end{quote}
+and the parent arithmetic decoding proves \eqref{eq:target} for $P_{206}$,
+$P_{207}$, and the partition seeds.
+
+\section{Removing defined arithmetic coordinates}
+\label{sec:elimination}
+
+The semantic compression above can be followed by an unconditional
+algebraic transformation. This second method is inherited from source
+152; the new work applies it to the new literal seeds and records the
+resulting equations and certificates.
+
+\begin{lemma}[Integral monic substitution]\label{lem:monic}
+Suppose one residual is $\epsilon x_v+f(\widehat{\boldsymbol x})$,
+where $\epsilon\in\{1,-1\}$ and $f$ does not contain $x_v$.
+Delete that residual and substitute $x_v=-\epsilon f$ into every other
+residual. Then the zero sets of the two systems are in bijection over
+$\Z$, by coordinate deletion and the displayed polynomial restoration.
+An acyclic sequence of such deletions has the same property.
+\end{lemma}
+\begin{proof}
+At a zero, the selected equation uniquely forces $x_v=-\epsilon f$.
+Substitution therefore preserves every other zero equation. Conversely,
+a zero of the substituted system has a unique integer extension by this
+formula. Restore an acyclic sequence in reverse order. No divisibility,
+positivity, or existence theorem is needed.
+\end{proof}
+
+The optimizer selects a finite acyclic set of such source pivots and
+computes a conservative degree bound for every substituted residual.
+It does not claim to find the best possible pivot set. The delivered
+certificate fixes the actual pivots, source identity, retained variables,
+and substitution circuit, so its validity does not depend on trusting
+the search heuristic.
+
+Each final polynomial is the sum of the squares of its surviving
+substituted residuals. A circuit gives an exact finite polynomial, even
+when expanding every monomial would be inefficient. The only nodes are
+literal integer constants, variable leaves, addition, subtraction, and
+multiplication. Repeatedly substituting those definitions yields an
+ordinary member of $\Z[\boldsymbol x]$.
+
+An exact degree certificate consists of an upper bound propagated through
+the circuit and a nonzero evaluation of the corresponding top homogeneous
+part modulo a specified integer greater than one. This is a finite exact witness
+that the homogeneous polynomial is not zero; it is not a probabilistic
+identity test. Likewise, a nonzero partial-derivative value modulo an integer greater than one
+certifies genuine dependence on a coordinate. The independent verifier
+checks the certificates as well as the source pivots and substitutions.
+
+\section{Measured equations and their interpretation}
+\label{sec:results}
+
+\input{results.tex}
+
+All final variables range independently over unrestricted integers.
+The displayed degrees are degrees of the resulting polynomial, rather
+than of an expression with extra implicit witnesses. The literal
+constants in the circuits remain small; expanded coefficients can grow
+under substitution. Reported coefficient-size bounds, where given, are
+proved upper bounds on the expanded coefficient height, not exact maxima.
+The archive does not label a circuit's largest literal constant as the
+height of its expanded polynomial.
+
+The useful new comparisons are with the pinned direct-calculus branch.
+Source 152, for example, supplies $(153,8)$, $(144,12)$, $(125,16)$,
+$(117,32)$, $(111,64)$, $(102,256)$, and $(94,65540)$ in
+(integer variables, degree). The present table identifies actual
+improvements at several of these budgets. It does not claim to dominate
+the repository's small-variable, large-coefficient constructions.
+
+\section{Verification, reproducibility, and the proof boundary}
+\label{sec:verification}
+
+The archive supplies the full LaTeX source, compiled PDF, literal
+polynomial circuits, retained residual lists, source ports, pivot
+certificates, builders, evaluators, independent verifiers, and receipts
+from actual successful runs. Python's standard library is sufficient
+for the finite arithmetic checks. The final verification commands are
+documented in the top-level README.
+
+The validation is divided by what each layer can establish. The parent
+replay authenticates the incoming finite construction. A separately
+implemented port audit reconstructs the 36-square frame, all seventeen
+request ports, all fourteen Pell pairs, the anchor comparisons, and
+the exact bootstrap identities. It proves that their required row
+combinations avoid the deleted rows. A separate circuit checker binds
+the literal pooling expression and retained rows to those ports and
+checks the degree certificate. A further verifier reconstructs every
+monic substitution and final circuit from its certificate. Arithmetic
+fixtures exercise negative parameters, signed indices, zero and unit
+bases, repeated moduli, and deliberately incorrect signs and outputs.
+
+These tasks are complementary. Finite fixtures do not prove the
+unbounded theorem; source hashes do not prove the meaning of a
+polynomial; and a numerical search that finds no zeros would not prove
+consistency. The unbounded argument is the ordinary proof in this
+article, composed with the precisely identified inherited arithmetic
+and logical theorems. No new end-to-end Lean/Rocq build or encoded
+object-language ZFC derivation was produced. The separate reviews were
+AI-assisted internal checks, not external human peer review.
+
+The construction is additive material for ProveIt intake. The public
+repository was read at the pinned commit; this submission does not
+require any modification to its existing files.
+
+\section{A rejected structural shortcut: using the radix as the CRT modulus}
+\label{sec:obstruction}
+
+We also examined whether the distinct request $N=B^x$ could be removed by
+using $q=(BH)^x$ as the CRT modulus. The unchanged range tests would then
+require $q\mid\binom{C_{\rm crt}}{t}$. This seemingly economical
+replacement cannot preserve the existing construction.
+
+After the same sign and binomial recovery, all relevant representatives
+are nonnegative,
+\[
+ B=\binom{F+t}{t}>F+t,\quad
+ H>C_{\rm crt},\quad H>\max(1,C_{\rm crt}),\quad x\ge t.
+\]
+For $C_{\rm crt}\ge t$, one has
+\[
+ 0<\binom{C_{\rm crt}}t
+ \le C_{\rm crt}^t<H^x<(BH)^x=q.
+\]
+Thus the proposed divisibility would force $C_{\rm crt}<t$.
+But the retained row requires $B\mid C_{\rm crt}+F+1$, while
+\[
+ 0<C_{\rm crt}+F+1\le F+t<B,
+\]
+a contradiction. Therefore that specific substitution makes the
+unchanged range-and-index system inconsistent. A successful removal of
+the separate CRT modulus would have to redesign these range conditions,
+not merely identify the two existing coordinates.
+
+This obstruction helps explain the source architecture: the radix must
+dominate coefficients for digit recovery, whereas the CRT modulus must
+permit large global representatives with independently prescribed
+small local residues. Those two requirements cannot be merged by the
+proposed literal substitution.
+
+\section{What remains open}
+
+The joint certificate removes the separation between index authentication
+and exact-power recovery, but retains the squared anchor that bounds
+the classified indices. A further reduction would need either a cheaper
+way to establish that raw bound, or a new simultaneous certificate that
+also authenticates the anchor without a circular size argument. The
+present proof does not provide such a replacement.
+
+A second concrete optimization is to select the partition and monic
+eliminations jointly. A larger pool uses fewer quotient variables but
+raises the degree of some frequently used ports, which can make later
+substitution more expensive. The measured family demonstrates that
+pooling every block is not automatically the best choice at a fixed
+degree. Exhaustive global optimization of this design space was not
+performed.
+
+Finally, formalizing the rational-integrality lemma and its exact source
+binding would provide a comparatively small new proof-assistant target.
+Its essential ingredients are congruence modulo the integers, a common
+sign for all rational error terms, and a strict upper bound below one.
+The large inherited logical calibration need not be redesigned to
+formalize this local improvement.
+
+\appendix
+\section{Complete affine port table}\label{app:ports}
+
+The source coordinates are $x_0,\ldots,x_{215}$. Set $A=x_{134}+1$ and
+use $D_i=X_i-AY_i$ as the stored Pell difference. This difference port
+is named \code{D} in the electronic data. Each abscissa is recovered as
+$X_i=D_i+Z_i$.
+The bases indexed $0,\ldots,4$ are
+$(x_0,x_4,x_{186},x_{94}-1,x_{94})$.
+The explicit derived-label index is
+\begin{align*}
+ h={}&-4-3x_8-7x_9+4x_{19}+2x_{22}+2x_{26}+2x_{28}+2x_{30}+2x_{32}\\
+ &+4x_{34}+2x_{35}+2x_{38}+2x_{41}+4x_{60}+2x_{61}.
+\end{align*}
+\input{ports.tex}
+The fourteen distinct pairs in $\Omega$ are represented once each by
+requests 0, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, and 17.
+All symbols in this table are explicit affine polynomials.
+
+\section{Every retained quadratic residual}\label{app:rows}
+
+The following list prints all 143 retained rows of the intermediate
+$P_{207}$. For the joint construction $P_{206}$ omit the one row labeled
+$Q_{142}$ as specified in \eqref{eq:P206}. No listed row contains any of
+the ten deleted power coordinates. Row $Q_{142}$ is the only listed
+row containing coordinate $x_{201}$. The authoritative machine-readable
+integer coefficient list and an exact parser check accompany this display.
+
+\input{residuals.tex}
+
+\section{Finite elimination specifications}\label{app:pivots}
+
+Each listed pair $(r,v)$ selects the source row $r$ as a monic definition
+of source coordinate $v$. The exact sign, polynomial, dependency order,
+and original-to-final coordinate map are in the accompanying JSON
+certificate; the verifier reconstructs them from the literal source
+rows. Each final expression is obtained by the substitutions of
+Lemma~\ref{lem:monic}, followed by a sum of the surviving squares.
+The source seed and all row indices are explicitly identified for each
+profile.
+
+\input{pivots.tex}
+
+\begin{thebibliography}{9}
+\bibitem{parent} ProveIt incoming research archive,
+\emph{Direct quartic consistency equations in 218 and 216 integers},
+25 October 2026. Immutable comparison:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/315154b670d7bdb1679554734e417410c9b8187b/docs/incoming/ConZFC_Pooled_Projection_2026-10-25.zip}.
+The complete original archive is retained in \code{source/}.
+\bibitem{pool168} ProveIt report 168,
+\emph{Reciprocal pooling and integral projections for Con(ZFC)},
+25 October 2026. Pinned path:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/315154b670d7bdb1679554734e417410c9b8187b/Computability/DiophantineConsistency/con-zfc-diophantine-forms/168-reciprocal-pooling}.
+\bibitem{elim152} ProveIt report 152,
+\emph{Lucas corrections and elimination of arithmetic witnesses},
+25 October 2026. Pinned path:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/315154b670d7bdb1679554734e417410c9b8187b/Computability/DiophantineConsistency/con-zfc-diophantine-forms/152-lucas-corrections}.
+\bibitem{anchor135} ProveIt report 135,
+\emph{Recovering nonnegative arithmetic from signed Pell orientation},
+section ``A signed nominal index in the squared anchor.''
+\code{135-cofinal-anchors-round17/direct/ORIENTATION_FIRST_PROOF.md},
+with its retained \code{PROOF_315.md} dependencies; pinned to the same
+comparison commit. Relevant source proofs are retained in this submission.
+\bibitem{bayer} J.~Bayer, M.~David, M.~Ha\ss ler, Y.~Matiyasevich,
+and D.~Schleicher, \emph{Diophantine equations over $\Z$: universal bounds
+and parallel formalization}, arXiv:2506.20909v3, 22 October 2026.
+\url{https://arxiv.org/abs/2506.20909}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,808 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array,microtype,xcolor}
+\usepackage{xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black}
+\hypersetup{pdftitle={Polynomial Centers for Diophantine Consistency},
+pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov and ProveIt},
+pdfsubject={Degree 208 in ten positive variables and direct quartic companions},
+pdfkeywords={Diophantine equation, Con(ZFC), polynomial center, Pell equation}}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks[4]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\topdeg}[2]{[#1]_{#2}}
+\newcommand{\qpoly}{\operatorname{quo}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\input{metrics.tex}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Polynomial centers for Diophantine consistency}
+\fancyhead[R]{\small 25 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{Polynomial Centers for Diophantine Consistency\\[0.4em]
+\large A degree-208 equation in ten positive variables,\\
+with direct quartic companions in 203 naturals and 233 integers}
+\author{AI-assisted research prepared for Vladimir Reshetnikov and ProveIt}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a literal integer polynomial in ten strictly positive variables,
+of exact total degree 208, evaluated by \PrimaryOps{} live binary arithmetic
+operations. Its unsolvability is equivalent to $\Con(\ZFC)$ by an ordinary
+proof formalizable in ZFC, composed with explicitly identified inherited
+arithmetic and refutation calibrations. The new step centers the whole Pell
+product $gV$, using polynomial division of $EV$ and a truncated square-root
+expansion. All divisions disappear from the final formula. A signed
+majorant argument establishes soundness before any positivity conclusion
+about the encoded computation is used. This also resolves the previously
+unproved square-transport case in source 163.
+
+The package includes smaller-operation alternatives at degree 232, 228,
+224 and 220, with the same ten positive variables and the same entire
+fixed coefficient tuple. A separate direct-calculus component gives fully
+expanded quartics in 203 nonnegative variables and 233 unrestricted
+integers. The direct component does not simulate K215 or use Jones's
+universal equation. No global minimum, proof of consistency, or new
+end-to-end proof-assistant certificate is claimed.
+\end{abstract}
+\clearpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{Result and comparison boundary}
+
+The objective is an actual polynomial with fixed integer coefficients,
+not an exponential Diophantine formula or an unspecified instance of MRDP.
+Throughout, $\N=\{0,1,2,\ldots\}$ and $\Pos=\{1,2,3,\ldots\}$.
+The domain is part of every assertion.
+
+\begin{theorem}[Main equation]\label{thm:main}
+Let $P_{208}$ be the polynomial defined in Sections~\ref{sec:formula}
+and~\ref{sec:center}, with the four fixed integers defined in
+Appendix~\ref{app:constants}. Then $P_{208}\in\Z[J,F,\alpha,i,T,w,s,n,\eta,\zeta]$,
+its exact total degree is 208, and
+\[
+ \ZFC\ \vdash\
+ \bigl(\neg\exists\mathbf x\in\Pos^{10}\;P_{208}(\mathbf x)=0\bigr)
+ \ \longleftrightarrow\ \Con(\ZFC).
+\]
+The displayed provability claim is established by the ordinary proofs here and
+the precisely named inherited interfaces. This package does not contain
+a newly checked object-language ZFC derivation or a newly compiled
+end-to-end Lean or Rocq development.
+\end{theorem}
+
+We use the immutable repository snapshot
+\begin{center}\small\ttfamily
+fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb.
+\end{center}
+The comparison includes recent packages 163--165, not merely the older
+summary table. Source 163 gives ten-positive degree 232 in 87 operations;
+source 164 gives degree 304 in 85 operations~\cite{p163,p164}. Their two mechanisms compose
+to give 85/232. The further centers below give new degree/cost choices.
+\begin{center}
+\begin{tabular}{lrrl}
+\toprule
+Equation & Operations & Exact degree & Main change\\
+\midrule
+Source 164 &85&304&Inverse Lucas correction\\
+Source 163 &87&232&Unsquared strong trace\\
+Trace plus inverse &85&232&Composition of the two\\
+Lower center &87&228&$(A-1)UE$\\
+Center at $AUE$ &88&224&First norm cancellation\\
+Quotient center &96&220&Divide $E$ by $A$\\
+\textbf{Whole-product center} &\textbf{\PrimaryOps}&\textbf{208}&\textbf{Divide $EV$ by powers of $A$}\\
+\bottomrule
+\end{tabular}
+\end{center}
+All these counts concern ten independent positive variables and the same
+whole coefficient tuple. Every live binary addition, subtraction and
+multiplication is charged, including squares and fixed scalar products.
+Named values are polynomial abbreviations, not extra unknowns. These
+operation counts are not bit-complexity estimates: the largest fixed
+coefficient port has 592,884 bits.
+
+\begin{theorem}[Direct quartic companions]\label{thm:direct}
+The literal residual lists in the package define quartics
+\[
+ P_{203}^{\N}=\sum_{j=0}^{154}q_j^2,
+ \qquad P_{233}^{\Z}=\sum_{j=0}^{168}r_j^2,
+\]
+in respectively 203 nonnegative and 233 unrestricted integer variables,
+such that ZFC proves each no-zero statement equivalent to $\Con(\ZFC)$.
+All $q_j,r_j$ are explicitly listed integer quadratics; complete collected
+quartic coefficients are also supplied. These constructions use the
+numerical proof calculus C222 and its ZF/ZFC calibration.
+\end{theorem}
+
+This is a set of measured improvements, not a claim that one ordering of
+``simplicity'' dominates every other. The repository already has fewer-variable
+equations of much larger degree. Coefficient size, monomial count, proof
+burden, variable domain, degree and evaluation cost must be kept separate.
+
+The ten-positive-variable equation immediately becomes a ten-nonnegative-variable
+equation of the same degree by replacing each input $x_j$ with $u_j+1$.
+If an unrestricted integer domain is required, the four-square theorem gives
+the completely explicit alternative
+\[
+ P_{208}\left(1+\sum_{r=1}^4z_{1r}^2,\ldots,
+                   1+\sum_{r=1}^4z_{10,r}^2\right)=0,
+ \qquad \mathbf z\in\Z^{40},
+\]
+of exact degree 416. Each positive input has such a representation.
+The degree is exact because restricting each block to one square leaves
+the nonzero leading polynomial with every exponent doubled. This standard
+domain conversion is separate from the direct quartic reductions.
+
+\section{The complete common polynomial definitions}\label{sec:formula}
+
+Quantify exactly
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\Pos.
+\]
+The fixed integers are $\beta,K_0,M_C,M_F$. They are supplied both as
+authenticated binary numerals and by the complete finite recipe in
+Appendix~\ref{app:constants}. In particular,
+\[
+ \beta=2^{590069}-1,\qquad
+ 0<M_C<\beta<M_F<2\beta,\qquad K_0>0.
+\]
+These inequalities alone do not calibrate an arbitrary four-tuple. The
+construction uses all four actual integers together.
+
+Define the following ordinary polynomials in the ten variables:
+\begin{align*}
+ h&=\beta J,&q&=h+1,&C&=q-F-\alpha,\\
+ X&=qw,&Y&=qs,&k&=\eta+\zeta,\\
+ c&=kY+\eta,&A&=Y(X+1)+1,&\Delta&=A^2-1,\\
+ H&=4A-5,&\ell&=(XY)(kY),&E&=1+\ell(\ell+k),\\
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ B&=(K_0+w)C-F,&U&=ic^2,&a&=\Delta U^2E,\\
+ F_0&=1+a,&G&=EF_0,&f&=1+2a,\\
+ Q&=4\Delta aF_0,&b&=cT-R,&V&=fb-c,\\
+ K&=X(3c-2X)+2,&D&=6q^6,&M&=hDH,\\
+ e_6&=6(k-R-1)-\ell(k^2-4).
+\end{align*}
+The letters $C,F,F_0,G,H,K$ here have only the meanings displayed above.
+They are not coefficients to be chosen or additional quantifiers.
+
+For any polynomial shift $\Omega$ and positive fixed integer $r$, put
+\begin{align}
+ Z_0&=hD\{H(n-b^2B)+K\}-H\{DB+h(e_6-6q^4s)\},\label{eq:Z0}\\
+ Z&=Z_0-M\Omega,\label{eq:Z}\\
+ P_{\Omega,r}
+ &=Q\bigl(Z^2-r^2M^2GV^2\bigr)+\bigl(r^2M^2G-Z^2\bigr).
+ \label{eq:generalP}
+\end{align}
+The principal equation uses $r=4$ and the explicitly polynomial shift in
+the next section. Equivalently, its literal evaluator inserts
+$n-b^2B-\Omega$ inside the braces in~\eqref{eq:Z0}, saving one operation.
+
+Every exponent in these definitions is a fixed nonnegative integer.
+In particular, $q^6$ denotes an ordinary polynomial, evaluated by repeated
+multiplication. There is no variable exponent, floor, factorial or
+unbounded product in $P_{\Omega,r}$.
+
+\section{A division-free center for the whole product}\label{sec:center}
+
+The following short formula completely specifies the new shift. Put
+\begin{align}
+ e_2&=(kY)^2,\notag\\
+ S_E&=(kY)\{\ell+k-(kY)(Y+1)\},\notag\\
+ \Theta&=U^2b,\notag\\
+ R_E&=3E+e_2,\notag\\
+ H_E&=4E^2+3S_E^2+e_2^2,\notag\\
+ \boxed{\displaystyle
+ \Omega=U\left[2S_E(\Theta R_E-b+c)
+           +A(4EV-\Theta H_E)\right].}\label{eq:Omega}
+\end{align}
+Finally, the requested equation is
+\begin{equation}\label{eq:main}
+ \boxed{\displaystyle
+ P_{208}=Q\bigl(Z^2-16M^2GV^2\bigr)
+               +\bigl(16M^2G-Z^2\bigr)=0.}
+\end{equation}
+Together with the finite coefficient recipe, these displayed definitions
+are one complete polynomial specification in ten positive variables.
+The supplied straight-line graph is a second, machine-readable
+specification of exactly this polynomial.
+
+\subsection{Where the formula comes from}
+
+Introduce a formal indeterminate $t$, for the proof only, and write
+\begin{align*}
+ \mathcal E(t)&=e_2t^2+e_1t+e_0,\\
+ e_1&=k^2Y(1-2Y-2Y^2),\\
+ e_0&=1+k^2Y(Y+1)\{Y(Y+1)-1\},\\
+ \mathcal V(t)&=\{1+2(t^2-1)U^2\mathcal E(t)\}b-c,\\
+ \mathcal F(t)&=\mathcal E(t)\mathcal V(t).
+\end{align*}
+Then $\mathcal E(A)=E$, $\mathcal V(A)=V$ and $\mathcal F(A)=EV$.
+When taking polynomial quotients, $Y,k,U,b,c$ are held as coefficient
+parameters. Their eventual substitutions as polynomials in the original
+ten variables do not invalidate a polynomial identity.
+
+For $j=1,3$, let $Q_j$ be the value at $A$ of the ordinary polynomial
+quotient of $\mathcal F(t)$ by $t^j$. Since $\mathcal E(t)(b-c)$ has
+degree two and the other summand of $\mathcal F(t)$ is
+$2U^2b(t^2-1)\mathcal E(t)^2$, every coefficient of $Q_3$ is even.
+Thus the polynomial
+\begin{equation}\label{eq:quotientcenter}
+ U\left(4AEV-2Q_1-\frac{Q_3}{2}\right)
+\end{equation}
+has integer coefficients. Direct polynomial multiplication proves that
+it is exactly~\eqref{eq:Omega}. The slash in~\eqref{eq:quotientcenter}
+is explanatory notation only; equation~\eqref{eq:Omega} contains no
+division operation.
+
+The identity can also be checked without expanding a large expression.
+Let $S=S_E$, $J_E=S(E+e_0)$ and
+$D_E=e_2(2S-Ae_2)$. Since $E=AS+e_0$,
+\[
+ Q_1=S(b-c)+2\Theta(AE^2-J_E),\qquad
+ \frac{Q_3}{2}=\Theta(J_E-D_E).
+\]
+Substitution into~\eqref{eq:quotientcenter} gives
+\[
+ \Omega=U\{4AEV-2S(b-c)-\Theta\mathcal H\},
+ \quad
+ \mathcal H=A(4E^2+3S^2+e_2^2)-2S(3E+e_2),
+\]
+and hence~\eqref{eq:Omega}.
+
+The formal expansion
+\[
+ \sqrt{t^2-1}=t-\frac1{2t}-\frac1{8t^3}+O(t^{-5})
+\]
+suggests the center, but is not used as an analytic assumption in the
+Diophantine proof. All required cancellations are exact polynomial
+identities. The decisive change is to take the polynomial part of the
+\emph{whole} expression $U\mathcal F(t)\sqrt{t^2-1}$, instead of first
+approximating $g$ and then multiplying that approximation by $V$.
+
+\section{Soundness before the signs of the encoded data are known}
+
+This section states the inherited interfaces and proves the new signed
+center estimate. The detailed parent arguments are retained in
+\code{compact/parents/}, including its nested \code{proof_sources/}; their canonical
+source paths and hashes are in the source ledger. The original unbounded
+arguments are not replaced by finite numerical tests.
+
+\subsection{Root extraction and the low-index exclusions}
+
+At every positive input, independently of the equation,
+\[
+ q\ge32,\quad X,Y\ge q,\quad k\ge2,\quad c>kY,\quad
+ U\ge c^2,\quad a>c,\quad f>2c,\quad M>0.
+\]
+Moreover,
+\begin{equation}\label{eq:strongidentities}
+ f^2=1+4aF_0,\qquad
+ Q=\Delta(f^2-1)=4\Delta^2U^2G,\qquad
+ f-1=2\Delta i^2c^4E.
+\end{equation}
+If $b=0$, then $V=-c$; otherwise $|V|\ge f-c>1$. At a zero of
+\eqref{eq:main},
+\[
+ (Q-1)Z^2=16M^2G(QV^2-1).
+\]
+Since $Q$ is a multiple of $G$, both $Q-1$ and $QV^2-1$ are coprime
+to $G$. Prime valuations show that $G$ is a square. The fixed factor
+16 and the factor $M^2$ contribute only even valuations. Also
+$\gcd(E,F_0)=1$, so
+\[
+ E=\tau^2,\quad F_0=f_0^2,\quad G=g^2,
+ \qquad g=\tau f_0>0.
+\]
+The adjacent-coefficient Pell descent from the parent, applied initially
+over the rationals, gives an integer $y>0$ such that
+\begin{equation}\label{eq:adjacent}
+ QV^2-(Q-1)y^2=1,\qquad Z/M=\varepsilon\,4gy,
+ \quad \varepsilon\in\{-1,1\}.
+\end{equation}
+For completeness, if the rational ordinate has reduced denominator $m$,
+then $m^2\mid Q-1$. The norm-preserving transformation
+\[
+ u'=(2Q-1)u-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2Qu
+\]
+strictly decreases $|u|>1$ after sign reflection, keeps its first
+coordinate integral, and preserves the reduced denominator of the second.
+It ends at $u=1,y=1$, proving $m=1$.
+
+Put $I=2Ug$. The signed all-index folding theorem applies to
+\[
+ f^2-\Delta I^2=1,\quad Q=(\Delta I)^2,
+ \quad c^2\mid I,\quad V\equiv-c\pmod f.
+\]
+It yields $c=\psi_A(p)$ for an odd positive $p$, where
+$\psi_A(0)=0$, $\psi_A(1)=1$ and
+$\psi_A(j+2)=2A\psi_A(j+1)-\psi_A(j)$.
+The first norm yields $k=2\psi_{1+2XY^2}(m)$ for $m\ge1$.
+The parent excludes $m=1$ and $p=3$, giving
+\[
+ c>8XY^3\ge8q^4,\quad c>X,\quad K>0,
+ \quad c>4\Delta+3.
+\]
+These steps use no sign assumption about $B,C,R,b$.
+
+The adjacent auxiliary index is odd. Index one would give $|V|=1$.
+Index three would give one of the two impossible divisibilities
+\[
+ f(b-4\Delta f)=c-(4\Delta+3),\qquad
+ f(b+4\Delta f)=c+(4\Delta+3),
+\]
+whose right sides lie strictly between zero and $f$. Thus its index is
+at least five. Also $b=0$ is impossible, since then
+$y^2-c^2=(c^2-1)/(Q-1)$ lies strictly between zero and one.
+We obtain the strong absolute estimates
+\begin{align}
+ &\operatorname{sgn}(V)=\operatorname{sgn}(b),\quad
+ |V|>8Q^2,\quad |b|>8f^3-\tfrac12>7f^3,\label{eq:bstrong}\\
+ &g<f/6,\quad y<\tfrac32|V|,\quad
+ |V|<\tfrac32f|b|,\quad AUE<\tfrac32g<f/4.
+ \label{eq:absolutebounds}
+\end{align}
+The bound $g<f/6$ follows from
+$a^2/g^2=\Delta U^2a/(1+a)>9$; the last bound uses
+$G=E+\Delta(UE)^2$.
+
+\subsection{A uniform polynomial-majorant lemma}
+
+\begin{lemma}[The whole-product center is controlled]\label{lem:centerbound}
+Under the preceding positive-input hypotheses and the consequences of
+the Pell equations, before recovering the sign of $B$, the polynomial
+$\Omega$ has the sign of $V$ and satisfies
+\[
+ 3AUE|V|<|\Omega|<5AUE|V|.
+\]
+\end{lemma}
+\begin{proof}
+For a polynomial in the formal variable $t$, let a superscript $\#$ denote
+the sum obtained by taking absolute values of its coefficients and then
+evaluating at the positive real number $A$. This is proof notation, not
+part of the Diophantine expression.
+
+Put $\delta=(Y+1)/A$. Since $X,Y\ge32$, $\delta<1/16$. We have
+\[
+ |e_1|<2e_2(Y+1),\qquad 0<e_0\le e_2(Y+1)^2.
+\]
+Consequently
+\[
+ \mathcal E^{\#}(A)\le e_2(A+Y+1)^2,
+ \qquad E\ge e_2A^2(1-2\delta),
+\]
+so $\mathcal E^{\#}(A)<2E$.
+
+Using
+$\mathcal F(t)=\mathcal E(t)(b-c)+2U^2b(t^2-1)\mathcal E(t)^2$
+and $|b|\ge1$ gives
+\[
+ \mathcal F^{\#}(A)
+ <2E(|b|+c)+8(A^2+1)U^2E^2|b|.
+\]
+Here $1+c<2U^2E$ and
+$|V|>(f-c)|b|>\Delta U^2E|b|$. Therefore
+\begin{equation}\label{eq:majorant}
+ \frac{\mathcal F^{\#}(A)}{|EV|}
+ <\frac4\Delta+\frac{8(A^2+1)}\Delta
+ =8+\frac{20}{\Delta}<10.
+\end{equation}
+Deleting lower powers in a polynomial gives
+$|Q_j|\le\mathcal F^{\#}(A)/A^j$. Equation~\eqref{eq:quotientcenter}
+therefore implies
+\[
+ |\Omega-4AUEV|
+ <10U|EV|\left(\frac2A+\frac1{2A^3}\right)
+ <AU|EV|,
+\]
+because $A\ge16$ and $20/A^2+5/A^4<1$. This proves both the strict
+sign assertion and the two bounds.
+\end{proof}
+
+\begin{corollary}[The square transport budget]\label{cor:budget}
+Before assuming $B\ge0$,
+\[
+ 4gy+|\Omega|<b^2/4.
+\]
+\end{corollary}
+\begin{proof}
+By~\eqref{eq:absolutebounds} and Lemma~\ref{lem:centerbound},
+\[
+ 4gy+|\Omega|
+ <6g|V|+5AUE|V|
+ <\frac94f|V|
+ <\frac{27}{8}f^2|b|.
+\]
+Since $|b|>7f^3$ and $f>2$, the ratio of the last bound to $b^2$
+is less than $27/(56f)<1/4$.
+\end{proof}
+
+\subsection{Recovering the semantic signs without a circular argument}
+
+For proof only, put
+\[
+ \rho=\frac{k-R-1-XY^2k(k^2-4)/6}{q^6},\quad
+ \sigma=\frac{s}{q^2},\quad t_0=\frac{B}{h},\quad
+ \kappa=\frac KH,\quad W=1+hb^2.
+\]
+The exact rational carrier identity is
+\begin{equation}\label{eq:carrier}
+ Z/M=n+\kappa+\sigma-Wt_0-\rho-\Omega.
+\end{equation}
+The inverse Lucas correction is crucial: $k\ge2$ implies
+\[
+ k-R-1-XY^2k(k^2-4)/6\le k-R-1<b.
+\]
+Thus $\rho<|b|/q^6<b^2/2$, uniformly for positive, zero or negative
+$R$. If $B\le-1$, then $Wt_0<-b^2$. Since $\kappa,\sigma>0$,
+\eqref{eq:adjacent}, \eqref{eq:carrier} and
+Corollary~\ref{cor:budget} would give
+\[
+ n\le4gy+|\Omega|-\kappa-\sigma+Wt_0+\rho
+ <\frac{b^2}{4}-b^2+\frac{b^2}{2}<0,
+\]
+contradicting $n>0$. Therefore $B\ge0$, and its defining equation
+forces $C>0$.
+
+Only now may the calibrated mask estimate $3q<R<q^4-2$ be used.
+It gives $c>2R$ and hence $b,V>0$. The normalized-rank theorem and
+the congruences
+\[
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c
+\]
+identify $p=R$. The second congruence uses $f\equiv1\pmod c$ from
+\eqref{eq:strongidentities}, not an assumed sign. The old signed cases
+are thereby covered before the positive computation is reconstructed.
+
+\section{Index recovery, completeness, and the logical endpoint}
+
+\subsection{The inverse Lucas correction retains its exact denominator order}
+
+Because $\Omega$ is an integer polynomial, $Z_0/M=\varepsilon4gy+\Omega$
+is integral. Thus the parent inverse-correction arithmetic applies to
+the unshifted carrier with exactly the same divisibility conditions.
+For clarity, the essential order is summarized here.
+
+The recurrence expansion, with $v=XY^2$, is
+\[
+ k=2\psi_{1+2v}(m)=2m+8v\binom{m+1}{3}+32v^2Z_m,
+ \qquad Z_m\in\N.
+\]
+Writing $d=2m-R-1$ and
+$e^*=k-R-1-vk(k^2-4)/6$, its exact cubic-difference identity gives
+\[
+ 3(e^*-d)=4v^2\{24Z_m-A_mS_m\},
+\]
+where $A_m=\binom{m+1}{3}+4vZ_m$ and
+$S_m=k^2+k(2m)+(2m)^2-4$. Since $v=q^3ws^2$, this proves
+$q^4\mid(e^*-d)$ even at the prime 3. Integral $Z_0/M$ also gives
+$q^4\mid e^*$. The first Pell base exceeds $A$, so $m<R$; the bound
+$R<q^4$ now forces $d=0$.
+
+One must not yet cancel the factor 3 at the full $q^6$ level.
+First reduce the literal numerator modulo $H$ to obtain $H\mid6hK$.
+The inherited uniform ratio bound and whole-product projection force
+$X=2^R$, without canceling arbitrary factors of a congruence.
+As $q\mid X$, $q$ is a power of two. Only then does the identity above
+give $q^6\mid e^*$. It follows that $q^2\mid s$, $q^3\mid Y$,
+$\kappa\in\Pos$ and $h\mid B$. These are exactly the native outer
+conditions of the pinned calibration. This preserves the explicit
+third-primary repair in source 164.
+
+\subsection{Constructing positive witnesses from a refutation}
+
+Conversely, a finite syntactic ZFC refutation supplies the parent's
+canonical outer data with
+\[
+ X=2^R,
+ \quad q^3\mid Y,
+ \quad C>0,
+ \quad t_0=B/h\in\N,
+ \quad \rho,\sigma,\kappa\in\Z.
+\]
+The retained Pell-period construction gives positive $i,\eta,\zeta,T$
+and positive $V,y$ satisfying the Pell equation in~\eqref{eq:adjacent}.
+For the unsquared
+trace, the old auxiliary coordinate changes by the explicitly integral
+formula
+\[
+ T_{\rm new}=fT_{\rm old}-\frac{f-1}{c}R
+            =\frac{V+c+Rf}{cf}>0.
+\]
+The quotient $(f-1)/c=2\Delta i^2c^3E$ is a polynomial.
+The new center obeys $\Omega>0$. Define
+\begin{equation}\label{eq:ncomplete}
+ n=4gy+\Omega+(1+hb^2)t_0+\rho-\kappa-\sigma.
+\end{equation}
+Every term is an integer. The parent direct estimates give
+$g>\kappa+\sigma+|\rho|$, including the potentially negative inverse
+Lucas correction. Hence $n>0$, the carrier equals $4gy$, and the
+literal polynomial vanishes. This constructs all ten positive witnesses;
+it does not assert that a refutation or a zero actually exists.
+
+\subsection{What the equivalence means internally}
+
+The fixed tuple is the indexed native compilation of the calibrated
+machine used by the pinned parents. Their outer reconstruction connects
+a positive zero to a finite syntactic refutation. Composing the two
+directions above gives, inside ZFC,
+\[
+ \exists\mathbf x\in\Pos^{10}\;P_{208}(\mathbf x)=0
+ \quad\longleftrightarrow\quad
+ \exists p\;\operatorname{Proof}_{\ZFC}(p,\bot).
+\]
+Negating proves Theorem~\ref{thm:main}. This reasoning uses finite coding,
+integer arithmetic, recurrence identities and the specified inherited
+proof transformations, all formalizable in ZFC. It is not an inference
+from agreement only on standard numerals. Nor does it select coefficients
+according to the unknown truth value of $\Con(\ZFC)$.
+
+The direct quartics instead use the named interfaces
+\code{KEndpoint.c222_iff_zf_refutation} and
+\code{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+The new Diophantine transformations are ordinary mathematical proofs;
+the inherited Lean/Rocq developments were not rebuilt in this session.
+
+\section{Exact degree and the literal arithmetic count}\label{sec:degree}
+
+The cancellation giving degree 208 must be checked on the entire polynomial.
+Propagating degrees through the original squared expression alone would
+give only an upper bound and miss the main result.
+
+Assign the intermediate weights
+\[
+ \deg A=4,\quad\deg Y=2,\quad\deg k=1,
+ \quad\deg U=7,\quad\deg b=4,\quad\deg c=3.
+\]
+An independent sparse expansion of the center gives
+\begin{equation}\label{eq:defecttop}
+ \topdeg{\Omega^2-16GV^2}{106}
+ =8A^8Y^8k^8U^6b^2-48A^6Y^{12}k^8U^6b^2.
+\end{equation}
+The exact homogeneous component is meant here; these are not estimates
+from a numerical ray. The full checked coefficient array of the defect
+is included in the whole-product component.
+
+The global polynomial identity
+\begin{align}
+ P_{208}={}&(Q-1)Z_0^2-2(Q-1)M\Omega Z_0\notag\\
+ &+M^2\{Q(\Omega^2-16GV^2)-\Omega^2+16G\}
+ \label{eq:wholeexpansion}
+\end{align}
+has successive upper degrees $122,177,208,152,72$.
+In particular, using the square weight makes $\deg Z_0=21$;
+retaining $bV$ here would make the cross term degree 213 and obscure the
+lower-degree norm defect.
+
+Set
+\[
+ q_0=\beta J,\qquad k_0=\eta+\zeta,\qquad
+ B_0=k_0sT-q_0^2(q_0-F).
+\]
+Substitution of the actual leading components in~\eqref{eq:defecttop}
+gives
+\begin{equation}\label{eq:maintop}
+ \boxed{\displaystyle
+ \topdeg{P_{208}}{208}
+ =9\,2^{11}q_0^{88}w^{18}s^{52}i^{10}k_0^{32}
+ B_0^2(w^2-6s^2).}
+\end{equation}
+This is nonzero over the polynomial ring for the actual $\beta>0$.
+Thus the exact degree is 208. The factors $B_0$ and $w^2-6s^2$ must
+be retained; suppressing a tied leading term would give an incomplete
+degree certificate.
+
+The complete literal circuit has \PrimaryOps{} live binary operations:
+\PrimaryMul{} multiplications, \PrimaryAdd{} additions and
+\PrimarySub{} subtractions. Every gate, input and fixed port is used.
+The independent checker binds its entire unchanged prefix to the frozen
+85-operation parent, verifies the new center as a polynomial identity,
+checks the altered carrier and finalizer, and establishes the exact
+leading form. The reported count does not count a displayed abbreviation
+as a free arithmetic operation.
+
+\section{Direct quartics and nonnegativity on the zero set}\label{sec:quartics}
+
+The direct component is logically independent of the native coefficient
+tuple. Its source is package 164's C222 arithmetic construction, and its
+projection technique descends from packages 159 and 163~\cite{p159,p163}. The fresh content
+is the particular measured reductions and the natural-domain argument.
+\input{direct_table.tex}
+The 203-natural equation trades coefficient height against the smaller
+dimension; the row-basis variants make that tradeoff explicit. The
+233-integer equation reduces the inspected 234-variable dimension record
+in this direct family, but does not improve every coefficient measure.
+
+\subsection{An exact quadratic projection}
+
+Let $q_1,\ldots,q_m$ be integer quadratics. Suppose an integer vector $v$
+is in the common kernel of their homogeneous quadratic Hessians, with
+$v_p=1$. In coordinates $x=y+vz$, $y_p=0$, each row has the form
+\[
+ q_j(y+vz)=q_j(y)+a_jz,
+ \qquad a_j\in\Z.
+\]
+If $a_r=\pm1$, eliminate $z=-a_rq_r(y)$. The remaining quadratics are
+\[
+ q_j(y)-a_ra_jq_r(y)=0\qquad(j\ne r).
+\]
+These maps are inverse on unrestricted integer zero sets. The independent
+checker reconstructs the target by this row-combination identity; the
+constructor uses shear and substitution. Natural domains require an
+additional argument, which is not supplied by the Hessian calculation.
+
+\subsection{Two canonical sign choices remove two natural coordinates}
+
+In the pinned natural source, put
+\[
+ A_1=\code{mul.363},\quad B_1=\code{mul.369},
+ \qquad Y_1=B_1-A_1.
+\]
+The row $A_1=(Sp+1)(1+\code{mul.361})$ restores $A_1\ge0$ and
+$B_1=Y_1+A_1\ge0$ from every target natural zero. The source's canonical
+CRT construction already chooses $B_1>A_1$, supplying the reverse
+existential direction. The second pair is
+\[
+ C_1=\code{mul.372},\quad D_1=\code{mul.373},
+ \qquad Y_2=C_1-D_1,
+\]
+with $D_1=(S+1)(1+\code{mul.361})$ and $C_1=Y_2+D_1$.
+The same canonical representatives satisfy $C_1>D_1$.
+These reductions give 204 nonnegative variables. They are not claimed to
+be bijections on every arbitrary natural source zero.
+
+\subsection{A retained equation certifies the third restoration}
+
+Write $u=\code{mul.299}$, $v=\code{mul.304}$ and
+$t=\code{add.302}$. Their defining rows are
+$u=\Pi$ and $v=t(t+1)$, where
+\begin{align*}
+ \Pi={}&4556+4320r+1024r^2+512rs+128rt_1\\
+       &{}+1080s+64s^2+32st_1+270t_1+4t_1^2,\\
+ r&=\code{mul.232},\quad s=\code{mul.237},\quad
+ t_1=\code{mul.243}.
+\end{align*}
+The common quadratic direction is $(u,v)\mapsto(u+z,v-4z)$.
+Retain $w_1=v+4u$, eliminate $u$, and restore
+\[
+ u=\Pi,\qquad v=w_1-4\Pi.
+\]
+Although the latter polynomial has negative coefficients, its retained
+row forces $w_1-4\Pi=t(t+1)\ge0$ on every target natural zero.
+Conversely $w_1=v+4u\ge0$ on every old natural zero. Thus this third
+step is a pointwise natural zero-set bijection and gives 203 variables.
+
+The useful principle is that a restoration only has to be nonnegative
+\emph{on the target zero set}. Requiring its coefficients all to be
+nonnegative would miss this elimination. The package verifies the exact
+retained row and the entire restoration, not just its expected shape.
+
+\section{What was investigated and what is not claimed}
+
+We investigated splitting the general C222 seed bundle into a shallow
+guarded vacuity axiom and a fixed-label seed core. This initially looked
+like a new semantic simplification. A source audit found exactly that
+proposal already measured in package 156, with negative size results~\cite{p156}.
+An updated trial still did not beat the current natural equation, so it
+is not promoted as a new construction. This prevents an apparent change
+of notation or an old negative experiment from being reported as a
+breakthrough.
+
+Whole-expression polynomial centers already occur in the
+eleven-unrestricted-integer branch of packages 153, 154 and
+165~\cite{signedcenters}. The new contribution here is the ten-positive-variable
+specialization: the explicit quotient center for $EV$, its majorant bound
+before recovery of the encoded signs, and the resulting literal degree-208
+equation. Its unbounded proof is separate from the finite checks.
+This endpoint and its specific argument appear new relative to the inspected
+repository boundary; no exhaustive literature-priority claim is made.
+
+There is no proof here that degree 208 is best for ten positive unknowns,
+that 203 or 233 variables are best among direct quartics, or that any
+one metric captures ``simplest.'' The small-variable forms retain
+large fixed coefficients. The direct quartics have smaller coefficients
+and many more variables. A future formalization must check the new
+Diophantine bridge, not merely reuse the existing machine endpoint.
+
+\section{Reproducibility and integration}
+
+The ZIP contains this PDF and all native LaTeX sources; the ten-variable
+graphs; four authenticated fixed numerals and their finite reconstruction;
+the direct quadratic residual lists and collected quartic expansions;
+ordinary proofs; independent coefficient/certificate checkers; source
+ledgers, licenses, and recorded verification receipts.
+
+The top-level command
+\begin{quote}\code{python3 -B verify_all.py}\end{quote}
+checks the new finite artifacts using only the Python standard library.
+An optimized run is supported with \code{python3 -B -O verify_all.py}.
+The report build command is \code{sh build_report.sh}; it requires an
+ordinary TeX Live installation. Mathematical definitions are the
+authenticated graph and coefficient arrays, not PDF metadata.
+
+The final archive is an additive submission suitable for
+\code{docs/incoming}. No remote repository content was modified.
+The provenance boundary and internal AI-assisted reviews are disclosed;
+they are not represented as outside human peer review.
+
+\appendix
+\section{The complete fixed coefficient recipe}\label{app:constants}
+
+The following finite recipe is retained from the authenticated indexed
+native source. It is a specification of four fixed integers, independent
+of all quantified variables. Its bounded sums and fixed decoder do not
+introduce variable exponents into the final polynomial. The executable
+reconstructor verifies the exact raw bytes of all four integers.
+\input{coefficient_recipe.tex}
+
+\section{The principal literal arithmetic circuit}\label{app:circuit}
+
+The following table prints the entire straight-line evaluator. A row
+$z=x\mathbin\circ y$ introduces a polynomial abbreviation; only the ten
+listed witnesses are quantified. The table is generated from, and checked
+against, the canonical JSON graph.
+\input{circuit.tex}
+
+\section{Literal residuals of the 203-natural quartic}\label{app:203}
+
+Every coordinate below is independently in $\N$. The equation is exactly
+$\sum_{j=0}^{154}q_j(x_0,\ldots,x_{202})^2=0$.
+The complete expanded quartic in the archive is independently regenerated
+from these residuals. An index denotes the canonical coordinate order in
+\code{direct/natural203/equation.json}.
+\input{residuals203.tex}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small\raggedright
+\bibitem{p163} ProveIt, package 163, \emph{Lower degree and fewer witnesses
+for Diophantine consistency}, 25 October 2026. In particular
+\code{compact/PROOF.md}, sections 3--9.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb/Computability/DiophantineConsistency/con-zfc-diophantine-forms/163-trace-radical}.
+\bibitem{p164} ProveIt, package 164, \emph{Unsquared factors and linear
+selectors for Diophantine consistency}, 25 October 2026. The positive
+inverse-Lucas proof and the natural canonical CRT proof are the immediate
+arithmetic parents.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb/Computability/DiophantineConsistency/con-zfc-diophantine-forms/164-unsquared-factors-linear-selectors}.
+\bibitem{p159} ProveIt, package 159, \emph{A direct quartic for Con(ZFC)
+in 234 integer variables}, 25 October 2026. Common-Hessian projection
+and independent algebraic certificates.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb/Computability/DiophantineConsistency/con-zfc-diophantine-forms/159-quadratic-projection-234}.
+\bibitem{p156} ProveIt, package 156, \emph{Integral projection lattice},
+\code{research_notes/EXPERIMENT_REVIEW.md}. Prior measured seed/vacuity split.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb/Computability/DiophantineConsistency/con-zfc-diophantine-forms/156-integral-projection-lattice/research_notes/EXPERIMENT_REVIEW.md}.
+\bibitem{p152} ProveIt, package 152, \emph{Lucas corrections and elimination
+of arithmetic witnesses}, 25 October 2026. The earlier forward Lucas
+correction, retained in the source closure.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb/Computability/DiophantineConsistency/con-zfc-diophantine-forms/152-lucas-corrections}.
+\bibitem{signedcenters} ProveIt, packages 153, 154 and 165. Earlier
+whole-expression polynomial centers for eleven unrestricted integer variables:
+\path{153-nearest-factorial/signed/PROOF.md}, section 6;
+\path{154-normalized-residues-round19/report/scalar.tex}; and
+\path{165-wider-budgets-round20/scalar/PROOF.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb/Computability/DiophantineConsistency/con-zfc-diophantine-forms/165-wider-budgets-round20/scalar/PROOF.md}.
+\bibitem{kendpoint} ProveIt, \code{KEndpoint.lean},
+\code{KSeedDirect222.lean}, \code{ConstructibleChoice.lean}.
+Named C222/ZF/ZFC interfaces, with the exact selected source copies and
+commit identifiers recorded in the artifact ledgers.
+\bibitem{jones} J. P. Jones, \emph{Universal Diophantine Equation},
+Journal of Symbolic Logic 47 (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}. Background for comparison only;
+the direct quartic component does not use this universal equation.
+\end{thebibliography}
+\end{document}
