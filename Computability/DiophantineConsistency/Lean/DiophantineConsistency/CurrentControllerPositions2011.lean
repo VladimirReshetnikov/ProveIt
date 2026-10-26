@@ -24,11 +24,8 @@ theorem position_pos (k : ℕ) (j : ZMod (auxiliary^k)) : 0 < position k j := by
 theorem position_budget (k : ℕ) (j : ZMod (auxiliary^k)) :
     position k j+auxiliary^k+auxiliary ≤ auxiliary^(k+1)+3 := by
   have hv : j.val+1 ≤ auxiliary^k := ZMod.val_lt j
-  have hm := Nat.mul_le_mul_left (auxiliary-1) hv
-  have hp : auxiliary^(k+1) = auxiliary^k*auxiliary := pow_succ _ _
-  have ha : auxiliary-1+1 = auxiliary := by decide
-  unfold position
-  nlinarith
+  simp only [position, pow_succ, auxiliary] at hv ⊢
+  omega
 
 theorem position_max (k : ℕ) (j : ZMod (auxiliary^k)) :
     position k j ≤ auxiliary^(k+1)-auxiliary^k-auxiliary+3 := by
@@ -79,9 +76,7 @@ theorem optional_stride_lt {rw k : ℕ} (hrw : rw < k) :
 theorem position_injective (k : ℕ) : Function.Injective (position k) := by
   intro i j hij
   apply ZMod.val_injective
-  have hp : 0 < auxiliary-1 := by decide
-  unfold position at hij
-  nlinarith
+  exact Nat.eq_of_mul_eq_mul_left (by decide : 0 < auxiliary-1) (Nat.add_left_cancel hij)
 
 theorem position_ne_three (k : ℕ) (j : ZMod (auxiliary^k)) : position k j ≠ 3 := by
   intro h
