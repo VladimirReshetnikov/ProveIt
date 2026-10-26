@@ -1,0 +1,2103 @@
+{
+  "status": "PASS_WITH_EXPLICIT_POST_BUILD_KZIP_RECHECK",
+  "scope": "Original driver completed168modules:104 authenticated cached and64 fresh. ROOT reauthenticated all168current sources,167unchanged object hashes, fresh module logs, compiler and Init. KZip was explicitly freshly rebuilt afterward, followed by a fresh decimal-machine endpoint audit. This is not a fresh full rebuild.",
+  "driver_origins": {
+    "exact_source_cache": 104,
+    "fresh_current_source": 64
+  },
+  "post_build_object_event": {
+    "module": "BusyBeaver.ZFC.KZip",
+    "observation": "The first ROOT whole-object reauthentication found one differing object hash; it stopped before writing any receipt. KZip source bytes matched the pinned source. Its object timestamp was during the original driver run; the original writer was not inferred. ROOT then read and freshly rebuilt the actual source and reran the closed endpoint checks.",
+    "initial_observed_object_sha256": "2847c50892bafbe4e7a15442d5e07817f6499cad7cf9b19064e3c46e02040be8",
+    "fresh_ROOT_object_sha256": "5fc974ab21b7b445c2c8c195b447ccb4800d188498286a51b4acbf546255e0e6",
+    "independent_byte_comparison": "Both controller_certificate and ROOT independently reproduced initial observed hash2847c508\u2026 by replacing the sole embedded absolute source path62ff\u219246be in old cached object1230b602\u2026. Exactly four bytes differ; the actor is not attributed. No file was written for that comparison."
+  },
+  "toolchain": "leanprover/lean4:v4.32.0",
+  "compiler_sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+  "Init_sha256": "d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e",
+  "plan_sha256": "7a02540977e35b613a2a42133c1efbaaca1641c8086e3bdc6d8048057ff1f155",
+  "driver_sha256": "dd3c83b7fac9fed4629e7d5d73b50e145cace86bcb1e25ba1a81a4eed42fc56d",
+  "state_sha256": "dda2a880165baa31ad86bf53364b27f519dc18c396e07228075efd7a8fa9bb57",
+  "driver_log_sha256": "01130ed431d5a95a8aa3fba0c70c108752fa65342f54beb705f65fa7e2215dff",
+  "endpoint_audit_sha256": "8c8399852b680aaab40886892fe8ad1cc6c1f7b29716209231e2c006ef32d173",
+  "endpoint_audit_log_sha256": "99ec76eb139a0374f458bab79e271a67e511e3cba07cc96aed1fdae68aba368e",
+  "modules": [
+    {
+      "module": "BusyBeaver.Core",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/Core.lean",
+      "source_sha256": "436336133fa107c62eb00322333ec9451a0705964bd2b62fce3f44ce848672a6",
+      "imports": [],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "57b3e66bc092485d60dc3c7439f8f4745b109e9fe5c0376864a9330ce1208107",
+      "current_object_sha256": "57b3e66bc092485d60dc3c7439f8f4745b109e9fe5c0376864a9330ce1208107"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KZip",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZip.lean",
+      "source_sha256": "71edb0ca7a8cf160d9f8868f73c7ab52cffcd66301c35ad90f828cd4afb265a3",
+      "imports": [],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "1230b602dbaba00b43662f984f143e466eb255ab27ffd3b4255706bca6e1e701",
+      "current_object_sha256": "5fc974ab21b7b445c2c8c195b447ccb4800d188498286a51b4acbf546255e0e6",
+      "post_build_verification": "ROOT read the entire current source and freshly rebuilt it with lake env lean -M6000 -j1; exit0. The subsequent fresh DecimalMachineZFCChecks also exited0 with standard axiom sets."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KDenseBridge",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDenseBridge.lean",
+      "source_sha256": "af106657576086765266c915f0710a4ac9fcef1a90c6e8e6ea0cd6736ad97b54",
+      "imports": [
+        "BusyBeaver.Core",
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "1fe91cbca692d93c1226c554c30c18181648dd2fa40e3ad1e571ba01bac0ba25",
+      "current_object_sha256": "1fe91cbca692d93c1226c554c30c18181648dd2fa40e3ad1e571ba01bac0ba25"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTableCore",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KTableCore.lean",
+      "source_sha256": "8d9eb49c11dcc64bf461cfa205aa886f7ab7e43925a5315485acffc1f2c75e5d",
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "6bb00cdc044e5ed106bf3be516b9646ae0019252d391a8520846d696df3e5266",
+      "current_object_sha256": "6bb00cdc044e5ed106bf3be516b9646ae0019252d391a8520846d696df3e5266"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTable215",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KTable215.lean",
+      "source_sha256": "429775b1774d41e94ba3b7283f7f50ea45bc13716d4ef27fccffe1f686a8d24c",
+      "imports": [
+        "BusyBeaver.ZFC.KTableCore"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "ae70b37196d432ce7d571a32378b1a55773c115362ce9987efb8e8fe8c76b25d",
+      "current_object_sha256": "ae70b37196d432ce7d571a32378b1a55773c115362ce9987efb8e8fe8c76b25d"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KDense215",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDense215.lean",
+      "source_sha256": "b1ebe573ced4b336ead43dbe7278ad97c8d28c06412b43c7291d051b98c6395a",
+      "imports": [
+        "BusyBeaver.ZFC.KDenseBridge",
+        "BusyBeaver.ZFC.KTable215"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "90b6c544786f18d29ca085fcd3411d6576cdb7afa397abee0097fd43150f0547",
+      "current_object_sha256": "90b6c544786f18d29ca085fcd3411d6576cdb7afa397abee0097fd43150f0547"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RegisterPath",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean",
+      "source_sha256": "4dfac01d72974d3655afce04a587a7da3c0a9022bed276078b36f50424457363",
+      "imports": [
+        "Init"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "834ec71fd91ef6c0ca9f96c0d7408595a1d91eb5b0815f1e76dc606fd06d924b",
+      "current_object_sha256": "834ec71fd91ef6c0ca9f96c0d7408595a1d91eb5b0815f1e76dc606fd06d924b"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMDag",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMDag.lean",
+      "source_sha256": "36b7b8fdeaad284940fafe170b8da3ed6953e41b743034e446f68c8c5f6fd3cb",
+      "imports": [],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "50340a70d74f3026a5c8a47027a4234de95599afce0ffd4f71bb26e8ae06485e",
+      "current_object_sha256": "50340a70d74f3026a5c8a47027a4234de95599afce0ffd4f71bb26e8ae06485e"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMEquiv",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMEquiv.lean",
+      "source_sha256": "61f807d4327a1e39ad441e1e737f5affd9fd7004476e12bb378c9c6663dc909c",
+      "imports": [
+        "BusyBeaver.ZFC.RegisterPath",
+        "BusyBeaver.ZFC.RMDag"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "ff410e8cd7f2253bb290e97cfdc104d89a41f4722d3188aafb8465933b43500d",
+      "current_object_sha256": "ff410e8cd7f2253bb290e97cfdc104d89a41f4722d3188aafb8465933b43500d"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMBisim",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMBisim.lean",
+      "source_sha256": "c18b757a0b981a6e78c7a1fbe449fe6d53f38039f7d99cdf0021b2a151166f81",
+      "imports": [
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "5600644ab5fd2ca44a08a9a97328cf15e342791e62d00cca86c82e2c4aeaf4ef",
+      "current_object_sha256": "5600644ab5fd2ca44a08a9a97328cf15e342791e62d00cca86c82e2c4aeaf4ef"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215Program",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215Program.lean",
+      "source_sha256": "7ab40d3faf9ddb976cdac2f77727e9e43b99b13a81fb45a340ad99abdfcd8310",
+      "imports": [
+        "BusyBeaver.ZFC.RMBisim"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "4e0d002fb42450a8b3ac470b725c7b22760cdc1b6d807156d897fda0859f1070",
+      "current_object_sha256": "4e0d002fb42450a8b3ac470b725c7b22760cdc1b6d807156d897fda0859f1070",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMNormalizedBisim",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMNormalizedBisim.lean",
+      "source_sha256": "8f3106bd9f78ca3b5dcdb724fd6f61134c0e8c8094be38275f09fc85410b3ccd",
+      "imports": [
+        "BusyBeaver.ZFC.RMBisim"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "cf0d212f35ac1ae040786fce832cf0e0eb7b77d54e108e56e1a6522ab1c0d7a2",
+      "current_object_sha256": "cf0d212f35ac1ae040786fce832cf0e0eb7b77d54e108e56e1a6522ab1c0d7a2",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Dag222",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag222.lean",
+      "source_sha256": "9e73e2d6ac692c33b07efde7faa08545fdd61ca692ec03e21afe2ffe99a7cb71",
+      "imports": [
+        "BusyBeaver.ZFC.RMDag"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "bd98a469af117f7d8deb61090dfa66e452899a7c33b8ae06da3b71956fbfda65",
+      "current_object_sha256": "bd98a469af117f7d8deb61090dfa66e452899a7c33b8ae06da3b71956fbfda65",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Dag219",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag219.lean",
+      "source_sha256": "fd3bdfcd5048dd7205b66fcce323bb78017a3137dcd04cc3ef9c0788334ac3ad",
+      "imports": [
+        "BusyBeaver.ZFC.Dag222"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "eb256de9887f301cc330a35db11f7bcfd0619c5b421cf0d6647e2cfabc168602",
+      "current_object_sha256": "eb256de9887f301cc330a35db11f7bcfd0619c5b421cf0d6647e2cfabc168602",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.DagDom",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DagDom.lean",
+      "source_sha256": "9d52a871ea029099dd192fb66cf0ef802c4f9ed6e8c32d3a7b3661ce343af5aa",
+      "imports": [
+        "BusyBeaver.ZFC.Dag219"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "370cf3ba4091107b8cf5c4aa88b5e225185f45956210c003063672409f6eaec6",
+      "current_object_sha256": "370cf3ba4091107b8cf5c4aa88b5e225185f45956210c003063672409f6eaec6",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.DagPerm",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DagPerm.lean",
+      "source_sha256": "11ccf62cf09e41b8f85e1c7d6aa56aeca0c0d211e119fb5309d5fb1ac6a96123",
+      "imports": [
+        "BusyBeaver.ZFC.DagDom"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "e926329aa171b00f00210bbb0f315916e08d080945e38122f0ea0e3cc518862a",
+      "current_object_sha256": "e926329aa171b00f00210bbb0f315916e08d080945e38122f0ea0e3cc518862a",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215Data",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215Data.lean",
+      "source_sha256": "23b670c2b6ffd08fa173bbbe54faaf8989aac9b410a41a3332dee3f5fcaa5554",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.RMNormalizedBisim",
+        "BusyBeaver.ZFC.RMEquiv",
+        "BusyBeaver.ZFC.DagPerm"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "5c4d8ce48b16850c7b96e501789083b1b6a570a741eb3a2ed58e4089488ea252",
+      "current_object_sha256": "5c4d8ce48b16850c7b96e501789083b1b6a570a741eb3a2ed58e4089488ea252",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck00",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck00.lean",
+      "source_sha256": "94814b35eddc170e62e344e7688bb5fac219f13012237a3c289184b9e2c7ebe1",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "8d07143be2444317f6908fc8ab4cc23f01a7ea03dfe896ba07417fc1b636898f",
+      "current_object_sha256": "8d07143be2444317f6908fc8ab4cc23f01a7ea03dfe896ba07417fc1b636898f",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck01",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck01.lean",
+      "source_sha256": "51650ba6a8b60ace0e0df08d091642cf6b26f61be90ff94f48fcaf915230554f",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "a3cad8af1aa6ed27688b28aaecb3a13a02d8c01a3e58827e2806c8e57f891c7e",
+      "current_object_sha256": "a3cad8af1aa6ed27688b28aaecb3a13a02d8c01a3e58827e2806c8e57f891c7e",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck02",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck02.lean",
+      "source_sha256": "93b51768742c644e375a29b4bea3334cdc442668b238630d0981b837333d0beb",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "230802381ffdecc2842376af0d00f6f95059652294968a26c6d76db6e60eeb68",
+      "current_object_sha256": "230802381ffdecc2842376af0d00f6f95059652294968a26c6d76db6e60eeb68",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck03",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck03.lean",
+      "source_sha256": "f7995d503238314b660ec50aa539fdbbe396963081c9106d4c0d28cf67799c06",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "105719a5cc3c064e0bfee626b741fac2541c4ae41cbc847364c6beb12bdef972",
+      "current_object_sha256": "105719a5cc3c064e0bfee626b741fac2541c4ae41cbc847364c6beb12bdef972",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck04",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck04.lean",
+      "source_sha256": "a11d471d874702bb3d5997dbbd931da8943e21c5439bd38e39d3c7ad8fc4563e",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "5541753733849651c9367c19139feab1ff2529ad7c2bcd43872d608098ecd54d",
+      "current_object_sha256": "5541753733849651c9367c19139feab1ff2529ad7c2bcd43872d608098ecd54d",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck05",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck05.lean",
+      "source_sha256": "1b778ec1851826ca42385b36d37e2fb68beeebe36f8e43c54fa619a3acff160a",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "718c482150b58387f241311df3b29e602a8cea36f6a93325814cdcbde02029b8",
+      "current_object_sha256": "718c482150b58387f241311df3b29e602a8cea36f6a93325814cdcbde02029b8",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck06",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck06.lean",
+      "source_sha256": "0b180db46c1559108b27817d8bce975ddf0b5d01bd37cf344aeeb1c1949e1919",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "0dce8aa5e3786c853da5a4afd941f8d5a4a0c208484788f0b5c547c42741db9e",
+      "current_object_sha256": "0dce8aa5e3786c853da5a4afd941f8d5a4a0c208484788f0b5c547c42741db9e",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck07",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck07.lean",
+      "source_sha256": "0dfe7b445f279fe74cb73d7586fc337cb31fbe02ddafcc18dce920becdf04d9a",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "f02858dc00c73b3b6f6b31ab132a88590a807088686052e87a6f59301d391e13",
+      "current_object_sha256": "f02858dc00c73b3b6f6b31ab132a88590a807088686052e87a6f59301d391e13",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck08",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck08.lean",
+      "source_sha256": "ec65d59064254fcb3e4917700b76d72ada5a1b913b7eeb9f95c5b0ffd022c68d",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "245ab6c1bf431da242661025097cce5ba16b97425109482aeebcfda3af2faecd",
+      "current_object_sha256": "245ab6c1bf431da242661025097cce5ba16b97425109482aeebcfda3af2faecd",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck09",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck09.lean",
+      "source_sha256": "1081f5dbe35de086481840dc57c19fd31776c18202cdc70c944a6a10c2f52d91",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "2934da90e8a02c2071cba25e13172c8f70ae938c59da57ebdcc78ed6c3528701",
+      "current_object_sha256": "2934da90e8a02c2071cba25e13172c8f70ae938c59da57ebdcc78ed6c3528701",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck10",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck10.lean",
+      "source_sha256": "2fd83e04ccc2c5bc88a0f2d1cadc5508ad6ca087dadac57584abc58245518fd9",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "5e4097852551ae42497eab40c5e5cfabc5a97c34d9f019e5c2c7f836cbd8d654",
+      "current_object_sha256": "5e4097852551ae42497eab40c5e5cfabc5a97c34d9f019e5c2c7f836cbd8d654",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck11",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck11.lean",
+      "source_sha256": "675d4952844aca13b0cc56d329ad8e10e03214edf1b5ad111098284a17ea14b5",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "3870df5219155cda5af8d9e272f704bd2384aa7f80e62851d1a5b74812cce5a9",
+      "current_object_sha256": "3870df5219155cda5af8d9e272f704bd2384aa7f80e62851d1a5b74812cce5a9",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck12",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck12.lean",
+      "source_sha256": "0a8a7e890b3b73422adec5f8862eed0c939939ab8f2176e2c3afbb06c2e7d0d2",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "0e20d8fa0b95eff7a5a87a7ec5a8725ea56ac925f89a8ce09820ae351a63892c",
+      "current_object_sha256": "0e20d8fa0b95eff7a5a87a7ec5a8725ea56ac925f89a8ce09820ae351a63892c",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck13",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck13.lean",
+      "source_sha256": "d511874dc2d775a15f4aa5fab071121da09596e9165e5952c7f1b0d5232c7ed2",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "0f01bc2d8f79461444533dd6918fa58edd321c657354de89910aa727eb9dd63d",
+      "current_object_sha256": "0f01bc2d8f79461444533dd6918fa58edd321c657354de89910aa727eb9dd63d",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck14",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck14.lean",
+      "source_sha256": "662f8f1a6a4a2649bc2f173c67f91a2c39887459d7f44e01233695b7596e83e4",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "d6cdf0508c044522dcd3e64d2c5821cd01156215e1f42784f4e288bec7ba9e28",
+      "current_object_sha256": "d6cdf0508c044522dcd3e64d2c5821cd01156215e1f42784f4e288bec7ba9e28",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck15",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck15.lean",
+      "source_sha256": "e1569df821afdf7861b97debed209027be84f8422c2649801997e83edc33508a",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "5772de3b611963e7bc134f530b52b9a73bccbc3556b4b59ba4f849ccb6db5bd5",
+      "current_object_sha256": "5772de3b611963e7bc134f530b52b9a73bccbc3556b4b59ba4f849ccb6db5bd5",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215.lean",
+      "source_sha256": "1a25e38fa662a609357d41eb307ee7156ec55c1502cc3298c5556ab1f20bb245",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data",
+        "BusyBeaver.ZFC.KSource215FwdCheck00",
+        "BusyBeaver.ZFC.KSource215FwdCheck01",
+        "BusyBeaver.ZFC.KSource215FwdCheck02",
+        "BusyBeaver.ZFC.KSource215FwdCheck03",
+        "BusyBeaver.ZFC.KSource215FwdCheck04",
+        "BusyBeaver.ZFC.KSource215FwdCheck05",
+        "BusyBeaver.ZFC.KSource215FwdCheck06",
+        "BusyBeaver.ZFC.KSource215FwdCheck07",
+        "BusyBeaver.ZFC.KSource215FwdCheck08",
+        "BusyBeaver.ZFC.KSource215FwdCheck09",
+        "BusyBeaver.ZFC.KSource215FwdCheck10",
+        "BusyBeaver.ZFC.KSource215FwdCheck11",
+        "BusyBeaver.ZFC.KSource215FwdCheck12",
+        "BusyBeaver.ZFC.KSource215FwdCheck13",
+        "BusyBeaver.ZFC.KSource215FwdCheck14",
+        "BusyBeaver.ZFC.KSource215FwdCheck15"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "2e5c94bff3cc4404dfb53907bff4209bcee2244d3bb3b2daa4e07d25bdfced5b",
+      "current_object_sha256": "2e5c94bff3cc4404dfb53907bff4209bcee2244d3bb3b2daa4e07d25bdfced5b",
+      "exit_code": 0,
+      "log_sha256": "019636b3dbf6978a030ab7b1c89fbf8d734f8bf48b24ae2e64d3f7449b2e25a7"
+    },
+    {
+      "module": "FirstOrder.Fol",
+      "source": "Logic/FirstOrder/Lean/FirstOrder/Fol.lean",
+      "source_sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+      "imports": [],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "0a06d972972febb12b63150811ad1aabdb6232776588e9207f9c5aac72ece1b2",
+      "current_object_sha256": "0a06d972972febb12b63150811ad1aabdb6232776588e9207f9c5aac72ece1b2"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Kalmar",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Kalmar.lean",
+      "source_sha256": "3cf0caf5187aa99790d83ac1b482dbc228942cc6308a752ae2b7f980984381b4",
+      "imports": [],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "bc147e5956b5ece5c9836878c904653e10b4096e88f87f45ded5064fb51fd38e",
+      "current_object_sha256": "bc147e5956b5ece5c9836878c904653e10b4096e88f87f45ded5064fb51fd38e"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiCalculus",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+      "source_sha256": "07855d7116c0a57fae8d7064c97cd52ff21ac1d095e1e0afa9d0cbd7069415d4",
+      "imports": [],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "7465ec53677da2525ce02ad0cf1bd578b4b557466b5a9f874e2a6756cf7064b2",
+      "current_object_sha256": "7465ec53677da2525ce02ad0cf1bd578b4b557466b5a9f874e2a6756cf7064b2"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiDerived",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+      "source_sha256": "8d91af78db6bbb1dab8f07f102bc802e70b3fb86467764a5644f2ec9b1b426d2",
+      "imports": [
+        "BusyBeaver.ZFC.Kalmar",
+        "BusyBeaver.ZFC.TarskiCalculus"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "6d8c00bb5b629bae1cbdf7339deaa079434028cf945cdceb95611c377f3c1780",
+      "current_object_sha256": "6d8c00bb5b629bae1cbdf7339deaa079434028cf945cdceb95611c377f3c1780"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiLeibniz",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+      "source_sha256": "731aefe160e05836bf1de2cd8e748ef2523e539fa17a6538283465f6bfc678a3",
+      "imports": [
+        "BusyBeaver.ZFC.TarskiDerived"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "ec1c9226e98c5fb4bca5e9678d0a81863e477303d8012d3f7ba6bd4c2b5924f6",
+      "current_object_sha256": "ec1c9226e98c5fb4bca5e9678d0a81863e477303d8012d3f7ba6bd4c2b5924f6"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiClean",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+      "source_sha256": "5dbfdac09367ae7416b69d68276758ff7a6971b42c9bc5bdfc41bc6a2293a899",
+      "imports": [
+        "BusyBeaver.ZFC.TarskiLeibniz"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "18b8a2e422bc9b3c5849589d44fe32bbddba10e599d851490d4ba63758dac013",
+      "current_object_sha256": "18b8a2e422bc9b3c5849589d44fe32bbddba10e599d851490d4ba63758dac013"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiComplete",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean",
+      "source_sha256": "9eae50f96f9bda9c027ec6ebd37f54a78501bebb3c8627b4ffbdd62d8c4683b2",
+      "imports": [
+        "FirstOrder.Fol",
+        "BusyBeaver.ZFC.TarskiClean"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "4757a2572f2b8617cda3bdb32b0298ebff959baeb8f303cd2207a76e1d143e7c",
+      "current_object_sha256": "4757a2572f2b8617cda3bdb32b0298ebff959baeb8f303cd2207a76e1d143e7c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.DominatedImplication",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DominatedImplication.lean",
+      "source_sha256": "bd07364a829e8a1535b0ecf1ee6ed0c292d5af35e01a6db8f152dd2610e247d8",
+      "imports": [
+        "Init"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "90a8554680e90ed428af537b7e942c2b4f2e86003deb8417961ce0285c93ec57",
+      "current_object_sha256": "90a8554680e90ed428af537b7e942c2b4f2e86003deb8417961ce0285c93ec57"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Lukasiewicz",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+      "source_sha256": "7d443a733b5c5ddd0d49728cf1ea7d855dd445f156934c13578bacc008c59874",
+      "imports": [
+        "BusyBeaver.ZFC.TarskiComplete",
+        "BusyBeaver.ZFC.DominatedImplication"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "cfca45c597bd8ef6f1ded2a217c1e65b522b9f816c968a72bdb8c28e702e43cc",
+      "current_object_sha256": "cfca45c597bd8ef6f1ded2a217c1e65b522b9f816c968a72bdb8c28e702e43cc"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiFalsity",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiFalsity.lean",
+      "source_sha256": "73a98d487a99602ef16b49918cd591400d64f9016f927272d01f53911c258406",
+      "imports": [
+        "BusyBeaver.ZFC.Lukasiewicz"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "31c168c4077e861f68b46ad88d6790ff630f7efb2770c2d9925650ce0418eb86",
+      "current_object_sha256": "31c168c4077e861f68b46ad88d6790ff630f7efb2770c2d9925650ce0418eb86"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Code254",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+      "source_sha256": "efffed3d6c96bb073d444c35352361347b6e2415b8c9e95b8bc860ecda3eb05a",
+      "imports": [
+        "FirstOrder.Fol",
+        "BusyBeaver.ZFC.TarskiFalsity"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "95e7b78efc8d4a12e75be287d77d8bb9e99f435625567c99aee7d27ee4d3ed34",
+      "current_object_sha256": "95e7b78efc8d4a12e75be287d77d8bb9e99f435625567c99aee7d27ee4d3ed34"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KCode222",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean",
+      "source_sha256": "fbc4fef6e479b6bc5bc83bcfafa73fb1befdc1b1d02b605da68ecf691f641eb3",
+      "imports": [
+        "BusyBeaver.ZFC.Code254"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "e8ca86dfe38e52af42b7bab442ca440a89afbfc210b5648feefae355564e861c",
+      "current_object_sha256": "e8ca86dfe38e52af42b7bab442ca440a89afbfc210b5648feefae355564e861c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeed222",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeed222.lean",
+      "source_sha256": "f1edf98f4bcd6f548f8e7b8ca59afdf4f01fc8307c1fdab19b21d95afb9543e8",
+      "imports": [
+        "BusyBeaver.ZFC.KCode222"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "6a770290e72dccf318a33e1bbcf73abcbc874f2ebf087cacdb68a8c423052c99",
+      "current_object_sha256": "6a770290e72dccf318a33e1bbcf73abcbc874f2ebf087cacdb68a8c423052c99"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KThmK",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean",
+      "source_sha256": "35b485200a181eceba3098a3ed837bc51c9f1e448bc3d2bb3e77b1d4d52b87c3",
+      "imports": [
+        "BusyBeaver.ZFC.TarskiLeibniz",
+        "BusyBeaver.ZFC.Lukasiewicz",
+        "BusyBeaver.ZFC.Code254"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "9da35a43598288b7d1f94432f38ac59cd608bc44a173f9821fa6b50251d66558",
+      "current_object_sha256": "9da35a43598288b7d1f94432f38ac59cd608bc44a173f9821fa6b50251d66558"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEqCodes222",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEqCodes222.lean",
+      "source_sha256": "1e2e768af99cbf3fe1cae0f4f41e93c229e77f8ea4937ceab9884a93ff8071cb",
+      "imports": [
+        "BusyBeaver.ZFC.KCode222"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "6f180b97da8216aca6a92d6b32c0f2b7baade4814e896ef4cbbcc69461334920",
+      "current_object_sha256": "6f180b97da8216aca6a92d6b32c0f2b7baade4814e896ef4cbbcc69461334920"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEind222",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean",
+      "source_sha256": "cc863d4b209b505c3240d683812d86c4cd4f1a599abce050c5e558e09592a508",
+      "imports": [
+        "BusyBeaver.ZFC.KThmK",
+        "BusyBeaver.ZFC.KEqCodes222"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "590956ee6af9280690414692974580c1404f31ccea06311a600991e40eb42967",
+      "current_object_sha256": "590956ee6af9280690414692974580c1404f31ccea06311a600991e40eb42967"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeedInterface222",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedInterface222.lean",
+      "source_sha256": "0ac1d3e3a2071fe04865502dcf0decb22fa9a32dfcceb7fa2e9c33c72cfc188e",
+      "imports": [
+        "BusyBeaver.ZFC.KSeed222",
+        "BusyBeaver.ZFC.KEind222"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "7215494a404294de7fc9fdaa1fb9ca1741aed114a91ec301cff4150e959f35f9",
+      "current_object_sha256": "7215494a404294de7fc9fdaa1fb9ca1741aed114a91ec301cff4150e959f35f9"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeedDirect222",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean",
+      "source_sha256": "671c413d14ec8b75d2c80f51ca8acb35acaf408fb8d0f4581df42e6fdc9f92af",
+      "imports": [
+        "BusyBeaver.ZFC.KSeedInterface222"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "89d18cd600fa8b946b87895ec3ba2ca7aa54c52de072f27c6ff4fc5c302739e3",
+      "current_object_sha256": "89d18cd600fa8b946b87895ec3ba2ca7aa54c52de072f27c6ff4fc5c302739e3"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileCongruence",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCongruence.lean",
+      "source_sha256": "a4a53a141352b87b3b6c8beb7b6376316c21aad5842ad62848407f586dca48ba",
+      "imports": [
+        "FirstOrder.Fol"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "a4054931866daded000e13b1b0b0109917b41a0c29bf958f6d467b249ffe9b1c",
+      "current_object_sha256": "a4054931866daded000e13b1b0b0109917b41a0c29bf958f6d467b249ffe9b1c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfilePairs",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfilePairs.lean",
+      "source_sha256": "d05b17aba8198b6c1fc5805d15fcb3353b5cf2bab07882942a489e4bc5637f9f",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileCongruence"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "04a75f9d18fb5a89f3f9926fd4188f757595c0d7c10a21be2ee2173f904cb695",
+      "current_object_sha256": "04a75f9d18fb5a89f3f9926fd4188f757595c0d7c10a21be2ee2173f904cb695"
+    },
+    {
+      "module": "BusyBeaver.ZFC.PositiveClosure",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PositiveClosure.lean",
+      "source_sha256": "3d5476f01f10f3425f35f417a1d4b0678a66c6dda28e480fdabc7dc6b48f9150",
+      "imports": [],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "239a0fbfc695b8c2004014b10d7a4ab9d79f8a083abaf90c528211487e9e4a8d",
+      "current_object_sha256": "239a0fbfc695b8c2004014b10d7a4ab9d79f8a083abaf90c528211487e9e4a8d"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileCollection",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCollection.lean",
+      "source_sha256": "2cbd1b1d80f85a4fc48d5640231870c365788458c537cdc2252f84c680ab54f5",
+      "imports": [
+        "BusyBeaver.ZFC.ProfilePairs",
+        "BusyBeaver.ZFC.PositiveClosure"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "fa309947bf61a09900a8c2a872bfbbadb69d4e991d7d2aece9530ff7e90e0fa7",
+      "current_object_sha256": "fa309947bf61a09900a8c2a872bfbbadb69d4e991d7d2aece9530ff7e90e0fa7"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Code254Containers",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Containers.lean",
+      "source_sha256": "fa7826c62bb1c2839c1e53b51a6929cec0117c45f017a7bb0569b44a96dae800",
+      "imports": [
+        "BusyBeaver.ZFC.Code254",
+        "BusyBeaver.ZFC.ProfileCollection"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "5c1e214b80041a457a831390271f951ccbb9a5dab7b6f615490e1205ef406f27",
+      "current_object_sha256": "5c1e214b80041a457a831390271f951ccbb9a5dab7b6f615490e1205ef406f27"
+    },
+    {
+      "module": "BusyBeaver.ZFC.DeepPositiveClosure",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DeepPositiveClosure.lean",
+      "source_sha256": "a1ddfc51493e8c2b4e7c319d342dbbbf738cd4e1937c5112dd300eb5df0ce588",
+      "imports": [
+        "FirstOrder.Fol",
+        "BusyBeaver.ZFC.PositiveClosure"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "4f499471781d7215f2d8b59b95696dda1a4d288bab3e09f76e74120cc97aa42f",
+      "current_object_sha256": "4f499471781d7215f2d8b59b95696dda1a4d288bab3e09f76e74120cc97aa42f"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileSyntax",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileSyntax.lean",
+      "source_sha256": "8d649faf0035f93ed3b255e64a3ba7dd4c8105e993d36748a04b6838da7b9bcb",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileCollection",
+        "BusyBeaver.ZFC.DeepPositiveClosure"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "f082209ad46b740858c2ee0d866b96fbfe6aa61a5de77d842091d86bf38e0f2c",
+      "current_object_sha256": "f082209ad46b740858c2ee0d866b96fbfe6aa61a5de77d842091d86bf38e0f2c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileModel",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileModel.lean",
+      "source_sha256": "a275d982a9a22105ddad2d4132564d6eee13d7790285300f7053d5629032ebcd",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileSyntax"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "cdf0dca28dadb0470e46d5a6928d2fda9d9b5d9250924fd2efb52b6c30bacfab",
+      "current_object_sha256": "cdf0dca28dadb0470e46d5a6928d2fda9d9b5d9250924fd2efb52b6c30bacfab"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Code254GIC",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254GIC.lean",
+      "source_sha256": "2c2bd36a3f530801a3ec16d0d14689ac1dd5df52d74a5f5c2afdc11fd917dd86",
+      "imports": [
+        "BusyBeaver.ZFC.Code254Containers",
+        "BusyBeaver.ZFC.ProfileModel"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "b0349ca575488d9f10b4a8f8c94124fe81474e9de04fb3f4f73c6e6fe0cd4429",
+      "current_object_sha256": "b0349ca575488d9f10b4a8f8c94124fe81474e9de04fb3f4f73c6e6fe0cd4429"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerSeed",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean",
+      "source_sha256": "ef411c36c16ec10fb0f28de21ae5f72b57df1b9479fd1e6392cddce161367165",
+      "imports": [
+        "BusyBeaver.ZFC.KSeedInterface222",
+        "BusyBeaver.ZFC.Code254GIC"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "d643c717917c4d51481798a6f3290ebb853b756675928dca23ffda2a4d2265c6",
+      "current_object_sha256": "d643c717917c4d51481798a6f3290ebb853b756675928dca23ffda2a4d2265c6"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerRaw",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRaw.lean",
+      "source_sha256": "9c4d606be83bdb5da13115f7bbe05b84c8aee1a1f5a2b85518fa6dd4327ec5b7",
+      "imports": [
+        "BusyBeaver.ZFC.KLowerSeed"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "5bab4b12840ceae39510885bd9e0e2e74b7ad46d88f5e57391d926a0625f19cc",
+      "current_object_sha256": "5bab4b12840ceae39510885bd9e0e2e74b7ad46d88f5e57391d926a0625f19cc"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerRel",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRel.lean",
+      "source_sha256": "91e22c3cd78d8eadd3bdc92593b96283e363957da0bc763da7317030924b405b",
+      "imports": [
+        "BusyBeaver.ZFC.KLowerRaw"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "1cc15b2d24f69a55eda58abfe3c526f398c1ee8ec7724ae6609bc9033cb5b1a8",
+      "current_object_sha256": "1cc15b2d24f69a55eda58abfe3c526f398c1ee8ec7724ae6609bc9033cb5b1a8"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerTag",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerTag.lean",
+      "source_sha256": "ef698a4b035fd93db09c51ff37c30d96ef3c5b944f8a75cd24168d12606461d3",
+      "imports": [
+        "BusyBeaver.ZFC.KLowerRel"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "4f943ad5883b937a469dcc40a1603f6548ab9e7706a7d62031df974838fcc8a7",
+      "current_object_sha256": "4f943ad5883b937a469dcc40a1603f6548ab9e7706a7d62031df974838fcc8a7"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileComposition",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileComposition.lean",
+      "source_sha256": "2c51eda4e0c175e66345ffd8bee9fe2ac0a9f74e7d63a044ff6b0b06b1b9c73a",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileCollection"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "82feb3cc778bdb58bfe1acbcd3a97db14941d5422865f145785f1328124b2f71",
+      "current_object_sha256": "82feb3cc778bdb58bfe1acbcd3a97db14941d5422865f145785f1328124b2f71"
+    },
+    {
+      "module": "BusyBeaver.ZFC.CompositionModel",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CompositionModel.lean",
+      "source_sha256": "ffcd2758db64f989424fc915f9d881ad5106befac0e99875c890e07932d6913e",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileModel",
+        "BusyBeaver.ZFC.ProfileComposition"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "7e0decbc00fca65258d90655debb5f89e704f66eba79e193b9704e4de4ca9a83",
+      "current_object_sha256": "7e0decbc00fca65258d90655debb5f89e704f66eba79e193b9704e4de4ca9a83"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileAxioms",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileAxioms.lean",
+      "source_sha256": "848f84aa36c57e49fac7920a4ce49938f987a03562088713f45dd729d2872f50",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileComposition"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "ceb14c55b106c71131dbdef7611cee2e8c4b0bcde0ac80b79402f0c67c10ec1c",
+      "current_object_sha256": "ceb14c55b106c71131dbdef7611cee2e8c4b0bcde0ac80b79402f0c67c10ec1c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQHyp",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQHyp.lean",
+      "source_sha256": "6a8d6c70cc3b9139b77cb4bae4bfffb308946645abc1faa4de25af1c1bc6cb71",
+      "imports": [
+        "BusyBeaver.ZFC.CompositionModel",
+        "BusyBeaver.ZFC.ProfileAxioms"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "d0aaa60ac43b72cda7efc2f7f92bbeac0366e2c02289a88afb1f3597a54fbeb8",
+      "current_object_sha256": "d0aaa60ac43b72cda7efc2f7f92bbeac0366e2c02289a88afb1f3597a54fbeb8"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerEqv",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerEqv.lean",
+      "source_sha256": "0531258acfdd868577e1f23eaf5feb64441273472d762df3632601cada8f83e4",
+      "imports": [
+        "BusyBeaver.ZFC.KLowerTag",
+        "BusyBeaver.ZFC.ProfileComposition",
+        "BusyBeaver.ZFC.KQHyp"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "b9bc028f4e9534f3bf2b92cc484da1df585b4fd0ce1f5850c8635e2ec7b344ed",
+      "current_object_sha256": "b9bc028f4e9534f3bf2b92cc484da1df585b4fd0ce1f5850c8635e2ec7b344ed"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Model",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Model.lean",
+      "source_sha256": "284f5c1a9ac828bd2b773fbfe365ec1d5b2471f7f6088e2b0f82abfc0fbfcd2a",
+      "imports": [
+        "BusyBeaver.ZFC.KQHyp"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "64518bcf7924f041fcc2b311c865df3898ca5b5fc3f3b0c27f6c2bbe217bfafe",
+      "current_object_sha256": "64518bcf7924f041fcc2b311c865df3898ca5b5fc3f3b0c27f6c2bbe217bfafe"
+    },
+    {
+      "module": "FirstOrder.Calculus",
+      "source": "Logic/FirstOrder/Lean/FirstOrder/Calculus.lean",
+      "source_sha256": "6d61edd50c7062213be2e34a3b6a1efdb67d0f8072e75d4ff5dea20b41f549be",
+      "imports": [
+        "FirstOrder.Fol"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "42bf84e4b2f3895902b27ec63d45c5b39ced694ebdcf1dab3d4cee8515c06042",
+      "current_object_sha256": "42bf84e4b2f3895902b27ec63d45c5b39ced694ebdcf1dab3d4cee8515c06042"
+    },
+    {
+      "module": "FirstOrder.Completeness",
+      "source": "Logic/FirstOrder/Lean/FirstOrder/Completeness.lean",
+      "source_sha256": "e847ae3b260974b09c726a31e2c01ad5e5f84e04b2db12eef4321a4b1ab77299",
+      "imports": [
+        "FirstOrder.Calculus"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "0210d0dc9fca6a834946e02a1ad5ec4c97a18b852fc87cb7623818fe0e35d157",
+      "current_object_sha256": "0210d0dc9fca6a834946e02a1ad5ec4c97a18b852fc87cb7623818fe0e35d157"
+    },
+    {
+      "module": "BusyBeaver.ZFC.SingletonInfinityCore",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinityCore.lean",
+      "source_sha256": "f4afc4395f5487fd54cde6c28099e5f9f4c01e2d9eb665784b687748c538bd76",
+      "imports": [
+        "FirstOrder.Fol"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "c32710a5876d935fe1ad72831d81f07070f2121caa7dc4d2bf3a2bd294b25e00",
+      "current_object_sha256": "c32710a5876d935fe1ad72831d81f07070f2121caa7dc4d2bf3a2bd294b25e00"
+    },
+    {
+      "module": "ZF.Zf",
+      "source": "SetTheory/ZF/Lean/ZF/Zf.lean",
+      "source_sha256": "c97cb84214a61095fc0ac70f06460654d9abfde34531d3447907cb28d7c72daa",
+      "imports": [
+        "FirstOrder.Calculus"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "7dd1c71a91dcd57ffb9c0d5a2256a92140a5e6efb6a8f6f939edd285bf5a7eae",
+      "current_object_sha256": "7dd1c71a91dcd57ffb9c0d5a2256a92140a5e6efb6a8f6f939edd285bf5a7eae"
+    },
+    {
+      "module": "BusyBeaver.ZFC.FiniteSetsCore",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSetsCore.lean",
+      "source_sha256": "d0e1a085651910d04a5a50b5f7157cc394c6d334c1e6cf53668e64eacdce41dc",
+      "imports": [
+        "BusyBeaver.ZFC.SingletonInfinityCore",
+        "ZF.Zf"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "c146102b01571509fd222df6c5af92c792d1da4e6779c4b7b119aa7d7c53191d",
+      "current_object_sha256": "c146102b01571509fd222df6c5af92c792d1da4e6779c4b7b119aa7d7c53191d"
+    },
+    {
+      "module": "BusyBeaver.ZFC.InductiveAttemptsCore",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttemptsCore.lean",
+      "source_sha256": "9cbeaa6c96144437d3b18cd7fe0f6d86930e090a407169bdb5fcf12203bc0034",
+      "imports": [
+        "BusyBeaver.ZFC.SingletonInfinityCore",
+        "BusyBeaver.ZFC.FiniteSetsCore",
+        "ZF.Zf"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "aa1672e1e03e35e324cb3144954f3010dd3faf2218d7bdd708452b9c014ce4ad",
+      "current_object_sha256": "aa1672e1e03e35e324cb3144954f3010dd3faf2218d7bdd708452b9c014ce4ad"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Separation",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Separation.lean",
+      "source_sha256": "f4befa6a5bc4f893ed1ccc9506365d73bd021d2f781c9037479bd32dbe7109ac",
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Model",
+        "BusyBeaver.ZFC.ProfileAxioms",
+        "ZF.Zf"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "324b6b503f8c96fa00e92d9d90805aa98374040aa54cfab0fffe8187b51e7acd",
+      "current_object_sha256": "324b6b503f8c96fa00e92d9d90805aa98374040aa54cfab0fffe8187b51e7acd"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Basic",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Basic.lean",
+      "source_sha256": "c6dcf8a8babed8e7544bc091a53070c923f67c97c2f3e8439783c243c8293ca8",
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Separation"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "c2352e3f1ce913b855f4d9567d4d9e3741568ead11bb4f0c55e36f09b5ca6184",
+      "current_object_sha256": "c2352e3f1ce913b855f4d9567d4d9e3741568ead11bb4f0c55e36f09b5ca6184"
+    },
+    {
+      "module": "BusyBeaver.ZFC.PowerSyntax",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PowerSyntax.lean",
+      "source_sha256": "71b3cd2d29d3b72967aabffb09c82f1c7f23f382ca7fa121e49cb4afa4cd6f7b",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileAxioms",
+        "BusyBeaver.ZFC.ProfileModel"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "4cf7340ba89acd5d18f1724cb99f52f3115fa78477e097b5a9f9bc204b61777f",
+      "current_object_sha256": "4cf7340ba89acd5d18f1724cb99f52f3115fa78477e097b5a9f9bc204b61777f"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Power",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Power.lean",
+      "source_sha256": "c2cafb493b2893e3345edac24e1bc2ac2981d056983828f1836c2286cfe24c5b",
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Separation",
+        "BusyBeaver.ZFC.PowerSyntax"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "e5d0e759e9d5fdb2af8d0641e64d4f725d14bb5766dd12e29c9db4cbcbc4afb6",
+      "current_object_sha256": "e5d0e759e9d5fdb2af8d0641e64d4f725d14bb5766dd12e29c9db4cbcbc4afb6"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Collect",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Collect.lean",
+      "source_sha256": "7e0bd508c644964cba186be9aea5561c7afd6ca8d537cbfd1ee09064f7ec51d0",
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Power"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "337ad581a29a24a76cdad1a070c64d1dc343121609e8a9aeefe54f0e97d5ea44",
+      "current_object_sha256": "337ad581a29a24a76cdad1a070c64d1dc343121609e8a9aeefe54f0e97d5ea44"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1ReplacementNative",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ReplacementNative.lean",
+      "source_sha256": "e3ec748c313b295b477239e33a87670e8a50135f27c7a73ca110af7c07924225",
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Collect"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "33df93019d328e47ea0b24701cb033d77b0adb8efde209748fd00b373b49773a",
+      "current_object_sha256": "33df93019d328e47ea0b24701cb033d77b0adb8efde209748fd00b373b49773a"
+    },
+    {
+      "module": "BusyBeaver.ZFC.WellFoundedPartCore",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPartCore.lean",
+      "source_sha256": "af12f1f97989df932232fd7a70a6f2a5f41bb750c6d7ce9913b21dd7147be253",
+      "imports": [
+        "BusyBeaver.ZFC.FiniteSetsCore",
+        "BusyBeaver.ZFC.ProfileModel",
+        "ZF.Zf"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "a25809a9e114d42a102817bebfc336358bf80e6565c34515e25bf108123364ec",
+      "current_object_sha256": "a25809a9e114d42a102817bebfc336358bf80e6565c34515e25bf108123364ec"
+    },
+    {
+      "module": "BusyBeaver.ZFC.WFRelativization",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+      "source_sha256": "7bcd80f1042bf270e609975996a7d2a7b0c69b790902d89f471ea6ab4b96141c",
+      "imports": [
+        "BusyBeaver.ZFC.WellFoundedPartCore"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "3eba146b97af3518d7de662f9803726671aa88bd52c7382c920baabd7b0dcc93",
+      "current_object_sha256": "3eba146b97af3518d7de662f9803726671aa88bd52c7382c920baabd7b0dcc93"
+    },
+    {
+      "module": "BusyBeaver.ZFC.PowerSets",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PowerSets.lean",
+      "source_sha256": "fe2f9aa8deb9a4bebb96c0685858b3df6f8c5ade3fba7b524468a61dbcfbac98",
+      "imports": [
+        "ZF.Zf"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "c2e3bd07a77214178f74d32f2fb330ee7c9d25589f9e898ae11d942976e3db21",
+      "current_object_sha256": "c2e3bd07a77214178f74d32f2fb330ee7c9d25589f9e898ae11d942976e3db21"
+    },
+    {
+      "module": "BusyBeaver.ZFC.WFModelCore",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean",
+      "source_sha256": "59a40978561071d79c289024b8e13119ccbc9b90032b4300867d6b318873709d",
+      "imports": [
+        "BusyBeaver.ZFC.WFRelativization",
+        "BusyBeaver.ZFC.PowerSets"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "24859e9d014f8ff50e197f96e4348a49584a2550f342ef0db5ee4c3d475208d3",
+      "current_object_sha256": "24859e9d014f8ff50e197f96e4348a49584a2550f342ef0db5ee4c3d475208d3"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1ZF",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ZF.lean",
+      "source_sha256": "83b098c1676237ede24209c6b904254657f10c1c2bc7e40a0c187620fdfdd70c",
+      "imports": [
+        "FirstOrder.Completeness",
+        "BusyBeaver.ZFC.InductiveAttemptsCore",
+        "BusyBeaver.ZFC.KQ1Basic",
+        "BusyBeaver.ZFC.KQ1ReplacementNative",
+        "BusyBeaver.ZFC.KQ1Collect",
+        "BusyBeaver.ZFC.WFModelCore"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "41301a65e9b764f1d525bdba78ee07a4692313ae3b64edae593a26eb13a4ffd4",
+      "current_object_sha256": "41301a65e9b764f1d525bdba78ee07a4692313ae3b64edae593a26eb13a4ffd4"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerQHyp",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean",
+      "source_sha256": "342485cb6294e12d0c52cc747758d447221670ce7dfda096b2f242d7a2974e62",
+      "imports": [
+        "BusyBeaver.ZFC.KLowerEqv",
+        "BusyBeaver.ZFC.KQ1Model",
+        "BusyBeaver.ZFC.KQ1ZF"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "bce386d38581074cddb585badacd214f1b89fb7439fde2c6b0b05ee02528888c",
+      "current_object_sha256": "bce386d38581074cddb585badacd214f1b89fb7439fde2c6b0b05ee02528888c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.NamedZF",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedZF.lean",
+      "source_sha256": "2bbf029d3c73436ee2ebf4acbceb7198308f4d3ba760ef00025405d3b51f70fd",
+      "imports": [
+        "ZF.Zf"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "f694b124efe04e8574e51f1bad2fbbfd26d1dcb68176abc8f661f73480f5173a",
+      "current_object_sha256": "f694b124efe04e8574e51f1bad2fbbfd26d1dcb68176abc8f661f73480f5173a"
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalOrd",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean",
+      "source_sha256": "b36c1ed470783380369d029023540e6b806c3448027afc7ec1ffddb6b32a16ba",
+      "imports": [
+        "BusyBeaver.ZFC.NamedZF"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "a9509693ca0d78a5a670a1f11a2f57425ec382b7a8038ab40ed4d99f08b6d4fe",
+      "current_object_sha256": "a9509693ca0d78a5a670a1f11a2f57425ec382b7a8038ab40ed4d99f08b6d4fe"
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalRank",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+      "source_sha256": "d3fbdfbf272aecd3c207083ba72c1c01d694444c88a9565fa96050e03b487164",
+      "imports": [
+        "BusyBeaver.ZFC.InternalOrd"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "e7b8de8ba08cc1c05797315f4dc3140960bcd058c087c3915a8f9845df0d097c",
+      "current_object_sha256": "e7b8de8ba08cc1c05797315f4dc3140960bcd058c087c3915a8f9845df0d097c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TransRec",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TransRec.lean",
+      "source_sha256": "da6b8f9136328f0582cd50f0514988109245c038e0cfb37435c3bcf2a24db7fe",
+      "imports": [
+        "BusyBeaver.ZFC.InternalRank"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "08af3538c1ad9281d3849a729ee2ba41d2df9291735c22234176beb5ddb71efe",
+      "current_object_sha256": "08af3538c1ad9281d3849a729ee2ba41d2df9291735c22234176beb5ddb71efe"
+    },
+    {
+      "module": "BoundedZFCConsistency.Basic",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Basic.lean",
+      "source_sha256": "c427fac669f8c00304e9542fcde868656f5c473d22ebfb081f20e327e7ebf028",
+      "imports": [
+        "FirstOrder.Completeness",
+        "ZF.Zf"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "0f3c6ffa290851cb19bfa690811938bdc8fe07e204a497233f84c23fc04cc0a4",
+      "current_object_sha256": "0f3c6ffa290851cb19bfa690811938bdc8fe07e204a497233f84c23fc04cc0a4"
+    },
+    {
+      "module": "BoundedZFCConsistency.Coding",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Coding.lean",
+      "source_sha256": "783451cf18ecca8270b6b49e012e25321bc799a909b59436dd73920ba90db7c8",
+      "imports": [
+        "BoundedZFCConsistency.Basic"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "9d394e5c322b2a695b61d5da3f0f2c87a98a16975c72e3a9ba0a49fb9b07dc66",
+      "current_object_sha256": "9d394e5c322b2a695b61d5da3f0f2c87a98a16975c72e3a9ba0a49fb9b07dc66"
+    },
+    {
+      "module": "BoundedZFCConsistency.CodePredicate",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/CodePredicate.lean",
+      "source_sha256": "e27513981a6a5d0fb5c830e71a1a952b4508606f2e3e1c5a4433fec12780c9df",
+      "imports": [
+        "BoundedZFCConsistency.Coding"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "29125a92fd8c67c25cea05d894971988ce5bf504caa13028f18fb6ca8e9fdee4",
+      "current_object_sha256": "29125a92fd8c67c25cea05d894971988ce5bf504caa13028f18fb6ca8e9fdee4"
+    },
+    {
+      "module": "BoundedZFCConsistency.FormulaClosedSet",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/FormulaClosedSet.lean",
+      "source_sha256": "4e25a31e0fcd428bc6a960a1c5b7e6b84e3c26d5186ac1baaff3ade7b79c40a8",
+      "imports": [
+        "BoundedZFCConsistency.CodePredicate"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "ff6aeeb768fd3a985929b4be432a36fda7873e5ba853a54b163bb7942d66dbae",
+      "current_object_sha256": "ff6aeeb768fd3a985929b4be432a36fda7873e5ba853a54b163bb7942d66dbae"
+    },
+    {
+      "module": "BoundedZFCConsistency.OmegaRecursion",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/OmegaRecursion.lean",
+      "source_sha256": "dbbe6fbddaaaf3766e0adabba91392a57f2e202c8491a57a919aa75a0d92738e",
+      "imports": [
+        "BoundedZFCConsistency.Basic"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "86614ad6b71a7098ca39f4f91cf5154cbe8d5249414f249efd563fb5cc8000a8",
+      "current_object_sha256": "86614ad6b71a7098ca39f4f91cf5154cbe8d5249414f249efd563fb5cc8000a8"
+    },
+    {
+      "module": "BoundedZFCConsistency.InternalSat",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSat.lean",
+      "source_sha256": "6f9cd1ec5917548ebf6e1bc41fc3c9a1ec9c2dd40473ab57ebb60bdca333b0a1",
+      "imports": [
+        "BoundedZFCConsistency.FormulaClosedSet",
+        "BoundedZFCConsistency.OmegaRecursion"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "15bcd5d1faec1724b7a963c8c57a060928e883d52bd270a90b7798995d7a7e5f",
+      "current_object_sha256": "15bcd5d1faec1724b7a963c8c57a060928e883d52bd270a90b7798995d7a7e5f"
+    },
+    {
+      "module": "BoundedZFCConsistency.InternalSatTotality",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSatTotality.lean",
+      "source_sha256": "6261ea9968d46d60af1ff4440422f2b5140fa1cca0acdd0a17a351c0333b12b9",
+      "imports": [
+        "BoundedZFCConsistency.InternalSat"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "a3f808674193206110a1e1e58164c7f67c7c23546f1b76a7a0925fed3cd16795",
+      "current_object_sha256": "a3f808674193206110a1e1e58164c7f67c7c23546f1b76a7a0925fed3cd16795"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleDef",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleDef.lean",
+      "source_sha256": "28b93a2d4340c8ade31b8bf30a2709419ba4846478381a5ec02112b1b0fd3d34",
+      "imports": [
+        "BusyBeaver.ZFC.TransRec",
+        "BoundedZFCConsistency.InternalSatTotality"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "2dbc0d06659147f3567f2fb63892cefd52e35bc78d6bca2f335cf5b6b673d0ab",
+      "current_object_sha256": "2dbc0d06659147f3567f2fb63892cefd52e35bc78d6bca2f335cf5b6b673d0ab"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Constructible",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Constructible.lean",
+      "source_sha256": "2c3aea758b591dd3deb3f154a96f4fbd52e2c6d9600f7506058f593670bfd2d6",
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleDef"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "85c840ec6b3d35aa49e86168b6a349ddc7a4f009d7086a7754fd6c54afb13bf1",
+      "current_object_sha256": "85c840ec6b3d35aa49e86168b6a349ddc7a4f009d7086a7754fd6c54afb13bf1"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ZFRank",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFRank.lean",
+      "source_sha256": "df0b9faf58e80e51a390dd8ec15944eecdfe462c0cc1ec94d1a29eab36f6d388",
+      "imports": [
+        "BusyBeaver.ZFC.InternalRank",
+        "BoundedZFCConsistency.OmegaRecursion"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "3a20d536efd416a73a51f5f1a09510d42084062dfa7c9fc74701932d100b124a",
+      "current_object_sha256": "3a20d536efd416a73a51f5f1a09510d42084062dfa7c9fc74701932d100b124a"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleReflect",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleReflect.lean",
+      "source_sha256": "b844bddeeebe4d009d92edc16a79225e81e5ef8ce0626b2b78c02c6fc3fd3108",
+      "imports": [
+        "BusyBeaver.ZFC.Constructible",
+        "BusyBeaver.ZFC.ZFRank"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "b265505194b4c66331a6d17e928ba3d56f1851e5cc357c028dbbc26301382628",
+      "current_object_sha256": "b265505194b4c66331a6d17e928ba3d56f1851e5cc357c028dbbc26301382628"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleZF",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleZF.lean",
+      "source_sha256": "00ff2869b1313643c83a0124abc3cf8bf6e0b3e9d590e768ff8488ab7dd3cc6c",
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleReflect"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "cfe973edababe8313292b6d33b63cd887d6b2c1d03478781540936ede911911c",
+      "current_object_sha256": "cfe973edababe8313292b6d33b63cd887d6b2c1d03478781540936ede911911c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.SatSupport",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SatSupport.lean",
+      "source_sha256": "6c373873159691fa767e518917874410201b7cec2b42d5add25a93e7495b24bd",
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleZF"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "2435a651fca7a5918da2b022e5b3c1a35dd45bdd3fc5bbf45fe9195a8b393f86",
+      "current_object_sha256": "2435a651fca7a5918da2b022e5b3c1a35dd45bdd3fc5bbf45fe9195a8b393f86"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleAbs",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean",
+      "source_sha256": "5ce25c47d4976bb7a699f5965ebc80e0e9f57c80a9f066063e82eec28059b5ae",
+      "imports": [
+        "BusyBeaver.ZFC.SatSupport"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "d9707b0fa5f61684c9950b4ece5a5717262c3d9d17e7e83c678d360e624d36b7",
+      "current_object_sha256": "d9707b0fa5f61684c9950b4ece5a5717262c3d9d17e7e83c678d360e624d36b7"
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalWO",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean",
+      "source_sha256": "344bd30704aad42e53efcf86dcff59a931a00e80ba46949a95f725305ba69a40",
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleAbs"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "a03bbfca0b8d2f3d8d14ea384695551588d103661dc252179efb282a0c7158ab",
+      "current_object_sha256": "a03bbfca0b8d2f3d8d14ea384695551588d103661dc252179efb282a0c7158ab"
+    },
+    {
+      "module": "BusyBeaver.ZFC.OrderRec",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean",
+      "source_sha256": "19bcf592efcef5647a53e9796db590aad1585e3b19f25445aeb6272d1e50eeb2",
+      "imports": [
+        "BusyBeaver.ZFC.InternalWO"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "40bf9da253cc5195ac95b908cd2c400193ec50b201ac2a5b8c005e62d49ee58e",
+      "current_object_sha256": "40bf9da253cc5195ac95b908cd2c400193ec50b201ac2a5b8c005e62d49ee58e"
+    },
+    {
+      "module": "BusyBeaver.ZFC.CodeOrder",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CodeOrder.lean",
+      "source_sha256": "dad7258176530b381ee630504e7a5b2cac60fd9f3f86514d13e6ece711b17556",
+      "imports": [
+        "BusyBeaver.ZFC.OrderRec"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "e466df48cdac8d2629f951dea8c1a0b109ebac8d1afd6aeb34134908d278208f",
+      "current_object_sha256": "e466df48cdac8d2629f951dea8c1a0b109ebac8d1afd6aeb34134908d278208f"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TupleOrder",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TupleOrder.lean",
+      "source_sha256": "d20eea9bc00f817fc396194c43ee10dd12bf8333d34ba356a8f88067d9aaf36f",
+      "imports": [
+        "BusyBeaver.ZFC.CodeOrder"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "721721c65751b2075c68b5365280df8b7fecb16a82652f3181efd057e3de9110",
+      "current_object_sha256": "721721c65751b2075c68b5365280df8b7fecb16a82652f3181efd057e3de9110"
+    },
+    {
+      "module": "BoundedZFCConsistency.Choice",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Choice.lean",
+      "source_sha256": "659cfe68441b2ebd9ed3dceb2e62e7690110424769e6e7ba1f81f63c9c1f6928",
+      "imports": [
+        "ZF.Zf"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "dfbd56632d35fb56c6b8b06ee7ea3f17bd5b9a1d1b35e58f6e3ba65f23c99844",
+      "current_object_sha256": "dfbd56632d35fb56c6b8b06ee7ea3f17bd5b9a1d1b35e58f6e3ba65f23c99844"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleOrder",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleOrder.lean",
+      "source_sha256": "7f19fe8d9c6c6aa5bf160e46715c364adb395f6bb12092380510a1e8deddfc0d",
+      "imports": [
+        "BusyBeaver.ZFC.TupleOrder",
+        "BoundedZFCConsistency.Choice"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "34df0ffe05a4485b528feb957aaaf8e57ac7f2331a791e45101b6b57555d240f",
+      "current_object_sha256": "34df0ffe05a4485b528feb957aaaf8e57ac7f2331a791e45101b6b57555d240f"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ZFModels",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFModels.lean",
+      "source_sha256": "a8766ccc0fdb0d31db88be9a174b9ad58a0b715f0fe15a546148a370bfbc7602",
+      "imports": [
+        "BusyBeaver.ZFC.InternalOrd"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "49f20a250929d6434caa4542cbf76095fd8d1238864c0b550d28a0c683e80092",
+      "current_object_sha256": "49f20a250929d6434caa4542cbf76095fd8d1238864c0b550d28a0c683e80092"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleChoice",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean",
+      "source_sha256": "3728efadefd93d944836c0f70d18aabbad37274b8c474594b8f01b89dd0eb84c",
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleOrder",
+        "BusyBeaver.ZFC.ZFModels"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "b13ea24add2a3e0ab858ec5969d0e2bd4339d65d37f5bfb448c3e6175f811288",
+      "current_object_sha256": "b13ea24add2a3e0ab858ec5969d0e2bd4339d65d37f5bfb448c3e6175f811288"
+    },
+    {
+      "module": "BusyBeaver.ZFC.NamedForm254",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedForm254.lean",
+      "source_sha256": "ef31ca9a720449a237f8bf3db0290004f4f1fc7479e67a5b6206c9bc6bb9f057",
+      "imports": [
+        "BusyBeaver.ZFC.TarskiCalculus",
+        "BusyBeaver.ZFC.ProfileSyntax"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "8fa2e33b0826f638a1165eebca41d514cd6247e7f0a3e5b97a90aab8e48491b1",
+      "current_object_sha256": "8fa2e33b0826f638a1165eebca41d514cd6247e7f0a3e5b97a90aab8e48491b1"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KUpper222",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KUpper222.lean",
+      "source_sha256": "e9ad034a48cfef16d9d2aa388b1ab8536a68168e04497ca4c198d519bb84a511",
+      "imports": [
+        "BusyBeaver.ZFC.KSeed222",
+        "BusyBeaver.ZFC.ConstructibleReflect",
+        "BusyBeaver.ZFC.ConstructibleChoice",
+        "BusyBeaver.ZFC.NamedForm254"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "6997d478a86534ffa99abf8379d3133c41fc2f246cccb7e71eb66585f1df6f61",
+      "current_object_sha256": "6997d478a86534ffa99abf8379d3133c41fc2f246cccb7e71eb66585f1df6f61"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KRuntimeCore",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KRuntimeCore.lean",
+      "source_sha256": "4ecde56c82c57487c8f9e842fcfc27e4e925059ad7ef19e7cdd01204399d5cd2",
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "e31b8d44b1d6fdeed1aa2e1f70ea437271d46462aa93c7793587e1cd9c52a2ee",
+      "current_object_sha256": "e31b8d44b1d6fdeed1aa2e1f70ea437271d46462aa93c7793587e1cd9c52a2ee"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHome",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHome.lean",
+      "source_sha256": "846736440e760d1665a08622c08974c2814307d85cddc47f8f0460693c662b19",
+      "imports": [
+        "BusyBeaver.ZFC.KRuntimeCore"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "471e400218506c000fd4bfcf6391e7f63ef133338506ad11a934c9b2c78f78ad",
+      "current_object_sha256": "471e400218506c000fd4bfcf6391e7f63ef133338506ad11a934c9b2c78f78ad"
+    },
+    {
+      "module": "BusyBeaver.ZFC.FramedWindow",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FramedWindow.lean",
+      "source_sha256": "ea588b0b42695917ba75370614fa1e60e0a8b30a40af649bf80be841097da4dd",
+      "imports": [
+        "Init"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "b2750ff6cd21f90e9e16a958fa4f0973c6632fb7198d7c6f5fdc11830fa36b42",
+      "current_object_sha256": "b2750ff6cd21f90e9e16a958fa4f0973c6632fb7198d7c6f5fdc11830fa36b42"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KZipTape",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZipTape.lean",
+      "source_sha256": "a6ac1f380f1233a75d27668250a7c0bd95463b3162173c4197ef4e930d08230d",
+      "imports": [
+        "BusyBeaver.ZFC.KZip",
+        "BusyBeaver.ZFC.FramedWindow"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "de7a9a155c789c792233655827a736974c3d4ce29cad5d0892f455c503b7f288",
+      "current_object_sha256": "de7a9a155c789c792233655827a736974c3d4ce29cad5d0892f455c503b7f288"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHomeReady",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHomeReady.lean",
+      "source_sha256": "1a895e55fc21a4decd5dad6313351b4e048e06da785d7eca6634c30561f72e7a",
+      "imports": [
+        "BusyBeaver.ZFC.KHome",
+        "BusyBeaver.ZFC.KZipTape"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "a0a3736edb337da4c785c35529bd288f6a9882943a4867ea93a7ac4aac8b0e28",
+      "current_object_sha256": "a0a3736edb337da4c785c35529bd288f6a9882943a4867ea93a7ac4aac8b0e28"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RegisterPathClean",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPathClean.lean",
+      "source_sha256": "c029c0720c7631ba935318af1cfa8829ba641eb7397b8a4ee183927f8dd98cde",
+      "imports": [
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "1de7eb1b09b45f34f5893d3fa2c8ae3b63afd2accee1b30b5fba6fa1226fd484",
+      "current_object_sha256": "1de7eb1b09b45f34f5893d3fa2c8ae3b63afd2accee1b30b5fba6fa1226fd484"
+    },
+    {
+      "module": "BusyBeaver.ZFC.SiteCoverage",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SiteCoverage.lean",
+      "source_sha256": "15ad5a7b5f1ab1e656146ae823f0e012ea8ab4295b5381c8650e03885f201c24",
+      "imports": [
+        "BusyBeaver.ZFC.RMBisim",
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "7e7cca36cb05655f44471906f96251f35daf0be52bafcd5aefca3e45168fcb50",
+      "current_object_sha256": "7e7cca36cb05655f44471906f96251f35daf0be52bafcd5aefca3e45168fcb50"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSim",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean",
+      "source_sha256": "cb055c60ca4b41dbe36ae3356d952252661b4a15836d24b71d7aff0b579be731",
+      "imports": [
+        "BusyBeaver.ZFC.KHomeReady",
+        "BusyBeaver.ZFC.RegisterPathClean",
+        "BusyBeaver.ZFC.SiteCoverage"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "ee5d6daed90f6c2645150219c8a642ba5b7fc49db25edbf0a942c5ec0dd1327b",
+      "current_object_sha256": "ee5d6daed90f6c2645150219c8a642ba5b7fc49db25edbf0a942c5ec0dd1327b"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEndpoint",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean",
+      "source_sha256": "04965b2e82b0f22cdbb11910c17ddf82efafe26123040d6b1b01a88707ec8175",
+      "imports": [
+        "BusyBeaver.ZFC.KSeedDirect222",
+        "BusyBeaver.ZFC.KLowerQHyp",
+        "BusyBeaver.ZFC.KUpper222",
+        "BusyBeaver.ZFC.KSim",
+        "BusyBeaver.ZFC.KDenseBridge"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "df6dcd55d63439f4309a27c4c49310b4c0dcc08e9dea8755d723d51d858d8bec",
+      "current_object_sha256": "df6dcd55d63439f4309a27c4c49310b4c0dcc08e9dea8755d723d51d858d8bec"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTable230",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KTable230.lean",
+      "source_sha256": "07b988b854aa25bdcd7466628ef35209d64fe14e249cd6753ea1945945f4939c",
+      "imports": [
+        "BusyBeaver.ZFC.KTableCore"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "c276eb626101c245e47987dbe5401ca3f7026e016b9e9de52d63288d97d24dc0",
+      "current_object_sha256": "c276eb626101c245e47987dbe5401ca3f7026e016b9e9de52d63288d97d24dc0",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTape",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KTape.lean",
+      "source_sha256": "55cf0bd584c351dc9743e44b34da68b4625f57f121554de315ed0b6c42a49803",
+      "imports": [
+        "BusyBeaver.ZFC.KRuntimeCore",
+        "BusyBeaver.ZFC.KTable230"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "17f0484a13b26836f18cb63470739fd3037331f5de5f537238d0f9ea7e0b4bc3",
+      "current_object_sha256": "17f0484a13b26836f18cb63470739fd3037331f5de5f537238d0f9ea7e0b4bc3",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot.lean",
+      "source_sha256": "a7a82ed68c778937728bdd332fe2a52978dfc54bdc99b17df2a19a16fcd534c6",
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "f33bbb388455d0064476a2a78e0e65891ecdb5cca22f70713f42e8de464ec67d",
+      "current_object_sha256": "f33bbb388455d0064476a2a78e0e65891ecdb5cca22f70713f42e8de464ec67d",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KFast215",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KFast215.lean",
+      "source_sha256": "4f33903017795959d98f52d73875965415fb3ead8e553e0b5637f5097c577c19",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot",
+        "BusyBeaver.ZFC.KTable215"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "20da21b11e3a2ce8e5fc47062aeab9056a21121f06103b3105a26d38733b4c80",
+      "current_object_sha256": "20da21b11e3a2ce8e5fc47062aeab9056a21121f06103b3105a26d38733b4c80",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk000",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk000.lean",
+      "source_sha256": "b0fc5b762ac6ce006dbefac116aabe6988aaf559550d7205761ee6468f599078",
+      "imports": [
+        "BusyBeaver.ZFC.KFast215"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "714c238ce9a8af7b63a4bccb31b720b62be93d800d6bfe74e76b0eebae0422ba",
+      "current_object_sha256": "714c238ce9a8af7b63a4bccb31b720b62be93d800d6bfe74e76b0eebae0422ba",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk001",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk001.lean",
+      "source_sha256": "93b5a6e63defbe1136b6668532e6e7f2ce579f0543d240cc803a0d71313b00bd",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk000"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "29adee5911bfbf120503d22dbcddb6a17651a5082f0d94b6c2613d184afb8218",
+      "current_object_sha256": "29adee5911bfbf120503d22dbcddb6a17651a5082f0d94b6c2613d184afb8218",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk002",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk002.lean",
+      "source_sha256": "d4ef959d4110b197a68c57de22007fe641b8fddffaaaf4eada6b6b1b152fe954",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk001"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "e92b6e874bd79458e94973f8619a390659a64e8392fe0b7105d0ae4c186cca0e",
+      "current_object_sha256": "e92b6e874bd79458e94973f8619a390659a64e8392fe0b7105d0ae4c186cca0e",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk003",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk003.lean",
+      "source_sha256": "82ca4b73d9bb57056beaefa006a25f538ae351ba3e5095d0709cab1c6d5bbbcb",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk002"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "86b1476d480888e676787f29bce6d59d8066bc6769a400e6f4dfed4208b1c48d",
+      "current_object_sha256": "86b1476d480888e676787f29bce6d59d8066bc6769a400e6f4dfed4208b1c48d",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk004",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk004.lean",
+      "source_sha256": "f55e5b47aeb47d806e57008722c9e8cc8aec4cd31ef6a59dd2678ebdf4eb5d85",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk003"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "877828f2cfd852eb0e72ca3e89fed949d9add574dca23c40c148152a3e60b682",
+      "current_object_sha256": "877828f2cfd852eb0e72ca3e89fed949d9add574dca23c40c148152a3e60b682",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk005",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk005.lean",
+      "source_sha256": "75f0fcd083e73eafc12aabf51627d042511970a908a31277b6ccf2fe002f72d8",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk004"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "76c28cbdf15b1fdb23c8453a43388ed2ccfe505a1b713292b51ccbf7521732d9",
+      "current_object_sha256": "76c28cbdf15b1fdb23c8453a43388ed2ccfe505a1b713292b51ccbf7521732d9",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk006",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk006.lean",
+      "source_sha256": "21599974e6eb97f09946d56471b1b0224c2a748acce2839219a8f649869adb74",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk005"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "9def526486cac34ce95dbc046e173484969c36a976d68a1aeaa7ace780cfde00",
+      "current_object_sha256": "9def526486cac34ce95dbc046e173484969c36a976d68a1aeaa7ace780cfde00",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk007",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk007.lean",
+      "source_sha256": "65a4d78fc456c04771c68d0c9514c938e886abf573224191f4764ba822c91d53",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk006"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "439f62aad43d60564311900bb79222030f55ae86e1fd6b24e66aeb14bda4dcbb",
+      "current_object_sha256": "439f62aad43d60564311900bb79222030f55ae86e1fd6b24e66aeb14bda4dcbb",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk008",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk008.lean",
+      "source_sha256": "ed8e822dc5bb5cbba990f6e32a46639f8f8ff1b7fa8dbbeb6e90351014403103",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk007"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "5c22d0837358f556252cde9f19f177ee529794c822964cc9e326c45aaa1a14ee",
+      "current_object_sha256": "5c22d0837358f556252cde9f19f177ee529794c822964cc9e326c45aaa1a14ee",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk009",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk009.lean",
+      "source_sha256": "61f1c2f91458e9938e3f87fa3afca35f09ba3cf509b6873f2ebb9ce94c93d65c",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk008"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "f1cfe350d3f53ffc33697b72983724471463f59953d4e67e4c617bd50efb0ec8",
+      "current_object_sha256": "f1cfe350d3f53ffc33697b72983724471463f59953d4e67e4c617bd50efb0ec8",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk010",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk010.lean",
+      "source_sha256": "4bdd21b4e7dc251bf2f57c32576c5cdf9e11a89ffbd163c791b7842a297faecf",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk009"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "6c5bf9661976756a0bce1cba4c5d1cc8c6468062ef36020a1e2e6bc955f03397",
+      "current_object_sha256": "6c5bf9661976756a0bce1cba4c5d1cc8c6468062ef36020a1e2e6bc955f03397",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk011",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk011.lean",
+      "source_sha256": "6add85ca9b6ef350c0d4951ccd90b36e194232ed0d769bd83475cd609770ef57",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk010"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "6994232563197bb1a5403cc546c8ee38aebae291de95a6f74a31c9c76cdb5c41",
+      "current_object_sha256": "6994232563197bb1a5403cc546c8ee38aebae291de95a6f74a31c9c76cdb5c41",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk012",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk012.lean",
+      "source_sha256": "34310c0c089727de08320af461115168ed1b7c3b82117403242865bd8b9d05ef",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk011"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "2219e1b8a70be90e9f467111b56a41e40c198ab56aeb9666611148005d25c1f8",
+      "current_object_sha256": "2219e1b8a70be90e9f467111b56a41e40c198ab56aeb9666611148005d25c1f8",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215.lean",
+      "source_sha256": "45f81db42066cc3f9c5278dd0902a45f1167fa9c8f2632a9568ceb5a87850ad5",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk012",
+        "BusyBeaver.ZFC.KRuntimeCore"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "7e5812fa01b536b72fe515567f193a7ccd17a6b6e5d6734740540ba5f4f06d01",
+      "current_object_sha256": "7e5812fa01b536b72fe515567f193a7ccd17a6b6e5d6734740540ba5f4f06d01",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KFastSites215",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KFastSites215.lean",
+      "source_sha256": "a0229a646567500c514ccf3f85cef34cc2f394c915feceb694d8eac9df0e5ea5",
+      "imports": [
+        "BusyBeaver.ZFC.KFast215",
+        "BusyBeaver.ZFC.KSim"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "5b759f45b091d5428981785ea6c735c8233b60e4b3a7418389867fd8c83fd3d1",
+      "current_object_sha256": "5b759f45b091d5428981785ea6c735c8233b60e4b3a7418389867fd8c83fd3d1",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch000",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch000.lean",
+      "source_sha256": "6eeba730ca68956cd65b384b958f2b24ffc123b276bf7ed254f5459d59fdc8bb",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "fe17b873d8c122bf6c0fecad808ca4aa3645a2d723e4f2485e34644124b7dbde",
+      "current_object_sha256": "fe17b873d8c122bf6c0fecad808ca4aa3645a2d723e4f2485e34644124b7dbde",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch001",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch001.lean",
+      "source_sha256": "030d1dfdf1920b5118872d22a9320053a0cd28ac2423a8a1b57d00ee119fcda9",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "067eafcd80aee44ecab09146976e3ee4e8e6150d735ce354d0a589e25912c856",
+      "current_object_sha256": "067eafcd80aee44ecab09146976e3ee4e8e6150d735ce354d0a589e25912c856",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch002",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch002.lean",
+      "source_sha256": "fedb7c726cdec58b1587155fbf0f8f84039be7e0b540105efcb25fa002bcff96",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "84c0cbbae7d0b82c30442e0bd003d1efafc086aa16976a4da1d0ecc7ab14d189",
+      "current_object_sha256": "84c0cbbae7d0b82c30442e0bd003d1efafc086aa16976a4da1d0ecc7ab14d189",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch003",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch003.lean",
+      "source_sha256": "58e6981a6821dd8ff0071e9dbf4b1c69c356bfea5658eccfb7631bee7b8b743d",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "22fcb450aff1a52f063568b44898793512a64d4f1c9e1e903c623dc17f2e8428",
+      "current_object_sha256": "22fcb450aff1a52f063568b44898793512a64d4f1c9e1e903c623dc17f2e8428",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch004",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch004.lean",
+      "source_sha256": "cdce86362e8ab38e24b829e2ef88db8e1e6c7df0be548a2f713197ed2e58ac3f",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "f3df65121a7be2cec2e53b6bffa2f2f9744e066e0c1c990e20e52c85d98cfd7a",
+      "current_object_sha256": "f3df65121a7be2cec2e53b6bffa2f2f9744e066e0c1c990e20e52c85d98cfd7a",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch005",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch005.lean",
+      "source_sha256": "8b762b1cdb86e31624af193891bd8432cf05b6f5101d1ce899d5f2ff30014243",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "6a7d95b5eb90da605db14e364bbf3ffa1a67f3b3736290f2bb6ccd30983b2eef",
+      "current_object_sha256": "6a7d95b5eb90da605db14e364bbf3ffa1a67f3b3736290f2bb6ccd30983b2eef",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch006",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch006.lean",
+      "source_sha256": "f1313be869bb59bfc0979546604e792f9adc51059f8be972c3c2faba443de791",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "65232ea19565c66510586c87351da85dab9f7026ed1812e906f5bd886aa69efd",
+      "current_object_sha256": "65232ea19565c66510586c87351da85dab9f7026ed1812e906f5bd886aa69efd",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch007",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch007.lean",
+      "source_sha256": "f923ed6e63e0cdebdda49be5959eae34a90ad2909b536b479821e748accfb9be",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "d1bfe71bdb3b46b7cdc4e81cae5fa7ee9a856f74bc8d31d7d037a6512de83e1f",
+      "current_object_sha256": "d1bfe71bdb3b46b7cdc4e81cae5fa7ee9a856f74bc8d31d7d037a6512de83e1f",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch008",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch008.lean",
+      "source_sha256": "3035812778f8582266ab95fecb9edd5660d5af853a57d9e99c24c73c4764896a",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "5452548c1a9c085ff45b6dedf8c39f4d32228774b879595f0c124350060ca6ee",
+      "current_object_sha256": "5452548c1a9c085ff45b6dedf8c39f4d32228774b879595f0c124350060ca6ee",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215.lean",
+      "source_sha256": "2473fcb082552b32148095da71a0b274d7419e372da315d826815d372acc2ebc",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KSites215Batch000",
+        "BusyBeaver.ZFC.KSites215Batch001",
+        "BusyBeaver.ZFC.KSites215Batch002",
+        "BusyBeaver.ZFC.KSites215Batch003",
+        "BusyBeaver.ZFC.KSites215Batch004",
+        "BusyBeaver.ZFC.KSites215Batch005",
+        "BusyBeaver.ZFC.KSites215Batch006",
+        "BusyBeaver.ZFC.KSites215Batch007",
+        "BusyBeaver.ZFC.KSites215Batch008"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "112baf2bf3c739ee060076cadc2fca2936cdfb9fe50fe921d3df17ecf5408cbb",
+      "current_object_sha256": "112baf2bf3c739ee060076cadc2fca2936cdfb9fe50fe921d3df17ecf5408cbb",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMDagIteration",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMDagIteration.lean",
+      "source_sha256": "cc13e5431b2c61483a765adaac788de7d1bce36a450a7e68474ee8c780943389",
+      "imports": [
+        "BusyBeaver.ZFC.RMDag"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "252c36883054c62d94823dfde15cfc5e506da6e15683fc868183a6bccb3be485",
+      "current_object_sha256": "252c36883054c62d94823dfde15cfc5e506da6e15683fc868183a6bccb3be485",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMTransfer",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMTransfer.lean",
+      "source_sha256": "285fda0c080fb6d952cb8796069d0475d121691c95994a94d40131051d9402e7",
+      "imports": [
+        "BusyBeaver.ZFC.RMDag"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "bc1ecdcd93ce71d9ab3adce12dea608b2814702514c4d58a3977c2afe12c729a",
+      "current_object_sha256": "bc1ecdcd93ce71d9ab3adce12dea608b2814702514c4d58a3977c2afe12c729a",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Dag219Bisim",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag219Bisim.lean",
+      "source_sha256": "9abd0e85b51fa41ef9de4b26952810aaf7abc0a87b9a855fb9381de724094e5a",
+      "imports": [
+        "BusyBeaver.ZFC.Dag219",
+        "BusyBeaver.ZFC.RMTransfer"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "1f1275619488b39377f74440a66f779f74b8f02db04b5d097a502c769228d7a8",
+      "current_object_sha256": "1f1275619488b39377f74440a66f779f74b8f02db04b5d097a502c769228d7a8",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Lib222",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Lib222.lean",
+      "source_sha256": "08d28d2ef7a53ece2464f4611e6c86bed42efc5964f958f81a5db92f3cb1f099",
+      "imports": [
+        "BusyBeaver.ZFC.Dag222",
+        "BusyBeaver.ZFC.Code254"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "d6c132c84020a9977495e0f386b8a4460d4fdf37dff319bb79e190690c46964e",
+      "current_object_sha256": "d6c132c84020a9977495e0f386b8a4460d4fdf37dff319bb79e190690c46964e",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Macros222",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Macros222.lean",
+      "source_sha256": "c0c20f8e270509d69990f56c04282123d25c914aafb2e44308c3a9b5f1efa905",
+      "imports": [
+        "BusyBeaver.ZFC.L2Lib222"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "c9dba973112869b63aa2a3fe6d4eff6be17beef9dc6383fb96bd8da0fc8066a8",
+      "current_object_sha256": "c9dba973112869b63aa2a3fe6d4eff6be17beef9dc6383fb96bd8da0fc8066a8",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Control222",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Control222.lean",
+      "source_sha256": "dc579f7494a52ea8fb69c11080ddcd4bb82aee2a82c25f3c0980464ab282ef1c",
+      "imports": [
+        "BusyBeaver.ZFC.L2Macros222"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "812b00b72b7de9b45cdf84eda473ccecee673d863eca35636f2fea498d5ed717",
+      "current_object_sha256": "812b00b72b7de9b45cdf84eda473ccecee673d863eca35636f2fea498d5ed717",
+      "exit_code": 0,
+      "log_sha256": "55e7399c128bb74b80390c3ac4eef9a68f5a64e586e727d01f4f5faf8c021f1b"
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Perm",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Perm.lean",
+      "source_sha256": "10e012486cf62a79f54a9268ac0840795896950156e3ca23a1499ef02e150929",
+      "imports": [
+        "BusyBeaver.ZFC.DagPerm",
+        "BusyBeaver.ZFC.Dag219Bisim",
+        "BusyBeaver.ZFC.L2Control222",
+        "BusyBeaver.ZFC.RMTransfer"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "c830ac03b09fc9a9bcacda79c4f26a85efcbabc36fe80f419f9e7f1abe793bfb",
+      "current_object_sha256": "c830ac03b09fc9a9bcacda79c4f26a85efcbabc36fe80f419f9e7f1abe793bfb",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.DomRho8",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DomRho8.lean",
+      "source_sha256": "8fdbec0db9134070bee2dfa0a433aff66ab83c00007ea7b9aabd9192c506d378",
+      "imports": [
+        "BusyBeaver.ZFC.Code254",
+        "BusyBeaver.ZFC.DominatedImplication"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "676e0904512a71612eb849970506c7a6da4878d6d3f506d7bc325501b81c252a",
+      "current_object_sha256": "676e0904512a71612eb849970506c7a6da4878d6d3f506d7bc325501b81c252a"
+    },
+    {
+      "module": "BusyBeaver.ZFC.EnumPerm",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumPerm.lean",
+      "source_sha256": "0c2a214ef68b37cb4df92c9a208d069bd2b4fca04f062483dfd11dc2b2a9e30e",
+      "imports": [
+        "BusyBeaver.ZFC.KCode222",
+        "BusyBeaver.ZFC.DomRho8"
+      ],
+      "driver_origin": "exact_source_cache",
+      "driver_object_sha256": "bf2d44748b6134768aa371d0f05dfbde9c24ceb383239b38a0c066244aa7d409",
+      "current_object_sha256": "bf2d44748b6134768aa371d0f05dfbde9c24ceb383239b38a0c066244aa7d409"
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2AxiomsPerm",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean",
+      "source_sha256": "428c63c0982318f9c6591e34755f42ce6ae1443921e03de7fefdc244e68c52ea",
+      "imports": [
+        "BusyBeaver.ZFC.L2Perm",
+        "BusyBeaver.ZFC.EnumPerm"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "66a4c143b9bf85abfd20ecdc0901f9503a97aea126e112c08ec54981768969d2",
+      "current_object_sha256": "66a4c143b9bf85abfd20ecdc0901f9503a97aea126e112c08ec54981768969d2",
+      "exit_code": 0,
+      "log_sha256": "5244b30fe8e808d3ef6a3ba85a7fe3a5858df42b56f7deda562ae9a449865ab0"
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2RootPerm",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootPerm.lean",
+      "source_sha256": "90672f5b2f207e92f0c822088b73e1f5107e514974d710c6a3cd9c82c2352c00",
+      "imports": [
+        "BusyBeaver.ZFC.RMDagIteration",
+        "BusyBeaver.ZFC.L2AxiomsPerm"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "ea1fe85144985f5134d954b9ab429c50f13998b1b6383a3ec31e70c5ab4d24ac",
+      "current_object_sha256": "ea1fe85144985f5134d954b9ab429c50f13998b1b6383a3ec31e70c5ab4d24ac",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "BusyBeaver.ZFC.SeedPerm",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SeedPerm.lean",
+      "source_sha256": "ed038b38122aca4ebd1f31a48f2ea9e99d2bb6f33a406cab4039ba62163b80ec",
+      "imports": [
+        "BusyBeaver.ZFC.L2RootPerm"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "b08265ebb0fa29d1ee62e9d4375d268a73b01037fa626259e45673dcc40583ce",
+      "current_object_sha256": "b08265ebb0fa29d1ee62e9d4375d268a73b01037fa626259e45673dcc40583ce",
+      "exit_code": 0,
+      "log_sha256": "007a947d34239b9d7677fe867ebd77c6afc5376d548d6ea5c881e044ff343bcc"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEndpoint215",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean",
+      "source_sha256": "77b71164cf3cac4303ab786852e58969bc5c7332c5261aecfc22a63d3a39dfc9",
+      "imports": [
+        "BusyBeaver.ZFC.KSource215",
+        "BusyBeaver.ZFC.KEndpoint",
+        "BusyBeaver.ZFC.KTape",
+        "BusyBeaver.ZFC.KDense215",
+        "BusyBeaver.ZFC.KBoot215",
+        "BusyBeaver.ZFC.KSites215",
+        "BusyBeaver.ZFC.SeedPerm"
+      ],
+      "driver_origin": "fresh_current_source",
+      "driver_object_sha256": "eb09261e13c60812df9265720553d491538bef915fb7828eb565579bc7fea6ff",
+      "current_object_sha256": "eb09261e13c60812df9265720553d491538bef915fb7828eb565579bc7fea6ff",
+      "exit_code": 0,
+      "log_sha256": "3a8c6dd0c002f263f898f5ed37ab83586bc9a308c52522fea79b2b2aec2cb320"
+    }
+  ]
+}

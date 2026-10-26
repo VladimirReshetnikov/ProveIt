@@ -122,10 +122,13 @@ actual bit-three prefix argument and the full low-clause mask consequence:
 then the derived2006 low bound forces total at mostone. See the
 [decoder/staircase review](reviews/decimal-staircase-lean-root.md).
 The current physical prefix residues, resets and full942-tile language
-remain to be connected. The current machine-to-ZFC dependency closure is
-being rebuilt as described in
-[its build record](reviews/machine215-current-closure-build.md); a live
-build is not a completed endpoint check.
+remain to be connected. The current machine-to-ZFC dependency run has completed168/168, with104
+exact-source cached modules and64 fresh compilations, plus the separately
+recorded KZip verification. `DecimalMachineZFC.blank_nonhalting_iff_conZFC`
+now gives a closed equivalence for the actual decoded machine and the
+existing consistency predicate. See the [root review](reviews/decimal-machine-zfc-lean-root.md)
+and [completed build record](reviews/machine215-current-closure-build.md).
+The current Diophantine/tableau link and internal-ZFC proof remain open.
 
 The signed auxiliary-Pell residue needed by the thirteen-variable soundness
 map is now checked in `SignedPellResidue.four_square_dvd_sub_one`. From
