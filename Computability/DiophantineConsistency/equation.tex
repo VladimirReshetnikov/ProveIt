@@ -10,32 +10,32 @@
 \newcommand{\rg}[2]{\{#1,\ldots,#2\}}
 \begin{document}
 \begin{center}
-{\large\bfseries A complete fifteen-variable consistency equation}\\[-1pt]
-{\small Strictly positive integer unknowns; exact degree 157; a 66-operation evaluator.}
+{\large\bfseries A complete fourteen-variable consistency equation}\\[-1pt]
+{\small Strictly positive integer unknowns; exact degree 150; a 65-operation evaluator.}
 \end{center}\vspace{-8pt}
 \begin{multicols}{2}
 \fontsize{9}{9.5}\selectfont
 The only unknowns are
 \[
-J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma\in\mathbb Z_{>0}.
+J,F,\alpha,z,f,i,T,s,w,n,\eta,\zeta,y,\gamma\in\mathbb Z_{>0}.
 \]
 All other symbols in the equation are polynomial abbreviations:
 \[
 \begin{gathered}
-q_-=\beta J,\quad q=q_-+1,\quad C=q-F-\alpha,\\
+b=\beta J,\quad q=b+1,\quad C=q-F-\alpha,\\
 X=wq,\quad Y=sq^3,\quad E=XY,\quad k=\eta+\zeta,\\
 \ell=EkY,\quad c=kY+\eta,\quad a=E+Y,\\
 H=4a+3,\quad\Delta=a^2+H,\quad D=X+ac+\gamma H,\\
-R=[q_-(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
-V=f^2(cT-R)-c,\quad S=i\Delta c^2,\\
-N_0=\tau^2-\ell(\ell+k),\quad N_1=D^2-\Delta c^2,\\
-N_a=S^2(V^2-y^2)+y^2,\quad N_k=k-hE-R,\\
-N_t=(K+w)C+(q-F)-zq_-,\quad N_s=\Delta f^2-S^2.
+R=[b(q-F)+\alpha](q^2-1)+(\mu+q\omega)J,\\
+\tau=En+k-R,\quad V=f^2(cT-R)-c,\\
+P=\tau^2-\ell(\ell+k),\quad Q=D^2-\Delta c^2,\\
+S=i\Delta c^2,\quad U=S^2(V^2-y^2)+y^2,\\
+W=(K+w)C+(q-F)-zb,\quad Z=\Delta f^2-S^2.
 \end{gathered}
 \]
 The single equation is
 \[
-\boxed{N_0N_1N_aN_kN_tN_s-\Delta=0.}
+\boxed{PQUWZ-\Delta=0.}
 \]
 
 \textbf{The four fixed integers.}
@@ -43,19 +43,19 @@ Every index, set, sum, product and floor below defines a constant, not
 another unknown. Put
 \[
 \begin{gathered}
-\rho=2^{47},\quad B=\rho^{2963},\quad\beta=B-1,\\
+\rho=2^{47},\quad B=\rho^{2953},\quad\beta=B-1,\\
 G_m(x)=\sum_{j=0}^{m-1}x^j,\quad
-\Lambda=\rho^{1956}.
+\Lambda=\rho^{1945}.
 \end{gathered}
 \]
 \begin{align*}
-M_C={}&\beta-G_{951}(\rho)\\
+\mu={}&\beta-G_{951}(\rho)\\
 &-\rho^{960}G_{26}(\rho)-\rho^{1005},\\
-M_F={}&\beta+4G_{917}(\rho)+(2^{44}-2)\Lambda\\
+\omega={}&\beta+4G_{917}(\rho)+(2^{45}-4)\Lambda\\
 &+\rho^{960}G_9(\rho)+\rho^{987}G_8(\rho)
   +\rho^{1005},\\
-K={}&\rho^{18}+\rho^{1005}+\rho^{2972}\\
-&+\Lambda\Phi(1/\rho),
+K={}&\rho^{18}+\rho^{1005}+\rho^{2962}\\
+&+2\Lambda\Phi(1/\rho),
 \end{align*}
 where
 \[
@@ -99,33 +99,35 @@ Put $D_b(A,k)=\fl{A/b^k}\bmod b$, where
 $a\bmod b=a-b\fl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
 \[
 \begin{gathered}
-N=\mathcal A\bmod2^{636},\quad
-T_0=\fl{\mathcal A/2^{636}}\bmod2^{1675},\\
-E_0=\fl{\mathcal A/2^{2311}},\\
-\nu_j=D_2(N,j),\quad \sigma_j=\sum_{k=0}^{j-1}\nu_k,\\
-m_q=D_2(N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
-F_q=14+m_q(D_{16}(E_0,\tau_q)-14),\\
-u_j=\nu_j(1+\sigma_j)+(1-\nu_j)D_{216}(T_0,j-\sigma_j),\\
+\mathcal N=\mathcal A\bmod2^{636},\quad
+\mathcal T=\fl{\mathcal A/2^{636}}\bmod2^{1675},\\
+\mathcal E=\fl{\mathcal A/2^{2311}},\\
+\nu_j=D_2(\mathcal N,j),\quad \sigma_j=\sum_{k=0}^{j-1}\nu_k,\\
+m_q=D_2(\mathcal N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14+m_q(D_{16}(\mathcal E,\tau_q)-14),\\
+u_j=\nu_j(1+\sigma_j)+(1-\nu_j)D_{216}(\mathcal T,j-\sigma_j),\\
 v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
 \end{gathered}
 \]
 Empty sums are zero. Here $(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
 uses this actual first target, including its state renaming.
 
-\textbf{The integer $\mathcal A$.}
-The alphabet, in order of digit values $0,\ldots,61$, is
-{\fontsize{7.7}{8.2}\selectfont\ttfamily 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}.\par
-Concatenate the following 436 characters as digits $e_0,\ldots,e_{435}$;
-put $\mathcal A=\sum_{j=0}^{435}e_j62^{435-j}$.\par
+\textbf{The integer $\mathcal A$ in base 10.}
+Its complete decimal expansion is the concatenation of these lines:\par
 \begingroup\fontsize{7.7}{8.2}\selectfont\ttfamily
-BxEnhvy6NipzkWmROo0GsA3uK3twWLxscLq20UTumy5Cdu461LwD6g7RDNzF8Y\par
-iYDFTpB8ehAypd7d6OsOL4APamnJeNXQypUezCmW9n4oXP6XfgmiWuAWZ8ZJ7U\par
-OP7gu4kVdlGZqZHULQMar1dXNeJW4i7oNVI8usp8BlovjjZbwPCovZI328fRUq\par
-4q92R81s5GjWQaQfGhkq9UYMK3rRMaBmsOIBkJqc2cj2VRIZ6mjzkBIOkW9SjZ\par
-FzeA6J5u4j3sBL3SdgwXzM9mHvQivu8EJ1TBTpRhHDqZIbmYgwQ8VqTAFotl6F\par
-We1YC554GKrVHsA8oUGKSA6F6k5KREBSD0Tgd7bFALY84LLbpw574BQyvdoHrl\par
-0Oe35uwDf15DpT6VJWZBjSbHPpPAINYTte0eUxnTFTKBlGj8Am6sb1gLldh8WZ\par
-8P\par
+58607250878986781889126737426325463240251722983538552729956831\par
+76496994940633391931532387237578247746672546301152856771829405\par
+50763006124739855037353655204691391414186758883217097375044976\par
+42946582709441420855053768425590291026930410855625406846907106\par
+04079067372476312963058285538418194441497390173357046917308541\par
+88716717442048170942517613524282407203789879020689779835988780\par
+40029993694652746006732672118869311652887813524414818759918714\par
+86564767549564149889156364118077528277278717925755937885232355\par
+70139705060092827980034336115111037194604982010168556898406861\par
+82116884452995397333290970898321098991845697808324750094293767\par
+95970989537956914018656075189240808229394060280859606344247457\par
+33090027075172177846970890324537666784074933609456239656992860\par
+8269451028931454227375493204418786549\par
 \endgroup
 \normalfont\fontsize{7.7}{8.2}\selectfont
 The ordinary complemented-color, native and Pell arguments give
