@@ -10,7 +10,7 @@ There is an existing **object-level PA consistency equivalence for the exact Rot
 
 ## Primary source and build scope
 
-Foundation was inspected at `/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation`, git commit `32e1a0956a8622fad067328ca1959729a7634428`. This is the checkout referenced by the repository's ZFC-in-PA research. It is **not** a current worktree Lake dependency. Its `lean-toolchain` says v4.31.0; the active project uses v4.32.0. No Foundation object was loaded, copied, rebuilt or accepted in this audit. Existing compilation claims in historical research documents were read as provenance, not repeated as fresh checks.
+Foundation was inspected at `/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation`, git commit `32e1a0956a8622fad067328ca1959729a7634428`. This is the checkout referenced by the repository's ZFC-in-PA research. It is **not** a current worktree Lake dependency. Its standalone `lean-toolchain` says v4.31.0; the active project uses v4.32.0. The initial read-only audit loaded no Foundation objects. In the subsequently authorized adapter work, the central project's complete 59-module GG cache was found with **v4.32.0** build traces; all 59 current source hashes and 236 object-companion hashes matched those traces. That cache was reused privately to compile only the two new adapter/check files. No vendor source or shared object was modified, and no Foundation closure was rebuilt. The exact distinction is recorded in `foundation-theory-gg-author.md` and `foundation-theory-gg-dependency-replay.json`. Historical arithmetic compilation claims remain separate from this fresh logical adapter check.
 
 I read the entire 199-line Foundation `FirstOrder/NegationTranslation/GoedelGentzen.lean`, the full relevant intuitionistic deduction source, classical proof constructors and theory-proof representation, the arithmetic axiom/schema definitions, and all three repository consistency-composition modules listed below. The search for existing HA theory/PA-to-HA adapters covered Foundation's Lean sources and `Logic/Interpretability/ZFCinPA/Lean`; no arithmetic HA definition or use of `Theory.ToTheoryᵢ` outside its defining file was found. This is a scoped search result, not a claim about every possible external library.
 
@@ -33,15 +33,15 @@ Paths in this section are relative to the pinned Foundation checkout.
 
 The final GG wrapper uses classical Lean infrastructure to obtain its metatheoretic proof wrapper. That does not add excluded middle to the target proof calculus. Conversely, a standard-only Lean axiom report does not itself certify an HA derivation: the target must actually be a theorem of the intuitionistic proof relation.
 
-The smallest useful missing generic adapter appears to be:
+The smallest useful generic adapter identified by this audit was:
 
 ```lean
--- Proposed interface; not implemented or claimed as a theorem here.
+-- Now implemented in DiophantineConsistency.FoundationTheoryGG.
 theorem theory_godelGentzen {T : Theory L} {φ : Sentence L} :
     T ⊢ φ → T.ToTheoryᵢ (𝗜𝗻𝘁¹ : Hilbertᵢ L) ⊢ φᴺ
 ```
 
-Its proof can use the finite axiom list already stored by `Theory.Proof`, the existing `Derivation.gödelGentzen`, `emb_doubleNegation`, negative stability, and `Theoryᵢ` context rules. This avoids duplicating GG. A small adapter is plausible, but its compiler/environment preparation and proof have not been attempted.
+The subsequent 61-line `FoundationTheoryGG.lean` implements it using the finite axiom list already stored by `Theory.Proof`, the existing `Derivation.gödelGentzen`, `emb_doubleNegation`, negative stability, and `Theoryᵢ` context rules. It also gives the actual proof-tree map for arbitrary target `Hilbertᵢ` and retains the exact translated finite axiom list. Its 76-line checks and the main module freshly pass in the private v4.32.0 overlay; eight reports use only standard Lean axioms. This reuses, rather than duplicates, the existing GG algorithm. It does not provide any arithmetic axiom/induction or target-stability adapter.
 
 Arithmetic remains a separate obligation. Foundation `Arithmetic/Schemata.lean:53` defines PA as ordered-ring-language `PeanoMinus` plus universal closures of all `succInd` instances. `Arithmetic/PeanoMinus/Basic.lean:15–55` lists equality and seventeen arithmetic/order axioms, including trichotomy. This is not definitionally the same syntax or axiom predicate as `PAHF.PASyntax` or the new `HA.Proves`. A conventional HA theorem must establish an interpretation of equality, order, these base axioms and arbitrary induction, rather than simply name the translated-axiom image “HA.” One may either construct that Foundation arithmetic adapter or prove an explicit syntax/proof bridge to `HAProofs`.
 
@@ -75,7 +75,7 @@ The checked external current polynomial equivalence and the new direct witness-e
 
 `HAProofs.lean` and `HAProofsChecks.lean` are freshly checked in Lean v4.32.0. They define genuine intuitionistic first-order arithmetic proof existence over the existing PAHF syntax, conventional formula induction, and only a one-way erasure into the existing classical calculus. Their complete dependency/replay scope is in `ha-proofs-author.md` and `ha-proofs-dependency-replay.json`. This audit leaves that packet unchanged and does not start a second GG implementation.
 
-Recommended independent steps are: (1) prepare a compatible, authenticated Foundation logical closure and prove the small theory GG adapter; (2) choose and prove the conventional HA arithmetic/syntax adapter, including induction and target stability; (3) bind the exact current equation and refutation predicate to arithmetic sentences; (4) supply the actual215 and native/Pell arithmetic equivalence. The existing240/validator internal results are reusable calibration, not a replacement for step (4).
+The compatible logical adapter is now a checked checkpoint. Remaining independent steps are: (1) choose and prove the conventional HA arithmetic/syntax adapter, including induction and target stability; (2) bind the exact current equation and refutation predicate to arithmetic sentences; (3) supply the actual215 and native/Pell arithmetic equivalence. The existing240/validator internal results are reusable calibration, not a replacement for step (3).
 
 The earlier incomplete internal-ZF integer-completion draft is isolated at `research/object-integer-completion-draft/`, explicitly unaccepted; it has no accepted Lean object. No further effort on that ZF-only draft is needed for this audit.
 

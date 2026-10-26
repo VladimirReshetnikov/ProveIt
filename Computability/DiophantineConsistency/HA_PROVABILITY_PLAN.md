@@ -70,8 +70,12 @@ iff does not itself provide the required PA derivation. Classical Tarski
 validity alone likewise does not establish intuitionistic derivability.
 
 The Foundation library already has the first-order Gödel–Gentzen theorem
-in Lean, as well as the Coq port. Its pure logical theorem is being lifted
-to finite theory assumptions in a small adapter; it should be reused.
+in Lean, as well as the Coq port. The small
+[FoundationTheoryGG](Lean/DiophantineConsistency/FoundationTheoryGG.lean)
+adapter now lifts it to finite theory assumptions, preserving the actual
+translated axiom list. Both leaves passed an
+[independent fresh replay](reviews/foundation-theory-gg-root.md), with59
+prerequisite modules authenticated against their v4.32 build traces.
 Arithmetic axiom and induction preservation, syntax interoperability and
 the particular target's stability remain separate obligations. See the
 [existing API audit](reviews/ha-existing-foundation-api-audit.md).
