@@ -1137,8 +1137,7 @@ published to support further work toward 214.
 **Diophantine form of the K215 endpoint** (not formalized). The report
 [`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
 is now under `Computability/DiophantineConsistency`. It holds waves 5–25
-(intake batches 221–241; latest reconciled placement `740f48e10d`; wave 25,
-sources 194–195, is placed and awaits reconciliation).
+(intake batches 221–241; latest reconciled placement `d421bf078f`).
 
 Until wave 11, every finished equation turned the K215 calibration behind
 `KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
@@ -1153,9 +1152,9 @@ encodings, provided they prove their own calibration (the report's section
 proof-certificate sources over the C222 calculus, calibrated through
 `KEndpoint.c222_iff_zf_refutation` and
 `ConstructibleChoice.zf_refutation_iff_zfc_refutation`. Wave 11 finishes
-that route: explicit direct quartics with no coefficient tuple, down to 202
-naturals and 208 unrestricted integers after wave 24 (sources 171, 179, 191), and
-ones with every coefficient ±1 (sources 120, 127, 135, 144, 154, 165, 172, 186); the
+that route: explicit direct quartics with no coefficient tuple, down to 201
+naturals and 208 unrestricted integers after wave 25 (sources 194, 191), and
+ones with every coefficient ±1 (sources 120, 127, 135, 144, 154, 165, 172, 186, 195); the
 step "polynomial zero iff C222 derivation" is an ordinary proof in each
 package, not a Lean theorem.
 
@@ -1169,10 +1168,11 @@ As the packages state them:
 - 14-unknown equations of degree 24 or in 65 operations, and a 15-unknown one
   in 66 operations;
 - the smallest coefficient tuple binding an equation has B = 2^139261 (188's
-  fourteen-positive circuits on the research session's block-mask2963 tuple,
-  if its calibration holds and, for 67 / 94, the transfer of 51's, 53's and
-  59's proofs); then 2^189269 (183's and 192's, on the admissible942 tuple);
-  then 2^193969 for 174, 185 and 186 if their Start-only calibrations hold,
+  fourteen-positive and 194's ten-positive circuits on the research session's
+  block-mask2963 tuple, if its calibration and 194's transfer hold and, for
+  67 / 94, the transfer of 51's, 53's and 59's proofs); then 2^189269 (183's
+  and 192's, on the admissible942 tuple); then 2^193969 for 174, 185, 186
+  and 195 if their Start-only calibrations hold,
   2^196319 if 179's transfer holds, 2^343523 if 171's calibration holds, 2^413929 if 141's carry proof holds,
   and 2^429959.
 
