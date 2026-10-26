@@ -15,8 +15,9 @@ For each selected literal polynomial P, the intended endpoint is a Lean
 theorem asserting `HA.Proves equivalenceSentence`, with `HA.Proves` meaning
 existence of a finite derivation using intuitionistic first-order logic,
 the usual arithmetic axioms and the full first-order induction schema.
-These names are a TARGET API, not a claim that the completed theorem or
-its particular arithmetic sentence already exists.
+`HA.Proves` is now defined in [HAProofs](Lean/DiophantineConsistency/HAProofs.lean)
+and independently checked. The particular `equivalenceSentence` and its
+completed provability theorem remain targets.
 
 The sentence must express, in arithmetic, that P has no positive integer
 solution iff the actual sealed-ZFC proof predicate has no refutation.
@@ -68,9 +69,12 @@ chosen proof-checker formula and equation sentence. A standard-number Lean
 iff does not itself provide the required PA derivation. Classical Tarski
 validity alone likewise does not establish intuitionistic derivability.
 
-The repository contains a Coq first-order Gödel–Gentzen development under
-`Logic/FoundationPort/Coq/FirstOrder/NegationTranslation/GoedelGentzen.v`.
-Its actual rules and assumptions are being audited before any Lean reuse.
+The Foundation library already has the first-order Gödel–Gentzen theorem
+in Lean, as well as the Coq port. Its pure logical theorem is being lifted
+to finite theory assumptions in a small adapter; it should be reused.
+Arithmetic axiom and induction preservation, syntax interoperability and
+the particular target's stability remain separate obligations. See the
+[existing API audit](reviews/ha-existing-foundation-api-audit.md).
 An existence theorem via general proof translation is acceptable: no
 expanded derivation for the enormous fixed integers must be displayed.
 
@@ -81,6 +85,13 @@ expanded derivation for the enormous fixed integers must be displayed.
   The existing type-valued bounded-PA proof trees likewise contain LEM.
   Removing LEM must be explicit in a genuine new derivability relation;
   erasure into PA is only a one-way validation.
+- `HAProofs` now supplies that relation: sixteen intuitionistic deduction
+  rules with capture-avoiding quantifier side conditions, a finite list of
+  conventional arithmetic axioms, and full formula induction. Its
+  [author receipt](reviews/ha-proofs-author.md) and
+  [independent replay](reviews/ha-proofs-lean-peer.md) record ten axiom
+  reports and authenticated reuse of five prerequisite modules. This
+  defines genuine HA theoremhood; it is not yet the desired HA theorem.
 - The shallow `PA.Model` has induction for every Lean predicate. An
   argument using that stronger semantic bundle must not be mislabeled
   validity in every first-order PA model. Formula-instance induction and
@@ -106,11 +117,33 @@ construction and `zf_consistent_of_formSeed`. The final ZF/ZFC transfer
 uses `ConstructibleChoice.zf_refutation_iff_zfc_refutation`.
 
 These are valid external Lean interfaces at their recorded scope. Their
-proofs do not automatically establish arithmetic provability of the
-calibration. Investigate syntactic proof translations or other verified
-finitary reductions for these exact conventions. Their use of models and
-constructibility is an OPEN arithmetization obligation, not a proof that
-the fixed-machine equivalence is unprovable in HA.
+proofs do not automatically establish arithmetic provability of this
+calibration. There is, however, substantial completed internal arithmetic
+machinery: `ZFCinPA.ValidatorConsistencyEquivalence` proves the validator
+consistency equivalence in IΣ₂ and PA; `LSchema` already supplies internal
+ZF/ZFC Choice transport; and `BinaryConsistencyRotation240` proves the
+consistency equivalence for the exact represented Rotation240 binary
+machine in IΣ₂ and PA. Reuse these results rather than reconstructing them.
+
+The remaining comparison concerns the actual215 table and boot seed,
+the changed C222 calculus, and the distinct coded proof conventions.
+The user-specified `k225-formal/verification/k215/README.md` explicitly
+separates its external endpoint from an internal PA theorem. Its215
+candidate counter starts at4; the represented240 validator uses different
+startup data and the older254 calculus. No definitional rewrite between
+these has been found in the inspected sources. Existing represented
+lookup and positive-clock simulation frameworks are useful interfaces,
+but their exact215 contracts must be proved. The
+[constructive/source audit](research/ha-current-equation-constructive-audit-20261026.md)
+records these concrete differences and the searched scope. This is an
+open comparison obligation, not a claim of unprovability in HA.
+
+[CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
+now proves the external direct equivalence between positive zeros and
+the literal `BProv ZFCax_s [] Form.fBot`. Its final negation composition
+uses no double-negation elimination; imported calibration and arithmetic
+are not thereby internalized. See the
+[root replay](reviews/current-witness-equivalence2011-root.md).
 
 Other candidate refactorings include replacing general complete-lattice
 carry normalization by bounded iteration on the actual finite digit
@@ -121,8 +154,8 @@ surface elimination of `Classical.choice` is not the goal by itself.
 
 ## Next reviewable checkpoints
 
-1. Define authentic HA derivability and prove basic arithmetic/induction
-   interfaces, with a one-way classical embedding and focused rule checks.
+1. Authentic HA derivability and basic arithmetic/induction interfaces are
+   checked, with one-way classical embedding and focused binder checks.
 2. Supply the literal arithmetic equation sentence and exact arithmetized
    ZFC-refutation sentence, retaining every current constant and domain.
 3. Establish the applicable proof-translation/stability theorem or the two

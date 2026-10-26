@@ -86,7 +86,7 @@ external Lean equivalence for the maintained polynomial.
 13-coordinate solution under negated consistency are checked as well.
 See the [author record](reviews/current-positive-zero2011-root.md) and
 [independent fresh replay](reviews/current-positive-zero2011-lean-peer.md).
-Remaining work includes the encoded internal-ZFC derivation, other equation
+Remaining work includes the HA proof-existence theorem, other equation
 frontiers, further size reduction and source-authenticated current closure
 validation. These fresh endpoint builds reuse prerequisites; they are not
 a fresh full umbrella build. The source-authenticated361-module custom
@@ -95,6 +95,19 @@ and191 scheduled fresh; see its [plan](reviews/current-positive-zero2011-closure
 and [root launch record](reviews/current-positive-zero2011-closure-launch-root.md).
 No completed-closure claim is made before its terminal checks. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
+
+`CurrentWitnessEquivalence2011` now exposes both external witness maps
+directly: positive zero iff `BProv ZFCax_s [] Form.fBot`. Its final negation
+equivalence has no outer double-negation-elimination step. Root independently
+rebuilt both new leaves and checked all five standard-only axiom reports;
+see the [receipt](reviews/current-witness-equivalence2011-root.md).
+`HAProofs` separately defines genuine intuitionistic first-order arithmetic
+derivability and full formula induction, with independent fresh replay of
+its main/check leaves and authenticated five-module prerequisite reuse.
+Neither checkpoint proves HA's desired consistency equivalence. The
+[HA plan](HA_PROVABILITY_PLAN.md) now records the existing internal IΣ₂/PA
+validator and Rotation240 results and the exact215/coding adapters still
+needed.
 
 The first new modules address necessary reusable pieces of that chain:
 

@@ -17,6 +17,12 @@ The owner now additionally requires a Lean theorem that this equivalence
 is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
+A genuine HA derivability relation is now independently checked in
+[HAProofs](Lean/DiophantineConsistency/HAProofs.lean). Existing IΣ₂/PA
+validator and Rotation240 consistency theorems provide reusable arithmetic
+machinery; adapting it to the exact215 machine remains open. The
+[source audit](research/ha-current-equation-constructive-audit-20261026.md)
+also covers the owner's K215 verification pointer.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the
@@ -53,7 +59,13 @@ and [independent fresh endpoint replay](reviews/current-positive-zero2011-lean-p
 record six standard-only axiom audits and the exact domain and coefficient
 binding. These leaf builds reused prerequisites; source-authenticated
 post-merge closure validation remains separate. Further frontier equations,
-size reductions and an encoded internal-ZFC derivation remain active work.
+size reductions and the HA proof-existence theorem remain active work.
+The new [direct witness interface](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
+also proves positive zero iff an actual syntactic ZFC refutation. Negating
+these maps requires no double-negation elimination; this does not turn
+their imported proofs into HA derivations. Its
+[root replay](reviews/current-witness-equivalence2011-root.md) passed five
+standard-only axiom audits and literal current-port checks.
 
 The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **complete decimal Carrier65 equation
