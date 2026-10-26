@@ -176,6 +176,14 @@ whole-source reviews, fresh builds/checks and standard-only axiom audits.
 K remains a parameter, so the current native consistency theorem is still
 an outstanding objective.
 
+`CurrentSparseDigits2011.polynomial_zero_reconstructs` now starts from an
+actual positive current65 zero and recovers N>0, exact q/J and the full
+Boolean selector word C on the repeated current support. Its global origin
+bit is1; selector1, dummy977 and marker1004 each have exactly one available
+bit. The full MC*repunit+1 identity is proved. See the [root review](reviews/current-sparse-digits2011-lean-root.md)
+for the exact source/check replay and cache scope. This fixes the Start bit;
+at-most-one selector occupation and native interpretation are still required.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
