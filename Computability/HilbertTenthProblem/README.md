@@ -46,7 +46,8 @@ As the packages state them:
 - eleven positive unknowns at degree 174 in 104 operations;
 - twelve positive unknowns at degree 70, and thirteen at degree 28;
 - fourteen positive unknowns at degree 24, or in 65 operations at degree 150;
-- a fifteen-positive equation in 66 operations at degree 157;
+- a fifteen-positive equation in 66 operations at degree 157 (dominated across
+  counts by the fourteen-positive 65 / 150);
 - a quartic in 37 unrestricted integers, a sextic in 30 and an octic in 25.
 
 These are fixed-instance results, so the universal operation bounds stated
