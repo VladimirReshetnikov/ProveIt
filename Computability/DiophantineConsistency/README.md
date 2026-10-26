@@ -21,14 +21,14 @@ See [the active size-reduction plan](SIZE_REDUCTION.md).
 The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **complete decimal Carrier65 equation
 in fourteen positive unknowns, exact degree150, with65 integer-leaf binary
-operations**. The encoded integer appears as all781 ordinary decimal digits.
+operations**. The encoded integer appears as all 715 ordinary decimal digits.
 Every scalar in the polynomial front has a distinct unsubscripted name;
 the five factors are P,Q,U,W,Z and the two masks are mu,omega.
 The full430-action decoder and942 indexed tiles remain on one Letter page
 at9-point body and7.7-point numeral/footer sizes.
 
-The [complete reversed2521 candidate](candidates/one-page-reversed-carrier65-2521/README.md)
-uses**59297 raw fixed-integer bytes**,10152 below the preceding decimal2953
+The [complete current candidate](candidates/one-page-reverse-discovery-carrier65-2521/README.md)
+uses **59297 raw fixed-integer bytes**,10152 below the earlier decimal2953
 page, a reduction of about14.6%. Its explicit permutation fixes Start0
 and reverses the other941 selectors. The abstract tile table is unchanged;
 Phi uses the printed exponent pi(i), moving the initializer from abstract928
@@ -55,14 +55,21 @@ nonzero degree150 leader remain unchanged, with the same full
 [root](reviews/carrier65-root.md) and
 [peer](reviews/carrier65-independent-peer.md) arithmetic reviews.
 
-All781 source/PDF digits and every430 action are preserved. The actual
-printed permutation reconstructs every942 physical tile and3297 coefficient.
-Complete TeX is5217 bytes, nonwhite `pdftotext -layout` text2872 characters,
-PDF151798 bytes and gzip integers4172 bytes. Against decimal2953, TeX
-adds58 bytes and extracted text32 characters; PDF grows810 bytes and
-gzip shrinks49. The [independent page review](reviews/reversed-carrier65-2521-page-peer.md)
+The [reverse-discovery seed proof](research/reverse-discovery-decimal-seed/PROOF.md)
+reduces the decimal numeral from 781 to 715 digits while preserving all
+430 actions and the complete specialized polynomial. The page prints the
+full mixed-radix decoder, including radix-one discoveries, prefix endpoint
+430 and the necessary halt remainder. Actual source and PDF digit checks,
+all 942 physical tiles, all 3297 coefficients and every whole integer agree.
+
+Complete TeX is 5230 bytes, nonwhite `pdftotext -layout` text 2846 characters,
+PDF 152521 bytes and gzip integers 4172 bytes. Against the preceding
+781-digit reversed2521 page, the full specification saves 26 extracted
+characters after decoder overhead; TeX grows 13 bytes and PDF grows 723.
+The [independent page review](reviews/reverse-discovery-carrier65-2521-page-peer.md)
 and [CURRENT_EQUATION.json](CURRENT_EQUATION.json) bind complete sources,
-all four ports, actual rendering and the exact preceding metadata.
+all four unchanged ports, two visual inspections, fresh byte-identical
+rendering and the exact preceding metadata.
 
 An independent [decimal conversion checkpoint](research/decimal-seed-stage-A-run/README.md)
 verifies the same complete781-digit integer by a full forward and reverse
@@ -94,8 +101,13 @@ preserved. Reviewed [single-clause3037](research/single-clause-independent/READM
 and [composite2983](research/composite-length-independent/README.md) proofs
 are intermediate checkpoints, as is the reviewed
 [scaled2953 P66 page](candidates/one-page-scaled-clause2953/equation.pdf).
-Next work tests shorter decimal seed recipes and further selector orders,
-while preserving decimal notation and distinct scalar names. The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
+The [sorted2501 construction](research/sorted-selector-independent/README.md)
+now has its complete ordinary proof, finite certificate and independent
+reviews. Its ports save a further 468 raw bytes, reaching 58829. The full
+printed page is under review before adoption. A separate
+[tail-envelope bound](research/sorted-selectors-probe/TAIL_ENVELOPE_BOUND.md)
+proves optimality only within the stated fixed reset/controller family.
+Further work preserves decimal notation and distinct scalar names. The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
 preserves its bound tuple; [radix obstructions](research/radix-parity-independent/README.md)
 explain why direct46/45 substitutions need different proof interfaces.
 

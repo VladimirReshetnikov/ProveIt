@@ -13,7 +13,7 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained [decimal reversed2521 page](candidates/one-page-reversed-carrier65-2521/README.md)
+The maintained [decimal reversed2521 page](candidates/one-page-reverse-discovery-carrier65-2521/README.md)
 has**14 positive unknowns,65 integer-leaf operations and exact degree150**.
 The uniform Carrier65 front and its positive maps are unchanged. The new
 native tuple has a complete ordinary proof, discharged Pcrv and full
@@ -30,18 +30,24 @@ actual rank and safe-subset proof uses the new tuple, with controller
 orders23/1260, prime231841 and H34/1660/56592.
 
 The owner requested base10 and distinct scalar names. Every future maintained
-TeX/PDF must retain those preferences. The page prints all781 decimal digits,
+TeX/PDF must retain those preferences. The page prints all 715 decimal digits,
 uses unsubscripted front names, and keeps every942 indexed tile and430 action.
 The five factors are P,Q,U,W,Z. Fonts stay9pt body/7.7pt numeral/footer.
-TeX5217 and extracted nonwhite text2872 increase58/32 against decimal2953;
-PDF151798 grows810 and gzip4172 saves49 bytes. This is a coefficient-size
-improvement with a small explicit-permutation display cost, not all-metric
-dominance. The preceding complete decimal2953 page is preserved.
+The reverse-discovery seed proof and complete page review establish exact
+equality of all 430 actions, the whole polynomial and every fixed integer.
+The numeral saves 66 digits against the preceding reversed2521 page. After
+the complete new decoder, extracted nonwhite PDF text falls 26 to 2846;
+TeX grows 13 to 5230 and PDF grows 723 to 152521. Gzip remains 4172.
+Both full source/PDF digits and prefix endpoint domains are checked.
+The preceding complete page and CURRENT record are preserved exactly.
 
-Next directions are a shorter reverse-discovery decimal numeral for exactly
-the same actions, and further explicit selector orders. The finite sorted2501
-lead saves another468 raw bytes but needs a full ordinary proof and complete
-printed-cost comparison before adoption. The unpromoted scaled2953 P66 page
+The sorted2501 construction now has a complete ordinary proof, discharged
+finite premises, independent proof/code reviews and full root acceptance.
+It saves another 468 raw bytes, reaching 58829. Its complete printed-cost
+comparison is under review before adoption. The separately reviewed
+full-suffix exchange bound proves C>=1493 and L>=2501 only within this
+fixed weight/marker/reset/controller family; further reductions must alter
+at least one of those restrictions. The unpromoted scaled2953 P66 page
 and all earlier recipes remain available as separately reviewed checkpoints.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
