@@ -13,30 +13,36 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained [decimal Carrier65-2953 page](candidates/one-page-decimal-carrier65-2953/README.md)
+The maintained [decimal reversed2521 page](candidates/one-page-reversed-carrier65-2521/README.md)
 has**14 positive unknowns,65 integer-leaf operations and exact degree150**.
-The complete first-Pell carrier removes h and free tau in favor of n>0,
-with tau=En+k−R, and proves positive witness maps using signs before bounds.
-All65 graph rows, the full degree150 leader and the complete ordinary proof
-pass root and independent reviews. The native2953 proof and Pcsc are also
-discharged, with all four coherent integers totaling69449 raw bytes.
+The uniform Carrier65 front and its positive maps are unchanged. The new
+native tuple has a complete ordinary proof, discharged Pcrv and full
+root/peer reviews; its four integers total59297 raw bytes,10152 below
+scaled2953, a reduction of about14.6%.
+
+The explicit permutation pi(0)=0,pi(i)=942-i keeps the entire abstract
+942-tile table and uses x raised to pi(i) in Phi. The complete high-index
+coefficient sum supplies unconditional resets before marker1004. Clause1515
+recovers one-hotness before the global phase19 exclusion. All916 bit3
+padding tests follow from complete selector-only input arrays and residues
+at most5 modulo2048. The combined low mask is8*G917-4. The entire mask,
+actual rank and safe-subset proof uses the new tuple, with controller
+orders23/1260, prime231841 and H34/1660/56592.
 
 The owner requested base10 and distinct scalar names. Every future maintained
 TeX/PDF must retain those preferences. The page prints all781 decimal digits,
 uses unsubscripted front names, and keeps every942 indexed tile and430 action.
 The five factors are P,Q,U,W,Z. Fonts stay9pt body/7.7pt numeral/footer.
-TeX5159 and extracted nonwhite text2840 increase189/202 against block2963;
-PDF150988 shrinks8282 and raw integers save236, while gzip grows19 to4221.
-Readability choices and mathematical size metrics are recorded separately.
+TeX5217 and extracted nonwhite text2872 increase58/32 against decimal2953;
+PDF151798 grows810 and gzip4172 saves49 bytes. This is a coefficient-size
+improvement with a small explicit-permutation display cost, not all-metric
+dominance. The preceding complete decimal2953 page is preserved.
 
-The new [native tuple](research/scaled-clause-independent/PROOF.md)
-doubles weights and moves the sole clause to1945. The marker needs zero
-incoming carry only; its parity survives outgoing carry. The full changed
-count, copy, padding, rank and safe-subset arguments apply, and controller
-orders23/492, prime192373 and H12/2749/19610 discharge Pcsc. The
-[scaled2953 P66 page](candidates/one-page-scaled-clause2953/equation.pdf)
-is preserved as an unpromoted checkpoint because the requested display
-format was implemented in its Carrier65 successor.
+Next directions are a shorter reverse-discovery decimal numeral for exactly
+the same actions, and further explicit selector orders. The finite sorted2501
+lead saves another468 raw bytes but needs a full ordinary proof and complete
+printed-cost comparison before adoption. The unpromoted scaled2953 P66 page
+and all earlier recipes remain available as separately reviewed checkpoints.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
 gives65 operations for the same bound three-anchor47 polynomial while

@@ -25,40 +25,40 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete **decimal Carrier65-2953** equation:14 positive unknowns,
-degree150,65 integer-leaf operations and69449 raw fixed-integer bytes.
-The full encoded integer is printed as781 base10 digits. Every polynomial
-scalar has a distinct unsubscripted name, including factors P,Q,U,W,Z.
-The one Letter page retains9pt/7.7pt fonts and every942 tile/430 action.
+the complete **decimal reversed2521 Carrier65** equation:14 positive
+unknowns, degree150,65 integer-leaf operations and59297 raw fixed-integer
+bytes. All781 base10 digits and distinct unsubscripted polynomial scalar
+names, including factors P,Q,U,W,Z, are preserved. The one Letter page
+retains9pt/7.7pt fonts and every942 tile/430 action.
 
-The [Carrier65 proof](research/carrier65-independent/PROOF.md) replaces
-old h,tau by n>0 and tau=En+k−R, saving one variable, one operation and
-seven degrees. Signs are recovered before rank bounds and positivity;
-the omitted positive quotient is reconstructed by first-Pell arithmetic.
-Canonical parent witnesses supply the converse. Full root/peer math
-reviews and the entire65-row graph/degree audit pass.
+The [native2521 proof](research/reversed-selector-independent/PROOF.md)
+transports the complete admissible language through an explicit reversal.
+Its full coefficient tail resets fields0..1003 before marker parity and
+count recovery. The global South-color graph excludes offset19; all916
+bit3 padding tests follow from selector residues modulo2048. Every copy,
+mask, rank, safe increment and both positive P66 maps are proved. Pcrv is
+discharged at prime231841 with H34/1660/56592, and full root/peer reviews pass.
 
-The [native2953 proof](research/scaled-clause-independent/PROOF.md)
-uses doubled weights, clause1945 and an incoming-only marker reset.
-All count, copy, padding, rank, safe-increment and positive P66 interfaces
-are proved, with Pcsc discharged at prime192373 and H12/2749/19610.
-Its four ports are236 bytes smaller than the preceding maintained2963 tuple.
-The new arithmetic front changes the polynomial with explicit witness maps.
+The [Carrier65 proof](research/carrier65-independent/PROOF.md) applies to
+the exact new scalar bounds and canonical parent witnesses. Its entire
+65-row graph, positive-domain maps and exact degree150 are unchanged.
+The four new ports change the specialized polynomial and save10152 raw
+bytes, about14.6%, against decimal2953.
 
-The [candidate](candidates/one-page-decimal-carrier65-2953/README.md)
-and [page review](reviews/decimal-carrier65-2953-page-peer.md) bind every
-printed decimal digit, direct decoded action, tile and whole integer.
-Normal/optimized checks and two actual full-page inspections pass.
-TeX5159 and extracted nonwhite text2840 grow189/202 against block2963
-because of the requested decimal/notation changes; PDF150988 falls8282.
-Gzip grows19 to4221. CURRENT preserves the exact previous record.
+The [candidate](candidates/one-page-reversed-carrier65-2521/README.md)
+and [page review](reviews/reversed-carrier65-2521-page-peer.md) bind every
+actual decimal digit, action, printed permutation, tile and whole integer.
+Normal/optimized checks, two full-page inspections and a fresh byte-identical
+PDF rebuild pass. TeX5217 and extracted nonwhite text2872 grow58/32 because
+of the complete permutation recipe; PDF151798 grows810. Gzip falls49 to4172.
+CURRENT preserves the exact previous record and the decimal2953 page.
 
 All earlier pages and CURRENT records remain preserved, along with reviewed
 [single-clause3037](research/single-clause-independent/README.md) and
 [composite2983](research/composite-length-independent/README.md) checkpoints.
 No new formal-kernel replay or consistency decision is claimed; inherited
-ordinary calibration remains explicit. Next work reorders selectors and
-tests shorter complete layouts, retaining decimal and distinct-name displays. The separately checked
+ordinary calibration remains explicit. Next work tests shorter decimal seed recipes and
+further selector layouts, retaining decimal and distinct-name displays. The separately checked
 [weighted-only Psi identity](research/weighted-only-psi/NOTE.md) preserves
 its bound tuple. The [radix note](research/radix-parity-independent/README.md)
 and earlier [interior-padding probe](research/start-marker-padding-probe/NOTE.md)

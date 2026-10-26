@@ -27,40 +27,48 @@ the five factors are P,Q,U,W,Z and the two masks are mu,omega.
 The full430-action decoder and942 indexed tiles remain on one Letter page
 at9-point body and7.7-point numeral/footer sizes.
 
-The [complete candidate](candidates/one-page-decimal-carrier65-2953/README.md)
-uses**69449 raw integer bytes**,236 below the preceding maintained2963
-page. The [Carrier65 proof](research/carrier65-independent/PROOF.md)
-removes one positive variable and one operation and lowers degree by7.
-The first Pell trace carries the omitted index quotient: tau=En+k−R.
-The proof recovers all norm signs before bounding R and proving tau>0,
-then restores a positive parent witness. Canonical parent witnesses give
-the converse. Full [root](reviews/carrier65-root.md) and
-[peer](reviews/carrier65-independent-peer.md) reviews and the complete
-integer-leaf graph/degree audit pass.
+The [complete reversed2521 candidate](candidates/one-page-reversed-carrier65-2521/README.md)
+uses**59297 raw fixed-integer bytes**,10152 below the preceding decimal2953
+page, a reduction of about14.6%. Its explicit permutation fixes Start0
+and reverses the other941 selectors. The abstract tile table is unchanged;
+Phi uses the printed exponent pi(i), moving the initializer from abstract928
+to physical14. All four new integers are coherent and independently checked.
 
-The [native proof](research/scaled-clause-independent/PROOF.md) doubles
-all reflected weights and lowers the sole clause to1945 at cell length2953.
-Marker parity needs zero incoming carry, while its outgoing carry may be
-nonzero. The shifted count tests absorb an extra Boolean selector and
-recover the same complete language. All copy tests, padding, actual rank,
-safe subsets and both parent P66 maps are proved for the new tuple.
-Its [finite certificate](research/scaled-clause-independent/certificate.json)
-discharges Pcsc with orders23/492, prime192373 and H12/2749/19610.
+The [native proof](research/reversed-selector-independent/PROOF.md) uses
+the complete reversed coefficient tail to reset every field0..1003 before
+decoding. Marker1004 parity first recovers an integral field rotation;
+clause1515 then decodes every cell, including its extra Boolean summand.
+The complete South-color graph excludes the residual offset19. All916
+padding tests use bit3, with low residues at most5 modulo2048; the native
+low mask8*G917-4 preserves origin bit2. The full proof covers every copy,
+mask, rank, safe subset and both positive P66 maps. Its
+[finite certificate](research/reversed-selector-independent/certificate.json)
+discharges Pcrv with orders23/1260, prime231841 and H34/1660/56592.
+Full [root](reviews/reversed-selector2521-root.md) and
+[independent](reviews/reversed-selector2521-independent-peer.md) reviews pass.
 
-The requested decimal representation and distinct names are fully checked:
-all781 source/PDF digits reproduce the whole integer, every430 action and
-all942 tiles. Complete TeX is5159 bytes, nonwhite `pdftotext -layout` text2840
-characters, PDF150988 bytes and gzip integers4221 bytes. Against the prior
-maintained page, TeX grows189 and extracted text202 while PDF falls8282;
-these readability changes are separated from the mathematical reductions.
-The [independent page review](reviews/decimal-carrier65-2953-page-peer.md)
+The [Carrier65 proof](research/carrier65-independent/PROOF.md) applies at
+these exact ports. Its first Pell trace tau=En+k-R recovers the omitted
+positive quotient after establishing norm signs and rank bounds; canonical
+parent witnesses supply the converse. The complete65-row graph and its
+nonzero degree150 leader remain unchanged, with the same full
+[root](reviews/carrier65-root.md) and
+[peer](reviews/carrier65-independent-peer.md) arithmetic reviews.
+
+All781 source/PDF digits and every430 action are preserved. The actual
+printed permutation reconstructs every942 physical tile and3297 coefficient.
+Complete TeX is5217 bytes, nonwhite `pdftotext -layout` text2872 characters,
+PDF151798 bytes and gzip integers4172 bytes. Against decimal2953, TeX
+adds58 bytes and extracted text32 characters; PDF grows810 bytes and
+gzip shrinks49. The [independent page review](reviews/reversed-carrier65-2521-page-peer.md)
 and [CURRENT_EQUATION.json](CURRENT_EQUATION.json) bind complete sources,
 all four ports, actual rendering and the exact preceding metadata.
 
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
 proof, consistency decision or global minimum is claimed. Lean remains
-paused. The [block-mask2963](candidates/one-page-block-mask2963/equation.pdf),
+paused. The [decimal2953](candidates/one-page-decimal-carrier65-2953/equation.pdf),
+[block-mask2963](candidates/one-page-block-mask2963/equation.pdf),
 [low-padding2963](candidates/one-page-low-padding2963/equation.pdf),
 [single-clause2999](candidates/one-page-parity-clause2999/equation.pdf),
 [admissible942](candidates/one-page-admissible942/equation.pdf),
@@ -77,7 +85,7 @@ preserved. Reviewed [single-clause3037](research/single-clause-independent/READM
 and [composite2983](research/composite-length-independent/README.md) proofs
 are intermediate checkpoints, as is the reviewed
 [scaled2953 P66 page](candidates/one-page-scaled-clause2953/equation.pdf).
-Next work reorders selectors to reduce the packed coefficient size further,
+Next work tests shorter decimal seed recipes and further selector orders,
 while preserving decimal notation and distinct scalar names. The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
 preserves its bound tuple; [radix obstructions](research/radix-parity-independent/README.md)
 explain why direct46/45 substitutions need different proof interfaces.
