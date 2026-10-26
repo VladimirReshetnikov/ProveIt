@@ -637,5 +637,17 @@ also passed all four isolated fresh builds. Reverse arithmetic/controller
 construction remains necessary for the actual equation equivalence.
 
 Each verified checkpoint is
+preceded by bounded source/check replay. The reverse arithmetic work now
+has `CurrentCellConstruction2011`: an actual local Boolean cell with the
+physical selector, exact complemented labels, full clause balance and
+literal Start data. Dummy977 and marker1004 remain free in its adapters.
+`NativeRankVariation` binds the actual Carrier65 rank and proves the
+ordinary increment/decrement identity with its explicit F increment,
+without inferring it from a congruence. See the [root source review and
+four fresh checks](reviews/current-cell-rank-construction-lean-root.md).
+Global word assembly, cyclic carries, composite controller and arithmetic
+witnesses remain work items.
+
+Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
