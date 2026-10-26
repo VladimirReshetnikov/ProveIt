@@ -1,0 +1,191 @@
+\subsection{The signed power and remainder interfaces}
+
+The unchanged semantic anchor and full orientation frame supply
+$W\ge258$, $|A|>W^W$, canonical signed Pell pairs, and bounds on the
+actual power bases, indices and outputs. The two pooled blocks are
+covered by the theorem just proved. For the three individual requests,
+the usual congruence
+\[
+ X_k(A)+(n-A)Y_k(A)\equiv m\pmod{2An-n^2-1}
+\]
+gives the same conclusion when $|n|\ge2$: the bounded congruence
+is the equality $m=n^k$, and a negative $k=-j$ would force
+$mn^j=1$. This is impossible for an integer $m$. The bounds use
+absolute values and do not require $n$ to be positive.
+
+The common normalized remainder certificate is
+\[
+ M^2=1+4\sum_j R_j^2+a^2+b^2+c(c+1).
+\]
+As $c(c+1)\ge0$ for every integer $c$, one has $M\ne0$ and
+$|R_j|<|M|/2$. If $L_jv_j=M$ and $v_jU_j=MQ_j+R_j$, then
+$L_j,v_j\ne0$, $v_j\mid R_j$, and the integer $r_j=R_j/v_j$ satisfies
+\[
+ U_j=L_jQ_j+r_j,\qquad |r_j|<|L_j|/2.
+\]
+A congruent remainder in this open centered interval is unique, even
+for negative $L_j$. The first binomial interpretation can therefore be
+recovered before the radix has been proved positive.
+
+\subsection{An acyclic bootstrap}
+
+The horizon $t=16+2h_0^2$ is positive and even. Its individual power
+request first gives $F=t^t\ge2^{64}$.
+The fixed class $q=6z+3$ makes the two pooled bases nonzero nonunits.
+Their power requests give $x\ge0$, $y+1\ge0$, and nonnegative values
+of all nine actual representatives $a_j$. Hence $H\ge3$.
+From $y=F(2v+1)$ and $y\ge-1$ follows $y\ge F$.
+
+The raw index equation is
+\[
+ B\,u=C_0+F+1,
+\]
+where $C_0$ is the already nonnegative actual index representative.
+Thus $B\ne0$ and $|BH|\ge3$. The individual self-radix request
+gives $q=(BH)^x$. Since $q\ne1$, one has $x\ge1$.
+The first and last beta endpoint equations are
+\[
+ x=F+1+(y+1)u_0,
+ \qquad x=1+\bigl(1+(t+1)y\bigr)u_t.
+\]
+If $u_0\le-1$, the first gives $x\le F-y\le0$, impossible.
+Therefore $x\ge F+1$. The last endpoint then forces $u_t\ge1$, so
+\begin{equation}\label{eq:xlarge}
+ x\ge2+(t+1)y\ge2+(t+1)F.
+\end{equation}
+Write $Q=|q|$ and $b=|B|$. Without assuming either sign, we now have
+\[
+ Q=(bH)^x\ge2^x,\qquad Q\ge9b^2,\qquad b\le Q/9.
+\]
+All low-digit denominator exponents are nonnegative and at most $x$.
+Their exact ratios to the common modulus $M=q^x$ are integral.
+
+\subsection{The first binomial digit forces a positive radix}
+
+For $0\le j\le t$, put $C_j=\binom{F+t}{j}$.
+Since $F\ge t$, these coefficients increase up to $t$, and
+\[
+ C_j\le C_t=\prod_{i=1}^t\left(1+\frac{F}{i}\right)
+       \le(F+1)^t=:V_*.
+\]
+The bound $F+1\le2^{F-1}$ and \eqref{eq:xlarge} imply
+\[
+ \frac{V_*}{Q}\le2^{-F-t-2},\qquad \frac{V_*}{Q-1}<1/32.
+\]
+The authenticated numerator is $U=(q+1)^{F+t}$, and its digit row is
+\[
+ U=q^t(B+q\xi)+r,\qquad |r|<Q^t/2.
+\]
+For either sign of $q$, the binomial theorem gives the canonical
+integer remainder
+\[
+ r_0=\sum_{j=0}^{t-1}C_jq^j,
+ \qquad |r_0|<\frac{V_*Q^t}{Q-1}<Q^t/32.
+\]
+Centered remainder uniqueness yields $r=r_0$, and division by $q^t$
+gives $B\equiv C_t\pmod q$. But $|B|\le Q/9$ and
+$C_t<Q/32$, so $|B-C_t|<Q$. Thus
+\[
+ B=\binom{F+t}{t}>0,\qquad q=(BH)^x>0,\qquad N=B^x>0.
+\]
+Because $t\ge2$, this binomial coefficient exceeds $F+1$.
+The earlier divisibility $B\mid C_0+F+1$ excludes $C_0=0$;
+hence $C_0\ge1$, as required by the row-index extraction.
+This argument handles the entire negative-radix possibility before
+excluding it.
+
+\subsection{The two prime-power covering statements}
+
+For completeness, let $\Lambda=\lcm(1,\ldots,t)$, $R\ge\Lambda^2$,
+and $B=\binom{R+t}{t}$. Every row $i\in\{1,\ldots,t\}$ has a full
+prime power $p^e\Vert B$ dividing $R+i$ with $p^e>t$.
+Indeed, if every $v_p(R+i)\le2\lfloor\log_p t\rfloor$, then
+$R+i\mid\Lambda^2$, contradicting $R+i>\Lambda^2$.
+Choose $p$ with $v=v_p(R+i)>2a$, $a=\lfloor\log_p t\rfloor$.
+For $j\ne i$, the distance $|j-i|\le t$ implies
+$v_p(R+j)=v_p(j-i)$. Therefore
+\[
+ e=v_p(B)=v-v_p\!\left(t\binom{t-1}{i-1}\right).
+\]
+In the Legendre sum for the subtracted valuation, each level up to $a$
+contributes zero or one, and all later levels contribute zero.
+Thus $v-a\le e\le v$, which proves $p^e>t$ and $p^e\mid R+i$.
+
+Conversely, every full prime power of $B$ divides at least one row.
+For a fixed prime let $v=\max_i v_p(R+i)$. Legendre's formula for
+$v_p(B)$ is a sum of zero-or-one interval-carry terms, with no terms
+above level $v$. Hence $v_p(B)\le v$. Both statements are needed:
+one supplies a large row selector, and the other covers every prime
+factor during reverse CRT construction. Consecutive $R+i$ need not
+be pairwise coprime.
+
+Here $R=F=t^t\ge\Lambda^2$ by Lemma~\ref{lem:lcm}, so the
+retained factorial-free binomial CRT compiler applies.
+
+\subsection{Remaining local bounds and the beta endpoint}
+
+The inherited local-polynomial ledger uses exponent $2^{23}$.
+For $R_{\rm maj}=2+t+x+y+F$, the established bounds give
+$R_{\rm maj}<2x$ and $x\ge2^{64}+1$. The retained uniform estimate
+$(2x)^{2^{23}}<2^x$ therefore applies. Its derived-label degree
+bound $2^{22}(t+1)<x$ also holds. Since $H=3+6\sum a_j$ dominates
+the old representative majorant, the other ten binomial digit
+remainders retain their strict relative margin below $1/32$.
+Their exact divisibilities give the same local polynomial constraints,
+with the strengthened strict local ranges from the pooling source.
+
+For each row the selected prime power $p^e>t$ identifies the correct
+index. The amplified range lemma, the precision $x$, and the bound
+$0\le L<2^x\le p^{ex}$ turn the local congruence into $L=0$.
+Thus all supplied Horn-rule and accumulator rows are genuine.
+
+There is a small boundary case to settle. If $y=F$, the first beta
+endpoint gives initial proper remainder zero, while the last gives
+final remainder one. The recovered local equations are
+\[
+ S_{i+1}W_{\mathrm{concl}(i)}
+  =S_iW_{\mathrm{prem}_1(i)}W_{\mathrm{prem}_2(i)},
+ \qquad W_j=1+jF>0.
+\]
+A zero initial state propagates to every state, contradicting the last.
+Hence $y>F$. The actual first remainder is $F+1$, the last is one,
+and all intervening states are positive. Their product identity and
+Lemma~\ref{lem:labels} recover the exact multiplicities of proof labels.
+The retained single-conclusion flow criterion then yields a $C_{222}$
+refutation. It allows cycles and repeated premises: summing the balance
+over labels outside the finite closure of truth gives the usual
+contradiction if the target is outside that closure.
+
+\subsection{Constructive completeness}
+
+From a finite $C_{222}$ refutation, choose a finite proof tree and an
+even horizon $t=16+2h_0^2$ strictly larger than its size, labels and
+every local parameter. Pad with truth to $t$ rows. Set $F=t^t$ and
+form the finite pending-multiset accumulator path with weights $1+jF$.
+
+Let $O$ be the odd part of $t!$. Choose an arbitrarily large odd
+$u=O(2m+1)$, and set $y=Fu$, $v=(u-1)/2$. The inequality
+$v_2(F)\ge t>v_2(t!)$ gives $t!\mid y$. Choose $u$ large enough
+that $y>F$ and exceeds every accumulator value. The beta moduli
+$1+(i+1)y$ are pairwise coprime and odd. CRT gives a positive beta
+code $x$, cofinal in its residue class.
+
+Set $B=\binom{F+t}{t}$ and $N=B^x$. The two prime-power statements
+assign compatible genuine rows at every prime factor of $B$.
+The inherited precision-$N^2$ CRT construction supplies all nine
+nonnegative representatives and range witnesses. Since $B$ is odd,
+$N^2$ is odd, so their cofinal lifts also permit the parity and
+dominance choices for the semantic anchor.
+
+Now $H=3+6\sum a_j$ is positive, odd and divisible by three.
+Thus $q=(BH)^x$ is positive, odd and divisible by three, and
+$z=(q-3)/6$ is an integer. The standard canonical construction gives
+the individual powers, Pell frame, normalized remainders and common
+norm completion. The converse pooling theorem supplies its four new
+coordinates. All source rows vanish. The exact projection and row
+maps then give a zero of the final quartic.
+
+Together with soundness and the inherited logical calibration, this
+proves that the new arithmetic source, its pooled form, and its final
+integer quartics have zeros exactly when there is a finite syntactic
+ZFC refutation.

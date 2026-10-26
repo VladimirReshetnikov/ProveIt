@@ -1,0 +1,222 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[letterpaper,margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,multicol}
+\usepackage{microtype,xcolor,hyperref,url,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,pdftitle={Quotient carriers and integral projection for Diophantine consistency},pdfauthor={Research prepared for Vladimir Reshetnikov with AI assistance}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Diophantine consistency}\fancyhead[R]{\small 25 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[3]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Refutes}{\operatorname{Ref}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\input{results.tex}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.5in}
+{\color{blue!45!black}\large Research contribution to ProveIt\par}
+\vspace{0.25in}
+{\LARGE\bfseries Quotient carriers and integral projection\par}
+\vspace{0.12in}
+{\Large Explicit polynomial equations for syntactic consistency of ZFC\par}
+\vspace{0.35in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{25 October 2026\par}
+{Developed with AI assistance; ordinary proofs and exact finite artifacts\par}
+\vspace{0.4in}
+\begin{abstract}
+We construct four compact ordinary polynomials and a direct integer
+quartic whose unsolvability, in their stated domains, is provably
+equivalent in ZFC to the syntactic consistency of ZFC. An auxiliary Pell
+ordinate carries the residue of an omitted divisibility quotient. This
+gives thirteen-positive-variable equations in 70 and 71 binary arithmetic
+operations, of degrees 206 and 162. A smaller residue modulus gives
+degree 154 in 72 operations. A separate rational carrier, made integral
+by the inherited adjacent-Pell descent, gives twelve positive variables
+in 74 operations at degree 438.
+
+On the direct proof-calculus route, we combine an affine signed-radix
+bootstrap with previously supplied strict local ranges, pooled power
+certificates and integral quadratic projections. The resulting polynomial
+has \DirectVars\ unrestricted integer variables, \DirectRows\ quadratic
+residuals, degree four and coefficient height \DirectHeight. A separate
+220-variable quartic has coefficient height 2,336. Neither direct
+construction uses K215 or a universal Diophantine polynomial.
+
+The report prints the complete principal residual list and the full
+finite recipe for the compact fixed integers. Exact arithmetic programs,
+all quartic coefficients, inverse maps, checkers and source identities
+are supplied. We distinguish new applications from inherited lemmas,
+finite verification from unbounded proofs, and ordinary formalizability
+from a new proof-assistant derivation. No global minimum or consistency
+decision is claimed.
+\end{abstract}
+\vfill
+\begingroup\raggedright
+\textbf{Comparison snapshot.}\quad
+\file{536c08e7913e59bd42e8fca66e89944c920884ad}, including all twelve
+archives present in \file{docs/incoming} at that commit.\par
+\textbf{Canonical objects.}\quad
+The literal equations, complete coefficient data and restoration
+certificates in the accompanying archive.
+\endgroup
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\begingroup\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\pagenumbering{arabic}
+
+\section{Results and the exact meaning of the theorem}
+
+Let $\Refutes_{\mathrm{ZFC}}(p)$ be the fixed syntactic predicate expressing
+that $p$ codes a finite derivation of contradiction in ZFC, with the
+numeration and logical interfaces retained from ProveIt. Set
+\[
+ \Con(\mathrm{ZFC})\equiv
+ \neg\exists p\in\N\;\Refutes_{\mathrm{ZFC}}(p).
+\]
+For each selected polynomial $P$ and its declared domain $D$, the result is
+\begin{equation}\label{eq:target}
+ \mathrm{ZFC}\vdash
+ \left[\neg\exists\mathbf x\in D\;P(\mathbf x)=0\right]
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+\end{equation}
+We give constructions in both directions between a polynomial zero and
+a finite refutation, by ordinary arithmetic formalizable in ZFC.
+Neither direction assumes consistency. The theorem does not assert
+that either side of the biconditional holds.
+
+\input{comparison.tex}
+
+There is no single ordering of \emph{simplest} across variable count,
+domain, degree, coefficient height, expanded support, and arithmetic
+circuit size. The repository already contains a quartic with 37
+unrestricted integer variables using a large fixed coefficient
+architecture, and equations with nine positive variables at much
+higher circuit cost and degree. The present direct quartics concern
+the small-coefficient $C_{222}$ branch. The compact contribution improves
+specific operation/degree tradeoffs and eliminates a variable from its
+matched parents; it does not establish a global minimum.
+
+All operation counts charge each binary addition, subtraction and
+multiplication, including a square and multiplication by a small
+constant. Reuse and fixed integer leaves are free. Thus the compact
+counts do not charge the bit lengths of their large fixed constants.
+Every comparison retains the variable domain and coefficient architecture.
+The source ledger records actual pinned files, including incoming
+manuscripts absent from older headline README tables.
+
+\section{Compact equations by eliminating an index quotient}\label{sec:quotient}
+\input{compact_proof.tex}
+
+\section{A direct quartic from pooled powers and integral projection}\label{sec:quartic}
+\input{projection_proof.tex}
+
+\input{diagonal_background.tex}
+
+\section{Exact finite verification}\label{sec:verification}
+\input{finite_verification.tex}
+
+\section{Calibration, reproducibility, and limits}\label{sec:status}
+
+The direct arithmetic encodes the numerical calculus $C_{222}$ itself.
+Its finite constructor polynomials and full rule list are retained with
+the original proof sources. Its logical interfaces are
+\begin{align*}
+ C_{222}(1)&\longleftrightarrow\text{a finite ZF refutation},\\
+ \text{a finite ZF refutation}&\longleftrightarrow
+                  \text{a finite ZFC refutation}.
+\end{align*}
+The repository declarations are
+\file{KEndpoint.c222_iff_zf_refutation} and
+\file{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+The latter is the constructible-universe equiconsistency interface.
+No K215 simulation or Jones universal polynomial is used on this route.
+
+The compact branch retains the entire native indexed943/radix67 tuple
+and its calibrated finite-refutation interface. This branch does retain
+the inherited K215/native encoding. Constants from different native
+tuples are not interchangeable. Its four supplied values are fixed
+explicit integers, rather than parameters awaiting a consistency-dependent
+choice or unspecified coefficients chosen by an existence theorem.
+
+The new reasoning is an ordinary mathematical proof formalizable in ZFC.
+The finite checks establish identities and authenticate literal equations,
+degrees, counts, restored rows and fixed integers. They do not prove an
+unbounded theorem from finite samples, search for a ZFC contradiction,
+or rebuild the full transitive Lean/Rocq development. The separate
+mathematical reviews in this package are separate AI-assisted reviews
+within this work, not external human refereeing.
+
+The inherited elementary Pell tools, rational integrality descent,
+factorial-free selector, diagonal growth, strict-horizon change,
+fixed-base power pooling and common-quadratic-direction projection
+are credited to their retained sources. The new compact carriers,
+smaller-modulus refinement, affine radix choice and exact compositions
+are the contributions submitted for review. Improvement over this
+pinned comparison set does not establish literature-wide priority.
+
+\input{reproduction.tex}
+
+\appendix
+\section{The full compact coefficient recipe}\label{app:compact}
+\input{compact_specification.tex}
+
+\section{Every quadratic residual of the principal equation}\label{app:rows}
+
+All coordinates range independently over $\Z$. The equation is exactly
+the sum of the squares of the following \DirectRows\ residuals.
+Coordinate subscripts are indices, not sign restrictions.
+
+\input{residuals.tex}
+
+\section{A reusable ordinate-normalization construction}\label{app:ordinate}
+\input{ordinate_lemma.tex}
+
+\clearpage
+\begin{thebibliography}{9}
+\small\raggedright\setlength{\itemsep}{3pt}
+\bibitem{repo} V. Reshetnikov and contributors, \emph{ProveIt}, comparison
+commit \file{536c08e7913e59bd42e8fca66e89944c920884ad},
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+The source ledger gives exact paths, retained notices, and hashes.
+\bibitem{factorialfree} \emph{Removing factorial authenticity from
+Diophantine consistency}, incoming archive
+\file{ConZFC_Factorial_Free_Binomial_CRT_2026-10-25.zip}, at that snapshot.
+\bibitem{coprime} \emph{Coprime product certificates and positive Pell
+centers}, package \file{142-coprime-products-positive-centers},
+at that snapshot.
+\bibitem{linearcrt} \emph{Linear CRT}, incoming archive
+\file{ConZFC_Linear_CRT_2026-10-25.zip}, at that snapshot.
+\bibitem{pooled} \emph{Pooled Powers}, incoming archive
+\file{ConZFC_Pooled_Powers_2026-10-25.zip}, at that snapshot.
+\bibitem{projection} \emph{A direct quartic for Con(ZFC) in 234 integer
+variables}, incoming archive
+\file{ConZFC_Quadratic_Projection_234_2026-10-25.zip}, at that snapshot.
+\bibitem{cofinal} \emph{Cofinal witnesses and centered carriers for
+Diophantine consistency}, incoming archive
+\file{ConZFC_Cofinal_Witnesses_Centered_Carriers_2026-10-25.zip},
+at that snapshot. Its retained sources include the earlier rational
+adjacent-Pell integrality argument, used and reproved here.
+\bibitem{bayer} J. Bayer, M. David, M. Hassler, Y. Matiyasevich, and
+D. Schleicher, \emph{Diophantine Equations over $\mathbb Z$: Universal
+Bounds and Parallel Formalization}, arXiv:2506.20909,
+\url{https://arxiv.org/abs/2506.20909}. Contextual background; the
+direct construction does not invoke a universal polynomial as a black box.
+\end{thebibliography}
+\end{document}

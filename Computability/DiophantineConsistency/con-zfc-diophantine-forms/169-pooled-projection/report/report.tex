@@ -1,0 +1,818 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,enumitem,fancyhdr}
+\usepackage{hyperref,xurl}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black,citecolor=blue!50!black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.5em}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Direct Diophantine consistency}
+\rhead{\small Pooled powers and integral projection}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\ZF}{\mathrm{ZF}}
+\newcommand{\Ccal}{\mathrm{C222}}
+\newcommand{\pp}[1]{\texttt{\detokenize{#1}}}
+\input{metrics.tex}
+\title{\bfseries Pooling signed power certificates before integral projection\\[5pt]
+\large A direct quartic consistency equation in 218 integer variables,\\
+with a 216-variable companion}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt research program\\
+\small AI-assisted research and independent internal audits}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a fully specified polynomial \(P_{218}\in
+\Z[x_0,\ldots,x_{217}]\) of total degree four for which an ordinary
+argument formalizable in ZFC proves
+\[
+  \bigl(\forall \mathbf{x}\in\Z^{218}\;P_{218}(\mathbf{x})\ne0\bigr)
+  \quad\longleftrightarrow\quad\Con(\ZFC).
+\]
+It is the sum of squares of 155 explicitly printed quadratic residuals.
+Its collected expansion has \MainTerms\ nonzero monomials and maximum
+absolute coefficient \MainHeight. The inspected 225-variable direct
+equation has 162 residuals, 7,867 monomials, and height 128,446.
+Thus the new principal equation improves all four size measures,
+with degree unchanged. A second exact construction has 216 variables
+and 153 residuals, at the measured cost of \FewTerms\ monomials and
+height \FewHeight.
+
+The construction combines the factorial-free arithmetic source of
+ProveIt source 157 with the fixed-base power pooling of source 158,
+then applies explicit integral projections and residual row operations.
+The combination requires a new check of the signed bootstrap and of
+every retained square-frame atom. Every constant of the final
+polynomials is a literal integer. There is no hidden universal-polynomial
+parameter or Turing-machine coefficient tuple.
+
+The inherited C222/ZF/ZFC refutation calibration is identified exactly.
+The new semantic composition and algebraic maps are ordinary proofs,
+with independent finite coefficient checks. This is a concrete improvement
+in the direct quartic branch, not a global simplicity minimum, a
+consistency decision, or a newly compiled end-to-end formal proof.
+\end{abstract}
+\tableofcontents
+
+\section{The delivered equation and the scope of the result}
+
+All independent unknowns of the delivered equations range over
+\emph{unrestricted integers}.
+Let \(R_0,\ldots,R_{154}\) be the literal quadratic polynomials printed
+in Appendix~\ref{app:residuals}. The principal equation is
+\begin{equation}\label{eq:principal}
+ \boxed{\displaystyle P_{218}(x_0,\ldots,x_{217})
+       =\sum_{j=0}^{154}R_j(x_0,\ldots,x_{217})^2=0.}
+\end{equation}
+The appendix, together with this finite sum, completely defines one
+polynomial. The machine-readable coefficient list and complete collected
+expansion are supplied as well. The indices of the sum are fixed;
+they are not additional unknowns.
+
+\begin{theorem}[Consistency equation]\label{thm:main}
+For the effective presentation of ZFC used by the repository's named
+refutation calibration, ZFC proves
+\[
+ \exists\mathbf{x}\in\Z^{218}\; P_{218}(\mathbf{x})=0
+ \quad\longleftrightarrow\quad
+ \exists p\;\operatorname{Refutation}_{\ZFC}(p).
+\]
+Consequently ZFC proves that \eqref{eq:principal} has no integer
+solution if and only if \(\Con(\ZFC)\).
+The analogous statement holds for the supplied
+\(P_{216}\in\Z[x_0,\ldots,x_{215}]\).
+\end{theorem}
+
+The theorem composes the arithmetic equivalences and integer polynomial
+maps below with the inherited syntactic calibration. It asserts neither
+side of the consistency equivalence by itself. Evaluating these
+polynomials is not a method for deciding consistency.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrrrr}
+\toprule
+Equation & Variables & Rows & Degree & Terms & Height\\
+\midrule
+Source 158, \(P_{225}\) &225&162&4&7,867&128,446\\
+New principal \(P_{218}\)&218&155&4&\MainTerms&\MainHeight\\
+New companion \(P_{216}\)&216&153&4&\FewTerms&\FewHeight\\
+\bottomrule
+\end{tabular}
+\caption{Exact counts over \(\Z\). Rows are quadratic residuals before
+taking the sum of squares. Height is the maximum absolute
+\emph{expanded polynomial} coefficient.}
+\label{tab:comparison}
+\end{table}
+
+The principal residual height is \MainRowHeight, and all 218 declared
+coordinates occur. The companion residual height is \FewRowHeight.
+The companion uses two fewer coordinates but is less sparse and has
+larger coefficients.
+
+The comparison is pinned to ProveIt commit
+\pp{953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4}.
+The repository also has compact equations with far fewer variables and
+much higher degree or very large fixed coefficients. At that snapshot its
+complete display uses 15 strictly positive variables, 66 integer-leaf binary
+operations, and degree 157 \cite{current}. That result has a different
+domain and objective. Our contribution is an explicit improvement in
+the direct, small-coefficient, degree-four construction.
+
+A final read-only check found sources 160--165 at commit
+\pp{fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb} \cite{late}.
+Their READMEs report further tradeoffs: source 162 has a 236-variable
+quartic with 4,876 monomials and height 7,968; source 165 has a
+238-variable quartic with 5,236 monomials and height 3,968.
+Our two forms use fewer variables, while those examples have
+smaller support and height. The simultaneous improvement in
+Table~\ref{tab:comparison} is specifically over the pinned
+source 158 equation. Later metrics were read from the cited
+READMEs, not independently expanded. Their exact file identities
+are recorded in \pp{provenance/LATE_REPOSITORY_CHECK.json}.
+
+\section{Logical calibration and the starting arithmetic system}
+
+\subsection{The inherited chain}
+
+The arithmetic source encodes finite derivations in the numerical calculus
+\(\Ccal\), rather than a particular Turing-machine execution. Its logical
+chain is
+\begin{equation}\label{eq:logicalchain}
+\begin{split}
+ \text{integer zero}
+ &\ \longleftrightarrow\ \text{finite square-shell C222 refutation}\\
+ &\ \longleftrightarrow\ \text{finite original C222 refutation}\\
+ &\ \longleftrightarrow\ \text{finite ZF refutation}\\
+ &\ \longleftrightarrow\ \text{finite ZFC refutation}.
+\end{split}
+\end{equation}
+The first equivalence is arithmetic; the second is a recursive recoding
+of formula constructors. The last two use the declarations
+\begin{quote}\small
+\pp{KEndpoint.c222_iff_zf_refutation}\\
+\pp{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\end{quote}
+These are unconditional calculus/refutation interfaces
+\cite{endpoint,choice}; machine-specific simulation hypotheses are not used.
+
+We retain the source statements and their pinned identities. We have
+not rebuilt their entire transitive Lean dependency graph. The ordinary
+proofs used here can be carried out in ZFC; this report does not supply
+an encoded object-ZFC derivation or a fresh full Lean or Rocq proof term.
+This is the dependency boundary of Theorem~\ref{thm:main}.
+
+\subsection{The syntax being arithmetized}
+
+For \(a,b\in\N\) and \(s=a+b\), the square-shell recoding uses
+\[
+ Q_0(a,b)=s^2+a,\qquad Q_1(a,b)=s^2+3a+4b+3
+\]
+and four constructors
+\[
+ I=2Q_0,\quad M=2Q_0+1,\quad A_{\rm syn}=2Q_1,\quad E_{\rm syn}=2Q_1+1.
+\]
+The two shell ranges partition the natural numbers before the parity
+split. Recursive decoding yields a bijection with the original coding.
+It fixes zero and the falsity code one. Constructor identities and
+freshness disequalities transport through this bijection. The source
+158 syntax note identifies this interface \cite{s158}.
+
+The local compiler represents a backwards proof-tree expansion by a
+finite list of polynomial alternatives. A pending multiset of labels
+is represented by a product of weights \(1+jF\). Local transitions
+replace a conclusion by zero, one, or two premises. A beta/CRT code
+stores the accumulator path; binomial divisibility selects its rows
+and enforces bounded local parameters. Pell certificates replace all
+requested powers by ordinary polynomial equations.
+
+These mechanisms are inherited. The present construction preserves the
+exact local square-shell Horn circuit and changes only the identified
+range and certificate layers.
+
+\subsection{The factorial-free source}
+
+Our actual starting system is the 242-coordinate arithmetic source in
+package 157, before that package's later projections \cite{s157}.
+Its literal file is a pinned input. Its semantic quantities include
+\begin{equation}\label{eq:source}
+\begin{gathered}
+ t=16+4d^2,\qquad F=t^t,\qquad C=2c,\\
+ H=2+4(C+A_1+\cdots+A_8),\qquad y=F(2v+1),\\
+ B h_B=C+F+1,\\
+ x=F+1+(y+1)u_0,\qquad
+ x=1+[1+(t+1)y]u_t.
+\end{gathered}
+\end{equation}
+Exponentiation in this display describes the meanings proved for
+polynomial certificates; it is not a primitive of the final equation.
+The initial requests are \(F=t^t\), \(N=B^x\), \(q=(BH)^x\);
+the other requests use the two bases \(q\) and \(q+1\).
+The binomial radius is \(F\), with authenticated digit
+\(B=\binom{F+t}{t}\). Authenticating \(t!\) is unnecessary.
+
+The retained square frame has
+\begin{equation}\label{eq:frame}
+ W=2+\sum_\nu a_\nu^2,\qquad W\ge258,\qquad |A|>W^W.
+\end{equation}
+Every actual requested base, index, and proposed output is among
+the affine atoms \(a_\nu\). The retained orientation argument identifies
+the Pell pairs at their canonical \emph{signed} indices before the
+arithmetic signs in \eqref{eq:source} are known.
+The distinction between \(a_\nu^2<W\) and the weaker \(|a_\nu|<W\)
+is essential for pooling. Independent checkers reconstruct the actual
+36-square identity and check all 17 retained power requests.
+
+\section{Cofinal strict ranges}
+
+Five old tests use lower binomial index \(t+1\): the four local
+schema parameters and the derived label. We replace all five by
+tests at lower index \(t\). The decoded bounds become
+\begin{equation}\label{eq:strict}
+ 0\le a,b,c,d<t,\qquad 0\le J(a,b,c,d)<t.
+\end{equation}
+This is a bound on each \emph{local} tuple. We do not bound the much
+larger global value of \(J\) on the CRT representatives by \(t\);
+that global value remains the semantic Pell anchor.
+
+\begin{proposition}\label{prop:strict}
+The strict-range replacement preserves existence of an integer
+solution of the factorial-free arithmetic source.
+\end{proposition}
+\begin{proof}
+Soundness uses the inherited prime-power range lemma:
+if \(p^e\mid\binom{a}{k}\), \(a\ge0\), \(k,e\ge1\), then the least residue of
+\(a\) modulo \(p^e\) is less than \(k\). Taking \(k=t\)
+strengthens the decoded local bounds, so previous soundness
+conclusions continue to hold.
+
+For completeness fix a finite refutation tree. Choose \(t=16+4d^2\)
+strictly larger than its number of expansion steps, every local
+parameter, and every value of the full local derived-label expression,
+including inactive branches and the truth-padding tuple. This is a
+cofinal choice made before constructing \(F\), the accumulators,
+the beta code, or the Pell frame.
+
+For each full prime power \(p^m\mathbin{\|}B\), hence
+\(p^{xm}\mathbin{\|}N=B^x\), precision-\(2x\) CRT
+makes a representative congruent to its target \(w\in[0,t-1]\)
+modulo \(p^{2xm}\). If the representative is below \(t\), its
+binomial at lower index \(t\) is zero. Otherwise its falling
+factorial contains \(a-w\). Since
+\[
+ v_p(t!)\le t-1<xm,
+\]
+division by \(t!\) leaves divisibility by \(p^{xm}\).
+Polynomial congruence gives the same conclusion for the derived label.
+The factorial-free source supplies the much stronger endpoint bound
+\(x\ge2+(t+1)y\), so replacing an early ratio consequence
+\(x\ge t+1\) by \(x\ge t\) causes no loss.
+\end{proof}
+
+Every affected normalized digit can now use the existing \(q^t\)
+denominator. Delete the \(q^{t+1}\) output, its private power
+quotient, the wire for its derived Pell pair, and its normalization
+ratio. Delete their three rows, redirect five ratio uses, and remove
+the old output square from the frame. The system has 238 coordinates,
+and all principal orientation pairs remain.
+
+This is a semantic transformation: an old witness need not survive
+at its old horizon. Completeness rebuilds witnesses at a larger
+horizon. We do \emph{not} use source 158's separate
+factorial-dependent change \(y=V-1\); here \(y=F(2v+1)\) is retained.
+
+\section{Two quadratic rows for a whole block of powers}
+
+The following fixed-base construction is inherited from source 158.
+Its signed hypotheses and its use in the new bootstrap are checked
+again for this combined source.
+
+\begin{lemma}[Signed fixed-base pooling]\label{lem:pool}
+Let \(W\ge258\), \(|A|>W^W\), and \(1\le r\le15\).
+Let \(n\ne0\), and suppose, for each \(1\le i\le r\),
+\[
+ n^2<W,\qquad m_i^2<W,\qquad k_i^2<W.
+\]
+Let \((X_i,Y_i)\) be the canonical signed Pell pair at parameter
+\(A\) and integer index \(k_i\), and put \(Z_i=AY_i\).
+There exist \(K,L\in\Z\) satisfying
+\begin{align}
+ K-2\sum_iY_i(m_i-X_i)-(2A-n)L&=0,\label{eq:pool1}\\
+ \sum_i[(m_i-X_i+Z_i)^2-Y_i^2]-nK+L&=0\label{eq:pool2}
+\end{align}
+if and only if every exact power identity \(m_i=n^{k_i}\) holds.
+For \(|n|\ge2\), these identities force \(k_i\ge0\).
+For \(n=\pm1\), signed indices are allowed.
+\end{lemma}
+\begin{proof}
+Write
+\[
+ T=2An-n^2-1,\quad D_i=m_i-X_i+Z_i,\quad
+ U=\sum_iY_i(m_i-X_i),\quad S=\sum_i(D_i^2-Y_i^2).
+\]
+The polynomial identity
+\begin{equation}\label{eq:identity}
+ \sum_i(D_i-nY_i)^2=S-2nU-T\sum_iY_i^2
+\end{equation}
+holds when \(Z_i=AY_i\). Eliminating \(K\) from the two rows gives
+\(S-2nU=TL\). Thus \(T\) divides the left side of
+\eqref{eq:identity}.
+
+The Pell congruence remains valid for negative indices. In the ring
+with formal square root of \(A^2-1\), sending that root to \(n-A\)
+is a homomorphism modulo \(T\), because
+\((n-A)^2-(A^2-1)=-T\). It sends the norm-one unit
+\(A+\sqrt{A^2-1}\) to \(n\). Since \(T\equiv-1\pmod n\),
+\(n\) is invertible modulo \(T\). Hence
+\[
+ X_i+(n-A)Y_i\equiv n^{k_i}\pmod T
+\]
+for all signed indices.
+
+Put \(b=\lfloor\sqrt{W-1}\rfloor\). Multiplying by \(n^b\)
+clears all negative indices and gives
+\[
+ T\mid E:=\sum_i(m_i n^b-n^{b+k_i})^2.
+\]
+All exponents are nonnegative. Every
+\(|n|,|m_i|,|k_i|\le b\), with \(b\ge16\), so
+\[
+ 0\le E\le4r b^{4b}<W^{2b+1}\le W^W.
+\]
+Here \(4r\le60<W\), \(b^2<W\), and
+\(2b+1\le b^2+1\le W\). On the other hand,
+\[
+ |T|\ge2|A||n|-n^2-1\ge2|A|-W>W^W.
+\]
+Thus \(E=0\), so each square vanishes. If \(|n|\ge2\) and
+\(k_i<0\), the resulting equation \(m_i n^{-k_i}=1\) is
+impossible over \(\Z\). All other cases give the asserted powers.
+
+Conversely the exact powers make each \(D_i-nY_i\) divisible
+by \(T\). Identity \eqref{eq:identity} then makes
+\(L=(S-2nU)/T\) integral. Taking \(K=2U+(2A-n)L\)
+supplies both rows.
+\end{proof}
+
+The symbols \(T,U,S,b\) are proof abbreviations, not new
+coordinates. The other quantities are existing affine coordinate
+expressions, including the existing \(Z_i=AY_i\) gate. Thus both
+new rows are quadratic. A whole block needs just two new
+coordinates and two rows in this construction.
+
+The strict system has eleven requests at \(q+1\) and three at \(q\).
+Replacing individual quotients and the old modulus coordinates saves
+ten and two coordinates, respectively. The initial requests
+\(F=t^t\), \(N=B^x\), and \(q=(BH)^x\) remain individual.
+
+\section{The pooled factorial-free bootstrap}\label{sec:bootstrap}
+
+An algebraic pooling identity alone is insufficient. The bases and
+signed indices must be justified in an order that avoids circular
+sign assumptions.
+
+\begin{proposition}\label{prop:bootstrap}
+The modified system recovers all arithmetic signs and exact powers
+without assuming a positive radix or positive CRT representatives.
+\end{proposition}
+\begin{proof}
+The individual request at known base and index \(t\) first gives
+\(F=t^t\ge16^{16}=2^{64}\). Since \(t=16+4d^2\), \(F\)
+is even. With \(C=2c\), the right side of
+\(Bh_B=C+F+1\) is odd even when \(c<0\). Thus \(B\) is
+odd and nonzero. Independently \(H\equiv2\pmod4\), whence
+\(|H|\ge2\) and \(|BH|\ge2\). The individual \(BH\) request
+gives \(x\ge0\) and \(q=(BH)^x\).
+
+The beta equation gives \(|y|\ge F\), so
+\[
+ |1+(t+1)y|\ge(t+1)F-1>1.
+\]
+If \(x=0\), the terminal endpoint makes this integer divide
+\(-1\), a contradiction. Therefore \(x\ge1\) and \(|q|\ge2\).
+
+Apply Lemma~\ref{lem:pool} to the \(q\) block. Its request at
+exponent \(y+1\) forces \(y+1\ge0\). A negative \(y\) would
+be at most \(-F<-1\), so \(y\ge F>0\).
+The first endpoint excludes \(u_0\le-1\), giving \(x\ge F+1\);
+the last endpoint now forces \(u_t\ge1\). Thus
+\begin{equation}\label{eq:xlarge}
+ x\ge2+(t+1)y\ge2+(t+1)F.
+\end{equation}
+Since \(|q|\ge2^x\), we have \(|q+1|\ge2\).
+Pooling at \(q+1\) now proves all representative indices
+nonnegative and all outputs exact. In particular
+\(C,A_1,\ldots,A_8\ge0\), the semantic anchor retains its
+meaning, and \(H>0\). Neither \(B>0\) nor \(q>0\) has
+yet been assumed.
+
+To finish the sign argument, write \(Q=|q|\) and
+\(c_j=\binom{F+t}{j}\). For \(0\le j\le t\),
+\[
+ c_j\le(F+t)^t\le(F^2+F)^t\le2^{t(F-1)}.
+\]
+Equation \eqref{eq:xlarge} yields
+\(c_{\max}/(Q-1)<1/32\) and \(c_t<Q/32\).
+The binomial theorem is valid at negative \(q\), and its true low
+part \(r_0=\sum_{j<t}c_jq^j\) satisfies \(|r_0|<Q^t/32\).
+
+The retained normalization identities and common remainder norm
+bound each supplied remainder by half its denominator in absolute
+value. Congruent supplied and genuine remainders must therefore
+coincide. The digit row gives \(B\equiv c_t\pmod q\).
+For \(a=|BH|\ge2\), \(|B|\le a<Q/2\), because \(x\ge3\).
+Hence \(|B-c_t|<Q\), and
+\[
+ B=c_t=\binom{F+t}{t}>0.
+\]
+Now \(q>0\), \(N=B^x>0\), and all later binomial, CRT, and
+weight arguments have their original natural-number meanings.
+\end{proof}
+
+Source 157's remaining estimates are unchanged. They use
+\(\operatorname{lcm}(1,\ldots,t)^2\le16^{t-1}<t^t=F\)
+for binomial CRT selection, its sharper weight-separation proof
+at \(F=t^t\), and its local polynomial majorant below \(2^x\)
+\cite{s157}. The local ranges have only become smaller.
+
+For reverse construction choose the larger cofinal horizon,
+choose the beta spacing as a sufficiently large odd multiple of
+the odd part of \(t!\) times \(F\), then build the original CRT
+and simultaneous Pell witnesses. The converse of
+Lemma~\ref{lem:pool} supplies the four pooled coordinates.
+Old witnesses need not remain numerically unchanged.
+
+\section{Exact algebraic compression}
+
+\subsection{Private wires and Pell difference coordinates}
+
+Before pooling, three private coordinates are removed by the
+consumer-based integer changes of source 158. Their forward and
+reverse residual identities are checked against the factorial-free
+source by matching the unchanged local Horn subcircuit.
+This takes 238 coordinates to 235. The change introduces one
+shared product, eliminates four private wires, and replaces a gate
+by an aggregate square-sum coordinate. It is an exact algebraic
+transformation, unlike the cofinal change of Section~3.
+
+Pooling gives 223 coordinates and 160 residuals.
+For each retained Pell pair use the difference coordinate
+\[
+ U_i=X_i-Z_i,\qquad X_i=U_i+Z_i.
+\]
+Because \(Z_i\) already has a gate coordinate, this is an invertible
+integer affine change in the ambient coordinate system.
+On the common zero set, the retained gate equation \(Z_i=AY_i\)
+identifies \(U_i\) with \(X_i-AY_i\).
+It reduces expanded support without changing the number of
+unknowns or requiring a divisibility premise. The resulting
+223-coordinate system is the pinned input to the following
+projection theorem.
+
+\subsection{Removing common quadratic directions}
+
+\begin{theorem}[Integral radical projection]\label{thm:radical}
+Let \(F_0,\ldots,F_{m-1}\in\Z[\mathbf{x}]\) have degree at most two.
+Suppose \(v\in\Z^n\) satisfies
+\[
+ F_i(\mathbf{x}+uv)=F_i(\mathbf{x})+u a_i
+ \quad\text{for every }i,
+\]
+where \(a_i\in\Z\) is independent of \(\mathbf{x}\).
+Assume \(v_p=1\) and \(a_r=\pm1\).
+On \(z_p=0\), set
+\[
+ G_i(\mathbf{z})=F_i(\mathbf{z})-(a_i/a_r)F_r(\mathbf{z})
+ \qquad(i\ne r).
+\]
+The common integer zero sets of \(F\) and \(G\) are in polynomial
+bijection, and every \(G_i\) has degree at most two.
+\end{theorem}
+\begin{proof}
+The projection and lift are
+\[
+ \pi(\mathbf{x})=\mathbf{x}-x_pv,\qquad
+ \lambda(\mathbf{z})=\mathbf{z}-vF_r(\mathbf{z})/a_r.
+\]
+They have integer coefficients because \(a_r=\pm1\).
+The directional identity gives
+\[
+ F_r(\lambda(\mathbf{z}))=0,\qquad
+ F_i(\lambda(\mathbf{z}))=G_i(\mathbf{z}).
+\]
+At a zero of \(F\),
+\(F_r(\pi(\mathbf{x}))=-a_rx_p\), and therefore
+\(\lambda(\pi(\mathbf{x}))=\mathbf{x}\).
+Conversely \(z_p=0\) gives
+\(\pi(\lambda(\mathbf{z}))=\mathbf{z}\).
+\end{proof}
+
+A common kernel vector for the homogeneous Hessian matrices has
+the required constant-direction property. The certificate supplies
+five integer vectors, pivots, omitted rows, and directional
+constants. The checker verifies the directional identities
+themselves, not merely a reported rank.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{rrrl}
+\toprule
+Dimension& Pivot & Omitted row & Nonzero entries of \(v\)\\
+\midrule
+223&43&28&\(v_{43}=1,\ v_{44}=-1\)\\
+222&59&45&\(v_{59}=1,\ v_{60}=-1,\ v_{61}=-2\)\\
+221&63&48&\(v_{61}=-1,\ v_{63}=1\)\\
+220&30&15&\(v_{30}=1,\ v_{31}=-1,\ v_{32}=-2\)\\
+219&24&9 &\(v_{24}=1,\ v_{26}=-1,\ v_{27}=-2\)\\
+\bottomrule
+\end{tabular}
+\caption{The five actual radical projections. Indices refer to the
+current system before that row of the table is applied.}
+\label{tab:directions}
+\end{table}
+
+The transformations take 223 coordinates and 160 rows to 218
+coordinates and 155 rows. This is source 159's method applied to
+the new combined arithmetic source \cite{s159}; the generic
+projection theorem is not claimed as a new literature theorem.
+
+Then 38 recorded integer row operations lower height and support.
+Each \(F_i\leftarrow F_i+kF_j\), \(i\ne j\), has integer inverse
+\(F_i\leftarrow F_i-kF_j\), so the common zero set is unchanged.
+The sum of squares of the final rows is \(P_{218}\).
+
+\subsection{The 216-coordinate companion}
+
+Two affine consequences permit two additional coordinate
+eliminations. Each certificate expresses an affine polynomial as
+an exact constant-coefficient combination of the rows, with unit
+coefficient on the removed coordinate. Solving for that coordinate
+and substituting preserves degree two. The certificate identifies
+the omitted old row and proves its recovery from the combination.
+The row-combination coefficient need only be nonzero for this
+recovery over \(\Z\); the solved coordinate coefficient must be a
+unit to ensure an integral lift.
+
+Direct substitution needlessly enlarges coefficients. In the
+218-coordinate projected system before the balancing row operations,
+let
+\[
+ a=x_8,\quad b=x_9,\quad u=x_{19},\quad
+ v=x_{20},\quad w=x_{33}.
+\]
+The exact identity is
+\[
+ -F_5+F_{18}=4+12a+16b+4u-v+w.
+\]
+Introduce the integral affine coordinates
+\[
+ t_*=u+3a+4b+1,\qquad c_*=v-2t_*,
+\]
+whose inverse is
+\[
+ u=t_*-3a-4b-1,\qquad v=c_*+2t_*.
+\]
+The affine relation becomes \(2t_*-c_*+w=0\), hence
+\(w=c_*-2t_*\). The retained common-square row collapses to
+\[
+ c_*-4t_*^2+1=0.
+\]
+No integer coordinate is divided by two. The actual chart and
+inverse are explicit certificate data, and the notation here does
+not add polynomial unknowns.
+
+The two affine eliminations, followed by 59 invertible row
+operations, yield \(P_{216}\). Its 153 quadratic residuals and full
+collected expansion are included. The centered chart controls the
+coefficient growth caused by the two additional substitutions.
+The principal \(P_{218}\) remains the better sparse, low-height
+choice.
+
+\section{Proof of the main theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+A finite sum of integer squares is zero precisely when every
+residual is zero. Thus a zero of \(P_{218}\) is a zero of its
+155-row quadratic system.
+
+Invert the recorded row operations and apply the lifts of
+Theorem~\ref{thm:radical}, obtaining a 223-coordinate zero.
+Invert the Pell difference chart. The actual square-frame
+memberships, Lemma~\ref{lem:pool}, and the bootstrap of
+Proposition~\ref{prop:bootstrap} restore every exact power.
+The exact private-wire maps and the strict-range soundness
+argument recover the inherited local proof-certificate
+interpretation. It gives a finite square-shell C222 refutation.
+The recoding and named interfaces in \eqref{eq:logicalchain}
+produce a finite ZFC refutation.
+
+Conversely a finite ZFC refutation yields a finite C222
+refutation and its square-shell recoding by the inherited
+calibration. Choose a sufficiently large cofinal horizon and
+construct the factorial-free strict-range witnesses, as in
+Section~3 and source 157's completeness proof.
+The private-wire changes, the converse of
+Lemma~\ref{lem:pool}, and the Pell difference chart give a
+223-coordinate zero. Apply the radical projections and
+recorded row operations to obtain a zero of \(P_{218}\).
+
+All steps are finite integer arithmetic, recursive syntactic
+constructions, or the identified inherited calibration, and
+their arguments formalize in ZFC. Negation gives the stated
+consistency equivalence. The additional centered chart and
+affine projections give the same equivalence for \(P_{216}\).
+\end{proof}
+
+\section{Finite verification and reproducibility}
+
+Verification separates three claims. The article and independent
+mathematical review establish the new unbounded semantic steps
+using the identified inherited arithmetic theorems.
+The composition checkers bind those statements to the literal
+source edits, all actual power requests and the square frame,
+and the private coordinate maps. The algebra checker verifies
+every projection, row operation, inverse chart, and collected
+coefficient. Coefficient checks do not replace unbounded proofs.
+
+The root commands use only Python's standard library:
+\begin{verbatim}
+python3 -B verify.py
+python3 -B -O verify.py
+\end{verbatim}
+Both ordinary and optimized execution are supported; required
+checks are not removable Python assertions. The receipts record
+the checks actually performed. Deliberately corrupted
+certificates are rejected. There is no search for a zero.
+
+The sparse format stores each term as an integer coefficient
+and a sorted list of coordinate indices. Repetitions mean
+repeated factors; the empty list denotes the constant monomial.
+For example \([{-}3,[2,7,7]]\) denotes \(-3x_2x_7^2\).
+Monomial index lists in residuals have length at most two, and
+in the expanded quartic at most four. Validation excludes duplicate monomials, zero
+coefficients, noninteger data, and out-of-range indices.
+
+The verifier independently expands \(\sum R_j^2\), compares
+every coefficient with the collected polynomial, and checks
+degree, support, height, coordinate liveness, and the printed
+principal appendix. All 155 residuals in that appendix are
+parsed back into integer polynomials for comparison.
+Raw source identities and canonical JSON hashes are recorded
+separately.
+
+The complete literal equations can be evaluated without
+executing a historical compiler. The builder and frozen
+certificates are also supplied for reproduction.
+The following table gives the construction stages; changes
+of integer basis leave the counts of variables and rows fixed.
+
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule
+Stage&Coordinates&Quadratic rows\\
+\midrule
+Pinned factorial-free arithmetic source&242&178\\
+Strict local ranges&238&175\\
+Private-wire basis&235&172\\
+Pooled powers and Pell differences&223&160\\
+Common-direction projection&218&155\\
+Centered affine projections&216&153\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Attribution and verification boundary}
+
+The new result is the complete cross-branch construction, its
+checked noncircular bootstrap, the exact finite bindings, and
+the two final literal polynomials. The factorial-free
+binomial/CRT theorem is inherited from source 157; the pooling
+lemma and private-wire identities from source 158; the
+common-direction projection method from source 159.
+The combined instance and its improved equations are the
+contribution of this iteration.
+
+New finite checks were executed for this release. Historical
+source receipts remain historical. The full logical formal
+development was not recompiled. No global optimum or
+literature-wide priority is asserted, and the internal
+independent reviews are AI-assisted audits, not external
+human peer review.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can a residual basis for the centered 216-coordinate
+companion approach the support and height of \(P_{218}\)?
+This is now a finite integer-algebra problem on a fixed
+coefficient system.
+\item Can a pooled coordinate be eliminated while all rows
+stay quadratic and the signed bootstrap remains valid?
+The two-row lemma is a construction, not a minimum theorem.
+\item Can the local square-shell proof circuit be redesigned
+to retain more common quadratic directions through compilation,
+while preserving the constructor recoding and freshness guards?
+\item Can low-degree consequences beyond constant row
+combinations and common Hessian kernels expose further
+integral projections? Rational eliminations need integral
+lifts or separate divisibility arguments.
+\item A focused formalization could first establish
+Lemma~\ref{lem:pool} and Theorem~\ref{thm:radical}, and then
+validate a compact certificate format. That isolates the new
+mathematics without requiring a new full logical build.
+\end{enumerate}
+
+These questions are not assumptions of either delivered equation.
+
+\appendix
+\section{Every residual of the principal equation}
+\label{app:residuals}
+
+The following list fixes all coefficients of
+\(P_{218}=\sum_{j=0}^{154}R_j^2\).
+The only independent unknowns are
+\(x_0,\ldots,x_{217}\in\Z\).
+There are no omitted constants, variable exponents, range
+predicates, or additional side conditions.
+
+\begingroup\footnotesize
+\setlength{\jot}{1.5pt}
+\input{residuals218.tex}
+\endgroup
+
+\section{Artifact identities}
+\input{identities.tex}
+
+The algebra certificates contain the five radical directions,
+both affine combinations, the centered chart and its inverse,
+and every row operation. The source-composition certificates
+contain the cofinal-range edits, private-wire maps, pooled
+blocks, and complete frame-atom ledger.
+
+\begin{thebibliography}{9}
+\bibitem{s157}
+ProveIt contributors.
+\emph{Affine beta spacing and arithmetic sign recovery;
+source 157, linear CRT}.
+Snapshot \pp{953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4},
+25 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/157-linear-crt}.
+
+\bibitem{s158}
+ProveIt contributors.
+\emph{Pooling exact power certificates for Diophantine consistency;
+source 158}.
+Same pinned snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers}.
+
+\bibitem{s159}
+ProveIt contributors.
+\emph{A direct quartic for Con(ZFC) in 234 integer variables;
+source 159}.
+Same pinned snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/159-quadratic-projection-234}.
+
+\bibitem{endpoint}
+ProveIt contributors.
+\emph{KEndpoint.lean}, especially
+\pp{c222_iff_zf_refutation}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean}.
+
+\bibitem{choice}
+ProveIt contributors.
+\emph{ConstructibleChoice.lean}, especially
+\pp{zf_refutation_iff_zfc_refutation}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean}.
+
+\bibitem{current}
+ProveIt contributors.
+\emph{A complete fifteen-variable consistency equation}.
+Complete display at the same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/DiophantineConsistency/equation.tex}.
+
+\bibitem{late}
+ProveIt contributors.
+\emph{Sources 160--165: later direct quartic and compact tradeoffs}.
+README comparison at commit
+\pp{fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fb1bed5eb7196cf35abfaa746c18c6ee7eae6cfb/Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,162 @@
+\section{One diagonal power serves three purposes}\label{sec:diagonal}
+
+The diagonal choice $F=t^t$, the alias $R=F$, and the linear odd beta
+spacing already occur in the incoming Linear CRT manuscript~\cite{linearcrt}.
+We give the needed proofs here to make the new sign-bootstrap and pooling
+composition reviewable. The distinct feature of this source is the fixed
+radix class $q\equiv3\pmod6$.
+
+The direct arithmetic construction encodes a finite multiset of valid
+instances of a single-conclusion proof calculus. An exact balance between
+conclusion labels and premise labels characterizes a proof of the target.
+The existing compiler represents a finite sequence of multiplicative
+accumulator states through beta remainders and certifies its local rows
+through amplified binomial CRT conditions. We retain that architecture
+and change the growth parameter and sign bootstrap.
+
+Throughout this section, $t\ge2$ is an even integer. In the actual
+polynomial source, $t=16+2h^2$, so these premises are automatic. Put
+\[
+ F=t^t,\qquad L_t=\lcm(1,2,\ldots,t).
+\]
+The variable exponent is proof notation: $F=t^t$ is enforced by an
+existing simultaneous Pell power certificate in the ordinary source.
+It is not an operation in the final quartic.
+
+\subsection{Separating bounded multisets at one integer}
+
+For a finite list $A=(a_1,\ldots,a_m)$ with $1\le a_i\le t$ and
+$0\le m\le t$, define the auxiliary polynomial
+\[
+ H_A(X)=\prod_{i=1}^{m}(1+a_iX).
+\]
+The empty product is one. This polynomial is used in the proof only;
+the length of the list is not the number of final unknowns.
+
+\begin{lemma}[Diagonal evaluation separates the lists]\label{lem:labels}
+If $A$ is such a list, $B$ is any finite list of labels in
+$\{1,\ldots,t\}$, and $H_A(F)=H_B(F)$ with $F=t^t$, then $A$ and $B$
+have the same multiplicities of every label. Only one initial length
+bound is required.
+\end{lemma}
+\begin{proof}
+First their lengths are equal. If $m>n$, then $m\ge n+1$ and
+\[
+ H_A(F)\ge(F+1)^m\ge(F+1)^{n+1}
+       >(t(F+1))^n\ge(tF+1)^n\ge H_B(F).
+\]
+The strict inequality follows from $F+1>t^n$. The following weak
+inequality also covers $n=0$. If $n>m$, the symmetric comparison uses
+$m\le t$ and $F+1>t^m$; no prior upper bound on $n$ is needed.
+
+Let the common length be $m$. For $0\le k\le m$, the coefficient of
+$X^k$ in either product is a positive integer and is at most
+\[
+ \binom{m}{k}t^k\le\binom{t}{k}t^k
+ \le t^{t-k}t^k=t^t=F.
+\]
+Here $\binom{t}{k}=\binom{t}{t-k}\le t^{t-k}$.
+Thus every coefficient of $H_A-H_B$ has absolute value strictly less
+than $F$. If a nonzero coefficient had least index $k$, division of
+$(H_A-H_B)(F)=0$ by $F^k$ and reduction modulo $F$ would force that
+coefficient to be divisible by $F$, a contradiction. Therefore
+$H_A=H_B$ in $\Z[X]$.
+
+Each $1+jX$ is a primitive linear polynomial, and two such factors with
+positive $j$ are associates only when their labels agree. Unique
+factorization, or comparison of the rational roots $-1/j$, now gives
+the asserted multiplicities.
+\end{proof}
+
+Truth label zero has weight one and is deliberately omitted from these
+lists. The retained proof-flow interface treats truth as freely available.
+The lemma therefore provides exactly the projected label balance needed
+by that interface. It does not claim that all integers $1+jF$ are pairwise
+coprime; they need not be.
+
+\subsection{The same power covers the CRT rows}
+
+\begin{lemma}[Elementary least-common-multiple bound]\label{lem:lcm}
+For even $t\ge2$, $L_t^2\le t^t=F$.
+\end{lemma}
+\begin{proof}
+Write $L_t$ as the product of the largest power of each prime not
+exceeding $t$. Each factor is at most $t$. There are at most $t/2$
+such primes: besides 2, they belong to the $t/2-1$ odd integers from
+3 through $t-1$. Thus $L_t\le t^{t/2}$, and squaring proves the claim.
+\end{proof}
+
+The inherited factorial-free CRT theorem uses
+\[
+ R\ge L_t^2,\qquad B=\binom{R+t}{t}.
+\]
+It proves two different prime-power facts. Every row $i\in\{1,\ldots,t\}$
+has a full prime power $p^e\Vert B$ with $p^e\mid R+i$ and $p^e>t$;
+conversely every full prime power of $B$ divides at least one such row.
+The first fact supplies row-by-row soundness. The second supplies a
+consistent reverse CRT construction at all prime factors of $B$.
+The retained proof includes their valuation arguments and the amplified
+range extraction; this report does not replace them by an assumption of
+pairwise coprimality of the consecutive factors.
+
+Lemma~\ref{lem:lcm} permits the literal specialization
+\begin{equation}\label{eq:shift}
+ R=F=t^t,\qquad B=\binom{F+t}{t}.
+\end{equation}
+The former square relation $R=F^2$ is unnecessary. This is a change to
+the semantically certified source, followed by a polynomial alias and
+exact elimination of its now redundant coordinate. It is not the
+unjustified deletion of an equation from the old zero set.
+
+\subsection{The required parity is already present}
+
+The same choice also provides
+\[
+ v_2(F)=t\,v_2(t)\ge t>v_2(t!).
+\]
+Consequently an arbitrarily large odd multiple of $F$ can be chosen
+divisible by $t!$: multiply by an odd multiple of the odd part of $t!$.
+This is precisely the freedom used to choose a beta spacing large enough
+for every pending proof-accumulator state. The polynomial need not
+represent $t!$; it occurs only in the constructive existence proof of an
+appropriate spacing.
+
+Also $B=\binom{F+t}{t}$ is odd. For $1\le i\le t$,
+$v_2(i)<v_2(F)$, so $v_2(F+i)=v_2(i)$. The powers of two in the
+numerator product and in $t!$ therefore cancel exactly. This parity
+allows the subsequent CRT representatives and beta codes to be chosen in
+the required residue classes.
+
+\section{Recovering signs before arithmetic interpretation}\label{sec:signs}
+
+The direct final equation has unrestricted integer unknowns. Positivity
+must therefore follow from equations, and the order in which it follows
+matters. We replace the old positive-square radix by
+\begin{equation}\label{eq:radix}
+ q=6z+3,\qquad H=3+6\sum_{j=1}^{9}a_j,\qquad q=(BH)^x,
+\end{equation}
+where the $a_j$ are the nine actual CRT representatives. The last identity
+is an existing polynomially certified power request.
+
+Before the sign of any representative or of $B$ is known,
+\[
+ |q|\ge3,\qquad |q+1|\ge2.
+\]
+Thus the signed power theorem applies to both bases. The requests with
+base $q+1$ force the nine representative indices to be nonnegative;
+the request with base $q$ and index $y+1$ gives $y+1\ge0$.
+It follows that $H\ge3$ and $y\ge-1$ without assuming a binomial value
+or a positive radix.
+
+The beta spacing can now be linear in its cofinal parameter:
+\begin{equation}\label{eq:beta}
+ y=F(2v+1).
+\end{equation}
+Because $F=t^t\ge2$ and $y\ge-1$, its odd multiplier cannot be negative.
+Hence $y\ge F$ and $v\ge0$. This recovers the sign that a square formerly
+imposed, while retaining a cofinal collection of legal spacings. The full
+bootstrap, including the normalization ratios, the signed first binomial
+digit, $B>0$, $x>0$, and finally $q>0$, is given in the following proof.
+
+\input{direct_proof.tex}
+
