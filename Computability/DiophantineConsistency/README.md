@@ -51,6 +51,11 @@ including nested-binder substitution and variable-shift checks. The actual
 now also passes [independent replay](reviews/foundation-pahf-logic-root.md),
 preserving all finite assumptions in `HA.Derives`. Translated arithmetic
 axioms and induction remain separate work.
+The first [conventional HA arithmetic proofs](Lean/DiophantineConsistency/HABasicArithmetic.lean)
+now cover the six actual axioms, equality, safe closure operations and formula
+induction, including genuine proofs of0+t=t and t+1=S t. Their
+[independent replay](reviews/ha-basic-arithmetic-root.md) passed19 reports
+using only `propext` and `Quot.sound`; full arithmetic translation remains open.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the

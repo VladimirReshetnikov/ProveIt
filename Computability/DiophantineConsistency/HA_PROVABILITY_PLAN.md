@@ -247,6 +247,17 @@ with14 reports using only `propext` and `Quot.sound`, with67 authenticated
 cached prerequisites. Conventional arithmetic axioms, induction and sentence
 closure still require their own derivations and comparison.
 
+The first conventional arithmetic derivations are now checked in
+[HABasicArithmetic](Lean/DiophantineConsistency/HABasicArithmetic.lean):
+equality rules, all six arbitrary-term instances of the actual HA axioms,
+safe closure opening/reclosing, and the actual formula-induction rule.
+The module uses that induction rule to prove0+t=t and proves t+1=S t
+from the addition axioms. Nested/free-parameter checks passed
+[independent root replay](reviews/ha-basic-arithmetic-root.md), with19
+reports using only `propext` and `Quot.sound`. Seven cached prerequisites
+were explicitly reused. Further semiring/order axioms and their translated
+induction/parameter closures remain separate work.
+
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and
 the literal `BProv ZFCax_s [] Form.fBot`. Its final negation composition
