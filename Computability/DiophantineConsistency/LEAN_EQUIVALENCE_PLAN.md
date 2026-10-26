@@ -120,6 +120,14 @@ being rebuilt as described in
 [its build record](reviews/machine215-current-closure-build.md); a live
 build is not a completed endpoint check.
 
+The signed auxiliary-Pell residue needed by the thirteen-variable soundness
+map is now checked in `SignedPellResidue.four_square_dvd_sub_one`. From
+S>=2, the exact auxiliary norm and y congruent to1 modulo4 it derives
+`4*S^2 | y-1`, without sign or size assumptions on V,y. The
+[root review](reviews/signed-pell-residue-lean-root.md) includes signed
+examples and the necessary modulo-four premise. The full transport-witness
+recovery and fresh-seed converse remain separate work items.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged

@@ -11,6 +11,7 @@ import DiophantineConsistency.FirstPellCarrier
 import DiophantineConsistency.Carrier65Witness
 import DiophantineConsistency.Carrier66
 import DiophantineConsistency.ThirteenCarrier
+import DiophantineConsistency.SignedPellResidue
 import DiophantineConsistency.FactorialRepresentation
 import DiophantineConsistency.BoundedForallRepresentation
 import DiophantineConsistency.PairingRepresentation
