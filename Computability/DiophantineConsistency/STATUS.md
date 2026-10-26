@@ -75,8 +75,10 @@ occurs, and every first output/capture and the conditional .tex draft are
 preserved. The separately reviewed
 [Carrier65 corollary](research/tile-biased-carrier65-corollary/README.md)
 gives the same family a14/65/150 front without changing its four ports.
-A new held check targets2039 using the whole-modulus controller conditions
-directly. No successful tuple, validated saving or page replacement is claimed.
+The [four short-length obstructions](research/tile-biased49-short-length-obstructions/README.md)
+have [two full reviews and scoped root acceptance](reviews/tile-biased49-short-length-ROOT-two-peer-acceptance.json).
+The2039 whole-modulus probe remains unexecuted under CODE_ONLY/HOLD.
+No successful tuple, validated saving or page replacement is claimed.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 saves twenty operations and178 degree while adding four unknowns.

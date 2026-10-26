@@ -26,6 +26,12 @@ polynomial front has a distinct unsubscripted name; its five factors are
 P,Q,U,W,Z and its two masks are mu,omega. The complete 430-action decoder
 and 942 indexed tiles fit on one Letter page at the unchanged fonts.
 
+Decimal notation and distinct unsubscripted scalar unknowns are maintained
+display requirements. Future replacements must preserve them and update
+TeX and PDF together. The latest [format continuity check](reviews/current-decimal-distinct-names-9989-ROOT-continuity.json)
+authenticates both complete files, all 715 digits and the saved page image.
+Subscripts in the fixed tile table and decoder index constant data.
+
 The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 uses **47,313 raw fixed-integer bytes**, 10,812 below the preceding2471
 page. It fixes Start and sorts the other941 selectors by their distinct
@@ -117,9 +123,12 @@ finds H=0 modulo19 for the actual new kernel. No auxiliary prime repairs
 that fixed-unit failure, so the2033 controller is rejected and its draft
 page is preserved without promotion. The same whole conditional family
 has a reviewed [Carrier65 corollary](research/tile-biased-carrier65-corollary/README.md),
-retaining14 positive inputs,65 operations and degree150. The next finite
-check targets length2039; no successful tuple or measured equation saving
-is claimed yet. The maintained decimal page is unchanged.
+retaining14 positive inputs,65 operations and degree150. The
+[short-length obstructions](research/tile-biased49-short-length-obstructions/README.md)
+now have [two full reviews and scoped root acceptance](reviews/tile-biased49-short-length-ROOT-two-peer-acceptance.json).
+The length2039 packet remains unexecuted under CODE_ONLY/HOLD; no successful
+tuple or measured equation saving is claimed. The maintained decimal page
+is the padding-staircase2011 version above.
 
 The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
 [grouped66 page](candidates/one-page-grouped66/equation.pdf) and
