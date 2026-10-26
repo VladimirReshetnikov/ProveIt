@@ -87,9 +87,7 @@ theorem index_residues {A c f I J p m y u : ℕ}
   have hsp := step_down hA hp hpm (Or.inl hstep)
   have hcmZ : (c : ℤ) ∣ m := by exact_mod_cast hcm
   have hsp' : (c : ℤ) ∣ (s : ℤ) - p ∨ (c : ℤ) ∣ (s : ℤ) + p := by
-    rcases hsp with hh | hh
-    · exact Or.inl (dvd_trans hcmZ hh)
-    · exact Or.inr (dvd_trans hcmZ hh)
+    exact hsp.imp (dvd_trans hcmZ) (dvd_trans hcmZ)
   -- `u ≡ (−1)^h s (mod c)` and `u ≡ J (mod c)`
   have hcI : (c : ℤ) ∣ (I : ℤ) ^ 2 := by
     exact dvd_pow (by exact_mod_cast hcI₀) (by decide : 2 ≠ 0)
@@ -109,16 +107,12 @@ theorem index_residues {A c f I J p m y u : ℕ}
   have hJp_of_sign {t : ℤ} (hJs : (J : ℤ) ≡ t * s [ZMOD c])
       (ht : t = 1 ∨ t = -1) :
       (c : ℤ) ∣ (J : ℤ) - p ∨ (c : ℤ) ∣ (J : ℤ) + p := by
-    have hJs' := Int.modEq_iff_dvd.1 hJs
+    have hJs' := Int.modEq_iff_dvd.1 hJs.symm
     rcases ht with e | e <;> rw [e] at hJs' <;> rcases hsp' with hh | hh
-    · left; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
-      exact ⟨k1 - k2, by linear_combination hk1 - hk2⟩
-    · right; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
-      exact ⟨k1 - k2, by linear_combination hk1 - hk2⟩
-    · right; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
-      exact ⟨-k1 - k2, by linear_combination -hk1 - hk2⟩
-    · left; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
-      exact ⟨-k1 - k2, by linear_combination -hk1 - hk2⟩
+    · left; convert Int.dvd_add hJs' hh using 1; ring
+    · right; convert Int.dvd_add hJs' hh using 1; ring
+    · right; convert Int.dvd_sub hJs' hh using 1; ring
+    · left; convert Int.dvd_sub hJs' hh using 1; ring
   rcases hJs with hJs | hJs
   · exact hJp_of_sign hJs (neg_one_pow_eq_or ℤ h)
   · apply hJp_of_sign (t := -((-1 : ℤ) ^ h)) (by simpa only [neg_mul] using hJs)
@@ -135,8 +129,7 @@ theorem signed_index_residues {A c f I J p m y : ℕ} {V : ℤ}
     (haux : (I : ℤ) ^ 2 * V ^ 2 - ((I : ℤ) ^ 2 - 1) * (y : ℤ) ^ 2 = 1)
     (hVf : V ≡ -(c : ℤ) [ZMOD f]) (hVJ : V ≡ -(J : ℤ) [ZMOD c]) :
     (c : ℤ) ∣ (J : ℤ) - p ∨ (c : ℤ) ∣ (J : ℤ) + p := by
-  have hvsq : (V.natAbs : ℤ) ^ 2 = V ^ 2 := by
-    rcases Int.natAbs_eq V with h | h <;> rw [h] <;> simp
+  have hvsq : (V.natAbs : ℤ) ^ 2 = V ^ 2 := by simp
   have hvaux : ((I : ℤ) * V.natAbs) ^ 2 =
       1 + ((I : ℤ) ^ 2 - 1) * (y : ℤ) ^ 2 := by
     rw [mul_pow, hvsq]
@@ -147,28 +140,20 @@ theorem signed_index_residues {A c f I J p m y : ℕ} {V : ℤ}
   have hvJ : (V.natAbs : ℤ) ≡ J [ZMOD c] ∨
       (V.natAbs : ℤ) ≡ -(J : ℤ) [ZMOD c] := by
     rcases Int.natAbs_eq V with h | h
-    · right
-      exact (congrArg (fun z : ℤ => z % (c : ℤ)) h.symm).trans hVJ
+    · right; simpa only [← h] using hVJ
     · left
-      have habs : (V.natAbs : ℤ) = -V := by omega
-      have habsmod : (V.natAbs : ℤ) ≡ -V [ZMOD c] :=
-        congrArg (fun z : ℤ => z % (c : ℤ)) habs
-      have hnegmod : -V ≡ J [ZMOD c] := by simpa only [neg_neg] using hVJ.neg
-      exact habsmod.trans hnegmod
+      rw [h] at hVJ
+      simpa only [neg_neg] using hVJ.neg
   exact index_residues hA hp hcp hf hpm hcm hI1 hcI hIsq hy hvaux hvf hvJ
 
 /-- Half-modulus bounds remove both sign and nonzero-multiple ambiguity. -/
 theorem eq_of_residues {c J p : ℕ} (hp : 0 < p) (hJ : 0 < J)
     (hpc : 2 * p < c) (hJc : 2 * J < c)
     (hres : (c : ℤ) ∣ (J : ℤ) - p ∨ (c : ℤ) ∣ (J : ℤ) + p) : p = J := by
-  have hpZ : (0 : ℤ) < p := by exact_mod_cast hp
-  have hJZ : (0 : ℤ) < J := by exact_mod_cast hJ
-  have hpcZ : (2 : ℤ) * p < c := by exact_mod_cast hpc
-  have hJcZ : (2 : ℤ) * J < c := by exact_mod_cast hJc
   rcases hres with h | h
   · have hzero : (J : ℤ) - p = 0 :=
       Int.eq_zero_of_abs_lt_dvd h (by rw [abs_lt]; constructor <;> omega)
-    exact_mod_cast (show (p : ℤ) = J by omega)
+    omega
   · have hzero : (J : ℤ) + p = 0 :=
       Int.eq_zero_of_abs_lt_dvd h (by rw [abs_lt]; constructor <;> omega)
     omega
@@ -233,11 +218,8 @@ theorem source_index_of_strong {A c f i J p y : ℕ} {V j o : ℤ}
 `c ∣ f²-1`; no cancellation of the Pell discriminant is used. -/
 theorem quotient_dvd {c f o J : ℤ}
     (hcf : c ∣ f ^ 2 - 1) (hV : c ∣ o * f + J) : c ∣ o + J * f := by
-  have h₁ : c ∣ (o * f + J) * f := dvd_mul_of_dvd_left hV f
-  have h₂ : c ∣ o * (f ^ 2 - 1) := dvd_mul_of_dvd_right hcf o
-  have heq : o + J * f = (o * f + J) * f - o * (f ^ 2 - 1) := by ring
-  rw [heq]
-  exact dvd_sub h₁ h₂
+  convert Int.dvd_sub (dvd_mul_of_dvd_left hV f) (dvd_mul_of_dvd_right hcf o) using 1
+  ring
 
 /-- Substituting the restored quotient exactly reproduces the original
 minus-sign auxiliary coordinate. -/

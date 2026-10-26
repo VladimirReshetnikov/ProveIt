@@ -17,9 +17,7 @@ theorem lower_key {X Y : ℕ} (hX : 1 ≤ X) (hY : 1 ≤ Y) :
     2 * (2 * (X * Y ^ 2) + 1) * (X + 1) ^ 2 <
       (2 * (Y * (X + 1) + 2) - 1) ^ 2 * X := by
   rw [show 2 * (Y * (X + 1) + 2) - 1 = 2 * (Y * (X + 1)) + 3 by omega]
-  have h1 : X * (X + 1) ≤ X * Y * (X + 1) := by
-    have := Nat.mul_le_mul_right (X + 1) (Nat.mul_le_mul_left X hY)
-    simpa using this
+  have h1 := Nat.mul_le_mul_right (X + 1) (Nat.mul_le_mul_left X hY)
   nlinarith [h1,hX]
 
 /-- The elementary lower ratio estimate with the actual doubled first
@@ -134,12 +132,13 @@ theorem source_X_ge_sixteen (ports : Fin 4 → ℤ) (hβ : 15 ≤ ports 0)
     linear_combination h2
   have hJ : (1 : ℤ) ≤ x 0 := by exact_mod_cast hx 0
   have hw : (1 : ℤ) ≤ x 10 := by exact_mod_cast hx 10
-  have hq : (16 : ℤ) ≤ 1 + (x 0 : ℤ) * ports 0 := by
-    nlinarith [mul_nonneg (show 0 ≤ (x 0 : ℤ) - 1 by omega) (show 0 ≤ ports 0 by omega)]
-  have hge : (16 : ℤ) ≤ x 21 := by
-    rw [hX]
-    nlinarith [mul_nonneg (show 0 ≤ 1 + (x 0 : ℤ) * ports 0 by omega)
-      (show 0 ≤ (x 10 : ℤ) - 1 by omega)]
+  have hge : (16 : ℤ) ≤ x 21 := calc
+    16 ≤ 1 + ports 0 := by omega
+    _ ≤ 1 + (x 0 : ℤ) * ports 0 :=
+      add_le_add le_rfl (le_mul_of_one_le_left (show (0 : ℤ) ≤ ports 0 by omega) hJ)
+    _ ≤ (1 + (x 0 : ℤ) * ports 0) * x 10 :=
+      le_mul_of_one_le_right (by positivity) hw
+    _ = x 21 := hX.symm
   exact_mod_cast hge
 
 /-- The defining row gives the exact main congruence over the naturals. -/

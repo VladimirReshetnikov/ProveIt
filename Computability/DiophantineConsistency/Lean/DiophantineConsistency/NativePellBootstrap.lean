@@ -197,9 +197,7 @@ theorem first_norm_classification {Q tau k : ℕ} (hQ : 0 < Q) (hk : 0 < k)
   have hprop : (tau : ℤ) ^ 2 - (Q : ℤ) * (Q + 1) * k ^ 2 = 1 := by
     have hz : (tau : ℤ) ^ 2 = 1 + (Q : ℤ) * (Q + 1) * k ^ 2 := by exact_mod_cast hnorm
     linear_combination hz
-  have htau : 0 < tau := by
-    have hsquare : 1 ≤ tau ^ 2 := by rw [hnorm]; omega
-    exact Nat.pos_of_ne_zero (by intro hz; simp [hz] at hsquare)
+  have htau : 0 < tau := by nlinarith [Nat.zero_le (Q * (Q + 1) * k ^ 2)]
   obtain ⟨n,hn⟩ := (firstUnit_fundamental hQ).eq_pow_of_nonneg
     (a := Pell.Solution₁.mk tau k hprop) (by change (0 : ℤ) < tau; exact_mod_cast htau)
     (by change (0 : ℤ) ≤ k; positivity)
@@ -236,7 +234,6 @@ theorem large_of_six_le {A c p : ℕ} (hA : 1 < A) (hp : 6 ≤ p)
 def firstQ (x : Fin 31 → ℕ) : ℕ := x 21 * (x 16 * x 9) ^ 2
 
 theorem firstQ_pos (x : Fin 31 → ℕ) (hx : ∀ i, 0 < x i) : 0 < firstQ x := by
-  dsimp [firstQ]
   exact Nat.mul_pos (hx 21) (pow_pos (Nat.mul_pos (hx 16) (hx 9)) _)
 
 /-- The two defining source rows reconstruct E and P over the naturals. -/
@@ -273,7 +270,7 @@ theorem source_first_classification (ports : Fin 4 → ℤ) (x : Fin 31 → ℕ)
       1 < 2 * firstQ x + 1) n ∧
       x 12 + x 13 = 2 * yn (by have := firstQ_pos x hx; omega :
       1 < 2 * firstQ x + 1) n := by
-  have hQ : 0 < firstQ x := by dsimp [firstQ]; exact Nat.mul_pos (hx 21) (pow_pos (Nat.mul_pos (hx 16) (hx 9)) _)
+  have hQ := firstQ_pos x hx
   have hP := (source_first_registers ports x hx hs).2
   have h7 := hs 7
   change (-1 : ℤ) + (-1) * ((x 18 : ℤ) ^ 2) + x 13 * x 18 + x 12 * x 18 +
@@ -457,18 +454,13 @@ theorem source_transport_positive (ports : Fin 4 → ℤ)
     dsimp [q]
     linear_combination h14
   have hF : (0 : ℤ) < x 1 := by exact_mod_cast hx 1
-  have hα : (0 : ℤ) < x 2 := by exact_mod_cast hx 2
   have hz : (1 : ℤ) ≤ x 3 := by exact_mod_cast hx 3
   have hw : (0 : ℤ) < x 10 := by exact_mod_cast hx 10
   have hKw : 0 < ports 1 + x 10 := by omega
   have hprod : 0 < (ports 1 + x 10) * (q - x 1 - x 2) := by
     rw [htrans]
     nlinarith [mul_nonneg (show 0 ≤ (x 3 : ℤ) - 1 by omega) (show 0 ≤ q - 1 by omega)]
-  have hC : 0 < q - x 1 - x 2 := by
-    by_contra hC
-    have hnonpos := mul_nonpos_of_nonneg_of_nonpos hKw.le (show q - x 1 - x 2 ≤ 0 by omega)
-    omega
-  exact hC
+  exact pos_of_mul_pos_right hprod hKw.le
 
 /-- Native rank positivity follows from the OLD positive transport coordinate
 and nonnegative native mask ports, without importing the outer rank bounds. -/
@@ -562,13 +554,12 @@ theorem source_window_bound (ports : Fin 4 → ℤ)
   have hRpow : nativeRank x + 1 < q ^ 4 := by linarith
   have hw : (1 : ℤ) ≤ x 10 := by exact_mod_cast hx 10
   have hs' : (1 : ℤ) ≤ x 9 := by exact_mod_cast hx 9
-  have hws : (1 : ℤ) ≤ (x 10 : ℤ) * x 9 := by
-    nlinarith [mul_nonneg (show 0 ≤ (x 10 : ℤ) - 1 by omega) (show 0 ≤ (x 9 : ℤ) - 1 by omega)]
+  have hws : (1 : ℤ) ≤ (x 10 : ℤ) * x 9 := one_le_mul_of_one_le_of_one_le hw hs'
   have hE := source_scale_eq ports x hx hs
   change (x 17 : ℤ) = q ^ 4 * (x 10 * x 9) at hE
   have hEbound : q ^ 4 ≤ (x 17 : ℤ) := by
-    nlinarith [mul_nonneg (show 0 ≤ q ^ 4 by positivity)
-      (show 0 ≤ (x 10 : ℤ) * x 9 - 1 by omega)]
+    rw [hE]
+    exact le_mul_of_one_le_right (by positivity) hws
   omega
 
 /-- The ordinary native mask interface needed for positive main bootstrap.
@@ -597,15 +588,11 @@ theorem source_bootstrap_of_portBox (ports : Fin 4 → ℤ) (hports : PortBox po
     hports.MC_lt_beta hports.MF_lt_twice_beta x hx hs
   let R := (nativeRank x).toNat
   have hR : (R : ℤ) = nativeRank x := Int.toNat_of_nonneg (by omega)
-  have hR8 : 8 ≤ R := by
-    exact_mod_cast (show (8 : ℤ) ≤ (R : ℤ) by rw [hR]; omega)
-  have hRE : R + 1 < x 17 := by
-    rw [← hR] at hwindow
-    exact_mod_cast hwindow
+  have hR8 : 8 ≤ R := by omega
+  have hRE : R + 1 < x 17 := by omega
   obtain ⟨p,hp,hD,hc,hbig,hpc,hRc⟩ := source_bootstrap ports hports.beta_pos x hx hs hR hR8 hRE
   refine ⟨p,hp,hD,hc,hbig,hpc,?_⟩
-  rw [← hR]
-  exact_mod_cast hRc
+  omega
 
 /-- The strong norm and the auxiliary norm are exact consequences of the
 literal source rows. No cancellation of the discriminant is used. -/
@@ -666,9 +653,8 @@ theorem source_main_index_exact (ports : Fin 4 → ℤ) (hports : PortBox ports)
     hports.MC_nonneg hports.MF_nonneg x hx hs
   let R := (nativeRank x).toNat
   have hR : (R : ℤ) = nativeRank x := Int.toNat_of_nonneg (by omega)
-  have hRpos : 0 < R := by
-    exact_mod_cast (show (0 : ℤ) < (R : ℤ) by rw [hR]; omega)
-  have hRhalf : 2 * R < x 19 := by rw [← hR] at hRc; exact_mod_cast hRc
+  have hRpos : 0 < R := by omega
+  have hRhalf : 2 * R < x 19 := by omega
   have hVj : (x 26 : ℤ) = (x 8 : ℤ) * x 19 - R := by
     dsimp [nativeRank] at hR
     linear_combination hR

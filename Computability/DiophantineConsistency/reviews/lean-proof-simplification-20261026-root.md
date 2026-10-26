@@ -66,3 +66,32 @@ The printed axioms are standard Lean axioms only. ROOT read both complete
 final files and every changed hunk, confirming the interface and witness maps.
 These are author tool observations; no separate raw log files or complete
 library rebuild are asserted.
+
+## Pell index and bootstrap arguments
+
+| Module | Before | After | Lines removed |
+|---|---:|---:|---:|
+| `NativePellFirstIndex` | 108 | 104 | 4 |
+| `NativePellPower` | 181 | 180 | 1 |
+| `NativePellStepDown` | 248 | 230 | 18 |
+| `NativePellBootstrap` | 685 | 671 | 14 |
+| **Total** | **1222** | **1185** | **37** |
+
+The proof changes reuse the existing positivity lemma, standard product
+order bounds, `Or.imp`, integer divisibility closure and the natAbs square
+identity. `omega` handles mixed natural/integer linear bounds directly,
+removing repeated manual cast bridges. Definitions, imports, theorem
+statements and their sign/range assumptions are unchanged.
+
+`alternate_encoding_research` authored this chunk and directly observed
+zero exits for all four final source/olean checks in dependency order,
+all four existing focused check modules and the `FirstPellCarrier`,
+`NativeBinaryScale` and `NativeHalfBinomial` clients. The axiom checks cover
+46 theorems and include signed-quotient, ordinary Pell and port-box examples.
+Only standard axioms occur. The unchanged `NativeBinaryScale` source retains
+its existing unused-variable warning.
+
+ROOT read all changed proof hunks and checked the final source hashes.
+`v_finite_full_static` independently reviewed every changed hunk in context,
+including all four divisibility sign cases and the natAbs alternatives,
+and reported PASS. These checks do not assert a complete library rebuild.
