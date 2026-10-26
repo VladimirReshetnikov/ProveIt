@@ -1,4 +1,5 @@
 import DiophantineConsistency.ConsecutivePell
+import DiophantineConsistency.ShortEquation
 import Mathlib.Data.Rat.Lemmas
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic.FieldSimp
@@ -55,11 +56,7 @@ theorem main_norm_ne_zero (a x y : ℤ) (ha : 0 ≤ a) (hy : y ≠ 0) :
 /-- This discriminant excludes the negative unit by its residue modulo four. -/
 theorem main_norm_ne_neg_one (a x y : ℤ) :
     x ^ 2 - (a ^ 2 + 4 * a + 3) * y ^ 2 ≠ -1 := by
-  intro he
-  have hm := congrArg (fun z : ℤ => (z : ZMod 4)) he
-  push_cast at hm
-  have bad : ∀ a x y : ZMod 4, x ^ 2 - (a ^ 2 + 4 * a + 3) * y ^ 2 ≠ -1 := by decide
-  exact bad _ _ _ hm
+  convert ShortEquation.strong_ne_neg_one a x y using 1 <;> ring
 
 theorem square_ge_one_of_ne_zero (z : ℤ) (hz : z ≠ 0) : 1 ≤ z ^ 2 := by
   have hp := sq_pos_of_ne_zero hz
@@ -123,13 +120,8 @@ theorem auxiliary_ne_zero (U V e : ℤ) (hU : 2 ≤ U) (he : 0 < e) :
 
 /-- A square auxiliary parameter also excludes the negative unit modulo four. -/
 theorem square_auxiliary_ne_neg_one (I V e : ℤ) : auxiliary (I ^ 2) V e ≠ -1 := by
-  intro he
-  have hm := congrArg (fun z : ℤ => (z : ZMod 4)) he
-  simp only [auxiliary] at hm
-  push_cast at hm
-  have bad : ∀ I V e : ZMod 4,
-      I ^ 2 * V ^ 2 - (I ^ 2 - 1) * (V + e) ^ 2 ≠ -1 := by decide
-  exact bad _ _ _ hm
+  convert ShortEquation.strong_ne_neg_one (I - 2) (I * V) (V + e) using 1 <;>
+    dsimp [auxiliary] <;> ring
 
 theorem auxiliary_ne_neg_one_of_gap_zero (U V e I : ℤ) (hW : strongGap U I = 0) :
     auxiliary U V e ≠ -1 := by
