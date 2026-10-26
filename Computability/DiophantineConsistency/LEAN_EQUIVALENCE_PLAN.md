@@ -676,6 +676,25 @@ record14 standard-only reports, both zero-exponent endpoints and the benign
 symbolic exponent977 notice. This establishes units, not safe increments
 or arbitrary-target rank correction.
 
+`CurrentDummyMutation2011` proves the exact single-slot source update and
+ordinary positional increment, then derives the normalized F increment from
+the two actual transport facts and an explicit nonwrapping bound. Only then
+does it conclude the exact integer rank decrement. The [author receipt](reviews/current-dummy-mutation2011-author.md)
+and [independent isolated replay](reviews/current-dummy-mutation2011-lean-peer.md)
+record11 standard-only reports and a modular-wrap negative control. The
+nonwrapping bound is retained as an obligation, not inferred from congruence.
+
+`CurrentNativePacking2011` now gives one record for the same assembled C,
+normalization F, both complete scalar masks, every local digit mask, positive
+alpha/z, strong slack, literal positive J and its ordinary balance equation.
+Its conditional-halt endpoint constructs that record at independently large
+power dimensions, retaining unique Start. See the [author/composition receipt](reviews/current-native-packing2011-root.md)
+and [independent fresh main/check replay](reviews/current-native-packing2011-lean-peer.md)
+with four standard-only reports. The temporal multiplier is still B^stride;
+its required equality with the printed-rank multiplier and the remaining
+positive Pell/source witnesses remain open. These partial witnesses do not
+yet assert a positive polynomial zero or the converse consistency endpoint.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
