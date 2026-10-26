@@ -834,3 +834,87 @@ definition bodies remain byte-identical; the two changed proof-record fields
 retain identical data fields and the complete records are kernel-equal as
 described above. Equation artifacts are unchanged. The iterative goal remains
 active.
+
+## Native span frontier and shared Jones semantics
+
+`intake_e13` adopted y's native position proof as `39a52d6353`. For rows
+0–20, the target itself is at most7516, so the ordinary natural-subtraction
+bound suffices for every pair. Only row21 reaches7678. Its five actual
+supported entries have complementary exponents7407,7474,7411,7478 and7516;
+the retained five `decide` branches check precisely these entries. The full
+22-row support and coefficient data, all four ports and every old public
+statement remain unchanged. The module shrinks from258 to177 lines without
+an import or helper.
+
+Seven final calls pass on the first attempt: target, `NativeQuadraticSource52`
+and `NativeNinePolynomial52` clients, their three corresponding existing
+focused checks and all15 old public axiom reports. The earlier baseline audit
+is separate, and the complete reports are byte-identical. Existing controls
+retain the attained top exponent7516, the vanishing coefficient7865 and the
+source/full-polynomial transports. No cache gap, source repair or warning
+occurred. `alternate_encoding_research` independently read all177 final lines,
+the original diff and actual support/weight/degree contracts, returning PASS.
+
+`v_finite_full_static` adopted ze's evaluation API patch as `80eabc57c8`.
+Five already proved Jones syntax bridges become public; the executable
+module reuses them at one qualified call site and deletes its five duplicate
+private proofs. No new proof, import or simp attribute is added. All26 old
+public statements and21 executable definition regions are unchanged. The two
+modules shrink from479 to430 lines, removing49 lines.
+
+Nine final calls pass on the first attempt: both targets, `EquationFromRep`,
+`SimplifiedJones`, `CompactedJones` and `ZFCFromProgram` clients, the existing
+63-endpoint compiler check, all26 old public axiom reports and the five exposed
+bridge audits. The earlier baseline is separate; all old reports are
+byte-identical. The radicand/weight bridges use the standard three axioms,
+and divisor/dividend/margin use only `propext`. `intake_e13` independently read
+all430 final lines, the complete baseline diff and actual evaluator/record
+contracts, returning PASS on both unchanged final hashes. The reviewer did
+not rerun compiler checks or write source.
+
+## List-sum coefficients and arbitrary internal environments
+
+ROOT adopted zg's coefficient patch as `ed32381986`. A private bridge identifies
+the unchanged recursive interpretation with the list sum of its monomials.
+Standard append, negation, multiplication and additive coefficient-map laws
+replace five repeated transport inductions; equivalence injectivity supplies
+the exponent equality test. List order, multiplicity, empty lists and cancelling
+coefficients remain allowed. Executable expansion and coefficient extraction
+are unchanged. Including the private helper and new import,120 lines become110.
+
+ROOT adapted zg's environment restriction as `be154fa93b`. Injectivity of
+`Fin.val` makes restriction of infinite environments onto finite tuples
+surjective; the existing empty-set value supplies an explicit default. An
+explicit guarded predicate fixes the initial candidate's motive-inference
+failure. This quantifies over every internal tuple, including the zero-variable
+case and nonstandard naturals, without any extra model hypothesis. Direct
+`evalForm_spec` simplification also proves the unchanged equation formula's
+shifted binder semantics. Formula definitions and public statements remain
+unchanged;98 lines become82, removing16 lines after charging the annotation.
+
+All nine final calls pass: both targets, `QuarticSyntax`,
+`ObjectNaturalSemiring` and `ObjectEquation` clients, existing `CompilerAxioms`,
+`ObjectAxioms` and `ObjectOmegaSemiring` checks, and all15 old public axiom
+reports. The earlier baseline is separate; the complete old/new reports are
+byte-identical. There was one initial object-target inference failure, resolved
+by the explicit predicate; no dependency adjustment or further repair was
+needed. `alternate_encoding_research` independently read all192 final lines,
+the complete diff and actual list, polynomial, satisfaction, sealing and
+restriction contracts, returning PASS on both unchanged hashes.
+
+These four source commits reduce955 lines to799, removing156 net lines and
+bringing the reviewed series from3097 to3253. ROOT compares all56 old public
+headers and35 complete definition regions with immutable `f00ba53b33`; all are
+unchanged. The three groups have25 successful final Lean calls and three
+successful baseline audits, plus the single recorded failed initial inference.
+Independent static review is additional source evidence, not another compiler
+run. The iterative goal remains active.
+
+The maintained `equation.tex` and `equation.pdf` were separately audited for
+the user's notation preference: the packed integer is printed as715 base-10
+digits, and the fourteen unknowns have distinct, unsubscripted names. Indexed
+tile/action symbols are explicitly fixed constants. PDF extraction agrees with
+the source, and a fresh `pdflatex` build reproduces the committed one-page,
+153046-byte PDF exactly. Neither artifact needed an edit. Their SHA-256 hashes
+remain `a48ac1f5bc498bfdbf300c7050332ecaa28af1fc43f27d86b0879a79bd38714e`
+and `417c2fa109cacf99d0e83af35d06cbdc8fed1179054d7245e07f3e51ebfff978`.

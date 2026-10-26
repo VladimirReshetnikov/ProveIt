@@ -43,7 +43,7 @@ def evalExprVars {σ : Type*} (a : σ → ℤ) (v : RingVars (Expr σ)) : Jones1
   ⟨v.R.eval a, v.N.eval a, v.b.eval a, v.g.eval a, v.G.eval a,
     v.h.eval a, v.s.eval a, v.w.eval a, v.φ.eval a, v.i.eval a, v.j.eval a⟩
 
-private theorem eval_rad {σ : Type*} (a : σ → ℤ)
+theorem eval_rad {σ : Type*} (a : σ → ℤ)
     (v : RingVars (Expr σ)) (k : Fin 2) :
     (fun e : Expr σ => e.eval a) (v.rad k) = Jones1982.Nine.rad (evalExprVars a v) k := by
   fin_cases k <;>
@@ -59,12 +59,12 @@ private theorem eval_rad {σ : Type*} (a : σ → ℤ)
       Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F, Jones1982.Nine.Vars.Gp,
       Jones1982.Nine.Vars.H, Jones1982.Nine.Vars.I]
 
-private theorem eval_wt {σ : Type*} (a : σ → ℤ)
+theorem eval_wt {σ : Type*} (a : σ → ℤ)
     (v : RingVars (Expr σ)) (k : Fin 2) :
     (v.wt k).eval a = Jones1982.Nine.wt (evalExprVars a v) k := by
   simp [RingVars.wt, Jones1982.Nine.wt, Expr.eval_pow, eval_rad, Expr.eval]
 
-private theorem eval_dvsr {σ : Type*} (a : σ → ℤ)
+theorem eval_dvsr {σ : Type*} (a : σ → ℤ)
     (v : RingVars (Expr σ)) :
     (fun e : Expr σ => e.eval a) v.dvsr = Jones1982.Nine.dvsr (evalExprVars a v) := by
   simp [Expr.eval, RingVars.dvsr, Jones1982.Nine.dvsr, evalExprVars,
@@ -75,7 +75,7 @@ private theorem eval_dvsr {σ : Type*} (a : σ → ℤ)
     Jones1982.Nine.Vars.C, Jones1982.Nine.Vars.J, Jones1982.Nine.Vars.D,
     Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F]
 
-private theorem eval_dvnd {σ : Type*} (a : σ → ℤ)
+theorem eval_dvnd {σ : Type*} (a : σ → ℤ)
     (v : RingVars (Expr σ)) :
     (fun e : Expr σ => e.eval a) v.dvnd = Jones1982.Nine.dvnd (evalExprVars a v) := by
   simp [Expr.eval, RingVars.dvnd, Jones1982.Nine.dvnd, evalExprVars,
@@ -86,7 +86,7 @@ private theorem eval_dvnd {σ : Type*} (a : σ → ℤ)
     Jones1982.Nine.Vars.C, Jones1982.Nine.Vars.J, Jones1982.Nine.Vars.Q,
     Jones1982.Nine.Vars.D, Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F, Jones1982.Nine.Vars.H]
 
-private theorem eval_marg {σ : Type*} (a : σ → ℤ)
+theorem eval_marg {σ : Type*} (a : σ → ℤ)
     (v : RingVars (Expr σ)) :
     (fun e : Expr σ => e.eval a) v.marg = Jones1982.Nine.marg (evalExprVars a v) := by
   simp [Expr.eval, RingVars.marg, Jones1982.Nine.marg, evalExprVars,
