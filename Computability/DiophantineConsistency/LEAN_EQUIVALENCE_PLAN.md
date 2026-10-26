@@ -476,6 +476,37 @@ See the [root review and four fresh replays](reviews/wang-tiles942-strip-foundat
 Finite strip bounds and actual machine-run semantics are subsequent work.
 
 Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. Each verified checkpoint is
+integration, documentation and commits. `DecimalMachineInitialization`
+proves the literal decimal machine's first transition, exact post-step
+configuration, all integer tape readings and the clock shift for runs
+started there. `WangMachineEncoding` defines the actual vertical colors
+of a configuration, retaining write and movement on actions entering halt.
+Its initialized color function is exactly1 at0,4 at1,0 elsewhere, matching
+the derived initial tile row. See the [root review and four fresh replays](reviews/wang-machine-initialization-encoding-lean-root.md).
+No complete row/run correspondence is assumed or proved by those packets.
+
+`WangTiles942StripGeometry` now
+derives persistent wall columns and a seam-free interior from the exact
+initial strip and actual time matching. Every integer interior coordinate
+has its exact initial tile and seeded South color; no seam can appear at
+any integer time. Its marked-word endpoint derives the finite initial
+strip rather than assuming it. The [author review and fresh checks](reviews/wang-tiles942-strip-geometry-lean-root.md)
+record this complete geometric step, without machine-run semantics.
+The [independent geometry review](reviews/wang-tiles942-strip-geometry-lean-peer.md)
+also passed fresh isolated main/check replay, with its dependency authorship
+explicitly recorded.
+
+`WangTiles942InitialStrip` now
+derives both finite seam walls and every intervening initializer from
+actual horizontal periodicity and Start. The walls are first departures
+from their respective initializer tails, not supplied boundaries.
+`WangTiles942ResetHorizontal` classifies horizontal color1 as exactly a
+reset or an explicit seam alternative. Its nonseam corollaries preserve
+the stated hypothesis needed to recover the reset tuple. See the [root
+review and four fresh replays](reviews/wang-tiles942-initial-reset-lean-root.md).
+Reset propagation, full row semantics and actual run extraction remain
+subsequent steps.
+
+Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
