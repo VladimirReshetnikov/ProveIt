@@ -269,6 +269,14 @@ See the [root full-source review and fresh replay](reviews/current-selector-tail
 The physical source confinement and all483 padding residues/masks still
 need composition with the actual reflected geometry.
 
+`CurrentClause2011` now proves the exact literal clause convolution,
+physical selector-prefix identity and normalized low residue, retaining
+selector1, incoming carry and the unaligned temporal term. It also binds
+the actual full clause mask at every cell. See the [root review](reviews/current-clause2011-lean-root.md)
+and [independent replay/source challenge](reviews/current-clause2011-lean-peer.md).
+The complete preliminary-count argument can now use these literal
+clause interfaces; the middle-phase padding bindings remain required.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
