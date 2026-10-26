@@ -646,6 +646,15 @@ The [independent marker-helper review](reviews/wang-tiles942-marker-construction
 also passed all four isolated fresh builds. Reverse arithmetic/controller
 construction remains necessary for the actual equation equivalence.
 
+`PrimePowerOrder` proves the exact odd-prime-power order from a first-order
+nontrivial lift, deriving all natural-subtraction domain facts. The actual
+`CurrentAuxiliaryOrder2011` discharges those hypotheses from the checked
+literal lift and proves order120199^k modulo120199^(k+1) for
+B^(120199−1), including k=0. See the [author receipt](reviews/prime-power-current-auxiliary-order2011-author.md)
+and [independent four-target root replay](reviews/prime-power-current-auxiliary-order2011-root.md).
+All14 axiom reports are standard-only; no full closure is claimed. The
+full CRT coordinates and their safe physical realization remain separate.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
