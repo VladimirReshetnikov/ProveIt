@@ -41,3 +41,22 @@ it is explicitly a template bound. These scopes are appropriate.
 This is independent root acceptance of the conditional arithmetic result
 and finite challenge. The main 2011 page, its four constants, complete
 native theorem and accepted controller remain unchanged.
+
+## Subsequent full ordinary-proof review
+
+After the initial finite-review commit, ROOT read every line of the separately
+authored PROOF.md and the complete independent finite receipt. The proof's
+local mask congruences, phase ranges, nonzero-South case split and parity
+contradiction are sound under the explicit hypotheses. Its fixed-marker
+length bound and unresolved whole-field offsets are correctly scoped.
+The prospective marker-996 cycle argument and rejected center-997 calibration
+are recorded as leads, with no premature complete native acceptance.
+
+PROOF.md was saved by its author during the initial directory staging and
+is present in that commit. This later addendum records the actual order of
+root review; the earlier finite review did not claim a prior complete read
+of that newly arriving ordinary proof. Its exact reviewed SHA256 is
+`530cba824e7240b3b397e82b9a964f9ba8550ab8e7e0ca5a3df4fbc336fdd871`.
+The independent finite receipt is
+[markerless-fractional-phase-peer.md](../../reviews/markerless-fractional-phase-peer.md),
+SHA256 `8f4593c5826763bc1caeca52d4a8acb48cf117befe21d1253b412dd02638ebec`.
