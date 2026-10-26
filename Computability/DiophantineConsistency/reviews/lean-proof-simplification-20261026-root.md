@@ -136,3 +136,24 @@ module/olean checks, the `ArithmeticRepresentation`, `EquationFromRep` and
 checks and two axiom audits. The shared lemma uses only `Quot.sound`; all
 other printed sets are standard axioms. ROOT read the complete final
 representation module, the compiler wrapper in context and both diffs.
+
+## Core list lookup lemmas
+
+The proposal's `list-library.patch` replaces seven private inductions in
+`AnnotatedProofChecker`, `AnnotatedRename`, `AnnotatedBound`,
+`AnnotatedRuleSide` and `AnnotatedAssumption` with `List.mem_of_getElem?`
+and `List.getElem?_of_mem`. The five files decrease from1286 to1246 lines,
+removing40 lines and1553 bytes. Every wrapper signature and private name is
+retained, and all checker/parser definitions and premises are unchanged.
+
+`v_finite_full_static` read the complete five sources and exact core lemma
+signatures, applied only those proof replacements, and directly observed
+14 zero exits: the five module builds, four direct clients (`ProofCode`,
+`RenameCode`, `BoundLocal`, `Line`) and five existing focused check files.
+The build logs are empty; the focused checks retain their passing executable
+controls and standard-axiom reports. ROOT read every changed declaration
+and the checker axiom output. No archive script or whole-library build ran.
+
+The six committed groups in this review remove197 maintained Lean source
+lines across20 modules, including the shared assignment lemma. The general
+proof-simplification goal remains active; these are iterative checkpoints.

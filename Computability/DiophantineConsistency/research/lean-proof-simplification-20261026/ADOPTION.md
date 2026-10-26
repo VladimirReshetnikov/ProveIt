@@ -12,6 +12,11 @@ the quartic compiler reuses its shared assignment lemma. The two modules
 and representative constructor/size/cost clients pass current-source Lean
 checks. Together they remove26 lines, preserving witness and expression data.
 
+`patches/list-library.patch` is integrated in the five Annotated checker
+modules. All five module builds, four direct clients and five existing
+focused checks pass. Seven private wrappers now reuse the core list API,
+removing40 lines while preserving every wrapper signature and checker value.
+
 The other patches and generated candidates retain their proposal status
 until a further adoption entry records their current-source validation.
 Original packet files and its archived manifest remain unchanged.
