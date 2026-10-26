@@ -11,12 +11,15 @@ witness domain, whose absence of zeros is equivalent to the absence of a
 finite derivation of falsity from the repository's ZFC axiom predicate.
 Neither consistency nor inconsistency is assumed.
 
-The current priority is equation size and complexity. At the repository
-owner's request, Lean formalization is paused. Research continues on
-smaller arithmetic circuits, simpler complete printed coefficient recipes,
-and alternative encodings. Completed proof checkpoints are retained;
-unfinished formalization files are not being extended during this phase.
-See [the active size-reduction plan](SIZE_REDUCTION.md).
+The current priority is Lean proofs that the smallest constructed equations
+under the different size metrics have no solutions exactly when `Con(ZFC)`.
+The owner resumed formalization on 25 October 2026. The
+[formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
+older endpoints from the literal arithmetic and native compiler links
+still required for the recent equations. The
+[size-reduction record](SIZE_REDUCTION.md) preserves the constructions and
+their ordinary proofs. Later references below to the Lean pause describe
+their historical checkpoints; the resumed plan governs current work.
 
 The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **complete decimal Carrier65 equation
@@ -25,6 +28,12 @@ operations**. All 715 decimal digits are printed. Every scalar in the
 polynomial front has a distinct unsubscripted name; its five factors are
 P,Q,U,W,Z and its two masks are mu,omega. The complete 430-action decoder
 and 942 indexed tiles fit on one Letter page at the unchanged fonts.
+
+Decimal notation and distinct unsubscripted scalar unknowns are maintained
+display requirements. Future replacements must preserve them and update
+TeX and PDF together. The latest [format continuity check](reviews/current-decimal-distinct-names-9989-ROOT-continuity.json)
+authenticates both complete files, all 715 digits and the saved page image.
+Subscripts in the fixed tile table and decoder index constant data.
 
 The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 uses **47,313 raw fixed-integer bytes**, 10,812 below the preceding2471
@@ -45,6 +54,10 @@ positive P66 maps. Its
 discharges the full controller at d = 47*2011, with auxiliary prime120199.
 Independent mathematical and verifier reviews and
 [root acceptance](research/padding-staircase-independent/ROOT_REVIEW.md) pass.
+The separate [directional terminology amendment](reviews/padding-staircase2011-directional-terminology-amendment.md)
+corrects two inherited East/West slot names and verifies the actual packed
+coordinates and directed helical orientation. All frozen coefficients,
+copy equalities and proof artifacts remain unchanged.
 
 The [uniform Carrier65 proof](research/carrier65-independent/PROOF.md)
 applies at these exact ports. Its complete 65-row arithmetic graph,
@@ -103,6 +116,26 @@ tradeoffs while preserving decimal notation and distinct scalar names.
 The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
 preserves its bound tuple; [radix obstructions](research/radix-parity-independent/README.md)
 explain why direct46/45 substitutions need different proof interfaces.
+
+The [tile-biased single-clause family](research/tile-biased-single-clause-family/README.md)
+has two full independent ordinary reviews and
+[conditional root acceptance](reviews/tile-biased-family-composite2033-ROOT-conditional-acceptance.json).
+Fixed corrections to the third and fourth tile components permit count
+recovery before phase recovery, with a single clause at 1006 and a last
+product at 2011. The [49-bit, length-2033 controller note](research/tile-biased49-composite2033-controller/README.md)
+proves whole-modulus order 954, including the repeated factor in
+49*2033 = 7^2*19*107. The subsequent
+[five-run finite check](research/tile-biased49-2033-first-run/README.md)
+finds H=0 modulo19 for the actual new kernel. No auxiliary prime repairs
+that fixed-unit failure, so the2033 controller is rejected and its draft
+page is preserved without promotion. The same whole conditional family
+has a reviewed [Carrier65 corollary](research/tile-biased-carrier65-corollary/README.md),
+retaining14 positive inputs,65 operations and degree150. The
+[short-length obstructions](research/tile-biased49-short-length-obstructions/README.md)
+now have [two full reviews and scoped root acceptance](reviews/tile-biased49-short-length-ROOT-two-peer-acceptance.json).
+The length2039 packet remains unexecuted under CODE_ONLY/HOLD; no successful
+tuple or measured equation saving is claimed. The maintained decimal page
+is the padding-staircase2011 version above.
 
 The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
 [grouped66 page](candidates/one-page-grouped66/equation.pdf) and

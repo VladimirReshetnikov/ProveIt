@@ -1,9 +1,10 @@
-# Active equation-size research
+# Equation-size research and formalization targets
 
 The owner paused Lean formalization on 23 October 2026 and directed the
-research toward reducing equation size and complexity. The goal remains
-active. Existing proof checkpoints and incomplete experiments are preserved;
-no further Lean development or compiler runs are part of this phase.
+research toward reducing equation size and complexity. On 25 October the
+owner resumed Lean work to prove the resulting smallest equations equivalent
+to `Con(ZFC)`. The [resumed formalization plan](LEAN_EQUIVALENCE_PLAN.md)
+governs that work; this document retains the size frontier and its history.
 
 The required mathematical endpoint is unchanged: the equation's absence
 of solutions must be provably equivalent in ZFC to syntactic `Con(ZFC)`.

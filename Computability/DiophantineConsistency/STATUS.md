@@ -2,10 +2,20 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
-**Current direction:** Lean formalization is paused at the owner's request.
-The active goal continues with equation-size and complexity reduction;
-see [SIZE_REDUCTION.md](SIZE_REDUCTION.md). The Lean statuses below record
-completed checkpoints, rather than instructions to continue formalization.
+**Current direction:** On 25 October 2026 the owner resumed Lean
+formalization, requesting proofs for the simplest equations constructed
+under the different metrics. See [LEAN_EQUIVALENCE_PLAN.md](LEAN_EQUIVALENCE_PLAN.md).
+The later pause statements in this chronological record describe earlier
+checkpoints. The maintained decimal display and all size comparisons
+remain documented in [SIZE_REDUCTION.md](SIZE_REDUCTION.md).
+
+The resumed arithmetic checkpoint now checks the literal fourteen-variable
+Carrier65 polynomial in Lean, every norm sign, the rank window from the
+transport factor, and the unique positive omitted witness. The converse
+first-Pell carrier map is also checked. See
+[the exact theorem and review scope](reviews/carrier65-lean-arithmetic-root.md).
+The complete fixed native recipe and its connection to the syntactic
+refutation endpoint remain open; no new end-to-end theorem is claimed.
 
 The first size-only result is a440-operation nine-positive circuit, down
 from443, with the exact same polynomial and degree1,845,940; the natural
@@ -61,6 +71,24 @@ and distinct names. The separately checked
 its bound tuple. The [radix note](research/radix-parity-independent/README.md)
 and earlier [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
 remain scoped obstacles/tradeoffs, without a global lower-bound claim.
+
+The [tile-biased family](research/tile-biased-single-clause-family/README.md)
+now passes two full independent ordinary reviews, with
+[conditional root acceptance](reviews/tile-biased-family-composite2033-ROOT-conditional-acceptance.json).
+It places the sole clause at 1006 and last product at 2011. A separate
+[49/2033 reduction](research/tile-biased49-composite2033-controller/README.md)
+proves exact B-order 954 modulo the entire 7^2*19*107. The separately
+released [five-run check](research/tile-biased49-2033-first-run/README.md)
+reproduces H=0mod19 for the new whole kernel, rejecting that controller
+for every auxiliary prime. All production controls pass; no prime search
+occurs, and every first output/capture and the conditional .tex draft are
+preserved. The separately reviewed
+[Carrier65 corollary](research/tile-biased-carrier65-corollary/README.md)
+gives the same family a14/65/150 front without changing its four ports.
+The [four short-length obstructions](research/tile-biased49-short-length-obstructions/README.md)
+have [two full reviews and scoped root acceptance](reviews/tile-biased49-short-length-ROOT-two-peer-acceptance.json).
+The2039 whole-modulus probe remains unexecuted under CODE_ONLY/HOLD.
+No successful tuple, validated saving or page replacement is claimed.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 saves twenty operations and178 degree while adding four unknowns.

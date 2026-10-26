@@ -1,0 +1,114 @@
+{
+  "schema": "ROOT_tile_biased49_2033_proposed_isolated_execution_envelope_v1",
+  "status": "PROPOSED_CODE_ONLY_HOLD_NOT_A_RUNTIME_RELEASE",
+  "frozen_source_manifest": {
+    "bytes": 2589,
+    "sha256": "c08ec8da65e94d76523aa182b93034f2fb430f94d59fee64f272690dbc171b14"
+  },
+  "reason": "Bind physical interpreter; use -I -S to exclude project/user import paths and site startup customizations. This is an external execution envelope for independent static review, not a source change or a new project helper.",
+  "working_directory": "/home/codex/.codex/worktrees/62ff/Proofs",
+  "interpreter": {
+    "path": "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/bin/python3.13",
+    "bytes": 31598288,
+    "sha256": "b200d6c7ae464af64f81808ba246a856b1a1cdf3b2ae7088d37d87d31aebe9ff"
+  },
+  "env_tool": {
+    "path": "/usr/bin/env",
+    "bytes": 43976,
+    "sha256": "f13fae95a6f3fcba6c0ee8787c92747089eb81e550673f135bc4bc09bfc174d1"
+  },
+  "trusted_boundary": "Existing physical CPython, its standard library and OS dynamic runtime. No project imports/subprocesses or newly installed dependency. -I ignores Python environment variables; -S skips site startup; -B prevents bytecode writes.",
+  "ordered_applications": [
+    {
+      "label": "write",
+      "argv": [
+        "/usr/bin/env",
+        "-i",
+        "PATH=/usr/bin:/bin",
+        "LC_ALL=C",
+        "TZ=UTC",
+        "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/bin/python3.13",
+        "-I",
+        "-B",
+        "-S",
+        "/home/codex/.codex/worktrees/62ff/Proofs/Computability/DiophantineConsistency/research/tile-biased49-composite2033-controller-probe/probe.py",
+        "--write"
+      ],
+      "stdout": "/tmp/tile-biased49-2033-write.stdout",
+      "stderr": "/tmp/tile-biased49-2033-write.stderr"
+    },
+    {
+      "label": "normal",
+      "argv": [
+        "/usr/bin/env",
+        "-i",
+        "PATH=/usr/bin:/bin",
+        "LC_ALL=C",
+        "TZ=UTC",
+        "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/bin/python3.13",
+        "-I",
+        "-B",
+        "-S",
+        "/home/codex/.codex/worktrees/62ff/Proofs/Computability/DiophantineConsistency/research/tile-biased49-composite2033-controller-probe/probe.py"
+      ],
+      "stdout": "/tmp/tile-biased49-2033-normal.stdout",
+      "stderr": "/tmp/tile-biased49-2033-normal.stderr"
+    },
+    {
+      "label": "optimized",
+      "argv": [
+        "/usr/bin/env",
+        "-i",
+        "PATH=/usr/bin:/bin",
+        "LC_ALL=C",
+        "TZ=UTC",
+        "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/bin/python3.13",
+        "-I",
+        "-B",
+        "-S",
+        "-O",
+        "/home/codex/.codex/worktrees/62ff/Proofs/Computability/DiophantineConsistency/research/tile-biased49-composite2033-controller-probe/probe.py"
+      ],
+      "stdout": "/tmp/tile-biased49-2033-optimized.stdout",
+      "stderr": "/tmp/tile-biased49-2033-optimized.stderr"
+    },
+    {
+      "label": "fresh-normal",
+      "argv": [
+        "/usr/bin/env",
+        "-i",
+        "PATH=/usr/bin:/bin",
+        "LC_ALL=C",
+        "TZ=UTC",
+        "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/bin/python3.13",
+        "-I",
+        "-B",
+        "-S",
+        "/home/codex/.codex/worktrees/62ff/Proofs/Computability/DiophantineConsistency/research/tile-biased49-composite2033-controller-probe/probe.py"
+      ],
+      "stdout": "/tmp/tile-biased49-2033-fresh-normal.stdout",
+      "stderr": "/tmp/tile-biased49-2033-fresh-normal.stderr"
+    },
+    {
+      "label": "fresh-optimized",
+      "argv": [
+        "/usr/bin/env",
+        "-i",
+        "PATH=/usr/bin:/bin",
+        "LC_ALL=C",
+        "TZ=UTC",
+        "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/bin/python3.13",
+        "-I",
+        "-B",
+        "-S",
+        "-O",
+        "/home/codex/.codex/worktrees/62ff/Proofs/Computability/DiophantineConsistency/research/tile-biased49-composite2033-controller-probe/probe.py"
+      ],
+      "stdout": "/tmp/tile-biased49-2033-fresh-optimized.stdout",
+      "stderr": "/tmp/tile-biased49-2033-fresh-optimized.stderr"
+    }
+  ],
+  "capture_method": "Standard shell redirection with noclobber enabled, after all ten exact capture paths and data directory have been verified absent. Execute exactly one application per tool call, inspect actual status before continuing. No application/helper/import/AST/help/version run is authorized by this envelope.",
+  "stop_rule": "Any nonzero actual process status, nonempty stderr or whole capture/data discrepancy stops immediately and preserves first bytes. Structured scientific rejection is a normal result, not an exception or endpoint.",
+  "pending": "Both full exact-final independent static reports must also explicitly cover this complete external envelope, then their preservation and a distinct ROOT runtime release."
+}
