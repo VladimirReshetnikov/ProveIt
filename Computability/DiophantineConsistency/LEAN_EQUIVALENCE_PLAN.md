@@ -496,6 +496,19 @@ whose South is Boolean. No clean-row or no-finish premise is introduced.
 See the [author review and four fresh checks](reviews/wang-tiles942-row-encoding-operating-lean-root.md).
 The actual one-row step theorem and eventual-halt extraction remain open.
 
+An [independent row-encoding and operating-row review](reviews/wang-tiles942-row-encoding-operating-lean-peer.md)
+passed four isolated fresh builds, retaining the actual clock1 and the
+derived finish exclusion without an added clean-row premise.
+
+`WangTiles942HeadBounds.next_head_inside` now proves strict containment
+of the actual stepped head, including entry into halt, from matching
+against the literal seam bounds. `WangMachineTraceBounds` proves sharp
+head/tape bounds for arbitrary operational runs and independently
+enlargeable blank margins around any given finite or halted trace.
+See the [root review and four fresh checks](reviews/wang-machine-strip-trace-bounds-lean-root.md).
+These support the row evolution and reverse tiling constructions;
+neither assumes a tiling/run equivalence.
+
 `WangTiles942InputLanguage` now
 identifies each operating north head input with its exact actual transition
 and retains both pass/finish choices at halt and all pass/finish/receive
