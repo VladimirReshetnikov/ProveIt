@@ -218,18 +218,17 @@ theorem one_add_pow_le {ε : ℝ} (r : ℕ) (hε : 0 ≤ ε) (hrε : (r : ℝ) *
     _ = (1 - r * ε)⁻¹ := one_div _
     _ ≤ 1 + 2 * (r * ε) := h3
 
-/-- The upper estimate `c/k < ξ + 1/2` once `72 r < U + 1`, `U^r ≤ Y` and `16 ≤ Y(U+1)`. -/
-theorem upper_estimate' {U Y r k c a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr : 1 ≤ r)
+/-- A single error-factor estimate covers the ordinary and doubled native ratios. -/
+theorem upper_estimate_factor {U Y r k c a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr : 1 ≤ r)
     (hJ : J = 2 * r + 1) (hA : 1 < a + 2) (ha : a = Y * (U + 1))
     (hP : 1 < 2 * (U * Y ^ 2) + 1) (hc : c = ψ hA J) (hk : k = ψ hP (r + 1))
-    (hξY' : ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r < Y + 1)
-    (h72 : 72 * r < U + 1) (hYr : U ^ r ≤ Y) (h16 : 16 ≤ Y * (U + 1)) :
-    (c : ℝ) / k < ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r + 1 / 2 := by
+    (factor : ℝ) (hfactor : 0 < factor) (hξY' : ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r < factor * (Y + 1))
+    (h72 : 72 * r < U + 1) (h16 : 16 ≤ Y * (U + 1)) :
+    (c : ℝ) / k < ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r + factor / 2 := by
   have hk0 : 0 < k := by
     rw [hk]; exact lt_of_lt_of_le (Nat.succ_pos r) (Pell.yn_ge_n hP (r + 1))
   have hkR : (0 : ℝ) < k := by exact_mod_cast hk0
   have hUR : (0 : ℝ) < (U : ℝ) ^ r := by positivity
-  have hU1 : (0 : ℝ) < (U : ℝ) + 1 := by positivity
   have hYR : (1 : ℝ) ≤ Y := by exact_mod_cast hY
   have hYU : (0 : ℝ) < (Y : ℝ) * (U + 1) := by positivity
   have haR : (a : ℝ) = Y * (U + 1) := by rw [ha]; push_cast; ring
@@ -251,11 +250,6 @@ theorem upper_estimate' {U Y r k c a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr 
   obtain ⟨Z, hZ⟩ : ∃ Z : ℝ, Z = (2 * ((a : ℝ) + 2)) ^ 2 * U := ⟨_, rfl⟩
   obtain ⟨ε, hε⟩ : ∃ ε : ℝ, ε = 9 / ((Y : ℝ) * (U + 1)) := ⟨_, rfl⟩
   have hε0 : 0 ≤ ε := by rw [hε]; positivity
-  have hXpos : 0 < X := by
-    rw [hX]
-    have : (1 : ℕ) ≤ 2 * (2 * (U * Y ^ 2) + 1) - 1 := by omega
-    have : (1 : ℝ) ≤ ((2 * (2 * (U * Y ^ 2) + 1) - 1 : ℕ) : ℝ) := by exact_mod_cast this
-    positivity
   have hZX : Z ≤ X * (1 + ε) := by
     have key := upper_key hU hY h16
     have keyR : Z * ((Y : ℝ) * (U + 1)) ≤ X * ((Y : ℝ) * (U + 1) + 9) := by
@@ -289,9 +283,9 @@ theorem upper_estimate' {U Y r k c a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr 
           apply mul_le_mul hXk hpow (by positivity) (by positivity)
       _ = (k : ℝ) * ξ * (1 + 2 * (r * ε)) * (U : ℝ) ^ r := by rw [hξdef]; ring
   have h1' : (c : ℝ) ≤ (k : ℝ) * ξ * (1 + 2 * (r * ε)) := le_of_mul_le_mul_right h1 hUR
-  have hξY : ξ < Y + 1 := by rw [hξ]; exact hξY'
-  -- `ξ ⋅ 2rε < 1/2`
-  have hsmall : ξ * (2 * (r * ε)) < 1 / 2 := by
+  have hξY : ξ < factor * (Y + 1) := by rw [hξ]; exact hξY'
+  -- The scaling factor multiplies the error allowance.
+  have hsmall : ξ * (2 * (r * ε)) < factor / 2 := by
     have hε' : (Y + 1 : ℝ) * (2 * (r * ε)) < 1 / 2 := by
       rw [hε]
       have e : ((Y : ℝ) + 1) * (2 * (r * (9 / ((Y : ℝ) * (U + 1))))) =
@@ -299,17 +293,29 @@ theorem upper_estimate' {U Y r k c a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr 
       rw [e, div_lt_iff₀ hYU]
       nlinarith
     have hξ0 : 0 ≤ ξ := by rw [hξ]; positivity
-    calc ξ * (2 * (r * ε)) ≤ (Y + 1 : ℝ) * (2 * (r * ε)) :=
+    calc ξ * (2 * (r * ε)) ≤ factor * (Y + 1 : ℝ) * (2 * (r * ε)) :=
           mul_le_mul_of_nonneg_right hξY.le (by positivity)
-      _ < 1 / 2 := hε'
+      _ < factor / 2 := by nlinarith [mul_lt_mul_of_pos_left hε' hfactor]
   -- conclude
   rw [div_lt_iff₀ hkR]
   calc (c : ℝ) ≤ k * ξ * (1 + 2 * (r * ε)) := h1'
     _ = k * ξ + k * (ξ * (2 * (r * ε))) := by ring
-    _ < k * ξ + k * (1 / 2) := by
+    _ < k * ξ + k * (factor / 2) := by
         have := mul_lt_mul_of_pos_left hsmall hkR
         linarith
-    _ = (ξ + 1 / 2) * k := by ring
+    _ = (ξ + factor / 2) * k := by ring
+
+/-- The upper estimate `c/k < ξ + 1/2` once `72 r < U + 1`, `U^r ≤ Y` and `16 ≤ Y(U+1)`. -/
+theorem upper_estimate' {U Y r k c a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr : 1 ≤ r)
+    (hJ : J = 2 * r + 1) (hA : 1 < a + 2) (ha : a = Y * (U + 1))
+    (hP : 1 < 2 * (U * Y ^ 2) + 1) (hc : c = ψ hA J) (hk : k = ψ hP (r + 1))
+    (hξY' : ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r < Y + 1)
+    (h72 : 72 * r < U + 1) (hYr : U ^ r ≤ Y) (h16 : 16 ≤ Y * (U + 1)) :
+    (c : ℝ) / k < ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r + 1 / 2 := by
+  have hbound : ((U : ℝ) + 1) ^ (2 * r) / (U : ℝ) ^ r < 1 * (Y + 1) := by
+    simpa using hξY'
+  simpa using upper_estimate_factor hU hY hr hJ hA ha hP hc hk
+    1 (by norm_num) hbound h72 h16
 
 theorem upper_estimate {U Y r k c η ζ a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr : 1 ≤ r)
     (hJ : J = 2 * r + 1) (hA : 1 < a + 2) (ha : a = Y * (U + 1))

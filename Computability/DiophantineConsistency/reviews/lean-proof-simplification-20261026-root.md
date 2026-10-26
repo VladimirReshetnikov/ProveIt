@@ -338,3 +338,44 @@ These three additional groups remove1694 maintained Lean lines, including
 every new helper and label table. Together with the previous nine groups,
 this iteration series removes1958 lines. The decimal equation artifacts
 are unchanged. The iterative proof-simplification goal remains active.
+
+## Shared Pell ratio error factor
+
+The newly merged `lean-proof-simplification-new-2026-10-26.zip` supplies
+`patches/01-pell-factor.patch`. `v_finite_full_static` applied its two-file
+proof refactor: a positive-real-factor upper estimate lives in the existing
+HTP `Diophantine/Paper1980/PellRatio90` module, and the ordinary/native
+wrappers specialize factors1/2. Every old signature and premise, including
+the ordinary wrapper's `hYr` argument, remains unchanged. Existing recurrence,
+input and ratio definitions are untouched. No consistency-layer import is
+added to the lower HTP module.
+
+The paper module grows from472 to478 lines and the native module shrinks
+from244 to161. Including the whole generalized proof and both wrappers,
+the net reduction is77 lines and3654 bytes. ROOT read the whole changed
+proof in context and compared all19 old theorem statement texts; they are
+unchanged. `alternate_encoding_research` independently read all639 final
+source lines, the whole patch and the scaling/positivity contracts, reporting
+PASS on the exact frozen source hashes with no findings.
+
+Both changed modules and `PellRatio3` first passed. The `Pell90` client then
+failed before elaboration because `Bootstrap90.olean` was missing; its log is
+retained separately. The minimal missing cache closure was only `System90`,
+`Bootstrap90` and `PellExponent90`. All three unchanged prerequisites built
+successfully, then the unchanged `Pell90` client passed with an empty log.
+No source repair or raised proof limits were needed.
+
+All12 final verification calls returned zero: two touched module/olean
+builds, three direct clients (`PellRatio3`, `Pell90`, `NativePopulationLower`),
+the three cache prerequisites, two existing native focused checks and two
+axiom audits. Five existing public axiom reports are byte-identical before
+and after; the new helper uses only standard Lean axioms. ROOT independently
+compared the two public audit logs and read the helper report.
+The source refactor is committed as `8ca6455829`.
+
+Across the four additional source groups, this continuation removes1771
+net Lean lines, including all helper costs. The reviewed iteration series
+now removes2035 net lines across both affected library locations. New packet
+intake ranks signed-root recovery and internal natural-case reuse next;
+their archived compilation evidence is recorded as pending in `ADOPTION.md`
+and has not been substituted for maintained-tree checks. The goal stays active.
