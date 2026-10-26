@@ -68,8 +68,7 @@ The actual marked word now constructs the cyclic source, bounded carries,
 the complete low and high scalar masks, positive alpha and z, strong slack,
 and the exact unit transport factor. No desired mask, carry or strict F
 is supplied. The literal kernel residues are also proved. Remaining work
-now includes the remaining positive Pell/source
-witnesses and their polynomial composition, other equation
+now includes the final polynomial composition, other equation
 frontiers and internal-ZFC derivation. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
@@ -793,6 +792,31 @@ checkpoint alone does not yet supply a polynomial zero. See the
 halt-packing [independent replay](reviews/current-halt-packing2011-lean-peer.md).
 Their eight reports are standard-only; these are fresh leaf checks with
 reused prerequisites, not a fresh full umbrella build or internal ZFC proof.
+
+`NativeOuterSeedConstruction` constructs the literal native outer Pell
+seed from positive u, odd R and its exact population3*u+2. It derives the
+q-cubed scale, strict Pell interval, doubled first ordinate, both norms and
+all positive quotient witnesses. No interval, divisibility, norm or source
+zero is supplied. See the [author receipt](reviews/native-outer-seed-construction-author.md)
+and [independent root replay](reviews/native-outer-seed-construction-root.md).
+The latter freshly checks both new modules against authenticated current
+Ratio90/Half prerequisites, with four standard-only reports. The two
+prerequisite objects were freshly rebuilt by the author and reused by
+root; the recorded stale shared dependency objects were preserved.
+
+`NativePositiveSourceConstruction` composes that seed with a fresh private
+auxiliary Pell seed. Its `Data` keeps the actual scalar balance, exact
+window rank, temporal product and signed unit transport together. The
+population endpoint derives both seeds, all31 strictly positive natural
+source coordinates and all22 literal rows, and the actual positive
+fourteen-variable polynomial zero. The private negative ordinate is safely
+negated because its equation uses only its square; every other sign and
+integrality obligation is proved before conversion. See the
+[author receipt](reviews/native-positive-source-construction-author.md) and
+[independent fresh replay](reviews/native-positive-source-construction-lean-peer.md)
+with eight standard-only reports. Supplying its Data from the calibrated
+current packing and composing the actual consistency endpoint remain the
+next checkpoint. These are scoped leaf builds, not an internal ZFC proof.
 
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
