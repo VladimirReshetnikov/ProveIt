@@ -25,7 +25,7 @@ compiler below, with its input interface removed, to the blank run of the
 is an explicit polynomial with fixed integer coefficients, and by an ordinary
 argument formalizable in ZFC, ZFC proves "no solution" ↔ Con(ZFC). Wave 11
 adds finished direct quartics in the numerical proof calculus C222, with no
-coefficient tuple and without K215, this compiler or Jones; waves 12–24
+coefficient tuple and without K215, this compiler or Jones; waves 12–25
 bring them down to 201 naturals and 208 unrestricted integers
 (report sources 194 and 191).
 

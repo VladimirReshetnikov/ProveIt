@@ -80,8 +80,8 @@ frontier, over the packages of this collection, is now:**
 - **the smallest native tuple binding an equation**, B = 2^139261 (188's
   fourteen-positive and 194's ten-positive circuits, on the research
   session's block-mask2963
-  tuple, 69,685 raw bytes; that tuple's calibration was not checked at
-  intake); then 2^189269 (183's fourteen-positive circuit and 192's
+  tuple, 69,685 raw bytes; that tuple's calibration and 194's transfer to
+  it were not checked at intake); then 2^189269 (183's fourteen-positive circuit and 192's
   thirteen-positive circuits, on the research session's admissible942 tuple,
   94,689 raw bytes; its inherited native
   calibration was not checked at intake); then 2^193969 (174's P66, 185's fourteen-positive and 186's and
@@ -263,10 +263,10 @@ Lean development of Jones's reduction. The compiler and the Diophantine
 bridge are not formalized.
 
 Other routes in the repository:
-- **Finished by packages.** The direct C222 quartics of waves 11–24 (87's
+- **Finished by packages.** The direct C222 quartics of waves 11–25 (87's
   27,916 integers down to 194's 201 naturals and 191's 208 integers) and
-  the tuple-free forms of higher degree (152, 168, 175–177, 180, 181,
-  185–188, 190, 192–195) are complete
+  the tuple-free forms of higher degree (152, 168, 175–177, 179's octic, 180,
+  181, 185–188, 190, 192–195) are complete
   explicit polynomials on a route without K215 or Jones; their calibration
   is two Lean interfaces plus an ordinary proof of "polynomial zero iff
   C222 derivation" (wave-11 section). Wave 9's 60, 66 and 67 and wave 10's
@@ -503,9 +503,9 @@ At the wave-25 intake research points with emitted graphs dominate package
 rows at nine and thirteen positive unknowns, and its pages dominate the
 smallest-tuple row. Its fourteen-positive 66 / 118 of `b4c64e63d3` (19:00) is
 wave-24 package 188's form on a smaller tuple. At thirteen positive its
-certified 70 / 140 (`45d045db1f`, 19:40, on 192's carrier) and 71 / 128
-(`c21a1e801e`, 19:57) dominate 170's 154 / 72 and 162 / 71 and 192's
-170 / 70. At nine positive: its
+certified 140 / 70 (`45d045db1f`, 19:40, on 192's carrier) and 128 / 71
+(`c21a1e801e`, 19:57; degree / operations, as in the frontier rows) dominate
+170's 154 / 72 and 162 / 71 and 192's 170 / 70. At nine positive: its
 nine-positive 405 operations at degree 1,191,570 and 413 at 1,316,546
 (`23d8510a10`; the 413 form on the 2^429959 tuple), 722 at 1,158,228 and
 1,056 at 997,810 dominate every nine-positive package point. Its
@@ -598,7 +598,7 @@ lower directory number counts as earlier.
 | Fifteen positive | 66 ops (51's P66, degree 157; 141 binds the same 66-operation shape to radix-47 and radix-49 tuples, and 174 to its 4127 and 4159 tuples); across counts, 183's fourteen-positive 150 / 65 dominates the 157 / 66 point, and 188's 118 / 66 and 94 / 67 dominate the 125 / 67 and 101 / 68 points; lowest degree 24 / 88 (66); Pareto frontier as after wave 9 | 51; 66 | — |
 | Twelve positive, systems | unchanged: 59's three-equation system at 94 operations | 59 | 59 |
 | Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125. From wave 2 (history only, see the wave-2 README `5b0c9ae9fd`): 15's positive-domain sextic in 25 and octic in 20 unknowns, which still dominate 75's 26- and 21-unknown versions | waves 2, 5, 6 | — |
-| Smallest coefficients binding an equation | **B = 2^139261** (188's fourteen-positive 66 / 118 and 67 / 94, and 194's ten-positive 97 / 202, 111 / 198 and 119 / 190, on the research session's block-mask2963 tuple, 69,685 raw bytes; that tuple's calibration, and for 67 / 94 the transfer of 51's, 53's and 59's proofs, were not checked at intake, and the research session was already below it when 188 arrived); B = 2^189269 (183's fourteen-positive circuit, and 192's thirteen-positive 69 / 174 and 70 / 170, on the research session's admissible942 tuple, 94,689 raw bytes, taken unchanged; its inherited native calibration was not checked at intake, and that session was already on smaller tuples when 183 arrived, see above); B = 2^193969 (174's P66, 185's fourteen-positive and 186's and 195's ten-positive circuits, on the research session's Start-marker4127 tuple, 97,046 raw bytes; their Start-only calibrations and 186's whole-tuple bridge were not checked at intake); B = 2^196319 (179's ten-positive circuits on the research session's Start-marker4177 tuple, 98,219 raw bytes, if 179's native transfer holds); 171's binding of its ten-positive 85 / 232 to the research session's one-anchor7309 tuple, B = 2^343523 (172,011 raw bytes), if 171's native calibration holds; 141's radix-47 tuple, **B = 2^413929** (207,214 raw bytes), if its 29-to-12 carry proof holds (149, 164 and 175 bind ten-positive circuits to it); before them **B = 2^429959** (54), to which 85, 86, 101 and 105 bind nine-positive forms. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1 (186, 172; earlier 165, 154, 144, 135, 127, 120) and 2 (114) to about 1.3·10^33 (161's horizon-free forms)) | 188, 194; 183, 192; 174, 185, 186, 195; 179; 171; 141; 54; 87–89 | 54 |
+| Smallest coefficients binding an equation | (Pairs in this row are operations / degree.) **B = 2^139261** (188's fourteen-positive 66 / 118 and 67 / 94, and 194's ten-positive 97 / 202, 111 / 198 and 119 / 190, on the research session's block-mask2963 tuple, 69,685 raw bytes; that tuple's calibration, 194's transfer to it, and for 67 / 94 the transfer of 51's, 53's and 59's proofs, were not checked at intake, and the research session was already below it when 188 arrived); B = 2^189269 (183's fourteen-positive circuit, and 192's thirteen-positive 69 / 174 and 70 / 170, on the research session's admissible942 tuple, 94,689 raw bytes, taken unchanged; its inherited native calibration was not checked at intake, and that session was already on smaller tuples when 183 arrived, see above); B = 2^193969 (174's P66, 185's fourteen-positive and 186's and 195's ten-positive circuits, on the research session's Start-marker4127 tuple, 97,046 raw bytes; their Start-only calibrations and 186's whole-tuple bridge were not checked at intake); B = 2^196319 (179's ten-positive circuits on the research session's Start-marker4177 tuple, 98,219 raw bytes, if 179's native transfer holds); 171's binding of its ten-positive 85 / 232 to the research session's one-anchor7309 tuple, B = 2^343523 (172,011 raw bytes), if 171's native calibration holds; 141's radix-47 tuple, **B = 2^413929** (207,214 raw bytes), if its 29-to-12 carry proof holds (149, 164 and 175 bind ten-positive circuits to it); before them **B = 2^429959** (54), to which 85, 86, 101 and 105 bind nine-positive forms. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1 (195; earlier 186, 172, 165, 154, 144, 135, 127, 120) and 2 (114) to about 1.3·10^33 (161's horizon-free forms)) | 188, 194; 183, 192; 174, 185, 186, 195; 179; 171; 141; 54; 87–89 | 54 |
 
 ## Wave 25 (sources 194–195)
 
@@ -630,11 +630,11 @@ Two read-only dossiers did the following:
   the actual ports;
 - re-expanded every quartic, and replayed:
   - all four of 195's quartics from 184's 210;
-  - 194's natural chart from 171's pooled202, and all five of its
-    contractions;
+  - 194's natural chart from 171's pooled202 and its four contractions,
+    and the 138-variable contraction from 179's chart202;
   - 194's 209 from 184's 210;
 - recollected 195's tuple-free forms (up to 1,030,202 terms) and replayed
-  their 89 unit pivots;
+  their unit pivots (71 for 138 / 8, 89 for each degree-16 form);
 - verified 195's fifteen height-one forms from final polynomial to source;
 - implemented 194's thirteen-integer construction from its proof and
   checked it against both graphs.
@@ -644,7 +644,8 @@ Every headline figure was confirmed. Not checked:
 - the positive bootstrap and authentication order;
 - 195's m = 4 sign and completeness argument, power-pool estimate and
   orientation residue bound;
-- the soundness of eliminating the outer x in 194's 138-variable octic;
+- the soundness of eliminating the outer x in 194's 138-variable octic,
+  and 179's chart202 certificate, its source;
 - the low2963 and Start-marker4127 calibrations and the transfers to them;
 - the coefficient recipes (none was run);
 - every unbounded proof.
@@ -659,14 +660,16 @@ Every headline figure was confirmed. Not checked:
 - **Ten positive.**
   - 194's 97 / 202 is 179's 90 / 206 with the quotient center 2AUE − U·Qt,
     two gates cheaper than 193's product-style version. It dominates 193's
-    99 / 202.
+    99 / 202. 193 has precedence for this kind of center edit; 194 found it
+    independently.
   - 194's 111 / 198 is a new point: 172's 87 / 214 with 178's Ω₂.
   - 194's 119 / 190 is a third degree-190 polynomial, distinct from 190's
     and 193's. 193's 118 / 190 dominates it.
   - 195's 99 / 202 is 193's polynomial, and its 120 / 190 is 190's.
 - **Direct ℤ quartics.**
-  - 195 changes only three rows of 184's 210 (horizon, frame and
-    orientation) before projection:
+  - 195's semantic source changes three rows of 184's 210 (horizon, frame
+    and orientation); its 210–212 endpoints add a monic split of the
+    divisibility row, and 211 and 212 add 4 and 426 row operations:
     - its 210 / 150 / 5,276 / 2^24 dominates 184's 210;
     - its 211 dominates 184's and 182's 214s and 173's 215;
     - its 212 / 18,381 / 5,200 dominates 192's 212 / 21,556 / 6,432 and
@@ -676,7 +679,8 @@ Every headline figure was confirmed. Not checked:
   - 191's 208 keeps the fewest variables.
   - 194's 209 is the same polynomial as 191's 209 / 2^44, a third delivery
     of 190's 209 before scaling.
-  - 194's 212 is a control dominated by 184's and 195's points, as 194 says.
+  - 194's 212 is a control dominated by 184's 210, as 194 says, and by
+    195's 210.
 - **Direct ℕ quartics.**
   - 194's 201 has the fewest variables of any ℕ quartic. It is 171's pooled
     chart with one more substitution, and it dominates 179's 203 and 204.
@@ -687,15 +691,16 @@ Every headline figure was confirmed. Not checked:
 - **Tuple-free forms of higher degree.**
   - 195's 138 / 8 and 113 / 16 have the fewest variables at their degrees
     (180 had 143, 190 had 116).
-  - 195 ships them as term lists, not circuits. The dossier's upper bounds
-    are 2,990 operations at degree 8 and 22,556 at degree 16, so on
-    operations 180's 143 / 8 and 190's 116 / 16 survive.
+  - 195 ships them as term lists, not circuits, so they have no operation
+    count; 180's 143 / 8 (2,590 operations) and 190's 116 / 16 (2,433)
+    survive on operations. The dossier's direct-evaluation upper bounds are
+    2,990 and 22,556.
 
 ### Tensions, not adjudicated at intake
 
 - **Unclaimed complete forms.** None is ranked:
   - 195's stages 212 / 152 / 5,177 / 277,420 (it dominates 192's sparse
-    212) and 210 / 150 / 5,173 / 2^40;
+    212), 211 / 151 / 5,175 / 2^24 and 210 / 150 / 5,173 / 2^40;
   - 194's chart202 (202 / 154 / 6,000 / 1,854,571), which is Pareto in ℕ.
 - **A combination not delivered.** On every zero of 195's chains F is
   divisible by 2^21 (or 2^19 or 2^11, depending on the chain). 190's
@@ -872,8 +877,8 @@ every unbounded proof.
   phase-split2471 tuple, crediting 192's `compact13/PROOF.md` and
   `positive13_square.json` by SHA-256, and an independent ordinary review
   passed. Its literal graph was certified at 19:40 (`45d045db1f`), after
-  this wave's placement; it dominates 170's 154 / 72 and 162 / 71 and 192's
-  170 / 70.
+  this wave's placement; it dominates 170's 72 / 154 and 71 / 162 and 192's
+  70 / 170.
 - **Smallest tuple.** 188's binding to the block-mask2963 tuple
   (B = 2^139261, 69,685 raw bytes) is the smallest tuple bound to a package
   equation. It rests on the research session's calibration of that tuple,
