@@ -287,6 +287,15 @@ See the [independent root review and fresh replay](reviews/current-polynomial-wi
 This closes the forward polynomial-to-word composition; physical native
 decoding, converse/controller witnesses and internal-ZFC proof remain open.
 
+`CurrentPhaseParity2011.fractional_phase_zero` now excludes every nonzero
+binary phase from the actual marker parity, full reflected sum and
+bounded-carry reset. It needs an at-most-one count only in the origin
+cell, with no label, occupation or marker-value premise. See the [root
+whole-source review and fresh replay](reviews/current-phase-parity2011-lean-root.md).
+Supplying that count from the full padding/clause argument will make the
+result unconditional for polynomial zeros; whole-field alignment remains
+an independent native obligation.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
