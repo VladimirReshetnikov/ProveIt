@@ -373,6 +373,8 @@ Facts. The literal Start supplies South510 and its two source ones;
 actual copy identities reduce the offset to0/19/20. The finite-cycle
 and residue arguments exclude19/20 with the actual physical941 gate,
 including the valid511 self-loop. See the [root review and fresh replay](reviews/current-whole-field2011-lean-root.md).
+An [independent composition review](reviews/current-whole-field2011-lean-peer.md)
+also freshly rebuilt the main module and checks in an isolated import overlay.
 There is no occupation, unique-Start, supplied marker-value or calibration
 premise. All-cell occupation, neighboring color matching, native-machine
 semantics, the converse/controller and internal-ZFC proof remain open.
@@ -387,6 +389,17 @@ internally and takes whole-field alignment from the preceding theorem.
 See the [root review and fresh replay](reviews/current-adjacency2011-lean-root.md).
 Occupation and conversion of these bit equalities to actual matching tile
 colors remain subsequent composition steps.
+
+`WangTiles942Language` now characterizes membership in the actual table
+by ten exact allowed families, in both directions. Directional target
+membership is equivalent to occurrence in the literal decimal-decoded
+actions, including halt215. Rail injectivity is restricted to actual
+directional targets; their ranges are disjoint. Both horizontal colors
+are below250, so their complements are positive, supplying the occupation
+propagation bound. See the [root review and fresh replay](reviews/wang-tiles942-language-lean-root.md).
+The [machine-language plan](reviews/current-wang-machine-language-plan.md)
+states the still missing marked-tiling soundness and cofinal canonical
+converse. Finite classification alone proves neither endpoint.
 
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is

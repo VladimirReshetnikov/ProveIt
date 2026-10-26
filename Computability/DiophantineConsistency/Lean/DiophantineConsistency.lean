@@ -235,6 +235,7 @@ import DiophantineConsistency.NativePackedMachine54
 import DiophantineConsistency.DecimalMachine215
 import DiophantineConsistency.WangTiles942
 import DiophantineConsistency.WangTiles942Permutation
+import DiophantineConsistency.WangTiles942Language
 import DiophantineConsistency.DecimalMachineZFC
 import DiophantineConsistency.PaddingStaircase
 import DiophantineConsistency.NativePreliminaryCount2011

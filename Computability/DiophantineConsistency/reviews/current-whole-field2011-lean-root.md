@@ -4,6 +4,10 @@ Date: 2026-10-26. Independent complete source/check review and fresh replay:
 ROOT. The separate [author receipt](current-whole-field2011-author.md)
 records the dependency bindings and initial builds.
 
+The later [independent composition review](current-whole-field2011-lean-peer.md)
+also passed, using a freshly built main object and checks in an isolated
+import overlay. Its receipt explicitly records prerequisite authorship.
+
 | Source under `Lean/DiophantineConsistency/` | SHA-256 |
 |---|---|
 | CurrentWholeField2011.lean (156 lines) | 16c06800d326578b5898f2353229b574f2c0c8783bfadc362d517d34d2a5d079 |
