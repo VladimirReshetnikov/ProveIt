@@ -1663,3 +1663,26 @@ pre-merge author receipts and logs. Its archive has344 entries; ROOT checks
 the archive integrity and every entry against its retained bytes. Historical
 Core input records resolve to the archived original source snapshot, rather
 than the subsequently repaired path.
+
+## Final upstream synchronization
+
+The reviewed checkpoint and bundle are committed as `3803e9620b`. Before
+pushing, ROOT fetched immutable upstream
+`88cf5fc90ea7abc2e81be1a01247d2964078965b`, which adds323 paths and modifies
+five beyond the earlier merge. Its37 new active Lean modules comprise13
+BusyBeaver,18 HA/Foundation, four thirteen-variable and two ZFCinPA modules.
+The existing umbrella adds two imports. Those paths,19 research files,
+267 review/evidence files and four top-level documents are outside all357
+protected files and do not overlap local changes or parked untracked work.
+`alternate_encoding_research` independently verifies the inventory, source
+names, absence of import shadowing and all357 hashes. The new work retains
+its separately attributed upstream validation; no incoming program is run.
+
+The ordinary merge completes cleanly as
+`5098e5c47ddffcdb2160613e40029f8dbacd11e5`. ROOT re-resolves the tracked
+project import graph and checks all26 roots,352 sources, every project
+import edge and all357 hashes against the validated checkpoint; all remain
+exact. The pinned mathlib revision and tracked sources remain unchanged.
+The96 successful scope observations therefore retain their original source
+bindings, including both committed equation artifacts. This synchronization
+requires no further compiler replay of unchanged inputs.
