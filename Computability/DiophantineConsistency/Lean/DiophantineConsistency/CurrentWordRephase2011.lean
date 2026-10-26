@@ -25,17 +25,11 @@ theorem normalization_of_rotation_eq {n : ℕ} [NeZero n]
     (hf : CurrentCarryConstruction2011.Facts c W carry digits)
     (hr : binaryRotation 47 W' c = binaryRotation 47 W c) :
     CurrentCarryConstruction2011.Facts c W' carry digits := by
-  have hraw : CurrentCarryConstruction2011.raw c W' =
-      CurrentCarryConstruction2011.raw c W := by
-    funext i
-    simp only [CurrentCarryConstruction2011.raw,hr]
   refine ⟨hf.carry_bound,hf.digit_bound,?_,?_,hf.word_bound,?_⟩
   · intro i
-    rw [hraw]
-    exact hf.recurrence i
+    simpa only [CurrentCarryConstruction2011.raw,hr] using hf.recurrence i
   · intro i
-    rw [hraw]
-    exact hf.decomposition i
+    simpa only [CurrentCarryConstruction2011.raw,hr] using hf.decomposition i
   · have hnew := word_binaryRotation 47 W' c
     have hold := word_binaryRotation 47 W c
     rw [hr] at hnew
