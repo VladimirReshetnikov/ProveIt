@@ -25,32 +25,31 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete Start-marker4127 equation: fifteen positive unknowns, exact
-degree157 and66 integer-leaf operations. Its constants total**97046 raw
-bytes**,1173 fewer than4177 (1.2%). Complete TeX5072 bytes and nonwhite
-extracted text2699 characters are unchanged; PDF grows5 to159636 bytes.
+the complete shared-copy4049 equation: fifteen positive unknowns, exact
+degree157 and66 integer-leaf operations. Its constants total**95205 raw
+bytes**,1841 fewer than4127. Complete TeX5058 bytes and nonwhite extracted
+text2693 characters save14 bytes and six characters; PDF shrinks18 to159618.
 Fonts remain9pt/7.7pt on one Letter page.
 
-The complete [ordinary proof](research/start-marker1031-independent/PROOF.md)
-passes root and independent review. All eight positive Start south bits
-and the exact tile942 calibration exclude extra offsets, allowing marker1031.
-The whole915-offset classification has913 multiple-selector contradictions,
-one calibrated exception and zero. Every changed predecessor, carry29
-bound,875 padding tests, canonical subset, actual rank and P66 map is
-covered. The new controller uses prime474491, orders23/2063 and H9/3487/153928.
-Normal and optimized checks reproduce all finite and printed-port files,
-including the actual TeX marker-deletion rejection. Two actual full-page
-visual inspections pass. See the
-[complete candidate](candidates/one-page-start-marker4127/README.md),
-[mathematical review](reviews/start-marker1031-independent-peer.md) and
-[page review](reviews/start-marker4127-page-peer.md).
+The complete [ordinary proof](research/merged-copy-independent/PROOF.md)
+and finite Pcm18 discharge pass root and independent review. Exactly one
+rho18 supplies both label copies. Every changed carry, predecessor,
+934-case phase classification,875 padding tests, safe subset and both
+P66 maps is covered. The controller uses prime190763, orders23/506 and
+H34/3240/43425. Normal and optimized checks reproduce all source/port
+files, including actual TeX marker-deletion rejection. Two actual full-page
+visual inspections pass. See the [complete candidate](candidates/one-page-merged-copy4049/README.md),
+[mathematical review](reviews/merged-copy4049-independent-peer.md) and
+[page review](reviews/merged-copy4049-page-peer.md).
 
 Every previous page and CURRENT record is preserved. No new formal-kernel
 replay or consistency decision is claimed; inherited ordinary calibration
-remains explicit. Research is active on a merged-copy kernel and one fewer
-dummy position. The [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
-has separate finite review:96670 raw bytes at the cost of eight more TeX
-bytes, pending a complete ordinary proof. Its result does not replace4127.
+remains explicit. The reviewed [single-dummy intermediate](research/single-dummy-independent/README.md)
+saves another516 raw bytes. Its Boolean-only mask simplifies the printed
+recipe further; complete review is ongoing. Deleting the already forbidden
+selector is the next language simplification. The separately reviewed
+[interior-padding probe](research/start-marker-padding-probe/NOTE.md)
+remains a conditional tradeoff tied to the preserved4127 layout.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 still saves nineteen operations and171 degree while adding five unknowns.

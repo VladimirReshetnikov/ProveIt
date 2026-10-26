@@ -19,48 +19,49 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **complete Start-marker4127 equation
+[equation.tex](equation.tex) print the **complete shared-copy4049 equation
 in fifteen positive unknowns, exact degree157, with66 integer-leaf binary
 operations**. All four fixed constants, the436-character numeral, alphabet,
 closed decoder and943 tiles fit on one Letter page at9-point body and
 7.7-point seed/footer sizes.
 
-The [complete candidate](candidates/one-page-start-marker4127/README.md)
-reduces raw coefficient storage from98219 to**97046 bytes**, saving1173
-(1.2%) from Start-marker4177. Complete TeX stays5072 bytes and nonwhite
-`pdftotext -layout` text stays2699 characters; PDF grows5 bytes to159636.
-Variables, degree, operation count and fonts stay unchanged. Four coherent
-new integers specialize the same P66 template.
+The [complete candidate](candidates/one-page-merged-copy4049/README.md)
+reduces raw coefficient storage from97046 to**95205 bytes**, saving1841
+from Start-marker4127. Complete TeX shrinks14 bytes to5058; nonwhite
+`pdftotext -layout` text shrinks six characters to2693; PDF shrinks18
+bytes to159618. Variables, degree, operation count and fonts are unchanged.
+Four coherent new integers specialize the same P66 template.
 
-The [whole ordinary proof](research/start-marker1031-independent/PROOF.md)
-moves the physical Start marker to1031. All eight positive Start south
-bits exclude the new small offsets except32, which contradicts the exact
-decoded south bit of tile942. Larger offsets require two selectors in one
-already-decoded cell. Global carry29, every copy,875 tail-padding bits,
-predecessor resets, actual rank and both P66 maps are checked.
-The [finite certificate](research/start-marker1031-independent/certificate.json)
-discharges Pcs1031 with orders23/2063, lambda474491 and H9/3487/153928.
-Full [root](reviews/start-marker1031-root.md) and
-[independent](reviews/start-marker1031-independent-peer.md) mathematical
-reviews pass. Normal and optimized reconstruction reproduces every printed
-integer and rejects actual deletion of the zero-weight marker term.
-The [page review](reviews/start-marker4127-page-peer.md) records full source
-agreement and a second actual visual inspection.
+The [whole ordinary proof](research/merged-copy-independent/PROOF.md)
+uses exactly one rho18 monomial for both label-copy roles. It moves the
+marker to1008 and rebuilds every copy, predecessor, carry29 bound and875
+padding tests. The full934-case phase classification uses Start's eight
+positive south bits and the decoded tile942 obstruction. Fresh canonical
+subsets, actual rank and both P66 witness maps are covered.
+The [finite certificate](research/merged-copy-independent/certificate.json)
+discharges Pcm18 with orders23/506, lambda190763 and H34/3240/43425.
+Full [root](reviews/merged-copy4049-root.md) and
+[independent](reviews/merged-copy4049-independent-peer.md) reviews pass.
+Normal and optimized reconstruction reproduces every printed integer and
+rejects actual deletion of the zero-weight marker term.
+The [page review](reviews/merged-copy4049-page-peer.md) records complete
+source agreement and a second actual visual inspection.
 [CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the page and preserves
 the preceding metadata verbatim.
 
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
 proof, consistency decision or global minimum is claimed. Lean remains
-paused. The [Start-marker4177](candidates/one-page-start-marker4177/equation.pdf),
+paused. The [Start-marker4127](candidates/one-page-start-marker4127/equation.pdf),
+[Start-marker4177](candidates/one-page-start-marker4177/equation.pdf),
 [zero-weight6007](candidates/one-page-zero-weight6007/equation.pdf),
 [one-anchor7309](candidates/one-page-one-anchor7309/equation.pdf),
 [two-anchor7691](candidates/one-page-two-anchor7691/equation.pdf),
 [three-anchor47](candidates/one-page-complemented47-independent/equation.pdf)
 and [radix55](candidates/one-page-compact66-radix55/equation.pdf) pages remain
-preserved. Next work combines two copy monomials and removes a spare dummy;
-a separately reviewed interior-padding probe preserves a raw/printed-size
-tradeoff rather than claiming a complete replacement.
+preserved. A fully reviewed [single-dummy4027 intermediate](research/single-dummy-independent/README.md)
+reaches94689 raw bytes. Its Boolean-only simplification and deletion of an
+already forbidden tile are the next printed-recipe reductions under review.
 
 The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
 [grouped66 page](candidates/one-page-grouped66/equation.pdf) and
