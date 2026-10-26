@@ -154,6 +154,20 @@ The build logs are empty; the focused checks retain their passing executable
 controls and standard-axiom reports. ROOT read every changed declaration
 and the checker axiom output. No archive script or whole-library build ran.
 
-The six committed groups in this review remove197 maintained Lean source
+The first six committed groups in this review remove197 maintained Lean source
 lines across20 modules, including the shared assignment lemma. The general
 proof-simplification goal remains active; these are iterative checkpoints.
+
+## Reuse unconditional packing bounds
+
+`SplitWordBounds.weak_cap_packing` and its `GapWordBounds66` counterpart now
+obtain source positivity, both low-mask bounds and both packed-word signs
+from their already-proved `unconditional_word_bounds` theorems. This removes
+14 lines, reducing the two modules from376/261 to369/254 lines. The weak cap,
+target bounds, injectivity, scale and nonnegativity assumptions are unchanged,
+as are all upper-packing and final rank-cap steps.
+
+ROOT read the sources and authored this change. Both module/olean rebuilds
+and both existing focused check files returned zero; all printed theorem
+axioms are standard. `v_finite_full_static` independently read the helper
+contracts and complete changed packing proofs and reported PASS.

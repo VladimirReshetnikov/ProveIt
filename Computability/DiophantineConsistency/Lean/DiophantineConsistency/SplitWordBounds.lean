@@ -332,7 +332,6 @@ theorem weak_cap_packing {D0 D1 D2 : ℤ[X]} {B H b g : ℤ}
   dsimp only
   obtain ⟨hB, _, _, hfour⟩ := scale_bounds hH hb hscale
   have hB2 : 2 ≤ B := by omega
-  have he0 := powerSum_nonneg (by omega : 0 ≤ B) w
   have he := powerSum_lt_two_top hB2 w hwi hw
   have hetop := top_le_powerSum (by omega : 0 ≤ B) w hwt
   have hu0 : 0 < powerSum B w + g := by
@@ -341,18 +340,12 @@ theorem weak_cap_packing {D0 D1 D2 : ℤ[X]} {B H b g : ℤ}
   have hucap : powerSum B w + g < 6 * b * B ^ 116 := by
     have hp : 0 < B ^ 116 := by positivity
     nlinarith only [he, hcap, mul_le_mul_of_nonneg_right hb hp.le]
-  have hGp := source_pos_of_word hk hH hb hscale w hwt hg
+  obtain ⟨hGp, hm0, hmcap, hS0, hT0⟩ :=
+    unconditional_word_bounds hk hH hb hscale w hwi hw hwt q hg
   have hGcap := source_lt_one_sixtyfourth hk hH hb hscale hu0 hucap
   have hgcap : g < B ^ 117 := PolynomialRangeBounds.weak_cap_lt_low_block hB2 hfour 116 hcap
-  obtain ⟨hm0, hmcap⟩ := lowMask_bounds hB2 hb hfour he0 he
   obtain ⟨ht0, htcap, hthicap⟩ := targets_bounds hB q hqi hq
   have hN0 : 0 < B ^ 117 := by positivity
-  have hS0 : 0 < packedS B g (sourceValue D0 D1 D2 B (powerSum B w + g)) (powerSum B q) := by
-    unfold packedS
-    positivity
-  have hT0 : 0 ≤ packedT B b (powerSum B w) (powerSum B q) := by
-    unfold packedT
-    positivity
   have hZ : 128 < B ^ 2162 := by
     have hpow : B ≤ B ^ 2162 := by
       simpa only [pow_one] using (pow_le_pow_right₀ (by omega : 1 ≤ B) (by decide : 1 ≤ 2162))
