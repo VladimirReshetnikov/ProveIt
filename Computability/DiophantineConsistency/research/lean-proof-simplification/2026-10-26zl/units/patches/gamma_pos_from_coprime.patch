@@ -1,0 +1,15 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerUnits2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerUnits2011.lean
+@@ -192,10 +192,7 @@
+   simp only [Gamma, NativeRankVariation.rankGamma, Nat.cast_mul, Nat.cast_pow,
+     Nat.cast_sub (quadratic_ge_one n), Nat.cast_one, Nat.cast_add]
+ 
+-theorem Gamma_pos (rw n : ℕ) : 0 < Gamma rw n := by
+-  have hq := q_gt_one n
+-  have hs : 0 < q n^2-1 := Nat.sub_pos_of_lt (by nlinarith)
+-  have hr : 0 < CurrentMasks2011.radix^977 := pow_pos (by decide) _
+-  exact mul_pos (mul_pos hr hs) (by omega)
++theorem Gamma_pos (rw n : ℕ) : 0 < Gamma rw n :=
++  Nat.pos_of_ne_zero fun hz => by simpa [hz] using coprime_Gamma_47 rw n
+ 
+ end DiophantineConsistency.CurrentControllerUnits2011

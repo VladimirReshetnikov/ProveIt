@@ -165,56 +165,6 @@ theorem eval_syntaxVars {ν : ℕ} (seed : Expr (Fin (ν + 1)))
   simp [syntaxVars, JonesSyntax.evalExprVars, Jones1982.Nine.varsOf,
     rankCode, Jones1982.Nine.rZ, Expr.eval_pow, Expr.eval]
 
-private theorem eval_rad {σ : Type*} (a : σ → ℤ)
-    (v : RingVars (Expr σ)) (k : Fin 2) :
-    (v.rad k).eval a = Jones1982.Nine.rad (JonesSyntax.evalExprVars a v) k := by
-  fin_cases k <;>
-    simp [Expr.eval, RingVars.rad, Jones1982.Nine.rad, JonesSyntax.evalExprVars,
-      RingVars.U, RingVars.Y, RingVars.M, RingVars.P, RingVars.K,
-      RingVars.A, RingVars.B', RingVars.W, RingVars.C, RingVars.J,
-      RingVars.D, RingVars.E, RingVars.F, RingVars.Gp,
-      RingVars.H, RingVars.I,
-      Jones1982.Nine.Vars.U, Jones1982.Nine.Vars.Y, Jones1982.Nine.Vars.M,
-      Jones1982.Nine.Vars.P, Jones1982.Nine.Vars.K, Jones1982.Nine.Vars.A,
-      Jones1982.Nine.Vars.B', Jones1982.Nine.Vars.W, Jones1982.Nine.Vars.C,
-      Jones1982.Nine.Vars.J, Jones1982.Nine.Vars.D,
-      Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F, Jones1982.Nine.Vars.Gp,
-      Jones1982.Nine.Vars.H, Jones1982.Nine.Vars.I]
-
-private theorem eval_wt {σ : Type*} (a : σ → ℤ)
-    (v : RingVars (Expr σ)) (k : Fin 2) :
-    (v.wt k).eval a = Jones1982.Nine.wt (JonesSyntax.evalExprVars a v) k := by
-  simp [RingVars.wt, Jones1982.Nine.wt, Expr.eval_pow, eval_rad, Expr.eval]
-
-private theorem eval_dvsr {σ : Type*} (a : σ → ℤ) (v : RingVars (Expr σ)) :
-    v.dvsr.eval a = Jones1982.Nine.dvsr (JonesSyntax.evalExprVars a v) := by
-  simp [Expr.eval, RingVars.dvsr, Jones1982.Nine.dvsr, JonesSyntax.evalExprVars,
-    RingVars.U, RingVars.Y, RingVars.M, RingVars.A, RingVars.B', RingVars.W,
-    RingVars.C, RingVars.J, RingVars.D, RingVars.E, RingVars.F,
-    Jones1982.Nine.Vars.U, Jones1982.Nine.Vars.Y, Jones1982.Nine.Vars.M,
-    Jones1982.Nine.Vars.A, Jones1982.Nine.Vars.B', Jones1982.Nine.Vars.W,
-    Jones1982.Nine.Vars.C, Jones1982.Nine.Vars.J, Jones1982.Nine.Vars.D,
-    Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F]
-
-private theorem eval_dvnd {σ : Type*} (a : σ → ℤ) (v : RingVars (Expr σ)) :
-    v.dvnd.eval a = Jones1982.Nine.dvnd (JonesSyntax.evalExprVars a v) := by
-  simp [Expr.eval, RingVars.dvnd, Jones1982.Nine.dvnd, JonesSyntax.evalExprVars,
-    RingVars.U, RingVars.Y, RingVars.M, RingVars.A, RingVars.B', RingVars.W,
-    RingVars.C, RingVars.J, RingVars.Q, RingVars.D, RingVars.E, RingVars.F, RingVars.H,
-    Jones1982.Nine.Vars.U, Jones1982.Nine.Vars.Y, Jones1982.Nine.Vars.M,
-    Jones1982.Nine.Vars.A, Jones1982.Nine.Vars.B', Jones1982.Nine.Vars.W,
-    Jones1982.Nine.Vars.C, Jones1982.Nine.Vars.J, Jones1982.Nine.Vars.Q,
-    Jones1982.Nine.Vars.D, Jones1982.Nine.Vars.E, Jones1982.Nine.Vars.F, Jones1982.Nine.Vars.H]
-
-private theorem eval_marg {σ : Type*} (a : σ → ℤ) (v : RingVars (Expr σ)) :
-    v.marg.eval a = Jones1982.Nine.marg (JonesSyntax.evalExprVars a v) := by
-  simp [Expr.eval, RingVars.marg, Jones1982.Nine.marg, JonesSyntax.evalExprVars,
-    RingVars.U, RingVars.Y, RingVars.M, RingVars.P, RingVars.K,
-    RingVars.B', RingVars.W, RingVars.C,
-    Jones1982.Nine.Vars.U, Jones1982.Nine.Vars.Y, Jones1982.Nine.Vars.M,
-    Jones1982.Nine.Vars.P, Jones1982.Nine.Vars.K, Jones1982.Nine.Vars.B',
-    Jones1982.Nine.Vars.W, Jones1982.Nine.Vars.C]
-
 def withInput {ν : ℕ} (seed : Expr (Fin (ν + 1))) (z y : ℕ) : Expr (Fin 10) :=
   let v := syntaxVars seed z y
   RefinedPair.value (v.rad 0) (v.rad 1) (v.wt 0) (v.wt 1) (.var 9)
@@ -227,7 +177,8 @@ theorem eval_withInput {ν : ℕ} (seed : Expr (Fin (ν + 1)))
   rw [RefinedPair.value_eq]
   simp only [withInput, RefinedPair.value, Expr.eval_add, Expr.eval_sub, Expr.eval_mul,
     Expr.eval_pow, Expr.eval_var,
-    eval_rad, eval_wt, eval_dvsr, eval_dvnd, eval_marg, eval_syntaxVars]
+    JonesSyntax.eval_rad, JonesSyntax.eval_wt, JonesSyntax.eval_dvsr,
+    JonesSyntax.eval_dvnd, JonesSyntax.eval_marg, eval_syntaxVars]
   rfl
 
 /-- Executable nine-unknown syntax from a supplied seed expression. -/

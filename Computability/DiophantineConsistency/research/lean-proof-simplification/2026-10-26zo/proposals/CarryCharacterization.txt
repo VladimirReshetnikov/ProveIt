@@ -1,0 +1,48 @@
+PROPOSED REPOSITORY ADAPTER: NOT IMPLEMENTED OR COMPILED
+
+Recommended first step: characterize the existing normalization; retain the
+current short fixed-point existence proof.
+
+Actual scope:
+  N > 0; assembled word c = word a dummy marker;
+  Boolean dummy and marker maps; W = displacement s (whole-cell).
+  An existing CurrentCarryConstruction2011.Facts c W k digits.
+
+Define raw_j(e) = raw c W (base j + e), rho = 2^47.
+For 0 <= e < 2011 prove:
+  k(base j + e) = run rho raw_j 0 (e+1)
+  digits(base j + e) = (raw_j(e) + run rho raw_j 0 e) % rho.
+
+Proof obligations:
+  1. Existing top_carry_digits proves k(base(j-1)+2010)=0.
+  2. Prove base j-1 = base(j-1)+2010 in ZMod(N*2011), retaining N=1/j=0.
+  3. Define an incoming-carry sequence for this cell, seeded by the preceding
+     final field. At positive indices use the same-cell predecessor identity.
+  4. Apply the checked matches_run theorem to the actual Facts.recurrence.
+  5. Obtain the digit formula from Facts.decomposition, digit_bound and
+     quotient/remainder uniqueness (existing baseline API may do this).
+  6. Use prefix_congr to compare raw prefixes. For digit at e, equality must
+     include e: all i < e+1. Equality only for i<e omits the current raw value.
+
+Resulting use:
+  Equal RAW prefixes imply equal normalized digits/outgoing carries. A source
+  cell edit may affect several raw cells through convolution/rotation. Prove
+  that raw influence separately before applying this result.
+
+Import placement:
+  CurrentWordTopBounds2011 imports Clause, which imports CarryConstruction.
+  Do not import TopBounds back into CarryConstruction. Use a later adapter
+  module, or move raw reset geometry to a genuinely lower dependency layer.
+
+Optional later constructor:
+  run from zero in every raw cell, with resets at2009/2010, can construct a
+  simultaneous normalization. This may increase source length. The existing
+  generic theorem is already short; do not replace it without a measured client
+  benefit. The prefix budget proves bounds through run2009; derive run2010=0
+  from the2009 reset and run2011=0 from raw2010=0. Last-digit zero requires both
+  incoming and outgoing reset facts, not terminal carry zero alone.
+
+Not implied:
+  Safe source mutations, high-mask acceptance, strict positive transport,
+  controller correction, source-system zeros, or completion of the consistency
+  equivalence.

@@ -1,4 +1,5 @@
 import DiophantineConsistency.NativePellFirstIndex
+import Diophantine.Paper1980.PellRatio90
 
 /-!
 # Exponential recovery for the ordinary native Pell source
@@ -15,10 +16,8 @@ open Diophantine Pell NativePellBootstrap NativePellFirstIndex
 /-- The strict cross-product comparison underlying the lower ratio bound. -/
 theorem lower_key {X Y : ℕ} (hX : 1 ≤ X) (hY : 1 ≤ Y) :
     2 * (2 * (X * Y ^ 2) + 1) * (X + 1) ^ 2 <
-      (2 * (Y * (X + 1) + 2) - 1) ^ 2 * X := by
-  rw [show 2 * (Y * (X + 1) + 2) - 1 = 2 * (Y * (X + 1)) + 3 by omega]
-  have h1 := Nat.mul_le_mul_right (X + 1) (Nat.mul_le_mul_left X hY)
-  nlinarith [h1,hX]
+      (2 * (Y * (X + 1) + 2) - 1) ^ 2 * X :=
+  Jones1980.Ratio90.lower_key hX hY
 
 /-- The elementary lower ratio estimate with the actual doubled first
 coordinate of the native source. -/
@@ -28,26 +27,10 @@ theorem doubled_ratio_lower {X Y r k c a R : ℕ}
     (hc : c = yn (by omega : 1 < a + 2) R)
     (hk : k = 2 * yn (by nlinarith : 1 < 2 * (X * Y ^ 2) + 1) (r + 1)) :
     k * (X + 1) ^ (2 * r) < 2 * c * X ^ r := by
-  have hcl : (2 * (a + 2) - 1) ^ (2 * r) ≤ c := by
-    rw [hc,hR]
-    exact pow_le_ψ_succ (by omega : 1 < a + 2) (2 * r)
-  have hku : yn (by nlinarith : 1 < 2 * (X * Y ^ 2) + 1) (r + 1) ≤
-      (2 * (2 * (X * Y ^ 2) + 1)) ^ r :=
-    ψ_succ_le_pow (by nlinarith : 1 < 2 * (X * Y ^ 2) + 1) r
-  have key := lower_key hX hY
-  rw [← ha] at key
-  have hpow := Nat.pow_lt_pow_left key (by omega : r ≠ 0)
-  have hlow : yn (by nlinarith : 1 < 2 * (X * Y ^ 2) + 1) (r + 1) *
-      (X + 1) ^ (2 * r) < c * X ^ r := by
-    calc _ ≤ (2 * (2 * (X * Y ^ 2) + 1)) ^ r * (X + 1) ^ (2 * r) :=
-          Nat.mul_le_mul_right _ hku
-      _ = (2 * (2 * (X * Y ^ 2) + 1) * (X + 1) ^ 2) ^ r := by
-          rw [pow_mul,← mul_pow]
-      _ < ((2 * (a + 2) - 1) ^ 2 * X) ^ r := hpow
-      _ = (2 * (a + 2) - 1) ^ (2 * r) * X ^ r := by rw [mul_pow,← pow_mul]
-      _ ≤ c * X ^ r := Nat.mul_le_mul_right _ hcl
+  have h := Jones1980.Ratio90.lower_estimate hX hY hr hR (by omega) ha
+    (by nlinarith) hc rfl
   rw [hk]
-  nlinarith
+  simpa only [mul_assoc] using Nat.mul_lt_mul_of_pos_left h (by decide : 0 < 2)
 
 /-- The actual source interval and doubled ratio force an exponential lower
 bound for Y, without replacing k by an undoubled Pell coordinate. -/

@@ -1,0 +1,133 @@
+BASELINE: 9f35798db4a63c25e435fca14d75931144657d7e
+
+IDEA A: ONE FIXED RESIDUE FOR THE ENTIRE CONTROLLER RANK STEP
+
+Exact target: CurrentControllerUnits2011.lean, especially power_dimension_47,
+power_dimension_2011, power_dimension_auxiliary; quadratic_mod_{47,2011,auxiliary};
+coupling_mod_{47,2011,auxiliary}; coprime_Gamma_{47,2011,auxiliary};
+coprime_Gamma_width_cells. Existing source is201 lines. The named per-prime
+lemmas are only used within that module and its Checks file in the reviewed
+Lean subtree, so production API preservation need not force all proof paths
+to remain. Do not claim a measured integrated line reduction; this is a
+standalone checked replacement core with a clear deletion map.
+
+Mathematical mechanism:
+Let p=120199, d=94517=47*2011, R=d*p. Let B=2^94517, r=radix^977=2^45919.
+For any monoid, x^p=x implies x^(p^n)=x by induction (no commutativity needed).
+Kernel-checked modular exponentiation proves (B:ZMod R)^p=B. Hence both
+q=B^(p^n) and widthPower=B^(p^rw) have the fixed residue B moduloR.
+For K the SAME maintained kernel, write
+Gamma0=r*(B^2-1)*(1+B*K+B^2).
+Then Gamma(rw,n)=r*(q^2-1)*(1+q*(K+widthPower)) is congruent toGamma0 moduloR.
+This transports the whole expression once; it does not transport each factor
+separately at every prime. The natural subtraction cast needs1<=B, derived
+once; this supplies1<=q^2.
+
+If a≡b mod(d*p) and Coprime b (d*p), then Coprime a (d*p^n) for every n.
+Proof: ModEq.gcd_eq transports coprimality at d*p; split into d and p;
+raise the latter coprimality to p^n; recombine. No primality or squarefree
+assumption is required for this implication. In the actual application R
+is the radical of d*p^n for n>0; n=0 has smaller prime support and the same
+one-sided proof remains valid. Do NOT assert the converse for n=0.
+
+Concrete certificate derived from repository facts K_mod_47=26,
+K_mod_2011=1995,K_mod_auxiliary=114787:
+R=11360848883;
+K modR=1491904576;
+B modR=10287028452;
+r modR=9930929229;
+Gamma0 modR=706142772;
+gcd(706142772,R)=1.
+The prototype keeps K symbolic, assumes exactly the three already proved
+literal K residues, combines them by CRT, and checks the rest in Lean.
+The actual full-kernel extraction/build has not been replayed by this
+prototype. Existing source provides those three facts; no stronger assumed
+arithmetic closure is introduced.
+
+Novelty: prior packets excluded generic modular transport, general unit
+product decomposition, and coprime cancellation in RatioReparameterization.
+This proposal uses a single fixed point of the powering map on the whole
+radical residue ring to erase both independent exponents, then one seed
+coprimality certificate. It is not a renamed helper for the old proof tree.
+Do not separately count the power-fixed-point lemma and radical transport
+as disjoint large savings: they are complementary parts of one replacement.
+
+Important limitation: this certifies the coefficient is a unit. It does not
+construct safe physical dummy positions, safe increments, or arbitrary
+rank-target correction, and does not close Con(ZFC) equivalence.
+
+IDEA B: FIRST NONZERO LIFT DIGIT AS EXACT-ORDER INPUT
+
+Exact target: CurrentAuxiliaryOrder2011.generator_gt_one,
+generator_mod_prime,generator_dvd,generator_not_square and the three order/lift
+wrappers. Current source begins with a checked remainder modulo p^2, then
+reconstructs several Nat subtraction/divisibility facts separately.
+
+Provide generic first_lift_data:
+1<p,0<c,g%p^2=1+p*c =>1<g and p|(g-1) and not p^2|(g-1).
+The remainder lower bound gives the subtraction guard; reduce modulo p for
+the divisibility; a hypothetical p^2-divisibility would force remainder1,
+contradicting p*c>0. A separate c<p assumption is redundant because a
+remainder is already<p^2. Keep odd-prime assumption for the actual LTE/order
+corollary: p=2 does NOT generally satisfy the same principal-unit order law.
+
+Then order_from_first_lift(hp:Prime p)(ho:Odd p)(hc:0<c)(hseed)(k):
+orderOf(g:ZMod(p^(k+1)))=p^k
+is a two-line application of the maintained PrimePowerOrder.order_succ.
+The actual seed has g=B^(120199-1),c=60739; auxiliary_lift and
+lift_nonzero_digit.1 prove hseed without evaluating the huge natural g.
+
+Novelty: minimal modular seed is the public interface. The older power
+certificates and Pell valuation/sign helpers do not give this odd-prime
+principal-unit lifting interface. This improves boundary ownership and
+reuse; it does not replace the existing correct LTE core or pretend CRT
+least-common-multiple order was missing (order_product already exists).
+
+BOUNDARIES / QA
+
+All declared generic residue theorems include rw=0,n=0. The use of a
+one-sided coprime lift is intentional. For a=3,d=2,p=3,n=0, coprimality
+modulo d*p^n holds while coprimality modulo d*p fails, so a uniform iff
+would be false. The first-lift order theorem includes k=0 (modulus p).
+
+
+IDEA C: LTE AS A UNIFORM ANNIHILATOR LAW
+
+PrimePowerAnnihilator.lean has been checked: for every k,m,
+p^(k+1)|(g^m-1) iff p^k|m. It uses the same odd-prime/first-valuation
+hypotheses as the production code. Convert via pow_cast_eq_one_iff,
+then exact order is Nat.dvd_antisymm applied to orderOf_dvd_of_pow_eq_one
+and pow_orderOf_eq_one. This removes k=0/succ branching and the use of
+orderOf_eq_prime_pow. The law is stronger than the old exact_lift
+intermediate, but logically equivalent to the already proved exact-order
+endpoint. Do not call the mathematical endpoint new or stronger.
+
+A concrete alternate PrimePowerOrder module retaining all existing public
+statements is supplied, with an application patch. It is80->79 total source
+lines (35->34 replaced lines), while adding the reusable all-exponent law.
+The modest line reduction is intentional: the chief gain is uniform proof
+structure and an immediately useful divisibility interface, not compression
+by moving unchecked work into helpers. Check the alternate's compile JSON
+for final status. The base public theorem names and statements are retained.
+
+Counterexamples to careless generalization: p=2,g=3 satisfies the first
+nonzero lift condition but has order2 modulo8, not4. Compositep=9,g=28
+has order3 modulo81, not9. Prime/odd hypotheses remain essential.
+
+FINAL VALIDATION
+
+ResidueTower.lean:exit0; eight printed axiom reports standard-only;21.052s
+wall under shared load. LiftSeed.lean:exit0; both printed reports
+standard-only; imported baseline PrimePowerOrder freshly built.
+PrimePowerAnnihilator.lean:exit0; three printed reports standard-only;
+125.527s wall under shared load.
+PrimePowerOrderRefactored.lean:exit0; compiled under the actual module path
+DiophantineConsistency.PrimePowerOrder into an isolated cache;108.387s.
+Unmodified baseline PrimePowerOrderChecks.lean:exit0 against that new cache;
+20.937s; six original public axiom reports standard-only.
+All timing values are receipts, not performance comparisons.
+The patch passes git apply --check against baseline.
+All six old public theorem signatures are byte-equivalent after whitespace
+normalization; only pow_divisibility was added.
+Do not include check_build/,check_refactored/,refactored_source/ caches in
+the deliverable. Those are local compiler inputs and outputs only.

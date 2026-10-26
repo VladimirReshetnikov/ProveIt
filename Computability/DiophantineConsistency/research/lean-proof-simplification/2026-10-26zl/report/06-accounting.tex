@@ -1,0 +1,25 @@
+\pageheading{7 Count complete files and keep optional costs separate}
+\textbf{The core saving is 24 physical source lines, not a theorem or performance count.}
+All three core patches are against the same source pin and edit disjoint files. The complete before and after files are supplied, so the totals include imports, comments, blank lines, namespace scaffolding and retained compatibility declarations.
+
+\begin{tabular}{@{}L{0.49\linewidth}r r r@{}}\toprule
+Complete file & Before & After & Removed\\\midrule
+\code{PrimePowerOrder.lean} & 80 & 73 & 7\\[5pt]
+\code{CurrentPowerCoordinates2011.lean} & 105 & 91 & 14\\[5pt]
+\code{CurrentWordPadding2011.lean} & 224 & 221 & 3\\\midrule
+\textbf{Core} & \textbf{409} & \textbf{385} & \textbf{24}\\[5pt]
+\code{CurrentControllerUnits2011.lean} & 201 & 198 & 3\\\midrule
+Core plus optional positivity & 610 & 583 & 27\\\bottomrule
+\end{tabular}
+
+\textbf{Helper accounting.} No new Lean helper, import, wrapper or public declaration is added. The exact-order bundle deletes the one-use private \code{order_transport}: four declaration lines, one doc-comment line and one blank line. Its client is rewritten in place and stays three lines. The combined 14-line saving is not a four-line body estimate: it includes the complete helper deletion and every changed client.
+
+The guarded cast declaration contributes seven lines. In the exact-order file, direct CRT composition contributes five, the auxiliary order-one specialization contributes one, the full fixed-factor specialization contributes two, and helper removal contributes six. The padding proof body contributes three. The optional positivity declaration contributes three, partly through terse layout; its logical dependency change is more important than that cosmetic count.
+
+\textbf{Secondary measures are not interchangeable.} The independent audit records 23 nonblank lines removed in the core and three more in the optional variant. The power bundle alone removes 20 nonblank lines as well as 21 physical lines. The mask checker records 175 to 172 comment-stripped nonempty code lines and 2587 to 2553 regex lexical tokens for the full module. Those tokens are not Lean parser tokens. No aggregate token count is inferred across differently defined metrics. The physical-line total above is the common reproducible measure.
+
+\textbf{No double counting.} Existing helpers and the already imported exact-order infrastructure are baseline costs, not new additions. The old 228-line adoption increment and 3016-line ledger total are not included. The withdrawn scalar prefix candidate receives zero saving. The optional positivity variant is separate, and all-source totals are not presented as default adoption advice.
+
+\textbf{Evidence cost is visible but not proof-source cost.} The report, before/after snapshots, patches, manifests, independent verification scripts and captured results are review artifacts, not Lean library additions. They are delivered separately rather than silently counted as zero-size files. No new Lean regression module is claimed: the sequential validation plan uses the existing checks and downstream targets.
+
+\textbf{Definition boundary.} These are proof-only edits. No public definition body changes, no stronger preconditions, and no theorem renaming are proposed. In particular, the literal huge constants remain opaque where the source already protects them, and the exact original kernel is not replaced by a congruent stand-in.

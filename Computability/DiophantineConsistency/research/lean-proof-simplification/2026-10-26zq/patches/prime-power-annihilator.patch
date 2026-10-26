@@ -1,0 +1,68 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PrimePowerOrder.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PrimePowerOrder.lean
+@@ -36,40 +36,39 @@
+     rw [Nat.cast_sub hk, Nat.cast_pow, Nat.cast_one] at hz
+     exact sub_eq_zero.mp hz
+ 
+-/-- LTE gives exact valuation k+1, not merely a divisibility lower bound. -/
+-theorem exact_lift {p g : ℕ} (hp : Nat.Prime p) (ho : Odd p)
+-    (hd : p ∣ g-1) (hs : ¬ p^2 ∣ g-1) (k : ℕ) :
+-    p^(k+1) ∣ g^(p^k)-1 ∧ ¬ p^(k+2) ∣ g^(p^k)-1 := by
++/-- LTE describes every exponent, including m=0. -/
++theorem pow_divisibility {p g : ℕ} (hp : Nat.Prime p) (ho : Odd p)
++    (hd : p ∣ g-1) (hs : ¬ p^2 ∣ g-1) (k m : ℕ) :
++    p^(k+1) ∣ g^m-1 ↔ p^k ∣ m := by
+   have hg := one_lt_of_not_square hs
+   have hnd := not_dvd_of_dvd_sub_one hp hg.le hd
+   have hbase : emultiplicity p (g-1) = (1 : ℕ) :=
+     emultiplicity_eq_coe.mpr (by simpa only [pow_one] using And.intro hd hs)
+-  have hval := Nat.emultiplicity_pow_sub_pow hp ho hd hnd (p^k)
+-  have hv : emultiplicity p (g^(p^k)-1) = ((k+1 : ℕ) : ℕ∞) := by
+-    simpa only [one_pow, hbase, emultiplicity_pow_self_of_prime hp.prime,
+-      Nat.cast_add, Nat.cast_one, add_comm] using hval
+-  simpa only [Nat.add_assoc] using (emultiplicity_eq_coe.mp hv)
++  have hv := Nat.emultiplicity_pow_sub_pow hp ho hd hnd m
++  simp only [one_pow, hbase] at hv
++  rw [pow_dvd_iff_le_emultiplicity, pow_dvd_iff_le_emultiplicity, hv,
++    Nat.cast_add, Nat.cast_one, add_comm (k : ℕ∞) 1]
++  exact ENat.add_le_add_iff_left (by simp)
+ 
+-/-- The modulus p is included: the order is p^0=1. -/
++/-- The previous exact-lift endpoint is retained. -/
++theorem exact_lift {p g : ℕ} (hp : Nat.Prime p) (ho : Odd p)
++    (hd : p ∣ g-1) (hs : ¬ p^2 ∣ g-1) (k : ℕ) :
++    p^(k+1) ∣ g^(p^k)-1 ∧ ¬ p^(k+2) ∣ g^(p^k)-1 := by
++  refine ⟨(pow_divisibility hp ho hd hs k _).mpr dvd_rfl, ?_⟩
++  rw [show k+2 = (k+1)+1 by omega, pow_divisibility hp ho hd hs]
++  rw [Nat.pow_dvd_pow_iff_le_right hp.one_lt]
++  omega
++
++/-- The same two divisibilities establish order at every k, including zero. -/
+ theorem order_succ {p g : ℕ} (hp : Nat.Prime p) (ho : Odd p)
+     (hd : p ∣ g-1) (hs : ¬ p^2 ∣ g-1) (k : ℕ) :
+     orderOf (g : ZMod (p^(k+1))) = p^k := by
+-  letI : Fact p.Prime := ⟨hp⟩
+-  have hg := (one_lt_of_not_square hs).le
+-  cases k with
+-  | zero =>
+-      rw [pow_zero]
+-      apply orderOf_eq_one_iff.mpr
+-      have h := (pow_cast_eq_one_iff (m:=p^(0+1)) hg 1).mpr (by simpa using hd)
+-      simpa only [pow_one] using h
+-  | succ k =>
+-      apply orderOf_eq_prime_pow (p:=p) (n:=k)
+-      · rw [pow_cast_eq_one_iff hg]
+-        simpa only [Nat.succ_eq_add_one, Nat.add_assoc] using
+-          (exact_lift hp ho hd hs k).2
+-      · rw [pow_cast_eq_one_iff hg]
+-        simpa only [Nat.succ_eq_add_one, Nat.add_assoc] using
+-          (exact_lift hp ho hd hs (k+1)).1
++  have hpow (m : ℕ) : (g : ZMod (p^(k+1)))^m = 1 ↔ p^k ∣ m :=
++    (pow_cast_eq_one_iff (one_lt_of_not_square hs).le m).trans
++      (pow_divisibility hp ho hd hs k m)
++  exact Nat.dvd_antisymm
++    (orderOf_dvd_of_pow_eq_one ((hpow _).mpr dvd_rfl))
++    ((hpow _).mp (pow_orderOf_eq_one _))
+ 
+ theorem order_prime_power {p g n : ℕ} (hp : Nat.Prime p) (ho : Odd p)
+     (hd : p ∣ g-1) (hs : ¬ p^2 ∣ g-1) (hn : 1 ≤ n) :

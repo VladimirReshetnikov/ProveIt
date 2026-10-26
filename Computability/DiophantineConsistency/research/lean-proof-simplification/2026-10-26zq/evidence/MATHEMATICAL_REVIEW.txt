@@ -1,0 +1,191 @@
+CLOSING REFRESH NOTICE (f00ba53b331833c6cb64707bd90e48489e5610f5):
+The following is a historical baseline review. FINAL_REFRESH_NOVELTY_AUDIT.txt
+and refresh_candidate_decisions.json control the final novelty decisions.
+In particular, the optional PrimeSupport idea is WITHDRAWN as a duplicate of
+2026-10-26zd. Earlier correctness checks remain historical evidence, not a
+recommendation or novelty claim. Final exclusion scope is 36 placed reports.
+
+INDEPENDENT MATHEMATICAL AND NOVELTY REVIEW
+=========================================
+
+Repository source pin: 9f35798db4a63c25e435fca14d75931144657d7e.
+Review scope: proof statements and bodies in FixedPeriods.lean,
+PrimeSupport.lean, ResidueTower.lean, SubsetTranslation.lean,
+LiftSeed.lean and RestrictedSubsetSums.lean; relevant maintained source
+interfaces; existing compilation receipts where present. This review did
+not run a new build or broad test suite. Exact reviewed source hashes are
+recorded separately in mathematical_review_manifest.json.
+
+1. Fixed periods versus exact order
+----------------------------------
+The two general monoid lemmas are correct, including m=0: if m|e and
+x^m=1, write e=m*k; and (x^s)^m=(x^m)^s by the exponent laws. No group
+or commutative-monoid hypothesis is needed.
+
+The fixed-prime certificates match the maintained B=2^94517. Periods23
+and 402 suffice for the fixed-prime projection and power-dimension clients.
+The exact auxiliary order remains necessary for power-coordinate
+injectivity. The direct complete projection is modulo 94517*120199;
+its name generator_projection_C0 should be explained with that exact C0.
+
+No logical weakening is hidden: the new production statements require
+only annihilating powers. If the old exact-order diagnostics remain in
+the same imported source module, their source is still elaborated during
+that module's build. Thus proof-dependency reduction is established by
+the design, but build-dependency reduction needs a real module split.
+
+Counterexample to using a period as exact order: 1^3=1 in ZMod 9, but
+orderOf(1)=1, not 3. An orbit indexed by three exponents is not injective.
+
+2. Prime support for exact-order diagnostics
+-------------------------------------------
+The finite prime-support theorem correctly specializes mathlib's existing
+criterion. Since n>0, membership in n.primeFactors is exactly the needed
+prime-divisor information. The n=1 case is valid: the set is empty and
+x^1=1 already forces exact order 1. Positivity may not be discarded: at
+n=0, x^0=1 and primeFactors 0 is empty for every x, but x=1 has order 1.
+
+Checking only x^n=1 is insufficient. In the actual second fixed field,
+2 has order 402;2010 is a period but is not the order. The quotient test
+for prime 5 rejects 2010 since 2010/5=402.
+
+Novelty is the concrete prime-support proof boundary for these diagnostics,
+not the multiplicative-order criterion or finite checking generally.
+Do not count its source savings as an additional production saving if
+the fixed-period redesign already removes this dependency.
+
+The final PrimeSupport.compile.json records successful compilation with
+exit code 0, superseding an earlier interrupted or failed attempt. The final
+log prints three standard-only axiom reports. Its helper plus the selected
+two proof bodies occupy 18 lines, equal to the maintained bodies; no net
+source deletion is established for this optional interface.
+
+3. Whole-controller residue transport
+------------------------------------
+The generic pow_power_fixed induction is correct in any monoid. A fixed
+point of x->x^p remains fixed under exponents p^n. It does not require
+p prime, an invertible element, or a finite field.
+
+The coprimality transfer is also correct without primality or coprimality
+assumptions on d and p: congruence modulo d*p preserves gcd with d*p;
+coprimality with both d and p implies coprimality with d*p^n. The one-way
+form handles n=0. The converse fails:3 is coprime to 2*3^0=2 but is not
+coprime to 2*3=6. Therefore no unconditional iff across n=0 is justified.
+
+The Gamma identity genuinely treats rw and n independently. Each exponent
+is separately reduced by the fixed-point law. The natural subtraction
+q^2-1 is translated into ring subtraction only after 1<=q^2 is proved.
+The analogous guard for B^2-1 is also present. The raw cast rule without
+that guard is false: in ZMod 5, the cast of natural 0^2-1 is 0, whereas
+(0:ZMod 5)^2-1=4. This does not claim the entire Gamma theorem necessarily
+fails at B=0; it explains why the specific cast rewrite needs its guard.
+
+The appended numeric adapter is sound. currentR=2^45919 agrees with
+radix^977 because 47*977=45919; currentB=2^94517 is the maintained base.
+The three K-residue assumptions are exactly the already proved residues.
+They combine by CRT into K=1491904576 modulo 94517*120199. The computed
+seed residue 706142772 is coprime to that modulus. No expansion of the
+literal K is used, and K is not silently replaced as a natural number.
+
+The checked standalone current_gamma_coprime theorem is conditional on
+those three K-residue hypotheses. Applying it to the original production
+definition and rebuilding its callers remains a distinct integration step.
+No physical placement, rank-increment safety, or complete consistency
+equivalence follows from this arithmetic unit result alone.
+
+Useful hypothesis controls:
+- Fixed-point information must not be converted to an annihilating power
+  by canceling a nonunit:0^5=0 in ZMod 5 but 0^4 is not 1.
+- The fixed-point hypothesis in Gamma transport has content. Take
+  r=1,B=2,K=1,p=2,d=5,rw=0,n=1. The seed is 21, coprime to 10, but the
+  actual Gamma is 195, not coprime to 10. Here2^2 differs from 2 modulo 10.
+
+4. Arbitrary-seed translation
+----------------------------
+Translation in an additive group is injective, so finite cardinality is
+preserved. The sum formula is card(S)*t+sum(S). Surjectivity of the
+cardinality action is sufficient for a prescribed sum; a full automorphism
+is stronger than necessary. The ZMod specialization correctly constructs
+the inverse from coprimality. It even makes sense at T=0, where coprimality
+forces a singleton; the production finite cyclic setting normally has T>0.
+
+A constraint P is preserved only under the displayed translation-stability
+hypothesis. Physical safe-position predicates are not automatically stable.
+For example, a fixed distinguished origin may be forbidden; translating
+a safe singleton can move it to that origin.
+
+Counterexample without surjectivity: in ZMod 4, translating{0,1} produces
+only sums 1 and 3 since every sum is 2t+1. This does not contradict the next
+theorem: arbitrary two-element subsets, unlike translates of that one seed,
+do realize every sum in ZMod 4.
+
+5. First-lift seed
+------------------
+The first_lift_data proof correctly extracts g>1 from the residue bound,
+then p|(g-1) and not p^2|(g-1). The separate bound c<p is unnecessary:
+the literal equality g%p^2=1+p*c already enforces it when p>1.
+
+Oddness and primality in order_from_first_lift are essential to the
+underlying exact-order result. Controls:
+- p=2,g=3,c=1 satisfies the first-lift equation, but g has order 2 modulo 8,
+  not 4; this rejects dropping oddness at k=2.
+- p=9,g=28,c=3 satisfies the first-lift equation and p is odd, but g has
+  order 3 modulo 81, not 9; this rejects replacing prime by merely odd.
+- c=0,g=1 gives no nontrivial lift and exact order remains 1.
+
+A proposed all-exponent annihilator law
+  p^(k+1)|(g^m-1) iff p^k|m
+is a stronger intermediate than the existing special case m=p^k, but is
+equivalent to the already-maintained exact-order endpoint. Its possible
+novelty is the proof organization LTE->all exponents->order, not a stronger
+final mathematical claim. Both m=0 and k=0 must be included explicitly.
+
+6. Arbitrary fixed-cardinality subset sums: primary new proposal
+--------------------------------------------------------------
+The constructive staircase proof is correct. Write an offset delta as
+a*q+r,0<=r<a. For i=0,...,a-1 use
+  i+q+1_{i>=a-r}.
+These positions are strictly increasing; their sum is
+sum_{i<a}i+a*q+r. From delta<=a*(T-a), q<=T-a. If q=T-a, then r=0;
+otherwise the largest position is at mostT-1. Thus every integer sum in
+the exact interval
+  [sum_{i<a}i, sum_{i<a}i+a*(T-a)]
+is realized by an a-subset of[0,T).
+
+For1<=a<T the interval width covers T-1 because
+  a*(T-a)-(T-1)=(a-1)*(T-a-1)>=0.
+Taking delta to be the representative of u-sum_{i<a}i gives every residue.
+The Nat theorem correctly allows a=T,delta=0; the modular surjectivity
+theorem correctly keeps the stricter a<T. No coprimality, field, prime,
+prime-power, or finite-group additive-combinatorics theorem is required.
+
+Controls for the strict cardinality hypotheses:
+- At a=0 modulo 2, only sum 0 occurs, so target 1 is impossible.
+- At a=T=3, only the full subset occurs and its sum is 0, so target 1 fails.
+
+The affine consequence for weights 1+C0*z modulo C0*T is valid under
+0<C0<T. Choose a as the least positive representative of the projection:
+1<=a<=C0. A projected zero requires a=C0. Then use the additive fiber of
+the projection and the arbitrary-cardinality subset-sum theorem.
+
+This is NOT an unchanged-signature replacement for the existing Boolean
+theorem, which promises 0<a<C0. Without a correction, projected-zero
+targets cannot have a positive cardinality strictly below C0. The new
+bound must permit a=C0. Existing exists_coordinate requires a<C0; it can
+be reused on z-a with representative 0 and then translated back.
+
+The C0<T hypothesis has real content. At C0=T=2, the affine weights are
+{1,3} modulo 4. Their subset sums are{0,1,3}, so target 2 is impossible.
+
+The actual power-orbit decomposition uses C0=d*auxiliary, not d alone.
+Removal of the optional Boolean term is an arithmetic-interface result.
+It does not prove enough safe physical positions, preserve a particular
+shape class of subsets, or complete the final controller realization.
+
+Novelty: no earlier proposal found for fixed-cardinality subset-sum
+surjectivity without coprimality or for deleting this Boolean correction.
+Nearest precedents are finite inverse invariance, sparse placement,
+controller local invariants and affine native-rank coordinates; none
+supplies this theorem. Uniform seed translation is a useful companion
+for shape constraints, but its source saving overlaps the same interval
+proof target and must not be double-counted.

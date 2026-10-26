@@ -1,0 +1,31 @@
+\pageheading{5 An optional positivity proof with a dependency cost}
+\textbf{Three lines can be removed, but the old proof has a useful independence property.}
+The exact client is \src{CurrentControllerUnits2011}{195}{199}. It proves
+$0<\Gamma(r_w,n)$ for every pair of natural exponents, including $r_w=0$ and $n=0$.
+The old proof multiplies three positive factors. The replacement observes that the already proved coprimality with 47 excludes zero.
+
+\begin{lstlisting}
+theorem Gamma_pos (rw n : ℕ) : 0 < Gamma rw n :=
+  Nat.pos_of_ne_zero fun hz => by
+    simpa [hz] using coprime_Gamma_47 rw n
+\end{lstlisting}
+
+The supplied patch keeps the inner proof on one line, so the declaration occupies two physical lines instead of five. The listing is wrapped for reading. The full module changes from 201 to 198 physical lines; it adds no helper, import or wrapper. Every definition and theorem statement is unchanged.
+
+\textbf{Mathematical justification.} For natural $x$, $\gcd(0,47)=47\ne1$.
+Thus $\operatorname{Coprime}(x,47)$ implies $x\ne0$, hence $0<x$. This uses the exact existing theorem \code{coprime_Gamma_47}; it neither generalizes the unit theorem nor proves new calibration data. The original factors are
+\[
+  \Gamma(r_w,n)=\rho^{977}\bigl(q(n)^2-1\bigr)
+    \bigl(1+q(n)A(r_w)\bigr),
+\]
+where $\rho=2^{47}$, $q(n)=B^{p^n}$, $A(r_w)=K+B^{p^{r_w}}$, and $p=120199$.
+The original proof obtains positivity from $q(n)>1$, $\rho>0$ and the final factor being at least one; it does not need any residue of $K$.
+
+\textbf{The tradeoff is real.} The replacement depends on \code{coprime_Gamma_47}, whose proof goes through the nonzero quadratic and coupling residues. The latter uses the calibrated residue of the original literal kernel. Positivity therefore acquires a dependency on the full current calibration chain even though its elementary mathematical reason does not require that chain. This is not an additional assumption in the theorem statement, but it matters for modular maintenance and which intermediate files can be reused independently.
+
+\textbf{Recommendation.} Treat this as an optional consequence-reuse variant, not a default improvement. Keep the elementary proof if positivity is intended to remain independent of kernel calibration. Adopt the shorter proof only if that dependency is acceptable and the compiled proof is at least as clear to maintainers. No runtime benefit is asserted.
+
+\textbf{Preserved distinctions.} The two dimensions remain independent. Neither exponent is strengthened to be positive. The natural subtraction $q(n)^2-1$ still agrees with the signed rank expression only through its retained lower-bound proof; the replacement does not remove \code{quadratic_ge_one}. The definitions of $K$, $B$, $q$, $A$ and $\Gamma$ and their local opacity attributes are untouched. In particular, a proof of a unit does not itself construct an orbit or certify a safe controller mutation.
+
+The unit proof chain and full-width modulus remain as inspected in
+\src{CurrentControllerUnits2011}{146}{199}. This packet does not count prime-coprimality helper reuse, Frobenius, scalar rank factorization or cast-to-residue bridges as new abstractions.

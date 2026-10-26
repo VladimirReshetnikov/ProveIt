@@ -1,0 +1,79 @@
+{
+  "source_pin": "e1c8914bc7064d9a8e7c06171a18069a949badd0",
+  "closing_pin": "91dce223cda86c0755b8a9b2504f84be04443fce",
+  "all_prior_proposals_assumed_applied": true,
+  "families": [
+    {
+      "id": "S",
+      "family": "Sidon endpoint normalization",
+      "decision": "SURVIVES_SEMANTIC_SCREEN",
+      "targets": [
+        "SidonPositions.weight_injective",
+        "SidonPositions.pairWeight_injective"
+      ],
+      "claimed_lines_removed": 4,
+      "mechanism": "Specialize weight_sum_eq_iff on diagonal pairs to prove weight injectivity; discharge the crossed sorted-pair case from both Fin ordering premises. Count the two endpoint edits once.",
+      "nearest_prior": "F07, V08; closing packet y/report/report.tex:524-538 and arithmetic/patches/sidon-moment.patch; earlier packet t/report/sections/03_coefficients.tex:68-75.",
+      "distinction": "The prior Sidon proposal changes only the moment-polarization proof of weight_sum_eq_iff. It does not normalize these injectivity endpoint clients. Generic coefficient fibers and cast normal forms remain assumed available; no credit is claimed for them."
+    },
+    {
+      "id": "I",
+      "family": "Definitional depth proof",
+      "decision": "SURVIVES_SEMANTIC_SCREEN",
+      "targets": [
+        "IterationSize.iterate_depth"
+      ],
+      "claimed_lines_removed": 2,
+      "mechanism": "Replace an expression equality proved by rfl and then congrArg Expr.depth with the same definitional equality proved directly by rfl.",
+      "nearest_prior": "V03 packet b/report.tex:269-282; V17 affine/max-plus budgets and promised actual adapters.",
+      "distinction": "V03 moves witness-count projection lemmas earlier in the import graph; V17 concerns resource bounds. Neither proposes this direct definitional depth proof. This is a tiny local cleanup, not new metadata infrastructure."
+    },
+    {
+      "id": "P",
+      "family": "Exact-order zero-level endpoint reuse",
+      "decision": "SURVIVES_SEMANTIC_SCREEN",
+      "targets": [
+        "CurrentPowerCoordinates2011.generator_cast_auxiliary",
+        "CurrentPowerCoordinates2011.generator_cast_C0"
+      ],
+      "claimed_lines_removed": 3,
+      "mechanism": "Specialize generator_order_succ and full_order at zero and use orderOf_eq_one_iff instead of separate modular-cast/CRT arguments. Count both endpoints as one reuse family.",
+      "nearest_prior": "V18 coercion packaging, V23 finite invariant predecessor, C05 packet zd/report.tex:255-373, C15 zh/report/04-controller.tex and zj/report.tex:115-188.",
+      "distinction": "C05 establishes exact numerical base orders by finite prime-factor tests, while C15 simplifies controller residue/cardinality clients. Neither specializes the existing lifting/order theorems at k=0; no new generic order or cast helper is credited."
+    },
+    {
+      "id": "F",
+      "family": "Finite physical-order rigidity",
+      "decision": "EXCLUDED_EXACT_PRIOR_PROPOSAL",
+      "targets": [
+        "WangTiles942PhysicalOrder.strictMono_fin_eq_self"
+      ],
+      "claimed_lines_removed": 0,
+      "mechanism": "Package a finite strictly monotone endomap as an OrderIso and invoke finite ordinal rigidity.",
+      "nearest_prior": "C14 packet zh/report/03-physical.tex and physical/REPORT.md; packet zj/report.tex:82-114.",
+      "distinction": "None: zh gives the exact candidate proof and 180→156 accounting; zj gives an alternative finite-rigidity proof. Its 24 lines must not enter new savings."
+    }
+  ],
+  "surviving_family_count": 3,
+  "claimed_total_lines_removed": 9,
+  "proof_status": "Semantic novelty screen only; this audit did not run Lean. Candidate validation and exact metrics belong to the independent candidate audit.",
+  "additional_exclusions": [
+    {
+      "target": "CurrentWordOrigin2011 origin/reflected/convolution zero clients",
+      "reason": "V10 aligned arbitrary-shift support-zero and V18 wrapped equations already supply this semantic reduction."
+    },
+    {
+      "target": "CurrentWordTopBounds2011 terminal marker/convolution fields",
+      "reason": "C16 now explicitly supplies the complete actual upper-tail marker impulse response."
+    },
+    {
+      "target": "CurrentKernelResidues certificate chunks and NativeCoefficientBounds generic row methods",
+      "reason": "V12 finite dispatch and V08/V09 coefficient/indexed-generator infrastructure, including actual clients, are assumed applied."
+    },
+    {
+      "target": "FinishConstruction halted pass/finish allowedness",
+      "reason": "D04 fourth delivered round: shared halted_tiles_allowed forwarding, 164→155, is assumed applied regardless of adoption."
+    }
+  ],
+  "not_exhausted": "Only exact local endpoint specialization or definitional proof-term cleanup demonstrably outside the complete contracts remains in this pass; no unexamined broad subsystem is advertised as novel."
+}

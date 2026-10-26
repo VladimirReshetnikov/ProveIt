@@ -1,0 +1,31 @@
+# Lean Omega Fin preprocessing source evidence
+
+Release: v4.32.0 (the repository's lean-toolchain pin)
+URL: https://github.com/leanprover/lean4/blob/v4.32.0/src/Lean/Elab/Tactic/Omega/Frontend.lean
+Returned Git blob SHA: 3c1a7aabf2a83b12654ed5bf15eee7e84ccbdf35
+License header: Copyright (c) 2023 Lean FRO, LLC; Apache 2.0; author Kim Morrison.
+
+Relevant source excerpt (exact line numbers):
+
+440:       match_expr t with
+441:       | Eq α x y =>
+442:         match_expr α with
+443:         | Int =>
+444:           match y.int? with
+445:           | some 0 => pure (← p.addIntEquality h x, 1)
+446:           | _ => p.addFact (mkApp3 (.const ``Int.sub_eq_zero_of_eq []) x y h)
+447:         | Nat => p.addFact (mkApp3 (.const ``Int.ofNat_congr []) x y h)
+448:         | Fin n => p.addFact (mkApp4 (.const ``Fin.val_congr []) n x y h)
+449:         | _ => pure (p, 0)
+450:       | LE.le α _ x y =>
+451:         match_expr α with
+452:         | Int =>
+453:           match x.int? with
+454:           | some 0 => pure (← p.addIntInequality h y, 1)
+455:           | _ => p.addFact (mkApp3 (.const ``Int.sub_nonneg_of_le []) y x h)
+456:         | Nat => p.addFact (mkApp3 (.const ``Int.ofNat_le_of_le []) x y h)
+457:         | Fin n => p.addFact (mkApp4 (.const ``Fin.val_le_of_le []) n x y h)
+458:         | _ => pure (p, 0)
+459:       | LT.lt α _ x y =>
+
+Finding: addFact translates Fin equality hypotheses with Fin.val_congr and Fin ordering hypotheses with Fin.val_le_of_le. Thus the proposed Sidon swapped branch's h1/h2/hp/hq are explicitly supported inputs to Omega. This is source evidence, not an executed tactic test or kernel acceptance.

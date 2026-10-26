@@ -1,5 +1,6 @@
 import DiophantineConsistency.SelectiveQuadraticCoding
 import DiophantineConsistency.MultiTargetCarry
+import Mathlib.Algebra.Polynomial.BigOperators
 
 /-!
 # Carry and packing interfaces for selective quadratic sources
@@ -28,16 +29,25 @@ theorem combined_degree_le {m r : ℕ} (w : Fin (m + 1) → ℕ)
     (E : Fin r → ℕ) (D : ℕ)
     (hD : ∀ k p, p ∈ s k → E k - pairWeight w p ≤ D) :
     (combined w s a E).natDegree ≤ D := by
-  classical
-  apply natDegree_le_iff_coeff_eq_zero.mpr
-  intro n hn
-  simp only [combined, complementary, finsetSum_coeff, coeff_monomial]
-  apply Finset.sum_eq_zero
-  intro k _
-  apply Finset.sum_eq_zero
-  intro p hp
-  have hd := hD k p hp
-  exact if_neg (by omega)
+  unfold combined complementary
+  exact natDegree_sum_le_of_forall_le _ _ fun k _ =>
+    natDegree_sum_le_of_forall_le _ _ fun p hp =>
+      (natDegree_monomial_le _).trans (hD k p hp)
+
+theorem rowProduct_degree_lt {m r : ℕ} (w : Fin (m + 1) → ℕ)
+    (s : Fin r → Finset (PairIndex m)) (a : Fin r → PairIndex m → ℤ)
+    (u : Fin (m + 1) → ℤ) (E : Fin r → ℕ) (W D : ℕ)
+    (hw : ∀ i, w i ≤ W)
+    (hD : ∀ k p, p ∈ s k → E k - pairWeight w p ≤ D) :
+    (rowProduct w s a u E).natDegree < D + 2 * W + 1 := by
+  have he : (encoded w u).natDegree ≤ W := by
+    unfold encoded
+    exact natDegree_sum_le_of_forall_le _ _
+      (fun i _ => (natDegree_monomial_le (u i)).trans (hw i))
+  have hd := natDegree_mul_le_of_le (natDegree_pow_le_of_le 2 he)
+    (combined_degree_le w s a E D hD)
+  change (encoded w u ^ 2 * combined w s a E).natDegree < D + 2 * W + 1
+  omega
 
 /-- Every coefficient outside the actual product span is zero. -/
 theorem coeff_rowProduct_eq_zero {m r : ℕ} (w : Fin (m + 1) → ℕ)
@@ -46,36 +56,8 @@ theorem coeff_rowProduct_eq_zero {m r : ℕ} (w : Fin (m + 1) → ℕ)
     (hw : ∀ i, w i ≤ W)
     (hD : ∀ k p, p ∈ s k → E k - pairWeight w p ≤ D)
     {n : ℕ} (hn : D + 2 * W < n) : (rowProduct w s a u E).coeff n = 0 := by
-  classical
-  rw [rowProduct, combined, Finset.mul_sum, finsetSum_coeff]
-  apply Finset.sum_eq_zero
-  intro k _
-  rw [complementary, Finset.mul_sum]
-  simp only [finsetSum_coeff]
-  apply Finset.sum_eq_zero
-  intro p hp
-  rw [encoded_square]
-  simp only [Finset.sum_mul, finsetSum_coeff, monomial_mul_monomial]
-  apply Finset.sum_eq_zero
-  intro i _
-  apply Finset.sum_eq_zero
-  intro j _
-  have hi := hw i
-  have hj := hw j
-  have hd := hD k p hp
-  rw [coeff_monomial, if_neg (by omega)]
-
-theorem rowProduct_degree_lt {m r : ℕ} (w : Fin (m + 1) → ℕ)
-    (s : Fin r → Finset (PairIndex m)) (a : Fin r → PairIndex m → ℤ)
-    (u : Fin (m + 1) → ℤ) (E : Fin r → ℕ) (W D : ℕ)
-    (hw : ∀ i, w i ≤ W)
-    (hD : ∀ k p, p ∈ s k → E k - pairWeight w p ≤ D) :
-    (rowProduct w s a u E).natDegree < D + 2 * W + 1 := by
-  have h : (rowProduct w s a u E).natDegree ≤ D + 2 * W := by
-    apply natDegree_le_iff_coeff_eq_zero.mpr
-    intro n hn
-    exact coeff_rowProduct_eq_zero w s a u E W D hw hD hn
-  omega
+  exact coeff_eq_zero_of_natDegree_lt
+    ((rowProduct_degree_lt w s a u E W D hw hD).trans_le (Nat.succ_le_of_lt hn))
 
 /-- The digit word is the full polynomial value plus the geometric bias. -/
 theorem doubled_shifted_polynomial_cast (p : ℤ[X]) {t n : ℕ} (ht : 1 ≤ t)

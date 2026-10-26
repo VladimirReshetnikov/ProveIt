@@ -1,0 +1,25 @@
+\pageheading{8 Validate in small sequential steps}
+\textbf{Static validation passed; Lean validation is still the acceptance gate.}
+The candidate verifiers check pinned hashes, exact patches, signatures and non-target bytes. The table records their finite runs, not universal proofs or elaboration; section 9 covers the independent audit.
+
+\begin{tabular}{@{}L{0.49\linewidth}L{0.43\linewidth}@{}}\toprule
+Check family & Recorded finite scope\\\midrule
+Guarded cast equivalence & 27,885 cases; zero modulus/exponent and missing-guard counterexample\\[5pt]
+CRT order and prime powers & 27,265 CRT cases (266 zero-modulus); 144 odd-prime order cases\\[5pt]
+Modulus factorization & 512 cases; actual-generator residues computed without expanding the huge base\\[5pt]
+Padding bit transfer & 20,480 cases; 60 guarded; high multiples and guard mutations\\[5pt]
+Optional unit consequence & 147 modular cases from supplied calibration, not independent literal-$K$ evaluation\\\bottomrule
+\end{tabular}
+
+\textbf{Build against the declared versions.} Use \code{lake build} with fully qualified targets, Lean \code{v4.32.0} and Mathlib revision \code{81a5d257c8e410db227a6665ed08f64fea08e997}. Start from a clean pinned worktree with its existing dependencies available. Record a successful unmodified baseline before applying a patch. Installation or cache retrieval, if needed, is a separate environment action; this review did neither.
+
+\textbf{Build process safety.} The \href{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/README.md\#L248-L271}{repository warning} says \code{LAKE_JOBS=1} is ineffective here. Run one Lean process/module at a time, only after its dependencies are compiled; rebuild each main module before its Checks module. Never launch an umbrella build over stale dependencies, and never set \code{LEAN_NUM_THREADS=0}.
+
+\begin{enumerate}
+\item Apply only \code{guarded_power_cast_fusion.patch}. Rebuild the \code{PrimePowerOrder} and \code{CurrentAuxiliaryOrder2011} mains in dependency order, then their Checks modules. Inspect the exact cast proof, odd-prime/LTE guards and $k=0$ endpoint before proceeding.
+\item Apply \code{exact_order_clients.patch}. Rebuild \code{CurrentPowerCoordinates2011} first, then its Checks module and the generic \code{ControllerPowerCoordinatesChecks}. Confirm the shortened CRT map computes definitionally to the product, both zero-exponent specializations elaborate, and dependent modulus transport keeps the base opaque.
+\item Apply \code{bit3_clear_of_residue.patch}. Build the padding checks, then the origin, high-mask and scalar-witness checks. Confirm the original statement is unchanged and the restricted simplifier transfers the low bit without adding a bound on the full digit.
+\item Only if the dependency tradeoff is accepted, apply \code{gamma_pos_from_coprime.patch} and build \code{CurrentControllerUnits2011Checks}. Otherwise keep the elementary positivity proof.
+\item Only after all dependencies are compiled, build the encompassing \code{DiophantineConsistency} target, inspect the exact diff, and rerun the original downstream checks. If adopting on the later exclusion-cutoff tree, also build \code{CurrentControllerSubsets2011Checks}: its new subset client uses \code{block_order}. Record versions, commands, exits and failures. Compare \texttt{\#print axioms} output before and after if the project's acceptance policy requires it; no axiom equality is asserted here.
+\end{enumerate}
+

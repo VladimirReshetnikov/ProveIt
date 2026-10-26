@@ -1,0 +1,79 @@
+\subsection{What was actually checked}
+
+The seven delivered proof experiments use Lean~4.32.0 and the repository-pinned mathlib
+revision. They are ordinary kernel-checked Lean proofs. The final receipt
+inventory distinguishes standalone generic theorems, a checked adapter
+using freshly compiled repository prerequisites, and a focused production
+module replacement.
+
+\begin{longtable}{@{}p{0.39\textwidth}p{0.52\textwidth}@{}}
+\toprule
+Artifact & Checking scope \\
+\midrule
+\endhead
+\artifact{RestrictedSubsetSums.lean} & Passed; explicit natural construction and all proper positive cyclic cardinalities, including noncoprime examples. \\
+\artifact{AffineSubsetCoverage.lean} & Passed against four freshly compiled unchanged controller modules and the checked cyclic subset theorem. \\
+\artifact{FixedPeriods.lean} & Passed; generic period transport and actual modular certificates, with an exact-order counterexample. \\
+\artifact{ResidueTower.lean} & Passed; whole-expression transport and actual numeric specialization conditional on the three existing kernel-residue facts. \\
+\artifact{PrimePowerAnnihilator.lean} & Passed; all-exponent divisibility, modular powers, and uniform exact order. \\
+\artifact{LiftSeed.lean} & Passed against a freshly compiled baseline principal-unit module. \\
+\artifact{SubsetTranslation.lean} & Passed; additive-group theorem, invariant-property variant, and cyclic specialization. \\
+\bottomrule
+\end{longtable}
+
+The unchanged prerequisites \ident{ControllerIntervalSums},
+\ident{ControllerOrbitTransport}, \ident{ControllerAuxiliaryChoice}, and
+\ident{ControllerResidueLift} were compiled freshly for the affine adapter.
+The uniform-order patch was checked separately under the real module name
+\ident{DiophantineConsistency.PrimePowerOrder}; the unmodified
+\ident{PrimePowerOrderChecks} module was then compiled against that fresh
+replacement. The patch also passes \texttt{git apply --check} at the pinned
+baseline. All six pre-existing public theorem signatures are preserved;
+the only additional public theorem is \ident{pow_divisibility}.
+
+The focused module changes from 80 to 79 physical lines, including the new
+helper. This is the one measured source-size comparison in the deliverable.
+Its principal benefit is a uniform theorem and fewer proof branches, not
+a large line deletion. Compiler wall times are retained as receipts, but
+the shared execution environment does not support a controlled timing
+comparison.
+
+\subsection{Trust and integration boundaries}
+
+The 27 printed axiom reports from the delivered prototypes and the six
+reports from the unchanged focused checks contain only the standard axioms
+\ident{propext}, \ident{Classical.choice}, and \ident{Quot.sound}, or no
+axioms. The package's validation script rejects failed compiler runs and
+unexpected axiom dependencies. No supplied proof uses \ident{sorry},
+\ident{admit}, a newly declared axiom, or \ident{native_decide}.
+
+The explicit distinction between checking levels matters. A compiled
+generic theorem with stated premises is not a rebuilt theorem about the
+entire production kernel. The residue adapter accepts precisely the
+already-proved kernel residue facts, while the affine adapter imports the
+existing coordinate infrastructure and changes the endpoint cardinality
+contract. The delivered patch has a narrower, genuinely replayed production
+scope. No full-project build or complete consistency-equivalence proof is
+claimed.
+
+\subsection{Replay}
+
+From the unpacked archive, use:
+\begin{lstlisting}
+python3 scripts/replay.py /path/to/ProveIt
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The replay script verifies the repository pin and needed source hashes,
+builds only the named prerequisites, compiles the proof experiments in an
+isolated output directory, then checks the replacement module and unchanged
+focused checks. It does not apply the patch or alter tracked source files.
+The scripts and receipts separate reproducibility from any future decision
+to adopt the changes.
+
+The exclusion inventory can be regenerated without executing code from
+the earlier archives:
+\begin{lstlisting}
+python3 scripts/build_exclusion_inventory.py \
+  --repo /path/to/ProveIt --out regenerated-exclusion-audit
+\end{lstlisting}

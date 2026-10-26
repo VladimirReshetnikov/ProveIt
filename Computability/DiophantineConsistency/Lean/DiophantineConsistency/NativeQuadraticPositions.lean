@@ -23,95 +23,14 @@ def target (k : Fin 22) : ℕ := 349 * (k.val + 1)
 private theorem index_span : ∀ k i, i ∈ rowSupportIndices k →
     target k - pairWeight SelectiveCertificate52.weights (SelectiveCertificate52.activePair i) ≤ 7516 := by
   intro k i hi
-  fin_cases k
-  · change i ∈ {32, 1, 25, 0} at hi
+  by_cases hk : k.val < 21
+  · have ht : target k ≤ 7516 := by dsimp [target]; omega
+    exact (Nat.sub_le _ _).trans ht
+  · have hk21 : k = 21 := Fin.ext (by have := k.isLt; omega)
+    subst k
+    change i ∈ {59, 18, 64, 21, 0} at hi
     simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {37, 1, 17, 25, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {35, 1, 11, 22, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {48, 10, 17, 18, 21, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {50, 52, 13, 53, 55, 18, 20, 21} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {50, 14, 58, 19, 20, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {49, 12, 51, 13, 54, 14, 60, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {57, 16, 62, 20, 21, 22, 23, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {63, 21, 31, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {61, 20, 24} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {65, 23, 66, 24, 31, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {45, 6, 47, 9, 13, 14, 18, 20, 27} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {32, 33, 36, 37, 1, 39, 40, 2, 42, 3, 47, 9, 17, 20, 25, 27, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {34, 35, 1, 38, 2, 41, 3, 4, 11, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {43, 5, 26} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {44, 5, 8, 20, 27, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {56, 15, 68, 27, 28, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {46, 7, 24, 29} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {70, 29, 30} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {67, 26, 30, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {56, 15, 69, 28, 30, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl | rfl
-    all_goals decide
-  · change i ∈ {59, 18, 64, 21, 0} at hi
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hi
-    rcases hi with rfl | rfl | rfl | rfl | rfl
-    all_goals decide
+    rcases hi with rfl | rfl | rfl | rfl | rfl <;> decide
 
 theorem encoding_span (k : Fin 22) (p : PairIndex 31) (hp : p ∈ rowSupport k) :
     target k - pairWeight SelectiveCertificate52.weights p ≤ 7516 := by
