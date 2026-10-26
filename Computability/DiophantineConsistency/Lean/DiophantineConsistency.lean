@@ -11,6 +11,8 @@ import DiophantineConsistency.FirstPellCarrier
 import DiophantineConsistency.Carrier65Witness
 import DiophantineConsistency.Carrier66
 import DiophantineConsistency.Carrier66Source
+import DiophantineConsistency.CurrentMasks2011
+import DiophantineConsistency.CurrentMaskRecipes2011
 import DiophantineConsistency.ThirteenCarrier
 import DiophantineConsistency.SignedPellResidue
 import DiophantineConsistency.ThirteenCarrierSoundness

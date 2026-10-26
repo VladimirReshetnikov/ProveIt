@@ -156,6 +156,16 @@ fresh checks and the necessary extra finite residue. The exact current
 masks must discharge that residue; the full native and internal-ZFC links
 remain required.
 
+`CurrentMasks2011` and `CurrentMaskRecipes2011` now bind the complete two
+length2011 masks and beta, including their exact printed geometric-series
+recipes, strict bounds, positivity, population sum94517, low residue2
+modulo4 and native-high residue4 modulo8. Every finite Interface field is
+proved for K>=0, with the source high mask shifted by beta exactly once.
+The [independent whole-mask review](reviews/current-masks2011-lean-peer.md)
+includes fresh builds, standard axiom audits and full coefficient-byte
+comparisons against the maintained page. K remains a parameter; its exact
+942-tile recipe and native interpretation still need composition.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
