@@ -1,0 +1,12 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HAEqualityDecidable.lean:169:38: error: don't know how to synthesize placeholder for argument `G`
+context:
+hy :
+  Relative Formula.Ax_s (List.map (Formula.rename Nat.succ) [body])
+    ((Formula.eq (Term.var 0) Term.zero).or (Formula.eq (Term.var 1) (Term.var 0).succ).ex)
+hi :
+  Relative Formula.Ax_s
+    (Formula.eq (Term.var 1) (Term.var 0).succ ::
+      List.map (Formula.rename Nat.succ)
+        ((Formula.eq (Term.var 1) (Term.var 0).succ).ex :: List.map (Formula.rename Nat.succ) [body]))
+    (cases (Term.var 3) (Term.var 0)).all
+⊢ List Formula

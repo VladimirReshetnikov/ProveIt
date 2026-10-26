@@ -24,6 +24,29 @@ Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
 
+26 October shared residual: the
+[76/96 presentation](research/thirteen-shared-squares96/README.md)
+shares h=f²−1 between the auxiliary coefficient and strong residual. It
+computes exactly the same polynomial as the preserved77/96 presentation,
+over every commutative ring, with one fewer subtraction. The complete count
+is42 multiplications,18 additions and16 subtractions, with the same13 positive
+unknowns and47313 raw/4230 gzip coefficient bytes. Both fresh Lean leaves
+and full normal/optimized finite graph/degree/port checks passed
+[independent root review](reviews/thirteen-shared-squares96-root.md), including
+the actual external ConZFC endpoint. This improves77/96 at unchanged degree;
+the decimal14/65/150 display and remaining HA proof-existence goal are unchanged.
+
+26 October grouped residuals: the
+[77/96 equation](research/thirteen-grouped-squares96/README.md)
+keeps the13 positive variables and all47313 raw coefficient bytes of LV72.
+It replaces the final product by `(PQ-1)^2+(U-1)^2+(Z-1)^2`. The parent norm
+theorem proves identical entire positive zero sets by the identity map.
+Five extra operations reduce exact degree124 to96. Full graph/degree/whole-port
+normal/optimized checks and fresh Lean main/check replay passed independent
+[root review](reviews/thirteen-grouped-squares96-root.md), with nine standard-only
+reports. This is a count/degree tradeoff; no global minimum or HA endpoint is
+claimed, and the decimal14/65/150 page is unchanged.
+
 26 October mixed-carrier improvement: the complete current-port
 [thirteen-variable variants](research/thirteen-lv-carrier122/README.md)
 give **72 operations/degree124 and74 operations/degree122**, with the same
@@ -230,6 +253,7 @@ zero-set maps, full coefficient recipes and domain/metric distinctions.
 | Integers | 315 / 316 | not optimized | 4 | Preserved raw parents;217/218 rows,7999/7987 terms,height14250071 |
 | Positive integers | **14** | **65** | **150** | Maintained complete decimal page and every constant; full positive maps, exact graph, source and visual checks pass |
 | Positive integers | 13 | 72 / 74 | 124 / 122 | Complete CURRENT2011 mixed-carrier graphs; all-positive inverse maps and external Lean ConZFC endpoints, independent finite degree/whole-port checks |
+| Positive integers | 13 | 77 | 96 | Complete CURRENT2011 grouped-square graph; identical positive zero set to LV72, external Lean ConZFC endpoint and independent exact degree/whole-port checks |
 | Positive integers | 15 | 66 | 157 | Preserved complete P66 pages and coefficient checkpoints |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 96 | 70 | Free positive J and an identical polarized norm tail |

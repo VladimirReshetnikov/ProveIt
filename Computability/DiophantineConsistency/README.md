@@ -31,6 +31,27 @@ machine leaves and24 standard-only axiom reports. The
 [C222 calibration audit](research/ha-c222-internalization-audit.md) separates
 the remaining seed-axiom and counter4 runtime bridges to the existing internal
 validator theorem; run totality alone does not prove that equivalence.
+The [C222 equality leaf](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean)
+now translates into the actual C254 proof predicate for every internal input
+in every IΣ1 model. Its [independent replay](reviews/validator-growg222-root.md)
+passed seven fresh commands and ten standard-only reports. The changed seed
+and runtime calibration remain open.
+The literal helper-free seed now also has
+[bounded arithmetic graphs](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticSeedTemplates222.lean),
+with [independent replay](reviews/arithmetic-seed-templates222-root.md).
+Representation of its syntax is separate from the pending seed-validity proof.
+An [actual C222 Nat checker](reviews/code222-proof-root.md) is now checked
+in both directions against the calculus, and the changed
+[bounded row](reviews/arithmetic-row222-root.md) has exact internal graph
+semantics and standard one-step parser agreement. A separate
+[generic represented history](reviews/arithmetic-sequence-history-root.md)
+proves unique evaluation and lookup at all internal IΣ1 indices, retaining
+the explicit represented-step premise. Its
+[actual C222 instantiation](reviews/arithmetic-history222-root.md) now proves
+the exact recurrence and a closed IΣ1 theorem of unique Boolean evaluation.
+[Agreement with the concrete Nat decoder](reviews/arithmetic-history222-nat-root.md)
+now holds for every code, including malformed inputs. Internal seed validity
+and exact runtime calibration remain open.
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence
@@ -41,8 +62,36 @@ an ingredient of the proof transfer; it does not prove the consistency
 equivalence.
 The [Foundation-to-HA syntax bridge](Lean/DiophantineConsistency/FoundationPAHFSyntax.lean)
 also now has an [independent replay](reviews/foundation-pahf-syntax-root.md),
-including nested-binder substitution and variable-shift checks. Actual
-proof-tree transfer and translated arithmetic axioms remain separate work.
+including nested-binder substitution and variable-shift checks. The actual
+[intuitionistic proof-tree map](Lean/DiophantineConsistency/FoundationPAHFLogic.lean)
+now also passes [independent replay](reviews/foundation-pahf-logic-root.md),
+preserving all finite assumptions in `HA.Derives`. Translated arithmetic
+axioms and induction remain separate work.
+The first [conventional HA arithmetic proofs](Lean/DiophantineConsistency/HABasicArithmetic.lean)
+now cover the six actual axioms, equality, safe closure operations and formula
+induction, including genuine proofs of0+t=t and t+1=S t. Their
+[independent replay](reviews/ha-basic-arithmetic-root.md) passed19 reports
+using only `propext` and `Quot.sound`; full arithmetic translation remains open.
+The subsequent [HA semiring proofs](reviews/ha-semiring-arithmetic-root.md)
+now derive addition/multiplication associativity and commutativity, both
+distributive laws and the zero/one laws using actual formula induction.
+Four independently compiled leaves passed36 standard-only reports.
+HA also proves the [zero-or-successor decomposition](reviews/ha-natural-cases-root.md)
+and [equality decidability](reviews/ha-equality-decidable-root.md), with
+capture-safe arbitrary-term instances and explicit finite contexts.
+These supply arithmetic ingredients for the translation; the full HA
+equivalence remains open.
+The first [eight translated Foundation arithmetic axioms](reviews/foundation-ha-arithmetic-root.md)
+are now discharged by actual HA proofs of their literal GG images.
+Both leaves pass independent compilation and22 standard-only reports;
+the remaining equality/order axioms and arbitrary induction are explicit
+separate obligations.
+The [whole source equality theory](reviews/foundation-ha-equality-root.md)
+is now discharged too, including congruence of the interpreted order relation.
+The [actual source parameter closure](reviews/foundation-ha-closure-peer.md)
+also has its exact syntax identity and a checked HA proof constructor.
+These results retain the existing source encodings; the remaining order
+axioms and arbitrary induction body still need proofs.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the
@@ -122,6 +171,23 @@ improves both metrics of the preserved
 [73/126 checkpoint](research/thirteen-corrected-strong126/README.md).
 The71/128 and14/65/150 points remain separate tradeoffs. The decimal display
 is preserved, and HA proof-existence formalization remains open.
+
+The further [grouped-square variant](research/thirteen-grouped-squares96/README.md)
+gives **13 positive variables,77 operations and exact degree96**, at the same
+complete coefficients. Its identity witness map preserves every positive zero
+of the72/124 parent. Both fresh Lean leaves and the complete normal/optimized
+finite audit passed [independent root review](reviews/thirteen-grouped-squares96-root.md).
+The extra five operations lower degree by28; the earlier tradeoffs and displayed
+equation are preserved.
+
+The [shared-residual presentation](research/thirteen-shared-squares96/README.md)
+improves this to **13 positive variables,76 operations and exact degree96**.
+Sharing `f²−1` computes exactly the same polynomial over every commutative
+ring, preserving all assignments and the current-port external ConZFC endpoint.
+Both fresh Lean leaves and normal/optimized full finite audits passed
+[independent root review](reviews/thirteen-shared-squares96-root.md).
+All four complete coefficients are unchanged. The earlier77/96 packet remains
+preserved; the displayed14/65/150 equation and HA target are unchanged.
 
 The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 uses **47,313 raw fixed-integer bytes**, 10,812 below the preceding2471

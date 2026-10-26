@@ -52,6 +52,15 @@ also have checked entire-positive-zero maps and closed external ConZFC
 equivalences. Their [independent replay](reviews/thirteen-lv-carrier122-root.md)
 passed16 standard-only reports, with separate complete finite metric checks.
 Their HA proof-existence endpoints remain open alongside the maintained page.
+The grouped-square13/77/96 variant likewise has a checked external endpoint
+and exact positive identity map to LV72; its
+[root replay](reviews/thirteen-grouped-squares96-root.md) retains the separate
+finite metric and cached-prerequisite scopes. Its HA endpoint is also open.
+The shared-residual13/76/96 presentation is now externally checked too:
+it computes exactly the grouped polynomial using one fewer operation.
+Its [independent replay](reviews/thirteen-shared-squares96-root.md) passed
+eleven standard-only reports and separate complete normal/optimized finite
+metric checks. Its HA proof-existence endpoint remains open.
 
 [ObjectCurrentEquation2011](Lean/DiophantineConsistency/ObjectCurrentEquation2011.lean)
 supplies a set-theory-language no-solution sentence with exact arbitrary-model
@@ -204,9 +213,70 @@ The [C222 audit](research/ha-c222-internalization-audit.md) gives the missing
 all-model witness equivalence explicitly: exact215 halting iff the old C254
 history checker accepts falsity. It separates represented C222 checking,
 internal logical/seed calibration and actual counter4 runtime simulation.
-The changed equality leaf has a small prospective C254 adapter; the changed
-seed bundle requires additional internal syntactic interpretation work.
+The changed equality leaf now has a checked
+[C254 adapter](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean):
+for every internal a,b,c in every IΣ1 model it constructs an actual old-checker
+proof code for the literal `growG` formula. Its Sigma0 graph agrees with the
+actual C222 definition. Seven fresh main/check/prerequisite commands passed
+[independent root replay](reviews/validator-growg222-root.md), with ten
+standard-only reports and114 authenticated cached prerequisites. The changed
+seed bundle still requires additional internal syntactic interpretation work.
+Its literal helper-free syntax now also has checked
+[bounded circuits](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticSeedTemplates222.lean)
+for req/clos/nks/vrel/bundle222, with exact Nat bindings and arbitrary-internal
+IOpen graph correctness. Two leaves passed [independent root replay](reviews/arithmetic-seed-templates222-root.md)
+with16 standard-only reports and102 authenticated cached prerequisites.
+The repeated matrix/binder c, false code1 and legal a=b,c=0 case are retained.
+These are representation results; they do not prove the seed internally valid.
 None of these missing statements is supplied by standard-Nat simulation.
+
+The actual calculus now has a checked
+[Nat proof checker](../BusyBeaver/Lean/BusyBeaver/ZFC/Code222Proof.lean),
+including `C222 n ↔ ∃code, check222 code n=true`. Old raw-tree parsing and
+quoting are reused as syntax; new recursive validity and conclusions bind
+both changed leaves and MP to the actual C222 definitions. Its
+[independent replay](reviews/code222-proof-root.md) passed nine reports.
+The [bounded row](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticRow222.lean)
+then represents exactly those numeric rule semantics in every IOpen model,
+with arbitrary-child standard parser agreement and invalid-tag rejection.
+Its [independent replay](reviews/arithmetic-row222-root.md) passed ten reports.
+Neither packet assumes old C254 semantic agreement for the changed calculus.
+
+[ArithmeticSequenceHistory](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticSequenceHistory.lean)
+separately reuses Foundation's generic primitive recursion. Its fixed
+history/value syntax has Sigma1/Delta1 graphs, unique totality, exact
+sequence length and all-index lookup equations in every IΣ1 model,
+conditional on an explicitly represented total step. Both totality
+statements retain that premise. Its
+[independent replay](reviews/arithmetic-sequence-history-root.md) passed15
+reports. Actual C222 instantiation, whole-code Nat binding, internal seed
+calibration and exact counter4 runtime simulation are the next obligations.
+These three packets total six fresh leaves over pinned cached prerequisites;
+they do not establish the final arithmetic consistency equivalence.
+
+The actual instantiation is now supplied by
+[ArithmeticHistory222](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticHistory222.lean).
+Its syntax-fixed step graph composes actual div/rem, Cantor projections,
+sequence lookups and the C222 row. Child-index bounds make the internal
+successor recurrence depend on this evaluator's own preceding values.
+It proves represented unique evaluation and an actual closed IΣ1 theorem
+of total unique Boolean evaluation, by existing arithmetic completeness.
+The [independent replay](reviews/arithmetic-history222-root.md) passed both
+new leaves and14 standard-only reports over118 cached prerequisites.
+Whole-code Nat agreement with the literal decoder is still separate, as
+are the logical seed and exact-runtime consistency calibrations. Total
+evaluation alone proves neither acceptance soundness nor HA equivalence.
+
+The [all-code Nat adapter](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticHistory222Nat.lean)
+now proves exact agreement with the actual decoder/checker for every code,
+including malformed inputs, by strong induction generalized over parser fuel.
+It defines no duplicate evaluator and imports old History254 only for generic
+div/rem/numeral facts. It binds actual C222 derivability to a witness for the
+same fixed represented formula. Both leaves passed
+[independent replay](reviews/arithmetic-history222-nat-root.md), with eight
+standard-only reports over120 cached prerequisites. Internal seed and exact
+runtime calibration remain open; the represented formula now has its actual
+whole-code standard interpretation.
 
 The [arithmetic translation audit](research/ha-arithmetic-translation-adapter-audit.md)
 also fixes the next proof-transfer interface: translate Foundation ordered
@@ -227,8 +297,84 @@ instantiation, free/open and eigenvariable-shift identities are proved.
 Both leaves passed [independent root replay](reviews/foundation-pahf-syntax-root.md)
 with15 standard-only reports; all369 source/trace/object pins for the59
 Foundation and five PAHF cached prerequisites matched. This is a syntax
-checkpoint, not a proof-calculus or arithmetic-axiom transfer. The next leaf
-maps actual intuitionistic Hilbert proof trees to `HA.Derives`.
+checkpoint, separate from arithmetic-axiom transfer.
+
+The logical proof-calculus map is now checked too:
+[FoundationPAHFLogic](Lean/DiophantineConsistency/FoundationPAHFLogic.lean)
+maps actual intuitionistic Hilbert proof trees to `HA.Derives []`, and actual
+finite-context proofs/proof existence to `HA.Derives (Γ.map formula)`.
+The concrete intuitionistic endpoint discharges the generic extra-axiom
+premise using HA's ex-falso rule; it contains no arithmetic-image assumption.
+All shifted quantifier contexts and ordered/duplicate assumptions are
+retained. Both leaves passed [independent root replay](reviews/foundation-pahf-logic-root.md)
+with14 reports using only `propext` and `Quot.sound`, with67 authenticated
+cached prerequisites. Conventional arithmetic axioms, induction and sentence
+closure still require their own derivations and comparison.
+
+The first conventional arithmetic derivations are now checked in
+[HABasicArithmetic](Lean/DiophantineConsistency/HABasicArithmetic.lean):
+equality rules, all six arbitrary-term instances of the actual HA axioms,
+safe closure opening/reclosing, and the actual formula-induction rule.
+The module uses that induction rule to prove0+t=t and proves t+1=S t
+from the addition axioms. Nested/free-parameter checks passed
+[independent root replay](reviews/ha-basic-arithmetic-root.md), with19
+reports using only `propext` and `Quot.sound`. Seven cached prerequisites
+were explicitly reused. Further semiring/order axioms and their translated
+induction/parameter closures remain separate work.
+
+The conventional arithmetic library now also includes
+[HAAdditiveArithmetic](Lean/DiophantineConsistency/HAAdditiveArithmetic.lean)
+and [HAMultiplicativeArithmetic](Lean/DiophantineConsistency/HAMultiplicativeArithmetic.lean).
+They derive the semiring identities using HA formula induction and explicit
+HA equality chains. Their four-leaf [independent replay](reviews/ha-semiring-arithmetic-root.md)
+passed36 reports using only `propext` and `Quot.sound`, with eight/nine cached
+prerequisites reused for the two respective pairs. These are actual HA
+proofs, not equalities supplied as proof-transfer hypotheses.
+
+[HANaturalCases](Lean/DiophantineConsistency/HANaturalCases.lean) proves
+`t=0 ∨ ∃z t=S z` by actual formula induction. Its
+[independent replay](reviews/ha-natural-cases-root.md) passed11 reports.
+[HAEqualityDecidable](Lean/DiophantineConsistency/HAEqualityDecidable.lean)
+then proves `∀x∀y (x=y ∨ ¬x=y)` by one formula induction and the predecessor
+split, with arbitrary-term instances and full context shifts through
+existential elimination. Its [independent replay](reviews/ha-equality-decidable-root.md)
+passed14 reports. Both packets use only `propext` and `Quot.sound` (or no
+axioms); equality decidability supplies no general excluded-middle rule.
+Translated Foundation arithmetic axioms, induction and the final target
+comparison still require explicit derivations.
+
+The first concrete translated-axiom checkpoint is now proved in
+[FoundationHAArithmetic](Lean/DiophantineConsistency/FoundationHAArithmetic.lean).
+Each of the eight semiring equation axioms has an actual
+`HA.Proves (FoundationPAHFSyntax.sentence PeanoMinus.Axiom.<name>ᴺ)` endpoint.
+Constructive double-negation introduction precedes universal closure;
+the fixed source list's membership and every literal syntax image are
+checked. No arithmetic-image predicate or desired-provability hypothesis
+is supplied. Its [independent replay](reviews/foundation-ha-arithmetic-root.md)
+passed22 reports using only `propext` and `Quot.sound`, with88 cached
+prerequisites. All76 Foundation records exactly match the already accepted
+arithmetic215 inventory. Equality-theory cases, nine order/geometric axioms,
+arbitrary induction and the source's parameter closure remain separate.
+
+[FoundationHAEquality](Lean/DiophantineConsistency/FoundationHAEquality.lean)
+now discharges every actual source equality-theory axiom's literal GG image,
+including all four functions and both relations. HA's proved equality
+decidability supplies equality-specific stability; order congruence transports
+the whole double-negated existential formula without order decidability.
+The source's implication conversion reuses the actual Foundation theorem and
+checked intuitionistic proof map, retaining its metatheoretic choice dependency.
+Both leaves passed [independent replay](reviews/foundation-ha-equality-root.md),
+with31 reports restricted to the standard three Lean axioms.
+
+[FoundationHAClosure](Lean/DiophantineConsistency/FoundationHAClosure.lean)
+proves the exact identity between the actual source `univCl` GG image and
+`closeN φ.fvSup (formula φᴺ)`. A proved canonical-environment identity covers
+all `fixitr` counts, including counts below a sparse free variable. Its HA
+proof constructor closes an actual proof of the open body, using genuine
+universal introduction. The [independent peer replay](reviews/foundation-ha-closure-peer.md)
+passed both leaves and six standard-only reports. This closes the parameter
+closure comparison; the arbitrary induction body, nine order/geometric
+axioms and final target equivalence still require proofs.
 
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and
