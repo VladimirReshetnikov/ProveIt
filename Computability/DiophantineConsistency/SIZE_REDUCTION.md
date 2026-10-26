@@ -13,20 +13,23 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained [decimal sorted2501 page](candidates/one-page-sorted-carrier65-2501/README.md)
-has **14 positive unknowns, 65 integer-leaf operations and exact degree 150**.
-The uniform Carrier65 front and its positive maps are unchanged. The new
-native tuple has a complete ordinary proof, discharged finite premises and
-full independent proof/code reviews. Its four integers total 58829 raw
-bytes, 468 below the preceding reversed2521 tuple.
+The maintained [decimal padding-staircase2011 page](candidates/one-page-padding-staircase-carrier65-2011/README.md)
+has **14 positive unknowns,65 integer-leaf operations and exact degree150**.
+The uniform Carrier65 front and positive maps are unchanged. The new native
+tuple has a complete ordinary proof, discharged finite premises and full
+independent proof/code reviews. Its four integers total47313 raw bytes,
+10812 below the preceding2471 tuple.
 
-The full printed weight definition and floor-rank formula fix Start and
-order the other 941 selectors strictly. The initializer becomes physical
-504. The full suffix from 490 resets low fields before marker1004 parity
-and clause1493 count recovery. Both residual offsets are excluded by global
-Start-cycle arguments. The complete proof covers all 916 bit3 padding tests,
-actual mask populations and rank, every safe subset, the entire three-prime
-controller and both positive P66 maps. The auxiliary prime is 118681.
+The printed weight definition and floor-rank formula fix Start and order
+the other941 selectors strictly; the initializer stays physical504. For
+the difficult binary phases7..10,483 consecutive bit3 padding tests bound
+the first483 selectors by3. This forces at most one selector globally;
+other phases give the preliminary bound directly. Conditional low-carry
+resets and marker1004 parity then fix the binary phase before full
+clause1005 decoding. Global Start-cycle arguments exclude both residual
+offsets. The proof covers every padding test, mask and rank, all safe
+subsets, the controller at47*2011 with auxiliary prime120199, and both
+positive P66 maps.
 
 The owner requested base10 and distinct scalar names. Every maintained
 TeX/PDF must retain those preferences. The current page prints all 715
@@ -37,19 +40,52 @@ unsubscripted names, including factors P,Q,U,W,Z. Fonts stay 9pt body and
 checks, independent full reconstruction, two visual inspections and fresh
 byte-identical rendering.
 
-The sorted page saves 468 raw bytes but adds 132 TeX bytes, 33 extracted
-nonwhite PDF characters, 84 gzip bytes and 526 PDF bytes. Totals are
-5362, 2879, 4256 and 153047 respectively. The preceding complete715-digit2521
-page has a shorter displayed recipe and remains preserved with its exact
-CURRENT record. The specialized polynomials differ because their ports do.
+The staircase page saves10812 raw bytes and28 compressed bytes, giving
+47313 and4230 respectively. TeX remains5362 bytes and extracted nonwhite
+PDF text2879 characters; PDF serialization falls one byte to153046.
+All715 decimal digits and the whole arithmetic front are identical; only
+three fixed scalar exponents change. The complete2471 parent and exact
+CURRENT record remain preserved. The specialized polynomials differ
+because their ports do.
 
-The independently reviewed full-suffix exchange bound proves C>=1493 and
-L>=2501 only within its fixed weight/marker/reset/controller family. Next
-work splits binary phases to seek a sharper reset argument, and develops
-separate rational-leaf and lower-degree arithmetic tradeoffs. Those leads
-are not accepted replacements until their full proof and literal graph
-are reviewed. Every earlier native and complete-page checkpoint remains
-available.
+The full-suffix exchange bound proves C>=1493 and L>=2501 only within its
+fixed weight/marker/reset/controller family. The2471 and2011 proofs change
+that reset method. Further length reduction must change the final occupied
+field or marker geometry: with the fixed physical marker1004 and a zero
+top field, the present odd-length template already needs L>=2011. This is
+a template bound, not a general minimum. Next work tests different marker
+positions and arithmetic tradeoffs. Every new tuple still needs its complete
+proof, finite certificate and page review before promotion.
+
+A [conditional fractional-phase argument](research/markerless-fractional-phase/NOTE.md)
+now excludes every nonzero binary phase using the forced Start South bits
+and nine copy tests, provided preliminary one-hot recovery and low-carry
+resets have been proved. Root-reviewed normal/optimized checks enumerate
+every accepted local mask word and the complete conditional reset band.
+Deleting the marker still leaves whole-field offsets 1 and 18 unresolved;
+this local result does not replace the current native theorem. Work is
+now testing a smaller physical marker while retaining the global checks.
+The [marker-996 exploration](research/marker996-probe/CORRECTION.md) exposed
+a physical-coordinate error: slot978 encodes packed West bit0, so Start253
+sets it and cancels the assumed marker parity. Its proposed proof and
+canonical map are not accepted despite passing the miscalibrated finite
+check. A separate marker-997 proposal must use the actual coefficient-to-bit
+map and undergo fresh complete review; the main 2011 page is unchanged.
+
+The [complete thirteen-variable carrier](research/thirteen-variable-independent/README.md)
+now has independently reviewed full soundness/fresh-seed maps and two
+materialized integer graphs:69 operations/degree174 and70/140. Both bind
+the full58125-byte2471 tuple. Root-reviewed normal/optimized audits check
+every row, all96/72 leading terms and all four whole ports. The corrected
+odd-Pell recurrence initialization and its review history are preserved.
+These save one positive unknown at the cost of four or five operations;
+no new printed page is claimed. The separately accepted
+[normalized graph](research/thirteen-variable-normalized-independent/README.md)
+now materializes 71 operations at exact degree 128, with full proof,
+independent graph/code reviews and matching normal/optimized receipts.
+Its exact identity p70=Delta*p71 preserves every positive zero because
+Delta is positive throughout the domain. All 72 leading terms and every
+fixed-port byte are checked; it retains the frozen 2471 binding.
 
 The [scaled auxiliary replacement](research/scaled-auxiliary118/README.md)
 now has two independent ordinary reviews, a complete sorted2501-bound

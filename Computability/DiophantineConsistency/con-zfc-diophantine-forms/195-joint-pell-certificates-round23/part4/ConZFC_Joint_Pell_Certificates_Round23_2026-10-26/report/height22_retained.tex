@@ -1,0 +1,57 @@
+\subsection{Product constructors for constants}
+The new normalization retains the old logical coordinate list, constant
+values, scale values and source rows. If a needed constant $K_c$ has
+available earlier constants $K_a,K_b$ with $1<a\le b<c$ and $ab=c$,
+replace its additive definition by
+\[
+ K_c-K_aK_b=0.
+\]
+The chosen pair is the lexicographically least $(b,a)$ among the eligible
+pairs. This is fixed certificate data, not an unknown of the equation.
+
+\begin{proposition}
+These replacements preserve the normalized integer zero set literally,
+and preserve the final network zero set by the canonical source lift and
+projection. They introduce no new normalization coordinate or sign branch.
+\end{proposition}
+\begin{proof}
+Constants are ordered increasingly. Both factors precede $K_c$, even when
+$a=b$. Induction through the unchanged additive and new multiplicative
+monic definitions forces $K_c=c$ uniquely. Conversely the intended values
+satisfy every definition. Every source row and scale has exactly the same
+pullback. Thus the normalized zero sets agree in the same coordinates.
+Each final network separately has the already proved inverse projection
+and unique lift through the common source, which supply the desired
+bijection even though the final aliases and flows may differ. The universal
+identity~\eqref{eq:networklift}, including the hub term, remains valid.
+No division is used. Positivity of a forced constant is not a restriction
+on a quantified final coordinate.
+\end{proof}
+The monic row now has two signed monomial occurrences rather than three.
+This changes the graph search and can remove more than one eventual alias
+or flow; final savings are measured after complete coefficient collection.
+
+\subsection{Chained scale constructors}
+The smallest selected endpoint also replaces a scale definition
+$S(c,x)-K_cx=0$ when an earlier scale $S(b,x)$ and a constant $K_d$
+exist with $d>1$, $b<c$ and $db=c$. The new definition is
+\[
+ S(c,x)-K_dS(b,x)=0.
+\]
+Constants precede all scales and scales are ordered by
+(coefficient, source coordinate). Induction therefore forces
+$S(c,x)=d(bx)=cx$ for every integer $x$, including negative and zero
+values. Conversely those values satisfy the new rows. The monic pivot
+and predecessor on the \emph{same} original coordinate are essential;
+merely factoring the numerical coefficient without checking the base
+coordinate would not establish the identity. This again preserves both
+normalized zero sets and the final source-lift bijection without division.
+The deterministic choice is the lexicographically least available $(d,b)$.
+
+The independent checker removes row orientations and verifies the
+identical coordinate list and metadata, every changed and unchanged row,
+all earlier-factor conditions, every exact source pullback, and the
+complete collected final polynomial. It tests source/constant corruption
+classes and a separate chained-scale corruption. No heuristic claim of
+optimality is used to prove correctness or numerical metrics.
+

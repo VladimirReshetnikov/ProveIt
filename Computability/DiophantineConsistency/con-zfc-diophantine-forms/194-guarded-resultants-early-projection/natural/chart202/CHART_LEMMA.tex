@@ -1,0 +1,41 @@
+\begin{lemma}[Affine charts certified on natural zeros]
+Let $R=(R_0,\ldots,R_{m-1})\in\mathbb Z[X_0,\ldots,X_{n-1}]^m$.
+Let $T\subseteq\{0,\ldots,n-1\}$ and suppose that for every $v\in T$
+one retained source row is
+\[
+ R_{j(v)}=X_v-f_v(X),\qquad f_v\in\mathbb N[X].
+\]
+Assume these defining rows admit an order in which every coordinate of
+$T$ occurring in $f_v$ has already been defined. Let $F$ be an integral
+affine automorphism with integral affine inverse $G$, fixing the coordinates
+outside $T$. Suppose that for every $v\in T$ there are a polynomial
+$P_v\in\mathbb N[X]$ and integer constants $a_{vj}$ such that
+\[
+ F_v=P_v+\sum_{j=0}^{m-1}a_{vj}R_j.
+\]
+Then $F$ induces a bijection between the natural zero sets of $R$ and
+$R\circ G$. The same holds after any unimodular integer change of the
+residual basis, and the degree of the residuals is unchanged by the chart.
+\end{lemma}
+\begin{proof}
+If $x\in\mathbb N^n$ satisfies $R(x)=0$, then
+$F_v(x)=P_v(x)\ge0$ for $v\in T$, and the other coordinates are unchanged.
+The affine inverse identities give $(R\circ G)(F(x))=0$.
+Conversely, let $y\in\mathbb N^n$ satisfy $(R\circ G)(y)=0$ and put
+$z=G(y)\in\mathbb Z^n$. Every unchanged coordinate is natural.
+Although the other entries of $G(y)$ need not be nonnegative at arbitrary
+$y$, the equations $z_v=f_v(z)$ prove their nonnegativity successively in
+the stipulated source-gate order. Thus $z\in\mathbb N^n$ and $R(z)=0$.
+The maps are mutually inverse. An invertible integer row matrix does not
+alter the simultaneous zero set. Affine substitution does not increase
+degree; applying the inverse gives equality of the maximum residual degree.
+\end{proof}
+
+The condition on $F_v$ is strictly weaker than requiring each elementary
+shear to have a nonnegative addition. For example, a negative elementary
+shear may remove a positive summand introduced by an earlier coordinate
+accumulator, leaving a coefficientwise nonnegative final $F_v$.
+More generally, replacing a positive gate monomial by its retained defining
+polynomial yields a finite exact certificate of the displayed form. None
+of this asserts that an arbitrary inverse affine shift preserves
+$\mathbb N^n$.

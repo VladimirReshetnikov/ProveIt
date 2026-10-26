@@ -1,0 +1,71 @@
+\subsection{A retained row changes the numerator chart}
+The smallest selected endpoint uses a further exact algebraic adjustment,
+not a weaker-frame theorem. Let $R_W=0$ be the retained frame residual of
+the conservative source and replace the orientation numerator by
+\[
+ \Omega'=\Omega+R_W.
+\]
+All retained source zeros have $R_W=0$, so the joint zero-set argument is
+unchanged. In the actual centered source coordinates this addition cancels
+the quadratic $x^2$ term. A later monic substitution for $x$ can then have
+degree four without making the selected pool row exceed degree eight.
+The certificate checks the exact coefficient cancellation and restores the
+retained row before invoking Theorem~\ref{thm:unweighted-joint}.
+It is not a claim that $\Omega'$ is itself nonnegative away from those
+retained zeros.
+
+For the 113-variable endpoint the four base blocks are partitioned as
+$(B)$ and $(D,q,q+1)$, with orientation fused into the first part. The
+source has thirteen principal pairs and fifteen power requests, not the
+fourteen-pair weighted reference. The 202-coordinate, 142-row joint seed
+then undergoes 89 exact unit-pivot eliminations, leaving 113 coordinates
+and 53 residuals of degree at most eight. Its sum of squares has exact
+degree 16, support 1030202 and height $16250018885420533678080$.
+
+The sparse 114-variable companion keeps orientation separate and partitions
+the power blocks as $(B,D)$ and $(q,q+1)$. It has 54 residuals, exact degree
+16, 127818 terms and the same height. This is a useful sparseness tradeoff,
+not another use of the fused orientation theorem. The 138-variable companion
+has 78 residuals, exact degree eight, 12099 terms and height $2^{50}$.
+The 138-variable point uses direct monic elimination from the conservative
+source, without a new pool, and is not credited to the joint theorem.
+All three full collected polynomials are supplied; their supports are not
+estimates inferred from circuit sizes.
+
+\subsection{The finite substitution specification}
+For clarity, a unit-pivot step at the current residual row has the form
+\[
+ Q_r=\epsilon x_v+f(\widehat{x_v}),\qquad\epsilon\in\{-1,1\},
+\]
+with no other occurrence of $x_v$ in $Q_r$. Substitute $x_v=-\epsilon f$
+in every other residual, then delete row $r$ and coordinate $v$. This is
+an integral zero-set bijection: insertion of that polynomial is its exact
+inverse, and the deleted equation becomes an identity. Later restorations
+compose in reverse order. Every step's resulting degree is checked after
+full exact coefficient collection; a generic degree-propagation bound is
+not used as an attained degree certificate.
+
+The appendix gives the complete conservative source, literal principal-pair
+and request ports, exact removed rows, fixed pool partitions, and each
+ordered triple $(v,r,\epsilon)$. Starting with the stated seed, set
+$\sigma_0$ to the identity and successively apply
+\[
+ \sigma_{j+1}=\sigma_j
+ \bigl[x_v\mapsto-\epsilon\,\sigma_j(Q_r)|_{x_v=0}\bigr].
+\]
+Here the substitutions mean applying the current pivot replacement to every
+current row; the recorded order removes any ambiguity about composition.
+The final polynomial is the sum of squares of all retained substituted
+rows, in the explicitly listed retained coordinate order. This is a finite
+ordinary polynomial definition with no existential register or division.
+The supplied full residual and coefficient arrays independently agree with
+this specification.
+
+The matched unfused control uses the same source and admissible monic pivot
+strategy. It isolates the extra elimination enabled by the joint numerator
+chart. The sparse 114-variable endpoint and the low-degree 138-variable
+endpoint are separate controls with their own partitions and metrics; they
+are not falsely reported as a simultaneous improvement in all objectives.
+The unbounded joint theorem, exact substitutions and inherited source
+calibration together establish~\eqref{eq:calibration} for every selected
+endpoint on $\Z$.

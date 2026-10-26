@@ -1,0 +1,163 @@
+\section{A 201-variable natural quartic}
+
+All coordinates in this section range independently over
+$\mathbb N=\{0,1,2,\ldots\}$. The principal polynomial is the sum of the
+squares of the $153$ literal quadratic residuals supplied in
+\texttt{natural201/equation.json}. Its complete collected coefficient list is
+\texttt{natural201/expanded\_polynomial.json}. It has $201$ variables, exact
+degree $4$, $6002$ nonzero monomials and coefficient height $1860103$.
+The inherited fixed-calculus calibration is unchanged: it has a natural zero
+if and only if the specified effectively presented ZFC calculus has a finite
+syntactic refutation. Its no-natural-zero sentence thus retains the inherited
+$\operatorname{Con}(\mathrm{ZFC})$ interpretation. This is not a consistency
+proof, an optimality claim, or a new end-to-end kernel formalization.
+
+\begin{center}
+\begin{tabular}{lrrrrr}
+Profile & Variables & Rows & Degree & Terms & Height\\\hline
+Principal &201&153&4&6002&1860103\\
+Affine parent &202&154&4&6000&1854571\\
+Sparse sextic &165&117&6&6558&1860101\\
+Smaller sextic &164&116&6&15774&1860101\\
+Sparse octic &139&91&8&11873&1117699986\\
+Smaller octic &138&90&8&16515&2933403776
+\end{tabular}
+\end{center}
+
+\paragraph{Natural affine charts certified modulo source equations.}
+Let $R=(R_0,\ldots,R_{m-1})$ be integral polynomials in $n$ coordinates.
+Suppose a set $S$ of coordinates has retained source equations
+\[
+ R_{j(v)}=X_v-f_v(X),\qquad f_v\in\mathbb N[X],\quad v\in S,
+\]
+and an ordering in which every coordinate of $S$ appearing in $f_v$ is
+earlier than $v$. Let $F$ be an integral affine automorphism, with integral
+affine inverse $G$, fixing the coordinates outside $S$. Suppose that for each
+$v\in S$ a certificate supplies
+\[
+ F_v=P_v+\sum_j a_{vj}R_j,\qquad P_v\in\mathbb N[X],\quad a_{vj}\in\mathbb Z.
+ \tag{N1}
+\]
+Then $F$ and $G$ give inverse bijections between the natural zero sets of
+$R$ and $R\circ G$.
+
+Indeed, at a natural zero $x$ of $R$, equation~(N1) proves $F_v(x)\ge0$;
+the other coordinates are unchanged. Conversely, if $y$ is a natural zero
+of $R\circ G$, put $z=G(y)$ in $\mathbb Z^n$. Coordinates outside $S$ are
+already natural. The retained equations give $z_v=f_v(z)$, so induction in
+the stated source order proves every remaining coordinate nonnegative.
+The two affine inverse identities prove the inverse laws. Crucially, no
+claim is made that $G$ preserves the entire natural orthant.
+An elementary integral row operation $R_i\leftarrow R_i+kR_j$, $i\ne j$,
+is reversed by subtraction and does not change the common zero set.
+Affine substitutions do not increase degree; applying the affine inverse
+proves preservation of maximum residual degree.
+
+\paragraph{The literal chart.}
+The source is the preceding pooled $202$-coordinate natural system, with
+its full source closure and proof retained in \texttt{inherited/}.
+A positive syntax-index-budget accumulator, the twelve earlier syntax
+shears, and forty further literal affine shears yield the selected chart;
+twenty-four recorded elementary row shears are then applied. Complete replay
+inputs and both affine maps occur under \texttt{chart202/}.
+There are $33$ changed coordinates. Twenty-nine final forward maps are
+coefficientwise nonnegative. The other four require only source rows
+$13,17,34,75$, for coordinates $27,31,49,93$ respectively. For example,
+\[
+ F_{31}=X_{27}+X_{31}-16X_{25},\qquad F_{93}=X_{93}-X_{92}.
+\]
+Subtracting source row $17$ from $F_{31}$ gives the recorded polynomial
+with nonnegative coefficients. Source row $75$ has the form
+$X_{93}-HX_{92}$, where $H$ is coefficientwise nonnegative with constant
+$236$; thus $F_{93}=(H-1)X_{92}+R_{75}$ is nonnegative on source zeros.
+All $33$ original positive defining equations and their dependency order
+are checked from literal polynomials. The inherited Pell and power
+interpretations are used only after the original natural zero has been
+restored; no lost orientation is assumed away.
+
+\paragraph{The new quadratic contraction.}
+In the final $202$-coordinate chart, before renumbering, the only rows
+containing $X_{57}$ are
+\[
+ R_{42}=X_{57}-2-6X_{48}-4X_{48}^{2},\qquad
+ R_{44}=X_{59}-4X_{57}-X_{58}-X_{58}^{2}.
+\]
+The coordinated shear of $X_{59}$ has removed the other incidences.
+Substitute $X_{57}=2+6X_{48}+4X_{48}^{2}$, and delete coordinate $57$
+and row $42$. The remaining occurrence becomes
+\[
+ X_{59}-8-24X_{48}-16X_{48}^{2}-X_{58}-X_{58}^{2}.
+\]
+Every residual remains quadratic. The restoring polynomial is nonnegative
+on every natural retained assignment, and the deleted monic row forces
+precisely that value. Deletion and extension are therefore inverse natural
+zero-set maps. The resulting sum of $153$ squares is the asserted
+$201$-variable quartic. The literal collected coefficients establish exact
+degree, support and height. No lower-bound theorem is inferred from the
+finite search for further contractions in this particular row basis.
+
+\paragraph{Signed monic contractions for the degree tradeoffs.}
+There is a more general certificate which avoids requiring every restoring
+polynomial to have nonnegative coefficients. Start with a chart
+$C=U(R\circ G)$, where $U$ is an invertible integral residual matrix.
+Repeatedly select a row $aY_v+h(Y_{\ne v})$, $a\in\{1,-1\}$, substitute
+$Y_v=-ah$ into the remaining rows and delete that row and coordinate.
+These operations give a polynomial extension $E$ of the retained coordinates
+and a projection $\pi$, inverse to one another on the integer zero sets.
+This follows inductively because each deleted monic equation forces its
+restoring value, without division or an additional congruence.
+
+Let $D$ be the set of deleted source-coordinate indices. Assume the original
+system has positive acyclic defining equations for every coordinate in
+$S\cup D$. Given a natural retained zero $y$, extend to $E(y)$ over the
+integers and put $z=G(E(y))$. All original residuals vanish. Coordinates
+outside $S\cup D$ remain unchanged natural coordinates. Induction along
+the original positive definitions proves $z\in\mathbb N^n$. Equation~(N1)
+then gives $F(z)=E(y)\in\mathbb N^n$. The inverse direction is projection
+of the natural chart image of an original natural zero. Hence the same
+maps are inverse bijections on natural zero sets, even when intermediate
+restoring formulas have negative coefficients.
+
+The $165$-, $164$-, and $139$-variable companions contract $37$, $38$, and
+$63$ coordinates from the new chart; their certified restoration sets have
+$69$, $70$, and $83$ coordinates. The $138$-variable companion contracts
+$64$ coordinates from the preceding-round chart and has a $74$-coordinate
+restoration set. In the degree-eight profiles, the deleted original outer
+$x$ is restored from its explicit positive equation
+$x=1+\mathrm{endpoint.ut}(1+\mathrm{mul.8})$; no sign of a free integer
+is postulated. The equivalence is existential, not a new assertion with
+$x$ held as an externally fixed parameter. Every contraction equation,
+substitution, restoration order and retained-index renumbering is supplied.
+The residual degrees are at most three or four, giving the displayed
+sextic and octic tradeoffs. They are not quartic-dimension improvements.
+
+\paragraph{Current-source comparison and verification boundary.}
+At the pinned current snapshot
+\texttt{ecb9a4b4dda617512952525d50f17343700aac52}, the authenticated
+source178 principal and sparse natural $203$-variable quartics have
+$155$ rows and respectively $8237$ terms/height $799349232$ and
+$8263$ terms/height $207116893$. The new $201$-variable quartic improves
+all four measures against both. The source178 low-height alternative
+has $49682$ terms and height $481920$; it remains a height tradeoff.
+Literal current-source equations and a full independent recollection are
+included, so this is not a comparison with an obsolete summary.
+
+The preceding principal had $202$ variables, $154$ rows and $9353$ terms.
+The new counts are $201$, $153$ and $6002$. Height rises from $1854167$ to
+$1860103$, an increase of $5936$ (approximately $0.32\%$). Accordingly,
+we do not claim simultaneous improvement of every previous metric.
+The inherited low-height $202$-variable form, with $16927$ terms and
+height $416488$, is preserved. The new $165$-variable sextic strictly
+improves every displayed metric over the earlier $200$-variable octic, which
+had $152$ rows, $10392$ terms and height $13654244$.
+
+The standard-library-only builder reconstructs all literal rows and
+coefficients. An independent exponent-count implementation verifies the
+affine inverse identities, positive representatives, original restoration
+DAGs, monic eliminations, every residual and every expanded coefficient.
+Negative controls reject corrupted representatives, gate orders, eliminated
+definitions and coefficients. Normal and optimized Python execution,
+byte-identical temporary reconstruction, LaTeX round-trips, current-source
+recollection and replay of the complete inherited finite construction closure
+are recorded. These are finite exact certificates accompanying the ordinary
+unbounded semantic and logical proofs, not a claim of a new kernel proof.

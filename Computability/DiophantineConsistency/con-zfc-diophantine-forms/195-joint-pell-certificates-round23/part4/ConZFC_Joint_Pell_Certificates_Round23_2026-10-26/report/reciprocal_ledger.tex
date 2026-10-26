@@ -1,0 +1,155 @@
+\section{Exact reciprocal ports and substitution ledgers}
+\label{sec:reciprocal-ledger}
+This appendix, together with the complete conservative residual array in Appendix~\ref{sec:conservative-residuals}, defines every selected reciprocal polynomial without a search or an implicit coefficient. All $x_i,R_i$ in the port tables refer to that appendix, not to the principal quartic.
+\subsection{The common principal pairs and power requests}
+Put $A=x_{130}$ and $d=A-1$. The thirteen pairs have the following literal ports. The norm and multiplication rows remain part of the source.
+\begin{center}\small\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}rllllrr@{}}\toprule
+Pair & $k_i$ & $X_i$ & $Y_i$ & $Z_i$ & Gate & Norm\\\midrule
+0 & $16+32x_{177}$ & $1+x_{136}$ & $x_{135}$ & $1-x_{134}+x_{136}$ & 94 & 95\\
+2 & $16+x_{1}+32x_{177}$ & $x_{143}$ & $x_{142}$ & $-x_{141}+x_{143}$ & 100 & 101\\
+3 & $x_{7}$ & $x_{146}$ & $x_{145}$ & $-x_{144}+x_{146}$ & 102 & 103\\
+5 & $x_{8}$ & $x_{149}$ & $x_{148}$ & $-x_{147}+x_{149}$ & 104 & 105\\
+6 & $x_{9}$ & $x_{152}$ & $x_{151}$ & $-x_{150}+x_{152}$ & 106 & 107\\
+7 & $x_{10}$ & $x_{155}$ & $x_{154}$ & $-x_{153}+x_{155}$ & 108 & 109\\
+8 & $x_{11}$ & $x_{158}$ & $x_{157}$ & $-x_{156}+x_{158}$ & 110 & 111\\
+9 & $x_{3}$ & $1+x_{161}$ & $x_{160}$ & $1-x_{159}+x_{161}$ & 112 & 113\\
+10 & $x_{12}$ & $x_{164}$ & $x_{163}$ & $-x_{162}+x_{164}$ & 114 & 115\\
+11 & $x_{13}$ & $x_{167}$ & $x_{166}$ & $-x_{165}+x_{167}$ & 116 & 117\\
+12 & $x_{0}$ & $1+x_{170}$ & $x_{169}$ & $1-x_{168}+x_{170}$ & 118 & 119\\
+13 & $x_{14}$ & $x_{173}$ & $x_{172}$ & $-x_{171}+x_{173}$ & 120 & 121\\
+14 & $2x_{15}$ & $x_{176}$ & $x_{175}$ & $-x_{174}+x_{176}$ & 122 & 123\\
+\bottomrule\end{tabular}\end{center}
+The four base blocks and all fifteen $(\text{pair},m)$ requests are:
+\begin{center}\small
+\begin{tabular}{@{}rll@{}}\toprule
+Block & Base $n_j$ & Requests $(i,m)$\\\midrule
+0 & $x_{2}$ & $(12,x_{16})$\\
+1 & $2+2x_{1}+4x_{15}$ & $(12,-1+x_{93})$\\
+2 & $-1+x_{93}$ & $(0,x_{95}),\quad(9,x_{112}),\quad(12,x_{119})$\\
+3 & $x_{93}$ & $(2,x_{94}),\quad(3,x_{99}),\quad(5,x_{102})$\\
+ & & $(6,x_{105}),\quad(7,x_{108}),\quad(8,x_{111})$\\
+ & & $(10,x_{115}),\quad(11,x_{118}),\quad(13,x_{123})$\\
+ & & $(14,x_{126})$\\
+\bottomrule\end{tabular}\end{center}
+Define $T_j,H_j,S_j,E_j,\Omega$ from precisely these ports as in Section~\ref{sec:reciprocal23}. Thus $Z_i$ is the displayed polynomial port, not a new independent variable. To define the literal reduced source chart, put $\widehat E_0=E_0$, $\widehat E_1=E_1$ and
+\[\widehat E_2=E_2+R_{95}+R_{113},\qquad \widehat E_3=E_3+\sum_{r\in\mathcal J}R_r,\]
+where $\mathcal J=\{101,103,105,107,109,111,115,117,121,123\}$. These exact retained-norm corrections are necessary for the literal coefficient arrays, although they vanish at source zeros. Use $\widehat E_j$, not $E_j$, in every seed pool below. The source orientation identity is
+\[\Omega-(R_{135}+d x_{191})=-R_{138}.\]
+This identity is exact in the conservative source coordinates, including their existing row chart. The joint numerator is exactly $\Omega^{\prime}=\Omega+R_{124}$.
+\subsection{The seeds before elimination}
+For a fixed ordered block set $I$ and a new variable $z_I$, write
+\[\mathcal P_I=\sum_{j\in I}\widehat E_j\prod_{h\in I\setminus\{j\}}T_h-z_I\prod_{j\in I}T_j.\]
+The sparse 114 seed retains all source rows except $96,97,98,99,141,142,143,144$, deletes coordinates $137,138,139,140,201,202,203,204$, and appends $\mathcal P_{\{0,1\}}$ followed by $\mathcal P_{\{2,3\}}$. The other retained rows preserve ascending original order. First retain coordinates in ascending original order, then append the two new pool variables in that same pool order. This gives 203 coordinates and 143 rows.
+The joint 113 seed additionally deletes row 135 and coordinate 191. Its appended rows, in order, are
+\[\Omega^{\prime} T_0+d\mathcal P_{\{0\}},\qquad\mathcal P_{\{1,2,3\}}.\]
+Use the same ascending retained-coordinate order and then the two new pool variables. This gives 202 coordinates and 142 rows. The matched unfused control instead keeps row 135 and coordinate 191 and appends $\mathcal P_{\{0\}},\mathcal P_{\{1,2,3\}}$.
+The 138-variable endpoint starts directly from the complete 209-coordinate, 149-row conservative source, with no new pool seed. Its 71 monic substitutions are therefore generic exact eliminations, not a gain credited to the new joint theorem.
+\subsection{How to read the complete ordered tables}
+In each following table, $(j,r,v,\epsilon)$ means: at ordinal $j$, the current row with original seed label $r$ has the form $\epsilon u_v+f$, with no other $u_v$ term. Replace $u_v$ by $-\epsilon f$ in every other current row and delete row $r$. Row and coordinate labels remain the initial seed labels throughout; do not compact after a step. At the end retain the undeleted row labels in ascending order, and compact the undeleted coordinate labels in ascending order. The sum of squares of those remaining rows is the literal final polynomial. Thus the tables and fixed seeds alone specify every coefficient, with no optimizer or choice left to execute.
+The adjacent \file{NATIVE_DEFINITION.json} files also give every resulting pivot polynomial explicitly; independent replay verifies each unit coefficient and the complete final residual arrays. The tables below are parsed independently against those files.
+\subsection{The 138 variable degree eight polynomial}
+The fixed seed has 209 coordinates and 149 rows. Perform all 71 steps in ordinal order, reading each four-column block downward, then the next block.
+\begin{center}\small\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}rrrr@{\quad}rrrr@{\quad}rrrr@{}}\toprule
+$j$&$r$&$v$&$\epsilon$&$j$&$r$&$v$&$\epsilon$&$j$&$r$&$v$&$\epsilon$\\\midrule
+0 & 68 & 82 & 1 & 24 & 0 & 6 & 1 & 48 & 104 & 147 & -1\\
+1 & 54 & 68 & -1 & 25 & 72 & 86 & 1 & 49 & 100 & 141 & -1\\
+2 & 55 & 64 & 1 & 26 & 39 & 53 & 1 & 50 & 112 & 159 & -1\\
+3 & 74 & 88 & 1 & 27 & 125 & 188 & 1 & 51 & 102 & 144 & -1\\
+4 & 48 & 62 & -1 & 28 & 133 & 180 & 1 & 52 & 116 & 165 & -1\\
+5 & 129 & 190 & 1 & 29 & 36 & 50 & 1 & 53 & 122 & 174 & -1\\
+6 & 63 & 77 & 1 & 30 & 86 & 117 & -1 & 54 & 106 & 150 & -1\\
+7 & 20 & 34 & 1 & 31 & 88 & 121 & -1 & 55 & 31 & 45 & 1\\
+8 & 51 & 65 & -1 & 32 & 89 & 125 & -1 & 56 & 14 & 29 & 1\\
+9 & 49 & 63 & -1 & 33 & 82 & 104 & -1 & 57 & 78 & 91 & 1\\
+10 & 96 & 137 & 1 & 34 & 81 & 101 & -1 & 58 & 118 & 168 & -1\\
+11 & 132 & 182 & 1 & 35 & 90 & 128 & -1 & 59 & 17 & 19 & 1\\
+12 & 79 & 98 & 1 & 36 & 84 & 110 & -1 & 60 & 34 & 48 & 1\\
+13 & 50 & 69 & -1 & 37 & 85 & 114 & -1 & 61 & 12 & 27 & 1\\
+14 & 76 & 90 & 1 & 38 & 10 & 25 & 1 & 62 & 23 & 37 & 1\\
+15 & 62 & 75 & 1 & 39 & 143 & 203 & 1 & 63 & 137 & 119 & 1\\
+16 & 46 & 60 & 1 & 40 & 134 & 181 & 1 & 64 & 42 & 56 & 1\\
+17 & 52 & 66 & -1 & 41 & 141 & 201 & 1 & 65 & 26 & 40 & 1\\
+18 & 98 & 139 & -1 & 42 & 108 & 153 & -1 & 66 & 56 & 70 & 1\\
+19 & 146 & 207 & 1 & 43 & 83 & 107 & -1 & 67 & 28 & 42 & 1\\
+20 & 6 & 21 & 1 & 44 & 110 & 156 & -1 & 68 & 21 & 35 & 1\\
+21 & 61 & 74 & 1 & 45 & 114 & 162 & -1 & 69 & 15 & 30 & 1\\
+22 & 58 & 72 & 1 & 46 & 120 & 171 & -1 & 70 & 44 & 58 & 1\\
+23 & 92 & 133 & 1 & 47 & 94 & 134 & -1 &  &  &  & \\
+\bottomrule\end{tabular}\end{center}
+The final count is 138 coordinates and 78 rows; all are live. The ordered complement of the table's deleted indices agrees exactly with the supplied retained-index arrays.
+\subsection{The sparse 114 variable degree sixteen polynomial}
+The fixed seed has 203 coordinates and 143 rows. Perform all 89 steps in ordinal order, reading each four-column block downward, then the next block.
+\begin{center}\small\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}rrrr@{\quad}rrrr@{\quad}rrrr@{}}\toprule
+$j$&$r$&$v$&$\epsilon$&$j$&$r$&$v$&$\epsilon$&$j$&$r$&$v$&$\epsilon$\\\midrule
+0 & 74 & 88 & 1 & 30 & 92 & 133 & 1 & 60 & 91 & 132 & 1\\
+1 & 125 & 186 & 1 & 31 & 130 & 177 & 1 & 61 & 23 & 37 & 1\\
+2 & 68 & 82 & 1 & 32 & 86 & 117 & -1 & 62 & 78 & 91 & 1\\
+3 & 55 & 69 & -1 & 33 & 90 & 128 & -1 & 63 & 14 & 29 & 1\\
+4 & 6 & 21 & 1 & 34 & 121 & 184 & 1 & 64 & 76 & 90 & 1\\
+5 & 51 & 65 & -1 & 35 & 36 & 50 & 1 & 65 & 80 & 97 & -1\\
+6 & 49 & 63 & -1 & 36 & 48 & 62 & -1 & 66 & 24 & 38 & 1\\
+7 & 72 & 86 & 1 & 37 & 57 & 71 & 1 & 67 & 21 & 35 & 1\\
+8 & 79 & 98 & 1 & 38 & 71 & 85 & 1 & 68 & 126 & 175 & 1\\
+9 & 50 & 64 & -1 & 39 & 10 & 25 & 1 & 69 & 87 & 122 & 1\\
+10 & 62 & 75 & 1 & 40 & 102 & 146 & -1 & 70 & 16 & 31 & 1\\
+11 & 128 & 178 & 1 & 41 & 34 & 48 & 1 & 71 & 63 & 77 & 1\\
+12 & 75 & 89 & 1 & 42 & 19 & 33 & 1 & 72 & 123 & 185 & 1\\
+13 & 31 & 45 & 1 & 43 & 118 & 170 & -1 & 73 & 114 & 166 & 1\\
+14 & 46 & 60 & 1 & 44 & 17 & 19 & 1 & 74 & 32 & 46 & 1\\
+15 & 54 & 68 & -1 & 45 & 42 & 56 & 1 & 75 & 37 & 51 & 1\\
+16 & 52 & 66 & -1 & 46 & 100 & 143 & -1 & 76 & 58 & 72 & 1\\
+17 & 20 & 34 & 1 & 47 & 108 & 155 & -1 & 77 & 2 & 0 & 1\\
+18 & 129 & 176 & 1 & 48 & 106 & 152 & -1 & 78 & 44 & 58 & 1\\
+19 & 138 & 199 & 1 & 49 & 61 & 74 & 1 & 79 & 40 & 54 & 1\\
+20 & 88 & 121 & -1 & 50 & 116 & 167 & -1 & 80 & 132 & 119 & 1\\
+21 & 82 & 104 & -1 & 51 & 28 & 42 & 1 & 81 & 11 & 26 & 1\\
+22 & 89 & 125 & -1 & 52 & 112 & 161 & -1 & 82 & 137 & 3 & 1\\
+23 & 84 & 110 & -1 & 53 & 110 & 158 & -1 & 83 & 64 & 78 & 1\\
+24 & 81 & 101 & -1 & 54 & 96 & 137 & -1 & 84 & 29 & 43 & 1\\
+25 & 39 & 53 & 1 & 55 & 98 & 140 & -1 & 85 & 13 & 28 & 1\\
+26 & 85 & 114 & -1 & 56 & 104 & 149 & -1 & 86 & 15 & 30 & 1\\
+27 & 136 & 196 & 1 & 57 & 94 & 134 & -1 & 87 & 25 & 39 & 1\\
+28 & 0 & 6 & 1 & 58 & 12 & 27 & 1 & 88 & 43 & 57 & 1\\
+29 & 83 & 107 & -1 & 59 & 59 & 73 & 1 &  &  &  & \\
+\bottomrule\end{tabular}\end{center}
+The final count is 114 coordinates and 54 rows; all are live. The ordered complement of the table's deleted indices agrees exactly with the supplied retained-index arrays.
+\subsection{The joint 113 variable degree sixteen polynomial}
+The fixed seed has 202 coordinates and 142 rows. Perform all 89 steps in ordinal order, reading each four-column block downward, then the next block.
+\begin{center}\small\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}rrrr@{\quad}rrrr@{\quad}rrrr@{}}\toprule
+$j$&$r$&$v$&$\epsilon$&$j$&$r$&$v$&$\epsilon$&$j$&$r$&$v$&$\epsilon$\\\midrule
+0 & 71 & 85 & 1 & 30 & 89 & 125 & -1 & 60 & 72 & 86 & 1\\
+1 & 46 & 60 & 1 & 31 & 90 & 128 & -1 & 61 & 58 & 72 & 1\\
+2 & 49 & 63 & -1 & 32 & 81 & 101 & -1 & 62 & 32 & 46 & 1\\
+3 & 6 & 21 & 1 & 33 & 82 & 104 & -1 & 63 & 37 & 51 & 1\\
+4 & 74 & 88 & 1 & 34 & 84 & 110 & -1 & 64 & 44 & 58 & 1\\
+5 & 54 & 68 & -1 & 35 & 86 & 117 & -1 & 65 & 75 & 89 & 1\\
+6 & 66 & 80 & 1 & 36 & 83 & 107 & -1 & 66 & 40 & 54 & 1\\
+7 & 128 & 178 & 1 & 37 & 39 & 53 & 1 & 67 & 9 & 24 & 1\\
+8 & 79 & 98 & 1 & 38 & 85 & 114 & -1 & 68 & 104 & 149 & -1\\
+9 & 52 & 66 & -1 & 39 & 57 & 71 & 1 & 69 & 98 & 140 & -1\\
+10 & 125 & 186 & 1 & 40 & 78 & 91 & 1 & 70 & 100 & 143 & -1\\
+11 & 62 & 75 & 1 & 41 & 19 & 33 & 1 & 71 & 106 & 152 & -1\\
+12 & 20 & 34 & 1 & 42 & 17 & 19 & 1 & 72 & 96 & 137 & -1\\
+13 & 0 & 6 & 1 & 43 & 61 & 74 & 1 & 73 & 118 & 170 & -1\\
+14 & 63 & 77 & 1 & 44 & 34 & 48 & 1 & 74 & 112 & 161 & -1\\
+15 & 50 & 64 & -1 & 45 & 28 & 42 & 1 & 75 & 116 & 167 & -1\\
+16 & 76 & 90 & 1 & 46 & 42 & 56 & 1 & 76 & 102 & 146 & -1\\
+17 & 121 & 184 & 1 & 47 & 59 & 73 & 1 & 77 & 110 & 158 & -1\\
+18 & 129 & 176 & 1 & 48 & 91 & 132 & 1 & 78 & 94 & 134 & -1\\
+19 & 69 & 83 & 1 & 49 & 16 & 31 & 1 & 79 & 114 & 166 & 1\\
+20 & 14 & 29 & 1 & 50 & 80 & 97 & -1 & 80 & 108 & 155 & -1\\
+21 & 135 & 195 & 1 & 51 & 24 & 38 & 1 & 81 & 11 & 26 & 1\\
+22 & 92 & 133 & 1 & 52 & 136 & 3 & 1 & 82 & 13 & 28 & 1\\
+23 & 31 & 45 & 1 & 53 & 21 & 35 & 1 & 83 & 2 & 0 & 1\\
+24 & 55 & 69 & -1 & 54 & 12 & 27 & 1 & 84 & 29 & 43 & 1\\
+25 & 64 & 78 & 1 & 55 & 23 & 37 & 1 & 85 & 131 & 119 & 1\\
+26 & 137 & 198 & 1 & 56 & 48 & 62 & -1 & 86 & 15 & 30 & 1\\
+27 & 36 & 50 & 1 & 57 & 126 & 175 & 1 & 87 & 25 & 39 & 1\\
+28 & 130 & 177 & 1 & 58 & 87 & 122 & 1 & 88 & 43 & 57 & 1\\
+29 & 88 & 121 & -1 & 59 & 123 & 185 & 1 &  &  &  & \\
+\bottomrule\end{tabular}\end{center}
+The final count is 113 coordinates and 53 rows; all are live. The ordered complement of the table's deleted indices agrees exactly with the supplied retained-index arrays.

@@ -1,0 +1,311 @@
+\section{Quotient centers with an index three safe transport}
+\label{sec:scalar23}
+This round composes the retained free inverse chart with the quotient centers
+of source 178~\cite{centers178}. The new ten-positive-variable degree/gate pairs are
+$(202,99)$ and $(190,120)$. The latter uses the transport weight
+$L=(UE)b^2$, rather than the unsupported bare $b^2$. The factor $UE$ makes
+the transport safe before sign and rank recovery, including the possible
+main and auxiliary index-three cases. Both equations use exactly the whole
+Start-only 4127 tuple of Section~\ref{sec:start4127-positive10}; no numeral,
+mask shift or native controller is changed.
+
+These are degree improvements with a gate cost, not simultaneous improvements
+in all metrics: the retained $214/87$ and incoming $206/90$ points have fewer
+gates. All ten inputs remain strictly positive. No statement about ten
+unrestricted integer variables or the separate signed eleven-variable family
+is inferred.
+
+\subsection{Both complete polynomial definitions}
+The independent coordinates are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\Z_{>0}.
+\]
+Use the following polynomial abbreviations, in the displayed order:
+\begin{align*}
+ h&=\beta J,&q&=h+1,&C&=q-F-\alpha,&X&=qw,\\
+ Y&=s,&N_0&=qY,&k&=\eta+\zeta,&c&=kY+\eta,\\
+ A&=N_0(X+1)+1,&\Delta&=A^2-1,&H&=4A-5,&v&=XN_0^2,\\
+ \ell&=vk,&E&=1+\ell(\ell+k),&U&=ic^2,&a&=\Delta U^2E,\\
+ F_0&=1+a,&G&=EF_0,&f&=a+F_0,&Q&=4\Delta aF_0,\\
+ b&=cT-R,&V&=fb-c,&K&=X(3c-2X)+2,\\
+ D&=6q^7,&M&=hDH.&&
+\end{align*}
+Here the earlier abbreviation $R$ and the remaining abbreviations are
+\begin{align*}
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ B&=(K_0+w)C-F,\qquad
+ e_6=6(k-R-1)-\ell(k^2-4),\\
+ S&=(kN_0)\bigl[\ell+k-(kN_0)(N_0+1)\bigr].
+\end{align*}
+Equivalently, evaluate $R$ before $b$; these displays specify one finite
+acyclic expression. The notation $N_0$ avoids confusion with the CRT modulus
+in the earlier direct family.
+
+For the degree-202 equation choose
+\begin{equation}\label{eq:center202}
+ r=2,\qquad L=bV,\qquad \Omega=(2AUE-US)V.
+\end{equation}
+For the degree-190 equation choose
+\begin{align}
+ r&=4,&L&=(UE)b^2,&e_2&=(kN_0)^2,&\theta&=U^2b,\nonumber\\
+ R_c&=\theta(3E+e_2)-(b-c),&&
+ S_c=4E^2+3S^2+e_2^2,\nonumber\\
+ \Omega&=U\bigl[2SR_c+A(4EV-\theta S_c)\bigr].\label{eq:center190}
+\end{align}
+In either case the complete final equation is $P=0$, with
+\begin{align}
+ Z_0&=hD[H(n-LB)+K]-H[DB+h(e_6-6q^4s)],\nonumber\\
+ Z&=Z_0-M\Omega,\nonumber\\
+ P&=Q[Z^2-r^2M^2GV^2]+[r^2M^2G-Z^2].\label{eq:scalar23-polynomial}
+\end{align}
+Every displayed abbreviation is a polynomial, not an extra quantified
+unknown. The actual graph uses only binary $+,-,\times$ and integer leaves.
+In proof notation only, let
+\[
+ t_*=B/h,\quad\kappa=K/H,\quad\rho=(e_6/6)/q^7,
+ \quad\sigma=Y/q^3,\quad z=Z/M,\quad W_*=1+hL.
+\]
+Their exact rational identity is
+\begin{equation}\label{eq:scalar23-carrier}
+ z=n+\kappa+\sigma-W_*t_*-\rho-\Omega.
+\end{equation}
+No quotient is assumed integral at this stage.
+
+\subsection{Root extraction before signs and rank}
+The valuation and rational adjacent-Pell descent of
+Section~\ref{sec:positive} apply to $z/r$. Multiplying the norm by the
+fixed square $r^2$ does not change any prime-valuation parity. At any zero
+there are positive integers $\tau,f_0,g,y$ and a sign $\varepsilon$ with
+\begin{gather*}
+ E=\tau^2,\quad F_0=f_0^2,\quad G=g^2,\quad z=\varepsilon rgy,\qquad
+ QV^2-(Q-1)y^2=1,\\
+ f^2-\Delta I^2=1,\quad I=2Ug,\quad c^2\mid I,\qquad
+ c=\psi_A(p),\quad p\text{ positive and odd}.
+\end{gather*}
+This uses rational descent, not an assumed integrality of $z$ or $y$.
+As before, $q\ge32$, $N_0\ge q$, $A>q^2$, $c\ge3$, and $p\ge3$.
+Consequently
+\[
+ c\ge4\Delta+3>4q^4,\qquad c>X,\qquad K>0.
+\]
+The full signed auxiliary argument gives $b\ne0$, equal signs of $b,V$,
+$f>2c$, $f>6g$, $y<3|V|/2$, and
+\begin{equation}\label{eq:scalar23-bbound}
+ |b|>4\Delta f-1>3\Delta f,
+ \qquad |V|\le f|b|+c<\tfrac32f|b|.
+\end{equation}
+The auxiliary index-three branch is allowed. None of these facts uses
+$C>0$, a sign for $R$, or any transport integrality. Also
+\[
+ (AUE)^2-G=U^2E^2-E>0,
+ \qquad \frac{(AUE)^2}{G}<\frac{A^2}{\Delta}<\frac94,
+ \qquad g<AUE<\tfrac32g.
+\]
+The factors $U,E$ are strictly positive already from their definitions.
+
+\subsection{The scalar center and its pre rank bound}
+Regard $A$ as a formal variable over $\Z[N_0,k,U,b,c]$. The identity
+$v=N_0(A-N_0-1)$ gives
+\begin{align*}
+ E&=e_2A^2+e_1A+e_0,\\
+ e_2&=k^2N_0^2,\qquad e_1=k^2N_0(1-2N_0-2N_0^2),\\
+ e_0&=1+k^2N_0(N_0+1)[N_0(N_0+1)-1].
+\end{align*}
+Polynomial division gives $E=AS+e_0$ with exactly the displayed $S$.
+Since $X,N_0\ge32$,
+\[
+ S=k^2N_0[(X-1)N_0^2-N_0+1]>0,
+ \qquad e_0>0,\qquad 0<S<E/A.
+\]
+The scalar center $C_2=2AUE-US$ therefore obeys
+$0<C_2<2AUE<3g$. For the degree-202 choice,
+\[
+ 2gy+|\Omega|<6g|V|<L/2.
+\]
+Indeed~\eqref{eq:scalar23-bbound} and $f>6g$ give
+$|b|>18\Delta g>12g$, and $L=|b||V|$. For canonical positive $V$,
+$\Omega$ is positive as well.
+
+\subsection{The whole product center as an integer polynomial}
+Let $\mathcal F(A)=E(A)V(A)$, where
+$V=[1+2(A^2-1)U^2E]b-c$, and let $Q_j$ be its formal polynomial quotient
+by $A^j$. The intended center is
+\begin{equation}\label{eq:whole-quotient}
+ \Omega=U[4AEV-2Q_1-Q_3/2].
+\end{equation}
+This is an integer polynomial: the degree-at-most-two term $(b-c)E$
+does not contribute to $Q_3$, and the remainder
+$2U^2b(A^2-1)E^2$ is coefficientwise even.
+
+Here is the full identity justifying the division-free evaluator.
+Writing $\operatorname{quot}$ for ordinary polynomial quotient in $A$, put
+\begin{align*}
+ J_1&=\operatorname{quot}(E^2,A)=S(2E-AS),\\
+ J_3&=\operatorname{quot}(E^2,A^3)=e_2(2S-Ae_2),\\
+ H_1&=\operatorname{quot}((A^2-1)E^2,A)=AE^2-J_1,\\
+ H_3&=\operatorname{quot}((A^2-1)E^2,A^3)=J_1-J_3.
+\end{align*}
+Then $Q_1=(b-c)S+2\theta H_1$, $Q_3=2\theta H_3$, and
+\[
+ 4H_1+H_3
+ =4AE^2-3J_1-J_3
+ =A(4E^2+3S^2+e_2^2)-2S(3E+e_2).
+\]
+Substitution proves~\eqref{eq:center190} exactly as an integer-polynomial
+identity at every tuple. Division and halves occur only in the proof;
+there is no division gate in the emitted circuit.
+
+\subsection{A signed whole product bound and the new transport}
+For a polynomial in $A$, write a superscript $\#$ for absolute-coefficient
+evaluation at the positive $A$. Let $\delta=(N_0+1)/A<1/16$. Then
+\begin{gather*}
+ |e_1|<2e_2(N_0+1),\quad 0<e_0\le e_2(N_0+1)^2,\\
+ E^\#\le e_2(A+N_0+1)^2,
+ \quad E\ge e_2A^2(1-2\delta),\quad E^\#<2E.
+\end{gather*}
+It follows that
+\[
+ \mathcal F^\#<2E(|b|+c)+8(A^2+1)U^2E^2|b|.
+\]
+Use $|b|\ge1$, $c+1<2U^2E$, and
+$|V|>(f-c)|b|>\Delta U^2E|b|$. The last inequality follows from
+$a=\Delta U^2E>c$ and $f=1+2a$. Hence
+\[
+ \frac{\mathcal F^\#}{|EV|}
+ <\frac4\Delta+\frac{8(A^2+1)}\Delta=8+\frac{20}\Delta<10.
+\]
+Deleting low coefficients gives $|Q_j|\le\mathcal F^\#/A^j$.
+Equation~\eqref{eq:whole-quotient} consequently gives
+\[
+ |\Omega-4AUEV|
+ <10U|EV|\left(\frac2A+\frac1{2A^3}\right)<AU|EV|.
+\]
+Thus $\Omega$ has the sign of $V$ and
+$|\Omega|<5AUE|V|<7.5g|V|$. Therefore
+\[
+ 4gy+|\Omega|<13.5g|V|<16g|V|.
+\]
+The new transport is $L=UEb^2>0$. From~\eqref{eq:scalar23-bbound},
+\[
+ \frac{g|V|}{L}<\frac{3Af}{2|b|}
+ <\frac{A}{2\Delta}<\frac1A.
+\]
+The final inequality uses $A^2>2$. Since $A>q^2\ge1024$,
+\begin{equation}\label{eq:newtransport}
+ 4gy+|\Omega|<16L/A<L/2.
+\end{equation}
+This proof works for both signs of $b,V$ and at the possible index-three
+case. It does not claim $gy<b^2/2$; the additional factor $UE$ is essential
+to this pre-rank estimate.
+
+\subsection{Transport soundness and denominator recovery}
+The subtracted inverse-Lucas term is nonnegative since $k\ge2$, so
+$e_6/6\le k-R-1<b$ for every integer $R$. Therefore
+$\rho<|b|/q^7$. Both weights have $L\ge|b|$, and hence $\rho<L/2$.
+If $B\le-1$, then $W_*t_*=B/h+LB<-L$. Solving
+\eqref{eq:scalar23-carrier} for the positive input $n$, using
+$\kappa,\sigma>0$ and the preceding center bounds, gives
+\[
+ n<L/2-L+L/2=0,
+\]
+a contradiction. Thus $B\ge0$ and $C>0$. Only now use the authenticated
+whole-tuple bounds $3q<R<q^4-2$. Since $c>2R$, $b,V>0$; the retained
+strong-rank and signed auxiliary-index arguments yield $p=R$, odd $R$,
+even $q$, and odd $J$.
+
+The center change is an integer-polynomial multiple of $M$, and both $L$
+are integer polynomials. Every denominator step in the reference free inverse
+proof is consequently still valid, in the same order:
+\begin{enumerate}
+\item From $E=\tau^2$, obtain $k=2\psi_{1+2v}(m)$ with $2\le m<R$.
+Cancel the literal factor six over the integers, not as a modular unit.
+Integral $Z_0/M$ and $\gcd(q,hH)=1$ give $q^4\mid e_6/6$.
+\item The exact cubic difference~\eqref{eq:inverse-cubic}, with
+$v=q^3ws^2$, proves $q^4\mid[e_6/6-(2m-R-1)]$ at every prime, including
+three. The strict bound $|2m-R-1|<R<q^4$ gives $m=(R+1)/2$.
+Neither $q^7$ divisibility nor $q^3\mid Y$ was assumed.
+\item The literal projection gives $H\mid6hK$. The full-product magnitude
+bound, without cancelling $6h$ through $H$, forces $X=2^R$. Thus $q$ is
+a power of two. Rank growth gives $q^6\mid X$, then $q^8\mid v$ and
+$q^7\mid e_6/6$. Hence $\rho$ and $\kappa$ are integers.
+\item Since $\Omega,z,n,\kappa,\rho$ are integral,
+\eqref{eq:scalar23-carrier} makes $\sigma-W_*B/h$ integral. Reduction
+modulo $q^3$ gives $q^3\mid Y$; reduction modulo $h$ gives $h\mid B$,
+because $W_*\equiv1\pmod h$ for either weight. Thus $t_*\in\N$.
+\end{enumerate}
+These are exactly the same native outer conditions:
+$X=2^R$, $q^3\mid Y$, $C>0$, and $(K_0+w)C-F=ht_*$ with $t_*\ge0$.
+The full reconstruction in Section~\ref{sec:start4127-positive10} creates
+fresh unscaled Pell witnesses at $Y(X+1)+2$, and the native appendix decodes
+an actual marked blank computation and finite ZFC refutation. It does not
+infer native soundness from numerical boxes, mix separately calibrated
+ports, or shift $M_F$ a second time.
+
+\subsection{Strictly positive completeness}
+Conversely the same whole Start-only native theorem supplies canonical outer
+data from a finite refutation. Use the reference construction to choose all
+positive coordinates except $n$: the strip coordinates, a sufficiently
+divisible strong Pell period, and the positive trace-linear auxiliary $T$.
+Then $b,V>0$ and $t_*,\rho,\kappa,\sigma$ are integers with $t_*\ge0$.
+The inherited bounds give $|\rho|<g/3$ and $\kappa+\sigma<g/2$,
+including possibly negative $\rho$. Both center proofs give $\Omega>0$.
+Choose
+\[
+ n=rgy+\Omega+(1+hL)t_*+\rho-\kappa-\sigma.
+\]
+This is strictly positive since $r,y\ge1$ and
+$g>\kappa+\sigma+|\rho|$. It makes $z=rgy$, so the literal polynomial
+vanishes. This is a constructive positive lift, not an assertion that an
+arbitrary inverse shear preserves the positive orthant. Both witness
+directions now prove~\eqref{eq:calibration} on the actual positive domain,
+without deciding consistency.
+
+\subsection{Exact cancellation degrees at the actual numerals}
+Use independent formal variables $(A,N_0,k,U,b,c)$ with weights
+$(4,2,1,5,4,2)$. The base degrees of $(Q,M,G,V,UE)$ are
+$(72,12,46,36,19)$. For the degree-202 chart, $\deg Z_0=54$ and
+$\deg C_2=23$, while
+\[
+ C_2^2-4G=4U^2Ee_0+U^2S^2-4E
+\]
+has exact weighted degree 34 and leading form $4U^2A^2N_0^6k^4$.
+The output's dominant degree is $72+24+72+34=202$; its cross term has
+degree 197.
+
+For the degree-190 chart, $\deg L=27$ and $\deg Z_0=41$. Exact
+collection of all 594 monomials of $D_{\rm whole}=\Omega^2-16GV^2$
+gives weighted degree 94 and the entire highest component
+\[
+ [D_{\rm whole}]_{94}
+ =8A^6N_0^8k^8U^6b^2(A^2-6N_0^4).
+\]
+The center has 84 monomials and degree 59. The complete decomposition is
+\[
+ P=Q[Z_0^2-2MZ_0\Omega+M^2D_{\rm whole}]
+       +16M^2G-(Z_0-M\Omega)^2.
+\]
+Its five summand upper degrees are $154,184,190,70,142$. Thus only
+$QM^2D_{\rm whole}$ can contribute degree 190. Naive gatewise degree
+propagation would miss the exact cancellations.
+
+Set $q_0=\beta J$, $k_0=\eta+\zeta$. After substituting all actual
+leading forms in the ten original variables, the complete leaders are
+\begin{align*}
+ [P_{202}]_{202}
+ &=9\cdot2^{12}q_0^{80}w^{22}s^{56}i^{10}k_0^{32}(q_0-F)^2,\\
+ [P_{190}]_{190}
+ &=9\cdot2^{11}q_0^{74}w^{18}s^{52}i^{10}k_0^{32}
+       (q_0-F)^2(w^2-6s^2).
+\end{align*}
+They contain 99 and 198 monomials. For example the $P_{190}$ coefficient
+on $J^{74}F^2\eta^{32}w^{20}s^{52}i^{10}$ is
+$9\cdot2^{11}\beta^{74}\ne0$ at the actual positive numeral $\beta$.
+Thus these are attained degrees, not only generic free-port bounds.
+
+The graphs have 99 live operations $(60\times,21+,18-)$ and 120 live
+operations $(75\times,24+,21-)$. Every square, fixed-numeral multiplication
+and independent input is counted. Their entire 97046-byte tuple is unchanged.
+Independent checks authenticate every gate, exact quotient identity, all
+594 defect coefficients, complete highest forms and coefficient bytes;
+normal and optimized runs reject all single-operator corruptions. These
+finite results supplement, rather than replace, the unbounded proof above.

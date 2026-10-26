@@ -1,0 +1,145 @@
+{
+  "schema": "conzfc-release-plan-v1",
+  "steps": [
+    {
+      "name": "signed full reconstruction normal",
+      "arguments": [
+        "signed/verify.py",
+        "--deep"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "reciprocal source and coefficients normal",
+      "arguments": [
+        "reciprocal/verify.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "reciprocal literal rebuild normal",
+      "arguments": [
+        "reciprocal/build.py",
+        "--check"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "height-one full reconstruction normal",
+      "arguments": [
+        "height_one/verify.py",
+        "--single"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "positive-ten full native replay normal",
+      "arguments": [
+        "scalar/replay.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "inherited signed source normal",
+      "arguments": [
+        "signed/verify.py"
+      ],
+      "cwd": "inherited_round20"
+    },
+    {
+      "name": "inherited height sources normal",
+      "arguments": [
+        "check_height_sources.py",
+        "--common-parent",
+        "signed/parent252",
+        "--bindings",
+        "HEIGHT_SOURCE_BINDINGS.json"
+      ],
+      "cwd": "inherited_round20"
+    },
+    {
+      "name": "independent coefficients and closure normal",
+      "arguments": [
+        "check_independent.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "signed full reconstruction optimized",
+      "arguments": [
+        "-O",
+        "signed/verify.py",
+        "--deep"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "reciprocal source and coefficients optimized",
+      "arguments": [
+        "-O",
+        "reciprocal/verify.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "reciprocal literal rebuild optimized",
+      "arguments": [
+        "-O",
+        "reciprocal/build.py",
+        "--check"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "height-one full reconstruction optimized",
+      "arguments": [
+        "-O",
+        "height_one/verify.py",
+        "--single"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "positive-ten full native replay optimized",
+      "arguments": [
+        "-O",
+        "scalar/replay.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "inherited signed source optimized",
+      "arguments": [
+        "-O",
+        "signed/verify.py"
+      ],
+      "cwd": "inherited_round20"
+    },
+    {
+      "name": "inherited height sources optimized",
+      "arguments": [
+        "-O",
+        "check_height_sources.py",
+        "--common-parent",
+        "signed/parent252",
+        "--bindings",
+        "HEIGHT_SOURCE_BINDINGS.json"
+      ],
+      "cwd": "inherited_round20"
+    },
+    {
+      "name": "independent coefficients and closure optimized",
+      "arguments": [
+        "-O",
+        "check_independent.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "printed equations and finite ledger",
+      "arguments": [
+        "check_printed_equations.py"
+      ]
+    }
+  ]
+}

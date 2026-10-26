@@ -1,0 +1,316 @@
+\section{The retained ten positive integer arithmetic interface}
+\label{sec:positive}
+The three reference equations retained from Round22 have exactly ten independent inputs
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\Z_{>0}.
+\]
+Their complete four-port tuple is the Start-only4127 specialization
+of Section~\ref{sec:start4127-positive10}. The arithmetic proof below is
+uniform under its authenticated scalar bounds; the whole-native bridge
+in that section licenses all four ports together. Strict Horizons
+supplies the free quotient and projection-first strategy; Trace Radical
+supplies the linear trace; Unsquared Factors and Linear Selectors
+supplies the inverse correction at $k$. The retained Round21 uniform signed bound
+licenses their composition without assuming $q\mid Y$ early and
+without the extra positive shift $T+\alpha$.
+
+\subsection{The three complete polynomial definitions}
+Put $h=\beta J$, $q=h+1$, $C=q-F-\alpha$ and $k=\eta+\zeta$.
+Choose one of the following fixed charts. The symbols $W_b$, $\lambda$
+and $D$ below are polynomial abbreviations, not independent inputs.
+\begin{center}\small
+\begin{tabular}{@{}lccccc@{}}\toprule
+Chart & $W_b$ & $X$ & $Y$ & $\lambda$ & $D$\\\midrule
+Free plain & $qw$ & $q^2w$ & $s$ & $q$ & $q^7$\\
+Scaled inverse & $w$ & $qw$ & $qs$ & $1$ & $6q^6$\\
+Free inverse & $w$ & $qw$ & $s$ & $q$ & $6q^7$\\\bottomrule
+\end{tabular}
+\end{center}
+In every chart define
+\begin{align*}
+ c&=kY+\eta,& A&=\lambda Y(X+1)+1,&\Delta&=A^2-1,\\
+ H&=4A-5,&v&=X\lambda^2Y^2,&E&=1+v(v+1)k^2,\\
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ B&=(K_0+W_b)C-F,&U&=ic^2,&a&=\Delta U^2E,\\
+ F_0&=1+a,&G&=EF_0,&f&=1+2a,\\
+ Q&=4\Delta aF_0,&b&=cT-R,&V&=fb-c,\\
+ K&=X(3c-2X)+2,&L&=bV,&M&=hDH.
+\end{align*}
+In the plain chart put $e_c=k-R-1-q^4s$; in either inverse chart put
+$e_c=6(k-R-1-q^4s)-vk(k^2-4)$. Finally set
+\begin{align}
+ Z&=hD[H(n-LB)+K]-H[DB+he_c],\nonumber\\
+ P&=Q(Z^2-M^2GV^2)+(M^2G-Z^2).\label{eq:positive-polynomial}
+\end{align}
+The equation is $P=0$. Fixed powers are implemented by binary
+multiplications. There is no radical or quotient gate. The graph's
+register sharing, not the typography of these abbreviations, defines
+the measured operation count.
+
+For the proof only, let $t_*=B/h$, $\kappa=K/H$, $z=Z/M$ and
+$W_*=1+hL$. In the plain chart let $e=k-R-1$, $\rho=e/q^7$.
+In the inverse charts let
+\[
+ e_*=k-R-1-\frac{vk(k^2-4)}6,
+ \qquad \rho=e_*/q^d,
+ \quad d=6\text{ or }7.
+\]
+In all charts put $\sigma=Y/q^3$. Direct expansion gives
+\begin{equation}\label{eq:positive-carrier}
+ P=(Q-1)Z^2-M^2G(QV^2-1),\qquad
+ z=n+\kappa+\sigma-W_*t_*-\rho.
+\end{equation}
+These proof quotients are rational until integrality is established.
+The carrier denominator is nonzero for every positive input.
+
+\subsection{Root extraction before any transport sign}
+Positive inputs give $q\ge32$, $X\ge q$, $Y\ge1$, $k\ge2$,
+$c\ge3$, $A>q^2$, $\Delta>1$, $U\ge c^2$ and $E>1$.
+The exact identities are
+\begin{equation}\label{eq:positive-trace}
+ f^2=1+4aF_0,\quad Q=\Delta(f^2-1)=4\Delta^2U^2G,
+ \quad\gcd(E,F_0)=1.
+\end{equation}
+Also $f>2c$ and $Q>c^2$, hence $V\ne0$ for every integral $b$.
+At a zero, valuations in \eqref{eq:positive-carrier} imply that
+$G=g^2$ for a positive integer $g$: every prime of $G$ divides neither
+$Q-1$ nor $QV^2-1$, so its valuation in the rational square $z^2$ is
+even. Coprimality then gives $E=\tau^2$, $F_0=f_0^2$ and
+$g=\tau f_0$ with positive integer roots.
+
+The inherited adjacent-coefficient descent makes $y=|z|/g$ integral.
+For completeness, a reduced denominator $m$ satisfies $m^2\mid Q-1$.
+For $u=|V|>1$, the norm-preserving transformation
+\[
+ u'=(2Q-1)u-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2Qu
+\]
+has a nonzero integral first coordinate with $|u'|<u$ and preserves the
+reduced denominator of the second. The first integrality follows from
+$(Q-1)y\in\Z$; denominator preservation follows from
+$\gcd(2Q-1,m)=1$. The norm gives
+$u<y<(2Q-1)u/[2(Q-1)]$, proving $0<u'<u$ after reflection.
+Descent reaches $u=y=1$, forcing $m=1$. Therefore
+\[
+ QV^2-(Q-1)y^2=1,\qquad z=\varepsilon gy,
+ \quad\varepsilon\in\{-1,1\}.
+\]
+With $I=2Ug$, equations \eqref{eq:positive-trace} give
+$f^2-\Delta I^2=1$, $Q=(\Delta I)^2$, $c^2\mid I$ and $c\le I$.
+The retained signed all-index folding theorem applies to $V\equiv-c\pmod f$
+and gives $c=\psi_A(p)$ for a positive odd index $p$. Since $c\ge3$,
+$p\ge3$, and hence
+\begin{equation}\label{eq:positive-c3}
+ c\ge c_3:=4A^2-1=4\Delta+3>4q^4,
+ \qquad c>X,\qquad K>0.
+\end{equation}
+No sign of $R,B,C,b,V$ or divisibility $q\mid Y$ was used.
+
+\subsection{A uniform bound removes the positive shift}
+If $b=0$, the auxiliary norm would give
+$0<y^2-c^2=(c^2-1)/(Q-1)<1$, impossible for integers.
+Thus $b\ne0$, $\sgn V=\sgn b$ and $|V|>1$.
+Put $S=\Delta I$, so $Q=S^2$. Pell classification of $(SV,y)$
+gives an odd auxiliary index: even traces are units modulo $S$,
+whereas $SV$ is divisible by $S$. Index one would give $|V|=1$.
+The index is therefore at least three, and $|V|\ge4Q-3$.
+Moreover
+\[
+ \frac{a^2}{g^2}=\frac{\Delta U^2a}{1+a}>
+ \frac{\Delta U^2}{2}>9,
+\]
+so $f>6g$. Using $c_3\le c$ and $f>2c$ yields the essential
+bound, for either sign of $V$,
+\begin{equation}\label{eq:positive-uniform}
+ |b|\ge\frac{|V|-c}{f}
+ \ge4\Delta f-\frac{c+c_3}{f}
+ >4\Delta f-1>4g.
+\end{equation}
+The possible auxiliary index three is harmless; it is not excluded.
+The norm also gives $y<3|V|/2$. Consequently
+\[
+ L=bV=|b||V|>0,\qquad gy<3L/8<L/2,
+ \qquad |b|/q^d<L/2\quad(d=6,7).
+\]
+This remains valid at $Y=1$, before its cubic $q$-scale is recovered.
+
+In the plain chart $e=k-R-1<b$ since $cT-k+1>0$.
+In the inverse charts $k\ge2$ gives $e_*\le e<b$.
+Thus $\rho<|b|/q^d$ in all charts. If $B\le-1$, then
+$W_*t_*<-L$, and \eqref{eq:positive-carrier} implies
+\[
+ n=\varepsilon gy-\kappa-\sigma+W_*t_*+\rho
+ <L/2-L+|b|/q^d<0,
+\]
+contradicting the positive domain. Hence $B\ge0$ and $C>0$.
+This handles all negative values of $R$ and zero uniformly.
+Only now use the authentic whole-tuple mask bound $3q<R<q^4-2$.
+Equation~\eqref{eq:positive-c3} gives $c>2R$, hence $b,V>0$.
+The retained normalized strong-rank and signed auxiliary-index theorems
+apply to $V\equiv-c\pmod f$ and $V\equiv-R\pmod c$;
+the latter uses $f-1=2\Delta i^2c^4E$. With $c>2p,2R$
+they yield $p=R$. Thus $R$ is positive odd, and mask parity gives
+even $q$ and odd $J$. Neither $\rho$ nor $\sigma$ has yet been
+assumed integral.
+
+\subsection{Authenticate the first index at every prime}
+The square $E=\tau^2$ gives $k=2\psi_{1+2v}(m)$ with $m\ge1$.
+The case $m=1$ would give $k=2$, $\eta=\zeta=1$ and
+$c=2Y+1$ strictly between $\psi_A(1)=1$ and $\psi_A(2)=2A$.
+Thus $m\ge2$. The first base $1+2v$ exceeds $A$, since
+$\lambda Y(2X\lambda Y-X-1)>0$. Monotonicity and $c>k$
+then give $m<R$.
+
+In the free plain chart $v=q^4ws^2$. Integral $z$ and
+$\gcd(q,hH)=1$ give $q^7\mid e-q^4s$, hence $q^4\mid e$.
+The recurrence $k\equiv2m\pmod{4v}$ shows
+$q^4\mid2m-R-1$. Its absolute value is less than $R<q^4$;
+therefore $2m=R+1$.
+
+In either inverse chart $v=q^3ws^2$. The inherited finite Lucas
+identity, valid at every index, is
+\[
+ k=2m+8vC_m+32v^2Z_m,\quad
+ C_m=\binom{m+1}{3},\quad Z_m\in\N.
+\]
+Since $k$ is even, $k(k^2-4)/6$ is integral: write $k=2u$
+and use $3\mid u(u-1)(u+1)$. Thus $e_*$ is integral.
+Clearing the carrier and cancelling its literal factor six, not
+inverting six modulo $q$, gives $q^d\mid hH(e_*-q^4s)$,
+hence $q^4\mid e_*$.
+Put $t_0=2m$, $d_0=2m-R-1$, $A_m=C_m+4vZ_m$ and
+$S_m=k^2+kt_0+t_0^2-4$. Cubic subtraction gives exactly
+\begin{equation}\label{eq:inverse-cubic}
+ 3(e_*-d_0)=4v^2(24Z_m-A_mS_m).
+\end{equation}
+Indeed $t_0(t_0^2-4)=48C_m$ and $k-t_0=8vA_m$.
+For any prime $p\mid q$, writing $a_p=v_p(q)\ge1$, the identity gives
+\[
+ v_p(e_*-d_0)\ge6a_p-v_p(3)\ge4a_p.
+\]
+This includes the prime three. Hence $q^4\mid d_0$, and the strict
+size bound gives $d_0=0$. In all three charts,
+\begin{equation}\label{eq:positive-index}
+ m=(R+1)/2.
+\end{equation}
+Full $q^6$- or $q^7$-divisibility of $e_*$ has not been inferred here;
+the third-primary obstruction is repaired only after projection.
+
+\subsection{Projection precedes complete denominator recovery}
+The literal numerator and integral $z$ give $H\mid hDK$.
+Cancel only the $q$-part: $H\mid d_1hK$, where $d_1=1$ in
+the plain chart and $d_1=6$ in the inverse charts.
+Write $R=2r+1$, so $r\ge48$. The retained $\lambda$-uniform ratio
+theorem applies to the authenticated indices and strip $Y<c/k<Y+1$:
+\[
+ Y>X^r/3,\qquad X^{r+1}<3Y(X+1)<H.
+\]
+Modulo odd $H$, the universal scaled recurrence gives
+$3\cdot2^{R-1}\psi_A(R)\equiv4^R-1$. The retained projector yields
+\[
+ H\mid d_1h(X-2^R)(2^RX+1).
+\]
+The complete product, including $d_1$, has magnitude below $H$:
+\[
+ d_1h|(X-2^R)(2^RX+1)|
+ <4\cdot4^rX^6+8\cdot16^rX^5<X^{r+1}<H.
+\]
+After division by $X^{r+1}$ the two terms decrease for $X\ge32$,
+$r\ge48$; at $(32,48)$ their sum is $2^{-117}+2^{-25}<1$.
+Thus $X=2^R$. The universal projector itself then gives positive
+integral $\kappa=K/H$; no unproved cancellation of $d_1h$ is used.
+
+Now $q\mid X$ implies $q=2^a$ with $a\ge5$.
+Since $R>3q\ge6a$, one has $q^6\mid X$.
+In the free charts $v=Xq^2Y^2$ is divisible by $q^8$.
+In the plain chart $4v\mid e$ gives $q^7\mid e$; in the free
+inverse chart \eqref{eq:inverse-cubic} with $d_0=0$ gives $q^7\mid e_*$.
+In the scaled chart $Y=qs$, so $q^8\mid v$ as well and the same
+identity gives $q^6\mid e_*$. Thus $\rho$ is integral everywhere.
+
+The carrier now makes $\sigma-W_*B/h$ integral. Multiply by $q^3h$
+and reduce modulo $q^3$ to obtain $q^3\mid Y$; reduce modulo $h$
+to obtain $h\mid B$, using $\gcd(q,h)=1$ and $W_*\equiv1\pmod h$.
+Thus $t_*=B/h\in\N$. These are the exact retained native outer
+conditions. The fixed-minus parity and half-binomial theorems, uniform
+in $\lambda$, reconstruct fresh source witnesses at
+$A_{\rm source}=Y(X+1)+2$, not at the present base.
+The retained whole-tuple native/refutation calibration then supplies a
+finite syntactic ZFC refutation.
+
+\subsection{A constructive positive lift with possibly negative correction}
+Conversely a finite refutation supplies canonical outer data
+$q=2^a$, $X=2^R$, $R>3q$, $R\equiv3\pmod4$, $q^3\mid Y$,
+$C>0$ and integral $t_*=B/h\ge0$. Choose $w=X/q^2$ in the free
+plain chart and $w=X/q$ otherwise; take $s=Y$ in free charts and
+$s=Y/q$ in the scaled chart. All are positive integers.
+Construct fresh $A,v$ and set
+\[
+ c=\psi_A(R),\quad k=2\psi_{1+2v}((R+1)/2),\quad
+ \tau=\chi_{1+2v}((R+1)/2),
+ \quad\eta=c-kY,\quad\zeta=k-\eta.
+\]
+The retained exact uniform ratio theorem gives $0<\eta<k$.
+The same recurrence and power-of-two divisibility prove integral
+$\rho$; projection gives $0<\kappa<Xc$, and $\sigma$ is positive
+integral.
+
+Choose a positive Pell matrix period at $A$ modulo $c^2\tau$,
+obtaining a seed $(f_0,I_0)$ with $c^2\tau\mid I_0$.
+Set $i=I_0/(c^2\tau)>0$. Then $a=f_0^2-1$, $G=(\tau f_0)^2$
+and the doubled strong pair is $f=1+2a$, $I=2f_0I_0$.
+Keep this seed fixed. The retained positive auxiliary reconstruction
+gives $(V_*,y)$ with $V_*=f^2(cT_{\rm old}-R)-c$.
+Define
+\[
+ T_{\rm new}=\frac{V_*+c+Rf}{cf}.
+\]
+This is integral: $f^2\mid V_*+c$, $V_*\equiv-R\pmod c$,
+$f\equiv1\pmod c$ and $\gcd(c,f)=1$. It is strictly positive,
+and $V_*=f(cT_{\rm new}-R)-c$ exactly. This is a fresh witness
+construction, not an inverse shear on arbitrary positive tuples.
+
+In inverse charts the correction may be negative. Since $k\ge R+1$
+and $vk^2>6$, one has $|\rho|<vk^3/3$. For every chosen $i\ge1$,
+\[
+ g>\sqrt\Delta c^2E>c^2v^2k^2>vk^3,\qquad g>4Xc.
+\]
+For the latter inequality use $\sqrt\Delta>A-1>X$ and $cE>4$.
+Thus $\kappa+\sigma<g/2$ and $|\rho|<g/3$.
+In the plain chart $\rho\ge0$, and the same bound on $g$ suffices.
+In all cases
+\[
+ n=gy+(1+hL)t_*+\rho-\kappa-\sigma
+\]
+is a strictly positive integer. Its carrier has $z=gy$, so the literal
+polynomial vanishes. Every one of the ten independent inputs has been
+constructed in the actual positive domain at one coherent tuple.
+
+\subsection{Attained degrees and exact circuit counts}
+Put $q_0=\beta J$, $k_0=\eta+\zeta$ and
+$B_0=k_0sT-q_0^2(q_0-F)$. Complete homogeneous collection gives
+\begin{align*}
+ [P_{\rm plain}]_{240}
+ &=-2^8q_0^{112}w^{26}s^{58}i^{10}k_0^{32}(q_0-F)^2,\\
+ [P_{\rm scaled}]_{232}
+ &=-9\cdot2^{10}q_0^{100}w^{26}s^{58}i^{10}k_0^{32}B_0^2,\\
+ [P_{\rm free}]_{214}
+ &=-9\cdot2^{10}q_0^{86}w^{26}s^{58}i^{10}k_0^{32}(q_0-F)^2.
+\end{align*}
+They have respectively $99,202,99$ collected monomials. In the free
+charts the leading part of $b$ is $-q_0^3(q_0-F)$; in the scaled
+chart the full degree tie $b_0=q_0B_0$ must be retained.
+Selecting $\eta^{32}F^2$ in the free cases gives nonzero coefficients
+$-2^8\beta^{112}$ and $-9\cdot2^{10}\beta^{86}$; selecting
+$\eta^{34}T^2$ in the scaled case gives $-9\cdot2^{10}\beta^{100}$.
+These prove attained degree at the authentic positive $\beta$.
+
+In chart order, the degrees of $(Q,M,G,V,Z)$ are
+$(82,13,52,40,60)$, $(80,11,50,40,57)$ and $(72,12,46,36,54)$.
+The unique dominant output term is $-QM^2GV^2$.
+The live binary-operation counts are respectively $82,85,87$.
+The independent checker verifies complete top forms of every register,
+not sampled lines. Historically, the scaled $232/85$ point saved two operations against
+incoming Trace Radical's $232/87$; the free $214/87$ point saved eighteen
+degrees against that same incoming point. Neither comparison is a global
+bound or a claim about unrestricted integer variables.

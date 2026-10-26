@@ -1,0 +1,217 @@
+\section{Guarded quadratic trace elimination}
+\label{sec:guarded-trace-resultants}
+Two new fixed ordinary polynomials have thirteen unrestricted integer unknowns:
+\[
+ (\deg,\mathrm{ops})=(118,114),\qquad (120,112).
+\]
+The charged operation counts (multiplication, addition, subtraction) are
+$(66,27,21)$ and $(65,26,21)$. Each point strictly dominates the incoming
+thirteen-integer $(152,119)$ and $(156,117)$ points in both varying metrics;
+the two new points themselves trade degree against cost. All six full fixed
+numeral payloads and their finite recipe are retained unchanged. These are
+ordinary reductions through an identified native/compiler/refutation theorem,
+not a consistency assertion, global optimum or new end-to-end kernel certificate.
+
+\subsection{Entire literal equations}
+The inputs, in order, are
+\[
+ j,C,z,h,r,v,w,T,c,n,y,p_2,p_3\in\mathbb Z.
+\]
+Use the authentic ports $\beta,K_0,M_C,M_F,A_c,B_c$, with $M_F$ already shifted,
+$\beta=2^{1064921}-1$, $A_c=2^{1113}$ and $B_c=2^{666104}$. Their full bytes,
+binding and finite recipe are under the retained coefficient directory:
+\begin{center}\small\texttt{roots/inherited\_round22/inherited\_round20/}\\
+\texttt{inherited/coefficients/}\end{center}
+All following names are polynomial abbreviations, not further unknowns:
+\begin{gather*}
+ J=6j+1,\quad q_m=\beta J,\quad q=q_m+1,\quad W=12w+4,\quad X=qW,\quad Y=v,\\
+ F=(K_0+W)C-zq_m,\qquad
+ R=[q(q-F)-C](q^2-1)+(M_C+qM_F)J,\\
+ E=XY,\quad a=E+Y,\quad H=4a+3,\quad \Delta=a^2+H,\quad \ell=XY^2,\\
+ \eta=c-Yk,\quad L=\ell k,\quad I=(8r+4)c^2,\quad
+ D_s=\Delta I^2,\quad F_s=D_s+1,\\
+ Q=\Delta D_s,\quad \delta=Q-1,\quad b=cT-R,\quad d_y=\delta y,\quad
+ t=c+d_y,\quad t_t=t^2,\quad L_b=F_sb^2,\\
+ A_r=L_b+t_t-Qd_yy-1,\qquad H_r=A_r^2-4L_bt_t,\\
+ q_3=q^3,\quad M=2q_3,\quad U=MH,\quad K_{\rm lo}=X(2X-3c)-2,\\
+ Z_0=Un+MK_{\rm lo}+H(Y-q_3),\quad
+ D_{\rm err}=(A_cF-q)^2+(B_cC-q)^2.
+\end{gather*}
+The two charts are
+\begin{align*}
+ k_{118}&=R+1+h\ell,&
+ \mathcal B_{118}&=(Yk)^2(q^2-D_{\rm err})
+             -q^2\bigl[4(Y\eta)^2+(kq^2)^2\bigr],&Z_{118}&=Z_0+UL,\\
+ k_{120}&=R+1+hE,&
+ \mathcal B_{120}&=(Yk)^2(q^2-D_{\rm err})
+             -q^2\bigl[4(Y\eta)^2+(kq^3)^2\bigr],&Z_{120}&=Z_0.
+\end{align*}
+In the 120-chart evaluator, $L=E(Yk)$ avoids a separate computation of $\ell$.
+Finish in either chart with
+\begin{gather*}
+ G=\mathcal B-1-p_2^2-p_3(p_3+1),\quad
+ D_\tau=1+L(L+k),\quad U_2=U^2,\quad g_a=U_2G,\quad d_b=U_2D_\tau,\\
+ N=(Z^2-g_a-d_b)^2-4g_ad_b,\qquad
+ P=NH_r+N+H_r=(N+1)(H_r+1)-1.
+\end{gather*}
+The expanded final schedule saves one operation. There is no division gate,
+variable exponent, omitted numeral or hidden positivity restriction.
+
+\subsection{Resultant identity and the exceptional branch}
+For proof only, introduce $f$ and put $V=fb-c$ and
+$E_a=V^2-\delta y(2V+y)$. The complete identities are
+\begin{align}
+ A_r&=F_sb^2+c^2-1-\delta y(y-2c),\label{eq:r23-resultant-cancel}\\
+ E_a-1&=A_r-2btf+b^2(f^2-F_s),\label{eq:r23-resultant-linear}\\
+ H_r&=A_r^2-F_s(2bt)^2.\label{eq:r23-resultant-norm}
+\end{align}
+Thus $f^2=F_s$ and $E_a=1$ imply $H_r=0$. The converse requires
+$bt\ne0$; without it a resultant may vanish without a rational trace.
+We establish that nonvanishing from the guard \emph{before} recovering $f$.
+Sharing $t_t$ in the first and third expressions saves two evaluator gates;
+identity \eqref{eq:r23-resultant-cancel} must be used before assigning degrees.
+
+\subsection{All signed roots and guard restoration}
+Unconditionally $q$ is even and nonzero, $|W|\ge4$, $|X|\ge8$, $H$ is odd and
+nonzero, and $U\ne0$. Since $a=(X+1)Y$ is zero or has $|a|\ge7$,
+$\Delta=(a+2)^2-1\ge3$. Also $\ell$ is even and
+$D_\tau=1+\ell(\ell+1)k^2\ge1$.
+
+Both $N$ and $H_r$ are squares modulo four. At $P=0$, the integer factors
+$N+1,H_r+1$ are units, neither can be $-1$, and consequently $N=H_r=0$.
+With $\rho=Z/U$,
+\[
+ (\rho^2-G-D_\tau)^2=4GD_\tau.
+\]
+This forces $G\ge0$, including $G=0$, and $\mathcal B>0$, hence $Yk\ne0$.
+Moreover
+\[
+ D_\tau\ge1+\tfrac12X^2Y^4k^2
+ \ge1+8q^2Y^4k^2>q^2Y^2k^2\ge\mathcal B>G.
+\]
+Therefore $\rho\ne0$ before any division by it. The rationals
+\[
+ p=\frac{\rho^2+G-D_\tau}{2\rho},\qquad \tau=\rho-p
+\]
+satisfy $p^2=G$ and $\tau^2=D_\tau$. A rational whose square is integral is
+integral, by reducing its fraction to lowest terms. Thus $p,\tau\in\mathbb Z$.
+This handles zero guard roots, both signs and coincident square classes.
+
+Set $\sigma=1$ for degree 118 and $\sigma=0$ for degree 120, and restore
+\[
+ p_{1,\rm old}=p,\qquad
+ n_{\rm old}=n+\sigma L-(2L+k)-p+\tau.
+\]
+With $Z_{\rm old}=Un_{\rm old}+MK_{\rm lo}+H(Y-q^3)$, one has
+$Z_{\rm old}/U+2L+k=2\tau$. Hence the identity
+\[
+ (Z_{\rm old}+Uk)^2+4U(LZ_{\rm old}-U)
+  =(Z_{\rm old}+U(2L+k))^2-4U^2D_\tau
+\]
+restores the old carrier row, while $p^2=G$ restores its guard.
+
+\subsection{Noncircular exclusion of every resultant escape}
+Only the positive budget and the retained centered-disk/authentic-mask argument
+are now used. Write $q_0=|q|$ and
+$B_0=k^2(q^2-D_{\rm err})-4q^2\eta^2$.
+The 118 guard is $Y^2B_0-k^2q^6>0$, so $B_0>0$ and $|Y|>q_0^2$;
+the 120 guard similarly gives $|Y|>q_0^3$. The disk gives
+$D_{\rm err}<q^2$, $|\eta/k|<1/2$, and
+\[
+ |c|>|k|(|Y|-1/2).
+\]
+The authentic mask lemma gives, independently of the strong or auxiliary rows,
+\[
+ q_0\ge16,\qquad q_0(q_0^2-1)<R<q_0^4-2.
+\]
+Thus $|\ell|>4q_0^5>3R+1$ in the 118 chart, while $|E|>4q_0^4>3R+1$ in
+its companion. These are the early arguments in the retained source 153
+Section 2 and the q8 signed source, before any Pell-index interpretation.
+
+Let $d=\ell$ or $E$. Since $k=R+1+hd$ and $|d|>3R+1$, either $h=0$
+and $|k|=R+1$, or $|k|\ge|d|-(R+1)>2R\ge R+1$. Consequently
+$|c|>R>0$. For integer $T$, $b=cT-R$ cannot vanish: $T=0$ gives $-R$,
+while $T\ne0$ gives $|cT|\ge|c|>R$.
+
+Also $|I|\ge4c^2$ and $\Delta\ge3$, whence
+\[
+ \delta=\Delta^2I^2-1\ge144c^4-1>|c|>0.
+\]
+For every integer $y$, $t=c+\delta y\ne0$: this follows from $c\ne0$ if
+$y=0$ and from $|\delta y|>|c|$ otherwise. Therefore $2bt\ne0$.
+Equation \eqref{eq:r23-resultant-norm} now gives a rational
+\[
+ f=\frac{A_r}{2bt},\qquad f^2=F_s\in\mathbb Z,
+\]
+so $f$ is an integer. Equation \eqref{eq:r23-resultant-linear} gives $E_a=1$,
+and $f^2-\Delta I^2=1$ is immediate. Arbitrary signs of every input remain
+allowed. The cases $c=0$, $b=0$ and $t=0$ were excluded by prior inequalities,
+not silently divided away.
+
+We have restored a literal zero of the even-strong fifteen-integer kernel
+identified by equation (2.5) of the retained Round 22 proof. Its Sections 3--4
+supply the complete signed bootstrap and \emph{fresh} odd-scale strong and
+auxiliary witnesses before invoking the authenticated native/compiler/
+refutation theorem. We do not incorrectly reuse an even-scale trace in that
+odd-scale theorem.
+
+\subsection{Reverse map and constructive completeness}
+From any zero of the even-strong kernel, $f^2=F_s$ and $E_a=1$ imply $H_r=0$
+without division. Its carrier gives
+$(Z_{\rm old}/U+2L+k)^2=4D_\tau$. The rational-root argument makes this
+quantity an even integer, say $2\tau$. Delete $f,p_{1,\rm old}$ and set
+\[
+ n=n_{\rm old}-\sigma L+(2L+k)+p_{1,\rm old}-\tau.
+\]
+Then $\rho=p_{1,\rm old}+\tau$, $G=p_{1,\rm old}^2$, and
+$D_\tau=\tau^2$, so $N=0$ and $P=0$. This works on every old zero with
+all root signs; no inverse polynomial automorphism is claimed.
+The retained fresh-witness construction and native completeness theorem
+therefore give a new zero from every finite syntactic ZFC refutation.
+Together the two maps establish the ordinary ZFC-provable equivalence of
+integer unsolvability and syntactic $\operatorname{Con}(\mathrm{ZFC})$.
+
+\subsection{Complete exact leading forms and verification}
+Write
+\begin{gather*}
+ q_0=6\beta j,\quad X_0=12q_0w,\quad a_0=X_0v,\quad F_0=12wC-q_0z,\\
+ R_0=-q_0^3F_0,\quad \ell_0=X_0v^2,\quad U_0=8q_0^3a_0.
+\end{gather*}
+Identity \eqref{eq:r23-resultant-cancel} gives $\deg A_r=22$, not 38.
+The whole resultant top is
+\[
+ [H_r]_{60}=-2^{20}a_0^{10}r^6c^{12}R_0^2y^2.
+\]
+For degree 120,
+\[
+ [N]_{60}=U_0^4R_0^4(q_0^8+\ell_0^2)^2.
+\]
+For degree 118 put $k_0=R_0+h\ell_0$ and
+$T_0=A_c^2v^2F_0^2+4q_0^2v^4+q_0^6$. The exact cancellation
+\[
+ (Z_0+UL)^2-U^2D_\tau=Z_0^2+2ULZ_0-U^2(1+Lk)
+\]
+has degree 26, and gives
+\[
+ [N]_{58}=4U_0^4\ell_0^2k_0^4T_0.
+\]
+The full output tops are the products of these forms. Their 85 and 21
+monomials are all expanded by the independent checker. In particular,
+\begin{align*}
+ [j^{58}w^{16}v^{18}z^6r^6c^{12}y^2]P_{118}
+    &=-2^{124}3^{74}\beta^{58}\ne0,\\
+ [j^{66}w^{14}v^{14}z^6r^6c^{12}y^2]P_{120}
+    &=-2^{126}3^{80}\beta^{66}\ne0.
+\end{align*}
+The exponents sum to 118 and 120. These are coefficients at the actual fixed
+numeral slice, not a generic-coefficient estimate or sampled ray.
+
+Required replay uses only Python's standard library. The independent checker
+imports no producer or circuit implementation, binds every live gate to a
+separately written formula, checks all signed identities and leading forms,
+authenticates 255 inherited files and all 615,883 raw coefficient bytes, and
+rejects both alternative binary operators at each live gate (228 and 224
+mutations). Normal and optimized runs have identical explicit acceptance
+conditions. The separate finite recipe reconstructs all six numeral payloads.
+Finite checks verify literal artifacts and algebra; the unbounded guarded
+extraction and inherited logical calibration remain the stated ordinary proofs.
