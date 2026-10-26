@@ -44,10 +44,11 @@ No global optimality theorem is requested or inferred from that ledger.
 
 The live local native modules treat the older 457-mode, 89-bit compact54
 construction. Their strongest local-mask endpoint is
-`NativeLocalMask54.source_local_masks`. The current 942-tile, 47-bit,
-length-2011 coefficient recipe, decimal decoder, sorting permutation,
+`NativeLocalMask54.source_local_masks`. The literal decimal decoder and complete length2011 masks now have the
+bindings and proofs recorded below. The remaining current942-tile,
+47-bit encoding work includes the exact K recipe, sorting permutation,
 carry/phase recovery, helical tiling interpretation and canonical controller
-converse still need literal Lean bindings and proofs. The 1997 proposal
+converse. The 1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
 The first new modules address necessary reusable pieces of that chain:
@@ -152,9 +153,7 @@ outer data from every actual positive Carrier65 zero, PortBounds, the
 finite mask Interface and MC%4=2, and produces positive zeros of all three
 literal13 polynomials while preserving all nine outer slots. The
 [full root review](reviews/thirteen-fresh-complete-lean-root.md) records
-fresh checks and the necessary extra finite residue. The exact current
-masks must discharge that residue; the full native and internal-ZFC links
-remain required.
+fresh checks and the necessary extra finite residue. The full native and internal-ZFC links remain required.
 
 `CurrentMasks2011` and `CurrentMaskRecipes2011` now bind the complete two
 length2011 masks and beta, including their exact printed geometric-series
@@ -165,6 +164,17 @@ The [independent whole-mask review](reviews/current-masks2011-lean-peer.md)
 includes fresh builds, standard axiom audits and full coefficient-byte
 comparisons against the maintained page. K remains a parameter; its exact
 942-tile recipe and native interpretation still need composition.
+
+`CurrentCarrierArithmetic2011.positive_zero_existence_chain` now composes
+both complete arithmetic witness maps at those exact masks, discharging
+PortBounds, Interface and MC%4 internally. It proves65↔69↔70↔71 for the
+literal positive-zero existence statements under only K>0; `completes`
+additionally preserves all nine outer coordinates. The [root integration
+review](reviews/current-carrier-arithmetic2011-lean-root.md) and [independent
+peer replay](reviews/current-carrier-arithmetic2011-lean-peer.md) record
+whole-source reviews, fresh builds/checks and standard-only axiom audits.
+K remains a parameter, so the current native consistency theorem is still
+an outstanding objective.
 
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
