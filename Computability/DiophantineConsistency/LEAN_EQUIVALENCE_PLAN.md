@@ -476,7 +476,15 @@ See the [root review and four fresh replays](reviews/wang-tiles942-strip-foundat
 Finite strip bounds and actual machine-run semantics are subsequent work.
 
 Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. `WangTiles942InitialStrip` now
+integration, documentation and commits. `WangTiles942StripGeometry` now
+derives persistent wall columns and a seam-free interior from the exact
+initial strip and actual time matching. Every integer interior coordinate
+has its exact initial tile and seeded South color; no seam can appear at
+any integer time. Its marked-word endpoint derives the finite initial
+strip rather than assuming it. The [author review and fresh checks](reviews/wang-tiles942-strip-geometry-lean-root.md)
+record this complete geometric step, without machine-run semantics.
+
+`WangTiles942InitialStrip` now
 derives both finite seam walls and every intervening initializer from
 actual horizontal periodicity and Start. The walls are first departures
 from their respective initializer tails, not supplied boundaries.
