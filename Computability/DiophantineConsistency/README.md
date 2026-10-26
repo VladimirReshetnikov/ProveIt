@@ -67,6 +67,17 @@ The [internal C222 equality core](reviews/validator-equality-core222-root.md)
 now recovers reflexivity, the helper, specialization and rho7 from growG,
 and membership vacuity from the actual gated bundle. These finite internal
 proof witnesses leave semantic seed validity as a separate obligation.
+The [internal relational and indiscernibility proofs](reviews/validator-eind222-root.md)
+now derive quantified membership transport, fixed-binder equality interpretation
+and gated vacuity in the actual C222 checker. Their four independent builds
+pass24 standard-only reports and preserve zero/equal labels and auxiliary
+binder collisions. The [membership-container witness](reviews/validator-seed-witness222-root.md)
+then supplies actual numeric proof witnesses uniformly in every IΣ1 model,
+including member label0. Its two independent builds pass11 reports. This
+is a weaker containment result than the native container/GIC axioms; those
+axioms, arbitrary represented proof translation and runtime calibration
+remain open. Independent [relational review](reviews/validator-relational-eind222-peer.md)
+and [seed review](reviews/validator-seed-witness222-peer.md) found no corrections.
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence

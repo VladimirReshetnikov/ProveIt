@@ -482,6 +482,20 @@ PA/negative-translation route, each
 refactoring should be justified by its contribution to PA formalization;
 surface elimination of `Classical.choice` is not the goal by itself.
 
+The actual internal C222 [relational/equality packet](reviews/validator-eind222-root.md)
+now supplies finite quantifier and existential deductions, membership
+vacuity, fixed-binder alpha conversion and the indiscernibility relation
+with both membership transports. The proofs retain arbitrary internal
+IΣ1 values, legal zero/equal labels and the auxiliary-binder collision.
+Four independent leaves pass24 standard-only reports with byte-identical
+author objects. The [next seed witness](reviews/validator-seed-witness222-root.md)
+normalizes both literal negative universals by explicit finite deductions,
+then obtains `CProv222(∃k(p∈k))` with numeric label k=Eind(p+1,p).
+The two independent leaves pass11 reports, including actual Nat p=0.
+This is membership containment, not the full native container axiom or
+CP/GIC. No arbitrary proof interpretation, seed semantic soundness or
+counter4 calibration follows merely from this witness.
+
 ## Next reviewable checkpoints
 
 1. Authentic HA derivability and basic arithmetic/induction interfaces are
