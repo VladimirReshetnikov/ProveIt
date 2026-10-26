@@ -1,0 +1,78 @@
+Final incoming freshness audit — separate snapshot addendum
+==========================================================
+
+Fresh snapshot: d163c476db9ca1142d2d73de8fa64c0b2c03a848
+Initial ledger snapshot: b310142330df89e48413c8fce62e7de223e1c7d5
+
+All six selected contribution families remain distinct from proposals found in both fresh incoming archives. No change to the selected six is required by this refresh.
+
+AUTHENTICATED PACKETS
+diophantine-lean-simplification-2026-10-26(1).zip
+  Git blob SHA1: 88326b5aa03a7618a5491767e1c3da9a7aa6d6dc
+  SHA256: c8d7d56a0344f141dc7d2e44c63b0ee450d552205d4ae9c8d10076cd310e1118
+  Size: 309896 bytes; 73 members.
+lean-proof-simplification-review-2026-10-26.zip
+  Git blob SHA1: 638389925ff19d69296aefcaa6ae4f6cb0aa5220
+  SHA256: 9d9eb709f2d454c4439d2e1f822dbe1b1bcda3cb0f3eedcf5338542b1fbe1ecb
+  Size: 399503 bytes; 124 members.
+
+COMPARISON OF THE SELECTED SIX
+
+C1: Delete two redundant specialized internal inductions
+  No matching proposal found in either fresh archive
+  The fresh report proposes a definability-preserving induction wrapper. The selected change uses existing nat_zero_or_succ because the specialized successor cases ignore their induction hypotheses; it deletes zeroSumStage/zeroProductStage and their satisfaction lemmas. It retains the whole internal omega. Neither fresh packet proposes these eliminations.
+  Nearest prior locator: diophantine-lean-simplification-2026-10-26(1).zip :: diophantine-lean-simplification/report.tex:463
+  Nearest prior locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/evidence/syntax/findings.txt:150
+
+C2: Reuse odd_index_of_base_dvd
+  No matching proposal found in either fresh archive
+  The fresh review modifies the same module, but only eq_of_residues, removing explicit Nat-to-Int bound casts and merging duplicated omega branches. It does not modify index_residues or suggest reusing SignedPellResidue.odd_index_of_base_dvd.
+  Nearest prior locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/lean-proof-simplification-review.tex:289
+  Nearest prior locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/evidence/arithmetic/findings.txt:118
+  Nearest prior locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/patches/pell-residue-casts.patch:4
+
+C3: Compose divisibility facts instead of constructing four quotient witnesses
+  No matching proposal found in either fresh archive
+  The selected change composes dvd_sub/dvd_add/dvd_neg in the signed branches of index_residues. The fresh same-module patch changes only eq_of_residues; the other modular proposal is a cyclic-word residue API. Full replacement copies retain the original index_residues proof and are not evidence that its unchanged text was proposed as a simplification.
+  Nearest prior locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/lean-proof-simplification-review.tex:289
+  Nearest prior locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/evidence/arithmetic/findings.txt:118
+  Nearest prior locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/patches/pell-residue-casts.patch:4
+  Nearest prior locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/lean-proof-simplification-review.tex:605
+
+C4: Integral proof of nonsquare norm nonvanishing
+  No matching proposal found in either fresh archive
+  The selected proof uses equal-power divisibility and integer cancellation to avoid the rational detour. Neither fresh report nor its detailed notes or proposed patches discusses MinimumNorm, norm_ne_zero_of_not_isSquare, or an equal-power-divisibility proof of this statement. General cast cleanup in a linear Pell residue proof is a different argument.
+  Nearest prior locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/lean-proof-simplification-review.tex:289
+
+C5: Pell base-parameter monotonicity via simultaneous positive recurrences
+  No matching proposal found in either fresh archive
+  Neither fresh packet proposes simultaneous monotonicity of Pell xn/yn in the base parameter or replacement of the exponential index-comparison bounds by monotonicity and transitivity.
+
+C6: Use inverse invariance of a finite permutation-invariant set
+  No matching proposal found in either fresh archive
+  The fresh geometry proposals concern cyclic residue and source-index interfaces. Neither fresh packet proposes perm_symm_on_of_perm_on_finite/perm_symm_mapsTo_of_mapsTo or removes the orbit-period argument at offset19_excludes_510. The selected change retains the finite/permutation assumptions and the valid 511 self-loop.
+  Nearest prior locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/lean-proof-simplification-review.tex:635
+
+EXCLUDED CANDIDATES
+
+Local constructor algebra for annotated bound/renaming
+  Fresh packet contains a related explicit proposal; retain exclusion
+  Section 6 of evidence/syntax/findings.txt proposes shared code_binaryForm, renamed_binaryForm, and bound_binaryForm lemmas, with soundness/readiness/completeness reuse. This is closer than the earlier scanner/history proposals and independently supports excluding the unimplemented constructor-algebra sketch. No claim of its novelty should survive the final refresh.
+  Locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/evidence/syntax/findings.txt:122
+
+Canonical evaluation witness plus uniqueness for ObjectNaturalSemiring.evalRel_iff
+  Retain conservative exclusion already selected before refresh
+  Fresh syntax notes explicitly discuss evalRel_iff as an existing internal-semiring interface and its import-cycle constraints. The earlier totality/semiring-witness note remains the reason for conservative exclusion; neither selected bundle nor report should count this candidate among new contributions.
+  Locator: lean-proof-simplification-review-2026-10-26.zip :: lean-proof-simplification-review/evidence/syntax/findings.txt:150
+
+METHOD
+- Downloaded both ZIPs from pinned raw GitHub URLs; authenticated byte lengths and Git blob SHA1 against the parent's independently retrieved GitHub tree metadata.
+- Recorded SHA256 and complete member inventory; safely extracted after rejecting traversal and symlink entries. The two archives have 197 total members and no nested archives.
+- Read both complete report sources, both package readmes, and all three detailed arithmetic/structural/syntax findings notes. Inspected proposed patch and Lean artifact inventories, performed target/theorem/mechanism searches, and inspected the same-module Pell diff directly.
+- Compared proposed changes, not unchanged source statements contained in full-file copies. Did not execute any archive-supplied script or proof during this prior-art audit.
+- Kept the initial 81-family exclusion ledger and its 103 locators unchanged. This addendum adds a separately pinned comparison of the two newly arrived packets.
+
+LIMITS
+This is a scoped prior-proposal comparison, not a claim of mathematical originality or Lean compilation. The repository can receive later updates; all conclusions are pinned to the two stated snapshots.
+
+The JSON companion contains full report/notes section indexes and hashes of reviewed primary texts. The original exclusion_ledger.json and its locators have not been rewritten.

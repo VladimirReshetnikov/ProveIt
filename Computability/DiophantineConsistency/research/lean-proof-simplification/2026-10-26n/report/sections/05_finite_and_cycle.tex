@@ -1,0 +1,63 @@
+\section{C1 and C4 Replace special cases with existing facts}
+\label{sec:simple}
+
+\subsection{C1 Characterize a sum bounded by one}
+
+\textbf{Target.} \src{CurrentCellLabels2011.lean}{131}{158},
+\code{sum_le_one_cases}. The current proof separately derives a nonzero
+summand, proves it equals one, removes it from the sum and shows every other
+summand vanishes. \code{Finset.sum_le_one_iff} already packages the decisive
+pairwise facts. It is used elsewhere in the pinned project, in
+\code{NativeSelectorClause54.selectors_one}.
+
+\begin{Lean}
+theorem sum_le_one_cases {ι : Type*} [Fintype ι]
+    (f : ι → ℕ) (hf : (∑ i, f i) ≤ 1) :
+    (∀ i, f i = 0) ∨ ∃ i, Selected f i := by
+  classical
+  by_cases hz : ∀ i, f i = 0
+  · exact Or.inl hz
+  · push_neg at hz
+    obtain ⟨i, hi⟩ := hz
+    have hs := Finset.sum_le_one_iff.mp hf
+    refine Or.inr ⟨i,
+      (hs i i (Finset.mem_univ i) (Finset.mem_univ i) hi hi).2,
+      ?_⟩
+    intro j hji
+    by_contra hj
+    exact hji
+      (hs j i (Finset.mem_univ j) (Finset.mem_univ i) hj hi).1
+\end{Lean}
+
+\textbf{Preservation.} Splitting on ``every entry is zero'' retains the empty
+index-type case without requiring a chosen element or a \code{Nonempty}
+instance. Only the second branch chooses a nonzero entry. The sum bound and
+\code{Selected} conclusion are unchanged. This is not a proposal to change
+how selector counts are decoded from the physical word.
+
+\textbf{Static delta.} The proof body is 26 versus 10 nonblank lines in the
+candidate file (the listing above is rewrapped). Check the pinned mathlib
+signature and orientation of \code{sum_le_one_iff} before adoption.
+
+\subsection{C4 Make zero-base propagation a specialization}
+
+\textbf{Targets.} \src{CurrentCellCycle2011.lean}{113}{122},
+\code{propagate}, and the existing \src{CurrentCellCycle2011.lean}{125}{136},
+\code{propagate_from}. Move the latter before the former, then replace
+\code{propagate}'s body with:
+
+\begin{Lean}
+  exact propagate_from P 0 hzero hnext
+\end{Lean}
+
+The general theorem already performs the same successor-preserved induction
+and uses \code{reachable_from}. Its proof does not depend on \code{propagate},
+so reordering is acyclic. The predicate remains arbitrary; no word,
+occupation or tile hypothesis is added. The ambient
+\code{[NeZero (N * 2011)]} assumption and the single-cell case remain intact.
+
+\textbf{Tradeoff.} Eight nonblank body lines become one, but the zero-base
+proof now uses general reachability rather than the simpler canonical
+\code{iterate_index_zero} fact. This is a dependency/readability decision,
+not automatically a faster proof. If the zero-base theorem is intentionally
+kept below the general reachability API, retain the independent proof.

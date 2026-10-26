@@ -1,0 +1,89 @@
+\section{Separate first-exit minimality from tile geometry}
+\label{sec:firstexit}
+
+\subsection{Two proofs with the same well-ordering step}
+
+\code{WangTiles942InitialStrip.left_wall_exists} finds the first tile to
+the left of Start that is not the left initializer. Its right-hand analogue
+finds the first tile after the head that is not the right initializer.
+Both construct a \code{Nat.find} witness, prove a bound from a known
+failure, prove that every preceding index is still an initializer, and
+split between an immediate exit and an initializer predecessor
+\cite{strip}.
+
+The geometric data are different and should stay different. The left
+search starts at one and has a witness by \(N\); the right search starts at
+two and has a witness by \(N+1\). The left seam is classified by east color
+two, while the right seam is classified by west color four. The proposed
+shared theorem captures only the well-ordering argument.
+
+\subsection{The common theorem}
+
+For a decidable predicate \(P:\N\to\mathrm{Prop}\), a starting index
+\(a\), and a known failing index \(b\ge a\), prove
+\[
+\begin{split}
+\exists k,\quad &a\le k\le b,\quad \neg P(k),\\
+&\forall j,\ a\le j<k\ \Longrightarrow\ P(j),\\
+&k=a\quad\lor\quad P(k-1).
+\end{split}
+\]
+The exact interface is:
+\begin{lean}
+theorem exists_first_failure (P : Nat → Prop) [DecidablePred P]
+    (a b : Nat) (hab : a ≤ b) (hb : ¬ P b) :
+    ∃ k : Nat, a ≤ k ∧ k ≤ b ∧ ¬ P k ∧
+      (∀ j : Nat, a ≤ j → j < k → P j) ∧
+      (k = a ∨ P (k - 1))
+\end{lean}
+
+The disjunction is necessary. If the first position already fails,
+\(k=a\), then \(k-1\) need not lie in the searched interval. When
+\(a=0\), natural subtraction truncates, making an unconditional
+predecessor conclusion particularly inappropriate. The focused checks
+include this zero-start immediate-exit boundary and a later-exit case.
+
+The proof chooses the least index satisfying \(a\le j\land\neg P(j)\).
+Minimality yields the interior condition. If the chosen index differs from
+\(a\), then \(a\le k-1<k\), so the same interior condition proves the
+predecessor case. Periodicity, finite cardinality, and tiles are absent
+from this theorem.
+
+\subsection{Applications retain the exact geometric premises}
+
+For the left wall, instantiate
+\[
+P(j):=T(-j)=\mathrm{initLeft},\qquad a=1,\quad b=N.
+\]
+The original periodic-Start argument supplies \(\neg P(N)\). For the
+right wall, instantiate
+\[
+P(j):=T(j)=\mathrm{initRight},\qquad a=2,\quad b=N+1.
+\]
+The original periodic-head argument supplies \(\neg P(N+1)\).
+
+The \code{k = a} branch uses Start or the head initializer respectively.
+The other branch uses the returned initializer predecessor. Actual
+horizontal matching then supplies the boundary edge color, and the
+existing local classification theorem identifies the seam. No uniqueness
+of Start, global rectangular tiling, or machine-run hypothesis is added.
+
+\subsection{An explicit source-size tradeoff}
+
+The client module decreases from 148 to 133 physical lines. The new
+production helper is 28 lines, so the aggregate changes from 148 to 161:
+\emph{13 additional physical lines}. This is not a net shortening claim.
+The gain is that two copies of the least-exit proof become one theorem,
+and each geometric proof contains only its own boundary reasoning.
+
+For a project optimizing immediate total source length, defer this patch.
+For a project expecting further initial-strip or reset-strip arguments,
+the shared invariant can be worthwhile. The archive keeps this patch
+separate, so that decision does not affect the other reductions.
+
+This is distinct from the older finite-invariant predecessor proposal:
+that proposal derives backward preservation from an injective map of a
+finite invariant set. Here the shared mechanism is least-failure
+minimality on a bounded natural interval, with an explicit starting
+boundary. Neither finite injectivity nor an orbit-period argument enters
+the helper.

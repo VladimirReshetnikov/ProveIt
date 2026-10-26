@@ -1,0 +1,55 @@
+\section{Review corpus and reusable artifacts}
+\label{sec:artifacts}
+
+\subsection{The six prior packets}
+
+The 75 scoped exclusions in \pathcode{incoming_audit/EXCLUSION_CATALOG.md}
+refer to these manuscript sources. Full Git blob identities and SHA-256
+values are in the accompanying manifest; all six archive byte streams were
+verified. The retired packet's placed TeX/PDF match its archive byte for byte.
+
+\begin{description}
+\item[A] \href{https://github.com/VladimirReshetnikov/ProveIt/blob/b310142330df89e48413c8fce62e7de223e1c7d5/docs/incoming/Lean_Proof_Simplification_2026-10-26.zip}{\pathcode{Lean_Proof_Simplification_2026-10-26.zip}}.
+Manuscript: \pathcode{Lean_Proof_Simplification/report/report.tex}.
+\item[B] \href{https://github.com/VladimirReshetnikov/ProveIt/blob/b310142330df89e48413c8fce62e7de223e1c7d5/docs/incoming/ProveIt_Lean_Proof_Simplification_2026-10-26.zip}{\pathcode{ProveIt_Lean_Proof_Simplification_2026-10-26.zip}}.
+Manuscript: \pathcode{LeanReview/report/proof_simplification_report.tex}.
+\item[C] \href{https://github.com/VladimirReshetnikov/ProveIt/blob/b310142330df89e48413c8fce62e7de223e1c7d5/docs/incoming/diophantine-lean-simplification-2026-10-26.zip}{\pathcode{diophantine-lean-simplification-2026-10-26.zip}}.
+Manuscript: \pathcode{diophantine-lean-simplification-2026-10-26/report.tex}.
+\item[D] \href{https://github.com/VladimirReshetnikov/ProveIt/blob/b310142330df89e48413c8fce62e7de223e1c7d5/docs/incoming/lean-proof-simplification-2026-10-26\%20(2).zip}{\pathcode{lean-proof-simplification-2026-10-26 (2).zip}}.
+Manuscript: \pathcode{lean-proof-simplification-2026-10-26/report.tex}.
+\item[E] \href{https://github.com/VladimirReshetnikov/ProveIt/blob/b310142330df89e48413c8fce62e7de223e1c7d5/docs/incoming/lean-proof-simplification-2026-10-26.zip}{\pathcode{lean-proof-simplification-2026-10-26.zip}}.
+Manuscript: \pathcode{lean-proof-simplification-2026-10-26/report.tex}.
+\item[F] Retired \pathcode{diophantine-lean-proof-simplification-2026-10-26.zip},
+received at commit \code{151a732b91}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b310142330df89e48413c8fce62e7de223e1c7d5/Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/report.tex}{Placed manuscript at the review pin}:
+\pathcode{research/lean-proof-simplification-20261026/report.tex}.
+\end{description}
+
+\subsection{What to use from the new archive}
+
+\begin{itemize}
+\item \pathcode{report/}: this editable TeX source, PDF, build script and QA record.
+\item \pathcode{annotated/}, \pathcode{current/}, \pathcode{wang/},
+\pathcode{supplemental/}: complete uncompiled candidates, exact patches where
+available, explanations and reproducible source-text measurements.
+\item \pathcode{incoming_audit/}: exclusion catalog, explicit novelty decisions,
+archive identities and audit results, without repackaging the old reports as new work.
+\item \pathcode{provenance/}, \pathcode{sources/}, \pathcode{supplemental/evidence/}:
+immutable source anchors, byte manifests, recent-commit evidence and selected
+source material. Archive contents are evidence, not a replacement checkout.
+\item \pathcode{validation/}: future replay plan, non-vacuous endpoint/axiom
+checks and static validation tools. Read its instructions before running it.
+\end{itemize}
+
+\subsection{Decisions that remain after compilation}
+
+Start with C4, S1, C1 and C2. Then evaluate A2, and A1 if its existing
+bounded-decoder dependency is acceptable. C3 requires the correct import
+placement. W1 and S2 are optional maintenance choices: compilation alone
+does not make their abstraction worthwhile.
+
+Before adoption, establish that the candidates elaborate under the pinned
+dependencies, public types and axiom sets meet project policy, and the edits
+improve readability. Novelty is relative to the six reviewed packets, not a
+claim of global originality. No accepted simplification or performance result
+is asserted before that replay.

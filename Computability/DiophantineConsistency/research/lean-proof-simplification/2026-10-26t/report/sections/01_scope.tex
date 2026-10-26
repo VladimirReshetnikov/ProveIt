@@ -1,0 +1,89 @@
+\section{Outcome, scope, and novelty standard}
+
+This report proposes four additional directions. The first three produce
+local source reductions; the fourth makes two geometric proofs share one
+well-ordering argument, at a small increase in total source size. This
+distinction matters: a shorter application site is not automatically a
+shorter development once the supporting theorem is counted.
+
+\begin{enumerate}
+\item \textbf{Identify the existing list code with Mathlib's encoding.}
+Use that identity to obtain length and injectivity facts, and derive typed
+parent-list correctness from the raw checker theorem already present.
+\item \textbf{Base quadratic coefficient extraction on a local pair fibre.}
+Prove the coefficient identity for an arbitrary weight map with exactly the
+two required contributing ordered pairs, then specialize to global Sidon and
+selective coding.
+\item \textbf{Remove sign cases from the fundamental Pell-unit proof.}
+Work with the magnitude of the second coordinate, retaining the existing
+square-gap comparison. Keep the more general minimum-coordinate
+criterion as an optional checked abstraction.
+\item \textbf{Factor the least-exit argument in the two strip-wall proofs.}
+Separate interval minimality from the asymmetric tile geometry on the left
+and right of Start.
+\end{enumerate}
+
+\subsection{The source snapshot}
+
+Repository access began by resolving the current main branch through GitHub.
+All source analysis and integration patches use the immutable commit
+\sourcecommit. Its recorded author time is 26 October 2026, 16:43:16 UTC.
+The commit already merges several earlier simplification adoptions, but the
+adoption table also records proposals that are pending or deferred
+\cite{sourcepin,adoption}. We do not interpret those statuses as permission
+to repeat them.
+
+The task's premise is stronger than ``find edits missing from main.'' We
+treat the mechanisms proposed by earlier reports as exhausted even where
+their code is absent, uncompiled, rejected, or only described as future
+work. The numerical before/after measurements are nevertheless against the
+real pinned files. They are not estimates for a hypothetical tree formed by
+simultaneously applying every mutually alternative historical design.
+
+\subsection{Exclusion audit}
+
+The audit inventories 329 files in the two requested exclusion directories
+and 400 members of the five incoming ZIPs. The six placed packets are
+\code{2026-10-26a} through \code{2026-10-26f}. All eleven principal
+manuscripts were inspected by section; supplementary proposal notes,
+patches, and the earlier reports' own novelty audits were also searched and
+reviewed. The archive contents were read as evidence, not executed.
+
+The accompanying \code{evidence/exclusion-ledger.json} and
+\code{evidence/EXCLUSION_LEDGER.md} identify 60 prior technique families,
+with file-and-line or archive-member-and-line references.
+\path{evidence/prior-corpus-manifest.json} records their source hashes.
+Inventory coverage does not assert that every incidental copied source
+snapshot or binary received an independent semantic reading.
+
+Examples of deliberately excluded ideas include scanner simulation,
+primitive-recursion congruence, decoder completeness, coefficient envelopes,
+sum-of-squares interfaces, generated circuit certificates, support envelopes,
+finite invariant predecessor lemmas, carry uniqueness, rational-root descent,
+and aligned-cell additive equivalences. Some apparently fresh directions
+were explicitly rejected in the older manuscripts themselves; those too
+are excluded. The present four proposals were compared with their nearest
+prior mechanisms, not merely searched under their proposed names.
+
+\subsection{What is claimed}
+
+The supplied patches preserve the existing executable encoding and arithmetic
+definitions. New statements are proved, and existing public theorem types
+are retained. The formal checks concern proof simplifications; they do not
+establish an additional Diophantine equivalence, improve a variable count,
+or resolve a mathematical gap elsewhere in the research program.
+
+The report separates three kinds of evidence:
+\begin{itemize}
+\item \emph{Full modified module checks}: the actual source module is
+compiled with its replacement proof and production imports.
+\item \emph{Focused checks}: exact theorem applications, helper checks,
+and axiom reports examine the changed interface.
+\item \emph{Architectural recommendations}: a checked general theorem may
+support future reuse without any claim that a whole downstream migration
+has already been implemented.
+\end{itemize}
+
+All final counts and check outcomes are recorded in
+\code{evidence/results.json}. The validation section states the actual
+rebuild scope and the limits of the evidence.

@@ -1,0 +1,138 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedParents.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedParents.lean
+@@ -51,50 +51,16 @@
+     check fuel (listCode history) (listCode expected) parents=1 ↔
+       ∃ indices : List Nat,parents=listCode indices ∧
+         indices.map (fun i => history[i]?)=expected.map some := by
+-  induction expected generalizing fuel parents with
+-  | nil =>
+-    rw [show listCode ([] : List Nat)=0 from rfl,check_nil]
+-    constructor
+-    · intro h
+-      exact ⟨[],h,rfl⟩
+-    · rintro ⟨indices,hi,hm⟩
+-      have hn : indices=[] := List.map_eq_nil_iff.mp hm
+-      simpa only [hn,listCode] using hi
+-  | cons e es ih =>
+-    cases fuel with
+-    | zero => simp at hf
+-    | succ fuel =>
+-      have hff : es.length≤fuel := by
+-        simpa only [List.length_cons,Nat.succ_le_succ_iff] using hf
+-      cases parents with
+-      | zero =>
+-        constructor
+-        · simp [check,listCode]
+-        · rintro ⟨indices,hi,hm⟩
+-          cases indices with
+-          | nil => simp at hm
+-          | cons p ps => simp [listCode] at hi
+-      | succ raw =>
+-        have hs : check (fuel+1) (listCode history) (listCode (e::es)) (raw+1)=
+-            referenceCheck (Nat.pair (listCode history) (Nat.pair raw.unpair.1 e)) *
+-              check fuel (listCode history) (listCode es) raw.unpair.2 := by
+-          simp [check,listCode]
+-        rw [hs,AnnotatedSchemaMaps.mul_eq_one_nat,referenceCheck_listCode,
+-          ih fuel raw.unpair.2 hff]
+-        constructor
+-        · rintro ⟨hp,indices,hi,hm⟩
+-          refine ⟨raw.unpair.1::indices,?_,?_⟩
+-          · simp only [listCode,←hi,Nat.pair_unpair]
+-          · simp only [List.map_cons,hp,hm]
+-        · rintro ⟨indices,hi,hm⟩
+-          cases indices with
+-          | nil => simp [listCode] at hi
+-          | cons p ps =>
+-            have he : raw=Nat.pair p (listCode ps) := Nat.add_right_cancel hi
+-            simp only [List.map_cons,List.cons.injEq] at hm
+-            refine ⟨?_,ps,?_,hm.2⟩
+-            · simpa only [he,Nat.unpair_pair] using hm.1
+-            · simp only [he,Nat.unpair_pair]
++  constructor
++  · intro h
++    obtain ⟨rows, hr⟩ :=
++      AnnotatedRenameScan.decodeTable_total parents parents (Nat.le_refl _)
++    have he : AnnotatedCodeArithmetic.listCode (rows.map AnnotatedRename.rowCode) = parents :=
++      AnnotatedRenameScan.tableCode_of_decode hr
++    refine ⟨rows.map AnnotatedRename.rowCode, he.symm, ?_⟩
++    exact (check_lists fuel history expected _ hf).mp (by simpa only [he] using h)
++  · rintro ⟨indices, rfl, h⟩
++    exact (check_lists fuel history expected indices hf).mpr h
+ 
+ attribute [local irreducible] check
+ 
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofCode.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofCode.lean
+@@ -75,37 +75,8 @@
+ @[simp] theorem parse_quote (t : Tree) : parse t.quote=some t :=
+   decode_quote t t.quote (depth_le_quote t)
+ 
+-theorem decoded_depth_le {fuel code : Nat} {t : Tree} (h : decode fuel code=some t) :
+-    t.depth≤fuel := by
+-  induction fuel generalizing code t with
+-  | zero => simp [decode] at h
+-  | succ fuel ih =>
+-    cases code with
+-    | zero => simp [decode] at h
+-    | succ code =>
+-      simp only [decode] at h
+-      cases hp : (Nat.unpair code).1 with
+-      | zero =>
+-        simp only [hp] at h
+-        cases h
+-        simp [depth]
+-      | succ left =>
+-        simp only [hp] at h
+-        cases ha : decode fuel left with
+-        | none => simp [ha] at h
+-        | some a =>
+-          cases hb : decode fuel (Nat.unpair code).2 with
+-          | none => simp [ha,hb] at h
+-          | some b =>
+-            simp only [ha,hb,Option.pure_def] at h
+-            cases h
+-            have h1 := ih ha
+-            have h2 := ih hb
+-            simp only [depth]
+-            omega
+-
+-theorem quote_of_decode {fuel code : Nat} {t : Tree} (h : decode fuel code=some t) :
+-    t.quote=code := by
++theorem decode_spec {fuel code : Nat} {t : Tree}
++    (h : decode fuel code = some t) : t.quote = code ∧ t.depth ≤ fuel := by
+   induction fuel generalizing code t with
+   | zero => simp [decode] at h
+   | succ fuel ih =>
+@@ -118,18 +89,28 @@
+       | zero =>
+         simp only [he] at h hp
+         cases h
+-        simp only [quote,hp]
++        exact ⟨by simp only [quote, hp], by simp [depth]⟩
+       | succ left =>
+         simp only [he] at h hp
+         cases ha : decode fuel left with
+         | none => simp [ha] at h
+         | some a =>
+           cases hb : decode fuel (Nat.unpair code).2 with
+-          | none => simp [ha,hb] at h
++          | none => simp [ha, hb] at h
+           | some b =>
+-            simp only [ha,hb,Option.pure_def] at h
++            simp only [ha, hb, Option.pure_def] at h
+             cases h
+-            simp only [quote,ih ha,ih hb,hp]
++            obtain ⟨hqa, hda⟩ := ih ha
++            obtain ⟨hqb, hdb⟩ := ih hb
++            exact ⟨by simp only [quote, hqa, hqb, hp], by simp only [depth]; omega⟩
++
++theorem decoded_depth_le {fuel code : Nat} {t : Tree}
++    (h : decode fuel code = some t) : t.depth ≤ fuel :=
++  (decode_spec h).2
++
++theorem quote_of_decode {fuel code : Nat} {t : Tree}
++    (h : decode fuel code = some t) : t.quote = code :=
++  (decode_spec h).1
+ 
+ theorem quote_injective : Function.Injective quote := by
+   intro a b h

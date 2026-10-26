@@ -1,0 +1,437 @@
+Prior-proposal exclusion ledger
+Snapshot: b310142330df89e48413c8fce62e7de223e1c7d5
+
+All five ZIP archives present in docs/incoming, incoming README, and the retired DiophantineConsistency proof-simplification packet explicitly linked by that README. Historical K215 and unrelated archive-placement entries are not re-audited as DiophantineConsistency proposal reports.
+
+Read report bodies and targeted detailed notes; inspect nonbaseline artifact inventory; search proposed Lean and notes for current candidate overlap. Original source copies are evidence of baseline, not proposals. No supplied scripts or Lean files were executed. ZIP contents were extracted for text inspection.
+
+Semantic novelty is assessed against the audited packets, not claimed for all literature or all prior conversations. The ledger groups variants; one item may have multiple reports, and evidence lists representative exact locations rather than every repeated mention.
+
+81 prior idea families are recorded.
+
+P01 — Reuse core optional-list lookup facts
+Replace private membership/index-existence inductions by List.mem_of_getElem? and List.getElem?_of_mem.
+Targets: AnnotatedRename, AnnotatedBound, AnnotatedProofChecker, AnnotatedAssumption, AnnotatedRuleSide
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:163 (Delete duplicated list lookup inductions.)
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:173 (Immediate proof-only improvement: use Lean)
+
+P02 — Option.map injectivity
+Use Option.map_injective instead of Option constructor splitting.
+Targets: AnnotatedParents.judgmentCode injectivity
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:172 (Option.map_injective judgmentCode_injective)
+
+P03 — Share DivMod arithmetic certificate
+Extract one neutral quotient/remainder equivalence while retaining distinct witness realizers and counts.
+Targets: QuadraticDivMod.certificate_iff, RegisterDivMod.certificate_iff
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:174 (Share the quotient/remainder certificate)
+
+P04 — Share scanner iteration and fixed-state laws
+Bridge Nat.rec to Function.iterate or a small recursor library; share successor, fixed-point and invariant proofs.
+Targets: AnnotatedRenameScan, AnnotatedBoundScan, AnnotatedLineScan, AnnotatedContext, AnnotatedAxiomContext
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:186 (Replace scanner inductions with an iteration bridge)
+Evidence: lean-proof-simplification-2026-10-26 (2).zip :: lean-proof-simplification-2026-10-26/report.tex:375 (Shared scanner machinery)
+
+P05 — Encoding/iteration fusion
+Lift one-step commuting diagrams to encoded iteration, including AnnotatedClosure.
+Targets: AnnotatedClosure
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:210 (Encoding fusion is a second reusable fact.)
+
+P06 — Guarded-history fold and production composition
+Abstract validation, emitted judgment, rejection, run_append/run_sound and Produces composition without changing raw program syntax.
+Targets: AnnotatedRename.run, AnnotatedBound.run, AnnotatedProofChecker.run
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:286 (One invariant-preserving history fold)
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:232 (A later shared fold.)
+
+P07 — Typed-list scanner simulation
+Share sufficient-fuel encoded-list simulation; retain separate invariant for arbitrary raw input soundness.
+Targets: AnnotatedRenameScan, AnnotatedBoundScan, AnnotatedLineScan, AnnotatedAxiomContext
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:541 (Share scanner proofs at the correct semantic boundary)
+
+P08 — Explicit PR iterator with dynamic seed/parameters
+Factor iterateFrom or iterateProgram while preserving supplied program .val and node counts.
+Targets: DirectScalarArithmetic.iterate, AnnotatedContextPR, AnnotatedBoundScan, AnnotatedLineScan, AnnotatedRenameScanPR
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:362 (A better primitive-recursive iterator interface)
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:614 (Factor the supplied PR iterator)
+
+P09 — Exact numeric Boolean output
+Combine Boolean range and acceptance iff to derive check=truth(valid), then simplify scanner branches.
+Targets: AnnotatedRenameLocal, AnnotatedBoundLocal, AnnotatedRenameScan.step_cons, AnnotatedBoundScan.step_cons
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:214 (Exact checker outputs and proof side dispatch)
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/checker-review.md:138 (Strengthen the numeric classifier API)
+
+P10 — Common numeric tag dispatcher
+Normalize frozen arithmetic threshold tests into tags 0/1,2,3/4/5,6/7 and invalid cases, over all natural tags.
+Targets: AnnotatedRenameLocal, AnnotatedBoundLocal
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:228 (Normalize the common tag dispatcher)
+
+P11 — Assignment naturality
+Expose natAssignment/Sum.map composition law and reuse Expr.eval_rename in representation constructors.
+Targets: Representation.reindex, Representation.conjunction, Representation.disjunction, Representation.existsBlock
+Evidence: lean-proof-simplification-2026-10-26 (2).zip :: lean-proof-simplification-2026-10-26/report.tex:156 (Checked refactor: assignment naturality)
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:219 (Witness layouts: prove the transport once)
+
+P12 — Finite witness block packing
+One existential equivalence between Fin(m+n) witnesses and two witness functions using Fin.addCases, including empty blocks.
+Targets: Representation.conjunction, Representation.disjunction, Representation.existsBlock
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:241 (The second law is the existential equivalence)
+
+P13 — Move witness-count projections earlier
+Make small rfl constructor projection laws available without importing downstream global size modules.
+Targets: RepresentationSize, DirectComposition
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:269 (Move existing projection lemmas to their natural home)
+
+P14 — Common expression polynomial-renaming law
+Move duplicated expression rename/toPolynomial induction to syntax layer.
+Targets: QuarticCompiler.Gates.polynomial_rename, NaturalRegisterRelation.rename_toPolynomial
+Evidence: lean-proof-simplification-2026-10-26 (2).zip :: lean-proof-simplification-2026-10-26/report.tex:524 (Move basic syntax facts below the consumers)
+
+P15 — Common residual-squares evaluator, zero-set and degree API
+Share sumExpressions evaluation and finite sums-of-squares semantics and degree bounds.
+Targets: DAGQuartic, NaturalDAGQuartic, QuadraticRegisterSystem
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:399 (One executable sum-of-squares API)
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:624 (Share residual-system facts before merging compilers)
+
+P16 — Common sumExpressions cost bound
+Promote existing parameterized per-row binary-operation budget, retaining sharp special final-row treatment.
+Targets: QuarticCost, DAGQuartic
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:650 (Promote the parameterized cost bound already present)
+
+P17 — Generic semiring gate soundness and completeness
+Extract gate syntax/data first to avoid cycles, then specialize GatesSemiring results to old natural compiler.
+Targets: QuarticCompiler, GatesSemiring
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:443 (The semiring theorem already subsumes the natural induction)
+
+P18 — Reuse weighted expression degree
+Use constant weight one for unweighted syntax degree; move degree machinery below register/compiler consumers.
+Targets: QuadraticRegisterSystem.syntaxDegree, WeightedExpressionDegree
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:463 (Constant weight one supplies the old bound.)
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/circuits-review.md:150 (Reuse the existing syntax-degree bound earlier)
+
+P19 — Share RHS node degree case analysis
+Abstract degree at most two from degree-one wire expressions while retaining signed/natural distinctions.
+Targets: DAGQuartic.rhs_degree, NaturalDAGQuartic.rhs_degree
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:299 (Degree accounting is a smaller companion change.)
+
+P20 — Generic topological DAG invariant
+Factor strong induction over dependencies; instantiate degree, nonnegativity and uniqueness.
+Targets: ArithmeticDAGDegree, NaturalDAGQuartic, ArithmeticDAGSemantics
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:676 (Use a common DAG invariant theorem selectively)
+
+P21 — Power-label certificates for generated proofs
+Replace 193 ring chains with existing run_power and finite checked labels; reuse Split parent labels; retain compatibility wrappers.
+Targets: SplitCircuitSteps59, GapCircuitSteps66, SplitJointPower59
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/04_circuits.tex:50 (Consolidate power proofs while retaining every public theorem)
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:483 (Replace 193 power chains by parent exponent certificates)
+
+P22 — Indexed or demand-generated node equations
+Specialize run_node_equation on demand; retain meaningful cached semantic cuts and compare lookup costs.
+Targets: SplitCircuitSteps59, GapCircuitSteps66
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/04_circuits.tex:128 (Offer an indexed facade before removing named wrappers)
+
+P23 — Respect earlier semantic register cuts in generator
+Update generator cut dictionary after each theorem; copy dictionaries to avoid forward/self references; shorten selected rewrite lists.
+Targets: SplitCircuitRegisters59.natural_sourceSRegister, SplitCircuitRegisters59.natural_sourceRankRegister
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:427 (Use established register facts as proof boundaries)
+
+P24 — Shared scalar free-carrier ratio tail
+Extract text-identical ratioValue plus map/cast laws, retaining recipe-specific exponents and data.
+Targets: SplitNinePolynomial59.ratioValue, GapNinePolynomial66.ratioValue
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:234 (Share the identical polynomial tail)
+
+P25 — Shared 99-node free-carrier circuit tail
+Certify a boundary-port block, exact embeddings and high-level meaning for Split/Gap shared suffix.
+Targets: SplitCircuit59 indices 416-514, GapCircuit66 indices 385-483
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:468 (Extract the shared 99-node free-carrier tail)
+
+P26 — Compositional semantic block certificates
+Prove kernel/recipe blocks with existing node-equation uniqueness, preserving independent high-level specification.
+Targets: GapCircuitRegisters66, GapCircuitRecipe66, Split circuit counterparts
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/04_circuits.tex:167 (Certify semantic blocks instead of globally normalizing the DAG)
+
+P27 — Positive/natural circuit simulation and commutative node swaps
+Parameterize reference-map simulation and extend NodeRel for add/mul operand swaps instead of hard-coded exceptional branches.
+Targets: SplitCircuitTranslation59, GapCircuitTranslation66, ArithmeticDAGPowers.NodeRel
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:713 (Positive/natural translation is a simulation)
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/report.tex:258 (Treat commutative swaps in the relation)
+
+P28 — Typed checked circuit views
+Bundle literal node lists, topology and bounded outputs; optional SafeNode view with exact erasure equality.
+Targets: ArithmeticDAG.Node, ArithmeticDAG topology
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/04_circuits.tex:211 (Treat typed circuit views as a later design option)
+
+P29 — Natural register append invariants
+Factor topology/allowed-node append lemmas and old/new index reasoning around Program.push/eval_old/eval_last.
+Targets: NaturalRegisterProgram.Program.push, NaturalRegisterProgram.eval_old, NaturalRegisterProgram.eval_last
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/circuits-review.md:172 (Package the append invariants used by natural registers)
+
+P30 — Shared ShortSystem degree prefix
+Extract exact common 224-line prefix or use shared DAG degree certificate while retaining cancellation-aware bound <=68.
+Targets: ShortSystem.degree proofs
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/04_circuits.tex:188 (Share the ShortSystem degree prefix before changing representation)
+
+P31 — Nine-coordinate positive/natural packing
+Parameterize duplicated packing existential equivalences by evaluator, preserving unshifted coordinate 7 and positivity elsewhere.
+Targets: SplitSourceExistence, GapSourceExistence66
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/03_architecture.tex:11 (Prove the nine coordinate packaging equivalence once)
+
+P32 — Guarded existence-of-solutions transport
+Compose two existence-preserving directions, not assignment bijections; retain domain guards and witness-choice dependencies.
+Targets: CurrentCarrierArithmetic2011, carrier equivalence families
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:257 (Guarded solution transport must preserve domains)
+
+P33 — Named accessors for conjunction certificates
+Keep conjunction definitions but add stable projection names; optional later Prop record.
+Targets: Carrier66.Canonical, PortBounds, Carrier66Source.canonical_strong_error
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/03_architecture.tex:68 (Give long conjunctions names without changing their definitions)
+
+P34 — Metavariable-selected finite positivity coordinates
+After fin_cases use hn/hh/ht/hv _ rather than enumerating coordinate numerals.
+Targets: Carrier66.drop_pos, Carrier66.restore_pos
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:78 (Let elaboration choose a coordinate)
+
+P35 — Narrow canonical-zero simplification
+Use explicit canonical equations and simp only in place of general ring search.
+Targets: Carrier66.canonical_zero
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:97 (Use a narrow rewrite set)
+
+P36 — Integer unit-factor API
+Use Int.eq_one_or_neg_one_of_mul_eq_one and sign exclusions; organize product proof in dependency order.
+Targets: ShortSystem.unit_eq_one, ShortSystem.product_eq_one_iff
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:119 (Units of the integers.)
+
+P37 — Local five-residual zero equivalence
+Use add_eq_zero_iff_of_nonneg, sq_eq_zero_iff, sub_eq_zero instead of five nlinarith branches.
+Targets: ShortSystem.residualSum_zero_iff
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/02_local.tex:55 (State the sum of squares invariant directly)
+
+P38 — Combine identical gate induction branches
+Share QuarticCompiler add/mul completeness branch proof via alternative pattern.
+Targets: QuarticCompiler.Gates.complete
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:132 (Combine genuinely identical constructor branches.)
+
+P39 — Shorten DAG run_map induction
+Use List.map_append/map_singleton and Node.eval_map directly on induction hypothesis.
+Targets: ArithmeticDAG.run_map
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:148 (Use the map lemma at the recursive boundary.)
+
+P40 — Cast entire Pell disjunction
+Replace final manual disjunction transport with exact_mod_cast while keeping Nat/Int subtraction boundaries.
+Targets: FirstPellCarrier.first_norm_facts_int
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:156 (Cast the whole conclusion instead of splitting it manually.)
+
+P41 — One coefficient-envelope row proof schema
+Select finite row, recurse through abs_ite_le and close all leaves using fixed nonnegativity facts; related uniform SplitKernelData proof generation.
+Targets: NativeCoefficientBounds.rowEnvelope_0 through rowEnvelope_21, SplitKernelData59
+Evidence: lean-proof-simplification-2026-10-26 (2).zip :: lean-proof-simplification-2026-10-26/report.tex:222 (Coefficient envelopes: one proof schema for all rows)
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/inventory/INVENTORY.md:52 (Coefficient-bound batches.)
+
+P42 — Finite catalog of coefficient values
+Bound distinct coefficient expressions once and verify catalog lookup equals authoritative rowCoefficient.
+Targets: NativeCoefficientBounds, NativeQuadraticParent.rowCoefficient
+Evidence: lean-proof-simplification-2026-10-26 (2).zip :: lean-proof-simplification-2026-10-26/report.tex:301 (small finite catalog.)
+
+P43 — Finite symbolic majorant certificate
+Nonnegative monomial basis plus finite coefficient-vector bounds replaces repeated arithmetic leaves without weakening linear dependence on K.
+Targets: NativeCoefficientBounds, SplitCoefficientBounds
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/notes/arithmetic.txt:253 (A reusable symbolic majorant can go beyond tactic compression)
+
+P44 — Coefficient homomorphism naturality from shared syntax
+Narrow map simp/case schema or computational ring syntax; retain exact literal coefficient binding and computability.
+Targets: NativeNinePolynomial52.mapRowCoefficient, GapNinePolynomial66
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/03_architecture.tex:214 (Remove duplicated coefficient expressions in stages)
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:384 (Do the same for coefficient naturality)
+
+P45 — Sparse quadratic row normalizer
+Small proof-producing normalized sparse syntax for source-row identities, avoiding full finalizer expansion.
+Targets: Gap row identities, Split row identities, Native row identities
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:754 (A small sparse-row normalizer is a better first reflection target)
+
+P46 — Elementary row operations preserve zero sets
+Represent two row additions and surjective reindexing generically; check concrete transformed-family binding.
+Targets: SplitCertificate59.transformed_zero_iff
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:774 (Represent elementary row operations once)
+
+P47 — Specialize existing half-base bound at 31
+Use half_base_bound with m=31 and normalize 4096; delete reproof.
+Targets: SelectiveCoefficientBounds.half_base_bound_31
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/02_local.tex:10 (Specialize the generic coefficient bound already in the file)
+
+P48 — Predecessor exponent rewrite
+Replace repeated congr/omega with pow_succ and Nat.sub_add_cancel under 1<=t.
+Targets: MultiTargetCarry, SelectiveCarry, SelectiveCoefficientBounds
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/02_local.tex:145 (Remove the repeated predecessor exponent calculation)
+
+P49 — Exact half-radix quotient/remainder identity
+Prove (s*a)%(2*s)+(s*b)/(2*s)=s*(a%2)+b/2 for s>0, derive bound/parity without sixteen cases.
+Targets: NativeCyclicRotation.shiftDigits_half_bound, NativeCyclicRotation.shiftDigits_half_parity_89
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:548 (A stronger half-radix lemma)
+Evidence: lean-proof-simplification-2026-10-26 (2).zip :: lean-proof-simplification-2026-10-26/report.tex:310 (Scaled division and cyclic residue interfaces)
+
+P50 — Cyclic residue, aligned-field and off-origin API
+Share ZMod representative arithmetic, arbitrary shifts/wraparound and mask lookup below consuming layers.
+Targets: CurrentClause2011, CurrentReflectedGeometry2011, CurrentCellTranslation2011, NativeLocalMask54, NativeCleanBands54
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:582 (Share physical-field residue calculations)
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md:167 (Put field-coordinate and off-origin mask lemmas below the clause layer)
+
+P51 — Finite-set intersection for support sums
+Use Finset.filter_mem_eq_inter and inter_eq_right instead of set extensionality.
+Targets: LowMaskCoding.sum_range_support, MultiTargetCarry.selectedMask_eq
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/02_local.tex:105 (Use finite set intersection instead of reproving membership)
+
+P52 — Convolution distributivity factoring
+Use Finset.sum_mul, mul_sum, pow_add and controlled AC simplification in final convolution proof step.
+Targets: NativeCyclicConvolution.word_convolution
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/02_local.tex:216 (Convolution factorization.)
+
+P53 — Finite-fiber weighted pushforward identity
+One sum-over-fibers identity serves mass, convolution and word reindexing and retains collisions.
+Targets: NativeCyclicConvolution.mass_foldStencil, convolution_foldStencil, word_foldStencil
+Evidence: lean-proof-simplification-2026-10-26 (2).zip :: lean-proof-simplification-2026-10-26/report.tex:415 (One finite-fiber identity for folded stencils)
+
+P54 — Use exact power >1 library theorem
+Use Nat.one_lt_two_pow in radix-origin decoding.
+Targets: NativeRadixDigits.decode_originMask
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/02_local.tex:223 (Use the exact power fact.)
+
+P55 — Normalize finite-switch boundary once
+In complement of tag=count prove tag<count+1 iff tag<count, removing second split.
+Targets: ArithmeticFiniteSwitch.program
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/02_local.tex:229 (Normalize a finite-switch boundary once.)
+
+P56 — Optional cellDigit bound by direct finite branches
+Two-line split_ifs/norm_num experiment, explicitly low priority due to existing highDigits_lt.
+Targets: CurrentHighDigits2011.cellDigit_lt
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/02_local.tex:234 (Do not prefer branch expansion just because it is shorter.)
+
+P57 — Coherent source/window extraction
+Factor polynomial zero -> restored canonical parent -> one shared source and N -> low/high window facts.
+Targets: CurrentSparseDigits2011.polynomial_zero_reconstructs, CurrentHighDigits2011.polynomial_zero_mask_test, CurrentPolynomialWindow2011.polynomial_zero_window
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/03_architecture.tex:99 (Share one coherent source and scalar window certificate)
+
+P58 — Smaller proved views of native window facts
+Project WordFacts/core contexts with Booleanity, support, carry and mask facts; derive count then phase then decoding.
+Targets: CurrentPolynomialWindow2011.Facts, CurrentOneHot2011, CurrentCellLabels2011, CurrentDecodedWindow2011
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:305 (Native proofs need smaller contexts and local equations)
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:869 (Improve the current-window API where coherence already exists)
+
+P59 — Derive carry recurrence instead of storing it
+Digit bound plus exact decomposition gives quotient recurrence; retain dot-notation method and coherent arrays.
+Targets: CurrentPolynomialWindow2011.Facts.carry_recurrence, NativeWindowCarry, CurrentWindowCarry2011
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:644 (Derive recurrence instead of storing it twice)
+
+P60 — Scalar carry decomposition lemmas
+Share quotient, residue and small-total reset from raw=digit+radix*carry, with minimal premises.
+Targets: CurrentClause2011.normalized_clause_residue, CurrentEarlyPadding2011, CurrentPhaseParity2011
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md:87 (Normalize exact digit/carry equations through a small scalar API)
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:320 (Add equation-side carry lemmas)
+
+P61 — Decode Pell source-register equations once
+Extract q=1+J*beta, L=q^2-1, N=q^3, X=q*w as arithmetic facts from literal rows.
+Targets: NativePellBootstrap.source_Y_ge_two, NativePellBootstrap.source_rank_eq_target, NativePellBootstrap.source_scale_eq, NativePellPower
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:617 (Decode source-register equations once)
+
+P62 — Rank Nat/Int conversion interface
+Package nonnegativity, toNat cast equality and existing rank inequalities once at source boundary.
+Targets: NativePellFirstIndex.source_first_index_exact, NativePellFirstIndex.source_first_pair, source-window family
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/notes/arithmetic.txt:227 (Normalize Nat/Int transitions at explicit semantic boundaries)
+
+P63 — Direction/field descriptors and copied bounds
+Describe widths/offsets/packed positions once and share four field bounds, preserving WNES/WENS ordering distinction.
+Targets: CurrentKernel2011, CurrentCellLabels2011
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:338 (Describe the packed direction layout once.)
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:712 (One copied-field bound interface)
+
+P64 — Finite checked-block assembly
+Keep kernel-checked chunks; share adjacent-block coverage, Euclidean block dispatcher, balanced sum composition, final partial blocks.
+Targets: WangTiles942Data.action_eq_decoder, WangTiles942Data rail assembly, CurrentKernel2011 finite sums
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:334 (Keep kernel-checked chunks; simplify their assembly.)
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:678 (Keep checked finite chunks; share their assembly)
+
+P65 — Optional reusable mask-block lookup/length/bounds
+Extract symbolic block library only when second substantial consumer exists, preserving distinct origin and high-port shifts.
+Targets: CurrentHighDigits2011
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:350 (Optional mask-block reuse.)
+
+P66 — Origin-decrement word identity
+Prove word_sub_origin with explicit no-borrow delta<=a 0 from word_add/word_origin.
+Targets: CurrentHighDigits2011.high_mask_word, NativeHighPort54.mask_word
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md:205 (Share the origin-decrement word lemma across the two high-mask families)
+
+P67 — Expose physical selector sum directly
+Make the Fin942 sum equality public instead of converting through prefix sums and back.
+Targets: CurrentClause2011.selectorCount_eq_prefix, CurrentOneHot2011, CurrentFieldOffsets2011
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md:230 (Expose the already-proved physical sum identity directly)
+
+P68 — Separate current carrier base from completeness imports
+Extract base arithmetic/masks/window below ThirteenCarrier completeness and keep facade.
+Targets: CurrentCarrierArithmetic2011, proposed CurrentCarrierBase2011
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/03_architecture.tex:147 (Put the current base interface below completeness)
+
+P69 — Common direct/native graph program builder
+Parameterize shared rawStepProgram/boundedRunProgram control flow by graph combinators; preserve 1742 vs6924 witnesses.
+Targets: DirectGraphEnumerator, NativeGraphEnumerator
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:356 (Share control flow without collapsing cost models)
+
+P70 — Transport definable induction once
+omega_ind_of_spec takes actual formula/environment and satisfaction equivalence; retains nonstandard-model definability.
+Targets: ObjectAdditionLaws, ObjectMultiplicationLaws, ObjectDistributivity
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/checker-review.md:159 (Transport definable induction once, retaining the formula witness)
+
+P71 — Model validity to sealed derivation bridge
+Centralize completeness_inf_context, ZF-model extraction and seal_valid, retaining arbitrary model universe and context distinctions.
+Targets: ObjectArithmetic, ObjectMultiplication, ObjectCode modules, ObjectNaturalExpression
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:728 (A shared bridge from arbitrary models to sealed derivations)
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/checker-review.md:182 (Centralize the sealed-model completeness boilerplate)
+
+P72 — Closed-formula transport polymorphic in arity
+Generalize local closed helper to arbitrary Fin k and reuse at source/target arities.
+Targets: ObjectQuarticCompiler.zfc_proves_compiler, ObjectPolynomial.sat_noZeroForm_at_iff
+Evidence: diophantine-lean-simplification-2026-10-26.zip :: diophantine-lean-simplification-2026-10-26/report.tex:768 (Generalize closed-sentence transport across arity)
+
+P73 — Share finite-index and renaming algebra across object/compiler clients
+Generic conjunction row-zero and instantiation bookkeeping; use existing internal semiring, preserve unguarded evalRel_unique.
+Targets: ObjectQuadraticSystem.conjunction_rows_zero_iff, QuadraticRegisterComposition.System.conjunction_holds, ObjectResidualSquares
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/report.tex:851 (Build on the algebraic interfaces already present)
+Evidence: lean-proof-simplification-2026-10-26.zip :: lean-proof-simplification-2026-10-26/notes/syntax.txt:133 (The totality theorem can profit from a semiring witness)
+
+P74 — Descend stronger modular result by divisibility
+Derive modulo16 reflection from modulo2048 via Nat.ModEq.of_dvd; identify existing selector definitions.
+Targets: CurrentEarlyPadding2011.reflected_mod_sixteen, CurrentClause2011.reflected_weight_mod
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md:57 (Use the existing stronger congruence at smaller moduli)
+
+P75 — Conditional padding witness API
+Require padding existential only inside 7<=phase<=10 branch, eliminating caller dummy function and classical choice.
+Targets: NativePreliminaryCount2011.total_le_one_all_phases, CurrentCount2011.count_le_one_of_middle_padding
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md:21 (Put a conditional witness inside the branch that needs it)
+
+P76 — Rewrite PR recursor congruence rather than second induction
+Use supplied pointwise realization equalities under Nat.rec; optional axiom-free rec_congr fallback.
+Targets: ScalarPRCode.Realizes.prec, PRCode.Realizes.prec, ScalarPROptimizer.eval_optimize
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/checker-review.md:38 (Rewrite under primitive recursion instead of proving congruence by induction)
+
+P77 — Finite coefficient support membership API
+Replace repeated insertion-membership simplification with explicit membership specification or indexed support representation.
+Targets: NativeQuadraticPositions
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/inventory/INVENTORY.md:53 (Finite-coordinate tables.)
+
+P78 — Common positive-modulus instance normalization
+Centralize repeated NeZero(N*2011) side conditions and cast/divisibility normalization.
+Targets: Current module family
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/inventory/INVENTORY.md:54 (Common modulus infrastructure.)
+
+P79 — Axiom policy gate and pure audit-wrapper generation
+Make existing axiom output fail policy violations; consolidate pure wrappers while preserving behavioral regression checks.
+Targets: checks modules, EndpointAudit, axiom-log scripts
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/05_validation.tex:39 (Turn the existing audit output into a failing policy gate)
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/05_validation.tex:72 (Consolidate pure audit wrappers but keep the regression proofs)
+
+P80 — Uniform generation templates and narrow proof interfaces
+Share Split/Gap generation templates, keep public cached cutpoints; explicit local simp, narrow imports and benchmark real consumers.
+Targets: Split/Gap proof generators, large native/circuit clients
+Evidence: Lean_Proof_Simplification_2026-10-26.zip :: Lean_Proof_Simplification/report/report.tex:294 (Share generation templates.)
+Evidence: diophantine-lean-proof-simplification-2026-10-26.zip [retired] :: Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/report.tex:375 (Prefer a stable simplification boundary)
+
+P81 — Abstract Split/Gap degree profiles
+Parameterize d0,d1,d2 and strict gaps d1<d2+116,d0<d2+232; retain sharp scale and leading coefficient hypotheses.
+Targets: SplitWordBounds, GapWordBounds66
+Evidence: ProveIt_Lean_Proof_Simplification_2026-10-26.zip :: LeanReview/report/sections/03_architecture.tex:172 (Abstract the degree profile but retain sharp hypotheses)

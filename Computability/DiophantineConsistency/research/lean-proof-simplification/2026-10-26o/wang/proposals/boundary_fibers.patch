@@ -1,0 +1,165 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942Boundary.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942Boundary.lean
+@@ -73,99 +73,69 @@
+   | reset p hp => exact Or.inr (Or.inl ⟨p,hp,rfl⟩)
+   | seam a b => exact Or.inr (Or.inr ⟨a,b,rfl⟩)
+ 
+-theorem north_435_iff_start {t : Tile} (ht : Allowed t) : t.north = 435 ↔ t = start := by
++theorem high_north_fiber {t : Tile} (ht : Allowed t) (c : ℕ) (hc : 434 ≤ c) :
++    t.north = c ↔
++      (c = 435 ∧ t = start) ∨
++      (c = 434 ∧ t = ⟨2,434,2,0⟩) ∨
++      (c = 436 ∧ (t = ⟨3,436,4,4⟩ ∨ t = ⟨4,436,4,0⟩)) ∨
++      (c = 438 ∧ ∃ p ∈ [434,435,436], t = ⟨1,438,1,p⟩) ∨
++      (c = 437 ∧ ∃ a b : Fin 3, t = ⟨a.val^2,437,b.val,437⟩) := by
+   constructor
+   · intro hn
+     rcases high_north_cases ht (by omega) with
+       rfl | rfl | rfl | rfl | ⟨p,hp,rfl⟩ | ⟨a,b,rfl⟩
+-    · rfl
+-    all_goals norm_num at hn
+-  · rintro rfl
+-    rfl
++    · exact Or.inl ⟨hn.symm,rfl⟩
++    · exact Or.inr (Or.inl ⟨hn.symm,rfl⟩)
++    · exact Or.inr (Or.inr (Or.inl ⟨hn.symm,Or.inl rfl⟩))
++    · exact Or.inr (Or.inr (Or.inl ⟨hn.symm,Or.inr rfl⟩))
++    · exact Or.inr (Or.inr (Or.inr (Or.inl ⟨hn.symm,p,hp,rfl⟩)))
++    · exact Or.inr (Or.inr (Or.inr (Or.inr ⟨hn.symm,a,b,rfl⟩)))
++  · rintro (⟨rfl,rfl⟩ | ⟨rfl,rfl⟩ | ⟨rfl,rfl | rfl⟩ |
++      ⟨rfl,p,hp,rfl⟩ | ⟨rfl,a,b,rfl⟩) <;> rfl
++
++theorem high_south_fiber {t : Tile} (ht : Allowed t) (c : ℕ) (hc : 434 ≤ c) :
++    t.south = c ↔
++      (c = 438 ∧ ∃ a b : Fin 2, t = ⟨0,432*a.val+b.val,0,438⟩) ∨
++      (c ∈ [434,435,436] ∧ t = ⟨1,438,1,c⟩) ∨
++      (c = 437 ∧ ∃ a b : Fin 3, t = ⟨a.val^2,437,b.val,437⟩) := by
++  constructor
++  · intro hs
++    rcases high_south_cases ht (by omega) with
++      ⟨a,b,rfl⟩ | ⟨p,hp,rfl⟩ | ⟨a,b,rfl⟩
++    · exact Or.inl ⟨hs.symm,a,b,rfl⟩
++    · change p = c at hs
++      subst p
++      exact Or.inr (Or.inl ⟨hp,rfl⟩)
++    · exact Or.inr (Or.inr ⟨hs.symm,a,b,rfl⟩)
++  · rintro (⟨rfl,a,b,rfl⟩ | ⟨hp,rfl⟩ | ⟨rfl,a,b,rfl⟩) <;> rfl
++
++theorem north_435_iff_start {t : Tile} (ht : Allowed t) : t.north = 435 ↔ t = start := by
++  simpa using high_north_fiber ht 435 (by decide)
+ 
+ theorem north_434_iff_initLeft {t : Tile} (ht : Allowed t) :
+     t.north = 434 ↔ t = ⟨2,434,2,0⟩ := by
+-  constructor
+-  · intro hn
+-    rcases high_north_cases ht (by omega) with
+-      rfl | rfl | rfl | rfl | ⟨p,hp,rfl⟩ | ⟨a,b,rfl⟩
+-    · norm_num [start] at hn
+-    · rfl
+-    all_goals norm_num at hn
+-  · rintro rfl
+-    rfl
++  simpa using high_north_fiber ht 434 (by decide)
+ 
+ /-- The head initializer has south color 4, not the old state-93 color 188. -/
+ theorem north_436_iff_initializers {t : Tile} (ht : Allowed t) :
+     t.north = 436 ↔ t = ⟨3,436,4,4⟩ ∨ t = ⟨4,436,4,0⟩ := by
+-  constructor
+-  · intro hn
+-    rcases high_north_cases ht (by omega) with
+-      rfl | rfl | rfl | rfl | ⟨p,hp,rfl⟩ | ⟨a,b,rfl⟩
+-    · norm_num [start] at hn
+-    · norm_num at hn
+-    · exact Or.inl rfl
+-    · exact Or.inr rfl
+-    all_goals norm_num at hn
+-  · rintro (rfl | rfl) <;> rfl
++  simpa using high_north_fiber ht 436 (by decide)
+ 
+ theorem north_438_iff_reset {t : Tile} (ht : Allowed t) :
+     t.north = 438 ↔ ∃ p ∈ [434,435,436], t = ⟨1,438,1,p⟩ := by
+-  constructor
+-  · intro hn
+-    rcases high_north_cases ht (by omega) with
+-      rfl | rfl | rfl | rfl | ⟨p,hp,rfl⟩ | ⟨a,b,rfl⟩
+-    · norm_num [start] at hn
+-    · norm_num at hn
+-    · norm_num at hn
+-    · norm_num at hn
+-    · exact ⟨p,hp,rfl⟩
+-    · norm_num at hn
+-  · rintro ⟨p,hp,rfl⟩
+-    rfl
++  simpa using high_north_fiber ht 438 (by decide)
+ 
+ theorem north_437_iff_seam {t : Tile} (ht : Allowed t) :
+     t.north = 437 ↔ ∃ a b : Fin 3, t = ⟨a.val^2,437,b.val,437⟩ := by
+-  constructor
+-  · intro hn
+-    rcases high_north_cases ht (by omega) with
+-      rfl | rfl | rfl | rfl | ⟨p,hp,rfl⟩ | ⟨a,b,rfl⟩
+-    · norm_num [start] at hn
+-    · norm_num at hn
+-    · norm_num at hn
+-    · norm_num at hn
+-    · norm_num at hn
+-    · exact ⟨a,b,rfl⟩
+-  · rintro ⟨a,b,rfl⟩
+-    rfl
++  simpa using high_north_fiber ht 437 (by decide)
+ 
+ theorem south_438_iff_finish {t : Tile} (ht : Allowed t) :
+     t.south = 438 ↔ ∃ a b : Fin 2, t = ⟨0,432*a.val+b.val,0,438⟩ := by
+-  constructor
+-  · intro hs
+-    rcases high_south_cases ht (by omega) with
+-      ⟨a,b,rfl⟩ | ⟨p,hp,rfl⟩ | ⟨a,b,rfl⟩
+-    · exact ⟨a,b,rfl⟩
+-    · simp only [List.mem_cons, List.not_mem_nil, or_false] at hp
+-      simp only at hs
+-      omega
+-    · norm_num at hs
+-  · rintro ⟨a,b,rfl⟩
+-    rfl
++  simpa using high_south_fiber ht 438 (by decide)
+ 
+ theorem south_437_iff_seam {t : Tile} (ht : Allowed t) :
+     t.south = 437 ↔ ∃ a b : Fin 3, t = ⟨a.val^2,437,b.val,437⟩ := by
+-  constructor
+-  · intro hs
+-    rcases high_south_cases ht (by omega) with
+-      ⟨a,b,rfl⟩ | ⟨p,hp,rfl⟩ | ⟨a,b,rfl⟩
+-    · norm_num at hs
+-    · simp only [List.mem_cons, List.not_mem_nil, or_false] at hp
+-      simp only at hs
+-      omega
+-    · exact ⟨a,b,rfl⟩
+-  · rintro ⟨a,b,rfl⟩
+-    rfl
++  simpa using high_south_fiber ht 437 (by decide)
+ 
+ /-- A seam color on either vertical edge forces a full seam tile. -/
+ theorem north_437_iff_south_437 {t : Tile} (ht : Allowed t) :
+@@ -179,19 +149,9 @@
+   have hb : 434 ≤ p ∧ p ≤ 436 := by
+     simp only [List.mem_cons, List.not_mem_nil, or_false] at hp
+     omega
+-  constructor
+-  · intro hs
+-    rcases high_south_cases ht (by omega) with
+-      ⟨a,b,rfl⟩ | ⟨q,hq,rfl⟩ | ⟨a,b,rfl⟩
+-    · simp only at hs
+-      omega
+-    · simp only at hs
+-      subst q
+-      rfl
+-    · simp only at hs
+-      omega
+-  · rintro rfl
+-    rfl
++  have h437 : p ≠ 437 := by omega
++  have h438 : p ≠ 438 := by omega
++  simpa [h437, h438, hp] using high_south_fiber ht p hb.1
+ 
+ /-- All nine finite seam combinations are actually present in the indexed table. -/
+ theorem seam_tile_exists (a b : Fin 3) :

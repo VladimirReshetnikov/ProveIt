@@ -1,0 +1,45 @@
+{
+  "baseline_commit": "b310142330df89e48413c8fce62e7de223e1c7d5",
+  "lean_toolchain": "leanprover/lean4:v4.32.0",
+  "mathlib_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "checks": [
+    {
+      "target": "NoVacuousInduction.lean",
+      "exit_code": 0,
+      "log": "no_vacuous_induction_build.log"
+    },
+    {
+      "target": "replacements/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectAdditionCancellation.lean",
+      "exit_code": 0,
+      "log": "replacement_addition_build.log"
+    },
+    {
+      "target": "replacements/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectNaturalZero.lean",
+      "exit_code": 0,
+      "log": "replacement_multiplication_build.log"
+    },
+    {
+      "target": "git apply --check no_vacuous_induction.patch",
+      "exit_code": 0
+    }
+  ],
+  "axioms": {
+    "DiophantineConsistency.NoVacuousInduction.addRel_zero_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "DiophantineConsistency.NoVacuousInduction.mulRel_zero_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "scope": "Standalone alternate proofs and two full replacement modules checked. Whole repository not rebuilt. Existing source checkout unchanged.",
+  "net_source_lines_saved": 42,
+  "block_line_counts": {
+    "before": 73,
+    "after": 29,
+    "extra_import_lines": 2
+  }
+}

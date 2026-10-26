@@ -1,0 +1,33 @@
+\subsection{What was compiled}
+
+All twelve supplied experiment modules were compiled successfully with Lean 4.32.0 against the pinned project and mathlib environment. The complete patched \code{Representation.lean} was also compiled, and \code{git apply --check} accepted its patch. The compatibility module imports an isolated copy of the unchanged original; the patched module has a different output path.
+
+\begin{longtable}{L{0.34\textwidth}L{0.55\textwidth}}
+\toprule
+Compiled artifact & Scope of the successful check\\
+\midrule
+\endhead
+\code{AssignmentTransport.lean} & General transport and witness-splitting helpers; three complete old/new constructor equalities proved by \code{rfl}.\\
+\code{GenericScanner.lean} & General simulation and invariant theorems. The four existing scanners have not been migrated.\\
+\code{DAGRefactoring.lean} & Generic topological invariant, equality and degree consumers, input irrelevance, commutative node-relation soundness, and a power-certificate adapter.\\
+\code{HalfRadixCore.lean} & Scalar half-radix identity and bound/parity consequences.\\
+\code{HalfRadixRefactor.lean} & Same-signature replacements for both original cyclic-rotation results, importing the original project module.\\
+\code{OneHotCore.lean} & The same generic one-hot statement, with the original predicate reproduced in an isolated namespace.\\
+\code{CarryCore.lean} & Quotient and remainder consequences of a normalized local carry equation.\\
+\code{CyclicFieldRefactor.lean} & Addition/subtraction residues and support exclusion in the full cyclic ambient group.\\
+\code{CyclicFieldProjectAdapter.lean} & All four concrete low-support exclusions from the original clause/marker arguments, grouped into two results.\\
+\code{PositiveZeroRefactor.lean} & General congruence and both $69\leftrightarrow70$ and $70\leftrightarrow71$ existence comparisons against the actual project polynomials.\\
+\code{ReflectedResidueRefactor.lean} & The modulus-16 replacement derived directly from the original modulus-2048 theorem.\\
+\code{WordOriginRefactor.lean} & Subtraction-at-origin helper using the actual packed-word definitions and its required natural-subtraction guard.\\
+\bottomrule
+\end{longtable}
+
+The portable \code{scripts/verify.py --full} replay checks all twelve modules, the original representation module, patch applicability, and the complete patched module. It records commands, exit codes, source hashes, log hashes, and printed axiom dependencies in \code{validation/replay/status.json}. The higher-level classification is in \code{validation/status.json}. The earlier command transcript records the review machine's paths; the Python script is the portable entry point.
+
+Every supplied successful printed axiom audit reports a subset of \code{propext}, \code{Classical.choice}, and \code{Quot.sound}; several invariant results use no axioms. No printed audit contains \code{sorryAx} or a native-evaluation axiom. This statement concerns the recorded elaborated declarations, not an exhaustive axiom audit of all 546 project files.
+
+\subsection{What remains an integration proposal}
+
+The archive does not migrate every scanner, replace both complete circuit translations, remove the generated power or gate declarations, implement the sparse-row certificate generator, or refactor the object-language induction layer. The checked helpers establish concrete reusable proof interfaces for those changes. Their total source reduction and elaboration costs must be measured after integration.
+
+Selected original dependency targets were built successfully; the entire repository was not rebuilt. Existing unrelated linter warnings remain in the dependency logs. No global build-time or memory improvement is claimed. Source metrics are independently reproducible with \code{scripts/audit_lean.py}.

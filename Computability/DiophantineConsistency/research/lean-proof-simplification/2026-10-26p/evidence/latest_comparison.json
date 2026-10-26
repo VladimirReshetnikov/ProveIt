@@ -1,0 +1,344 @@
+{
+  "baseline_commit": "7fa06d530df54d4aeb2e18027409df082234c69e",
+  "latest_commit": "6f46a5e3480a2fa2e45993b8090826f256aeaa56",
+  "repository_unchanged": true,
+  "lean_validation_scope": "All Lean checks remain pinned to baseline commit. This receipt establishes source identity and patch applicability only, not a full latest-main Lean build.",
+  "proposals": {
+    "pell_factor": {
+      "retained": true,
+      "patch": "/dev/shm/lean-review-10015/research/ratio/ratio-factor.patch",
+      "files": [
+        {
+          "path": "Computability/HilbertTenthProblem/Lean/Diophantine/Paper1980/PellRatio90.lean",
+          "status": "unchanged",
+          "baseline_blob": "cd525d295816e6de4e74232d99f0e5a5e7bb8053",
+          "latest_blob": "cd525d295816e6de4e74232d99f0e5a5e7bb8053",
+          "baseline": {
+            "bytes": 23237,
+            "physical_lines": 472,
+            "nonblank_lines": 443,
+            "sha256": "b87217635990714681f5edf9f326a503da25f7ebcbefce3b8206d1cfedd4116c"
+          },
+          "latest": {
+            "bytes": 23237,
+            "physical_lines": 472,
+            "nonblank_lines": 443,
+            "sha256": "b87217635990714681f5edf9f326a503da25f7ebcbefce3b8206d1cfedd4116c"
+          },
+          "latest_candidate": {
+            "bytes": 23855,
+            "physical_lines": 478,
+            "nonblank_lines": 448,
+            "sha256": "5b790da2863fba41ac42b56675c77bc8404a2e5834e9a44ab255602e5a3fbbd0"
+          }
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeHalfBinomial.lean",
+          "status": "unchanged",
+          "baseline_blob": "df54f29fa14513e5785be03bc987895e47c0bcde",
+          "latest_blob": "df54f29fa14513e5785be03bc987895e47c0bcde",
+          "baseline": {
+            "bytes": 12130,
+            "physical_lines": 244,
+            "nonblank_lines": 234,
+            "sha256": "520b206dbf9761113a6dc4880b76c77e8a8a2276b4b10847ef00e75259fabdfa"
+          },
+          "latest": {
+            "bytes": 12130,
+            "physical_lines": 244,
+            "nonblank_lines": 234,
+            "sha256": "520b206dbf9761113a6dc4880b76c77e8a8a2276b4b10847ef00e75259fabdfa"
+          },
+          "latest_candidate": {
+            "bytes": 7858,
+            "physical_lines": 161,
+            "nonblank_lines": 151,
+            "sha256": "c816fb0395389dce45042aed6acbfd6c182355357de9d4b2abf660516bab3881"
+          }
+        }
+      ],
+      "latest_patch_check": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "applied_to_temporary_tree": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "patch_sha256": "393ffdfbdef029faec2435d68e41979673479f63ea37f03b85abc6b45488f92f"
+    },
+    "variadic_fragments": {
+      "retained": true,
+      "patch": "/dev/shm/lean-review-10015/research/syntax/variadic-fragments.patch",
+      "files": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofChecker.lean",
+          "status": "modified",
+          "baseline_blob": "5707b0eb499d03dbaef3d06c19f4980c2ae3b584",
+          "latest_blob": "6a3ed823d96d9d07badd61c93007421a5406cda5",
+          "baseline": {
+            "bytes": 16382,
+            "physical_lines": 388,
+            "nonblank_lines": 345,
+            "sha256": "145b098735cdfbd76d48835231dd242ac330a2fcfabce50c73d1c5ef1b810301"
+          },
+          "latest": {
+            "bytes": 16131,
+            "physical_lines": 380,
+            "nonblank_lines": 337,
+            "sha256": "23031932b4c99bc723a076c59e7bb176ca2a7cbcbab3b3e254c41dcbf4106845"
+          },
+          "diff": "diff --git a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofChecker.lean b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofChecker.lean\nindex 5707b0eb4..6a3ed823d 100644\n--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofChecker.lean\n+++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofChecker.lean\n@@ -175,16 +175,8 @@ def Line.valid (line : Line) (seen : List Judgment) : Bool :=\n   line.rule.side && decide (line.parents.map (fun i => seen[i]?)=line.rule.premises.map some)\n \n private theorem mem_of_lookup {seen : List Judgment} {i : Nat} {j : Judgment}\n-    (h : seen[i]?=some j) : j\u2208seen := by\n-  induction seen generalizing i with\n-  | nil => simp at h\n-  | cons a seen ih =>\n-    cases i with\n-    | zero =>\n-      simp only [List.getElem?_cons_zero,Option.some.injEq] at h\n-      subst j\n-      exact List.mem_cons_self\n-    | succ i => exact List.mem_cons_of_mem a (ih h)\n+    (h : seen[i]?=some j) : j\u2208seen :=\n+  List.mem_of_getElem? h\n \n theorem Line.sound (line : Line) (seen : List Judgment)\n     (hseen : \u2200 j \u2208 seen,j.Provable) (h : line.valid seen=true) : line.rule.output.Provable := by\n",
+          "latest_candidate": {
+            "bytes": 15948,
+            "physical_lines": 370,
+            "nonblank_lines": 326,
+            "sha256": "cb575d1788eb0b85b52470ff9a3c88e8fc2c0156fe3d576a0297b765c2ce51b1"
+          }
+        }
+      ],
+      "latest_patch_check": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "applied_to_temporary_tree": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "patch_sha256": "26e0e5c00d0d82e3d20ff18539c6d4a6d0c471ca9af55e411353a4125bfe6a99"
+    },
+    "successor_certificate": {
+      "retained": true,
+      "patch": "/dev/shm/lean-review-10015/research/syntax/successor-certificate.patch",
+      "files": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedSyntaxGraphs.lean",
+          "status": "unchanged",
+          "baseline_blob": "3f594c8f930d0bb612d3cac13bfd8684570a7cbb",
+          "latest_blob": "3f594c8f930d0bb612d3cac13bfd8684570a7cbb",
+          "baseline": {
+            "bytes": 7518,
+            "physical_lines": 169,
+            "nonblank_lines": 140,
+            "sha256": "b3151576aa5a2054d5f9a77539cae877b21ffe3f835873676d91b8244f5c9449"
+          },
+          "latest": {
+            "bytes": 7518,
+            "physical_lines": 169,
+            "nonblank_lines": 140,
+            "sha256": "b3151576aa5a2054d5f9a77539cae877b21ffe3f835873676d91b8244f5c9449"
+          },
+          "latest_candidate": {
+            "bytes": 7277,
+            "physical_lines": 166,
+            "nonblank_lines": 136,
+            "sha256": "0ed5f2d4499d2dc000454c3ee4aa164b3d068a206143063abf6d6fd0192b7fac"
+          }
+        }
+      ],
+      "latest_patch_check": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "applied_to_temporary_tree": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "patch_sha256": "7980b6b7d2a22bf48a2bcb85338a39c158ff7cbd52ad050a495c03f44c1acb1c"
+    },
+    "support_difference": {
+      "retained": true,
+      "patch": "/dev/shm/lean-review-10015/research/arithmetic/support-difference.patch",
+      "files": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/SupportDifference.lean",
+          "status": "absent_both",
+          "baseline_blob": null,
+          "latest_blob": null,
+          "baseline": null,
+          "latest": null,
+          "latest_candidate": {
+            "bytes": 1474,
+            "physical_lines": 36,
+            "nonblank_lines": 30,
+            "sha256": "8b0f3ce3cb42cfce819de428f14c9f8d12e4fc77cf6dcba68affc4d4feb0d3f0"
+          }
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeTemporalSupport54.lean",
+          "status": "unchanged",
+          "baseline_blob": "04da212e375d36f2b73780911a7b6aa1c08a3339",
+          "latest_blob": "04da212e375d36f2b73780911a7b6aa1c08a3339",
+          "baseline": {
+            "bytes": 4190,
+            "physical_lines": 82,
+            "nonblank_lines": 71,
+            "sha256": "58214bf9c8760e6302b5b04d5ec48198597c35783379bcac7c6e3dc092e746d8"
+          },
+          "latest": {
+            "bytes": 4190,
+            "physical_lines": 82,
+            "nonblank_lines": 71,
+            "sha256": "58214bf9c8760e6302b5b04d5ec48198597c35783379bcac7c6e3dc092e746d8"
+          },
+          "latest_candidate": {
+            "bytes": 4025,
+            "physical_lines": 89,
+            "nonblank_lines": 77,
+            "sha256": "0d5259cd1f31704e9d13aadef0d992746b49cf976241f8af4f2541c0ab7ce3f5"
+          }
+        }
+      ],
+      "latest_patch_check": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "applied_to_temporary_tree": {
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "patch_sha256": "4ddb7d19d969e88dabf64058264f2eca511d2c3917fd7bcbf759159ca5712bdd"
+    },
+    "canonical_pairing": {
+      "retained": true,
+      "patch": null,
+      "files": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticNatPairing.lean",
+          "status": "unchanged",
+          "baseline_blob": "2f54cb6dfd995e39ec82ae2b3d179a023623c38a",
+          "latest_blob": "2f54cb6dfd995e39ec82ae2b3d179a023623c38a",
+          "baseline": {
+            "bytes": 6838,
+            "physical_lines": 158,
+            "nonblank_lines": 132,
+            "sha256": "a7c07f9a01fbc6a15b9b2d24bd37d3d91cc7ca7507549817f9a39fecf225841d"
+          },
+          "latest": {
+            "bytes": 6838,
+            "physical_lines": 158,
+            "nonblank_lines": 132,
+            "sha256": "a7c07f9a01fbc6a15b9b2d24bd37d3d91cc7ca7507549817f9a39fecf225841d"
+          }
+        }
+      ]
+    },
+    "sign_congruence": {
+      "retained": false,
+      "patch": null,
+      "exclusion_reason": "Root reports a newly arrived docs/incoming archive explicitly proposes this mechanism.",
+      "files": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/SignModEq.lean",
+          "status": "absent_both",
+          "baseline_blob": null,
+          "latest_blob": null,
+          "baseline": null,
+          "latest": null
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean",
+          "status": "modified",
+          "baseline_blob": "9512eb50969361965a7ab3e05a0c3e87034287df",
+          "latest_blob": "1ba45f03d35726c5426e590de8d87d4b89caa6d0",
+          "baseline": {
+            "bytes": 11791,
+            "physical_lines": 248,
+            "nonblank_lines": 236,
+            "sha256": "83c942bbb59c388bc0e940b07b2f9e62a160b00a36ae81f68404528e3766bdca"
+          },
+          "latest": {
+            "bytes": 10732,
+            "physical_lines": 230,
+            "nonblank_lines": 218,
+            "sha256": "3ac04e51295cc9e2afb68fcd34b1847900dcbb922ebfb78d427b5681c65803fc"
+          },
+          "diff": "diff --git a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean\nindex 9512eb509..1ba45f03d 100644\n--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean\n+++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean\n@@ -87,9 +87,7 @@ theorem index_residues {A c f I J p m y u : \u2115}\n   have hsp := step_down hA hp hpm (Or.inl hstep)\n   have hcmZ : (c : \u2124) \u2223 m := by exact_mod_cast hcm\n   have hsp' : (c : \u2124) \u2223 (s : \u2124) - p \u2228 (c : \u2124) \u2223 (s : \u2124) + p := by\n-    rcases hsp with hh | hh\n-    \u00b7 exact Or.inl (dvd_trans hcmZ hh)\n-    \u00b7 exact Or.inr (dvd_trans hcmZ hh)\n+    exact hsp.imp (dvd_trans hcmZ) (dvd_trans hcmZ)\n   -- `u \u2261 (\u22121)^h s (mod c)` and `u \u2261 J (mod c)`\n   have hcI : (c : \u2124) \u2223 (I : \u2124) ^ 2 := by\n     exact dvd_pow (by exact_mod_cast hcI\u2080) (by decide : 2 \u2260 0)\n@@ -109,16 +107,12 @@ theorem index_residues {A c f I J p m y u : \u2115}\n   have hJp_of_sign {t : \u2124} (hJs : (J : \u2124) \u2261 t * s [ZMOD c])\n       (ht : t = 1 \u2228 t = -1) :\n       (c : \u2124) \u2223 (J : \u2124) - p \u2228 (c : \u2124) \u2223 (J : \u2124) + p := by\n-    have hJs' := Int.modEq_iff_dvd.1 hJs\n+    have hJs' := Int.modEq_iff_dvd.1 hJs.symm\n     rcases ht with e | e <;> rw [e] at hJs' <;> rcases hsp' with hh | hh\n-    \u00b7 left; obtain \u27e8k1, hk1\u27e9 := hh; obtain \u27e8k2, hk2\u27e9 := hJs'\n-      exact \u27e8k1 - k2, by linear_combination hk1 - hk2\u27e9\n-    \u00b7 right; obtain \u27e8k1, hk1\u27e9 := hh; obtain \u27e8k2, hk2\u27e9 := hJs'\n-      exact \u27e8k1 - k2, by linear_combination hk1 - hk2\u27e9\n-    \u00b7 right; obtain \u27e8k1, hk1\u27e9 := hh; obtain \u27e8k2, hk2\u27e9 := hJs'\n-      exact \u27e8-k1 - k2, by linear_combination -hk1 - hk2\u27e9\n-    \u00b7 left; obtain \u27e8k1, hk1\u27e9 := hh; obtain \u27e8k2, hk2\u27e9 := hJs'\n-      exact \u27e8-k1 - k2, by linear_combination -hk1 - hk2\u27e9\n+    \u00b7 left; convert Int.dvd_add hJs' hh using 1; ring\n+    \u00b7 right; convert Int.dvd_add hJs' hh using 1; ring\n+    \u00b7 right; convert Int.dvd_sub hJs' hh using 1; ring\n+    \u00b7 left; convert Int.dvd_sub hJs' hh using 1; ring\n   rcases hJs with hJs | hJs\n   \u00b7 exact hJp_of_sign hJs (neg_one_pow_eq_or \u2124 h)\n   \u00b7 apply hJp_of_sign (t := -((-1 : \u2124) ^ h)) (by simpa only [neg_mul] using hJs)\n@@ -135,8 +129,7 @@ theorem signed_index_residues {A c f I J p m y : \u2115} {V : \u2124}\n     (haux : (I : \u2124) ^ 2 * V ^ 2 - ((I : \u2124) ^ 2 - 1) * (y : \u2124) ^ 2 = 1)\n     (hVf : V \u2261 -(c : \u2124) [ZMOD f]) (hVJ : V \u2261 -(J : \u2124) [ZMOD c]) :\n     (c : \u2124) \u2223 (J : \u2124) - p \u2228 (c : \u2124) \u2223 (J : \u2124) + p := by\n-  have hvsq : (V.natAbs : \u2124) ^ 2 = V ^ 2 := by\n-    rcases Int.natAbs_eq V with h | h <;> rw [h] <;> simp\n+  have hvsq : (V.natAbs : \u2124) ^ 2 = V ^ 2 := by simp\n   have hvaux : ((I : \u2124) * V.natAbs) ^ 2 =\n       1 + ((I : \u2124) ^ 2 - 1) * (y : \u2124) ^ 2 := by\n     rw [mul_pow, hvsq]\n@@ -147,28 +140,20 @@ theorem signed_index_residues {A c f I J p m y : \u2115} {V : \u2124}\n   have hvJ : (V.natAbs : \u2124) \u2261 J [ZMOD c] \u2228\n       (V.natAbs : \u2124) \u2261 -(J : \u2124) [ZMOD c] := by\n     rcases Int.natAbs_eq V with h | h\n-    \u00b7 right\n-      exact (congrArg (fun z : \u2124 => z % (c : \u2124)) h.symm).trans hVJ\n+    \u00b7 right; simpa only [\u2190 h] using hVJ\n     \u00b7 left\n-      have habs : (V.natAbs : \u2124) = -V := by omega\n-      have habsmod : (V.natAbs : \u2124) \u2261 -V [ZMOD c] :=\n-        congrArg (fun z : \u2124 => z % (c : \u2124)) habs\n-      have hnegmod : -V \u2261 J [ZMOD c] := by simpa only [neg_neg] using hVJ.neg\n-      exact habsmod.trans hnegmod\n+      rw [h] at hVJ\n+      simpa only [neg_neg] using hVJ.neg\n   exact index_residues hA hp hcp hf hpm hcm hI1 hcI hIsq hy hvaux hvf hvJ\n \n /-- Half-modulus bounds remove both sign and nonzero-multiple ambiguity. -/\n theorem eq_of_residues {c J p : \u2115} (hp : 0 < p) (hJ : 0 < J)\n     (hpc : 2 * p < c) (hJc : 2 * J < c)\n     (hres : (c : \u2124) \u2223 (J : \u2124) - p \u2228 (c : \u2124) \u2223 (J : \u2124) + p) : p = J := by\n-  have hpZ : (0 : \u2124) < p := by exact_mod_cast hp\n-  have hJZ : (0 : \u2124) < J := by exact_mod_cast hJ\n-  have hpcZ : (2 : \u2124) * p < c := by exact_mod_cast hpc\n-  have hJcZ : (2 : \u2124) * J < c := by exact_mod_cast hJc\n   rcases hres with h | h\n   \u00b7 have hzero : (J : \u2124) - p = 0 :=\n       Int.eq_zero_of_abs_lt_dvd h (by rw [abs_lt]; constructor <;> omega)\n-    exact_mod_cast (show (p : \u2124) = J by omega)\n+    omega\n   \u00b7 have hzero : (J : \u2124) + p = 0 :=\n       Int.eq_zero_of_abs_lt_dvd h (by rw [abs_lt]; constructor <;> omega)\n     omega\n@@ -233,11 +218,8 @@ theorem source_index_of_strong {A c f i J p y : \u2115} {V j o : \u2124}\n `c \u2223 f\u00b2-1`; no cancellation of the Pell discriminant is used. -/\n theorem quotient_dvd {c f o J : \u2124}\n     (hcf : c \u2223 f ^ 2 - 1) (hV : c \u2223 o * f + J) : c \u2223 o + J * f := by\n-  have h\u2081 : c \u2223 (o * f + J) * f := dvd_mul_of_dvd_left hV f\n-  have h\u2082 : c \u2223 o * (f ^ 2 - 1) := dvd_mul_of_dvd_right hcf o\n-  have heq : o + J * f = (o * f + J) * f - o * (f ^ 2 - 1) := by ring\n-  rw [heq]\n-  exact dvd_sub h\u2081 h\u2082\n+  convert Int.dvd_sub (dvd_mul_of_dvd_left hV f) (dvd_mul_of_dvd_right hcf o) using 1\n+  ring\n \n /-- Substituting the restored quotient exactly reproduces the original\n minus-sign auxiliary coordinate. -/\n"
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/SignedPellResidue.lean",
+          "status": "unchanged",
+          "baseline_blob": "90db8b332e30a54df716ed3b75ef396ee04eb0f8",
+          "latest_blob": "90db8b332e30a54df716ed3b75ef396ee04eb0f8",
+          "baseline": {
+            "bytes": 4482,
+            "physical_lines": 102,
+            "nonblank_lines": 92,
+            "sha256": "53a42a0e1fcf6b054b70d6aecc9b5d9684a5a0530c1a920ac4628e169104ae2b"
+          },
+          "latest": {
+            "bytes": 4482,
+            "physical_lines": 102,
+            "nonblank_lines": 92,
+            "sha256": "53a42a0e1fcf6b054b70d6aecc9b5d9684a5a0530c1a920ac4628e169104ae2b"
+          }
+        }
+      ]
+    },
+    "depth_budget": {
+      "retained": false,
+      "patch": null,
+      "exclusion_reason": "Root reports a newly arrived docs/incoming archive explicitly proposes this mechanism.",
+      "files": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/DepthBudget.lean",
+          "status": "absent_both",
+          "baseline_blob": null,
+          "latest_blob": null,
+          "baseline": null,
+          "latest": null
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/GraphSizeBounds.lean",
+          "status": "unchanged",
+          "baseline_blob": "fdea6cb483025e33221595369dac63bb23b316df",
+          "latest_blob": "fdea6cb483025e33221595369dac63bb23b316df",
+          "baseline": {
+            "bytes": 8504,
+            "physical_lines": 214,
+            "nonblank_lines": 179,
+            "sha256": "046e7266543277cd0d178b47ca55a6358181f59bb1e23d11b362b70cceadb0d6"
+          },
+          "latest": {
+            "bytes": 8504,
+            "physical_lines": 214,
+            "nonblank_lines": 179,
+            "sha256": "046e7266543277cd0d178b47ca55a6358181f59bb1e23d11b362b70cceadb0d6"
+          }
+        }
+      ]
+    }
+  },
+  "retained_mechanism_presence_assessment": {
+    "pell_factor": "Both targeted production files byte-identical to baseline; existing duplicated estimates remain. General scale-parametric replacement is absent from these clients.",
+    "variadic_fragments": "Latest changes only mem_of_lookup. Arity-specific fragment0/1/2/3 remain untouched; collect_fragments is absent.",
+    "successor_certificate": "Production file byte-identical to baseline. Successor-normalized certificate equivalence remains absent.",
+    "support_difference": "NativeTemporalSupport54 byte-identical to baseline; proposed SupportDifference module does not exist at either revision.",
+    "canonical_pairing": "Production certificate module byte-identical to baseline. Proposed canonical witness normal form remains absent."
+  },
+  "latest_name_search": {
+    "command": [
+      "git",
+      "grep",
+      "-n",
+      "-E",
+      "SignModEq|SupportDifference|DepthBudget|collect_fragments|forkCertificate_succ|certificate_normal_form|normal_form|amortized|amortised|upper_estimate.*scale|upper_estimate.*factor",
+      "6f46a5e3480a2fa2e45993b8090826f256aeaa56",
+      "--",
+      "Computability/DiophantineConsistency/Lean",
+      "Computability/HilbertTenthProblem/Lean"
+    ],
+    "caveat": "Identifier search supplements target-file comparison; it is not proof of absence of all semantically equivalent results under different names.",
+    "exit_code": 0,
+    "stdout": "6f46a5e3480a2fa2e45993b8090826f256aeaa56:Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeHalfBinomial.lean:18:theorem upper_estimate_scaled {U Y r k c a J : \u2115} (hU : 1 \u2264 U) (hY : 1 \u2264 Y) (hr : 1 \u2264 r)\n6f46a5e3480a2fa2e45993b8090826f256aeaa56:Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeHalfBinomial.lean:137:  have hup := upper_estimate_scaled hX hY hr hR (by omega : 1 < a + 2) ha\n6f46a5e3480a2fa2e45993b8090826f256aeaa56:Computability/DiophantineConsistency/Lean/checks/NativeHalfBinomial.lean:5:#print axioms upper_estimate_scaled\n",
+    "stderr": ""
+  }
+}

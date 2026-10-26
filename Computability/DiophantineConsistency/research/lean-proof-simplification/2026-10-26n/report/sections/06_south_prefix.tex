@@ -1,0 +1,63 @@
+\section{C2 Normalize the two South prefix specializations}
+\label{sec:prefix}
+
+\textbf{Targets.} \src{CurrentSouthShift2011.lean}{92}{140}:
+\code{offset19_word} and \code{offset20_word}. Their generic engine,
+\src{CurrentSouthShift2011.lean}{30}{47}, \code{binaryWord_prefix}, already
+proves the needed low-prefix identity. The current specializations introduce
+a local function, prove a function equality by \code{funext}, rewrite a
+helper equality, and finish with a presentation conversion.
+
+\textbf{Change.} First rewrite by \code{copy_word_translation}; then
+specialize the generic prefix theorem and normalize its numeric offsets,
+powers and association in a deliberately small \code{simpa only} set.
+No new arithmetic theorem is needed.
+
+\subsection{Offset 19}
+\begin{Lean}
+  rw [copy_word_translation c t 941 b (by omega) hcopy]
+  simpa only [southWord, binaryWord_one, ← Nat.add_assoc,
+    Nat.reduceAdd, Nat.reducePow, Nat.add_zero,
+    Nat.cast_ofNat] using
+    (binaryWord_prefix
+      (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+        ((941 + j : ℕ) : ZMod (N * 2011))))
+      1 8 (fun j _ => hc _))
+\end{Lean}
+
+The specialization is $k=1,n=8$: it shifts the nine-bit South word by one,
+reduces modulo $2^9=512$, and restores physical bit 941. The small
+\code{binaryWord_one} helper already exists privately in the target module.
+
+\subsection{Offset 20}
+\begin{Lean}
+  rw [copy_word_translation c t 940 b (by omega) hcopy]
+  simpa only [southWord, binaryWord_two, ← Nat.add_assoc,
+    Nat.reduceAdd, Nat.reducePow, Nat.add_zero,
+    Nat.cast_ofNat] using
+    (binaryWord_prefix
+      (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+        ((940 + j : ℕ) : ZMod (N * 2011))))
+      2 7 (fun j _ => hc _))
+\end{Lean}
+
+Here $k=2,n=7$: the multiplier is four, the modulus is again 512, and
+physical bits 940 and 941 form the two-bit prefix. The existing
+\code{binaryWord_two} helper supplies its expansion. Its duplication in the
+standalone candidate is only an import-access workaround for a private
+name; it is not an extra helper in the intended target edit.
+
+\subsection{Preserve the arithmetic contract}
+
+The exact hypotheses \texttt{hr : t \% 2011 = 19} or \code{20}, the nine physical
+copy equalities, the Boolean bound and the full \code{ZMod (N * 2011)}
+coordinates are retained. The candidate does not weaken a modulus, prove
+periodicity, alter a carry bound or invoke a half-radix identity. The generic
+prefix theorem only needs the retained suffix to be Boolean; the source
+specializations supply that from their existing global bound.
+
+\textbf{Static delta and gate.} The respective bodies are 14 versus 6 and
+16 versus 6 nonblank lines. Lean must check the exact normal forms under the
+pinned simp lemmas, especially the offset cast and left-associated addition.
+If the short normalization is brittle, retain a named offset equality rather
+than broaden the global simp set.

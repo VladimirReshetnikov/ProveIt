@@ -1,0 +1,332 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.78in,top=0.7in,bottom=0.7in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,enumitem,xcolor,listings,hyperref,fancyhdr}
+\definecolor{inkblue}{RGB}{28,67,105}
+\hypersetup{colorlinks=true,urlcolor=inkblue,linkcolor=inkblue,pdftitle={New proof simplifications after the marked Wang word commits},pdfauthor={Proof engineering review}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small DiophantineConsistency proof review round two}\rhead{\small 26 October 2026}\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\emergencystretch=3em
+\setlist[itemize]{label=$\bullet$,leftmargin=*,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=3pt}
+\newcommand{\code}[1]{{\small\texttt{\detokenize{#1}}}}
+\newcommand{\src}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b310142330df89e48413c8fce62e7de223e1c7d5/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean\#L#2-L#3}{\code{#1.lean}:#2--#3}}
+\newcommand{\docsrc}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b310142330df89e48413c8fce62e7de223e1c7d5/Computability/DiophantineConsistency/#1\#L#2-L#3}{\code{#1}:#2--#3}}
+\newcommand{\commit}[1]{\href{https://github.com/VladimirReshetnikov/ProveIt/commit/#1}{\code{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,breaklines=true,breakatwhitespace=true,showstringspaces=false,aboveskip=6pt,belowskip=6pt,frame=single,framerule=0.25pt,rulecolor=\color{black!22},xleftmargin=4pt,xrightmargin=4pt,framesep=5pt,
+ literate={ℕ}{{$\mathbb N$}}1 {→}{{$\to$}}1 {←}{{$\leftarrow$}}1 {↔}{{$\leftrightarrow$}}1 {∀}{{$\forall$}}1 {∃}{{$\exists$}}1 {≤}{{$\le$}}1 {≠}{{$\ne$}}1 {∧}{{$\land$}}1 {∨}{{$\lor$}}1 {∈}{{$\in$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {·}{{$\cdot$}}1 {▸}{{$\triangleright$}}1 {∘}{{$\circ$}}1 {ℤ}{{$\mathbb Z$}}1}
+\newcommand{\pageheading}[1]{\newpage\section*{#1}}
+\begin{document}
+\raggedright
+\begin{center}
+{\LARGE\bfseries New proof simplifications after\\[3pt] the marked Wang word commits}\\[8pt]
+{\large A second source specific review with prior ideas excluded}\\[5pt]
+Proof-source commit \code{b310142330df89e48413c8fce62e7de223e1c7d5}
+\end{center}
+\section*{1 The useful new changes}
+\textbf{The new code offers three small proof refactors and one narrowly scoped coherence API.} The best immediate pilot is to specialize the existing binary-prefix theorem directly in the two South-word clients. Next, reuse the existing aligned translation as a reachability witness and specialize the existing general propagation theorem. Finally, package the new boundary-color classifiers as two exact fibers, so eight color corollaries no longer repeat family elimination.
+
+The core proposal changes \textbf{three existing modules}, preserves all existing theorem statements, and adds only the two boundary-fiber helpers. Its complete-module physical line count falls from \textbf{534 to 462}, a net reduction of \textbf{72 lines}. Selected proof bodies fall from \textbf{138 to 52 nonblank lines}, including the new helpers' 22 proof lines. These are static source measurements, \textbf{not Lean compilation or performance results}.
+
+\begin{tabular}{@{}L{0.18\linewidth}L{0.43\linewidth}L{0.30\linewidth}@{}}
+\toprule
+Proposal & Exact new target & Recommendation\\\midrule
+Direct prefix use & \code{offset19_word}, \code{offset20_word} & First pilot; no helper.\\[4pt]
+Cycle clients & Difference witness and zero-base propagation & Small local patch; prior-interface overlap disclosed.\\[4pt]
+Boundary fibers & Five North and three South color corollaries & Consolidate eight eliminations into two.\\[4pt]
+Selection coherence & Characterize an alternate index assignment by its selectors & Optional API; judge separately from line savings.\\\bottomrule
+\end{tabular}
+
+\textbf{This is not a second copy of the earlier recommendations.} Eleven actual manuscripts were inspected: the five incoming ZIPs and one placed manuscript at the proof-source pin, plus five later arrivals. The initial ledger records 60 prior proposal families; page 11 adds the bounded late comparison and its qualifications. List-library cleanup, scanner abstractions, shared polynomial tails, generic carry certificates, DAG invariants and the already implemented cell-coordinate equivalence are not proposed again here.
+
+\textbf{Current mathematical scope.} The fresh commits now derive whole-field alignment, all-cell occupation and the marked cyclic Wang word from the original positive polynomial zero. They retain the original selector binding and prove the rank-based stride positive and nonzero modulo the word length. Machine-run extraction, the cofinal canonical converse, arithmetic/controller completeness and the internal-ZFC proof remain separate obligations. The suggestions below preserve, rather than replace, those boundaries.
+
+\textbf{Verification status.} The supplied changes are source-reviewed candidates. Textual patch applicability, declaration comparisons and independent finite arithmetic tests are available. No candidate has been elaborated or kernel-checked in this review environment. Compile against the pinned toolchain before adoption.
+
+\pageheading{2 What changed since the previous review}
+The previous review used \code{60e9c5d620c6c387d932876cfa2d9376f64ea56c}. Proof examples and counts here use the pin printed on page 1; page 11 records the later comparison snapshot. Across that interval, twelve code commits changed 29 Lean paths, including the umbrella import file. The main directory grew from 546 files and 73,971 physical lines to \textbf{574 files and 77,278 lines}: 28 new module files and 3,307 additional lines. Counts use the actual main-directory prefix; preserved generated copies elsewhere are not production modules.
+
+\begin{tabular}{@{}L{0.19\linewidth}L{0.71\linewidth}@{}}\toprule
+Commit & New mathematical layer relevant to this review\\\midrule
+\commit{3951d5611} & Actual copy parity and exact South-word translation recurrences.\\[3pt]
+\commit{876f6b409} & Whole-cell alignment from an actual polynomial zero, without occupation.\\[3pt]
+\commit{7e9e9235e} & Literal spatial and temporal neighboring bit equalities.\\[3pt]
+\commit{df7f0c9c9} & Actual tile language and positive horizontal complements.\\[3pt]
+\commit{a54685015} & Aligned-cell reachability and generic predicate propagation.\\[3pt]
+\commit{2207b481b} & Actual neighboring colors and exclusion of zero temporal displacement.\\[3pt]
+\commit{db8628247} & Exactly one actual selected tile in every aligned cell.\\[3pt]
+\commit{98bfa794d} & Marked cyclic word and periodic-plane pullback.\\[3pt]
+\commit{cf0b056cc} & Exact physical shifts through the canonical cell coordinate.\\[3pt]
+\commit{bfdd368be} & Original positive polynomial zero to marked cyclic Wang word.\\[3pt]
+\commit{9cef0257d} & Exact boundary colors, retaining the genuine initializer.\\[3pt]
+\commit{73d3d8e9c} & Time-invariant seam columns and exact initial horizontal alternatives.\\\bottomrule
+\end{tabular}
+
+\textbf{Read the later endpoint, not an earlier progress note.} The equivalence plan is cumulative. Its earlier paragraphs still describe alignment or occupation as future work; the later entries supersede that status. The whole-field endpoint is described at \docsrc{LEAN_EQUIVALENCE_PLAN.md}{371}{383}; occupation at lines 423--431; the marked-word endpoint and remaining obligations at lines 449--460; and the latest boundary/strip foundations at lines 462--476.
+
+This changes the simplification target. The useful interface now is not an assumed occupied word or a new generic \code{WordFacts} layer. It is the precise coherence already proved between one original Boolean word, its selected tile at each physical cell, and the marked assignment at the inverse coordinate.
+
+The broad inventory contains 761 Lean files and 114,009 physical lines, including research material and two placed generated candidates. That denominator is deliberately separate from the 574-file main source census. The archive includes a per-file inventory with hashes and the recent-commit list so the scope can be replayed.
+
+\pageheading{3 Novelty compared with the incoming manuscripts}
+\textbf{Novelty here means absent as a proposal from the inspected corpus, not global mathematical originality.} Changing a tactic name or moving the same idea to a nearby module is not enough. The comparison below distinguishes a new concrete client simplification from a previously proposed abstraction.
+
+\begin{tabular}{@{}L{0.20\linewidth}L{0.35\linewidth}L{0.36\linewidth}@{}}\toprule
+This report & Nearest prior discussion & Decision and exact difference\\\midrule
+South-prefix clients & P0 sec. 9.2; P3 sec. 8.1; P5 sec. 5: half-radix arithmetic & New narrow delta. Specialize an existing binary-word prefix theorem and normalize addresses under the lambda; no carry or half-radix lemma.\\[5pt]
+Difference-cell witness & P1 sec. 12; P3 sec. 8.2; P4 sec. 4.2: reuse aligned translation and modular residue facts & Overlap extension, not new architecture. Only the new \code{reachable_from} proof uses \code{theta a.val b} instead of reconstructing closure.\\[5pt]
+Zero-base propagation & P1 sec. 7; P4 sec. 5: shared iteration/scanners & Local specialization, not a generic iteration proposal. Existing \code{propagate_from} is already sufficient.\\[5pt]
+High-color fibers & P1 sec. 13; P3 sec. 9.2: finite dispatch assembly & New concrete target. Factor exact color equalities through the new six/three-case classifiers; do not enumerate 942 tiles or build a generic dispatcher.\\[5pt]
+Selected-index coherence & P1 sec. 12; P5 sec. 15: coherent native facts & New narrow API. Characterize an independently supplied assignment by selected bits in the same original word; transport existing marked-word correctness.\\\bottomrule
+\end{tabular}
+
+\textbf{Source anchors for the comparisons.} P1 sec. 12 occupies \code{report/report.tex}:305--333, and sec. 13 lines 333--356. P3 sec. 8.1 and sec. 8.2 occupy \code{report.tex}:548--617; sec. 9.2 lines 678--712. P4 sec. 4.2 occupies \code{report.tex}:349--375, and sec. 5 lines 375--415. P5 sec. 15 occupies \code{report.tex}:869--913. Packet identities and archive hashes are on page 10; the machine-readable ledger includes complete artifact paths, section ranges, document hashes and PDF page matches.
+
+\textbf{Excluded rather than relabeled.} The generic reflected-parity/carry proposal overlaps prior exact carry decomposition and modular projection (ledger E16 and E53). It is not counted as a new idea. Nor is a new \(\mathrm{Cell}\simeq\mathrm{ZMod}\,N\) equivalence proposed: the fresh source already implements the coordinate construction. Generic WordFacts projections, scanner semantics, list lookup, ratio tails, finite-block dispatch and DAG certificates remain exclusions.
+
+The five later manuscripts qualify the general patterns behind the fibers and selector API; page 11 states the exact retained deltas. The 72-line saving belongs only to three concrete modules, not to any prior proposal or optional API growth.
+
+\pageheading{4 Use the existing binary prefix theorem directly}
+\textbf{Delete the function-equality detour in the two new South-word clients.} The general theorem \code{binaryWord_prefix} is already present at \src{CurrentSouthShift2011}{32}{51}. Each client currently introduces a function \code{f}, a translated-word equality, a separate equality of functions proved by \code{funext}, and then an intermediate identity that is reformatted into the goal. Only the address association is nontrivial.
+
+Let \(W_n(f)=\sum_{j<n}2^j f(j)\). The existing result says
+\[
+ W_{k+n}(f)=\bigl(2^kW_{k+n}(j\mapsto f(k+j))\bmod 2^{k+n}\bigr)+W_k(f).
+\]
+Only the retained suffix needs its Boolean bound. In the two clients \((k,n)=(1,8)\) and \((2,7)\). The translated addresses reduce to the same South block because
+\(941+(1+j)=942+j\) and \(940+(2+j)=942+j\). A restricted simplification set can make those rewrites inside the lambda.
+
+\textbf{Candidate for \code{offset19_word}.} The statement at \src{CurrentSouthShift2011}{92}{113} is unchanged; replace its 14 nonblank body lines by:
+\begin{lstlisting}
+  have hp := binaryWord_prefix
+    (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+      ((941+j : ℕ) : ZMod (N * 2011)))) 1 8 (fun _ _ => hc _)
+  rw [copy_word_translation c t 941 b (by omega) hcopy]
+  simpa only [southWord, ← Nat.add_assoc, binaryWord_one, Nat.add_zero] using hp
+\end{lstlisting}
+\textbf{Candidate for \code{offset20_word}.} The statement at \src{CurrentSouthShift2011}{116}{140} is unchanged; replace its 16 body lines by:
+\begin{lstlisting}
+  have hp := binaryWord_prefix
+    (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+      ((940+j : ℕ) : ZMod (N * 2011)))) 2 7 (fun _ _ => hc _)
+  rw [copy_word_translation c t 940 b (by omega) hcopy]
+  simpa only [southWord, ← Nat.add_assoc, binaryWord_two, Nat.add_zero] using hp
+\end{lstlisting}
+The one- and two-bit prefix lemmas are already private declarations earlier in this module, so these are in-place replacements, not an import-only proof that accidentally relies on inaccessible names. No global simp rule is added.
+
+\textbf{Keep the exact correction.} Offset 20 concludes a weighted low prefix, \(c(940)+2c(941)\), not an unweighted error estimate. Its separate bound by 2 uses the one-hot selector count; without it, prefix 11 has weight 3. Both patches retain all nine copy equalities, arbitrary natural shift \code{t}, its residue hypothesis, the global Boolean bound and the physical source \code{theta t b}. They introduce neither occupation nor decoded tile labels.
+
+\textbf{Evidence and limit.} Independent enumeration checks all 1,024 one-bit-prefix/9-bit-word cases and all 2,048 two-bit-prefix cases. This confirms the finite arithmetic identity, not Lean's simplifier or elaborator. The compile gate must confirm the two \code{simpa only} calls without broadening their rewrite set unnecessarily.
+
+\pageheading{5 Reuse the exact cycle witness and propagation theorem}
+\textbf{The new reachability proof rebuilds closure already packaged by \code{theta}.} At \src{CurrentCellCycle2011}{97}{109}, the original proof forms \(b-a\) in \(\mathrm{ZMod}(2011N)\), proves its representative is aligned using \code{subtraction_residue}, and then turns it into a \code{Cell N}. But translation by the aligned representative of \(a\) already returns precisely that cell.
+
+For an aligned cell \(a\), its representative satisfies \(a.\mathrm{val}\bmod2011=0\), so \(\mathrm{wholeShift}(a.\mathrm{val})=a.\mathrm{val}\). Therefore the underlying value of \(d=\mathrm{theta}(a.\mathrm{val})(b)\) is \(b-a\). The existing quotient index supplies \(\mathrm{index}(d)<N\); the existing iterate formula gives
+\[
+ \mathrm{next}^{\mathrm{index}(d)}(a)=a+2011\,\mathrm{index}(d)=a+d=b.
+\]
+All equalities are in the full physical cyclic word, not merely equalities of residues modulo 2011. Replace the 11-line body by:
+\begin{lstlisting}
+  let d := theta (a : ZMod (N * 2011)).val b
+  refine ⟨index d, index_lt d, ?_⟩
+  apply Subtype.ext
+  rw [coe_iterate_next, cast_index_mul, coe_theta]
+  simp only [wholeShift, a.property, Nat.sub_zero, ZMod.natCast_zmod_val]
+  abel
+\end{lstlisting}
+The new source already supplies \code{index_lt}, \code{cast_index_mul} and \code{coe_iterate_next}; see \src{CurrentCellCycle2011}{50}{78}. The candidate adds no theorem or new coordinate abstraction. Its one elaboration-sensitive point is reducible unfolding of local \code{d} when rewriting \code{coe_theta}.
+
+\textbf{Preserve the degenerate case.} The hypothesis remains \code{[NeZero (N * 2011)]}; the theorem still includes \(N=1\). There is no assumption that 2011 is invertible modulo \(N\), nor a replacement of the physical modulus by a coprime quotient. Independent arithmetic checks cover all 11,440 ordered aligned-cell pairs for \(1\le N\le32\), including singleton and wraparound cases. They are sanity checks, not a proof for arbitrary \(N\).
+
+\textbf{Make the zero-base theorem a specialization.} The adjacent theorem \code{propagate} repeats an iterate induction that already occurs in \code{propagate_from}. Move the former, with its unchanged statement, below the latter and replace its eight-line body with:
+\begin{lstlisting}
+  exact propagate_from P 0 hzero hnext
+\end{lstlisting}
+The existing general theorem does not use \code{propagate}, so the reorder creates no cycle; compare \src{CurrentCellCycle2011}{113}{135}. The predicate remains arbitrary and no occupation premise is introduced.
+
+\textbf{Novelty is limited to these clients.} Prior reports already recommended reusing translation and iteration interfaces. The new value here is the exact witness and existing specialization at newly committed declarations, not another modular-arithmetic library or scanner framework. Together, the cycle changes remove 12 body lines without adding helpers.
+
+\pageheading{6 Classify a high color once instead of per corollary}
+\textbf{The boundary module already has the right finite reduction.} Its two classifiers restrict an allowed tile to six North alternatives or three South families. The eight exact-color corollaries then repeatedly eliminate those same alternatives and discard the impossible colors. The proposal adds an equality-indexed fiber theorem on each side and makes the corollaries specializations.
+
+This is not a new enumeration of all 942 tiles. The existing semantic language, transition bound 431 and receiving-output bound 433 remain unchanged. The latter must include halt target 215. Sources: \src{WangTiles942Boundary}{20}{37} and the existing classifiers at \src{WangTiles942Boundary}{39}{74}.
+
+With tuple order \((\mathrm{west},\mathrm{north},\mathrm{east},\mathrm{south})\), the relevant fibers are:
+\begin{tabular}{@{}L{0.18\linewidth}L{0.18\linewidth}L{0.55\linewidth}@{}}\toprule
+Edge & Color & Exactly the allowed tiles in the fiber\\\midrule
+North & 434 & \((2,434,2,0)\).\\[3pt]
+North & 435 & The literal \code{start} tile.\\[3pt]
+North & 436 & \((3,436,4,4)\) or \((4,436,4,0)\).\\[3pt]
+North & 438 & \((1,438,1,p)\), with \(p\in\{434,435,436\}\).\\[3pt]
+North or South & 437 & \((a^2,437,b,437)\), with \(a,b\in\mathrm{Fin}\,3\).\\[3pt]
+South & 438 & \((0,432a+b,0,438)\), with \(a,b\in\mathrm{Fin}\,2\).\\[3pt]
+South & \(p\in\{434,435,436\}\) & Exactly \((1,438,1,p)\).\\\bottomrule
+\end{tabular}
+
+\textbf{The equality-indexed North fiber.} Under \code{ht : Allowed t} and \code{hc : 434 <= c}, the statement is:
+\begin{lstlisting}
+    t.north = c ↔
+      (c = 435 ∧ t = start) ∨
+      (c = 434 ∧ t = ⟨2,434,2,0⟩) ∨
+      (c = 436 ∧ (t = ⟨3,436,4,4⟩ ∨ t = ⟨4,436,4,0⟩)) ∨
+      (c = 438 ∧ ∃ p ∈ [434,435,436], t = ⟨1,438,1,p⟩) ∨
+      (c = 437 ∧ ∃ a b : Fin 3, t = ⟨a.val^2,437,b.val,437⟩)
+\end{lstlisting}
+The forward direction calls \code{high_north_cases} once, uses the requested equality to record which color applies, and returns the corresponding branch. The reverse direction destructs that branch and uses reflexivity. Keeping the color test in every disjunct lets a literal specialization eliminate the irrelevant branches without repeating family analysis.
+
+\textbf{Do not simplify the table data.} The initializer's actual South color is 4, not the obsolete lookalike 188. The nine seam tuples retain the square on the West coordinate and the unsquared East coordinate. The reset family retains three possible South colors. These are semantic obligations, not formatting choices; the candidate statements preserve them exactly.
+
+\pageheading{7 Derive the boundary clients from two exact fibers}
+\textbf{Index the reset row by the requested South color.} The South fiber avoids a later existential-equality substitution by using \code{c} directly in the reset tuple:
+\begin{lstlisting}
+    t.south = c ↔
+      (c = 438 ∧ ∃ a b : Fin 2, t = ⟨0,432*a.val+b.val,0,438⟩) ∨
+      (c ∈ [434,435,436] ∧ t = ⟨1,438,1,c⟩) ∨
+      (c = 437 ∧ ∃ a b : Fin 3, t = ⟨a.val^2,437,b.val,437⟩)
+\end{lstlisting}
+The forward proof calls \code{high_south_cases}. In the reset branch its edge equality is \code{p = c}; substitute once inside the helper. Reverse implications are again reflexive. These two helpers cost 22 nonblank proof-body lines, or 34 nonblank lines including their statements.
+
+Seven exact-color proofs then each become a single specialization. Representative replacements are:
+\begin{lstlisting}
+-- north_436_iff_initializers
+  simpa using high_north_fiber ht 436 (by decide)
+
+-- north_437_iff_seam
+  simpa using high_north_fiber ht 437 (by decide)
+
+-- south_438_iff_finish
+  simpa using high_south_fiber ht 438 (by decide)
+\end{lstlisting}
+The parameterized reset corollary retains its short bound calculation rather than relying on broad arithmetic simplification:
+\begin{lstlisting}
+  have hb : 434 ≤ p ∧ p ≤ 436 := by
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hp
+    omega
+  have h437 : p ≠ 437 := by omega
+  have h438 : p ≠ 438 := by omega
+  simpa [h437, h438, hp] using high_south_fiber ht p hb.1
+\end{lstlisting}
+The original exact-color declarations are at \src{WangTiles942Boundary}{76}{168} and \src{WangTiles942Boundary}{175}{194}. The existing \code{north_437_iff_south_437} remains a composition of the two seam equivalences; there is no reason to replace its already short proof.
+
+\textbf{Count the helpers, not only the attractive one-liners.} The eight old bodies contain 89 nonblank lines. New client bodies contain 13; the helpers add 22, giving \textbf{89 to 35} inclusive. The full module falls from 201 to 161 physical lines. Its byte size falls only from 7,294 to 7,210: long, explicit fiber statements consume most of the bytes saved from the proofs. The maintenance benefit is eight family decompositions becoming two, not dramatic file compression or a demonstrated speedup.
+
+\textbf{Safe deployment.} Keep the old public names and statements. Insert the helpers after the existing high-color classifiers, then replace only the client bodies. Compile the unchanged boundary checks and the seam-column/initial-horizontal consumers. Confirm that simplification reduces concrete color tests and does not use the original corollaries in a dependency cycle. The supplied import-only prototype uses distinct names, and the in-place candidate shows the actual replacement.
+
+\pageheading{8 Characterize the assignment by the original selectors}
+\textbf{Expose when an independently extracted index function equals the existing assignment.} The marked-word code chooses an index from the occupation witness at each canonical inverse coordinate. Its \code{assignment_selected} theorem retains the full selection predicate, not merely a tile color; see \src{CurrentMarkedWindow2011}{37}{46}.
+
+The selection predicate says \(f(i)=1\) and \(f(j)=0\) for every \(j\ne i\). Its existing \code{Selected.unique} theorem already identifies any other index with value one: \src{CurrentCellLabels2011}{128}{129} and \src{CurrentCellLabels2011}{169}{174}. The new API should use that theorem, not re-prove uniqueness or assume injectivity of the tile table.
+
+\textbf{Add an exact assignment characterization.} For the same word \code{c}, occupation proof \code{ho} and independently supplied function \code{a}, the proposed statement and body are:
+\begin{lstlisting}
+theorem assignment_eq_iff_selector (c : ZMod (N * 2011) → ℕ)
+    (ho : ∀ b : Cell N, Occupied c b) (a : ZMod N → Fin 942) :
+    a = assignment c ho ↔
+      ∀ j, selectorValue c
+        ((coordinate.symm j : Cell N) : ZMod (N * 2011)) (a j) = 1 := by
+  constructor
+  · rintro rfl j
+    exact (assignment_selected c ho j).1
+  · intro ha
+    funext j
+    exact (assignment_selected c ho j).unique _ (ha j)
+\end{lstlisting}
+The reverse implication does not ask the alternate decoder to provide all the other-zero clauses again. Those clauses already belong to the known selected assignment. Its single selected-bit equation suffices to identify the same index pointwise.
+
+\textbf{Reuse the existing marked-word proof by equality transport.} The companion theorem \code{facts_marked_word_of_selector} takes the original \code{Facts v N x c carry digits}, an alternate \code{a}, and its selector equations, and concludes \code{MarkedWord N (stride v N : Int) a}. Its proof is:
+\begin{lstlisting}
+  rw [(assignment_eq_iff_selector c
+    (facts_occupied v x c carry digits h) a).mpr ha]
+  exact facts_marked_word v x c carry digits h
+\end{lstlisting}
+The existing orientation proof at \src{CurrentMarkedWindow2011}{97}{117} remains essential. It is not replaced by these two lines: the new theorem makes that proof reusable for another extraction implementation.
+
+\textbf{Cost and adoption threshold.} This is an additive API, not a current line reduction. The two actual declaration blocks add 17 lines, including eight proof-body lines. The standalone candidate module has 47 physical lines with imports, context and comments. Adopt when a second decoder or consumer needs this contract; otherwise retain it as a prototype. Do not subtract its two-line client from the existing 18-line correctness proof.
+
+The result is stronger than independence of two occupation proofs, which is already proof irrelevance, but weaker than an unrestricted uniqueness theorem about tilings. It preserves the same \code{c}, the same inverse coordinate, actual selected indices and the original unreduced stride. It assumes neither color injectivity, coprimality nor a globally unique Start. Generic coherence includes \(N=1\); the separate Facts-specific nonzero-stride conclusion is not erased or used as a hidden premise.
+
+\pageheading{9 Validation and adoption without changing the contract}
+\textbf{Separate five kinds of evidence.} A mathematically correct idea may still fail Lean elaboration, and an applicable patch is not a checked proof. The archive records these distinctions explicitly.
+
+\begin{tabular}{@{}L{0.27\linewidth}L{0.43\linewidth}L{0.21\linewidth}@{}}\toprule
+Evidence & What it establishes & Current status\\\midrule
+Source and type inspection & Same existing declarations; exact assumptions and mathematical argument reviewed & Performed\\[4pt]
+Textual patch checks & Changes apply to the pinned source; selected signatures match & Passed\\[4pt]
+Independent Python checks & Finite arithmetic and reconstructed-family sanity conditions & Passed; not Lean\\[4pt]
+Lean elaboration and axioms & Actual syntax, coercions, instances, simp behavior and kernel dependency audit & Not run\\[4pt]
+Downstream build and timings & Consumers still elaborate; measured runtime/heartbeat effect & Not run\\\bottomrule
+\end{tabular}
+
+\textbf{Finite regressions worth retaining.} The cyclic suite checks 3,072 prefix identities and 11,440 exact difference witnesses. The boundary suite parses 430 actions, reconstructs 942 indexed rows and checks North/South fiber equivalences for colors 434 through 512: 148,836 comparisons. Its North fiber cardinalities at 434--438 are \(1,1,2,9,3\); the South cardinalities are \(1,1,1,9,4\). These checks are independent Python transcriptions of family formulas, not a Lean proof of decimal decoding.
+
+The boundary guard \(434\le c\) is necessary: an ordinary blank tile at \(c=0\) refutes the unguarded statement. The regression controls also retain initializer South 4 rather than 188, halt target 215, the blank ordinary tile, all nine square-West seam tuples and the offset-20 weighted prefix 11 counterexample to the unguarded error bound.
+
+\textbf{A short adoption sequence.}
+\begin{enumerate}
+\item Start in a disposable checkout at the pinned commit, with Lean and mathlib \code{v4.32.0}, as specified by the repository. Review and apply the two cyclic patches and the boundary patch independently; keep the optional selector API separate.
+\item Compile each modified module and its existing \code{Checks} consumer before the umbrella target. For the prefix proof inspect numeric reductions and lambda normalization; for reachability inspect unfolding of \code{d}; for fibers inspect concrete disjunction simplification.
+\item Run the selector prototype and its supplied checks only if adopting that API. Confirm local \code{NeZero N} inference, explicit coordinate coercions, generic singleton coherence, Start at zero, original orientation and nonzero stride. These checks are supplied as specifications and have not been executed here.
+\item Inspect axiom output and then build the aggregate \code{DiophantineConsistency} target. Preserve statements, numerical constants, exact source bindings and downstream interfaces. Do not resolve an elaboration problem by adding an assumption, changing an index map or inserting \code{sorry}.
+\item Record actual time and memory only after a like-for-like fresh run. Source-line counts alone cannot support a claim about proof-term size, heartbeat use or checking speed.
+\end{enumerate}
+
+\textbf{Stop if the current client does not pay for an abstraction.} Existing periodic-plane wrappers and coordinate proofs are already short. No new additive quotient framework, global simplifier or generic finite dispatcher is warranted by these concrete changes. The optional coherence theorem has a clear semantic contract but is explicitly outside the 72-line saving.
+
+\pageheading{10 Initial provenance and artifact guide}
+\textbf{The initial six manuscripts were compared, not just their filenames.} These initial IDs are supplemented by L1--L5 on page 11. SHA-256 prefixes below identify each distinct archive; full hashes, arrival commits, placement history and document hashes are in \code{catalog/provenance.json} and \code{catalog/exclusion_ledger.json}.
+
+\begin{tabular}{@{}L{0.06\linewidth}L{0.65\linewidth}L{0.21\linewidth}@{}}\toprule
+ID & Archive filename & SHA-256 prefix\\\midrule
+P1 & \small\nolinkurl{Lean_Proof_Simplification_2026-10-26.zip} & \code{dda8929e3e15}\\[5pt]
+P2 & \small\nolinkurl{ProveIt_Lean_Proof_Simplification_2026-10-26.zip} & \code{2a0f51271b3d}\\[5pt]
+P3 & \small\nolinkurl{diophantine-lean-simplification-2026-10-26.zip} & \code{f05ee2789f3c}\\[5pt]
+P4 & \small\nolinkurl{lean-proof-simplification-2026-10-26 (2).zip} & \code{5035e9a719f7}\\[5pt]
+P5 & \small\nolinkurl{lean-proof-simplification-2026-10-26.zip} & \code{a7d630331b4f}\\[5pt]
+P0 & \small\nolinkurl{diophantine-lean-proof-simplification-2026-10-26.zip} & \code{f03f894362c9}\\\bottomrule
+\end{tabular}
+
+P1--P5 are the five archives present in \code{docs/incoming} at the review pin. P0 arrived at \commit{151a732b9} and was placed at \commit{ac762c9cf} under \nolinkurl{Computability/DiophantineConsistency/research/lean-proof-simplification-20261026}. Its report is byte-identical to the arrived manuscript. P4 and P5 are different manuscripts despite similar names. P1 is the prior 17-page review, retained unchanged rather than overwritten by this continuation.
+
+\textbf{How to find the supplied evidence.}
+\begin{itemize}
+\item \code{report/}: editable TeX, this PDF and a build script requiring an existing TeX installation.
+\item \code{cyclic/}: exact source snapshots, candidate modules, two patches, static metrics and independent arithmetic regressions for the prefix/cycle changes.
+\item \code{wang/}: import-only fiber prototype, in-place proposed module, patch, finite-family audit and helper-inclusive measurements.
+\item \code{occupation/}: additive selector-coherence candidate, patch and unexecuted Lean check specifications. Rejected reflected-parity drafts are not part of the proposal packet.
+\item \code{catalog/}: all prior proposal exclusions, exact section evidence, packet provenance and per-proposal novelty decisions N1--N5. X1 and X2 document exclusions rather than new recommendations.
+\item \code{audit/}: independent source/mathematical review and reproducible static/arithmetic checks. \code{evidence/}: the pinned source census. The recent-commit list records the twelve code changes summarized on page 2.
+\end{itemize}
+
+\textbf{Reading source links.} Lean links resolve to the fixed proof-source commit and the directory \nolinkurl{Computability/DiophantineConsistency/Lean/DiophantineConsistency/}. Documentation links resolve to the same commit, not a moving branch. Archived-manuscript references use the packet ID, section and TeX range because the original documents are nested inside ZIPs; the ledger resolves those references to exact member paths and hashes. The late comparison has its own pinned ledger.
+
+\textbf{Recommended decision.} Compile the direct prefix and cycle patches first. If they pass unchanged, pilot the boundary fibers with all exact-color checks. Keep selector coherence as a separately costed extension until an independent decoder uses it. This yields a concrete continuation of the review without recycling the existing incoming proposals or claiming a logical endpoint that the source does not yet prove.
+
+
+\pageheading{11 Late incoming comparison before delivery}
+\textbf{Five further manuscripts arrived while this review was being prepared.} A bounded final comparison used commit \code{9bd29079d5e1c6cc1c0bcaee6cb57d59b835cba9}. At this late pin, these five archives occupy \code{docs/incoming} after the earlier set was placed. Their actual report bodies were read, bringing the comparison corpus to \textbf{eleven manuscripts}. The proof-source pin and measured candidate files remain those on page 1; the late comparison is not a claim of continuous review of moving \code{main}.
+
+\begin{tabular}{@{}L{0.06\linewidth}L{0.65\linewidth}L{0.21\linewidth}@{}}\toprule
+ID & Late archive filename & SHA-256 prefix\\\midrule
+L1 & \small\nolinkurl{diophantine-lean-additional-simplifications-2026-10-26.zip} & \code{8c849deed064}\\[5pt]
+L2 & \small\nolinkurl{diophantine-lean-new-directions-2026-10-26.zip} & \code{9d31a37f69f3}\\[5pt]
+L3 & \small\nolinkurl{diophantine-lean-new-ideas-2026-10-26.zip} & \code{0941e8297fef}\\[5pt]
+L4 & \small\nolinkurl{diophantine-lean-simplification-2026-10-26(1).zip} & \code{c8d7d56a0344}\\[5pt]
+L5 & \small\nolinkurl{lean-proof-simplification-review-2026-10-26.zip} & \code{9d9eb709f2d4}\\\bottomrule
+\end{tabular}
+
+\textbf{The narrow proposals survive, but their general patterns are not new.} No exact duplicate of N1--N5 was found in these five reports. L2 sections 4.1 and 4.4 (PDF pages 8--9; \code{report.tex}:220--246, 272--276) use a general constructor-view strategy for \code{ObjectCodeBound} tagged-pair inversion. Therefore the boundary proposal's retained contribution is only the \emph{guarded symbolic North/South color fibers and their eight actual Wang clients}, not the general idea of factoring constructor cases.
+
+L1 sections 10.1 and 10.4 (PDF pages 11--12; \code{report.tex}:350--370, 390--396) and L2 section 7.5 (PDF page 14; \code{report.tex}:487--502) already discuss canonical witnesses obtained by uniqueness, for carry/digit normalization and explicit carries. The selector proposal therefore claims only the \emph{same-original-word assignment characterization by actual selector bits, followed by transport of the existing marked-word proof}. It does not claim a new generic uniqueness-to-canonicality method. L3--L5 shorten \code{sum_le_one_cases} using the library finite-support criterion and retain \code{Selected.unique} as an existing downstream interface. That uniqueness theorem was already credited on page 8. The exact theta witness and binary-prefix clients were not found; zero-base propagation remains only a minor specialization.
+
+\textbf{The targeted source did not change.} Byte comparisons at the late pin confirm that \code{CurrentCellCycle2011}, \code{CurrentSouthShift2011}, \code{WangTiles942Boundary} and \code{CurrentMarkedWindow2011} are identical to the proof-source snapshot. Thus the measured three-module reduction remains 534 to 462 physical lines; no late change has been counted as our saving.
+
+\textbf{New upstream work is recognized, not proposed again.} Four further code commits derive finite initial-strip/reset alternatives (\commit{72d3198bb}), persistent walls and seam-free interiors (\commit{076b953e7}), the literal first machine step and configuration colors (\commit{90a2ded65}), and a total-degree tactic replacing generated Short-family degree certificates (\commit{dc055c502}). The degree-tactic work is already upstream and is excluded from this report's recommendations.
+
+The late equivalence plan still distinguishes those results from complete row/run correspondence and actual run extraction. Its machine-initialization statement explicitly stops short of full correspondence, and its strip/reset entry leaves further extraction work open. See the \href{https://github.com/VladimirReshetnikov/ProveIt/blob/9bd29079d5e1c6cc1c0bcaee6cb57d59b835cba9/Computability/DiophantineConsistency/LEAN_EQUIVALENCE_PLAN.md\#L478-L508}{late plan, lines 478--508}. Neither these commits nor the proposed simplifications establish the full internal-ZFC endpoint.
+
+The late ledger \nolinkurl{catalog/late9bd/late_exclusion_ledger.json} records 28 proposal groups with full hashes and section evidence. Source hashes and the bounded comparison scope are in \code{evidence/late_snapshot.json}. This amendment adds no Lean compilation claim.
+\end{document}

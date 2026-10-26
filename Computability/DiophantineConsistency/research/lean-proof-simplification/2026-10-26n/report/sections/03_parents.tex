@@ -1,0 +1,68 @@
+\section{A1 Reuse total decoding for raw parent codes}
+\label{sec:parents}
+
+\textbf{Target.} \src{AnnotatedParents.lean}{49}{97},
+\code{check_raw_iff}. The theorem connects a numeric parent-list checker to
+an existential list of indices. Its forward proof reconstructs that list
+through a 44-line proof-body induction, despite the preceding
+\src{AnnotatedParents.lean}{29}{45}, \code{check_lists}, already establishing
+the exact typed-list characterization.
+
+\textbf{Change.} Choose an encoded list using the existing raw-table decoder,
+rewrite to its exact recoding, then apply \code{check_lists}. The decoder
+returns arbitrary raw six-field rows; their row codes provide the needed
+natural-number list. This does not assert that the rows are valid proof lines.
+
+\begin{Lean}
+  constructor
+  · intro h
+    obtain ⟨rows, hr⟩ :=
+      AnnotatedRenameScan.decodeTable_total parents parents
+        (Nat.le_refl _)
+    have he : AnnotatedCodeArithmetic.listCode
+        (rows.map AnnotatedRename.rowCode) = parents :=
+      AnnotatedRenameScan.tableCode_of_decode hr
+    refine ⟨rows.map AnnotatedRename.rowCode, he.symm, ?_⟩
+    exact (check_lists fuel history expected _ hf).mp
+      (by simpa only [he] using h)
+  · rintro ⟨indices, rfl, h⟩
+    exact (check_lists fuel history expected indices hf).mpr h
+\end{Lean}
+
+This is the candidate proof body, line-wrapped for the page. The full
+statement and non-conflicting \code{check_raw_iff_short} declaration are in
+\pathcode{annotated/AnnotatedCandidates.lean}. The exact conservative patch
+is \pathcode{annotated/proposed.patch}; it has not been applied to the
+supplied source snapshot.
+
+\subsection{Why the bridge is available}
+
+\src{AnnotatedRenameScan.lean}{124}{162} proves both
+\code{tableCode_of_decode} and \code{decodeTable_total}. Supplying
+\code{parents} as both code and sufficient external-natural fuel yields
+\code{rows}; exact recoding gives \code{he}. The parent-checker's forward
+direction is now the existing typed-list equivalence applied after that
+rewrite. The backward direction already has the encoded list, so it needs
+no decoder or reconstruction at all.
+
+The import chain is already present. \code{AnnotatedParents} reaches
+\code{AnnotatedRenameScan} through \code{AnnotatedSchemaMaps} and
+\code{AnnotatedRenameScanPR}. There is no new import and no need for a
+new list-code injectivity theorem.
+
+\subsection{What must not be conflated}
+
+The decoder is used in a \code{Prop} proof; it is not inserted into the
+executable checker or its primitive-recursive program. The hypothesis
+\code{hf : expected.length ≤ fuel} and the checker fuel remain unchanged.
+The original source's emphasis on avoiding an unbounded decoder is not a
+reason to claim this dependency is free: the candidate deliberately uses
+an existing \emph{bounded-decoder totality theorem} at a sufficient
+external-natural fuel. If the intended architecture forbids that proof
+dependency, keep the original induction even if this candidate elaborates.
+
+\textbf{Static outcome and gate.} The whole declaration changes from 49 to
+15 nonblank lines, and from 2,083 to 829 UTF-8 bytes, under the artifact's
+counting rule. First check implicit arguments and the proof-local
+\code{he} rewrite in the pinned Lean environment; then compare the old and
+new axiom dependency lists. No kernel-term or runtime reduction is claimed.

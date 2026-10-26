@@ -1,0 +1,554 @@
+{
+  "repository_commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "lean_version": "4.32.0",
+  "mathlib_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "levels": {
+    "core": "Four examples requiring only Lean core or Std.",
+    "prototypes": "Core plus mathematical/syntax prototypes; no full-file integration claim.",
+    "full": "Prototypes plus exact full-file checks and 15-command residual overlay. This does not build all 546 maintained files."
+  },
+  "recommended_patches": [
+    "patches/list-lookup.patch",
+    "patches/decoder-options.patch",
+    "patches/assignment-transport.patch",
+    "patches/finite-residuals.patch",
+    "patches/pell-residue-casts.patch"
+  ],
+  "optional_patches": [
+    "patches/optional/coefficient-bounds-compact.patch",
+    "patches/optional/decoder-fusion.patch"
+  ],
+  "checks": [
+    {
+      "id": "list-lookup",
+      "file": "lean/ListLookup.lean",
+      "level": "core",
+      "optional": false,
+      "scope": "Exact polymorphic statements covering seven lookup replacement sites.",
+      "prerequisites": [],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "b784aa848a4850648de234b705eb840493dfe25df959ed3faaa6819304137c5b"
+    },
+    {
+      "id": "scan-iteration",
+      "file": "lean/ScanIteration.lean",
+      "level": "core",
+      "optional": false,
+      "scope": "Generic recursion laws and three concrete scanner shapes; client migration not performed.",
+      "prerequisites": [],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "2a846eed1c569e963f858e5cd8fe86b5b6ccc05cbade019c73150f936affca80"
+    },
+    {
+      "id": "validated-history",
+      "file": "lean/ValidatedHistory.lean",
+      "level": "core",
+      "optional": false,
+      "scope": "Generic history laws and explicit specialization bridges; client migration not performed.",
+      "prerequisites": [],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "1c429ddb2ad4f376983207daf59cd3efe4ded1e6d0414bada871221dff75a624"
+    },
+    {
+      "id": "basic-nat",
+      "file": "lean/BasicNat.lean",
+      "level": "core",
+      "optional": false,
+      "scope": "Exact copied wholeShift definition with shorter direct proofs.",
+      "prerequisites": [],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "dd67cb42ae13936d91129add1b7785c14c4026d97cf7a4072a721d79c0b35353"
+    },
+    {
+      "id": "decoder-options",
+      "file": "lean/DecoderOptions.lean",
+      "level": "prototypes",
+      "optional": false,
+      "scope": "Unchanged extracted decoder definitions and two replacement proofs.",
+      "prerequisites": [
+        "Mathlib.Data.Nat.Pairing",
+        "Lean.Elab.Tactic.Omega"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "4599cd8e37ec2cd8fdf2530168d9a78d1ec33b4c4f7ddb0e56731110c8c954c8"
+    },
+    {
+      "id": "small-arithmetic",
+      "file": "lean/SmallArithmetic.lean",
+      "level": "prototypes",
+      "optional": false,
+      "scope": "Exact selected arithmetic statements and generalized full-modulus residue bridge.",
+      "prerequisites": [
+        "Mathlib.Data.ZMod.Basic",
+        "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+        "Mathlib.Algebra.Order.Ring.Pow"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "5c5034c59728920e2fbe0f6a8ec578714a9dc1622fa85687564c570153016b0f"
+    },
+    {
+      "id": "assignment-original-axioms",
+      "file": "lean/AssignmentOriginalAxioms.lean",
+      "level": "prototypes",
+      "optional": false,
+      "scope": "Audits the three original representation constructors.",
+      "prerequisites": [
+        "DiophantineConsistency.Representation"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "b41e3593f22719dcc187b9d6150daefc5fb6ea3d2ddca5058b0e98fe01c0e1e4"
+    },
+    {
+      "id": "assignment-transport",
+      "file": "lean/AssignmentTransport.lean",
+      "level": "prototypes",
+      "optional": false,
+      "scope": "Three replacement constructors, expression equalities by rfl, and axiom audits.",
+      "prerequisites": [
+        "DiophantineConsistency.Representation"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "1c9f80a40d74a309de790df0d524f1fcbf6259934e58bb741a19010b97c4c788"
+    },
+    {
+      "id": "finite-residuals",
+      "file": "lean/FiniteResiduals.lean",
+      "level": "prototypes",
+      "optional": false,
+      "scope": "Eight exact original-statement replacements and paired original/replacement axiom audits.",
+      "prerequisites": [
+        "DiophantineConsistency.QuadraticRegisterSystem",
+        "Mathlib.Data.Sum.Basic"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "8462a8ec80a4d3cc52caaab2955bffc6226056a4bb684112578560db6428e91b"
+    },
+    {
+      "id": "run-invariant",
+      "file": "lean/RunInvariant.lean",
+      "level": "prototypes",
+      "optional": false,
+      "scope": "Generic evaluation invariant and two exact applications; original/replacement audits.",
+      "prerequisites": [
+        "DiophantineConsistency.ArithmeticDAGDegree",
+        "DiophantineConsistency.NaturalDAGQuartic"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "774b8579f6f0b5ae59d3c2c73fca794b7ec1883da0b7971013de7e50b428bf54"
+    },
+    {
+      "id": "decoder-fusion",
+      "file": "lean/optional/DecoderFusion.lean",
+      "level": "prototypes",
+      "optional": true,
+      "scope": "Optional fused invariant: depth projection gains Classical.choice.",
+      "prerequisites": [
+        "Mathlib.Data.Nat.Pairing",
+        "Mathlib.Tactic"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "cfe88b1158aced1e7afdaaa24db8eb76ca9a12486a04b38ed6533b110354b41e"
+    },
+    {
+      "id": "AnnotatedProofChecker-baseline",
+      "file": "lean/full/AnnotatedProofChecker.baseline.lean",
+      "level": "full",
+      "optional": false,
+      "scope": "Original complete file with four audits.",
+      "prerequisites": [
+        "BoundedZFCConsistency.Choice",
+        "FirstOrder.Completeness"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "6ce6e998147bb7681c3c6975363f374079770a87d7acb9ae87cf886087e9b7fc"
+    },
+    {
+      "id": "AnnotatedProofChecker-modified",
+      "file": "lean/full/AnnotatedProofChecker.modified.lean",
+      "level": "full",
+      "optional": false,
+      "scope": "Complete file with one lookup proof replaced and four audits.",
+      "prerequisites": [
+        "BoundedZFCConsistency.Choice",
+        "FirstOrder.Completeness"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "696188b109e7418a7106e9a9c89d95fea016db123859bda14da3ffa7f97915e9"
+    },
+    {
+      "id": "AnnotatedProofCode-baseline",
+      "file": "lean/full/AnnotatedProofCode.baseline.lean",
+      "level": "full",
+      "optional": false,
+      "scope": "Original complete file with four audits.",
+      "prerequisites": [
+        "DiophantineConsistency.AnnotatedProofChecker",
+        "Mathlib.Data.Nat.Pairing"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "b51a756c7f5b75964ba4cec8dc07fb902044cf0a81e4ff7971c7cf3d328cd754"
+    },
+    {
+      "id": "AnnotatedProofCode-option",
+      "file": "lean/full/AnnotatedProofCode.option.lean",
+      "level": "full",
+      "optional": false,
+      "scope": "Complete file with independent Option proofs and four audits.",
+      "prerequisites": [
+        "DiophantineConsistency.AnnotatedProofChecker",
+        "Mathlib.Data.Nat.Pairing"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "6b7ed2d1f5c90e1e71ce6b7c254320418f643b34a7fc1f53ff1267203b359869"
+    },
+    {
+      "id": "representation-file",
+      "file": "lean/full/Representation.lean",
+      "level": "full",
+      "optional": false,
+      "scope": "Exact complete assignment-transport replacement file with original imports.",
+      "prerequisites": [
+        "Mathlib.Algebra.MvPolynomial.Eval",
+        "Mathlib.Algebra.Order.Ring.Unbundled.Basic",
+        "Mathlib.Data.Int.Order.Basic",
+        "Mathlib.Data.Fin.Basic"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "df6d1ddb3dc8b8347c125124441c9acfcefcc91b1f482380d12e397d7c6422e2"
+    },
+    {
+      "id": "pell-baseline",
+      "file": "lean/full/NativePellStepDown.baseline.lean",
+      "level": "full",
+      "optional": false,
+      "scope": "Complete original/replacement Pell file, including three selected audits.",
+      "prerequisites": [
+        "Diophantine.Paper1980.PellHalf90"
+      ],
+      "lean_args": [
+        "-j1",
+        "-M6000"
+      ],
+      "sha256": "47d750dae8b43c106f36c559ee36ac778dc805a11f7bd3fbadc7482ed0bf92c6"
+    },
+    {
+      "id": "coefficient-baseline",
+      "file": "lean/optional/NativeCoefficientBounds.baseline.lean",
+      "level": "full",
+      "optional": true,
+      "scope": "Optional complete original/compact coefficient file, including three selected audits; measured source/cost tradeoff.",
+      "prerequisites": [
+        "DiophantineConsistency.NativeQuadraticParent",
+        "Mathlib.Algebra.Order.Ring.Abs",
+        "Mathlib.Tactic.Linarith"
+      ],
+      "lean_args": [
+        "-j1",
+        "-M3000"
+      ],
+      "sha256": "b892dc4b08879629d9a0f0e49f91ef0e24af0f543a85112bf796c8bbf4866ea9"
+    },
+    {
+      "id": "pell-audited",
+      "file": "lean/full/NativePellStepDown.audited.lean",
+      "level": "full",
+      "optional": false,
+      "scope": "Complete original/replacement Pell file, including three selected audits.",
+      "prerequisites": [
+        "Diophantine.Paper1980.PellHalf90"
+      ],
+      "lean_args": [
+        "-j1",
+        "-M6000"
+      ],
+      "sha256": "9474691052135e10d64edc7967d49ddfcb2fcdbc32cb3cf074bcc70da57d79e8"
+    },
+    {
+      "id": "coefficient-audited",
+      "file": "lean/optional/NativeCoefficientBounds.audited.lean",
+      "level": "full",
+      "optional": true,
+      "scope": "Optional complete original/compact coefficient file, including three selected audits; measured source/cost tradeoff.",
+      "prerequisites": [
+        "DiophantineConsistency.NativeQuadraticParent",
+        "Mathlib.Algebra.Order.Ring.Abs",
+        "Mathlib.Tactic.Linarith"
+      ],
+      "lean_args": [
+        "-j1",
+        "-M3000"
+      ],
+      "sha256": "1ae222f410bb61fd6cdc91c21f6bca5d94bc0dee0640fa8f6a34b39a580afb9b"
+    },
+    {
+      "id": "proofcode-fusion",
+      "file": "lean/optional/AnnotatedProofCode.fusion.lean",
+      "level": "full",
+      "optional": true,
+      "scope": "Optional complete file with fused decoder and five audits; not axiom-equivalent to the original depth proof.",
+      "prerequisites": [
+        "DiophantineConsistency.AnnotatedProofChecker",
+        "Mathlib.Data.Nat.Pairing"
+      ],
+      "lean_args": [
+        "-j1"
+      ],
+      "sha256": "2b19fb4cbc2966d1c3f5179e15c2fbede52988f7469529c90e1a701476ecf575"
+    }
+  ],
+  "overlay_prerequisites": [
+    "DiophantineConsistency.ArithmeticDAGSemantics",
+    "DiophantineConsistency.ArithmeticRepresentation",
+    "DiophantineConsistency.QuarticCost",
+    "DiophantineConsistency.QuarticSyntax",
+    "Mathlib.Data.Fin.VecNotation",
+    "Mathlib.Data.Nat.Pairing",
+    "Mathlib.Data.Sum.Basic"
+  ],
+  "identical_audit_outputs": [
+    [
+      "AnnotatedProofChecker-baseline",
+      "AnnotatedProofChecker-modified"
+    ],
+    [
+      "AnnotatedProofCode-baseline",
+      "AnnotatedProofCode-option"
+    ],
+    [
+      "pell-baseline",
+      "pell-audited"
+    ],
+    [
+      "coefficient-baseline",
+      "coefficient-audited"
+    ]
+  ],
+  "axiom_set_comparisons": [
+    {
+      "original": {
+        "check": "assignment-original-axioms",
+        "constant": "DiophantineConsistency.Rep.reindex"
+      },
+      "replacement": {
+        "check": "assignment-transport",
+        "constant": "DiophantineConsistency.ProofRefactor.reindex"
+      },
+      "expected_axioms": [
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "assignment-original-axioms",
+        "constant": "DiophantineConsistency.Rep.conjunction"
+      },
+      "replacement": {
+        "check": "assignment-transport",
+        "constant": "DiophantineConsistency.ProofRefactor.conjunction"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "assignment-original-axioms",
+        "constant": "DiophantineConsistency.Rep.disjunction"
+      },
+      "replacement": {
+        "check": "assignment-transport",
+        "constant": "DiophantineConsistency.ProofRefactor.disjunction"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.DAGQuartic.expression_zero_iff"
+      },
+      "replacement": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.ProofRefactor.signed_expression_zero_iff"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.DAGQuartic.polynomial_degree"
+      },
+      "replacement": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.ProofRefactor.signed_polynomial_degree"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.DAGQuartic.exists_polynomial_zero_iff"
+      },
+      "replacement": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.ProofRefactor.signed_exists_polynomial_zero_iff"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.NaturalDAGQuartic.expression_zero_iff"
+      },
+      "replacement": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.ProofRefactor.natural_expression_zero_iff"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.NaturalDAGQuartic.polynomial_degree"
+      },
+      "replacement": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.ProofRefactor.natural_polynomial_degree"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.NaturalDAGQuartic.exists_polynomial_zero_iff"
+      },
+      "replacement": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.ProofRefactor.natural_exists_polynomial_zero_iff"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.QuadraticRegisterSystem.System.expression_zero_iff"
+      },
+      "replacement": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.ProofRefactor.system_expression_zero_iff"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.QuadraticRegisterSystem.System.expression_degree"
+      },
+      "replacement": {
+        "check": "finite-residuals",
+        "constant": "DiophantineConsistency.ProofRefactor.system_expression_degree"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "run-invariant",
+        "constant": "DiophantineConsistency.NaturalDAGQuartic.run_nonnegative"
+      },
+      "replacement": {
+        "check": "run-invariant",
+        "constant": "DiophantineConsistency.ProofRefactor.run_nonnegative"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "original": {
+        "check": "run-invariant",
+        "constant": "DiophantineConsistency.ArithmeticDAG.value_degree_le"
+      },
+      "replacement": {
+        "check": "run-invariant",
+        "constant": "DiophantineConsistency.ProofRefactor.value_degree_le"
+      },
+      "expected_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    }
+  ]
+}

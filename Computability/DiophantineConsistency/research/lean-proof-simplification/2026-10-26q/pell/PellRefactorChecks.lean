@@ -1,0 +1,6 @@
+import DiophantineConsistency.ConsecutivePell
+
+#print axioms DiophantineConsistency.NativePellBootstrap.firstUnit_fundamental
+#print axioms DiophantineConsistency.ConsecutivePell.pow_x_mod
+#print axioms DiophantineConsistency.ConsecutivePell.positive_x_mod
+#print axioms DiophantineConsistency.ConsecutivePell.norm_ne_neg_one

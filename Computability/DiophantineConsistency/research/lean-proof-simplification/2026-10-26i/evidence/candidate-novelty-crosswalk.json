@@ -1,0 +1,324 @@
+{
+  "reviewed_commit": "e73fa2e916c9bb6f61c79e4fe2cd02b5f43e9d11",
+  "current_incoming_entries": [
+    {
+      "path": "docs/incoming/README.md",
+      "git_blob_sha": "538341da10d0ac26d43bb22eb526909d9d8875d0",
+      "bytes": 267590,
+      "lines": 1952,
+      "review": "Entire file scanned against all eight candidate themes; all matching contexts reviewed; relevant packet and placement sections read. This is an index-summary review, not a full review of every transitive manuscript."
+    },
+    {
+      "path": "docs/incoming/diophantine-lean-simplification-2026-10-26.zip",
+      "git_blob_sha": "065a4cbf9fde2ef0b15db9898920e84d7a3b49fb",
+      "bytes": 300573,
+      "sha256": "f05ee2789f3cfbca29467377aeaaef6972211406807ce45d4590459621c86470",
+      "review": "Complete 920-line report.tex read; prototype declarations inventoried and relevant prototype files inspected."
+    }
+  ],
+  "related_prior_packet": {
+    "path": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026",
+    "discovered_at": "docs/incoming/README.md lines 14-18",
+    "review": "Complete 442-line report.tex and all three supplementary source_notes files read; prototype declarations inventoried; supplied validation claims treated as inherited evidence."
+  },
+  "index_scan_artifact": "incoming-index-scan.json",
+  "full_exclusion_catalog": "exclusion-catalog.json",
+  "candidates": [
+    {
+      "id": "N01",
+      "title": "Rational-root integrality preserving the original witnesses",
+      "judgment": "distinct from the reviewed proof-simplification proposals under the stated scope",
+      "nearest_prior_exclusion_ids": [
+        "E21"
+      ],
+      "nearest_prior_references": [
+        {
+          "source": "current_report",
+          "start_line": 617,
+          "end_line": 641,
+          "section": "Decode source-register equations once"
+        }
+      ],
+      "substantive_difference": "Earlier packet decodes Pell/source-register row identities once. The candidate proves that a specified rational whose square is an integer is itself integral, descends that same rational, and preserves its linear relation/sign. It eliminates choosing new IsSquare witnesses and reconstructing four sign combinations.",
+      "target_modules": [
+        "NearSquareFinalizer",
+        "MarginFinalizer"
+      ],
+      "incoming_index_scan": {
+        "pattern": "rational|integral|denominator|near.square|margin.final|square.root|norm",
+        "raw_matching_lines": 25,
+        "interpretation": "The incoming index mentions a Joint Norm archive (line 99) and gap-norm construction (line 1815), but neither summary proposes witness-preserving rational descent. Broader norm-construction novelty is not claimed."
+      },
+      "validation": "Novelty comparison only; compilation status is recorded separately by the producing agent."
+    },
+    {
+      "id": "N02",
+      "title": "One exact tree-decoder graph theorem with a product invariant",
+      "judgment": "distinct from the reviewed proof-simplification proposals under the stated scope",
+      "nearest_prior_exclusion_ids": [
+        "E07"
+      ],
+      "nearest_prior_references": [
+        {
+          "source": "current_report",
+          "start_line": 327,
+          "end_line": 361,
+          "section": "Separate recurrence from encoding"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 280,
+          "end_line": 295,
+          "section": "Share iteration laws without changing the programs"
+        }
+      ],
+      "substantive_difference": "Earlier packet factors forward scans and flat-history folds. This candidate characterizes the recursive tree parser by decode fuel code = some t iff t.quote = code and t.depth <= fuel, combining the inverse and fuel/depth invariants in one induction and deriving existing laws by projections.",
+      "target_modules": [
+        "AnnotatedProofCode"
+      ],
+      "incoming_index_scan": {
+        "pattern": "decod|parser|quote|fuel|depth|product.invariant",
+        "raw_matching_lines": 18,
+        "interpretation": "Index decoder references concern K215 machine decoders (e.g. lines 550-553); weighted quote/height/short-fuel bounds at line 1758 describe C254 source encodings. No index summary states this simultaneous graph theorem for AnnotatedProofCode.Tree.decode."
+      },
+      "validation": "Novelty comparison only; compilation status is recorded separately by the producing agent."
+    },
+    {
+      "id": "N03",
+      "title": "Reflect a finite invariant through an injective map",
+      "judgment": "distinct from the reviewed proof-simplification proposals under the stated scope",
+      "nearest_prior_exclusion_ids": [
+        "E07"
+      ],
+      "nearest_prior_references": [
+        {
+          "source": "current_report",
+          "start_line": 327,
+          "end_line": 361,
+          "section": "Separate recurrence from encoding"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 280,
+          "end_line": 295,
+          "section": "Share iteration laws without changing the programs"
+        }
+      ],
+      "substantive_difference": "Forward preservation plus finiteness and injectivity implies restricted surjectivity and therefore predecessor membership. This removes explicit periods, iterate-even induction, and p-1 return bookkeeping in the offset19 exclusion. Earlier scan invariants propagate forward only.",
+      "target_modules": [
+        "NativeFieldCycles2011"
+      ],
+      "incoming_index_scan": {
+        "pattern": "invariant|injectiv|surjectiv|finite.*permut|period",
+        "raw_matching_lines": 9,
+        "interpretation": "The index contains general invariant/cycle titles in historical TM and rounding work, but no finite invariant-reflection refactor of this theorem. Current report lines 862-870 state the 511 self-loop boundary only; the candidate preserves it."
+      },
+      "validation": "Novelty comparison only; compilation status is recorded separately by the producing agent."
+    },
+    {
+      "id": "N04",
+      "title": "Register Primrec as a function property for fun_prop",
+      "judgment": "distinct from the reviewed proof-simplification proposals under the stated scope",
+      "nearest_prior_exclusion_ids": [
+        "E02",
+        "E08"
+      ],
+      "nearest_prior_references": [
+        {
+          "source": "prior_report",
+          "start_line": 114,
+          "end_line": 131,
+          "section": "Rewrite under primitive recursion"
+        },
+        {
+          "source": "current_report",
+          "start_line": 362,
+          "end_line": 379,
+          "section": "A better primitive-recursive iterator interface"
+        }
+      ],
+      "substantive_difference": "Earlier PR suggestions rewrite Realizes.prec recursors or build dynamic-seed explicit realizers. This candidate registers compositional rules for the extensional Primrec predicate and lets fun_prop assemble the proof of primitive recursiveness for already fixed functions. Explicit program values are not redesigned.",
+      "target_modules": [
+        "Computability"
+      ],
+      "incoming_index_scan": {
+        "pattern": "fun_prop|primrec|primitive.recurs|function.propert|closure.*automat",
+        "raw_matching_lines": 0,
+        "interpretation": "The entire incoming README has zero hits for fun_prop, Primrec, primitive-recursive, function-property, or closure-automation patterns. Both full reports and their supplementary notes also omit this mechanism."
+      },
+      "validation": "Novelty comparison only; compilation status is recorded separately by the producing agent."
+    },
+    {
+      "id": "N05",
+      "title": "Prove univariate support envelopes first, then eliminate tail coefficients",
+      "judgment": "distinct from the reviewed proof-simplification proposals under the stated scope",
+      "nearest_prior_exclusion_ids": [
+        "E12"
+      ],
+      "nearest_prior_references": [
+        {
+          "source": "current_report",
+          "start_line": 459,
+          "end_line": 468,
+          "section": "Weighted-expression degree specialization"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 266,
+          "end_line": 271,
+          "section": "Move existing degree machinery to an earlier layer"
+        }
+      ],
+      "substantive_difference": "Earlier degree suggestions concern expression syntax, weighted multivariate degree, and moving those APIs down the import graph. The candidate reverses a specific SelectiveCarry proof: establish natDegree(encoded^2 * combined) <= 2W + D compositionally, then infer coefficient vanishing, replacing a fourfold coefficient expansion.",
+      "target_modules": [
+        "SelectiveCarry"
+      ],
+      "incoming_index_scan": {
+        "pattern": "natDegree|univariate|support.envelope|degree|coefficient",
+        "raw_matching_lines": 39,
+        "interpretation": "The index records equation degrees and coefficient data for historical constructions (lines 1814-1830), not this proof-direction change. Moving a helper earlier alone is not treated as the new idea."
+      },
+      "validation": "Novelty comparison only; compilation status is recorded separately by the producing agent."
+    },
+    {
+      "id": "N06",
+      "title": "Uniqueness of carries with fixed digits via a finite maximum",
+      "judgment": "distinct from the reviewed proof-simplification proposals under the stated scope",
+      "nearest_prior_exclusion_ids": [
+        "E22",
+        "E28"
+      ],
+      "nearest_prior_references": [
+        {
+          "source": "current_report",
+          "start_line": 644,
+          "end_line": 677,
+          "section": "Derive recurrence instead of storing it twice"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 343,
+          "end_line": 354,
+          "section": "Use one exact decomposition interface"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 353,
+          "end_line": 354,
+          "section": "Duplicated canonical digit witnesses"
+        },
+        {
+          "source": "prior_digits_notes",
+          "start_line": 249,
+          "end_line": 268,
+          "section": "8. Factor the restored canonical window once"
+        }
+      ],
+      "substantive_difference": "Earlier normalization proposals derive quotients/residues from decomposition and request coherent source-window witnesses. The candidate supplies a different missing theorem: two carries satisfying the same raw/digit equations have difference d with rho*d(i)=d(prev(i)); a finite maximum and rho>1 force d=0. Canonical packed-digit uniqueness can then identify the digits where exact-word or strict-word hypotheses justify it.",
+      "target_modules": [
+        "NativeCyclicCarry",
+        "CurrentPolynomialWindow2011"
+      ],
+      "incoming_index_scan": {
+        "pattern": "carry|carries|normaliz|uniqueness|maximum",
+        "raw_matching_lines": 27,
+        "interpretation": "Nearest prior text is prior_digits_notes lines 249-268, which explicitly says independently combining two existential windows requires a uniqueness argument. Accordingly the novelty claim is the actual fixed-digit contraction proof, not the already suggested desire to share coherent witnesses. Recurrence alone is not claimed unique."
+      },
+      "validation": "Novelty comparison only; compilation status is recorded separately by the producing agent."
+    },
+    {
+      "id": "N07",
+      "title": "Obtain rotation-word semantics from convolution with a Dirac stencil",
+      "judgment": "distinct from the reviewed proof-simplification proposals under the stated scope",
+      "nearest_prior_exclusion_ids": [
+        "E18",
+        "E19",
+        "E26"
+      ],
+      "nearest_prior_references": [
+        {
+          "source": "current_report",
+          "start_line": 548,
+          "end_line": 581,
+          "section": "A stronger half-radix lemma"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 319,
+          "end_line": 329,
+          "section": "A half-radix shift needs arithmetic"
+        },
+        {
+          "source": "current_report",
+          "start_line": 582,
+          "end_line": 616,
+          "section": "Share physical-field residue calculations"
+        },
+        {
+          "source": "prior_digits_notes",
+          "start_line": 167,
+          "end_line": 204,
+          "section": "5. Put field-coordinate and off-origin mask lemmas below the clause layer"
+        },
+        {
+          "source": "prior_digits_notes",
+          "start_line": 205,
+          "end_line": 229,
+          "section": "6. Share the origin-decrement word lemma"
+        }
+      ],
+      "substantive_difference": "Earlier proposals simplify half-radix arithmetic, physical residue/support calculations, and no-borrow origin decrement. This candidate identifies rotation itself with convolution by a single-site unit, so the existing word_convolution theorem supplies word_rotate rather than reproving reindexing and modular exponent transport.",
+      "target_modules": [
+        "NativeCyclicRotation",
+        "NativeCyclicConvolution"
+      ],
+      "incoming_index_scan": {
+        "pattern": "Dirac|delta|convolution|rotat|stencil",
+        "raw_matching_lines": 9,
+        "interpretation": "The index rotation matches all concern Turing-machine source rotations. It contains no Dirac, delta, convolution, or stencil proposal for this native-word theorem."
+      },
+      "validation": "Novelty comparison only; compilation status is recorded separately by the producing agent."
+    },
+    {
+      "id": "N08",
+      "title": "Factor a product equal to one through IsUnit rather than rebracketing factors",
+      "judgment": "distinct from the reviewed proof-simplification proposals under the stated scope",
+      "nearest_prior_exclusion_ids": [
+        "E10"
+      ],
+      "nearest_prior_references": [
+        {
+          "source": "current_report",
+          "start_line": 399,
+          "end_line": 442,
+          "section": "One executable sum-of-squares API"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 162,
+          "end_line": 189,
+          "section": "Sums of squares"
+        }
+      ],
+      "substantive_difference": "The earlier ShortSystem proposal replaces residualSum_zero_iff by the general sum-of-squares zero criterion. This candidate targets product_eq_one_iff instead: derive IsUnit of the whole product, simplify IsUnit.mul_iff and Int.isUnit_iff once, and use the resulting sign alternatives. It removes separate complementary-product constructions and factor-wise ring rebracketing.",
+      "target_modules": [
+        "ShortSystem"
+      ],
+      "incoming_index_scan": {
+        "pattern": "IsUnit|unit_eq_one|product_eq_one|\\bunits?\\b|factori[sz]ation",
+        "raw_matching_lines": 1,
+        "interpretation": "The complete index has one match for unit/factorization terminology, line 1774, where Lean units means separately compiled source modules in a TM project. Neither the index nor either simplification report proposes IsUnit factorization for ShortSystem.product_eq_one_iff."
+      },
+      "validation": "Novelty comparison only; compilation status is recorded separately by the producing agent."
+    }
+  ],
+  "rejected_overlap": [
+    {
+      "title": "Promote aligned Cell to additive subgroup/additive equivalence with ZMod N",
+      "judgment": "Omit as a fresh headline under the strict no-repetition request.",
+      "reason": "Current report.tex lines 613-615 already suggests an aligned-cell equivalence with ZMod N to simplify reindexing. The additive strengthening is a refinement of that proposed direction."
+    }
+  ],
+  "novelty_scope": "No duplicate of these eight proof-engineering mechanisms was found in the two current incoming entries or the explicitly linked earlier simplification packet. This is not a claim of new mathematics or a comprehensive novelty audit of all 195 historical Diophantine construction manuscripts and every K215 paper linked transitively by the index.",
+  "method": "Read full simplification manuscripts and supplementary notes before assessing candidates; search the full 1952-line index with recorded broad patterns; inspect every matching context; compare mathematical proof obligations rather than names alone."
+}

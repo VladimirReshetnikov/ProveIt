@@ -1,0 +1,30 @@
+All six complete replacement modules compiled successfully together in one
+combined module tree with Lean 4.32.0 and the exact pinned mathlib revision.
+The unchanged repository dependencies were built from the pinned sources;
+the exact-version mathlib cache was reused. The combined run loaded the new
+addition proof when checking the multiplication file and the new step-down
+module when checking the Pell bootstrap file.
+
+The existing \code{NativeFieldCycles2011Checks} module also compiled against
+the replacement. Its checks include the allowed nonzero $511$ self-loop,
+the zero loop, use of the offset-19 exclusion, and the offset-20 statement
+on an infinite type with an arbitrary map.
+
+The selected axiom audit reports only
+\code{propext}, \code{Classical.choice}, and \code{Quot.sound} for the seven
+edited existing theorems. The new \code{coordinates_mono_base} lemma reports
+only \code{propext}. No \code{sorryAx}, native-decision trust axiom, or new
+axiom appears in those results. Separate experiments also checked the
+stronger Pell comparison and the direct internal-natural proofs.
+
+The combined patch passes \code{git apply --check} at the pinned commit.
+The seven retained public declaration headers match the originals after
+whitespace normalization. The compiler leaves only the expected warnings
+about public parameters retained for compatibility: \code{hy} in the
+step-down theorem and \code{hp}/\code{hn} in the index comparison.
+
+These checks cover the six changed modules and the stated regression and
+axiom checks. The entire ProveIt repository and every downstream endpoint
+were not rebuilt. The two removed direct imports in \code{MinimumNorm} have
+no proof-bearing direct consumer in this directory beyond the import and
+axiom-audit aggregators inspected during the review.

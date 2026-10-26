@@ -1,0 +1,5 @@
+import DiophantineConsistency.NativePellScaleBounds
+
+#print axioms DiophantineConsistency.NativePellBootstrap.source_native_rank_envelope
+#print axioms DiophantineConsistency.NativePellBootstrap.source_native_rank_ge_twentyfour
+#print axioms DiophantineConsistency.NativePellScaleBounds.source_rank_gt_three_q

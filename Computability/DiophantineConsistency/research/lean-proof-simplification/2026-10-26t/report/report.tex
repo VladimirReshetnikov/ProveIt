@@ -1,0 +1,89 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.92in,headheight=15pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Bitstream Charter}
+\setsansfont{DejaVu Sans}[Scale=0.92]
+\setmonofont{DejaVu Sans Mono}[Scale=0.80]
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{xcolor,enumitem,fancyhdr,titlesec,fvextra}
+\usepackage{needspace,etoolbox}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{xurl}
+\definecolor{ink}{HTML}{15364A}
+\definecolor{accent}{HTML}{207A82}
+\definecolor{muted}{HTML}{526570}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=accent,citecolor=accent,
+  pdftitle={Further Lean Proof Simplifications: Four Directions After the Existing Proposal Corpus},
+  pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\titleformat{\section}{\Large\sffamily\bfseries\color{ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{ink}}{\thesubsection}{0.7em}{}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily Further Lean proof simplifications}
+\fancyhead[R]{\small\sffamily ProveIt / 26 October 2026}
+\fancyfoot[C]{\small\thepage}
+\newcommand{\code}[1]{{\small\texttt{\detokenize{#1}}}}
+\newcommand{\sourcecommit}{\texttt{6f46a5e3480a2fa2e45993b8090826f256aeaa56}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\kw}[1]{\textsf{\textbf{#1}}}
+\DefineVerbatimEnvironment{lean}{Verbatim}{fontsize=\small,breaklines=true,
+  breakanywhere=true,frame=single,rulecolor=\color{accent},framesep=6pt}
+\pretocmd{\section}{\Needspace{6\baselineskip}}{}{}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{1.1cm}
+{\sffamily\color{accent}\large PROVEIT RESEARCH NOTE\par}
+\vspace{0.6cm}
+{\sffamily\bfseries\color{ink}\Huge Further Lean Proof\\[4pt] Simplifications\par}
+\vspace{0.55cm}
+{\sffamily\Large Four directions after the existing proposal corpus\par}
+\vspace{0.9cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{26 October 2026\par}
+\vspace{0.8cm}
+\rule{\textwidth}{0.7pt}
+\vspace{0.3cm}
+\textbf{Scope.} The maintained Lean development in
+\code{Computability/DiophantineConsistency}, with all ideas in the six placed
+proof-simplification packets and five incoming archives treated as prior work.
+
+\textbf{Source pin.} \sourcecommit.
+
+\textbf{Deliverables.} Integration patches, complete changed Lean modules,
+source and exclusion manifests, exact compiler logs, replay scripts, and this
+report in PDF and LaTeX.
+
+\vspace{0.5cm}
+\begin{quote}
+The useful remaining changes are about proof dependency direction: identify
+an existing codec, make local coefficient extraction foundational, remove
+sign cases from a Pell minimality proof, and isolate the least-exit
+argument shared by two geometric proofs.
+\end{quote}
+\vfill
+{\small\color{muted}Novelty in this report means absence from the audited
+proposal corpus. It does not mean a new mathematical theorem, a new Lean
+technique in general, or a claim that every possible refactoring has been
+exhausted.}
+\end{titlepage}
+
+{\setlength{\parskip}{0pt}\small\tableofcontents}
+\newpage
+\input{sections/01_scope}
+\input{sections/02_encoding}
+\input{sections/03_coefficients}
+\input{sections/04_pell}
+\input{sections/05_first_exit}
+\input{sections/06_validation}
+\input{sections/07_next}
+\input{sections/08_references}
+\end{document}

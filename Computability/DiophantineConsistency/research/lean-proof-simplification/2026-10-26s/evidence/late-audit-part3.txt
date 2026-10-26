@@ -1,0 +1,83 @@
+LATE INCOMING AUDIT — PART 3
+
+Archive: docs/incoming/diophantine-lean-new-simplifications-2026-10-26.zip
+Repository refresh pin: 23f631ea07fff8632eb8cd92286f7621bbe051c0
+Archive SHA-256: 3f65634b03124ed8353651baadd63e4cb7ae5664755ec5b43c8052fd82fce09d
+Archive size: 248,984 bytes; 62 members (from late-intake/inventory.json).
+Extraction root: late-intake/diophantine-lean-new-simplifications-2026-10-26/diophantine-lean-new-simplifications-2026-10-26/
+All locations below are relative to this extraction root.
+
+REVIEW METHOD
+
+Read the complete report, including Further research questions; reviewed the proposed patch, targeted replacement regions, experiments/snippets, independent review, novelty comparison (including screened-out candidates), final-refresh audit addendum, and the complete readable exclusion ledger. The supplied scripts were treated as data, not executed. Copies of untouched source in replacement modules were not interpreted as proposed changes. The six current candidates were checked at the mechanism and surviving-proof-obligation level, not merely by theorem-name search.
+
+DECISION
+
+One concrete overlap requires trimming two specification-proof targets. The other five current candidate families remain distinct from this packet; the remaining 20 specification targets also remain distinct. No entire current direction must be dropped on the basis of this archive alone.
+
+1. COMPOSITIONAL OBJECT-FORMULA SPECIFICATIONS — TRIM TWO TARGETS
+
+Exact prior proposal:
+- report/report.tex:223-280, Idea 1, remove two specialized inductions.
+- report/report.tex:236-239 explicitly says nat_zero_or_succ removes the two private formulas and their specification proofs.
+- patches/new-simplifications.patch:13-23 deletes zeroSumStage and zeroSumStage_spec from ObjectAdditionCancellation.
+- patches/new-simplifications.patch:69-79 deletes zeroProductStage and zeroProductStage_spec from ObjectNaturalZero.
+- audit/novelty_comparison.json:6-20 lists these exact targets and the deletion mechanism.
+- audit/independent_review.txt:31-33 confirms these two private formulas and satisfaction lemmas disappear; cancellationStage remains because it defines the public cancellation formula.
+
+Required response to the user's counterfactual:
+Drop our simplifications of ObjectAdditionCancellation.zeroSumStage_spec and ObjectNaturalZero.zeroProductStage_spec entirely. After the prior proposal is applied, neither theorem exists. It would be wrong to claim additional savings from shortening those deleted proofs, even though our method of shortening them differs.
+
+The remaining cancellationStage_spec is retained. Its actual induction uses its induction hypothesis. The same check was made for all retained arithmetic stage consumers in ObjectAdditionLaws, ObjectMultiplicationLaws, ObjectDistributivity and ObjectNaturalOrder: their successor cases explicitly use ih. Thus report/report.tex:617-625's further suggestion to audit omega_ind calls that discard the induction hypothesis does not independently eliminate any further selected stage target.
+
+The retained mechanism remains new relative to this archive: explicit normalization of Sat and atomic exact specs under binders, including scons offsets and the necessary propositional rearrangements. This archive removes two unnecessary specifications; it does not provide compositional normalization of surviving specifications.
+
+Applied trim in architecture-prototypes:
+- zeroSumStage_spec restored byte-for-byte to original in ObjectAdditionCancellation.lean.
+- ObjectNaturalZero.lean removed from the active candidate directory.
+- audit_specs.py TARGETS updated; --metrics-only support added for static refresh.
+- object-spec-normalization.patch, source-metrics.json, theorem-metrics.json and validation-targets.json refreshed.
+- Current scope: 20 proofs in 8 modules, 133 physical lines and 5,283 UTF-8 bytes removed.
+- Complete selected modules: 1,713 -> 1,580 physical lines.
+- Selected proof bodies: 185 -> 52 lines, counting the line containing by.
+- Deterministic proof erasure confirms every byte outside the 20 selected proof bodies unchanged.
+- The prior 22-proof/9-module compiler logs are historical evidence; the parent agent's final common-overlay check must validate the trimmed complete source. No new compiler success is claimed by this static refresh.
+
+2. SCALED PELL RATIO ESTIMATE — KEEP
+
+Nearest proposal is report/report.tex:378-457, Idea 4, simultaneous Pell-coordinate monotonicity in the BASE parameter, with consumer NativePellBootstrap.main_index_gt_first. Its patch region is patches/new-simplifications.patch:216-259. The future suggestions at report/report.tex:600-615 concern relocating that monotonicity helper and weakening source_base_separation obligations.
+
+Our candidate shares a positive-SCALE real error estimate between ordinary and doubled ratio clients, with explicit lambda*(Y+1) budget and lambda/2 conclusion; it reuses a lower ratio comparison at the same boundary. It does not compare Pell base parameters or replace index comparison. No proposal in this packet identifies upper_estimate_budget, upper_estimate_scaled, doubled_ratio_lower, the common scale budget, or the shared ratio-growth proof. Keep; do not count the other packet's index proof as ours.
+
+3. FINITE STRICT-CUT CARDINALITIES — KEEP
+
+Nearest proposal is report/report.tex:498-557, Idea 6, finite-permutation inverse invariance. It replaces a periodic orbit witness in NativeFieldCycles2011.offset19_excludes_510 with Equiv.Perm.perm_symm_on_of_perm_on_finite. Further search directions at lines636-642 concern other uses of periodicity whose only purpose is predecessor invariance.
+
+Our finite-cut API proves strict cardinality growth using proper inclusion and a witness, for WangTiles942Permutation's strict rank and WangTiles942Language's rail prefix. It needs no permutation orbit or forward-invariant predicate. Both use finiteness, but they discharge different obligations and apply to different theorems. No strictRank, target_prefix_card_lt, card_cut, rank injectivity or lower-cut abstraction proposal appears in the new content. Keep.
+
+4. SMALL-SQUARE GAP IN firstUnit_fundamental — KEEP
+
+The archive contains a complete replacement NativePellBootstrap.lean, but its proposed change is main_index_gt_first, not firstUnit_fundamental. An untouched copy of firstUnit_fundamental is baseline evidence, not a simplification proposal.
+
+Idea 5 (report/report.tex:459-496) treats MinimumNorm.norm_ne_zero_of_not_isSquare by integer divisibility of equal powers and cancellation, replacing a rational-square argument. Our change instead uses Int.sq_eq_one_of_sq_lt_four and Pell y != 0 to eliminate a sign split in firstUnit_fundamental, then excludes a square strictly between consecutive integer squares. The domain, target theorem and key fact differ. No matching small-square-gap proposal or sq_eq_one_of_sq_lt_four use appears. Keep.
+
+5. TWO-ERROR INTEGER RECOVERY — KEEP
+
+No new real interval, floor or combined error-budget abstraction is proposed here. Existing prior-ledger entries P49 and P50 concern half-radix arithmetic and cyclic field congruences, already screened in the original audit. Pell parameter monotonicity is unrelated to identifying one natural integer from two overlapping real unit-interval certificates. Keep as optional checked example with no net source-saving claim.
+
+6. OBSERVED INTERNAL CERTIFICATE CLOSURE — KEEP
+
+The finite-permutation invariance proposal is about an external finite state space and the inverse of a bijection. Our closure interface concerns arbitrary internal sets S:V in a ZF model, monotone support predicates, union and singleton insertion; it preserves members outside the encoding image. It does not infer inverse invariance or use finiteness of V.
+
+The screened-out constructor-algebra idea in audit/novelty_comparison.json:249-274 concerns depth-indexed AnnotatedBound/AnnotatedRename constructor soundness and certificate completeness, with code_binaryForm/renamed_binaryForm/bound_binaryForm semantic lemmas. It is explicitly narrower than a generic scanner fold but still different from cup/insertion closure of internal relation certificates. The canonical-evaluation note at lines220-246 uses an evaluator witness and existing uniqueness; it does not prove closure under unions or insertion. No observed-encoding Closed, BoundClosed_cup/insert, RenClosed_cup/insert, RankClosed_cup/insert, postfixed union or monotone-certificate set-kernel proposal appears in the new content. Keep as optional core plus six actual clients; no net saving claimed.
+
+OTHER SUPPLEMENTARY DIRECTIONS SCREENED
+
+- report/report.tex:627-634: possible public signed divisibility up-to-sign API; unrelated to all retained six candidates.
+- report/report.tex:644-651: source/term/import/time scoring methodology; ordinary validation practice, not a novel proof mechanism claimed in our packet.
+- audit/independent_review.txt:111-115 and audit/novelty_comparison.json excluded_candidates: canonical evaluator witness and constructor semantic algebra; distinctions above.
+- audit/exclusion_notes.txt P70-P73 and P80: definable induction transport, model-validity bridge, arity transport, shared semiring witness, generic narrow proof interfaces. These repeat already-audited prior families; they do not describe constructing the remaining exact binder-aware Sat specifications.
+
+FINAL JUDGMENT
+
+Retain all six mechanism families, but shrink the specification implementation to the 20 surviving targets. The two dropped stage-specification improvements must not appear as recommendations, active patch hunks, active target lists, or net additional savings. Historical validation evidence may retain them only if clearly identified as preceding this late scope trim.

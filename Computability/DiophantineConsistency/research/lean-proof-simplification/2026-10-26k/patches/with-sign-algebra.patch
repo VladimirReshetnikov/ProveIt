@@ -1,0 +1,627 @@
+--- /dev/null
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ProofSimplification/SignedModEq.lean
+@@ -0,0 +1,64 @@
++import Mathlib.Data.Int.ModEq
++
++/-! Congruence up to sign: a small proof interface for Pell index recovery.
++    This module changes no residue modulus and requires no positivity. -/
++
++namespace DiophantineConsistency.ProofSimplification
++
++def SignedModEq (m a b : ℤ) : Prop :=
++  a ≡ b [ZMOD m] ∨ a ≡ -b [ZMOD m]
++
++namespace SignedModEq
++
++theorem of_modEq {m a b : ℤ} (h : a ≡ b [ZMOD m]) : SignedModEq m a b :=
++  Or.inl h
++
++theorem symm {m a b : ℤ} (h : SignedModEq m a b) : SignedModEq m b a := by
++  rcases h with h | h
++  · exact Or.inl h.symm
++  · exact Or.inr (by simpa only [neg_neg] using h.neg.symm)
++
++theorem trans {m a b c : ℤ} (h : SignedModEq m a b) (g : SignedModEq m b c) :
++    SignedModEq m a c := by
++  rcases h with h | h <;> rcases g with g | g
++  · exact Or.inl (h.trans g)
++  · exact Or.inr (h.trans g)
++  · exact Or.inr (h.trans g.neg)
++  · exact Or.inl (by simpa only [neg_neg] using h.trans g.neg)
++
++theorem iff_dvd {m a b : ℤ} :
++    SignedModEq m a b ↔ m ∣ a - b ∨ m ∣ a + b := by
++  unfold SignedModEq
++  rw [Int.modEq_comm, Int.modEq_iff_dvd, Int.modEq_comm, Int.modEq_iff_dvd,
++    sub_neg_eq_add]
++
++theorem sign_mul (m t b : ℤ) (ht : t = 1 ∨ t = -1) :
++    SignedModEq m (t * b) b := by
++  rcases ht with rfl | rfl
++  · exact Or.inl (by simp)
++  · exact Or.inr (by simp)
++
++theorem natAbs (m a : ℤ) : SignedModEq m (a.natAbs : ℤ) a := by
++  rw [Int.natCast_natAbs]
++  rcases le_total 0 a with ha | ha
++  · exact Or.inl (by rw [abs_of_nonneg ha])
++  · exact Or.inr (by rw [abs_of_nonpos ha])
++
++end SignedModEq
++
++/-- The entire final sign chase in `index_residues` factors through this lemma. -/
++theorem signed_index_chase {m u J t s p : ℤ}
++    (huJ : SignedModEq m u J) (hus : u ≡ t * s [ZMOD m])
++    (ht : t = 1 ∨ t = -1) (hsp : m ∣ s - p ∨ m ∣ s + p) :
++    m ∣ J - p ∨ m ∣ J + p :=
++  SignedModEq.iff_dvd.mp
++    (huJ.symm.trans ((SignedModEq.of_modEq hus).trans
++      ((SignedModEq.sign_mul m t s ht).trans (SignedModEq.iff_dvd.mpr hsp))))
++
++/-- Absolute-value classification transports back to the original signed value. -/
++theorem signed_of_natAbs {m y p : ℤ} (h : SignedModEq m (y.natAbs : ℤ) p) :
++    SignedModEq m y p :=
++  (SignedModEq.natAbs m y).symm.trans h
++
++
++end DiophantineConsistency.ProofSimplification
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCellLabels2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentCellLabels2011.lean
+@@ -131,31 +131,14 @@
+ theorem sum_le_one_cases {ι : Type*} [Fintype ι] (f : ι → ℕ)
+     (hf : (∑ i, f i) ≤ 1) : (∀ i, f i = 0) ∨ ∃ i, Selected f i := by
+   classical
+-  by_cases hz : (∑ i, f i) = 0
+-  · left
+-    intro i
+-    have hi := Finset.single_le_sum (fun j (_ : j ∈ Finset.univ) => Nat.zero_le (f j))
+-      (Finset.mem_univ i)
+-    omega
+-  · have hsum : (∑ i, f i) = 1 := by omega
+-    have hex : ∃ i, 0 < f i := by
+-      by_contra hnot
+-      push Not at hnot
+-      have hall : ∀ i, f i = 0 := fun i => by have := hnot i; omega
+-      simp only [hall, Finset.sum_const_zero] at hsum
+-      contradiction
+-    obtain ⟨i, hi⟩ := hex
+-    have hle := Finset.single_le_sum (fun j (_ : j ∈ Finset.univ) => Nat.zero_le (f j))
+-      (Finset.mem_univ i)
+-    have hi1 : f i = 1 := by omega
+-    have herase : ∑ j ∈ Finset.univ.erase i, f j = 0 := by
+-      have he := Finset.sum_erase_add (s := Finset.univ) f (Finset.mem_univ i)
+-      omega
+-    refine Or.inr ⟨i, hi1, ?_⟩
+-    intro j hj
+-    have hjmem : j ∈ Finset.univ.erase i := Finset.mem_erase.mpr ⟨hj, Finset.mem_univ j⟩
+-    have hjle := Finset.single_le_sum (fun q (_ : q ∈ Finset.univ.erase i) => Nat.zero_le (f q)) hjmem
+-    omega
++  have h := Finset.sum_le_one_iff.mp hf
++  by_cases hz : ∀ i, f i = 0
++  · exact Or.inl hz
++  · obtain ⟨i, hi⟩ := not_forall.mp hz
++    refine Or.inr ⟨i, (h i i (by simp) (by simp) hi hi).2, ?_⟩
++    intro j hji
++    by_contra hj
++    exact hji (h j i (by simp) (by simp) hj hi).1
+ 
+ theorem Selected.weighted_sum {ι : Type*} [Fintype ι] {f : ι → ℕ} {i : ι}
+     (h : Selected f i) (a : ι → ℕ) : (∑ j, a j * f j) = a i := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean
+@@ -1,4 +1,6 @@
+ import Diophantine.Paper1980.PellHalf90
++import DiophantineConsistency.SignedPellResidue
++import DiophantineConsistency.ProofSimplification.SignedModEq
+ 
+ /-!
+ # Signed auxiliary Pell step-down for the native minus-sign block
+@@ -31,32 +33,11 @@
+       push_cast [Nat.cast_sub hI2]; exact haux
+     exact_mod_cast this
+   obtain ⟨s, hIu, hys⟩ := eq_pell_of_sq hI1 hpell
+-  have hs0 : 0 < s := by
+-    rcases Nat.eq_zero_or_pos s with h0 | h0
+-    · rw [h0, yn_zero] at hys; omega
+-    · exact h0
+   have hIZ0 : (I : ℤ) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
+   -- `s` is odd
+-  have hsodd : Odd s := by
+-    by_contra heven
+-    rw [Nat.not_odd_iff_even] at heven
+-    obtain ⟨h, hh⟩ := heven
+-    have e1 : (xn hI1 s : ℤ) ≡ (-1) ^ h [ZMOD I] := by
+-      rw [xn_eq_xr hI1, hh, ← two_mul]; exact xr_even_modEq (I : ℤ) h
+-    have e2 : (xn hI1 s : ℤ) = I * u := by rw [← hIu]; push_cast; ring
+-    rw [e2] at e1
+-    have e3 : (0 : ℤ) ≡ (-1) ^ h [ZMOD I] := by
+-      have : (I : ℤ) * u ≡ 0 [ZMOD I] := (Int.modEq_zero_iff_dvd).2 (dvd_mul_right _ _)
+-      exact this.symm.trans e1
+-    have hdvd : (I : ℤ) ∣ (-1) ^ h := by
+-      have := (Int.modEq_iff_dvd.1 e3); simpa using this
+-    have hdvd1 : (I : ℤ) ∣ 1 := by
+-      rcases neg_one_pow_eq_or ℤ h with e | e
+-      · rwa [e] at hdvd
+-      · rw [e] at hdvd; exact (dvd_neg).1 hdvd
+-    have : (I : ℤ) = 1 := Int.eq_one_of_dvd_one (by positivity) hdvd1
+-    have : I = 1 := by exact_mod_cast this
+-    omega
++  have hsodd : Odd s := SignedPellResidue.odd_index_of_base_dvd hI1 (by
++    rw [← hIu]
++    exact dvd_mul_right I u)
+   obtain ⟨h, hs⟩ := hsodd
+   -- `u = Q_h(I²)`
+   have hu_eq : (u : ℤ) = Qh h ((I : ℤ) ^ 2) := by
+@@ -98,31 +79,8 @@
+     have := Qh_modEq h0 h
+     rw [Qh_eval_zero, ← hu_eq] at this
+     rw [hs]; push_cast; exact this
+-  have hJs : (J : ℤ) ≡ (-1) ^ h * s [ZMOD c] ∨
+-      (J : ℤ) ≡ -((-1) ^ h * s) [ZMOD c] := by
+-    rcases hu_J with hu_J | hu_J
+-    · exact Or.inl (hu_J.symm.trans hu_cc)
+-    · right
+-      have h := hu_J.symm.trans hu_cc
+-      simpa using h.neg
+-  -- hence `c ∣ J − p` or `c ∣ J + p`
+-  have hJp_of_sign {t : ℤ} (hJs : (J : ℤ) ≡ t * s [ZMOD c])
+-      (ht : t = 1 ∨ t = -1) :
+-      (c : ℤ) ∣ (J : ℤ) - p ∨ (c : ℤ) ∣ (J : ℤ) + p := by
+-    have hJs' := Int.modEq_iff_dvd.1 hJs
+-    rcases ht with e | e <;> rw [e] at hJs' <;> rcases hsp' with hh | hh
+-    · left; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨k1 - k2, by linear_combination hk1 - hk2⟩
+-    · right; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨k1 - k2, by linear_combination hk1 - hk2⟩
+-    · right; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨-k1 - k2, by linear_combination -hk1 - hk2⟩
+-    · left; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨-k1 - k2, by linear_combination -hk1 - hk2⟩
+-  rcases hJs with hJs | hJs
+-  · exact hJp_of_sign hJs (neg_one_pow_eq_or ℤ h)
+-  · apply hJp_of_sign (t := -((-1 : ℤ) ^ h)) (by simpa only [neg_mul] using hJs)
+-    rcases neg_one_pow_eq_or ℤ h with hh | hh <;> simp [hh]
++  exact ProofSimplification.signed_index_chase hu_J hu_cc
++    (neg_one_pow_eq_or ℤ h) hsp'
+ 
+ /-- The same index residues for a signed auxiliary coordinate with the native
+ minus-sign congruences. -/
+@@ -145,16 +103,8 @@
+     have h := hVf.pow 2
+     simpa only [neg_sq, ← hvsq] using h
+   have hvJ : (V.natAbs : ℤ) ≡ J [ZMOD c] ∨
+-      (V.natAbs : ℤ) ≡ -(J : ℤ) [ZMOD c] := by
+-    rcases Int.natAbs_eq V with h | h
+-    · right
+-      exact (congrArg (fun z : ℤ => z % (c : ℤ)) h.symm).trans hVJ
+-    · left
+-      have habs : (V.natAbs : ℤ) = -V := by omega
+-      have habsmod : (V.natAbs : ℤ) ≡ -V [ZMOD c] :=
+-        congrArg (fun z : ℤ => z % (c : ℤ)) habs
+-      have hnegmod : -V ≡ J [ZMOD c] := by simpa only [neg_neg] using hVJ.neg
+-      exact habsmod.trans hnegmod
++      (V.natAbs : ℤ) ≡ -(J : ℤ) [ZMOD c] :=
++    (ProofSimplification.SignedModEq.natAbs c V).trans (Or.inr hVJ)
+   exact index_residues hA hp hcp hf hpm hcm hI1 hcI hIsq hy hvaux hvf hvJ
+ 
+ /-- Half-modulus bounds remove both sign and nonzero-multiple ambiguity. -/
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SignedPellResidue.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SignedPellResidue.lean
+@@ -1,4 +1,5 @@
+ import Diophantine.Common.PellInt
++import DiophantineConsistency.ProofSimplification.SignedModEq
+ 
+ /-!
+ # The signed odd auxiliary Pell residue
+@@ -77,14 +78,7 @@
+     rcases neg_one_pow_eq_or ℤ j with hj | hj
+     · exact Or.inl (by rwa [hj] at hr)
+     · exact Or.inr (by rwa [hj] at hr)
+-  by_cases hy0 : 0 ≤ y
+-  · simpa only [Int.natCast_natAbs, abs_of_nonneg hy0] using habs
+-  · have hy0 : y ≤ 0 := by omega
+-    rcases habs with hpos | hneg
+-    · right
+-      simpa only [Int.natCast_natAbs, abs_of_nonpos hy0, neg_neg] using hpos.neg
+-    · left
+-      simpa only [Int.natCast_natAbs, abs_of_nonpos hy0, neg_neg] using hneg.neg
++  exact ProofSimplification.signed_of_natAbs habs
+ 
+ /-- The full signed residue required by the thirteen-coordinate carrier.
+ Neither V nor y is assumed positive, and no size bound on them is supplied. -/
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RegisterDivMod.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RegisterDivMod.lean
+@@ -1,3 +1,4 @@
++import DiophantineConsistency.ArithmeticCertificates
+ import DiophantineConsistency.RegisterRelationLogic
+ 
+ /-! # A shared-register quotient/remainder certificate with an explicit positive guard -/
+@@ -8,21 +9,8 @@
+ 
+ theorem certificate_iff (q r n b : ℕ) :
+     (∃ s, n = q * b + r ∧ b = r + s + 1) ↔
+-      0 < b ∧ q = n / b ∧ r = n % b := by
+-  constructor
+-  · rintro ⟨s,hn,hb⟩
+-    have hb0 : 0 < b := by omega
+-    have hr : r < b := by omega
+-    have hmod : n % b = r := by
+-      simp [hn,Nat.add_mod,Nat.mod_eq_of_lt hr]
+-    have hdiv : n / b = q := by
+-      rw [hn,Nat.add_comm (q*b) r,Nat.add_mul_div_right r q hb0,Nat.div_eq_of_lt hr,Nat.zero_add]
+-    exact ⟨hb0,hdiv.symm,hmod.symm⟩
+-  · rintro ⟨hb,hq,hr⟩
+-    have hrb : r < b := by rw [hr]; exact Nat.mod_lt n hb
+-    refine ⟨b-r-1,?_,by omega⟩
+-    rw [hq,hr]
+-    exact (Nat.div_add_mod' n b).symm
++      0 < b ∧ q = n / b ∧ r = n % b :=
++  ArithmeticCertificates.divMod_certificate_iff q r n b
+ 
+ /-- Source inputs are `(quotient,remainder,numerator,denominator)` and input
+ 4 is the explicit remainder-bound slack. Shared products are computed once. -/
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticDivMod.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticDivMod.lean
+@@ -1,3 +1,4 @@
++import DiophantineConsistency.ArithmeticCertificates
+ import DiophantineConsistency.QuadraticRegisterSystem
+ import DiophantineConsistency.RegisterRelationLogic
+ 
+@@ -9,21 +10,8 @@
+ 
+ theorem certificate_iff (q r n b : ℕ) :
+     (∃ s, n = q * b + r ∧ b = r + s + 1) ↔
+-      0 < b ∧ q = n / b ∧ r = n % b := by
+-  constructor
+-  · rintro ⟨s,hn,hb⟩
+-    have hb0 : 0 < b := by omega
+-    have hr : r < b := by omega
+-    have hmod : n % b = r := by
+-      simp [hn,Nat.add_mod,Nat.mod_eq_of_lt hr]
+-    have hdiv : n / b = q := by
+-      rw [hn,Nat.add_comm (q*b) r,Nat.add_mul_div_right r q hb0,Nat.div_eq_of_lt hr,Nat.zero_add]
+-    exact ⟨hb0,hdiv.symm,hmod.symm⟩
+-  · rintro ⟨hb,hq,hr⟩
+-    have hrb : r < b := by rw [hr]; exact Nat.mod_lt n hb
+-    refine ⟨b-r-1,?_,by omega⟩
+-    rw [hq,hr]
+-    exact (Nat.div_add_mod' n b).symm
++      0 < b ∧ q = n / b ∧ r = n % b :=
++  ArithmeticCertificates.divMod_certificate_iff q r n b
+ 
+ /-- Source inputs are `(quotient,remainder,numerator,denominator)` and input
+ 4 is the explicit remainder-bound slack. The local constraints need no gates. -/
+--- /dev/null
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCertificates.lean
+@@ -0,0 +1,20 @@
++import Std.Tactic
++
++/-! Semantic certificates shared by distinct arithmetic representation backends. -/
++
++namespace DiophantineConsistency.ArithmeticCertificates
++
++theorem divMod_certificate_iff (q r n b : Nat) :
++    (∃ s, n = q * b + r ∧ b = r + s + 1) ↔
++      0 < b ∧ q = n / b ∧ r = n % b := by
++  constructor
++  · rintro ⟨s, hn, hb⟩
++    have hb0 : 0 < b := by omega
++    have h := (Nat.div_mod_unique (a := n) (d := q) (c := r) hb0).mpr
++      ⟨by simpa [Nat.add_comm, Nat.mul_comm] using hn.symm, by omega⟩
++    exact ⟨hb0, h.1.symm, h.2.symm⟩
++  · rintro ⟨hb, rfl, rfl⟩
++    exact ⟨b - n % b - 1, (Nat.div_add_mod' n b).symm,
++      by have := Nat.mod_lt n hb; omega⟩
++
++end DiophantineConsistency.ArithmeticCertificates
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PairingRepresentation.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PairingRepresentation.lean
+@@ -1,3 +1,4 @@
++import DiophantineConsistency.PairingProjection
+ import DiophantineConsistency.ComposeRepresentation
+ import Mathlib.Data.Nat.Pairing
+ import Mathlib.Data.Fin.VecNotation
+@@ -52,12 +53,8 @@
+   intro v
+   change (∃ w : Fin 1 → ℕ, v (some 0) = Nat.pair (v none) (w 0)) ↔
+     v none = (Nat.unpair (v (some 0))).1
+-  constructor
+-  · rintro ⟨w, h⟩
+-    rw [h, Nat.unpair_pair]
+-  · intro h
+-    refine ⟨fun _ => (Nat.unpair (v (some 0))).2, ?_⟩
+-    rw [h, Nat.pair_unpair]
++  simp only [Fin.exists_fin_succ_pi, Fin.exists_fin_zero_pi, Fin.cons_zero]
++  exact PairingProjection.exists_right_iff Nat.pairEquiv (v (some 0)) (v none)
+ 
+ /-- The second inverse-pairing coordinate graph uses the first as a witness. -/
+ def unpairRightCoordinate : GraphRep (fun v : Fin 1 → ℕ => (Nat.unpair (v 0)).2) := by
+@@ -68,12 +65,8 @@
+   intro v
+   change (∃ w : Fin 1 → ℕ, v (some 0) = Nat.pair (w 0) (v none)) ↔
+     v none = (Nat.unpair (v (some 0))).2
+-  constructor
+-  · rintro ⟨w, h⟩
+-    rw [h, Nat.unpair_pair]
+-  · intro h
+-    refine ⟨fun _ => (Nat.unpair (v (some 0))).1, ?_⟩
+-    rw [h, Nat.pair_unpair]
++  simp only [Fin.exists_fin_succ_pi, Fin.exists_fin_zero_pi, Fin.cons_zero]
++  exact PairingProjection.exists_left_iff Nat.pairEquiv (v (some 0)) (v none)
+ 
+ /-- First inverse-pairing projection of a supplied represented function. -/
+ def unpairLeft {σ : Type*} {f : (σ → ℕ) → ℕ} (r : GraphRep f) :
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticNatPairing.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticNatPairing.lean
+@@ -1,3 +1,4 @@
++import DiophantineConsistency.PairingProjection
+ import DiophantineConsistency.QuadraticRegisterSystem
+ import DiophantineConsistency.PairingRepresentation
+ 
+@@ -106,28 +107,20 @@
+     intro v
+     simp only [holds_iff]
+     change (∃ w : Fin 4 → ℕ, Certificate (v 1) (v 0) (w 0) (w 1) (w 2) (w 3)) ↔ _
+-    constructor
+-    · rintro ⟨w,hw⟩
+-      have hp := certificate_sound hw
+-      rw [hp,Nat.unpair_pair]
+-    · intro h
+-      have hp : v 1 = Nat.pair (v 0) (Nat.unpair (v 1)).2 := by rw [h,Nat.pair_unpair]
+-      obtain ⟨t,s,m,hc⟩ := certificate_complete hp
+-      exact ⟨![(Nat.unpair (v 1)).2,t,s,m],hc⟩)
++    simp only [Fin.exists_fin_succ_pi, Fin.exists_fin_zero_pi]
++    change (∃ b t s m, Certificate (v 1) (v 0) b t s m) ↔ _
++    simp only [exists_certificate_iff]
++    exact PairingProjection.exists_right_iff Nat.pairEquiv (v 1) (v 0))
+ 
+ def rightRepresentation : Rep (Fin 2) (fun v => v 0 = (Nat.unpair (v 1)).2) :=
+   (System.scopedRep (a := 2) (k := 4) (system 2 0)).ofIff (by
+     intro v
+     simp only [holds_iff]
+     change (∃ w : Fin 4 → ℕ, Certificate (v 1) (w 0) (v 0) (w 1) (w 2) (w 3)) ↔ _
+-    constructor
+-    · rintro ⟨w,hw⟩
+-      have hp := certificate_sound hw
+-      rw [hp,Nat.unpair_pair]
+-    · intro h
+-      have hp : v 1 = Nat.pair (Nat.unpair (v 1)).1 (v 0) := by rw [h,Nat.pair_unpair]
+-      obtain ⟨t,s,m,hc⟩ := certificate_complete hp
+-      exact ⟨![(Nat.unpair (v 1)).1,t,s,m],hc⟩)
++    simp only [Fin.exists_fin_succ_pi, Fin.exists_fin_zero_pi]
++    change (∃ b t s m, Certificate (v 1) b (v 0) t s m) ↔ _
++    simp only [exists_certificate_iff]
++    exact PairingProjection.exists_left_iff Nat.pairEquiv (v 1) (v 0))
+ 
+ private def graphIndex : Fin 2 → Option (Fin 1) := Fin.cases none (fun _ => some 0)
+ 
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RegisterNatPairing.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RegisterNatPairing.lean
+@@ -1,3 +1,4 @@
++import DiophantineConsistency.PairingProjection
+ import DiophantineConsistency.RegisterRelationLogic
+ import DiophantineConsistency.PairingRepresentation
+ 
+@@ -99,14 +100,12 @@
+     simp only [program_lhs,program_rhs]
+     change v 0 = (Nat.unpair (v 1)).1 ↔ ∃ w : Fin 2 → ℕ,
+       certificateLeft (v 1) (v 0) (w 0) (w 1) = certificateRight (v 1) (v 0) (w 0) (w 1)
+-    constructor
+-    · intro h
+-      have hp : v 1 = Nat.pair (v 0) (Nat.unpair (v 1)).2 := by rw [h,Nat.pair_unpair]
+-      obtain ⟨s,hs⟩ := (exists_certificate_iff _ _ _).mpr hp
+-      exact ⟨![(Nat.unpair (v 1)).2,s],hs⟩
+-    · rintro ⟨w,hw⟩
+-      have hp := (exists_certificate_iff _ _ _).mp ⟨w 1,hw⟩
+-      rw [hp,Nat.unpair_pair]
++    symm
++    simp only [Fin.exists_fin_succ_pi, Fin.exists_fin_zero_pi]
++    change (∃ b s, certificateLeft (v 1) (v 0) b s =
++      certificateRight (v 1) (v 0) b s) ↔ _
++    simp only [exists_certificate_iff]
++    exact PairingProjection.exists_right_iff Nat.pairEquiv (v 1) (v 0)
+ 
+ /-- The second projection uses the identical branch circuit with swapped inputs. -/
+ def rightRelation : Relation 2 (fun v => v 0 = (Nat.unpair (v 1)).2) where
+@@ -119,14 +118,12 @@
+     simp only [program_lhs,program_rhs]
+     change v 0 = (Nat.unpair (v 1)).2 ↔ ∃ w : Fin 2 → ℕ,
+       certificateLeft (v 1) (w 0) (v 0) (w 1) = certificateRight (v 1) (w 0) (v 0) (w 1)
+-    constructor
+-    · intro h
+-      have hp : v 1 = Nat.pair (Nat.unpair (v 1)).1 (v 0) := by rw [h,Nat.pair_unpair]
+-      obtain ⟨s,hs⟩ := (exists_certificate_iff _ _ _).mpr hp
+-      exact ⟨![(Nat.unpair (v 1)).1,s],hs⟩
+-    · rintro ⟨w,hw⟩
+-      have hp := (exists_certificate_iff _ _ _).mp ⟨w 1,hw⟩
+-      rw [hp,Nat.unpair_pair]
++    symm
++    simp only [Fin.exists_fin_succ_pi, Fin.exists_fin_zero_pi]
++    change (∃ b s, certificateLeft (v 1) b (v 0) s =
++      certificateRight (v 1) b (v 0) s) ↔ _
++    simp only [exists_certificate_iff]
++    exact PairingProjection.exists_left_iff Nat.pairEquiv (v 1) (v 0)
+ 
+ private def graphIndex : Fin 2 → Option (Fin 1) :=
+   Fin.cases none (fun _ => some 0)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticTreeCodeGraphs.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticTreeCodeGraphs.lean
+@@ -1,3 +1,4 @@
++import DiophantineConsistency.PairingProjection
+ import DiophantineConsistency.QuadraticRegisterComposition
+ import DiophantineConsistency.QuadraticNatPairing
+ import DiophantineConsistency.AnnotatedCodeArithmetic
+@@ -80,16 +81,12 @@
+     simp only [left_holds_iff]
+     change (∃ w : Fin 5 → ℕ, w 0 = (v 1).pred ∧
+       QuadraticNatPairing.Certificate (w 0) (v 0) (w 1) (w 2) (w 3) (w 4)) ↔ _
+-    constructor
+-    · rintro ⟨w,hpred,hc⟩
+-      have hp := QuadraticNatPairing.certificate_sound hc
+-      change v 0 = (Nat.unpair (v 1).pred).1
+-      rw [←hpred,hp,Nat.unpair_pair]
+-    · intro h
+-      change v 0 = (Nat.unpair (v 1).pred).1 at h
+-      have hp : (v 1).pred = Nat.pair (v 0) (Nat.unpair (v 1).pred).2 := by rw [h,Nat.pair_unpair]
+-      obtain ⟨t,s,m,hc⟩ := QuadraticNatPairing.certificate_complete hp
+-      exact ⟨![(v 1).pred,(Nat.unpair (v 1).pred).2,t,s,m],rfl,hc⟩)
++    simp only [Fin.exists_fin_succ_pi, Fin.exists_fin_zero_pi]
++    change (∃ p b t s m, p = (v 1).pred ∧
++      QuadraticNatPairing.Certificate p (v 0) b t s m) ↔
++      v 0 = (Nat.unpair (v 1).pred).1
++    simp only [exists_and_left, exists_eq_left, QuadraticNatPairing.exists_certificate_iff]
++    exact PairingProjection.exists_right_iff Nat.pairEquiv (v 1).pred (v 0))
+ 
+ def treeRightRepresentation : Rep (Fin 2) (fun v => v 0 = AnnotatedCodeArithmetic.treeRight (v 1)) :=
+   (System.scopedRep (a := 2) (k := 5) rightSystem).ofIff (by
+@@ -97,16 +94,12 @@
+     simp only [right_holds_iff]
+     change (∃ w : Fin 5 → ℕ, w 0 = (v 1).pred ∧
+       QuadraticNatPairing.Certificate (w 0) (w 1) (v 0) (w 2) (w 3) (w 4)) ↔ _
+-    constructor
+-    · rintro ⟨w,hpred,hc⟩
+-      have hp := QuadraticNatPairing.certificate_sound hc
+-      change v 0 = (Nat.unpair (v 1).pred).2
+-      rw [←hpred,hp,Nat.unpair_pair]
+-    · intro h
+-      change v 0 = (Nat.unpair (v 1).pred).2 at h
+-      have hp : (v 1).pred = Nat.pair (Nat.unpair (v 1).pred).1 (v 0) := by rw [h,Nat.pair_unpair]
+-      obtain ⟨t,s,m,hc⟩ := QuadraticNatPairing.certificate_complete hp
+-      exact ⟨![(v 1).pred,(Nat.unpair (v 1).pred).1,t,s,m],rfl,hc⟩)
++    simp only [Fin.exists_fin_succ_pi, Fin.exists_fin_zero_pi]
++    change (∃ p b t s m, p = (v 1).pred ∧
++      QuadraticNatPairing.Certificate p b (v 0) t s m) ↔
++      v 0 = (Nat.unpair (v 1).pred).2
++    simp only [exists_and_left, exists_eq_left, QuadraticNatPairing.exists_certificate_iff]
++    exact PairingProjection.exists_left_iff Nat.pairEquiv (v 1).pred (v 0))
+ 
+ private def graphIndex : Fin 2 → Option (Fin 1) := Fin.cases none (fun _ => some 0)
+ 
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PairingProjection.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PairingProjection.lean
+@@ -0,0 +1,16 @@
++import Mathlib.Logic.Equiv.Basic
++
++/-! Projection graphs of the inverse of a product equivalence. -/
++namespace DiophantineConsistency.PairingProjection
++
++theorem exists_right_iff {A B C : Type*} (e : A × B ≃ C) (z : C) (a : A) :
++    (∃ b, z = e (a, b)) ↔ a = (e.symm z).1 := by
++  simp only [← e.symm_apply_eq, Prod.ext_iff]
++  simp [eq_comm]
++
++theorem exists_left_iff {A B C : Type*} (e : A × B ≃ C) (z : C) (b : B) :
++    (∃ a, z = e (a, b)) ↔ b = (e.symm z).2 := by
++  simp only [← e.symm_apply_eq, Prod.ext_iff]
++  simp [eq_comm]
++
++end DiophantineConsistency.PairingProjection
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/GraphSizeBounds.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/GraphSizeBounds.lean
+@@ -1,3 +1,4 @@
++import DiophantineConsistency.AffineBudget
+ import DiophantineConsistency.RepresentationSize
+ import DiophantineConsistency.PolynomialGraph
+ import DiophantineConsistency.NativeFormulaGraphs
+@@ -48,21 +49,11 @@
+ theorem thin_compose (C : ℕ) (hC : 1 ≤ C) (hn : 1 ≤ n)
+     (r : Rep (Fin n) P) (s : ∀ i, GraphRep (f i))
+     (hr : Thin C r) (hs : ∀ i, Thin C (s i)) : Thin C (r.compose s) := by
+-  let w := r.witnessCount + ∑ i, (s i).witnessCount
+-  have hr' : r.depth ≤ 6 * w + C := by dsimp [Thin, w] at *; omega
+-  have hs' (i) : (s i).depth ≤ 6 * w + C := by
+-    have hsum : (s i).witnessCount ≤ ∑ j, (s j).witnessCount :=
+-      Finset.single_le_sum (f := fun j => (s j).witnessCount)
+-        (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
+-    have hi := hs i
+-    dsimp only [Thin] at hi
+-    dsimp only [w]
+-    omega
+-  have hd := compose_depth_le r s (by omega : 1 ≤ 6 * w + C) hr' hs'
+-  unfold Thin
+-  rw [BoundedForallSize.predicate_compose_count]
+-  change (r.compose s).depth ≤ 6 * (n + w) + C
+-  omega
++  exact AffineBudget.compose
++    (fun i => (s i).witnessCount) (fun i => (s i).depth) hC hr hs
++    (fun _ hh hr hs => compose_depth_le r s hh hr hs)
++    (by omega : 2 * n + 2 ≤ 6 * (n))
++    (by rw [BoundedForallSize.predicate_compose_count]; omega)
+ 
+ end Rep
+ 
+@@ -113,40 +104,20 @@
+ theorem thin_composeDirect (C : ℕ) (hC : 1 ≤ C) (hn : 1 ≤ n)
+     (r : GraphRep f) (s : ∀ i, GraphRep (g i))
+     (hr : Thin C r) (hs : ∀ i, Thin C (s i)) : Thin C (r.composeDirect s) := by
+-  let w := r.witnessCount + ∑ i, (s i).witnessCount
+-  have hr' : r.depth ≤ 6 * w + C := by dsimp [Thin, w] at *; omega
+-  have hs' (i) : (s i).depth ≤ 6 * w + C := by
+-    have hsum : (s i).witnessCount ≤ ∑ j, (s j).witnessCount :=
+-      Finset.single_le_sum (f := fun j => (s j).witnessCount)
+-        (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
+-    have hi := hs i
+-    dsimp only [Thin] at hi
+-    dsimp only [w]
+-    omega
+-  have hd := composeDirect_depth_le r s (by omega : 1 ≤ 6 * w + C) hr' hs'
+-  unfold Thin
+-  rw [composeDirect_witnessCount]
+-  change (r.composeDirect s).depth ≤ 6 * (n + w) + C
+-  omega
++  exact AffineBudget.compose
++    (fun i => (s i).witnessCount) (fun i => (s i).depth) hC hr hs
++    (fun _ hh hr hs => composeDirect_depth_le r s hh hr hs)
++    (by omega : 2 * n + 2 ≤ 6 * (n))
++    (by rw [composeDirect_witnessCount]; omega)
+ 
+ theorem thin_compose (C : ℕ) (hC : 1 ≤ C) (hn : 1 ≤ n)
+     (r : GraphRep f) (s : ∀ i, GraphRep (g i))
+     (hr : Thin C r) (hs : ∀ i, Thin C (s i)) : Thin C (r.compose s) := by
+-  let w := r.witnessCount + ∑ i, (s i).witnessCount
+-  have hr' : r.depth ≤ 6 * w + C := by dsimp [Thin, w] at *; omega
+-  have hs' (i) : (s i).depth ≤ 6 * w + C := by
+-    have hsum : (s i).witnessCount ≤ ∑ j, (s j).witnessCount :=
+-      Finset.single_le_sum (f := fun j => (s j).witnessCount)
+-        (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
+-    have hi := hs i
+-    dsimp only [Thin] at hi
+-    dsimp only [w]
+-    omega
+-  have hd := compose_depth_le r s (by omega : 1 ≤ 6 * w + C) hr' hs'
+-  unfold Thin
+-  rw [compose_witnessCount]
+-  change (r.compose s).depth ≤ 6 * (n + 1 + w) + C
+-  omega
++  exact AffineBudget.compose
++    (fun i => (s i).witnessCount) (fun i => (s i).depth) hC hr hs
++    (fun _ hh hr hs => compose_depth_le r s hh hr hs)
++    (by omega : 2 * n + 4 ≤ 6 * (n + 1))
++    (by rw [compose_witnessCount]; omega)
+ 
+ theorem thin_add {σ : Type*} {f g : (σ → ℕ) → ℕ} (C : ℕ)
+     (r : GraphRep f) (s : GraphRep g) (hr : Thin C r) (hs : Thin C s) :
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AffineBudget.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AffineBudget.lean
+@@ -0,0 +1,21 @@
++import Mathlib.Algebra.Order.BigOperators.Group.Finset
++import Std.Tactic
++
++namespace DiophantineConsistency.AffineBudget
++open scoped BigOperators
++
++/-- Spend constructor overhead from the six depth credits per added witness. -/
++theorem compose {ι : Type*} [Fintype ι] {C w₀ d₀ extra overhead W D : ℕ}
++    (w d : ι → ℕ) (hC : 1 ≤ C)
++    (h₀ : d₀ ≤ 6 * w₀ + C) (hd : ∀ i, d i ≤ 6 * w i + C)
++    (rule : ∀ h, 1 ≤ h → d₀ ≤ h → (∀ i, d i ≤ h) → D ≤ overhead + h)
++    (pay : overhead ≤ 6 * extra) (count : extra + (w₀ + ∑ i, w i) ≤ W) :
++    D ≤ 6 * W + C := by
++  have hi (i) : w i ≤ w₀ + ∑ j, w j :=
++    (Finset.single_le_sum (fun j _ => Nat.zero_le (w j)) (Finset.mem_univ i)).trans
++      (Nat.le_add_left _ _)
++  have hb := rule (6 * (w₀ + ∑ i, w i) + C) (by omega) (by omega)
++    (fun i => by have := hd i; have := hi i; omega)
++  omega
++
++end DiophantineConsistency.AffineBudget

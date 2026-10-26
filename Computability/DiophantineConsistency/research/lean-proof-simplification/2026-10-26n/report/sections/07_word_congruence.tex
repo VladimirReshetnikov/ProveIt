@@ -1,0 +1,71 @@
+\section{C3 Put binary word congruence beside its definition}
+\label{sec:word}
+
+\textbf{Existing lemma.} \src{CurrentTileColors2011.lean}{19}{25}
+contains the right abstraction already:
+
+\begin{Lean}
+theorem binaryWord_congr (f g : ℕ → ℕ) (n : ℕ)
+    (h : ∀ j, j < n → f j = g j) :
+    binaryWord f n = binaryWord g n := by
+  unfold binaryWord
+  apply Finset.sum_congr rfl
+  intro j hj
+  rw [h j (Finset.mem_range.mp hj)]
+\end{Lean}
+
+Two earlier clients reopen this implementation and manually lift equalities
+through the factor $2^j$. Move the existing theorem into
+\code{CurrentCellLabels2011}, beside \code{binaryWord}, and use it at those
+clients. If namespace compatibility is required, keep a forwarding theorem
+under \code{CurrentTileColors2011.binaryWord_congr}.
+
+\subsection{Translate a copy word without reopening the sum}
+
+At \src{CurrentSouthShift2011.lean}{71}{89}, keep every hypothesis and use
+this body after the relocation:
+
+\begin{Lean}
+  unfold southWord
+  apply CurrentCellLabels2011.binaryWord_congr
+  intro j hj
+  have hs := source_eq_of_remainder_le b t (960+j) (by omega)
+  rw [show 960+j-t%2011 = a+j by omega] at hs
+  exact (hcopy ⟨j, hj⟩).trans (congrArg c hs)
+\end{Lean}
+
+The geometric equality \code{hs} remains the existing exact full-word shift
+fact. The only removed work is finite-range membership conversion and
+multiplication congruence. The standalone candidate references the lemma's
+\emph{current} namespace because it imports the original modules; the target
+edit must use its new earlier location.
+
+\subsection{Aggregate horizontal bits in one application}
+
+At \src{CurrentOccupation2011.lean}{42}{50},
+\code{horizontal_words}, the intended body is:
+
+\begin{Lean}
+  exact CurrentCellLabels2011.binaryWord_congr _ _ 8
+    (fun j hj => hbits ⟨j, hj⟩)
+\end{Lean}
+
+The exact direction remains East(current) equals West(previous). The
+congruence lemma is about arbitrary natural-valued functions; it adds no
+Boolean, occupation, carry or positivity premise.
+
+\subsection{The import direction is part of the change}
+
+\textbf{Do not add a \code{CurrentTileColors2011} import to
+\code{CurrentSouthShift2011}.} That would point back through the new physical
+word development and create a cycle. Hoisting the small theorem to the
+existing definition layer is the actual proposal, not merely changing the
+tactic invocation. The original theorem's proof needs only the definition
+and finite-sum API already available there.
+
+\textbf{Honest size accounting.} The targeted bodies shrink from 10 to 6 and
+4 to 2 nonblank lines. Moving the existing seven-line declaration does not
+remove it; a compatibility wrapper adds lines. Thus six removed client-body
+lines are not a guaranteed six-line whole-module saving. Adopt primarily
+for a stable abstraction boundary, then check the resulting import graph,
+all old theorem-name users and the affected Checks modules.

@@ -1,0 +1,669 @@
+{
+  "reviewed_commit": "e73fa2e916c9bb6f61c79e4fe2cd02b5f43e9d11",
+  "baseline_reports_commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "scope": "Exclusion audit of current incoming simplification ZIP and earlier retired packet explicitly linked by incoming README. Reports and supplementary source notes read in full; prototype declaration lists inventoried. Historical mathematical construction packets are not claimed to have been exhaustively read.",
+  "current_zip_git_blob_sha": "065a4cbf9fde2ef0b15db9898920e84d7a3b49fb",
+  "current_zip_sha256": "f05ee2789f3cfbca29467377aeaaef6972211406807ce45d4590459621c86470",
+  "sources": {
+    "current_report": {
+      "local_path": "/workspace/scratch/85070e449907/novelty-audit/extracted/diophantine-lean-simplification-2026-10-26/report.tex",
+      "sha256": "9c606a8955fcd2ceb15c462ff30bc4e265f7a60a09eaa3b278f1b566dde58fdb",
+      "line_count": 920
+    },
+    "prior_report": {
+      "local_path": "/workspace/scratch/85070e449907/ProveIt/Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/report.tex",
+      "sha256": "0035defc594c27adb39c92af2af597b1a25974e6adaedd5190df8c34fb8f8775",
+      "line_count": 442
+    },
+    "prior_digits_notes": {
+      "local_path": "/workspace/scratch/85070e449907/ProveIt/Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md",
+      "sha256": "f46ce0eec8f09fa5b0b02801695bd9be8cfdb240bbeedf2df9d832d90f16ac79",
+      "line_count": 294
+    },
+    "prior_checker_notes": {
+      "local_path": "/workspace/scratch/85070e449907/ProveIt/Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/checker-review.md",
+      "sha256": "f9163dc613d11a8b3bc46e1323151e096c1dee686cf4ec5dd2296293c8188678",
+      "line_count": 217
+    },
+    "prior_circuit_notes": {
+      "local_path": "/workspace/scratch/85070e449907/ProveIt/Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/circuits-review.md",
+      "sha256": "3daf215ecf7c1d1ba2f54afe12e85da670640eaf750d69d29bf51cc44cc3b9f4",
+      "line_count": 202
+    },
+    "incoming_index": {
+      "local_path": "/workspace/scratch/85070e449907/novelty-audit/incoming-README.md",
+      "sha256": "8b693f283c868348b1c77b61b80f20937f00a449751dd536b6d21eb3d01e3afd",
+      "line_count": 1952
+    }
+  },
+  "exclusions": [
+    {
+      "id": "E01",
+      "technique": "Core list lookup/membership lemmas",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 173,
+          "end_line": 218,
+          "section": "Immediate proof-only improvement"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 132,
+          "end_line": 143,
+          "section": "Use the core list-lookup API"
+        }
+      ],
+      "target_modules": [
+        "AnnotatedRename",
+        "AnnotatedBound",
+        "AnnotatedProofChecker",
+        "AnnotatedAssumption",
+        "AnnotatedRuleSide"
+      ]
+    },
+    {
+      "id": "E02",
+      "technique": "Recursor congruence instead of repeated induction",
+      "references": [
+        {
+          "source": "prior_report",
+          "start_line": 114,
+          "end_line": 131,
+          "section": "Rewrite under primitive recursion"
+        }
+      ],
+      "target_modules": [
+        "ScalarPRCode",
+        "PRCode",
+        "ScalarPROptimizer"
+      ]
+    },
+    {
+      "id": "E03",
+      "technique": "Assignment naturality under Sum.map and renaming",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 219,
+          "end_line": 268,
+          "section": "Witness layouts"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 144,
+          "end_line": 161,
+          "section": "Expose assignment naturality once"
+        }
+      ],
+      "target_modules": [
+        "Representation",
+        "QuarticCompiler"
+      ]
+    },
+    {
+      "id": "E04",
+      "technique": "Splitting concatenated witness blocks with Fin.addCases",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 241,
+          "end_line": 268,
+          "section": "Witness layouts: existential block equivalence"
+        }
+      ],
+      "target_modules": [
+        "Representation"
+      ]
+    },
+    {
+      "id": "E05",
+      "technique": "Move constructor projection/count lemmas to earlier modules",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 269,
+          "end_line": 283,
+          "section": "Move existing projection lemmas to their natural home"
+        }
+      ],
+      "target_modules": [
+        "RepresentationSize",
+        "DirectComposition"
+      ]
+    },
+    {
+      "id": "E06",
+      "technique": "Generic validated-history fold and Produces append/step laws",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 286,
+          "end_line": 326,
+          "section": "One invariant-preserving history fold"
+        }
+      ],
+      "target_modules": [
+        "AnnotatedRename",
+        "AnnotatedBound",
+        "AnnotatedProofChecker"
+      ]
+    },
+    {
+      "id": "E07",
+      "technique": "Generic scanner fixed-state, successor, invariant, and encoded-list simulations",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 327,
+          "end_line": 361,
+          "section": "Separate recurrence from encoding"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 280,
+          "end_line": 295,
+          "section": "Share iteration laws without changing the programs"
+        }
+      ],
+      "target_modules": [
+        "AnnotatedRenameScan",
+        "AnnotatedBoundScan",
+        "AnnotatedLineScan",
+        "AnnotatedAxiomContext",
+        "AnnotatedContext"
+      ]
+    },
+    {
+      "id": "E08",
+      "technique": "Dynamic-seed and parameterized primitive-recursive iterateFrom",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 362,
+          "end_line": 379,
+          "section": "A better primitive-recursive iterator interface"
+        }
+      ],
+      "target_modules": [
+        "DirectScalarArithmetic",
+        "AnnotatedContextPR",
+        "AnnotatedBoundScan",
+        "AnnotatedLineScan",
+        "AnnotatedRenameScanPR"
+      ]
+    },
+    {
+      "id": "E09",
+      "technique": "Shared tag dispatch and exact numeric Boolean reflection",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 380,
+          "end_line": 396,
+          "section": "Share tag dispatch and Boolean reflection"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 296,
+          "end_line": 310,
+          "section": "Replace acceptance equivalences by exact numeric values"
+        }
+      ],
+      "target_modules": [
+        "AnnotatedRenameLocal",
+        "AnnotatedBoundLocal"
+      ]
+    },
+    {
+      "id": "E10",
+      "technique": "Sum-of-squares zero criterion, shared evaluation, degree and cost",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 399,
+          "end_line": 442,
+          "section": "One executable sum-of-squares API"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 162,
+          "end_line": 189,
+          "section": "Sums of squares"
+        }
+      ],
+      "target_modules": [
+        "ShortSystem",
+        "DAGQuartic",
+        "NaturalDAGQuartic",
+        "QuadraticRegisterSystem",
+        "QuarticCost"
+      ]
+    },
+    {
+      "id": "E11",
+      "technique": "Generic semiring gate specialization after data/semantics import split",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 443,
+          "end_line": 468,
+          "section": "The semiring theorem already subsumes the natural induction"
+        }
+      ],
+      "target_modules": [
+        "QuarticCompiler",
+        "GatesSemiring"
+      ]
+    },
+    {
+      "id": "E12",
+      "technique": "Move structural degree API early; specialize weighted degree to weight one",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 459,
+          "end_line": 468,
+          "section": "Weighted-expression degree specialization"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 266,
+          "end_line": 271,
+          "section": "Move existing degree machinery to an earlier layer"
+        }
+      ],
+      "target_modules": [
+        "QuadraticRegisterSystem",
+        "WeightedExpressionDegree",
+        "ShortFrontier"
+      ]
+    },
+    {
+      "id": "E13",
+      "technique": "Reuse exponent-label power certificates for generated circuit chains",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 483,
+          "end_line": 523,
+          "section": "Replace 193 power chains by parent exponent certificates"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 192,
+          "end_line": 210,
+          "section": "Reuse the power certificate that already exists"
+        }
+      ],
+      "target_modules": [
+        "ArithmeticDAGPowers",
+        "GapCircuitSteps66",
+        "SplitCircuitSteps59",
+        "SplitJointPower59"
+      ]
+    },
+    {
+      "id": "E14",
+      "technique": "On-demand circuit node equation specialization and compact wrappers",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 524,
+          "end_line": 545,
+          "section": "Specialize low-level node equations at use sites"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 211,
+          "end_line": 239,
+          "section": "Specialize local evaluation once per circuit"
+        }
+      ],
+      "target_modules": [
+        "GapCircuitSteps66",
+        "SplitCircuitSteps59"
+      ]
+    },
+    {
+      "id": "E15",
+      "technique": "Shared topological circuit induction for indexed invariants",
+      "references": [
+        {
+          "source": "prior_report",
+          "start_line": 240,
+          "end_line": 255,
+          "section": "A shared induction for topological circuit semantics"
+        }
+      ],
+      "target_modules": [
+        "ArithmeticDAGSemantics",
+        "ArithmeticDAGDegree",
+        "NaturalDAGQuartic"
+      ]
+    },
+    {
+      "id": "E16",
+      "technique": "Commutative operand-swap relation and common circuit translation skeleton",
+      "references": [
+        {
+          "source": "prior_report",
+          "start_line": 258,
+          "end_line": 265,
+          "section": "Treat commutative swaps in the relation"
+        }
+      ],
+      "target_modules": [
+        "GapCircuitTranslation66",
+        "SplitCircuitTranslation59"
+      ]
+    },
+    {
+      "id": "E17",
+      "technique": "Generic append topology/predicate/evaluation invariants",
+      "references": [
+        {
+          "source": "prior_report",
+          "start_line": 272,
+          "end_line": 277,
+          "section": "Package append invariants locally"
+        }
+      ],
+      "target_modules": [
+        "NaturalRegisterProgram"
+      ]
+    },
+    {
+      "id": "E18",
+      "technique": "Exact half-radix quotient/remainder identity replaces finite cases",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 548,
+          "end_line": 581,
+          "section": "A stronger half-radix lemma"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 319,
+          "end_line": 329,
+          "section": "A half-radix shift needs arithmetic"
+        }
+      ],
+      "target_modules": [
+        "NativeCyclicRotation"
+      ]
+    },
+    {
+      "id": "E19",
+      "technique": "Physical field residue, source-offset and off-origin mask normal forms",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 582,
+          "end_line": 616,
+          "section": "Share physical-field residue calculations"
+        },
+        {
+          "source": "prior_digits_notes",
+          "start_line": 167,
+          "end_line": 204,
+          "section": "5. Put field-coordinate and off-origin mask lemmas below the clause layer"
+        }
+      ],
+      "target_modules": [
+        "CurrentClause2011",
+        "CurrentPhaseParity2011",
+        "CurrentEarlyPadding2011",
+        "CurrentReflectedGeometry2011",
+        "CurrentCellTranslation2011"
+      ]
+    },
+    {
+      "id": "E20",
+      "technique": "Project stronger coefficient congruence to weaker moduli",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 605,
+          "end_line": 611,
+          "section": "Modulo-2048 to modulo-16 projection"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 313,
+          "end_line": 318,
+          "section": "Derive weaker moduli from stronger ones"
+        }
+      ],
+      "target_modules": [
+        "CurrentClause2011",
+        "CurrentEarlyPadding2011"
+      ]
+    },
+    {
+      "id": "E21",
+      "technique": "Decode and reuse Pell/source-register arithmetic equations",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 617,
+          "end_line": 641,
+          "section": "Decode source-register equations once"
+        }
+      ],
+      "target_modules": [
+        "NativePellBootstrap",
+        "NativePellPower"
+      ]
+    },
+    {
+      "id": "E22",
+      "technique": "Exact carry decomposition API; derive recurrence/residue/reset",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 644,
+          "end_line": 677,
+          "section": "Derive recurrence instead of storing it twice"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 343,
+          "end_line": 354,
+          "section": "Use one exact decomposition interface"
+        }
+      ],
+      "target_modules": [
+        "CurrentPolynomialWindow2011",
+        "CurrentPhaseParity2011",
+        "CurrentClause2011",
+        "CurrentEarlyPadding2011"
+      ]
+    },
+    {
+      "id": "E23",
+      "technique": "Generic finite chunk dispatcher and balanced partial-sum assembly",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 678,
+          "end_line": 711,
+          "section": "Keep checked finite chunks; share their assembly"
+        }
+      ],
+      "target_modules": [
+        "WangTiles942Data",
+        "CurrentKernel2011"
+      ]
+    },
+    {
+      "id": "E24",
+      "technique": "Shared copied-field bounds and descriptor interface",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 712,
+          "end_line": 725,
+          "section": "One copied-field bound interface"
+        }
+      ],
+      "target_modules": [
+        "CurrentCellLabels2011"
+      ]
+    },
+    {
+      "id": "E25",
+      "technique": "Conditional padding witness only within relevant phase branch",
+      "references": [
+        {
+          "source": "prior_report",
+          "start_line": 330,
+          "end_line": 342,
+          "section": "Make the padding witness conditional"
+        }
+      ],
+      "target_modules": [
+        "NativePreliminaryCount2011",
+        "CurrentCount2011"
+      ]
+    },
+    {
+      "id": "E26",
+      "technique": "Generic no-borrow origin decrement for packed words",
+      "references": [
+        {
+          "source": "prior_digits_notes",
+          "start_line": 205,
+          "end_line": 229,
+          "section": "6. Share the origin-decrement word lemma"
+        }
+      ],
+      "target_modules": [
+        "CurrentHighDigits2011",
+        "NativeHighPort54"
+      ]
+    },
+    {
+      "id": "E27",
+      "technique": "Expose selectorCount physical finite-sum identity directly",
+      "references": [
+        {
+          "source": "prior_digits_notes",
+          "start_line": 230,
+          "end_line": 248,
+          "section": "7. Expose the already-proved physical sum identity directly"
+        }
+      ],
+      "target_modules": [
+        "CurrentClause2011",
+        "CurrentOneHot2011",
+        "CurrentFieldOffsets2011"
+      ]
+    },
+    {
+      "id": "E28",
+      "technique": "Share restored canonical window extraction with coherent witnesses",
+      "references": [
+        {
+          "source": "prior_report",
+          "start_line": 353,
+          "end_line": 354,
+          "section": "Duplicated canonical digit witnesses"
+        },
+        {
+          "source": "prior_digits_notes",
+          "start_line": 249,
+          "end_line": 268,
+          "section": "8. Factor the restored canonical window once"
+        }
+      ],
+      "target_modules": [
+        "CurrentSparseDigits2011",
+        "CurrentHighDigits2011",
+        "CurrentPolynomialWindow2011"
+      ]
+    },
+    {
+      "id": "E29",
+      "technique": "Definability-aware omega induction transport",
+      "references": [
+        {
+          "source": "prior_report",
+          "start_line": 357,
+          "end_line": 364,
+          "section": "A definable-induction transport lemma"
+        }
+      ],
+      "target_modules": [
+        "ObjectAdditionLaws",
+        "ObjectMultiplicationLaws",
+        "ObjectDistributivity"
+      ]
+    },
+    {
+      "id": "E30",
+      "technique": "Arbitrary-model extraction and sealed completeness bridge",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 728,
+          "end_line": 767,
+          "section": "A shared bridge from arbitrary models to sealed derivations"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 365,
+          "end_line": 372,
+          "section": "One bridge from model validity to a sealed derivation"
+        }
+      ],
+      "target_modules": [
+        "ObjectArithmetic",
+        "ObjectAdditionLaws",
+        "ObjectMultiplication",
+        "ObjectDistributivity",
+        "ObjectCode*"
+      ]
+    },
+    {
+      "id": "E31",
+      "technique": "Arity-generic closed-formula satisfaction transport",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 768,
+          "end_line": 781,
+          "section": "Generalize closed-sentence transport across arity"
+        }
+      ],
+      "target_modules": [
+        "ObjectQuarticCompiler",
+        "ObjectPolynomial"
+      ]
+    },
+    {
+      "id": "E32",
+      "technique": "Scoped simp boundaries, dependency placement, certificate granularity and profiling",
+      "references": [
+        {
+          "source": "current_report",
+          "start_line": 782,
+          "end_line": 840,
+          "section": "Adoption plan and criteria"
+        },
+        {
+          "source": "prior_report",
+          "start_line": 373,
+          "end_line": 394,
+          "section": "Automation and performance"
+        }
+      ],
+      "target_modules": [
+        "cross-cutting"
+      ]
+    }
+  ],
+  "adoption_status_note": "Incoming README and prior PLACEMENT.md link ADOPTION.md, but that path is absent at the reviewed commit. This audit makes no blanket adoption assertion.",
+  "novelty_rule": "An idea is not fresh merely because a previously proposed helper is renamed, specialized to another existing client, or accompanied by a new proof. A fresh proposal must remove a different proof obligation, exploit a different mathematical invariant, or cover a materially different semantic boundary."
+}

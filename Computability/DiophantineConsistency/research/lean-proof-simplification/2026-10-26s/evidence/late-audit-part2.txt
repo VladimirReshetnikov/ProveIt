@@ -1,0 +1,118 @@
+LATE INCOMING AUDIT — PART 2
+Audited archive: ProveIt_Lean_Simplification_Round2_2026-10-26.zip
+Archive SHA-256: 4fb50b527a8cead896aaa8e5d3328eec7cdc2b5cc6c85a3388b44ea88528c543
+Archive root: late-intake/ProveIt_Lean_Simplification_Round2_2026-10-26/LeanReview2/
+New live repository pin: 23f631ea07fff8632eb8cd92286f7621bbe051c0
+Earlier working pin: 9bd29079d5e1c6cc1c0bcaee6cb57d59b835cba9
+
+DECISION
+Round2 overlaps the rail-prefix part of the finite-cut proposal through its
+screening entry N08. Root's conservative decision to withdraw the entire
+finite-cut family is justified. Round2 does not overlap the scaled Pell ratio,
+integer interval extraction, compositional Sat specifications, or observed-set
+certificate closure directions. It also does not itself overlap the first-unit
+proof, but a separate late archive audited by novelty_audit does; that first-unit
+proposal is withdrawn independently and is not to be included in the final packet.
+
+AUDIT SCOPE
+Read all twelve report sections and the supplied Lean candidates. Inspected
+README and annotated/current/Wang/supplemental explanatory notes, and read the
+full NOVELTY_DECISIONS CSV/JSON including nonselected ideas. Checked the 75-family
+exclusion catalog for additional mentions of our targets. Baseline snapshots
+under sources/ are unchanged source evidence, not proposed replacements.
+The nine recommended families are A1 raw parent decoding, A2 fused quote/depth
+decoder invariant, C1 sum<=1 classification, C2 direct prefix specialization,
+C3 binary-word congruence relocation, C4 zero-base propagation specialization,
+W1 indexed north-boundary view, S1 explicit CRT congruence, S2 binary composition
+depth specialization. None concerns our two surviving arithmetic directions.
+
+EXACT OVERLAP LOCATION
+  incoming_audit/NOVELTY_DECISIONS.csv:9
+  corresponding JSON entry candidate_id=N08
+  proposal: "Target-prefix rail bound via existing finite rank infrastructure"
+This is an actual stated simplification direction. The accompanying boundary
+calls for a concrete target theorem with an unchanged bound. It is a screening
+entry, rather than one of the nine final recommendations, but the user's
+exclude-all-ideas condition includes it. Our proposed target_prefix_card_lt,
+rail_strict_mono and rail_injective_on use the finite-rank/cut infrastructure on
+that same target-prefix rail family. The shared abstract card-cut lemma is more
+specific than the prior sentence, but presenting the whole rail-backed family
+as new would overstate novelty. Withdrawing the whole finite-cut proposal also
+avoids a weak one-client abstraction after removing the rail half.
+README.md:15-17 explicitly explains that the decision records retain screening
+questions not all selected as recommendations; that does not make them absent.
+
+SIX-PROPOSAL COMPARISON
+1. Compositional Sat normalization: no Round2 collision. A2 fuses two traversals
+   of an external Nat/Option tree decoder, not object-formula interpretation
+   under binders. C2's simpa-only normalization is for numeric prefix offsets.
+   Using the same tactic is not the same mathematical/proof obligation.
+2. Scale-parametric Pell ratio: no Round2 collision. No proposal names
+   PellRatio90, upper_estimate_scaled, lower_key, firstUnit, or a real positive
+   scaling budget. The old exclusion catalog's EX050 is source-register
+   equation decoding, not sharing the ordinary and doubled ratio estimates.
+3. Finite cuts: DROP, due N08 above. The separate late New_Deltas archive also
+   has a rail-rank research suggestion (reported independently by novelty_audit).
+4. Small-square first unit: no Round2 collision, but DROP due another late
+   archive's exact firstUnit_fundamental replacement via
+   Pell.isFundamental_of_y_le_three. Do not keep our alternative 19-line proof
+   after assuming that shorter prior replacement already applied.
+5. Integer error-budget extraction: no Round2 collision. Prefix-bit identities
+   C2 and old EX047 concern exact natural modular arithmetic; none combines two
+   real errors to identify an integer unit interval or generalizes the real
+   denominator s>=2.
+6. Observed certificate-set closure: no Round2 collision. N12 (CSV:13) proposes
+   Nat.unpair existential projection and bounded Fin witness assembly. That is
+   different from closure of arbitrary internal sets under union/singleton
+   insertion as observed through their encodings. No union/postfixed-set API
+   is proposed by this archive.
+
+LATEST SOURCE CHANGES — READ FROM GIT DIFF
+NativePellBootstrap changes elsewhere, but firstUnit_fundamental itself is
+byte-unchanged. Its full module shrinks 685->671 because separate positivity,
+source-register reuse, multiplication-order, and Nat/Int bridge cleanups were
+adopted. No new first-unit proof is present in live source, yet the newly found
+prior proposal still excludes our idea under the user's counterfactual.
+
+NativePellPower.lower_key changes its h1 proof from a typed have/by/have/simpa
+block to direct `have h1 := Nat.mul_le_mul_right ...`, saving two physical lines.
+The doubled_ratio_lower theorem is unchanged. source_X_ge_sixteen separately
+changes to a calc proof using multiplication monotonicity, adding one physical
+line; preserve that independent edit. Thus the complete module is 181->180.
+The lower_key cleanup is not the same textual change as the earlier trivial
+existential xi/X/Z/epsilon aliases in the UPPER estimates: it eliminates a
+local type/presentation adapter in a LOWER polynomial comparison. Its origin
+need not be assumed to calculate the delta: it is already in the current
+baseline and receives no extra discount. Audit agent found no explicit
+lower_key recommendation in its two late archives either.
+
+NativeHalfBinomial and H10 PellRatio90 are byte-identical between the two pins.
+The scale family remains meaningful. Direct H10 lower_key reuse now saves two
+fewer lines than it did at the old pin; all other new proof bodies are unchanged.
+
+LATEST ADAPTATION — NO FRESH COMPILE CLAIM HERE
+Requested secondary adaptation is under algebra-prototypes/latest/:
+  baseline/                         four exact latest exported source files
+  candidate/                        three complete ratio candidate modules
+  PellRatio90.lean                   convenient same-byte candidate
+  NativeHalfBinomial.lean            convenient same-byte candidate
+  NativePellPower.lean               convenient same-byte candidate
+  scaled-pell-ratio.patch            exact patch against 23f631ea
+  counterfactual-metrics.json        source/candidate hashes and line counts
+  baseline-manifest.json             source hashes, pins, old/current counts
+  adapt_ratio.py                    deterministic regeneration
+All unrelated current NativePellPower changes are preserved. No candidate
+fundamental source or patch was produced in latest/. The original old-pin
+files remain untouched as historical evidence only and must not be packaged
+as current proposed edits. `git apply --check` against latest/baseline passes.
+Root owns fresh new-pin dependency/integration replay.
+
+LATEST RATIO METRICS (complete modules, shared helper/imports counted once)
+                         current  alias-normalized  candidate
+PellRatio90                   472               470        482
+NativeHalfBinomial             244               242        161
+NativePellPower                180               180        163
+TOTAL                         896               892        806
+Raw new-pin saving = 90 lines. Incremental saving after the still-unapplied
+prior upper-alias cleanup = 86 lines. Discount four lines exactly once; the
+two lower_key lines already absent from current source are not discounted twice.

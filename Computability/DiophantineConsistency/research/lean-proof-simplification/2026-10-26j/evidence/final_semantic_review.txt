@@ -1,0 +1,68 @@
+FINAL SEMANTIC REVIEW
+Reviewer: semantic_opportunities
+Scope: report.tex Sections 2-5; exact decoder comments; proposed decoder diff.
+Baseline: 8e8b5dcb954969621c484588f0b902be1cfea7b3
+
+Result: PASS within the stated scope. No material mathematical, source-status,
+or validation correction was found. No report file was edited by this review.
+
+1. Decoder correctness
+The fused quotation/depth invariant is valid and the stated exact graph iff
+follows from the existing decode_quote converse. Fuel monotonicity is a valid
+corollary. The report distinguishes the proposed production patch from the
+checked core abstractions and the production-shaped parameterized test.
+The final copied patch passes git apply --check. Its numstat is 15 insertions,
+33 deletions, giving the claimed net reduction of 18 lines. The old region
+from decoded_depth_le through quote_of_decode contains 56 physical lines;
+the replacement therefore contains 38. These are source measurements only.
+
+2. Signed congruences
+The involution construction and three-link residue transport are correct.
+The cited NativePellStepDown hypotheses support those three links. The
+modulo-8 equal-squares counterexample is correct and guards against weakening
+the actual Pell argument. The final positive half-modulus reasoning agrees
+with eq_of_residues, whose hypotheses are 2*p<c and 2*J<c. The production
+Pell refactor remains explicitly unmeasured and unbuilt.
+
+3. Internal constructor views
+The generic tagged-relation inversion follows from injectivity of tags and
+pairing on an arbitrary carrier. The report correctly preserves index
+naturalness in the atomic payload and identifies the production BoundStep
+equivalence as an outstanding proof, not as a checked artifact.
+
+4. Unique existence and nonstandard codes
+The displayed formula
+  fEx (fAnd (boundCodeForm 0 1)
+    (fAll (fImp (boundCodeForm 0 2) (fEq 0 1))))
+correctly expresses the unique-existence induction predicate. Its inner
+variables are competing output 0, selected output 1, and input code 2.
+The equality orientation is competing output = selected output. The report
+requires an actual formula and the existing internal-code induction principle;
+it makes no claim that external finite Lean formulas exhaust internal codes.
+The combined induction is correctly labeled proposed production work.
+
+5. Internal recursion preservation/fusion
+The stated graph laws suffice for the proof given, provided the exact stage
+predicate has the required induction principle. The report states this
+restriction explicitly, retains definability of the production step relation,
+and distinguishes the checked abstract theorem from a ThetaG integration.
+The fusion statement uses a global commuting-map law; no restricted law is
+silently generalized. Neither theorem relies on identifying the index type
+with Lean Nat.
+
+6. Validation scope
+The report explicitly says the Mathlib production dependency closure was
+unavailable and does not claim a full production build. ExactDecoderFusion
+accurately describes its pairing operations/law as parameters. Its source
+retains the production arithmetic offsets and patched Option proof branches.
+The four final copied semantic prototypes have exactly the same bytes as
+the files that passed Lean 4.32.0 in the earlier checks:
+  DecoderGraph.lean
+  ExactDecoderFusion.lean
+  IterationGraph.lean
+  TaggedConstructor.lean
+Their reported axiom profiles agree with the successful logs.
+
+Remaining obligations are already disclosed in the report: production
+module/downstream builds; concrete BoundStep equivalence; unique-existence
+formula specification and proof; definable ThetaG adapters and client changes.

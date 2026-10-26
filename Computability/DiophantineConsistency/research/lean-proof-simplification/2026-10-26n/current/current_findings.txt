@@ -1,0 +1,109 @@
+CURRENT-WORD / FINITE-SUPPORT SIMPLIFICATIONS
+Pinned source: b310142330df89e48413c8fce62e7de223e1c7d5
+Status: all candidate Lean code is UNCOMPILED. No Lean runtime was available;
+none was installed. No upstream or snapshot source file was edited.
+
+RESULT
+Four distinct recommendations, six proof replacements. Targeted nonblank
+proof-body text is 78 -> 31 lines in the readable draft (47 removed). This
+is a textual comparison, NOT measured kernel proof size, compile time,
+formatter output, or a compiled implementation. Statement text is retained.
+C3 may require an additional compatibility alias, which is not in that sum.
+Exact anchors, hashes and counting rule: candidate_metrics.json.
+
+C1 — Use the existing one-support characterization, not erase-sum arithmetic
+CurrentCellLabels2011.sum_le_one_cases, lines 131–158: 26 -> 10 body lines.
+The current proof separately establishes sum=1, existence of a positive
+summand, its exact value, the sum over erase i, and vanishing of every
+remaining summand. Finset.sum_le_one_iff already packages the substantive
+one-support fact. Its exact call shape is witnessed in the pinned repository
+by NativeSelectorClause54.selectors_one (lines 74–79), so this is reuse of
+an API the project already uses, not speculation about a Mathlib lemma name.
+
+Split on whether every f i is zero. Otherwise pick i with f i != 0. The
+existing characterization applied to (i,i) gives f i=1; applied to (j,i)
+forces j=i whenever f j != 0. This directly constructs Selected f i and
+eliminates the erase bookkeeping. The empty type and all-zero branch remain
+valid: no Nonempty or inhabited assumption is introduced.
+
+C2 — Specialize the new binary-prefix theorem in its own normal form
+CurrentSouthShift2011.offset19_word, lines 92–113: 14 -> 6 body lines.
+CurrentSouthShift2011.offset20_word, lines 116–140: 16 -> 6 body lines.
+Both current proofs name f, prove a shifted-function identity by funext and
+omega, introduce the prefix theorem, rewrite the identity, then transport
+through the copy equality. But binaryWord_prefix already has precisely the
+required shape. First rewrite with copy_word_translation at a=941 or 940;
+then specialize binaryWord_prefix at (k,n)=(1,8) or (2,7). Left-associated
+natural addition normalizes 941+(1+j) and 940+(2+j) to 942+j; the existing
+private binaryWord_one/two lemmas normalize the short prefix. A single
+simpa only handles the remaining arithmetic, powers and casts.
+
+This does NOT alter offset19 periodicity or offset20 obstruction reasoning.
+It proves the same finite-word aggregation equalities with the same Boolean
+premise and full ZMod (N*2011) source positions. Nor does it introduce a new
+half-radix/scaled-residue theorem. The main elaboration risk is the explicit
+simp normal-form list; the source provides all required identities. If one
+cast requires a small simp adjustment, do not replace actual source equality
+by only a modulo2011 residue equality.
+
+C3 — Place the existing bounded binary-word congruence below its clients
+CurrentTileColors2011.binaryWord_congr is currently declared downstream of
+CurrentWholeField2011 -> CurrentSouthShift2011. Move its unchanged statement
+and proof to CurrentCellLabels2011, beside binaryWord, then reuse it in:
+* CurrentSouthShift2011.copy_word_translation, lines 71–89: 10 -> 6 lines;
+* CurrentOccupation2011.horizontal_words, lines 42–50: 4 -> 2 lines.
+The old clients unfold binaryWord and repeat range-membership and weighted
+sum congruence. The hoisted lemma preserves the exact j<n guard; the only
+nontrivial transport in copy_word_translation is the existing exact
+source_eq_of_remainder_le, composed under congrArg c.
+
+DO NOT merely import CurrentTileColors2011 into CurrentSouthShift2011: that
+would introduce an import cycle. The standalone review candidate imports
+both existing modules and uses the currently qualified helper only to avoid
+modifying the snapshot. The real change moves the helper to the earlier
+module. For public API compatibility, retain a forwarding theorem (same
+qualified name) in CurrentTileColors2011, or test a one-line re-export.
+Forwarding declaration overhead is not included in the two body comparisons.
+
+C4 — Make zero-based propagation a specialization of arbitrary-origin propagation
+CurrentCellCycle2011.propagate, lines 113–122: 8 -> 1 body line.
+The new file proves the same iterate induction twice, once from zero and
+once from arbitrary a. Move propagate_from before propagate and define:
+  exact propagate_from P 0 hzero hnext
+No new theorem or generalized datatype is needed. Both statements remain
+unchanged; reachable_from and its exact full-word difference-cell witness
+remain as they are. In particular N=1 still works, and no inverse of 2011
+modulo N or coprimality assumption appears. This is not the prior proposal
+to reuse the aligned Cell geometry API.
+
+NOVELTY
+The exclusion review covered all six incoming/retired manuscripts and notes
+and cleared C1–C4 specifically. Deliberately omitted: generic residue helper,
+physical-field support/origin normal form, half-radix identities, folded
+stencil finite-fiber law, source/window/Facts packing, carry-certificate
+reconstruction, modulo2048->16 projection, control-direction descriptors,
+new mask-block library, word_sub_origin, physical-selectorCount normal form,
+import splitting, existing offset19 periodicity, and cosmetic cellDigit_lt.
+Simply being in a newly added module was not treated as evidence of novelty.
+
+VALIDATION
+* Six targeted source checks match the freshly pinned Git tree blob SHAs.
+* No new sorry/admit/axiom declaration in the candidate file.
+* Finite arithmetic smoke checks: 28 eligible arrays over domain sizes 0..6
+  satisfy one-hot/all-zero characterization; 3840 retained-prefix cases
+  exercise the two offsets with arbitrary natural values outside the retained
+  Boolean suffix; positive cyclic sizes 1..8 include the singleton case.
+* These tests DO NOT establish Lean elaboration, tactic/simp behavior, or
+  mathematical generality; the supplied candidates must be checked by Lean.
+
+REPLAY (in a real checkout with its pinned dependencies, not run here)
+1. Copy CurrentSimplificationCandidates.lean into a temporary project path
+   and run lake env lean on it. Preserve its fresh theorem names initially.
+2. Implement C1 and C2 proof bodies in their original files; run their Checks.
+3. For C3, move the existing congruence theorem downward, retain an alias if
+   its public qualified name matters, and check the import DAG before build.
+4. For C4, reorder the complete declarations (including docs) before replacing
+   propagate's proof. Rebuild CellCycleChecks, CellCoordinateChecks,
+   OccupationChecks and MarkedWindowChecks plus the project umbrella.
+5. Keep strict carry budgets, full cyclic modulus, all-max zero exception,
+   origin handling and all original theorem hypotheses unchanged.

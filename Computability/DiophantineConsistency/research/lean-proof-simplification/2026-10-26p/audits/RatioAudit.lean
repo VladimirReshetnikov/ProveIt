@@ -1,0 +1,5 @@
+import DiophantineConsistency.NativeHalfBinomial
+#print axioms Jones1980.Ratio90.upper_estimate'
+#print axioms Jones1980.Ratio90.upper_estimate
+#print axioms DiophantineConsistency.NativeHalfBinomial.upper_estimate_scaled
+#print axioms DiophantineConsistency.NativeHalfBinomial.source_half_binomial

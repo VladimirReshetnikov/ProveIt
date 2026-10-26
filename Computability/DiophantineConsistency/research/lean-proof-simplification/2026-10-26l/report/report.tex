@@ -1,0 +1,705 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont[Scale=0.83]{DejaVu Sans Mono}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{fvextra}
+\usepackage{xcolor}
+\definecolor{ink}{HTML}{19384D}
+\definecolor{muted}{HTML}{526575}
+\usepackage[obeyspaces,spaces]{xurl}
+\usepackage[colorlinks=true,linkcolor=ink,urlcolor=ink,citecolor=ink]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily Further Lean proof simplifications}
+\fancyhead[R]{\small\sffamily ProveIt / 26 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.52em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=0.22em,topsep=0.35em}
+\fvset{fontsize=\small,breaklines=true,breakanywhere=true,tabsize=2,
+  samepage=true,frame=single,rulecolor=\color{muted},framesep=6pt}
+\urlstyle{tt}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\repo}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b310142330df89e48413c8fce62e7de223e1c7d5/#1}{#2}}
+\newcommand{\modulelink}[2]{\repo{Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean}{#2}}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\title{\color{ink}\sffamily Further Lean Proof Simplifications\\[0.35em]
+  \large Six additional ideas for \texttt{DiophantineConsistency}}
+\author{Research and implementation report for Vladimir Reshetnikov}
+\date{26 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+This report develops six concrete proof simplifications after auditing the five
+archives in \code{docs/incoming} at the initial snapshot, the sixth retired
+packet linked from its README, and two more packets added during this review.
+The resulting changes replace two
+unused internal inductions by an existing zero-or-successor decomposition;
+reuse an exact Pell parity theorem; compose divisibility statements without
+opening quotient witnesses; compare Pell indices by monotonicity in the base;
+keep a nonsquare-norm argument entirely in the integers; and replace an explicit
+finite-orbit construction by inverse invariance of a finite set.
+
+The accompanying patch preserves the existing public theorem statements.
+The report distinguishes local proof shortening, helper costs, dependency
+simplification, and the scope of the Lean checks. The novelty claim is relative
+to the inspected proposal packets. A promising evaluator refactor was excluded
+because an earlier note already suggests a closely related semiring witness.
+\end{abstract}
+
+\vspace{0.4em}
+\textbf{Pinned repository snapshot.}\quad
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/b310142330df89e48413c8fce62e7de223e1c7d5}{\code{b310142330df89e48413c8fce62e7de223e1c7d5}}
+
+\textbf{Verification versions.}\quad Lean 4.32.0; mathlib
+\code{81a5d257c8e410db227a6665ed08f64fea08e997}.
+
+\textbf{Closing audit snapshot.}\quad
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/d163c476db9ca1142d2d73de8fa64c0b2c03a848}{\code{d163c476db9ca1142d2d73de8fa64c0b2c03a848}}.
+The six target files and dependency pins are unchanged, and the patch also
+passes its application check at this later snapshot.
+
+\textbf{Recommended starting point.}\quad Apply the two unused-induction
+deletions, the existing Pell parity theorem, and the integer norm argument
+first. The Pell base comparison and finite-invariant-set argument are the most
+useful mathematical changes to the proof structure.
+
+\newpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Outcome and measurement}
+
+The deliverable is a reviewable six-file patch, complete replacement modules,
+standalone comparison experiments, a prior-proposal exclusion ledger, and
+validation evidence. The patch changes proofs and imports; it retains the
+statements of the seven existing public theorems directly edited. The Pell
+bootstrap file gains one reusable simultaneous monotonicity lemma.
+
+\begin{longtable}{@{}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}>{\raggedright\arraybackslash}p{0.55\textwidth}@{}}
+\toprule
+Idea & Main target & Actual simplification \\
+\midrule
+\endhead
+1 & Object addition and multiplication at zero & Replace two specialized
+\code{omega_ind} scripts and their private formula specifications by
+\code{nat_zero_or_succ}. \\
+2 & Pell auxiliary-index oddness & Reuse
+\code{SignedPellResidue.odd_index_of_base_dvd} with the exact hypothesis
+already present. \\
+3 & Pell sign transport & Apply closure of divisibility under addition,
+subtraction, and negation instead of constructing four quotient witnesses. \\
+4 & Main versus first Pell index & Prove simultaneous monotonicity of the two
+Pell coordinates in the base, then use strict monotonicity in the index. \\
+5 & Nonsquare integer norm & Infer divisibility of square roots and cancel a
+nonzero integer square; remove the detour through rational squares. \\
+6 & Offset-19 exclusion & Use inverse invariance of a finite permutation's
+forward-invariant even-state set in place of an explicit period and iteration
+induction. \\
+\bottomrule
+\end{longtable}
+
+\input{metrics.tex}
+
+The file totals in this table include comments, whitespace, helper lemmas,
+and changed imports. They are reproducible source measurements, not a claim
+about kernel term size or compilation speed. Separate proof-region counts in
+the validation manifest explain where the savings occur. In particular, the
+Pell monotonicity helper is charged to the change; the three-line consumer
+proof is not advertised as a free replacement for the old proof.
+
+The repository's requested Lean tree contains 574 Lean files at this snapshot.
+The directory named \code{DiophantineConsistency} contains 391 of those files
+and 71,601 physical lines, including several check modules. This review selects
+a small number of proof changes from that larger codebase; it is not a
+whole-project minimization result.
+
+\section{How existing proposals were excluded}
+\label{sec:novelty}
+
+\subsection{The inspected material}
+
+At the initial snapshot, the \repo{docs/incoming}{incoming directory} contained
+these five archives:
+
+\begin{enumerate}
+\item \code{Lean_Proof_Simplification_2026-10-26.zip}
+\item \code{ProveIt_Lean_Proof_Simplification_2026-10-26.zip}
+\item \code{diophantine-lean-simplification-2026-10-26.zip}
+\item \code{lean-proof-simplification-2026-10-26 (2).zip}
+\item \code{lean-proof-simplification-2026-10-26.zip}
+\end{enumerate}
+
+Their 1,793 archive members contain no nested archives. The downloaded
+archives' Git blob hashes match the repository directory entries. The audit
+read their reports and relevant detailed notes and searched the proposed Lean
+artifacts for overlap. Copies of original source files inside a packet were
+treated as baseline evidence, rather than automatically treating every theorem
+in such a copy as a proposal.
+
+The incoming README also links a retired sixth packet,
+\code{diophantine-lean-proof-simplification-2026-10-26.zip}, now placed under
+\repo{Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/PLACEMENT.md}{\code{research/lean-proof-simplification-20261026}}.
+Its report and three detailed review notes were also inspected. Historical
+entries concerning other research programs are outside this proof-simplification
+comparison.
+
+The bundled \code{audit/exclusion_ledger.json} groups 81 earlier idea families
+and records 103 checked report or note locators. The readable ledger gives the
+archive, member path, line, and a distinctive phrase for each entry. The
+comparison is semantic: changing a proposed abstraction's name is not counted
+as a new idea.
+
+\subsection{Closing refresh after concurrent repository changes}
+
+The repository advanced while this review was in progress. At the closing
+snapshot \code{d163c476db9ca1142d2d73de8fa64c0b2c03a848}, the original five
+archives had been placed in research directories, and two new archives were
+present in \code{docs/incoming}:
+\code{diophantine-lean-simplification-2026-10-26(1).zip} and
+\code{lean-proof-simplification-review-2026-10-26.zip}. These were separately
+audited before delivery. The closing addendum records their hashes, proposal
+locations, and comparisons with the six retained ideas.
+
+One new packet also proposes an edit in \code{NativePellStepDown}, but it
+targets \code{eq_of_residues} and simplifies casts. That differs from the
+odd-index theorem reuse and sign-transport changes delivered here. The audit
+found no matching proposal for any of the six retained mechanisms in the
+two new packets.
+
+A Git comparison confirms that all six edited source files, the dependency
+pins, and the imported repository source roots are unchanged between the
+initial and closing snapshots. The patch passes a separate application check
+against the later snapshot's index. The main Lean tree acquired additional
+strip and machine modules; those additions are outside this patch and were
+not claimed as freshly rebuilt endpoints.
+
+\subsection{Topics deliberately left out}
+
+Earlier packets already propose assignment naturality, finite witness layouts,
+scanner iterations and fusion, guarded history folds, exact numerical Boolean
+outputs, tag dispatch, sparse coefficient bounds, half-radix arithmetic,
+finite-fiber sum identities, residual-square interfaces, semiring compiler
+sharing, power-label certificates, indexed DAG equations, shared Split/Gap
+circuit tails, source/window records, and transport of necessary definable
+induction. They also contain smaller suggestions in ancillary notes. None of
+those is offered here as an additional idea.
+
+A concrete evaluator experiment was developed and then excluded. It constructs
+the semiring evaluator's relational witness and invokes the existing
+\code{evalRel_unique} theorem to simplify \code{ObjectNaturalSemiring.evalRel_iff}.
+Although that exact consumer refactor is absent from the inspected packets,
+\code{notes/syntax.txt:133} in the fifth archive already suggests a semiring
+witness for evaluator totality. The strict novelty policy used for this
+delivery excludes that neighboring development from the patch and from the
+six contributions counted here.
+
+\subsection{The novelty boundary of the six retained ideas}
+
+The first idea eliminates two inductions whose step cases discard the
+induction hypothesis. This differs from the earlier plan to transport a
+necessary induction through a formula specification. The finite-permutation
+idea uses inverse preservation of a finite state predicate, rather than the
+earlier scanner-fold and iterate abstractions. The Pell comparison uses an
+order theorem in the base parameter, rather than a uniform coefficient or
+exponential envelope. The other three changes are exact local replacements
+for which the audit found no corresponding proposal.
+
+These are additional contributions relative to the eight inspected packets.
+The report does not claim that basic mathematical facts such as integer
+cancellation, monotonicity, or finite-set invariance are new mathematics.
+
+\section{Idea 1: remove two specialized inductions}
+\label{sec:no-induction}
+
+\subsection{What the current proofs actually use}
+
+\modulelink{ObjectAdditionCancellation}{\code{ObjectAdditionCancellation.lean}}
+proves \code{addRel_zero_iff} by defining a private object-language formula,
+proving its semantic specification, and applying \code{omega_ind}. The
+successor case begins \code{intro n hn _}: its induction hypothesis is
+discarded. The same pattern occurs in
+\modulelink{ObjectNaturalZero}{\code{ObjectNaturalZero.mulRel_zero_iff}}.
+
+The necessary elimination principle is already available:
+\repo{SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSat.lean}{\code{nat_zero_or_succ}}
+states that every member of a model's internal omega is either its zero or a
+successor of another member. Importing its existing module and using this
+decomposition removes the two private formulas and their specification proofs.
+
+\subsection{Addition}
+
+The relation \code{AddRel H x y (vempty H)} already supplies the naturalness
+of its arguments. Apply \code{nat_zero_or_succ} to the second argument; no
+new public hypothesis is needed.
+
+If $y=0$, functionality of addition compares the given graph witness with the
+zero law and yields $x=0$. If $y=\operatorname{succ}(n)$, totality supplies the
+intermediate sum $b=x+n$. The successor law gives $x+y=\operatorname{succ}(b)$.
+Functionality then forces the empty set to equal that successor, contradicting
+the fact that $b$ is a member of its successor. No assertion about smaller
+values of $y$ is used.
+
+\VerbatimInput{snippets/addition-new.lean}
+
+\subsection{Multiplication}
+
+For multiplication, the zero case is immediate. In the successor case,
+totality gives $b=xn$, and the successor equation identifies
+$x\operatorname{succ}(n)$ with $b+x$. If that sum is zero, the additive zero
+theorem yields $x=0$. Again, no induction hypothesis occurs in the argument.
+
+\VerbatimInput{snippets/multiplication-new.lean}
+
+\subsection{Semantic scope and exact savings}
+
+The direct decomposition applies to all internal naturals, including
+nonstandard elements of a model. There is no replacement of internal induction
+by induction over the external type \code{Nat}. The existing decomposition
+theorem itself was proved once by definable omega induction, so the improvement
+removes two redundant specialized induction scripts rather than removing
+induction from the foundational dependency chain.
+
+The additive theorem retains its original unguarded statement. The
+multiplicative theorem retains its two naturalness hypotheses. The changed
+proof/helper blocks occupy 73 physical lines before the patch and 29 after it.
+The explicit import of \code{BoundedZFCConsistency.InternalSat} in each file
+makes the net full-file reduction 42 lines: $118\to96$ and $60\to40$.
+
+\section{Idea 2: reuse the exact Pell parity theorem}
+
+\subsection{The duplicated argument}
+
+In \modulelink{NativePellStepDown}{\code{NativePellStepDown.index_residues}},
+Pell classification yields an index $s$ with
+\[
+ Iu=X_I(s),\qquad I>1.
+\]
+The original proof then derives oddness of $s$ by a local even-index
+congruence and divisibility argument. But
+\modulelink{SignedPellResidue}{\code{SignedPellResidue.odd_index_of_base_dvd}}
+already proves precisely that $I\mid X_I(s)$ forces $s$ to be odd when $I>1$.
+The displayed equality supplies its hypothesis directly.
+
+\begin{Verbatim}
+  have hsodd : Odd s := SignedPellResidue.odd_index_of_base_dvd hI1 (by
+    rw [← hIu]
+    exact dvd_mul_right I u)
+\end{Verbatim}
+
+The new import is acyclic: \code{SignedPellResidue} depends on the common Pell
+integer library, not on \code{NativePellStepDown}. The reduction also permits
+removal of the unused local proof that $s>0$ and an unused name for the second
+coordinate equality. Public parameters remain in place for compatibility.
+
+\subsection{Why this is preferable to another abstraction}
+
+No new parity interface or generic congruence framework is needed. This is
+exact reuse of an existing theorem with the existing hypotheses. The
+classification step, the odd-index polynomial identity, and the subsequent
+step-down argument remain explicit. The change reduces the local proof's
+arithmetic burden and the number of places that must be maintained if the Pell
+congruence interface changes.
+
+\section{Idea 3: keep divisibility witnesses abstract}
+
+\subsection{The local sign problem}
+
+Later in the same \code{index_residues} theorem, the proof knows
+\[
+ c\mid(s-p)\ \lor\ c\mid(s+p),
+ \qquad J\equiv ts\pmod c,
+ \qquad t=1\ \lor\ t=-1.
+\]
+It must derive $c\mid(J-p)$ or $c\mid(J+p)$. The original proof opens the
+divisibility statements into integer quotient witnesses in each sign case,
+constructs a new quotient, and checks its equality by
+\code{linear_combination}.
+
+Divisibility already has the required additive closure laws. Convert the
+congruence once to $c\mid(ts-J)$ and compose it with the known divisibility
+statement using \code{dvd_sub}, \code{dvd_add}, and \code{dvd_neg}. The branch
+arithmetic is summarized below.
+
+\begin{center}
+\begin{tabular}{@{}cll@{}}
+\toprule
+$t$ & Divisible expressions used & Resulting divisible expression \\
+\midrule
+$1$ & $s-p$, $s-J$ & $(s-p)-(s-J)=J-p$ \\
+$1$ & $s+p$, $s-J$ & $(s+p)-(s-J)=J+p$ \\
+$-1$ & $s+p$, $-s-J$ & $-((s+p)+(-s-J))=J-p$ \\
+$-1$ & $s-p$, $-s-J$ & $-((s-p)+(-s-J))=J+p$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The delivered proof uses a small local helper and \code{Or.imp} to map the two
+branches. It does not introduce a new global ``congruence up to sign'' relation.
+The delivered proof uses \code{convert!} so that the source expression is
+elaborated without prematurely imposing the target expression. The resulting
+ring identity then closes the conversion. An explicitly typed intermediate
+divisibility statement is another readable way to control the same inference.
+
+\VerbatimInput{snippets/sign-transport-new.lean}
+
+\subsection{When this technique is useful}
+
+Opening an existential divisibility witness is appropriate when the quotient
+itself becomes later data. Here the quotient is immediately repackaged into
+another proposition. Leaving it abstract makes the proof expose its actual
+structure: an additive combination of elements of the principal ideal
+$c\mathbb Z$. The argument retains both possible signs and adds no positivity
+condition on the signed intermediate coordinate.
+
+Ideas 2 and 3 affect separate regions of one theorem. Their net source savings
+are reported together at the file level, so the two changes are not counted
+twice.
+
+The adjacent \code{signed_index_residues} wrapper receives the same treatment.
+After the two cases of \code{Int.natAbs_eq}, it reuses the supplied congruence
+\code{hVJ} or its negation directly. This reduces the absolute-value congruence
+block from 11 to five lines. The identity for its square is obtained from
+\code{Int.natCast_natAbs} and \code{sq_abs}; the argument never equates a
+negative integer with its absolute value. These are supporting edits within
+the sign-transport idea, not additional contributions.
+
+\section{Idea 4: compare Pell bases instead of exponentials}
+\label{sec:pell-monotone}
+
+\subsection{The current comparison}
+
+The original
+\modulelink{NativePellBootstrap}{\code{NativePellBootstrap.main_index_gt_first}}
+assumes $1<A$, $1<P$, and
+\[
+ c=Y_A(p),\qquad k=2Y_P(n),\qquad k<c.
+\]
+It also assumes $c>1$, $p>0$, $n>0$, and the relatively strong separation
+$2A<2P-1$. Its 21-line proof first establishes lower bounds on the indices,
+then compares
+\[
+ c\le(2A)^{p-1}\le(2A)^{n-1}
+ <(2P-1)^{n-1}\le Y_P(n)\le k
+\]
+under the contradictory assumption $p\le n$.
+
+The desired conclusion follows from a more direct order comparison.
+
+\subsection{Simultaneous monotonicity}
+
+For a natural parameter $a>1$, write $X_a(n)$ and $Y_a(n)$ for the two Pell
+coordinates. Their first-order recurrences are
+\begin{align*}
+ X_a(0)&=1,&Y_a(0)&=0,\\
+ X_a(n+1)&=aX_a(n)+(a^2-1)Y_a(n),
+ &Y_a(n+1)&=X_a(n)+aY_a(n).
+\end{align*}
+All coefficients are nonnegative. If $1<a\le b$, simultaneous induction on
+$n$ gives
+\[
+ X_a(n)\le X_b(n)\quad\text{and}\quad Y_a(n)\le Y_b(n).
+\]
+The simultaneous statement is the useful induction invariant: trying to
+prove the inequality for the second coordinate alone would need information
+about the first coordinate in the successor case.
+
+\VerbatimInput{snippets/pell-monotonicity-new.lean}
+
+The proof uses the positive first-order recurrence, avoiding the subtraction
+that occurs in an alternative second-order Pell recurrence. Natural
+subtraction in $a^2-1$ is handled by its ordinary monotonicity theorem.
+
+\begin{proposition}
+Let $1<A\le P$. If $Y_P(n)<Y_A(p)$, then $n<p$.
+\end{proposition}
+\begin{proof}
+Base monotonicity gives $Y_A(p)\le Y_P(p)$. Hence
+$Y_P(n)<Y_P(p)$. Strict monotonicity of the second coordinate in its index
+then gives $n<p$.
+\end{proof}
+
+Since $Y_P(n)\le 2Y_P(n)=k<c=Y_A(p)$, the proposition proves the target.
+The compatibility theorem keeps the old hypotheses but now has a three-line
+body:
+
+\VerbatimInput{snippets/pell-index-new.lean}
+
+\subsection{A useful strengthening, with its cost made explicit}
+
+The standalone experiment also checks the stronger theorem whose assumptions
+are only $1<A$, $1<P$, $A\le P$, the two coordinate identities, and $k<c$.
+The old hypotheses $c>1$, $p>0$, $n>0$, and strict base separation are not
+needed for this logical implication. Existing callers retain their public
+interface in the integration patch.
+
+The old consumer proof has 21 body lines and the replacement has three. The
+new monotonicity helper occupies 11 physical lines including its declaration
+and documentation, and a separating blank line is retained. Thus this is a
+small net reduction even when the reusable helper is charged immediately.
+More significantly, it removes four exponential comparison steps, truncated
+index subtraction, and two positivity subarguments from the consumer.
+
+The current source still proves the stronger base-separation fact for its
+other uses. Replacing that theorem, changing its public statement, or deleting
+its proof is not part of this patch. A future cleanup can inspect its complete
+caller set and decide whether the weaker base inequality is sufficient there.
+
+\section{Idea 5: prove the norm fact entirely over the integers}
+
+\subsection{The source argument and its replacement}
+
+\modulelink{MinimumNorm}{\code{MinimumNorm.norm_ne_zero_of_not_isSquare}}
+asserts
+\[
+ \neg\operatorname{IsSquare}(d),\quad y\ne0
+ \quad\Longrightarrow\quad x^2-dy^2\ne0
+ \qquad(d,x,y\in\mathbb Z).
+\]
+The original proof casts the equality into $\mathbb Q$, introduces $x/y$,
+clears a denominator, and transfers rational squareness back to the integers.
+
+An integral proof is direct. Suppose $x^2=dy^2=y^2d$. Then $y^2\mid x^2$.
+The integer theorem \code{Int.pow_dvd_pow_iff} gives $y\mid x$, so write
+$x=yk$. Substitution yields
+\[
+ y^2k^2=y^2d.
+\]
+Because $y\ne0$, its square is nonzero and can be cancelled. Thus $d=k^2$,
+contradicting the hypothesis.
+
+\VerbatimInput{snippets/norm-new.lean}
+
+\subsection{Why the coefficient domain matters}
+
+The decisive statement is the divisibility-of-powers theorem for integers.
+This should not be generalized silently to an arbitrary integral domain:
+in a domain that is not integrally closed, an element can acquire a square
+root in its fraction field without having one in the domain. The delivered
+proof keeps the original integer statement and its hypothesis $y\ne0$.
+
+The full replacement file compiles after removing the direct imports of
+\code{Mathlib.Data.Rat.Lemmas} and \code{Mathlib.Tactic.FieldSimp}. This is a
+reduction in the module's direct dependency vocabulary. It does not prove that
+no transitive dependency elsewhere in the import graph mentions rational
+numbers, and no compilation-time improvement is claimed.
+
+\section{Idea 6: use inverse invariance of a finite set}
+
+\subsection{The finite-state proof obligation}
+
+\modulelink{NativeFieldCycles2011}{\code{NativeFieldCycles2011.offset19_excludes_510}}
+works with a permutation $\sigma$ of a finite type, a state value $S_i<512$,
+and a bit $\epsilon_i\le1$, satisfying
+\[
+ S_{\sigma i}=(2S_i+\epsilon_i)\bmod512.
+\]
+The exceptional bit may equal one only at a single fixed source value
+$s_\ast$. The existing predecessor argument shows that if some value were
+$510$, then $s_\ast=511$. The existing local successor lemma then shows
+\[
+ S_i\equiv0\pmod2\quad\Longrightarrow\quad
+ S_{\sigma i}\equiv0\pmod4.
+\]
+
+The original final step proves evenness along all forward iterates, obtains
+a positive period, constructs its predecessor index $p-1$, and uses return
+to the starting point to get the contradiction $510\equiv0\pmod4$.
+
+\subsection{The shorter proof}
+
+Let $E=\{i\mid S_i\equiv0\pmod2\}$. The successor lemma implies
+$\sigma(E)\subseteq E$. The restriction of an injective map to the finite set
+$E$ is surjective, so $\sigma^{-1}(E)\subseteq E$ as well. Consequently,
+if $S_i=510$, the predecessor $\sigma^{-1}i$ is even. Apply the same successor
+lemma to that predecessor. Its successor is $i$, so $S_i$ is divisible by
+four, which contradicts $510\bmod4=2$.
+
+This exact finite-permutation fact is already present in mathlib as
+\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/GroupTheory/Perm/Finite.lean}{\code{Equiv.Perm.perm_symm_on_of_perm_on_finite}}.
+The new final part of the proof is:
+
+\VerbatimInput{snippets/finite-invariant-new.lean}
+
+The direct import changes from the periodic-point library to
+\code{Mathlib.GroupTheory.Perm.Finite}. The local arithmetic lemmas and the
+separate offset-20 theorem remain the same. The full-file reduction is eight
+physical lines; the larger benefit is removal of the custom orbit induction,
+period witness, and predecessor-index arithmetic.
+
+\subsection{What cannot be dropped}
+
+Finiteness is essential to this inference. On an infinite orbit indexed by
+$\mathbb Z$, a bounded state can stay at $511$ for all negative times, take
+the zero exceptional bit once, and then evolve through
+\[
+ 510,508,504,496,480,448,384,256,0,0,\ldots.
+\]
+Use the exceptional bit one while remaining at $511$, and zero from the
+transition to $510$ onward. This satisfies the recurrence and the fixed-source
+gate with $s_\ast=511$ on the infinite shift permutation. Thus neither this
+argument nor the original one licenses deleting the finiteness hypothesis.
+
+The permitted finite $511$ self-loop also remains permitted. The theorem
+excludes the value $510$, not all nonzero cycles.
+
+\section{Verification and integration}
+\label{sec:verification}
+
+\input{validation-status.tex}
+
+\subsection{Reproducibility}
+
+The patch is pinned to the repository commit on the title page. It is intended
+to be applied at the repository root. The archive contains:
+
+\begin{itemize}
+\item the LaTeX source and this PDF;
+\item one combined patch and complete replacement files;
+\item independent Lean experiments for the new mathematical arguments;
+\item a verification script using the repository's pinned Lean/Lake setup;
+\item source hashes, source-line metrics, successful compiler logs, and axiom
+  output;
+\item the exclusion ledger, candidate novelty comparison, and independent
+  review notes.
+\end{itemize}
+
+The verification script applies no patch itself. It checks the expected
+replacement hashes in an already patched checkout, builds the six affected
+modules, and runs the axiom audit. This keeps the review and mutation steps
+explicit. A preparatory \code{git apply --check} command is documented in the
+README before the ordinary \code{git apply} command.
+
+\subsection{What the evidence supports}
+
+The checked replacement modules demonstrate that their retained declarations
+elaborate and their proofs are accepted with the pinned dependencies. The
+standalone experiments make it easy to inspect the essential arguments without
+the surrounding source file. The axiom report checks the selected results for
+admitted proofs or extra logical assumptions.
+
+Line counts are deterministic textual measurements. They do not measure the
+size of a kernel proof term, the transitive size of imports, or the time saved
+on a cold project build. Compilation times in local logs are diagnostic only:
+the environment reused an exact-version package cache and was not a controlled
+benchmarking setup.
+
+\section{Further research questions}
+
+\subsection{Where should Pell parameter monotonicity live?}
+
+The patch places the new helper immediately above its first consumer for a
+small, reviewable change. If other modules need it, the natural destination
+is a lower Pell sequence interface, with public names for the two projections
+of the simultaneous theorem. A follow-up can inventory genuine consumers
+before adding more wrappers. It should compare the complete helper cost with
+the proof reductions at those call sites.
+
+\subsection{Can the base-separation obligations be weakened downstream?}
+
+The strengthened standalone theorem needs only $A\le P$. Inspecting all uses
+of \code{source_base_separation} may reveal callers whose strict separation
+proofs are now unnecessary. This requires an actual dependency and caller
+audit; this report does not claim that the existing separation theorem can
+already be deleted. The present patch preserves its public interface.
+
+\subsection{Which internal inductions have no inductive content?}
+
+The two successful examples suggest a targeted audit of \code{omega_ind}
+uses whose step binder is literally discarded. The test is semantic: a proof
+may hide an induction hypothesis in automation or use it under a different
+name. Where only zero/successor elimination is needed, the existing internal
+decomposition theorem should replace the formula-specific induction. Necessary
+internal inductions must retain their definability witnesses; unrestricted
+induction over arbitrary external predicates would change the mathematics.
+
+\subsection{Can signed divisibility endpoints share a small algebraic lemma?}
+
+The delivered patch uses a local helper because there is one identified
+consumer. If a search finds several independent endpoints with the same
+$\pm$-transport pattern, a public theorem about divisibility up to sign could
+make them shorter. Its statement should encode the orientation of
+\code{Int.ModEq} explicitly and preserve all sign possibilities. A global API
+is warranted only after that reuse is demonstrated.
+
+\subsection{Can other finite-state proofs use predicate invariance?}
+
+Some finite-permutation arguments need an actual period or orbit length; those
+should keep the periodic-point interface. When the only use of periodicity is
+to return a forward-invariant property to a predecessor, the finite-set lemma
+is a better fit. The relevant search should inspect the proof's consumer of
+the period witness, not replace every finite orbit argument mechanically.
+
+\subsection{How should proof simplification be scored?}
+
+A useful follow-up benchmark can record four separate quantities: edited
+source lines including helpers, proof-term size, import footprint, and
+elaboration time under controlled conditions. A proof can improve one without
+improving all four. The present work establishes source and structural
+simplifications, with formal checking of the edited modules, and leaves
+performance claims to such a benchmark.
+
+\appendix
+\section{Source map}
+
+All repository links below resolve to the pinned snapshot. The exact baseline
+and replacement file hashes are in \code{validation/manifest.json}.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.58\textwidth}@{}}
+\toprule
+Source & Role in this report \\
+\midrule
+\endhead
+\modulelink{ObjectAdditionCancellation}{\code{ObjectAdditionCancellation.lean}} &
+Original zero-sum induction and retained public statement. \\
+\modulelink{ObjectNaturalZero}{\code{ObjectNaturalZero.lean}} &
+Original zero-product induction and its downstream instance. \\
+\repo{SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSat.lean}{\code{InternalSat.lean}} &
+Internal zero-or-successor decomposition; no standardness assumption. \\
+\modulelink{SignedPellResidue}{\code{SignedPellResidue.lean}} &
+Existing exact odd-index theorem. \\
+\modulelink{NativePellStepDown}{\code{NativePellStepDown.lean}} &
+Auxiliary parity and signed divisibility transport. \\
+\modulelink{NativePellBootstrap}{\code{NativePellBootstrap.lean}} &
+Original exponential comparison of the main and first indices. \\
+\repo{Computability/HilbertTenthProblem/Lean/Diophantine/Common/Pell.lean}{\code{Diophantine/Common/Pell.lean}} &
+Pell recurrence and monotonicity interface used by the new base comparison. \\
+\modulelink{MinimumNorm}{\code{MinimumNorm.lean}} &
+Original rational-square norm argument. \\
+\modulelink{NativeFieldCycles2011}{\code{NativeFieldCycles2011.lean}} &
+Existing predecessor and successor arithmetic for the offset exclusion. \\
+\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/GroupTheory/Perm/Finite.lean}{\code{Mathlib/GroupTheory/Perm/Finite.lean}} &
+Finite forward-invariant sets are invariant under the inverse permutation. \\
+\repo{docs/incoming/README.md}{\code{docs/incoming/README.md}} &
+Current and retired proposal packet inventory. \\
+\bottomrule
+\end{longtable}
+
+\section{Reading the audit artifacts}
+
+The exclusion ledger is intentionally more detailed than the prose summary.
+An entry records an earlier idea family, its targets, and one or more precise
+locations in archived material. It is a reference for overlap screening, not
+an additional list of proposed work. The novelty comparison marks the
+canonical-evaluation candidate as excluded and the unused constructor-algebra
+design as not delivered.
+
+The independent review notes examine logical scope: preservation of
+nonstandard internal naturals, dependence on finite permutations, retention of
+the $511$ self-loop, sign orientations, and the absence of circular use of the
+theorems being replaced. Compiler acceptance and this conceptual review serve
+different purposes; both are included so the intended simplification is easy
+to assess.
+
+\end{document}

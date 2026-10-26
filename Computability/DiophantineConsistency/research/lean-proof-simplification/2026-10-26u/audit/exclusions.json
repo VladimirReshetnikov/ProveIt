@@ -1,0 +1,492 @@
+[
+  {
+    "id": "E01",
+    "idea": "Recursor congruence via `simp` or generic `rec_congr`, replacing duplicate induction in PR realizers/optimizer",
+    "evidence": "A report, “Rewrite under primitive recursion”; `lean/RecursorCore.lean`; `patches/pr-congruence.patch`"
+  },
+  {
+    "id": "E02",
+    "idea": "Core `List.mem_of_getElem?`, `List.getElem?_of_mem`; Option map injectivity",
+    "evidence": "A report “Use the core list-lookup API”; E report section 6 and `checker_examples/standard_library_cleanup.patch`"
+  },
+  {
+    "id": "E03",
+    "idea": "Assignment naturality under `Sum.map`, evaluator renaming, transport of input/witness blocks",
+    "evidence": "A assignment-map patch; B “Witness layouts”; D “Checked refactor: assignment naturality”; H “A small assignment-transport API”"
+  },
+  {
+    "id": "E04",
+    "idea": "Existential witness splitting/regrouping using `Fin.addCases`, `Fin.exists_fin_add`, or `Sum.exists_sum`",
+    "evidence": "B `lean/WitnessLayout.lean`; H “Regroup witnesses with the existing sum-type theorem”"
+  },
+  {
+    "id": "E05",
+    "idea": "Move witness-count/projection/rename lemmas to earlier dependency layers",
+    "evidence": "B “Move existing projection lemmas to their natural home”; C “Share residual-system facts”"
+  },
+  {
+    "id": "E06",
+    "idea": "Generic validated-history fold with separate input/stored types, append, invariant, Produces composition and certified rule fragments",
+    "evidence": "B “One invariant-preserving history fold”; C `notes/syntax.txt` (ready_binary/ready_unary/fragment2/fragment3); H “An input row and a stored judgment need not have the same type”"
+  },
+  {
+    "id": "E07",
+    "idea": "Shared Nat.rec iteration, fixed/reject/done states, invariants, and `Function.iterate` bridge",
+    "evidence": "A “Share iteration laws”; B/C/D/E scanner sections; H `lean/ScanIteration.lean`"
+  },
+  {
+    "id": "E08",
+    "idea": "Shared encoded-list simulation with sufficient fuel, step-cons, distinct rejection/terminal encodings and arbitrary-raw-code soundness",
+    "evidence": "B “Separate recurrence from encoding”; C “Share scanner proofs at the correct semantic boundary”; G “One simulation kernel”"
+  },
+  {
+    "id": "E09",
+    "idea": "Dynamic-seed/input-dependent PR iterator; supplied program/`.val` preservation",
+    "evidence": "B “A better primitive-recursive iterator interface”; C “Factor the supplied PR iterator”"
+  },
+  {
+    "id": "E10",
+    "idea": "Exact numeric Boolean output and threshold/tag dispatch normalization on all natural tags",
+    "evidence": "A BooleanCore and “Replace acceptance equivalences”; E section 8"
+  },
+  {
+    "id": "E11",
+    "idea": "Shared finite sum-of-squares syntax, evaluation/zero criterion, degree and operation-count bounds",
+    "evidence": "A sections 4/7; B “One executable sum-of-squares API”; C/H compiler sections"
+  },
+  {
+    "id": "E12",
+    "idea": "Reuse semiring gate soundness/completeness, separate gate data from semantics; combine identical constructor proof branches",
+    "evidence": "B “The semiring theorem already subsumes the natural induction”; E section 5"
+  },
+  {
+    "id": "E13",
+    "idea": "Existing `run_power` exponent certificates for generated pure-power chains",
+    "evidence": "A generated-steps; B power certificates; F `report/sections/04_circuits.tex`"
+  },
+  {
+    "id": "E14",
+    "idea": "Circuit-specific indexed `run_node_equation` facade, selected named wrappers, on-demand proof generation",
+    "evidence": "A/B generated step proposals; F circuit C2"
+  },
+  {
+    "id": "E15",
+    "idea": "Generic topological run invariant for uniqueness, nonnegativity, degree/range",
+    "evidence": "A `CircuitInvariant.lean`; C “Use a common DAG invariant theorem”; H “A reusable invariant”"
+  },
+  {
+    "id": "E16",
+    "idea": "Generic circuit simulation and local NodeRel allowing commuted addition/multiplication",
+    "evidence": "A `NodeRelCommutative.lean`; C “Positive/natural translation is a simulation”"
+  },
+  {
+    "id": "E17",
+    "idea": "Generic register append topology/dependency/evaluation facts",
+    "evidence": "A `source_notes/circuits-review.md` section 7"
+  },
+  {
+    "id": "E18",
+    "idea": "Earlier structural/weighted degree API, weight-one specialization, shared RHS degree bounds",
+    "evidence": "A/C/D degree interfaces; H “Weighted syntax degree”"
+  },
+  {
+    "id": "E19",
+    "idea": "Cancellation-aware normal-form certificates before degree checking",
+    "evidence": "C “Preserve cancellation-aware degree arguments”; F circuit C4"
+  },
+  {
+    "id": "E20",
+    "idea": "Preserve/reuse established register semantic cuts in generators",
+    "evidence": "C “Use established register facts as proof boundaries”; split-register-cuts.patch"
+  },
+  {
+    "id": "E21",
+    "idea": "Common 99-node Split/Gap tail with boundary-port substitution and insertion theorem",
+    "evidence": "C “Extract the shared 99-node free-carrier tail”"
+  },
+  {
+    "id": "E22",
+    "idea": "Common scalar FreeCarrierPolynomial ratio tail, map/cast laws, common recipe-tail correctness",
+    "evidence": "E sections 9/11; C shared-tail section"
+  },
+  {
+    "id": "E23",
+    "idea": "Row-index coefficient-envelope dispatcher; conditional-bound tactic; common nonnegative monomial context",
+    "evidence": "C “Compress the coefficient-row proofs”; D “Coefficient envelopes”; G narrow envelope tactic"
+  },
+  {
+    "id": "E24",
+    "idea": "Finite signed-monomial majorant certificates retaining sharp dependence on K",
+    "evidence": "C “A stronger abstraction: a finite majorant certificate”; D further research"
+  },
+  {
+    "id": "E25",
+    "idea": "Coefficient expression syntax / single AST, generic naturality by homomorphism interpretation",
+    "evidence": "C “Do the same for coefficient naturality”; F architecture A6"
+  },
+  {
+    "id": "E26",
+    "idea": "Sparse quadratic row normalization tied to independently supplied residual/source data",
+    "evidence": "C “A small sparse-row normalizer”; G low-degree row certificates"
+  },
+  {
+    "id": "E27",
+    "idea": "Elementary row additions and surjective row reindexing preserve common zero sets",
+    "evidence": "C “Represent elementary row operations once”, `lean/checked/RowOperations.lean`"
+  },
+  {
+    "id": "E28",
+    "idea": "Exact scaled half-radix quotient/remainder identity instead of finite case enumeration",
+    "evidence": "A/B/C/D/G half-radix sections"
+  },
+  {
+    "id": "E29",
+    "idea": "Weaken modulo 2048 reflected coefficient to modulo 16 using divisibility",
+    "evidence": "A modulus-reuse.patch; B/C/G congruence sections"
+  },
+  {
+    "id": "E30",
+    "idea": "Conditional padding witness eliminates irrelevant dummy witnesses",
+    "evidence": "A conditional-padding.patch; A digits-review section 1"
+  },
+  {
+    "id": "E31",
+    "idea": "Exact digit/carry decomposition gives quotient, remainder, modular projection, zero carry",
+    "evidence": "A NormalizationArithmetic; B CarryCertificate; E equation-side carry lemmas"
+  },
+  {
+    "id": "E32",
+    "idea": "Derive rather than store redundant `Facts.carry_recurrence`; small named carry/window views",
+    "evidence": "A digits-review section 3; C “Improve the current-window API”; D carry records"
+  },
+  {
+    "id": "E33",
+    "idea": "Shared ambient cyclic modulus/field residue/offset/nonorigin support facts",
+    "evidence": "A digits-review section 5; B physical-field residues; D generic cyclic residues; G cyclic-field interface"
+  },
+  {
+    "id": "E34",
+    "idea": "Aligned-cell equivalence with `ZMod N`, reindexing and reuse existing Cell type",
+    "evidence": "B report lines 613-615; E section 12; J `evidence/prior_ideas.md` E29 explicitly warns that a basic AddEquiv is too close"
+  },
+  {
+    "id": "E35",
+    "idea": "No-borrow origin decrement word law, separate low +1/high -1 corrections",
+    "evidence": "A digits-review section 6; G “One origin-correction lemma”"
+  },
+  {
+    "id": "E36",
+    "idea": "Direct physical selector sum API avoids prefix-sum round trips",
+    "evidence": "A digits-review section 7"
+  },
+  {
+    "id": "E37",
+    "idea": "Coherent restored source/window extraction preserves the same source and N across low/high/full window",
+    "evidence": "A digits-review section 8; F architecture A3"
+  },
+  {
+    "id": "E38",
+    "idea": "Decode common source/Pell register equations once; semantic identities and Nat/Int rank conversion",
+    "evidence": "B “Decode source-register equations once”; C `notes/arithmetic.txt` section 6"
+  },
+  {
+    "id": "E39",
+    "idea": "Generic finite table chunk/tail dispatcher, balanced block assembly, finite sum chunks",
+    "evidence": "B “Keep checked finite chunks”; E section 13; WangTiles942Data and CurrentKernel2011 are explicit targets"
+  },
+  {
+    "id": "E40",
+    "idea": "Shared copied-field bounds, finite direction/offset/width descriptor and 34-control reindexing",
+    "evidence": "B “One copied-field bound interface”; E section 13"
+  },
+  {
+    "id": "E41",
+    "idea": "Optional mask-block lookup/length/bound API",
+    "evidence": "E section 13, “Optional mask-block reuse”"
+  },
+  {
+    "id": "E42",
+    "idea": "Definable induction transport with explicit object formula and satisfaction witness",
+    "evidence": "A “A definable-induction transport lemma”; G “Wrap internal induction”"
+  },
+  {
+    "id": "E43",
+    "idea": "Shared model-axiom extraction/completeness/sealing bridge retaining arbitrary models and contexts",
+    "evidence": "A/B/C/D/E/H object endpoint sections"
+  },
+  {
+    "id": "E44",
+    "idea": "Arity-polymorphic closed-sentence/environment transport",
+    "evidence": "B “Generalize closed-sentence transport”; C “An especially small arity-polymorphism improvement”"
+  },
+  {
+    "id": "E45",
+    "idea": "Generic finite-index row-family facts for internal naturals (`Fin.forall_fin_add`, `forall_fin_two`), quantified List.ofFn simplification",
+    "evidence": "C “Build on algebraic interfaces already present”; G object finite-index section; H `inputsNaturalForm_spec`"
+  },
+  {
+    "id": "E46",
+    "idea": "Nine-coordinate packaging equivalence with coordinate 7 left unshifted",
+    "evidence": "F architecture A1; `NineCoordinatePackaging.lean`"
+  },
+  {
+    "id": "E47",
+    "idea": "Parameterized sharp Split/Gap numerical degree profiles and leading-coefficient bounds",
+    "evidence": "F architecture A2"
+  },
+  {
+    "id": "E48",
+    "idea": "Lower CurrentCarrierBase import layer/facade avoiding thirteen-coordinate completeness dependencies",
+    "evidence": "F architecture A4"
+  },
+  {
+    "id": "E49",
+    "idea": "Named conjunction accessors and derived positivity projections",
+    "evidence": "F architecture A5"
+  },
+  {
+    "id": "E50",
+    "idea": "Local standard-algebra reductions: Carrier66 positivity/canonical zero; `run_map`; whole-disjunction cast in FirstPellCarrier",
+    "evidence": "E sections 3-5, exact algebra patches"
+  },
+  {
+    "id": "E51",
+    "idea": "Specialize existing half_base_bound at 31; Finset intersection for mask sums; predecessor power identity; convolution distributivity; `Nat.one_lt_two_pow`; finite-switch boundary",
+    "evidence": "F `report/sections/02_local.tex` and tactics candidates"
+  },
+  {
+    "id": "E52",
+    "idea": "Finite-fiber/pushforward identity for foldStencil mass, convolution and word",
+    "evidence": "D “One finite-fiber identity for folded stencils”; FinitePushforward prototype"
+  },
+  {
+    "id": "E53",
+    "idea": "Injective sparse placement API distinct from general colliding foldStencil; Fin-to-ZMod transport",
+    "evidence": "G “Separate arbitrary folding from injective sparse placement”; H finite-word boundary"
+  },
+  {
+    "id": "E54",
+    "idea": "Guarded solvability congruence/transport and composition, without unnecessary witness bijections",
+    "evidence": "E section 10 and SolutionTransport.lean; G positiveZero_congr"
+  },
+  {
+    "id": "E55",
+    "idea": "Shared direct/native graph enumerator builder with separate cost projections",
+    "evidence": "E section 14; exact rawStepProgram/boundedRunProgram duplicates"
+  },
+  {
+    "id": "E56",
+    "idea": "Parser-then-check composition, generic quotation injectivity via partial decoder",
+    "evidence": "G “Reuse parser and list infrastructure”; checker source notes"
+  },
+  {
+    "id": "E57",
+    "idea": "Successful Option.bind inversion to remove impossible decoder branches; combined decoder graph/fuel theorem",
+    "evidence": "H decoder-options (with axiom distinction); J/K exact decoder graph sections"
+  },
+  {
+    "id": "E58",
+    "idea": "Pell parity theorem reuse in NativePellStepDown",
+    "evidence": "I “Reuse the already proved Pell parity criterion”"
+  },
+  {
+    "id": "E59",
+    "idea": "Signed congruence up to ±1 as transitive relation; absolute value transport; half-interval equality",
+    "evidence": "I sign section; J signed congruence section and algebra_review.md"
+  },
+  {
+    "id": "E60",
+    "idea": "Product-equivalence inverse projection graph theorem, including pairing/Cantor extension",
+    "evidence": "I “Derive inverse graphs from a product equivalence” and further questions"
+  },
+  {
+    "id": "E61",
+    "idea": "Shared positive-denominator Euclidean certificate and full quotient/remainder/slack uniqueness/coherence",
+    "evidence": "E section 6; I Euclidean certificate section and further questions"
+  },
+  {
+    "id": "E62",
+    "idea": "Affine composition-depth/witness budget helper and removal of ordinary graph nonempty-arity premise",
+    "evidence": "I “Factor the arithmetic budget”; further questions"
+  },
+  {
+    "id": "E63",
+    "idea": "Certified max-plus/depth-budget summaries, local constructor adapters and expression traversal preserving let sharing",
+    "evidence": "I further question; J “Synthesize representation-depth bounds”"
+  },
+  {
+    "id": "E64",
+    "idea": "Internal tagged constructor/no-confusion views and combined unique-existence code induction",
+    "evidence": "J “Constructor views and one internal unique-existence induction”"
+  },
+  {
+    "id": "E65",
+    "idea": "Internal recursive-graph invariant/preservation/fusion, retaining exact definable predicate",
+    "evidence": "J “Preservation and fusion for internal recursive graphs”"
+  },
+  {
+    "id": "E66",
+    "idea": "Explicit least/greatest cyclic carry formulas, two-solution classification and budget selection",
+    "evidence": "J “An optional structural alternative: explicit cyclic carries”; algebra_review.md"
+  },
+  {
+    "id": "E67",
+    "idea": "Preserve chosen rational witnesses on integer descent using denominator-one integrality",
+    "evidence": "K “Preserve rational roots when descending to integers”"
+  },
+  {
+    "id": "E68",
+    "idea": "Decompose product units once using IsUnit.mul_iff/Int.isUnit_iff",
+    "evidence": "K “Decompose the product's units once”; E has older factor-by-factor unit simplifications"
+  },
+  {
+    "id": "E69",
+    "idea": "Finite invariant reflection/restricted injection surjectivity instead of periodic predecessor orbit",
+    "evidence": "K “Use finiteness to recover an invariant predecessor”"
+  },
+  {
+    "id": "E70",
+    "idea": "Polynomial support envelope first, then coefficient vanishing via natDegree",
+    "evidence": "K “Prove the support envelope before individual coefficients”"
+  },
+  {
+    "id": "E71",
+    "idea": "Rotation as convolution with a point mass, reuse word_convolution",
+    "evidence": "K “Rotation is convolution with a point mass”"
+  },
+  {
+    "id": "E72",
+    "idea": "Scoped fun_prop registrations for extensional Primrec composition, separate from supplied program syntax",
+    "evidence": "K “Automate extensional primitive-recursiveness composition”"
+  },
+  {
+    "id": "E73",
+    "idea": "Fixed raw+digit carry uniqueness via finite maximum principle; fixed-length packing injectivity",
+    "evidence": "K “Canonical normalization from a finite maximum principle”"
+  },
+  {
+    "id": "E74",
+    "idea": "Support-restricted evaluator congruence/frame rules, signed Expr extension of existing WitnessCompaction.eval_congr",
+    "evidence": "J `evidence/prior_ideas.md`, candidate 7, including subsequent maintained-source caveat"
+  },
+  {
+    "id": "E75",
+    "idea": "Normalize schema renaming chains by algebra of index maps",
+    "evidence": "J `evidence/prior_ideas.md`, candidate 8; `evidence/semantic_review.md` section 5"
+  },
+  {
+    "id": "E76",
+    "idea": "Cyclic packing via monoid algebra/quotient-ring homomorphism",
+    "evidence": "J `evidence/prior_ideas.md`, candidate 9; `evidence/algebra_review.md` optional direction"
+  },
+  {
+    "id": "E77",
+    "idea": "General profiling, simp boundaries, small checked certificates, sharding, generator/output synchronization, compatibility wrappers, explicit audit policies/import coverage",
+    "evidence": "All manuscripts; F validation and import census. These are sound practices, not new proposal mechanisms."
+  },
+  {
+    "id": "E78",
+    "idea": "Future finite-state controller invariants only after actual decoder binding; SCC/ranking for cycle exclusion",
+    "evidence": "E report section 13, final paragraph. This does not specifically propose Wang step/tape decomposition, but generic finite-state-invariant language is already present."
+  },
+  {
+    "id": "E79",
+    "idea": "Replace artificial trivial existential lets by `set ... with ...` in NativeHalfBinomial.upper_estimate_scaled",
+    "evidence": "H `evidence/arithmetic/findings.txt`, section 8, “Minor readability improvements in analytic estimates”"
+  },
+  {
+    "id": "E80",
+    "idea": "Standard natural subtraction/remainder identities; let omega handle supported Nat/Int casts; keep huge powers symbolic",
+    "evidence": "H manuscript “Natural subtraction and remainder”, “Let omega handle the cast interface”, “Keep huge powers symbolic”; `evidence/arithmetic/findings.txt` sections 4-6"
+  },
+  {
+    "id": "E81",
+    "idea": "Shared semantic binaryForm/unaryForm constructors and code/rename/bound laws remove repeated valid-tag branches",
+    "evidence": "H `evidence/syntax/findings.txt` section 6; applies to AnnotatedRename.binary_sound and AnnotatedBound.binary_sound"
+  },
+  {
+    "id": "E82",
+    "idea": "Central `zero_pair : Nat.pair 0 n = n*n` and reuse generic syntaxDegree_rename",
+    "evidence": "H `evidence/syntax/findings.txt` section 7"
+  },
+  {
+    "id": "E83",
+    "idea": "Dedicated natural-semiring evaluator with erasure correctness, preserving typed register costs",
+    "evidence": "H `evidence/structural/findings.txt` section 7; manuscript final paragraph before validation"
+  },
+  {
+    "id": "E84",
+    "idea": "Directly specialize binaryWord_prefix at South offsets 19/20, normalizing addresses under lambdas",
+    "evidence": "L `report/report.tex`, page heading 4; M `report/sections/06_south_prefix.tex`"
+  },
+  {
+    "id": "E85",
+    "idea": "Reuse theta of an aligned representative as the exact difference-cell reachability witness",
+    "evidence": "L `report/report.tex`, page heading 5, `CurrentCellCycle2011.reachable_from`"
+  },
+  {
+    "id": "E86",
+    "idea": "Make zero-base cell propagation a specialization of existing propagate_from, with declaration reorder",
+    "evidence": "L page heading 5; M `report/sections/05_finite_and_cycle.tex`, C4"
+  },
+  {
+    "id": "E87",
+    "idea": "Guarded symbolic North/South tile-color fibers, or color-indexed NorthView, to share exact boundary classification",
+    "evidence": "L page headings 6–7; M `report/sections/08_north_view.tex`"
+  },
+  {
+    "id": "E88",
+    "idea": "Characterize alternate marked assignments by their selected bits in the same original word, then transport existing marked-word correctness",
+    "evidence": "L page heading 8, `assignment_eq_iff_selector` and `facts_marked_word_of_selector`"
+  },
+  {
+    "id": "E89",
+    "idea": "Replace raw parent-code reconstruction by existing total table decoding, exact re-encoding and check_lists",
+    "evidence": "M `report/sections/03_parents.tex`; `annotated/REVIEW_NOTES.md`, A"
+  },
+  {
+    "id": "E90",
+    "idea": "Hoist existing binaryWord_congr to the definition layer and reuse it in copy-word and horizontal-word clients",
+    "evidence": "M `report/sections/07_word_congruence.tex`; `current/current_findings.txt`, C3"
+  },
+  {
+    "id": "E91",
+    "idea": "Replace CRT modulus tactic search by explicit congruence transport through add/multiply/add",
+    "evidence": "M `report/sections/09_supplemental.tex`, S1; `supplemental/crt-explicit-congruence.patch`"
+  },
+  {
+    "id": "E92",
+    "idea": "Uniform Pell fundamental-unit criterion for positive ordinate at most three, replacing firstUnit_fundamental entirely",
+    "evidence": "N `report/additional_lean_simplifications.tex`, lines 283–370; `patches/main.patch`"
+  },
+  {
+    "id": "E93",
+    "idea": "Consume quadratic Boolean zero-certificate equivalence before assembling conditional witnesses",
+    "evidence": "N report section “Consume the Boolean certificate before constructing a conditional”"
+  },
+  {
+    "id": "E94",
+    "idea": "Package physical-position injectivity as Fin.cons of zero and a positive injective strict-rank tail",
+    "evidence": "N report section “Optional: recognize the physical permutation as a positive tail”; `optional/permutation-injectivity.patch`"
+  },
+  {
+    "id": "E95",
+    "idea": "Replace internal omega_ind proofs whose induction hypothesis is unused by existing nat_zero_or_succ decomposition",
+    "evidence": "O report Idea 1, ObjectAdditionCancellation.addRel_zero_iff and ObjectNaturalZero.mulRel_zero_iff; further audit question"
+  },
+  {
+    "id": "E96",
+    "idea": "Prove simultaneous Pell-coordinate monotonicity in the base, compare indices directly, and inspect weaker base-separation obligations downstream",
+    "evidence": "O report Idea 4 and further research questions; NativePellBootstrap.main_index_gt_first"
+  },
+  {
+    "id": "E97",
+    "idea": "Keep nonsquare integer norm proof integral via Int.pow_dvd_pow_iff and cancellation of a nonzero square",
+    "evidence": "O report Idea 5, MinimumNorm.norm_ne_zero_of_not_isSquare"
+  },
+  {
+    "id": "E98",
+    "idea": "Share the general separated-norm integer-root theorem below both finalizer clients, retaining signed nonzero weights",
+    "evidence": "N report “Put the general separated theorem below both clients”; overlaps E67's exact-root descent but adds this explicit theorem-placement/generalization obligation"
+  }
+]

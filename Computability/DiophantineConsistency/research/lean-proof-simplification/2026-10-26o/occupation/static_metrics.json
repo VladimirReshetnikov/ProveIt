@@ -1,0 +1,40 @@
+{
+  "upstream_commit": "b310142330df89e48413c8fce62e7de223e1c7d5",
+  "status": "uncompiled static candidate",
+  "validation": "No Lean command or compiler installation attempted",
+  "original_declarations_modified": 0,
+  "original_public_types_changed": 0,
+  "module_lines": 47,
+  "new_declaration_lines": 17,
+  "new_proof_body_lines": 8,
+  "new_proof_body_lines_by_theorem": {
+    "assignment_eq_iff_selector": 6,
+    "facts_marked_word_of_selector": 2
+  },
+  "net_current_proof_body_line_delta": 8,
+  "net_current_declaration_line_delta": 17,
+  "line_reduction_claim": false,
+  "test_lines": 53,
+  "files": [
+    {
+      "path": "candidate/SelectorBindingCoherence.lean",
+      "sha256": "1031c3383bf1eccb79fe9c474a95ff2226d6f82d5e523e8df1fae7fbadecd112"
+    },
+    {
+      "path": "tests/SelectorBindingCoherenceChecks.lean",
+      "sha256": "1d22ae0a6d5b8bd02396618adf13dece91910c2b42c89272d67126cace17c8d3"
+    }
+  ],
+  "new_theorem_headers": [
+    "theorem assignment_eq_iff_selector (c : ZMod (N * 2011) \u2192 \u2115)\n    (ho : \u2200 b : Cell N, Occupied c b) (a : ZMod N \u2192 Fin 942) :\n    a = assignment c ho \u2194\n      \u2200 j, selectorValue c ((coordinate.symm j : Cell N) : ZMod (N * 2011)) (a j) = 1 := by",
+    "theorem facts_marked_word_of_selector (v : Fin 14 \u2192 \u2124) (x : Fin 31 \u2192 \u2115)\n    (c carry digits : ZMod (N * 2011) \u2192 \u2115) (h : Facts v N x c carry digits)\n    (a : ZMod N \u2192 Fin 942)\n    (ha : \u2200 j, selectorValue c ((coordinate.symm j : Cell N) : ZMod (N * 2011)) (a j) = 1) :\n    MarkedWord N (stride v N : \u2124) a := by"
+  ],
+  "patch_syntax_check": {
+    "command": "git apply --check occupation/patches/selector-binding-coherence.patch",
+    "cwd": "lean_simplification_round2/upstream",
+    "result": "passed",
+    "changes_applied": false,
+    "proves_lean_elaboration": false
+  },
+  "novelty": "New specific API extension relative to the inspected corpus; no current line reduction."
+}

@@ -1,0 +1,5 @@
+import DiophantineConsistency.MinimumNorm
+#print axioms DiophantineConsistency.MinimumNorm.minima76_zero_iff
+#print axioms DiophantineConsistency.MinimumNorm.main_norm_ne_neg_one
+#print axioms DiophantineConsistency.MinimumNorm.square_auxiliary_ne_neg_one
+#print axioms DiophantineConsistency.MinimumNorm.gap_minima75_zero_iff

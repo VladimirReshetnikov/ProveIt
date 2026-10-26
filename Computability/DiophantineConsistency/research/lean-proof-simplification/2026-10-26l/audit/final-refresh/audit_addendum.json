@@ -1,0 +1,927 @@
+{
+  "title": "Final incoming freshness audit — separate snapshot addendum",
+  "initial_snapshot_commit": "b310142330df89e48413c8fce62e7de223e1c7d5",
+  "fresh_snapshot_commit": "d163c476db9ca1142d2d73de8fa64c0b2c03a848",
+  "date": "2026-10-26",
+  "result": "All six selected contribution families remain distinct from proposals found in both fresh incoming archives. No change to the selected six is required by this refresh.",
+  "method": [
+    "Downloaded both ZIPs from pinned raw GitHub URLs; authenticated byte lengths and Git blob SHA1 against the parent's independently retrieved GitHub tree metadata.",
+    "Recorded SHA256 and complete member inventory; safely extracted after rejecting traversal and symlink entries. The two archives have 197 total members and no nested archives.",
+    "Read both complete report sources, both package readmes, and all three detailed arithmetic/structural/syntax findings notes. Inspected proposed patch and Lean artifact inventories, performed target/theorem/mechanism searches, and inspected the same-module Pell diff directly.",
+    "Compared proposed changes, not unchanged source statements contained in full-file copies. Did not execute any archive-supplied script or proof during this prior-art audit.",
+    "Kept the initial 81-family exclusion ledger and its 103 locators unchanged. This addendum adds a separately pinned comparison of the two newly arrived packets."
+  ],
+  "archives": [
+    {
+      "name": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "snapshot_commit": "d163c476db9ca1142d2d73de8fa64c0b2c03a848",
+      "url": "https://raw.githubusercontent.com/VladimirReshetnikov/ProveIt/d163c476db9ca1142d2d73de8fa64c0b2c03a848/docs/incoming/diophantine-lean-simplification-2026-10-26%281%29.zip",
+      "git_blob_sha1": "88326b5aa03a7618a5491767e1c3da9a7aa6d6dc",
+      "sha256": "c8d7d56a0344f141dc7d2e44c63b0ee450d552205d4ae9c8d10076cd310e1118",
+      "size_bytes": 309896,
+      "member_count": 73
+    },
+    {
+      "name": "lean-proof-simplification-review-2026-10-26.zip",
+      "snapshot_commit": "d163c476db9ca1142d2d73de8fa64c0b2c03a848",
+      "url": "https://raw.githubusercontent.com/VladimirReshetnikov/ProveIt/d163c476db9ca1142d2d73de8fa64c0b2c03a848/docs/incoming/lean-proof-simplification-review-2026-10-26.zip",
+      "git_blob_sha1": "638389925ff19d69296aefcaa6ae4f6cb0aa5220",
+      "sha256": "9d9eb709f2d454c4439d2e1f822dbe1b1bcda3cb0f3eedcf5338542b1fbe1ecb",
+      "size_bytes": 399503,
+      "member_count": 124
+    }
+  ],
+  "candidate_results": [
+    {
+      "id": "C1",
+      "candidate": "Delete two redundant specialized internal inductions",
+      "targets": [
+        "ObjectAdditionCancellation.addRel_zero_iff",
+        "ObjectNaturalZero.mulRel_zero_iff"
+      ],
+      "finding": "No matching proposal found in either fresh archive",
+      "nearest_neighbors": [
+        {
+          "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+          "member": "diophantine-lean-simplification/report.tex",
+          "line": 463,
+          "anchor": "\\subsection{Wrap internal induction while retaining definability}"
+        },
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+          "line": 150,
+          "anchor": "8. RETAIN THE OBJECT/NAT SEMANTIC BOUNDARY AND IMPORT ORDER"
+        }
+      ],
+      "distinction": "The fresh report proposes a definability-preserving induction wrapper. The selected change uses existing nat_zero_or_succ because the specialized successor cases ignore their induction hypotheses; it deletes zeroSumStage/zeroProductStage and their satisfaction lemmas. It retains the whole internal omega. Neither fresh packet proposes these eliminations."
+    },
+    {
+      "id": "C2",
+      "candidate": "Reuse odd_index_of_base_dvd",
+      "targets": [
+        "NativePellStepDown.index_residues"
+      ],
+      "finding": "No matching proposal found in either fresh archive",
+      "nearest_neighbors": [
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+          "line": 289,
+          "anchor": "\\subsection{Let \\texttt{omega} handle the cast interface it already supports}"
+        },
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+          "line": 118,
+          "anchor": "5. Let omega handle Nat-to-Int casts in a linear residue argument"
+        },
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/patches/pell-residue-casts.patch",
+          "line": 4,
+          "anchor": " theorem eq_of_residues"
+        }
+      ],
+      "distinction": "The fresh review modifies the same module, but only eq_of_residues, removing explicit Nat-to-Int bound casts and merging duplicated omega branches. It does not modify index_residues or suggest reusing SignedPellResidue.odd_index_of_base_dvd."
+    },
+    {
+      "id": "C3",
+      "candidate": "Compose divisibility facts instead of constructing four quotient witnesses",
+      "targets": [
+        "NativePellStepDown.index_residues"
+      ],
+      "finding": "No matching proposal found in either fresh archive",
+      "nearest_neighbors": [
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+          "line": 289,
+          "anchor": "\\subsection{Let \\texttt{omega} handle the cast interface it already supports}"
+        },
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+          "line": 118,
+          "anchor": "5. Let omega handle Nat-to-Int casts in a linear residue argument"
+        },
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/patches/pell-residue-casts.patch",
+          "line": 4,
+          "anchor": " theorem eq_of_residues"
+        },
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+          "line": 605,
+          "anchor": "\\subsection{Share residue transport at the correct modulus}"
+        }
+      ],
+      "distinction": "The selected change composes dvd_sub/dvd_add/dvd_neg in the signed branches of index_residues. The fresh same-module patch changes only eq_of_residues; the other modular proposal is a cyclic-word residue API. Full replacement copies retain the original index_residues proof and are not evidence that its unchanged text was proposed as a simplification."
+    },
+    {
+      "id": "C4",
+      "candidate": "Integral proof of nonsquare norm nonvanishing",
+      "targets": [
+        "MinimumNorm.norm_ne_zero_of_not_isSquare"
+      ],
+      "finding": "No matching proposal found in either fresh archive",
+      "nearest_neighbors": [
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+          "line": 289,
+          "anchor": "\\subsection{Let \\texttt{omega} handle the cast interface it already supports}"
+        }
+      ],
+      "distinction": "The selected proof uses equal-power divisibility and integer cancellation to avoid the rational detour. Neither fresh report nor its detailed notes or proposed patches discusses MinimumNorm, norm_ne_zero_of_not_isSquare, or an equal-power-divisibility proof of this statement. General cast cleanup in a linear Pell residue proof is a different argument."
+    },
+    {
+      "id": "C5",
+      "candidate": "Pell base-parameter monotonicity via simultaneous positive recurrences",
+      "targets": [
+        "NativePellBootstrap.main_index_gt_first"
+      ],
+      "finding": "No matching proposal found in either fresh archive",
+      "nearest_neighbors": [],
+      "distinction": "Neither fresh packet proposes simultaneous monotonicity of Pell xn/yn in the base parameter or replacement of the exponential index-comparison bounds by monotonicity and transitivity."
+    },
+    {
+      "id": "C6",
+      "candidate": "Use inverse invariance of a finite permutation-invariant set",
+      "targets": [
+        "NativeFieldCycles2011.offset19_excludes_510"
+      ],
+      "finding": "No matching proposal found in either fresh archive",
+      "nearest_neighbors": [
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+          "line": 635,
+          "anchor": "\\subsection{Package repeated geometric facts without adding assumptions}"
+        }
+      ],
+      "distinction": "The fresh geometry proposals concern cyclic residue and source-index interfaces. Neither fresh packet proposes perm_symm_on_of_perm_on_finite/perm_symm_mapsTo_of_mapsTo or removes the orbit-period argument at offset19_excludes_510. The selected change retains the finite/permutation assumptions and the valid 511 self-loop."
+    }
+  ],
+  "excluded_candidate_updates": [
+    {
+      "candidate": "Local constructor algebra for annotated bound/renaming",
+      "finding": "Fresh packet contains a related explicit proposal; retain exclusion",
+      "locators": [
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+          "line": 122,
+          "anchor": "6. USE SEMANTIC CONSTRUCTOR LEMMAS TO REMOVE THE REPEATED THREE-WAY BRANCHES"
+        }
+      ],
+      "detail": "Section 6 of evidence/syntax/findings.txt proposes shared code_binaryForm, renamed_binaryForm, and bound_binaryForm lemmas, with soundness/readiness/completeness reuse. This is closer than the earlier scanner/history proposals and independently supports excluding the unimplemented constructor-algebra sketch. No claim of its novelty should survive the final refresh."
+    },
+    {
+      "candidate": "Canonical evaluation witness plus uniqueness for ObjectNaturalSemiring.evalRel_iff",
+      "finding": "Retain conservative exclusion already selected before refresh",
+      "locators": [
+        {
+          "archive": "lean-proof-simplification-review-2026-10-26.zip",
+          "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+          "line": 150,
+          "anchor": "8. RETAIN THE OBJECT/NAT SEMANTIC BOUNDARY AND IMPORT ORDER"
+        }
+      ],
+      "detail": "Fresh syntax notes explicitly discuss evalRel_iff as an existing internal-semiring interface and its import-cycle constraints. The earlier totality/semiring-witness note remains the reason for conservative exclusion; neither selected bundle nor report should count this candidate among new contributions."
+    }
+  ],
+  "same_module_collision": {
+    "module": "NativePellStepDown.lean",
+    "fresh_patch": {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/patches/pell-residue-casts.patch",
+      "line": 4,
+      "anchor": " theorem eq_of_residues"
+    },
+    "fresh_changed_declaration": "eq_of_residues",
+    "selected_changed_declaration": "index_residues",
+    "finding": "Distinct theorem and proof mechanism. A same-file match is not an idea overlap."
+  },
+  "reviewed_primary_text_hashes": [
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "sha256": "08d8d0d680c9a7d7fa9c8a794b9ee9b02409b5e2bb951395522b5c992f3d4a2e"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/README.md",
+      "sha256": "2add7503ba8a294c4e3b40096dcc82ee5d1304fa8a23d08b1a3014b6acdb0e86"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "sha256": "b9a9e14aab2341b098c5e37841c79df7f462b587795820567041b8bc8b3a17c8"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/README.txt",
+      "sha256": "7de46572e66a846d9c0550eb74492f6e6e9b8665de8a75371c78acc58d979756"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "sha256": "fd66c7bd40595d331730696d60b6e1602cd473d9d353706c2fd2b119f4355843"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/structural/findings.txt",
+      "sha256": "72f65d7a1a069adbcf563353d7d2b4e4b7d2b7abbca007cae2276ae2f4683d53"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+      "sha256": "feb30456f9e46228f0ef568105295e6d89f0b1b3e639868bb6715aaeee270094"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/patches/pell-residue-casts.patch",
+      "sha256": "1b059999cb9e9e963243c291791c7303c47aa86df456521e25b92d8139e4dbfe"
+    }
+  ],
+  "report_section_index": [
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 74,
+      "heading": "\\section{What the review establishes}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 85,
+      "heading": "\\subsection{Snapshot and coverage}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 114,
+      "heading": "\\subsection{Recommended order}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 134,
+      "heading": "\\section{Immediate refactorings with precise mathematical content}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 136,
+      "heading": "\\subsection{Assignment transport and witness splitting}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 176,
+      "heading": "\\subsection{Replace half-radix case enumeration by one identity}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 199,
+      "heading": "\\subsection{Use the existing sum-at-most-one API}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 209,
+      "heading": "\\subsection{Derive carry recurrence from normalized local arithmetic}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 229,
+      "heading": "\\subsection{Use a stronger congruence instead of proving a weaker one again}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 240,
+      "heading": "\\subsection{Lift pointwise zero-set equivalence once}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 256,
+      "heading": "\\section{One simulation kernel for the annotated scanners}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 258,
+      "heading": "\\subsection{The repeated structure}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 275,
+      "heading": "\\subsection{The checked abstraction}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 287,
+      "heading": "\\subsection{How to migrate without changing coded programs}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 295,
+      "heading": "\\section{The largest opportunity: compact circuit proof certificates}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 297,
+      "heading": "\\subsection{Measure proof schemas separately from literal circuit data}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 318,
+      "heading": "\\subsection{Reuse the existing power checker systematically}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 332,
+      "heading": "\\subsection{One topological induction principle}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 342,
+      "heading": "\\subsection{Replace thousands of gate-proof lines without unfolding the evaluator}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 352,
+      "heading": "\\subsection{Factor the two translation proofs and admit commutative swaps}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 370,
+      "heading": "\\subsection{Share residual packaging before merging quartic compilers}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 382,
+      "heading": "\\subsection{Use low-degree row certificates as the first reflection experiment}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 390,
+      "heading": "\\subsection{Preserve cancellation-aware degree proofs}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 396,
+      "heading": "\\section{Word arithmetic and geometric interfaces}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 398,
+      "heading": "\\subsection{Extract cyclic-field arithmetic below the geometry modules}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 414,
+      "heading": "\\subsection{One origin-correction lemma for multiple mask generations}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 427,
+      "heading": "\\subsection{Separate arbitrary folding from injective sparse placement}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 435,
+      "heading": "\\subsection{A narrow tactic for coefficient envelopes}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 443,
+      "heading": "\\section{Checker composition and internal arithmetic}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 445,
+      "heading": "\\subsection{Reuse parser and list infrastructure that already exists}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 455,
+      "heading": "\\subsection{Normalize finite-index reasoning in the object layer}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 463,
+      "heading": "\\subsection{Wrap internal induction while retaining definability}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 478,
+      "heading": "\\subsection{Keep the unresolved logical interfaces explicit}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 484,
+      "heading": "\\section{A practical migration plan}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 486,
+      "heading": "\\subsection{First change: foundational proof reuse}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 492,
+      "heading": "\\subsection{Second change: shared induction and interfaces}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 498,
+      "heading": "\\subsection{Third change: generated certificates}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 506,
+      "heading": "\\subsection{What to measure}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 517,
+      "heading": "\\section{Validation and contents of the archive}"
+    },
+    {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member": "diophantine-lean-simplification/report.tex",
+      "line": 525,
+      "heading": "\\subsection{Source map for the principal proposals}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 69,
+      "heading": "\\section{Results and priorities}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 117,
+      "heading": "\\subsection{What the survey covers}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 139,
+      "heading": "\\section{Replace repeated coefficient bounds with one argument}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 142,
+      "heading": "\\subsection{The existing pattern}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 161,
+      "heading": "\\subsection{The replacement}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 192,
+      "heading": "\\subsection{Proof budget and maintenance}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 199,
+      "heading": "\\subsection{A certificate design that could remove repeated arithmetic search}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 220,
+      "heading": "\\section{Use existing lookup, sum, and arithmetic lemmas}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 222,
+      "heading": "\\subsection{Seven list inductions have direct replacements}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 255,
+      "heading": "\\subsection{A finite sum at most one}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 271,
+      "heading": "\\subsection{Natural subtraction and remainder}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 289,
+      "heading": "\\subsection{Let \\texttt{omega} handle the cast interface it already supports}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 301,
+      "heading": "\\subsection{Keep huge powers symbolic}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 310,
+      "heading": "\\section{Shorten decoder proofs without enlarging their axiom dependencies}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 312,
+      "heading": "\\subsection{Repeated successful-decode cases}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 340,
+      "heading": "\\subsection{Why the apparently shorter fusion is not the default patch}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 371,
+      "heading": "\\section{A small assignment-transport API removes repeated extensionality}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 373,
+      "heading": "\\subsection{The invariant already implicit in the constructors}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 412,
+      "heading": "\\subsection{Data preservation is checked, not inferred from equivalence}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 428,
+      "heading": "\\section{Share the finite residual and degree arguments}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 430,
+      "heading": "\\subsection{Three copies of the same evaluator lemma}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 454,
+      "heading": "\\subsection{The needed polynomial-degree theorem already exists}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 467,
+      "heading": "\\subsection{Regroup witnesses with the existing sum-type theorem}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 483,
+      "heading": "\\subsection{Two further consolidations}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 506,
+      "heading": "\\section{Reuse scanner and validated-history proofs}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 508,
+      "heading": "\\subsection{Recursive steps and terminal states}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 524,
+      "heading": "\\subsection{An input row and a stored judgment need not have the same type}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 556,
+      "heading": "\\section{Simplify object-theory endpoints at the semantic boundary}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 558,
+      "heading": "\\subsection{A completeness-and-sealing helper}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 582,
+      "heading": "\\subsection{Reuse the ZFC-model-to-ZF-axioms bridge}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 593,
+      "heading": "\\subsection{A smaller quantified-list example}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 603,
+      "heading": "\\section{Unify modular and finite-word interfaces}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 605,
+      "heading": "\\subsection{Share residue transport at the correct modulus}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 619,
+      "heading": "\\subsection{One boundary between \\texttt{ZMod}, \\texttt{Fin}, and lists}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 635,
+      "heading": "\\subsection{Package repeated geometric facts without adding assumptions}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 648,
+      "heading": "\\section{Treat generated circuit proofs as generated interfaces}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 650,
+      "heading": "\\subsection{What the large files actually contain}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 677,
+      "heading": "\\subsection{Reuse the existing power-certificate theorem}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 698,
+      "heading": "\\subsection{A naming trap worth avoiding}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 707,
+      "heading": "\\section{A reusable invariant for arithmetic DAG evaluation}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 729,
+      "heading": "\\section{Validation and integration plan}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 731,
+      "heading": "\\subsection{What has been checked}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 747,
+      "heading": "\\subsection{Replay the evidence}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 763,
+      "heading": "\\subsection{Suggested order}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 785,
+      "heading": "\\section{Further questions}"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+      "line": 807,
+      "heading": "\\section{Source and artifact guide}"
+    }
+  ],
+  "detailed_findings_section_index": [
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "line": 7,
+      "heading": "1. Largest source reduction, with a cost tradeoff: NativeCoefficientBounds.lean"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "line": 61,
+      "heading": "2. A mathematically transparent scalar reduction: published_large_scale"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "line": 82,
+      "heading": "3. Reuse Finset.sum_le_one_iff for one-hot reasoning"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "line": 98,
+      "heading": "4. Eliminate duplicated cyclic residue bridges"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "line": 118,
+      "heading": "5. Let omega handle Nat-to-Int casts in a linear residue argument"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "line": 145,
+      "heading": "6. Use the exact existing natural arithmetic lemmas"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "line": 156,
+      "heading": "7. Keep representation-conversion plumbing behind small lemmas"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "line": 169,
+      "heading": "8. Minor readability improvements in analytic estimates"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "line": 178,
+      "heading": "9. Maintain the important semantic boundaries"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "line": 193,
+      "heading": "10. Larger follow-up: certify coefficients in a fixed nonnegative basis"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+      "line": 225,
+      "heading": "11. Deliverables and status"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/structural/findings.txt",
+      "line": 7,
+      "heading": "1. Assignment transport belongs in the representation API."
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/structural/findings.txt",
+      "line": 23,
+      "heading": "2. Centralize finite sums of squared residuals."
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/structural/findings.txt",
+      "line": 42,
+      "heading": "3. Use Sum.exists_sum for witness regrouping."
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/structural/findings.txt",
+      "line": 54,
+      "heading": "4. Merge generic cost and renaming support rather than duplicate it."
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/structural/findings.txt",
+      "line": 68,
+      "heading": "5. Share syntax degree and evaluator induction that already exist."
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/structural/findings.txt",
+      "line": 84,
+      "heading": "6. Treat generated proof volume separately."
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/structural/findings.txt",
+      "line": 105,
+      "heading": "7. Natural-register representation change is optional, not first priority."
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+      "line": 5,
+      "heading": "1. REUSE THE CORE LIST LOOKUP API (concrete patch, isolated kernel check complete)"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+      "line": 24,
+      "heading": "2. ELIMINATE OPTION CASE TREES WHILE KEEPING THE TWO INVARIANTS SEPARATE"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+      "line": 56,
+      "heading": "3. MAKE SCANNER ITERATION FACTS PROOF-ONLY SHARED LEMMAS (checked generic prototype)"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+      "line": 79,
+      "heading": "4. SHARE THE VALIDATED-HISTORY PROOF FRAMEWORK (checked generic prototype; migration proposal)"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+      "line": 100,
+      "heading": "5. CENTRALIZE THE ARBITRARY-MODEL COMPLETENESS INTRODUCTION (specific architectural proposal)"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+      "line": 122,
+      "heading": "6. USE SEMANTIC CONSTRUCTOR LEMMAS TO REMOVE THE REPEATED THREE-WAY BRANCHES"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+      "line": 135,
+      "heading": "7. CONSOLIDATE SMALL PRIVATE ALGEBRA LEMMAS, BUT USE EXISTING GOOD ABSTRACTIONS"
+    },
+    {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+      "line": 150,
+      "heading": "8. RETAIN THE OBJECT/NAT SEMANTIC BOUNDARY AND IMPORT ORDER"
+    }
+  ],
+  "limits": "This is a scoped prior-proposal comparison, not a claim of mathematical originality or Lean compilation. The repository can receive later updates; all conclusions are pinned to the two stated snapshots."
+}

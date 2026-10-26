@@ -1,0 +1,74 @@
+Final algebra review
+Date: 2026-10-26
+Reviewer role: algebra_opportunities
+Repository baseline: 8e8b5dcb954969621c484588f0b902be1cfea7b3
+
+Scope
+Read report.tex sections 3 (signed congruences), 6 (representation depth),
+and 7 (cyclic carries). Compared the signed section to NativePellStepDown.lean
+and the checked SignOrbit prototype; compared both depth plans to the actual
+factorial_depth/product_depth_le proofs in BoundedForallDepth.lean and to
+lean/DepthBudget.lean; rechecked all displayed carry formulas and boundary
+claims against NativeCyclicCarry.lean/NativeCyclicCarryWord.lean and the
+previously reviewed complete ordinary proof. No new experiments were run.
+
+Result
+PASS: no mathematical or source-attribution defect found in these sections.
+One editorial precision recommendation was sent to the root agent: in the
+Cyclic carry classification theorem, quantify the index in "M does not
+divide A_i" as "for some (equivalently every) index i". The following proof
+already establishes this equivalence, so this does not change the theorem.
+
+Signed congruences
+- The cited source contains exactly the repeated sign transport described.
+- Closure of an equivalence relation under a compatible involution is
+  correctly proved and instantiated by integer remainders in the prototype.
+- The report accurately distinguishes the concrete standalone check from
+  integration into the project's Int.ModEq/divisibility APIs.
+- The modulo-8 counterexample correctly rules out inferring signed
+  congruence merely from equality of squares.
+- The positive half-modulus argument is valid and preserves the substantive
+  Pell step-down requirement.
+- The stated axiom dependencies agree with the final successful log.
+
+Representation depth
+- The summary invariant base >= required implies depth <= base + extra
+  is mathematically sound for the displayed unary/binary rules.
+- Natural-number charges ensure that the baseline floor is absorbed.
+- The factorial plan follows the actual constructor tree and charges:
+  add 6, arithmetic composite 8, required baseline 512, excess 50.
+- The product plan follows the actual constructor tree and charges:
+  add/mul 6, arithmetic composite 8, factorial wrapper 6 with baseline
+  16384; resulting excess 66.
+- The source already proves the intermediate bound 562 before weakening it
+  to 16384. The report explicitly acknowledges this and claims no new
+  numerical improvement.
+- The missing production adapters and automatic traversal are explicitly
+  identified. The report does not misrepresent a handwritten certificate
+  language as a completed proof-shortening implementation.
+
+Cyclic carries
+- For n > 0 and rho > 1, M = rho^n - 1 is positive.
+- The rotated-sum identity rho*A_i = M*a_i + A_(i-1) is correct.
+- The greatest formula uses ordinary remainders in [0,M-1].
+- The least formula uses positive remainders in [1,M], with a separate
+  all-zero case; natural truncated subtraction is explicitly specified.
+- Both remainder intervals imply the required digit interval [0,rho-1].
+- The telescoping identity A_i = M*k_i + D_i and 0 <= D_i <= M is correct.
+- In the positive divisible case, local alternatives synchronize globally;
+  exactly two carry assignments remain, giving all-maximal and all-zero
+  normalized digits respectively. There is no unjustified 2^n ambiguity.
+- The all-zero case and n=1, rho=2, M=1 boundary are handled correctly.
+- The current budget gives raw_i <= (D+1)*(rho-1), hence
+  A_i <= (D+1)*M and leastCarry_i <= D. GreatestCarry_i can equal D+1;
+  the displayed constant-raw example is exact and satisfies the strict
+  budget.
+- A strict transport representative 0 < F < M excludes the ambiguous
+  zero residue. The existing normalized-word equality is not claimed new.
+- The report correctly preserves the arbitrary-predecessor, positive-radix
+  generality of the existing fixed-point theorem.
+- The 57540/2323/57308 experimental counts match the supplied JSON. The
+  report labels them finite evidence and does not claim Lean formalization
+  of the closed-form carry theorem or a measured production line saving.
+
+No edits were made to report.tex during this review.

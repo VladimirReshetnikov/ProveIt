@@ -1,0 +1,39 @@
+{
+  "not_a_lean_proof": true,
+  "pin": "b310142330df89e48413c8fce62e7de223e1c7d5",
+  "binary_prefix": {
+    "tests": {
+      "offset_19": 1024,
+      "offset_20": 2048
+    },
+    "coverage": "Every 9-bit South word and every Boolean 1- or 2-bit prepended prefix; dropped high South bits independently varied.",
+    "one_hot_error_boundary": "00,10,01 satisfy weighted error<=2; 11 gives 3 and must be excluded."
+  },
+  "cyclic_witness": {
+    "tests": 11440,
+    "coverage": "All pairs of aligned cells for every N in 1..32, including the singleton cycle; validates the exact theta difference witness, not only existence."
+  },
+  "static_source_checks": [
+    {
+      "file": "CurrentCellCycle2011.lean",
+      "signatures_unchanged": true,
+      "before_lines": 171,
+      "after_lines": 159,
+      "before_nonblank_lines": 138,
+      "after_nonblank_lines": 126,
+      "sha256_before": "874a68dc11255170f19dc1a5345e195f36379711f8af630b16dd6eb9fe77081d",
+      "sha256_after": "4666b4a880bf26a2f4fd796be74bf29e8b8ff10db4226d0f614c00195dc7d21d"
+    },
+    {
+      "file": "CurrentSouthShift2011.lean",
+      "signatures_unchanged": true,
+      "before_lines": 162,
+      "after_lines": 142,
+      "before_nonblank_lines": 144,
+      "after_nonblank_lines": 124,
+      "sha256_before": "256403c28ff13e2fb8585597a1931c1be8703f6726daaf3c5509cfbff5f8cf8d",
+      "sha256_after": "59c027aa0aee0695e4ad74cb857ccaa65b1c1e994ceb3b9358638d90255656d0"
+    }
+  ],
+  "lean_compilation": "NOT RUN: Lean compiler was not run."
+}

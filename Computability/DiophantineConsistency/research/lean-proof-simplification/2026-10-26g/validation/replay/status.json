@@ -1,0 +1,435 @@
+{
+  "commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "mathlib_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "scope": "Selected experiments and patched module; no whole-repository rebuild",
+  "checks": [
+    {
+      "label": "source-unchanged",
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+        "--",
+        "Computability/DiophantineConsistency/Lean",
+        "Computability/HilbertTenthProblem/Lean",
+        "Computability/BusyBeaver/Lean",
+        "SetTheory/ZF/Lean",
+        "Logic/FirstOrder/Lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/source-unchanged.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "compiler-version",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "--version"
+      ],
+      "exit_code": 0,
+      "log": "logs/compiler-version.log",
+      "log_sha256": "98e0981047bbf5c7289f7eb988532a4e923f301d2014b5633936cba0b1ffbc0a"
+    },
+    {
+      "label": "repository-dependencies",
+      "command": [
+        "lake",
+        "build",
+        "DiophantineConsistency.ArithmeticDAGDegree",
+        "DiophantineConsistency.ArithmeticDAGPowers",
+        "DiophantineConsistency.NativeCyclicRotation",
+        "DiophantineConsistency.CurrentCarrierArithmetic2011",
+        "DiophantineConsistency.CurrentClause2011",
+        "DiophantineConsistency.NativeRadixDigits"
+      ],
+      "exit_code": 0,
+      "log": "logs/repository-dependencies.log",
+      "log_sha256": "e1e1c89e7e849505eeade4a8abd3976c7529d1413be24cc1e85e6bd83eae38d2"
+    },
+    {
+      "label": "original-Representation",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "--root=/workspace/scratch/77ef15dff129/replay-final-2/original-source",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/original-lib/DiophantineConsistency/Representation.olean",
+        "/workspace/scratch/77ef15dff129/replay-final-2/original-source/DiophantineConsistency/Representation.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/original-Representation.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/workspace/scratch/77ef15dff129/replay-final-2/original-source/DiophantineConsistency/Representation.lean",
+      "source_sha256": "69427aad8d135be6c680643ab073b11cd9f74683f1ba1fa5a116fb346fcac136",
+      "axiom_audits": {}
+    },
+    {
+      "label": "GenericScanner",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/GenericScanner.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/GenericScanner.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/GenericScanner.log",
+      "log_sha256": "f70c006da01bd355003265b67a70912c4c3f286eb9adb1147c3e4688ec7333cd",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/GenericScanner.lean",
+      "source_sha256": "5e9f340201c38d587e1b88ed1d8ce1dd94a1a6bc018ceca73f3ac9c0736ee7e3",
+      "axiom_audits": {
+        "RefactorPrototype.Scanner.run_simulation": [
+          "propext"
+        ],
+        "RefactorPrototype.Scanner.run_invariant": [],
+        "RefactorPrototype.Scanner.iterate_invariant": []
+      }
+    },
+    {
+      "label": "HalfRadixCore",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/HalfRadixCore.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/HalfRadixCore.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/HalfRadixCore.log",
+      "log_sha256": "042f6b73546d74c6bb180e939174011d970ba657a47fea163a3d477343ca7b44",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/HalfRadixCore.lean",
+      "source_sha256": "a0178ed2e44fce09b3ff54c010977d46cdf11393ec2c488b06a57caa21db7c04",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorHalfRadix.half_digit_eq": [
+          "propext"
+        ],
+        "DiophantineConsistency.RefactorHalfRadix.half_digit_le": [
+          "propext",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorHalfRadix.half_digit_parity": [
+          "propext",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "label": "OneHotCore",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/OneHotCore.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/OneHotCore.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/OneHotCore.log",
+      "log_sha256": "42ac1e02789c188edec4567d9e37c5550bdb9e0d4adc9e5e5e115186f1ad378c",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/OneHotCore.lean",
+      "source_sha256": "b2068dc9e02d3be9f81f90a839a0d1fe42fa2786544e13668b06f14355f17504",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorOneHot.sum_le_one_cases": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "label": "CarryCore",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/CarryCore.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/CarryCore.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/CarryCore.log",
+      "log_sha256": "c4c408e8d38e5955386320e9fdb7e230fef6ace89ffec2ccb55b46bf4c47aa4c",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/CarryCore.lean",
+      "source_sha256": "2078f7be3bcbdfa6108069d40fe1449fa9fce685f5aad9ef1edcfe7b0f5ea78d",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorCarry.quotient_of_local": [
+          "propext"
+        ],
+        "DiophantineConsistency.RefactorCarry.remainder_of_local": [
+          "propext"
+        ]
+      }
+    },
+    {
+      "label": "CyclicFieldRefactor",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/CyclicFieldRefactor.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/CyclicFieldRefactor.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/CyclicFieldRefactor.log",
+      "log_sha256": "5afc6e2bed3a84a44fc1d39bcc972463845cefca7c1e06eaf4dc7336a1b75ec4",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/CyclicFieldRefactor.lean",
+      "source_sha256": "d7c945aa00e499a8e003d20c611f2dbc8e276a839ba5a4ec40ca5c4695ce5ae2",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorCyclicField.source_residue": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorCyclicField.zero_outside_support": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "label": "AssignmentTransport",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/AssignmentTransport.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/AssignmentTransport.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/AssignmentTransport.log",
+      "log_sha256": "8f216489908e46dac9a1ed8c6454e3371d15b4fd6ac4aa718a3752580662e8d2",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/AssignmentTransport.lean",
+      "source_sha256": "f6571e2b2986b8175cc0560f4cefae24e43663e03e95a97b8f66173dfcfe6b8e",
+      "axiom_audits": {
+        "RefactorPrototype.reindexShort": [
+          "propext",
+          "Quot.sound"
+        ],
+        "RefactorPrototype.conjunctionShort": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "RefactorPrototype.disjunctionShort": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "RefactorPrototype.conjunctionShort_eq": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "RefactorPrototype.disjunctionShort_eq": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "label": "DAGRefactoring",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/DAGRefactoring.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/DAGRefactoring.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/DAGRefactoring.log",
+      "log_sha256": "029087cf33264c8fb621239422ffd5067eca46d8ddbb790e8d860316aa3ce9ec",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/DAGRefactoring.lean",
+      "source_sha256": "056ea3cc5bbe3db2c4f5e30daa37dcf824422a0e0e92d92b3fe72fe6248abab0",
+      "axiom_audits": {
+        "DiophantineConsistency.Refactoring.run_invariant": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.Refactoring.run_eq_of_node_equations_short": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.Refactoring.value_degree_le_short": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.Refactoring.evalAt_input_irrelevant": [
+          "propext"
+        ],
+        "DiophantineConsistency.Refactoring.evalAt_of_NodeRelComm": [
+          "propext"
+        ],
+        "DiophantineConsistency.Refactoring.register_power_of_certificate": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "label": "HalfRadixRefactor",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/HalfRadixRefactor.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/HalfRadixRefactor.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/HalfRadixRefactor.log",
+      "log_sha256": "915d68242fbe71cc0cee5e041dcabb1cc5b7804c383e70279d4ad1ceaa50bbb7",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/HalfRadixRefactor.lean",
+      "source_sha256": "16e860bd2b5ca447e23cee6c3a253740e4c310ceebd68cb5c0d3411a0aa811d4",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorHalfRadix.shiftDigits_half_bound": [
+          "propext",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorHalfRadix.shiftDigits_half_parity_89": [
+          "propext",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "label": "PositiveZeroRefactor",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/PositiveZeroRefactor.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/PositiveZeroRefactor.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/PositiveZeroRefactor.log",
+      "log_sha256": "62907571a34640737a1076ae26f5c3b31f6c9faa1ca2540ffad201eaff9f24ea",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/PositiveZeroRefactor.lean",
+      "source_sha256": "06e9afec9d4c3594a8960ae4242d0646f8ae8084face3408f83aeece8e8b7efc",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorPositiveZero.positiveZero_congr": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorPositiveZero.positive_zero_69_iff_70": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorPositiveZero.positive_zero_70_iff_71": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "label": "ReflectedResidueRefactor",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/ReflectedResidueRefactor.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/ReflectedResidueRefactor.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/ReflectedResidueRefactor.log",
+      "log_sha256": "0c642a37f4e79467807275e4508a826a4c80b149866a3c6a13a6454a127f4d52",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/ReflectedResidueRefactor.lean",
+      "source_sha256": "dc5be1c47f1f475e32bb41144aa532932e2faf528200739e103c5411c14855f0",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorReflectedResidue.reflected_mod_sixteen": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "label": "WordOriginRefactor",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/WordOriginRefactor.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/WordOriginRefactor.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/WordOriginRefactor.log",
+      "log_sha256": "ff3784ef8ca52602802092f159ba17839997fe61946967c4d0981da5ea845fc1",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/WordOriginRefactor.lean",
+      "source_sha256": "ee26faa02079a46f67fb843fc02d322258e6bc49b9dfd9511a505c71d7a78fea",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorWordOrigin.word_sub_origin": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "label": "CyclicFieldProjectAdapter",
+      "command": [
+        "/workspace/scratch/77ef15dff129/toolchain/lean-4.32.0-linux/bin/lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/prototype-lib/CyclicFieldProjectAdapter.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/CyclicFieldProjectAdapter.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/CyclicFieldProjectAdapter.log",
+      "log_sha256": "05ae6bcafe98ea63b962a0d030d686f80d4b435bfbda11b1cc4d6cc8bd08cfee",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/lean/CyclicFieldProjectAdapter.lean",
+      "source_sha256": "efb9f72ec858a305a66a387a0e8acbce481f9e1d9afc81f6cadca8a97d03019b",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorCyclicField.clause_bare_inputs_zero": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorCyclicField.marker_bare_inputs_zero": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      }
+    },
+    {
+      "label": "patch-applicability",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/patches/Representation-refactor.patch"
+      ],
+      "exit_code": 0,
+      "log": "logs/patch-applicability.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "patched-Representation",
+      "command": [
+        "lake",
+        "env",
+        "lean",
+        "--root=/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/refactored-source",
+        "-o",
+        "/workspace/scratch/77ef15dff129/replay-final-2/RepresentationRefactored.olean",
+        "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/refactored-source/DiophantineConsistency/Representation.lean"
+      ],
+      "exit_code": 0,
+      "log": "logs/patched-Representation.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/workspace/scratch/77ef15dff129/output/diophantine-lean-simplification/refactored-source/DiophantineConsistency/Representation.lean",
+      "source_sha256": "a1935bb518fab666d8ac82270da7c0dc91dccd1cc63c83958fe783c9e7c01929",
+      "axiom_audits": {}
+    }
+  ]
+}

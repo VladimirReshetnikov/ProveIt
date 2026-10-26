@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-26",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "lean_toolchain": "leanprover/lean4:v4.32.0",
+  "compiler_observation": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "mathlib_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "experiment_module_count": 12,
+  "full_replay_check_count": 18,
+  "full_replay_passed": true,
+  "whole_repository_rebuilt": false,
+  "upstream_source_modified": false,
+  "printed_declaration_audit_count": 31,
+  "permitted_observed_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "modules": [
+    {
+      "file": "lean/GenericScanner.lean",
+      "classification": "generic_prototype",
+      "description": "List/numeric scanner simulation and invariant kernels; four project adapters remain proposed.",
+      "compiled": true,
+      "source_sha256": "5e9f340201c38d587e1b88ed1d8ce1dd94a1a6bc018ceca73f3ac9c0736ee7e3",
+      "axiom_audits": {
+        "RefactorPrototype.Scanner.run_simulation": [
+          "propext"
+        ],
+        "RefactorPrototype.Scanner.run_invariant": [],
+        "RefactorPrototype.Scanner.iterate_invariant": []
+      },
+      "receipt_label": "GenericScanner"
+    },
+    {
+      "file": "lean/HalfRadixCore.lean",
+      "classification": "generic_prototype",
+      "description": "Scalar half-radix identity and bound/parity consequences.",
+      "compiled": true,
+      "source_sha256": "a0178ed2e44fce09b3ff54c010977d46cdf11393ec2c488b06a57caa21db7c04",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorHalfRadix.half_digit_eq": [
+          "propext"
+        ],
+        "DiophantineConsistency.RefactorHalfRadix.half_digit_le": [
+          "propext",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorHalfRadix.half_digit_parity": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      "receipt_label": "HalfRadixCore"
+    },
+    {
+      "file": "lean/OneHotCore.lean",
+      "classification": "isolated_same_statement",
+      "description": "Same generic one-hot statement with the original Selected predicate reproduced in a fresh namespace.",
+      "compiled": true,
+      "source_sha256": "b2068dc9e02d3be9f81f90a839a0d1fe42fa2786544e13668b06f14355f17504",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorOneHot.sum_le_one_cases": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "receipt_label": "OneHotCore"
+    },
+    {
+      "file": "lean/CarryCore.lean",
+      "classification": "generic_prototype",
+      "description": "Normalized carry equation implies quotient and remainder views; record migration remains proposed.",
+      "compiled": true,
+      "source_sha256": "2078f7be3bcbdfa6108069d40fe1449fa9fce685f5aad9ef1edcfe7b0f5ea78d",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorCarry.quotient_of_local": [
+          "propext"
+        ],
+        "DiophantineConsistency.RefactorCarry.remainder_of_local": [
+          "propext"
+        ]
+      },
+      "receipt_label": "CarryCore"
+    },
+    {
+      "file": "lean/CyclicFieldRefactor.lean",
+      "classification": "generic_prototype",
+      "description": "Cyclic addition/subtraction residues and support exclusion in the full ambient modulus.",
+      "compiled": true,
+      "source_sha256": "d7c945aa00e499a8e003d20c611f2dbc8e276a839ba5a4ec40ca5c4695ce5ae2",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorCyclicField.source_residue": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorCyclicField.zero_outside_support": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "receipt_label": "CyclicFieldRefactor"
+    },
+    {
+      "file": "lean/AssignmentTransport.lean",
+      "classification": "project_compatibility",
+      "description": "Assignment and witness-block transport; old/new full representation constructors equal by rfl against the isolated pinned original.",
+      "compiled": true,
+      "source_sha256": "f6571e2b2986b8175cc0560f4cefae24e43663e03e95a97b8f66173dfcfe6b8e",
+      "axiom_audits": {
+        "RefactorPrototype.reindexShort": [
+          "propext",
+          "Quot.sound"
+        ],
+        "RefactorPrototype.conjunctionShort": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "RefactorPrototype.disjunctionShort": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "RefactorPrototype.conjunctionShort_eq": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "RefactorPrototype.disjunctionShort_eq": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "receipt_label": "AssignmentTransport"
+    },
+    {
+      "file": "lean/DAGRefactoring.lean",
+      "classification": "generic_project_extension",
+      "description": "Generic topological invariant, equality/degree consumers, commutative node relation, input irrelevance and indexed power adapter.",
+      "compiled": true,
+      "source_sha256": "056ea3cc5bbe3db2c4f5e30daa37dcf824422a0e0e92d92b3fe72fe6248abab0",
+      "axiom_audits": {
+        "DiophantineConsistency.Refactoring.run_invariant": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.Refactoring.run_eq_of_node_equations_short": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.Refactoring.value_degree_le_short": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.Refactoring.evalAt_input_irrelevant": [
+          "propext"
+        ],
+        "DiophantineConsistency.Refactoring.evalAt_of_NodeRelComm": [
+          "propext"
+        ],
+        "DiophantineConsistency.Refactoring.register_power_of_certificate": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "receipt_label": "DAGRefactoring"
+    },
+    {
+      "file": "lean/HalfRadixRefactor.lean",
+      "classification": "project_adapter",
+      "description": "Both original cyclic-rotation theorem statements proved using the generic helper.",
+      "compiled": true,
+      "source_sha256": "16e860bd2b5ca447e23cee6c3a253740e4c310ceebd68cb5c0d3411a0aa811d4",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorHalfRadix.shiftDigits_half_bound": [
+          "propext",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorHalfRadix.shiftDigits_half_parity_89": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      "receipt_label": "HalfRadixRefactor"
+    },
+    {
+      "file": "lean/PositiveZeroRefactor.lean",
+      "classification": "project_adapter",
+      "description": "PositiveZero congruence and both 69/70 and 70/71 equivalences for the actual project polynomials.",
+      "compiled": true,
+      "source_sha256": "06e9afec9d4c3594a8960ae4242d0646f8ae8084face3408f83aeece8e8b7efc",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorPositiveZero.positiveZero_congr": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorPositiveZero.positive_zero_69_iff_70": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorPositiveZero.positive_zero_70_iff_71": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "receipt_label": "PositiveZeroRefactor"
+    },
+    {
+      "file": "lean/ReflectedResidueRefactor.lean",
+      "classification": "project_adapter",
+      "description": "Actual modulus-16 result derived from the original modulus-2048 result.",
+      "compiled": true,
+      "source_sha256": "dc5be1c47f1f475e32bb41144aa532932e2faf528200739e103c5411c14855f0",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorReflectedResidue.reflected_mod_sixteen": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "receipt_label": "ReflectedResidueRefactor"
+    },
+    {
+      "file": "lean/WordOriginRefactor.lean",
+      "classification": "generic_project_extension",
+      "description": "Subtraction at the origin for the actual packed-word definitions with q <= a 0.",
+      "compiled": true,
+      "source_sha256": "ee26faa02079a46f67fb843fc02d322258e6bc49b9dfd9511a505c71d7a78fea",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorWordOrigin.word_sub_origin": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "receipt_label": "WordOriginRefactor"
+    },
+    {
+      "file": "lean/CyclicFieldProjectAdapter.lean",
+      "classification": "project_adapter",
+      "description": "Four original lowSupport exclusions checked against CurrentClause2011 definitions, grouped into two theorems.",
+      "compiled": true,
+      "source_sha256": "efb9f72ec858a305a66a387a0e8acbce481f9e1d9afc81f6cadca8a97d03019b",
+      "axiom_audits": {
+        "DiophantineConsistency.RefactorCyclicField.clause_bare_inputs_zero": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "DiophantineConsistency.RefactorCyclicField.marker_bare_inputs_zero": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "receipt_label": "CyclicFieldProjectAdapter"
+    }
+  ],
+  "representation_patch": {
+    "file": "patches/Representation-refactor.patch",
+    "applies_cleanly": true,
+    "complete_patched_module_compiled": true,
+    "full_structure_compatibility_checked": true,
+    "original_physical_lines": 260,
+    "patched_physical_lines": 244,
+    "net_physical_lines_removed": 16,
+    "patched_source_sha256": "a1935bb518fab666d8ac82270da7c0dc91dccd1cc63c83958fe783c9e7c01929"
+  },
+  "replay_receipts": "validation/replay/status.json",
+  "proposed_integrations_not_completed": [
+    "All four annotated-scanner migrations",
+    "Both complete circuit translation migrations",
+    "Replacing generated gate/power proof families",
+    "Sparse low-degree row certificate generator",
+    "Shared quartic residual-system packaging",
+    "Internal-model induction/validity wrappers"
+  ],
+  "measurement_limits": [
+    "No global elaboration speed or peak-memory improvement measured.",
+    "Source metrics are lexical and do not measure proof-term size.",
+    "Printed axiom audits cover the recorded declarations, not every upstream theorem."
+  ]
+}

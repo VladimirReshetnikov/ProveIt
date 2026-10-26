@@ -1,0 +1,120 @@
+\section{Identify the list codec before proving more list lemmas}
+\label{sec:encoding}
+
+\subsection{The remaining duplication}
+
+The wire-format module \code{AnnotatedCodeArithmetic} defines
+\code{listCode} on lists of natural numbers by
+\[
+  C([])=0,\qquad C(x::xs)=\operatorname{Nat.pair}(x,C(xs))+1.
+\]
+At the pinned Mathlib version, this is the same function as the installed
+\code{Encodable} instance for \code{List Nat}. The equations arise in
+different definitions, so the useful interface is a proved pointwise
+identity, not a change of the repository's definition \cite{codearith,mathlist}.
+
+The distinction is valuable because the existing code is not merely a
+mathematical encoder. Supplied arithmetic programs, program-size statements,
+and downstream reductions refer to its literal implementation. Replacing the
+definition by a library alias would create an unnecessary definitional
+compatibility obligation. Adding one theorem leaves those data untouched.
+
+The actual bridge is short:
+\begin{lean}
+theorem listCode_eq_encode (xs : List Nat) :
+    listCode xs = Encodable.encode xs := by
+  induction xs with
+  | nil => rfl
+  | cons x xs ih => exact congrArg (fun n => Nat.pair x n + 1) ih
+\end{lean}
+
+The integration file keeps this as an explicitly invoked bridge. It does not
+globally redirect every simplifier traversal of executable code into the
+encoding typeclass.
+
+\subsection{First consequence: reuse the standard length theorem}
+
+\code{AnnotatedRename.length_le_tableCode}, in the module
+\code{AnnotatedRenameCode}, currently proves its length
+bound by a separate induction using a pairing inequality. A table is a list
+of row codes, so the bridge reduces the entire argument to the library's
+\code{Encodable.length_le_encode}:
+\begin{lean}
+  simpa only [tableCode, listCode_eq_encode, List.length_map] using
+    (Encodable.length_le_encode (rows.map rowCode))
+\end{lean}
+
+This is stronger maintenance simplification than merely shortening the
+induction. There is now one source for the general claim that a list's
+length is bounded by this exact code. The row encoder requires no
+injectivity hypothesis for this application: the theorem concerns the
+length of the mapped list, and \code{List.length_map} supplies that equality
+\cite{renamecode,mathlist}.
+
+\subsection{Second consequence: derive typed parent checking from raw checking}
+
+\code{AnnotatedParents} has both a typed-list theorem,
+\code{check_lists}, and a raw-code theorem, \code{check_raw_iff}. The former
+originally performs another induction over the expected list, with nested
+fuel and parent-list cases. The latter already reconstructs the complete
+parent spine from an arbitrary natural code. Its proof does not need
+\code{check_lists} \cite{parents}.
+
+Move \code{check_lists} below \code{check_raw_iff}, preserving its public
+statement, and specialize the stronger theorem to \code{listCode parents}.
+The only remaining issue is uniqueness of the decoded spine. The library
+encoding is injective, and the bridge provides precisely that fact for
+\code{listCode}:
+\begin{lean}
+  rw [check_raw_iff fuel history expected (listCode parents) hf]
+  simp [listCode_eq_encode, Encodable.encode_injective.eq_iff]
+\end{lean}
+
+Schematically, the raw theorem has the form
+\[
+\mathrm{check}(c)=1
+\quad\Longleftrightarrow\quad
+\exists ps,\ c=C(ps)\;\land\;\mathrm{ParentsAgree}(ps).
+\]
+Setting \(c=C(parents)\) and applying injectivity removes the existential.
+The premise \code{expected.length ≤ fuel} is retained exactly. No stronger
+fuel assumption, parser termination argument, or exclusion of malformed
+codes has been inserted.
+
+\subsection{Why this survives the prior proposals}
+
+Earlier reports propose lookup-library reuse, generic decoder graphs, and
+using a decoder left inverse for code injectivity. Those are already
+assumed available. The additional fact here is an exact identification with
+an existing \emph{library instance}, which simultaneously supplies a length
+bound and injectivity. The second change makes the typed result a corollary
+of the independently proved raw result.
+It does not introduce another scanner or decoder-correctness framework.
+
+\subsection{Measured effect and integration order}
+
+With all three modules included, the aggregate physical source length decreases
+from 461 to 453 lines, counting the new import, explanatory comment, and
+bridge theorem. The selected proof bodies go from 19 to 7 lines when the
+bridge proof is included. All three modified modules were compiled with
+their production imports.
+
+There is one foundation-level tradeoff. The original table-length theorem
+depends on \code{propext} and \code{Quot.sound}; the library replacement also
+depends on \code{Classical.choice}, through the proof-bearing list encoding
+instance and its library lemmas. This is a standard Lean axiom, not a new
+assumption added to the project, but it is an observable change to
+\code{#print axioms}. The parent-checker theorem already has all three
+standard dependencies and does not increase its footprint. The table-length
+change is therefore supplied as a separate optional patch. Omitting it
+retains the original footprint and gives a four-line aggregate reduction
+for the codec bridge plus parent specialization alone.
+
+Apply \code{01-list-encoding-core.patch}, which includes the codec bridge
+and parent theorem reordering. Apply \code{02-optional-table-length.patch}
+only if the extra axiom dependency is acceptable. Existing public signatures
+are unchanged.
+The remaining maintenance obligation is explicit: if the repository's
+encoding or Mathlib's chosen list encoding changes, the small bridge is
+where that incompatibility will surface. It should not be hidden by an
+overly broad simplification rule.

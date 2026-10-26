@@ -1,0 +1,666 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=0.78]
+\usepackage{amsmath,amssymb,booktabs,longtable,tabularx,array,xcolor}
+\usepackage{fvextra}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=teal!60!black,urlcolor=teal!60!black]{hyperref}
+\usepackage{bookmark}
+\usepackage{needspace}
+\usepackage{xurl}
+\urlstyle{tt}
+\definecolor{ink}{HTML}{193B45}
+\definecolor{light}{HTML}{EFF5F5}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily Further Lean proof simplifications}
+\fancyhead[R]{\small\sffamily ProveIt / 26 October 2026}
+\fancyfoot[C]{\small\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\emergencystretch}{6em}
+\setlist{nosep,leftmargin=1.5em}
+\fvset{fontsize=\small,breaklines=true,breakanywhere=true,samepage=true,frame=single,
+  rulecolor=\color{black!18},framesep=6pt}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\base}{6175dff9a15491497c7a3c1bda4f6a62a6349c74}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6175dff9a15491497c7a3c1bda4f6a62a6349c74/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean\#L#2}{\code{#1.lean}:#2}}
+\newcommand{\art}[1]{\nolinkurl{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\hypersetup{pdftitle={Further Lean Proof Simplifications for DiophantineConsistency},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Six additional proposals, novelty audit, exact patches, and validation evidence}}
+
+\begin{document}
+\begin{center}
+{\Large\sffamily\bfseries\color{ink} Further Lean Proof Simplifications}\\[5pt]
+{\large\sffamily for ProveIt's DiophantineConsistency development}\\[8pt]
+Six additional proposals after a prior-proposal audit\\
+Prepared for Vladimir Reshetnikov \quad 26 October 2026
+\end{center}
+
+\textbf{Main result.} This packet identifies six concrete simplification opportunities
+that were not found in the two earlier DiophantineConsistency simplification
+packets indexed by \code{docs/incoming}, including their supplementary notes.
+It supplies reviewable patches, independently checkable Lean files, measured
+source changes, and compiler evidence. The largest immediate benefit is a
+clearer statement of the mathematical reason for each proof: support
+classification, an already established Pell parity theorem, an inverse
+equivalence, uniqueness of Euclidean division, a common arithmetic budget,
+or transitivity of congruence up to sign.
+
+Five compatible proposals form a conservative patch set with a net reduction
+of \textbf{57 physical production lines}, including all new helper modules
+and imports. Two of those changes alone save 37 lines without a new helper.
+The sixth proposal, a reusable sign relation, is an alternative extension:
+it improves proof structure but introduces enough shared code that the
+combined net reduction becomes 29 lines. These are modest, measured savings;
+they are not a claim to have dramatically compressed the whole development.
+
+\textbf{Strongest verification.} The complete modified
+\code{PairingRepresentation} module compiled under Lean 4.32.0. Two further
+proofs establish by \code{rfl} that its complete inverse-coordinate
+\code{GraphRep} values equal the baseline definitions. Their expressions
+and witness counts therefore remain definitionally unchanged. Other
+proposals have the narrower validation scopes listed below; no complete
+repository build or complete downstream rebuild is claimed.
+
+\begin{table}[h]
+\small
+\begin{tabularx}{\linewidth}{@{}p{0.28\linewidth}Yp{0.15\linewidth}@{}}
+\toprule
+Proposal & Concrete target & Net lines saved\\
+\midrule
+1. Support classification & \code{sum_le_one_cases} & 17\\
+2. Existing Pell parity theorem & Local \code{hsodd} argument & 20\\
+3. Inverse-equivalence projections & Eight inverse-pairing clients & 8\\
+4. Shared Euclidean certificate & Two \code{certificate_iff} proofs & 4\\
+5. Affine witness budget & Three \code{thin_compose} arguments & 8\\
+\midrule
+Conservative combination & Includes all helper overhead & \textbf{57}\\
+6. Optional sign algebra & Replaces the native/Pell subset above & \textbf{29 total}\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Baseline, scope, and novelty}
+
+\subsection{A fixed source snapshot}
+
+The repository baseline is \href{https://github.com/VladimirReshetnikov/ProveIt/commit/6175dff9a15491497c7a3c1bda4f6a62a6349c74}{commit \code{6175dff9a154}}.
+Its full identifier is recorded in the source manifest and patch metadata.
+The initial GitHub inspection returned \code{e73fa2e916c9}; the local checkout
+then obtained the newer merge used here. That merge preserves both earlier
+proposal packets and newer maintained proofs. The two files currently in
+\code{docs/incoming} have the same Git blob identities at both inspected
+commits, so this change of baseline does not alter the incoming corpus.
+
+The Lean subtree contains 574 \code{.lean} files and 77,278 physical lines at
+this snapshot. This is an inventory, not a claim that every declaration has
+received a semantic review. The present work concentrates on six specific
+repeated arguments. The exact validation environment was Lean 4.32.0,
+compiler commit \code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}, with mathlib
+commit \code{81a5d257c8e410db227a6665ed08f64fea08e997}.
+
+\subsection{What was excluded}
+
+The audit examined the current archive
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6175dff9a15491497c7a3c1bda4f6a62a6349c74/docs/incoming/diophantine-lean-simplification-2026-10-26.zip}{\code{diophantine-lean-simplification-2026-10-26.zip}}
+and the earlier placed packet
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/6175dff9a15491497c7a3c1bda4f6a62a6349c74/Computability/DiophantineConsistency/research/lean-proof-simplification-20261026}{\code{research/lean-proof-simplification-20261026/}},
+which is explicitly linked by the incoming README. It included their reports,
+prototype declarations, patch contents, and source notes. The complete
+35-item exclusion matrix is supplied as \art{novelty-audit.md}.
+
+Previously proposed directions include successful list-lookup APIs, witness
+block concatenation and assignment transport, primitive-recursive iterator
+congruence, checked-history folds and scanner laws, common sum-of-squares
+semantics, topological gate induction, generated exponent certificates,
+finite dispatch, degree interfaces, half-radix formulas, field-residue
+geometry, carry decomposition, copied-field bounds, object-model bridges,
+and closed-sentence transport. None is offered again as a new headline.
+
+One initially promising candidate was explicitly rejected: an additive
+subgroup presentation of aligned cells. The current incoming report already
+proposes a later equivalence between aligned cells and \code{ZMod N}. A new
+implementation would advance that earlier direction, but it would not meet
+the user's request for an additional idea.
+
+The novelty claim is deliberately local: these six concrete refactors were
+not found in the reviewed DiophantineConsistency proposal corpus. It is not
+a claim of novelty in mathematics or Lean practice. The incoming README also
+indexes historical Busy Beaver packets. Their visible summaries informed
+the exclusions, but their hundreds of ancillary files were not all opened.
+The audit records this limit rather than claiming an exhaustive history of
+every earlier research submission.
+
+\section{Use the existing finite-support classification}
+
+\subsection{The redundant argument}
+
+In \src{CurrentCellLabels2011}{131}, the theorem
+\code{sum_le_one_cases} classifies a natural-valued function whose finite sum
+is at most one. The current proof selects a nonzero term, proves it equals
+one, erases its index from the sum, proves the remaining sum vanishes, and
+then proves every other coordinate vanishes. All of those steps express one
+support property already available in mathlib.
+
+The existing theorem
+\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/Order/BigOperators/Group/Finset.lean\#L590}{\code{Finset.sum_le_one_iff}}
+states, in the present natural-number specialization, that if the sum is at
+most one, any two nonzero summands have the same index and the selected value
+is one. Its conclusion is almost exactly the repository's existing
+\code{Selected} predicate:
+\[
+ \operatorname{Selected}(f,i)
+ \quad\Longleftrightarrow\quad
+ f(i)=1\ \land\ \forall j\ne i,\ f(j)=0.
+\]
+
+\subsection{The replacement}
+
+After choosing a nonzero coordinate only when one exists, the replacement is:
+
+\begin{Verbatim}
+  classical
+  have h := Finset.sum_le_one_iff.mp hf
+  by_cases hz : ∀ i, f i = 0
+  · exact Or.inl hz
+  · obtain ⟨i, hi⟩ := not_forall.mp hz
+    refine Or.inr ⟨i, (h i i (by simp) (by simp) hi hi).2, ?_⟩
+    intro j hji
+    by_contra hj
+    exact hji (h j i (by simp) (by simp) hj hi).1
+\end{Verbatim}
+
+The proof exposes the actual invariant directly: the support is empty or a
+singleton carrying the value one. It preserves the exact theorem statement
+and the existing definition of \code{Selected}. In particular it requires
+neither a default element nor a \code{Nonempty} instance. If the index type
+is empty, the first branch is valid. The natural-valued assumption is
+material: allowing arbitrary signed values would permit cancellation and
+would invalidate this support conclusion.
+
+The whole production file changes from 311 to 294 physical lines, a saving
+of 17. The exact theorem statement and exact \code{Selected} definition
+compile in \art{native-proofs/OneHotSupport.lean}. The complete
+\code{CurrentCellLabels2011} dependency cone was not rebuilt. The patch
+therefore has a checked replacement theorem, rather than a claim of full
+module integration.
+
+\textbf{Why this adds something new.} The earlier finite-dispatch and
+copied-field proposals concern data assembly and field bounds. They do not
+replace the mathematical support-uniqueness argument in this theorem.
+
+\section{Reuse the already proved Pell parity criterion}
+
+\subsection{Two proofs of the same number-theoretic fact}
+
+The theorem \code{index_residues} in \src{NativePellStepDown}{17} contains a
+local proof that an auxiliary Pell index \code{s} is odd. It argues by
+contradiction: an even-index first Pell coordinate has residue a power of minus one
+modulo the Pell parameter; divisibility would then force the parameter to
+divide one, contradicting its lower bound.
+
+The repository already provides precisely the needed fact in
+\src{SignedPellResidue}{42}:
+
+\begin{Verbatim}
+odd_index_of_base_dvd
+  (hA : 1 < A) (hd : A ∣ xn hA n) : Odd n
+\end{Verbatim}
+
+The local Pell classification equation supplies its divisibility premise.
+Consequently the replacement is:
+
+\begin{Verbatim}
+  have hsodd : Odd s :=
+    SignedPellResidue.odd_index_of_base_dvd hI1 (by
+      rw [← hIu]
+      exact dvd_mul_right I u)
+\end{Verbatim}
+
+The now unused local proof \code{hs0 : 0 < s} is also removed. The public
+theorem's hypotheses are retained; this patch does not require editing its
+callers. Including the additional import, the file changes from 248 to 228
+lines, a net saving of 20 without a new helper module.
+
+\subsection{Integration and novelty boundaries}
+
+\code{SignedPellResidue} imports the independent Pell integer development;
+it does not import \code{NativePellStepDown}. The source dependency inspection
+found no cycle introduced by the proposed import. The patch applies to the
+pinned source, but the entire modified Pell module was not compiled in this
+session. This is the most important remaining validation step for this
+otherwise small change.
+
+The separate optional sign abstraction in Section~\ref{sec:sign} is not
+required for this saving. The file \art{native-proofs/pell-oddness-only.patch}
+is the independent minimal version. It is an alternative to the larger
+native combined patch, not an additional patch to apply after it.
+
+The earlier proposal to decode Pell register equations into arithmetic
+facts is different. Here the relevant arithmetic fact has already been
+proved in another maintained source file; the improvement is to reuse that
+exact theorem at an overlooked client.
+
+\section{Derive inverse graphs from a product equivalence}
+
+\subsection{A representation-independent theorem}
+
+Eight inverse-pairing clients currently re-create a missing coordinate,
+apply a pairing correctness theorem, and then use the two pairing/unpairing
+identities. This is the inverse-image property of an equivalence.
+
+For any equivalence \(e:A\times B\simeq C\), any \(z:C\), and any \(a:A\),
+\[
+ (\exists b:B,\ z=e(a,b))
+ \quad\Longleftrightarrow\quad
+ a=(e^{-1}z)_1.
+\]
+The corresponding second-coordinate theorem is symmetric. Applying
+\(e^{-1}\) converts the equation into equality of ordered pairs; existentially
+quantifying the unused coordinate then leaves precisely the retained
+projection. This needs no encoding-specific arithmetic and no choice of a
+fresh witness beyond the coordinate already supplied by \(e^{-1}z\).
+
+Both general lemmas fit in a 16-line production module:
+
+\begin{Verbatim}
+theorem exists_right_iff {A B C : Type*}
+    (e : A × B ≃ C) (z : C) (a : A) :
+    (∃ b, z = e (a, b)) ↔ a = (e.symm z).1 := by
+  simp only [← e.symm_apply_eq, Prod.ext_iff]
+  simp [eq_comm]
+\end{Verbatim}
+
+Mathlib already supplies
+\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Data/Nat/Pairing.lean\#L72}{\code{Nat.pairEquiv}}.
+The repository's inverse-pairing proofs can specialize the general lemma
+instead of proving the inverse-image argument afresh.
+
+\subsection{Separate tuple normalization from inverse reasoning}
+
+For the one-witness client in \src{PairingRepresentation}{47}, the proof
+after its existing \code{change} statement becomes:
+
+\begin{Verbatim}
+  simp only [Fin.exists_fin_succ_pi, Fin.exists_fin_zero_pi,
+    Fin.cons_zero]
+  exact PairingProjection.exists_right_iff
+    Nat.pairEquiv (v (some 0)) (v none)
+\end{Verbatim}
+
+The first step is only a normalization of the existing one-element witness
+tuple. The second step is the new semantic abstraction. This distinction
+matters for novelty: previous packets proposed general witness layouts,
+but they did not derive arithmetic inverse graphs from product equivalences.
+
+For a quadratic certificate, the normal form is
+\[
+ \exists b,t,s,m,\ \operatorname{Certificate}(z,a,b,t,s,m).
+\]
+The existing \code{exists_certificate_iff} eliminates \(t,s,m\), leaving
+\(\exists b, z=\operatorname{pair}(a,b)\). The same projection lemma finishes
+the proof. The tree-code version first eliminates the equality fixing the
+predecessor coordinate and then follows this identical semantic argument.
+This preserves the supplied certificate data and does not change how the
+register program or polynomial is constructed.
+
+The eight clients are distributed across four modules. The direct and
+quadratic representations appear in \src{PairingRepresentation}{47} and
+\src{QuadraticNatPairing}{104}. The register and tree-code clients appear
+in \src{RegisterNatPairing}{92} and \src{QuadraticTreeCodeGraphs}{77}.
+The four files lose 24 lines after their added imports; the new helper adds
+16, giving a net saving of eight.
+
+\subsection{A full module check and a data-preservation proof}
+
+The baseline \code{Representation}, \code{ArithmeticRepresentation},
+\code{ComposeRepresentation}, and \code{PairingRepresentation} modules were
+compiled. The new helper and the complete modified
+\code{PairingRepresentation} were then compiled. Finally the original two
+inverse-coordinate definitions were copied, with changed names, into
+\art{PairingDataAudit.lean}. Lean accepted:
+
+\begin{Verbatim}
+example : unpairLeftCoordinate = unpairLeftCoordinateBaseline := rfl
+example : unpairRightCoordinate = unpairRightCoordinateBaseline := rfl
+\end{Verbatim}
+
+These compare complete \code{GraphRep} values. Their data fields are
+definitionally the same, and proof irrelevance accounts for the changed
+correctness proof. Both witness counts remain three. This is stronger
+evidence than observing that the patch visually changes only proof text.
+
+The other six clients are supplied as source-reviewed candidates. The exact
+quadratic and tree witness-obligation shapes are checked separately under
+their existing certificate specification; this does not substitute for
+compiling their complete production modules. A small elaboration issue was
+also resolved during the full check: \code{simpa ... using} left the generic
+equivalence coercion folded, while \code{simp only ...} followed by
+\code{exact} allowed definitional equality to close the goal. The delivered
+patch contains the successful form.
+
+\section{Share the positive-denominator Euclidean certificate}
+
+\subsection{An exact duplicate across two backends}
+
+\src{RegisterDivMod}{9} and \src{QuadraticDivMod}{10} contain the same
+17-line theorem. Both characterize a certificate with one natural slack:
+\[
+ \exists s\in\mathbb N,\quad
+ n=qb+r\ \land\ b=r+s+1
+ \quad\Longleftrightarrow\quad
+ b>0\ \land\ q=\lfloor n/b\rfloor\ \land\ r=n\bmod b.
+\]
+The register and quadratic encodings are different, but this arithmetic
+lemma is independent of both. Importing one full backend into the other
+would introduce an unnecessary representation dependency. A small
+\code{ArithmeticCertificates} module provides an appropriate common home.
+
+The new proof uses Lean's existing \code{Nat.div_mod_unique}. The forward
+direction extracts \(0<b\) and \(r<b\) from \(b=r+s+1\), then applies
+quotient/remainder uniqueness once. The reverse direction uses the usual
+division decomposition and the canonical slack \(b-(n\bmod b)-1\).
+The production helper imports only \code{Std.Tactic}; it does not require
+either representation compiler.
+
+Both public declarations retain their original statement and become:
+
+\begin{Verbatim}
+theorem certificate_iff (q r n b : ℕ) :
+    (∃ s, n = q * b + r ∧ b = r + s + 1) ↔
+      0 < b ∧ q = n / b ∧ r = n % b :=
+  ArithmeticCertificates.divMod_certificate_iff q r n b
+\end{Verbatim}
+
+\subsection{The guard and a useful uniqueness extension}
+
+The positive-denominator guard must remain part of the represented
+predicate. Lean's natural division is total at zero, but a zero denominator
+cannot satisfy \(b=r+s+1\). Dropping the guard would therefore change the
+certificate's zero set. The supplied check file proves explicitly that no
+certificate exists with denominator zero.
+
+It also proves a stronger fact useful for subsequent refactors: two
+certificates for the same \(n,b\) determine the same quotient, remainder,
+\emph{and slack}. Quotient/remainder uniqueness gives \(q=q'\) and \(r=r'\);
+the two equations \(b=r+s+1=r'+s'+1\) then give \(s=s'\). The actual checked
+conclusion is \code{q = q' ∧ r = r' ∧ s = s'}. This can support future proofs
+by uniqueness rather than repeated explicit witness recovery.
+
+The complete new production helper is 20 lines. The two backend files
+together change from 159 to 135 lines, so including the helper the net
+change is 159 to 155, a saving of four. The primary gain is one maintained
+semantic proof and independent backend dependencies. All source bytes
+outside the two changed declarations and imports were checked to be
+unchanged.
+
+The helper, exact public wrapper type, zero-denominator result, canonical
+certificate result, and uniqueness extension all compiled. The full backend
+modules were not rebuilt. The logged axiom probes for these checks contain
+only \code{propext} and \code{Quot.sound}.
+
+\textbf{Novelty boundary.} Earlier carry-normalization proposals concern
+pointwise quotient/digit decompositions. They do not identify or share this
+exact existential positive-denominator certificate across the two backends.
+
+\section{Factor the arithmetic budget behind composition}
+
+\subsection{The repeated argument}
+
+The three composition theorems in \src{GraphSizeBounds}{48}
+(at lines 48, 113, and 132) repeat the same
+arithmetic proof around different semantic depth/count laws. The invariant is
+\[
+ \operatorname{Thin}(C,r):\quad
+ \operatorname{depth}(r)\le 6\operatorname{witnessCount}(r)+C.
+\]
+Each proof takes the total of the parent and child witness counts, bounds
+every child by that total, invokes the appropriate composition-depth rule,
+and pays for the fixed composition overhead with additional witnesses.
+
+This can be stated as an arithmetic lemma, leaving the source expressions
+and graph constructors entirely out of its definition. Let
+\[
+ T=w_0+\sum_iw_i,
+ \qquad d_0\le6w_0+C,
+ \qquad d_i\le6w_i+C,
+ \qquad C\ge1.
+\]
+Suppose a constructor rule gives \(D\le h+o\) whenever the parent and child
+depths are at most \(h\), and suppose
+\(o\le6k\) and \(k+T\le W\). Then
+\[
+ D\le (6T+C)+o\le6(T+k)+C\le6W+C.
+\]
+The only finite-sum fact needed is \(w_i\le\sum_jw_j\), valid because the
+weights are natural numbers. The only purpose of \(C\ge1\) here is to
+make the common bound \(6T+C\) admissible to the existing depth rule.
+
+\subsection{The small production interface}
+
+The 21-line production helper accepts the depth rule as a proof parameter,
+so it can be used by three existing constructors without reimplementing
+their semantic proofs. One of the new client bodies is:
+
+\begin{Verbatim}
+  exact AffineBudget.compose
+    (fun i => (s i).witnessCount) (fun i => (s i).depth)
+    hC hr hs
+    (fun _ hh hr hs => compose_depth_le r s hh hr hs)
+    (by omega : 2 * n + 2 ≤ 6 * n)
+    (by rw [BoundedForallSize.predicate_compose_count]; omega)
+\end{Verbatim}
+
+The production patch retains the established coefficient six rather than
+introducing a more general resource framework with no present clients.
+The three original proof bodies are replaced by applications of the same
+lemma. \code{GraphSizeBounds} changes from 214 to 185 lines; after adding
+the 21-line helper, the net saving is eight.
+
+\subsection{An unnecessary premise becomes visible}
+
+For predicate composition and direct graph composition, the current
+overhead is \(2n+2\), with \(n\) additional witnesses. The budget inequality
+\(2n+2\le6n\) requires \(n\ge1\). For ordinary graph composition, the
+overhead is \(2n+4\), while \(n+1\) additional witnesses are available:
+\[
+ 2n+4\le6(n+1)\qquad\text{for every }n\in\mathbb N.
+\]
+Thus the arithmetic argument for ordinary graph composition does not need
+the current \code{hn : 1 ≤ n} hypothesis. The check module proves this
+zero-arity-inclusive numerical rule. The delivered production patch keeps
+the old public signature to avoid a caller migration, but a follow-up
+generalized theorem can remove this premise after a full module check.
+The direct-composition case must retain its different restriction.
+
+The helper and both numerical application regimes compiled. Their hypotheses
+are precisely the metadata supplied by the existing count/depth theorems.
+The complete \code{GraphSizeBounds} module was not rebuilt. This is a checked
+arithmetic core plus a source-reviewed client patch.
+
+\textbf{Further development.} The long constructor-bound proof in
+\code{BoundedForallDepth} is a separate next client worth investigating:
+its repeated maximum and offset calculations could be replayed through a
+small max-plus bound language. No such language is implemented or counted
+in this packet. Unlike the earlier syntax-degree proposal, this direction
+concerns depth and witness budgets, including their arity-dependent overhead.
+
+\section{Make congruence up to sign compositional}\label{sec:sign}
+
+\subsection{The mathematical relation}
+
+Several final Pell arguments carry a residue only up to a sign. Working
+directly with disjunctions such as \(m\mid a-b\) or \(m\mid a+b\) creates
+a four-branch sign chase whenever two such facts are combined. Introduce
+the relation
+\[
+ a\sim_m b
+ \quad\Longleftrightarrow\quad
+ a\equiv b\pmod m\ \lor\ a\equiv-b\pmod m.
+\]
+It is symmetric and transitive. It also has the divisibility form
+\(m\mid a-b\lor m\mid a+b\), is unchanged by multiplying one endpoint by
+\(1\) or \(-1\), and relates an integer to the natural cast of its absolute
+value. The definition and proofs work for every integer modulus, including
+zero; no positivity hypothesis is hidden in the interface.
+
+The implementation uses \code{Int.ModEq} and its existing negation and
+transitivity lemmas. The unavoidable four-way sign case split is proved
+once in the relation's transitivity theorem. Clients then compose facts
+at the level at which they reason mathematically.
+
+\subsection{The Pell client}
+
+The final part of \code{NativePellStepDown.index_residues} can be represented
+by the following chain:
+\[
+ J\sim_m u\sim_m ts\sim_m s\sim_m p,
+ \qquad t\in\{1,-1\}.
+\]
+The supplied theorem \code{signed_index_chase} proves this chain once and
+converts its result back into the existing divisibility disjunction. The
+client becomes:
+
+\begin{Verbatim}
+  exact ProofSimplification.signed_index_chase hu_J hu_cc
+    (neg_one_pow_eq_or ℤ h) hsp'
+\end{Verbatim}
+
+The same interface shortens absolute-value transport in
+\code{SignedPellResidue}. The generic helper and both application theorems
+compile; the complete modified Pell modules remain to be rebuilt.
+
+\subsection{Do not hide the abstraction cost}
+
+The readable helper, its application lemmas, comments, and module scaffolding
+occupy 64 physical lines. With the one-hot, parity, and sign changes
+together, the three existing native files lose 73 lines; after the new
+helper, the native subset saves only nine. The simpler one-hot plus
+parity subset saves 37. Therefore adding the sign API costs 28 lines
+relative to that minimal subset. Across all proposals, the conservative
+57-line saving becomes 29.
+
+The case for the sign API is semantic structure and future reuse, not a
+claim of maximal immediate line compression. Adopt the minimal parity
+patch first if current source size is the priority; consider the sign API
+when further clients need the same relation. No time or object-size speedup
+is inferred from the smaller client proof.
+
+\textbf{Novelty boundary.} Earlier proposals to decode the Pell source
+equations do not supply this sign relation, transitivity, or absolute-value
+transport. This is a different proof interface applied after the arithmetic
+facts have been obtained.
+
+\section{Validation and reproducibility}
+
+\subsection{What actually ran}
+
+\begin{longtable}{@{}p{0.30\linewidth}p{0.61\linewidth}@{}}
+\toprule
+Artifact & Observed result and scope\\
+\midrule
+\endhead
+\code{OneHotSupport} & Exact replacement statement and \code{Selected} definition compiled. Full current-cell module not rebuilt.\\[4pt]
+Pell parity-only patch & Applies to the pinned source; existing theorem and dependency inspected. Full patched Pell theorem not compiled.\\[4pt]
+\code{PairingProjection} & Both general inverse-projection lemmas compiled.\\[4pt]
+Modified \code{PairingRepresentation} & Complete module compiled after its three baseline dependencies.\\[4pt]
+\code{PairingDataAudit} & Both complete inverse \code{GraphRep} equalities proved by \code{rfl}; witness counts remain three.\\[4pt]
+Quadratic/tree projection checks & Schematic exact witness-obligation shapes compiled under the existing certificate specification. Other full production clients not rebuilt.\\[4pt]
+\code{ArithmeticCertificates} & Helper, exact wrapper type, positive canonical witness, zero-denominator exclusion, and full certificate uniqueness compiled.\\[4pt]
+\code{AffineBudgetChecks} & Production helper and direct/ordinary numerical client rules compiled, including the ordinary zero-arity case.\\[4pt]
+\code{SignedModEq} & Relation laws and sign-chase/absolute-value application theorems compiled. Full Pell clients not rebuilt.\\[4pt]
+All supplied patch combinations & \code{git apply --check} performed against the fixed baseline. This is a textual integration check, not a Lean build.\\
+\bottomrule
+\end{longtable}
+
+New checked files contain no \code{sorry}, \code{admit}, or added axiom
+declarations. The recorded axiom probes list only the usual
+\code{propext}, \code{Classical.choice}, and \code{Quot.sound}, with the
+Euclidean certificate checks using only the first and last. These checks
+say nothing new about the repository's global consistency endpoint or its
+complete dependency assumptions; they concern the specified local theorems.
+
+Measured compiler durations are retained as execution evidence, not presented
+as performance benchmarks. They are single observations from a prepared
+environment. A whole-module timing comparison, proof-object size study,
+and downstream regression build would be separate experiments.
+
+\subsection{Patch choices}
+
+The top-level \art{patches/conservative.patch} combines support classification,
+parity reuse, pairing projections, arithmetic certificates, and affine
+budgets. The alternative \art{patches/with-sign-algebra.patch} replaces the
+native subset with the larger sign-interface version. Apply one aggregate
+patch, not both. Individual patches are also retained for separate reviews.
+No change was committed or pushed to GitHub during this work.
+
+The archive includes complete candidate modules, so the proposed result can
+be inspected without applying a patch. The candidate files preserve all
+unrelated baseline contents. Scripts regenerate patch text and count lines;
+the shared replay script runs the isolated checks in an existing Lean 4.32.0
+project, and has an option to compile the complete pairing example in a
+temporary output directory. It does not install tools or claim to run the
+whole repository build.
+
+The full repository should still be built in the normal project environment
+before adoption. In particular, the simple-looking Pell import reuse is
+not upgraded to ``compiled'' merely because its invoked theorem exists.
+The distinction is retained in both the human report and JSON evidence.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can the inverse-equivalence lemma replace analogous missing-coordinate
+proofs for the repository's Cantor encoding, while preserving each encoding's
+actual equivalence and avoiding any accidental identification with
+\code{Nat.pair}? The abstraction permits this, but an additional concrete
+client audit is needed.
+\item Can certificate uniqueness be used to derive coherence of composed
+quotient/remainder witnesses, eliminating repeated reconstruction arguments?
+The checked three-coordinate uniqueness result is a suitable starting point;
+a claim of savings requires identifying additional production clients.
+\item Can ordinary graph composition expose a theorem without its nonempty
+arity premise? The numerical obstacle has been removed here. The stronger
+production theorem should be checked with the existing count/depth API and
+then introduced without disrupting positional callers.
+\item Can a small certified max-plus calculation replace the manually named
+intermediate depth bounds in \code{BoundedForallDepth}, with the old semantic
+constructor lemmas as its leaves? The challenge is to avoid expanding large
+representation expressions during elaboration.
+\item At how many additional Pell clients does the sign relation become a
+net source reduction relative to direct case analysis? Count the complete
+helper and compatibility wrappers, and distinguish readability from run time.
+\item Would a declaration-level search for proofs already subsumed by existing
+theorems find further parity-style wins? The useful target is a precise
+mathematical implication, not indiscriminate rewriting of every proof into
+generic automation.
+\end{enumerate}
+
+The recommended first review is the 37-line helper-free support/parity subset,
+followed by the fully compiled pairing example. The remaining small shared
+interfaces are concrete follow-on changes with explicitly recorded build
+gaps. Their value comes from making repeated mathematical obligations
+recognizable and maintaining them once.
+
+\Needspace{20\baselineskip}
+\section*{Primary sources and artifact map}
+
+\begin{enumerate}
+\item ProveIt baseline \href{https://github.com/VladimirReshetnikov/ProveIt/commit/6175dff9a15491497c7a3c1bda4f6a62a6349c74}{\code{6175dff9a154}}. Source links throughout this report are pinned to this commit.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/6175dff9a15491497c7a3c1bda4f6a62a6349c74/docs/incoming}{Incoming directory} and the two DiophantineConsistency packets identified in Section 1. Detailed exclusion evidence: \art{novelty-audit.md}.
+\item mathlib \href{https://github.com/leanprover-community/mathlib4/tree/81a5d257c8e410db227a6665ed08f64fea08e997}{\code{81a5d257c8e410db227a6665ed08f64fea08e997}}: finite-sum support theorem, natural pairing equivalence, \code{Int.ModEq}, finite tuples, and equivalence identities.
+\item Lean \href{https://github.com/leanprover/lean4/tree/8c9756b28d64dab099da31a4c09229a9e6a2ef35}{\code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}}: exact 4.32.0 compiler used for the recorded checks.
+\item \art{evidence/validation-summary.json}, execution logs, source manifest, and production metrics: machine-readable support for the validation and line-count claims.
+\item \art{native-proofs/}, \art{certificates/}, and \art{projection-and-budget/}: proposal code, exact patches, full candidate modules, and reproduction scripts. \art{scripts/replay.py} provides the common check entry point.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,17 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRenameCode.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRenameCode.lean
+@@ -48,12 +48,8 @@
+       rfl
+ 
+ theorem length_le_tableCode (rows : List Row) : rows.length≤tableCode rows := by
+-  induction rows with
+-  | nil => exact Nat.zero_le _
+-  | cons r rows ih =>
+-    have hr := Nat.right_le_pair (rowCode r) (tableCode rows)
+-    change rows.length+1≤Nat.pair (rowCode r) (tableCode rows)+1
+-    omega
++  simpa only [tableCode,listCode_eq_encode,List.length_map] using
++    (Encodable.length_le_encode (rows.map rowCode))
+ 
+ def checkCode (mode k depth input output code : Nat) : Bool :=
+   match decodeTable code code with

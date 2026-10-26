@@ -1,0 +1,103 @@
+--- /dev/null
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SupportDifference.lean
+@@ -0,0 +1,36 @@
++import Mathlib.Data.ZMod.Basic
++import Mathlib.Tactic.Abel
++
++/-! Translation-invariant support separation. The certificate concerns
++    the residue group, not truncated natural subtraction. -/
++namespace DiophantineConsistency.SupportDifference
++
++def differences {G : Type*} [Sub G] (S : Set G) : Set G :=
++  {d | ∃ a ∈ S, ∃ b ∈ S, d = b - a}
++
++/-- A projection may merge physical positions. Only the projected support
++and the actual projected displacement enter this certificate. -/
++theorem translated_pair_zero {A B R : Type*} [AddCommGroup A] [AddCommGroup B] [Zero R]
++    (π : A →+ B) (S : Set B) (f : A → R) (t : A)
++    (hsupport : ∀ x, π (x - t) ∉ S → f x = 0)
++    {x y δ : A} (hxy : y = x + δ) (hδ : π δ ∉ differences S) :
++    f x = 0 ∨ f y = 0 := by
++  classical
++  by_cases hx : π (x - t) ∈ S
++  · by_cases hy : π (y - t) ∈ S
++    · exact False.elim (hδ ⟨π (x - t), hx, π (y - t), hy, by
++        rw [← map_sub, hxy]
++        congr 1
++        abel⟩)
++    · exact Or.inr (hsupport y hy)
++  · exact Or.inl (hsupport x hx)
++
++/-- Quotienting a cyclic word by its cell length is a ring homomorphism. -/
++def residue {N L : ℕ} : ZMod (N * L) →+* ZMod L :=
++  ZMod.castHom (Nat.dvd_mul_left L N) (ZMod L)
++
++theorem residue_val {N L : ℕ} [NeZero (N * L)] (k : ZMod (N * L)) :
++    (residue k).val = k.val % L := by
++  simp only [residue, ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast]
++
++end DiophantineConsistency.SupportDifference
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeTemporalSupport54.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeTemporalSupport54.lean
+@@ -1,4 +1,5 @@
+ import DiophantineConsistency.NativeCleanBands54
++import DiophantineConsistency.SupportDifference
+ 
+ /-! # Sparse temporal rotations leave one member of each clause pair clean -/
+ 
+@@ -52,11 +53,20 @@
+     (k - ((W / 89 : ℕ) : ZMod (N * cellLength))) = 0
+   exact shiftDigits_sparse c hc (by have := Nat.mod_lt W (by decide : 0 < 89); omega) _ hk
+ 
+-private theorem no_difference_606 (a b : ℕ) (ha : CoarseSupport a) (hb : CoarseSupport b) :
+-    (a + 606) % cellLength ≠ b := by
++private def coarseResidues : Set (ZMod cellLength) := {j | CoarseSupport j.val}
++
++private theorem no_difference_606 :
++    (606 : ZMod cellLength) ∉ SupportDifference.differences coarseResidues := by
++  letI : NeZero cellLength := ⟨by decide⟩
++  rintro ⟨a, ha, b, hb, hab⟩
++  have hh : a + 606 = b := by rw [hab]; abel
++  have hv := congrArg ZMod.val hh
++  rw [ZMod.val_add] at hv
++  change (a.val + 606) % cellLength = b.val at hv
++  change CoarseSupport a.val at ha
++  change CoarseSupport b.val at hb
+   unfold CoarseSupport cellLength at *
+-  rcases ha with ha | rfl | rfl <;>
+-    rcases hb with hb | rfl | rfl <;> omega
++  rcases ha with ha | ha | ha <;> rcases hb with hb | hb | hb <;> omega
+ 
+ /-- Every pair of positions separated by606 has a zero temporal digit
+ at one member. The bit phase and whole-digit rotation are arbitrary. -/
+@@ -64,19 +74,16 @@
+     (hc : ∀ k, c k < 2 ^ periodicBits k) (l r : ZMod (N * cellLength))
+     (hr : r = l + 606) :
+     binaryRotation 89 W c l = 0 ∨ binaryRotation 89 W c r = 0 := by
+-  by_cases hl : (l - ((W / 89 : ℕ) : ZMod (N * cellLength))).val % cellLength ∈ support
+-  · by_cases hrr : (r - ((W / 89 : ℕ) : ZMod (N * cellLength))).val % cellLength ∈ support
+-    · have hh := subtraction_residue (r - ((W / 89 : ℕ) : ZMod (N * cellLength))) 606
+-      have hi : r - ((W / 89 : ℕ) : ZMod (N * cellLength)) - (606 : ZMod (N * cellLength)) =
+-          l - ((W / 89 : ℕ) : ZMod (N * cellLength)) := by rw [hr]; abel
+-      change ((r - ((W / 89 : ℕ) : ZMod (N * cellLength)) - (606 : ZMod (N * cellLength))).val + 606) %
+-        cellLength = (r - ((W / 89 : ℕ) : ZMod (N * cellLength))).val % cellLength at hh
+-      rw [hi] at hh
+-      have hh' : ((l - ((W / 89 : ℕ) : ZMod (N * cellLength))).val % cellLength + 606) % cellLength =
+-          (r - ((W / 89 : ℕ) : ZMod (N * cellLength))).val % cellLength := by
+-        simpa only [Nat.add_mod,Nat.mod_mod] using hh
+-      exact False.elim (no_difference_606 _ _ (support_coarse hl) (support_coarse hrr) hh')
+-    · exact Or.inr (binaryRotation_sparse W c hc r hrr)
+-  · exact Or.inl (binaryRotation_sparse W c hc l hl)
++  refine SupportDifference.translated_pair_zero
++    (SupportDifference.residue (N := N) (L := cellLength)).toAddMonoidHom
++    coarseResidues (binaryRotation 89 W c) ((W / 89 : ℕ) : ZMod (N * cellLength)) ?_ hr ?_
++  · intro k hk
++    apply binaryRotation_sparse W c hc k
++    intro hs
++    apply hk
++    change CoarseSupport (SupportDifference.residue _).val
++    rw [SupportDifference.residue_val]
++    exact support_coarse hs
++  · simpa only [RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, map_ofNat] using no_difference_606
+ 
+ end DiophantineConsistency.NativeTemporalSupport54

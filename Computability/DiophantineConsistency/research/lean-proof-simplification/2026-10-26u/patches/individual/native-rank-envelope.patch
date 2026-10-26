@@ -1,0 +1,101 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
+@@ -462,6 +462,28 @@
+     nlinarith [mul_nonneg (show 0 ≤ (x 3 : ℤ) - 1 by omega) (show 0 ≤ q - 1 by omega)]
+   exact pos_of_mul_pos_right hprod hKw.le
+ 
++/-- A common sharp lower envelope for the native packing target.  The positive
++transport gap gives q-F >= 2, hence its leading factor is at least 2*q-1. -/
++theorem source_native_rank_envelope (ports : Fin 4 → ℤ)
++    (hβ : 0 < ports 0) (hK : 0 ≤ ports 1) (hMC : 0 ≤ ports 2) (hMF : 0 ≤ ports 3)
++    (x : Fin 31 → ℕ) (hx : ∀ i, 0 < x i)
++    (hs : ∀ k, SplitCertificate59.sourceRows ports (fun i => (x i : ℤ)) k = 0) :
++    let q : ℤ := 1 + (x 0 : ℤ) * ports 0
++    3 ≤ q ∧ (2 * q - 1) * (q ^ 2 - 1) ≤ nativeRank x := by
++  let q : ℤ := 1 + (x 0 : ℤ) * ports 0
++  have hC : 0 < q - x 1 - x 2 := source_transport_positive ports hβ hK x hx hs
++  have hF : (0 : ℤ) < x 1 := by exact_mod_cast hx 1
++  have hα : (0 : ℤ) < x 2 := by exact_mod_cast hx 2
++  have hq : 3 ≤ q := by omega
++  have hG : 2 * q - 1 ≤ (q - 1) * (q - x 1) + x 2 := by
++    nlinarith [mul_nonneg (show 0 ≤ q - 1 by omega) (show 0 ≤ q - x 1 - 2 by omega)]
++  have hGL := mul_le_mul_of_nonneg_right hG (show 0 ≤ q ^ 2 - 1 by nlinarith)
++  have hmask : 0 ≤ (ports 2 + ports 3 * q) * x 0 := by positivity
++  have htarget := source_rank_eq_target ports x hs
++  change nativeRank x = ((q - 1) * (q - x 1) + x 2) * (q ^ 2 - 1) +
++    (ports 2 + ports 3 * q) * x 0 at htarget
++  exact ⟨hq, by linarith⟩
++
+ /-- Native rank positivity follows from the OLD positive transport coordinate
+ and nonnegative native mask ports, without importing the outer rank bounds. -/
+ theorem source_native_rank_ge_twentyfour (ports : Fin 4 → ℤ)
+@@ -469,22 +491,10 @@
+     (x : Fin 31 → ℕ) (hx : ∀ i, 0 < x i)
+     (hs : ∀ k, SplitCertificate59.sourceRows ports (fun i => (x i : ℤ)) k = 0) :
+     24 ≤ nativeRank x := by
+-  let q : ℤ := 1 + (x 0 : ℤ) * ports 0
+-  have hC : 0 < q - x 1 - x 2 := source_transport_positive ports hβ hK x hx hs
+-  have hF : (0 : ℤ) < x 1 := by exact_mod_cast hx 1
+-  have hα : (0 : ℤ) < x 2 := by exact_mod_cast hx 2
+-  have hq3 : 3 ≤ q := by omega
+-  have hL8 : 8 ≤ q ^ 2 - 1 := by nlinarith
+-  have hG : q ≤ (q - 1) * (q - x 1) + x 2 := by
+-    nlinarith [mul_nonneg (show 0 ≤ q - 1 by omega) (show 0 ≤ q - x 1 - 1 by omega)]
+-  have hGL := mul_le_mul_of_nonneg_right hG (show 0 ≤ q ^ 2 - 1 by omega)
+-  have hmin : (24 : ℤ) ≤ q * (q ^ 2 - 1) := by
+-    exact mul_le_mul hq3 hL8 (by norm_num) (by omega)
+-  have hmask : 0 ≤ (ports 2 + ports 3 * q) * x 0 := by positivity
+-  have htarget := source_rank_eq_target ports x hs
+-  change nativeRank x = ((q - 1) * (q - x 1) + x 2) * (q ^ 2 - 1) +
+-    (ports 2 + ports 3 * q) * x 0 at htarget
+-  linarith
++  obtain ⟨hq, hR⟩ := source_native_rank_envelope ports hβ hK hMC hMF x hx hs
++  have hq2 : (8 : ℤ) ≤ (1 + (x 0 : ℤ) * ports 0) ^ 2 - 1 := by nlinarith
++  have hm := mul_le_mul_of_nonneg_left hq2 (show 0 ≤ 2 * (1 + (x 0 : ℤ) * ports 0) - 1 by omega)
++  nlinarith
+ 
+ /-- The literal defining rows give E=q^4*w*s. -/
+ theorem source_scale_eq (ports : Fin 4 → ℤ) (x : Fin 31 → ℕ)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellScaleBounds.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellScaleBounds.lean
+@@ -40,30 +40,16 @@
+     (hs : ∀ k, SplitCertificate59.sourceRows ports (fun i => (x i : ℤ)) k = 0) :
+     3 * sourceQ ports x < (nativeRank x).toNat := by
+   let q : ℤ := 1 + (x 0 : ℤ) * ports 0
+-  have hC : 0 < q - x 1 - x 2 :=
+-    source_transport_positive ports hports.beta_pos hports.K_nonneg x hx hs
+-  have hF : (0 : ℤ) < x 1 := by exact_mod_cast hx 1
+-  have hα : (0 : ℤ) < x 2 := by exact_mod_cast hx 2
+-  have hq3 : 3 ≤ q := by omega
+-  have hL8 : 8 ≤ q ^ 2 - 1 := by nlinarith
+-  have hG : q ≤ (q - 1) * (q - x 1) + x 2 := by
+-    nlinarith [mul_nonneg (show 0 ≤ q - 1 by omega) (show 0 ≤ q - x 1 - 1 by omega)]
+-  have hGL := mul_le_mul_of_nonneg_right hG (show 0 ≤ q ^ 2 - 1 by omega)
+-  have hmin : 3 * q < q * (q ^ 2 - 1) := by nlinarith
+-  have hmask : 0 ≤ (ports 2 + ports 3 * q) * x 0 :=
+-    mul_nonneg (add_nonneg hports.MC_nonneg (mul_nonneg hports.MF_nonneg (by omega)))
+-      (by positivity)
+-  have htarget := source_rank_eq_target ports x hs
+-  change nativeRank x = ((q - 1) * (q - x 1) + x 2) * (q ^ 2 - 1) +
+-    (ports 2 + ports 3 * q) * x 0 at htarget
+-  have hR : 3 * q < nativeRank x := by linarith
+-  have hcast : ((nativeRank x).toNat : ℤ) = nativeRank x :=
+-    Int.toNat_of_nonneg (by omega)
+-  have hqcast : (sourceQ ports x : ℤ) = q := sourceQ_cast ports hports.beta_pos.le x
+-  have hz : (3 : ℤ) * (sourceQ ports x : ℤ) < ((nativeRank x).toNat : ℤ) := by
+-    rw [hqcast,hcast]
+-    exact hR
+-  exact_mod_cast hz
++  obtain ⟨hq, hR⟩ := source_native_rank_envelope ports hports.beta_pos hports.K_nonneg
++    hports.MC_nonneg hports.MF_nonneg x hx hs
++  have hq2 : (8 : ℤ) ≤ q ^ 2 - 1 := by change 3 ≤ q at hq; nlinarith
++  have hm := mul_le_mul_of_nonneg_left hq2 (show 0 ≤ 2 * q - 1 by change 3 ≤ q at hq; omega)
++  have hR' : 3 * q < nativeRank x := by
++    change (2 * q - 1) * (q ^ 2 - 1) ≤ nativeRank x at hR
++    change 3 ≤ q at hq
++    nlinarith
++  rw [Int.lt_toNat, Nat.cast_mul, Nat.cast_ofNat, sourceQ_cast ports hports.beta_pos.le x]
++  exact hR'
+ 
+ /-- The source rank dominates three times the binary exponent of q. -/
+ theorem source_binary_exponent_bound (ports : Fin 4 → ℤ) (hports : PortBox ports)

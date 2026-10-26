@@ -1,0 +1,21 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean
+@@ -161,16 +161,9 @@
+ theorem eq_of_residues {c J p : ℕ} (hp : 0 < p) (hJ : 0 < J)
+     (hpc : 2 * p < c) (hJc : 2 * J < c)
+     (hres : (c : ℤ) ∣ (J : ℤ) - p ∨ (c : ℤ) ∣ (J : ℤ) + p) : p = J := by
+-  have hpZ : (0 : ℤ) < p := by exact_mod_cast hp
+-  have hJZ : (0 : ℤ) < J := by exact_mod_cast hJ
+-  have hpcZ : (2 : ℤ) * p < c := by exact_mod_cast hpc
+-  have hJcZ : (2 : ℤ) * J < c := by exact_mod_cast hJc
+   rcases hres with h | h
+-  · have hzero : (J : ℤ) - p = 0 :=
+-      Int.eq_zero_of_abs_lt_dvd h (by rw [abs_lt]; constructor <;> omega)
+-    exact_mod_cast (show (p : ℤ) = J by omega)
+-  · have hzero : (J : ℤ) + p = 0 :=
+-      Int.eq_zero_of_abs_lt_dvd h (by rw [abs_lt]; constructor <;> omega)
++  all_goals
++    have hzero := Int.eq_zero_of_abs_lt_dvd h (by rw [abs_lt]; omega)
+     omega
+ 
+ /-- The native minus-sign block recovers the main index.  In particular `V`,

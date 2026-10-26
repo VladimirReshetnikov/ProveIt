@@ -1,0 +1,213 @@
+--- /dev/null
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ConsecutivePellUnit.lean
+@@ -0,0 +1,45 @@
++import Mathlib.NumberTheory.Pell
++import Mathlib.Tactic
++
++namespace DiophantineConsistency.NativePellBootstrap
++
++/-- The explicit least positive unit for the native first norm. -/
++def firstUnit (Q : ℕ) : Pell.Solution₁ ((Q : ℤ) * (Q + 1)) :=
++  Pell.Solution₁.mk (2 * Q + 1) 2 (by ring)
++
++/-- No square lies at `Q(Q+1)+1`, and the next available second coordinate
++is two. This proves the ordinary fundamental-unit assertion unboundedly. -/
++theorem firstUnit_fundamental {Q : ℕ} (hQ : 0 < Q) :
++    Pell.IsFundamental (firstUnit Q) := by
++  refine ⟨by change (1 : ℤ) < 2 * Q + 1; omega, by change (0 : ℤ) < 2; norm_num, ?_⟩
++  intro b hb
++  change (2 * Q + 1 : ℤ) ≤ b.x
++  have hQZ : (0 : ℤ) < Q := by exact_mod_cast hQ
++  have hprop := b.prop
++  have hysq : (4 : ℤ) ≤ b.y ^ 2 := by
++    by_contra hlt
++    have hsmall : b.y ^ 2 < (2 : ℤ) ^ 2 := by omega
++    have habs := abs_lt_of_sq_lt_sq hsmall (by norm_num : (0 : ℤ) ≤ 2)
++    have hycases : b.y = -1 ∨ b.y = 0 ∨ b.y = 1 := by
++      rw [abs_lt] at habs
++      omega
++    have hnotone (hy : b.y ^ 2 = 1) : False := by
++      have hlow : (Q : ℤ) ^ 2 < b.x ^ 2 := by nlinarith
++      have hhigh : b.x ^ 2 < ((Q : ℤ) + 1) ^ 2 := by nlinarith
++      have hlo : (Q : ℤ) < b.x := (sq_lt_sq₀ (by positivity) (by omega)).mp hlow
++      have hhi : b.x < (Q : ℤ) + 1 := (sq_lt_sq₀ (by omega) (by positivity)).mp hhigh
++      omega
++    rcases hycases with hy | hy | hy
++    · exact hnotone (by rw [hy]; norm_num)
++    · have hx2 : (1 : ℤ) < b.x ^ 2 := by
++        simpa using (sq_lt_sq₀ (by norm_num : (0 : ℤ) ≤ 1) (by omega)).mpr hb
++      rw [hy] at hprop
++      norm_num at hprop
++      omega
++    · exact hnotone (by rw [hy]; norm_num)
++  have hxsq : (2 * Q + 1 : ℤ) ^ 2 ≤ b.x ^ 2 := by
++    nlinarith [mul_nonneg (show 0 ≤ (Q : ℤ) * (Q + 1) by positivity)
++      (show 0 ≤ b.y ^ 2 - 4 by omega)]
++  exact (sq_le_sq₀ (by positivity) (by omega)).mp hxsq
++
++end DiophantineConsistency.NativePellBootstrap
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ConsecutivePell.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ConsecutivePell.lean
+@@ -1,71 +1,51 @@
+-import Mathlib.Data.Int.Basic
+-import Mathlib.Algebra.Order.Ring.Abs
+-import Mathlib.Tactic.Linarith
+-import Mathlib.Tactic.Ring
+-import Mathlib.Tactic.NormNum
++import DiophantineConsistency.ConsecutivePellUnit
+ 
+ /-!
+ # Negative Pell norms for two consecutive factors
+ 
+-For `n ≥ 2`, the norm `x² - n(n+1)y²` never equals `-1`.
+-The elementary descent multiplies by the norm-one unit
+-`(2n+1) + 2√(n(n+1))`. Its inverse takes the absolute values
+-of a hypothetical solution to another solution with a smaller positive
+-second coordinate. No continued-fraction theory is needed.
++Square a hypothetical negative-norm solution, classify the positive norm-one
++solution using the existing fundamental unit, and contradict its first coordinate modulo 2n.
+ -/
+ 
+ namespace DiophantineConsistency.ConsecutivePell
+ 
+-private theorem no_negative_nat_y (n : ℤ) (hn : 2 ≤ n) :
+-    ∀ y : ℕ, ∀ x : ℤ, x ^ 2 - n * (n + 1) * (y : ℤ) ^ 2 ≠ -1 := by
+-  intro y
+-  induction y using Nat.strong_induction_on with
+-  | h y ih =>
+-      intro x hnorm
+-      have hy : 0 < (y : ℤ) := by
+-        by_contra hy
+-        have hy0 : (y : ℤ) = 0 := le_antisymm (le_of_not_gt hy) (Int.natCast_nonneg y)
+-        simp only [hy0, zero_pow (by decide : 2 ≠ 0), mul_zero, sub_zero] at hnorm
+-        nlinarith [sq_nonneg x]
+-      have hx : 0 ≤ |x| := abs_nonneg x
+-      have hnorm' : |x| ^ 2 - n * (n + 1) * (y : ℤ) ^ 2 = -1 := by
+-        simpa only [sq_abs] using hnorm
+-      have hny : 0 ≤ n * (y : ℤ) := mul_nonneg (by omega) (by omega)
+-      have hnysq : 2 ≤ n * (y : ℤ) ^ 2 := by
+-        have hsq : 1 ≤ (y : ℤ) ^ 2 := by nlinarith
+-        calc
+-          2 ≤ n := hn
+-          _ = n * 1 := by ring
+-          _ ≤ n * (y : ℤ) ^ 2 := mul_le_mul_of_nonneg_left hsq (by omega)
+-      have hlarge : n * (y : ℤ) < |x| := by
+-        by_contra h
+-        have hle : |x| ≤ n * (y : ℤ) := le_of_not_gt h
+-        have hp := mul_nonneg (sub_nonneg.mpr hle) (add_nonneg hny hx)
+-        nlinarith [hp]
+-      let y' : ℤ := (2 * n + 1) * (y : ℤ) - 2 * |x|
+-      let x' : ℤ := (2 * n + 1) * |x| - 2 * n * (n + 1) * (y : ℤ)
+-      have hy' : 0 < y' := by
+-        dsimp [y']
+-        by_contra h
+-        have hle : (2 * n + 1) * (y : ℤ) ≤ 2 * |x| := by omega
+-        have hsum : 0 ≤ 2 * |x| + (2 * n + 1) * (y : ℤ) := by
+-          positivity
+-        have hp := mul_nonneg (sub_nonneg.mpr hle) hsum
+-        nlinarith [hp, sq_nonneg (y : ℤ)]
+-      have hsmall : y' < (y : ℤ) := by dsimp [y']; nlinarith
+-      have hnew : x' ^ 2 - n * (n + 1) * y' ^ 2 = -1 := by
+-        calc
+-          x' ^ 2 - n * (n + 1) * y' ^ 2 =
+-              |x| ^ 2 - n * (n + 1) * (y : ℤ) ^ 2 := by dsimp [x', y']; ring
+-          _ = -1 := hnorm'
+-      have hcast : ((Int.toNat y' : ℕ) : ℤ) = y' := Int.toNat_of_nonneg hy'.le
+-      have hlt : Int.toNat y' < y := by
+-        exact_mod_cast (show ((Int.toNat y' : ℕ) : ℤ) < (y : ℤ) by rw [hcast]; exact hsmall)
+-      exact ih (Int.toNat y') hlt x' (by simpa only [hcast] using hnew)
++/-- Powers of the explicit unit have first coordinate congruent to one modulo twice Q. -/
++theorem pow_x_mod (Q k : ℕ) : (2 * Q : ℤ) ∣ (NativePellBootstrap.firstUnit Q ^ k).x - 1 := by
++  induction k with
++  | zero => simp
++  | succ k ih =>
++      rw [pow_succ, Pell.Solution₁.x_mul]
++      change (2 * Q : ℤ) ∣ (NativePellBootstrap.firstUnit Q ^ k).x * (2 * Q + 1) +
++        Q * (Q + 1) * ((NativePellBootstrap.firstUnit Q ^ k).y * 2) - 1
++      obtain ⟨t, ht⟩ := ih
++      refine ⟨t + (NativePellBootstrap.firstUnit Q ^ k).x + (Q + 1) * (NativePellBootstrap.firstUnit Q ^ k).y, ?_⟩
++      linear_combination ht
+ 
+-/-- A Pell discriminant `n(n+1)` with `n ≥ 2` excludes the negative unit. -/
++/-- A norm-one solution in the positive quadrant inherits the first-coordinate invariant. -/
++theorem positive_x_mod {Q : ℕ} (hQ : 0 < Q)
++    (u : Pell.Solution₁ ((Q : ℤ) * (Q + 1)))
++    (hx : 0 < u.x) (hy : 0 ≤ u.y) : (2 * Q : ℤ) ∣ u.x - 1 := by
++  obtain ⟨k, rfl⟩ := (NativePellBootstrap.firstUnit_fundamental hQ).eq_pow_of_nonneg hx hy
++  exact pow_x_mod Q k
++
++/-- A norm-minus-one solution would square to a forbidden first-coordinate residue class. -/
+ theorem norm_ne_neg_one (n x y : ℤ) (hn : 2 ≤ n) :
+     x ^ 2 - n * (n + 1) * y ^ 2 ≠ -1 := by
+-  simpa only [Int.natCast_natAbs, sq_abs] using no_negative_nat_y n hn y.natAbs x
++  lift n to ℕ using (by omega : 0 ≤ n)
++  intro h
++  have hp : (2 * x ^ 2 + 1) ^ 2 - (n : ℤ) * (n + 1) * |2 * x * y| ^ 2 = 1 := by
++    rw [sq_abs]
++    linear_combination 4 * x ^ 2 * h
++  let u := Pell.Solution₁.mk (2 * x ^ 2 + 1) |2 * x * y| hp
++  have hdvd := positive_x_mod (Q := n) (by omega) u
++    (by change (0 : ℤ) < 2 * x ^ 2 + 1; positivity)
++    (by change (0 : ℤ) ≤ |2 * x * y|; positivity)
++  change (2 * n : ℤ) ∣ (2 * x ^ 2 + 1) - 1 at hdvd
++  have hdvd2 : (2 * n : ℤ) ∣ 2 := by
++    obtain ⟨t, ht⟩ := hdvd
++    refine ⟨((n : ℤ) + 1) * y ^ 2 - t, ?_⟩
++    linear_combination 2 * h - ht
++  have := Int.le_of_dvd (by norm_num : (0 : ℤ) < 2) hdvd2
++  omega
+ 
+ end DiophantineConsistency.ConsecutivePell
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
+@@ -1,3 +1,4 @@
++import DiophantineConsistency.ConsecutivePellUnit
+ import DiophantineConsistency.NativePellStepDown
+ import DiophantineConsistency.SplitCertificate59
+ 
+@@ -148,45 +149,6 @@
+   refine ⟨p,hp,hD,hc,?_,source_rank_half_lt ports hβ x hx hs⟩
+   exact twice_index_lt (by omega) (by have := hx 20; omega)
+     (by have h := (source_c_bounds ports x hx hs).2; omega) hc
+-
+-/-- The explicit least positive unit for the native first norm. -/
+-def firstUnit (Q : ℕ) : Pell.Solution₁ ((Q : ℤ) * (Q + 1)) :=
+-  Pell.Solution₁.mk (2 * Q + 1) 2 (by ring)
+-
+-/-- No square lies at `Q(Q+1)+1`, and the next available second coordinate
+-is two. This proves the ordinary fundamental-unit assertion unboundedly. -/
+-theorem firstUnit_fundamental {Q : ℕ} (hQ : 0 < Q) :
+-    Pell.IsFundamental (firstUnit Q) := by
+-  refine ⟨by change (1 : ℤ) < 2 * Q + 1; omega, by change (0 : ℤ) < 2; norm_num, ?_⟩
+-  intro b hb
+-  change (2 * Q + 1 : ℤ) ≤ b.x
+-  have hQZ : (0 : ℤ) < Q := by exact_mod_cast hQ
+-  have hprop := b.prop
+-  have hysq : (4 : ℤ) ≤ b.y ^ 2 := by
+-    by_contra hlt
+-    have hsmall : b.y ^ 2 < (2 : ℤ) ^ 2 := by omega
+-    have habs := abs_lt_of_sq_lt_sq hsmall (by norm_num : (0 : ℤ) ≤ 2)
+-    have hycases : b.y = -1 ∨ b.y = 0 ∨ b.y = 1 := by
+-      rw [abs_lt] at habs
+-      omega
+-    have hnotone (hy : b.y ^ 2 = 1) : False := by
+-      have hlow : (Q : ℤ) ^ 2 < b.x ^ 2 := by nlinarith
+-      have hhigh : b.x ^ 2 < ((Q : ℤ) + 1) ^ 2 := by nlinarith
+-      have hlo : (Q : ℤ) < b.x := (sq_lt_sq₀ (by positivity) (by omega)).mp hlow
+-      have hhi : b.x < (Q : ℤ) + 1 := (sq_lt_sq₀ (by omega) (by positivity)).mp hhigh
+-      omega
+-    rcases hycases with hy | hy | hy
+-    · exact hnotone (by rw [hy]; norm_num)
+-    · have hx2 : (1 : ℤ) < b.x ^ 2 := by
+-        simpa using (sq_lt_sq₀ (by norm_num : (0 : ℤ) ≤ 1) (by omega)).mpr hb
+-      rw [hy] at hprop
+-      norm_num at hprop
+-      omega
+-    · exact hnotone (by rw [hy]; norm_num)
+-  have hxsq : (2 * Q + 1 : ℤ) ^ 2 ≤ b.x ^ 2 := by
+-    nlinarith [mul_nonneg (show 0 ≤ (Q : ℤ) * (Q + 1) by positivity)
+-      (show 0 ≤ b.y ^ 2 - 4 by omega)]
+-  exact (sq_le_sq₀ (by positivity) (by omega)).mp hxsq
+ 
+ /-- Classification of the actual square first norm, whose second coordinate
+ is twice a Pell sequence value. -/

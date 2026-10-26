@@ -1,0 +1,69 @@
+\section{Adoption order and bounded follow-up work}
+
+\subsection{Recommended first pass}
+
+The coefficient patch is the strongest immediate candidate. It removes
+repeated mathematical expansion, applies under weaker local hypotheses,
+serves five existing proof sites, and saves 20 physical lines after the
+shared theorem's full cost. Its new module is small and has an explicit
+interface. Review the diagonal multiplicity and the selected exponent's
+fibre condition first; they are the essential correctness points.
+
+The Pell patch is the smallest isolated proof edit. It adds neither an
+import nor a helper and saves eight lines. Its mathematical obligation is
+unchanged: the same interval between consecutive squares rules out the
+small second coordinate. The change is to derive that coordinate's square
+once from its absolute value. It is a suitable independent integration
+commit.
+
+The codec/parent patch is useful where preserving the literal wire format
+is a priority. It makes an exact relationship to a library API explicit and
+turns an already available raw correctness theorem into the source of the
+typed correctness theorem. The four-line net saving is smaller, but the
+duplicate induction disappears. The optional length proof can be considered
+separately after examining its added \code{Classical.choice} dependency.
+
+Defer the first-failure patch if immediate aggregate source length is the
+only criterion. Adopt it when shared control of interval minimality is
+valuable, or when an additional strip argument would otherwise introduce
+another copy. No arbitrary threshold on a predicted future saving is needed:
+compare the actual next client against the 28-line helper already supplied.
+
+\subsection{Two checked prototypes, with no unearned production saving}
+
+\textbf{Mixed products.} The optional \code{PairFiber.lean} file supplies a
+related local coefficient theorem for a product of two encodings. At the
+chosen exponent the two surviving contributions are \(u_i v_j\) and
+\(u_j v_i\); on the diagonal there is only \(u_i v_i\). It can support
+future bilinear clients that should not be forced through a square. This
+prototype was compiled, but no present production client is migrated to
+it and no savings are counted for it. Integrate only when a concrete client
+justifies the extra interface.
+
+\textbf{Pell minimum-coordinate criterion.} The optional
+\code{PellMinimum.lean} file proves that minimizing \(y^2\) among solutions
+with \(x>1\), together with the candidate's positivity, suffices for
+fundamentality. It makes the mathematical proof obligation reusable while
+allowing competitors of either sign in \(y\). For the one current target,
+the direct eight-line reduction is preferable. A second fundamental-unit
+proof would give a concrete reason to revisit the shared criterion.
+
+Both prototypes are accompanied by successful compiler logs. They are
+separate from the ten-module production overlay and from all source-saving
+totals. Neither is a reason to reopen an already-excluded historical idea.
+
+\subsection{What would change these recommendations}
+
+Three concrete developments could affect the choice. A changed Mathlib
+list-encoding instance would require rechecking the exact codec bridge.
+Another polynomial encoding with only selected isolated targets would
+increase the value of the local coefficient theorem. Another strip-wall
+proof would provide a real third client for the first-failure abstraction.
+Each can be assessed through the supplied interfaces without redesigning
+the executable reductions.
+
+The archive is meant to make those decisions reviewable: each direction has
+an exact target, a mathematical reason for the simplification, a separate
+integration patch, complete affected source, and a declared verification
+scope. The exclusion ledger accompanies the proposals so that later work can
+continue from this boundary instead of rediscovering the same mechanisms.
