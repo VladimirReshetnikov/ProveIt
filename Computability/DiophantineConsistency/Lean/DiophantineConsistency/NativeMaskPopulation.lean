@@ -19,9 +19,7 @@ theorem four_block_population_le (u A B C D : ℕ) :
   have h1 := σ_two_add_le A (2 ^ u * B)
   have h2 := σ_two_add_le (A + 2 ^ u * B) ((2 ^ u) ^ 2 * C)
   have h3 := σ_two_add_le (A + 2 ^ u * B + (2 ^ u) ^ 2 * C) ((2 ^ u) ^ 3 * D)
-  have hB : σ 2 (2 ^ u * B) = σ 2 B := lemma_2_4_σ u B
-  have hC : σ 2 ((2 ^ u) ^ 2 * C) = σ 2 C := by rw [← pow_mul]; exact lemma_2_4_σ _ _
-  have hD : σ 2 ((2 ^ u) ^ 3 * D) = σ 2 D := by rw [← pow_mul]; exact lemma_2_4_σ _ _
+  simp only [← pow_mul, lemma_2_4_σ] at h1 h2 h3 ⊢
   omega
 
 /-- The half-binomial population lower bound leaves no room for either
@@ -50,12 +48,7 @@ def repeated (t N a : ℕ) : ℕ := Nat.ofDigits (2 ^ t) (List.replicate N a)
 def repunit (t N : ℕ) : ℕ := repeated t N 1
 
 theorem repeated_eq_mul_repunit (t N a : ℕ) : repeated t N a = a * repunit t N := by
-  induction N with
-  | zero => simp [repeated,repunit]
-  | succ N ih =>
-    change a + 2 ^ t * repeated t N a = a * (1 + 2 ^ t * repunit t N)
-    rw [ih]
-    ring
+  simp [repeated, repunit, Nat.mul_ofDigits]
 
 theorem repeated_population (t N a : ℕ) (ha : a < 2 ^ t) :
     σ 2 (a * repunit t N) = N * σ 2 a := by
@@ -67,20 +60,13 @@ theorem repeated_population (t N a : ℕ) (ha : a < 2 ^ t) :
 theorem repunit_mod_eight {t N : ℕ} (ht : 3 ≤ t) (hN : 0 < N) :
     repunit t N % 8 = 1 := by
   obtain ⟨n,rfl⟩ : ∃ n, N = n + 1 := ⟨N-1,by omega⟩
-  have hpow : 2 ^ t % 8 = 0 := by
-    apply Nat.mod_eq_zero_of_dvd
-    change 2 ^ 3 ∣ 2 ^ t
-    exact pow_dvd_pow 2 ht
+  have hpow : 2 ^ t % 8 = 0 := Nat.mod_eq_zero_of_dvd (pow_dvd_pow 2 ht)
   change (1 + 2 ^ t * repunit t n) % 8 = 1
-  rw [Nat.add_mod,Nat.mul_mod,hpow]
-  norm_num
+  simp [Nat.add_mod, Nat.mul_mod, hpow]
 
 theorem population_add_one_even {n : ℕ} (hn : n % 2 = 0) :
     σ 2 (n + 1) = σ 2 n + 1 := by
-  have hdiv : (n + 1) / 2 = n / 2 := by omega
-  have hmod : (n + 1) % 2 = 1 := by omega
-  rw [σ_two_rec (n+1),σ_two_rec n,hdiv,hmod,hn]
-  omega
+  rw [show n = 2 * (n / 2) by omega, σ_two_two_mul_add_one, σ_two_two_mul]
 
 theorem population_sub_one_mod_eight {n : ℕ} (hn : n % 8 = 4) :
     σ 2 (n - 1) = σ 2 n + 1 := by

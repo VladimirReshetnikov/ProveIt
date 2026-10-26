@@ -20,15 +20,13 @@ theorem hasPositiveZero_positiveShift_iff (e : Expr σ) :
   constructor
   · rintro ⟨v, hp, hz⟩
     refine ⟨fun i => (v i - 1).toNat, ?_⟩
-    have he : (fun i => ((v i - 1).toNat : ℤ)) = fun i => v i - 1 := by
-      funext i
-      exact Int.toNat_of_nonneg (by have := hp i; omega)
+    have he (i) : ((v i - 1).toNat : ℤ) = v i - 1 :=
+      Int.toNat_of_nonneg (by have := hp i; omega)
     simpa only [positiveShift, eval_subst, eval_sub, eval_var, eval_constant, he] using hz
   · rintro ⟨u, hu⟩
-    refine ⟨fun i => (u i : ℤ) + 1, ?_, ?_⟩
-    · intro i
-      exact Int.add_pos_of_nonneg_of_pos (Int.natCast_nonneg _) (by decide)
-    · simpa only [positiveShift, eval_subst, eval_sub, eval_var, eval_constant,
-        add_sub_cancel_right] using hu
+    refine ⟨fun i => (u i : ℤ) + 1,
+      fun i => Int.add_pos_of_nonneg_of_pos (Int.natCast_nonneg _) (by decide), ?_⟩
+    simpa only [positiveShift, eval_subst, eval_sub, eval_var, eval_constant,
+      add_sub_cancel_right] using hu
 
 end DiophantineConsistency.Expr

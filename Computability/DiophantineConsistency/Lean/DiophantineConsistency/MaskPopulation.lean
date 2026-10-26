@@ -30,19 +30,12 @@ theorem population_pow_sub_pow {k t : ℕ} (hkt : k ≤ t) :
 
 private theorem sum_map_range (f : ℕ → ℕ) (n : ℕ) :
     ((List.range n).map f).sum = ∑ j ∈ range n, f j := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    rw [List.range_succ, List.map_append, List.sum_append, ih, Finset.sum_range_succ]
-    simp
+  have hr : (List.range n).toFinset = range n := by ext; simp
+  simpa only [hr] using (List.sum_toFinset f (List.nodup_range (n := n))).symm
 
 private theorem sum_support {S : Finset ℕ} {n : ℕ} (hS : S ⊆ range n) (f : ℕ → ℕ) :
     (∑ j ∈ range n, if j ∈ S then f j else 0) = ∑ j ∈ S, f j := by
-  have hf : (range n).filter (fun j => j ∈ S) = S := by
-    ext j
-    simp only [mem_filter]
-    exact and_iff_right_of_imp (fun hj => hS hj)
-  rw [← Finset.sum_filter, hf]
+  rw [← Finset.sum_filter, Finset.filter_mem_eq_of_subset hS]
 
 /-- An additive form avoids hiding either exact subtraction in a mask. -/
 theorem low_mask_population {k t n : ℕ} (ht : 1 ≤ t) (hkt : k ≤ t)

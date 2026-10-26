@@ -91,17 +91,7 @@ def prec {n : ℕ} {f : List.Vector ℕ n → ℕ} {g : List.Vector ℕ (n + 2) 
       v.head.rec (f v.tail) (fun i acc => g (i ::ᵥ acc ::ᵥ v.tail))) := by
   refine ⟨.prec p.val q.val, ?_⟩
   intro v
-  have h (k : ℕ) :
-      Nat.rec (motive := fun _ => ℕ) (p.val.eval v.tail)
-          (fun i acc => q.val.eval (i ::ᵥ acc ::ᵥ v.tail)) k =
-        Nat.rec (motive := fun _ => ℕ) (f v.tail)
-          (fun i acc => g (i ::ᵥ acc ::ᵥ v.tail)) k := by
-    induction k with
-    | zero => exact p.property _
-    | succ k ih =>
-        change q.val.eval (k ::ᵥ _ ::ᵥ v.tail) = g (k ::ᵥ _ ::ᵥ v.tail)
-        rw [q.property, ih]
-  exact h v.head
+  simp only [eval, p.property, q.property]
 
 /-- Keep program data and transport its specification using a supplied proof. -/
 def ofEq {n : ℕ} {f g : List.Vector ℕ n → ℕ} (p : Realizes f)

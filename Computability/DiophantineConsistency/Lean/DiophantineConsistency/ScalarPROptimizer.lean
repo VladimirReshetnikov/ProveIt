@@ -117,20 +117,7 @@ theorem eval_optimize (c : ScalarPRCode) (n : ℕ) : c.optimize.eval n = c.eval 
   | pair f g hf hg => simp only [optimize, eval_smartPair, eval, hf, hg]
   | comp f g hf hg => simp only [optimize, eval_smartComp, eval, hf, hg]
   | prec f g hf hg =>
-      rw [optimize, eval_smartPrec]
-      simp only [eval]
-      have h (k : ℕ) :
-          Nat.rec (motive := fun _ => ℕ) (f.optimize.eval n.unpair.1)
-              (fun i acc => g.optimize.eval (Nat.pair n.unpair.1 (Nat.pair i acc))) k =
-          Nat.rec (motive := fun _ => ℕ) (f.eval n.unpair.1)
-              (fun i acc => g.eval (Nat.pair n.unpair.1 (Nat.pair i acc))) k := by
-        induction k with
-        | zero => exact hf _
-        | succ k ih =>
-            change g.optimize.eval (Nat.pair n.unpair.1 (Nat.pair k _)) =
-              g.eval (Nat.pair n.unpair.1 (Nat.pair k _))
-            rw [hg, ih]
-      exact h _
+      simp only [optimize, eval_smartPrec, eval, hf, hg]
 
 /-- The optimizer never increases the finite program tree. -/
 theorem nodeCount_optimize_le (c : ScalarPRCode) : c.optimize.nodeCount ≤ c.nodeCount := by

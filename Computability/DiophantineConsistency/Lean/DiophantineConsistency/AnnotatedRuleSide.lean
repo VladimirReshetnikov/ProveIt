@@ -16,23 +16,12 @@ def value (tag : Nat) (r : Coordinates) (membershipIndex : Nat) : Nat :=
     (Nat.pair r.context (Nat.pair membershipIndex r.a)) else 1
 
 private theorem lookup_mem {G : List Form} {index : Nat} {f : Form}
-    (h : G[index]?=some f) : f∈G := by
-  induction G generalizing index with
-  | nil => simp at h
-  | cons a G ih =>
-    cases index with
-    | zero => simp only [List.getElem?_cons_zero,Option.some.injEq] at h; subst a; simp
-    | succ index => exact List.mem_cons_of_mem a (ih h)
+    (h : G[index]?=some f) : f∈G :=
+  List.mem_of_getElem? h
 
 private theorem exists_lookup (G : List Form) (f : Form) (h : f∈G) :
-    ∃ index : Nat,G[index]?=some f := by
-  induction G with
-  | nil => simp at h
-  | cons a G ih =>
-    rcases List.mem_cons.mp h with rfl | hf
-    · exact ⟨0,rfl⟩
-    · obtain ⟨index,hi⟩ := ih hf
-      exact ⟨index+1,by simpa only [List.getElem?_cons_succ] using hi⟩
+    ∃ index : Nat,G[index]?=some f :=
+  List.getElem?_of_mem h
 
 private theorem exists_reference (G : List Form) (a : Form) :
     (∃ index,AnnotatedContextLookup.referenceValue

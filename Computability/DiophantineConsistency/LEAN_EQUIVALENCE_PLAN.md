@@ -476,7 +476,56 @@ See the [root review and four fresh replays](reviews/wang-tiles942-strip-foundat
 Finite strip bounds and actual machine-run semantics are subsequent work.
 
 Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. `DecimalMachineInitialization`
+integration, documentation and commits. `WangMachineStep` proves the
+complete actual color update at the moved head, written old head and all
+other cells. `WangMachineAction` binds that operational step to the actual
+cached tile action and numeric target, including215. `WangTiles942Signals`
+excludes plain-input receive/receive signals and identifies the precise
+actual receiver in both transition directions. It keeps plain finish
+until the separately derived operating-row exclusion is applied. See the
+[root review and six fresh replays](reviews/wang-machine-action-signals-lean-root.md).
+These supply local step components, not a supplied whole-row equivalence.
+
+`WangTiles942RowEncoding` now
+identifies row1 of the derived persistent strip with the actual decimal
+machine at clock1, with its head inside the walls and every interior
+north color equal to the actual configuration encoder. `WangTiles942OperatingRow`
+then derives absence of every interior finish while the encoded state is
+operating: one finish would propagate to the forced head transition,
+whose South is Boolean. No clean-row or no-finish premise is introduced.
+See the [author review and four fresh checks](reviews/wang-tiles942-row-encoding-operating-lean-root.md).
+The actual one-row step is now closed by `WangTiles942RowStep.row_step`:
+the written old head, exact moved-head receiver and unchanged pass cells
+give the complete actual next configuration. Absence of finishes and
+strict next-head containment are derived rather than supplied. The
+reverse `WangTiles942StepConstruction.step_row` explicitly constructs
+an actual matching row from every operating configuration, including
+actions entering halt215. See the [root review and four fresh replays](reviews/wang-tiles942-row-step-construction-lean-root.md).
+Eventual-halt extraction and the complete converse remain further work.
+
+An [independent row-encoding and operating-row review](reviews/wang-tiles942-row-encoding-operating-lean-peer.md)
+passed four isolated fresh builds, retaining the actual clock1 and the
+derived finish exclusion without an added clean-row premise.
+
+`WangTiles942HeadBounds.next_head_inside` now proves strict containment
+of the actual stepped head, including entry into halt, from matching
+against the literal seam bounds. `WangMachineTraceBounds` proves sharp
+head/tape bounds for arbitrary operational runs and independently
+enlargeable blank margins around any given finite or halted trace.
+See the [root review and four fresh checks](reviews/wang-machine-strip-trace-bounds-lean-root.md).
+These support the row evolution and reverse tiling constructions;
+neither assumes a tiling/run equivalence.
+
+`WangTiles942InputLanguage` now
+identifies each operating north head input with its exact actual transition
+and retains both pass/finish choices at halt and all pass/finish/receive
+choices at plain inputs. `WangTiles942ResetRows` propagates one actual
+reset through the seam-free interval. A single interior south438 edge
+therefore forces an entire finish row followed by a reset row, without
+assuming either uniform row. See the [root review and four fresh replays](reviews/wang-tiles942-input-reset-rows-lean-root.md).
+Neither packet supplies a run or assumes existence of a finish event.
+
+`DecimalMachineInitialization`
 proves the literal decimal machine's first transition, exact post-step
 configuration, all integer tape readings and the clock shift for runs
 started there. `WangMachineEncoding` defines the actual vertical colors

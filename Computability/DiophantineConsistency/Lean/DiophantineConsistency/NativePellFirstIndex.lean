@@ -46,8 +46,7 @@ theorem source_first_index_exact (ports : Fin 4 → ℤ) (hports : PortBox ports
     hports.MC_nonneg hports.MF_nonneg x hx hs
   let R := (nativeRank x).toNat
   have hR : (R : ℤ) = nativeRank x := Int.toNat_of_nonneg (by omega)
-  have hRpos : 0 < R := by
-    exact_mod_cast (show (0 : ℤ) < (R : ℤ) by rw [hR]; omega)
+  have hRpos : 0 < R := by omega
   have hkc : x 12 + x 13 < x 19 := by
     have hce := (source_c_bounds ports x hx hs).1
     have hkY : x 12 + x 13 ≤ (x 12 + x 13) * (x 16 * x 9) :=
@@ -60,9 +59,7 @@ theorem source_first_index_exact (ports : Fin 4 → ℤ) (hports : PortBox ports
     (source_base_separation ports hports.beta_pos x hx hs) hc hk hkc
   have hwindow := source_window_bound ports hports.beta_pos hports.K_nonneg
     hports.MC_lt_beta hports.MF_lt_twice_beta x hx hs
-  have hRE : R + 1 < x 17 := by
-    rw [← hR] at hwindow
-    exact_mod_cast hwindow
+  have hRE : R + 1 < x 17 := by omega
   have hE := (source_first_registers ports x hx hs).1
   have hEP : x 17 ∣ 2 * firstQ x := by
     rw [hE]
@@ -99,8 +96,7 @@ theorem source_first_pair (ports : Fin 4 → ℤ) (hports : PortBox ports)
   have hR24 := source_native_rank_ge_twentyfour ports hports.beta_pos hports.K_nonneg
     hports.MC_nonneg hports.MF_nonneg x hx hs
   have hcast : ((nativeRank x).toNat : ℤ) = nativeRank x := Int.toNat_of_nonneg (by omega)
-  have hR24' : 24 ≤ (nativeRank x).toNat := by
-    exact_mod_cast (show (24 : ℤ) ≤ ((nativeRank x).toNat : ℤ) by rw [hcast]; omega)
+  have hR24' : 24 ≤ (nativeRank x).toNat := by omega
   refine ⟨n - 1,by omega,by omega,?_,?_⟩
   · simpa only [Nat.sub_add_cancel hn] using hτ
   · simpa only [Nat.sub_add_cancel hn] using hk
