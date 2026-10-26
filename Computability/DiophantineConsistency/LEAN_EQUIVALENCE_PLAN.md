@@ -345,6 +345,15 @@ physical941 South calibration, retaining the real511 possibility. See the
 composition replay](reviews/current-decoded-window2011-lean-peer.md).
 Empty cells, whole-field alignment and native/machine semantics remain open.
 
+`CurrentCellTranslation2011` now proves the exact aligned-cell equivalence
+and both temporal source residue cases, including arbitrary large shifts
+and N=1. `CurrentFieldOffsets2011` derives the coarse0/19/20 split from
+support, counts and three source ones. `NativeFieldCycles2011` proves the
+minimal generic19/20 exclusions while preserving the real511 self-loop.
+See the [root review and six fresh replays](reviews/current-field-geometry2011-lean-root.md).
+Actual copy/Start/terminal-word bindings and nine-bit aggregation remain
+explicit composition steps for whole-field alignment.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
