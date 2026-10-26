@@ -32,12 +32,7 @@ def equationForm (e : Expr (Fin n)) (coordinates : Fin n → Nat) : Form :=
 theorem equationForm_spec (H : ZFAxioms mem) (e : Expr (Fin n))
     (coordinates : Fin n → Nat) (ee : Nat → V) :
     Sat mem ee (equationForm e coordinates) ↔ EquationRel H e (ee ∘ coordinates) := by
-  change (∃ z,
-    Sat mem (scons z ee) (evalForm e.splitNatural.1 (fun i => coordinates i + 1) 0) ∧
-    Sat mem (scons z ee) (evalForm e.splitNatural.2 (fun i => coordinates i + 1) 0)) ↔ _
-  apply exists_congr
-  intro z
-  exact and_congr (evalForm_spec H _ _ _ _) (evalForm_spec H _ _ _ _)
+  simp only [equationForm, Sat, evalForm_spec H, EquationRel, Function.comp_def, scons]
 
 /-- No internal natural tuple solves the supplied polynomial equation. -/
 def NoZeroRel (H : ZFAxioms mem) (e : Expr (Fin n)) : Prop :=
@@ -52,24 +47,13 @@ theorem sentence_noZeroForm (e : Expr (Fin n)) : Sentence (noZeroForm e) := Sent
 /-- Exact semantics in every ZF model, including its nonstandard natural tuples. -/
 theorem sat_noZeroForm_iff (H : ZFAxioms mem) (e : Expr (Fin n)) :
     (∀ ee : Nat → V, Sat mem ee (noZeroForm e)) ↔ NoZeroRel H e := by
-  have hs := seal_valid (mem := mem)
-    (fImp (inputsNaturalForm (Fin.val : Fin n → Nat)) (fImp (equationForm e Fin.val) fBot))
-  constructor
-  · intro h v hv heq
-    let ee : Nat → V := fun j => if hj : j < n then v ⟨j, hj⟩ else vempty H
-    have hee : ee ∘ Fin.val = v := by
-      funext i
-      simp only [Function.comp_apply, ee, dif_pos i.isLt]
-    have hguard : Sat mem ee (inputsNaturalForm (Fin.val : Fin n → Nat)) :=
-      (inputsNaturalForm_spec H _ ee).mpr (by simpa only [← hee, Function.comp_apply] using hv)
-    have heq' : Sat mem ee (equationForm e Fin.val) :=
-      (equationForm_spec H e _ ee).mpr (by simpa only [hee] using heq)
-    exact hs.mp h ee hguard heq'
-  · intro h
-    apply hs.mpr
-    intro ee hguard heq
-    exact h (ee ∘ Fin.val) ((inputsNaturalForm_spec H _ ee).mp hguard)
-      ((equationForm_spec H e _ ee).mp heq)
+  refine (seal_valid (mem := mem) _).trans ?_
+  change (∀ ee : Nat → V,
+    Sat mem ee (inputsNaturalForm (Fin.val : Fin n → Nat)) →
+      ¬ Sat mem ee (equationForm e Fin.val)) ↔ NoZeroRel H e
+  simp only [inputsNaturalForm_spec H, equationForm_spec H]
+  exact (Fin.val_injective.surjective_comp_right' (fun _ => vempty H)).forall
+    (p := fun v : Fin n → V => (∀ i, mem (v i) (omegaV H)) → ¬ EquationRel H e v) |>.symm
 
 /-- Numeral tuples satisfy the object-language equation exactly when the
 supplied integer expression vanishes on the corresponding external naturals. -/
