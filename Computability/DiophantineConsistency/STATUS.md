@@ -25,34 +25,36 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete Boolean-dummy4027 equation: fifteen positive unknowns,
-exact degree157 and66 integer-leaf operations. Its constants total
-**94689 raw bytes**,516 fewer than4049. Complete TeX5050 bytes and
-nonwhite extracted text2688 characters save eight bytes and five characters;
-PDF shrinks23 to159595. Gzip integer storage grows11 bytes. Fonts remain
-9pt/7.7pt on one Letter page.
+the complete admissible942 equation: fifteen positive unknowns, degree157,
+66 integer-leaf operations and**94689 raw integer bytes**. Complete TeX5025
+bytes and nonwhite extracted text2671 save25 bytes and17 characters from
+Boolean4027. PDF grows126 to159721 bytes; gzip integers grow22 bytes.
+The same9pt/7.7pt fonts and one Letter page are retained.
 
-The [ordinary proof](research/boolean-dummy-independent/PROOF.md) and finite
-Pcbd18 discharge pass root and independent review. Canonical controller
-subsets need only a Boolean dummy, so its second bit can be removed.
-Every nonzero fractional phase becomes even without spill. Complete
-mask populations978,873 padding tests, actual rank, safe subsets and both
-P66 maps are covered. The controller has prime246929, orders23/1342 and
-H18/2634/79912. Normal/optimized source and finite checks pass, including
-actual dummy-domain/rank controls and printed marker deletion. Two actual
-full-page visual inspections pass. See the [candidate](candidates/one-page-boolean-dummy4027/README.md),
-[math review](reviews/boolean-dummy4027-independent-peer.md) and
-[page review](reviews/boolean-dummy4027-page-peer.md).
+The [ordinary proof](research/admissible942-independent/PROOF.md) deletes
+only the already forbidden old selector1 through an explicit bijection.
+Initializer928, every remaining tile and the full admissible computation
+language are preserved. All978 physical bits are allowed; no +rho exception
+is needed. The complete moved geometry,934-phase partition,873 padding
+bits, actual rank and both P66 maps pass root and independent review.
+Pca942 uses prime246929, orders23/1342 and new H38/3031/56296.
+Normal/optimized checks reproduce all942 printed tiles,3297 coefficients,
+physical support and integer ports. Actual initializer/marker corruptions
+are rejected; two actual full-page visual inspections pass. See the
+[candidate](candidates/one-page-admissible942/README.md),
+[math review](reviews/admissible942-independent-peer.md) and
+[page review](reviews/admissible942-page-peer.md).
 
-Every previous page and CURRENT record is preserved. No new formal-kernel
+All earlier pages and CURRENT records remain preserved. No new formal-kernel
 replay or consistency decision is claimed; inherited ordinary calibration
-remains explicit. Work now deletes the already forbidden selector through
-an exact finite-language bijection and removes a marker factor whose two
-used evaluations are unchanged. The independently checked
-[radix obstacles](research/radix-parity-independent/README.md) concern
-specific proof interfaces, not general equation lower bounds. The
+remains explicit. A single-clause layout is now under complete proof and
+finite review: marker parity may bound the phase before count decoding,
+allowing the second clause to be removed. The separately checked
+[weighted-only Psi identity](research/weighted-only-psi/NOTE.md) preserves
+the exact tuple while shortening the recipe blocks. The
+[radix note](research/radix-parity-independent/README.md) and
 [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
-remains a conditional tradeoff tied to preserved4127 geometry.
+remain scoped obstacles/tradeoffs, with no global lower-bound claim.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
 still saves nineteen operations and171 degree while adding five unknowns.

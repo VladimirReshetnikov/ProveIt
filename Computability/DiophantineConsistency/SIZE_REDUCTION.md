@@ -13,22 +13,23 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained page uses the fully reviewed **Boolean-dummy4027** tuple.
-Its four raw integers total94689 bytes versus95205 for4049,97046 for4127,
+The maintained page uses the fully reviewed **admissible942** tuple.
+Its four raw integers remain94689 bytes, versus95205 for4049,97046 for4127,
 98219 for4177,141226 for zero-weight6007,172011 for one-anchor7309,
 180987 for two-anchor7691,207214 for three-anchor47 and242484 for radix55.
-Complete TeX5050 bytes saves eight from4049; nonwhite extracted text2688
-saves five characters; PDF shrinks23 to159595 bytes. Gzip storage grows11.
-Fonts and the15-positive/66-operation/degree157 profile remain unchanged.
-Pcbd18 is discharged; see the [complete candidate](candidates/one-page-boolean-dummy4027/README.md).
+Complete TeX5025 bytes saves25 fromBoolean4027; nonwhite extracted text2671
+saves17 characters. PDF grows126 to159721 and gzip storage grows22.
+Fonts and the15-positive/66-operation/degree157 profile are unchanged.
+Pca942 is discharged; see the [candidate](candidates/one-page-admissible942/README.md).
 
-Canonical safe subsets only use0/1 at the sole controller dummy, so its
-extra clearing can be removed. Native population978 equals core105 plus873
-padding bits, and actual rank remains pc(R)=3t+2 with R=3 modulo4.
-The complete carry,935-case phase, reset, canonical subset, controller and
-positive P66 maps pass independent review. Every printed coefficient and
-physical position is reconstructed; targeted actual marker deletion is
-rejected. Both actual visual inspections pass.
+Delete precisely the already forbidden old selector1 using the bijection
+g(0)=0,g(j)=j+1. Every admissible tile, computation and cofinal rectangle
+is preserved. Initializer928 keeps its colors. With all978 physical bits
+allowed, MC loses +rho. The marker term loses a redundant t^34 factor at
+its only used evaluations1 and2. Complete phase, carry, native, actual-rank,
+controller and P66 proofs pass review. Every printed tile and fixed integer
+is reconstructed; initializer and marker corruption controls pass, as do
+two actual visual inspections.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
 gives65 operations for the same bound three-anchor47 polynomial while
@@ -40,14 +41,20 @@ those specific bindings. Neither is an integer-leaf65 record. The specific
 four-gate tail requiring MC=MF_native is ruled out by odd-d mask parity;
 this is no general lower bound on64-operation evaluators.
 
-The reviewed [single-dummy4027 intermediate](research/single-dummy-independent/README.md)
-is preserved as the preceding proof checkpoint. The current Boolean-only
-refinement simplifies its MC recipe and removes the exceptional spill case.
-Next, the already forbidden selector1 can be deleted by the exact bijection
-g(0)=0,g(j)=j+1 for1..941. This shortens the complete table and removes
-another MC term while preserving every admissible old tile. The marker
-factor t^34 is also redundant at the only used Psi evaluations1 and2.
-Each complete specialization receives separate proof, finite and page review.
+The next major lead uses only one clause. For a Boolean physical marker,
+its forced odd test may first exclude fractional phases and bound the
+integral offset. Placing a sole clause above twice the marker then makes
+that clause clean before count decoding. The full ordinary argument and
+new geometry/controller certificate are being developed independently;
+no finite-only result replaces the maintained equation.
+
+The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
+removes the zero-weight marker from Psi and subtracts it explicitly in MC.
+All3297 coefficients,978 physical positions and four whole integers remain
+exactly equal. Root-reviewed normal/optimized checks pass, including actual
+marker-deletion rejection. The exact two recipe blocks save six bytes;
+complete-page rendering remains a separate step. All earlier proof and
+page checkpoints, including the0..3-dummy intermediate, are preserved.
 
 The independently checked [radix note](research/radix-parity-independent/README.md)
 records two precise obstacles: radix46 violates the retained square converse
