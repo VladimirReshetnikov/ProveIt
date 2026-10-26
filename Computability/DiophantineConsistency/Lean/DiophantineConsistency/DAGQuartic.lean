@@ -1,5 +1,6 @@
 import DiophantineConsistency.ArithmeticDAGSemantics
 import DiophantineConsistency.QuarticCost
+import DiophantineConsistency.CompilerSupport
 
 /-!
 # A quartic compiler that preserves arithmetic-circuit sharing
@@ -80,19 +81,11 @@ theorem eval_nodeResidual (nodes : List (Node inputs fixed)) (p : Fin fixed → 
         (fun j => (x j : ℤ)) (signedRead w) := by
   rw [nodeResidual,Expr.eval_sub,eval_wire,eval_rhs,sub_eq_zero]
 
-private theorem eval_sumExpressions {σ : Type*} (es : List (Expr σ)) (v : σ → ℤ) :
-    (QuarticSyntax.sumExpressions es).eval v = (es.map (fun e => e.eval v)).sum := by
-  induction es <;> simp_all [QuarticSyntax.sumExpressions]
-
 theorem expression_zero_iff (nodes : List (Node inputs fixed)) (output : ℕ)
     (p : Fin fixed → ℤ) (v : Variables inputs nodes.length → ℤ) :
     (expression nodes output p).eval v = 0 ↔
-      ∀ i, (residual nodes output p i).eval v = 0 := by
-  rw [expression,eval_sumExpressions]
-  simp only [List.map_ofFn,Fin.sum_ofFn,Function.comp_apply,Expr.eval_mul]
-  simpa only [Finset.mem_univ,forall_true_left] using
-    (Finset.sum_mul_self_eq_zero_iff (Finset.univ : Finset (Fin (nodes.length+1)))
-      (fun i => (residual nodes output p i).eval v))
+      ∀ i, (residual nodes output p i).eval v = 0 :=
+  CompilerSupport.sumSquares_zero_iff _ _
 
 /-- An arbitrary signed circuit evaluation supplies the gate witnesses. -/
 def witnesses (nodes : List (Node inputs fixed)) (p : Fin fixed → ℤ) (x : Fin inputs → ℕ) :
@@ -242,14 +235,8 @@ theorem residual_degree (nodes : List (Node inputs fixed)) (output : ℕ)
       (rhs_degree nodes.length p (nodes.getD j.val (.literal 0)))
 
 theorem polynomial_degree (nodes : List (Node inputs fixed)) (output : ℕ)
-    (p : Fin fixed → ℤ) : (polynomial nodes output p).totalDegree ≤ 4 := by
-  unfold polynomial expression
-  rw [QuarticSyntax.polynomial_sumExpressions]
-  simp only [List.map_ofFn,Fin.sum_ofFn,Function.comp_apply,Expr.toPolynomial]
-  apply MvPolynomial.totalDegree_finsetSum_le
-  intro i _
-  exact (MvPolynomial.totalDegree_mul _ _).trans
-    (Nat.add_le_add (residual_degree nodes output p i) (residual_degree nodes output p i))
+    (p : Fin fixed → ℤ) : (polynomial nodes output p).totalDegree ≤ 4 :=
+  CompilerSupport.sumSquares_degree_le _ 2 (residual_degree nodes output p)
 
 /-- The number of natural variables, charging both parts of every node. -/
 theorem variable_count (nodes : List (Node inputs fixed)) :
@@ -263,23 +250,8 @@ theorem exists_polynomial_zero_iff (nodes : List (Node inputs fixed))
     (∃ v : Variables inputs nodes.length → ℕ,
       MvPolynomial.eval (fun i => (v i : ℤ)) (polynomial nodes output p) = 0) ↔
       ∃ x : Fin inputs → ℕ, value nodes output p (fun i => (x i : ℤ)) = 0 := by
-  constructor
-  · rintro ⟨v,hv⟩
-    apply Exists.intro (fun i => v (.inl i))
-    apply (exists_zero_iff nodes htop output ho p _).mp
-    refine ⟨fun i => v (.inr i),?_⟩
-    have he : assignment (fun i => v (.inl i)) (fun i => v (.inr i)) =
-        fun i => (v i : ℤ) := by funext i; cases i <;> rfl
-    rw [he]
-    simpa only [polynomial,Expr.eval_toPolynomial] using hv
-  · rintro ⟨x,hx⟩
-    obtain ⟨w,hw⟩ := (exists_zero_iff nodes htop output ho p x).mpr hx
-    refine ⟨Sum.elim x w,?_⟩
-    rw [polynomial,Expr.eval_toPolynomial]
-    have he : (fun i => ((Sum.elim x w i : ℕ) : ℤ)) = assignment x w := by
-      funext i
-      cases i <;> rfl
-    rw [he]
-    exact hw
+  rw [Sum.exists_sum]
+  simpa only [polynomial, Expr.eval_toPolynomial, CompilerSupport.natCast_sumRec, assignment, natAssignment] using
+    (exists_congr (fun x => exists_zero_iff nodes htop output ho p x))
 
 end DiophantineConsistency.DAGQuartic
