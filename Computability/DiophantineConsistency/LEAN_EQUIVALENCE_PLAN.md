@@ -864,6 +864,20 @@ separate source-authenticated closure refresh addresses those gaps.
 The encoded iff between this sentence and sealed internal consistency
 remains OPEN; constructing the sentence is not that calibration proof.
 
+`CarrierScaledAuxiliary118` now checks the accepted auxiliary-coefficient
+replacement directly on Carrier65. Nonzero discriminant is enough for
+the identity witness map to preserve the entire integer zero set; the
+positive specialization derives that condition from the actual beta and
+coordinate signs. The new literal current-port polynomial therefore has
+a closed external no-positive-zero iff actual ConZFC theorem. See the
+[author record](reviews/carrier-scaled-auxiliary118-root.md) and
+[independent fresh replay](reviews/carrier-scaled-auxiliary118-lean-peer.md),
+with six standard-only reports. This extends the Lean-covered arithmetic
+frontier using an existing ordinary reduction; the separate frozen
+sorted2501 graph's66-operation/degree118 proof is not relabeled as a new
+current2011 graph or as a Lean metric theorem. The65-operation page stays
+unchanged, and the internal-ZFC obligation remains separate.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the

@@ -12,6 +12,16 @@ A smaller formula must retain a complete ordinary proof chain, including
 its coefficient tuple and witness domain. Local gadget counts alone do
 not establish the size of a complete consistency equation.
 
+The accepted scaled auxiliary-coefficient replacement now also has a
+uniform Lean proof on all fourteen Carrier65 coordinates, including
+noncanonical positive zeros, and a closed external consistency equivalence
+at the exact CURRENT2011 ports. See
+[`CarrierScaledAuxiliary118`](Lean/DiophantineConsistency/CarrierScaledAuxiliary118.lean)
+and its [independent replay](reviews/carrier-scaled-auxiliary118-lean-peer.md).
+This extends formal coverage; its separate older66/118 graph and degree
+certificate retain their sorted2501 binding. A new current-port graph or
+Lean exact-degree theorem is not claimed by that algebraic transfer.
+
 ## 25 October continuation
 
 26 October formalization checkpoint: the maintained14/65/150 equation and
