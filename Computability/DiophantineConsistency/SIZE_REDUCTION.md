@@ -24,6 +24,21 @@ Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
 
+26 October new tradeoff: the
+[corrected thirteen-variable strong factor](research/thirteen-corrected-strong126/README.md)
+gives **13 positive unknowns,73 integer-leaf operations and exact degree126**
+at the complete CURRENT2011 ports (47313 raw bytes). Compared with71/128,
+it spends two operations to lower the degree by two. The correction adapts
+the existing fifteen-variable strong-factor idea; no novelty or global
+minimum is claimed. Its entire positive zero set is preserved by the
+identity witness map, and its actual current-port consistency equivalence
+is Lean-checked. The complete finite graph/degree audit passes normally
+and under optimized Python, including both cancellation sites and all72
+leading terms. See the [independent root review](reviews/thirteen-corrected-strong126-root.md).
+This metric proof is separate from the Lean zero-set proof; an HA
+proof-existence endpoint remains open. The maintained decimal14/65/150
+page is unchanged.
+
 26 October formalization checkpoint: the maintained14/65/150 equation and
 the generic accepted13/69/174,13/70/140 and13/71/128 forms instantiated at
 the CURRENT2011 coefficient tuple now have closed external Lean no-positive-zero

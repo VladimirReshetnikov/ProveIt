@@ -70,6 +70,14 @@ authenticates both complete files and all 715 digits in a fresh PDF extraction.
 A fresh one-page build is byte-identical, and its whole page was visually checked.
 Subscripts in the fixed tile table and decoder index constant data.
 
+The new [13/73/126 arithmetic variant](research/thirteen-corrected-strong126/README.md)
+preserves the complete positive zero set of the normalized13-variable form
+at the CURRENT2011 ports, spending two operations to reduce degree128 to126.
+Its consistency equivalence is externally Lean-checked, and its complete
+graph/degree/whole-port audit has independent root replay. It remains a
+separate tradeoff; the14/65/150 decimal display is preserved. HA
+proof-existence formalization remains governed by the plan above.
+
 The [complete padding-staircase2011 candidate](candidates/one-page-padding-staircase-carrier65-2011/README.md)
 uses **47,313 raw fixed-integer bytes**, 10,812 below the preceding2471
 page. It fixes Start and sorts the other941 selectors by their distinct

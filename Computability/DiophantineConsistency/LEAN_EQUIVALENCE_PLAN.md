@@ -892,6 +892,20 @@ sorted2501 graph's66-operation/degree118 proof is not relabeled as a new
 current2011 graph or as a Lean metric theorem. The65-operation page stays
 unchanged, and the internal-ZFC obligation remains separate.
 
+`ThirteenCorrectedStrong` adds the first-norm residual inside the normalized
+strong factor. At a zero of EITHER product polynomial it independently
+derives P=1 from the integer-unit property and the actual consecutive-Pell
+negative-unit exclusion. Thus the identity map preserves the entire
+positive thirteen-coordinate zero set, without a supplied norm or native
+witness. The exact current2011 specialization has a closed external
+no-positive-zero iff ConZFC theorem. Its [author receipt](reviews/thirteen-corrected-strong126-author.md)
+and [independent root source/replay/finite review](reviews/thirteen-corrected-strong126-root.md)
+record eleven standard-only reports. The separate complete graph gives
+73 operations and exact degree126, after full323/353-term cancellation
+checks and all72 leading terms. All four actual ports are rebuilt in the
+normal/optimized auditor. This is a two-operation/two-degree tradeoff,
+with no Lean exact-degree or HA proof-existence endpoint claimed.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
