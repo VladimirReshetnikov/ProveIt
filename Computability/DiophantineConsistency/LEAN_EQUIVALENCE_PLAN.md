@@ -52,6 +52,18 @@ No global optimality theorem is requested or inferred from that ledger.
 
 ## Current gaps and implementation order
 
+The exact215 machine now also has an independent arithmetic graph/step/run
+specialization, including total unique evaluation at every internal IΣ1
+time and exact standard whole-tape semantics. See its
+[root replay](reviews/arithmetic-machine215-root.md): eight fresh leaves,
+24 standard-only reports and124 authenticated cached prerequisites.
+The one-line decoder import repair retains all proof bodies and machine
+data; a separate native endpoint regression passed. This does not establish
+the missing internal consistency calibration or an HA proof. The
+[C222 audit](research/ha-c222-internalization-audit.md) and
+[HA arithmetic adapter audit](research/ha-arithmetic-translation-adapter-audit.md)
+state the remaining concrete interfaces.
+
 The older native modules treat the457-mode,89-bit compact54 construction;
 their strongest local-mask endpoint is `NativeLocalMask54.source_local_masks`.
 The current942-tile,47-bit construction now has checked literal decimal

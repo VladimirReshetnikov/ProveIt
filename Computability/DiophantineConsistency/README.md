@@ -23,6 +23,14 @@ validator and Rotation240 consistency theorems provide reusable arithmetic
 machinery; adapting it to the exact215 machine remains open. The
 [source audit](research/ha-current-equation-constructive-audit-20261026.md)
 also covers the owner's K215 verification pointer.
+The [exact215 arithmetic run](Lean/DiophantineConsistency/ArithmeticMachineRun215.lean)
+is now represented and total at every internal time in every IΣ1 model,
+with exact standard-machine semantics. Its
+[independent replay](reviews/arithmetic-machine215-root.md) passed all eight
+machine leaves and24 standard-only axiom reports. The
+[C222 calibration audit](research/ha-c222-internalization-audit.md) separates
+the remaining seed-axiom and counter4 runtime bridges to the existing internal
+validator theorem; run totality alone does not prove that equivalence.
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence

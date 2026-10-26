@@ -177,6 +177,36 @@ but their exact215 contracts must be proved. The
 records these concrete differences and the searched scope. This is an
 open comparison obligation, not a claim of unprovability in HA.
 
+The exact215 graph/step/run specialization is now checked in
+[ArithmeticMachineRun215](Lean/DiophantineConsistency/ArithmeticMachineRun215.lean).
+The bounded transition graph is compiled from the actual typed decimal table,
+not a replacement machine. Its primitive-recursive run is total and unique
+at every time of every IΣ1 model, and agrees with the actual whole-tape run
+at ordinary natural times. IΣ1/PA prove the closed run-totality sentence;
+the closed halting sentence has the exact standard interpretation.
+Eight fresh leaves passed [independent root replay](reviews/arithmetic-machine215-root.md)
+with24 standard-only reports and124 authenticated cached prerequisites.
+The sole decoder change narrows one import; a separate two-leaf regression
+retains the external equation endpoint. This is not a full closure refresh.
+
+The [C222 audit](research/ha-c222-internalization-audit.md) gives the missing
+all-model witness equivalence explicitly: exact215 halting iff the old C254
+history checker accepts falsity. It separates represented C222 checking,
+internal logical/seed calibration and actual counter4 runtime simulation.
+The changed equality leaf has a small prospective C254 adapter; the changed
+seed bundle requires additional internal syntactic interpretation work.
+None of these missing statements is supplied by standard-Nat simulation.
+
+The [arithmetic translation audit](research/ha-arithmetic-translation-adapter-audit.md)
+also fixes the next proof-transfer interface: translate Foundation ordered
+arithmetic syntax into the existing conventional PAHF HA, then map actual
+intuitionistic proofs. Translated equality/arithmetic axioms and arbitrary
+induction require explicit HA derivations. Reuse the existing GG recursion;
+do not identify its translated axiom theory with conventional HA by naming.
+For the literal universal negative equality, a direct syntax comparison can
+remove the translation; arbitrary negative formulas require more than the
+already proved double-negation stability.
+
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and
 the literal `BProv ZFCax_s [] Form.fBot`. Its final negation composition
