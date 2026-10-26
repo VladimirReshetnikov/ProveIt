@@ -25,33 +25,34 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete admissible942 equation: fifteen positive unknowns, degree157,
-66 integer-leaf operations and**94689 raw integer bytes**. Complete TeX5025
-bytes and nonwhite extracted text2671 save25 bytes and17 characters from
-Boolean4027. PDF grows126 to159721 bytes; gzip integers grow22 bytes.
+the complete single-clause2999 equation: fifteen positive unknowns,
+degree157,66 integer-leaf operations and**70533 raw integer bytes**.
+Compared with admissible942, raw storage falls24156 bytes, gzip3819 to4193,
+complete TeX12 to5013, nonwhite extracted text6 to2665 and PDF16 to159705.
 The same9pt/7.7pt fonts and one Letter page are retained.
 
-The [ordinary proof](research/admissible942-independent/PROOF.md) deletes
-only the already forbidden old selector1 through an explicit bijection.
-Initializer928, every remaining tile and the full admissible computation
-language are preserved. All978 physical bits are allowed; no +rho exception
-is needed. The complete moved geometry,934-phase partition,873 padding
-bits, actual rank and both P66 maps pass root and independent review.
-Pca942 uses prime246929, orders23/1342 and new H38/3031/56296.
+The [ordinary proof](research/parity-clause-independent/PROOF.md) uses
+one clause at1956. All reflected low-field overlaps are included: they
+are even label weights and remain below the carry bound. Marker parity
+first forces fractional phase zero; the Boolean temporal clause bit is
+then absorbed into the count lemma. Decoded Start labels recover full
+alignment. The exact predecessor,916 padding bits, actual rank, ordinary
+safe increments and both P66 maps pass full root and independent review.
+Pcpc uses prime965357, orders23/1499 and new H45/2747/650665.
 Normal/optimized checks reproduce all942 printed tiles,3297 coefficients,
 physical support and integer ports. Actual initializer/marker corruptions
 are rejected; two actual full-page visual inspections pass. See the
-[candidate](candidates/one-page-admissible942/README.md),
-[math review](reviews/admissible942-independent-peer.md) and
-[page review](reviews/admissible942-page-peer.md).
+[candidate](candidates/one-page-parity-clause2999/README.md),
+[math review](reviews/parity-clause2999-independent-peer.md) and
+[page review](reviews/parity-clause2999-page-peer.md).
 
-All earlier pages and CURRENT records remain preserved. No new formal-kernel
-replay or consistency decision is claimed; inherited ordinary calibration
-remains explicit. A single-clause layout is now under complete proof and
-finite review: marker parity may bound the phase before count decoding,
-allowing the second clause to be removed. The separately checked
+All earlier pages and CURRENT records remain preserved, along with the
+reviewed [single-clause3037 checkpoint](research/single-clause-independent/README.md).
+No new formal-kernel replay or consistency decision is claimed; inherited
+ordinary calibration remains explicit. Next work tests squarefree composite
+block lengths and alternative padding placements. The separately checked
 [weighted-only Psi identity](research/weighted-only-psi/NOTE.md) preserves
-the exact tuple while shortening the recipe blocks. The
+its bound tuple while shortening the recipe blocks. The
 [radix note](research/radix-parity-independent/README.md) and
 [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
 remain scoped obstacles/tradeoffs, with no global lower-bound claim.
