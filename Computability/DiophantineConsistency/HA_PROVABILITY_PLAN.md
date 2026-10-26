@@ -428,8 +428,8 @@ reports with byte-identical author objects. The
 [final three order cases](reviews/foundation-ha-order-final-root.md)
 mulLtMul, ltIrrefl and ltTri now pass six more independent builds and53
 standard-only reports, also byte-identical to the author. Thus all nine
-source order images are discharged. Full arithmetic proof transfer and the
-exact no-zero/consistency target comparison remain separate obligations.
+source order images are discharged. The exact no-zero/consistency target
+comparison remains a separate obligation.
 
 [FoundationHATheoryTransfer](Lean/DiophantineConsistency/FoundationHATheoryTransfer.lean)
 now constructs the required finite assumption discharge and actual
@@ -438,8 +438,14 @@ GG theorem with explicit HA proofs of the source images. The concrete
 eight-semiring-axiom corollary has no image-provability premise. Both leaves
 passed author and [independent peer builds](reviews/foundation-ha-theory-transfer-peer.md),
 with seven standard-only reports and byte-identical outputs. This supplies
-proof composition; complete arithmetic instantiation and exact target
-comparison remain open.
+proof composition. [FoundationHAPeano](Lean/DiophantineConsistency/FoundationHAPeano.lean)
+now discharges every actual PeanoMinus constructor and every unrestricted
+induction axiom, giving HA proofs of literal GG images of all actual PA,
+subtheory and IΣk derivations without image-axiom premises. Both leaves pass
+[independent replay](reviews/foundation-ha-peano-peer.md), with nine reports
+and byte-identical objects over112 cached prerequisites (85 Foundation).
+The actual source PA theorem of the equation/Con(ZFC) equivalence, its
+literal target comparison and the C222 seed/runtime bridges remain open.
 
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and

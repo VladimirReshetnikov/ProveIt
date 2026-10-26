@@ -116,13 +116,18 @@ and preserving the double-negated order premises. The
 [final order packet](reviews/foundation-ha-order-final-root.md) now proves
 mulLtMul, ltIrrefl and ltTri too, using actual HA witness construction and
 formula induction. All nine source order images are independently checked.
-Full arithmetic transfer and the HA target equivalence remain open.
+The [full PA-to-HA transfer](reviews/foundation-ha-peano-peer.md) now composes
+every equality, arithmetic and unrestricted induction image into an actual
+HA proof of any PA theorem's literal GG image. Both independent leaves
+pass all nine reports. The source PA proof of the exact equivalence and
+the final target comparison remain open.
 The [proof-transfer adapter](reviews/foundation-ha-theory-transfer-peer.md)
 now composes the existing GG and finite proof maps into actual HA
 derivations, provided each used source axiom image is proved in HA. Its
 concrete semiring corollary discharges that premise for all eight axioms;
 independent builds pass all seven reports. The complete arithmetic
-instantiation and final target comparison remain separate work.
+instantiation is now checked in FoundationHAPeano; final target comparison
+remains separate work.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the

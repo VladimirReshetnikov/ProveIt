@@ -177,6 +177,13 @@ discharges mulLtMul, ltIrrefl and ltTri with six independent builds and53
 standard-only reports. No source order case remains. These checkpoints
 do not yet prove the final HA consistency equivalence.
 
+The [complete PA negative proof transfer](reviews/foundation-ha-peano-peer.md)
+now composes all actual source equality/arithmetic/induction cases. An
+actual Foundation PA proof yields a genuine HA proof of its literal GG
+image, with no remaining source-axiom image premise. Independent fresh main
+and checks pass nine reports and match author objects. This leaves the
+source PA equivalence, actual target comparison and C222 calibration open.
+
 ### First arithmetic checkpoint
 
 The first four modules above now compile, together with their focused
