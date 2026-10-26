@@ -8,4 +8,4 @@
   placement parent; `OMITTED.tsv` gives each member's blob hash and a repository path holding it.
 - The ZIP is retired from `docs/incoming/` in the placement commit. Nothing here is imported by the
   Lean build. Adoption into the maintained tree is recorded in
-  [../lean-proof-simplification-20261026/ADOPTION.md](../lean-proof-simplification-20261026/ADOPTION.md).
+  [../ADOPTION.md](../ADOPTION.md).
