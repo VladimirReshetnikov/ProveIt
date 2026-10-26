@@ -645,6 +645,8 @@ literal Start data. Dummy977 and marker1004 remain free in its adapters.
 ordinary increment/decrement identity with its explicit F increment,
 without inferring it from a congruence. See the [root source review and
 four fresh checks](reviews/current-cell-rank-construction-lean-root.md).
+The [independent cell-construction review](reviews/current-cell-construction2011-lean-peer.md)
+passed fresh isolated main/check replay with the same exact source binding.
 Global word assembly, cyclic carries, composite controller and arithmetic
 witnesses remain work items.
 

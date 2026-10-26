@@ -58,6 +58,10 @@ The rank check log SHA-256 is
 `208166be42aaea2cc32eadae211093656b803995b55a098a0841a2b98e97eec1`.
 See author receipts for [local cells](current-cell-construction2011-author.md)
 and [rank variation](native-rank-variation-author.md).
+The [independent local-cell review](current-cell-construction2011-lean-peer.md)
+also passed isolated fresh main/check replay with 15 standard-only reports
+and byte-identical objects. It checked the true field orientation, full
+clause mask, physical permutation and free control-slot interfaces.
 
 The global Boolean word, shifted marker, cyclic carry/mask proof,
 composite rank controller and positive arithmetic witnesses remain open.
