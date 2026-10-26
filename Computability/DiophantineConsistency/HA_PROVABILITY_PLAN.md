@@ -444,8 +444,8 @@ induction axiom, giving HA proofs of literal GG images of all actual PA,
 subtheory and IΣk derivations without image-axiom premises. Both leaves pass
 [independent replay](reviews/foundation-ha-peano-peer.md), with nine reports
 and byte-identical objects over112 cached prerequisites (85 Foundation).
-The actual source PA theorem of the equation/Con(ZFC) equivalence, its
-literal target comparison and the C222 seed/runtime bridges remain open.
+The actual source PA theorem of the equation/Con(ZFC) equivalence, the
+consistency-predicate comparison and C222 seed/runtime bridges remain open.
 
 [FoundationHANoZero](Lean/DiophantineConsistency/FoundationHANoZero.lean)
 now proves both HA implications between the existing compiled no-zero
@@ -453,10 +453,26 @@ sentence and an explicit Foundation negative-equation sentence's GG image,
 for every Expr(Fin n). It constructs HA equalities for source add-one versus
 successor and retains exactly n binders. Both
 [independent root leaves](reviews/foundation-ha-nozero-root.md) pass27
-reports using only propext/Quot.sound. The literal current binding still
-requires splitting its wide native imports from canonical syntax/data:
-Foundation and the matrix library declare different global Matrix.map
-constants. The generic theorem does not discharge source PA equivalence.
+reports using only propext/Quot.sound. The [literal current binding](Lean/DiophantineConsistency/FoundationHACurrentNoZero2011.lean)
+now proves both HA implications for exactly the original
+ArithmeticCurrentEquation2011.unsolvabilitySentence and a concrete
+Foundation source with14 binders. Seven independent fresh leaves pass18
+standard-only reports. An exact40-declaration ownership move into five
+narrow data/syntax modules avoids the conflicting global Matrix.map
+imports while preserving original names, ports, expression bodies and
+all remaining proof text. Internal hygienic macro names can change, so
+affected native clients require their own refresh. Neither comparison
+discharges source PA equivalence or identifies the final consistency
+predicate with its translated image.
+
+[FoundationHACurrentTransfer](Lean/DiophantineConsistency/FoundationHACurrentTransfer.lean)
+now composes the completed maps: an explicit PA proof of the concrete
+source equivalence yields both HA implications for the maintained sentence
+and the translated target. Its negative corollary concludes not GG(rho).
+Two [independent fresh leaves](reviews/foundation-ha-current-transfer-root.md)
+pass10 standard-only reports with byte-identical objects over133 reused
+modules (85 Foundation). No source PA proof or independent consistency
+predicate comparison is supplied by this conditional adapter.
 
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and
@@ -495,6 +511,14 @@ The two independent leaves pass11 reports, including actual Nat p=0.
 This is membership containment, not the full native container axiom or
 CP/GIC. No arbitrary proof interpretation, seed semantic soundness or
 counter4 calibration follows merely from this witness.
+
+The [canonical-data refresh](reviews/current-equation-narrow-root.md)
+also independently rebuilds130 affected native clients, with92
+standard-only reports, over285 unchanged authenticated objects and five
+independently fresh narrow owners. Its420 selected modules include the
+actual consistency/witness endpoints and selected frontier checks. The
+full478-module inventory and58 outside modules are distinguished; no
+whole Foundation or umbrella replay is claimed.
 
 ## Next reviewable checkpoints
 

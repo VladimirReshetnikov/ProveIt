@@ -36,3 +36,6 @@ variable against the13-variable frontier. No global minimum, new internal
 HA/ZFC theorem or page replacement is claimed. Durable root replay records
 retain all commands, pins and complete logs; author failure history remains
 in the separate author metadata. The displayed decimal equation is unchanged.
+
+The frozen auditor retains a harmless final blank line reported by
+`git diff --check`; its pinned bytes are preserved.

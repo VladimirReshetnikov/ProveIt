@@ -1,0 +1,313 @@
+{
+  "snapshot": "a9bba4836516478cc5a052b9986662de628ac320",
+  "old_sources": [
+    {
+      "module": "LowMaskCoding",
+      "old_sha256": "055a848258ccc294205ef3d8b4bd1400992c4f26e056fa1995279c2073f55cd1",
+      "snapshot": "/tmp/current-equation-narrow-move-originals/LowMaskCoding.lean",
+      "new_sha256": "e785d27788aff314cd3a294b08e658f7c5ae04429bd3415cca2f09d899922a3a"
+    },
+    {
+      "module": "WangTiles942Core",
+      "old_sha256": "d5c2c1958add229406a10dec95f20e8ae79d8c6e385afb6237faf7df04ba08a5",
+      "snapshot": "/tmp/current-equation-narrow-move-originals/WangTiles942Core.lean",
+      "new_sha256": "27eae9953d2938690af39d5b52b30520bc99d8e013181962c38b7810c82e5304"
+    },
+    {
+      "module": "CurrentMasks2011",
+      "old_sha256": "72ec99ac052c4d244f22f2590fb5645cebbe9ffe3a18fd89fe1cb8db7248fe06",
+      "snapshot": "/tmp/current-equation-narrow-move-originals/CurrentMasks2011.lean",
+      "new_sha256": "b1ad2349e696f647107b9abbbc2bb092a8a04d1be0e94283b690b52c898bfc8d"
+    },
+    {
+      "module": "CurrentKernel2011",
+      "old_sha256": "6f8642d8d3715335dcf61fb0060818226f227db24e126d4c14d58831e76d3a55",
+      "snapshot": "/tmp/current-equation-narrow-move-originals/CurrentKernel2011.lean",
+      "new_sha256": "c7a6fff79e698680733b85f424416107f0f970696d7b79f1339bf837b341e83b"
+    },
+    {
+      "module": "CurrentWindowCarry2011",
+      "old_sha256": "94f9ec318d90b66200757bba8992eb6560e283dbdceeac877e48eee80ade3d06",
+      "snapshot": "/tmp/current-equation-narrow-move-originals/CurrentWindowCarry2011.lean",
+      "new_sha256": "2ac2ddb722b7b23c7d528252da28d65486c551dc86d07f22eabbdb19e4a1b39e"
+    },
+    {
+      "module": "ObjectCurrentEquation2011",
+      "old_sha256": "897872f31299a8faddbf1eee65c4e029d238ad47957e8c5f6cab68ff0b04ea8c",
+      "snapshot": "/tmp/current-equation-narrow-move-originals/ObjectCurrentEquation2011.lean",
+      "new_sha256": "ee7f8a8602f69b4952a188ba9fec3ac84bbc798d12a43afd795655bec361e7c3"
+    },
+    {
+      "module": "ArithmeticCurrentEquation2011",
+      "old_sha256": "54d3e6f824d4233dfcff4a7538f928729f39f237dbe422946b6218bf9b4d6d5b",
+      "snapshot": "/tmp/current-equation-narrow-move-originals/ArithmeticCurrentEquation2011.lean",
+      "new_sha256": "7fde13dfe93aa35c0de9990514df394d940551c2b49d92f678544599c7cf8ba0"
+    }
+  ],
+  "moves": [
+    {
+      "owner": "LowMaskCoding",
+      "name": "supportValue",
+      "text": "def supportValue (B : \u2115) (S : Finset \u2115) : \u2115 := \u2211 j \u2208 S, B ^ j",
+      "sha256": "c9b7ba7865b41832b7a5927902794cd4926e832ebcd8aba1c6c5b3c326b08c21"
+    },
+    {
+      "owner": "LowMaskCoding",
+      "name": "mask",
+      "text": "def mask (B b len : \u2115) (S : Finset \u2115) : \u2115 :=\n  B ^ len - 1 - (b-1) * supportValue B S",
+      "sha256": "0b25d84706d3ef74100534b66d9a7fd06a05404c71585be827a9f3338616f1dd"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "Tile",
+      "text": "structure Tile where\n  west : \u2115\n  north : \u2115\n  east : \u2115\n  south : \u2115\n  deriving DecidableEq, Repr, Inhabited",
+      "sha256": "8ebc002315ba161d8b3795406d8740ea522db6671ff2adc024e30a7bacf35513"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "headColor",
+      "text": "def headColor (q b : \u2115) : \u2115 := 2 * q + b + 2",
+      "sha256": "0176b273457db34e5b74ab5e92481c12d7d8e6eddd576e7ea3a6dd0c8a28b1e0"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "start",
+      "text": "def start : Tile := \u27e82, 435, 3, 1\u27e9",
+      "sha256": "232538398cf17b0cd55e442a13ebae88b56aebc1e26bf930b6c135ea82f5a236"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "transitionRow",
+      "text": "def transitionRow (j : Fin 430) : \u2115 \u00d7 Tile :=\n  let a := action j\n  let d := a.2.1.toNat\n  (j.val + 1, \u27e8(1-d) * rail false a.2.2, headColor (j.val/2) (j.val%2),\n    d * rail true a.2.2, a.1.toNat\u27e9)",
+      "sha256": "d844ad8edd091271df115378c9bacc3f23a7398a016df96801e7dd16fee5843a"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "copyRows",
+      "text": "def copyRows (a : \u2115) : List (\u2115 \u00d7 Tile) :=\n  (List.range 2).map (fun b => (433 - 2*a + b, \u27e80,432*a+b,0,432*a+b\u27e9))",
+      "sha256": "06e02f350ee8828b0dbcfa01a4c62bb224a48464e6582fbce0dfd2347a69075b"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "signalRows",
+      "text": "def signalRows (d : Bool) : List (\u2115 \u00d7 Tile) :=\n  (targetList d).flatMap (fun q => (List.range 2).map (fun b =>\n    (423+2*rail d q+b, \u27e8d.toNat*rail d q,b,(1-d.toNat)*rail d q,headColor q b\u27e9)))",
+      "sha256": "fd08f73a231504911fba6c99333fbadd55f98f2cc60f65e96bdde531fe2b0f44"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "tailRows",
+      "text": "def tailRows : List (\u2115 \u00d7 Tile) :=\n  (List.range 2).flatMap (fun a => (List.range 2).map (fun b =>\n    (923+2*a+b, \u27e80,432*a+b,0,438\u27e9))) ++\n  [(927,\u27e82,434,2,0\u27e9),(928,\u27e83,436,4,4\u27e9),(929,\u27e84,436,4,0\u27e9)] ++\n  [434,435,436].map (fun t => (496+t,\u27e81,438,1,t\u27e9)) ++\n  (List.range 3).flatMap (fun a => (List.range 3).map (fun b =>\n    (933+3*a+b,\u27e8a^2,437,b,437\u27e9)))",
+      "sha256": "df9418a82f6e74e2ba611a0f2427c990f38f0b568d7b0e876c65ac7e2bcfe503"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "indexedRows",
+      "text": "/-- Every constructor family in printed order; the two values of a and d\nare enumerated explicitly without changing their row formulas. -/\ndef indexedRows : List (\u2115 \u00d7 Tile) :=\n  [(0, start)] ++ List.ofFn transitionRow ++ (copyRows 0 ++ copyRows 1) ++\n    (signalRows false ++ signalRows true) ++ tailRows",
+      "sha256": "1b94a4e9d82c4a261b231c3147aca3c4f1e50c7f4fc3ac1448b16b0a4f95b3cd"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "orderedRows",
+      "text": "/-- Exchanging only the copy and signal blocks puts the complete table in\nindex order. The permutation proof below does not rely on finite sorting. -/\ndef orderedRows : List (\u2115 \u00d7 Tile) :=\n  [(0, start)] ++ List.ofFn transitionRow ++ (copyRows 1 ++ copyRows 0) ++\n    (signalRows true ++ signalRows false) ++ tailRows",
+      "sha256": "d5208d3c33a8d53d43137ac3d0ac8bc1acfbb789e7cc3a8aa9a5680678ad2b51"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "row_indices_exact",
+      "text": "theorem row_indices_exact : orderedRows.map Prod.fst = List.range 942 := by\n  decide +kernel",
+      "sha256": "bb63121b7657e317892a16b1352e3515c2daee6cc6820fc5283e0002d5024760"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "ordered_count",
+      "text": "theorem ordered_count : orderedRows.length = 942 := by\n  have h := congrArg List.length row_indices_exact\n  simpa only [List.length_map, List.length_range] using h",
+      "sha256": "d18a82ce2e65a342955abe9f72ad0d2ccc95060365bffbaab05d9fa084fb1273"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "tile",
+      "text": "/-- The actual indexed tile, selected from the complete ordered row list. -/\ndef tile (i : Fin 942) : Tile := (orderedRows[i.val]'(by rw [ordered_count]; exact i.isLt)).2",
+      "sha256": "21a140c8ab2a48e7550791dbc755aaa2f1e957f80eee0407c2ad9db07d05bd2b"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "selectorWeight",
+      "text": "/-- The unscaled selector coefficient in the actual printed Phi. -/\ndef selectorWeight (t : Tile) : \u2115 :=\n  1 + 2 ^ 10 * (1 + t.west + 2 ^ 8 * t.north + 2 ^ 17 * t.east + 2 ^ 25 * t.south)",
+      "sha256": "92534600ef2797dd77a35dc4c4c2ba9b26b074e93b93d9e83fea13410f3e3a3e"
+    },
+    {
+      "owner": "WangTiles942Core",
+      "name": "physicalPosition",
+      "text": "/-- The sorted physical position, written over all 941 non-Start rows. -/\ndef physicalPosition (i : Fin 942) : \u2115 :=\n  if i.val = 0 then 0 else 1 + ((orderedRows.drop 1).map (fun row =>\n    (2 ^ 44 - 1 + selectorWeight row.2 - selectorWeight (tile i)) / 2 ^ 44)).sum",
+      "sha256": "b67f2cf1860b9dabd20263dc562d5e12196f0f5b497476274441337b923b4f4c"
+    },
+    {
+      "owner": "CurrentMasks2011",
+      "name": "radix",
+      "text": "def radix : \u2115 := 2 ^ 47",
+      "sha256": "9a0af88c60502df2399ef6002fa9811434ff68b9e30d0c37f36cd6dfacc59a69"
+    },
+    {
+      "owner": "CurrentMasks2011",
+      "name": "width",
+      "text": "def width : \u2115 := 47 * 2011",
+      "sha256": "e5ab6ab5cf7ca86a5a927ab0adcc94590eb20ef470fb049bc4c15610c6f2ed01"
+    },
+    {
+      "owner": "CurrentMasks2011",
+      "name": "beta",
+      "text": "def beta : \u2115 := radix ^ 2011 - 1",
+      "sha256": "4591efb4b263166629af3d490fe618f73d0fa817fe0b69f3a25be60f1355197a"
+    },
+    {
+      "owner": "CurrentMasks2011",
+      "name": "lowSupport",
+      "text": "irreducible_def lowSupport : Finset \u2115 := Finset.range 951 \u222a Finset.Ico 960 986 \u222a {1004}",
+      "sha256": "6ad046af738ed5f1ccd79afe584c9f10117084cd5aecb44503d7d576e5272efb"
+    },
+    {
+      "owner": "CurrentMasks2011",
+      "name": "lowPort",
+      "text": "def lowPort : \u2115 := mask radix 2 2011 lowSupport",
+      "sha256": "a557c459b41ca87dafafe68b93cb9cd442d7889cae27c28c024e0726f94ec347"
+    },
+    {
+      "owner": "CurrentMasks2011",
+      "name": "highPrefix",
+      "text": "/-- All nonzero high-mask digits occur in this1006-digit prefix. -/\ndef highPrefix : List \u2115 :=\n  4 :: (List.replicate 916 8 ++ List.replicate 43 0 ++ List.replicate 9 1 ++\n    List.replicate 18 0 ++ List.replicate 8 1 ++ List.replicate 9 0 ++ [1, 2 ^ 45 - 4])",
+      "sha256": "f59ff6e19edd6c83f6266cd44bfa4982b9fae14eda227e5820a06bb54079989f"
+    },
+    {
+      "owner": "CurrentMasks2011",
+      "name": "highDigits",
+      "text": "def highDigits : List \u2115 := highPrefix ++ List.replicate 1005 0",
+      "sha256": "c3c36a4f306500030d60c032104ee8225fd8fae0427d4dca2acffbde9e777bee"
+    },
+    {
+      "owner": "CurrentMasks2011",
+      "name": "highPort",
+      "text": "def highPort : \u2115 := Nat.ofDigits radix highDigits",
+      "sha256": "9a7bad9e4ea86e9f3798d0bca594d743859e3b29a55d20fb9f7012fc6bc422c2"
+    },
+    {
+      "owner": "CurrentMasks2011",
+      "name": "ports",
+      "text": "def ports (K : \u2124) : Fin 4 \u2192 \u2124 := ![beta, K, lowPort, highPort + beta]",
+      "sha256": "e87b2661795cb6712872f9697784b6e4c61ecadbe09deeba9e362e81b68facf3"
+    },
+    {
+      "owner": "CurrentKernel2011",
+      "name": "radix",
+      "text": "abbrev radix : \u2115 := CurrentMasks2011.radix",
+      "sha256": "3ee2b1fcd5f1b2412247affd79c680f48fa252f87e6848073facf065b1fe838b"
+    },
+    {
+      "owner": "CurrentKernel2011",
+      "name": "Entry",
+      "text": "/-- The34 control entries use the actual packed west/north/east/south order. -/\nabbrev Entry := Fin 942 \u2295 (Fin 8 \u2295 (Fin 9 \u2295 (Fin 8 \u2295 Fin 9)))",
+      "sha256": "d246e32c686694d62118fbe293f469a9c2308bd8106eae23da3a9ad6df9abac1"
+    },
+    {
+      "owner": "CurrentKernel2011",
+      "name": "position",
+      "text": "def position : Entry \u2192 \u2115\n  | .inl i => physicalPosition i\n  | .inr (.inl j) => 978 + j.val -- west\n  | .inr (.inr (.inl j)) => 960 + j.val -- north\n  | .inr (.inr (.inr (.inl j))) => 969 + j.val -- east\n  | .inr (.inr (.inr (.inr j))) => 942 + j.val -- south",
+      "sha256": "818bb3a514874d05a6c7d9c440a2c1d6eb377d214aced2619b5355a230941179"
+    },
+    {
+      "owner": "CurrentKernel2011",
+      "name": "weight",
+      "text": "def weight : Entry \u2192 \u2115\n  | .inl i => selectorWeight (tile i)\n  | .inr (.inl j) => 2 ^ (10 + j.val)\n  | .inr (.inr (.inl j)) => 2 ^ (18 + j.val)\n  | .inr (.inr (.inr (.inl j))) => 2 ^ (27 + j.val)\n  | .inr (.inr (.inr (.inr j))) => 2 ^ (35 + j.val)",
+      "sha256": "3cc9c330a46dacb7cfe375acc708995e4a52a09d4894056fe0021d5210118503"
+    },
+    {
+      "owner": "CurrentKernel2011",
+      "name": "Term",
+      "text": "abbrev Term := Fin 3 \u2295 Entry",
+      "sha256": "af329b867aa235944791b2b570b96c2aef3f5f21ee4879b69b02fd18b28b59a2"
+    },
+    {
+      "owner": "CurrentKernel2011",
+      "name": "exponent",
+      "text": "def exponent : Term \u2192 \u2115\n  | .inl j => ![18, 1004, 2020] j\n  | .inr e => 1005 - position e",
+      "sha256": "e01ee0387a710561300102d90fc128170f57269e62b671e76376c36985eea144"
+    },
+    {
+      "owner": "CurrentKernel2011",
+      "name": "coefficient",
+      "text": "def coefficient : Term \u2192 \u2115\n  | .inl _ => 1\n  | .inr e => 2 * weight e",
+      "sha256": "3524f71474817854053072696e606b4b92269a71a49f8bc14db42f5ad5c0b378"
+    },
+    {
+      "owner": "CurrentKernel2011",
+      "name": "rawWord",
+      "text": "def rawWord (r : \u2115) : \u2115 := \u2211 t : Term, coefficient t * r ^ exponent t",
+      "sha256": "2350e5c0688e34139c13b0a45dc348edc424784cf697a1c08735e196a34ff5fe"
+    },
+    {
+      "owner": "CurrentKernel2011",
+      "name": "K",
+      "text": "def K : \u2115 := rawWord radix",
+      "sha256": "04df8e2ac6d6a7afb5901bd20b6f77c8dfbd9932d554051ff7b7b0f27a4d5e7d"
+    },
+    {
+      "owner": "CurrentWindowCarry2011",
+      "name": "ports",
+      "text": "/-- The four actual integer ports, including the one source high-mask shift. -/\ndef ports : Fin 4 \u2192 \u2124 := CurrentMasks2011.ports (K : \u2124)",
+      "sha256": "7f3fb9ee4116af1670b2347d25e4f4aeff90a48619fed34722b79d93945d3220"
+    },
+    {
+      "owner": "ObjectCurrentEquation2011",
+      "name": "expressionAt",
+      "text": "/-- Literal arithmetic syntax, in the same coordinate and port order as\n`Carrier65.core`. All four ports are single integer-constant leaves. -/\ndef expressionAt (p : Fin 4 \u2192 \u2124) : Expr (Fin 14) :=\n  let J : Expr (Fin 14) := .var 0\n  let F : Expr (Fin 14) := .var 1\n  let alpha : Expr (Fin 14) := .var 2\n  let z : Expr (Fin 14) := .var 3\n  let f : Expr (Fin 14) := .var 4\n  let i : Expr (Fin 14) := .var 5\n  let T : Expr (Fin 14) := .var 6\n  let s : Expr (Fin 14) := .var 7\n  let w : Expr (Fin 14) := .var 8\n  let n : Expr (Fin 14) := .var 9\n  let eta : Expr (Fin 14) := .var 10\n  let zeta : Expr (Fin 14) := .var 11\n  let y : Expr (Fin 14) := .var 12\n  let gamma : Expr (Fin 14) := .var 13\n  let b := Expr.constant (p 0) * J\n  let q := b + 1\n  let C := q - F - alpha\n  let X := w * q\n  let Y := s * q ^ 3\n  let E := X * Y\n  let k := eta + zeta\n  let ell := E * k * Y\n  let c := k * Y + eta\n  let a := E + Y\n  let H := 4 * a + 3\n  let delta := a ^ 2 + H\n  let D := X + a * c + gamma * H\n  let rank := (b * (q - F) + alpha) * (q ^ 2 - 1) +\n    (Expr.constant (p 2) + q * Expr.constant (p 3)) * J\n  let tau := E * n + k - rank\n  let V := f ^ 2 * (c * T - rank) - c\n  let S := i * delta * c ^ 2\n  let P := tau ^ 2 - ell * (ell + k)\n  let Q := D ^ 2 - delta * c ^ 2\n  let U := S ^ 2 * (V ^ 2 - y ^ 2) + y ^ 2\n  let W := (Expr.constant (p 1) + w) * C + (q - F) - z * b\n  let Z := delta * f ^ 2 - S ^ 2\n  P * Q * U * W * Z - delta",
+      "sha256": "3a76331623140e8c3d7d3b375e8e6ed420f0366cd95b1113c9bd4641b0863dd7"
+    },
+    {
+      "owner": "ObjectCurrentEquation2011",
+      "name": "expression",
+      "text": "/-- The current ports retain the full kernel and both complete masks. -/\ndef expression : Expr (Fin 14) := expressionAt CurrentWindowCarry2011.ports",
+      "sha256": "fc79d10b73646ba4328d5aaa1b1d358a15b1cdbb61d1ff051b277d70078d21a4"
+    },
+    {
+      "owner": "ObjectCurrentEquation2011",
+      "name": "positiveShift",
+      "text": "/-- This substitution changes the domain, without adding any variables. -/\ndef positiveShift {\u03c3 : Type*} (e : Expr \u03c3) : Expr \u03c3 :=\n  e.subst (fun i => Expr.var i + Expr.constant 1)",
+      "sha256": "0d65797862355978761390aeaa7a146fda8fb10eea3f8d6da632bc3a30e19958"
+    },
+    {
+      "owner": "ObjectCurrentEquation2011",
+      "name": "naturalExpression",
+      "text": "def naturalExpression : Expr (Fin 14) := positiveShift expression",
+      "sha256": "cd9cc52ee5c988a495ceb6fb3b5123755e4fc83db541f86064d79182af4ea80f"
+    },
+    {
+      "owner": "ArithmeticCurrentEquation2011",
+      "name": "unsolvabilitySentence",
+      "text": "/-- A literal closed formula in the ordinary `0,S,+,*` language. -/\ndef unsolvabilitySentence : Formula :=\n  ArithmeticExpression.noZeroSentence naturalExpression",
+      "sha256": "985bd3d68857c4e28312167fd4d2a4b59672cd21f7d4a6f40db858c31b7df8ee"
+    }
+  ],
+  "new_sources": [
+    {
+      "module": "LowMaskData",
+      "sha256": "797ca9900ad6a1af0693aa241ad93f9e7679600f3fc7bee5d6acbddc61c9817b"
+    },
+    {
+      "module": "WangTiles942TableData",
+      "sha256": "0d2bf996f4e7e19acba82d5d3f1805a71c17cb1a9bcdc959e67453da14697a2c"
+    },
+    {
+      "module": "CurrentMaskData2011",
+      "sha256": "14f32924a514865d4fbd297aac323679c8cfd75305dcc52bb2b588dfffdbdf36"
+    },
+    {
+      "module": "CurrentKernelData2011",
+      "sha256": "529b2f89e4e93516a8a52343d98dc749c57f5a967d8ef522b92373bf3adf0a2c"
+    },
+    {
+      "module": "CurrentEquationSyntax2011",
+      "sha256": "744ed9b68cc2b9d94a8df0d19f5337afb1574ca2ec254dbef66fa11031d2ee7d"
+    }
+  ],
+  "driver_sha256": "d3b4cbc7e3479f15b535b31082e482815094d32676342580f56da0544914ce09",
+  "owner_whitespace_cleanup": "Collapse three or more consecutive newlines at removed declaration boundaries to two; no declaration text altered."
+}

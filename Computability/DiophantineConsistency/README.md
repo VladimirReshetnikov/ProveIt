@@ -17,9 +17,11 @@ The owner now additionally requires a Lean theorem that this equivalence
 is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
-The latest [post-merge refresh](reviews/ha-native-merge-refresh-20261026.md)
-passes47 current equation/client builds and155 standard-only reports over
-the469-source inventory, with422 explicitly authenticated cached objects.
+The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
+passes130 affected native/client builds and92 standard-only reports,
+with285 authenticated unchanged reuses and five independently refreshed
+data owners. Its420 selected modules preserve the actual endpoints while
+allowing the exact maintained sentence to import with Foundation.
 A genuine HA derivability relation is now independently checked in
 [HAProofs](Lean/DiophantineConsistency/HAProofs.lean). Existing IΣ₂/PA
 validator and Rotation240 consistency theorems provide reusable arithmetic
@@ -131,19 +133,29 @@ The [full PA-to-HA transfer](reviews/foundation-ha-peano-peer.md) now composes
 every equality, arithmetic and unrestricted induction image into an actual
 HA proof of any PA theorem's literal GG image. Both independent leaves
 pass all nine reports. The source PA proof of the exact equivalence and
-the final target comparison remain open.
+the consistency-predicate comparison remain open.
 The [proof-transfer adapter](reviews/foundation-ha-theory-transfer-peer.md)
 now composes the existing GG and finite proof maps into actual HA
 derivations, provided each used source axiom image is proved in HA. Its
 concrete semiring corollary discharges that premise for all eight axioms;
 independent builds pass all seven reports. The complete arithmetic
-instantiation is now checked in FoundationHAPeano; final target comparison
-remains separate work.
+instantiation is now checked in FoundationHAPeano; exact consistency-target
+comparison remains separate work.
 The [generic no-zero bridge](reviews/foundation-ha-nozero-root.md) now proves
 both sentence implications in HA, including successor/add-one conversion
-and exact quantifier counts. Its literal current instantiation still needs
-a compatible import split; the generic theorem supplies no source PA
-equivalence or internal calibration.
+and exact quantifier counts. The [literal current instantiation](Lean/DiophantineConsistency/FoundationHACurrentNoZero2011.lean)
+now proves both implications for the original fully qualified maintained
+sentence. Its seven independent builds pass18 standard-only reports.
+Five narrow data owners retain all40 original declaration texts and avoid
+the conflicting Matrix.map imports, with every other proof body preserved.
+The generic and literal comparisons supply no source PA equivalence,
+consistency-predicate comparison or internal calibration.
+The [exact-current transfer adapter](reviews/foundation-ha-current-transfer-root.md)
+now composes a supplied source PA equivalence into both HA implications
+for the maintained sentence. Two independent builds pass10 standard-only
+reports. Its negative corollary targets the literal negated GG predicate;
+the source PA equivalence and consistency-predicate identification remain
+explicit outstanding obligations.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the

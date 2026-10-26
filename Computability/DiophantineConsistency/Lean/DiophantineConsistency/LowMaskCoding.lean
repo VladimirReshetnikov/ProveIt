@@ -1,3 +1,4 @@
+import DiophantineConsistency.LowMaskData
 import Diophantine.Paper1982.Master2
 
 /-!
@@ -15,11 +16,6 @@ open Finset Jones1982
 open scoped BigOperators
 
 set_option maxRecDepth 10000
-
-def supportValue (B : ℕ) (S : Finset ℕ) : ℕ := ∑ j ∈ S, B ^ j
-
-def mask (B b len : ℕ) (S : Finset ℕ) : ℕ :=
-  B ^ len - 1 - (b-1) * supportValue B S
 
 def maskDigit (B b : ℕ) (S : Finset ℕ) (j : ℕ) : ℕ :=
   if j ∈ S then B-b else B-1
