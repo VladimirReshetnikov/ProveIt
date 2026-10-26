@@ -11,8 +11,6 @@ DESTINATION = DIRECTORY / 'circuits/p77_sos.json'
 LEAN = DIRECTORY / 'Lean/DiophantineConsistency/ShortSystem.lean'
 BEGIN = '-- BEGIN GENERATED P77 LITERAL EVALUATOR'
 END = '-- END GENERATED P77 LITERAL EVALUATOR'
-DEGREE_BEGIN = '-- BEGIN GENERATED P77 DEGREE CERTIFICATE'
-DEGREE_END = '-- END GENERATED P77 DEGREE CERTIFICATE'
 
 
 def build(compact=False):
@@ -74,42 +72,6 @@ def lean_block(circuit):
     return '\n'.join(lines)
 
 
-def degree_block(circuit):
-    compact = len(circuit['source']) == 75
-    count = 75 if compact else 77
-    begin, end = (marker.replace('77', str(count)) for marker in (DEGREE_BEGIN, DEGREE_END))
-    polynomial = 'compactPolynomial' if compact else 'polynomial'
-    value = 'compactValue' if compact else 'value'
-    equality = 'compactLiteralValue_eq_compactValue' if compact else 'literalValue_eq_value'
-    degrees = {name: 1 for name in circuit['witnesses']}
-    degrees.update({name: 0 for name in circuit['fixed_numerals']})
-    lines = [begin,
-             '/-- A kernel-checked upper degree bound for the actual polynomial. -/',
-             f'theorem {polynomial}_totalDegree_le (p : Fin 4 → ℤ) :',
-             f'    ({polynomial} p).totalDegree ≤ 68 := by']
-    for names, port in [(circuit['witnesses'], 'X'), (circuit['fixed_numerals'], 'p')]:
-        for index, name in enumerate(names):
-            expression = f'MvPolynomial.X ({index} : Fin 15)' if port == 'X' else f'MvPolynomial.C (p {index})'
-            proof = f'by simp only [{name}, MvPolynomial.totalDegree_X, le_refl]' if port == 'X' else \
-                '(MvPolynomial.totalDegree_C _).le'
-            lines.extend([f'  let {name} : MvPolynomial (Fin 15) ℤ := {expression}',
-                          f'  have h_{name} : {name}.totalDegree ≤ {degrees[name]} := {proof}'])
-    for name, operation, left, right in circuit['source']:
-        dl, dr = (0 if type(x) is int else degrees[x] for x in (left, right))
-        degree = dl + dr if operation == '*' else max(dl, dr)
-        degrees[name] = degree
-        lemma = {'+': 'degree_add', '-': 'degree_sub', '*': 'degree_mul'}[operation]
-        proofs = ['(degree_numeral ' + str(x) + ')' if type(x) is int else 'h_' + x for x in (left, right)]
-        lines.extend([f'  let {name} := {left} {operation} {right}',
-                      f'  have h_{name} : {name}.totalDegree ≤ {degree} :=',
-                      f'    {lemma} {proofs[0]} {proofs[1]}'])
-    lines.extend([f'  change ({value} (fun j => MvPolynomial.C (p j)) MvPolynomial.X).totalDegree ≤ 68',
-                  f'  rw [← {equality}]',
-                  '  change polynomial.totalDegree ≤ 68',
-                  '  exact h_polynomial', end])
-    return '\n'.join(lines)
-
-
 def emit(compact=False):
     circuit = build(compact)
     count = 75 if compact else 77
@@ -124,14 +86,6 @@ def emit(compact=False):
     else:
         marker = '/-- Ring homomorphisms preserve the complete five-equation expression. -/'
         source = source.replace(marker, block + '\n\n' + marker)
-    degree = degree_block(circuit)
-    begin, end = (marker.replace('77', str(count)) for marker in (DEGREE_BEGIN, DEGREE_END))
-    if begin in source:
-        a, b = source.index(begin), source.index(end) + len(end)
-        source = source[:a] + degree + source[b:]
-    else:
-        source = source.replace('end DiophantineConsistency.ShortSystem',
-                                degree + '\n\nend DiophantineConsistency.ShortSystem')
     LEAN.write_text(source)
     print(str(destination.relative_to(ROOT)))
 
