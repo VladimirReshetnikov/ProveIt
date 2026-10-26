@@ -28,9 +28,13 @@ endpoint. Every positive zero of the maintained polynomial now yields a
 marked cyclic word in that exact942-tile table, retaining the original
 arithmetic witnesses and selector bindings, with matching colors and the
 exact positive temporal stride. The [current plan](LEAN_EQUIVALENCE_PLAN.md)
-records fresh checks and exact premises. Extracting the actual machine run,
-constructing reverse arithmetic witnesses, completing the other frontier
-equations and an internal-ZFC derivation remain open.
+records fresh checks and exact premises. The actual run extraction is now
+proved: every marked word gives a blank-machine halt before its vertical
+period. Composing with the checked machine endpoint proves
+**ConZFC implies no positive zero** for the maintained polynomial and all
+three accepted13-variable forms. The [soundness receipt](reviews/current-soundness2011-lean-root.md)
+binds those exact statements and fresh checks. The converse construction,
+remaining frontier equations and an internal-ZFC derivation remain open.
 
 The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **complete decimal Carrier65 equation
