@@ -1,0 +1,601 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage{hyperref,xurl}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Cofinal Pell Centers and Oriented Power Certificates},
+ pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Explicit Diophantine forms of Con(ZFC)}
+\fancyhead[R]{\small 25 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\Prf}{\operatorname{Prf}}
+\newcommand{\pin}{\texttt{02a78a08603cbae248c19c23a75907c6c6bd6443}}
+\title{\textbf{Cofinal Pell Centers and Oriented Power Certificates}\\[4pt]
+\large Four explicit Diophantine equations for syntactic ZFC consistency}
+\author{AI-assisted research prepared for Vladimir Reshetnikov\\
+\small An additive contribution to ProveIt}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give two arithmetic reductions and four fully specified integer
+polynomials whose absence of integer zeros is provably equivalent in ZFC
+to its syntactic consistency, by composition with the identified ProveIt
+C222 refutation calibration. First, an even Pell frame permits the free
+center $A=L^2+2u^2$, replacing $L^2+u^2+v^2$. The new ingredient is an
+order-eight identity in a finite quadratic algebra. Canonical parity in
+the existing source makes the required frame change only a constant
+increment. The resulting quartics have 229 and 228 integer variables,
+respectively 4,477 and 12,001 collected monomials, and coefficient height
+7,968. Second, oriented reciprocal pooling combines power certificates
+at different, initially signed bases. Its conclusion applies to nonzero
+bases while zero bases remain inactive; a parity argument then proves
+that every actual base is nonzero without circular reasoning. This gives
+206 variables at degree 24 and 207 at degree 16. All variables are
+unrestricted integers. Literal residuals, exact coefficients,
+reconstruction programs, and independent finite checks accompany the
+proofs. These are measured improvements over named parents and new
+tradeoffs; a global simplest equation, worldwide priority, and a new
+end-to-end proof-assistant derivation are not claimed.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Result, specification, and comparison}
+
+\subsection{The precise logical target}
+
+Fix the effective first-order ZFC presentation called
+\texttt{ZFCax\_s} in ProveIt and its finite derivation relation
+\texttt{BProv}. Let $\Prf_{\ZFC}(p,\bot)$ be its arithmetized proof
+predicate. Throughout,
+\[
+ \Con(\ZFC)\;\equiv\;\neg\exists p\in\N\;\Prf_{\ZFC}(p,\bot).
+\]
+Effective translations between ordinary presentations give the usual
+syntactic consistency statement. No assumption about externally standard
+integers, transitive set models, or the truth of all ZFC theorems is
+substituted for this definition.
+
+For each of the four polynomials below the result is
+\begin{equation}\label{eq:target}
+ \ZFC\vdash
+ \left(\exists\boldsymbol{x}\in\Z^n\;P(\boldsymbol{x})=0\right)
+ \ \longleftrightarrow\
+ \exists p\in\N\;\Prf_{\ZFC}(p,\bot).
+\end{equation}
+Negating both sides gives the requested no-solution equivalence. The
+claim is an ordinary mathematical proof formalizable in ZFC, using the
+explicitly credited inherited calibration; the archive does not contain
+a newly compiled Lean/Rocq proof of the whole statement or a literal
+object-language ZFC derivation. It proves neither side of the consistency
+question.
+
+\subsection{The delivered polynomials}
+
+Every polynomial is specified by a finite list of integer-coefficient
+residuals and the instruction to square and sum that list. All named
+expressions are polynomial abbreviations, not additional quantified
+variables. The JSON convention is
+\[
+ [c,[i_1,\ldots,i_d]]\quad\longleftrightarrow\quad
+ c\,x_{i_1}\cdots x_{i_d};\qquad[c,[]]\longleftrightarrow c.
+\]
+Repeated indices are fixed nonnegative exponents. No exponentiation
+primitive, factorial, binomial primitive, free coefficient parameter,
+congruence side condition, or implicit sign restriction survives in a
+final equation.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Polynomial & Variables & Degree & Residuals & Monomials & Height\\
+\midrule
+$P_{229}$, balanced &229&4&176&4,477&7,968\\
+$P_{228}$, compact &228&4&175&12,001&7,968\\
+$P_{207}$, split pooling &207&16&146&94,294&13,607,065,661\\
+$P_{206}$, full pooling &206&24&145&not fully expanded&not claimed\\
+\bottomrule
+\end{tabular}
+\end{center}
+``Height'' means the maximum absolute coefficient of the fully collected
+single polynomial. For $P_{206}$ the complete residual list is supplied:
+144 quadratic residuals and one degree-12 residual. The latter has
+25,144 monomials. Its square need not be expanded to specify the
+polynomial completely. We deliberately do not report a collected
+coefficient height for that unperformed expansion.
+
+$P_{207}$ has the same 144 quadratic residuals, a degree-8 residual and a
+degree-5 residual. Its full expansion is included. The maximum absolute
+coefficient within the residual lists of both pooled equations is
+95,232; this is a different statistic from final polynomial height.
+
+\subsection{What the improvements measure}
+
+The comparison snapshot is \pin. It was the observed \texttt{main} head
+when the source review began. We inspected the three requested repository
+locations, the active research indexes, and the later delivered packages;
+the collection's introductory frontier table lags several of its newest
+files. In particular, package 173 already supplies a 215-variable
+quartic, and 213/214-variable quartics with much larger coefficients.
+We do not compare against obsolete 225-variable records as though those
+were the whole current frontier.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Matched quartic & Variables & Monomials & Height & Residuals\\
+\midrule
+Package 166 balanced parent &230&4,482&7,968&176\\
+New balanced center &229&4,477&7,968&176\\
+Package 166 compact parent &229&12,006&7,968&175\\
+New compact center &228&12,001&7,968&175\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each center reduction saves exactly one integer coordinate and five
+collected monomials, with degree, height, and residual count unchanged.
+The maximum residual coefficient also remains 64. These are strict
+improvements on the two actual parent equations, not a new record for
+quartic variable count.
+
+Pooling starts from package 173's 221-coordinate, 160-row source chart,
+the source of its 215-variable balanced quartic. Replacing ten private
+certificate coordinates by one or two saves nine or eight coordinates;
+the same six certified projections then give 206 or 207. The degree
+increases, so these points do not dominate the existing quartics. The
+repository also contains nine-positive and ten-integer constructions,
+and a 37-integer quartic with a very different coefficient architecture
+\cite{collection,sun}. ``Simplest'' therefore requires choosing a
+measure: variables, degree, support, coefficient bits, evaluation cost,
+proof complexity, or some specified combination.
+
+The most reusable contribution here is the arithmetic behind the
+reductions. The finite quadratic-ring construction is inherited from
+package 166, but the order-eight square correction strengthens its
+two-square conclusion. Package 168 already pointed toward multi-base
+reciprocal pooling; the oriented, zero-base-tolerant theorem below and
+its noncircular activation argument complete a concrete version of that
+direction. Literature-wide novelty is not established.
+
+\section{One scaled square for a cofinal Pell center}
+
+For $a\ge2$ and $j\ge0$ define the standard Pell polynomials by
+\[
+ (a+\sqrt{a^2-1})^j=X_j(a)+Y_j(a)\sqrt{a^2-1}.
+\]
+Equivalently, $X_0=1$, $Y_0=0$, $X_1=a$, $Y_1=1$, and either sequence
+satisfies $U_{j+2}=2aU_{j+1}-U_j$. The identities used below follow by
+polynomial multiplication. The finite quadratic algebra notation is
+only a proof device; it does not enlarge the final polynomial's domain.
+
+\begin{theorem}[One scaled square]\label{thm:center}
+Let $W\ge2$ be even. Let $q,M$ be positive odd integers, with every
+prime divisor of $M$ dividing $q$. Write $n=q+1$, and put
+\[
+ a_0\equiv\frac{n^2+1}{2n}
+       =1+\frac{q^2}{2(q+1)}\pmod M.
+\]
+Then there exist an odd positive integer $k$ and an integer $u$ such that
+\begin{equation}\label{eq:onecenter}
+ L=X_{Wk}(W+1),\qquad A=L^2+2u^2,\qquad A\equiv a_0\pmod M.
+\end{equation}
+For this fixed $k$, the center $A$ can be made arbitrarily large.
+Moreover $Y_{Wk}(W+1)/W$ is an odd positive integer. Thus, for some
+integer $z$, the inherited frame equation is preserved:
+\begin{equation}\label{eq:oddframe}
+ L^2-W^3(W+2)(2z+1)^2=1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+If $M=1$, choose $k=1$ and let $u$ grow; the parity assertion follows
+from the argument at the end. Otherwise put $D=W(W+2)$ and work in
+\[
+ S_M=(\Z/M\Z)[s]/(s^2-D).
+\]
+The element $e=(W+1)+s$ has norm one and inverse $(W+1)-s$. Its
+$W$th power has finite order $2^r k$, with $k$ odd. Therefore
+$g=e^{Wk}$ has power-of-two order. Write $g=L+Ys$. These are precisely
+the integer Pell coordinates in \eqref{eq:onecenter}, reduced modulo $M$.
+
+Fix $p^a\Vert M$, where $p$ is odd. We shall prove that
+\[
+ c=\frac{a_0-L^2}{2}\pmod {p^a}
+\]
+is a square. Inverses of all displayed denominators exist because
+$p\mid q$ and $p\nmid2(q+1)$.
+
+\emph{Case 1: $L\equiv\epsilon\pmod p$, with $\epsilon=\pm1$.}
+If $D\not\equiv0\pmod p$, the norm relation
+$L^2-DY^2=1$ gives $Y=0\pmod p$. If $D=0\pmod p$, then $s^2=0$.
+Raising $\epsilon+Ys$ to a power of two shows that its nilpotent
+coefficient must vanish: that coefficient is an invertible multiple of
+$Y$ over the odd-characteristic field. Thus $g=\epsilon$ in $S_p$
+in either case.
+
+The kernel of reduction from $S_{p^a}^{\times}$ to $S_p^{\times}$
+consists of elements $1+pv$ and is a finite $p$-group. The element
+$\epsilon g$ belongs to this kernel and has power-of-two order, so it
+is the identity. Hence $L^2=1\pmod{p^a}$ and
+\[
+ c\equiv\frac{q^2}{4(q+1)}\pmod {p^a}.
+\]
+The unit $q+1$ is $1$ modulo $p$. The root $1$ of
+$b^2-(q+1)$ has derivative $2$ modulo $p$ and lifts successively to a
+unit root $b$ modulo $p^a$. Thus $c=(q/(2b))^2$ is a square.
+
+\emph{Case 2: $L\not\equiv\pm1\pmod p$.}
+The ramified case $D=0\pmod p$ is impossible by the same nilpotent
+argument. Also $Y\ne0\pmod p$. In a separable quadratic algebra over
+$\mathbb F_p$, the only norm-one elements with square one are $1$ and
+$-1$: this is immediate in a field, and in the split algebra the two
+coordinates are mutual inverses. Therefore the image of $g$ has order
+at least four. Because $W$ is even and $k$ odd, the order of $e$ modulo
+$p$ is divisible by eight.
+
+Choose a power $h=H+Zs$ of $e$ of exact order eight. The unique
+nonidentity norm-one involution is $-1$, so $h^4=-1$. Hence
+$h^{-2}=-h^2$, and comparison of scalar parts gives
+\[
+ 2H^2=1,\qquad DZ^2=H^2-1=-\tfrac12,
+ \qquad -\frac D2=(DZ)^2
+ \quad\text{in }\mathbb F_p.
+\]
+Since $a_0=1\pmod p$,
+\[
+ c=\frac{1-L^2}{2}=-\frac{DY^2}{2}=(DZY)^2\pmod p.
+\]
+It is nonzero, so its square root lifts to modulo $p^a$ by the
+invertibility of $2u$. This proves the local claim without quadratic
+reciprocity or a formula for the order of the norm-one group.
+
+The Chinese remainder theorem combines the roots into $u\pmod M$.
+Replacing $u$ by $u+jM$ preserves the congruence and makes
+$L^2+2u^2$ arbitrarily large. In all cases $A\ge L^2$.
+
+It remains to prove the frame parity. At $a=W+1$, the recurrence modulo
+$W$ gives $Y_j(a)\equiv j\pmod W$, so $W\mid Y_W(a)$. Because $W$
+is even, $a$ is odd and every $X_j(a)$ is odd. The odd-index ordinates
+are odd; the doubling formula
+$Y_{2j}(a)=2X_j(a)Y_j(a)$ therefore gives
+$\nu_2(Y_W(a))=\nu_2(W)$. The quotient $Y_W(a)/W$ is odd. Finally,
+\[
+ Y_{Wk}(a)=Y_W(a)Y_k(X_W(a)),
+\]
+and the second factor is odd for odd $k$. The positive quotient is
+$2z+1$ for an integer $z$. Substitution in the Pell norm proves
+\eqref{eq:oddframe}.
+\end{proof}
+
+\subsection{Why the hypotheses matter}
+
+The theorem does not say that an arbitrary prescribed center gap is a
+square or that every preselected frame works. The odd multiplier $k$
+is chosen before the correction $u$. It is an existence choice for
+already present variables $L,z$, not a new quantified polynomial
+coordinate.
+
+There are small exact obstructions to tempting stronger statements.
+For $W=5,q=3,M=3$, we have $D=35=-1\pmod3$ and $e=s$. For every
+odd $k$, $e^{5k}$ has scalar coordinate $L=0\pmod3$, whereas
+$a_0=1\pmod3$. But $2u^2$ is never $1\pmod3$. Thus the even-frame
+hypothesis cannot simply be discarded.
+
+For $W=6,q=3,M=27$, every index $6k$ has $L^2=1\pmod{27}$:
+in the quadratic algebra, $(7+s)^6=1+12s$ and $(12s)^2=0$ modulo 27,
+so every power of this element has scalar part one.
+Here $a_0=19\pmod{27}$. The required correction $18\pmod{27}$
+is not a square, but it equals $2\cdot3^2$. A single unscaled square
+would fail. These examples are also executable negative controls.
+
+\section{Applying the center theorem to the literal quartics}
+
+\subsection{The inherited modular interface}
+
+Package 166 directly compiles a numerical proof calculus. Its six exact
+power requests are
+\[
+ R=16^t,\quad N=B^x,\quad q=(BH)^x,\quad
+ D_t=q^t,\quad D_y=q^{y+1},\quad M_{\rm pow}=q^x.
+\]
+Eleven other numerator values are supplied by modular Pell evaluations
+at base $q+1$. They need a common center satisfying
+\[
+ 2(q+1)A-(q+1)^2-1\equiv0\pmod\Omega,
+ \qquad \Omega=NM_{\rm pow}.
+\]
+In completeness, $B,q,\Omega$ are positive odd integers and every prime
+of $\Omega$ divides $q$. Thus the residue is exactly that of
+Theorem~\ref{thm:center}. The existing two-square theorem supplies
+$A=L^2+u^2+v^2$; our theorem supplies $A=L^2+2u^2$ instead.
+The signed Pell recognition and common-root modular numerator arguments
+are inherited \cite{source166}. Their source proofs are retained in
+the archive with their scope and provenance.
+
+\subsection{Making the frame even by one constant}
+
+Write $\Sigma$ for the sum of the 21 atom squares in the source frame.
+The atoms, grouped only for readability, are
+\[
+ t,x,y+1,R+t,B;\qquad a_0,\ldots,a_8;\qquad
+ N,J,q,D_t,D_y,M_{\rm pow},BH.
+\]
+Here $a_0,\ldots,a_8$ denote actual CRT representatives; the notation
+$a_0$ in this paragraph is unrelated to the center residue in
+Theorem~\ref{thm:center}.
+
+The inherited completeness construction already chooses $x,J$ even,
+$R,y$ even, one odd CRT representative and eight even ones, and the
+seven quantities $B,N,q,D_t,D_y,M_{\rm pow},BH$ odd. Its later CRT
+adjustments preserve these parities. The two atoms $t,R+t$ have the same
+parity, whatever the parity of $t$. Therefore
+\[
+ \Sigma\equiv
+ \underbrace{t^2+(R+t)^2}_{0}
+ +\underbrace{x^2+J^2}_{0}
+ +\underbrace{(y+1)^2+7}_{0}
+ +\underbrace{\sum_{i=0}^8a_i^2}_{1}
+ \equiv1\pmod2.
+\]
+Changing the frame from $W=2+\Sigma$ to $W=3+\Sigma$ thus makes
+the canonical completeness frame even. All inherited lower bounds are
+strengthened. On an arbitrary polynomial zero $W$ need not be even:
+soundness only uses the stronger magnitude bound and $A\ge L^2$.
+Evenness is used when constructing witnesses, exactly where the parity
+calculation applies.
+
+The delivered parity checker reconstructs the complete square sum from
+the literal raw source. In its stored coordinates the frame constant
+changes from $-525$ to $-526$. It independently propagates the addition
+chain for $J$ modulo two and checks both possible parities of $t$.
+Finite checking authenticates these identities; availability of the
+canonical semantic choices is the inherited completeness theorem.
+
+\subsection{Soundness, completeness, and exact algebra}
+
+For soundness, the new center row gives $A\ge L^2$ and the new frame
+implies every previous frame inequality. All retained arithmetic
+recognition lemmas apply. The modular numerators, exact binomial
+coefficients, finite rule rows and Horn-flow certificate decode as in
+the parent, yielding a C222 refutation.
+
+For completeness, start from a finite C222 refutation. Choose the
+inherited semantic data with the stated parities, and compute the new
+even $W=3+\Sigma$. Apply Theorem~\ref{thm:center} with modulus
+$\Omega=Nq^x$. Choose $A$ large
+enough for all inherited cap and orientation constructions, then fill
+their Pell coordinates, modular numerators, and remaining arithmetic
+gates. This constructs a zero of the modified source. The constrained
+eliminations and shears have recorded integral restoration maps on their
+zero sets; deleted unused coordinates can be restored arbitrarily.
+
+The reconstruction replays the parent source's 208 monic eliminations,
+its integral translations, and the balanced or compact final maps.
+Every pivot is checked to be an equation $v=f$ with integral $f$
+independent of $v$. Each residual remains quadratic. The now-unused
+private $v$ is deleted, and every surviving coordinate occurs.
+
+There is also a much shorter independent description at the final
+endpoint. Let $F$ be the parent's final frame residual after the substitution
+$v=u$ (in fact it is independent of these center coordinates), and identify its
+private center coordinates $v=u$. Every residual is then unchanged
+except $F\mapsto F-1$. Consequently the complete single polynomials
+satisfy the exact identity
+\begin{equation}\label{eq:globalidentity}
+ \boxed{P_{\rm new}=P_{\rm parent}[v:=u]-2F+1.}
+\end{equation}
+This identity checks the emitted coefficients. It does not by itself
+prove existential equivalence: an arbitrary old center need not have
+$u=v$. The cofinal theorem supplies the missing completeness argument
+by choosing the frame and center afresh.
+
+\input{pooling_section.tex}
+
+\section{Logical calibration and formalization boundary}
+
+The two source families directly encode the C222 numerical calculus;
+neither construction simulates K215 or instantiates Jones's universal
+polynomial. The inherited chain is
+\begin{align*}
+ \text{integer polynomial zero}
+ &\longleftrightarrow\text{finite square-shell C222 refutation}\\
+ &\longleftrightarrow\text{original C222 derivation of code 1}\\
+ &\longleftrightarrow\text{finite ZF refutation}\\
+ &\longleftrightarrow\text{finite ZFC refutation}.
+\end{align*}
+The square-shell syntax change is an effective recoding, not an assertion
+that its numerical constructors literally equal the older Lean ones.
+The two logical interfaces are
+\begin{center}\small\ttfamily
+KEndpoint.c222\_iff\_zf\_refutation\\
+ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation.
+\end{center}
+Their inspected source files are included \cite{endpoint,choice}.
+The numerical-calculus endpoint has no Turing-machine argument, even
+though its source file also contains machine-specific theorems.
+
+The full C222/ZF calibration is a substantial inherited theorem. The
+lower direction uses a model construction through a tagged domain and
+an internally well-founded quotient component; it is not the invalid
+assertion that syntactic consistency yields a transitive set model.
+The ZF/ZFC step is the constructible-model equiconsistency argument.
+The archive identifies these dependencies but does not recompile their
+entire transitive Lean import closure. Inspecting two endpoint proof
+terms alone would not establish every imported theorem's assumptions.
+
+On the arithmetic side, the inherited nontrivial inputs include signed
+Pell classification and canonical-index recovery, the common frame and
+orientation bound, generalized binomial CRT coding, the local
+proof-calculus compiler, and large-evaluation multiplicity recovery.
+The new proofs state their exact interfaces and preserve or strengthen
+their hypotheses. The pooled replacement is even pointwise
+existentially equivalent over all retained source coordinates.
+
+All new proof operations are finite arithmetic, induction, polynomial
+identities, finite groups/rings, elementary lifting, and CRT. They can
+be carried out internally in ZFC and do not quantify only over
+externally standard witnesses. In a nonstandard model the same internal
+lemmas relate its coded polynomial tuples and coded finite derivations.
+This is the intended meaning of \eqref{eq:target}.
+
+\section{Reproducibility and evidence}
+
+\subsection{What is completely specified}
+
+The archive includes the LaTeX article and compiled PDF; all four
+polynomial residual lists; three full collected polynomial expansions;
+the final-coordinate pool blocks and their factored definitions; exact
+source changes; integral projection certificates; selected inherited
+proofs and endpoint source files; independent checkers; an evaluator;
+and checksums. A finite residual list is already a complete polynomial
+definition, including for $P_{206}$ whose full squared expansion is not
+materialized.
+
+\subsection{Checks and their proper interpretation}
+
+The center endpoint checker imports no producer algebra. It compares
+every residual by variable names, checks \eqref{eq:globalidentity}, and
+independently collects every coefficient of both quartics. Six deliberate
+mutations are rejected. A separate checker authenticates the 21 frame
+atoms and the exact parity calculation. Two independently implemented
+finite-ring checks cover 59,880 and 2,040 center congruences; the larger
+run includes 2,351 nontrivial local order-eight cases. Both mathematical
+negative controls are retained.
+
+The pooling audit reconstructs the five blocks from the parent rows,
+checks privacy of all ten deleted coordinates, independently replays
+the five radical-direction projections and the affine consequence,
+and compares every final residual coefficient. Its unbounded proof was
+separately scrutinized, including negative indices, negative centers,
+unit bases, temporarily zero bases, and the order of the parity
+bootstrap. Complete finite fixtures supplement, rather than replace,
+those quantified arguments.
+
+The standard-library entry point is
+\begin{verbatim}
+python3 -B verify.py
+python3 -B -O verify.py
+\end{verbatim}
+It authenticates the release files when a manifest is present, runs the
+finite checks, and reconstructs the new equations in temporary
+directories. The included receipts record the actual completed runs.
+Disabling Python assertions does not remove the substantive checks:
+explicit exceptions implement failures.
+
+The evaluator accepts a literal integer tuple of the correct length and
+computes the chosen polynomial. It is not a root search or a decision
+procedure for consistency. Rebuild commands and relative paths are in
+\texttt{README.md}; no network is needed for the delivered checks.
+
+\section{Research implications and next concrete targets}
+
+The first result changes the question asked of a free parameter. The
+center need not accept every nonnegative slack at a fixed frame; the
+frame itself can be selected from a cofinal family. Removing the odd
+part of a finite unit order and using the even frame forces a square
+class that one scaled square can realize. This suggests examining other
+free Diophantine parameters whose completeness proofs currently use a
+universal three- or four-square slack. Any further application must
+prove its own residue-class and parity conditions; Theorem~\ref{thm:center}
+does not permit indiscriminate replacement of nonnegativity witnesses.
+
+The second result makes reciprocal certificates usable before all
+semantic signs are known. The weight $n_j$ aligns denominator signs,
+and allowing inactive zero bases separates the recognition lemma from
+the later nonvanishing proof. The latter is particularly cheap in this
+source because an even power and an even CRT index already make a
+retained product odd. A useful next optimization would lower the degree
+of the five-denominator certificate while preserving this sign and
+activation argument. Eliminating the orienting factors without a new
+proof would reintroduce cancellation.
+
+Neither reduction settles the variable/degree/height optimum. The
+37-variable large-coefficient quartic and the nine/ten-variable
+high-degree branches remain separate competitors. For integration,
+the safest comparison is the literal matched-parent table and the
+exact source chart used for pooling. An end-to-end formalization of
+the arithmetic compiler, including the two new lemmas, is a meaningful
+further target; it is not represented here as already complete.
+
+\appendix
+\section{Complete balanced quartic \texorpdfstring{$P_{229}$}{P229}}
+
+All $x_0,\ldots,x_{228}$ range independently over $\Z$. The equation is
+\[
+ P_{229}(x_0,\ldots,x_{228})=\sum_{i=0}^{175}R_i^2=0.
+\]
+The following is the entire literal residual list. Variable names in
+the companion TSV file are explanatory metadata and impose no domain
+restrictions.
+\input{../equations/P229_balanced/residuals.tex}
+
+\section{Complete definitions of the pooled equations}
+\input{pooling_appendix.tex}
+
+\section{Companion quartic and machine-readable identities}
+
+$P_{228}$ is the sum of the 175 residual squares in
+\texttt{equations/P228\_compact/equation.json}; every collected coefficient
+is also supplied in that directory. Its readable residual list and
+LaTeX include are complete. It is obtained from the compact package-166
+parent by exactly the same two-row change and private variable
+identification proved above. The balanced and compact parents use
+different integral projections; one must not delete a coordinate from
+the balanced list and assume that the compact equation follows without
+its separate map.
+
+The source-coordinate and final-coordinate certificates define every
+map, including all restored eliminated variables. The sorted sparse
+integer lists are authoritative mathematical data; PDF metadata and
+font bytes may differ across TeX installations without changing any
+equation. The final checksum manifest covers the supplied files except
+itself. Historical source notices are preserved, and the new work uses
+the repository's MIT No Attribution terms.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{collection} Vladimir Reshetnikov, \emph{ProveIt: Con(ZFC) in
+Diophantine form}, source snapshot \pin.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/DiophantineConsistency/con-zfc-diophantine-forms}{Pinned collection and provenance}.
+\bibitem{source166} ProveIt, package 166, \emph{Fixed-base modular
+Diophantine consistency}, 25 October 2026. In particular
+\texttt{TWO\_SQUARE\_CENTER.md}, \texttt{FRAME\_AND\_AFFINE\_PROOF.md},
+and \texttt{MODULAR\_PROOF.md}, Section 10.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/DiophantineConsistency/con-zfc-diophantine-forms/166-fixed-base-modular}{Pinned package 166}.
+\bibitem{source168} ProveIt, package 168, \emph{Reciprocal pooling and
+integral projections for Con(ZFC)}, 25 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/DiophantineConsistency/con-zfc-diophantine-forms/168-reciprocal-pooling}{Pinned package 168}.
+\bibitem{source173} ProveIt, package 173, \emph{Reusing the encoded row
+index as the Pell anchor}, 25 October 2026. Source chart
+\texttt{source/anchor221/equation.json}; proofs
+\texttt{C\_ANCHOR\_THEOREM.md},
+\texttt{LABEL\_SEPARATION\_WITHOUT\_DERIVED\_RANGE.md}, and
+\texttt{ORDINARY\_PROOF\_DEPENDENCY\_BOUNDARY.md}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/DiophantineConsistency/con-zfc-diophantine-forms/173-crt-index-anchor-215}{Pinned package 173}.
+\bibitem{endpoint} ProveIt, \texttt{KEndpoint.lean}, theorem
+\texttt{c222\_iff\_zf\_refutation}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean}{Pinned endpoint source}.
+\bibitem{choice} ProveIt, \texttt{ConstructibleChoice.lean}, theorem
+\texttt{zf\_refutation\_iff\_zfc\_refutation}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean}{Pinned Choice transport source}.
+\bibitem{sun} Zhi-Wei Sun, \emph{Ten unknowns for Hilbert's tenth problem
+over the integers}, arXiv:2609.01594, 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+\end{thebibliography}
+\end{document}

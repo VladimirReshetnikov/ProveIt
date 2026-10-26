@@ -1,0 +1,177 @@
+\section{A separate degree ten companion in 212 integers}
+\label{sec:reciprocal22}
+The reciprocal companion is not a quartic. It has exactly 212 unrestricted
+integer coordinates, 151 residuals, exact total degree 10, 55820 collected
+monomials and coefficient height 31104. Its largest residual has degree
+five and coefficient height 108. The polynomial is the sum of the squares
+of its complete literal residual array; its variable order and coefficients
+are supplied separately from the unchanged principal quartic.
+
+The incoming reciprocal-pooling theorem comes from source 168. Its old
+factorial-based sign bootstrap is not imported into the present factorial-free
+front. Instead we prove a cofinal restricted chart in which both bases are
+nonzero before the power requests are interpreted; unit bases are allowed
+by the reciprocal theorem and are eliminated only after source restoration. The original
+$H=2+4(C+\sum A_i)$ remains unchanged.
+
+\subsection{A cofinal radix chart with no early sign assumption}
+Restrict the source by the literal substitution
+\[
+ q=3z+1,\qquad z\in\Z.
+\]
+At every integer input either $q\ge1$, $q+1\ge2$, or $q\le-2$,
+$q+1\le-1$. Both bases are therefore nonzero and have the same sign,
+before any semantic power interpretation. The possible values $q=1$
+and $q+1=-1$ are not prematurely excluded. This is an integral chart
+of a restricted subfamily, not a unimodular change on all old radix values.
+We must prove that the restriction preserves completeness.
+
+Choose the horizon $t=32+4a^2$ with $a\not\equiv0\pmod3$, for example
+$a=3v+1$ arbitrarily large. Then $12\mid t$, and these horizons remain
+cofinal. Put $K=32t^4$ and $F=t^K$, in that order; the power is not $K^t$.
+For $p=2,3$ set $v_p(F)=v$ and $v_p(t!)=a_p$. Then
+$v>\max_{1\le i\le t}v_p(i)$. Expanding the numerator of the binomial gives
+\[
+ t!(B-1)=\prod_{i=1}^t(F+i)-t!
+ =\sum_{\varnothing\ne S\subseteq\{1,\ldots,t\}}
+       F^{|S|}\prod_{i\notin S}i.
+\]
+Each summand has valuation
+\[
+ a_p+\sum_{i\in S}\bigl(v-v_p(i)\bigr)\ge a_p+1.
+\]
+Canceling the known $p$-power and the remaining unit part of $t!$ gives
+$B\equiv1\pmod p$. This is an integer valuation proof, not reduction of
+uncanceled rational factors modulo $p$. In particular $\gcd(B,6)=1$.
+
+As in the main completeness proof, choose the finite path, then sufficiently
+large $y=Fw$ with odd $w$ and $t!\mid y$. Every beta modulus
+$1+(i+1)y$ is odd. Their prescribed CRT class therefore has arbitrarily
+large even representatives; choose an even $x$ satisfying all retained
+bounds. Now $N=B^x$ is coprime to six. Fix the eight ordinary representatives
+in their prescribed classes modulo $N^2$. Because $\gcd(N^2,6)=1$, the
+remaining class for $C$ can be chosen even and in either of the two residues
+modulo three for which $3\nmid H$. Its valid values form a cofinal progression
+of step $6N^2$. Choose $C$ above all other nominal indices and representatives.
+This preserves all previous CRT congruences and $B\mid C+F+1$.
+
+Only now define $H$ and $q=(BH)^x$. Here $H\equiv2\pmod4$, $3\nmid H$,
+$B\equiv1\pmod3$, and $x$ is positive even. Consequently
+$q\equiv0\pmod4$ and $q\equiv1\pmod3$, hence $q\equiv4\pmod{12}$.
+In particular $q\equiv1\pmod3$, so the coordinate $z=(q-1)/3$
+is integral. The stronger modulo-twelve conclusion is useful only for
+constructing canonical witnesses, not imposed on arbitrary source zeros. Finally choose the actual square
+frame, Pell center and even-anchor cap witnesses as before. The choice
+order has no cyclic dependence:
+\[
+ t,K,F,\text{path},y,x,B,N,\text{other representatives},C,H,q,\text{frame},A.
+\]
+Evenness of $x$ is a canonical completeness choice, not an assumption on
+arbitrary soundness witnesses.
+
+\subsection{The reciprocal polynomial and its exact power theorem}
+For $n_0=q,n_1=q+1$ let $I_j$ denote the two request groups, containing
+three and ten requests. Retain the actual canonical Pell pairs $(X_i,Y_i)$,
+outputs $m_i$, indices $k_i$, and wires $Z_i=AY_i$. Set
+\begin{align*}
+ T_j&=2An_j-n_j^2-1,&H_j&=\sum_{i\in I_j}Y_i(m_i-X_i),\\
+ S_j&=\sum_{i\in I_j}\bigl((m_i-X_i+Z_i)^2-Y_i^2\bigr),
+ &E_j&=S_j-2n_jH_j.
+\end{align*}
+Delete the four private old pool coordinates and four rows, introducing
+one unrestricted integer $\zeta$ and the single residual
+\begin{equation}\label{eq:reciprocal}
+ E_0T_1+E_1T_0-\zeta T_0T_1=0.
+\end{equation}
+It has degree at most five. All other residuals remain quadratic.
+
+\begin{theorem}
+Under the retained canonical-Pell and square-frame hypotheses,
+\eqref{eq:reciprocal} is solvable in $\zeta\in\Z$ if and only if all
+thirteen outputs are the exact powers $m_i=n_j^{k_i}$. An index is
+nonnegative whenever its base has absolute value at least two; unit bases
+retain their canonical signed powers. No coprimality of $T_0,T_1$ is required.
+\end{theorem}
+\begin{proof}
+Write $\delta_i=m_i-X_i+(A-n_j)Y_i$ for $i\in I_j$.
+Exact expansion gives
+\[
+ \sum_{i\in I_j}\delta_i^2=E_j-T_j\sum_{i\in I_j}Y_i^2.
+\]
+Thus~\eqref{eq:reciprocal} says that $\sum_{j,i}\delta_i^2/T_j$ is an
+integer. Let $b=\lfloor\sqrt{W-1}\rfloor\ge16$ and
+$C_*=[q(q+1)]^b\ne0$. Every signed index satisfies $|k_i|\le b$.
+The integer
+\[
+ d_i=C_*m_i-(C_*/n_j^b)n_j^{b+k_i}
+\]
+is defined without a negative exponent. Canonical Pell congruences imply
+$C_*\delta_i\equiv d_i\pmod{T_j}$, because $n_j$ is a unit modulo its
+own $T_j\equiv-1\pmod{n_j}$. Therefore
+\[
+ \sum_{j=0}^1\sum_{i\in I_j}\frac{d_i^2}{T_j}\in\Z.
+\]
+We only multiplied by $C_*^2$ and changed a numerator by a multiple of its
+own denominator. Neither $C_*$ nor the other modulus was inverted.
+
+The frame gives $|n_j|,|m_i|,|k_i|\le b$. Hence
+\[
+ |C_*|\le b^{2b},\quad |C_*/n_j^b|\le b^b,\quad
+ |d_i|\le b^{2b+1}+b^{3b}\le2b^{3b}.
+\]
+With $r=13\le15$,
+\[
+ \sum_i d_i^2\le4rb^{6b}<W^{3b+1}\le W^W
+       <\min(|T_0|,|T_1|).
+\]
+Indeed $4r<W$, $b^2<W$, $3b+1\le b^2+1\le W$, and
+$|T_j|\ge2|A|-W>W^W$. Also $\operatorname{sgn}(T_j)=
+\operatorname{sgn}(An_j)$, so the denominators have the same sign.
+The displayed integral reciprocal sum has absolute value below one and
+summands of a common sign. It is zero and every $d_i=0$. Dividing the
+identity in $\Q$ by the nonzero $C_*$ gives $m_i=n_j^{k_i}$.
+A negative index at a nonunit base would force an integer times a
+positive power of its absolute value to equal one, impossible.
+
+Conversely exact powers give $T_j\mid\delta_i$ for every request.
+The square identity gives $T_j\mid E_j$, and
+$\zeta=E_0/T_0+E_1/T_1$ is an integral solution of
+\eqref{eq:reciprocal}.
+\end{proof}
+The common sign and strict bound are essential. With opposite denominators,
+nonzero squares can cancel; without the bound a nonzero reciprocal sum can
+be an integer. The proof uses neither phenomenon.
+
+\subsection{Restoration and the consistency equivalence}
+At a new zero, first the unchanged signed cap and orientation recover the
+canonical pairs. The affine radix chart already gives two nonzero bases,
+so the theorem applies without invoking an unauthenticated radix power.
+Restore the old coordinates by
+\[
+ L_j=E_j/T_j,\qquad K_j=2H_j+(2A-n_j)L_j.
+\]
+They are integral on this zero set, and both old rows
+$K_j-2H_j-(2A-n_j)L_j=0$ and $S_j-n_jK_j+L_j=0$ vanish.
+Only now apply the accepted old source bootstrap. Its retained singleton
+$BH$ request, nonzero even $H$, odd nonzero $B$ and endpoint argument
+exclude $x=0$ and hence $q=1$. The recovered $q$ powers then give
+$y>0$ and the large endpoint bound on $x$, excluding $q+1=-1$. Thus
+both bases are nonunits at every actual zero, the representative signs
+are authenticated in the old acyclic order, and a finite syntactic
+refutation is decoded. The reciprocal step itself did not assume these
+later conclusions.
+Conversely the cofinal construction above supplies a source zero in the
+restricted chart, and $\zeta=L_0+L_1$ supplies the new zero.
+These are witness-existence maps, not a polynomial automorphism of the
+whole ambient lattice.
+
+The finite compiler checks that the four deleted coordinates are private
+to the four protected rows, retains every singleton request and every
+norm/orientation/cap equation, and substitutes $q=3z+1$ throughout the
+entire retained source and every actual frame atom. Protected transported
+operations and two integral radical projections are rechecked against
+that source. The literal degree-five row and its complete squared
+expansion determine the stated exact degree 10 and coefficients. This
+separate composition proves the same consistency equivalence on
+$\Z^{212}$ without changing the principal quartic or claiming a global
+variable minimum.

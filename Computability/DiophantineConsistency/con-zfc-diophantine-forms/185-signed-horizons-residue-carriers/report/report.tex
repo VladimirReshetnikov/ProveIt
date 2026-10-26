@@ -1,0 +1,449 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype,enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref,xurl}
+\usepackage{fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+urlcolor=blue!45!black,pdftitle={Signed horizons and residue-encoded Pell witnesses},
+pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Explicit Diophantine forms of consistency}
+\fancyhead[R]{\small 25 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep}
+\allowdisplaybreaks[3]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Refut}{\operatorname{Ref}}
+\newcommand{\PellX}{\chi}
+\newcommand{\PellY}{\psi}
+\title{\textbf{Signed horizons and residue-encoded Pell witnesses}\\[5pt]
+\large Explicit Diophantine equations for the consistency of ZFC}
+\author{Research prepared for Vladimir Reshetnikov and ProveIt\\
+\small AI-assisted mathematical development with separate proof and artifact reviews}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give new explicitly instantiated Diophantine equations whose
+unsolvability, in their stated domains, is provably equivalent in ZFC
+to its syntactic consistency. A signed affine proof horizon removes an
+integer variable from each of two directly compiled quartics. The balanced
+result has 214 unrestricted integer variables, 153 squared quadratic
+residuals, 5,875 collected monomials and coefficient height 655,360.
+A second quartic has 212 integer variables and larger coefficients.
+An independent Pell-ordinate construction replaces a quantified quotient
+by a residue already carried by an auxiliary ordinate. It yields fourteen
+positive variables at 66 operations and degree 174, or 68 operations and
+degree 146. A careful domain audit turns the latter into a fully explicit
+equation in 36 unrestricted integers, degree 288 and 145 operations.
+Composing signed horizons with a reused CRT anchor and oriented power
+pooling also gives eight direct integer profiles, including 117 variables
+at degree 16, 108 at degree 32, and 86 at degree 2,097,780.
+All final equations have fixed coefficients and contain only polynomial
+operations. The new proofs are ordinary mathematics formalizable in ZFC,
+composed with explicitly identified inherited calibration theorems.
+Exact finite verification is supplied, but no new end-to-end
+Lean/Rocq or encoded object-language ZFC proof is claimed.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+\section{Results, interpretation, and comparison scope}
+\label{sec:results}
+
+The task is to make the consistency equation simpler while keeping both
+directions of its calibration. There is no single order on simplicity:
+variable count, total degree, evaluation length, coefficient height,
+coefficient storage and proof complexity can move in opposite directions.
+This submission therefore gives exact completed constructions and makes
+the relevant tradeoffs explicit. It does not prove global optimality or
+claim worldwide priority for its component techniques.
+
+The repository comparison is pinned to
+\[
+\texttt{02a78a08603cbae248c19c23a75907c6c6bd6443}.
+\]
+The immediate direct source is package 173~\cite{proveit173}; the compact
+source is package 174~\cite{proveit174}, with a residue-carrier argument
+from package 170~\cite{proveit170}. The direct higher-degree family also
+uses the separately delivered \emph{Oriented Powers} packet~\cite{oriented}.
+Its archive identity is retained in the source ledgers.
+
+\subsection{The precise logical claim}
+
+Fix the effective first-order presentation denoted \texttt{ZFCax\_s}
+and the finite proof relation \texttt{BProv} in the repository.
+Let $\Refut_{\mathrm{ZFC}}$ mean that there is a finite derivation of
+\texttt{Form.fBot} from that presentation, and put
+$\Con(\mathrm{ZFC})=\neg\Refut_{\mathrm{ZFC}}$.
+The new constructions prove the following ordinary theorem.
+
+\begin{theorem}\label{thm:main}
+For every final polynomial $P$ delivered with this article and its
+specified domain $\mathcal D$, ZFC proves
+\[
+ \bigl(\exists\mathbf x\in\mathcal D\;P(\mathbf x)=0\bigr)
+ \longleftrightarrow \Refut_{\mathrm{ZFC}}.
+\]
+Consequently ZFC proves
+\[
+ \boxed{\bigl(\neg\exists\mathbf x\in\mathcal D\;P(\mathbf x)=0\bigr)
+ \longleftrightarrow \Con(\mathrm{ZFC}).}
+\]
+The coefficients are fixed independently of the truth of consistency.
+\end{theorem}
+
+The theorem proves an equivalence. It does not establish the absence of
+zeros, nor consistency itself. Its quantifiers are the internally coded
+integers and finite derivations of ZFC. The argument is not restricted to
+externally standard proof lengths.
+
+\subsection{The useful completed endpoints}
+
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Equation family & Domain & Variables & Exact degree & Binary operations\\
+\midrule
+Balanced direct quartic $Q_{214}$ & $\Z$ &214&4&---\\
+Dimension-focused quartic $Q_{212}$ & $\Z$ &212&4&---\\
+Compact $P_E$ & $\Z_{>0}$ &14&174&66\\
+Compact $P_q$ & $\Z_{>0}$ &14&158&67\\
+Compact $P_q^\circ$ & $\Z_{>0}$ &14&146&68\\
+Explicit compact integer lift $P_{36}$ & $\Z$ &36&288&145\\
+Direct pooled profile & $\Z$ &132&12&2484\\
+Direct pooled profile & $\Z$ &117&16&2439\\
+Direct pooled profile & $\Z$ &108&32&2434\\
+Smallest delivered direct profile & $\Z$ &86&2097780&2385\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Operation counts are binary $+,-,\times$ gates in the supplied
+straight-line programs, with fixed coefficients as input numerals
+and shared intermediate values counted once. They measure arithmetic
+circuit length; big-integer bit complexity is a separate cost.
+
+The compact integer equation $P_{36}$ has a short factorized definition:
+Section~\ref{sec:ordinate} gives all its polynomial factors and
+Section~\ref{sec:ordinate-constants} defines its four fixed constants.
+The balanced quartic has modest \emph{expanded} coefficients and no
+native coefficient ports; Appendix~\ref{app:quartic} prints every residual.
+The direct circuits are useful alternatives when avoiding the large
+compact constants matters more than arithmetic evaluation length.
+
+The fourteen-positive-variable equations do not assert a
+fourteen-\emph{integer}-variable theorem. The stated conversion to 36
+integer variables is part of the proof. Likewise, the 86-variable direct
+equation is not a variable-count record across other encoding families.
+Much smaller-variable equations at other degree and coefficient costs
+already appear in the repository. Published small-variable universality
+results also have a different optimization objective~\cite{sun2026}.
+
+\subsection{How this iteration changes the earlier results}
+
+The balanced parent from package 173 has 215 integer variables, 154
+quadratic residuals, 5,660 monomials and height 91,679. The new balanced
+quartic removes one variable and one residual, at the cost of increasing
+support to 5,875 and height to 655,360. The 213-variable companion
+similarly becomes 212 variables, with increased coefficient height.
+These are dimension reductions, not improvements in every metric.
+
+The compact parent has fifteen positive variables, degree 157 and 66
+operations. The new $P_E$ keeps 66 operations with fourteen variables,
+while its degree is 174. The lower-degree $P_q^\circ$ improves the
+documented fourteen-positive 71-operation, degree-157 comparison to
+68 operations and degree 146. Complete coefficient tuples are kept
+separate throughout this comparison.
+
+The pooled direct family has stronger matched improvements:
+137 variables at degree 12 become 132 with the same bound of 256 on
+literal circuit constants; 121 at degree 16 become 117; 111 at degree 32
+become 108. Its final 86-variable profile has degree 2,097,780, compared
+with 87 variables and degree 8,388,612 in the earlier packet. The
+expanded coefficient bounds remain a separate column of the exact
+machine-readable comparison.
+
+\input{quartic_section.tex}
+\input{../compact/section.tex}
+\input{../direct/ARTICLE_SECTION.tex}
+
+\section{Why the consistency calibration is an ordinary ZFC proof}
+\label{sec:calibration}
+
+The direct and compact branches have different immediate calibrations.
+The direct branch encodes the numerical proof calculus C222. It does
+not simulate K215, instantiate Jones's universal polynomial, or use
+Sun's integer-domain reduction. The compact branch deliberately retains
+its existing native/K215 coefficient construction. The new argument
+there is an exact soundness restoration to P66 and a fresh-witness
+completeness construction; it does not replace the inherited coefficient
+calibration by mere numerical inequalities.
+
+\subsection{Direct branch}
+
+The square-shell arithmetic constructors are
+\begin{align*}
+ I(a,b)&=2((a+b)^2+a),& M(a,b)&=I(a,b)+1,\\
+ A(a,b)&=2((a+b)^2+3a+4b+3),&
+ E(a,b)&=A(a,b)+1.
+\end{align*}
+They are the actual constructors in the arithmetic source.
+Their constructor-preserving recoding to the original numerical C222
+syntax fixes truth and falsity. One must not identify the two sets of
+numeric constructors literally or assume that recoding preserves
+arithmetic on their labels.
+
+The inherited endpoints used after that recoding are
+\begin{align*}
+ &\texttt{KEndpoint.c222\_iff\_zf\_refutation},\\
+ &\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+\end{align*}
+The pinned source files are included for inspection and cited
+directly~\cite{kendpoint,choice}. They contain the named theorem
+compositions. Their full transitive import closure is not rebuilt by
+this submission.
+
+The lower C222 direction uses first-order completeness, named formulas
+and a seed-to-model construction; the upper direction uses an
+interpretation in a constructible model. The ZF/ZFC transport uses the
+constructible submodel together with soundness and completeness. These
+are ordinary constructions available in ZFC. The internally well-founded
+part of the lower model is an \emph{internal} notion; no assumption of an
+externally well-founded or transitive set model is added.
+
+The arithmetic reductions are uniform over finite syntax, integers and
+finite lists. Their inductions, finite CRT choices, Pell recurrences,
+finite polynomial identities and finite group arguments are formalizable
+in ZFC. Composing them with the identified logical endpoints gives the
+internal equivalence in Theorem~\ref{thm:main}, without assuming consistency.
+The entire inherited calibration is not described as a newly implemented
+primitive-recursive proof translator: its supplied proof includes
+semantic completeness and model constructions.
+
+\subsection{Compact branch}
+
+The four fixed coefficient ports are bound to one complete Start-only4127
+native construction. Their full bytes, a finite reconstruction recipe
+and a reconstructing program are supplied. Their total raw size is
+97,046 bytes, and the largest fixed integer has 194,440 bits.
+The new residue-ordinate proof reconstructs all missing positive P66
+witnesses from a new zero. Conversely a refutation supplies the canonical
+outer P66 witnesses, after which new private strong and auxiliary Pell
+witnesses are chosen. This distinction matters: arbitrary old auxiliary
+witnesses need not satisfy the new residue condition.
+
+No coefficient port from another encoding is substituted.
+The inequalities $\beta\ge31$, $0<M_C<\beta<M_F<2\beta$ are useful in
+the proof, but they do not alone give a consistency calibration.
+That calibration belongs to the whole named, authenticated tuple.
+
+\subsection{Proof boundary}
+
+The new unbounded arguments have received separately assigned
+AI-assisted mathematical reviews. The checks supplied with the archive
+authenticate finite algebra and exact source binding. They do not replace
+the Pell classification theorem, the native window theorem, or the
+C222/ZF/ZFC calibration by testing examples.
+
+No new complete Lean or Rocq proof term or encoded object-language ZFC
+derivation is supplied. This is an ordinary proof with exact computational
+certificates and explicit inherited dependencies. It should be integrated
+with that status rather than described as newly kernel-checked.
+
+\section{Verification, reproducibility, and integration}
+\label{sec:verify}
+
+\subsection{What the programs check}
+
+The quartic checker is independent of its emitter. It checks the exact
+source bytes, the protected-row edits, commutation with the inherited
+projection and optimization chain, the affine substitution, the two
+invertible row operations, every coefficient of the collected sums of
+squares, degree four and occurrence of every variable.
+The signed horizon is a semantic change; the checker does not
+mislabel it as a pointwise inverse to the old square horizon.
+
+The compact checker reconstructs the literal graphs and their fixed
+coefficient binding. It verifies all 56 terms of each leading form and
+the 323-term main-norm cancellation. The integer-domain checker
+authenticates the eleven positivity substitutions, the three free
+integer coordinates, the 145-gate count, and the nonzero degree-288
+leader. All four coefficient payloads are independently regenerated
+from the complete fixed recipe and compared byte for byte.
+
+The pooled-source checker binds sixteen actual power requests and fourteen
+canonical Pell pairs, including every shifted multiplication wire,
+norm, orientation term and required squared frame atom. The circuit
+checker verifies all unit pivots and source-row partitions, local
+polynomial expansions, degree witnesses, coefficient bounds and actual
+dependence on each input. Deliberate corruptions of relevant artifact
+fields are rejected. A fresh reconstruction reproduces its mathematical
+JSON files exactly.
+
+The release commands run the substantive checks both normally and under
+\texttt{python -O}. Verification does not search for a zero and cannot
+decide consistency. Degree statements use exact leading forms or
+nonzero finite-field specializations of the highest homogeneous part,
+not floating-point sampling.
+
+\subsection{Files and commands}
+
+The root directory contains this article, a root verifier, integration
+notes, a SHA-256 manifest and three mathematical subpackages:
+\texttt{quartic/}, \texttt{compact/} and \texttt{direct/}.
+Each contains the relevant proof, literal equations and replay tools.
+The final mathematical definitions are the exact integer residual lists,
+straight-line circuits, fixed coefficient bytes and their stated domains.
+Named intermediate registers are polynomial abbreviations, not hidden
+quantified variables.
+
+From the extracted package:
+\begin{verbatim}
+python3 -B verify_all.py
+python3 -O -B verify_all.py
+\end{verbatim}
+Python 3.10 or later and its standard library suffice. The report can be
+rebuilt with an ordinary TeX Live installation:
+\begin{verbatim}
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+PDF metadata can vary with the TeX installation. Frozen-byte manifests
+and mathematical reconstruction have deliberately separate roles.
+The integration notes suggest an additive new package; existing
+calibrations and historical equations should remain available.
+
+\section{Further research questions}
+\label{sec:further}
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{A second residue in the same ordinate.}
+Can an auxiliary Pell ordinate authenticate another quotient already
+present in the compact formula without increasing the number of free
+witnesses or losing the common-sign unit argument? The present proof
+depends on $M\mid v$, $M\mid S^2$ and $R<M$; a second congruence would
+have to be compatible with the same cofinal witness construction.
+
+\item \textbf{Smaller carrier modulus.}
+The $q^4$ carrier follows from the proven bound $R<q^4-2$.
+A smaller modulus would need a sharper bound on the recovered
+index difference, rather than an unsupported assertion that congruent
+indices are equal.
+
+\item \textbf{Sharper constructor growth budgets.}
+The direct quartics use the uniform depth constant $\ell=2^{20}$.
+For a nonnegative-coefficient polynomial $A(t)$ of degree at most $e$,
+the finite inequality $A(t_0)<t_0^e$ implies
+$A(t)<t^e$ for all $t\ge t_0$, by monotonicity of each term of
+$A(t)/t^e$. Applying this to the actual constructor DAG can improve
+its coarse depth budget. Extending a final horizon below eight
+still requires rechecking every CRT and digit estimate; no such
+additional equation is asserted here.
+
+\item \textbf{Reduce quartic height after the sign change.}
+The balanced $Q_{214}$ trades a variable for coefficient height.
+Further integral coordinate or residual changes may reduce its
+655,360 height without restoring a horizon variable. Any claimed
+improvement should be measured on the fully collected polynomial.
+
+\item \textbf{Simplify the logical source.}
+The direct arithmetic cost is still driven by the large guarded C222
+schema and its constructor tree. A different equiconsistent numerical
+calculus might improve more than local certificate edits. Such a route
+must supply its own uniform calibration, including the converse direction.
+
+\item \textbf{Close the formalization boundary.}
+The new sign recovery, residue-ordinate extraction, protected-row
+commutation and exact circuit certificates are natural formalization
+targets. Their finite algebra does not by itself close the inherited
+unbounded arithmetic and logical dependency chain.
+\end{enumerate}
+
+\appendix
+\input{../compact/coefficients.tex}
+\clearpage
+\section{Complete literal balanced quartic}\label{app:quartic}
+
+Every $x_0,\ldots,x_{213}$ below ranges independently over $\Z$.
+The equation is
+\[
+ \boxed{Q_{214}(x_0,\ldots,x_{213})=\sum_{j=0}^{152}R_j^2=0.}
+\]
+The list is generated directly from the verified integer coefficient file.
+It contains 153 quadratic residuals; there are no unstated side
+conditions or auxiliary quantifiers. The adjacent JSON also records
+every collected coefficient of the one quartic.
+
+\input{quartic_residuals.tex}
+
+\clearpage
+\section{Source identities and comparison notes}
+
+The exact repository source identities, original Git blob identifiers and
+SHA-256 digests are retained in each subpackage's provenance ledger.
+The earlier Oriented Powers archive has SHA-256
+\begin{center}
+\small\texttt{b5f564d8afc22cd0d17fd831f965baf9fa3423155229c7caa9b1084cddcbbaa2}.
+\end{center}
+The final archive's manifest authenticates its delivered contents.
+Inherited notices identify prior authorship and source scope.
+The new manuscript and code are AI-assisted work prepared for ProveIt;
+separate AI reviews are not described as external human peer review.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{proveit173}
+ProveIt contributors, \emph{A reused CRT index: an explicit Diophantine
+consistency equation}, package 173, 25 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/DiophantineConsistency/con-zfc-diophantine-forms/173-crt-index-anchor-215}.
+\bibitem{proveit174}
+ProveIt contributors, \emph{Start-marker compositions}, package 174,
+25 October 2026. Complete Start-only4127 tuple and P66 calibration.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/DiophantineConsistency/con-zfc-diophantine-forms/174-start-marker-compositions}.
+\bibitem{proveit170}
+ProveIt contributors, \emph{Quotient carriers}, package 170,
+25 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/DiophantineConsistency/con-zfc-diophantine-forms/170-quotient-carriers}.
+\bibitem{oriented}
+\emph{Oriented power pooling and polynomial root centering},
+AI-assisted research prepared for Vladimir Reshetnikov and ProveIt,
+25 October 2026. Prior delivered archive
+\texttt{ConZFC\_Oriented\_Powers\_2026-10-25.zip}; exact identity above.
+The local inherited theorem and source pins are in \texttt{direct/}.
+\bibitem{kendpoint}
+ProveIt contributors, \texttt{KEndpoint.lean},
+\texttt{c222\_iff\_zf\_refutation}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean}.
+\bibitem{choice}
+ProveIt contributors, \texttt{ConstructibleChoice.lean},
+\texttt{zf\_refutation\_iff\_zfc\_refutation}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean}.
+\bibitem{danilkin2023}
+Anna Danilkin and Lo\"ic Chevalier,
+\emph{Three Squares Theorem}, Archive of Formal Proofs, 3 May 2023.
+\url{https://isa-afp.org/entries/Three_Squares.html}.
+\bibitem{sun2026}
+Zhi-Wei Sun, \emph{Ten unknowns for Hilbert's tenth problem over the
+integers}, arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+\end{thebibliography}
+\end{document}

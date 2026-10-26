@@ -1,0 +1,99 @@
+\section{Complete fixed coefficient recipe}\label{sec:ordinate-constants}
+The following finite recipe is retained from the whole Start-only4127 construction~\cite{proveit174}. Its fixed indices do not introduce quantified variables into any equation. The accompanying four unsigned big-endian payloads have a combined size of 97,046 bytes.\par
+\begingroup
+\providecommand{\Cfl}[1]{\left\lfloor#1\right\rfloor}
+\providecommand{\Crg}[2]{\{#1,\ldots,#2\}}
+\textbf{The four fixed integers.}
+Every index, set, sum, product and floor below defines a constant, not
+another unknown. Put
+\[
+\begin{gathered}
+\rho=2^{47},\quad B=\rho^{4127},\quad\beta=B-1,\\
+G_m(x)=\sum_{j=0}^{m-1}x^j,\quad
+\Lambda=\rho^{2042}+\rho^{3074}.
+\end{gathered}
+\]
+\begin{align*}
+M_C={}&\beta+\rho-(\rho+3)\rho^{990}\\
+&-G_{943}(\rho)-\Psi(\rho,1),\\
+M_F={}&B+3+(2^{44}-2)\Lambda\\
+&+\rho^{973}G_9(\rho)+\rho^{1012}G_8(\rho)
+  +\rho^{1031}\\
+&+2^{29}\rho^{4124}-\rho^{4106},\\
+K_0={}&\rho^{20}+\rho^{30}+\rho^{1031}+\rho^{4137}\\
+&+\Lambda\Phi(1/\rho),
+\end{align*}
+where
+\[
+\begin{split}
+\Phi(x)={}&\sum_{i=0}^{942}[1+2^{10}(1+w_i+2^8n_i\\
+&+2^{17}p_i+2^{25}s_i)]x^i+2^{10}\Psi(x,2),\\
+\Psi(x,t)={}&x^{992}(x^{10}+t^{17})G_8(tx)\\
+&+t^8x^{943}(x^{30}+t^{17})G_9(tx)\\
+&+t^{34}(2-t)x^{1031}.
+\end{split}
+\]
+The rational intermediate in $K_0$ cancels exactly; all four results are positive integers.
+
+\textbf{The 943 indexed fixed tiles.}
+Use the actions $u_j,v_j,d_j$ decoded below. For $d=0,1$, let
+\[
+\begin{gathered}
+h(q,b)=2q+b+2,\quad
+\mathcal S_d=\{u_j:d_j=d,\ 0\le j<430\},\\
+r_{d,q}=205-199d+|\mathcal S_d\cap\Crg{0}{q-1}|.
+\end{gathered}
+\]
+An interval ending at $-1$ is empty. The table defines $t_i$ for
+$0\le i\le942$; all index ranges are fixed:
+\[
+\setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
+\text{index }i&\text{tile }t_i=(w_i,n_i,p_i,s_i)\\\hline
+0,1&(2,435,3,1),\ (5,0,0,0)\\
+j+2\ (j=2q+b<430)&((1-d_j)r_{0,u_j},h(q,b),d_jr_{1,u_j},v_j)\\
+434-2a+b\ (a,b=0,1)&(0,432a+b,0,432a+b)\\
+\substack{424+2r_{d,q}+b\\q\in\mathcal S_d,\ d,b=0,1}&(dr_{d,q},b,(1-d)r_{d,q},h(q,b))\\
+924+2a+b\ (a,b=0,1)&(0,432a+b,0,438)\\
+928&(2,434,2,0)\\
+929&(3,436,4,4)\\
+930&(4,436,4,0)\\
+497+t\ (t=434,435,436)&(1,438,1,t)\\
+934+3a+b\ (a,b=0,1,2)&(a^2,437,b,437)
+\end{array}
+\]
+\textbf{A closed decoder for the 430 actions.}
+Put $D_b(A,k)=\Cfl{A/b^k}\bmod b$, where
+$a\bmod b=a-b\Cfl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
+\[
+\begin{gathered}
+N=\mathcal A\bmod2^{636},\quad
+T_0=\Cfl{\mathcal A/2^{636}}\bmod2^{1675},\\
+E_0=\Cfl{\mathcal A/2^{2311}},\\
+\nu_j=D_2(N,j),\quad \sigma_j=\sum_{k=0}^{j-1}\nu_k,\\
+m_q=D_2(N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14+m_q(D_{16}(E_0,\tau_q)-14),\\
+u_j=\nu_j(1+\sigma_j)+(1-\nu_j)D_{216}(T_0,j-\sigma_j),\\
+v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
+\end{gathered}
+\]
+Empty sums are zero. Here $(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
+uses this actual first target, including its state renaming.
+
+\textbf{The integer $\mathcal A$.}
+The alphabet, in order of digit values $0,\ldots,61$, is:\par
+\noindent{\small\ttfamily 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}\par
+Concatenate the following 436 characters as digits $e_0,\ldots,e_{435}$;
+put $\mathcal A=\sum_{j=0}^{435}e_j62^{435-j}$.\par
+\begingroup\small\ttfamily
+BxEnhvy6NipzkWmROo0GsA3uK3twWLxscLq20UTumy5Cdu461LwD6g7RDNzF8Y\par
+iYDFTpB8ehAypd7d6OsOL4APamnJeNXQypUezCmW9n4oXP6XfgmiWuAWZ8ZJ7U\par
+OP7gu4kVdlGZqZHULQMar1dXNeJW4i7oNVI8usp8BlovjjZbwPCovZI328fRUq\par
+4q92R81s5GjWQaQfGhkq9UYMK3rRMaBmsOIBkJqc2cj2VRIZ6mjzkBIOkW9SjZ\par
+FzeA6J5u4j3sBL3SdgwXzM9mHvQivu8EJ1TBTpRhHDqZIbmYgwQ8VqTAFotl6F\par
+We1YC554GKrVHsA8oUGKSA6F6k5KREBSD0Tgd7bFALY84LLbpw574BQyvdoHrl\par
+0Oe35uwDf15DpT6VJWZBjSbHPpPAINYTte0eUxnTFTKBlGj8Am6sb1gLldh8WZ\par
+8P\par
+\endgroup
+
+\endgroup
+

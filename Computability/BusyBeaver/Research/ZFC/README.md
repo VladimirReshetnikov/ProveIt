@@ -1136,9 +1136,8 @@ published to support further work toward 214.
 
 **Diophantine form of the K215 endpoint** (not formalized). The report
 [`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5–17
-(intake batches 221–233; latest reconciled placement `2a18823cc1`; waves 18
-and 19, sources 160–168, are placed and await reconciliation).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–22
+(intake batches 221–238; latest reconciled placement `9a5c44092b`).
 
 Until wave 11, every finished equation turned the K215 calibration behind
 `KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
@@ -1153,22 +1152,24 @@ encodings, provided they prove their own calibration (the report's section
 proof-certificate sources over the C222 calculus, calibrated through
 `KEndpoint.c222_iff_zf_refutation` and
 `ConstructibleChoice.zf_refutation_iff_zfc_refutation`. Wave 11 finishes
-that route: explicit direct quartics with no coefficient tuple, down to 219
-naturals and 225 unrestricted integers after wave 17 (sources 149, 158), and
-ones with every coefficient ±1 (sources 120, 127, 135, 144, 154); the
+that route: explicit direct quartics with no coefficient tuple, down to 202
+naturals and 213 unrestricted integers after wave 22 (sources 171, 173), and
+ones with every coefficient ±1 (sources 120, 127, 135, 144, 154, 165, 172); the
 step "polynomial zero iff C222 derivation" is an ordinary proof in each
 package, not a Lean theorem.
 
 As the packages state them:
 
 - nine positive unknowns in 420 operations, or at degree 997,810;
-- ten positive unknowns in 75 operations at degree 626, and eleven
+- ten positive unknowns in 75 operations at degree 402, and eleven
   unrestricted integers without Sun's reduction in 107 operations;
 - 10 unrestricted integers via a cited reduction of Sun, in 467 operations
   at degree 1,245,324;
 - a 14-unknown equation of degree 24, and a 15-unknown one in 66 operations;
-- the smallest coefficient tuple binding an equation has B = 2^413929 (141's
-  radix-47 P66, if its carry proof holds; otherwise 2^429959).
+- the smallest coefficient tuple binding an equation has B = 2^193969 (174's
+  P66 tuple, which is also the research session's, if its Start-only
+  calibration holds; then 2^343523 if 171's
+  calibration holds, 2^413929 if 141's carry proof holds, and 2^429959).
 
 Materialized coefficient bytes do not by themselves prove the compiler
 theorem. Only the machine endpoint is checked in Lean/Rocq; the Diophantine

@@ -1,0 +1,270 @@
+\section{Result and scope}
+The literal polynomial supplied in \texttt{equation\_bV.json} has ten
+independently strictly positive unknowns, 88 live binary integer-leaf
+operations, and exact degree 224. The pinned inverse-trace parent has
+85 operations and degree 232. This is an operation/degree tradeoff, not a
+simultaneous improvement, a global minimum, or a reduction of the variable
+count. All scalar multiplications and squares are charged.
+
+The principal historical BFS943/radix67 tuple is retained little-endian.
+A separately calibrated whole Start-marker4177 specialization is supplied
+big-endian: 98,219 raw bytes, largest port 196,790 bits. All four ports
+change together. The latter is a new compact front at an upstream encoding,
+not a claim to have invented that encoding. The proof is ordinary and
+composed at the retained explicit native/refutation boundary; it is not a
+new formal-kernel object, an internal-ZFC replay, a consistency decision,
+or a claimed zero. In particular, the numerical port box is not the
+syntactic-refutation calibration.
+
+The new observation is the exact square approximation
+\[
+ g_0=AUE,\qquad G=E+(A^2-1)U^2E^2,
+ \qquad g_0^2-G=U^2E^2-E.
+\]
+Centering the carrier at $g_0V$ removes eight highest degrees. Completeness uses the exact positive shift $n_{\rm new}=n_{\rm old}+g_0V$
+at constructed parent zeros where $V>0$. The inverse shift need not
+preserve positivity, so soundness is proved separately.
+
+\section{The entire equation}
+The independent inputs are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+For the whole fixed ports $\beta,K_0,M_C,M_F$, define
+\begin{align*}
+ h&=\beta J,&q&=h+1,&C&=q-F-\alpha,\\
+ X&=qw,&Y&=qs,&k&=\eta+\zeta,&c&=kY+\eta,\\
+ A&=Y(X+1)+1,&\Delta&=A^2-1,&H&=4A-5,\\
+ \ell&=(XY)(kY),&E&=1+\ell(\ell+k),\\
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ B&=(K_0+w)C-F,&U&=ic^2,&a&=\Delta U^2E,\\
+ F_0&=1+a,&G&=EF_0,&f&=a+F_0,&Q&=4\Delta aF_0,\\
+ b&=cT-R,&V&=fb-c,&g_0&=AUE,&K&=X(3c-2X)+2,\\
+ e_6&=6(k-R-1)-\ell(k^2-4),&D&=6q^6,&M&=hDH.
+\end{align*}
+Finally put
+\begin{align}
+ Z&=hD\{H[n-V(bB+g_0)]+K\}-H[DB+h(e_6-6q^4s)],\label{eq:Z}\\
+ P&=Q(Z^2-M^2GV^2)+(M^2G-Z^2).\label{eq:P}
+\end{align}
+The single equation is $P=0$. Every symbol after the ten inputs is a
+polynomial abbreviation, not another quantified variable. No quotient,
+recurrence, binomial, or variable-exponent gate occurs in the circuit.
+
+For proof only set
+\[
+ v=XY^2,\quad L=bV,\quad e^*=e_6/6,\quad
+ \rho=e^*/q^6,\quad\sigma=s/q^2,\quad t=B/h,
+ \quad W=1+hL,\quad\kappa=K/H,\quad z=Z/M.
+\]
+Before asserting divisibility, the exact rational carrier identity is
+\begin{equation}
+ z=n+\kappa+\sigma-Wt-\rho-g_0V.\label{eq:carrier}
+\end{equation}
+If $Z_0$ is the old numerator on the same inputs, then $Z=Z_0-Mg_0V$.
+This does not assert equality of old/new polynomials or positive zero sets.
+
+\section{Root extraction and the signed bootstrap}
+The complete parent is retained unmodified in \texttt{parent/}. Its
+root-extraction and folding arguments use the final norm equation, not
+the carrier's particular numerator. Thus at a zero they still give
+positive integers $\tau,f_0,g,y$ and $\epsilon\in\{-1,1\}$ with
+\begin{gather*}
+ E=\tau^2,\quad F_0=f_0^2,\quad g=\tau f_0,\quad z=\epsilon gy,
+ \qquad QV^2-(Q-1)y^2=1,\\
+ f^2-\Delta I^2=1,\quad I=2Ug,\quad c^2\mid I,\qquad
+ c=\psi_A(p),\quad p\ge1\text{ odd},\\
+ k=2\psi_{1+2XY^2}(m),\quad m\ge2,\quad c>8XY^3,\quad c>X,\quad K>0.
+\end{gather*}
+The unchanged $p=3$ exclusion uses $q\mid X,Y$. The trace-linear
+auxiliary-index-three exclusions then show that $b,V$ have the same
+nonzero sign and
+\begin{equation}
+ L=|b||V|>0,\quad a>3g,\quad f>g,\quad
+ y<\tfrac32|V|,\quad |V|>8Q^2,\quad
+ |b|>8f^3-\tfrac12>8g.\label{eq:bounds}
+\end{equation}
+These statements precede all sign conclusions about $B,C,R,b,V$.
+
+The new square approximation obeys
+\[
+ 0<g_0^2-g^2=U^2E^2-E<U^2E^2<G/\Delta.
+\]
+Since $\Delta\ge3$, one has $g<g_0<2g$. Therefore
+\begin{equation}
+ gy+g_0|V|<\tfrac72g|V|<\tfrac7{16}L<\tfrac12L.\label{eq:sign}
+\end{equation}
+Also $k\ge2$ makes $e^*\le k-R-1<b$, hence $\rho<|b|/q^6$.
+If $B\le-1$, then $Wt<-L$, and \eqref{eq:carrier} yields
+\[
+ n=\epsilon gy+g_0V-\kappa-\sigma+Wt+\rho
+   <L/2-L+|b|/q^6<0,
+\]
+using $|V|q^6>2$. This contradiction proves $B\ge0,C>0$.
+The retained mask bound now gives $3q<R<q^4-2$. Since $c>2R$, $b,V>0$.
+The same normalized-rank and signed auxiliary-index theorem gives $p=R$,
+then $R$ odd, $q$ even, and $J$ odd. No negative-rank branch is omitted.
+
+\section{Authentication, projection, and the exact native interface}
+Because $Z-Z_0=-Mg_0V$, every numerator reduction modulo $D$ and $H$
+in the parent's inverse-correction proof is unchanged. Integer cancellation
+of 6 gives $q^6\mid(e^*-q^4s)$, hence $q^4\mid e^*$.
+The recurrence expansion and exact cubic difference give
+\[
+ 3[e^*-(2m-R-1)]=4v^2(24Z_m-A_mS_m),
+\]
+where $A_m=\binom{m+1}{3}+4vZ_m$ and
+$S_m=k^2+2mk+4m^2-4$. For every prime dividing $q$, the parent's
+valuation argument gives $q^4\mid[e^*-(2m-R-1)]$.
+Monotonicity gives $m<R$, so $m=(R+1)/2$. One must not yet conclude
+$q^6\mid e^*$ at arbitrary $q$; the retained third-primary obstruction
+is explicitly checked.
+
+Reduction modulo $H$ gives $H\mid6hK$. The universal projector and the
+whole-product height estimate then imply $X=2^R$. Since $q\mid X$,
+$q$ is a power of 2, and only now does the inverse identity imply
+$q^6\mid e^*$. Thus $\rho,\kappa$ are integral. Since $g_0V$ is
+integral on every input, \eqref{eq:carrier} gives the same final conclusions
+$q^2\mid s$ and $h\mid B$. Consequently $q^3\mid Y$ and $t\ge0$ is
+integral.
+
+These are precisely the unchanged outer data used by the fixed-minus
+parity, half-binomial rounding, and fresh original-source reconstruction
+at base $Y(X+1)+2$, not the present $A$. The whole calibrated native
+encoding then gives a finite syntactic ZFC refutation. None of these
+native conclusions follows from the four scalar bounds alone.
+
+\section{Constructive strictly positive completeness}
+A finite refutation supplies a parent positive zero using the canonical
+outer data, ratio construction, strong period seed, and unsquared-trace
+auxiliary construction in the retained parent proof. In particular $V>0$.
+Keep every independent input except $n$ and set
+\[
+ n_{\rm new}=n_{\rm old}+g_0V.
+\]
+The polynomial $g_0=AUE$ is positive and independent of $n$, so this is
+a strictly positive integer. Directly,
+\[
+ n_{\rm new}-V(bB+g_0)=n_{\rm old}-bVB.
+\]
+Every other register agrees, hence $Z_{\rm new}(n_{\rm new})=
+Z_{\rm old}(n_{\rm old})$ and the final polynomial values agree exactly.
+Thus the new polynomial vanishes. The positive norm branch is retained;
+no extra period/cofinal choice or new size estimate is needed.
+
+This map applies to parent positive zeros, not arbitrary positive inputs.
+The inverse shift can fail positivity, which is why the preceding signed
+bootstrap and native recovery independently establish soundness. The same
+map works at each separately calibrated whole tuple, with fresh canonical
+words rather than reused historical witnesses.
+
+\section{Cost, exact degree, and checks}
+The old $L=bV$, $LB$, $n-LB$ cost three gates. The new
+$bB$, $bB+g_0$, $V(bB+g_0)$, $n-V(bB+g_0)$ cost four.
+Computing $A=(A-1)+1$ and $g_0=A(UE)$ uses two further gates because
+$UE$ is already live. The total is therefore 88 operations:
+52 multiplications, 20 additions, 16 subtractions, with integer leaves.
+
+Naive gatewise degree maxima miss the exact identity
+\begin{equation}
+ Z^2-M^2GV^2=Z_0^2-2Mg_0VZ_0+M^2E(U^2E-1)V^2.\label{eq:cancel}
+\end{equation}
+The three degrees on the right are respectively $114,133,144$, since
+$\deg Z_0=57$, $\deg M=11$, $\deg g_0=25$, $\deg V=40$,
+$\deg U=7$, $\deg E=14$. The degree-80 factor $Q$ gives exact degree224;
+the correction $M^2G-Z^2$ has degree152. With
+\[
+ q_0=\beta J,\quad k_0=\eta+\zeta,\quad
+ B_0=k_0sT-q_0^2(q_0-F),
+\]
+the complete highest homogeneous part is
+\[
+ [P]_{224}=9\cdot2^{10}q_0^{96}w^{24}s^{56}i^{10}k_0^{32}B_0^2.
+\]
+It is nonzero at the actual $\beta>0$ and has202 terms. The independent
+checker authenticates all88 live gates through39 exact cuts, proves
+\eqref{eq:cancel}, verifies the whole leading form, reconstructs all
+coefficient bytes, and rejects177 actual corruptions. Normal and optimized
+Python receipts agree. Finite recurrence tests are separately labelled
+and are not substitutes for unbounded arguments.
+
+\section{The current whole Start-marker4177 specialization}
+The immutable comparison snapshot is ProveIt
+\texttt{5274bc751a1566879ddc028a2d2a2af3c031654a}. Its current display
+is15 positive unknowns,66 integer-leaf operations,degree157; the present
+10/88/224 front is not smaller on every axis. The separately supplied
+current specialization has
+\[
+ \beta=2^{196319}-1,\quad
+ (\operatorname{bits}K_0,\operatorname{bits}M_C,
+ \operatorname{bits}M_F)=(196790,196319,196320).
+\]
+All payloads are minimal unsigned big-endian. The complete printed
+recipe is in Appendix B, and the actual native forbidden mask is shifted
+by $\beta$ exactly once.
+
+Physical support must be reconstructed separately from nonzero weights:
+\[
+ \{0,\ldots,942\}\cup\{943,\ldots,951\}\cup\{973,\ldots,981\}
+ \cup\{992,\ldots,999\}\cup\{1002,\ldots,1009\}\cup\{990,991,1048\}.
+\]
+There are980 physical positions and977 nonzero weights. The Boolean marker
+1048 has coefficient zero; the separate kernel monomial $\rho^{1048}$
+copies Start selector0. It is not a sum of selectors. The two nonzero
+Start south bits1 and8, together with that copy, recover the full phase.
+The verifier reconstructs all3297 coefficient slots and all physical
+positions, and tests marker inclusion and the Start-copy coefficient1.
+
+The retained current native proof establishes the new scalar, parity and
+population premises, decodes the actual new masks and kernel, and gives
+fresh completeness words with the exact outer interface used above.
+Its separate Pcs certificate proves primes4177 and224113, orders23 and87,
+spacing2001, and nonzero $H$ residues9,2620,158694 at47,4177,224113.
+Both normal and optimized finite replay pass. No old Pc1 certificate or
+old packed word is substituted.
+
+The stored compressed blobs remain unchanged. The upstream page builder's
+generic gzip bytecheck is runtime-sensitive: the present runtime emits
+OS-header byte03 while the stored header usesff, although raw integers
+agree. We do not claim that upstream compressed full-build check passed.
+Our builder reproduces the new graph JSON and our checker authenticates
+both the stored bytes and every reconstructed raw integer.
+
+At each separately retained calibration, ZFC proves that the supplied
+polynomial has no positive zero exactly when $\mathrm{Con}(\mathrm{ZFC})$.
+This statement is an ordinary proof composition, not a new end-to-end
+formalization or a consistency proof. Full inherited sources, licenses,
+finite recipes, and explicit interface boundaries accompany the report.
+
+\section{A second tradeoff: the already-live \texorpdfstring{$A+1$}{A+1} center}
+Replacing only $g_0$ by $g_+=(A+1)UE$ removes the private addition
+$A=(A-1)+1$, since $A+1$ is already live in $\Delta=(A-1)(A+1)$.
+The complete literal variant has87 integer-leaf operations
+(52 multiplications,19 additions,16 subtractions) and degree228.
+Both whole tuple specializations are supplied as
+\texttt{equation\_plus1\_bV.json}.
+
+The signed bootstrap remains valid because
+\[
+ g_+^2/G<(A+1)^2/(A^2-1)=(A+1)/(A-1)<2,
+\]
+so $g_+<2g$ and the same bound $gy+g_+|V|<7L/16<L/2$ applies.
+Every modular argument is unchanged because the numerator difference is
+again an integral multiple of $M$. For completeness, set $n_{\rm new}=n_{\rm old}+g_+V>0$ at the
+parent's positive zero. The identity
+$n_{\rm new}-V(bB+g_+)=n_{\rm old}-bVB$ makes the two numerators
+identical and preserves the zero. Soundness remains the independent
+argument above, without assuming that an inverse shift stays positive.
+
+The exact residual is
+\[
+ g_+^2-G=2(A+1)U^2E^2-E.
+\]
+In the analog of \eqref{eq:cancel}, the three degrees are $114,133,148$;
+after multiplication by $Q$ the degree is228, with full leading form
+\[
+ [P_+]_{228}=9\cdot2^{11}q_0^{98}w^{25}s^{57}i^{10}k_0^{32}B_0^2.
+\]
+All202 leading terms,38 exact cuts, and175 actual gate-corruption
+rejections are checked for each tuple. The three points85/232,87/228,
+88/224 are distinct operation/degree tradeoffs, not a global frontier claim.

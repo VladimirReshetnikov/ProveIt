@@ -25,42 +25,47 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete block-mask2963 equation: fifteen positive unknowns,
-degree157,66 integer-leaf operations and**69685 raw integer bytes**.
-Its four constants and specialized polynomial are identical to low-padding2963.
-The exact block-mask/inline-Phi identity saves26 TeX bytes to4970,
-19 extracted nonwhite characters to2638 and432 PDF bytes to159270.
-Gzip stays4202, with the same9pt/7.7pt fonts and one Letter page.
+the complete **decimal reversed2521 Carrier65** equation:14 positive
+unknowns, degree150,65 integer-leaf operations and59297 raw fixed-integer
+bytes. All781 base10 digits and distinct unsubscripted polynomial scalar
+names, including factors P,Q,U,W,Z, are preserved. The one Letter page
+retains9pt/7.7pt fonts and every942 tile/430 action.
 
-The [identity audit](research/block-mask-recipe/NOTE.md) checks every
-weighted and physical coefficient independently. The new actual-source
-reader rejects marker/dummy deletion, inline-weight and initializer
-corruptions. Full integer equality, the entire66-row graph and all942
-printed tiles pass normal/optimized checks. Root and peer viewed the whole
-actual PNG. See the [candidate](candidates/one-page-block-mask2963/README.md)
-and [page review](reviews/block-mask2963-page-peer.md).
+The [native2521 proof](research/reversed-selector-independent/PROOF.md)
+transports the complete admissible language through an explicit reversal.
+Its full coefficient tail resets fields0..1003 before marker parity and
+count recovery. The global South-color graph excludes offset19; all916
+bit3 padding tests follow from selector residues modulo2048. Every copy,
+mask, rank, safe increment and both positive P66 maps are proved. Pcrv is
+discharged at prime231841 with H34/1660/56592, and full root/peer reviews pass.
 
-The unchanged [ordinary proof](research/low-padding-independent/PROOF.md)
-uses916 low bit2 padding tests and the combined4*G917 mask. The final
-product2961 resets and the top zero field supplies strict representatives
-and safe increments. Phase, count, alignment, actual rank, controller and
-both P66 maps retain their full reviews. Pclp uses prime1362521,
-orders23/2962 and H29/2938/492699. The exact identity needs no new native
-or controller premise, and CURRENT records literal polynomial equality.
+The [Carrier65 proof](research/carrier65-independent/PROOF.md) applies to
+the exact new scalar bounds and canonical parent witnesses. Its entire
+65-row graph, positive-domain maps and exact degree150 are unchanged.
+The four new ports change the specialized polynomial and save10152 raw
+bytes, about14.6%, against decimal2953.
+
+The [candidate](candidates/one-page-reversed-carrier65-2521/README.md)
+and [page review](reviews/reversed-carrier65-2521-page-peer.md) bind every
+actual decimal digit, action, printed permutation, tile and whole integer.
+Normal/optimized checks, two full-page inspections and a fresh byte-identical
+PDF rebuild pass. TeX5217 and extracted nonwhite text2872 grow58/32 because
+of the complete permutation recipe; PDF151798 grows810. Gzip falls49 to4172.
+CURRENT preserves the exact previous record and the decimal2953 page.
 
 All earlier pages and CURRENT records remain preserved, along with reviewed
 [single-clause3037](research/single-clause-independent/README.md) and
 [composite2983](research/composite-length-independent/README.md) checkpoints.
 No new formal-kernel replay or consistency decision is claimed; inherited
-ordinary calibration remains explicit. Next work reviews doubled clause
-weights and tests further complete coefficient layouts. The separately checked
+ordinary calibration remains explicit. Next work tests shorter decimal seed recipes and
+further selector layouts, retaining decimal and distinct-name displays. The separately checked
 [weighted-only Psi identity](research/weighted-only-psi/NOTE.md) preserves
 its bound tuple. The [radix note](research/radix-parity-independent/README.md)
 and earlier [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
 remain scoped obstacles/tradeoffs, without a global lower-bound claim.
 
 Against the earlier ten-positive85/328 page, the arithmetic improvement
-still saves nineteen operations and171 degree while adding five unknowns.
+saves twenty operations and178 degree while adding four unknowns.
 Every predecessor page and its entire history remains available; Lean
 remains paused, with no consistency decision or global minimum claim.
 The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)

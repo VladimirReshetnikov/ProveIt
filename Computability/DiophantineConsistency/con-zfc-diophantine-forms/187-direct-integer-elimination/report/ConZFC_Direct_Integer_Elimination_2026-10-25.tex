@@ -1,0 +1,861 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,microtype,xcolor,enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={A Direct Integer Equation for the Consistency of ZFC},pdfauthor={ChatGPT, OpenAI; prepared for Vladimir Reshetnikov}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\Refut}{\operatorname{Ref}}\newcommand{\degp}{\operatorname{deg}}
+\newcommand{\abs}[1]{\left|#1\right|}\newcommand{\sqnorm}[1]{\left\lVert#1\right\rVert}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=1.6em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Direct Diophantine consistency}
+\fancyhead[R]{\small ProveIt research contribution}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.35in}
+{\large COMPUTABILITY / DIOPHANTINE CONSISTENCY\par}
+\vspace{0.32in}
+{\Huge\bfseries A direct integer equation\par for the consistency of ZFC\par}
+\vspace{0.3in}
+{\Large Joint Pell certificates and exact integral elimination\par}
+\vspace{0.45in}
+{\large Prepared for Vladimir Reshetnikov and the ProveIt project\par}
+{\large 25 October 2026\par}
+\vspace{0.25in}
+\begin{center}
+\fbox{\begin{minipage}{0.86\textwidth}
+\centering\vspace{9pt}
+\textbf{Principal delivered equation}\par\vspace{5pt}
+$P_{85}(y_0,\ldots,y_{84})=\displaystyle\sum_{j=0}^{23}r_j(\boldsymbol y)^2=0$\par\vspace{5pt}
+85 unrestricted integer unknowns; exact degree 16,964;\par
+1,788 live binary arithmetic operations.\par\vspace{7pt}
+$\displaystyle\ZFC\vdash
+ \bigl(\neg\exists\boldsymbol y\in\Z^{85}\ P_{85}(\boldsymbol y)=0\bigr)
+ \longleftrightarrow\Con(\ZFC).$
+\vspace{9pt}
+\end{minipage}}
+\end{center}
+\vspace{0.3in}
+This statement uses the explicitly identified inherited C222/ZF/ZFC
+calibration. The new arithmetic composition and coordinate eliminations
+have ordinary mathematical proofs and exact finite certificates.
+The appendices specify every coefficient and substitution of the principal
+polynomial. No choice of coefficient depends on the truth of consistency.
+\vfill
+\textbf{Research status.} AI-assisted research with separately assigned
+internal mathematical and artifact reviews. This is a concrete improvement
+within the inspected direct-calculus family, not a global simplicity
+minimum or a claim of worldwide priority. The archive also contains
+alternative variable/degree tradeoffs. It supplies no new end-to-end
+Lean or Rocq compilation and proves neither consistency nor inconsistency.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+We construct a fixed polynomial over the integers whose integer
+unsolvability is equivalent, provably in ZFC, to syntactic consistency of
+ZFC. The principal polynomial has 85 unrestricted integer unknowns, exact
+total degree 16,964, and a division-free evaluator with 1,788 live binary
+operations. Its 24 residual squares and all polynomial reconstruction maps
+are specified explicitly. The construction combines the cofinal CRT
+anchor of ProveIt package 173 with the joint signed-index and power
+certificate of package 176. Eleven old certificate coordinates are
+replaced by one; 124 further coordinates are eliminated using acyclic
+equations with unit coefficients. Each of these 124 coordinate
+reconstructions is an integer polynomial.
+The new composition retains the numerical C222 proof calculus and has no
+K215 simulation, Jones polynomial, or large encoded-machine coefficient
+tuple. We separate the unbounded number-theoretic and logical proof from
+finite algebra verification, give exact degree and variable-dependence
+certificates, and record the larger literal coefficients introduced by
+the CRT-anchor parent. The result improves selected inspected direct
+variable/degree/circuit bounds; equations in fewer variables already exist
+in other regimes. A restricted investigation of additional Pell centers
+is included to explain why a plausible competing route did not improve
+its parent degree.
+\end{abstract}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+\section{Result, scope, and comparison}
+\label{sec:result}
+
+The task is to give one actual polynomial, with all of its integer
+coefficients determined, for which ZFC proves an equivalence between
+integer unsolvability and its own syntactic consistency. Merely invoking
+the existence part of the DPRM theorem would not specify such a
+polynomial. A bounded family of consistency tests would also not meet
+the task. This report gives a finite, independently replayable polynomial
+definition and identifies the precise inherited theorem that supplies
+its logical meaning.
+
+There is no single established ordering of ``simplest.'' Number of
+unknowns, degree, coefficient height, description length, evaluation
+cost, and proof complexity can conflict. Our principal choice gives a
+substantial improvement of an inspected direct proof-calculus family.
+It is not the fewest-variable representation in the entire repository:
+the repository already contains much smaller variable counts in
+different degree and coefficient regimes. Literature on universal pairs
+likewise treats variable count and degree jointly \cite{bayer2026}.
+
+\begin{theorem}[Principal consistency equation]
+\label{thm:main}
+Let $P_{85}\in\Z[y_0,\ldots,y_{84}]$ be the polynomial specified in
+Sections~\ref{sec:literal} and \ref{sec:elimination} and
+Appendices~\ref{app:free}--\ref{app:source}.
+Using the inherited calibration in Section~\ref{sec:logic}, ZFC proves
+\[
+ \exists\boldsymbol y\in\Z^{85}\ P_{85}(\boldsymbol y)=0
+ \quad\longleftrightarrow\quad
+ \exists p\in\N\ \Refut_{\ZFC}(p).
+\]
+Consequently ZFC proves
+\[
+ \neg\exists\boldsymbol y\in\Z^{85}\ P_{85}(\boldsymbol y)=0
+ \quad\longleftrightarrow\quad\Con(\ZFC).
+\]
+The polynomial has exact total degree $16\,964$, depends on each of its
+85 variables, and is a sum of 24 polynomial squares. Its supplied
+division-free evaluator has 1,788 live binary additions, subtractions,
+and multiplications.
+\end{theorem}
+
+The proof concerns the standard syntactic statement: no finite proof of
+falsity in a fixed effective presentation of ZFC. It does not assume
+consistency, infer the truth of arbitrary ZFC theorems, or require a
+transitive model. All occurrences of ``integer'' in the delivered
+equations mean an unrestricted integer. Positivity assertions below are
+conclusions of retained equations or hypotheses of stated lemmas.
+
+\subsection{Measured alternatives}
+\input{metrics_table.tex}
+All degrees in this table are exact, not just estimates propagated
+through a circuit. ``Operations'' counts live binary $+,-,\times$
+instructions; a square and multiplication by a fixed integer each cost
+one operation. This is an algebraic operation count, not a bit-cost
+bound. The coefficient exponent $H$ certifies
+$\max_{\alpha}|[\boldsymbol y^{\alpha}]P|\leq 2^H$; it is an upper
+bound on expanded coefficients, not an exact height.
+
+The comparison snapshot is ProveIt commit
+\texttt{ecb9a4b4dda617512952525d50f17343700aac52}. Package~177
+reports a direct 87-integer polynomial of degree $8\,388\,612$ with
+2,447 operations, a 94-integer polynomial of degree 256 with 2,468
+operations, a 104-integer polynomial of degree 64 with 2,451 operations,
+and a 111-integer polynomial of degree 32 with 2,502 operations
+\cite{p177}. Our 85-, 90-, 100-, and 109-integer profiles improve the
+corresponding inspected dimension/degree/circuit comparisons.
+
+That statement has an explicit cost qualification. The largest absolute
+integer literal in the new supplied circuits is
+$1\,099\,511\,627\,780=2^{40}+4$; package~177's corresponding direct
+circuits use literals of magnitude at most 256. Large literal
+coefficients arise in the inherited frame because the first requested
+power has index $2^{20}t$. Thus the new equations do not dominate every
+coefficient-sensitive simplicity measure. Neither actual expanded term
+counts nor exact expanded coefficient heights are claimed for the
+high-degree equations.
+
+Two ZIPs were present in \texttt{docs/incoming} at the snapshot:
+\path{ConZFC_Mixed_Base_Pooling_2026-10-25.zip} and
+\path{ConZFC_Affine_Horizons_Centered_Certificates_2026-10-26.zip}.
+Their binary contents were not accessible through the available
+repository reader. They are outside the novelty comparison. The
+mathematical theorem and literal equations do not depend on a novelty
+claim about these unread submissions.
+
+\subsection{What is new}
+The generic ingredients are credited rather than renamed as new
+theorems. Package~173 supplies the cofinal CRT index used as a Pell
+anchor and the affine growth horizon. Package~176 proves joint
+authentication of signed indices and powers. Acyclic elimination with
+unit coefficients already appears in the earlier direct constructions,
+including package~152. The contribution here is their explicit compatible
+composition, the source-specific interface proof, and the resulting
+frozen integer polynomials and certificates. In particular, the
+147 retained quadratic rows, all sixteen power requests, and the actual
+signed frame are checked together; the composition is not justified by
+matching variable counts alone.
+
+\section{The calibrated arithmetic source}
+\label{sec:source}
+
+The immediate source is package~173's
+\texttt{source/anchor219/equation.json}, preserved as identical literal
+polynomial data in \texttt{source/anchor219.json}. The working copy has
+one additional trailing newline; the exact upstream bytes and their
+authenticated Git blob identity are retained separately. It has 219 integer coordinates
+$v_0,\ldots,v_{218}$ and 158 quadratic residuals $R_0,\ldots,R_{157}$.
+The source profile enforces, in its arithmetic interpretation,
+\[
+ t=16+4d^2,\qquad K=2^{20}t,\qquad F=t^K,\qquad C=2v_{16}.
+\]
+These variable powers describe the interpretation of the polynomial
+certificate. They are not operations in the final polynomial. In the
+literal source $t=v_0$, $F=v_2$, and the shared Pell parameter is
+$A=v_{137}+1$.
+
+The source binds a numerical proof calculus directly to arithmetic.
+Finite derivations are represented by local constructor and rule
+conditions; a generalized binomial/CRT encoding enforces these local
+conditions, and a Horn-flow argument recovers a finite refutation.
+There is no intermediate Turing-machine computation in this branch.
+The calibration is inherited, and its boundaries are stated in
+Section~\ref{sec:logic}.
+
+\subsection{Why the affine growth index is sufficient}
+The deleted derived-label range of package~173 is replaced by a uniform
+constructor bound. Its finite constructor-depth ledger uses
+$\lambda=2^{20}$ and gives local positive labels below $t^{\lambda-1}$.
+Write $L=t^{\lambda}$. The growth request $F=t^{\lambda t}$ then gives
+$F=L^t$. The boundary case matters: an argument requiring $F>L^t$
+would not suffice for this source.
+
+The relevant large-evaluation lemma says that, for positive labels at
+most $L$, $L\geq t$, and $F\geq L^t$, equality of two products of factors
+$1+Fj$, with at most $t$ factors on one side and at most $2t+1$ on the
+other, forces equality of their multisets of labels. First compare the
+number of factors: an extra factor produces a value exceeding the
+other side because $F+1>L^t$. Once both sides have $m\leq t$ factors,
+their elementary symmetric coefficients lie in $[1,F]$ in positive
+degrees. Differences lie strictly between $-F$ and $F$. Reduction at
+the least nonzero coefficient modulo $F$ forbids a nonzero difference
+polynomial from vanishing at $F$. Factorization over $\mathbb Q$ then
+recovers the labels. Package~173 supplies the full boundary-valid
+proof and the constructor-depth certificate \cite{p173}.
+
+The other useful source change is cofinality. The actual CRT index $C$
+can be chosen positive, even, and above all other requested indices
+inside its prescribed residue class. The CRT modulus is odd, so the
+allowed even representatives form an unbounded progression. The radix
+and Pell frame are chosen afterward. Consequently $C$ can serve as the
+semantic anchor without an unjustified bound on a previously fixed
+representative. This ordering is retained unchanged here.
+
+\section{A literal joint polynomial certificate}
+\label{sec:literal}
+
+Delete the following source coordinates and rows:
+\begin{align*}
+ D_v&=\{144,145,146,147,148,149,204,214,215,216,217\},\\
+ D_R&=\{102,103,104,105,106,107,147,153,154,155,156\}.
+\end{align*}
+Every coordinate in $D_v$ occurs only in rows in $D_R$. Retain the other
+208 coordinates and append $v_{219}=z$. The resulting 209-coordinate
+system keeps the 147 rows $R_j$ for $j\notin D_R$ and replaces all eleven
+deleted rows by the single residual defined below.
+
+Let the five bases be
+\[
+ n_0=v_0,\quad n_1=v_3,\quad n_2=v_{189},\quad
+ n_3=v_{100}-1,\quad n_4=v_{100}.
+\]
+For each row of Table~\ref{tab:requests}, $m_i$ is the requested output,
+$k_i$ the requested exponent, and $(D_i,Y_i,Z_i)$ the stored Pell data.
+The retained gates give $Z_i=AY_i$, and the actual abscissa is
+$X_i=D_i+Z_i$. Affine shifts in the table are part of the exact
+definition; they must not be dropped.
+
+\input{requests_table.tex}
+
+There are sixteen requests and fourteen distinct principal pairs.
+Requests sharing the same $(D_i,Y_i,Z_i)$ also have the same $k_i$.
+Use one copy of each distinct pair in the following sum:
+\[
+ \Omega=\sum_{\text{distinct pairs }i}
+       \bigl((X_i-1)^2+(Y_i-k_i)^2\bigr).
+\]
+For $0\leq j\leq4$, let $I_j$ be the set of requests in base group $j$,
+and define ordinary polynomial abbreviations
+\begin{align}
+ d_A&=A-1,& T_j&=2An_j-n_j^2-1,\label{eq:T}\\
+ H_j&=\sum_{i\in I_j}Y_i(m_i-X_i),&
+ S_j&=\sum_{i\in I_j}\bigl((m_i-D_i)^2-Y_i^2\bigr),\label{eq:HS}\\
+ E_j&=S_j-2n_jH_j,&\Pi&=\prod_{j=0}^4T_j.\label{eq:E}
+\end{align}
+The joint residual is the following polynomial, without a division:
+\begin{equation}
+ \boxed{\mathcal J=
+ \Omega\Pi+d_A\sum_{j=0}^4 n_jE_j\prod_{\ell\ne j}T_\ell
+       -z\,d_A\Pi.}
+ \label{eq:joint}
+\end{equation}
+All sums and products have the fixed finite index sets just printed.
+They introduce no quantified variables. The intermediate polynomial is
+\begin{equation}
+ P_{209}=\mathcal J^2+
+       \sum_{j\in\{0,\ldots,157\}\setminus D_R}R_j^2.
+ \label{eq:P209}
+\end{equation}
+It has 148 residual squares and degree at most 26.
+
+\section{Why orientation and powers can share one certificate}
+\label{sec:jointproof}
+
+This section supplies the unbounded argument, including its order of
+dependence. It is essential to classify the raw Pell solutions before
+identifying their indices with the requested exponents.
+
+\subsection{Information available before the new residual is used}
+The retained signed frame and squared-anchor comparison equations give
+\[
+ W\geq258,\qquad |A|>W^W,\qquad
+ k_i^2,n_j^2,m_i^2,C^2<W.
+\]
+Set $b=\lfloor\sqrt{W-1}\rfloor$, so $b\geq16$. The comparison
+congruences identify the anchor's positive classified index as $|C|$.
+The squared-ordinate bound then bounds the absolute classified indices
+of all principal pairs by $|C|\leq b$. These conclusions use neither
+the removed orientation row nor the removed power rows.
+
+Let $\mathsf X_n(A),\mathsf Y_n(A)$ denote the signed Pell sequences.
+Every raw principal pair can therefore be written
+\begin{equation}
+ (X_i,Y_i)=\epsilon_i\bigl(\mathsf X_{\nu_i}(A),
+                              \mathsf Y_{\nu_i}(A)\bigr),
+ \quad \epsilon_i\in\{-1,1\},\quad \nu_i\in\Z,
+ \quad |\nu_i|\leq b.
+ \label{eq:raw}
+\end{equation}
+At index zero this includes both $(1,0)$ and $(-1,0)$.
+For negative $A$, the signed recurrence handles the parity signs; no
+positivity of every abscissa is imposed.
+
+\subsection{The small integer with a common sign}
+Modulo $d_A=A-1$, the canonical recurrences give
+$\mathsf X_\nu(A)\equiv1$ and
+$\mathsf Y_\nu(A)\equiv\nu$. Consequently
+\begin{equation}
+ \Omega\equiv o:=\sum_i\bigl((\epsilon_i-1)^2+
+                         (\epsilon_i\nu_i-k_i)^2\bigr)
+ \pmod {d_A},\qquad o\geq0.
+ \label{eq:o}
+\end{equation}
+At a nonzero base, $\gcd(n_j,T_j)=1$ because $T_j\equiv-1\pmod{n_j}$.
+The Pell recurrence reduces modulo $T_j$ to
+\[
+ X_i+(n_j-A)Y_i\equiv\epsilon_i n_j^{\nu_i}\pmod{T_j}.
+\]
+Negative exponents in this proof-only congruence are defined by the
+modular inverse of $n_j$. Define
+$\delta_i=m_i-X_i+(A-n_j)Y_i=m_i-D_i-n_jY_i$.
+A direct polynomial calculation, using $Z_i=AY_i$, gives
+\begin{equation}
+ \sum_{i\in I_j}\delta_i^2
+     =E_j-T_j\sum_{i\in I_j}Y_i^2.
+ \label{eq:squareidentity}
+\end{equation}
+
+All denominators in the argument are nonzero. The number $d_A$ has the
+sign of $A$ and $|d_A|\geq W^W$. If $n_j\ne0$, then
+$|T_j|>W^W$ and $n_j/T_j$ has the sign of $A$. If $n_j=0$, then
+$T_j=-1$, and the weighted summand vanishes. Dividing
+\eqref{eq:joint} and applying \eqref{eq:squareidentity} shows that
+\[
+ \frac{\Omega}{d_A}+\sum_j\sum_{i\in I_j}
+                 \frac{n_j\delta_i^2}{T_j}
+\quad\hbox{is an integer.}
+\]
+
+Put $C_* =\prod_{j:n_j\ne0}n_j^b$, a nonzero integer. For a request in
+a nonzero group define
+\[
+ e_i=C_*m_i-\epsilon_i\frac{C_*}{n_j^b}n_j^{b+\nu_i}.
+\]
+Here $C_*/n_j^b$ is an integer and $b+\nu_i\geq0$; thus this
+definition uses ordinary integer powers in the proof. We have
+$C_*\delta_i\equiv e_i\pmod{T_j}$. Reducing each numerator in its
+own denominator proves that
+\begin{equation}
+ V_*=\frac{C_*^2o}{d_A}+
+       \sum_{j:n_j\ne0}\sum_{i\in I_j}\frac{n_je_i^2}{T_j}
+ \quad\hbox{is an integer.}
+ \label{eq:smallinteger}
+\end{equation}
+No coprimality between different denominators is required. This is
+particularly useful when an index modulus and a power modulus have
+large common factors.
+
+Every nonzero summand of \eqref{eq:smallinteger} has the same sign.
+The conservative bounds of the joint-certificate theorem accommodate
+at most fifteen pairs and seventeen requests; our fourteen and sixteen
+are within these bounds:
+\begin{align*}
+ o&\leq120b^2,& |C_*|&\leq b^{5b},\\
+ C_*^2o+\sum_{j,i}|n_j|e_i^2
+   &\leq120b^{10b+2}+68b^{12b+1}
+     \leq188b^{12b+2}<W^{6b+2}\leq W^W.
+\end{align*}
+For completeness, $|e_i|\leq2b^{6b}$ follows from $|m_i|\leq b$,
+$|C_*|\leq b^{5b}$, and $|n_j^{\nu_i}|\leq b^b$ when
+$\nu_i\geq0$; negative indices only decrease that absolute-value
+bound. There are at most seventeen terms, each carrying a factor
+$|n_j|\leq b$. The strict comparison uses $188<W$, $b^2<W$, and
+$6b+2\leq b^2+1\leq W$ for $b\geq16$.
+
+It follows that $|V_*|<1$. Since $V_*$ is an integer, it is zero.
+The common-sign property then forces $o=0$ and every $e_i=0$.
+Equation~\eqref{eq:o} gives $\epsilon_i=1$ and $\nu_i=k_i$ for
+each pair, and $e_i=0$ gives the exact power $m_i=n_j^{k_i}$ at every
+nonzero base. When $|n_j|\geq2$, an integer value of this power
+excludes a negative $k_i$.
+
+\begin{proposition}[Joint authentication]
+Under the retained frame, norm, gate, and squared-anchor hypotheses,
+$\mathcal J=0$ simultaneously authenticates the canonical signs and
+indices of all fourteen pairs and the sixteen powers at every nonzero
+base. Conversely, canonical pairs and exact powers admit an integer
+$z$ making $\mathcal J=0$.
+\end{proposition}
+\begin{proof}
+Soundness was proved above. For completeness, the canonical base-one
+congruences give $d_A\mid\Omega$. Exact powers and the modular Pell
+identity give $T_j\mid\delta_i$, hence $T_j\mid E_j$ by
+\eqref{eq:squareidentity}. Therefore
+\[
+ z=\frac{\Omega}{d_A}+\sum_{j:n_j\ne0}\frac{n_jE_j}{T_j}
+\]
+is an integer satisfying \eqref{eq:joint}. Zero-base contributions are
+zero. These divisions construct witnesses in the proof; none occurs
+in the defining polynomial.
+\end{proof}
+
+\subsection{Direct restoration, including zero bases}
+The new source need not repeat the parent's longer arithmetic decoding
+argument. It suffices to restore the eleven deleted source coordinates.
+For a nonzero base, joint authentication gives the canonical congruence
+and the exact requested power, so $T_j\mid\delta_i$ and $T_j\mid E_j$.
+For a zero base, $T_j=-1$, so both divisibilities hold automatically.
+Thus the temporary zero-base branches create no restoration gap.
+
+Restore the three removed singleton moduli as $T_j$ and their
+quotients as $-\delta_i/T_j$. For either old pooled base group restore
+\[
+ L_j=E_j/T_j,\qquad K_j=2H_j+(2A-n_j)L_j.
+\]
+The preceding argument proves these are integers and makes both old
+pooled rows zero. Restore the orientation quotient as
+$\Omega/d_A$. Source row 147 differs from
+$\Omega-d_Av_{204}$ by minus the sum of the fourteen retained
+norm rows; this exact identity is included in the independent source
+audit. Thus every $P_{209}$ zero extends to a source219 zero. Conversely,
+the old source rows themselves establish the divisibilities needed to
+construct $z$ in the displayed completeness formula. Every source219
+zero therefore projects to a $P_{209}$ zero. No claim of an
+integer restoration away from the zero sets is needed here.
+
+\section{Eliminating 124 coordinates over the integers}
+\label{sec:elimination}
+
+The preceding reduction is semantic: its quotient witnesses are
+restored only after proving divisibility. The next reduction is purely
+polynomial and has an integer reconstruction for every free input.
+
+\begin{lemma}[Acyclic unit elimination]
+\label{lem:eliminate}
+Let an integer polynomial system contain selected rows
+$\epsilon_v v+F_v=0$, where $\epsilon_v\in\{-1,1\}$ and $F_v$
+does not contain $v$. Suppose the dependence graph among selected
+variables, with $v$ depending on those selected variables occurring in
+$F_v$, is acyclic. Assign arbitrary integers to the unselected variables
+and recursively set $v=-\epsilon_v F_v$. This defines an integer
+polynomial map $\Phi$ from the free coordinates to all coordinates.
+The remaining equations after substitution have an integer zero if
+and only if the original system does. Projection and $\Phi$ are
+inverse on the two zero sets.
+\end{lemma}
+\begin{proof}
+Topologically order the selected variables with dependencies first.
+At each step the displayed substitution is an integer polynomial in
+already defined coordinates. It makes its selected row zero
+identically. Any zero of the original system must have exactly these
+coordinate values, by induction along the same order. The remaining
+rows then vanish on either side precisely when their substituted
+versions vanish. This proves both directions and the inverse claim.
+\end{proof}
+
+The unit condition is crucial. Solving $2v=u$ over the rationals and
+discarding the equation would lose the parity condition on $u$.
+Solving $av=F$ without a divisibility certificate can introduce
+spurious integer inputs. Our 124 selected coefficients are all
+literal $1$ or $-1$, and no selected variable occurs elsewhere in
+its defining row.
+
+Appendix~\ref{app:free} lists the 85 free source indices and
+Appendix~\ref{app:pivots} gives every selected row, variable, and
+unit coefficient in dependency order. Let $\Phi$ be the resulting
+map. The 23 unselected old rows are
+\begin{equation}
+ \begin{split}
+ \mathcal K=\{&1,42,83,99,101,109,111,113,115,117,119,121,123,\\
+              &125,127,129,131,133,138,140,149,150,151\}.
+ \end{split}
+ \label{eq:K}
+\end{equation}
+The principal equation, now fully specified, is
+\begin{equation}
+ \boxed{P_{85}(\boldsymbol y)=
+       \mathcal J(\Phi(\boldsymbol y))^2+
+       \sum_{j\in\mathcal K}R_j(\Phi(\boldsymbol y))^2=0.}
+ \label{eq:85}
+\end{equation}
+The fixed finite source row table, request table, free-index list, and
+pivot table determine every coefficient of this polynomial. They are
+one finite definition, not a program that searches for a suitable
+polynomial or assumes an unspecified universal parameter. Source
+coordinates outside the free list are polynomial abbreviations, not
+additional unknowns.
+
+Since selected rows pull back identically to zero, the exact polynomial
+identity $P_{85}=P_{209}\circ\Phi$ also holds. The reverse map on zero
+sets is coordinate projection. This makes the existential equivalence
+particularly straightforward to formalize in ZFC.
+
+\section{Exact complexity certificates}
+\label{sec:metrics}
+
+\subsection{Degree is proved, including noncancellation}
+An arithmetic DAG propagates a valid upper degree bound by taking a
+maximum at additions and adding degrees at multiplications. Such a
+bound alone is not an exact-degree proof: leading terms can cancel.
+For the principal equation the retained residual degree bounds are
+\[
+ (6,4096,8482,50,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+   14,12,2,2,8,39).
+\]
+Their order is the increasing list $\mathcal K$, followed by
+$\mathcal J$. The maximal residual is source row 83, of degree at
+most 8,482 after substitution.
+
+For a completely exact lower bound, put $p=1\,000\,000\,007$ and let
+$s_0<\cdots<s_{84}$ be the free source indices. Evaluate the propagated
+top homogeneous component on the integer direction
+$a_i=s_i+3$. Its residue at the row-83 residual is
+\[
+ [\lambda^{8482}]R_{83}(\Phi(\lambda\boldsymbol a))
+       \equiv 140\,621\,492\not\equiv0\pmod p.
+\]
+The leading term has a simple source-level explanation. In row 83,
+$-v_{79}v_{95}$ is the unique highest-degree term after reconstruction.
+The reconstructed coordinates have exact degrees 8,198 and 284;
+their top components on the same ray are respectively $46\,952\,950$
+and $64\,682\,962$ modulo $p$. Every other term of row 83 has degree
+at most 12. Their product gives the displayed nonzero residue.
+This modular calculation is an exact finite witness that the integer
+coefficient is nonzero; it is not a probabilistic polynomial-identity
+test. Therefore that residual has exact degree 8,482.
+Over the real numbers a sum of polynomial squares cannot cancel its
+maximal homogeneous components. Equivalently, on this integer ray,
+the leading real coefficient of the sum is a sum of squares with a
+nonzero summand. Hence $\degp P_{85}=2\cdot8482=16\,964$.
+The last step is over $\mathbb R$ or $\mathbb Q$, not a claim that
+sums of squares cannot cancel modulo $p$.
+
+\subsection{Every counted variable actually occurs}
+A syntactically live input need not affect the resulting polynomial;
+the expression $x-x$ demonstrates the distinction. The archive gives
+one exact modular point and all 85 partial derivative values computed
+by reverse differentiation of the literal DAG. Every value is nonzero.
+Thus each integer polynomial $\partial P_{85}/\partial y_i$ is
+nonzero, and all 85 coordinates genuinely occur. The point was found
+by a deterministic search, but verification of the supplied witness
+uses only exact integer arithmetic modulo the displayed modulus.
+
+\subsection{Coefficient and evaluator accounting}
+The checker propagates upper bounds on the coefficient $\ell^1$ norm.
+For integer polynomials $f,g$,
+\[
+ \|f\pm g\|_1\leq\|f\|_1+\|g\|_1,
+ \qquad\|fg\|_1\leq\|f\|_1\|g\|_1.
+\]
+Bounding each norm by a power of two and adding the residual squares
+gives $\max_\alpha|[\boldsymbol y^\alpha]P_{85}|\leq2^{59805}$.
+No huge expanded polynomial needs to be materialized to prove this
+bound. The largest circuit literal $2^{40}+4$ and the expanded-height
+bound are deliberately reported separately.
+
+The JSON specification retains some nodes solely for reconstruction
+and certificate comparison. The operation count includes only binary
+operations reachable from the final polynomial output. The principal
+file contains 3,559 stored nodes, while its live evaluator uses 1,788
+binary operations. Constants and input nodes are not counted as
+binary operations. These conventions match the stated comparison
+metric and do not assert optimal arithmetic-circuit size.
+
+\section{Logical calibration and internal ZFC meaning}
+\label{sec:logic}
+
+The inherited chain is
+\[
+ \begin{gathered}
+ \text{square-shell C222 refutation}
+ \ \longleftrightarrow\ \text{original C222 derivation of code 1},\\
+ \text{original C222 derivation of code 1}
+ \ \longleftrightarrow\ \text{a finite ZF refutation},\\
+ \text{a finite ZF refutation}
+ \ \longleftrightarrow\ \text{a finite ZFC refutation}.
+ \end{gathered}
+\]
+The named Lean source interfaces are
+\path{KEndpoint.c222_iff_zf_refutation} and
+\path{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+The effective first-order axiom predicate is the repository's
+\texttt{ZFCax\_s}, with finite proof relation \texttt{BProv} and
+falsity \texttt{Form.fBot}. The square-shell syntax change is an
+ordinary effective recoding; it is not a literal identification of
+two differently coded formula constructors.
+
+The source calculus-to-ZF bridge is a substantial inherited theorem.
+Its model arguments use the internally well-founded part of a
+quotient construction, and the ZF-to-ZFC consistency transport uses
+the constructible model. None of this is replaced by assuming that
+a consistent theory has an externally well-founded or transitive
+model. The present packet identifies and retains the relevant source
+proofs; it does not freshly compile the full transitive import closure.
+The source audit and provenance ledger should be read as such, not
+as a new kernel-checked theorem about the entire development.
+
+For the new steps, the formalizability claim is direct. Pell
+recurrences, their classification and congruences, finite CRT,
+polynomial substitution, prime factorization, and induction over
+finite syntactic objects are ordinary constructions provable in ZFC.
+The inequalities in Section~\ref{sec:jointproof} are uniform in the
+internally coded integers. They do not quantify only over externally
+standard proof codes. In a nonstandard model of ZFC, the theorem
+concerns that model's integers and finite derivations, interpreted by
+the same internally proved lemmas.
+
+Combining the inherited source theorem, the parent-restoration
+equivalence, and Lemma~\ref{lem:eliminate} proves
+Theorem~\ref{thm:main}. Negating the existential refutation statement
+gives exactly the usual arithmetized $\Con(\ZFC)$. It gives no
+independent proof that $P_{85}$ has no integer zero.
+
+\section{Verification, reproduction, and integration}
+\label{sec:verification}
+
+The archive is self-contained for reproducing the new finite
+polynomial checks. Python 3.10 or later and its standard library
+suffice; a TeX installation is needed only to rebuild this PDF.
+From the extracted package root, run
+\begin{verbatim}
+python3 -B verify.py
+python3 -O -B verify.py
+\end{verbatim}
+The verifier checks the source hashes, exact retained/deleted row
+interface, the joint pool identities, unit pivots, acyclicity,
+complete substitution of source DAG nodes, the sum of squares,
+exact degree witnesses, all-variable dependence witnesses, and
+reported finite metrics. Deliberate corruptions are required to fail.
+It imports neither the projection producer nor its search routine.
+Optimization-mode replay checks that substantive gates are not
+implemented merely as removable Python assertions.
+
+The source and new proofs establish unbounded facts. The finite
+verifier authenticates their literal algebraic instances. Passing
+checks does not, by itself, establish the Pell classification,
+logical calibration, or absence of solutions. No search for a
+Diophantine zero is performed or needed.
+
+The principal JSON contains a topologically ordered list of constants,
+variables, and binary operations; its final output is the actual
+integer polynomial. A supplied evaluator can inspect its input order,
+evaluate it exactly, or evaluate it modulo a chosen positive integer.
+A modular zero would not constitute an integer solution. Evaluating
+the high-degree forms exactly can produce large values even at
+small inputs.
+
+For repository intake, add the ZIP as an independent manuscript
+package in \texttt{docs/incoming}, then place it according to the
+repository's intake procedure. Preserve the source ledger, inherited
+notices, proof-boundary statement, and domain distinction. The package
+does not replace the maintained fifteen-positive-variable display,
+claim an improvement in every simplicity measure, or silently
+upgrade an ordinary proof to a fresh Lean/Rocq build.
+
+\section{An unsuccessful route worth recording}
+\label{sec:obstruction}
+
+We also examined the latest ten-positive-variable degree-208
+construction of package~178 \cite{p178}. Its center approximates a square root
+of a product of Pell expressions using polynomial quotients at
+infinity. A natural extension is to retain more terms in
+\[
+ \sqrt{A^2-1}=A-\frac1{2A}-\frac1{8A^3}
+                    -\frac1{16A^5}-\cdots.
+\]
+The degree relevant to the final equation is a weighted total degree,
+not just the degree in $A$. Taking the full polynomial part in $A$
+does not improve the parent's degree: a term involving high powers
+of $Y$ survives with the same weighted degree.
+
+In the actual variables $A=XY+Y+1$, with weights
+$(X,Y,k,U,b,c)=(2,2,1,7,4,3)$, the first nonpolynomial term of
+the relevant scale-four root expansion is
+$3X^{-1}Y^7k^4U^3b$, of weight 41. The next terms are
+$-3X^{-2}Y^7k^4U^3b+12X^{-1}Y^6k^4U^3b$, of weight 39.
+Multiplication by $X$ permits the first correction but leaves a
+defect of weight 108, compared with the parent's 106; its final
+degree is worse. Multiplication by $X+1$ can cancel one further
+term but leaves the same defect weight 106. The independently
+checked notes in \texttt{research/} retain the exact restricted
+calculation and its assumptions.
+
+A stronger restricted statement follows from these coefficients.
+Let
+\[
+ \begin{gathered}
+ A=XY+Y+1,\quad E=1+XY^2k^2+X^2Y^4k^2,\quad\Delta=A^2-1,\\
+ G=E+\Delta U^2E^2,\qquad V=(1+2\Delta U^2E)b-c.
+ \end{gathered}
+\]
+\begin{proposition}[Affine-scale obstruction]
+In $\mathbb Q[X,Y,k,U,b,c]$ with the weights above, for every nonzero
+$r=aX+b_0Y+d\in\mathbb Q[X,Y]$ and every polynomial $C$,
+\[
+ \deg_w(C^2-16r^2GV^2)\geq106.
+\]
+\end{proposition}
+\begin{proof}
+Introduce a weighted Laurent parameter and choose the formal root
+$S=4\sqrt G\,V$ with leading monomial
+$8X^7Y^{11}k^4U^3b$ of weight 65. Above weight 41 its components
+are polynomials. Write $K=k^4U^3b$. Its nonpolynomial components
+at weights 41, 39, and 37 are exactly
+\[
+ \frac{3KY^7}{X},\qquad
+ -\frac{3KY^7}{X^2}+\frac{12KY^6}{X},\qquad
+ \frac{3KY^7}{X^3}-\frac{15KY^6}{X^2}+\frac{15KY^5}{X}.
+\]
+They are obtained by recursively squaring and comparing coefficients;
+the supplied standard-library checker verifies these finite identities
+with rational coefficients. For nonzero constant $r$, a defect below
+106 requires agreement of $C$ with one sign of $rS$ through weight
+41, which its first nonpolynomial term prevents. For nonconstant $r$,
+the leading weight is 67, so a defect below 106 requires agreement
+through weight 39. At weight 43 the nonpolynomial part is
+$3b_0KY^8/X$, forcing $b_0=0$. At weight 41 it is
+$3(d-a)KY^7/X$, forcing $d=a$. The remaining nonzero scale is
+$a(X+1)$, whose weight-39 nonpolynomial part is $-3aKY^6/X$.
+This is impossible for a polynomial center. The degree conclusion
+uses $(C-rS)(C+rS)$: after choosing the leading sign, the second
+factor retains weight 65 or 67, so its product with the first
+unmatched coefficient cannot cancel in the rational function field.
+\end{proof}
+
+This is a theorem about the displayed abstract polynomial ring and
+affine scales. It is not a global lower bound for consistency equations,
+arbitrary nonlinear scales, or different encodings. In particular, it
+prevents recycling this specific unsuccessful improvement attempt
+without claiming that degree 208 is universally minimal.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can the joint orientation-and-power residual be applied before
+more of the source's quadratic coordinates are introduced? The
+present composition saves certificate variables and then projects;
+a compiler that preserves this sharing from the outset might reduce
+both source size and literal coefficient growth.
+\item Can a smaller constructor majorant replace $2^{20}$ while
+preserving the boundary-valid multiset-separation proof? This targets
+the main coefficient tradeoff rather than just the variable count.
+An improved bound must cover every local constructor on every
+allowed parameter tuple, not only sampled syntax.
+\item Which dependency structures prevent the remaining unit
+eliminations? A certified search over integer coordinate shears,
+followed by acyclic unit pivots, could expose equations that are
+solvable integrally but not monic in the current coordinates.
+Any nonunit pivot requires an explicit congruence or divisibility
+argument.
+\item Can the new low-dimensional forms be given sharper expanded
+coefficient bounds, or smaller evaluation circuits, without changing
+their zero sets? Circuit simplification should preserve an exact
+map to the frozen definition and recount all live constant products.
+\item Can the new source-interface theorem and reconstruction map
+be formalized on top of the existing ZFC endpoint? A modest first
+target is the 209-to-85 polynomial pullback and zero-set equivalence;
+the larger target is an explicit object-language ZFC derivation of
+the full consistency equivalence.
+\item Can a different complete proof calculus improve the entire
+description, rather than its arithmetic certificate alone? The
+comparison should charge syntax, coefficients, and both directions
+of the internal consistency calibration.
+\end{enumerate}
+
+\appendix
+\clearpage
+\section{The 85 free coordinates}
+\label{app:free}
+Write the following ordered source-index list as
+$(s_0,\ldots,s_{84})$. The only independent unknowns of the principal
+equation are $y_0,\ldots,y_{84}\in\Z$, with $v_{s_i}=y_i$.
+In particular $v_{219}$ is the joint quotient. All other coordinates
+that occur below are fixed polynomial abbreviations defined by the
+next appendix.
+\input{free_indices.tex}
+
+\section{The complete integral reconstruction}
+\label{app:pivots}
+For each table row $(v,j,\epsilon)$, remove the unique monomial
+$\epsilon v_v$ from the literal source polynomial $R_j$ in the next
+appendix. Call the resulting polynomial $F_v$. Define
+$v_v=-\epsilon F_v$, using previously defined coordinates. The table
+is in dependency order, not merely in increasing variable order.
+Thus these 124 instructions, together with the free list, are a
+complete division-free polynomial reconstruction. They are also a
+shorter finite specification than expanding every high-degree
+residual into monomials.
+\input{pivot_table.tex}
+
+\clearpage
+\section{Complete retained source row table}
+\label{app:source}
+The following 147 quadratic polynomials are the retained rows from
+the literal source219 system. Source labels use zero-based indices.
+Rows listed in the preceding pivot table define coordinates; the 23
+rows in \eqref{eq:K} contribute residual squares in \eqref{eq:85}.
+The additional joint residual is completely defined by
+\eqref{eq:T}--\eqref{eq:joint} and Table~\ref{tab:requests}.
+No other equations or unspecified constants enter the definition.
+
+\input{source_rows.tex}
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{p173} ProveIt, package 173, \emph{A reused CRT index: an explicit
+Diophantine consistency equation}. Source, ordinary proofs, and exact
+equations at the comparison snapshot.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ecb9a4b4dda617512952525d50f17343700aac52/Computability/DiophantineConsistency/con-zfc-diophantine-forms/173-crt-index-anchor-215}
+\bibitem{p176} ProveIt, package 176, \emph{Oriented pooling}, especially
+\texttt{proofs/JOINT\_POOLING.md} and
+\texttt{proofs/ORIENTED\_POOLING.md}.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ecb9a4b4dda617512952525d50f17343700aac52/Computability/DiophantineConsistency/con-zfc-diophantine-forms/176-oriented-pooling}
+\bibitem{p177} ProveIt, package 177, \emph{Oriented power pooling and
+polynomial root centering}. The stated direct-family comparison.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ecb9a4b4dda617512952525d50f17343700aac52/Computability/DiophantineConsistency/con-zfc-diophantine-forms/177-oriented-powers}
+\bibitem{p178} ProveIt, package 178, \emph{Polynomial centers for
+Diophantine consistency}.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ecb9a4b4dda617512952525d50f17343700aac52/Computability/DiophantineConsistency/con-zfc-diophantine-forms/178-polynomial-centers}
+\bibitem{p152} ProveIt, package 152, \emph{Lucas corrections}.
+Earlier applications of acyclic unit elimination to direct equations.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ecb9a4b4dda617512952525d50f17343700aac52/Computability/DiophantineConsistency/con-zfc-diophantine-forms/152-lucas-corrections}
+\bibitem{bayer2026} J.~Bayer, M.~David, M.~Ha\ss ler, Y.~Matiyasevich,
+and D.~Schleicher, \emph{Diophantine equations over $\Z$: universal
+bounds and parallel formalization}, arXiv:2506.20909v3, 22 October 2026.\newline
+\url{https://arxiv.org/abs/2506.20909}
+\end{thebibliography}
+\end{document}

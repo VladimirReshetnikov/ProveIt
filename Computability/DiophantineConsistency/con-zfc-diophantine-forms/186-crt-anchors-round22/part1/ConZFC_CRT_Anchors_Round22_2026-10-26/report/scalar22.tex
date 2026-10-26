@@ -1,0 +1,160 @@
+\section{A whole new coefficient tuple for the ten-positive family}
+\label{sec:start4127-positive10}
+The three ten-positive-variable equations retain their free-port arithmetic
+and their exact degree/gate pairs $(240,82)$, $(232,85)$, and $(214,87)$.
+The new result is a coherent specialization of \emph{all four} fixed ports to
+the Start-only complemented native encoding with cell length $4127$.
+The complete unsigned coefficient payloads shrink from $295\,388$ to
+$97\,046$ bytes, a saving of $198\,342$ bytes ($67.146\%$).
+The incoming Start-marker package had specialized its fifteen-positive P66
+front to this tuple, but retained the old radix-$67$ tuple for its ten-positive
+$232/85$ equation. The present result proves the missing whole-native bridge
+for all three retained ten-positive charts. It does not lower their degrees
+or operation counts, or change the separate six-port integer11 family.
+
+\subsection{The complete fixed tuple and its semantic requirements}
+Put $\rho=2^{47}$, $M=2^{44}$, $L=4127$, $B_0=\rho^L$ and
+$\beta=B_0-1=2^{193969}-1$. Let $t_j=(w_j,n_j,e_j,s_j)$, $0\leq j\leq942$,
+be the complete fixed tile list reconstructed from the retained 436-character
+machine numeral. Its Start is $(2,435,3,1)$ and tile942 is $(4,437,2,437)$.
+Define
+\[
+ c_j=1+2^{10}(1+w_j+2^8n_j+2^{17}e_j+2^{25}s_j),
+ \quad 0\leq j\leq942,
+\]
+and, in addition,
+\[
+\begin{array}{ll}
+c_{1002+j}=2^{10+j},\quad c_{992+j}=2^{27+j}&(0\leq j<8),\\
+c_{973+j}=2^{18+j},\quad c_{943+j}=2^{35+j}&(0\leq j<9).
+\end{array}
+\]
+All other $c_e$, $0\leq e\leq3296$, are zero. Write
+$G_m(x)=\sum_{j=0}^{m-1}x^j$ and
+\begin{align*}
+\Psi(x,t)&=x^{992}(x^{10}+t^{17})G_8(tx)
+ +t^8x^{943}(x^{30}+t^{17})G_9(tx)+t^{34}(2-t)x^{1031},\\
+\Phi(x)&=\sum_{j=0}^{942}c_jx^j+2^{10}\Psi(x,2),\qquad
+\Lambda=\rho^{2042}+\rho^{3074},\\
+D_C&=\rho^{20}+\rho^{30}+\rho^{1031}+\Lambda\Phi(1/\rho),\\
+K_0&=D_C+B_0\rho^{10},\\
+M_C&=\beta+\rho-(\rho+3)\rho^{990}-G_{943}(\rho)-\Psi(\rho,1),\\
+M_F&=B_0+3+(M-2)\Lambda+\rho^{973}G_9(\rho)
+ +\rho^{1012}G_8(\rho)+\rho^{1031}
+ +2^{29}\rho^{4124}-\rho^{4106}.
+\end{align*}
+These finite sums define integers: the reflected exponents are nonnegative.
+$M_F$ is already the once-shifted source mask; the proof-only native mask is
+$M_F-\beta$, not a second independently selected coefficient.
+The complete numerical payloads, decoder, all 943 tiles and 3297 weights are
+included, rather than replacing coefficients by hashes.
+
+The retained Start-only proof establishes more than scalar inequalities.
+Its physical support has 980 positions, with a separate zero-weight flag at 1031.
+The carry box is $0,\ldots,29$; clean clauses precede alignment. Eight Start
+label bits and the flag test leave offsets 0 and 32, and the actual complemented
+south color $511-437=74$ of tile942 excludes 32. The flag at a temporal
+predecessor equals the current Start selector, \emph{not} occupancy.
+Positive complemented colors propagate occupation after alignment. Complete
+clause resets, origin masks and 875 padding bits then reconstruct the genuine
+marked blank computation. Every one of these semantic conditions is retained;
+matching port names or the inequalities $0<M_C<\beta<M_F<2\beta$ would not
+alone license this specialization.
+
+For the converse the actual new controller has
+\[
+ d=193969,\quad\lambda=474491,\quad
+ \operatorname{ord}_{47}(B_0)=23,\quad
+ \operatorname{ord}_{4127}(B_0)=2063,
+ \quad\operatorname{lcm}(23,2063)=47449.
+\]
+The values of $1+B_0K_0+B_0^2$ modulo $47,4127,474491$ are respectively
+$9,3487,153928$, and
+$B_0^{\lambda-1}=1+135285\lambda\pmod{\lambda^2}$.
+Full trial division and all prime-factor order tests discharge these finite
+premises. The whole cofinal rectangle/subset-sum proof uses this new $K_0$,
+not old controller residues or an old packed word.
+
+\subsection{Why all three arithmetic charts transfer}
+Write $h=q-1$, $B_{\rm tr}=(K_0+W)C-F$ and $t=B_{\rm tr}/h$.
+The retained ten-positive proof, with the new authenticated scalar boxes,
+recovers $X=2^R$, $q^3\mid Y$, $C>0$ and integral $t\geq0$.
+In the plain free chart $X=q^2w$ and $W=qw$; in both inverse charts
+$X=qw$ and $W=w$. Thus in \emph{every} chart $W=X/q$.
+Define fresh source coordinates
+\[
+ w_s=X/q,\qquad s_s=Y/q^3,\qquad z_s=t+1.
+\]
+They are positive integers and satisfy the exact transport, not merely a
+congruence:
+\[
+ (K_0+w_s)C+(q-F)-z_sh
+ =ht+q-(t+1)h=1.
+\]
+The rank $R=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J$ and
+$C=q-F-\alpha$ agree literally with the new native interface.
+Projection still precedes full denominator recovery; no early inference
+from $q^3\mid HY$ to $q^3\mid Y$ is used.
+
+For an explicit soundness bridge set $r=(R-1)/2$ and rebuild the unscaled
+source base, rather than identifying it with a free-chart base:
+\begin{align*}
+ a_s&=Y(X+1),& A_s&=a_s+2,&\Delta_s&=A_s^2-1,&H_s&=4a_s+3,\\
+ c_s&=\psi_{A_s}(R),&D_s&=\chi_{A_s}(R),&P_0&=1+2XY^2,\\
+ k_s&=2\psi_{P_0}(r+1),&\tau_s&=\chi_{P_0}(r+1),\\
+ \eta_s&=c_s-k_sY,&\zeta_s&=k_s-\eta_s,\\
+ h_s&=(k_s-R-1)/(XY),&
+ \gamma_s&=(D_s-X-a_sc_s)/H_s.
+\end{align*}
+The retained fixed-minus parity and exact half-binomial theorem prove
+$R=3\pmod4$ and positivity and integrality of these witnesses.
+Take $m_s=c_sR$, $I_s=\psi_{A_s}(m_s)$,
+$f_s=\chi_{A_s}(m_s)$ and $i_s=I_s/c_s^2$.
+The Pell multiplication identity gives $c_s^2\mid I_s$.
+The canonical auxiliary construction at $S_s=\Delta_sI_s$ supplies
+positive $V_*,y_s,T_s$ with
+\[
+ V_*=f_s^2(c_sT_s-R)-c_s,\qquad
+ S_s^2(V_*^2-y_s^2)+y_s^2=1.
+\]
+These fresh witnesses give every normalized P66 factor equal to1, at the
+\emph{same complete new tuple}. The Start-only P66 soundness theorem therefore
+extracts a finite syntactic ZFC refutation. This establishes a semantic
+composition, not equality with the old specialized polynomial.
+
+Conversely, the new native theorem constructs fresh canonical data from any
+finite refutation, with $q=2^{dN}$, $X=2^R$, $R>q(q^2-1)$,
+$R=3\pmod4$, $\operatorname{pc}(R)=3dN+2$, $q^3\mid Y$ and the
+actual integral transport. The rank margin permits $w=X/q^2$ in the plain
+free chart and $w=X/q$ in the inverse charts; take $s=Y$ for free charts
+and $s=Y/q$ for the scaled chart. The retained uniform ratio theorem,
+divisible strong period, trace-linear auxiliary reconstruction and
+positive-$n$ bounds then produce all ten positive coordinates. The inverse
+correction may be negative; the original $g$ bounds explicitly handle this.
+Thus each new polynomial has a positive zero exactly when a finite ZFC
+refutation exists. Negation is equivalent in ZFC to syntactic
+$\operatorname{Con}(\mathrm{ZFC})$, without deciding either side.
+
+\subsection{Exact degree and verification}
+With $q_0=(2^{193969}-1)J$, $k_0=\eta+\zeta$ and
+$B_* = k_0sT-q_0^2(q_0-F)$, the full highest forms remain
+\begin{align*}
+ [P_{240}]_{240}&=-2^8q_0^{112}w^{26}s^{58}i^{10}k_0^{32}(q_0-F)^2,\\
+ [P_{232}]_{232}&=-9\cdot2^{10}q_0^{100}w^{26}s^{58}i^{10}k_0^{32}B_*^2,\\
+ [P_{214}]_{214}&=-9\cdot2^{10}q_0^{86}w^{26}s^{58}i^{10}k_0^{32}(q_0-F)^2.
+\end{align*}
+Their selected nonzero coefficients establish actual degrees at these fixed
+numerals. Every original free-port gate is unchanged. Independent reconstruction
+decodes the complete machine numeral, all tiles and weights, and all coefficient
+bytes without importing the producer; it also checks full native geometry and
+controller premises. Normal and optimized-Python deep checks reject all 508
+single-operator corruptions, and clean-copy replay reconstructs graphs and
+receipts byte-identically. These finite checks authenticate the artifacts;
+they are not an unbounded native/refutation proof or a new formal-kernel
+certificate.
+
+The squared-transport variant is not silently transferred to the two free
+charts: their pre-rank auxiliary index-three case is allowed, and the proven
+bound relative to $bV$ does not imply the required bound relative to $b^2$.
+Likewise no assertion of global minimality or a new signed11 degree floor is
+made.

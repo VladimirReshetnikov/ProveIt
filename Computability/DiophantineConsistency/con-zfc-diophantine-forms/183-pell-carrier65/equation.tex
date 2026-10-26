@@ -1,0 +1,137 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=.38in]{geometry}
+\usepackage{amsmath,amssymb,multicol}
+\pdfinfoomitdate=1\pdftrailerid{}
+\pagestyle{empty}\setlength{\parindent}{0pt}\setlength{\parskip}{2pt}
+\setlength{\columnsep}{13pt}\setlength{\jot}{0pt}
+\setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{3pt}
+\let\bigsum\sum\renewcommand{\sum}{\bigsum\nolimits}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\begin{document}
+\begin{center}
+{\large\bfseries A complete fourteen-variable consistency equation}\\[-1pt]
+{\small Strictly positive integer unknowns; exact degree 150; a 65-operation evaluator.}
+\end{center}\vspace{-8pt}
+\begin{multicols}{2}
+\fontsize{9}{9.5}\selectfont
+The only unknowns are
+\[
+J,F,\alpha,z,f,i,T,s,w,n,\eta,\zeta,y,\gamma\in\mathbb Z_{>0}.
+\]
+All other symbols in the equation are polynomial abbreviations:
+\[
+\begin{gathered}
+q_-=\beta J,\quad q=q_-+1,\quad C=q-F-\alpha,\\
+X=wq,\quad Y=sq^3,\quad E=XY,\quad k=\eta+\zeta,\\
+\ell=EkY,\quad c=kY+\eta,\quad a=E+Y,\\
+H=4a+3,\quad\Delta=a^2+H,\quad D=X+ac+\gamma H,\\
+R=[q_-(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+\tau=En+k-R,\quad V=f^2(cT-R)-c,\\
+S=i\Delta c^2,\\
+N_0=\tau^2-\ell(\ell+k),\quad N_1=D^2-\Delta c^2,\\
+N_a=S^2(V^2-y^2)+y^2,\\
+N_t=(K+w)C+(q-F)-zq_-,\quad N_s=\Delta f^2-S^2.
+\end{gathered}
+\]
+The single equation is
+\[
+\boxed{N_0N_1N_aN_tN_s-\Delta=0.}
+\]
+
+\textbf{The four fixed integers.}
+Every index, set, sum, product and floor below defines a constant, not
+another unknown. Put
+\[
+\begin{gathered}
+\rho=2^{47},\quad B=\rho^{4027},\quad\beta=B-1,\\
+G_m(x)=\sum_{j=0}^{m-1}x^j,\quad
+\Lambda=\rho^{1992}+\rho^{2998}.
+\end{gathered}
+\]
+\begin{align*}
+M_C={}&\beta-\rho^{977}\\
+&-G_{942}(\rho)-\Psi(\rho,1),\\
+M_F={}&B+3+(2^{44}-2)\Lambda\\
+&+\rho^{960}G_9(\rho)+\rho^{987}G_8(\rho)
+  +\rho^{1005}\\
+&+2^{27}\rho^{4022}-\rho^{4004},\\
+K={}&\rho^{18}+\rho^{1005}+\rho^{4036}\\
+&+\Lambda\Phi(1/\rho),
+\end{align*}
+where
+\[
+\begin{split}
+\Phi(x)={}&\sum_{i=0}^{941}[1+2^{10}(1+w_i+2^8n_i\\
+&+2^{17}p_i+2^{25}s_i)]x^i+2^{10}\Psi(x,2),\\
+\Psi(x,t)={}&x^{969}(x^9+t^{17})G_8(tx)\\
+&+t^8x^{942}(x^{18}+t^{17})G_9(tx)\\
+&+(2-t)x^{1005}.
+\end{split}
+\]
+The rational intermediate in K cancels exactly; all four results are positive integers.
+
+\textbf{The 942 indexed fixed tiles.}
+Use the actions $u_j,v_j,d_j$ decoded below. For $d=0,1$, let
+\[
+\begin{gathered}
+h(q,b)=2q+b+2,\quad
+\mathcal S_d=\{u_j:d_j=d,\ 0\le j<430\},\\
+r_{d,q}=205-199d+|\mathcal S_d\cap\rg0{q-1}|.
+\end{gathered}
+\]
+An interval ending at $-1$ is empty. The table defines $t_i$ for
+$0\le i\le941$; all index ranges are fixed:
+\[
+\setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
+\text{index }i&\text{tile }t_i=(w_i,n_i,p_i,s_i)\\\hline
+0&(2,435,3,1)\\
+j+1\ (j=2q+b<430)&((1-d_j)r_{0,u_j},h(q,b),d_jr_{1,u_j},v_j)\\
+433-2a+b\ (a,b=0,1)&(0,432a+b,0,432a+b)\\
+\substack{423+2r_{d,q}+b\\q\in\mathcal S_d,\ d,b=0,1}&(dr_{d,q},b,(1-d)r_{d,q},h(q,b))\\
+923+2a+b\ (a,b=0,1)&(0,432a+b,0,438)\\
+927&(2,434,2,0)\\
+928&(3,436,4,4)\\
+929&(4,436,4,0)\\
+496+t\ (t=434,435,436)&(1,438,1,t)\\
+933+3a+b\ (a,b=0,1,2)&(a^2,437,b,437)
+\end{array}
+\]
+\textbf{A closed decoder for the 430 actions.}
+Put $D_b(A,k)=\fl{A/b^k}\bmod b$, where
+$a\bmod b=a-b\fl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
+\[
+\begin{gathered}
+N=\mathcal A\bmod2^{636},\quad Q=\fl{\mathcal A/2^{636}},\\
+\nu_j=D_2(N,j),\quad \sigma_j=\sum_{k=0}^{j-1}\nu_k,\\
+r_j=(\sigma_j+2)^{1-\nu_j},\quad P_j=\prod_{k=0}^{j-1}r_k\ (j\le430),\\
+m_q=D_2(N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14+m_q(D_{16}(\fl{Q/P_{430}},\tau_q)-14),\\
+u_j=(\sigma_{j+1}-(\fl{Q/P_j}\bmod r_j))\bmod216,\\
+v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
+\end{gathered}
+\]
+Empty sums/products are $0/1$. Here $(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
+uses this actual first target, including its state renaming.
+
+\textbf{The integer $\mathcal A$.}
+The alphabet, in order of digit values $0,\ldots,61$, is
+{\fontsize{7.7}{8.2}\selectfont\ttfamily 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}.\par
+Concatenate the following 399 characters as digits $e_0,\ldots,e_{398}$;
+put $\mathcal A=\sum_{j=0}^{398}e_j62^{398-j}$.\par
+\begingroup\fontsize{7.7}{8.2}\selectfont\ttfamily
+5TPXx0McEgSbYki3sGVNKJLlN8Q3rCXEfmrabEMMQ8k2o7MWvDH3pCkVAr7WqE\par
+SjjWJ6dfq6LXnsZ6OHq7X5iVUPDlwMCAVZSQetoQ0ToXWH6MDnc00LmAYqNDjl\par
+4vOt5Pyqlm1w3QNJbgusSWi8PpjYYL0GfwYX6CiaBwhYAamgcErq0NvxD1RlnG\par
+hk2ZQlIzR5QYJ7qPAGs4LiKjiwLVxBklwY6mc0rXASKtPvKSExJCqmSq0QA4We\par
+dyi3CmNTqaYAAUHXNKVii0Y7dPyuBGK3Wf9xU3vNHYczDPSJUREK7toNXVZLE0\par
+Av8LC0sn6Z6b3e6vj2YEsfHM9lAXImUXzNvBajRskYaVHYhxtRPsiISO0Rst1h\par
+16ymUkkXf1F2lVOfi8rCWgfBlPp\par
+\endgroup
+\normalfont\fontsize{7.7}{8.2}\selectfont
+The ordinary complemented-color, native and Pell arguments give
+unsolvability iff $\mathrm{Con}(\mathrm{ZFC})$.
+Native calibration and internal-ZFC formalization remain open in Lean.
+This page is a complete finite specification, not an unsolvability proof.
+\end{multicols}
+\end{document}

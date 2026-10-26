@@ -1,0 +1,127 @@
+{
+  "steps": [
+    {
+      "name": "direct source and reconstruction normal",
+      "arguments": [
+        "signed/verify.py",
+        "--deep"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "reciprocal reconstruction normal",
+      "arguments": [
+        "reciprocal/verify.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "retained signed ancestry normal",
+      "arguments": [
+        "inherited_round20/signed/verify.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "retained height ancestry normal",
+      "arguments": [
+        "check_height_sources.py",
+        "--common-parent",
+        "signed/parent252",
+        "--bindings",
+        "HEIGHT_SOURCE_BINDINGS.json"
+      ],
+      "cwd": "inherited_round20"
+    },
+    {
+      "name": "height full reconstruction normal",
+      "arguments": [
+        "height_one/verify.py",
+        "--single"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "positive scalar reconstruction normal",
+      "arguments": [
+        "scalar/positive10/replay.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "independent coefficients and bindings normal",
+      "arguments": [
+        "check_independent.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "direct source and reconstruction optimized",
+      "arguments": [
+        "-O",
+        "signed/verify.py",
+        "--deep"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "reciprocal reconstruction optimized",
+      "arguments": [
+        "-O",
+        "reciprocal/verify.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "retained signed ancestry optimized",
+      "arguments": [
+        "-O",
+        "inherited_round20/signed/verify.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "retained height ancestry optimized",
+      "arguments": [
+        "-O",
+        "check_height_sources.py",
+        "--common-parent",
+        "signed/parent252",
+        "--bindings",
+        "HEIGHT_SOURCE_BINDINGS.json"
+      ],
+      "cwd": "inherited_round20"
+    },
+    {
+      "name": "height full reconstruction optimized",
+      "arguments": [
+        "-O",
+        "height_one/verify.py",
+        "--single"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "positive scalar reconstruction optimized",
+      "arguments": [
+        "-O",
+        "scalar/positive10/replay.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "independent coefficients and bindings optimized",
+      "arguments": [
+        "-O",
+        "check_independent.py"
+      ],
+      "cwd": "."
+    },
+    {
+      "name": "printed principal residuals",
+      "arguments": [
+        "check_printed_equation.py"
+      ]
+    }
+  ]
+}

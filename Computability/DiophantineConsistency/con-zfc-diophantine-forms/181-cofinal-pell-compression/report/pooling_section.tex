@@ -1,0 +1,242 @@
+\section{Oriented reciprocal pooling at different bases}
+
+The next reduction is independent of the center construction. It
+starts from package 173's unchanged signed Pell source, whose frame
+already gives $|A|>W^W$ and bounds the squares of every actual base,
+requested output, and nominal index by $W$ \cite{source173}.
+The Pell polynomials are evaluated at signed integer $A$ using their
+polynomial recurrences. For signed indices use $X_{-k}(A)=X_k(A)$ and
+$Y_{-k}(A)=-Y_k(A)$. These are the coefficients of the corresponding
+positive or negative powers of the unit $A+s$, $s^2=A^2-1$.
+
+\begin{theorem}[Oriented pooling with inactive zero bases]\label{thm:pool}
+Let $W\in\Z$, $W\ge258$, let $A\in\Z$ satisfy $|A|>W^W$, and let at most five
+integer bases $n_j$ be given. There are at most 64 requests in total.
+Each request in block $j$ consists of integers $(m_i,k_i)$ and canonical
+signed Pell coordinates $(X_i,Y_i)$ at parameter $A$ and index $k_i$.
+Assume
+\[
+ n_j^2<W,\qquad m_i^2<W,\qquad k_i^2<W.
+\]
+Define
+\begin{align*}
+ T_j&=2An_j-n_j^2-1,&D_i&=X_i-AY_i,\\
+ S_j&=\sum_{i\in j}\bigl((m_i-D_i)^2-Y_i^2\bigr),&
+ H_j&=\sum_{i\in j}Y_i(m_i-X_i),\\
+ E_j&=S_j-2n_jH_j.
+\end{align*}
+All $T_j$ are nonzero. Then
+\begin{equation}\label{eq:orientedintegrality}
+ \sum_j\frac{n_jE_j}{T_j}\in\Z
+\end{equation}
+if and only if every request in every nonzero-base block satisfies
+$m_i=n_j^{k_i}$, initially interpreted in $\Q$. For $|n_j|\ge2$ this
+also forces $k_i\ge0$. No conclusion is asserted about a zero-base
+block's outputs; its term in \eqref{eq:orientedintegrality} is zero.
+\end{theorem}
+
+\begin{proof}
+For $n_j=0$, $T_j=-1$. For $n_j\ne0$,
+\[
+ |T_j|\ge2|A|-W>W^W,
+ \qquad\operatorname{sgn}\frac{n_j}{T_j}=\operatorname{sgn}A.
+\]
+Let $\delta_i=m_i-X_i+(A-n_j)Y_i$. Direct expansion gives
+\begin{equation}\label{eq:erroridentity}
+ E_j=\sum_{i\in j}\delta_i^2+T_j\sum_{i\in j}Y_i^2.
+\end{equation}
+Thus \eqref{eq:orientedintegrality} is equivalent to integrality of
+$\sum_j n_j\sum_i\delta_i^2/T_j$.
+
+We record why signed indices cause no gap. In the quadratic integer
+ring with $s^2=A^2-1$, send $s$ to $n_j-A$ modulo $T_j$. This is a
+ring homomorphism because
+\[
+ (n_j-A)^2-(A^2-1)=n_j^2-2An_j+1=-T_j.
+\]
+The unit $A+s$ maps to $n_j$, whose inverse is $2A-n_j$, since
+$n_j(2A-n_j)=1\pmod{T_j}$. Therefore for every signed integer $k_i$,
+\begin{equation}\label{eq:signedcongruence}
+ X_i+(n_j-A)Y_i\equiv n_j^{k_i}\pmod{T_j}.
+\end{equation}
+Here negative powers on the right mean powers of this modular unit.
+
+Put $b=\lfloor\sqrt{W-1}\rfloor$, so $b\ge16$. Let $J$ be the set
+of nonzero-base blocks, $s=|J|\le5$, and put
+\[
+ C=\prod_{j\in J}n_j^b\ne0.
+\]
+The integer $C$ appears only in the proof. For a request in an active
+block define
+\[
+ d_i=Cm_i-\frac{C}{n_j^b}n_j^{b+k_i}\in\Z.
+\]
+The exponents $b,b+k_i$ are nonnegative. Equation
+\eqref{eq:signedcongruence} implies
+$C\delta_i\equiv d_i\pmod{T_j}$, and hence
+$C^2\delta_i^2-d_i^2$ is a multiple of $T_j$.
+Multiplying the integral sum by $C^2$ now shows that
+\[
+ \Lambda=\sum_{j\in J}\frac{n_j\sum_{i\in j}d_i^2}{T_j}
+\]
+is an integer. This step clears each negative-index denominator before
+any estimate is used.
+
+Every relevant absolute value is at most $b$, so
+\[
+ |d_i|\le b^{sb+1}+b^{(s+1)b}\le2b^{(s+1)b}.
+\]
+Writing $r\le64$ for the total number of requests, we obtain
+\begin{align*}
+ \sum_{j\in J}|n_j|\sum_{i\in j}d_i^2
+ &\le4r\,b^{2(s+1)b+1}\\
+ &\le4r\,b^{12b+1}<W^{6b+2}\le W^W.
+\end{align*}
+The strict inequality follows from $4r\le256<W$ and $b^2<W$.
+The last inequality uses $6b+2\le b^2+1\le W$, valid for $b\ge16$.
+Since every denominator has absolute value greater than $W^W$,
+$|\Lambda|<1$. All its nonzero summands have sign $\operatorname{sgn}A$.
+Thus the integer $\Lambda$ vanishes, and every $d_i=0$. Dividing by
+$C$ gives $m_i=n_j^{k_i}$ in $\Q$. If $|n_j|\ge2$ and $k_i<0$,
+the integer equality $m_i n_j^{-k_i}=1$ is impossible.
+
+Conversely, exact powers imply $T_j\mid\delta_i$ in every active
+block. Equation~\eqref{eq:erroridentity} makes $E_j/T_j$ integral
+there. Every inactive block contributes zero, proving
+\eqref{eq:orientedintegrality}.
+\end{proof}
+
+\subsection{Clearing the denominators without adding a primitive}
+
+Introduce one unrestricted integer $z$ and define the ordinary polynomial
+\begin{equation}\label{eq:fullpool}
+ \mathcal R=
+ \sum_{j=0}^{4}n_jE_j\!\prod_{\substack{0\le h\le4\\h\ne j}}T_h
+ -z\prod_{h=0}^{4}T_h.
+\end{equation}
+Since every $T_h\ne0$ under the retained frame, $\mathcal R=0$ is
+equivalent to \eqref{eq:orientedintegrality}. The denominator notation
+has disappeared from the actual equation. Existing multiplication wires
+$Z_i=AY_i$ allow the completely literal definition
+\[
+ E_j=\sum_{i\in j}
+ \left((m_i-D_i)^2-Y_i^2
+       -2n_jY_i(m_i-D_i-Z_i)\right).
+\]
+Thus $E_j$ has degree at most three and $T_j$ degree two. Formula
+\eqref{eq:fullpool} has degree at most twelve. Its emitted coefficient
+list has a nonzero degree-12 part, so its square has exact degree 24.
+
+For the two existing fixed-base pools, the old private variables
+$K_j,L_j$ satisfy
+\[
+ K_j-2H_j-(2A-n_j)L_j=0,\qquad S_j-n_jK_j+L_j=0.
+\]
+Adding $n_j$ times the first row to the second gives $E_j-T_jL_j$.
+The construction verifies this identity directly against the literal
+parent rows; the block membership is not inferred from descriptive
+variable names.
+
+\subsection{Activating every block without assuming a positive radix}
+
+The five actual bases are
+\[
+ t,\quad B,\quad BH,\quad q,\quad q+1,
+\]
+with respectively $1,1,1,3,10$ requests. All their canonical signed
+Pell coordinates and the frame bounds are recovered before any deleted
+power row is used. The unchanged source supplies
+\begin{gather*}
+ t=128+4h^2,\qquad K=t^4,\qquad F\text{ requested as }t^K,\\
+ C=2c,\qquad B\mu=C+F+1,\qquad
+ H=2+4\sum(\text{actual CRT representatives}),\\
+ q\text{ requested as }(BH)^x.
+\end{gather*}
+The following order is essential.
+\begin{enumerate}
+\item Since $t\ge128$, its block is active. Theorem~\ref{thm:pool}
+gives $F=t^K$. In particular $F$ is even.
+\item The literal $C=2c$ is even. Hence $C+F+1$ is odd and nonzero.
+The retained equality $B\mu=C+F+1$ forces $B$ odd and nonzero, without
+using the sign of $C$.
+\item $H\equiv2\pmod4$, so $H\ne0$ and $|H|\ge2$. The active
+$BH$ block gives $x\ge0$ and $q=(BH)^x$.
+\item If $x=0$, then $q=1$. If $x\ge1$, then $q$ is nonzero and
+even. Thus $q\notin\{0,-1\}$, and both remaining bases are nonzero.
+\end{enumerate}
+All five blocks are now active and all original power assertions hold.
+The proof has not changed a CRT representative, parity condition,
+radix constructor, or shared residual to obtain this conclusion.
+
+For a new zero, restore each singleton modulus as $T_j$ and its old
+quotient as $-\delta_j/T_j$. For a fixed-base block restore
+\[
+ L_j=E_j/T_j,\qquad K_j=2H_j+(2A-n_j)L_j.
+\]
+These are integers by the recovered powers. Every retained coordinate
+is unchanged. Conversely, at an old zero the old singleton quotient
+$Q_j$ gives $\delta_j=-T_jQ_j$, so
+$E_j/T_j=T_jQ_j^2+Y_j^2$. The explicit polynomial choice
+\[
+ z=\sum_{j=0}^{2}n_j(T_jQ_j^2+Y_j^2)
+       +qL_q+(q+1)L_{q+1}
+\]
+satisfies the new certificate. Thus the transformation is pointwise
+existential equivalence over the shared source coordinates.
+
+\subsection{A degree-16 companion}
+
+Use oriented pooling only on the first three bases, with quotient $z_0$:
+\[
+ \mathcal R_0=
+ \sum_{j=0}^{2}n_jE_j\!\prod_{\substack{0\le h\le2\\h\ne j}}T_h
+ -z_0\prod_{h=0}^{2}T_h.
+\]
+The preceding parity argument already makes $q,q+1$ nonzero. Two
+nonzero consecutive integers have the same sign. Their denominators
+therefore have the same sign, and the unweighted two-base certificate
+from package 168 applies \cite{source168}:
+\begin{equation}\label{eq:splitpool}
+ \mathcal R_1=E_3T_4+E_4T_3-z_1T_3T_4.
+\end{equation}
+For completeness from an old zero take
+$z_0=\sum_{j=0}^{2}n_j(T_jQ_j^2+Y_j^2)$ and
+$z_1=L_q+L_{q+1}$. For soundness the same bounded-error proof uses
+$C=(q(q+1))^b$ and the estimate
+\[
+ 4\cdot13\,b^{6b}<W^{3b+1}\le W^W.
+\]
+There are no opposite-sign errors to cancel. The first new residual has
+exact degree eight, the second exact degree five. Their squares and the
+144 retained quadratic squares give exact degree sixteen.
+
+\subsection{Final variable counts and exact projections}
+
+In the parent 221-coordinate chart the removed private coordinates are
+\[
+ 145,146,147,148,149,150,215,216,217,218,
+\]
+and the removed rows are
+\[
+ 102,103,104,105,106,107,153,154,155,156.
+\]
+The checker verifies that none of these coordinates occurs in a
+retained row. The one-certificate source has $221-10+1=212$ variables
+and 151 rows; the split source has 213 variables and 152 rows.
+
+The same five integral projections along directions in the common
+kernel of the quadratic Hessians, followed by the same affine
+consequence, remove six syntax coordinates. At every step the actual
+pivot slope is $1$ or $-1$, the restoration has integer coefficients,
+and the new pooling expressions are invariant along the projected
+directions. The independent checker expands the shears directly rather
+than using the producer's directional-derivative method. Hence the final
+counts are 206 and 207.
+
+Both equations share exactly 205 coordinates $x_0,\ldots,x_{204}$,
+the same 144 quadratic residuals and the same sixteen request tuples.
+For $P_{206}$ the only new coordinate is $z=x_{205}$; for $P_{207}$
+they are $z_0=x_{205},z_1=x_{206}$. Appendix B specifies all those
+residuals and request tuples literally, so its two short formulas define
+both complete integer polynomials without importing any unspecified
+universal polynomial.

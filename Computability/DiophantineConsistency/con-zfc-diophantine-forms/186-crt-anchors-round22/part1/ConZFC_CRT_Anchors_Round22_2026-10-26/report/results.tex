@@ -1,0 +1,87 @@
+\section{Results and precise comparison}
+\label{sec:results}
+\input{metrics.tex}
+The principal ordinary polynomial is
+\begin{equation}\label{eq:principal}
+ \boxed{P_{\PrincipalVariables}(x_0,\ldots,x_{\PrincipalLast})
+       =\sum_{j=0}^{\PrincipalLastRow}R_j(x)^2=0,
+       \qquad x\in\Z^{\PrincipalVariables}.}
+\end{equation}
+Every residual is printed in Appendix~\ref{sec:residuals}. Its finite
+literal array specifies every coefficient and independent coordinate;
+no variable exponent, oracle, recurrence, sequence or hidden witness
+is an algebraic primitive. The final collected polynomial has exact
+degree four, \PrincipalTerms\ monomials and coefficient height
+\PrincipalHeight.
+
+\begin{theorem}\label{thm:main}
+For the principal polynomial and each selected companion on its stated
+domain $D$, the ordinary witness arguments composed with the identified
+inherited syntactic calibration prove
+\[
+ \mathrm{ZFC}\vdash
+ [\neg\exists x\in D^n\;P(x)=0]\ \longleftrightarrow\
+ \Con(\mathrm{ZFC}).
+\]
+No consistency assumption is used to prove this equivalence.
+\end{theorem}
+This does not assert that either side is true. In particular it neither
+proves consistency nor decides whether an equation has a zero.
+
+\subsection{Direct quartics over unrestricted integers}
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Endpoint & Variables & Rows & Terms & Height\\\midrule
+Round21 principal &217&154&7396&8880\\
+Incoming CRT-anchor principal &215&154&5660&91679\\
+Round22 principal &\PrincipalVariables&\PrincipalRows&\PrincipalTerms&\PrincipalHeight\\
+Round22 balanced &215&154&7315&4096\\
+Round22 lower height &215&154&16077&2304\\
+Round22 lower dimension &214&153&7078&1052028\\\bottomrule
+\end{tabular}
+\end{center}
+Every row represents a distinct fixed quartic. The incoming anchor point
+is sparser than the selected moderate-height presentation; it is not
+claimed to be dominated. The 214-variable endpoint pays a substantially
+larger coefficient height, and the lower-height endpoint pays more
+support. The balanced equation uses 234 more monomials than the principal
+and reduces height from 8880 to 4096; the exact catalog preserves that
+tradeoff rather than hiding it in a single simplicity score.
+
+The incoming source contributes the CRT-anchor and label-separation ideas.
+The new contributions are their actual composition with the transported
+quadratic simplifications, the weighted and quadratic growth budgets,
+and independently checked final coefficient arrays. Savings from different
+sources are not added without implementing their joint residual system.
+
+\subsection{A separate lower dimension tradeoff}
+The reciprocal companion has 212 unrestricted integer variables, 151 residuals,
+55820 monomials and coefficient height 31104, but exact degree 10 rather
+than four. Its proof in Section~\ref{sec:reciprocal22} uses a cofinal
+$q\equiv1\pmod3$ restriction, followed by reciprocal pooling of the
+$q$ and $q+1$ certificates. The original even $H$ is unchanged. Its
+higher degree and much larger height are explicit costs, not omitted
+coordinates in the quartic comparison. Against source 168's separate
+degree-ten point in 215 integers with 152 rows, 99914 monomials and
+height 113304, it improves all four displayed finite size measures;
+its arithmetic front is nevertheless different, not a relabeling of
+that source's zero set.
+
+\subsection{Height one and positive scalar equations}
+The selected height-one catalog ranges from $493/24828$ to $701/7141$
+variables/monomials. Its nine points include the retained $557/11991$
+tradeoff. Each is a quartic with constant one and all collected nonzero
+coefficients in $\{-1,1\}$, on unrestricted integer coordinates.
+
+The scalar domain is instead exactly
+\[
+ (J,F,\alpha,i,T,w,s,n,\eta,\zeta)\in\Z_{>0}^{10}.
+\]
+The three exact degree/live-operation pairs are $214/87$, $232/85$ and
+$240/82$, unchanged from Round21. The new complete four-port tuple occupies
+97046 minimal unsigned bytes instead of 295388, a 67.146 percent reduction.
+This is a raw numerical payload comparison, not compressed ZIP size,
+polynomial support or the height of the fully expanded scalar polynomial.
+Those latter two scalar measures are not claimed. The separate
+11-unrestricted-integer six-port family is unchanged and is not a new
+selected artifact in this round.

@@ -1,0 +1,20 @@
+{
+  "status": "REPRODUCED_FAILURE",
+  "exit_code": 1,
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-B",
+    "/tmp/integer215-portability-failure-btb4jmix/unrelated-name/verify.py",
+    "--parent"
+  ],
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/integer215-portability-failure-btb4jmix/unrelated-name/verify.py\", line 35, in <module>\n    p=argparse.ArgumentParser();p.add_argument('--parent',action='store_true');p.add_argument('--receipt',type=Path);a=p.parse_args();result=main(a.parent);s=json.dumps(result,indent=2)+'\\n';print(s,end='')\n                                                                                                                                             ^^^^^^^^^^^^^^\n  File \"/tmp/integer215-portability-failure-btb4jmix/unrelated-name/verify.py\", line 17, in main\n    if p.read_bytes()!=(ROOT/p.relative_to(dest)).read_bytes():raise ValueError('rebuild '+str(p.relative_to(dest)))\n                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: rebuild semantic_certificate.json\n",
+  "changed_field": "semantic_certificate.json:old_frame.path",
+  "old_value": "/workspace/scratch/416780682817/round22/integer/final/sources/parent217.json",
+  "rebuilt_value": "/tmp/integer215-portability-failure-btb4jmix/unrelated-name/sources/parent217.json",
+  "all_other_certificate_data_identical": true,
+  "old_builder_sha256": "5fa8063e0175e093b4a6a20ede58879f04c23b10756eb13aa450cb79892f1178",
+  "old_semantic_certificate_sha256": "8ac2b224bd23d1e402dae06f3ef9ed95b2379c0444b40ea4929888b72546bf5f",
+  "failure_workspace": "/tmp/integer215-portability-failure-btb4jmix",
+  "diagnosis": "An execution-location path leaked into a deterministically replayed certificate. No mathematical data differed."
+}

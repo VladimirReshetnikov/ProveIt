@@ -1,0 +1,1846 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{booktabs,longtable,array,microtype,xcolor,enumitem}
+\usepackage{hyperref,xurl,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,pdftitle={Reciprocal pooling across signed bases for Diophantine consistency},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Reciprocal pooling and Diophantine consistency}\fancyhead[R]{\small ProveIt research contribution}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{13pt}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=1.5em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Ht}{\operatorname{Ht}}
+\newcommand{\src}{\textsf{S216}}
+\title{Reciprocal pooling across signed bases\\for Diophantine consistency}
+\author{AI-assisted research prepared for Vladimir Reshetnikov\\\small A contribution for the ProveIt repository}
+\date{25 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a uniform arithmetic compression theorem for finitely many
+Pell-certified power requests with different, signed, or zero bases.
+A single polynomial congruence witness replaces the separate witnesses
+for all power blocks. The principal new point is a second integrality
+argument: it rules out cancellation between positive and negative
+reciprocal moduli without introducing orientation factors. Applied to an
+explicit, calibrated numerical proof-calculus equation in the ProveIt
+repository, it removes nine coordinates. Subsequent exact monic
+eliminations give the fixed integer polynomials listed below.
+For every delivered equation, ordinary mathematics formalizable in ZFC,
+composed with the explicitly retained source calibration, proves that
+absence of an integer zero is equivalent to syntactic $\Con(\mathrm{ZFC})$.
+The complete finite polynomial definitions, source residuals, elimination
+tables, executable circuits, and independent finite checkers are supplied.
+We do not claim a globally simplest equation, a consistency proof, or a
+new end-to-end proof-assistant certificate.
+\end{abstract}
+
+\section{Results and the meaning of simplicity}
+
+Our principal recommendation is the fixed polynomial in \textbf{112 unrestricted integers of exact degree 24}. A lower-degree companion uses \textbf{119 integers at degree 16}; the smallest variable count in this release is \textbf{102 integers at degree 64}. Each has the required ZFC equivalence, with the dependency boundary described below.
+
+\begin{center}
+
+\begin{tabular}{rrrrr}
+
+\toprule
+
+Integer variables & Exact degree & Residuals & Height bound & Binary operations\\
+
+\midrule
+
+143 & 8 & 80 & $<2^{43}$ & 2590\\
+
+119 & 16 & 56 & $<2^{79}$ & 2519\\
+
+112 & 24 & 49 & $<2^{79}$ & 2501\\
+
+107 & 32 & 44 & $<2^{113}$ & 2482\\
+
+102 & 64 & 39 & $<2^{214}$ & 2437\\
+
+\bottomrule
+
+\end{tabular}
+
+\end{center}
+
+The 143-variable octic is a useful companion obtained with five singleton blocks and ordinary elimination; it does not need the new cross-base fusion theorem. The other four rows use that theorem. Operation counts describe the delivered literal evaluators and are not claimed optimal.
+
+For comparison, package 152 gives 153 integers at degree 8, 125 at degree 16, 117 at degree 32, and 111 at degree 64 \cite{eliminate152}. The corresponding supplied coefficient-height bounds are $2^{47},2^{80},2^{144},2^{173}$. Our results lower the variable counts at those degrees; our degree-64 height bound $2^{214}$ is larger than the older bound $2^{173}$. Thus even this direct-family comparison has a coefficient tradeoff.
+
+A fair local control isolates the new arithmetic gain. Apply exactly the principal form\textquotesingle s 95 core eliminations to the original source and also eliminate its three modulus coordinates and two already monic $K$ coordinates. This gives 116 integers, 53 residuals, and exact degree 24 without cross-base fusion. The new construction has 112 integers, 49 residuals, and the same degree. The four-coordinate saving in this matched comparison is attributable to the new fusion; the larger comparison against older packages also benefits from the improved source and generic elimination.
+
+
+All variables in this report are independently quantified over $\Z$.
+In particular, no nonnegativity condition on a free coordinate is silently
+assumed. The coefficient data are fixed integers. The final polynomials
+use only addition, subtraction and multiplication, with fixed finite
+index sets. Exponentiation by a variable occurs in the \emph{proof of
+correctness}, never in the definition of a delivered equation.
+
+The main contribution is a reusable compression theorem, followed by an
+explicit instantiation. It does not introduce a new formalization of set
+theory. The selected source encodes the finite numerical calculus C222
+directly, and its arithmetic calibration connects C222 refutations to
+ZF and ZFC refutations. The present polynomial is therefore not a
+simulation of K215 and does not instantiate Jones's universal polynomial.
+Those distinctions concern the route used, not an assertion that their
+other tradeoffs have become inferior.
+
+There is no agreed scalar measure of ``simplest.'' Variable count, total
+degree, coefficient height, number of monomials, straight-line-program
+length, and the size of fixed coefficient data compete. The repository
+already includes a quartic in 37 unrestricted integers, nine-positive-
+variable equations of much higher degree, and ten-integer equations
+using a different reduction \cite{corpus}. Our contribution concerns the
+direct C222 route with small literal integer data. It does not replace
+those constructions or establish a lower bound on any unrestricted
+notion of simplicity.
+
+\subsection{Comparison boundary and attribution}
+
+The repository snapshot is
+\begin{center}\small\texttt{ef0c534c1ae1e312c61a2a9a5a3f18f5516fd42b}.\end{center}
+The corpus was inspected through package 172. The main README's summary
+lags some delivered packages; our arithmetic source is the actual
+pre-row-reduction 216-coordinate system in package 172, not that summary.
+The exact source bytes have SHA-256
+\begin{center}\scriptsize\texttt{e5e14bc0bbabb625f78ce57017fbdb336c4a65c5877f517142c399769992ff39}.\end{center}
+
+Package 158 introduced pooling at one nonzero base. Package 168 combined
+the two consecutive-base pools by a reciprocal sum, relying on their
+common modulus sign, and discussed orientation weights as a possible
+generalization \cite{pool158,pool168}. Package 172 supplied the present
+arithmetic source, including its signed bootstrap, exact projections,
+and ordinary C222 calibration \cite{source172}. Package 152 supplied the
+general monic-elimination method used for the later degree/variable
+tradeoffs \cite{eliminate152}. We credit all of these ingredients.
+
+The new mathematical step is the unweighted pooling theorem below,
+including mixed signs and zero bases, and its explicit composition with
+the authenticated source. The search for elimination orders is a finite
+optimization of that construction. No literature-wide priority claim is
+made. Independent reviews here mean separately assigned AI-assisted
+mathematical and program checks, not outside human refereeing.
+
+\section{The arithmetic interface}
+
+For an integer $A$, let the canonical signed Pell coordinates be defined
+by
+\[
+ (A+\sqrt{A^2-1})^k=X_k(A)+Y_k(A)\sqrt{A^2-1},\qquad k\in\Z.
+\]
+This notation can equivalently be defined by integer recurrence, avoiding
+any analytic choice of a square root. Put
+\[
+ M_A=\begin{pmatrix}A&A^2-1\\1&A\end{pmatrix},\qquad
+ \begin{pmatrix}X_k(A)\\Y_k(A)\end{pmatrix}
+ =M_A^k\begin{pmatrix}1\\0\end{pmatrix}.
+\]
+The determinant is one, so negative powers also have integer entries.
+In particular $X_{-k}=X_k$ and $Y_{-k}=-Y_k$. Both signs of $A$ are
+permitted throughout the proof.
+
+Suppose that $s$ bases $n_1,\ldots,n_s$ support a total of $r$ requests.
+For $i\in I_j$, the proposed request is $m_i=n_j^{k_i}$ and the retained
+Pell pair is $(X_i,Y_i)=(X_{k_i}(A),Y_{k_i}(A))$. The sets $I_j$ are fixed
+finite index sets. Define
+\begin{align}
+ T_j&=2An_j-n_j^2-1,\label{eq:T}\\
+ \Delta_i&=m_i-X_i+AY_i,\notag\\
+ H_j&=\sum_{i\in I_j}Y_i(m_i-X_i),\notag\\
+ S_j&=\sum_{i\in I_j}(\Delta_i^2-Y_i^2),\notag\\
+ E_j&=S_j-2n_jH_j.\label{eq:E}
+\end{align}
+In the literal source, $Z_i=AY_i$ is an already retained coordinate or
+affine expression. Thus $\Delta_i=m_i-X_i+Z_i$ is affine, $H_j,S_j$ are
+quadratic, and $E_j$ is at most cubic. The letters in these displays
+are polynomial abbreviations unless explicitly declared as coordinates.
+
+\begin{lemma}[Pell congruence for signed indices]\label{lem:pell}
+If $n\ne0$ and $T=2An-n^2-1$, then $\gcd(n,T)=1$. Whenever $T\ne0$,
+\[
+ X_k(A)+(n-A)Y_k(A)\equiv n^k\pmod T\qquad(k\in\Z),
+\]
+where negative exponents on the right mean powers of the unit $n$
+in $\Z/T\Z$.
+\end{lemma}
+\begin{proof}
+The identity $T\equiv-1\pmod n$ proves coprimality. For the row vector
+$\ell=(1,n-A)$, direct multiplication gives
+\[
+ \ell M_A=(n,An-1)\equiv n(1,n-A)=n\ell\pmod T,
+\]
+because $An-1-n(n-A)=T$. Both $M_A$ and $n$ are invertible modulo
+$T$, so this relation iterates through every signed integer $k$.
+Apply it to $(1,0)^{\mathsf T}$. No sign or parity assumption on $A$
+or $k$ has been used.
+\end{proof}
+
+Write $\delta_i=m_i-X_i+(A-n_j)Y_i$ for $i\in I_j$. Expansion gives
+the central identity
+\begin{equation}
+ \sum_{i\in I_j}\delta_i^2
+ =E_j-T_j\sum_{i\in I_j}Y_i^2.\label{eq:normidentity}
+\end{equation}
+The symbolic checker verifies this identity using only the retained
+$Z_i-AY_i$ equations, with all actual coordinate offsets included.
+
+\section{Unweighted pooling across arbitrary signed bases}
+
+\begin{theorem}[Two integrality steps]\label{thm:main}
+Let $W\ge258$ and $|A|>W^W$, and put
+$b=\lfloor\sqrt{W-1}\rfloor$. Suppose
+\[
+ n_j^2<W,\qquad m_i^2<W,\qquad k_i^2<W,
+\]
+and suppose the Pell pairs are canonical at their stated signed indices.
+Assume also
+\begin{equation}
+ 4r<W,\qquad
+ (s+1)b+\left\lceil\frac{s+1}{2}\right\rceil+1\le W.
+ \label{eq:budget}
+\end{equation}
+The following conditions are equivalent:
+\begin{enumerate}
+\item $T_j\mid E_j$ for every $j$;
+\item every request at a nonzero base is the exact rational equality
+      $m_i=n_j^{k_i}$;
+\item there is $z\in\Z$ such that
+\begin{equation}
+ \boxed{\quad
+ R=\sum_{j=1}^{s}E_j\prod_{h\ne j}T_h
+       -z\prod_{h=1}^{s}T_h=0.\quad}\label{eq:pooled}
+\end{equation}
+\end{enumerate}
+For $|n_j|\ge2$, the same conditions force $k_i\ge0$.
+Zero bases, unit bases, repeated bases, and noncoprime moduli are allowed.
+In particular, the two budget inequalities hold uniformly for $s\le14$, $r\le64$.
+\end{theorem}
+
+\begin{proof}
+First note that every $T_j$ is nonzero. If $n_j=0$, then $T_j=-1$.
+Otherwise, since $1\le|n_j|\le b$,
+\begin{equation}
+ |T_j|\ge |n_j|(2|A|-W)>|n_j|W^W,
+ \qquad \sgn(n_jT_j)=\sgn(A).\label{eq:denombound}
+\end{equation}
+Indeed $|n_j|+1/|n_j|\le b+1\le W$, and $|A|>W^W>W$.
+
+Assume \eqref{eq:pooled}. Divide by the nonzero product of moduli and
+use \eqref{eq:normidentity}. Then
+$\sum_{j,i\in I_j}\delta_i^2/T_j$ is an integer. Terms at zero bases
+are already integers, because their denominators equal $-1$. Remove
+them from this rational sum. If no bases remain, every required
+divisibility is automatic. Otherwise let $J=\{j:n_j\ne0\}$ and set
+\[
+ L=\prod_{j\in J}n_j,\qquad C=L^b\ne0,
+ \qquad
+ d_i=Cm_i-\frac{C}{n_j^b}n_j^{b+k_i}\quad(i\in I_j,\ j\in J).
+\]
+These are integers: $b+k_i\ge0$ and $C/n_j^b$ is a product of
+integer powers. Lemma~\ref{lem:pell} implies
+$C\delta_i\equiv d_i\pmod{T_j}$, including negative indices.
+Consequently, with
+\[
+ D_j^*=\sum_{i\in I_j}d_i^2,\qquad D^*=\sum_{j\in J}D_j^*,
+\]
+the rational number $R_0=\sum_{j\in J}D_j^*/T_j$ differs by an integer
+from $C^2\sum\delta_i^2/T_j$. Hence $R_0\in\Z$.
+
+Every input has absolute value at most $b$. If $s'=|J|\le s$, then
+\[
+ |d_i|\le b^{s'b+1}+b^{(s'+1)b}\le2b^{(s+1)b},\qquad
+ D^*\le4r b^{2(s+1)b}.
+\]
+The stronger estimate needed momentarily is
+\begin{align}
+ 2|L|D^*
+ &\le8r b^{2(s+1)b+s}
+ \le4r b^{2(s+1)b+s+1}\notag\\
+ &<W^{(s+1)b+\lceil(s+1)/2\rceil+1}
+ \le W^W.\label{eq:strongbudget}
+\end{align}
+Here $2\le b$, $b^2<W$, $4r<W$, and \eqref{eq:budget} are sufficient.
+In particular $D^*<W^W$. Thus \eqref{eq:denombound} gives
+$|R_0|\le D^*/(2|A|-W)<1$. Since $R_0$ is an integer, $R_0=0$.
+
+This is not yet enough: denominators can have opposite signs. The second
+integrality step uses the exact identity
+\begin{equation}
+ \frac{2A}{T_j}=\frac1{n_j}
+       +\frac{n_j^2+1}{n_jT_j}.\label{eq:split}
+\end{equation}
+Multiplying $R_0=0$ by $2A$ gives $U+V=0$, where
+\[
+ U=\sum_{j\in J}\frac{D_j^*}{n_j},\qquad
+ V=\sum_{j\in J}\frac{D_j^*(n_j^2+1)}{n_jT_j}.
+\]
+Now $LU\in\Z$, so $LV=-LU\in\Z$. On the other hand,
+\[
+ \frac{n_j^2+1}{|n_jT_j|}
+ \le\frac{1+n_j^{-2}}{2|A|-W}
+ \le\frac2{2|A|-W},
+\]
+and \eqref{eq:strongbudget} yields
+$|LV|\le2|L|D^*/(2|A|-W)<1$. Therefore $LV=0$ and $V=0$.
+Every nonzero summand of $V$ has the same sign, namely $\sgn(A)$.
+All $D_j^*$ and all $d_i$ must vanish. Dividing $d_i=0$ in $\Q$ by
+$C$ proves $m_i=n_j^{k_i}$. For a nonunit base and a negative index,
+this would imply $m_i n_j^{-k_i}=1$, which is impossible in $\Z$.
+
+Conversely, exact powers at nonzero bases and Lemma~\ref{lem:pell}
+give $T_j\mid\delta_i$. Identity~\eqref{eq:normidentity} then gives
+$T_j\mid E_j$. At a zero base this divisibility is automatic. Finally,
+if every $T_j\mid E_j$, choose $z=\sum_j E_j/T_j\in\Z$ to obtain
+\eqref{eq:pooled}.
+
+For the uniform numerical corollary, $b\ge16$ and
+\[
+ (s+1)b+\lceil(s+1)/2\rceil+1\le15b+9\le b^2+1\le W
+\]
+when $s\le14$. Also $4r\le256<W$ when $r\le64$.
+\end{proof}
+
+\subsection{Why the second step matters}
+
+A single small-integer argument only proves $R_0=0$. It does not prevent
+cancellation between moduli of opposite signs. The decomposition
+\eqref{eq:split} separates a rational leading term with controlled
+denominator from a smaller correction whose sign is common. This is the
+additional mechanism that permits removal of the orientation factors.
+
+The height assumption is essential. Set $A=10$ and let every index be
+zero, so every canonical pair is $(1,0)$. At base $+1$ take proposed
+output $4$, giving $E_+=9,T_+=18$. At base $-1$ take outputs $4,2,2$,
+giving $E_-=11,T_-=-22$. Then
+\[
+ E_+/T_++E_-/T_- =\tfrac12-\tfrac12=0,
+\]
+although neither divisibility holds. This example violates the large-
+center hypothesis. It is included in the independent audit as a concrete
+reason not to delete that hypothesis.
+
+\subsection{Integral witness recovery}
+
+The retained source uses two kinds of power block. An individual request
+has private coordinates $T,Q$ and rows
+\[
+ T-(2An-n^2-1)=0,\qquad \delta+TQ=0.
+\]
+After applying the theorem, recover
+\[
+ T=2An-n^2-1,\qquad Q=-\delta/T\in\Z.
+\]
+At a nonzero base, exact powers guarantee the required divisibility.
+At a zero base, $T=-1$ guarantees it without interpreting $0^k$.
+
+A same-base block has private $K,L$ and rows
+\begin{equation}
+ K-2H-(2A-n)L=0,\qquad S-nK+L=0.\label{eq:oldpool}
+\end{equation}
+Restore
+\[
+ L=E/T,\qquad K=2H+(2A-n)L.
+\]
+Both are integers and satisfy \eqref{eq:oldpool}. For $n=0$, simply
+$L=-E$. Thus the new equation restores the full old polynomial system
+before the old semantic bootstrap is invoked. No circular argument
+about nonzero bases is introduced.
+
+These maps preserve the set of retained tuples that admit witnesses.
+They are not polynomial coordinate bijections on all of affine space:
+division is used only in the proof of integral recovery on the zero set.
+The emitted polynomial itself contains no division.
+
+\section{The explicit calibrated source and its transformation}
+
+\subsection{The five blocks}
+
+The literal source $\src$ has 216 unrestricted integer coordinates
+$x_0,\ldots,x_{215}$ and 153 quadratic residuals
+$r_0,\ldots,r_{152}$. Appendix~\ref{app:rows} prints every residual.
+The arithmetic roles used here are
+\[
+ A=1+x_{133},\quad t=x_0,\quad F=x_3,\quad B=x_4,
+ \quad BH=x_{185},\quad q=1+4x_{209}.
+\]
+The five bases, in their fixed order, are
+\begin{equation}
+ (n_0,n_1,n_2,n_3,n_4)=(t,B,BH,q+1,q).\label{eq:fivebases}
+\end{equation}
+The first three blocks each have one request. The fourth has eleven and
+the fifth has three, for a total of seventeen. The complete request table
+appears in Appendix~\ref{app:requests}. Repeated use of a Pell pair at
+the same index does not create a new coordinate.
+
+Delete exactly the ten rows
+\begin{equation}
+ \mathcal D=\{97,98,99,100,101,102,149,150,151,152\}\label{eq:deletedrows}
+\end{equation}
+and the ten coordinates
+\begin{equation}
+ \mathcal V=\{140,141,142,143,144,145,212,213,214,215\}.
+ \label{eq:deletedvars}
+\end{equation}
+The first six coordinates are the three individual moduli and quotients;
+the last four are the two $K,L$ pairs. They occur nowhere in the retained
+143 rows. Their exact private occurrences and their signs are checked.
+
+Define the five $T_j,H_j,S_j,E_j$ from the complete request table and
+\eqref{eq:T}--\eqref{eq:E}, and let $R$ be \eqref{eq:pooled} with
+$s=5$. The first explicit new polynomial is
+\begin{equation}
+ \boxed{\quad P_{207}=\sum_{i\notin\mathcal D}r_i^2+R^2.\quad}
+ \label{eq:P207}
+\end{equation}
+Its free coordinates are the 206 old coordinates outside $\mathcal V$
+and the new integer $z$. For software, the retained old indices are
+renumbered in increasing order, followed by $z$; the exact map is stored.
+
+Because every base and $A$ is affine, each $T_j$ is quadratic and each
+$E_j$ is at most cubic. Thus $R$ has degree at most 11. Its coefficient
+of the private variable $z$ is $-\prod_jT_j$, a polynomial of degree
+exactly ten. Each $T_j$ has a nonzero quadratic homogeneous part, and
+$\Z[\mathbf x]$ is an integral domain. Therefore $\deg R=11$ and
+$\deg P_{207}=22$ exactly. Taking sums of squares introduces no
+cancellation of the highest nonzero homogeneous square.
+
+\subsection{Why the retained hypotheses still hold}
+
+The source proof establishes canonical signed Pell pairs and the large
+center before interpreting the power congruences or recovering front
+signs. The actual frame is
+\begin{equation}
+ W=2+\sum_{a\in\mathcal A}a^2,\qquad |\mathcal A|=34,
+ \label{eq:frame}
+\end{equation}
+where the complete affine-atom list is supplied in
+\texttt{inputs/interface216.json}. The independent checker expands
+\eqref{eq:frame} and matches source row 129 exactly. Every actual base,
+output and index of all seventeen requests is one of these atoms.
+The $t$ atom and retained horizon equation give $t\ge16$, hence
+$W\ge258$. The retained scale and semantic-anchor argument gives
+$|A|>W^W$ \cite{source172}.
+
+All fourteen $Z_i=AY_i$ equations, fourteen Pell norm equations, the
+complete signed-orientation equation, the scale, and the frame remain.
+The checker also reconstructs source row 142 as the orientation identity
+minus the fourteen retained norm identities. Three delicate conventions
+are checked literally: $A$ is stored with offset $+1$; pair 3's ordinate
+has offset $-1$; pair 12's $Z$ has offset $+1$. A variable name alone
+is never taken as evidence of its arithmetic value.
+
+Here $s=5,r=17$, so $4r=68<258$ and
+$6b+4\le b^2+1\le W$. Theorem~\ref{thm:main} applies to every zero
+of the new retained system. It restores all ten deleted witnesses and
+all ten source rows. Conversely, every source zero supplies an integer
+$z$. Thus $P_{207}$ and $\src$ have equivalent integer-zero existence.
+
+\subsection{The logical endpoint}
+
+The ordinary source calibration proves
+\begin{align*}
+ \exists\mathbf x\in\Z^{216}\ (r_i(\mathbf x)=0\text{ for all }i)
+ &\quad\Longleftrightarrow\quad
+ \text{there is a finite C222 refutation}\\
+ &\quad\Longleftrightarrow\quad
+ \text{there is a finite ZF refutation}\\
+ &\quad\Longleftrightarrow\quad
+ \text{there is a finite ZFC refutation}.
+\end{align*}
+The named logical interfaces are
+\begin{quote}\small\ttfamily
+KEndpoint.c222\_iff\_zf\_refutation\\
+ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation.
+\end{quote}
+Their provenance and source files are retained with the parent arithmetic
+proofs. The appearance of the name \texttt{KEndpoint} in an inherited
+interface is not a Turing-machine simulation in the present polynomial.
+
+All new steps are finite integer algebra, elementary bounds, recurrence
+arguments, and explicit finite-witness transformations. They are
+formalizable in ZFC and do not assume $\Con(\mathrm{ZFC})$.
+Composing with the identified ordinary source calibration gives
+\begin{equation}
+ \mathrm{ZFC}\vdash
+ \left(\forall\mathbf u\in\Z^{207},\ P_{207}(\mathbf u)\ne0\right)
+ \longleftrightarrow\Con(\mathrm{ZFC}).\label{eq:logic}
+\end{equation}
+Here $\Con(\mathrm{ZFC})$ refers to absence of a finite refutation in
+the effective presentation fixed by the inherited calibration. No
+semantic soundness assumption on ZFC is needed to state or prove the
+equivalence. The report does not prove either side of it.
+
+\section{Removing defined coordinates}
+
+\begin{lemma}[Acyclic monic elimination]\label{lem:eliminate}
+Suppose selected residuals have the form
+$r_j=\varepsilon x_v+f$, where $\varepsilon\in\{1,-1\}$ and $f$
+does not contain $x_v$. If their dependency graph is acyclic, replace
+every selected $x_v$ by the recursively defined polynomial
+$-\varepsilon f$, omit the selected residuals, and retain every other
+residual after substitution. This gives a polynomial bijection between
+the zero sets in the remaining and original coordinates.
+\end{lemma}
+\begin{proof}
+Resolve the definitions in a topological order. Each gives one unique
+integer coordinate for any values of its already resolved arguments.
+The omitted row then vanishes identically. The retained rows become
+exactly the substituted rows. Forward restriction and reverse polynomial
+restoration are mutual inverses on the zero sets.
+\end{proof}
+
+This lemma is a standard exact elimination step and was already applied
+extensively in package 152. The contribution here is its composition with
+the new power pooling and the explicit selected pivot tables. Every
+pivot is checked against a retained \emph{original} source row: its
+coefficient is exactly $+1$ or $-1$, it has no other occurrence in that
+row, and no private power coordinate is referenced. The compiler checks
+acyclicity and recursively substitutes the definitions. No rational
+Gaussian-elimination step is used to remove an integer coordinate.
+
+The principal smaller polynomials are fully defined by
+\eqref{eq:P207}, or by its specified block partition, followed by the
+finite pivot lists in Appendix~\ref{app:pivots}. A pivot $(i,v)$ always
+means: solve the printed original row $r_i$ for $x_v$ with its unit
+coefficient. Resolve all such definitions recursively, remove their
+rows, and sum the squares of the remaining substituted residuals and
+the specified pooled residuals. This is a complete polynomial recipe
+with fixed integer coefficients; it does not call an unspecified
+Diophantine compiler.
+
+\subsection{Partitioning blocks to control degree}
+
+The five blocks may be partitioned into fixed subsets. Apply
+Theorem~\ref{thm:main} separately to each subset, introducing one $z$
+per part. The unchanged square-frame budget is sufficient for every
+part. Before monic eliminations, the selected partitions have these
+exact counts:
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Block sizes & Integer variables & Residuals & Degree & Height bound\\
+\midrule
+$5$ &207&144&22&$<2^{46}$\\
+$3+2$ &208&145&14&$<2^{29}$\\
+$2+2+1$ &209&146&10&$<2^{25}$\\
+$1+1+1+1+1$ &211&148&6&$<2^{24}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Even a singleton part can replace its two old private coordinates by
+one witness, at a degree cost. These rows are intermediate constructions,
+not a claim that their raw variable counts improve the repository's
+already eliminated high-degree equations.
+
+\subsection{Exact degree, liveness, and coefficient size}
+
+The emitted straight-line programs are complete, topologically ordered
+arrays with integer leaves and binary $+,-,\times$ gates. Their inputs
+are exactly the declared free integer coordinates. Sharing a node is
+only an evaluator optimization and adds no mathematical variable.
+
+Degrees are certified in two steps. Propagating syntactic degrees gives
+an upper bound. Propagating homogeneous leading values at a supplied
+integer point gives a nonzero value in that upper degree, proving
+equality. The independent checkers recompute these witnesses. Nonzero
+partial derivatives at explicit finite-field points certify that every
+declared coordinate really occurs in the final polynomial; syntactic
+appearance alone would not prove this after cancellation.
+
+We have not expanded the largest output polynomials, so exact monomial
+counts and exact expanded coefficient heights are not claimed. A useful
+rigorous bound is nevertheless available. Assign norm bound $1$ to each
+variable, $|c|$ to an integer constant, sum bounds at addition or
+subtraction, and multiply bounds at multiplication. These rules bound
+the coefficient $\ell^1$ norm, hence every expanded coefficient. If the
+resulting positive integer has bit length $B$, then $\Ht(P)<2^B$.
+The reported bounds use the complete emitted circuits, including the
+sum of residual squares. The largest literal integer in those circuits
+is 60; this must not be confused with their expanded coefficient height.
+
+\section{Verification, reproducibility, and remaining limits}
+
+The release contains two independent mathematical reviews of the
+mixed-sign pooling argument. The first supplies the uniform theorem and
+the signed Pell congruence proof; the second separately checks the
+five-base/seventeen-request bounds, zero and unit bases, and the
+small-center counterexample. The independent finite checks cover:
+\begin{itemize}
+\item the immutable source hash, all seventeen request ports, the exact
+      34-atom frame, all fourteen Pell pairs, offsets, and every private
+      occurrence of the ten removed coordinates;
+\item the new $T,H,S,E$ expressions, the error-square identity, pool
+      partitions, the complete retained residual list, and emitted circuits;
+\item every monic pivot, its integer inverse definition, acyclicity,
+      the full substituted circuit, exact degree and variable liveness;
+\item arithmetic samples with both signs of $A$, mixed and zero bases,
+      units with negative indices, false outputs, and impossible negative
+      nonunit powers, together with deliberate corruptions;
+\item deterministic reconstruction in a fresh directory and both ordinary
+      and optimized Python execution, so disabled \texttt{assert}
+      statements cannot silently remove the validation.
+\end{itemize}
+
+The restored package-172 source tree and its finite arithmetic ancestry
+were also replayed. Its recorded receipts distinguish that replay from
+a new Lean/Rocq build, which was not performed. The full ordinary proof
+of the inherited calibration is a dependency; finite checks do not turn
+it into a proof-assistant certificate. Similarly, numerical tests of
+the new arithmetic theorem support implementation review but do not
+replace the quantified proof in Section~3.
+
+Run the release verifier from any working directory using an absolute
+path to \texttt{verify.py}. The checker requires Python 3.10 or later
+and its standard library. \texttt{evaluate.py} evaluates a selected
+literal circuit on one supplied tuple, exactly or modulo a chosen
+integer. It performs no root search. A modular zero has no asserted
+relationship to a ZFC refutation.
+
+The verification record in \texttt{verification/} identifies exactly
+what was run. \texttt{SOURCES.json} and \texttt{NOTICE.md} distinguish
+new results from inherited source files. The archive's manifest covers
+the final release bytes. The \LaTeX{} sources and all generated inputs
+are present; an ordinary \texttt{pdflatex} installation rebuilds this
+report. Rebuilding may change PDF metadata without changing its content.
+
+\section{Further research questions}
+
+\paragraph{Can the two-scale argument reduce more shared certificates?}
+The proof exploits the particular expansion
+$2A/T=1/n+(n^2+1)/(nT)$. More generally, one can seek denominator
+families with a rational leading term of bounded denominator and a
+correction of one sign. A useful extension would state precise height
+conditions and produce a polynomial with a smaller aggregate degree.
+Merely taking an arbitrary reciprocal sum is invalid, as the explicit
+small-center counterexample demonstrates.
+
+\paragraph{How far can partition-aware elimination go?}
+The selected orders are finite successful searches, not optima. The
+choice of block partition interacts with which bases, moduli, and Pell
+products may be inlined while keeping a target degree. A joint search
+could use exact degree certificates during optimization rather than
+only safe weighted-degree upper bounds. Any new point should be compared
+against the same source with the fusion disabled, so the contribution
+of the arithmetic theorem remains measurable.
+
+\paragraph{Can the quotient witness be carried by another coordinate?}
+The new aggregate adds one unrestricted integer per part. If a retained
+coordinate has a demonstrably free cofinal choice, a polynomial carrier
+might encode this quotient without adding a new coordinate. Such a
+proposal needs both an integral soundness recovery and a constructive
+completeness argument. No such carrier is claimed here.
+
+\paragraph{Can a comparable gain be obtained at degree four?}
+The present compression deliberately spends degree. Returning to a
+quartic requires lifting products to new coordinates, which may erase
+the variable savings. A useful objective is a structural identity that
+retains the cancellation argument but realizes its conclusion with
+fewer quadratic constraints than the original five blocks. The current
+result supplies no lower bound ruling this out.
+
+\paragraph{Can the calibration and the general theorem be formalized together?}
+A focused formal development could first prove the rational two-
+integrality lemma, then its signed-Pell specialization, and finally the
+literal source transformation. That is smaller in scope than rebuilding
+an entire universal Diophantine theorem. The source arithmetic compiler
+and object-language ZFC formalization boundary would still need to be
+tracked explicitly. We have not represented ordinary formalizability
+as a completed kernel check.
+
+\paragraph{What is the best presentation under a declared simplicity budget?}
+An exact comparison should fix the domain and charge for coefficient
+data, degree, and either expanded support or a specified arithmetic
+circuit. The direct route here avoids a large native coefficient tuple
+but uses more variables than the repository's other routes. Proving a
+global minimum is far beyond the current evidence. A reproducible
+Pareto catalog with matched controls would be a concrete next result.
+
+\appendix
+\section{Complete request interface}\label{app:requests}
+The following table is literal data, not an informal description.
+The source coordinate numbers are used throughout. The quantities
+$X=D+Z$, $n$, $m$ and $k$ supply the definitions in Section~2.
+The final request uses the affine expression
+\[
+ J=5x_8-3x_9+4x_{19}+2x_{22}+2x_{26}+2x_{28}+2x_{30}
+ +2x_{32}+4x_{34}+2x_{35}+2x_{38}+2x_{41}+4x_{60}+2x_{61}.
+\]
+\begin{center}\small
+\begin{tabular}{rrrrlll}
+\toprule
+Request & Block & $n$ & $m$ & $k$ & $D=X-AY$ & $(Y,Z)$\\
+\midrule
+0 & 0 & $x_{0}$ & $x_{3}$ & $x_{0}$ & $x_{137}$ & $(x_{138},x_{139})$\\
+1 & 1 & $x_{4}$ & $x_{17}$ & $x_{1}$ & $x_{173}$ & $(x_{174},1+x_{175})$\\
+2 & 2 & $x_{185}$ & $1+4x_{209}$ & $x_{1}$ & $x_{173}$ & $(x_{174},1+x_{175})$\\
+3 & 3 & $2+4x_{209}$ & $x_{94}$ & $x_{0}+x_{3}$ & $x_{146}$ & $(x_{147},x_{148})$\\
+4 & 4 & $1+4x_{209}$ & $x_{95}$ & $x_{0}$ & $x_{137}$ & $(x_{138},x_{139})$\\
+5 & 3 & $2+4x_{209}$ & $x_{99}$ & $-1+x_{8}$ & $x_{149}$ & $(-1+x_{150},x_{151})$\\
+7 & 3 & $2+4x_{209}$ & $x_{102}$ & $x_{9}$ & $x_{152}$ & $(x_{153},x_{154})$\\
+8 & 3 & $2+4x_{209}$ & $x_{105}$ & $x_{10}$ & $x_{155}$ & $(x_{156},x_{157})$\\
+9 & 3 & $2+4x_{209}$ & $x_{108}$ & $x_{11}$ & $x_{158}$ & $(x_{159},x_{160})$\\
+10 & 3 & $2+4x_{209}$ & $x_{111}$ & $x_{12}$ & $x_{161}$ & $(x_{162},x_{163})$\\
+11 & 4 & $1+4x_{209}$ & $x_{112}$ & $x_{2}$ & $x_{164}$ & $(x_{165},x_{166})$\\
+12 & 3 & $2+4x_{209}$ & $x_{115}$ & $x_{13}$ & $x_{167}$ & $(x_{168},x_{169})$\\
+13 & 3 & $2+4x_{209}$ & $x_{118}$ & $x_{14}$ & $x_{170}$ & $(x_{171},x_{172})$\\
+14 & 4 & $1+4x_{209}$ & $x_{119}$ & $x_{1}$ & $x_{173}$ & $(x_{174},1+x_{175})$\\
+15 & 3 & $2+4x_{209}$ & $x_{123}$ & $x_{15}$ & $x_{176}$ & $(x_{177},x_{178})$\\
+16 & 3 & $2+4x_{209}$ & $x_{126}$ & $x_{16}$ & $x_{179}$ & $(x_{180},x_{181})$\\
+17 & 3 & $2+4x_{209}$ & $x_{129}$ & $J$ & $x_{182}$ & $(x_{183},x_{184})$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+
+\section{Every quadratic source residual}\label{app:rows}
+Set each of the following 153 polynomials equal to zero to recover the
+literal source $\src$. Row numbers are zero-based. The rows in
+\eqref{eq:deletedrows} are removed only by the proved pooling
+transformation. No other row is silently dropped. These formulas,
+the request table and the pivot tables specify every final polynomial
+without requiring external numerical data.
+\begingroup\small\allowdisplaybreaks[4]
+% BEGIN_RESIDUAL 0
+\begin{align*}
+r_{0}={}&x_{0}-x_{0}x_{2}-x_{2}+x_{7}
+\end{align*}
+% END_RESIDUAL 0
+
+% BEGIN_RESIDUAL 1
+\begin{align*}
+r_{1}={}&-1+x_{1}-x_{2}x_{5}-x_{3}
+\end{align*}
+% END_RESIDUAL 1
+
+% BEGIN_RESIDUAL 2
+\begin{align*}
+r_{2}={}&-1+x_{1}-x_{6}x_{7}
+\end{align*}
+% END_RESIDUAL 2
+
+% BEGIN_RESIDUAL 3
+\begin{align*}
+r_{3}={}&1+x_{3}-x_{4}x_{18}+x_{16}
+\end{align*}
+% END_RESIDUAL 3
+
+% BEGIN_RESIDUAL 4
+\begin{align*}
+r_{4}={}&-1+x_{8}-x_{8}^{2}-2x_{8}x_{9}-x_{9}-x_{9}^{2}+x_{19}
+\end{align*}
+% END_RESIDUAL 4
+
+% BEGIN_RESIDUAL 5
+\begin{align*}
+r_{5}={}&-5-20x_{8}-16x_{8}^{2}-16x_{8}x_{9}-16x_{8}x_{19}-10x_{9}-4x_{9}^{2}-8x_{9}x_{19}-10x_{19}-4x_{19}^{2}+x_{20}
+\end{align*}
+% END_RESIDUAL 5
+
+% BEGIN_RESIDUAL 6
+\begin{align*}
+r_{6}={}&-2-x_{8}-x_{8}^{2}-4x_{8}x_{20}-4x_{20}-4x_{20}^{2}+x_{21}
+\end{align*}
+% END_RESIDUAL 6
+
+% BEGIN_RESIDUAL 7
+\begin{align*}
+r_{7}={}&1+2x_{21}-4x_{21}^{2}+x_{22}
+\end{align*}
+% END_RESIDUAL 7
+
+% BEGIN_RESIDUAL 8
+\begin{align*}
+r_{8}={}&-2-x_{9}^{2}-2x_{9}x_{10}-x_{10}-x_{10}^{2}+x_{23}
+\end{align*}
+% END_RESIDUAL 8
+
+% BEGIN_RESIDUAL 9
+\begin{align*}
+r_{9}={}&-1+x_{8}-x_{8}^{2}-2x_{8}x_{10}-x_{9}-x_{10}^{2}+x_{24}
+\end{align*}
+% END_RESIDUAL 9
+
+% BEGIN_RESIDUAL 10
+\begin{align*}
+r_{10}={}&8-11x_{8}-49x_{8}^{2}+10x_{8}x_{9}-44x_{8}x_{10}-32x_{8}x_{19}+4x_{8}x_{20}-4x_{8}x_{23}-32x_{8}x_{24}+25x_{9}+3x_{9}^{2}\\
+&+8x_{9}x_{10}-8x_{9}x_{23}-15x_{10}-12x_{10}^{2}-16x_{10}x_{19}+8x_{10}x_{23}-16x_{10}x_{24}-9x_{19}-4x_{19}^{2}-8x_{19}x_{24}\\
+&+4x_{20}+4x_{20}^{2}-x_{21}+12x_{23}-4x_{23}^{2}-8x_{24}-4x_{24}^{2}+x_{25}
+\end{align*}
+% END_RESIDUAL 10
+
+% BEGIN_RESIDUAL 11
+\begin{align*}
+r_{11}={}&-18+14x_{8}-2x_{8}^{2}-8x_{8}x_{9}+8x_{8}x_{10}-8x_{8}x_{23}+24x_{9}-8x_{9}^{2}+16x_{9}x_{10}-16x_{9}x_{23}-30x_{10}-44x_{10}^{2}\\
+&+16x_{10}x_{23}+24x_{10}x_{25}+24x_{23}-8x_{23}^{2}-4x_{25}^{2}+x_{26}
+\end{align*}
+% END_RESIDUAL 11
+
+% BEGIN_RESIDUAL 12
+\begin{align*}
+r_{12}={}&-6-8x_{8}-4x_{8}^{2}-8x_{8}x_{9}-8x_{8}x_{10}+8x_{8}x_{23}+8x_{8}x_{24}-6x_{9}-4x_{9}^{2}-8x_{9}x_{10}+8x_{9}x_{23}+8x_{9}x_{24}\\
+&-5x_{10}-4x_{10}^{2}+8x_{10}x_{23}+8x_{10}x_{24}-x_{19}+8x_{23}-4x_{23}^{2}-8x_{23}x_{24}+6x_{24}-4x_{24}^{2}+x_{27}
+\end{align*}
+% END_RESIDUAL 12
+
+% BEGIN_RESIDUAL 13
+\begin{align*}
+r_{13}={}&1-4x_{8}+2x_{9}-4x_{9}^{2}-8x_{9}x_{10}-8x_{9}x_{27}+4x_{10}-4x_{10}^{2}-8x_{10}x_{27}-2x_{19}+4x_{27}-4x_{27}^{2}+x_{28}
+\end{align*}
+% END_RESIDUAL 13
+
+% BEGIN_RESIDUAL 14
+\begin{align*}
+r_{14}={}&35-16x_{8}+2x_{8}^{2}+18x_{8}x_{9}-12x_{8}x_{10}-20x_{8}x_{23}-32x_{8}x_{24}-8x_{9}-14x_{9}^{2}-24x_{9}x_{10}-40x_{9}x_{23}\\
+&-12x_{9}x_{24}-26x_{10}-24x_{10}^{2}-40x_{10}x_{23}-32x_{10}x_{24}-x_{19}-40x_{23}+4x_{23}^{2}+16x_{23}x_{24}-28x_{24}+4x_{24}^{2}\\
+&-2x_{27}+x_{29}
+\end{align*}
+% END_RESIDUAL 14
+
+% BEGIN_RESIDUAL 15
+\begin{align*}
+r_{15}={}&8+34x_{8}+18x_{8}^{2}-8x_{8}x_{9}+24x_{8}x_{10}+8x_{8}x_{23}+32x_{8}x_{24}-50x_{9}+10x_{9}^{2}-32x_{9}x_{10}+16x_{9}x_{23}\\
+&-8x_{9}x_{24}+60x_{10}-4x_{10}^{2}-16x_{10}x_{23}+32x_{10}x_{24}-24x_{10}x_{25}-32x_{10}x_{29}-24x_{23}+8x_{23}^{2}+32x_{24}\\
+&+8x_{24}^{2}+4x_{25}^{2}-x_{26}-2x_{29}-4x_{29}^{2}+x_{30}
+\end{align*}
+% END_RESIDUAL 15
+
+% BEGIN_RESIDUAL 16
+\begin{align*}
+r_{16}={}&6-2x_{8}+x_{8}^{2}+4x_{8}x_{20}-47x_{9}-28x_{9}^{2}+16x_{9}x_{10}+24x_{9}x_{19}+24x_{9}x_{23}+7x_{10}+8x_{10}^{2}+16x_{19}\\
+&-4x_{19}^{2}-8x_{19}x_{23}+4x_{20}+4x_{20}^{2}-x_{21}+6x_{23}-4x_{23}^{2}-x_{24}+x_{31}
+\end{align*}
+% END_RESIDUAL 16
+
+% BEGIN_RESIDUAL 17
+\begin{align*}
+r_{17}={}&-3-6x_{8}+2x_{9}-2x_{10}-2x_{24}-4x_{31}-4x_{31}^{2}+x_{32}
+\end{align*}
+% END_RESIDUAL 17
+
+% BEGIN_RESIDUAL 18
+\begin{align*}
+r_{18}={}&16+30x_{8}+14x_{8}^{2}-2x_{8}x_{9}-24x_{8}x_{10}-16x_{8}x_{19}+60x_{8}x_{20}-16x_{8}x_{27}+19x_{9}-6x_{9}x_{10}-24x_{9}x_{19}\\
+&+32x_{9}x_{20}-12x_{10}+6x_{10}^{2}-12x_{10}x_{19}+12x_{10}x_{27}+3x_{19}-8x_{19}^{2}+32x_{19}x_{20}-8x_{19}x_{27}+15x_{20}\\
+&-4x_{20}^{2}-x_{23}-2x_{24}+4x_{27}^{2}+x_{33}+8x_{36}-8x_{36}^{2}+2x_{37}-x_{42}
+\end{align*}
+% END_RESIDUAL 18
+
+% BEGIN_RESIDUAL 19
+\begin{align*}
+r_{19}={}&1+2x_{33}-4x_{33}^{2}+x_{34}
+\end{align*}
+% END_RESIDUAL 19
+
+% BEGIN_RESIDUAL 20
+\begin{align*}
+r_{20}={}&-x_{9}^{2}-4x_{9}x_{34}-4x_{34}^{2}+x_{35}
+\end{align*}
+% END_RESIDUAL 20
+
+% BEGIN_RESIDUAL 21
+\begin{align*}
+r_{21}={}&-1-15x_{8}-17x_{8}^{2}+30x_{8}x_{9}-32x_{8}x_{19}+7x_{9}-13x_{9}^{2}+8x_{9}x_{10}+32x_{9}x_{19}-x_{10}-14x_{19}-16x_{19}^{2}\\
+&-4x_{23}+x_{24}+x_{36}+2x_{71}
+\end{align*}
+% END_RESIDUAL 21
+
+% BEGIN_RESIDUAL 22
+\begin{align*}
+r_{22}={}&-4-3x_{8}-7x_{9}-4x_{10}-2x_{23}-x_{24}+4x_{36}-4x_{36}^{2}+x_{37}
+\end{align*}
+% END_RESIDUAL 22
+
+% BEGIN_RESIDUAL 23
+\begin{align*}
+r_{23}={}&-6x_{8}+2x_{9}+2x_{10}-4x_{10}^{2}-8x_{10}x_{37}-2x_{24}+4x_{37}-4x_{37}^{2}+x_{38}
+\end{align*}
+% END_RESIDUAL 23
+
+% BEGIN_RESIDUAL 24
+\begin{align*}
+r_{24}={}&-x_{10}-x_{10}^{2}-2x_{10}x_{11}-x_{11}^{2}+x_{39}
+\end{align*}
+% END_RESIDUAL 24
+
+% BEGIN_RESIDUAL 25
+\begin{align*}
+r_{25}={}&-31+2x_{8}-x_{8}^{2}-4x_{8}x_{39}-22x_{9}+16x_{9}^{2}-32x_{9}x_{10}+32x_{9}x_{23}-42x_{10}-20x_{10}^{2}-8x_{10}x_{23}\\
+&+24x_{10}x_{24}+12x_{23}^{2}-8x_{23}x_{24}+22x_{24}-4x_{24}^{2}+2x_{39}-4x_{39}^{2}+x_{40}-4x_{43}
+\end{align*}
+% END_RESIDUAL 25
+
+% BEGIN_RESIDUAL 26
+\begin{align*}
+r_{26}={}&4x_{8}-2x_{8}^{2}-8x_{8}x_{39}-16x_{10}^{2}-16x_{10}x_{40}+4x_{39}-8x_{39}^{2}-4x_{40}^{2}+x_{41}
+\end{align*}
+% END_RESIDUAL 26
+
+% BEGIN_RESIDUAL 27
+\begin{align*}
+r_{27}={}&-16x_{8}^{2}+24x_{8}x_{10}-16x_{8}x_{19}+16x_{8}x_{27}+x_{10}-9x_{10}^{2}+12x_{10}x_{19}-12x_{10}x_{27}-4x_{19}^{2}+8x_{19}x_{27}\\
+&-4x_{27}^{2}+x_{42}
+\end{align*}
+% END_RESIDUAL 27
+
+% BEGIN_RESIDUAL 28
+\begin{align*}
+r_{28}={}&-1+6x_{9}-4x_{9}^{2}+8x_{9}x_{10}-8x_{9}x_{23}-6x_{10}-4x_{10}^{2}+8x_{10}x_{23}+6x_{23}-4x_{23}^{2}+x_{43}
+\end{align*}
+% END_RESIDUAL 28
+
+% BEGIN_RESIDUAL 29
+\begin{align*}
+r_{29}={}&-1-x_{10}-x_{10}^{2}-4x_{10}x_{43}-4x_{43}^{2}+x_{44}
+\end{align*}
+% END_RESIDUAL 29
+
+% BEGIN_RESIDUAL 30
+\begin{align*}
+r_{30}={}&1+x_{9}-x_{9}^{2}-4x_{9}x_{44}-4x_{44}^{2}+x_{45}
+\end{align*}
+% END_RESIDUAL 30
+
+% BEGIN_RESIDUAL 31
+\begin{align*}
+r_{31}={}&-1-6x_{45}-4x_{45}^{2}+x_{46}
+\end{align*}
+% END_RESIDUAL 31
+
+% BEGIN_RESIDUAL 32
+\begin{align*}
+r_{32}={}&-1-x_{10}-x_{10}^{2}-4x_{10}x_{46}-4x_{46}^{2}+x_{47}
+\end{align*}
+% END_RESIDUAL 32
+
+% BEGIN_RESIDUAL 33
+\begin{align*}
+r_{33}={}&2+x_{9}-x_{9}^{2}-4x_{9}x_{47}-4x_{47}^{2}+x_{48}
+\end{align*}
+% END_RESIDUAL 33
+
+% BEGIN_RESIDUAL 34
+\begin{align*}
+r_{34}={}&-2x_{42}-4x_{42}^{2}-8x_{42}x_{48}-4x_{48}^{2}+x_{49}
+\end{align*}
+% END_RESIDUAL 34
+
+% BEGIN_RESIDUAL 35
+\begin{align*}
+r_{35}={}&-9+7x_{8}-x_{8}^{2}-4x_{8}x_{49}+12x_{49}-4x_{49}^{2}+x_{50}
+\end{align*}
+% END_RESIDUAL 35
+
+% BEGIN_RESIDUAL 36
+\begin{align*}
+r_{36}={}&-1-6x_{50}-4x_{50}^{2}+x_{51}
+\end{align*}
+% END_RESIDUAL 36
+
+% BEGIN_RESIDUAL 37
+\begin{align*}
+r_{37}={}&-x_{10}-x_{10}^{2}-4x_{10}x_{51}-4x_{51}^{2}+x_{52}
+\end{align*}
+% END_RESIDUAL 37
+
+% BEGIN_RESIDUAL 38
+\begin{align*}
+r_{38}={}&-x_{8}-x_{8}^{2}-4x_{8}x_{52}-4x_{52}-4x_{52}^{2}+x_{53}
+\end{align*}
+% END_RESIDUAL 38
+
+% BEGIN_RESIDUAL 39
+\begin{align*}
+r_{39}={}&-10-x_{9}+x_{10}-x_{23}-14x_{53}-4x_{53}^{2}+x_{54}
+\end{align*}
+% END_RESIDUAL 39
+
+% BEGIN_RESIDUAL 40
+\begin{align*}
+r_{40}={}&1-2x_{9}+2x_{10}-2x_{23}+4x_{54}-4x_{54}^{2}+x_{55}
+\end{align*}
+% END_RESIDUAL 40
+
+% BEGIN_RESIDUAL 41
+\begin{align*}
+r_{41}={}&-10+x_{9}-x_{9}^{2}-4x_{9}x_{55}-14x_{48}-4x_{48}^{2}-4x_{55}^{2}+x_{56}
+\end{align*}
+% END_RESIDUAL 41
+
+% BEGIN_RESIDUAL 42
+\begin{align*}
+r_{42}={}&21+28x_{48}+8x_{48}^{2}-2x_{56}-4x_{56}^{2}+x_{57}
+\end{align*}
+% END_RESIDUAL 42
+
+% BEGIN_RESIDUAL 43
+\begin{align*}
+r_{43}={}&15x_{9}-36x_{9}^{2}+12x_{9}x_{10}+24x_{9}x_{19}-x_{10}-x_{10}^{2}-4x_{10}x_{19}-5x_{19}-4x_{19}^{2}+x_{58}
+\end{align*}
+% END_RESIDUAL 43
+
+% BEGIN_RESIDUAL 44
+\begin{align*}
+r_{44}={}&1+6x_{9}+x_{10}-x_{10}^{2}-4x_{10}x_{57}-2x_{19}-4x_{57}^{2}+4x_{58}-4x_{58}^{2}+x_{59}
+\end{align*}
+% END_RESIDUAL 44
+
+% BEGIN_RESIDUAL 45
+\begin{align*}
+r_{45}={}&-2-2x_{10}+2x_{10}^{2}+8x_{10}x_{57}+8x_{57}^{2}-2x_{59}-4x_{59}^{2}+x_{60}
+\end{align*}
+% END_RESIDUAL 45
+
+% BEGIN_RESIDUAL 46
+\begin{align*}
+r_{46}={}&-2-4x_{60}-4x_{60}^{2}+x_{61}
+\end{align*}
+% END_RESIDUAL 46
+
+% BEGIN_RESIDUAL 47
+\begin{align*}
+r_{47}={}&-x_{3}x_{13}+x_{62}
+\end{align*}
+% END_RESIDUAL 47
+
+% BEGIN_RESIDUAL 48
+\begin{align*}
+r_{48}={}&x_{12}-x_{13}-2x_{22}x_{62}-x_{63}
+\end{align*}
+% END_RESIDUAL 48
+
+% BEGIN_RESIDUAL 49
+\begin{align*}
+r_{49}={}&12x_{10}x_{62}+x_{12}-x_{13}-2x_{26}x_{62}-x_{64}
+\end{align*}
+% END_RESIDUAL 49
+
+% BEGIN_RESIDUAL 50
+\begin{align*}
+r_{50}={}&x_{12}-x_{13}-2x_{28}x_{62}-6x_{62}-x_{65}
+\end{align*}
+% END_RESIDUAL 50
+
+% BEGIN_RESIDUAL 51
+\begin{align*}
+r_{51}={}&-12x_{10}x_{62}+x_{12}-x_{13}-2x_{30}x_{62}-x_{66}
+\end{align*}
+% END_RESIDUAL 51
+
+% BEGIN_RESIDUAL 52
+\begin{align*}
+r_{52}={}&x_{12}-x_{13}-2x_{32}x_{62}+6x_{62}-x_{67}
+\end{align*}
+% END_RESIDUAL 52
+
+% BEGIN_RESIDUAL 53
+\begin{align*}
+r_{53}={}&x_{12}-x_{13}-4x_{34}x_{62}-2x_{35}x_{62}-x_{68}
+\end{align*}
+% END_RESIDUAL 53
+
+% BEGIN_RESIDUAL 54
+\begin{align*}
+r_{54}={}&x_{12}-x_{13}-2x_{38}x_{62}-x_{69}
+\end{align*}
+% END_RESIDUAL 54
+
+% BEGIN_RESIDUAL 55
+\begin{align*}
+r_{55}={}&x_{12}-x_{13}-2x_{41}x_{62}-4x_{62}-x_{70}
+\end{align*}
+% END_RESIDUAL 55
+
+% BEGIN_RESIDUAL 56
+\begin{align*}
+r_{56}={}&-x_{8}x_{9}+x_{8}x_{10}+x_{9}+x_{9}x_{10}-x_{10}-x_{10}^{2}+x_{71}
+\end{align*}
+% END_RESIDUAL 56
+
+% BEGIN_RESIDUAL 57
+\begin{align*}
+r_{57}={}&1+2x_{11}+x_{11}^{2}-x_{71}^{2}+x_{72}
+\end{align*}
+% END_RESIDUAL 57
+
+% BEGIN_RESIDUAL 58
+\begin{align*}
+r_{58}={}&-x_{12}^{2}+2x_{12}x_{13}+2x_{12}x_{74}-x_{13}^{2}-2x_{13}x_{74}-x_{72}^{2}+x_{73}-x_{74}^{2}
+\end{align*}
+% END_RESIDUAL 58
+
+% BEGIN_RESIDUAL 59
+\begin{align*}
+r_{59}={}&-4x_{60}x_{62}-2x_{61}x_{62}+2x_{62}+x_{74}
+\end{align*}
+% END_RESIDUAL 59
+
+% BEGIN_RESIDUAL 60
+\begin{align*}
+r_{60}={}&-x_{9}x_{62}-x_{13}+x_{75}x_{76}+x_{77}
+\end{align*}
+% END_RESIDUAL 60
+
+% BEGIN_RESIDUAL 61
+\begin{align*}
+r_{61}={}&-1+2x_{3}+6x_{3}x_{9}-2x_{3}x_{19}+x_{75}
+\end{align*}
+% END_RESIDUAL 61
+
+% BEGIN_RESIDUAL 62
+\begin{align*}
+r_{62}={}&-x_{8}x_{211}-x_{12}+x_{76}+x_{211}
+\end{align*}
+% END_RESIDUAL 62
+
+% BEGIN_RESIDUAL 63
+\begin{align*}
+r_{63}={}&-4x_{8}x_{62}-2x_{9}x_{62}+x_{9}x_{211}+x_{12}-x_{13}-2x_{19}x_{62}+x_{78}
+\end{align*}
+% END_RESIDUAL 63
+
+% BEGIN_RESIDUAL 64
+\begin{align*}
+r_{64}={}&-x_{12}x_{63}+x_{13}x_{63}+x_{79}
+\end{align*}
+% END_RESIDUAL 64
+
+% BEGIN_RESIDUAL 65
+\begin{align*}
+r_{65}={}&-x_{64}x_{79}+x_{80}
+\end{align*}
+% END_RESIDUAL 65
+
+% BEGIN_RESIDUAL 66
+\begin{align*}
+r_{66}={}&-x_{65}x_{80}+x_{81}
+\end{align*}
+% END_RESIDUAL 66
+
+% BEGIN_RESIDUAL 67
+\begin{align*}
+r_{67}={}&-x_{66}x_{81}+x_{82}
+\end{align*}
+% END_RESIDUAL 67
+
+% BEGIN_RESIDUAL 68
+\begin{align*}
+r_{68}={}&-x_{67}x_{82}+x_{83}
+\end{align*}
+% END_RESIDUAL 68
+
+% BEGIN_RESIDUAL 69
+\begin{align*}
+r_{69}={}&-x_{68}x_{83}+x_{84}
+\end{align*}
+% END_RESIDUAL 69
+
+% BEGIN_RESIDUAL 70
+\begin{align*}
+r_{70}={}&-x_{69}x_{84}+x_{85}
+\end{align*}
+% END_RESIDUAL 70
+
+% BEGIN_RESIDUAL 71
+\begin{align*}
+r_{71}={}&-x_{70}x_{85}+x_{86}
+\end{align*}
+% END_RESIDUAL 71
+
+% BEGIN_RESIDUAL 72
+\begin{align*}
+r_{72}={}&-x_{77}x_{86}+x_{87}
+\end{align*}
+% END_RESIDUAL 72
+
+% BEGIN_RESIDUAL 73
+\begin{align*}
+r_{73}={}&-x_{78}x_{87}+x_{88}
+\end{align*}
+% END_RESIDUAL 73
+
+% BEGIN_RESIDUAL 74
+\begin{align*}
+r_{74}={}&-x_{88}^{2}+x_{89}
+\end{align*}
+% END_RESIDUAL 74
+
+% BEGIN_RESIDUAL 75
+\begin{align*}
+r_{75}={}&-x_{2}-x_{2}x_{16}+x_{16}+x_{90}
+\end{align*}
+% END_RESIDUAL 75
+
+% BEGIN_RESIDUAL 76
+\begin{align*}
+r_{76}={}&-x_{14}x_{90}+x_{91}
+\end{align*}
+% END_RESIDUAL 76
+
+% BEGIN_RESIDUAL 77
+\begin{align*}
+r_{77}={}&-2x_{1}^{2}+2x_{1}x_{12}+2x_{1}x_{13}+2x_{1}x_{91}+2x_{1}x_{92}-x_{12}^{2}-2x_{12}x_{91}-x_{13}^{2}-2x_{13}x_{92}+x_{17}x_{93}\\
+&-x_{73}x_{89}-x_{91}^{2}-x_{92}^{2}
+\end{align*}
+% END_RESIDUAL 77
+
+% BEGIN_RESIDUAL 78
+\begin{align*}
+r_{78}={}&-x_{2}x_{15}+x_{15}-x_{15}x_{90}+x_{92}
+\end{align*}
+% END_RESIDUAL 78
+
+% BEGIN_RESIDUAL 79
+\begin{align*}
+r_{79}={}&-x_{96}-4x_{96}x_{209}+x_{98}
+\end{align*}
+% END_RESIDUAL 79
+
+% BEGIN_RESIDUAL 80
+\begin{align*}
+r_{80}={}&-x_{4}x_{119}+x_{94}x_{201}-x_{97}-x_{98}x_{119}
+\end{align*}
+% END_RESIDUAL 80
+
+% BEGIN_RESIDUAL 81
+\begin{align*}
+r_{81}={}&x_{99}x_{201}-x_{100}x_{122}-x_{101}
+\end{align*}
+% END_RESIDUAL 81
+
+% BEGIN_RESIDUAL 82
+\begin{align*}
+r_{82}={}&x_{102}x_{201}-x_{103}x_{122}-x_{104}
+\end{align*}
+% END_RESIDUAL 82
+
+% BEGIN_RESIDUAL 83
+\begin{align*}
+r_{83}={}&x_{105}x_{201}-x_{106}x_{122}-x_{107}
+\end{align*}
+% END_RESIDUAL 83
+
+% BEGIN_RESIDUAL 84
+\begin{align*}
+r_{84}={}&x_{108}x_{201}-x_{109}x_{122}-x_{110}
+\end{align*}
+% END_RESIDUAL 84
+
+% BEGIN_RESIDUAL 85
+\begin{align*}
+r_{85}={}&x_{111}x_{202}-x_{113}x_{122}-x_{114}
+\end{align*}
+% END_RESIDUAL 85
+
+% BEGIN_RESIDUAL 86
+\begin{align*}
+r_{86}={}&x_{115}x_{202}-x_{116}x_{122}-x_{117}
+\end{align*}
+% END_RESIDUAL 86
+
+% BEGIN_RESIDUAL 87
+\begin{align*}
+r_{87}={}&-x_{17}x_{119}+x_{122}
+\end{align*}
+% END_RESIDUAL 87
+
+% BEGIN_RESIDUAL 88
+\begin{align*}
+r_{88}={}&x_{118}-x_{120}x_{122}-x_{121}
+\end{align*}
+% END_RESIDUAL 88
+
+% BEGIN_RESIDUAL 89
+\begin{align*}
+r_{89}={}&-x_{122}x_{124}+x_{123}-x_{125}
+\end{align*}
+% END_RESIDUAL 89
+
+% BEGIN_RESIDUAL 90
+\begin{align*}
+r_{90}={}&-x_{122}x_{127}+x_{126}x_{201}-x_{128}
+\end{align*}
+% END_RESIDUAL 90
+
+% BEGIN_RESIDUAL 91
+\begin{align*}
+r_{91}={}&-x_{122}x_{130}+x_{129}x_{201}-x_{131}
+\end{align*}
+% END_RESIDUAL 91
+
+% BEGIN_RESIDUAL 92
+\begin{align*}
+r_{92}={}&x_{132}-2x_{132}x_{134}+x_{135}
+\end{align*}
+% END_RESIDUAL 92
+
+% BEGIN_RESIDUAL 93
+\begin{align*}
+r_{93}={}&-x_{132}x_{135}-x_{135}+x_{136}
+\end{align*}
+% END_RESIDUAL 93
+
+% BEGIN_RESIDUAL 94
+\begin{align*}
+r_{94}={}&2x_{133}+x_{133}^{2}+x_{135}^{2}-x_{136}^{2}
+\end{align*}
+% END_RESIDUAL 94
+
+% BEGIN_RESIDUAL 95
+\begin{align*}
+r_{95}={}&-x_{133}x_{138}-x_{138}+x_{139}
+\end{align*}
+% END_RESIDUAL 95
+
+% BEGIN_RESIDUAL 96
+\begin{align*}
+r_{96}={}&-1+x_{137}^{2}+2x_{137}x_{139}+x_{138}^{2}
+\end{align*}
+% END_RESIDUAL 96
+
+% BEGIN_RESIDUAL 97
+\begin{align*}
+r_{97}={}&1-2x_{0}+x_{0}^{2}-2x_{0}x_{133}+x_{140}
+\end{align*}
+% END_RESIDUAL 97
+
+% BEGIN_RESIDUAL 98
+\begin{align*}
+r_{98}={}&-x_{0}x_{138}+x_{3}-x_{137}+x_{140}x_{141}
+\end{align*}
+% END_RESIDUAL 98
+
+% BEGIN_RESIDUAL 99
+\begin{align*}
+r_{99}={}&1-2x_{4}+x_{4}^{2}-2x_{4}x_{133}+x_{142}
+\end{align*}
+% END_RESIDUAL 99
+
+% BEGIN_RESIDUAL 100
+\begin{align*}
+r_{100}={}&-x_{4}x_{174}+x_{17}+x_{142}x_{143}-x_{173}
+\end{align*}
+% END_RESIDUAL 100
+
+% BEGIN_RESIDUAL 101
+\begin{align*}
+r_{101}={}&-1+2x_{133}x_{185}-x_{144}+2x_{185}-x_{185}^{2}
+\end{align*}
+% END_RESIDUAL 101
+
+% BEGIN_RESIDUAL 102
+\begin{align*}
+r_{102}={}&1+x_{144}x_{145}-x_{173}-x_{174}x_{185}+4x_{209}
+\end{align*}
+% END_RESIDUAL 102
+
+% BEGIN_RESIDUAL 103
+\begin{align*}
+r_{103}={}&-x_{133}x_{147}-x_{147}+x_{148}
+\end{align*}
+% END_RESIDUAL 103
+
+% BEGIN_RESIDUAL 104
+\begin{align*}
+r_{104}={}&-1+x_{146}^{2}+2x_{146}x_{148}+x_{147}^{2}
+\end{align*}
+% END_RESIDUAL 104
+
+% BEGIN_RESIDUAL 105
+\begin{align*}
+r_{105}={}&1+x_{133}-x_{133}x_{150}-x_{150}+x_{151}
+\end{align*}
+% END_RESIDUAL 105
+
+% BEGIN_RESIDUAL 106
+\begin{align*}
+r_{106}={}&x_{149}^{2}+2x_{149}x_{151}-2x_{150}+x_{150}^{2}
+\end{align*}
+% END_RESIDUAL 106
+
+% BEGIN_RESIDUAL 107
+\begin{align*}
+r_{107}={}&-x_{133}x_{153}-x_{153}+x_{154}
+\end{align*}
+% END_RESIDUAL 107
+
+% BEGIN_RESIDUAL 108
+\begin{align*}
+r_{108}={}&-1+x_{152}^{2}+2x_{152}x_{154}+x_{153}^{2}
+\end{align*}
+% END_RESIDUAL 108
+
+% BEGIN_RESIDUAL 109
+\begin{align*}
+r_{109}={}&-x_{133}x_{156}-x_{156}+x_{157}
+\end{align*}
+% END_RESIDUAL 109
+
+% BEGIN_RESIDUAL 110
+\begin{align*}
+r_{110}={}&-1+x_{155}^{2}+2x_{155}x_{157}+x_{156}^{2}
+\end{align*}
+% END_RESIDUAL 110
+
+% BEGIN_RESIDUAL 111
+\begin{align*}
+r_{111}={}&-x_{133}x_{159}-x_{159}+x_{160}
+\end{align*}
+% END_RESIDUAL 111
+
+% BEGIN_RESIDUAL 112
+\begin{align*}
+r_{112}={}&-1+x_{158}^{2}+2x_{158}x_{160}+x_{159}^{2}
+\end{align*}
+% END_RESIDUAL 112
+
+% BEGIN_RESIDUAL 113
+\begin{align*}
+r_{113}={}&-x_{133}x_{162}-x_{162}+x_{163}
+\end{align*}
+% END_RESIDUAL 113
+
+% BEGIN_RESIDUAL 114
+\begin{align*}
+r_{114}={}&-1+x_{161}^{2}+2x_{161}x_{163}+x_{162}^{2}
+\end{align*}
+% END_RESIDUAL 114
+
+% BEGIN_RESIDUAL 115
+\begin{align*}
+r_{115}={}&-x_{133}x_{165}-x_{165}+x_{166}
+\end{align*}
+% END_RESIDUAL 115
+
+% BEGIN_RESIDUAL 116
+\begin{align*}
+r_{116}={}&-1+x_{164}^{2}+2x_{164}x_{166}+x_{165}^{2}
+\end{align*}
+% END_RESIDUAL 116
+
+% BEGIN_RESIDUAL 117
+\begin{align*}
+r_{117}={}&-x_{133}x_{168}-x_{168}+x_{169}
+\end{align*}
+% END_RESIDUAL 117
+
+% BEGIN_RESIDUAL 118
+\begin{align*}
+r_{118}={}&-1+x_{167}^{2}+2x_{167}x_{169}+x_{168}^{2}
+\end{align*}
+% END_RESIDUAL 118
+
+% BEGIN_RESIDUAL 119
+\begin{align*}
+r_{119}={}&-x_{133}x_{171}-x_{171}+x_{172}
+\end{align*}
+% END_RESIDUAL 119
+
+% BEGIN_RESIDUAL 120
+\begin{align*}
+r_{120}={}&-1+x_{170}^{2}+2x_{170}x_{172}+x_{171}^{2}
+\end{align*}
+% END_RESIDUAL 120
+
+% BEGIN_RESIDUAL 121
+\begin{align*}
+r_{121}={}&1-x_{133}x_{174}-x_{174}+x_{175}
+\end{align*}
+% END_RESIDUAL 121
+
+% BEGIN_RESIDUAL 122
+\begin{align*}
+r_{122}={}&-1+2x_{173}+x_{173}^{2}+2x_{173}x_{175}+x_{174}^{2}
+\end{align*}
+% END_RESIDUAL 122
+
+% BEGIN_RESIDUAL 123
+\begin{align*}
+r_{123}={}&-x_{133}x_{177}-x_{177}+x_{178}
+\end{align*}
+% END_RESIDUAL 123
+
+% BEGIN_RESIDUAL 124
+\begin{align*}
+r_{124}={}&-1+x_{176}^{2}+2x_{176}x_{178}+x_{177}^{2}
+\end{align*}
+% END_RESIDUAL 124
+
+% BEGIN_RESIDUAL 125
+\begin{align*}
+r_{125}={}&-x_{133}x_{180}-x_{180}+x_{181}
+\end{align*}
+% END_RESIDUAL 125
+
+% BEGIN_RESIDUAL 126
+\begin{align*}
+r_{126}={}&-1+x_{179}^{2}+2x_{179}x_{181}+x_{180}^{2}
+\end{align*}
+% END_RESIDUAL 126
+
+% BEGIN_RESIDUAL 127
+\begin{align*}
+r_{127}={}&-x_{133}x_{183}-x_{183}+x_{184}
+\end{align*}
+% END_RESIDUAL 127
+
+% BEGIN_RESIDUAL 128
+\begin{align*}
+r_{128}={}&-1+x_{182}^{2}+2x_{182}x_{184}+x_{183}^{2}
+\end{align*}
+% END_RESIDUAL 128
+
+% BEGIN_RESIDUAL 129
+\begin{align*}
+r_{129}={}&-8-2x_{0}^{2}-2x_{0}x_{3}-x_{1}^{2}-x_{2}^{2}-2x_{3}^{2}-x_{4}^{2}+2x_{8}-26x_{8}^{2}+30x_{8}x_{9}-40x_{8}x_{19}-20x_{8}x_{22}\\
+&-20x_{8}x_{26}-20x_{8}x_{28}-20x_{8}x_{30}-20x_{8}x_{32}-40x_{8}x_{34}-20x_{8}x_{35}-20x_{8}x_{38}-20x_{8}x_{41}-40x_{8}x_{60}\\
+&-20x_{8}x_{61}-10x_{9}^{2}+24x_{9}x_{19}+12x_{9}x_{22}+12x_{9}x_{26}+12x_{9}x_{28}+12x_{9}x_{30}+12x_{9}x_{32}+24x_{9}x_{34}\\
+&+12x_{9}x_{35}+12x_{9}x_{38}+12x_{9}x_{41}+24x_{9}x_{60}+12x_{9}x_{61}-x_{10}^{2}-x_{11}^{2}-x_{12}^{2}-x_{13}^{2}-x_{14}^{2}\\
+&-x_{15}^{2}-x_{16}^{2}-x_{17}^{2}-16x_{19}^{2}-16x_{19}x_{22}-16x_{19}x_{26}-16x_{19}x_{28}-16x_{19}x_{30}-16x_{19}x_{32}\\
+&-32x_{19}x_{34}-16x_{19}x_{35}-16x_{19}x_{38}-16x_{19}x_{41}-32x_{19}x_{60}-16x_{19}x_{61}-4x_{22}^{2}-8x_{22}x_{26}-8x_{22}x_{28}\\
+&-8x_{22}x_{30}-8x_{22}x_{32}-16x_{22}x_{34}-8x_{22}x_{35}-8x_{22}x_{38}-8x_{22}x_{41}-16x_{22}x_{60}-8x_{22}x_{61}-4x_{26}^{2}\\
+&-8x_{26}x_{28}-8x_{26}x_{30}-8x_{26}x_{32}-16x_{26}x_{34}-8x_{26}x_{35}-8x_{26}x_{38}-8x_{26}x_{41}-16x_{26}x_{60}-8x_{26}x_{61}\\
+&-4x_{28}^{2}-8x_{28}x_{30}-8x_{28}x_{32}-16x_{28}x_{34}-8x_{28}x_{35}-8x_{28}x_{38}-8x_{28}x_{41}-16x_{28}x_{60}-8x_{28}x_{61}\\
+&-4x_{30}^{2}-8x_{30}x_{32}-16x_{30}x_{34}-8x_{30}x_{35}-8x_{30}x_{38}-8x_{30}x_{41}-16x_{30}x_{60}-8x_{30}x_{61}-4x_{32}^{2}\\
+&-16x_{32}x_{34}-8x_{32}x_{35}-8x_{32}x_{38}-8x_{32}x_{41}-16x_{32}x_{60}-8x_{32}x_{61}-16x_{34}^{2}-16x_{34}x_{35}-16x_{34}x_{38}\\
+&-16x_{34}x_{41}-32x_{34}x_{60}-16x_{34}x_{61}-4x_{35}^{2}-8x_{35}x_{38}-8x_{35}x_{41}-16x_{35}x_{60}-8x_{35}x_{61}-4x_{38}^{2}\\
+&-8x_{38}x_{41}-16x_{38}x_{60}-8x_{38}x_{61}-4x_{41}^{2}-16x_{41}x_{60}-8x_{41}x_{61}-16x_{60}^{2}-16x_{60}x_{61}-4x_{61}^{2}\\
+&-x_{94}^{2}-x_{95}^{2}-x_{99}^{2}-x_{102}^{2}-x_{105}^{2}-x_{108}^{2}-x_{111}^{2}-x_{112}^{2}-x_{115}^{2}-x_{118}^{2}-x_{119}^{2}\\
+&-x_{123}^{2}-x_{126}^{2}-x_{129}^{2}+x_{132}-x_{185}^{2}-24x_{209}-32x_{209}^{2}
+\end{align*}
+% END_RESIDUAL 129
+
+% BEGIN_RESIDUAL 130
+\begin{align*}
+r_{130}={}&-x_{4}-x_{4}x_{8}-x_{4}x_{9}-x_{4}x_{10}-x_{4}x_{11}-x_{4}x_{12}-x_{4}x_{13}-x_{4}x_{14}-x_{4}x_{15}-x_{4}x_{16}+x_{185}
+\end{align*}
+% END_RESIDUAL 130
+
+% BEGIN_RESIDUAL 131
+\begin{align*}
+r_{131}={}&-16+x_{0}-x_{186}^{2}
+\end{align*}
+% END_RESIDUAL 131
+
+% BEGIN_RESIDUAL 132
+\begin{align*}
+r_{132}={}&-x_{133}x_{188}-x_{188}+x_{197}
+\end{align*}
+% END_RESIDUAL 132
+
+% BEGIN_RESIDUAL 133
+\begin{align*}
+r_{133}={}&-1+x_{187}^{2}+x_{188}^{2}-x_{197}^{2}
+\end{align*}
+% END_RESIDUAL 133
+
+% BEGIN_RESIDUAL 134
+\begin{align*}
+r_{134}={}&-x_{190}-x_{190}x_{191}+x_{198}
+\end{align*}
+% END_RESIDUAL 134
+
+% BEGIN_RESIDUAL 135
+\begin{align*}
+r_{135}={}&-1+x_{189}^{2}+x_{190}^{2}-x_{198}^{2}
+\end{align*}
+% END_RESIDUAL 135
+
+% BEGIN_RESIDUAL 136
+\begin{align*}
+r_{136}={}&-x_{183}^{2}+x_{199}
+\end{align*}
+% END_RESIDUAL 136
+
+% BEGIN_RESIDUAL 137
+\begin{align*}
+r_{137}={}&x_{188}-2x_{193}x_{199}-x_{199}
+\end{align*}
+% END_RESIDUAL 137
+
+% BEGIN_RESIDUAL 138
+\begin{align*}
+r_{138}={}&-4x_{188}-8x_{188}x_{192}+x_{191}
+\end{align*}
+% END_RESIDUAL 138
+
+% BEGIN_RESIDUAL 139
+\begin{align*}
+r_{139}={}&-x_{133}-x_{187}x_{194}+x_{191}
+\end{align*}
+% END_RESIDUAL 139
+
+% BEGIN_RESIDUAL 140
+\begin{align*}
+r_{140}={}&-x_{182}-x_{184}-x_{187}x_{195}+x_{189}
+\end{align*}
+% END_RESIDUAL 140
+
+% BEGIN_RESIDUAL 141
+\begin{align*}
+r_{141}={}&-5x_{8}+3x_{9}-4x_{19}-2x_{22}-2x_{26}-2x_{28}-2x_{30}-2x_{32}-4x_{34}-2x_{35}-2x_{38}-2x_{41}-4x_{60}-2x_{61}-4x_{183}x_{196}\\
+&+x_{190}
+\end{align*}
+% END_RESIDUAL 141
+
+% BEGIN_RESIDUAL 142
+\begin{align*}
+r_{142}={}&26+2x_{0}^{2}+2x_{0}x_{3}-2x_{0}x_{138}-2x_{0}x_{147}+x_{1}^{2}-2x_{1}x_{174}+x_{2}^{2}-2x_{2}x_{165}+x_{3}^{2}-2x_{3}x_{147}\\
+&+26x_{8}^{2}-30x_{8}x_{9}+40x_{8}x_{19}+20x_{8}x_{22}+20x_{8}x_{26}+20x_{8}x_{28}+20x_{8}x_{30}+20x_{8}x_{32}+40x_{8}x_{34}\\
+&+20x_{8}x_{35}+20x_{8}x_{38}+20x_{8}x_{41}+40x_{8}x_{60}+20x_{8}x_{61}-2x_{8}x_{150}-10x_{8}x_{183}+10x_{9}^{2}-24x_{9}x_{19}\\
+&-12x_{9}x_{22}-12x_{9}x_{26}-12x_{9}x_{28}-12x_{9}x_{30}-12x_{9}x_{32}-24x_{9}x_{34}-12x_{9}x_{35}-12x_{9}x_{38}-12x_{9}x_{41}\\
+&-24x_{9}x_{60}-12x_{9}x_{61}-2x_{9}x_{153}+6x_{9}x_{183}+x_{10}^{2}-2x_{10}x_{156}+x_{11}^{2}-2x_{11}x_{159}+x_{12}^{2}\\
+&-2x_{12}x_{162}+x_{13}^{2}-2x_{13}x_{168}+x_{14}^{2}-2x_{14}x_{171}+x_{15}^{2}-2x_{15}x_{177}+x_{16}^{2}-2x_{16}x_{180}\\
+&+16x_{19}^{2}+16x_{19}x_{22}+16x_{19}x_{26}+16x_{19}x_{28}+16x_{19}x_{30}+16x_{19}x_{32}+32x_{19}x_{34}+16x_{19}x_{35}\\
+&+16x_{19}x_{38}+16x_{19}x_{41}+32x_{19}x_{60}+16x_{19}x_{61}-8x_{19}x_{183}+4x_{22}^{2}+8x_{22}x_{26}+8x_{22}x_{28}+8x_{22}x_{30}\\
+&+8x_{22}x_{32}+16x_{22}x_{34}+8x_{22}x_{35}+8x_{22}x_{38}+8x_{22}x_{41}+16x_{22}x_{60}+8x_{22}x_{61}-4x_{22}x_{183}+4x_{26}^{2}\\
+&+8x_{26}x_{28}+8x_{26}x_{30}+8x_{26}x_{32}+16x_{26}x_{34}+8x_{26}x_{35}+8x_{26}x_{38}+8x_{26}x_{41}+16x_{26}x_{60}+8x_{26}x_{61}\\
+&-4x_{26}x_{183}+4x_{28}^{2}+8x_{28}x_{30}+8x_{28}x_{32}+16x_{28}x_{34}+8x_{28}x_{35}+8x_{28}x_{38}+8x_{28}x_{41}+16x_{28}x_{60}\\
+&+8x_{28}x_{61}-4x_{28}x_{183}+4x_{30}^{2}+8x_{30}x_{32}+16x_{30}x_{34}+8x_{30}x_{35}+8x_{30}x_{38}+8x_{30}x_{41}+16x_{30}x_{60}\\
+&+8x_{30}x_{61}-4x_{30}x_{183}+4x_{32}^{2}+16x_{32}x_{34}+8x_{32}x_{35}+8x_{32}x_{38}+8x_{32}x_{41}+16x_{32}x_{60}+8x_{32}x_{61}\\
+&-4x_{32}x_{183}+16x_{34}^{2}+16x_{34}x_{35}+16x_{34}x_{38}+16x_{34}x_{41}+32x_{34}x_{60}+16x_{34}x_{61}-8x_{34}x_{183}+4x_{35}^{2}\\
+&+8x_{35}x_{38}+8x_{35}x_{41}+16x_{35}x_{60}+8x_{35}x_{61}-4x_{35}x_{183}+4x_{38}^{2}+8x_{38}x_{41}+16x_{38}x_{60}+8x_{38}x_{61}\\
+&-4x_{38}x_{183}+4x_{41}^{2}+16x_{41}x_{60}+8x_{41}x_{61}-4x_{41}x_{183}+16x_{60}^{2}+16x_{60}x_{61}-8x_{60}x_{183}+4x_{61}^{2}\\
+&-4x_{61}x_{183}-x_{133}x_{200}-2x_{137}-2x_{139}+x_{139}^{2}-2x_{146}-2x_{148}+x_{148}^{2}-2x_{149}+2x_{150}-2x_{151}+x_{151}^{2}\\
+&-2x_{152}-2x_{154}+x_{154}^{2}-2x_{155}-2x_{157}+x_{157}^{2}-2x_{158}-2x_{160}+x_{160}^{2}-2x_{161}-2x_{163}+x_{163}^{2}-2x_{164}\\
+&-2x_{166}+x_{166}^{2}-2x_{167}-2x_{169}+x_{169}^{2}-2x_{170}-2x_{172}+x_{172}^{2}-2x_{173}+x_{175}^{2}-2x_{176}-2x_{178}\\
+&+x_{178}^{2}-2x_{179}-2x_{181}+x_{181}^{2}-2x_{182}-2x_{184}+x_{184}^{2}
+\end{align*}
+% END_RESIDUAL 142
+
+% BEGIN_RESIDUAL 143
+\begin{align*}
+r_{143}={}&-x_{95}x_{201}+x_{119}
+\end{align*}
+% END_RESIDUAL 143
+
+% BEGIN_RESIDUAL 144
+\begin{align*}
+r_{144}={}&-x_{112}x_{202}+x_{119}
+\end{align*}
+% END_RESIDUAL 144
+
+% BEGIN_RESIDUAL 145
+\begin{align*}
+r_{145}={}&-1+x_{2}-x_{3}-2x_{3}x_{210}
+\end{align*}
+% END_RESIDUAL 145
+
+% BEGIN_RESIDUAL 146
+\begin{align*}
+r_{146}={}&-2-25x_{8}^{2}+30x_{8}x_{9}-40x_{8}x_{19}-20x_{8}x_{22}-20x_{8}x_{26}-20x_{8}x_{28}-20x_{8}x_{30}-20x_{8}x_{32}-40x_{8}x_{34}\\
+&-20x_{8}x_{35}-20x_{8}x_{38}-20x_{8}x_{41}-40x_{8}x_{60}-20x_{8}x_{61}-9x_{9}^{2}+24x_{9}x_{19}+12x_{9}x_{22}+12x_{9}x_{26}\\
+&+12x_{9}x_{28}+12x_{9}x_{30}+12x_{9}x_{32}+24x_{9}x_{34}+12x_{9}x_{35}+12x_{9}x_{38}+12x_{9}x_{41}+24x_{9}x_{60}+12x_{9}x_{61}\\
+&-16x_{19}^{2}-16x_{19}x_{22}-16x_{19}x_{26}-16x_{19}x_{28}-16x_{19}x_{30}-16x_{19}x_{32}-32x_{19}x_{34}-16x_{19}x_{35}\\
+&-16x_{19}x_{38}-16x_{19}x_{41}-32x_{19}x_{60}-16x_{19}x_{61}-4x_{22}^{2}-8x_{22}x_{26}-8x_{22}x_{28}-8x_{22}x_{30}-8x_{22}x_{32}\\
+&-16x_{22}x_{34}-8x_{22}x_{35}-8x_{22}x_{38}-8x_{22}x_{41}-16x_{22}x_{60}-8x_{22}x_{61}-4x_{26}^{2}-8x_{26}x_{28}-8x_{26}x_{30}\\
+&-8x_{26}x_{32}-16x_{26}x_{34}-8x_{26}x_{35}-8x_{26}x_{38}-8x_{26}x_{41}-16x_{26}x_{60}-8x_{26}x_{61}-4x_{28}^{2}-8x_{28}x_{30}\\
+&-8x_{28}x_{32}-16x_{28}x_{34}-8x_{28}x_{35}-8x_{28}x_{38}-8x_{28}x_{41}-16x_{28}x_{60}-8x_{28}x_{61}-4x_{30}^{2}-8x_{30}x_{32}\\
+&-16x_{30}x_{34}-8x_{30}x_{35}-8x_{30}x_{38}-8x_{30}x_{41}-16x_{30}x_{60}-8x_{30}x_{61}-4x_{32}^{2}-16x_{32}x_{34}-8x_{32}x_{35}\\
+&-8x_{32}x_{38}-8x_{32}x_{41}-16x_{32}x_{60}-8x_{32}x_{61}-16x_{34}^{2}-16x_{34}x_{35}-16x_{34}x_{38}-16x_{34}x_{41}-32x_{34}x_{60}\\
+&-16x_{34}x_{61}-4x_{35}^{2}-8x_{35}x_{38}-8x_{35}x_{41}-16x_{35}x_{60}-8x_{35}x_{61}-4x_{38}^{2}-8x_{38}x_{41}-16x_{38}x_{60}\\
+&-8x_{38}x_{61}-4x_{41}^{2}-16x_{41}x_{60}-8x_{41}x_{61}-16x_{60}^{2}-16x_{60}x_{61}-4x_{61}^{2}-x_{138}^{2}-x_{147}^{2}+2x_{150}\\
+&-x_{150}^{2}-x_{153}^{2}-x_{156}^{2}-x_{159}^{2}-x_{162}^{2}-x_{165}^{2}-x_{168}^{2}-x_{171}^{2}-x_{174}^{2}-x_{177}^{2}\\
+&-x_{180}^{2}+x_{183}^{2}-x_{203}^{2}-x_{204}^{2}-x_{205}-x_{205}^{2}
+\end{align*}
+% END_RESIDUAL 146
+
+% BEGIN_RESIDUAL 147
+\begin{align*}
+r_{147}={}&-1-2x_{97}^{2}-2x_{101}^{2}-2x_{104}^{2}-2x_{107}^{2}-2x_{110}^{2}-2x_{114}^{2}-2x_{117}^{2}+x_{119}^{2}-2x_{121}^{2}-2x_{125}^{2}\\
+&-2x_{128}^{2}-2x_{131}^{2}-x_{206}^{2}-x_{207}^{2}-x_{208}-x_{208}^{2}
+\end{align*}
+% END_RESIDUAL 147
+
+% BEGIN_RESIDUAL 148
+\begin{align*}
+r_{148}={}&-x_{3}x_{12}+x_{211}
+\end{align*}
+% END_RESIDUAL 148
+
+% BEGIN_RESIDUAL 149
+\begin{align*}
+r_{149}={}&-2x_{94}x_{147}+2x_{99}-2x_{99}x_{150}-2x_{102}x_{153}-2x_{105}x_{156}-2x_{108}x_{159}-2x_{111}x_{162}-2x_{115}x_{168}\\
+&-2x_{118}x_{171}-2x_{123}x_{177}-2x_{126}x_{180}-2x_{129}x_{183}-2x_{133}x_{213}+2x_{146}x_{147}+2x_{147}x_{148}-2x_{149}\\
+&+2x_{149}x_{150}+2x_{150}x_{151}-2x_{151}+2x_{152}x_{153}+2x_{153}x_{154}+2x_{155}x_{156}+2x_{156}x_{157}+2x_{158}x_{159}\\
+&+2x_{159}x_{160}+2x_{161}x_{162}+2x_{162}x_{163}+2x_{167}x_{168}+2x_{168}x_{169}+2x_{170}x_{171}+2x_{171}x_{172}+2x_{176}x_{177}\\
+&+2x_{177}x_{178}+2x_{179}x_{180}+2x_{180}x_{181}+2x_{182}x_{183}+2x_{183}x_{184}+4x_{209}x_{213}+x_{212}
+\end{align*}
+% END_RESIDUAL 149
+
+% BEGIN_RESIDUAL 150
+\begin{align*}
+r_{150}={}&-1+x_{94}^{2}-2x_{94}x_{146}+x_{99}^{2}-2x_{99}x_{149}+x_{102}^{2}-2x_{102}x_{152}+x_{105}^{2}-2x_{105}x_{155}+x_{108}^{2}\\
+&-2x_{108}x_{158}+x_{111}^{2}-2x_{111}x_{161}+x_{115}^{2}-2x_{115}x_{167}+x_{118}^{2}-2x_{118}x_{170}+x_{123}^{2}-2x_{123}x_{176}\\
+&+x_{126}^{2}-2x_{126}x_{179}+x_{129}^{2}-2x_{129}x_{182}+x_{146}^{2}-x_{147}^{2}+x_{149}^{2}+2x_{150}-x_{150}^{2}+x_{152}^{2}\\
+&-x_{153}^{2}+x_{155}^{2}-x_{156}^{2}+x_{158}^{2}-x_{159}^{2}+x_{161}^{2}-x_{162}^{2}+x_{167}^{2}-x_{168}^{2}+x_{170}^{2}\\
+&-x_{171}^{2}+x_{176}^{2}-x_{177}^{2}+x_{179}^{2}-x_{180}^{2}+x_{182}^{2}-x_{183}^{2}-4x_{209}x_{212}-2x_{212}+x_{213}
+\end{align*}
+% END_RESIDUAL 150
+
+% BEGIN_RESIDUAL 151
+\begin{align*}
+r_{151}={}&-2x_{95}x_{138}-2x_{112}x_{165}-2x_{119}x_{174}-2x_{133}x_{215}+2x_{137}x_{138}+2x_{138}x_{139}+2x_{164}x_{165}+2x_{165}x_{166}\\
+&+2x_{173}x_{174}+2x_{174}+2x_{174}x_{175}+4x_{209}x_{215}+x_{214}-x_{215}
+\end{align*}
+% END_RESIDUAL 151
+
+% BEGIN_RESIDUAL 152
+\begin{align*}
+r_{152}={}&x_{95}^{2}-2x_{95}x_{137}+x_{112}^{2}-2x_{112}x_{164}+x_{119}^{2}-2x_{119}x_{173}+x_{137}^{2}-x_{138}^{2}+x_{164}^{2}-x_{165}^{2}\\
+&+x_{173}^{2}-x_{174}^{2}-4x_{209}x_{214}-x_{214}+x_{215}
+\end{align*}
+% END_RESIDUAL 152
+
+\endgroup
+
+
+\section{Complete monic-elimination tables}\label{app:pivots}
+For each profile the listed pair $(r,v)$ means solve original row $r_r$
+for original coordinate $x_v$. All coefficients used for solving are
+$\pm1$. Use recursive acyclic substitution, not a change in quantifier
+domain. Coordinates outside \eqref{eq:deletedvars} and outside the
+listed pivots remain free; append one new integer per block part.
+These are fixed lists, with no data-dependent iteration in the
+definition of the final polynomial.
+\subsection{143 integers, degree 8}
+Block partition: $(0;\ 1;\ 2;\ 3;\ 4)$.
+There are 68 deleted monic coordinates and 80 final residuals.
+\begin{center}\small\begin{tabular}{rrrrrr}\toprule
+$(71,86)$ & $(50,65)$ & $(79,98)$ & $(37,52)$ & $(64,79)$ & $(73,88)$\\
+$(57,72)$ & $(53,68)$ & $(81,101)$ & $(83,107)$ & $(61,75)$ & $(52,67)$\\
+$(84,110)$ & $(89,125)$ & $(54,69)$ & $(88,121)$ & $(18,33)$ & $(85,114)$\\
+$(78,92)$ & $(41,56)$ & $(136,199)$ & $(30,45)$ & $(91,131)$ & $(90,128)$\\
+$(51,66)$ & $(82,104)$ & $(86,117)$ & $(59,74)$ & $(55,70)$ & $(43,58)$\\
+$(49,64)$ & $(35,50)$ & $(93,136)$ & $(39,54)$ & $(62,76)$ & $(14,29)$\\
+$(76,91)$ & $(16,31)$ & $(32,47)$ & $(140,189)$ & $(134,198)$ & $(25,40)$\\
+$(0,7)$ & $(132,197)$ & $(10,25)$ & $(22,37)$ & $(27,42)$ & $(28,43)$\\
+$(6,21)$ & $(115,166)$ & $(111,160)$ & $(123,178)$ & $(107,154)$ & $(119,172)$\\
+$(125,181)$ & $(95,139)$ & $(105,151)$ & $(103,148)$ & $(121,175)$ & $(109,157)$\\
+$(117,169)$ & $(113,163)$ & $(127,184)$ & $(1,1)$ & $(3,16)$ & $(20,35)$\\
+$(13,28)$ & $(143,119)$ &  &  &  & \\
+\bottomrule\end{tabular}\end{center}
+\subsection{119 integers, degree 16}
+Block partition: $(0,1,2;\ 3,4)$.
+There are 89 deleted monic coordinates and 56 final residuals.
+\begin{center}\small\begin{tabular}{rrrrrr}\toprule
+$(53,68)$ & $(138,191)$ & $(52,67)$ & $(64,79)$ & $(54,69)$ & $(0,7)$\\
+$(136,199)$ & $(50,65)$ & $(62,76)$ & $(72,87)$ & $(49,64)$ & $(63,78)$\\
+$(55,70)$ & $(67,82)$ & $(85,114)$ & $(90,128)$ & $(81,101)$ & $(82,104)$\\
+$(89,125)$ & $(80,97)$ & $(86,117)$ & $(88,121)$ & $(84,110)$ & $(83,107)$\\
+$(91,131)$ & $(10,21)$ & $(48,63)$ & $(29,44)$ & $(76,91)$ & $(78,92)$\\
+$(74,89)$ & $(16,31)$ & $(132,197)$ & $(37,52)$ & $(32,47)$ & $(44,59)$\\
+$(27,42)$ & $(93,136)$ & $(61,75)$ & $(117,169)$ & $(105,151)$ & $(119,172)$\\
+$(109,157)$ & $(127,184)$ & $(107,154)$ & $(111,160)$ & $(125,181)$ & $(1,1)$\\
+$(113,163)$ & $(103,148)$ & $(115,166)$ & $(123,178)$ & $(41,56)$ & $(18,33)$\\
+$(14,29)$ & $(51,66)$ & $(46,61)$ & $(20,35)$ & $(23,38)$ & $(13,28)$\\
+$(56,71)$ & $(3,16)$ & $(25,40)$ & $(121,175)$ & $(95,139)$ & $(39,54)$\\
+$(71,86)$ & $(141,190)$ & $(87,122)$ & $(79,98)$ & $(92,135)$ & $(69,84)$\\
+$(143,119)$ & $(65,80)$ & $(59,74)$ & $(134,198)$ & $(75,90)$ & $(28,43)$\\
+$(43,58)$ & $(34,49)$ & $(31,46)$ & $(24,39)$ & $(36,51)$ & $(21,36)$\\
+$(5,20)$ & $(58,73)$ & $(140,189)$ & $(148,211)$ & $(9,24)$ & \\
+\bottomrule\end{tabular}\end{center}
+\subsection{112 integers, degree 24}
+Block partition: $(0,1,2,3,4)$.
+There are 95 deleted monic coordinates and 49 final residuals.
+\begin{center}\small\begin{tabular}{rrrrrr}\toprule
+$(53,68)$ & $(138,191)$ & $(52,67)$ & $(64,79)$ & $(54,69)$ & $(0,7)$\\
+$(136,199)$ & $(50,65)$ & $(62,76)$ & $(72,87)$ & $(49,64)$ & $(63,78)$\\
+$(55,70)$ & $(67,82)$ & $(85,114)$ & $(90,128)$ & $(81,101)$ & $(82,104)$\\
+$(89,125)$ & $(80,97)$ & $(86,117)$ & $(88,121)$ & $(84,110)$ & $(83,107)$\\
+$(91,131)$ & $(10,21)$ & $(48,63)$ & $(29,44)$ & $(76,91)$ & $(78,92)$\\
+$(74,89)$ & $(16,31)$ & $(132,197)$ & $(37,52)$ & $(32,47)$ & $(44,59)$\\
+$(27,42)$ & $(93,136)$ & $(61,75)$ & $(41,56)$ & $(18,33)$ & $(14,29)$\\
+$(51,66)$ & $(56,71)$ & $(69,84)$ & $(25,40)$ & $(59,74)$ & $(39,54)$\\
+$(71,86)$ & $(141,190)$ & $(1,1)$ & $(3,16)$ & $(20,35)$ & $(13,28)$\\
+$(23,38)$ & $(46,61)$ & $(87,122)$ & $(79,98)$ & $(92,135)$ & $(117,169)$\\
+$(105,151)$ & $(121,175)$ & $(119,172)$ & $(109,157)$ & $(127,184)$ & $(107,154)$\\
+$(111,160)$ & $(95,139)$ & $(125,181)$ & $(113,163)$ & $(103,148)$ & $(115,166)$\\
+$(123,178)$ & $(143,119)$ & $(65,80)$ & $(134,198)$ & $(75,90)$ & $(28,43)$\\
+$(43,58)$ & $(34,49)$ & $(31,46)$ & $(24,39)$ & $(36,51)$ & $(21,36)$\\
+$(5,20)$ & $(58,73)$ & $(140,189)$ & $(11,26)$ & $(57,72)$ & $(148,211)$\\
+$(145,2)$ & $(68,83)$ & $(60,77)$ & $(9,24)$ & $(137,188)$ & \\
+\bottomrule\end{tabular}\end{center}
+\subsection{107 integers, degree 32}
+Block partition: $(0,1,2,3,4)$.
+There are 100 deleted monic coordinates and 44 final residuals.
+\begin{center}\small\begin{tabular}{rrrrrr}\toprule
+$(53,68)$ & $(138,191)$ & $(52,67)$ & $(64,79)$ & $(54,69)$ & $(0,7)$\\
+$(136,199)$ & $(50,65)$ & $(62,76)$ & $(72,87)$ & $(49,64)$ & $(63,78)$\\
+$(55,70)$ & $(67,82)$ & $(85,114)$ & $(90,128)$ & $(81,101)$ & $(82,104)$\\
+$(89,125)$ & $(80,97)$ & $(86,117)$ & $(88,121)$ & $(84,110)$ & $(83,107)$\\
+$(91,131)$ & $(10,21)$ & $(48,63)$ & $(29,44)$ & $(76,91)$ & $(78,92)$\\
+$(74,89)$ & $(16,31)$ & $(132,197)$ & $(37,52)$ & $(32,47)$ & $(44,59)$\\
+$(27,42)$ & $(93,136)$ & $(61,75)$ & $(41,56)$ & $(18,33)$ & $(14,29)$\\
+$(51,66)$ & $(56,71)$ & $(69,84)$ & $(25,40)$ & $(59,74)$ & $(39,54)$\\
+$(71,86)$ & $(141,190)$ & $(1,1)$ & $(3,16)$ & $(20,35)$ & $(13,28)$\\
+$(23,38)$ & $(46,61)$ & $(87,122)$ & $(79,98)$ & $(92,135)$ & $(117,169)$\\
+$(105,151)$ & $(121,175)$ & $(119,172)$ & $(109,157)$ & $(127,184)$ & $(107,154)$\\
+$(111,160)$ & $(95,139)$ & $(125,181)$ & $(113,163)$ & $(103,148)$ & $(115,166)$\\
+$(123,178)$ & $(143,119)$ & $(65,80)$ & $(134,198)$ & $(75,90)$ & $(28,43)$\\
+$(43,58)$ & $(34,49)$ & $(31,46)$ & $(24,39)$ & $(36,51)$ & $(131,0)$\\
+$(21,36)$ & $(5,20)$ & $(42,57)$ & $(58,73)$ & $(140,189)$ & $(11,26)$\\
+$(57,72)$ & $(148,211)$ & $(145,2)$ & $(68,83)$ & $(60,77)$ & $(9,24)$\\
+$(137,188)$ & $(47,62)$ & $(8,23)$ & $(4,19)$ &  & \\
+\bottomrule\end{tabular}\end{center}
+\clearpage
+\subsection{102 integers, degree 64}
+Block partition: $(0,1,2,3,4)$.
+There are 105 deleted monic coordinates and 39 final residuals.
+\begin{center}\small\begin{tabular}{rrrrrr}\toprule
+$(72,87)$ & $(70,85)$ & $(74,89)$ & $(68,83)$ & $(136,199)$ & $(65,80)$\\
+$(79,98)$ & $(138,191)$ & $(62,76)$ & $(48,63)$ & $(0,7)$ & $(51,66)$\\
+$(76,91)$ & $(78,92)$ & $(58,73)$ & $(54,69)$ & $(50,65)$ & $(53,68)$\\
+$(61,75)$ & $(63,78)$ & $(55,70)$ & $(52,67)$ & $(49,64)$ & $(129,132)$\\
+$(132,197)$ & $(84,110)$ & $(90,128)$ & $(81,101)$ & $(82,104)$ & $(89,125)$\\
+$(91,131)$ & $(85,114)$ & $(83,107)$ & $(88,121)$ & $(86,117)$ & $(36,51)$\\
+$(140,189)$ & $(141,190)$ & $(31,46)$ & $(34,49)$ & $(38,53)$ & $(29,44)$\\
+$(40,55)$ & $(56,71)$ & $(6,21)$ & $(22,37)$ & $(44,59)$ & $(25,40)$\\
+$(16,31)$ & $(14,29)$ & $(10,25)$ & $(18,33)$ & $(80,97)$ & $(87,122)$\\
+$(148,211)$ & $(67,82)$ & $(64,79)$ & $(59,74)$ & $(75,90)$ & $(93,136)$\\
+$(71,86)$ & $(134,198)$ & $(115,166)$ & $(103,148)$ & $(117,169)$ & $(113,163)$\\
+$(123,178)$ & $(95,139)$ & $(107,154)$ & $(119,172)$ & $(125,181)$ & $(109,157)$\\
+$(111,160)$ & $(127,184)$ & $(121,175)$ & $(105,151)$ & $(24,39)$ & $(42,57)$\\
+$(43,58)$ & $(28,43)$ & $(27,42)$ & $(32,47)$ & $(57,72)$ & $(92,135)$\\
+$(60,77)$ & $(66,81)$ & $(21,36)$ & $(9,24)$ & $(5,20)$ & $(137,188)$\\
+$(8,23)$ & $(1,1)$ & $(3,16)$ & $(46,61)$ & $(20,35)$ & $(143,119)$\\
+$(13,28)$ & $(131,0)$ & $(37,52)$ & $(47,62)$ & $(145,2)$ & $(130,185)$\\
+$(41,56)$ & $(139,133)$ & $(4,19)$ &  &  & \\
+\bottomrule\end{tabular}\end{center}
+
+
+\begin{thebibliography}{9}
+\bibitem{source172} ProveIt research package 172,
+\emph{Pooled powers and quadratic projections for ZFC consistency},
+25 October 2026. The signed arithmetic component, its ordinary proof,
+source calibration and affine216 chart are retained in this release.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ef0c534c1ae1e312c61a2a9a5a3f18f5516fd42b/Computability/DiophantineConsistency/con-zfc-diophantine-forms/172-pooled-powers-round21}
+\bibitem{pool168} ProveIt research package 168,
+\emph{Reciprocal pooling of distinct-base Pell certificates},
+25 October 2026, especially \texttt{proofs/RECIPROCAL\_POOLING.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ef0c534c1ae1e312c61a2a9a5a3f18f5516fd42b/Computability/DiophantineConsistency/con-zfc-diophantine-forms/168-reciprocal-pooling}
+\bibitem{pool158} ProveIt research package 158,
+\emph{Pooling exact power certificates for Diophantine consistency},
+25 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ef0c534c1ae1e312c61a2a9a5a3f18f5516fd42b/Computability/DiophantineConsistency/con-zfc-diophantine-forms/158-pooled-powers}
+\bibitem{eliminate152} ProveIt research package 152,
+\emph{Lucas corrections and elimination of arithmetic witnesses},
+25 October 2026, higher-degree component.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ef0c534c1ae1e312c61a2a9a5a3f18f5516fd42b/Computability/DiophantineConsistency/con-zfc-diophantine-forms/152-lucas-corrections}
+\bibitem{corpus} Vladimir Reshetnikov, \emph{ProveIt: Con(ZFC) in
+Diophantine form}, repository corpus and comparison README, inspected
+at the pinned snapshot stated in Section~1.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ef0c534c1ae1e312c61a2a9a5a3f18f5516fd42b/Computability/DiophantineConsistency/con-zfc-diophantine-forms}
+\end{thebibliography}
+\end{document}

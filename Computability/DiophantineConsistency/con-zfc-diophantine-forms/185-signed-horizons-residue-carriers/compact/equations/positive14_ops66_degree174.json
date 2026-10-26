@@ -1,0 +1,483 @@
+{
+  "auxiliary_gap": false,
+  "coefficient_binding": {
+    "certificate": "../inherited/start_only_certificate.json",
+    "certificate_sha256": "962fdf7fc5a5de9dbc4bf7ae01b5ccb8411694c3fb64cc3147e00d030370542a",
+    "ordinary_proof": "../inherited/START_ONLY_PROOF.md",
+    "ordinary_proof_sha256": "a76706481a97c914b2d6214f342e8e2a23f31c7baac31a9fdc16926243dba6bb",
+    "path": "../coefficients/",
+    "ports": {
+      "K0": {
+        "bits": 194440,
+        "bytes": 24305,
+        "file": "K0.bin",
+        "sha256": "f6653f4678958d23505ecb44cfca6a47b5ebe8e419c5a859f2b210880571dd8d"
+      },
+      "MC": {
+        "bits": 193969,
+        "bytes": 24247,
+        "file": "MC.bin",
+        "sha256": "513493c2cc428a23e0a9eb08ee4d3062b974cb670e50c1010b3a3ee474236674"
+      },
+      "MF": {
+        "bits": 193970,
+        "bytes": 24247,
+        "file": "MF.bin",
+        "sha256": "6f3e9ba9c490197a1889571afd8db6d542f138c14fb081fe0481c57e6f152063"
+      },
+      "beta": {
+        "bits": 193969,
+        "bytes": 24247,
+        "file": "beta.bin",
+        "sha256": "e9921a2dcab070bceda4c414f37d59881aefb7b61c6a0607ebf9d1ac1e2cc3fb"
+      }
+    },
+    "raw_bytes": 97046,
+    "schema": "start_only4127_materialized_v1",
+    "recipe": "../coefficients.tex",
+    "builder": "../rebuild_coefficients.py",
+    "recipe_origin": "174-start-marker-compositions/compact66/preferred4127",
+    "recipe_commit": "02a78a08603cbae248c19c23a75907c6c6bd6443"
+  },
+  "exact_degree": 174,
+  "finalizer": "normalized_scaled_product",
+  "first_gap": false,
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "name": "positive14_ops66_degree174",
+  "operation_counts": {
+    "*": 38,
+    "+": 15,
+    "-": 13
+  },
+  "operations": 66,
+  "output": "polynomial",
+  "proof": "../PROOF.md",
+  "proof_boundary": "New residue-ordinate elimination, ordinary proof at the retained P66 and whole Start-only4127 native/refutation calibration. No new proof-assistant object.",
+  "source": [
+    [
+      "qm",
+      "*",
+      "beta",
+      "J"
+    ],
+    [
+      "q",
+      "+",
+      "qm",
+      1
+    ],
+    [
+      "q2",
+      "*",
+      "q",
+      "q"
+    ],
+    [
+      "q3",
+      "*",
+      "q2",
+      "q"
+    ],
+    [
+      "X",
+      "*",
+      "w",
+      "q"
+    ],
+    [
+      "Y",
+      "*",
+      "s",
+      "q3"
+    ],
+    [
+      "E",
+      "*",
+      "X",
+      "Y"
+    ],
+    [
+      "k",
+      "+",
+      "eta",
+      "zeta"
+    ],
+    [
+      "kY",
+      "*",
+      "k",
+      "Y"
+    ],
+    [
+      "ell",
+      "*",
+      "E",
+      "kY"
+    ],
+    [
+      "tau2",
+      "*",
+      "tau",
+      "tau"
+    ],
+    [
+      "ell_plus_k",
+      "+",
+      "ell",
+      "k"
+    ],
+    [
+      "first_product",
+      "*",
+      "ell",
+      "ell_plus_k"
+    ],
+    [
+      "N0",
+      "-",
+      "tau2",
+      "first_product"
+    ],
+    [
+      "c",
+      "+",
+      "kY",
+      "eta"
+    ],
+    [
+      "a",
+      "+",
+      "E",
+      "Y"
+    ],
+    [
+      "four_a",
+      "*",
+      4,
+      "a"
+    ],
+    [
+      "H",
+      "+",
+      "four_a",
+      3
+    ],
+    [
+      "a2",
+      "*",
+      "a",
+      "a"
+    ],
+    [
+      "Delta",
+      "+",
+      "a2",
+      "H"
+    ],
+    [
+      "ac",
+      "*",
+      "a",
+      "c"
+    ],
+    [
+      "main_base",
+      "+",
+      "X",
+      "ac"
+    ],
+    [
+      "gammaH",
+      "*",
+      "gamma",
+      "H"
+    ],
+    [
+      "main_root",
+      "+",
+      "main_base",
+      "gammaH"
+    ],
+    [
+      "c2",
+      "*",
+      "c",
+      "c"
+    ],
+    [
+      "Dc2",
+      "*",
+      "Delta",
+      "c2"
+    ],
+    [
+      "main_square",
+      "*",
+      "main_root",
+      "main_root"
+    ],
+    [
+      "N1",
+      "-",
+      "main_square",
+      "Dc2"
+    ],
+    [
+      "qF",
+      "-",
+      "q",
+      "F"
+    ],
+    [
+      "C",
+      "-",
+      "qF",
+      "alpha"
+    ],
+    [
+      "gap_product",
+      "*",
+      "qm",
+      "qF"
+    ],
+    [
+      "gap",
+      "+",
+      "gap_product",
+      "alpha"
+    ],
+    [
+      "q2minus1",
+      "-",
+      "q2",
+      1
+    ],
+    [
+      "rproduct",
+      "*",
+      "gap",
+      "q2minus1"
+    ],
+    [
+      "qMF",
+      "*",
+      "q",
+      "MF"
+    ],
+    [
+      "maskfactor",
+      "+",
+      "MC",
+      "qMF"
+    ],
+    [
+      "mask",
+      "*",
+      "maskfactor",
+      "J"
+    ],
+    [
+      "R",
+      "+",
+      "rproduct",
+      "mask"
+    ],
+    [
+      "carrier_product",
+      "*",
+      "n",
+      "E"
+    ],
+    [
+      "carrier_partial",
+      "-",
+      "k",
+      "carrier_product"
+    ],
+    [
+      "carrier",
+      "-",
+      "carrier_partial",
+      "R"
+    ],
+    [
+      "Kw",
+      "+",
+      "K0",
+      "w"
+    ],
+    [
+      "transport",
+      "*",
+      "Kw",
+      "C"
+    ],
+    [
+      "transport_partial",
+      "+",
+      "transport",
+      "qF"
+    ],
+    [
+      "zqm",
+      "*",
+      "z",
+      "qm"
+    ],
+    [
+      "Nt",
+      "-",
+      "transport_partial",
+      "zqm"
+    ],
+    [
+      "f2",
+      "*",
+      "f",
+      "f"
+    ],
+    [
+      "cT",
+      "*",
+      "c",
+      "T"
+    ],
+    [
+      "cTminusR",
+      "-",
+      "cT",
+      "R"
+    ],
+    [
+      "f2inner",
+      "*",
+      "f2",
+      "cTminusR"
+    ],
+    [
+      "V",
+      "-",
+      "f2inner",
+      "c"
+    ],
+    [
+      "normalized_S0",
+      "*",
+      "i",
+      "Dc2"
+    ],
+    [
+      "normalized_S",
+      "*",
+      "E",
+      "normalized_S0"
+    ],
+    [
+      "normalized_S2",
+      "*",
+      "normalized_S",
+      "normalized_S"
+    ],
+    [
+      "V2",
+      "*",
+      "V",
+      "V"
+    ],
+    [
+      "y2",
+      "*",
+      "carrier",
+      "carrier"
+    ],
+    [
+      "V2minusY2",
+      "-",
+      "V2",
+      "y2"
+    ],
+    [
+      "aux_product",
+      "*",
+      "normalized_S2",
+      "V2minusY2"
+    ],
+    [
+      "Na",
+      "+",
+      "aux_product",
+      "y2"
+    ],
+    [
+      "scaled_f2",
+      "*",
+      "Delta",
+      "f2"
+    ],
+    [
+      "scaled_Ns",
+      "-",
+      "scaled_f2",
+      "normalized_S2"
+    ],
+    [
+      "product0",
+      "*",
+      "N0",
+      "N1"
+    ],
+    [
+      "product1",
+      "*",
+      "product0",
+      "Na"
+    ],
+    [
+      "product3",
+      "*",
+      "product1",
+      "Nt"
+    ],
+    [
+      "product4",
+      "*",
+      "product3",
+      "scaled_Ns"
+    ],
+    [
+      "polynomial",
+      "-",
+      "product4",
+      "Delta"
+    ]
+  ],
+  "squared_modulus": true,
+  "witness_domain": "strictly positive integers",
+  "witnesses": [
+    "J",
+    "F",
+    "alpha",
+    "z",
+    "f",
+    "n",
+    "i",
+    "T",
+    "s",
+    "w",
+    "tau",
+    "eta",
+    "zeta",
+    "gamma"
+  ],
+  "carrier_modulus": "E",
+  "strong_ordinate_multiplier": "E",
+  "parent": {
+    "path": "../inherited/P66.json",
+    "sha256": "fc7e3e639b8226b3a57b499ff6fdca2f82b92c7e62cae8a2a599ffefba67bab5"
+  }
+}

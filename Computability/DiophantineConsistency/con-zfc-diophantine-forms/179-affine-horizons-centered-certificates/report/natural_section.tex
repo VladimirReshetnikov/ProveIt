@@ -1,0 +1,204 @@
+\section{Natural triangular syntax charts}
+\label{sec:natural-triangular-charts}
+
+The principal new quartic has $202$ independently nonnegative integer
+variables and $154$ quadratic residuals.  Its selected support profile has
+$9\,353$ nonzero expanded monomials and coefficient height $1\,854\,167$.
+A low-height profile on the same variables has $16\,927$ monomials and
+height $416\,488$.  The construction is an exact natural-domain change of
+the retained round 21 system; it does not relax natural witnesses to signed
+integers or discard a Pell orientation condition.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+Profile & Variables & Rows & Monomials & Height\\
+\hline
+Round21 principal &202&154&9\,818&239\,204\,765\\
+Round21 low height &202&154&12\,706&31\,145\,294\\
+New raw chart &202&154&9\,652&13\,654\,244\\
+New principal &202&154&9\,353&1\,854\,167\\
+New low height &202&154&16\,927&416\,488\\
+New sparse companion &203&155&6\,524&1\,979\,888\\
+New sparse companion &204&156&6\,503&1\,981\,520
+\end{tabular}
+\end{center}
+
+The raw chart already improves both support and height over the preceding
+principal profile, and has lower height than its low-height companion.
+The last three refinements use independently certified integral residual
+shears.  No optimality is asserted.
+
+\subsection{A natural-domain affine chart lemma}
+
+Let $R_1,\ldots,R_r\in\mathbb Z[\boldsymbol x]$, and let $S$ be a set
+of gate coordinates admitting an order $g_1,\ldots,g_s$.  Suppose the
+retained residuals include
+\begin{equation}
+ x_{g_i}-f_i(\boldsymbol x)=0,\qquad 1\leq i\leq s,
+ \label{eq:triangular-gate-definitions}
+\end{equation}
+where every coefficient of $f_i$ is nonnegative, $f_i$ does not contain
+$x_{g_i}$, and every coordinate from $S$ occurring in $f_i$ belongs to
+$g_1,\ldots,g_{i-1}$.  Coordinates outside $S$ require no new interpretation.
+
+Perform elementary changes, read sequentially,
+\begin{equation}
+ x_v^{\rm new}=x_v^{\rm current}+L(\boldsymbol x^{\rm current}),
+ \label{eq:nonnegative-affine-shear}
+\end{equation}
+where $v\in S$, the affine polynomial $L$ has nonnegative integer
+coefficients and does not contain $x_v$.  Let $F$ be their composition and
+$G=F^{-1}$ its integral affine inverse.  Then
+\begin{equation}
+ F:\{\boldsymbol x\in\mathbb N^n:R_j(\boldsymbol x)=0\ \forall j\}
+ \longrightarrow
+ \{\boldsymbol y\in\mathbb N^n:R_j(G(\boldsymbol y))=0\ \forall j\}
+ \label{eq:natural-chart-bijection}
+\end{equation}
+is a bijection.
+
+Indeed, every forward step preserves nonnegativity.  Conversely, given a
+natural zero $\boldsymbol y$, put $\boldsymbol x=G(\boldsymbol y)\in
+\mathbb Z^n $.  Coordinates outside $ S$ are unchanged and nonnegative.
+All original residuals vanish by substitution.  Induction in
+\eqref{eq:triangular-gate-definitions} now proves $x_{g_i}=f_i(\boldsymbol
+x)\geq 0 $.  Both affine composite identities hold over $\mathbb Z^n$, so
+these maps are mutually inverse on the natural zero sets.
+
+The inverse is emphatically not required to preserve the whole orthant:
+$x_v^{\rm current}=x_v^{\rm new}-L(\boldsymbol x^{\rm new})$ can be
+negative at points that are not zeros.  It is the retained triangular
+positive gate system that restores nonnegativity.  Since the substitutions
+are affine, quadratic residuals remain quadratic.
+
+\subsection{The twelve explicit changes}
+
+Use the inherited formal labels, and abbreviate
+$a=\texttt{crt.encoded.a}$, $b=\texttt{crt.encoded.b}$,
+$G=\texttt{syntax.shared\_shifted\_square}$,
+$m_j=\texttt{mul.}j$, and $a_j=\texttt{add.}j$.  The changes are
+\begin{align*}
+ m_{36}&\gets m_{36}+2b+3,\\
+ m_{97}&\gets m_{97}+8b+m_{36}+4m_{60}+11,\\
+ m_{173}&\gets m_{173}+2a+m_{74}+16G+16,\\
+ m_{243}&\gets m_{243}+16m_{232}+4m_{237}+33,\\
+ m_{131}&\gets m_{131}+2a+4m_{36}+m_{74},\\
+ m_{48}&\gets m_{48}+32m_{36}+4G+34,\\
+ m_{225}&\gets m_{225}+16m_{214}+4m_{219}+34,\\
+ m_{274}&\gets m_{274}+16m_{263}+4m_{268}+34,\\
+ m_{148}&\gets m_{148}+16m_{36}+4G+18,\\
+ m_{317}&\gets m_{317}+5m_{36},\\
+ m_{256}&\gets m_{256}+2a_{253}+2,\\
+ a_{253}&\gets a_{253}+a.
+\end{align*}
+Every right-hand side means its current value at that step.  In particular,
+the last change occurs after the change to $m_{256}$.
+
+In the literal parent row numbering, starting at zero, the restoration
+order is
+\[
+\begin{array}{c|rrrrrrrrrrrr}
+\text{gate}&m_{36}&m_{48}&m_{97}&m_{131}&m_{148}&m_{173}&m_{225}&m_{243}&a_{253}&m_{256}&m_{274}&m_{317}\\
+\text{row}&6&8&14&18&20&23&30&33&35&36&39&45 .
+\end{array}
+\]
+Each listed row is literally a monic output minus a polynomial with
+nonnegative coefficients, and translated inputs occur only at earlier
+positions of this order.  The finite checker verifies these facts from the
+coefficient lists.  No outer semantic coordinate, power denominator, Pell
+ordinate, CRT remainder or source value is translated.
+
+For the $203$-coordinate companion omit the absent targets $m_{173}$ and
+$m_{131}$.  For the $204$-coordinate companion additionally omit $m_{97}$.
+All inputs in the remaining changes still exist; their own defining-row
+orders meet the same criterion.
+
+\subsection{A cancellation that explains the improvement}
+
+Let $m$ and $p$ denote the original $m_{36}$ and $m_{48}$.  The original
+$m_{55}$ defining polynomial is
+\begin{equation}
+ (2p+128b+64m+8G+259)(2p+128b+64m+8G+260).
+ \label{eq:dense-pairing-example}
+\end{equation}
+The first change gives $\ell=m+2b+3$, and the sixth gives
+\[
+ z=p+32\ell+4G+34=p+64b+32m+4G+130.
+\]
+Consequently \eqref{eq:dense-pairing-example} becomes simply
+\begin{equation}
+ (2z-1)(2z)=4z^2-2z.
+\end{equation}
+A dense quadratic row has become a one-variable quadratic without a new
+coordinate or a divisibility condition.  Its negative linear coefficient
+is harmless: natural restoration uses the original gate polynomial, not
+coefficientwise positivity of the transformed row.  The other changes
+make analogous affine-accumulator cancellations.
+
+For integral $k$ and distinct $i,j$, an elementary residual change
+$R_i\gets R_i+kR_j$ is reversed by subtraction.  Thus every supplied
+residual-basis sequence preserves the common zero set.  Over natural inputs
+the sum of squares is zero precisely when every residual is zero, so each
+newly squared basis has the same natural zeros.  The numerical
+sum-of-squares polynomial itself need not remain equal.  The principal,
+low-height, $203$- and $204$-variable profiles use respectively
+$24,53,25,26$ such reversible row changes.
+
+\subsection{A separate degree-eight dimension tradeoff}
+
+The raw chart also yields a $200$-variable polynomial of exact degree eight
+with $152$ residuals, $10\,392$ expanded monomials and height
+$13\,654\,244$.  This is not a quartic-dimension improvement.
+
+Write $n=q>0$, $A=\texttt{shared.lower\_A}+\texttt{shared.A\_slack}$,
+and $T=2An-n^2-1$.  Retain the three inherited pooled pairs $(Y_i,Z_i)$
+and affine output expressions $m_i$, and retain the natural witness $M$.
+The three pooled quadratic rows are
+\begin{align*}
+ R_0&=U-\sum_iY_i^2,\\
+ R_1&=K-2\sum_iY_i(m_i+Z_i)-(2A-n)M+nU,\\
+ R_2&=\sum_i(m_i+Z_i)^2+M-nK.
+\end{align*}
+Neither $U$ nor $K$ occurs elsewhere.  Delete them and these three rows,
+and retain the single quartic residual
+\begin{equation}
+ Q=\sum_i(m_i+Z_i-nY_i)^2-TM
+   =R_2+nR_1-n^2R_0.
+ \label{eq:direct-pooled-quartic}
+\end{equation}
+Projection takes every natural zero of the quadratic system to a natural
+zero of the new system.  Conversely, first restore the syntax gates and
+use the unchanged unpooled power authentication to obtain $n>0$, before
+interpreting any pooled power.  Set
+\[
+ U=\sum_iY_i^2,\qquad
+ K=2\sum_iY_i(m_i+Z_i)+(2A-n)M-nU.
+\]
+The first expression is natural and the second is integral.  Equation
+\eqref{eq:direct-pooled-quartic} gives
+$nK=\sum_i(m_i+Z_i)^2+M\geq0$; hence $K\geq0$.  Thus both eliminated
+witnesses are restored in the natural domain.  Integrality of $K$ comes
+from its polynomial formula, not an unproved divisibility assertion.
+
+\subsection{Calibration and exact verification}
+
+The gate restoration recovers the entire inherited residual system before
+any Pell or semantic theorem is used.  Its strengthened lower frame,
+additive frame budgets, and inverse-power argument for the $y+1$ seed are
+unchanged.  In particular no deleted orientation is silently re-assumed.
+The inherited finite-refutation theorem therefore transfers to every
+profile above.  With the fixed effective ZFC presentation and its retained
+C222/ZF/ZFC calibration, ZFC proves that each displayed no-natural-zero
+sentence is equivalent to $\operatorname{Con}(\mathrm{ZFC})$.
+
+The package contains every residual and every collected integer
+coefficient.  An independent standard-library checker uses sparse
+exponent maps to verify both affine compositions, every transformed row,
+the original positive gate definitions and their dependency order, all
+sum-of-squares coefficients, and the elimination identities.  Separate
+checks replay and reverse every residual-basis change and reject corrupted
+certificates.  A clean rebuild reproduces the coefficient files, and the
+printed TeX residuals are parsed back to their exact polynomials.  Normal
+and optimized Python executions both pass.  These finite computations
+check exact algebra; they are not represented as an end-to-end
+proof-assistant formalization of the unbounded inherited theorem.

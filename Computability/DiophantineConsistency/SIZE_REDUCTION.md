@@ -13,23 +13,36 @@ not establish the size of a complete consistency equation.
 
 ## 25 October continuation
 
-The maintained page uses the fully reviewed **block-mask2963** recipe,
-which describes literally the same polynomial as low-padding2963. Its
-four raw integers total69685 bytes:848 below2999 and25004 below
-admissible942, versus95205 for4049,97046 for4127,98219 for4177,
-141226 for6007,172011 for7309,180987 for7691,207214 for three-anchor47
-and242484 for radix55. Complete TeX4970 saves26 from low-padding2963;
-nonwhite extracted text2638 saves19 and PDF159270 saves432. Gzip stays4202.
-Fonts and the15-positive/66-operation/degree157 profile are unchanged.
-Pclp remains discharged; see the [candidate](candidates/one-page-block-mask2963/README.md).
+The maintained [decimal reversed2521 page](candidates/one-page-reversed-carrier65-2521/README.md)
+has**14 positive unknowns,65 integer-leaf operations and exact degree150**.
+The uniform Carrier65 front and its positive maps are unchanged. The new
+native tuple has a complete ordinary proof, discharged Pcrv and full
+root/peer reviews; its four integers total59297 raw bytes,10152 below
+scaled2953, a reduction of about14.6%.
 
-The exact physical support0..950,960..985 and1005 gives two geometric
-blocks and one isolated marker. Inlining the two weighted label sums
-removes Psi while preserving every coefficient and all four whole integers.
-The [identity audit](research/block-mask-recipe/NOTE.md), actual source
-corruption checks, whole66-row graph and two actual page inspections pass.
-The inherited916 low-padding tests and combined origin4*G917, complete
-phase/count/rank/controller proof and both P66 witness maps are unchanged.
+The explicit permutation pi(0)=0,pi(i)=942-i keeps the entire abstract
+942-tile table and uses x raised to pi(i) in Phi. The complete high-index
+coefficient sum supplies unconditional resets before marker1004. Clause1515
+recovers one-hotness before the global phase19 exclusion. All916 bit3
+padding tests follow from complete selector-only input arrays and residues
+at most5 modulo2048. The combined low mask is8*G917-4. The entire mask,
+actual rank and safe-subset proof uses the new tuple, with controller
+orders23/1260, prime231841 and H34/1660/56592.
+
+The owner requested base10 and distinct scalar names. Every future maintained
+TeX/PDF must retain those preferences. The page prints all781 decimal digits,
+uses unsubscripted front names, and keeps every942 indexed tile and430 action.
+The five factors are P,Q,U,W,Z. Fonts stay9pt body/7.7pt numeral/footer.
+TeX5217 and extracted nonwhite text2872 increase58/32 against decimal2953;
+PDF151798 grows810 and gzip4172 saves49 bytes. This is a coefficient-size
+improvement with a small explicit-permutation display cost, not all-metric
+dominance. The preceding complete decimal2953 page is preserved.
+
+Next directions are a shorter reverse-discovery decimal numeral for exactly
+the same actions, and further explicit selector orders. The finite sorted2501
+lead saves another468 raw bytes but needs a full ordinary proof and complete
+printed-cost comparison before adoption. The unpromoted scaled2953 P66 page
+and all earlier recipes remain available as separately reviewed checkpoints.
 
 The [single-rational rank evaluator](research/single-rational-rank65/README.md)
 gives65 operations for the same bound three-anchor47 polynomial while
@@ -48,7 +61,8 @@ at70157. The latter proves the controller for all47/19/157 divisors of
 its squarefree d, removing the former prime-length restriction. The low
 padding argument then shortens the tuple to2963 while simplifying the
 source mask. The accepted exact block recipe then shortens the printed
-definition. Next work tests doubled clause weights and lower clauses.
+definition. Doubled weights then shorten the tuple to2953. Next work
+reorders selectors and tests lower clauses while preserving the complete language.
 Every new tuple requires a complete proof and finite certificate; exact
 recipe identities require whole-port equality and separate page review.
 
@@ -72,7 +86,7 @@ upper bits. It gives96670 raw bytes for the preserved4127 geometry while
 adding eight TeX bytes. A complete new ordinary composition remains
 necessary; this conditional tradeoff does not replace the maintained page.
 
-The requested neighboring research is relevant at two different interfaces.
+The requested neighboring research supplies several complementary interfaces.
 [Hilbert Tenth](../HilbertTenthProblem/README.md) supplies the half-binomial
 and Pell techniques already used by the front; a new transfer must count
 all gates and restore complete native witnesses.
@@ -80,6 +94,12 @@ all gates and restore complete native witnesses.
 K215 machine already encoded by the430 actions. Further seed savings need
 a smaller complete calibrated machine or an improved encoding of that exact
 machine, including initialization. State count alone is insufficient.
+The [con-zfc-diophantine-forms collection](con-zfc-diophantine-forms/README.md)
+provides complete alternate constructions and inherited proof interfaces.
+Package170 records related quotient-carrier methods; package174 records
+Start-marker compositions and the explicit limits of transferring its trace
+substitution. Their delivered packages remain frozen. New transfers require
+whole ordinary witness maps and actual coefficient bindings, as in Carrier65.
 
 Continue with shorter anchor layouts, integer-only rank and transport
 sharing, and smaller finite label/seed recipes. Preserve exact
@@ -96,7 +116,8 @@ zero-set maps, full coefficient recipes and domain/metric distinctions.
 | Integers | 315 / 316 | not optimized | 4 | Preserved balanced-shear parents;217/218 rows,5809/5803 terms,height98336,row height256 |
 | Integers | 315 / 316 | not optimized | 4 | Complete fixed58-shift parents;217/218 rows,5743/5737 terms,height128446,row height256; separate full fast verification accepted |
 | Integers | 315 / 316 | not optimized | 4 | Preserved raw parents;217/218 rows,7999/7987 terms,height14250071 |
-| Positive integers | **15** | **66** | **157** | Maintained complete one-page indexed equation and every constant; all actual-page/replay/visual checks pass |
+| Positive integers | **14** | **65** | **150** | Maintained complete decimal page and every constant; full positive maps, exact graph, source and visual checks pass |
+| Positive integers | 15 | 66 | 157 | Preserved complete P66 pages and coefficient checkpoints |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 96 | 70 | Free positive J and an identical polarized norm tail |
 | Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |

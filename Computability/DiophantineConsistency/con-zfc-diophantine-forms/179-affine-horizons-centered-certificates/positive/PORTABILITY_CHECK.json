@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "action": "Copied whole updated package to an unrelated temporary directory and reran ./reproduce.sh",
+  "receipts_byte_identical": [
+    "CHECK.json",
+    "CHECK_OPTIMIZED.json",
+    "VARIANTS_CHECK.json",
+    "VARIANTS_CHECK_OPTIMIZED.json",
+    "start_marker4177/CHECK.json",
+    "start_marker4177/CHECK_OPTIMIZED.json",
+    "late172/CHECK.json",
+    "late172/CHECK_OPTIMIZED.json"
+  ],
+  "scope": "All old controls and new late172graphs, full coefficient/physical-support/Pcs replay; source172parent independently deepchecked normally/optimized in late172/PARENT_REPLAY.json.",
+  "exact_replay_script": "reproduce.sh",
+  "source172_parent_included_in_portable_replay": [
+    "python3 -B late172/parent/build.py --check",
+    "python3 -B late172/parent/verify.py --deep --mutations --receipt <temporary>/PARENT_NORMAL.json",
+    "python3 -B -O late172/parent/verify.py --deep --mutations --receipt <temporary>/PARENT_OPTIMIZED.json",
+    "cmp normal optimized; cmp normal late172/parent/CHECK_DEEP.json"
+  ],
+  "remaining_portability_issue": "Only the transparently recorded original4177 upstream gzipOS-header03/ff full-build discrepancy; newgraph rebuild, frozencompressed hashes, full rawinteger reconstruction, Pcs and all listedmathematical checks pass."
+}

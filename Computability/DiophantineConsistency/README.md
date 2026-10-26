@@ -19,41 +19,57 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **complete block-mask2963 equation
-in fifteen positive unknowns, exact degree157, with66 integer-leaf binary
-operations**. All four fixed constants, the436-character numeral, alphabet,
-closed430-action decoder and942 admissible tiles fit on one Letter page
-at9-point body and7.7-point seed/footer sizes.
+[equation.tex](equation.tex) print the **complete decimal Carrier65 equation
+in fourteen positive unknowns, exact degree150, with65 integer-leaf binary
+operations**. The encoded integer appears as all781 ordinary decimal digits.
+Every scalar in the polynomial front has a distinct unsubscripted name;
+the five factors are P,Q,U,W,Z and the two masks are mu,omega.
+The full430-action decoder and942 indexed tiles remain on one Letter page
+at9-point body and7.7-point numeral/footer sizes.
 
-The [complete candidate](candidates/one-page-block-mask2963/README.md)
-defines exactly the same polynomial as low-padding2963, with**69685 raw
-integer bytes** and4202 gzip bytes. Two contiguous physical-mask blocks
-and an inline weighted polynomial remove a helper definition. Complete
-TeX falls26 bytes to4970, nonwhite `pdftotext -layout` text19 characters
-to2638 and actual PDF432 bytes to159270. Fonts and all equation data remain.
-The [exact identity audit](research/block-mask-recipe/NOTE.md) checks every
-physical/weighted coefficient and the four whole integers. Actual printed
-marker, dummy, inline-weight and initializer corruptions are rejected.
-The [page review](reviews/block-mask2963-page-peer.md) records an independent
-whole-page inspection; root acceptance and complete manifests close the bundle.
+The [complete reversed2521 candidate](candidates/one-page-reversed-carrier65-2521/README.md)
+uses**59297 raw fixed-integer bytes**,10152 below the preceding decimal2953
+page, a reduction of about14.6%. Its explicit permutation fixes Start0
+and reverses the other941 selectors. The abstract tile table is unchanged;
+Phi uses the printed exponent pi(i), moving the initializer from abstract928
+to physical14. All four new integers are coherent and independently checked.
 
-The inherited [whole ordinary proof](research/low-padding-independent/PROOF.md)
-places all916 padding tests at bit2 in fields1..916. Their aligned digits
-are at most3 with zero incoming carry; the origin and padding combine as
-4*G917(rho). The final product2961 resets and top field2962 is zero.
-The marker-first phase, Boolean count, full alignment, actual rank, safe
-increments and both positive P66 maps remain unchanged.
-The [finite certificate](research/low-padding-independent/certificate.json)
-discharges Pclp with orders23/2962, prime1362521 and H29/2938/492699.
-Full [root](reviews/low-padding2963-root.md) and
-[independent](reviews/low-padding2963-independent-peer.md) math reviews pass.
-[CURRENT_EQUATION.json](CURRENT_EQUATION.json) explicitly records polynomial
-identity and preserves the preceding metadata verbatim.
+The [native proof](research/reversed-selector-independent/PROOF.md) uses
+the complete reversed coefficient tail to reset every field0..1003 before
+decoding. Marker1004 parity first recovers an integral field rotation;
+clause1515 then decodes every cell, including its extra Boolean summand.
+The complete South-color graph excludes the residual offset19. All916
+padding tests use bit3, with low residues at most5 modulo2048; the native
+low mask8*G917-4 preserves origin bit2. The full proof covers every copy,
+mask, rank, safe subset and both positive P66 maps. Its
+[finite certificate](research/reversed-selector-independent/certificate.json)
+discharges Pcrv with orders23/1260, prime231841 and H34/1660/56592.
+Full [root](reviews/reversed-selector2521-root.md) and
+[independent](reviews/reversed-selector2521-independent-peer.md) reviews pass.
+
+The [Carrier65 proof](research/carrier65-independent/PROOF.md) applies at
+these exact ports. Its first Pell trace tau=En+k-R recovers the omitted
+positive quotient after establishing norm signs and rank bounds; canonical
+parent witnesses supply the converse. The complete65-row graph and its
+nonzero degree150 leader remain unchanged, with the same full
+[root](reviews/carrier65-root.md) and
+[peer](reviews/carrier65-independent-peer.md) arithmetic reviews.
+
+All781 source/PDF digits and every430 action are preserved. The actual
+printed permutation reconstructs every942 physical tile and3297 coefficient.
+Complete TeX is5217 bytes, nonwhite `pdftotext -layout` text2872 characters,
+PDF151798 bytes and gzip integers4172 bytes. Against decimal2953, TeX
+adds58 bytes and extracted text32 characters; PDF grows810 bytes and
+gzip shrinks49. The [independent page review](reviews/reversed-carrier65-2521-page-peer.md)
+and [CURRENT_EQUATION.json](CURRENT_EQUATION.json) bind complete sources,
+all four ports, actual rendering and the exact preceding metadata.
 
 The proof remains ordinary mathematics composed with the retained explicit
 K215/refutation calibration. No new end-to-end Lean or encoded object-ZFC
 proof, consistency decision or global minimum is claimed. Lean remains
-paused. The [low-padding2963](candidates/one-page-low-padding2963/equation.pdf),
+paused. The [decimal2953](candidates/one-page-decimal-carrier65-2953/equation.pdf),
+[block-mask2963](candidates/one-page-block-mask2963/equation.pdf),
+[low-padding2963](candidates/one-page-low-padding2963/equation.pdf),
 [single-clause2999](candidates/one-page-parity-clause2999/equation.pdf),
 [admissible942](candidates/one-page-admissible942/equation.pdf),
 [Boolean4027](candidates/one-page-boolean-dummy4027/equation.pdf),
@@ -67,8 +83,10 @@ paused. The [low-padding2963](candidates/one-page-low-padding2963/equation.pdf),
 and [radix55](candidates/one-page-compact66-radix55/equation.pdf) pages remain
 preserved. Reviewed [single-clause3037](research/single-clause-independent/README.md)
 and [composite2983](research/composite-length-independent/README.md) proofs
-are intermediate checkpoints. Next work tests doubled clause weights and
-further complete coefficient layouts. The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
+are intermediate checkpoints, as is the reviewed
+[scaled2953 P66 page](candidates/one-page-scaled-clause2953/equation.pdf).
+Next work tests shorter decimal seed recipes and further selector orders,
+while preserving decimal notation and distinct scalar names. The [weighted-only Psi identity](research/weighted-only-psi/NOTE.md)
 preserves its bound tuple; [radix obstructions](research/radix-parity-independent/README.md)
 explain why direct46/45 substitutions need different proof interfaces.
 
@@ -77,8 +95,8 @@ The [previous radix67 compact page](candidates/one-page-compact66/equation.pdf),
 [original66/157 page](candidates/one-page-fifteen66/equation.pdf) remain
 unchanged. Against the preserved
 [ten-positive85/328 page](candidates/one-page-doubled85/equation.pdf),
-the arithmetic improvement still saves nineteen operations and171 degree
-while adding five unknowns. All predecessor pages and histories remain
+the arithmetic improvement saves twenty operations and178 degree
+while adding four unknowns. All predecessor pages and histories remain
 available. No global minimum, consistency decision or new Lean derivation
 is claimed; Lean remains paused.
 

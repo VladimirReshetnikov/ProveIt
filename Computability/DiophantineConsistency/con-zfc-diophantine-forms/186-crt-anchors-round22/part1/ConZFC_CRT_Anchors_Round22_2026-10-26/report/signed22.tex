@@ -1,0 +1,118 @@
+\section{Weighted growth and the emitted integer charts}
+\label{sec:signed22}
+The weighted source has $(h,c)=(32,32)$ in~\eqref{eq:growth}; the
+quadratic companion has $t=1024+4z^2$ and $K=1024t^2$.
+Both attain the admissible boundary $K/t\ge2^{20}$. Unlike a mere
+change of names, the actual defining residuals, frame atom and requested
+Pell index are all changed together and checked against the retained source.
+
+\subsection{A literal local majorant without a derived range}
+The removal of the derived-label range also requires an independent bound
+for the actual local Horn polynomial. Here is an explicit circuit argument.
+Put $R_0=2+t+x+y+F$. On a decoded local tuple, the genuine inputs
+$t,x,F,y+1,a+1,b,c,d,S,S',u,v_q,C$ are smaller than $R_0$; here $C$
+is the \emph{local residue}, not its enlarged global representative.
+The extra product $FS$ is bounded by $R_0^2$.
+
+For a monic gate $v=\sum_m c_m\prod_jv_{mj}$, suppose
+$|v_{mj}|\le R_0^{e_{mj}}$ and there are $n$ nonzero summands.
+Since $R_0\ge2$, the triangle inequality gives
+\[
+ |v|\le R_0^e,\qquad
+ e=\max_m\left(\lceil\log_2|c_m|\rceil+\sum_je_{mj}\right)
+       +\lceil\log_2n\rceil.
+\]
+Induction follows the actual monic dependencies, not a guessed syntactic
+name. The independent ledger checks coordinates 20 through 99 using
+rows 5 through 83 and 85 of the literal parent225 circuit. Removing exactly
+the $N$-quotient monomial from row 84 isolates the local constraint.
+Its resulting exponent is $5339613<2^{23}=8388608$. Thus the local
+nonnegative constraint is below $R_0^{2^{23}}$ without the removed
+range test. As already proved, $R_0<2x$ and $x>2^{32}$ imply
+$R_0^{2^{23}}<2^x$. This is precisely the strict modulus margin needed
+for exact decoding, and is independent of the inflated global $C$.
+
+\subsection{More detail on the signed anchor witnesses}
+For completeness we spell out the two sensitive divisions in the anchor
+argument. In the notation of Proposition~\ref{prop:anchor}, principal
+Pell classification at $|A|$ gives positive indices $i,l$ with
+$|Y|=Y_i(|A|)$ and $|J_Y|=Y_l(|A|)$. Strong divisibility gives $i\mid l$.
+Write $l=is$. Composition gives
+\[
+ Y_l(|A|)=Y_i(|A|)Y_s(X_i(|A|)),\qquad
+ Y_s(X_i)\equiv sX_i^{s-1}\pmod{Y_i}.
+\]
+The Pell norm makes $X_i$ a unit modulo $Y_i$. Since $Y_i^2\mid Y_l$,
+we get $Y_i\mid s$ and consequently $|Y|\mid l$. The independent
+abscissa comparison gives $j\equiv\pm i\pmod{2l}$ for the comparison
+index, while $D\equiv1\pmod{4Y}$ and $V_Y\equiv C\pmod{4Y}$ give
+$j\equiv\pm C\pmod{4|Y|}$. Hence
+$i\equiv\pm C\pmod{2|Y|}$. Together with
+$1\le i\le|Y|$ and $|C|<|Y|$, this proves $C\ne0$ and $i=|C|$.
+Neither nonnegativity nor a formula-label interpretation of $C$ is used.
+
+Conversely choose the positive canonical center and even $C$. With
+$Y=Y_C(A)$, $U=X_C(A)$, use $l=CY$ and $J_Y=Y_l(A)$.
+Composition and the polynomial expansion modulo $Y^2$ show
+\[
+ J_Y/Y^2\equiv U^{Y-1}\pmod Y.
+\]
+Since $Y$ is even and $U$ odd, this quotient is odd. Thus
+$e=(J_Y/Y^2-1)/2$ is integral. The index $l$ is even, so $J_X$ is odd;
+the norm gives $\gcd(J_X,8J_Y)=1$. CRT therefore solves
+\[
+ D\equiv A\pmod{J_X},\qquad D\equiv1+4J_Y\pmod{8J_Y}
+\]
+with $D\ge2$. Evaluating the Pell polynomials at $D$ gives all remaining
+comparison quotients integrally. The dominant index makes the cap slack
+nonnegative, and its ternary-square representation completes the cap.
+These are actual integer witnesses, not a divisibility assertion with an
+unjustified quotient.
+
+\subsection{Exact transport followed by two radical projections}
+The Round21 chart supplies proposed operations, not a semantic theorem
+about the new coordinate names. The literal emitted sequence retains
+only operations checked on the actual source:
+\begin{enumerate}
+\item Integer shears $x_j=y_j+ky_i$, $i\ne j$, with inverse
+$y_j=x_j-kx_i$.
+\item Integer row additions $R_i\leftarrow R_i+kR_j$, with inverse
+obtained by replacing $k$ by $-k$.
+\item Monic definitions $x_v=f(\widehat{x_v})$, followed by deletion of
+that row and coordinate. A quadratic restoration is used only when the
+old coordinate occurs linearly everywhere else and every final row
+remains quadratic. Inserting $f$ is the exact integral inverse on zeros.
+\end{enumerate}
+Each profile then admits two common-Hessian projections from
+Theorem~\ref{thm:radical-projection}. Their actual direction and row
+certificates satisfy the literal unit conditions, and the independent
+checker reconstructs both directions without importing the producer.
+Weighted growth gives 215 coordinates and 154 rows; quadratic growth gives
+214 coordinates and 153 rows. Subsequent support/height changes are
+invertible integer row operations. The sum of their squares may change
+away from the common zero set; no identity of those sums is asserted.
+
+The source change for the quadratic-growth companion deletes precisely
+the private $T_2=t^2$ coordinate and defining row, while changing
+$K=cT_2^2$ to $K=1024t^2$. The existing request is at actual $K$ and
+the frame keeps that actual value. This is not deleting a wire while
+leaving its old occurrences in the circuit.
+
+\subsection{The inherited calibration and literal identity pins}
+The parent225 residual array has SHA-256
+\begin{quote}\small
+\file{fee84c408828aba3e7ceebe9a37f58509327063aa7fd078fd49c80adf3af4e56}.
+\end{quote}
+The inherited anchor221 array has SHA-256
+\begin{quote}\small
+\file{4024d913bde43aa47e8be1fe8c4f36f560420e8b5ceef999d1625e2e31c31c3e}.
+\end{quote}
+The complete source dependency boundary and exact inventory accompany
+these arrays. The ordinary calibration uses
+\file{KEndpoint.c222_iff_zf_refutation} and
+\file{ConstructibleChoice.zf_refutation_iff_zfc_refutation}, pinned
+in the incoming source to commit
+\file{953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4}.
+The new proof transfers these statements by unbounded witness arguments
+and exact algebra, rather than claiming that a finite coefficient test
+establishes consistency or a new complete formalization.

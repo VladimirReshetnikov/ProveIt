@@ -1,0 +1,750 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=24mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,microtype,fancyhdr}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{17364C}
+\definecolor{muted}{HTML}{526170}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,citecolor=ink,
+ pdftitle={Diagonal Power Certificates for Diophantine Consistency},
+ pdfauthor={AI-assisted research prepared for the ProveIt project}}
+\urlstyle{tt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Diagonal power certificates}
+\fancyhead[R]{\small\color{muted}ProveIt research contribution}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Crefut}{\operatorname{Ref}_{\mathrm{C222}}}
+\newcommand{\ZFCrefut}{\operatorname{Ref}_{\mathrm{ZFC}}}
+\newcommand{\R}{\mathcal R}
+\newcommand{\Qdiag}{Q_{214}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\bitlen}{\operatorname{bitlen}}
+\newcommand{\height}{\operatorname{H}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ frame=single,framerule=0.3pt,rulecolor=\color{muted},xleftmargin=3pt,xrightmargin=3pt}
+
+\begin{document}
+\begin{center}
+{\Large\bfseries\color{ink} Diagonal Power Certificates\par}
+\vspace{3pt}
+{\Large\bfseries\color{ink} for Diophantine Consistency\par}
+\vspace{10pt}
+{\large A 214-variable integer quartic with coefficient height 219,813\par}
+\vspace{12pt}
+{Research prepared for Vladimir Reshetnikov's ProveIt project\par}
+{\small AI-assisted mathematical research and reproducible arithmetic audit\par}
+\vspace{5pt}
+{25 October 2026\par}
+\end{center}
+
+\begin{abstract}
+We give an explicit polynomial $\Qdiag\in\Z[x_0,\ldots,x_{213}]$,
+of degree four and coefficient height $219{,}813$, for which ZFC proves
+that absence of an integer zero is equivalent to its usual arithmetized
+consistency statement. The polynomial is the sum of squares of 153
+displayed quadratic residuals; its collected expansion has 5,656 monomials.
+The construction modifies ProveIt package 173's direct C222 consistency
+encoding. Its growth certificate is replaced by
+\[
+ t=464+z^2,\qquad K=464t^2,\qquad F=K^K.
+\]
+The power is represented by the existing ordinary polynomial Pell
+certificate: the already authenticated index $K$ also serves as the base.
+A positive-coefficient estimate for the actual C222 formula codes proves
+that this growth suffices, allowing one intermediate variable and one
+quadratic residual to be removed. At 214 variables and degree four, the
+new height is more than five million times smaller than that of package
+173's existing 214-variable companion, at the cost of 170 additional
+monomials. Earlier self-power constructions are explicitly credited.
+This is a concrete tradeoff within a direct small-coefficient construction,
+not a claim of global simplicity or a new universal-polynomial record.
+The ordinary proof uses identified inherited Pell and logical calibration
+theorems. Exact independent arithmetic checks accompany it; a new
+end-to-end proof-assistant formalization is not claimed.
+\end{abstract}
+
+\section{The equation and the precise result}
+
+\begin{definition}
+For the 153 quadratic residuals printed in Appendix~\ref{app:residuals}, set
+\begin{equation}\label{eq:main}
+ \boxed{\quad \Qdiag(x_0,\ldots,x_{213})
+       :=\sum_{j=0}^{152}\R_j(x_0,\ldots,x_{213})^2=0,
+       \qquad (x_0,\ldots,x_{213})\in\Z^{214}.\quad}
+\end{equation}
+Every variable is independently unrestricted over the integers. No
+positivity, divisibility, exponentiation, or omitted side condition is
+part of the definition.
+\end{definition}
+
+The complete quadratic coefficient list is
+\file{direct/diagonal214/equation.json}; the complete collected quartic is
+\file{direct/diagonal214/expanded_polynomial.json}. The appendix is generated
+from the former and checked against it. Thus \eqref{eq:main} specifies an
+ordinary fixed polynomial, rather than a polynomial schema or an
+exponential Diophantine equation. Powers with variable exponents below
+occur only in its mathematical interpretation.
+
+\begin{theorem}\label{thm:main}
+Using the identified C222/Pell and C222/ZF/ZFC calibration theorems of
+ProveIt, the following equivalence is provable in ZFC:
+\begin{equation}\label{eq:target}
+ \bigl(\neg\exists\mathbf x\in\Z^{214}\;\Qdiag(\mathbf x)=0\bigr)
+ \quad\longleftrightarrow\quad \Con(\mathrm{ZFC}).
+\end{equation}
+The polynomial has exact degree four, 5,656 nonzero collected monomials,
+and coefficient height $\height(\Qdiag)=219{,}813$.
+\end{theorem}
+
+Here $\Con(\mathrm{ZFC})$ means that no finite derivation of falsity exists
+in the fixed effective first-order ZFC presentation used by ProveIt.
+This is the syntactic consistency predicate, not an assertion of external
+truth or existence of a transitive set model. The ordinary proof establishes
+the positive existence equivalence
+\begin{equation}\label{eq:positive}
+ \exists\mathbf x\in\Z^{214}\;\Qdiag(\mathbf x)=0
+ \quad\longleftrightarrow\quad \ZFCrefut;
+\end{equation}
+negation gives \eqref{eq:target}. No consistency assumption is required
+to prove these equivalences. In particular, this report does not prove
+that the displayed equation lacks solutions.
+
+The meaning of ``using'' in the theorem is ordinary mathematical reliance
+on stated earlier theorems, not an extra consistency hypothesis. The new
+arithmetic changes are proved here. The inherited unbounded logical
+calibration is credited and its formalization boundary is stated in
+Section~\ref{sec:boundary}.
+
+\subsection{What improves, and what does not}
+
+The parent is the principal equation of package 173,
+\file{173-crt-index-anchor-215}, at repository commit
+\texttt{02a78a08603cbae248c19c23a75907c6c6bd6443}~\cite{parent173}.
+All equations in the following comparison have degree four and use
+unrestricted integer variables.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Equation & Variables & Residuals & Monomials & Coefficient height\\
+\midrule
+Package 173, principal $P_{215}$ & 215 & 154 & 5,660 & 91,679\\
+Package 173, companion $P_{214}$ & 214 & 153 & 5,486 & 1,099,511,627,852\\
+\textbf{This report, $\Qdiag$} & \textbf{214} & \textbf{153} & \textbf{5,656} & \textbf{219,813}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Relative to $P_{215}$, one variable and one residual disappear, while
+height increases. Relative to the existing $P_{214}$, height falls by a
+factor greater than five million, while support increases by 170
+monomials, about $3.10\%$. Package 173 also has a 213-variable companion,
+whose height is $2{,}417{,}851{,}639{,}242{,}452{,}488{,}945{,}685$.
+The broader repository contains much smaller variable counts with other
+degree and coefficient tradeoffs. Accordingly, ``simplest'' has no
+established single optimum here. The defensible claim is the explicit
+measured improvement in the table.
+
+The general diagonal-growth idea $F=t^t$ already occurs in package 170
+and its sources~\cite{prior170}. The new contribution is the source-specific
+label majorant, the amplified diagonal $F=K^K$ with $K=464t^2$, its
+application to the range-free C-anchor interface, and the fully emitted
+low-height endpoint. Neither the general self-power idea nor the
+inherited C-anchor construction is claimed as new.
+
+\section{A literal five-row change}
+
+The parent coordinate chart has been optimized by translations, so
+historical variable names are not by themselves semantic definitions.
+The coordinates that matter here are exactly
+\begin{align*}
+ t&=x_0, & F&=x_2, & C&=2x_{16}, & K&=x_{93},\\
+ W&=x_{131}, & A&=x_{132}, & E&=x_{139}, & q_{\mathrm{pow}}&=x_{140},\\
+ D_K&=x_{181}, & Y_K&=x_{182}, & X_K&=x_{183}+1, & z&=x_{185}.
+\end{align*}
+$A$ is the common signed Pell center, $C$ the actual encoded row-index
+representative, and $W$ the shared frame. In particular, $x_{183}$ is
+$X_K-1$, not $X_K$. The unchanged rows 126 and 127 say
+\begin{align}
+ 1-AY_K-D_K+x_{183}&=0,\label{eq:paira}\\
+ -1+2D_K-D_K^2+2D_Kx_{183}+Y_K^2&=0.\label{eq:pairb}
+\end{align}
+Substituting $X_K=x_{183}+1=D_K+AY_K$ in \eqref{eq:pairb} gives
+$X_K^2-(A^2-1)Y_K^2=1$. The retained cap and orientation certificates
+authenticate its canonical index as $K$.
+
+The old semantic growth data were
+\[
+ t=128+4z^2,\qquad T_2=t^2,\qquad K=T_2^2=t^4,\qquad F=t^K.
+\]
+The new data are
+\begin{equation}\label{eq:newgrowth}
+ \boxed{t=464+z^2,\qquad K=464t^2,\qquad F=K^K.}
+\end{equation}
+To implement this change, retain coordinates $x_0,\ldots,x_{213}$,
+delete $x_{214}=T_2$, and change only the following parent rows:
+\begin{center}
+\begin{tabular}{rl}
+\toprule
+Row & New quadratic residual\\
+\midrule
+96 & $1+K^2-2KA+E$\\
+97 & $F-D_K-KY_K+E q_{\mathrm{pow}}$\\
+128 & $\R^{\mathrm{old}}_{128}+t^2-K^2$\\
+130 & $t-464-z^2$\\
+152 & $K-464t^2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Delete old row 153. Old rows 152 and 153 were $x_{214}-t^2$ and
+$K-x_{214}^2$. No other row used $x_{214}$; no other row uses the horizon
+root $z$. All other retained residuals are identical to the parent.
+
+Rows 96 and 97 are the same singleton Pell power certificate with base
+changed from $t$ to $K$. The index is still $K$, so no new principal pair
+is introduced. The actual square frame formerly contained the growth
+base $t$ and the index $K$. It now contains $K$ in both roles. The change
+$+t^2-K^2$ in row 128 performs exactly this replacement; deleting the
+existing index occurrence would be incorrect. The independent reviewer
+reconstructed all 35 frame atoms, including affine translations and the
+two occurrences of $K$.
+
+This transformation preserves existence of witnesses through their
+finite-refutation meaning. It is not a pointwise substitution between
+complete old and new zero sets: the horizons and huge growth values
+change. Both directions must therefore be proved semantically.
+
+\section{A certified bound for the actual formula labels}\label{sec:labels}
+
+The source calculus is the same square-shell recoding of C222 used by
+the parent. Its constructor polynomials are
+\begin{align*}
+ I(a,b)&=2\bigl((a+b)^2+a\bigr),& M(a,b)&=I(a,b)+1,\\
+ A_{\mathrm{syn}}(a,b)&=2\bigl((a+b)^2+3a+4b+3\bigr),&
+ E_{\mathrm{syn}}(a,b)&=A_{\mathrm{syn}}(a,b)+1.
+\end{align*}
+The syntax constructor $A_{\mathrm{syn}}$ is distinct from the Pell center
+$A$. Let $J(a,b,c,d)$ be the sum of the nine unchanged axiom-code
+expressions and the five expressions $a,b,I(a,b),A_{\mathrm{syn}}(a,b),1$.
+Every possible nonzero local conclusion or premise label is bounded by
+$J$. Write $j(s)=J(s,s,s,s)$. This is a mathematical majorant only: no
+new equation variable or range request for $J$ is added.
+
+\subsection{The finite arithmetic certificate}
+
+The authenticated source \file{majorant/shell_source.py}~\cite{shell112} is 2,955 bytes,
+with SHA-256 recorded in Appendix~\ref{app:reproduce}. Its actual
+\file{codes_only} path is executed through a positive arithmetic DAG by
+\file{majorant/check_label_majorant.py}. The DAG has 312 nodes. All
+coefficients are nonnegative, and the exact degrees of its fourteen
+summands, in source order, are
+\[
+ 16,8,8,8,8,32,16,8,524288,1,1,2,2,0.
+\]
+Thus $\deg j=524288$. The decisive exact inequalities are
+\begin{align}
+ \bitlen\bigl(j(464)\bigr)&=5{,}692{,}913,\label{eq:bits1}\\
+ \bitlen\bigl(464^{645888}\bigr)&=5{,}721{,}264.\label{eq:bits2}
+\end{align}
+In particular,
+\begin{equation}\label{eq:onepoint}
+ j(464)<2^{5692913}<2^{5721263}\le 464^{645888}.
+\end{equation}
+
+The finite certificate uses exact integer arithmetic with outward-rounded
+dyadic bounds, not floating-point logarithms. For example, it supplies
+\begin{align*}
+ j(464)&\le 12187191352475505376\cdot2^{5692849},\\
+ 464^{645888}&\ge14263689019699129227\cdot2^{5721200}.
+\end{align*}
+The matching lower and upper bounds locate each integer in a unique binary
+interval. The optional \file{--exact} check evaluates the full integers
+and confirms the bit lengths; that check was also run for this package.
+It is unnecessary to expand the degree-524288 polynomial.
+
+\begin{lemma}[Positive-coefficient extrapolation]\label{lem:coeff}
+Let $p(X)=\sum_{i=0}^{D}a_iX^i$ with $a_i\ge0$. If $t\ge c>0$,
+$d\ge D$, and $p(c)<c^d$, then $p(t)<t^d$.
+\end{lemma}
+\begin{proof}
+For each $i\le D$, $t^i=c^i(t/c)^i\le c^i(t/c)^D$. Hence
+\[
+ p(t)\le p(c)(t/c)^D<c^d(t/c)^D\le t^d.
+\]
+Clearing denominators gives an equivalent integer argument.
+\end{proof}
+
+Set
+\begin{equation}\label{eq:ldef}
+ c_*=464,\qquad d_*=3c_*^2=645888,\qquad L(t)=t^{d_*}.
+\end{equation}
+Since $d_*\ge524288$, Lemma~\ref{lem:coeff} and
+\eqref{eq:onepoint} give $j(t)<L(t)$ for every integer $t\ge464$.
+The retained independent parameter ranges give $0\le a,b,c,d<t$ at every
+decoded local row. Monotonicity therefore yields
+\begin{equation}\label{eq:alllabels}
+ J(a,b,c,d)\le j(t-1)<j(t)<L(t).
+\end{equation}
+This is a uniform proof for all possible witnesses. The single finite
+evaluation is a certificate for the hypothesis of an unbounded
+positive-coefficient lemma, not evidence from sampling.
+
+The same certificate finds that $c=462$ fails this particular sufficient
+test, while $c=463$ succeeds. We choose the convenient even coefficient
+464, which supplies the parity margin used below. This observation is
+not a minimality proof for the chosen constant or for any Diophantine
+construction.
+
+\section{The amplified diagonal growth lemma}
+
+\begin{lemma}\label{lem:power}
+If $t\ge c\ge3$ are integers, then $c^t\ge t^c$.
+\end{lemma}
+\begin{proof}
+At $t=c$ there is equality. For every $n\ge c$,
+\[
+ (1+1/n)^c\le(1+1/c)^c
+ \le\sum_{r=0}^{c}\frac1{r!}<3\le c.
+\]
+The strict bound follows from $r!\ge2^{r-1}$ for $r\ge2$ and the finite
+geometric sum. Thus $(n+1)^c<cn^c$. Multiplying the induction hypothesis
+$c^n\ge n^c$ by $c$ proves $c^{n+1}\ge(n+1)^c$.
+\end{proof}
+
+\begin{proposition}\label{prop:growth}
+The semantic data \eqref{eq:newgrowth} satisfy
+\begin{equation}\label{eq:growthbound}
+ F\ge L(t)^t=t^{645888t}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Put $c=c_*=464$. Since $t\ge c$ and $K=ct^2$,
+\begin{align*}
+ F=K^K
+  &=(ct^2)^{ct^2}
+    =(c^t)^{ct}\,t^{2ct^2}\\
+  &\ge t^{c^2t+2ct^2}
+   \ge t^{3c^2t}=L(t)^t.
+\end{align*}
+The first inequality uses Lemma~\ref{lem:power}; the second uses $t\ge c$.
+\end{proof}
+
+The useful design principle is that a very large authenticated index can
+also be its own base. The parent already paid for the $K$-index Pell pair.
+Increasing its numerical role, while bounding the actual source labels
+more accurately, replaces two quadratic growth-index gates by one.
+This changes the growth certificate without changing the logical
+calculus or introducing a machine simulation.
+
+\section{Why the growth bound is enough}\label{sec:separation}
+
+The following sharp lemma is inherited from package 173. Its proof is
+included because it explains exactly what the new certificate must supply.
+
+\begin{lemma}[Finite-product separation]\label{lem:separation}
+Let $t,L,F$ be positive integers, $L\ge t$ and $F\ge L^t$.
+Let $U,V$ be finite multisets in $\{1,\ldots,L\}$, with $|U|\le t$
+and $|V|\le2t+1$. If
+\[
+ \prod_{u\in U}(1+uF)=\prod_{v\in V}(1+vF),
+\]
+then $U=V$ with multiplicities.
+\end{lemma}
+\begin{proof}
+First recover the factor counts. If they differ, set
+$r=\min(|U|,|V|)\le t$. The larger product is at least $(F+1)^{r+1}$;
+the smaller is at most $(1+LF)^r\le L^r(F+1)^r$. Equality would give
+$F+1\le L^r\le F$, a contradiction. Thus $|U|=|V|=m\le t$.
+The case $m=0$ is immediate.
+
+Replace $F$ by an indeterminate $Z$. Every coefficient of either product,
+in each degree $0\le k\le m$, is a positive integer at most
+\[
+ \binom{m}{k}L^k\le m^{m-k}L^k\le L^m\le F.
+\]
+Here $\binom{m}{k}=\binom{m}{m-k}\le m^{m-k}$. Differences of corresponding
+coefficients have absolute value strictly less than $F$, including when
+one original coefficient equals $F$.
+
+If the difference polynomial is nonzero, let $r$ be its least nonzero
+degree, with coefficient $b_r$. Equality at $Z=F$, divided by $F^r$ and
+reduced modulo $F$, forces $F\mid b_r$, contradicting $0<|b_r|<F$.
+The polynomials are identical. Unique factorization in $\mathbb Q[Z]$,
+or the distinct rational roots $-1/j$, recovers every label multiplicity.
+\end{proof}
+
+The decoded local rules have conclusion $v_i$ and two premises $p_i,q_i$;
+missing premises are padded by truth, whose code is zero. Put $w_j=1+Fj$,
+so $w_0=1$. The retained pending-state update is
+\[
+ S_{i+1}w_{v_i}=S_iw_{p_i}w_{q_i}.
+\]
+The beta endpoints give the initial state $F+1$ and final state $1$.
+The possible boundary case $y=F$ would make the initial residue zero;
+the positive weights would propagate zero to the final state, a
+contradiction. Hence $y>F$, all states are positive, and multiplication
+and cancellation of the $t$ updates gives
+\begin{equation}\label{eq:balance}
+ \prod_{i<t}w_{v_i}=(1+F)\prod_{i<t}w_{p_i}w_{q_i}.
+\end{equation}
+After discarding truth factors, the left side has at most $t$ factors
+and the right side at most $2t+1$. Equations \eqref{eq:alllabels} and
+\eqref{eq:growthbound} allow Lemma~\ref{lem:separation} to be applied.
+Consequently conclusion multiplicity minus premise multiplicity is
+one at falsity label 1 and zero at every other positive label.
+
+Take the closure of truth under the finitely many instantiated rules.
+If falsity were outside it, each rule with an outside conclusion would
+have an outside premise. Its contribution to the total outside-label
+balance would be nonpositive; the total could not be one. This contradicts
+the recovered multiplicities. The argument extracts a finite C222
+refutation even if the selected rule multiset contains cycles or repeated
+premises. No topological ordering is assumed.
+
+\section{Soundness: every integer zero gives a refutation}\label{sec:soundness}
+
+Assume $\Qdiag(\mathbf x)=0$ for an arbitrary integer tuple. Since it is
+a sum of integer squares, each residual vanishes. Row 130 gives $t\ge464$,
+and row 152 gives $K=464t^2>0$, with $K$ even. The required order of the
+remaining deductions is important.
+
+\subsection{Recover the canonical powers before postponed signs}
+
+The unchanged frame rows give a large nondegenerate signed center $A$;
+the frame contains every actual requested base, index, and output.
+The parent's C-anchor theorem~\cite{parent173} classifies the anchor
+pair and bounds all principal indices before the sign of the actual CRT
+representative $C$ is known. Its squared cap and bounded-error orientation
+then authenticate every principal pair, including the retained $K$ pair.
+This theorem remains applicable: the modified frame has the same form
+and still contains all actual atoms. In particular, both the growth base
+and growth index are the already positive $K$.
+
+Rows 96 and 97 are exactly the singleton power certificate for this
+base and index. They therefore force $F=K^K$. Thus $F>0$ is even before
+the original sign bootstrap is used. Since $C=2x_{16}$ is even and the
+retained divisibility is $B\mid C+F+1$, $B$ is nonzero and odd. The
+self-sized radix multiplier remains 2 modulo 4, so its first nontrivial
+power has a base of absolute value at least two. The unchanged singleton
+and pooled power arguments can now recover the other powers and their
+signs in the original order. None of this assumes the desired semantic
+power equality before applying its certificate.
+
+\subsection{The unchanged range and local-row interface}
+
+All nine independent local-column range requests remain: four formula
+parameters, two pending states, two beta quotients, and the encoded row
+index. The only derived-label range previously removed by package 173
+is still absent. Section~\ref{sec:labels} supplies its needed upper bound.
+The local Horn polynomial, both beta endpoint congruences, the binomial
+range certificates, and every-prime CRT compatibility are unchanged.
+
+The inherited sign and beta bounds give $y\ge F$ and
+$x\ge2+(t+1)y$, where $x$ denotes the beta code (not a free new coordinate).
+For the local polynomial let $R_0=2+t+x+y+F$. The parent's uniform bound
+is
+\[
+ 0\le\mathrm{Local}<R_0^{2^{23}}.
+\]
+The new growth is stronger than $F\ge t^t$, and $t\ge464>16$; hence
+$x>2^{32}$ and $R_0<2x$. If $2^k\le x<2^{k+1}$ with $k\ge32$, then
+$2^{23}(k+2)<2^k\le x$, so $\mathrm{Local}<2^x$. Thus the unchanged
+prime-power selector still upgrades local congruences to exact zero
+rows. This is the same unbounded local estimate, not a check at particular
+witness values.
+
+For the binomial-selector radius, put
+$\Lambda_t=\operatorname{lcm}(1,\ldots,t)$. The uniform estimate
+\begin{equation}\label{eq:radius}
+ \Lambda_t^2\le(t!)^2\le t^{2t}\le F
+\end{equation}
+follows from Proposition~\ref{prop:growth}. It avoids any parity
+restriction on $t$. An earlier, sharper estimate proved only for even
+horizons is not being used.
+
+Consequently the decoded local rows satisfy the update and endpoints
+used in Section~\ref{sec:separation}. Product separation and the
+finite Horn-closure argument yield a C222 refutation. We have proved
+\begin{equation}\label{eq:sound}
+ \exists\mathbf x\in\Z^{214}\;\Qdiag(\mathbf x)=0
+ \quad\Longrightarrow\quad\Crefut.
+\end{equation}
+
+\section{Completeness: every finite refutation gives a zero}
+
+Start with a finite square-shell C222 refutation. Choose $z\in\N$ so
+large that $t=464+z^2$ exceeds its local length and every independent
+source parameter. These horizons are cofinal. Pad with legitimate truth
+steps as in the parent, and set $K=464t^2$, $F=K^K$. All source labels
+and all finite pending-multiset states are now fixed.
+
+\subsection{The parity change is harmless}
+
+Although $t$ need not be even, $464=16\cdot29$ gives
+\begin{equation}\label{eq:valuations}
+ v_2(K)=4+2v_2(t),\qquad
+ v_2(F)=K v_2(K)\ge4K>2t.
+\end{equation}
+In particular $F$ contains more than the entire power of two dividing
+$t!$. Let $O$ be the odd part of $t!$. Choose a sufficiently large
+positive odd multiple $u$ of $O$ and set $y=Fu$. Then $t!\mid y$,
+$y>F$, and $y$ exceeds all genuine pending states. It also has the
+required literal shape $F(2w+1)$.
+
+The beta moduli $1+(i+1)y$ are pairwise coprime. Indeed a common divisor
+of the $i$th and $j$th moduli divides $(j-i)y$ and is coprime to $y$;
+it therefore divides $j-i$, which divides $t!$ and hence $y$. The
+divisor is one. Ordinary finite CRT supplies the beta code, chosen
+cofinally large in its class.
+
+Now set $B=\binom{F+t}{t}$ and $N=B^x$. For each $1\le i\le t$,
+\eqref{eq:valuations} implies $v_2(F+i)=v_2(i)$. The binomial product
+formula gives $v_2(B)=0$, so $B$, $N$, and $N^2$ are odd. The
+parity-free radius estimate \eqref{eq:radius} also holds. Thus both
+directions of the inherited generalized binomial CRT theorem apply:
+every row has a selector, and every prime dividing $B$ has a compatible
+row at its required full prime-power precision~\cite{binomial151}.
+
+\subsection{Choose the reused anchor in a noncircular order}
+
+The local-column CRT conditions determine nine residue classes modulo
+$N^2$, one for each independent column. Choose the eight ordinary
+representatives first. Then choose the actual row-index representative
+$C$ in its prescribed class, positive and even, greater than all other
+requested nominal indices, including $K$. This is always possible:
+$N^2$ is odd, so the permitted even values form a cofinal progression
+of step $2N^2$.
+
+Only after this choice define the self-sized radix multiplier, its power
+outputs, the actual square frame $W$, and its positive canonical Pell
+center $A$. The modulus $N^2$ was fixed before choosing $C$ and does not
+depend on this later frame. Increasing $C$ preserves all local CRT
+conditions and strengthens the self-sized radix bounds. This is the
+cofinal-C argument of the parent, with the new index $K$ included in the
+finite list to be dominated.
+
+The parent's cap and orientation completeness proof now supplies every
+auxiliary Pell witness. The even index $C$ provides the same odd
+auxiliary quotient; its canonical ordinate dominates the retained finite
+sum of the other ordinates. Nonnegative slacks retain their ternary
+representations. The new first power request uses canonical base $K$
+and index $K$, and output $F=K^K$, so its divisor quotient is integral.
+All other singleton, pooled, range, and local witnesses are unchanged
+in form. Set the new index wire to $464t^2$ and omit the old private
+$t^2$ wire. This constructs a zero of every new residual. Therefore
+\begin{equation}\label{eq:complete}
+ \Crefut\quad\Longrightarrow\quad
+ \exists\mathbf x\in\Z^{214}\;\Qdiag(\mathbf x)=0.
+\end{equation}
+
+\section{Logical calibration and the proof boundary}\label{sec:boundary}
+
+Equations \eqref{eq:sound} and \eqref{eq:complete} prove the arithmetic
+existence equivalence with the unchanged square-shell C222 calculus.
+The remaining logical chain is
+\begin{align*}
+ \text{square-shell C222 refutation}
+ &\ \Longleftrightarrow\ \text{original C222 derivation of code 1}\\
+ &\ \Longleftrightarrow\ \text{ZF refutation}\\
+ &\ \Longleftrightarrow\ \text{ZFC refutation}.
+\end{align*}
+The first arrow is the parent's syntax recoding, a bijection fixing truth
+0 and falsity 1 and transporting guarded rule instances. It is not a
+claim that square-shell arithmetic constructors literally equal the
+original numerical constructors.
+
+The two named logical endpoints are
+\begin{quote}\small\ttfamily
+SetTheory.BusyBeaver.ZFC.KEndpoint.\allowbreak c222\_iff\_zf\_refutation\\
+SetTheory.BusyBeaver.ZFC.ConstructibleChoice.\allowbreak zf\_refutation\_iff\_zfc\_refutation.
+\end{quote}
+They are pinned at commit
+\texttt{953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4}~\cite{kend,choice}.
+Copies of their source files are included as dependency excerpts, with
+byte and Git-blob hashes. Their transitive import closure is not bundled
+or newly compiled. The endpoint source file also contains machine
+theorems, but the named C222/refutation endpoint has no machine argument.
+This construction introduces neither a K215 computation nor a
+specialization of Jones' universal polynomial.
+
+The new proof uses finite syntax, induction, ordinary integer inequalities,
+polynomial identities, finite CRT, and the identified Pell theorems.
+These are formalizable in ZFC and compose with the inherited calibration
+to prove \eqref{eq:positive} and Theorem~\ref{thm:main}. All reasoning is
+uniform over the internally coded integers and finite derivations of
+ZFC. It is not restricted to externally standard integers or proofs.
+No appeal to omega-consistency or external well-foundedness of a model
+is made.
+
+The largest logical dependency not independently rederived here is the
+full C222/ZF calibration, including the seed-to-model lower direction.
+Its internally well-founded model construction must not be replaced by
+an assumption that consistency yields an externally transitive model.
+On the arithmetic side, the delicate inherited dependencies are signed
+Pell classification, squared divisibility, abscissa comparison, bounded
+orientation, and pooled-power error estimates. The retained parent note
+\file{inherited/parent173/ORDINARY_PROOF_DEPENDENCY_BOUNDARY.md} identifies
+their precise sources.
+
+The result's status is therefore an ordinary mathematical proof with
+explicit inherited dependencies and exact finite arithmetic certificates.
+It is not a new end-to-end Lean or Rocq proof object. The supplied
+checks establish literal finite statements about the emitted equation
+and source majorant; they do not on their own prove the unbounded
+Pell, CRT, or logical interpretation.
+
+\section{Verification, scope, and further research}
+
+The producer authenticates the parent bytes before any transformation.
+Two separately implemented finite checkers import none of that producer's
+polynomial code. Between them they verify every changed row, every
+unchanged row, the complete shared frame, index-pair roles, cap and
+orientation terms, coordinate liveness, every coefficient of the
+collected quartic, and the exact source-bound label calculation.
+The root checker also checks all printed residuals, regeneration of the
+TeX appendix, deterministic reproduction of all six equation artifacts,
+and rejection of corrupted versions of the five risk-bearing rows.
+The standard-library checks passed both normally and with Python
+assertions disabled. Exact huge-integer evaluation was also performed.
+
+The degree is at most four because every residual is quadratic. It is
+exactly four because $x_{185}$ occurs only in
+$\R_{130}=x_0-464-x_{185}^2$; the coefficient of $x_{185}^4$ in
+$\Qdiag$ is one. All 214 variables occur in the collected polynomial.
+The residual list contains 1,040 nonzero terms and has coefficient
+height 464. Collecting all squares, including cancellations of mixed
+terms, gives the stated 5,656 monomials and height 219,813.
+
+The useful next research questions are narrower than an unsupported
+claim of global simplicity. Can another already authenticated index
+also absorb a power base without increasing the shared frame cost?
+Can the source label majorant be made cheaper by changing the coding
+while preserving a fully identified logical calibration? Can a
+different Horn aggregation reduce the number of independent CRT
+columns? Each would require a complete soundness and completeness
+argument; finite numerical reductions alone do not establish it.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{parent173}
+V. Reshetnikov, \emph{ProveIt, package 173: CRT-index anchor, 215/214/213
+integer quartics}. Pinned repository commit
+\texttt{02a78a08603cbae248c19c23a75907c6c6bd6443}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/DiophantineConsistency/con-zfc-diophantine-forms/173-crt-index-anchor-215}{Repository package and ordinary proof notes}.
+
+\bibitem{prior170}
+V. Reshetnikov, \emph{ProveIt, package 170: quotient carriers,
+diagonal-pool source proof}. Same repository snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/02a78a08603cbae248c19c23a75907c6c6bd6443/Computability/DiophantineConsistency/con-zfc-diophantine-forms/170-quotient-carriers/direct/diagonal_pool/inputs/DIAGONAL_SOURCE_PROOF.md}{Earlier self-power construction}.
+
+\bibitem{shell112}
+V. Reshetnikov, \emph{ProveIt, package 112 intake: square-shell C222 source},
+\file{ConZFC_Shell_Reciprocal_660/code/shell_source.py}, commit
+\texttt{953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/112-powered-saturation-round14/intake/ConZFC_Shell_Reciprocal_660_2026-10-24/ConZFC_Shell_Reciprocal_660/code/shell_source.py}{Pinned source file}.
+
+\bibitem{binomial151}
+V. Reshetnikov, \emph{ProveIt, package 151: factorial-free binomial CRT},
+\file{report/main.tex}, same pinned logical/source commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/151-factorial-free-binomial-crt/report/main.tex}{Generalized selector theorem and every-prime completeness}.
+
+\bibitem{kend}
+V. Reshetnikov, \emph{ProveIt, KEndpoint.lean}, commit
+\texttt{953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean}{C222/ZF refutation endpoint}.
+
+\bibitem{choice}
+V. Reshetnikov, \emph{ProveIt, ConstructibleChoice.lean}, same commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/953fb4d82d4229f4efc5f9db4cc2bf38ae329bb4/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean}{ZF/ZFC refutation transport}.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{Reproduction and artifact identities}\label{app:reproduce}
+
+Run the following from the extracted package directory. The Python
+programs require only the standard library.
+\begin{lstlisting}
+python3 -B verify.py --rebuild
+python3 -B -O verify.py --rebuild --exact-majorant
+python3 -B verification/review_diagonal.py
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The first two commands check equation data and regenerate its printable
+definition; they do not compile a proof-assistant development. The last
+two compile this PDF using standard LaTeX packages. The evaluator
+\file{evaluate.py} accepts an explicit JSON list of 214 integer
+coordinates and evaluates either the quartic or all residuals, with
+an optional modulus; it is not a solution search or a consistency test.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.39\linewidth}p{0.54\linewidth}}
+\toprule
+Artifact & Role\\
+\midrule
+\file{report.tex}, \file{residuals.tex} & Complete paper and all literal residuals\\
+\file{direct/diagonal214/} & Exact equation, full expansion, metrics, variable map, source delta\\
+\file{direct/build_diagonal.py} & Deterministic producer from authenticated parent\\
+\file{direct/principal/} & Archived principal parent equation\\
+\file{majorant/} & Authenticated source, positive-DAG checker, certificate, proof\\
+\file{verify.py} & Independent artifact and delta verification\\
+\file{verification/} & Separate review, checker, and execution receipts\\
+\file{inherited/} & Credited proof dependencies and logical endpoint excerpts\\
+\file{SOURCES.md} & Source paths, commits, and provenance\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The exact SHA-256 identities are listed below. Line breaks in the
+display are typographical only; concatenate each pair of half-lines.
+\begin{quote}\small\ttfamily
+Parent equation:\\
+8d919a1e5d6a802765b6d010c0140fb1d\\
+83c3d36d211b209b7a8d2fb3f3fb6f6\\[4pt]
+New equation:\\
+7ffda8ff6f609918dc3d1824a28ff718\\
+8ec8c3ea2be83abb1e4bc5d465fd7894\\[4pt]
+Collected expansion:\\
+171c6c26f97c0c0846f2aa4c6a8e134d\\
+b6d4d2d459874b1e3b224bce67a8bcc4\\[4pt]
+Square-shell source:\\
+59c68a354fe5cdbc04bde33720080db2\\
+436cb51ae25e3485ac5ae45ff4230199
+\end{quote}
+The equation digest authenticates the complete quadratic coefficient
+list, rather than a shortened display. Verification receipts report
+these same identities.
+
+\clearpage
+\section{Complete quadratic residuals}\label{app:residuals}
+
+The following are all 153 residuals, indexed from 0 to 152. Every
+symbol $x_i$ is one of the independently quantified integers
+$x_0,\ldots,x_{213}$. There are no external constants to instantiate
+and no omitted rows. Equation \eqref{eq:main} is the sum of their squares.
+Rows that wrap continue on the next aligned line.
+
+\input{residuals.tex}
+
+\end{document}

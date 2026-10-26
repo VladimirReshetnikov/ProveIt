@@ -15,9 +15,8 @@ universal Diophantine equations by James P. Jones and coauthors:
 
 **Fixed-input specializations for Con(ZFC)** (not formalized). The report
 [`con-zfc-diophantine-forms`](../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5–17
-(batches 221–233, one hundred and twenty-nine packages; waves 18 and 19,
-sources 160–168, are placed and await reconciliation).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–22
+(batches 221–238, one hundred and forty-eight packages).
 
 Until wave 11, every finished equation applied the native-window/Pell
 compiler below, with its input interface removed, to the blank run of the
@@ -26,9 +25,9 @@ compiler below, with its input interface removed, to the blank run of the
 is an explicit polynomial with fixed integer coefficients, and by an ordinary
 argument formalizable in ZFC, ZFC proves "no solution" ↔ Con(ZFC). Wave 11
 adds finished direct quartics in the numerical proof calculus C222, with no
-coefficient tuple and without K215, this compiler or Jones; waves 12–17
-bring them down to 219 naturals and 225 unrestricted integers
-(report sources 149 and 158).
+coefficient tuple and without K215, this compiler or Jones; waves 12–22
+bring them down to 202 naturals and 213 unrestricted integers
+(report sources 171 and 173).
 
 That route is not required. By Vladimir's direction, a proposal is free to
 use another encoding instead of K215, Jones's universal equation or this
@@ -38,7 +37,7 @@ compiler, provided it proves its own calibration; see the report's section
 As the packages state them:
 
 - nine positive unknowns in 420 operations, or at degree 997,810;
-- ten positive unknowns in 75 operations at degree 626, or at degree 246;
+- ten positive unknowns in 75 operations at degree 402, or at degree 208;
 - 10 unrestricted integers at degree 1,245,324 in 467 operations, via a
   cited 2026 preprint of Z.-W. Sun (not formalized, not checked at intake);
 - 11 unrestricted integers without that preprint, in 107 operations or at

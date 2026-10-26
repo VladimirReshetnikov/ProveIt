@@ -1,0 +1,322 @@
+\section{An auxiliary ordinate removes a quantified quotient}\label{sec:ordinate}
+
+The next construction improves the inexpensive positive-variable branch.
+It combines the normalized auxiliary ordinate of the fifteen-variable
+P66 equation~\cite{proveit174} with the residue-carrier argument developed
+for combined Pell roots in package~170~\cite{proveit170}. The resulting
+equations have fourteen positive unknowns and the following exact profiles.
+The whole Start-only4127 coefficient tuple is retained unchanged; its
+complete finite definition is in Section~\ref{sec:ordinate-constants}.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Equation & Positive unknowns & Binary operations & Degree\\
+\midrule
+Immediate P66 parent &15&66&157\\
+Previously documented comparison &14&70&189\\
+Previously documented comparison &14&71&157\\
+New $P_E$ &14&66&174\\
+New $P_q$ &14&67&158\\
+New $P_q^{\circ}$ &14&68&146\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first new row reduces the dimension of the immediate parent at the same
+arithmetic cost, with a degree increase. The first and last new rows also
+improve both cost and degree against the corresponding fourteen-variable
+comparisons. The previous comparison tuples and the new tuple are distinct
+complete coefficient specializations. These are documented improvements
+within this branch, not a global minimum theorem.
+
+\subsection{Complete polynomial definitions}
+
+The independent positive integers are
+\[
+ (J,F,\alpha,z,f,n,i,T,s,w,\tau,\eta,\zeta,\gamma).
+\]
+With the four fixed integers $\beta,K_0,M_C,M_F$, define
+\begin{align*}
+q&=\beta J+1,&C&=q-F-\alpha,&X&=wq,&Y&=sq^3,\\
+E&=XY,&k&=\eta+\zeta,&\ell&=EkY,&c&=kY+\eta,\\
+a&=E+Y,&H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,
+\end{align*}
+and
+\begin{align*}
+D&=X+ac+\gamma H,\\
+R&=[(q-1)(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+V&=f^2(cT-R)-c,\\
+N_0&=\tau^2-\ell(\ell+k),\qquad N_1=D^2-\Delta c^2,\\
+N_t&=(K_0+w)C+(q-F)-z(q-1).
+\end{align*}
+Choose either $(M,d)=(E,E)$ or $(M,d)=(q^4,q^2)$ and put
+\begin{align*}
+u&=k-Mn-R,&I&=dic^2,&S&=\Delta I,\\
+N_a&=S^2(V^2-u^2)+u^2,\\
+N_s^{\mathrm{sc}}&=\Delta f^2-S^2,&N_s&=f^2-\Delta I^2.
+\end{align*}
+The displayed letters are polynomial abbreviations, not additional
+unknowns. For $(M,d)=(E,E)$ the equation is
+\begin{equation}\label{eq:ordinate66}
+ \boxed{P_E=N_0N_1N_aN_tN_s^{\mathrm{sc}}-\Delta=0.}
+\end{equation}
+For $(M,d)=(q^4,q^2)$ we supply both
+\begin{equation}\label{eq:ordinate67}
+ P_q=N_0N_1N_aN_tN_s^{\mathrm{sc}}-\Delta=0.
+\end{equation}
+\begin{equation}\label{eq:ordinate68}
+ \boxed{P_q^{\circ}=N_0N_1N_aN_tN_s-1=0.}
+\end{equation}
+The exact identity $P_q=\Delta P_q^{\circ}$ and $\Delta>0$ show that
+these last two equations have the same positive zero set. The unscaled
+strong norm costs one additional multiplication but reduces degree by twelve.
+
+\paragraph{The equivalence theorem.}
+For each of these fixed polynomials, ZFC proves that a positive zero exists
+if and only if a finite syntactic ZFC refutation exists. Consequently ZFC
+proves that the stated positive zero set is empty if and only if
+$\operatorname{Con}(\mathrm{ZFC})$.
+The proof below restores a literal parent P66 zero and constructs new
+witnesses from its canonical completeness data. The native and foundational
+calibrations are the identified inherited theorems, not conclusions of a
+finite numerical search.
+
+\subsection{Unit signs are resolved before recovering an index}
+
+At a positive zero, canceling $\Delta$ in the proof, if necessary, gives
+\begin{equation}\label{eq:ordinateunits}
+ N_0N_1N_aN_tN_s=1.
+\end{equation}
+Every factor is an integer unit. Let $v=XY^2=EY$. Then
+$N_0=\tau^2-v(v+1)k^2$. For $v\ge2$, the negative Pell equation
+$x^2-v(v+1)y^2=-1$ is impossible: a solution with least positive $y$
+satisfies $vy<x<(v+1)y$, and multiplication by
+$(2v+1)-2\sqrt{v(v+1)}$ produces another solution with ordinate
+$0<|(2v+1)y-2x|<y$. Thus $N_0=1$.
+
+The number $\Delta=(a+2)^2-1$ is $0$ or $3$ modulo $4$, so neither
+$N_1$ nor $N_s$ can be $-1$. Modulo $4$, $N_a$ is congruent to $u^2$
+or $V^2$, according as $S$ is even or odd, so it cannot be $-1$ either.
+Equation~\eqref{eq:ordinateunits} therefore yields
+\begin{equation}\label{eq:ordinateallunits}
+ N_0=N_1=N_a=N_t=N_s=1.
+\end{equation}
+In particular, deleting the old quotient factor removes its previously
+unresolved partner sign in $N_t$. We immediately have
+\[
+ (K_0+w)C=1+z(q-1)-(q-F)\ge F>0,
+\]
+so $C>0$. The unchanged coherent coefficient tuple satisfies
+$0<M_C<\beta<M_F<2\beta$. Applying these inequalities to the literal
+definition of $R$, with
+$G_0=q\alpha+(q-1)C$, gives
+\begin{equation}\label{eq:ordinatemask}
+ 3q<R<q^4-q^3+q^2-1<q^4-2\le E-2.
+\end{equation}
+In both variants $R<M$. None of these statements has used the omitted
+quotient or assumed a main Pell index.
+
+\subsection{The main index is authenticated without that quotient}
+
+For $b\ge2$, write $\chi_b(j),\psi_b(j)$ for the Pell sequences with
+initial values $(1,b)$ and $(0,1)$ and recurrence
+$U_{j+2}=2bU_{j+1}-U_j$. Put $A=a+2$ and $P_0=1+2v$.
+The norm equations imply
+\begin{align}
+ \tau&=\chi_{P_0}(r),&k&=2\psi_{P_0}(r),&r&\ge1,
+     \label{eq:ordinatefirst}\\
+ D&=\chi_A(p),&c&=\psi_A(p),&p&\ge1.
+     \label{eq:ordinatemain}
+\end{align}
+For the first norm the fundamental positive solution is $(2v+1,2)$;
+ordinate one would put a square strictly between $v^2$ and $(v+1)^2$.
+The case $r=1$ would give $k=2$, $\eta=\zeta=1$, and
+$1<c=2Y+1<2A$, which is impossible in~\eqref{eq:ordinatemain}.
+Hence
+\begin{equation}\label{eq:ordinategrowth}
+ r\ge2,\quad k\ge8XY^2+4,\quad c>kY>8XY^3>2R.
+\end{equation}
+Since $P_0>A$ and $c>k$, monotonicity gives $r<p$; now $p\ge3$ and
+$A\ge2$ imply $c=\psi_A(p)>2p$.
+
+The strong equation gives $f=\chi_A(m)$ and $I=\psi_A(m)$.
+The literal divisibility $c^2\mid I$ and strong divisibility first imply
+$p\mid m$. Writing $m=pj$, composition gives
+$I=c\psi_D(j)$. Since $D^2\equiv1\pmod c$, the recurrence gives
+$\psi_D(j)\equiv jD^{j-1}\pmod c$. Thus $c\mid j$ and
+\begin{equation}\label{eq:ordinatestrongindex}
+ pc\mid m,\qquad c\mid m,\qquad m>2p.
+\end{equation}
+
+Let $Q=S^2=\Delta(f^2-1)>1$. The auxiliary equation is
+\[
+ QV^2-(Q-1)u^2=1.
+\]
+Neither coordinate is zero; also $V>0$ by
+\eqref{eq:ordinatemask}--\eqref{eq:ordinategrowth}, $T\ge1$, and $f^2>2$.
+Therefore $SV=\chi_S(\nu)$ and $|u|=\psi_S(\nu)$ for a positive odd
+index $\nu$. An even index would make the abscissa $\pm1$ modulo $S$.
+
+For $\nu=2j+1$, the integer polynomials
+$L_0(Z)=1$, $L_1(Z)=4Z-3$,
+$L_{j+1}(Z)=(4Z-2)L_j(Z)-L_{j-1}(Z)$ satisfy
+\begin{align*}
+ \chi_b(2j+1)&=bL_j(b^2),&L_j(0)&=(-1)^j(2j+1),\\
+ L_j(1-A^2)&=(-1)^j\psi_A(2j+1).
+\end{align*}
+Using $Q\equiv1-A^2\pmod f$ and $V\equiv-c\pmod f$ yields
+$\psi_A(\nu)\equiv\pm c\pmod f$. Squaring gives
+\[
+ \chi_A(2\nu)\equiv\chi_A(2p)\pmod{\chi_A(m)}.
+\]
+The signed step-down argument from~\cite{proveit170} applies with
+$0<2p<m$: addition identities reduce any abscissa to a signed
+$\chi_A(t)$ with $0\le t\le m$; the endpoint has residue zero,
+$2\chi_A(m-1)<\chi_A(m)$ excludes a negative representative, and
+monotonicity identifies the positive one. It follows that
+$2\nu\equiv\pm2p\pmod{2m}$ and hence $\nu\equiv\pm p\pmod c$.
+Separately, $Q\equiv0\pmod c$ and $V\equiv-R\pmod c$ give
+$\nu\equiv\pm R\pmod c$. As $0<p,R<c/2$, we conclude
+\begin{equation}\label{eq:ordinatepR}
+ p=R.
+\end{equation}
+The omitted quotient has not occurred in any premise of this authentication.
+
+\subsection{The ordinate restores the missing quotient}
+
+Both choices satisfy $M\mid v$ and $M\mid S^2$. Reducing the first
+recurrence modulo $M$ gives $k\equiv2r\pmod M$. The odd-ordinate identity
+\begin{equation}\label{eq:ordinateodd}
+ \psi_S(2j+1)\equiv(-1)^j\pmod{4S^2}
+\end{equation}
+follows by induction. Thus $u\equiv\pm1\pmod M$. Since
+$u=k-Mn-R$, there is $\varepsilon\in\{1,-1\}$ such that
+$2r-R\equiv\varepsilon\pmod M$. Now $r<p=R<M$ implies
+$|2r-R-\varepsilon|<R<M$, so
+\[
+ 2r=R+\varepsilon.
+\]
+The negative choice would give $R=2r+1$. But $B_0=2A^2-1>P_0$ and
+composition then imply
+\[
+ c=\psi_A(2r+1)>2A\psi_{B_0}(r)
+ \ge2A\psi_{P_0}(r)=Ak>k(Y+1),
+\]
+contrary to $c=kY+\eta<k(Y+1)$. Therefore $2r=R+1$.
+The full first recurrence gives $k\equiv2r\pmod{4v}$, so
+\begin{equation}\label{eq:ordinatehrestore}
+ h_{\rm old}=\frac{k-R-1}{E}\in\mathbb Z_{>0}.
+\end{equation}
+Positivity follows from~\eqref{eq:ordinategrowth} and~\eqref{eq:ordinatemask}.
+Together with $i_{\rm old}=di$ and $y_{\rm old}=|u|>0$, this restores
+an exact zero of the original P66 equation: its omitted quotient factor
+is $+1$, and all its other normalized factors are $+1$.
+The retained whole-tuple calibration supplies a finite syntactic refutation.
+
+For completeness, start with a refutation and its canonical outer P66
+witnesses. The inherited native theorem supplies $R\equiv3\pmod4$,
+$c=\psi_A(R)$, $k=2\psi_{P_0}((R+1)/2)$, and the required outer unit
+factors. Choose a positive period of the determinant-one Pell matrix
+modulo $c^2d$. It supplies $m>0$ such that $c^2d\mid\psi_A(m)$.
+Set $f=\chi_A(m)$ and $i=\psi_A(m)/(c^2d)>0$ before choosing fresh
+auxiliary witnesses. Define
+\[
+ V_* = \frac{\chi_S(R)}S,\qquad y_* =\psi_S(R).
+\]
+These are positive integers. The same polynomial identities, now modulo
+$f^2$ and $c$, give $V_*\equiv-c\pmod{f^2}$ and
+$V_*\equiv-R\pmod c$. Since $\gcd(c,f)=1$ and $f^2\equiv1\pmod c$,
+\[
+ T=\frac{V_*+c+Rf^2}{cf^2}\in\mathbb Z_{>0}.
+\]
+Finally~\eqref{eq:ordinateodd} gives $y_*\equiv-1\pmod M$, whereas
+$k-R\equiv1\pmod M$. Thus
+\[
+ n=\frac{y_*+k-R}{M}\in\mathbb Z_{>0},\qquad u=-y_*.
+\]
+Every new coordinate is positive and every unit factor is $+1$. This proves
+completeness with newly chosen private witnesses, rather than assuming old
+private witnesses retain stronger divisibilities.
+
+\subsection{Exact costs and nonzero leading forms}
+
+In $P_E$ the parent's three gates for $k-hE-R$ are reused as $k-nE-R$.
+Removing this factor from the final product saves one multiplication;
+scaling $S$ by $E$ costs one. Thus the count remains 66. The $q^4$ modulus
+adds one gate, giving 67; computing $SI$ for the unscaled strong norm adds
+one further gate, giving 68. All inputs and gates are live.
+
+Write $q_0=\beta J$, $k_0=\eta+\zeta$ and
+$B_0=w(q_0-F-\alpha)-zq_0$. The complete leading homogeneous forms are
+\begin{align*}
+ [P_E]_{174}&=8q_0^{103}\gamma i^4k_0^{13}w^{16}s^{29}T^2f^4B_0,\\
+ [P_q]_{158}&=8q_0^{95}\gamma i^4k_0^{13}w^{12}s^{25}T^2f^4B_0,\\
+ [P_q^{\circ}]_{146}&=8q_0^{87}\gamma i^4k_0^{13}w^{10}s^{23}T^2f^4B_0.
+\end{align*}
+The only leading cancellation is accounted for exactly by
+\[
+ N_1=2acZ+Z^2-Hc^2,\qquad Z=X+\gamma H,
+\]
+which has degree 18. The five factor degrees are respectively
+$(22,18,74,2,58)$, $(22,18,66,2,50)$ and $(22,18,66,2,38)$.
+Choosing the $-zq_0$ term and the $\eta^{13}$ term displays coefficients
+$-8\beta^{104}$, $-8\beta^{96}$ and $-8\beta^{88}$. They are nonzero at
+the actual fixed $\beta$, certifying the claimed exact degrees.
+
+\subsection{A complete equation in 36 unrestricted integers}\label{sec:ordinate36}
+
+The sign audit permits three parent coordinates to range over all integers.
+The polynomial uses $f$ and $\tau$ only squared, and their recovered norms
+force them to be nonzero, so absolute values restore positivity.
+The sign of $n$ was never used in soundness: only the signed carrier $u$
+and its residue modulo $M$ matter. Completeness already constructs these
+three coordinates positively. Thus only
+\[
+ J,F,\alpha,z,i,T,s,w,\eta,\zeta,\gamma
+\]
+require positivity encodings.
+
+For each coordinate $x$ in this eleven-element list, substitute
+\begin{equation}\label{eq:ordinatepositiveparameter}
+ x=1+x_a^2+x_b^2+x_c(x_c+1),\qquad x_a,x_b,x_c\in\mathbb Z,
+\end{equation}
+in $P_q^{\circ}$ and leave $f,n,\tau$ unrestricted. This is the explicit
+polynomial $P_{36}$ in the supplied literal graph. The parameterization is
+positive for every integer triple and represents every positive integer.
+For a short derivation, Legendre's three-square theorem applies to $4N+1$
+for every $N\ge0$; reducing modulo 4 shows that exactly one square
+is odd, so after permutation
+\[
+ 4N+1=(2a)^2+(2b)^2+(2c+1)^2,
+ \quad N=a^2+b^2+c(c+1).
+\]
+This representation is also explicitly formalized in the Archive of Formal
+Proofs~\cite{danilkin2023}. We obtain the ordinary ZFC theorem
+\begin{equation}\label{eq:ordinateintegercon}
+ \boxed{\mathrm{ZFC}\vdash
+  \bigl(\neg\exists\mathbf x\in\mathbb Z^{36}\;P_{36}(\mathbf x)=0\bigr)
+  \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).}
+\end{equation}
+No inequalities or extra quantified registers remain in $P_{36}$.
+
+There are $3\cdot11+3=36$ integer unknowns. Each substitution costs seven
+binary operations, giving $68+7\cdot11=145$ operations. Giving the eleven
+substituted coordinates weight two and $f,n,\tau$ weight one yields factor
+degrees $(44,36,128,4,76)$, totaling 288. The squared carrier contributes
+only degree 118 in the auxiliary norm, so it cannot overtake the degree-128
+$V^2$ term. The complete leading form is the last displayed positive
+leader with each substituted $x$ replaced by
+$\sigma_x=x_a^2+x_b^2+x_c^2$ and with $f$ unchanged. Setting all $x_b,x_c$
+to zero exhibits the nonzero coefficient $-8\beta^{88}$ at
+\[
+ J_a^{176}\gamma_a^2 i_a^8\eta_a^{26}w_a^{20}s_a^{46}T_a^4f^4z_a^2.
+\]
+Its exponents sum to 288, so this degree is exact.
+
+The 36-integer equation uses a large fixed coefficient architecture. Its
+size should therefore be compared separately with small-coefficient direct
+quartics and with still smaller but higher-degree constructions. The new
+finite checks authenticate the literal formulas, full fixed bytes, liveness,
+and leading forms; the unbounded equivalence is the mathematical proof above
+composed with the retained native/refutation calibration.
