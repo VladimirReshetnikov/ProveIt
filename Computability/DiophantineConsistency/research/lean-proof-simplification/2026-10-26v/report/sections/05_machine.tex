@@ -1,0 +1,36 @@
+\section{Reduce local machine case analysis}
+
+\subsection{M2 Split on the write site only}
+
+\refs\ \src{WangMachineStep.lean}{62}{76}. The theorem's result distinguishes the moved head, old head, and other cells. Its proof need not branch on all three. A write affects one cell. Away from that cell, the tape frame rule holds whether or not the position is the moved head; leave that destination test symbolic on both sides.
+
+\begin{Lean}
+  by_cases ho : x = cfg.head
+  · subst x
+    simp [color, (moved_head_ne a.move cfg.head).symm]
+  · simp [color, ho, Tape.read_write_of_ne cfg.tape ho a.write]
+\end{Lean}
+
+At the old head, movement ensures that the old position is not the new head, and \code{Tape.read_write_same} resolves the write. Everywhere else, \code{Tape.read_write_of_ne} removes the write without deciding the remaining destination conditional. Two decisions and three leaves become one decision and two leaves; the three-way conclusion is unchanged. The declaration changes from 15 to 11 nonblank lines.
+
+\textbf{Semantic checks.} An action entering \code{none} still writes and moves. At the new head, the read is the old tape bit; its halt color is 432 or 433. The proof uses tape reads rather than normalized list equality and therefore does not silently assume a duplicate-free tape representation. The patch adds no global simp rule.
+
+\subsection{M3 Use the exact absolute value view}
+
+\refs\ \src{WangMachineTraceBounds.lean}{89}{96}. The current proof splits on the sign of \code{x}, rewrites \code{|x|}, and reconstructs the two exterior cases. Mathlib already supplies exactly the required disjunction:
+
+\begin{Lean}
+le_abs' : a ≤ |b| ↔ b ≤ -a ∨ a ≤ b
+\end{Lean}
+
+The complete replacement body is:
+
+\begin{Lean}
+  exact run_read_outside M t x (le_abs'.mp hx)
+\end{Lean}
+
+The library theorem is produced by \code{@[to_additive]} from \code{le_mabs'} in the pinned \mlsrc{Algebra/Order/Group/Abs.lean}{66}{67}{absolute-value source, lines 66--67}. The source evidence is supplied with the candidate; this verifies the declaration's provenance, not its elaboration at this call site. No import is added because the module already imports the relevant library.
+
+The threshold remains inclusive: \(t\leq |x|\), including \(t=0\) and \(x=0\). There is no new positivity premise and no change to write-before-move support or stationary halted runs. The declaration changes from eight to three nonblank lines. The underlying trace induction is left alone; a new envelope structure would add overhead without an established additional saving.
+
+\textbf{Artifacts.} \artifact{machine/MachineCandidates.lean} contains isolated source-exact statements and edge-case checks. The three independent patches and complete proposed modules are accompanied by a deterministic metric builder and static validation record.

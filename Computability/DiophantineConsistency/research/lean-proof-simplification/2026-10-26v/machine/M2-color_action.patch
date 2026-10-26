@@ -1,0 +1,20 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineStep.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangMachineStep.lean
+@@ -66,14 +66,10 @@
+          tape := Tape.write cfg.tape cfg.head a.write } : Config 215) x =
+       if x = a.move.apply cfg.head then headColor a.next (Tape.read cfg.tape x)
+       else if x = cfg.head then a.write.toNat else color cfg x := by
+-  by_cases hn : x = a.move.apply cfg.head
++  by_cases ho : x = cfg.head
+   · subst x
+-    simp [color, read_written_at_moved]
+-  · by_cases ho : x = cfg.head
+-    · subst x
+-      simp [color, hn]
+-    · simp only [color, if_neg hn, if_neg ho]
+-      rw [Tape.read_write_of_ne cfg.tape ho a.write]
++    simp [color, (moved_head_ne a.move cfg.head).symm]
++  · simp [color, ho, Tape.read_write_of_ne cfg.tape ho a.write]
+ 
+ /-- The complete actual machine-step formula. The head branch uses
+ `a.next` even when it is `none`; writing and movement have already occurred. -/

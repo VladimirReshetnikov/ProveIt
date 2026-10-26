@@ -1,0 +1,30 @@
+{\LARGE\bfseries Further Lean proof simplifications\\after prior proposals\par}
+\vspace{6pt}
+{\large DiophantineConsistency third review\par}
+\vspace{7pt}
+26 October 2026\qquad Pinned source \code{22e020937caa81d0cb72a4f63071d6c0bcc1eba9}
+
+\textbf{Recommendation.} Test five small proof replacements in the new machine and row modules first. Consider one larger change separately: describe the two horizontal edges of a constructed row by one spatial pulse. The latter makes compatibility a substitution, but does \emph{not} reduce nonblank lines once its helper is included.
+
+This review treats the previous proposals as completed, including their advertised adapters and design-only APIs. The six ideas below address obligations left \emph{after} that virtual refactoring. They do not repackage compiler residuals, generated degree certificates, scanner iteration, typed decoders, or boundary views.
+
+\begin{tabularx}{\linewidth}{@{}L{0.39in}Y L{1.55in}@{}}
+\toprule
+ID & Remaining proof obligation & Incremental change \\
+\midrule
+E1 & Injectivity of the actual state number with halt at 215 & 18 to 7 lines; one extra import \\
+M1 & Reflect action halt through the injective state number & 10 to 3 declaration lines \\
+M2 & Compute color after a one-cell tape write & 15 to 11 declaration lines \\
+M3 & Convert an absolute-value trace bound to exterior cases & 8 to 3 declaration lines \\
+R1 & Propagate a predicate through an open integer interval & 31 to 23 declaration lines \\
+R2 & Match horizontal edges of the constructed step row & One shared edge invariant; 28 to 29 lines \\
+\bottomrule
+\end{tabularx}
+
+\textbf{What changed upstream.} Between the preceding review pin and this pin, the 32 modified active Lean files shrink by 1,502 physical lines in aggregate. Another 34 files add 3,479 lines, so the net active-source change is \textbf{plus 1,977 lines}. Most additions bind the literal machine and tile language to actual step and row semantics. Those are valuable new results, not a failed simplification, and none of the observed savings is credited to this report.
+
+\textbf{What is checked.} The source inventory and dependency evidence are hash verified; proposed patches and metrics receive static checks. \textbf{None of the new Lean has been compiled.} No Lean or Lake runtime is installed in the review environment. Compilation, kernel axiom comparisons, downstream checks, and performance remain open gates. The PDF and source artifacts are research proposals, not an adoption claim.
+
+\textbf{Suggested order.} Start with M3, M1, and M2, which introduce no helpers or imports. Try R1 with its unchanged theorem interface. Evaluate E1 against the cost of one Mathlib import. Treat R2 as an optional API normalization rather than a line-saving patch.
+
+The next pages separate observed commits, assumed prior outcomes, exact candidates, and validation. Source links are pinned; artifact paths are relative to the accompanying archive. No repository source was edited or published.
