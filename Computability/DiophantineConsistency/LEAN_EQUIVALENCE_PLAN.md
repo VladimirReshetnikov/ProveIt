@@ -705,6 +705,25 @@ and [independent fresh root replay](reviews/current-controller-subsets2011-root.
 with four standard-only reports. Physical safety and ordinary finite-word
 mutation remain separate from this modular subset equality.
 
+`CurrentControllerPositions2011` now embeds the actual selected exponents
+and optional cell3 injectively into the physical cyclic cells. Its exact
+finite support preserves cardinality and, under rw<k, every member satisfies
+both unreduced successor bounds needed by the mutation theorem. The
+[author receipt](reviews/current-controller-positions2011-author.md) and
+[independent isolated replay](reviews/current-controller-positions2011-lean-peer.md)
+record13 standard-only audits, k=0, optional-cell separation and no-wrap values.
+
+`CurrentDummySafety2011` derives K<radix^2022 from every literal term and
+the checked complete coefficient mass. The two physical successor bounds
+then imply the required ordinary nonwrapping inequality for the same F.
+Its endpoint constructs the updated normalization with both ordinary source
+and F increments; no desired increment or nonwrapping bound is supplied.
+The [author receipt](reviews/current-dummy-safety2011-author.md) and
+[independent isolated replay](reviews/current-dummy-safety2011-lean-peer.md)
+record13 standard-only reports, boundary failures and a fresh two-cell
+construction. A finite-support iteration still needs to accumulate these
+one-dummy changes and compose the modular target into the actual rank.
+
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
 has `CurrentCellConstruction2011`: an actual local Boolean cell with the
