@@ -1,0 +1,25 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationHAInduction.lean:68:4: error: Tactic `rfl` failed: The left-hand side
+  termAux (fun i => Term.var ↑i) (fun j => Term.var (1 + j)) ((Rew.subst fun x => t) &j)
+is not definitionally equal to the right-hand side
+  Term.subst (replaceZero (term t)) (Term.var (1 + j))
+
+case e_fv
+ψ : Semiformulaᵢ ℒₒᵣ ℕ 1
+t : SyntacticSemiterm ℒₒᵣ 1
+j : ℕ
+⊢ termAux (fun i => Term.var ↑i) (fun j => Term.var (1 + j)) ((Rew.subst fun x => t) &j) =
+    Term.subst (replaceZero (term t)) (Term.var (1 + j))
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationHAInduction.lean:113:10: error(lean.unknownIdentifier): Unknown identifier `map_imply`
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationHAInduction.lean:129:62: error: unsolved goals
+φ : Semiformula ℒₒᵣ ℕ 1
+⊢ φ/[↑0] = φ/[Semiterm.func Language.ORing.Func.zero Fin.elim0] ∧
+    φ/[‘(#0 + 1)’] = φ/[Semiterm.func Language.ORing.Func.add ![#0, Semiterm.func Language.ORing.Func.one Fin.elim0]]
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationHAInduction.lean:142:38: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  formula (Semiformulaᵢ.all ?φ)
+in the target expression
+  Relative Formula.Ax_s [formula (∀⁰ (φ 🡒 φ ⇜ fun x => sourceAddOne)ᴺ), formula (φ ⇜ fun x => sourceZero)ᴺ]
+    (formula (∀⁰ φ)ᴺ)
+
+φ : Semiformula ℒₒᵣ ℕ 1
+⊢ Relative Formula.Ax_s [formula (∀⁰ (φ 🡒 φ ⇜ fun x => sourceAddOne)ᴺ), formula (φ ⇜ fun x => sourceZero)ᴺ]
+    (formula (∀⁰ φ)ᴺ)

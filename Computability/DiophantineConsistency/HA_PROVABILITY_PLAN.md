@@ -287,6 +287,16 @@ both leaves and15 standard-only reports over119 cached prerequisites.
 The represented CProv222 logical interface and subsequent seed/calculus
 interpretation remain separate work.
 
+[ValidatorProvability222](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorProvability222.lean)
+now provides the fixed Sigma1 represented CProv222 predicate, actual
+new-constructor witnesses, and finite Lukasiewicz/Kalmar logic. Its Nat
+interpretation is exactly actual C222. The
+[independent replay](reviews/validator-provability222-root.md) passed both
+leaves and ten standard-only reports over122 cached prerequisites. GrowG
+is the actual changed equality rule; rho7 is not assumed. The encoded
+calculus's classical logic is separate from HA's intuitionistic proof rules.
+Internal equality helpers, seed interpretation and runtime remain open.
+
 The [arithmetic translation audit](research/ha-arithmetic-translation-adapter-audit.md)
 also fixes the next proof-transfer interface: translate Foundation ordered
 arithmetic syntax into the existing conventional PAHF HA, then map actual
@@ -384,6 +394,25 @@ universal introduction. The [independent peer replay](reviews/foundation-ha-clos
 passed both leaves and six standard-only reports. This closes the parameter
 closure comparison; the arbitrary induction body, nine order/geometric
 axioms and final target equivalence still require proofs.
+
+[FoundationHAInduction](Lean/DiophantineConsistency/FoundationHAInduction.lean)
+now proves the actual GG image of every unrestricted Foundation induction
+instance. Its open body uses actual HA formula induction, distinct zero
+and successor substitutions, full-context shifts and genuine equality
+transport for x+1=Sx under arbitrary nested formulas. Exact source closure
+then gives the closed schema member. Both leaves passed
+[independent replay](reviews/foundation-ha-induction-root.md), with30
+standard-only reports; all85 cached Foundation records match the already
+accepted arithmetic215 inventory. No image-provability premise remains.
+
+[FoundationHAOrderBase](Lean/DiophantineConsistency/FoundationHAOrderBase.lean)
+also proves the literal zeroLtOne and zeroLe GG images, with a constructive
+arbitrary-term zero/predecessor proof and the exact negative disjunction
+encoding. Its [independent peer replay](reviews/foundation-ha-order-base-lean-peer.md)
+passed both leaves and ten reports using only `propext` and `Quot.sound`.
+Seven order/geometric cases remain: addEqOfLt, oneLeOfZeroLt, addLtAdd,
+mulLtMul, ltIrrefl, ltTrans and ltTri. Full arithmetic proof transfer and
+the exact no-zero/consistency target comparison remain separate obligations.
 
 [CurrentWitnessEquivalence2011](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 now proves the external direct equivalence between positive zeros and

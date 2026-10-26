@@ -1,0 +1,21 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationHAInduction.lean:144:2: error: Tactic `apply` failed: could not unify the conclusion of `Arithmetic.induction (formula φᴺ)`
+  Relative Formula.Ax_s ?m.32 (Formula.all (formula φᴺ))
+with the goal
+  Relative Formula.Ax_s [formula (∀⁰ (φ 🡒 φ ⇜ fun x => sourceAddOne)ᴺ), formula (φ ⇜ fun x => sourceZero)ᴺ]
+    (formula (∀⁰ φᴺ))
+
+Note: The full type of `Arithmetic.induction (formula φᴺ)` is
+  Relative Formula.Ax_s ?m.32 (Formula.subst Formula.substZero (formula φᴺ)) →
+    Relative Formula.Ax_s ?m.32 (Formula.imp (formula φᴺ) (Formula.subst Formula.substSuccVar (formula φᴺ))).all →
+      Relative Formula.Ax_s ?m.32 (Formula.all (formula φᴺ))
+
+φ : Semiformula ℒₒᵣ ℕ 1
+⊢ Relative Formula.Ax_s [formula (∀⁰ (φ 🡒 φ ⇜ fun x => sourceAddOne)ᴺ), formula (φ ⇜ fun x => sourceZero)ᴺ]
+    (formula (∀⁰ φᴺ))
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationHAInduction.lean:143:45: warning: This simp argument is unused:
+  formula_all
+
+Hint: Omit it from the simp argument list.
+  simp only [Semiformula.doubleNegation_all,̵ ̵f̵o̵r̵m̵u̵l̵a̵_̵a̵l̵l̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

@@ -56,6 +56,10 @@ The [actual internal C222 constructor equations](reviews/arithmetic-proof-constr
 now give accepted-node witnesses for all twelve rule cases, preserving the
 two exact seed gates and the new growG leaf. They passed independent
 compilation with15 standard-only reports; seed soundness is a separate step.
+The [represented CProv222 interface](reviews/validator-provability222-root.md)
+now supplies actual internal rule witnesses and finite propositional logic,
+with its Nat interpretation bound to the actual calculus. Seed interpretation
+and exact machine calibration remain open.
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence
@@ -94,8 +98,12 @@ The [whole source equality theory](reviews/foundation-ha-equality-root.md)
 is now discharged too, including congruence of the interpreted order relation.
 The [actual source parameter closure](reviews/foundation-ha-closure-peer.md)
 also has its exact syntax identity and a checked HA proof constructor.
-These results retain the existing source encodings; the remaining order
-axioms and arbitrary induction body still need proofs.
+The [arbitrary induction image](reviews/foundation-ha-induction-root.md)
+is now proved too, using actual HA formula induction and equality transport
+for x+1=Sx. The [base order packet](reviews/foundation-ha-order-base-lean-peer.md)
+also discharges the literal zeroLtOne and zeroLe source images. These results
+retain the existing source encodings; seven order/geometric axioms and the
+full arithmetic proof-transfer composition remain open.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the
