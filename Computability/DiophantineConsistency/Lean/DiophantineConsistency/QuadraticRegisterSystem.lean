@@ -67,17 +67,9 @@ def residual (s : System p) : Fin (p.nodes.length + s.rowCount) →
 def expression (s : System p) : Expr (Fin n ⊕ Fin p.nodes.length) :=
   QuarticSyntax.sumExpressions (List.ofFn fun i => let e := s.residual i; e * e)
 
-private theorem eval_sumExpressions {σ : Type*} (es : List (Expr σ)) (v : σ → ℤ) :
-    (QuarticSyntax.sumExpressions es).eval v = (es.map (fun e => e.eval v)).sum := by
-  induction es <;> simp_all [QuarticSyntax.sumExpressions]
-
 theorem expression_zero_iff (s : System p) (v : Fin n ⊕ Fin p.nodes.length → ℤ) :
-    s.expression.eval v = 0 ↔ ∀ i, (s.residual i).eval v = 0 := by
-  rw [expression,eval_sumExpressions]
-  simp only [List.map_ofFn,Fin.sum_ofFn,Function.comp_apply,Expr.eval_mul]
-  simpa only [Finset.mem_univ,forall_true_left] using
-    (Finset.sum_mul_self_eq_zero_iff
-      (Finset.univ : Finset (Fin (p.nodes.length + s.rowCount))) (fun i => (s.residual i).eval v))
+    s.expression.eval v = 0 ↔ ∀ i, (s.residual i).eval v = 0 :=
+  CompilerSupport.sumSquares_zero_iff _ _
 
 private theorem node_rows_iff (x : Fin n → ℕ) (w : Fin p.nodes.length → ℕ) :
     (∀ i, (NaturalDAGQuartic.nodeResidual p.nodes (fun j : Fin 0 => j.elim0) i).eval
@@ -144,12 +136,8 @@ theorem residual_degree (s : System p) (i : Fin (p.nodes.length + s.rowCount)) :
   · rw [residual_right]
     exact s.degree j
 
-theorem expression_degree (s : System p) : s.expression.toPolynomial.totalDegree ≤ 4 := by
-  rw [expression,QuarticSyntax.polynomial_sumExpressions]
-  simp only [List.map_ofFn,Fin.sum_ofFn,Function.comp_apply,Expr.toPolynomial]
-  apply MvPolynomial.totalDegree_finsetSum_le
-  intro i _
-  exact (MvPolynomial.totalDegree_mul _ _).trans (Nat.add_le_add (s.residual_degree i) (s.residual_degree i))
+theorem expression_degree (s : System p) : s.expression.toPolynomial.totalDegree ≤ 4 :=
+  CompilerSupport.sumSquares_degree_le _ 2 s.residual_degree
 
 /-- Move the supplied auxiliary-input block into the natural witnesses. -/
 def scopedRep {a k : ℕ} {p : Program (a+k)} (s : System p) :

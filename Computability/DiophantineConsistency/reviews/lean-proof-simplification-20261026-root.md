@@ -187,3 +187,32 @@ both existing focused checks and five clients (`MaskPopulation`,
 `SparseBorrowCarry`). All printed axioms are standard. ROOT read all six
 changed proof bodies; `alternate_encoding_research` independently reviewed
 the changes in context and reported PASS.
+
+## Shared finite-residual compiler facts
+
+The review packet's `finite-residuals.patch` is integrated as a36-line
+`CompilerSupport` module and proof replacements in `DAGQuartic`,
+`NaturalDAGQuartic` and `QuadraticRegisterSystem`. It shares evaluation and
+degree bounds for finite sums of squared residuals, plus natural-assignment
+transport. The three existing modules decrease from285/293/170 to257/264/158
+lines; including the new helper, the net saving is33 lines and1612 bytes.
+
+Every existing theorem statement, topology/nonnegativity hypothesis,
+expression, circuit and witness definition is unchanged. The helper imports
+`QuarticSyntax`; it is imported by the DAG compiler, preserving acyclic layering.
+The source proposal is in
+`docs/incoming/lean-proof-simplification-review-2026-10-26.zip`.
+
+`alternate_encoding_research` directly observed ten final zero exits: four
+module/olean builds, `QuadraticNatPairing` and `QuadraticDivMod` clients,
+three existing compiler focus checks and one helper/API axiom audit.
+The checks include signed negative intermediates, nonzero rejection, natural
+compiler restrictions, witness counts and zero-denominator rejection.
+All eight replaced public results retain their original standard-axiom sets.
+ROOT read the complete helper and every changed client proof;
+`v_finite_full_static` independently reviewed all helper and client changes
+and reported PASS.
+
+Across all nine groups, this series removes264 maintained Lean source lines,
+including36 lines for the new shared helper. Larger generated-steps and
+scanner refactors remain under review; the iterative goal is active.
