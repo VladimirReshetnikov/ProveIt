@@ -80,8 +80,9 @@ frontier, over the packages of this collection, is now:**
 - **the smallest native tuple binding an equation**, B = 2^139261 (188's
   fourteen-positive circuits, on the research session's block-mask2963
   tuple, 69,685 raw bytes; that tuple's calibration was not checked at
-  intake); then 2^189269 (183's fourteen-positive circuit, on the research
-  session's admissible942 tuple, 94,689 raw bytes; its inherited native
+  intake); then 2^189269 (183's fourteen-positive circuit and 192's
+  thirteen-positive circuits, on the research session's admissible942 tuple,
+  94,689 raw bytes; its inherited native
   calibration was not checked at intake); then 2^193969 (174's P66, 185's fourteen-positive and 186's
   ten-positive circuits, on the research session's Start-marker4127 tuple;
   their Start-only calibrations were not checked at intake), 2^196319 (179's
@@ -123,7 +124,9 @@ sorted-carrier65-2501 (`6eb46a8c14`, 18:52) and phase-split-carrier65-2471
 (`f727b2dcd0`, 19:17) at this reconciliation. At 19:00 (`b4c64e63d3`) it
 certified a fourteen-positive 66-operation equation of degree 118, wave-24
 package 188's form, crediting 188's proof by its SHA-256 (`1e23611da2`,
-18:58). By 17:12 on 24 October
+18:58). At 19:25 (`76c06aab89`) it proved a thirteen-positive 70 / 140 form
+built on 192's carrier, crediting 192 by SHA-256; no literal graph of it
+exists yet. By 17:12 on 24 October
 it also had 89 / 288 (`90d8b714f9`, page `0ca3812ae9`) and a ten-positive
 86 / 466 (`75f850496c`), which wave-14 package 133's 84 / 436 dominates.
 At 22:03 it accepted 133's 84 / 436 and 85 / 328 (`a223b3e174`) with an
@@ -495,9 +498,12 @@ row. The active research session's own candidates and this
 repository's `candidates/ten-positive-gap-fusion` (an independent
 derivation of package points) are compared in its
 [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
-At the wave-24 intake research points dominate package rows only at nine
-positive unknowns (its fourteen-positive 66 / 118 of `b4c64e63d3`, 19:00, is
-wave-24 package 188's form on a smaller tuple): its
+At the wave-24 intake research points with emitted graphs dominate package
+rows at nine positive unknowns, and its pages dominate the smallest-tuple
+row. Its fourteen-positive 66 / 118 of `b4c64e63d3` (19:00) is wave-24
+package 188's form on a smaller tuple, and its proved but not yet
+materialized thirteen-positive 70 / 140 (`76c06aab89`, 19:25) would dominate
+170's 154 / 72 and 162 / 71 and 192's 170 / 70. At nine positive: its
 nine-positive 405 operations at degree 1,191,570 and 413 at 1,316,546
 (`23d8510a10`; the 413 form on the 2^429959 tuple), 722 at 1,158,228 and
 1,056 at 997,810 dominate every nine-positive package point. Its
@@ -582,7 +588,7 @@ lower directory number counts as earlier.
 | Integer sextic | **30ℤ** (76). Dominated: the 31ℤ sextics of 77, 79, 81 (144 operations), 82, and the 32ℤ and 34ℤ sextics of waves 9–10 | 76 | 76 |
 | Integer quartic | **37ℤ** (76 ≡ 82, two variants; 77's four variants differ in one guard row). Dominated: 69's and 71's 38ℤ | 76, 77, 82 | 76 |
 | Direct C222 quartic, ℕ (no K215, Jones, Sun or coefficient tuple) | **202 / 154 / 9,353 / 1,854,167**, 202 / 154 / 16,927 / 416,488, 203 / 155 / 6,524 / 1,979,888 and 204 / 156 / 6,503 / 1,981,520 (179, from 171's charts); 207 / 159 / 5,278 / 69,238,087 and 208 / 160 / 5,198 / 65,866,712 (164); 255 / 203 / 5,743 / 64,214,623 (133); 333 / 264 / 4,357 (122) on terms; 4,860 / 4,476 / 14,719 / **1,837** (98, lowest height). Raw systems (those of 140, 142, 143, 144, 149 and 164 unclaimed): **310 / 262 / 4,501 / 63,907,245** (164), 359 / 307 / 5,706 / 1,418,780 (128), 412 / 349 / **2,852** / 63,907,302 (131), 479 / 414 / 3,042 / 1,144,307 (123), 554 / 476 / 3,276 / 1,142,323 (112). Dominated: 171's 202s, 203 and 204; 178's three 203s; 164's 206; 128's 242; 123's 320; 125's 331ds and 332ss; 149's 219 and both 221s; 144's 221; 140's 221, 222 and 223, 142's 221 and 222, 144's 222, 223 and 224, 143's 228s, 229 and its control, 149's controls, 150's unclaimed 231, 131's 278, 139's 226 and 227, 135's 228, 229 and 230, 134's 233, 138's 235 and 236, 129's 233 and 234, 133's 237, 239 and 240, 131's 249, 124's 261 and 292, 127's, 130's 241 and dense 239, 108's and 109's 395; raw: 142's 324, 149's 324 and 325, 144's 325 and 327, 133's 343, 140's 326, 143's 335, 139's 332, 135's 334, 138's 336 and 337, 134's 339, 130's 349, 131's 387, 127's and 129's raws, 123's 465, 124's 435 and 406, and earlier forms | 98, 112, 122, 123, 128, 131, 133, 164, 179 | 87 (earliest), 89 (this lineage) |
-| Direct C222 quartic, ℤ | **208 / 148 / 5,987 / 1.76·10^13** (191); 209 / 149 / 5,486 / 2^32 and 209 / 149 / 6,654 / 2^30 (190); 209 / 150 / 5,283 / 2.75·10^11 (189); 209 / 149 / 5,485 / 2^48 (191); 210 / 150 / 5,282 / 1.10·10^12 and 214 / 153 / 5,699 / 91,679 (184); 212 / 152 / 21,556 / 6,432 and 212 / 152 / 5,290 / 277,420 (192); 214 / 153 / 5,656 / 219,813 (182); 215 / 154 / 7,081 / 8,880, 215 / 154 / 7,315 / 4,096 and 215 / 154 / 16,077 / **2,304** (186); 215 / 152 / 14,578 / 16,866 and 215 / 152 / 34,700 / 4,512 (179); 215 / 154 / 5,660 / 91,679 (173); 216 / 153 / 25,602 / 5,632 and 217 / 154 / 14,793 / 3,200 (172); 220 / 157 / 8,847 / 2,336 (170); 229 / 176 / 4,477 / 7,968 (181); 234 / 170 / 5,018 / 8,880 (174); 234 / 170 / 4,858 / 13,448 (178); 236 / 173 / 4,876 / 7,968 (162); 236 / 172 / 4,992 / 10,722 (163); 238 / 175 / 5,236 / 3,968 and 239 / 175 / 5,137 / 3,968 (165); 240 / 176 / 4,927 / 7,596 (164); 247 / 179 / 4,352 / 23,316 and 247 / 179 / 4,432 / 17,235 (149); 250 / 182 / 4,770 / 6,709 (154); 263 / 191 / 4,141, 264 / 190 / 4,135, 285 / 213 / 3,750 and 286 / 212 / **3,744** (144, height 128,446); 284 / 194 / 4,270 / 10,864 and 306 / 216 / 3,870 / 14,512 (143); 493 integers / 24,828 terms, 494 / 24,648, 496 / 20,548, 504 / 18,297, 507 / 17,524, 546 / 12,139, 605 / 8,305 and 701 / 7,141 (186) and 557 / 11,991 (172), all at **height 1** (not sums of squares, so compared on variables, terms and height). Dominated: 191's 209 / 5,486 / 2^44 (by 190's); 173's 213 and 214; 169's 216; 172's 217 / 7,396 / 8,880; 170's 220 / 7,858 / 6,272 and 217; 166's 230 and 229; 181's 228; 185's 212 and 214; 186's 214; 158's 225; 159's 234, 235 and 236; 157's 238 and both 239s; 156's Gram forms; 154's 244 and 247 / 3,840; 150's 247; every endpoint of 160 and 161; 162's 235; 163's 235 and 234; 164's 239 and 240 / 5,232; 165's 237; 167's 220 and 218; 168's 218; 169's 218; 171's four; 174's two 233s; 178's 233; the height-one forms of 172 other than 557, and those of 165, 154 and 144; and everything those dominated | 143, 144, 149, 154, 162, 163, 164, 165, 170, 172, 173, 174, 178, 179, 181, 182, 184, 186, 189, 190, 191, 192 | 87 |
+| Direct C222 quartic, ℤ | **208 / 148 / 5,987 / 1.76·10^13** (191); 209 / 149 / 5,486 / 2^32 and 209 / 149 / 6,654 / 2^30 (190); 209 / 150 / 5,283 / 2.75·10^11 (189); 209 / 149 / 5,485 / 2^48 (191); 210 / 150 / 5,282 / 1.10·10^12 and 214 / 153 / 5,699 / 91,679 (184); 212 / 152 / 21,556 / 6,432 and 212 / 152 / 5,290 / 277,420 (192); 214 / 153 / 5,656 / 219,813 (182); 215 / 154 / 7,081 / 8,880, 215 / 154 / 7,315 / 4,096 and 215 / 154 / 16,077 / **2,304** (186); 215 / 152 / 14,578 / 16,866 and 215 / 152 / 34,700 / 4,512 (179); 215 / 154 / 5,660 / 91,679 (173); 216 / 153 / 25,602 / 5,632 and 217 / 154 / 14,793 / 3,200 (172); 220 / 157 / 8,847 / 2,336 (170); 229 / 176 / 4,477 / 7,968 (181); 234 / 170 / 5,018 / 8,880 (174); 234 / 170 / 4,858 / 13,448 (178); 236 / 173 / 4,876 / 7,968 (162); 236 / 172 / 4,992 / 10,722 (163); 238 / 175 / 5,236 / 3,968 and 239 / 175 / 5,137 / 3,968 (165); 240 / 176 / 4,927 / 7,596 (164); 247 / 179 / 4,352 / 23,316 and 247 / 179 / 4,432 / 17,235 (149); 250 / 182 / 4,770 / 6,709 (154); 263 / 191 / 4,141, 264 / 190 / 4,135, 285 / 213 / 3,750 and 286 / 212 / **3,744** (144, height 128,446); 284 / 194 / 4,270 / 10,864 and 306 / 216 / 3,870 / 14,512 (143); 493 integers / 24,828 terms, 494 / 24,648, 496 / 20,548, 504 / 18,297, 507 / 17,524, 546 / 12,139, 605 / 8,305 and 701 / 7,141 (186) and 557 / 11,991 (172), all at **height 1** (not sums of squares, so compared on variables, terms and height). Dominated: 191's 209 / 5,486 / 2^44 and 2^50 and 190's F128 intermediate 209 / 5,486 / 1.42·10^10 (all by 190's F64); 173's 213 and 214; 169's 216; 172's 217 / 7,396 / 8,880; 170's 220 / 7,858 / 6,272 and 217; 166's 230 and 229; 181's 228; 185's 212 and 214; 186's 214; 158's 225; 159's 234, 235 and 236; 157's 238 and both 239s; 156's Gram forms; 154's 244 and 247 / 3,840; 150's 247; every endpoint of 160 and 161; 162's 235; 163's 235 and 234; 164's 239 and 240 / 5,232; 165's 237; 167's 220 and 218; 168's 218; 169's 218; 171's four; 174's two 233s; 178's 233; the height-one forms of 172 other than 557, and those of 165, 154 and 144; and everything those dominated | 143, 144, 149, 154, 162, 163, 164, 165, 170, 172, 173, 174, 178, 179, 181, 182, 184, 186, 189, 190, 191, 192 | 87 |
 | Eleven positive | **174 / 104** (184, on 133's indexed tuple). Dominated: 115's 211 / 107 (its evaluator of the research session's polynomial, which 105 evaluates in 110), 83's 211 / 112, 86's 213 / 112, 87's 211 / 113, 82's 269 / 111, the 277 / 111 polynomial of 76, 77, 78, 79, 81, 77's 257 / 114, and 70's 325 / 113 | 184 | 76 (277), 83 (211) |
 | Twelve positive, Pareto frontier | **70 / 95** (115's evaluator of 98's free-J polynomial); 57's **258 / 89** (across counts, 163's ten-positive 80 / 258, 171's 85 / 232, 172's 82 / 240 and 87 / 214 and 179's 89 / 210 dominate it); **438 / 74** (170). Dominated: 98's 70 / 98, 76's 78 / 101 ≡ 82's 78 / 102, 78's ≡ 81's 78 / 103, 87's 70 / 100, 69's 82 / 102, 74's forms | 98, 115; 57; 170 | 80 (claim), 87 (first artifact), 98 |
 | Thirteen positive, Pareto frontier | **28 / 98** (72); 30 / 92 (73; 74 evaluates the same polynomial in 93); **51 / 87** (115's evaluator of 98's polynomial); 114 / 83 (62); 154 / 72 and 162 / 71 (170); 170 / 70 and **174 / 69** (192). Dominated: 170's 206 / 70, 142's 433 / 72, 98's 51 / 88, 70's and 75's 30 / 94, 61's 34 / 93 | 72; 73; 98, 115; 62; 170; 192 | — |
@@ -590,7 +596,7 @@ lower directory number counts as earlier.
 | Fifteen positive | 66 ops (51's P66, degree 157; 141 binds the same 66-operation shape to radix-47 and radix-49 tuples, and 174 to its 4127 and 4159 tuples); across counts, 183's fourteen-positive 150 / 65 dominates the 157 / 66 point, and 188's 118 / 66 and 94 / 67 dominate the 125 / 67 and 101 / 68 points; lowest degree 24 / 88 (66); Pareto frontier as after wave 9 | 51; 66 | — |
 | Twelve positive, systems | unchanged: 59's three-equation system at 94 operations | 59 | 59 |
 | Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125. From wave 2 (history only, see the wave-2 README `5b0c9ae9fd`): 15's positive-domain sextic in 25 and octic in 20 unknowns, which still dominate 75's 26- and 21-unknown versions | waves 2, 5, 6 | — |
-| Smallest coefficients binding an equation | **B = 2^139261** (188's fourteen-positive 66 / 118 and 67 / 94 on the research session's block-mask2963 tuple, 69,685 raw bytes; that tuple's calibration, and for 67 / 94 the transfer of 53's and 59's proofs, were not checked at intake, and the research session was already below it when 188 arrived); B = 2^189269 (183's fourteen-positive circuit on the research session's admissible942 tuple, 94,689 raw bytes, taken unchanged; its inherited native calibration was not checked at intake, and that session was already on smaller tuples when 183 arrived, see above); B = 2^193969 (174's P66, 185's fourteen-positive and 186's ten-positive circuits, on the research session's Start-marker4127 tuple, 97,046 raw bytes; their Start-only calibrations and 186's whole-tuple bridge were not checked at intake); B = 2^196319 (179's ten-positive circuits on the research session's Start-marker4177 tuple, 98,219 raw bytes, if 179's native transfer holds); 171's binding of its ten-positive 85 / 232 to the research session's one-anchor7309 tuple, B = 2^343523 (172,011 raw bytes), if 171's native calibration holds; 141's radix-47 tuple, **B = 2^413929** (207,214 raw bytes), if its 29-to-12 carry proof holds (149, 164 and 175 bind ten-positive circuits to it); before them **B = 2^429959** (54), to which 85, 86, 101 and 105 bind nine-positive forms. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1 (186, 172; earlier 165, 154, 144, 135, 127, 120) and 2 (114) to about 1.3·10^33 (161's horizon-free forms)) | 188; 183; 174, 185, 186; 179; 171; 141; 54; 87–89 | 54 |
+| Smallest coefficients binding an equation | **B = 2^139261** (188's fourteen-positive 66 / 118 and 67 / 94 on the research session's block-mask2963 tuple, 69,685 raw bytes; that tuple's calibration, and for 67 / 94 the transfer of 51's, 53's and 59's proofs, were not checked at intake, and the research session was already below it when 188 arrived); B = 2^189269 (183's fourteen-positive circuit, and 192's thirteen-positive 69 / 174 and 70 / 170, on the research session's admissible942 tuple, 94,689 raw bytes, taken unchanged; its inherited native calibration was not checked at intake, and that session was already on smaller tuples when 183 arrived, see above); B = 2^193969 (174's P66, 185's fourteen-positive and 186's ten-positive circuits, on the research session's Start-marker4127 tuple, 97,046 raw bytes; their Start-only calibrations and 186's whole-tuple bridge were not checked at intake); B = 2^196319 (179's ten-positive circuits on the research session's Start-marker4177 tuple, 98,219 raw bytes, if 179's native transfer holds); 171's binding of its ten-positive 85 / 232 to the research session's one-anchor7309 tuple, B = 2^343523 (172,011 raw bytes), if 171's native calibration holds; 141's radix-47 tuple, **B = 2^413929** (207,214 raw bytes), if its 29-to-12 carry proof holds (149, 164 and 175 bind ten-positive circuits to it); before them **B = 2^429959** (54), to which 85, 86, 101 and 105 bind nine-positive forms. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1 (186, 172; earlier 165, 154, 144, 135, 127, 120) and 2 (114) to about 1.3·10^33 (161's horizon-free forms)) | 188; 183, 192; 174, 185, 186; 179; 171; 141; 54; 87–89 | 54 |
 
 ## Wave 24 (sources 188–193)
 
@@ -608,18 +614,18 @@ of 179–187 as unplaced archives. None saw a sibling, and none cites one.
 190 and 191 share a subtitle with 185, credit ChatGPT, make the same horizon
 edit of the same parent and ship one shared ten-positive polynomial; they
 probably come from one source. The PDFs the dossiers dated were built
-between 18:14 and 18:20.
+between 18:14 and 18:25 (190 at 18:14, 192 and 193 at 18:24).
 
 In this section ten-, thirteen- and fourteen-positive pairs are
 operations / degree, and tuple-free forms variables / degree.
 
 | Dir | Archive | Title as printed | Constructions |
 |---|---|---|---|
-| [`188-pell-orientation-exact-projection/`](188-pell-orientation-exact-projection/) | `ConZFC_Pell_Orientation_Exact_Projection_2026-10-25.zip` | *Pell orientation and exact projection for Diophantine consistency of ZFC* (README H1 differs in case) | **fourteen positive 66 / 118** and **67 / 94** (the research session's block-mask2963 tuple, B = 2^139261); tuple-free 84 / 2,097,808 (2,351 operations), its 85-variable control, and 205 / 26, 120 / 32, 123 / 32; bundles the whole 181 ZIP |
-| [`189-prime-supported-spacing/`](189-prime-supported-spacing/) | `ConZFC_Prime_Supported_Spacing_2026-10-25.zip` | *Prime-supported Pell growth and binomial sequence spacing* | direct quartic ℤ **209 / 150 / 5,283 / 274,899,927,541** |
-| [`190-signed-growth-and-transport/`](190-signed-growth-and-transport/) | `ConZFC_Signed_Growth_and_Transport_2026-10-25.zip` | *Signed growth and centered Pell transport for Diophantine consistency* | direct quartics ℤ **209 / 149 / 5,486 / 2^32** and **209 / 149 / 6,654 / 2^30**; tuple-free **130 / 12**, **116 / 16** and 107 / 32; ten positive 119 / 190 |
-| [`191-sparse-syntax-weighted-transport/`](191-sparse-syntax-weighted-transport/) | `ConZFC_Sparse_Syntax_and_Weighted_Transport_2026-10-26.zip` | *Sparse syntax and weighted Pell transport* (README H1 adds "for Con(ZFC)") | direct quartics ℤ **208 / 148 / 5,987 / 2^44**, **209 / 149 / 5,485 / 2^48** and 209 / 149 / 5,486 / 2^44; ten positive 120 / 190 (190's polynomial); bundles the whole 184 ZIP |
-| [`192-pell-centers-fused-bounds/`](192-pell-centers-fused-bounds/) | `ConZFC_Pell_Centers_and_Fused_Bounds_2026-10-25.zip` | *Pell centers and fused bounds for Con(ZFC)* | direct quartics ℤ **212 / 152 / 21,556 / 6,432** and **212 / 152 / 5,290 / 277,420**; tuple-free **106 / 32**, **97 / 64**, **87 / 256**, **85 / 444**, 84 / 956, 83 / 1,092, 82 / 16,964 and 81 / 2,097,732 (1,711 operations); **thirteen positive 69 / 174** and **70 / 170**; 39ℤ lifts |
+| [`188-pell-orientation-exact-projection/`](188-pell-orientation-exact-projection/) | `ConZFC_Pell_Orientation_Exact_Projection_2026-10-25.zip` | *Pell Orientation and Exact Projection for Diophantine Consistency of ZFC* (README H1 in sentence case) | **fourteen positive 66 / 118** and **67 / 94** (the research session's block-mask2963 tuple, B = 2^139261); tuple-free 84 / 2,097,808 (2,351 operations), its 85-variable control, and 205 / 26, 120 / 32, 123 / 32; bundles the whole 181 ZIP |
+| [`189-prime-supported-spacing/`](189-prime-supported-spacing/) | `ConZFC_Prime_Supported_Spacing_2026-10-25.zip` | *Prime-supported Pell growth and binomial sequence spacing* | direct quartic ℤ **209 / 150 / 5,283 / 274,899,927,541**; bundles the whole 184 ZIP |
+| [`190-signed-growth-and-transport/`](190-signed-growth-and-transport/) | `ConZFC_Signed_Growth_and_Transport_2026-10-25.zip` | *Signed growth and centered Pell transport* (README H1 and PDF metadata add "for Diophantine consistency") | direct quartics ℤ **209 / 149 / 5,486 / 2^32** and **209 / 149 / 6,654 / 2^30**; tuple-free **130 / 12**, **116 / 16** and 107 / 32; ten positive 119 / 190 |
+| [`191-sparse-syntax-weighted-transport/`](191-sparse-syntax-weighted-transport/) | `ConZFC_Sparse_Syntax_and_Weighted_Transport_2026-10-26.zip` | *Sparse syntax and weighted Pell transport* (README H1 adds "for Con(ZFC)") | direct quartics ℤ **208 / 148 / 5,987 / 2^44**, **209 / 149 / 5,485 / 2^48**, 209 / 149 / 5,486 / 2^44 and 209 / 149 / 5,486 / 2^50; ten positive 120 / 190 (190's polynomial); bundles the whole 184 ZIP |
+| [`192-pell-centers-fused-bounds/`](192-pell-centers-fused-bounds/) | `ConZFC_Pell_Centers_and_Fused_Bounds_2026-10-25.zip` | *Pell Centers and Fused Bounds* (README H1 adds "for Con(ZFC)") | direct quartics ℤ **212 / 152 / 21,556 / 6,432** and **212 / 152 / 5,290 / 277,420**; tuple-free **106 / 32**, **97 / 64**, **87 / 256**, **85 / 444**, 84 / 956, 83 / 1,092, 82 / 16,964 and 81 / 2,097,732 (1,711 operations); **thirteen positive 69 / 174** and **70 / 170** (the admissible942 tuple, B = 2^189269); 39ℤ lifts; bundles the whole 187 ZIP |
 | [`193-transport-and-pell-reuse/`](193-transport-and-pell-reuse/) | `ConZFC_Transport_and_Pell_Reuse_2026-10-25.zip` | *Two Routes to Smaller Diophantine Consistency Equations* | tuple-free D83 **83 / 624** (31 squares, 1,789 operations, literals at most 64) and profiles **79 / 8,388,620**, **81 / 2,048**, **82 / 764**, **84 / 512**, 85 / 444, **86 / 424**, 87 / 268, **88 / 176**, **89 / 128** and **91 / 80**; **ten positive 118 / 190** and **99 / 202** (133's indexed tuple) |
 
 ### Identities and dominance (intake findings)
@@ -627,26 +633,31 @@ operations / degree, and tuple-free forms variables / degree.
 Three read-only dossiers did the following:
 - recounted every circuit and measured every degree modulo 2^127 − 1, with
   the actual ports where there is a tuple;
-- re-expanded every quartic, and replayed every graft, source edit,
-  projection, row ledger and fusion;
-- parsed the printed definitions and checked the printed top-degree forms;
+- re-expanded every quartic, and replayed every graft, projection, row
+  ledger and fusion, and every source edit except 193's frame row;
+- parsed the printed definitions (except 188's `generated/direct_appendix.tex`)
+  and checked the printed top-degree forms of 190, 191 and 193;
 - checked 191's sparse formula coding against the repository's
-  `Code254.lean` and `KCode222.lean` axiom schemata, symbolically and on
-  random constructor sets;
+  `Code254.lean` and `KCode222.lean` axiom schemata at random points, and its
+  finite-marker lemma on 300 random subtree-closed sets (a sanity test, not a
+  proof);
 - rebuilt 189's completeness fixture at a small prime.
 
 Every headline figure was confirmed. Not checked: 136's orientation on
 181's center; 189's sign, capacity and witness-order arguments; 190's and
 191's signed anchor, frame and cap theorem at t ≥ 2; 192's growth and
 shared-guard completeness; 193's center theorem beyond spot checks; the
-transfer of 53's and 59's proofs behind 188's 67 / 94; the calibrations of
-the research session's tuples; the coefficient recipes (none was run); and
+transfer of 51's, 53's and 59's proofs behind 188's 67 / 94; 188's claimed
+leading forms; 193's frame-row derivation from 166's raw source; the
+calibrations of the research session's tuples and every inherited calibration
+(172's radix-67 tuple for the ten-positive circuits of 190, 191 and 193, and
+183's carrier at the 2963 ports for 188's 66 / 118); the coefficient recipes (none was run); and
 every unbounded proof.
 
 - **Direct ℤ quartics.** Four packages edit 184's 210 independently:
   - **191's 208** recodes C222 syntax with sparse constructors
     4((x + y)² + x) + tag. The new block is exactly the old rule set, and
-    only two coordinates cross it. 191 also changes the Pell center to
+    only three of its coordinates (its two outputs and F·S) occur outside it. 191 also changes the Pell center to
     8t + 1 and the horizon to t = 2 + 4z. It has the fewest variables of any
     ℤ quartic.
   - **190's two 209s** use the same horizon t = 2 + 4z (so v₂(t) = 1) and
@@ -663,12 +674,14 @@ every unbounded proof.
   and 185's 212 were already dominated.
 - **Ten positive.**
   - 193's 118 / 190 is 172's 87 / 214 chart with 178's W4 center and a new
-    transport weight A·U³·b². This is wave-22 further question 2, answered.
-    It has the lowest ten-positive degree.
+    transport weight A·U³·b². It has the lowest ten-positive degree. It
+    answers the first half of wave-22 further question 2 (172's chart), as
+    190's and 191's 119 / 190 had done 8 minutes earlier; 163's circuits
+    remain open.
   - 190's 119 / 190 and 191's 120 / 190 are one other polynomial, on the
     weight U·E·b². 193's 118 / 190 dominates both.
   - 193's 99 / 202 is 179's 90 / 206 with its center A·U·E replaced by
-    2AUE − U·S; it is a new Pareto point.
+    2AUE − U·S and G scaled to 4G; it is a new Pareto point.
 - **Fourteen positive.**
   - 188's 66 / 118 is 183's carrier gate list with one more subtraction:
     the auxiliary S² becomes Δ(f² − 1).
@@ -685,7 +698,8 @@ every unbounded proof.
     degree: one shared guard replaces two private guards, and a linear sign
     numerator saves 27–28 operations. This dominates all of 187's forms.
   - 193 builds a new lineage from 166's compact229. It deletes u and v and
-    reuses the frame quotient as the Pell center, one step beyond 181. Its
+    reuses the frame quotient as the witness of the one-square center, one
+    step beyond 181. Its
     79 / 8,388,620 has the fewest variables of the class.
   - 188's direct headline (84 / 2,097,808) was overtaken in transit by
     187's 84 / 2,097,732. 188's orientation device turns a Pell abscissa
@@ -703,17 +717,22 @@ every unbounded proof.
 
 ### Tensions, not adjudicated at intake
 
-- **The research session adopted 188's degree-118 form.** `1e23611da2` (18:58)
+- **The research session certified 188's degree-118 form on its own tuple.** `1e23611da2` (18:58)
   credits 188's `native/PROOF.md` by its SHA-256 and does not adopt its
   tuple or graph. `b4c64e63d3` (19:00) certifies 14 / 66 / 118 on the
   research session's sorted2501 tuple; it did not adopt 67 / 94. The base is
-  188. At 19:02 (`7153f88e9f`) the research session also recorded a
-  conditional thirteen-positive lead (70 / 140, with a 71 / 136 companion)
-  built on 192's carrier; it has not accepted it.
+  188. At 19:02 (`7153f88e9f`) the research session recorded a conditional
+  thirteen-positive lead (70 / 140, with a 71 / 136 companion) that combines
+  192's carrier with 188's degree-118 auxiliary edit. At 19:25 (`76c06aab89`;
+  a typo corrected in `28b9195799`, 19:33) it proved the 70 / 140 form on its
+  phase-split2471 tuple, crediting 192's `compact13/PROOF.md` and
+  `positive13_square.json` by SHA-256, and an independent ordinary review
+  passed. No literal graph or finite audit of it exists yet; once one does,
+  it dominates 170's 154 / 72 and 162 / 71 and 192's 170 / 70.
 - **Smallest tuple.** 188's binding to the block-mask2963 tuple
   (B = 2^139261, 69,685 raw bytes) is the smallest tuple bound to a package
   equation. It rests on the research session's calibration of that tuple,
-  and, for 67 / 94, on the transfer of 53's and 59's proofs, none checked at
+  and, for 67 / 94, on the transfer of 51's, 53's and 59's proofs, none checked at
   intake. The research session was already below it when 188 arrived.
 - **A combination not delivered.** 191's 208 has v₂(F) = 20 at every zero.
   190's scaling F = 64f therefore applies to it, and the dossier measured
@@ -722,9 +741,11 @@ every unbounded proof.
 - **Literal size.** 188's ≤ 256-literal evaluator and 193's ≤ 64-literal
   factored D83 are presentations of polynomials already counted; literal
   size is not ranked.
-- **The undelivered archives.** 190 and 191 carry two
-  `ConZFC_Shell_Reciprocal_660` files through their 184 and 173 copies; no
-  package carries a finished equation of either archive.
+- **The undelivered archives.** 189, 190 and 191 carry two
+  `ConZFC_Shell_Reciprocal_660` files through their 184 and 173 copies (189
+  and 191 inside the bundled 184 ZIP), and 192 carries the shell-encoding
+  proof through its 184 upstream copy; no package carries a finished equation
+  of either archive.
 
 ### Delivery discrepancies (wave 24)
 
@@ -733,18 +754,20 @@ every unbounded proof.
   - 188's `direct/build.py` rewrites `PROFILES.json` even with `--check`.
   - 190's `compact/verify.py` rewrites two files on every run.
   - 191's `package_release.py` always rewrites `MANIFEST.sha256`.
-  - 193's checkers write receipts by default.
+  - 193's checkers write receipts by default, and its root verifier runs
+    four replays in parallel.
 - **Records.**
   - 191's recoding note still gives the old horizon t = 16 + 4z².
   - 190 presents the signed horizon as its own mechanism and credits 185
-    only for pooling.
-  - 190 also claims "one fewer variable at each degree", without 180's
-    107 / 32, which its pin contained.
+    only for oriented pooling and projection.
+  - 190 also claims to "remove one variable at each matched degree" (against
+    185's 131 / 12, 117 / 16 and 108 / 32), without 180's 107 / 32, which its
+    pin contained.
   - 192 copies 187's height exponents, which still hold.
   - 192 never cites 185, although 185 was inside its pin.
-  - 189 carries 184's sandbox path `/tmp/…`.
+  - 189 and 190 carry 184's sandbox path `/tmp/…`.
   - 188 ships a review byte-identical to a proof, and 59's proof twice.
-  - 188 and 189 ship byte-identical receipt sets.
+  - All six ship byte-identical normal and optimized receipt pairs.
 - **Licence and attribution.** No root NOTICE: 190, 192. Every package states
   AI assistance itself.
 
@@ -755,8 +778,9 @@ every unbounded proof.
    184's source.
 3. Apply 192's guard fusion to 193's lineage, and 188's orientation unit
    pivot to 187's, 192's and 193's.
-4. Combine 188's auxiliary edit with 185's y-carrier or 192's thirteen-positive
-   carrier.
+4. Combine 188's auxiliary edit with 185's y-carrier (the research session
+   combined it with 192's carrier: 70 / 140 in `76c06aab89`, which still needs
+   a literal graph).
 
 ## Wave 23 (sources 179–187)
 
@@ -4858,9 +4882,10 @@ The packages say, in their own words (exceptions noted):
   hypothesis: wave-5 32, 33, 36; wave-6 41, 43, 45; wave-7 48, 52.
 - **Domains.** Positive and nine-variable equations must not be read over ℤ;
   the domains of different forms are not interchangeable.
-- **No optimality.** No global minimum is claimed. The only claim below 67
-  operations is 51's P66 (66 operations, degree 157); no package claims
-  fewer. No form below nine unknowns or ten unrestricted integers is
+- **No optimality.** No global minimum is claimed. Claims below 67
+  operations are 51's P66 (66 operations, degree 157), 185's and 188's
+  fourteen-positive 66-operation forms, and 183's 65 (degree 150); no package
+  claims fewer than 65. No form below nine unknowns or ten unrestricted integers is
   claimed. 59 lists three routes to twelve unrestricted integers as
   unproved in `signed/NO_TWELVE_VARIABLE_CLAIM.md`; its counterexamples
   there show that two shortcuts in its own 13ℤ proof are invalid.

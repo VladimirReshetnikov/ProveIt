@@ -1170,7 +1170,8 @@ As the packages state them:
   in 66 operations;
 - the smallest coefficient tuple binding an equation has B = 2^139261 (188's
   fourteen-positive circuits on the research session's block-mask2963 tuple,
-  if its calibration holds); then 2^189269 (183's, on the admissible942 tuple);
+  if its calibration holds and, for 67 / 94, the transfer of 51's, 53's and
+  59's proofs); then 2^189269 (183's and 192's, on the admissible942 tuple);
   then 2^193969 for 174, 185 and 186 if their Start-only calibrations hold,
   2^196319 if 179's transfer holds, 2^343523 if 171's calibration holds, 2^413929 if 141's carry proof holds,
   and 2^429959.
