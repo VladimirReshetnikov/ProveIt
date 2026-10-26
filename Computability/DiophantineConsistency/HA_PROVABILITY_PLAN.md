@@ -529,6 +529,14 @@ actual consistency/witness endpoints and selected frontier checks. The
 full478-module inventory and58 outside modules are distinguished; no
 whole Foundation or umbrella replay is claimed.
 
+The [actual internal seed closure](reviews/validator-seed-closure222-root.md)
+now supplies empty objects and singletons up to the fixed Eind relation
+uniformly in every IΣ1 model. Its two independent builds pass14 standard-only
+reports and retain numeric proof witnesses at p=0, legal zero/equal seed
+labels and explicit input-binder vacuity. No self-label vacuity is assumed.
+The full native container/GIC axioms, arbitrary proof interpretation and
+exact runtime calibration remain open.
+
 ## Next reviewable checkpoints
 
 1. Authentic HA derivability and basic arithmetic/induction interfaces are

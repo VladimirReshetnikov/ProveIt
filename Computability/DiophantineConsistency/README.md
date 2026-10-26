@@ -80,6 +80,14 @@ is a weaker containment result than the native container/GIC axioms; those
 axioms, arbitrary represented proof translation and runtime calibration
 remain open. Independent [relational review](reviews/validator-relational-eind222-peer.md)
 and [seed review](reviews/validator-seed-witness222-peer.md) found no corrections.
+The [actual internal seed closure](reviews/validator-seed-closure222-root.md)
+now supplies empty objects and singletons up to the fixed Eind relation
+uniformly in every IΣ1 model. Its two independent builds pass14 standard-only
+reports and retain numeric proof witnesses at p=0, legal zero/equal seed
+labels and explicit input-binder vacuity. No self-label vacuity is assumed.
+The full native container/GIC axioms, arbitrary proof interpretation and
+exact runtime calibration remain open.
+
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence
