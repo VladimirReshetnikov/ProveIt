@@ -43,6 +43,22 @@ def pair {σ : Type*} {f g : (σ → ℕ) → ℕ}
     Fin.cases r (Fin.cases s (fun i => Fin.elim0 i))
   exact GraphRep.compose pairCoordinates arguments
 
+theorem exists_pair_right_iff (z a : ℕ) :
+    (∃ b, z = Nat.pair a b) ↔ a = (Nat.unpair z).1 := by
+  constructor
+  · rintro ⟨b, rfl⟩
+    simp
+  · intro h
+    exact ⟨(Nat.unpair z).2, by rw [h, Nat.pair_unpair]⟩
+
+theorem exists_pair_left_iff (z b : ℕ) :
+    (∃ a, z = Nat.pair a b) ↔ b = (Nat.unpair z).2 := by
+  constructor
+  · rintro ⟨a, rfl⟩
+    simp
+  · intro h
+    exact ⟨(Nat.unpair z).1, by rw [h, Nat.pair_unpair]⟩
+
 /-- The first inverse-pairing coordinate graph uses the second as a witness. -/
 def unpairLeftCoordinate : GraphRep (fun v : Fin 1 → ℕ => (Nat.unpair (v 0)).1) := by
   let index : Option (Fin 2) → Option (Fin 1) ⊕ Fin 1
@@ -52,12 +68,7 @@ def unpairLeftCoordinate : GraphRep (fun v : Fin 1 → ℕ => (Nat.unpair (v 0))
   intro v
   change (∃ w : Fin 1 → ℕ, v (some 0) = Nat.pair (v none) (w 0)) ↔
     v none = (Nat.unpair (v (some 0))).1
-  constructor
-  · rintro ⟨w, h⟩
-    rw [h, Nat.unpair_pair]
-  · intro h
-    refine ⟨fun _ => (Nat.unpair (v (some 0))).2, ?_⟩
-    rw [h, Nat.pair_unpair]
+  simp [Fin.exists_fin_succ_pi, exists_pair_right_iff]
 
 /-- The second inverse-pairing coordinate graph uses the first as a witness. -/
 def unpairRightCoordinate : GraphRep (fun v : Fin 1 → ℕ => (Nat.unpair (v 0)).2) := by
@@ -68,12 +79,7 @@ def unpairRightCoordinate : GraphRep (fun v : Fin 1 → ℕ => (Nat.unpair (v 0)
   intro v
   change (∃ w : Fin 1 → ℕ, v (some 0) = Nat.pair (w 0) (v none)) ↔
     v none = (Nat.unpair (v (some 0))).2
-  constructor
-  · rintro ⟨w, h⟩
-    rw [h, Nat.unpair_pair]
-  · intro h
-    refine ⟨fun _ => (Nat.unpair (v (some 0))).1, ?_⟩
-    rw [h, Nat.pair_unpair]
+  simp [Fin.exists_fin_succ_pi, exists_pair_left_iff]
 
 /-- First inverse-pairing projection of a supplied represented function. -/
 def unpairLeft {σ : Type*} {f : (σ → ℕ) → ℕ} (r : GraphRep f) :
