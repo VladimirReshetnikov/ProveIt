@@ -327,6 +327,15 @@ review and fresh replay](reviews/doubled-clause2011-lean-root.md) record
 symbolic acceptance/rejection controls. The following physical-label
 binding connects this arithmetic to the literal current clause.
 
+`CurrentCellLabels2011.decode_cell` now binds every physical control bit
+and the full doubled clause to either empty zero labels or a uniquely
+selected actual tile's34-bit complement. All four color blocks are unpacked
+in the true orientation, and clause outgoing carry is derived zero while
+incoming carry and temporal bit remain present during decoding. See the
+[root review and fresh replay](reviews/current-cell-labels2011-lean-root.md).
+Its explicit count/phase premises are supplied by the unconditional
+polynomial count result; whole-field alignment and adjacency remain open.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
