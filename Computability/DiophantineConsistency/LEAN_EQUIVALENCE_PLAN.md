@@ -243,6 +243,14 @@ replay and full-byte K reconstruction. This closes the literal coefficient
 binding; source/polynomial composition, physical decoding and internal-ZFC
 equivalence remain to be completed.
 
+`CurrentWindowCarry2011.source_carries` now specializes source carry
+normalization to all four actual fixed ports. Interface, folded-K
+congruence and carry57 budget are discharged internally; the positive
+literal source rows, Boolean C word, q window and full mask-word binding
+remain explicit. The [root full-source review and fresh replay](reviews/current-window-carry2011-lean-root.md)
+record the exact endpoint. Polynomial-to-word composition and physical
+decoding remain required.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
