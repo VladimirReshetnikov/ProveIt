@@ -1170,8 +1170,8 @@ As the packages state them:
   in 66 operations;
 - the smallest coefficient tuple binding an equation has B = 2^189269 (183's
   fourteen-positive circuit on the research session's admissible942 tuple);
-  then 2^193969 for 174 and 186 if their Start-only calibrations hold,
-  2^343523 if 171's calibration holds, 2^413929 if 141's carry proof holds,
+  then 2^193969 for 174, 185 and 186 if their Start-only calibrations hold,
+  2^196319 if 179's transfer holds, 2^343523 if 171's calibration holds, 2^413929 if 141's carry proof holds,
   and 2^429959.
 
 Materialized coefficient bytes do not by themselves prove the compiler
