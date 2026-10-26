@@ -42,8 +42,13 @@ delivered, with a `PLACEMENT.md` recording its arrival. Nothing here is imported
 | [2026-10-26zh](2026-10-26zh/PLACEMENT.md) | `Lean_Proof_Simplification_New_Construction_2026-10-26.zip` | `5b24be5bc0` | `663fb267f6` |
 | [2026-10-26zi](2026-10-26zi/PLACEMENT.md) | `ProveIt_Lean_Simplification_Round4_2026-10-26.zip` | `5b24be5bc0` | `09d65a93c9` |
 | [2026-10-26zj](2026-10-26zj/PLACEMENT.md) | `lean-additional-simplifications-2026-10-26.zip` | `eab031e8ba` | `663fb267f6` |
+| [2026-10-26zk](2026-10-26zk/PLACEMENT.md) | `diophantine-lean-new-obligations-2026-10-26.zip` | `c40fb84615` | `9f35798db4` |
+| [2026-10-26zl](2026-10-26zl/PLACEMENT.md) | `Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip` | `c40fb84615` | `91dce223cd` |
+| [2026-10-26zm](2026-10-26zm/PLACEMENT.md) | `ProveIt_Lean_Simplification_Round5_2026-10-26.zip` | `c40fb84615` | `91dce223cd` |
+| [2026-10-26zn](2026-10-26zn/PLACEMENT.md) | `proveit-lean-additional-certificates-2026-10-26.zip` | `cec7d7871e` | `e1c8914bc7` |
+| [2026-10-26zo](2026-10-26zo/PLACEMENT.md) | `lean-proof-simplifications-2026-10-26.zip` | `71a89b3beb` | `9f35798db4` |
 
-Packets b–zj omit members byte-identical to a Git blob of the reviewed commit, of `60e9c5d620` or of the placement parent,
+Packets b–zo omit members byte-identical to a Git blob of the reviewed commit, of `60e9c5d620` or of the placement parent,
 mostly bundled source snapshots; each one's `OMITTED.tsv` lists them with a repository path holding the
 same bytes.
 

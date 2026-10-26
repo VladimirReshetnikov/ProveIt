@@ -1,0 +1,66 @@
+{
+  "all_expected_results_observed": true,
+  "validation": "Python source guard checks only; no Lean execution",
+  "results": [
+    {
+      "script": "check_sources.py",
+      "optimized": false,
+      "fixture": "valid",
+      "exit_code": 0,
+      "expected_exit": 0
+    },
+    {
+      "script": "check_sources.py",
+      "optimized": false,
+      "fixture": "deliberately_tampered",
+      "exit_code": 1,
+      "expected_exit": "nonzero",
+      "error_last_line": "RuntimeError: Source identity or theorem statement mismatch: IterationSize.lean"
+    },
+    {
+      "script": "check_sources.py",
+      "optimized": true,
+      "fixture": "valid",
+      "exit_code": 0,
+      "expected_exit": 0
+    },
+    {
+      "script": "check_sources.py",
+      "optimized": true,
+      "fixture": "deliberately_tampered",
+      "exit_code": 1,
+      "expected_exit": "nonzero",
+      "error_last_line": "RuntimeError: Source identity or theorem statement mismatch: IterationSize.lean"
+    },
+    {
+      "script": "replay_composition.py",
+      "optimized": false,
+      "fixture": "valid",
+      "exit_code": 0,
+      "expected_exit": 0
+    },
+    {
+      "script": "replay_composition.py",
+      "optimized": false,
+      "fixture": "deliberately_tampered",
+      "exit_code": 1,
+      "expected_exit": "nonzero",
+      "error_last_line": "RuntimeError: Original Sidon source does not match frozen source SHA-256"
+    },
+    {
+      "script": "replay_composition.py",
+      "optimized": true,
+      "fixture": "valid",
+      "exit_code": 0,
+      "expected_exit": 0
+    },
+    {
+      "script": "replay_composition.py",
+      "optimized": true,
+      "fixture": "deliberately_tampered",
+      "exit_code": 1,
+      "expected_exit": "nonzero",
+      "error_last_line": "RuntimeError: Original Sidon source does not match frozen source SHA-256"
+    }
+  ]
+}

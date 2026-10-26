@@ -1,0 +1,30 @@
+\pageheading{6 A narrow bit test cleanup without changing the word}
+\textbf{Keep the current mask construction and shorten only its residue-to-bit client.}
+The retained target is \src{CurrentWordPadding2011}{125}{133}. For an arbitrary natural $x$,
+\[
+ x\bmod2048\le5\quad\Longrightarrow\quad x\mathbin{\&}8=0.
+\]
+The source first clears bit three of the residue, separately identifies that bit with the bit of $x$, and transfers the result. A restricted simplification performs the same transfer directly.
+
+\begin{lstlisting}
+theorem bit3_clear_of_residue {x : ℕ}
+    (hx : x%2048 ≤ 5) : x &&& 8 = 0 := by
+  simpa only [PaddingStaircase.bit3_mask_iff,
+    Nat.testBit_mod_two_pow,
+    show (3 < 11) = True from propext (by decide),
+    decide_true, Bool.true_and] using
+    (Nat.testBit_lt_two_pow (show x%2^11 < 2^3 by omega))
+\end{lstlisting}
+
+The patch uses three proof-body physical lines instead of six; the listing is wrapped for legibility. The complete module changes from 224 to 221 physical lines, with zero helper or import cost. All bytes outside this proof body are retained.
+
+\textbf{Why it is correct.} Let $r=x\bmod2^{11}$. The premise gives $r\le5<8=2^3$, so bit three of $r$ is false. Reduction modulo $2^{11}$ preserves every bit below eleven, in particular bit three. The established mask equivalence then identifies $x\mathbin{\&}2^3=0$ with that false bit. The proof does not infer $x<8$: values $x=2048t+r$, with arbitrary $t$ and $0\le r\le5$, remain in scope.
+
+\textbf{Novelty boundary.} This is a new-client deletion, not a new bit-test method. The source already uses the same \code{testBit_mod_two_pow} simplification pattern in \src{PaddingStaircase}{23}{33}. That existing technique is treated as available. What remains here is the removable intermediate transport in a newly added client, not a new mask theorem, carry architecture or scalar witness interface.
+
+\textbf{The surrounding semantic guards stay intact.} This patch leaves the padding support bounds, reflected residue calculation, zero marker input and same-source carry normalization untouched. It does not turn arbitrary numeric maps into Boolean maps, discard matching or origin hypotheses, or replace an actual normalized word by an unrelated witness. The assembled padding conclusion continues to refer to the same word, carry and digits supplied in \src{CurrentWordPadding2011}{179}{222}.
+
+\textbf{Rejected scalar shortening.} The candidate that rewrote
+$q=\rho^{N\cdot2011-1}\rho$ directly with predecessor-power cancellation is excluded: earlier proposal E41 already supplies exactly that mechanism in \href{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/report/sections/02_local.tex\#L145-L164}{packet f}. It is not included in the reported saving. Generic quotient/remainder packages, signed-prefix borrowing, coherent source/carry views, source-residue zeros and the fourth packet's marker-only terminal band are also baseline material, not fresh recommendations.
+
+The scalar witness definitions and the positive transport factor remain unchanged. In particular, the actual signed transport factor is one, not zero; its natural quotient witness is a successor, and all cast-subtraction guards must remain available.

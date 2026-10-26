@@ -1,0 +1,51 @@
+{
+  "source_pin": "9f35798db4a63c25e435fca14d75931144657d7e",
+  "variants": [
+    {
+      "name": "guarded_power_cast_fusion",
+      "patch": "power/patches/guarded_power_cast_fusion.patch",
+      "files": {
+        "PrimePowerOrder.lean": {
+          "candidate": "power/proposed/PrimePowerOrder.lean",
+          "changed": ["pow_cast_eq_one_iff"]
+        }
+      }
+    },
+    {
+      "name": "exact_order_clients",
+      "patch": "power/patches/exact_order_clients.patch",
+      "files": {
+        "CurrentPowerCoordinates2011.lean": {
+          "candidate": "power/proposed/CurrentPowerCoordinates2011.lean",
+          "changed": ["order_product", "generator_cast_auxiliary", "generator_cast_C0", "block_order"],
+          "removed": ["order_transport"]
+        }
+      }
+    },
+    {
+      "name": "bit3_clear_of_residue",
+      "patch": "masks/patches/bit3_clear_of_residue.patch",
+      "files": {
+        "CurrentWordPadding2011.lean": {
+          "candidate": "masks/candidates/CurrentWordPadding2011.lean",
+          "changed": ["bit3_clear_of_residue"]
+        }
+      }
+    },
+    {
+      "name": "gamma_pos_from_coprime",
+      "patch": "units/patches/gamma_pos_from_coprime.patch",
+      "files": {
+        "CurrentControllerUnits2011.lean": {
+          "candidate": "units/candidates/CurrentControllerUnits2011.lean",
+          "changed": ["Gamma_pos"]
+        }
+      }
+    }
+  ],
+  "compositions": {
+    "power": ["guarded_power_cast_fusion", "exact_order_clients"],
+    "recommended": ["guarded_power_cast_fusion", "exact_order_clients", "bit3_clear_of_residue"],
+    "all": ["guarded_power_cast_fusion", "exact_order_clients", "bit3_clear_of_residue", "gamma_pos_from_coprime"]
+  }
+}

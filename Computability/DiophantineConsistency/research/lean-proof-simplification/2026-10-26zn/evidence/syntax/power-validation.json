@@ -1,0 +1,45 @@
+{
+  "lean_version": "4.32.0",
+  "mathlib_revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "source_commit": "e1c8914bc7064d9a8e7c06171a18069a949badd0",
+  "checks": [
+    {
+      "file": "PowerFixedPoint.lean",
+      "status": "passed",
+      "scope": "generic monoid fixed point; three exact residue seeds; symbolic base wrappers; zero-exponent and zero-map-power edges",
+      "axioms_generic": [
+        "propext"
+      ],
+      "axioms_concrete": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "sha256": "a804a86f9d3e3b747a4b79c71fb8157d140490a473615985be276ecfacd5c329"
+    },
+    {
+      "file": "ControllerPowerComparison.lean",
+      "status": "not_replayed_after_io_stall",
+      "scope": "proposed before/after exact arithmetic fixture",
+      "reason": "Initial attempt stalled in kernel I/O before diagnostics. Final copy additionally unfolds the auxiliary numeral explicitly; not rerun after that source-only robustness edit.",
+      "sha256": "9b866e4e16b917c07208bd6f08da24dc4a632e34c1da8fb3e1edfcf8aed3e9ba"
+    },
+    {
+      "file": "LibraryPowerFixed.lean",
+      "status": "interrupted_io_stall",
+      "scope": "optional alternate helper using existing pow_iterate and Function.IsFixedPt.iterate",
+      "reason": "Task-owned worker blocked in folio_wait_bit_common; terminated. Not needed for actual supplied patch.",
+      "sha256": "da171608a3174734f9569c2a40acd573b728114edaea3d5089eab8c8409ce87f"
+    },
+    {
+      "file": "ControllerPowerAfter.lean",
+      "status": "not_replayed_after_io_stall",
+      "scope": "exact replacement bodies and concrete source arithmetic using narrow imports",
+      "reason": "Initial attempt stalled in kernel I/O before diagnostics. Final copy additionally unfolds the auxiliary numeral explicitly; not rerun after that source-only robustness edit.",
+      "sha256": "0a7a2b012ba0865645f6c9d785782e4b8662fd7974c972eb921a549230e39c07"
+    }
+  ],
+  "production_module_rebuild": "not_run",
+  "production_clients_rebuild": "not_run",
+  "source_metrics": "power-metrics.json"
+}

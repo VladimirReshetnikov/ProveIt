@@ -1,0 +1,52 @@
+INDEPENDENT FINAL SOURCE REVIEW
+Reviewed revision: e1c8914bc7064d9a8e7c06171a18069a949badd0
+
+Conclusion: retain four proposals. All four mechanisms are mathematically sound on source review, and none matches an idea identified in the scoped exclusion corpus. This is not a full production-build certification. The nonexistent List.exists_map_eq_iff proposal is rejected and not a recommendation.
+
+SCOPE TABLE
+A: checked exact data and modular arithmetic; unchanged physical-order/rawWord_cast bridge and full production module not rebuilt.
+B: checked monoid core, numerical seeds and source-shaped symbolic wrappers; final exact production-body comparison fixtures not replayed; module not rebuilt.
+C: checked general finite weighted update, same packed-word defining expression and update bound; production imports not rebuilt.
+D: checked exact origin-specialization core with extracted support/reflection dependencies and generic reflected-sum consequence; full concrete word-construction imports not rebuilt.
+
+COMMON-MODULUS
+Source: Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentKernelResidues2011.lean
+Candidate SHA-256: f16f792f4449e423bfa6165f81a6b6e3d8c872531b4e428aaf0bebafd178a659
+Physical lines: 843 -> 426 (net removal 417, including any new helpers). Preserved public declaration headers: 15.
+Mathematical review: Sound: each target modulus divides M, so a natural-number residue equality in ZMod M maps to the target ZMod by ZMod.castHom. No CRT reconstruction, coprimality, or primality is required for this projection. The polynomial coefficients and all 59 source chunks remain unchanged.
+Precise scope: 59 shared block certificates replace 177 independent block certificates. K_cast_common plus a generic projection helper derive the same three existing public K residues. Existing physical-order, permutation and rawWord_cast bridge retained verbatim.
+Validation: Arithmetic agent final hash-bound receipt records Lean 4.32.0 exit 0 for fixture SHA-256 0eb5cc6f1b894a32b61467e3eba0544339063a8c1d323778ef0aa9f84d5ef016: all exact 941 rows, 59 blocks, 34 controls, reflected expression and three projections. Independent reviewer did not rerun compiler. Full production imports and clients not rebuilt.
+Limit: Larger modulus may increase reduction cost; no elaboration or kernel speedup established.
+
+POWER-FIXED-POINT
+Source: Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerUnits2011.lean
+Candidate SHA-256: 4da0be4df8e80cd3e91fc06eca1033f3ee8f35c03dd0400d5967a39ae4aa3d64
+Physical lines: 201 -> 196 (net removal 5, including any new helpers). Preserved public declaration headers: 31.
+Mathematical review: Sound in any monoid: induction on n and pow_succ/pow_mul turn x^(a^(n+1)) into (x^(a^n))^a. Base n=0 gives x^1=x. No commutativity or primality is needed by this helper.
+Precise scope: Three separate literal one-step seeds for B modulo 47, 2011 and 120199 are propagated by one helper. This is not a single common-modulus seed in the delivered patch. Existing public statements and auxiliary congruence lemmas remain.
+Validation: PowerFixedPoint.lean passed according to syntax agent receipt. Final exact production-body fixtures, changed to explicitly unfold auxiliary, were not replayed after an I/O stall. Production module and clients not rebuilt.
+Limit: Removing direct Mathlib.FieldTheory.Finite.Basic import may change transitive API exposure for clients; no claim that all module primality dependence is removed.
+
+WEIGHTED-UPDATE
+Source: Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentDummyMutation2011.lean
+Candidate SHA-256: c24a0bdb3bcfc3baa02b13178130d16978a453174efe222a374ed6bb22e9c217
+Physical lines: 193 -> 185 (net removal 8, including any new helpers). Preserved public declaration headers: 12.
+Mathematical review: Sound: mapping Function.update through each indexed weight preserves a single updated summand; split the old finite sum at that index and normalize distributivity. All quantities are natural; no subtraction, digit bound, radix bound or carry hypothesis is introduced.
+Precise scope: word_update_increment is shortened directly, and update_boolean uses Function.forall_update_iff. Production change adds no new helper. The generic weighted_update_add theorem is an explanatory validation artifact.
+Validation: Root agent reports final compilation exit 0. Final weighted-updates.log contains three successful axiom reports and no errors or sorryAx; its hash is recorded below. Independent reviewer did not rerun compiler. Full production imports and clients not rebuilt.
+Limit: The local word fixture has the same defining expression with explicit section parameters; it is not the full production import closure.
+
+ORIGIN-SPECIALIZATION
+Source: Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordOrigin2011.lean
+Candidate SHA-256: b7d14fcf3aab1ccbf5727ca72b7770715d88f925714574c068cab9f802d1952f
+Physical lines: 118 -> 111 (net removal 7, including any new helpers). Preserved public declaration headers: 6.
+Mathematical review: Sound: specialize existing reflected_source at h=0. The bound position e <=985 makes its positive-offset branch impossible, yielding zero at the aligned origin. Support and alignment premises remain exactly the original ones.
+Precise scope: Only origin_reflected_zero is shortened in the production patch. convolution_origin_zero is unchanged and benefits by using the shortened helper; no separate line reduction is assigned to that caller. No new helper is added.
+Validation: Root agent reports final compilation exit 0. Final origin-reuse.log contains three successful axiom reports and no errors or sorryAx; its hash is recorded below. The exact origin core is checked in the scoped fixture, not through full production imports. Independent reviewer did not rerun compiler.
+Limit: The isolated fixture reuses the source support and reflection law and checks generic callers, but does not rebuild the full concrete word-construction dependency graph.
+
+Combined source metrics: 1355 -> 918 physical lines; 437 net lines removed. All 64 original public declaration headers are preserved, and K_cast_common is the only new public declaration. The primary numerical improvement comes from the common-modulus certificate; the other three are small local simplifications. These counts describe the supplied patches against the pinned files. No runtime, compilation-speed, or proof-term-size improvement is claimed.
+
+Cross-proposal distinction: the common-modulus kernel uses the radix rho=2^47; the controller power patch concerns B=rho^2011. Their residue constants must not be interchanged. The optional common-modulus Gamma extension is not one of the four measured production proposals and is outside this independent review.
+
+Review limits: all exclusion corpus bytes were hash-verified; semantic review covered reports, proposal inventories and targeted implementation notes, not a claim that every code line in every prior artifact was read. Novelty means no matching proposal was found within that scoped audit. The root agent owns final compiler receipts and packaging. Full production modules and their clients still require integration builds.

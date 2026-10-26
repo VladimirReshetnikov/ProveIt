@@ -1,0 +1,13 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/IterationSize.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/IterationSize.lean
+@@ -69,9 +69,7 @@
+     (DirectGraphEnumerator.iterate p initial).witnessCount = (rows p initial).witnessCount := rfl
+ 
+ theorem iterate_depth {f : ℕ → ℕ} (p : R f) (initial : ℕ) :
+-    (DirectGraphEnumerator.iterate p initial).depth = (rows p initial).depth := by
+-  have he : (DirectGraphEnumerator.iterate p initial).expression = (rows p initial).expression := rfl
+-  exact congrArg Expr.depth he
++    (DirectGraphEnumerator.iterate p initial).depth = (rows p initial).depth := rfl
+ 
+ theorem entryGraph_witnessCount {σ : Type*} {f g h : (σ → ℕ) → ℕ}
+     (r : GraphRep f) (s : GraphRep g) (t : GraphRep h) :

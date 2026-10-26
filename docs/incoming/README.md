@@ -14,7 +14,7 @@ a report at one of the destinations of section 2.
 
 ## DiophantineConsistency proof-simplification packets
 
-Thirty-six proof-simplification packets of 26 October 2026, reviewing commits from `60e9c5d620` onward, are placed under
+Forty-one proof-simplification packets of 26 October 2026, reviewing commits from `60e9c5d620` onward, are placed under
 [`Computability/DiophantineConsistency/research/lean-proof-simplification/`](../../Computability/DiophantineConsistency/research/lean-proof-simplification/README.md) and retired here:
 
 | Archive | Arrival | Placement |
@@ -55,6 +55,11 @@ Thirty-six proof-simplification packets of 26 October 2026, reviewing commits fr
 | `Lean_Proof_Simplification_New_Construction_2026-10-26.zip` | `5b24be5bc0` | [2026-10-26zh](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zh/PLACEMENT.md) |
 | `ProveIt_Lean_Simplification_Round4_2026-10-26.zip` | `5b24be5bc0` | [2026-10-26zi](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zi/PLACEMENT.md) |
 | `lean-additional-simplifications-2026-10-26.zip` | `eab031e8ba` | [2026-10-26zj](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zj/PLACEMENT.md) |
+| `diophantine-lean-new-obligations-2026-10-26.zip` | `c40fb84615` | [2026-10-26zk](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zk/PLACEMENT.md) |
+| `Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip` | `c40fb84615` | [2026-10-26zl](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zl/PLACEMENT.md) |
+| `ProveIt_Lean_Simplification_Round5_2026-10-26.zip` | `c40fb84615` | [2026-10-26zm](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zm/PLACEMENT.md) |
+| `proveit-lean-additional-certificates-2026-10-26.zip` | `cec7d7871e` | [2026-10-26zn](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zn/PLACEMENT.md) |
+| `lean-proof-simplifications-2026-10-26.zip` | `71a89b3beb` | [2026-10-26zo](../../Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zo/PLACEMENT.md) |
 
 Members byte-identical to a Git blob of the reviewed commit (the bundled source snapshots) are listed in
 each placement's `OMITTED.tsv` instead of being copied. Adopted ideas are tracked in

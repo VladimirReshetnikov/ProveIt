@@ -1,0 +1,1668 @@
+{
+  "pin": "9f35798db4a63c25e435fca14d75931144657d7e",
+  "sources": [
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerPowerCoordinates.lean",
+      "sha256": "d15bf886e1f266c5b40757706e58f7d3a08cdeef8ae145110041b5308f2f3b2e",
+      "git_blob": "c335916ddede21f6e8ff68c6fe7ad3d7381b6734",
+      "lines": 42,
+      "declarations": [
+        {
+          "line": 13,
+          "text": "theorem exists_power_coordinates {C0 T : \u2115} [NeZero T] (hC0 : 1 < C0)"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ControllerPowerCoordinatesChecks.lean",
+      "sha256": "d65f5d660c0d0fc9d1f1a471512ea1b20dff59a68e6cacb8bbcaf3c5f8258514",
+      "git_blob": "bff13330d30511c82b465111a5c0b62be4460961",
+      "lines": 36,
+      "declarations": []
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentAuxiliaryOrder2011.lean",
+      "sha256": "67db5e89285d56908ce482ffd72108c909ccc5e4f505ac2d324157344048e08e",
+      "git_blob": "6af1ed4fb55416e1fbeee9fcd2b2a8bc537462bf",
+      "lines": 62,
+      "declarations": [
+        {
+          "line": 17,
+          "text": "theorem generator_gt_one : 1 < B^(auxiliary-1) := by"
+        },
+        {
+          "line": 22,
+          "text": "theorem generator_mod_prime : B^(auxiliary-1) % auxiliary = 1 := by"
+        },
+        {
+          "line": 30,
+          "text": "theorem generator_dvd : auxiliary \u2223 B^(auxiliary-1)-1 := by"
+        },
+        {
+          "line": 37,
+          "text": "theorem generator_not_square : \u00ac auxiliary^2 \u2223 B^(auxiliary-1)-1 := by"
+        },
+        {
+          "line": 44,
+          "text": "theorem generator_not_dvd : \u00ac auxiliary \u2223 B^(auxiliary-1) :="
+        },
+        {
+          "line": 47,
+          "text": "theorem generator_exact_lift (k : \u2115) :"
+        },
+        {
+          "line": 52,
+          "text": "theorem generator_order_succ (k : \u2115) :"
+        },
+        {
+          "line": 57,
+          "text": "theorem generator_order (n : \u2115) (hn : 1 \u2264 n) :"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentAuxiliaryOrder2011Checks.lean",
+      "sha256": "5f5c6ea233495dec39d7842ce0393b5ba7d607a10a16ca78ef63f2a41953aca1",
+      "git_blob": "5053ba9e5552738f782ebb77b52bd53e412bf638",
+      "lines": 43,
+      "declarations": []
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerUnits2011.lean",
+      "sha256": "1c3bdb8af6c4113589b92b76aa895fbee3ecad4ca4d32f8e6290b382bf2f004f",
+      "git_blob": "24d91f3fc612ce50ef110e8f7cca788018fac30c",
+      "lines": 201,
+      "declarations": [
+        {
+          "line": 22,
+          "text": "def dimension (n : \u2115) : \u2115 := auxiliary^n"
+        },
+        {
+          "line": 23,
+          "text": "def q (n : \u2115) : \u2115 := B^(dimension n)"
+        },
+        {
+          "line": 24,
+          "text": "def A (rw : \u2115) : \u2115 := CurrentKernel2011.K+B^(dimension rw)"
+        },
+        {
+          "line": 25,
+          "text": "def Gamma (rw n : \u2115) : \u2115 :="
+        },
+        {
+          "line": 28,
+          "text": "theorem dimension_pos (n : \u2115) : 0 < dimension n :="
+        },
+        {
+          "line": 31,
+          "text": "theorem B_gt_one : 1 < B := by"
+        },
+        {
+          "line": 37,
+          "text": "theorem q_gt_one (n : \u2115) : 1 < q n :="
+        },
+        {
+          "line": 40,
+          "text": "theorem quadratic_ge_one (n : \u2115) : 1 \u2264 q n^2 := by"
+        },
+        {
+          "line": 44,
+          "text": "theorem auxiliary_modEq_23 : auxiliary \u2261 1 [MOD 23] := by decide"
+        },
+        {
+          "line": 45,
+          "text": "theorem auxiliary_modEq_402 : auxiliary \u2261 1 [MOD 402] := by decide"
+        },
+        {
+          "line": 48,
+          "text": "theorem power_dimension_47 (n : \u2115) :"
+        },
+        {
+          "line": 58,
+          "text": "theorem power_dimension_2011 (n : \u2115) :"
+        },
+        {
+          "line": 68,
+          "text": "theorem power_dimension_auxiliary (n : \u2115) :"
+        },
+        {
+          "line": 74,
+          "text": "theorem q_cast_47 (n : \u2115) : (q n : ZMod 47) = 37 :="
+        },
+        {
+          "line": 76,
+          "text": "theorem q_cast_2011 (n : \u2115) : (q n : ZMod 2011) = 1283 :="
+        },
+        {
+          "line": 78,
+          "text": "theorem q_cast_auxiliary (n : \u2115) : (q n : ZMod auxiliary) = 37435 :="
+        },
+        {
+          "line": 81,
+          "text": "private theorem mod_of_cast {m : \u2115} [NeZero m] (a b : \u2115)"
+        },
+        {
+          "line": 86,
+          "text": "theorem quadratic_mod_47 (n : \u2115) : (q n^2-1) % 47 = 5 := by"
+        },
+        {
+          "line": 91,
+          "text": "theorem quadratic_mod_2011 (n : \u2115) : (q n^2-1) % 2011 = 1090 := by"
+        },
+        {
+          "line": 96,
+          "text": "theorem quadratic_mod_auxiliary (n : \u2115) : (q n^2-1) % auxiliary = 99282 := by"
+        },
+        {
+          "line": 103,
+          "text": "theorem coupling_cast {p : \u2115} (rw n : \u2115)"
+        },
+        {
+          "line": 112,
+          "text": "theorem coupling_mod_47 (rw n : \u2115) : (1+q n*A rw) % 47 = 29 := by"
+        },
+        {
+          "line": 117,
+          "text": "theorem coupling_mod_2011 (rw n : \u2115) : (1+q n*A rw) % 2011 = 674 := by"
+        },
+        {
+          "line": 122,
+          "text": "private theorem transport_modulus (a m n r : \u2115) (hm : m = n)"
+        },
+        {
+          "line": 125,
+          "text": "theorem coupling_mod_auxiliary (rw n : \u2115) :"
+        },
+        {
+          "line": 132,
+          "text": "private theorem coprime_of_mod_ne_zero {x p : \u2115} (hp : Nat.Prime p)"
+        },
+        {
+          "line": 138,
+          "text": "theorem radix_coprime {p : \u2115} (ho : Odd p) :"
+        },
+        {
+          "line": 142,
+          "text": "private theorem gamma_coprime_of_factors (rw n p : \u2115) (ho : Odd p)"
+        },
+        {
+          "line": 149,
+          "text": "theorem coprime_Gamma_47 (rw n : \u2115) : Nat.Coprime (Gamma rw n) 47 := by"
+        },
+        {
+          "line": 158,
+          "text": "theorem coprime_Gamma_2011 (rw n : \u2115) : Nat.Coprime (Gamma rw n) 2011 := by"
+        },
+        {
+          "line": 167,
+          "text": "theorem coprime_Gamma_auxiliary (rw n : \u2115) :"
+        },
+        {
+          "line": 178,
+          "text": "theorem coprime_Gamma_width_cells (rw n : \u2115) :"
+        },
+        {
+          "line": 184,
+          "text": "theorem isUnit_Gamma_width_cells (rw n : \u2115) :"
+        },
+        {
+          "line": 189,
+          "text": "theorem Gamma_cast_rankGamma (rw n : \u2115) :"
+        },
+        {
+          "line": 195,
+          "text": "theorem Gamma_pos (rw n : \u2115) : 0 < Gamma rw n := by"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerUnits2011Checks.lean",
+      "sha256": "40af856fb4a962ff6650b3a3f74758625377470935e9b7652476c9991a9e0bdf",
+      "git_blob": "eaa0fddd56c9b88e53d06ccc9118af917222c0c3",
+      "lines": 85,
+      "declarations": [
+        {
+          "line": 11,
+          "text": "private theorem coprime_transport (a m n : \u2115) (hm : m = n)"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentKernelResidues2011.lean",
+      "sha256": "6e6812f7181a4b7fa5c558aef5f369c3068c21870710d522a979c39c877c8f4f",
+      "git_blob": "1ca6d48b7106170472ad890a118fe0266d18bbbd",
+      "lines": 843,
+      "declarations": [
+        {
+          "line": 22,
+          "text": "def evaluate {R : Type*} [Semiring R] (r : R) : List (\u2115 \u00d7 \u2115) \u2192 R"
+        },
+        {
+          "line": 26,
+          "text": "theorem evaluate_append {R : Type*} [CommSemiring R] (r : R)"
+        },
+        {
+          "line": 35,
+          "text": "theorem evaluate_sum {R : Type*} [CommSemiring R] (r : R)"
+        },
+        {
+          "line": 53,
+          "text": "private theorem evaluate_rows {R : Type*} [CommSemiring R] (r : R) :"
+        },
+        {
+          "line": 63,
+          "text": "theorem selector_reflection {R : Type*} [CommSemiring R] (r : R) :"
+        },
+        {
+          "line": 79,
+          "text": "def controlReflection {R : Type*} [CommSemiring R] (r : R) : R :="
+        },
+        {
+          "line": 86,
+          "text": "theorem rawWord_cast {R : Type*} [CommSemiring R] (r : \u2115) :"
+        },
+        {
+          "line": 99,
+          "text": "private theorem length_01 : chunk01.length = 16 := rfl"
+        },
+        {
+          "line": 100,
+          "text": "private theorem length_02 : chunk02.length = 16 := rfl"
+        },
+        {
+          "line": 101,
+          "text": "private theorem length_03 : chunk03.length = 16 := rfl"
+        },
+        {
+          "line": 102,
+          "text": "private theorem length_04 : chunk04.length = 16 := rfl"
+        },
+        {
+          "line": 103,
+          "text": "private theorem length_05 : chunk05.length = 16 := rfl"
+        },
+        {
+          "line": 104,
+          "text": "private theorem length_06 : chunk06.length = 16 := rfl"
+        },
+        {
+          "line": 105,
+          "text": "private theorem length_07 : chunk07.length = 16 := rfl"
+        },
+        {
+          "line": 106,
+          "text": "private theorem length_08 : chunk08.length = 16 := rfl"
+        },
+        {
+          "line": 107,
+          "text": "private theorem length_09 : chunk09.length = 16 := rfl"
+        },
+        {
+          "line": 108,
+          "text": "private theorem length_10 : chunk10.length = 16 := rfl"
+        },
+        {
+          "line": 109,
+          "text": "private theorem length_11 : chunk11.length = 16 := rfl"
+        },
+        {
+          "line": 110,
+          "text": "private theorem length_12 : chunk12.length = 16 := rfl"
+        },
+        {
+          "line": 111,
+          "text": "private theorem length_13 : chunk13.length = 16 := rfl"
+        },
+        {
+          "line": 112,
+          "text": "private theorem length_14 : chunk14.length = 16 := rfl"
+        },
+        {
+          "line": 113,
+          "text": "private theorem length_15 : chunk15.length = 16 := rfl"
+        },
+        {
+          "line": 114,
+          "text": "private theorem length_16 : chunk16.length = 16 := rfl"
+        },
+        {
+          "line": 115,
+          "text": "private theorem length_17 : chunk17.length = 16 := rfl"
+        },
+        {
+          "line": 116,
+          "text": "private theorem length_18 : chunk18.length = 16 := rfl"
+        },
+        {
+          "line": 117,
+          "text": "private theorem length_19 : chunk19.length = 16 := rfl"
+        },
+        {
+          "line": 118,
+          "text": "private theorem length_20 : chunk20.length = 16 := rfl"
+        },
+        {
+          "line": 119,
+          "text": "private theorem length_21 : chunk21.length = 16 := rfl"
+        },
+        {
+          "line": 120,
+          "text": "private theorem length_22 : chunk22.length = 16 := rfl"
+        },
+        {
+          "line": 121,
+          "text": "private theorem length_23 : chunk23.length = 16 := rfl"
+        },
+        {
+          "line": 122,
+          "text": "private theorem length_24 : chunk24.length = 16 := rfl"
+        },
+        {
+          "line": 123,
+          "text": "private theorem length_25 : chunk25.length = 16 := rfl"
+        },
+        {
+          "line": 124,
+          "text": "private theorem length_26 : chunk26.length = 16 := rfl"
+        },
+        {
+          "line": 125,
+          "text": "private theorem length_27 : chunk27.length = 16 := rfl"
+        },
+        {
+          "line": 126,
+          "text": "private theorem length_28 : chunk28.length = 16 := rfl"
+        },
+        {
+          "line": 127,
+          "text": "private theorem length_29 : chunk29.length = 16 := rfl"
+        },
+        {
+          "line": 128,
+          "text": "private theorem length_30 : chunk30.length = 16 := rfl"
+        },
+        {
+          "line": 129,
+          "text": "private theorem length_31 : chunk31.length = 16 := rfl"
+        },
+        {
+          "line": 130,
+          "text": "private theorem length_32 : chunk32.length = 16 := rfl"
+        },
+        {
+          "line": 131,
+          "text": "private theorem length_33 : chunk33.length = 16 := rfl"
+        },
+        {
+          "line": 132,
+          "text": "private theorem length_34 : chunk34.length = 16 := rfl"
+        },
+        {
+          "line": 133,
+          "text": "private theorem length_35 : chunk35.length = 16 := rfl"
+        },
+        {
+          "line": 134,
+          "text": "private theorem length_36 : chunk36.length = 16 := rfl"
+        },
+        {
+          "line": 135,
+          "text": "private theorem length_37 : chunk37.length = 16 := rfl"
+        },
+        {
+          "line": 136,
+          "text": "private theorem length_38 : chunk38.length = 16 := rfl"
+        },
+        {
+          "line": 137,
+          "text": "private theorem length_39 : chunk39.length = 16 := rfl"
+        },
+        {
+          "line": 138,
+          "text": "private theorem length_40 : chunk40.length = 16 := rfl"
+        },
+        {
+          "line": 139,
+          "text": "private theorem length_41 : chunk41.length = 16 := rfl"
+        },
+        {
+          "line": 140,
+          "text": "private theorem length_42 : chunk42.length = 16 := rfl"
+        },
+        {
+          "line": 141,
+          "text": "private theorem length_43 : chunk43.length = 16 := rfl"
+        },
+        {
+          "line": 142,
+          "text": "private theorem length_44 : chunk44.length = 16 := rfl"
+        },
+        {
+          "line": 143,
+          "text": "private theorem length_45 : chunk45.length = 16 := rfl"
+        },
+        {
+          "line": 144,
+          "text": "private theorem length_46 : chunk46.length = 16 := rfl"
+        },
+        {
+          "line": 145,
+          "text": "private theorem length_47 : chunk47.length = 16 := rfl"
+        },
+        {
+          "line": 146,
+          "text": "private theorem length_48 : chunk48.length = 16 := rfl"
+        },
+        {
+          "line": 147,
+          "text": "private theorem length_49 : chunk49.length = 16 := rfl"
+        },
+        {
+          "line": 148,
+          "text": "private theorem length_50 : chunk50.length = 16 := rfl"
+        },
+        {
+          "line": 149,
+          "text": "private theorem length_51 : chunk51.length = 16 := rfl"
+        },
+        {
+          "line": 150,
+          "text": "private theorem length_52 : chunk52.length = 16 := rfl"
+        },
+        {
+          "line": 151,
+          "text": "private theorem length_53 : chunk53.length = 16 := rfl"
+        },
+        {
+          "line": 152,
+          "text": "private theorem length_54 : chunk54.length = 16 := rfl"
+        },
+        {
+          "line": 153,
+          "text": "private theorem length_55 : chunk55.length = 16 := rfl"
+        },
+        {
+          "line": 154,
+          "text": "private theorem length_56 : chunk56.length = 16 := rfl"
+        },
+        {
+          "line": 155,
+          "text": "private theorem length_57 : chunk57.length = 16 := rfl"
+        },
+        {
+          "line": 156,
+          "text": "private theorem length_58 : chunk58.length = 13 := rfl"
+        },
+        {
+          "line": 158,
+          "text": "private theorem block_47_00 : evaluate (2 : ZMod 47) chunk00 = 41 := by"
+        },
+        {
+          "line": 161,
+          "text": "private theorem block_47_01 : evaluate (2 : ZMod 47) chunk01 = 46 := by"
+        },
+        {
+          "line": 164,
+          "text": "private theorem block_47_02 : evaluate (2 : ZMod 47) chunk02 = 31 := by"
+        },
+        {
+          "line": 167,
+          "text": "private theorem block_47_03 : evaluate (2 : ZMod 47) chunk03 = 24 := by"
+        },
+        {
+          "line": 170,
+          "text": "private theorem block_47_04 : evaluate (2 : ZMod 47) chunk04 = 0 := by"
+        },
+        {
+          "line": 173,
+          "text": "private theorem block_47_05 : evaluate (2 : ZMod 47) chunk05 = 15 := by"
+        },
+        {
+          "line": 176,
+          "text": "private theorem block_47_06 : evaluate (2 : ZMod 47) chunk06 = 40 := by"
+        },
+        {
+          "line": 179,
+          "text": "private theorem block_47_07 : evaluate (2 : ZMod 47) chunk07 = 7 := by"
+        },
+        {
+          "line": 182,
+          "text": "private theorem block_47_08 : evaluate (2 : ZMod 47) chunk08 = 8 := by"
+        },
+        {
+          "line": 185,
+          "text": "private theorem block_47_09 : evaluate (2 : ZMod 47) chunk09 = 9 := by"
+        },
+        {
+          "line": 188,
+          "text": "private theorem block_47_10 : evaluate (2 : ZMod 47) chunk10 = 2 := by"
+        },
+        {
+          "line": 191,
+          "text": "private theorem block_47_11 : evaluate (2 : ZMod 47) chunk11 = 5 := by"
+        },
+        {
+          "line": 194,
+          "text": "private theorem block_47_12 : evaluate (2 : ZMod 47) chunk12 = 24 := by"
+        },
+        {
+          "line": 197,
+          "text": "private theorem block_47_13 : evaluate (2 : ZMod 47) chunk13 = 17 := by"
+        },
+        {
+          "line": 200,
+          "text": "private theorem block_47_14 : evaluate (2 : ZMod 47) chunk14 = 10 := by"
+        },
+        {
+          "line": 203,
+          "text": "private theorem block_47_15 : evaluate (2 : ZMod 47) chunk15 = 18 := by"
+        },
+        {
+          "line": 206,
+          "text": "private theorem block_47_16 : evaluate (2 : ZMod 47) chunk16 = 29 := by"
+        },
+        {
+          "line": 209,
+          "text": "private theorem block_47_17 : evaluate (2 : ZMod 47) chunk17 = 37 := by"
+        },
+        {
+          "line": 212,
+          "text": "private theorem block_47_18 : evaluate (2 : ZMod 47) chunk18 = 39 := by"
+        },
+        {
+          "line": 215,
+          "text": "private theorem block_47_19 : evaluate (2 : ZMod 47) chunk19 = 29 := by"
+        },
+        {
+          "line": 218,
+          "text": "private theorem block_47_20 : evaluate (2 : ZMod 47) chunk20 = 5 := by"
+        },
+        {
+          "line": 221,
+          "text": "private theorem block_47_21 : evaluate (2 : ZMod 47) chunk21 = 1 := by"
+        },
+        {
+          "line": 224,
+          "text": "private theorem block_47_22 : evaluate (2 : ZMod 47) chunk22 = 35 := by"
+        },
+        {
+          "line": 227,
+          "text": "private theorem block_47_23 : evaluate (2 : ZMod 47) chunk23 = 46 := by"
+        },
+        {
+          "line": 230,
+          "text": "private theorem block_47_24 : evaluate (2 : ZMod 47) chunk24 = 26 := by"
+        },
+        {
+          "line": 233,
+          "text": "private theorem block_47_25 : evaluate (2 : ZMod 47) chunk25 = 14 := by"
+        },
+        {
+          "line": 236,
+          "text": "private theorem block_47_26 : evaluate (2 : ZMod 47) chunk26 = 31 := by"
+        },
+        {
+          "line": 239,
+          "text": "private theorem block_47_27 : evaluate (2 : ZMod 47) chunk27 = 34 := by"
+        },
+        {
+          "line": 242,
+          "text": "private theorem block_47_28 : evaluate (2 : ZMod 47) chunk28 = 29 := by"
+        },
+        {
+          "line": 245,
+          "text": "private theorem block_47_29 : evaluate (2 : ZMod 47) chunk29 = 10 := by"
+        },
+        {
+          "line": 248,
+          "text": "private theorem block_47_30 : evaluate (2 : ZMod 47) chunk30 = 6 := by"
+        },
+        {
+          "line": 251,
+          "text": "private theorem block_47_31 : evaluate (2 : ZMod 47) chunk31 = 12 := by"
+        },
+        {
+          "line": 254,
+          "text": "private theorem block_47_32 : evaluate (2 : ZMod 47) chunk32 = 25 := by"
+        },
+        {
+          "line": 257,
+          "text": "private theorem block_47_33 : evaluate (2 : ZMod 47) chunk33 = 13 := by"
+        },
+        {
+          "line": 260,
+          "text": "private theorem block_47_34 : evaluate (2 : ZMod 47) chunk34 = 26 := by"
+        },
+        {
+          "line": 263,
+          "text": "private theorem block_47_35 : evaluate (2 : ZMod 47) chunk35 = 16 := by"
+        },
+        {
+          "line": 266,
+          "text": "private theorem block_47_36 : evaluate (2 : ZMod 47) chunk36 = 7 := by"
+        },
+        {
+          "line": 269,
+          "text": "private theorem block_47_37 : evaluate (2 : ZMod 47) chunk37 = 6 := by"
+        },
+        {
+          "line": 272,
+          "text": "private theorem block_47_38 : evaluate (2 : ZMod 47) chunk38 = 41 := by"
+        },
+        {
+          "line": 275,
+          "text": "private theorem block_47_39 : evaluate (2 : ZMod 47) chunk39 = 46 := by"
+        },
+        {
+          "line": 278,
+          "text": "private theorem block_47_40 : evaluate (2 : ZMod 47) chunk40 = 33 := by"
+        },
+        {
+          "line": 281,
+          "text": "private theorem block_47_41 : evaluate (2 : ZMod 47) chunk41 = 30 := by"
+        },
+        {
+          "line": 284,
+          "text": "private theorem block_47_42 : evaluate (2 : ZMod 47) chunk42 = 9 := by"
+        },
+        {
+          "line": 287,
+          "text": "private theorem block_47_43 : evaluate (2 : ZMod 47) chunk43 = 13 := by"
+        },
+        {
+          "line": 290,
+          "text": "private theorem block_47_44 : evaluate (2 : ZMod 47) chunk44 = 0 := by"
+        },
+        {
+          "line": 293,
+          "text": "private theorem block_47_45 : evaluate (2 : ZMod 47) chunk45 = 38 := by"
+        },
+        {
+          "line": 296,
+          "text": "private theorem block_47_46 : evaluate (2 : ZMod 47) chunk46 = 20 := by"
+        },
+        {
+          "line": 299,
+          "text": "private theorem block_47_47 : evaluate (2 : ZMod 47) chunk47 = 38 := by"
+        },
+        {
+          "line": 302,
+          "text": "private theorem block_47_48 : evaluate (2 : ZMod 47) chunk48 = 23 := by"
+        },
+        {
+          "line": 305,
+          "text": "private theorem block_47_49 : evaluate (2 : ZMod 47) chunk49 = 43 := by"
+        },
+        {
+          "line": 308,
+          "text": "private theorem block_47_50 : evaluate (2 : ZMod 47) chunk50 = 23 := by"
+        },
+        {
+          "line": 311,
+          "text": "private theorem block_47_51 : evaluate (2 : ZMod 47) chunk51 = 25 := by"
+        },
+        {
+          "line": 314,
+          "text": "private theorem block_47_52 : evaluate (2 : ZMod 47) chunk52 = 44 := by"
+        },
+        {
+          "line": 317,
+          "text": "private theorem block_47_53 : evaluate (2 : ZMod 47) chunk53 = 19 := by"
+        },
+        {
+          "line": 320,
+          "text": "private theorem block_47_54 : evaluate (2 : ZMod 47) chunk54 = 32 := by"
+        },
+        {
+          "line": 323,
+          "text": "private theorem block_47_55 : evaluate (2 : ZMod 47) chunk55 = 39 := by"
+        },
+        {
+          "line": 326,
+          "text": "private theorem block_47_56 : evaluate (2 : ZMod 47) chunk56 = 19 := by"
+        },
+        {
+          "line": 329,
+          "text": "private theorem block_47_57 : evaluate (2 : ZMod 47) chunk57 = 0 := by"
+        },
+        {
+          "line": 332,
+          "text": "private theorem block_47_58 : evaluate (2 : ZMod 47) chunk58 = 0 := by"
+        },
+        {
+          "line": 335,
+          "text": "private theorem rows_47 : evaluate (2 : ZMod 47) rows = 15 := by"
+        },
+        {
+          "line": 363,
+          "text": "private theorem controls_47 : controlReflection (2 : ZMod 47) = 4 := by"
+        },
+        {
+          "line": 366,
+          "text": "private theorem radix_47 : (radix : ZMod 47) = 2 := by"
+        },
+        {
+          "line": 371,
+          "text": "private theorem block_2011_00 : evaluate (1283 : ZMod 2011) chunk00 = 589 := by"
+        },
+        {
+          "line": 374,
+          "text": "private theorem block_2011_01 : evaluate (1283 : ZMod 2011) chunk01 = 985 := by"
+        },
+        {
+          "line": 377,
+          "text": "private theorem block_2011_02 : evaluate (1283 : ZMod 2011) chunk02 = 717 := by"
+        },
+        {
+          "line": 380,
+          "text": "private theorem block_2011_03 : evaluate (1283 : ZMod 2011) chunk03 = 1048 := by"
+        },
+        {
+          "line": 383,
+          "text": "private theorem block_2011_04 : evaluate (1283 : ZMod 2011) chunk04 = 1048 := by"
+        },
+        {
+          "line": 386,
+          "text": "private theorem block_2011_05 : evaluate (1283 : ZMod 2011) chunk05 = 460 := by"
+        },
+        {
+          "line": 389,
+          "text": "private theorem block_2011_06 : evaluate (1283 : ZMod 2011) chunk06 = 450 := by"
+        },
+        {
+          "line": 392,
+          "text": "private theorem block_2011_07 : evaluate (1283 : ZMod 2011) chunk07 = 15 := by"
+        },
+        {
+          "line": 395,
+          "text": "private theorem block_2011_08 : evaluate (1283 : ZMod 2011) chunk08 = 1262 := by"
+        },
+        {
+          "line": 398,
+          "text": "private theorem block_2011_09 : evaluate (1283 : ZMod 2011) chunk09 = 1863 := by"
+        },
+        {
+          "line": 401,
+          "text": "private theorem block_2011_10 : evaluate (1283 : ZMod 2011) chunk10 = 183 := by"
+        },
+        {
+          "line": 404,
+          "text": "private theorem block_2011_11 : evaluate (1283 : ZMod 2011) chunk11 = 1532 := by"
+        },
+        {
+          "line": 407,
+          "text": "private theorem block_2011_12 : evaluate (1283 : ZMod 2011) chunk12 = 453 := by"
+        },
+        {
+          "line": 410,
+          "text": "private theorem block_2011_13 : evaluate (1283 : ZMod 2011) chunk13 = 784 := by"
+        },
+        {
+          "line": 413,
+          "text": "private theorem block_2011_14 : evaluate (1283 : ZMod 2011) chunk14 = 1115 := by"
+        },
+        {
+          "line": 416,
+          "text": "private theorem block_2011_15 : evaluate (1283 : ZMod 2011) chunk15 = 1085 := by"
+        },
+        {
+          "line": 419,
+          "text": "private theorem block_2011_16 : evaluate (1283 : ZMod 2011) chunk16 = 1637 := by"
+        },
+        {
+          "line": 422,
+          "text": "private theorem block_2011_17 : evaluate (1283 : ZMod 2011) chunk17 = 472 := by"
+        },
+        {
+          "line": 425,
+          "text": "private theorem block_2011_18 : evaluate (1283 : ZMod 2011) chunk18 = 1440 := by"
+        },
+        {
+          "line": 428,
+          "text": "private theorem block_2011_19 : evaluate (1283 : ZMod 2011) chunk19 = 783 := by"
+        },
+        {
+          "line": 431,
+          "text": "private theorem block_2011_20 : evaluate (1283 : ZMod 2011) chunk20 = 917 := by"
+        },
+        {
+          "line": 434,
+          "text": "private theorem block_2011_21 : evaluate (1283 : ZMod 2011) chunk21 = 1784 := by"
+        },
+        {
+          "line": 437,
+          "text": "private theorem block_2011_22 : evaluate (1283 : ZMod 2011) chunk22 = 250 := by"
+        },
+        {
+          "line": 440,
+          "text": "private theorem block_2011_23 : evaluate (1283 : ZMod 2011) chunk23 = 1492 := by"
+        },
+        {
+          "line": 443,
+          "text": "private theorem block_2011_24 : evaluate (1283 : ZMod 2011) chunk24 = 20 := by"
+        },
+        {
+          "line": 446,
+          "text": "private theorem block_2011_25 : evaluate (1283 : ZMod 2011) chunk25 = 671 := by"
+        },
+        {
+          "line": 449,
+          "text": "private theorem block_2011_26 : evaluate (1283 : ZMod 2011) chunk26 = 1623 := by"
+        },
+        {
+          "line": 452,
+          "text": "private theorem block_2011_27 : evaluate (1283 : ZMod 2011) chunk27 = 1758 := by"
+        },
+        {
+          "line": 455,
+          "text": "private theorem block_2011_28 : evaluate (1283 : ZMod 2011) chunk28 = 236 := by"
+        },
+        {
+          "line": 458,
+          "text": "private theorem block_2011_29 : evaluate (1283 : ZMod 2011) chunk29 = 111 := by"
+        },
+        {
+          "line": 461,
+          "text": "private theorem block_2011_30 : evaluate (1283 : ZMod 2011) chunk30 = 980 := by"
+        },
+        {
+          "line": 464,
+          "text": "private theorem block_2011_31 : evaluate (1283 : ZMod 2011) chunk31 = 570 := by"
+        },
+        {
+          "line": 467,
+          "text": "private theorem block_2011_32 : evaluate (1283 : ZMod 2011) chunk32 = 1649 := by"
+        },
+        {
+          "line": 470,
+          "text": "private theorem block_2011_33 : evaluate (1283 : ZMod 2011) chunk33 = 1954 := by"
+        },
+        {
+          "line": 473,
+          "text": "private theorem block_2011_34 : evaluate (1283 : ZMod 2011) chunk34 = 1143 := by"
+        },
+        {
+          "line": 476,
+          "text": "private theorem block_2011_35 : evaluate (1283 : ZMod 2011) chunk35 = 972 := by"
+        },
+        {
+          "line": 479,
+          "text": "private theorem block_2011_36 : evaluate (1283 : ZMod 2011) chunk36 = 1690 := by"
+        },
+        {
+          "line": 482,
+          "text": "private theorem block_2011_37 : evaluate (1283 : ZMod 2011) chunk37 = 946 := by"
+        },
+        {
+          "line": 485,
+          "text": "private theorem block_2011_38 : evaluate (1283 : ZMod 2011) chunk38 = 449 := by"
+        },
+        {
+          "line": 488,
+          "text": "private theorem block_2011_39 : evaluate (1283 : ZMod 2011) chunk39 = 801 := by"
+        },
+        {
+          "line": 491,
+          "text": "private theorem block_2011_40 : evaluate (1283 : ZMod 2011) chunk40 = 1942 := by"
+        },
+        {
+          "line": 494,
+          "text": "private theorem block_2011_41 : evaluate (1283 : ZMod 2011) chunk41 = 1193 := by"
+        },
+        {
+          "line": 497,
+          "text": "private theorem block_2011_42 : evaluate (1283 : ZMod 2011) chunk42 = 1090 := by"
+        },
+        {
+          "line": 500,
+          "text": "private theorem block_2011_43 : evaluate (1283 : ZMod 2011) chunk43 = 452 := by"
+        },
+        {
+          "line": 503,
+          "text": "private theorem block_2011_44 : evaluate (1283 : ZMod 2011) chunk44 = 29 := by"
+        },
+        {
+          "line": 506,
+          "text": "private theorem block_2011_45 : evaluate (1283 : ZMod 2011) chunk45 = 1556 := by"
+        },
+        {
+          "line": 509,
+          "text": "private theorem block_2011_46 : evaluate (1283 : ZMod 2011) chunk46 = 654 := by"
+        },
+        {
+          "line": 512,
+          "text": "private theorem block_2011_47 : evaluate (1283 : ZMod 2011) chunk47 = 1824 := by"
+        },
+        {
+          "line": 515,
+          "text": "private theorem block_2011_48 : evaluate (1283 : ZMod 2011) chunk48 = 1619 := by"
+        },
+        {
+          "line": 518,
+          "text": "private theorem block_2011_49 : evaluate (1283 : ZMod 2011) chunk49 = 188 := by"
+        },
+        {
+          "line": 521,
+          "text": "private theorem block_2011_50 : evaluate (1283 : ZMod 2011) chunk50 = 309 := by"
+        },
+        {
+          "line": 524,
+          "text": "private theorem block_2011_51 : evaluate (1283 : ZMod 2011) chunk51 = 715 := by"
+        },
+        {
+          "line": 527,
+          "text": "private theorem block_2011_52 : evaluate (1283 : ZMod 2011) chunk52 = 790 := by"
+        },
+        {
+          "line": 530,
+          "text": "private theorem block_2011_53 : evaluate (1283 : ZMod 2011) chunk53 = 500 := by"
+        },
+        {
+          "line": 533,
+          "text": "private theorem block_2011_54 : evaluate (1283 : ZMod 2011) chunk54 = 777 := by"
+        },
+        {
+          "line": 536,
+          "text": "private theorem block_2011_55 : evaluate (1283 : ZMod 2011) chunk55 = 1846 := by"
+        },
+        {
+          "line": 539,
+          "text": "private theorem block_2011_56 : evaluate (1283 : ZMod 2011) chunk56 = 1835 := by"
+        },
+        {
+          "line": 542,
+          "text": "private theorem block_2011_57 : evaluate (1283 : ZMod 2011) chunk57 = 1275 := by"
+        },
+        {
+          "line": 545,
+          "text": "private theorem block_2011_58 : evaluate (1283 : ZMod 2011) chunk58 = 236 := by"
+        },
+        {
+          "line": 548,
+          "text": "private theorem rows_2011 : evaluate (1283 : ZMod 2011) rows = 1822 := by"
+        },
+        {
+          "line": 576,
+          "text": "private theorem controls_2011 : controlReflection (1283 : ZMod 2011) = 241 := by"
+        },
+        {
+          "line": 579,
+          "text": "private theorem radix_2011 : (radix : ZMod 2011) = 1283 := by"
+        },
+        {
+          "line": 584,
+          "text": "private theorem block_120199_00 : evaluate (4237 : ZMod 120199) chunk00 = 119957 := by"
+        },
+        {
+          "line": 587,
+          "text": "private theorem block_120199_01 : evaluate (4237 : ZMod 120199) chunk01 = 116825 := by"
+        },
+        {
+          "line": 590,
+          "text": "private theorem block_120199_02 : evaluate (4237 : ZMod 120199) chunk02 = 117476 := by"
+        },
+        {
+          "line": 593,
+          "text": "private theorem block_120199_03 : evaluate (4237 : ZMod 120199) chunk03 = 51076 := by"
+        },
+        {
+          "line": 596,
+          "text": "private theorem block_120199_04 : evaluate (4237 : ZMod 120199) chunk04 = 57714 := by"
+        },
+        {
+          "line": 599,
+          "text": "private theorem block_120199_05 : evaluate (4237 : ZMod 120199) chunk05 = 5609 := by"
+        },
+        {
+          "line": 602,
+          "text": "private theorem block_120199_06 : evaluate (4237 : ZMod 120199) chunk06 = 108874 := by"
+        },
+        {
+          "line": 605,
+          "text": "private theorem block_120199_07 : evaluate (4237 : ZMod 120199) chunk07 = 31851 := by"
+        },
+        {
+          "line": 608,
+          "text": "private theorem block_120199_08 : evaluate (4237 : ZMod 120199) chunk08 = 6545 := by"
+        },
+        {
+          "line": 611,
+          "text": "private theorem block_120199_09 : evaluate (4237 : ZMod 120199) chunk09 = 46473 := by"
+        },
+        {
+          "line": 614,
+          "text": "private theorem block_120199_10 : evaluate (4237 : ZMod 120199) chunk10 = 100272 := by"
+        },
+        {
+          "line": 617,
+          "text": "private theorem block_120199_11 : evaluate (4237 : ZMod 120199) chunk11 = 76515 := by"
+        },
+        {
+          "line": 620,
+          "text": "private theorem block_120199_12 : evaluate (4237 : ZMod 120199) chunk12 = 97669 := by"
+        },
+        {
+          "line": 623,
+          "text": "private theorem block_120199_13 : evaluate (4237 : ZMod 120199) chunk13 = 31269 := by"
+        },
+        {
+          "line": 626,
+          "text": "private theorem block_120199_14 : evaluate (4237 : ZMod 120199) chunk14 = 85068 := by"
+        },
+        {
+          "line": 629,
+          "text": "private theorem block_120199_15 : evaluate (4237 : ZMod 120199) chunk15 = 8807 := by"
+        },
+        {
+          "line": 632,
+          "text": "private theorem block_120199_16 : evaluate (4237 : ZMod 120199) chunk16 = 48908 := by"
+        },
+        {
+          "line": 635,
+          "text": "private theorem block_120199_17 : evaluate (4237 : ZMod 120199) chunk17 = 73117 := by"
+        },
+        {
+          "line": 638,
+          "text": "private theorem block_120199_18 : evaluate (4237 : ZMod 120199) chunk18 = 47892 := by"
+        },
+        {
+          "line": 641,
+          "text": "private theorem block_120199_19 : evaluate (4237 : ZMod 120199) chunk19 = 21226 := by"
+        },
+        {
+          "line": 644,
+          "text": "private theorem block_120199_20 : evaluate (4237 : ZMod 120199) chunk20 = 23029 := by"
+        },
+        {
+          "line": 647,
+          "text": "private theorem block_120199_21 : evaluate (4237 : ZMod 120199) chunk21 = 34863 := by"
+        },
+        {
+          "line": 650,
+          "text": "private theorem block_120199_22 : evaluate (4237 : ZMod 120199) chunk22 = 14065 := by"
+        },
+        {
+          "line": 653,
+          "text": "private theorem block_120199_23 : evaluate (4237 : ZMod 120199) chunk23 = 87455 := by"
+        },
+        {
+          "line": 656,
+          "text": "private theorem block_120199_24 : evaluate (4237 : ZMod 120199) chunk24 = 102198 := by"
+        },
+        {
+          "line": 659,
+          "text": "private theorem block_120199_25 : evaluate (4237 : ZMod 120199) chunk25 = 21233 := by"
+        },
+        {
+          "line": 662,
+          "text": "private theorem block_120199_26 : evaluate (4237 : ZMod 120199) chunk26 = 112865 := by"
+        },
+        {
+          "line": 665,
+          "text": "private theorem block_120199_27 : evaluate (4237 : ZMod 120199) chunk27 = 90610 := by"
+        },
+        {
+          "line": 668,
+          "text": "private theorem block_120199_28 : evaluate (4237 : ZMod 120199) chunk28 = 45292 := by"
+        },
+        {
+          "line": 671,
+          "text": "private theorem block_120199_29 : evaluate (4237 : ZMod 120199) chunk29 = 74157 := by"
+        },
+        {
+          "line": 674,
+          "text": "private theorem block_120199_30 : evaluate (4237 : ZMod 120199) chunk30 = 76955 := by"
+        },
+        {
+          "line": 677,
+          "text": "private theorem block_120199_31 : evaluate (4237 : ZMod 120199) chunk31 = 80747 := by"
+        },
+        {
+          "line": 680,
+          "text": "private theorem block_120199_32 : evaluate (4237 : ZMod 120199) chunk32 = 48089 := by"
+        },
+        {
+          "line": 683,
+          "text": "private theorem block_120199_33 : evaluate (4237 : ZMod 120199) chunk33 = 74485 := by"
+        },
+        {
+          "line": 686,
+          "text": "private theorem block_120199_34 : evaluate (4237 : ZMod 120199) chunk34 = 78296 := by"
+        },
+        {
+          "line": 689,
+          "text": "private theorem block_120199_35 : evaluate (4237 : ZMod 120199) chunk35 = 118518 := by"
+        },
+        {
+          "line": 692,
+          "text": "private theorem block_120199_36 : evaluate (4237 : ZMod 120199) chunk36 = 92450 := by"
+        },
+        {
+          "line": 695,
+          "text": "private theorem block_120199_37 : evaluate (4237 : ZMod 120199) chunk37 = 35667 := by"
+        },
+        {
+          "line": 698,
+          "text": "private theorem block_120199_38 : evaluate (4237 : ZMod 120199) chunk38 = 116256 := by"
+        },
+        {
+          "line": 701,
+          "text": "private theorem block_120199_39 : evaluate (4237 : ZMod 120199) chunk39 = 98816 := by"
+        },
+        {
+          "line": 704,
+          "text": "private theorem block_120199_40 : evaluate (4237 : ZMod 120199) chunk40 = 62404 := by"
+        },
+        {
+          "line": 707,
+          "text": "private theorem block_120199_41 : evaluate (4237 : ZMod 120199) chunk41 = 45424 := by"
+        },
+        {
+          "line": 710,
+          "text": "private theorem block_120199_42 : evaluate (4237 : ZMod 120199) chunk42 = 119298 := by"
+        },
+        {
+          "line": 713,
+          "text": "private theorem block_120199_43 : evaluate (4237 : ZMod 120199) chunk43 = 90493 := by"
+        },
+        {
+          "line": 716,
+          "text": "private theorem block_120199_44 : evaluate (4237 : ZMod 120199) chunk44 = 32389 := by"
+        },
+        {
+          "line": 719,
+          "text": "private theorem block_120199_45 : evaluate (4237 : ZMod 120199) chunk45 = 319 := by"
+        },
+        {
+          "line": 722,
+          "text": "private theorem block_120199_46 : evaluate (4237 : ZMod 120199) chunk46 = 52281 := by"
+        },
+        {
+          "line": 725,
+          "text": "private theorem block_120199_47 : evaluate (4237 : ZMod 120199) chunk47 = 15936 := by"
+        },
+        {
+          "line": 728,
+          "text": "private theorem block_120199_48 : evaluate (4237 : ZMod 120199) chunk48 = 48008 := by"
+        },
+        {
+          "line": 731,
+          "text": "private theorem block_120199_49 : evaluate (4237 : ZMod 120199) chunk49 = 66785 := by"
+        },
+        {
+          "line": 734,
+          "text": "private theorem block_120199_50 : evaluate (4237 : ZMod 120199) chunk50 = 107063 := by"
+        },
+        {
+          "line": 737,
+          "text": "private theorem block_120199_51 : evaluate (4237 : ZMod 120199) chunk51 = 25844 := by"
+        },
+        {
+          "line": 740,
+          "text": "private theorem block_120199_52 : evaluate (4237 : ZMod 120199) chunk52 = 103396 := by"
+        },
+        {
+          "line": 743,
+          "text": "private theorem block_120199_53 : evaluate (4237 : ZMod 120199) chunk53 = 26806 := by"
+        },
+        {
+          "line": 746,
+          "text": "private theorem block_120199_54 : evaluate (4237 : ZMod 120199) chunk54 = 980 := by"
+        },
+        {
+          "line": 749,
+          "text": "private theorem block_120199_55 : evaluate (4237 : ZMod 120199) chunk55 = 55371 := by"
+        },
+        {
+          "line": 752,
+          "text": "private theorem block_120199_56 : evaluate (4237 : ZMod 120199) chunk56 = 101317 := by"
+        },
+        {
+          "line": 755,
+          "text": "private theorem block_120199_57 : evaluate (4237 : ZMod 120199) chunk57 = 41810 := by"
+        },
+        {
+          "line": 758,
+          "text": "private theorem block_120199_58 : evaluate (4237 : ZMod 120199) chunk58 = 112145 := by"
+        },
+        {
+          "line": 761,
+          "text": "private theorem rows_120199 : evaluate (4237 : ZMod 120199) rows = 64708 := by"
+        },
+        {
+          "line": 789,
+          "text": "private theorem controls_120199 : controlReflection (4237 : ZMod 120199) = 88241 := by"
+        },
+        {
+          "line": 792,
+          "text": "private theorem radix_120199 : (radix : ZMod 120199) = 4237 := by"
+        },
+        {
+          "line": 797,
+          "text": "private theorem start_weight : selectorWeight start = 34876427265 := by decide +kernel"
+        },
+        {
+          "line": 800,
+          "text": "theorem K_cast_47 : (K : ZMod 47) = 26 := by"
+        },
+        {
+          "line": 804,
+          "text": "theorem K_cast_2011 : (K : ZMod 2011) = 1995 := by"
+        },
+        {
+          "line": 808,
+          "text": "theorem K_cast_auxiliary : (K : ZMod 120199) = 114787 := by"
+        },
+        {
+          "line": 812,
+          "text": "private theorem mod_of_cast {m : \u2115} [NeZero m] (a b : \u2115)"
+        },
+        {
+          "line": 817,
+          "text": "private theorem transport_modulus (a m n r : \u2115) (hm : m = n)"
+        },
+        {
+          "line": 822,
+          "text": "theorem K_mod_47 : K % 47 = 26 := mod_of_cast K 26 K_cast_47 (by decide)"
+        },
+        {
+          "line": 823,
+          "text": "theorem K_mod_2011 : K % 2011 = 1995 := mod_of_cast K 1995 K_cast_2011 (by decide)"
+        },
+        {
+          "line": 824,
+          "text": "theorem K_mod_auxiliary : K % 120199 = 114787 :="
+        },
+        {
+          "line": 828,
+          "text": "theorem Hs_mod_47 :"
+        },
+        {
+          "line": 832,
+          "text": "theorem Hs_mod_2011 :"
+        },
+        {
+          "line": 836,
+          "text": "theorem Hs_mod_auxiliary :"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentKernelResidues2011Checks.lean",
+      "sha256": "e91e763e095b1876b3c09b5ab1043ee69d03eed0b714ff180166d14ccbcea0ba",
+      "git_blob": "7890def8a3c0d1f0f116142c638fec0a8808b3ca",
+      "lines": 63,
+      "declarations": []
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean",
+      "sha256": "53853c593225c4a616b0701bdbcd6773846e3a4add7cc5f653a9c7609bf96497",
+      "git_blob": "d21771491b163f6efca80e550614d3601f9e3033",
+      "lines": 105,
+      "declarations": [
+        {
+          "line": 17,
+          "text": "theorem order_product {a b : \u2115} (hab : Nat.Coprime a b) (x k : \u2115) :"
+        },
+        {
+          "line": 30,
+          "text": "theorem generator_cast_47 : (B : ZMod 47)^(auxiliary-1) = 1 := by"
+        },
+        {
+          "line": 35,
+          "text": "theorem generator_cast_2011 : (B : ZMod 2011)^(auxiliary-1) = 1 := by"
+        },
+        {
+          "line": 40,
+          "text": "theorem generator_cast_fixed : (B : ZMod d)^(auxiliary-1) = 1 := by"
+        },
+        {
+          "line": 46,
+          "text": "theorem generator_cast_auxiliary : (B : ZMod auxiliary)^(auxiliary-1) = 1 := by"
+        },
+        {
+          "line": 51,
+          "text": "theorem fixed_auxiliary_coprime : Nat.Coprime d auxiliary := by decide"
+        },
+        {
+          "line": 54,
+          "text": "theorem full_order (k : \u2115) :"
+        },
+        {
+          "line": 60,
+          "text": "theorem generator_cast_C0 : (B : ZMod (d*auxiliary))^(auxiliary-1) = 1 := by"
+        },
+        {
+          "line": 67,
+          "text": "private theorem order_transport (x k m n : \u2115) (h : m = n) :"
+        },
+        {
+          "line": 72,
+          "text": "theorem modulus_factorization (k : \u2115) : (d*auxiliary)*auxiliary^k = d*auxiliary^(k+1) := by"
+        },
+        {
+          "line": 76,
+          "text": "theorem block_order (k : \u2115) :"
+        },
+        {
+          "line": 80,
+          "text": "theorem block_projection (k : \u2115) :"
+        },
+        {
+          "line": 87,
+          "text": "theorem exists_coordinates (k : \u2115) :"
+        },
+        {
+          "line": 97,
+          "text": "theorem exists_base_power_coordinates (k : \u2115) :"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011Checks.lean",
+      "sha256": "d0e61dbaee6986d80c5348894aeaec32788c9d93e6827cef59908b1db6fe7c29",
+      "git_blob": "d2eed91463527c580a52d5c5897c4b4ea38267d9",
+      "lines": 47,
+      "declarations": []
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordHighMask2011.lean",
+      "sha256": "f14b90ec3d4210c75dce2e4ece4de6f50bb1b2069e26b9329309eadd1c7da74a",
+      "git_blob": "48161e011c096a2d5b226eab0ec023fbef227500",
+      "lines": 109,
+      "declarations": [
+        {
+          "line": 25,
+          "text": "theorem cell_representation (i : ZMod (N*2011)) :"
+        },
+        {
+          "line": 34,
+          "text": "theorem gap_mask_zero (j : ZMod N) (e : \u2115) (he : e < 2011)"
+        },
+        {
+          "line": 47,
+          "text": "theorem cell_mask_pass (a : ZMod N \u2192 Fin 942) (dummy : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 75,
+          "text": "theorem all_mask_digits (a : ZMod N \u2192 Fin 942) (dummy : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 84,
+          "text": "theorem scalar_high_mask (a : ZMod N \u2192 Fin 942) (dummy : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 95,
+          "text": "theorem exists_high_mask_normalization (a : ZMod N \u2192 Fin 942) (dummy : ZMod N \u2192 \u2115)"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordHighMask2011Checks.lean",
+      "sha256": "a9d997219d9d4bf3f3d81277ac764b3fc3d61fd37062398659e98ee18cfd3ffc",
+      "git_blob": "80e7aef5286b8a53ec6306d6da2ecbd355f79e03",
+      "lines": 48,
+      "declarations": []
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordOrigin2011.lean",
+      "sha256": "6b6bb89e40422745154e5ef990d9909a65b740d43e86842b54fde887f5de3f56",
+      "git_blob": "ebb600ab35563f31730d95b6e2a462b7970968bb",
+      "lines": 118,
+      "declarations": [
+        {
+          "line": 26,
+          "text": "theorem origin_bare_zero (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 38,
+          "text": "theorem origin_reflected_zero (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 54,
+          "text": "theorem convolution_origin_zero (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 67,
+          "text": "theorem normalized_origin (a : ZMod N \u2192 Fin 942) (dummy : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 94,
+          "text": "theorem predecessor_not_start (a : ZMod N \u2192 Fin 942) (s : \u2115)"
+        },
+        {
+          "line": 102,
+          "text": "theorem origin_masks (a : ZMod N \u2192 Fin 942) (dummy : ZMod N \u2192 \u2115)"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordOrigin2011Checks.lean",
+      "sha256": "141e38f2420bb0b6aa29f3e42fdb294944a9edd7eca3dc5ae9d6d8d37108e558",
+      "git_blob": "44973809aa796bd6aa232a0ffa3c743f29ee9d33",
+      "lines": 54,
+      "declarations": []
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordPadding2011.lean",
+      "sha256": "dcf9b865df831b0c7f4de2aa0e9060c88fd62d6fae2dd0497ea0aa2f36c6b6d7",
+      "git_blob": "097a9914ee332759c5d2bce0616dd4d975c119cc",
+      "lines": 224,
+      "declarations": [
+        {
+          "line": 22,
+          "text": "private def selectorFactor : Entry \u2192 \u2115"
+        },
+        {
+          "line": 26,
+          "text": "private theorem weight_residue (e : Entry) :"
+        },
+        {
+          "line": 36,
+          "text": "private def activeDigit (c : ZMod (N*2011) \u2192 \u2115) (b : ZMod (N*2011))"
+        },
+        {
+          "line": 42,
+          "text": "theorem padding_source_le {h : \u2115} (hh : h \u2264 916) (e : Entry) : source h e \u2264 896 := by"
+        },
+        {
+          "line": 48,
+          "text": "private theorem active_sum_le (c : ZMod (N*2011) \u2192 \u2115)"
+        },
+        {
+          "line": 64,
+          "text": "theorem padding_reflected_residue (c : ZMod (N*2011) \u2192 \u2115)"
+        },
+        {
+          "line": 94,
+          "text": "theorem padding_marker_input_zero (c : ZMod (N*2011) \u2192 \u2115)"
+        },
+        {
+          "line": 110,
+          "text": "theorem padding_raw_residue (c r : ZMod (N*2011) \u2192 \u2115)"
+        },
+        {
+          "line": 127,
+          "text": "theorem bit3_clear_of_residue {x : \u2115} (hx : x%2048 \u2264 5) : x &&& 8 = 0 := by"
+        },
+        {
+          "line": 135,
+          "text": "theorem padding_mask (b : ZMod (N*2011)) (hb : b.val%2011 = 0)"
+        },
+        {
+          "line": 156,
+          "text": "theorem assembled_reflected_residue (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 165,
+          "text": "theorem assembled_raw_residue (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 179,
+          "text": "theorem normalized_padding_residue (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 197,
+          "text": "theorem padding_mask_pass (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 210,
+          "text": "theorem exists_padding_normalization (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordPadding2011Checks.lean",
+      "sha256": "14d194ed4f7978b01772b00f397fd3ee7bc1c4902ec70dc37b823a54746bbf09",
+      "git_blob": "d85325b0da53baa6ae1844102f8ec25ec12e0975",
+      "lines": 83,
+      "declarations": []
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordScalarWitness2011.lean",
+      "sha256": "8a644c7eb65bff5016d28a992e2db477bb5341b33fa31e92f1a086a0d0e4879e",
+      "git_blob": "0b93bce0afef1432d9f395b1885fb942cd66a404",
+      "lines": 156,
+      "declarations": [
+        {
+          "line": 22,
+          "text": "def q (N : \u2115) : \u2115 := radix^(N*2011)"
+        },
+        {
+          "line": 24,
+          "text": "def source {N : \u2115} [NeZero N] (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115) : \u2115 :="
+        },
+        {
+          "line": 27,
+          "text": "def normalized {N : \u2115} [NeZero N] (digits : ZMod (N*2011) \u2192 \u2115) : \u2115 :="
+        },
+        {
+          "line": 30,
+          "text": "def multiplier (s : \u2115) : \u2115 := 2^(displacement s)"
+        },
+        {
+          "line": 32,
+          "text": "def alpha (q C F : \u2115) : \u2115 := q-C-F"
+        },
+        {
+          "line": 34,
+          "text": "def quotientWitness (q A : \u2115) : \u2115 := A/(q-1)+1"
+        },
+        {
+          "line": 37,
+          "text": "theorem slack_of_prefix {q C F P \u03c1 : \u2115} (hq : q=P*\u03c1)"
+        },
+        {
+          "line": 43,
+          "text": "theorem quotientWitness_pos (q A : \u2115) : 0 < quotientWitness q A := by"
+        },
+        {
+          "line": 47,
+          "text": "theorem quotient_transport {q A F : \u2115} (hF : F<q-1)"
+        },
+        {
+          "line": 59,
+          "text": "theorem transport_factor_eq_one {q A F z : \u2115} (hq : 0<q) (hz : 0<z)"
+        },
+        {
+          "line": 67,
+          "text": "structure ScalarFacts (q C F w alpha z : \u2115) : Prop where"
+        },
+        {
+          "line": 84,
+          "text": "theorem q_pos : 0<q N := pow_pos (by decide : 0<radix) _"
+        },
+        {
+          "line": 86,
+          "text": "theorem q_prefix : q N=radix^(N*2011-1)*radix := by"
+        },
+        {
+          "line": 94,
+          "text": "theorem strong_slack (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 109,
+          "text": "theorem scalar_witness (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+        },
+        {
+          "line": 142,
+          "text": "theorem exists_scalar_witness (a : ZMod N \u2192 Fin 942) (dummy marker : ZMod N \u2192 \u2115)"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordScalarWitness2011Checks.lean",
+      "sha256": "1c47209fca1a79e346e7ce2b4559cf20095c62ced1974ab26346a23a892bdbb0",
+      "git_blob": "2126632b1f47084d5647f1f4bb35da1c617fd841",
+      "lines": 80,
+      "declarations": []
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NatIterate.lean",
+      "sha256": "c52148b71e86cc8f8713889f92bc321160292cc9ab1b6237ae417fc8f847fb2a",
+      "git_blob": "e86de68c4503d6bc0feab5980fb0019ddbea9fdb",
+      "lines": 19,
+      "declarations": [
+        {
+          "line": 6,
+          "text": "theorem rec_fixed {\u03b1 : Sort u} (step : \u03b1 \u2192 \u03b1) (a : \u03b1) (h : step a = a)"
+        },
+        {
+          "line": 12,
+          "text": "theorem rec_succ {\u03b1 : Sort u} (step : \u03b1 \u2192 \u03b1) (a : \u03b1) (fuel : Nat) :"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/PrimePowerOrder.lean",
+      "sha256": "781aa36c18153b4f7e7e6b7df204b3b42545bc8cabf0f9f25736d012e598dd47",
+      "git_blob": "75bcc6200fb7abfb40cad02b754efc3c0e23dd4f",
+      "lines": 80,
+      "declarations": [
+        {
+          "line": 14,
+          "text": "theorem one_lt_of_not_square {p g : \u2115} (h : \u00ac p^2 \u2223 g-1) : 1 < g := by"
+        },
+        {
+          "line": 19,
+          "text": "theorem not_dvd_of_dvd_sub_one {p g : \u2115} (hp : Nat.Prime p)"
+        },
+        {
+          "line": 27,
+          "text": "theorem pow_cast_eq_one_iff {g m : \u2115} (hg : 1 \u2264 g) (k : \u2115) :"
+        },
+        {
+          "line": 40,
+          "text": "theorem exact_lift {p g : \u2115} (hp : Nat.Prime p) (ho : Odd p)"
+        },
+        {
+          "line": 54,
+          "text": "theorem order_succ {p g : \u2115} (hp : Nat.Prime p) (ho : Odd p)"
+        },
+        {
+          "line": 74,
+          "text": "theorem order_prime_power {p g n : \u2115} (hp : Nat.Prime p) (ho : Odd p)"
+        }
+      ]
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/PrimePowerOrderChecks.lean",
+      "sha256": "c7f8fe09ae961e9879e166a62cbc299b2995702e432323ad4dd00a7f9b165eaa",
+      "git_blob": "5b6f0b87085362bf6cdaf7ff2713f3ba512675f6",
+      "lines": 46,
+      "declarations": []
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticFiber.lean",
+      "sha256": "8b286afbd209835c8dd759179c60496783536f03a1bc12285ddf0b3d61fea30d",
+      "git_blob": "857c8fbe6b594a7d692f7a82b7321fea8b67e7c6",
+      "lines": 32,
+      "declarations": [
+        {
+          "line": 11,
+          "text": "theorem coeff_square_at_isolated {I R : Type*} [Fintype I] [DecidableEq I]"
+        }
+      ]
+    }
+  ]
+}

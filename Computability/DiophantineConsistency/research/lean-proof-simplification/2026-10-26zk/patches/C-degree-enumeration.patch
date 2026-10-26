@@ -1,0 +1,74 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean
+@@ -1,5 +1,6 @@
+ import DiophantineConsistency.QuarticSyntax
+ import DiophantineConsistency.JonesSyntax
++import Mathlib.Data.Fin.Tuple.NatAntidiagonal
+ 
+ /-!
+ # Executable Jones arithmetic syntax from supplied quartic syntax
+@@ -25,59 +26,16 @@
+     (rangeSum n f).eval v = ∑ i, (f i).eval v := by
+   simp [rangeSum, List.map_ofFn, Fin.sum_ofFn]
+ 
+-/-- Explicit nested enumeration of all bounded exponent vectors. -/
+-def vectorSum {σ : Type*} : (n : ℕ) → ((Fin n → Fin 5) → Expr σ) → Expr σ
+-  | 0, f => f Fin.elim0
+-  | n + 1, f => rangeSum 5 fun a => vectorSum n fun b => f (Fin.cons a b)
+-
+-@[simp] theorem eval_vectorSum {σ : Type*} (n : ℕ)
+-    (f : (Fin n → Fin 5) → Expr σ) (v : σ → ℤ) :
+-    (vectorSum n f).eval v = ∑ k, (f k).eval v := by
+-  induction n with
+-  | zero =>
+-    simp only [vectorSum, Fintype.sum_unique]
+-    exact congrArg (fun k => (f k).eval v) (Subsingleton.elim _ _)
+-  | succ n ih =>
+-    simp only [vectorSum, eval_rangeSum, ih]
+-    calc
+-      _ = ∑ p : Fin 5 × (Fin n → Fin 5), (f (Fin.cons p.1 p.2)).eval v :=
+-        (Fintype.sum_prod_type (fun p : Fin 5 × (Fin n → Fin 5) =>
+-          (f (Fin.cons p.1 p.2)).eval v)).symm
+-      _ = _ := Fintype.sum_equiv (Fin.consEquiv fun _ : Fin (n + 1) => Fin 5)
+-        (fun p => (f (Fin.cons p.1 p.2)).eval v) (fun k => (f k).eval v) (fun _ => rfl)
+-
+-/-- Reindex the bounded-vector enumeration by the degree-four star. -/
+-theorem sum_bounded_eq_star {M : Type*} [AddCommMonoid M] (ν : ℕ)
+-    (f : (Fin (ν + 2) → ℕ) → M) :
+-    (∑ k : Fin (ν + 2) → Fin 5,
+-      if (∑ j, (k j : ℕ)) = 4 then f (fun j => (k j : ℕ)) else 0) =
+-      ∑ k ∈ star ν 4, f k := by
+-  classical
+-  rw [← Finset.sum_filter]
+-  apply Finset.sum_bij (fun k _ j => (k j : ℕ))
+-  · intro k hk
+-    exact (mem_star ν 4).2 (Finset.mem_filter.1 hk).2
+-  · intro a ha b hb h
+-    funext j
+-    exact Fin.ext (congrFun h j)
+-  · intro k hk
+-    let b : Fin (ν + 2) → Fin 5 := fun j => ⟨k j, by have := star_le ν 4 hk j; omega⟩
+-    refine ⟨b, ?_, rfl⟩
+-    exact Finset.mem_filter.2 ⟨Finset.mem_univ _, (mem_star ν 4).1 hk⟩
+-  · intro k hk
+-    rfl
+-
+-/-- Sum over the star with an explicit, executable order of its vectors. -/
++/-- The degree-four star, enumerated directly as an executable list. -/
+ def starSum {σ : Type*} (ν : ℕ) (f : (Fin (ν + 2) → ℕ) → Expr σ) : Expr σ :=
+-  vectorSum (ν + 2) fun k =>
+-    if (∑ j, (k j : ℕ)) = 4 then f (fun j => (k j : ℕ)) else .constant 0
++  QuarticSyntax.sumExpressions ((List.Nat.antidiagonalTuple (ν + 2) 4).map f)
+ 
+ @[simp] theorem eval_starSum {σ : Type*} (ν : ℕ)
+     (f : (Fin (ν + 2) → ℕ) → Expr σ) (v : σ → ℤ) :
+     (starSum ν f).eval v = ∑ k ∈ star ν 4, (f k).eval v := by
+-  rw [starSum, eval_vectorSum]
+-  simpa only [apply_ite, Expr.eval_constant] using
+-    sum_bounded_eq_star ν (fun k => (f k).eval v)
++  rw [starSum, eval_sumExpressions, List.map_map, star,
++    Finset.piAntidiag_univ_fin_eq_antidiagonalTuple]
++  rfl
+ 
+ /-- The Jones coefficient, computed directly from the supplied syntax. -/
+ def pCoefficient {ν : ℕ} (e : Expr (Fin (ν + 1))) (k : Fin (ν + 2) → ℕ) : ℤ :=

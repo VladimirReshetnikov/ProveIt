@@ -1,0 +1,66 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerUnits2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerUnits2011.lean
+@@ -17,6 +17,13 @@
+ 
+ set_option Elab.async false
+ set_option maxRecDepth 10000
++
++/-- Only a fixed power is needed when the exponent is iterated. -/
++private theorem pow_power_fixed {M : Type*} [Monoid M] {x : M} {p : ℕ}
++    (h : x ^ p = x) (n : ℕ) : x ^ (p ^ n) = x := by
++  induction n with
++  | zero => simp
++  | succ n ih => rw [pow_succ, pow_mul, ih, h]
+ 
+ /-- Either independent dimension is a power of the actual auxiliary prime. -/
+ def dimension (n : ℕ) : ℕ := auxiliary^n
+@@ -47,22 +54,14 @@
+ /-- Exact power reduction at the first fixed prime, for every exponent. -/
+ theorem power_dimension_47 (n : ℕ) :
+     ((B^(dimension n) : ℕ) : ZMod 47) = (B : ZMod 47) := by
+-  have he : dimension n ≡ 1 [MOD 23] := by
+-    simpa only [dimension, one_pow] using auxiliary_modEq_23.pow n
+-  have hp : (B : ZMod 47)^23 = 1 := by
+-    rw [← B_order_47]
+-    exact pow_orderOf_eq_one _
+-  simpa only [Nat.cast_pow, pow_one] using pow_eq_pow_of_modEq he hp
++  simp only [dimension, Nat.cast_pow, B_cast_47, auxiliary]
++  exact pow_power_fixed (by reduce_mod_char) n
+ 
+ /-- The second fixed-prime order is 402, not 2010. -/
+ theorem power_dimension_2011 (n : ℕ) :
+     ((B^(dimension n) : ℕ) : ZMod 2011) = (B : ZMod 2011) := by
+-  have he : dimension n ≡ 1 [MOD 402] := by
+-    simpa only [dimension, one_pow] using auxiliary_modEq_402.pow n
+-  have hp : (B : ZMod 2011)^402 = 1 := by
+-    rw [← B_order_2011]
+-    exact pow_orderOf_eq_one _
+-  simpa only [Nat.cast_pow, pow_one] using pow_eq_pow_of_modEq he hp
++  simp only [dimension, Nat.cast_pow, B_cast_2011, auxiliary]
++  exact pow_power_fixed (by reduce_mod_char) n
+ 
+ /-- Frobenius handles all auxiliary powers, including auxiliary^0 = 1. -/
+ theorem power_dimension_auxiliary (n : ℕ) :
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean
+@@ -28,14 +28,14 @@
+     _ = _ := Prod.orderOf_mk
+ 
+ theorem generator_cast_47 : (B : ZMod 47)^(auxiliary-1) = 1 := by
+-  rw [← orderOf_dvd_iff_pow_eq_one, B_order_47]
+-  have hd : 23 ∣ spacing := by rw [← spacing_lcm]; exact Nat.dvd_lcm_left _ _
+-  exact hd.trans spacing_dvd
++  rw [B_cast_47]
++  change (37 : ZMod 47) ^ 120198 = 1
++  reduce_mod_char
+ 
+ theorem generator_cast_2011 : (B : ZMod 2011)^(auxiliary-1) = 1 := by
+-  rw [← orderOf_dvd_iff_pow_eq_one, B_order_2011]
+-  have hd : 402 ∣ spacing := by rw [← spacing_lcm]; exact Nat.dvd_lcm_right _ _
+-  exact hd.trans spacing_dvd
++  rw [B_cast_2011]
++  change (1283 : ZMod 2011) ^ 120198 = 1
++  reduce_mod_char
+ 
+ theorem generator_cast_fixed : (B : ZMod d)^(auxiliary-1) = 1 := by
+   change (B : ZMod (47*2011))^(auxiliary-1) = 1
