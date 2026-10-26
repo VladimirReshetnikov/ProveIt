@@ -25,32 +25,35 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf) and [TeX](equation.tex) print
-the complete low-padding2963 equation: fifteen positive unknowns,
+the complete block-mask2963 equation: fifteen positive unknowns,
 degree157,66 integer-leaf operations and**69685 raw integer bytes**.
-Compared with2999, raw storage falls848 bytes, complete TeX17 to4996,
-nonwhite extracted text8 to2657 and PDF3 to159702. Gzip grows9 to4202.
-The same9pt/7.7pt fonts and one Letter page are retained.
+Its four constants and specialized polynomial are identical to low-padding2963.
+The exact block-mask/inline-Phi identity saves26 TeX bytes to4970,
+19 extracted nonwhite characters to2638 and432 PDF bytes to159270.
+Gzip stays4202, with the same9pt/7.7pt fonts and one Letter page.
 
-The [ordinary proof](research/low-padding-independent/PROOF.md) moves
-all916 padding tests to uniformly zero bit2 in low fields1..916. Their
-aligned digits are at most3 with zero incoming carry. The combined origin
-mask4*G917 retains978 native bits and the exact first-origin borrow.
-One untested zero top field after product2961 retains strict representatives
-and safe increments. Full phase, count, alignment, actual rank, controller
-and both P66 maps pass root and independent review. Pclp uses prime1362521,
-orders23/2962 and H29/2938/492699. Normal/optimized checks reproduce every
-printed tile, coefficient, physical position and integer port. Actual
-initializer/marker corruptions are rejected; two whole-page inspections pass.
-See the [candidate](candidates/one-page-low-padding2963/README.md),
-[math review](reviews/low-padding2963-independent-peer.md) and
-[page review](reviews/low-padding2963-page-peer.md).
+The [identity audit](research/block-mask-recipe/NOTE.md) checks every
+weighted and physical coefficient independently. The new actual-source
+reader rejects marker/dummy deletion, inline-weight and initializer
+corruptions. Full integer equality, the entire66-row graph and all942
+printed tiles pass normal/optimized checks. Root and peer viewed the whole
+actual PNG. See the [candidate](candidates/one-page-block-mask2963/README.md)
+and [page review](reviews/block-mask2963-page-peer.md).
+
+The unchanged [ordinary proof](research/low-padding-independent/PROOF.md)
+uses916 low bit2 padding tests and the combined4*G917 mask. The final
+product2961 resets and the top zero field supplies strict representatives
+and safe increments. Phase, count, alignment, actual rank, controller and
+both P66 maps retain their full reviews. Pclp uses prime1362521,
+orders23/2962 and H29/2938/492699. The exact identity needs no new native
+or controller premise, and CURRENT records literal polynomial equality.
 
 All earlier pages and CURRENT records remain preserved, along with reviewed
 [single-clause3037](research/single-clause-independent/README.md) and
 [composite2983](research/composite-length-independent/README.md) checkpoints.
 No new formal-kernel replay or consistency decision is claimed; inherited
-ordinary calibration remains explicit. Next work simplifies complete block
-mask recipes and tests further clause layouts. The separately checked
+ordinary calibration remains explicit. Next work reviews doubled clause
+weights and tests further complete coefficient layouts. The separately checked
 [weighted-only Psi identity](research/weighted-only-psi/NOTE.md) preserves
 its bound tuple. The [radix note](research/radix-parity-independent/README.md)
 and earlier [interior-padding probe](research/start-marker-padding-probe/NOTE.md)
