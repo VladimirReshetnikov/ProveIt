@@ -453,12 +453,13 @@ retained at each canonical inverse coordinate, both color matches are
 proved, and the unchanged rank quotient is nonzero moduloN and positive
 as a natural stride. No rectangle, coprimality, globally unique Start or
 machine premise is supplied. See the [root review and fresh replay](reviews/current-marked-window2011-lean-root.md).
+An [independent marked-word review](reviews/current-marked-window2011-lean-peer.md)
+also passed isolated fresh main/check builds with all original bindings.
 Machine-run extraction, cofinal canonical tilings, arithmetic/controller
 completeness, remaining equation frontiers and internal-ZFC proof remain
 required; the marked-word endpoint is not the final consistency theorem.
 
-Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. `WangTiles942Boundary` proves the
+`WangTiles942Boundary` proves the
 exact local cases for vertical colors434..438, including north437 iff
 south437 and the nine actual seam tuples. Transition input heads stop
 at431 while actual receiving outputs include halt215 and stop at433.
@@ -466,6 +467,15 @@ The [root review and fresh replay](reviews/wang-tiles942-boundary-lean-root.md)
 retain the true initializer color4 and reject its old188 lookalike.
 These are local table facts, with no strip, run or halting premise.
 
-Each verified checkpoint is
+`WangTiles942SeamColumns` now proves seam status invariant through all
+integer times using only actual Allowed tiles and time matching, without
+horizontal or periodic premises. Its marked-origin column never has seam
+color437. `WangTiles942InitialHorizontal` proves the exact small-color
+initialization alternatives and retains the genuine seam exceptions.
+See the [root review and four fresh replays](reviews/wang-tiles942-strip-foundations-lean-root.md).
+Finite strip bounds and actual machine-run semantics are subsequent work.
+
+Independent agents own distinct new Lean modules. The coordinator owns
+integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
