@@ -1,0 +1,29 @@
+\pageheading{5 Use the exponential rank bound at its final exponent}
+\textbf{Replace an intermediate square estimate by one standard inequality.} Set $u=\mathrm{width}\cdot N$ and $q=2^u$. The fresh client \code{rank_gt_twice_window} currently derives $u<q$, $q\ge2$, and $q^2\ge2$ before proving $2u<q^3$. Instead use
+\[
+ 2u\le3u<2^{3u}=(2^u)^3=q^3.
+\]
+The strict step is the existing \href{https://github.com/leanprover/lean4/blob/v4.32.0/src/Init/Data/Nat/Lemmas.lean\#L1231-L1232}{\code{Nat.lt_two_pow_self}} at exponent $3u$. It holds even when $u=0$; there is no need to manufacture positivity merely to prove this numerical comparison. The replacement is:
+\begin{lstlisting}
+  have hc : 2*(width*N) < q N^3 := by
+    rw [q_binary, ← pow_mul]
+    exact (show 2*(width*N) ≤ (width*N)*3 by omega).trans_lt
+      Nat.lt_two_pow_self
+\end{lstlisting}
+The printed line break is for readability; the delivered candidate has three physical lines in place of eight. The public statement retains $[\operatorname{NeZero}N]$, $C>0$ and $C+F<q$, since the rest of the rank construction still uses its original domains. See \src{CurrentPackingRank2011}{77}{100}.
+
+\textbf{Do not bypass the natural representative.} The rank is the existing integer \code{windowRank} with fourth source port \code{highPort+beta}, shifted exactly once. Its natural representative is
+\begin{align*}
+ B={}&(C-1)+(LJ+1)+q\bigl(F+(HJ-1)\bigr)\\
+    &+q^2(q-C)+q^3(q-F-1),
+\end{align*}
+where $L=\mathrm{lowPort}$, $H=\mathrm{highPort}$ and $J$ is the repunit. From $C>0$ and $C+F<q$, the top complement satisfies $q-F-1\ge1$, so $q^3\le B$. The unchanged cast theorem checks every natural subtraction before identifying $(B:\Z)$ with the actual rank. Composing these facts yields $2u<\mathrm{rank}$ without changing $B$, the source, the normalized word or the mask ports. See \src{CurrentPackingRank2011}{22}{75}.
+
+\textbf{The exact population construction stays intact.} For $A,F,M,H<2^u$ and disjoint masks $A\mathbin{\&}M=F\mathbin{\&}H=0$, no addition carry crosses a window. The three lower blocks are strict representatives; the top block need not be restricted. Binary population $\sigma$ therefore splits across four blocks. The disjoint-sum identities and complement identities give
+\[
+ \sigma\!\left((A+M)+2^u(F+H)+2^{2u}(2^u-1-A)+2^{3u}(2^u-1-F)\right)
+ =2u+\sigma(M)+\sigma(H).
+\]
+Calibration $\sigma(M)+\sigma(H)=u+2$ yields $3u+2$. The actual client still supplies the repeated-mask calibration and the same $B$ witness; no Pell population premise is introduced. See \src{NativePackingPopulation}{19}{55} and \src{CurrentPackingRank2011}{102}{136}.
+
+\textbf{A secondary two-line deletion.} In \code{disjoint_add_lt}, directly rewrite the goal with \code{JM1984.add_eq_land_add_lor}, disjointness and \code{zero_add}; then retain \code{Nat.or_lt_two_pow}. This removes a named intermediate equality, not a new population argument. The two complete files shrink $138\to133$ and $57\to55$ lines, seven lines total with zero helper or import cost. Exponential domination and general rank/cast interfaces were already excluded; only these residual client steps are credited.

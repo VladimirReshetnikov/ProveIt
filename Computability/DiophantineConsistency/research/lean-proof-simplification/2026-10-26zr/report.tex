@@ -1,0 +1,442 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.86in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{xcolor,microtype,enumitem,fancyhdr,listings,xurl}
+\usepackage[colorlinks=true,linkcolor=teal!60!black,urlcolor=teal!60!black]{hyperref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{soft}{HTML}{F3F6F8}
+\definecolor{rulecolor}{HTML}{CFD9E2}
+\hypersetup{pdftitle={Five Further Lean Proof Simplifications for DiophantineConsistency},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{ink}ProveIt / Further Lean proof simplifications}
+\fancyhead[R]{\small 26 October 2026}
+\fancyfoot[C]{\small\thepage}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{5pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=4pt}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt}
+\newcommand{\pin}{9d9d1123b39927d30363f1dcd53c23f0575c30ee}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9d9d1123b39927d30363f1dcd53c23f0575c30ee/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean}{\code{#2}}}
+\newcommand{\packet}[1]{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/9d9d1123b39927d30363f1dcd53c23f0575c30ee/Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26#1}{packet #1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\lstdefinestyle{lean}{basicstyle=\ttfamily\footnotesize,backgroundcolor=\color{soft},frame=single,rulecolor=\color{rulecolor},framerule=.35pt,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,xleftmargin=4pt,xrightmargin=4pt,framesep=5pt,aboveskip=9pt,belowskip=8pt,tabsize=2,
+literate={ℕ}{{$\mathbb N$}}1 {ℤ}{{$\mathbb Z$}}1 {ρ}{{$\rho$}}1 {δ}{{$\delta$}}1 {ε}{{$\varepsilon$}}1 {α}{{$\alpha$}}1 {∀}{{$\forall$}}1 {∃}{{$\exists$}}1 {→}{{$\to$}}1 {←}{{$\leftarrow$}}1 {↔}{{$\leftrightarrow$}}1 {≤}{{$\le$}}1 {≥}{{$\ge$}}1 {≠}{{$\ne$}}1 {∧}{{$\land$}}1 {∨}{{$\lor$}}1 {¬}{{$\neg$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {₀}{{$_0$}}1 {≡}{{$\equiv$}}1 {▸}{{$\triangleright$}}1 {·}{{$\cdot$}}1}
+\lstset{style=lean}
+
+\begin{document}
+\begin{center}
+{\large\sffamily\color{ink}A source-specific research and implementation note}\par\vspace{8pt}
+{\LARGE\bfseries Five Further Lean Proof Simplifications}\par\vspace{5pt}
+{\Large for \texttt{DiophantineConsistency}}\par\vspace{10pt}
+{\large Prepared for Vladimir Reshetnikov}\par
+26 October 2026
+\end{center}
+\vspace{4pt}
+\textbf{Source revision.} \href{\repo/commit/\pin}{\texttt{\pin}}.\newline
+\textbf{Compiler baseline.} Lean 4.32.0; Mathlib revision
+\texttt{81a5d257c8e410db227a6665ed08f64fea08e997}.
+
+\begin{abstract}
+This iteration treats every proposal in the two requested exclusion locations as available infrastructure, whether adopted or pending. It identifies five additional changes at six declarations: exact exponent normalization for the raw cyclic digit rotation; a stronger two-summand capacity bound for nonwrapping; internal quotient uniqueness by cancelling the common quotient contribution; zero-test soundness derived from its product and reconstruction equations; and direct linear arithmetic for the fixed controller progression. Five independent Lean files check the mathematical mechanisms, including copied production definitions where relevant. Four patch files propose edits to five production modules. Their complete-file line counts decrease from 783 to 763, charging the additional import in the zero-test module. This is a measured textual delta of the proposed patches, not a completed project integration or a build-time claim. The most useful gains are weaker proof dependencies and stronger intermediate statements; the immediate line savings are deliberately modest.
+\end{abstract}
+
+\section{Outcome and scope}
+
+The strongest conceptual changes are the first, second, and fourth proposals. They replace an unnecessarily specialized intermediate statement with the fact actually needed by the client. Rotation equality depends on the phase and cyclic shift, so it can be established before proving anything about the digit values. Nonwrapping follows from the two units of slack in two strict natural-number bounds, so a quadratic radix inequality is unnecessary. The zero-test output follows from two of its certificate equations, so soundness need not first classify roots of the Boolean equation.
+
+The division proposal simplifies a proof inside an arbitrary internal natural-number structure. It cancels a common summand and uses one positive quotient gap. Its value is that it removes the second slack witness and the constructed self-inequality while retaining the intended nonstandard-model semantics. The controller proposal is a smaller cleanup: its apparently nonlinear multiplication has a fixed natural coefficient, and its exact affine form is suitable for \code{omega}.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}p{.075\linewidth}>{\raggedright\arraybackslash}X p{.15\linewidth}>{\raggedright\arraybackslash}p{.18\linewidth}@{}}
+\toprule
+ID & Target and mathematical change & File lines & Immediate value\\
+\midrule
+R & \code{CurrentWordRephase2011.rotation_eq}: compare exponent observations directly & $122\to119$ & 3 fewer lines; Boolean reasoning removed from body\\
+C & \code{CurrentDummySafety2011.nonwrap_of_short}: two strict bounds in the same window & $213\to208$ & 5 fewer lines; stronger reusable bound\\
+D & \code{ObjectDivision.quotient_not_lt}: cancel $qd$, retain one gap & $179\to175$ & 4 fewer lines; one fewer witness\\
+Z & \code{ObjectZeroTest.certificate_sound}: product and reconstruction rows & $91\to89$ & 2 fewer lines after one import\\
+A & \code{CurrentControllerPositions2011}: injectivity and exclusion of 3 & $178\to172$ & 6 fewer lines; linear arithmetic\\
+\midrule
+ & \textbf{Total, five proposed production files} & $\mathbf{783\to763}$ & \textbf{20 fewer lines}\\
+\bottomrule
+\end{tabularx}
+\caption{Physical line counts of complete source files. Optional general lemmas and the independent research prototypes are not inserted by these patches.}
+\end{table}
+
+All public theorem statements in the proposed patches retain their existing binders and conclusions. In particular, the immediate rotation patch retains the original Boolean premise, although the new proof does not use it. The zero-test patch concerns the existing three-row certificate and does not alter the literal polynomial system. The patch for that file adds an import exposing the existing ordered-semiring instance, and that line is charged in the table.
+
+\subsection{What has actually been checked}
+
+The independent Lean prototypes establish the mathematical cores against the pinned compiler and Mathlib revisions. The rotation file copies the production definitions of \code{rotate}, \code{shiftDigits}, and \code{binaryRotation}; the controller file copies the exact controller constant, position formula, and \code{ZMod} domains. The two internal-arithmetic files work over abstract algebraic carriers, so their proofs do not identify an internal model with the external natural numbers. The capacity file is a direct proof over \code{Nat}, including the exact statement of the current private lemma.
+
+These checks do not rebuild the complete production dependency graph. Thus the patches are concrete, reviewable integration proposals. The archive supplies compiler logs, axiom output, source hashes, patch checks, and portable reproduction commands. It contains no claim that the 20-line textual reduction has already passed the repository's complete integration gates.
+
+\section{Exclusion audit: earlier ideas are the baseline}
+
+The audit is pinned to the same revision as the source review. It covers the
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/9d9d1123b39927d30363f1dcd53c23f0575c30ee/Computability/DiophantineConsistency/research/lean-proof-simplification}{placed proof-simplification directory}
+and all five archives in
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/9d9d1123b39927d30363f1dcd53c23f0575c30ee/docs/incoming}{\code{docs/incoming}}.
+There are 36 dated placed packets, from \code{2026-10-26a} through \code{2026-10-26zj}. Across the two requested locations the tracked-path census contains 2,175 paths. Text extraction, including text members of ZIPs, yields 3,768 entries and 2,874 distinct text hashes. These include repeated source snapshots and nested copies of earlier reports; they are not counts of distinct ideas. The direct report corpus contains 127 component files, about 1.56 MB of prose and report source.
+
+The procedure was to inventory the complete text corpus, scan the report titles and section structure, and compare each candidate against the closest report mechanisms and earlier candidate source variants. Source snapshots were distinguished from proposed edits. A report that merely bundles an unchanged module does not exhaust every possible later simplification of that module. Conversely, a proposal counts as excluded even if it was never implemented, was left as future work, or has no successful compilation record.
+
+The following families are therefore treated as already supplied: assignment naturality and witness layouts; generic sum-of-squares and coefficient envelopes; compiler schema generation; PR composition and scanner invariants; internal arithmetic transport and successor discreteness; signed Pell residue interfaces; rotation via convolution with an impulse; degree-before-coefficient reasoning; finite-support and helical-period interfaces; coherent carry records and reset-local carry arguments; shared modular kernel certificates; and finite weighted point updates. None is claimed again as a contribution of this report.
+
+\begin{longtable}{@{}p{.09\linewidth}p{.37\linewidth}p{.47\linewidth}@{}}
+\toprule ID & Closest earlier mechanism & Additional content retained here\\\midrule\endhead
+R & \packet{i}: \code{word_rotate} from impulse convolution; earlier phase estimates & Exact equality of the raw digit function after reducing the bit exponent modulo the complete bit window. It applies to unbounded digits and specializes to a fresh rephasing client.\\
+C & Earlier power cancellation; incoming mutation packets retaining a nonwrap guard & A stronger sufficient capacity statement with two summands under the same boundary, including the radix-two endpoint. The old guard is discharged through this specific inequality.\\
+D & \packet{k}: external natural quotient certificates; \packet{zf}: internal division existence & An additional simplification of internal quotient uniqueness: cancel the common $qd$, eliminating the remainder-gap witness.\\
+Z & \packet{x}: Boolean idempotence by cancellation; \packet{m}: consume Boolean certificates; \packet{zg}: identity transport & Eliminate the Boolean equation from the soundness dependency set itself. The product and reconstruction rows determine the selector.\\
+A & \packet{zh} and \packet{zj}: physical-order and finite-order interfaces & Resolve two new, literal affine-arithmetic obligations at coefficient $120198$, with a six-line local reduction.\\
+\bottomrule
+\end{longtable}
+
+The archive's \code{evidence/novelty-notes.md} gives a packet-by-packet map, including the five incoming archives. \code{novelty-matrix.csv} records the closest precedent for each retained idea. The conclusion is relative novelty within the inspected, pinned corpus. It is not a claim of mathematical originality for elementary cancellation or quotient/remainder identities, nor an absolute guarantee against a differently phrased equivalent sentence in a large archive.
+
+\section{R: normalize the exponent of the raw digit rotation}
+
+\subsection{The current proof uses a stronger interpretation than equality requires}
+
+The production definition in \src{NativeCyclicRotation}{NativeCyclicRotation.lean} is
+\begin{lstlisting}
+def binaryRotation (v W : ℕ) (c : ZMod n → ℕ) : ZMod n → ℕ :=
+  rotate (shiftDigits (2 ^ v) (2 ^ (W % v)) c)
+    ((W / v : ℕ) : ZMod n)
+\end{lstlisting}
+where
+\[
+ \operatorname{shiftDigits}(\rho,s,c)(k)
+ = (s c(k))\bmod\rho
+   +\left\lfloor\frac{s c(k-1)}{\rho}\right\rfloor,
+ \qquad \operatorname{rotate}(c,t)(k)=c(k-t).
+\]
+This definition retains the quotient contribution from the preceding digit. It is meaningful even when the input digits are not Boolean or smaller than the radix.
+
+The client \src{CurrentWordRephase2011}{CurrentWordRephase2011.rotation_eq} compares displacements $47(2011s)$ and $47(2011t)$ when the cell strides agree in $\mathbb Z/N\mathbb Z$. Its current proof invokes the Boolean phase-zero theorem twice and then compares the resulting pointwise permutations. But the two calls to \code{binaryRotation} already have the same partial phase and the same cyclic whole-digit shift. Equality can be proved at that level before interpreting any output digit.
+
+\subsection{A stronger exact statement}
+
+\begin{theorem}[Exponent normalization]
+For all natural $v,n,W$ and all functions $c:\operatorname{ZMod}(n)\to\mathbb N$,
+\[
+ \operatorname{binaryRotation}\bigl(v,W\bmod(vn),c\bigr)
+ =\operatorname{binaryRotation}(v,W,c).
+\]
+The equality is an equality of functions.
+\end{theorem}
+\begin{proof}
+If $v=0$ or $n=0$, then $W\bmod(vn)=W$, so the conclusion is immediate. Otherwise the exponent enters the definition only through $W\bmod v$ and the class of $\lfloor W/v\rfloor$ modulo $n$. Natural division and remainder satisfy
+\[
+ (W\bmod(vn))\bmod v=W\bmod v,
+ \qquad
+ \left\lfloor\frac{W\bmod(vn)}v\right\rfloor
+ =\left\lfloor\frac Wv\right\rfloor\bmod n.
+\]
+Casting the right-hand remainder to \texttt{\detokenize{ZMod n}} gives the same class as casting the original quotient. Thus every argument to \code{rotate} and \code{shiftDigits} is unchanged.
+\end{proof}
+
+The checked Lean proof is only the corresponding simplification:
+\begin{lstlisting}
+theorem binaryRotation_mod (v W : ℕ) (c : ZMod n → ℕ) :
+    binaryRotation v (W % (v * n)) c = binaryRotation v W c := by
+  simp only [binaryRotation, Nat.mod_mul_right_mod,
+    Nat.mod_mul_right_div_self, ZMod.natCast_mod]
+\end{lstlisting}
+Consequently congruent exponents modulo $vn$ produce equal digit functions. For positive $v$ and $n$ this gives an actual period; the degenerate zero cases should be described as normalization identities, not as positive periodicity.
+
+\subsection{Immediate implementation and accounting}
+
+The existing whole-cell client can use its already proved \code{physical_shift_eq} directly:
+\begin{lstlisting}
+  simp only [binaryRotation, displacement, Nat.mul_mod_right,
+    Nat.mul_div_cancel_left _ (by decide : 0 < 47),
+    physical_shift_eq s t hst]
+\end{lstlisting}
+The supplied patch formats this as two proof lines, replacing five existing lines. It adds no import and no helper. The original \code{hc} premise remains in the theorem header for compatibility and becomes unused; a later API cleanup may expose an unrestricted theorem while retaining the original wrapper. That later wrapper change is not included in the measured saving.
+
+The general normalization theorem is worth adding when additional clients compare arbitrary partial phases or exponents presented in different arithmetic forms. One current two-line client does not by itself amortize a new abstraction layer. This distinction matters: the elementary local patch saves three lines, while the optional stronger API adds declarations and provides a better statement for future proofs.
+
+\subsection{Boundary cases and validation}
+
+\code{lean/RotationPeriod.lean} checks the exact copied definitions, the normalization theorem, its congruent-exponent corollary, a whole-digit equality theorem, and the literal $47/2011$ specialization. It also elaborates zero-width, zero-cycle, and one-cell examples. The generic theorems require no digit upper bound. There is no assumption that either ordinary multiplier $2^W$ agrees with another multiplier as a natural number: the conclusion concerns the cyclic digit operation. This is precisely the distinction needed by the rephasing module, whose scalar quotient witnesses may change.
+
+\section{C: obtain nonwrapping from two units of strict slack}
+
+\subsection{The current arithmetic detour}
+
+The private theorem \src{CurrentDummySafety2011}{CurrentDummySafety2011.nonwrap_of_short} assumes
+\[
+ \rho\ge2,\quad m\ge2,\quad
+ F<\rho^{m-1},\quad \delta<\rho^{m-2}
+\]
+and proves $F+\delta<\rho^m-1$. Its current proof factors through $\rho^{m-2}$, proves $\rho+1<\rho^2$, and combines several polynomial inequalities. The destination modulus is one less than the full radix power, so a proof must account for strict natural-number slack rather than merely establish $F+\delta<\rho^m$.
+
+\subsection{A stronger capacity theorem}
+
+\begin{theorem}[Two strict summands in one window]
+Let $\rho,m,F,\delta\in\mathbb N$, with $\rho\ge2$ and $m\ge1$. If
+\[
+ F<\rho^{m-1}\quad\text{and}\quad\delta<\rho^{m-1},
+\]
+then $F+\delta<\rho^m-1$.
+\end{theorem}
+\begin{proof}
+Put $B=\rho^{m-1}$. The two strict bounds give $F+1\le B$ and $\delta+1\le B$. Hence
+\[
+ F+\delta+2\le2B\le\rho B=\rho^m.
+\]
+This is exactly the integer slack required for $F+\delta<\rho^m-1$.
+\end{proof}
+
+The proof first isolates an exponent-free capacity fact:
+\begin{lstlisting}
+theorem two_slots {F δ B Q : ℕ} (hF : F < B) (hδ : δ < B)
+    (hcapacity : B + B ≤ Q) : F + δ < Q - 1 := by
+  omega
+\end{lstlisting}
+Only one multiplicative inequality is then needed to instantiate it:
+\begin{lstlisting}
+theorem same_window {ρ m F δ : ℕ} (hρ : 2 ≤ ρ) (hm : 1 ≤ m)
+    (hF : F < ρ ^ (m - 1)) (hδ : δ < ρ ^ (m - 1)) :
+    F + δ < ρ ^ m - 1 := by
+  have hcapacity := Nat.mul_le_mul_right (ρ ^ (m - 1)) hρ
+  have he : ρ * ρ ^ (m - 1) = ρ ^ m := by
+    rw [← pow_succ']
+    congr 1
+    omega
+  rw [he] at hcapacity
+  exact two_slots hF hδ (by omega)
+\end{lstlisting}
+
+The present lemma follows because $m-2\le m-1$ and powers are monotone for $\rho\ge1$. The inline patch applies the same argument without adding the two general declarations to production. It removes five lines from the complete module and uses no new imports.
+
+\subsection{Why this is a useful strengthening}
+
+The second summand may now occupy the same penultimate window as the first. The current client has a stronger hypothesis on $\delta$, so its statement and behavior are preserved by the patch. A later client can use the more permissive theorem if its actual increment bound is only $\delta<\rho^{m-1}$. That is a genuine improvement of the sufficient condition, not a restatement of a previously assumed nonwrap guard.
+
+The endpoint $\rho=2$ is instructive. At $m=3$, both summands may equal $3$, giving $6<7$. Replacing one strict bound by a weak bound would allow $3+4=7$, which violates the conclusion. Thus the two units of slack are doing essential work. The condition $m\ge1$ is also used: it justifies $\rho\,\rho^{m-1}=\rho^m$ despite natural truncated subtraction. All these issues are visible in the stronger statement rather than hidden in a large arithmetic tactic call.
+
+This proposal does not assert any additional preservation property for masks or changed words. It supplies the numeric nonwrap fact used by the existing mutation reasoning. The earlier mutation, rank, and carry infrastructure remains the assumed baseline.
+
+\section{D: cancel the common quotient contribution in internal division}
+
+\subsection{The exact source obligation}
+
+In \src{ObjectDivision}{ObjectDivision.lean}, the carrier is \texttt{\detokenize{Natural H}}, the internal omega of an arbitrary model satisfying the relevant set-theoretic axioms. The relation is
+\[
+ \operatorname{DivisionRel}(q,r,n,d)
+ \quad\Longleftrightarrow\quad n=qd+r\ \land\ r<d.
+\]
+The private theorem \code{quotient_not_lt} takes two such representations and proves $\neg(q<q')$. The present proof chooses both a quotient gap and a remainder gap, then builds a positive slack witnessing the impossible inequality $n<n$.
+
+The division-existence proof uses internal induction and has already been the subject of earlier proposals. The change here is confined to the uniqueness argument after two representations have been supplied.
+
+\subsection{One gap is enough}
+
+Assume $q<q'$. The existing discrete-order theorem supplies $s$ with
+\[
+ q'=q+s+1.
+\]
+The two representation equations imply
+\[
+ qd+r=q'd+r'=(q+s+1)d+r'=qd+(sd+d+r').
+\]
+Additive cancellation gives $r=sd+d+r'$. Canonical additive order now gives $d\le sd+d+r'=r$, contradicting $r<d$. No remainder-gap witness is needed.
+
+The proposed proof body is:
+\begin{lstlisting}
+  intro hq
+  obtain ⟨s,hs⟩ :=
+    (ObjectNaturalDiscrete.lt_iff_exists_add_one H q q').mp hq
+  have he : r=s*d+d+r' := add_left_cancel (a := q*d)
+    (h.1.symm.trans (h'.1.trans (by rw [hs]; ring)))
+  exact not_le_of_gt h.2
+    (he.symm ▸ (le_add_self.trans le_self_add))
+\end{lstlisting}
+The patch uses compact formatting for the last two expressions. The complete source file decreases from 179 to 175 lines, without helpers or imports.
+
+\subsection{The important semantic boundary}
+
+The proof does not represent an internal natural as an external \code{Nat}, invoke external well-founded induction, or assume an Archimedean property. Multiplication monotonicity is unnecessary too: after cancelling $qd$, the inequality $d\le sd+d+r'$ follows entirely from canonical additive order. This makes the proof applicable on the entire internal omega, including its nonstandard elements.
+
+The independent theorem in \code{lean/InternalQuotientGap.lean} is checked over a commutative semiring with a linear order, canonical additive order, and additive cancellation. Its only discreteness input is the explicit implication
+\[
+ a<b\ \Longrightarrow\ \exists s,\ b=a+s+1.
+\]
+The project already has this implication. The abstract proof therefore separates the algebraic cancellation mechanism from the previously established internal-model facts without turning those facts into hidden new assumptions.
+
+The proof of $\neg(q<q')$ does not need the second remainder bound $r'<d$, although the public relation supplies it. The symmetric application in \code{division_unique} uses the corresponding bound on the other side. This observation explains the structure of the existing uniqueness theorem and avoids introducing an unnecessarily symmetric low-level helper.
+
+\section{Z: derive the zero-test selector from two certificate equations}
+
+\subsection{A dependency reduction inside the existing certificate}
+
+The certificate in \src{ObjectZeroTest}{ObjectZeroTest.lean} consists of
+\begin{equation}\label{eq:zerocertificate}
+ b^2=b,\qquad bn=0,\qquad n+b(s+1)=s+1.
+\end{equation}
+Its current soundness proof first uses $b^2=b$ to split $b=0$ or $b=1$, then derives the corresponding statement about $n$. A more direct proof splits on the observed input $n=0$ and uses the last two equations to determine $b$.
+
+\begin{theorem}[Two-row zero-test soundness]
+Let $R$ be a commutative semiring with cancellation by nonzero factors. Suppose $s+1\ne0$, $bn=0$, and $n+b(s+1)=s+1$. Then
+\[
+ b=\begin{cases}1,&n=0,\\0,&n\ne0.\end{cases}
+\]
+\end{theorem}
+\begin{proof}
+If $n=0$, the reconstruction equation becomes $b(s+1)=1(s+1)$; cancel the nonzero factor $s+1$. If $n\ne0$, cancel $n$ from $bn=0n$, equivalently use the zero-product property, to obtain $b=0$.
+\end{proof}
+
+In Lean the minimal proof is:
+\begin{lstlisting}
+theorem zeroTest_two_rows {bit n slack : R}
+    (hs : slack+1 ≠ 0) (hbn : bit*n = 0)
+    (hns : n+bit*(slack+1) = slack+1) :
+    bit = if n = 0 then 1 else 0 := by
+  by_cases hn : n = 0
+  · simp only [hn, zero_add] at hns
+    simpa only [if_pos hn] using
+      mul_right_cancel₀ hs (hns.trans (one_mul _).symm)
+  · simpa only [if_neg hn] using
+      (mul_eq_zero.mp hbn).resolve_right hn
+\end{lstlisting}
+Here the class assumptions are \texttt{\detokenize{CommSemiring R}}, \texttt{\detokenize{IsCancelMulZero R}}, and \texttt{\detokenize{DecidableEq R}}. The second theorem in the prototype uses the ordered-carrier assumptions relevant to the actual internal naturals and retains all three conjuncts of the source certificate. Thus the instance inference needed for that algebraic setting is also checked independently.
+
+\subsection{Production port and exact cost}
+
+The production proof calls \texttt{\detokenize{ObjectNaturalDiscrete.add_one_ne_zero H slack}} for the nonzero successor. Its proposed extra import is \code{ObjectNaturalOrderedSemiring}, which exposes the already established strict ordered-semiring structure and the resulting nonzero multiplication cancellation. The import graph is acyclic: that file depends on \code{ObjectNaturalDiscrete}, not on the zero-test module.
+
+The old proof block has 11 physical lines and the proposed block has 8. After charging the additional import, the complete file decreases from 91 to 89 lines. If the earlier multiplication-order proposal is already integrated so that the instance is exposed transitively, the import may be redundant; this report uses the conservative current-file accounting.
+
+The result is more informative than the two-line net saving: the soundness proof has a smaller dependency set. Booleanity becomes a consequence of the two determining equations in this carrier. This is distinct from shortening the general theorem that classifies idempotent elements, and distinct from consuming an already supplied Boolean certificate more efficiently.
+
+\subsection{Why the hypotheses and literal rows must be distinguished}
+
+Nonzero cancellation matters. In a ring, $s=-1$ makes $s+1=0$; with $n=0$, the last two equations then hold for arbitrary $b$. The conclusion fails without a nonzero-successor premise. The internal-natural theorem has exactly the fact needed to exclude this degeneration.
+
+The proposed patch leaves \eqref{eq:zerocertificate}, \code{zeroRows}, the degree theorem, and the expression semantics as written. Deleting a polynomial row would be a different change: it could affect literal systems, cost statements, and certificates over other domains. The current contribution is a proof simplification for the existing certificate. The derivation also offers a useful review principle for future gadgets: first ask which rows determine the output on the intended carrier, then use that dependency information to organize soundness proofs. Any later alteration of a literal system needs its own analysis.
+
+\section{A: expose the fixed affine controller progression}
+
+The controller data defines \code{auxiliary} to be $120199$. The position map in
+\src{CurrentControllerPositions2011}{CurrentControllerPositions2011.lean} is therefore
+\[
+ \operatorname{position}(k,j)=2+120198\,j.\operatorname{val},
+ \qquad j:\operatorname{ZMod}(120199^k).
+\]
+Two current proofs use nonlinear arithmetic: injectivity of this map and exclusion of the optional position $3$. Both obligations are actually linear over the natural representative because the coefficient is fixed.
+
+The proposed exclusion proof is:
+\begin{lstlisting}
+theorem position_ne_three (k : ℕ)
+    (j : ZMod (auxiliary^k)) : position k j ≠ 3 := by
+  change 2 + 120198 * j.val ≠ 3
+  omega
+\end{lstlisting}
+The equation would require $120198\,j.\operatorname{val}=1$, which has no natural solution. No split on whether the representative is zero is needed.
+
+Similarly, the injection proof is:
+\begin{lstlisting}
+theorem position_injective (k : ℕ) :
+    Function.Injective (position k) := by
+  intro i j hij
+  apply ZMod.val_injective
+  change 2 + 120198 * i.val = 2 + 120198 * j.val at hij
+  omega
+\end{lstlisting}
+This exposes the affine equality precisely at the arithmetic interface while retaining the existing \code{ZMod} representatives. An experiment that globally unfolded \code{auxiliary} changed the presentation of the representative expressions enough to confuse the arithmetic atoms; the delivered proof uses the explicit local \code{change} shown above.
+
+The exact-domain pilot compiles both proofs with the real position and cell definitions. The combined patch removes six lines from the complete 178-line module and introduces no helper or import. It also applies at $k=0$, when the source cycle has one element. Nothing in the proof needs $k>0$.
+
+This is intentionally a small cleanup. A new general affine-embedding framework would add overhead and repeat prior infrastructure proposals. If the controller parameter later becomes variable, a symbolic injectivity argument using positivity and an exclusion argument modulo the step size would be more appropriate. For the present literal controller, the two direct proofs are the smallest clear change.
+
+\section{Validation, adoption order, and limits}
+
+\subsection{Compiler evidence}
+
+The archive contains five standalone files and thirteen named audited theorem declarations:
+\begin{itemize}
+\item \code{RotationPeriod.lean}: four theorems, plus zero-width, zero-cycle, and single-cell examples.
+\item \code{Capacity.lean}: four theorems, including both a reusable stronger theorem and an inline exact-statement version; three endpoint examples.
+\item \code{InternalQuotientGap.lean}: the abstract one-gap quotient argument.
+\item \code{TwoRowZeroTest.lean}: a minimal cancellation theorem and an ordered-carrier certificate theorem.
+\item \code{AffinePositions.lean}: two exact-domain controller proofs.
+\end{itemize}
+The \texttt{\#print axioms} outputs contain only subsets of \code{propext}, \code{Classical.choice}, and \code{Quot.sound}. The quotient-gap theorem uses only \code{propext}; no new axiom, placeholder, or external arithmetic certificate is introduced by the prototypes. These outputs concern the independent theorems, not an axiom audit of every imported production theorem.
+
+The compiler is Lean 4.32.0, commit \texttt{8c9756b28d64dab099da31a4c09229a9e6a2ef35}. The Mathlib revision equals the one in the source repository's \code{lake-manifest.json}. Read-only cached Mathlib objects were reused. No cached \code{DiophantineConsistency} object is used as evidence for the changed production files; the independent files import Mathlib and the core tactic modules directly.
+
+\subsection{What the measurements mean}
+
+The line table counts complete candidate modules, not selected proof interiors. It charges the zero-test import. The proposed production patches add no general helper declarations. The stronger rotation and capacity APIs live in the research prototypes and are described separately, so their extra source is not hidden in a claimed net reduction.
+
+Physical line count is only one measure of simplification. The division patch removes a witness and a constructed contradiction certificate. The zero-test patch removes dependence on the Boolean-root classification theorem. The rotation patch removes two semantic rewrites. The capacity patch replaces a quadratic radix inequality with a single multiplication monotonicity fact. These are structural observations about the actual proofs. There are no measured wall-clock or memory improvements, and no such improvements are claimed.
+
+\subsection{Recommended integration sequence}
+
+Start with the controller, rotation, and capacity body-only patches. They have small dependency surfaces and introduce no new imports. Rebuild each touched module and its direct clients using the repository's normal workflow. The rotation proof can leave an unused-premise warning because its public Boolean premise is retained; decide explicitly whether the project's warning policy calls for a compatibility wrapper or a future API change.
+
+Next integrate the division proof. Confirm that the existing canonical additive order and cancellation instances are visible through its current imports. Its independent proof uses those exact algebraic capabilities and does not require the multiplication-order import.
+
+Finally integrate the zero-test proof with the explicit ordered-semiring import, or omit that import if the assumed earlier work already exposes the instance. Rebuild the zero-test module and the clients consuming its certificate and expression theorems. Since the literal rows are unchanged, the relevant regression question is statement and elaboration compatibility, not a new polynomial construction.
+
+Only after these clients are rebuilt should the 20-line candidate delta be called an integrated reduction. Add the optional general rotation-normalization or capacity API when a second client makes its cost worthwhile. The compact patches are useful even if those general declarations remain research lemmas.
+
+\subsection{Corpus and time boundary}
+
+The reviewed source is the fixed commit displayed on the first page. New commits or newly uploaded proposals can change the novelty assessment. The archive records the exact hashes of the source targets and the exclusion inventory so a later iteration can compare against this result without relying on the moving \code{main} branch.
+
+\section{Artifact guide and reproduction}
+
+\begin{tabularx}{\linewidth}{@{}p{.30\linewidth}X@{}}
+\toprule
+Path & Purpose\\\midrule
+\code{report.tex}, \code{report.pdf} & Complete article and its compiled PDF.\\
+\code{lean/} & Five independent, checked Lean prototypes with axiom commands.\\
+\code{patches/} & Four unified patch files affecting five source modules.\\
+\code{evidence/validation.json} & Final independent compilation results and validation scope.\\
+\code{evidence/logs/} & Compiler output for every delivered prototype.\\
+\code{evidence/source_manifest.json} & Exact source revision, content hashes, and source-file sizes.\\
+\code{evidence/novelty-matrix.csv} & Proposal-by-proposal comparison with the closest earlier ideas.\\
+\code{evidence/novelty-notes.md} & Full placed-packet and incoming-archive map.\\
+\code{evidence/exclusion-corpus-manifest.json} & Hashed inventory of extracted text inputs and ZIP members.\\
+\code{scripts/check_sources.py} & Check target source hashes before considering the patches.\\
+\code{scripts/check_lean.sh} & Compile the independent files in the pinned Lake environment.\\
+\code{scripts/build_pdf.sh} & Recompile the article with \code{latexmk}.\\
+\bottomrule
+\end{tabularx}
+
+For a fresh independent proof environment, install the toolchain named by
+\code{lean-toolchain}, run \texttt{\detokenize{lake update}}, obtain the Mathlib cache with
+\texttt{\detokenize{lake exe cache get}}, then run \texttt{\detokenize{sh scripts/check_lean.sh}}. The
+\code{lakefile.toml} pins the exact Mathlib commit rather than a moving branch.
+For source integration, first run the source-hash checker against a checkout
+of the pinned ProveIt commit, then inspect the patches and use
+\texttt{\detokenize{git apply --check}} before applying them. The source checker intentionally
+fails on a different target hash; a changed revision needs a new comparison.
+
+\clearpage
+\section*{Primary sources}
+\addcontentsline{toc}{section}{Primary sources}
+\begin{enumerate}[label={[\arabic*]},leftmargin=2em]
+\item \href{\repo/commit/\pin}{ProveIt, reviewed commit \texttt{9d9d1123b399}}; the source manifest in the archive records full hashes.
+\item \src{NativeCyclicRotation}{NativeCyclicRotation.lean} and \src{CurrentWordRephase2011}{CurrentWordRephase2011.lean}: literal rotation definitions and the whole-cell rephasing client.
+\item \src{CurrentDummySafety2011}{CurrentDummySafety2011.lean} and \src{CurrentWordTopBounds2011}{CurrentWordTopBounds2011.lean}: existing nonwrap guard, increment bounds, and normalized-word upper bounds.
+\item \src{ObjectDivision}{ObjectDivision.lean}: internal division existence and uniqueness, especially \code{quotient_not_lt}.
+\item \src{ObjectZeroTest}{ObjectZeroTest.lean}, \src{ObjectNaturalOrderedSemiring}{ObjectNaturalOrderedSemiring.lean}, and \src{ObjectNaturalDiscrete}{ObjectNaturalDiscrete.lean}: literal zero-test certificate and the internal arithmetic interfaces.
+\item \src{CurrentControllerData2011}{CurrentControllerData2011.lean} and \src{CurrentControllerPositions2011}{CurrentControllerPositions2011.lean}: the exact auxiliary constant and affine positions.
+\item \href{https://github.com/leanprover/lean4/blob/v4.32.0/src/Init/Data/Nat/Mod.lean}{Lean 4.32.0, \code{Init/Data/Nat/Mod.lean}}: the natural quotient and remainder identities used in rotation normalization.
+\item \href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Data/ZMod/Basic.lean}{Mathlib, pinned \code{Mathlib/Data/ZMod/Basic.lean}}: cast normalization and representative injectivity.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/9d9d1123b39927d30363f1dcd53c23f0575c30ee/Computability/DiophantineConsistency/research/lean-proof-simplification}{The 36 placed proposal packets} and \href{https://github.com/VladimirReshetnikov/ProveIt/tree/9d9d1123b39927d30363f1dcd53c23f0575c30ee/docs/incoming}{the five incoming ZIP archives}, all at the reviewed commit. Their mechanisms are treated as already applied throughout this report.
+\end{enumerate}
+\end{document}

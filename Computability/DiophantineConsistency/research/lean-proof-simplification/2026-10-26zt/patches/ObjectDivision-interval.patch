@@ -1,0 +1,21 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean
+@@ -91,13 +91,11 @@
+     (h : DivisionRel H q r n d) (h' : DivisionRel H q' r' n d) : ¬ q<q' := by
+   intro hq
+   obtain ⟨s,hs⟩ := (ObjectNaturalDiscrete.lt_iff_exists_add_one H q q').mp hq
+-  obtain ⟨t,ht⟩ := (ObjectNaturalDiscrete.lt_iff_exists_add_one H r d).mp h.2
+-  have hn : n<n := (ObjectNaturalDiscrete.lt_iff_exists_add_one H n n).mpr ⟨s*d+t+r',by
+-    calc
+-      n = (q+s+1)*d+r' := by rw [← hs,← h'.1]
+-      _ = (q*d+r)+(s*d+t+r')+1 := by rw [ht]; ring
+-      _ = n+(s*d+t+r')+1 := by rw [← h.1]⟩
+-  exact lt_irrefl n hn
++  have hmul : q*d+d ≤ q'*d :=
++    (ObjectNaturalOrder.Natural.le_iff_exists_add H _ _).mpr ⟨s*d,by rw [hs]; ring⟩
++  have hfirst : q*d+r < q*d+d := by
++    simpa only [add_comm] using add_lt_add_left h.2 (q*d)
++  exact (ne_of_lt (hfirst.trans_le (hmul.trans le_self_add))) (h.1.symm.trans h'.1)
+ 
+ theorem division_unique {q r q' r' n d : N H}
+     (h : DivisionRel H q r n d) (h' : DivisionRel H q' r' n d) : q=q' ∧ r=r' := by

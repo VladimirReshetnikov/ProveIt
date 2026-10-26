@@ -1,0 +1,22 @@
+--- round6_closing/DiophantineConsistency/AnnotatedProofChecker.lean
++++ round7_source/DiophantineConsistency/AnnotatedProofChecker.lean
+@@ -174,10 +174,6 @@
+ def Line.valid (line : Line) (seen : List Judgment) : Bool :=
+   line.rule.side && decide (line.parents.map (fun i => seen[i]?)=line.rule.premises.map some)
+ 
+-private theorem mem_of_lookup {seen : List Judgment} {i : Nat} {j : Judgment}
+-    (h : seen[i]?=some j) : j∈seen :=
+-  List.mem_of_getElem? h
+-
+ theorem Line.sound (line : Line) (seen : List Judgment)
+     (hseen : ∀ j ∈ seen,j.Provable) (h : line.valid seen=true) : line.rule.output.Provable := by
+   simp only [valid,Bool.and_eq_true,decide_eq_true_eq] at h
+@@ -187,7 +183,7 @@
+     rw [h.2]
+     exact List.mem_map_of_mem hj
+   obtain ⟨i,_,hi⟩ := List.mem_map.mp hm
+-  exact hseen j (mem_of_lookup hi)
++  exact hseen j (List.mem_of_getElem? hi)
+ 
+ /-- Failed lines abort. History stores only judgments of accepted lines. -/
+ def run : List Line → List Judgment → Option (List Judgment)

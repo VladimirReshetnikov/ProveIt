@@ -1,0 +1,25 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/EnumeratorSemantics.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/EnumeratorSemantics.lean
+@@ -1,5 +1,5 @@
+ import BusyBeaver.ZFC.EnumPerm
+-import Mathlib.Computability.Primrec.Basic
++import Mathlib.Logic.Encodable.Basic
+ 
+ /-! # Definitions and semantic halting bridge for the literal enumerator
+ 
+@@ -12,15 +12,6 @@
+ open SetTheory SetTheory.BusyBeaver.ZFC
+ open EnumPerm Code254 KCode222
+ 
+-
+-private def stateEquiv : St ≃ ℕ × ℕ × ℕ × ℕ × ℕ × ℕ where
+-  toFun s := (s.pl, s.np, s.tw, s.ws, s.d, s.h)
+-  invFun s := ⟨s.1, s.2.1, s.2.2.1, s.2.2.2.1, s.2.2.2.2.1, s.2.2.2.2.2⟩
+-  left_inv _ := rfl
+-  right_inv _ := rfl
+-
+-private instance : Primcodable St := Primcodable.ofEquiv _ stateEquiv
+-private instance : DecidableEq St := Encodable.decidableEqOfEncodable _
+ 
+ /-- Run the proof enumerator for a bounded number of steps; `none` stays `none`. -/
+ def boundedRun (n : ℕ) (s : St) : Option St :=

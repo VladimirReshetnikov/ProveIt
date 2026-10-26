@@ -1,0 +1,28 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/Computability.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/Computability.lean
+@@ -290,21 +290,11 @@
+ /-- The input is unused: every input is accepted exactly when the falsity code is derivable. -/
+ def refutationInputs : Set ℕ := fun _ => C222 F
+ 
+-/-- Syntactic inconsistency of ZFC is semidecidable, by the actual verified enumerator. -/
++/-- The constant input set is classically r.e. The executable enumerator is
++certified separately by `haltingTest_natPrimrec` and `exists_haltingTest_eq_one_iff`. -/
+ theorem refutationInputs_re : REPred refutationInputs := by
+-  have ht : Primrec fun v : ℕ × ℕ => decide (boundedRun v.2 initialState = none) :=
+-    (Primrec.eq.comp
+-      (pr_boundedRun.comp Primrec.snd (Primrec.const initialState))
+-      (Primrec.const none)).decide
+-  have hsearch : Partrec fun _ : ℕ => Nat.rfind
+-      (fun t => Part.some (decide (boundedRun t initialState = none))) :=
+-    Partrec.rfind ht.to_comp.partrec
+-  apply hsearch.dom_re.of_eq
+-  intro _
+-  simp only [Nat.rfind_dom, Part.mem_some_iff, true_eq_decide_iff,
+-    Part.some_dom, implies_true, and_true]
+-  exact (exists_none_iff initialState).trans
+-    (EnumPerm.halts_iff rfl ⟨C222.truth, C222.truth, good_zero⟩)
++  classical
++  exact (Computable.const (decide (C222 F))).computablePred.to_re
+ 
+ /-- A scalar, executable bounded test for the actual proof enumerator.
+ Its result is `1` exactly when a refutation has already been found. -/

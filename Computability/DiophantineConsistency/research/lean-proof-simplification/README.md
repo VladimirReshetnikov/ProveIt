@@ -49,9 +49,20 @@ delivered, with a `PLACEMENT.md` recording its arrival. Nothing here is imported
 | [2026-10-26zo](2026-10-26zo/PLACEMENT.md) | `lean-proof-simplifications-2026-10-26.zip` | `71a89b3beb` | `9f35798db4` |
 | [2026-10-26zp](2026-10-26zp/PLACEMENT.md) | `lean-controller-word-refinements-2026-10-26.zip` | `f127cbd69b` | `ae736b383e` |
 | [2026-10-26zq](2026-10-26zq/PLACEMENT.md) | `lean-controller-simplifications-2026-10-26.zip` | `f127cbd69b` | `f00ba53b33` |
+| [2026-10-26zr](2026-10-26zr/PLACEMENT.md) | `diophantine-lean-proof-deltas-2026-10-26.zip` | `31d750f4cd` | `9d9d1123b3` |
+| [2026-10-26zs](2026-10-26zs/PLACEMENT.md) | `ProveIt_Lean_Simplification_Round6_2026-10-26.zip` | `7ba7d10282` | `9d9d1123b3` |
+| [2026-10-26zt](2026-10-26zt/PLACEMENT.md) | `lean-residual-guards-2026-10-26.zip` | `7ba7d10282` | `60fcb2a69b` |
+| [2026-10-26zu](2026-10-26zu/PLACEMENT.md) | `ProveIt_Lean_Shape_Windows_Growth_2026-10-26.zip` | `569599816d` | `60fcb2a69b` |
+| [2026-10-26zv](2026-10-26zv/PLACEMENT.md) | `Lean_Proof_Simplification_Positions_Rank_Rephase_2026-10-26.zip` | `569599816d` | `60fcb2a69b` |
+| [2026-10-26zw](2026-10-26zw/PLACEMENT.md) | `proveit-lean-rank-zero-test-2026-10-26.zip` | `3b51c69d42` | `09eaa57ae5` |
+| [2026-10-26zx](2026-10-26zx/PLACEMENT.md) | `ProveIt_Proof_Simplification_Review_2026-10-26.zip` | `3b51c69d42` | `60fcb2a69b` |
+| [2026-10-26zy](2026-10-26zy/PLACEMENT.md) | `diophantine_consistency_lean_simplification.zip` | `5a1db2b1f5` | `3299f4aa4c` |
+| [2026-10-26zz](2026-10-26zz/PLACEMENT.md) | `ProveIt_Lean_Simplification_Round7_2026-10-26.zip` | `9c3d0366ed` | `3b51c69d42` |
+| [2026-10-26zza](2026-10-26zza/PLACEMENT.md) | `diophantine-lean-simplifications-2026-10-26.zip` | `9c3d0366ed` | `3b51c69d42` |
+| [2026-10-26zzb](2026-10-26zzb/PLACEMENT.md) | `proveit_lean_residual_simplifications_2026-10-26.zip` | `29940bd155` | `3b51c69d42` |
 
-Packets b–zq omit members byte-identical to a Git blob of the reviewed commit, of `60e9c5d620` or of the placement parent,
-mostly bundled source snapshots; each one's `OMITTED.tsv` lists them with a repository path holding the
+Packets b–zzb omit members byte-identical to a Git blob of the reviewed commit, of `60e9c5d620` or of the placement parent,
+or to a member of a packet already placed here, mostly bundled source snapshots; each one's `OMITTED.tsv` lists them with a repository path holding the
 same bytes.
 
 [ADOPTION.md](ADOPTION.md) records, proposal by proposal, what has been taken into the maintained tree,

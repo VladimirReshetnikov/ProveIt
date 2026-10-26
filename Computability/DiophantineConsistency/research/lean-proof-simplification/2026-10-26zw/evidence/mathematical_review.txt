@@ -1,0 +1,180 @@
+# Independent mathematical and source-binding review
+
+Reviewed source/exclusion pin:
+`60fcb2a69b7f1fdd4c3592ea5f164223cad50abe` (43 placed packets).
+The maintained Lean sources are unchanged from
+`3299f4aa4c9ae38b0f5a1c00a1f0d23f6cbdb114`.
+
+## Scope and conclusion
+
+All three proposed mathematical reductions are valid under the hypotheses
+of their intended production targets. The sharp rank bound is the largest
+new mathematical contribution; the zero-test change removes a redundant
+logical premise; the controller change is a small endpoint dependency
+reduction using standard coprimality facts.
+
+This review inspected the independent Lean kernels, proposed patches, the
+relevant maintained definitions and theorem signatures, and the available
+compilation/axiom logs. It does not claim a separate complete project build.
+Source-body fixtures intentionally take already proved source identities
+as theorem parameters. Their successful elaboration checks the binding
+contract, without rebuilding those source identities or their imports.
+
+## 1. Sharp upper native-rank envelope
+
+Let all variables be integers, let
+
+```
+q = 1 + J*beta,
+C = q-F-alpha,
+R = ((q-1)*(q-F)+alpha)*(q^2-1) + (MC+MF*q)*J,
+U = q^4-q^3-q-1.
+```
+
+The kernel assumes `C>0`, `F>0`, `alpha>0`, `J>0`, `MC<beta`, and
+`MF<2*beta`. These are sufficient. In particular:
+
+- Integer discreteness gives `F,C,J >= 1`, `beta-MC-1 >= 0`, and
+  `2*beta-MF-1 >= 0`. The proof must not be generalized to a dense ordered
+  field with the same strict hypotheses: the unit slack estimates would fail.
+- Since `q=C+F+alpha`, integer positivity gives `q>=3`, so `q`, `q+1`,
+  and `q^2-1` are nonnegative. No lower bound on either mask port is needed.
+- The following exact identity has the correct signs and coefficients:
+
+```
+U-R = q*(q^2-1)*(F-1) + (q^2-1)*(C-1) + (q+1)*(J-1)
+      + J*((beta-MC-1)+q*(2*beta-MF-1)).
+```
+
+Replacing `beta*J` by `q-1` verifies the identity directly. Every summand is
+nonnegative, yielding `R<=U`. Since `q>=3`, `R+1<=q^4-q^3-q<q^4`.
+Consequently the existing inequality `q^4<=E` proves `R+1<E`.
+
+### Sharpness and its scope
+
+For every integer `q>=3`, take
+
+```
+F=C=J=1, alpha=q-2, beta=q-1, MC=q-2, MF=2*q-3.
+```
+
+Every stated box hypothesis holds and every slack term vanishes. Thus `U`
+is the exact maximum for this reduced arithmetic box. The kernel's
+`sharp_value` and `sharp_box` separately establish the value and admissibility.
+No conclusion follows that these assignments extend to a solution of all
+22 source equations and all 31 positive source coordinates. Describing the
+bound as sharp for actual full source solutions would be unsupported.
+
+### Production binding
+
+The substitutions are exactly:
+
+| Symbol | Maintained source |
+|---|---|
+| `J` | `(x 0 : Int)` |
+| `F` | `(x 1 : Int)` |
+| `alpha` | `(x 2 : Int)` |
+| `beta, MC, MF` | `ports 0, ports 2, ports 3` |
+| `R` | `nativeRank x = (x 19 : Int)*x 8-x 26` |
+| `E` | `(x 17 : Int)` |
+
+`source_transport_positive` supplies `C>0` from the existing `hbeta`,
+`hK`, positivity and source rows. `source_rank_eq_target` binds the same
+inner native rank to the displayed target expression. `source_scale_eq`
+supplies `E=q^4*(x 10*x 9)`; positivity of both natural coordinates gives
+the required product at least one. These are exactly the old theorem's
+inputs, with no premise added or weakened.
+
+The first draft rewrote `source_rank_eq_target` but omitted an explicit
+unfolding of its `nativeTarget` definition. This was identified during
+review and corrected to `dsimp [nativeTarget, q]`. The corrected
+`RankSourceFixture.lean` uses the actual `nativeRank` and `nativeTarget`
+definitions, the actual source-row arity `Fin 22`, exact upstream theorem
+contracts, and the proposed production proof body. Its log records a
+successful proof with standard axioms only. This removes the earlier gap
+between the expanded arithmetic fixture and the production target.
+
+## 2. Zero-test soundness from annihilation and balance
+
+In a cancellative commutative semiring with zero, suppose
+
+```
+bit*n=0,   n+bit*unit=unit,   unit != 0.
+```
+
+If `n=0`, balance says `bit*unit=1*unit`, so right cancellation gives
+`bit=1`. If `n!=0`, the annihilation equation and absence of zero divisors
+give `bit=0`. The idempotence equation is not involved in either branch.
+
+The nonzero guard is essential: with `n=unit=0`, both retained equations
+hold for every bit. The supplied natural-number example with bit two
+correctly demonstrates the failure without this guard.
+
+For the external certificate, `unit=(slack:Int)+1` is nonzero because
+`slack:Nat`. Its third row
+`n-(1-bit)*unit=0` is algebraically equivalent to the balance equation.
+Integer no-zero-divisor and cancellation laws apply; casting back to natural
+numbers preserves equality and the zero test.
+
+For the internal certificate, `unit=slack+1` is nonzero by the existing
+`ObjectNaturalDiscrete.add_one_ne_zero H slack`. This theorem is valid for
+every element of `ObjectOmegaSemiring.Natural H`, including nonstandard
+elements. No external induction, surjectivity of natural-number casts, or
+identification of the internal carrier with `Nat` is used.
+
+The source import closure provides `CommSemiring`, `LinearOrder`,
+`CanonicallyOrderedAdd`, and `IsStrictOrderedRing` on the internal carrier.
+The latter comes through `ObjectPairingInjective` and
+`ObjectNaturalOrderedSemiring`. Mathlib's
+`IsStrictOrderedRing.isDomain` supplies the cancellation hierarchy using
+`ExistsAddOfLE`, which is supplied by `CanonicallyOrderedAdd`. The final
+standalone `inferInstance` bridge under exactly these classes compiled
+successfully.
+The source also already provides `NoZeroDivisors` directly.
+
+The production definitions and all three stored polynomial rows remain
+unchanged. The final proof deliberately clears the first conjunct before
+`simp_all` with `rcases h with ⟨-, hn, hs⟩`. An anonymous underscore could
+leave an inaccessible hypothesis available to the simplifier. The final
+direct fixtures and source patch use the explicit clearing pattern, and
+the final fixture compilation succeeded. The generic
+two-premise theorem already demonstrates mathematical independence; clearing
+the conjunct also makes that independence true of the short direct proof.
+
+## 3. Actual controller base is a unit from oddness
+
+The maintained definitions give `d=47*2011=94517`, `auxiliary=120199`,
+and `B=2^94517`. Both `d` and `auxiliary` are odd. Thus the entire modulus
+
+```
+(d*auxiliary)*auxiliary^k
+```
+
+is odd for every natural `k`, including zero. Two is coprime to every odd
+natural modulus, hence its class in this `ZMod` is a unit. Raising that unit
+to the power 94517 gives the class of `B` after `B_eq` and `Nat.cast_pow`.
+No primality, exact multiplicative order, LTE, or positive-power assumption
+is needed for this theorem.
+
+The corrected proof keeps the enormous base symbolic and rewrites its
+power representation rather than evaluating it. The updated comment now
+describes the odd-modulus argument. `ControllerBaseSourceFixture.lean`
+uses the same production proof body with the three established constant/
+oddness facts as explicit theorem parameters; its log records a successful
+proof with standard axioms only.
+
+This removes the exact-order dependency from this theorem's proof.
+It does not remove the exact-order theory from the whole module: actual
+power-orbit bijections elsewhere still use it. The recent zq proposal
+explicitly retains both orbit and base-unit proofs after its subset changes.
+
+## Remaining validation boundary
+
+The independent kernels and fixtures have normal Lean proofs; inspected
+axiom outputs list only `propext`, `Classical.choice`, and `Quot.sound`
+(some pure identities use fewer). The proposal is not evidence of a
+whole-repository build, complete downstream migration, or compilation-time
+improvement. The exact corrected patches should be applied and checked
+in the repository's pinned environment before adoption. This is an
+integration requirement, not a remaining mathematical gap in the three
+arguments reviewed here.

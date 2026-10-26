@@ -1,0 +1,106 @@
+# Candidate novelty decisions
+
+Scope: source and 43 placed packets at
+`60fcb2a69b7f1fdd4c3592ea5f164223cad50abe`.
+The final refresh adds zp and zq; maintained Lean is unchanged from the
+initial 41-packet pin `3299f4aa4c9ae38b0f5a1c00a1f0d23f6cbdb114`.
+Search corpus: all selected text/Lean/TeX/Markdown artifacts under the two
+requested exclusion roots. Exact negative keyword searches are combined with
+reading nearest prior mechanisms; novelty is relative to this corpus.
+
+## A. Zero-test certificate without its idempotence premise: retain
+
+Target: `ObjectZeroTest.certificate_sound` and corresponding natural certificate.
+New obligation: from `bit * n = 0`, `n + bit * s = s`, and `s != 0`, derive
+`bit = if n = 0 then 1 else 0`. If n=0, cancel s from bit*s=s; if n!=0,
+no-zero-divisors gives bit=0. The additional Boolean/idempotent equation is
+therefore not needed by soundness. Primary candidate should retain every
+stored polynomial row and all executable constructors.
+
+Nearest prior work:
+- x/report/lean-proof-refinements.tex:206-217 simplifies `x*x=x` into a
+  zero-or-one conclusion by cancellation; it still uses idempotence.
+- m/report/additional_lean_simplifications.tex:581 onward consumes
+  exists_zero_certificate_iff in the zero/conditional clients; it does not
+  prove one row redundant.
+- zg/report/sections/02-polynomial.tex:138 and
+  zg/evidence/polynomial_transport_review.md:54 discuss semantic normalization
+  of zero-test rows in cancellative semirings; they preserve the rows and do
+  not derive the bit from the other two equations.
+
+Search terms: ZeroTest, zero-test, idempotent, redundant Boolean, bit+slack,
+selector redundancy. No matching premise-removal mechanism found. Credit only
+the concrete logical dependency reduction. Ordinary cancellation is prior.
+
+## B. Sharp upper envelope for the native rank: retain
+
+Target: `NativePellBootstrap.source_window_bound`.
+Use q=1+beta*J, C=q-F-alpha, positive integer F,C,J, MC<beta, MF<2*beta,
+and R=(q*(q-F)-C)*(q^2-1)+(MC+MF*q)*J. Then
+
+    U(q) = q^4-q^3-q-1
+    U(q)-R = q*(q^2-1)*(F-1) + (q^2-1)*(C-1)
+      + (q+1)*(J-1)
+      + J*((beta-MC-1)+q*(2*beta-MF-1)).
+
+Each term is nonnegative for q>=3; equality holds in the reduced arithmetic
+box at F=C=J=1, alpha=q-2, beta=q-1, MC=q-2, MF=2*q-3. This is NOT an
+attainability assertion for all original source equations.
+
+Nearest prior work:
+- u/report.tex:198-268 proves the LOWER envelope
+  `(2*q-1)*(q^2-1) <= R`, shared by rank>=40 and rank>3*q clients.
+- zb/report/report.tex:344-407 uses exact affine rank dependence on C+qF
+  to compare two ranks with common q,J and ports. It explicitly distinguishes
+  its comparison API from the lower envelope; no upper-envelope client.
+- Earlier source-register decoding is assumed already available. Its source
+  identity supplies the new inequality rather than constituting new credit.
+
+Searches: source_window_bound, upper/rank in both orders, sharp upper,
+slack/rank, q^4-q^3. Direct target hits are old unchanged source snapshots,
+not proposed edits. Retain this exact stronger inequality and window client.
+
+## C. Odd modulus proves the actual block base is a unit: qualified retain
+
+Target: new `CurrentControllerSubsets2011.block_base_isUnit`.
+Replace the route through positivity of the multiplicative order of B^(p-1)
+by `B=2^94517` and oddness of `(d*p)*p^k`, using coprimality.
+The narrow contribution is removing an unnecessary exact-order/LTE theorem
+dependency from this new endpoint. Power-of-two coprimality is standard and
+not a new generic unit API. Keep B opaque except for its symbolic equality.
+
+Nearest prior work:
+- zk fixed-controller clients replace exact order by fixed powers, but retain
+  the auxiliary prime-power order for genuine orbit-bijection construction.
+- zo/report/report.tex:210-230 already supplies fixed-modulus unit
+  certification using ZMod.isUnit_iff_coprime and coprime power/product laws.
+- zl/units/NOTES.md:131 onward says generic composite-modulus unit assembly
+  itself is not a new abstraction.
+
+- zp already has fixed-reference coprimality thickening for Gamma; zq
+  already has fixed residue certification and Boolean-free subset coverage.
+- zq/evidence/late_head_scope_addendum.md:45 explicitly says actual
+  power-orbit and base-unit proofs remain in use. Thus this target persists
+  after that new subset proposal.
+
+No exact block_base_isUnit or odd-modulus replacement found. Qualify as a
+new-client dependency simplification, not broad mathematical novelty.
+Do not include deleting `subset_modulus_transport` as a separate new idea:
+zl already deletes precisely such a one-use modulus-transport helper.
+
+## D. sum_le_one_cases via standard finite sums: reject
+
+The exact standard-library mechanism is `Finset.sum_le_one_iff`, not
+`Finset.sum_eq_one_iff`. Exact prior proposals occur in g/report.tex:201,
+h/evidence/arithmetic/findings.txt:82,
+k/report.tex:148, k/native-proofs/OneHotSupport.lean, and
+n/report/sections/05_finite_and_cycle.tex. The 155-entry zo map omitted this
+explicit item, demonstrating why candidate-specific full-text searches matter.
+
+## Final refresh verdict
+
+Both zp and zq are treated as fully applied, including optional companions.
+A and B remain distinct from their mechanisms. C is only an endpoint-level
+proof-dependency simplification using established mathematics. No removal
+of the entire controller module's exact-order/LTE import dependency is
+claimed, because other orbit clients still require that theory.

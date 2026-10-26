@@ -1,0 +1,1268 @@
+{
+  "shape": [
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/report.tex",
+      "line": 289,
+      "text": "and \\code{AnnotatedProofChecker} have the same recursive shape: validate"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26z/report.tex",
+      "line": 70,
+      "text": "\\textbf{Delivery recheck.} At \\href{https://github.com/VladimirReshetnikov/ProveIt/commit/45ac0dfc366f798d4686070a89d66e8dafdb6879}{\\texttt{45ac0dfc366f}}, Round3 has been relocated to packet v and the incoming directory contains only its README. The substantive twenty-two-packet corpus is unchanged: a--u have identical Git tree identities, and every Round3 member is accounted for by identical content, one newline-only normalization, or the placement's recorded omission manifest. Sixteen retained source/dependency files also have unchanged Git blobs at this delivery revision. See \\code{audit/DELIVERY_CHECK.md} and \\code{audit/delivery-source-blobs.json}."
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/evidence/declarations.json",
+      "line": 10086,
+      "text": "    \"name\": \"rep_splitSize_le\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/evidence/declarations.json",
+      "line": 11022,
+      "text": "    \"name\": \"SplitSize\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/evidence/declarations.json",
+      "line": 11058,
+      "text": "    \"name\": \"splitSize\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/evidence/declarations.json",
+      "line": 11064,
+      "text": "    \"name\": \"splitSize_correct\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/evidence/declarations.json",
+      "line": 30132,
+      "text": "    \"name\": \"splitSize\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/evidence/declarations.json",
+      "line": 30138,
+      "text": "    \"name\": \"splitSize_eq\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/evidence/declarations.json",
+      "line": 30162,
+      "text": "    \"name\": \"splitSize_le_pow_depth\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26o/catalog/section_evidence.json",
+      "line": 1755,
+      "text": "    \"source_text\": \"\\\\subsection{One invariant-preserving history fold}\\n\\nThe list processors in \\\\code{AnnotatedRename}, \\\\code{AnnotatedBound},\\nand \\\\code{AnnotatedProofChecker} have the same recursive shape: validate\\nthe next line against a history; prepend the emitted result; continue;\\nor reject. Rename and bound rows emit themselves; proof lines emit a\\njudgment. The appropriate abstraction therefore has two types and two\\nfunctions:\\n\\n\\\\begin{Lean}\\ndef run (valid : Line → List Judgment → Bool)\\n    (emit : Line → Judgment) :\\n    List Line → List Judgment → Option (List Judgment)\\n  | [], seen => some seen\\n  | line :: lines, seen =>\\n      if valid line seen then\\n        run valid emit lines (emit line :: seen)\\n      else none\\n\\\\end{Lean}\\n\\nThe generic soundness proof assumes exactly the local invariant step:\\nif all existing judgments satisfy \\\\(P\\\\), and a line passes validation,\\nthen its emitted judgment satisfies \\\\(P\\\\). Induction on the remaining\\nlines proves t"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26c/evidence/declaration_spans.csv",
+      "line": 686,
+      "text": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean,theorem,splitSize_le_pow_depth,94,112,18,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26c/evidence/declaration_spans.csv",
+      "line": 713,
+      "text": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean,theorem,splitSize_correct,39,56,17,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26c/evidence/declaration_spans.csv",
+      "line": 1483,
+      "text": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean,theorem,splitSize_eq,47,58,11,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26c/evidence/declaration_spans.csv",
+      "line": 2496,
+      "text": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean,structure,SplitSize,12,19,7,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26c/evidence/declaration_spans.csv",
+      "line": 2497,
+      "text": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean,def,splitSize,32,39,7,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26c/evidence/declaration_spans.csv",
+      "line": 4043,
+      "text": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean,def,splitSize,37,42,5,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26c/evidence/declaration_spans.csv",
+      "line": 4044,
+      "text": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean,theorem,splitSize_rename,42,47,5,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26c/evidence/declaration_spans.csv",
+      "line": 4849,
+      "text": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectQuarticSize.lean,theorem,rep_splitSize_le,205,209,4,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26c/evidence/declaration_spans.csv",
+      "line": 4871,
+      "text": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean,theorem,splitSize_rename,56,60,4,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/inventory/declarations.csv",
+      "line": 1789,
+      "text": "DiophantineConsistency/DirectQuarticSize.lean,theorem,rep_splitSize_le,204,4"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/inventory/declarations.csv",
+      "line": 1956,
+      "text": "DiophantineConsistency/ExpressionSize.lean,structure,SplitSize,11,7"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/inventory/declarations.csv",
+      "line": 1962,
+      "text": "DiophantineConsistency/ExpressionSize.lean,def,splitSize,30,8"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/inventory/declarations.csv",
+      "line": 1963,
+      "text": "DiophantineConsistency/ExpressionSize.lean,theorem,splitSize_correct,38,17"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/inventory/declarations.csv",
+      "line": 1964,
+      "text": "DiophantineConsistency/ExpressionSize.lean,theorem,splitSize_rename,55,4"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/inventory/declarations.csv",
+      "line": 5303,
+      "text": "DiophantineConsistency/RepresentationSize.lean,def,splitSize,34,7"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/inventory/declarations.csv",
+      "line": 5304,
+      "text": "DiophantineConsistency/RepresentationSize.lean,theorem,splitSize_rename,41,4"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/inventory/declarations.csv",
+      "line": 5305,
+      "text": "DiophantineConsistency/RepresentationSize.lean,theorem,splitSize_eq,45,11"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/inventory/declarations.csv",
+      "line": 5309,
+      "text": "DiophantineConsistency/RepresentationSize.lean,theorem,splitSize_le_pow_depth,92,18"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26n/supplemental/DepthCandidates.lean",
+      "line": 28,
+      "text": "/-- Pilot for the binomial wrapper; sub/mod/div have the same proof shape. -/"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26n/supplemental/metrics.json",
+      "line": 21,
+      "text": "    \"same_shape_clients\": 5,"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26z/audit/DELIVERY_CHECK.md",
+      "line": 11,
+      "text": "All twenty-one existing packet directories, `2026-10-26a` through `2026-10-26u`, have identical Git subtree IDs at both commits. Their contents are therefore unchanged."
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/inventory/declaration_spans.csv",
+      "line": 1789,
+      "text": "DiophantineConsistency/DirectQuarticSize.lean,theorem,rep_splitSize_le,205,209,4,modules,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/inventory/declaration_spans.csv",
+      "line": 1956,
+      "text": "DiophantineConsistency/ExpressionSize.lean,structure,SplitSize,12,19,7,modules,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/inventory/declaration_spans.csv",
+      "line": 1962,
+      "text": "DiophantineConsistency/ExpressionSize.lean,def,splitSize,32,39,7,modules,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/inventory/declaration_spans.csv",
+      "line": 1963,
+      "text": "DiophantineConsistency/ExpressionSize.lean,theorem,splitSize_correct,39,56,17,modules,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/inventory/declaration_spans.csv",
+      "line": 1964,
+      "text": "DiophantineConsistency/ExpressionSize.lean,theorem,splitSize_rename,56,60,4,modules,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/inventory/declaration_spans.csv",
+      "line": 5302,
+      "text": "DiophantineConsistency/RepresentationSize.lean,def,splitSize,37,42,5,modules,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/inventory/declaration_spans.csv",
+      "line": 5303,
+      "text": "DiophantineConsistency/RepresentationSize.lean,theorem,splitSize_rename,42,47,5,modules,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/inventory/declaration_spans.csv",
+      "line": 5304,
+      "text": "DiophantineConsistency/RepresentationSize.lean,theorem,splitSize_eq,47,58,11,modules,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/inventory/declaration_spans.csv",
+      "line": 5308,
+      "text": "DiophantineConsistency/RepresentationSize.lean,theorem,splitSize_le_pow_depth,94,112,18,modules,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/validation/print_axioms_sites.json",
+      "line": 9039,
+      "text": "    \"target\": \"Expr.splitSize_eq\","
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/validation/print_axioms_sites.json",
+      "line": 9057,
+      "text": "    \"target\": \"Expr.splitSize_le_pow_depth\","
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26a/data/declarations.json",
+      "line": 5772,
+      "text": "    \"name\": \"rep_splitSize_le\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26a/data/declarations.json",
+      "line": 6144,
+      "text": "    \"name\": \"splitSize_correct\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26a/data/declarations.json",
+      "line": 19980,
+      "text": "    \"name\": \"splitSize_eq\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26a/data/declarations.json",
+      "line": 19998,
+      "text": "    \"name\": \"splitSize_le_pow_depth\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26v/provenance/history.json",
+      "line": 4369,
+      "text": "      \"patch\": \"@@ -0,0 +1,920 @@\\n+\\\\documentclass[11pt,letterpaper]{article}\\n+\\\\usepackage[margin=0.87in,headheight=15pt]{geometry}\\n+\\\\usepackage{fontspec}\\n+\\\\setmainfont{Latin Modern Roman}\\n+\\\\setsansfont{Latin Modern Sans}\\n+\\\\setmonofont{DejaVu Sans Mono}[Scale=0.79]\\n+\\\\usepackage{unicode-math}\\n+\\\\setmathfont{Latin Modern Math}\\n+\\\\usepackage{microtype,booktabs,longtable,array,enumitem,fancyhdr,fvextra,xcolor}\\n+\\\\usepackage{xurl}\\n+\\\\usepackage[colorlinks=true,linkcolor=teal!65!black,urlcolor=teal!65!black]{hyperref}\\n+\\\\definecolor{ink}{HTML}{183449}\\n+\\\\definecolor{pale}{HTML}{EEF3F6}\\n+\\\\setlength{\\\\parskip}{5pt}\\n+\\\\setlength{\\\\parindent}{0pt}\\n+\\\\setlength{\\\\emergencystretch}{1em}\\n+\\\\setcounter{tocdepth}{1}\\n+\\\\newcolumntype{P}[1]{>{\\\\raggedright\\\\arraybackslash}p{#1}}\\n+\\\\setlist{nosep,leftmargin=1.5em,topsep=5pt}\\n+\\\\pagestyle{fancy}\\n+\\\\fancyhf{}\\n+\\\\fancyhead[L]{\\\\small\\\\sffamily ProveIt / Lean proof simplification}\\n+\\\\fancyhead[R]{\\\\small\\\\sffamily 26 October 20"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26j/lean/DecoderGraph.lean",
+      "line": 66,
+      "text": "proves through two identical parser case trees. -/"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 53,
+      "text": "      r.witnessCount * (4 * r.expression.splitSize + 11790) +"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 54,
+      "text": "        10 * r.expression.splitSize + 20674 := by"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 58,
+      "text": "  have hsp := (ExpressionSize.splitSize_correct r.expression).1"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 59,
+      "text": "  have hsn := (ExpressionSize.splitSize_correct r.expression).2"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 62,
+      "text": "  have hs : r.expression.splitSize = (ExpressionSize.splitSize r.expression).positive +"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 63,
+      "text": "      (ExpressionSize.splitSize r.expression).negative := by"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 64,
+      "text": "    rw [Expr.splitSize_eq, hsp, hsn]"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 65,
+      "text": "  have he : 4 * ((ExpressionSize.splitSize r.expression).positive - 1) +"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 66,
+      "text": "      4 * ((ExpressionSize.splitSize r.expression).negative - 1) + 11798 ="
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 67,
+      "text": "      4 * r.expression.splitSize + 11790 := by omega"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 153,
+      "text": "      ((ExpressionSize.splitSize r.expression).positive - 1)"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 154,
+      "text": "      ((ExpressionSize.splitSize r.expression).negative - 1) := by"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 160,
+      "text": "  rw [(ExpressionSize.splitSize_correct r.expression).1] at hp"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 161,
+      "text": "  rw [(ExpressionSize.splitSize_correct r.expression).2] at hn"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 163,
+      "text": "      (ExpressionSize.splitSize r.expression).positive - 1 := by omega"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 165,
+      "text": "      (ExpressionSize.splitSize r.expression).negative - 1 := by omega"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectQuarticSize.lean",
+      "line": 34,
+      "text": "attribute [local irreducible] NativeZFC.representation Nat.unpair Rep.depth Expr.depth Expr.splitSize"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectQuarticSize.lean",
+      "line": 205,
+      "text": "private theorem rep_splitSize_le {σ : Type*} {P : (σ → ℕ) → Prop} (r : Rep σ P) :"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectQuarticSize.lean",
+      "line": 206,
+      "text": "    r.expression.splitSize + 2 ≤ 2 ^ (2 * r.depth + 2) := by"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectQuarticSize.lean",
+      "line": 207,
+      "text": "  simpa only [Rep.depth] using r.expression.splitSize_le_pow_depth"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectQuarticSize.lean",
+      "line": 229,
+      "text": "    (rep_splitSize_le transition)"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 12,
+      "text": "structure SplitSize where"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 17,
+      "text": "namespace SplitSize"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 19,
+      "text": "def leaf : SplitSize := ⟨1, 1⟩"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 20,
+      "text": "def add (a b : SplitSize) : SplitSize :="
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 22,
+      "text": "def sub (a b : SplitSize) : SplitSize :="
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 24,
+      "text": "def mul (a b : SplitSize) : SplitSize :="
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 27,
+      "text": "def conjunction (a b : SplitSize) : SplitSize := add (mul a a) (mul b b)"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 29,
+      "text": "end SplitSize"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 32,
+      "text": "def splitSize {σ : Type*} : Expr σ → SplitSize"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 35,
+      "text": "  | .add p q => .add (splitSize p) (splitSize q)"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 36,
+      "text": "  | .sub p q => .sub (splitSize p) (splitSize q)"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 37,
+      "text": "  | .mul p q => .mul (splitSize p) (splitSize q)"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 39,
+      "text": "theorem splitSize_correct {σ : Type*} (e : Expr σ) :"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 40,
+      "text": "    QuarticCompiler.Gates.count e.splitNatural.1 = (splitSize e).positive ∧"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 41,
+      "text": "    QuarticCompiler.Gates.count e.splitNatural.2 = (splitSize e).negative := by"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 46,
+      "text": "    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.add,"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 49,
+      "text": "    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.sub,"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 52,
+      "text": "    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.mul,"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 56,
+      "text": "@[simp] theorem splitSize_rename {σ τ : Type*} (e : Expr σ) (f : σ → τ) :"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 57,
+      "text": "    splitSize (e.rename f) = splitSize e := by"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 58,
+      "text": "  induction e <;> simp_all [Expr.rename, splitSize]"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 37,
+      "text": "def splitSize {σ : Type*} : Expr σ → ℕ"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 39,
+      "text": "  | .add p q | .sub p q => 2 + p.splitSize + q.splitSize"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 40,
+      "text": "  | .mul p q => 6 + 2 * p.splitSize + 2 * q.splitSize"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 42,
+      "text": "@[simp] theorem splitSize_rename {σ τ : Type*} (e : Expr σ) (f : σ → τ) :"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 43,
+      "text": "    (e.rename f).splitSize = e.splitSize := by"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 44,
+      "text": "  induction e <;> simp_all [rename, splitSize]"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 47,
+      "text": "theorem splitSize_eq {σ : Type*} (e : Expr σ) :"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 48,
+      "text": "    e.splitSize = QuarticCompiler.Gates.count e.splitNatural.1 +"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 50,
+      "text": "  induction e <;> simp_all only [splitSize, splitNatural, QuarticCompiler.Gates.count]"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 94,
+      "text": "theorem splitSize_le_pow_depth {σ : Type*} (e : Expr σ) :"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 95,
+      "text": "    e.splitSize + 2 ≤ 2 ^ (2 * e.depth + 2) := by"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 101,
+      "text": "  rw [splitSize_eq]"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 116,
+      "text": "  r.witnessCount + r.expression.splitSize + 1"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 168,
+      "text": "    rawQuarticVariables, Expr.splitSize_eq, Nat.add_assoc] using h"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 174,
+      "text": "  have he := r.expression.splitSize_le_pow_depth"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 177,
+      "text": "  change r.witnessCount + r.expression.splitSize + 1 + 1 ≤ _"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 178,
+      "text": "  change r.expression.splitSize + 2 ≤ 2 ^ (2 * r.depth + 2) at he"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/checks/RepresentationSize.lean",
+      "line": 17,
+      "text": "example : Expr.splitSize (Expr.var (0 : Fin 1) * Expr.var 0) = 14 := rfl"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/checks/RepresentationSize.lean",
+      "line": 19,
+      "text": "#print axioms Expr.splitSize_eq"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/checks/RepresentationSize.lean",
+      "line": 22,
+      "text": "#print axioms Expr.splitSize_le_pow_depth"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 53,
+      "text": "      r.witnessCount * (4 * r.expression.splitSize + 11790) +"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 54,
+      "text": "        10 * r.expression.splitSize + 20674 := by"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 58,
+      "text": "  have hsp := (ExpressionSize.splitSize_correct r.expression).1"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 59,
+      "text": "  have hsn := (ExpressionSize.splitSize_correct r.expression).2"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 62,
+      "text": "  have hs : r.expression.splitSize = (ExpressionSize.splitSize r.expression).positive +"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 63,
+      "text": "      (ExpressionSize.splitSize r.expression).negative := by"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 64,
+      "text": "    rw [Expr.splitSize_eq, hsp, hsn]"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 65,
+      "text": "  have he : 4 * ((ExpressionSize.splitSize r.expression).positive - 1) +"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 66,
+      "text": "      4 * ((ExpressionSize.splitSize r.expression).negative - 1) + 11798 ="
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallDepth.lean",
+      "line": 67,
+      "text": "      4 * r.expression.splitSize + 11790 := by omega"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 153,
+      "text": "      ((ExpressionSize.splitSize r.expression).positive - 1)"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 154,
+      "text": "      ((ExpressionSize.splitSize r.expression).negative - 1) := by"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 160,
+      "text": "  rw [(ExpressionSize.splitSize_correct r.expression).1] at hp"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 161,
+      "text": "  rw [(ExpressionSize.splitSize_correct r.expression).2] at hn"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 163,
+      "text": "      (ExpressionSize.splitSize r.expression).positive - 1 := by omega"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallSize.lean",
+      "line": 165,
+      "text": "      (ExpressionSize.splitSize r.expression).negative - 1 := by omega"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectQuarticSize.lean",
+      "line": 34,
+      "text": "attribute [local irreducible] NativeZFC.representation Nat.unpair Rep.depth Expr.depth Expr.splitSize"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectQuarticSize.lean",
+      "line": 205,
+      "text": "private theorem rep_splitSize_le {σ : Type*} {P : (σ → ℕ) → Prop} (r : Rep σ P) :"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectQuarticSize.lean",
+      "line": 206,
+      "text": "    r.expression.splitSize + 2 ≤ 2 ^ (2 * r.depth + 2) := by"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectQuarticSize.lean",
+      "line": 207,
+      "text": "  simpa only [Rep.depth] using r.expression.splitSize_le_pow_depth"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectQuarticSize.lean",
+      "line": 229,
+      "text": "    (rep_splitSize_le transition)"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 12,
+      "text": "structure SplitSize where"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 17,
+      "text": "namespace SplitSize"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 19,
+      "text": "def leaf : SplitSize := ⟨1, 1⟩"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 20,
+      "text": "def add (a b : SplitSize) : SplitSize :="
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 22,
+      "text": "def sub (a b : SplitSize) : SplitSize :="
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 24,
+      "text": "def mul (a b : SplitSize) : SplitSize :="
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 27,
+      "text": "def conjunction (a b : SplitSize) : SplitSize := add (mul a a) (mul b b)"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 29,
+      "text": "end SplitSize"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 32,
+      "text": "def splitSize {σ : Type*} : Expr σ → SplitSize"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 35,
+      "text": "  | .add p q => .add (splitSize p) (splitSize q)"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 36,
+      "text": "  | .sub p q => .sub (splitSize p) (splitSize q)"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 37,
+      "text": "  | .mul p q => .mul (splitSize p) (splitSize q)"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 39,
+      "text": "theorem splitSize_correct {σ : Type*} (e : Expr σ) :"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 40,
+      "text": "    QuarticCompiler.Gates.count e.splitNatural.1 = (splitSize e).positive ∧"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 41,
+      "text": "    QuarticCompiler.Gates.count e.splitNatural.2 = (splitSize e).negative := by"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 46,
+      "text": "    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.add,"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 49,
+      "text": "    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.sub,"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 52,
+      "text": "    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.mul,"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 56,
+      "text": "@[simp] theorem splitSize_rename {σ τ : Type*} (e : Expr σ) (f : σ → τ) :"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 57,
+      "text": "    splitSize (e.rename f) = splitSize e := by"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExpressionSize.lean",
+      "line": 58,
+      "text": "  induction e <;> simp_all [Expr.rename, splitSize]"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 37,
+      "text": "def splitSize {σ : Type*} : Expr σ → ℕ"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 39,
+      "text": "  | .add p q | .sub p q => 2 + p.splitSize + q.splitSize"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 40,
+      "text": "  | .mul p q => 6 + 2 * p.splitSize + 2 * q.splitSize"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 42,
+      "text": "@[simp] theorem splitSize_rename {σ τ : Type*} (e : Expr σ) (f : σ → τ) :"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 43,
+      "text": "    (e.rename f).splitSize = e.splitSize := by"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 44,
+      "text": "  induction e <;> simp_all [rename, splitSize]"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 47,
+      "text": "theorem splitSize_eq {σ : Type*} (e : Expr σ) :"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 48,
+      "text": "    e.splitSize = QuarticCompiler.Gates.count e.splitNatural.1 +"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 50,
+      "text": "  induction e <;> simp_all only [splitSize, splitNatural, QuarticCompiler.Gates.count]"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 94,
+      "text": "theorem splitSize_le_pow_depth {σ : Type*} (e : Expr σ) :"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 95,
+      "text": "    e.splitSize + 2 ≤ 2 ^ (2 * e.depth + 2) := by"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 101,
+      "text": "  rw [splitSize_eq]"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 116,
+      "text": "  r.witnessCount + r.expression.splitSize + 1"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 168,
+      "text": "    rawQuarticVariables, Expr.splitSize_eq, Nat.add_assoc] using h"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 174,
+      "text": "  have he := r.expression.splitSize_le_pow_depth"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 177,
+      "text": "  change r.witnessCount + r.expression.splitSize + 1 + 1 ≤ _"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/RepresentationSize.lean",
+      "line": 178,
+      "text": "  change r.expression.splitSize + 2 ≤ 2 ^ (2 * r.depth + 2) at he"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/checks/RepresentationSize.lean",
+      "line": 17,
+      "text": "example : Expr.splitSize (Expr.var (0 : Fin 1) * Expr.var 0) = 14 := rfl"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/checks/RepresentationSize.lean",
+      "line": 19,
+      "text": "#print axioms Expr.splitSize_eq"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/checks/RepresentationSize.lean",
+      "line": 22,
+      "text": "#print axioms Expr.splitSize_le_pow_depth"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 18,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 25,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 32,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 39,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 46,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 53,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 60,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 67,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 74,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 81,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 88,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 95,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 102,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 109,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 116,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 123,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 130,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 137,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 144,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 151,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 158,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 165,
+      "text": "      \"byte_identical_tree\": true"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/catalog/corpus_inventory.json",
+      "line": 172,
+      "text": "      \"byte_identical_tree\": true"
+    }
+  ],
+  "windows": [
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26g/report.tex",
+      "line": 203,
+      "text": "The core fact is already packaged by mathlib as \\code{Finset.sum_le_one_iff}; the repository itself uses it in \\module{NativeSelectorClause54}, \\code{selectors_one} (65--80). For a finite family $f_i\\in\\mathbb N$, it yields uniqueness of any nonzero index and that its value is one. Split only on whether all entries are zero. If not, choose a nonzero index and apply the uniqueness conclusion."
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/evidence/declarations.json",
+      "line": 25272,
+      "text": "    \"name\": \"quotient_not_lt\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/evidence/declarations.json",
+      "line": 26322,
+      "text": "    \"name\": \"max_not_lt\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26o/catalog/novelty_decisions.json",
+      "line": 57,
+      "text": "      \"boundary\": \"Exact candidate occupation/candidate/SelectorBindingCoherence.lean inspected. Selected-index uniqueness itself and coherent Facts bundles are existing source/proposals. The new delta is canonical assignment characterization plus transport to independently extracted functions on the same c, not proof-irrelevance of ho, tile-color injectivity, or another Facts record. This additive API adds source today and should not be counted as a current LOC reduction.\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26o/catalog/late9bd/late_section_evidence.json",
+      "line": 1619,
+      "text": "    \"source_text\": \"\\\\subsection{Use the existing sum-at-most-one API}\\n\\n\\\\textbf{Target.} \\\\module{CurrentCellLabels2011}, \\\\code{sum_le_one_cases} (131--158). The existing proof chooses a positive term, compares it with the sum, erases its index, proves the remaining sum is zero, and bounds each remaining term.\\n\\nThe core fact is already packaged by mathlib as \\\\code{Finset.sum_le_one_iff}; the repository itself uses it in \\\\module{NativeSelectorClause54}, \\\\code{selectors_one} (65--80). For a finite family $f_i\\\\in\\\\mathbb N$, it yields uniqueness of any nonzero index and that its value is one. Split only on whether all entries are zero. If not, choose a nonzero index and apply the uniqueness conclusion.\\n\\nThe supplied \\\\code{OneHotCore.lean} proves the same generic statement using eight nonblank proof-body lines instead of 26. It reproduces the existing \\\\code{Selected} predicate in a fresh namespace for isolated checking; production should simply replace the original proof body"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26o/catalog/late9bd/packet_04/diophantine-lean-simplification/report.tex",
+      "line": 203,
+      "text": "The core fact is already packaged by mathlib as \\code{Finset.sum_le_one_iff}; the repository itself uses it in \\module{NativeSelectorClause54}, \\code{selectors_one} (65--80). For a finite family $f_i\\in\\mathbb N$, it yields uniqueness of any nonzero index and that its value is one. Split only on whether all entries are zero. If not, choose a nonzero index and apply the uniqueness conclusion."
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26o/baseline/Computability/DiophantineConsistency/LEAN_EQUIVALENCE_PLAN.md",
+      "line": 218,
+      "text": "index uniqueness; the separate physical-map extension below supplies the"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26c/evidence/declaration_spans.csv",
+      "line": 1326,
+      "text": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean,theorem,quotient_not_lt,90,102,12,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26c/evidence/declaration_spans.csv",
+      "line": 1846,
+      "text": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectPairingInjective.lean,theorem,max_not_lt,45,54,9,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/inventory/declarations.csv",
+      "line": 4417,
+      "text": "DiophantineConsistency/ObjectDivision.lean,theorem,quotient_not_lt,89,12"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26d/inventory/declarations.csv",
+      "line": 4599,
+      "text": "DiophantineConsistency/ObjectPairingInjective.lean,theorem,max_not_lt,44,9"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zi/provenance/history.json",
+      "line": 1445,
+      "text": "      \"message\": \"Close literal marked-word consistency equivalence and derive a unique constructed Start\\n\\nConstruct marked words for every independently large widthw≥2T+4 and heightH≥T+2,H≥3 from an actual blank halt. Package positive moduli explicitly and prove marked-word existence iff the literal decimal machine halts, then no marked word iff the existing syntactic ConZFC.\\n\\nFor the same concrete extended-band quotient, derive Start index uniqueness and retain complete original band binding from actual halt and margin bounds. No unique-marker, coprimality, least-period, run-calibration or clean-boundary premise is supplied.\\n\\nRecord complete root review, four fresh capped Lean builds with12standard-only audits and independent marker-helper replay. The actual equation converse still requires coefficient-word/carry construction, composite rank control and positive arithmetic witnesses; no full equation equivalence or internal-ZFC theorem is claimed.\","
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zi/sources/Computability/DiophantineConsistency/LEAN_EQUIVALENCE_PLAN.md",
+      "line": 233,
+      "text": "index uniqueness; the separate physical-map extension below supplies the"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26za/baseline/Computability/DiophantineConsistency/LEAN_EQUIVALENCE_PLAN.md",
+      "line": 218,
+      "text": "index uniqueness; the separate physical-map extension below supplies the"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/inventory/declaration_spans.csv",
+      "line": 4416,
+      "text": "DiophantineConsistency/ObjectDivision.lean,theorem,quotient_not_lt,90,102,12,modules,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/inventory/declaration_spans.csv",
+      "line": 4598,
+      "text": "DiophantineConsistency/ObjectPairingInjective.lean,theorem,max_not_lt,45,54,9,modules,False"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26a/data/declarations.json",
+      "line": 17136,
+      "text": "    \"name\": \"quotient_not_lt\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26a/data/declarations.json",
+      "line": 17910,
+      "text": "    \"name\": \"max_not_lt\""
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26y/syntax/ShellPairingBefore.lean",
+      "line": 45,
+      "text": "private theorem max_not_lt {a b c d : R}"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26y/syntax/ShellPairingBefore.lean",
+      "line": 59,
+      "text": "      (le_of_not_gt (max_not_lt succ_le he.symm)) (le_of_not_gt (max_not_lt succ_le he))"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26y/syntax/ShellPairing.lean",
+      "line": 45,
+      "text": "private theorem max_not_lt {a b c d : R}"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26y/syntax/ShellPairing.lean",
+      "line": 68,
+      "text": "      (le_of_not_gt (max_not_lt succ_le he.symm)) (le_of_not_gt (max_not_lt succ_le he))"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26y/syntax/candidates/ObjectPairingInjective.lean",
+      "line": 45,
+      "text": "private theorem max_not_lt {a b c d : R}"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26y/syntax/candidates/ObjectPairingInjective.lean",
+      "line": 68,
+      "text": "      (le_of_not_gt (max_not_lt succ_le he.symm)) (le_of_not_gt (max_not_lt succ_le he))"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26y/syntax/patches/pairing-shell-threshold.patch",
+      "line": 21,
+      "text": "       (le_of_not_gt (max_not_lt succ_le he.symm)) (le_of_not_gt (max_not_lt succ_le he))"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26k/native-proofs/findings.md",
+      "line": 27,
+      "text": "immediately gives value one at the chosen index and uniqueness of every nonzero"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zf/candidate-source/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean",
+      "line": 85,
+      "text": "private theorem quotient_not_lt {q r q' r' n d : N H}"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zf/candidate-source/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean",
+      "line": 99,
+      "text": "  have hq : q=q' := le_antisymm (le_of_not_gt (quotient_not_lt H h' h))"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zf/candidate-source/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean",
+      "line": 100,
+      "text": "    (le_of_not_gt (quotient_not_lt H h h'))"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zf/candidate-source/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectPairingInjective.lean",
+      "line": 45,
+      "text": "private theorem max_not_lt {a b c d : R}"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zf/candidate-source/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectPairingInjective.lean",
+      "line": 59,
+      "text": "      (le_of_not_gt (max_not_lt succ_le he.symm)) (le_of_not_gt (max_not_lt succ_le he))"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/provenance/history.json",
+      "line": 5364,
+      "text": "      \"message\": \"Close literal marked-word consistency equivalence and derive a unique constructed Start\\n\\nConstruct marked words for every independently large widthw≥2T+4 and heightH≥T+2,H≥3 from an actual blank halt. Package positive moduli explicitly and prove marked-word existence iff the literal decimal machine halts, then no marked word iff the existing syntactic ConZFC.\\n\\nFor the same concrete extended-band quotient, derive Start index uniqueness and retain complete original band binding from actual halt and margin bounds. No unique-marker, coprimality, least-period, run-calibration or clean-boundary premise is supplied.\\n\\nRecord complete root review, four fresh capped Lean builds with12standard-only audits and independent marker-helper replay. The actual equation converse still requires coefficient-word/carry construction, composite rank control and positive arithmetic witnesses; no full equation equivalence or internal-ZFC theorem is claimed.\","
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/LEAN_EQUIVALENCE_PLAN.md",
+      "line": 243,
+      "text": "index uniqueness; the separate physical-map extension below supplies the"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean",
+      "line": 90,
+      "text": "private theorem quotient_not_lt {q r q' r' n d : N H}"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean",
+      "line": 104,
+      "text": "  have hq : q=q' := le_antisymm (le_of_not_gt (quotient_not_lt H h' h))"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean",
+      "line": 105,
+      "text": "    (le_of_not_gt (quotient_not_lt H h h'))"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectPairingInjective.lean",
+      "line": 45,
+      "text": "private theorem max_not_lt {a b c d : R}"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectPairingInjective.lean",
+      "line": 59,
+      "text": "      (le_of_not_gt (max_not_lt succ_le he.symm)) (le_of_not_gt (max_not_lt succ_le he))"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/LEAN_EQUIVALENCE_PLAN.md",
+      "line": 243,
+      "text": "index uniqueness; the separate physical-map extension below supplies the"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean",
+      "line": 90,
+      "text": "private theorem quotient_not_lt {q r q' r' n d : N H}"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean",
+      "line": 104,
+      "text": "  have hq : q=q' := le_antisymm (le_of_not_gt (quotient_not_lt H h' h))"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean",
+      "line": 105,
+      "text": "    (le_of_not_gt (quotient_not_lt H h h'))"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectPairingInjective.lean",
+      "line": 45,
+      "text": "private theorem max_not_lt {a b c d : R}"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectPairingInjective.lean",
+      "line": 59,
+      "text": "      (le_of_not_gt (max_not_lt succ_le he.symm)) (le_of_not_gt (max_not_lt succ_le he))"
+    }
+  ],
+  "rank": [
+    {
+      "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26u/candidate-source/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellScaleBounds.lean",
+      "line": 61,
+      "text": "  have huq : u < sourceQ ports x := by rw [hqu]; exact Nat.lt_two_pow_self"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/dependencies/Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/Carries.lean",
+      "line": 85,
+      "text": "  have h5 : i < 2 ^ i := Nat.lt_two_pow_self"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/dependencies/Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/Carries.lean",
+      "line": 229,
+      "text": "    have h4 : j + 1 < 2 ^ (j + 1) := Nat.lt_two_pow_self"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/dependencies/Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/Index.lean",
+      "line": 24,
+      "text": "  have hs : s < z := Nat.lt_two_pow_self"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/dependencies/Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/Master1.lean",
+      "line": 139,
+      "text": "      have := Nat.lt_two_pow_self (n := ν + 1); omega"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/JonesIndex.lean",
+      "line": 47,
+      "text": "  Nat.lt_two_pow_self"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeBaseBounds52.lean",
+      "line": 77,
+      "text": "  have hpow := (cofinalExponent lower x).lt_two_pow_self"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellScaleBounds.lean",
+      "line": 75,
+      "text": "  have huq : u < sourceQ ports x := by rw [hqu]; exact Nat.lt_two_pow_self"
+    },
+    {
+      "path": "docs/incoming/ProveIt_Lean_Simplification_Round5_2026-10-26.zip::LeanReview5/sources/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SplitSourceExistence.lean",
+      "line": 22,
+      "text": "  have h : (∑ i,z i)+1<2^((∑ i,z i)+1) := Nat.lt_two_pow_self"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/JonesIndex.lean",
+      "line": 47,
+      "text": "  Nat.lt_two_pow_self"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeBaseBounds52.lean",
+      "line": 77,
+      "text": "  have hpow := (cofinalExponent lower x).lt_two_pow_self"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellScaleBounds.lean",
+      "line": 75,
+      "text": "  have huq : u < sourceQ ports x := by rw [hqu]; exact Nat.lt_two_pow_self"
+    },
+    {
+      "path": "docs/incoming/Lean_Proof_Simplification_Power_And_Masks_2026-10-26.zip::Lean_Proof_Simplification_Power_And_Masks/baseline/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SplitSourceExistence.lean",
+      "line": 22,
+      "text": "  have h : (∑ i,z i)+1<2^((∑ i,z i)+1) := Nat.lt_two_pow_self"
+    }
+  ]
+}

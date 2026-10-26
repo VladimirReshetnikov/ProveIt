@@ -1,0 +1,35 @@
+\pageheading{3 Make the actual position arithmetic linear}
+\textbf{Use the fixed coefficient already present in the statement.} In
+\src{CurrentControllerPositions2011}{13}{17}, write
+\[
+ p=120199,\qquad A=p^k,\qquad P_k(j)=2+(p-1)j.\operatorname{val},
+ \qquad j:\operatorname{ZMod}(p^k).
+\]
+The ordinary cell modulus is $p^{k+1}=pA$. These are the actual controller positions, not an arbitrary affine family. Unfolding only \code{position}, \code{auxiliary} and one \code{pow_succ} turns the local obligations into Presburger arithmetic with coefficient $120198$. The term $p^k$ can remain an opaque natural atom. Only the small actual auxiliary $120199$ is exposed, not the huge block base or literal kernel $K$. No symbolic power is evaluated as an enormous numeral, and no generic theorem is added.
+
+\textbf{Sharp budget.} The canonical representative satisfies $j.\operatorname{val}+1\le A$. Therefore
+\[
+ P_k(j)+A+p
+ = 2+(p-1)j.\operatorname{val}+A+p
+ \le 2+(p-1)(A-1)+A+p=pA+3.
+\]
+The candidate replaces a multiplied inequality, a separate power equality and nonlinear arithmetic by the following entire body:
+\begin{lstlisting}
+  have hv : j.val+1 ≤ auxiliary^k := ZMod.val_lt j
+  simp only [position, pow_succ, auxiliary] at hv ⊢
+  omega
+\end{lstlisting}
+This preserves the subtraction-free public budget, hence its existing natural-subtraction endpoint and safe-next-cell clients. The source is \src{CurrentControllerPositions2011}{24}{43}.
+
+\textbf{Injectivity needs only cancellation by a fixed positive integer.} If $P_k(i)=P_k(j)$, then
+\[
+ 2+120198i.\operatorname{val}=2+120198j.\operatorname{val}
+ \quad\Longrightarrow\quad i.\operatorname{val}=j.\operatorname{val}.
+\]
+The candidate applies \code{ZMod.val_injective}, unfolds the two fixed definitions in the equality, and lets \code{omega} cancel the coefficient. This replaces a separate positivity fact and \code{nlinarith}; no primality argument or new finite-order principle is needed. See \src{CurrentControllerPositions2011}{79}{84}.
+
+\textbf{Stop before the prior optional-support design.} The final exclusion comparison revealed an earlier direction to retire the optional-support API. Accordingly, the initially considered deletions in \code{optional_next_lt}, \code{optional_stride_lt} and \code{position_ne_three} are withdrawn, even though they are valid-looking local arithmetic simplifications. They receive neither a retained patch nor savings credit. Only the budget and injectivity clients survive the assumed-applied comparison.
+
+The actual positions, cyclic embedding, support and optional-cell definitions remain unchanged in the candidate. Its existing safety and cardinality clients are retained verbatim. Both changed statements still cover $k=0$; no $r_w<k$ assumption is added to them. The physical guard and same-word consequences on the next page are also unchanged source results, not additional cuts.
+
+\textbf{Cost and scope.} Two proof bodies shrink from 11 to 7 physical lines. The complete module shrinks from 178 to 174 lines and from 7345 to 7173 UTF-8 bytes; all helpers are included and no new helper or import is introduced. This is a fresh-client cleanup, not a new affine geometry or support-cardinality construction. It does not claim that \code{omega} compiles faster than \code{nlinarith}.

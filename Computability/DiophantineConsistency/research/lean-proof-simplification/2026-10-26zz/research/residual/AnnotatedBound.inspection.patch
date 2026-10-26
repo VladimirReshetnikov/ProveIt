@@ -1,0 +1,33 @@
+--- round6_closing/DiophantineConsistency/AnnotatedBound.lean
++++ round7_source/DiophantineConsistency/AnnotatedBound.lean
+@@ -47,10 +47,6 @@
+ 
+ def Good (r : Row) : Prop := ∃ f : Form,r.input=formCode f ∧ r.output=bound f
+ 
+-private theorem lookup_mem {α : Type} {xs : List α} {i : Nat} {a : α}
+-    (h : xs[i]?=some a) : a∈xs :=
+-  List.mem_of_getElem? h
+-
+ theorem binary_sound (r : Row) (seen : List Row)
+     (hs : ∀ a∈seen,Good a) (ht : r.tag=3 ∨ r.tag=4 ∨ r.tag=5)
+     (h : binaryAt r seen=true) : Good r := by
+@@ -62,8 +58,8 @@
+     | none => simp [ha,hb] at h
+     | some b =>
+       simp only [ha,hb,binaryEquations,decide_eq_true_eq] at h
+-      obtain ⟨f,hfi,hfo⟩ := hs a (lookup_mem ha)
+-      obtain ⟨g,hgi,hgo⟩ := hs b (lookup_mem hb)
++      obtain ⟨f,hfi,hfo⟩ := hs a (List.mem_of_getElem? ha)
++      obtain ⟨g,hgi,hgo⟩ := hs b (List.mem_of_getElem? hb)
+       rcases h with ⟨hi,ho⟩
+       rcases ht with h3 | h4 | h5
+       · refine ⟨fImp f g,?_,?_⟩
+@@ -84,7 +80,7 @@
+   | none => simp [ha] at h
+   | some a =>
+     simp only [ha,unaryEquations,decide_eq_true_eq] at h
+-    obtain ⟨f,hfi,hfo⟩ := hs a (lookup_mem ha)
++    obtain ⟨f,hfi,hfo⟩ := hs a (List.mem_of_getElem? ha)
+     rcases h with ⟨_,hi,ho⟩
+     rcases ht with h6 | h7
+     · refine ⟨fAll f,?_,?_⟩

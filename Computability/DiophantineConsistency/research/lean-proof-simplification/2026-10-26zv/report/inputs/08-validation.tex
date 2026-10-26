@@ -1,0 +1,19 @@
+\pageheading{8 Validate one dependency ready module at a time}
+\textbf{Lean compilation remains the adoption gate.} The packaged checks reconstruct the exact candidate patches, compare pinned source hashes and public headers, and check that non-proof code and contexts are unchanged. The integrated audit replayed all six main-batch and 24 optional-inclusive file-patch orders, and rejected 15 source or obsolete-patch mutations in both normal and optimized Python. Finite arithmetic is independent corroboration only. The candidate files must still elaborate and pass the project's original checks.
+
+Use the declared Lean \code{v4.32.0} and Mathlib revision
+\code{81a5d257c8e410db227a6665ed08f64fea08e997}. Begin in a clean worktree at the source pin with its dependencies available and record a successful unmodified baseline. Installation and cache retrieval are separate environment actions; neither was performed in this review.
+
+\textbf{Do not rely on \code{LAKE_JOBS=1}.} The
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9d9d1123b39927d30363f1dcd53c23f0575c30ee/README.md\#L248-L271}{repository's corrected build warning}
+says it does not limit the worker count. Run one Lean process/module per invocation, and only after that module's dependencies are compiled. Rebuild every changed main module before its Checks module. Use fully qualified \code{DiophantineConsistency.} target names. Do not launch an aggregate target over stale dependencies and never set \code{LEAN_NUM_THREADS=0}.
+
+\begin{enumerate}
+\item Apply \code{positions_combined.patch} alone for both bodies; the two isolated patches are alternative single edits against the original baseline, not a sequential patch series. Build \code{CurrentControllerPositions2011}, then its Checks module. Inspect the $k=0$ cases, exact canonical values, optional cell $3$, support cardinality and original $r_w<k$ guard. Build the unchanged safety main and its Checks module when their dependencies are ready; verify that the existing physical-guard no-wrap and ordinary increment statements remain intact.
+\item Apply the rank patch alone. Build \code{CurrentPackingRank2011}, then \code{CurrentPackingRank2011Checks}. Confirm the type of \code{Nat.lt_two_pow_self} after rewriting $q^3$, the natural-to-integer cast, the unchanged $C>0$ and $C+F<q$ guards, and the once-shifted high-mask port.
+\item If the secondary cleanup is wanted, apply it to \code{NativePackingPopulation}; rebuild that main, then its Checks module, followed by the rank main and Checks. Do not build the rank against a stale population dependency.
+\item Apply the rephasing patch. Build \code{CurrentWordRephase2011}, then its Checks module. Confirm both restricted field rewrites, unchanged scalar congruence, and the same carry/digit functions in the packing endpoint. Test a nonzero whole-period stride difference, not only $s=t$.
+\item Only after every prerequisite is compiled, run the encompassing target and original downstream checks. Inspect the final diff; record exact versions, invocations, exit codes and failures. If required for adoption, compare \texttt{\#print axioms} on every changed public theorem and dependent endpoint before and after. This packet does not claim such a comparison has run.
+\end{enumerate}
+
+\textbf{Reproducible evidence.} The archive contains exact before/after sources and patch files under \code{safety/}, \code{population/} and \code{rephase/}; their manifests and read-only checkers record full-file costs and finite scopes. \code{catalog/} records the exclusion corpus, earlier delivery and source history. \code{audit/} provides the independent integrated checker. The report's pinned source links identify exact theorem ranges rather than a moving branch. \code{report/build.sh} rebuilds this PDF from the supplied \code{report.tex} and \code{inputs/} using an installed TeX Live, without downloads.

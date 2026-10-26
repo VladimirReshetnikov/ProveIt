@@ -1,0 +1,488 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\DeclareUnicodeCharacter{03B2}{\ensuremath{\beta}}
+\usepackage[margin=0.9in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,enumitem}
+\usepackage{xcolor,listings,fancyhdr,hyperref,xurl}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{087E8B}
+\definecolor{papergray}{HTML}{F3F5F7}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=accent,citecolor=ink,pdftitle={Three further Lean proof simplifications for DiophantineConsistency},pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}DiophantineConsistency: further proof simplifications}
+\fancyhead[R]{\small 26 October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlist{itemsep=3pt,topsep=4pt,leftmargin=1.5em}
+\newcommand{\code}[1]{{\small\urlstyle{tt}\nolinkurl{#1}}}
+\newcommand{\pin}{\code{f00ba53b331833c6cb64707bd90e48489e5610f5}}
+\newcommand{\repo}{\url{https://github.com/VladimirReshetnikov/ProveIt}}
+\newcommand{\source}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/f00ba53b331833c6cb64707bd90e48489e5610f5/#1}{#2}}
+\newcommand{\module}[1]{\code{#1.lean}}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}[proposition]{Corollary}
+\lstset{basicstyle=\ttfamily\footnotesize,backgroundcolor=\color{papergray},frame=single,rulecolor=\color{papergray},breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,xleftmargin=4pt,xrightmargin=4pt,aboveskip=9pt,belowskip=8pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.5in}
+{\Large\color{accent}FORMAL PROOF MAINTENANCE\par}
+\vspace{0.22in}
+{\huge\bfseries\color{ink}Fewer assumptions,\par shorter internal arguments\par}
+\vspace{0.22in}
+{\Large Three further Lean proof simplifications\par}
+{\large for \texttt{DiophantineConsistency}\par}
+\vspace{0.35in}
+\textbf{Prepared for Vladimir Reshetnikov}\par
+26 October 2026\par
+\vspace{0.25in}
+\textbf{Proof and patch baseline}\par
+\pin\par
+\textbf{Closing source and exclusion audit}\par
+\code{60fcb2a69b7f1fdd4c3592ea5f164223cad50abe}\par
+\repo
+\vspace{0.35in}
+\begin{abstract}
+This report treats all recommendations in the forty-three prior simplification packets at the closing audit as already available, including optional and unimplemented recommendations. Three residual opportunities survive the resulting nonduplication screen. First, the positive source equations themselves imply the first port's positivity and a stronger scale bound, so callers need not pass that positivity guard independently. Second, exact binary rotation depends only on a partial-bit phase and a cyclic whole-digit displacement; comparing these parameters removes Boolean hypotheses from a recently added rephasing proof. Third, internal Euclidean-division uniqueness can use separation of quotient intervals, avoiding the construction of a second successor-gap witness.
+
+The accompanying Lean kernels, concrete source-row client, candidate patches, source manifests, and compiler records make these proposals reviewable. The report distinguishes checked lemmas from candidate integration and does not present isolated checks as a complete repository build. Two proposals strengthen interfaces; the division proposal mainly simplifies the mathematical argument. No aggregate line-reduction claim is made against an imaginary checkout containing every earlier proposal.
+\end{abstract}
+\vfill
+{\small\color{ink}Scope: proof structure and assumptions. The printed Diophantine equation and the mathematical consistency claim are not changed.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\begingroup\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+
+\section{Findings and recommended order}
+
+The most useful new change is to \emph{derive redundant guards at the point where the literal source equations become available}. It strengthens the source-facing API and removes a dependency that several later proofs currently thread through their signatures. The rotation change is small and sharply bounded. The division change is a mathematical cleanup with a small local line saving; its main value is a simpler invariant.
+
+\begin{tabularx}{\textwidth}{@{}p{0.08\textwidth}p{0.24\textwidth}Xp{0.19\textwidth}@{}}
+\toprule
+Order & Proposal & Concrete benefit & Accounting rule\\
+\midrule
+1 & Recover the port guard from the source & Derive $\beta>0$, $J>0$, $q\ge2$, and $N_s\ge8$ from two scale rows; remove an independently supplied $\beta$ guard from suitable clients. & Count the new lemma and any compatibility wrappers.\\[4pt]
+2 & Compare rotation parameters directly & Delete Boolean premises from \code{rotation_eq} and \code{normalization_rephase}; obtain exact periodicity for arbitrary digit sizes. & The supplied production patch saves two physical lines; its main gain is the stronger contract.\\[4pt]
+3 & Separate quotient intervals internally & Remove the remainder-gap witness and the explicit construction of $n<n$ in \code{quotient_not_lt}. & The local declaration loses two nonblank lines without a new helper.\\
+\bottomrule
+\end{tabularx}
+
+These are deliberately three scoped recommendations. Adding a new implementation of a previously proposed generic framework would not satisfy the requested exclusion rule. Nor would checking an old proposal in a newer Lean version make its mathematical idea new.
+
+\section{Baseline, evidence, and the exclusion rule}
+\label{sec:baseline}
+
+\subsection{What was inspected}
+
+The baseline is commit \pin. Its active \code{Lean/DiophantineConsistency} directory has 519 source files in the fetched tree; their local bytes were checked against the Git blob identities at the pin. The repository was inspected with the GitHub connection. Locally available source and toolchain material were reused only after the relevant source identities were checked or their more limited status was recorded.
+
+The prior-proposal index contains thirty-six packets: \code{2026-10-26a} through \code{2026-10-26z}, followed by \code{2026-10-26za} through \code{2026-10-26zj}. At this snapshot, \code{docs/incoming} contains its README, which records their placement and retirement from the intake queue. The inspection included the primary reports, substantive notes, cumulative exclusion ledgers, and candidate-specific Lean and patch files. The closing byte-identity screen for this baseline covered all 974 Markdown, LaTeX, Lean, and patch files in the exclusion subtree: 210 Markdown files, 130 LaTeX files, 481 Lean files, and 153 patches. These include repeated snapshots as well as primary proposals. Candidate-specific searches and reading were performed across that retained text/code corpus; byte verification is not a claim that every line received equal-depth semantic review. The archive records the scope rather than claiming that every historical external document linked by the intake ledger was read.
+
+Primary anchors are the \source{Computability/DiophantineConsistency/research/lean-proof-simplification/README.md}{proposal index}, the \source{Computability/DiophantineConsistency/research/lean-proof-simplification/ADOPTION.md}{adoption record}, and the \source{docs/incoming/README.md}{incoming ledger}. The detailed mechanism map is in \code{evidence/novelty-audit.md}.
+
+\subsection{The counterfactual baseline}
+
+The instruction to assume prior proposals applied changes the comparison. The available repository is one actual source tree; the prior packets include alternative designs, optional sketches, and interfaces not all integrated together. They cannot honestly be assigned a single measured line count. Accordingly:
+
+\begin{enumerate}
+\item An idea is excluded if a prior packet already supplies its mechanism or a stronger interface, whether or not the adoption log marks it implemented.
+\item A candidate is retained only for an obligation that remains after granting the closest earlier interface.
+\item Physical line counts refer only to the actual pinned source and the supplied candidate patch.
+\item A claim of incremental savings after every counterfactual refactoring would require a separate integration, which is not asserted here.
+\end{enumerate}
+
+This distinction matters especially for the new source-guard lemma. Packet b already proposed decoding the scale equations. That decoding is assumed. The new step is deriving the first port's sign from those equations and the natural-coordinate types, then deleting that sign as an input.
+
+\subsection{Examples excluded by the audit}
+
+The report does not re-propose finite support placement APIs, a common coefficient-envelope engine, generic scanner folds, deterministic witness elimination, a universal internal-induction wrapper, native rank comparison via $C+qF$, signed-prefix carry formulae, finite-chain rigidity, or source positivity from one selected digit. The recent implementation changes to the formal two-radicand combiner, doubled Pell bounds, odd-index reuse, pairing projections, impulse-based rotation, and degree-first support proofs are also treated as prior work.
+
+Historical novelty labels are not themselves evidence of novelty. One closing audit found that packet zj retained a controller cast-normalization mechanism that packet zh had already explicitly excluded by reference to packet p. The union of the actual mechanisms is what matters.
+
+\subsection{Closing refresh: forty-three packets}
+
+Before delivery, the repository advanced to
+\code{60fcb2a69b7f1fdd4c3592ea5f164223cad50abe}, adding packets
+\code{zk} through \code{zq}. All three recommendations survived a fresh
+review of those seven packets, including their substantive notes and optional
+follow-on proposals. The closing receipt authenticates all 171 text/code
+payloads in that increment. A further sixteen substantive historical text
+notes were retrieved, authenticated, and checked for the same mechanisms.
+The full closing decisions are in \code{evidence/closing-novelty-audit.md}.
+
+\begin{tabularx}{\textwidth}{@{}p{0.09\textwidth}X@{}}
+\toprule
+Packet & Additional prior mechanisms granted in the final comparison\\
+\midrule
+zk & Shared Jones finalizer evaluations, affine carrier reflection, homogeneous-star enumeration, fixed-factor periods.\\
+zl & Guarded power-cast equivalences, CRT and zero-level order endpoints, modulus transport, controller-factor positivity from coprimality.\\
+zm & Diagonal Sidon-pair recovery, ordered-endpoint elimination, exact-order endpoint reuse, definitional depth equality.\\
+zn & One modular-kernel certificate, power fixed-point iteration, weighted finite updates, reflected-source origin specialization.\\
+zo & Fixed controller unit residue, exponent divisibility spectrum, carry-prefix locality between actual resets, quadratic power threshold.\\
+zp & All-offset reflected-source identity, fixed-prime-support coprimality, arbitrary fixed-cardinality seed translation, exponent spectrum.\\
+zq & Cyclic subset sums without coprimality, Boolean-free affine correction, fixed-period interfaces, prime-power annihilator and lift-seed APIs.\\
+\bottomrule
+\end{tabularx}
+
+The closest new overlaps were examined explicitly. Removing the optional
+Boolean correction in a subset-sum construction is different from comparing
+two digit rotations without a Boolean digit bound. Positivity of a controller
+factor from coprimality does not imply the source port's sign from the first
+two scale rows. The new finite carry and source-update APIs likewise do not
+supply the targeted rotation congruence or internal quotient-interval proof.
+
+A separate closing source check found all fourteen audited target, check,
+direct-dependency, and build-pin identities unchanged between the proof
+baseline and the closing commit. Five other production modules changed,
+including \code{ObjectPolynomial} and \code{SyntaxCoefficients}, which may be
+transitive dependencies. The compiler observations therefore remain attached
+to the original proof baseline. The later byte-compatibility check is not
+presented as a full build at the closing commit.
+
+The expanded corpus is indexed at
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/research/lean-proof-simplification}{the forty-three-packet closing snapshot}.
+
+\section{Recover the positive port guard from the source equations}
+\label{sec:guard}
+
+\subsection{The existing dependency}
+
+In \source{Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean}{\module{NativePellBootstrap}}, the declarations
+\code{source_Y_ge_two}, \code{source_rank_half_lt}, \code{source_main_and_half_bounds}, \code{source_base_separation}, and \code{source_bootstrap} take a separate hypothesis \code{hβ : 0 < ports 0}. They also take positive source coordinates and the vanishing of the literal source rows.
+
+The source already contains enough information to recover this sign. More strongly, one source coordinate's positivity suffices for the recovery; two other signs follow from their types. Let the following names denote zero-based source coordinates:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Mathematical name & Lean expression & Type information\\
+\midrule
+$\beta$ & \code{ports 0} & An integer, with no sign assumed\\
+$J$ & \code{(x 0 : Int)} & Nonnegative because \code{x 0 : Nat}\\
+$L$ & \code{(x 24 : Int)} & The one required positive coordinate\\
+$N_s$ & \code{(x 16 : Int)} & Nonnegative because \code{x 16 : Nat}\\
+$q$ & $1+J\beta$ & An integer expression\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Rows 0 and 1 of \source{Computability/DiophantineConsistency/Lean/DiophantineConsistency/SplitCertificate59.lean}{\module{SplitCertificate59}} give
+\begin{equation}
+ L=q^2-1,\qquad N_s=q(1+L),\qquad q=1+J\beta.
+ \label{eq:scales}
+\end{equation}
+The existing scale-decoding proposal is the natural production home for these equalities. The supplied concrete client also checks them against the actual current \code{sourceRows} definition, so the conclusion is not based on an unidentified abstract system.
+
+\subsection{A stronger guard-recovery theorem}
+
+\begin{proposition}[Guard recovery]
+Let $J,\beta,L,N_s$ be integers satisfying \eqref{eq:scales}. If
+\[
+ J\ge0,\qquad L>0,\qquad N_s\ge0,
+\]
+then
+\[
+ q\ge2,\qquad J>0,\qquad \beta>0,\qquad L\ge3,\qquad N_s\ge8.
+\]
+\end{proposition}
+
+\begin{proof}
+Since $1+L>0$ and $N_s=q(1+L)\ge0$, we have $q\ge0$. If $q\le1$, integrality and nonnegativity give $q\in\{0,1\}$, whereas $L=q^2-1\le0$. Thus $q\ge2$.
+
+Consequently $J\beta=q-1>0$. The alternative that both factors are negative is impossible because $J\ge0$. Hence $J>0$ and $\beta>0$. The equation for $L$ now gives $L\ge3$. Finally,
+\[
+ N_s=q(1+L)\ge2\cdot4=8.
+\]
+Equivalently, substituting $1+L=q^2$ gives $N_s=q^3$, although the implementation need not expand a cubic to prove the lower bound.
+\end{proof}
+
+The proof avoids assuming positivity of $J$ or $N_s$. Their nonnegativity is automatic in the source interpretation. It does not appeal to Pell classification, an auxiliary norm equation, a port box, or a lower bound on the native rank.
+
+\subsection{The checked concrete source client}
+
+The archive's \code{lean/SourceGuardClient.lean} proves the following exact consequence of the literal source rows:
+\begin{equation}
+ \bigl(x_{24}>0\ \land\ \forall k,\ \operatorname{sourceRows}(\mathrm{ports},x)_k=0\bigr)
+ \ \Longrightarrow\ x_0>0\ \land\ \mathrm{ports}_0>0\ \land\ 8\le x_{16}.
+ \label{eq:client}
+\end{equation}
+Here $x:\operatorname{Fin}(31)\to\mathbb N$. Only rows 0 and 1 are used in the proof. The universally quantified source-row hypothesis matches the current API; a later interface may expose just those two equations if that has an actual caller benefit.
+
+The second concrete theorem establishes \code{source_Y_ge_two_no_beta}. It assumes only positivity of coordinates 24 and 9, plus the source equations, to derive
+\[
+ 2\le x_{16}x_9.
+\]
+The first factor is at least eight, and the second is at least one. This supplies the existing bootstrap conclusion with fewer input assumptions. Retaining the old, weaker numerical conclusion avoids creating work for downstream clients.
+
+\subsection{How to integrate it after the earlier proposals}
+
+At the scale boundary, expose a theorem such as \code{source_port_guard} or add the recovered facts to the already proposed scale interface. Do not introduce another competing source record merely to store the same equations.
+
+The first migration should remove the independent $\beta$ guard from the five declarations listed above. The argument supplied to the later bootstrap theorem still includes the necessary rank and window hypotheses. This proposal says nothing that would discharge those other premises.
+
+Additional declarations such as \code{source_transport_positive}, \code{source_native_rank_ge_twentyfour}, and \code{source_window_bound} also receive a $\beta$ guard while already receiving a positive source. They are candidates for the same local recovery. Their separate hypotheses on $K$, mask ports, and mask-port upper bounds must be retained unless independently derived. The call-site inventory identifies the relevant declarations and named consumers.
+
+There are two reasonable API strategies. A direct migration deletes the argument and updates all callers. A staged migration introduces a stronger theorem under a new name and lets the old theorem ignore its now-redundant guard while forwarding to the stronger result. The latter preserves compatibility but adds wrapper lines. This report does not count those extra declarations as compression.
+
+\subsection{Why the assumptions cannot simply disappear everywhere}
+
+The guard is recoverable because the source equations and coordinate types are present. It should remain on an abstract Pell lemma that has no such source hypothesis. Three boundary examples make the exact dependence clear:
+
+\begin{center}
+\begin{tabular}{@{}p{0.25\textwidth}p{0.43\textwidth}p{0.22\textwidth}@{}}
+\toprule
+Dropped condition & Values satisfying both scale equations & Failed conclusion\\
+\midrule
+$L>0$ & $J=1,\ \beta=0,\ L=0,\ N_s=1$ & $\beta>0$\\
+$N_s\ge0$ & $J=1,\ \beta=-3,\ L=3,\ N_s=-8$ & $\beta>0$\\
+$J\ge0$ & $J=-1,\ \beta=-1,\ L=3,\ N_s=8$ & $J>0$ and $\beta>0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In the actual source, the last two conditions are guaranteed by the natural-coordinate interpretation. The positivity of coordinate 24 remains material.
+
+\subsection{Novelty boundary and expected value}
+
+Packet b already gives the scale identities. Packet f already proposes extracting \code{beta_pos} from an assumed \code{beta_min} and exposing positive source scales. Those interfaces are assumed available. Neither implies that the independently supplied port sign has already been removed from source-based bootstrap statements. The retained idea is the proof of that redundancy from the literal equations, with a smaller positivity boundary.
+
+The immediate benefit is an acyclic dependency: source equations and natural-coordinate signs imply the port guard, and the bootstrap consumes the resulting facts. It need not depend on an independently constructed port-box certificate just to establish $\beta>0$. This is an interface simplification, not a claim that every port-box assumption is redundant or that the final source construction has been completed.
+
+\section{Compare rotation parameters instead of proving digit bounds}
+\label{sec:rotation}
+
+\subsection{What the definition actually reads}
+
+The current \source{Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeCyclicRotation.lean}{\module{NativeCyclicRotation}} defines
+\[
+ \operatorname{binaryRotation}(v,W,c)
+ =\operatorname{rotate}\left(
+   \operatorname{shiftDigits}\bigl(2^v,2^{W\bmod v},c\bigr),
+   \left\lfloor W/v\right\rfloor\bmod n\right),
+\]
+where $c:\operatorname{ZMod}(n)\to\mathbb N$. The displacement $W$ is observed through exactly two values:
+\[
+ \left(W\bmod v,\quad (W/v:\operatorname{ZMod}(n))\right).
+\]
+This dependency statement says nothing about whether $c$ is Boolean or even bounded by the radix.
+
+\begin{proposition}[Exact parameter congruence]
+If
+\[
+ W\bmod v=W'\bmod v,\qquad
+ (W/v:\operatorname{ZMod}(n))=(W'/v:\operatorname{ZMod}(n)),
+\]
+then
+\[
+ \operatorname{binaryRotation}(v,W,c)=\operatorname{binaryRotation}(v,W',c)
+\]
+as functions, for every natural-valued $c$.
+\end{proposition}
+
+\begin{proof}
+Unfold \code{binaryRotation} and rewrite its two observed arguments. No digit arithmetic remains.
+\end{proof}
+
+The Lean proof is two tactic lines after the theorem header:
+\begin{lstlisting}
+  unfold binaryRotation
+  rw [hphase, hshift]
+\end{lstlisting}
+The most general checked kernel does not require \code{NeZero n} or $v>0$. When either modulus is zero, it uses Lean's existing definitions; it does not infer a nontrivial finite cycle from those degenerate cases.
+
+\subsection{Exact periodicity, including partial-bit phases}
+
+The same dependency observation yields a useful parameter normal form.
+
+\begin{corollary}[Full bit-period reduction]
+For all natural $v,n,W$ and all $c:\operatorname{ZMod}(n)\to\mathbb N$,
+\[
+ \operatorname{binaryRotation}(v,W\bmod(vn),c)
+ =\operatorname{binaryRotation}(v,W,c).
+\]
+Consequently $W\equiv W'\pmod{vn}$ implies exact equality of the rotations, and the function of $W$ is periodic with period $vn$.
+\end{corollary}
+
+\begin{proof}
+Because $v\mid vn$, reducing modulo $vn$ preserves the remainder modulo $v$. The division identity
+\[
+ (W\bmod(vn))/v=(W/v)\bmod n
+\]
+preserves the second coordinate after casting to \code{ZMod n}. Apply parameter congruence. The last statements follow from the definition of natural modular congruence.
+\end{proof}
+
+The implementation uses \code{Nat.mod_mod_of_dvd}, \code{Nat.mod_mul_right_div_self}, and \code{ZMod.natCast_mod}. This is an equality of the complete digit functions, stronger than a congruence between their evaluated words. It does not assert that the least period equals $vn$; particular arrays may have a smaller period.
+
+\subsection{The present rephase client}
+
+In \source{Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordRephase2011.lean}{\module{CurrentWordRephase2011}}, \code{rotation_eq} currently assumes
+\code{hc : forall i, c i <= 1}. It then uses \code{rotation_zero_phase} twice to identify each binary rotation with a plain cell rotation. That route needs a digit hypothesis because it describes each rotation separately.
+
+The theorem's actual goal only compares the two rotations. For the current displacement
+\[
+ W_s=47\cdot2011\cdot s,
+\]
+both partial-bit phases are zero. The existing \code{physical_shift_eq} already transports $s=t$ in \code{ZMod N} to equality of the physical quotient shifts in \code{ZMod (N*2011)}. Parameter congruence therefore proves the desired equality for arbitrary digits.
+
+Two dependent changes follow. First, delete \code{hc} from \code{rotation_eq}. Second, delete \code{hd : forall j, dummy j <= 1} from \code{normalization_rephase}, where it is used only to establish \code{constructed_boolean} for this comparison. Update the one production call and the focused check call recorded in the patch. The existing \code{normalization_of_rotation_eq} derives the new scalar transport from exact equality of rotations, so it still transfers the same carry and digit arrays.
+
+\subsection{The distinction that prevents an unsound shortcut}
+
+For unbounded digits, a zero-phase binary rotation need not equal the original digit function. With $v=3$, $n=5$, and $c(i)=8$ everywhere,
+\[
+ \operatorname{binaryRotation}(3,0,c)(i)=8\bmod8+\lfloor8/8\rfloor=1,
+\]
+whereas $c(i)=8$. The checked example in \code{RotationCongruence.lean} records this failure of the stronger, incorrect simplification.
+
+Thus the proposal compares two equally normalized expressions; it does not delete the guard from \code{rotation_zero_phase}. Nor does it delete \code{hd} from \code{marked_packing_rephase} or \code{packing_rephase}: those later theorems still use Boolean bounds for masks and scalar construction. The ordinary temporal multipliers can change when the stride changes, even though the rotations agree. The proof must continue deriving the appropriate transport congruence rather than claiming equality of ordinary multipliers.
+
+\subsection{Novelty boundary and accounting}
+
+Earlier packets cover half-radix splitting, point-mass convolution, sparse arbitrary-phase support, and equality of evaluated words. Those are assumed. The residual claim is equality from the two coordinates actually read by the definition, and the removal of two newly introduced Boolean premises from the rephase interface.
+
+The local production patch changes the main rephase module from 122 to 120 physical lines; its check module remains 80 lines. The generic exposition kernels add lines if installed in full. The sensible integration choice is either the minimal direct proof in the current module, or a small shared congruence theorem when another actual caller appears. The periodicity result is a useful optional extension of the same idea, not a fourth independent proposal and not a basis for extrapolated line savings.
+
+\section{Prove internal division uniqueness by interval separation}
+\label{sec:division}
+
+\subsection{The exact residual proof}
+
+\source{Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean}{\module{ObjectDivision}} works over \code{Natural H}, the naturals of an arbitrary model satisfying the displayed set-theoretic axioms. Its relation is
+\[
+ \operatorname{DivisionRel}(q,r,n,d)\quad\Longleftrightarrow\quad n=qd+r\ \land\ r<d.
+\]
+The private lemma \code{quotient_not_lt} compares two such certificates. Currently, assuming $q<q'$, it constructs witnesses for both
+\[
+ q'=q+s+1,\qquad d=r+t+1,
+\]
+expands a ring identity, and constructs an explicit successor witness for $n<n$.
+
+The second witness is avoidable. The remainder bound already expresses the strict interval information needed by the proof.
+
+\subsection{The interval argument}
+
+\begin{proposition}[Separation of quotient intervals]
+In the internal natural semiring, suppose $q'=q+s+1$ and $r<d$. Then for every internal natural $r'$,
+\[
+ qd+r<q'd+r'.
+\]
+\end{proposition}
+
+\begin{proof}
+Use the chain
+\[
+ qd+r < qd+d \le q'd \le q'd+r'.
+\]
+The first step is translation invariance of strict additive order. For the second step, the nonnegative additive gap is $sd$, since
+\[
+ (qd+d)+sd=(q+s+1)d=q'd.
+\]
+For the third step, the additive gap is $r'$. The existing characterization of internal order by an additive witness proves both weak inequalities.
+\end{proof}
+
+If two division certificates have the same dividend, the chain contradicts their equality. Applying the argument in both directions gives $q=q'$, after which additive cancellation gives $r=r'$.
+
+\subsection{What the delivered replacement removes}
+
+The supplied local patch retains one witness $s$ for $q<q'$ and one short ring normalization for the middle inequality. It removes the separate remainder-gap witness $t$ and the specially manufactured witness for $n<n$. It does not claim to make the proof wholly witness-free.
+
+The abstract kernel \code{DivisionInterval.lean} is checked for a commutative semiring with linear order, ordered cancellative addition, and the displayed additive-order laws. Multiplication monotonicity is established only at the needed comparison using $sd$. No new global ordered-multiplication instance is needed by this candidate.
+
+If the previously proposed ordered-semiring API has already been installed, the same middle step can be expressed directly using $(q+1)\le q'$ and nonnegative multiplication. That is an integration choice using an assumed earlier API. The present packet's new mathematical content is the interval separation of the two division certificates.
+
+\subsection{Why host-natural division is not a replacement}
+
+One must not silently use \code{Nat.div_mod_unique} on arbitrary \code{Natural H}. An arbitrary model's natural numbers need not all be represented by external standard numerals. The earlier packet k correctly says that its host-\code{Nat} certificate theorem does not replace internal \code{ObjectDivision} statements without a separate internal semantic argument.
+
+The interval proof supplies that remaining local argument without any external induction on the model carrier. The internal-induction proof of division existence is untouched. The convention for divisor zero is untouched. A division certificate with $r<d$ already rules out $d=0$, but the uniqueness proof need not impose a new explicit positive-divisor parameter.
+
+\subsection{Novelty boundary and measured value}
+
+The closing code audit inspected packet zf's proposed \module{ObjectDivision}. It edits \code{successor_step} and \code{division_exists}, while leaving the old two-witness \code{quotient_not_lt} argument unchanged. This proposal is therefore about a different, still-present obligation.
+
+The local declaration decreases from eleven to nine nonblank lines, with no new production helper or import. A standalone reusable kernel increases total source size if added for only this one caller. The recommendation is to use the direct local interval proof, or reuse an existing order API, and to justify the change by the simpler invariant. It is a lower-priority cleanup than removing redundant theorem hypotheses.
+
+\section{Validation and interpretation of the artifacts}
+\label{sec:validation}
+
+\input{validation-summary.tex}
+
+\subsection{What the checks establish}
+
+A successful Lean invocation verifies the supplied statements against the imported declarations in that invocation. The accompanying axiom reports distinguish ordinary Lean foundations from a placeholder or an added assumption. Kernel examples and negative controls check the intended guard boundaries, rather than mirroring a proof's syntax.
+
+The source-row client is especially useful evidence: its two \code{change} statements must match the actual polynomial rows, and the linear-combination steps must produce the displayed scale equalities. A general numerical lemma alone would not establish this source binding.
+
+The source manifests and patch-application checks serve a different purpose. They pin the files on which the proposals were based and show where a candidate applies; they do not themselves establish Lean elaboration. Conversely, a checked standalone kernel is not evidence that every updated repository caller has been migrated. The validation table keeps these scopes separate.
+
+\subsection{No claimed end-to-end consistency advance}
+
+These changes do not construct the outstanding rank-calibrated temporal exponent, the remaining positive Pell witnesses, or a complete solution of the final source system. They simplify arguments already used around those obligations. In particular, proving that an existing positive source forces $\beta>0$ is a conditional theorem, not a construction of that positive source.
+
+\section{Integration plan and stopping criteria}
+
+\subsection{Stage 1: source guard recovery}
+
+Add the guard-recovery theorem beside the existing scale interface. Verify the concrete source interpretation once. Introduce a source-facing theorem with fewer hypotheses and preserve the old wrapper if required by current consumers. Then migrate the five direct bootstrap clients as one reviewable change. A later pass may remove redundant $\beta$ inputs from other source-facing theorems, but it should explicitly retain all other port and rank assumptions.
+
+The acceptance criterion is a checked statement comparison: all original conclusions remain available, and the only removed inputs are consequences of already present source equations and signs. Count the helper and compatibility wrappers. There is no need to reorganize the entire source system to obtain this benefit.
+
+\subsection{Stage 2: rotation congruence}
+
+Apply the small rephase patch and run its focused checks and direct consumers. Keep the arbitrary-digit regression example, because it prevents a future rewrite from replacing exact parameter equality by an invalid unrestricted plain-rotation law. Install the complete periodicity API only if a second displacement-normalization client benefits from it.
+
+The acceptance criterion is preservation of the same source, carry array, and normalized digit function. Exact rotation equality is the transport premise. Equality of ordinary multipliers is neither needed nor generally true.
+
+\subsection{Stage 3: interval uniqueness}
+
+Replace the private proof locally. Use the prior ordered-semiring interface if it is already the preferred model API; otherwise use the one-gap version in the supplied candidate. Recheck division uniqueness, the quotient/remainder specification, and the existing external-numeral comparison.
+
+The acceptance criterion is that the proof remains valid for arbitrary internal model naturals. A shorter proof that assumes all such naturals are standard would change the theorem's mathematical strength and must be rejected.
+
+\section{Archive guide and reproducibility}
+
+\begin{tabularx}{\textwidth}{@{}p{0.32\textwidth}X@{}}
+\toprule
+Location & Purpose\\
+\midrule
+\code{report/report.tex} & Complete LaTeX source of this report.\\
+\code{report/report.pdf} & Compiled report, with rendered-page quality checks.\\
+\code{lean/} & Checked guard, rotation, and interval kernels; concrete source-row client; boundary examples.\\
+\code{patches/} & Scoped rephase and internal-division candidate changes.\\
+\code{evidence/} & Source identities, compiler output, validation scopes, call-site inventory, nonduplication audit, and independent review.\\
+\code{scripts/} & Focused replay, source-manifest verification, and report build commands.\\
+\code{SHA256SUMS} & Integrity manifest for the deliverable files.\\
+\bottomrule
+\end{tabularx}
+
+The replay script expects a checkout at the documented commit with its Lean 4.32.0 Lake environment available. It checks source identities and compiles the supplied kernels in a separate output directory. It does not silently modify the user's checkout. Full candidate integration remains a distinct operation, as recorded by the validation status.
+
+\section*{Selected sources and nearest prior proposals}
+\addcontentsline{toc}{section}{Selected sources and nearest prior proposals}
+
+All repository links below refer to the reviewed commit. The archive's source manifest identifies the exact bytes used.
+
+\begin{enumerate}[label={\arabic*.}]
+\item \source{Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean}{NativePellBootstrap}: source-facing positive-port inputs, scale bounds, and bootstrap consumers.
+\item \source{Computability/DiophantineConsistency/Lean/DiophantineConsistency/SplitCertificate59.lean}{SplitCertificate59}: the actual first two source rows.
+\item \source{Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeCyclicRotation.lean}{NativeCyclicRotation}: exact binary-rotation definition and evaluated-word transport.
+\item \source{Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordRephase2011.lean}{CurrentWordRephase2011}: rephasing of the same source, carries, and digit arrays.
+\item \source{Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectDivision.lean}{ObjectDivision}: arbitrary-model division existence and uniqueness.
+\item \source{Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26b/report.tex}{Packet b, report}: previously proposed scale interfaces, granted as baseline here.
+\item \source{Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/report/sections/03_architecture.tex}{Packet f, architecture}: positivity accessors and extraction from already assumed port bounds.
+\item \source{Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26k/certificates/README.md}{Packet k, certificate notes}: explicit distinction between host-natural and internal-model division.
+\item \source{Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zf/report.tex}{Packet zf, report}: internal successor and arithmetic maintenance; its division candidate leaves the targeted uniqueness proof unchanged.
+\item \source{Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zj/evidence/novelty_inventory.md}{Packet zj, novelty inventory}, and \source{Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zh/catalog/EXCLUSION_AND_ADOPTION_LEDGER.md}{packet zh, exclusion ledger}: useful indexing aids, checked against actual mechanisms rather than adopted without review.
+\end{enumerate}
+
+\end{document}

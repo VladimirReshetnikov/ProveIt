@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "source_pin": "9d9d1123b39927d30363f1dcd53c23f0575c30ee",
+  "lean_status": "UNCOMPILED",
+  "static": {
+    "exact_reconstruction": true,
+    "all_body_edit_orders": 2,
+    "patch_application_contract": "Use combined patch alone for both changes; isolated patches are separate single-edit alternatives against original baseline, not an arbitrary sequential patch set.",
+    "unified_patch_sequence_validation": false,
+    "complete_file_metrics": {
+      "before": {
+        "sha256": "aab00b74d13e24bb78dda62c5c5a5fa55990f414821fef7b56d02c8fee675acf",
+        "git_blob": "779f72b283b44a1947f9083b9f887dbc7cb97b41",
+        "physical": 178,
+        "nonblank": 148,
+        "bytes": 7345
+      },
+      "after": {
+        "sha256": "b76c4621db790f9bf780a0d68defffcfb8aeba56f6c1f91936edda2c1cc08fa0",
+        "git_blob": "753cb632faa8399ef41dd93e503ce789ffe4f2f0",
+        "physical": 174,
+        "nonblank": 144,
+        "bytes": 7173
+      }
+    },
+    "helpers_added": 0,
+    "imports_added": 0,
+    "proof_bodies_changed": [
+      "position_budget",
+      "position_injective"
+    ],
+    "reference_sha256": {
+      "CurrentControllerData2011.lean": "a86aa5cc6b523bd659df8681012a1a39307ea340c27a7785629d30699ca151ae",
+      "CurrentControllerPositions2011Checks.lean": "7723e5c1bd82e7711aa47930c219ff967ae3e0de8e9b180db85aa431c55f84ea",
+      "CurrentDummySafety2011.lean": "31f92f372076071c75ece964cb418c118fa051694057556c004d74a7353e7c00",
+      "CurrentDummySafety2011Checks.lean": "0ff01ecb9c436f6f7043449c666d2473687725067e9aa5bd7729af39a6f7efe7"
+    },
+    "safety_module_edited": false
+  },
+  "finite": {
+    "counts": {
+      "affine_points": 141460,
+      "injectivity_pairs": 2940,
+      "optional_next": 25,
+      "optional_stride": 50,
+      "support_sets": 250,
+      "safe_exponent_triples": 352
+    },
+    "linear_abstraction_pairs": 5050,
+    "retained_candidate_checks": "affine budget and injectivity; other finite cases are unchanged-baseline safety regressions, not restored optional-branch novelty",
+    "negative_controls": {
+      "auxiliary_2_collides_with_three": true,
+      "auxiliary_4_breaks_optional_next_at_k0": true,
+      "wrong_stride_rw_kplus1_fails": true,
+      "epsilon_2_breaks_cardinality_contract": true,
+      "last_cell_breaks_kernel_margin": true,
+      "wrapped_temporal_destination_breaks_margin": true,
+      "already_enabled_dummy_has_zero_increment": true
+    },
+    "scope": "Finite arithmetic evidence only; not Lean elaboration or a proof of universal quantifiers."
+  },
+  "no_source_edits_no_external_execution": true
+}

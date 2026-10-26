@@ -1,0 +1,39 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.78in,top=0.72in,bottom=0.70in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,enumitem,xcolor,listings,hyperref,fancyhdr}
+\definecolor{inkblue}{RGB}{28,67,105}
+\hypersetup{colorlinks=true,urlcolor=inkblue,linkcolor=inkblue,pdftitle={Lean proof simplification for physical safety and same data packing},pdfauthor={Proof engineering review}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small DiophantineConsistency proof review round six}\rhead{\small 26 October 2026}\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\emergencystretch=3em
+\setlist[itemize]{label=$\bullet$,leftmargin=*,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=*,itemsep=3pt,topsep=3pt}
+\newcommand{\code}[1]{{\small\texttt{\detokenize{#1}}}}
+\newcommand{\src}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9d9d1123b39927d30363f1dcd53c23f0575c30ee/Computability/DiophantineConsistency/Lean/DiophantineConsistency/#1.lean\#L#2-L#3}{\code{#1.lean}:#2--#3}}
+\newcommand{\commit}[1]{\href{https://github.com/VladimirReshetnikov/ProveIt/commit/#1}{\code{#1}}}
+\newcommand{\shortcommit}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/commit/#1}{\code{#2}}}
+\newcommand{\lib}[3]{\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/#1\#L#2-L#3}{\code{#1}:#2--#3}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,breaklines=true,breakatwhitespace=true,showstringspaces=false,aboveskip=6pt,belowskip=6pt,frame=single,framerule=0.25pt,rulecolor=\color{black!22},xleftmargin=4pt,xrightmargin=4pt,framesep=5pt,
+ literate={₀}{{$_0$}}1 {ℕ}{{$\mathbb N$}}1 {→}{{$\to$}}1 {←}{{$\leftarrow$}}1 {↔}{{$\leftrightarrow$}}1 {∀}{{$\forall$}}1 {∃}{{$\exists$}}1 {≤}{{$\le$}}1 {≠}{{$\ne$}}1 {∧}{{$\land$}}1 {∨}{{$\lor$}}1 {∈}{{$\in$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {·}{{$\cdot$}}1 {▸}{{$\triangleright$}}1 {∘}{{$\circ$}}1 {ℤ}{{$\mathbb Z$}}1 {¬}{{$\neg$}}1 {≃}{{$\simeq$}}1 {∑}{{$\sum$}}1 {ρ}{{$\rho$}}1 {∣}{{$\mid$}}1 {⊢}{{$\vdash$}}1 {δ}{{$\delta$}}1}
+\newcommand{\pageheading}[1]{\newpage\section*{#1}}
+\begin{document}
+\raggedright
+\begin{center}
+{\LARGE\bfseries Lean proof simplification for\\[3pt] physical safety and same data packing}\\[8pt]
+{\large A sixth review with every earlier proposal assumed available}\\[5pt]
+Source commit \code{9d9d1123b39927d30363f1dcd53c23f0575c30ee}
+\end{center}
+\input{inputs/01-summary.tex}
+\input{inputs/02-baseline.tex}
+\input{inputs/03-positions.tex}
+\input{inputs/04-safety.tex}
+\input{inputs/05-population.tex}
+\input{inputs/06-rephase.tex}
+\input{inputs/07-accounting.tex}
+\input{inputs/08-validation.tex}
+\end{document}

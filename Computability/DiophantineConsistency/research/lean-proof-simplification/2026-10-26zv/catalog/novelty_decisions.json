@@ -1,0 +1,155 @@
+{
+  "pin": "9d9d1123b39927d30363f1dcd53c23f0575c30ee",
+  "all_prior_outcomes_assumed_available": true,
+  "primary_saved_lines": 15,
+  "optional_housekeeping_saved_lines": 2,
+  "decisions": [
+    {
+      "family": "positions",
+      "status": "retain_routine_exact_client_family",
+      "theorems": [
+        "position_budget",
+        "position_injective"
+      ],
+      "reason": "Only small fixed-literal budget/injectivity linearization remains after granting zq Boolean-free arbitrary-subset placement and optional-support retirement. Three optional-path edits withdrawn.",
+      "files": {
+        "source": {
+          "path": "safety/baseline/CurrentControllerPositions2011.lean",
+          "sha256": "aab00b74d13e24bb78dda62c5c5a5fa55990f414821fef7b56d02c8fee675acf",
+          "lines": 178
+        },
+        "candidate": {
+          "path": "safety/candidate/CurrentControllerPositions2011.lean",
+          "sha256": "b76c4621db790f9bf780a0d68defffcfb8aeba56f6c1f91936edda2c1cc08fa0",
+          "lines": 174
+        },
+        "patch": {
+          "path": "safety/patches/positions_combined.patch",
+          "sha256": "26064c60ff9db0e60af467dae0f25223411207ec564daabb01c52217054b3fec",
+          "lines": 28
+        }
+      },
+      "saved_lines": 4,
+      "lean_status": "UNCOMPILED"
+    },
+    {
+      "family": "rank",
+      "status": "retain_routine_exact_client",
+      "theorems": [
+        "rank_gt_twice_window"
+      ],
+      "reason": "Existing Nat.lt_two_pow_self technique at3u; old envelope/threshold APIs granted. Preserve actual fourBlocks/rank cast bridge.",
+      "files": {
+        "source": {
+          "path": "population/source/CurrentPackingRank2011.lean",
+          "sha256": "614f47e52f31dfc199f98387e5c720f1ae51fb0725ce8d9f21223b540a30c546",
+          "lines": 138
+        },
+        "candidate": {
+          "path": "population/candidates/CurrentPackingRank2011.lean",
+          "sha256": "c00ce4a282ba5e09665135ec7f075443c0dd6483a8cc3364416d5a850e9ab5fb",
+          "lines": 133
+        },
+        "patch": {
+          "path": "population/patches/rank_gt_twice_window.patch",
+          "sha256": "55407b288ee22813895432a46df9486d2db1a45e1577e6b8a18e18bdeab1ff89",
+          "lines": 19
+        }
+      },
+      "saved_lines": 5,
+      "lean_status": "UNCOMPILED"
+    },
+    {
+      "family": "rephase",
+      "status": "retain_routine_exact_client",
+      "theorems": [
+        "normalization_of_rotation_eq"
+      ],
+      "reason": "Only inline raw equality into two record fields; no new coherent-carry/normalization/rephase contract. Scalar transport proof unchanged.",
+      "files": {
+        "source": {
+          "path": "rephase/source/CurrentWordRephase2011.lean",
+          "sha256": "7a1df92104c40f502cc7b62fb1ac04327ce5c842be95172a5483d511a0b99332",
+          "lines": 122
+        },
+        "candidate": {
+          "path": "rephase/candidate/CurrentWordRephase2011.lean",
+          "sha256": "aa099f7056dbd5274d7158885ac0ab282cf5bf7d8b6f6ba55175b81e4e440e45",
+          "lines": 116
+        },
+        "patch": {
+          "path": "rephase/patches/rephase-exact-field-rewrite.patch",
+          "sha256": "3dc3601fee3300f09b59456255c0afbd1dbcbea5fab7395f65171f81b90da0cb",
+          "lines": 22
+        }
+      },
+      "saved_lines": 6,
+      "lean_status": "UNCOMPILED"
+    },
+    {
+      "family": "disjoint",
+      "status": "optional_housekeeping_only",
+      "theorems": [
+        "disjoint_add_lt"
+      ],
+      "reason": "Direct rewriting by already used equality, with unchanged OR bound and hypotheses; not mathematical novelty.",
+      "files": {
+        "source": {
+          "path": "population/source/NativePackingPopulation.lean",
+          "sha256": "bc4526d0e9f267df6d027b6f7ec38e5374ecc4f1627d556f4cffd41b0f1cd3ac",
+          "lines": 57
+        },
+        "candidate": {
+          "path": "population/candidates/NativePackingPopulation.lean",
+          "sha256": "e6e96b771938bbe3655ab78b1615e5b0afa14591e1b1d367085d72161cc71283",
+          "lines": 55
+        },
+        "patch": {
+          "path": "population/patches/disjoint_add_lt.patch",
+          "sha256": "cec51fa642d216c9e545d1b1559ec1dce9c9555ac8fa6f803346f468d6779a09",
+          "lines": 13
+        }
+      },
+      "saved_lines": 2,
+      "lean_status": "UNCOMPILED"
+    }
+  ],
+  "excluded": [
+    "CurrentWordScalarWitness2011.q_prefix",
+    "new common-modulus K/Gamma/fixed-power/LTE contracts",
+    "reset-separated carry locality/per-cell constructor/low-field e=0 generalization",
+    "arbitrary fixed-cardinality subset translations",
+    "weighted point or batch update framework",
+    "generic kernel power envelope and nonwrapping rearrangement",
+    "Controller scaledCoordinate noncoprime affine fiber equivalence, C0=0 where applicable",
+    "all prior and newly encountered optional/unpromoted directions",
+    "zq optional-support retirement: optional_next_lt and optional_stride_lt explicitly; position_ne_three conservatively through named three_not_mem_image path",
+    "zp unrestricted-offset reflection including p<=1005 and all optional extensions",
+    "zq unrestricted-cardinality staircase / Boolean-free affine coverage / first-lift seed and all companion and migration alternatives"
+  ],
+  "comparison_cutoff": "60fcb2a69b7f1fdd4c3592ea5f164223cad50abe",
+  "withdrawn_subchanges": [
+    {
+      "theorem": "optional_next_lt",
+      "initial_saved_lines": 2,
+      "reason": "Explicitly removable under zq optional-support retirement",
+      "anchor": "2026-10-26zq/evidence/late_head_scope_addendum.md:82-87"
+    },
+    {
+      "theorem": "optional_stride_lt",
+      "initial_saved_lines": 2,
+      "reason": "Explicitly removable under zq optional-support retirement",
+      "anchor": "2026-10-26zq/evidence/late_head_scope_addendum.md:82-87"
+    },
+    {
+      "theorem": "position_ne_three",
+      "initial_saved_lines": 5,
+      "reason": "Conservative retirement inference: only production consumers cell_ne_three and three_not_mem_image; latter explicitly retired, former only check clients",
+      "anchor": "2026-10-26zq/evidence/late_head_scope_addendum.md:82-87; source CurrentControllerPositions2011:86,105,119"
+    }
+  ],
+  "initial_explored_primary_saved_lines": 24,
+  "final_primary_saved_lines": 15,
+  "final_all_saved_lines": 17,
+  "late_review": "catalog/late60fcb/LEDGER.md"
+}

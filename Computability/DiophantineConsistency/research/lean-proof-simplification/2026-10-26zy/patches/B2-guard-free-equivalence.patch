@@ -1,0 +1,105 @@
+--- /dev/null
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SourceGuard.lean
+@@ -0,0 +1,55 @@
++import Mathlib.Tactic.LinearCombination
++import Mathlib.Tactic.Linarith
++import Mathlib.Tactic.NormNum
++import Mathlib.Tactic.Positivity
++import Mathlib.Data.Fin.VecNotation
++import Mathlib.Logic.Equiv.Defs
++
++/-! Arithmetic sign recovery for old and gap positive source solutions. -/
++
++namespace DiophantineConsistency.SourceGuard
++
++/-- A guard obtainable from either domain element need not be an external
++parameter of the equivalence. Proof irrelevance aligns the inverse proofs. -/
++def discharge {A B : Type*} {G : Prop} (e : G → A ≃ B)
++    (ga : A → G) (gb : B → G) : A ≃ B where
++  toFun a := e (ga a) a
++  invFun b := (e (gb b)).symm b
++  left_inv a := (e (ga a)).left_inv a
++  right_inv b := (e (gb b)).right_inv b
++
++/-- Shared sign argument. The final factor D is either L or 1+L. -/
++theorem beta_pos_kernel {β J L N D : ℤ}
++    (hJ : 0 ≤ J) (hL : 0 < L) (hN : 0 < N) (hD : 0 < D)
++    (hquad : L = (1 + β * J)^2 - 1)
++    (hlinear : N = (1 + β * J) * D) : 0 < β := by
++  have hq : (0 : ℤ) < 1 + β * J :=
++    (mul_pos_iff_of_pos_right hD).mp (hlinear ▸ hN)
++  have hq1 : (1 : ℤ) < 1 + β * J := by
++    by_contra h
++    have he : (1 : ℤ) + β * J = 1 := by omega
++    rw [he] at hquad
++    norm_num at hquad
++    omega
++  have hp : 0 < β * J := by omega
++  exact pos_of_mul_pos_left hp hJ
++
++/-- Gap row 1 is N=qL. -/
++theorem gap_rows_beta_pos {β J L N : ℤ}
++    (hJ : 0 ≤ J) (hL : 0 < L) (hN : 0 < N)
++    (hzero : L + ((-2) * β) * J + (-(β ^ 2)) * (J ^ 2) = 0)
++    (hone : (-1) * L + N + (-β) * (J * L) = 0) : 0 < β := by
++  apply beta_pos_kernel (D := L) hJ hL hN hL
++  · linear_combination hzero
++  · linear_combination hone
++
++/-- Old row 1 is N=q(1+L). -/
++theorem old_rows_beta_pos {β J L N : ℤ}
++    (hJ : 0 ≤ J) (hL : 0 < L) (hN : 0 < N)
++    (hzero : L + ((-2) * β) * J + (-(β ^ 2)) * (J ^ 2) = 0)
++    (hone : (-1) + (-1) * L + N + (-β) * J + (-β) * (J * L) = 0) : 0 < β := by
++  apply beta_pos_kernel (D := 1 + L) hJ hL hN (by omega)
++  · linear_combination hzero
++  · linear_combination hone
++
++end DiophantineConsistency.SourceGuard
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/GapSource66.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/GapSource66.lean
+@@ -1,4 +1,5 @@
+ import DiophantineConsistency.SplitCertificate59
++import DiophantineConsistency.SourceGuard
+ import Mathlib.Tactic.LinearCombination
+ import Mathlib.Tactic.Positivity
+ 
+@@ -346,4 +347,38 @@
+     ((exists_positive_zero_iff ports hβ).trans
+       (positive_nat_iff (fun x => ∀ k,SplitCertificate59.sourceRows ports x k=0)).symm)
+ 
++
++/-! ## Guard recovered from membership in the positive zero sets -/
++
++theorem gap_positive_beta (ports : Fin 4 → ℤ) (x : Fin 31 → ℤ)
++    (hx : Positive x) (hz : ∀ k, rows ports x k = 0) : 0 < ports 0 :=
++  SourceGuard.gap_rows_beta_pos (hx 0).le (hx 24) (hx 16) (hz 0) (hz 1)
++
++theorem old_positive_beta (ports : Fin 4 → ℤ) (x : Fin 31 → ℤ)
++    (hx : Positive x) (hz : ∀ k, SplitCertificate59.sourceRows ports x k = 0) :
++    0 < ports 0 :=
++  SourceGuard.old_rows_beta_pos (hx 0).le (hx 24) (hx 16) (hz 0) (hz 1)
++
++/-- The source equations supply beta positivity separately at each element.
++The old guarded API is retained for compatibility. -/
++def positiveZeroEquiv_all (ports : Fin 4 → ℤ) :
++    {x : Fin 31 → ℤ // Positive x ∧ ∀ k, rows ports x k=0} ≃
++      {x : Fin 31 → ℤ // Positive x ∧ ∀ k, SplitCertificate59.sourceRows ports x k=0} :=
++  SourceGuard.discharge (positiveZeroEquiv ports)
++    (fun x => gap_positive_beta ports x x.property.1 x.property.2)
++    (fun x => old_positive_beta ports x x.property.1 x.property.2)
++
++theorem exists_positive_zero_iff_all (ports : Fin 4 → ℤ) :
++    (∃ x : Fin 31 → ℤ, Positive x ∧ ∀ k, rows ports x k=0) ↔
++      ∃ x : Fin 31 → ℤ, Positive x ∧ ∀ k, SplitCertificate59.sourceRows ports x k=0 :=
++  (positiveZeroEquiv_all ports).exists_subtype_congr
++
++theorem exists_positive_nat_zero_iff_all (ports : Fin 4 → ℤ) :
++    (∃ x : Fin 31 → ℕ, (∀ i,0<x i) ∧ ∀ k, rows ports (fun i => (x i:ℤ)) k=0) ↔
++      ∃ x : Fin 31 → ℕ, (∀ i,0<x i) ∧ ∀ k,
++        SplitCertificate59.sourceRows ports (fun i => (x i:ℤ)) k=0 :=
++  (positive_nat_iff (fun x => ∀ k,rows ports x k=0)).trans
++    ((exists_positive_zero_iff_all ports).trans
++      (positive_nat_iff (fun x => ∀ k,SplitCertificate59.sourceRows ports x k=0)).symm)
++
+ end DiophantineConsistency.GapSource66

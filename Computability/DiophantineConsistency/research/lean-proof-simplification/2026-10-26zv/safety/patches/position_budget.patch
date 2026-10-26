@@ -1,0 +1,16 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerPositions2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerPositions2011.lean
+@@ -24,11 +24,8 @@
+ theorem position_budget (k : ℕ) (j : ZMod (auxiliary^k)) :
+     position k j+auxiliary^k+auxiliary ≤ auxiliary^(k+1)+3 := by
+   have hv : j.val+1 ≤ auxiliary^k := ZMod.val_lt j
+-  have hm := Nat.mul_le_mul_left (auxiliary-1) hv
+-  have hp : auxiliary^(k+1) = auxiliary^k*auxiliary := pow_succ _ _
+-  have ha : auxiliary-1+1 = auxiliary := by decide
+-  unfold position
+-  nlinarith
++  simp only [position, pow_succ, auxiliary] at hv ⊢
++  omega
+ 
+ theorem position_max (k : ℕ) (j : ZMod (auxiliary^k)) :
+     position k j ≤ auxiliary^(k+1)-auxiliary^k-auxiliary+3 := by

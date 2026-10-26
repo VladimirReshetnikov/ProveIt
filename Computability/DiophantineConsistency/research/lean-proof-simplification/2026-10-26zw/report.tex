@@ -1,0 +1,518 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{18324B}
+\definecolor{linkblue}{HTML}{176B8D}
+\definecolor{papergray}{HTML}{F3F6F8}
+\hypersetup{colorlinks=true,linkcolor=linkblue,urlcolor=linkblue,citecolor=linkblue,
+  pdftitle={Three Further Lean Proof Simplifications for ProveIt},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}ProveIt: further Lean proof simplifications}
+\fancyhead[R]{\small 26 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{papergray},
+  frame=single,rulecolor=\color{papergray},breaklines=true,columns=fullflexible,
+  keepspaces=true,showstringspaces=false,xleftmargin=5pt,xrightmargin=5pt}
+\newtheorem{proposition}{Proposition}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\basecommit}{60fcb2a69b7f1fdd4c3592ea5f164223cad50abe}
+\newcommand{\codecommit}{3299f4aa4c9ae38b0f5a1c00a1f0d23f6cbdb114}
+\input{metrics.tex}
+
+\begin{document}
+\begin{center}
+{\Large\bfseries\color{ink}Three Further Lean Proof Simplifications}\\[5pt]
+{\large For ProveIt's DiophantineConsistency development}\\[10pt]
+{\normalsize A sharp rank bound, a two-equation zero test, and an elementary unit proof}\\[8pt]
+Prepared for Vladimir Reshetnikov\quad\textbar\quad 26 October 2026
+\end{center}
+
+\begin{abstract}
+This review proposes three residual simplifications after treating all ideas in
+43 earlier proposal packets as available. The principal arithmetic result is
+the sharp upper bound $R\le q^4-q^3-q-1$ for the reduced native-rank constraints,
+proved by an explicit sum of nonnegative terms. It replaces a sequence of
+coarser estimates in \code{source_window_bound}. A second result proves the
+zero-test selector from annihilation and balance alone, removing the Boolean
+idempotence argument from two existing soundness proofs while keeping the
+literal certificate unchanged. A smaller third change proves that the actual
+controller base is a unit from oddness of the modulus, without an element-order
+calculation. The accompanying proof-only patches remove \TotalSaved{} physical
+lines from four current modules, with no new production helpers or imports.
+The mathematical kernels and source-shaped verification files were checked with
+Lean 4.32.0 and the repository's pinned mathlib revision. A complete rebuild of
+the production import graph was not performed; that remaining integration check
+is explicitly separated from the checks completed here.
+\end{abstract}
+
+\section{Scope, baseline, and what is new}
+
+The reviewed project is
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency}{\code{Computability/DiophantineConsistency}}
+in the ProveIt repository. The initial source revision was
+\code{3299f4aa4c9a}. During the review, the exclusion corpus grew from 41 to 43
+packets. The final exclusion revision is \code{60fcb2a69b7f}; the intervening
+three commits add the two packets \code{2026-10-26zp} and \code{2026-10-26zq}
+and update the two indexes. They do not change maintained Lean source.
+The full revision identifiers and source hashes are recorded in the evidence
+directory.
+
+A final read-only freshness check found main at \code{09eaa57ae5b8}
+(26 October, 19:20:44 UTC). Its nine additional commits add further
+construction results and adopt previously excluded small cleanups. The four
+target files in this packet are unchanged; the proposal collection still has
+43 packets. The only change inside the requested exclusion directories is an
+adoption-note update for existing list-lookup and predecessor-power ideas.
+The final comparison is preserved in \code{evidence/final_freshness.json}.
+
+The user's exclusion rule is interpreted semantically. An earlier idea counts
+as prior work even if it was uncompiled, deferred, rejected, described only as a
+future direction, or never adopted. This rules out repackaging an old helper,
+compiling an earlier sketch, or moving a theorem to a more convenient file as a
+new proposal. It also rules out counting a shorter proof already proposed for
+another client in an explicitly covered family.
+
+The audit combined the packet index, adoption notes, prior exclusion maps,
+manuscript headings, recent packet READMEs and reports, and candidate-specific
+searches across prose, Lean files, and patches. This is a documented comparison,
+not a claim that a textual search mechanically proves mathematical novelty.
+The candidate decisions identify the closest earlier mechanisms and why the
+retained proposals differ. For example, a tempting simplification of
+\code{CurrentCellLabels2011.sum_le_one_cases} was rejected: the exact
+\code{Finset.sum_le_one_iff} support characterization occurs in several earlier packets, even
+though it was absent from one convenient summary ledger.
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.19\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.36\linewidth}}
+\toprule
+Proposal & Existing targets & Distinct mechanism \\
+\midrule
+Sharp upper bound & \code{NativePellBootstrap.source_window_bound} & Replace independent estimates by a sharp nonnegative-deficit identity. \\
+Two-equation zero test & \code{QuadraticBoolean.zero_certificate_sound}; \code{ObjectZeroTest.certificate_sound} & Derive the selector without the idempotence premise. \\
+Controller base unit & \code{CurrentControllerSubsets2011.block_base_isUnit} & Use oddness and a power of two directly; avoid the order theorem in this proof term. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first two are the main recommendations. The third is deliberately a small,
+local dependency improvement. No new encoding, variable count, equation,
+certificate row, or consistency result is claimed.
+
+\section{A sharp upper bound for the native rank}
+
+\subsection{The existing proof obligation}
+
+The current \code{source_window_bound} proves
+\[
+  \operatorname{nativeRank}(x)+1 < x_{17}
+\]
+from positive source coordinates, $\beta>0$, $K\ge0$, and the two upper mask
+bounds. Its existing proof estimates a quadratic expression $G$, estimates the
+two mask contributions separately, combines those estimates, proves a further
+comparison of powers, and finally compares the result with the source scale.
+Those steps are visible in the pinned
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean#L514-L563}{source declaration}.
+
+Write the relevant source coordinates as
+\[
+ J=x_0,\qquad F=x_1,\qquad \alpha=x_2,\qquad
+ \beta=\mathrm{ports}_0,\qquad q=1+J\beta,
+\]
+and let $M_C=\mathrm{ports}_2$, $M_F=\mathrm{ports}_3$,
+$R=\operatorname{nativeRank}(x)$, and $E=(x_{17}:\Z)$. The already established
+source identities give
+\begin{align}
+ R&=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)+(M_C+qM_F)J,\label{eq:rank}\\
+ E&=q^4ws,\qquad w=x_{10}\ge1,\quad s=x_9\ge1.\label{eq:scale}
+\end{align}
+The existing positive-transport theorem gives $q-F-\alpha>0$. Thus, over
+integers, the arithmetic assumptions relevant to the upper bound are
+\begin{equation}
+ F,\alpha,J\ge1,\quad C:=q-F-\alpha\ge1,\quad
+ M_C\le\beta-1,\quad M_F\le2\beta-1.\label{eq:box}
+\end{equation}
+In particular $q=F+\alpha+C\ge3$. No lower bound on either mask port is needed
+for this upper estimate. This agrees with the actual theorem: it does not
+assume the full \code{PortBox} record.
+
+\subsection{The exact deficit}
+
+\begin{proposition}[Sharp reduced upper bound]
+If \eqref{eq:rank}, \eqref{eq:box}, and $q=1+J\beta$ hold in $\Z$, then
+\[
+ \boxed{R\le q^4-q^3-q-1.}
+\]
+\end{proposition}
+
+\begin{proof}
+The following polynomial identity is the entire substantive estimate:
+\begin{align}
+ q^4-q^3-q-1-R
+ ={}&q(q^2-1)(F-1)\notag\\
+ &+(q^2-1)(q-F-\alpha-1)\notag\\
+ &+(q+1)(J-1)\label{eq:deficit}\\
+ &+J\bigl((\beta-M_C-1)+q(2\beta-M_F-1)\bigr).\notag
+\end{align}
+After substituting $q=1+J\beta$, Lean's \code{ring} tactic checks the identity.
+Every summand on the right is nonnegative: $q\ge3$, $q^2-1\ge0$, and each
+remaining factor is one of the nonnegative slacks in \eqref{eq:box}. Therefore
+the deficit is nonnegative.
+\end{proof}
+
+The important change in proof organization is that the mask terms are not
+estimated independently and then recombined with a loose bound on $G$.
+Equation \eqref{eq:deficit} keeps all the integrality margins until the end.
+Each hypothesis has a visible role in a particular nonnegative factor. This
+also makes future changes to a mask threshold easier to assess: they change
+specific terms of the certificate.
+
+\subsection{Why the bound is sharp, and what that does not imply}
+
+For any integer $q\ge3$, set
+\[
+ J=1,\quad \beta=q-1,\quad F=1,\quad \alpha=q-2,\quad
+ M_C=q-2,\quad M_F=2q-3.
+\]
+These values satisfy the reduced constraints, and every term in
+\eqref{eq:deficit} is zero. Hence equality holds. Both the equality and the
+admissibility of this family are proved in the delivered Lean file.
+
+This establishes sharpness for the reduced arithmetic box only. It does not
+assert that these values extend to a positive solution of every source row,
+the Pell equations, or the final Diophantine equation. The source has additional
+constraints that were deliberately not used here. A smaller bound could still
+follow from those extra constraints.
+
+The strict integer hypotheses matter. The conversion of, for example,
+$M_C<\beta$ into $\beta-M_C-1\ge0$ uses integer discreteness. The proposition is
+not stated for arbitrary real variables under the same strict inequalities.
+It also retains the positive $F,\alpha,J$ and transport-gap hypotheses; these
+are not convenient assumptions silently introduced by the proof.
+
+\subsection{Recovering the existing window theorem}
+
+Equation \eqref{eq:scale} gives $q^4\le E$. The new bound then gives
+\[
+ R+1\le q^4-q^3-q<q^4\le E,
+\]
+because $q\ge3$. Thus the existing strict window statement follows with room
+to spare. The original theorem's type and downstream uses stay identical.
+
+The supplied production patch inserts the deficit argument directly into
+\code{source_window_bound}. It adds no helper declaration and no import. The
+separate general theorem is included as a reusable mathematical artifact, not
+as an uncharged production dependency. The patch explicitly unfolds
+\code{nativeTarget} when checking the identity; it does not rely on accidental
+unfolding by \code{ring}.
+
+The current declaration changes from \WindowOld{} to \WindowNew{} physical
+lines. More significantly, the separate $G$, mask, recombination, and
+$q^2<q^3$ estimates are replaced by one equality and nonnegativity of its
+right-hand side. There is no claimed elaboration-time improvement: the new
+\code{ring} obligation is larger, and timing would require a controlled full
+module comparison.
+
+\subsection{Relation to earlier proposals}
+
+Packet \code{2026-10-26u} already proposes a \emph{lower} native-rank envelope,
+including $(2q-1)(q^2-1)$. Packet \code{2026-10-26zb} compares ranks using the
+scalar $C+qF$ at fixed surrounding parameters. Both are treated as available.
+Neither supplies the upper deficit \eqref{eq:deficit}, its sharp reduced-box
+bound, or this replacement of \code{source_window_bound}. The new statement
+therefore complements those results rather than reimplementing them.
+
+\section{Prove the zero test without the Boolean equation}
+
+\subsection{The certificate already contains enough information}
+
+The current internal certificate has three fields:
+\begin{equation}
+ b^2=b,\qquad bn=0,\qquad n+b(s+1)=s+1.\label{eq:zerocert}
+\end{equation}
+Its soundness proof first applies the internal Boolean-root theorem to the
+first field, then handles $b=0$ and $b=1$. The external natural-coordinate
+certificate uses the integer rows
+\[
+ b(b-1)=0,\qquad bn=0,\qquad n-(1-b)(s+1)=0
+\]
+and follows the same strategy. The relevant pinned declarations are
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectZeroTest.lean#L23-L36}{\code{ObjectZeroTest.certificate_sound}}
+and
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticBoolean.lean#L10-L27}{\code{QuadraticBoolean.zero_certificate_sound}}.
+
+The first field is not needed to determine the selector.
+
+\begin{proposition}[Annihilation and balance determine the selector]
+Let $A$ be a commutative semiring with cancellation by nonzero factors, let
+$u\ne0$, and suppose
+\[
+ bn=0,\qquad n+bu=u.
+\]
+Then $b=1$ if $n=0$, and $b=0$ if $n\ne0$.
+\end{proposition}
+
+\begin{proof}
+If $n=0$, the balance equation becomes $bu=u=1u$. Cancel the nonzero right
+factor $u$ to obtain $b=1$. If $n\ne0$, the annihilation equation and absence
+of zero divisors give $b=0$.
+\end{proof}
+
+This proof does not first establish that $b$ is Boolean. Booleanity is a
+consequence of the selector equation. For the internal certificate take
+$u=s+1$ and use the existing theorem that this internal successor is nonzero.
+For the external certificate, rearrange the third integer row into the
+balance equation and use that a natural slack plus one is positive.
+
+\subsection{The actual proof edits}
+
+The production changes retain the definitions of both certificates and all
+three literal polynomial rows. They change only the two soundness proof
+bodies. In each proof, the first field is explicitly cleared, and the case
+split is on $n=0$. The remaining equations then simplify directly.
+
+Explicit clearing is a useful implementation detail here. An underscore in a
+destructuring pattern may leave an automatically named hypothesis available to
+automation. Since this proposal is specifically about not using the first
+field, the delivered proof uses the clearing pattern and is checked after that
+change. The independent general theorem has no idempotence hypothesis at all,
+which makes the logical reduction unambiguous.
+
+The external body changes from \ZeroExternalOldBody{} to
+\ZeroExternalNewBody{} lines, and the internal body from
+\ZeroInternalOldBody{} to \ZeroInternalNewBody{} lines. Together these direct
+edits remove \ZeroSaved{} physical lines without adding a shared helper or an
+import. A general shared theorem is available in the standalone artifact if
+future clients justify it, but its code is not hidden from the production
+accounting.
+
+\subsection{Why this works for nonstandard internal naturals}
+
+The argument is algebraic. It does not replace the internal carrier with
+$\N$, enumerate its values, or perform external induction on its elements.
+The existing internal semiring, linear order, canonical additive order, and
+strict ordered-ring structure provide cancellation by a nonzero factor.
+The canonical additive order supplies the \code{ExistsAddOfLE} premise needed
+by mathlib's ordered-domain instance. The existing
+\code{ObjectNaturalDiscrete.add_one_ne_zero} supplies the nonzero successor
+fact for arbitrary internal slack values. The delivered abstract-carrier
+fixture checks the argument under these algebraic contracts.
+
+There are genuine hypotheses here. If $u=0$ and $n=0$, both equations hold for
+every $b$, so the nonzero condition cannot be dropped. Likewise, arbitrary
+semirings with zero divisors do not support the conclusion. For example, in
+$\N\times\N$, choose $n=(1,0)$, $b=(0,1)$, and $u=(1,1)$. Annihilation and
+balance hold, but $b$ is neither the zero nor the unit of the product semiring.
+The report therefore does not advertise the result as a theorem of all
+commutative semirings.
+
+\subsection{Relation to earlier proposals and to equation size}
+
+The nearest earlier work includes packet \code{2026-10-26m}'s use of the
+zero-test correctness theorem in conditional clients, packet
+\code{2026-10-26x}'s simplification of idempotent cancellation, and packet
+\code{2026-10-26zg}'s split-zero interpretation of signed expressions. These
+are useful but different: they still consume Booleanity, simplify how it is
+proved, or normalize the interpretation of rows. The present argument shows
+that the other two constraints already force the selector.
+
+Removing the literal Boolean row could be a separate encoding experiment.
+It is not part of this patch: doing so would alter the generated system and
+require new row, degree, operation-count, and representation checks. The
+delivered proposal is only a proof simplification and a precise redundancy
+theorem. All public statements, witness counts, and executable expressions
+remain unchanged in the proposed files.
+
+\section{Use oddness to prove the controller base is a unit}
+
+\subsection{The existing endpoint needs less than an order theorem}
+
+The current \code{block_base_isUnit} obtains positive order of
+$B^{a-1}$ from \code{block_order}, infers that this power is a unit, and then
+deduces that $B$ is a unit. For this particular conclusion, the established
+numeric shape of the base and modulus is enough:
+\[
+ B=2^{94517},\qquad d=47\cdot2011,\qquad a=120199,\qquad
+ m=(da)a^k.
+\]
+The existing controller-data module already provides \code{B_eq},
+\code{d_odd}, and \code{auxiliary_odd}.
+
+Since $m$ is odd, $\gcd(2,m)=1$. Hence the residue class of $2$ is a unit in
+$\Z/m\Z$, and so is its $94517$th power. The proof works also at $k=0$;
+there is no positive-exponent side case for $k$.
+
+In Lean, the useful chain is
+\begin{lstlisting}
+Nat.coprime_two_left
+ZMod.isUnit_iff_coprime
+IsUnit.pow
+\end{lstlisting}
+with \code{Nat.cast_pow} moving the exponentiation into \code{ZMod}. This
+keeps $2^{94517}$ symbolic. An earlier test form applied coprimality to the
+large natural power and triggered an elaborator warning about reducing the
+large exponent; the supplied final proof avoids that form.
+
+The declaration changes from \UnitOld{} to \UnitNew{} physical lines. The
+claim is strictly local: the proof term no longer uses \code{block_order}.
+The surrounding module still needs its power-coordinate imports for other
+results. There is no claim that the whole module's import graph, total build
+time, or all controller order calculations disappear.
+
+\subsection{Novelty boundary}
+
+Previous packets contain general coprime-thickening, fixed-reference Gamma
+certificates, exact-order alternatives, and weaker controller annihilation
+facts. Those mechanisms are excluded. This proposal is only the remaining
+endpoint replacement for the actual base $B$. In particular,
+\code{2026-10-26zq/evidence/late_head_scope_addendum.md} explicitly leaves the
+base-unit proof in use after its own subset construction. The present small
+change can therefore coexist with that proposal.
+
+\section{Validation, accounting, and integration}
+
+\subsection{Completed checks}
+
+The checked runtime reports Lean 4.32.0, commit
+\code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}. Its mathlib source is
+\code{81a5d257c8e410db227a6665ed08f64fea08e997}, matching the repository's
+\code{lake-manifest.json}. An existing installation was reused read-only;
+project object files from other checkouts were not used for these checks.
+
+The delivered Lean files check the general arithmetic identities, their
+inequalities, the sharpness family, the selector theorem, the literal
+external certificate, an abstract admissible internal certificate, and the
+actual numerical controller modulus. Source-shaped fixtures additionally
+check the proposed rank body with the copied rank definitions and the
+existing source identities passed as explicit hypotheses, and check the
+controller body under the existing base-identity and oddness contracts.
+
+These hypotheses are not \code{axiom} declarations or admitted proofs. They
+are theorem parameters representing the already proved production interfaces.
+This checks how the proposed body consumes those interfaces. It does not
+recompile the proofs that establish the interfaces in the complete project.
+The source manifest and review identify the exact production suppliers.
+
+All checked files avoid \code{sorry}, \code{admit}, and added axioms. Their
+\texttt{\#print axioms} outputs contain only the ordinary logical foundations
+\code{propext}, \code{Classical.choice}, and \code{Quot.sound}, as applicable.
+The logs are included. This is a check of these new lemmas and fixtures; it
+should not be read as an axiom audit of every production theorem in ProveIt.
+
+\subsection{What the line counts mean}
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Changed module & Before & After & Removed \\
+\midrule
+\code{NativePellBootstrap} & \WindowModuleOld & \WindowModuleNew & \WindowSaved \\
+\code{QuadraticBoolean} & \ZeroExternalModuleOld & \ZeroExternalModuleNew & \ZeroExternalSaved \\
+\code{ObjectZeroTest} & \ZeroInternalModuleOld & \ZeroInternalModuleNew & \ZeroInternalSaved \\
+\code{CurrentControllerSubsets2011} & \UnitModuleOld & \UnitModuleNew & \UnitSaved \\
+\midrule
+Total reduction & & & \TotalSaved \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are physical-line differences for the supplied complete replacement
+files against the pinned current source. New production helpers and imports
+are zero. The extra standalone proofs, fixtures, report, and audit scripts are
+validation and explanatory artifacts; they are not proposed production
+dependencies. Declaration types and all non-proof definitions are preserved.
+One explanatory controller comment is updated to describe its new proof.
+
+The numbers are not an estimate against an imaginary repository in which every
+alternative historical patch has simultaneously been merged. Some historical
+alternatives are mutually exclusive. The user's all-applied rule is enforced
+for novelty; quantitative differences are measured against an explicit real
+revision. This distinction avoids charging the same earlier improvement twice.
+
+\subsection{Remaining production check}
+
+A complete build of the four production modules and their transitive project
+dependencies was not performed here. The initial environment had very little
+free storage, and no fresh full project build was claimed in its place.
+The checked kernels and source-shaped fixtures establish a narrower, useful
+verification boundary. The report consistently labels the patches as
+integration candidates.
+
+The archive provides scripts for source verification and standalone checks
+with \texttt{lake env lean}. The README also gives commands to apply the
+patches and build the four changed targets and their relevant clients in a
+ProveIt checkout. The patches do not
+require a new mathematical assumption. If the current repository has moved,
+compare the target bodies and signatures before applying them; do not force a
+patch through a conflicting change.
+
+Recommended order is the zero-test change first, because it is small and its
+logical premise reduction is especially easy to review; the rank change next,
+because it supplies the most substantive new identity; and the unit proof last
+as a small cleanup. These changes are independent and can be accepted
+separately. No GitHub commit, pull request, or repository write was made as
+part of this delivery.
+
+\section{Further research questions}
+
+These are follow-up questions suggested by the three results, not additional
+claims of novelty.
+
+\paragraph{Can the exact source improve the sharp reduced bound?}
+The reduced-box extremizer need not satisfy the Pell and transport equations.
+Does an additional source row exclude it, and if so, can that exclusion be
+expressed as another positive term in \eqref{eq:deficit}? A useful result would
+be a new source-specific margin with a short certificate, not a larger
+collection of numerical estimates.
+
+\paragraph{Should the upper envelope become public?}
+The current patch keeps the argument local to avoid helper overhead. If a
+second independent client needs a bound on the native rank, the separately
+checked \code{upper_envelope} is a candidate public interface. Its precise
+strength and mask-sign assumptions are already documented. The decision
+should be based on real consumers and total code cost.
+
+\paragraph{Where else is an algebraic certificate premise redundant?}
+The zero-test example suggests inspecting certificates for constraints implied
+by their remaining equations and nonzero guards. This is a research direction,
+not a claim that arbitrary rows can be removed. Each candidate needs a proof
+over the actual carrier, including nonstandard internal values, and its
+literal encoding should remain fixed during proof-only refactoring.
+
+\section*{Source and artifact guide}
+
+All repository references are pinned to the final exclusion revision unless
+otherwise stated. The evidence directory includes the candidate-specific
+novelty comparison, independent mathematical review, source hashes, detailed
+line metrics, runtime validation results, and logs. The complete changed
+files are supplied alongside patches, so a reviewer can inspect either form.
+
+\begin{enumerate}
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/tree/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/research/lean-proof-simplification}{Prior proposal corpus and index}, including all 43 packets.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/docs/incoming/README.md}{Incoming index}; at the reviewed revision it contains no waiting archive.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean}{Native rank, target, scale, and window theorem}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticBoolean.lean}{External quadratic Boolean certificate} and
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectZeroTest.lean}{internal zero-test certificate}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerData2011.lean}{Controller constants and parity facts} and
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/60fcb2a69b7f1fdd4c3592ea5f164223cad50abe/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerSubsets2011.lean}{the base-unit consumer}.
+\item \href{https://github.com/leanprover-community/mathlib4/tree/81a5d257c8e410db227a6665ed08f64fea08e997}{Pinned mathlib source}; relevant library contracts are checked by the delivered Lean files.
+\end{enumerate}
+
+\end{document}

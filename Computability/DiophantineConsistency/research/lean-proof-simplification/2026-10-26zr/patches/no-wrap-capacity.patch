@@ -1,0 +1,26 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentDummySafety2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentDummySafety2011.lean
+@@ -120,17 +120,12 @@
+ 
+ private theorem nonwrap_of_short {ρ m F δ : ℕ} (hρ : 2 ≤ ρ) (hm : 2 ≤ m)
+     (hF : F < ρ^(m-1)) (hδ : δ < ρ^(m-2)) : F+δ < ρ^m-1 := by
+-  have he1 : m-1 = (m-2)+1 := by omega
+-  have he2 : m = (m-2)+2 := by omega
+-  have hp : 0 < ρ^(m-2) := pow_pos (by omega) _
+-  have hc : ρ+1 < ρ^2 := by nlinarith
+-  have hq : ρ^m = ρ^(m-2)*ρ^2 := by conv_lhs => rw [he2,pow_add]
+-  rw [he1,pow_succ] at hF
+-  have hl : F+δ+2 ≤ ρ^(m-2)*(ρ+1) := by nlinarith
+-  have hr : ρ^(m-2)*(ρ+1) < ρ^m := by
+-    rw [hq]
+-    exact Nat.mul_lt_mul_of_pos_left hc hp
+-  have := hl.trans_lt hr
++  have hδ' := hδ.trans_le (Nat.pow_le_pow_right
++    (by omega : 1 ≤ ρ) (by omega : m-2 ≤ m-1))
++  have hcapacity := Nat.mul_le_mul_right (ρ^(m-1)) hρ
++  have he : ρ*ρ^(m-1) = ρ^m := by
++    rw [← pow_succ']; congr 1; omega
++  rw [he] at hcapacity
+   omega
+ 
+ variable {N : ℕ} [NeZero N]
