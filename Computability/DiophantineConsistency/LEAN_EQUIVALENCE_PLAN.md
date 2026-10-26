@@ -494,7 +494,14 @@ then derives absence of every interior finish while the encoded state is
 operating: one finish would propagate to the forced head transition,
 whose South is Boolean. No clean-row or no-finish premise is introduced.
 See the [author review and four fresh checks](reviews/wang-tiles942-row-encoding-operating-lean-root.md).
-The actual one-row step theorem and eventual-halt extraction remain open.
+The actual one-row step is now closed by `WangTiles942RowStep.row_step`:
+the written old head, exact moved-head receiver and unchanged pass cells
+give the complete actual next configuration. Absence of finishes and
+strict next-head containment are derived rather than supplied. The
+reverse `WangTiles942StepConstruction.step_row` explicitly constructs
+an actual matching row from every operating configuration, including
+actions entering halt215. See the [root review and four fresh replays](reviews/wang-tiles942-row-step-construction-lean-root.md).
+Eventual-halt extraction and the complete converse remain further work.
 
 An [independent row-encoding and operating-row review](reviews/wang-tiles942-row-encoding-operating-lean-peer.md)
 passed four isolated fresh builds, retaining the actual clock1 and the
