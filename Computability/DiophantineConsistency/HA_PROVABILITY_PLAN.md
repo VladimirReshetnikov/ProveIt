@@ -47,6 +47,15 @@ standard-only reports and353 authenticated reused objects. It includes
 the maintained and mixed-carrier endpoints, and preserves the twelve
 explicit unchanged-client reuse boundaries.
 
+The [complete normalized product](research/fourteen-normalized-product106/README.md)
+now supplies14 positive variables,67 operations and degree106 with the
+unchanged current ports. The exact scaled identity and positive delta
+preserve every positive zero. Two independent fresh current-source builds
+pass six standard-only reports; normal/optimized complete finite audits
+verify the full degree, all paid operations and all47313 coefficient bytes.
+See the [root acceptance](reviews/fourteen-normalized-product106-root.md).
+Its external ConZFC equivalence is checked; its HA endpoint remains open.
+
 The current-port mixed-carrier13-variable variants at72/124 and74/122
 also have checked entire-positive-zero maps and closed external ConZFC
 equivalences. Their [independent replay](reviews/thirteen-lv-carrier122-root.md)

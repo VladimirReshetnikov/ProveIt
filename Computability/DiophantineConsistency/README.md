@@ -156,6 +156,11 @@ for the maintained sentence. Two independent builds pass10 standard-only
 reports. Its negative corollary targets the literal negated GG predicate;
 the source PA equivalence and consistency-predicate identification remain
 explicit outstanding obligations.
+The [normalized14/67/106 form](research/fourteen-normalized-product106/README.md)
+now also has a complete current-port graph and independently checked
+external consistency equivalence. Its identity maps retain every positive
+assignment. The [root replay](reviews/fourteen-normalized-product106-root.md)
+uses the refreshed current data owners and passes all six reports.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the

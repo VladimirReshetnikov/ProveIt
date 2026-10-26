@@ -381,3 +381,4 @@ import DiophantineConsistency.OnePageTuple54
 import DiophantineConsistency.ObjectDivision
 import DiophantineConsistency.ObjectDivModSyntax
 import DiophantineConsistency.AnnotatedSharedSyntax
+import DiophantineConsistency.CarrierNormalizedProduct106

@@ -50,6 +50,15 @@ manuscript catalogue. These must be assessed by their actual metrics and
 bindings, rather than replacing the goal with one convenient equation.
 No global optimality theorem is requested or inferred from that ledger.
 
+The [complete normalized product](research/fourteen-normalized-product106/README.md)
+now supplies14 positive variables,67 operations and degree106 with the
+unchanged current ports. The exact scaled identity and positive delta
+preserve every positive zero. Two independent fresh current-source builds
+pass six standard-only reports; normal/optimized complete finite audits
+verify the full degree, all paid operations and all47313 coefficient bytes.
+See the [root acceptance](reviews/fourteen-normalized-product106-root.md).
+Its external ConZFC equivalence is checked; its HA endpoint remains open.
+
 ## Current gaps and implementation order
 
 After merging the next13 upstream proof simplifications at891c86e0b2,
