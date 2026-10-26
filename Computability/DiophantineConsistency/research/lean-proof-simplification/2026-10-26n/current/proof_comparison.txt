@@ -1,0 +1,132 @@
+C1: CurrentCellLabels2011.sum_le_one_cases
+BEFORE (verbatim):
+  classical
+  by_cases hz : (∑ i, f i) = 0
+  · left
+    intro i
+    have hi := Finset.single_le_sum (fun j (_ : j ∈ Finset.univ) => Nat.zero_le (f j))
+      (Finset.mem_univ i)
+    omega
+  · have hsum : (∑ i, f i) = 1 := by omega
+    have hex : ∃ i, 0 < f i := by
+      by_contra hnot
+      push Not at hnot
+      have hall : ∀ i, f i = 0 := fun i => by have := hnot i; omega
+      simp only [hall, Finset.sum_const_zero] at hsum
+      contradiction
+    obtain ⟨i, hi⟩ := hex
+    have hle := Finset.single_le_sum (fun j (_ : j ∈ Finset.univ) => Nat.zero_le (f j))
+      (Finset.mem_univ i)
+    have hi1 : f i = 1 := by omega
+    have herase : ∑ j ∈ Finset.univ.erase i, f j = 0 := by
+      have he := Finset.sum_erase_add (s := Finset.univ) f (Finset.mem_univ i)
+      omega
+    refine Or.inr ⟨i, hi1, ?_⟩
+    intro j hj
+    have hjmem : j ∈ Finset.univ.erase i := Finset.mem_erase.mpr ⟨hj, Finset.mem_univ j⟩
+    have hjle := Finset.single_le_sum (fun q (_ : q ∈ Finset.univ.erase i) => Nat.zero_le (f q)) hjmem
+    omega
+AFTER (uncompiled):
+  classical
+  by_cases hz : ∀ i, f i = 0
+  · exact Or.inl hz
+  · push_neg at hz
+    obtain ⟨i, hi⟩ := hz
+    have hs := Finset.sum_le_one_iff.mp hf
+    refine Or.inr ⟨i, (hs i i (Finset.mem_univ i) (Finset.mem_univ i) hi hi).2, ?_⟩
+    intro j hji
+    by_contra hj
+    exact hji (hs j i (Finset.mem_univ j) (Finset.mem_univ i) hj hi).1
+
+C2: CurrentSouthShift2011.offset19_word
+BEFORE (verbatim):
+  let f := fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+    ((941+j : ℕ) : ZMod (N * 2011)))
+  have hw : southWord c b = binaryWord f 9 :=
+    copy_word_translation c t 941 b (by omega) hcopy
+  have hs : (fun j => f (1+j)) =
+      (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+        ((942+j : ℕ) : ZMod (N * 2011)))) := by
+    funext j
+    dsimp only [f]
+    rw [show 941+(1+j) = 942+j by omega]
+  have hp := binaryWord_prefix f 1 8 (fun j _ => hc _)
+  rw [hs, binaryWord_one] at hp
+  change binaryWord f 9 = (2*southWord c (theta t b)) % 512 + f 0 at hp
+  exact hw.trans hp
+AFTER (uncompiled):
+  rw [copy_word_translation c t 941 b (by omega) hcopy]
+  simpa only [southWord, binaryWord_one, ← Nat.add_assoc,
+    Nat.reduceAdd, Nat.reducePow, Nat.add_zero, Nat.cast_ofNat] using
+    (binaryWord_prefix
+      (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+        ((941 + j : ℕ) : ZMod (N * 2011)))) 1 8 (fun j _ => hc _))
+
+C2: CurrentSouthShift2011.offset20_word
+BEFORE (verbatim):
+  let f := fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+    ((940+j : ℕ) : ZMod (N * 2011)))
+  have hw : southWord c b = binaryWord f 9 :=
+    copy_word_translation c t 940 b (by omega) hcopy
+  have hs : (fun j => f (2+j)) =
+      (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+        ((942+j : ℕ) : ZMod (N * 2011)))) := by
+    funext j
+    dsimp only [f]
+    rw [show 940+(2+j) = 942+j by omega]
+  have hp := binaryWord_prefix f 2 7 (fun j _ => hc _)
+  rw [hs, binaryWord_two] at hp
+  change binaryWord f 9 = (4*southWord c (theta t b)) % 512 + (f 0 + 2*f 1) at hp
+  rw [hw, hp]
+  change _ = (4*southWord c (theta t b)) % 512 + f 0 + 2*f 1
+  omega
+AFTER (uncompiled):
+  rw [copy_word_translation c t 940 b (by omega) hcopy]
+  simpa only [southWord, binaryWord_two, ← Nat.add_assoc,
+    Nat.reduceAdd, Nat.reducePow, Nat.add_zero, Nat.cast_ofNat] using
+    (binaryWord_prefix
+      (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+        ((940 + j : ℕ) : ZMod (N * 2011)))) 2 7 (fun j _ => hc _))
+
+C3: CurrentSouthShift2011.copy_word_translation
+BEFORE (verbatim):
+  unfold southWord binaryWord
+  apply Finset.sum_congr rfl
+  intro j hj
+  have hj' : j < 9 := Finset.mem_range.mp hj
+  have hc := hcopy ⟨j,hj'⟩
+  have hs := source_eq_of_remainder_le b t (960+j) (by omega)
+  have he : 960+j-t%2011 = a+j := by omega
+  rw [he] at hs
+  rw [hs] at hc
+  exact congrArg (fun z : ℕ => 2^j*z) hc
+AFTER (uncompiled):
+  unfold southWord
+  apply CurrentTileColors2011.binaryWord_congr
+  intro j hj
+  have hs := source_eq_of_remainder_le b t (960+j) (by omega)
+  rw [show 960+j-t%2011 = a+j by omega] at hs
+  exact (hcopy ⟨j, hj⟩).trans (congrArg c hs)
+
+C3: CurrentOccupation2011.horizontal_words
+BEFORE (verbatim):
+  unfold eastWord westWord binaryWord
+  apply Finset.sum_congr rfl
+  intro j hj
+  exact congrArg (fun a : ℕ => 2^j*a) (hbits ⟨j, Finset.mem_range.mp hj⟩)
+AFTER (uncompiled):
+  exact CurrentTileColors2011.binaryWord_congr _ _ 8
+    (fun j hj => hbits ⟨j, hj⟩)
+
+C4: CurrentCellCycle2011.propagate
+BEFORE (verbatim):
+  have hp (j : ℕ) : P ((next : Cell N → Cell N)^[j] 0) := by
+    induction j with
+    | zero => exact hzero
+    | succ j ih =>
+        rw [Function.iterate_succ_apply']
+        exact hnext _ ih
+  intro b
+  simpa only [iterate_index_zero] using hp (index b)
+AFTER (uncompiled):
+  exact propagate_from P 0 hzero hnext

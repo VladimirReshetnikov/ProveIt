@@ -1,0 +1,56 @@
+\thispagestyle{empty}
+{\Large\bfseries Further simplification of\\[3pt]
+DiophantineConsistency Lean proofs\par}
+\vspace{7pt}
+{\large Source review and new proposals after the recent commits\par}
+\vspace{5pt}
+26 October 2026\quad Second review
+
+\textbf{Review pin}\quad\code{b310142330df89e48413c8fce62e7de223e1c7d5}
+
+\textbf{Main conclusion.} The recent commits add a new layer of exact word,
+cell-cycle and Wang-boundary proofs; they do not simplify the older proof
+bodies. The best next edits are local: reuse an existing raw-table decoder,
+fuse two tree-decoder invariants, and specialize APIs that the new modules
+already provide. These changes are independent of the previously submitted
+large circuit, bound, carry and representation refactors.
+
+\begin{tabularx}{\linewidth}{@{}L{0.46in}Y L{1.25in}@{}}
+\toprule
+ID & Proposed change & First acceptance test\\
+\midrule
+A1 & Replace the parent-code reconstruction induction with total decoding and \code{check_lists}. & Same raw-input theorem\\
+A2 & Prove tree quotation and depth together; retain both old theorem names as projections. & One decoder traversal\\
+C1 & Use \code{Finset.sum_le_one_iff} for the all-zero or selected-index dichotomy. & Empty type still works\\
+C2 & Specialize \code{binaryWord_prefix} directly for offsets 19 and 20. & Exact low-bit formulas\\
+C3 & Move the existing binary-word congruence lemma to the definition layer. & No import cycle\\
+C4 & Derive zero-base propagation from \code{propagate_from}. & Reorder before reuse\\
+W1 & Expose an indexed north-boundary view for five classification proofs. & Same literal tile cases\\
+S1--S2 & Make one CRT congruence explicit; share binary composition depth bookkeeping. & Same certificate and bounds\\
+\bottomrule
+\end{tabularx}
+
+\textbf{What is new.} All proposals were compared with the five ZIP packets
+at \code{docs/incoming} and the sixth packet routed to the research archive.
+Section~\ref{sec:novelty} identifies the nearest excluded ideas and the
+specific obligation each new proposal removes. The packet contains no new
+recommendation to repeat the old circuit certificates, general scalar bounds,
+sum-of-squares infrastructure, tuple packaging or scanner frameworks.
+
+\textbf{Measured text only.} A1 and A2 replace 103 nonblank declaration lines
+with 49, counting the shared theorem and wrappers. The six targeted current-module
+proof bodies in C1--C4 total 78 versus 31 nonblank lines before compatibility
+alias overhead. These are static draft counts, not compiled savings or
+performance measurements.
+
+\textbf{Validation boundary.} All new Lean code is \textbf{uncompiled}.
+The environment has no Lean/Lake toolchain; no installation was attempted.
+Source bytes and source anchors were verified, and the report was built and
+visually reviewed. No Lean elaboration, kernel replay, fresh axiom audit or
+benchmark is claimed. The source snapshot is unchanged and no upstream change
+was published.
+
+\vfill
+\textbf{Reading order.} Commit context and novelty come first; each proposal
+then gives the source, mechanism, candidate and adoption gate. Full Lean files,
+patches, measurements and provenance accompany this TeX/PDF report.

@@ -1,0 +1,556 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MarginFinalizer.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MarginFinalizer.lean
+@@ -48,50 +48,8 @@
+ theorem integer_roots_of_separated_norm_zero {theta omega a b w : ℤ}
+     (homega : omega ≠ 0) (hw : w ≠ 0) (hsep : a ≠ w ^ 2 * b)
+     (hz : norm theta omega a w b = 0) :
+-    ∃ r s : ℤ, r ^ 2 = a ∧ s ^ 2 = b ∧ theta = omega * (r + w * s) := by
+-  have htheta : theta ≠ 0 := by
+-    intro ht
+-    rw [ht] at hz
+-    dsimp [NearSquareFinalizer.norm] at hz
+-    have he : omega ^ 4 * (a - w ^ 2 * b) ^ 2 = 0 := by
+-      linear_combination hz
+-    rcases mul_eq_zero.mp he with he | he
+-    · exact (pow_ne_zero 4 homega) he
+-    · exact hsep (sub_eq_zero.mp (eq_zero_of_pow_eq_zero he))
+-  have hwQ : (w : ℚ) ≠ 0 := by exact_mod_cast hw
+-  have hoQ : (omega : ℚ) ≠ 0 := by exact_mod_cast homega
+-  have htQ : (theta : ℚ) ≠ 0 := by exact_mod_cast htheta
+-  have hzQ : norm ((theta : ℚ) / omega) 1 a w b = 0 := by
+-    have h : norm (theta : ℚ) omega a w b = 0 := by
+-      dsimp [NearSquareFinalizer.norm] at hz ⊢
+-      exact_mod_cast hz
+-    dsimp [NearSquareFinalizer.norm] at h ⊢
+-    field_simp
+-    nlinarith [h]
+-  obtain ⟨r, s, hr, hs, hsum⟩ :=
+-    rational_roots_of_norm_zero hwQ (div_ne_zero htQ hoQ) hzQ
+-  have hsa : IsSquare a := Rat.isSquare_intCast_iff.mp ⟨r, by nlinarith [hr]⟩
+-  have hsb : IsSquare b := Rat.isSquare_intCast_iff.mp ⟨s, by nlinarith [hs]⟩
+-  obtain ⟨r₀, hr₀⟩ := hsa
+-  obtain ⟨s₀, hs₀⟩ := hsb
+-  have hr₀' : r₀ ^ 2 = a := by nlinarith [hr₀]
+-  have hs₀' : s₀ ^ 2 = b := by nlinarith [hs₀]
+-  have hrootsr : r = (r₀ : ℚ) ∨ r = -(r₀ : ℚ) := by
+-    have : r ^ 2 = (r₀ : ℚ) ^ 2 := by exact_mod_cast hr.trans (by exact_mod_cast hr₀'.symm)
+-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
+-  have hrootss : s = (s₀ : ℚ) ∨ s = -(s₀ : ℚ) := by
+-    have : s ^ 2 = (s₀ : ℚ) ^ 2 := by exact_mod_cast hs.trans (by exact_mod_cast hs₀'.symm)
+-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
+-  rcases hrootsr with hrsgn | hrsgn <;> rcases hrootss with hssgn | hssgn
+-  all_goals rw [hrsgn, hssgn] at hsum
+-  · refine ⟨r₀, s₀, hr₀', hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨r₀, -s₀, hr₀', by simpa using hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨-r₀, s₀, by simpa using hr₀', hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨-r₀, -s₀, by simpa using hr₀', by simpa using hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
++    ∃ r s : ℤ, r ^ 2 = a ∧ s ^ 2 = b ∧ theta = omega * (r + w * s) :=
++  NearSquareFinalizer.integer_roots_of_separated_norm_zero homega hw hsep hz
+ 
+ /-- Literal package-52 finalizer with one natural witness. -/
+ def value (a b V₀ V₁ J Q m n : ℤ) : ℤ :=
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellBootstrap.lean
+@@ -153,40 +153,32 @@
+ def firstUnit (Q : ℕ) : Pell.Solution₁ ((Q : ℤ) * (Q + 1)) :=
+   Pell.Solution₁.mk (2 * Q + 1) 2 (by ring)
+ 
+-/-- No square lies at `Q(Q+1)+1`, and the next available second coordinate
+-is two. This proves the ordinary fundamental-unit assertion unboundedly. -/
++/-- A positive Pell solution whose second coordinate is at most three is
++automatically fundamental: every nontrivial positive power beyond the first
++already has second coordinate at least four. -/
++theorem isFundamental_of_y_le_three {d : ℤ} {a : Pell.Solution₁ d}
++    (hx : 1 < a.x) (hy : 0 < a.y) (hsmall : a.y ≤ 3) : Pell.IsFundamental a := by
++  obtain ⟨f, hf⟩ := Pell.IsFundamental.exists_of_not_isSquare
++    (Pell.Solution₁.d_pos_of_one_lt_x hx) (Pell.Solution₁.d_nonsquare_of_one_lt_x hx)
++  obtain ⟨n, rfl⟩ := hf.eq_pow_of_nonneg (by omega) hy.le
++  have hn : n < 2 := by
++    by_contra hn
++    have h2 := hf.y_strictMono.monotone (show (2 : ℤ) ≤ n by omega)
++    simp only [zpow_natCast, zpow_ofNat, pow_two, Pell.Solution₁.y_mul] at h2
++    have hfx := hf.1
++    have hfy := hf.2.1
++    nlinarith only [h2, hsmall, hfx, hfy, mul_nonneg (show (0 : ℤ) ≤ f.x - 2 by omega)
++      (show (0 : ℤ) ≤ f.y - 1 by omega)]
++  interval_cases n
++  · simp at hy
++  · simpa using hf
++
++/-- The explicit first unit has second coordinate two, so the uniform
++small-coordinate criterion proves it fundamental. -/
+ theorem firstUnit_fundamental {Q : ℕ} (hQ : 0 < Q) :
+     Pell.IsFundamental (firstUnit Q) := by
+-  refine ⟨by change (1 : ℤ) < 2 * Q + 1; omega, by change (0 : ℤ) < 2; norm_num, ?_⟩
+-  intro b hb
+-  change (2 * Q + 1 : ℤ) ≤ b.x
+-  have hQZ : (0 : ℤ) < Q := by exact_mod_cast hQ
+-  have hprop := b.prop
+-  have hysq : (4 : ℤ) ≤ b.y ^ 2 := by
+-    by_contra hlt
+-    have hsmall : b.y ^ 2 < (2 : ℤ) ^ 2 := by omega
+-    have habs := abs_lt_of_sq_lt_sq hsmall (by norm_num : (0 : ℤ) ≤ 2)
+-    have hycases : b.y = -1 ∨ b.y = 0 ∨ b.y = 1 := by
+-      rw [abs_lt] at habs
+-      omega
+-    have hnotone (hy : b.y ^ 2 = 1) : False := by
+-      have hlow : (Q : ℤ) ^ 2 < b.x ^ 2 := by nlinarith
+-      have hhigh : b.x ^ 2 < ((Q : ℤ) + 1) ^ 2 := by nlinarith
+-      have hlo : (Q : ℤ) < b.x := (sq_lt_sq₀ (by positivity) (by omega)).mp hlow
+-      have hhi : b.x < (Q : ℤ) + 1 := (sq_lt_sq₀ (by omega) (by positivity)).mp hhigh
+-      omega
+-    rcases hycases with hy | hy | hy
+-    · exact hnotone (by rw [hy]; norm_num)
+-    · have hx2 : (1 : ℤ) < b.x ^ 2 := by
+-        simpa using (sq_lt_sq₀ (by norm_num : (0 : ℤ) ≤ 1) (by omega)).mpr hb
+-      rw [hy] at hprop
+-      norm_num at hprop
+-      omega
+-    · exact hnotone (by rw [hy]; norm_num)
+-  have hxsq : (2 * Q + 1 : ℤ) ^ 2 ≤ b.x ^ 2 := by
+-    nlinarith [mul_nonneg (show 0 ≤ (Q : ℤ) * (Q + 1) by positivity)
+-      (show 0 ≤ b.y ^ 2 - 4 by omega)]
+-  exact (sq_le_sq₀ (by positivity) (by omega)).mp hxsq
++  exact isFundamental_of_y_le_three
++    (by change (1 : ℤ) < 2 * Q + 1; omega) (by norm_num [firstUnit]) (by norm_num [firstUnit])
+ 
+ /-- Classification of the actual square first norm, whose second coordinate
+ is twice a Pell sequence value. -/
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean
+@@ -1,4 +1,5 @@
+ import Diophantine.Paper1980.PellHalf90
++import DiophantineConsistency.SignedPellResidue
+ 
+ /-!
+ # Signed auxiliary Pell step-down for the native minus-sign block
+@@ -31,32 +32,9 @@
+       push_cast [Nat.cast_sub hI2]; exact haux
+     exact_mod_cast this
+   obtain ⟨s, hIu, hys⟩ := eq_pell_of_sq hI1 hpell
+-  have hs0 : 0 < s := by
+-    rcases Nat.eq_zero_or_pos s with h0 | h0
+-    · rw [h0, yn_zero] at hys; omega
+-    · exact h0
+   have hIZ0 : (I : ℤ) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
+-  -- `s` is odd
+-  have hsodd : Odd s := by
+-    by_contra heven
+-    rw [Nat.not_odd_iff_even] at heven
+-    obtain ⟨h, hh⟩ := heven
+-    have e1 : (xn hI1 s : ℤ) ≡ (-1) ^ h [ZMOD I] := by
+-      rw [xn_eq_xr hI1, hh, ← two_mul]; exact xr_even_modEq (I : ℤ) h
+-    have e2 : (xn hI1 s : ℤ) = I * u := by rw [← hIu]; push_cast; ring
+-    rw [e2] at e1
+-    have e3 : (0 : ℤ) ≡ (-1) ^ h [ZMOD I] := by
+-      have : (I : ℤ) * u ≡ 0 [ZMOD I] := (Int.modEq_zero_iff_dvd).2 (dvd_mul_right _ _)
+-      exact this.symm.trans e1
+-    have hdvd : (I : ℤ) ∣ (-1) ^ h := by
+-      have := (Int.modEq_iff_dvd.1 e3); simpa using this
+-    have hdvd1 : (I : ℤ) ∣ 1 := by
+-      rcases neg_one_pow_eq_or ℤ h with e | e
+-      · rwa [e] at hdvd
+-      · rw [e] at hdvd; exact (dvd_neg).1 hdvd
+-    have : (I : ℤ) = 1 := Int.eq_one_of_dvd_one (by positivity) hdvd1
+-    have : I = 1 := by exact_mod_cast this
+-    omega
++  have hsodd : Odd s := SignedPellResidue.odd_index_of_base_dvd hI1
++    (by rw [← hIu]; exact dvd_mul_right I u)
+   obtain ⟨h, hs⟩ := hsodd
+   -- `u = Q_h(I²)`
+   have hu_eq : (u : ℤ) = Qh h ((I : ℤ) ^ 2) := by
+@@ -98,31 +76,10 @@
+     have := Qh_modEq h0 h
+     rw [Qh_eval_zero, ← hu_eq] at this
+     rw [hs]; push_cast; exact this
+-  have hJs : (J : ℤ) ≡ (-1) ^ h * s [ZMOD c] ∨
+-      (J : ℤ) ≡ -((-1) ^ h * s) [ZMOD c] := by
+-    rcases hu_J with hu_J | hu_J
+-    · exact Or.inl (hu_J.symm.trans hu_cc)
+-    · right
+-      have h := hu_J.symm.trans hu_cc
+-      simpa using h.neg
+-  -- hence `c ∣ J − p` or `c ∣ J + p`
+-  have hJp_of_sign {t : ℤ} (hJs : (J : ℤ) ≡ t * s [ZMOD c])
+-      (ht : t = 1 ∨ t = -1) :
+-      (c : ℤ) ∣ (J : ℤ) - p ∨ (c : ℤ) ∣ (J : ℤ) + p := by
+-    have hJs' := Int.modEq_iff_dvd.1 hJs
+-    rcases ht with e | e <;> rw [e] at hJs' <;> rcases hsp' with hh | hh
+-    · left; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨k1 - k2, by linear_combination hk1 - hk2⟩
+-    · right; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨k1 - k2, by linear_combination hk1 - hk2⟩
+-    · right; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨-k1 - k2, by linear_combination -hk1 - hk2⟩
+-    · left; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨-k1 - k2, by linear_combination -hk1 - hk2⟩
+-  rcases hJs with hJs | hJs
+-  · exact hJp_of_sign hJs (neg_one_pow_eq_or ℤ h)
+-  · apply hJp_of_sign (t := -((-1 : ℤ) ^ h)) (by simpa only [neg_mul] using hJs)
+-    rcases neg_one_pow_eq_or ℤ h with hh | hh <;> simp [hh]
++  exact SignedModEq.iff_dvd_sub_or_add.mp
++    (((SignedModEq.symm hu_J).trans
++      (SignedModEq.of_sign_mul hu_cc (neg_one_pow_eq_or ℤ h))).trans
++      (SignedModEq.iff_dvd_sub_or_add.mpr hsp'))
+ 
+ /-- The same index residues for a signed auxiliary coordinate with the native
+ minus-sign congruences. -/
+@@ -144,17 +101,8 @@
+   have hvf : (V.natAbs : ℤ) ^ 2 ≡ (c : ℤ) ^ 2 [ZMOD f] := by
+     have h := hVf.pow 2
+     simpa only [neg_sq, ← hvsq] using h
+-  have hvJ : (V.natAbs : ℤ) ≡ J [ZMOD c] ∨
+-      (V.natAbs : ℤ) ≡ -(J : ℤ) [ZMOD c] := by
+-    rcases Int.natAbs_eq V with h | h
+-    · right
+-      exact (congrArg (fun z : ℤ => z % (c : ℤ)) h.symm).trans hVJ
+-    · left
+-      have habs : (V.natAbs : ℤ) = -V := by omega
+-      have habsmod : (V.natAbs : ℤ) ≡ -V [ZMOD c] :=
+-        congrArg (fun z : ℤ => z % (c : ℤ)) habs
+-      have hnegmod : -V ≡ J [ZMOD c] := by simpa only [neg_neg] using hVJ.neg
+-      exact habsmod.trans hnegmod
++  have hvJ : SignedModEq c (V.natAbs : ℤ) J :=
++    (SignedModEq.natAbs c V).symm.trans (Or.inr hVJ)
+   exact index_residues hA hp hcp hf hpm hcm hI1 hcI hIsq hy hvaux hvf hvJ
+ 
+ /-- Half-modulus bounds remove both sign and nonzero-multiple ambiguity. -/
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NearSquareFinalizer.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NearSquareFinalizer.lean
+@@ -90,6 +90,12 @@
+   have heq := full_majorant_defect t D F G H I hDF hI
+   exact ⟨hV, ha, by linarith⟩
+ 
++/-- Preserve the actual signed rational root when an integral power is known. -/
++theorem rat_intCast_num_of_pow {q : ℚ} {z : ℤ} {n : ℕ}
++    (hn : n ≠ 0) (h : q ^ n = (z : ℚ)) : (q.num : ℚ) = q := by
++  apply Rat.coe_int_num_of_den_eq_one
++  simpa [hn] using congrArg Rat.den h
++
+ /-- A nonzero rational norm root reconstructs two rational square roots. -/
+ theorem rational_roots_of_norm_zero {a b w q : ℚ} (hw : w ≠ 0) (hq : q ≠ 0)
+     (hz : norm q 1 a w b = 0) :
+@@ -112,15 +118,11 @@
+   field_simp
+   ring
+ 
+-/-- A norm zero with the first radicand strictly below the separating square
+-forces both integer radicands to be squares and supplies signed integer roots. -/
+-theorem integer_roots_of_norm_zero {theta omega a b w : ℤ}
+-    (homega : omega ≠ 0) (hw : 0 < w) (ha : a < w ^ 2) (hb : 0 < b)
++/-- Separated integer radicands reconstruct the actual signed rational roots. -/
++theorem integer_roots_of_separated_norm_zero {theta omega a b w : ℤ}
++    (homega : omega ≠ 0) (hw : w ≠ 0) (hsep : a ≠ w ^ 2 * b)
+     (hz : norm theta omega a w b = 0) :
+     ∃ r s : ℤ, r ^ 2 = a ∧ s ^ 2 = b ∧ theta = omega * (r + w * s) := by
+-  have hsep : a ≠ w ^ 2 * b := by
+-    have := mul_nonneg (sq_nonneg w) (show 0 ≤ b - 1 by omega)
+-    nlinarith
+   have htheta : theta ≠ 0 := by
+     intro ht
+     rw [ht] at hz
+@@ -130,7 +132,7 @@
+     rcases mul_eq_zero.mp he with he | he
+     · exact (pow_ne_zero 4 homega) he
+     · exact hsep (sub_eq_zero.mp (eq_zero_of_pow_eq_zero he))
+-  have hwQ : (w : ℚ) ≠ 0 := by exact_mod_cast ne_of_gt hw
++  have hwQ : (w : ℚ) ≠ 0 := by exact_mod_cast hw
+   have hoQ : (omega : ℚ) ≠ 0 := by exact_mod_cast homega
+   have htQ : (theta : ℚ) ≠ 0 := by exact_mod_cast htheta
+   have hzQ : norm ((theta : ℚ) / omega) 1 a w b = 0 := by
+@@ -141,29 +143,23 @@
+     field_simp
+     nlinarith [h]
+   obtain ⟨r, s, hr, hs, hsum⟩ := rational_roots_of_norm_zero hwQ (div_ne_zero htQ hoQ) hzQ
+-  have hsa : IsSquare a := Rat.isSquare_intCast_iff.mp ⟨r, by nlinarith [hr]⟩
+-  have hsb : IsSquare b := Rat.isSquare_intCast_iff.mp ⟨s, by nlinarith [hs]⟩
+-  obtain ⟨r₀, hr₀⟩ := hsa
+-  obtain ⟨s₀, hs₀⟩ := hsb
+-  have hr₀' : r₀ ^ 2 = a := by nlinarith [hr₀]
+-  have hs₀' : s₀ ^ 2 = b := by nlinarith [hs₀]
+-  have hrootsr : r = (r₀ : ℚ) ∨ r = -(r₀ : ℚ) := by
+-    have : r ^ 2 = (r₀ : ℚ) ^ 2 := by exact_mod_cast hr.trans (by exact_mod_cast hr₀'.symm)
+-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
+-  have hrootss : s = (s₀ : ℚ) ∨ s = -(s₀ : ℚ) := by
+-    have : s ^ 2 = (s₀ : ℚ) ^ 2 := by exact_mod_cast hs.trans (by exact_mod_cast hs₀'.symm)
+-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
+-  rcases hrootsr with hrsgn | hrsgn <;> rcases hrootss with hssgn | hssgn
+-  all_goals
+-    rw [hrsgn, hssgn] at hsum
+-  · refine ⟨r₀, s₀, hr₀', hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨r₀, -s₀, hr₀', by simpa using hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨-r₀, s₀, by simpa using hr₀', hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨-r₀, -s₀, by simpa using hr₀', by simpa using hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
++  have hrInt := rat_intCast_num_of_pow (by decide : 2 ≠ 0) hr
++  have hsInt := rat_intCast_num_of_pow (by decide : 2 ≠ 0) hs
++  rw [← hrInt] at hr hsum
++  rw [← hsInt] at hs hsum
++  refine ⟨r.num, s.num, ?_, ?_, ?_⟩
++  · exact_mod_cast hr
++  · exact_mod_cast hs
++  · exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
++
++/-- The bounded-radicand form is a specialization of separated root recovery. -/
++theorem integer_roots_of_norm_zero {theta omega a b w : ℤ}
++    (homega : omega ≠ 0) (hw : 0 < w) (ha : a < w ^ 2) (hb : 0 < b)
++    (hz : norm theta omega a w b = 0) :
++    ∃ r s : ℤ, r ^ 2 = a ∧ s ^ 2 = b ∧ theta = omega * (r + w * s) := by
++  apply integer_roots_of_separated_norm_zero homega (ne_of_gt hw) ?_ hz
++  have h := mul_nonneg (sq_nonneg w) (show 0 ≤ b - 1 by omega)
++  nlinarith
+ 
+ /-- The strict square bounds become one-unit root bounds after integrality. -/
+ theorem root_abs_le {a V r : ℤ} (hV : 0 < V) (ha : a < V ^ 2)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PairingRepresentation.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PairingRepresentation.lean
+@@ -43,6 +43,22 @@
+     Fin.cases r (Fin.cases s (fun i => Fin.elim0 i))
+   exact GraphRep.compose pairCoordinates arguments
+ 
++theorem exists_pair_right_iff (z a : ℕ) :
++    (∃ b, z = Nat.pair a b) ↔ a = (Nat.unpair z).1 := by
++  constructor
++  · rintro ⟨b, rfl⟩
++    simp
++  · intro h
++    exact ⟨(Nat.unpair z).2, by rw [h, Nat.pair_unpair]⟩
++
++theorem exists_pair_left_iff (z b : ℕ) :
++    (∃ a, z = Nat.pair a b) ↔ b = (Nat.unpair z).2 := by
++  constructor
++  · rintro ⟨a, rfl⟩
++    simp
++  · intro h
++    exact ⟨(Nat.unpair z).1, by rw [h, Nat.pair_unpair]⟩
++
+ /-- The first inverse-pairing coordinate graph uses the second as a witness. -/
+ def unpairLeftCoordinate : GraphRep (fun v : Fin 1 → ℕ => (Nat.unpair (v 0)).1) := by
+   let index : Option (Fin 2) → Option (Fin 1) ⊕ Fin 1
+@@ -52,12 +68,7 @@
+   intro v
+   change (∃ w : Fin 1 → ℕ, v (some 0) = Nat.pair (v none) (w 0)) ↔
+     v none = (Nat.unpair (v (some 0))).1
+-  constructor
+-  · rintro ⟨w, h⟩
+-    rw [h, Nat.unpair_pair]
+-  · intro h
+-    refine ⟨fun _ => (Nat.unpair (v (some 0))).2, ?_⟩
+-    rw [h, Nat.pair_unpair]
++  simp [Fin.exists_fin_succ_pi, exists_pair_right_iff]
+ 
+ /-- The second inverse-pairing coordinate graph uses the first as a witness. -/
+ def unpairRightCoordinate : GraphRep (fun v : Fin 1 → ℕ => (Nat.unpair (v 0)).2) := by
+@@ -68,12 +79,7 @@
+   intro v
+   change (∃ w : Fin 1 → ℕ, v (some 0) = Nat.pair (w 0) (v none)) ↔
+     v none = (Nat.unpair (v (some 0))).2
+-  constructor
+-  · rintro ⟨w, h⟩
+-    rw [h, Nat.unpair_pair]
+-  · intro h
+-    refine ⟨fun _ => (Nat.unpair (v (some 0))).1, ?_⟩
+-    rw [h, Nat.pair_unpair]
++  simp [Fin.exists_fin_succ_pi, exists_pair_left_iff]
+ 
+ /-- First inverse-pairing projection of a supplied represented function. -/
+ def unpairLeft {σ : Type*} {f : (σ → ℕ) → ℕ} (r : GraphRep f) :
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticBoolean.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticBoolean.lean
+@@ -62,9 +62,7 @@
+     intro v
+     simp only [zero_holds_iff]
+     change (∃ w : Fin 1 → ℕ, ZeroCertificate (v 0) (v 1) (w 0)) ↔ _
+-    constructor
+-    · rintro ⟨w,hw⟩; exact zero_certificate_sound hw
+-    · intro h; rw [h]; exact ⟨fun _ => (v 1).pred,zero_certificate_complete (v 1)⟩)
++    simpa [Fin.exists_fin_succ_pi] using exists_zero_certificate_iff (v 0) (v 1))
+ 
+ private def unaryGraphIndex : Fin 2 → Option (Fin 1) := Fin.cases none (fun _ => some 0)
+ 
+@@ -100,17 +98,9 @@
+     simp only [conditional_holds_iff]
+     change (∃ w : Fin 2 → ℕ, ZeroCertificate (w 0) (v 1) (w 1) ∧
+       (v 0 : ℤ) - ((w 0 : ℤ) * (v 2 : ℤ) + (1 - (w 0 : ℤ)) * (v 3 : ℤ)) = 0) ↔ _
+-    constructor
+-    · rintro ⟨w,hw,he⟩
+-      have hb := zero_certificate_sound hw
+-      by_cases hn : v 1 = 0
+-      · have hb1 : w 0 = 1 := by simpa [hn] using hb
+-        simpa [hn,hb1,sub_eq_zero] using he
+-      · have hb0 : w 0 = 0 := by simpa [hn] using hb
+-        simpa [hn,hb0,sub_eq_zero] using he
+-    · intro h
+-      refine ⟨![if v 1 = 0 then 1 else 0,(v 1).pred],zero_certificate_complete (v 1),?_⟩
+-      by_cases hn : v 1 = 0 <;> simp [hn] at h ⊢ <;> rw [h] <;> ring)
++    by_cases hn : v 1 = 0 <;>
++      simp [Fin.exists_fin_succ_pi, exists_and_right, exists_zero_certificate_iff,
++        hn, sub_eq_zero])
+ 
+ private def conditionalGraphIndex : Fin 4 → Option (Fin 3) :=
+   Fin.cases none some
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticNatPairing.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticNatPairing.lean
+@@ -94,40 +94,21 @@
+     intro v
+     simp only [holds_iff]
+     change (∃ w : Fin 3 → ℕ, Certificate (v 1) (v 0) (v 2) (w 0) (w 1) (w 2)) ↔ _
+-    constructor
+-    · rintro ⟨w,hw⟩
+-      exact certificate_sound hw
+-    · intro h
+-      obtain ⟨t,s,m,hc⟩ := certificate_complete h
+-      exact ⟨![t,s,m],hc⟩)
++    simpa [Fin.exists_fin_succ_pi] using exists_certificate_iff (v 1) (v 0) (v 2))
+ 
+ def leftRepresentation : Rep (Fin 2) (fun v => v 0 = (Nat.unpair (v 1)).1) :=
+   (System.scopedRep (a := 2) (k := 4) (system 0 2)).ofIff (by
+     intro v
+     simp only [holds_iff]
+     change (∃ w : Fin 4 → ℕ, Certificate (v 1) (v 0) (w 0) (w 1) (w 2) (w 3)) ↔ _
+-    constructor
+-    · rintro ⟨w,hw⟩
+-      have hp := certificate_sound hw
+-      rw [hp,Nat.unpair_pair]
+-    · intro h
+-      have hp : v 1 = Nat.pair (v 0) (Nat.unpair (v 1)).2 := by rw [h,Nat.pair_unpair]
+-      obtain ⟨t,s,m,hc⟩ := certificate_complete hp
+-      exact ⟨![(Nat.unpair (v 1)).2,t,s,m],hc⟩)
++    simp [Fin.exists_fin_succ_pi, exists_certificate_iff, GraphRep.exists_pair_right_iff])
+ 
+ def rightRepresentation : Rep (Fin 2) (fun v => v 0 = (Nat.unpair (v 1)).2) :=
+   (System.scopedRep (a := 2) (k := 4) (system 2 0)).ofIff (by
+     intro v
+     simp only [holds_iff]
+     change (∃ w : Fin 4 → ℕ, Certificate (v 1) (w 0) (v 0) (w 1) (w 2) (w 3)) ↔ _
+-    constructor
+-    · rintro ⟨w,hw⟩
+-      have hp := certificate_sound hw
+-      rw [hp,Nat.unpair_pair]
+-    · intro h
+-      have hp : v 1 = Nat.pair (Nat.unpair (v 1)).1 (v 0) := by rw [h,Nat.pair_unpair]
+-      obtain ⟨t,s,m,hc⟩ := certificate_complete hp
+-      exact ⟨![(Nat.unpair (v 1)).1,t,s,m],hc⟩)
++    simp [Fin.exists_fin_succ_pi, exists_certificate_iff, GraphRep.exists_pair_left_iff])
+ 
+ private def graphIndex : Fin 2 → Option (Fin 1) := Fin.cases none (fun _ => some 0)
+ 
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticTreeCodeGraphs.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuadraticTreeCodeGraphs.lean
+@@ -80,16 +80,9 @@
+     simp only [left_holds_iff]
+     change (∃ w : Fin 5 → ℕ, w 0 = (v 1).pred ∧
+       QuadraticNatPairing.Certificate (w 0) (v 0) (w 1) (w 2) (w 3) (w 4)) ↔ _
+-    constructor
+-    · rintro ⟨w,hpred,hc⟩
+-      have hp := QuadraticNatPairing.certificate_sound hc
+-      change v 0 = (Nat.unpair (v 1).pred).1
+-      rw [←hpred,hp,Nat.unpair_pair]
+-    · intro h
+-      change v 0 = (Nat.unpair (v 1).pred).1 at h
+-      have hp : (v 1).pred = Nat.pair (v 0) (Nat.unpair (v 1).pred).2 := by rw [h,Nat.pair_unpair]
+-      obtain ⟨t,s,m,hc⟩ := QuadraticNatPairing.certificate_complete hp
+-      exact ⟨![(v 1).pred,(Nat.unpair (v 1).pred).2,t,s,m],rfl,hc⟩)
++    simp [Fin.exists_fin_succ_pi, exists_and_left,
++      QuadraticNatPairing.exists_certificate_iff, GraphRep.exists_pair_right_iff,
++      AnnotatedCodeArithmetic.treeLeft])
+ 
+ def treeRightRepresentation : Rep (Fin 2) (fun v => v 0 = AnnotatedCodeArithmetic.treeRight (v 1)) :=
+   (System.scopedRep (a := 2) (k := 5) rightSystem).ofIff (by
+@@ -97,16 +90,9 @@
+     simp only [right_holds_iff]
+     change (∃ w : Fin 5 → ℕ, w 0 = (v 1).pred ∧
+       QuadraticNatPairing.Certificate (w 0) (w 1) (v 0) (w 2) (w 3) (w 4)) ↔ _
+-    constructor
+-    · rintro ⟨w,hpred,hc⟩
+-      have hp := QuadraticNatPairing.certificate_sound hc
+-      change v 0 = (Nat.unpair (v 1).pred).2
+-      rw [←hpred,hp,Nat.unpair_pair]
+-    · intro h
+-      change v 0 = (Nat.unpair (v 1).pred).2 at h
+-      have hp : (v 1).pred = Nat.pair (Nat.unpair (v 1).pred).1 (v 0) := by rw [h,Nat.pair_unpair]
+-      obtain ⟨t,s,m,hc⟩ := QuadraticNatPairing.certificate_complete hp
+-      exact ⟨![(v 1).pred,(Nat.unpair (v 1).pred).1,t,s,m],rfl,hc⟩)
++    simp [Fin.exists_fin_succ_pi, exists_and_left,
++      QuadraticNatPairing.exists_certificate_iff, GraphRep.exists_pair_left_iff,
++      AnnotatedCodeArithmetic.treeRight])
+ 
+ private def graphIndex : Fin 2 → Option (Fin 1) := Fin.cases none (fun _ => some 0)
+ 
+--- /dev/null
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SignedModEq.lean
+@@ -0,0 +1,43 @@
++import Mathlib.Data.Int.ModEq
++
++namespace DiophantineConsistency
++
++/-- Congruence modulo an arbitrary integer, with the target sign forgotten. -/
++abbrev SignedModEq (m a b : ℤ) : Prop :=
++  a ≡ b [ZMOD m] ∨ a ≡ -b [ZMOD m]
++
++namespace SignedModEq
++variable {m a b c ε : ℤ}
++
++theorem symm (h : SignedModEq m a b) : SignedModEq m b a := by
++  rcases h with h | h
++  · exact Or.inl h.symm
++  · exact Or.inr (by simpa using h.symm.neg)
++
++theorem trans (hab : SignedModEq m a b) (hbc : SignedModEq m b c) :
++    SignedModEq m a c := by
++  rcases hab with hab | hab <;> rcases hbc with hbc | hbc
++  · exact Or.inl (hab.trans hbc)
++  · exact Or.inr (hab.trans hbc)
++  · exact Or.inr (hab.trans hbc.neg)
++  · exact Or.inl (by simpa using hab.trans hbc.neg)
++
++theorem of_sign_mul (h : a ≡ ε * b [ZMOD m]) (hε : ε = 1 ∨ ε = -1) :
++    SignedModEq m a b := by
++  rcases hε with rfl | rfl
++  · exact Or.inl (by simpa using h)
++  · exact Or.inr (by simpa using h)
++
++theorem iff_dvd_sub_or_add : SignedModEq m a b ↔ m ∣ a - b ∨ m ∣ a + b := by
++  unfold SignedModEq
++  rw [Int.modEq_comm (a := a) (b := b), Int.modEq_comm (a := a) (b := -b)]
++  simp only [Int.modEq_iff_dvd, sub_neg_eq_add]
++
++/-- Forgetting the sign of an integer does not change its signed residue. -/
++theorem natAbs (m a : ℤ) : SignedModEq m a a.natAbs := by
++  rcases Int.natAbs_eq a with h | h
++  · exact Or.inl (congrArg (fun z : ℤ => z % m) h)
++  · exact Or.inr (congrArg (fun z : ℤ => z % m) h)
++
++end SignedModEq
++end DiophantineConsistency
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SignedPellResidue.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SignedPellResidue.lean
+@@ -1,4 +1,5 @@
+ import Diophantine.Common.PellInt
++import DiophantineConsistency.SignedModEq
+ 
+ /-!
+ # The signed odd auxiliary Pell residue
+@@ -77,14 +78,7 @@
+     rcases neg_one_pow_eq_or ℤ j with hj | hj
+     · exact Or.inl (by rwa [hj] at hr)
+     · exact Or.inr (by rwa [hj] at hr)
+-  by_cases hy0 : 0 ≤ y
+-  · simpa only [Int.natCast_natAbs, abs_of_nonneg hy0] using habs
+-  · have hy0 : y ≤ 0 := by omega
+-    rcases habs with hpos | hneg
+-    · right
+-      simpa only [Int.natCast_natAbs, abs_of_nonpos hy0, neg_neg] using hpos.neg
+-    · left
+-      simpa only [Int.natCast_natAbs, abs_of_nonpos hy0, neg_neg] using hneg.neg
++  exact (SignedModEq.natAbs _ y).trans habs
+ 
+ /-- The full signed residue required by the thirteen-coordinate carrier.
+ Neither V nor y is assumed positive, and no size bound on them is supplied. -/

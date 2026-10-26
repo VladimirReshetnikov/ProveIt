@@ -1,0 +1,279 @@
+{
+  "snapshot_commit": "b310142330df89e48413c8fce62e7de223e1c7d5",
+  "status": "Prior-art comparison only; this file does not assert that the new candidate proofs compile.",
+  "comparison_scope": "Initial six-packet audit at b310142330df89e48413c8fce62e7de223e1c7d5, plus the two newly arrived docs/incoming ZIPs at d163c476db9ca1142d2d73de8fa64c0b2c03a848. Original-source copies were not interpreted as proposals. See final_refresh/audit_addendum.json for separately pinned freshness evidence.",
+  "candidates": [
+    {
+      "candidate": "Eliminate two redundant internal inductions in zero-sum and zero-product characterizations",
+      "targets": [
+        "ObjectAdditionCancellation.addRel_zero_iff",
+        "ObjectAdditionCancellation.zeroSumStage",
+        "ObjectAdditionCancellation.zeroSumStage_spec",
+        "ObjectNaturalZero.mulRel_zero_iff",
+        "ObjectNaturalZero.zeroProductStage",
+        "ObjectNaturalZero.zeroProductStage_spec"
+      ],
+      "finding": "No matching proposal found",
+      "nearest_prior_ids": [
+        "P70"
+      ],
+      "distinction": "Use the existing internal nat_zero_or_succ case eliminator because both specialized successor proofs ignore their induction hypotheses; delete both private induction formulas and their satisfaction lemmas.",
+      "qualification": "Earlier omega_ind_of_spec proposal transports required definable induction. This candidate removes two unnecessary specialized uses. nat_zero_or_succ itself is proved once by definable omega_ind; do not describe the foundational development as induction-free. All internal naturals, including nonstandard ones, remain covered.",
+      "final_refresh": {
+        "id": "C1",
+        "candidate": "Delete two redundant specialized internal inductions",
+        "targets": [
+          "ObjectAdditionCancellation.addRel_zero_iff",
+          "ObjectNaturalZero.mulRel_zero_iff"
+        ],
+        "finding": "No matching proposal found in either fresh archive",
+        "nearest_neighbors": [
+          {
+            "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+            "member": "diophantine-lean-simplification/report.tex",
+            "line": 463,
+            "anchor": "\\subsection{Wrap internal induction while retaining definability}"
+          },
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+            "line": 150,
+            "anchor": "8. RETAIN THE OBJECT/NAT SEMANTIC BOUNDARY AND IMPORT ORDER"
+          }
+        ],
+        "distinction": "The fresh report proposes a definability-preserving induction wrapper. The selected change uses existing nat_zero_or_succ because the specialized successor cases ignore their induction hypotheses; it deletes zeroSumStage/zeroProductStage and their satisfaction lemmas. It retains the whole internal omega. Neither fresh packet proposes these eliminations."
+      }
+    },
+    {
+      "candidate": "Reuse odd_index_of_base_dvd in NativePellStepDown",
+      "targets": [
+        "NativePellStepDown.index_residues"
+      ],
+      "finding": "No matching proposal found",
+      "nearest_prior_ids": [
+        "P61",
+        "P62"
+      ],
+      "distinction": "Replace the auxiliary oddness reproof by the existing SignedPellResidue theorem, rather than extracting raw source-register equations or Nat/Int rank conversions.",
+      "qualification": "The same semantic theorem may exist in the repository already; novelty claimed here is the unproposed source-specific simplification, not new Pell mathematics.",
+      "final_refresh": {
+        "id": "C2",
+        "candidate": "Reuse odd_index_of_base_dvd",
+        "targets": [
+          "NativePellStepDown.index_residues"
+        ],
+        "finding": "No matching proposal found in either fresh archive",
+        "nearest_neighbors": [
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+            "line": 289,
+            "anchor": "\\subsection{Let \\texttt{omega} handle the cast interface it already supports}"
+          },
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+            "line": 118,
+            "anchor": "5. Let omega handle Nat-to-Int casts in a linear residue argument"
+          },
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/patches/pell-residue-casts.patch",
+            "line": 4,
+            "anchor": " theorem eq_of_residues"
+          }
+        ],
+        "distinction": "The fresh review modifies the same module, but only eq_of_residues, removing explicit Nat-to-Int bound casts and merging duplicated omega branches. It does not modify index_residues or suggest reusing SignedPellResidue.odd_index_of_base_dvd."
+      }
+    },
+    {
+      "candidate": "Compose divisibility facts directly in signed-congruence branches",
+      "targets": [
+        "NativePellStepDown.index_residues"
+      ],
+      "finding": "No matching proposal found",
+      "nearest_prior_ids": [
+        "P50",
+        "P74"
+      ],
+      "distinction": "The delivered proof replaces four explicit quotient witnesses with dvd_sub, dvd_add, dvd_neg and Or.imp; the negative branch reverses the alternatives to preserve the J-p/J+p conclusion order.",
+      "qualification": "No new generic signed-congruence relation is defined in the current artifact. Describe this as direct divisibility composition at an existing signed interface, not a newly implemented signed-equivalence framework. No added positivity or nonzero-modulus premise is needed.",
+      "final_refresh": {
+        "id": "C3",
+        "candidate": "Compose divisibility facts instead of constructing four quotient witnesses",
+        "targets": [
+          "NativePellStepDown.index_residues"
+        ],
+        "finding": "No matching proposal found in either fresh archive",
+        "nearest_neighbors": [
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+            "line": 289,
+            "anchor": "\\subsection{Let \\texttt{omega} handle the cast interface it already supports}"
+          },
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/evidence/arithmetic/findings.txt",
+            "line": 118,
+            "anchor": "5. Let omega handle Nat-to-Int casts in a linear residue argument"
+          },
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/patches/pell-residue-casts.patch",
+            "line": 4,
+            "anchor": " theorem eq_of_residues"
+          },
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+            "line": 605,
+            "anchor": "\\subsection{Share residue transport at the correct modulus}"
+          }
+        ],
+        "distinction": "The selected change composes dvd_sub/dvd_add/dvd_neg in the signed branches of index_residues. The fresh same-module patch changes only eq_of_residues; the other modular proposal is a cyclic-word residue API. Full replacement copies retain the original index_residues proof and are not evidence that its unchanged text was proposed as a simplification."
+      }
+    },
+    {
+      "candidate": "Integral divisibility proof of nonsquare norm nonvanishing",
+      "targets": [
+        "MinimumNorm.norm_ne_zero_of_not_isSquare"
+      ],
+      "finding": "No matching proposal found",
+      "nearest_prior_ids": [
+        "P40",
+        "P62"
+      ],
+      "distinction": "From x^2=d*y^2 derive y divides x using equal-power divisibility, cancel nonzero y^2 and obtain d=k^2 entirely in integers, removing rational coercions and field_simp.",
+      "qualification": "Prior reports contain no MinimumNorm, norm_ne_zero, pow_dvd_pow_iff, isSquare_intCast or field_simp proposal.",
+      "final_refresh": {
+        "id": "C4",
+        "candidate": "Integral proof of nonsquare norm nonvanishing",
+        "targets": [
+          "MinimumNorm.norm_ne_zero_of_not_isSquare"
+        ],
+        "finding": "No matching proposal found in either fresh archive",
+        "nearest_neighbors": [
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+            "line": 289,
+            "anchor": "\\subsection{Let \\texttt{omega} handle the cast interface it already supports}"
+          }
+        ],
+        "distinction": "The selected proof uses equal-power divisibility and integer cancellation to avoid the rational detour. Neither fresh report nor its detailed notes or proposed patches discusses MinimumNorm, norm_ne_zero_of_not_isSquare, or an equal-power-divisibility proof of this statement. General cast cleanup in a linear Pell residue proof is a different argument."
+      }
+    },
+    {
+      "candidate": "Pell base-parameter monotonicity via simultaneous recurrences",
+      "targets": [
+        "NativePellBootstrap.main_index_gt_first"
+      ],
+      "finding": "No matching proposal found",
+      "nearest_prior_ids": [
+        "P61"
+      ],
+      "distinction": "Prove simultaneous monotonicity of Pell xn and yn in the base parameter using positive first-order recurrences, then compare indices by transitivity instead of exponential upper/lower estimates. Earlier NativePellBootstrap proposals extract raw row equations, not parameter monotonicity.",
+      "qualification": "State the exact lower-bound domain for the base parameter and preserve existing theorem assumptions; a stronger reusable lemma is distinct from changing the public contract.",
+      "final_refresh": {
+        "id": "C5",
+        "candidate": "Pell base-parameter monotonicity via simultaneous positive recurrences",
+        "targets": [
+          "NativePellBootstrap.main_index_gt_first"
+        ],
+        "finding": "No matching proposal found in either fresh archive",
+        "nearest_neighbors": [],
+        "distinction": "Neither fresh packet proposes simultaneous monotonicity of Pell xn/yn in the base parameter or replacement of the exponential index-comparison bounds by monotonicity and transitivity."
+      }
+    },
+    {
+      "candidate": "Finite forward-invariant set is inverse-invariant under a permutation",
+      "targets": [
+        "NativeFieldCycles2011.offset19_excludes_510"
+      ],
+      "finding": "No matching proposal found",
+      "nearest_prior_ids": [],
+      "distinction": "Use Mathlib's finite permutation invariant-set API to obtain an even predecessor directly, removing orbit iteration induction and an explicit positive-period return witness.",
+      "qualification": "Earlier reports praise the existing offset-19 argument and insist on retaining the actual 511 loop, but do not propose inverse-invariance or the finite permutation theorem. Preserve that loop and all original hypotheses.",
+      "final_refresh": {
+        "id": "C6",
+        "candidate": "Use inverse invariance of a finite permutation-invariant set",
+        "targets": [
+          "NativeFieldCycles2011.offset19_excludes_510"
+        ],
+        "finding": "No matching proposal found in either fresh archive",
+        "nearest_neighbors": [
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/lean-proof-simplification-review.tex",
+            "line": 635,
+            "anchor": "\\subsection{Package repeated geometric facts without adding assumptions}"
+          }
+        ],
+        "distinction": "The fresh geometry proposals concern cyclic residue and source-index interfaces. Neither fresh packet proposes perm_symm_on_of_perm_on_finite/perm_symm_mapsTo_of_mapsTo or removes the orbit-period argument at offset19_excludes_510. The selected change retains the finite/permutation assumptions and the valid 511 self-loop."
+      }
+    }
+  ],
+  "excluded_candidates": [
+    {
+      "candidate": "Canonical evaluation witness plus existing uniqueness for evalRel_iff",
+      "targets": [
+        "ObjectNaturalSemiring.evalRel_iff"
+      ],
+      "finding": "Exact factoring is not proposed; a neighboring totality-witness suggestion exists",
+      "nearest_prior_ids": [
+        "P73"
+      ],
+      "distinction": "The proposed rewrite derives the equivalence from a canonical semantic witness and existing unguarded evalRel_unique instead of repeating inversion through a large syntax induction.",
+      "qualification": "Disclose the neighboring note: lean-proof-simplification-2026-10-26.zip, lean-proof-simplification-2026-10-26/notes/syntax.txt:133 says totality can profit from a semiring witness under natural-input hypotheses. It does not propose this exact evalRel_iff factorization; do not claim the general canonical-witness idea was wholly absent.",
+      "screening_decision": "Excluded from final new-contributions bundle to honor the strict non-repetition request conservatively.",
+      "additional_existing_source_neighbor": "ObjectNaturalExpression.evalRel_numerals_iff already applies canonical numeral evaluation plus evalRel_unique. The inspected prototype extends that existing architecture to arbitrary internal-natural valuations, rather than inventing the architecture.",
+      "final_refresh": {
+        "candidate": "Canonical evaluation witness plus uniqueness for ObjectNaturalSemiring.evalRel_iff",
+        "finding": "Retain conservative exclusion already selected before refresh",
+        "locators": [
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+            "line": 150,
+            "anchor": "8. RETAIN THE OBJECT/NAT SEMANTIC BOUNDARY AND IMPORT ORDER"
+          }
+        ],
+        "detail": "Fresh syntax notes explicitly discuss evalRel_iff as an existing internal-semiring interface and its import-cycle constraints. The earlier totality/semiring-witness note remains the reason for conservative exclusion; neither selected bundle nor report should count this candidate among new contributions."
+      }
+    },
+    {
+      "candidate": "Local constructor algebra for annotated bound and renaming certificates",
+      "targets": [
+        "AnnotatedRename",
+        "AnnotatedBound"
+      ],
+      "finding": "No matching proposal found",
+      "nearest_prior_ids": [
+        "P06",
+        "P07",
+        "P09",
+        "P10"
+      ],
+      "distinction": "The earlier proposals share history folds, numeric scanner simulations, Boolean output and threshold tag dispatch. A depth-indexed semantic algebra sharing local constructor soundness and certificate completeness addresses a different structural proof layer.",
+      "qualification": "The implementation must deliver constructor soundness/completeness sharing, not merely repackage an already proposed scanner fold or tag dispatcher.",
+      "screening_decision": "Excluded: not implemented in final selected concrete patch set; no need to dilute the tested contribution set with architecture sketches.",
+      "final_refresh": {
+        "candidate": "Local constructor algebra for annotated bound/renaming",
+        "finding": "Fresh packet contains a related explicit proposal; retain exclusion",
+        "locators": [
+          {
+            "archive": "lean-proof-simplification-review-2026-10-26.zip",
+            "member": "lean-proof-simplification-review/evidence/syntax/findings.txt",
+            "line": 122,
+            "anchor": "6. USE SEMANTIC CONSTRUCTOR LEMMAS TO REMOVE THE REPEATED THREE-WAY BRANCHES"
+          }
+        ],
+        "detail": "Section 6 of evidence/syntax/findings.txt proposes shared code_binaryForm, renamed_binaryForm, and bound_binaryForm lemmas, with soundness/readiness/completeness reuse. This is closer than the earlier scanner/history proposals and independently supports excluding the unimplemented constructor-algebra sketch. No claim of its novelty should survive the final refresh."
+      }
+    }
+  ],
+  "selection": "Six concrete contribution families. The vacuous-induction family contains two theorem rewrites. Canonical evaluation and constructor algebra are screening evidence only, not delivered new contributions. The final two-packet freshness audit retains the six and reinforces exclusion of the constructor-algebra sketch.",
+  "final_refresh_snapshot_commit": "d163c476db9ca1142d2d73de8fa64c0b2c03a848",
+  "final_refresh_addendum": "final_refresh/audit_addendum.json"
+}

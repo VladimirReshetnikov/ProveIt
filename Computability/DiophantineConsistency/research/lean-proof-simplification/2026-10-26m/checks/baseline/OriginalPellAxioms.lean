@@ -1,0 +1,3 @@
+import DiophantineConsistency.NativePellBootstrap
+
+#print axioms DiophantineConsistency.NativePellBootstrap.firstUnit_fundamental

@@ -1,0 +1,15 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallCertificate.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallCertificate.lean
+@@ -85,10 +85,8 @@
+         Dvd.dvd.modEq_zero_nat <|
+           (dvd_of_mod_eq_zero <| sub_mod_eq_zero_of_mod_eq <| hWitness_residue i _ hk).trans <|
+             dvd_prod_of_mem _ <| mem_range_succ_iff.mpr <| Pi.le_def.mp (le_sup hk) i
+-    · apply ModEq.trans _ dvd_rfl.modEq_zero_nat
+-      unfold crtModulus
+-      gcongr
+-      exact?
++    · exact ((((hIndex_residue k hk).add_right 1).mul_right T).add_right 1).trans
++        dvd_rfl.modEq_zero_nat
+     · have hPolynomial_congruence g :
+           evalRow x c a g ≡ evalRow x k (w k) g [MOD crtModulus T k] := by
+         polynomial_congr

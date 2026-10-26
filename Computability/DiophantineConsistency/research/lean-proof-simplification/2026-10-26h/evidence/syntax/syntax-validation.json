@@ -1,0 +1,132 @@
+{
+  "base_commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "lean": "4.32.0",
+  "checks": [
+    {
+      "file": "ListLookup.lean",
+      "exit_code": 0,
+      "scope": "Exact generic propositions used by seven one-line replacements",
+      "axioms": {
+        "lookup_mem": [
+          "propext"
+        ],
+        "exists_lookup": [
+          "propext"
+        ]
+      },
+      "sha256": "b784aa848a4850648de234b705eb840493dfe25df959ed3faaa6819304137c5b"
+    },
+    {
+      "file": "ScanIteration.lean",
+      "exit_code": 0,
+      "scope": "Two generic iteration lemmas and three scanner-shape examples",
+      "axioms": {
+        "rec_succ": [],
+        "rec_fixed": []
+      },
+      "sha256": "2a846eed1c569e963f858e5cd8fe86b5b6ccc05cbade019c73150f936affca80"
+    },
+    {
+      "file": "ValidatedHistory.lean",
+      "exit_code": 0,
+      "scope": "Generic runner laws and explicit bridges for both concrete recursion shapes",
+      "axioms": {
+        "run_append": [
+          "propext"
+        ],
+        "run_sound": [
+          "propext"
+        ],
+        "Produces.append": [
+          "propext"
+        ],
+        "Produces.step": [
+          "propext",
+          "Quot.sound"
+        ]
+      },
+      "sha256": "1c429ddb2ad4f376983207daf59cd3efe4ded1e6d0414bada871221dff75a624"
+    },
+    {
+      "file": "DecoderFusion.lean",
+      "exit_code": 0,
+      "scope": "Extracted unchanged decoder definitions, fused proof and downstream tree lemmas",
+      "status": "Optional prototype; axiom separation regression",
+      "sha256": "cfe88b1158aced1e7afdaaa24db8eb76ca9a12486a04b38ed6533b110354b41e"
+    },
+    {
+      "file": "AnnotatedProofCode.baseline.lean",
+      "exit_code": 0,
+      "scope": "Complete original file with axiom audit",
+      "log": "proofcode-baseline.log",
+      "sha256": "b51a756c7f5b75964ba4cec8dc07fb902044cf0a81e4ff7971c7cf3d328cd754"
+    },
+    {
+      "file": "AnnotatedProofCode.modified.lean",
+      "exit_code": 0,
+      "scope": "Complete file with fused decoder proof and axiom audit",
+      "log": "proofcode-modified.log",
+      "status": "Not recommended as default: decoded_depth_le gains Classical.choice",
+      "sha256": "2b19fb4cbc2966d1c3f5179e15c2fbede52988f7469529c90e1a701476ecf575"
+    },
+    {
+      "file": "AnnotatedProofChecker.baseline.lean",
+      "exit_code": 0,
+      "scope": "Complete original file with axiom audit",
+      "log": "proofchecker-baseline.log",
+      "sha256": "6ce6e998147bb7681c3c6975363f374079770a87d7acb9ae87cf886087e9b7fc"
+    },
+    {
+      "file": "AnnotatedProofChecker.modified.lean",
+      "exit_code": 0,
+      "scope": "Complete file with lookup induction replaced, unchanged axiom lists",
+      "log": "proofchecker-modified.log",
+      "sha256": "696188b109e7418a7106e9a9c89d95fea016db123859bda14da3ffa7f97915e9"
+    },
+    {
+      "file": "DecoderOptions.lean",
+      "exit_code": 0,
+      "scope": "Unchanged extracted Tree definitions, exact independent proof replacements and downstream Tree lemmas",
+      "log": "decoder-options-isolated.log",
+      "axiom_footprints": "Exactly match original two theorems",
+      "sha256": "4599cd8e37ec2cd8fdf2530168d9a78d1ec33b4c4f7ddb0e56731110c8c954c8"
+    },
+    {
+      "file": "AnnotatedProofCode.option.lean",
+      "exit_code": 0,
+      "scope": "Complete original module with independent Option-based proof replacements, plus four axiom audits",
+      "log": "proofcode-option.log",
+      "axiom_footprints": "Audit output byte-for-byte identical to baseline",
+      "sha256": "6b7ed2d1f5c90e1e71ce6b7c254320418f643b34a7fc1f53ff1267203b359869"
+    }
+  ],
+  "patch_application_checks": [
+    {
+      "file": "list-lookup.patch",
+      "exit_code": 0
+    },
+    {
+      "file": "decoder-fusion.patch",
+      "exit_code": 0
+    },
+    {
+      "file": "decoder-options.patch",
+      "exit_code": 0
+    }
+  ],
+  "caveat": "Only the ProofChecker member of the five-file lookup patch has a complete-file replay; all seven replacement propositions are covered by the generic core theorem checks. No runtime speedup is claimed.",
+  "recommended_patches": [
+    "list-lookup.patch",
+    "decoder-options.patch"
+  ],
+  "recommended_patch_declaration_lines": {
+    "before": 116,
+    "after": 64,
+    "removed": 52,
+    "note": "61 -> 21 in list lookup declarations; 55 -> 43 in two decoder proofs. Not a repository-wide metric."
+  },
+  "log_comparisons": {
+    "proofcode-baseline_vs_option": "identical",
+    "proofchecker-baseline_vs_modified": "identical"
+  }
+}

@@ -1,0 +1,65 @@
+\section{W1 Index the north boundary result by color}
+\label{sec:north}
+
+\textbf{Targets.} The five classifications at
+\src{WangTiles942Boundary.lean}{76}{140} repeat the same six-way elimination
+from \src{WangTiles942Boundary.lean}{40}{54}, \code{high_north_cases}, then
+reject the other numeric colors. A small result indexed by the queried
+north color can centralize that elimination.
+
+\begin{Lean}
+def NorthView (n : ℕ) (t : Tile) : Prop :=
+  match n with
+  | 434 => t = ⟨2,434,2,0⟩
+  | 435 => t = start
+  | 436 => t = ⟨3,436,4,4⟩ ∨ t = ⟨4,436,4,0⟩
+  | 437 => ∃ a b : Fin 3, t = ⟨a.val^2,437,b.val,437⟩
+  | 438 => ∃ p ∈ [434,435,436], t = ⟨1,438,1,p⟩
+  | _ => False
+
+theorem north_view {t : Tile} (ht : Allowed t)
+    (hn : 434 ≤ t.north) : NorthView t.north t := by
+  rcases high_north_cases ht hn with
+    rfl | rfl | rfl | rfl | ⟨p,hp,rfl⟩ | ⟨a,b,rfl⟩
+  · exact rfl
+  · exact rfl
+  · exact Or.inl rfl
+  · exact Or.inr rfl
+  · exact ⟨p,hp,rfl⟩
+  · exact ⟨a,b,rfl⟩
+\end{Lean}
+
+The helper uses only the earlier high-north theorem, not any of the five
+classification theorems it would replace. It performs six semantic cases,
+not an enumeration of all 942 tile indices.
+
+\subsection{Keep the public classification statements}
+
+For example, the complete initializer theorem becomes:
+\begin{Lean}
+theorem north_436_iff_initializers {t : Tile} (ht : Allowed t) :
+    t.north = 436 ↔ t = ⟨3,436,4,4⟩ ∨ t = ⟨4,436,4,0⟩ := by
+  constructor
+  · intro hn
+    simpa only [hn, NorthView] using north_view ht (by omega)
+  · rintro (rfl | rfl) <;> rfl
+\end{Lean}
+
+The same forward body handles 434, 435, 437 and 438; their existing reflexive
+reverse directions remain. All five full candidates are in
+\pathcode{wang/NorthViewCandidates.lean}.
+
+\textbf{Semantic checks.} Color 436 keeps \emph{both} initializers and the
+head initializer's south color 4, not the old state-93 color 188. Reset
+parameters remain in \code{[434,435,436]}; seam parameters remain
+\code{Fin 3}. The helper's lower bound is derived from the queried color,
+not added to a public theorem. No occupation, unique Start, periodicity,
+run or halting premise is introduced. The literal \code{Allowed} language
+and table remain untouched.
+
+\textbf{Optional priority.} Old declarations total 60 nonblank lines;
+new wrappers total 34 and the helper adds 18, for 52 overall. Eight lines is
+a modest net saving. The value is one maintenance site for color-to-shape
+classification, not a large compression or performance claim. Keep the
+old proofs if the indirection is less readable. If adopted, use focused
+closed-color rewrites rather than globally adding the entire view to simp.

@@ -1,0 +1,121 @@
+{
+  "status": "PASS for the explicitly listed checks; remaining designs are proposals",
+  "prepared_date_utc": "2026-10-26",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "repository_commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "lean": "4.32.0",
+  "mathlib_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "source_survey": {
+    "tracked_lean_files_in_requested_subtree": 711,
+    "maintained_lean_files": 546,
+    "direct_main_module_files": 363,
+    "direct_main_module_physical_lines": 68308,
+    "all_maintained_files_hashed": true,
+    "receipt": "source-inventory.json",
+    "method_limit": "Textual inventory, not a Lean AST or transitive axiom audit"
+  },
+  "recommended_patches": [
+    {
+      "path": "patches/list-lookup.patch",
+      "before_lines": 61,
+      "after_lines": 21,
+      "scope": "Seven declarations across five modules; exact polymorphic replacements checked. Complete baseline/replacement replay only for AnnotatedProofChecker; selected theorem and endpoint axiom output identical.",
+      "receipt": "syntax/syntax-validation.json"
+    },
+    {
+      "path": "patches/decoder-options.patch",
+      "before_lines": 55,
+      "after_lines": 43,
+      "scope": "Two-theorem block; complete baseline and replacement files compiled; directly changed theorem and selected endpoint audit output identical.",
+      "receipt": "syntax/syntax-validation.json"
+    },
+    {
+      "path": "patches/assignment-transport.patch",
+      "before_lines": 260,
+      "after_lines": 242,
+      "scope": "Complete file compiled including 15 new helper lines; exact expression data checked by rfl; three original/replacement axiom pairs equal. No complete dependent rebuild.",
+      "receipt": "structural/structural-summary.json"
+    },
+    {
+      "path": "patches/finite-residuals.patch",
+      "net_physical_lines_saved": 33,
+      "new_helper_file_lines": 36,
+      "scope": "Four patched modules, eight unchanged dependencies, and three original audit files passed; eight original/replacement axiom pairs equal.",
+      "receipt": "structural/structural-summary.json"
+    },
+    {
+      "path": "patches/pell-residue-casts.patch",
+      "before_lines": 248,
+      "after_lines": 241,
+      "scope": "Complete original and replacement files compiled at -M6000 -j1; all seven public signatures preserved; three selected audits identical. No speedup claim.",
+      "receipt": "arithmetic/metrics.json"
+    }
+  ],
+  "optional_alternatives": [
+    {
+      "path": "patches/optional/coefficient-bounds-compact.patch",
+      "before_lines": 679,
+      "after_lines": 122,
+      "scope": "Complete original and replacement files compiled at -M3000 -j1; all eight public signatures preserved; three selected audit outputs identical.",
+      "local_maxHeartbeats": 4000000,
+      "single_run_user_cpu_seconds": {
+        "original": 23.372192,
+        "replacement": 110.397976
+      },
+      "limitation": "Optional source-maintenance tradeoff. Slower in the recorded shared-host run; not a general benchmark or speedup.",
+      "receipt": "arithmetic/metrics.json"
+    },
+    {
+      "path": "patches/optional/decoder-fusion.patch",
+      "before_lines": 55,
+      "after_lines": 35,
+      "scope": "Alternative to decoder-options, not an additive patch. Complete replacement compiles, but decoded_depth_le gains Classical.choice.",
+      "recommendation": "Not the default patch.",
+      "receipt": "syntax/decoder-fusion-metrics.json"
+    }
+  ],
+  "checked_prototypes": {
+    "files": [
+      "lean/ScanIteration.lean",
+      "lean/ValidatedHistory.lean",
+      "lean/RunInvariant.lean",
+      "lean/SmallArithmetic.lean",
+      "lean/BasicNat.lean"
+    ],
+    "scope": "Generic interfaces or copied theorem statements checked; concrete client migration not claimed."
+  },
+  "structural_axiom_comparison_count": 13,
+  "structural_axiom_sets_all_equal": true,
+  "package_harness_replay": {
+    "prototypes": {
+      "passed": 10,
+      "receipt": "harness/prototypes/results.json"
+    },
+    "structural_axiom_pairs_rechecked": 13,
+    "residual_overlay": {
+      "passed": 15,
+      "receipt": "harness/residual-overlay/overlay-verification.json"
+    },
+    "recommended_patches_joint_git_apply_check": true,
+    "all_546_source_hashes_rechecked": true,
+    "entire_full_level_rerun_for_packaging": false,
+    "note": "The full-file examples have their separate successful topic receipts; packaging replay did not redundantly rerun every expensive full-file check."
+  },
+  "architectural_proposals_not_implemented": [
+    "Kernel-checked coefficient-vector certificate bound to the literal row table",
+    "Object completeness and sealing interface over arbitrary models and internal omega",
+    "Generated exponent-label tables using ArithmeticDAG.run_power",
+    "Generic sum-cost and weighted-degree consolidation",
+    "Migration of concrete scanner/history clients",
+    "Shared cyclic-word interfaces and geometric records"
+  ],
+  "limits": {
+    "full_546_file_repository_build": false,
+    "all_dependents_of_combined_patch_rebuilt": false,
+    "proof_term_size_improvement_measured": false,
+    "repository_wide_line_saving_claim": false,
+    "diophantine_expression_or_witness_count_reduction_claim": false,
+    "upstream_sources_modified_or_pushed": false
+  },
+  "integrity": "SHA256SUMS.txt covers all packaged files except itself."
+}

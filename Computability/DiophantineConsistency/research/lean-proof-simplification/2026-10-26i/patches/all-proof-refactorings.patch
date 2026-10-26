@@ -1,0 +1,408 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NearSquareFinalizer.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NearSquareFinalizer.lean
+@@ -112,6 +112,48 @@
+   field_simp
+   ring
+ 
++/-- Preserve the rational witness when an integral nonzero power is known. -/
++theorem num_cast_of_pow_eq_int {q : ℚ} {a : ℤ} {n : ℕ}
++    (hn : n ≠ 0) (h : q ^ n = (a : ℚ)) : (q.num : ℚ) = q := by
++  apply Rat.coe_int_num_of_den_eq_one
++  apply (pow_eq_one_iff_left hn).mp
++  simpa only [Rat.den_pow, Rat.den_intCast] using congrArg Rat.den h
++
++/-- Separated integer radicands reconstruct signed integer roots. -/
++theorem integer_roots_of_separated_norm_zero {theta omega a b w : ℤ}
++    (homega : omega ≠ 0) (hw : w ≠ 0) (hsep : a ≠ w ^ 2 * b)
++    (hz : norm theta omega a w b = 0) :
++    ∃ r s : ℤ, r ^ 2 = a ∧ s ^ 2 = b ∧ theta = omega * (r + w * s) := by
++  have htheta : theta ≠ 0 := by
++    intro ht
++    rw [ht] at hz
++    dsimp [NearSquareFinalizer.norm] at hz
++    have he : omega ^ 4 * (a - w ^ 2 * b) ^ 2 = 0 := by
++      linear_combination hz
++    rcases mul_eq_zero.mp he with he | he
++    · exact (pow_ne_zero 4 homega) he
++    · exact hsep (sub_eq_zero.mp (eq_zero_of_pow_eq_zero he))
++  have hwQ : (w : ℚ) ≠ 0 := by exact_mod_cast hw
++  have hoQ : (omega : ℚ) ≠ 0 := by exact_mod_cast homega
++  have htQ : (theta : ℚ) ≠ 0 := by exact_mod_cast htheta
++  have hzQ : norm ((theta : ℚ) / omega) 1 a w b = 0 := by
++    have h : norm (theta : ℚ) omega a w b = 0 := by
++      dsimp [NearSquareFinalizer.norm] at hz ⊢
++      exact_mod_cast hz
++    dsimp [NearSquareFinalizer.norm] at h ⊢
++    field_simp
++    nlinarith [h]
++  obtain ⟨r, s, hr, hs, hsum⟩ :=
++    rational_roots_of_norm_zero hwQ (div_ne_zero htQ hoQ) hzQ
++  have er := num_cast_of_pow_eq_int (by decide : 2 ≠ 0) hr
++  have es := num_cast_of_pow_eq_int (by decide : 2 ≠ 0) hs
++  rw [← er] at hr hsum
++  rw [← es] at hs hsum
++  refine ⟨r.num, s.num, ?_, ?_, ?_⟩
++  · exact_mod_cast hr
++  · exact_mod_cast hs
++  · exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
++
+ /-- A norm zero with the first radicand strictly below the separating square
+ forces both integer radicands to be squares and supplies signed integer roots. -/
+ theorem integer_roots_of_norm_zero {theta omega a b w : ℤ}
+@@ -121,49 +163,7 @@
+   have hsep : a ≠ w ^ 2 * b := by
+     have := mul_nonneg (sq_nonneg w) (show 0 ≤ b - 1 by omega)
+     nlinarith
+-  have htheta : theta ≠ 0 := by
+-    intro ht
+-    rw [ht] at hz
+-    dsimp [norm] at hz
+-    have he : omega ^ 4 * (a - w ^ 2 * b) ^ 2 = 0 := by
+-      linear_combination hz
+-    rcases mul_eq_zero.mp he with he | he
+-    · exact (pow_ne_zero 4 homega) he
+-    · exact hsep (sub_eq_zero.mp (eq_zero_of_pow_eq_zero he))
+-  have hwQ : (w : ℚ) ≠ 0 := by exact_mod_cast ne_of_gt hw
+-  have hoQ : (omega : ℚ) ≠ 0 := by exact_mod_cast homega
+-  have htQ : (theta : ℚ) ≠ 0 := by exact_mod_cast htheta
+-  have hzQ : norm ((theta : ℚ) / omega) 1 a w b = 0 := by
+-    have h : norm (theta : ℚ) omega a w b = 0 := by
+-      dsimp [norm] at hz ⊢
+-      exact_mod_cast hz
+-    dsimp [norm] at h ⊢
+-    field_simp
+-    nlinarith [h]
+-  obtain ⟨r, s, hr, hs, hsum⟩ := rational_roots_of_norm_zero hwQ (div_ne_zero htQ hoQ) hzQ
+-  have hsa : IsSquare a := Rat.isSquare_intCast_iff.mp ⟨r, by nlinarith [hr]⟩
+-  have hsb : IsSquare b := Rat.isSquare_intCast_iff.mp ⟨s, by nlinarith [hs]⟩
+-  obtain ⟨r₀, hr₀⟩ := hsa
+-  obtain ⟨s₀, hs₀⟩ := hsb
+-  have hr₀' : r₀ ^ 2 = a := by nlinarith [hr₀]
+-  have hs₀' : s₀ ^ 2 = b := by nlinarith [hs₀]
+-  have hrootsr : r = (r₀ : ℚ) ∨ r = -(r₀ : ℚ) := by
+-    have : r ^ 2 = (r₀ : ℚ) ^ 2 := by exact_mod_cast hr.trans (by exact_mod_cast hr₀'.symm)
+-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
+-  have hrootss : s = (s₀ : ℚ) ∨ s = -(s₀ : ℚ) := by
+-    have : s ^ 2 = (s₀ : ℚ) ^ 2 := by exact_mod_cast hs.trans (by exact_mod_cast hs₀'.symm)
+-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
+-  rcases hrootsr with hrsgn | hrsgn <;> rcases hrootss with hssgn | hssgn
+-  all_goals
+-    rw [hrsgn, hssgn] at hsum
+-  · refine ⟨r₀, s₀, hr₀', hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨r₀, -s₀, hr₀', by simpa using hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨-r₀, s₀, by simpa using hr₀', hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨-r₀, -s₀, by simpa using hr₀', by simpa using hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
++  exact integer_roots_of_separated_norm_zero homega (ne_of_gt hw) hsep hz
+ 
+ /-- The strict square bounds become one-unit root bounds after integrality. -/
+ theorem root_abs_le {a V r : ℤ} (hV : 0 < V) (ha : a < V ^ 2)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MarginFinalizer.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/MarginFinalizer.lean
+@@ -49,49 +49,7 @@
+     (homega : omega ≠ 0) (hw : w ≠ 0) (hsep : a ≠ w ^ 2 * b)
+     (hz : norm theta omega a w b = 0) :
+     ∃ r s : ℤ, r ^ 2 = a ∧ s ^ 2 = b ∧ theta = omega * (r + w * s) := by
+-  have htheta : theta ≠ 0 := by
+-    intro ht
+-    rw [ht] at hz
+-    dsimp [NearSquareFinalizer.norm] at hz
+-    have he : omega ^ 4 * (a - w ^ 2 * b) ^ 2 = 0 := by
+-      linear_combination hz
+-    rcases mul_eq_zero.mp he with he | he
+-    · exact (pow_ne_zero 4 homega) he
+-    · exact hsep (sub_eq_zero.mp (eq_zero_of_pow_eq_zero he))
+-  have hwQ : (w : ℚ) ≠ 0 := by exact_mod_cast hw
+-  have hoQ : (omega : ℚ) ≠ 0 := by exact_mod_cast homega
+-  have htQ : (theta : ℚ) ≠ 0 := by exact_mod_cast htheta
+-  have hzQ : norm ((theta : ℚ) / omega) 1 a w b = 0 := by
+-    have h : norm (theta : ℚ) omega a w b = 0 := by
+-      dsimp [NearSquareFinalizer.norm] at hz ⊢
+-      exact_mod_cast hz
+-    dsimp [NearSquareFinalizer.norm] at h ⊢
+-    field_simp
+-    nlinarith [h]
+-  obtain ⟨r, s, hr, hs, hsum⟩ :=
+-    rational_roots_of_norm_zero hwQ (div_ne_zero htQ hoQ) hzQ
+-  have hsa : IsSquare a := Rat.isSquare_intCast_iff.mp ⟨r, by nlinarith [hr]⟩
+-  have hsb : IsSquare b := Rat.isSquare_intCast_iff.mp ⟨s, by nlinarith [hs]⟩
+-  obtain ⟨r₀, hr₀⟩ := hsa
+-  obtain ⟨s₀, hs₀⟩ := hsb
+-  have hr₀' : r₀ ^ 2 = a := by nlinarith [hr₀]
+-  have hs₀' : s₀ ^ 2 = b := by nlinarith [hs₀]
+-  have hrootsr : r = (r₀ : ℚ) ∨ r = -(r₀ : ℚ) := by
+-    have : r ^ 2 = (r₀ : ℚ) ^ 2 := by exact_mod_cast hr.trans (by exact_mod_cast hr₀'.symm)
+-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
+-  have hrootss : s = (s₀ : ℚ) ∨ s = -(s₀ : ℚ) := by
+-    have : s ^ 2 = (s₀ : ℚ) ^ 2 := by exact_mod_cast hs.trans (by exact_mod_cast hs₀'.symm)
+-    exact (sq_eq_sq_iff_eq_or_eq_neg).mp this
+-  rcases hrootsr with hrsgn | hrsgn <;> rcases hrootss with hssgn | hssgn
+-  all_goals rw [hrsgn, hssgn] at hsum
+-  · refine ⟨r₀, s₀, hr₀', hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨r₀, -s₀, hr₀', by simpa using hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨-r₀, s₀, by simpa using hr₀', hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
+-  · refine ⟨-r₀, -s₀, by simpa using hr₀', by simpa using hs₀', ?_⟩
+-    exact_mod_cast ((div_eq_iff hoQ).mp hsum).trans (mul_comm _ _)
++  exact NearSquareFinalizer.integer_roots_of_separated_norm_zero homega hw hsep hz
+ 
+ /-- Literal package-52 finalizer with one natural witness. -/
+ def value (a b V₀ V₁ J Q m n : ℤ) : ℤ :=
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ShortSystem.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ShortSystem.lean
+@@ -16,12 +16,6 @@
+ 
+ open ShortCircuit
+ open MvPolynomial
+-
+-private theorem unit_eq_one {a b : ℤ} (h : a * b = 1) (hne : a ≠ -1) : a = 1 := by
+-  have hu : IsUnit a := IsUnit.of_mul_eq_one_right b (by simpa only [mul_comm] using h)
+-  rcases Int.isUnit_iff.mp hu with hpos | hneg
+-  · exact hpos
+-  · exact (hne hneg).elim
+ 
+ /-- The square-coefficient auxiliary norm also excludes the negative unit modulo four. -/
+ theorem square_aux_ne_neg_one (t h y : ℤ) :
+@@ -40,18 +34,11 @@
+       n0 = 1 ∧ n1 = 1 ∧ na = 1 ∧ ns = 1 ∧ nk * nt = 1 := by
+   constructor
+   · intro hp
+-    have hs1 : ns = 1 := unit_eq_one (b := n0 * n1 * na * nk * nt)
+-      (by calc ns * (n0 * n1 * na * nk * nt) = n0 * n1 * na * nk * nt * ns := by ring
+-               _ = 1 := hp) hs
+-    have h01 : n0 = 1 := unit_eq_one (b := n1 * na * nk * nt * ns)
+-      (by calc n0 * (n1 * na * nk * nt * ns) = n0 * n1 * na * nk * nt * ns := by ring
+-               _ = 1 := hp) h0
+-    have h11 : n1 = 1 := unit_eq_one (b := n0 * na * nk * nt * ns)
+-      (by calc n1 * (n0 * na * nk * nt * ns) = n0 * n1 * na * nk * nt * ns := by ring
+-               _ = 1 := hp) h1
+-    have ha1 : na = 1 := unit_eq_one (b := n0 * n1 * nk * nt * ns)
+-      (by calc na * (n0 * n1 * nk * nt * ns) = n0 * n1 * na * nk * nt * ns := by ring
+-               _ = 1 := hp) (ha hs1)
++    have hu : IsUnit (n0 * n1 * na * nk * nt * ns) := hp.symm ▸ isUnit_one
++    simp only [IsUnit.mul_iff, Int.isUnit_iff, or_iff_left h0,
++      or_iff_left h1, or_iff_left hs] at hu
++    rcases hu with ⟨⟨⟨⟨⟨h01, h11⟩, hau⟩, _⟩, _⟩, hs1⟩
++    have ha1 := hau.resolve_right (ha hs1)
+     exact ⟨h01, h11, ha1, hs1, by simpa only [h01, h11, ha1, hs1, one_mul, mul_one] using hp⟩
+   · rintro ⟨h01, h11, ha1, hs1, hkt⟩
+     simpa only [h01, h11, ha1, hs1, one_mul, mul_one] using hkt
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SelectiveCarry.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SelectiveCarry.lean
+@@ -1,5 +1,6 @@
+ import DiophantineConsistency.SelectiveQuadraticCoding
+ import DiophantineConsistency.MultiTargetCarry
++import Mathlib.Algebra.Polynomial.BigOperators
+ 
+ /-!
+ # Carry and packing interfaces for selective quadratic sources
+@@ -46,24 +47,15 @@
+     (hw : ∀ i, w i ≤ W)
+     (hD : ∀ k p, p ∈ s k → E k - pairWeight w p ≤ D)
+     {n : ℕ} (hn : D + 2 * W < n) : (rowProduct w s a u E).coeff n = 0 := by
+-  classical
+-  rw [rowProduct, combined, Finset.mul_sum, finsetSum_coeff]
+-  apply Finset.sum_eq_zero
+-  intro k _
+-  rw [complementary, Finset.mul_sum]
+-  simp only [finsetSum_coeff]
+-  apply Finset.sum_eq_zero
+-  intro p hp
+-  rw [encoded_square]
+-  simp only [Finset.sum_mul, finsetSum_coeff, monomial_mul_monomial]
+-  apply Finset.sum_eq_zero
+-  intro i _
+-  apply Finset.sum_eq_zero
+-  intro j _
+-  have hi := hw i
+-  have hj := hw j
+-  have hd := hD k p hp
+-  rw [coeff_monomial, if_neg (by omega)]
++  have he : (encoded w u).natDegree ≤ W := by
++    unfold encoded
++    exact natDegree_sum_le_of_forall_le _ _
++      (fun i _ => (natDegree_monomial_le (u i)).trans (hw i))
++  have hd := natDegree_mul_le_of_le (natDegree_pow_le_of_le 2 he)
++    (combined_degree_le w s a E D hD)
++  apply coeff_eq_zero_of_natDegree_lt
++  change (encoded w u ^ 2 * combined w s a E).natDegree < n
++  omega
+ 
+ theorem rowProduct_degree_lt {m r : ℕ} (w : Fin (m + 1) → ℕ)
+     (s : Fin r → Finset (PairIndex m)) (a : Fin r → PairIndex m → ℤ)
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofCode.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofCode.lean
+@@ -75,37 +75,8 @@
+ @[simp] theorem parse_quote (t : Tree) : parse t.quote=some t :=
+   decode_quote t t.quote (depth_le_quote t)
+ 
+-theorem decoded_depth_le {fuel code : Nat} {t : Tree} (h : decode fuel code=some t) :
+-    t.depth≤fuel := by
+-  induction fuel generalizing code t with
+-  | zero => simp [decode] at h
+-  | succ fuel ih =>
+-    cases code with
+-    | zero => simp [decode] at h
+-    | succ code =>
+-      simp only [decode] at h
+-      cases hp : (Nat.unpair code).1 with
+-      | zero =>
+-        simp only [hp] at h
+-        cases h
+-        simp [depth]
+-      | succ left =>
+-        simp only [hp] at h
+-        cases ha : decode fuel left with
+-        | none => simp [ha] at h
+-        | some a =>
+-          cases hb : decode fuel (Nat.unpair code).2 with
+-          | none => simp [ha,hb] at h
+-          | some b =>
+-            simp only [ha,hb,Option.pure_def] at h
+-            cases h
+-            have h1 := ih ha
+-            have h2 := ih hb
+-            simp only [depth]
+-            omega
+-
+-theorem quote_of_decode {fuel code : Nat} {t : Tree} (h : decode fuel code=some t) :
+-    t.quote=code := by
++theorem decoded_spec {fuel code : Nat} {t : Tree}
++    (h : decode fuel code=some t) : t.quote=code ∧ t.depth≤fuel := by
+   induction fuel generalizing code t with
+   | zero => simp [decode] at h
+   | succ fuel ih =>
+@@ -118,18 +89,30 @@
+       | zero =>
+         simp only [he] at h hp
+         cases h
+-        simp only [quote,hp]
++        exact ⟨by simp only [quote,hp], by simp [depth]⟩
+       | succ left =>
+         simp only [he] at h hp
+-        cases ha : decode fuel left with
+-        | none => simp [ha] at h
+-        | some a =>
+-          cases hb : decode fuel (Nat.unpair code).2 with
+-          | none => simp [ha,hb] at h
+-          | some b =>
+-            simp only [ha,hb,Option.pure_def] at h
+-            cases h
+-            simp only [quote,ih ha,ih hb,hp]
++        change (decode fuel left).bind (fun a =>
++          (decode fuel (Nat.unpair code).2).bind (fun b => some (fork a b))) = some t at h
++        simp only [Option.bind_eq_some_iff,Option.some.injEq] at h
++        obtain ⟨a,ha,b,hb,rfl⟩ := h
++        obtain ⟨hqa,hda⟩ := ih ha
++        obtain ⟨hqb,hdb⟩ := ih hb
++        exact ⟨by simp only [quote,hqa,hqb,hp], by simp only [depth]; omega⟩
++
++/-- The old API remains available by projection. -/
++theorem decoded_depth_le {fuel code : Nat} {t : Tree}
++    (h : decode fuel code=some t) : t.depth≤fuel := (decoded_spec h).2
++
++theorem quote_of_decode {fuel code : Nat} {t : Tree}
++    (h : decode fuel code=some t) : t.quote=code := (decoded_spec h).1
++
++theorem decode_eq_some_iff (fuel code : Nat) (t : Tree) :
++    decode fuel code=some t ↔ t.quote=code ∧ t.depth≤fuel := by
++  constructor
++  · exact decoded_spec
++  · rintro ⟨rfl,hf⟩
++    exact decode_quote t fuel hf
+ 
+ theorem quote_injective : Function.Injective quote := by
+   intro a b h
+@@ -138,13 +121,8 @@
+ 
+ theorem decode_quote_iff (t u : Tree) (fuel : Nat) :
+     decode fuel t.quote=some u ↔ u=t ∧ t.depth≤fuel := by
+-  constructor
+-  · intro h
+-    have hu : u=t := quote_injective (quote_of_decode h)
+-    exact ⟨hu,hu ▸ decoded_depth_le h⟩
+-  · rintro ⟨hu,hf⟩
+-    rw [hu]
+-    exact decode_quote t fuel hf
++  rw [decode_eq_some_iff,quote_injective.eq_iff]
++  exact and_congr_right (fun h => by rw [h])
+ 
+ theorem decode_quote_none_of_lt (t : Tree) (fuel : Nat) (h : fuel<t.depth) :
+     decode fuel t.quote=none := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeFieldCycles2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeFieldCycles2011.lean
+@@ -1,4 +1,4 @@
+-import Mathlib.Dynamics.PeriodicPts.Lemmas
++import Mathlib.Data.Set.Finite.Basic
+ import Mathlib.Tactic
+ 
+ /-!
+@@ -76,22 +76,15 @@
+   have hgate' : ∀ j, epsilon j = 1 → S j = 511 := by
+     intro j hj
+     exact (hgate j hj).trans hstar
+-  have heven (n : ℕ) : S ((sigma : A → A)^[n] i) % 2 = 0 := by
+-    induction n with
+-    | zero => simp only [Function.iterate_zero, id_eq, hi]
+-    | succ n ih =>
+-        rw [Function.iterate_succ_apply']
+-        have hm := successor_mod_four sigma S epsilon he hstep hgate' _ ih
+-        omega
+-  obtain ⟨p,hp,hperiod⟩ := Function.mem_periodicPts.mp (sigma.injective.mem_periodicPts i)
+-  have hm := successor_mod_four sigma S epsilon he hstep hgate'
+-    ((sigma : A → A)^[p-1] i) (heven (p-1))
+-  have hreturn : sigma ((sigma : A → A)^[p-1] i) = i := by
+-    rw [← Function.iterate_succ_apply' (f := (sigma : A → A)) (p-1) i]
+-    have hpred : (p-1).succ = p := by omega
+-    rw [hpred]
+-    exact hperiod
+-  rw [hreturn, hi] at hm
++  have hmap : Set.MapsTo sigma {j | S j % 2 = 0} {j | S j % 2 = 0} := by
++    intro j hj
++    change S (sigma j) % 2 = 0
++    have hm := successor_mod_four sigma S epsilon he hstep hgate' j hj
++    omega
++  have hb := ((Set.toFinite _).injOn_iff_bijOn_of_mapsTo hmap).mp sigma.injective.injOn
++  obtain ⟨j, hj, hji⟩ := hb.surjOn (show S i % 2 = 0 by omega)
++  have hm := successor_mod_four sigma S epsilon he hstep hgate' j hj
++  rw [hji, hi] at hm
+   contradiction
+ 
+ /-- Offset20 exclusion. A two-bit prefix with value at most2 makes every
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeCyclicRotation.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeCyclicRotation.lean
+@@ -17,26 +17,9 @@
+ 
+ theorem word_rotate {ρ : ℕ} (hρ : 1 ≤ ρ) (c : ZMod n → ℕ) (t : ZMod n) :
+     word ρ (rotate c t) ≡ ρ ^ t.val * word ρ c [MOD ρ ^ n - 1] := by
+-  have he : word ρ (rotate c t) = ∑ i : ZMod n, c i * ρ ^ (t + i).val := by
+-    symm
+-    apply Fintype.sum_equiv (Equiv.addLeft t)
+-    intro i
+-    simp only [rotate, Equiv.coe_addLeft, add_sub_cancel_left]
+-  rw [he]
+-  calc
+-    (∑ i : ZMod n, c i * ρ ^ (t + i).val) ≡
+-        ∑ i : ZMod n, c i * ρ ^ (t.val + i.val) [MOD ρ ^ n - 1] := by
+-      apply Nat.ModEq.sum
+-      intro i _
+-      have hp := (pow_mod_length (n := n) hρ (t.val + i.val)).symm
+-      rw [← ZMod.val_add] at hp
+-      exact hp.mul_left _
+-    _ = ρ ^ t.val * word ρ c := by
+-      rw [word, Finset.mul_sum]
+-      apply Finset.sum_congr rfl
+-      intro i _
+-      rw [pow_add]
+-      ring
++  classical
++  simpa [word, convolution, rotate, Pi.single_apply, ite_mul] using
++    word_convolution hρ (Pi.single t 1) c
+ 
+ /-- Carry the high part of each scaled radix digit into its successor,
+ including the last-to-first cyclic carry. -/

@@ -1,0 +1,56 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentSouthShift2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentSouthShift2011.lean
+@@ -97,20 +97,11 @@
+         (t : ZMod (N * 2011)))) :
+     southWord c b = (2*southWord c (theta t b)) % 512 +
+       c (((theta t b : Cell N) : ZMod (N * 2011)) + 941) := by
+-  let f := fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+-    ((941+j : ℕ) : ZMod (N * 2011)))
+-  have hw : southWord c b = binaryWord f 9 :=
+-    copy_word_translation c t 941 b (by omega) hcopy
+-  have hs : (fun j => f (1+j)) =
+-      (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+-        ((942+j : ℕ) : ZMod (N * 2011)))) := by
+-    funext j
+-    dsimp only [f]
+-    rw [show 941+(1+j) = 942+j by omega]
+-  have hp := binaryWord_prefix f 1 8 (fun j _ => hc _)
+-  rw [hs, binaryWord_one] at hp
+-  change binaryWord f 9 = (2*southWord c (theta t b)) % 512 + f 0 at hp
+-  exact hw.trans hp
++  have hp := binaryWord_prefix
++    (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
++      ((941+j : ℕ) : ZMod (N * 2011)))) 1 8 (fun _ _ => hc _)
++  rw [copy_word_translation c t 941 b (by omega) hcopy]
++  simpa only [southWord, ← Nat.add_assoc, binaryWord_one, Nat.add_zero] using hp
+ 
+ /-- Offset20 prepends physical selectors940 and941 to seven retained South bits. -/
+ theorem offset20_word (c : ZMod (N * 2011) → ℕ) (hc : ∀ k, c k ≤ 1)
+@@ -122,22 +113,11 @@
+     southWord c b = (4*southWord c (theta t b)) % 512 +
+       c (((theta t b : Cell N) : ZMod (N * 2011)) + 940) +
+       2*c (((theta t b : Cell N) : ZMod (N * 2011)) + 941) := by
+-  let f := fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+-    ((940+j : ℕ) : ZMod (N * 2011)))
+-  have hw : southWord c b = binaryWord f 9 :=
+-    copy_word_translation c t 940 b (by omega) hcopy
+-  have hs : (fun j => f (2+j)) =
+-      (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
+-        ((942+j : ℕ) : ZMod (N * 2011)))) := by
+-    funext j
+-    dsimp only [f]
+-    rw [show 940+(2+j) = 942+j by omega]
+-  have hp := binaryWord_prefix f 2 7 (fun j _ => hc _)
+-  rw [hs, binaryWord_two] at hp
+-  change binaryWord f 9 = (4*southWord c (theta t b)) % 512 + (f 0 + 2*f 1) at hp
+-  rw [hw, hp]
+-  change _ = (4*southWord c (theta t b)) % 512 + f 0 + 2*f 1
+-  omega
++  have hp := binaryWord_prefix
++    (fun j => c (((theta t b : Cell N) : ZMod (N * 2011)) +
++      ((940+j : ℕ) : ZMod (N * 2011)))) 2 7 (fun _ _ => hc _)
++  rw [copy_word_translation c t 940 b (by omega) hcopy]
++  simpa only [southWord, ← Nat.add_assoc, binaryWord_two, Nat.add_zero] using hp
+ 
+ private theorem pair_le_sum {A : Type*} [Fintype A] [DecidableEq A]
+     (f : A → ℕ) (i j : A) (hij : i ≠ j) : f i + f j ≤ ∑ k, f k := by

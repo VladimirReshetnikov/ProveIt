@@ -1,0 +1,39 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ShortSystem.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ShortSystem.lean
+@@ -16,12 +16,6 @@
+ 
+ open ShortCircuit
+ open MvPolynomial
+-
+-private theorem unit_eq_one {a b : ℤ} (h : a * b = 1) (hne : a ≠ -1) : a = 1 := by
+-  have hu : IsUnit a := IsUnit.of_mul_eq_one_right b (by simpa only [mul_comm] using h)
+-  rcases Int.isUnit_iff.mp hu with hpos | hneg
+-  · exact hpos
+-  · exact (hne hneg).elim
+ 
+ /-- The square-coefficient auxiliary norm also excludes the negative unit modulo four. -/
+ theorem square_aux_ne_neg_one (t h y : ℤ) :
+@@ -40,18 +34,11 @@
+       n0 = 1 ∧ n1 = 1 ∧ na = 1 ∧ ns = 1 ∧ nk * nt = 1 := by
+   constructor
+   · intro hp
+-    have hs1 : ns = 1 := unit_eq_one (b := n0 * n1 * na * nk * nt)
+-      (by calc ns * (n0 * n1 * na * nk * nt) = n0 * n1 * na * nk * nt * ns := by ring
+-               _ = 1 := hp) hs
+-    have h01 : n0 = 1 := unit_eq_one (b := n1 * na * nk * nt * ns)
+-      (by calc n0 * (n1 * na * nk * nt * ns) = n0 * n1 * na * nk * nt * ns := by ring
+-               _ = 1 := hp) h0
+-    have h11 : n1 = 1 := unit_eq_one (b := n0 * na * nk * nt * ns)
+-      (by calc n1 * (n0 * na * nk * nt * ns) = n0 * n1 * na * nk * nt * ns := by ring
+-               _ = 1 := hp) h1
+-    have ha1 : na = 1 := unit_eq_one (b := n0 * n1 * nk * nt * ns)
+-      (by calc na * (n0 * n1 * nk * nt * ns) = n0 * n1 * na * nk * nt * ns := by ring
+-               _ = 1 := hp) (ha hs1)
++    have hu : IsUnit (n0 * n1 * na * nk * nt * ns) := hp.symm ▸ isUnit_one
++    simp only [IsUnit.mul_iff, Int.isUnit_iff, or_iff_left h0,
++      or_iff_left h1, or_iff_left hs] at hu
++    rcases hu with ⟨⟨⟨⟨⟨h01, h11⟩, hau⟩, _⟩, _⟩, hs1⟩
++    have ha1 := hau.resolve_right (ha hs1)
+     exact ⟨h01, h11, ha1, hs1, by simpa only [h01, h11, ha1, hs1, one_mul, mul_one] using hp⟩
+   · rintro ⟨h01, h11, ha1, hs1, hkt⟩
+     simpa only [h01, h11, ha1, hs1, one_mul, mul_one] using hkt

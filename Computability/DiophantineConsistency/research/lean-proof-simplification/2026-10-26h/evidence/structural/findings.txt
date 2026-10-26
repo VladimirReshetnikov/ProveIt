@@ -1,0 +1,121 @@
+STRUCTURAL REVIEW — ProveIt 60e9c5d620c6c387d932876cfa2d9376f64ea56c
+Root prefix: Computability/DiophantineConsistency/Lean/DiophantineConsistency/
+Prototype validation: PASS for AssignmentTransport, FiniteResiduals, and RunInvariant.
+Exact assignment source patch PASS. Exact finite-residual patch and 3 existing
+audits PASS in isolated overlay. All 13 paired axiom comparisons agree.
+
+1. Assignment transport belongs in the representation API.
+Representation.lean lines 155-166 (Rep.reindex), 170-199 (conjunction), 202-231
+(disjunction) prove the same Sum.map/natAssignment naturality fact locally.
+The two hl/hr blocks are repeated verbatim in conjunction and disjunction.
+A single lemma natAssignment v w ∘ Sum.map f g =
+natAssignment (v ∘ f) (w ∘ g), proved by function extensionality and Sum cases,
+gives eval_rename_natAssignment using Expr.eval_rename. Then the complete
+Rep.reindex correctness proof is one simpa; conjunction/disjunction remove
+their four local extensionality proofs. The constructors retain the exact
+same witnessCount and expression fields, as rfl equality checks in the
+prototype demonstrate as confirmed by compilation. Existing Rep.ofIff, reindex,
+conjunction and disjunction names should remain; add the helper near
+natAssignment, not in a late compiler-specific file. This is a local API
+refactor and does not change any encoded equation or claimed variable count.
+Prototype: AssignmentTransport.lean.
+
+2. Centralize finite sums of squared residuals.
+DAGQuartic.lean lines 83-95; NaturalDAGQuartic.lean lines 110-122; and
+QuadraticRegisterSystem.lean lines 70-81 contain the same private
+eval_sumExpressions induction followed by the same expression_zero_iff
+proof. Make the evaluator lemma public in QuarticSyntax and prove one
+sumSquares_zero_iff for es : Fin n → Expr σ and v : σ → ℤ. Each compiler's
+expression_zero_iff becomes an exact instantiation. This works for n=0:
+both the empty sum and universal condition have their expected meanings.
+Keep the coefficient domain ℤ (or explicitly state the needed ordered-ring
+assumptions); the analogous statement is false for arbitrary rings.
+The degree proofs DAGQuartic.polynomial_degree lines 244-252,
+NaturalDAGQuartic.polynomial_degree lines 253-261, and
+QuadraticRegisterSystem.System.expression_degree lines 150-155 become
+instances of sumSquares_degree_le. Use the already available
+Diophantine.totalDegree_sum_pow_le from the H10 common library, not a new
+polynomial-degree induction. General statement: degree ≤ 2*d if every
+residual has degree ≤ d. It is an upper bound, never an exact-degree claim.
+Prototype: FiniteResiduals.lean.
+
+3. Use Sum.exists_sum for witness regrouping.
+DAGQuartic.exists_polynomial_zero_iff lines 260-283 and
+NaturalDAGQuartic.exists_polynomial_zero_iff lines 267-291 each manually
+split a valuation into input/witness functions, reconstruct Sum.elim,
+and prove two extensional cast identities. Mathlib.Data.Sum.Basic already
+has Sum.exists_sum (line 36 in pinned Mathlib). After one generic cast
+identity for Sum.rec (the recursor exposed by Sum.exists_sum), both proofs reduce to rw [Sum.exists_sum] followed by
+simpa using exists_congr of the existing exists_zero_iff. Preserve the
+topology, output-index, and Allowed hypotheses: the shorter proof discharges
+exactly the same theorem, not a weakened encoding statement.
+Prototype: FiniteResiduals.lean.
+
+4. Merge generic cost and renaming support rather than duplicate it.
+DAGQuartic.sumExpressions_cost lines 166-176 is general in a bound b;
+QuarticCost.sumExpressions_binaryOps_le lines 65-74 separately proves the
+b=5 case. Move the general theorem into QuarticCost, retain the old name as
+a b=5 compatibility wrapper, and instantiate b=11 for the signed DAG.
+DO NOT directly replace the b=11 use by the current b=5 theorem.
+QuarticCompiler.Gates.polynomial_rename lines 169-171 and
+NaturalRegisterRelation.rename_toPolynomial lines 37-39 also repeat the same
+structural induction. Promote one theorem to Expr.toPolynomial_rename and
+keep both existing names as aliases during migration. Similar private
+degree_add/degree_sub helpers repeat in QuarticCompiler.Gates lines 173-180,
+DAGQuartic lines 199-205 and NaturalDAGQuartic lines 209-215. A small shared
+polynomial-degree API is sufficient; avoid a large new abstraction hierarchy.
+
+5. Share syntax degree and evaluator induction that already exist.
+QuadraticRegisterSystem.syntaxDegree lines 18-22 is the constant-weight-1
+case of Expr.weightedDegree in WeightedExpressionDegree.lean.
+Its polynomial_degree_le lines 24-33 can derive from degree_evalRing_le and
+evalRing_X after an API-preserving equality lemma. New dependency should
+be checked for cycles; a foundational degree module is preferable.
+NaturalDAGQuartic.run_nonnegative and ArithmeticDAG.value_degree_le
+repeat the same strong induction along Topological dependencies. A
+run_invariant lemma can accept a value predicate P i value and a local
+closure rule; nonnegativity and degree bounds become local closure proofs.
+The generic rule and two replacement proofs are now checked in RunInvariant.lean.
+Their integration into existing modules remains a design proposal; no total
+source reduction or speed improvement is claimed for this extra abstraction.
+The existing run_node_equation and run_eq_of_node_equations already capture
+much of the appropriate architecture; build on them.
+
+6. Treat generated proof volume separately.
+GapCircuitSteps66.lean: 3122 physical lines, 484 natural_step lemmas,
+86 natural_power lemmas and 86 ring calls.
+SplitCircuitSteps59.lean: 3445 physical lines, 515 natural_step lemmas,
+107 natural_power lemmas and 107 ring calls.
+Total: 6567 physical lines, 999 step lemmas, 193 power lemmas.
+Each step theorem already uses the generic run_node_equation once. It is
+wrong to describe those 6567 lines as independent mathematical proofs waiting
+for discovery. Source compression requires changing the generators
+tools/generate_split_recipe_steps59.py and generate_gap_recipe_steps66.py.
+An optional simplification is emit one natural_step theorem quantified over
+Fin nodes.length, and keep only needed numerical aliases. A separate
+possible improvement is reuse ArithmeticDAG.run_power: generate an
+exponent-label table and check all PowerStep obligations once, then derive
+power aliases by the existing soundness theorem. This could remove 193 local
+ring proofs. The emitted checked table, stable names and the generator
+--check gate matter. No speed improvement is claimed without measurement.
+IMPORTANT: Gap/Split naturalNodes names concern natural INPUTS, not all
+intermediates. Gap's naturalNodes contains 21 subtraction nodes and negative
+literals. NaturalDAGQuartic.Allowed does NOT follow from that name.
+
+7. Natural-register representation change is optional, not first priority.
+NaturalRegisterProgram.Op already restricts register references with Fin
+and has only natural literals, inputs, addition and multiplication, while
+Program stores an erased integer ArithmeticDAG with topological/allowed
+certificates. A dedicated natural-semiring evaluator could make positivity
+and casts automatic, but would require an erasure-correctness theorem and
+may trade many small cast proofs for dependent type transport. Start with
+the local shared-lemma changes above. Do not rewrite the entire evaluator
+only to reduce displayed source lines.
+
+Validation policy for all proposals:
+- Run exact pinned Lean/mathlib versions.
+- Preserve public theorem signatures and encoded expression data.
+- Check #print axioms; no sorryAx or native-decide trust expansion.
+- Recheck affected import dependents for simp/API changes.
+- Count net source changes including new helper proofs, not only call sites.
+- Measure elaboration/heartbeat behavior if performance is claimed.

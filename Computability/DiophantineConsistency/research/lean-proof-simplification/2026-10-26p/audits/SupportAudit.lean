@@ -1,0 +1,4 @@
+import DiophantineConsistency.NativeTemporalSupport54
+#print axioms DiophantineConsistency.SupportDifference.translated_pair_zero
+#print axioms DiophantineConsistency.SupportDifference.residue_val
+#print axioms DiophantineConsistency.NativeTemporalSupport54.clause_pair_one_zero

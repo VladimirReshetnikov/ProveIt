@@ -1,0 +1,15 @@
+theorem mulRel_zero_iff (H : ZFAxioms mem) {x y : V}
+    (hx : mem x (omegaV H)) (hy : mem y (omegaV H)) :
+    MulRel H x y (vempty H) ↔ x = vempty H ∨ y = vempty H := by
+  constructor
+  · intro hxy
+    rcases nat_zero_or_succ H y hy with rfl | ⟨n, hn, rfl⟩
+    · exact Or.inr rfl
+    · obtain ⟨b, hb⟩ := mulRel_total H hx hn
+      have he : vempty H = addValue H b x := mulRel_unique H hxy (mulRel_succ H hb)
+      have hadd : AddRel H b x (vempty H) :=
+        he.symm ▸ addValue_rel H (mulRel_result_nat H hb) hx
+      exact Or.inl ((ObjectAdditionCancellation.addRel_zero_iff H b x).mp hadd).2
+  · rintro (rfl | rfl)
+    · exact mulRel_zero_left H hy
+    · exact mulRel_zero H hx

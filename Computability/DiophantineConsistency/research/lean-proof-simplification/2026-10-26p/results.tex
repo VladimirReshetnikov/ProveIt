@@ -1,0 +1,21 @@
+\newcommand{\ResultTable}{%
+{\small
+\begin{longtable}{P{.05\textwidth}P{.29\textwidth}P{.19\textwidth}P{.35\textwidth}}
+\toprule
+ID & Scope counted & Physical lines & Verification\\\midrule\endhead
+A & Both Pell estimate files & $716\to639$; saves 77 & Both complete modules compile; 19 original theorem headers preserved.\\
+B & Complete proof checker & $388\to378$; saves 10 & Complete module compiles; eight audited theorem axiom outputs unchanged.\\
+C & Complete syntax-graph module & $169\to166$; saves 3 & Complete module compiles; seven audited theorem axiom outputs unchanged.\\
+D & Support client and new helper & $82\to125$; adds 43 & Both complete modules compile; original client statement preserved.\\
+E & Stronger pairing API & No net reduction claimed & Extension imports the actual production predicate and compiles, including witness uniqueness.\\
+\bottomrule
+\end{longtable}}
+The three immediate refactors together remove 90 physical lines: $1273\to1183$ at the validation pin. At the refreshed commit, proposal B instead gives $380\to370$, preserving the upstream eight-line lookup cleanup; the net saving remains 90. Proposal D and the optional extension are not included in that saving.}
+
+\newcommand{\FragmentStatus}{The final complete \code{AnnotatedProofChecker.lean} compiles. The changed region decreases from 55 to 45 physical lines, from 50 to 39 nonblank lines, and from 2,643 to 2,460 UTF-8 bytes. The complete file decreases from 388 to 378 lines at the validation pin. Eight audited public theorem axiom outputs are byte-identical to baseline, including the original \code{fragment_exists} and downstream certificate endpoints.}
+
+\newcommand{\ForkStatus}{The final complete \code{AnnotatedSyntaxGraphs.lean} compiles. Including the new successor lemma, the changed region decreases from 37 to 34 physical lines and from 1,727 to 1,486 UTF-8 bytes. The complete file decreases from 169 to 166 lines. Seven audited theorem axiom outputs are byte-identical to baseline, including the graph degree, operation-count, witness-count, and fixed-body count endpoints.}
+
+\newcommand{\PairingStatus}{The supplied \code{CanonicalPairingIntegration.lean} imports and aliases the actual production \code{QuadraticNatPairing.Certificate}; it does not substitute a copied definition. Lean accepts the normal-form theorem, derived soundness and completeness, and witness uniqueness. The axiom audit reports only \code{propext}, \code{Classical.choice}, and \code{Quot.sound}. This is a checked extension, not a replacement of the entire production module.}
+
+\newcommand{\ValidationSummary}{Six complete candidate modules were checked: the two Pell files, the proof checker, the syntax-graph module, the support helper, and its native client. The optional pairing extension was checked against the actual production predicate. All four patches pass application checks against both the validation pin and refreshed commit \code{6f46a5e3480a2fa2e45993b8090826f256aeaa56}. Compilation and axiom comparisons remain tied to the original pin; the refreshed dependency graph was not rebuilt.}

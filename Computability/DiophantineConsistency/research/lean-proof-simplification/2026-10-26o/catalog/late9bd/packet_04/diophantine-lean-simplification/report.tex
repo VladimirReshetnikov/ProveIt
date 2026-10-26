@@ -1,0 +1,553 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.85in,headheight=15pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=0.78]
+\usepackage{unicode-math}
+\setmathfont{Latin Modern Math}
+\usepackage{microtype,booktabs,longtable,array,tabularx,enumitem,amsmath}
+\usepackage[table]{xcolor}
+\usepackage{fvextra,fancyhdr,titlesec,xurl,hyperref,needspace,etoolbox}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{11756F}
+\definecolor{pale}{HTML}{EDF4F5}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=teal,pdftitle={Shorter Lean proofs for Diophantine consistency},pdfauthor={Research review prepared for Vladimir Reshetnikov}}
+\titleformat{\section}{\Large\sffamily\bfseries\color{navy}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{navy}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\sffamily\bfseries}{\thesubsubsection}{0.6em}{}
+\pretocmd{\section}{\Needspace{6\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace{5\baselineskip}}{}{}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=1.4em,topsep=4pt}
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily Diophantine consistency: Lean proof refactoring}
+\fancyhead[R]{\small\sffamily 26 October 2026}
+\fancyfoot[C]{\small\thepage}
+\DefineVerbatimEnvironment{Code}{Verbatim}{fontsize=\small,breaklines=true,breakanywhere=true,frame=leftline,rulecolor=\color{teal},framesep=5pt}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\SourceBase}{https://github.com/VladimirReshetnikov/ProveIt/blob/60e9c5d620c6c387d932876cfa2d9376f64ea56c/Computability/DiophantineConsistency}
+\newcommand{\module}[1]{\href{\SourceBase/Lean/DiophantineConsistency/#1.lean}{\texttt{#1.lean}}}
+\newcommand{\docsource}[1]{\href{\SourceBase/#1}{\texttt{\detokenize{#1}}}}
+\newcommand{\status}[1]{\textbf{Status:} #1.}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.5in}
+{\sffamily\color{teal}\large SOURCE-GROUNDED RESEARCH REVIEW\par}
+\vspace{0.25in}
+{\raggedright\sffamily\bfseries\color{navy}\fontsize{29}{34}\selectfont Shorter Lean proofs for Diophantine consistency\par}
+\vspace{0.22in}
+{\Large Shared proof kernels, reusable arithmetic, and compact checked certificates\par}
+\vspace{0.45in}
+{\large Prepared for Vladimir Reshetnikov\par}
+26 October 2026
+\vspace{0.35in}
+
+\textbf{Reviewed repository}\par
+\url{https://github.com/VladimirReshetnikov/ProveIt}\par
+\code{Computability/DiophantineConsistency/Lean}\par
+Commit \code{60e9c5d620c6c387d932876cfa2d9376f64ea56c}\par
+Lean 4.32.0; pinned mathlib commit\par
+\code{81a5d257c8e410db227a6665ed08f64fea08e997}
+
+\vspace{0.3in}
+\textbf{Central finding.} The strongest opportunities come from making existing abstractions carry more of the proof: assignment transport, scanner simulation, topological induction, and the circuit power checker. Small arithmetic improvements can be adopted independently. The largest source-volume opportunity lies in generated gate and power proofs, but it needs controlled certificate interfaces that preserve sharing and named intermediate expressions.
+
+\textbf{Concrete deliverable.} The archive contains a checked refactoring of the representation constructors, independently compiled generic proof modules, compiler/axiom logs, reproducible source metrics, and a staged plan for the larger changes. Compiled examples and proposed integrations are identified separately.
+
+\vfill
+\small This is a refactoring study of existing formal proofs. Its measurements refer to the pinned snapshot. It does not claim a completed rewrite of the entire project, a measured global speedup, or completion of the still-open formalization links documented by the repository.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+{\setlength{\parskip}{0pt}\small\tableofcontents}
+\newpage
+
+\section{What the review establishes}
+
+The most effective way to shorten this development is to reduce the number of independently maintained proof patterns. The code already has a strong separation between explicit arithmetic data, executable evaluators, finite certificates, and mathematical correctness. That separation should be retained. Several repeated arguments can be moved into the existing foundational layers without changing any polynomial, witness coordinate, primitive-recursive program, or statement of consistency.
+
+There are three different outcomes in this report:
+\begin{enumerate}
+\item \textbf{A concrete source patch.} The representation constructors are shortened while preserving their complete \code{Rep} structures. The archive includes the patch, compatibility proofs, and validation evidence.
+\item \textbf{Compiled proof prototypes.} General scanner, circuit, arithmetic, finite-support, and cyclic-residue results are checked with the pinned compiler. Some are used in replacement proofs against the original project modules. A compiled general theorem does not by itself establish that every proposed caller migration has been completed.
+\item \textbf{Larger integration proposals.} Generated proof compression, complete translation certificates, object-level wrappers, and shared quartic packaging are grounded in specific source declarations. Their full implementation and net savings remain to be measured.
+\end{enumerate}
+
+\subsection{Snapshot and coverage}
+
+The review uses the main-branch snapshot at commit \code{60e9c5d620c6}, whose last change concerns cell translation, field offsets, and cycle exclusions. Source links in this report are pinned to the full commit. The active Lean subtree contains 546 Lean files. There are another 165 Lean files elsewhere under the requested directory, mostly preserved candidate or historical material; they are excluded from the active-source totals. The detailed audit concentrates on the named proof families below rather than claiming a line-by-line mathematical review of all 73,971 lines.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lr}
+\toprule
+Measure in the active Lean subtree & Count\\
+\midrule
+Lean source files & 546\\
+Physical lines & 73,971\\
+Nonblank source lines & 63,808\\
+Nonblank lines after lexical comment/string removal & 59,832\\
+Theorem/lemma declarations, lexical count & 4,970\\
+UTF-8 source bytes & 3,293,801\\
+Audit/check files, by documented naming/path rule & 220\\
+Physical lines in those audit/check files & 7,114\\
+Files with a generated-source header in the first 30 lines & 18\\
+Physical lines in those generated-header files & 14,807\\
+\bottomrule
+\end{tabular}
+\caption{Reproducible source measurements; these are not proof-term or elaboration-cost measurements.}
+\end{table}
+
+The script \code{scripts/audit_lean.py} defines every counting rule and records per-file hashes. It supports nested Lean comments and blanks ordinary string literals before lexical counting. It found no byte-identical Lean files, but identified 29 candidate clusters of identical normalized tactic bodies. Those candidates require semantic inspection: identical text in different namespaces need not express the same theorem.
+
+The source scan found no code tokens \code{sorry}, \code{admit}, \code{axiom}, or \code{native_decide} in the active subtree. This is useful inventory evidence, not an axiom audit of all imported results. The supplied compiled experiments additionally use \code{#print axioms}; their successful outputs are retained. The distinction follows Lean's documented separation between source elaboration, trusted logical axioms, and compiler-supported reduction.\footnote{\url{https://lean-lang.org/doc/reference/latest/ValidatingProofs/} and \url{https://lean-lang.org/theorem_proving_in_lean4/Axioms-and-Computation/}. The actual experiments use Lean 4.32.0, rather than relying on whichever version the current documentation describes.}
+
+\subsection{Recommended order}
+
+\begin{longtable}{L{0.06\textwidth}L{0.30\textwidth}L{0.51\textwidth}}
+\toprule
+Order & Change & Reason to do it at this stage\\
+\midrule
+\endhead
+1 & Assignment and witness-block transport & A concrete checked patch; preserves literal data and reduces foundational repetition.\\
+2 & Half-radix identity, one-hot support, carry views & Small mathematical lemmas with checked prototypes and clear reuse.\\
+3 & Existing stronger residue theorem & A one-line application replaces a repeated finite case proof.\\
+4 & Shared scanner simulation & Four closely related modules can use one induction, while keeping raw-input soundness separate.\\
+5 & Indexed power certificates & Existing \code{run_power} and existing Split label data already provide most of the architecture.\\
+6 & Shared circuit invariant and translation relation & Checked generic results factor topology bookkeeping and harmless commutative swaps.\\
+7 & Local gate proof generation with explicit stopping points & Targets 999 repetitive gate equations and long rewrite lists without expanding entire circuits.\\
+8 & Low-level cyclic-field and mask helpers & Removes repeated arithmetic/support arguments and avoids import cycles.\\
+9 & Shared residual-system and sparse-row certificates & Reduces quartic and quadratic-row repetition, preserving independent specifications.\\
+10 & Object-level induction/validity wrappers & Simplifies proof presentation while retaining definability and nonstandard-model quantifiers.\\
+\bottomrule
+\end{longtable}
+
+\section{Immediate refactorings with precise mathematical content}
+
+\subsection{Assignment transport and witness splitting}
+
+\textbf{Targets.} In \module{Representation}: \code{Rep.reindex} (lines 155--166), \code{Rep.conjunction} (170--198), and \code{Rep.disjunction} (202--231). The same technique can later support \code{Rep.existsBlock}. A narrower assignment-composition lemma already exists privately in \module{QuarticCompiler}, lines 95--98. The proposed change promotes the idea into the foundational layer and makes both input and witness renaming explicit.
+
+The common equation is
+\[
+ \operatorname{natAssignment}(v,w)\circ\operatorname{Sum.map}(f,g)
+ =\operatorname{natAssignment}(v\circ f,w\circ g).
+\]
+Its proof is just function extensionality followed by the two sum-type cases. Combined with the existing \code{Expr.eval_rename}, it removes the local assignment equalities repeated in the binary constructors.
+
+The remaining bookkeeping concerns an assignment on \code{Fin (m+n)}. Prove once that
+\[
+\begin{split}
+&\exists w,\ P(w\circ\operatorname{castAdd}_n)\land Q(w\circ\operatorname{natAdd}_m)\\
+&\hspace{1.1in}\longleftrightarrow (\exists a,P(a))\land(\exists b,Q(b)).
+\end{split}
+\]
+There is an analogous disjunction equivalence. Its reverse direction supplies zero to the unused natural witness block. This default witness matters: an analogous statement over arbitrary empty witness-value types would need an inhabitation assumption.
+
+The resulting correctness proof for conjunction becomes:
+\begin{Code}
+intro v
+simp only [left, right, Expr.eval_add, Expr.eval_mul, Expr.eval_rename,
+  assignment_comp, Function.comp_id, mul_self_add_mul_self_eq_zero]
+exact (and_congr (r.correct v) (s.correct v)).trans
+  (exists_fin_add_and _ _).symm
+\end{Code}
+The constructor still supplies exactly the same witness count and exactly the same expression tree. In the checked prototype, the strongest compatibility assertions are:
+\begin{Code}
+theorem reindexShort_eq ... : reindexShort r f = r.reindex f := rfl
+theorem conjunctionShort_eq ... : conjunctionShort r s = r.conjunction s := rfl
+theorem disjunctionShort_eq ... : disjunctionShort r s = r.disjunction s := rfl
+\end{Code}
+Here the ellipses abbreviate binders in the exposition only; complete compilable declarations are in \code{lean/AssignmentTransport.lean}. Definitional equality of the data, together with proof irrelevance for correctness fields, proves equality of the whole structures. This is stronger than proving only that the new expression has the same existential zero set.
+
+\textbf{Honest accounting.} The original three constructor declarations occupy 71 physical lines; their shortened versions occupy 22. The shared helpers cost 28 declaration lines. The complete source patch, including comments and blank lines, changes \code{Representation.lean} from 260 to 244 lines: 42 insertions and 58 deletions, a net reduction of 16 lines. The dramatic reduction at each call site should not be presented as a 69\% reduction of the file or project. The helper's main advantage is that future witness constructions inherit a stable interface.
+
+\textbf{Extension.} Add the nested-sum transport identity used by \code{existsBlock}; use the same helper in the semiring gate interpreter after generalizing its target value type. Keep the helper low in the import graph. Importing \code{QuarticCompiler} back into \code{Representation} would create the wrong dependency direction.
+
+\subsection{Replace half-radix case enumeration by one identity}
+
+\textbf{Targets.} In \module{NativeCyclicRotation}: the bound theorem \code{shiftDigits_half_bound} (100--116) and the parity theorem \code{shiftDigits_half_parity_89} (160--165).
+
+For $s>0$ and arbitrary natural digits $a,b$,
+\begin{equation}\label{eq:half}
+ (sa)\bmod(2s)+\left\lfloor\frac{sb}{2s}\right\rfloor
+ =s(a\bmod2)+\left\lfloor\frac b2\right\rfloor.
+\end{equation}
+This is the exact mathematical content of the half-radix branch. Lean's core multiplication/remainder and multiplication/division lemmas prove it directly:
+\begin{Code}
+theorem half_digit_eq {s : ℕ} (hs : 0 < s) (a b : ℕ) :
+    s * a % (2 * s) + s * b / (2 * s) = s * (a % 2) + b / 2 := by
+  rw [Nat.mul_comm 2 s, Nat.mul_mod_mul_left,
+    Nat.mul_div_mul_left _ _ hs]
+\end{Code}
+
+If $b\le3$, then $a\bmod2\le1$ and $b/2\le1$, so the expression is at most $s+1$. If $s$ is even, its parity is $b/2$. No bound on the current digit $a$ is needed. The old APIs may keep the stronger hypothesis that all digits are at most three; compatibility need not wait for a separate hypothesis cleanup.
+
+The bound's original proof body has 15 nonblank lines and a four-way digit split; its adapter has one line. The parity proof has four body lines but generates sixteen cases; its adapter has two lines. The three shared scalar lemmas cost ten nonblank proof-body lines in the checked version. This gives an explicit account of the helper overhead and a genuine simplification of the argument, without asserting an unmeasured runtime gain.
+
+The scalar lemmas do not inspect the indexing type. Consequently the cyclic predecessor $k-1$ is retained exactly, including wraparound and any degenerate modulus allowed by the original theorem. There is no assumption of a zero incoming carry or an already aligned temporal phase. Artifacts: \code{HalfRadixCore.lean} and the project-definition adapters in \code{HalfRadixRefactor.lean}.
+
+\subsection{Use the existing sum-at-most-one API}
+
+\textbf{Target.} \module{CurrentCellLabels2011}, \code{sum_le_one_cases} (131--158). The existing proof chooses a positive term, compares it with the sum, erases its index, proves the remaining sum is zero, and bounds each remaining term.
+
+The core fact is already packaged by mathlib as \code{Finset.sum_le_one_iff}; the repository itself uses it in \module{NativeSelectorClause54}, \code{selectors_one} (65--80). For a finite family $f_i\in\mathbb N$, it yields uniqueness of any nonzero index and that its value is one. Split only on whether all entries are zero. If not, choose a nonzero index and apply the uniqueness conclusion.
+
+The supplied \code{OneHotCore.lean} proves the same generic statement using eight nonblank proof-body lines instead of 26. It reproduces the existing \code{Selected} predicate in a fresh namespace for isolated checking; production should simply replace the original proof body. Empty index types are covered by the all-zero alternative. A Boolean-input premise is unnecessary because the sum bound already supplies the required information.
+
+Keep \code{Selected.unique} and \code{Selected.weighted_sum}. These are useful downstream interfaces; replacing them with repeated raw sums would undo the improvement.
+
+\subsection{Derive carry recurrence from normalized local arithmetic}
+
+\textbf{Target.} \module{CurrentPolynomialWindow2011}, the \code{Facts} fields near lines 58--66.
+
+Suppose natural numbers satisfy
+\[
+ \mathrm{raw}=\mathrm{digit}+\rho\,\mathrm{carry},\qquad
+ \mathrm{digit}<\rho.
+\]
+Then
+\[
+ \mathrm{carry}=\mathrm{raw}/\rho,\qquad
+ \mathrm{digit}=\mathrm{raw}\bmod\rho.
+\]
+The digit bound implies $\rho>0$, so both conclusions follow directly from division and remainder laws. \code{CarryCore.lean} checks the two short proofs.
+
+The current facts record stores the digit bound, local carry equation, and quotient recurrence. Store the first two and expose the recurrence as a theorem named \code{Facts.carry_recurrence}. Existing client notation \code{h.carry_recurrence} can remain natural, while constructors lose a redundant obligation. A small normalized-digit structure can support both views pointwise.
+
+This refactoring applies only after the digit bound is available. Some early geometry proofs intentionally assume just a local equality. They cannot recover quotient information from that weaker interface. Also retain the existing generic fixed-point construction in \module{NativeCyclicCarry}: a linear induction starting from zero carry is not a replacement for a cyclic-word argument.
+
+\subsection{Use a stronger congruence instead of proving a weaker one again}
+
+\textbf{Target.} \module{CurrentEarlyPadding2011}, \code{reflected_mod_sixteen} (99--107). It repeats the same selector/marker case split already performed in \module{CurrentClause2011}, \code{reflected_weight_mod} (122--131), with a smaller modulus.
+
+Since $16\mid2048$, the complete replacement is
+\begin{Code}
+exact (CurrentClause2011.reflected_weight_mod e).of_dvd
+  (by decide : 16 ∣ 2048)
+\end{Code}
+The two private selector indicators have the same definition, so the target expressions are definitionally equal. A later cleanup can move that indicator next to \code{Entry}, but it is not a prerequisite for this proof reuse. The original proof has eight nonblank body lines; the replacement is one logical application. More significantly, one finite case argument disappears while all actual coefficient cases remain certified by the stronger theorem.
+
+\subsection{Lift pointwise zero-set equivalence once}
+
+\textbf{Target.} \module{CurrentCarrierArithmetic2011}, \code{positive_zero_69_iff_70} and \code{positive_zero_70_iff_71} (95--119).
+
+The pointwise polynomial result already compares the same positive assignment. A congruence for the existing \code{PositiveZero} predicate lifts it through the existential quantifier and positivity guard:
+\begin{Code}
+theorem positiveZero_congr {n : ℕ} (P Q : MvPolynomial (Fin n) ℤ)
+    (h : ∀ u : Fin n → ℤ, (∀ j, 0 < u j) →
+      (MvPolynomial.eval u P = 0 ↔ MvPolynomial.eval u Q = 0)) :
+    PositiveZero P ↔ PositiveZero Q := by
+  exact exists_congr fun u => and_congr_right (h u)
+\end{Code}
+The two existing equivalences then become applications of the pointwise result. The first port's positivity can also have one named lemma instead of three repeated cast proofs.
+
+This helper does not replace the $65\leftrightarrow69$ theorem: that result changes the witness dimension from fourteen to thirteen and needs its actual \code{completes}/\code{restores} maps. Preserve the fact that the $69/70/71$ comparisons impose no positivity condition on $K$. Adding such a hypothesis merely to unify theorem signatures would weaken the API.
+
+\section{One simulation kernel for the annotated scanners}
+
+\subsection{The repeated structure}
+
+The main loop argument appears in \module{AnnotatedRenameScan} (29--87), \module{AnnotatedBoundScan} (25--83), \module{AnnotatedLineScan} (32--54 and 131--154), and \module{AnnotatedAxiomContext} (30--50 and 130--151). \module{AnnotatedContext} shares the iteration/fixed-point part but has a different terminal relation.
+
+Each numeric scanner operates on a state encoding a remaining list and a history. Rejection resets the state to zero. An empty remaining list is stable. A successful row advances to the tail and updates history. The semantic list runner has the shape
+\[
+\begin{aligned}
+\operatorname{run}([],h)&=\operatorname{some}(h),\\
+\operatorname{run}(a::as,h)&=
+ \begin{cases}
+ \operatorname{run}(as,\operatorname{push}(a,h)),&\operatorname{valid}(a,h),\\
+ \operatorname{none},&\text{otherwise}.
+ \end{cases}
+\end{aligned}
+\]
+The payload update must be a parameter. Renaming and bound scans retain a raw row; line and axiom-context scans can retain a checked output. Hard-coding cons of the input row would miss those instances.
+
+\subsection{The checked abstraction}
+
+\code{GenericScanner.lean} needs only \code{import Std}. Its implementation record carries a numeric step, an encoding of remaining rows and history, and three laws:
+\begin{enumerate}
+\item The rejecting state is fixed: $\operatorname{step}(0)=0$.
+\item Encoded empty lists are fixed.
+\item One encoded cons step is the corresponding semantic branch.
+\end{enumerate}
+One theorem then proves that, for fuel at least the remaining list length, the numeric iteration equals zero on semantic failure and the encoded final history on success. Extra fuel is handled by the fixed-point law. The theorem accepts terminal/reject encoding collisions because it is a simulation statement; a separate finishing predicate decides whether the terminal history is acceptable.
+
+The module also proves preservation of an arbitrary inductive history invariant and preservation of a raw numeric-state invariant under iteration. Its axiom audit records only \code{propext} for the list simulation and no axioms for the two invariant theorems.
+
+\subsection{How to migrate without changing coded programs}
+
+Keep the existing numeric \code{step}, \code{scan}, and supplied primitive-recursive programs. Construct an instance of the generic implementation using each module's existing local arithmetic theorem. Prove the required equality between the generic and existing list runner. Replace the repeated simulation proof with the shared result and retain the existing public theorem name.
+
+This is intentionally a proof-level extraction. Replacing the checker definitions themselves may change their syntax trees or node counts, even when the functions are extensionally equal. The project has literal program-size certificates; proof simplification should preserve that data unless a separate program optimization is intended.
+
+Raw-input soundness remains a separate obligation. In particular, \module{AnnotatedLineScan}'s soundness theorem for arbitrary natural input codes does more than simulate the encoding of a known well-formed list. Its local checker reconstructs genuine provable judgments. The generic raw-state invariant can organize that proof, but the reconstruction argument cannot be omitted or replaced by a well-formed-input assumption.
+
+\section{The largest opportunity: compact circuit proof certificates}
+
+\subsection{Measure proof schemas separately from literal circuit data}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+File & Physical lines & Gate lemmas & Power lemmas\\
+\midrule
+\code{SplitCircuitSteps59.lean} & 3,445 & 515 & 107\\
+\code{GapCircuitSteps66.lean} & 3,122 & 484 & 86\\
+\midrule
+Total & 6,567 & 999 & 193\\
+\bottomrule
+\end{tabular}
+\caption{The two dominant generated proof-schema files.}
+\end{table}
+
+These two files occupy 8.88\% of all physical lines in the active subtree. Their local-gate declaration blocks account for 4,995 lines and their power blocks for 1,540. These are exposed targets for refactoring, not achieved savings. A replacement must charge its certificate data, generic checker, compatibility aliases, and revised consumers.
+
+By contrast, the large lists in \module{SplitCircuit59}, \module{SplitJointCircuit59}, and \module{GapCircuit66} are actual circuit data. Moving those lists or hiding them in another file does not simplify a mathematical proof. The intended reduction is in independently generated reasoning and manually maintained dependency traversal.
+
+\subsection{Reuse the existing power checker systematically}
+
+\module{ArithmeticDAGPowers} already defines \code{PowerStep} and proves \code{run_power} for arbitrary commutative rings. A nonzero label is an exponent. At a multiplication node, checked labels satisfy
+\[
+ \ell_i=\ell_a+\ell_b,
+\]
+and the base register has label one. Topological induction proves that every labeled register is the appropriate power of the base.
+
+Yet the two step files separately prove 193 power identities by rewriting predecessor identities and invoking polynomial normalization. More concretely, \module{SplitJointPower59} already contains the parent Split circuit's power-label table and finite certificate. Move that parent certificate into a small independent module rather than importing the entire joint child circuit merely to obtain it. Generate and check the analogous Gap labels.
+
+Expose one indexed theorem. Initially preserve old \code{natural_power_*} names as thin aliases so existing explicit rewrite lists and audits remain valid. Then migrate consumers to the indexed result or a controlled local tactic. The Python generators already calculate the exponent labels; the generated data should be checked in Lean with the existing kernel-based finite-checking approach. The generator is not trusted to establish the theorem.
+
+The supplied \code{DAGRefactoring.lean} includes a checked adapter that accepts a finite exponent certificate and invokes \code{run_power}. The full replacement of the 193 named declarations remains an integration task. It should change \code{generate_split_recipe_steps59.py} and \code{generate_gap_recipe_steps66.py} as well as their emitted Lean files.
+
+\subsection{One topological induction principle}
+
+The same induction appears in \module{ArithmeticDAGSemantics}, \code{run_eq_of_node_equations} (97--109); \module{ArithmeticDAGDegree}, \code{value_degree_le} (65--82); \module{ArithmeticDAGPowers}, \code{run_power}; and \module{NaturalDAGQuartic}, \code{run_nonnegative} (43--53).
+
+A generic invariant $P(i,v)$ should express what is known about register $i$ and its value. The step theorem receives the invariant for every referenced predecessor and proves it for the current node's evaluated right-hand side. The shared proof handles strict predecessor bounds and rewrites the evaluator equation once.
+
+Instantiations include equality to a proposed value table, a polynomial-degree bound, nonnegativity, an interval bound, or a power label. \code{DAGRefactoring.lean} checks this induction principle and same-signature shortened forms of evaluator uniqueness and degree soundness. This is a modest immediate line improvement with a substantial interface benefit: future invariants no longer need to know the list evaluator's indexing proof.
+
+Do not expect a net saving from adding a generic theorem and migrating only one tiny consumer. Migrate the closely related family together, while retaining local arithmetic lemmas as the semantic content of each instance.
+
+\subsection{Replace thousands of gate-proof lines without unfolding the evaluator}
+
+Each of the 999 local gate equations is a specialization of the existing \code{run_node_equation}. A small proof-producing tactic can construct such an equation on demand: identify the literal register index, invoke the generic theorem, prove the finite index bound, and reduce just the selected node and \code{Node.evalAt}.
+
+The stopping rule is essential. Leave predecessor registers as named expressions until a caller asks to expand them. Global simplification of \code{run} or recursive expansion of every register into a polynomial loses the very sharing that makes a DAG compact.
+
+The present register proofs show why this matters. A line in \module{GapCircuitRegisters66} contains 2,142 characters and 125 explicit step/power references. The two register modules together contain 660 step references and 254 power references. These long dependency traversals are mechanical; the named base, kernel, threshold, and finalizer values are useful mathematical boundaries.
+
+A suitable tactic or checker should accept semantic stopping registers, use the power certificate before traversing a power chain, cache intermediate equations, and return ordinary proof terms. Maintain a small explicit specification of the stopping points. A tactic that merely hides the original enormous expansion in one command would reduce visible text but might worsen elaboration, term size, and debuggability.
+
+\subsection{Factor the two translation proofs and admit commutative swaps}
+
+\module{SplitCircuitTranslation59} and \module{GapCircuitTranslation66} each have 79 lines. Their full text matches after documented family and finite-parameter substitutions; \code{metrics/focused-circuits.json} reproduces the comparison. Both use the same retained-register map, the same private input-irrelevance lemma, and one special case for a multiplication whose operands are reversed.
+
+Extend the existing node relation with a commutative alternative:
+\[
+\begin{split}
+\operatorname{Rel}_{+/*}((a,b),(c,d))\iff{}
+ &(a\sim c\land b\sim d)\\
+ &\lor(a\sim d\land b\sim c).
+\end{split}
+\]
+Subtraction must retain ordered operands. The compiled \code{NodeRelComm} and \code{evalAt_of_NodeRelComm} establish this exact distinction. They remove the reason for the isolated swapped-product proof cases.
+
+A complete shared translation theorem can then take two node lists, their topology proofs, the retained-register map, an explicit initial-input interface, and a finite correspondence certificate. Each family supplies its actual circuit data. The special handling of the unshifted stored input is a real semantic feature and remains explicit; it is not removed by admitting a commutative operand swap.
+
+The generic relation and soundness proof are checked. The complete two-family migration is proposed work, not a claimed completed simplification of both translation modules.
+
+\subsection{Share residual packaging before merging quartic compilers}
+
+\module{DAGQuartic} and \module{NaturalDAGQuartic} duplicate sum-expression evaluation, sum-of-squares reasoning, degree helpers, and an identical 19-line \code{rhs_degree} body. The former also has a general private \code{sumExpressions_cost} theorem with an arbitrary per-expression bound, whereas \module{QuarticCost} repeats essentially the same induction for bound five.
+
+The first extraction should be a finite residual-system API. For residual expressions $r_i$ over integer values, prove once:
+\[
+ \sum_i r_i(v)^2=0\ \longleftrightarrow\ \forall i,\ r_i(v)=0.
+\]
+If every residual polynomial has degree at most two, prove the summed-square polynomial has degree at most four. Give a syntax-operation bound parameterized by the cost of each residual. Promote the already existing general cost theorem and retain the old bound-five result as a specialization.
+
+The shared six-constructor right-hand-side proof can be abstracted over the expressions representing inputs and wires. A later wire-codec abstraction may capture both full compilers, but their realization conditions must remain distinct. The signed compiler encodes arbitrary integers using two natural coordinates; the one-coordinate compiler requires a genuine nonnegativity invariant. Preserve the exact counts $\mathrm{inputs}+2\,\mathrm{nodes}$ and $\mathrm{inputs}+\mathrm{nodes}$ and their separate operation bounds.
+
+\subsection{Use low-degree row certificates as the first reflection experiment}
+
+\module{GapCertificate66}, \module{SplitCertificate59}, and \module{NativeQuadraticParent} each contain 22 individual row-identity proofs. Their identity sections total 1,074 physical lines, followed by essentially the same 22-case dispatcher. These rows are quadratic, so they offer a more bounded normalization problem than a complete high-degree circuit.
+
+Use a sparse row syntax for constant, linear, and quadratic terms, with the fixed ports as coefficient parameters. Prove evaluation of that syntax once. A checked normalizer or a proof-producing tactic can then certify each generated row against its independently specified source row. The final dispatcher becomes table-driven.
+
+The independent source specification must remain. Redefining \code{deliveredRows} or \code{shiftedRows} to be the generated encoding would erase the connection that the current identities prove. Likewise, random numerical evaluation cannot establish a polynomial identity. Retain universal quantification in the fixed ports and coordinate values, and initially preserve public row-theorem names as aliases.
+
+\subsection{Preserve cancellation-aware degree proofs}
+
+The project already distinguishes structural upper bounds from sharper algebraic bounds. \module{GapCircuitDegree66} obtains the generic bound $2{,}063{,}116$. \module{GapFinalizerDegree66}, together with \module{FreeCarrierDegree}, obtains the stronger bound $1{,}845{,}940$ by using actual identities and Pell-related cancellations.
+
+A shorter proof of the larger bound is not a replacement for the smaller one. The useful extension is a checked rewrite block: first prove that a compact rewritten expression equals the actual circuit expression, then apply the existing weighted-degree machinery to that normal form. Keep all required port conditions and named-register equalities visible. Numeric degree labels certify upper bounds; they do not automatically prove exact degree or the absence of leading-term cancellation.
+
+\section{Word arithmetic and geometric interfaces}
+
+\subsection{Extract cyclic-field arithmetic below the geometry modules}
+
+\module{CurrentClause2011} (65--94) and \module{CurrentPhaseParity2011} (49--78) repeat about thirty lines of the same calculation: determine two source residues, prove that they lie outside the low support, and conclude that the corresponding source digits vanish. Their target fields differ, but their arithmetic pattern does not.
+
+The compiled \code{CyclicFieldRefactor.lean} works in the full ambient group $\mathbb Z/(NL)\mathbb Z$, with $N,L>0$ (the code has \code{NeZero (N * L)} and an explicit proof of $L>0$). For an aligned base $b$, it proves
+\begin{equation}\label{eq:field}
+ \operatorname{val}(b+e-t)\bmod L=(L+e-(t\bmod L))\bmod L.
+\end{equation}
+The offset $e$ and shift $t$ are arbitrary natural numbers; the concrete upper bound on $e$ used in a current theorem is unnecessary. A companion support lemma turns a proof that the right side is outside a support set into a zero source digit.
+
+The existing \module{CurrentCellTranslation2011}, \code{source_residue} (92--105), already has the concrete version. Importing it into \code{CurrentClause2011} would create a cycle, because the translation module depends on the clause module. Extract the common addition, subtraction, and source-residue lemmas into a genuinely low-level module, and retain concrete wrappers under old names.
+
+Only the field residue forgets whole-cell motion in equation~\eqref{eq:field}. The group element itself still uses the entire shift $t$. Replacing that group element by a shift of $t\bmod L$ loses temporal translation and is incorrect. The generic theorem preserves the $N=1$ case as well.
+
+The actual support is an \code{irreducible_def}. Closed exclusions should use its existing characterization lemma, for example \code{norm_num [CurrentMasks2011.lowSupport_def]}, rather than assuming that a bare decision tactic will unfold the hidden definition.
+
+\subsection{One origin-correction lemma for multiple mask generations}
+
+\module{NativeHighPort54}, \code{mask_word} (183--203), and \module{CurrentHighDigits2011}, \code{high_mask_word} (107--126), both subtract one from the origin digit of a packed word and repeat the cancellation proof.
+
+For any radix $r$, finite cyclic word $a$, and $q\le a_0$,
+\[
+ \operatorname{word}_r\bigl(k\mapsto a_k-q[\,k=0\,]\bigr)
+ =\operatorname{word}_r(a)-q.
+\]
+Prove the pointwise addition identity, apply word additivity and the existing origin-word theorem, and cancel. The guard $q\le a_0$ is necessary because subtraction in $\mathbb N$ is truncated. There is no digit-upper-bound or radix-positivity premise in this argument. The supplied \code{WordOriginRefactor.lean} makes this proposed reusable API concrete; its exact validation classification appears in the experiment inventory.
+
+After extraction, each mask proof needs to establish only its own periodic repetition and single-cell formula. Existing additive origin-mask lemmas remain useful and can share the same foundational layer.
+
+\subsection{Separate arbitrary folding from injective sparse placement}
+
+\module{NativeCyclicConvolution} already has \code{foldStencil}, \code{mass_foldStencil}, \code{word_foldStencil}, and \code{convolution_foldStencil}. \module{CurrentKernel2011} already uses them effectively. Rebuilding that API would add machinery without addressing the actual repetition.
+
+The remaining opportunity is the injective-placement specialization used in \module{NativeHighPort54} and \module{NativeWordPopulation}. A sparse table with an embedding into digit positions can expose lookup at an image, lookup outside the image, coefficient bounds, word evaluation, and population additivity. Natural positions already known to lie below $n$ can be stored as \code{Fin n} and sent through \code{ZMod.finEquiv n}, avoiding repeated cast-injectivity proofs.
+
+Do not assume injectivity for arbitrary folded stencils: exponents may collide and their coefficients must add. Also distinguish exact word evaluation at bounded positions from evaluation at arbitrary exponents modulo $r^n-1$. The latter generally gives a congruence, not equality of natural representatives.
+
+\subsection{A narrow tactic for coefficient envelopes}
+
+\module{NativeCoefficientBounds}, lines 63--600, contains 22 \code{rowEnvelope_*} proofs. They repeatedly introduce the same nonnegative monomials, split nested conditional coefficients with \code{abs_ite_le}, and solve the leaves with the same linear-arithmetic context.
+
+A small local tactic can recurse only through those conditional bounds and use an explicitly named set of nonnegativity facts at the leaves. A later signed-coefficient certificate could share the sparse-row infrastructure rather than creating a second unrelated normalizer.
+
+Preserve the actual envelope and its dependence on the large parameter $K$. A simpler but much looser estimate, especially one quadratic in $K$ where the existing proof is linear, can change the construction's size argument. This proposal targets proof repetition, not the bound being proved.
+
+\section{Checker composition and internal arithmetic}
+
+\subsection{Reuse parser and list infrastructure that already exists}
+
+\module{AnnotatedProofCode} repeats a parse-option split followed by typed checker soundness in \code{check_sound}, goal-specific checking, and refutation checking (around 402--459). One small parse-then-check lemma should extract a successfully parsed certificate and its successful typed check. Specialized soundness follows by composition with \code{Certificate.check_sound}.
+
+Similar quote-injectivity proofs occur for trees, judgments, contexts, and formulas. They follow from a partial decoder's left-inverse equation $\operatorname{decode}(\operatorname{encode}(a))=\operatorname{some}(a)$. A common helper can express that once. This proves injectivity of valid encodings, not that every natural number parses as a formula. The total decoder for a six-field row is a separate representation theorem.
+
+An even smaller change needs no new helper: \module{AnnotatedProofChecker}, \code{mem_of_lookup} (177--187), reproves a list fact available in the pinned Lean core as \code{List.mem_of_getElem?}. Replace the local induction and its use in line soundness with that existing theorem. This is a good preliminary patch because it removes repetition without adding an abstraction.
+
+The seventeen rule-coordinate cases in \module{AnnotatedRuleSchedules} are already compact \code{fin_cases}/\code{rfl} proofs. A metaprogram for them is unlikely to improve clarity. Likewise, \module{AnnotatedSchemaMaps} already has a useful chain interface. Its nonempty-chain premise in soundness must remain: the empty chain merely compares raw codes and does not validate formula syntax.
+
+\subsection{Normalize finite-index reasoning in the object layer}
+
+\module{ObjectQuadraticSystem}, \code{conjunction_rows_zero_iff} (17--27), manually decomposes a universal quantifier over \code{Fin (m+n)}. The project already uses \code{Fin.forall_fin_add} elsewhere. Use that equivalence together with the \code{Fin.addCases} reduction lemmas.
+
+\module{ObjectDivModSyntax}, \code{rows_zero_iff} (21--39), and \module{ObjectPredecessorSyntax}, the corresponding theorem (24--41), establish two row facts and then manually reconstruct a two-element universal statement. The existing \code{Fin.forall_fin_two} can replace the final conjunction plumbing. These are source-grounded replacement suggestions; the full object-layer integrations are not claimed as compiled experiments in this archive.
+
+The statements must still range over \code{ObjectOmegaSemiring.Natural H}. Substituting ordinary Lean naturals would remove the internal-model content of the theorem. Assignment composition can likewise be factored at the semantic value type rather than specialized back to standard naturals.
+
+\subsection{Wrap internal induction while retaining definability}
+
+\module{ObjectAdditionLaws} and \module{ObjectMultiplicationLaws} repeatedly construct an object formula, prove its satisfaction specification, apply \code{omega_ind}, and translate base cases, induction hypotheses, and conclusions with the two directions of that specification.
+
+A useful wrapper takes an actual object formula $\varphi$, an environment $e$, a semantic predicate $P$, and a proof
+\[
+ \forall n,\quad \operatorname{Sat}(\operatorname{scons}(n,e),\varphi)
+ \longleftrightarrow P(n).
+\]
+It then takes the zero and successor arguments and returns $P(n)$ for all $n$ in the model's $\omega$. The formula and satisfaction equivalence are essential. A wrapper accepting an arbitrary external $P$ with no definability evidence would assert an unjustified induction principle for a nonstandard model.
+
+\module{ObjectCodeBound} already demonstrates the right discipline: its form-code induction takes explicit object predicates and their satisfaction equivalences. Extend that approach to the repeated natural-number inductions.
+
+The semantic-validity-to-provability boundary can also have a wrapper around the existing completeness theorem, the sentence condition, and the model's ZFC axioms. It must still prove validity of an explicit object formula in every relevant model. A standard-natural-number argument is not a replacement.
+
+\subsection{Keep the unresolved logical interfaces explicit}
+
+The project documents separate layers: external correctness on standard natural codes, internal semantics over model naturals, quoted formal derivations, and the complete native polynomial-to-machine connection. \module{ObjectPolynomial} (89--96) explicitly supplies one direction from internal unsolvability to external unsolvability. \module{ObjectConsistency} records the outstanding internal sealed/unsealed proof-code translation.
+
+The current \docsource{README.md} and \docsource{LEAN_EQUIVALENCE_PLAN.md} also distinguish completed arithmetic checkpoints from the remaining native and internal-ZFC composition. Refactoring should make those interfaces easier to prove and review; it must not replace a missing interface with a premise that already asserts the desired conclusion. None of the compiled helpers in this report completes those open links.
+
+\section{A practical migration plan}
+
+\subsection{First change: foundational proof reuse}
+
+Run the included validation script in an untouched checkout at the pinned commit, with its pinned toolchain and dependencies. It extracts and compiles the original representation source before checking the old/new compatibility proofs, then compiles the patched source to a separate output path. Only after that check should the patch be applied in a disposable branch. The supplied patch passes a dry-run application check, and the prototype proves equality of the complete old and new constructor results. The successful logs in the archive state which additional examples were checked during this review.
+
+Then adopt the low-risk arithmetic changes independently: half-radix identity, finite-support theorem reuse, normalized carry views, and the stronger congruence. Keep existing theorem names as wrappers. Give each generic helper a narrow import list where practical; shrinking imports should follow actual dependency checks rather than guesses about which tactics happen to be re-exported.
+
+\subsection{Second change: shared induction and interfaces}
+
+Migrate the four scanner simulations as a family. Prove each local adapter against its unchanged numeric implementation, and separately retain raw-input soundness and finishing-predicate correctness. Add the generic circuit invariant and migrate equality, degree, and nonnegativity consumers together.
+
+Extract cyclic-field arithmetic into a low-level module before using it in clause and marker proofs. This resolves the import-direction problem and keeps the full ambient modulus visible. Consolidate the origin-word correction only after checking its natural-subtraction guard at every caller.
+
+\subsection{Third change: generated certificates}
+
+Start with power labels because the generic proof and part of the data already exist. Update the generator and generated output together, expose an indexed theorem, and preserve legacy names until consumers have moved. Next migrate one translation family to a generic correspondence theorem with the commutative node relation. Retain actual input conversion and finite topology checks.
+
+For local gate proof generation, begin with one named register block. Check that the resulting theorem has the same type and expected axiom dependencies. Measure elaboration cost and exported declaration size before removing the old generated file. Only then extend the approach across the whole finalizer recipe.
+
+Low-degree row certificates are the next bounded experiment. A general compiler over typed or scoped DAGs is a longer-term option, but it should retain the existing flat literal data and prove conversion preserves its evaluator under \code{Topological}. The current total evaluator gives zero for invalid references; a scoped representation cannot silently replace its theorems for arbitrary lists.
+
+\subsection{What to measure}
+
+Report the following separately:
+\begin{itemize}
+\item Human-maintained source and generated source, including helper and certificate overhead.
+\item Number of exported declarations and sizes of generated proof modules.
+\item Elaboration time, peak memory, and compiled artifact size on a controlled machine.
+\item Exact theorem types, axiom dependencies, and preservation of literal construction data.
+\end{itemize}
+This review makes no performance claim based on wall-clock times from the shared execution environment. A smaller source file may still elaborate more slowly, and a one-line tactic may generate a very large proof term. Likewise, removing audit files or moving historical sources outside a counted directory is not a proof simplification.
+
+\section{Validation and contents of the archive}
+
+\input{validation-summary.tex}
+
+The archive includes the LaTeX/PDF report, checked Lean sources, the representation patch, source metrics and hashes, pinned environment files, and compiler/axiom logs. The README gives replay instructions.
+
+The repository checkout was used for reading and isolated builds. The reviewed upstream branch was not changed. The patch is provided as a concrete reviewable artifact, so adoption can be a small, well-scoped repository change rather than an all-at-once rewrite.
+
+\subsection{Source map for the principal proposals}
+
+\begin{longtable}{L{0.26\textwidth}L{0.63\textwidth}}
+\toprule
+Topic & Pinned source anchors\\
+\midrule
+\endhead
+Representation transport & \module{Representation}, 155--256; \module{QuarticCompiler}, 95--98.\\
+Half-radix arithmetic & \module{NativeCyclicRotation}, 100--116 and 160--165.\\
+One-hot support & \module{CurrentCellLabels2011}, 131--158; \module{NativeSelectorClause54}, 65--80.\\
+Carry normalization & \module{CurrentPolynomialWindow2011}, 58--66.\\
+Residue reuse & \module{CurrentClause2011}, 118--131; \module{CurrentEarlyPadding2011}, 95--107.\\
+Positive zeros & \module{CurrentCarrierArithmetic2011}, 78--119.\\
+Scanner simulation & \module{AnnotatedRenameScan}, 29--87; \module{AnnotatedBoundScan}, 25--83; \module{AnnotatedLineScan}, 32--54 and 131--154; \module{AnnotatedAxiomContext}, 30--50 and 130--151.\\
+Generic circuit semantics & \module{ArithmeticDAGSemantics}, 58--116; \module{ArithmeticDAGDegree}, 65--88; \module{ArithmeticDAGPowers}, 7--61.\\
+Generated powers & \module{SplitCircuitSteps59}, 2591--3444; \module{GapCircuitSteps66}, 2436--3121; \module{SplitJointPower59}, 64--78.\\
+Translation & \module{SplitCircuitTranslation59}, 16--77; \module{GapCircuitTranslation66}, 16--77.\\
+Quartic packaging & \module{DAGQuartic}, 83--96, 166--176, 199--252; \module{NaturalDAGQuartic}, 110--122, 209--261; \module{QuarticCost}, 65--74.\\
+Sparse row identities & \module{GapCertificate66}; \module{SplitCertificate59}; \module{NativeQuadraticParent}, the 22 row-identity blocks and their final dispatchers.\\
+Sharp degree bounds & \module{GapCircuitDegree66}, 50--66; \module{GapFinalizerDegree66}, 42--70; \module{FreeCarrierDegree}, 15--94.\\
+Cyclic geometry & \module{CurrentClause2011}, 65--94; \module{CurrentPhaseParity2011}, 49--78; \module{CurrentCellTranslation2011}, 92--105.\\
+Origin masks & \module{NativeHighPort54}, 183--203; \module{CurrentHighDigits2011}, 107--126.\\
+Internal arithmetic & \module{ObjectAdditionLaws}; \module{ObjectMultiplicationLaws}; \module{ObjectCodeBound}, 324--328 and 367--370.\\
+Finite internal rows & \module{ObjectQuadraticSystem}, 17--27; \module{ObjectDivModSyntax}, 21--39; \module{ObjectPredecessorSyntax}, 24--41.\\
+Logical status & \docsource{README.md}; \docsource{LEAN_EQUIVALENCE_PLAN.md}; \module{ObjectPolynomial}, 89--96; \module{ObjectConsistency}.\\
+\bottomrule
+\end{longtable}
+
+\end{document}

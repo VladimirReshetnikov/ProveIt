@@ -1,0 +1,65 @@
+\section{Measurements and acceptance gates}
+\label{sec:validation}
+
+\subsection{Separate measured text from proposed maintenance benefits}
+
+All counts below come from pinned source and candidate text, without a
+formatter. ``Declaration'' includes its header; ``body'' starts after
+\code{:= by}. Empty lines are excluded. Listings in this report may wrap
+differently. These are not proof-term size, elaboration time, runtime or
+kernel-memory measurements.
+
+\begin{tabularx}{\linewidth}{@{}L{0.38in}Y L{0.88in}R{0.40in}R{0.40in}@{}}
+\toprule
+ID & Measured unit & Kind & Old & New\\
+\midrule
+A1 & \code{check_raw_iff} & Declaration & 49 & 15\\
+A2 & Two decoder facts, shared theorem and wrappers & Declarations & 54 & 34\\
+C1 & \code{sum_le_one_cases} & Body & 26 & 10\\
+C2 & \code{offset19_word} & Body & 14 & 6\\
+C2 & \code{offset20_word} & Body & 16 & 6\\
+C3 & \code{copy_word_translation} & Body & 10 & 6\\
+C3 & \code{horizontal_words} & Body & 4 & 2\\
+C4 & \code{propagate} & Body & 8 & 1\\
+W1 & Five classifications, including helper overhead & Declarations & 60 & 52\\
+S1 & One CRT branch & Tactic lines & 4 & 2\\
+S2 & Each binary-depth pilot & Body & 4 & 2\\
+\bottomrule
+\end{tabularx}
+
+C3's compatibility alias is additional overhead; its client-body saving is
+not a whole-project net figure. S2 is not a compression headline. A1/A2's
+optional complete decoder iff is excluded from their count. No aggregate
+``percentage faster'' or total verified reduction follows from this table.
+
+\subsection{The validation sequence}
+
+\begin{enumerate}
+\item \textbf{Use the actual pinned project.} Work in a complete disposable
+checkout at the review pin, with
+\code{leanprover/lean4:v4.32.0} and the locked mathlib dependencies. The
+selected source snapshot is evidence, not a standalone Lake workspace.
+\item \textbf{Compile the independent candidates first.} Record Lean/Lake
+versions and command output. Check A1's total-decoder dependency, A2's
+recursive option simplification, C1's library signature and C2's numeric
+normal forms before editing production proofs.
+\item \textbf{Test the actual edit shape.} Apply exact patches only in the
+throwaway checkout. For C3, relocate the helper and retain required aliases;
+for C4, reorder declarations. Compiling a standalone file that imports later
+modules does not validate these production import-order changes.
+\item \textbf{Compare public statements and axioms.} Preserve old theorem
+names, hypotheses and conclusions; inspect every expected endpoint's
+\code{#print axioms} result. A missing or empty audit log is not a pass.
+Compare dependency sets with the original declarations rather than merely
+searching for one forbidden string.
+\item \textbf{Replay affected consumers.} Rebuild the annotated checker,
+current word/cell/occupation modules, Wang boundary/seam consumers and
+bounded-quantification Checks modules as applicable. Only then measure
+elaboration costs with identical options and a recorded warm/cold policy.
+\end{enumerate}
+
+\textbf{Available evidence.} Byte verification, static declaration checks,
+patch dry runs and finite arithmetic smoke checks help catch packaging or
+specification mistakes. None proves that Lean accepts a candidate. The
+supporting \pathcode{validation/} tools exist to make future replay
+reproducible; they are not another novelty claim or a substitute for it.

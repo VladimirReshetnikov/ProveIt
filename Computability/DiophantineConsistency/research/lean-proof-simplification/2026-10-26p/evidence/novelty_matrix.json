@@ -1,0 +1,486 @@
+{
+  "source_commit": "7fa06d530df54d4aeb2e18027409df082234c69e",
+  "scope": "Seven ZIP archives in docs/incoming at source_commit, the directly linked retired DiophantineConsistency simplification manuscript, and three additional ZIPs present at refresh_commit; all eleven relevant manuscripts and substantive supplements reviewed. The intake README and refreshed adoption record were inspected. Older K215 intake dossiers linked from the README were not exhaustively followed.",
+  "reports": {
+    "P1": {
+      "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+      "member_or_repository_path": "Lean_Proof_Simplification/report/report.tex"
+    },
+    "P2": {
+      "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+      "member_or_repository_path": "LeanReview/report/sections/"
+    },
+    "P3": {
+      "archive": "diophantine-lean-simplification-2026-10-26(1).zip",
+      "member_or_repository_path": "diophantine-lean-simplification/report.tex"
+    },
+    "P4": {
+      "archive": "diophantine-lean-simplification-2026-10-26.zip",
+      "member_or_repository_path": "diophantine-lean-simplification-2026-10-26/report.tex"
+    },
+    "P5": {
+      "archive": "lean-proof-simplification-2026-10-26 (2).zip",
+      "member_or_repository_path": "lean-proof-simplification-2026-10-26/report.tex"
+    },
+    "P6": {
+      "archive": "lean-proof-simplification-2026-10-26.zip",
+      "member_or_repository_path": "lean-proof-simplification-2026-10-26/report.tex"
+    },
+    "P7": {
+      "archive": "lean-proof-simplification-review-2026-10-26.zip",
+      "member_or_repository_path": "lean-proof-simplification-review/lean-proof-simplification-review.tex"
+    },
+    "P8": {
+      "archive": null,
+      "member_or_repository_path": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/report.tex"
+    },
+    "P9": {
+      "archive": "diophantine-lean-additional-simplifications-2026-10-26.zip",
+      "member_or_repository_path": "diophantine-lean-additional-simplifications-2026-10-26/report.tex",
+      "arrival_review_commit": "6f46a5e3480a2fa2e45993b8090826f256aeaa56"
+    },
+    "P10": {
+      "archive": "diophantine-lean-new-directions-2026-10-26.zip",
+      "member_or_repository_path": "new-lean-simplification-2026-10-26/report.tex",
+      "arrival_review_commit": "6f46a5e3480a2fa2e45993b8090826f256aeaa56"
+    },
+    "P11": {
+      "archive": "diophantine-lean-new-ideas-2026-10-26.zip",
+      "member_or_repository_path": "diophantine-lean-new-ideas-2026-10-26/report.tex",
+      "arrival_review_commit": "6f46a5e3480a2fa2e45993b8090826f256aeaa56"
+    }
+  },
+  "prior_idea_families": [
+    {
+      "id": "existing_library_lookup",
+      "idea": "Core List lookup/member and Option map injectivity",
+      "locations": "P1:162-182; P7:222-254; P8:132-142",
+      "overlap_note": "Replacing private list inductions or encoded-list injectivity by these APIs is already proposed."
+    },
+    {
+      "id": "recursor_congruence",
+      "idea": "Transport pointwise equalities directly through Nat.rec",
+      "locations": "P8:114-130",
+      "overlap_note": "Includes PRCode, ScalarPRCode and ScalarPROptimizer; do not present a generic recursor congruence helper as fresh."
+    },
+    {
+      "id": "assignment_naturality",
+      "idea": "natAssignment composed with Sum.map; finite witness-block splitting",
+      "locations": "P3:136-174; P7:371-427; P8:144-160",
+      "overlap_note": "Includes reindex/conjunction/disjunction, nested sums and existsBlock extensions, and moving projections lower."
+    },
+    {
+      "id": "sum_squares",
+      "idea": "Shared finite residual-sum evaluation and zero iff all residuals zero",
+      "locations": "P3:370-380; P7:428-505; P8:162-188",
+      "overlap_note": "Also generic sum cost, polynomial degree bound, and signed/natural compiler comparison."
+    },
+    {
+      "id": "gate_semantics",
+      "idea": "Share generic gate soundness/completeness across semirings and wire codecs",
+      "locations": "P4:443-468; P5:541-576",
+      "overlap_note": "Signed two-coordinate and nonnegative one-coordinate realizers retain separate hypotheses and costs."
+    },
+    {
+      "id": "topological_invariant",
+      "idea": "One strong induction/invariant for topological DAG registers",
+      "locations": "P3:332-341; P7:707-728; P8:240-254",
+      "overlap_note": "Includes uniqueness, degree, nonnegativity and some append/topology bookkeeping."
+    },
+    {
+      "id": "register_append",
+      "idea": "Shared append proofs for register topology/evaluation",
+      "locations": "P8:272-276",
+      "overlap_note": "Do not relabel the same old-index/new-index split as a novel builder API."
+    },
+    {
+      "id": "power_step_certificate",
+      "idea": "Indexed run_node_equation facade and existing exponent-label PowerStep checker",
+      "locations": "P2:04_circuits.tex:11-166; P3:295-350; P8:190-238",
+      "overlap_note": "Both broad certificates and preserving/generating old named wrappers are prior."
+    },
+    {
+      "id": "semantic_blocks",
+      "idea": "DAG semantic block certificates and dependent safe-node/checked-circuit views",
+      "locations": "P2:04_circuits.tex:167-242; P1:287-303",
+      "overlap_note": "Must bind to exact existing DAG; typed circuit views themselves are not a new proposal."
+    },
+    {
+      "id": "shared_tail",
+      "idea": "Identical Split/Gap free-carrier polynomial and 99-node circuit suffix",
+      "locations": "P1:234-255; P6:468-540",
+      "overlap_note": "Includes shared map laws, 22-let tail correctness, register instantiation and generator-template reuse."
+    },
+    {
+      "id": "translations",
+      "idea": "Generic circuit simulation with prefix/input/ref map and commutative NodeRel swaps",
+      "locations": "P3:352-369; P6:711-738; P8:256-270",
+      "overlap_note": "Shift x\u2192x-1 is not a ring homomorphism; both reports state this explicitly."
+    },
+    {
+      "id": "degree_profiles",
+      "idea": "Shared ShortSystem degree prefix and Split/Gap degree profile",
+      "locations": "P2:03_architecture.tex:172-213; P2:04_circuits.tex:188-210",
+      "overlap_note": "Also move syntaxDegree down import graph; retain cancellation normal forms and sharp bounds."
+    },
+    {
+      "id": "coefficient_envelope_tactic",
+      "idea": "Factor 22 coefficient envelope proofs with structural abs_ite_le and one arithmetic context",
+      "locations": "P3:435-441; P6:330-383; P7:139-198",
+      "overlap_note": "Prior fully compiled candidate has an observed 4.7x CPU increase; terse code is not an unqualified speed win."
+    },
+    {
+      "id": "coefficient_majorants",
+      "idea": "Eight-monomial nonnegative basis and finite componentwise majorant certificate",
+      "locations": "P6:407-426; P7:199-219",
+      "overlap_note": "Explicit triangle inequality and small integer coefficient vectors already proposed."
+    },
+    {
+      "id": "coefficient_naturality",
+      "idea": "One finite-row homomorphism dispatcher or computable syntax interpreter",
+      "locations": "P2:03_architecture.tex:214-248; P6:384-406",
+      "overlap_note": "Includes eliminating duplicated hleft/hright formulas and binding syntax to authoritative rows."
+    },
+    {
+      "id": "row_reflection",
+      "idea": "Sparse quadratic row normalizer; rewrite-before-degree block certificates",
+      "locations": "P3:382-394; P6:754-773",
+      "overlap_note": "Broad expression reflection/normal forms are prior; a different quotient relation needs a concrete mathematical distinction."
+    },
+    {
+      "id": "row_operations",
+      "idea": "Elementary row-addition zero-set preservation and surjective row reindexing",
+      "locations": "P6:774-808",
+      "overlap_note": "Full matrix approach is mentioned as later extension for arbitrary invertible combinations."
+    },
+    {
+      "id": "scanner_iteration",
+      "idea": "Fixed states, successor iteration, invariant preservation and encoded-list simulation",
+      "locations": "P1:186-212; P3:256-294; P6:541-600; P8:278-310",
+      "overlap_note": "Raw arbitrary-input soundness versus encoded completeness explicitly distinguished."
+    },
+    {
+      "id": "history_folds",
+      "idea": "Heterogeneous Line/Judgment history fold, run_append, Produces.append/step",
+      "locations": "P1:232; P4:284-327; P6:601-613; P7:524-555; P6:notes/syntax.txt:76-88",
+      "overlap_note": "Reversed history order and certified composition for fragment2/fragment3 are explicit. No arbitrary-premise list compiler constructing suffix-length parent indices was found."
+    },
+    {
+      "id": "pr_builder",
+      "idea": "Realized iterateFrom/iterateProgram, shared direct/native graph builder",
+      "locations": "P1:356-365; P4:362-379; P6:614-623",
+      "overlap_note": "Preserving actual program data and witness/node costs is part of the prior proposal."
+    },
+    {
+      "id": "boolean_dispatch",
+      "idea": "Exact numeric 0/1 checker value from Booleanity+acceptance; threshold tag dispatcher",
+      "locations": "P1:214-232; P4:380-396; P8:296-310",
+      "overlap_note": "A new Boolean wrapper using the same two premises is a repeat."
+    },
+    {
+      "id": "parse_codec",
+      "idea": "Parse-then-check composition and left-inverse decoder-to-injectivity helper",
+      "locations": "P3:445-453; P7:310-339",
+      "overlap_note": "Includes successful Option.bind_eq_some_iff destructuring; broad codec cleanup overlaps."
+    },
+    {
+      "id": "decoder_fusion",
+      "idea": "Fuse successful decoder depth/quote correctness into one induction",
+      "locations": "P7:340-369; P9:182-220; P10:123-167",
+      "overlap_note": "Joint soundness plus exact arbitrary-code/fuel graph theorem also appears in refreshed packets; not a new recommendation."
+    },
+    {
+      "id": "half_radix",
+      "idea": "Scaled div/mod identity removes 4\u00d74 digit enumeration",
+      "locations": "P3:176-198; P5:310-374; P8:319-329",
+      "overlap_note": "Exact identity s*a%(2*s)+s*b/(2*s)=s*(a%2)+b/2 is prior."
+    },
+    {
+      "id": "modulus_interfaces",
+      "idea": "Common addition/subtraction/source residue interface and weakening 2048 to16",
+      "locations": "P2:02_local.tex:176-209; P3:229-239,398-412; P8:313-318",
+      "overlap_note": "Preserving whole-cell motion while taking local residue is explicit."
+    },
+    {
+      "id": "divmod_carry",
+      "idea": "One quotient/remainder certificate and normalized carry decomposition",
+      "locations": "P1:174-182,320-331; P3:209-227; P4:644-677; P8:343-353",
+      "overlap_note": "Includes removing redundant recurrence fields, exact quotient/modulo/reset consequences."
+    },
+    {
+      "id": "word_origin",
+      "idea": "Generic origin subtraction correction for packed words",
+      "locations": "P3:414-425",
+      "overlap_note": "Guard q\u2264a0 for truncated natural subtraction is explicit."
+    },
+    {
+      "id": "sparse_placement",
+      "idea": "Injective sparse placement API with image/off-image lookup, bounds and population",
+      "locations": "P3:427-433",
+      "overlap_note": "Bounded positions represented by Fin n and ZMod.finEquiv are explicitly suggested."
+    },
+    {
+      "id": "fiber_pushforward",
+      "idea": "One finite-fiber weighted sum identity for mass, convolution and word",
+      "locations": "P5:415-445",
+      "overlap_note": "Allows collisions and noncommutative multiplication; no injectivity assumption."
+    },
+    {
+      "id": "finite_word_interface",
+      "idea": "Boundary between ZMod, Fin, List.ofFn and finite sums",
+      "locations": "P7:619-634",
+      "overlap_note": "Also geometry record for modulus/range/wrapped index consequences at 635-647."
+    },
+    {
+      "id": "window_views",
+      "idea": "Shared source/window extraction, coherent witness N, derived Facts views",
+      "locations": "P1:305-332; P2:03_architecture.tex:99-171; P6:869-912",
+      "overlap_note": "Includes import split CurrentCarrierBase2011 below completeness and named conjunction accessors."
+    },
+    {
+      "id": "conditional_padding",
+      "idea": "Make padding witness existential only in middle-phase branch",
+      "locations": "P8:330-341",
+      "overlap_note": "Removes dummy zero witness; changing quantifier order is already proposed."
+    },
+    {
+      "id": "packed_fields",
+      "idea": "Finite field descriptors and shared four copied-field bounds",
+      "locations": "P1:338-350; P4:712-725",
+      "overlap_note": "Packed direction order and ColorsBounded order differ and must stay explicit."
+    },
+    {
+      "id": "chunk_assembly",
+      "idea": "Euclidean block+tail dispatch and balanced assembly of finite sum certificates",
+      "locations": "P1:334-337; P4:678-711",
+      "overlap_note": "Finite leaves retain kernel checks; not a new certificate framework."
+    },
+    {
+      "id": "pell_source_decode",
+      "idea": "Named q=1+J\u03b2,L=q\u00b2\u22121,N=q\u00b3,X=qw facts from literal source rows",
+      "locations": "P4:617-641",
+      "overlap_note": "Targets NativePellBootstrap and NativePellPower; not the same as a new sign-orbit quotient API."
+    },
+    {
+      "id": "pell_cast_cleanup",
+      "idea": "Use omega directly in NativePellStepDown.eq_of_residues; whole disjunction exact_mod_cast",
+      "locations": "P7:289-300; P1:156-160",
+      "overlap_note": "Bound/cast cleanup alone is prior; sign transitivity/negation is separately excluded after the refreshed packets."
+    },
+    {
+      "id": "guarded_zero_transport",
+      "idea": "Lift pointwise zero-set equivalence through guards/existence; nine-coordinate packing",
+      "locations": "P1:257-285; P2:03_architecture.tex:11-67; P3:240-254",
+      "overlap_note": "Many-to-one witnesses need not be equivalences; positive/natural slot7 asymmetry explicit."
+    },
+    {
+      "id": "object_transport",
+      "idea": "Completeness+sealing wrapper, model\u2192axioms bridge, definable internal induction",
+      "locations": "P3:463-477; P6:809-868; P7:556-602; P8:355-371",
+      "overlap_note": "Actual formula/satisfaction spec and model quantification retained; external predicate induction invalid."
+    },
+    {
+      "id": "object_indices",
+      "idea": "Closed-sentence arity polymorphism and finite-index conjunction plumbing",
+      "locations": "P3:455-461; P6:829-850; P4:768-781",
+      "overlap_note": "Fin.forall_fin_add and Fin.forall_fin_two already suggested."
+    },
+    {
+      "id": "small_arithmetic",
+      "idea": "Standard sum\u22641, finite set intersection, predecessor exponent, symbolic huge powers",
+      "locations": "P2:02_local.tex:105-175; P3:199-207; P7:255-309; P11:143-199",
+      "overlap_note": "Also exact Nat power lemma and finite-switch complement normalization. Exact finite-support sum_le_one_cases migration is now explicitly proposed."
+    },
+    {
+      "id": "audit_policy",
+      "idea": "Consolidate pure audit wrappers, explicit checks closure, axiom policy gates and profiling",
+      "locations": "P2:05_validation.tex:39-107; P1:367-407; P8:373-393",
+      "overlap_note": "Validation methods are required practice, not fresh proof ideas."
+    },
+    {
+      "id": "finite_cycle_rank",
+      "idea": "Future finite-state controller certificates with ranking/SCC for cycle exclusion",
+      "locations": "P1:354",
+      "overlap_note": "Broad direction explicitly prior. Concrete Lyapunov construction may be new work but must acknowledge this precedent."
+    },
+    {
+      "id": "rational_root_preserving_descent",
+      "idea": "Preserve chosen rational roots when descending to integers via denominator-one lemma",
+      "locations": "P9:121-157",
+      "overlap_note": "Retains signs and linear relations rather than choosing replacement square roots; shared finalizer theorem is also prior."
+    },
+    {
+      "id": "product_unit_decomposition",
+      "idea": "Decompose all integer factors of a product equal to one using IsUnit.mul_iff",
+      "locations": "P9:159-180",
+      "overlap_note": "One tuple of \u00b11 alternatives replaces repeated product rearrangements in ShortSystem."
+    },
+    {
+      "id": "finite_invariant_predecessor",
+      "idea": "Restrict a finite injection to a forward-invariant subset to obtain an invariant predecessor",
+      "locations": "P9:222-248",
+      "overlap_note": "Exact NativeFieldCycles2011 offset-19 application is already supplied."
+    },
+    {
+      "id": "univariate_support_envelope",
+      "idea": "Bound polynomial natDegree before proving coefficient vanishing",
+      "locations": "P9:250-281",
+      "overlap_note": "SelectiveCarry support envelope avoids nested coefficient expansions; distinct from projected group difference sets."
+    },
+    {
+      "id": "rotation_point_mass",
+      "idea": "Deduce cyclic rotation from convolution with Pi.single",
+      "locations": "P9:283-307",
+      "overlap_note": "Direct specialization of existing word_convolution is already a checked patch."
+    },
+    {
+      "id": "primrec_fun_prop",
+      "idea": "Register extensional Primrec composition rules for fun_prop",
+      "locations": "P9:309-346",
+      "overlap_note": "Local registrations and constructor adapters are already provided; executable PR-code construction remains separate."
+    },
+    {
+      "id": "canonical_carry_uniqueness",
+      "idea": "Finite-maximum principle gives carry uniqueness after digits or a full packed word are fixed",
+      "locations": "P9:348-394",
+      "overlap_note": "Canonical carry interface and fixed-length digit injectivity are prior; modular equality alone is insufficient."
+    },
+    {
+      "id": "signed_modular_orbit",
+      "idea": "Congruence up to sign, transitivity, negation and natAbs transport",
+      "locations": "P10:169-215; P11:497-561",
+      "overlap_note": "Exact same mechanism and NativePellStepDown/SignedPellResidue clients; exclude entirely from new recommendations."
+    },
+    {
+      "id": "internal_constructor_unique_exists",
+      "idea": "Tagged semantic constructor views plus one internal unique-existence induction",
+      "locations": "P10:217-274",
+      "overlap_note": "ObjectCodeBound totality/functionality fusion is prior; retains definable induction on nonstandard internal codes."
+    },
+    {
+      "id": "internal_graph_preservation_fusion",
+      "idea": "Invariant preservation and fusion for internal recursive graphs",
+      "locations": "P10:276-345",
+      "overlap_note": "ThetaG clients use totality, functionality and definable induction; generic graph preservation is prior."
+    },
+    {
+      "id": "depth_maxplus_certificates",
+      "idea": "Small baseline/excess certificates for representation depth",
+      "locations": "P10:347-404; P11:489-495,634-637",
+      "overlap_note": "BoundedForallDepth factorial/product plans and future max-plus automation are already proposed."
+    },
+    {
+      "id": "explicit_cyclic_carries",
+      "idea": "Closed least/greatest cyclic carry formulas and precise two-solution classification",
+      "locations": "P10:406-506",
+      "overlap_note": "Exact-witness/canonical-carry construction is prior, though production Lean formalization was left open."
+    },
+    {
+      "id": "pell_parity_reuse",
+      "idea": "Reuse SignedPellResidue.odd_index_of_base_dvd in NativePellStepDown",
+      "locations": "P11:201-251",
+      "overlap_note": "Includes deleting unused hs0 positivity proof; do not treat this cleanup as new."
+    },
+    {
+      "id": "pairing_equiv_projections",
+      "idea": "Derive inverse-coordinate graphs from a product equivalence",
+      "locations": "P11:253-349",
+      "overlap_note": "Targets include QuadraticNatPairing inverse graphs; does not determine selector/slack/max witnesses."
+    },
+    {
+      "id": "euclidean_certificate_uniqueness",
+      "idea": "Share positive-denominator Euclidean certificate across register/quadratic backends and prove witness uniqueness",
+      "locations": "P11:351-413",
+      "overlap_note": "Exact shared theorem plus q/r/slack uniqueness is prior; retain positive denominator guard."
+    },
+    {
+      "id": "affine_depth_witness_budget",
+      "idea": "One arithmetic budget pays composition depth overhead with newly introduced witnesses",
+      "locations": "P11:415-495",
+      "overlap_note": "Exact GraphSizeBounds Thin clients, coefficient six, and zero-arity distinction are already proposed; exclude entirely."
+    }
+  ],
+  "candidate_assessments": [
+    {
+      "candidate": "signed_modular_congruence_orbit",
+      "status": "exclude: exact prior mechanism discovered in final refresh",
+      "nearest_prior": "P10:169-215 and P11:497-561 explicitly contain relation, transport laws, and same Pell clients",
+      "selected": false
+    },
+    {
+      "candidate": "amortized_depth_witness_budget",
+      "status": "exclude: exact prior mechanism discovered in final refresh",
+      "nearest_prior": "P11:415-495 gives same affine budget, three Thin clients, and zero-arity boundary",
+      "selected": false
+    },
+    {
+      "candidate": "pell_relative_error_ratio_transfer",
+      "status": "distinct mechanism absent from eleven-manuscript corpus",
+      "nearest_prior": "P4 source-register Pell identities; P10/P11 sign/parity transport, not analytic scale parameter",
+      "selected": true
+    },
+    {
+      "candidate": "support_difference_separation",
+      "status": "distinct mechanism absent from eleven-manuscript corpus",
+      "nearest_prior": "P3 sparse placement; P5 finite fibers; P9 polynomial support envelope; P11 one-hot support classification",
+      "selected": true
+    },
+    {
+      "candidate": "canonical_pairing_witness_normal_form",
+      "status": "distinct square-pairing witness normal form; scope novelty narrowly",
+      "nearest_prior": "P11:253-349 inverse-equivalence projections and351-413 Euclidean q/r/slack uniqueness; no selector/slack/max square-pairing normal form",
+      "selected": true
+    },
+    {
+      "candidate": "successor_shifted_fork_certificate",
+      "status": "distinct local mechanism absent from eleven-manuscript corpus",
+      "nearest_prior": "P2 nine-coordinate positive/natural packaging; no fork successor equivalence and zero boundary split",
+      "selected": true
+    },
+    {
+      "candidate": "variadic_fragment_completeness",
+      "status": "distinct extension: arbitrary-premise backward-reference index compiler",
+      "nearest_prior": "P4 run/Produces laws and P6 notes/syntax.txt:76-88 already suggest shared certified fragments; claim only arbitrary-list index synthesis",
+      "selected": true
+    },
+    {
+      "candidate": "mixed_radix_product_coordinates",
+      "status": "potentially distinct if concrete product equivalence supplied",
+      "nearest_prior": "P3 Fin/ZMod sparse embeddings; P7 geometric records",
+      "selected": false
+    },
+    {
+      "candidate": "finite_cycle_lyapunov_rank",
+      "status": "extension of explicitly prior direction; do not count as wholly fresh",
+      "nearest_prior": "P1 line354 ranking/SCC cycle certificates",
+      "selected": false
+    },
+    {
+      "candidate": "minimum_norm_saturation",
+      "status": "omit as conceptual repetition",
+      "nearest_prior": "shared nonnegative sums/SOS zero arguments",
+      "selected": false
+    },
+    {
+      "candidate": "partial_codec_record",
+      "status": "overlaps",
+      "nearest_prior": "P3 parse-then-check and decoder left-inverse injectivity; P7 Option decoder proof",
+      "selected": false
+    },
+    {
+      "candidate": "fused_decoder_metadata",
+      "status": "explicitly already proposed and implemented",
+      "nearest_prior": "P7 lines340-369 with axiom-dependency caveat",
+      "selected": false
+    }
+  ],
+  "refresh_commit": "6f46a5e3480a2fa2e45993b8090826f256aeaa56",
+  "corpus_totals": {
+    "archives": 10,
+    "archive_members": 2193,
+    "manuscripts": 11,
+    "primary_tex_files": 18,
+    "primary_tex_characters": 498645,
+    "excluded_mechanism_families": 58
+  }
+}

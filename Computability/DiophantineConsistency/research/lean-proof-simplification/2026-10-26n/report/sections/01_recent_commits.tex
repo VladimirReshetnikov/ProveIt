@@ -1,0 +1,66 @@
+\section{What the recent commits change}
+\label{sec:commits}
+
+The comparison is from the previous review pin
+\code{60e9c5d620c6c387d932876cfa2d9376f64ea56c} to the present immutable pin.
+The previous pin is the merge base: the repository is ahead by 21 commits and
+behind by zero. The head commit is timestamped 26 October 2026 at 16:18:46 UTC.
+The complete compare and per-commit metadata are included in
+\pathcode{provenance/}.
+
+\begin{tabularx}{\linewidth}{@{}L{1.55in}Y@{}}
+\toprule
+Net change & Consequence for this review\\
+\midrule
+28 new active Lean modules & 14 proof/definition modules and 14 matching Checks modules.
+These are new review surfaces, not replacements of old proofs.\\
+14 new root imports & The sole changed pre-existing active Lean file is the root facade;
+no existing active proof body changes in this interval.\\
+3,307 added active Lean lines & 3,293 are in new modules, 14 are imports; zero deletions.\\
+60 research-archive files & Prior proposals were placed, not adopted as active proof simplifications.\\
+29 review documents & New implementation reviews supply context, but their build receipts
+are upstream claims, not reproduced validation here.\\
+\bottomrule
+\end{tabularx}
+
+\subsection{The new proof layer in four stages}
+
+\textbf{Actual arithmetic words.} Commits
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/3951d56119b98e5abd4789f97e211d0000e96887}{\code{3951d56119}},
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/876f6b409b3a9c3297c53f9743cb9b9780f34065}{\code{876f6b409b}}
+and
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/7e9e9235e5d6d13f92763f91e2a47a86838e4539}{\code{7e9e9235e5}}
+connect copy parity, whole-cell alignment and literal neighboring bits.
+C2 and C3 simplify the proof plumbing around these exact formulas; neither
+changes the formulas nor substitutes residue-only geometry.
+
+\textbf{Selection and spatial propagation.} The classification,
+cell-cycle, true-color and occupation commits
+\code{df7f0c9c9b}, \code{a54685015f}, \code{2207b481bc} and
+\code{db86282477} connect local tile possibilities with exact occupation.
+C1 removes a manual finite-sum argument; C4 removes a special-case induction
+already subsumed by the general propagation theorem.
+
+\textbf{Cyclic word semantics.} Commits \code{98bfa794dd},
+\code{cf0b056cc8} and \code{bfdd368be9} define the marked word, transport
+physical shifts through its canonical coordinate, and map actual positive
+polynomial zeros to it. None of the proposals alters that map, the ambient
+modulus, the chosen coordinate or the word's temporal orientation.
+
+\textbf{Boundary classification.} Commits
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/9cef0257dde4cdc80f35121b7ea0450df316548c}{\code{9cef0257dd}}
+and
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/73d3d8e9c04d5362012dc1c1c1cce1ada97ac139}{\code{73d3d8e9c0}}
+classify exact boundary colors and seam behavior. W1 factors repeated
+north-color elimination without changing the literal initializer or adding
+any strip, run, halting or tiling premise.
+
+\subsection{Evidence and limits}
+
+The snapshot contains 826 selected files, including all 574 active
+\code{.lean} files in the target Lean subtree. Each file's bytes were checked
+against its pinned Git blob identity and recorded with SHA-256: all 826
+checks pass. Of these, 766 unchanged files were reused only after a fresh
+object-identity check; 60 were fetched by immutable blob URL. Incoming ZIPs
+have a separate six-packet byte verification. The audit is a source-level
+result, not proof of elaboration or mathematical correctness.

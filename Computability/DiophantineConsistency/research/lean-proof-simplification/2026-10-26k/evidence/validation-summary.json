@@ -1,0 +1,86 @@
+{
+  "repository": "VladimirReshetnikov/ProveIt",
+  "commit": "6175dff9a15491497c7a3c1bda4f6a62a6349c74",
+  "lean": "4.32.0",
+  "lean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35",
+  "mathlib_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "full_repository_build": false,
+  "downstream_rebuild": false,
+  "performance_claim": false,
+  "checks": [
+    {
+      "proposal": "one-hot support",
+      "status": "kernel_checked_exact_statement",
+      "full_production_module": false,
+      "receipt": "native-proofs/validation/results.json",
+      "source": "native-proofs/OneHotSupport.lean",
+      "source_sha256": "296db5ee215ba776a497ae266266d3171c04a6059e8c9d7424d771c5b334cda2"
+    },
+    {
+      "proposal": "Pell parity reuse",
+      "status": "source_reviewed_and_patch_checked",
+      "full_production_module": false,
+      "source": "native-proofs/pell-oddness-only.patch",
+      "source_sha256": "48407f882326b46d221f8029f09092fdd436f40f31d29450a6ee7d0e7664c464"
+    },
+    {
+      "proposal": "inverse-equivalence helper",
+      "status": "kernel_checked",
+      "receipt": "evidence/environment/patched-pairing-build.json",
+      "source": "projection-and-budget/lean/DiophantineConsistency/PairingProjection.lean",
+      "source_sha256": "4eb15307f7c7453c28dbd2c3e62615fa70d29022c39cb7cdfe6c7e5b367858c4"
+    },
+    {
+      "proposal": "complete modified PairingRepresentation",
+      "status": "kernel_checked_complete_module",
+      "full_production_module": true,
+      "receipt": "evidence/environment/patched-pairing-build.json",
+      "source": "projection-and-budget/patched-modules/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PairingRepresentation.lean",
+      "source_sha256": "65b97d4c8c585c8ab1c5a2c8fcb1a8f08e78d76d764b26e09198a6cde4bc2f1c"
+    },
+    {
+      "proposal": "pairing data preservation",
+      "status": "kernel_checked_rfl_equalities",
+      "receipt": "evidence/environment/patched-pairing-data-audit.log",
+      "source": "projection-and-budget/lean/PairingDataAudit.lean",
+      "source_sha256": "8faa3661f2673b1136fcf7ad058ac0675a844e89097cf78a33a4ac0111063229"
+    },
+    {
+      "proposal": "other six inverse-pairing clients",
+      "status": "source_reviewed_candidates_with_schematic_checks",
+      "full_production_modules": false,
+      "receipt": "evidence/environment/pairing-projection-checks.log",
+      "source": "projection-and-budget/lean/PairingProjectionChecks.lean",
+      "source_sha256": "b977c80678e5c7810b6b82408aaabfc8e59d6d580b402278c1b88f18de58c6bb"
+    },
+    {
+      "proposal": "Euclidean certificate and uniqueness",
+      "status": "kernel_checked_helper_and_exact_wrapper_type",
+      "full_production_modules": false,
+      "receipt": "certificates/evidence/validation.json",
+      "source": "certificates/lean/DiophantineConsistency/ArithmeticCertificates.lean",
+      "source_sha256": "820a3cd2214a01c57476f50e92abeb2041f35086623be89180731b6cd0c89710"
+    },
+    {
+      "proposal": "affine budget",
+      "status": "kernel_checked_helper_and_numeric_client_rules",
+      "full_production_module": false,
+      "receipt": "evidence/environment/affine-budget-checks.json",
+      "source": "projection-and-budget/lean/DiophantineConsistency/AffineBudget.lean",
+      "source_sha256": "6dd9bc95fb5a40ea9239bf3d08c3573bb7c90cec43f4091b85dfb8f21e243f4b"
+    },
+    {
+      "proposal": "signed congruence",
+      "status": "kernel_checked_helper_and_application_theorems",
+      "full_production_modules": false,
+      "receipt": "native-proofs/validation/results.json",
+      "source": "native-proofs/SignedModEq.lean",
+      "source_sha256": "7f6c491730e27183e2f464bfd17e5d850e905ffe1eb269fb23f0a817020abcea"
+    }
+  ],
+  "net_physical_production_lines_saved": {
+    "conservative": 57,
+    "with_sign_algebra": 29
+  },
+  "script_validation": "Common replay runner syntax-checked and reviewed; original successful individual commands are recorded, not a rerun of the common runner."
+}

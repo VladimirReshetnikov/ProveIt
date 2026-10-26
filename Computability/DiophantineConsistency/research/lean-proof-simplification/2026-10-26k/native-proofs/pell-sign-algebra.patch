@@ -1,0 +1,98 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean
+@@ -1,4 +1,6 @@
+ import Diophantine.Paper1980.PellHalf90
++import DiophantineConsistency.SignedPellResidue
++import DiophantineConsistency.ProofSimplification.SignedModEq
+ 
+ /-!
+ # Signed auxiliary Pell step-down for the native minus-sign block
+@@ -31,32 +33,11 @@
+       push_cast [Nat.cast_sub hI2]; exact haux
+     exact_mod_cast this
+   obtain ⟨s, hIu, hys⟩ := eq_pell_of_sq hI1 hpell
+-  have hs0 : 0 < s := by
+-    rcases Nat.eq_zero_or_pos s with h0 | h0
+-    · rw [h0, yn_zero] at hys; omega
+-    · exact h0
+   have hIZ0 : (I : ℤ) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
+   -- `s` is odd
+-  have hsodd : Odd s := by
+-    by_contra heven
+-    rw [Nat.not_odd_iff_even] at heven
+-    obtain ⟨h, hh⟩ := heven
+-    have e1 : (xn hI1 s : ℤ) ≡ (-1) ^ h [ZMOD I] := by
+-      rw [xn_eq_xr hI1, hh, ← two_mul]; exact xr_even_modEq (I : ℤ) h
+-    have e2 : (xn hI1 s : ℤ) = I * u := by rw [← hIu]; push_cast; ring
+-    rw [e2] at e1
+-    have e3 : (0 : ℤ) ≡ (-1) ^ h [ZMOD I] := by
+-      have : (I : ℤ) * u ≡ 0 [ZMOD I] := (Int.modEq_zero_iff_dvd).2 (dvd_mul_right _ _)
+-      exact this.symm.trans e1
+-    have hdvd : (I : ℤ) ∣ (-1) ^ h := by
+-      have := (Int.modEq_iff_dvd.1 e3); simpa using this
+-    have hdvd1 : (I : ℤ) ∣ 1 := by
+-      rcases neg_one_pow_eq_or ℤ h with e | e
+-      · rwa [e] at hdvd
+-      · rw [e] at hdvd; exact (dvd_neg).1 hdvd
+-    have : (I : ℤ) = 1 := Int.eq_one_of_dvd_one (by positivity) hdvd1
+-    have : I = 1 := by exact_mod_cast this
+-    omega
++  have hsodd : Odd s := SignedPellResidue.odd_index_of_base_dvd hI1 (by
++    rw [← hIu]
++    exact dvd_mul_right I u)
+   obtain ⟨h, hs⟩ := hsodd
+   -- `u = Q_h(I²)`
+   have hu_eq : (u : ℤ) = Qh h ((I : ℤ) ^ 2) := by
+@@ -98,31 +79,8 @@
+     have := Qh_modEq h0 h
+     rw [Qh_eval_zero, ← hu_eq] at this
+     rw [hs]; push_cast; exact this
+-  have hJs : (J : ℤ) ≡ (-1) ^ h * s [ZMOD c] ∨
+-      (J : ℤ) ≡ -((-1) ^ h * s) [ZMOD c] := by
+-    rcases hu_J with hu_J | hu_J
+-    · exact Or.inl (hu_J.symm.trans hu_cc)
+-    · right
+-      have h := hu_J.symm.trans hu_cc
+-      simpa using h.neg
+-  -- hence `c ∣ J − p` or `c ∣ J + p`
+-  have hJp_of_sign {t : ℤ} (hJs : (J : ℤ) ≡ t * s [ZMOD c])
+-      (ht : t = 1 ∨ t = -1) :
+-      (c : ℤ) ∣ (J : ℤ) - p ∨ (c : ℤ) ∣ (J : ℤ) + p := by
+-    have hJs' := Int.modEq_iff_dvd.1 hJs
+-    rcases ht with e | e <;> rw [e] at hJs' <;> rcases hsp' with hh | hh
+-    · left; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨k1 - k2, by linear_combination hk1 - hk2⟩
+-    · right; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨k1 - k2, by linear_combination hk1 - hk2⟩
+-    · right; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨-k1 - k2, by linear_combination -hk1 - hk2⟩
+-    · left; obtain ⟨k1, hk1⟩ := hh; obtain ⟨k2, hk2⟩ := hJs'
+-      exact ⟨-k1 - k2, by linear_combination -hk1 - hk2⟩
+-  rcases hJs with hJs | hJs
+-  · exact hJp_of_sign hJs (neg_one_pow_eq_or ℤ h)
+-  · apply hJp_of_sign (t := -((-1 : ℤ) ^ h)) (by simpa only [neg_mul] using hJs)
+-    rcases neg_one_pow_eq_or ℤ h with hh | hh <;> simp [hh]
++  exact ProofSimplification.signed_index_chase hu_J hu_cc
++    (neg_one_pow_eq_or ℤ h) hsp'
+ 
+ /-- The same index residues for a signed auxiliary coordinate with the native
+ minus-sign congruences. -/
+@@ -145,16 +103,8 @@
+     have h := hVf.pow 2
+     simpa only [neg_sq, ← hvsq] using h
+   have hvJ : (V.natAbs : ℤ) ≡ J [ZMOD c] ∨
+-      (V.natAbs : ℤ) ≡ -(J : ℤ) [ZMOD c] := by
+-    rcases Int.natAbs_eq V with h | h
+-    · right
+-      exact (congrArg (fun z : ℤ => z % (c : ℤ)) h.symm).trans hVJ
+-    · left
+-      have habs : (V.natAbs : ℤ) = -V := by omega
+-      have habsmod : (V.natAbs : ℤ) ≡ -V [ZMOD c] :=
+-        congrArg (fun z : ℤ => z % (c : ℤ)) habs
+-      have hnegmod : -V ≡ J [ZMOD c] := by simpa only [neg_neg] using hVJ.neg
+-      exact habsmod.trans hnegmod
++      (V.natAbs : ℤ) ≡ -(J : ℤ) [ZMOD c] :=
++    (ProofSimplification.SignedModEq.natAbs c V).trans (Or.inr hVJ)
+   exact index_residues hA hp hcp hf hpm hcm hI1 hcI hIsq hy hvaux hvf hvJ
+ 
+ /-- Half-modulus bounds remove both sign and nonzero-multiple ambiguity. -/

@@ -1,0 +1,178 @@
+SYNTAX AND OBJECT-SEMANTICS REVIEW
+Pinned source: VladimirReshetnikov/ProveIt, commit 60e9c5d620c6c387d932876cfa2d9376f64ea56c.
+Scope: Computability/DiophantineConsistency/Lean/DiophantineConsistency.
+
+1. REUSE THE CORE LIST LOOKUP API (concrete patch, isolated kernel check complete)
+
+Seven local inductions duplicate two exact Lean 4.32 library theorems:
+  List.mem_of_getElem? : xs[i]? = some a -> a in xs
+  List.getElem?_of_mem : a in xs -> Exists i, xs[i]? = some a.
+The replacement is simply `List.mem_of_getElem? h` or `List.getElem?_of_mem h`.
+The target statements, argument order, private visibility and all caller names remain unchanged.
+Exact source sites: AnnotatedAssumption.lookup_mem L40-47 and exists_lookup L49-57;
+AnnotatedRuleSide.lookup_mem L18-25 and exists_lookup L27-35;
+AnnotatedBound.lookup_mem L50-57; AnnotatedRename.lookup_mem L110-117;
+AnnotatedProofChecker.mem_of_lookup L177-187.
+Across the seven complete declarations, physical nonempty lines fall from 61 to 21.
+This is a measured local change, not a repository-wide reduction estimate.
+`list-lookup.patch` passes `git apply --check` at the pinned revision.
+`ListLookup.lean` checks the exact generic propositions using only Init.Data.List.Lemmas;
+both proofs depend only on propext. The full AnnotatedProofChecker baseline and modified
+copies both exited 0. Their private lookup lemma, Line.sound, run_sound, and
+exists_checked_iff have identical axiom lists; see proofchecker-{baseline,modified}.log.
+
+2. ELIMINATE OPTION CASE TREES WHILE KEEPING THE TWO INVARIANTS SEPARATE
+   (concrete patch, isolated and complete-file kernel checks passed)
+
+AnnotatedProofCode.Tree.decoded_depth_le L78-105 and quote_of_decode L107-132
+follow the same branches: fuel zero/successor, code zero/successor, unpaired tag
+zero/successor, first recursive decode failure/success, second decode failure/success.
+Successful Option.bind equality already supplies the recursive success witnesses.
+Use `Option.bind_eq_some_iff.mp h` twice and `cases h` instead of enumerating
+none/some twice. In the depth proof, combine the two induction hypotheses with
+Nat.succ_le_succ (max_le ... ...), avoiding a separate omega invocation. The theorem
+statements and all executable definitions remain unchanged. The combined block
+changes from 55 physical lines (54 nonempty) to 43 (42 nonempty), with no new helper.
+`decoder-options.patch` passes git apply --check. `DecoderOptions.lean` checks the
+exact original Tree definitions, both changed proofs, and their immediate consumers.
+The complete AnnotatedProofCode.option.lean replay exited 0, and its four #print axioms
+outputs are byte-for-byte identical to the full baseline log. The original per-theorem
+axiom footprints are preserved exactly:
+  decoded_depth_le: propext, Quot.sound;
+  quote_of_decode: propext, Classical.choice, Quot.sound.
+
+An instructive rejected-default alternative is `decoder-fusion.patch`: prove both
+invariants as one conjunction and retain projection wrappers. It checks, and shrinks
+the block to 35 lines, including the new helper. Both full ProofCode baseline and
+fused files exited 0; checker endpoints have unchanged axiom lists. BUT the depth
+projection now inherits Classical.choice from Nat.pair_unpair, which is required
+by the canonicality half. The original depth theorem did not use choice. The
+43-line independent approach is preferable when per-theorem dependency stability
+matters. This is a concrete example of
+why an audit must compare each changed theorem, not only a final theorem's axioms.
+The fused prototype may be retained as an explicitly optional design tradeoff, not
+silently described as trust-neutral.
+
+3. MAKE SCANNER ITERATION FACTS PROOF-ONLY SHARED LEMMAS (checked generic prototype)
+
+Five modules repeat `scan_zero`, `scan_succ`, and `scan_done` for exactly the recursion
+`fuel.rec initial (fun _ acc => step acc)`:
+  AnnotatedAxiomContext L32-51;
+  AnnotatedBoundScan L30-52;
+  AnnotatedLineScan L35-55;
+  AnnotatedContext L100-120;
+  AnnotatedRenameScan L34-56.
+Each scanner uses a different local transition, and Context has a different terminal
+state. No transition needs to be generalized or changed. Prove two lemmas once:
+  rec_succ f n x: iterate (n+1) f x = iterate n f (f x);
+  rec_fixed f x h n: f x = x -> iterate n f x = x.
+Here iterate is the exact existing Nat.rec expression, so no Function.iterate equality
+bridge or executable rewrite is needed. `ScanIteration.lean` checks these generic
+facts and their concrete Nat-scanner shape examples with only `import Init`; neither
+lemma depends on any axioms. Existing scan_succ becomes a single application,
+scan_zero uses step_zero, and scan_done uses one proof that the specific terminal
+state is fixed. Keep step/scan/primitive-recursive program definitions literally
+unchanged so exact node-count and checker specifications do not move.
+A shared library costs roughly 17 lines before savings; do not quote the sum of the
+removed local inductions as net savings without charging the helper and imports.
+
+4. SHARE THE VALIDATED-HISTORY PROOF FRAMEWORK (checked generic prototype; migration proposal)
+
+AnnotatedProofChecker L206-250, AnnotatedRename L192-235 and AnnotatedBound L132-175
+repeat the same run/append/invariant/fragment composition argument. A generic runner
+needs two types: input instructions I and stored facts S. Its parameters are
+`valid : I -> List S -> Bool` and `output : I -> S`. The invariant theorem is
+parameterized by `P : S -> Prop` and a local soundness condition. Specializations are:
+  ProofChecker: I=Line, S=Judgment, output=line.rule.output, P=Judgment.Provable;
+  Rename: I=S=Row, output=id, P=Row.Good mode k;
+  Bound: I=S=Row, output=id, P=Good.
+`ValidatedHistory.lean` checks run_append, run_sound, Produces.append and Produces.step,
+plus exact bridges for the existing recursive definition shapes. A significant
+implementation detail: independently defined recursive functions are NOT accepted
+as definitionally equal to the generic runner here; naive one-line application
+failed. The supplied prototype proves short function-equality bridges by induction
+and transports the generic facts through them. Either retain those bridges, or
+make concrete run an alias and carefully audit the changed definitional reductions.
+The first route preserves executable definitions. The framework's value is one
+central induction and invariant, especially if more validators are added; its helper
+and bridge cost must be included in source-size accounting.
+
+5. CENTRALIZE THE ARBITRARY-MODEL COMPLETENESS INTRODUCTION (specific architectural proposal)
+
+The same semantic-axiom extraction exists privately in ObjectArithmetic L143-164,
+publicly in ObjectMultiplication L169-184, and as
+BoundedZFCConsistency.zfAxioms_of_zfcModel in CodedRank L1907-1930. Put its canonical
+proof in a low common bridge module and provide compatibility aliases. Importing
+CodedRank into foundational arithmetic only to reuse this theorem would add a large
+unnecessary dependency; the right move is to relocate the shared bridge downward.
+Many Object endpoints then repeat: apply completeness_inf_context; introduce a
+model of sealed ZFC; extract ZFAxioms; apply seal_valid; prove the model-semantic body.
+A helper with the following contract leaves only the mathematical body at each site:
+  (forall D : Type, forall m : D -> D -> Prop, forall H : ZFAxioms m,
+     forall ee : Nat -> D, Sat m ee f) -> BProv ZFCax_s [] (sealF f).
+Representative consumers: ObjectNaturalExpression.zfc_proves_total/unique L182-202;
+ObjectPairingGraph.zfc_proves_total/unique L92-115; ObjectCodeBound total/unique
+L457-476; ObjectCodeSeal L92-108; ObjectCodeClosure L152-170; ObjectResidualSquares
+zfc_proves_residual_conjunction L170 onwards. Twenty-seven occurrences of the
+completeness invocation occur in Object modules, but ObjectConsistency and
+ObjectQuarticCompiler have different shapes and should not be counted as automatic
+replacements. Preserve the universal quantification over arbitrary models and their
+whole internal omega. External Nat correctness cannot replace this obligation.
+
+6. USE SEMANTIC CONSTRUCTOR LEMMAS TO REMOVE THE REPEATED THREE-WAY BRANCHES
+
+AnnotatedRename already defines binaryForm (L264) and unaryForm (L267), but its
+binary_sound L118-144 and AnnotatedBound.binary_sound L59-82 repeat virtually identical
+witness proofs for implication, conjunction and disjunction. Move the shared syntax
+constructors to an earlier common module and prove `code_binaryForm` once under the
+valid-tag disjunction, `renamed_binaryForm` once, and `bound_binaryForm` once.
+Then both soundness proofs can supply one witness `binaryForm r.tag f g`, with the
+constructor equations discharged by those lemmas. Valid tags remain explicit:
+code_binaryForm cannot erase the tag guard because the numeric code retains r.tag.
+This is a migration proposal, not yet a measured patch. It should be worthwhile only
+if these lemmas serve soundness, readiness/completeness, and subsequent validators.
+
+7. CONSOLIDATE SMALL PRIVATE ALGEBRA LEMMAS, BUT USE EXISTING GOOD ABSTRACTIONS
+
+The identical `zero_pair (n) : Nat.pair 0 n = n*n` appears in AnnotatedCodeGraphs L69-73,
+AnnotatedSyntaxGraphs L108-112 and AnnotatedSharedSyntax L50-54. Publish it once in
+AnnotatedCodeArithmetic (or a dedicated pairing helper) and reuse it; one namespace
+level theorem suffices, no new simp attribute is necessary unless orientation is
+intentionally global. Similarly AnnotatedSharedSyntax.syntaxDegree_rename L61-64
+should use the existing general expression-degree API if an import-safe theorem can
+be found, rather than becoming yet another private induction.
+By contrast, several routines are already good templates: parseForm_quoteForm uses
+one induction and simp_all; parseRule_quoteRule and parseAxiom_quoteAxiom use cases
+and simp; parseWith_quote is a correct general parser-lifting combinator;
+AnnotatedSharedSyntax.valid_fork_iff already creates a clean semantic boundary.
+A review should preserve those wins and target remaining repeated structure.
+
+8. RETAIN THE OBJECT/NAT SEMANTIC BOUNDARY AND IMPORT ORDER
+
+ObjectNaturalSemiring.evalRel_iff L17-51 already identifies relational expression
+semantics with evaluation in the actual internal omega semiring. Downstream
+polynomial and residual-square arguments should use it. However this module imports
+ObjectPolynomial, which imports ObjectNaturalExpression; using it to shorten the
+foundational EvalRel proofs in ObjectNaturalExpression would create a cycle unless
+definitions and primitive relation facts are deliberately split first. Its carrier
+Natural H need not be externally isomorphic to Nat. Refactoring the foundational
+semantics to external Nat, or dropping the quantified arbitrary-model hypotheses,
+would change the theorem rather than simplify the proof.
+
+FILES
+ListLookup.lean: complete, kernel-checked generic replacement propositions.
+ScanIteration.lean: complete, kernel-checked proof-only scanner abstraction.
+ValidatedHistory.lean: complete, kernel-checked history abstraction and explicit bridges.
+DecoderFusion.lean: complete, kernel-checked isolated original decoder with fused proof.
+list-lookup.patch, list-lookup-metrics.json: seven exact declaration edits, application check passed.
+decoder-options.patch, decoder-options-metrics.json: recommended exact independent refactor.
+decoder-fusion.patch, decoder-fusion-metrics.json: optional fusion with documented axiom tradeoff.
+AnnotatedProofCode.{baseline,modified,option}.lean and proofcode-*.log: full-file validation copies/logs;
+modified means fused alternative, option means recommended independent proof.
+AnnotatedProofChecker.{baseline,modified}.lean and proofchecker-*.log: full-file validation copies/logs.
+DecoderOptions.lean and decoder-options-isolated.log: checked independent refactor and exact axiom lists.
+No source checkout files have been edited by this agent. No declarations use sorry,
+admit, native_decide, or new axioms. Complete-file replays passed for the recommended ProofCode option replacement and
+ProofChecker lookup replacement, with byte-for-byte identical baseline axiom audits.
+The remaining four files in the lookup patch are covered by exact generic core-lemma
+proof checks and the patch application check, not full-file dependency rebuilds.

@@ -1,0 +1,44 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativePellStepDown.lean
+@@ -1,4 +1,5 @@
+ import Diophantine.Paper1980.PellHalf90
++import DiophantineConsistency.SignedPellResidue
+ 
+ /-!
+ # Signed auxiliary Pell step-down for the native minus-sign block
+@@ -31,32 +32,11 @@
+       push_cast [Nat.cast_sub hI2]; exact haux
+     exact_mod_cast this
+   obtain ⟨s, hIu, hys⟩ := eq_pell_of_sq hI1 hpell
+-  have hs0 : 0 < s := by
+-    rcases Nat.eq_zero_or_pos s with h0 | h0
+-    · rw [h0, yn_zero] at hys; omega
+-    · exact h0
+   have hIZ0 : (I : ℤ) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
+   -- `s` is odd
+-  have hsodd : Odd s := by
+-    by_contra heven
+-    rw [Nat.not_odd_iff_even] at heven
+-    obtain ⟨h, hh⟩ := heven
+-    have e1 : (xn hI1 s : ℤ) ≡ (-1) ^ h [ZMOD I] := by
+-      rw [xn_eq_xr hI1, hh, ← two_mul]; exact xr_even_modEq (I : ℤ) h
+-    have e2 : (xn hI1 s : ℤ) = I * u := by rw [← hIu]; push_cast; ring
+-    rw [e2] at e1
+-    have e3 : (0 : ℤ) ≡ (-1) ^ h [ZMOD I] := by
+-      have : (I : ℤ) * u ≡ 0 [ZMOD I] := (Int.modEq_zero_iff_dvd).2 (dvd_mul_right _ _)
+-      exact this.symm.trans e1
+-    have hdvd : (I : ℤ) ∣ (-1) ^ h := by
+-      have := (Int.modEq_iff_dvd.1 e3); simpa using this
+-    have hdvd1 : (I : ℤ) ∣ 1 := by
+-      rcases neg_one_pow_eq_or ℤ h with e | e
+-      · rwa [e] at hdvd
+-      · rw [e] at hdvd; exact (dvd_neg).1 hdvd
+-    have : (I : ℤ) = 1 := Int.eq_one_of_dvd_one (by positivity) hdvd1
+-    have : I = 1 := by exact_mod_cast this
+-    omega
++  have hsodd : Odd s := SignedPellResidue.odd_index_of_base_dvd hI1 (by
++    rw [← hIu]
++    exact dvd_mul_right I u)
+   obtain ⟨h, hs⟩ := hsodd
+   -- `u = Q_h(I²)`
+   have hu_eq : (u : ℤ) = Qh h ((I : ℤ) ^ 2) := by

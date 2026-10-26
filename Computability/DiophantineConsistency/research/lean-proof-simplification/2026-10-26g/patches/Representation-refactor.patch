@@ -1,0 +1,133 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/Representation.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/Representation.lean
+@@ -112,6 +112,39 @@
+     natAssignment v w (.inl i) = v i := rfl
+ @[simp] theorem natAssignment_inr {σ τ : Type*} (v : σ → ℕ) (w : τ → ℕ) (i : τ) :
+     natAssignment v w (.inr i) = w i := rfl
++
++/-- Assignment transport for arbitrary input and witness renamings. -/
++theorem assignment_comp {σ τ ι κ : Type*}
++    (v : τ → ℕ) (w : κ → ℕ) (f : σ → τ) (g : ι → κ) :
++    natAssignment v w ∘ Sum.map f g = natAssignment (v ∘ f) (w ∘ g) := by
++  funext i
++  cases i <;> rfl
++
++theorem exists_fin_add_and {m n : ℕ}
++    (P : (Fin m → ℕ) → Prop) (Q : (Fin n → ℕ) → Prop) :
++    (∃ w : Fin (m + n) → ℕ,
++      P (w ∘ Fin.castAdd n) ∧ Q (w ∘ Fin.natAdd m)) ↔
++        (∃ a, P a) ∧ (∃ b, Q b) := by
++  constructor
++  · rintro ⟨w, hp, hq⟩
++    exact ⟨⟨w ∘ Fin.castAdd n, hp⟩, ⟨w ∘ Fin.natAdd m, hq⟩⟩
++  · rintro ⟨⟨a, ha⟩, ⟨b, hb⟩⟩
++    exact ⟨Fin.addCases a b, by simpa [Function.comp_def] using ha,
++      by simpa [Function.comp_def] using hb⟩
++
++/-- The unused witness block is filled with zero. -/
++theorem exists_fin_add_or {m n : ℕ}
++    (P : (Fin m → ℕ) → Prop) (Q : (Fin n → ℕ) → Prop) :
++    (∃ w : Fin (m + n) → ℕ,
++      P (w ∘ Fin.castAdd n) ∨ Q (w ∘ Fin.natAdd m)) ↔
++        (∃ a, P a) ∨ (∃ b, Q b) := by
++  constructor
++  · rintro ⟨w, hp | hq⟩
++    · exact Or.inl ⟨w ∘ Fin.castAdd n, hp⟩
++    · exact Or.inr ⟨w ∘ Fin.natAdd m, hq⟩
++  · rintro (⟨a, ha⟩ | ⟨b, hb⟩)
++    · exact ⟨Fin.addCases a (fun _ => 0), Or.inl (by simpa [Function.comp_def] using ha)⟩
++    · exact ⟨Fin.addCases (fun _ => 0) b, Or.inr (by simpa [Function.comp_def] using hb)⟩
+ 
+ /-- A representation is data: a finite witness count and an explicit expression.
+ The theorem field certifies the expression supplied by the constructor. -/
+@@ -152,18 +185,12 @@
+       exact sub_eq_zero.mp hw
+ 
+ /-- Precompose the predicate with a map of input coordinates. -/
+-def reindex (r : Rep σ P) (f : σ → τ) : Rep τ (fun v => P (v ∘ f)) where
++def reindex {τ : Type*} (r : Rep σ P) (f : σ → τ) :
++    Rep τ (fun v => P (v ∘ f)) where
+   witnessCount := r.witnessCount
+   expression := r.expression.rename (Sum.map f id)
+   correct v := by
+-    rw [r.correct]
+-    apply exists_congr
+-    intro w
+-    rw [Expr.eval_rename]
+-    have h : natAssignment (v ∘ f) w = natAssignment v w ∘ Sum.map f id := by
+-      funext i
+-      cases i <;> rfl
+-    rw [h]
++    simpa only [Expr.eval_rename, assignment_comp, Function.comp_id] using r.correct (v ∘ f)
+ 
+ /-- Conjunction combines independent witness blocks and adds the squares of
+ the two residuals. No decisions about the represented predicates are made. -/
+@@ -172,30 +199,9 @@
+   let right := s.expression.rename (Sum.map id (Fin.natAdd r.witnessCount))
+   refine ⟨r.witnessCount + s.witnessCount, left * left + right * right, ?_⟩
+   intro v
+-  have hl (w : Fin (r.witnessCount + s.witnessCount) → ℕ) :
+-      left.eval (natAssignment v w) =
+-        r.expression.eval (natAssignment v (w ∘ Fin.castAdd s.witnessCount)) := by
+-    rw [Expr.eval_rename]
+-    apply congrArg r.expression.eval
+-    funext i
+-    cases i <;> rfl
+-  have hr (w : Fin (r.witnessCount + s.witnessCount) → ℕ) :
+-      right.eval (natAssignment v w) =
+-        s.expression.eval (natAssignment v (w ∘ Fin.natAdd r.witnessCount)) := by
+-    rw [Expr.eval_rename]
+-    apply congrArg s.expression.eval
+-    funext i
+-    cases i <;> rfl
+-  simp only [Expr.eval_add, Expr.eval_mul, hl, hr, mul_self_add_mul_self_eq_zero]
+-  rw [r.correct, s.correct]
+-  constructor
+-  · rintro ⟨⟨a, ha⟩, ⟨b, hb⟩⟩
+-    refine ⟨Fin.addCases a b, ?_, ?_⟩
+-    · simpa [Function.comp_def] using ha
+-    · simpa [Function.comp_def] using hb
+-  · rintro ⟨w, ha, hb⟩
+-    exact ⟨⟨w ∘ Fin.castAdd s.witnessCount, ha⟩,
+-      ⟨w ∘ Fin.natAdd r.witnessCount, hb⟩⟩
++  simp only [left, right, Expr.eval_add, Expr.eval_mul, Expr.eval_rename,
++    assignment_comp, Function.comp_id, mul_self_add_mul_self_eq_zero]
++  exact (and_congr (r.correct v) (s.correct v)).trans (exists_fin_add_and _ _).symm
+ 
+ /-- Disjunction multiplies residuals and keeps independent witness blocks.
+ The unused branch may take all its natural witnesses to be zero. -/
+@@ -204,31 +210,9 @@
+   let right := s.expression.rename (Sum.map id (Fin.natAdd r.witnessCount))
+   refine ⟨r.witnessCount + s.witnessCount, left * right, ?_⟩
+   intro v
+-  have hl (w : Fin (r.witnessCount + s.witnessCount) → ℕ) :
+-      left.eval (natAssignment v w) =
+-        r.expression.eval (natAssignment v (w ∘ Fin.castAdd s.witnessCount)) := by
+-    rw [Expr.eval_rename]
+-    apply congrArg r.expression.eval
+-    funext i
+-    cases i <;> rfl
+-  have hr (w : Fin (r.witnessCount + s.witnessCount) → ℕ) :
+-      right.eval (natAssignment v w) =
+-        s.expression.eval (natAssignment v (w ∘ Fin.natAdd r.witnessCount)) := by
+-    rw [Expr.eval_rename]
+-    apply congrArg s.expression.eval
+-    funext i
+-    cases i <;> rfl
+-  simp only [Expr.eval_mul, hl, hr, mul_eq_zero]
+-  rw [r.correct, s.correct]
+-  constructor
+-  · rintro (⟨a, ha⟩ | ⟨b, hb⟩)
+-    · refine ⟨Fin.addCases a (fun _ => 0), Or.inl ?_⟩
+-      simpa [Function.comp_def] using ha
+-    · refine ⟨Fin.addCases (fun _ => 0) b, Or.inr ?_⟩
+-      simpa [Function.comp_def] using hb
+-  · rintro ⟨w, ha | hb⟩
+-    · exact Or.inl ⟨w ∘ Fin.castAdd s.witnessCount, ha⟩
+-    · exact Or.inr ⟨w ∘ Fin.natAdd r.witnessCount, hb⟩
++  simp only [left, right, Expr.eval_mul, Expr.eval_rename,
++    assignment_comp, Function.comp_id, mul_eq_zero]
++  exact (or_congr (r.correct v) (s.correct v)).trans (exists_fin_add_or _ _).symm
+ 
+ /-- Move a finite block of input coordinates into the existential witnesses. -/
+ def existsBlock {k : ℕ} {P : (σ ⊕ Fin k → ℕ) → Prop}

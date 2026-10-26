@@ -1,0 +1,9 @@
+import DiophantineConsistency.AnnotatedProofChecker
+#print axioms DiophantineConsistency.AnnotatedProofChecker.fragment0
+#print axioms DiophantineConsistency.AnnotatedProofChecker.fragment1
+#print axioms DiophantineConsistency.AnnotatedProofChecker.fragment2
+#print axioms DiophantineConsistency.AnnotatedProofChecker.fragment3
+#print axioms DiophantineConsistency.AnnotatedProofChecker.fragment_exists
+#print axioms DiophantineConsistency.AnnotatedProofChecker.certificate_exists
+#print axioms DiophantineConsistency.AnnotatedProofChecker.exists_checked_iff
+#print axioms DiophantineConsistency.AnnotatedProofChecker.no_refutation_iff

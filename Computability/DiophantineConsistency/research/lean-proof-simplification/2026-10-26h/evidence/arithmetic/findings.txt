@@ -1,0 +1,234 @@
+Arithmetic / finite-word proof simplification review
+Repository: VladimirReshetnikov/ProveIt
+Pinned revision: 60e9c5d620c6c387d932876cfa2d9376f64ea56c
+Base path: Computability/DiophantineConsistency/Lean/DiophantineConsistency/
+Lean 4.32.0, pinned mathlib 81a5d257c8e410db227a6665ed08f64fea08e997.
+
+1. Largest source reduction, with a cost tradeoff: NativeCoefficientBounds.lean
+
+The 22 private rowEnvelope_0 ... rowEnvelope_21 declarations (lines 63--599)
+repeat the identical three nonnegativity facts, explicit rowCoefficient
+tables, nested applications of abs_ite_le, and the same linarith context.
+The public abs_rowCoefficient_le_envelope (602--625) then dispatches those
+22 identical strategies by fin_cases. The proposal keeps PairIndex,
+rowCoefficient, envelope, and the public theorem statement unchanged.
+
+After finite enumeration of the 22 row indices, unfold just rowCoefficient.
+Prove each conditional leaf bound with the same seven hypotheses:
+four port nonnegativity assumptions, sq_nonneg (ports 0),
+mul_nonneg h3 h0, and mul_nonneg h1 h0. The compact tactic is:
+
+  fin_cases k <;> dsimp only [rowCoefficient]
+  all_goals
+    unfold envelope
+    repeat' apply abs_ite_le
+    all_goals rw [abs_le]; constructor <;>
+      linarith only [h0, h1, h2, h3, hsq, hmf, hkp]
+
+This preserves the existing proof strategy, but expresses it once.
+It proves all possible branches bounded without adding index-equality
+assumptions to the arithmetic context. No coefficient is supplied as an
+assumption, no reduction is delegated to native_decide, and no statement
+is weakened. Both complete original and replacement modules passed Lean,
+including axiom audits of the main bound, published_large_scale, and the
+published weighted bound. Each audited theorem has exactly the same standard
+axiom set in both versions: propext, Classical.choice, Quot.sound.
+
+The candidate uses `set_option maxHeartbeats 4000000 in` on the combined
+declaration; the original default 200000 budget timed out. The option must
+precede the declaration's doc comment. The current candidate removes 551
+physical lines in the main row-proof block (before also simplifying
+published_large_scale). Full file 679->122
+physical lines after both changes, excluding review-only axiom-print commands.
+The row-proof block is 566->15 lines, including the local option and comment.
+UTF-8 bytes: complete file 39920->5269; row block 35034->708. All eight public
+theorem signatures are text-identical, with names preserved.
+
+STATUS: fully checked, OPTIONAL source-maintenance tradeoff. In sequential
+single full-file runs on a shared host, baseline/candidate wall times were
+24.42/111.37 seconds and user CPU times were 23.37/110.40 seconds. Both used
+-M3000 -j1 and exited zero. These are not controlled benchmark results;
+they do establish a substantial observed cost rather than a speedup. Prefer
+retaining the current proof unless reduced source maintenance warrants it.
+
+A per-row repeat-driver alternative was also tried, but rows 12 and 13
+exceeded the default 200000 heartbeat budget. A split_ifs variant failed a
+simp step limit and the default heartbeat budget in row 12. These rejected
+experiments are not delivered as usable replacements. The coefficient-vector
+architecture in section 10 is a more promising future way to reduce repeated
+arithmetic search itself, but it has not been formalized here.
+
+2. A mathematically transparent scalar reduction: published_large_scale
+
+NativeCoefficientBounds.lean:651--662 proves
+  (16 : Z) * 2^590069 <= 2^592884.
+Its original proof introduces three intermediate inequalities/equalities
+and a multiplication comparison. The replacement uses the same exponent
+laws directly:
+
+  change (2 : Z)^4 * 2^590069 <= 2^592884
+  rw [<- pow_add]
+  exact pow_le_pow_right_0 (by decide : (1 : Z) <= 2) (by decide)
+
+(Use the exact Unicode Lean spelling in SmallArithmetic.lean.)
+This is valuable beyond its line count: it keeps arithmetic symbolic and
+does not expand a 590069-bit power. The small decide goals involve 4+590069
+and 592884. Tested successfully in SmallArithmetic.lean and in the complete
+NativeCoefficientBounds replacement; standard axioms only. The declaration
+shrinks from 11 to 5 physical lines, counting its following blank line.
+The neighboring published_height_eq already uses the appropriate symbolic
+power-law strategy and need not be rewritten.
+
+3. Reuse Finset.sum_le_one_iff for one-hot reasoning
+
+CurrentCellLabels2011.lean:131--158 manually proves the zero-or-singleton
+support alternatives using sum bounds, a nonzero-summand argument, an
+erased sum, and another bound. The pinned mathlib already provides
+Finset.sum_le_one_iff in Mathlib/Algebra/Order/BigOperators/Group/Finset.lean:590.
+The same repository already uses it in NativeSelectorClause54.lean:65--79.
+
+In SmallArithmetic.lean the identical Selected predicate and theorem statement
+are proved by a zero/nonzero split and this existing library fact. In the
+nonzero case, choose i with f i != 0. The library theorem applied to (i,i)
+gives f i = 1, and applied to (j,i) forces any other nonzero j to equal i.
+The proof retains the empty-index-type case; it adds no Nonempty assumption.
+Tested successfully; standard axioms only. No full CurrentCellLabels2011
+integration check has been claimed merely from the standalone test.
+
+4. Eliminate duplicated cyclic residue bridges
+
+CurrentClause2011.lean:27--40 (addition_residue/subtraction_residue) and
+CurrentReflectedGeometry2011.lean:74--87 (private add_residue/sub_residue)
+contain the same two proofs, with only theorem names changed. Extracting
+these to a lightweight shared arithmetic module would remove duplication
+without forcing either high-level module to depend on the other.
+
+SmallArithmetic.lean proves a stronger generic form for any N,L with
+NeZero (N*L). The addition proof is ZMod.val_add + ZMod.val_natCast +
+Nat.mod_mod_of_dvd. The subtraction proof is just the addition theorem
+applied to k - e, followed by sub_add_cancel. Both pass Lean and their axiom
+audits contain only propext and Quot.sound.
+
+Important boundary: the operations remain in ZMod (N*L), not ZMod L.
+Residue equality alone is not a full source-position identity. Do not use
+the simplification to drop the exact full-modulus theta translations or
+their Nat.cast_sub side conditions. A new shared module is an integration
+proposal, not a claim that the two existing modules were rebuilt here.
+
+5. Let omega handle Nat-to-Int casts in a linear residue argument
+
+NativePellStepDown.lean:161--175, eq_of_residues, explicitly recasts hp,
+hJ, hpc, and hJc into integers before the same abs_lt/omega reasoning.
+The pinned omega preprocessor handles those casts itself. The tested
+replacement is:
+
+  rcases hres with h | h
+  all_goals
+    have hzero := Int.eq_zero_of_abs_lt_dvd h (by rw [abs_lt]; omega)
+    omega
+
+The assumptions, including positivity and both strict half-modulus bounds,
+are unchanged. Both complete original and replacement NativePellStepDown
+modules passed Lean, as did the standalone theorem. The declaration shrinks
+from 15 to 8 physical lines; the full file from 248 to 241 lines, and from
+11791 to 11382 UTF-8 bytes. All seven public theorem signatures are
+text-identical, with names preserved. No local heartbeat cap is added.
+
+Sequential full-file runs at -M6000 -j1 took 6.98/8.19 seconds wall and
+5.98/7.19 seconds user CPU for baseline/candidate. Both exited zero. These
+single runs support no speedup claim. Both versions initially failed while
+importing under an artificial -M3000 memory cap; raising that cap resolved
+the import failure in both. Axiom audits of eq_of_residues, source_index,
+and source_index_of_strong were identical in baseline/candidate, with only
+propext, Classical.choice, Quot.sound.
+
+6. Use the exact existing natural arithmetic lemmas
+
+CurrentCellTranslation2011.lean:26--38:
+  wholeShift_dvd := <t/2011, Nat.mul_div_self_eq_mod_sub_self.symm>
+  wholeShift_add_remainder := Nat.sub_add_cancel (Nat.mod_le t 2011)
+
+The exact Unicode code is in BasicNat.lean. It imports only Std and passes
+Lean 4.32.0. Axiom audit: dvd uses propext and Quot.sound; the addition
+identity uses propext. These are small improvements, useful as examples of
+preferring a named arithmetic identity to a new omega derivation.
+
+7. Keep representation-conversion plumbing behind small lemmas
+
+NativeCyclicConvolution.lean:104 (word_lt_pow) and :162 (mask_word_iff) repeatedly prove
+that every element of List.ofFn a is bounded by destructing List.mem_ofFn.
+The pinned Mathlib.Data.List.OfFn provides List.forall_mem_ofFn_iff:104.
+For example the bound subproof can be
+  List.forall_mem_ofFn_iff.mpr (fun i => ha _).
+Likewise a small List.getD-ofFn-below-length lemma would hide the two identical
+List.getD_eq_getElem / List.getElem_ofFn rewrites in mask_word_iff.
+STATUS: source-grounded proposal; not a tested whole-module replacement.
+Avoid replacing the entire digit representation with Vector merely for style;
+digitArray and its reconstruction theorems already provide useful boundaries.
+
+8. Minor readability improvements in analytic estimates
+
+NativeHalfBinomial.upper_estimate_scaled introduces xi, X, Z, and epsilon
+by obtaining witnesses to trivial existentials, each constructed by <_,rfl>
+(around lines32,45--48). `set xi := ... with hxi` preserves a rewrite equation
+and removes the artificial existential packaging. This is a readability
+proposal, not a measured performance improvement, and should be replayed
+against the full theorem before adoption.
+
+9. Maintain the important semantic boundaries
+
+NativeCyclicCarry.exists_bounded_carries is already a compact fixed-point
+construction that correctly handles cyclic predecessor maps. Do not replace
+it with a linear induction fixing the initial carry to zero.
+NativeCyclicCarryWord.word_eq_of_congruent deliberately distinguishes <= M
+from < M and requires a positive target: the all-(rho-1) word represents
+zero modulo rho^n-1. Those hypotheses cannot be removed as cosmetic clutter.
+CurrentCellTranslation2011 explicitly handles arbitrary shifts and N=1;
+keep those cases in any shared residue interface.
+Never replace finite decide/ring/norm_num checks by native_decide without
+separately reviewing the theorem's axiom output and the project's intended
+trust boundary. Source-line reduction is distinct from kernel-term size
+and elaboration performance.
+
+10. Larger follow-up: certify coefficients in a fixed nonnegative basis
+
+There is a natural algebraic explanation of the native envelope. Write beta,
+K, MC, MF for ports 0,1,2,3 and use the nonnegative basis
+
+  v = (beta^2, MF*beta, MC, MF, beta, K*beta, K, 1),
+  b = (2, 2, 1, 1, 2, 1, 1, 8).
+
+Then envelope = sum_i b_i*v_i. Every literal branch coefficient in the frozen
+rowCoefficient table is an integer linear combination sum_i q_i*v_i, where
+the absolute coefficient vector is bounded componentwise by b. A single
+generic triangle-inequality lemma proves
+
+  (forall i, 0 <= v_i) -> (forall i, abs(q_i) <= b_i) ->
+    abs(sum_i q_i*v_i) <= sum_i b_i*v_i.
+
+A future generator could emit the tiny integer vectors q, ordinary decidable
+componentwise-bound certificates, and kernel-checked equalities binding their
+evaluations to the exact rowCoefficient branches. This would remove repeated
+linear-arithmetic search, not merely its source spelling. The data alone would
+not constitute a proof: the binding equalities and generic theorem application
+must be checked in Lean. It also makes the key absence of a K^2 term explicit.
+STATUS: proposed certificate architecture, not implemented or benchmarked here.
+
+A separate exact-integer symbolic audit checked the frozen source table:
+136 nonterminal branch expressions map to 25 distinct nonterminal vectors,
+all supported in the stated basis and bounded by b. The coordinatewise
+observed maxima equal b; terminal else values are zero. The delivered JSON
+records this computation, all 25 templates, the source commit, and source
+SHA-256. This Python audit is supporting design evidence, NOT a Lean
+certificate and NOT a substitute for the required binding equalities.
+
+11. Deliverables and status
+
+The ready/ folder is the authoritative delivery set: two complete clean Lean
+replacement modules, their two patches, two standalone examples, full-file
+baseline/candidate logs with exit codes and axiom output, exact metrics,
+and the explicitly non-proof coefficient audit. Both patches together passed
+git apply --check against the pinned checkout. They touch different modules
+and can be applied independently. Failed variants remain outside ready/.
+Review-only axiom-print commands are excluded from clean source/patches;
+the proof bodies are identical to the successful checked candidates.

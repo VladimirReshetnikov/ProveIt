@@ -1,0 +1,8 @@
+import DiophantineConsistency.AnnotatedSyntaxGraphs
+#print axioms DiophantineConsistency.AnnotatedSyntaxGraphs.forkCertificate_iff
+#print axioms DiophantineConsistency.AnnotatedSyntaxGraphs.forkCertificate_sound
+#print axioms DiophantineConsistency.AnnotatedSyntaxGraphs.forkCertificate_complete
+#print axioms DiophantineConsistency.AnnotatedSyntaxGraphs.forkGraph_degree
+#print axioms DiophantineConsistency.AnnotatedSyntaxGraphs.forkGraph_binaryOps
+#print axioms DiophantineConsistency.AnnotatedSyntaxGraphs.treeGraph_witnessCount
+#print axioms DiophantineConsistency.AnnotatedSyntaxGraphs.fixedBodies_graph_counts

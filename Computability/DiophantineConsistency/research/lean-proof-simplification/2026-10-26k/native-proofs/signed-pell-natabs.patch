@@ -1,0 +1,24 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SignedPellResidue.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/SignedPellResidue.lean
+@@ -1,4 +1,5 @@
+ import Diophantine.Common.PellInt
++import DiophantineConsistency.ProofSimplification.SignedModEq
+ 
+ /-!
+ # The signed odd auxiliary Pell residue
+@@ -77,14 +78,7 @@
+     rcases neg_one_pow_eq_or ℤ j with hj | hj
+     · exact Or.inl (by rwa [hj] at hr)
+     · exact Or.inr (by rwa [hj] at hr)
+-  by_cases hy0 : 0 ≤ y
+-  · simpa only [Int.natCast_natAbs, abs_of_nonneg hy0] using habs
+-  · have hy0 : y ≤ 0 := by omega
+-    rcases habs with hpos | hneg
+-    · right
+-      simpa only [Int.natCast_natAbs, abs_of_nonpos hy0, neg_neg] using hpos.neg
+-    · left
+-      simpa only [Int.natCast_natAbs, abs_of_nonpos hy0, neg_neg] using hneg.neg
++  exact ProofSimplification.signed_of_natAbs habs
+ 
+ /-- The full signed residue required by the thirteen-coordinate carrier.
+ Neither V nor y is assumed positive, and no size bound on them is supplied. -/

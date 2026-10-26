@@ -1,0 +1,40 @@
+{
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "runs": [
+    {
+      "label": "helper",
+      "command": [
+        "/workspace/scratch/e090e3419a31/lean-env/lean-4.32.0-linux/bin/lean",
+        "-o",
+        "/tmp/arithmetic-certificates-8dwd7i4g/DiophantineConsistency/ArithmeticCertificates.olean",
+        "/workspace/scratch/e090e3419a31/research-notes/certificates/lean/DiophantineConsistency/ArithmeticCertificates.lean"
+      ],
+      "exit_code": 0,
+      "log": "helper.log"
+    },
+    {
+      "label": "checks",
+      "command": [
+        "/workspace/scratch/e090e3419a31/lean-env/lean-4.32.0-linux/bin/lean",
+        "/workspace/scratch/e090e3419a31/research-notes/certificates/lean/ArithmeticCertificatesChecks.lean"
+      ],
+      "exit_code": 0,
+      "log": "checks.log"
+    },
+    {
+      "label": "patch-check",
+      "command": [
+        "git",
+        "-C",
+        "/workspace/scratch/e090e3419a31/ProveIt",
+        "apply",
+        "--check",
+        "/workspace/scratch/e090e3419a31/research-notes/certificates/patches/arithmetic-certificates.patch"
+      ],
+      "exit_code": 0,
+      "log": "patch-check.log"
+    }
+  ],
+  "scope": "Standalone helper and exact-type wrappers; production backend modules not rebuilt.",
+  "baseline": "6175dff9a15491497c7a3c1bda4f6a62a6349c74"
+}

@@ -1,0 +1,172 @@
+{
+  "status": "PASS_SOURCE_ONLY_UNCOMPILED",
+  "pin": "b310142330df89e48413c8fce62e7de223e1c7d5",
+  "source_hashes_before": {
+    "checked": 826,
+    "errors": []
+  },
+  "source_hashes_after": {
+    "checked": 826,
+    "errors": []
+  },
+  "supplemental_source": {
+    "path": "supplemental/evidence/MRDPCore.lean",
+    "git_blob_sha1": "e062e6ec76a0d47e4a7a2156b6a09aa2eee05110",
+    "sha256": "c6f8b993f95be28b1f18e21cb82442c61d4011907f73f6725ac2f15486864c78",
+    "status": "PASS"
+  },
+  "plan": {
+    "status": "PASS_SOURCE_PLAN_ONLY",
+    "errors": [],
+    "probes": [
+      {
+        "source": "annotated/AnnotatedCandidates.lean",
+        "module": "AnnotatedCandidates",
+        "group": "annotated",
+        "imports": [
+          "DiophantineConsistency.AnnotatedParents"
+        ],
+        "expected": [
+          "DiophantineConsistency.AnnotatedParents.check_raw_iff_short",
+          "DiophantineConsistency.AnnotatedProofCode.Tree.decode_spec_short",
+          "DiophantineConsistency.AnnotatedProofCode.Tree.decoded_depth_le_short",
+          "DiophantineConsistency.AnnotatedProofCode.Tree.quote_of_decode_short",
+          "DiophantineConsistency.AnnotatedProofCode.Tree.decode_eq_some_iff_short"
+        ],
+        "requires_probes": []
+      },
+      {
+        "source": "current/CurrentSimplificationCandidates.lean",
+        "module": "CurrentSimplificationCandidates",
+        "group": "current",
+        "imports": [
+          "DiophantineConsistency.CurrentSouthShift2011",
+          "DiophantineConsistency.CurrentTileColors2011",
+          "DiophantineConsistency.CurrentOccupation2011",
+          "DiophantineConsistency.CurrentCellCycle2011"
+        ],
+        "expected": [
+          "DiophantineConsistency.Round2Current.sum_le_one_cases_candidate",
+          "DiophantineConsistency.Round2Current.offset19_word_candidate",
+          "DiophantineConsistency.Round2Current.offset20_word_candidate",
+          "DiophantineConsistency.Round2Current.copy_word_translation_candidate",
+          "DiophantineConsistency.Round2Current.horizontal_words_candidate",
+          "DiophantineConsistency.Round2Current.propagate_candidate"
+        ],
+        "requires_probes": []
+      },
+      {
+        "source": "wang/NorthViewCandidates.lean",
+        "module": "NorthViewCandidates",
+        "group": "wang",
+        "imports": [
+          "DiophantineConsistency.WangTiles942Boundary"
+        ],
+        "expected": [
+          "DiophantineConsistency.WangNorthViewProposal.north_view",
+          "DiophantineConsistency.WangNorthViewProposal.north_435_iff_start_candidate",
+          "DiophantineConsistency.WangNorthViewProposal.north_434_iff_initLeft_candidate",
+          "DiophantineConsistency.WangNorthViewProposal.north_436_iff_initializers_candidate",
+          "DiophantineConsistency.WangNorthViewProposal.north_438_iff_reset_candidate",
+          "DiophantineConsistency.WangNorthViewProposal.north_437_iff_seam_candidate"
+        ],
+        "requires_probes": []
+      },
+      {
+        "source": "supplemental/DepthCandidates.lean",
+        "module": "DepthCandidates",
+        "group": "depth",
+        "imports": [
+          "DiophantineConsistency.BoundedForallDepth"
+        ],
+        "expected": [
+          "DiophantineConsistency.Round2Supplemental.compose_two_depth_le",
+          "DiophantineConsistency.Round2Supplemental.pow_depth_le_candidate",
+          "DiophantineConsistency.Round2Supplemental.binomial_depth_le_candidate"
+        ],
+        "requires_probes": []
+      },
+      {
+        "source": "supplemental/BoundedForallCertificateCandidate.lean",
+        "module": "DiophantineConsistency.BoundedForallCertificate",
+        "group": "crt",
+        "imports": [
+          "Diophantine.Common.MRDPCore"
+        ],
+        "expected": [
+          "DiophantineConsistency.boundedForallCertificate"
+        ],
+        "requires_probes": []
+      }
+    ],
+    "expected_endpoint_count": 21
+  },
+  "candidates": [
+    {
+      "source": "annotated/AnnotatedCandidates.lean",
+      "sha256": "5cecde7bd85bc9ce415f55e619ed1ee3a92e339282f078413fb2b47c0ebe5724",
+      "expected_endpoints": 5
+    },
+    {
+      "source": "current/CurrentSimplificationCandidates.lean",
+      "sha256": "0fb5f1795cf5b101d5cb0cdf698f7e9dfb75d58b489e44180ceb782cf700fcb5",
+      "expected_endpoints": 6
+    },
+    {
+      "source": "wang/NorthViewCandidates.lean",
+      "sha256": "fc6c90bc96587e0c8b85747805122d18c07657029278477c75a6226bef20ea55",
+      "expected_endpoints": 6
+    },
+    {
+      "source": "supplemental/DepthCandidates.lean",
+      "sha256": "52fee645cee216812b53fab0c75173a28051f1269a76920aacee11fa268d7f7c",
+      "expected_endpoints": 3
+    },
+    {
+      "source": "supplemental/BoundedForallCertificateCandidate.lean",
+      "sha256": "312a1e5f2dedb3ac94d6509293b5a63c5472d6601857c306dd7845358f26c673",
+      "expected_endpoints": 1
+    }
+  ],
+  "patches": [
+    {
+      "path": "annotated/proposed.patch",
+      "sha256": "ac7daf5b938450676406c7406fb8ad297aa3a0b3f59fe3813fddfd5c187b7da7",
+      "git_apply_check_passed": true,
+      "applied_in_disposable_copy": true,
+      "check_exit": 0,
+      "check_stderr": "",
+      "apply_exit": 0,
+      "apply_stderr": "",
+      "resulting_target_sha256": {
+        "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedParents.lean": "69bc48517075a7e0459d006b05d28c699be97e4b879284d19312c5e3780e3edb",
+        "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofCode.lean": "18393d6c6f2f59630b72143bc6b705377ac1ba51d1daf6f872d6f0613f712dc6"
+      },
+      "added_physical_lines": 26,
+      "removed_physical_lines": 79
+    },
+    {
+      "path": "supplemental/crt-explicit-congruence.patch",
+      "sha256": "c4acb6ea8de887d64f53d5aa89f54756ed3f01059b0f10020ce62980ee7c928b",
+      "git_apply_check_passed": true,
+      "applied_in_disposable_copy": true,
+      "check_exit": 0,
+      "check_stderr": "",
+      "apply_exit": 0,
+      "apply_stderr": "",
+      "resulting_target_sha256": {
+        "Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallCertificate.lean": "bf8207017d3f4e115cbac6466f5274531bc7bcfa6dd141ea28b95eeb7c312bc1"
+      },
+      "added_physical_lines": 2,
+      "removed_physical_lines": 4
+    }
+  ],
+  "errors": [],
+  "not_established": [
+    "Lean elaboration",
+    "kernel checking",
+    "transitive axiom results",
+    "integration correctness",
+    "performance improvement"
+  ]
+}

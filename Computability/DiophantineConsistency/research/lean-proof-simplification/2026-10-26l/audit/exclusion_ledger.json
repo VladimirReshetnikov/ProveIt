@@ -1,0 +1,1793 @@
+{
+  "scope": {
+    "repository": "VladimirReshetnikov/ProveIt",
+    "snapshot_commit": "b310142330df89e48413c8fce62e7de223e1c7d5",
+    "scope": "All five ZIP archives present in docs/incoming, incoming README, and the retired DiophantineConsistency proof-simplification packet explicitly linked by that README. Historical K215 and unrelated archive-placement entries are not re-audited as DiophantineConsistency proposal reports.",
+    "method": "Read report bodies and targeted detailed notes; inspect nonbaseline artifact inventory; search proposed Lean and notes for current candidate overlap. Original source copies are evidence of baseline, not proposals. No supplied scripts or Lean files were executed. ZIP contents were extracted for text inspection.",
+    "limitations": "Semantic novelty is assessed against the audited packets, not claimed for all literature or all prior conversations. The ledger groups variants; one item may have multiple reports, and evidence lists representative exact locations rather than every repeated mention."
+  },
+  "sources": {
+    "A": {
+      "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+      "root": "Lean_Proof_Simplification",
+      "report": "report/report.tex",
+      "sha256": "dda8929e3e159c3f165b469dbdaacd9e180e30e4a90fb62abe3ecff69a6d58ac",
+      "git_blob_sha1": "28e8215b4b8d80d5187c5b1aeaacfa9cacadb6f3",
+      "size_bytes": 1513770,
+      "member_count": 615,
+      "nested_archives": []
+    },
+    "B": {
+      "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+      "root": "LeanReview",
+      "report": "report/sections/03_architecture.tex",
+      "sha256": "2a0f51271b3d327a2916f66273b999f09e8c2fbebd69489102e2558e397d3f1e",
+      "git_blob_sha1": "55730040e6410fb7f530d84018e4cd6ecb80e961",
+      "size_bytes": 3008758,
+      "member_count": 1015,
+      "nested_archives": []
+    },
+    "C": {
+      "archive": "diophantine-lean-simplification-2026-10-26.zip",
+      "root": "diophantine-lean-simplification-2026-10-26",
+      "report": "report.tex",
+      "sha256": "f05ee2789f3cfbca29467377aeaaef6972211406807ce45d4590459621c86470",
+      "git_blob_sha1": "065a4cbf9fde2ef0b15db9898920e84d7a3b49fb",
+      "size_bytes": 300573,
+      "member_count": 48,
+      "nested_archives": []
+    },
+    "D": {
+      "archive": "lean-proof-simplification-2026-10-26 (2).zip",
+      "root": "lean-proof-simplification-2026-10-26",
+      "report": "report.tex",
+      "sha256": "5035e9a719f7504dfc5c035b2675bbcdf207e9b81c5cbcc28f6112d9be1cdc56",
+      "git_blob_sha1": "1ff01cc5a18b9f3043b6778f3e45da66bf90f4bb",
+      "size_bytes": 444704,
+      "member_count": 51,
+      "nested_archives": []
+    },
+    "E": {
+      "archive": "lean-proof-simplification-2026-10-26.zip",
+      "root": "lean-proof-simplification-2026-10-26",
+      "report": "report.tex",
+      "sha256": "a7d630331b4f50b653a57de9c3b8f1958762d4b2257e65da1e1de17302182c20",
+      "git_blob_sha1": "2f7a1482e17ae06fb45fb9a92a655d30096e50cb",
+      "size_bytes": 382084,
+      "member_count": 64,
+      "nested_archives": []
+    },
+    "F": {
+      "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+      "root": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026",
+      "report": "report.tex",
+      "discovery": "docs/incoming/README.md:15-19",
+      "arrival_commit": "151a732b91",
+      "placement_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b310142330df89e48413c8fce62e7de223e1c7d5/Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/PLACEMENT.md"
+    }
+  },
+  "prior_ideas": [
+    {
+      "id": "P01",
+      "title": "Reuse core optional-list lookup facts",
+      "mechanism": "Replace private membership/index-existence inductions by List.mem_of_getElem? and List.getElem?_of_mem.",
+      "targets": [
+        "AnnotatedRename",
+        "AnnotatedBound",
+        "AnnotatedProofChecker",
+        "AnnotatedAssumption",
+        "AnnotatedRuleSide"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 163,
+          "anchor": "Delete duplicated list lookup inductions."
+        },
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 173,
+          "anchor": "Immediate proof-only improvement: use Lean"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P02",
+      "title": "Option.map injectivity",
+      "mechanism": "Use Option.map_injective instead of Option constructor splitting.",
+      "targets": [
+        "AnnotatedParents.judgmentCode injectivity"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 172,
+          "anchor": "Option.map_injective judgmentCode_injective"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P03",
+      "title": "Share DivMod arithmetic certificate",
+      "mechanism": "Extract one neutral quotient/remainder equivalence while retaining distinct witness realizers and counts.",
+      "targets": [
+        "QuadraticDivMod.certificate_iff",
+        "RegisterDivMod.certificate_iff"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 174,
+          "anchor": "Share the quotient/remainder certificate"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P04",
+      "title": "Share scanner iteration and fixed-state laws",
+      "mechanism": "Bridge Nat.rec to Function.iterate or a small recursor library; share successor, fixed-point and invariant proofs.",
+      "targets": [
+        "AnnotatedRenameScan",
+        "AnnotatedBoundScan",
+        "AnnotatedLineScan",
+        "AnnotatedContext",
+        "AnnotatedAxiomContext"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 186,
+          "anchor": "Replace scanner inductions with an iteration bridge"
+        },
+        {
+          "source": "D",
+          "archive": "lean-proof-simplification-2026-10-26 (2).zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 375,
+          "anchor": "Shared scanner machinery"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P05",
+      "title": "Encoding/iteration fusion",
+      "mechanism": "Lift one-step commuting diagrams to encoded iteration, including AnnotatedClosure.",
+      "targets": [
+        "AnnotatedClosure"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 210,
+          "anchor": "Encoding fusion is a second reusable fact."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P06",
+      "title": "Guarded-history fold and production composition",
+      "mechanism": "Abstract validation, emitted judgment, rejection, run_append/run_sound and Produces composition without changing raw program syntax.",
+      "targets": [
+        "AnnotatedRename.run",
+        "AnnotatedBound.run",
+        "AnnotatedProofChecker.run"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 286,
+          "anchor": "One invariant-preserving history fold"
+        },
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 232,
+          "anchor": "A later shared fold."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P07",
+      "title": "Typed-list scanner simulation",
+      "mechanism": "Share sufficient-fuel encoded-list simulation; retain separate invariant for arbitrary raw input soundness.",
+      "targets": [
+        "AnnotatedRenameScan",
+        "AnnotatedBoundScan",
+        "AnnotatedLineScan",
+        "AnnotatedAxiomContext"
+      ],
+      "evidence": [
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 541,
+          "anchor": "Share scanner proofs at the correct semantic boundary"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P08",
+      "title": "Explicit PR iterator with dynamic seed/parameters",
+      "mechanism": "Factor iterateFrom or iterateProgram while preserving supplied program .val and node counts.",
+      "targets": [
+        "DirectScalarArithmetic.iterate",
+        "AnnotatedContextPR",
+        "AnnotatedBoundScan",
+        "AnnotatedLineScan",
+        "AnnotatedRenameScanPR"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 362,
+          "anchor": "A better primitive-recursive iterator interface"
+        },
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 614,
+          "anchor": "Factor the supplied PR iterator"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P09",
+      "title": "Exact numeric Boolean output",
+      "mechanism": "Combine Boolean range and acceptance iff to derive check=truth(valid), then simplify scanner branches.",
+      "targets": [
+        "AnnotatedRenameLocal",
+        "AnnotatedBoundLocal",
+        "AnnotatedRenameScan.step_cons",
+        "AnnotatedBoundScan.step_cons"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 214,
+          "anchor": "Exact checker outputs and proof side dispatch"
+        },
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/checker-review.md",
+          "line": 138,
+          "anchor": "Strengthen the numeric classifier API"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P10",
+      "title": "Common numeric tag dispatcher",
+      "mechanism": "Normalize frozen arithmetic threshold tests into tags 0/1,2,3/4/5,6/7 and invalid cases, over all natural tags.",
+      "targets": [
+        "AnnotatedRenameLocal",
+        "AnnotatedBoundLocal"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 228,
+          "anchor": "Normalize the common tag dispatcher"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P11",
+      "title": "Assignment naturality",
+      "mechanism": "Expose natAssignment/Sum.map composition law and reuse Expr.eval_rename in representation constructors.",
+      "targets": [
+        "Representation.reindex",
+        "Representation.conjunction",
+        "Representation.disjunction",
+        "Representation.existsBlock"
+      ],
+      "evidence": [
+        {
+          "source": "D",
+          "archive": "lean-proof-simplification-2026-10-26 (2).zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 156,
+          "anchor": "Checked refactor: assignment naturality"
+        },
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 219,
+          "anchor": "Witness layouts: prove the transport once"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P12",
+      "title": "Finite witness block packing",
+      "mechanism": "One existential equivalence between Fin(m+n) witnesses and two witness functions using Fin.addCases, including empty blocks.",
+      "targets": [
+        "Representation.conjunction",
+        "Representation.disjunction",
+        "Representation.existsBlock"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 241,
+          "anchor": "The second law is the existential equivalence"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P13",
+      "title": "Move witness-count projections earlier",
+      "mechanism": "Make small rfl constructor projection laws available without importing downstream global size modules.",
+      "targets": [
+        "RepresentationSize",
+        "DirectComposition"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 269,
+          "anchor": "Move existing projection lemmas to their natural home"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P14",
+      "title": "Common expression polynomial-renaming law",
+      "mechanism": "Move duplicated expression rename/toPolynomial induction to syntax layer.",
+      "targets": [
+        "QuarticCompiler.Gates.polynomial_rename",
+        "NaturalRegisterRelation.rename_toPolynomial"
+      ],
+      "evidence": [
+        {
+          "source": "D",
+          "archive": "lean-proof-simplification-2026-10-26 (2).zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 524,
+          "anchor": "Move basic syntax facts below the consumers"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P15",
+      "title": "Common residual-squares evaluator, zero-set and degree API",
+      "mechanism": "Share sumExpressions evaluation and finite sums-of-squares semantics and degree bounds.",
+      "targets": [
+        "DAGQuartic",
+        "NaturalDAGQuartic",
+        "QuadraticRegisterSystem"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 399,
+          "anchor": "One executable sum-of-squares API"
+        },
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 624,
+          "anchor": "Share residual-system facts before merging compilers"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P16",
+      "title": "Common sumExpressions cost bound",
+      "mechanism": "Promote existing parameterized per-row binary-operation budget, retaining sharp special final-row treatment.",
+      "targets": [
+        "QuarticCost",
+        "DAGQuartic"
+      ],
+      "evidence": [
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 650,
+          "anchor": "Promote the parameterized cost bound already present"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P17",
+      "title": "Generic semiring gate soundness and completeness",
+      "mechanism": "Extract gate syntax/data first to avoid cycles, then specialize GatesSemiring results to old natural compiler.",
+      "targets": [
+        "QuarticCompiler",
+        "GatesSemiring"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 443,
+          "anchor": "The semiring theorem already subsumes the natural induction"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P18",
+      "title": "Reuse weighted expression degree",
+      "mechanism": "Use constant weight one for unweighted syntax degree; move degree machinery below register/compiler consumers.",
+      "targets": [
+        "QuadraticRegisterSystem.syntaxDegree",
+        "WeightedExpressionDegree"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 463,
+          "anchor": "Constant weight one supplies the old bound."
+        },
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/circuits-review.md",
+          "line": 150,
+          "anchor": "Reuse the existing syntax-degree bound earlier"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P19",
+      "title": "Share RHS node degree case analysis",
+      "mechanism": "Abstract degree at most two from degree-one wire expressions while retaining signed/natural distinctions.",
+      "targets": [
+        "DAGQuartic.rhs_degree",
+        "NaturalDAGQuartic.rhs_degree"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 299,
+          "anchor": "Degree accounting is a smaller companion change."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P20",
+      "title": "Generic topological DAG invariant",
+      "mechanism": "Factor strong induction over dependencies; instantiate degree, nonnegativity and uniqueness.",
+      "targets": [
+        "ArithmeticDAGDegree",
+        "NaturalDAGQuartic",
+        "ArithmeticDAGSemantics"
+      ],
+      "evidence": [
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 676,
+          "anchor": "Use a common DAG invariant theorem selectively"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P21",
+      "title": "Power-label certificates for generated proofs",
+      "mechanism": "Replace 193 ring chains with existing run_power and finite checked labels; reuse Split parent labels; retain compatibility wrappers.",
+      "targets": [
+        "SplitCircuitSteps59",
+        "GapCircuitSteps66",
+        "SplitJointPower59"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/04_circuits.tex",
+          "line": 50,
+          "anchor": "Consolidate power proofs while retaining every public theorem"
+        },
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 483,
+          "anchor": "Replace 193 power chains by parent exponent certificates"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P22",
+      "title": "Indexed or demand-generated node equations",
+      "mechanism": "Specialize run_node_equation on demand; retain meaningful cached semantic cuts and compare lookup costs.",
+      "targets": [
+        "SplitCircuitSteps59",
+        "GapCircuitSteps66"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/04_circuits.tex",
+          "line": 128,
+          "anchor": "Offer an indexed facade before removing named wrappers"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P23",
+      "title": "Respect earlier semantic register cuts in generator",
+      "mechanism": "Update generator cut dictionary after each theorem; copy dictionaries to avoid forward/self references; shorten selected rewrite lists.",
+      "targets": [
+        "SplitCircuitRegisters59.natural_sourceSRegister",
+        "SplitCircuitRegisters59.natural_sourceRankRegister"
+      ],
+      "evidence": [
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 427,
+          "anchor": "Use established register facts as proof boundaries"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P24",
+      "title": "Shared scalar free-carrier ratio tail",
+      "mechanism": "Extract text-identical ratioValue plus map/cast laws, retaining recipe-specific exponents and data.",
+      "targets": [
+        "SplitNinePolynomial59.ratioValue",
+        "GapNinePolynomial66.ratioValue"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 234,
+          "anchor": "Share the identical polynomial tail"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P25",
+      "title": "Shared 99-node free-carrier circuit tail",
+      "mechanism": "Certify a boundary-port block, exact embeddings and high-level meaning for Split/Gap shared suffix.",
+      "targets": [
+        "SplitCircuit59 indices 416-514",
+        "GapCircuit66 indices 385-483"
+      ],
+      "evidence": [
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 468,
+          "anchor": "Extract the shared 99-node free-carrier tail"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P26",
+      "title": "Compositional semantic block certificates",
+      "mechanism": "Prove kernel/recipe blocks with existing node-equation uniqueness, preserving independent high-level specification.",
+      "targets": [
+        "GapCircuitRegisters66",
+        "GapCircuitRecipe66",
+        "Split circuit counterparts"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/04_circuits.tex",
+          "line": 167,
+          "anchor": "Certify semantic blocks instead of globally normalizing the DAG"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P27",
+      "title": "Positive/natural circuit simulation and commutative node swaps",
+      "mechanism": "Parameterize reference-map simulation and extend NodeRel for add/mul operand swaps instead of hard-coded exceptional branches.",
+      "targets": [
+        "SplitCircuitTranslation59",
+        "GapCircuitTranslation66",
+        "ArithmeticDAGPowers.NodeRel"
+      ],
+      "evidence": [
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 713,
+          "anchor": "Positive/natural translation is a simulation"
+        },
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/report.tex",
+          "line": 258,
+          "anchor": "Treat commutative swaps in the relation"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P28",
+      "title": "Typed checked circuit views",
+      "mechanism": "Bundle literal node lists, topology and bounded outputs; optional SafeNode view with exact erasure equality.",
+      "targets": [
+        "ArithmeticDAG.Node",
+        "ArithmeticDAG topology"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/04_circuits.tex",
+          "line": 211,
+          "anchor": "Treat typed circuit views as a later design option"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P29",
+      "title": "Natural register append invariants",
+      "mechanism": "Factor topology/allowed-node append lemmas and old/new index reasoning around Program.push/eval_old/eval_last.",
+      "targets": [
+        "NaturalRegisterProgram.Program.push",
+        "NaturalRegisterProgram.eval_old",
+        "NaturalRegisterProgram.eval_last"
+      ],
+      "evidence": [
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/circuits-review.md",
+          "line": 172,
+          "anchor": "Package the append invariants used by natural registers"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P30",
+      "title": "Shared ShortSystem degree prefix",
+      "mechanism": "Extract exact common 224-line prefix or use shared DAG degree certificate while retaining cancellation-aware bound <=68.",
+      "targets": [
+        "ShortSystem.degree proofs"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/04_circuits.tex",
+          "line": 188,
+          "anchor": "Share the ShortSystem degree prefix before changing representation"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P31",
+      "title": "Nine-coordinate positive/natural packing",
+      "mechanism": "Parameterize duplicated packing existential equivalences by evaluator, preserving unshifted coordinate 7 and positivity elsewhere.",
+      "targets": [
+        "SplitSourceExistence",
+        "GapSourceExistence66"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/03_architecture.tex",
+          "line": 11,
+          "anchor": "Prove the nine coordinate packaging equivalence once"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P32",
+      "title": "Guarded existence-of-solutions transport",
+      "mechanism": "Compose two existence-preserving directions, not assignment bijections; retain domain guards and witness-choice dependencies.",
+      "targets": [
+        "CurrentCarrierArithmetic2011",
+        "carrier equivalence families"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 257,
+          "anchor": "Guarded solution transport must preserve domains"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P33",
+      "title": "Named accessors for conjunction certificates",
+      "mechanism": "Keep conjunction definitions but add stable projection names; optional later Prop record.",
+      "targets": [
+        "Carrier66.Canonical",
+        "PortBounds",
+        "Carrier66Source.canonical_strong_error"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/03_architecture.tex",
+          "line": 68,
+          "anchor": "Give long conjunctions names without changing their definitions"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P34",
+      "title": "Metavariable-selected finite positivity coordinates",
+      "mechanism": "After fin_cases use hn/hh/ht/hv _ rather than enumerating coordinate numerals.",
+      "targets": [
+        "Carrier66.drop_pos",
+        "Carrier66.restore_pos"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 78,
+          "anchor": "Let elaboration choose a coordinate"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P35",
+      "title": "Narrow canonical-zero simplification",
+      "mechanism": "Use explicit canonical equations and simp only in place of general ring search.",
+      "targets": [
+        "Carrier66.canonical_zero"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 97,
+          "anchor": "Use a narrow rewrite set"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P36",
+      "title": "Integer unit-factor API",
+      "mechanism": "Use Int.eq_one_or_neg_one_of_mul_eq_one and sign exclusions; organize product proof in dependency order.",
+      "targets": [
+        "ShortSystem.unit_eq_one",
+        "ShortSystem.product_eq_one_iff"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 119,
+          "anchor": "Units of the integers."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P37",
+      "title": "Local five-residual zero equivalence",
+      "mechanism": "Use add_eq_zero_iff_of_nonneg, sq_eq_zero_iff, sub_eq_zero instead of five nlinarith branches.",
+      "targets": [
+        "ShortSystem.residualSum_zero_iff"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/02_local.tex",
+          "line": 55,
+          "anchor": "State the sum of squares invariant directly"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P38",
+      "title": "Combine identical gate induction branches",
+      "mechanism": "Share QuarticCompiler add/mul completeness branch proof via alternative pattern.",
+      "targets": [
+        "QuarticCompiler.Gates.complete"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 132,
+          "anchor": "Combine genuinely identical constructor branches."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P39",
+      "title": "Shorten DAG run_map induction",
+      "mechanism": "Use List.map_append/map_singleton and Node.eval_map directly on induction hypothesis.",
+      "targets": [
+        "ArithmeticDAG.run_map"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 148,
+          "anchor": "Use the map lemma at the recursive boundary."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P40",
+      "title": "Cast entire Pell disjunction",
+      "mechanism": "Replace final manual disjunction transport with exact_mod_cast while keeping Nat/Int subtraction boundaries.",
+      "targets": [
+        "FirstPellCarrier.first_norm_facts_int"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 156,
+          "anchor": "Cast the whole conclusion instead of splitting it manually."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P41",
+      "title": "One coefficient-envelope row proof schema",
+      "mechanism": "Select finite row, recurse through abs_ite_le and close all leaves using fixed nonnegativity facts; related uniform SplitKernelData proof generation.",
+      "targets": [
+        "NativeCoefficientBounds.rowEnvelope_0 through rowEnvelope_21",
+        "SplitKernelData59"
+      ],
+      "evidence": [
+        {
+          "source": "D",
+          "archive": "lean-proof-simplification-2026-10-26 (2).zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 222,
+          "anchor": "Coefficient envelopes: one proof schema for all rows"
+        },
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/inventory/INVENTORY.md",
+          "line": 52,
+          "anchor": "Coefficient-bound batches."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P42",
+      "title": "Finite catalog of coefficient values",
+      "mechanism": "Bound distinct coefficient expressions once and verify catalog lookup equals authoritative rowCoefficient.",
+      "targets": [
+        "NativeCoefficientBounds",
+        "NativeQuadraticParent.rowCoefficient"
+      ],
+      "evidence": [
+        {
+          "source": "D",
+          "archive": "lean-proof-simplification-2026-10-26 (2).zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 301,
+          "anchor": "small finite catalog."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P43",
+      "title": "Finite symbolic majorant certificate",
+      "mechanism": "Nonnegative monomial basis plus finite coefficient-vector bounds replaces repeated arithmetic leaves without weakening linear dependence on K.",
+      "targets": [
+        "NativeCoefficientBounds",
+        "SplitCoefficientBounds"
+      ],
+      "evidence": [
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/notes/arithmetic.txt",
+          "line": 253,
+          "anchor": "A reusable symbolic majorant can go beyond tactic compression"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P44",
+      "title": "Coefficient homomorphism naturality from shared syntax",
+      "mechanism": "Narrow map simp/case schema or computational ring syntax; retain exact literal coefficient binding and computability.",
+      "targets": [
+        "NativeNinePolynomial52.mapRowCoefficient",
+        "GapNinePolynomial66"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/03_architecture.tex",
+          "line": 214,
+          "anchor": "Remove duplicated coefficient expressions in stages"
+        },
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 384,
+          "anchor": "Do the same for coefficient naturality"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P45",
+      "title": "Sparse quadratic row normalizer",
+      "mechanism": "Small proof-producing normalized sparse syntax for source-row identities, avoiding full finalizer expansion.",
+      "targets": [
+        "Gap row identities",
+        "Split row identities",
+        "Native row identities"
+      ],
+      "evidence": [
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 754,
+          "anchor": "A small sparse-row normalizer is a better first reflection target"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P46",
+      "title": "Elementary row operations preserve zero sets",
+      "mechanism": "Represent two row additions and surjective reindexing generically; check concrete transformed-family binding.",
+      "targets": [
+        "SplitCertificate59.transformed_zero_iff"
+      ],
+      "evidence": [
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 774,
+          "anchor": "Represent elementary row operations once"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P47",
+      "title": "Specialize existing half-base bound at 31",
+      "mechanism": "Use half_base_bound with m=31 and normalize 4096; delete reproof.",
+      "targets": [
+        "SelectiveCoefficientBounds.half_base_bound_31"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/02_local.tex",
+          "line": 10,
+          "anchor": "Specialize the generic coefficient bound already in the file"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P48",
+      "title": "Predecessor exponent rewrite",
+      "mechanism": "Replace repeated congr/omega with pow_succ and Nat.sub_add_cancel under 1<=t.",
+      "targets": [
+        "MultiTargetCarry",
+        "SelectiveCarry",
+        "SelectiveCoefficientBounds"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/02_local.tex",
+          "line": 145,
+          "anchor": "Remove the repeated predecessor exponent calculation"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P49",
+      "title": "Exact half-radix quotient/remainder identity",
+      "mechanism": "Prove (s*a)%(2*s)+(s*b)/(2*s)=s*(a%2)+b/2 for s>0, derive bound/parity without sixteen cases.",
+      "targets": [
+        "NativeCyclicRotation.shiftDigits_half_bound",
+        "NativeCyclicRotation.shiftDigits_half_parity_89"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 548,
+          "anchor": "A stronger half-radix lemma"
+        },
+        {
+          "source": "D",
+          "archive": "lean-proof-simplification-2026-10-26 (2).zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 310,
+          "anchor": "Scaled division and cyclic residue interfaces"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P50",
+      "title": "Cyclic residue, aligned-field and off-origin API",
+      "mechanism": "Share ZMod representative arithmetic, arbitrary shifts/wraparound and mask lookup below consuming layers.",
+      "targets": [
+        "CurrentClause2011",
+        "CurrentReflectedGeometry2011",
+        "CurrentCellTranslation2011",
+        "NativeLocalMask54",
+        "NativeCleanBands54"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 582,
+          "anchor": "Share physical-field residue calculations"
+        },
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md",
+          "line": 167,
+          "anchor": "Put field-coordinate and off-origin mask lemmas below the clause layer"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P51",
+      "title": "Finite-set intersection for support sums",
+      "mechanism": "Use Finset.filter_mem_eq_inter and inter_eq_right instead of set extensionality.",
+      "targets": [
+        "LowMaskCoding.sum_range_support",
+        "MultiTargetCarry.selectedMask_eq"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/02_local.tex",
+          "line": 105,
+          "anchor": "Use finite set intersection instead of reproving membership"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P52",
+      "title": "Convolution distributivity factoring",
+      "mechanism": "Use Finset.sum_mul, mul_sum, pow_add and controlled AC simplification in final convolution proof step.",
+      "targets": [
+        "NativeCyclicConvolution.word_convolution"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/02_local.tex",
+          "line": 216,
+          "anchor": "Convolution factorization."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P53",
+      "title": "Finite-fiber weighted pushforward identity",
+      "mechanism": "One sum-over-fibers identity serves mass, convolution and word reindexing and retains collisions.",
+      "targets": [
+        "NativeCyclicConvolution.mass_foldStencil",
+        "convolution_foldStencil",
+        "word_foldStencil"
+      ],
+      "evidence": [
+        {
+          "source": "D",
+          "archive": "lean-proof-simplification-2026-10-26 (2).zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 415,
+          "anchor": "One finite-fiber identity for folded stencils"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P54",
+      "title": "Use exact power >1 library theorem",
+      "mechanism": "Use Nat.one_lt_two_pow in radix-origin decoding.",
+      "targets": [
+        "NativeRadixDigits.decode_originMask"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/02_local.tex",
+          "line": 223,
+          "anchor": "Use the exact power fact."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P55",
+      "title": "Normalize finite-switch boundary once",
+      "mechanism": "In complement of tag=count prove tag<count+1 iff tag<count, removing second split.",
+      "targets": [
+        "ArithmeticFiniteSwitch.program"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/02_local.tex",
+          "line": 229,
+          "anchor": "Normalize a finite-switch boundary once."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P56",
+      "title": "Optional cellDigit bound by direct finite branches",
+      "mechanism": "Two-line split_ifs/norm_num experiment, explicitly low priority due to existing highDigits_lt.",
+      "targets": [
+        "CurrentHighDigits2011.cellDigit_lt"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/02_local.tex",
+          "line": 234,
+          "anchor": "Do not prefer branch expansion just because it is shorter."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P57",
+      "title": "Coherent source/window extraction",
+      "mechanism": "Factor polynomial zero -> restored canonical parent -> one shared source and N -> low/high window facts.",
+      "targets": [
+        "CurrentSparseDigits2011.polynomial_zero_reconstructs",
+        "CurrentHighDigits2011.polynomial_zero_mask_test",
+        "CurrentPolynomialWindow2011.polynomial_zero_window"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/03_architecture.tex",
+          "line": 99,
+          "anchor": "Share one coherent source and scalar window certificate"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P58",
+      "title": "Smaller proved views of native window facts",
+      "mechanism": "Project WordFacts/core contexts with Booleanity, support, carry and mask facts; derive count then phase then decoding.",
+      "targets": [
+        "CurrentPolynomialWindow2011.Facts",
+        "CurrentOneHot2011",
+        "CurrentCellLabels2011",
+        "CurrentDecodedWindow2011"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 305,
+          "anchor": "Native proofs need smaller contexts and local equations"
+        },
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 869,
+          "anchor": "Improve the current-window API where coherence already exists"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P59",
+      "title": "Derive carry recurrence instead of storing it",
+      "mechanism": "Digit bound plus exact decomposition gives quotient recurrence; retain dot-notation method and coherent arrays.",
+      "targets": [
+        "CurrentPolynomialWindow2011.Facts.carry_recurrence",
+        "NativeWindowCarry",
+        "CurrentWindowCarry2011"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 644,
+          "anchor": "Derive recurrence instead of storing it twice"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P60",
+      "title": "Scalar carry decomposition lemmas",
+      "mechanism": "Share quotient, residue and small-total reset from raw=digit+radix*carry, with minimal premises.",
+      "targets": [
+        "CurrentClause2011.normalized_clause_residue",
+        "CurrentEarlyPadding2011",
+        "CurrentPhaseParity2011"
+      ],
+      "evidence": [
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md",
+          "line": 87,
+          "anchor": "Normalize exact digit/carry equations through a small scalar API"
+        },
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 320,
+          "anchor": "Add equation-side carry lemmas"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P61",
+      "title": "Decode Pell source-register equations once",
+      "mechanism": "Extract q=1+J*beta, L=q^2-1, N=q^3, X=q*w as arithmetic facts from literal rows.",
+      "targets": [
+        "NativePellBootstrap.source_Y_ge_two",
+        "NativePellBootstrap.source_rank_eq_target",
+        "NativePellBootstrap.source_scale_eq",
+        "NativePellPower"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 617,
+          "anchor": "Decode source-register equations once"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P62",
+      "title": "Rank Nat/Int conversion interface",
+      "mechanism": "Package nonnegativity, toNat cast equality and existing rank inequalities once at source boundary.",
+      "targets": [
+        "NativePellFirstIndex.source_first_index_exact",
+        "NativePellFirstIndex.source_first_pair",
+        "source-window family"
+      ],
+      "evidence": [
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/notes/arithmetic.txt",
+          "line": 227,
+          "anchor": "Normalize Nat/Int transitions at explicit semantic boundaries"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P63",
+      "title": "Direction/field descriptors and copied bounds",
+      "mechanism": "Describe widths/offsets/packed positions once and share four field bounds, preserving WNES/WENS ordering distinction.",
+      "targets": [
+        "CurrentKernel2011",
+        "CurrentCellLabels2011"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 338,
+          "anchor": "Describe the packed direction layout once."
+        },
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 712,
+          "anchor": "One copied-field bound interface"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P64",
+      "title": "Finite checked-block assembly",
+      "mechanism": "Keep kernel-checked chunks; share adjacent-block coverage, Euclidean block dispatcher, balanced sum composition, final partial blocks.",
+      "targets": [
+        "WangTiles942Data.action_eq_decoder",
+        "WangTiles942Data rail assembly",
+        "CurrentKernel2011 finite sums"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 334,
+          "anchor": "Keep kernel-checked chunks; simplify their assembly."
+        },
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 678,
+          "anchor": "Keep checked finite chunks; share their assembly"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P65",
+      "title": "Optional reusable mask-block lookup/length/bounds",
+      "mechanism": "Extract symbolic block library only when second substantial consumer exists, preserving distinct origin and high-port shifts.",
+      "targets": [
+        "CurrentHighDigits2011"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 350,
+          "anchor": "Optional mask-block reuse."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P66",
+      "title": "Origin-decrement word identity",
+      "mechanism": "Prove word_sub_origin with explicit no-borrow delta<=a 0 from word_add/word_origin.",
+      "targets": [
+        "CurrentHighDigits2011.high_mask_word",
+        "NativeHighPort54.mask_word"
+      ],
+      "evidence": [
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md",
+          "line": 205,
+          "anchor": "Share the origin-decrement word lemma across the two high-mask families"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P67",
+      "title": "Expose physical selector sum directly",
+      "mechanism": "Make the Fin942 sum equality public instead of converting through prefix sums and back.",
+      "targets": [
+        "CurrentClause2011.selectorCount_eq_prefix",
+        "CurrentOneHot2011",
+        "CurrentFieldOffsets2011"
+      ],
+      "evidence": [
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md",
+          "line": 230,
+          "anchor": "Expose the already-proved physical sum identity directly"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P68",
+      "title": "Separate current carrier base from completeness imports",
+      "mechanism": "Extract base arithmetic/masks/window below ThirteenCarrier completeness and keep facade.",
+      "targets": [
+        "CurrentCarrierArithmetic2011",
+        "proposed CurrentCarrierBase2011"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/03_architecture.tex",
+          "line": 147,
+          "anchor": "Put the current base interface below completeness"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P69",
+      "title": "Common direct/native graph program builder",
+      "mechanism": "Parameterize shared rawStepProgram/boundedRunProgram control flow by graph combinators; preserve 1742 vs6924 witnesses.",
+      "targets": [
+        "DirectGraphEnumerator",
+        "NativeGraphEnumerator"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 356,
+          "anchor": "Share control flow without collapsing cost models"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P70",
+      "title": "Transport definable induction once",
+      "mechanism": "omega_ind_of_spec takes actual formula/environment and satisfaction equivalence; retains nonstandard-model definability.",
+      "targets": [
+        "ObjectAdditionLaws",
+        "ObjectMultiplicationLaws",
+        "ObjectDistributivity"
+      ],
+      "evidence": [
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/checker-review.md",
+          "line": 159,
+          "anchor": "Transport definable induction once, retaining the formula witness"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P71",
+      "title": "Model validity to sealed derivation bridge",
+      "mechanism": "Centralize completeness_inf_context, ZF-model extraction and seal_valid, retaining arbitrary model universe and context distinctions.",
+      "targets": [
+        "ObjectArithmetic",
+        "ObjectMultiplication",
+        "ObjectCode modules",
+        "ObjectNaturalExpression"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 728,
+          "anchor": "A shared bridge from arbitrary models to sealed derivations"
+        },
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/checker-review.md",
+          "line": 182,
+          "anchor": "Centralize the sealed-model completeness boilerplate"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P72",
+      "title": "Closed-formula transport polymorphic in arity",
+      "mechanism": "Generalize local closed helper to arbitrary Fin k and reuse at source/target arities.",
+      "targets": [
+        "ObjectQuarticCompiler.zfc_proves_compiler",
+        "ObjectPolynomial.sat_noZeroForm_at_iff"
+      ],
+      "evidence": [
+        {
+          "source": "C",
+          "archive": "diophantine-lean-simplification-2026-10-26.zip",
+          "member": "diophantine-lean-simplification-2026-10-26/report.tex",
+          "line": 768,
+          "anchor": "Generalize closed-sentence transport across arity"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P73",
+      "title": "Share finite-index and renaming algebra across object/compiler clients",
+      "mechanism": "Generic conjunction row-zero and instantiation bookkeeping; use existing internal semiring, preserve unguarded evalRel_unique.",
+      "targets": [
+        "ObjectQuadraticSystem.conjunction_rows_zero_iff",
+        "QuadraticRegisterComposition.System.conjunction_holds",
+        "ObjectResidualSquares"
+      ],
+      "evidence": [
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/report.tex",
+          "line": 851,
+          "anchor": "Build on the algebraic interfaces already present"
+        },
+        {
+          "source": "E",
+          "archive": "lean-proof-simplification-2026-10-26.zip",
+          "member": "lean-proof-simplification-2026-10-26/notes/syntax.txt",
+          "line": 133,
+          "anchor": "The totality theorem can profit from a semiring witness"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P74",
+      "title": "Descend stronger modular result by divisibility",
+      "mechanism": "Derive modulo16 reflection from modulo2048 via Nat.ModEq.of_dvd; identify existing selector definitions.",
+      "targets": [
+        "CurrentEarlyPadding2011.reflected_mod_sixteen",
+        "CurrentClause2011.reflected_weight_mod"
+      ],
+      "evidence": [
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md",
+          "line": 57,
+          "anchor": "Use the existing stronger congruence at smaller moduli"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P75",
+      "title": "Conditional padding witness API",
+      "mechanism": "Require padding existential only inside 7<=phase<=10 branch, eliminating caller dummy function and classical choice.",
+      "targets": [
+        "NativePreliminaryCount2011.total_le_one_all_phases",
+        "CurrentCount2011.count_le_one_of_middle_padding"
+      ],
+      "evidence": [
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/digits-review.md",
+          "line": 21,
+          "anchor": "Put a conditional witness inside the branch that needs it"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P76",
+      "title": "Rewrite PR recursor congruence rather than second induction",
+      "mechanism": "Use supplied pointwise realization equalities under Nat.rec; optional axiom-free rec_congr fallback.",
+      "targets": [
+        "ScalarPRCode.Realizes.prec",
+        "PRCode.Realizes.prec",
+        "ScalarPROptimizer.eval_optimize"
+      ],
+      "evidence": [
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/source_notes/checker-review.md",
+          "line": 38,
+          "anchor": "Rewrite under primitive recursion instead of proving congruence by induction"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P77",
+      "title": "Finite coefficient support membership API",
+      "mechanism": "Replace repeated insertion-membership simplification with explicit membership specification or indexed support representation.",
+      "targets": [
+        "NativeQuadraticPositions"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/inventory/INVENTORY.md",
+          "line": 53,
+          "anchor": "Finite-coordinate tables."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P78",
+      "title": "Common positive-modulus instance normalization",
+      "mechanism": "Centralize repeated NeZero(N*2011) side conditions and cast/divisibility normalization.",
+      "targets": [
+        "Current module family"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/inventory/INVENTORY.md",
+          "line": 54,
+          "anchor": "Common modulus infrastructure."
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P79",
+      "title": "Axiom policy gate and pure audit-wrapper generation",
+      "mechanism": "Make existing axiom output fail policy violations; consolidate pure wrappers while preserving behavioral regression checks.",
+      "targets": [
+        "checks modules",
+        "EndpointAudit",
+        "axiom-log scripts"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/05_validation.tex",
+          "line": 39,
+          "anchor": "Turn the existing audit output into a failing policy gate"
+        },
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/05_validation.tex",
+          "line": 72,
+          "anchor": "Consolidate pure audit wrappers but keep the regression proofs"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P80",
+      "title": "Uniform generation templates and narrow proof interfaces",
+      "mechanism": "Share Split/Gap generation templates, keep public cached cutpoints; explicit local simp, narrow imports and benchmark real consumers.",
+      "targets": [
+        "Split/Gap proof generators",
+        "large native/circuit clients"
+      ],
+      "evidence": [
+        {
+          "source": "A",
+          "archive": "Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "Lean_Proof_Simplification/report/report.tex",
+          "line": 294,
+          "anchor": "Share generation templates."
+        },
+        {
+          "source": "F",
+          "archive": "diophantine-lean-proof-simplification-2026-10-26.zip [retired]",
+          "member": "Computability/DiophantineConsistency/research/lean-proof-simplification-20261026/report.tex",
+          "line": 375,
+          "anchor": "Prefer a stable simplification boundary"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    },
+    {
+      "id": "P81",
+      "title": "Abstract Split/Gap degree profiles",
+      "mechanism": "Parameterize d0,d1,d2 and strict gaps d1<d2+116,d0<d2+232; retain sharp scale and leading coefficient hypotheses.",
+      "targets": [
+        "SplitWordBounds",
+        "GapWordBounds66"
+      ],
+      "evidence": [
+        {
+          "source": "B",
+          "archive": "ProveIt_Lean_Proof_Simplification_2026-10-26.zip",
+          "member": "LeanReview/report/sections/03_architecture.tex",
+          "line": 172,
+          "anchor": "Abstract the degree profile but retain sharp hypotheses"
+        }
+      ],
+      "status": "previously proposed; excluded as a new main contribution"
+    }
+  ]
+}

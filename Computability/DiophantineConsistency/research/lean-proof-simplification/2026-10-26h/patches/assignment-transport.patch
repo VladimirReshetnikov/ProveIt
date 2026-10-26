@@ -1,0 +1,88 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/Representation.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/Representation.lean
+@@ -112,6 +112,21 @@
+     natAssignment v w (.inl i) = v i := rfl
+ @[simp] theorem natAssignment_inr {σ τ : Type*} (v : σ → ℕ) (w : τ → ℕ) (i : τ) :
+     natAssignment v w (.inr i) = w i := rfl
++
++/-- Renaming input and witness coordinates commutes with natural assignment. -/
++theorem natAssignment_map {σ τ α β : Type*} (v : τ → ℕ) (w : β → ℕ)
++    (f : σ → τ) (g : α → β) :
++    natAssignment v w ∘ Sum.map f g =
++      natAssignment (v ∘ f) (w ∘ g) := by
++  funext i
++  cases i <;> rfl
++
++/-- Evaluate a coordinate renaming through its two assignment blocks. -/
++theorem Expr.eval_rename_natAssignment {σ τ α β : Type*} (e : Expr (σ ⊕ α))
++    (f : σ → τ) (g : α → β) (v : τ → ℕ) (w : β → ℕ) :
++    (e.rename (Sum.map f g)).eval (natAssignment v w) =
++      e.eval (natAssignment (v ∘ f) (w ∘ g)) := by
++  rw [Expr.eval_rename, natAssignment_map]
+ 
+ /-- A representation is data: a finite witness count and an explicit expression.
+ The theorem field certifies the expression supplied by the constructor. -/
+@@ -156,14 +171,7 @@
+   witnessCount := r.witnessCount
+   expression := r.expression.rename (Sum.map f id)
+   correct v := by
+-    rw [r.correct]
+-    apply exists_congr
+-    intro w
+-    rw [Expr.eval_rename]
+-    have h : natAssignment (v ∘ f) w = natAssignment v w ∘ Sum.map f id := by
+-      funext i
+-      cases i <;> rfl
+-    rw [h]
++    simpa only [Expr.eval_rename_natAssignment, Function.comp_id] using r.correct (v ∘ f)
+ 
+ /-- Conjunction combines independent witness blocks and adds the squares of
+ the two residuals. No decisions about the represented predicates are made. -/
+@@ -172,21 +180,8 @@
+   let right := s.expression.rename (Sum.map id (Fin.natAdd r.witnessCount))
+   refine ⟨r.witnessCount + s.witnessCount, left * left + right * right, ?_⟩
+   intro v
+-  have hl (w : Fin (r.witnessCount + s.witnessCount) → ℕ) :
+-      left.eval (natAssignment v w) =
+-        r.expression.eval (natAssignment v (w ∘ Fin.castAdd s.witnessCount)) := by
+-    rw [Expr.eval_rename]
+-    apply congrArg r.expression.eval
+-    funext i
+-    cases i <;> rfl
+-  have hr (w : Fin (r.witnessCount + s.witnessCount) → ℕ) :
+-      right.eval (natAssignment v w) =
+-        s.expression.eval (natAssignment v (w ∘ Fin.natAdd r.witnessCount)) := by
+-    rw [Expr.eval_rename]
+-    apply congrArg s.expression.eval
+-    funext i
+-    cases i <;> rfl
+-  simp only [Expr.eval_add, Expr.eval_mul, hl, hr, mul_self_add_mul_self_eq_zero]
++  simp only [left, right, Expr.eval_add, Expr.eval_mul, Expr.eval_rename_natAssignment,
++    Function.comp_id, mul_self_add_mul_self_eq_zero]
+   rw [r.correct, s.correct]
+   constructor
+   · rintro ⟨⟨a, ha⟩, ⟨b, hb⟩⟩
+@@ -204,21 +199,8 @@
+   let right := s.expression.rename (Sum.map id (Fin.natAdd r.witnessCount))
+   refine ⟨r.witnessCount + s.witnessCount, left * right, ?_⟩
+   intro v
+-  have hl (w : Fin (r.witnessCount + s.witnessCount) → ℕ) :
+-      left.eval (natAssignment v w) =
+-        r.expression.eval (natAssignment v (w ∘ Fin.castAdd s.witnessCount)) := by
+-    rw [Expr.eval_rename]
+-    apply congrArg r.expression.eval
+-    funext i
+-    cases i <;> rfl
+-  have hr (w : Fin (r.witnessCount + s.witnessCount) → ℕ) :
+-      right.eval (natAssignment v w) =
+-        s.expression.eval (natAssignment v (w ∘ Fin.natAdd r.witnessCount)) := by
+-    rw [Expr.eval_rename]
+-    apply congrArg s.expression.eval
+-    funext i
+-    cases i <;> rfl
+-  simp only [Expr.eval_mul, hl, hr, mul_eq_zero]
++  simp only [left, right, Expr.eval_mul, Expr.eval_rename_natAssignment,
++    Function.comp_id, mul_eq_zero]
+   rw [r.correct, s.correct]
+   constructor
+   · rintro (⟨a, ha⟩ | ⟨b, hb⟩)

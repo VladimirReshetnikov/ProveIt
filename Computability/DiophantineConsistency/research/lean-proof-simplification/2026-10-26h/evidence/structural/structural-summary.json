@@ -1,0 +1,191 @@
+{
+  "commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "assignment_transport": {
+    "file": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/Representation.lean",
+    "before_physical_lines": 260,
+    "after_physical_lines": 242,
+    "before_nonblank_lines": 227,
+    "after_nonblank_lines": 207,
+    "net_physical_lines_saved": 18,
+    "helper_lines_included": 15,
+    "verified": true,
+    "verification_scope": "Both AssignmentTransport.lean prototype and exact patched/Representation.lean compiled successfully with Lean 4.32.0",
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "patch_sha256": "e491de2807424324d798c3cbf95add6915dc4193a8ae6e9a76e71cd0382e2973",
+    "patched_source_sha256": "df6d1ddb3dc8b8347c125124441c9acfcefcc91b1f482380d12e397d7c6422e2",
+    "exit_status": 0,
+    "full_dependent_rebuild": false,
+    "original_replacement_axiom_comparisons": 3,
+    "original_replacement_axiom_sets_equal": true
+  },
+  "finite_residuals": {
+    "files": [
+      {
+        "file": "CompilerSupport.lean",
+        "before_lines": 0,
+        "after_lines": 36,
+        "delta": 36,
+        "before_nonblank_lines": 0,
+        "after_nonblank_lines": 30,
+        "source_sha256": "ab4db8c6dd174294b817c031bfcdad06702c51952ccba07b634a40a37e04fb1f"
+      },
+      {
+        "file": "DAGQuartic.lean",
+        "before_lines": 285,
+        "after_lines": 257,
+        "delta": -28,
+        "before_nonblank_lines": 249,
+        "after_nonblank_lines": 222,
+        "source_sha256": "67e6fa2daaeb3949443e48fd9bd7224fefcd4a63094c21cba0dd63fe9ded167c"
+      },
+      {
+        "file": "NaturalDAGQuartic.lean",
+        "before_lines": 293,
+        "after_lines": 264,
+        "delta": -29,
+        "before_nonblank_lines": 253,
+        "after_nonblank_lines": 225,
+        "source_sha256": "31cf0ad15d7d731107ae5d5bd7eb4ab3388358fa9b47fb7e7bd6ee5f5b3506d1"
+      },
+      {
+        "file": "QuadraticRegisterSystem.lean",
+        "before_lines": 170,
+        "after_lines": 158,
+        "delta": -12,
+        "before_nonblank_lines": 143,
+        "after_nonblank_lines": 132,
+        "source_sha256": "22c13f37bc91ad8488349be05f8952581ca223a123b4dbd78be4fea41b86b675"
+      }
+    ],
+    "net_physical_lines_saved": 33,
+    "verification": "PASS: exact four-file patch compiled in isolated overlay, eight unchanged audit dependencies recompiled, all three existing audits passed; all eight original/replacement axiom sets equal",
+    "net_nonblank_lines_saved": 36,
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "exit_status": 0,
+    "patch_sha256": "f74fa30254a6541f44c7f7a20a03ed02fd904e3477d39ba3dc35afa63a5bf144",
+    "verified": true,
+    "overlay_receipt": "overlay-verification.json",
+    "full_repository_rebuild": false,
+    "original_replacement_axiom_comparisons": 8
+  },
+  "run_invariant": {
+    "file": "RunInvariant.lean",
+    "status": "PASS: generic rule and two exact original-statement replacements compile; paired original/replacement axiom sets equal",
+    "new_rule": "run_invariant",
+    "applications": [
+      "NaturalDAGQuartic.run_nonnegative",
+      "ArithmeticDAG.value_degree_le"
+    ],
+    "claim": "simpler application proofs; no net total source reduction claimed",
+    "original_replacement_axiom_comparisons": 2,
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "exit_status": 0
+  },
+  "anchors": [
+    {
+      "file": "Representation.lean",
+      "declarations": [
+        "Rep.reindex",
+        "Rep.conjunction",
+        "Rep.disjunction"
+      ],
+      "lines": "155-231"
+    },
+    {
+      "file": "DAGQuartic.lean",
+      "declarations": [
+        "eval_sumExpressions",
+        "expression_zero_iff",
+        "polynomial_degree",
+        "exists_polynomial_zero_iff"
+      ],
+      "lines": "83-95;244-252;260-283"
+    },
+    {
+      "file": "NaturalDAGQuartic.lean",
+      "declarations": [
+        "eval_sumExpressions",
+        "expression_zero_iff",
+        "polynomial_degree",
+        "exists_polynomial_zero_iff"
+      ],
+      "lines": "110-122;253-261;267-291"
+    },
+    {
+      "file": "QuadraticRegisterSystem.lean",
+      "declarations": [
+        "System.eval_sumExpressions",
+        "System.expression_zero_iff",
+        "System.expression_degree"
+      ],
+      "lines": "70-81;150-155"
+    },
+    {
+      "file": "QuarticCost.lean",
+      "declarations": [
+        "sumExpressions_binaryOps_le"
+      ],
+      "lines": "65-74",
+      "note": "hard-coded element cost5; generalize, do not substitute directly at11"
+    },
+    {
+      "file": "ArithmeticDAGPowers.lean",
+      "declarations": [
+        "run_power"
+      ],
+      "note": "reuse existing power certificate soundness; implementation deferred"
+    },
+    {
+      "file": "WeightedExpressionDegree.lean",
+      "declarations": [
+        "Expr.weightedDegree",
+        "Expr.degree_evalRing_le",
+        "Expr.evalRing_X"
+      ],
+      "note": "existing generic support for the syntaxDegree specialization"
+    }
+  ],
+  "generated_code": [
+    {
+      "file": "GapCircuitSteps66.lean",
+      "physical_lines": 3122,
+      "step_lemmas": 484,
+      "power_lemmas": 86,
+      "ring_calls": 86
+    },
+    {
+      "file": "SplitCircuitSteps59.lean",
+      "physical_lines": 3445,
+      "step_lemmas": 515,
+      "power_lemmas": 107,
+      "ring_calls": 107
+    }
+  ],
+  "generated_proposal": "Generate exponent labels and checked PowerStep certificate once per circuit; reuse ArithmeticDAG.run_power; retain aliases and update generators. Not implemented or benchmarked.",
+  "important_caveat": "Gap/Split naturalNodes does not imply nonnegative intermediate values; Gap naturalNodes has 21 subtraction nodes. Preserve NaturalDAGQuartic.Allowed assumptions.",
+  "performance_claims": false,
+  "upstream_mutations": false,
+  "axiom_comparison_count": 13,
+  "all_original_replacement_axiom_sets_equal": true,
+  "overlay_verification": {
+    "status": "PASS",
+    "patched_modules": 4,
+    "unchanged_audit_dependencies": 8,
+    "existing_audit_files": 3,
+    "commands_passed": 15,
+    "receipt": "overlay-verification.json",
+    "replay_script": "verify_shared_patch.py"
+  }
+}

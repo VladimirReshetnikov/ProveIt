@@ -1,0 +1,32 @@
+{
+  "compiler": "Lean 4.32.0",
+  "source_commit": "60e9c5d620c6c387d932876cfa2d9376f64ea56c",
+  "checks": [
+    {
+      "source": "GenericScanner.lean",
+      "sha256": "5e9f340201c38d587e1b88ed1d8ce1dd94a1a6bc018ceca73f3ac9c0736ee7e3",
+      "exit_code": 0,
+      "log": "GenericScanner.validation.log",
+      "log_sha256": "f70c006da01bd355003265b67a70912c4c3f286eb9adb1147c3e4688ec7333cd"
+    },
+    {
+      "source": "AssignmentTransport.lean",
+      "sha256": "f6571e2b2986b8175cc0560f4cefae24e43663e03e95a97b8f66173dfcfe6b8e",
+      "exit_code": 0,
+      "log": "AssignmentTransport.validation.log",
+      "log_sha256": "8f216489908e46dac9a1ed8c6454e3371d15b4fd6ac4aa718a3752580662e8d2"
+    },
+    {
+      "source": "refactored-source/DiophantineConsistency/Representation.lean",
+      "sha256": "a1935bb518fab666d8ac82270da7c0dc91dccd1cc63c83958fe783c9e7c01929",
+      "exit_code": 0,
+      "log": "Representation-refactor.validation.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "patch_applicability": {
+    "command": "git apply --check Representation-refactor.patch",
+    "exit_code": 0
+  },
+  "scope": "Standalone scanner; imported constructor compatibility against unchanged Representation; entire patched Representation module. No full repository rebuild."
+}

@@ -1,0 +1,63 @@
+\section{S1 and S2 Two small bounded quantification edits}
+\label{sec:supplemental}
+
+\subsection{S1 Name the CRT congruence already in the context}
+
+\textbf{Target.} \src{BoundedForallCertificate.lean}{87}{91}. The existing
+CRT-index branch unfolds \code{crtModulus}, invokes \code{gcongr} and ends
+with \code{exact?}. This is the only \code{exact?} occurrence among the
+574 active Lean files at the pin. The branch's required fact is already
+\code{hIndex_residue k hk}.
+
+The imported \code{MRDPCore} definition is
+\code{crtModulus scale index := (index + 1) * scale + 1}.
+Transport that residue through exactly those three operations:
+\begin{Lean}
+    · exact ((((hIndex_residue k hk).add_right 1).mul_right T).add_right 1).trans
+        dvd_rfl.modEq_zero_nat
+\end{Lean}
+
+This two-line candidate replaces four tactic lines.
+This is a deterministic explicit proof term rather than a measured speedup.
+It does not change the certificate's witnesses, quantifiers, polynomial
+congruence, or the preceding falling-factorial branch. In particular, the
+truncated-subtraction handling using \code{min} is untouched. The exact
+patch and full replacement source are in \pathcode{supplemental/}; the
+imported defining source has independently verified provenance in
+\pathcode{supplemental/evidence/}.
+
+\subsection{S2 Pay the binary composition bookkeeping once}
+
+\textbf{Targets.} \src{BoundedForallDepth.lean}{81}{120} repeats the same
+\code{Fin 2} elimination in \code{pow_depth_le}, \code{binomial_depth_le},
+\code{sub_depth_le}, \code{mod_depth_le} and \code{div_depth_le}. The generic
+\src{GraphSizeBounds.lean}{91}{111}, \code{GraphRep.compose_depth_le},
+gives $2n+4+h$; for $n=2$ that is $h+8$.
+
+\begin{Lean}
+theorem compose_two_depth_le {σ : Type*}
+    {f : (Fin 2 → ℕ) → ℕ} {g : Fin 2 → (σ → ℕ) → ℕ}
+    (r : GraphRep f) (s : ∀ i, GraphRep (g i)) {h : ℕ}
+    (hh : 1 ≤ h) (hr : r.depth ≤ h)
+    (h0 : (s 0).depth ≤ h) (h1 : (s 1).depth ≤ h) :
+    (r.compose s).depth ≤ h + 8 := by
+  refine (GraphRep.compose_depth_le r s hh hr ?_).trans (by omega)
+  intro i
+  fin_cases i <;> assumption
+\end{Lean}
+
+For \code{pow_depth_le}, the candidate body is:
+\begin{Lean}
+  unfold GraphRep.pow
+  exact compose_two_depth_le _ _ (by omega)
+    (BoundedForallDepth.pow_depth.trans hh) hr hs
+\end{Lean}
+
+\textbf{Limited recommendation.} The artifact supplies the helper and two
+pilots, not all five replacements. Each client body is four versus two
+nonblank lines in its source formatting. Extending to all five would remove
+ten client-body lines, but the nine-line helper offsets nine of them; its
+docstring eliminates even that nominal whole-file gain. Include this only
+if a single maintenance point for further binary operations is valuable.
+All graph constructors, witness counts, fixed 512 ceilings and $+8$ bounds
+stay unchanged. This is neither a new bound nor a representation redesign.

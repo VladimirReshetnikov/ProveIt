@@ -1,0 +1,61 @@
+\section{A2 Fuse quotation and depth decoder invariants}
+\label{sec:decoder}
+
+\textbf{Targets.} \src{AnnotatedProofCode.lean}{78}{132}:
+\code{Tree.decoded_depth_le} and \code{Tree.quote_of_decode}.
+Both traverse the same fuel, zero-code, tag and recursive \code{Option}
+cases. Only their terminal conclusions differ. One induction can return
+both facts, preserving the old names as projections.
+
+\begin{Lean}
+theorem decode_spec {fuel code : Nat} {t : Tree}
+    (h : decode fuel code = some t) :
+    t.quote = code ∧ t.depth ≤ fuel := by
+  induction fuel generalizing code t with
+  | zero => simp [decode] at h
+  | succ fuel ih =>
+    cases code with
+    | zero => simp [decode] at h
+    | succ code =>
+      have hp := Nat.pair_unpair code
+      simp only [decode] at h
+      cases he : (Nat.unpair code).1 with
+      | zero =>
+        simp only [he] at h hp
+        cases h
+        exact ⟨by simp only [quote, hp], by simp [depth]⟩
+      | succ left =>
+        simp only [he] at h hp
+        cases ha : decode fuel left with
+        | none => simp [ha] at h
+        | some a =>
+          cases hb : decode fuel (Nat.unpair code).2 with
+          | none => simp [ha, hb] at h
+          | some b =>
+            simp only [ha, hb, Option.pure_def] at h
+            cases h
+            obtain ⟨hqa, hda⟩ := ih ha
+            obtain ⟨hqb, hdb⟩ := ih hb
+            exact ⟨by simp only [quote, hqa, hqb, hp],
+              by simp only [depth]; omega⟩
+\end{Lean}
+
+The original \code{decoded_depth_le h} becomes \code{(decode_spec h).2};
+\code{quote_of_decode h} becomes \code{(decode_spec h).1}. The fork branch
+uses the same two recursive successful decodes once, extracting their two
+quotation equalities and two depth bounds. The atom branch keeps
+\code{Nat.pair_unpair}; no numeric quotation, parser or depth definition changes.
+
+\textbf{Measured scope.} Counting the combined theorem and both wrappers,
+the old pair's 54 nonblank declaration lines becomes 34; text changes from
+1,723 to 1,304 UTF-8 bytes. The strengthened induction hypothesis does not
+strengthen any premise. The optional six-line
+\code{decode_eq_some_iff_short} combines this result with the existing
+\code{decode_quote}; it is included separately, not in the conservative
+patch or savings.
+
+\textbf{Gate.} Test the branch simplification after \code{cases h}, the
+\code{Option.pure_def} normalization and the final maximum-depth arithmetic.
+Retain both old theorem statements, so clients need not change. This is a
+recursive tree-parser invariant, not the previously proposed scanner or
+history-fold framework.
