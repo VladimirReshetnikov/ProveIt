@@ -49,6 +49,18 @@ Packet names refer to the subdirectories of this directory.
 | `patches/01-common-modulus.patch` | zn | `CurrentKernelResidues2011` | adopted as `1eb5d15000`; 177 numeric chunk certificates become 59 modulo a common multiple, then project to the old factors. Target, direct units client, both existing focused modules, 15-old-declaration comparison and new common-residue audit pass (six final calls); old reports identical, new API standard-three axioms. All definitions and physical/reindex/raw-word bridge remain exact. 417 lines removed including the new API/helper; independent full review passes; no speedup claim |
 | f T03 (`hpow` by `Nat.sub_add_cancel`) | f | `SelectiveCoefficientBounds.half_base_bound` | adopted; module rebuilt with `lake build` |
 | generator I/O | — | `tools/generate_split_recipe_steps59.py`, `tools/generate_gap_recipe_steps66.py` | both read and write UTF-8 with LF, so `--check` and regeneration behave the same on Windows; both `--check` runs pass |
+| `patches/formula-minimum.patch` | x | `AnnotatedClosure` | adopted as `9c37c0868c`; pairing/fork monotonicity gives the uniform44 formula-code bound from the outer constructor, replacing structural induction. Including all five private supporting lemmas,19 lines removed. Joint closure/binary validation passes11 final calls: two targets, three clients, five focuses and23-old-declaration comparison; all reports identical,14 runtime controls true. All program data remain literal; independent full review passes |
+| `patches/width-divisibility.patch` | zg | `NativeBinaryScale` | adopted as `7f35ee6786`; the natural power-remainder identity and power-at-most-one criterion replace a separate equality/injectivity argument.4 lines removed without helpers/imports; old positive-width API retained. The joint11-call suite above passes; existing unused-`hd` warning remains. Binary/scale clients also validate the Pell port below; independent full review passes |
+| `patches/logic-proof-refinements.patch`, without redundant import | zr | `ObjectDivision`, `ObjectZeroTest` | adopted as `5bb366fcb8`; internal semiring cancellation replaces repeated gap reconstruction and a Boolean case split.7 lines removed, all formulas/definitions/types/imports unchanged. Eight final calls pass: two targets, two clients, three focuses and23-old-declaration comparison. Stale imported anonymous-instance names required14 unchanged cache refreshes and both original sources rebuilt before the coherent baseline; initial target/diagnostic failures preserved. Independent full review passes |
+| `lte/prime-power-spectrum.patch`, composed over the existing guarded cast bridge | zo, adapted | `PrimePowerOrder` | adopted as `25feb7f728`; arbitrary-exponent LTE yields exact lifting and order by mutual divisibility, including zero exponent.73→68 lines including the new public helper; source bytes grow17, so no byte-compression claim. Joint power validation passes seven final calls plus one unchanged prerequisite restoration and a baseline; all15 old reports identical, new helper standard-three axioms. Independent full review passes |
+| `patches/PellQuadratic.patch` | zo | `NativePellPower` | adopted as `88ebe8f66b`; a quadratic inequality at4^r≥16 replaces induction, retaining all nine public statements and doubled-coordinate data.4 lines removed without helper/import. Joint seven-call power suite passes, with ROOT's fresh Binary/scale clients and focuses separate. Two overbroad Lake builds were stopped, followed by explicit restoration of absent caches and successful narrow retries; interrupted/pre-elaboration results are not passes. Independent full review passes |
+| `patches/02-power-fixed-point.patch` | zn | `CurrentControllerUnits2011` | adopted as `a9f8201893`; one generic monoid fixed-point induction propagates three checked literal power residues, including exponent zero.201→196 lines including the helper and removal of the direct finite-field import; no claim about transitive imports. Target, safe-controller client, both existing focuses and31-old-result comparison pass (five final calls after baseline and unchanged positions prerequisite). All old reports identical; independent full reviews pass |
+| `patches/04-origin-reuse.patch` | zn | `CurrentWordOrigin2011` | adopted as `fc26c5f371`; specialize the existing source-reflection theorem, using the original support/alignment bound to exclude the reflected branch.118→111 lines, all old statements/data unchanged. Joint origin/dummy validation passes seven final calls including18-old-result comparison; independent full review passes |
+| `patches/03-weighted-updates.patch` | zn, adapted | `CurrentDummyMutation2011` | adopted as `733d023d0a`; use `Function.apply_update` and the finite-sum update lemma directly, while retaining constructive equality cases for the Boolean bound.193→186 lines; the proposed shorter `forall_update_iff` proof was not used because it would add axioms to this previously axiom-free result. Joint seven-call suite above passes, all18 old reports identical; separate kernel controls confirm the constructive proof is axiom-free. Independent full review passes |
+| `masks/patches/bit3_clear_of_residue.patch` | zl | `CurrentWordPadding2011` | adopted as `57dcc2a5ec` after the shared rank baseline made its original word dependencies available. Existing bit/remainder identities reduce224→221 lines without helper/import; arbitrary high multiples and the exact residue guard remain. Target, HighMask client, both existing focuses and11-old-result comparison pass (five final calls after separate baseline); all reports identical, changed bit lemma still choice-free. No failures/warnings or new prerequisite builds in this group; independent full review passes |
+| `controller/patches/controller_hs_inline.patch`, with dead-tactic cleanup | zh, adapted | `CurrentControllerData2011` | adopted as `7f1081d5c6`; direct modular rewrites replace the private bookkeeping helper, retaining explicit kernel-residue hypotheses and opaque B/K.184→169 lines without helper/import overhead. Four final calls pass: target, unchanged current Units client, existing Data focus and49-old-result comparison; all reports identical. The first candidate passed too, then its new dead-tactic/focus warnings were removed and final scope rerun. Existing Units exponent warning remains; independent full review passes |
+| `research/outer_seed/candidate.patch` | zz | `NativeOuterSeedConstruction` | adopted as `50d7e2133b`; reuse the already imported strict Pell index bound for the local hKr step.279→269 lines without helper/import, every other source byte literal including the31-field Seed structure. The original target was built explicitly before37-public baseline; target, positive-source client, existing focus and final37-report comparison pass (four final calls), all reports identical and no warnings. Exact inert archive candidate and independent full review pass |
+| `arithmetic_candidates/fourblocks_certificate/fourblocks_certificate.patch` and `population/patches/rank_gt_twice_window.patch` | zs + zv, composed | `CurrentPackingRank2011` | adopted as `5187d9cb36`; the negative-q repunit certificate replaces the expanded integer bridge, and2u≤3u<2^(3u) supplies rank growth.138→122 lines without helper/import, all five subtraction guards and the single beta shift retained, including F=0. Five final target/parity-client/two-focus/10-old-result calls pass first try; all reports identical. Before editing,138 distinct named original/prerequisite builds and a separate original audit passed; two earlier missing-object failures remain separate. Independent full review passes |
 
 ## Pending
 
@@ -135,6 +147,43 @@ independent full review. Equation artifacts remain unchanged. The separate
 three-line padding proposal is unedited; it requires a much larger uncached
 construction closure. The optional zo LTE-spectrum API and Pell inequality
 ports remain unadopted in this batch.
+
+Five further source commits `9c37c0868c`, `7f35ee6786`, `5bb366fcb8`,
+`25feb7f728` and `88ebe8f66b` reduce six modules from759 to720 lines,
+removing39 net lines and bringing this reviewed series from3714 to3753.
+The three final suites have26 successful calls, counting shared Binary/scale
+client evidence once. Preparatory original-source, baseline and cache-restoration
+checks are separate, as are the preserved unsuccessful diagnostics and stopped
+builds. ROOT authored the constructor/width ports, `v_finite_full_static` the
+internal arithmetic ports, and `alternate_encoding_research` the LTE/Pell
+ports. Exact-final independent full review passes for every group; all61 old
+public declaration axiom reports are byte-identical. Equation artifacts remain
+unchanged. Packing-rank simplification is still in baseline preparation and is
+not included in these savings or validation claims.
+
+Three further source commits `a9f8201893`, `fc26c5f371` and `733d023d0a`
+reduce the units/origin/dummy modules from512 to493 lines, removing19 net
+lines. Together with the preceding39-line batch, eight source commits reduce
+nine modules from1271 to1213 lines, removing58 and bringing the reviewed
+series from3714 to3772. The final suites contain38 successful calls, with
+shared client evidence counted once. All110 old public axiom reports are
+byte-identical. ROOT separately verifies93 old public theorem headers and19
+complete definition blocks against immutable `40183b4bdc`; they are unchanged.
+Every final source has independent full review. Packing-rank baseline work
+still contributes no saving or final validation to these totals.
+
+Four more source commits `57dcc2a5ec`, `7f1081d5c6`, `50d7e2133b` and
+`5187d9cb36` remove44 net lines. The complete twelve-commit batch reduces
+thirteen modules from2096 lines to1994, removing102 and bringing the reviewed
+series from3714 to3816. All56 final validation calls pass, counting shared
+evidence once. All217 old public declaration reports are byte-identical;
+161 old public theorem headers,27 entire definition blocks and the entire
+31-field `Seed` structure remain literal against immutable `40183b4bdc`.
+Every final source and the contracts used by its changed proofs passed
+independent review. Original/prerequisite builds, baselines, diagnostics, superseded
+successful candidates and interrupted/failed attempts are separately recorded
+in the root review. The equation artifacts retain their decimal constant and
+fourteen distinct unsubscripted unknowns.
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

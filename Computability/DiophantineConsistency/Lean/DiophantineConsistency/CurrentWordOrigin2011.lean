@@ -39,17 +39,10 @@ theorem origin_reflected_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N �
     (j : ZMod N) (e : Entry) :
     CurrentWordConstruction2011.word a dummy marker
       (base j-((1005-position e : ℕ) : ZMod (N*2011))) = 0 := by
-  have hp := position_le e
-  have he : base j-((1005-position e : ℕ) : ZMod (N*2011)) =
-      base (j-1)+((1006+position e : ℕ) : ZMod (N*2011)) := by
-    have hb : base (j-1) = base j-2011 := by
-      simpa only [Nat.mul_one,Nat.cast_one,Nat.cast_ofNat] using base_sub_stride j 1
-    rw [hb]
-    simp only [Nat.cast_sub (by omega : position e ≤ 1005),
-      Nat.cast_add,Nat.cast_ofNat]
-    ring
-  rw [he]
-  exact word_zero_high a dummy marker _ _ (by omega) (by omega)
+  have hp : ¬ 1005 ≤ 0 + position e := by have := position_le e; omega
+  simpa only [Nat.cast_zero, add_zero, if_neg hp] using
+    reflected_source _ (word_support a dummy marker) (base j) (base_aligned j)
+      (h := 0) (p := position e) (by decide) (position_le e)
 
 theorem convolution_origin_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (j : ZMod N) :

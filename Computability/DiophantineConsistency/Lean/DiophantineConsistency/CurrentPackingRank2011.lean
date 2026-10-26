@@ -57,22 +57,11 @@ theorem fourBlocks_cast (C F : ℕ) (hC : 0<C) (hCF : C+F<q N) :
   have hb := congrArg (fun n : ℕ => (n : ℤ))
     (CurrentNativePacking2011.repunit_balance (N:=N))
   push_cast at hb
-  have hbeta : (beta : ℤ)*repunit width N = (q N : ℤ)-1 := by omega
-  have hh := NativeSourceMask.packing_four_block (C:=(C:ℤ)) (F:=(F:ℤ))
-    (MC:=(lowPort:ℤ)) (MF:=(highPort:ℤ)) hbeta
-  have hB : (fourBlocks N C F : ℤ) =
-      ((C : ℤ)-1)+((lowPort : ℤ)*repunit width N+1)+
-      (q N : ℤ)*(F+((highPort : ℤ)*repunit width N-1))+
-      (q N : ℤ)^2*((q N : ℤ)-C)+(q N : ℤ)^3*((q N : ℤ)-F-1) := by
-    unfold fourBlocks
-    push_cast [Nat.cast_sub (by omega : 1 ≤ C),Nat.cast_sub hHJ,
-      Nat.cast_sub hCq,Nat.cast_sub (by omega : 1 ≤ q N-F),
-      Nat.cast_sub (by omega : F ≤ q N)]
-    ring
-  rw [hB,← hh]
-  unfold rank NativeRankVariation.windowRank
-  push_cast
-  ring
+  unfold fourBlocks rank NativeRankVariation.windowRank
+  push_cast [Nat.cast_sub (by omega : 1 ≤ C),Nat.cast_sub hHJ,
+    Nat.cast_sub hCq,Nat.cast_sub (by omega : 1 ≤ q N-F),
+    Nat.cast_sub (by omega : F ≤ q N)]
+  linear_combination -(q N : ℤ) * hb
 
 omit [NeZero N] in
 /-- The positive complement in the top block supplies a large rank before
@@ -87,14 +76,9 @@ theorem fourBlocks_ge_cube (C F : ℕ) (hC : 0<C) (hCF : C+F<q N) :
 
 theorem rank_gt_twice_window (C F : ℕ) (hC : 0<C) (hCF : C+F<q N) :
     (2*(width*N) : ℕ) < rank N C F := by
-  have hu : width*N < q N := by rw [q_binary]; exact Nat.lt_two_pow_self
-  have hw : 0 < width*N := Nat.mul_pos (by decide) (NeZero.pos N)
-  have hq : 2 ≤ q N := by omega
-  have hsq : 2 ≤ q N^2 := by nlinarith
   have hc : 2*(width*N) < q N^3 := by
-    calc
-      2*(width*N) < 2*q N := Nat.mul_lt_mul_of_pos_left hu (by decide)
-      _ ≤ q N^3 := by rw [pow_succ]; exact Nat.mul_le_mul_right (q N) hsq
+    rw [q_binary, ← pow_mul]
+    exact (show 2*(width*N) ≤ (width*N)*3 by omega).trans_lt Nat.lt_two_pow_self
   have hn := hc.trans_le (fourBlocks_ge_cube C F hC hCF)
   have hz : ((2*(width*N) : ℕ) : ℤ) < (fourBlocks N C F : ℤ) := by exact_mod_cast hn
   rwa [fourBlocks_cast C F hC hCF] at hz

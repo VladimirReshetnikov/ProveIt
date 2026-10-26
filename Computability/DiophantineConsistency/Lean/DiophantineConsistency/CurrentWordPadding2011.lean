@@ -125,12 +125,9 @@ theorem padding_raw_residue (c r : ZMod (N*2011) → ℕ)
 /-- The tested bit is determined by the low residue even when the
 unreduced digit contains a large multiple of2048. -/
 theorem bit3_clear_of_residue {x : ℕ} (hx : x%2048 ≤ 5) : x &&& 8 = 0 := by
-  apply (PaddingStaircase.bit3_mask_iff x).mpr
-  have hb : (x%2048).testBit 3 = false := Nat.testBit_lt_two_pow (by omega)
-  have he := Nat.testBit_mod_two_pow x 11 3
-  change (x%2048).testBit 3 = _ at he
-  simp only [show (3 < 11) = True from propext (by decide),decide_true,Bool.true_and] at he
-  rwa [he] at hb
+  simpa only [PaddingStaircase.bit3_mask_iff, Nat.testBit_mod_two_pow,
+    show (3 < 11) = True from propext (by decide), decide_true, Bool.true_and] using
+    (Nat.testBit_lt_two_pow (show x%2^11 < 2^3 by omega))
 
 theorem padding_mask (b : ZMod (N*2011)) (hb : b.val%2011 = 0)
     (h : ℕ) (hh : 1 ≤ h ∧ h ≤ 916) :

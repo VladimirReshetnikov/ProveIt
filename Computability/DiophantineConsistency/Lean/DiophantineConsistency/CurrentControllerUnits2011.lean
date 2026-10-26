@@ -1,13 +1,12 @@
 import DiophantineConsistency.CurrentKernelResidues2011
 import DiophantineConsistency.NativeRankVariation
-import Mathlib.FieldTheory.Finite.Basic
 
 /-!
 # Units for the actual 2011-cell rank step
 
 The width and cell count are independent powers of the checked auxiliary
-prime. Both exponents may be zero. The fixed-prime power reductions use the
-checked orders; the auxiliary-prime reduction is Frobenius, not an LTE claim.
+prime. Both exponents may be zero. Three checked one-step power residues
+are propagated by one monoid fixed-point lemma at every exponent.
 The kernel stays the original literal K. No orbit or safe mutation is asserted.
 -/
 
@@ -44,32 +43,28 @@ theorem quadratic_ge_one (n : ℕ) : 1 ≤ q n^2 := by
 theorem auxiliary_modEq_23 : auxiliary ≡ 1 [MOD 23] := by decide
 theorem auxiliary_modEq_402 : auxiliary ≡ 1 [MOD 402] := by decide
 
-/-- Exact power reduction at the first fixed prime, for every exponent. -/
+/-- A fixed point of one power map stays fixed under every iterate, including zero. -/
+private theorem pow_pow_fixed {M : Type*} [Monoid M] (x : M) (a n : ℕ)
+    (h : x^a=x) : x^(a^n)=x := by
+  induction n with
+  | zero => simp
+  | succ n ih => rw [pow_succ,pow_mul,ih,h]
+
+/-- The first literal residue is fixed by raising to the auxiliary power. -/
 theorem power_dimension_47 (n : ℕ) :
     ((B^(dimension n) : ℕ) : ZMod 47) = (B : ZMod 47) := by
-  have he : dimension n ≡ 1 [MOD 23] := by
-    simpa only [dimension, one_pow] using auxiliary_modEq_23.pow n
-  have hp : (B : ZMod 47)^23 = 1 := by
-    rw [← B_order_47]
-    exact pow_orderOf_eq_one _
-  simpa only [Nat.cast_pow, pow_one] using pow_eq_pow_of_modEq he hp
+  simpa only [dimension,Nat.cast_pow] using
+    pow_pow_fixed (B : ZMod 47) auxiliary n (by rw [B_cast_47]; unfold auxiliary; reduce_mod_char)
 
-/-- The second fixed-prime order is 402, not 2010. -/
 theorem power_dimension_2011 (n : ℕ) :
     ((B^(dimension n) : ℕ) : ZMod 2011) = (B : ZMod 2011) := by
-  have he : dimension n ≡ 1 [MOD 402] := by
-    simpa only [dimension, one_pow] using auxiliary_modEq_402.pow n
-  have hp : (B : ZMod 2011)^402 = 1 := by
-    rw [← B_order_2011]
-    exact pow_orderOf_eq_one _
-  simpa only [Nat.cast_pow, pow_one] using pow_eq_pow_of_modEq he hp
+  simpa only [dimension,Nat.cast_pow] using
+    pow_pow_fixed (B : ZMod 2011) auxiliary n (by rw [B_cast_2011]; unfold auxiliary; reduce_mod_char)
 
-/-- Frobenius handles all auxiliary powers, including auxiliary^0 = 1. -/
 theorem power_dimension_auxiliary (n : ℕ) :
     ((B^(dimension n) : ℕ) : ZMod auxiliary) = (B : ZMod auxiliary) := by
-  letI : Fact auxiliary.Prime := ⟨prime_auxiliary⟩
-  simpa only [dimension, Nat.cast_pow] using
-    (ZMod.pow_card_pow (n := n) (B : ZMod auxiliary))
+  simpa only [dimension,Nat.cast_pow] using
+    pow_pow_fixed (B : ZMod auxiliary) auxiliary n (by rw [B_cast_auxiliary]; unfold auxiliary; reduce_mod_char)
 
 theorem q_cast_47 (n : ℕ) : (q n : ZMod 47) = 37 :=
   (power_dimension_47 n).trans B_cast_47
