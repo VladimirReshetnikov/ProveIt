@@ -1,0 +1,80 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenCarrierSoundness.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenCarrierSoundness.lean
+@@ -182,21 +182,28 @@
+     (show 0 ≤ |y| + 2 * |V| by positivity)
+   nlinarith [sq_abs y, sq_abs V]
+ 
++/-- Affine carrier positivity needs no sign hypothesis on V. -/
++theorem affine_carrier_pos {b G V y m : ℤ} (hb : 0 < b) (hG : 0 < G)
++    (hsmall : -2 * V < y)
++    (hy : y = 1 + 4 * (b * (m - V ^ 2 * G) - G)) : 0 < m := by
++  by_contra hm
++  have hbm := mul_nonpos_of_nonneg_of_nonpos hb.le (show m ≤ 0 by omega)
++  have hAG := mul_nonneg (show 0 ≤ 1 + b * V ^ 2 by positivity)
++    (show 0 ≤ G - 1 by omega)
++  have hbV := mul_nonneg (show 0 ≤ b - 1 by omega) (sq_nonneg V)
++  nlinarith only [hy, hsmall, hbm, hAG, hbV, sq_nonneg (4 * V - 1)]
++
+ /-- The positive carrier m forces the recovered transport to be nonnegative. -/
+ theorem transport_nonneg {b m G V y : ℤ} (hb : 0 < b) (hm : 0 < m)
+     (hy : y = 1 + 4 * (b * (m - V ^ 2 * G) - G))
+     (hsmall : |y| < 2 * |V|) : 0 ≤ G := by
+   by_contra hG
+-  have hG : G ≤ -1 := by omega
+-  have hV : 1 ≤ |V| := by have := abs_nonneg y; omega
+-  have hVs : |V| ≤ V ^ 2 := by
+-    have hh := mul_nonneg (abs_nonneg V) (by omega : 0 ≤ |V| - 1)
+-    nlinarith [sq_abs V]
+-  have hbm : 1 ≤ b * m := mul_pos hb hm
+-  have hterm := mul_le_mul_of_nonneg_right (show 1 ≤ b from hb) (sq_nonneg V)
+-  have hprod := mul_nonneg (show 0 ≤ 1 + b * V ^ 2 by positivity)
+-    (by omega : 0 ≤ -G - 1)
+-  nlinarith [le_abs_self y]
++  have hsmall' : -2 * |V| < 2 - y := by have := le_abs_self y; omega
++  have hreflect : 2 - y = 1 + 4 * (b * (-m - |V| ^ 2 * -G) - -G) := by
++    rw [sq_abs]
++    nlinarith only [hy]
++  have := affine_carrier_pos hb (show 0 < -G by omega) hsmall' hreflect
++  omega
+ 
+ theorem base_dvd_transport (p : Fin 4 → ℤ) (v : Fin 13 → ℤ) (hb : 0 < p 0)
+     (hv : ∀ j, 0 < v j) (hu : auxiliary p v = 1) : b p v ∣ G p v := by
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenFreshSeed.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenFreshSeed.lean
+@@ -42,32 +42,12 @@
+     ∃ m : ℤ, 0 < m ∧ y = 1 + 4 * (b * (m - V ^ 2 * G) - G) := by
+   obtain ⟨g, hg⟩ := hd
+   obtain ⟨e, he⟩ := hy
+-  have hg0 : 0 < g := by
+-    have : 0 < b * g := by rwa [← hg]
+-    exact pos_of_mul_pos_right this hb.le
+   let m := e + (1 + b * V ^ 2) * g
+-  have hm : 4 * b * m = y - 1 + 4 * b * (1 + b * V ^ 2) * g := by
++  have heq : y = 1 + 4 * (b * (m - V ^ 2 * G) - G) := by
+     dsimp [m]
+-    linear_combination -he
+-  have hVs : V ≤ V ^ 2 := by nlinarith
+-  have hbVs : V ^ 2 ≤ b * V ^ 2 := by
+-    have := mul_nonneg (show 0 ≤ b - 1 by omega) (sq_nonneg V)
+-    nlinarith only [this]
+-  have hcoef : 4 * (1 + V) ≤ 4 * b * (1 + b * V ^ 2) := by
+-    have := mul_nonneg (show 0 ≤ b - 1 by omega)
+-      (show 0 ≤ 1 + b * V ^ 2 by positivity)
+-    nlinarith only [this, hVs, hbVs]
+-  have hgcoef : 4 * b * (1 + b * V ^ 2) ≤ 4 * b * (1 + b * V ^ 2) * g := by
+-    have := mul_nonneg (show 0 ≤ g - 1 by omega)
+-      (show 0 ≤ 4 * b * (1 + b * V ^ 2) by positivity)
+-    nlinarith only [this]
+-  have hm0 : 0 < m := by
+-    have hprod : 0 < 4 * b * m := by linarith
+-    exact pos_of_mul_pos_right hprod (by positivity)
+-  refine ⟨m, hm0, ?_⟩
+-  dsimp [m]
+-  rw [hg]
+-  linear_combination he
++    rw [hg]
++    linear_combination he
++  exact ⟨m, ThirteenCarrierSoundness.affine_carrier_pos hb hG hsmall heq, heq⟩
+ 
+ /-- A fresh strong seed and an auxiliary pair at any rank congruent to 3 modulo 4.
+ The returned signed ordinate is negative; it is not an independent unknown. -/

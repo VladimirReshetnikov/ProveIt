@@ -1,0 +1,70 @@
+\pageheading{3 Fuse the guarded power cast equivalence}
+\textbf{Remove duplicate implications, not the natural-subtraction guard.}
+In \src{PrimePowerOrder}{26}{37}, \code{pow_cast_eq_one_iff} proves
+\[
+ (g:\mathrm{ZMod}(m))^k=1
+ \quad\Longleftrightarrow\quad m\mid(g^k-1),
+ \qquad 1\le g.
+\]
+The source proves both directions by converting the natural difference to a zero cast. The proposed proof rewrites the equivalence itself once:
+
+\begin{lstlisting}
+theorem pow_cast_eq_one_iff {g m : ℕ}
+    (hg : 1 ≤ g) (k : ℕ) :
+    (g : ZMod m)^k = 1 ↔ m ∣ g^k-1 := by
+  rw [← CharP.cast_eq_zero_iff (ZMod m) m (g^k-1),
+    Nat.cast_sub (one_le_pow₀ hg), Nat.cast_pow,
+    Nat.cast_one, sub_eq_zero]
+\end{lstlisting}
+
+The exact patch keeps the existing two-line statement and uses two proof-body lines. The declaration changes from 11 to 4 physical lines; the full module changes from 80 to 73. There is no new helper, wrapper, import or definition edit. The use of a standard rewriting chain is routine; the saving is elimination of the two separate copies in this new exact client.
+
+\textbf{Mathematical justification.} From $1\le g$, obtain $1\le g^k$. Thus the natural subtraction is untruncated and its cast equals
+$(g:\mathrm{ZMod}(m))^k-1$. In characteristic $m$, a natural number casts to zero exactly when $m$ divides it. Finally $u-1=0$ is equivalent to $u=1$. These are the same facts already used in the original forward and reverse proofs.
+
+\textbf{Why the guard cannot disappear.} Without $1\le g$, take $g=0$, $m=2$ and $k=1$. In natural arithmetic $g^k-1=0$, so the divisibility statement is true, but $0=1$ in $\mathrm{ZMod}(2)$ is false. The replacement retains \code{hg} exactly, rather than allowing a cast tactic to conceal this truncation issue.
+
+\textbf{Boundary cases remain included.} The theorem retains arbitrary $m$ and $k$, including $m=0$, $m=1$ and $k=0$. No positivity or nonzero instance is added for the modulus. The $m=0$ case is interpreted through $\mathrm{ZMod}(0)$, not by dividing by zero in an integer remainder test. The finite checker uses that separate interpretation.
+
+The downstream LTE theorem still requires an odd prime $p$, $p\mid(g-1)$ and $p^2\nmid(g-1)$; it establishes an exact valuation, not merely a lower divisibility bound. The exact order theorem still handles the modulus $p$ through its $k=0$ branch, and \code{order_prime_power} still requires $1\le n$. None of these hypotheses is weakened or re-proved here. See \src{PrimePowerOrder}{40}{78}.
+
+\textbf{Validation to perform in Lean.} Elaborate the rewritten equivalence first, then the existing prime-power checks and actual-generator clients. In particular, verify the orientation of \code{CharP.cast_eq_zero_iff}, the inferred natural power bound, and simplification of the final reflexive equivalence. The mathematical argument is complete; elaboration is not established by that argument or by the supplied finite tests.
+
+\pageheading{4 Reuse the actual exact order results}
+\textbf{The new full-modulus file contains small proofs that can use its own stronger results.}
+The bundle changes \code{CurrentPowerCoordinates2011.lean} from 105 to 91 physical lines. It combines three local cleanups, with no new imports or helpers and no public signature changes.
+
+\textbf{CRT order calculation.} The existing Chinese remainder ring equivalence preserves multiplicative order, and a product's order is the least common multiple of the two component orders. Inline the intermediate image equality directly at its only use:
+\begin{lstlisting}
+  calc
+    _ = orderOf (ZMod.chineseRemainder hab
+        ((x : ZMod (a*b))^k)) :=
+      ((ZMod.chineseRemainder hab).toMulEquiv.orderOf_eq _).symm
+    _ = _ := by
+      rw [map_pow, map_natCast]
+      exact Prod.orderOf_mk
+\end{lstlisting}
+The exact declaration changes from 12 to 7 physical lines. The coprimality premise is unchanged, with no extra nonzero-modulus assumptions. The pinned APIs are \lib{Mathlib/GroupTheory/OrderOfElement.lean}{368}{377} and \lib{Mathlib/GroupTheory/OrderOfElement.lean}{1388}{1393}.
+
+\textbf{Two order-one endpoints.} Specializing the already proved actual order formulas at exponent zero yields order one, hence the generator is one:
+\begin{lstlisting}
+-- generator_cast_auxiliary
+  apply orderOf_eq_one_iff.mp
+  simpa only [zero_add, pow_one, pow_zero] using
+    generator_order_succ 0
+-- generator_cast_C0
+  apply orderOf_eq_one_iff.mp
+  simpa only [zero_add, pow_one, pow_zero] using full_order 0
+\end{lstlisting}
+The first declaration saves one line; the second saves two. The decisive equivalence is \lib{Mathlib/GroupTheory/OrderOfElement.lean}{254}{260}.
+There is no circularity: \code{full_order} uses the fixed-factor identity and \code{generator_order_succ}; it does not depend on either endpoint being replaced. The exact upstream statements are in \src{CurrentAuxiliaryOrder2011}{52}{60} and \src{CurrentPowerCoordinates2011}{46}{64}.
+
+These shorter endpoint proofs intentionally depend on the stronger exact-order development, whereas the old auxiliary endpoint had a direct residue proof. No import is added, and the actual calibration is fixed, but maintainers may reasonably keep the lower-level proof if independence from LTE is important.
+
+\textbf{Transport only the small modulus expression.} Replace the one-use private \code{order_transport} by
+\begin{lstlisting}
+  simpa only [modulus_factorization] using full_order k
+\end{lstlisting}
+inside \code{block_order}. Its three-line declaration remains three lines. Deleting the four-line helper, its one-line doc comment and one blank line saves six physical lines; no helper cost is hidden. Together the bundle saves $5+1+2+6=14$ lines.
+
+\textbf{Preserved scope.} Every modulus, public wrapper, opacity guard and actual coordinate conclusion stays unchanged; the transport never evaluates the huge base. Generic finite-surjectivity, coordinate records and the old castHom/value projection are excluded. Late packet zd's finite prime-factor exact-order certificates are also baseline. They do not remove the CRT, zero-level or equality-transport steps targeted above.

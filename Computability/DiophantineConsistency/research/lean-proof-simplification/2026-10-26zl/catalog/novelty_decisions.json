@@ -1,0 +1,329 @@
+{
+  "pin": "9f35798db4a63c25e435fca14d75931144657d7e",
+  "round4_delivery_also_excluded": true,
+  "interpretation": "Routine proof-only residual reductions at genuinely fresh clients, not new mathematical abstractions; physical savings must include full helper/context accounting. All baseline proposals assumed available.",
+  "decisions": [
+    {
+      "id": "scalar_q_prefix",
+      "decision": "excluded_exact_prior_contract",
+      "target": "CurrentWordScalarWitness2011.q_prefix",
+      "reason": "E41 already proposes replacing predecessor-power arithmetic by pow_succ/pow_succ' and Nat.sub_add_cancel under the same positive-exponent guard. A new target and multiplication orientation do not add a new contract; zero credited savings and no delivered candidate for this target.",
+      "nearest_prior": [
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/report/sections/02_local.tex",
+          "sha256": "ec1ddb68f307605316d5107e4ee944cb84a19db76fb5b0ad8a473c5c2d59ed07",
+          "lines": [
+            145,
+            164
+          ],
+          "excerpt": "\\subsection{Remove the repeated predecessor exponent calculation}\n\n\\textbf{Priority 2.} Seven local \\code{hpow} proofs show\n\\code{a ^ t = a * a ^ (t - 1)} under \\code{1 \u2264 t}. They share this\nthree-line body:\n\n\\begin{Lean}\n  rw [\u2190 pow_succ']\n  congr 1\n  omega\n\\end{Lean}\n\nThe existing power and natural-subtraction APIs give the proposed body:\n\n\\begin{Lean}\n  rw [\u2190 pow_succ', Nat.sub_add_cancel ht]\n\\end{Lean}\n\nThe occurrences are in\n\\src{MultiTargetCarry.lean}{40}{43},\n"
+        }
+      ],
+      "preserve": [
+        "NeZero N",
+        "exact radix^(N*2011) prefix expression"
+      ],
+      "source": {
+        "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordScalarWitness2011.lean",
+        "sha256": "8a644c7eb65bff5016d28a992e2db477bb5341b33fa31e92f1a086a0d0e4879e",
+        "lines": [
+          86,
+          91
+        ],
+        "excerpt": "theorem q_prefix : q N=radix^(N*2011-1)*radix := by\n  have hn : N*2011=(N*2011-1)+1 := by\n    have := wordLength_pos (N := N)\n    omega\n  unfold q\n  conv_lhs => rw [hn,pow_succ]\n"
+      },
+      "lean_status": "Uncompiled; no Lean elaboration, kernel or axiom check performed.",
+      "claimed_new_general_mathematics": false,
+      "final_boundary_review": "Seven fresh manuscripts zc,zd,ze,zf,zg,zi,zj fully reviewed including relevant optional directions and prototypes; exact retained or excluded decision unchanged."
+    },
+    {
+      "id": "padding_bit3",
+      "decision": "retain_routine_exact_new_client",
+      "target": "CurrentWordPadding2011.bit3_clear_of_residue",
+      "reason": "Delete the reconstructed temporary bit equality and use the existing bit-test iff and modulo-two-power law directly. No earlier proposal targets this fresh obligation. The technique itself is already used by PaddingStaircase.bit3_eq_of_mod16 (also present in an old packet baseline snapshot), so only the exact three-line deletion is new.",
+      "nearest_prior": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/PaddingStaircase.lean",
+          "sha256": "b75d9c9cf430b4e3f8b020246c75eefd9c367f740cc6b1a99bc5de4859fb4932",
+          "lines": [
+            23,
+            33
+          ],
+          "excerpt": "theorem bit3_mask_iff (x : \u2115) : x &&& 8 = 0 \u2194 x.testBit 3 = false := by\n  change x &&& 2 ^ 3 = 0 \u2194 _\n  rw [Nat.and_two_pow]\n  cases h : x.testBit 3 <;> simp\n\ntheorem bit3_eq_of_mod16 {x y : \u2115} (h : x % 16 = y % 16) :\n    x.testBit 3 = y.testBit 3 := by\n  have hh := congrArg (fun z : \u2115 => z.testBit 3) h\n  change (x % 2 ^ 4).testBit 3 = (y % 2 ^ 4).testBit 3 at hh\n  simpa only [Nat.testBit_mod_two_pow, show (3 < 4) = True from propext (by decide),\n    decide_true, Bool.true_and] using hh\n"
+        }
+      ],
+      "preserve": [
+        "arbitrary x : Nat",
+        "x%2048<=5, not x<=5",
+        "actual bit3 mask 8",
+        "no new helpers or imports"
+      ],
+      "source": {
+        "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordPadding2011.lean",
+        "sha256": "dcf9b865df831b0c7f4de2aa0e9060c88fd62d6fae2dd0497ea0aa2f36c6b6d7",
+        "lines": [
+          125,
+          133
+        ],
+        "excerpt": "/-- The tested bit is determined by the low residue even when the\nunreduced digit contains a large multiple of2048. -/\ntheorem bit3_clear_of_residue {x : \u2115} (hx : x%2048 \u2264 5) : x &&& 8 = 0 := by\n  apply (PaddingStaircase.bit3_mask_iff x).mpr\n  have hb : (x%2048).testBit 3 = false := Nat.testBit_lt_two_pow (by omega)\n  have he := Nat.testBit_mod_two_pow x 11 3\n  change (x%2048).testBit 3 = _ at he\n  simp only [show (3 < 11) = True from propext (by decide),decide_true,Bool.true_and] at he\n  rwa [he] at hb\n"
+      },
+      "lean_status": "Uncompiled; no Lean elaboration, kernel or axiom check performed.",
+      "claimed_new_general_mathematics": false,
+      "patch": {
+        "path": "masks/patches/bit3_clear_of_residue.patch",
+        "sha256": "7e5a5bdb74f43db99c0f882a31382220f5eb3c15cb32369aec720c754bb2df50"
+      },
+      "final_boundary_review": "Seven fresh manuscripts zc,zd,ze,zf,zg,zi,zj fully reviewed including relevant optional directions and prototypes; exact retained or excluded decision unchanged."
+    },
+    {
+      "id": "power_cast_iff",
+      "decision": "retain_routine_exact_new_client",
+      "target": "PrimePowerOrder.pow_cast_eq_one_iff",
+      "reason": "Fuse the two directions through the same existing CharP.cast_eq_zero_iff and subtraction guard. LE24 is the nearest cast-normalization predecessor, specifically Pell linear Nat/Int normalization and cyclic residue bridges; it does not already supply this fresh power-order iff proof. No new cast API or number-theoretic theorem is claimed.",
+      "nearest_prior": [
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26h/evidence/arithmetic/findings.txt",
+          "sha256": "fd66c7bd40595d331730696d60b6e1602cd473d9d353706c2fd2b119f4355843",
+          "lines": [
+            98,
+            125
+          ],
+          "excerpt": "4. Eliminate duplicated cyclic residue bridges\n\nCurrentClause2011.lean:27--40 (addition_residue/subtraction_residue) and\nCurrentReflectedGeometry2011.lean:74--87 (private add_residue/sub_residue)\ncontain the same two proofs, with only theorem names changed. Extracting\nthese to a lightweight shared arithmetic module would remove duplication\nwithout forcing either high-level module to depend on the other.\n\nSmallArithmetic.lean proves a stronger generic form for any N,L with\nNeZero (N*L). The addition proof is ZMod.val_add + ZMod.val_natCast +\nNat.mod_mod_of_dvd. The subtraction proof is just the addition theorem\napplied to k - e, followed by sub_add_cancel. Both pass Lean and their axiom\naudits contain only propext and Quot.sound.\n\nImportant boundary: the operations remain in ZMod (N*L), not ZMod L.\nResidue equality alone is not a full source-position identity. Do not use\nthe simplification to drop the exact full-modulus theta translations or\ntheir Nat.cast_sub side conditions. A new shared module is an integration\nproposal, not a claim that the two existing modules were rebuilt here.\n\n5. Let omega handle Nat-to-Int casts in a linear residue argument\n\nNativePellStepDown.lean:161--175, eq_of_residues, explicitly recasts hp,\nhJ, hpc, and hJc into integers before the same abs_lt/omega reasoning.\nThe pinned omega preprocessor handles those casts itself. The tested\nreplacement is:\n\n  rcases hres with h | h\n"
+        },
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zd/report.tex",
+          "lines": [
+            255,
+            373
+          ],
+          "assumed_contract": "Finite primeFactors exact-order certificate adapter with positive candidate-order guard; two exact controller constants and further controller-constant clients.",
+          "residual_boundary": "Does not implement the retained actual CRT/k0/dependent-modulus/guarded cast-iff deletion. See late91dce/reviews/zc_zd.md."
+        }
+      ],
+      "preserve": [
+        "g>=1 guard",
+        "all natural m including m=0",
+        "all natural k including k=0",
+        "exact public statement and imports"
+      ],
+      "source": {
+        "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/PrimePowerOrder.lean",
+        "sha256": "781aa36c18153b4f7e7e6b7df204b3b42545bc8cabf0f9f25736d012e598dd47",
+        "lines": [
+          26,
+          37
+        ],
+        "excerpt": "/-- Natural subtraction is used only after proving the needed lower bound. -/\ntheorem pow_cast_eq_one_iff {g m : \u2115} (hg : 1 \u2264 g) (k : \u2115) :\n    (g : ZMod m)^k = 1 \u2194 m \u2223 g^k-1 := by\n  have hk : 1 \u2264 g^k := one_le_pow\u2080 hg\n  constructor\n  \u00b7 intro h\n    apply (CharP.cast_eq_zero_iff (ZMod m) m (g^k-1)).mp\n    rw [Nat.cast_sub hk, Nat.cast_pow, Nat.cast_one, h, sub_self]\n  \u00b7 intro h\n    have hz := (CharP.cast_eq_zero_iff (ZMod m) m (g^k-1)).mpr h\n    rw [Nat.cast_sub hk, Nat.cast_pow, Nat.cast_one] at hz\n    exact sub_eq_zero.mp hz\n"
+      },
+      "lean_status": "Uncompiled; no Lean elaboration, kernel or axiom check performed.",
+      "claimed_new_general_mathematics": false,
+      "patch": {
+        "path": "power/patches/guarded_power_cast_fusion.patch",
+        "sha256": "eb5bc4479b364d94543ed1acf3e6966074d99d94a27b3de13c23d85a1de008d7"
+      },
+      "final_boundary_review": "Seven fresh manuscripts zc,zd,ze,zf,zg,zi,zj fully reviewed including relevant optional directions and prototypes; exact retained or excluded decision unchanged."
+    },
+    {
+      "id": "crt_order_transport",
+      "decision": "retain_routine_exact_new_client",
+      "target": "CurrentPowerCoordinates2011.order_product",
+      "reason": "Use the existing CRT equivalence order law and product-order law in one calc, deleting the intermediate projection equality. No prior .lean/.patch/.diff prototype or main report proposes this actual order client. The CRT/order mathematics and map laws were already in source and receive no novelty credit.",
+      "nearest_prior": [
+        {
+          "baseline_groups": [
+            "E17",
+            "LE04",
+            "LE24",
+            "round4 finite-chain rigidity"
+          ],
+          "boundary": "Finite surjectivity/cyclic quotient infrastructure is assumed; no new coordinate representation or quotient-value theorem is introduced."
+        },
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zd/report.tex",
+          "lines": [
+            255,
+            373
+          ],
+          "assumed_contract": "Finite primeFactors exact-order certificate adapter with positive candidate-order guard; two exact controller constants and further controller-constant clients.",
+          "residual_boundary": "Does not implement the retained actual CRT/k0/dependent-modulus/guarded cast-iff deletion. See late91dce/reviews/zc_zd.md."
+        }
+      ],
+      "preserve": [
+        "all coprime natural a,b including zero/unit edge cases",
+        "arbitrary natural x,k",
+        "same exact order/lcm expression"
+      ],
+      "source": {
+        "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean",
+        "sha256": "53853c593225c4a616b0701bdbcd6773846e3a4add7cc5f653a9c7609bf96497",
+        "lines": [
+          16,
+          28
+        ],
+        "excerpt": "/-- Actual CRT preserves order as the least common multiple of both orders. -/\ntheorem order_product {a b : \u2115} (hab : Nat.Coprime a b) (x k : \u2115) :\n    orderOf ((x : ZMod (a*b))^k) =\n      Nat.lcm (orderOf ((x : ZMod a)^k)) (orderOf ((x : ZMod b)^k)) := by\n  let e := ZMod.chineseRemainder hab\n  have hm : e ((x : ZMod (a*b))^k) = ((x : ZMod a)^k,(x : ZMod b)^k) := by\n    rw [map_pow, map_natCast]\n    rfl\n  calc\n    _ = orderOf (e ((x : ZMod (a*b))^k)) :=\n      (e.toMulEquiv.orderOf_eq _).symm\n    _ = orderOf (((x : ZMod a)^k,(x : ZMod b)^k)) := congrArg orderOf hm\n    _ = _ := Prod.orderOf_mk\n"
+      },
+      "lean_status": "Uncompiled; no Lean elaboration, kernel or axiom check performed.",
+      "claimed_new_general_mathematics": false,
+      "patch": {
+        "path": "power/patches/exact_order_clients.patch",
+        "sha256": "11b23f432c9cec7a1ccf22204ccad737b60e77e50b4193e370ee7b4a716d05cd"
+      },
+      "final_boundary_review": "Seven fresh manuscripts zc,zd,ze,zf,zg,zi,zj fully reviewed including relevant optional directions and prototypes; exact retained or excluded decision unchanged."
+    },
+    {
+      "id": "zero_exponent_order_corollaries",
+      "decision": "retain_exact_new_client_dependency_reuse",
+      "target": "CurrentPowerCoordinates2011.generator_cast_auxiliary / generator_cast_C0",
+      "reason": "Use generator_order_succ 0 and full_order 0 to obtain order one, rather than reconstructing a residue or a second CRT proof. This exploits the fresh exact order theorems already proved upstream; it does not newly prove those order theorems or change coordinate construction.",
+      "nearest_prior": [
+        {
+          "baseline_groups": [
+            "E17",
+            "LE24"
+          ],
+          "boundary": "Old residue normal forms and literal-opacity discipline remain available; exact principal-unit/full-modulus order was not a prior proposal."
+        },
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zd/report.tex",
+          "lines": [
+            255,
+            373
+          ],
+          "assumed_contract": "Finite primeFactors exact-order certificate adapter with positive candidate-order guard; two exact controller constants and further controller-constant clients.",
+          "residual_boundary": "Does not implement the retained actual CRT/k0/dependent-modulus/guarded cast-iff deletion. See late91dce/reviews/zc_zd.md."
+        }
+      ],
+      "preserve": [
+        "literal actual B and auxiliary prime",
+        "zero-exponent specialization",
+        "all unchanged public statements",
+        "B remains locally irreducible"
+      ],
+      "source": [
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean",
+          "sha256": "53853c593225c4a616b0701bdbcd6773846e3a4add7cc5f653a9c7609bf96497",
+          "lines": [
+            46,
+            49
+          ],
+          "excerpt": "theorem generator_cast_auxiliary : (B : ZMod auxiliary)^(auxiliary-1) = 1 := by\n  have hc : ((B^(auxiliary-1) : \u2115) : ZMod auxiliary) = ((1 : \u2115) : ZMod auxiliary) :=\n    (ZMod.natCast_eq_natCast_iff' _ _ _).mpr (by rw [generator_mod_prime]; decide)\n  simpa only [Nat.cast_pow, Nat.cast_one] using hc\n"
+        },
+        {
+          "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean",
+          "sha256": "53853c593225c4a616b0701bdbcd6773846e3a4add7cc5f653a9c7609bf96497",
+          "lines": [
+            54,
+            64
+          ],
+          "excerpt": "theorem full_order (k : \u2115) :\n    orderOf ((B : ZMod (d*auxiliary^(k+1)))^(auxiliary-1)) = auxiliary^k := by\n  rw [order_product (fixed_auxiliary_coprime.pow_right (k+1)),\n    generator_cast_fixed, generator_order_succ]\n  simp\n\ntheorem generator_cast_C0 : (B : ZMod (d*auxiliary))^(auxiliary-1) = 1 := by\n  apply orderOf_eq_one_iff.mp\n  rw [order_product fixed_auxiliary_coprime, generator_cast_fixed,\n    generator_cast_auxiliary]\n  simp\n"
+        }
+      ],
+      "lean_status": "Uncompiled; no Lean elaboration, kernel or axiom check performed.",
+      "claimed_new_general_mathematics": false,
+      "patch": {
+        "path": "power/patches/exact_order_clients.patch",
+        "sha256": "11b23f432c9cec7a1ccf22204ccad737b60e77e50b4193e370ee7b4a716d05cd"
+      },
+      "final_boundary_review": "Seven fresh manuscripts zc,zd,ze,zf,zg,zi,zj fully reviewed including relevant optional directions and prototypes; exact retained or excluded decision unchanged."
+    },
+    {
+      "id": "block_modulus_transport",
+      "decision": "retain_routine_exact_new_client",
+      "target": "CurrentPowerCoordinates2011.block_order / private order_transport",
+      "reason": "Rewrite the already-proved modulus_factorization directly in full_order; delete the private equality-transport theorem including comment/context cost. No new equality or modular-cast interface is claimed, and the old quotient projection cleanup remains excluded.",
+      "nearest_prior": [
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26h/evidence/arithmetic/findings.txt",
+          "sha256": "fd66c7bd40595d331730696d60b6e1602cd473d9d353706c2fd2b119f4355843",
+          "lines": [
+            98,
+            125
+          ],
+          "excerpt": "4. Eliminate duplicated cyclic residue bridges\n\nCurrentClause2011.lean:27--40 (addition_residue/subtraction_residue) and\nCurrentReflectedGeometry2011.lean:74--87 (private add_residue/sub_residue)\ncontain the same two proofs, with only theorem names changed. Extracting\nthese to a lightweight shared arithmetic module would remove duplication\nwithout forcing either high-level module to depend on the other.\n\nSmallArithmetic.lean proves a stronger generic form for any N,L with\nNeZero (N*L). The addition proof is ZMod.val_add + ZMod.val_natCast +\nNat.mod_mod_of_dvd. The subtraction proof is just the addition theorem\napplied to k - e, followed by sub_add_cancel. Both pass Lean and their axiom\naudits contain only propext and Quot.sound.\n\nImportant boundary: the operations remain in ZMod (N*L), not ZMod L.\nResidue equality alone is not a full source-position identity. Do not use\nthe simplification to drop the exact full-modulus theta translations or\ntheir Nat.cast_sub side conditions. A new shared module is an integration\nproposal, not a claim that the two existing modules were rebuilt here.\n\n5. Let omega handle Nat-to-Int casts in a linear residue argument\n\nNativePellStepDown.lean:161--175, eq_of_residues, explicitly recasts hp,\nhJ, hpc, and hJc into integers before the same abs_lt/omega reasoning.\nThe pinned omega preprocessor handles those casts itself. The tested\nreplacement is:\n\n  rcases hres with h | h\n"
+        },
+        {
+          "path": "inherited_round4/novelty_decisions.json",
+          "boundary": "ControllerResidueLift.exists_coordinate was withdrawn as exact prior residue_val overlap; this candidate does not touch it."
+        },
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26zd/report.tex",
+          "lines": [
+            255,
+            373
+          ],
+          "assumed_contract": "Finite primeFactors exact-order certificate adapter with positive candidate-order guard; two exact controller constants and further controller-constant clients.",
+          "residual_boundary": "Does not implement the retained actual CRT/k0/dependent-modulus/guarded cast-iff deletion. See late91dce/reviews/zc_zd.md."
+        }
+      ],
+      "preserve": [
+        "complete dependent ZMod modulus",
+        "same actual B",
+        "all k including zero",
+        "no global unfolding of huge base"
+      ],
+      "source": {
+        "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean",
+        "sha256": "53853c593225c4a616b0701bdbcd6773846e3a4add7cc5f653a9c7609bf96497",
+        "lines": [
+          66,
+          78
+        ],
+        "excerpt": "/-- Explicit modulus transport avoids any evaluation of the huge base. -/\nprivate theorem order_transport (x k m n : \u2115) (h : m = n) :\n    orderOf ((x : ZMod m)^k) = orderOf ((x : ZMod n)^k) := by\n  subst n\n  rfl\n\ntheorem modulus_factorization (k : \u2115) : (d*auxiliary)*auxiliary^k = d*auxiliary^(k+1) := by\n  rw [pow_succ]\n  ring\n\ntheorem block_order (k : \u2115) :\n    orderOf ((B : ZMod ((d*auxiliary)*auxiliary^k))^(auxiliary-1)) = auxiliary^k :=\n  (order_transport B (auxiliary-1) _ _ (modulus_factorization k)).trans (full_order k)\n"
+      },
+      "lean_status": "Uncompiled; no Lean elaboration, kernel or axiom check performed.",
+      "claimed_new_general_mathematics": false,
+      "patch": {
+        "path": "power/patches/exact_order_clients.patch",
+        "sha256": "11b23f432c9cec7a1ccf22204ccad737b60e77e50b4193e370ee7b4a716d05cd"
+      },
+      "final_boundary_review": "Seven fresh manuscripts zc,zd,ze,zf,zg,zi,zj fully reviewed including relevant optional directions and prototypes; exact retained or excluded decision unchanged."
+    },
+    {
+      "id": "gamma_positive_from_coprime",
+      "decision": "retain_optional_with_dependency_penalty",
+      "target": "CurrentControllerUnits2011.Gamma_pos",
+      "reason": "Derive nonzero Gamma from the already-proved coprimality with47, then natural positivity. The old integer-unit product/sign decomposition does not supply this actual rank-step corollary. Credit only the small deletion of duplicate factor positivity reasoning, not a new coprimality/positivity principle.",
+      "nearest_prior": [
+        {
+          "path": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26i/report.tex",
+          "sha256": "818781ca070b95d7093164aa1f281efa628596b76d19234507e4ae2224347b14",
+          "lines": [
+            159,
+            180
+          ],
+          "excerpt": "\\section{Decompose the product's units once}\n\nThe target \\src{ShortSystem}{20--61} proves an equivalence from\n\\[\n n_0 n_1 n_a n_k n_t n_s=1\n\\]\nunder explicit assumptions excluding the negative unit for selected factors. The current proof proves four separate multiplication-equals-one facts, rearranging the other factors with \\code{ring}, then invokes a helper on each.\n\nA product equal to one is a unit. In the commutative integer ring, \\code{IsUnit.mul_iff} recursively gives that every factor is a unit. Finally, \\code{Int.isUnit_iff} says an integer unit is either \\(1\\) or \\(-1\\). One simplification pass extracts the entire tuple of alternatives:\n\n\\begin{Lean}\nhave hu : IsUnit (n0 * n1 * na * nk * nt * ns) :=\n  hp.symm \u25b8 isUnit_one\nsimp only [IsUnit.mul_iff, Int.isUnit_iff, or_iff_left h0,\n  or_iff_left h1, or_iff_left hs] at hu\n\\end{Lean}\n\nThe proof then obtains \\(n_s=1\\), uses the existing conditional hypothesis \\(n_s=1\\Rightarrow n_a\\ne-1\\), and resolves the remaining sign for \\(n_a\\). Substitution into the original equation gives \\(n_k n_t=1\\).\n\nThat last product is deliberately retained: the hypotheses do not force \\(n_k=n_t=1\\), since both could equal \\(-1\\). The patch preserves this distinction and does not strengthen the theorem accidentally. The relevant API is \\mathsrc{Algebra/Group/Int/Units}{\\code{Int.isUnit_iff}} and the multiplicative-unit lemmas it imports.\n\nThe complete \\code{ShortSystem} file shrinks from \\textbf{1,117 to 1,104 lines}, including removal of its unused private helper. The full patched module compiles. This is a small, direct simplification with no new production helper library.\n"
+        }
+      ],
+      "preserve": [
+        "all independent rw,n including zero exponents",
+        "same actual Gamma definition",
+        "dependency remains on preceding coprime_Gamma_47",
+        "no residue assumption added"
+      ],
+      "source": {
+        "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerUnits2011.lean",
+        "sha256": "1c3bdb8af6c4113589b92b76aa895fbee3ecad4ca4d32f8e6290b382bf2f004f",
+        "lines": [
+          195,
+          199
+        ],
+        "excerpt": "theorem Gamma_pos (rw n : \u2115) : 0 < Gamma rw n := by\n  have hq := q_gt_one n\n  have hs : 0 < q n^2-1 := Nat.sub_pos_of_lt (by nlinarith)\n  have hr : 0 < CurrentMasks2011.radix^977 := pow_pos (by decide) _\n  exact mul_pos (mul_pos hr hs) (by omega)\n"
+      },
+      "lean_status": "Uncompiled; no Lean elaboration, kernel or axiom check performed.",
+      "claimed_new_general_mathematics": false,
+      "patch": {
+        "path": "units/patches/gamma_pos_from_coprime.patch",
+        "sha256": "3a6bde9a716e16e0e0fcc4517212923184cc970f515e3127a71245537eb7c086"
+      },
+      "recommendation": "Optional only; not part of default recommended pilot.",
+      "dependency_penalty": "The short original positivity proof depends only on geometric factor positivity. The new proof reaches coprime_Gamma_47, hence the full actual literal-K residue calibration. It is shorter source but a heavier semantic dependency; no speedup is claimed.",
+      "final_boundary_review": "Seven fresh manuscripts zc,zd,ze,zf,zg,zi,zj fully reviewed including relevant optional directions and prototypes; exact retained or excluded decision unchanged."
+    }
+  ],
+  "source_pin_repository_manuscripts": 28,
+  "final_comparison_pin": "91dce223cda86c0755b8a9b2504f84be04443fce",
+  "final_repository_manuscripts": 36,
+  "final_screen": "late91dce/FINAL_BOUNDED_REVIEW.md",
+  "final_decisions_unchanged": true
+}

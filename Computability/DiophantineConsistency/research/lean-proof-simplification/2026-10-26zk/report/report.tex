@@ -1,0 +1,466 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.87in]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem,xcolor,hyperref,xurl,fancyhdr,fvextra,microtype}
+\definecolor{ink}{HTML}{17344B}
+\definecolor{blue}{HTML}{226B8E}
+\definecolor{pale}{HTML}{EDF3F6}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,pdftitle={Four further Lean proof simplifications for DiophantineConsistency},pdfauthor={Research continuation for ProveIt}}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=*}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\sffamily ProveIt / DiophantineConsistency}
+\rhead{\small\sffamily Further proof simplifications}
+\cfoot{\small\thepage}
+\setlength{\headheight}{14pt}
+\newcommand{\code}[1]{{\small\nolinkurl{#1}}}
+\newcommand{\repo}{\url{https://github.com/VladimirReshetnikov/ProveIt}}
+\newcommand{\pin}{\texttt{9f35798db4a63c25e435fca14d75931144657d7e}}
+\newcommand{\module}[1]{\texttt{#1}}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newenvironment{lean}{\Verbatim[fontsize=\small,breaklines=true,breakanywhere=true,frame=single,rulecolor=\color{pale}]}{\endVerbatim}
+\begin{document}
+\begin{titlepage}
+\vspace*{0.4in}
+{\sffamily\color{blue}\large RESEARCH CONTINUATION\par}
+\vspace{0.25in}
+{\sffamily\bfseries\color{ink}\LARGE Four further Lean proof simplifications\par}
+\vspace{0.12in}
+{\sffamily\Large for DiophantineConsistency\par}
+\vspace{0.35in}
+{\large Weaker controller facts, direct homogeneous enumeration, shared Jones evaluation, and affine reflection\par}
+\vspace{0.35in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{26 October 2026\par}
+\vspace{0.35in}
+\textbf{Repository snapshot}\par
+\pin\par
+\repo\par
+\vspace{0.3in}
+\begin{minipage}{0.96\textwidth}
+\textbf{Result.} Four source-specific proposals survive a screen against the 23 filed studies and five incoming archives. The clearest mathematical simplification is an affine reflection that makes the carrier soundness and completeness sign arguments instances of one integer lemma. The largest structural change replaces the Jones compiler's filtered Cartesian enumeration by the existing executable antidiagonal list. Two smaller changes share five duplicated finalizer proofs and remove unnecessary exact-order reasoning from four controller clients.
+
+\textbf{Evidence.} The archive includes standalone Lean experiments, four candidate patches, a packet-by-packet exclusion ledger, exact source and archive hashes, measurements, and validation records. Standalone proof checks, static inspection, and incomplete integration checks are distinguished explicitly. No candidate is represented as an adopted repository change.
+\end{minipage}
+\vfill
+{\small\sffamily Novelty is relative to the specified proposal corpus. No claim of priority for the underlying mathematical identities is made.}
+\end{titlepage}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{What remains after the earlier proposals are assumed applied}
+
+The question is a continuation task: a change is useful here only if it still removes work after the outcomes of the earlier proposals are granted. This is stricter than searching for long proof bodies in the current checkout. A long body may already have a proposed replacement; a theorem marked ``deferred'' may already supply exactly the abstraction one is about to suggest. I therefore treated adopted, pending, design-only, optional, and notes-only proposals alike as part of the assumed baseline.\cite{prior,incoming}
+
+The current source was pinned before analysis. All 686 Lean files under the requested maintained subtree were checked against their recorded Git blob hashes and byte sizes. The corresponding selected prior-artifact census contains 643 files, including the five incoming ZIPs; these also pass the byte-integrity check. These counts describe retrieved source coverage, not a claim that every proof was semantically reviewed. The maintained subtree contains 85,917 physical Lean lines; 403 files remain when the checks directory and files ending in \code{Checks.lean} are excluded. Exact counting rules are supplied in \code{audit/source_integrity.json}.
+
+The semantic novelty screen read the packet index, adoption record, all 23 filed packet READMEs, all five incoming READMEs, principal report and section maps, explicit future-question sections, and relevant supplementary notes and prototype matches. Candidate-specific searches and source review were then used to decide whether each proposed mechanism was already present. The ledger records the limits: it does not assert a fresh semantic reading of every copied historical baseline line, every binary member, or every historical archive linked transitively from the large incoming README.
+
+\subsection{Four retained directions}
+
+\begin{tabularx}{\textwidth}{@{}p{0.08\textwidth}X p{0.25\textwidth}@{}}
+\toprule
+ID & Surviving simplification & Main boundary \\
+\midrule
+A & Share the five existing Jones finalizer evaluation lemmas across the two syntax constructors. & Proof-only edit; no expression data change. \\
+B & Use one affine positivity lemma and reflection about $y=1$ for carrier soundness and completeness. & Preserve the integral domain and one-sided completeness hypothesis. \\
+C & Enumerate only degree-four exponent vectors using \code{List.Nat.antidiagonalTuple}. & Executable expression trees change. \\
+D & Prove only the fixed-power and annihilation facts consumed by the fixed controller factors. & Auxiliary prime-power exact order still matters. \\
+\bottomrule
+\end{tabularx}
+
+The recommended implementation order is A, B, D, then C. A has the smallest conceptual risk. B removes a repeated mathematical argument. D improves the sufficient contract of four clients, with little source-line reduction. C has the strongest effect on the generated syntax but requires a deliberate compatibility decision.
+
+\subsection{What is deliberately not proposed again}
+
+The earlier corpus already covers assignment naturality, witness transport, list lookup APIs, decoder fusion, scanner iteration, common residual sums, coefficient envelopes, circuit certificates, degree tactics, source-register equations, guarded zero-set transport, Pell sign and comparison lemmas, exact quotient recovery, internal arithmetic specification interfaces, one-hot support, cyclic carries, helical periods and band coordinates, shared Wang edges, receiver causality, and canonical tile-row recognition.\cite{prior,incoming}
+
+Generic advice to use \code{simp}, add helper records, shorten imports, profile elaboration, or generate repetitive proofs is also established methodology rather than a new contribution. The included independent review rejected a fifth proposal because no distinct surviving client benefit could be established. Four concrete proposals are more informative than a longer list padded with old abstractions.
+
+\section{A: share the existing Jones finalizer evaluation}
+\label{sec:share}
+
+\subsection{The duplication is exact and local}
+
+\code{JonesSyntax.lean} defines the evaluation of a \code{RingVars (Expr σ)} record and proves five private facts:
+\code{eval_rad}, \code{eval_wt}, \code{eval_dvsr}, \code{eval_dvnd}, and \code{eval_marg}. Later, \code{ExecutableJones.lean} imports that module, uses the same record evaluator, and proves the same five facts again. The second copy differs mainly in qualification and in writing application as a lambda or as \code{.eval}; these do not describe different semantics.\cite{jones,execjones}
+
+The two compilers differ in how they construct the upstream coding quantities. One uses coefficient readers on a polynomial; the other uses supplied executable syntax. That difference is handled by each module's own \code{eval_syntaxVars}. Once a \code{RingVars (Expr σ)} value has been supplied, its finalizer fields have identical meanings in both modules.
+
+\subsection{Concrete edit}
+
+Make the five existing theorems in \code{JonesSyntax} public, remove the second copies, and qualify the five uses in the executable compiler:
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,samepage=true]
+  simp only [withInput, RefinedPair.value,
+    Expr.eval_add, Expr.eval_sub, Expr.eval_mul,
+    Expr.eval_pow, Expr.eval_var,
+    JonesSyntax.eval_rad, JonesSyntax.eval_wt,
+    JonesSyntax.eval_dvsr, JonesSyntax.eval_dvnd,
+    JonesSyntax.eval_marg, eval_syntaxVars]
+  rfl
+\end{Verbatim}
+
+This is intentionally narrower than introducing a new generic evaluator or a semantic homomorphism framework. Those general ideas are already in the baseline. The new observation is that the needed concrete interface already exists in the direct import and is private for no demonstrated client requirement.
+
+The patch makes no changes to \code{syntaxVars}, \code{withInput}, \code{expression}, \code{removeInput}, or the expression constructors. It adds no global simplification attributes. Consequently, this proposal by itself changes no literal expression tree, no coefficient order, and no compiler output data. It is independent of proposal C.
+
+\subsection{Measured source effect and validation boundary}
+
+The candidate changes \code{ExecutableJones.lean} from 300 to 251 physical lines and keeps \code{JonesSyntax.lean} at 179 lines: \textbf{49 lines removed, with no new helper proof}. This includes the qualified-use replacement. The archive contains the exact diff and its metric record, rather than an extrapolated repository-wide percentage.
+
+The change was reviewed against both complete source blocks. A full fresh build of the complete Jones dependency closure was not established in this session. Therefore the patch is labelled a statically reviewed candidate, not a kernel-checked integrated replacement. Its next gate is short and concrete: compile the changed \code{JonesSyntax} first, compile \code{ExecutableJones} against that new object, and check both existing \code{eval_expression} endpoints. Reusing an old private-theorem object would not test the intended interface change.
+
+\section{B: one affine lemma, with soundness obtained by reflection}
+\label{sec:affine}
+
+\subsection{The same relation appears in both directions}
+
+The private carrier coordinate in \code{ThirteenFreshSeed.carrier_exists} and the recovered transport in \code{ThirteenCarrierSoundness.transport_nonneg} are related by
+\begin{equation}
+ y=1+4\left(b(m-V^2G)-G\right)
+  =1+4\left(bm-(1+bV^2)G\right).
+ \label{eq:affine}
+\end{equation}
+The completeness proof constructs $m$ and proves $m>0$ using several successive coefficient lower bounds. The soundness proof assumes $m>0$, supposes $G<0$, and develops a separate contradiction with the small-ordinate bound.\cite{fresh,sound}
+
+The surviving simplification is to use the affine symmetry of \eqref{eq:affine}. No Pell recurrence, norm-minimality result, signed congruence calculus, or rational-root descent is needed for this local step. Those earlier themes solve different obligations.
+
+\subsection{The common integer lemma}
+
+\begin{proposition}[Affine carrier positivity]
+Let $b,G,V,y,m\in\mathbb Z$. If $b>0$, $G>0$, $-2V<y$, and \eqref{eq:affine} holds, then $m>0$. There is no sign assumption on $V$.
+\end{proposition}
+
+\begin{proof}
+Suppose $m\le0$. Since the variables are integers, $b\ge1$ and $G\ge1$. Put $A=1+bV^2$, which is positive. Then $bm\le0$ and $AG\ge A$, so
+\[
+ y=1+4(bm-AG)\le 1-4A=-3-4bV^2.
+\]
+For every integer $V$ and every $b\ge1$,
+\begin{equation}
+4(4bV^2-2V+3)
+ =(4V-1)^2+16(b-1)V^2+11>0.
+\label{eq:gap}
+\end{equation}
+Thus $-3-4bV^2<-2V$, contradicting $-2V<y$.
+\end{proof}
+
+The completed-square identity explains why the old proof's positive-$V$ comparison $V\le V^2$ is dispensable. It also makes the domain requirements visible. Integer discreteness supplies $b\ge1$ and $G\ge1$ from strict positivity. One cannot silently replace the integer variables by arbitrary positive real numbers while retaining the same argument.
+
+The checked Lean core expresses the required inequalities directly:
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,samepage=true]
+theorem affine_carrier_pos {b G V y m : ℤ}
+    (hb : 0 < b) (hG : 0 < G) (hsmall : -2 * V < y)
+    (hy : y = 1 + 4 * (b * (m - V ^ 2 * G) - G)) :
+    0 < m := by
+  by_contra hm
+  have hbm := mul_nonpos_of_nonneg_of_nonpos hb.le
+    (show m ≤ 0 by omega)
+  have hAG := mul_nonneg
+    (show 0 ≤ 1 + b * V ^ 2 by positivity)
+    (show 0 ≤ G - 1 by omega)
+  have hbV := mul_nonneg
+    (show 0 ≤ b - 1 by omega) (sq_nonneg V)
+  nlinarith only [hy, hsmall, hbm, hAG, hbV,
+    sq_nonneg (4 * V - 1)]
+\end{Verbatim}
+
+\subsection{Completeness keeps its original one-sided hypothesis}
+
+The existing divisibility premises produce integers $g,e$ with
+\[
+ G=bg,\qquad y-1=4be.
+\]
+Define the same explicit witness as in the current proof:
+\begin{equation}
+ m=e+(1+bV^2)g.
+ \label{eq:witness}
+\end{equation}
+Substitution verifies \eqref{eq:affine}; the common lemma proves $m>0$. The new proof does not need to establish $g>0$ separately or build the two coefficient comparison chains. More importantly, it does not strengthen the existing premise $-2V<y$ to the symmetric premise $|y|<2|V|$.
+
+The existing public parameter $0<V$ can remain for compatibility, even though the shorter local proof does not use it. The standalone compilation reports that unused-parameter warning; it is not a proof failure. Removing the public premise is a separate API choice, not a condition of this proposal.
+
+\subsection{Soundness is the reflected instance}
+
+The transformation
+\begin{equation}
+ (m,G,y)\longmapsto(-m,-G,2-y)
+ \label{eq:reflect}
+\end{equation}
+preserves \eqref{eq:affine}. The reflection is around $y=1$: the correct new ordinate is $2-y$, not $-y$. Also replace $V$ by $|V|$, which preserves its square.
+
+Suppose the soundness hypotheses hold: $b>0$, $m>0$, and $|y|<2|V|$. If $G<0$, then $-G>0$. Since $y\le |y|<2|V|$, we have
+\[
+ -2|V|<2-y.
+\]
+Apply the common positivity lemma to the reflected data. It gives $-m>0$, contradicting $m>0$. Hence $G\ge0$.
+
+This proof uses only an upper bound on the original $y$ to form the reflected lower bound. It introduces neither a positivity assumption on the original $V$ nor a new absolute-value condition in completeness.
+
+\subsection{Patch scope}
+
+The patch places the helper in \code{ThirteenCarrierSoundness}, which \code{ThirteenFreshSeed} already imports. It replaces both local arguments while preserving their existing theorem signatures. In the final documented patch, the soundness module grows from 290 to 297 lines, while the seed module shrinks from 217 to 197: \textbf{13 net lines removed, including the helper and its documentation}.
+
+The reduction is modest in line count but substantial in proof structure. The two directions now share one reason that an incorrectly signed carrier coordinate is too large in magnitude. The exact witness \eqref{eq:witness}, the outer native data, the Pell construction, and the polynomial definitions are unchanged.
+
+The standalone core, soundness adapter, and completeness adapter compile under Lean 4.32.0. Their axiom output is limited to the standard \code{propext}, \code{Classical.choice}, and \code{Quot.sound}. Separate patched-module elaboration attempts and their dependency limitations are recorded in the validation artifacts; they are not promoted to a clean build of the entire pinned project.
+
+\section{C: generate the Jones homogeneous star directly}
+\label{sec:enumeration}
+
+\subsection{The current proof pays for a representation conversion}
+
+The executable Jones compiler currently enumerates all functions
+\[
+ k:\operatorname{Fin}(\nu+2)\to\operatorname{Fin}(5),
+\]
+then tests whether their coordinate sum is four. Valid vectors produce a term; the others produce a literal zero expression. A recursive \code{eval_vectorSum} theorem proves the Cartesian enumeration, and \code{sum_bounded_eq_star} constructs the conversion to natural-valued vectors in the homogeneous star. The latter proof must show membership, injectivity, and surjectivity, including the lift of every natural coordinate to \code{Fin 5}.\cite{execjones}
+
+The target set is already
+\[
+ \operatorname{star}(\nu,4)
+ =\left\{k:\operatorname{Fin}(\nu+2)\to\mathbb N:
+                 \sum_j k_j=4\right\}.
+\]
+In the underlying Jones formalization it is defined as \code{Finset.univ.piAntidiag 4}. The pinned Mathlib provides an executable list of precisely these tuples, its membership characterization, and its no-duplicates theorem. It also provides the equality between the finite antidiagonal and \code{piAntidiag}.\cite{coding,antidiag,piantidiag}
+
+\subsection{Replace the source of the enumeration, not its order proof}
+
+The new definition is simply
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,samepage=true]
+def starSum {σ : Type*} (ν : ℕ)
+    (f : (Fin (ν + 2) → ℕ) → Expr σ) : Expr σ :=
+  QuarticSyntax.sumExpressions
+    ((List.Nat.antidiagonalTuple (ν + 2) 4).map f)
+\end{Verbatim}
+
+An explicit proof can turn the duplicate-free list sum into a finite-set sum and identify membership on both sides. The pinned library permits a still shorter adapter: after the existing sum evaluator and the supplied antidiagonal equality are rewritten, the remaining equality is definitional.
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,samepage=true]
+  rw [starSum, eval_sumExpressions, List.map_map, star,
+    Finset.piAntidiag_univ_fin_eq_antidiagonalTuple]
+  rfl
+\end{Verbatim}
+
+The direct list-to-finite-set equality was separately checked in Lean. The complete proposed Jones module is still subject to the integration gate below.
+
+The independent checked prototype proves this for every additive commutative monoid, every coordinate count $n$, every degree $d$, and any callback $f$:
+\begin{equation}
+ \sum_{k\in\mathrm{List.Nat.antidiagonalTuple}(n,d)} f(k)
+ =\sum_{k\in\mathrm{univ.piAntidiag}(d)} f(k).
+ \label{eq:enumerator}
+\end{equation}
+It also supplies an evaluation adapter parameterized by a syntax sum and its existing evaluation theorem. This isolates the mathematical change from the long Jones dependency closure.
+
+There is no need to invent a new enumerator or reprove its recursive combinatorics. In particular, do not use \code{Finset.toList} or \code{Multiset.toList} as the executable implementation: these interfaces are noncomputable in the pinned library. The list antidiagonal is the appropriate constructive object. Its construction splits the remaining total degree among the remaining positions.
+
+\subsection{The structural difference is large}
+
+For $n=\nu+2>0$, the old Cartesian enumeration visits $5^n$ candidate vectors. The homogeneous list contains
+\begin{equation}
+ \binom{n+3}{4}
+ \label{eq:starsbars}
+\end{equation}
+valid degree-four vectors, by the usual stars-and-bars count. The old syntax contains rejected zero branches; the new outer list contains only the valid callbacks, followed by the sum constructor's terminal identity.
+
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+Coordinates $n$ & Old candidate vectors $5^n$ & Valid list entries $\binom{n+3}{4}$ \\
+\midrule
+2 & 25 & 5 \\
+4 & 625 & 35 \\
+8 & 390,625 & 330 \\
+10 & 9,765,625 & 715 \\
+16 & 152,587,890,625 & 3,876 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are exact combinatorial counts, not measured elapsed times. The implementation also allocates tuple representations and traverses internal recursive branches. A naive recursion down to zero remaining coordinates can visit more leaves than the number of valid outputs. The report therefore does not identify \eqref{eq:starsbars} with total primitive operations, nor does it claim a benchmark speedup. The compelling proof-maintenance point is that the Cartesian/filter conversion and its coordinate-bound obligations disappear.
+
+\subsection{Compatibility is a real choice}
+
+This proposal changes \code{starSum}'s expression tree. Evaluated integer values and polynomial semantics can be preserved by \eqref{eq:enumerator}; raw syntax identity, tree hashes, generated gate counts, and every definitional equality do not follow from that theorem. Existing compiler artifacts or regressions that depend on literal syntax must be reviewed or regenerated deliberately.
+
+The proposed cleanup removes the public helpers \code{vectorSum}, \code{eval_vectorSum}, and \code{sum_bounded_eq_star}. A textual reference scan of the complete maintained subtree finds all uses of those helpers confined to \code{ExecutableJones.lean}. The same holds in the selected historical Lean sources that were available locally. This is not a search of every possible external consumer or every unextracted repository path. Keeping the old helper API as a compatibility layer is possible, but then its source lines cannot honestly be counted as deleted.
+
+The candidate implementation changes \code{ExecutableJones.lean} from 300 to 258 lines: \textbf{42 lines removed} under the explicit cleanup choice. That count is separate from A's 49-line removal. The two diffs touch different blocks and are supplied independently, so the data-preserving change can be adopted without accepting the executable change.
+
+\subsection{Residual novelty after the baseline}
+
+Earlier sparse coefficient and circuit proposals concern fixed catalogs, coefficient normalization, or interpreting supplied rows. They do not remove the bounded-vector representation at this particular homogeneous-index interface. Even if their APIs are already present, this compiler still needlessly proves that a filtered Cartesian product denotes an existing constructive antidiagonal. The new contribution is the recognition and removal of that representation conversion.
+
+\section{D: fixed controller clients need fixed powers, not least orders}
+\label{sec:controller}
+
+\subsection{Separate sufficient equations from exact classification}
+
+The maintained controller uses
+\[
+ B=2^{94517},\qquad p=120199,\qquad \operatorname{dimension}(n)=p^n.
+\]
+Its checked residues include
+\[
+ B=37\text{ in }\mathbb Z/47\mathbb Z,
+ \qquad
+ B=1283\text{ in }\mathbb Z/2011\mathbb Z.
+\]
+The data module proves exact orders of both $2$ and $B$ at the two fixed primes. Four production clients use the exact $B$ orders: two dimension-power reductions and two generator-power identities. Inspection of their conclusions shows that none asks for a least exponent.\cite{controllerdata,controllerunits,powercoordinates}
+
+One route keeps the existing checked equations $2^{23}=1$ modulo 47 and $2^{402}=1$ modulo 2011. Power commutation gives the corresponding equations for $B=2^{94517}$. Exponent congruence then proves the downstream statements without any proof that 23 or 402 is minimal.
+
+For the literal controller there is an even shorter route. Check the needed fixed residues directly at exponent $p$ and at exponent $p-1$:
+\begin{align*}
+37^{120199}&=37 &&\text{in }\mathbb Z/47\mathbb Z,\\
+1283^{120199}&=1283 &&\text{in }\mathbb Z/2011\mathbb Z,\\
+37^{120198}&=1 &&\text{in }\mathbb Z/47\mathbb Z,\\
+1283^{120198}&=1 &&\text{in }\mathbb Z/2011\mathbb Z.
+\end{align*}
+The supplied prototype checks all four with \code{reduce_mod_char}. It does not materialize the huge natural number $B$.
+
+\subsection{One fixed-point iteration lemma}
+
+\begin{lemma}
+In any monoid, if $x^p=x$, then $x^{p^n}=x$ for every $n\in\mathbb N$.
+\end{lemma}
+\begin{proof}
+At $n=0$ the exponent is one. For the induction step,
+\[
+ x^{p^{n+1}}=(x^{p^n})^p=x^p=x.
+\]
+\end{proof}
+
+\begin{Verbatim}[fontsize=\small,breaklines=true,samepage=true]
+theorem pow_power_fixed {M : Type*} [Monoid M]
+    {x : M} {p : ℕ} (h : x ^ p = x) (n : ℕ) :
+    x ^ (p ^ n) = x := by
+  induction n with
+  | zero => simp
+  | succ n ih => rw [pow_succ, pow_mul, ih, h]
+\end{Verbatim}
+
+No primality, finite-group enumeration, coprimality of an exponent, order-minimality result, or positivity of $n$ is needed for this lemma. The case $n=0$ is included and is important because the current independent dimensions allow zero exponents.
+
+After rewriting the residue of $B$, each fixed-prime \code{power_dimension} theorem becomes an application of this lemma. Each fixed-prime \code{generator_cast} theorem becomes the already checked annihilation identity at $p-1$. The auxiliary-field dimension theorem can continue using its existing Frobenius proof; replacing a good one-line proof merely for visual uniformity would not help.
+
+\subsection{What must be retained}
+
+There are two separate limits to the simplification.
+
+First, the exact fixed-prime order declarations are public and are exercised by \code{CurrentControllerData2011Checks}. The supplied patch leaves those declarations and their checks intact. It changes the sufficient dependencies of the four production proofs, not the truth or availability of stronger results.
+
+Second, the auxiliary prime-power exact order is genuinely used later:
+\[
+ \begin{gathered}
+ \text{\code{generator_order_succ}}\longrightarrow\text{\code{full_order}},\\
+ \text{\code{full_order}}\longrightarrow\text{\code{block_order}}
+ \longrightarrow\text{\code{exists_coordinates}}.
+ \end{gathered}
+\]
+That chain constructs a coordinate bijection with the required full orbit size. An arbitrary annihilating exponent would not establish the necessary injectivity and cardinality. It must not be weakened along with the four fixed-factor identities.\cite{auxiliaryorder,powercoordinates}
+
+There is also a distinction between a theorem dependency and a compilation dependency. If exact-order proofs remain in an imported module, Lean still compiles that module. A subsequent module split could put optional exact-order certificates behind a compatibility facade, but that is a separate architectural change and is not counted as an achieved speedup here.
+
+\subsection{The actual source payoff is small, the contract payoff is clear}
+
+The candidate diff retains every exact-order theorem and adds the generic iterator only once. Its two touched modules change from 306 to 305 lines in total: \textbf{one line removed}. This proposal is therefore recommended for the clearer and weaker proof obligation, not for a dramatic source reduction.
+
+The standalone experiment verifies the general monoid lemma, all four literal residue facts, and transport from an arbitrary natural $B$ satisfying the two recorded residues. Full integration of the edited controller modules was not claimed. In particular, the standalone tests do not certify the larger auxiliary orbit construction; that construction is intentionally outside this change.
+
+\section{Evidence, measurements, and what has not been established}
+\label{sec:validation}
+
+\subsection{Three levels of evidence}
+
+The archive separates three kinds of claim:
+
+\begin{enumerate}
+\item \textbf{Pinned source facts.} Source blobs, current theorem statements, repeated proof blocks, identifier references, and patch line counts are reproducible from the recorded commit and supplied scripts.
+\item \textbf{Standalone Lean results.} The mathematical controller core, constructive-enumeration bridge, and affine reflection are compiled with the pinned Lean 4.32.0 toolchain and the pinned Mathlib dependency version. Full output, including axiom reports and nonfatal warnings, is included.
+\item \textbf{Repository integration.} The diffs are proposals. A complete clean build of the entire pinned ProveIt dependency closure and a complete before/after axiom audit of all downstream theorems have not been established. Any cached-dependency module elaboration is labelled separately in its receipt.
+\end{enumerate}
+
+The final standalone logs, not an earlier failed editing attempt, determine the reported success. No \code{sorry}, \code{admit}, \code{sorryAx}, or \code{native_decide} is used as a proof shortcut in the successful core deliverables. The axiom reports expose the standard Lean axioms actually present; they do not assert axiom-free proofs.
+
+\subsection{Candidate patch measurements}
+
+\begin{tabularx}{\textwidth}{@{}p{0.06\textwidth}Xrrp{0.19\textwidth}@{}}
+\toprule
+ID & Modules & Before & After & Net reduction \\
+\midrule
+A & JonesSyntax; ExecutableJones & 479 & 430 & 49 lines \\
+B & ThirteenCarrierSoundness; ThirteenFreshSeed & 507 & 494 & 13 lines \\
+C & ExecutableJones, as an independent alternative & 300 & 258 & 42 lines \\
+D & CurrentControllerUnits2011; CurrentPowerCoordinates2011 & 306 & 305 & 1 line \\
+\bottomrule
+\end{tabularx}
+
+Counts are physical source lines, including new helper code and documentation, measured on the final candidate files. They are not counts of kernel proof terms, compiled object size, or elapsed-time improvements. A and C are independent edits to the same module; their rows must not be treated as separate copies of the module when computing a combined total. No percentage reduction across the entire project is extrapolated from these examples.
+
+\subsection{Necessary integration checks}
+
+For A, rebuild the exported theorem module before its consumer and verify both existing expression-evaluation endpoints. For B, rebuild both modules and their soundness/completeness clients against the actual current prerequisites; compare old and new public theorem types and check that the explicit witness is unchanged. For D, compare the dependencies of the four selected theorems while retaining the auxiliary-order chain and public exact-order checks. For C, verify evaluated and polynomial equality for the new syntax and explicitly review every assumption about raw trees, generated sizes, hashes, and compatibility helpers.
+
+These are remaining acceptance conditions, not an invitation to require a large unrelated test campaign. Once those concrete risks are resolved, there is no reason to repeat every historical finite-certificate computation to adopt a local proof-only change.
+
+\section{A tempting shortcut that should not be adopted}
+
+The review also considered whether a bound-code observation certificate could imply formula-code validity, thereby removing the explicit \code{IsFormCodeSem} guard from a uniqueness theorem. This would be a new shortcut relative to the screened corpus, but it is not justified by the existing interfaces.
+
+The formula-validity predicate is defined through the least constructor-closed interpretation. The bound-certificate relation supplies local postfixed observation equations. Projecting a locally closed graph does not identify it with the least generated domain. Quantifier rows also preserve the bound, so the numeric bound is not a strictly decreasing rank that would close the gap. The relevant internal \code{ZFAxioms} interface deliberately lacks Foundation/Regularity. An external natural-number induction on arbitrary internal codes would not repair that issue.\cite{boundcode,formulaclosed}
+
+This failed direction is included because it illustrates the standard used for the four positive proposals: absence from the earlier corpus is not enough. A recommendation must also remove a genuine current obligation without quietly strengthening the assumptions or weakening the intended theorem.
+
+\section{Using the archive}
+
+The report is accompanied by:
+
+\begin{itemize}
+\item \code{lean/}: four standalone proof files and their final validation output;
+\item \code{patches/}: four independent candidate diffs against the pinned source;
+\item \code{audit/}: source integrity, the complete packet exclusion ledger, incoming archive hashes, independent semantic review, exact target references, metrics, and validation scope;
+\item \code{scripts/}: commands to rebuild the report, replay the standalone checks in a Lean 4.32.0 project, and inspect the patch targets;
+\item the repository's \code{lean-toolchain} and \code{lake-manifest.json} as version evidence.
+\end{itemize}
+
+To replay the Lean cores, use an existing checkout with the recorded toolchain and dependencies and run the supplied script with that checkout as its argument. The script compiles the four standalone sources; it does not silently apply patches or infer that an integrated build passed. The report can be rebuilt with XeLaTeX from its own directory.
+
+The practical next action is to land A and B as separate proof-only changes after their focused integration gates, then evaluate D for its contract simplification. C should be reviewed as an executable compiler refactor with an explicit syntax-compatibility decision. Each change addresses work still present after the earlier proposal outcomes are granted.
+
+\appendix
+\section{Primary sources and reproducible references}
+
+All ProveIt links below are pinned to the reviewed commit. The machine-readable source-reference map includes exact line ranges, and the source-integrity receipt verifies the local bytes. Mathlib references are pinned to the dependency commit in \code{lake-manifest.json}, not to the current website's default branch.
+
+\begin{thebibliography}{99}
+\small
+\bibitem{prior} ProveIt, \emph{Lean proof simplification research, including ADOPTION.md and packets a--w}. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/9f35798db4a63c25e435fca14d75931144657d7e/Computability/DiophantineConsistency/research/lean-proof-simplification}.
+\bibitem{incoming} ProveIt, \emph{docs/incoming}, five current proposal archives and index. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/9f35798db4a63c25e435fca14d75931144657d7e/docs/incoming}.
+\bibitem{jones} ProveIt, \emph{JonesSyntax.lean}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/Computability/DiophantineConsistency/Lean/DiophantineConsistency/JonesSyntax.lean}.
+\bibitem{execjones} ProveIt, \emph{ExecutableJones.lean}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean}.
+\bibitem{fresh} ProveIt, \emph{ThirteenFreshSeed.lean}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenFreshSeed.lean}.
+\bibitem{sound} ProveIt, \emph{ThirteenCarrierSoundness.lean}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenCarrierSoundness.lean}.
+\bibitem{coding} ProveIt, \emph{Paper1982/Coding.lean}, homogeneous star definition. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/Coding.lean}.
+\bibitem{antidiag} Mathlib, \emph{Data/Fin/Tuple/NatAntidiagonal.lean}, executable lists and no-duplicates theorem. \url{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Data/Fin/Tuple/NatAntidiagonal.lean}.
+\bibitem{piantidiag} Mathlib, \emph{Algebra/Order/Antidiag/Pi.lean}, finite antidiagonal comparison. \url{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/Order/Antidiag/Pi.lean}.
+\bibitem{controllerdata} ProveIt, \emph{CurrentControllerData2011.lean}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerData2011.lean}.
+\bibitem{controllerunits} ProveIt, \emph{CurrentControllerUnits2011.lean}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerUnits2011.lean}.
+\bibitem{powercoordinates} ProveIt, \emph{CurrentPowerCoordinates2011.lean}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean}.
+\bibitem{auxiliaryorder} ProveIt, \emph{CurrentAuxiliaryOrder2011.lean}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentAuxiliaryOrder2011.lean}.
+\bibitem{boundcode} ProveIt, \emph{ObjectCodeBound.lean}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ObjectCodeBound.lean}.
+\bibitem{formulaclosed} ProveIt, \emph{FormulaClosedSet.lean}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/9f35798db4a63c25e435fca14d75931144657d7e/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/FormulaClosedSet.lean}.
+\end{thebibliography}
+\end{document}

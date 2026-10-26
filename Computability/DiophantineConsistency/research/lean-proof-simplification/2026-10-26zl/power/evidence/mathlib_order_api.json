@@ -1,0 +1,25 @@
+{
+  "repository": "leanprover-community/mathlib4",
+  "revision": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "path": "Mathlib/GroupTheory/OrderOfElement.lean",
+  "github_blob_sha": "b7ee3e5669e10e67cb1a078325053eba1f3786bb",
+  "url": "https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/GroupTheory/OrderOfElement.lean",
+  "source": "Read-only official GitHub connector response; no installation/build or repository modification.",
+  "excerpts": [
+    {
+      "start_line": 252,
+      "end_line": 260,
+      "text": "  IsPeriodicPt.minimalPeriod_le hn (by rwa [isPeriodicPt_mul_iff_pow_eq_one])\n\n@[to_additive (attr := simp)]\ntheorem orderOf_one : orderOf (1 : G) = 1 := by\n  rw [orderOf, ← minimalPeriod_id (x := (1 : G)), ← one_mul_eq_id]\n\n@[to_additive (attr := simp) AddMonoid.addOrderOf_eq_one_iff]\ntheorem orderOf_eq_one_iff : orderOf x = 1 ↔ x = 1 := by\n  rw [orderOf, minimalPeriod_eq_one_iff_isFixedPt, IsFixedPt, mul_one]"
+    },
+    {
+      "start_line": 368,
+      "end_line": 377,
+      "text": "theorem orderOf_injective {H : Type*} [Monoid H] (f : G →* H) (hf : Function.Injective f) (x : G) :\n    orderOf (f x) = orderOf x := by\n  simp_rw [orderOf_eq_orderOf_iff, ← f.map_pow, ← f.map_one, hf.eq_iff, forall_const]\n\n/-- A multiplicative equivalence preserves orders of elements. -/\n@[to_additive (attr := simp) /-- An additive equivalence preserves orders of elements. -/]\nlemma MulEquiv.orderOf_eq {H : Type*} [Monoid H] (e : G ≃* H) (x : G) :\n    orderOf (e x) = orderOf x :=\n  orderOf_injective e.toMonoidHom e.injective x\n"
+    },
+    {
+      "start_line": 1388,
+      "end_line": 1393,
+      "text": "theorem IsOfFinOrder.prod_iff : IsOfFinOrder x ↔ IsOfFinOrder x.1 ∧ IsOfFinOrder x.2 :=\n  ⟨fun h ↦ ⟨h.fst, h.snd⟩, fun h ↦ .prod_mk h.1 h.2⟩\n\n@[to_additive]\nlemma Prod.orderOf_mk : orderOf (a, b) = Nat.lcm (orderOf a) (orderOf b) :=\n  (a, b).orderOf"
+    }
+  ]
+}

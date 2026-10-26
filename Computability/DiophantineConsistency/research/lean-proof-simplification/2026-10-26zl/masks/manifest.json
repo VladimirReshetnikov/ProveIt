@@ -1,0 +1,67 @@
+{
+  "pin": "9f35798db4a63c25e435fca14d75931144657d7e",
+  "status": "uncompiled Lean candidates; static and finite tests only",
+  "tokenizer": "[\\w\\u0080-\\uffff]+|[^\\w\\s] after removing block and line comments; not Lean parser tokens",
+  "candidates": [
+    {
+      "file": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordPadding2011.lean",
+      "target": "bit3_clear_of_residue",
+      "baseline_sha256": "dcf9b865df831b0c7f4de2aa0e9060c88fd62d6fae2dd0497ea0aa2f36c6b6d7",
+      "candidate_sha256": "32b3612c45b0664b4fee21b3b1c4ae2675ba1106fab119c77a14409ccbf2c9dd",
+      "old_body": "  apply (PaddingStaircase.bit3_mask_iff x).mpr\n  have hb : (x%2048).testBit 3 = false := Nat.testBit_lt_two_pow (by omega)\n  have he := Nat.testBit_mod_two_pow x 11 3\n  change (x%2048).testBit 3 = _ at he\n  simp only [show (3 < 11) = True from propext (by decide),decide_true,Bool.true_and] at he\n  rwa [he] at hb",
+      "new_body": "  simpa only [PaddingStaircase.bit3_mask_iff, Nat.testBit_mod_two_pow,\n    show (3 < 11) = True from propext (by decide), decide_true, Bool.true_and] using\n    (Nat.testBit_lt_two_pow (show x%2^11 < 2^3 by omega))",
+      "old_body_metrics": {
+        "physical_lines": 6,
+        "code_lines": 6,
+        "lexical_tokens": 86
+      },
+      "new_body_metrics": {
+        "physical_lines": 3,
+        "code_lines": 3,
+        "lexical_tokens": 52
+      },
+      "old_module_metrics": {
+        "physical_lines": 224,
+        "code_lines": 175,
+        "lexical_tokens": 2587
+      },
+      "new_module_metrics": {
+        "physical_lines": 221,
+        "code_lines": 172,
+        "lexical_tokens": 2553
+      },
+      "new_helpers": 0,
+      "new_imports": 0,
+      "public_contract_changed": false,
+      "body_delta": {
+        "physical_lines": -3,
+        "code_lines": -3,
+        "lexical_tokens": -34
+      },
+      "module_delta": {
+        "physical_lines": -3,
+        "code_lines": -3,
+        "lexical_tokens": -34
+      }
+    }
+  ],
+  "dependency_bindings": {
+    "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordHighMask2011.lean": "f14b90ec3d4210c75dce2e4ece4de6f50bb1b2069e26b9329309eadd1c7da74a",
+    "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordOrigin2011.lean": "6b6bb89e40422745154e5ef990d9909a65b740d43e86842b54fde887f5de3f56",
+    "Computability/DiophantineConsistency/Lean/DiophantineConsistency/PaddingStaircase.lean": "b75d9c9cf430b4e3f8b020246c75eefd9c367f740cc6b1a99bc5de4859fb4932",
+    "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordConstruction2011.lean": "9455d6c2015906a8f76ff2be5275a95cae5340f0ca3e8dc16666ffc6bab2b5b8",
+    "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentWordScalarWitness2011.lean": "8a644c7eb65bff5016d28a992e2db477bb5341b33fa31e92f1a086a0d0e4879e"
+  },
+  "totals": {
+    "physical_lines": -3,
+    "code_lines": -3,
+    "lexical_tokens": -34
+  },
+  "rejected": [
+    {
+      "target": "CurrentWordScalarWitness2011.q_prefix",
+      "reason": "Exact predecessor-exponent normalization already proposed as E41 in packet f report/sections/02_local.tex:145–164; no delivered candidate or savings.",
+      "previously_explored": true
+    }
+  ]
+}

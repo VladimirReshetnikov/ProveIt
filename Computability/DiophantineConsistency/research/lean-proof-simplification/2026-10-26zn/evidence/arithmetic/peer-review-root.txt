@@ -1,0 +1,29 @@
+Independent static review of weighted-update and origin-reuse proposals
+
+Reviewed current root/WeightedUpdates.lean and root/OriginReuse.lean against
+CurrentDummyMutation2011.lean, NativeCyclicConvolution.lean,
+CurrentWordOrigin2011.lean, and the retained CurrentReflectedGeometry interface.
+
+Weighted update: the finite sum identity is valid over Nat without subtraction,
+digit bounds, or carry assumptions. Every unaffected coordinate is preserved;
+the selected contribution rises by delta*w(i). Boolean update is valid for every
+ZMod N including N=0 because it requires only the existing pointwise bound. The
+current source mutation transports and ordinary nonwrapping premise remain
+unchanged. Earlier unannotated field projection in the fixture was corrected;
+the final compiler status is owned by root. The standalone word expression is
+identical to production, though the complete declaration has moved section
+parameters into explicit binders and therefore is not literally byte-for-byte
+identical as a declaration.
+
+Origin reuse: reflected_source with h=0 and p<=985 has false condition
+1005<=p, so the reflected coefficient is zero. This covers a one-cell cycle as well as larger positive dimensions. It uses exactly the
+existing periodic support and aligned-base assumptions, no added matching,
+marker, or origin-cleanliness premise. Finite summation then yields zero for the
+reflected component. The three bare taps still require their existing source
+lemmas, which are proved in origin_bare_zero and retained by the integration
+plan. The normalized-origin carry and mask obligations remain downstream and
+are not silently discharged by this simplification.
+
+Conclusion: both proof mechanisms are sound as stated. This is independent
+source/mathematical review, not a substitute for final Lean compilation or a
+claim that production clients were rebuilt.

@@ -1,0 +1,60 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean
+@@ -17,15 +17,10 @@
+ theorem order_product {a b : ℕ} (hab : Nat.Coprime a b) (x k : ℕ) :
+     orderOf ((x : ZMod (a*b))^k) =
+       Nat.lcm (orderOf ((x : ZMod a)^k)) (orderOf ((x : ZMod b)^k)) := by
+-  let e := ZMod.chineseRemainder hab
+-  have hm : e ((x : ZMod (a*b))^k) = ((x : ZMod a)^k,(x : ZMod b)^k) := by
+-    rw [map_pow, map_natCast]
+-    rfl
+   calc
+-    _ = orderOf (e ((x : ZMod (a*b))^k)) :=
+-      (e.toMulEquiv.orderOf_eq _).symm
+-    _ = orderOf (((x : ZMod a)^k,(x : ZMod b)^k)) := congrArg orderOf hm
+-    _ = _ := Prod.orderOf_mk
++    _ = orderOf (ZMod.chineseRemainder hab ((x : ZMod (a*b))^k)) :=
++      ((ZMod.chineseRemainder hab).toMulEquiv.orderOf_eq _).symm
++    _ = _ := by rw [map_pow, map_natCast]; exact Prod.orderOf_mk
+ 
+ theorem generator_cast_47 : (B : ZMod 47)^(auxiliary-1) = 1 := by
+   rw [← orderOf_dvd_iff_pow_eq_one, B_order_47]
+@@ -44,9 +39,8 @@
+   simp
+ 
+ theorem generator_cast_auxiliary : (B : ZMod auxiliary)^(auxiliary-1) = 1 := by
+-  have hc : ((B^(auxiliary-1) : ℕ) : ZMod auxiliary) = ((1 : ℕ) : ZMod auxiliary) :=
+-    (ZMod.natCast_eq_natCast_iff' _ _ _).mpr (by rw [generator_mod_prime]; decide)
+-  simpa only [Nat.cast_pow, Nat.cast_one] using hc
++  apply orderOf_eq_one_iff.mp
++  simpa only [zero_add, pow_one, pow_zero] using generator_order_succ 0
+ 
+ theorem fixed_auxiliary_coprime : Nat.Coprime d auxiliary := by decide
+ 
+@@ -59,23 +53,15 @@
+ 
+ theorem generator_cast_C0 : (B : ZMod (d*auxiliary))^(auxiliary-1) = 1 := by
+   apply orderOf_eq_one_iff.mp
+-  rw [order_product fixed_auxiliary_coprime, generator_cast_fixed,
+-    generator_cast_auxiliary]
+-  simp
+-
+-/-- Explicit modulus transport avoids any evaluation of the huge base. -/
+-private theorem order_transport (x k m n : ℕ) (h : m = n) :
+-    orderOf ((x : ZMod m)^k) = orderOf ((x : ZMod n)^k) := by
+-  subst n
+-  rfl
++  simpa only [zero_add, pow_one, pow_zero] using full_order 0
+ 
+ theorem modulus_factorization (k : ℕ) : (d*auxiliary)*auxiliary^k = d*auxiliary^(k+1) := by
+   rw [pow_succ]
+   ring
+ 
+ theorem block_order (k : ℕ) :
+-    orderOf ((B : ZMod ((d*auxiliary)*auxiliary^k))^(auxiliary-1)) = auxiliary^k :=
+-  (order_transport B (auxiliary-1) _ _ (modulus_factorization k)).trans (full_order k)
++    orderOf ((B : ZMod ((d*auxiliary)*auxiliary^k))^(auxiliary-1)) = auxiliary^k := by
++  simpa only [modulus_factorization] using full_order k
+ 
+ theorem block_projection (k : ℕ) :
+     ZMod.castHom (dvd_mul_right (d*auxiliary) (auxiliary^k)) (ZMod (d*auxiliary))

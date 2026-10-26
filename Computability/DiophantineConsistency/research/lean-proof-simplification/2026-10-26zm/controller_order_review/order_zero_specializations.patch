@@ -1,0 +1,25 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean
+@@ -44,9 +44,8 @@
+   simp
+ 
+ theorem generator_cast_auxiliary : (B : ZMod auxiliary)^(auxiliary-1) = 1 := by
+-  have hc : ((B^(auxiliary-1) : ℕ) : ZMod auxiliary) = ((1 : ℕ) : ZMod auxiliary) :=
+-    (ZMod.natCast_eq_natCast_iff' _ _ _).mpr (by rw [generator_mod_prime]; decide)
+-  simpa only [Nat.cast_pow, Nat.cast_one] using hc
++  apply orderOf_eq_one_iff.mp
++  simpa only [Nat.zero_add, pow_one, pow_zero] using generator_order_succ 0
+ 
+ theorem fixed_auxiliary_coprime : Nat.Coprime d auxiliary := by decide
+ 
+@@ -59,9 +58,7 @@
+ 
+ theorem generator_cast_C0 : (B : ZMod (d*auxiliary))^(auxiliary-1) = 1 := by
+   apply orderOf_eq_one_iff.mp
+-  rw [order_product fixed_auxiliary_coprime, generator_cast_fixed,
+-    generator_cast_auxiliary]
+-  simp
++  simpa only [Nat.zero_add, pow_one, pow_zero] using full_order 0
+ 
+ /-- Explicit modulus transport avoids any evaluation of the huge base. -/
+ private theorem order_transport (x k m n : ℕ) (h : m = n) :

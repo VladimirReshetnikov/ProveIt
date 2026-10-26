@@ -1,0 +1,152 @@
+{
+  "commit": "9f35798db4a63c25e435fca14d75931144657d7e",
+  "scanned_local_lean_files": 1010,
+  "complete_maintained_lean_files": 686,
+  "scan_scope": "Every local .lean file in extracted ProveIt tree; complete maintained DiophantineConsistency/Lean tree and selected historical artifacts. Does not cover unextracted repository files outside this scope. Textual identifier search, including declarations and comments.",
+  "symbols": [
+    "vectorSum",
+    "eval_vectorSum",
+    "sum_bounded_eq_star",
+    "starSum",
+    "eval_starSum"
+  ],
+  "matching_files": [
+    "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean"
+  ],
+  "occurrence_lines": [
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 29,
+      "symbols": [
+        "vectorSum"
+      ],
+      "maintained_source": true,
+      "source": "def vectorSum {\u03c3 : Type*} : (n : \u2115) \u2192 ((Fin n \u2192 Fin 5) \u2192 Expr \u03c3) \u2192 Expr \u03c3"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 31,
+      "symbols": [
+        "vectorSum"
+      ],
+      "maintained_source": true,
+      "source": "  | n + 1, f => rangeSum 5 fun a => vectorSum n fun b => f (Fin.cons a b)"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 33,
+      "symbols": [
+        "eval_vectorSum"
+      ],
+      "maintained_source": true,
+      "source": "@[simp] theorem eval_vectorSum {\u03c3 : Type*} (n : \u2115)"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 35,
+      "symbols": [
+        "vectorSum"
+      ],
+      "maintained_source": true,
+      "source": "    (vectorSum n f).eval v = \u2211 k, (f k).eval v := by"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 38,
+      "symbols": [
+        "vectorSum"
+      ],
+      "maintained_source": true,
+      "source": "    simp only [vectorSum, Fintype.sum_unique]"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 41,
+      "symbols": [
+        "vectorSum"
+      ],
+      "maintained_source": true,
+      "source": "    simp only [vectorSum, eval_rangeSum, ih]"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 50,
+      "symbols": [
+        "sum_bounded_eq_star"
+      ],
+      "maintained_source": true,
+      "source": "theorem sum_bounded_eq_star {M : Type*} [AddCommMonoid M] (\u03bd : \u2115)"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 71,
+      "symbols": [
+        "starSum"
+      ],
+      "maintained_source": true,
+      "source": "def starSum {\u03c3 : Type*} (\u03bd : \u2115) (f : (Fin (\u03bd + 2) \u2192 \u2115) \u2192 Expr \u03c3) : Expr \u03c3 :="
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 72,
+      "symbols": [
+        "vectorSum"
+      ],
+      "maintained_source": true,
+      "source": "  vectorSum (\u03bd + 2) fun k =>"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 75,
+      "symbols": [
+        "eval_starSum"
+      ],
+      "maintained_source": true,
+      "source": "@[simp] theorem eval_starSum {\u03c3 : Type*} (\u03bd : \u2115)"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 77,
+      "symbols": [
+        "starSum"
+      ],
+      "maintained_source": true,
+      "source": "    (starSum \u03bd f).eval v = \u2211 k \u2208 star \u03bd 4, (f k).eval v := by"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 78,
+      "symbols": [
+        "starSum",
+        "eval_vectorSum"
+      ],
+      "maintained_source": true,
+      "source": "  rw [starSum, eval_vectorSum]"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 80,
+      "symbols": [
+        "sum_bounded_eq_star"
+      ],
+      "maintained_source": true,
+      "source": "    sum_bounded_eq_star \u03bd (fun k => (f k).eval v)"
+    },
+    {
+      "path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ExecutableJones.lean",
+      "line": 115,
+      "symbols": [
+        "starSum"
+      ],
+      "maintained_source": true,
+      "source": "  starSum \u03bd fun k =>"
+    }
+  ],
+  "occurrences_by_symbol": {
+    "vectorSum": 6,
+    "eval_vectorSum": 2,
+    "sum_bounded_eq_star": 2,
+    "starSum": 4,
+    "eval_starSum": 1
+  }
+}

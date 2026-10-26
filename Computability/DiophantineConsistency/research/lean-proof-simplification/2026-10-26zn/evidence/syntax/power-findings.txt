@@ -1,0 +1,33 @@
+POWER-MAP FIXED POINTS FOR THE CURRENT CONTROLLER
+
+Source pin: e1c8914bc7064d9a8e7c06171a18069a949badd0.
+Target: Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentControllerUnits2011.lean, power_dimension_47 (line 48), power_dimension_2011 (line 58), power_dimension_auxiliary (line 68). The first two current proofs recover a power-one statement from orderOf, reduce the exponent modulo the corresponding order (23 or 402), and apply pow_eq_pow_of_modEq. The third installs the primality instance and uses the finite-field Frobenius theorem ZMod.pow_card_pow.
+
+NEW DELTA
+Treat all three as instances of a single fixed-point statement in an arbitrary monoid:
+  x^a=x  ==>  for every n:Nat, x^(a^n)=x.
+The n=0 case is x^1=x. For n+1, use
+  x^(a^(n+1)) = x^((a^n)*a) = (x^(a^n))^a = x^a = x.
+This needs neither commutativity, invertibility nor primality. It is not an assertion that a Frobenius map is a homomorphism over a composite modulus. It is a fixed-point identity for one distinguished base.
+
+The exact one-step residues are:
+  (37:ZMod 47)^120199 = 37;
+  (1283:ZMod 2011)^120199 = 1283;
+  (37435:ZMod 120199)^120199 = 37435.
+All three seeds were checked with reduce_mod_char, and the symbolic-B wrappers use only the already existing B_cast_* facts. The original huge B need not be evaluated by any new lemma. The seed exponent is a fixed integer; computation is modular repeated squaring, not expansion of the natural power B^120199.
+
+CURRENT PATCH
+controller-power-fixed.patch retains all three public theorem statements, all executable definitions, both auxiliary_modEq_* public lemmas, and the later coprimality/unit results. It adds a private six-line generic proof, changes the three bodies, removes the no-longer-needed FieldTheory.Finite.Basic import, and updates the module description to reflect the new proof mechanism. It leaves the checked order theorems in CurrentControllerData2011 available to their other clients. The change is 201 -> 196 physical lines; 151 -> 146 nonempty noncomment code lines, helper/import included. This is a modest size improvement; the stronger gain is having one mechanism and one proof obligation form for all three power reductions. No compiler speedup is claimed.
+
+NOVELTY
+/root/novelty_audit found no such power_dimension/Frobenius/power-map fixed-point proposal in rounds a-w or the five incoming ZIPs. Earlier scanner iteration is an excluded generic recurrence idea; this proposal's new source-specific contribution is that the controller does not need full finite-field or multiplicative-order structure to propagate these exact three residues. The standalone claim 'induction can be abstracted' is not being advertised as novel.
+
+VALIDATION
+PowerFixedPoint.lean compiled successfully under Lean 4.32.0 with mathlib 81a5d257c8e410db227a6665ed08f64fea08e997. It checks the monoid theorem, exact numeric seeds, symbolic-B wrappers, n=0, and the optional a=0 edge (where the premise forces x=1). No sorry, new axiom declaration or native_decide is used. Generic theorem axiom set is [propext]; concrete wrappers use [propext, Classical.choice, Quot.sound]. This is isolated formal checking, not a full production module/client rebuild.
+ControllerPowerComparison.lean is the stronger before/after arithmetic fixture. It copies the relevant exact source constants and source arithmetic proofs, including the original order-derived and Frobenius proof bodies, rather than assuming those arithmetic facts. It uses a local radix definition with the same literal 2^47 and width 94517 and leaves all the new proof bodies identical. This stronger comparison was interrupted after worker I/O stalled in folio_wait_bit_common, with no compiler diagnostics. A final narrower concrete-after fixture was also interrupted in the same kernel I/O state; neither is claimed compiler-validated. The surrounding source K dependency is deliberately absent and no production-client validation is inferred.
+
+SYNTHESIS WITH THE ARITHMETIC AGENT
+The same monoid theorem can propagate one fixed-point certificate modulo M=47*2011*120199=11360848883. This yields both independent dimensions q(n) and B^(dimension(rw)) equal to B modulo M. Combined with the common K residue and the unchanged natural-subtraction bound 1<=q(n)^2, Gamma(rw,n) has one fixed residue modulo M. A single coprimality certificate modulo M then lifts to d*auxiliary^n via coprime_mul_iff_right and pow_right. That synthesis is being developed and checked by arithmetic_ideas; it is one extension of the shared certificate approach, not an independently counted fifth idea. Keep both exponents arbitrary, including zero, and preserve the subtraction guard.
+
+REPLAY
+Set LEAN_PATH to the pinned mathlib/dependency olean paths, then run lean PowerFixedPoint.lean and lean ControllerPowerComparison.lean. In the actual ProveIt checkout, apply the patch and rebuild CurrentControllerUnits2011 and CurrentControllerUnits2011Checks, followed by relevant unit/controller clients. Source hashes and exact metrics are in power-metrics.json. The standalone check does not justify declaring the production patch integrated.

@@ -1,0 +1,43 @@
+Pinned repository source: 9f35798db4a63c25e435fca14d75931144657d7e
+Compiler: Lean 4.32.0, x86_64-unknown-linux-gnu, Release.
+Compiler commit: 8c9756b28d64dab099da31a4c09229a9e6a2ef35.
+The available Mathlib cache was accepted by this compiler.
+
+FixedPointCore.lean: compiled successfully, exit status 0.
+The final compile emitted FixedPointCore.olean, subsequently imported by
+GammaCertificate.lean. Both the detailed and compact Pell proof passed.
+
+'ProofSimplification20261026.fixed_power' depends on axioms: [propext]
+'ProofSimplification20261026.coprime_power_modulus' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ProofSimplification20261026.gamma_specialization' depends on axioms: [propext]
+'ProofSimplification20261026.sixteen_pow_bound_quadratic' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ProofSimplification20261026.sixteen_pow_bound_short' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+GammaCertificate.lean: compiled successfully, exit status 0.
+
+'ProofSimplification20261026.kernel_residue_CRT' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ProofSimplification20261026.gamma_residue' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ProofSimplification20261026.gamma_coprime_all' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ProofSimplification20261026.gamma_current_from_kernel_residues' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+
+No sorry, axioms supplied by the author, or native_decide occurs in these files.
+The final current specialization uses explicit K-residue hypotheses with exactly
+the types of the existing CurrentKernelResidues2011 proofs. It does not assert
+that the literal repository kernel was independently rebuilt in this check.
+
+GammaRepositoryAdapter.lean: integration sketch, NOT COMPILED.
+PellQuadratic.patch: exact theorem body checked in isolation; full module/client
+build not performed here. The old theorem type is retained.
+
+Reproduction from a project with the pinned Mathlib environment, with these
+files placed together in a relative directory called algebra:
+  lake env lean -o algebra/FixedPointCore.olean algebra/FixedPointCore.lean
+  lake env bash -c 'LEAN_PATH="$PWD/algebra:$LEAN_PATH" lean algebra/GammaCertificate.lean'
+
+Checked source hashes (SHA-256):
+  FixedPointCore.lean: 9a1e0887c68f8415c5fd74bf43b3fc20546b4aaa5bb10d4f500b8a2ea5cc0141
+  GammaCertificate.lean: 48a18114981b238e152d0bec8f660e51d8c1df965f02c7f09f744bb9ee7eac21
+  PellQuadratic.patch: bdb76857d13c09f0670b0a307c0d9ce610abeda80a739718c5fcbba539c80304
+  finite_certificate.json: 8b2ef63e2f119ff2a16917197c7c84d148618612c1def9d1cc0aa67e2572d955

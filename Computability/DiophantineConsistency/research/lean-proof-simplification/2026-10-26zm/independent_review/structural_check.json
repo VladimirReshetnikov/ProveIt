@@ -1,0 +1,246 @@
+{
+  "pin": "e1c8914bc7064d9a8e7c06171a18069a949badd0",
+  "files": [
+    {
+      "file": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/IterationSize.lean",
+      "candidate_path": "fixtures/IterationSize.candidate.lean",
+      "source_manifest_sha256_matches": true,
+      "source_git_blob_matches": true,
+      "source_sha256": "cb450f76d0eb442ca656310fcd67b07c3966d49552376fb17d30a1a5837fac56",
+      "candidate_sha256": "b9bef864c4dcf5bd24ece3dea7824141916b5a392d4cea67d65461ad606ff371",
+      "source_lines": 163,
+      "candidate_lines": 161,
+      "source_delta_lines": 2,
+      "statements": [
+        {
+          "theorem": "iterate_depth",
+          "statement_identical": true
+        }
+      ],
+      "changed_regions": [
+        {
+          "kind": "replace",
+          "source_start": 72,
+          "source_end": 74,
+          "candidate_start": 72,
+          "candidate_end": 72,
+          "removed": [
+            "    (DirectGraphEnumerator.iterate p initial).depth = (rows p initial).depth := by",
+            "  have he : (DirectGraphEnumerator.iterate p initial).expression = (rows p initial).expression := rfl",
+            "  exact congrArg Expr.depth he"
+          ],
+          "added": [
+            "    (DirectGraphEnumerator.iterate p initial).depth = (rows p initial).depth := rfl"
+          ]
+        }
+      ],
+      "validation": "source inspection only; no Lean invocation",
+      "novelty_status": "RETAINED_AFTER_CLOSING_SCREEN",
+      "eligible_new_lines_saved": 2
+    },
+    {
+      "file": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/SidonPositions.lean",
+      "candidate_path": "fixtures/SidonPositions.candidate.lean",
+      "source_manifest_sha256_matches": true,
+      "source_git_blob_matches": true,
+      "source_sha256": "e3f637d5eaffc23facb5b0b4f901cee030bb6ee046dc544b9d34ed9b04f95c9f",
+      "candidate_sha256": "a8eb2b54493180001e9daa513b84dd70dc69acd3ec87ec2a813d90289a0fb51a",
+      "source_lines": 168,
+      "candidate_lines": 164,
+      "source_delta_lines": 4,
+      "statements": [
+        {
+          "theorem": "weight_injective",
+          "statement_identical": true
+        },
+        {
+          "theorem": "pairWeight_injective",
+          "statement_identical": true
+        }
+      ],
+      "changed_regions": [
+        {
+          "kind": "replace",
+          "source_start": 97,
+          "source_end": 100,
+          "candidate_start": 97,
+          "candidate_end": 98,
+          "removed": [
+            "  have hp : weight m i + weight m 0 = weight m j + weight m 0 := by rw [h]",
+            "  rcases (weight_sum_eq_iff i 0 j 0).mp hp with h | h",
+            "  \u00b7 exact h.1",
+            "  \u00b7 exact h.1.trans h.2"
+          ],
+          "added": [
+            "  rcases (weight_sum_eq_iff i i j j).mp (congrArg (fun n => n + n) h) with h | h <;>",
+            "    exact h.1"
+          ]
+        },
+        {
+          "kind": "replace",
+          "source_start": 157,
+          "source_end": 162,
+          "candidate_start": 155,
+          "candidate_end": 158,
+          "removed": [
+            "  \u00b7 have hi : p.val.1 = q.val.1 := by",
+            "      apply le_antisymm",
+            "      \u00b7 simpa only [h2] using p.property",
+            "      \u00b7 simpa only [\u2190 h1] using q.property",
+            "    have hj : p.val.2 = q.val.2 := h2.trans (hi.symm.trans h1)",
+            "    exact Subtype.ext (Prod.ext hi hj)"
+          ],
+          "added": [
+            "  \u00b7 have hp := p.property",
+            "    have hq := q.property",
+            "    apply Subtype.ext",
+            "    apply Prod.ext <;> apply Fin.ext <;> omega"
+          ]
+        }
+      ],
+      "validation": "source inspection only; no Lean invocation",
+      "novelty_status": "RETAINED_AFTER_CLOSING_SCREEN",
+      "eligible_new_lines_saved": 4
+    },
+    {
+      "file": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942PhysicalOrder.lean",
+      "candidate_path": "fixtures/WangTiles942PhysicalOrder.candidate.lean",
+      "source_manifest_sha256_matches": true,
+      "source_git_blob_matches": true,
+      "source_sha256": "eafbd5914bf4219d6ce48b501c8be41c228253ef719b65a02e7d167ada0ce3e9",
+      "candidate_sha256": "da39dd1f505ee86395df7aa7a527113abcecdc8470d28ba18ea74040873d2820",
+      "source_lines": 180,
+      "candidate_lines": 156,
+      "source_delta_lines": 24,
+      "statements": [
+        {
+          "theorem": "strictMono_fin_eq_self",
+          "statement_identical": true
+        }
+      ],
+      "changed_regions": [
+        {
+          "kind": "replace",
+          "source_start": 70,
+          "source_end": 97,
+          "candidate_start": 70,
+          "candidate_end": 73,
+          "removed": [
+            "  have hs := Finite.surjective_of_injective hf.injective",
+            "  have fixed : \u2200 k, \u2200 hk : k<n, (f \u27e8k,hk\u27e9).val=k := by",
+            "    intro k",
+            "    induction k using Nat.strong_induction_on with",
+            "    | h k ih =>",
+            "      intro hk",
+            "      obtain \u27e8j,hj\u27e9 := hs \u27e8k,hk\u27e9",
+            "      by_cases hlt : j.val<k",
+            "      \u00b7 have hjfix := ih j.val hlt j.isLt",
+            "        have hjval := congrArg Fin.val hj",
+            "        change (f j).val=j.val at hjfix",
+            "        change (f j).val=k at hjval",
+            "        omega",
+            "      \u00b7 by_cases he : j.val=k",
+            "        \u00b7 have he' : j=\u27e8k,hk\u27e9 := Fin.ext he",
+            "          simpa only [he'] using congrArg Fin.val hj",
+            "        \u00b7 have hl : (\u27e8k,hk\u27e9 : Fin n)<j := by",
+            "            change k<j.val",
+            "            omega",
+            "          have hm := hf hl",
+            "          have hv : (f \u27e8k,hk\u27e9).val<k := by",
+            "            rw [hj] at hm",
+            "            exact hm",
+            "          have hh := ih (f \u27e8k,hk\u27e9).val hv (f \u27e8k,hk\u27e9).isLt",
+            "          have he' : f (f \u27e8k,hk\u27e9)=f \u27e8k,hk\u27e9 := Fin.ext hh",
+            "          have hc := congrArg Fin.val (hf.injective he')",
+            "          omega",
+            "  exact Fin.ext (fixed i.val i.isLt)"
+          ],
+          "added": [
+            "  let e : Fin n \u2243o Fin n :=",
+            "    \u27e8Equiv.ofBijective f \u27e8hf.injective, Finite.surjective_of_injective hf.injective\u27e9,",
+            "      hf.le_iff_le\u27e9",
+            "  exact Fin.ext (Fin.coe_orderIso_apply e i)"
+          ]
+        }
+      ],
+      "validation": "source inspection only; no Lean invocation",
+      "novelty_status": "EXCLUDED_EXACT_DUPLICATE_CLOSING_ZH",
+      "eligible_new_lines_saved": 0
+    },
+    {
+      "file": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/CurrentPowerCoordinates2011.lean",
+      "candidate_path": "fixtures/CurrentPowerCoordinates2011.candidate.lean",
+      "source_manifest_sha256_matches": true,
+      "source_git_blob_matches": true,
+      "source_sha256": "53853c593225c4a616b0701bdbcd6773846e3a4add7cc5f653a9c7609bf96497",
+      "candidate_sha256": "fd0adb00d2b0307b47cf02f58dc961d6ccc0ba9d41ddeed731d1ba708f54e4ae",
+      "source_lines": 105,
+      "candidate_lines": 102,
+      "source_delta_lines": 3,
+      "statements": [
+        {
+          "theorem": "generator_cast_auxiliary",
+          "statement_identical": true
+        },
+        {
+          "theorem": "generator_cast_C0",
+          "statement_identical": true
+        }
+      ],
+      "changed_regions": [
+        {
+          "kind": "replace",
+          "source_start": 47,
+          "source_end": 49,
+          "candidate_start": 47,
+          "candidate_end": 48,
+          "removed": [
+            "  have hc : ((B^(auxiliary-1) : \u2115) : ZMod auxiliary) = ((1 : \u2115) : ZMod auxiliary) :=",
+            "    (ZMod.natCast_eq_natCast_iff' _ _ _).mpr (by rw [generator_mod_prime]; decide)",
+            "  simpa only [Nat.cast_pow, Nat.cast_one] using hc"
+          ],
+          "added": [
+            "  apply orderOf_eq_one_iff.mp",
+            "  simpa only [Nat.zero_add, pow_one, pow_zero] using generator_order_succ 0"
+          ]
+        },
+        {
+          "kind": "replace",
+          "source_start": 62,
+          "source_end": 64,
+          "candidate_start": 61,
+          "candidate_end": 61,
+          "removed": [
+            "  rw [order_product fixed_auxiliary_coprime, generator_cast_fixed,",
+            "    generator_cast_auxiliary]",
+            "  simp"
+          ],
+          "added": [
+            "  simpa only [Nat.zero_add, pow_one, pow_zero] using full_order 0"
+          ]
+        }
+      ],
+      "validation": "source inspection only; no Lean invocation",
+      "novelty_status": "RETAINED_AFTER_CLOSING_SCREEN",
+      "eligible_new_lines_saved": 3
+    }
+  ],
+  "mathlib_binding_checks": [
+    {
+      "path": "Mathlib/Order/Fin/Basic.lean",
+      "sha256_matches": true,
+      "git_blob_matches": true,
+      "pinned_revision_matches": true
+    },
+    {
+      "path": "Mathlib/Logic/Equiv/Defs.lean",
+      "sha256_matches": true,
+      "git_blob_matches": true,
+      "pinned_revision_matches": true
+    }
+  ],
+  "total_reviewed_source_delta": 33,
+  "eligible_new_lines_saved": 9,
+  "accounting_note": "Sidon raw-source168\u2192164; assumed prior161\u2192new157. Prior7 not reclaimed.",
+  "proof_status": "UNCOMPILED"
+}

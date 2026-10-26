@@ -1,0 +1,56 @@
+{
+  "patches_commute_exact_bytes": true,
+  "fuzz": 0,
+  "source_sha256": "e3f637d5eaffc23facb5b0b4f901cee030bb6ee046dc544b9d34ed9b04f95c9f",
+  "assumed_applied_baseline_lines": 161,
+  "round5_composed_lines": 157,
+  "new_lines_saved": 4,
+  "prior_lines_saved_not_reclaimed": 7,
+  "validation": "patch application and byte identity only; no Lean invocation",
+  "receipts": [
+    {
+      "sequence": "prior_then_round5",
+      "steps": [
+        {
+          "patch": "fixtures/sidon_assumed_prior.patch",
+          "patch_sha256": "c2512bbf4cdcf4c591419991c9caf7deb56552dc633de404e58a0f699c0827c4",
+          "exit_code": 0,
+          "stdout": "patching file Computability/DiophantineConsistency/Lean/DiophantineConsistency/SidonPositions.lean\n",
+          "stderr": "",
+          "result_lines": 161
+        },
+        {
+          "patch": "fixtures/sidon_round5.patch",
+          "patch_sha256": "a81d2cff9661dfc9eeb86b7dcc786cb1613649f9c8f382dc13aafc7a33ddc71d",
+          "exit_code": 0,
+          "stdout": "patching file Computability/DiophantineConsistency/Lean/DiophantineConsistency/SidonPositions.lean\nHunk #1 succeeded at 87 (offset -7 lines).\nHunk #2 succeeded at 145 (offset -7 lines).\n",
+          "stderr": "",
+          "result_lines": 157
+        }
+      ],
+      "final_sha256": "08e26a516324b10efe55199ec2f4479120ec7d110dffa1c420272c09f1230380"
+    },
+    {
+      "sequence": "round5_then_prior",
+      "steps": [
+        {
+          "patch": "fixtures/sidon_round5.patch",
+          "patch_sha256": "a81d2cff9661dfc9eeb86b7dcc786cb1613649f9c8f382dc13aafc7a33ddc71d",
+          "exit_code": 0,
+          "stdout": "patching file Computability/DiophantineConsistency/Lean/DiophantineConsistency/SidonPositions.lean\n",
+          "stderr": "",
+          "result_lines": 164
+        },
+        {
+          "patch": "fixtures/sidon_assumed_prior.patch",
+          "patch_sha256": "c2512bbf4cdcf4c591419991c9caf7deb56552dc633de404e58a0f699c0827c4",
+          "exit_code": 0,
+          "stdout": "patching file Computability/DiophantineConsistency/Lean/DiophantineConsistency/SidonPositions.lean\n",
+          "stderr": "",
+          "result_lines": 157
+        }
+      ],
+      "final_sha256": "08e26a516324b10efe55199ec2f4479120ec7d110dffa1c420272c09f1230380"
+    }
+  ]
+}

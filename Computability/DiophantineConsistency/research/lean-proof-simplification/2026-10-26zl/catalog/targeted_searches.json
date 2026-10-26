@@ -1,0 +1,756 @@
+{
+  "pin": "9f35798db4a63c25e435fca14d75931144657d7e",
+  "method": "Case-insensitive targeted text search of placed and incoming manuscript/report/note text (.tex,.md,.txt), excluding baseline/provenance/sources/library/dependencies directories. Catalog duplicates may occur. Exact source lines retained. Search is supplementary to semantic baseline, never the sole novelty test.",
+  "text_files": 289,
+  "queries": [
+    {
+      "id": "prime_power_order",
+      "regex": "orderOf|prime.power|principal.unit|order_product|generator_cast",
+      "hits": [
+        {
+          "source": "docs/incoming/diophantine-lean-further-deltas-2026-10-26.zip!diophantine-lean-further-deltas-2026-10-26/evidence/EXCLUSIONS.md",
+          "sha256": "fbed559ff72eb20c44dbdd6a9fa3196a4df77d423ce58555775da35a85d4f838",
+          "matches": [
+            {
+              "line": 133,
+              "text": "| Internal-natural LinearOrder from strict total order | Provisionally distinct | No strict-order reconstruction proposal or linearOrderOfSTO/IsStrictTotalOrder mention found. Preserve the current <= definition or prove adapter compatibility. |"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/diophantine-lean-further-deltas-2026-10-26.zip!diophantine-lean-further-deltas-2026-10-26/report/report.tex",
+          "sha256": "c0d2ee1579676dcde451a64991cd313b640f96821f4ec82b78c97fd56b85e3a8",
+          "matches": [
+            {
+              "line": 430,
+              "text": "The pinned mathlib provides \\code{linearOrderOfSTO} for a strict total order. Registering the existing strict-order facts and invoking that constructor can replace much of the repeated order-law verification. The proposal keeps the underlying subtype, membership relation, arithmetic operations, and nonstandard-model interpretation."
+            },
+            {
+              "line": 517,
+              "text": "\\libsource{Order/RelClasses.lean}{Mathlib strict-order classes} & \\code{linearOrderOfSTO}.\\\\"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/diophantine-lean-further-deltas-2026-10-26.zip!diophantine-lean-further-deltas-2026-10-26/syntax/FINDINGS.md",
+          "sha256": "3e6534b959de60db8fa09a9ba0dfb8d6de45c48e8bbe02275f086fb5dd2b2083",
+          "matches": [
+            {
+              "line": 89,
+              "text": "mathlib's `linearOrderOfSTO`. The strict-total-order proof has three fields;"
+            },
+            {
+              "line": 93,
+              "text": "There is an important concrete representation issue. `linearOrderOfSTO`"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bit_test",
+      "regex": "bit3|testBit|bitwise|bit.test",
+      "hits": []
+    },
+    {
+      "id": "power_predecessor",
+      "regex": "pow_succ|sub_add_cancel|predecessor.power|n.?-.?1.*power",
+      "hits": [
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26h/lean-proof-simplification-review.tex",
+          "sha256": "b9a9e14aab2341b098c5e37841c79df7f462b587795820567041b8bc8b3a17c8",
+          "matches": [
+            {
+              "line": 280,
+              "text": "  Nat.sub_add_cancel (Nat.mod_le t 2011)"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26r/evidence/prior_art_audit.md",
+          "sha256": "29ff0bc15ee65cb94d6c0015e432600f4ef5623e56200224c121307e8a25c812",
+          "matches": [
+            {
+              "line": 99,
+              "text": "F explicitly proposes specializing `half_base_bound_31`, Finset filter/intersection support identities, predecessor-power cancellation, `Nat.one_lt_two_pow`, convolution distributivity normalization, and one finite-switch complement proof. E already includes simplifying Carrier66 positivity coordinate proofs, narrow canonical-zero rewrites, `Gates.complete` alternative constructor branches, `ArithmeticDAG.run_map`, and `exact_mod_cast` on the whole Pell disjunction. These should not be counted anew."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26u/audit/novelty_audit.md",
+          "sha256": "de5c064914a638743867d874ebcda488f13528eee60f5c8e4fd6430136e8cdba",
+          "matches": [
+            {
+              "line": 88,
+              "text": "| E51 | Specialize existing half_base_bound at 31; Finset intersection for mask sums; predecessor power identity; convolution distributivity; `Nat.one_lt_two_pow`; finite-switch boundary | F `report/sections/02_local.tex` and tactics candidates |"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/tactics/README.md",
+          "sha256": "ea43e20a7248bd75aa00c3f24c28e078f29fa528377af4cb8b789d8bd49e2c1b",
+          "matches": [
+            {
+              "line": 30,
+              "text": "   (194\u2013197,227\u2013230) use `rw [\u2190 pow_succ']; congr 1; omega`."
+            },
+            {
+              "line": 32,
+              "text": "   `rw [\u2190 pow_succ', Nat.sub_add_cancel ht]`."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/tactics/before_after.md",
+          "sha256": "071adef984741dc68523d8d21391b55d68b2b37fae474e4c436dd06eaa57978e",
+          "matches": [
+            {
+              "line": 27,
+              "text": "    rw [\u2190 pow_succ']"
+            },
+            {
+              "line": 111,
+              "text": "    rw [\u2190 pow_succ']"
+            },
+            {
+              "line": 117,
+              "text": "    rw [\u2190 pow_succ', Nat.sub_add_cancel ht]"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/tactics/replacement_snippets.txt",
+          "sha256": "73e17088dedfc13bfbb0ca657bbbda8e1001a6b5f7653d73a415af137f568fd2",
+          "matches": [
+            {
+              "line": 26,
+              "text": "  rw [\u2190 pow_succ', Nat.sub_add_cancel ht]"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/review/INDEPENDENT_REVIEW.md",
+          "sha256": "4977d205cafe7af704c165e87543b1b233bf81edd9fe1b9ad06e6e482eaf87d4",
+          "matches": [
+            {
+              "line": 45,
+              "text": "* **Other local candidates.** The finite-set intersection, predecessor-power,"
+            },
+            {
+              "line": 91,
+              "text": "candidate was aligned to its two-line excerpt; the old predecessor-power"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/report/sections/02_local.tex",
+          "sha256": "ec1ddb68f307605316d5107e4ee944cb84a19db76fb5b0ad8a473c5c2d59ed07",
+          "matches": [
+            {
+              "line": 26,
+              "text": "coefficient estimate, strict gap, and predecessor-power calculation. For"
+            },
+            {
+              "line": 35,
+              "text": "    rw [\u2190 pow_succ']"
+            },
+            {
+              "line": 152,
+              "text": "  rw [\u2190 pow_succ']"
+            },
+            {
+              "line": 160,
+              "text": "  rw [\u2190 pow_succ', Nat.sub_add_cancel ht]"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26h/evidence/arithmetic/findings.txt",
+          "sha256": "fd66c7bd40595d331730696d60b6e1602cd473d9d353706c2fd2b119f4355843",
+          "matches": [
+            {
+              "line": 109,
+              "text": "applied to k - e, followed by sub_add_cancel. Both pass Lean and their axiom"
+            },
+            {
+              "line": 149,
+              "text": "  wholeShift_add_remainder := Nat.sub_add_cancel (Nat.mod_le t 2011)"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26l/audit/exclusion_notes.txt",
+          "sha256": "a633ab22c01257ca2b1627640e722203c53065a5a86f191f136d7d947f16dac7",
+          "matches": [
+            {
+              "line": 260,
+              "text": "Replace repeated congr/omega with pow_succ and Nat.sub_add_cancel under 1<=t."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26o/catalog/late9bd/packet_05/lean-proof-simplification-review/lean-proof-simplification-review.tex",
+          "sha256": "b9a9e14aab2341b098c5e37841c79df7f462b587795820567041b8bc8b3a17c8",
+          "matches": [
+            {
+              "line": 280,
+              "text": "  Nat.sub_add_cancel (Nat.mod_le t 2011)"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26a/source_notes/digits-review.md",
+          "sha256": "f46ce0eec8f09fa5b0b02801695bd9be8cfdb240bbeedf2df9d832d90f16ac79",
+          "matches": [
+            {
+              "line": 221,
+              "text": "Prove the pointwise additive reconstruction using `Nat.sub_add_cancel`, then"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26n/incoming_audit/EXCLUSION_CATALOG.md",
+          "sha256": "d91edbc9a0177f4ac8da391356e7856e1b277f9dd1792111f3e97f0522292484",
+          "matches": [
+            {
+              "line": 296,
+              "text": "**Local powers.** Seven hpow bodies use pow_succ' and Nat.sub_add_cancel ht instead of congr+omega; avoid double-counting deleted half_base specialization."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26v/baseline_audit/ASSUMED_APPLIED_BASELINE.md",
+          "sha256": "6712da94e8387eca9eeb766737ecdc757f5d85c4fa79599bbdca6e00cca6ca7f",
+          "matches": [
+            {
+              "line": 561,
+              "text": "**Virtual subsystem:** V10. **Assumed outcome:** Seven hpow bodies use pow_succ' and Nat.sub_add_cancel ht instead of congr+omega; avoid double-counting deleted half_base specialization."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26m/audit/novelty_audit.md",
+          "sha256": "7f4144931808c95877c0ae83ee560cd7e86044bffaa854f90e58f36e5faf63d0",
+          "matches": [
+            {
+              "line": 534,
+              "text": "Use Nat.sub_add_cancel(mod_le) and divisibility remainder identities; let omega handle existing linear Nat/Int cast interface."
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/proveit-lean-structural-simplifications-2026-10-26.zip!proveit-lean-structural-simplifications-2026-10-26/audit/EXCLUSIONS.md",
+          "sha256": "a91bda747e7bc3254098ad2037a8ffbd507e4cdc403933d443d11f6a947ac2d8",
+          "matches": [
+            {
+              "line": 113,
+              "text": "| EX068 | **Predecessor exponent cancellation.** Seven hpow bodies use pow_succ' and Nat.sub_add_cancel ht instead of congr+omega; avoid double-counting deleted half_base specialization. | P-f:report/sections/02_local.tex:145-175. |"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/proveit-lean-structural-simplifications-2026-10-26.zip!proveit-lean-structural-simplifications-2026-10-26/notes/ARITHMETIC_FINDINGS.md",
+          "sha256": "e24d46824d52965038f8d20bedfce433453ec07879a5c580892075ef6b86ecab",
+          "matches": [
+            {
+              "line": 9,
+              "text": "The existing proof compares variable exponent `p - 1` with 5, transports a Pell lower bound through `Nat.sub_add_cancel`, and compares two exponential bases. None of this is needed for a fixed threshold 6. Use"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/diophantine-lean-further-deltas-2026-10-26.zip!diophantine-lean-further-deltas-2026-10-26/evidence/EXCLUSIONS.md",
+          "sha256": "fbed559ff72eb20c44dbdd6a9fa3196a4df77d423ce58555775da35a85d4f838",
+          "matches": [
+            {
+              "line": 121,
+              "text": "Carrier66 positivity coordinate proofs, canonical-zero focused simplification, shared Gates.complete branches, ArithmeticDAG.run_map cleanup, whole-conclusion exact_mod_cast, half_base_bound_31 specialization, Finset filter/intersection identities, predecessor-power cancellation, Nat.one_lt_two_pow, convolution distributivity, finite-switch complement, pure axiom-wrapper generation, and import/profiling methodology are prior work. They are not additional new ideas for the present report."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "coprime_unit_positive",
+      "regex": "coprime|IsUnit|nonzero.*positiv|positiv.*nonzero|zero.*coprim",
+      "hits": [
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26i/report.tex",
+          "sha256": "818781ca070b95d7093164aa1f281efa628596b76d19234507e4ae2224347b14",
+          "matches": [
+            {
+              "line": 167,
+              "text": "A product equal to one is a unit. In the commutative integer ring, \\code{IsUnit.mul_iff} recursively gives that every factor is a unit. Finally, \\code{Int.isUnit_iff} says an integer unit is either \\(1\\) or \\(-1\\). One simplification pass extracts the entire tuple of alternatives:"
+            },
+            {
+              "line": 170,
+              "text": "have hu : IsUnit (n0 * n1 * na * nk * nt * ns) :="
+            },
+            {
+              "line": 171,
+              "text": "  hp.symm \u25b8 isUnit_one"
+            },
+            {
+              "line": 172,
+              "text": "simp only [IsUnit.mul_iff, Int.isUnit_iff, or_iff_left h0,"
+            },
+            {
+              "line": 178,
+              "text": "That last product is deliberately retained: the hypotheses do not force \\(n_k=n_t=1\\), since both could equal \\(-1\\). The patch preserves this distinction and does not strengthen the theorem accidentally. The relevant API is \\mathsrc{Algebra/Group/Int/Units}{\\code{Int.isUnit_iff}} and the multiplicative-unit lemmas it imports."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26u/audit/novelty_audit.md",
+          "sha256": "de5c064914a638743867d874ebcda488f13528eee60f5c8e4fd6430136e8cdba",
+          "matches": [
+            {
+              "line": 105,
+              "text": "| E68 | Decompose product units once using IsUnit.mul_iff/Int.isUnit_iff | K \u201cDecompose the product's units once\u201d; E has older factor-by-factor unit simplifications |"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26p/evidence/novelty_audit.md",
+          "sha256": "47a166b1013b6289afbec65a92ae43f4640d338c4e844dfd65685f057e31f5d5",
+          "matches": [
+            {
+              "line": 83,
+              "text": "| `product_unit_decomposition` | Decompose all integer factors of a product equal to one using IsUnit.mul_iff | P9:159-180 | One tuple of \u00b11 alternatives replaces repeated product rearrangements in ShortSystem. |"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26t/evidence/final-review.md",
+          "sha256": "bb5fe7147e4badb3381fe055565c575baa18e3dd6768274cd995483f14713bc1",
+          "matches": [
+            {
+              "line": 53,
+              "text": "The changed theorem preserves the exact hypothesis `0 < Q` and the same fundamental unit `(2Q+1, 2)` for discriminant `Q(Q+1)`. For a competing solution with first coordinate greater than one, the existing Pell theorem supplies nonzero second coordinate. Assuming its square is below four gives `0 < |y| < 2`; discreteness yields `|y| = 1`, hence `y\u00b2 = 1`. The norm equation then places the positive first coordinate strictly between consecutive integers `Q` and `Q+1`. This contradiction establishes `4 \u2264 y\u00b2`; the original comparison of nonnegative squares finishes the first-coordinate bound."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26o/report/report.tex",
+          "sha256": "2eb7283ad5f2b5debc1ffaf38c70de9489d654d14d3a4a6b42cd3cb9b3a338ac",
+          "matches": [
+            {
+              "line": 46,
+              "text": "\\textbf{Current mathematical scope.} The fresh commits now derive whole-field alignment, all-cell occupation and the marked cyclic Wang word from the original positive polynomial zero. They retain the original selector binding and prove the rank-based stride positive and nonzero modulo the word length. Machine-run extraction, the cofinal canonical converse, arithmetic/controller completeness and the internal-ZFC proof remain separate obligations. The suggestions below preserve, rather than replace, those boundaries."
+            },
+            {
+              "line": 143,
+              "text": "\\textbf{Preserve the degenerate case.} The hypothesis remains \\code{[NeZero (N * 2011)]}; the theorem still includes \\(N=1\\). There is no assumption that 2011 is invertible modulo \\(N\\), nor a replacement of the physical modulus by a coprime quotient. Independent arithmetic checks cover all 11,440 ordered aligned-cell pairs for \\(1\\le N\\le32\\), including singleton and wraparound cases. They are sanity checks, not a proof for arbitrary \\(N\\)."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26o/catalog/late9bd/packet_01/diophantine-lean-additional-simplifications-2026-10-26/report.tex",
+          "sha256": "818781ca070b95d7093164aa1f281efa628596b76d19234507e4ae2224347b14",
+          "matches": [
+            {
+              "line": 167,
+              "text": "A product equal to one is a unit. In the commutative integer ring, \\code{IsUnit.mul_iff} recursively gives that every factor is a unit. Finally, \\code{Int.isUnit_iff} says an integer unit is either \\(1\\) or \\(-1\\). One simplification pass extracts the entire tuple of alternatives:"
+            },
+            {
+              "line": 170,
+              "text": "have hu : IsUnit (n0 * n1 * na * nk * nt * ns) :="
+            },
+            {
+              "line": 171,
+              "text": "  hp.symm \u25b8 isUnit_one"
+            },
+            {
+              "line": 172,
+              "text": "simp only [IsUnit.mul_iff, Int.isUnit_iff, or_iff_left h0,"
+            },
+            {
+              "line": 178,
+              "text": "That last product is deliberately retained: the hypotheses do not force \\(n_k=n_t=1\\), since both could equal \\(-1\\). The patch preserves this distinction and does not strengthen the theorem accidentally. The relevant API is \\mathsrc{Algebra/Group/Int/Units}{\\code{Int.isUnit_iff}} and the multiplicative-unit lemmas it imports."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26q/minima/new_directions_audit.md",
+          "sha256": "abc5a6f789a960513755bc8dffc51278912b801cf630cc757c4fb6e43f37ee3a",
+          "matches": [
+            {
+              "line": 16,
+              "text": "Modulo four, a square is zero or one. If A is odd, A\u00b2\u22121 is zero modulo four and the displayed norm has residue zero or one. If A is even, A\u00b2\u22121 is \u22121 modulo four and the norm is the sum of two squares, with residue zero, one, or two. Neither case permits \u22121 modulo four. This proof requires no positivity, nonzero coordinate, Pell-index, or consistency assumption."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26i/notes/arithmetic.md",
+          "sha256": "9944bf33c05f8a7cce21ab7cd66d666a0bd949ab5725b90f8300763eca0906d9",
+          "matches": [
+            {
+              "line": 64,
+              "text": "The old proof constructs a separate complementary product for each sign-fixed factor and invokes `ring` four times solely to regroup the same six-factor product. A product equal to one is a unit; `IsUnit.mul_iff` decomposes that fact along the existing multiplication tree. `Int.isUnit_iff` then gives the six \u00b11 alternatives without any algebraic rebracketing."
+            },
+            {
+              "line": 68,
+              "text": "The replacement uses one `IsUnit` construction and one `simp only` pass:"
+            },
+            {
+              "line": 71,
+              "text": "  have hu : IsUnit (n0 * n1 * na * nk * nt * ns) := hp.symm \u25b8 isUnit_one"
+            },
+            {
+              "line": 72,
+              "text": "  simp only [IsUnit.mul_iff, Int.isUnit_iff, or_iff_left h0,"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26v/baseline_audit/ASSUMED_APPLIED_BASELINE.md",
+          "sha256": "6712da94e8387eca9eeb766737ecdc757f5d85c4fa79599bbdca6e00cca6ca7f",
+          "matches": [
+            {
+              "line": 615,
+              "text": "**Virtual subsystem:** V04. **Assumed outcome:** One IsUnit.mul_iff/Int.isUnit_iff pass resolves the unit factors with existing sign guards; no separate complementary products or private helper. The residual nk*nt=1 is retained."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26v/baseline_audit/INTEGRATION_CONFLICTS.md",
+          "sha256": "2d7421f42c40581b038ee377c6692c61c2925d064773cc68f47b016085ff3cf7",
+          "matches": [
+            {
+              "line": 9,
+              "text": "| Direct integer-unit helper versus whole-product IsUnit factorization (EX015, NF002) | Unit/sign extraction is available at both useful interfaces; no requirement to retain an unused private helper. | Removing that helper again or replacing complementary products is excluded. |"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/proveit-lean-structural-simplifications-2026-10-26.zip!proveit-lean-structural-simplifications-2026-10-26/audit/EXCLUSIONS.md",
+          "sha256": "a91bda747e7bc3254098ad2037a8ffbd507e4cdc403933d443d11f6a947ac2d8",
+          "matches": [
+            {
+              "line": 129,
+              "text": "| L04 | **Whole-product unit decomposition.** Use IsUnit.mul_iff and Int.isUnit_iff once for all factors, resolving conditional sign exclusions without manufacturing complementary products. | I-eight: Decompose the product's units once |"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/proveit-lean-structural-simplifications-2026-10-26.zip!proveit-lean-structural-simplifications-2026-10-26/report.tex",
+          "sha256": "f3921cf3b9d211936b814eab9c73502c1f12cf7284908e6c700a6811a1d62e06",
+          "matches": [
+            {
+              "line": 110,
+              "text": "This proves the target after reversing the equality. The reasoning includes negative \\(t\\), zero \\(w\\), and negative \\(w\\); it needs no finite modulus, positivity, division, or coprimality assumption."
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/ProveIt_Additional_Lean_Simplifications_2026-10-26.zip!diophantine-lean-proof-interfaces-2026-10-26/README.md",
+          "sha256": "e706163d2022657e8532d19f291b07394f0c6c2dac1cba7befa319cbf8ac6883",
+          "matches": [
+            {
+              "line": 15,
+              "text": "| B | Coprime cancellation for combined divisibility | 180 \u2192 173 | 7 |"
+            },
+            {
+              "line": 51,
+              "text": "claim that periodicity, coprime cancellation, Euclidean division, or affine order"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/ProveIt_Additional_Lean_Simplifications_2026-10-26.zip!diophantine-lean-proof-interfaces-2026-10-26/evidence/arithmetic-review.md",
+          "sha256": "69e9872f23f08b2cdb5cc8451cee22e051830b4d156a4960e7b7d51834cc8827",
+          "matches": [
+            {
+              "line": 5,
+              "text": "These are deliberately narrow, source-specific deltas after treating the earlier simplification packets as applied. The novelty audit found no proposal about the indicated coprime divisibility decomposition, geometric-sum proofs, or positive-margin interval argument. These edits do not claim a new general proof methodology. In particular, the first should not be presented as the old generic recommendation to avoid unpacking divisibility witnesses; the actual new target is cancellation in the orthogonal sum `Q*F + J*T` under `IsCoprime F J`."
+            },
+            {
+              "line": 15,
+              "text": "with the single premise `J \u2223 F - 1`. That premise makes `F` and `J` coprime. The old proof separately constructs four witnesses, subtracts off each divisible summand, and constructs a new quotient for the reverse direction."
+            },
+            {
+              "line": 19,
+              "text": "The public type and the existing helper `isCoprime_of_congruence` remain exactly the same. No nonzero or positivity hypothesis is added. This matters because, for example, `J=0, F=1` and `F=0, J=\u00b11` satisfy the existing premise and should remain covered. The proof is valid at these degenerate values."
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/ProveIt_Additional_Lean_Simplifications_2026-10-26.zip!diophantine-lean-proof-interfaces-2026-10-26/evidence/late-packet-v-audit.md",
+          "sha256": "5eb09e7b62cd1e666f6cdf3f8750354f2a4aeae41309f597da6bb2dbe8fb38d8",
+          "matches": [
+            {
+              "line": 39,
+              "text": "**Retain.** Coprime extraction and cancellation for J*F dividing Q*F+J*T is a divisibility theorem. M1 reflects equality through the finite machine-state encoder. The shared word cancellation does not identify the obligation or adapter."
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/ProveIt_Additional_Lean_Simplifications_2026-10-26.zip!diophantine-lean-proof-interfaces-2026-10-26/evidence/nonduplication-audit.md",
+          "sha256": "4e32583740cf62cad6b500f2aa796700f5d557fd633c6a1da7379fbd5e54041b",
+          "matches": [
+            {
+              "line": 128,
+              "text": "| Coprime orthogonal-sum divisibility `(J*F | Q*F+J*T) <-> J|Q and F|T` | Retain with narrow claim | Earlier l keeps signed-divisibility witnesses abstract, but does not use coprimality to separate this mixed sum. Do not market generic library reuse or witness opacity as new. |"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/ProveIt_Additional_Lean_Simplifications_2026-10-26.zip!diophantine-lean-proof-interfaces-2026-10-26/report/report.tex",
+          "sha256": "6c45d905783dad828d382ff62adce35212033168a4224dfad85887b9d6c71f16",
+          "matches": [
+            {
+              "line": 115,
+              "text": "The new arithmetic edits are intentionally described by their exact targets. ``Use the library'' is background practice, not a new research contribution. For example, proposal B concerns coprime cancellation in the particular sum \\(QF+JT\\); it does not claim fresh credit for the already suggested general preference to avoid unnecessary quotient witnesses."
+            },
+            {
+              "line": 156,
+              "text": "There is no new domain restriction. The width \\(w\\) can be zero or negative, the time is any integer, and \\(\\alpha\\) needs no structure. The proof does not require a nonzero period, a finite codomain, a unique Start tile, a computation trace, or coprimality of geometric parameters."
+            },
+            {
+              "line": 164,
+              "text": "\\section{B: Keep coprime divisibility at the divisibility interface}"
+            },
+            {
+              "line": 168,
+              "text": "In \\src{RatioReparameterization}, the premise \\(J\\mid F-1\\) implies that \\(F\\) and \\(J\\) are coprime. The target is"
+            },
+            {
+              "line": 179,
+              "text": "  have hcop := isCoprime_of_congruence hJF"
+            },
+            {
+              "line": 197,
+              "text": "No positivity or nonzero premise should be added to make the proof easier. The existing assumption permits cases such as \\(J=0,F=1\\), and \\(F=0,J=1\\) or \\(-1\\). The abstract divisibility proof covers these cases without a separate branch. Replacing it by an argument that divides by \\(J\\) or \\(F\\) would need extra bookkeeping and could accidentally weaken the theorem."
+            },
+            {
+              "line": 372,
+              "text": "Rewrite both ranks in affine form. Cancel the common additive term, cancel multiplication by the positive factor \\(q^2-1\\), and use the order reversal of subtraction from the same constant. Equality only needs that factor to be nonzero."
+            },
+            {
+              "line": 476,
+              "text": "\\item Mathlib revision \\path{81a5d257c8e410db227a6665ed08f64fea08e997}: \\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/Ring/Periodic.lean}{periodicity}, \\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/Ring/GeomSum.lean}{geometric sums}, \\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/RingTheory/Coprime/Basic.lean}{coprimality}, and \\href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Algebra/Order/Ring/Abs.lean}{ordered-ring square and absolute-value facts}."
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/ProveIt_Additional_Lean_Simplifications_2026-10-26.zip!diophantine-lean-proof-interfaces-2026-10-26/report/validation-summary.tex",
+          "sha256": "73b8c2789f39bb865911fbc66ffbcfcdd64c52b894ea34075d9f373c12992e90",
+          "matches": [
+            {
+              "line": 26,
+              "text": "The periodic-orbit and coprime-divisibility results depend on \\code{propext} and"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/Lean_Proof_Simplification_Post_Adoption_2026-10-26.zip!Lean_Proof_Simplification_Post_Adoption/evidence/late_equivalence_plan.md",
+          "sha256": "3bd80f80801ef9abe6d405337165a526fd98d026520497a067896b226e82fbf0",
+          "matches": [
+            {
+              "line": 468,
+              "text": "proved, and the unchanged rank quotient is nonzero moduloN and positive"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/diophantine-lean-proof-refinements-2026-10-26.zip!diophantine-lean-proof-refinements-2026-10-26/audit/independent_patch_review.md",
+          "sha256": "80ab6adb64dd48123cd516b35194cb69c8a0f5623c342e27366eb32d439f983a",
+          "matches": [
+            {
+              "line": 54,
+              "text": "The original hypothesis `T (y+w) (u-1) = T y u` says exactly that `f(s+1)=f(s)`. `Function.Periodic.int_mul_eq` gives `f(t)=f(0)`, and symmetry yields `T x t = T (x+w*t) 0`. This handles arbitrary target type and every signed `x`, `w`, and `t`, including negative width or time and width zero. No positivity, nonzero-width, coprimality, or additional periodicity hypothesis has been introduced."
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/diophantine-lean-proof-refinements-2026-10-26.zip!diophantine-lean-proof-refinements-2026-10-26/audit/structural-findings.md",
+          "sha256": "e2b249b6487879a18a17f29aa3654f9e89bb3dd18648004ef632eedb7eab7607",
+          "matches": [
+            {
+              "line": 16,
+              "text": "3. For `0<a`, the product `a*d` is nonzero, hence positive in the canonical order."
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/diophantine-lean-proof-refinements-2026-10-26.zip!diophantine-lean-proof-refinements-2026-10-26/report/lean-proof-refinements.tex",
+          "sha256": "5919d0144d13f90f4dfad9b046585602ff68b172558c0a1ec32763c4bc21097f",
+          "matches": [
+            {
+              "line": 184,
+              "text": "Since \\(b\\leq c\\), canonical additive order supplies \\(d\\) with \\(c=b+d\\). If \\(d=0\\), then \\(b=c\\), contradicting \\(b<c\\). Thus \\(d\\ne0\\). The multiplier \\(a\\) is nonzero, so the absence of zero divisors implies \\(ad\\ne0\\). In a canonical order, nonzero elements are positive, hence \\(0<ad\\). Distributivity and additive order give"
+            },
+            {
+              "line": 318,
+              "text": "The new theorem retains the real hypotheses: the actual halting state at time \\(T\\); margins \\(L,R\\geq T+2\\); height \\(H\\geq T+2\\) and \\(H\\geq3\\); positive width; and the existing nonzero typeclass instances for the finite moduli. The wrapper supplies those instances from the same arithmetic hypotheses as before."
+            },
+            {
+              "line": 383,
+              "text": "\\item \\textbf{How weak can the internal cancellation boundary be?} The checked generic theorem uses a convenient linear canonical order. It would be useful to determine whether a smaller combination of order/cancellation classes suffices for the exact internal-natural instance, without increasing instance-search complexity. Any further weakening must still make positivity of a nonzero additive difference explicit."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cast_bridge",
+      "regex": "cast_eq_zero_iff|cast_sub|push_cast|cast.normal|CharP|sub_eq_zero",
+      "hits": [
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/tactics/before_after.md",
+          "sha256": "071adef984741dc68523d8d21391b55d68b2b37fae474e4c436dd06eaa57978e",
+          "matches": [
+            {
+              "line": 61,
+              "text": "    exact \u27e8sub_eq_zero.mp (sq_eq_zero_iff.mp h0), sub_eq_zero.mp (sq_eq_zero_iff.mp h1),"
+            },
+            {
+              "line": 62,
+              "text": "      sub_eq_zero.mp (sq_eq_zero_iff.mp ha), sub_eq_zero.mp (sq_eq_zero_iff.mp hs),"
+            },
+            {
+              "line": 63,
+              "text": "      sub_eq_zero.mp (sq_eq_zero_iff.mp hkt)\u27e9"
+            },
+            {
+              "line": 70,
+              "text": "    sq_nonneg, sq_eq_zero_iff, sub_eq_zero, and_assoc]"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/tactics/replacement_snippets.txt",
+          "sha256": "73e17088dedfc13bfbb0ca657bbbda8e1001a6b5f7653d73a415af137f568fd2",
+          "matches": [
+            {
+              "line": 6,
+              "text": "    sq_nonneg, sq_eq_zero_iff, sub_eq_zero, and_assoc]"
+            },
+            {
+              "line": 9,
+              "text": "  simpa only [residualSum, sub_eq_zero] using"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26f/report/sections/02_local.tex",
+          "sha256": "ec1ddb68f307605316d5107e4ee944cb84a19db76fb5b0ad8a473c5c2d59ed07",
+          "matches": [
+            {
+              "line": 74,
+              "text": "Together with \\code{sq_eq_zero_iff} and \\code{sub_eq_zero}, it describes"
+            },
+            {
+              "line": 81,
+              "text": "    sq_nonneg, sq_eq_zero_iff, sub_eq_zero, and_assoc]"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26h/evidence/arithmetic/findings.txt",
+          "sha256": "fd66c7bd40595d331730696d60b6e1602cd473d9d353706c2fd2b119f4355843",
+          "matches": [
+            {
+              "line": 115,
+              "text": "their Nat.cast_sub side conditions. A new shared module is an integration"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26l/audit/exclusion_notes.txt",
+          "sha256": "a633ab22c01257ca2b1627640e722203c53065a5a86f191f136d7d947f16dac7",
+          "matches": [
+            {
+              "line": 203,
+              "text": "Use add_eq_zero_iff_of_nonneg, sq_eq_zero_iff, sub_eq_zero instead of five nlinarith branches."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26q/report/new-proof-simplifications.tex",
+          "sha256": "ee32add5596599d112002b1f538ee6e2883db06bd5d054283b2405ef0226bd59",
+          "matches": [
+            {
+              "line": 300,
+              "text": "Apply this theorem once to the five displayed blocks. Normalize the finite sum and finite universal quantifier. Rewrite the first three equality conditions using the supplied hypotheses, and the last two using \\code{sq_eq_zero_iff} and \\code{sub_eq_zero}. The result is exactly"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26q/minima/new_directions_audit.md",
+          "sha256": "abc5a6f789a960513755bc8dffc51278912b801cf630cc757c4fb6e43f37ee3a",
+          "matches": [
+            {
+              "line": 86,
+              "text": "The replacement forms the five-element vector above, supplies its lower bounds, rewrites the original finalizer equation with `sub_eq_zero`, and simplifies the five equality cases. No polynomial definition or theorem assumption changes."
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26q/pell/Pell-first-coordinate-proposal.md",
+          "sha256": "237212b2f82017b4060d0c92bb876335edb0366af18120fdc229fdc06d0c9b60",
+          "matches": [
+            {
+              "line": 109,
+              "text": "and generic cast normalization. Its prerequisite, the positive fundamental-unit"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26e/report/report.tex",
+          "sha256": "2b2ae2b84ea45ed6ed0396ec34ee282a7d73088e28722bc1576a5b1748d37edb",
+          "matches": [
+            {
+              "line": 107,
+              "text": "\\textbf{Sum of squares.} \\src{ShortSystem}{63}{88} proves that a five-term residual sum is zero exactly when each residual vanishes. Over the integers each square is nonnegative, so \\code{add_eq_zero_iff_of_nonneg} decomposes the sum; \\code{sq_eq_zero_iff} removes squares and \\code{sub_eq_zero} removes subtraction. The candidate is:"
+            },
+            {
+              "line": 111,
+              "text": "     sq_eq_zero_iff, sub_eq_zero, and_assoc]"
+            }
+          ]
+        },
+        {
+          "source": "Computability/DiophantineConsistency/research/lean-proof-simplification/2026-10-26m/report/additional_lean_simplifications.tex",
+          "sha256": "a9c9adef5facff074a4b7b679c2085309f1faa3099a7ef7abc24f3d6572c95c6",
+          "matches": [
+            {
+              "line": 600,
+              "text": "    exists_zero_certificate_iff, hn, sub_eq_zero]"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/diophantine-lean-further-deltas-2026-10-26.zip!diophantine-lean-further-deltas-2026-10-26/arithmetic/notes/ARITHMETIC_FINDINGS.md",
+          "sha256": "03d9e7af2eea51dfddbe0b7d4ab8a343a0ad9e89ce762a1b5e2f587450817ea5",
+          "matches": [
+            {
+              "line": 29,
+              "text": "This is a modest local cleanup. It is not a new general Nat/Int transport strategy: earlier reports already discuss arithmetic-domain boundaries. The specific Sidon/Vieta polarization step was not found in the audited prior corpus. The exact replacement theorem passed (sidon-check.json), and the entire modified SidonPositions module passed separately (sidon-full-check.json). The exact theorem decreases26 to17 lines; two added tactic imports make the whole module168 to161 lines. These are raw-source local measurements, not an incremental mathematical gain over every prior general cast-normalization suggestion."
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/diophantine-lean-further-deltas-2026-10-26.zip!diophantine-lean-further-deltas-2026-10-26/evidence/CLOSING_AUDIT.md",
+          "sha256": "e09b0dbfe5ec5ff793e48cb0b054de25820d02d5322cb15cfa9f80b50259c9bf",
+          "matches": [
+            {
+              "line": 81,
+              "text": "| Aux: Sidon direct moment-polarization identity | Retain only with narrow framing | C05 consumes unchanged weight_sum_eq_iff; does not prove its moment identity. t explicitly rejects cast-only target changes. Claim direct polarization eliminating product reconstruction, not generic zify/cast normalization. |"
+            }
+          ]
+        },
+        {
+          "source": "docs/incoming/diophantine-lean-further-deltas-2026-10-26.zip!diophantine-lean-further-deltas-2026-10-26/report/report.tex",
+          "sha256": "c0d2ee1579676dcde451a64991cd313b640f96821f4ec82b78c97fd56b85e3a8",
+          "matches": [
+            {
+              "line": 536,
+              "text": "The particular identity is the proposed delta. Generic cast normalization with \\code{zify}, polynomial normalization, and the original factorization argument are not claimed as new ideas. This narrow framing matters because earlier packets already discuss cast cleanup, coefficient fibres, and the existing Sidon interface."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
