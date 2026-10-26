@@ -61,3 +61,8 @@ The [trace-cycle](wang-tiles942-trace-cycle-author.md),
 construction. This is the native reverse construction; the arithmetic
 controller, polynomial witnesses and internal-ZFC derivation remain open.
 The maintained decimal equation and size metrics are unchanged.
+An [independent cycle/boundary review](wang-tiles942-trace-cycle-boundary-peer.md)
+also passed all four isolated fresh builds with24 standard-only reports,
+byte-identical mains and unchanged shared artifacts. The separate
+[band/completeness review](wang-tiles942-native-completeness-peer.md)
+passed its four isolated builds with22 standard-only reports.

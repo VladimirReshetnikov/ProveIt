@@ -1,0 +1,77 @@
+import DiophantineConsistency.NativeRankVariation
+
+namespace DiophantineConsistency.NativeRankVariationChecks
+
+open NativeRankVariation
+
+set_option Elab.async false
+set_option maxRecDepth 10000
+
+-- The complete symbolic identity is valid in an arbitrary commutative ring.
+example {R : Type*} [CommRing R] (q C F MC MF J A δ : R) :
+    windowRank q (C+δ) (F+A*δ) MC MF J-windowRank q C F MC MF J =
+      -δ*(q^2-1)*(1+q*A) := by
+  rw [rank_variation]
+  ring
+
+-- The actual source MF port is used directly, with no second beta shift.
+example {R : Type*} [CommRing R] (p : Fin 4 → R) (v : Fin 14 → R) :
+    (Carrier65.core p v).rank =
+      windowRank (Carrier65.core p v).q (Carrier65.core p v).C (v 1) (p 2) (p 3) (v 0) :=
+  core_rank p v
+
+example {R : Type*} [CommRing R] (q C F MC MF J β : R) :
+    windowRank q C F MC (MF+β) J = windowRank q C F MC MF J+q*β*J := by
+  unfold windowRank
+  ring
+
+-- Both C and F increments matter: the drop here is208, not16.
+example : windowRank (3 : ℤ) 4 2 5 7 2 = 44 ∧
+    windowRank (3 : ℤ) (4+2) (2+4*2) 5 7 2 = -164 ∧
+    rankGamma (3 : ℤ) 4 2 = 208 := by norm_num [windowRank,rankGamma]
+
+example : windowRank (3 : ℤ) (4+2) (2+4*2) 5 7 2 ≠
+    windowRank (3 : ℤ) 4 2 5 7 2-2*(3^2-1) := by norm_num [windowRank]
+
+-- Mere congruence of F modulo q is insufficient for the ordinary identity.
+-- Replacing the prescribed10 by13 preserves that residue but changes rank.
+example : (13 : ℤ) % 3 = 10 % 3 ∧
+    windowRank (3 : ℤ) 6 13 5 7 2 ≠
+      windowRank (3 : ℤ) 4 2 5 7 2-rankGamma (3 : ℤ) 4 2 := by
+  norm_num [windowRank,rankGamma]
+
+-- Positional powers include the zeroth position without a division premise.
+example {R : Type*} [CommRing R] (q C F MC MF J A D B : R) :
+    windowRank q (C+D) (F+A*D) MC MF J =
+      windowRank q C F MC MF J-rankGamma q A D := by
+  simpa only [pow_zero,mul_one] using rank_power_variation q C F MC MF J A D B 0
+
+example : windowRank (3 : ℤ) (4+2*5^2) (2+4*(2*5^2)) 5 7 2 = -5156 := by
+  norm_num [windowRank]
+
+-- q=1 is an actual zero-step control; negative A can reverse the sign.
+example (A D C F MC MF J δ : ℤ) :
+    rankGamma 1 A D = 0 ∧
+      windowRank 1 (C+δ) (F+A*δ) MC MF J = windowRank 1 C F MC MF J :=
+  ⟨rankGamma_one A D,rank_variation_one C F MC MF J A δ⟩
+
+example : rankGamma (2 : ℤ) (-1) 1 < 0 := by norm_num [rankGamma]
+
+-- Strict decrease does not require a positive old rank or positive mask ports.
+example (q A δ : ℤ) (hq : 1 < q) (hA : 0 ≤ A) (hδ : 0 < δ) :
+    windowRank q ((-7)+δ) ((-9)+A*δ) (-2) (-3) (-4) <
+      windowRank q (-7) (-9) (-2) (-3) (-4) :=
+  rank_strict_decrease q (-7) (-9) (-2) (-3) (-4) A δ hq hA hδ
+
+#print axioms core_rank
+#print axioms rank_variation
+#print axioms rank_power_variation
+#print axioms core_rank_variation
+#print axioms core_rank_power_variation
+#print axioms rankGamma_one
+#print axioms rank_variation_one
+#print axioms rankGamma_pos
+#print axioms rank_strict_decrease
+#print axioms core_rank_strict_decrease
+
+end DiophantineConsistency.NativeRankVariationChecks
