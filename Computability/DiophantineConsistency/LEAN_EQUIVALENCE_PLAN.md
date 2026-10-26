@@ -402,6 +402,13 @@ states the still missing marked-tiling soundness and cofinal canonical
 converse. Finite classification alone proves neither endpoint.
 
 Independent agents own distinct new Lean modules. The coordinator owns
-integration, documentation and commits. Each verified checkpoint is
+integration, documentation and commits. `CurrentCellCycle2011` proves that
+successor by2011 reaches every aligned cell, and therefore propagates any
+successor-preserved predicate from zero. Its canonical coordinate is the
+actual field-base quotient in `ZMod N`, including N=1. See the [root review](reviews/current-cell-cycle2011-lean-root.md)
+for two fresh runs and sixteen standard-only axiom audits. This generic
+cycle theorem has no supplied word or occupation premise.
+
+Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
