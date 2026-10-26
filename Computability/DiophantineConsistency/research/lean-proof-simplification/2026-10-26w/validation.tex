@@ -1,0 +1,20 @@
+The validation uses Lean 4.32.0. Three theorem groups have successful kernel checks; the larger production migrations are separated below. The compiler could not complete some broad dependency imports under shared memory pressure. A stalled build is not a proof failure, and it is also not a successful validation. No build-time comparison is inferred.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.27\linewidth}Yp{0.24\linewidth}@{}}
+\toprule
+Artifact & Established evidence & Limit\\\midrule
+\code{Periodicity.lean} & Original and replacement generic helix/seam theorems compile; axiom lists recorded & Full production modules and clients not rebuilt\\
+\code{HelicalCoordinatesCore.lean} & Address uniqueness, normalization and band-origin criterion compile & Full finite-equivalence extension received mathematical review; compilation not completed\\
+\code{EdgeFields.lean} & Complete generic core, exact initializer and unrestricted literal step-pattern bridges compile & Actual production Tile wrappers and 942-tile clients not rebuilt\\
+\code{RefinedPairAlgebraic.lean} & Ordinary polynomial proof; source-authenticated dependencies; static formula/interface preservation & NOT compiler-validated; dependency build stopped before proposed module\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The periodicity patch saves 15 physical production lines: 12 in \code{row_zero_of_helix} and 3 in \code{seam_iff_zero}. This is a measured proposed-source change, not a repository-wide reduction or a completed production integration.
+The algebraic-only source changes 83 to 86 lines. Its integer endpoint body changes 16 to 3 lines, but the new \code{core_eq} declaration occupies 12 lines, including its 7-line proof. The full module cost is therefore correctly charged as an addition of three lines.
+
+For the edge core, \code{row_fields_roundtrip}, \code{grid_horizontal} and \code{grid_temporal} use no axioms. The function-extensional normal-form proofs report \code{Quot.sound}. The coordinate core reports \code{propext}, \code{Classical.choice} and \code{Quot.sound}. The periodicity axiom comparison is discussed in Section 3. No claim is made about the uncompiled algebraic module's final axiom list.
+
+The complete literal edge-example file also compiled successfully. Its initializer and step-pattern equality proofs report \code{propext} and \code{Quot.sound}, with no \code{sorryAx}. The successful final output is in \artifact{evidence/edge-fields.log}. No complete 942-tile production dependency cone was rebuilt. Both proposed patches remain unapplied.

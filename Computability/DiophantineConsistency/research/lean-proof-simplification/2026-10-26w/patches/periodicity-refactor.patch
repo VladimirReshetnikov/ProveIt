@@ -1,0 +1,59 @@
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalQuotient.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942HelicalQuotient.lean
+@@ -17,27 +17,15 @@
+ set_option Elab.async false
+ set_option maxRecDepth 10000
+ 
+-/-- Move any integer time to zero using the given helical period.
+-The equality is proved in both integer time directions. -/
++/-- Move any integer time to zero by the integer multiple of the
++given period vector in the additive lattice. -/
+ theorem row_zero_of_helix {α : Type*} (T : ℤ → ℤ → α) (w : ℤ)
+     (hhelix : ∀ x t, T (x+w) (t-1) = T x t) (x t : ℤ) :
+     T x t = T (x+w*t) 0 := by
+-  induction t using Int.induction_on generalizing x with
+-  | zero => simp
+-  | succ n ih =>
+-      have hh := hhelix x ((n : ℤ)+1)
+-      rw [add_sub_cancel_right] at hh
+-      calc
+-        T x ((n : ℤ)+1) = T (x+w) n := hh.symm
+-        _ = T ((x+w)+w*n) 0 := ih _
+-        _ = T (x+w*((n : ℤ)+1)) 0 := by congr 1; ring
+-  | pred n ih =>
+-      have hh := hhelix (x-w) (-(n : ℤ))
+-      rw [sub_add_cancel] at hh
+-      calc
+-        T x (-(n : ℤ)-1) = T (x-w) (-(n : ℤ)) := hh
+-        _ = T ((x-w)+w*(-(n : ℤ))) 0 := ih _
+-        _ = T (x+w*(-(n : ℤ)-1)) 0 := by congr 1; ring
++  have hp : Function.Periodic (fun p : ℤ × ℤ => T p.1 p.2) (w, -1) := by
++    intro p
++    simpa only [Prod.fst_add, Prod.snd_add, sub_eq_add_neg] using hhelix p.1 p.2
++  simpa [zsmul_eq_mul, mul_comm] using (hp.zsmul t (x,t)).symm
+ 
+ /-- A generic integer periodic function agrees with its remainder values. -/
+ theorem periodic_emod {α : Type*} {f : ℤ → α} {n : ℤ}
+--- a/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942SeamColumns.lean
++++ b/Computability/DiophantineConsistency/Lean/DiophantineConsistency/WangTiles942SeamColumns.lean
+@@ -38,15 +38,12 @@
+   rw [hTime x t]
+   exact (north_437_iff_south_437 (hAllowed x t)).symm
+ 
+-/-- Integer induction covers both future and past; there is no period premise. -/
++/-- Unit periodicity follows from matching and covers all integer times. -/
+ theorem seam_iff_zero (x t : ℤ) : SeamAt T x t ↔ SeamAt T x 0 := by
+-  induction t using Int.induction_on with
+-  | zero => rfl
+-  | succ n ih => exact (seam_successor_iff hAllowed hTime x (n : ℤ)).trans ih
+-  | pred n ih =>
+-      have hs := seam_successor_iff hAllowed hTime x (-(n : ℤ)-1)
+-      simp only [sub_add_cancel] at hs
+-      exact hs.symm.trans ih
++  have hp : Function.Periodic (fun u => SeamAt T x u) 1 :=
++    fun u => propext (seam_successor_iff hAllowed hTime x u)
++  exact (show SeamAt T x t = SeamAt T x 0 from by
++    simpa only [Int.cast_id, mul_one] using hp.int_mul_eq t).to_iff
+ 
+ theorem seam_iff_time (x t u : ℤ) : SeamAt T x t ↔ SeamAt T x u :=
+   (seam_iff_zero hAllowed hTime x t).trans (seam_iff_zero hAllowed hTime x u).symm

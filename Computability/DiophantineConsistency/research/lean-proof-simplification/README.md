@@ -28,8 +28,9 @@ delivered, with a `PLACEMENT.md` recording its arrival. Nothing here is imported
 | [2026-10-26t](2026-10-26t/PLACEMENT.md) | `diophantine-lean-further-simplifications-2026-10-26 (1).zip` | `6a7ef347b5` | `6f46a5e348` |
 | [2026-10-26u](2026-10-26u/PLACEMENT.md) | `diophantine-lean-structural-refinements-2026-10-26.zip` | `6a7ef347b5` | `23f631ea07` |
 | [2026-10-26v](2026-10-26v/PLACEMENT.md) | `ProveIt_Lean_Simplification_Round3_2026-10-26.zip` | `74c3273be4` | `22e020937c` |
+| [2026-10-26w](2026-10-26w/PLACEMENT.md) | `lean-proof-new-structures-2026-10-26.zip` | `5d45439139` | `553a5f7a46` |
 
-Packets b–v omit members byte-identical to a Git blob of the reviewed commit, of `60e9c5d620` or of the placement parent,
+Packets b–w omit members byte-identical to a Git blob of the reviewed commit, of `60e9c5d620` or of the placement parent,
 mostly bundled source snapshots; each one's `OMITTED.tsv` lists them with a repository path holding the
 same bytes.
 
