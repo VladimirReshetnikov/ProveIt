@@ -721,6 +721,15 @@ matching, carry or high-mask premise occurs. The [author receipt](reviews/curren
 and [independent isolated replay](reviews/current-word-low-mask2011-lean-peer.md)
 record four standard-only axiom audits and the omitted-subtraction control.
 
+`ControllerAuxiliaryChoice` constructs the optional Boolean bit and a
+positive cardinality coprime to every auxiliary-prime power. The actual
+quotient in `ControllerResidueLift` then gives the missing affine target
+coordinate and constructs every residue as a subset sum plus the optional
+term, under the explicit affine-injection interface and T=p^n>C0. No desired
+subset is assumed. See the [author receipt](reviews/controller-boolean-subsets-lean-root.md)
+and [independent four-target replay](reviews/controller-auxiliary-choice-residue-lift-lean-peer.md).
+The actual B-power orbit, safe dummy placement and rank correction remain open.
+
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
 before a normal, non-force push of the branch to `origin/main`.
