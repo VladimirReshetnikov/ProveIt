@@ -365,6 +365,18 @@ physical selector count. See the [root review and four fresh replays](reviews/cu
 No occupation, whole-field alignment or decoded color premise is used by
 these two supporting packets.
 
+`CurrentWholeField2011.polynomial_zero_aligned_window` now proves exact
+whole-cell alignment of the original rank-based temporal shift from only
+positivity and zero evaluation of the actual polynomial. It retains the
+same N, source coordinates, Boolean word, carries, digits and complete
+Facts. The literal Start supplies South510 and its two source ones;
+actual copy identities reduce the offset to0/19/20. The finite-cycle
+and residue arguments exclude19/20 with the actual physical941 gate,
+including the valid511 self-loop. See the [root review and fresh replay](reviews/current-whole-field2011-lean-root.md).
+There is no occupation, unique-Start, supplied marker-value or calibration
+premise. All-cell occupation, neighboring color matching, native-machine
+semantics, the converse/controller and internal-ZFC proof remain open.
+
 Independent agents own distinct new Lean modules. The coordinator owns
 integration, documentation and commits. Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
