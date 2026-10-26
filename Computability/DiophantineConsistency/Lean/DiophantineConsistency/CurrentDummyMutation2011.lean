@@ -27,17 +27,12 @@ theorem word_update_increment {n : ℕ} [NeZero n] (ρ : ℕ)
     (c : ZMod n → ℕ) (i : ZMod n) :
     NativeCyclicConvolution.word ρ (Function.update c i (c i+1)) =
       NativeCyclicConvolution.word ρ c+ρ^i.val := by
-  have he : Function.update c i (c i+1) =
-      fun k => c k+(if k = i then 1 else 0) := by
-    funext k
-    by_cases hk : k = i
-    · subst k
-      simp only [Function.update_self,ite_true]
-    · rw [Function.update_of_ne hk,if_neg hk,add_zero]
-  rw [he,word_add]
-  congr 1
-  simp only [NativeCyclicConvolution.word,ite_mul,one_mul,zero_mul,
-    Finset.sum_ite_eq',Finset.mem_univ,ite_true]
+  unfold NativeCyclicConvolution.word
+  simp_rw [Function.apply_update (fun (j : ZMod n) v => v * ρ ^ j.val)]
+  rw [Finset.sum_update_of_mem (Finset.mem_univ i),
+    Finset.sum_eq_add_sum_sdiff_singleton_of_mem (Finset.mem_univ i)
+      (fun j => c j * ρ ^ j.val)]
+  ring
 
 /-- Ordinary equality follows from both transports only after the new
 representative and the proposed ordinary sum are strictly below the modulus. -/
@@ -103,10 +98,8 @@ omit [NeZero N] in
 theorem update_boolean (dummy : ZMod N → ℕ) (hd : ∀ i, dummy i ≤ 1)
     (j i : ZMod N) : Function.update dummy j 1 i ≤ 1 := by
   by_cases hi : i = j
-  · subst i
-    rw [Function.update_self]
-  · rw [Function.update_of_ne hi]
-    exact hd i
+  · simpa only [hi, Function.update_self] using (le_rfl : (1 : ℕ) ≤ 1)
+  · simpa only [Function.update_of_ne hi] using hd i
 
 /-- The exact packed source increment requires only that the selected
 dummy was zero. Other controls may be arbitrary natural numbers. -/
