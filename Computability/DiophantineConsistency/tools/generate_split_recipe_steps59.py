@@ -21,7 +21,7 @@ def rhs(n):
  return f'naturalRegister p x {n["left"]} {op} naturalRegister p x {n["right"]}'
 
 def render():
- out=['''import DiophantineConsistency.ArithmeticDAGSemantics
+ out=['''import DiophantineConsistency.ArithmeticDAGPowers
 import DiophantineConsistency.SplitCircuit59
 
 /-! # Local scalar equations for the pinned natural split116 parent DAG
@@ -36,21 +36,53 @@ variable {R : Type*} [CommRing R]
 def naturalRegister (p : Fin 12 → R) (x : Fin 9 → R) (i : ℕ) : R :=
   (run p x SplitCircuit59.naturalNodes []).getD i 0
 ''']
+ out.append(f'''
+/-- One local-equation theorem specializes to every generated step. -/
+private theorem natural_step (p : Fin 12 → R) (x : Fin 9 → R)
+    (i : Fin {len(nodes)}) :
+    naturalRegister p x i.val =
+      (SplitCircuit59.naturalNodes.getD i.val (.literal 0)).evalAt p x
+        (naturalRegister p x) :=
+  run_node_equation p x SplitCircuit59.naturalNodes SplitCircuit59.natural_topological i.val
+    (by simpa only [SplitCircuit59.natural_length] using i.isLt)
+
+/-- Zero marks a register with no asserted pure-power specification. -/
+private def naturalPowerLabels : List ℕ :=
+  [
+''')
+ out.append(',\n'.join('    '+','.join(map(str,labels[i:i+20])) for i in range(0,len(labels),20)))
+ out.append(f'''
+  ]
+
+private def naturalPowerLabel (i : ℕ) : ℕ := naturalPowerLabels.getD i 0
+
+set_option maxHeartbeats 12000000 in
+private theorem natural_power_certificate : ∀ i : Fin {len(nodes)},
+    i.val ≠ {base} → naturalPowerLabel i.val ≠ 0 →
+      PowerStep SplitCircuit59.naturalNodes naturalPowerLabel i.val := by
+  decide +kernel
+
+/-- Reuses the existing generic soundness theorem for exponent labels. -/
+private theorem natural_power (p : Fin 12 → R) (x : Fin 9 → R)
+    (i : Fin {len(nodes)}) (hi : naturalPowerLabel i.val ≠ 0) :
+    naturalRegister p x i.val = naturalRegister p x {base} ^ naturalPowerLabel i.val :=
+  run_power p x SplitCircuit59.naturalNodes SplitCircuit59.natural_topological
+    naturalPowerLabel {base} (by decide)
+    (fun j hj => natural_power_certificate
+      ⟨j, by simpa only [SplitCircuit59.natural_length] using hj⟩)
+    i.val (by simpa only [SplitCircuit59.natural_length] using i.isLt) hi
+''')
  for i,n in enumerate(nodes):
   out.append(f'''theorem natural_step_{i} (p : Fin 12 → R) (x : Fin 9 → R) :
     naturalRegister p x {i} = {rhs(n)} :=
-  run_node_equation p x SplitCircuit59.naturalNodes SplitCircuit59.natural_topological {i}
-    (by rw [SplitCircuit59.natural_length];decide)
+  natural_step p x ⟨{i}, by decide⟩
 ''')
  for i,e in enumerate(labels):
   if not e or i==base:continue
-  n=nodes[i];cuts=[f'natural_power_{j}' for j in dict.fromkeys([n['left'],n['right']]) if j!=base]
   out.append(f'''theorem natural_power_{i} (p : Fin 12 → R) (x : Fin 9 → R) :
-    naturalRegister p x {i} = naturalRegister p x {base} ^ {e} := by
-  rw [natural_step_{i}]
+    naturalRegister p x {i} = naturalRegister p x {base} ^ {e} :=
+  natural_power p x ⟨{i}, by decide⟩ (by decide)
 ''')
-  if cuts:out.append('  simp only ['+','.join(cuts)+']\n')
-  out.append('  ring\n')
  out.append('end DiophantineConsistency.SplitCircuitSteps59\n')
  return '\n'.join(out)
 
