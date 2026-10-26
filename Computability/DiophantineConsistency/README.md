@@ -46,8 +46,11 @@ in both directions against the calculus, and the changed
 semantics and standard one-step parser agreement. A separate
 [generic represented history](reviews/arithmetic-sequence-history-root.md)
 proves unique evaluation and lookup at all internal IΣ1 indices, retaining
-the explicit represented-step premise. Instantiating it with the actual
-C222 row and calibrating the seed/runtime remain separate work.
+the explicit represented-step premise. Its
+[actual C222 instantiation](reviews/arithmetic-history222-root.md) now proves
+the exact recurrence and a closed IΣ1 theorem of unique Boolean evaluation.
+Agreement with the concrete Nat decoder and seed/runtime calibration remain
+separate work.
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence

@@ -249,6 +249,19 @@ calibration and exact counter4 runtime simulation are the next obligations.
 These three packets total six fresh leaves over pinned cached prerequisites;
 they do not establish the final arithmetic consistency equivalence.
 
+The actual instantiation is now supplied by
+[ArithmeticHistory222](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticHistory222.lean).
+Its syntax-fixed step graph composes actual div/rem, Cantor projections,
+sequence lookups and the C222 row. Child-index bounds make the internal
+successor recurrence depend on this evaluator's own preceding values.
+It proves represented unique evaluation and an actual closed IΣ1 theorem
+of total unique Boolean evaluation, by existing arithmetic completeness.
+The [independent replay](reviews/arithmetic-history222-root.md) passed both
+new leaves and14 standard-only reports over118 cached prerequisites.
+Whole-code Nat agreement with the literal decoder is still separate, as
+are the logical seed and exact-runtime consistency calibrations. Total
+evaluation alone proves neither acceptance soundness nor HA equivalence.
+
 The [arithmetic translation audit](research/ha-arithmetic-translation-adapter-audit.md)
 also fixes the next proof-transfer interface: translate Foundation ordered
 arithmetic syntax into the existing conventional PAHF HA, then map actual
