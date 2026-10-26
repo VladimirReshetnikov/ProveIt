@@ -51,6 +51,14 @@ are not accepted replacements until their full proof and literal graph
 are reviewed. Every earlier native and complete-page checkpoint remains
 available.
 
+The [scaled auxiliary replacement](research/scaled-auxiliary118/README.md)
+now has two independent ordinary reviews, a complete sorted2501-bound
+integer graph and an independently reviewed finite audit. It gives 14
+positive variables, 66 operations and exact degree 118, preserving every
+positive zero of the 65-operation degree150 parent by the identity map.
+All whole ports and all 40 leading terms are checked. It remains a separate
+degree/operation tradeoff; a complete printed page has not yet been prepared.
+
 The new [rational-leaf64 Carrier65 evaluator](research/rational-carrier64-independent/README.md)
 has a complete root-reviewed graph, universal identity and normal/optimized
 audit. It computes exactly the same reversed2521 polynomial with 64 live
