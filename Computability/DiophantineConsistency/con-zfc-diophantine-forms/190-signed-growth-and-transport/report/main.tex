@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage[unicode,colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black]{hyperref}
+\usepackage{xurl}
+\usepackage{listings}
+\definecolor{ink}{RGB}{24,42,58}
+\definecolor{accent}{RGB}{22,87,102}
+\hypersetup{pdftitle={Signed growth and centered Pell transport for Diophantine consistency},pdfauthor={Research prepared for Vladimir Reshetnikov with ChatGPT assistance}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Diophantine consistency}\rhead{\small Signed growth and transport}\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{0.4em}\setlength{\parindent}{0pt}
+\setlist{itemsep=0.25em,topsep=0.4em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}\newcommand{\Zp}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\Ccal}{\mathcal C_{222}}\newcommand{\vTwo}{\nu_2}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\artifact}[1]{\texttt{\detokenize{#1}}}
+\allowdisplaybreaks[2]
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},xleftmargin=0.5em,xrightmargin=0.5em}
+\begin{document}
+\begin{titlepage}
+\vspace*{1.2cm}
+{\color{accent}\Large PROVEIT RESEARCH NOTE}\par
+\vspace{0.6cm}
+{\color{ink}\huge\bfseries Signed growth and centered Pell transport\par}
+\vspace{0.35cm}
+{\LARGE Explicit Diophantine equations for the consistency of ZFC\par}
+\vspace{0.8cm}
+{\large Prepared for Vladimir Reshetnikov}\par
+{\large 25 October 2026}\par
+\vspace{0.8cm}
+\begin{abstract}
+We give explicitly specified ordinary polynomials whose nonsolvability, in
+their stated domains, is provably equivalent in ZFC to syntactic
+\(\Con(\ZFC)\). A signed affine horizon, followed by a divisibility-justified
+rescaling, yields a quartic in 209 unrestricted integers. A separate
+construction combines a free quotient with an integer polynomial center
+and a new transport bound to obtain degree 190 in ten positive integers.
+Three compositions with oriented pooling give further unrestricted-integer
+tradeoffs. Every equation is accompanied by its literal coefficient or
+circuit data, constructive reductions, fixed-source provenance, and
+reproducible exact checks. We also identify why a tempting additional
+variable elimination fails: it limits the capacity of the proof-state
+encoding. The results improve specified constructions and do not establish
+a global minimum for Diophantine consistency equations.
+\end{abstract}
+\vfill
+\begin{minipage}{\textwidth}
+\small
+\textbf{Proof status.} The new arguments are ordinary mathematical proofs
+formalizable in ZFC, composed with the explicitly named inherited
+refutation calibrations. Exact computation authenticates finite polynomial
+identities and numerals. A new end-to-end Lean/Rocq proof object is not
+claimed. Mathematical development and independent internal reviews were
+assisted by ChatGPT; they are not external human peer review.
+\end{minipage}
+\end{titlepage}
+\tableofcontents
+\newpage
+\input{overview.tex}
+\input{signed_growth.tex}
+\input{compact.tex}
+\input{pooling.tex}
+\input{limits.tex}
+\input{reproducibility.tex}
+\input{references.tex}
+\appendix
+\input{quartic_residuals.tex}
+\input{compact_coefficients.tex}
+\end{document}

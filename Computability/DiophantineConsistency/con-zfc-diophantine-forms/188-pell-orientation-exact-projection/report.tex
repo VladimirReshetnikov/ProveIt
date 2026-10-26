@@ -1,0 +1,421 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{booktabs,longtable,array,microtype,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Pell Orientation and Exact Projection for Diophantine Consistency of ZFC},pdfauthor={Research prepared for Vladimir Reshetnikov and ProveIt; AI-assisted development},pdfsubject={Explicit Diophantine consistency equations with proofs and reproducible arithmetic circuits},pdfkeywords={Diophantine equations, ZFC consistency, Pell equations, exact integer projection}}
+\usepackage{enumitem,fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Diophantine consistency of ZFC}\fancyhead[R]{\small Pell orientation and exact projection}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}\setlength{\parindent}{0pt}
+\setlist{itemsep=0.25em,topsep=0.3em}
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\Norm}{\mathcal N}\newcommand{\Old}{\mathcal O}\newcommand{\Tri}{\mathcal T}
+\newcommand{\pathcode}[1]{\texttt{\detokenize{#1}}}
+\input{generated/metrics.tex}
+\title{Pell Orientation and Exact Projection\\for Diophantine Consistency of ZFC}
+\author{Research prepared for Vladimir Reshetnikov and ProveIt\\\small AI-assisted mathematical development, implementation, and internal review}
+\date{25 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a fully specified composition of Pell orientation and exact integer projection in a direct arithmetic encoding of finite ZFC refutations. In a shared orientation certificate, an affine penalty $1-X$ replaces $(X-1)^2$. The bounded-residue mechanism is already present in ProveIt package 136; this report extends its use to the actual signed-parameter source and composes it with the newer C222 anchor and five-base pooling construction. A triangular penalty $X(X-1)$ gives an equivalent intermediate formulation. After reduction by the retained Pell norm equations, the coefficient of each abscissa difference becomes $-1$, permitting an integral unit substitution. Together with a fixed acyclic substitution list, this gives a polynomial in \DirectVars{} unrestricted integers of exact degree \DirectDegree{}, with \DirectRows{} squared residuals. The improvement over the matched construction is one coordinate. No previously unknown encoding mechanism is claimed.
+
+A separate arithmetic composition gives a polynomial in fourteen positive integers, exact degree $118$, evaluated in $66$ binary operations. It has exactly the same positive zero set as the $65$-operation, degree-$150$ carrier polynomial instantiated at the same current coefficient tuple. A degree-$94$, $67$-operation companion is also supplied. Each consistency conclusion is an ordinary mathematical proof formalizable in ZFC, composed with precisely identified inherited calibrations. No consistency decision, global minimum, or new end-to-end proof-assistant verification is claimed.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The precise result and its limits}
+\subsection{Which notion of simplicity is improved?}
+The task is to give a fixed integer-coefficient polynomial $P$ for which
+\begin{equation}\label{eq:target}
+\ZFC\vdash\bigl(\neg\exists\boldsymbol x\in\mathcal D\;P(\boldsymbol x)=0\bigr)
+\ \longleftrightarrow\ \Con(\ZFC),
+\end{equation}
+with the domain $\mathcal D$ stated explicitly. The consistency predicate is syntactic: there is no internally coded finite derivation of falsity in the fixed effective presentation of ZFC. It is not the stronger assertion that a transitive model of ZFC exists.
+
+There is no single established ordering called ``simplest.'' The number of variables, total degree, coefficient height, arithmetic operation count, and the size of a complete coefficient recipe are different quantities. This report supplies improvements on two specified routes. It does not identify a globally minimal polynomial.
+
+The repository was inspected at immutable commit
+\begin{center}\small\pathcode{cdfea7d90176775d74c1c30afbe49fa78ade9897}.\end{center}
+This includes the new incoming Carrier65, Cofinal Pell Compression, Diagonal Growth, Mixed Base Pooling, and Affine Horizons packages. Their unintegrated status does not make their results new in this report.
+
+\input{generated/comparison.tex}
+
+The direct equation is independent of a K215 simulation and of Jones's universal polynomial: its inherited route encodes the numerical proof calculus C222. The fourteen-positive equations use the separately identified native coefficient construction. The two routes are not conflated. In particular, \DirectVars{} unrestricted variables are not a new overall variable minimum; the repository already contains much smaller-variable native constructions with large fixed coefficient data.
+
+\subsection{What is new here?}
+The principal contribution is a new explicit composition and its checked coordinate projection. The change in arithmetic penalty makes an already necessary equation solvable for a coordinate with coefficient $1$, rather than coefficient $2$. The affine orientation principle is prior work: package 136, Section ``Linear orientation in a bounded residue pool,'' already gives $\sum(Y_i-k_i)^2+\sum(1-X_i)=(A-1)q$ with an unrestricted quotient. It was recovered during the independent source review and is credited here. The present signed-parameter proof, exact source binding, and emitted endpoint are the contributions of this iteration.
+
+The change is not an identity of the old and new polynomial functions. Its preservation of solvability requires the unbounded Pell classification and index bounds in Section~\ref{sec:triangle}. The triangular reformulation is a polynomial shear of the known affine pool, not evidence of a separately new orientation mechanism.
+
+The high-degree direct endpoint also uses earlier reciprocal pooling and exact substitutions. A matched control retains those same earlier changes and has one additional coordinate. The difference between that control and the new endpoint isolates the coordinate deletion enabled by the orientation replacement.
+
+For a broader comparison, package 177 reports an $87$-integer endpoint of degree $8{,}388{,}612$, with $2{,}447$ operations and literal magnitudes at most $256$~\cite{oriented177}. The bounded-literal realization supplied here has $84$ integer inputs, degree $2{,}097{,}808$, and $2{,}379$ operations at the same literal bound. This improves all three reported figures for that representation. The older figures are taken from its authenticated README; this release does not rerun package 177's verifier or claim that its endpoint is the whole repository frontier.
+
+The positive-variable degree reductions are compositions. The recent first-Pell-root congruence carrier is credited to the incoming Carrier65 package; reduced auxiliary coefficients and ordinary strong certificates also precede this report. Their new, fully emitted compositions are useful numerical choices, but are not presented as independent conceptual discoveries.
+
+\subsection{Proof status}
+There are three separate layers of evidence. The ordinary proofs establish the unbounded transformation theorems, with the orientation precedent explicitly credited. Exact finite computations authenticate the source equations, polynomial identities, fixed substitution lists, degree witnesses, and arithmetic circuits. The inherited arithmetic and C222/ZF/ZFC theorems provide the consistency calibration. The finite computations do not replace those unbounded theorems.
+
+No step assumes that ZFC is consistent. The target~\eqref{eq:target} is an equivalence between internally expressed statements, not a proof of either side. The proof arguments use finite induction, integer arithmetic, Pell recurrences, and the retained proof-calculus translations, all available inside ZFC. A complete new encoded ZFC derivation or Lean/Rocq build is not included.
+
+\section{A triangular certificate for canonical Pell indices}\label{sec:triangle}
+\subsection{Canonical pairs for either sign of the parameter}
+For an integer $A$ with $|A|>1$, define integer sequences $C_n(A),S_n(A)$ for $n\in\Z$ by
+\begin{equation}\label{eq:pell-def}
+(A+\sqrt{A^2-1})^n=C_n(A)+S_n(A)\sqrt{A^2-1}.
+\end{equation}
+The inverse of the displayed unit is $A-\sqrt{A^2-1}$, so the definition uses integral coefficients for negative indices too. In particular $C_{-n}=C_n$ and $S_{-n}=-S_n$. Equivalently one can use the integer recurrences starting at $(C_0,S_0)=(1,0)$ and multiplying by $(A,1)$.
+
+Put $M=A-1$. Reduction of the recurrence modulo $M$ gives
+\begin{equation}\label{eq:pell-residues}
+C_n(A)\equiv1\pmod M,\qquad S_n(A)\equiv n\pmod M
+\quad(n\in\Z).
+\end{equation}
+For $A<0$, the ordinary sign of $C_n(A)$ can depend on the parity of $n$. The sign used below is always the sign relative to the canonical pair at the signed parameter $A$.
+
+\begin{theorem}[Triangular orientation]\label{thm:tri}
+Suppose there are $1\le r\le17$ pairs $(X_i,Y_i)\in\Z^2$, nominal indices $k_i\in\Z$, and an integer $W\ge258$. Suppose the retained hypotheses, independently of any orientation equation, establish
+\begin{gather}\label{eq:hyp}
+X_i^2-(A^2-1)Y_i^2=1,\qquad
+(X_i,Y_i)=\varepsilon_i(C_{n_i}(A),S_{n_i}(A)),\\
+\varepsilon_i\in\{-1,1\},\quad |n_i|<W,\quad |k_i|<W,
+\qquad |A-1|>4W^3.\nonumber
+\end{gather}
+Then all the following are equivalent:
+\begin{enumerate}
+\item $(X_i,Y_i)=(C_{k_i}(A),S_{k_i}(A))$ for every $i$;
+\item an integer $Q$ satisfies
+\begin{equation}\label{eq:tri-raw}
+\sum_{i=1}^r\left[X_i(X_i-1)+(Y_i-k_i)^2\right]=M Q;
+\end{equation}
+\item an integer $Q_0$ satisfies the former orientation equation
+\begin{equation}\label{eq:old-raw}
+\sum_{i=1}^r\left[(X_i-1)^2+(Y_i-k_i)^2\right]=M Q_0.
+\end{equation}
+\end{enumerate}
+The two quotients are unrestricted integers. On canonical pairs they obey
+\begin{equation}\label{eq:q-map}
+Q_0=Q-\frac{\sum_i(X_i-1)}{M}.
+\end{equation}
+The division in~\eqref{eq:q-map} is an exact witness reconstruction, not an operation in the final polynomial.
+\end{theorem}
+
+\begin{proof}
+Set $\rho_i=\varepsilon_i n_i$. By~\eqref{eq:pell-residues}, the left-hand side of~\eqref{eq:tri-raw} is congruent modulo $M$ to
+\begin{equation}\label{eq:small-error}
+D=\sum_i\left[\varepsilon_i(\varepsilon_i-1)+(\rho_i-k_i)^2\right].
+\end{equation}
+The first term is $0$ for $\varepsilon_i=1$ and $2$ for $\varepsilon_i=-1$. Thus every summand is nonnegative. Since the indices are integers with absolute value below $W$,
+\[
+0\le D\le r\bigl(2+(2W-2)^2\bigr)<4rW^2<4W^3<|M|.
+\]
+If~\eqref{eq:tri-raw} holds, $M$ divides $D$, forcing $D=0$. Every sign is consequently $+1$ and every $n_i=k_i$. This proves canonicity without assuming a sign for $A$, $M$, or the supplied coordinates.
+
+Conversely, at canonical pairs each $X_i-1$ and $Y_i-k_i$ is divisible by $M$. Hence both sums in~\eqref{eq:tri-raw} and~\eqref{eq:old-raw} are divisible by $M$, giving the required integer quotients. Their difference is $\sum_i(X_i-1)$, which proves~\eqref{eq:q-map}.
+
+For completeness, the old equation also implies canonicity by the same argument with
+\[
+D_0=\sum_i\left[(\varepsilon_i-1)^2+(\rho_i-k_i)^2\right].
+\]
+Here $0\le D_0\le r(4+(2W-2)^2)<4rW^2<|M|$. Divisibility again gives $D_0=0$.
+\end{proof}
+
+\begin{remark}
+Replacing a square penalty by an arbitrary product is not valid. Here the residue of $X_i$ is known to be $+1$ or $-1$, and $X_i(X_i-1)$ distinguishes those residues by the nonnegative values $0$ and $2$. The separate small-index bound makes reduction modulo $M$ injective on the possible total error. Without that bound, a positive multiple of $|M|$ could be mistaken for zero.
+\end{remark}
+
+\subsection{Why the replacement saves a variable}
+The source stores the coordinates
+\[
+Z_i=A Y_i,\qquad D_i=X_i-Z_i,
+\]
+and retains the multiplication rows and Pell norm rows
+\begin{equation}\label{eq:norm}
+Z_i-A Y_i=0,\qquad
+N_i=D_i^2+2D_iZ_i+Y_i^2-1=0.
+\end{equation}
+On these rows, $N_i$ is the usual Pell norm minus $1$. Subtracting the norm rows from the former orientation sum gives the quadratic row
+\begin{equation}\label{eq:old-reduced}
+\Old=\sum_i\left[Z_i^2-2D_i-2Z_i-2k_iY_i+k_i^2+2\right]-M Q_0.
+\end{equation}
+For the triangular sum the corresponding row is
+\begin{equation}\label{eq:tri-reduced}
+\boxed{\Tri=\sum_i\left[Z_i^2-D_i-Z_i-2k_iY_i+k_i^2+1\right]-M Q.}
+\end{equation}
+There is an exact syntactic identity, using the same quotient symbol for comparison,
+\begin{equation}\label{eq:literal-row-change}
+\Tri=\Old+\sum_i(D_i+Z_i-1).
+\end{equation}
+All coefficients of the $D_i$ have become $-1$. If $D_j$ is independent of the other displayed expressions, solve~\eqref{eq:tri-reduced} explicitly:
+\begin{equation}\label{eq:pivot}
+\boxed{D_j=\sum_i\left[Z_i^2-Z_i-2k_iY_i+k_i^2+1\right]
+-\sum_{i\ne j}D_i-(A-1)Q.}
+\end{equation}
+The right-hand side is an integer polynomial, with no division by $2$ and no parity side condition. Substitute it into every remaining row and remove the orientation row and the coordinate $D_j$.
+
+\begin{corollary}[Exact integral projection]\label{cor:projection}
+Under the hypotheses of Theorem~\ref{thm:tri}, this replacement and substitution preserve existence of integer solutions. After the orientation change, substitution itself gives a bijection of zero sets: a projected tuple has the unique extension~\eqref{eq:pivot}. Between the old and triangular systems, the quotient is changed by the exact map~\eqref{eq:q-map}. Thus the old and new polynomial functions need not be equal.
+\end{corollary}
+
+The degree increase must be paid. The right-hand side of~\eqref{eq:pivot} is quadratic in the source coordinates, so its substitution into the selected quadratic norm produces a quartic residual. Squaring that residual can yield an octic equation. A pre-existing higher-degree pooling row must also receive the substitution. No unchanged-degree assertion follows merely from the dimension saving.
+
+\subsection{The cheaper affine form and its prior source}\label{sec:affine}
+Under the same hypotheses, the equation
+\begin{equation}\label{eq:affine-raw}
+\boxed{\mathcal L=\sum_i\left[1-X_i+(Y_i-k_i)^2\right]-(A-1)Q_L=0}
+\end{equation}
+also forces precisely the canonical pairs. Its small residue is
+\[
+\sum_i\left[1-\varepsilon_i+(\varepsilon_i n_i-k_i)^2\right],
+\]
+whose sign penalties are again $0$ or $2$. The proof is exactly the bounded-residue argument above. The actual left-hand summands need not be nonnegative. Only their chosen small residue representatives are; requiring $Q_L\ge0$ would not be justified.
+
+In the difference chart, the explicit pivot becomes
+\begin{equation}\label{eq:affine-pivot}
+\boxed{D_j=\sum_i\left[1-Z_i+(Y_i-k_i)^2\right]
+-\sum_{i\ne j}D_i-(A-1)Q_L.}
+\end{equation}
+It replaces the $Z_i^2$ terms of~\eqref{eq:pivot} with $Y_i^2$. On the retained multiplication rows,
+\[
+\sum_i(Z_i^2-Y_i^2)=(A-1)(A+1)\sum_iY_i^2.
+\]
+Thus the triangular and affine pools are related by the exact polynomial quotient shear
+\begin{equation}\label{eq:shear}
+Q=Q_L+(A+1)\sum_iY_i^2.
+\end{equation}
+The delivered principal endpoint uses this affine form. Package 136 proved the positive-$A$ version of this residue mechanism, orienting a selected subset of its principal pairs. The version here handles every current principal pair and either sign of $A$, and verifies the actual newer source's independent bounds. The essential mechanism is credited to that predecessor.
+
+\section{The explicit direct consistency polynomial}\label{sec:direct}
+\subsection{The authenticated source and the exact edit}
+The parent is the $206$-integer, $145$-residual source
+\pathcode{pooling/oriented_pool/principal206.json}
+from the incoming Cofinal Pell Compression package. All its coefficients are fixed integers, not externally supplied ports. Its provenance and the retained source package are included in the archive.
+
+The following indices are zero-based in that exact parent:
+\begin{center}
+\begin{tabular}{ll}\toprule
+Quantity&Source expression or row\\\midrule
+$A$, $M$&$x_{132}+1$, $x_{132}$\\
+Old orientation quotient&$Q=x_{193}$\\
+Chosen difference and product&$D_j=x_{142}$, $Z_j=x_{144}$\\
+Chosen ordinate and index&$Y_j=x_{143}-1$, $k_j=x_8-1$\\
+Chosen abscissa&$X_j=x_{142}+x_{144}$\\
+Principal norm rows&$95,97,99,\ldots,121$\\
+Chosen multiplication/norm rows&$98$, $99$\\
+Stored orientation row&$135$\\\bottomrule
+\end{tabular}
+\end{center}
+The stored row is already norm-reduced, as in~\eqref{eq:old-reduced}; it is not the raw sum of squares. Exactly row $135$ is changed, first by~\eqref{eq:literal-row-change} and then by the affine shear using the retained multiplication rows. Equivalently the exact coefficient edit is
+\[
+R_{135}^{\rm affine}=R_{135}^{\rm old}
++\sum_i\bigl[D_i+Z_i-1+Y_i^2-Z_i^2\bigr].
+\]
+Every other pre-projection source row is retained literally. The exact list of all fourteen pairs, all offsets, and the row identity are included in the machine-readable orientation certificate and the generated appendix.
+
+The new row has coefficient $-1$ on $x_{142}$. Eliminating that coordinate gives a $205$-variable, $144$-residual source. It has exact degree $26$ after taking the sum of residual squares. The degree-$12$ five-base pooling residual of the old source becomes degree $13$ after substitution; its square accounts for the increase. This is why inspecting only the quadratic Pell rows would give a wrong degree claim.
+
+\subsection{The anchor bounds are available before orientation}
+The semantic anchor is a different principal pair, with data
+\[
+c_0=2x_{16},\qquad U=x_{172}+x_{174},\qquad V=x_{173}.
+\]
+The retained cap constructor, comparison, and rank rows $125$--$134$ do not depend on $x_{142}$ or $x_{193}$. The common squared cap in row $138$ retains $Y_j=x_{143}-1$ but does not use the removed abscissa difference. Consequently the pre-orientation argument is preserved.
+
+Its dependency order is material. First the odd Pell frame proves $W\ge258$, $|A|>W^W$, and $|A-1|>4W^3$. It bounds the nominal indices by the frame. Second, the squared cap and the comparison/divisibility argument recover the anchor's absolute index $|c_0|$, initially without asserting $c_0>0$. The other principal absolute indices are smaller, so all are below $W$. Only then is orientation applied. Finally the retained reciprocal pooling theorem and parity bootstrap recover exact powers and the eventual positivity of the semantic indices. Using that last positivity to justify the earlier orientation would be circular; this proof does not do so.
+
+\subsection{A closed, finite definition of the final polynomial}
+Let $R_0,\ldots,R_{144}$ be the literal parent residuals, and replace $R_{135}$ by $\mathcal L$. The supplied ordered pivot list chooses rows of the form
+\begin{equation}\label{eq:unit-row}
+\varepsilon x_j+g(\boldsymbol x)=0,\qquad \varepsilon\in\{-1,1\},
+\quad x_j\notin g.
+\end{equation}
+Every pivot definition is $x_j=-\varepsilon g$. The dependency graph of these definitions is acyclic. Its leaves are the \DirectVars{} retained free coordinates, in the exact order specified by the circuit. Recursively substitute the definitions into each of the \DirectRows{} unselected residuals, obtaining the fixed ordinary polynomials $H_1,\ldots,H_{\DirectRows}$. Define
+\begin{equation}\label{eq:final-direct}
+\boxed{P_{\DirectVars}(u_0,\ldots,u_{83})
+=\sum_{j=1}^{\DirectRows}H_j(u_0,\ldots,u_{83})^2.}
+\end{equation}
+This is a finite definition of every coefficient. All exponents in the circuit are fixed nonnegative integers. No variable exponentiation, Pell-sequence function, predicate symbol, existentially chosen coefficient, or unbounded summation remains in~\eqref{eq:final-direct}. The JSON circuit, source rows, pivot certificate, evaluator, and reproducible constructor are part of the delivery. The complete expansion into monomials is deliberately not required to define or evaluate this very high-degree polynomial.
+
+\begin{theorem}[Direct endpoint]\label{thm:direct}
+The supplied $P_{\DirectVars}$ has \DirectVars{} unrestricted integer variables, \DirectRows{} squared residuals, and exact total degree \DirectDegree{}. Composed with the identified inherited C222 calibration,
+\[
+\ZFC\vdash\left(\neg\exists\boldsymbol u\in\Z^{\DirectVars}\;
+P_{\DirectVars}(\boldsymbol u)=0\right)\longleftrightarrow\Con(\ZFC).
+\]
+\end{theorem}
+\begin{proof}
+A zero of a sum of integer squares is precisely a common zero of its residuals. Acyclic unit substitution gives an integral extension to every omitted coordinate, making every pivot row zero and every retained row zero. The affine orientation theorem restores canonicity and hence an integral old orientation quotient. Hence a final zero yields a parent zero. Conversely a parent zero has canonical Pell pairs. Choose the new quotient by~\eqref{eq:affine-raw}, then project along the unit definitions to obtain a zero of~\eqref{eq:final-direct}. The parent's ordinary arithmetic theorem identifies its zeros with finite C222 refutations. The named logical interfaces in Section~\ref{sec:calibration} identify those with finite ZFC refutations. Negation gives the stated equivalence. The degree assertion is certified separately in Section~\ref{sec:verification}.
+\end{proof}
+
+\section{A small positive-variable companion}\label{sec:native}
+The following complete front end is useful when arithmetic cost and degree matter more than avoiding the fixed native coefficient tuple. Its four fixed coefficients are $\beta,K_0,M_C,M_F$ from the current block-mask2963 construction. They are supplied in full in the archive, together with the finite coefficient recipe, authentication hashes, and retained ordinary native proof. They are constants, not additional unknowns.
+
+Take exactly fourteen independent variables
+\[
+J,F,\alpha,z,f,i,T,s,w,n,\eta,\zeta,y,\gamma\in\Pos.
+\]
+Every remaining symbol below is a polynomial abbreviation:
+\begin{align*}
+q_-&=\beta J,&q&=q_-+1,& C&=q-F-\alpha,\\
+X&=wq,&Y&=s q^3,&E&=XY,\\
+k&=\eta+\zeta,&\ell&=EkY,&c&=kY+\eta,\\
+a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+D&=X+ac+\gamma H,&&&
+\end{align*}
+\begin{align*}
+R&=\bigl[q_-(q-F)+\alpha\bigr](q^2-1)+(M_C+qM_F)J,\\
+\tau&=En+k-R,\\
+V&=f^2(cT-R)-c,\qquad U=\Delta(f^2-1),\\
+N_0&=\tau^2-\ell(\ell+k),\qquad N_1=D^2-\Delta c^2,\\
+N_a&=U(V^2-y^2)+y^2,\\
+N_t&=(K_0+w)C+(q-F)-zq_-.
+\end{align*}
+For the first companion put $S=i\Delta c^2$, $N_s=\Delta f^2-S^2$. The equation is
+\begin{equation}\label{eq:q66}
+\boxed{Q_{66}=N_0N_1N_aN_tN_s-\Delta=0.}
+\end{equation}
+It uses $66$ binary integer-leaf operations and has exact degree $118$.
+
+\subsection{Proof by exact positive-zero-set restoration}
+Instantiate the recent carrier formula with the same current block-mask2963 tuple. The incoming Carrier65 archive used an earlier admissible942 numerical tuple; these different coefficient payloads are not being equated. Its uniform carrier argument applies to the current tuple because the retained current native theorem supplies the whole required interface. The corresponding carrier parent has exactly the same front end and strong factor, but its auxiliary factor is
+\[
+N_a^{\rm old}=S^2(V^2-y^2)+y^2.
+\]
+Its equation is $N_0N_1N_a^{\rm old}N_tN_s-\Delta=0$.
+The identity $\Delta=(a+2)^2-1$ gives $\Delta>0$ and $\Delta\equiv0$ or $3\pmod4$. Also
+\[
+N_s=\Delta\left[f^2-\Delta(i c^2)^2\right].
+\]
+Cancelling the nonzero integer $\Delta$ from~\eqref{eq:q66} in the proof gives a product of five integer units. The negative-Pell obstruction for $m(m+1)$ excludes $N_0=-1$, where $m=EY$. Squares modulo $4$ exclude $N_1=-1$ and $f^2-\Delta(i c^2)^2=-1$.
+
+For the new auxiliary factor, $U=\Delta(f^2-1)$ is $0$ or $1$ modulo $4$: this is immediate from $f^2\equiv0$ or $1$ and $\Delta\equiv0$ or $3$. Thus $N_a$ is congruent to $y^2$ or $V^2$ modulo $4$, and cannot be $-1$. The remaining transport unit must also be $+1$. We obtain
+\[
+f^2-\Delta(i c^2)^2=1,
+\qquad S^2=\Delta(f^2-1)=U.
+\]
+Consequently $N_a=N_a^{\rm old}$ at every new zero. The same unit argument on the old equation gives the identical equality at every old zero. The positive zero sets of the two equations are therefore exactly equal at identical coordinates.
+
+\begin{proposition}\label{prop:q66}
+With the authenticated block-mask2963 coefficients, ZFC proves that~\eqref{eq:q66} has no positive integer solution if and only if $\Con(\ZFC)$.
+\end{proposition}
+The proof composes the preceding exact restoration with the inherited Carrier65 and native-refutation calibrations. It costs one arithmetic operation relative to Carrier65 and lowers the degree by $32$, from $150$ to $118$.
+
+\subsection{The degree-94 companion}
+Keep the same fourteen variables and all abbreviations through $N_t$, but put
+\[
+I=i c^2,\qquad N_o=1+I^2-U.
+\]
+The second supplied equation is
+\begin{equation}\label{eq:q67}
+\boxed{Q_{67}=N_0N_1N_aN_tN_o-1=0.}
+\end{equation}
+It uses $67$ operations and has exact degree $94$. The same residue calculation excludes $N_o=-1$, since $I^2\in\{0,1\}$ and $U\in\{0,1\}$ modulo $4$. Hence all five factors at a zero are $1$, and $I^2=U$. Its soundness uses the retained ordinary-strong-certificate theorem, including its squarefree descent. It must not assume without proof that the supplied ordinary multiplier $i$ is divisible by $\Delta$, or assert $\Delta\mid I$ before the relevant rank hypotheses are established.
+
+The first Pell root still restores the omitted positive index quotient. From the transport factor one gets $C>0$ and the inherited explicit bounds
+\[
+q(q^2-1)<R<q^4-q^3<E.
+\]
+The first Pell root $\tau=En+k-R$ is positive and is $1$ modulo $E$, so $k-R-1$ is divisible by $E$. Its quotient $h=(k-R-1)/E$ is nonnegative. The first nontrivial Pell ordinate is $k=2$, which would force $R=1$ if $h=0$; every later ordinate is already larger than $E$. Thus $h>0$. This reconstructs the earlier ordinary strong equation.
+
+For completeness the earlier theorem supplies positive canonical witnesses and $\tau>k$. Then $n=(\tau-k+R)/E$ is a positive integer. No divisibility by $\Delta$ is used. The full inherited ordinary-strong proof and the new two-direction composition are retained in the package.
+
+\subsection{Exact degree and operation accounting}
+For~\eqref{eq:q66}, the exact factor degrees are
+\[
+\deg N_0=22,\quad\deg N_1=18,\quad\deg N_a=30,
+\quad\deg N_t=2,\quad\deg N_s=46.
+\]
+Their sum is $118$, and subtraction of $\Delta$ cannot change it. The main norm's naive degree-$22$ terms cancel. With $Z=X+\gamma H$ it is exactly
+\[
+N_1=2acZ+Z^2-Hc^2,
+\]
+whose actual degree is $18$. Writing $q_0=\beta J$ and $k_0=\eta+\zeta$, the degree-$118$ homogeneous component is
+\begin{equation}\label{eq:q66-leading}
+8\gamma i^2w^{10}s^{19}k_0^9q_0^{67}f^6T^2
+\left[w(q_0-F-\alpha)-zq_0\right].
+\end{equation}
+For example the coefficient obtained by selecting $\eta^9$ and the $-zq_0$ term is $-8\beta^{68}\ne0$. The exactness holds for the actual fixed coefficient tuple, not merely generic ports.
+
+For~\eqref{eq:q67}, only the strong factor changes: $\deg N_o=22$, giving total degree $94$. The archive's independent audit computes the complete leading forms and the live circuit counts. Multiplication by a fixed scalar and squaring each cost one binary operation; no division is allowed. The circuits have $37$ multiplications each, with $16$ additions and $13$ subtractions for $Q_{66}$, and $17$ additions and $13$ subtractions for $Q_{67}$.
+
+\section{Calibration to syntactic ZFC consistency}\label{sec:calibration}
+The direct construction inherits the chain
+\begin{align*}
+\text{parent integer zero}
+&\longleftrightarrow\text{square-shell C222 refutation}\\
+&\longleftrightarrow\text{original C222 derivation of code }1\\
+&\longleftrightarrow\text{finite ZF refutation}\\
+&\longleftrightarrow\text{finite ZFC refutation}.
+\end{align*}
+The syntax recoding is a constructor-preserving bijection fixing truth $0$ and falsity $1$; it does not assert that different numerical constructors are literally equal. The two identified logical interfaces in ProveIt are
+\begin{center}\small
+\pathcode{SetTheory.BusyBeaver.ZFC.KEndpoint.c222_iff_zf_refutation}\\[3pt]
+\pathcode{SetTheory.BusyBeaver.ZFC.ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\end{center}
+They concern the calculus and finite proofs. Their use here does not depend on running the K215 machine, although other theorems in the same source tree do discuss that machine.
+
+The most substantial inherited logical argument is the C222/ZF calibration, including the seed-to-model construction. The retained source note identifies its named-formula completeness, interpreted coding, seed axioms, and internally well-founded model construction. Neither a finite coefficient audit nor inspection of the endpoint theorem names proves that whole argument. It is credited as an inherited mathematical dependency, with pinned source references and the relevant retained files.
+
+Similarly, the inherited arithmetic route includes a factorial-free binomial/CRT selector, local Horn proof checking, canonical Pell index recovery, and the common square frame. The present theorem modifies only orientation after the pre-orientation bounds have been established. It does not need to re-encode the logical axioms, change a native program, or choose a new universal-polynomial index.
+
+The native companions have a different inherited chain: their fixed four coefficients encode the calibrated finite tile language and its refutation semantics. The complete coefficient recipe and current ordinary proof are supplied. These constants cannot be replaced by arbitrary positive integers while retaining the ZFC claim.
+
+All equivalences are intended uniformly for the internally coded finite objects of ZFC, including those in a nonstandard model. The proof uses the same internal induction and arithmetic lemmas there. It does not rely on an external assertion that every internally finite proof is standard.
+
+\section{Verification, reproducibility, and use}\label{sec:verification}
+\input{generated/verification.tex}
+
+\subsection{How exact degree is established}
+A circuit's propagated degree is an upper bound, and may overestimate after cancellation. The direct certificate therefore pairs its upper bound with a specialization witnessing a nonzero coefficient in that same degree. Arithmetic in the specialization is exact, or is carried out in an explicitly specified finite field where a nonzero result certifies that the integral coefficient was nonzero. For a sum of squares over the integers, at least one residual attaining the maximal residual degree implies twice that degree for the output: the leading real homogeneous squares cannot cancel.
+
+The native audit additionally expands the complete main norm where the leading cancellation occurs. The report's displayed definitions are compared with the literal circuits. No degree is inferred from a random evaluation of a giant polynomial.
+
+\subsection{What the scripts do not establish}
+The scripts evaluate and authenticate fixed polynomials and finite transformations. They do not search for a ZFC refutation, establish that no integer root exists, or decide consistency. Modular derivative checks, when supplied, witness that each formal variable is live; modular zeros by themselves are not integer solutions. Full expanded coefficient height is only asserted when actually collected; a bound is labeled as a bound.
+
+The delivered source and ordinary proofs are suitable for repository review and subsequent formalization. The work should be integrated as a new named construction with its own provenance, preserving the matched controls and older tradeoffs. It should not overwrite the maintained smallest-operation page merely because it offers a lower-degree alternative.
+
+\section{Further deductions and remaining research questions}
+The triangular-to-affine reduction illustrates a useful design rule already implicit in package 136. When a computation certificate reduces a coordinate to a finite set of possible residues, choose a penalty for its values on that finite set and for the coefficient it leaves after the structural equations are reduced. A square is convenient but need not be the best choice. Here $X(X-1)$ and $1-X$ have the same desired values on $\{1,-1\}$. The affine form is sufficient even though its value before modular reduction may be negative.
+
+This does not imply that arbitrary proof predicates can be compressed for free. The index bound, common frame, and all coordinate reconstruction equations remain necessary. A system with a fixed time horizon is not an unbounded fixed-arity Diophantine certificate. A finite presentation or a smaller local verifier does not by itself supply the missing arithmetic encoding of an arbitrarily long proof.
+
+The most promising next local question is whether another already certified finite residue set admits a penalty whose reduced coefficient is a unit, allowing a second integral coordinate deletion. A separate architectural question is whether the direct proof calculus can be simplified enough to reduce the enormous degree introduced by eliminating its syntax graph. Neither question is claimed solved here.
+
+\section*{Attribution and sources}
+\addcontentsline{toc}{section}{Attribution and sources}
+All new development and internal reviews in this release are AI-assisted. The retained ProveIt material and incoming research packages are credited in their notices and provenance ledgers. ``Independent review'' in this delivery means a separate mathematical and implementation review within this session; it is not a claim of external human peer review.
+
+\begingroup\raggedright
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov and contributors, \emph{ProveIt: DiophantineConsistency}, inspected at commit \pathcode{cdfea7d90176775d74c1c30afbe49fa78ade9897}. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/cdfea7d90176775d74c1c30afbe49fa78ade9897/Computability/DiophantineConsistency}.
+\bibitem{source173} ProveIt research package 173, \emph{CRT index anchor}, including \pathcode{C_ANCHOR_THEOREM.md}, the exact $215$-integer parent, and logical calibration notes. The retained source package supplies immutable source identities.
+\bibitem{cofinal} \emph{ConZFC Cofinal Pell Compression}, incoming package dated 25 October 2026, especially \pathcode{proofs/ORIENTED_POOLING.md} and \pathcode{pooling/oriented_pool/principal206.json}. Imported from the inspected repository snapshot.
+\bibitem{carrier} \emph{ConZFC Pell Carrier65}, incoming package dated 25 October 2026, especially \pathcode{proofs/CARRIER65_PROOF.md}. The $14$-positive, $65$-operation, degree-$150$ parent is prior work.
+\bibitem{earlier} ProveIt packages 51, 53, 57, 59, and 174, ordinary strong Pell certificates and degree-separated auxiliary coefficients. Exact files and immutable hashes used here are retained with the native companion.
+\bibitem{orientation136} ProveIt package 136, \emph{Local certificates}, Section ``Linear orientation in a bounded residue pool'' of its signed-integer construction. The exact prior formula and proof are retained in the provenance material of this release. Its original application has $306$ unrestricted integer coordinates.
+\bibitem{oriented177} ProveIt package 177, \emph{Oriented power pooling and polynomial root centering}, README at the inspected immutable commit. Its reported $87$-integer endpoint is used only as an explicitly attributed comparison. The byte-authenticated README is retained in \pathcode{provenance/source177_README.md}.
+\bibitem{jones} J. P. Jones, Universal Diophantine equation, \emph{Journal of Symbolic Logic} \textbf{47} (1982), 549--571. \url{https://doi.org/10.2307/2273588}. Background; the new direct endpoint does not instantiate this polynomial.
+\bibitem{bayer} J. Bayer, M. David, M. Ha{\ss}ler, Yu. Matiyasevich, and D. Schleicher, \emph{Diophantine equations over $\Z$: universal bounds and parallel formalization}, arXiv:2506.20909v2 (2025). \url{https://arxiv.org/abs/2506.20909}. Background on the separate measures of variables, degree, and domain.
+\end{thebibliography}
+\endgroup
+
+\appendix
+\section{Literal direct construction tables}
+\input{generated/direct_appendix.tex}
+\clearpage
+\section{The fixed native coefficient recipe}
+\input{generated/native_appendix.tex}
+\end{document}
