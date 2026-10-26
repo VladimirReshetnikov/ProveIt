@@ -52,6 +52,10 @@ the exact recurrence and a closed IΣ1 theorem of unique Boolean evaluation.
 [Agreement with the concrete Nat decoder](reviews/arithmetic-history222-nat-root.md)
 now holds for every code, including malformed inputs. Internal seed validity
 and exact runtime calibration remain open.
+The [actual internal C222 constructor equations](reviews/arithmetic-proof-constructors222-root.md)
+now give accepted-node witnesses for all twelve rule cases, preserving the
+two exact seed gates and the new growG leaf. They passed independent
+compilation with15 standard-only reports; seed soundness is a separate step.
 The [literal arithmetic equation sentence](Lean/DiophantineConsistency/ArithmeticCurrentEquation2011.lean)
 is now independently checked, with compact numerals for every fixed port
 and the exact positive-domain semantics. The HA consistency-equivalence

@@ -278,6 +278,15 @@ standard-only reports over120 cached prerequisites. Internal seed and exact
 runtime calibration remain open; the represented formula now has its actual
 whole-code standard interpretation.
 
+[ArithmeticProofConstructors222](../BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticProofConstructors222.lean)
+now supplies all twelve actual rule-node evaluation equations at arbitrary
+internal IΣ1 inputs. It uses the new history recurrence, actual growG and
+helper-free seed with exactly c≠a,b, including rejected collisions. Its
+[independent replay](reviews/arithmetic-proof-constructors222-root.md) passed
+both leaves and15 standard-only reports over119 cached prerequisites.
+The represented CProv222 logical interface and subsequent seed/calculus
+interpretation remain separate work.
+
 The [arithmetic translation audit](research/ha-arithmetic-translation-adapter-audit.md)
 also fixes the next proof-transfer interface: translate Foundation ordered
 arithmetic syntax into the existing conventional PAHF HA, then map actual
