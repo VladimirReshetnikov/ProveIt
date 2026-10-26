@@ -6,6 +6,14 @@ metrics have no solutions exactly when the repository's syntactic
 `ConZFC`. This supersedes the earlier pause. Decimal notation and distinct
 unsubscripted scalar names remain requirements for the maintained page.
 
+On26 October the owner strengthened the target to a Lean theorem that
+the equivalence is PROVABLE IN INTUITIONISTIC HEYTING ARITHMETIC (HA).
+Only existence of an HA proof must be proved; printing or serializing the
+literal proof is unnecessary. The [HA provability plan](HA_PROVABILITY_PLAN.md)
+now governs the remaining foundational work. Existing external endpoints
+and ZFC-sentence work are retained at their precise scopes; an encoded
+ZFC derivation is superseded as the primary remaining target.
+
 ## Required endpoints and evidence
 
 `DiophantineConsistency.ConZFC` is
@@ -28,9 +36,11 @@ For each selected frontier equation, completion requires:
    closed Lean theorem for that particular equation.
 5. Kernel-checked builds and audits of the theorem axioms. Python finite
    certificates and ordinary proofs guide this work but do not replace it.
-6. For the original assertion of provability *in ZFC*, the internal
-   interpretation and object-language derivation, including nonstandard
-   internal codes. The older external Lean endpoints alone do not supply it.
+6. A closed Lean theorem asserting existence of an HA derivation of the
+   literal arithmetic equivalence, including its proof-checker convention.
+   A general verified translation/existence argument is sufficient; a
+   literal expanded HA proof need not be produced. The external Lean iff
+   and the older set-theory sentence endpoints alone do not supply this.
 
 The target collection includes the maintained 14-positive/65-operation/
 degree-150 page; the accepted 13-positive 69/174, 70/140 and 71/128

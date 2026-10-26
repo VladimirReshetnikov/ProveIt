@@ -1,5 +1,12 @@
 # The object-language ZFC obligation
 
+Status update26 October2026: the owner has strengthened the remaining
+target to a Lean proof that the equivalence has a proof in intuitionistic
+Heyting Arithmetic. Existence is sufficient; no literal HA proof needs
+printing. See [HA_PROVABILITY_PLAN.md](HA_PROVABILITY_PLAN.md). The material
+below records completed ZFC-language interfaces and the former target;
+it is retained without making ZFC-only model work the primary next task.
+
 `ExplicitZFC.noSyntaxZero_iff_conZFC` is an external Lean theorem about the
 actual predicate `BProv ZFCax_s [] Form.fBot`. It is not a derivation in that
 calculus of a sentence expressing the same equivalence. The requested

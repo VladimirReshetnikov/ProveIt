@@ -13,6 +13,10 @@ Neither consistency nor inconsistency is assumed.
 
 The current priority is Lean proofs that the smallest constructed equations
 under the different size metrics have no solutions exactly when `Con(ZFC)`.
+The owner now additionally requires a Lean theorem that this equivalence
+is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
+of such a proof is sufficient; a literal printed proof is unnecessary.
+The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 The owner resumed formalization on 25 October 2026. The
 [formalization plan](LEAN_EQUIVALENCE_PLAN.md) distinguishes the checked
 older endpoints from each literal current-equation theorem and the
