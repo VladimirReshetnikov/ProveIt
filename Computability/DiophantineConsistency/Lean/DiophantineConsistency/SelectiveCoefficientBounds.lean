@@ -192,9 +192,7 @@ theorem half_base_bound {m : ℕ} (w : Fin (m + 1) → ℕ) (u : Fin m → ℕ) 
       _ ≤ _ := hbase
   have hpositive : 0 < H * (((m : ℤ) + 1) * b) ^ 2 := by positivity
   have hpow : (2 : ℤ) ^ t = 2 * 2 ^ (t - 1) := by
-    rw [← pow_succ']
-    congr 1
-    omega
+    rw [← pow_succ', Nat.sub_add_cancel ht]
   rw [hpow] at hscale
   linarith
 

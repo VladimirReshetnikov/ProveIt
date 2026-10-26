@@ -107,10 +107,6 @@ def Row.valid (mode k : Nat) (r : Row) (seen : List Row) : Bool :=
 def Row.Good (mode k : Nat) (r : Row) : Prop :=
   ∃ f : Form,r.input=formCode f ∧ r.output=formCode (renamed mode k r.depth f)
 
-private theorem lookup_mem {α : Type} {xs : List α} {i : Nat} {a : α}
-    (h : xs[i]?=some a) : a∈xs :=
-  List.mem_of_getElem? h
-
 theorem binary_sound (mode k : Nat) (r : Row) (seen : List Row)
     (hs : ∀ a∈seen,a.Good mode k) (ht : r.tag=3 ∨ r.tag=4 ∨ r.tag=5)
     (h : binaryAt r seen=true) : r.Good mode k := by
@@ -122,8 +118,8 @@ theorem binary_sound (mode k : Nat) (r : Row) (seen : List Row)
     | none => simp [ha,hb] at h
     | some b =>
       simp only [ha,hb,binaryEquations,decide_eq_true_eq] at h
-      obtain ⟨f,hfi,hfo⟩ := hs a (lookup_mem ha)
-      obtain ⟨g,hgi,hgo⟩ := hs b (lookup_mem hb)
+      obtain ⟨f,hfi,hfo⟩ := hs a (List.mem_of_getElem? ha)
+      obtain ⟨g,hgi,hgo⟩ := hs b (List.mem_of_getElem? hb)
       rcases h with ⟨hda,hdb,hi,ho⟩
       rcases ht with h3 | h4 | h5
       · refine ⟨fImp f g,?_,?_⟩
@@ -144,7 +140,7 @@ theorem unary_sound (mode k : Nat) (r : Row) (seen : List Row)
   | none => simp [ha] at h
   | some a =>
     simp only [ha,unaryEquations,decide_eq_true_eq] at h
-    obtain ⟨f,hfi,hfo⟩ := hs a (lookup_mem ha)
+    obtain ⟨f,hfi,hfo⟩ := hs a (List.mem_of_getElem? ha)
     rcases h with ⟨_,hd,hi,ho⟩
     rcases ht with h6 | h7
     · refine ⟨fAll f,?_,?_⟩
