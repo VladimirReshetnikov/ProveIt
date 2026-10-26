@@ -1,4 +1,5 @@
 import DiophantineConsistency.WangTiles942Data
+import Mathlib.Tactic
 
 /-!
 # The exact 942 indexed Wang tiles on the maintained decimal page

@@ -518,48 +518,34 @@ theorem source_window_bound (ports : Fin 4 → ℤ)
     (hs : ∀ k, SplitCertificate59.sourceRows ports (fun i => (x i : ℤ)) k = 0) :
     nativeRank x + 1 < (x 17 : ℤ) := by
   let q : ℤ := 1 + (x 0 : ℤ) * ports 0
-  let G : ℤ := (q - 1) * (q - x 1) + x 2
   have hC : 0 < q - x 1 - x 2 := source_transport_positive ports hβ hK x hx hs
   have hF : (0 : ℤ) < x 1 := by exact_mod_cast hx 1
   have hα : (0 : ℤ) < x 2 := by exact_mod_cast hx 2
+  have hJ : (0 : ℤ) < x 0 := by exact_mod_cast hx 0
   have hq3 : 3 ≤ q := by omega
   have hL : 0 ≤ q ^ 2 - 1 := by nlinarith
-  have hG : G ≤ q ^ 2 - q := by
-    have hmul := mul_le_mul_of_nonneg_left (show q - x 1 ≤ q - 1 by omega)
-      (show 0 ≤ q - 1 by omega)
-    dsimp [G]
-    nlinarith
-  have hGL := mul_le_mul_of_nonneg_right hG hL
-  have hJ : (0 : ℤ) < x 0 := by exact_mod_cast hx 0
-  have hMCJ : ports 2 * x 0 < q - 1 := by
-    have h := mul_lt_mul_of_pos_right hMCβ hJ
-    dsimp [q]
-    nlinarith
-  have hMFJ : ports 3 * x 0 < 2 * (q - 1) := by
-    have h := mul_lt_mul_of_pos_right hMFβ hJ
-    dsimp [q]
-    nlinarith
-  have hMFq := mul_lt_mul_of_pos_left hMFJ (show 0 < q by omega)
-  have hmask : (ports 2 + ports 3 * q) * x 0 < (q - 1) * (1 + 2 * q) := by
-    nlinarith
-  have htarget := source_rank_eq_target ports x hs
-  change nativeRank x = G * (q ^ 2 - 1) + (ports 2 + ports 3 * q) * x 0 at htarget
-  have hRup : nativeRank x < q ^ 4 - q ^ 3 + q ^ 2 - 1 :=
-    calc nativeRank x = G * (q ^ 2 - 1) + (ports 2 + ports 3 * q) * x 0 := htarget
-      _ < (q ^ 2 - q) * (q ^ 2 - 1) + (q - 1) * (1 + 2 * q) :=
-        add_lt_add_of_le_of_lt hGL hmask
-      _ = q ^ 4 - q ^ 3 + q ^ 2 - 1 := by ring
-  have hqq : q ^ 2 < q ^ 3 := by
-    nlinarith [mul_pos (show 0 < q - 1 by omega) (show 0 < q ^ 2 by positivity)]
-  have hRpow : nativeRank x + 1 < q ^ 4 := by linarith
-  have hw : (1 : ℤ) ≤ x 10 := by exact_mod_cast hx 10
-  have hs' : (1 : ℤ) ≤ x 9 := by exact_mod_cast hx 9
-  have hws : (1 : ℤ) ≤ (x 10 : ℤ) * x 9 := one_le_mul_of_one_le_of_one_le hw hs'
-  have hE := source_scale_eq ports x hx hs
-  change (x 17 : ℤ) = q ^ 4 * (x 10 * x 9) at hE
+  have hF1 : 0 ≤ (x 1 : ℤ) - 1 := by omega
+  have hC1 : 0 ≤ q - x 1 - x 2 - 1 := by omega
+  have hJ1 : 0 ≤ (x 0 : ℤ) - 1 := by omega
+  have hM : 0 ≤ ports 0 - ports 2 - 1 := by omega
+  have hH : 0 ≤ 2 * ports 0 - ports 3 - 1 := by omega
+  have hgap := add_nonneg (add_nonneg (add_nonneg
+    (mul_nonneg (mul_nonneg (show 0 ≤ q by omega) hL) hF1) (mul_nonneg hL hC1))
+    (mul_nonneg (show 0 ≤ q + 1 by omega) hJ1))
+    (mul_nonneg hJ.le (add_nonneg hM (mul_nonneg (show 0 ≤ q by omega) hH)))
+  have he : q ^ 4 - q ^ 3 - q - 1 - nativeRank x =
+      q * (q ^ 2 - 1) * ((x 1 : ℤ) - 1) + (q ^ 2 - 1) * (q - x 1 - x 2 - 1) +
+      (q + 1) * ((x 0 : ℤ) - 1) +
+      (x 0 : ℤ) * ((ports 0 - ports 2 - 1) + q * (2 * ports 0 - ports 3 - 1)) := by
+    rw [source_rank_eq_target ports x hs]
+    dsimp [nativeTarget, q]
+    ring
+  rw [← he] at hgap
   have hEbound : q ^ 4 ≤ (x 17 : ℤ) := by
-    rw [hE]
-    exact le_mul_of_one_le_right (by positivity) hws
+    rw [source_scale_eq ports x hx hs]
+    exact le_mul_of_one_le_right (pow_nonneg (show 0 ≤ q by omega) 4)
+      (one_le_mul_of_one_le_of_one_le (by exact_mod_cast hx 10) (by exact_mod_cast hx 9))
+  have hcube : 0 < q ^ 3 := pow_pos (by omega) _
   omega
 
 /-- The ordinary native mask interface needed for positive main bootstrap.

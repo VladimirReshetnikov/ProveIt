@@ -1405,3 +1405,284 @@ dependencies. The formerly incoming proof-deltas, Round6, positions/rank/
 rephase and Round7 packets are now placed as `zr`, `zs`, `zv` and `zz`;
 the adoption rows use those current locations. Historical raw-archive
 references above retain their exact Git pins and remain reproducible.
+
+## Direct field transport under rephasing
+
+`v_finite_full_static` adopted zv's exact-field patch as `702687fc33`.
+The recurrence and decomposition fields unfold the actual raw expression
+and rewrite the existing rotation equality directly. The six carry facts,
+arbitrary input digits, identical carry/digit functions and the whole scalar
+modular-transport suffix remain unchanged; no ordinary multiplier equality
+is assumed. All eight public statements, imports and options stay literal.
+There is no helper/import overhead;122 lines become116, removing6.
+
+The absent original target object was compiled explicitly before the fresh
+eight-public baseline. One unchanged `ControllerRankStride` prerequisite
+was also compiled. Five final calls pass on the first attempt: target,
+`CurrentRankStride2011` client, both existing focused modules and eight-public
+comparison. All reports are byte-identical. The focuses retain thirteen
+examples covering arbitrary raw input, equal cyclic shifts, the same carry
+witnesses and changed ordinary transport multipliers. Their existing
+large-exponent warning remains; no source repair or budget change was needed.
+`alternate_encoding_research` independently read all116 final lines, full
+diff and actual raw/Facts/rotation/congruence contracts, returning PASS at
+unchanged hashes. No extra compiler run is attributed to that review.
+
+## Linear budgets and generic positive-stride cancellation
+
+`intake_e13` adapted zv's positions/population patches as `81e0f4daed`.
+Exposing the fixed affine coefficient makes the endpoint budget linear.
+Injectivity cancels the common summand and positive original stride, avoiding
+unfolding the dependent `ZMod.val` expressions. The binary population lemma
+rewrites the existing AND/OR sum identity directly. All27 old public theorem
+headers, four entire definitions, imports/options and section contexts remain
+literal. Optional support still accepts arbitrary epsilon where originally
+allowed; its cardinality retains the original epsilon≤1 premise. Zero
+exponents/width and the unrestricted top population block remain. Positions
+178→173 and Population57→55 remove7 net lines without helpers/imports.
+
+The initial supplied injectivity proof failed after unfolding produced
+distinct dependent representative atoms. Its actual exit1 and source/log
+remain preserved. A bounded, checked fixed-coefficient repair passed, then
+was superseded by generic cancellation, which is shorter and avoids the
+literal stride. The final suite was run against that actual final source.
+The four baseline calls comprise an initial old-public audit, both original
+target refreshes and the coherent original audit; their reports agree.
+
+All seven final Lean calls pass without warnings: both targets,
+`CurrentSafeController2011` and `CurrentPackingRank2011` clients, both existing
+focused modules and31-public final audit. The actual full-stdout comparison
+returns1 because seven proof footprints are smaller, not because a source
+failed: six budget/cell consequences drop `Classical.choice`, while
+`position_injective` drops choice and `Quot.sound`, leaving only `propext`.
+The other24 reports are identical. ROOT independently parses both complete
+31-report logs and verifies every new set is a subset, authenticating all
+thirteen command log/time pairs. No artificial dependencies were added to
+force equal output. `v_finite_full_static` independently read all228 final
+lines, complete diffs, actual representative/cancellation/bit contracts and
+old/new reports, returning PASS at unchanged hashes. No reviewer compiler
+execution is claimed.
+
+## Nonnegative deficit for the native source window
+
+`alternate_encoding_research` adopted zw's rank-upper patch as `7e186e0c71`.
+The explicit gap below `q^4 - q^3 - q - 1` is a sum of nonnegative products
+from the original F/C/J and port-box margins. Combined with the unchanged
+actual scale bound, it gives the strict native window inequality directly.
+The window theorem still permits negative mask ports; the separate PortBox
+corollary keeps its original nonnegative premises. Every byte outside this
+single proof body is literal, including26 old theorem headers, four whole
+definitions and the entire6-field `PortBox` structure.671 lines become657,
+removing14 without helper/import overhead.
+
+Four final calls pass on the first attempt without warnings: target,
+`NativePellFirstIndex` client, existing bootstrap focus and38-public
+comparison. The fresh baseline is separate; all reports are byte-identical,
+including the structure, constructor and six projections. There were no
+prerequisite builds, failed attempts, source repairs or option increases.
+`v_finite_full_static` independently read all657 final lines, full diff,
+exact patch and actual rank/transport/scale/PortBox contracts, checking the
+whole deficit identity and every nonnegative factor, returning PASS at
+unchanged hashes. No reviewer compiler execution is attributed.
+
+## Shared high-colour fibers for the actual tile language
+
+ROOT adopted the previously pending o patch as `a32e2a3d81`. Two shared
+north/south fiber descriptions specialize to the eight repeated boundary
+arguments. Both helpers retain `434 ≤ c` and the actual finite `Allowed`
+premise. Receiving heads still include halt target215 through head433,
+the initializer's south colour is4, the three reset targets remain exact,
+and all nine finite square-west seam combinations remain. No strip/run or
+tiling premise is introduced. All15 old public theorem headers are literal;
+there are no executable definitions in the module. Including both helpers,
+201 lines become161, removing40; source bytes fall only84, so this is chiefly
+a shared-proof/maintenance reduction rather than large byte compression.
+
+The original cache had been freshly compiled in the previous rank foundation
+and its source/dependency hashes were preserved through `180e99fc75`; the
+fresh15-public audit precedes editing. Ten final calls pass on the first
+attempt without warnings: target, all three direct clients (`ResetRows`,
+`InputLanguage`, `SeamColumns`), their four corresponding existing focused
+modules including Boundary, a new generic focus and15-public comparison.
+All old reports are byte-identical; the two new helpers use only the standard
+three axioms. The three new cases rule out every north/south colour above438
+and demonstrate the high-colour guard's necessity on an actual low-colour
+copy tile. Existing checks preserve initializer and seam lookalike negatives,
+halt output heads, all reset colours and actual indexed-table membership.
+`intake_e13` independently read all161 final lines, complete diff, exact
+candidate/patch, the entire Allowed classification and actual constructor,
+head and target contracts, returning PASS at unchanged hashes. Retained
+author log/time observations were authenticated inertly; no reviewer
+compiler run is claimed.
+
+## Whole-list Horner certificate for the original kernel
+
+`alternate_encoding_research` adopted zzb's Horner patch as `276e19a689`.
+The accumulator satisfies `run r l z = z * r^length(l) + evaluate r l` over
+every commutative semiring. Its zero-start corollary evaluates the actual941
+physical rows in one kernel-checked residue certificate, replacing58 private
+length proofs,59 chunk certificates and their assembly. The original
+evaluator, complete physical permutation, protected Start, control reflection,
+raw-word identity and literal K binding remain exact. This is not a residue
+assumed for a replacement port. Empty lists and zero/nonunit radices require
+no new condition. All14 old public theorem headers, two entire old definitions,
+imports, source limits and opacity attributes remain literal. Including the
+new function and both generic proofs,426 lines become183, removing243 lines
+and10765 bytes.
+
+The fresh baseline audits16 current old declarations, including the
+previous batch's newly public `K_cast_common`. Six final calls pass on the
+first attempt: complete production target, unchanged current Units client,
+both existing focused modules,16-old-public comparison and three-new-API
+audit. Every old report is byte-identical. The three new declarations each
+use `propext` only; they are not labelled axiom-free. Existing focuses retain
+28 examples of literal residues, complete kernel data, independent controller
+exponents and nonunit/mutation controls. The Units client retains its
+existing exponent warning. No missing prerequisites, failed attempts,
+source repairs or budget increases occurred; the existing20M-heartbeat and
+100k-depth options remain unchanged. The observed production check took9.73s
+and3512116KiB maximum RSS, and its object changed801008→677664 bytes. These
+are individual observations, not a controlled speedup benchmark.
+
+`v_finite_full_static` independently read all183 final lines, the full426-line
+baseline diff and exact packet, the entire1324-line physical-data source
+including all941 literal pairs and their certified assembly, full physical
+order source and actual selector/raw-word/kernel/decoder route. The invariant,
+all unchanged interfaces/data and the actual whole-list binding pass full
+review at unchanged hashes. No numerical replay or additional compiler run
+is attributed to that independent review.
+
+These five source commits reduce six modules1655→1345 lines, removing310
+net and bringing the reviewed series from3816 to4126. All32 final Lean
+calls pass. Of108 old public declaration reports,101 are byte-identical
+and seven strictly reduce their axiom sets; none adds an axiom. ROOT's
+fresh comparison against immutable `180e99fc75` verifies90 old public
+theorem headers, ten entire definition blocks and the entire6-field
+`PortBox` structure; all are literal. Every exact-final source passed
+independent full review. Original/preparatory builds, baselines, the failed
+supplied injectivity proof, superseded checked repair and intentional
+stdout difference for smaller axiom footprints remain separate from the
+final validation counts. The maintained equation artifacts retain their
+decimal constant and fourteen distinct unsubscripted unknowns. The
+iterative goal remains active.
+
+Receipt readback caught a metadata scanner that stopped at a nested
+`have :=` inside one unchanged bootstrap theorem type. The first receipt
+is preserved, and its corrected R1 uses top-level declaration delimiters.
+ROOT authenticated all46 R1 file records, both source/commit bindings,
+all54 old reports and the three new API reports. ROOT also reran its own
+six-module comparison with exact, depth-aware header boundaries: all90
+complete headers, ten whole definitions and PortBox remain identical.
+This corrects metadata only; no source, proof, build result or validation
+count changed.
+
+## Synchronization and explicit certificate import
+
+ROOT fetched immutable upstream `cbfdd02ce4dee136d1344e3d65cda6fcb6551700`
+and merged it cleanly as `0ac0f529bf8f3e21af449a172b6bd0da579895fa`.
+The86 incoming changed paths include separate arithmetic/Foundation and
+carrier work, whose earlier validation remains separately attributed.
+Against the26 selected roots, the full tracked import graph has352 project
+sources; adding the three configuration/toolchain pins and both equation
+artifacts protects357 files. Only `DecimalMachine215` changes in that
+protected incoming set: its broad tactic import becomes the specific Finset
+import, with all decoder declarations, proof bodies and data unchanged.
+All six cleanup sources and the decimal equation artifacts survive the merge
+byte-for-byte. `alternate_encoding_research` independently confirms this
+import-only delta and its exact88-node affected cone, including20 roots.
+
+The initial refresh compiled the decoder and tile data successfully, then
+ROOT deliberately interrupted Core after904.76 seconds. The
+[earlier closure record](current-positive-zero2011-closure/execution-state.json)
+reports a successful10.44-second run of the same source; ROOT also
+authenticates its archived timing against that record. A profiler
+run and a complete narrow-import copy were also interrupted, after122.63
+and95.33 seconds. A complete temporary copy with an explicit broad import
+passes in13.95 seconds. Narrow/broad queries select identical top-level
+Nat/List equality instances, so no particular instance or tactic replacement
+is asserted as the cause, and no smallest corrective import is claimed.
+One earlier instrumented copy failed with three parse errors because its
+progress markers split documentation/declaration boundaries; the clean
+full-body copy corrects that diagnostic input. These observations are
+separate from final scope commands and are not a controlled speed benchmark.
+
+`927256e3a5` explicitly imports `Mathlib.Tactic` in Core, leaving every
+other byte literal and retaining the upstream decoder's narrow import for
+the arithmetic/Foundation route. The actual repaired production Core
+passes in12.28 seconds. This one-line dependency repair changes the final
+whole-scope saving to309: seven modules1885→1576, with all helper/API costs
+included, and the reviewed series3816→4125. The preceding310-line/32-call
+checkpoint remains the accurate pre-merge history.
+
+`v_finite_full_static` independently read the complete refresh driver,
+reconstructed the352-node import graph, authenticated all357 source pins,
+262 reused primary object hashes and both first-attempt successful
+source/object/log/time bindings, and verified the86 remaining sources are
+ordered by dependencies. Before execution, review caught a counter that
+would omit Core's seven axiom-free reports; the original draft is preserved
+and both driver and verifier count the two report forms. This was a
+pre-execution accounting correction, not a Lean failure. The corrected
+driver and verifier passed full independent readback before ROOT executed
+either. No reviewer compiler execution is attributed.
+
+R1 passes all94 actual calls, taking533.40 observed seconds. The two
+unchanged successful fresh sources from the first attempt give96 successful
+scope commands in total:88 affected project sources, an additional decoder
+focus, five old-public audit calls and two generic/new-API calls. This
+freshly checks every affected intermediate source, beyond just the20
+affected selected roots. All109 old-report comparisons are byte-identical
+to their respective baselines; Core contributes39, comprising32 reports
+with standard axioms and seven axiom-free reports. The two boundary helpers
+retain the standard three axioms and the three Horner declarations retain
+`propext` only. The three existing exponent warnings in Units, NativePacking
+and the Rephase focus match earlier logs. No source limits were increased;
+all scope commands use `-M6000 -j1 -DElab.async=false`.
+
+The unaffected bootstrap branch retains its earlier38-report validation.
+Across all147 old public reports,140 report texts are byte-identical and
+seven axiom sets strictly shrink; none adds an axiom. ROOT's new exact
+comparison against immutable `180e99fc75` preserves116 complete old theorem
+headers,23 whole definition blocks, the entire6-field PortBox and every
+Core structure/instance byte. All source/object pins hold before and after
+execution, and ROOT separately reauthenticates every final command record.
+
+The262 project ancestor objects remain authenticated reuse. Installed
+package/toolchain objects remain a trusted precompiled boundary. The two
+unaffected nonimported focus leaves retain their earlier checks. The new
+upstream HA and carrier leaves
+retain their own receipts. This is not a new fresh replay of all352 sources,
+the whole library umbrella or the external package closure. Both equation
+artifacts remain exactly the checked one-page decimal/distinct-name version.
+The iterative goal remains active.
+
+The [durable bundle](lean-proof-simplification-309-refresh-20261026/BUNDLE.json)
+contains the exact source/import pins, corrected driver and verifier,
+96 successful scope observations, interrupted first attempt, seven separate
+diagnostic/baseline calls, source/API integrity comparisons and all retained
+pre-merge author receipts and logs. Its archive has344 entries; ROOT checks
+the archive integrity and every entry against its retained bytes. Historical
+Core input records resolve to the archived original source snapshot, rather
+than the subsequently repaired path.
+
+## Final upstream synchronization
+
+The reviewed checkpoint and bundle are committed as `3803e9620b`. Before
+pushing, ROOT fetched immutable upstream
+`88cf5fc90ea7abc2e81be1a01247d2964078965b`, which adds323 paths and modifies
+five beyond the earlier merge. Its37 new active Lean modules comprise13
+BusyBeaver,18 HA/Foundation, four thirteen-variable and two ZFCinPA modules.
+The existing umbrella adds two imports. Those paths,19 research files,
+267 review/evidence files and four top-level documents are outside all357
+protected files and do not overlap local changes or parked untracked work.
+`alternate_encoding_research` independently verifies the inventory, source
+names, absence of import shadowing and all357 hashes. The new work retains
+its separately attributed upstream validation; no incoming program is run.
+
+The ordinary merge completes cleanly as
+`5098e5c47ddffcdb2160613e40029f8dbacd11e5`. ROOT re-resolves the tracked
+project import graph and checks all26 roots,352 sources, every project
+import edge and all357 hashes against the validated checkpoint; all remain
+exact. The pinned mathlib revision and tracked sources remain unchanged.
+The96 successful scope observations therefore retain their original source
+bindings, including both committed equation artifacts. This synchronization
+requires no further compiler replay of unchanged inputs.

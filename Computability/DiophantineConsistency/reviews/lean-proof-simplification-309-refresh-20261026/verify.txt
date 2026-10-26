@@ -1,0 +1,52 @@
+from pathlib import Path
+import hashlib,json,re,subprocess
+OUT=Path('/tmp/diophantine-310-postmerge-refresh-r1')
+s=json.loads((OUT/'setup.json').read_text())
+m=json.loads((OUT/'manifest.json').read_text())
+x=json.loads((OUT/'execution.json').read_text())
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def record_check(v):
+    p=Path(v['path']);assert p.stat().st_size==v['bytes'] and sha(p)==v['sha256'],str(p)
+assert x['complete'] and len(x['records'])==94 and x['actual_zero_exits']==94
+assert x['source_pins_before'] and x['source_pins_after'] and x['reused_object_pins_before'] and x['reused_object_pins_after']
+assert len(s['ordered_sources'])==86 and len(m['steps'])==94
+assert len(s['protected'])==357 and len(s['reused_objects'])==262
+for p,h in s['protected'].items():assert sha(p)==h,p
+for r in s['reused_objects']:assert sha(r['object'])==r['sha256'],r['object']
+record_check(m['driver'])
+assert len(m['previous_successes'])==2
+for previous in m['previous_successes']:
+    assert previous['actual_exit_code']==0
+    for key in ['log','timing','source','object']:record_check(previous[key])
+assert m['previous_interruption']['actual_exit_code']==130
+for key in ['log','timing']:record_check(m['previous_interruption'][key])
+assert sha('/tmp/diophantine-310-core-narrow-clean.lean')==m['previous_interruption']['source']['sha256']
+old_reports=0;new_reports=[];warnings=[]
+pattern=re.compile(r"'([^']+)' (?:depends on axioms:\s*\[([^\]]*)\]|does not depend on any axioms)",re.S)
+for plan,actual in zip(m['steps'],x['records'],strict=True):
+    assert plan['tag']==actual['tag'] and plan['kind']==actual['kind']
+    assert actual['actual_exit_code']==0
+    assert actual['argv'][0:6]==['lake','env','lean','-M6000','-j1','-DElab.async=false']
+    for key in ['log','timing','source','object']:
+        if key in actual:record_check(actual[key])
+    timing=Path(actual['timing']['path']).read_text()
+    assert re.search(r'\bexit_status=0\b',timing),timing
+    text=Path(actual['log']['path']).read_text()
+    warnings.extend([line for line in text.splitlines() if 'warning:' in line])
+    reports=[(n,[a.strip() for a in (ax or '').split(',') if a.strip()]) for n,ax in pattern.findall(text)]
+    assert all(set(ax)<={'propext','Classical.choice','Quot.sound'} for _,ax in reports)
+    if plan['kind']=='old-public-audit':
+        record_check(plan['expected_log'])
+        assert Path(actual['log']['path']).read_bytes()==Path(plan['expected_log']['path']).read_bytes()
+        assert actual['byte_equal_to_expected_baseline'] and len(reports)==plan['report_count']==actual['report_count']
+        old_reports+=len(reports)
+    if plan['tag'] in ['boundary-generic','horner-new-api']:new_reports+=reports
+assert old_reports==109 and len(new_reports)==5
+assert all(ax==['propext'] for name,ax in new_reports if '.CurrentKernelResidues2011.' in name)
+assert all(set(ax)=={'propext','Classical.choice','Quot.sound'} for name,ax in new_reports if '.WangTiles942Boundary.' in name)
+mathlib='.lake/packages/mathlib'
+assert subprocess.check_output(['git','-C',mathlib,'rev-parse','HEAD'],text=True).strip()==s['original_protected_receipt']['mathlib_head']
+assert not subprocess.check_output(['git','-C',mathlib,'status','--porcelain','--untracked-files=no'],text=True).strip()
+summary={'merged_HEAD':s['merged_HEAD'],'upstream':s['upstream'],'actual_successful_Lean_commands_in_R1':94,'actual_successful_Lean_commands_in_combined_scope':96,'fresh_affected_sources_in_R1':86,'fresh_affected_sources_from_original_attempt':2,'fresh_affected_sources_total':88,'affected_selected_roots':len(s['affected']['affected_selected_roots']),'selected_roots':len(s['original_protected_receipt']['roots']),'project_sources_in_original_checked_closure':len(s['original_protected_receipt']['project_import_edges']),'protected_pins':357,'authenticated_reused_primary_objects':262,'old_reports_byte_identical_to_expected_baselines':old_reports,'new_API_reports':new_reports,'elapsed_monotonic_seconds':x['elapsed_monotonic_seconds'],'warnings':warnings,'no_source_or_reused_object_mutations_during_R1':True,'additional_source_repair':m['additional_source_repair'],'original_interruption_exit_code':m['previous_interruption']['actual_exit_code']}
+(OUT/'verification.json').write_text(json.dumps(summary,indent=2)+'\n')
+print(json.dumps(summary,indent=2))
