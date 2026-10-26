@@ -682,7 +682,8 @@ It proves the literal `(K+2^W)*C` transport congruence before any positive
 strict F, high mask or source zero is supplied. Separate helpers require
 one positive digit for positivity and one nonmaximum digit for strictness.
 The assembled source C is positive for a marked word; positivity of F
-is still a local construction obligation. See the [author receipt](reviews/current-carry-construction2011-lean-root.md)
+was left as a local construction obligation, now discharged below for
+whole-cell displacements. See the [author receipt](reviews/current-carry-construction2011-lean-root.md)
 and [independent composition replay](reviews/current-carry-construction2011-lean-peer.md).
 All27 audits for these two packets use only standard Lean axioms.
 These are leaf/module checks reusing dependencies; no fresh full umbrella
@@ -695,6 +696,21 @@ retain the still-unproved actual K residues as explicit hypotheses;
 this is not a complete Pcst discharge. The [author receipt](reviews/current-controller-data2011-author.md)
 and [independent root replay](reviews/current-controller-data2011-lean-root.md)
 record both final bounded builds and21 standard-only/axiom-free audits.
+
+`CurrentWordClause2011` derives the exact normalized clause, all low carry
+resets, the actual local clause masks and `0<F<q−1` for the same constructed
+transport word. Its raw clause permits arbitrary numeric controls; its
+carry construction needs Boolean controls and a whole-cell displacement.
+No marked matching, positive stride, source zero, global mask or strict
+positive F is supplied. `WangTiles942PowerDimensions` chooses independent
+large power width/height and retains unique Start in the actual quotient.
+`ControllerOrbitTransport` constructs actual finite subsets from affine
+coordinate injections and proves their size and integer-sum congruence.
+The [full root review and six fresh checks](reviews/reverse-construction-round2-lean-root.md)
+record23 standard-axiom audits, prerequisite authorship and remaining scope.
+The dimension composition also has an [independent isolated replay](reviews/wang-tiles942-power-dimensions-peer.md).
+Whole high-mask/copy tests, stronger scalar bounds, actual power-orbit
+identification, safe mutations and the positive equation converse remain open.
 
 Each verified checkpoint is
 committed with its exact scope, then `origin/main` is fetched and merged
