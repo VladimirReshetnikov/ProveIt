@@ -1,0 +1,214 @@
+\section{Compact companion: a squared transport coordinate}
+\label{sec:compact-companion}
+
+The direct-calculus constructions and the following compact companion
+optimize different quantities.  This section gives two literal polynomials
+in ten \emph{strictly positive} integer variables, each of exact degree
+$232$ and $85$ binary arithmetic operations.  The trace parent has
+$87$ operations at degree $232$; the inverse-Lucas parent has $85$
+operations at degree $304$.  The new squared-coordinate variant also
+reduces the degree of one carrier numerator from $57$ to $21$.
+The total degree remains $232$.
+
+\paragraph{Late comparison and attribution.}
+At the later read-only snapshot
+\texttt{0d75e561a8cefc8c30fc4224605a8984c810ad1c}, the incoming
+Pooled Powers Separated Radicals archive already contains exactly the
+same $85$-gate $bV$ polynomial: all rows, all ten inputs and all four fixed
+coefficient values agree.  The $85/232$ metric point is therefore not
+claimed as new here.  That equation is a reproduced baseline.  The
+distinct contribution is the single replacement $L=bV\mapsto b^2$
+and its soundness/completeness proof, which lowers the carrier degree
+without changing total degree or operation count.  The exact comparison
+is recorded in the companion's \texttt{LATE\_COMPARISON.json}.
+
+The two parents are packages \texttt{163-trace-radical} and
+\texttt{164-unsquared-factors-linear-selectors} of the pinned ProveIt
+snapshot.  The former explicitly left open the squared-coordinate
+transport argument.  Its difficulty was a correction growing with a
+negative rank.  Evaluating the inverse correction at a positive Pell
+coordinate removes that difficulty.  This proves the particular new
+variant below; it does not assert worldwide novelty or global minimality.
+This compact component retains the native/K215 ancestry of its fixed
+coefficient tuple.
+
+\subsection{Complete polynomial}
+
+The quantified inputs are
+\[
+ J,F,\alpha,i,T,w,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+The four fixed integers $\beta,K_0,M_C,M_F$ are the complete indexed
+BFS943/radix67 tuple, reconstructed from the supplied finite recipe.
+In particular $\beta=2^{590069}-1$; the largest port has $592884$ bits.
+All four actual ports, rather than arbitrary integers with the same
+elementary bounds, are needed for the logical calibration.
+Define polynomial abbreviations
+\begin{align*}
+ h&=\beta J,&q&=h+1,& C&=q-F-\alpha,\\
+ X&=qw,&Y&=qs,&k&=\eta+\zeta,\\
+ c&=kY+\eta,&A&=Y(X+1)+1,&\Delta&=A^2-1,\\
+ H&=4A-5,&v&=XY^2,&\ell&=vk,\\
+ E&=1+\ell(\ell+k),&&&
+\end{align*}
+and
+\begin{align*}
+ R&=[h(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ B&=(K_0+w)C-F,\\
+ U&=ic^2,\qquad a=\Delta U^2E,\qquad F_0=1+a,\qquad G=EF_0,\\
+ f&=1+2a,\qquad Q=4\Delta aF_0,\\
+ b&=cT-R,\qquad V=fb-c,\qquad K=X(3c-2X)+2,\\
+ e_6&=6(k-R-1)-\ell(k^2-4),\qquad D_6=6q^6,\\
+ M&=hD_6H,\\
+ Z&=hD_6[H(n-LB)+K]-H[D_6B+h(e_6-6q^4s)] .
+\end{align*}
+The principal weight is $L=b^2$; a companion uses $L=bV$.
+The equation is
+\begin{equation}
+ \boxed{\;Q\bigl(Z^2-M^2GV^2\bigr)+\bigl(M^2G-Z^2\bigr)=0.\;}
+ \label{eq:compact232}
+\end{equation}
+Every symbol on the right is a polynomial abbreviation.  There are no
+additional quantified variables, variable exponents, recurrence operators,
+or uncomputed coefficients.  The literal circuit computes
+$\ell=(XY)(kY)$ and $f=a+F_0$, thereby sharing existing operations.
+
+Composed with the named inherited native/refutation calibration, the
+ordinary mathematical theorem is
+\[
+ \mathrm{ZFC}\vdash
+ \left(\neg\exists\boldsymbol{x}\in\mathbb Z_{>0}^{10}\;
+ P(\boldsymbol{x})=0\right)
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+The domain is essential.  If nonnegative variables are desired, substitute
+$x_j=u_j+1$ for each of the ten inputs.  This leaves the dimension and
+total degree unchanged, though the displayed operation count refers to
+the positive-input circuit.
+
+\subsection{The new transport proof}
+
+For the proof only, put
+\[
+ e_*={e_6\over6},\quad \rho={e_*\over q^6},\quad
+ \sigma={s\over q^2},\quad t={B\over h},\quad
+ \kappa={K\over H},\quad W=1+hL,\quad z={Z\over M}.
+\]
+No integrality of these quotients is initially assumed.  The exact
+rational identity is
+\begin{equation}
+ z=n+\kappa+\sigma-Wt-\rho.\label{eq:compact-carrier}
+\end{equation}
+
+The trace parent's root extraction and low-index exclusions depend on
+$Q,V,G$ and the final norm, not on $L$ or $e_6$.
+At a positive zero they therefore still give
+\[
+ G=g^2,quad z=\varepsilon gy,quad
+ QV^2-(Q-1)y^2=1,qquad g,y>0,quad\varepsilon\in\{-1,1\},
+\]
+with $z,y$ integral, and
+\[
+ b\ne0,\quad |b|>8f^3-\tfrac12,\quad
+ g<f/2,\quad y<3|V|/2,\quad c<f/2.
+\]
+These statements are established before any sign assumption on $R$ or $B$.
+In particular, since $b$ is a nonzero integer,
+\[
+ |V|\le f|b|+c<\tfrac32 f|b|,
+ \qquad
+ gy<\tfrac98 f^2|b|<\tfrac12 b^2.
+\]
+The last strict inequality follows from
+$|b|>8f^3-1/2>(9/4)f^2$ for $f\ge1$.
+Consequently $L=b^2$ satisfies
+\[
+ L>0,\qquad gy<L/2,\qquad |b|/q^6<L/2.
+\]
+
+The inverse correction has the decisive sign:
+\[
+ {vk(k^2-4)\over6}\ge0,
+ \qquad e_*\le k-R-1<b,
+\]
+because $k\ge2$ and $b-(k-R-1)=cT-k+1>0$.
+This holds for every integer $R$, including negative ranks.  Thus
+$\rho<|b|/q^6$.  If $B\le-1$, then $Wt<-L$; using the positive
+$n,\kappa,\sigma$ in \eqref{eq:compact-carrier} gives
+\[
+ n=\varepsilon gy-\kappa-\sigma+Wt+\rho
+   <L/2-L+|b|/q^6<0,
+\]
+a contradiction.  Therefore $B\ge0$ and then $C>0$.
+This is the new unbounded sign argument.  It is not inferred from
+bounded testing or from a formal substitution into the forward-correction
+proof.
+
+\subsection{The remaining arithmetic order}
+
+Once $C>0$, the inherited mask bound gives $3q<R<q^4-2$.
+The unsquared trace obeys $f\equiv1\pmod c$, so the two auxiliary
+residues remain
+$V\equiv-c\pmod f$ and $V\equiv-R\pmod c$.
+The retained signed-index theorem authenticates the main Pell rank as $R$.
+
+For clarity, the inverse denominator argument must retain its order.
+The first Pell recurrence has
+\[
+ k=2m+8vC_m+32v^2Z_m,qquad
+ C_m=\binom{m+1}{3},\quad Z_m\in\mathbb N.
+\]
+Putting $d=2m-R-1$, $A_m=C_m+4vZ_m$ and
+$S_m=k^2+2mk+4m^2-4$ gives the exact identity
+\[
+ 3(e_*-d)=4v^2(24Z_m-A_mS_m).
+\]
+The carrier gives $q^6\mid(e_*-q^4s)$, hence $q^4\mid e_*$.
+Since $v=q^3ws^2$, prime valuations in the displayed identity give
+$q^4\mid(e_*-d)$ even at the prime $3$.
+The bounds $|d|<R<q^4$ then force $d=0$.
+
+It would be premature to cancel the remaining factor $3$ and infer
+$q^6\mid e_*$.  Instead, the carrier first gives $H\mid6hK$.
+The retained uniform ratio estimate and whole-product projection force
+$X=2^R$.  Since $q\mid X$, the radix $q$ is a power of two.  Only now
+does the identity imply $q^6\mid e_*$.  The carrier then gives
+$q^2\mid s$ and $h\mid B$, supplying the exact native outer endpoint.
+The parent's indexed native/refutation calibration completes soundness.
+
+Conversely, a finite refutation gives the canonical outer witnesses and
+the trace parent's positive auxiliary Pell pair.  Its actual positive
+integer input is $T=(V+c+Rf)/(cf)$.
+The inverse error can be negative, but the inherited explicit bounds give
+\[
+ |\rho|<vk^3/3<g/3,\qquad \kappa+\sigma<g/2.
+\]
+For either positive weight choose
+\[
+ n=gy+(1+hL)t+\rho-\kappa-\sigma.
+\]
+This is an integer and is strictly positive because $y\ge1$, $t\ge0$
+and $g>\kappa+\sigma+|\rho|$.  The carrier now has $z=gy$, proving
+completeness for all ten positive inputs.
+
+\subsection{Exact complexity and scope}
+
+Let $q_0=\beta J$, $k_0=\eta+\zeta$ and
+$B_0=k_0sT-q_0^2(q_0-F)$.  The complete highest homogeneous component is
+\[
+ [P]_{232}=-9\,2^{10}q_0^{100}w^{26}s^{58}i^{10}k_0^{32}B_0^2.
+\]
+It is nonzero at the actual $\beta>0$.
+For $L=b^2$, the degrees of $(Q,M,G,V,Z)$ are
+$(80,11,50,40,21)$.  The term $QZ^2$ has degree $122$, while
+$-QM^2GV^2$ has degree $232$ and remains the unique dominant summand.
+For $L=bV$, $\deg Z=57$ and $\deg(QZ^2)=194$.
+
+The reproducible finite checker covers every live gate by $36$ exact
+free-polynomial cuts per graph, checks the complete $202$-monomial highest
+component and all four coefficient payloads, and rejects $22$ deliberately
+corrupted operators per graph.  Normal and optimized Python runs agree.
+The finite recipe reconstructs every fixed integer and matches its pinned
+raw SHA-256 identity.  These are algebraic artifact checks, separate from
+the unbounded arguments and inherited logical calibration.
+No new end-to-end proof-assistant development is claimed.
