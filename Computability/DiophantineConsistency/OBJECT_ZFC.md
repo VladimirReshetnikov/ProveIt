@@ -5,7 +5,13 @@ actual predicate `BProv ZFCax_s [] Form.fBot`. It is not a derivation in that
 calculus of a sentence expressing the same equivalence. The requested
 “provably equivalent in ZFC” claim therefore remains a separate obligation.
 No theorem in this research promotes the external equivalence to an internal
-one.
+one. The maintained14-variable polynomial and all three accepted13-variable
+forms now also have closed external Lean equivalences, in
+[`CurrentPositiveZero2011`](Lean/DiophantineConsistency/CurrentPositiveZero2011.lean).
+Its source, standard axiom audit and independent fresh endpoint replay are
+recorded in the [author](reviews/current-positive-zero2011-root.md) and
+[peer](reviews/current-positive-zero2011-lean-peer.md) receipts. This progress
+does not discharge the object-language obligation described here.
 
 Both sides of the internal target are now actual `SetTheory.Form` sentences:
 a consistency sentence for sealed ZFC axiom codes and a sentence saying that
@@ -24,6 +30,17 @@ over internal refutations from the sealed axiom-code predicate and quotes the
 actual external `ZFCax_s` convention. The equivalence between these two
 sentences is still open. The separate unsealed consistency sentence remains
 available for the canonical bounded-consistency development.
+
+That displayed target concerns the older nine-variable equation. For the
+maintained14-variable equation a separate literal expression and guarded
+positive-domain sentence must be bound to the actual current four ports.
+The planned natural encoding is P(x+1)=0, so all14 original unknowns are
+strictly positive; it must quantify over every model's internal naturals,
+not merely external numeral tuples. The
+[current-expression/internal-bridge audit](research/current-equivalence-next-bridge-20261026.md)
+identifies the exact API and remaining sealed-refutation/machine/native
+interpretation work. The new external theorem does not identify the older
+`ObjectEquation.unsolvabilitySentence` with this current equation.
 
 ## Verified reusable interfaces
 

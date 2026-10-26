@@ -67,9 +67,19 @@ same concrete quotient. See the [native completeness review](reviews/wang-tiles9
 The actual marked word now constructs the cyclic source, bounded carries,
 the complete low and high scalar masks, positive alpha and z, strong slack,
 and the exact unit transport factor. No desired mask, carry or strict F
-is supplied. The literal kernel residues are also proved. Remaining work
-now includes the final polynomial composition, other equation
-frontiers and internal-ZFC derivation. The1997 proposal
+is supplied. The literal kernel residues, complete rank-forced converse
+construction and positive Pell/source assembly are now composed:
+`CurrentPositiveZero2011.no_positive_zero_iff_conZFC` proves the closed
+external Lean equivalence for the maintained polynomial.
+`no_thirteen_positive_zero_iff_conZFC` proves it for all three accepted
+13-variable forms. The pointwise no-solution statement and one simultaneous
+13-coordinate solution under negated consistency are checked as well.
+See the [author record](reviews/current-positive-zero2011-root.md) and
+[independent fresh replay](reviews/current-positive-zero2011-lean-peer.md).
+Remaining work includes the encoded internal-ZFC derivation, other equation
+frontiers, further size reduction and source-authenticated current closure
+validation. These fresh endpoint builds reuse prerequisites; they are not
+a fresh full umbrella build. The1997 proposal
 remains a separate candidate; its page is not promoted by this plan.
 
 The first new modules address necessary reusable pieces of that chain:
@@ -817,6 +827,25 @@ integrality obligation is proved before conversion. See the
 with eight standard-only reports. Supplying its Data from the calibrated
 current packing and composing the actual consistency endpoint remain the
 next checkpoint. These are scoped leaf builds, not an internal ZFC proof.
+
+`CurrentPositiveZero2011` supplies all scalar Data fields from ONE actual
+rank-forced packing and closes the external converse from the exact
+negation of syntactic ConZFC to a positive zero of the maintained polynomial.
+Rank growth justifies exponent subtraction; the ordinary forced multiplier
+therefore gives w*q=2^R. Signed transport retains W=1, and the exact rank
+uses the source high port shifted by beta once. The literal fixed-port
+soundness theorem gives the other direction. The resulting no-positive-zero
+iff is closed for the14-variable polynomial and all three accepted13-variable
+frontiers; one positive13-coordinate assignment solves all three whenever
+the actual axiom predicate is inconsistent. No consistency assertion follows.
+The [author record](reviews/current-positive-zero2011-root.md) and
+[independent fresh main/check replay](reviews/current-positive-zero2011-lean-peer.md)
+record six standard-only axiom reports and exact statement/data binding.
+This closes the external Lean endpoint, with strict positive integer domains.
+An encoded proof inside the ZFC calculus remains open, including nonstandard
+internal witnesses. The [next-bridge audit](research/current-equivalence-next-bridge-20261026.md)
+records that separate obligation; its arithmetic-composition status predates
+this final checkpoint. Decimal notation and distinct unknown names are retained.
 
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now
