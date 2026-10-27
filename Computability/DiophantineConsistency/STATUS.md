@@ -29,6 +29,13 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [internal Pell residue/index package](reviews/arithmetic-pell-congruences-root.md)
+now supplies nonnegative residue quotients at every internal index, actual
+remainder identities,4Q first-index transport, norm-solution certificates,
+strict ordinate growth and index uniqueness in IΣ1. Independent builds
+match both objects/full logs and nine standard-only reports. Carrier index
+identities,simultaneous witnesses and final PA/HA composition remain open.
+
 The [current literal adaptive equivalence](reviews/native-adaptive-current2011-root.md)
 now closes positive-zero iff actual not-ConZFC and no-positive-zero iff
 actual ConZFC for the complete13-input graph at the exact current ports.

@@ -164,6 +164,13 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [internal Pell residue/index package](reviews/arithmetic-pell-congruences-root.md)
+now proves concrete residue quotients,4Q first-index transport and index
+uniqueness for arbitrary internal IΣ1 indices. Independent builds match
+both objects/full logs and nine standard-only reports. The first-index
+premise remains explicit; literal carrier/index calibration and simultaneous
+witness construction still precede the final PA/HA equation theorem.
+
 The [current literal adaptive equivalence](reviews/native-adaptive-current2011-root.md)
 now proves the13-input graph at the complete current coefficient tuple
 has no positive zero iff actual ConZFC. Independent builds match both

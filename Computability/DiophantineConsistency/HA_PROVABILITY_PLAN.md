@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [internal Pell residue/index package](reviews/arithmetic-pell-congruences-root.md)
+now gives actual quotient and remainder certificates,4Q transport under
+the explicit first-index identity, arbitrary norm-solution residues and
+strict index order/uniqueness. All indices are internal IΣ1 elements.
+Independent replay matches both objects/full logs and nine standard-only
+reports. Further carrier/index and simultaneous witness construction is
+still required before the actual equation/ConZFC PA theorem.
+
 The [current literal adaptive equivalence](reviews/native-adaptive-current2011-root.md)
 now closes both external consistency equivalences for the13-input graph
 at the exact current ports, including the once-shifted high coefficient.
