@@ -565,6 +565,14 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [substitution/opening audit](research/c222-substitution-opening-proposal-20261026.md)
+narrows the next actual C222 syntax checkpoint to a Π1/IΣ1 induction,
+reusing only unchanged term/vector helpers. Exact opening follows from
+source substitution and the accepted shift equation. Numeric equality
+needs no fresh-stream premise; later interpreted quantifier transport
+retains the explicit IΣ2 alpha and vacuity obligations. Stream selection
+and arbitrary proof translation are separately scoped.
+
 The [HA bounded quantifiers](reviews/ha-bounded-quantifiers-root.md) now
 have actual HA empty/successor laws and decision proofs from the uniform
 object-language premise ∀x.dec a. Genuine simultaneous formula induction

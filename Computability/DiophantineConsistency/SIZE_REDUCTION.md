@@ -27,6 +27,14 @@ Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
 
+The [historical-front transfer audit](research/ordinary-low-degree-current2011-transfer-audit.md)
+now identifies a route from the older13/88/51 and12/96/70 arithmetic to
+the current coefficient interface. The first scoped implementation will
+reconstruct a Carrier65 zero from any positive authoritative ordinary
+source, using the same native rank and rebuilding private Pell seeds.
+The shifted-z adapter and adaptive-carrier/free-J proofs remain separate;
+the historical metrics are not yet current-tuple Lean endpoints.
+
 The [scaled syzygy proposal](research/scaled-norm-syzygy-search/PROPOSAL.md)
 led to the separately [accepted13/178/86 equation](reviews/thirteen-scaled-norm-syzygy86-root.md)
 within the current47,313-byte coefficient family. Two independent Lean
