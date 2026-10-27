@@ -2,6 +2,12 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+The [uniform C222 alpha theorem](reviews/validator-environment-alpha222-root.md)
+now passes two independent builds and fifteen standard-only reports. Its
+all-internal Π2/IΣ2 induction preserves the same context in both directions
+and derives the four binder-vacuity resources. Numeric checker witnesses
+are explicit. Substitution and general proof interpretation remain open.
+
 The [current13/178/86 scaled syzygy](reviews/thirteen-scaled-norm-syzygy86-root.md)
 now passes two independent Lean builds with twelve standard-only reports
 and complete normal/optimized finite audits. Every positive zero and all

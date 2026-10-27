@@ -565,6 +565,13 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [uniform actual C222 alpha theorem](reviews/validator-environment-alpha222-root.md)
+is now independently checked for all internal typed source codes, with
+an explicit Π2 invariant under IΣ2. Both directions retain the same context,
+and both have actual numeric checker witnesses. Two fresh independent
+builds pass fifteen standard-only reports. Stream selection and source
+substitution/opening precede the later arbitrary proof interpretation.
+
 The [HA interval laws](reviews/ha-strict-intervals-root.md) now prove
 the empty interval, s<S s and both actual HA implications for
 s<S t iff (s<t∨s=t). Two independent fresh builds pass twelve

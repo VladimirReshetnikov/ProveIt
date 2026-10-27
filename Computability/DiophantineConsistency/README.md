@@ -61,6 +61,11 @@ now supplies actual C222 equality/membership certificates under the same
 represented context, with zero and auxiliary-label collisions retained.
 Two independent builds pass13 standard-only reports; uniform formula
 transport under its explicit IΣ2 invariant remains the next checkpoint.
+The subsequent [uniform alpha theorem](reviews/validator-environment-alpha222-root.md)
+now covers arbitrary internal typed formulas in both directions under that
+same represented context. Its explicit Π2/IΣ2 induction and two independent
+builds pass fifteen standard-only reports. Stream selection, substitution
+and arbitrary proof interpretation remain separate work.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed
