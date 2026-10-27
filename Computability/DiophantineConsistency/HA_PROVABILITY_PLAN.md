@@ -34,6 +34,13 @@ graphs. Independent fresh pairs match both objects/full logs and11 reports.
 Guarded comprehension and the parameter-safe marker/Collection/quotient route
 still precede actual ZF/ZFC calibration; no source-model premise is substituted.
 
+The [bounded marker-counter proposal](research/validator-seed-marker-counter-proposal.md)
+describes a possible all-internal transport invariant with marker index j,
+domain side-set length j and a fixed induction budget. It tracks ALL at j+1
+and SHIFT at j−1, followed by simultaneous marker/domain discharge. This is
+a mathematical proposal with six inspected source pins, not a Lean theorem
+or compiler authorization; actual tagged and quotient axiom images remain.
+
 The [actual internal scheduler/control halting theorem](reviews/arithmetic-dag-runtimeperm222-root.md)
 now composes repeated execution in both directions using a fixed Sigma1
 relation and derived positive clocks. It retains arbitrary internal data
