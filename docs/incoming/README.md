@@ -12,6 +12,31 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Sub-exponential 3-SAT (ETH) reports
+
+Nine arrivals of 26 October 2026 about sub-exponential 3-SAT, that is, about
+refuting the Exponential Time Hypothesis. The drop process staged the first
+five without committing them, and they were committed unchanged in
+`a505bd768b`; it committed the other four itself. They are placed in the new
+project
+[`Computability/SubexponentialSAT/`](../../Computability/SubexponentialSAT/README.md)
+and retired here. Byte-identical copies of upstream `openai/math@7ef5c0cc5c`
+files are listed in
+[`Research/OMITTED.tsv`](../../Computability/SubexponentialSAT/Research/OMITTED.tsv)
+instead of being filed.
+
+| Archive | Arrival | Placement |
+|---|---|---|
+| `cauchy_mode_improvement_2026-10-26.zip` | `a505bd768b` | [Research/cauchy_mode_improvement](../../Computability/SubexponentialSAT/Research/cauchy_mode_improvement/README.txt) |
+| `eth_contraction_improvements.zip` | `a505bd768b` | [Research/eth_contraction_improvements](../../Computability/SubexponentialSAT/Research/eth_contraction_improvements/README.txt) |
+| `sat_density_improvement.zip` | `a505bd768b` | [Research/sat_density_improvement](../../Computability/SubexponentialSAT/Research/sat_density_improvement/README.txt) |
+| `eth.pdf` | `a505bd768b` | [Research/claude-2o-n-3sat/eth.pdf](../../Computability/SubexponentialSAT/Research/claude-2o-n-3sat/eth.pdf) |
+| `paper.pdf` | `a505bd768b` | Not filed: byte-identical to the OpenAI preprint's `paper.pdf` ([project README](../../Computability/SubexponentialSAT/README.md#primary-manuscripts)) |
+| `3sat_precision_refinement_2026-10-26.zip` | `64b3202ee8` | [Research/3sat_precision_refinement](../../Computability/SubexponentialSAT/Research/3sat_precision_refinement/README.md) |
+| `3sat_refinement_package.zip` | `64b3202ee8` | [Research/3sat_refinement](../../Computability/SubexponentialSAT/Research/3sat_refinement/README.md) |
+| `eth_density_refinement.zip` | `64b3202ee8` | [Research/eth_density_refinement](../../Computability/SubexponentialSAT/Research/eth_density_refinement/README.txt) |
+| `3sat_asymptotic_analysis_20261027.zip` | `8afdbbea48` | [Research/3sat_asymptotic_analysis](../../Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/README.md), without the eight upstream copies in `source/` |
+
 ## DiophantineConsistency proof-simplification packets
 
 Fifty-four proof-simplification packets of 26 October 2026, reviewing commits from `60e9c5d620` onward, are placed under

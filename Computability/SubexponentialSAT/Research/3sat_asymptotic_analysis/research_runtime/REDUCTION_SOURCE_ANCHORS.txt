@@ -1,0 +1,87 @@
+   210	array there are
+   211	\[
+   212	 C_{gh}=\binom{N_{gh}}{d_{gh}}
+   213	\]
+   214	subsets of the specified size for this pair. Draw
+   215	$\lceil\log_2 C_{gh}\rceil$ Boolean wires between the two group
+   216	vertices to index them in lexicographic order. For $C_{gh}=1$
+   217	both endpoints use the unique subset (possibly the entire incidence
+   218	set) with no wires. Any unused bit string gives tensor entry zero.
+   219	To decode a valid index, take the incidences in order and count the
+   220	possible completions with or without each incidence using binomial
+   221	coefficients. These have polynomial bit length, so decoding uses
+   222	polynomial time and space.
+   223	
+   224	The union of the subsets over all pairs specifies a squarefree
+   225	monomial of degree at most $K$ in $N$ indeterminates. Including
+   226	all monomials of this degree bound gives the upper bound
+   227	$\binom{N+K}{K}$ by stars and bars. Thus the number
+   228	of wires $M$ in the network for this array satisfies
+   229	\begin{align}
+   230	 M &\le J^2+\log_2\prod_{g,h} C_{gh}
+   231	      \le J^2+\log_2\binom{N+K}{K} \notag\\
+   232	   &\le J^2+K\log_2\!\left(\frac{\mathrm e(N+K)}{K}\right)
+   233	      = O_{k,c}(n\nu).
+   234	 \label{eq:sharp-wire-budget}
+   235	\end{align}
+   236	Here $K=\Theta_{k,c}(n)$ and $N\le n\lambda^{O_{k,c}(1)}$.
+   237	Also $\lceil\log_2 C_{gh}\rceil\le N_{gh}$, so the degree of each
+   238	vertex is at most its number of incidences,
+   239	$n^{3/4}\lambda^{O_{k,c}(1)}$.
+   240	
+   241	\paragraph{Tensor entries and contraction.}
+   242	A valid assignment of wire bits determines a subset $S_i\subseteq I_i$
+   243	at each test. Write $z_{i,S_i}=\prod_{v\in S_i}z_{iv}$. The entry
+   244	at a test group $g$ is the coefficient of its indicated monomial
+   245	in $\prod_{i\in\mathcal T_g}\overline B_i(z_i,V)$. Since the $z_i$
+   305	\[
+   306	 2^{\,n/\sqrt{\lambda}+O_{k,c}(\sqrt n\log n)}.
+   307	\]
+   308	Both terms in this exponent are $O_{k,c}(n\nu/\sqrt{\lambda})$.
+   309	Process the branches and arrays sequentially. On each branch,
+   310	sum the contractions in $\mathcal B$ and apply $\mathcal S_\ell$.
+   311	Adding the branch residues modulo $2^{n+1}$ gives the original
+   312	count, since it lies between $0$ and $2^n$. This proves the
+   313	claimed bounds, using direct enumeration for bounded exceptional
+   314	sizes.
+   315	\end{proof}
+   316	
+   317	\begin{proof}[Proof of the arbitrary-density bound in
+   318	Theorem~\ref{thm:main}]
+   319	Normalize the formula on its original $n$ declared variables as
+   320	in Section~\ref{subsec:general-reduction}. Empty clauses and
+   321	formulas with no clauses have immediate answers. For $n\ge20$
+   322	apply Lemma~\ref{lem:sparsify} with
+   323	$\sigma=1/\lceil\sqrt{\lambda}\rceil$, where
+   324	$\lambda=\lceil\log_2 n\rceil$. The tree has
+   325	$n^{O_k(1)}2^{O(n/\sqrt{\lambda})}$ nodes and polynomial depth.
+   326	Every leaf has occurrence bound
+   327	$B=O_k((\sigma^{-1}\log(2/\sigma))^{k-1})=\lambda^{O_k(1)}$
+   328	and at most $Bn$ nonempty clauses.
+   329	
+   330	For a nontrivial leaf with $m_G$ clauses, use the initial parity
+   331	checks of Lemma~\ref{lem:sparse-checks} and the greedy procedure
+   332	of Lemma~\ref{lem:greedy-hashes}. Each initial row has support size
+   333	at most $D_0$, and each additional row has list length $P$.
+   334	Both bounds are $\lambda^{O_k(1)}$. By \eqref{eq:hash-query}, every row
+   335	gives a degree-at-most-$k$ equation with at most
+   350	per leaf. Since every fixed power of $\lambda$ is
+   351	$o(n\log\log n/\sqrt{\log n})$, these costs and the number of leaves
+   352	are absorbed in the claimed time bound
+   353	\[
+   354	 (n+m)^{O_k(1)}2^{O_k(n\log\log n/\sqrt{\log n})}.
+   355	\]
+   356	Here $m$ counts the input clauses. Traverse the tree
+   357	depth first and process one query at a time. The leaf solution sets
+   358	are disjoint, so their exact counts add with an $(n+1)$-bit
+   359	accumulator. Together with polynomial space per query and per
+   360	tree path, this gives the asserted polynomial-space bound.
+   361	\end{proof}
+   362	
+   363	A single algorithm attains both bounds. With
+   364	$\lambda=\lceil\log_2 n\rceil$ and $\nu=\lceil\log_2\lambda\rceil$,
+   365	use the clause network when $m\le n\nu$ and the parity queries
+   366	otherwise. In the first branch $n\le s=n+m=O(n\log\log n)$,
+   367	so its exponent is $O_k(n\log\log n/\sqrt{\log n})$ even at growing
+   368	density. For each fixed $D$ and all sufficiently large $n$, every
+   369	input with $m\le Dn$ takes that branch with $s=O_D(n)$.

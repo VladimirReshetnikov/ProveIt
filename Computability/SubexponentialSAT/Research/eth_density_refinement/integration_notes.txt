@@ -1,0 +1,62 @@
+INTEGRATION POINTS FOR THE DENSITY REFINEMENT
+
+Source snapshot:
+  openai/math, commit 42907c9e999cc00d6abe7a50bfc1023250edd1b9
+  preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026
+
+1. build/main_full_version.tex, lemma "sparse-checks"
+Replace the initial-check construction with report.tex Section 3:
+  w = ceil(log2(2B))
+  delta = 1/(1024 B w)
+  P = 2(1024 B w)^2
+  t = least integer with 2048 B w 19^t <= 20^t
+  D = 16^t
+Use a lazy MGG expander power and a local code with ceil(d/(32B))
+parity checks, where d = min(m,D). Handle m <= D with one vertex per side
+and m distinct parallel edges. When m > D, use q=ceil(sqrt(m/D)),
+q^2 vertices per side and degree D, then shorten to m edge coordinates.
+The row budget remains at most 3n and the distance conclusion remains m/P.
+
+2. build/main_full_version.tex, lemma "greedy-hashes"
+The greedy algorithm and proof are unchanged except for substituting the
+new P and D. All candidate queries must use the counter in item 3.
+The candidate-list multiplicity, coefficient-zero pairs, and repeated
+indices are retained; they implement the exact averaging argument.
+
+3. build/quantitative-reduction.tex, lemma "tensor-sparse-query"
+Retain an explicit maximum monomial count S rather than substituting a
+polylog(n) upper bound at the outset. Use size parameter
+  s = ceil(n log2(2+S)).
+Its wire bound is O(n log(2+S)); the other hypotheses are as proved in
+report.tex Section 4. Keep the original-variable n for precision,
+truncation, and total-degree accounting across variable-fixing branches.
+
+4. Top-level choice
+Use the density solver when B=max(1,ceil(m/n)) <= ceil(log2 n).
+Use the original arbitrary-density algorithm otherwise.
+This gives the all-input hybrid bound in report.tex Corollary 1.2.
+For fixed-density inputs the original direct clause-network routine can
+also be retained; either approach gives the same asymptotic order.
+
+5. Optional independent contraction retuning
+In build/quantitative-contraction.tex:
+  eta = 1/2048 (source 1/131072)
+  h = floor(M(2L-1) / sum_i (L/2^i)(u-i)) + 1
+  Lambda_i = h sum_{j=1}^{a-i} j min(j,u-i) 2^{a-i-j}
+  p_t = p + Lambda_i + (q_i-1)(a+1-i)
+Replace the old cosmetic bounds L,D_arr <= s^(1/1000) by the bounds in
+report.tex Section 6. Do not change creation-time canonical lifting or
+the underlying Hermite identities.
+This optional change is not needed for the density theorem.
+
+6. Optional Max-k-SAT corollary correction
+The threshold-circuit encoding in the existing proof has linear size
+and linear clause count for fixed k,epsilon. Invoke the fixed-density
+main theorem to obtain exponent O(n/sqrt(log n)).
+
+STATUS
+No upstream edits have been applied. This file is an integration guide,
+not a patch tested against the upstream Lean formalization. It must not
+be taken as an assertion that the unrestricted worst-case exponent was
+improved.
+

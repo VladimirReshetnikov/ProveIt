@@ -1,0 +1,1024 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{graphicx,xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{087E8B}
+\definecolor{paleblue}{HTML}{F0F5FA}
+\hypersetup{colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal,
+ pdftitle={Sharper precision for subexponential 3SAT},
+ pdfauthor={ChatGPT research analysis},
+ pdfsubject={Proved Hermite precision refinement and conditional structured-mode acceleration}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{navy}Sharper precision for subexponential 3SAT}
+\fancyhead[R]{\small Research memorandum}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{topsep=4pt,itemsep=3pt,leftmargin=*}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\vTwo}{v_2}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\srccommit}{\texttt{42907c9e999cc00d6abe7a50bfc1023250edd1b9}}
+\newtcolorbox{statusbox}{colback=paleblue,colframe=navy,boxrule=.6pt,
+ arc=1pt,left=9pt,right=9pt,top=8pt,bottom=8pt,breakable}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{black!20},showstringspaces=false}
+\title{\color{navy}\bfseries Sharper precision for subexponential 3SAT\par
+ \large A proved schedule refinement and a conditional route to a better logarithmic exponent}
+\author{Research memorandum prepared for Vladimir Reshetnikov}
+\date{October 26, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We analyze the October 25 revision of OpenAI's subexponential exact-counting
+algorithm, using a pinned source revision. We obtain a concrete refinement of
+its tapered Hermite interpolation: count the interpolation conditions exactly,
+then charge the actual two-adic loss of each recovery multiplier. The resulting
+working precision is at most $(6+o(1))MD/u$, compared with the source schedule's
+$(24+o(1))MD/u$. In the standard colored-partition estimate, this halves the
+leading constant in the exponential bound for mode enumeration. We also solve
+the associated real-valued minimax taper problem exactly and show why changing
+the taper alone cannot improve the logarithmic power.
+
+For a stronger improvement, we give an exact compressed tensor representation
+of the mode sum and formulate a precise structured-summation hypothesis.
+Under that hypothesis, a retuned algorithm would count arbitrary fixed-width
+CNF in $\poly(n,m)2^{O(n\log\log n/\log n)}$ time and polynomial space, with
+$\poly(n,m)2^{O(n/\log n)}$ at fixed clause density. The required new summation
+algorithm is not proved here. Exact-arithmetic implementations check the
+proved precision identities and the compressed representation on finite
+instances.
+\end{abstract}
+
+\begin{statusbox}
+\textbf{What is established.} A smaller, rigorously sufficient precision
+schedule; an improved explicit exponential upper-bound constant; an exact
+optimal taper for the full loss functional; and an exact mode-network
+reformulation.
+
+\medskip
+\textbf{What is still open in this work.} An improvement of the general
+$O(n\log\log n/\sqrt{\log n})$ exponent to a smaller asymptotic order. The
+$O(n\log\log n/\log n)$ rate below is a conditional target, not a claimed
+new 3SAT theorem. The supplied Python programs are algebraic prototypes and
+schedule routines, not a full subexponential SAT solver.
+\end{statusbox}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The baseline and the result being improved}
+\label{sec:baseline}
+
+The user's reference is OpenAI, \emph{The Exponential Time Hypothesis is
+False}, dated October 17 and revised October 25, 2026~\cite{paper}.
+This memorandum uses repository commit \srccommit. The main theorem and
+quantitative appendix state, for every fixed clause width $k$,
+\begin{align}
+ T_{\rm general}(n,m)
+  &=(n+m)^{O_k(1)}2^{O_k(n\log\log n/\sqrt{\log n})},
+   \label{eq:baseline-general}\\
+ T_{\rm density}(n,m)
+  &=(n+m)^{O_{k,D}(1)}2^{O_{k,D}(n/\sqrt{\log n})}
+       \quad(m\le Dn,\ D\text{ fixed}).\label{eq:baseline-sparse}
+\end{align}
+Both are exact-counting bounds, so testing whether the count is positive
+decides 3SAT when $k=3$. Both use polynomial space.
+
+The distinction between the manuscript and the formalized implementation
+matters. The repository's scope document~\cite{scope} describes a Lean theorem
+with the weaker exponent $O(n(\log\log n)^2/\sqrt{\log n})$, and explicitly
+lists the sharper manuscript bounds separately. The formal solution contains
+a compiled counting machine~\cite{leanfinal}; it is not merely an informal
+algorithm sketch. We inspected that distinction but did not rebuild Lean or
+rerun its proof comparison machinery. The new work here is an analysis of
+the quantitative tensor method, not a modification of that Lean endpoint.
+
+It would therefore be misleading to present removal of one factor of
+$\log\log n$ from the older bound as a new discovery. We compare against
+\eqref{eq:baseline-general} and \eqref{eq:baseline-sparse}.
+
+\subsection{A precise meaning of the proved improvement}
+
+The change proved in Sections~\ref{sec:linear}--\ref{sec:global} improves
+an explicit constant in the exponent of the tensor algorithm. It leaves its
+big-$O$ logarithmic rate unchanged. If two implementations are certified by
+$\exp((A+o(1))f(s))$ and $\exp((B+o(1))f(s))$ with $B<A$, the second has a
+strictly smaller stated upper bound. This does not prove that the first
+implementation attains its bound, or that a measured runtime ratio is
+$\exp((A-B)f(s))$.
+
+Our refinement has exactly that status. The more ambitious proposal in
+Section~\ref{sec:conditional} would change the rate itself, but depends on
+a new algorithmic hypothesis.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{.25\linewidth}p{.43\linewidth}p{.22\linewidth}@{}}
+\toprule
+Result & Quantitative statement & Status \\
+\midrule
+Exact precision schedule & $P'_t=p+B_i+(q_i-1)(a+1-i)$ & Proved here \\
+Dominant precision & $24MD/u$ replaced by at most $6MD/u$, asymptotically & Proved here \\
+Enumeration bound & $4\pi\sqrt6$ replaced by $2\pi\sqrt6$ in the normalized exponent & Proved here \\
+Mode-network encoding & $O(M/\sqrt u+r^2)$ rank bits for fixed weight allocations & Exact reformulation \\
+General 3SAT target & $\poly(n,m)2^{O(n\log\log n/\log n)}$ & Conditional \\
+Fixed-density target & $\poly(n,m)2^{O(n/\log n)}$ & Conditional \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Where the source spends exponential time}
+\label{sec:bottleneck}
+
+We use the source's contraction theorem and its correctness argument as
+the starting point~\cite{contraction,reduction}. A bipartite Boolean tensor
+network with $M$ wires has contraction
+\[
+ Z=\sum_{x\in\bits^{E}}\prod_v T_v(x|_{\delta(v)}).
+\]
+The source handles suitably bounded degrees, polynomial-size descriptions,
+and ring entries in
+\[
+ (\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),
+ \qquad P_0,\ell=O(s),
+\]
+where $s$ is a root size parameter and $M\le Cs$.
+An unramified coefficient extension supplies residue-distinct interpolation
+points. All precision statements below apply coordinatewise in that same
+extension and truncated polynomial ring.
+
+At an active call, the construction uses packets of $L=2^a$ slots and
+integer interpolation nodes
+\[
+ S=\{-L,-L+1,\ldots,L-1\},\qquad \alpha=2^{a+1}.
+\]
+For a retained nonzero node $t$, put
+\[
+ i=\vTwo(t),\qquad D_i=2^{a-i},\qquad 0\le i<u\le a.
+\]
+The deformed contraction $F(T)$ has degree at most
+\begin{equation}
+ R=M(2L-1).\label{eq:degree}
+\end{equation}
+At each node, crossing interactions are written in mode variables $Z$.
+A mode has a positive integer weight $w_Z$, and its coefficient is divisible
+by $2^{w_Z}$. There are at most $6M/D_i$ modes of any one weight. Thus only
+tuples satisfying
+\begin{equation}
+ \sum_Zw_Z\beta_Z<P_t\label{eq:budget}
+\end{equation}
+can matter modulo $2^{P_t}$.
+
+For a fixed tuple, the sum factors into child contractions:
+\begin{equation}
+ F(t+\alpha\zeta)
+   =\sum_{\beta:\,\sum w_Z\beta_Z<P_t}
+                \prod_{g=1}^{r} Z_{g,\beta}\pmod {2^{P_t}}.
+ \label{eq:mode-identity}
+\end{equation}
+Each mode has one source group and one target group. With the source choice
+$r=64$, every child has at most $3M/32<M/8$ wires.
+
+The source prescribes $h_{\rm old}=\ceil{3M/u}$, multiplicities
+$q_i=h_{\rm old}(u-i)$ for $i<u$, and
+\begin{equation}
+ P_t^{\rm old}=p+8h_{\rm old}D_i+8M(a+1).
+ \label{eq:old-precision}
+\end{equation}
+In its active regime this is $(24+o(1))MD_i/u$. Colored partitions then give
+$\exp(O(M/\sqrt u))$ tuples. Near the root, $u=\Theta(\log s)$, producing the
+square root of a logarithm in the denominator.
+
+For arbitrary clause density, the reduction first produces sparse polynomial
+queries. A retained incidence monomial has degree $K=O(n)$ among
+$N=n(\log n)^{O(1)}$ possible incidences. Binary ranks for its incidence
+subsets require
+\begin{equation}
+ O\!\left(\log\binom{N+K}{K}\right)=O(n\log\log n)
+ \label{eq:dense-entropy}
+\end{equation}
+wires. Contracting a network at that size gives
+\eqref{eq:baseline-general}. This explains the two distinct losses:
+the square root comes from mode enumeration, while the extra $\log\log n$
+comes from the reduction's representation~\cite{reduction}.
+
+\section{First refinement: the exact linear taper}
+\label{sec:linear}
+
+The original multiplicity count deliberately uses a loose lower bound.
+The exact count immediately improves its parameter.
+
+\begin{lemma}[Exact number of interpolation conditions]
+\label{lem:exact-jets}
+Let $a\ge u\ge1$, $L=2^a$, and assign multiplicity
+$q_i=h(u-i)$ to every node of valuation $i<u$, and zero otherwise.
+The total number of Hermite conditions is
+\begin{equation}
+ Q=h A_{a,u},\qquad
+ A_{a,u}=L\left(2u-2+2^{1-u}\right).
+ \label{eq:jets}
+\end{equation}
+In particular $A_{a,u}$ is an integer.
+\end{lemma}
+\begin{proof}
+For $0\le i<a$, exactly $L/2^i$ nonzero nodes in $S$ have valuation $i$.
+Since $i<u\le a$, the required sum is
+\[
+ Q=Lh\sum_{i=0}^{u-1}(u-i)2^{-i}.
+\]
+The finite geometric sum and its derivative give
+$\sum_{i=0}^{u-1}(u-i)2^{-i}=2u-2+2^{1-u}$.
+\end{proof}
+
+\begin{theorem}[Minimal sufficient integer slope]
+\label{thm:linear}
+For the degree bound \eqref{eq:degree}, the smallest positive integer slope
+within this linear-taper family that guarantees ordinary Hermite recovery is
+\begin{equation}
+ \boxed{h_{\min}=\ceil{\frac{M(2L-1)+1}{L(2u-2+2^{1-u})}}.}
+ \label{eq:hmin}
+\end{equation}
+If $u\to\infty$ and $M/u\to\infty$ in the source's active regime, then
+$h_{\min}=(1+o(1))M/u$.
+\end{theorem}
+\begin{proof}
+A polynomial of degree at most $R$ is uniquely determined by $R+1$
+Hermite conditions at distinct nodes. Equation~\eqref{eq:jets} therefore
+requires $hA_{a,u}\ge R+1$, giving \eqref{eq:hmin} and its minimality.
+The denominator is $2L(u-1+2^{-u})$. Dividing the numerator by this
+expression, and accounting for an additive rounding error below one,
+gives the stated asymptotic formula.
+\end{proof}
+
+All retained valuation levels remain active. The packets, group labels,
+interpolation nodes, local mode expansion, and child topology therefore need
+no change. If $M\ge u$, the odd nodes alone imply $A_{a,u}\ge Lu$, and
+$R+1\le2ML$. Hence $h_{\min}\le\ceil{2M/u}\le3M/u$ and
+$q_i\le3M$. These bounds are at least as strong as the auxiliary
+$h\le4M/u$, $q_i\le4M$ estimates used in the source.
+
+This first change reduces the slope by a factor tending to three.
+The second change avoids unnecessary slack in the precision charged to
+each retained node.
+
+\section{Second refinement: charge the exact recovery loss}
+\label{sec:precision}
+
+Extend $q_i$ by zero for $i\ge u$. For a node of valuation $i<u$, define
+the nonnegative integer
+\begin{equation}
+ B_i=\sum_{j=1}^{a-i}j\,2^{a-i-j}(q_i-q_{i+j})
+    =D_i\sum_{j=1}^{a-i}\frac{j}{2^j}(q_i-q_{i+j}).
+ \label{eq:Bi}
+\end{equation}
+Nonnegativity holds for a nonincreasing taper, including both the linear
+taper and the rounded full-loss optimum discussed below.
+
+For clarity, introduce the Hermite cardinal factor
+\[
+ E_t(T)=\prod_{\substack{v\in S\setminus\{0,t\}}}
+             \left(\frac{T-v}{t-v}\right)^{q_{\vTwo(v)}}.
+\]
+Zero multiplicities contribute a factor one. Counting the valuations of
+differences in the complete residue grid gives the exact source identity
+\begin{equation}
+ \vTwo(E_t(0))=-B_i.\label{eq:E-valuation}
+\end{equation}
+This is the equality preceding the source's coarse bound on Hermite loss;
+our change uses that equality directly~\cite{contraction}.
+
+\begin{theorem}[Exact sufficient working precision]
+\label{thm:precision}
+Suppose $\deg F\le R$ and $F(0)$ is integral in the source ring.
+At every retained node $t$, suppose $F(t+\alpha z)$ is integral
+coefficientwise and its first $q_i$ coefficients are supplied modulo
+$2^{P'_t}$, where
+\begin{equation}
+ \boxed{P'_t=p+B_i+(q_i-1)(a+1-i).}\label{eq:new-precision}
+\end{equation}
+For a nonnegative nonincreasing taper with enough Hermite conditions,
+these jets determine $F(0)$ modulo $2^p$.
+\end{theorem}
+\begin{proof}
+Every factor of $E_t(t+\alpha z)$ is a power of
+$1+\alpha z/(t-v)$. Since $\vTwo(t-v)\le a$, its coefficients are integral
+and its constant term is one. Its reciprocal truncated below $q_i$ is
+therefore integral. Forming
+\[
+ G_t(z)=\left[F(t+\alpha z)/E_t(t+\alpha z)\right]_{<q_i}
+\]
+loses no precision. Hermite recovery evaluates this polynomial at
+$-t/\alpha$ and multiplies by $E_t(0)$, then sums over $t$.
+
+The multiplier of the coefficient of $z^j$, $0\le j<q_i$, has valuation
+\[
+ \vTwo\!\left(E_t(0)(-t/\alpha)^j\right)
+       =-B_i-j(a+1-i).
+\]
+Replacing that coefficient by an arbitrary lift of its residue introduces
+an error with valuation at least
+\[
+ P'_t-B_i-j(a+1-i)
+       =p+(q_i-1-j)(a+1-i)\ge p.
+\]
+Every error lies in $2^p$ times the integral coefficient ring. Addition
+does not reduce this precision. The exact Hermite identity recovers
+$F(0)$, so the approximate calculation gives its required residue.
+The argument holds separately in every coefficient coordinate, including
+the truncated $V$ coordinate.
+\end{proof}
+
+\begin{remark}
+This is a sufficient precision bound. It need not be minimal for a
+particular polynomial with additional coefficient divisibility. For a
+general nonmonotone taper, a safe nondecreasing-precision version replaces
+the increment in \eqref{eq:new-precision} by its maximum with zero.
+For the positive linear taper with $u\le a$, $B_i>0$, so precision strictly
+increases, preserving the source's canonical-lifting convention.
+\end{remark}
+
+\subsection{Why the dominant constant becomes six}
+
+Write $k_i=u-i$. The full normalized loss of a linear taper is
+\begin{equation}
+ \sum_{j\ge1}\frac{j}{2^j}(q_i-q_{i+j})
+   =h\left(6-(k_i+3)2^{1-k_i}\right)\le6h.
+ \label{eq:linear-loss}
+\end{equation}
+The finite sum in \eqref{eq:Bi} is no larger. Thus $B_i\le6h_{\min}D_i$.
+
+The source uses cumulative packet exponents
+\[
+ u_d=\floor{\varepsilon\lambda/2^d},\quad
+ a_d=2\sum_{j=0}^d u_j,\quad
+ \lambda=\ceil{\log_2s},\quad
+ \varepsilon=\frac1{128\cdot1024}.
+\]
+At every active node, $D_i\ge2^{a_{d-1}+u_d}$, while inherited precision is
+at most $s\lambda^{O(1)}2^{a_{d-1}}$. The active $u_d$ is a positive
+power of $\lambda$. Consequently, uniformly over active depths and retained
+nodes,
+\[
+ p=o(MD_i/u),\qquad q_i(a+1-i)=o(MD_i/u).
+\]
+The smaller new increments preserve the inherited-precision estimate.
+Combining these observations with Theorem~\ref{thm:linear} proves
+\begin{equation}
+ \boxed{P'_t\le(6+o(1))\frac{MD_i}{u},\qquad
+ P_t^{\rm old}=(24+o(1))\frac{MD_i}{u}.}
+ \label{eq:precision-comparison}
+\end{equation}
+Levels close to the end of the taper can do better than the upper constant
+six. No change in the coefficient extension, exact arithmetic model, or
+polynomial-space argument is required.
+
+\section{The resulting explicit exponential bound}
+\label{sec:global}
+
+Let $N(P)$ be the number of mode tuples with weighted degree below $P$.
+For any $\theta>0$, the multiplicity bound $6M/D_i$ gives
+\begin{align}
+ \log N(P)
+ &\le\theta P+\frac{6M}{D_i}
+                 \sum_{j\ge1}-\log(1-e^{-\theta j})\\
+ &\le\theta P+\frac{\pi^2M}{D_i\theta}.
+ \label{eq:entropy-bound}
+\end{align}
+Here and below $\log$ in an entropy calculation is natural. The second
+line follows by expanding the logarithm:
+\[
+ \sum_{j\ge1}-\log(1-e^{-\theta j})
+ =\sum_{h\ge1}\frac1{h(e^{\theta h}-1)}
+ \le\frac1\theta\sum_{h\ge1}\frac1{h^2}
+ =\frac{\pi^2}{6\theta}.
+\]
+Taking $\theta=\pi\sqrt{M/(D_iP)}$ yields
+\begin{equation}
+ \log N(P)\le2\pi\sqrt{MP/D_i}.\label{eq:optimized-entropy}
+\end{equation}
+Therefore \eqref{eq:precision-comparison} gives the explicit comparison
+\begin{align}
+ \log N(P_t^{\rm old})
+   &\le(4\pi\sqrt6+o(1))M/\sqrt u,\\
+ \log N(P'_t)
+   &\le(2\pi\sqrt6+o(1))M/\sqrt u.
+ \label{eq:mode-constant}
+\end{align}
+
+\begin{corollary}[An explicit bound for the complete contraction]
+\label{cor:global}
+Normalize the root so it has at most $s$ wires, and retain the source's
+leaf threshold $H=\ceil{s/\floor{\sqrt\lambda}}$ and fixed $\varepsilon$.
+With description length $\mathcal L$, the refined algorithm satisfies
+\begin{equation}
+ T\le(s+\mathcal L)^{O(1)}
+ \exp\!\left[
+ \left(\frac{2\pi\sqrt6}
+ {\sqrt\varepsilon(1-\sqrt2/8)}+\log2+o(1)\right)
+ \frac{s}{\sqrt\lambda}\right].
+ \label{eq:global-explicit}
+\end{equation}
+The same calculation for the original precision prescription replaces
+$2\pi\sqrt6$ by $4\pi\sqrt6$.
+\end{corollary}
+\begin{proof}
+At depth $d$, $M_d\le s8^{-d}$ and
+$u_d=(1+o(1))\varepsilon\lambda2^{-d}$ uniformly along active paths.
+Thus the logarithms of the branching bounds sum to at most
+\[
+ \frac{2\pi\sqrt6+o(1)}{\sqrt\varepsilon}
+ \frac{s}{\sqrt\lambda}
+ \sum_{d\ge0}(\sqrt2/8)^d.
+\]
+Polynomial factors across $O(\log\lambda)$ levels contribute only
+$O(\lambda\log\lambda)=o(s/\sqrt\lambda)$ to the logarithm.
+Direct enumeration at a leaf contributes
+$(\log2+o(1))s/\sqrt\lambda$. The allowed entry cost
+$\exp(O(s^{9/10}))$ is also lower order. The fixed polynomial dependence
+on description length is retained exactly as in the source analysis.
+\end{proof}
+
+This is a genuine refinement of the specified algorithm and its explicit
+upper bound. Its asymptotic class remains
+$\poly(s+\mathcal L)2^{O(s/\sqrt{\log s})}$. In particular, the manuscript's
+general and fixed-density rates in Section~\ref{sec:baseline} remain the
+strongest rates established here. The large fixed constants and eventual
+parameter thresholds in the source also remain; this analysis is not a
+practical performance claim.
+
+\section{An exact optimal-taper theorem}
+\label{sec:optimal}
+
+The preceding improvement raises a natural question: can a more elaborate
+taper reduce precision by an additional factor of $u$? Within the loss
+functional used by the source, the answer is no. We can solve the relevant
+real optimization problem exactly.
+
+For a nonnegative real vector $q_0,\ldots,q_{u-1}$, set $q_i=0$ for
+$i\ge u$, and define
+\[
+ \mathcal A_i(q)=\sum_{j\ge1}\frac{j}{2^j}(q_i-q_{i+j}),
+ \qquad W(q)=\sum_{i=0}^{u-1}2^{-i}q_i.
+\]
+
+\begin{theorem}[Optimal full normalized loss]
+\label{thm:optimal}
+For $W>0$, among nonnegative real tapers satisfying $W(q)\ge W$,
+\begin{equation}
+ \min_q\max_{0\le i<u}\mathcal A_i(q)
+   =\frac{W}{u/3+2/9-(2/9)4^{-u}}.
+ \label{eq:optimal-value}
+\end{equation}
+Writing the right side as $\eta$, an optimizer is
+\begin{equation}
+ q_i=\eta r_{u-i},\qquad
+ r_k=\frac{k}{6}+\frac5{18}+\frac29\,4^{-k}.
+ \label{eq:optimal-profile}
+\end{equation}
+Every full loss of this profile equals $\eta$.
+\end{theorem}
+\begin{proof}
+Since $\sum_{j\ge1}j2^{-j}=2$, the constraints
+$\mathcal A_i(q)\le\eta$ are equivalent to
+\[
+ q_i\le\frac\eta2+\sum_{j\ge1}\frac{j}{2^{j+1}}q_{i+j}.
+\]
+Backward induction shows that the pointwise largest feasible vector
+saturates each inequality. After dividing by $\eta$ and reversing the
+index, its coefficients satisfy
+\[
+ r_k=\frac12+\sum_{j=1}^{k-1}\frac{j}{2^{j+1}}r_{k-j}.
+\]
+Their generating function is
+\[
+ \sum_{k\ge1}r_kz^k
+   =\frac{z(2-z)^2}{2(1-z)^2(4-z)}.
+\]
+Partial fractions give \eqref{eq:optimal-profile}; substitution also
+verifies it directly. Summing its weighted mass yields
+\[
+ \sum_{i=0}^{u-1}2^{-i}r_{u-i}
+    =\frac u3+\frac29-\frac29\,4^{-u}.
+\]
+The maximal mass at loss $\eta$ is therefore $\eta$ times this quantity.
+Choosing $\eta$ to attain mass $W$ proves both directions.
+\end{proof}
+
+Hermite completeness asks for $W=(R+1)/L=2M+o(M)$. Thus the optimal
+full normalized loss is $(6+o(1))M/u$. The simple optimized linear taper
+already reaches this leading constant.
+
+\subsection{The finite grid and integer multiplicities}
+
+Let $\mathcal A_i^{(a)}$ truncate the defining sum after $j=a-i$.
+Its relation to the full loss is exact:
+\begin{equation}
+ \mathcal A_i(q)-\mathcal A_i^{(a)}(q)
+    =q_i(a-i+2)2^{-(a-i)}.\label{eq:finite-tail}
+\end{equation}
+For $a\ge2u$ and $q_i=O(M)$, the right side is $o(M/u)$ uniformly as
+$u\to\infty$. Hence, among bounded tapers in the source regime,
+the finite-grid minimax loss has the same leading constant six.
+
+An exact finite-grid optimizer can also be computed by a triangular
+rational recurrence. Put
+\[
+ s_i=2-(a-i+2)2^{-(a-i)},\qquad
+ r_i^{(a)}=\frac{1+\sum_{j=1}^{u-1-i}j2^{-j}r_{i+j}^{(a)}}{s_i},
+\]
+processing $i$ backwards. Scale this vector to mass $W$.
+The same backward-induction proof shows optimality for the finite
+normalized-loss problem. This optional finite optimizer need not be used
+to obtain our leading-constant improvement.
+
+For either real optimizer, rounding every coordinate upward preserves
+Hermite completeness. Each loss increases by less than two: its diagonal
+coefficient is at most two, while all off-diagonal coefficients are
+nonpositive. Thus integer rounding preserves the leading constant.
+For the rounded full profile, monotonicity follows from that of $r_k$;
+the precision formula in Theorem~\ref{thm:precision} applies directly.
+
+\subsection{A reproducible finite comparison}
+
+For $M=1000$, $a=12$, $u=6$, and input precision $p=1001$, the supplied
+exact schedule routine gives the following maximum over retained nodes:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Schedule & Maximum working precision, in bits \\
+\midrule
+Published source prescription & $16{,}489{,}001$ \\
+Minimal complete linear taper, exact loss & $4{,}684{,}588$ \\
+Rounded full-loss optimum, exact loss & $3{,}681{,}886$ \\
+Rounded finite-grid optimum, exact loss & $3{,}640{,}672$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+These are exact integer schedule values, not timing measurements. The
+example concerns the local recovery lemma, which does not require the
+full solver's packet-packing inequalities. At small retained ranges, the
+lower-order improvement from the optimal
+profiles can be substantial. Upward rounding of a real optimum is not
+claimed to solve the integer minimax problem exactly.
+
+\subsection{What this rules out}
+
+Within the retained-level architecture, a bounded taper satisfying
+completeness must incur normalized loss $\Omega(M/u)$ at some active
+level. At that level the Hermite multiplier loses
+$\Omega(MD_i/u)$ bits. Therefore merely changing the taper cannot replace
+that scale by $MD_i/u^2$.
+
+This is a restriction on a particular precision accounting method. It is
+not a lower bound on all algorithms. A different recovery identity,
+additional divisibility specific to the generated polynomials, or
+cancellation between recovery terms could evade its hypotheses.
+
+\section{Why ordinary mode pruning does not improve the rate}
+\label{sec:barriers}
+
+Two valid refinements look promising at first. Since the expansion is a
+product of $M$ affine row factors, it satisfies $\sum_Z\beta_Z\le M$.
+Also, the true valuation of a mode coefficient can exceed its assigned
+weight by a baseline shift $a-i$. Neither restriction alone changes
+the worst-case counting scale.
+
+\begin{proposition}[A feasible binary family]
+\label{prop:mode-family}
+Consider an abstract mode family with $c=\Theta(M/D)$ colors per weight
+and budget $P=\Theta(MD/u)$, in a regime where
+$D/\sqrt u\to\infty$. There are parameter choices of this order for which
+at least $2^{\Omega(M/\sqrt u)}$ feasible tuples remain even after imposing
+$\beta_Z\in\{0,1\}$ and $\sum_Z\beta_Z\le M$.
+\end{proposition}
+\begin{proof}
+Choose $J=\floor{D/(C\sqrt u)}$ for a sufficiently large fixed $C$ and
+select all colors at weights between $J$ and $2J$. There are
+$K=\Theta(cJ)=\Theta(M/\sqrt u)$ such modes. Each of their $2^K$ subsets
+has ordinary degree at most $K\le M$ and weight at most
+$2JK=O(MD/u)$, below the budget after choosing $C$ appropriately.
+\end{proof}
+
+In the source's regime, the uniform baseline shift is negligible compared
+with $J$; it does not remove this family. Balanced versions also satisfy
+per-packet ordinary-degree caps. This proves a barrier to improving an
+enumeration bound from those restrictions alone. It does not assert that
+all coefficients in every actual network are nonzero.
+
+Changing polynomial bases offers a related constant-level improvement,
+but no established new rate: factorial divisibility obeys
+$\vTwo(b!)=b-s_2(b)$, which is asymptotically linear in $b$. It does not
+provide the superlinear weight growth needed to change the partition
+exponent. The refinement proved above extracts the available taper
+constant without claiming such a change.
+
+\section{An exact compressed representation of the mode sum}
+\label{sec:compressed}
+
+The stronger proposal is to exploit the structure of
+\eqref{eq:mode-identity} instead of attempting to enumerate fewer abstract
+tuples. Its source--target incidence suggests an exact second tensor
+network.
+
+Partition the modes by ordered source--target pair $(g,h)$. Let
+$\mathcal Z_{gh}$ be one such class. For an integer weight $w$, define
+\[
+ \mathcal C_{gh}(w)=
+ \{(\beta_Z)_{Z\in\mathcal Z_{gh}}:
+                       \sum_{Z\in\mathcal Z_{gh}}w_Z\beta_Z=w\},
+ \qquad c_{gh}(w)=|\mathcal C_{gh}(w)|.
+\]
+Enumerate arrays $(w_{gh})$ with total below $P_t$, skipping arrays whose
+classes are empty. For a fixed array, encode each class tuple by its
+lexicographic rank, using
+\[
+ b_{gh}=\ceil{\log_2 c_{gh}(w_{gh})}
+\]
+bits, with zero bits when the count is one. Unused binary rank strings
+give tensor entry zero.
+
+The tensor at group $g$ decodes the ranks of all incident mode classes
+and takes the value $Z_{g,\beta}$ from the source's child construction.
+Each tuple is visible to precisely its source and target. Summing over
+the rank bits therefore gives exactly the contribution of that weight
+array. Summing over arrays gives \eqref{eq:mode-identity}.
+
+\begin{proposition}[Size and exactness of the rank encoding]
+\label{prop:rank}
+For a fixed feasible array, the number of rank bits is
+\begin{equation}
+ S_\beta\le \log_2 N(P_t)+r(r-1)=O(M/\sqrt u+r^2).
+ \label{eq:rank-budget}
+\end{equation}
+The encoding is counting preserving. Completion counts and rank decoding
+use polynomial time and space in the original root parameters. The array
+enumeration has at most $P_t^{O(r^2)}$ possibilities.
+\end{proposition}
+\begin{proof}
+For the chosen array, its tuple count is the product of its class counts.
+It is at most the total feasible tuple count $N(P_t)$. Taking logarithms
+and allowing one rounding bit for each ordered pair proves
+\eqref{eq:rank-budget}. Class decoding is bijective on valid ranks, and
+invalid ranks contribute zero, so the contraction neither drops nor
+duplicates a tuple.
+
+For modes with weights $v_1,\ldots,v_b$, suffix completion counts satisfy
+\[
+ C(j,w)=\sum_{e=0}^{\floor{w/v_j}}C(j+1,w-ev_j),
+\]
+with terminal counts $C(b+1,0)=1$ and zero at other weights. These exact
+counts support ranking and unranking by subtraction of successive
+completion blocks. All mode counts and precision parameters are polynomial
+in $s$, and their count bit lengths are polynomial as well. The number of
+weight coordinates is at most $r(r-1)$, proving the array bound.
+\end{proof}
+
+The new graph may be made bipartite by subdividing every rank wire with
+an equality tensor, at a factor-two edge cost. This is an exact
+reformulation, not yet a faster contraction algorithm.
+
+\subsection{Why applying the published theorem twice is invalid}
+
+The compressed graph has only $r$ genuine group tensors. In a balanced
+family their degrees are of order $S_\beta/r$. If $r$ is fixed or
+polylogarithmic, this exceeds the published theorem's
+$S_\beta^{9/10}$ maximum-degree requirement. Fast entry evaluation does
+not remove that requirement.
+
+The packing inequality makes the obstruction quantitative. Its array
+parameter is $D_{\rm arr}=r_{\rm label}^{2a}$, and it requires
+\[
+ M_{\rm call}\ge2D_{\rm arr}^{\,2}\Delta.
+\]
+For outer degree $\Delta\asymp S_\beta/r$, it allows only
+$u'=O(\log r)$ retained levels. Increasing the number of initial groups
+to $r$ simultaneously restricts the initial range to
+$u=O(\log M/\log r)$. The apparent two savings then cancel:
+\[
+ \frac{M}{\sqrt{\log M/\log r}}\,
+       \frac1{\sqrt{\log r}}
+   =\frac{M}{\sqrt{\log M}}.
+\]
+This is a diagnosis of this particular attempted proof, not a general
+algorithmic lower bound.
+
+An equality tensor can be split into a bounded-degree tree because it has
+special structure. A generic high-degree tensor cannot be split that way
+merely from an efficient procedure for querying its entries. Retaining the
+original child networks does supply structure, but restores $\Theta(M)$
+original wires and loses the compression. A successful new theorem must
+use the actual generated representation more effectively.
+
+\section{The proposed improvement in logarithmic rate}
+\label{sec:conditional}
+
+The exact target can now be stated without hiding the missing step.
+
+\begin{hypothesis}[Structured-mode acceleration]
+\label{hyp:acceleration}
+For the actual packet tensors and canonical descriptions generated by the
+source, there is a uniform deterministic procedure evaluating
+\eqref{eq:mode-identity} using at most
+\[
+ s^{O(1)}\exp(O(M/u))
+\]
+recursive contractions of the same admissible type, each with at most
+$M/8$ wires. It preserves the source's degree and precision bounds,
+polynomial description lengths, and polynomial space. Its other work has
+only the source's allowed polynomial factors and entry-evaluation factor
+$\exp(O(s^{9/10}))$. The recursive query count is independent of the
+original description length; that length enters as a fixed polynomial
+per-call work factor.
+\end{hypothesis}
+
+This is an algorithmic hypothesis about structured expressions, not about
+arbitrary unrelated summands supplied through a black-box oracle. The
+explicit mode enumeration in the paper does not meet it. The rank
+representation above is a possible starting point, but does not prove it.
+
+\begin{theorem}[Conditional faster contraction]
+\label{thm:conditional-contraction}
+Under Hypothesis~\ref{hyp:acceleration}, the source's class of tensor
+networks can be contracted in
+\[
+ (s+\mathcal L)^{O(1)}2^{O(s/\log s)}
+\]
+time and polynomial space.
+\end{theorem}
+\begin{proof}
+Replace the leaf threshold by $H=\ceil{s/\lambda}$, retaining
+$u_d=\floor{\varepsilon\lambda/2^d}$ and $a_d=2\sum_{j\le d}u_j$.
+At an active call,
+\[
+ s/\lambda<M\le Cs8^{-d},\qquad
+ d\le\tfrac13\log_2\lambda+O_C(1),\qquad
+ u_d=\Omega_C(\lambda^{2/3}).
+\]
+Thus one may replace the source's auxiliary lower bound
+$u\ge\lambda^{4/5}$ by $u\ge\lambda^{3/5}$, for sufficiently large $s$.
+The cumulative bound $a_d\le4\varepsilon\lambda$ is unchanged.
+
+In particular, $L,D_{\rm arr}\le s^{1/1000}$ still holds, and
+\[
+ 2D_{\rm arr}^{\,2}\Delta=O(s^{9/10+2/1000})=o(s/\lambda),
+ \qquad LD_{\rm arr}=o(s/\lambda),\qquad 2L\le\Delta.
+\]
+All packing conditions survive. The inherited precision is still
+$s\lambda^{O(1)}2^{a_{d-1}}$, while
+$D_i\ge2^{a_{d-1}+u_d}$. Since $2^{u_d}$ dominates every fixed power of
+$\lambda$, the existing $P_t=O(MD_i/u_d)$ bound survives as well.
+
+Under the hypothesis, the logarithmic branching contribution at depth $d$
+is $O(M/u_d)=O((s/\lambda)4^{-d})$. Summing the geometric series gives
+$O(s/\lambda)$. Polynomial overhead across all depths contributes only
+$O(\lambda\log\lambda)$. A leaf costs
+\[
+ \exp(O(H)+O(s^{9/10}))=\exp(O(s/\lambda)).
+\]
+The assumed streaming evaluation and immutable polynomial descriptions
+permit the same depth-first polynomial-space traversal.
+\end{proof}
+
+\begin{corollary}[Conditional fixed-density counting]
+\label{cor:conditional-sparse}
+For fixed $k$ and $D$, Hypothesis~\ref{hyp:acceleration} implies exact
+counting of formulas with $m\le Dn$ in
+\[
+ (n+m)^{O_{k,D}(1)}2^{O_{k,D}(n/\log n)}
+\]
+time and polynomial space, using the source's $O_{k,D}(n)$-wire clause
+network.
+\end{corollary}
+
+\subsection{Two additional changes needed for arbitrary density}
+
+Changing only the contraction exponent is insufficient. The original
+general-density proof contains two separate factors
+$2^{O(n/\sqrt{\log n})}$, which would exceed the proposed faster target.
+Both must be retuned.
+
+Let $\lambda=\ceil{\log_2n}$ and $\nu=\ceil{\log_2\lambda}$. First set
+the sparsification parameter to
+\begin{equation}
+ \sigma=1/\lambda.\label{eq:sigma}
+\end{equation}
+The source's disjoint sparsification lemma gives
+$\poly(n,\lambda)2^{n/\lambda}$ tree nodes and occurrence bound
+\[
+ B=O_k((\lambda\log(2\lambda))^{k-1})=\lambda^{O_k(1)}.
+\]
+The initial parity checks, greedy candidate lengths, and sparse polynomial
+queries therefore still have polylogarithmic sparsity.
+
+Second, if $N_0$ is the number of test--variable incidences in a query,
+use the high-incidence cutoff
+\begin{equation}
+ D_* =\max\{1,\ceil{N_0/n}\}\lambda.\label{eq:high-cutoff}
+\end{equation}
+At most $n/\lambda$ variables exceed it. Enumerating their assignments
+costs at most $2^{n/\lambda}$. The remaining scopes and degrees still
+carry only fixed polylogarithmic factors.
+
+The incidence-monomial encoding continues to have $s=n\nu$ as a valid
+size parameter. Its maximum degree is at most
+$n^{3/4}\lambda^{O_k(1)}<(n\nu)^{9/10}$ for sufficiently large $n$,
+and its entry cost remains $\exp(\lambda^{O_k(1)})$.
+Theorem~\ref{thm:conditional-contraction} would give exponent
+$O(s/\log s)=O(n\nu/\lambda)$. The two new branching exponents
+$O(n/\lambda)$ and the degree-array exponent $O(\sqrt n\log n)$ are
+absorbed. Candidate enumeration contributes only fixed powers of
+$\lambda$ to the exponent.
+
+\begin{corollary}[Conditional general-density counting]
+\label{cor:conditional-general}
+Under Hypothesis~\ref{hyp:acceleration}, for every fixed $k$ one obtains
+\begin{equation}
+ \boxed{(n+m)^{O_k(1)}
+       2^{O_k(n\log\log n/\log n)}}\label{eq:conditional-target}
+\end{equation}
+time and polynomial space for exact counting. In particular, this would
+give the same bound for deciding 3SAT.
+\end{corollary}
+
+The argument applies to every queried sparse system, including candidates
+that still admit assignments violating the original formula. No unproved
+assumption about the greedy procedure's intermediate outputs is needed.
+
+\section{Research priorities and decision criteria}
+\label{sec:research}
+
+The immediate implementation task is well defined: use
+\eqref{eq:hmin}, \eqref{eq:Bi}, and \eqref{eq:new-precision} in a
+quantitative contraction implementation, retaining the existing algebraic
+interfaces and canonical-lifting rules. The supplied schedule module
+provides exact integer and rational routines for this part. A future Lean
+formalization should first prove these local identities, then transport
+the source contraction correctness argument; it should not simply edit
+the unrelated older formalized complexity endpoint.
+
+For a new logarithmic rate, the most focused next task is a factorization
+theorem for the generated high-degree tensors in Section~\ref{sec:compressed}.
+A candidate must do all of the following:
+\begin{enumerate}
+\item Preserve the exact weighted budget and the coefficient extraction at
+      every target group, including polynomial factors in the truncated
+      ring and creation-time representatives.
+\item Use the tensor descriptions or their source--target structure, so
+      that the exponentially many feasible tuples need not be queried
+      separately.
+\item Bound total time for computing the factorization, not just its
+      number of rank bits. Recomputing child entries can dominate a small
+      representation.
+\item Avoid reintroducing $\Theta(M)$ uncompressed wires or violating the
+      degree hypothesis at the next contraction level.
+\item Give a polynomial-space streaming evaluation and a uniform bound
+      valid at all active recursion depths.
+\end{enumerate}
+
+A representation satisfying these conditions with the query bound in
+Hypothesis~\ref{hyp:acceleration} would be a substantive breakthrough.
+Merely showing that the sum has a smaller entropy encoding does not meet
+them. The finite prototype is useful for falsifying proposed identities
+early; it cannot establish the required asymptotic representation theorem.
+
+The taper optimum also supplies a practical stopping rule for this
+research direction. Further optimization of the same retained-level loss
+can improve lower-order terms and constants, but cannot generate an extra
+factor $1/\sqrt{\log s}$ in the exponent. That gain must enter through
+new algebraic summation, a different recovery scheme, or additional
+structure not captured by the present loss functional.
+
+\section{Artifacts and reproducibility}
+\label{sec:artifacts}
+
+The archive contains this LaTeX source and its compiled PDF; exact-arithmetic
+Python routines; generated verification records; source provenance; and
+supporting derivations. The Python checks use the standard library.
+\begin{description}[style=nextline]
+\item[\texttt{code/precision\_schedule.py}]
+Computes source, optimized-linear, and rounded optimal schedules using
+integers and exact rational arithmetic. It exposes the proved local
+refinement without claiming to execute the entire SAT algorithm.
+\item[\texttt{code/verify\_precision\_schedule.py}]
+Checks schedule completeness, exact loss accounting, and finite recovery
+properties; its JSON result records the executed tests.
+\item[\texttt{code/mode\_network.py}]
+Implements a small exact Cauchy deformation, mode-polynomial coefficient
+extraction, completion-count ranking, and the compressed mode network.
+\item[\texttt{code/verify\_mode\_network.py}]
+Compares the direct $X,Y$ sum, global mode enumeration, and pairwise-rank
+contraction. Its fixtures include signed interpolation nodes, zero and
+nonzero shifts, invalid rank codes, and a nonzero quadratic mode term.
+\item[\texttt{code/verify\_bounds.py}]
+Independently checks finite Hermite valuations by rational products,
+finite-tail identities, taper optima, and feasible-family witnesses.
+\item[\texttt{results/}]
+Contains machine-readable verification summaries and exponent-scale
+comparisons. The latter compare mathematical functions, not runtime
+measurements. The faster rate is labeled conditional.
+\item[\texttt{notes/} and \texttt{source\_manifest.json}]
+Contain detailed derivations, the conditional theorem's assumptions, and
+pinned source identities. No unproved acceleration routine is supplied
+under an implementation label.
+\end{description}
+
+The mode-representation verification includes 11 exact identity fixtures,
+133,376 direct assignment pairs, 847 feasible global mode tuples, and
+456 invalid binary rank strings assigned zero. All three evaluations
+agree. Nine accompanying unit tests pass. These are checks of the
+reformulation on finite examples, not a new verification of the full
+source paper or its asymptotic theorem.
+
+The independent bounds verifier includes 5,460 exhaustive small taper
+profiles, 92,840 finite-tail coordinate checks, and 46 direct rational
+Hermite multiplier checks. The JSON summaries give the full parameters
+and exact results; subsequent reruns should be compared with those
+records rather than with wall-clock timing.
+
+The precision module passes seven unit tests and 40 exact Hermite
+recovery fixtures, with 304 independent multiplier-valuation checks and
+304 precision-boundary checks. The fixtures include genuinely rational
+Cauchy-product polynomials as well as integer polynomials. Errors at the
+permitted precision preserve the recovered residue; decreasing the
+allowance by one bit can change it, as checked by full rational recovery.
+
+To reproduce the checks and rebuild the report from the archive root:
+\begin{lstlisting}
+python3 code/verify_precision_schedule.py
+python3 code/verify_mode_network.py
+python3 code/verify_bounds.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+
+\section{Assessment}
+
+The established contribution is a concrete improvement to the
+quantitative implementation's schedule: the exact interpolation condition
+count and exact valuation charge reduce its dominant precision coefficient
+from 24 to at most 6, and halve the corresponding colored-partition
+upper-bound coefficient. The optimal-taper theorem shows that the improved
+leading precision coefficient is already optimal within the full
+retained-level loss model.
+
+The desired improvement in logarithmic order remains a research proposal.
+Its missing ingredient is isolated in Hypothesis~\ref{hyp:acceleration};
+the required recursion and both density-reduction changes have been worked
+out. The exact compressed representation supplies an object on which to
+attack that ingredient, while the degree and enumeration barriers explain
+why it is not a consequence of the published contraction theorem alone.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{paper}
+OpenAI. \emph{The Exponential Time Hypothesis is False}.
+October 17, 2026, revised October 25, 2026.
+\href{https://github.com/openai/math/blob/42907c9e999cc00d6abe7a50bfc1023250edd1b9/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/paper.pdf}{Pinned paper} and
+\href{https://github.com/openai/math/blob/42907c9e999cc00d6abe7a50bfc1023250edd1b9/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/main_full_version.tex}{main LaTeX source}.
+
+\bibitem{contraction}
+OpenAI. Quantitative contraction appendix to~\cite{paper}.
+\href{https://github.com/openai/math/blob/42907c9e999cc00d6abe7a50bfc1023250edd1b9/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-contraction.tex}{Pinned source: quantitative-contraction.tex}.
+Especially the tapered Hermite recovery, mode multiplicity, mode budget,
+recursion identity, and final time analysis.
+
+\bibitem{reduction}
+OpenAI. Quantitative reduction appendix to~\cite{paper}.
+\href{https://github.com/openai/math/blob/42907c9e999cc00d6abe7a50bfc1023250edd1b9/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-reduction.tex}{Pinned source: quantitative-reduction.tex}.
+Especially the Boolean contraction interface, fixed-density clause
+network, incidence degree, wire budget, and arbitrary-density proof.
+
+\bibitem{scope}
+OpenAI. Formalization scope for \emph{The Exponential Time Hypothesis is
+False}. \href{https://github.com/openai/math/blob/42907c9e999cc00d6abe7a50bfc1023250edd1b9/lean/docs/378.md}{Pinned scope document, lean/docs/378.md}.
+
+\bibitem{leanfinal}
+OpenAI. Formal counting-machine endpoint.
+\href{https://github.com/openai/math/blob/42907c9e999cc00d6abe7a50bfc1023250edd1b9/lean/OAI/Algorithms/SubexponentialSAT/SqrtLogSpace/Final.lean}{Pinned source: SqrtLogSpace/Final.lean}.
+Inspected for implementation scope; not rebuilt in this investigation.
+\end{thebibliography}
+\end{document}

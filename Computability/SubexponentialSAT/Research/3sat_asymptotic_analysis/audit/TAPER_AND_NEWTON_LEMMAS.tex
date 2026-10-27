@@ -1,0 +1,102 @@
+\section{A barrier for Hermite multiplicity retuning}
+\label{sec:taper-barrier-audit}
+This lemma concerns the normalization loss certificate in the paper's
+Cauchy--Hermite construction. It is not a lower bound for SAT, tensor
+contraction, or optimal Hermite recovery.
+
+\begin{proposition}
+Let $a\ge u\ge1$ be integers, $M>0$, $L=2^a$, and let
+$q_0,\ldots,q_{u-1}$ be nonnegative integers.
+Put $q_i=0$ for $u\le i\le a$. Suppose
+\[
+ L\sum_{i=0}^{u-1}2^{-i}q_i>M(2L-1).
+\]
+For $0\le i<u$, define
+\[
+ \ell_i=\sum_{j=1}^{a-i}\frac{j}{2^j}(q_i-q_{i+j}).
+\]
+Then some $i<u$ with $q_i>0$ satisfies
+\[
+ \ell_i>\frac{M}{4u}.
+\]
+Consequently, for any valuation-symmetric multiplicity profile satisfying
+the degree-recovery condition, some retained node has normalization loss
+$-v_2(E_t(0))=D_t\ell_i>D_tM/(4u)$.
+\end{proposition}
+\begin{proof}
+Write $Q=\max_{0\le i<u}q_i$. Since $\sum_{i=0}^{u-1}2^{-i}<2$,
+the degree condition gives $Q>M(1-1/(2L))\ge M/2$.
+Let
+\[
+ W_i=\sum_{j=1}^{a-i}j2^{-j}\ge\frac12,\qquad
+ d_i=\ell_i/W_i.
+\]
+Consider the following finite increasing Markov chain. From a state
+$i<u$, jump to $i+j$, for $1\le j\le a-i$, with probability
+$j2^{-j}/W_i$. Stop at the first state at least $u$. Every jump is
+positive, so the stopping time $\tau$ is at most $u$, and
+\[
+ q_i-\mathbb E[q_{X_{t+1}}\mid X_t=i]=d_i.
+\]
+Start at a state with $q_i=Q$. Telescoping conditional expectations,
+using $q_{X_\tau}=0$, yields
+\[
+ Q=\mathbb E\sum_{t=0}^{\tau-1}d_{X_t}
+ \le u\max_{i<u}d_i.
+\]
+At a maximizing state, $d_i\ge Q/u>0$ and therefore
+$\ell_i=W_id_i\ge Q/(2u)>M/(4u)$. If $q_i=0$, nonnegativity
+of all later $q$ would give $\ell_i\le0$, so this state is retained.
+The final assertion follows from the exact valuation identity in
+the proof of Lemma D.5.
+\end{proof}
+
+The proposition does not require a monotone taper. It shows that replacing
+the linear taper by another valuation-symmetric profile cannot improve the
+\emph{worst normalization-loss bound} from order $MD/u$ to $o(MD/u)$.
+It does not rule out a different recovery identity that exploits
+cancellation among final Hermite coefficients, an asymmetric selection of
+nodes, or a different deformation.
+
+\section{Newton modes: exact formula, but no better logarithmic power}
+For a crossing tile, put $h=2^{i+1}$ and
+$A=T-y_0+x$, so $v_2(A)\le i$. For
+$g(j)=(A-hj)^{-1}$, the forward-difference identity is
+\[
+ \Delta^b g(0)=
+ \frac{b!\,h^b}{\prod_{r=0}^{b}(A-hr)}.
+\]
+It follows by induction from the definition of $\Delta$, or directly by
+partial fractions. On a tile with integer indices $j=0,\ldots,d-1$,
+Newton interpolation therefore represents the kernel exactly as
+\[
+ g(j)=\sum_{b=0}^{d-1}\binom jb\,\Delta^b g(0).
+\]
+The summands with $b>j$ vanish. This finite expression can replace the
+geometric modes $j^b$ by the integral modes $\binom jb$.
+
+Write $v=v_2(A)\le i$. Every denominator factor $A-hr$ has valuation
+$v$, since $v_2(h)>v$. Thus
+\[
+ v_2(\Delta^b g(0))
+ =-v+b(i+1-v)+v_2(b!).
+\]
+Multiplying by the Cauchy prefactor gives the certified weight
+\[
+ a+1-v+b(i+1-v)+v_2(b!).
+\]
+In the worst crossing valuation $v=i$, this becomes
+\[
+ a+1-i+b+v_2(b!)=a+1-i+2b-s_2(b),
+\]
+where $s_2(b)$ is the number of ones in the binary expansion of $b$.
+Hence the weight remains linear in $b$. The factorial contributes only
+a constant-factor improvement to the slope, not a superlinear weight.
+The finite cap $b<d=D/2$ also does not remove modes at the partition
+saddle scale $b\asymp D/\sqrt u$.
+
+This is an exact alternative kernel representation worth investigating
+for implementation constants. It does not prove an exponent better than
+$O(M/\sqrt u)$, and therefore does not meet the stronger-than-Appendix-D
+target.
+

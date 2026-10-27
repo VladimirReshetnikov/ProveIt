@@ -24,6 +24,13 @@ context-closed simulations, compiler-size bounds, and a faithful injective
 operational embedding of Iota back into closed lambda terms.  The exact
 Turing-completeness and non-full-abstraction boundaries are explicit.
 
+[`SubexponentialSAT/`](SubexponentialSAT/README.md) collects external claims
+that #k-SAT can be solved in `2^{o(n)}` time, which would refute the Exponential
+Time Hypothesis. They are the OpenAI preprint *The Exponential Time Hypothesis
+is False*, a second manuscript credited to Claude, and seven reports that
+refine the OpenAI contraction algorithm or map its barriers. Nothing there is
+checked in ProveIt yet.
+
 [`BusyBeaver/`](BusyBeaver/) contains the repository-authored Busy Beaver
 machine model, domination theorems, exact small-state score certificates, and
 bridges to the vendored time certificates under [`../lib/Coq-BB5/`](../lib/Coq-BB5/).
