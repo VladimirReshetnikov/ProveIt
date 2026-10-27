@@ -152,6 +152,12 @@ builds pass sixteen standard-only reports with identical objects. Context
 quantifier transport,source derivation induction and source axiom
 interpretation remain open.
 
+The [actual C222 equality images](reviews/validator-equality-images222-root.md)
+now prove all five actual closed source equality axioms and discharge
+AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
+only. Independent builds pass25 standard-only reports and identical
+objects. The remaining set-theory axiom images and final HA endpoint stay open.
+
 The [adaptive source restoration](reviews/native-adaptive-source-restoration-root.md)
 now derives all31 positive source coordinates and all22 original rows
 from the literal positive cuts, preserving visible fields and rank.

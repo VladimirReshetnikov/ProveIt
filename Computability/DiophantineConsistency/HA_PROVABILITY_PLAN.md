@@ -11,6 +11,13 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual C222 equality-image theorem](reviews/validator-equality-images222-root.md)
+now discharges AxOK for the actual finite equality recognizer, with all
+five closed source images and a literal Eind-only irreflexivity image.
+Independent builds pass25 standard-only reports and identical objects.
+This removes a concrete theory-specific premise; the substantial remaining
+set-theory/schema images and fixed source-ZFC calibration are still required.
+
 The [adaptive source reconstruction](reviews/native-adaptive-source-restoration-root.md)
 now derives all31 positive source coordinates and all22 literal rows from
 the smaller construction's four positive cuts. Independent builds pass

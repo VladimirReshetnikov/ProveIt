@@ -30,6 +30,13 @@ historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
 
+The [actual C222 equality axiom images](reviews/validator-equality-images222-root.md)
+now discharge AxOK for the specified actual finite equality recognizer,
+including all five fully closed source axioms. Literal irreflexivity also
+has an Eind-only proof. Independent builds pass25 standard-only reports
+and identical objects. Set-theory/schema images,the fixed source-ZFC
+reduction and the final HA equivalence remain open.
+
 The [adaptive source restoration](reviews/native-adaptive-source-restoration-root.md)
 now constructs all31 positive original-source coordinates and proves all22
 literal rows from the original positive inputs and four cuts. Deleted
