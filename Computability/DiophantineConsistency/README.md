@@ -18,6 +18,12 @@ is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 
+The [direct squared-ordinate seed](reviews/arithmetic-pell-squared-seed-author.md)
+has passed its author build and awaits independent replay. It supplies the
+displayed equation's positive strong Pell norm at an explicit internal
+index, avoiding a general finite-pigeonhole step. Other simultaneous
+converse witnesses remain open.
+
 The [canonical215 control frame](reviews/arithmetic-control-frame215-root.md)
 now derives actual step/halt transport from a fixed represented entry,
 including complete consumed-path rebasing. Independent fresh pairs match

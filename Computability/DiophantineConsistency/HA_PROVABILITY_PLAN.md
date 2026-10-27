@@ -35,6 +35,16 @@ final file assembly. Machine simulation is closest to composition after
 the canonical-frame acceptance below. This estimate counts neither proof
 files nor independently replayed checkpoints as equal units of progress.
 
+The [direct squared-ordinate seed](reviews/arithmetic-pell-squared-seed-author.md)
+has passed its author build and awaits independent replay. In every IΣ1
+model it derives a positive strong-norm witness at the explicit index
+`R*ycoord R a`: internal two-step quotient induction proves the original
+ordinate squared divides this new ordinate. This avoids generic internal
+finite pigeonhole for the displayed fourteen-variable strong seed. It
+does not yet construct all simultaneous outer/auxiliary witnesses or
+establish the complete converse. The 105/30-line pair passes four
+standard-only reports with zero prerequisite refresh.
+
 The [canonical215 control-frame theorem](reviews/arithmetic-control-frame215-root.md)
 now fixes the represented entry graph, proves full consumed-path rebasing
 and derives actual six-case step/halt transport with arbitrary internal
