@@ -30,6 +30,13 @@ historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
 
+The [adaptive Mersenne recovery](reviews/native-adaptive-mersenne-root.md)
+now derives3∤q,q∣X and q=(2^94517)^N with N>0 and94517*N≤R.toNat
+from the literal positive cuts and the actual width identity. It excludes
+factor3 before cancelling it. Independent builds pass eight standard-only
+reports with identical objects. Full source restoration,the positive converse,
+whole small-equation graph binding and internal arithmetic remain open.
+
 The [actual C222 source quantifier contexts](reviews/validator-source-quantifier-context222-root.md)
 now prove GEN/ALL/EXS through internally sized contexts, deriving the source
 hypotheses' vacuity from typing and fresh-label resources. Independent

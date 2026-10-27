@@ -152,6 +152,13 @@ builds pass sixteen standard-only reports with identical objects. Context
 quantifier transport,source derivation induction and source axiom
 interpretation remain open.
 
+The [adaptive Mersenne recovery](reviews/native-adaptive-mersenne-root.md)
+now recovers3∤q,q∣X and a positive radix power q=(2^94517)^N from
+the literal cuts and actual width identity. Its generic proof excludes
+factor3 before using Bezout cancellation. Independent builds pass eight
+standard-only reports with identical objects. Source restoration,the
+canonical converse,whole small-equation graph and HA internalization remain open.
+
 The [actual C222 source quantifier contexts](reviews/validator-source-quantifier-context222-root.md)
 now derive GEN/ALL/EXS through internally sized contexts, including actual
 history witnesses and literal source shifts. Generic GEN uses explicit

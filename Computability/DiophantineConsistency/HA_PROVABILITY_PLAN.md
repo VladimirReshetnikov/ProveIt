@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [adaptive Mersenne recovery](reviews/native-adaptive-mersenne-root.md)
+now supplies the binary-radix conclusions from the smaller equation's
+positive cuts and actual width identity, including3∤q,q∣X and a positive
+power of radix2^94517 with94517*N≤R.toNat. Independent builds pass
+eight standard-only reports with identical objects. This external integer
+arithmetic theorem does not itself internalize the polynomial/Pell proof
+in PA or HA; complete source restoration and the converse also remain open.
+
 The [actual C222 source quantifier contexts](reviews/validator-source-quantifier-context222-root.md)
 now lift GEN/ALL/EXS through arbitrary internal contexts with actual
 checker witnesses. Typing and fresh_resources discharge every source
