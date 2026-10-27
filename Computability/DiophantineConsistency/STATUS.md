@@ -29,6 +29,15 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [literal adaptive graph](reviews/native-adaptive-graph-root.md)
+now binds all88 ordered binary gates and proves signed zero iff the four
+literal cuts; every positive zero restores all31 source coordinates and
+all22 original rows. Independent two-leaf replay matches both objects and
+eight standard-only reports. A separate normal/optimized text audit checks
+17 aliases and26 projections and rejects220 actual corruptions. The
+canonical converse,current-port endpoint and PA/HA internal arithmetic
+remain open; no new metric is promoted.
+
 
 The [internal register-loop theorem](reviews/arithmetic-dag-loops-root.md)
 now proves transfer,copy and clear at arbitrary internal counters, with

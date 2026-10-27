@@ -11,6 +11,15 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [literal adaptive graph](reviews/native-adaptive-graph-root.md)
+now binds the smaller construction's88 binary gates to its four cuts and
+proves complete positive source reconstruction from a graph zero. An
+independent pair reproduces both objects and eight standard-only reports;
+a separate literal text audit passes normal/optimized Python and rejects
+220 actual corruptions. This is an external integer/natural theorem. Its
+canonical converse,current specialization and internal arithmetic proof
+remain separate; the displayed equation's HA endpoint is still open.
+
 The [internal register loops](reviews/arithmetic-dag-loops-root.md)
 now supply actual current DagPerm subroutine proofs at arbitrary internal
 counters, with a nonvacuous represented occurrence check. Independent

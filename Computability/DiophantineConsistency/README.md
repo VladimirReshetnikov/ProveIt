@@ -164,6 +164,15 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [literal adaptive graph](reviews/native-adaptive-graph-root.md)
+now follows all88 ordered binary gates and proves signed zero iff its
+four actual cuts, followed by all31 positive source coordinates and22
+source rows for positive zeros. Independent two-leaf replay matches both
+objects and eight standard-only reports. Normal/optimized syntax audits
+check17 aliases and26 projections and reject220 actual corruptions.
+The canonical converse,current endpoint and PA/HA internal arithmetic
+remain separate obligations; no metric change is claimed.
+
 The [adaptive source restoration](reviews/native-adaptive-source-restoration-root.md)
 now derives all31 positive source coordinates and all22 original rows
 from the literal positive cuts, preserving visible fields and rank.
