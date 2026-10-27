@@ -143,6 +143,12 @@ premise. Independent builds pass eight propext/Quot.sound-only reports and
 identical objects. Actual hierarchy-one ordinary/GG comparison and the
 full HA equation equivalence remain open.
 
+The [signed adaptive first-carrier theorem](reviews/native-adaptive-carrier-bootstrap-root.md)
+now derives integral positive quotient witnesses and the signed Pell-root
+bound directly from literal A0, before source restoration. Independent
+builds pass five standard-only reports with identical objects. Main-Pell,
+rank and power restoration remain open; no lower-degree endpoint is claimed.
+
 The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
 now proves all22 unconditional row identities and both positive existence
 maps at the current ports, deriving old-z>1 from the supplied source itself.

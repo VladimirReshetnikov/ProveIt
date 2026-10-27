@@ -931,3 +931,16 @@ replacement, word draining, run addition and terminal uniqueness. It needs
 no numerical lower bound on append codes and no least stopping time. It is
 an internal IΣ1 runtime theorem, not yet the full represented proof compiler
 or an HA equation equivalence.
+
+
+## Signed adaptive first-carrier bootstrap accepted
+
+The [signed adaptive first-carrier theorem](reviews/native-adaptive-carrier-bootstrap-root.md)
+now derives integral positive quotient witnesses and the signed Pell-root
+bound directly from literal A0, before source restoration. Independent
+builds pass five standard-only reports with identical objects. Main-Pell,
+rank and power restoration remain open; no lower-degree endpoint is claimed.
+
+This is an external integer theorem on the full generic signed carrier
+domain. It does not assume the desired positive source or promote external
+algebra into an internal arithmetic proof.

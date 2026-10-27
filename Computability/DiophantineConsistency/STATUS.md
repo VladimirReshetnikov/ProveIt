@@ -76,6 +76,12 @@ plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. Evaluation composition is accepted above; fixed command blocks and
 compiler/proof-state invariants remain subsequent checkpoints.
 
+The [signed adaptive first-carrier theorem](reviews/native-adaptive-carrier-bootstrap-root.md)
+now derives integral positive quotient witnesses and the signed Pell-root
+bound directly from literal A0, before source restoration. Independent
+builds pass five standard-only reports with identical objects. Main-Pell,
+rank and power restoration remain open; no lower-degree endpoint is claimed.
+
 The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
 now proves all22 unconditional row identities and both positive existence
 maps at the current ports, deriving old-z>1 from the supplied source itself.

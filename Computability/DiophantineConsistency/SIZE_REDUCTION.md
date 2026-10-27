@@ -3670,3 +3670,16 @@ Only old-z=new-z+1 changes. Reverse positivity uses the source-derived
 strict bound; all31 coordinates and all four ports remain explicit. The
 next low-degree work is adaptive-carrier soundness before source restoration,
 with the now checked source bridge serving only as a downstream endpoint.
+
+
+## Signed adaptive first-carrier bootstrap accepted
+
+The [signed adaptive first-carrier theorem](reviews/native-adaptive-carrier-bootstrap-root.md)
+now derives integral positive quotient witnesses and the signed Pell-root
+bound directly from literal A0, before source restoration. Independent
+builds pass five standard-only reports with identical objects. Main-Pell,
+rank and power restoration remain open; no lower-degree endpoint is claimed.
+
+This is an external integer theorem on the full generic signed carrier
+domain. It does not assume the desired positive source or promote external
+algebra into an internal arithmetic proof.
