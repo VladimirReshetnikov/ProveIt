@@ -1,0 +1,369 @@
+\section{A sharper bound for exact counting}\label{app:quantitative}
+
+We prove Theorem~\ref{thm:main} by contracting Boolean tensor networks.
+The two running times reflect the number of wires in the networks.
+A formula with $m\le Dn$ clauses gives a network with $O_{k,D}(n)$
+wires. For arbitrary formulas, we use the parity tests of
+Section~\ref{sec:hashes}. The degree bound of Lemma~\ref{lem:total-order}
+lets us index a monomial retained in the product of their polynomial
+lifts with $O_k(n\log\log n)$ wires. We give both encodings before
+proving the contraction theorem they use.
+
+\subsection{Boolean tensor contraction}
+\label{subsec:tensor-interface}
+
+A Boolean tensor network is a bipartite multigraph $G$ in which each
+edge carries a single bit. Each vertex $v$ has an ordered list
+$\delta(v)$ of incident edges and a tensor $T_v$ assigning a ring
+element to each Boolean assignment to those edges. Parallel edges
+have distinct ports. The \emph{contraction} of the network is
+\[
+ Z=\sum_{x\in\{0,1\}^{E(G)}}\prod_{v\in V(G)} T_v(x|_{\delta(v)}).
+\]
+An isolated vertex contributes its scalar entry. We measure the size
+of the network by its number of edges.
+
+\begin{theorem}[Boolean tensor contraction]\label{thm:tensor-contraction}
+Fix positive constants $C,A,b$.  Let $s\ge2$ be an integer, and let
+$\mathcal L$ be the total length of the graph and tensor descriptions
+of a bipartite tensor network with at most $Cs$ edges and maximum
+degree at most $\lceil s^{9/10}\rceil$.  Suppose that the number of
+vertices is bounded by a fixed polynomial in $s$, and that the entries
+belong to
+\[
+ \mathcal B_{P_0,\ell}
+   =(\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),
+ \qquad 1\le P_0,\ell\le Cs.
+\]
+Suppose, uniformly for every vertex and Boolean choice of its ports,
+that its entry can be computed from the description in time
+$(s+\mathcal L)^b2^{A s^{9/10}}$ and space $(s+\mathcal L)^b$.
+Then the contraction can be computed deterministically in
+\[
+ (s+\mathcal L)^{O(1)}
+  2^{O(s/\sqrt{\log s})}
+\]
+bit operations and $(s+\mathcal L)^{O(1)}$ bits of space.  Constants
+depend only on the fixed bounds in the hypotheses.  In particular,
+$\ell=1$ is permitted.
+\end{theorem}
+
+The algorithm in Section~\ref{app:tensor} replaces a single global
+Taylor expansion by recursion on the wires. At each call it deforms
+the wire identifications so that, at a chosen interpolation node,
+only ports in the same group interact. Near that node, interactions
+between groups expand in variables called modes. A mode of weight
+$j$ has coefficient divisible by $2^j$, so only monomials of total
+weight below the working precision can contribute. Tapering the
+Hermite multiplicities with the two-adic valuation of the node
+bounds that precision. With $M$ wires and $u$ retained valuation
+levels, the number of mode monomials is $2^{O(M/\sqrt{u})}$, and
+each monomial factors into contractions with at most $M/8$ wires.
+At recursion depth $d$, $M=O(s8^{-d})$ and $u=\Theta((\log s)/2^d)$.
+The exponents therefore sum geometrically to $O(s/\sqrt{\log s})$.
+
+\subsection{Fixed clause density}\label{subsec:sharp-fixed-density}
+
+\begin{proof}[Proof of the fixed-density bound in Theorem~\ref{thm:main}]
+Give each clause a vertex carrying its Boolean satisfaction table, with
+one port for each distinct variable in the clause. A tautology may be
+dropped, and an empty clause gives count zero. For a variable with
+$d\ge1$ ports, require their bits to agree. For $d=1$ attach the unary
+tensor $(1,1)$, and for $d=2$ attach a binary equality tensor. For
+$d\ge3$ take a tree with $d$ external ports and trivalent equality
+tensors at its internal vertices. Such a tree has $d-2$ internal
+vertices, and each common value on its ports extends uniquely to all
+its internal edges.
+
+There are at most $km$ clause ports. The graph has $O_k(n+m)$ edges
+and vertices, and maximum degree at most $\max\{k,3\}$. Subdivide
+every edge once by a binary equality tensor. The old vertices and the
+new vertices form the two sides of a bipartite network. The two bits
+on a subdivided edge must be equal, so this preserves the contraction.
+Every satisfying assignment on the occurring variables contributes
+one and every other assignment contributes zero.
+
+With $s=n+m$, apply Theorem~\ref{thm:tensor-contraction} over
+$\mathbb Z/2^{n+1}\mathbb Z$, taking $P_0=n+1$ and $\ell=1$. The
+local tables have bounded size for fixed $k$. The
+degree and precision bounds hold for all sufficiently large $s$, and
+bounded instances can be enumerated directly. If $u$ declared
+variables are unused, multiply the contraction by $2^u$ modulo
+$2^{n+1}$. Its least nonnegative residue is $\#F$, since
+$0\le\#F\le2^n$. This includes the empty formula, for which the
+empty network has contraction one. The time is
+$s^{O_k(1)}2^{O_k(s/\sqrt{\log s})}$ and the space is polynomial.
+When $m\le Dn$, we have $n\le s\le(1+D)n$, giving exponent
+$O_{k,D}(n/\sqrt{\log n})$.
+\end{proof}
+
+\subsection{Arbitrary clause density}\label{subsec:sharp-dense}
+
+The sparsification and greedy row selection in Section~\ref{sec:hashes}
+reduce this case to counting common zeros of sparse polynomial equations.
+We retain the parity lift of Section~\ref{sec:setup}. Its degree bound
+lets us encode a monomial by a subset of test--variable incidences using
+$O(n\log\log n)$ Boolean wires.
+
+\begin{lemma}[Counting sparse polynomial systems by contraction]
+\label{lem:tensor-sparse-query}
+Fix integers $k,c\ge1$. Let $P_1,\ldots,P_a$ be polynomials over
+$\mathbb F_2$ on $n\ge20$ declared Boolean variables. Suppose
+$a\le cn$ and each $P_i$ is listed as at most
+$\lceil\log_2 n\rceil^c$ monomials of degree at most $k$. The number
+of common zeros is computable deterministically in
+$n^{O_{k,c}(1)}2^{O_{k,c}(n\log\log n/\sqrt{\log n})}$ bit operations and
+$n^{O_{k,c}(1)}$ bits of space.
+\end{lemma}
+
+\begin{proof}
+Put $\lambda=\lceil\log_2 n\rceil$ and
+$\nu=\lceil\log_2\lambda\rceil$.
+Within each monomial replace positive powers of a variable by its
+first power, and combine duplicate monomials modulo two. The scope
+of test $i$ consists of the variables in its remaining monomials.
+It has size at most $k\lambda^c$.
+Let $N_0$ be the sum of the scope sizes, counting a pair $(i,v)$
+once if variable $v$ belongs to test $i$. Thus $N_0\le ak\lambda^c$.
+Fix, in all possible ways, the variables belonging to more than
+\[
+ D_*=\max\{1,\lceil N_0/n\rceil\}\lceil\sqrt{\lambda}\rceil
+\]
+scopes. There are at most $n/\sqrt{\lambda}$ such variables. Their
+assignments partition the original count into at most
+$2^{n/\sqrt{\lambda}}$ branch counts. On each branch substitute the
+fixed bits and combine duplicate monomials again. The free scope
+$I_i$ of test $i$ still has size at most $k\lambda^c$, and each free
+variable appears in at most $D_*=\lambda^{O_{k,c}(1)}$ scopes. Free
+variables absent from every scope remain declared. A constant-one
+equation makes the branch count zero. We may discard constant-zero
+equations, and if none remain the answer for the branch is two to the
+power of its number of free variables. Below $a$ denotes the number
+of remaining equations and $n$ the original variable count.
+
+\paragraph{The polynomial on the incidences.}
+Give each pair $(i,v)$ with $v\in I_i$ its own indeterminate
+$z_{iv}$. Write $z_i=(z_{iv})_{v\in I_i}$. Form
+$\widetilde L_i(z_i)$ by summing the remaining monomials of the
+normalized branch polynomial with integer coefficients, using $z_{iv}$
+for $x_v$. We use the ring
+\[
+ \mathcal B=(\mathbb Z/2^p\mathbb Z)[V]/(V^\ell),
+ \qquad p=\ell=n+1 .
+\]
+Take $h(Y)=Y(Y-1)$ and the integer polynomials $e_j$ from
+Lemma~\ref{lem:rational-idempotent}. Reduce their coefficients
+modulo $2^p$, and form the factor
+\[
+ B_i(z_i,V)=\sum_{j=0}^{\ell-1}
+   e_j(\widetilde L_i(z_i))\,h(\widetilde L_i(z_i))^j V^j .
+\]
+Let $\overline B_i$ be its multilinear representative in the $z_i$,
+obtained in each coefficient of $V$ by replacing each positive
+power of an incidence indeterminate by its first power. It agrees
+with $B_i$ on every Boolean assignment to $z_i$. Define
+$F(z,V)=\prod_i\overline B_i(z_i,V)$ in $\mathcal B[z]$. The
+incidence indeterminates for different tests are disjoint, so $F$
+is multilinear even before substituting the same Boolean $x_v$ for
+all copies of variable $v$.
+
+The coefficient of $V^j$ in $\overline B_i$ has incidence degree
+at most $k(1+2j)$, since $\deg e_j\le1$, $\deg h=2$, and
+multilinearization only lowers monomial degrees. Multiplication in
+$\mathcal B$ retains only terms with $\sum_i j_i\le\ell-1$.
+Consequently every incidence monomial in $F$ has degree at most
+\begin{equation}\label{eq:sharp-incidence-degree}
+ K=k\bigl(a+2(\ell-1)\bigr)=O_{k,c}(n).
+\end{equation}
+Let $\mathcal S_\ell$ sum the coefficients of $1,V,\ldots,V^{\ell-1}$
+in $\mathcal B$. At $z_{iv}=x_v$, the multilinearized factor
+$\overline B_i$ agrees with $B_i$ for the normalized branch polynomial.
+The integer $\widetilde L_i((x_v)_{v\in I_i})$ has the same parity
+as the original $P_i$ evaluated at $x$ and the fixed bits. Applying
+Lemma~\ref{lem:total-order} to these integers shows that the branch
+count is congruent modulo $2^p$ to
+\begin{equation}\label{eq:sharp-branch-residue}
+ \mathcal S_\ell\left(\sum_x F\bigl((z_{iv}=x_v)_{iv},V\bigr)\right),
+\end{equation}
+where $x$ runs over all free Boolean assignments. We apply the
+coefficient-sum map after multiplying the test factors in the
+truncated ring.
+
+\paragraph{Indexing the monomials.}
+Partition the tests and the free variables separately into
+$J=\lceil n^{1/4}\rceil$ groups of sizes differing by at most one
+on each side. Write $\mathcal T_g$ for a test group and
+$\mathcal X_h$ for a variable group. A group contains
+$O_c(n^{3/4})$ objects, so the number of its incidences is at most
+$n^{3/4}\lambda^{O_{k,c}(1)}$ on either side. Let $N_{gh}$ be the
+number of incidences from $\mathcal T_g$ to $\mathcal X_h$ and let
+$N=\sum_{g,h}N_{gh}\le N_0$.
+
+For an incidence monomial let $d_{gh}$ be the number of its
+selected incidences joining groups $g,h$. Enumerate arrays of
+integers $(d_{gh})$ with $0\le d_{gh}\le N_{gh}$ and
+$\sum_{g,h}d_{gh}\le K$. There are at most
+\[
+ (K+1)^{J^2}=2^{O_{k,c}(\sqrt n\log n)}
+\]
+arrays, which can be enumerated using $J^2$ counters. For a fixed
+array there are
+\[
+ C_{gh}=\binom{N_{gh}}{d_{gh}}
+\]
+subsets of the specified size for this pair. Draw
+$\lceil\log_2 C_{gh}\rceil$ Boolean wires between the two group
+vertices to index them in lexicographic order. For $C_{gh}=1$
+both endpoints use the unique subset (possibly the entire incidence
+set) with no wires. Any unused bit string gives tensor entry zero.
+To decode a valid index, take the incidences in order and count the
+possible completions with or without each incidence using binomial
+coefficients. These have polynomial bit length, so decoding uses
+polynomial time and space.
+
+The union of the subsets over all pairs specifies a squarefree
+monomial of degree at most $K$ in $N$ indeterminates. Including
+all monomials of this degree bound gives the upper bound
+$\binom{N+K}{K}$ by stars and bars. Thus the number
+of wires $M$ in the network for this array satisfies
+\begin{align}
+ M &\le J^2+\log_2\prod_{g,h} C_{gh}
+      \le J^2+\log_2\binom{N+K}{K} \notag\\
+   &\le J^2+K\log_2\!\left(\frac{\mathrm e(N+K)}{K}\right)
+      = O_{k,c}(n\nu).
+ \label{eq:sharp-wire-budget}
+\end{align}
+Here $K=\Theta_{k,c}(n)$ and $N\le n\lambda^{O_{k,c}(1)}$.
+Also $\lceil\log_2 C_{gh}\rceil\le N_{gh}$, so the degree of each
+vertex is at most its number of incidences,
+$n^{3/4}\lambda^{O_{k,c}(1)}$.
+
+\paragraph{Tensor entries and contraction.}
+A valid assignment of wire bits determines a subset $S_i\subseteq I_i$
+at each test. Write $z_{i,S_i}=\prod_{v\in S_i}z_{iv}$. The entry
+at a test group $g$ is the coefficient of its indicated monomial
+in $\prod_{i\in\mathcal T_g}\overline B_i(z_i,V)$. Since the $z_i$
+are disjoint, this is
+\[
+ \prod_{i\in\mathcal T_g}[z_{i,S_i}]\overline B_i(z_i,V)
+ \qquad\text{in }\mathcal B.
+\]
+For a variable group $h$, put $b_v=|\{i:v\in S_i\}|$
+for $v\in\mathcal X_h$. Its entry is
+\[
+ \sum_{x\in\{0,1\}^{\mathcal X_h}}
+        \prod_{v\in\mathcal X_h}x_v^{b_v}
+   =2^{|\{v\in\mathcal X_h:b_v=0\}|}\pmod{2^p}.
+\]
+Indeed a positive exponent requires $x_v=1$ and a zero exponent
+leaves $x_v$ free. This includes variables outside all test scopes.
+
+Each monomial of $F$ occurs in exactly one array and has exactly
+one valid index at each group pair. Its coefficient in $F$ is the
+product of the test-group coefficients. After the incidences with
+the same $v$ are set equal, its sum over Boolean assignments is
+the product of the variable-group entries. By
+\eqref{eq:sharp-incidence-degree}, summing over these arrays exhausts
+all monomials. Consequently the element of $\mathcal B$ inside
+$\mathcal S_\ell$ in \eqref{eq:sharp-branch-residue} is the sum of
+the contractions of these bipartite networks.
+
+To evaluate one test-side coefficient, let $\mathbf1_T$ be the
+Boolean vector on $I_i$ with support $T\subseteq S_i$. At
+$\mathbf1_T$, the multilinear polynomial evaluates to the sum of its
+coefficients indexed by subsets of $T$, and it agrees there with
+$B_i$. Inverting this subset sum gives
+\[
+ [z_{i,S_i}]\overline B_i(z_i,V)=
+ \sum_{T\subseteq S_i}(-1)^{|S_i|-|T|}B_i(\mathbf1_T,V)
+ \qquad\text{in }\mathcal B.
+\]
+Each term costs polynomially many bit operations. Evaluate
+$\widetilde L_i(\mathbf1_T)$ from the listed monomials and use the
+polynomials $e_j$ of Lemma~\ref{lem:rational-idempotent}, which
+are constructible in polynomial time. Store the $\ell$ coefficients
+of $B_i(\mathbf1_T,V)$ modulo $2^p$. There are at most
+$2^{|S_i|}\le 2^{k\lambda^c}$ subsets to process. Sum one test
+at a time and multiply the resulting coefficients in $\mathcal B$
+over the group. This evaluates a test-group entry in
+$2^{\lambda^{O_{k,c}(1)}}$ bit operations and polynomial space.
+The variable-side entries and checks for invalid wire indices take
+polynomial time. The graph, degree array, and entry procedures have
+polynomial-size descriptions.
+
+Apply Theorem~\ref{thm:tensor-contraction} with size parameter
+$s=n\nu$, root precision $p=n+1$, and truncation order $\ell=n+1$.
+The graph has $2J$ vertices and $O_{k,c}(s)$ wires by
+\eqref{eq:sharp-wire-budget}. For all sufficiently large $n$ its
+maximum degree is at most $\lceil s^{9/10}\rceil$, its precision
+and truncation order are $O(s)$, and its entry-evaluation time is
+at most $2^{O_{k,c}(s^{9/10})}$. Each contraction then takes
+$n^{O_{k,c}(1)}2^{O_{k,c}(s/\sqrt{\log s})}$ bit operations and
+polynomial space. Here $s/\sqrt{\log s}=O(n\nu/\sqrt\lambda)$.
+The high-incidence branches and degree arrays multiply the
+running time by at most
+\[
+ 2^{\,n/\sqrt{\lambda}+O_{k,c}(\sqrt n\log n)}.
+\]
+Both terms in this exponent are $O_{k,c}(n\nu/\sqrt{\lambda})$.
+Process the branches and arrays sequentially. On each branch,
+sum the contractions in $\mathcal B$ and apply $\mathcal S_\ell$.
+Adding the branch residues modulo $2^{n+1}$ gives the original
+count, since it lies between $0$ and $2^n$. This proves the
+claimed bounds, using direct enumeration for bounded exceptional
+sizes.
+\end{proof}
+
+\begin{proof}[Proof of the arbitrary-density bound in
+Theorem~\ref{thm:main}]
+Normalize the formula on its original $n$ declared variables as
+in Section~\ref{subsec:general-reduction}. Empty clauses and
+formulas with no clauses have immediate answers. For $n\ge20$
+apply Lemma~\ref{lem:sparsify} with
+$\sigma=1/\lceil\sqrt{\lambda}\rceil$, where
+$\lambda=\lceil\log_2 n\rceil$. The tree has
+$n^{O_k(1)}2^{O(n/\sqrt{\lambda})}$ nodes and polynomial depth.
+Every leaf has occurrence bound
+$B=O_k((\sigma^{-1}\log(2/\sigma))^{k-1})=\lambda^{O_k(1)}$
+and at most $Bn$ nonempty clauses.
+
+For a nontrivial leaf with $m_G$ clauses, use the initial parity
+checks of Lemma~\ref{lem:sparse-checks} and the greedy procedure
+of Lemma~\ref{lem:greedy-hashes}. Each initial row has support size
+at most $D_0$, and each additional row has list length $P$.
+Both bounds are $\lambda^{O_k(1)}$. By \eqref{eq:hash-query}, every row
+gives a degree-at-most-$k$ equation with at most
+$2^k\max\{P,D_0\}$ monomials, and every queried system has at
+most $6n$ equations. A single constant $c=c(k)$ bounds both the
+ratio of equations to variables and the exponent of $\lambda$ in
+the monomial bound for all sufficiently large $n$.
+At each greedy step, use Lemma~\ref{lem:tensor-sparse-query} to
+compute $N(A;h_\gamma)$ for every candidate row $h_\gamma$ and
+append one attaining the minimum. The evaluator applies also to
+discarded candidates whose systems still accept nonsatisfying
+assignments. One final call gives $N(A)$ for the selected matrix,
+which equals the leaf count by Lemma~\ref{lem:greedy-hashes}.
+
+Constructing the initial checks and enumerating candidates costs
+$2^{\lambda^{O_k(1)}}$ bit operations apart from the evaluations.
+There are at most $3n(2m_G)^P+1=2^{\lambda^{O_k(1)}}$ evaluations
+per leaf. Since every fixed power of $\lambda$ is
+$o(n\log\log n/\sqrt{\log n})$, these costs and the number of leaves
+are absorbed in the claimed time bound
+\[
+ (n+m)^{O_k(1)}2^{O_k(n\log\log n/\sqrt{\log n})}.
+\]
+Here $m$ counts the input clauses. Traverse the tree
+depth first and process one query at a time. The leaf solution sets
+are disjoint, so their exact counts add with an $(n+1)$-bit
+accumulator. Together with polynomial space per query and per
+tree path, this gives the asserted polynomial-space bound.
+\end{proof}
+
+A single algorithm attains both bounds. With
+$\lambda=\lceil\log_2 n\rceil$ and $\nu=\lceil\log_2\lambda\rceil$,
+use the clause network when $m\le n\nu$ and the parity queries
+otherwise. In the first branch $n\le s=n+m=O(n\log\log n)$,
+so its exponent is $O_k(n\log\log n/\sqrt{\log n})$ even at growing
+density. For each fixed $D$ and all sufficiently large $n$, every
+input with $m\le Dn$ takes that branch with $s=O_D(n)$.

@@ -5,6 +5,12 @@ This directory holds a subset of the Lean library of
 (Lean `v4.34.1`, Mathlib `d13f23b7`) to this repository's Lean `4.32.0` /
 Mathlib `v4.32.0` workspace.
 
+[`preprints/`](preprints/PROVENANCE.md) separately holds unmodified copies of
+upstream manuscript directories, with no Lean code. It currently holds
+*The Exponential Time Hypothesis is False* at commit `7ef5c0cc5ca4b0e0…`. Its
+[`PROVENANCE.md`](preprints/PROVENANCE.md) records the URL, commit, fetch date
+and per-file Git blobs, and its `LICENSE` is the upstream root license.
+
 - Upstream: `https://github.com/openai/math`, commit
   `adc7f1241b42e322a6451854ab7e4b4c146bf78a` (2026-10-06), directory
   `lean/OAI/Combinatorics/Progressions/`, which belongs to family 159,

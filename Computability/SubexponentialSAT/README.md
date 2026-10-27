@@ -18,11 +18,17 @@ speedup, and none was formalized.
 
 | Manuscript | Date | Where | Claim |
 |---|---|---|---|
-| OpenAI, *The Exponential Time Hypothesis is False* | 25 October 2026 | upstream [`openai/math` preprint directory](https://github.com/openai/math/tree/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026) | A deterministic exact counter for satisfying assignments of a k-CNF. For each fixed `k ⩾ 2` it uses `poly_k(n, m)` space and runs in time `(n+m)^{O_k(1)} · 2^{n/(log n)^{1/2+o(1)}}`. Its Appendix D gives `(n+m)^{O_k(1)} · 2^{O_k(n log log n/√(log n))}` in general and `2^{O_{k,D}(n/√(log n))}` when `m ⩽ Dn`. |
+| OpenAI, *The Exponential Time Hypothesis is False* | 25 October 2026 | vendored copy [`lib/openai-math/preprints/…/paper.pdf`](../../lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/paper.pdf), with LaTeX sources in [`build/`](../../lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/main_full_version.tex) and [provenance](../../lib/openai-math/preprints/PROVENANCE.md); upstream [`openai/math` preprint directory](https://github.com/openai/math/tree/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026) (67 pages) | A deterministic exact counter for satisfying assignments of a k-CNF. For each fixed `k ⩾ 2` it uses `poly_k(n, m)` space and runs in time `(n+m)^{O_k(1)} · 2^{n/(log n)^{1/2+o(1)}}`. Its Appendix D gives `(n+m)^{O_k(1)} · 2^{O_k(n log log n/√(log n))}` in general and `2^{O_{k,D}(n/√(log n))}` when `m ⩽ Dn`. |
 | *A 2^{o(n)} time algorithm for 3-SAT*, credited to Claude (Anthropic) | 26 October 2026, 3:13 PM PT | [`Research/claude-2o-n-3sat/eth.pdf`](Research/claude-2o-n-3sat/eth.pdf) (49 pages) | A deterministic #k-SAT algorithm with time `2^{O(min{km/√(log m), k²·n·log log n/√(log n)})}`. Appendix E states `ETHIsFalse` and `MainTheorem` as Lean 4 propositions over Mathlib's multi-stack Turing machines. It reports proofs in a 1,881-file Lean 4.33.1 development, checked by the kernel, `leanchecker` and nanoda, with no axioms beyond the standard three. The development has not been published: its link is "to be added when a public location exists". The listing's comments cite the paper under the earlier title *The Exponential Time Hypothesis is False*. |
 
-The delivered `paper.pdf` (887,884 bytes) is byte-identical to `paper.pdf` in
-the upstream preprint directory. It is therefore not filed here a second time;
+The OpenAI preprint directory is vendored unmodified under
+[`lib/openai-math/preprints/`](../../lib/openai-math/preprints/PROVENANCE.md),
+the repository's only vendored-code root. Its `PROVENANCE.md` gives the
+upstream URL, the pinned commit `7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a`,
+the fetch date and per-file Git blobs, and the Apache 2.0 `LICENSE`. The
+delivered `paper.pdf` (887,884 bytes) is byte-identical to the vendored
+[`paper.pdf`](../../lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/paper.pdf).
+It is therefore not filed here a second time.
 [`Research/OMITTED.tsv`](Research/OMITTED.tsv) lists it and every other
 omitted upstream copy.
 

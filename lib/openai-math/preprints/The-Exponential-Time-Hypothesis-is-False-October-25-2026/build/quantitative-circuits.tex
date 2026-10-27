@@ -1,0 +1,71 @@
+\begin{proof}[Proof of Corollary~\ref{cor:quantitative-circuits}]
+We use Williams's witness-circuit argument~\cite[Theorem~6.1]{Wil13}
+with the local reduction of Jahanjou, Miles, and
+Viola~\cite[Theorem~1 and Section~6]{JMV13}.
+
+By \v{Z}\'ak's nondeterministic time hierarchy~\cite{Zak83}, in the
+form stated in~\cite[Theorem~2.1 in the full version]{Wil13}, fix a unary language
+$H\in\operatorname{NTIME}(2^n)\setminus\operatorname{NTIME}(2^{n/2})$
+on multitape Turing machines. For all sufficiently large $n$ apply
+the local reduction to its fixed machine on $1^n$ with locality parameter $r=2$. A time allowance
+$T=2^n n^{O(1)}$ includes the polylogarithmic overhead of simulating
+the machine in the reduction and gives $q=n+O(\log n)$ clause-index
+bits. In polynomial time the reduction constructs a decoder giving
+three variable labels and their signs on each index. Let $\varphi_n$
+consist of the clauses decoded on all $2^q$ indices. It is satisfiable
+exactly when $1^n\in H$.
+
+Each of the decoder's $O(n)$ output bits has a constant-depth decision
+tree, so it depends on at most a fixed number $w$ of index bits.
+Evaluating the decoder on all strings of Hamming weight at most $w$
+recovers each support. Indeed, two strings witnessing dependence on
+one coordinate can be set to zero off the support while retaining
+their differing outputs. The same evaluations give the truth table
+on each support. This constructs a decoder of $O(n)$ fan-in-two gates
+in polynomial time.
+
+Pad each variable label to $dn$ bits for a fixed positive integer $d$
+and declare all $2^{dn}$ variables. If $|i|=dn$ for such an $n$ and
+$\varphi_n$ is satisfiable, let $W(i)$ be bit $i$ of its
+lexicographically first satisfying assignment, ordering variables by
+their labels. Set $W(i)=0$ in all other cases. The length of $i$
+determines $n$. To decide $W$, write out the $2^q$ clauses, ask
+an NP oracle whether the formula is satisfiable, and, if so,
+recover the first assignment by asking whether its current prefix
+followed by zero has a satisfying extension. At most $2^{dn}$ prefix
+queries of length $2^{O(n)}$ suffice, so $W\in\mathrm E^{\mathrm{NP}}$.
+
+Put $a(t)=\sqrt{\log_2 t}$. Testing whether the count in the
+constant-density part of Theorem~\ref{thm:main} is positive
+decides $3$-SAT with $V$ variables and at most $5V$ clauses in time
+$V^b2^{A V/a(V)}$ for fixed $A,b>0$. We absorb the change of
+logarithm base in $A$. The solver uses polynomial space, so a
+multitape simulation can scan its workspace for each bit access at
+a cost $V^{O(1)}$, absorbed in $b$.
+
+Fix a positive rational $\eta<1/(12A)$ and put
+$s_n=\lfloor\eta n\lfloor a(n)\rfloor\rfloor$ for $n\ge2$.
+The threshold is computable using the binary length of $n$ and the
+integer square root of $\lfloor\log_2 n\rfloor$. Suppose that
+$C_W(dn)\le s_n$ for all sufficiently large $n$. To decide $H$,
+reject nonunary inputs. On $1^n$, guess a circuit on $dn$ index bits
+with at most $s_n$ gates. Feed the decoder's three variable labels to
+three copies of this circuit and test whether the indexed clause is
+violated. Accept if the test circuit is unsatisfiable. When
+$1^n\in H$, a circuit computing $W$ at length $dn$ gives an
+accepting guess. When $1^n\notin H$, every guess violates a clause.
+
+The test circuit has $q$ inputs and at most $3s_n+O(n)$ gates. The
+encoding above uses one variable per input and gate, at most four
+clauses of width at most three per gate to enforce its truth table,
+and one unit clause to pin the output. Padding with unused variables
+gives $U_n=3s_n+Bn$ variables and at most $5U_n$ clauses for a fixed
+integer $B$. Since $U_n=(3\eta+o(1))n a(n)$ and $a(U_n)\sim a(n)$,
+the test takes $2^{(3A\eta+o(1))n}$ time. Guessing and building the
+circuits take polynomial time, so $H$ is decidable nondeterministically
+in time $2^{n/2}$ for all sufficiently large $n$. The finitely many
+exceptional lengths can be hardwired, contradicting the choice of $H$.
+Thus $C_W(dn)>s_n$ for infinitely many $n$. Since
+$s_n\sim\eta n\sqrt{\log_2 n}$ and $d$ is fixed, taking $L=W$ and any
+$0<c<\eta/(d\sqrt{\log 2})$ proves \eqref{eq:quantitative-circuit-lower-bound}.
+\end{proof}
