@@ -207,12 +207,19 @@ directions. Independent builds match both objects/full logs and13
 standard-only reports. Actual site execution and control/tape calibration
 remain before the equation's PA/HA proof.
 
+The [actual relaxed-norm integral-solution theorem](reviews/arithmetic-pell-integral-solution-root.md)
+now derives the common-unit index multiple from the large-c bound and
+restores a positive original-base Pell index m with p|m. Both actual norm
+input forms are retained. Independent builds match both objects/full logs
+and five standard-only reports. Final c|m and full relaxed integrality remain.
+
 The [internal Pell strong-divisibility theorem](reviews/arithmetic-pell-strong-divisibility-root.md)
 now proves the exact sequence gcd, index-divisibility equivalence including
 zero indices, and arbitrary-scale common-divisor consequence. Genuine bounded
 Sigma1 descent and norm-derived cancellation give the result. Independent
 builds match both objects/full logs and seven standard-only reports.
-Large-index forcing and full relaxed integrality remain open.
+The later integral-solution packet above supplies large-index forcing;
+full relaxed integrality remains open.
 
 The [internal common-unit theorem](reviews/arithmetic-pell-common-unit-root.md)
 now derives one base, both positive internal Pell indices and a positive

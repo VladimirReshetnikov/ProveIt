@@ -50,13 +50,22 @@ Independent fresh pairs match both objects/full logs and13 standard-only
 reports. Actual scans/boxes/home/site execution and control/tape calibration
 remain open before final PA/HA assembly.
 
+The [actual relaxed-norm integral-solution theorem](reviews/arithmetic-pell-integral-solution-root.md)
+now derives the common-unit index multiple from the actual large-c bound,
+then a positive original-base index m with p|m, f=X_m(a) and
+i*c*c=delta(a)*Y_m(a). Both additive and justified truncated inputs are
+included. Independent fresh pairs match both objects/full logs and five
+standard-only reports. Final c|m, complete relaxed integrality, subsequent
+index recovery and cofinal witnesses remain open.
+
 The [internal Pell strong-divisibility theorem](reviews/arithmetic-pell-strong-divisibility-root.md)
 now proves gcd(Y(m),Y(n))=Y(gcd(m,n)), index-divisibility reflection and
 the scaled common-divisor consequence at arbitrary internal indices,
 including0. Norm-derived coefficient certificates justify cancellation;
 a bounded Sigma1 induction proves the Euclidean descent. Independent fresh
 pairs match both objects/full logs and seven standard-only reports.
-Large-c index forcing, cubic congruences and full integrality remain open.
+The later integral-solution packet above supplies large-c index forcing;
+final c|m and full integrality remain open.
 
 The [internal common-unit theorem](reviews/arithmetic-pell-common-unit-root.md)
 now derives one Pell base, both positive internal indices and a positive

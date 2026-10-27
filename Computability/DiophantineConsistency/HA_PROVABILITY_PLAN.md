@@ -11,13 +11,20 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual relaxed-norm integral-solution theorem](reviews/arithmetic-pell-integral-solution-root.md)
+now forces the common-unit index multiple from actual positive norm and
+large-c inputs, then restores m>0, p|m, f=X_m(a) and
+i*c*c=delta(a)*Y_m(a). Independent fresh pairs match both objects/full logs
+and five reports. Final c|m, complete relaxed integrality, subsequent index
+recovery and cofinal witness construction remain to be proved.
+
 The [internal Pell strong-divisibility theorem](reviews/arithmetic-pell-strong-divisibility-root.md)
 now derives the sequence gcd, index-divisibility reflection including0 and
 the arbitrary-scale common-divisor consequence. Norm certificates and a
 bounded Sigma1 Euclidean descent prove the actual represented identities.
 Independent fresh pairs match both objects/full logs and seven reports.
-The large-c estimate forcing the common-unit index multiple, subsequent
-cubic congruences and full relaxed integrality remain to be proved.
+The later integral-solution packet above supplies large-c index forcing;
+final c|m and full relaxed integrality remain to be proved.
 
 The [internal common-unit theorem](reviews/arithmetic-pell-common-unit-root.md)
 now derives the shared base and two positive internal indices from the
@@ -97,8 +104,8 @@ A known positive unit bounds a finite least-unit search. Elementary gcd
 normalization then puts both relevant norm solutions over one discriminant,
 potentially replacing the external squarefree/fundamental-unit setup.
 The known-unit descent, gcd normalization and common-unit composition are
-now proved above, along with strong divisibility. Large-index forcing and
-the final congruence argument still precede full relaxed integrality.
+now proved above, along with strong divisibility and large-index forcing.
+The final c-divides-index argument still precedes full relaxed integrality.
 
 The [uniform internal seed-source basis](reviews/validator-seed-source-basis222-root.md)
 now constructs the exact represented open proof of every internally typed
