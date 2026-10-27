@@ -884,3 +884,18 @@ separate; no equation metric or HA endpoint is promoted.
 This closes the variable-convention and positive-domain part of the planned
 historical transfer. It does not silently convert external finite algebra
 into an internal PA/HA proof; that remains a separate coding obligation.
+
+
+## Finite bounded double-negation inside actual HA
+
+The [HA finite bounded double-negation theorem](reviews/ha-bounded-double-negation-root.md)
+now proves both implications for an arbitrary matrix, with no decision
+premise. Independent builds pass eight propext/Quot.sound-only reports and
+identical objects. Actual hierarchy-one ordinary/GG comparison and the
+full HA equation equivalence remain open.
+
+The proof uses the existing real formula-induction axiom and capture-safe
+ambient-parameter shifts. Its arbitrary matrix may contain unbounded
+quantifiers; only the outer interval is finite. The next literal Σ1
+comparison can use this for bounded universal quantification without
+assuming a positive Σ1 decision or Markov principle.

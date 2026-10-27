@@ -123,6 +123,12 @@ now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
 plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. The next runtime
 checkpoint proves that evaluation of the concatenated words composes.
+The [HA finite bounded double-negation theorem](reviews/ha-bounded-double-negation-root.md)
+now proves both implications for an arbitrary matrix, with no decision
+premise. Independent builds pass eight propext/Quot.sound-only reports and
+identical objects. Actual hierarchy-one ordinary/GG comparison and the
+full HA equation equivalence remain open.
+
 The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
 now proves all22 unconditional row identities and both positive existence
 maps at the current ports, deriving old-z>1 from the supplied source itself.
