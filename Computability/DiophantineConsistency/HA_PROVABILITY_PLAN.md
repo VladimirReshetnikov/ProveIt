@@ -26,6 +26,15 @@ and half-index recovery have since passed independent review
 below. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
 
+The [changing-marker derivation transport](reviews/validator-seed-marker-relativization222-root.md)
+now handles all ten actual internal derivation constructors, using genuine
+Sigma1 bounded-budget induction and explicit source axiom images. Its
+falsum endpoint composes the accepted marker discharge; the IΣ2 endpoint
+then supplies an actual checker refutation witness. Independent fresh pairs
+match both objects/full logs and all 15 standard-only reports, with zero
+prerequisite refreshes. The actual GIC/ZF axiom images remain to be proved;
+the conditional transport is not yet the ZFC-to-checker bridge.
+
 The [actual215 symbolic executor theorem](reviews/arithmetic-symbolic-core215-root.md)
 now interprets the real checker oracle, every symbolic step and successful
 executor runs over arbitrary internal arithmetic data. It preserves the

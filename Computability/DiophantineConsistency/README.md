@@ -17,6 +17,13 @@ The owner now additionally requires a Lean theorem that this equivalence
 is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
+
+The [changing-marker derivation transport](reviews/validator-seed-marker-relativization222-root.md)
+now interprets all ten actual internal derivation constructors under
+explicit source axiom images. Its falsum and checker-witness endpoints
+compose the accepted marker discharge. Independent fresh pairs match both
+objects/full logs and all 15 standard-only reports, with zero prerequisite
+refreshes. Actual GIC/ZF axiom images and ZFC calibration remain open.
 The [current13/88/51 form](reviews/adaptive-current13-metrics-root.md)
 now has a checked literal Lean evaluator and external ConZFC equivalence,
 with independently reviewed finite certificates for88 live operations,
