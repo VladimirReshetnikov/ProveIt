@@ -27,9 +27,19 @@ Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
 
+The [historical-front transfer audit](research/ordinary-low-degree-current2011-transfer-audit.md)
+now identifies a route from the older13/88/51 and12/96/70 arithmetic to
+the current coefficient interface. The first scoped implementation will
+reconstruct a Carrier65 zero from any positive authoritative ordinary
+source, using the same native rank and rebuilding private Pell seeds.
+The shifted-z adapter and adaptive-carrier/free-J proofs remain separate;
+the historical metrics are not yet current-tuple Lean endpoints.
+
 The [scaled syzygy proposal](research/scaled-norm-syzygy-search/PROPOSAL.md)
-investigates13/178/86 within the current47,313-byte coefficient family.
-Its complete candidate audit is pending. The
+led to the separately [accepted13/178/86 equation](reviews/thirteen-scaled-norm-syzygy86-root.md)
+within the current47,313-byte coefficient family. Two independent Lean
+builds pass twelve standard-only reports, and normal/optimized complete
+finite audits reproduce every gate leader and the exact current ports. The
 [comparison correction](research/scaled-norm-syzygy-search/COMPARISON_SCOPE.md)
 retains the historical compact44 forms13/88/51 and12/96/70, which are
 smaller in these three metrics but use a different, larger coefficient
@@ -327,6 +337,7 @@ zero-set maps, full coefficient recipes and domain/metric distinctions.
 | Positive integers | 13 | 75 | 96 | Complete CURRENT2011 unit sphere, all-positive zero-set maps, external Lean endpoint and independent exact degree/whole-port checks |
 | Positive integers | 13 | 84 | 92 | Complete CURRENT2011 first-norm correction, same positive zero set and external Lean endpoint |
 | Positive integers | 13 | 92 / 97 | 90 / 88 | Complete CURRENT2011 further corrections, same positive zero set and independently checked external Lean endpoints |
+| Positive integers | 13 | 178 | 86 | Complete CURRENT2011 scaled syzygy; independently checked all-positive maps, exact degree/whole-port audit and external Lean endpoint; expensive degree tradeoff |
 | Positive integers | 15 | 66 | 157 | Preserved complete P66 pages and coefficient checkpoints |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 96 | 70 | Historical compact44 family; free positive J and an identical polarized norm tail |

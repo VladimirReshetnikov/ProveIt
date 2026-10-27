@@ -565,6 +565,39 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [substitution/opening audit](research/c222-substitution-opening-proposal-20261026.md)
+narrows the next actual C222 syntax checkpoint to a Π1/IΣ1 induction,
+reusing only unchanged term/vector helpers. Exact opening follows from
+source substitution and the accepted shift equation. Numeric equality
+needs no fresh-stream premise; later interpreted quantifier transport
+retains the explicit IΣ2 alpha and vacuity obligations. Stream selection
+and arbitrary proof translation are separately scoped.
+
+The [HA bounded quantifiers](reviews/ha-bounded-quantifiers-root.md) now
+have actual HA empty/successor laws and decision proofs from the uniform
+object-language premise ∀x.dec a. Genuine simultaneous formula induction
+preserves arbitrary nested matrices and all ambient parameters. Two fresh
+independent builds pass seventeen propext/Quot.sound-only reports. The
+next clients are structural bounded-formula decision and the literal
+Foundation/GG bounded-syntax comparison, with actual checker normalization
+still separately required.
+
+The [uniform actual C222 alpha theorem](reviews/validator-environment-alpha222-root.md)
+is now independently checked for all internal typed source codes, with
+an explicit Π2 invariant under IΣ2. Both directions retain the same context,
+and both have actual numeric checker witnesses. Two fresh independent
+builds pass fifteen standard-only reports. Stream selection and source
+substitution/opening precede the later arbitrary proof interpretation.
+
+The [HA interval laws](reviews/ha-strict-intervals-root.md) now prove
+the empty interval, s<S s and both actual HA implications for
+s<S t iff (s<t∨s=t). Two independent fresh builds pass twelve
+propext/Quot.sound-only reports. The
+[next bounded-quantifier plan](research/ha-bounded-quantifier-next-leaf-audit.md)
+retains arbitrary matrices, bound shifts and a literal uniform decision
+formula. It also keeps the actual Δ1 fixed-point proof checker distinct
+from a syntactically bounded matrix; that normalization remains unproved.
+
 The [HA strict-order decision](reviews/foundation-ha-order-decidable-root.md)
 now proves the actual ordinary decision formula and double-negation
 stability for arbitrary terms, with capture-safe transport and finite
@@ -631,6 +664,12 @@ now proves the required internal remaining-word decrease, retaining
 separate halt and successful-completion codes. Its independent pair passes
 thirteen standard-only reports and binds every raw Nat command to actual
 EnumPerm.cstep. The whole-word draining proof is a separate next checkpoint.
+The later [whole-word evaluator](reviews/arithmetic-command-runperm222-peer.md)
+now proves the drain bound at all internal IΣ1 word codes, total unique
+evaluation, and closed IΣ1/PA totality. Two independent fresh builds pass
+twenty-one standard-only reports. Its fixed-word pointwise induction does
+not quantify universally over changing work states. Execution composition,
+fair reach from candidate4 and the proof invariant remain open.
 
 The [73-module consistency refresh](reviews/fixed-consistency73-root.md)
 has now passed, including current R2Native, LSchema and the actual

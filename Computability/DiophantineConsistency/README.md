@@ -17,10 +17,27 @@ The owner now additionally requires a Lean theorem that this equivalence
 is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
+The [current13/178/86 tradeoff](reviews/thirteen-scaled-norm-syzygy86-root.md)
+now has independent Lean and complete finite audits, preserving the entire
+positive zero set and current47,313-byte coefficient tuple. It lowers the
+current thirteen-variable family's degree at substantial operation cost;
+historical larger-tuple forms remain separate comparisons. Its HA endpoint
+is still open.
 HA now [decides the interpreted strict-order atom](reviews/foundation-ha-order-decidable-root.md)
 and proves its double-negation stability for arbitrary terms. Two independent
 builds pass twelve reports using only propext and Quot.sound. This supplies
 an atomic prerequisite for the pending bounded-checker comparison.
+The [strict interval laws](reviews/ha-strict-intervals-root.md) now prove
+the empty interval and the exact successor split inside HA, with twelve
+independently checked propext/Quot.sound-only reports. They support the
+next bounded-quantifier construction; literal checker normalization remains
+a separate obligation.
+The [bounded-quantifier theorem](reviews/ha-bounded-quantifiers-root.md)
+now proves actual HA decisions for finite universal/existential bounds
+from the explicit uniform matrix-decision formula. Its simultaneous HA
+induction and two independent builds pass seventeen propext/Quot.sound-only
+reports. Structural bounded syntax and the actual checker comparison
+remain separate clients.
 An [explicit translated ZFC consistency sentence](reviews/foundation-zfc-consistency-nat-root.md)
 now has a checked standard-Nat meaning equal to the actual syntactic
 ConZFC proposition, including Choice. Its independent two-leaf replay
@@ -50,6 +67,11 @@ now supplies actual C222 equality/membership certificates under the same
 represented context, with zero and auxiliary-label collisions retained.
 Two independent builds pass13 standard-only reports; uniform formula
 transport under its explicit IΣ2 invariant remains the next checkpoint.
+The subsequent [uniform alpha theorem](reviews/validator-environment-alpha222-root.md)
+now covers arbitrary internal typed formulas in both directions under that
+same represented context. Its explicit Π2/IΣ2 induction and two independent
+builds pass fifteen standard-only reports. Stream selection, substitution
+and arbitrary proof interpretation remain separate work.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed
@@ -94,6 +116,11 @@ now has a proved internal decrease of the remaining word and exact
 all-raw Nat one-command semantics. Its independent pair passes thirteen
 standard-only reports. Halt0 and positive successful completion remain
 distinct; the draining and scheduling proofs are separate steps.
+The [whole-word draining theorem](reviews/arithmetic-command-runperm222-peer.md)
+now proves halt or successful completion within every internal word's
+numeric bound, with total represented evaluation and a closed PA totality
+proof. Its independent pair passes twenty-one standard-only reports.
+Execution composition, fairness and proof invariants remain open.
 The [C222 equality leaf](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean)
 now translates into the actual C254 proof predicate for every internal input
 in every IΣ1 model. Its [independent replay](reviews/validator-growg222-root.md)

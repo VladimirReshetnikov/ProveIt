@@ -2,6 +2,40 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
+now passes two independent builds and seventeen propext/Quot.sound-only
+reports. Genuine simultaneous formula induction proves finite all/ex
+decisions under an explicit uniform matrix-decision formula, preserving
+arbitrary nested matrices and ambient parameters. Structural syntax and
+the literal consistency-checker normalization remain open.
+
+The [uniform C222 alpha theorem](reviews/validator-environment-alpha222-root.md)
+now passes two independent builds and fifteen standard-only reports. Its
+all-internal Π2/IΣ2 induction preserves the same context in both directions
+and derives the four binder-vacuity resources. Numeric checker witnesses
+are explicit. Substitution and general proof interpretation remain open.
+
+The [current13/178/86 scaled syzygy](reviews/thirteen-scaled-norm-syzygy86-root.md)
+now passes two independent Lean builds with twelve standard-only reports
+and complete normal/optimized finite audits. Every positive zero and all
+current coefficient bytes are retained; no global frontier or HA endpoint
+is claimed. The next size direction audits transfer of the historically
+better compact44 arithmetic to the current small coefficient tuple.
+
+The [actual C222 whole-word evaluator](reviews/arithmetic-command-runperm222-peer.md)
+now has an independently rebuilt internal IΣ1 draining bound and total
+evaluation graph, with twenty-one standard-only reports. Its pointwise
+induction keeps word/work parameters fixed and preserves positive success
+versus halt0. Closed IΣ1/PA totality is proved; execution composition,
+scheduler fairness and the final HA consistency equivalence remain open.
+
+The [HA interval checkpoint](reviews/ha-strict-intervals-root.md) now has
+two independent successful builds and twelve propext/Quot.sound-only
+reports. Its literal existential-witness proof establishes s<S t iff
+(s<t∨s=t), retaining arbitrary terms and shifted finite contexts. The
+bounded-quantifier decision proof and actual checker normalization remain
+separate work.
+
 The [actual C222 word tick](reviews/arithmetic-command-tickperm222-peer.md)
 now has independent source review and two fresh builds with thirteen
 standard-only reports. Active ticks halt or strictly decrease the shifted
