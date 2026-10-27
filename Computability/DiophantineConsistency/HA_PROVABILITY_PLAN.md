@@ -11,6 +11,13 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [internal gcd normalization theorem](reviews/arithmetic-gcd-normalization-root.md)
+now constructs a fixed total unique Sigma1 gcd graph by least positive
+natural coefficient certificates, then derives the actual relaxed-norm
+common-discriminant factors. Independent fresh pairs match both objects/full
+logs and eight reports. Combining this with KnownUnit, represented sequence
+composition, strong divisibility and full integrality remains to be proved.
+
 The [actual internal augmented comprehension theorem](reviews/validator-seed-raw-comprehension222-root.md)
 now constructs a genuine source proof for arbitrary internal unary matrices
 and free parameters. It preserves full member closure, branch overlaps and
@@ -58,9 +65,9 @@ and [gcd normalization derivation](research/arithmetic-pell-gcd-normalization-no
 A known positive unit bounds a finite least-unit search. Elementary gcd
 normalization then puts both relevant norm solutions over one discriminant,
 potentially replacing the external squarefree/fundamental-unit setup.
-The known-unit descent is now proved above. The gcd normalization remains
-a paper derivation; internal gcd, composition and strong divisibility still
-need formalization.
+The known-unit descent and gcd normalization are now proved above. Their
+common-unit composition and the strong-divisibility argument still need
+formalization before full relaxed integrality.
 
 The [uniform internal seed-source basis](reviews/validator-seed-source-basis222-root.md)
 now constructs the exact represented open proof of every internally typed

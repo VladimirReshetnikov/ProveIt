@@ -40,6 +40,13 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [internal gcd normalization](reviews/arithmetic-gcd-normalization-root.md)
+now proves a fixed Sigma1 total unique gcd graph and derives the actual
+positive-factor normalization of R²+D=D*f² from its own coefficient witness.
+No supplied gcd, coprimality or minimum is used. Independent fresh pairs
+match both objects/full logs and eight standard-only reports. Common-unit
+composition, strong divisibility and full relaxed integrality remain open.
+
 The [actual internal augmented comprehension proof](reviews/validator-seed-raw-comprehension222-root.md)
 now supplies an actual source Proof certificate for every internally typed
 unary matrix and arbitrary source term/free parameters. Full member closure,
@@ -61,8 +68,8 @@ now derives a bounded least positive unit and a uniform internal index and
 ordinate scale for every solution of the same positive-discriminant norm.
 Its minimality comes from the supplied known solution and is not a premise
 of the public endpoint. Independent fresh pairs match both objects/full logs
-and four standard-only reports. Internal gcd normalization, composition,
-strong divisibility and full relaxed integrality still remain.
+and four standard-only reports. The later gcd theorem above supplies
+normalization; composition, strong divisibility and full integrality remain.
 
 The [actual internal DagPerm root](reviews/arithmetic-dag-rootperm222-root.md)
 now constructs either a halt run or a normal run to the actual scheduler's

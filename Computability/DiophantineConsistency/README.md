@@ -199,11 +199,18 @@ arbitrary internal data, with the actual physical file and rotated fetch loop.
 Independent builds match both objects/full logs and22 standard-only reports.
 Complete AX dispatch/root execution and literal215 simulation remain open.
 
+The [internal gcd normalization](reviews/arithmetic-gcd-normalization-root.md)
+now derives a fixed total unique Sigma1 gcd graph and the actual relaxed-norm
+factorization into a common discriminant. No gcd, coprimality or minimality
+premise is supplied. Independent builds match both objects/full logs and
+eight standard-only reports. Common-unit composition and full integrality remain.
+
 The [internal known-unit classification](reviews/arithmetic-pell-known-unit-root.md)
 now derives one least positive unit from a bounded search below a known
 solution, then classifies every internal solution using the same base and
 ordinate scale. Independent builds match both objects/full logs and four
-standard-only reports. Gcd normalization and full strong integrality remain.
+standard-only reports. The later gcd packet above supplies normalization;
+full strong integrality remains.
 
 The [internal Pell residue classes](reviews/arithmetic-pell-residue-classes-root.md)
 now cover arbitrary internal indices, the signed doubled step including2p=m,
