@@ -29,6 +29,14 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [internal Pell recurrence](reviews/arithmetic-pell-recurrence-root.md)
+now supplies fixed total Sigma1/Delta1 graphs, coordinate graphs, the norm,
+growth bounds and both addition identities for arbitrary internal IΣ1
+indices. Independent builds produce identical objects and nine standard-only
+reports. No Foundation/prerequisite build ran. Classification,congruences,
+cofinal witness construction and the final equation/ConZFC PA/HA proof
+remain open.
+
 The [literal adaptive graph](reviews/native-adaptive-graph-root.md)
 now binds all88 ordered binary gates and proves signed zero iff the four
 literal cuts; every positive zero restores all31 source coordinates and

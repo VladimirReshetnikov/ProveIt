@@ -164,6 +164,14 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [internal Pell recurrence](reviews/arithmetic-pell-recurrence-root.md)
+now has fixed total arithmetic graphs and proves the norm,growth and
+addition formulas at arbitrary internal IΣ1 indices. Independent fresh
+builds agree on both objects and nine standard-only reports, reusing95
+cached Foundation modules without rebuilding dependencies. Pell solution
+classification,carrier congruences and full PA/HA witness construction
+remain required.
+
 The [literal adaptive graph](reviews/native-adaptive-graph-root.md)
 now follows all88 ordered binary gates and proves signed zero iff its
 four actual cuts, followed by all31 positive source coordinates and22

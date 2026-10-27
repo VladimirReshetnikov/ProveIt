@@ -11,6 +11,15 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [internal Pell recurrence](reviews/arithmetic-pell-recurrence-root.md)
+is represented uniformly over arbitrary IΣ1 models, with fixed total
+Sigma1/Delta1 graphs and actual Sigma1 induction for its norm,growth and
+addition identities. Independent two-leaf replay matches both objects
+and nine standard-only reports; all95 Foundation prerequisites are reused.
+This begins the required internal number-theoretic construction. It does
+not yet classify Pell solutions or supply the carrier congruences and
+cofinal witnesses needed by the final PA-to-HA assembly.
+
 The [literal adaptive graph](reviews/native-adaptive-graph-root.md)
 now binds the smaller construction's88 binary gates to its four cuts and
 proves complete positive source reconstruction from a graph zero. An
