@@ -2,6 +2,12 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+The [closed HA consistency comparison](reviews/foundation-ha-zfc-validator-root.md)
+now proves both directions between the two fixed GG consistency sentences,
+with eight independently checked standard-only reports and no supplied
+PA-proof premise. The fixed standard-Nat meaning is separately checked.
+This is one completed link; the current equation's HA equivalence is open.
+
 **26 October update:** The owner reaffirmed HA as the final target.
 The [C222 formula encoder](reviews/validator-formula-encoder222-root.md)
 passes five independent fresh compilations and13 standard-only reports;

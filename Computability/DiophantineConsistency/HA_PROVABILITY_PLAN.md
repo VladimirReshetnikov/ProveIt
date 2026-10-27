@@ -565,6 +565,14 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+There is now a [closed HA consistency comparison](reviews/foundation-ha-zfc-validator-root.md):
+HA proves both implications between fixed GG(Foundation ZFC consistency)
+and GG(actual C254 validator consistency). The actual validated PA theorem
+supplies the proof, so no source-proof premise remains in this checkpoint.
+Two independent fresh builds pass eight standard-only reports. This is an
+actual HA proof-existence theorem for those two fixed translated sentences;
+the current equation and untranslated-checker comparison remain open.
+
 The [represented Eind-context checkpoint](reviews/validator-eind-context222-root.md)
 now provides internal IΣ1 projections, cons equivalences, context vacuity
 and binder discharge with actual numeric C222 witnesses. Its independent

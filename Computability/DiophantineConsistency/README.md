@@ -22,6 +22,11 @@ now has a checked standard-Nat meaning equal to the actual syntactic
 ConZFC proposition, including Choice. Its independent two-leaf replay
 passes eight standard-only reports. This fixes the semantic target; the
 HA equivalence remains open.
+For [two fixed translated consistency sentences](reviews/foundation-ha-zfc-validator-root.md),
+both HA implications are now proved with no supplied source-proof premise.
+The actual closed PA theorem and the checked proof map supply an HA proof.
+Its independent replay passes eight standard-only reports. Connecting the
+current equation and the untranslated checker is still required.
 The owner reaffirmed HA after considering PA as an alternative. The
 [represented C222 formula encoder](reviews/validator-formula-encoder222-root.md)
 now passes an independent five-source build with13 standard-only reports,
