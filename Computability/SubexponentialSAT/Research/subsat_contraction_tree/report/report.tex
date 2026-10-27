@@ -1,0 +1,561 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Subexponential SAT: contraction trees and streamed features}
+\fancyhead[R]{\small October 26, 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\tabcolsep}{5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\popcount}{\operatorname{popcount}}
+\newcommand{\vTwo}{\nu_2}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\hypersetup{pdftitle={Contraction trees and streamed Cauchy features for subexponential SAT},pdfauthor={Research analysis prepared for Vladimir Reshetnikov with ChatGPT},pdfsubject={Review of fifteen ProveIt proposals; improved exact contraction certificate and reproducible kernel benchmarks}}
+\title{Contraction trees and streamed Cauchy features\\for subexponential SAT\\[5pt]\large A review of the combined ProveIt frontier and two further improvements}
+\author{Research analysis prepared for Vladimir Reshetnikov\\\small with ChatGPT}
+\date{October 26, 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review fifteen refinement packets through the closing snapshot
+\nolinkurl{ProveIt@474ddba696a5d385c091c23fb2995f69edd13e00}.
+The initial snapshot contained seven placed packets and seven incoming archives; a final
+placement check added one matching-based packet without changing the frontier.
+Their ingredients compose: full-orientation Cauchy modes, asymmetric packet balancing,
+sharp Hermite precision, and cached mode-graph evaluation give a substantially stronger
+baseline than any standalone report indicates. We obtain two further results.
+First, constructing cached group tables by a binary contraction tree, and implementing
+fast matrix multiplication through exact integer-coordinate lifts, gives a relative
+contraction certificate
+\[
+ T(s,\mathcal L)\le\poly(s+\mathcal L)
+ 2^{(35.3545880584\ldots+o(1))s/\sqrt{\log_2s}},
+\]
+with space coefficient $34.2748030050\ldots$ on the same scale, under the common
+high-degree network interface. The proof pays for every recursive child and for exact
+arithmetic over the two-adic coefficient ring; it does not posit a free group oracle.
+Second, a constant-storage recurrence reduces the generation of $B$ Cauchy features
+at $P$ ports from $O(L+PB^2)$ to $O(L+PB)$ ring operations at unchanged precision.
+A matched modular implementation gives a measured $101.95$-fold local speedup for
+one $B=512$, 128-bit fixture, with identical outputs. The report gives complete proofs
+of the new components, exact finite checks, paired benchmark data, and integration notes.
+The general SAT logarithmic order is unchanged. The numerical constants count network
+wires, not SAT variables, and the asymptotic result retains the stated upstream
+contraction and reduction dependencies. No complete SAT solver or new Lean/Rocq
+certificate is claimed.
+\end{abstract}
+\noindent\textbf{Deliverable scope.} This is a research and implementation packet for review.
+The ZIP contains this PDF, its LaTeX, original Python components, all reported numerical
+results, checks, immutable source identifiers, and reproduction instructions. The package
+is designed to remain below 4 MB and does not duplicate the source manuscripts.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Results and the comparison that matters}
+\label{sec:results}
+The requested comparison is with an upper bound incorporating all the existing proposals.
+It is therefore insufficient to compare only with the original preprint or with the
+smallest number printed in an individual report. We explicitly compose compatible
+improvements and retain separate time--space regimes.
+
+\subsection{Two concrete advances}
+The new asymptotic component changes how the cached mode graph is evaluated. A cached
+function for a subset of groups has only the indices crossing that subset as arguments.
+Joining two disjoint subsets is a rectangular matrix multiplication: the shared internal
+indices are summed out, and their external indices form the output table. Constructing
+larger block tables this way avoids the earlier exhaustive enumeration of every incident
+index in a block. A fixed field matrix multiplication exponent below $12/5$ is a classical
+available ingredient \cite{mm2024}; an explicit lifting argument makes it safe for the
+actual quotient rings used by the SAT framework.
+
+The new implemented component reuses the prefix products in the full-orientation Cauchy
+basis. It preserves the mode weights, exact target/source features, and working precision.
+Its operation-count improvement is unconditional for the specified kernel, and it can be
+used in both polynomial-space streaming and cached contraction variants.
+
+\begin{center}
+\begin{tabular}{@{}p{.53\textwidth}rr@{}}
+\toprule
+Certificate on the scale $s/\sqrt{\log_2s}$ & Time coefficient & Space\\
+\midrule
+Strongest incoming standalone polynomial-space certificate & $76.908995$ & polynomial\\
+Asymmetric schedule plus joint Cauchy modes & $66.605143$ & polynomial\\
+Same supplied schedule plus existing cached Strassen method & $44.537572$ & $39.495950$\\
+New contraction trees, exact fast backend, explicit schedule & $35.354588$ & $34.274803$\\
+\bottomrule
+\end{tabular}
+\end{center}
+All entries refer to the common normalized high-degree tensor interface. The two middle
+rows are compositions derived in this review, not additional delivered packets.
+The third row is an explicit feasible combined baseline; it is not a claim that every
+parameter retuning of the prior ideas has been optimized. We give same-parameter
+comparisons and a general replacement inequality below so that the gain does not rest
+solely on that choice of baseline. Lower-degree specializations have different premises
+and are not ranked against the generic interface in this table.
+
+The final row implies the simple eventual bounds
+\[
+ T\le\poly(s+\mathcal L)2^{35.36s/\sqrt{\log_2s}},\qquad
+ S\le\poly(s+\mathcal L)2^{34.28s/\sqrt{\log_2s}}
+\]
+for all sufficiently large admissible inputs. The $35.36$ and $34.28$ are rounded
+\emph{upward} after absorbing the vanishing errors. This improves an explicit exponent
+coefficient, not the power of the logarithm. An improvement of upper bounds alone is
+not a measured ratio of SAT running times.
+
+\subsection{What can and cannot be compared numerically}
+The size $s$ is the number of Boolean network wires. A general-density SAT reduction
+uses $s=O_k(n\log\log n)$; density-sensitive variants use fewer wires in intermediate
+regimes. The constants hidden in that reduction must be tracked before placing a numerical
+coefficient on a formula in $n$. In particular, $35.354588$ must not be substituted for
+the hidden constant in the general SAT bound.
+
+The separate manuscript credited to Claude states the same relevant logarithmic order
+with unspecified comparable constants \cite{claude}. No numerical dominance over that
+unspecified constant follows. Likewise, conditional proposals involving an unconstructed
+summation or compression algorithm cannot be treated as already implemented algorithms.
+Our result neither disproves those targets nor establishes them.
+
+A safe portfolio statement is useful. Retain all admissible existing algorithms and add
+the new cached variant; choose using certified bounds, or dovetail the fixed collection.
+Up to a fixed overhead, its time is bounded by the minimum of their guarantees. Thus
+special lower-degree regimes and any separately superior construction remain available.
+The mathematical result here is a new explicit certificate and a cheaper compatible
+subroutine, rather than a claim of an optimal SAT algorithm.
+
+\section{Commit review and the fifteen-packet frontier}
+\label{sec:review}
+The initial review is pinned to the main-branch snapshot
+\nolinkurl{ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06}; a closing check pins
+\nolinkurl{474ddba696a5d385c091c23fb2995f69edd13e00}. The relevant path history was
+read through the GitHub connector, and the source bytes were independently retrieved
+from the public repository. Git blob hashes and SHA-256 digests were recorded for 138
+files under the two requested paths and the vendored preprint directory. All seven
+incoming ZIPs were extracted into separate directories after checking their member paths;
+inspection preceded execution of any imported Python module.
+
+The relevant recent commits are:
+\begin{itemize}[leftmargin=1.5em]
+\item \nolinkurl{a505bd768b}, \nolinkurl{64b3202ee8}, and \nolinkurl{8afdbbea48}: arrivals
+of the earlier SAT/ETH reports and source PDFs.
+\item \nolinkurl{2b925d8800}: placement of seven refinement packets under
+\nolinkurl{Computability/SubexponentialSAT/Research}, plus the separate Claude manuscript.
+\item \nolinkurl{3e09608991}: an unchanged vendored copy of the OpenAI manuscript directory.
+\item \nolinkurl{45233238ae}: the project README's summary of the earlier seven packets.
+\item \nolinkurl{3e57705cf1}: seven newer research archives in \nolinkurl{docs/incoming}.
+\item \nolinkurl{d098ba436b}: the additional matching-packing report.
+\item \nolinkurl{6d3adc450615}: placement of all eight second-round packets; the closing
+main snapshot is \nolinkurl{474ddba696a5}.
+\end{itemize}
+These commits fall on October 26 in Pacific time; the later Git timestamps are October 27
+UTC. Initial commit messages and source URLs are in \nolinkurl{provenance/review_manifest.json}; closing identities, placement paths, and byte checks are in \nolinkurl{provenance/closing_provenance.json} and \nolinkurl{audit/closing_review.txt}.
+The repository explicitly describes these as external research material; placement alone
+was not a proof verification or an executed test run \cite{repoindex}.
+
+\subsection{Previously placed packets}
+\small
+\begin{longtable}{@{}p{.235\textwidth}p{.435\textwidth}p{.25\textwidth}@{}}
+\toprule
+Packet & Useful established component claimed there & Boundary\\
+\midrule\endfirsthead
+\toprule Packet & Useful established component claimed there & Boundary\\\midrule\endhead
+\nolinkurl{cauchy_mode_improvement} & Factorial modes
+$1+b+2\nu_2(b!)=3b+1-2s_2(b)$; entropy slope three. & Same logarithmic order; a kernel, not a SAT solver.\\[4pt]
+\nolinkurl{eth_contraction_improvements} & Exact Hermite-condition count, precision
+$6MD/u$, coefficient $648.4411$, and streamed packet extraction. & The coefficient is an upper-bound certificate.\\[4pt]
+\nolinkurl{3sat_precision_refinement} & Exact recovery loss and the real full-loss
+minimax taper; leading precision six is optimal in that model. & Its $n\log\log n/\log n$ route needs a missing summation algorithm.\\[4pt]
+\nolinkurl{sat_density_improvement} & Uniform density envelope with
+$\min\{\log(2+m/n),\log\log n\}$. & No stronger general-density logarithmic order.\\[4pt]
+\nolinkurl{eth_density_refinement} & Closely overlapping density result and two-adic
+Smith/precision observations. & Several comparisons improve constants only.\\[4pt]
+\nolinkurl{3sat_refinement} & Scalar parity lift with incidence-degree cap
+$k(p+a-1)$. & Compact recursive mode factorization is not supplied.\\[4pt]
+\nolinkurl{3sat_asymptotic_analysis} & Scoped barriers for taper, budget, and mode
+retuning; precise missing interfaces. & No stronger unrestricted exponent proved.\\
+\bottomrule
+\end{longtable}
+\normalsize
+At the closing snapshot, all eight later packets are under \nolinkurl{Research}, and
+\nolinkurl{docs/incoming} contains only its README. We verified 312 Git blob matches with
+no mismatches: 120 original research files, 187 placed files from the seven initially
+reviewed archives, two updated indexes, and three texts from the newly arrived matching
+packet. Its report was read before closing the review. The placement map and exact
+checks are in \nolinkurl{provenance/closing_provenance.json}~\cite{closing}.\par
+
+The source directory is the same at the two upstream pins used by the older reports.
+The vendored reference pin is
+\nolinkurl{openai/math@7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a} \cite{upstream}.
+We retain the sharper manuscript appendix interface, while noting that the repository's
+linked Lean scope page states a weaker general bound. No formalization build was run.
+
+\subsection{The eight second-round arrivals}
+\small
+\begin{longtable}{@{}p{.265\textwidth}p{.415\textwidth}r@{}}
+\toprule
+Packet stem & Principal addition & Time coefficient\\
+\midrule\endfirsthead
+\toprule Packet stem & Principal addition & Time coefficient\\\midrule\endhead
+\nolinkurl{eth_asymmetric_packet_balancing} & Two-stage pair-load balance; fresh-side
+vs. retained-side degree invariant; additive precision buffer. & $76.908995$\\[4pt]
+\nolinkurl{3sat_round2_refinement} & Matching-potential balance and different root/tail
+alphabets under a symmetric degree constraint. & $84.066271$\\[4pt]
+\nolinkurl{eth_balanced_packing} & Near-unit padding and revised schedules. & $94.748202$\\[4pt]
+\nolinkurl{eth_high_moment} & Higher-moment conditional expectations, thin precision
+guard, and a smaller initial degree exponent in a SAT reduction. & $94.748202$\\[4pt]
+\nolinkurl{eth_matching_refinement} & Matching-potential near-unit padding and thin
+gaps; overlaps the same already covered coefficient. & $94.748202$\\[4pt]
+\nolinkurl{eth_packet_refinement} & Exponential conditional potentials and improved
+packing conditions. & $95.663940$\\[4pt]
+\nolinkurl{eth_recursive_refinement} & Missing-residue basis, including slope $64/21$,
+and refined recursive scheduling. & $133.207372$\\[4pt]
+\nolinkurl{eth_joint_cauchy} & Full crossing-orientation factorization, slope four at every
+valuation; fully charged caching and Strassen evaluation. & $319.685757$\\
+\bottomrule
+\end{longtable}
+\normalsize
+The last packet also gives a faster cached certificate $225.597057$ with space
+coefficient $196.199446$, using its older packing/schedule parameters. These numbers
+must be recomputed after composition; comparing our result only with $225.6$ would
+miss most of the existing gain. Archive names, exact member hashes, and a detailed
+incoming audit are included in the package \cite{incoming}.
+
+\subsection{What is inherited and what is new}
+The following are inherited: the deformation $W(T)$, integral local coordinates,
+creation-precision convention, recovery identity, child-network factorization, sharp
+Hermite precision, full-orientation Cauchy weights, exact-weight index lists, asymmetric
+pair balancing, and the idea of caching group functions. Variable root/tail alphabets
+and geometric depth allocations also already occur in the corpus.
+
+The new work is the binary construction of cached block tables; its complete use with
+an exact field-to-quotient-ring multiplication backend and a validated explicit schedule;
+and the proved and implemented streaming prefix evaluator. Classical matrix multiplication,
+CRT, dynamic programming, and prefix products are credited techniques. Novelty is claimed
+only for this refinement and integration relative to the reviewed corpus, not as a global
+priority claim for those techniques.
+
+\section{The combined baseline and a replacement guarantee}
+\label{sec:baseline}
+At an active call, let $M$ be the wire count, $L=2^a$ the packet length, $i$ a retained
+valuation, $D=L/2^i$, $r$ the grouping alphabet, and $u$ the taper length.
+Near-unit padding has total mass $(1+o(1))M$. The inherited exact recovery analysis gives
+\[
+ p_t\le (6+o(1))\frac{MD}{u}.
+\]
+For each directed pair of distinct groups there are at most
+$(2+o(1))M/(r^2D)$ mode variables of each index $q$. The full-orientation weights are
+\[
+ w_q=a+1-i+4q-2s_2(q).
+\]
+Every mode has exactly one source group and one target group, so replacing its basis
+does not add wires or enlarge packet-vertex degrees \cite{joint}.
+
+Partition mode tuples by the exact weight assigned to each directed pair. There are
+polynomially many such arrays because $r$ is fixed and $p_t$ is polynomial in $s$.
+Each pair's list can be indexed by the ordinary unbounded-knapsack recurrence
+$D(j,b)=D(j-1,b)+D(j,b-w_j)$, with exact integers of polynomial bit length.
+For an allocated array, let $h_e$ be the logarithm base two of a pair-list length.
+The inherited weighted entropy estimate, with the improved padding constant, is
+\begin{equation}\label{eq:weighted}
+ \sum_e t_e h_e\le\left(\frac{\sqrt{\sum_e t_e^2}}r+o(1)\right)K(M,u),
+ \qquad K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac{M}{\sqrt u},
+\end{equation}
+for any fixed nonnegative weights $t_e$. This bound is uniform even for small or zero
+pair budgets; it follows from a common generating-function parameter, not an invalid
+large-budget approximation on each edge separately.
+
+\subsection{Reconstructing the existing 16-group cached bound}
+The asymmetric supplied schedule has
+$u_0\sim\lambda/81$ and $u_d\sim\lambda/(108\,4^{d-1})$ for $d\ge1$, with
+$M_d\le(1+o(1))s/8^d$. The full-mode polynomial-space sum therefore has coefficient
+\[
+ \frac{\pi\sqrt{15/8}}{\ln2}(9+\sqrt3)
+ =66.6051434076\ldots.
+\]
+For the prior cached method, partition the 16 groups into sizes $5,5,6$ and put
+$\omega_S=\log_2 7$. The star-cache, naive block construction, multiplication, and
+boundary storage factors are respectively
+\[
+ a_0=\frac{\sqrt{30}}{16},\quad a_B=\frac{\sqrt{150}}{16},\quad
+ b_S=\frac{\sqrt{120+50(\omega_S-2)^2}}{16},\quad
+ j_B=\frac{\sqrt{120}}{16}.
+\]
+The root $K$ coefficient is $9\pi\sqrt2/\ln2$. Since the fully charged tail is smaller
+than the root multiplication term, the existing composition has time coefficient
+$44.5375718550\ldots$ and space coefficient $39.4959495337\ldots$.
+This also shows why a new polynomial-space coefficient of 50 or 60, by itself, would
+not improve the unrestricted-time frontier.
+
+\subsection{Why the replacement preserves the matched bound}
+For a block $U$ of $k$ groups, the old construction enumerates all its incident directed
+pair axes, whose number is $2k(r-k)+k(k-1)$. If $U=A\sqcup B$, with $|A|=a$ and
+$|B|=b$, the new merge has only its $2k(r-k)$ boundary axes and the $2ab$ shared axes.
+Since
+\[
+ 2ab\le k(k-1)\qquad(a,b\ge1),
+\]
+even the straightforward merge has no larger entropy certificate than that block's
+old exhaustive construction. Every intermediate subset has its incident axes contained
+in those of the final block. Fixed $r$ means there are only a constant number of merges.
+A faster matrix multiplication backend further lowers the merging bound; it also
+lowers the final three-block multiplication bound relative to Strassen. The star-cache
+cost and recursive child oracles are unchanged.
+
+For the storage comparison, require each top-level block to contain at most $r/2$
+groups. Its intermediate subsets then have no larger boundary-table envelope, since
+$2j(r-j)$ increases for $j\le r/2$. Thus, for \emph{every fixed admissible schedule
+and three-block partition satisfying this block-size condition}, the new local time
+envelope is no larger and storage retains the old boundary-table envelope. All balanced
+partitions used here satisfy the condition. The old builder may be retained for more
+imbalanced partitions. Recurrence monotonicity carries the replacement through the recursion. It need not give a strict leading gain on a schedule whose child
+cache cost is already the bottleneck. The explicit schedule proved next makes the gain
+strict. This pointwise replacement statement is stronger and more informative than
+claiming that one arbitrary old parameter choice was globally optimal.
+
+\paragraph{A matched ablation of the two changes.}
+Use exactly the new strict root/tail schedule below for all three variants. The earlier
+flat block builder with Strassen has coefficient $38.4844959057$. Giving that same flat
+builder the faster exponent-$12/5$ backend reduces the coefficient to $37.5461655198$;
+its root table-building term is $(3/4)K_0^*$. Replacing flat construction by the binary
+tree reduces it further to $35.3545880584$, a $5.84\%$ coefficient decrease from that
+already strengthened control. These are analytical upper-bound comparisons at matched
+parameters. The improvements are not inferred from a search for an optimal old schedule.
+
+
+\input{cached_tree.tex}
+
+\input{prefix_theorem.tex}
+
+\section{Executable evidence and reproducibility}
+\label{sec:evidence}
+The code consists of local exact kernels and finite proof checks. It does not invoke a
+SAT solver and does not implement the full asymptotic matrix multiplication algorithm.
+The fast-backend theorem imports an established algebraic algorithm; the executable CRT
+checks test the ring interface and reconstruction independently of that asymptotic backend.
+
+\subsection{Exact checks}
+The prefix verifier uses an independent direct product control in the same modular ring,
+and optionally loads the unchanged supplied rational implementation from the pinned
+incoming archive. The recorded normal and optimized-Python runs agree. They check:
+\begin{itemize}[leftmargin=1.5em]
+\item 69 parameter cases and 8,564 target/source feature values against the direct
+modular control;
+\item 3,124 feature values against the unchanged rational baseline;
+\item 2,112 reconstructed crossing-matrix entries against direct evaluation;
+\item 11 zero-prefactor fixtures, invalid parameter rejection, and a deliberately
+incorrect valuation normalization that the checker detects.
+\end{itemize}
+These checks include non-prime-subring interpolation values in the unramified quadratic
+ring $(\mathbb Z/2^p\mathbb Z)[U]/(U^2+U+1)$. The proof applies to arbitrary finite
+unramified extensions, but that general extension-degree implementation is not included.
+
+An independent cached-table checker verifies 48 small networks, 144 binary merges,
+14,448 table entries, and 48 three-block contractions. It also verifies 72 rectangular
+CRT products and 486 product entries, both over $\mathbb Z/2^p\mathbb Z$ and over a
+ring with $U^2+U+1=0$ and $V^2=0$, for $p\in\{1,3,7\}$. Two deliberate corruptions
+are detected. This independently exercises nilpotents, negative structure constants,
+index bookkeeping, and exact reconstruction. Schedule arithmetic checks validate the
+rational budget, strict exponent margins, recurrence constants, and merge counts.
+Finite fixtures support the implementation and bookkeeping; the all-size theorem rests
+on the proofs and their explicitly named imports.
+
+\subsection{Paired local benchmarks}
+Both timed methods compute the same normalized features using the same modular ring
+operations and the same requested precision. The control recomputes each prefix product
+from the beginning. The replacement retains each prefix's valuation and unit. Both
+include common-prefactor construction and materialize their output vectors; no
+precomputation is carried across runs. Each case uses three interleaved repeats, and
+every timed output is checked for exact equality. Four final ports of the orientation
+are sampled, so almost all requested features are active.
+
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+Retained modes & Precision & Direct median (s) & Prefix median (s) & Ratio\\
+\midrule
+8 & 128 & 0.000677 & 0.000415 & $1.63$\\
+32 & 128 & 0.011840 & 0.001914 & $6.19$\\
+128 & 128 & 0.208508 & 0.007927 & $26.30$\\
+256 & 128 & 0.905541 & 0.017406 & $52.02$\\
+512 & 128 & 3.851839 & 0.037781 & $101.95$\\
+512 & 256 & 5.301607 & 0.041325 & $128.29$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The full precision, packet, valuation, timing, and platform metadata is in
+\nolinkurl{results/prefix_benchmark.json}; the CSV preserves the tabulated values.
+In the 512-mode, 128-bit case the largest retained mode weight is 58, so the improvement
+does not come from declaring high-weight modes zero. The multiplication count drops
+from 2,093,066 to 20,410 and the unit-inversion count from 1,044,489 to 8,161.
+These arithmetic counts are more portable than wall-clock timings on shared hardware.
+The tiny first timing is particularly sensitive to fixed overhead.
+
+This benchmark is intentionally a substantial basis-construction workload. It is not a
+representative SAT benchmark suite. The measured ratio must not be presented as a
+$102\times$ end-to-end SAT acceleration. The kernel's contribution to a future complete
+solver depends on how much time that solver spends generating features rather than
+enumerating tuples, evaluating tensor entries, or multiplying cached tables.
+
+\subsection{Reproduction commands}
+From the extracted package root, run:
+\begin{verbatim}
+python3 code/verify_all.py
+python3 -O code/verify_all.py
+python3 code/benchmark_prefix.py --repeats 3 \
+  --output results/reproduced_benchmark.json \
+  --csv results/reproduced_benchmark.csv
+python3 code/build_report.py
+\end{verbatim}
+Only the Python standard library is required for the exact checks and benchmarks.
+The report build requires pdfLaTeX and the standard LaTeX packages named in its preamble.
+The optional rational-baseline check requires the pinned source member; its SHA-256 and
+archive identity are recorded, and \nolinkurl{README.txt} gives the command. The core package
+checks run offline without that source. The manifest verifies release bytes; re-running
+benchmarks creates separate files and does not change the recorded measurements.
+
+\section{SAT consequences, integration, and remaining questions}
+\label{sec:consequences}
+The strongest density-sensitive order claimed by the reviewed reductions remains
+\begin{equation}\label{eq:sat-envelope}
+ \poly_k(n,m)\,
+ 2^{O_k\!\left(\frac{n}{\sqrt{\log n}}
+       \min\{\log(2+m/n),\log\log n\}\right)}.
+\end{equation}
+At fixed density this is $\poly_k(n,m)2^{O_k(n/\sqrt{\log n})}$.
+At $m=\Theta(n\log\log n)$, the numerator can be
+$n\log\log\log n$. Neither new component changes these logarithmic orders.
+The cached variant uses subexponential space; it must not inherit a polynomial-space
+label from the underlying streamed algorithm.
+
+The full construction is conditional only in the explicit, ordinary sense of importing
+the source framework and established algebraic results. Its new table construction,
+ring reduction, and schedule do not assume the unprovided mode-summation oracle from
+the stronger earlier conjectures. Still, the review did not certify the complete ETH
+claim from first principles, compile its formal development, or produce a full solver.
+The corpus-level trust status should remain unchanged until those larger tasks are done.
+
+\subsection{Integration plan}
+Keep the immutable tensor-description and creation-precision conventions. At each call,
+use the improved pair balancing and full-orientation Cauchy modes. Form exact-weight
+pair lists, pay for each cached group value through the existing child contraction, and
+then build the three boundary tables via the specified binary trees. Use the exact
+coordinate/CRT wrapper for the fast field backend. The implementation can choose
+Strassen or direct multiplication at small sizes without affecting the asymptotic theorem.
+
+For the working prototype, replace the repeated-product feature evaluator with
+\nolinkurl{PrefixKernel.features}. If a generalized extension-ring implementation already
+exists, the same valuation/unit recurrence can be ported into that arithmetic layer.
+Do not obtain normalized features by dividing a reduced residue by a power of two;
+that would lose information. Track the power separately from the outset.
+
+An appropriate integration location is a new research directory beneath
+\nolinkurl{Computability/SubexponentialSAT/Research}. Add a row describing the exact theorem
+and the local benchmark scope. Keep the new report, scripts, recorded results, and
+source manifest together. This archive does not modify the remote repository.
+
+\subsection{Further research questions}
+\begin{enumerate}[leftmargin=1.6em]
+\item \textbf{Can cached contraction exploit the observed pair entropies?}
+The bound uses a worst-case Cauchy--Schwarz estimate for edge classes. For a particular
+exact-weight array, its actual list lengths may favor a different split tree or a
+rectangular multiplication routine. An optimizer over the fixed group set is feasible;
+proving a uniformly smaller coefficient requires analyzing all budget distributions.
+\item \textbf{Can a smaller-space algorithm obtain the same time coefficient?}
+Recomputation, separator schedules, or batched boundary slices may interpolate between
+polynomial space and full caching. The cost of reconstructing a group value must remain
+explicit. A memory reduction without paying its repeated oracle calls would be spurious.
+\item \textbf{Can actual sparse port sets beat the padded Smith profile?}
+The slope-four invariant factors are optimal for the complete padded crossing block
+under invertible integral basis changes. They do not constrain a submatrix with many
+missing real ports. An instance-sensitive pivot order could reduce finite mode lists;
+the cost of finding it must be included.
+\item \textbf{Can the $O(L)$ common prefactor and remaining inversions be reduced?}
+The prefix recurrence removes quadratic repetition. Product trees, denominator reuse,
+or batch unit inversion could improve further constants, with a controlled memory
+tradeoff. A fair benchmark should keep both precision and arithmetic representation fixed.
+\item \textbf{Can the logarithmic order be improved?}
+The existing linear mode-weight growth and retained-level packing budget still yield
+$M/\sqrt{\log s}$. A faster summation theorem or a smaller valid SAT-to-network encoding
+would be needed for a different order. The proposed $n/\log n$ interfaces remain open.
+\item \textbf{Can the pipeline become an executable, formally checked counter?}
+The next substantial engineering step is a complete exact contraction engine with
+canonical precision tags, entry oracles, interpolation, group caching, and certified
+cost accounting. This would enable meaningful SAT benchmarks and provide clear targets
+for Lean or Rocq verification.
+\end{enumerate}
+
+\section{Evidence ledger and limitations}
+The package separates three types of evidence. Mathematical proofs establish the new
+all-size statements relative to their named imports. Deterministic exact checks exercise
+the finite identities and implementations. Timings measure only the supplied local
+kernel under the recorded environment. None of these categories substitutes for the others.
+
+The source pin freezes the review while the repository continues to evolve. A later
+commit may contain another improvement; the recorded path history and digests make this
+comparison reproducible. The report does not claim a lower bound on any old algorithm's
+actual running time, a globally optimal coefficient, or a priority result beyond the
+reviewed corpus. The very small positive packing margins imply potentially enormous
+asymptotic crossover sizes. The prefix benchmark is the concrete practical result that
+can be reproduced immediately.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repoindex} Vladimir Reshetnikov, \emph{ProveIt: Sub-exponential 3-SAT project
+index}, initial snapshot \nolinkurl{ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06},
+closing snapshot \nolinkurl{474ddba696a5d385c091c23fb2995f69edd13e00}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06/Computability/SubexponentialSAT/README.md}.
+\bibitem{incoming} Vladimir Reshetnikov, \emph{ProveIt incoming research archives},
+arrival \nolinkurl{3e57705cf14ee9ac99c0ac35cfff751dcf70b396}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06/docs/incoming}.
+The source manifest records each ZIP's Git blob and SHA-256 digest.
+\bibitem{upstream} OpenAI, \emph{The Exponential Time Hypothesis is False},
+October 25, 2026; pinned source
+\nolinkurl{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a}.
+\url{https://github.com/openai/math/tree/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026}.
+In particular, \nolinkurl{build/quantitative-contraction.tex}, Git blob
+\nolinkurl{51ba54efc29f51bbc0426f848003030da484f354}, and the adjacent reduction source.
+\bibitem{asym} \emph{Asymmetric packet balancing for subexponential SAT},
+October 26, 2026. Incoming archive
+\nolinkurl{eth_asymmetric_packet_balancing_2026-10-26.zip};
+Git blob \nolinkurl{4313cf09e210adb48564296893e45c4d3633b903}.
+\bibitem{joint} \emph{Full Crossing-Block Cauchy Modes: An improvement beyond the reviewed ProveIt ETH proposals and a faster option using more memory},
+October 26, 2026. Incoming archive
+\nolinkurl{eth_joint_cauchy_2026-10-26.zip};
+Git blob \nolinkurl{009f8b85966ef630792223aef685594b24aab520}.
+The local finite factorization, full-block Smith profile, and weighted-entropy bound
+are imported from its report.
+\bibitem{earlier} The seven previously placed refinement packets, October 26, 2026,
+listed in Section~\ref{sec:review}; their report sources and hashes are recorded in
+\nolinkurl{provenance/source_files.json}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06/Computability/SubexponentialSAT/Research}.
+\bibitem{claude} Claude (Anthropic), \emph{A $2^{o(n)}$ time algorithm for 3-SAT},
+October 26, 2026, 49 pages; supplied at
+\nolinkurl{Research/claude-2o-n-3sat/eth.pdf} in the pinned project.
+The reported Lean development is not independently checked here.
+\bibitem{closing} Vladimir Reshetnikov, ProveIt second-round placement,
+\nolinkurl{6d3adc45061535ebe6fa7cd3d9b37dff7dcfc22a}, reviewed at
+\nolinkurl{474ddba696a5d385c091c23fb2995f69edd13e00}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/474ddba696a5d385c091c23fb2995f69edd13e00/Computability/SubexponentialSAT/Research}.
+\bibitem{mm2024} J.~Alman, R.~Duan, V.~Vassilevska Williams, Y.~Xu, Z.~Xu, and
+R.~Zhou, \emph{More Asymmetry Yields Faster Matrix Multiplication},
+arXiv:2404.16349v1, April 25, 2024.
+\url{https://arxiv.org/html/2404.16349v1}.
+Only the conservative consequence $\omega<12/5$ and the field-algebraic formulation
+are used; no claim about the latest matrix multiplication record is needed.
+\end{thebibliography}
+\end{document}

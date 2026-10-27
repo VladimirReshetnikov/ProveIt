@@ -1,0 +1,178 @@
+\section{Reproduction, integration, and proof status}
+\label{sec:delivery}
+
+\subsection{What the archive contains}
+
+The report's complete editable source is \texttt{report.tex}, with
+\texttt{theory.tex}, \texttt{implementation.tex}, \texttt{delivery.tex},
+and \texttt{references.tex}. The compiled \texttt{report.pdf} is included.
+The \texttt{code/} directory contains the two implementations, the
+byte-identical reference labeling routine, exact checkers, benchmark
+drivers, and a script to regenerate the figure from the recorded JSON.
+The benchmark results retain raw trials and input data. The mathematical
+checkers use Python's standard library only; regenerating the figure
+also requires Matplotlib. Building the PDF requires a standard LaTeX
+installation with the packages listed in its preamble.
+
+The \texttt{provenance/} directory records the checkout commit, relevant
+commits, source hashes, archive members, and the reference implementation's
+license. The \texttt{notes/} directory retains the detailed review and
+independent proof-checking notes. Those are research records rather than
+additional verified theorems. The manifest records every delivered file
+except the manifest itself. It establishes bundle consistency, not an
+independent signature or provenance authority.
+
+\subsection{Replay}
+
+From the extracted archive directory:
+\begin{verbatim}
+python3 run_checks.py
+python3 code/benchmark_cached_balancing.py --output new_packing_times.json
+python3 code/benchmark_precision_peeling.py --output new_precision_times.json
+python3 code/make_figures.py
+python3 build_report.py
+\end{verbatim}
+On a Windows installation, \texttt{py} may replace \texttt{python3}.
+The first command runs all four correctness/parameter checkers normally
+and with optimization enabled, compares their parsed results, and writes
+a release-verification summary. The benchmark commands deliberately write
+new files so the recorded measurements remain intact. Their wall-clock
+values depend on the execution host and load.
+
+\subsection{Integration order}
+
+The smallest independently usable change is replacing the asymmetric
+packet's \nolinkurl{balance_pair_labels} implementation with
+\texttt{cached\_balancing.py}. It preserves the call signature and returned
+object. Its exact comparison suite can serve as a migration regression.
+This does not require adopting a new contraction schedule.
+
+For the polynomial-space mathematical construction, retain the source
+deformation, group factorization and immutable tensor descriptions. Use
+asymmetric balancing, the prior full-block Cauchy modes, the exact taper,
+the buffer \eqref{eq:buffer}, and schedule \eqref{eq:ps-schedule}.
+Keep separate degree bounds for retained and fresh sides; replacing them
+by one maximum would discard the extra capacity used in the proof.
+
+The cached construction is a separate resource option. Use schedule
+\eqref{eq:new-cache-schedule}, exact directed-pair weight arrays, the
+specified root/tail block partitions, and recurrence
+\eqref{eq:cache-recurrence}. Compute group functions by recursive
+contraction. Pay for block construction as well as matrix multiplication.
+Do not quote a cache gain as if the group values were free.
+
+Finally, precision peeling can be applied inside either mode-summation
+method. Normalize target coefficients before the precision reduction,
+freeze each new child's capped representatives, and restore the outside
+power $2^V$ when accumulating modulo $2^P$. The cap regression in the
+checker shows why retaining an older larger representative during a later
+lift would give the wrong semantics. This change is appropriate only
+where those representatives and divisions are handled explicitly.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.40\textwidth}>{\raggedright\arraybackslash}p{.51\textwidth}@{}}
+\toprule Claim or component & Evidence and boundary\\\midrule\endfirsthead
+\toprule Claim or component & Evidence and boundary\\\midrule\endhead
+New multi-stage coefficient below 64 &
+Ordinary proof of gates, precision, recurrence and space; exact rational
+certificate; independent analytic review. Imported contraction lemmas remain dependencies.\\[4pt]
+New cached coefficients below 38 and 34 &
+Complete paid recurrence, block/table counts and memory proof; exact
+interval checks; independent review including the root table term.\\[4pt]
+Faster exact labeling implementation &
+Algebraic score identity; exact equality to supplied reference on 840
+instances; raw paired benchmark trials. This is an implemented subroutine.\\[4pt]
+Residual-precision identity &
+Exact coefficient substitution and congruence proof, valid in the full
+integral ring; implementation and actual-domain checks over rational scalars.
+No new extension-ring implementation is supplied.\\[4pt]
+Full upstream ETH theorem &
+Imported framework; not independently formalized or rebuilt here. The
+repository and preprint are identified precisely.\\[4pt]
+Full fast SAT program or measured SAT acceleration &
+Not supplied. Local code and timing evidence must not be presented as a
+full formula-to-count implementation.\\[4pt]
+Smaller unrestricted logarithmic order &
+Not established. The missing structured-summation or representation
+interfaces in the earlier packets remain open.\\\bottomrule
+\end{longtable}
+
+\subsection{Where another substantial gain would need to come from}
+
+The delivered changes remove redundant work while preserving established
+invariants. The direct engineering next step is integrating the exact
+labeling replacement and residual-precision representation into a complete
+contraction engine, then measuring their share of actual time. That would
+answer a question these isolated kernels cannot: whether packing,
+coefficient extraction, creator-oracle evaluation, or mode enumeration
+dominates at usable sizes.
+
+For a mathematical order improvement, the concrete missing target is
+still a mode-summation or compression algorithm with controlled group
+tensor evaluation cost. The local full-block Smith profile grows linearly,
+so another invertible integral basis change within that same block cannot
+make its invariant-factor growth quadratic. That local statement leaves
+open cancellation across modes, a different deformation, and a more
+economical SAT-to-network representation. A future claim along any of
+those routes should specify the actual interface and account for its
+precision, wire count, oracle cost, and memory before comparing exponents.
+
+\appendix
+\section{Independent elementary bounds for the cached headline}
+
+The interval checker gives many more digits than the theorem needs. For
+a short independent certificate, let $\xi=\log_2(7/4)$. Exact integer
+powers give
+\[
+ \frac{25}{31}<\xi<\frac{13}{16},\qquad
+ 7^{31}>2^{87},\quad 7^{16}<2^{45}.
+\]
+The tail ratio satisfies $\gamma<21/50$, so
+\[
+ \frac{a_9}{1-\gamma}<\frac{200}{261}
+ <\frac{\sqrt{566}}{31}<B_9.
+\]
+For the total coefficient, rational brackets from the positive logarithm
+series and Machin's formula give
+\[
+ \kappa<6.413,\qquad
+ \frac{a_7}{\sqrt{89/5000}}<3.710,\qquad
+ \frac{(2/7)B_9}{\sqrt{1233/125000}}<2.213.
+\]
+Their products imply
+\[
+ C_{\rm cache}<6.413(3.710+2.213)=37.984199<38.
+\]
+Similarly $j_7/\sqrt{89/5000}<5.250$, hence
+$C_{\rm mem}<33.66825<34$. All square-root comparisons reduce to
+integer inequalities after squaring positive quantities. The full
+independent review also verifies that the first-tail cached-child term
+exceeds the root table term. The supplied exact interval checker proves
+all the corresponding strict comparisons directly.
+
+\section{Source-to-change map}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.43\textwidth}>{\raggedright\arraybackslash}p{.48\textwidth}@{}}
+\toprule Original source location & Use or replacement\\\midrule\endfirsthead
+\toprule Original source location & Use or replacement\\\midrule\endhead
+Preprint quantitative contraction: coefficient ring and exact arithmetic &
+Retain integral extension arithmetic and immutable representative semantics.
+For peeling, add the explicit creation cap of Section~\ref{sec:peeling}.\\[4pt]
+Preprint packet-packing lemma &
+Use the incoming asymmetric lemma and preserve its uniform padded-cell
+arrangement; optionally run the faster exact scorer.\\[4pt]
+Preprint tapered Hermite recovery &
+Use the already established exact condition count and six-unit leading
+precision allowance. The additive buffer remains necessary.\\[4pt]
+Preprint crossing-mode expansion &
+Use the joint packet's full-orientation slope-four features, retaining
+one source and one target group per mode.\\[4pt]
+Preprint child networks and implicit descriptions &
+Retain the graph topology and creator descriptors. Track fresh-side degree
+separately when applying the new schedules.\\[4pt]
+Joint packet's exact pair-index mode graph &
+Use its computed group caches and division-free rectangular multiplication,
+with new alphabets and the full new recurrence.\\[4pt]
+Asymmetric packet's executable column scoring &
+Replace repeated row summation by Proposition~\ref{prop:scores}; the
+returned labeling and exact certificate remain identical.\\\bottomrule
+\end{longtable}

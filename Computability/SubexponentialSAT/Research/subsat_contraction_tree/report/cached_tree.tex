@@ -1,0 +1,205 @@
+\section{A stronger cached contraction by recursive table construction}
+\label{sec:cached-tree}
+
+This section gives a new coefficient certificate for the normalized tensor interface used by the reviewed packets. Let $s\ge2$, $\lambda=\lceil\log_2s\rceil$, and let $\mathcal L$ be the input-description length. The input is a bipartite Boolean tensor network with at most $s$ wires, maximum degree at most $\lceil s^{9/10}\rceil$, and entries in
+\[
+ (\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),\qquad P_0,\ell\le s.
+\]
+The permitted initial entry routines use $\operatorname{poly}(s+\mathcal L)2^{O(s^{9/10})}$ time and polynomial space. Constants in these hypotheses are fixed. The unchanged deformation, integrality, Hermite recovery, recursive factorization, and creation-precision conventions of the source manuscript are imported. The asymmetric balancing and slope-four Cauchy separation are imported from the incoming packets. Thus the following is a relative algorithmic refinement of those exact identities; it is not an independent certification of the upstream ETH claim.
+
+\begin{theorem}[Cached coefficient certificate]
+\label{thm:cached-tree}
+Under this interface, the construction below runs in
+\[
+ (s+\mathcal L)^{O(1)}2^{(C_T+o(1))s/\sqrt\lambda}
+ \quad\hbox{time},\qquad
+ (s+\mathcal L)^{O(1)}2^{(C_S+o(1))s/\sqrt\lambda}
+ \quad\hbox{space},
+\]
+where
+\[
+ C_T=\frac{\pi\sqrt{24339}}{20\ln2}=35.354588058401\ldots,\qquad
+ C_S=\frac{\pi\sqrt{915}}{4\ln2}=34.274803005023\ldots .
+\]
+In particular, $35.36$ and $34.28$ are valid respective coefficients for all sufficiently large $s$. A simpler rounded statement uses $36$ for time and $35$ for space. This variant uses subexponential, rather than polynomial, space.
+\end{theorem}
+
+The new steps are a coordinate-and-CRT bridge to fast field matrix multiplication, and building each group-block tensor by a binary contraction tree. The latter prevents table construction from becoming the bottleneck when the matrix multiplication backend is improved. The construction retains exact per-pair weight allocation and pays for every recursively evaluated group-function entry.
+
+\subsection{The exact pair-index interface}
+At a retained interpolation node, write $M$ for the current wire count, $u$ for the taper length, and $D=2^{a-i}$. Nearly lossless padding gives padded mass $P=(1+o(1))M$ and child size at most $(2/r+o(1))M$. The slope-four modes have weights
+\[
+ w_q=a+1-i+4q-2s_2(q),
+\]
+where $s_2$ is binary popcount. There are at most $(2+o(1))M/(r^2D)$ modes of any given index $q$ for each directed pair $g\ne h$. Each such mode has exactly one source group and one target group. The sharp Hermite precision is
+\[
+ p_t\le(6+o(1))MD/u.
+\]
+
+Enumerate arrays of exact pair budgets $(b_{gh})$ with $\sum b_{gh}<p_t$. Since $r$ is a fixed integer, there are polynomially many such arrays. For one array, let $\mathcal I_{gh}$ be the finite set of mode-exponent tuples of exact weight $b_{gh}$ on that pair. An empty set makes the array contribute zero. Exact-weight lists can be counted, ranked, unranked, and enumerated with polynomial resources per index by the integer recurrence
+\[
+ D(j,b)=D(j-1,b)+D(j,b-w_j),\qquad D(0,0)=1,
+\]
+with negative budgets assigned zero. These counts have polynomial bit length. The contribution of the array is exactly a graphical tensor contraction
+\[
+ \sum_{(\xi_{gh})\in\prod_{g\ne h}\mathcal I_{gh}}
+                \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}).
+\]
+An entry of $Z_g$ is obtained by contracting the prescribed child network. It is not a unit-cost oracle. Put $h_e=\log_2|\mathcal I_e|$; ceilings for binary indexing change all subsequent bounds by only $O_r(1)$.
+
+For any fixed nonnegative weights $z_e$, the weighted-partition calculation gives
+\begin{equation}\label{eq:tree-entropy}
+ \sum_ez_eh_e\le
+ \left(\frac{\sqrt{\sum_ez_e^2}}r+o(1)\right)
+ K(M,u),\qquad
+ K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac M{\sqrt u}.
+\end{equation}
+To check the constant, use
+$\sum_{q\ge0}-\ln(1-e^{-\theta(1+4q-2s_2(q))})
+=\pi^2/(24\theta)+O(\log^2(2/\theta))$.
+For pair $e$, choose generating-product parameter $\theta/z_e$ and multiply its logarithmic bound by $z_e$. Summing gives leading terms
+\[
+ \theta p_t+\frac{\pi^2}{24\theta}\frac{(2+o(1))M}{r^2D}
+                  \sum_ez_e^2.
+\]
+Optimizing proves~\eqref{eq:tree-entropy}. This argument is valid for zero or small individual pair budgets: no separate large-budget approximation for an individual list is used. The additive buffer below makes the error uniform at every active depth.
+
+\subsection{Fast matrix multiplication over the actual coefficient ring}
+The field-matrix result needed here is only the established strict inequality $\omega_{\mathbb Q}<12/5$. For example, Alman, Duan, Vassilevska Williams, Xu, Xu, and Zhou, \emph{More Asymmetry Yields Faster Matrix Multiplication} (arXiv:2404.16349), prove a stronger exponent bound~\cite{mm2024}. We use $12/5$ with fixed slack; no current-record assertion is needed.
+
+\begin{lemma}[Integer-coordinate bridge]
+\label{lem:coordinate-bridge}
+Let $R$ be a free module of polynomial rank over $\mathbb Z/2^p\mathbb Z$, with a specified polynomial-size integer multiplication table, where $p$ is polynomial in $s$. Assume the logarithms of the matrix dimensions are polynomial in $s$. Rectangular matrix multiplication over $R$ can be performed in
+\[
+ \operatorname{poly}(s+\mathcal L)\,
+ d_1d_2d_3\bigl(\min(d_1,d_2,d_3)\bigr)^{-3/5}
+\]
+bit operations, with storage bounded by a polynomial factor times the input/output matrix sizes. This applies to the source ring
+$R=(\mathbb Z/2^p\mathbb Z)[U,V]/(f(U),V^\ell)$.
+\end{lemma}
+\begin{proof}
+Fix once and for all a finite rational bilinear matrix-multiplication algorithm with exponent strictly below $12/5$, available from the quoted strict field bound. Clear its finitely many constant denominators. For every prime outside the resulting fixed exceptional set, the same bilinear identities hold over that prime field. Recursing on this fixed base algorithm, computing one recursive product at a time and accumulating the output blocks, gives quadratic field-element storage and exponent at most $12/5$. Its coefficients and base dimension are constants, however large, independent of $s$ and the matrix entries.
+
+Lift every coordinate of an input entry to its integer representative in $[0,2^p)$. For each pair of module coordinates, compute the corresponding ordinary integer matrix product. Each unreduced integer entry is at most $d_2(2^p-1)^2$, whose bit length is at most $2p+\lceil\log_2d_2\rceil+1$, hence polynomial in $s$. Put $B=2p+\lceil\log_2d_2\rceil+1$. Compute the product modulo the first $B$ nonexceptional odd primes; their product exceeds $2^B$ and hence the reconstruction bound. These primes have polynomial numerical magnitude in $B$ and can be found with a polynomial-size sieve. Field arithmetic and CRT recovery then take polynomial work per arithmetic or table-entry operation. Recover the nonnegative integer products, apply the specified integer structure constants, and reduce modulo $2^p$. Polynomially many coordinate pairs suffice. The quotient-ring multiplication table for $f(U)$ and $V^\ell$ is obtained by ordinary polynomial reduction and has polynomial size and bit length.
+
+For rectangular matrices, split into square blocks of side comparable to $\min(d_1,d_2,d_3)$ and pad by at most a constant factor. The number of block products is $O(d_1d_2d_3/\min(d_j)^3)$; the square cost proves the formula. Process one product and one CRT prime at a time. Store the input/output arrays, accumulated residue information of polynomial bit length per cell, and one recursive square product. This gives the stated storage. At no point is two, a nilpotent, or a general nonunit inverted in $R$.
+\end{proof}
+
+In terms of the three index-length logarithms $H_1,H_2,H_3$, the matrix product exponent is
+\begin{equation}\label{eq:tree-rectangular}
+ H_1+H_2+H_3-\frac35\min(H_1,H_2,H_3).
+\end{equation}
+It is the maximum of the three weighted sums assigning weights $1,1,2/5$ to these classes. If their respective directed-pair cardinalities are $v_1,v_2,v_3$,~\eqref{eq:tree-entropy} consequently bounds it by
+\begin{equation}\label{eq:tree-matrix-cardinality}
+ \left(\frac{\sqrt{v_1+v_2+v_3-(21/25)\min(v_1,v_2,v_3)}}r+o(1)\right)K(M,u).
+\end{equation}
+The discounted class in this worst-case bound is the smallest cardinality class. This remains an upper bound for arbitrary unbalanced actual index lengths.
+
+\subsection{Build block tables recursively}
+Cache every $Z_g$ on all its incident indices first. There are $2(r-1)$ incident directed pairs, so the number of recursively evaluated child entries is at most
+\[
+ 2^{(a_r+o(1))K(M,u)},\qquad a_r=\frac{\sqrt{2(r-1)}}r.
+\]
+Polynomial factors include the $r$ groups and all exact weight arrays.
+
+For a subset $B$ of groups, define its table $T_B$ on the directed indices between $B$ and its complement by summing the product of its cached group functions over all indices internal to $B$. For disjoint $A,B$, the tables $T_A,T_B$ share precisely the directed indices between $A$ and $B$. Their other index sets are disjoint: one joins $A$ to the outside of $A\cup B$, the other joins $B$ to that outside. Thus $T_{A\cup B}$ is an ordinary rectangular matrix product after reshaping.
+
+If $|A|=a$, $|B|=b$, and $k=a+b$, its three index classes have cardinalities
+\begin{equation}\label{eq:tree-merge-classes}
+ 2a(r-k),\qquad 2ab,\qquad 2b(r-k).
+\end{equation}
+Use~\eqref{eq:tree-matrix-cardinality} for this merge. Recursively split every block into two parts whose sizes differ by at most one. The stored output table for size $k$ has $2k(r-k)$ boundary directed pairs. The cached singleton tables are the base cases, so there is no repeated recursive child call hidden in table construction.
+
+Finally divide all groups into three nonempty blocks with sizes as equal as possible. Contract their tables as a triangle using the same rectangular matrix multiplication. For block sizes $k_1,k_2,k_3$, the three classes have cardinalities $2k_1k_2,2k_1k_3,2k_2k_3$. These operations give the following exact cardinality ledger. A listed cost is squared before division by $r^2$; its square root divided by $r$ is the coefficient on $K$.
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c}
+$r$&block sizes&cache&largest merge&triangle&largest boundary\\\hline
+$8$&$3,3,2$&$14$&$766/25$&$798/25$&$30$\\
+$12$&$4,4,4$&$22$&$1632/25$&$1728/25$&$64$
+\end{tabular}
+\end{center}
+For $r=8$, a size-three merge splits $1+2$: its classes are $10,4,20$, giving $34-(21/25)4=766/25$. The triangle classes are $18,12,12$, giving $42-(21/25)12=798/25$. For $r=12$, a size-four merge splits $2+2$: its classes are $32,8,32$, giving $72-(21/25)8=1632/25$. The triangle has three classes of size $32$, giving $96-(21/25)32=1728/25$. Smaller merges are less costly. Hence the triangle dominates construction in both cases.
+
+Set
+\[
+ b_8=\frac{\sqrt{798/25}}8,\quad j_8=\frac{\sqrt{30}}8;
+ \qquad b_{12}=\frac{\sqrt{1728/25}}{12},\quad j_{12}=\frac23.
+\]
+Per call the rigorous time recurrence, suppressing polynomial factors, is
+\begin{equation}\label{eq:tree-recurrence}
+ T_d\le 2^{(a_{r_d}+o(1))K_d}T_{d+1}
+              +2^{(b_{r_d}+o(1))K_d},
+\end{equation}
+and local stored tables use $2^{(j_{r_d}+o(1))K_d}$ cells. Matrix reshaping can be done by sorting records on their indices. Sequential block processing, external sorting, and fixed-base recursive multiplication add polynomial overhead in the index and record lengths, rather than assuming unit-cost access to exponentially large integers or tables.
+
+\subsection{A rational schedule with strict margins}
+Choose
+\begin{align*}
+ r_0&=8,&u_0&=\lfloor\lambda/61\rfloor,\\
+ r_d&=12\quad(d\ge1),&u_d&=\left\lfloor\frac{125\lambda}{13176\,6^{d-1}}\right\rfloor\quad(d\ge1),\\
+ b&=\lceil6\log_2\lambda\rceil,&a_d&=\sum_{j=0}^d(u_j+b),\\
+ H&=\lceil s/\lambda^{3/4}\rceil.&&
+\end{align*}
+The exact identity
+\[
+ \frac1{61}+\frac{125}{13176}\frac1{1-1/6}=\frac1{36}
+\]
+gives $a_d\le\lambda/36+O((\log\lambda)^2)$ on a logarithmic-depth path.
+The threshold $s/\lambda^{3/4}$ is deliberate. Using $s/\lambda$ with this same factor-six taper decay would not justify a uniformly growing $u_d$.
+
+Here is the bootstrap without a circular depth premise. Consider hypothetical active depths up to $3\log_5\lambda/4+O(1)$ with $M>H$. Then
+\[
+ u_d\ge\lambda^{\eta+o(1)},\qquad
+ \eta=1-\frac{3\ln6}{4\ln5}=0.1650\ldots>0.
+\]
+At the root, with $Q_0=8^{a_0}$, the dominant symmetric packing term has exponent
+\[
+ Q_0^2s^{9/10}=s^{6/61+9/10+o(1)}=s^{609/610+o(1)}.
+\]
+Below the root, all retained vertices have degree at most $s^{9/10+o(1)}$, while the fresh opposite side has degree at most $2^{a_{d-1}+1}$. The asymmetric conditions are
+$Q_dR_d\operatorname{polylog}(s)=o(M)$,
+$Q_d^2C_d\operatorname{polylog}(s)=o(M)$, and
+$2^{a_d}Q_d^2=o(M)$.
+The corresponding exponents are bounded by
+\[
+ \frac9{10}+\frac{\log_2 12}{36}<1,
+ \qquad \frac{2\log_2 12+1}{36}<1.
+\]
+For an entirely rational certificate, $12^{100}<2^{359}$ proves
+$\log_2 12<359/100$, leaving a margin of $1/3600$ in the first inequality. New packet degrees have exponent at most $1/36+o(1)<9/10$. All gaps absorb logarithmic factors, the buffers, and $s/M<\lambda^{3/4}$.
+
+Nearly lossless padding therefore holds uniformly throughout the hypothetical range. The root children have size $(1/4+o(1))M$, and tail children $(1/6+o(1))M$, in particular at most $M/5$ in the tail eventually. This proves the proposed logarithmic-depth bound and closes the induction. The sharper uniform shrink ratios give
+\[
+ M_0\le s,\qquad
+ M_d\le(1+o(1))^d\frac{s}{4\,6^{d-1}}\quad(d\ge1).
+\]
+The buffer also yields $D\ge2^{a_{d-1}+b+1}$. Inherited precision is at most $s\lambda^{O(1)}2^{a_{d-1}}$; the explicit source estimate $O(s\lambda^2 2^{a_{d-1}})$ suffices. Relative to $MD/u$, it is $O(\lambda^{15/4}2^{-b})=o(1)$. The local evaluation loss is lower order as well. Thus the precision and entropy premises above hold uniformly. All arithmetic sizes stay polynomial in $s$.
+
+\subsection{Sum the entire recursion, including all child oracles}
+Let $\kappa=\pi\sqrt2/\ln2$ and define
+\[
+ K_0^*=\kappa\sqrt{61},\qquad
+ K_1^*=\frac\kappa4\sqrt{\frac{13176}{125}},\qquad
+ \gamma=\frac1{\sqrt6}.
+\]
+On the scale $s/\sqrt\lambda$, the root $K$-coefficient is $K_0^*$, and tail coefficients are at most $(1+o(1))K_1^*\gamma^{d-1}$. Products of the polynomial factors over logarithmically many depths contribute only $O(\lambda\log\lambda)$ bits to the time exponent. From~\eqref{eq:tree-recurrence}, the full coefficient is at most
+\begin{equation}\label{eq:tree-total-time}
+ \max\left\{b_8K_0^*,\quad
+ a_8K_0^*+K_1^*\max\left(b_{12},\frac{a_{12}}{1-\gamma}\right)\right\}.
+\end{equation}
+The second inner maximum is $b_{12}$, and the two outer candidates are respectively
+\[
+ 35.354588058401\ldots,\qquad34.812362370059\ldots.
+\]
+The first therefore proves the claimed time coefficient. Ancestor tables occupy a sum of geometrically declining exponential sizes, not a product. Their largest coefficients are
+\[
+ j_8K_0^*=34.274803005023\ldots,
+ \qquad j_{12}K_1^*=10.967936961607\ldots,
+\]
+which proves the claimed space coefficient. Temporary CRT and coordinate data cost only polynomial factors per cell.
+
+Leaves take $2^{O(s/\lambda^{3/4})}$ local work, initial entry routines take $2^{O(s^{9/10})}$, and newly created packet routines take
+$\exp(O(2^{a_d}\log s))=\exp(s^{1/36+o(1)})$. All are lower order on the displayed scale, including after paying for the ancestor cached-child enumerations. Immutable creation-time descriptions prevent an unaccounted recursive composition of entry routines. This completes the proof of Theorem~\ref{thm:cached-tree}.
+
+\paragraph{Interpretation and limits.}
+The new theorem improves a certified leading coefficient in an exponential upper bound. It does not improve the global $n\log\log n/\sqrt{\log n}$ order or the fixed-density $n/\sqrt{\log n}$ order after the imported SAT reductions. The numerical $s$ is normalized wire count, not SAT variable count. The field algorithm is a theoretical backend; the accompanying finite code checks its coordinate/CRT interface, not a production implementation of a Coppersmith--Winograd-type algorithm. No practical SAT speedup, new formal proof, or global optimality over all possible schedules is claimed.

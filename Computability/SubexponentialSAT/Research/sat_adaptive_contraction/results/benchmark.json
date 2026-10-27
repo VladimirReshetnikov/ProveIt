@@ -1,0 +1,601 @@
+{
+  "python": "3.12.14",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "repeats": 5,
+  "warmups": 1,
+  "timing_clock": "perf_counter_ns",
+  "scope": "Local Cauchy feature tables modulo 2^p; neither SAT runtime nor complete contraction runtime.",
+  "controls": "Original full exact routine plus an O(N*B) exact recurrence adapted from the existing independent verifier with the same cutoff.",
+  "source_sha256": {
+    "modular_cauchy.py": "82f6921dead7c585e0eccaaee741c91af87f778bc357dad24d8228afbffe6dca",
+    "check_modular_cauchy.py": "b65b21b94bdeabba3dc65587ac1112678d7b790ee9252e92492fc67ed14b17c3",
+    "reference_recurrence.py": "6dff84000478b7eec103f5d64f4808f52a4d1f4325062d5ac3398aa5c522ff1e",
+    "benchmark_kernel.py": "9c818a6d16fd6b71d3a02904d434f6ef9a87bbe89640ecd137108106f668452f",
+    "reference_joint_cauchy.py": "5de8f6640154ef79b7d3592a85e2d7c963f5cb2ebbf14d9c1419736ab6f8fc2c"
+  },
+  "cases": [
+    {
+      "a": 5,
+      "i": 0,
+      "N": 16,
+      "p": 32,
+      "zeta": [
+        1,
+        0
+      ],
+      "B": 8,
+      "median_seconds": {
+        "archived_full_exact": 0.019966807,
+        "exact_recurrence_same_cutoff": 0.002427033,
+        "modular_cached_separate_inverses": 0.000382036,
+        "modular_cached_batch_inverse": 0.000390348
+      },
+      "samples_seconds": {
+        "archived_full_exact": [
+          0.020006655,
+          0.019966807,
+          0.019730747,
+          0.020297155,
+          0.019947908
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.002427033,
+          0.002354546,
+          0.002326393,
+          0.002821707,
+          0.003124705
+        ],
+        "modular_cached_separate_inverses": [
+          0.000406872,
+          0.000381595,
+          0.000382036,
+          0.000372171,
+          0.000506169
+        ],
+        "modular_cached_batch_inverse": [
+          0.00048654,
+          0.000376147,
+          0.000390348,
+          0.000410838,
+          0.000379522
+        ]
+      },
+      "median_cpu_seconds": {
+        "archived_full_exact": 0.01997204,
+        "exact_recurrence_same_cutoff": 0.002430941,
+        "modular_cached_separate_inverses": 0.000383188,
+        "modular_cached_batch_inverse": 0.000391881
+      },
+      "samples_cpu_seconds": {
+        "archived_full_exact": [
+          0.02001318,
+          0.01997204,
+          0.019735719,
+          0.020302409,
+          0.019953081
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.002430941,
+          0.002357072,
+          0.002328289,
+          0.002778556,
+          0.003129076
+        ],
+        "modular_cached_separate_inverses": [
+          0.000408496,
+          0.000382887,
+          0.000383188,
+          0.000373694,
+          0.000508644
+        ],
+        "modular_cached_batch_inverse": [
+          0.000488744,
+          0.00037795,
+          0.000391881,
+          0.000412571,
+          0.000381154
+        ]
+      },
+      "speedup_vs_batch": {
+        "archived_full_exact": 51.151298328670826,
+        "exact_recurrence_same_cutoff": 6.217613514095115,
+        "modular_cached_separate_inverses": 0.9787061801264513,
+        "modular_cached_batch_inverse": 1.0
+      },
+      "digest": "6bfa75bfc00e167e9236a9c5a7c413f325fffdd2258e8db4137fe658f7634b9e",
+      "all_outputs_equal": true,
+      "modular_ring_multiplications": 671,
+      "modular_ring_inversions": 1,
+      "prefactor_scalar_inversions": 1,
+      "total_modular_inversions": 2,
+      "distinct_cached_denominators": 31,
+      "output_pair_entries": 256
+    },
+    {
+      "a": 5,
+      "i": 0,
+      "N": 16,
+      "p": 32,
+      "zeta": [
+        0,
+        1
+      ],
+      "B": 8,
+      "median_seconds": {
+        "archived_full_exact": 0.110077705,
+        "exact_recurrence_same_cutoff": 0.019039003,
+        "modular_cached_separate_inverses": 0.000628019,
+        "modular_cached_batch_inverse": 0.000523796
+      },
+      "samples_seconds": {
+        "archived_full_exact": [
+          0.118119624,
+          0.115786395,
+          0.105304619,
+          0.108880823,
+          0.110077705
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.022721454,
+          0.01938849,
+          0.019039003,
+          0.017021276,
+          0.016023149
+        ],
+        "modular_cached_separate_inverses": [
+          0.000713086,
+          0.000532368,
+          0.000628019,
+          0.00070907,
+          0.000527731
+        ],
+        "modular_cached_batch_inverse": [
+          0.000650042,
+          0.000521292,
+          0.000665786,
+          0.000523796,
+          0.000500491
+        ]
+      },
+      "median_cpu_seconds": {
+        "archived_full_exact": 0.109990696,
+        "exact_recurrence_same_cutoff": 0.018941853,
+        "modular_cached_separate_inverses": 0.000631966,
+        "modular_cached_batch_inverse": 0.000525199
+      },
+      "samples_cpu_seconds": {
+        "archived_full_exact": [
+          0.118028369,
+          0.115743959,
+          0.105263993,
+          0.108838228,
+          0.109990696
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.022727111,
+          0.019392531,
+          0.018941853,
+          0.017026065,
+          0.016027966
+        ],
+        "modular_cached_separate_inverses": [
+          0.000716001,
+          0.000534372,
+          0.000631966,
+          0.000711424,
+          0.000529104
+        ],
+        "modular_cached_batch_inverse": [
+          0.000652116,
+          0.000522895,
+          0.000669072,
+          0.000525199,
+          0.000501533
+        ]
+      },
+      "speedup_vs_batch": {
+        "archived_full_exact": 210.15377169737837,
+        "exact_recurrence_same_cutoff": 36.348125987980055,
+        "modular_cached_separate_inverses": 1.1989763190249638,
+        "modular_cached_batch_inverse": 1.0
+      },
+      "digest": "9057d0e90ad2bd2c08578d3e10106adcb01355934c380f435dd288e701b4d3c4",
+      "all_outputs_equal": true,
+      "modular_ring_multiplications": 671,
+      "modular_ring_inversions": 1,
+      "prefactor_scalar_inversions": 1,
+      "total_modular_inversions": 2,
+      "distinct_cached_denominators": 31,
+      "output_pair_entries": 256
+    },
+    {
+      "a": 6,
+      "i": 0,
+      "N": 32,
+      "p": 64,
+      "zeta": [
+        1,
+        0
+      ],
+      "B": 16,
+      "median_seconds": {
+        "archived_full_exact": 0.134803856,
+        "exact_recurrence_same_cutoff": 0.010416009,
+        "modular_cached_separate_inverses": 0.001268638,
+        "modular_cached_batch_inverse": 0.001417558
+      },
+      "samples_seconds": {
+        "archived_full_exact": [
+          0.138763958,
+          0.139288309,
+          0.134803856,
+          0.128924973,
+          0.133249305
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.010416009,
+          0.011027805,
+          0.010720108,
+          0.009475216,
+          0.009662503
+        ],
+        "modular_cached_separate_inverses": [
+          0.001295318,
+          0.001268638,
+          0.001223341,
+          0.00166855,
+          0.001226555
+        ],
+        "modular_cached_batch_inverse": [
+          0.001207998,
+          0.001417558,
+          0.001492108,
+          0.001524637,
+          0.001242038
+        ]
+      },
+      "median_cpu_seconds": {
+        "archived_full_exact": 0.13475841,
+        "exact_recurrence_same_cutoff": 0.010420378,
+        "modular_cached_separate_inverses": 0.001270682,
+        "modular_cached_batch_inverse": 0.001419833
+      },
+      "samples_cpu_seconds": {
+        "archived_full_exact": [
+          0.138720401,
+          0.139318681,
+          0.13475841,
+          0.128824208,
+          0.133207091
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.010420378,
+          0.010989712,
+          0.010674985,
+          0.009477732,
+          0.009614445
+        ],
+        "modular_cached_separate_inverses": [
+          0.001298244,
+          0.001270682,
+          0.001226126,
+          0.001671076,
+          0.001228871
+        ],
+        "modular_cached_batch_inverse": [
+          0.001209913,
+          0.001419833,
+          0.001494273,
+          0.001527604,
+          0.001244334
+        ]
+      },
+      "speedup_vs_batch": {
+        "archived_full_exact": 95.09583099950761,
+        "exact_recurrence_same_cutoff": 7.3478538444282355,
+        "modular_cached_separate_inverses": 0.8949460974436321,
+        "modular_cached_batch_inverse": 1.0
+      },
+      "digest": "ca87c9aafd006d3a31660762e16b56e6b887cff2eda4dcc187c5ac073dcf9929",
+      "all_outputs_equal": true,
+      "modular_ring_multiplications": 2307,
+      "modular_ring_inversions": 1,
+      "prefactor_scalar_inversions": 1,
+      "total_modular_inversions": 2,
+      "distinct_cached_denominators": 63,
+      "output_pair_entries": 1024
+    },
+    {
+      "a": 6,
+      "i": 0,
+      "N": 32,
+      "p": 64,
+      "zeta": [
+        0,
+        1
+      ],
+      "B": 16,
+      "median_seconds": {
+        "archived_full_exact": 0.821409962,
+        "exact_recurrence_same_cutoff": 0.07622988,
+        "modular_cached_separate_inverses": 0.002021833,
+        "modular_cached_batch_inverse": 0.002270711
+      },
+      "samples_seconds": {
+        "archived_full_exact": [
+          0.819747416,
+          0.974002569,
+          0.821409962,
+          0.823818182,
+          0.798933666
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.072688238,
+          0.07622988,
+          0.09315215,
+          0.079999781,
+          0.073908344
+        ],
+        "modular_cached_separate_inverses": [
+          0.001737272,
+          0.001693717,
+          0.002465961,
+          0.002366163,
+          0.002021833
+        ],
+        "modular_cached_batch_inverse": [
+          0.001706546,
+          0.001998529,
+          0.002384489,
+          0.002270711,
+          0.002581761
+        ]
+      },
+      "median_cpu_seconds": {
+        "archived_full_exact": 0.821010173,
+        "exact_recurrence_same_cutoff": 0.076177119,
+        "modular_cached_separate_inverses": 0.002025882,
+        "modular_cached_batch_inverse": 0.002273328
+      },
+      "samples_cpu_seconds": {
+        "archived_full_exact": [
+          0.819003625,
+          0.97323824,
+          0.821010173,
+          0.823278037,
+          0.798370226
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.072646249,
+          0.076177119,
+          0.093102534,
+          0.079947446,
+          0.07384252
+        ],
+        "modular_cached_separate_inverses": [
+          0.001739317,
+          0.001695492,
+          0.002469038,
+          0.00236862,
+          0.002025882
+        ],
+        "modular_cached_batch_inverse": [
+          0.001708661,
+          0.002001184,
+          0.002387156,
+          0.002273328,
+          0.00258494
+        ]
+      },
+      "speedup_vs_batch": {
+        "archived_full_exact": 361.74130569676197,
+        "exact_recurrence_same_cutoff": 33.5709299862466,
+        "modular_cached_separate_inverses": 0.890396444109356,
+        "modular_cached_batch_inverse": 1.0
+      },
+      "digest": "b2a6c01e73c205a546a140b6a3e0debb0f50e536118d53a31a6664be7932c5a5",
+      "all_outputs_equal": true,
+      "modular_ring_multiplications": 2307,
+      "modular_ring_inversions": 1,
+      "prefactor_scalar_inversions": 1,
+      "total_modular_inversions": 2,
+      "distinct_cached_denominators": 63,
+      "output_pair_entries": 1024
+    },
+    {
+      "a": 7,
+      "i": 1,
+      "N": 64,
+      "p": 64,
+      "zeta": [
+        1,
+        0
+      ],
+      "B": 32,
+      "median_seconds": {
+        "archived_full_exact": 1.027572411,
+        "exact_recurrence_same_cutoff": 0.04396555,
+        "modular_cached_separate_inverses": 0.004522915,
+        "modular_cached_batch_inverse": 0.004541212
+      },
+      "samples_seconds": {
+        "archived_full_exact": [
+          1.027572411,
+          1.068241106,
+          1.024251759,
+          0.962869058,
+          1.051106808
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.046871873,
+          0.043982535,
+          0.04396555,
+          0.042861566,
+          0.043318252
+        ],
+        "modular_cached_separate_inverses": [
+          0.004727938,
+          0.00470179,
+          0.004522915,
+          0.00447226,
+          0.004471089
+        ],
+        "modular_cached_batch_inverse": [
+          0.005172227,
+          0.00482335,
+          0.004480703,
+          0.004325603,
+          0.004541212
+        ]
+      },
+      "median_cpu_seconds": {
+        "archived_full_exact": 1.027027412,
+        "exact_recurrence_same_cutoff": 0.043921151,
+        "modular_cached_separate_inverses": 0.004527417,
+        "modular_cached_batch_inverse": 0.004543612
+      },
+      "samples_cpu_seconds": {
+        "archived_full_exact": [
+          1.027027412,
+          1.067649634,
+          1.023737163,
+          0.962153068,
+          1.050624086
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.046878903,
+          0.043989021,
+          0.043921151,
+          0.042868772,
+          0.043274914
+        ],
+        "modular_cached_separate_inverses": [
+          0.004745581,
+          0.004705331,
+          0.004527417,
+          0.004475631,
+          0.004474529
+        ],
+        "modular_cached_batch_inverse": [
+          0.005128739,
+          0.004826901,
+          0.004483403,
+          0.004329153,
+          0.004543612
+        ]
+      },
+      "speedup_vs_batch": {
+        "archived_full_exact": 226.2771284406013,
+        "exact_recurrence_same_cutoff": 9.6814572849715,
+        "modular_cached_separate_inverses": 0.9959708993986627,
+        "modular_cached_batch_inverse": 1.0
+      },
+      "digest": "ee71ddb7dee3af631208f6e41364548ed237617f6135662d507798bc33aca6fa",
+      "all_outputs_equal": true,
+      "modular_ring_multiplications": 8707,
+      "modular_ring_inversions": 1,
+      "prefactor_scalar_inversions": 1,
+      "total_modular_inversions": 2,
+      "distinct_cached_denominators": 189,
+      "output_pair_entries": 4096
+    },
+    {
+      "a": 7,
+      "i": 1,
+      "N": 64,
+      "p": 64,
+      "zeta": [
+        0,
+        1
+      ],
+      "B": 32,
+      "median_seconds": {
+        "archived_full_exact": 6.288267299,
+        "exact_recurrence_same_cutoff": 0.391069854,
+        "modular_cached_separate_inverses": 0.006760998,
+        "modular_cached_batch_inverse": 0.006671548
+      },
+      "samples_seconds": {
+        "archived_full_exact": [
+          6.082315282,
+          6.288267299,
+          5.945133251,
+          6.48928265,
+          6.656893679
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.397646269,
+          0.391069854,
+          0.420787522,
+          0.378732643,
+          0.3742309
+        ],
+        "modular_cached_separate_inverses": [
+          0.006760998,
+          0.00687729,
+          0.008208797,
+          0.006333376,
+          0.006455167
+        ],
+        "modular_cached_batch_inverse": [
+          0.007043887,
+          0.008256402,
+          0.006405712,
+          0.006572389,
+          0.006671548
+        ]
+      },
+      "median_cpu_seconds": {
+        "archived_full_exact": 6.284350678,
+        "exact_recurrence_same_cutoff": 0.39080545,
+        "modular_cached_separate_inverses": 0.006765464,
+        "modular_cached_batch_inverse": 0.006675169
+      },
+      "samples_cpu_seconds": {
+        "archived_full_exact": [
+          6.078684751,
+          6.284350678,
+          5.939573075,
+          6.485201176,
+          6.652983956
+        ],
+        "exact_recurrence_same_cutoff": [
+          0.397422268,
+          0.39080545,
+          0.420689544,
+          0.378500692,
+          0.374019054
+        ],
+        "modular_cached_separate_inverses": [
+          0.006765464,
+          0.006881034,
+          0.008218075,
+          0.006336488,
+          0.006458819
+        ],
+        "modular_cached_batch_inverse": [
+          0.007047601,
+          0.008260077,
+          0.006409326,
+          0.006576474,
+          0.006675169
+        ]
+      },
+      "speedup_vs_batch": {
+        "archived_full_exact": 942.5499597694568,
+        "exact_recurrence_same_cutoff": 58.617558323795315,
+        "modular_cached_separate_inverses": 1.0134076828945846,
+        "modular_cached_batch_inverse": 1.0
+      },
+      "digest": "46404c4ae93d6d589e029d18738202cde12413a0d96e15b5042f29ea9cbf6f8b",
+      "all_outputs_equal": true,
+      "modular_ring_multiplications": 8707,
+      "modular_ring_inversions": 1,
+      "prefactor_scalar_inversions": 1,
+      "total_modular_inversions": 2,
+      "distinct_cached_denominators": 189,
+      "output_pair_entries": 4096
+    }
+  ],
+  "cpu_model": "AMD EPYC 9V74 80-Core Processor"
+}

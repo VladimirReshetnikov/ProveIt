@@ -1,0 +1,1202 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.86in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black,pdftitle={Adaptive aggregation for subexponential SAT},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\lhead{Adaptive aggregation for subexponential SAT}\rhead{October 26, 2026}\cfoot{\thepage}
+\setlength{\parskip}{5pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\vv}{\nu_2}
+\newcommand{\pc}{\operatorname{popcount}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\K}{\mathcal K}
+\newcommand{\smallpath}[1]{{\small\path{#1}}}
+\newcommand{\sourcepin}{\texttt{474ddba696a5d385c091c23fb2995f69edd13e00}}
+\title{\textbf{Adaptive aggregation for subexponential SAT}\\[5pt]\large A review of fifteen refinement packets, sharper time--space bounds,\\and a measured finite-precision Cauchy-kernel improvement}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{October 26, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review the current ProveIt SAT research tree and all eight second-round packets
+received through \texttt{docs/incoming}, a total of fifteen refinement packets and two primary
+manuscripts. The strongest displayed general polynomial-space contraction
+coefficient is $76.90899$, but combining already available ingredients gives
+$66.60514$, and approaching their parameter boundary gives $66.19272$.
+We use this stronger comparison baseline.
+
+The principal new combinatorial step chooses a partition of nine groups into
+three triples separately for each exact mode-weight allocation. An averaging
+argument bounds the crossing-index sum, so direct enumeration improves the
+fixed-partition matrix-multiplication certificate. Relative to the reviewed
+contraction framework, the resulting normalized bounds are
+\[
+ T\le\poly(s+\mathcal L)\,
+ 2^{(36.75031252384+o(1))s/\sqrt{\log_2s}},\qquad
+ S\le\poly(s+\mathcal L)\,
+ 2^{(34.02417800750+o(1))s/\sqrt{\log_2s}}.
+\]
+A separate recursive separator summation gives coefficient $55.70947831891$
+while retaining polynomial space. A low-degree specialization of the cached
+algorithm gives time coefficient $15.3919331988$. These constants are per normalized Boolean wire,
+not per SAT variable. The logarithmic order of the general SAT bound is unchanged.
+
+We also implement the existing joint Cauchy factorization directly modulo
+$2^p$, using separate exact valuations and bounded unit residues. On six
+paired local-kernel fixtures it is $6.22$--$58.62$ times faster than a
+strengthened rational-recurrence control with the same mode cutoff. Complete
+code, exact checks, raw timings, source hashes, and this LaTeX source accompany
+the report. No complete SAT solver or new proof-assistant verification is claimed.
+\end{abstract}
+\clearpage
+\begingroup
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Result, comparison standard, and proof boundary}
+\label{sec:result}
+
+The task is to improve on the combined frontier, rather than repeat an idea
+already in another packet. Three contributions survive that comparison:
+\begin{enumerate}
+\item \textbf{Adaptive aggregation.} For every exact mode-weight allocation,
+choose the least expensive crossing partition among the $280$ partitions of
+nine groups into triples. The new bound follows from a finite averaging
+identity, not a hypothetical compact tensor compiler.
+\item \textbf{Polynomial-space separator summation.} Recursively split the
+mode graph and, after fixing the crossing indices, sum its two sides
+independently. Exact distributivity avoids jointly enumerating the internal
+indices of separate branches and reduces the paid recursive work.
+\item \textbf{A practical arithmetic implementation.} Evaluate the known
+Cauchy features with bounded modular arithmetic, exact valuation bookkeeping,
+reused denominators, and streaming. Compare against both the unchanged
+archive and a stronger matched recurrence control.
+\end{enumerate}
+
+\subsection{Normalized interface}
+
+The common source interface is a bipartite Boolean tensor network. Its
+contraction is
+\[
+ Z=\sum_{x\in\{0,1\}^{E}}\prod_v T_v(x|_{\delta(v)}).
+\]
+The root has at most $s$ wires; the initial precision and truncated coefficient
+axis have size $O(s)$ under the source normalization. The root maximum degree
+is at most $\ceil{s^{9/10}}$, the tensor descriptions have total length
+$\mathcal L$, and original tensor entries obey the source's permitted
+$\exp(O(s^{9/10}))\poly(s+\mathcal L)$ evaluation cost and polynomial-space
+specification. Arithmetic takes place in an unramified extension of the
+two-adic integers, optionally with a truncated nilpotent coefficient axis,
+modulo a prescribed power of two. All scalar and coefficient dimensions
+remain polynomial in $s$.
+
+These are the same conditions under which the compared normalized constants
+are derived. An arbitrary dense tensor supplied by an arbitrary costly oracle
+does not automatically satisfy them. Tensor creation precision is part of
+its immutable description: later evaluation reuses the specified canonical
+representatives. Canonical lifting is not assumed to be a ring homomorphism.
+
+\begin{theorem}[Adaptive time--space certificate]\label{thm:main}
+Under the normalized interface and the inherited exact identities specified
+in Section~\ref{sec:dependencies}, there is an exact contraction algorithm with
+\begin{align}
+ T(s)&\le\poly(s+\mathcal L)
+ 2^{(C_{\rm ad}+o(1))s/\sqrt{\log_2s}},\label{eq:main-time}\\
+ S(s)&\le\poly(s+\mathcal L)
+ 2^{(C_{\rm mem}+o(1))s/\sqrt{\log_2s}},\label{eq:main-space}\\
+ C_{\rm ad}&=\frac{\pi\sqrt{40\log_2 9}}{\ln2}\frac{\sqrt{42}}9
+ =36.75031252383623\ldots,\notag\\
+ C_{\rm mem}&=\frac{\pi\sqrt{40\log_2 9}}{\ln2}\frac23
+ =34.02417800749051\ldots.\notag
+\end{align}
+There is also a polynomial-space implementation with coefficient
+$C_{\rm ps}=55.70947831890997\ldots$, given explicitly in
+Section~\ref{sec:polyspace}.
+\end{theorem}
+
+The two algorithms are different resource choices. The faster certificate
+stores subexponential tables and gives up polynomial space. It does not
+dominate the polynomial-space branch under a fixed memory budget.
+The $o(1)$ terms and eventual parameter thresholds matter: a coefficient such
+as $36.7503$ is not an observed running-time constant or a finite-size
+guarantee without its correction term.
+
+\subsection{What has and has not been proved here}
+\label{sec:dependencies}
+
+The adaptive partition identity, the streamed separator algorithm, their
+resource accounting, and the new schedule analysis are proved below. The new arithmetic
+implementation has an explicit algebraic correctness argument and independent
+exact finite checks.
+
+The following are imported from the reviewed sources, with their hypotheses
+preserved: the deformation and exact recovery identities; construction of
+the child tensor networks; the two-stage asymmetric packing lemma; the sharp
+Hermite precision loss; the all-level, group-preserving joint Cauchy basis;
+the original entry-oracle and canonical-representative conventions; and the
+reductions from SAT. This report does not independently reconstruct all of
+those arguments or rebuild the upstream Lean development. Consequently the
+global SAT consequences are \emph{relative refinements of that framework},
+not a newly certified independent proof of the ETH claim.
+
+Finite checks do not prove the asymptotic theorem. Conversely, a smaller
+proved upper-bound coefficient does not establish a speedup over the actual
+runtime of an unimplemented algorithm. The measured claim concerns the
+identified feature-table kernel only.
+
+\section{Frozen source review}
+\label{sec:review}
+
+The closing repository snapshot is \sourcepin. The initial review used
+\texttt{ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06}, where seven new SAT
+archives had just arrived in \texttt{3e57705cf14ee}. A closing check found one
+additional matching-potential packet in \texttt{d098ba436b33} and the filing
+commit \texttt{6d3adc450615}, committed October 26, 2026 at 19:03:44 Pacific
+time. All eight second-round packets are now under
+\texttt{Computability/SubexponentialSAT/Research}; their historical arrival
+archives remain identified in the ledger.
+
+The closing review includes the additional matching report and verifies the
+filed versions of the other seven against the reviewed archives. The final
+corpus contains fifteen refinement packets and two primary manuscripts.
+The initial seven-packet summary was therefore insufficient, and the report
+uses the expanded closing corpus.
+
+The first relocation commit is \texttt{2b925d8800cd}; the original preprint
+was vendored by \texttt{3e096089911f}. Its upstream pin is
+\texttt{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a}. The accompanying
+\smallpath{provenance/reviewed_sources.json} records the closing file paths,
+Git blob hashes, SHA-256 hashes, and immutable URLs. The initial source and
+archive inventory is retained separately. No repository branch or file was
+submitted or changed.
+
+\subsection{Primary manuscripts and seven earlier packets}
+
+The OpenAI manuscript's Appendix D gives the general order
+\begin{equation}
+ \poly_k(n,m)2^{O_k(n\log\log n/\sqrt{\log n})},
+ \label{eq:general-sat}
+\end{equation}
+and the fixed-density order $2^{O_{k,D}(n/\sqrt{\log n})}$, in polynomial
+space~\cite{openai}. The separate Claude manuscript states an order based on
+$\min\{km/\sqrt{\log m},k^2n\log\log n/\sqrt{\log n}\}$~\cite{claude}.
+Its implementation and matched explicit network constant are not provided.
+Numerical domination over that different architecture cannot be inferred
+from a smaller normalized contraction coefficient.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.67\textwidth}@{}}
+\toprule
+Earlier packet & Established ingredient and remaining limitation\\\midrule
+\endfirsthead
+\toprule Earlier packet & Established ingredient and remaining limitation\\\midrule
+\endhead
+\path{cauchy_mode_improvement} & Integral factorial Cauchy features with
+weights $1+b+2\vv(b!)$; slope three improves the mode-entropy coefficient.
+No change in logarithmic order.\\
+\path{eth_contraction_improvements} & Sharp taper/precision, leading
+precision $6MD/u$ in place of $24MD/u$; explicit coefficient $648.44107$;
+streamed finite-difference extraction.\\
+\path{3sat_precision_refinement} & Exact recovery loss and a solved
+real taper minimax problem. The $n\log\log n/\log n$ target requires a
+missing structured summation algorithm.\\
+\path{sat_density_improvement} & Uniform density-sensitive exponent
+$O_k(n\min\{\log(2+m/n),\log\log n\}/\sqrt{\log n})$.
+It improves some intermediate-density regimes.\\
+\path{eth_density_refinement} & Overlapping density-sensitive bound;
+precision refinements and a local Smith-spectrum analysis. Neither changes
+the unrestricted denominator $\sqrt{\log n}$.\\
+\path{3sat_refinement} & Scalar parity lift, reduced incidence-degree
+cap, and removal of an auxiliary coefficient axis. Its second-contraction
+target needs an unsupplied compact factorization.\\
+\path{3sat_asymptotic_analysis} & Restricted barriers for taper and
+mode retuning. Stronger targets are conditional on missing recursive or
+linear-wire interfaces.\\
+\bottomrule
+\end{longtable}
+
+These reports are filed under \texttt{Computability/SubexponentialSAT/Research}.
+Their exact file identities are in the provenance ledger; the independent
+review is included as \smallpath{audit/frontier_audit.md}.
+
+\subsection{All eight second-round packets}
+
+The following numeric coefficients use the common scale
+$s/\sqrt{\log_2s}$ in a base-two exponent, under the general degree premise.
+They must not be mixed with lower-degree specializations.
+
+\begin{longtable}{@{}p{0.40\textwidth}r p{0.36\textwidth}@{}}
+\toprule
+Second-round packet & Coefficient & Main ingredient\\\midrule
+\endfirsthead
+\toprule Second-round packet & Coefficient & Main ingredient\\\midrule
+\endhead
+\path{eth_balanced_packing} & $94.74820$ & Nearly lossless balanced padding
+and an additive precision guard.\\
+\path{eth_high_moment} & $94.74820$ & Higher-moment labeling and an
+alternative orbit-padding construction.\\
+\path{eth_packet_refinement} & $95.66394$ & Improved pair loads, crossing
+fraction, and a thin precision gap.\\
+\path{eth_recursive_refinement} & $133.20737$ & Sharper packing and
+an actual-domain Cauchy refinement.\\
+\path{3sat_round2_refinement} & $84.06627$ & Matching-potential packing
+and a combined two-stage schedule.\\
+\path{eth_asymmetric_packet_balancing} & $76.90899$ & Different bounds
+for the retained and fresh tensor sides.\\
+\path{eth_matching_refinement} & $94.74820$ & Exact matching-potential
+labeling and thin additive precision gaps; no new summation method.\\
+\path{eth_joint_cauchy} & $319.68576$ & Full-orientation slope-four modes
+at all retained levels; unchanged family multiplicity.\\
+\bottomrule
+\end{longtable}
+
+All are polynomial-space certificates as displayed in the table. The last
+packet also gives a cached, fixed-partition Strassen branch with time
+coefficient $225.59706$ and space coefficient $196.19945$.
+The asymmetric packet's $31.06413$ specialization assumes root degree
+$s^{1/12}$, rather than $s^{9/10}$. The high-moment and recursive reports
+also give lower-degree variants. These are retained as separate branches
+in the comparison, not treated as weaker general algorithms.
+
+\subsection{The stronger combined baseline}
+\label{sec:baseline}
+
+The eight second-round packets were each written against the older seven-packet
+frontier. Combining the new archives with one another is therefore necessary.
+Asymmetric packing preserves the old child graphs and gives
+\[
+ M_{\rm child}\le(2/r+o(1))M,\qquad
+ c_i\le(2(1-1/r)+o(1))M/D_i.
+\]
+The joint Cauchy basis has exactly the same mode-family multiplicity and
+source/target group locality. Its weights have slope four instead of three.
+It can therefore be composed with the asymmetric schedule.
+
+For the existing $r=16$ schedule, that composition gives
+\begin{equation}
+ C_{\rm comp}=\frac{\pi\sqrt{15/8}}{\ln2}(9+\sqrt3)
+ =66.60514340761482\ldots.\label{eq:composed-baseline}
+\end{equation}
+Letting the parameters approach the admissible boundary slowly enough to
+absorb their logarithmic buffers gives
+\begin{equation}
+ C_{\rm lim}=\frac{\pi\sqrt{150}}{\ln2}
+ \left(1+\frac1{3\sqrt3}\right)
+ =66.19272369357722\ldots.\label{eq:limiting-baseline}
+\end{equation}
+The complete integer boundary schedule is reproduced in the audit.
+The new polynomial-space coefficient is compared against
+\eqref{eq:limiting-baseline}, not just against $76.90899$. A preliminary
+two-alphabet retuning also gives $66.12053$; its complete schedule and
+independent review appear in \smallpath{audit/two_alphabet_review.md}.
+The separator summation proved below improves substantially on both.
+
+Similarly, the cached fixed-partition evaluator can be combined with the
+better packing and joint modes. For instance $r=8$, block sizes $(2,3,3)$,
+and geometric taper ratio $1/2$ give the limiting coefficient
+\begin{equation}
+ C_{\rm fixed,8}=\frac{\pi\sqrt{120}}{\ln2}
+ \sqrt{\frac{30+12(\log_2 7-2)^2}{64}}
+ =38.16774569701537\ldots.\label{eq:fixed-composed}
+\end{equation}
+Thus a comparison only with the packet's displayed $225.59706$ would greatly
+overstate the contribution. The adaptive evaluator improves this stronger
+composed certificate as well. We do not claim to have optimized every
+possible algorithm or every unreported constant in the corpus.
+
+\section{The shared arithmetic and recursion interfaces}
+\label{sec:interfaces}
+
+At an active call with $M$ wires, let $L=2^a$, let $r$ be the group alphabet,
+and write $Q=r^a$. Label each side of the graph by $[r]^a$ and pad every
+ordered label pair to a common multiple $H_{\rm pad}$ of $L$. The total padded
+mass is $P=H_{\rm pad}Q^2$.
+
+\subsection{Asymmetric padding and side provenance}
+
+The reviewed asymmetric packing lemma gives a deterministic polynomial-time
+labeling with pair load bounded by
+\begin{equation}
+ \left(1+\frac2{h-1}\right)
+ \left(\frac M{Q^2}+\frac RQ\right)+2(hC+1)\ln Q,\label{eq:load}
+\end{equation}
+where $R,C$ bound row and column degrees, respectively, and $h\ge2$.
+It first balances whole row vertices greedily, then derandomizes column
+labels by an exact rational conditional expectation. Parallel edges are
+distinct ports and are covered by the lemma.
+
+Taking $h\asymp\log s$ and rounding upward to a packet multiple yields
+$P=(1+o(1))M$ whenever, uniformly over active calls,
+\begin{equation}
+ \frac{QR}{M}=o(1),\qquad
+ \frac{Q^2C(\log s)^2}{M}=o(1),\qquad
+ \frac{LQ^2}{M}=o(1).\label{eq:padding-gates}
+\end{equation}
+The source orientation construction is unchanged. A child has at most
+$2P/r$ wires. All retained parent tensors lie on one side of a child; fresh
+packet tensors lie on the other and have degree at most $2L$. Hence below
+the root we may keep
+\begin{equation}
+ R_d\le\Delta,\qquad C_d\le2L_{d-1},\qquad
+ \Delta=\ceil{s^{9/10}},\label{eq:side-degrees}
+\end{equation}
+provided newly created degrees stay below $\Delta$.
+
+\subsection{Sharp precision with an additive buffer}
+
+For $i=\vv(t)<u\le a$, put $D_i=2^{a-i}$ and use multiplicities
+$q_i=\rho(u-i)$, where
+\[
+ \rho=\ceil{\frac{M(2L-1)+1}{L(2u-2+2^{1-u})}}.
+\]
+The denominator is the exact number of Hermite conditions per unit taper.
+The sharp recovery formula permits the sufficient precision
+\begin{equation}
+ p_t=p+6\rho D_i+\rho u(a+1).\label{eq:precision}
+\end{equation}
+This is an imported result; its leading constant six is already optimized
+within the earlier full-loss taper model.
+
+Let $\lambda=\ceil{\log_2s}$, stop at $M\le H=\ceil{s/\lambda}$, and set
+\begin{equation}
+ b=\ceil{6\log_2\lambda},\qquad
+ a_d=\sum_{j=0}^d u_j+(d+1)b.\label{eq:buffer}
+\end{equation}
+For active depths $O(\log\lambda)$, ancestral precision obeys
+$p=O(s\lambda^2 2^{a_{d-1}})$. Meanwhile
+$D_i\ge2^{a_{d-1}+b+1}$. Since $s/M\le\lambda$ and $u_d\le\lambda$,
+\[
+ \frac{p}{MD_i/u_d}=O(\lambda^4 2^{-b})=o(1).
+\]
+The final summand of \eqref{eq:precision} is also lower order. When the
+least active $u_d$ tends to infinity, uniformly,
+\begin{equation}
+ p_t\le(6+o(1))MD_i/u_d.\label{eq:precision-envelope}
+\end{equation}
+
+\subsection{The full-orientation joint Cauchy basis}
+
+For $R=2^i$, $N=L/2$, and
+\[
+ s_j=(j\bmod R)+2R\floor{j/R},\qquad 0\le j<N,
+\]
+one crossing orientation has the scalar difference kernel
+\[
+ W_{xy}(T)=\frac{\Gamma(T)}{T+x-y},\quad
+ \Gamma(T)=\frac{\prod_{v=-L}^{L-1}(T-v)}{\mathcal C'(0)},\quad
+ T=t+2^{a+1}\zeta.
+\]
+Here $\mathcal C(T)=\prod_{v=-L}^{L-1}(T-v)$, $\vv(T)=i$, and
+$\Gamma(T)\in2^{a+1}\OO$. The displayed quotient is interpreted after
+cancelling its linear polynomial factor.
+
+Define
+\begin{align*}
+ P_b(x)&=\prod_{h<b}\frac{x-s_h}{T+x-s_h},&
+ Q_b(y)&=\prod_{h<b}\frac{s_h-y}{T+s_h-y},\\
+ f_b(x)&=\frac{TP_b(x)}{T+x-s_b},&
+ g_b(y)&=\frac{TQ_b(y)}{T+s_b-y}.
+\end{align*}
+The exact finite telescoping identity is
+\begin{equation}
+ \frac1{T+x-y}=\frac1T\sum_{b=0}^{N-1}f_b(x)g_b(y).\label{eq:cauchy}
+\end{equation}
+For $b=qR+r'$, $0\le r'<R$, put $E_b=q+\vv(q!)=2q-\pc(q)$.
+The prior integrality lemma shows that
+$F_b=2^{-E_b}f_b$ and $G_b=2^{-E_b}g_b$ are integral on the slot domain.
+Thus
+\begin{equation}
+ W_{xy}(T)=\sum_b A_b(x)G_b(y),\qquad
+ A_b(x)=\frac{\Gamma(T)}T2^{2E_b}F_b(x),\label{eq:features}
+\end{equation}
+with certified weight
+\begin{equation}
+ w_q=a+1-i+4q-2\pc(q).\label{eq:weights}
+\end{equation}
+There are $R$ modes of each $q$ per orientation. Each orientation's source
+form reads a whole half-packet, but all those ports still belong to a single
+source group; its targets belong to one other group. This is exactly the
+locality needed for the unchanged child factorization.
+
+For any ordered pair of distinct groups $g,h$, uniform label-pair padding
+therefore gives at most
+\begin{equation}
+ c_{gh}=\frac{2P}{r^2D_i}
+ =\left(\frac2{r^2}+o(1)\right)\frac M{D_i}\label{eq:pair-colors}
+\end{equation}
+modes at each index $q$. Summing over $r(r-1)$ pairs recovers the asymmetric
+packet's total family envelope. No extra valuation-class factor is introduced.
+
+\section{Entropy of exact pair-weight lists}
+\label{sec:entropy}
+
+The recursion sums only mode tuples whose total weighted degree is below
+$p_t$. Split a tuple by the exact weights $b_{gh}$ allocated to its directed
+group pairs, with $\sum_{g\ne h}b_{gh}<p_t$. For fixed $r$, there are only
+polynomially many such arrays, although the polynomial exponent is large.
+
+For a particular array, let $\mathcal I_{gh}$ be the list of mode tuples on
+that pair with exact weight $b_{gh}$, and put
+$h_{gh}=\log_2|\mathcal I_{gh}|$. Arrays with an empty list contribute zero
+and are skipped. Each child factor $Z_g$ depends only on indices incident
+with $g$. Define the convenient scale
+\begin{equation}
+ \K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac M{\sqrt u}.\label{eq:K}
+\end{equation}
+
+\begin{lemma}[Entropy on selected directed pairs]\label{lem:entropy}
+For every fixed set $I$ of directed pairs,
+\begin{equation}
+ \sum_{e\in I}h_e\le
+ \left(\frac{\sqrt{|I|}}r+o(1)\right)\K(M,u),\label{eq:subset}
+\end{equation}
+uniformly over exact weight arrays and active calls in the schedules below.
+More generally, fixed nonnegative weights $v_e$ give the factor
+$\sqrt{\sum_ev_e^2}/r$ on the right.
+\end{lemma}
+\begin{proof}
+Lower the actual weights to $\widehat w_q=1+4q-2\pc(q)$ and extend the
+finite index range to all $q\ge0$, both valid upper bounds. The counting
+function of these weights is $x/4+O(\log(x+2))$, giving
+\[
+ \sum_{q\ge0}-\ln(1-e^{-\theta\widehat w_q})
+ =\frac{\pi^2}{24\theta}+O(\log^2(2/\theta)).
+\]
+This follows by integrating against the counting function and using
+$\int_0^\infty-\ln(1-e^{-x})\,dx=\pi^2/6$.
+
+Use the generating-product bound for pair $e$ with parameter
+$\theta/v_e$ when $v_e>0$, multiply its logarithm by $v_e$, and sum.
+With $c=(2/r^2+o(1))M/D_i$, this yields
+\[
+ \ln2\sum_ev_eh_e\le
+ \theta p_t+\frac{c\pi^2}{24\theta}\sum_ev_e^2
+ +O(c\log^2(2/\theta)).
+\]
+Optimizing the leading two terms and applying
+\eqref{eq:precision-envelope} proves the claim. The saddle parameter is of
+order $\sqrt u/D_i$. The additive buffer ensures $D_i\ge\lambda^6$ up to
+a fixed factor, so the error divided by $M/\sqrt u$ tends to zero uniformly.
+This joint argument also covers very small or zero individual allocated
+budgets; it does not assume a separate asymptotic saddle for every pair.
+\end{proof}
+
+\subsection{Exact indexing and partition selection are computable}
+
+For mode weights $w_1,\ldots,w_v$, the finite dynamic program
+\[
+ D(j,z)=D(j-1,z)+D(j,z-w_j),\quad D(0,0)=1,
+\]
+with other zero/negative boundary values counts exact-weight tuples.
+The number of modes and $p_t$ are polynomial in $s$, and the counts have
+polynomial bit length, since they are at most $(p_t+1)^v$. The table provides
+exact list sizes, rank/unrank operations, and enumeration with polynomial
+delay. No counting oracle is assumed.
+
+The partition algorithm below minimizes a product of these integer list
+sizes. It can compare the products exactly, without calculating floating-point
+logarithms. If binary ranks are used internally, rounding each logarithm adds
+at most a constant per pair and does not change the leading coefficient.
+
+\section{The new adaptive aggregation step}
+\label{sec:adaptive}
+
+We now fix $r=9$. For each exact weight array, consider all $280$ unlabelled
+partitions of the nine groups into three blocks of size three. Choose one
+minimizing
+\begin{equation}
+ H_{\rm cross}=\sum_{g,h\text{ in different blocks}}h_{gh}.\label{eq:cut}
+\end{equation}
+The choice is allowed to depend on the weight array. Once chosen, it is
+fixed while evaluating that array.
+
+\begin{lemma}[Adaptive crossing bound]\label{lem:partition}
+For every nonnegative directed edge weighting $h_{gh}$, there is a partition
+into triples for which
+\begin{equation}
+ H_{\rm cross}\le\frac34\sum_{g\ne h}h_{gh}.
+ \label{eq:average-cut}
+\end{equation}
+For the exact mode lists, this implies
+$H_{\rm cross}\le(1/\sqrt2+o(1))\K(M,u)$.
+\end{lemma}
+\begin{proof}
+In a uniformly random partition into triples, a fixed group has two partners
+among the other eight groups. Thus a fixed directed pair is separated with
+probability $6/8=3/4$. By linearity of expectation, the mean crossing weight
+is $3/4$ of the total; its minimum is no larger. The total has $72$ directed
+pairs, so Lemma~\ref{lem:entropy} bounds it by
+$(\sqrt{72}/9+o(1))\K$. Multiplication by $3/4$ gives $1/\sqrt2$.
+\end{proof}
+
+\subsection{Evaluate children once, then build block tables}
+
+For each group $g$, evaluate and store its factor $Z_g$ on all its incident
+pair indices. Each evaluation is a real recursive contraction of its child;
+this is not a cheap black-box oracle. A group has $16$ incident directed
+pairs, so the number of recursive calls per group is at most
+\begin{equation}
+ 2^{(\alpha+o(1))\K(M,u)},\qquad \alpha=4/9.\label{eq:alpha}
+\end{equation}
+
+For a triple $B$, build a table indexed by the directed pairs joining $B$
+to its complement. Sum over its internal pair indices the product of the
+three cached group factors. There are
+\[
+ \underbrace{2\cdot9\cdot3-3^2-3}_{42}
+ \quad\text{incident directed pairs},\qquad
+ \underbrace{2\cdot3\cdot6}_{36}
+ \quad\text{boundary directed pairs}.
+\]
+For every choice of the partition, Lemma~\ref{lem:entropy} gives the bounds
+\begin{align}
+ \text{block construction work}&\le
+ 2^{(\beta+o(1))\K(M,u)},&\beta&=\sqrt{42}/9,\label{eq:beta}\\
+ \text{block-table storage}&\le
+ 2^{(j+o(1))\K(M,u)},&j&=2/3.\label{eq:j}
+\end{align}
+There are only three tables and nine caches, absorbed into polynomial factors.
+
+\subsection{Directly sum the crossing indices}
+
+After the three block tables have been built, summing their product over all
+crossing indices costs $2^{H_{\rm cross}}$ table operations. By
+Lemma~\ref{lem:partition}, its coefficient is at most $1/\sqrt2$, strictly
+less than $\beta$, since $1/2<42/81$. Thus the block construction is the
+dominant local nonrecursive work. No matrix multiplication algorithm,
+division by a nonunit, or unconstructed tensor compression is required.
+
+\begin{theorem}[Local adaptive recurrence]\label{thm:local}
+Up to polynomial factors per call, the adaptive evaluator satisfies
+\begin{equation}
+ T_d\le 9\,2^{(\alpha+o(1))\K_d}T_{d+1}
+       +2^{(\beta+o(1))\K_d},\label{eq:recurrence}
+\end{equation}
+with $\alpha=4/9$, $\beta=\sqrt{42}/9$. Polynomial factors in the number
+of recursive calls depend on $s$, independently of $\mathcal L$; a single
+fixed polynomial in $s+\mathcal L$ pays for entry reading and arithmetic.
+Its largest local table has
+coefficient $j=2/3$ on scale $\K_d$.
+\end{theorem}
+\begin{proof}
+The first term pays for every cached child contraction, and the second pays
+for block-table construction and the final crossing summation. Each original
+mode tuple belongs to one exact weight array. Group factors and block tables
+only regroup finite sums and products in a commutative ring, so their
+contraction equals the original recursion identity. Exact weight arrays,
+interpolation nodes, and auxiliary evaluation choices contribute polynomial
+factors, because $r=9$ is fixed and all displayed budgets are polynomial.
+The preceding counts prove the bounds.
+\end{proof}
+
+\paragraph{Access cost.}
+Choose the partition before constructing its group caches. Exponential tables
+are not assumed to offer free random access. Store records
+lexicographically in their pair indices. Cache layouts can be sorted into
+the order needed by the chosen partition at polynomial overhead per record.
+In a lexicographic enumeration, a projection onto a factor's axes advances,
+repeats, or rewinds a suffix. Charge each rewind to the complete suffix
+assignments just traversed; total movement is bounded by a polynomial factor
+times the full enumeration. A global lexicographic enumeration of crossing
+indices can use each block table in its induced order. The record lengths,
+number of axes, and logarithms of record counts are polynomial in $s$.
+Therefore the stated exponents apply to bit work, not only to an idealized
+unit-cost table-lookup model.
+
+\section{A uniform integer schedule and the global theorem}
+\label{sec:schedule}
+
+Let $\lambda=\ceil{\log_2s}$ and define, using integer comparisons,
+\begin{equation}
+ B_\lambda=\max\{j\ge0:9^{20j}\le2^\lambda\},\quad
+ U=B_\lambda-\ceil{\sqrt\lambda},\quad
+ u_d=\floor{U/2^d}.\label{eq:main-schedule}
+\end{equation}
+Use $r=9$, the buffer \eqref{eq:buffer}, and $H=\ceil{s/\lambda}$.
+Handle bounded sizes or failed finite admissibility checks by direct
+contraction. The proof below shows that all those checks eventually succeed.
+
+\subsection{Padding, degree, and depth without circular assumptions}
+
+First consider every hypothetical active depth
+$d\le d_*:=\ceil{\log_4\lambda}+2$ and every $M>H$.
+The geometric sum gives
+\[
+ a_d\le2U+O((\log\lambda)^2),\qquad
+ u_d\ge\lambda^{1/2+o(1)}.
+\]
+Thus the floor errors are uniformly relative $o(1)$, and
+$U/\lambda\to1/(20\log_2 9)$.
+
+At the root, $R=C=\Delta$. By definition of $U$,
+\[
+ 2a_0\log_2 9+\tfrac9{10}\log_2s-\log_2s
+ \le-2\log_2 9\sqrt\lambda+O(\log\lambda).
+\]
+This tends to $-\infty$ fast enough to absorb the precision and padding
+logarithms. Below the root, \eqref{eq:side-degrees} gives the same leading
+negative gap for $Q_dR_d/M$, since $a_d\le2U+O((\log\lambda)^2)$.
+The other two padding gates have leading exponent at most
+\[
+ \frac{1+2\log_2 9}{10\log_2 9}-1<0.
+\]
+All newly created degrees are at most
+$s^{1/(10\log_2 9)+o(1)}<s^{9/10}$. This proves
+\eqref{eq:padding-gates} uniformly over the hypothetical range.
+
+Consequently the padded mass is $(1+o(1))M$, and eventually each child has
+at most $M/4$ wires, since $2/9<1/4$. An active path has at most
+$\log_4\lambda+O(1)$ steps, validating the hypothetical range and closing
+the induction. Sharply,
+\begin{equation}
+ M_d\le s\left((2/9)(1+\delta_s)\right)^d,
+ \qquad\delta_s\longrightarrow0.\label{eq:sharp-child}
+\end{equation}
+
+The negative $\Theta(\sqrt\lambda)$ slack is essential. Setting the
+parameters exactly on the boundary and then adding the logarithmic buffers
+would not justify nearly lossless padding. The inward retreat in
+\eqref{eq:main-schedule} resolves this while preserving the limit coefficient.
+
+\subsection{Solving the paid recursion}
+
+Equations \eqref{eq:K}, \eqref{eq:main-schedule}, and
+\eqref{eq:sharp-child} imply, uniformly,
+\begin{equation}
+ \K_d\le(\kappa+o(1))\gamma^d\frac{s}{\sqrt\lambda},\quad
+ \kappa=\frac{\pi\sqrt{40\log_2 9}}{\ln2},\quad
+ \gamma=\frac{2\sqrt2}{9}.\label{eq:decay}
+\end{equation}
+In fact, the packing relative error is $O(1/\lambda)$ plus terms that are
+exponentially small in $\sqrt\lambda$ or a fixed power of $s$. Over
+$O(\log\lambda)$ levels its product is $1+o(1)$. Equivalently one may keep
+$\gamma_s=\gamma+o(1)$ until the uniformly convergent geometric series is
+summed. A path that pays for child caches through
+depth $d-1$ and performs block work at depth $d$ has coefficient at most
+\[
+ \kappa\left[\alpha\frac{1-\gamma^d}{1-\gamma}
+                   +\beta\gamma^d\right].
+\]
+The bracket is a convex combination of $\alpha/(1-\gamma)$ and $\beta$.
+The exact inequalities
+\begin{equation}
+ \frac{\alpha}{1-\gamma}
+ =\frac4{9-2\sqrt2}<\frac23<\frac{\sqrt{42}}9=\beta
+ \label{eq:dominance}
+\end{equation}
+therefore show that the root block term controls the entire recurrence.
+This proves the time coefficient $\kappa\beta$ in
+Theorem~\ref{thm:main}.
+
+At any time, there are polynomially many recursion levels of resident caches
+and tables. Their sizes add rather than multiply; deeper coefficient bounds
+decrease geometrically. The largest local table is bounded by
+$2^{(j+o(1))\K_0}$, so the global space coefficient is $\kappa j$.
+
+The leaf cost is $2^{O(s/\lambda)}$. Original entry costs are
+$\exp(O(s^{9/10}))$. Fresh packet entry cost remains
+$\exp(O(L\log s))$, where $L=s^{1/(10\log_2 9)+o(1)}$ at most.
+All are $2^{o(s/\sqrt\lambda)}$. Polynomial work at
+$O(\log\lambda)$ levels contributes only $O(\lambda\log\lambda)$ to
+the logarithm. This includes preprocessing, exact indexing, and sorting.
+The precision and ring dimensions remain polynomial by the buffer argument.
+This completes the theorem, including its bit-operation and memory accounting.
+
+\section{Recursive separator summation in polynomial space}
+\label{sec:polyspace}
+
+The exact pair-weight allocation does more than enable caches. It turns the
+retained mode sum into a Cartesian product of pair lists, allowing independent
+internal sums to be computed without storing them. This uses ordinary
+separator conditioning and distributivity, in the tradition of recursive
+conditioning~\cite{darwiche}; the new contribution is its
+explicit paid application and coefficient bound in this contraction framework.
+
+Fix an exact weight array and a binary tree of the $r$ group vertices.
+At a node containing a group set $B$, split $B$ into two nearly equal parts.
+For each assignment to the directed pairs crossing that split, recursively
+sum each side over its own internal pairs and multiply the two answers.
+Assignments to pairs already fixed by ancestor splits remain parameters.
+At a leaf $\{g\}$ evaluate the original factor $Z_g$ by a real recursive
+child contraction. Accumulate one sum and product at a time.
+
+\begin{lemma}[Exact streamed separator identity]\label{lem:stream-exact}
+The algorithm evaluates the original finite mode sum using polynomial space.
+If $E_\ell$ is the union of cut-pair sets on a root-to-leaf path, then the
+number of expensive group-factor evaluations is at most
+\begin{equation}
+ \sum_{\ell=1}^r\prod_{e\in E_\ell}|\mathcal I_e|.
+ \label{eq:stream-calls}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For a split $B=B_1\sqcup B_2$, fixing its crossing indices separates all
+remaining internal variables into two disjoint sets. No factor in $B_1$
+depends on an internal index of $B_2$, or conversely. Finite distributivity
+therefore gives a product of the two conditional sums, followed by summation
+over the crossing indices. Induction on the tree proves exactness.
+
+A leaf is visited once for each assignment to the successive cut sets on its
+path. Those cut sets are disjoint, and their Cartesian product has the size
+in \eqref{eq:stream-calls}. Internal indices of sibling branches are summed
+independently; their domain sizes add to the work rather than multiply
+through the leaf. Each leaf evaluation pays for $Z_g$ explicitly. No free
+group oracle is assumed. All internal-node overhead is bounded by a fixed
+polynomial times this call count. The depth is $O(\log r)$, and the assignment
+ranks and ring accumulators have polynomial bit size, proving the space bound.
+\end{proof}
+
+\begin{lemma}[Balanced-tree cut profile]\label{lem:stream-profile}
+For a balanced binary split on $r$ groups, the largest number of directed
+pairs on a leaf path is $v(r)$, where
+\begin{equation}
+ v(1)=0,\qquad
+ v(r)=2\floor{r/2}\ceil{r/2}
+       +\max\{v(\floor{r/2}),v(\ceil{r/2})\}.
+ \label{eq:v-rec}
+\end{equation}
+For $r=2^j$, $v(r)=2(r^2-1)/3$. In particular $v(16)=170$, whereas the
+full directed group graph has $240$ pairs.
+\end{lemma}
+\begin{proof}
+The root split contributes $2\floor{r/2}\ceil{r/2}$ directed pairs to every
+leaf path. A path then enters one child, proving the recurrence. For powers
+of two it becomes $v(r)=r^2/2+v(r/2)$; summing the geometric series gives
+$2(r^2-1)/3$.
+\end{proof}
+
+Applying Lemma~\ref{lem:entropy} separately to each of the fixed $r$ path
+sets in \eqref{eq:stream-calls} gives the local recurrence
+\begin{equation}
+ T_d\le\poly(s)\,
+ 2^{(\beta_{\rm str}(r)+o(1))\K_d}T_{d+1},\qquad
+ \beta_{\rm str}(r)=\frac{\sqrt{v(r)}}r.
+ \label{eq:stream-rec}
+\end{equation}
+A single common fixed polynomial in $s+\mathcal L$ pays for entry reading
+and arithmetic. This is a reduction in the number of paid child evaluations,
+not an assumption that the mode graph can be solved in subexponential time
+in its index length. It still has exponential work on that length.
+
+\begin{theorem}[Polynomial-space coefficient below $56$]\label{thm:ps}
+Under the general normalized interface, streamed balanced binary summation
+with $r=16$ gives
+\begin{equation}
+ T\le\poly(s+\mathcal L)
+ 2^{(C_{\rm ps}+o(1))s/\sqrt{\log_2s}},\qquad
+ C_{\rm ps}=\frac{5\pi\sqrt{17}}{2\ln2}
+       \left(1+\frac1{3\sqrt3}\right)
+ =55.70947831890997\ldots,
+ \label{eq:ps-constant}
+\end{equation}
+using polynomial space.
+\end{theorem}
+\begin{proof}
+Set $g=\ceil{\sqrt\lambda}$,
+\[
+ B=\floor{\frac{\lambda-g}{80}},\qquad
+ u_0=B,\qquad u_d=\floor{3B/4^d}\quad(d\ge1),
+\]
+and keep the same buffer $a_d=\sum_{j\le d}u_j+(d+1)b$ and leaf threshold.
+The total retained range is at most $2B$.
+
+To verify applicability, first consider hypothetical active depths
+$d\le\ceil{\log_6\lambda}+2$. Uniformly there,
+$u_d\ge\lambda^{1-\log_6 4+o(1)}\to\infty$.
+At the root the $Q^2\Delta$ exponent is at most
+$\lambda-g/10+O(\log\lambda)$. Below it the retained-row $Q\Delta$
+exponent is at most $\lambda-g/10+O((\log\lambda)^2)$.
+Fresh-side and rounding exponents are at most
+$9(\lambda-g)/40+o(\lambda)<\lambda$. All padding gates hold; fresh
+packet degrees remain below $\Delta$. Nearly lossless padding gives eventual
+child ratio at most $1/6$, closing the depth bootstrap, and sharp ratio
+$(1+o(1))/8$.
+
+The sum of $M_d/\sqrt{u_d}$ along a path is bounded by
+\[
+ \left[\sqrt{80}\left(1+\frac1{3\sqrt3}\right)+o(1)\right]
+ \frac{s}{\sqrt\lambda}.
+\]
+Multiply by $(\pi\sqrt2/\ln2)\beta_{\rm str}(16)$ with
+$\beta_{\rm str}(16)=\sqrt{170}/16$. This gives
+\eqref{eq:ps-constant}. Entry, precision, interpolation, and leaf costs
+are lower order as in the preceding theorem. The separator recursion,
+exact pair indexing, and network recursion are all streamed depth first,
+so only polynomial space is retained.
+\end{proof}
+
+Relative to the combined $r=16$ polynomial-space boundary
+certificate \eqref{eq:limiting-baseline}, the coefficient is multiplied by
+\[
+ \sqrt{\frac{170}{240}}=\sqrt{\frac{17}{24}}
+ =0.8416254115\ldots.
+\]
+This is a $15.84\%$ reduction in that leading upper-bound coefficient. It
+is an exponential separation between the displayed certificate functions,
+not a measured SAT speedup. No claim of global optimality of the separator
+shape or alphabet is needed. The earlier two-alphabet retuning is also
+exceeded by this simpler $r=16$ construction.
+
+\section{A lower-degree cached specialization}
+\label{sec:lowdegree}
+
+For bounded-degree clause networks it is useful to keep the root's stronger
+structural premise instead of replacing it by $s^{9/10}$.
+
+\begin{corollary}[Lower-degree time--space bound]\label{cor:low}
+If the root maximum degree is at most $\ceil{s^{1/12}}$, the adaptive cached
+algorithm has time and space coefficients
+\begin{align}
+ C_{\rm low}&=\frac{\pi}{\ln2}
+  \sqrt{\frac{100\log_2(162)}{33}}\frac{\sqrt{42}}9
+  =15.3919331988\ldots,\\
+ C_{\rm low,mem}&=\frac{\pi}{\ln2}
+  \sqrt{\frac{100\log_2(162)}{33}}\frac23
+  =14.2501611298\ldots.
+\end{align}
+The coefficients remain per normalized wire. The original permitted tensor
+entry-cost premise is unchanged.
+\end{corollary}
+\begin{proof}
+Let $q=17/50$ and define
+\[
+ B_\lambda=\max\{j\ge0:162^j\le2^\lambda\},\quad
+ W=B_\lambda-\ceil{\sqrt\lambda},\quad
+ u_d=\floor{\frac{33}{50}W\left(\frac{17}{50}\right)^d}.
+\]
+The total leading retained budget is at most $W$, with limiting fraction
+$A=1/\log_2(162)$. The maximum old degree at depth $d$ is bounded by
+$\max\{\ceil{s^{1/12}},2L_{d-1}\}$: packet lengths increase with depth,
+and retained tensors do not gain ports.
+
+If the original-degree term dominates, the stronger symmetric packing
+constraint has exponent at most $2\log_2(9)A+1/12<1$, because $1/12<A$.
+If the created-degree term dominates, its exponent is at most
+$(1+2\log_2 9)A=1$, with the required negative
+$\Theta(\sqrt\lambda)$ slack. The rounding gate has the same bound since
+$1+2\log_2 9=\log_2(162)$. All additive buffers are absorbed.
+
+Hypothetical depth $\log_4\lambda+O(1)$ gives the least taper
+$\lambda^{1+\log_4(17/50)+o(1)}\to\infty$. Padding then gives child
+ratio at most $1/4$ eventually, closing the induction, and sharp ratio $2/9$.
+The $\K_d$ ratio is now
+$\gamma=(2/9)\sqrt{50/17}$ and its root coefficient is
+$\kappa_{\rm low}=(\pi/\ln2)\sqrt{100\log_2(162)/33}$.
+The exact squared inequalities
+\[
+ \gamma^2=\frac{200}{1377}<\left(\frac{31}{81}\right)^2,
+ \qquad \left(\frac{18}{25}\right)^2<\frac{42}{81}
+\]
+show that $\alpha/(1-\gamma)<18/25<\beta$. The same paid recurrence
+therefore has leading time $\kappa_{\rm low}\beta$ and space
+$\kappa_{\rm low}(2/3)$. All other work stays lower order.
+\end{proof}
+
+This is an additional, narrower branch. It must not be advertised as the
+coefficient for arbitrary $s^{9/10}$-degree inputs. Ordinary bounded-degree
+SAT encodings satisfy its graph-degree premise for sufficiently large sizes;
+translating the numerical coefficient to SAT variables still requires the
+encoding's wire constant.
+
+\section{A finite-precision implementation of the known Cauchy basis}
+\label{sec:kernel}
+
+The practical implementation targets exactly the feature tables in
+\eqref{eq:features}. It supports scalar integer parameters and the quadratic
+unramified extension
+\[
+ R_p=(\mathbb Z/2^p\mathbb Z)[U]/(U^2+U+1).
+\]
+An input pair $(u,v)$ represents the exact integer-extension parameter
+$\zeta=u+vU$. This is a tested concrete specialization, not an implementation
+of every extension degree required by the full contraction framework.
+
+The recurrence for the products $P_b,Q_b$ is already present in the earlier
+packet's independent verifier. We do not claim to invent that recurrence.
+The new contribution is evaluating it safely at finite precision, reusing
+denominators, and providing a measured implementation with a matched control.
+
+\subsection{Why no invalid division of a residue occurs}
+
+Each nonzero factor is stored as an exact integer valuation and a unit residue
+modulo $2^p$. A slot difference never has valuation exactly $i$: it has a
+lower differing bit, or is divisible by $2^{i+1}$. Hence, for nonzero
+$d=s_j-s_h$,
+\[
+ \vv(T+d)=\min\{i,\vv(d)\}\le i.
+\]
+Split the numerator and denominator before modular reduction. Invert only
+the unit part of the denominator. Multiplying units uses $p$-bit residues;
+normalizing by $2^{E_b}$ subtracts $E_b$ from the separately tracked exact
+valuation. The known integrality lemma guarantees a nonnegative remaining
+valuation. No reduced residue is divided by two, and no discarded low bits
+are subsequently needed.
+
+For the prefactor $\Gamma(T)/T$, cancel the factor $T$ symbolically first.
+Split every remaining factor and the scalar $\mathcal C'(0)$ denominator
+into valuations and units. When $\zeta=0$, the exact zero factor is handled
+explicitly. The output target/source tables are therefore exactly the prior
+tables reduced modulo $2^p$.
+
+Omit precisely the modes satisfying $w_q\ge p$, using the existing certified
+weights. Every omitted target is then zero modulo $2^p$ and every source is
+integral, so the reconstructed kernel is unchanged. The full-table API can
+also disable truncation for verification or other callers.
+
+\subsection{Reusing inverses and resource cost}
+
+Denominators depend only on $d=s_j-s_b$, of which there are $O(L)$ distinct
+values. Normalize and cache them once. A standard prefix-product batch
+inverse computes all inverse units with one extension-ring inversion and
+linear many ring multiplications. The prefactor also uses one separate
+scalar modular inversion. A separate-inversion strategy is available and
+is sometimes slightly faster at the small benchmark precisions.
+
+Let $B$ be the number of retained modes, $N=L/2$, and
+$S_0=NB-B(B-1)/2$. For nonzero $\zeta$, the instrumented batch variant uses
+\begin{equation}
+ 4K+(2L-1)+5S_0-2B\label{eq:opcount}
+\end{equation}
+ring multiplications, where $K$ is the number of distinct cached denominators,
+at most one extension-ring inversion, and one scalar inversion. When $B=0$
+there is no extension-ring inversion. Thus the construction
+uses $O(NB+L)$ ring operations. Generating/sorting the difference set costs
+$O(NB+L\log L)$ elementary integer operations. Apart from input normalization
+and integer bookkeeping, bit work is
+$O((NB+L)\mathsf M(p)+\mathsf I(p))$ in this fixed-degree ring.
+
+The table API uses $O(NB+L)$ ring storage, including its output. The streaming
+API yields one pair of columns at a time using $O(B+L)$ working ring storage,
+excluding consumer-retained output. Raw input normalization can involve
+$a$ and the input bit length; only the accumulated unit residues are bounded
+to $p$ bits. This distinction matters for arbitrary large signed parameters.
+
+\subsection{Fair controls}
+
+\smallpath{code/reference_joint_cauchy.py} is the unchanged archived routine.
+It constructs full exact rational/extension tables with repeated products.
+The stronger control, \smallpath{code/reference_recurrence.py}, adapts the
+quadratic-operation recurrence already in the earlier independent verifier:
+it supports both arithmetic domains, removes checking from its timed region,
+and uses exactly the same mode cutoff as the new modular implementation.
+Both exact controls include conversion to the requested residues. Therefore
+the main comparison does not force the control to construct discarded modes
+or execute its verification suite.
+
+\section{Measured results and exact verification}
+\label{sec:measurements}
+
+The benchmark uses Python 3.12.14 on an AMD EPYC 9V74 host, one warmup and
+five paired repetitions with alternating method order. All output tables
+are checked for exact equality. The raw record contains every wall and
+process-CPU sample, medians, parameter values, output digests, source hashes,
+and operation counts. Times are local-kernel observations, not projections
+from upper-bound constants.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}rrlrrrr@{}}
+\toprule
+$N$ & $p$ & Domain & $B$ & Exact recurrence (ms) & Modular (ms) & Gain\\\midrule
+16&32&Scalar&8&2.427&0.390&$6.22\times$\\
+16&32&Quadratic&8&19.039&0.524&$36.35\times$\\
+32&64&Scalar&16&10.416&1.418&$7.35\times$\\
+32&64&Quadratic&16&76.230&2.271&$33.57\times$\\
+64&64&Scalar&32&43.966&4.541&$9.68\times$\\
+64&64&Quadratic&32&391.070&6.672&$58.62\times$\\
+\bottomrule
+\end{tabular}
+\caption{Five-run median wall times for the same finite-precision feature
+tables and mode cutoff. The modular column uses the batch-inverse option.}
+\label{tab:bench}
+\end{table}
+
+For the last quadratic fixture, the archived full exact implementation takes
+$6.288267$ seconds, the stronger recurrence $0.391070$ seconds, and the new
+modular kernel $0.006672$ seconds. The approximately $943\times$ ratio against
+the archived full routine includes recurrence and truncation savings already
+available in other source files; the $58.62\times$ matched-control comparison
+is the more informative new result. Across the six fixtures, matched gains
+range from $6.22\times$ to $58.62\times$.
+
+These small synthetic cases were selected to exercise the arithmetic domains
+and growing table sizes. They are not a SAT benchmark distribution. They do
+not establish a universal speedup over every possible Cauchy implementation.
+The batch inverse is not consistently faster than separately inverting the
+same cached units, so the gain is attributed to bounded modular arithmetic
+and reuse, with batching an optional engineering choice.
+
+\subsection{Primary and independent exact checks}
+
+The primary verifier passes in ordinary Python and under \texttt{python -O},
+with identical canonical digests. It covers:
+\begin{itemize}
+\item $1{,}092$ parameter/precision cases and $35{,}868$ independent
+original-polynomial matrix reconstructions;
+\item $74{,}976$ target/source comparisons against the archived exact routine
+and the strengthened recurrence;
+\item $5{,}544$ streaming-versus-table comparisons, $1{,}092$
+batch-versus-separate comparisons, and $600$ randomized unit-inversion checks;
+\item eight invalid-input rejections, signed nodes, zero and nonunit
+parameters, and both arithmetic domains.
+\end{itemize}
+
+An independent checker evaluates the original cancelled polynomial modulo
+$2^{p+\vv(\mathcal C'(0))}$ and only then removes the known scalar denominator
+valuation. It shares neither the production prefactor nor the feature
+recurrence. It passes ordinary and optimized Python on $63$ further cases,
+through $N=128$ and $p=129$, with $493$ reconstructed entries, $493$ checks of
+the public direct-entry API, and $27$ full untruncated exact-table comparisons.
+It includes zero/nonunit parameters and signed $60$-bit extension inputs.
+
+The adaptive-aggregation checker separately verifies the partition identity,
+integer-cost choice, and equality of direct and cached/block contractions on
+small finite mode graphs, including a ring with zero divisors. The schedule
+checker verifies exact integer capacity decisions and the coefficient
+inequalities. These are implementation and finite-algebra checks; the
+uniform asymptotic arguments remain the proofs in this report.
+
+The mode-graph suite includes $240$ adaptive and $300$ streamed comparisons
+with literal sums, all $280$ balanced partitions, $160$ exact integer
+averaging cases, and rational certificates for the safe eventual coefficients
+$56$, $37/35$, and $16/15$. A separate implementation checks $40$ recursive
+conditioning fixtures over $(\mathbb Z/64\mathbb Z)[V]/(V^2)$, comparing
+individual leaf-call counts and live assignment contexts as well as exact
+values. Its results also agree in ordinary and optimized Python.
+
+\section{Consequences for SAT and remaining limits}
+\label{sec:sat}
+
+The general and density-sensitive SAT orders already in the repository remain
+available. Combining the reviewed reductions with the refined engine preserves
+\begin{equation}
+ \poly_k(n,m)\,
+ 2^{O_k\!\left(
+ \frac n{\sqrt{\log n}}
+ \min\{\log(2+m/n),\log\log n\}\right)}.
+ \label{eq:density}
+\end{equation}
+As usual, harmless positive shifts may be placed inside the logarithms for
+bounded $n$. At $m=O(n)$ this is $2^{O_k(n/\sqrt{\log n})}$; for dense
+instances it gives \eqref{eq:general-sat}. Remove unused variables before
+applying the reductions and multiply the exact count by their power of two.
+The active variable count is at most $\min\{n,km\}$ for fixed clause width.
+
+The faster cached evaluator changes the time--space coefficient of its
+normalized contraction engine. It does not prove a denominator $\log n$ in
+place of $\sqrt{\log n}$. The earlier structured-summation, compact-factorization,
+and degree-preserving-recursion targets still have missing algorithmic
+interfaces. Counting a compact index is not the same as cheaply evaluating
+the associated tensor.
+
+Likewise, a coefficient per wire cannot be inserted directly as a coefficient
+per SAT variable. The encoding's wire constant, density dependence, reduction
+branches, original tensor entry costs, and polynomial prefactors all have to
+be carried through. The alternative manuscript supplies a different
+big-$O$ theorem with unspecified constants, so no claim of numerical
+domination over that entire algorithm is justified.
+
+For a resource-aware portfolio, retain the earlier density and lower-degree
+branches, the polynomial-space algorithm of Section~\ref{sec:polyspace}, and
+the new cached branch when memory allows it. Taking the best applicable
+certificate preserves every reviewed established order and adds the sharper
+certificates proved here. The practical kernel is usable by either branch.
+
+\section{Reproducible deliverable and integration}
+\label{sec:deliverable}
+
+The archive contains this complete LaTeX source and compiled PDF, standalone
+standard-library Python code, raw results, independent reviews, a full source
+inventory, and a build/replay script. The copied reference kernel's original
+hash and the repository license are included. The project does not require
+network access to replay the supplied local checks.
+
+The principal integration changes are localized:
+\begin{enumerate}
+\item Retain the existing exact deformation, recovery, and immutable tensor
+description conventions. Use the sharp precision and full-orientation
+slope-four basis already present in the reviewed packets.
+\item Use asymmetric padding and preserve the separate degree bounds of
+retained and fresh tensor sides. Implement integer capacity tests and the
+explicit inward slack, rather than silently using a boundary parameter.
+\item For the polynomial-space branch, use balanced binary separator
+summation and the $r=16$ schedule in Section~\ref{sec:polyspace}. For the
+faster branch, enumerate exact pair-weight arrays, compute their
+list cardinalities, choose the least crossing product among the $280$
+triple partitions, build group caches and three block tables, and sum all
+crossing indices. Pay for each recursive group contraction as in
+\eqref{eq:recurrence}.
+\item Substitute the modular feature-table implementation where its supported
+coefficient ring applies. Its exact interface and streaming option are
+documented in \smallpath{audit/PRACTICAL_NOTES.md}.
+\end{enumerate}
+
+The archive provides a real local arithmetic optimization and a new aggregation
+prototype. It does not contain a completed end-to-end implementation of the
+very large upstream SAT framework. The next meaningful engineering milestone
+is an integrated contraction evaluator with memory-budget selection and
+creation-precision preservation, followed by paired complete-contraction
+benchmarks. Another round of abstract parameter retuning alone would not
+establish a better logarithmic SAT order.
+
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{3pt}
+\raggedright
+\bibitem{openai} OpenAI, \emph{The Exponential Time Hypothesis is False},
+October 25, 2026. Pinned source directory:
+\url{https://github.com/openai/math/tree/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026}.
+The reviewed files include \texttt{build/main\_full\_version.tex},
+\texttt{quantitative-contraction.tex}, and \texttt{quantitative-reduction.tex}.
+\bibitem{repo} Vladimir Reshetnikov and contributors, ProveIt, SAT research
+snapshot \sourcepin:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/474ddba696a5d385c091c23fb2995f69edd13e00/Computability/SubexponentialSAT}.
+\bibitem{incoming} ProveIt, second-round SAT packets, first arrival commit
+\texttt{3e57705cf14ee9ac99c0ac35cfff751dcf70b396}:
+\url{https://github.com/VladimirReshetnikov/ProveIt/commit/3e57705cf14ee9ac99c0ac35cfff751dcf70b396}.
+Additional arrival \texttt{d098ba436b33}; final placement
+\texttt{6d3adc45061535ebe6fa7cd3d9b37dff7dcfc22a}.
+\bibitem{asymmetric} \emph{Asymmetric packet balancing for subexponential SAT},
+October 26, 2026. Incoming archive
+\texttt{eth\_asymmetric\_packet\_balancing\_2026-10-26.zip}; especially
+\texttt{thm:pair-balance}, \texttt{cor:padding}, \texttt{lem:side-degree},
+and its depth-allocation appendix. Immutable archive path and hash are in
+\texttt{provenance/reviewed\_sources.json}.
+\bibitem{joint} \emph{Full crossing-block Cauchy modes}, October 26, 2026.
+Incoming archive \texttt{eth\_joint\_cauchy\_2026-10-26.zip}; especially
+\texttt{thm:modes}, \texttt{sec:compatibility}, \texttt{lem:subsetentropy},
+and the cached group/block evaluation sections. Exact identities and prototype
+reference source are credited to this packet.
+\bibitem{precision} \emph{Sharper precision for subexponential 3SAT},
+\texttt{Research/3sat\_precision\_refinement}; exact taper, precision loss,
+and full-loss minimax theorem.
+\bibitem{density} \emph{Improving the clause-density dependence of exact
+$k$-SAT counting}, \texttt{Research/sat\_density\_improvement}, and
+\emph{A density-sensitive refinement of exact \#k-SAT counting},
+\texttt{Research/eth\_density\_refinement}; both in the pinned ProveIt snapshot.
+\bibitem{barriers} \emph{Subexponential 3SAT asymptotic analysis},
+\texttt{Research/3sat\_asymptotic\_analysis}; report and
+\texttt{research\_decision/findings.md}, pinned snapshot as above.
+\bibitem{claude} \emph{A $2^{o(n)}$ time algorithm for 3-SAT}, credited to
+Claude (Anthropic), October 26, 2026; filed as
+\texttt{Research/claude-2o-n-3sat/eth.pdf}. Separate manuscript; no supplied
+matched explicit contraction constant or public formalization build in the
+reviewed packet.
+\bibitem{darwiche} Adnan Darwiche, ``Recursive conditioning,''
+\emph{Artificial Intelligence} 126(1--2), 5--41 (2001).
+\url{https://doi.org/10.1016/S0004-3702(00)00069-2}.
+The general conditioning technique is prior work; its mode-graph
+application and explicit certificates are the comparison made here.
+\end{thebibliography}
+\end{document}

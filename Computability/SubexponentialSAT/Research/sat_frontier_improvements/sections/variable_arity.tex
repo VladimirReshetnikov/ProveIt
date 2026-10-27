@@ -1,0 +1,182 @@
+\section{A polynomial-space certificate using several grouping arities}
+\label{sec:variable-arity}
+
+The previous round-two packet already permits different grouping alphabets
+at the root and below it.  We therefore do not claim variable arity itself
+as a new idea.  The additional refinement here is a concrete composition of
+that freedom with the asymmetric packing theorem and the full crossing-block
+Cauchy basis.  In the same normalized Boolean tensor interface, it gives
+\[
+ T(s,\mathcal L)\le (s+\mathcal L)^{O(1)}
+ 2^{(C_{\mathrm{multi}}+o(1))s/\sqrt{\log_2s}},
+ \qquad C_{\mathrm{multi}}=63.85740947110328\ldots,
+\]
+using polynomial space.  Consequently the coefficient $64$ is valid for
+all sufficiently large $s$.  This is a sharper exponential upper-bound
+certificate.  Its logarithmic order is unchanged, and its coefficient is
+per normalized tensor wire budget, not per SAT variable.  The separate
+cached construction uses more space and has its own smaller time bound.
+
+\subsection{The inherited interface}
+
+For definiteness, assume that the root has at most $s$ Boolean wires,
+maximum degree at most $\lceil s^{9/10}\rceil$, and initial coefficient
+precision and truncation order $O(s)$; use the same permitted entry-oracle
+cost and creation-time representative convention as the reviewed
+contraction theorems.  Let $\lambda=\lceil\log_2s\rceil$ and stop recursion
+at $H=\lceil s/\lambda\rceil$ wires.
+
+At an active call with $M$ wires, packet length $L=2^a$, alphabet size $r$
+and $Q=r^a$ labels, the asymmetric packing lemma supplies padded mass
+$P=(1+o(1))M$ provided, uniformly,
+\[
+ QR=o(M),\qquad Q^2C\lambda^2=o(M),\qquad LQ^2=o(M).
+\]
+Here $R,C$ are the two side-degree bounds.  At the root both are at most
+$\lceil s^{9/10}\rceil$.  Below the root, orient retained tensors on the
+row side and fresh packet tensors on the column side.  The bounds then are
+\[
+ R\le\lceil s^{9/10}\rceil,
+ \qquad C\le 2^{a_{d-1}+1}.
+\]
+The child-size ratio is $(2/r)(1+o(1))$.  For each Cauchy mode index there
+are at most
+\[
+ \bigl(2(1-1/r)+o(1)\bigr)M/D_i
+\]
+mode families.  The full-block weights are
+$a+1-i+4j-2s_2(j)$, and the sharp Hermite recovery budget remains
+$p_i\le(6+o(1))MD_i/u_d$.  The ordinary weighted-partition estimate
+therefore gives the following base-two logarithmic local cost:
+\begin{equation}\label{eq:multi-local}
+ \log_2 N_d\le\bigl(K(r_d)+o(1)\bigr)\frac{M_d}{\sqrt{u_d}},
+ \qquad K(r)=\frac{\pi}{\ln2}\sqrt{2(1-1/r)}.
+\end{equation}
+Indeed, a slope-four family contributes
+$(\pi^2+o(1))/(24\theta)$ to its logarithmic generating function.
+Optimizing $\theta p_i+c_i\pi^2/(24\theta)$ gives
+$\pi\sqrt{2(1-1/r)}M/\sqrt{u_d}$ in natural logarithms.  Neither the
+family count nor the source/target locality changes when $r$ changes
+between calls. The entropy remainder is uniform because
+$D_i\ge\lambda^6$, $a=O(\lambda)$, and consequently
+$(M/D_i)\log^2(D_i/\sqrt{u_d})=o(M/\sqrt{u_d})$.
+
+\subsection{An entirely explicit schedule}
+
+Put $b=\lceil6\log_2\lambda\rceil$ and define
+\[
+ a_{-1}=0,\qquad u_d=\lfloor f_d\lambda\rfloor,
+ \qquad a_d=a_{d-1}+u_d+b.
+\]
+Use the first four pairs
+\[
+ (r_0,r_1,r_2,r_3)=(13,14,8,6),\qquad
+ (f_0,f_1,f_2,f_3)=
+ \left(\frac{27}{2000},\frac{159}{12500},
+       \frac{71}{10000},\frac{533}{100000}\right).
+\]
+For every $j\ge0$ use
+\[
+ r_{4+j}=4,\qquad
+ f_{4+j}=\frac{27}{6400}\left(\frac58\right)^j.
+\]
+The four cumulative leading exponents and their limiting total are
+\[
+ (A_0,A_1,A_2,A_3)
+ =\frac1{100000}(1350,2622,3332,3865),
+ \qquad A_\infty=\sum_{d\ge0}f_d=\frac{499}{10000}.
+\]
+The asymmetry is useful because the root requires
+$2A_0\log_2r_0+9/10<1$, whereas a later row-side constraint is only
+$A_d\log_2r_d+9/10<1$.  Smaller later alphabets allow a larger cumulative
+packet exponent without violating that constraint.
+
+All required inequalities can be checked using rational upper bounds
+\[
+ \log_2 13<\frac{3701}{1000},\quad
+ \log_2 14<\frac{381}{100},\quad
+ \log_2 6<\frac{1293}{500},
+\]
+certified respectively by the integer comparisons
+$13^{1000}<2^{3701}$, $14^{100}<2^{381}$ and $6^{500}<2^{1293}$.
+The resulting upper powers of $s$ are as follows.  Logarithmic factors,
+ceilings and precision buffers contribute only $s^{o(1)}$.
+\[
+\begin{array}{c|c|c|c}
+\text{call}&\text{dominant high-degree term}&Q_d^2C_d&L_dQ_d^2\\\hline
+0&0.999927&0.999927&0.113427\\
+1&0.9998982&0.2132964&0.2260164\\
+2&0.99996&0.22614&0.23324\\
+3&0.9999489&0.2332178&0.2385478\\
+d\ge4&0.9998&0.2495&0.2495
+\end{array}
+\]
+In the first row the dominant term is $Q_0^2\Delta$; below it the
+high-degree term is $Q_d\Delta$.  Every exponent has a fixed strict
+margin.  The smallest displayed high-degree margin is $1/25000$.
+New packet degrees are $s^{499/10000+o(1)}$, hence are much smaller
+than the maintained $s^{9/10}$ bound.
+
+For a noncircular depth argument, provisionally check all depths up to
+$4+\lceil\log_{20/11}\lambda\rceil+O(1)$.  Their total additive buffer
+is $O((\log\lambda)^2)$, and their smallest $u_d$ is
+\[
+ \lambda^{\eta+o(1)},\qquad
+ \eta=1-\frac{\ln(8/5)}{\ln(20/11)}>0.
+\]
+The positivity follows already from $5/8>11/20$.  Thus flooring is a
+uniform relative $o(1)$ perturbation.  The strict power margins make
+all packing conditions uniform throughout this provisional depth range.
+For sufficiently large $s$ every child has at most $(11/20)M$ wires,
+because its limiting ratio is at most $1/2$.  An active path therefore
+cannot exceed the provisional depth.  This closes the bootstrap.
+
+The precision argument with additive gaps is unchanged: inherited
+precision is $p=O(s\lambda^2 2^{a_{d-1}})$, while
+$D_i\ge2^{a_{d-1}+b+1}$ for $i<u_d$.  Since $M>s/\lambda$ and
+$u_d\le\lambda$, inherited precision contributes at most
+$O(\lambda^4 2^{-b})=o(1)$ times $MD_i/u_d$.  The extra jet-loss term
+is also negligible, so the coefficient six used in
+\eqref{eq:multi-local} is uniform.
+
+\subsection{The coefficient and the remaining costs}
+
+Ignoring only uniform relative $o(1)$ perturbations, the size multipliers
+at the first five depths are
+\[
+ m_0=1,\quad m_1=\frac2{13},\quad m_2=\frac2{91},
+ \quad m_3=\frac1{182},\quad m_4=\frac1{546}.
+\]
+Thereafter $m_{4+j}=m_4 2^{-j}$.  Therefore
+\begin{align*}
+ C_{\mathrm{multi}}={}&
+ \frac{K(13)}{\sqrt{27/2000}}
+ +\frac{2K(14)}{13\sqrt{159/12500}}
+ +\frac{2K(8)}{91\sqrt{71/10000}}
+ +\frac{K(6)}{182\sqrt{533/100000}}\\
+ &+\frac{K(4)}{546\sqrt{27/6400}}
+       \frac1{1-\sqrt{2/5}}.
+\end{align*}
+The tail converges because $\sqrt{2/5}<1$.  Uniform padding errors
+perturb a strictly convergent geometric series by $o(1)$.
+The provided exact checker proves $C_{\mathrm{multi}}<64$ using only
+rational arithmetic, upper square-root enclosures, $\pi<22/7$ and
+$\ln2>693/1000$; these deliberately coarse enclosures already give an
+upper bound below $63.897$.
+
+Polynomial interpolation and grouping factors at $O(\log\lambda)$
+depths add $O(\lambda\log\lambda)$ to the logarithm of the work.
+Direct leaves cost $2^{O(s/\lambda)}$.  The permitted original entry
+cost is $\exp(O(s^{9/10}))$, and packet entry extraction costs at most
+$\exp(O(L\log s))=\exp(s^{499/10000+o(1)})$.  All are
+$2^{o(s/\sqrt\lambda)}$.  Labels, interpolation degrees, precisions,
+and stored immutable descriptions remain polynomial in the normalized
+input size; depth-first enumeration therefore preserves polynomial
+space.  This proves the stated certificate relative to the unchanged
+source identities and oracle interface.
+
+The packet does not assert that this multistage schedule is globally
+optimal.  Its purpose is a fully checkable strict improvement over the
+fixed-arity polynomial-space composition.  It neither establishes the
+conditional $n/\log n$ proposals nor removes the $\log\log n$ factor
+in the general-density reduction.

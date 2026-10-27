@@ -1,0 +1,121 @@
+\section{Preserving the stronger degree-sensitive frontier}
+\label{sec:degree-corollaries}
+
+A comparison restricted to the generic $s^{9/10}$ degree interface would
+miss useful stronger-premise bounds in the reviewed packets.  We record
+two polynomial-space corollaries on the same normalized wire scale.  Both
+retain the same permitted original entry-oracle cost as the generic
+theorem.  Neither changes the unrestricted SAT logarithmic order.
+
+\subsection{Root degree at most \texorpdfstring{$s^{3/5}$}{s to the power 3/5}}
+
+Suppose the root degree is at most $\lceil s^{3/5}\rceil$.  Keep the
+arities from Section~\ref{sec:variable-arity} and multiply every leading
+retained-level coefficient $f_d$ by
+\[
+ \tau=4.
+\]
+Continue using $u_d=\lfloor\tau f_d\lambda\rfloor$ and
+$a_d=a_{d-1}+u_d+\lceil6\log_2\lambda\rceil$.
+Maintain the degree bound $\lceil s^{3/5}\rceil$ on the retained side.
+The cumulative packet exponent is now
+\[
+ \tau A_\infty=\frac{499}{2500}=0.1996<\frac35,
+\]
+so every fresh packet tensor satisfies the maintained bound eventually.
+
+The high-degree packing powers become $3/5+\tau h_d$, where
+$h_d$ denotes the label-exponent part of the corresponding bound in
+Section~\ref{sec:variable-arity}; their maximum is
+\[
+ \frac35+4\frac{2499}{25000}
+ =\frac{6249}{6250}=0.99984<1.
+\]
+The root uses the doubled label exponent as before.  All pure label,
+fresh-column and rounding powers are multiplied by $\tau$; their maximum
+is at most
+\[
+ 4\frac{499}{2000}
+ =\frac{499}{500}=0.998<1.
+\]
+Thus all packing conditions retain fixed strict margins.  The same
+coarse child shrinkage, retained-range ratio and depth argument apply.
+Multiplying every $u_d$ by a fixed positive factor also leaves the
+additive precision-gap proof unchanged.
+
+The local costs are divided by $\sqrt\tau$.  Consequently this interface
+has polynomial-space time bound
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(C_{3/5}+o(1))s/\sqrt{\log_2s}},\qquad
+ C_{3/5}=\frac{C_{\mathrm{multi}}}{2}
+ =31.92870473555164\ldots.
+\]
+The integer coefficient $32$ is valid eventually: halve the earlier
+rational upper bound on $C_{\mathrm{multi}}$ to obtain a bound below
+$31.949$.  Packet-entry work is now at most
+$\exp(s^{0.1996+o(1)})$, still lower order; all other resource arguments
+remain as in the generic theorem.  An optional schedule with larger
+power margins uses $\tau=39/10$ instead; it gives coefficient
+$32.33545622568384\ldots$ and safe integer coefficient $33$.
+
+This premise includes root degree $s^{1/2}\operatorname{polylog}(s)$ and
+root degree $s^{0.51}$ for sufficiently large $s$.  Subject to their
+common normalized precision, truncation and oracle hypotheses, it
+therefore improves the respective $42.3726842\ldots$ and
+$60.7069575\ldots$ degree-sensitive polynomial-space certificates from
+the incoming high-moment and recursive packets.  This comparison is
+between upper bounds on the same normalized network size.
+
+\subsection{Root degree at most \texorpdfstring{$s^{1/12}$}{s to the power 1/12}}
+
+For low-degree input it is better to compose the incoming asymmetric
+packet's already proved low-degree schedule with the incoming full-block
+Cauchy basis.  Maintain $\Delta=\lceil s^{1/12}\rceil$, and use
+\[
+ r=48,\qquad
+ u_d=\left\lfloor\frac{\lambda}{14\,8^d}\right\rfloor,\qquad
+ a_d=\sum_{j=0}^d\left(u_j+\lceil6\log_2\lambda\rceil\right).
+\]
+The leading cumulative packet exponent is at most $4/49$.  The exact
+integer inequality $3^5<2^8$ yields $\log_2 48<28/5$.  Therefore the
+symmetric degree-packing exponent is bounded by
+\[
+ 2\frac4{49}\log_2 48+\frac1{12}
+ <\frac{419}{420}<1,
+\]
+and the rounding exponent is bounded by
+\[
+ \left(1+2\log_2 48\right)\frac4{49}
+ <\frac{244}{245}<1.
+\]
+The new packet degree has leading exponent $4/49<1/12$, so the same
+small degree bound is preserved.  The coarse child ratio $1/12$ and
+retained-range ratio $1/8$ give the usual noncircular depth bootstrap,
+with a uniformly positive power of $\lambda$ in every active $u_d$.
+
+The sharp child ratio is $1/24$.  The slope-four local coefficient is
+\[
+ K(48)=\frac{\pi}{\ln2}\sqrt{\frac{47}{24}}.
+\]
+Summing the convergent geometric series gives
+\[
+ C_{1/12}
+ =\frac{K(48)\sqrt{14}}{1-\sqrt8/24}
+ =\frac{\pi\sqrt{329/12}}
+        {\ln2\,(1-\sqrt2/12)}
+ =26.90232751306742\ldots.
+\]
+Thus the polynomial-space bound has eventual integer coefficient $27$.
+The exact checker verifies this directly using rational enclosures.
+This improves the prior polynomial-space coefficients
+$31.0641321\ldots$ and $31.2364960\ldots$ on their overlapping low-degree
+premises.  In particular, bounded-degree clause networks eventually
+satisfy the $s^{1/12}$ premise.  Conversion to a SAT-variable coefficient
+still requires accounting for the chosen encoding's wire budget.
+
+These two corollaries are compositions with complete schedules and
+resource accounting.  They do not imply numerical dominance between
+networks measured in different wire parameters, and they do not compare
+polynomial space with an unrestricted-memory claim as though the two
+resource guarantees were identical.
