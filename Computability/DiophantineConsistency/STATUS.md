@@ -2,6 +2,15 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+**26 October update:** The owner reaffirmed HA as the final target.
+The [C222 formula encoder](reviews/validator-formula-encoder222-root.md)
+passes five independent fresh compilations and13 standard-only reports;
+it represents the actual equality-as-Eind interpretation and nested SHIFT
+for internal arithmetic inputs. The final HA derivation remains open.
+The [consistency cache audit](research/fixed-consistency-nat-cache-gap-audit.md)
+authenticates all139 selected Foundation providers, while a proposed73
+local-module refresh remains unexecuted at this checkpoint.
+
 **Current direction:** On 25 October 2026 the owner resumed Lean
 formalization, requesting proofs for the simplest equations constructed
 under the different metrics. See [LEAN_EQUIVALENCE_PLAN.md](LEAN_EQUIVALENCE_PLAN.md).

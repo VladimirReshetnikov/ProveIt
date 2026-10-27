@@ -565,6 +565,17 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The owner reaffirmed the **HA target** on26 October after discussing PA.
+PA may remain an intermediate theory in the already checked proof
+translation; existence of an actual HA derivation is the required endpoint.
+The [represented C222 formula encoder](reviews/validator-formula-encoder222-root.md)
+now has an independent five-source replay with13 standard-only reports.
+Its fixed graph and constructor/SHIFT equations hold for arbitrary internal
+IΣ1 inputs. Uniform typed vacuity and arbitrary proof interpretation remain
+open. The [fixed consistency cache audit](research/fixed-consistency-nat-cache-gap-audit.md)
+has authenticated all139 selected Foundation providers and proposes73
+local refreshes; that proposal is not an executed consistency proof.
+
 1. Authentic HA derivability and basic arithmetic/induction interfaces are
    checked, with one-way classical embedding and focused binder checks.
 2. The literal arithmetic equation sentence is checked. Supply the exact

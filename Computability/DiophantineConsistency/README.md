@@ -17,6 +17,12 @@ The owner now additionally requires a Lean theorem that this equivalence
 is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
+The owner reaffirmed HA after considering PA as an alternative. The
+[represented C222 formula encoder](reviews/validator-formula-encoder222-root.md)
+now passes an independent five-source build with13 standard-only reports,
+including internal constructor and nested SHIFT equations. The complete
+HA equivalence still requires the documented proof-interpretation and
+runtime bridges.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed

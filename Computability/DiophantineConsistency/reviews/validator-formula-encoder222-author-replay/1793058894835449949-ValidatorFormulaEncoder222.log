@@ -1,0 +1,29 @@
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorFormulaEncoder222.lean:54:73: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+e : Fin (2 + 1) → V
+⊢ e 0 =
+      ((Circuit.input2.al
+                (((Circuit.input2.el Circuit.input0).im (Circuit.input2.el Circuit.input1)).conj
+                  ((Circuit.input2.el Circuit.input1).im (Circuit.input2.el Circuit.input0)))).conj
+            (Circuit.input2.al
+              (((Circuit.input0.el Circuit.input2).im (Circuit.input1.el Circuit.input2)).conj
+                ((Circuit.input1.el Circuit.input2).im (Circuit.input0.el Circuit.input2))))).eval
+        (e 1) (e 2) (e 1 + e 2 + 1) 0 ↔
+    e 0 =
+      wim
+        (wim
+          (wal (e 1 + e 2 + 1)
+            (wim
+              (wim (wim (wel (e 1 + e 2 + 1) (e 1)) (wel (e 1 + e 2 + 1) (e 2)))
+                (wim (wim (wel (e 1 + e 2 + 1) (e 2)) (wel (e 1 + e 2 + 1) (e 1))) 1))
+              1))
+          (wim
+            (wal (e 1 + e 2 + 1)
+              (wim
+                (wim (wim (wel (e 1) (e 1 + e 2 + 1)) (wel (e 2) (e 1 + e 2 + 1)))
+                  (wim (wim (wel (e 2) (e 1 + e 2 + 1)) (wel (e 1) (e 1 + e 2 + 1))) 1))
+                1))
+            1))
+        1
