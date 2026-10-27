@@ -164,6 +164,13 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [actual whole DagPerm control table](reviews/arithmetic-dag-controlperm222-root.md)
+now has complete4751-row catalogue equality, no extra high packed slots,
+and an unconditional whole-root occurrence. Independent fresh prerequisite/
+main/Checks replay matches all objects and12 standard-only reports. The
+structured execution,p215/site/tape calibration and final HA equation
+endpoint remain separate obligations.
+
 The [internal Pell classification](reviews/arithmetic-pell-classification-root.md)
 now proves that every solution of x²=1+(b+1)(b+3)y² in an arbitrary IΣ1
 model has a represented sequence index at most y, and proves the reverse

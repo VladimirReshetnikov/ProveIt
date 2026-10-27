@@ -1,6 +1,6 @@
 # Research status
 
-Updated 26 October 2026. This is a work log, not a completion certificate.
+Updated 27 October 2026. This is a work log, not a completion certificate.
 
 ## Assessment of the requested HA endpoint
 
@@ -28,6 +28,13 @@ execution step; it does not supply those remaining bridges.
 A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
+
+The [actual whole DagPerm control table](reviews/arithmetic-dag-controlperm222-root.md)
+now has complete4751-row catalogue equality, a packed high-bit bound and
+unconditional whole-root occurrence. Independent fresh PackedTables/main/
+Checks builds match all objects and12 standard-only reports. All75 kernel
+blocks and the final15 indices are covered. Structured interpreter execution,
+p215/site/tape calibration and the final PA/HA endpoint remain open.
 
 The [internal Pell classification](reviews/arithmetic-pell-classification-root.md)
 now proves both directions between the stated norm and a represented

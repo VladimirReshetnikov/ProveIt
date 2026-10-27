@@ -11,6 +11,13 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual whole DagPerm table](reviews/arithmetic-dag-controlperm222-root.md)
+now has kernel-checked catalogue equality for all4751 rows and unconditional
+root occurrence at entry1,fuel488. Independent fresh PackedTables/main/
+Checks replay reproduces all objects and12 standard-only reports. This
+discharges the table/occurrence boundary, while structured interpreter
+execution,p215 control/site/tape simulation and the final HA theorem remain.
+
 The [internal Pell classification](reviews/arithmetic-pell-classification-root.md)
 now proves the stated Pell norm iff a represented internal index<=y,
 uniformly over all IΣ1 models. Descent justifies natural subtraction and
