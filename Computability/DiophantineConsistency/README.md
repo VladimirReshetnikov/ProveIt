@@ -89,6 +89,11 @@ now iterates that step at every internal IΣ1 time and agrees with literal
 EnumPerm.run on every ordinary state/time. Two independent builds pass
 thirteen standard-only reports. Individual-word draining, scheduler
 fairness and proof-state invariants remain open.
+The [individual-word tick](reviews/arithmetic-command-tickperm222-peer.md)
+now has a proved internal decrease of the remaining word and exact
+all-raw Nat one-command semantics. Its independent pair passes thirteen
+standard-only reports. Halt0 and positive successful completion remain
+distinct; the draining and scheduling proofs are separate steps.
 The [C222 equality leaf](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean)
 now translates into the actual C254 proof predicate for every internal input
 in every IΣ1 model. Its [independent replay](reviews/validator-growg222-root.md)
