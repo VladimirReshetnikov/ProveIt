@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual internal augmented comprehension theorem](reviews/validator-seed-raw-comprehension222-root.md)
+now constructs a genuine source proof for arbitrary internal unary matrices
+and free parameters. It preserves full member closure, branch overlaps and
+all binder shifts, with actual Proof certificates and fixed total raw syntax
+graphs. Independent fresh pairs match both objects/full logs and11 reports.
+Guarded comprehension and the parameter-safe marker/Collection/quotient route
+still precede actual ZF/ZFC calibration; no source-model premise is substituted.
+
 The [actual internal scheduler/control halting theorem](reviews/arithmetic-dag-runtimeperm222-root.md)
 now composes repeated execution in both directions using a fixed Sigma1
 relation and derived positive clocks. It retains arbitrary internal data

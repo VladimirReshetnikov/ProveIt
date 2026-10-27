@@ -40,6 +40,14 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [actual internal augmented comprehension proof](reviews/validator-seed-raw-comprehension222-root.md)
+now supplies an actual source Proof certificate for every internally typed
+unary matrix and arbitrary source term/free parameters. Full member closure,
+root/singleton overlaps, capture-safe binders and fixed total raw syntax
+graphs are included. Independent fresh pairs match both objects/full logs
+and11 standard-only reports. Guarded comprehension, marker-safe proof
+transport, Collection and actual ZF/ZFC calibration remain open.
+
 The [actual internal scheduler/control halting theorem](reviews/arithmetic-dag-runtimeperm222-root.md)
 now proves both directions for arbitrary internal IΣ1 times and boundaries,
 with exact pointer0/candidate4/zero-work specialization. The fixed Sigma1

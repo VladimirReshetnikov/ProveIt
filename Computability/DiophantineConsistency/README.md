@@ -165,6 +165,13 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [actual internal augmented comprehension proof](reviews/validator-seed-raw-comprehension222-root.md)
+now constructs a genuine source proof for every internal unary matrix and
+arbitrary free parameters, retaining full member closure and branch overlaps.
+The actual Proof predicate and fixed total syntax graphs are checked.
+Independent builds match both objects/full logs and11 standard-only reports.
+Guarded comprehension, marker-safe interpretation and ZF/ZFC calibration remain.
+
 The [internal source basis](reviews/validator-seed-source-basis222-root.md)
 now constructs explicit open seed proofs for every internally typed matrix,
 and genuine source proofs of empty objects,singletons and inhabited tags.
