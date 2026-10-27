@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual internal DagPerm root](reviews/arithmetic-dag-rootperm222-root.md)
+now constructs the whole execution at every internal boundary and proves
+exact scheduler agreement with pointer/candidate progress. Its actual
+equality123,156-atom AX word and complete dispatch retain zero/collision
+cases. Independent fresh builds reproduce both objects/full logs and13
+standard-only reports. Repeated-run halting and positive clocks must still
+be composed before the literal215 tape/site/boot/clock simulations.
+
 The [internal Pell residue classes](reviews/arithmetic-pell-residue-classes-root.md)
 now derive full arbitrary-index plus/minus classes, the signed doubled step
 with2p≤m, and odd-index witnesses in every IΣ1 model. The local growth gap
@@ -42,8 +50,8 @@ now supply concrete run witnesses for pairing,unpairing,reads,all13 AX atoms
 and fetch, using the accepted actual control table and physical register file.
 The rotated fetch loop is proved with genuine Sigma1 iteration. Independent
 fresh builds reproduce both objects/full logs and22 standard-only reports.
-The actual equality/AX-word/dispatch/root theorem must still construct the
-whole structured execution before the accepted control/bisimulation bridges.
+The later root theorem above constructs its whole structured execution;
+the repeated-run halting bridge and literal machine simulation remain.
 
 The [actual internal first-norm theorem](reviews/arithmetic-pell-first-norm-root.md)
 now classifies every x²=1+Q(Q+1)k² solution in the represented sequence,

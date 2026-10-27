@@ -40,6 +40,15 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [actual internal DagPerm root](reviews/arithmetic-dag-rootperm222-root.md)
+now constructs either a halt run or a normal run to the actual scheduler's
+live successor, with pointer decrease or candidate increment. Actual
+equality123, the full156-atom AX word, all selectors and payload reads are
+included. Independent fresh builds match both objects/full logs and13
+standard-only reports; ROOT authenticates both packets without a third build.
+Repeated internal execution/positive clocks, literal215 calibration and the
+final PA/HA equivalence remain open.
+
 The [internal Pell residue classes](reviews/arithmetic-pell-residue-classes-root.md)
 now give the full plus/minus classes for arbitrary internal indices, signed
 doubled step-down with the inclusive2p=m endpoint, and actual odd-index
@@ -63,8 +72,8 @@ now proves concrete pairing/unpairing,three reads,all13 AX atoms and both
 fetch branches over arbitrary internal IΣ1 data. Pair/unpair allow dirty
 scratch; macro cleanliness is explicit. The actual rotated136/300 fetch
 loop has its own Sigma1 invariant. Independent fresh pairs match both
-objects/full logs and22 standard-only reports. Equality123,complete AX
-word/dispatch,root execution and literal215 calibration remain open.
+objects/full logs and22 standard-only reports. The later root packet above
+extends this checkpoint; literal215 calibration remains open.
 
 The [current13/88/51 metric packet](reviews/adaptive-current13-metrics-root.md)
 now independently certifies every live gate, complete specialized leading

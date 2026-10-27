@@ -171,6 +171,13 @@ and genuine source proofs of empty objects,singletons and inhabited tags.
 Independent builds match both objects/full logs and17 standard-only reports.
 Guarded comprehension,marker-safe interpretation and ZF/ZFC calibration remain.
 
+The [actual internal DagPerm root](reviews/arithmetic-dag-rootperm222-root.md)
+now constructs a whole root execution for every internal scheduler boundary,
+with exact next-state agreement and pointer/candidate progress. This includes
+actual equality123, the complete156-atom AX word and all dispatch branches.
+Independent builds match both objects/full logs and13 standard-only reports.
+Repeated-run halting correspondence and literal215 simulation remain open.
+
 The [actual internal DagPerm macros](reviews/arithmetic-dag-macros-perm222-root.md)
 now execute pairing,unpairing,reads,all13 AX atoms and both fetch cases for
 arbitrary internal data, with the actual physical file and rotated fetch loop.

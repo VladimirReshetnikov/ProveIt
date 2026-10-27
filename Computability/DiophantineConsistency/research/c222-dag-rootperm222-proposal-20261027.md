@@ -1,0 +1,17 @@
+# Actual DagPerm root: accepted-macro supplement and implementation scope
+
+27 October 2026. This supplements the frozen `c222-dagperm-runtime-proposal-20261027.md` and its historical cache plan; neither is rewritten. ROOT authorized the concrete next source implementation and requires review of this exact updated inventory before any compiler. No overlay or compiler was created by this audit.
+
+The direct imports are `BusyBeaver.ZFC.ArithmeticDagMacrosPerm222` and `DiophantineConsistency.ArithmeticEnumStepPerm222`. The source-header reachable DAG has 149 custom modules (95 Foundation), 434 recorded artifacts, 39 package boundary names and 117 current boundary companion observations. No source refresh or Foundation build is needed. The selected macro source is `3faa5f35de03d12407e2303432197144f2b279c842f785fd8d6ba6a89fa23d7d`; its accepted ROOT primary is `c225836ef38be24365c6ed0205ad5e5de280b6407c3155ce897553a5c3d17f4a` at `/tmp/arithmetic-dag-macros-perm222-root-y_v4hr6m/lib`, accepted in d504e3006d. The supplement retains the historical author packet and exact ROOT packet/state/18-file manifest.
+
+The updated plan SHA256 is `99ab05b4c499f031c65a58fc426777fac55ecc5584cfbd5a790eb2698cbcfa58`. Its audit performed 2,288 hash comparisons over 823 distinct observed paths, including preserved parent authentication, all selected sources/objects, re-read import headers, exact topological closure, package-first boundary providers, and all 18 ROOT evidence files. Package companions remain current observations, not retroactive build captures. The first metadata-only attempt failed on a nested boundary record; the preserved v1 and corrected v2 differ only in that primary-record selection. No Lean invocation occurred.
+
+The new `ArithmeticDagRootPerm222` and focused Checks will prove the same concrete scope already reviewed:
+
+* Actual equality123/461–466 over arbitrary internal counters, with normal exit exactly when the original two values agree and break otherwise. The cancellation loop has an explicitly represented Sigma1 invariant and uses internal iteration; then derive MP150, NIP152 including cache1 halt, and gate457.
+* All 13 actual AX atoms, the complete literal finite word from236 to457, its kernel-checked node-chain certificate, and exact symbolic fold to `gateValue`/`axStackValue`. Preserve physical parameter order, rho6(a,c), growG, old-d GEN and dominated rho8, every bundle collision and c=0.
+* Actual dispatch141, changed MP484 and AX471/485/486; selectors0/1/2/c+3 with real payload consumption. Compose fetch133 and read174 into root0, matching actual `enumValue` at `boundary pl np t S d h := ⟨np,t,S,0,d,h,0,0,pl⟩`, physically `[S,pl,t,d,0,0,np,h,0]`.
+
+The theorem is a disjunction: actual scheduler result0 plus an actual root halt run; or actual live successor plus a normal root run and progress `pl' < pl ∨ np' = np+1`. It accepts no root execution premise. Raw candidate0 and initial candidate4 remain literal. All counters/times are internal IΣ1 values; no standard-Nat execution theorem or old254 concrete runtime is used.
+
+No full EnumRun/control halting bridge, positive-clock theorem, p215 tape/site/boot simulation, source-ZFC or HA equivalence is part of this checkpoint. Compiler authorization remains pending ROOT's authentication of this supplement. Subsequent execution uses two private fresh regular outputs, pinned Lean4.32, -M6000 -j1 -DElab.async=false, explicit package paths, 512MiB reserve and preserved source/driver snapshots and all attempts.
