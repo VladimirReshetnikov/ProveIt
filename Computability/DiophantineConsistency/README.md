@@ -123,6 +123,12 @@ now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
 plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. The next runtime
 checkpoint proves that evaluation of the concatenated words composes.
+The [actual C222 GEN/MP rules](reviews/arithmetic-command-ruleperm222-root.md)
+now preserve all-top/all-stack contracts, including GEN at zero/code1 and
+both MP false-cache halt branches. Independent builds pass seven standard-only
+reports and identical objects. Uniform circuit compilation, unrestricted
+rho8 and proof-history correctness remain open.
+
 The [actual C222 finite command leaves](reviews/arithmetic-command-leafperm222-root.md)
 now construct all nine physical AX selections, exact gate/bundle outputs
 and conditional false-target termination under all-top/all-stack contracts.

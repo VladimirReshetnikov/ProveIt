@@ -1060,3 +1060,16 @@ compilation remain subsequent obligations.
 No false1 axiom is introduced. The terminator is conditional on an existing
 false-target contract, and exact saved-stack restoration supports the later
 MP major-premise call at top0 with its minor formula saved.
+
+
+## Actual C222 GEN/MP execution contracts accepted
+
+The [actual C222 GEN/MP rules](reviews/arithmetic-command-ruleperm222-root.md)
+now preserve all-top/all-stack contracts, including GEN at zero/code1 and
+both MP false-cache halt branches. Independent builds pass seven standard-only
+reports and identical objects. Uniform circuit compilation, unrestricted
+rho8 and proof-history correctness remain open.
+
+The major MP call retains its precise saved-stack input; the physical AX
+old-counter arguments are derived from execution. These finite runtime
+contracts do not by themselves construct a represented proof-word history.
