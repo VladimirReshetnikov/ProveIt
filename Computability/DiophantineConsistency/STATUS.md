@@ -29,6 +29,14 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [concrete full-seed source theory](reviews/validator-full-seed-theory222-root.md)
+now has its actual Delta1 recognizer, all-internal universal closure and
+AxOK for equality,irreflexivity and every fully closed seed instance.
+An internal falsum proof gives an actual History222 value2 witness without
+an axiom-image premise. Independent builds match both objects/full logs
+and13 standard-only reports. Tagged/parameterized interpretation and the
+actual ZF/ZFC calibration remain open before final PA/HA composition.
+
 The [internal Pell residue/index package](reviews/arithmetic-pell-congruences-root.md)
 now supplies nonnegative residue quotients at every internal index, actual
 remainder identities,4Q first-index transport, norm-solution certificates,

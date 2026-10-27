@@ -164,6 +164,13 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [concrete full-seed source theory](reviews/validator-full-seed-theory222-root.md)
+now has an actual Delta1 recognizer and discharged AxOK, including universal
+closure of arbitrary internal schema parameters. Its internal falsum proofs
+produce actual History222 value2 witnesses. Independent builds match both
+objects/full logs and13 standard-only reports. The tagged source interpretation
+and actual ZF/ZFC calibration still precede the final HA equation theorem.
+
 The [internal Pell residue/index package](reviews/arithmetic-pell-congruences-root.md)
 now proves concrete residue quotients,4Q first-index transport and index
 uniqueness for arbitrary internal IΣ1 indices. Independent builds match

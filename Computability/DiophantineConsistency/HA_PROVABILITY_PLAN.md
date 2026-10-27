@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [concrete full-seed source theory](reviews/validator-full-seed-theory222-root.md)
+now has a fixed Delta1 recognizer, genuine internal Pi2/IΣ2 universal closure,
+and discharged AxOK for equality,irreflexivity and the full seed schema.
+The actual source interpreter maps its internal falsum proofs to History222
+value2. Independent replay matches both objects/full logs and13 standard-only
+reports. The tagged-domain marker/guard/quotient interpretation and actual
+ZF/ZFC proof calibration remain required before the PA-to-HA assembly.
+
 The [internal Pell residue/index package](reviews/arithmetic-pell-congruences-root.md)
 now gives actual quotient and remainder certificates,4Q transport under
 the explicit first-index identity, arbitrary norm-solution residues and
