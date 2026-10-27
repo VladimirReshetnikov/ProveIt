@@ -1,0 +1,132 @@
+POLYNOMIAL-SPACE PACKET COEFFICIENT EXTRACTION
+===========================================
+
+Scope and source
+----------------
+The OpenAI preprint at commit 7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a
+defines a new packet tensor by extracting one monomial coefficient from a
+product of at most L affine row factors (quantitative-contraction.tex,
+subsection "The child networks and their descriptions", especially the
+paragraph beginning "All new tensors are given implicitly"). Its stated
+entry evaluator enumerates polynomially many choices per factor, at cost
+exp(O(L log s)) and polynomial space.
+
+The following replacement costs polynomial(s) times G, where G <= 2^L,
+and still uses polynomial space. It does not improve the full solver's
+dominant exp(O(s/sqrt(log s))) bound: L <= s^(1/1000) in the published
+parameter schedule. It is an actual local asymptotic speedup, not a proof
+of a smaller global exponent.
+
+The coefficient identity
+------------------------
+Let A be a commutative ring that is free of finite rank over Z; for the
+application use A = Z[U,V]/(f(U), V^ell), with f monic of degree e.
+Let
+
+  P(Z_1,...,Z_t) = product_{r=1}^R
+                         (a_{r,0} + sum_{j=1}^t a_{r,j} Z_j)
+
+with coefficients in A, R <= L, and a target beta in N^t. If |beta| > R,
+the requested coefficient is zero. Otherwise set beta_0 = R-|beta|,
+beta_bar = (beta_0,beta_1,...,beta_t), and homogenize:
+
+  Q(Z_0,...,Z_t) = product_{r=1}^R sum_{j=0}^t a_{r,j} Z_j.
+
+Then [Z^beta] P = [Z^beta_bar] Q. Define
+
+  D = product_{j=0}^t beta_j!,
+  N = sum_{0 <= gamma <= beta_bar} (-1)^(R-|gamma|)
+                  product_{j=0}^t binom(beta_j,gamma_j) Q(gamma).
+
+The exact identity is N = D [Z^beta_bar] Q.
+
+Proof: apply the beta_j-th forward difference in each coordinate at zero.
+For a monomial Z^alpha in Q, the finite difference vanishes if alpha_j
+is smaller than beta_j for any j. Since Q is homogeneous of total degree
+R = |beta_bar|, the only monomial with alpha_j >= beta_j in every
+coordinate is alpha = beta_bar. Its finite difference is product beta_j!.
+The identity holds coefficientwise in any commutative ring; the free
+integral module is used below to justify coordinatewise exact division.
+
+Number of evaluations and bit complexity
+----------------------------------------
+There are exactly
+
+  G = product_{j=0}^t (beta_j+1)
+
+grid points. Since b+1 <= 2^b for every nonnegative integer b,
+
+  G <= 2^(sum beta_j) = 2^R <= 2^L.
+
+This is often considerably smaller: for a univariate target of degree b,
+G = (R-b+1)(b+1), which is polynomial in R. The generic 2^R bound is
+tight for the grid when every positive homogenized target exponent is 1.
+One evaluates the R linear forms at each grid point and multiplies their
+values. No coefficient table or list of all grid points is stored.
+
+Correct arithmetic at a power-of-two modulus
+-------------------------------------------
+The application works over A/(2^p). D is often even, so division modulo
+2^p is invalid. Write D = 2^v d with d odd. Legendre's formula gives
+
+  v = sum_j v_2(beta_j!)
+    = R - sum_j popcount(beta_j) <= R.
+
+Take the canonical coordinates of every a_{r,j} modulo 2^p and regard
+them as integral coefficients. Evaluate the finite-difference numerator
+modulo 2^(p+v), using these same representatives. Each resulting
+coordinate lies in [0,2^(p+v)) and is divisible by 2^v, because the exact
+identity proves divisibility and the modulus itself is divisible by 2^v.
+Divide its integer representative by 2^v, multiply by d^(-1) modulo 2^p,
+and reduce modulo 2^p. The result is exactly the requested coefficient.
+
+Crucially, it is not necessary to evaluate the underlying kernel at
+higher precision. A different integral lift of an input coefficient
+changes the desired output coefficient by a multiple of 2^p. Using the
+canonical representatives consistently defines a suitable lift and
+keeps the quotient-ring reduction map multiplicative. One must not take
+an arbitrary residue of N modulo 2^p and then divide it by the even part
+of D: information would have been lost.
+
+Example: for [Z^2](1+Z)^4 modulo 8, beta_bar=(2,2), D=4, v=2.
+The numerator is 24. Modulo 32 it is retained and division by 4 gives
+6 modulo 8. Modulo 8 it would be 0 and subsequent division would fail.
+
+Creation-precision convention
+-----------------------------
+In the source algorithm, a packet tensor is tagged with creation
+precision p_c. To evaluate its entry, run this coefficient extraction
+with p=p_c and the packet's creation-time coefficients. Return the
+canonical coordinates modulo 2^p_c. If the tensor is retained in a
+later recursive call, use those same coordinates as its lift, exactly
+as prescribed by quantitative-contraction.tex (arithmetic subsection).
+The temporary p_c+v computation is internal to this extraction; it does
+not redefine the tensor at a new creation precision.
+
+The source-mode powers in the packet definition are multiplied into the
+extracted coefficient afterwards modulo 2^p_c, as in the original
+definition. They are not part of the homogenized row product.
+
+Space and operation count
+-------------------------
+The denominator has O(R log(R+1)) bits, each grid coordinate has
+O(log(R+1)) bits, and the binomial weight has O(R) bits. At most one
+grid point, one product accumulator, and one sum accumulator are needed.
+Every ring element has e*ell coordinates of p+v <= p+R bits. With
+polynomial-size packet descriptions and the source's polynomial bounds
+on e, ell, p, R and the number of modes, the whole routine uses polynomial
+space. Its time is G times a polynomial in those quantities and in the
+coefficient bit lengths of f. No exponential-size dynamic-programming
+table is needed.
+
+Prototype and validation limits
+-------------------------------
+packet_extraction.py implements this exact method for scalar rings and
+for arbitrary monic extension polynomials with a truncated V variable.
+test_packet_extraction.py compares it with independent direct polynomial
+multiplication on exhaustive small and deterministic random examples.
+The tests also include nilpotents, negative/oversized representatives,
+zero targets, empty products, targets of excessive degree, and a case
+where the extra precision is necessary. These checks validate only the
+local coefficient identity and implementation. They are not a full
+implementation, formal proof, or benchmark of the preprint's SAT solver.

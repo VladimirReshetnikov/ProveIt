@@ -1,0 +1,928 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,array,longtable,enumitem,xcolor}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\usepackage{listings}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\sat}{\#\mathrm{SAT}}
+\newcommand{\kcount}{\#k\text{-}\mathrm{SAT}}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\bigO}{\mathcal O}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exact counting and clause density}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single,rulecolor=\color{black!20},xleftmargin=0.5em,xrightmargin=0.5em}
+\hypersetup{pdftitle={Improving the Clause-Density Dependence of Exact k-SAT Counting},pdfauthor={ChatGPT research assistance for Vladimir Reshetnikov},pdfsubject={A density-dependent refinement of the October 2026 algorithm}}
+\title{Improving the Clause-Density Dependence\protect\\of Exact $k$-SAT Counting}
+\author{Research note prepared for Vladimir Reshetnikov\smallskip\\\small ChatGPT research assistance}
+\date{October 26, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We propose a modification of the exact counting algorithm in OpenAI's
+\emph{The Exponential Time Hypothesis is False}, revised October 25, 2026.
+Using its Boolean tensor-contraction theorem and parity-lift identity,
+and retaining its general counter at high density, we derive, for
+fixed $k\ge2$, a deterministic polynomial-space algorithm
+whose bit complexity on $n\ge20$ declared variables and $m$ clauses is
+\[
+ (n+m)^{O_k(1)}
+ 2^{\,O_k\!\left(\frac{n}{\sqrt{\log n}}
+       \min\left\{\log(2+m/n),\log\log n\right\}\right)}.
+\]
+The change is to construct the initial sparse parity checks using a
+powered constant-degree expander with local-code parameters depending
+on clause density, and to keep the actual monomial sparsity in the
+source's incidence-encoding bound. For $m=\Theta(n\log\log n)$ this
+replaces an exponent $O_k(n\log\log n/\sqrt{\log n})$ by
+$O_k(n\log\log\log n/\sqrt{\log n})$.
+This is an improvement of the density dependence. The unrestricted
+worst-case bound in $n$, and the fixed-density exponent, remain those
+of the source. We give explicit integer parameters, correctness and
+complexity proofs, a boundary analysis, and reproducible finite checks.
+The extension is a mathematical derivation relative to the cited
+source theorems; it has not been formally verified in Lean or Rocq.
+\end{abstract}
+\tableofcontents
+\clearpage
+
+\section{Result, comparison, and provenance}
+\label{sec:result}
+
+All logarithms in this note are base two unless explicitly written
+$\ln$. Changing the base affects only fixed constants. The parameter
+$k$ is fixed; the density may grow with $n$. The count includes every
+declared variable, whether or not it occurs in a clause.
+
+The revised source \cite{OAI2026} states the general bound
+\begin{equation}\label{eq:source-general}
+ (n+m)^{O_k(1)}2^{O_k(n\log\log n/\sqrt{\log n})}
+\end{equation}
+and, for each fixed $D$, the bound
+\begin{equation}\label{eq:source-sparse}
+ (n+m)^{O_{k,D}(1)}2^{O_{k,D}(n/\sqrt{\log n})}
+ \qquad(m\le Dn).
+\end{equation}
+The stronger tensor-contraction appendix, rather than the earlier
+rational-interpolation construction, is the baseline here. In fact its
+direct clause-network proof also gives
+$2^{O_k((n+m)/\sqrt{\log(n+m)})}$ up to a polynomial input factor.
+Combining this with \eqref{eq:source-general}, for
+$B=\max\{1,\ceil{m/n}\}\le\ceil{\log n}$, gives the exponent scale
+\begin{equation}\label{eq:old-profile}
+ \frac{n}{\sqrt{\log n}}\min\{1+B,\log\log n\}.
+\end{equation}
+Keeping the density information through the parity reduction improves
+this profile.
+
+\begin{theorem}[Density-dependent improvement]\label{thm:main}
+Use the Boolean tensor-contraction theorem, parity-lift identity, and
+general-counting bound of \cite{OAI2026} as imported results.
+For each fixed integer $k\ge2$, there is a
+deterministic algorithm that exactly counts the satisfying assignments
+of a $k$-CNF on $n\ge20$ declared variables with $m$ input clauses in
+\begin{equation}\label{eq:main}
+ (n+m)^{O_k(1)}
+ 2^{O_k\!\left(\frac{n}{\sqrt{\log n}}
+       \min\left\{\log(2+m/n),\log\log n\right\}\right)}
+\end{equation}
+bit operations and $(n+m)^{O_k(1)}$ bits of space.
+All constants are independent of $m/n$.
+\end{theorem}
+
+The proof constructs a new reduction for
+$B\le\ceil{\log n}$ and uses the source's general algorithm for larger
+$B$. A more general version works for $B\le(\log n)^A$ for any fixed
+$A$, with constants allowed to depend on $A$. Only $A=1$ is needed
+for Theorem~\ref{thm:main}.
+
+\begin{corollary}\label{cor:intermediate}
+For $m=\Theta(n\log\log n)$, the improved bound is
+\[
+ (n+m)^{O_k(1)}
+ 2^{O_k(n\log\log\log n/\sqrt{\log n})}.
+\]
+More generally, if $B\to\infty$ and
+$\log B=o(\log\log n)$, the new exponent scale is little-oh of
+\eqref{eq:old-profile}.
+\end{corollary}
+\begin{proof}
+Substitute the indicated density into \eqref{eq:main}. For the second
+claim, both $\log(B+2)/(1+B)$ and
+$\log(B+2)/\log\log n$ tend to zero. The ratio to the minimum
+in \eqref{eq:old-profile} is the maximum of these two ratios.
+\end{proof}
+
+\paragraph{What is inherited and what changes.}
+The contraction algorithm and its $s/\sqrt{\log s}$ exponent are
+inherited. The parity-lift identity and the monomial-to-network
+translation are also inherited. The new ingredients in this comparison
+are the density-only bounds on check support, and the uniform retention
+of the actual sparsity in the network-size estimate. Expander codes
+themselves are classical and already appear in the source. This note
+does not claim a new coding paradigm or priority over unexamined work.
+
+\paragraph{Version examined.}
+The source snapshot is \texttt{openai/math} at commit
+\begin{center}
+\small\texttt{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a}.
+\end{center}
+The analysis uses three sources in the preprint's \texttt{build/} directory:
+\begin{itemize}[nosep,leftmargin=*]
+\item \texttt{main\_full\_version.tex};
+\item \texttt{quantitative-reduction.tex};
+\item \texttt{quantitative-contraction.tex}.
+\end{itemize}
+The accompanying source manifest records
+their Git blob hashes and permanent URLs. This note does not report
+rerunning the source's formal verification or implementing its complete
+contraction engine.
+
+\section{A sparse-polynomial counter that retains its sparsity}
+\label{sec:sparse}
+
+The first step is a quantitative refinement of the source's lemma
+headed ``Counting sparse polynomial systems by contraction.'' Its
+proof gives more information than its stated polylogarithmic-sparsity
+bound when the actual number of monomials is retained.
+
+The imported contraction interface allows a bipartite Boolean tensor
+network with $O(s)$ edges and maximum degree at most $\ceil{s^{9/10}}$,
+over $(\Z/2^p\Z)[V]/(V^\ell)$ with $p,\ell=O(s)$. There must be
+polynomially many vertices and a description of length $\mathcal L$.
+If each tensor entry is computable in
+$(s+\mathcal L)^{O(1)}2^{O(s^{9/10})}$ time and
+$(s+\mathcal L)^{O(1)}$ space, the source theorem contracts the network
+in $(s+\mathcal L)^{O(1)}2^{O(s/\sqrt{\log s})}$ time and polynomial
+space. All constants in this interface are fixed. This is the input
+whose hypotheses are checked below.
+
+\begin{lemma}[Uniform sparsity dependence]\label{lem:sparse}
+Fix positive integers $k,c,C$. Let $P_1,\ldots,P_a$ be polynomials
+over $\F_2$ on $n\ge20$ declared Boolean variables, where $a\le cn$.
+Each polynomial is given by at most $S$ monomials of degree at most
+$k$, with
+\[
+ 1\le S\le\lambda^C,\qquad \lambda=\ceil{\log n}.
+\]
+Under the source assumptions of Theorem~\ref{thm:main}, their number
+of common zeros can be computed deterministically in polynomial space
+and
+\begin{equation}\label{eq:sparse-time}
+ n^{O_{k,c,C}(1)}
+ 2^{O_{k,c,C}(n\log(S+2)/\sqrt{\log n})}
+\end{equation}
+bit operations. The constants are uniform over all permitted $S$.
+\end{lemma}
+
+\begin{proof}
+Replace positive powers of each Boolean variable by its first power,
+and cancel duplicate monomials modulo two. There are at most
+\begin{equation}\label{eq:incidences}
+ N_0\le akS\le cknS
+\end{equation}
+equation--variable incidences. The scope of one equation has size at
+most $kS$.
+
+\paragraph{Control the large variable degrees.}
+Set
+\[
+ D_* = \max\{1,\ceil{N_0/n}\}\ceil{\sqrt\lambda}.
+\]
+Branch over all assignments to variables belonging to more than
+$D_*$ scopes. There are at most $n/\sqrt\lambda$ such variables, by
+counting incidences. Thus branching contributes at most
+$2^{n/\sqrt\lambda}$ calls. Substitute the fixed bits, normalize
+again, and discard constant-zero equations. A constant-one equation
+gives zero immediately. All remaining variable incidences are bounded
+by $O_{k,c}(S\sqrt\lambda)$; every remaining equation still has at
+most $S$ monomials. Keep the original value of $n$ for all bounds and
+precisions.
+
+\paragraph{Use the source's bounded-degree lift.}
+The source's parity-lift construction works over
+\[
+ \mathcal B=(\Z/2^{n+1}\Z)[V]/(V^{n+1}).
+\]
+Give each surviving incidence $(i,v)$ its own variable $z_{iv}$.
+The construction produces a multilinear polynomial
+\[
+ F(z,V)=\prod_i \overline B_i(z_i,V)
+\]
+with two properties. First, every retained incidence monomial has
+degree at most
+\begin{equation}\label{eq:degree}
+ K=k(a+2n),\qquad 2kn\le K\le(c+2)kn.
+\end{equation}
+Second, after identifying every $z_{iv}$ with the original Boolean
+$x_v$, summing over the free Boolean assignments, and summing the
+$V$-coefficients, the result is congruent modulo $2^{n+1}$ to the
+branch count. These are precisely the degree and residue identities
+in the source's sparse-query proof. They use its total-order parity
+lift; no new parity approximation is being assumed here.
+
+\paragraph{Encode each monomial by subsets of incidences.}
+Partition the tests and the free variables separately into
+$J=\ceil{n^{1/4}}$ groups, balanced in cardinality. Let $N_{gh}$
+be the number of incidences between test group $g$ and variable group
+$h$, and let $N=\sum_{g,h}N_{gh}\le N_0$. Enumerate arrays
+$(d_{gh})$ with $0\le d_{gh}\le N_{gh}$ and
+$\sum d_{gh}\le K$. There are at most
+\[
+ (K+1)^{J^2}=2^{O_{k,c}(\sqrt n\log n)}
+\]
+such arrays. For a fixed array, use
+$\ceil{\log\binom{N_{gh}}{d_{gh}}}$ Boolean wires to encode the
+chosen incidence subset for each pair of groups. Invalid indices
+receive tensor value zero. The source's tensor entries multiply the
+indicated test coefficients and sum the identified variable powers;
+therefore summing these networks over the degree arrays computes the
+required lift sum exactly.
+
+The important estimate is the number of wires $M$:
+\begin{align}
+ M&\le J^2+\log\prod_{g,h}\binom{N_{gh}}{d_{gh}}\notag\\
+  &\le J^2+\log\binom{N+K}{K}\notag\\
+  &\le J^2+K\log\!\left(\frac{\mathrm e(N+K)}K\right)
+    =O_{k,c}\bigl(n\log(S+2)\bigr).
+ \label{eq:wire-entropy}
+\end{align}
+The second line bounds the number of the specified squarefree
+monomials by the number of all monomials of degree at most $K$ in
+$N$ variables. The last line uses \eqref{eq:incidences} and
+\eqref{eq:degree}. Replacing $S$ by an unspecified power of $\log n$
+at this point would discard the improvement.
+
+\paragraph{Check the contraction hypotheses uniformly.}
+Choose the integer size parameter
+\[
+ \tau=1+\ceil{\log(S+1)},\qquad s=n\tau.
+\]
+Then \eqref{eq:wire-entropy} gives $M\le C_0s$ for a fixed
+$C_0=C_0(k,c)$. There are $2J$ vertices. Their degrees are at most
+\[
+ O_{k,c}(n^{3/4}S\sqrt\lambda)=o(s^{9/10}),
+\]
+uniformly for $S\le\lambda^C$. Each test-group tensor entry is
+computed by subset M\"obius inversion, one test at a time, in
+$2^{kS}n^{O_{k,c,C}(1)}$ time and polynomial space. This is at most
+$n^{O_{k,c,C}(1)}2^{s^{9/10}}$ for all sufficiently large $n$,
+uniformly over the same range. Variable-group entries and index
+decoding have polynomial cost. The graph and the entry descriptions
+have polynomial length; the precision and truncation order are
+$n+1=O(s)$.
+
+The source tensor theorem thus applies with fixed constants. It
+gives time polynomial in the description length times
+\[
+ 2^{O_{k,c,C}(s/\sqrt{\log s})}
+  =2^{O_{k,c,C}(n\log(S+2)/\sqrt{\log n})}.
+\]
+Both the high-incidence branching exponent $n/\sqrt\lambda$ and
+the array-enumeration exponent $O(\sqrt n\log n)$ are absorbed in
+this bound. Process branches, arrays, and contractions sequentially.
+The source's depth-first polynomial-space argument applies unchanged.
+The final count lies in $[0,2^n]$, so its least nonnegative residue
+modulo $2^{n+1}$ is the exact integer count. A finite range of smaller
+$n$, depending only on $k,c,C$, can be handled by direct enumeration.
+This changes only fixed constants.
+\end{proof}
+
+\section{Initial parity checks with support depending only on density}
+\label{sec:checks}
+
+The source's initial checks use, with $m\le Bn$ and
+$\mu=\floor{\log m}+1$,
+\[
+ D_0=320000B^2\mu^3,\qquad P_0=20000B^2\mu^2.
+\]
+Here $D_0$ bounds initial row supports and $P_0$ is the later sampling
+length. These factors of $\mu$ make the query sparsity a power of
+$\log n$ even when $B$ grows very slowly. We replace this part of
+the construction.
+
+\subsection{The explicit expander input}
+
+For every integer $q\ge1$, the Margulis--Gabber--Galil graph on
+$(\Z/q\Z)^2$ has the following eight labelled ports from $(x,y)$:
+\begin{equation}\label{eq:mgg}
+ (x\pm2y,y),\quad(x\pm(2y+1),y),\quad
+ (x,y\pm2x),\quad(x,y\pm(2x+1)).
+\end{equation}
+All operations are modulo $q$. Parallel edges and self-loops retain
+their port identities. The classical spectral theorem bounds the
+second largest eigenvalue of its normalized adjacency matrix $A/8$
+by $5\sqrt2/8$ \cite{GG1981,MGGFormal}. The cited formalization
+also records the explicit maps and the spectral proof.
+
+Add eight labelled identity ports and use the degree-$16$ lazy
+operator
+\[
+ Q=\frac{I+A/8}{2}.
+\]
+Every eigenvalue is nonnegative, and its restriction to the
+orthogonal complement of the constants has norm at most
+\begin{equation}\label{eq:rho}
+ \rho=\frac{1+5\sqrt2/8}{2}<\frac{19}{20}.
+\end{equation}
+This laziness avoids any convention about whether ``second
+eigenvalue'' bounds an absolute value. In the $t$-step walk graph,
+the degree is $16^t$ and the corresponding norm is at most
+$(19/20)^t$. A port is a word of length $t$ in the $16$-symbol
+alphabet. Each step map is a permutation, so there are exactly
+$16^t$ incoming and outgoing walk ports at every vertex.
+
+\subsection{Integer parameters and the small-instance branch}
+
+Let $B\ge1$ be an integer with $m\le Bn$. Define
+\begin{equation}\label{eq:parameters}
+ b=\ceil{\log(2B)},\qquad A_B=4096Bb,\qquad
+ \delta=A_B^{-1},\qquad P=2A_B^2.
+\end{equation}
+Choose the least integer $t\ge1$ satisfying
+\begin{equation}\label{eq:integer-tests}
+ 2A_B19^t\le20^t,\qquad16^t\ge64B,
+ \qquad\text{and set }d=16^t.
+\end{equation}
+No real-number oracle is needed. These integer inequalities imply
+$\varepsilon=(19/20)^t\le\delta/2$ and $d\ge64B$.
+They also give
+\begin{equation}\label{eq:d-bound}
+ t=O(\log(B+2)),\qquad d\le(16384Bb)^{56}.
+\end{equation}
+Indeed $2\cdot19^{14}<20^{14}$, so
+$t=14\ceil{\log(8192Bb)}$ is an admissible, possibly nonminimal
+choice. Since $2^{\ceil{\log x}}<2x$ for $x>0$ except at harmless
+equality endpoints, its degree is bounded as in \eqref{eq:d-bound}.
+This same choice also satisfies $16^t\ge64B$.
+
+If $m\le d$, directly enumerate the assignments of the at most
+$km$ occurring variables and multiply the resulting count by
+$2^{n-n_{\rm occ}}$. This costs
+\begin{equation}\label{eq:small-m}
+ \poly_k(n,m)2^{kd}=\poly_k(n,m)2^{(B+2)^{O_k(1)}}.
+\end{equation}
+When $B\le\ceil{\log n}$ this is an asymptotically subordinate
+overhead. It also avoids padding a tiny formula to an enormous graph.
+The constants in \eqref{eq:d-bound} are deliberately conservative;
+they are not intended to provide a competitive practical solver.
+
+Assume for the rest of this section that $m>d$. Set
+\begin{equation}\label{eq:padding}
+ q=\ceil{\sqrt{m/d}},\qquad N=q^2,\qquad M=Nd.
+\end{equation}
+The integer $q$ can be found as the least positive integer satisfying
+$q^2d\ge m$. Since $m/d>1$, we have
+\begin{equation}\label{eq:padding-bound}
+ m\le M<4m.
+\end{equation}
+Take a left and a right copy of the $N$ vertices of the powered lazy
+graph. Each labelled walk gives an edge from its left starting
+vertex to its right ending vertex. This is a $d$-regular bipartite
+multigraph. Spectral decomposition gives, for left and right vertex
+sets $U,V$,
+\begin{equation}\label{eq:mixing}
+ e(U,V)\le \frac{d|U||V|}{N}
+              +\varepsilon d\sqrt{|U||V|}.
+\end{equation}
+To obtain it, subtract the constant components of the two indicator
+vectors and bound the residual bilinear form by its operator norm.
+Replacing the residual norms by $\sqrt{|U|}$ and $\sqrt{|V|}$
+only weakens the estimate.
+
+\subsection{A local code with density-dependent distance}
+
+\begin{lemma}\label{lem:local-code}
+There exists a binary matrix $H$ with $d$ columns and
+$c_{\rm loc}=\ceil{d/(64B)}$ rows such that every nonzero word in
+its kernel has Hamming weight at least $\delta d$. Such a matrix
+can be found deterministically in $2^{O(d^2)}$ bit operations and
+$O(d^2)$ working bits.
+\end{lemma}
+\begin{proof}
+For $0<x\le1/2$, let
+$H_2(x)=-x\log x-(1-x)\log(1-x)$ be binary entropy. The usual
+binomial bound and $H_2(x)\le x\log(\mathrm e/x)$ give
+\[
+ \sum_{j=0}^{\ceil{\delta d}-1}\binom dj
+      \le2^{dH_2(\delta)}.
+\]
+Using $\log B\le b-1$, $\log b\le b$, $b\ge1$, and
+$\log\mathrm e<2$, we have
+\[
+ \log(\mathrm e/\delta)
+   =\log\mathrm e+12+\log B+\log b
+   <13+2b\le16b.
+\]
+Consequently
+\begin{equation}\label{eq:local-entropy}
+ H_2(\delta)\le\frac1{256B}
+     <\frac1{64B}\le\frac{c_{\rm loc}}d.
+\end{equation}
+For a uniformly random $c_{\rm loc}$-by-$d$ binary matrix, every
+fixed nonzero vector belongs to its kernel with probability
+$2^{-c_{\rm loc}}$. The expected number of nonzero kernel words
+of weight below $\delta d$ is strictly less than one by
+\eqref{eq:local-entropy}. Some matrix has no such word. Enumerate
+the matrices lexicographically, testing the forbidden words for each.
+The total cost is at most $2^{c_{\rm loc}d+d}\poly(d)$, which is
+$2^{O(d^2)}$, and only the current matrix and word are needed in
+working storage. The test $w<\delta d$ is the exact integer test
+$A_Bw<d$.
+\end{proof}
+
+\subsection{Global checks, distance, and shortening}
+
+Place the local checks $H$ on the incident ports of every vertex on
+both sides of the bipartite graph. The resulting global matrix has
+\begin{align}
+ 2Nc_{\rm loc}
+   &\le\frac{M}{32B}+\frac{2M}{d}\notag\\
+   &\le\frac{M}{16B}<\frac{m}{4B}\le\frac n4
+ \label{eq:row-count}
+\end{align}
+rows. Each row reads at most $d$ edge bits. The padding factor in
+\eqref{eq:padding-bound} is explicitly paid for in this estimate.
+
+\begin{lemma}\label{lem:initial-checks}
+When $m>d$, the construction gives a deterministic binary matrix
+$A^{(0)}$ with $m$ columns and fewer than $n/4$ rows, each of
+support at most $d$, satisfying
+\begin{equation}\label{eq:initial-distance}
+ 0\ne z\in\ker_{\F_2}A^{(0)}
+       \quad\Longrightarrow\quad |\supp z|\ge m/P.
+\end{equation}
+Here $d,P$ are bounded by fixed polynomials in $B+2$.
+\end{lemma}
+\begin{proof}
+First consider a nonzero accepted word on all $M$ edges. Let $w$
+be its weight and $U,V$ the vertex sets touched by its nonzero
+edges. The local-code property gives
+\[
+ w\ge\delta d\max\{|U|,|V|\}
+       \ge\delta d\sqrt{|U||V|}.
+\]
+Every nonzero edge joins $U$ to $V$, so $w\le e(U,V)$.
+Combining with \eqref{eq:mixing} and dividing by the positive number
+$d\sqrt{|U||V|}$ yields
+\[
+ \sqrt{|U||V|}\ge(\delta-\varepsilon)N.
+\]
+It follows that
+\[
+ w\ge\delta(\delta-\varepsilon)Nd
+     \ge\frac{\delta^2M}{2}\ge\frac{m}{P}.
+\]
+Keep any $m$ labelled edge coordinates and fix the remaining ones
+to zero. Restrict every global row to the retained columns to obtain
+$A^{(0)}$. A word in the restricted kernel extends by zeros to a
+word in the original kernel. Its weight is unchanged, so the distance
+lower bound survives this shortening. Row count and support size
+cannot increase. Equations \eqref{eq:parameters} and
+\eqref{eq:d-bound} prove the claimed polynomial dependence on $B$.
+\end{proof}
+
+Constructing the graph and its port lists uses polynomial time in
+$n,m,d,t$. Searching for the local matrix costs $2^{O(d^2)}$ once.
+The graph has fewer than $4m$ edges. The whole construction uses
+space polynomial in $n,m,d$, hence polynomial in $n,m$ in the
+density range used below.
+
+\section{From sparse checks to exact counting}
+\label{sec:greedy}
+
+For a clause $e$, let $v_e(x)\in\F_2$ indicate its violation by
+assignment $x$. As a Boolean polynomial it has degree at most $k$
+and at most $2^k$ monomials. Let $v(x)=(v_1(x),\ldots,v_m(x))$.
+Given a binary check matrix $A$, define
+\[
+ N(A)=\bigl|\{x\in\{0,1\}^n:Av(x)=0\}\bigr|.
+\]
+Every satisfying assignment survives every linear check. Therefore
+\begin{equation}\label{eq:survivors}
+ N(A)=\#F+D(A),
+\end{equation}
+where $D(A)$ counts the surviving nonsatisfying assignments.
+
+\begin{lemma}[Greedy elimination]\label{lem:greedy}
+Starting with $A^{(0)}$ from Lemma~\ref{lem:initial-checks}, a
+deterministic oracle reduction appends $3n$ rows of list length $P$
+and obtains $N(A)=\#F$. It makes at most $3n(2m)^P+1$ queries to
+an exact common-zero counting oracle. Every query has fewer than $4n$ equations, of
+degree at most $k$, and at most
+\begin{equation}\label{eq:query-sparsity}
+ S_B=2^k\max\{d,P\}
+\end{equation}
+monomials in each equation.
+\end{lemma}
+\begin{proof}
+Represent a candidate row by an ordered list
+\[
+ \gamma=((e_1,c_1),\ldots,(e_P,c_P))
+       \in([m]\times\{0,1\})^P.
+\]
+Repeated clause indices are allowed; their coefficients are added
+modulo two. Fix a nonsatisfying survivor $x$ of the current matrix.
+Its violation vector remains in the kernel of $A^{(0)}$ and has
+support at least $m/P$. A uniform candidate list misses this support
+with probability at most
+\[
+ (1-1/P)^P\le e^{-1}<1/2.
+\]
+Conditional on a hit, an independent coefficient at a hit position
+makes the parity uniform, even if indices repeat. Thus at least
+one quarter of the candidate lists reject $x$. Summing over all
+nonsatisfying survivors gives
+\[
+ \mathbb E_\gamma D(A;\gamma)\le\tfrac34D(A).
+\]
+Enumerate every candidate and compute $N(A;\gamma)$ using the
+exact common-zero counting oracle. Append a minimizing row. Equation
+\eqref{eq:survivors} shows that this also minimizes $D$ even though
+$\#F$ is not known. After $3n$ rounds,
+\[
+ D(A)\le(3/4)^{3n}2^n=(27/32)^n<1.
+\]
+Since $D(A)$ is a nonnegative integer, it is zero. One final query
+returns $\#F$.
+
+The initial row count is below $n/4$; at most $3n$ rows are ever
+appended. Every tested system therefore has fewer than $4n$
+equations. A row supported on at most $d$ clauses expands to at
+most $2^kd$ monomials, and a list of length $P$ expands to at most
+$2^kP$ monomials. Cancellation only decreases these numbers.
+This proves \eqref{eq:query-sparsity} and the query bound.
+\end{proof}
+
+The argument is the source's greedy selection step with new support
+parameters. Its use of exact common-zero counts is not circular:
+Lemma~\ref{lem:sparse} depends on the already available tensor
+counter, not on the density-dependent SAT algorithm being constructed.
+
+\section{The full algorithm and its uniform complexity}
+\label{sec:algorithm}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Normalize the input by deleting tautologies and repeated clauses and
+literals, without changing the list of declared variables. An empty
+clause gives zero; a formula with no clauses gives $2^n$. Let $m'$
+be the number of remaining clauses and
+$B=\max\{1,\ceil{m'/n}\}$. Since $m'\le m$, bounds expressed in
+terms of $m'$ are no larger, up to the input-processing polynomial,
+than the claimed bounds in terms of $m$.
+
+Suppose first that $B\le\lambda=\ceil{\log n}$. Use
+\eqref{eq:parameters}--\eqref{eq:integer-tests}. If $m'\le d$, use
+the direct occurring-variable branch \eqref{eq:small-m}. Otherwise
+construct the checks and use Lemma~\ref{lem:greedy}.
+By \eqref{eq:d-bound},
+\begin{equation}\label{eq:uniform-s}
+ S_B=(B+2)^{O_k(1)},\qquad
+ \log(S_B+2)=O_k(\log(B+2)).
+\end{equation}
+For one fixed exponent $C=C(k)$, all these sparsities are at most
+$\lambda^C$ for all sufficiently large $n$. Lemma~\ref{lem:sparse}
+with $c=4$ therefore gives query exponent
+\begin{equation}\label{eq:new-query-exp}
+ O_k\!\left(\frac{n\log(B+2)}{\sqrt{\log n}}\right),
+\end{equation}
+with constants independent of the actual value of $B$.
+
+The logarithm of the number of queries, the local-code search cost,
+and the small-instance enumeration cost are bounded by
+\begin{equation}\label{eq:overheads}
+ O_k\bigl(P\log(2m')+d^2+kd+\log n\bigr)
+      =\lambda^{O_k(1)}.
+\end{equation}
+For every fixed $C'$, $\lambda^{C'}=o(n/\sqrt\lambda)$.
+Hence \eqref{eq:overheads} is absorbed in \eqref{eq:new-query-exp},
+uniformly over $B\le\lambda$. Multiplication by the number of
+queries adds their logarithm to the exponent; it does not multiply
+the exponential scales. The time is therefore
+\begin{equation}\label{eq:density-only}
+ (n+m)^{O_k(1)}
+ 2^{O_k(n\log(B+2)/\sqrt{\log n})}.
+\end{equation}
+
+If $B>\lambda$, use the source algorithm
+\eqref{eq:source-general}. In this range
+$\log(2+m'/n)=\Omega(\log\log n)$, so its exponent agrees, up to
+a fixed factor, with the minimum in \eqref{eq:main}. In the first
+range $\log(B+2)=\Theta(\log(2+m'/n))$ and it is at most a fixed
+multiple of $\log\log n$. Thus \eqref{eq:density-only} also has the
+form \eqref{eq:main}. These comparisons prove the time bound.
+
+For space, enumerate matrices and candidates one at a time, keep
+only the current and best candidate counts, and use the
+polynomial-space sparse-system counter. The selected matrix has
+$O(n)$ rows; each list or support has polylogarithmic length in the
+first range. The graph has fewer than $4m'$ edges; local-code
+enumeration stores $O(d^2)$ bits. Accumulators use $n+1$ bits for
+counts. The direct occurring-variable branch is depth first, and
+the source's general branch already has polynomial space. All
+claimed space bounds follow. A uniformly finite exceptional range
+of $n$ is handled directly and absorbed in the fixed constants.
+\end{proof}
+
+The same low-density construction works, for any fixed $A>0$, on
+$B\le\lambda^A$ with constants depending on $k,A$. Every support,
+local search, and candidate-enumeration overhead is still bounded by
+a fixed power of $\lambda$ in the exponent. This proves the
+fixed-$A$ extension mentioned after Theorem~\ref{thm:main}.
+
+\subsection{Algorithm in operational form}
+
+\begin{enumerate}[leftmargin=*,itemsep=0.35em]
+\item Normalize the CNF, preserving its $n$ declared variables. Handle
+      an empty clause or no remaining clauses immediately.
+\item Compute $B=\max\{1,\ceil{m'/n}\}$ and
+      $\lambda=\ceil{\log n}$. If $B>\lambda$, call the source's
+      general counter and return its result.
+\item Compute the exact integer parameters in
+      \eqref{eq:parameters}--\eqref{eq:integer-tests}. If $m'\le d$,
+      count by enumerating the occurring variables, include the
+      unused-variable factor, and return.
+\item Construct the powered lazy expander, search for its local
+      check matrix, impose local checks at both ends, and shorten
+      the edge code to $m'$ coordinates.
+\item For $3n$ rounds, enumerate lists in $([m']\times\{0,1\})^P$.
+      Expand each candidate into degree-$k$ equations and count
+      their common zeros with Lemma~\ref{lem:sparse}. Append a
+      candidate giving the minimum count.
+\item Count the common zeros of the final system and return that
+      integer. Lemma~\ref{lem:greedy} proves it equals $\#F$.
+\end{enumerate}
+
+No randomized choice remains in this algorithm. Random matrices and
+random lists are used only to prove that exhaustive deterministic
+searches find objects with the required properties.
+
+\section{Where the bound improves, and where it does not}
+\label{sec:scope}
+
+Table~\ref{tab:comparison} compares the exponential scales after
+factoring out $n/\sqrt{\log n}$. Polynomial factors and fixed
+constants are suppressed. These are comparisons of proved upper
+bounds, not runtime measurements or lower bounds on the source.
+
+\begin{table}[htbp]
+\centering
+\caption{Clause-density dependence of the exponent.}
+\label{tab:comparison}
+\begin{tabular}{@{}p{0.30\linewidth}p{0.29\linewidth}p{0.28\linewidth}@{}}
+\toprule
+Density $B$ & Source guarantees combined & This modification\\
+\midrule
+$\Theta(1)$ & $1$ & $1$\\[0.4em]
+$\sqrt{\log\log n}$ & $\sqrt{\log\log n}$ & $\log\log\log n$\\[0.4em]
+$\log\log n$ & $\log\log n$ & $\log\log\log n$\\[0.4em]
+$(\log\log n)^2$ & $\log\log n$ & $\log\log\log n$\\[0.4em]
+$(\log n)^\alpha$, fixed $\alpha>0$ & $\log\log n$ & $\log\log n$\\[0.4em]
+Unrestricted & $\log\log n$ & $\log\log n$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For the central example $B=\Theta(\log\log n)$, the ratio of the
+old and new exponent scales tends to infinity like
+\[
+ \frac{\log\log n}{\log\log\log n}.
+\]
+This is more than a constant-factor change in the exponential
+upper bound. It is also narrower than improving the worst case over
+all $m$: at unrestricted density, \eqref{eq:main} retains the source
+exponent. Nor does it improve the fixed-density
+$n/\sqrt{\log n}$ scale.
+
+\subsection{Why simply retuning sparsification does not go further}
+
+The source's disjoint sparsification step, with parameter
+$0<\sigma\le1$, incurs $2^{\sigma n}$ leaves up to polynomial
+factors, with an occurrence bound
+\[
+ B=O_k\bigl([\sigma^{-1}\log(2/\sigma)]^{k-1}\bigr).
+\]
+Substituting this bound into \eqref{eq:density-only} gives the
+exponent estimate
+\begin{equation}\label{eq:sparsify-objective}
+ O_k\!\left(n\left[
+       \sigma+\frac{\log(2/\sigma)}{\sqrt{\log n}}
+                    \right]\right).
+\end{equation}
+On its permitted polylogarithmic-density range, the natural minimizing
+scale is $\sigma=\Theta(1/\sqrt{\log n})$. For example, minimizing
+$\sigma+a\ln(1/\sigma)/\sqrt{\log n}$ for a positive fixed $a$
+gives $\sigma=a/\sqrt{\log n}$. Its value has scale
+$\log\log n/\sqrt{\log n}$. Thus this particular upper-bound
+calculation still has the source's general scale. This observation
+is a limitation of the present estimate; it is not an impossibility
+theorem for other sparsifications or other algorithms.
+For general fixed $k$, this substitution uses the fixed-$A$
+extension with $A$ chosen sufficiently large in terms of $k$:
+the occurrence bound at the indicated $\sigma$ is polylogarithmic,
+although it can exceed $\log n$.
+
+\subsection{Why a total-degree cutoff alone does not beat the tensor exponent}
+
+The source's sharper tensor routine enumerates weighted mode
+monomials. With $M$ wires, $u$ retained valuation levels, and a
+packet parameter $D$, its relevant upper budgets have scales
+\[
+ \text{colors per weight }O(M/D),\qquad
+ \text{weight budget }O(MD/u),
+\]
+giving $\exp(O(M/\sqrt u))$ tuples. Here $u=\Theta(\log s)$.
+A tempting suggestion is to additionally impose the ordinary
+degree bound $|\beta|\le M$. The following elementary example shows
+why those two budgets by themselves cannot yield a better
+asymptotic enumeration bound.
+
+\begin{proposition}[A counting obstruction, not an algorithmic lower bound]
+\label{prop:obstruction}
+Let $M,D,u$ be positive integers. Suppose an abstract mode family
+has $\floor{M/D}$ distinct modes
+of every weight in an interval $[b,2b]$, where
+$b=\floor{D/(4\sqrt u)}$, $M/D\ge1$, and $D/\sqrt u$ is
+sufficiently large. Then there are $2^{\Omega(M/\sqrt u)}$
+distinct exponent tuples satisfying both $|\beta|\le M$ and
+$\sum_jw_j\beta_j<MD/u$.
+\end{proposition}
+\begin{proof}
+There are $\Theta((M/D)b)=\Theta(M/\sqrt u)$ modes in this
+interval. Give each of them an exponent in $\{0,1\}$ independently
+and all other modes exponent zero. Even selecting them all uses at
+most $\floor{M/D}(b+1)\le M$ total degree for sufficiently large
+parameters. The total weight is at most
+\[
+ 2b\floor{M/D}(b+1)<MD/u
+\]
+for the chosen constant $1/4$, again for sufficiently large
+parameters. Every subset is therefore allowed, yielding the stated
+number of tuples.
+\end{proof}
+
+This proposition does not assert that all such tuples are nonzero
+in every actual network. It shows that the two numerical budgets
+alone cannot justify an improved counting estimate. Additional
+algebraic structure or a way to sum many modes without enumerating
+them would be needed.
+
+\section{Verification status and reproducible artifacts}
+\label{sec:verification}
+
+The proof was checked independently at the following interfaces:
+the expander padding and port counts; the strict local-code entropy
+inequality; the global row budget; the minimum-distance argument
+under shortening; the greedy elimination invariant; and the
+uniform contraction hypotheses when the density grows with $n$.
+The source's complete tensor proof and its formalization were not
+reverified in this work.
+
+The archive includes a standard-library-only Python verification
+script and its machine-readable results. The script performs exact
+finite checks of the integer parameter inequalities, the explicit
+graph maps and their inverse ports, small spectral bounds, local and
+shortened code examples, subset indexing, and greedy parity
+selection. It also records the scale of the explicit parameters.
+These checks support implementation details and catch bookkeeping
+errors; the unbounded assertions are proved in the text or imported
+from the cited theorems.
+
+The executed check suite passed: $3{,}248$ inverse-port identities;
+four exact rational spectral certificates for side lengths $2$ through
+$5$; five small local-code searches; $156$ shortening and zero-extension
+checks; $2{,}047$ subset rank/unrank cases; $30{,}000$ wire-encoding
+inequalities; $72$ greedy parity rounds; parameter choices for
+$B=1,\ldots,1000$; and $27{,}696$ padding and row-budget cases.
+The spectral certificates use exact rational elimination, not
+floating-point eigenvalue approximations. These figures describe the
+finite tests only.
+
+\paragraph{What the code is.}
+It is a reference implementation and verifier for the new reduction's
+components. It is not a complete implementation or benchmark of the
+subexponential SAT counter. In particular, it does not replace the
+source's tensor engine by brute force and then claim the engine's
+asymptotic running time for that brute-force code.
+
+\paragraph{Reproduction.}
+From the extracted archive directory, run:
+\begin{lstlisting}
+python3 code/verify_components.py --output verification_results.json
+latexmk -pdf -interaction=nonstopmode -halt-on-error density_aware_sat_improvement.tex
+\end{lstlisting}
+The manuscript uses only common LaTeX packages. The Python checks
+require no third-party packages. The source manifest identifies the
+upstream files used; \texttt{PROOF\_STATUS.txt} records the proof
+dependencies and the distinction between finite tests and formal
+verification. \texttt{README.txt} describes each artifact.
+
+\paragraph{Practical limitation.}
+Even at small $B$, the conservative choice of $t$ can make $d=16^t$
+extremely large, and the local-code search is exponential in $d^2$.
+The proof absorbs these costs because $B\le\log n$ and every fixed
+power of $\log n$ is eventually smaller than
+$n/\sqrt{\log n}$. That comparison does not predict a usable
+crossover at realistic input sizes. A practical implementation would
+need substantially better local constructions and a careful
+implementation of the source engine.
+
+\section{Further research questions}
+\label{sec:future}
+
+\paragraph{Can the incidence information be compressed further?}
+Our modified checks have $S=(B+2)^{O(1)}$ and therefore cost
+$O(n\log(B+2))$ wires under the source's subset encoding. A
+stronger reduction would need to encode or sum the relevant
+incidence selections using fewer wires, or exploit dependencies
+among their test coefficients. Merely suppressing the sparsity
+parameter in the notation would not accomplish this. The sharper
+bound \eqref{eq:wire-entropy}, involving the actual total incidence
+count $N$, suggests studying nonuniform tests and many repeated
+scopes.
+
+\paragraph{Can one improve the check-support tradeoff?}
+The explicit degree bound \eqref{eq:d-bound} is intentionally loose.
+Better expander families and explicit local codes can reduce its
+power and avoid exhaustive local search. Such changes could improve
+constants and feasibility. As long as support remains a fixed power
+of $B$, its logarithm remains $\Theta(\log B)$, so this alone would
+not improve the asymptotic exponent scale proved here.
+
+\paragraph{Can one sum weighted modes collectively?}
+Proposition~\ref{prop:obstruction} rules out a purely numerical
+improvement from adding only a total-degree cutoff. It leaves open
+structured generating-function methods, algebraic compression of
+packet tensors, or exact summation procedures that avoid treating
+every allowed mode tuple separately. An improvement here would
+affect the fixed-density bound as well.
+
+\paragraph{Can density and sparsification be optimized jointly by a new invariant?}
+The objective \eqref{eq:sparsify-objective} retains the
+$\log\log n$ loss. To beat the unrestricted source bound through
+this route, one would need stronger information about the leaves
+than their maximum occurrence bound, such as a provably smaller
+incidence entropy aggregated over the entire disjoint tree. A
+uniform worst-case improvement has not been established here.
+
+\paragraph{Can the extension be mechanized economically?}
+A formal proof could reuse the source's tensor theorem and parity
+lift as interfaces, then formalize the explicit graph powering,
+entropy and distance inequalities, shortening, greedy elimination,
+and the uniform asymptotic comparison. The exact-integer formulation
+\eqref{eq:integer-tests} removes real arithmetic from parameter
+selection. This is a proposed formalization path, not a claim of a
+completed formal proof.
+
+\begin{thebibliography}{9}
+\bibitem{OAI2026}
+OpenAI, \emph{The Exponential Time Hypothesis is False},
+October 17, 2026, revised October 25, 2026.
+Source snapshot: \texttt{openai/math}, commit
+\texttt{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a}.
+See the main theorem; ``Initial tests that exclude small violation
+sets''; ``Choosing additional equations by counting common zeros'';
+and the appendices ``A sharper bound for exact counting'' and
+``Proof of the contraction theorem.''
+\href{https://github.com/openai/math/tree/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026}{Permanent repository link}.
+
+\bibitem{GG1981}
+O. Gabber and Z. Galil,
+\emph{Explicit constructions of linear-sized superconcentrators},
+Journal of Computer and System Sciences \textbf{22} (1981),
+407--420.
+\href{https://doi.org/10.1016/0022-0000(81)90040-4}{doi:10.1016/0022-0000(81)90040-4}.
+
+\bibitem{MGGFormal}
+Archive of Formal Proofs,
+\emph{Expander Graphs}, theory \texttt{Expander\_Graphs\_MGG},
+section ``Margulis Gabber Galil Construction.''
+The graph definition records the eight affine port maps;
+\texttt{mgg\_numerical\_radius} establishes the spectral bound.
+Accessed October 26, 2026.
+\href{https://isa-afp.org/browser_info/current/AFP/Expander_Graphs/Expander_Graphs_MGG.html}{Formal theory and proof}.
+\end{thebibliography}
+\end{document}

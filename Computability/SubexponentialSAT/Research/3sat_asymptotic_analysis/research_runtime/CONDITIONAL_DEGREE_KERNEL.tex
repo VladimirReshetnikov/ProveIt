@@ -1,0 +1,149 @@
+% Research note; no unconditional improvement is asserted.
+\section{A conditional degree-preserving compression theorem}
+\label{sec:conditional-degree-kernel}
+All logarithms in this section are base two, except in analytic partition estimates.
+Let $s$ and $K$ be positive integers, with $s$ a size parameter, $\lambda=\lceil\log_2 s\rceil$, and suppose
+$s/\lambda\le K\le s$. Constants multiplying these inequalities can be absorbed
+by changing $s$ and the constants below. Put
+\[
+ H=\left\lceil\sqrt{sK/\lambda}\right\rceil,
+ \quad u_d=\lfloor\varepsilon\lambda/2^d\rfloor,
+ \quad a_d=2\sum_{j=0}^d u_j,
+ \quad L_d=2^{a_d},\qquad \varepsilon=(128\cdot1024)^{-1}.
+\]
+The parameter $K$ is fixed globally; it need not decrease in a child.
+
+\paragraph{Explicit hypothesis, not an established construction.}
+Assume a class of encoded contraction objects admits the following uniform
+recursive interface. Every object has $M\le Cs8^{-d}$ Boolean wires at depth $d$,
+maximum degree at most $\lceil s^{9/10}\rceil$, and entries over the ring used in
+Appendix D. Root precision and nilpotent truncation order are $O(s)$.
+Here $\mathcal L$ denotes the total root description length. The graph and
+immutable entry descriptions stored along any root-to-leaf path have total
+length at most $(s+\mathcal L)^{O(1)}$, with a fixed uniform exponent, and all
+entry evaluations, at their creation precisions, take
+$\operatorname{poly}(s+\mathcal L)2^{O(s^{9/10})}$ time and polynomial space.
+Each active object, $M>H$, must have all the following properties.
+\begin{enumerate}
+\item There is an exactly specified deformation $F(T)$ whose value at zero
+is its contraction and whose degree is at most $K(2L_d-1)$. This is the key
+new degree bound; the published bit-wire deformation only guarantees
+$M(2L_d-1)$. For $S_d=\{-L_d,\ldots,L_d-1\}$ and
+$\alpha_d=2^{a_d+1}$, all $F(t+\alpha_d z)$ are integral over the coefficient
+ring. Their individual local factors and evaluations must be constructible
+at polynomial bit cost, apart from the stated entry-evaluation cost.
+\item At every retained node $t\ne0$ with $i=v_2(t)<u_d$, put
+$D_t=L_d/2^i$. At any residue-field interpolation value of $z$, the evaluation
+has an exact expansion modulo its working precision into mode monomials.
+There are at most $cM/D_t$ modes of each positive integer weight $w$;
+a mode monomial of weighted degree $b$ has coefficient divisible by $2^b$.
+Modes and feasible exponent tuples have polynomial descriptions and can be
+enumerated with polynomial delay and space. Merely showing $cN/D_t$ modes
+for an uncompressed incidence count $N$ is not sufficient.
+\item For each retained monomial, its contribution factors as the product
+of a constant number of child contractions, each with at most $M/8$ wires.
+The children remain in this class, with the same global degree parameter $K$,
+maximum degree at most $\lceil s^{9/10}\rceil$, and the description and entry
+cost bounds above. Entrywise canonical lifts must retain their creation-time
+representatives, as in Appendix D. In particular, this condition prohibits
+silently replacing a high-arity group tensor by an equality tree.
+\item All local interpolation, packing, mode processing, rational recovery,
+and description work per generated term is polynomial in $s+\mathcal L$;
+the number of interpolation nodes, evaluation points, and groups per call
+is polynomial in $s$ alone, independently of $\mathcal L$. Leaves can be summed over their Boolean wires directly, with the
+stated entry costs. The coefficient-ring arithmetic uses polynomial-bit
+coordinates and polynomial space at the precisions derived below.
+\end{enumerate}
+
+\paragraph{Conditional conclusion.}
+Under this interface, contraction takes
+\[
+ \operatorname{poly}(s+\mathcal L)\,
+ 2^{O(\sqrt{sK/\log s})}
+\]
+bit operations and polynomial space. This is an implication from a new
+recursive interface, not a proof that the interface exists for 3SAT.
+
+\paragraph{Proof of the implication.}
+Use the published tapered Hermite lemma with its degree parameter $M$
+replaced by $K$. Thus
+\[
+ h=\lceil3K/u_d\rceil,\quad q_t=h\max(0,u_d-i),\quad
+ p_t=p+8hD_t+8K(a_d+1).
+\]
+Here $K\ge u_d$ for all sufficiently large $s$. There are enough jets,
+because $\sum q_t\ge L_dhu_d\ge3KL_d>K(2L_d-1)$; also $h\le4K/u_d$.
+The proof of the source lemma then gives exactly the same integral recovery.
+One may recover each jet by polynomially many residue-distinct evaluations
+because the degree is $O(KL_d)=s^{O(1)}$.
+
+Since $H\ge s/\lambda$, active depth is $O(\log\lambda)$; more precisely,
+$8^d<Cs/H\le C\lambda$, so $u_d=\Omega_C(\lambda^{2/3})$.
+Also $a_d\le4\varepsilon\lambda$, and the original packing inequalities
+remain true: their right sides are $O(s^{0.902})=o(H)$ or smaller.
+Summing previous precision increments gives
+\[
+ p\le s\lambda^{O(1)}2^{a_{d-1}}.
+\]
+For a retained node,
+$D_t\ge2^{a_d-u_d}=2^{a_{d-1}+u_d}$.
+As $K\ge s/\lambda$ and $2^{u_d}$ dominates every fixed power of $\lambda$,
+the inherited precision and the $8K(a_d+1)$ term are absorbed, yielding
+\[
+ p_t=O(KD_t/u_d).
+\]
+All precisions remain polynomial in $s$ because $a_d=O(\log s)$.
+
+The generating-function estimate from Appendix D, now with at most $cM/D_t$
+variables of every weight, gives
+\[
+ \#\{\beta:\sum_Zw_Z\beta_Z<p_t\}
+ \le \exp\bigl(O(\sqrt{Mp_t/D_t})\bigr)
+ =\exp\bigl(O(\sqrt{MK/u_d})\bigr).
+\]
+At depth $d$ this exponent is at most
+\[
+ O\!\left(\sqrt{sK/\lambda}\,2^{-d}\right),
+\]
+because $M\le Cs8^{-d}$ and $u_d=\Theta_C(\lambda2^{-d})$.
+Summing along paths, and accounting for the polynomial branching factors,
+gives $\exp(O(\sqrt{sK/\lambda})+O(\lambda\log\lambda))$ calls.
+The latter additive term is negligible since $\sqrt{sK/\lambda}\ge s/\lambda$.
+Leaf work is bounded by $\operatorname{poly}(s+\mathcal L)
+\exp(O(H)+O(s^{9/10}))$, with the same final exponent.
+Depth-first accumulation and immutable polynomial descriptions give
+polynomial space. This proves the conditional implication.
+
+\paragraph{Consequent target for the sparse-query reduction.}
+The source reduction has compressed wire budget $s=\Theta(n\nu)$ and retained
+incidence degree $K=\Theta(n)$, where $\nu=\lceil\log_2\lceil\log_2 n\rceil\rceil$.
+If its encoded objects and every recursive child admitted the above
+interface, the source's other overheads would still be absorbed, giving
+\[
+ (n+m)^{O(1)}2^{O(n\sqrt{\log\log n/\log n})}
+\]
+for arbitrary-density exact counting and hence decision. This improves the
+published exponent by a factor $\sqrt{\log\log n}$. It does not improve the
+published fixed-density $O(n/\sqrt{\log n})$ exponent.
+The retained incidence degree is not, by itself, a degree bound on the
+multilinear extension of a binary subset index. No argument establishing
+that implication or recursive closure has been found. Already the coefficient
+table of the degree-one incidence polynomial $z_{2^b}$ on singleton indices,
+encoded by $b$ bits in ordinary order, is the Boolean AND of all $b$ index
+bits, of degree $b$. This elementary example rules out a generic degree
+transfer based solely on the incidence degree.
+
+\paragraph{A local candidate and its obstruction.}
+For a categorical wire indexing $d$-element subsets of an $N$-element set,
+consider $K_{S,T}(T_0)=\det W(T_0)[S,T]$, the $d$th exterior power of a base
+matrix deformation. If $W(0)=I$, then $K_{S,T}(0)=\delta_{S,T}$; its degree is
+at most $d\deg W$, and a block-diagonal $W$ induces block factorization after
+group occupancies and determinant signs are tracked. Integrality of $W$
+implies integrality of these determinants. Thus this is a genuine local
+low-degree kernel, not yet the required recursive contraction algorithm.
+Its ordinary Cauchy mode construction uses $N/D$, not
+$\log\binom Nd/D$, modes per weight. Exterior antisymmetry can force a
+rank-one mode to occur at most once in one determinant, but distinct-part
+partition counts still have square-root entropy when the particle bound
+is inactive. The missing compressed mode multiplicity and child-class
+closure are substantive new lemmas.

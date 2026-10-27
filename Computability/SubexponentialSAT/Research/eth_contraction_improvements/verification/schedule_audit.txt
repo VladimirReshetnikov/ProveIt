@@ -1,0 +1,455 @@
+INDEPENDENT REVIEW OF THE OPTIMIZED CONTRACTION SCHEDULE
+=======================================================
+
+Source snapshot
+---------------
+Repository: https://github.com/openai/math
+Commit: 7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a
+Directory: preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build
+Principal source: quantitative-contraction.tex
+Interface: Boolean tensor contraction theorem in quantitative-reduction.tex
+
+This review checks the proposed replacement of the contraction schedule,
+Hermite multiplicities, precision allowance, and partition-counting analysis.
+It does not constitute an independent formal verification of the entire
+preprint, its reductions, or its ETH claim. The source's algebraic contraction
+identity, packet construction, and entrywise lifting convention are retained.
+
+REVIEW CONCLUSION
+-----------------
+The optimized schedule is mathematically consistent with the retained
+contraction argument. Under the normalized C = 1 interface, it yields
+
+  T(s,Ldesc) <= (s + Ldesc)^O(1)
+                2^((Cnew + o(1)) s / sqrt(ceil(log_2 s))),
+
+where
+
+  Cnew = [2*pi*sqrt(6*720)] /
+         [ln(2)*(1 - (3/128)*sqrt(12))]
+       = 648.441066648753008... .
+
+Here Ldesc denotes the input-description length, not the packet length.
+The source schedule, analyzed with the same sharper generating-function
+estimate and its actual child-edge contraction factor, has the certificate
+
+  Csource = [4*pi*sqrt(6)] /
+            [ln(2)*sqrt(1/131072)*(1 - (3/32)*sqrt(2))] + 1
+          = 18535.753831668371276... .
+
+These are constants in upper-bound certificates. The comparison does not
+prove an actual running-time ratio, an exponential speedup over every
+implementation covered by the source theorem, or a smaller asymptotic
+order than s/sqrt(log s). Both algorithms retain the published logarithmic
+order. In particular, Csource is not a lower bound on the source algorithm.
+
+The normalized interface assumes:
+  * the root network has at most s Boolean edges;
+  * root precision P0 and truncation order ell are at most s;
+  * maximum degree is at most ceil(s^(9/10));
+  * the number of vertices is polynomially bounded in s;
+  * original entries have the source's allowed polynomial-space evaluation
+    procedures, with time (s + Ldesc)^b * 2^(A*s^(9/10)) for fixed A,b.
+
+For an application with a larger fixed edge or precision constant, choose
+s large enough to satisfy this normalized interface. The displayed constants
+are constants in s, not automatically constants in a SAT variable count n.
+
+1. THE PROPOSED SCHEDULE
+-----------------------
+Let
+
+  lambda = ceil(log_2 s),
+  r = 256,
+  rho = 6/r = 3/128,
+  Delta = ceil(s^(9/10)),
+  H = ceil(s/lambda).
+
+A call with M <= H is a leaf and is evaluated by direct summation. At an
+active depth-d call, set
+
+  u_d = floor(lambda/(720*12^d)),
+  a_d = 2*sum_{j=0}^d u_j,
+  a_{-1} = 0,
+  L = 2^a_d,
+  Darr = r^(2*a_d).
+
+All asymptotic claims below are for sufficiently large s. The algorithm must
+retain the source's finite-size fallback: when the tested parameter
+inequalities do not hold, use direct summation. In particular, expressions
+involving 1/u are only used at active calls with u >= 1. This fallback
+affects finitely many input sizes and therefore does not alter the stated
+asymptotic certificate.
+
+2. PACKING CONDITIONS
+---------------------
+The geometric sum gives
+
+  a_d <= (2*lambda/720)/(1 - 1/12) = lambda/330.
+
+Since lambda = log_2 s + O(1),
+
+  L = O(s^(1/330)),
+  Darr = 256^(2*a_d) = 2^(16*a_d) = O(s^(16/330)).
+
+The source's three packing requirements are
+
+  M >= 2*Darr^2*Delta,
+  M >= L*Darr,
+  2*L <= Delta.
+
+At an active call M > H >= s/lambda. The proposed schedule gives
+
+  Darr^2*Delta = O(s^(32/330 + 9/10))
+              = O(s^(329/330))
+              = o(s/lambda),
+
+  L*Darr = O(s^(17/330)) = o(s/lambda),
+
+  2*L = O(s^(1/330)) <= ceil(s^(9/10))
+
+for sufficiently large s. The factor 2 in the first packing requirement
+is absorbed by the strict polynomial gap. Thus packing is valid uniformly
+at all active calls, including the deepest ones.
+
+The new packet tensors still have at most 2L ports. Retained vertices keep
+their original degrees. The maximum-degree invariant is consequently
+preserved exactly as in the source.
+
+3. DEPTH AND THE SMALLEST ACTIVE u
+--------------------------------
+The packet lemma bounds real ports in a group by 3M/r on each side. Hence
+the child-edge count is at most
+
+  6M/r = rho*M.
+
+This exact source bound can be used instead of its looser M/8 estimate.
+Along a path,
+
+  M_d <= rho^d*s.
+
+An active call also has M_d > s/lambda. Therefore
+
+  d <= log_{1/rho}(lambda) + O(1).
+
+The active parameters obey
+
+  u_d = Omega(lambda^eta),
+
+  eta = 1 - ln(12)/ln(128/3)
+      = 0.3379616482436937... > 0.
+
+The floor contributes only O(1). In particular, u tends to infinity
+uniformly over the entire active recursion. This is stronger than merely
+checking u_0 -> infinity at the root, and it is needed to justify the
+uniform o(1) precision and counting estimates below.
+
+4. EXACT HERMITE MULTIPLICITY BUDGET
+----------------------------------
+Write a = a_d and u = u_d at the current call. The interpolation grid is
+
+  S = {-L, -L+1, ..., L-1},  L = 2^a,
+
+and the deformation degree is at most
+
+  Q = M*(2L - 1).
+
+For each nonzero t, put i = v_2(t), and assign multiplicity
+
+  q_t = h*max(0, u-i).
+
+Because a >= 2u, all relevant valuation levels occur in the grid. There
+are exactly L/2^i points of valuation i for 0 <= i < u. It follows that
+
+  sum_{t != 0} q_t
+    = L*h*sum_{i=0}^{u-1}(u-i)/2^i
+    = L*h*(2u - 2 + 2^(1-u)).
+
+Choose
+
+  h = ceil((Q+1)/(L*(2u - 2 + 2^(1-u)))).
+
+Then the sum of the multiplicities is at least Q+1, strictly larger than
+the degree. This is the exact condition required by Hermite interpolation.
+There is no need for the source's more conservative h = ceil(3M/u).
+
+Uniformly on active calls,
+
+  h = (M/u)*(1 + O(1/u) + O(1/L) + O(u/M))
+    = (1 + o(1))*M/u.
+
+To see uniformity, use u = Omega(lambda^eta), M > s/lambda, u <= lambda,
+and L >= 2^(2u). The round-up error is negligible because M/u -> infinity
+uniformly. This also gives q_t <= h*u <= 2M eventually, replacing any
+use of the source's looser q_t <= 4M.
+
+The formula for h is exactly computable using integer arithmetic. Multiply
+the numerator and denominator by 2^(u-1) to clear the displayed rational
+power of two. All resulting integers have polynomial bit length in s.
+
+5. PRECISION REQUIRED FOR RECOVERY
+---------------------------------
+The retained Hermite calculation proves
+
+  v_2(E_t(0)) >= -6*h*D,
+
+where D = L/2^i. The reciprocal of E_t(t+alpha*z), truncated at order
+q_t, is integral and has unit constant term, so forming the quotient
+does not itself lose precision.
+
+The coefficient with index j < q_t is evaluated at -t/alpha, where
+alpha = 2^(a+1). Its additional valuation loss is
+
+  j*(a+1-i) <= (q_t-1)*(a+1-i) <= h*u*(a+1).
+
+Thus the sufficient child precision is
+
+  p_t = p + 6*h*D + h*u*(a+1).
+
+An extra +1 is safe but not necessary. If every input coefficient is
+changed by a multiple of 2^p_t, its resulting contribution changes by a
+multiple of 2^p. That is exactly what reduction modulo 2^p requires.
+Summing such errors does not create any further loss.
+
+This proof uses the new h directly. It does not depend on the old
+ceil(3M/u) value once the Hermite degree condition is checked.
+
+6. INHERITED PRECISION IS LOWER ORDER
+------------------------------------
+As in the source, all earlier precision increments imply
+
+  p <= s*lambda^O(1)*2^a_{d-1}.
+
+At an active retained level i < u_d,
+
+  D = 2^(a_d-i)
+    >= 2^(a_{d-1}+u_d+1),
+
+because a_d-a_{d-1} = 2u_d. Therefore
+
+  p/(M*D/u_d) <= lambda^O(1)*2^(-u_d) = o(1)
+
+uniformly, using M > s/lambda. Likewise,
+
+  [h*u_d*(a_d+1)]/[M*D/u_d]
+    = O(u_d*(a_d+1)/D)
+    <= lambda^O(1)*2^(-u_d)
+    = o(1).
+
+Combining these estimates with h = (1+o(1))*M/u_d yields
+
+  p_t = (6+o(1))*M*D/u_d
+
+uniformly over every active call and retained interpolation node.
+
+All precisions remain polynomial in s. For example, the increments are
+bounded by s*lambda^O(1)*2^a_d and a_d <= lambda/330. There are only
+O(log lambda) levels. The new schedule does not require exponentially
+many bits of p-adic precision.
+
+7. SHARP GENERATING-FUNCTION CONSTANT
+------------------------------------
+The retained mode construction has at most 6M/D variables of each
+positive integer weight. Let N be the number of exponent tuples of
+weighted degree less than p_t. For every theta > 0,
+
+  ln N <= theta*p_t
+          + (6M/D)*sum_{j>=1}[-ln(1-exp(-theta*j))].
+
+The source's geometric-series estimate, with its exact zeta value, gives
+
+  sum_{j>=1}[-ln(1-exp(-theta*j))]
+    <= (1/theta)*sum_{h>=1}(1/h^2)
+    = pi^2/(6*theta).
+
+Consequently
+
+  ln N <= theta*p_t + pi^2*M/(D*theta).
+
+Optimize the right side by taking
+
+  theta = pi*sqrt(M/(D*p_t)).
+
+This gives
+
+  ln N <= 2*pi*sqrt(M*p_t/D)
+        <= (2*pi*sqrt(6)+o(1))*M/sqrt(u_d).
+
+Theta is a proof parameter only. The algorithm enumerates the same
+integer tuples and need not compute or store this real number.
+
+8. SUM OF RECURSIVE COSTS
+-------------------------
+The uniform floor estimate for u_d gives
+
+  M_d/sqrt(u_d)
+    <= (1+o(1))*sqrt(720)*s/sqrt(lambda)
+       * (rho*sqrt(12))^d.
+
+Since rho*sqrt(12) < 1, summing the maximal path costs yields
+
+  sum_d M_d/sqrt(u_d)
+    <= (1+o(1))*[sqrt(720)/(1-rho*sqrt(12))]
+       * s/sqrt(lambda).
+
+The number of interpolation nodes, interpolation values, and groups at
+one call is polynomial in s. Accumulating these factors over O(log
+lambda) levels contributes O(lambda*log lambda) to the natural logarithm
+of the total time. This is o(s/sqrt(lambda)).
+
+A leaf sums at most 2^H assignments. Its logarithmic cost H*ln(2) is
+O(s/lambda), also lower order. Original entry evaluation costs
+exp(O(s^(9/10))) and the source-style packet entry evaluation costs
+exp(O(L*log s)) = exp(O(s^(1/330)*log s)); both are lower order than
+exp(s/sqrt(lambda)). Any independently proved improvement to packet
+entry evaluation can therefore be incorporated without changing this
+leading constant.
+
+Putting these bounds together gives the natural-log certificate
+
+  Knew = 2*pi*sqrt(6*720)/(1-(3/128)*sqrt(12))
+       = 449.4650971068667...,
+
+and conversion to a base-two exponent gives Cnew = Knew/ln(2), as
+recorded at the start of this review.
+
+9. SPACE AND IMMUTABLE TENSOR DESCRIPTIONS
+----------------------------------------
+The new schedule preserves the source's representation discipline.
+Every tensor is tagged with its creation precision p_c. When retained
+at a later call, evaluate it modulo p_c and use those same integer
+coordinate representatives as its canonical lift to the later precision.
+Precision increases strictly along a recursive path under the new rule,
+so these representatives remain canonical representatives later.
+
+This detail is necessary: canonical lifting is not a ring homomorphism.
+One must not silently recompute a tensor from its old formula at a new
+precision and assume that it represents the same entrywise lift.
+
+New packet descriptions consist of the current packet data, exponent
+tuple, interpolation value, and creation precision. Retained descriptions
+remain immutable and are shared by reference. There is no accumulated
+composition of entry-evaluation routines with recursion depth. The new
+parameters change sizes and precisions but do not change this convention.
+
+Each path stores polynomially many vertices and description data, and
+each precision has polynomial bit length. Recovery uses polynomially
+many rational multipliers of polynomial bit length, with the same
+common-denominator procedure as the source. The residue-field extension
+degree e = 4*lambda still suffices: the interpolation degree is at most
+M*(2L-1), and M*(2L-1)+1 = O(s^(331/330)) < s^4 eventually.
+
+A depth-first traversal retains only O(log lambda) stack frames and
+accumulates one sum or product at a time. Total space remains polynomial
+in s + Ldesc.
+
+10. SOURCE-SCHEDULE COMPARISON
+------------------------------
+For the source's parameters,
+
+  epsilon = 1/131072,
+  u_d = floor(epsilon*lambda/2^d),
+  r = 64,
+  actual child factor = 6/r = 3/32,
+  H = ceil(s/floor(sqrt(lambda))).
+
+Its h = ceil(3M/u) and p_t = p + 8hD + 8M(a+1) give
+
+  p_t = (24+o(1))*M*D/u
+
+uniformly. The same optimal generating-function estimate then yields
+local natural-log cost
+
+  (4*pi*sqrt(6)+o(1))*M/sqrt(u).
+
+Summing the actual child factor 3/32 gives the denominator
+1-(3/32)*sqrt(2). The old leaf threshold contributes ln(2) to the
+natural-log leading constant, equivalently +1 to the base-two leading
+constant. Thus
+
+  Ksource = 4*pi*sqrt(6) /
+            [sqrt(1/131072)*(1-(3/32)*sqrt(2))] + ln(2)
+          = 12848.005507974134...,
+
+  Csource = Ksource/ln(2)
+          = 18535.753831668371276... .
+
+This is a sharpened analysis of the explicitly specified source schedule,
+not a constant that the preprint itself prints. Its comparison with Cnew
+measures the improvement in these derivable upper-bound certificates.
+
+11. OPTIONAL PARAMETER-FAMILY OPTIMIZATION
+-----------------------------------------
+Consider fixed r > 6 and b > 1, with rho = 6/r, and
+
+  u_d = floor(epsilon*lambda/b^d),
+  a_d = 2*sum_{j<=d}u_j,
+  H = ceil(s/lambda),
+
+using the same optimized h and precision rule. The packing condition with
+Delta = s^(9/10) permits
+
+  epsilon < (b-1)/(80*b*log_2 r).
+
+Indeed a_d/lambda <= 2*epsilon*b/(b-1), while Darr^2 has exponent
+4*(a_d/lambda)*log_2 r. The strict packing gap requires the sum of this
+exponent and 9/10 to be below 1.
+
+To retain u_min -> infinity with this leaf threshold, also require
+
+  b < 1/rho = r/6.
+
+The natural-log certificate is
+
+  K(r,b,epsilon) = 2*pi*sqrt(6/epsilon) /
+                   (1-rho*sqrt(b)).
+
+At the packing boundary, viewed as an infimum approached from below,
+
+  Kboundary(r,b)
+    = 2*pi*sqrt(480*log_2(r)*b/(b-1)) /
+       (1-rho*sqrt(b)).
+
+For fixed r, differentiating its logarithm in b gives the unique interior
+minimum at
+
+  b = rho^(-2/3) = (r/6)^(2/3).
+
+This satisfies b < 1/rho because rho < 1. At this value,
+
+  Kboundary(r)
+    = 2*pi*sqrt(480*log_2 r) /
+       (1-(6/r)^(2/3))^(3/2).
+
+For r = 256, the minimizing b is about 12.2102853 and the boundary
+infimum is about 442.5977481. The proposed simple schedule has Knew
+about 1.5516 percent above this boundary infimum.
+
+If r is temporarily treated as a real number, the stationary condition
+is
+
+  (6/r)^(2/3) = 1/(1+2*ln r).
+
+It gives r about 251.005441, b about 12.0509492, and a boundary infimum
+about 442.5935293. An actual labeling scheme uses an integer r; these
+continuous figures are an optimization diagnostic, not an additional
+algorithm with a fractional number of groups. Also, exact equality at
+the packing boundary is not justified by the strict-gap proof. These
+numbers describe an infimum approached by fixed parameter choices with
+a positive packing margin.
+
+The proposed r = 256, b = 12, epsilon = 1/720 schedule is therefore a
+convenient, nearly optimal choice within this particular analyzed family.
+This family analysis is not an optimality claim over all contraction
+algorithms, all packet constructions, or all interpolation schemes.
+
+FINAL CAUTIONS FOR THE MAIN REPORT
+---------------------------------
+1. State the improvement as a smaller explicit exponential upper-bound
+   constant, with the logarithmic order unchanged.
+2. Do not describe Csource/Cnew as an observed or proved actual speed ratio.
+3. Translate the normalized size parameter s to n only with the explicit
+   edge/precision constants of the relevant reduction.
+4. Preserve the finite-size fallback and creation-precision lifting rule.
+5. The review verifies the modified quantitative analysis; it does not
+   independently certify every theorem imported from the preprint.

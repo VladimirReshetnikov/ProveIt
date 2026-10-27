@@ -1,0 +1,33 @@
+{
+  "scope": "Local finite-difference packet coefficient extractor only",
+  "command": "python3 code/test_packet_extraction.py",
+  "result": "PASS",
+  "test_methods": 8,
+  "exact_finite_difference_vs_direct_multiplication_comparisons": 19542,
+  "unittest_elapsed_seconds": 1.718,
+  "random_seeds": [
+    20261026,
+    2601026
+  ],
+  "rings_checked": [
+    "Z/(2^p)",
+    "(Z/(2^p))[U]/(U^2+U+1)",
+    "(Z/(2^p))[U,V]/(U^2+U+1,V^3)",
+    "(Z/(2^p))[U,V]/(U^3+U+1,V^2)",
+    "(Z/(2^p))[U,V]/(U^2,V^2)"
+  ],
+  "special_cases": [
+    "empty products",
+    "zero and excessive target degree",
+    "negative and oversized coefficient representatives",
+    "canonical lifts at creation precision",
+    "necessary extra precision before division by an even factorial product"
+  ],
+  "limitations": [
+    "No full SAT solver is implemented.",
+    "No empirical SAT running-time claim is made.",
+    "No formal proof-assistant verification is claimed.",
+    "The source algorithm's dominant global exponent is unchanged by this local substitution."
+  ],
+  "verification_context": "Final assembly verification in the current workspace; all tests passed."
+}

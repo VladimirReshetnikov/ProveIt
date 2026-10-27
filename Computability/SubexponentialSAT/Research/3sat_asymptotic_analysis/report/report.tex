@@ -1,0 +1,191 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,urlcolor=blue,linkcolor=black,citecolor=blue]{hyperref}
+\hypersetup{pdftitle={Asymptotic improvement analysis for the October 2026 3 SAT preprint},pdfauthor={Research analysis},pdfsubject={Scoped barriers and a conditional improvement target}}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.6em}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\bit}{\{0,1\}}
+\newcommand{\pin}{\texttt{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a}}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{hypothesis}{Unproved hypothesis}
+\theoremstyle{remark}\newtheorem*{scope}{Scope}
+\title{\vspace{-1.4em}Asymptotic improvement analysis\\for the October 2026 3 SAT preprint}
+\author{Research report}
+\date{27 October 2026}
+\begin{document}
+\maketitle
+\vspace{-1.6em}
+\begin{abstract}
+\noindent
+\textbf{No stronger unconditional worst-case bound is established.} The target is to beat the strongest Appendix D guarantee in OpenAI's \emph{The Exponential Time Hypothesis is False}, not to implement that guarantee in place of an older formal endpoint. Our principal conditional route would change the general-density exponent from $O(n\log\log n/\sqrt{\log n})$ to $O(n\sqrt{\log\log n/\log n})$, provided a degree-preserving compressed kernel and recursive closure can be constructed. They have not been constructed. A separate, stronger linear-wire compression hypothesis would remove the whole $\log\log n$ factor. We also prove restricted method barriers; none is a SAT lower bound. The fixed-density guarantee is not improved. Source inspection and finite tests do not verify the full preprint or its Lean dependencies.
+\end{abstract}
+
+\section{The target and the result}
+Let $n$ be the number of declared Boolean variables and $m$ the number of input clauses. Width is fixed at three; the paper treats every fixed width $k$. Polynomial factors include reading the encoded input and exact bit arithmetic. Throughout this report, logarithms can be taken base two; a change of fixed base does not affect the displayed asymptotic comparisons. Small values of $n$ are handled separately.
+
+The paper's strongest claimed general guarantee is
+\begin{equation}\label{eq:baseline}
+ T_{\rm paper}(n,m)=\poly(n,m)\,
+ 2^{O\left(n\log\log n/\sqrt{\log n}\right)}.
+\end{equation}
+For each \emph{fixed} density constant $D_0$, it already gives
+\begin{equation}\label{eq:sparse}
+ m\le D_0 n\quad\Longrightarrow\quad
+ T_{\rm sparse}(n,m)=\poly(n,m)\,
+ 2^{O_{D_0}\left(n/\sqrt{\log n}\right)}.
+\end{equation}
+Both are exact-counting bounds in bit operations with polynomial space, and therefore also decide satisfiability \cite{paper}.
+
+\textbf{Outcome.} The principal analyzed proposal is a recursive contraction interface with a global deformation degree $K$. If it existed for the sparse-query encoding, it would give the intermediate unrestricted-density exponent $O(n\sqrt{\log\log n/\log n})$, improving the general exponent by $\sqrt{\log\log n}$. The missing compressed kernel and closure properties are stated explicitly in Section~\ref{sec:conditional-degree-kernel}. A separate linear-wire compression hypothesis in Section~\ref{sec:conditional} would give the stronger exponent $O(n/\sqrt{\log n})$ for unrestricted density. Neither interface is proved. Neither proposal improves the paper's fixed-density exponent itself.
+
+An upper bound $2^{O(f(n))}$ is a guarantee, not a lower bound on the old algorithm. Hence a sharper exponent would improve the certified asymptotic guarantee; it would not by itself establish that every concrete implementation runs faster on every input.
+
+\section{Which source statement is being improved}
+The inspected source is pinned to commit
+\begin{center}\small\pin.\end{center}
+The original preprint is dated 25 October 2026; its source title page states an earlier initial date and the same revision date. The repository describes its manuscripts as research outputs at differing verification stages \cite{repository}. The paper's title is not treated here as an independently established conclusion.
+
+There are three distinct guarantees:
+\begin{enumerate}
+\item Theorem 1.1 and Appendix D: \eqref{eq:baseline}, and the stronger fixed-density bound \eqref{eq:sparse}.
+\item The rational-interpolation argument in Sections 3--6: exponent
+\[
+ \rho(n)=n(\log\log n)^2/\sqrt{\log n}.
+\]
+\item The selected Lean endpoint \texttt{SqrtLogSpace.exact\_count\_and\_sat}, and the source declaration for its compiled-machine endpoint, refer to \texttt{SqrtLog.Statement.runtimeBound}. The selected canonical statement expands its exponential scale as
+\[
+ 2^{A n (\log\log(n+16))^2/\sqrt{\log(n+16)}}.
+\]
+The machine and constants are quantified uniformly for a fixed width, rather than chosen separately for each instance \cite{leanfinal,leanstatement}.
+\end{enumerate}
+The third item is a source-level observation. No Lean kernel build or transitive axiom audit was performed for this report. In particular, implementing or formalizing Appendix D instead of this loglog-squared endpoint would reproduce an already stated paper bound. It would not satisfy the stronger target.
+
+\section{Where Appendix D spends its exponent}
+\subsection{The contraction interface}
+The paper's Theorem D.1 contracts a bipartite Boolean tensor network with at most $Cs$ wires and maximum degree at most $\lceil s^{9/10}\rceil$. Its entries lie in
+\[
+ (\Z/2^{P_0}\Z)[V]/(V^\ell),\qquad 1\le P_0,\ell\le Cs.
+\]
+The number of vertices and description length are polynomially bounded in the applicable input parameters. For fixed constants, an entry must be evaluable in time
+\[
+ (s+\mathcal L)^b 2^{A s^{9/10}}
+\]
+and space $(s+\mathcal L)^b$, where $\mathcal L$ is the total graph and tensor-description length. Subject to these hypotheses, the theorem claims time
+\begin{equation}\label{eq:contraction}
+ (s+\mathcal L)^{O(1)}2^{O(s/\sqrt{\log s})}
+\end{equation}
+and polynomial space \cite{reduction}.
+
+A direct clause-and-equality network uses $O(n+m)$ wires. This is enough for \eqref{eq:sparse}. At arbitrary density the sparse polynomial query construction instead uses $O(n\log\log n)$ wires. Substituting that size into \eqref{eq:contraction} produces \eqref{eq:baseline}. The extra factor is not merely a polynomial multiplication overhead.
+
+\subsection{The local weighted enumeration}
+At recursive depth $d$, the proof has $M=O(s8^{-d})$ wires and
+\[
+ u=\Theta((\log s)/2^d)
+\]
+retained valuation levels. At a node $t$, write $\delta=L/2^{v_2(t)}$ for the paper's mode-scale parameter. The number of variables of each positive weight $j$ is at most $6M/\delta$, and tapered interpolation yields a working precision
+\[
+ p_t=O(M\delta/u).
+\]
+Only mode monomials of total weight below $p_t$ can contribute. The resulting enumeration estimate is
+\[
+ \exp\!\left(O\!\left(\sqrt{(M/\delta)p_t}\right)\right)
+ =2^{O(M/\sqrt u)}.
+\]
+Summing these exponents along a recursive path gives
+\[
+ \sum_{d\ge0} O\!\left(\frac{s8^{-d}}{\sqrt{(\log s)2^{-d}}}\right)
+ =O(s/\sqrt{\log s}),
+\]
+since $\sqrt2/8<1$ \cite{contraction}.
+
+The source uses immutable creation-precision tensor descriptions. Entrywise canonical lifts at later precision refer back to those fixed representatives. Discarding this discipline, or treating a computed residue as if it could be freely extended to higher precision, is not a valid optimization. Likewise, an entry evaluator is an actual algorithm with a cost bound, not a unit-cost oracle.
+
+\section{A restricted obstruction to simpler enumeration bounds}
+\begin{lemma}[Binary selections inside a weighted budget]\label{lem:binary}
+Suppose an abstract mode inventory has $K$ distinct variables of each integer weight $1,\ldots,B$. If
+\[
+ K B(B+1)/2<P,
+\]
+then at least $2^{KB}$ different nonnegative exponent vectors have total weighted degree below $P$. All these vectors have ordinary degree at most $KB$.
+\end{lemma}
+\begin{proof}
+For each of the $KB$ variables, independently select exponent zero or one. There are exactly $2^{KB}$ selections. The greatest possible weighted degree is the sum of all weights, namely $K\sum_{j=1}^B j=KB(B+1)/2$, and the greatest ordinary degree is $KB$.
+\end{proof}
+
+\begin{proposition}[The current numerical envelope permits exponential support]\label{prop:envelope}
+Let $u\ge1$, $\delta\ge4\sqrt u$, and $M\ge2\delta$. Set
+\[
+ K=\lfloor M/\delta\rfloor,\qquad
+ B=\lfloor\delta/(2\sqrt u)\rfloor,\qquad
+ P=M\delta/u.
+\]
+An abstract inventory with $K$ variables of each weight $1,\ldots,B$ is consistent with the upper multiplicity bound $6M/\delta$. It has at least
+\[
+ 2^{M/(8\sqrt u)}
+\]
+weighted-feasible exponent vectors of ordinary degree at most $M$.
+\end{proposition}
+\begin{proof}
+Since $M/\delta\ge2$ and $\delta/(2\sqrt u)\ge2$, floor bounds give
+\[
+ \frac{M}{8\sqrt u}\le KB\le\frac{M}{2\sqrt u}\le M.
+\]
+Also
+\begin{align*}
+ \frac{KB(B+1)}2
+ &\le \frac{M\delta}{8u}+\frac{M}{4\sqrt u}\\
+ &\le\frac{M\delta}{8u}+\frac{M\delta}{16u}
+ =\frac{3P}{16}<P.
+\end{align*}
+Apply Lemma~\ref{lem:binary}. The multiplicity condition holds because $K\le M/\delta$.
+\end{proof}
+
+\textbf{What this proves.} The multiplicity cap, weighted budget and ordinary-degree cap alone cannot imply a universally smaller exponent for the entire feasible-tuple universe. In particular, imposing the ordinary-degree constraint from a product of $M$ affine factors does not, by itself, remove the square-root-log scale. Sharper partition asymptotics or faster polynomial arithmetic alone do not establish a new log-power.
+
+\textbf{What this does not prove.} The paper provides an upper inventory bound, not the required lower inventory on every actual network. The constructed envelope need not be realized with independent nonzero coefficients in a tensor instance. This is not a runtime lower bound for the paper's actual implementation, a lower bound for tensor contraction, or a lower bound for SAT. A new algorithm might exploit coefficient dependence, cancellation, or non-enumerative sharing that these numerical constraints ignore.
+
+\input{../audit/TAPER_AND_NEWTON_LEMMAS.tex}
+\input{research_routes.tex}
+
+\section{What the audit and artifacts establish}
+The audit inspected the claimed bounds and selected local proof mechanisms: residue-grid valuations, integral Hermite recovery, fixed representative lifting, recursive wire shrinkage, the degree invariant and depth-first space accounting. No immediate local algebraic contradiction was found in those checks. This is not a certification of every lemma, every reduction, every primitive operation, or the published ETH claim.
+
+There is also a major practical qualification. Appendix D fixes
+\[
+ \varepsilon=1/(128\cdot1024)=2^{-17},\qquad
+ u_0=\lfloor\varepsilon\lceil\log_2 s\rceil\rfloor.
+\]
+Thus $u_0=0$ when $\lceil\log_2 s\rceil<131072$. Even the displayed necessary root inequality $u_0\ge\lambda^{4/5}$ requires $\lambda\ge2^{85}$, before floors and deeper-call conditions are addressed. The proof handles a fixed exceptional range by direct summation. These constants reinforce that an asymptotic theorem is not evidence of a practical solver speedup.
+
+The bundle includes the report source and PDF, pinned paper source files and PDF, selected Lean source excerpts, an independent audit, and original finite-check and rebuild scripts. The exact finite checks cover 27,990 taper profiles, 52,411 degree-admissible profile/degree cases, 388 rational normalizer products, 120 Newton difference identities, 420 interpolation values, 832 mode-envelope parameter cases, 313,600 explicit binary selections, and 1,312 affine polynomial systems. Separate exterior-power toy checks cover 36 identity entries, 288 integral substitutions, 216 block-locality comparisons, 65,536 shifted-mode subsets, and exact recurrence ratios. These local tests do not validate compressed mode multiplicities or recursive closure. They pass both normal Python and optimized Python; guard checks use explicit exceptions, not removable assertions. The archive contains no faster 3-SAT solver, no full implementation of Appendix D, and no new formal certificate. Their checks test only the stated finite identities, counts, source fingerprints and artifact integrity. They cannot prove an asymptotic theorem by experiment.
+
+The report is compiled with shell escape disabled. Upstream Lean or repository programs are neither executed nor compiled. A fresh archive replay compares extracted PDF text and every rendered page against a clean report rebuild. Negative controls check rejection of changed, missing, extra, duplicate-path and path-traversal archive entries. A SHA-256 manifest provides internal consistency, not cryptographic authorship; the independently supplied hash of the sealed ZIP identifies this release. No dependency installation or network access is required by the replay scripts.
+
+\section{The next proof obligation}
+The useful next step is not to rename the existing Appendix D theorem as a new improvement. It is to prove the compressed-kernel interface and recursive closure in Section~\ref{sec:conditional-degree-kernel}, the stronger compression interface in Section~\ref{sec:conditional}, or to demonstrate a different method whose full bit-cost analysis is below \eqref{eq:baseline}. Any proposed proof must account for construction time, description size, local entry cost, precision growth, recursive invariants, and the surrounding sparse-query reduction. Until those obligations are met, the honest result remains a conditional research route plus limited negative results.
+
+\begin{thebibliography}{9}\small\raggedright
+\bibitem{paper} OpenAI. \emph{The Exponential Time Hypothesis is False}. Revision dated 25 October 2026. Theorem 1.1 and Appendix D. Pinned \href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/paper.pdf}{paper PDF} and \href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/main_full_version.tex}{main TeX source}.
+\bibitem{reduction} OpenAI. Appendix D, reduction and contraction interface. Pinned \href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-reduction.tex}{\texttt{quantitative-reduction.tex}}.
+\bibitem{contraction} OpenAI. Appendix D, proof of the contraction theorem. Pinned \href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-contraction.tex}{\texttt{quantitative-contraction.tex}}.
+\bibitem{repository} OpenAI. Repository overview, including verification-stage qualifications. Pinned \href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/README.md}{repository README}.
+\bibitem{leanfinal} OpenAI. Selected formal endpoint source. Pinned \href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/lean/OAI/Algorithms/SubexponentialSAT/SqrtLogSpace/Final.lean}{\texttt{SqrtLogSpace/Final.lean}} and \href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/lean/OAI/Algorithms/SubexponentialSAT/SqrtLog/ExecutionNativeFinal.lean}{\texttt{SqrtLog/ExecutionNativeFinal.lean}}.
+\bibitem{leanstatement} OpenAI. Explicit primitive-machine target expansion. Pinned \href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/lean/OAI/Algorithms/SubexponentialSAT/SqrtLog/StatementCanonical.lean}{\texttt{SqrtLog/StatementCanonical.lean}}.
+\end{thebibliography}
+\end{document}
