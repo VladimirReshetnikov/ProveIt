@@ -19,6 +19,15 @@ Independent fresh pairs reproduce both objects/full logs and15 standard-only
 reports. Strong integrality, Qh identities, first/main carrier indices,
 cofinal simultaneous witnesses and final PA/HA assembly remain open.
 
+The next arithmetic route is documented in the
+[bounded known-unit proposal](research/arithmetic-pell-known-unit-next-plan.md)
+and [gcd normalization derivation](research/arithmetic-pell-gcd-normalization-note.md).
+A known positive unit bounds a finite least-unit search. Elementary gcd
+normalization then puts both relevant norm solutions over one discriminant,
+potentially replacing the external squarefree/fundamental-unit setup.
+These are formalization plans and a paper derivation; the internal gcd,
+descent, composition and strong-divisibility proofs remain to be constructed.
+
 The [uniform internal seed-source basis](reviews/validator-seed-source-basis222-root.md)
 now constructs the exact represented open proof of every internally typed
 full-seed body,with total raw constructor graphs and actual closed-instance
