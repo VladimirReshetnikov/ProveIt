@@ -24,6 +24,14 @@ Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
 
+A [bounded next-correction search](research/third-first-norm-correction-search/README.md)
+recovers the accepted92/90 and97/88 schedules without a further saving.
+Its [independently checked obstruction](reviews/third-correction-obstruction-root.md)
+excludes only additional A(P-1)+B(Q-1) corrections of degrees at most22/26:
+their degree44 terms are divisible by w², while U88 has a nonzero w-linear
+component. Higher-degree cancellations and other constructions remain open;
+this is not an optimality claim.
+
 Two [further first-norm corrections](research/thirteen-second-first-norm-corrections/README.md)
 now supply13/92/90 and13/97/88 (variables/operations/degree), with the same
 complete current coefficient tuple. Both retain the entire positive zero
