@@ -212,6 +212,14 @@ premise. Independent builds pass eight propext/Quot.sound-only reports and
 identical objects. Fixed consistency specialization and the full HA equation equivalence
 remain open.
 
+The [literal adaptive strong-index theorem](reviews/native-adaptive-strong-index-root.md)
+now recovers the actual main Pell coordinates at target R from literal
+A0/A1 and Fs/Fa, preserving unrestricted positive J. It derives square
+divisibility and both auxiliary congruences before index identification,
+with positive actual V/y and quotient witnesses. Independent builds pass
+three standard-only reports and identical objects. First-index/power
+recovery, source transfer, converse and internal HA arithmetic remain open.
+
 The [adaptive rank-window theorem](reviews/native-adaptive-rank-window-root.md)
 now derives the target window, both Pell classifications, n>=25, n<p,
 p>=6, a positive main ordinate, the large-c bound and both 2p<c/2R<c

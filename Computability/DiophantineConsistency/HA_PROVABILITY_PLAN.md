@@ -1179,3 +1179,21 @@ the represented generic SequenceHistory construction and a genuine Pi1
 prefix induction for all internal proof codes; the read-only
 [history proposal](research/c222-proof-word-history-proposal-20261026.md)
 records the exact recurrence,cache delta and Type0 completeness boundary.
+
+## Literal adaptive strong-index recovery accepted
+
+The [literal adaptive strong-index theorem](reviews/native-adaptive-strong-index-root.md)
+now recovers the actual main Pell coordinates at target R from literal
+A0/A1 and Fs/Fa, preserving unrestricted positive J. It derives square
+divisibility and both auxiliary congruences before index identification,
+with positive actual V/y and quotient witnesses. Independent builds pass
+three standard-only reports and identical objects. First-index/power
+recovery, source transfer, converse and internal HA arithmetic remain open.
+
+The crucial adapter derives c^2|f^2-1 from relaxed Pell classification
+and ordinate divisibility,then rewrites the graph's actual auxiliary value
+as jc-R and of-c. It does not cancel the discriminant from the norm.
+RankWindow supplies main classification and both strict half bounds;
+Fs/Fa supply the signed strong norms. This advances native soundness of
+the lower-degree carrier. It neither assumes nor supplies the still-missing
+internal PA proof of the displayed equation/consistency equivalence.
