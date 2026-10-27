@@ -30,6 +30,13 @@ historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
 
+The [actual C222 source-negation theorem](reviews/validator-source-negation222-root.md)
+now proves both encoded NNF-negation implications for all internal typed
+formulas and arbitrary encoder states. Its genuine Pi2 code induction
+uses explicit IΣ2. Independent two-leaf builds pass sixteen standard-only
+reports with identical objects. Context quantifier rules,full source-proof
+interpretation and source-axiom images remain open.
+
 The [actual C222 command-preservation theorem](reviews/arithmetic-command-preservationperm222-root.md)
 now preserves certified working states for every internal raw command and
 extracts an actual falsity proof from a halt. AX retains its physical y/x

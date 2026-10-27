@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual C222 NNF-negation theorem](reviews/validator-source-negation222-root.md)
+now supplies both checker-witnessed implications for every internal typed
+source formula and arbitrary encoder states. Its explicit Pi2 invariant
+uses IΣ2 code induction. Independent builds pass sixteen standard-only
+reports with identical objects. This discharges source negation compatibility;
+quantifier transport through internally sized contexts,full derivation
+induction and source-axiom calibration remain separate work.
+
 The [actual C222 local preservation theorem](reviews/arithmetic-command-preservationperm222-root.md)
 now retains bounded proof certificates across every successful command and
 extracts an actual History222 value2 witness at halt. Independent two-leaf
