@@ -1,0 +1,328 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:37:2: error: Tactic `apply` failed: could not unify the conclusion of `equivalent_plus h`
+  Equivalent (plus p ?m.24) (plus q ?m.25)
+with the goal
+  Equivalent (minus p r) (minus q s)
+
+Note: The full type of `equivalent_plus h` is
+  Equivalent ?m.24 ?m.25 → Equivalent (plus p ?m.24) (plus q ?m.25)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p q r s : Pair V
+h : Equivalent p q
+k : Equivalent r s
+⊢ Equivalent (minus p r) (minus q s)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:83:12: error: Type mismatch: After simplification, term
+  rep_nat v 1
+ has type
+  @Rep V inst✝¹ inst✝ σ (Expr.constant 1) v (natural 1)
+but is expected to have type
+  @Rep V inst✝¹ inst✝ σ (e ^ 0) v (natural 1)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:88:4: error: Type mismatch: After simplification, term
+  rep_mul (rep_nat v 1) h
+ has type
+  @Rep V inst✝¹ inst✝ σ (Expr.constant 1 * e) v p
+but is expected to have type
+  @Rep V inst✝¹ inst✝ σ (e ^ 1) v p
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:148:58: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  HMul (Expr ℕ) (Expr (Fin 14)) ?m.1158
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:136:69: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 14 → V
+hq : 2 ≤ ↑(p 0) * v 0 + 1
+hz :
+  NatExpr.evalSemiring v (expressionAt fun j => ↑(p j)).splitNatural.1 =
+    NatExpr.evalSemiring v (expressionAt fun j => ↑(p j)).splitNatural.2
+b : V := ↑(p 0) * v 0
+q : V := b + 1
+X : V := v 8 * q
+Y : V := v 7 * q ^ 3
+E : V := X * Y
+k : V := v 10 + v 11
+c : V := k * Y + v 10
+a : V := E + Y
+H : V := 4 * a + 3
+delta : V := (a + 1) * (a + 3)
+d : V := X + a * c + v 13 * H
+M : V := (↑(p 2) + q * ↑(p 3)) * v 0
+rp : V := (b * q + v 2) * (q ^ 2 - 1) + M
+rn : V := b * v 1 * (q ^ 2 - 1)
+tp : V × V := (E * v 9 + k + rn, rp)
+vp : V × V := (v 4 * v 4 * (c * v 6 + rn), v 4 * v 4 * rp + c)
+S : V := delta * v 5 * c * c
+eB : Expr (Fin 14) := Expr.constant ↑(p 0) * Expr.var 0
+eq : Expr (Fin 14) := eB + 1
+eX : Expr (Fin 14) := Expr.var 8 * eq
+eY : Expr (Fin 14) := Expr.var 7 * eq ^ 3
+eE : Expr (Fin 14) := eX * eY
+ek : Expr ℕ := Expr.var 10 + Expr.var 11
+⊢ Equivalent
+    (scale
+      ((v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+        (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3))
+      (product5
+        (magnitude
+              (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) * v 9 + (v 10 + v 11) +
+                  ↑(p 0) * v 0 * v 1 * ((↑(p 0) * v 0 + 1) ^ 2 - 1),
+                (↑(p 0) * v 0 * (↑(p 0) * v 0 + 1) + v 2) * ((↑(p 0) * v 0 + 1) ^ 2 - 1) +
+                  (↑(p 2) + (↑(p 0) * v 0 + 1) * ↑(p 3)) * v 0) *
+            magnitude
+              (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) * v 9 + (v 10 + v 11) +
+                  ↑(p 0) * v 0 * v 1 * ((↑(p 0) * v 0 + 1) ^ 2 - 1),
+                (↑(p 0) * v 0 * (↑(p 0) * v 0 + 1) + v 2) * ((↑(p 0) * v 0 + 1) ^ 2 - 1) +
+                  (↑(p 2) + (↑(p 0) * v 0 + 1) * ↑(p 3)) * v 0),
+          v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) *
+                (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + 1) *
+              (v 10 + v 11) *
+            (v 10 + v 11))
+        ((v 8 * (↑(p 0) * v 0 + 1) +
+                (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3) *
+                  ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) +
+              v 13 *
+                (4 * (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3) + 3)) *
+            (v 8 * (↑(p 0) * v 0 + 1) +
+                (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3) *
+                  ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) +
+              v 13 *
+                (4 * (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3) + 3)),
+          (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3) *
+              ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+            ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10))
+        ((v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                          (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 +
+                            3) *
+                        v 5 *
+                      ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                  ((v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                          (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 +
+                            3) *
+                        v 5 *
+                      ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) *
+                magnitude
+                  (v 4 * v 4 *
+                      (((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) * v 6 +
+                        ↑(p 0) * v 0 * v 1 * ((↑(p 0) * v 0 + 1) ^ 2 - 1)),
+                    v 4 * v 4 *
+                        ((↑(p 0) * v 0 * (↑(p 0) * v 0 + 1) + v 2) * ((↑(p 0) * v 0 + 1) ^ 2 - 1) +
+                          (↑(p 2) + (↑(p 0) * v 0 + 1) * ↑(p 3)) * v 0) +
+                      ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) *
+              magnitude
+                (v 4 * v 4 *
+                    (((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) * v 6 +
+                      ↑(p 0) * v 0 * v 1 * ((↑(p 0) * v 0 + 1) ^ 2 - 1)),
+                  v 4 * v 4 *
+                      ((↑(p 0) * v 0 * (↑(p 0) * v 0 + 1) + v 2) * ((↑(p 0) * v 0 + 1) ^ 2 - 1) +
+                        (↑(p 2) + (↑(p 0) * v 0 + 1) * ↑(p 3)) * v 0) +
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) +
+            v 12 * v 12,
+          (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                        (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3) *
+                      v 5 *
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                  ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                ((v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                        (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3) *
+                      v 5 *
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                  ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) *
+              v 12 *
+            v 12)
+        ((↑(p 1) + v 8) * (↑(p 0) * v 0 + 1) + (↑(p 0) * v 0 + 1),
+          (↑(p 1) + v 8) * (v 1 + v 2) + v 1 + v 3 * (↑(p 0) * v 0))
+        (v 4 * v 4,
+          (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3) *
+              (v 5 * ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) *
+            (v 5 * ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+              ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)))))
+    (natural
+      ((v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+        (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3)))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:243:4: error: Type mismatch: After simplification, term
+  h
+ has type
+  2 ≤ 1 + ↑(p 0) * v 0
+but is expected to have type
+  2 ≤ q
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:254:37: error: `dsimp` made no progress
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:255:8: error: `dsimp` made no progress
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:260:4: error: Application type mismatch: The argument
+  ArithmeticNegativeNorms.square_aux_ne_negative S (magnitude vp) (v 12)
+has type
+  S * magnitude vp * (S * magnitude vp) + v 12 * v 12 + 1 ≠ S * S * v 12 * v 12
+but is expected to have type
+  ((v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                          (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 +
+                            3) *
+                        v 5 *
+                      ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                  ((v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                          (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 +
+                            3) *
+                        v 5 *
+                      ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) *
+                magnitude
+                  (v 4 * v 4 *
+                      (((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) * v 6 +
+                        ↑(p 0) * v 0 * v 1 * ((↑(p 0) * v 0 + 1) ^ 2 - 1)),
+                    v 4 * v 4 *
+                        ((↑(p 0) * v 0 * (↑(p 0) * v 0 + 1) + v 2) * ((↑(p 0) * v 0 + 1) ^ 2 - 1) +
+                          (↑(p 2) + (↑(p 0) * v 0 + 1) * ↑(p 3)) * v 0) +
+                      ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) *
+              magnitude
+                (v 4 * v 4 *
+                    (((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) * v 6 +
+                      ↑(p 0) * v 0 * v 1 * ((↑(p 0) * v 0 + 1) ^ 2 - 1)),
+                  v 4 * v 4 *
+                      ((↑(p 0) * v 0 * (↑(p 0) * v 0 + 1) + v 2) * ((↑(p 0) * v 0 + 1) ^ 2 - 1) +
+                        (↑(p 2) + (↑(p 0) * v 0 + 1) * ↑(p 3)) * v 0) +
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) +
+            v 12 * v 12,
+          (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                        (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3) *
+                      v 5 *
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                  ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                ((v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                        (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3) *
+                      v 5 *
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                  ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) *
+              v 12 *
+            v 12).1 +
+      1 ≠
+    ((v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                        (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3) *
+                      v 5 *
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                  ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                ((v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                        (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3) *
+                      v 5 *
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                  ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) *
+              magnitude
+                (v 4 * v 4 *
+                    (((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) * v 6 +
+                      ↑(p 0) * v 0 * v 1 * ((↑(p 0) * v 0 + 1) ^ 2 - 1)),
+                  v 4 * v 4 *
+                      ((↑(p 0) * v 0 * (↑(p 0) * v 0 + 1) + v 2) * ((↑(p 0) * v 0 + 1) ^ 2 - 1) +
+                        (↑(p 2) + (↑(p 0) * v 0 + 1) * ↑(p 3)) * v 0) +
+                    ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) *
+            magnitude
+              (v 4 * v 4 *
+                  (((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) * v 6 +
+                    ↑(p 0) * v 0 * v 1 * ((↑(p 0) * v 0 + 1) ^ 2 - 1)),
+                v 4 * v 4 *
+                    ((↑(p 0) * v 0 * (↑(p 0) * v 0 + 1) + v 2) * ((↑(p 0) * v 0 + 1) ^ 2 - 1) +
+                      (↑(p 2) + (↑(p 0) * v 0 + 1) * ↑(p 3)) * v 0) +
+                  ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) +
+          v 12 * v 12,
+        (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                      (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3) *
+                    v 5 *
+                  ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+              ((v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 1) *
+                      (v 8 * (↑(p 0) * v 0 + 1) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 7 * (↑(p 0) * v 0 + 1) ^ 3 + 3) *
+                    v 5 *
+                  ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10) *
+                ((v 10 + v 11) * (v 7 * (↑(p 0) * v 0 + 1) ^ 3) + v 10)) *
+            v 12 *
+          v 12).2
+in the application
+  scaled_product5_positive delta hdelta hp (ArithmeticNegativeNorms.consecutive_ne_negative (E * Y) (magnitude tp) k hn)
+    (ArithmeticNegativeNorms.main_ne_negative a d c)
+    (ArithmeticNegativeNorms.square_aux_ne_negative S (magnitude vp) (v 12))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:264:4: error: Type mismatch: After simplification, term
+  hW
+ has type
+  (↑(p 1) + v 8) * (↑(p 0) * v 0 + 1) + (↑(p 0) * v 0 + 1) =
+    (↑(p 1) + v 8) * (v 1 + v 2) + v 1 + v 3 * (↑(p 0) * v 0) + 1
+but is expected to have type
+  (↑(p 1) + v 8) * q + q = (↑(p 1) + v 8) * (v 1 + v 2) + v 1 + v 3 * (q - 1) + 1
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:270:46: error: Function expected at
+  tsub_le_self
+but this term has type
+  ?m.900 - ?m.901 ≤ ?m.900
+
+Note: Expected a function because this term is being applied to the argument
+  _
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:300:14: error(lean.unknownIdentifier): Unknown identifier `add_tsub_add_right_eq_tsub`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:303:15: error: Type mismatch: After simplification, term
+  hP
+ has type
+  (E * v 9 + k - R) * (E * v 9 + k - R) =
+    1 +
+      v 8 * (1 + ↑(p 0) * v 0) * (v 7 * (1 + ↑(p 0) * v 0) ^ 3) * (v 7 * (1 + ↑(p 0) * v 0) ^ 3) *
+            (1 + v 8 * (1 + ↑(p 0) * v 0) * (v 7 * (1 + ↑(p 0) * v 0) ^ 3) * (v 7 * (1 + ↑(p 0) * v 0) ^ 3)) *
+          (v 10 + v 11) *
+        (v 10 + v 11)
+but is expected to have type
+  (v 8 * (1 + ↑(p 0) * v 0) * (v 7 * (1 + ↑(p 0) * v 0) ^ 3) * v 9 + (v 10 + v 11) -
+        ((↑(p 2) + (1 + ↑(p 0) * v 0) * ↑(p 3)) * v 0 +
+          ((1 + ↑(p 0) * v 0 - 1) * (1 + ↑(p 0) * v 0 - v 1) + v 2) * ((1 + ↑(p 0) * v 0) ^ 2 - 1))) *
+      (v 8 * (1 + ↑(p 0) * v 0) * (v 7 * (1 + ↑(p 0) * v 0) ^ 3) * v 9 + (v 10 + v 11) -
+        ((↑(p 2) + (1 + ↑(p 0) * v 0) * ↑(p 3)) * v 0 +
+          ((1 + ↑(p 0) * v 0 - 1) * (1 + ↑(p 0) * v 0 - v 1) + v 2) * ((1 + ↑(p 0) * v 0) ^ 2 - 1))) =
+    1 +
+      v 8 * (1 + ↑(p 0) * v 0) * (v 7 * (1 + ↑(p 0) * v 0) ^ 3) * (v 7 * (1 + ↑(p 0) * v 0) ^ 3) *
+            (1 + v 8 * (1 + ↑(p 0) * v 0) * (v 7 * (1 + ↑(p 0) * v 0) ^ 3) * (v 7 * (1 + ↑(p 0) * v 0) ^ 3)) *
+          (v 10 + v 11) *
+        (v 10 + v 11)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:304:41: error: Tactic `simp` failed with a nested error:
+(deterministic) timeout at `«Lean.Meta.acLt»`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:232:51: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:312:4: warning: exponent 2011 exceeds the threshold 256, exponentiation operation was not evaluated, use `set_option exponentiation.threshold <num>` to set a new threshold
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:318:4: error: Type mismatch: After simplification, term
+  Finset.single_le_sum (fun j x => Nat.zero_le (CurrentMasks2011.radix ^ j)) hz
+ has type
+  @LE.le ℕ Nat.instPreorder.toLE 1 (∑ x ∈ CurrentMasks2011.lowSupport, CurrentMasks2011.radix ^ x)
+but is expected to have type
+  @LE.le ℕ instLENat 1 (LowMaskCoding.supportValue CurrentMasks2011.radix CurrentMasks2011.lowSupport)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:320:4: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:324:10: warning: Possibly looping simp theorem: `CurrentMasks2011.highPrefix.eq_1`
+
+Note: Possibly caused by: `List.reduceReplicate` and `List.cons_append`
+
+Hint: You can disable a simp theorem from the default simp set by passing `- theoremName` to `simp`.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:324:4: error: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:325:69: error: unsolved goals
+case inr.inl
+x : ℕ
+hp : 140737488355328 ≤ 140737488355328 ^ 2011
+hb : 15 ≤ CurrentMasks2011.beta
+hz : 0 ∈ CurrentMasks2011.lowSupport
+hm : 1 ≤ LowMaskCoding.supportValue 140737488355328 CurrentMasks2011.lowSupport
+hl : CurrentMasks2011.lowPort < CurrentMasks2011.beta
+hlen : CurrentMasks2011.highPrefix.length = 1006
+h : ((((x = 8 ∨ x = 0) ∨ x = 1) ∨ x = 0) ∨ x = 1) ∨ x = 0
+⊢ x < 140737488355328
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:364:8: error(lean.unknownIdentifier): Unknown identifier `expressionAt_equations`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:365:2: error: No goals to be solved
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCarrierSoundness2011.lean:353:8: error: (kernel) excessive memory consumption detected

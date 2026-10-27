@@ -18,6 +18,28 @@ is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 
+The [literal carrier soundness theorem](reviews/arithmetic-carrier-soundness2011-root.md)
+now extracts transport and all four additive norms from the actual positive
+zero, including actual port bounds and the single natural-domain shift.
+Independent fresh pairs match both objects, complete logs and five standard-only
+reports. Power/radix composition and native encoding/converse witnesses remain.
+
+The [internal radix alignment theorem](reviews/arithmetic-radix-alignment-root.md)
+now derives the positive block count and exact residual exponential factor.
+Independent fresh pairs match both objects, complete logs and eight standard-only
+reports. Its concrete current-equation composition remains a separate client.
+
+The [closed checker/machine theorem](reviews/arithmetic-checker-machine215-root.md)
+now has actual IΣ1 and PA proofs for the fixed seed-checker/decimal215
+halting equivalence. Independent fresh pairs match both objects, complete
+logs and six standard-only reports. Source-ZFC calibration remains separate.
+
+The [transitive source certificates](reviews/validator-seed-transitive222-root.md)
+now construct raw and tagged transitive containers and exact tagged pairs,
+with actual source Proof codes and typed/raw formula bindings. Independent
+fresh pairs match both objects, complete logs and all 17 standard-only reports.
+Guarded profile laws and actual ZF/ZFC interpretation remain open.
+
 The [complete actual215 runtime equivalence](reviews/arithmetic-runtime215-root.md)
 now connects both directions of actual Enum halting and literal decimal215
 blank-machine halting over arbitrary internal clocks. All supported simulation,

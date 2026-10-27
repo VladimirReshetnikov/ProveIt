@@ -19,8 +19,8 @@ normalization results are established. The full arithmetic equivalence
 needed by the transfer theorem remains open. Work was organized around
 three substantial connections: actual ZFC/source-checker proof interpretation,
 actual control-to-tape simulation, and internal polynomial/Pell witness
-assembly. The actual runtime equivalence is now independently accepted
-below; its closed arithmetic proof client is next. The other two connections
+assembly. The actual checker/runtime equivalence now has independently
+accepted closed IΣ1 and PA proof-existence theorems below. The other two connections
 remain substantial, including internal binary population, mask/word/carry
 and tableau construction in the polynomial connection.
 The checked scheduler/control halting theorem, literal tape/boot theorem
@@ -36,8 +36,44 @@ do not remove the need for a closed arithmetic theorem about this exact
 equation. The source/ZF interpretation and simultaneous polynomial witness
 construction still require mathematical development; they are not merely
 final file assembly. Machine simulation has now passed complete composition
-at the arbitrary-model level. This estimate counts neither proof
+and its closed arithmetic proof client. This estimate counts neither proof
 files nor independently replayed checkpoints as equal units of progress.
+
+The [literal carrier soundness theorem](reviews/arithmetic-carrier-soundness2011-root.md)
+now derives all five additive equations from the actual positive splitNatural
+zero in every IΣ1 model. It binds the original signed cuts, applies all four
+negative-unit exclusions, derives transport and only then justifies natural
+rank/tau subtraction. Actual port bounds and the one positive-domain shift
+are proved. Independent fresh pairs match both objects, complete logs and
+all five standard-only reports, with zero refresh. Composition with power
+and radix recovery, binary population, actual mask/word/carry/tableau
+interpretation and simultaneous converse witnesses remain before full HA.
+
+The [internal radix alignment theorem](reviews/arithmetic-radix-alignment-root.md)
+now derives a positive block count, q=exp(d*N), the exponent bound and the
+exact remaining factor exp(R-d*N) from the actual exponential factorization.
+No binary-radix or exponent-divisibility oracle is supplied. Independent
+fresh pairs match both objects, complete logs and eight standard-only
+reports, with zero refresh. The concrete width94517 client is next; no
+native word or final polynomial equivalence is inferred from this generic
+arithmetic result.
+
+The [closed checker/machine theorem](reviews/arithmetic-checker-machine215-root.md)
+now supplies actual IΣ1 and PA proofs of one fixed sentence equating the
+actual History222 refutation predicate with the literal decimal215 halting
+sentence. Its all-model realization retains Type0 exactly where required
+by the forward compiler. Independent fresh pairs match both objects,
+complete logs and six standard-only reports, with zero refresh. This
+discharges the runtime proof-existence connection; the actual ZF/ZFC source
+and polynomial connections remain before the final HA equivalence.
+
+The [actual transitive source certificates](reviews/validator-seed-transitive222-root.md)
+now construct raw and guarded tagged transitive containers and exact tagged
+pairs, with actual Proof(seedTheory) codes and fixed Sigma1 formula graphs.
+The same full-seed witness is retained, and arbitrary parameters, repeated
+labels and U=t remain. Independent fresh pairs match both objects, complete
+logs and all 17 standard-only reports, with zero refresh. Guarded profile
+code laws, Eqv/Member, QHyp, quotient/WF and uniform ZF/ZFC calibration remain.
 
 The [complete actual215 runtime theorem](reviews/arithmetic-runtime215-root.md)
 now proves both directions between actual Enum live(0,4,0) halting and
@@ -46,7 +82,7 @@ arbitrary internal clocks in every IΣ1 model. The supported Sigma1 relation,
 all simulation premises, exact seed graph, full halted payload and accepted
 95,714-step boot are discharged. Independent fresh pairs match both objects,
 complete logs and all 15 standard-only reports, with zero refresh. The
-closed checker/machine IΣ1/PA client is next; actual source ZF/ZFC and
+closed checker/machine IΣ1/PA client is supplied above; actual source ZF/ZFC and
 polynomial/population/tableau/witness connections still precede full HA.
 
 The [direct squared-ordinate seed](reviews/arithmetic-pell-squared-seed-root.md)
@@ -66,8 +102,8 @@ now fixes the represented entry graph, proves full consumed-path rebasing
 and derives actual six-case step/halt transport with arbitrary internal
 registers and zero gaps. Both independent objects, complete logs and all
 20 standard-only reports match, with zero refresh. Whole iteration,
-the initial frame and boot composition remain before the closed runtime
-endpoint; no final polynomial PA or HA equivalence is claimed.
+the initial frame and boot composition are supplied by the accepted
+runtime theorem above; no final polynomial PA or HA equivalence is claimed.
 
 The [internal signed-factor extraction](reviews/arithmetic-signed-pairs-root.md)
 now turns an actual scaled five-factor signed product into five positive
@@ -75,8 +111,8 @@ additive identities, using four negative-unit exclusions and deriving the
 transport factor's sign. It handles arbitrary internal representatives and
 cancellation without an integer quotient. Independent fresh pairs match
 both objects/full logs and all seven standard-only reports with zero refresh.
-The literal splitNatural/scaled-product binding and application of the
-proved norm exclusions remain before actual polynomial soundness.
+The literal binding and actual norm exclusions are applied by the accepted
+carrier soundness theorem above; its remaining polynomial bridge is explicit.
 
 The [concrete logical source images](reviews/validator-seed-logical-images222-root.md)
 now supply all five actual equality axioms, literal irreflexivity and GIC
@@ -84,7 +120,8 @@ in one discharged moving-marker image contract. Its concrete source
 refutation-to-seed theorem has no image oracle; the actual checker witness
 adds IΣ2. Independent fresh pairs match both objects/full logs and all
 fifteen standard-only reports, with zero refresh. Tagged transitive
-containers, profile Eqv/Member, quotient/WF and ZF/ZFC calibration remain.
+containers are supplied above; profile Eqv/Member, quotient/WF and ZF/ZFC
+calibration remain.
 
 The [internal negative-norm exclusions](reviews/arithmetic-negative-norms-root.md)
 now prove the required modulo-four and consecutive-factor sign obstructions
@@ -92,7 +129,7 @@ in arbitrary IΣ1 models. Genuine bounded internal descent handles the
 consecutive factor, retaining the n=1 counterexample and both inverse-root
 orientations. Independent fresh pairs match both objects/full logs and
 all seven standard-only reports, with zero refresh. Signed-product and
-literal polynomial evaluation binding remain before actual soundness.
+literal polynomial binding are supplied by the accepted soundness theorem above.
 
 The [actual215 source-site theorem](reviews/arithmetic-site215-root.md)
 now derives all six instruction execution cases from actual LeafAt membership
