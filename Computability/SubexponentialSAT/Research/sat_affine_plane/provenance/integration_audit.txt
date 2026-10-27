@@ -1,0 +1,230 @@
+INDEPENDENT INTEGRATION AUDIT: FOUR-PLAN AFFINE CONTRACTION
+Prepared by incoming_frontier agent, 2026-10-27.
+
+Conclusion
+==========
+No concrete integration flaw found in the frozen candidate at
+candidate/affine_contraction. Its support-averaging theorem, exact plan
+selection, ring arithmetic bridge, paid child-entry recurrence, and separate
+space accounting are consistent with the inherited normalized interface.
+This audit does not independently reprove the Cauchy deformation, precision
+recovery, balancing, SAT reduction, or the entire source formalization.
+
+The comparison is a strict coefficient improvement in a subexponential
+upper-bound expression, not a new logarithmic exponent order and not an
+end-to-end practical SAT implementation. It applies with subexponential
+space. The separate best polynomial-space coefficient 46.184845586731
+remains a different branch and cannot be claimed improved in that model.
+
+Exact new generic normalized-wire coefficients:
+  time = 30.691337824285948868019023951125664253906108363975...
+  space = 29.466030256594790658501020919050052551008118223481...
+The old incoming tree certificate has time 30.891018920366092... and
+space 30.753912832054975.... Approximate coefficient reductions are
+0.646405% and 4.187703%, respectively. This is not an observed runtime gain
+or a lower bound on any prior algorithm's runtime.
+
+The coefficient multiplies s/sqrt(ceil(log_2 s)) for normalized wire count
+s. It is not directly a coefficient in SAT variables n. The root degree
+condition is at most ceil(s^(9/10)); removing it or supplying new reduction
+constants would need additional proof.
+
+1. Exact adaptive selection and entropy
+======================================
+For a fixed exact-weight allocation, replace opposite directed list domains
+by a pair domain d_{uv}=|I_{uv}| |I_{vu}|. Empty lists contribute zero and
+must be skipped before taking logarithms. Domain one is permitted.
+
+For each fixed plan j, P_j=max_v product_e d_e^(v_e) is an integer and
+F_j=(1/5) log_2 P_j. All exponents are 0, 2, or 5. Minimizing these exact
+integers is equivalent to minimizing the matrix work bound, without a
+floating-point comparison or a count oracle. Counts come from the inherited
+exact-weight dynamic program. Fixed r in {7,9,13}, polynomial mode/weight
+budgets, and polynomial count bit length make this selection polynomial.
+
+Pointwise min_j F_j <= average_j F_j = max_(v_1,...,v_4)
+[(v_1+...+v_4) dot g]/20. Applying the inherited weighted entropy bound to
+the fixed finite collection of possible sums is legitimate even though the
+maximizing support tuple depends on the entropy vector. No min/max exchange
+or assumption of arbitrary edge permutation is needed. Assign the same
+weight to both orientations of each edge, giving the factor two in
+b^2=2 Q/(25 q^2 r^2).
+
+The complete operation menus include all recursive block constructions and
+the final triangle. Counting only the final triangles would leave a gap;
+the supplied full support certificates do not have that gap.
+
+2. Independent finite certificates
+=================================
+The independent program candidate/local_kernel/check_integration.py imports
+none of the candidate certificate code. It reconstructs all operation
+tripartitions from vertex sets and balanced recursive splits, then proves
+an upper bound by the Gram expansion plus a matching witness.
+
+Nine groups: 21 masks per plan, individual squared norms <=486, every
+cross-plan inner product <=288. Thus
+  ||v_1+v_2+v_3+v_4||^2 <= 4*486+12*288 = 5400.
+Masks (18,18,18,18) attain this exactly. Hence b_9^2=1/3.
+
+Thirteen groups: 33 masks per plan, individual squared norms <=1064,
+every cross-plan inner product <=647. Thus
+  ||v_1+v_2+v_3+v_4||^2 <= 4*1064+12*647 = 12020.
+Masks (32,32,32,32) attain this exactly. Hence b_13^2=601/1690.
+
+The checker inspects 9180 exact cross-plan inner products across the two
+portfolios. Its proof is independent of the primary checker's enumeration
+of every 21^4 and 33^4 tuple. Both ordinary and optimized Python (-O) pass
+and produce byte-identical results. No validation relies on assert.
+
+3. Ring arithmetic and storage
+=============================
+Do not apply a field matrix-multiplication algorithm directly to the source
+ring, which has zero divisors. The existing integer-coordinate/CRT bridge
+is essential. It is sufficient that the source extension/truncation ring is
+free of polynomial rank over Z/(2^p), with explicitly computable integer
+structure constants of polynomial bit length. Lift coordinates to
+[0,2^p), compute coordinate matrix products over sufficiently many
+nonexceptional odd prime fields, reconstruct their nonnegative integer
+values, apply structure constants, and reduce modulo 2^p. Every exact
+coordinate product has a bound of the form inner_dimension*(2^p-1)^2,
+whose bit length is polynomial in s. The number of coordinate products and
+CRT primes is polynomial. No source-ring nonunit is inverted.
+
+A fixed rational bilinear square algorithm with exponent strictly below
+12/5 can have its fixed denominators cleared, excluding only finitely many
+prime characteristics. The primary reference Le Gall 2014 explicitly works
+over an arbitrary field and proves omega<2.3728639, already sufficient:
+  https://arxiv.org/html/1401.7714v1
+  https://arxiv.org/abs/1401.7714
+The latest numerical omega is unnecessary here; the inherited common
+backend bound 12/5 supports a fair comparison. A specific square algorithm
+strictly below that threshold can be fixed once, so its constants and bad
+primes do not depend on s.
+
+Square blocking yields logarithmic rectangular work cost
+  H_1+H_2+H_3-(3/5) min(H_1,H_2,H_3).
+Rounding and padding cost only polynomial factors. Sequential bilinear
+recursion and sequential CRT use polynomial overhead times the input/output
+table storage. The work cost is at least any H_i+H_j, so every operation's
+input/output table lies below the selected plan's bound. Singleton caches
+are inputs to an operation and are included. Finite local regrouping code
+does not implement or benchmark this theoretical matrix backend.
+
+4. Every recursive entry remains paid
+====================================
+Caching a singleton tensor requires an actual child contraction for every
+incident index assignment. The entropy bound gives alpha_r=sqrt(2(r-1))/r,
+so the local time recurrence is
+  T_d <= poly(s) [2^((alpha_r+o(1)) K_d) T_(d+1)
+                  +2^((b_r+o(1)) K_d)].
+The improved b_r is an aggregation coefficient, not a replacement for the
+alpha_r child-entry cost. The candidate retains this separation correctly.
+
+Calls for different cache entries run sequentially. Ancestor cached tables
+are retained while a child is evaluated, so space is a sum over active
+depths, bounded by a polynomial factor times the largest local table.
+The time prefix sum of cache exponents must not be charged to space; the
+candidate does not do so. Conversely, deleting the time prefix would be an
+error, and the candidate's C_1 and C_infinity include it.
+
+The local recurrence uses poly(s), with the input description cost carried
+as one common polynomial factor in s+L. If a proof were to multiply a fresh
+poly(L) at every depth, it would need repair when L is unrestricted. The
+source's scalar-entry cost can instead be factored once across the complete
+operation count. poly(s) accumulated across O(log log s) levels is
+2^(O(log s log log s)), which is absorbed in the stated lower-order exponent.
+
+5. Frozen rational schedule and global maximum
+=============================================
+  r_0=9, r_1=13, r_d=7 for d>=2;
+  eta_0=15773/1000000;
+  eta_1=9/800;
+  eta_d=(8597/1800000)*(4/9)^(d-2) for d>=2.
+Total eta is 1781/50000. All guards, floors, stopping rule, and near-unit
+padding hypotheses are inherited from the prior tree certificate.
+
+The exact inequalities
+  9^100000<2^316993,
+  13^100000<2^370044,
+  7^100000<2^280736
+give strict gaps below one of
+  69411/50000000000,
+  75247/25000000000,
+  287/156250000
+for root, depth one, and tail packing. These gaps are small but positive;
+they support an asymptotic theorem, not a practical problem-size threshold.
+The remaining capacity bound is
+  (1781/50000)*(1+2*(370044/100000))<1.
+Fresh packet degrees remain below the original 9/10 cap.
+
+The tail ratio gamma=(2/7)/sqrt(4/9)=3/7. Also
+  alpha_7^2/(1-gamma)^2=3/4 > b_7^2=632/1225.
+For j tail levels, the paid coefficient after the fixed prefix is
+  K_2 [alpha_7/(1-gamma)
+       +(b_7-alpha_7/(1-gamma))*gamma^j].
+It increases to the infinite cache prefix. Thus no undisplayed finite
+tail aggregation branch exceeds C_infinity.
+
+In units pi/ln 2, the exact radical formulas are
+  C_0: sqrt(2000000/47319);
+  C_1: sqrt(32000000/1277613)+sqrt(384640/123201);
+  C_infinity: sqrt(32000000/1277613)+sqrt(51200/41067)
+              +sqrt(1600000/4358679).
+Their values are 29.466030256595..., 30.691337824286...,
+30.489728224034..., respectively. The second is the time maximum. The
+root bounds all local storage; depth-one and first tail storage coefficients
+are only 8.008377156826... and 2.277544247270....
+
+The independent checker verifies exact rational arguments and packing gaps,
+cross-checks the primary rigorous intervals by an 80-digit calculation, and
+unrolls 96 recurrence levels as an additional consistency check. The exact
+symbolic geometric-tail argument, not the finite unrolling, justifies all
+depths. Normal and -O outputs are byte-identical.
+
+6. Exact executable local kernel
+===============================
+candidate/local_kernel/affine_kernel.py implements actual regrouping and
+exact plan selection for explicit finite nine-factor graphs over Z/(2^p).
+Every plan recursively constructs each three-vertex line table from cached
+singletons and finishes with an exact scalar triangle sum. Opposite
+directed pair indices are combined into unordered-pair domains.
+
+run_checks.py verifies 24 deterministic fixtures. All 96 fixed-plan
+contractions and all 24 selected-plan contractions agree with independent
+brute-force summation over a total of 18029 complete edge assignments.
+Fixtures cover up to twelve active binary domains, nonbinary domain 3,
+asymmetry, all singleton domains, signed representatives, precisions from
+1 to 13, zero factors, and an empty domain. Seven negative controls check
+malformed inputs. Exact score products agree with a separately implemented
+dimension formula. Both ordinary and optimized runs pass with byte-identical
+JSON. These results check regrouping/planning correctness on finite inputs;
+they are not a SAT benchmark or a proof of the asymptotic fast backend.
+
+Output artifacts:
+  candidate/local_kernel/results.json
+  candidate/local_kernel/results_optimized.json
+  candidate/local_kernel/integration_checks.json
+  candidate/local_kernel/integration_checks_optimized.json
+All use explicit exception-based checks, active under Python -O.
+
+7. Claim boundaries and provenance
+=================================
+The current best submitted incoming cached bound is genuinely the old
+30.8910189... tree certificate, not an earlier 35.xx or 37.xx packet. All
+nine current incoming archives were inspected; see incoming_review.txt.
+
+The newly supplied Anthropic PR31 includes a public Lean formalization of
+a uniform exact-counting TM theorem and ETHIsFalse, with successful
+published build/comparator/nanoda evidence on the same source tree. This
+updates older corpus statements that the formalization was unavailable.
+It does not itself formally certify this new four-plan contraction result
+or supply a comparable explicit normalized-wire coefficient. See
+anthropic_review.txt for exact head, source tree, theorem, and CI details.
+
+The new affine-plane construction gives a clean finite geometry explanation
+for the improved nine-group support bound. The thirteen-group fourth plan
+is an explicit certified extension of the existing three-plan menu, not
+claimed to arise from the same affine plane or to be globally optimal.
+Neither claim establishes a literature-wide priority result. The report
+should retain low-degree specializations and polynomial-space algorithms
+as separate available branches, rather than claiming universal dominance.

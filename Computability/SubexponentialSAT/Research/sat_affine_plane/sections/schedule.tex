@@ -1,0 +1,307 @@
+\section{A fully paid recursion with the new certificates}
+\label{sec:schedule}
+
+The local affine-plane certificate becomes a global improvement only after
+the expensive evaluation of the cached group functions is included. We use the explicit $9\to13\to7$ schedule below to improve the
+second-stage bottleneck as well as the root. This section states all additional
+resource assumptions and checks the complete recurrence.
+
+\subsection{Normalized inherited interface}
+
+Let $s\ge2$, $\lambda=\lceil\log_2s\rceil$, and let the initial
+bipartite Boolean tensor network have at most $s$ wires and maximum degree
+at most $\lceil s^{9/10}\rceil$. Its entries lie in
+$(\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell)$ with $P_0,\ell\le s$.
+Let $\mathcal L$ be its description length. The permitted original entry
+procedures take $(s+\mathcal L)^{O(1)}2^{O(s^{9/10})}$ time and polynomial
+space, with fixed exponents and constants. The ring extension, canonical
+creation-time lifts, exact deformation, and Hermite recovery are the
+inherited normalized interface of the reviewed packets. Thus the result
+below is a proved refinement of that interface; it does not independently
+verify the upstream exact-counting algorithm.
+
+At an active call with $M$ wires, group count $r$, and taper length $u$,
+write
+\[
+ \mathcal K(M,u)=\kappa\frac{M}{\sqrt u},\qquad
+ \kappa=\frac{\pi\sqrt2}{\ln2}.
+\]
+The inherited full-Cauchy entropy estimate says that if $h_{gh}$ is the
+base-two logarithm of the exact list cardinality on directed group pair
+$(g,h)$, then for every fixed nonnegative weight vector $z$,
+\[
+ \sum_{g\ne h}z_{gh}h_{gh}
+ \le\left(\frac{\sqrt{\sum_{g\ne h}z_{gh}^2}}r+o(1)\right)
+       \mathcal K(M,u).
+\]
+Exact weight allocations have total below the polynomially bounded working
+precision. Because only the three fixed group counts $9,13,7$ occur, there
+are polynomially many such allocations. The local certificates from the
+preceding section apply uniformly to each allocation.
+
+There are $2(r-1)$ directed pairs incident to one group. Consequently the
+total number of singleton-table entries, including the sum over all groups,
+is at most
+\[
+ \operatorname{poly}(s)\,
+ 2^{(\alpha_r+o(1))\mathcal K(M,u)},\qquad
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+Every entry is computed by a recursive child contraction with at most
+$(2/r+o(1))M$ wires. Charging these calls separately from the local tree
+operations gives
+\begin{equation}
+ T_d\le \operatorname{poly}(s)
+ \left[2^{(\alpha_{r_d}+o(1))\mathcal K_d}T_{d+1}
+       +2^{(b_{r_d}+o(1))\mathcal K_d}\right],
+ \qquad \mathcal K_d=\mathcal K(M_d,u_d).
+ \label{eq:affine-paid-recurrence}
+\end{equation}
+The local coefficients used here are
+\[
+ b_9^2=\frac13,\qquad b_{13}^2=\frac{601}{1690},\qquad
+ b_7^2=\frac{632}{1225}.
+\]
+The first two come from the new four-plan certificates. The last is the
+fixed seven-group plan $(0,1,2)\mid(3,4)\mid(5,6)$: its integer operation
+supports have maximum squared norm $316$, so its directed normalized
+coefficient is $2\cdot316/(25\cdot7^2)$. The supplied checker verifies this
+bound directly.
+
+The matrix operations use the inherited exact integer-coordinate and CRT
+bridge for a fixed rational matrix multiplication algorithm with exponent
+strictly below $12/5$. Thus the proof pays for the arithmetic over the
+source ring rather than assuming that the ring is a field. No fast matrix
+multiplication backend or end-to-end contraction solver is implemented by
+the certificate programs.
+
+\subsection{An explicit strict rational schedule}
+
+Choose
+\begin{align*}
+ r_0&=9,& \eta_0&=\frac{15773}{1000000},\\
+ r_1&=13,&\eta_1&=\frac9{800},\\
+ r_d&=7\quad(d\ge2),&
+ \eta_d&=\frac{8597}{1800000}
+                   \left(\frac49\right)^{d-2}\quad(d\ge2).
+\end{align*}
+Put
+\[
+ u_d=\lfloor\eta_d\lambda\rfloor,\qquad
+ B=\lceil6\log_2\lambda\rceil,\qquad
+ a_d=\sum_{j=0}^d(u_j+B),\qquad
+ H=\left\lceil\frac{s}{\lambda^{3/4}}\right\rceil.
+\]
+Use the inherited near-unit padding with relative slack $\lambda^{-3}$.
+Calls with $M\le H$ are evaluated directly. For sufficiently large $s$
+every active $u_d$ is positive; a fixed exceptional initial range is handled
+by exhaustive contraction. The exact capacity sums are
+\[
+ \eta_0+\eta_1=\frac{27023}{1000000},\qquad
+ \sum_{d\ge0}\eta_d=\frac{1781}{50000}.
+\]
+
+The following integer inequalities give rational upper bounds for every
+logarithm needed in the packing proof:
+\[
+ 9^{100000}<2^{316993},\qquad
+ 13^{100000}<2^{370044},\qquad
+ 7^{100000}<2^{280736}.
+\]
+They are checked using exact arbitrary-precision integers. Their respective
+upper bounds for $\log_2 9$, $\log_2 13$, and $\log_2 7$ are
+$316993/100000$, $370044/100000$, and $280736/100000$.
+
+At the root both old sides have degree exponent $9/10$. At a later depth,
+one side has that same old-degree bound, whereas the fresh side has degree
+at most $2^{a_{d-1}+1}$. The asymmetric packing requirements are, up to
+polylogarithmic factors, $Q^2\Delta$ at the root and $QR$, $Q^2C$,
+$2^aQ^2$ later, with $Q=r^a$, retained degree $R\le s^{9/10+o(1)}$,
+and fresh degree $C\le2^{a_{d-1}+1}$. The dominant margins are
+\begin{center}
+\begin{tabular}{lll}
+\hline
+Stage & Upper bound on the leading exponent & Margin below one\\
+\hline
+Root & $\displaystyle \frac9{10}
+       +2\frac{15773}{1000000}\frac{316993}{100000}$
+     & $\displaystyle\frac{69411}{50000000000}$\\[5pt]
+Depth one & $\displaystyle \frac9{10}
+       +\frac{27023}{1000000}\frac{370044}{100000}$
+     & $\displaystyle\frac{75247}{25000000000}$\\[5pt]
+Tail & $\displaystyle \frac9{10}
+       +\frac{1781}{50000}\frac{280736}{100000}$
+     & $\displaystyle\frac{287}{156250000}$\\
+\hline
+\end{tabular}
+\end{center}
+Every margin is strictly positive. The secondary fresh-side and packet
+terms are controlled by
+\[
+ \frac{1781}{50000}
+       \left(2\frac{370044}{100000}+1\right)<1.
+\]
+The fresh packet degree exponent is at most $1781/50000+o(1)<9/10$.
+The smallest displayed power gaps are of order $10^{-6}$. They certify
+eventual asymptotic feasibility, with no useful practical-size threshold
+claimed here. This is one reason the coefficient comparison should not
+be interpreted as a benchmark prediction.
+
+\subsection{Uniformity, depth, and precision}
+
+We give a bootstrap rather than using a depth bound as an unproved premise
+of packing. Consider hypothetical active tail depths up to
+$3\log_3\lambda/4+O(1)$. On this range,
+\[
+ u_d\ge\lambda^{\epsilon+o(1)},\qquad
+ \epsilon=1-\frac{3\ln(9/4)}{4\ln3}>0.
+\]
+For example, positivity follows from $(9/4)^3<3^4$.
+The cumulative guard adds only $O((\log\lambda)^2)$ to $a_d$.
+The positive fixed margins above absorb this guard, all packing
+polylogarithms, and $s/M<\lambda^{3/4}$. Padding is therefore valid
+throughout the hypothetical range, with relative error
+$O(\lambda^{-3})+s^{-c+o(1)}$ for a fixed $c>0$. In the tail every
+child has at most $(2/7+o(1))M<M/3$ wires eventually. Hence an active
+tail cannot extend beyond the stated hypothetical range. This closes the
+bootstrap and proves the actual depth is $O(\log\lambda)$.
+
+All active taper lengths tend to infinity uniformly. Floors therefore
+change their leading terms by $o(1)$ relatively. The accumulated padding
+error over the path is $1+o(1)$, and consequently
+\begin{equation}
+ M_0\le s,\qquad
+ M_1\le(1+o(1))\frac{2s}{9},\qquad
+ M_d\le(1+o(1))\frac{4s}{117}
+                   \left(\frac27\right)^{d-2}\quad(d\ge2).
+ \label{eq:affine-wire-masses}
+\end{equation}
+
+For a retained valuation $i<u_d$, set $D=2^{a_d-i}$. Then
+$D\ge2^{a_{d-1}+B+1}$. The inherited input precision of the call is at
+most $O(s\lambda^2 2^{a_{d-1}})$. Relative to $MD/u_d$, it is bounded by
+\[
+ O\!\left(\lambda^{15/4}2^{-B}\right)=o(1).
+\]
+The ordinary Hermite evaluation loss is lower order as well. The inherited
+sharp precision bound $p_t\le(6+o(1))MD/u_d$, and hence the weighted
+entropy estimate, therefore hold uniformly over all active calls.
+All precisions retain polynomial bit length, since
+$a_d\le(1781/50000)\lambda+O((\log\lambda)^2)$.
+
+Direct leaf contraction costs $2^{O(s/\lambda^{3/4})}$ times the entry
+cost. Original entries cost $2^{O(s^{9/10})}$ times a fixed polynomial.
+Fresh packet entries cost
+$\exp(O(2^{a_d}\log s))=\exp(s^{1781/50000+o(1)})$.
+These terms are all $2^{o(s/\sqrt\lambda)}$. Their immutable
+creation-time descriptions are retained; later entry evaluation does not
+recursively expand earlier contraction routines. The ancestor cache costs
+multiplying the leaf work remain explicitly charged in
+\eqref{eq:affine-paid-recurrence}.
+
+\subsection{Exact evaluation of the recurrence}
+
+Define the leading coefficients of $\mathcal K_d$ on the common scale
+$s/\sqrt\lambda$ by
+\[
+ K_0^*=\frac{\kappa}{\sqrt{\eta_0}},\qquad
+ K_1^*=\frac{2\kappa}{9\sqrt{\eta_1}},\qquad
+ K_2^*=\frac{4\kappa}{117\sqrt{\eta_2}}.
+\]
+After depth two the ratio is
+\[
+ \gamma=\frac{2/7}{\sqrt{4/9}}=\frac37.
+\]
+Unrolling the paid recurrence gives the maximum of three quantities:
+\begin{align*}
+ C_0&=b_9K_0^*,\\
+ C_1&=\alpha_9K_0^*+b_{13}K_1^*,\\
+ C_\infty&=\alpha_9K_0^*+\alpha_{13}K_1^*
+              +K_2^*\max\left\{b_7,
+                                  \frac{\alpha_7}{1-\gamma}\right\}.
+\end{align*}
+Indeed, the finite tail aggregation branches have tail part
+\[
+ K_2^*\left(\alpha_7\frac{1-\gamma^j}{1-\gamma}
+                 +b_7\gamma^j\right),\qquad j\ge0,
+\]
+and the terminal leaf route is the limit. Here
+$\alpha_7/(1-\gamma)=\sqrt3/2>b_7$, so the limit controls every tail
+branch. This also pays for the route containing all recursive cache calls.
+
+Exact radical expressions for these three coefficients are
+\begin{align*}
+ C_0&=\frac\pi{\ln2}\sqrt{\frac{2000000}{47319}},\\
+ C_1&=\frac\pi{\ln2}\left(
+      \sqrt{\frac{32000000}{1277613}}
+       +\sqrt{\frac{384640}{123201}}\right),\\
+ C_\infty&=\frac\pi{\ln2}\left(
+      \sqrt{\frac{32000000}{1277613}}
+       +\sqrt{\frac{51200}{41067}}
+       +\sqrt{\frac{1600000}{4358679}}\right).
+\end{align*}
+The supplied exact-rational interval calculation gives
+\begin{center}
+\begin{tabular}{ll}
+\hline
+Branch & Coefficient\\
+\hline
+$C_0$ & $29.46603025659479065850\ldots$\\
+$C_1$ & $30.69133782428594886802\ldots$\\
+$C_\infty$ & $30.48972822403429948939\ldots$\\
+\hline
+\end{tabular}
+\end{center}
+In particular $C_1$ is the unique maximum of the three. The computation
+encloses $\pi$ by Machin's identity and alternating arctangent series,
+$\ln2$ by the positive series $2\operatorname{artanh}(1/3)$ with an explicit
+tail bound, and square roots by integer square-root enclosures.
+The interval endpoints are outward rounded; the table displays approximations.
+Floating-point approximations are not used in any acceptance check.
+
+For space, local tables are bounded by the chosen tree's local operation
+bound, including singleton caches. Ancestor tables stored on one recursive
+path add in size; their exponents do not add. Thus the space coefficient is
+\[
+ \max\{b_9K_0^*,\ b_{13}K_1^*,\ b_7K_2^*\}=C_0,
+\]
+since the latter two quantities are respectively
+$8.0083771568264\ldots$ and $2.2775442472698\ldots$.
+The fixed polynomial factors across $O(\log\lambda)$ levels contribute
+only $O(\lambda\log\lambda)=o(s/\sqrt\lambda)$ to the exponent.
+The dependence on the original description length remains one fixed
+polynomial, because branching is independent of $\mathcal L$.
+
+\begin{theorem}[New generic normalized certificate]
+Under the inherited normalized interface specified above, the affine-plane
+and four-plan construction contracts the root network deterministically in
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(30.69133782428594886802\ldots+o(1))s/\sqrt\lambda}
+\]
+time and
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(29.46603025659479065850\ldots+o(1))s/\sqrt\lambda}
+\]
+space. The eventual coefficients $30.692$ and $29.467$, respectively, are
+valid. The method uses subexponential space.
+\end{theorem}
+
+\begin{proof}
+The local selectors merely reassociate exact finite sums and products in
+the inherited mode-contraction identity. Every feasible exact-weight
+allocation is evaluated once. The strict packing, depth, precision, and
+entry-access checks above justify all inherited calls. The paid recurrence
+and local storage calculation give the asserted resources, including leaves
+and polynomial overhead.
+\end{proof}
+
+Compared with the reviewed generic cached certificate
+$30.891018920366\ldots$ in time and $30.753912832055\ldots$ in space,
+both leading coefficients decrease. This is a comparison of explicit upper
+bounds per normalized wire; it is neither a measured SAT speedup nor a
+coefficient per SAT variable. The logarithmic order
+$s/\sqrt{\log s}$, and consequently the inherited unrestricted SAT order,
+remain unchanged. No global optimality of the finite portfolios or schedule
+is claimed.

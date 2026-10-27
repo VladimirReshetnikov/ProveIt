@@ -1,0 +1,148 @@
+AFFINE-PLANE FOUR-PLAN SUPPORT BOUND: INDEPENDENT ANALYTIC PROOF
+
+Setup. Label nine groups by the points of the affine plane F_3^2. Its four
+directions give four parallel classes, each a partition into three lines of
+three points. A plan first contracts inside the three lines by any binary
+tree, then contracts the resulting triangle. Within a three-point line the
+two binary merges have tripartitions of sizes(1,1,7) and(1,2,6). The final
+triangle has tripartition(3,3,3). Internal ordering/singleton choice is
+arbitrary and may differ across lines or directions.
+
+For any operation tripartition(A,B,C), rectangular multiplication with
+exponent12/5 gives three linear forms in the unordered pair entropies.
+Multiply these forms by5. Each support vector v has coordinate0 on an edge
+internal to one part, coordinate2 on the chosen discounted cross-class,
+and coordinate5 on the other two cross-classes. Edges are unordered pairs
+of the nine points. Denote operation types by:
+  A: sizes(1,1,7), with the two singled points on one affine line;
+  B: sizes(1,2,6), with the first two parts forming one affine line;
+  C: the final three parallel affine lines.
+
+Claim1. Every such vector has squared norm at most486.
+
+For parts of sizes a,b,c, the cross-class sizes are ab,ac,bc. Discounting
+one cross-class replaces squared coefficient25 by4, a decrease21 per edge.
+Thus the largest squared norm is25(ab+ac+bc)-21 min(ab,ac,bc).
+The three type maxima are:
+  A:25(1+7+7)-21*1=354;
+  B:25(2+6+12)-21*2=458;
+  C:25(9+9+9)-21*9=486.
+
+Claim2. If v,w belong to plans of distinct directions, then v.w<=288.
+
+Here is a counting proof. Let S(v) be the set of coordinates on which v is
+nonzero, and D(v) the discounted subset on which v equals2. Put
+  c=|S(v) intersection S(w)|,
+  a=|D(v) intersection S(w)|,
+  b=|D(w) intersection S(v)|,
+  t=|D(v) intersection D(w)|.
+Then exactly
+  v.w=25c-15(a+b)+9t,       t<=min(a,b).
+The elementary function -15(a+b)+9 min(a,b) decreases when either a or b
+increases. We can therefore use lower bounds on a,b in the cases below.
+
+Two lines from distinct directions intersect in exactly one point. Each
+line contains one point from each line of the other parallel class.
+
+AA. An A support consists of every edge incident to a two-point subset
+P of one line. If the corresponding two-point subset Q of a transverse
+line is disjoint from P, the common edges are the four P-to-Q edges.
+If P,Q intersect at x, the common edges are the eight edges incident to x,
+plus the edge joining the two other selected points. Thus c<=9 and
+v.w<=25*9=225.
+
+AB. Ignore the one internal edge omitted from a B support; this can only
+increase the common-support count. Intersect the incident-edge sets of a
+two-point subset P of one line and a transverse three-point line L.
+If disjoint there are six common edges. If they meet at x there are eight
+x-edges and two edges from P\{x} to L\{x}. Thus c<=10 and v.w<=250.
+
+AC. Let P be the pair underlying the A support. Its endpoints are in
+different lines of the C parallel class. Each endpoint has six neighbors
+in other C lines, and their mutual edge is counted twice. Thus c=11 and
+v.w<=275.
+
+BB. Let L,M be the transverse lines underlying the two B operations,
+x=L intersection M, and let s in L, t in M be their singled vertices.
+The two full incident-line edge sets have12 common edges: eight x-edges
+and four edges from L\{x} to M\{x}. The omitted internal edge of L removes
+one common edge exactly when s!=x; the omitted internal edge of M removes
+one common edge exactly when t!=x. These removed edges are distinct.
+Therefore c=12-1_{s!=x}-1_{t!=x}. Unless s=t=x, c<=11 and v.w<=275.
+If s=t=x, c=12. For the L operation, its three possible discounted classes
+meet the common support in respectively2,6,4 edges: x-to-(L\{x}),
+x-to-complement(L), and(L\{x})-to-complement(L). The same holds for M.
+Hence a,b>=2 and
+  v.w<=300-15(2+2)+9*2=258<275.
+In all BB cases v.w<=275.
+
+BC. Let L be the line underlying the B operation. It meets each line of
+the C parallel class once. The C-crossing edges incident to L number15:
+three vertices each have six C-crossing neighbors, with the three internal
+L edges counted twice. The B support omits one of those three internal
+edges, giving c=14.
+The C discounted class joins two of its parallel lines. Before the one
+B omission, exactly five of its edges have an endpoint in L:3+3-1=5.
+Thus its intersection with the B support has at least4 edges.
+For B, its three discounted classes have respectively2,4,8 C-crossing
+edges: the two singleton-to-pair internal L edges; the four cross-line
+singleton-to-complement edges; or the eight pair-to-complement edges.
+Consequently a,b can be ordered so that a>=4,b>=2, and
+  v.w<=350-15(4+2)+9*2=278.
+
+CC. Each parallel class has nine internal edges, and the two internal-edge
+sets are disjoint, since two distinct points determine a unique direction.
+Therefore c=36-9-9=18. A discounted class has nine edges, of which exactly
+three lie within the lines of the other parallel class, one in each line.
+Hence a=b=6. Choose the two lines defining each discounted class. Their
+four intersections form a2-by-2 grid, and exactly its two diagonals cross
+both pairs of lines, so t=2. Therefore
+  v.w=25*18-15*(6+6)+9*2=288.
+This equality holds for every choice of discounted classes.
+
+The resulting valid pairwise upper-bound table is
+         A    B    C
+  A     225  250  275
+  B     250  275  278
+  C     275  278  288.
+The table is deliberately an analytic upper certificate; some entries are
+not the sharp finite maximum. In particular every cross-direction dot
+product is at most288.
+
+Claim3. For arbitrary supports v_1,...,v_4, one from each direction,
+  ||v_1+...+v_4||_2^2 <=4*486+2*6*288=5400.
+This follows by expanding the squared norm and using Claims1-2. Equality
+is attained whenever all four supports are final-triangle supports, since
+then every norm is486 and every pairwise dot product is288.
+
+Consequence for the inherited exact-pair entropy interface.
+Let g_{xy}=h_{xy}+h_{yx}, where h_{xy} is the logarithm of the exact mode
+list cardinality on directed pair(x,y). For each direction j let
+  F_j(g)=(1/5) max_{v in V_j} v.g.
+Choose the least-cost of the four plans. Then
+  min_j F_j(g) <=(1/20) max_{v_j in V_j}(sum_j v_j).g.
+For each fixed support tuple, assign both directed orientations the weight
+z_{xy}=(sum_j v_j)_{unordered{x,y}}/20. The squared directed norm is at
+most(2/400)*5400=27. The inherited weighted entropy inequality is
+  sum z_{xy} h_{xy} <=(||z||_2/9+o(1))*K(M,u),
+where K(M,u)=(pi*sqrt2/ln2) M/sqrt(u).
+Thus the selected plan's nonrecursive work and local storage have exponent
+at most
+  (1/sqrt3+o(1))*K(M,u).
+The finite family ensures uniformity of the lower-order term. Every cached
+singleton entry still requires a paid child contraction, with coefficient
+alpha_9=sqrt(2*(9-1))/9=4/9. Therefore the fully paid local recurrence is
+  T_d <=poly(s)[2^{(4/9+o(1))K_d} T_{d+1}
+                  +2^{(1/sqrt3+o(1))K_d}].
+Local table space is bounded by the selected operation cost exactly as in
+the imported table method. Ancestor table sizes add along a recursion path.
+
+Independent finite confirmation (supplementing, not replacing, the proof).
+For the specific four naturally ordered parallel-class plans generated in
+scratch_schedule/affine_trees.json, there are21 supports per plan and194481
+four-tuples. A separately reconstructed implementation found maximum5400,
+sum of all squared norms622974240, and81 maximizing tuples, exactly the
+3^4 choices of final-triangle discount classes. Enlarging each direction's
+menu to every internal pair/singleton choice gives57 supports per class;
+all cross-direction pairwise dot products remain at most288. The proof
+above already covers that enlarged family and arbitrary internal ordering.

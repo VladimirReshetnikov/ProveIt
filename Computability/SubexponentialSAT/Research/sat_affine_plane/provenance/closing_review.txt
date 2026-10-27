@@ -1,0 +1,40 @@
+CLOSING REVIEW - ProveIt recent commits
+
+Frozen review pin: 73dfb5e5ab6e91bd7375e5b97ef85d7e1cc8e81d
+Closing main: 7de9d09fecd17de776d712835ecb2011205c531d
+Closing root tree: 0d6f1de1b5a133878bbd901df80a720d7360ca3a
+
+The closing head has two commits after the review pin:
+a7ae5ab55f9627f5af7bf77443b3c34ef8ef1be4  2026-10-27T03:15:51Z  Places the nine reviewed round-4 archives and updates README/omission metadata.
+7de9d09fecd17de776d712835ecb2011205c531d  2026-10-27T03:20:40Z  Links the public Anthropic Lean development and describes the updated public paper.
+
+Result: No change to reviewed mathematical sources or the comparison frontier. The nine former incoming archives are now filed in Research; docs/incoming contains only README.md. All 443 placed members are byte-identical; 84 omitted duplicate snapshots are identified and verified, plus one checksum ledger.
+
+Of 565 pre-existing files under Computability/SubexponentialSAT, 563 are byte-identical. Only README.md and Research/OMITTED.tsv changed. No existing mathematical source was modified or deleted. The subtree now contains 1008 files.
+
+Current directory mappings (all beneath Computability/SubexponentialSAT/Research):
+3sat_round3_frontier_20261027.zip -> Computability/SubexponentialSAT/Research/3sat_round3_frontier; 89 placed files, 26 omitted members; zero changed/extra files.
+ETH_Adaptive_Exact_Kernels_2026-10-27.zip -> Computability/SubexponentialSAT/Research/eth_adaptive_exact_kernels; 93 placed files, 59 omitted members; zero changed/extra files.
+eth_adaptive_schedules_2026-10-26.zip -> Computability/SubexponentialSAT/Research/eth_adaptive_schedules; 39 placed files, 0 omitted members; zero changed/extra files.
+sat_adaptive_bounds_2026-10-26.zip -> Computability/SubexponentialSAT/Research/sat_adaptive_bounds; 30 placed files, 0 omitted members; zero changed/extra files.
+sat_adaptive_frontier_2026-10-26.zip -> Computability/SubexponentialSAT/Research/sat_adaptive_frontier; 39 placed files, 0 omitted members; zero changed/extra files.
+sat_adaptive_matrix_partition_2026-10-26.zip -> Computability/SubexponentialSAT/Research/sat_adaptive_matrix_partition; 35 placed files, 0 omitted members; zero changed/extra files.
+sat_adaptive_tree_certificate_2026-10-26.zip -> Computability/SubexponentialSAT/Research/sat_adaptive_tree_certificate; 43 placed files, 0 omitted members; zero changed/extra files.
+subexponential_sat_adaptive_four_2026-10-26.zip -> Computability/SubexponentialSAT/Research/subexponential_sat_adaptive_four; 35 placed files, 0 omitted members; zero changed/extra files.
+subsat_rectangular_2026-10-26.zip -> Computability/SubexponentialSAT/Research/subsat_rectangular; 40 placed files, 0 omitted members; zero changed/extra files.
+
+The 85 omissions consist of 26 evidence copies from 3sat_round3_frontier, 58 source snapshots from ETH_Adaptive_Exact_Kernels, and one SHA256SUMS ledger. All 84 duplicate copies match the exact target Git blobs and byte counts recorded in the current OMITTED.tsv. The full original archives remain the provenance of this review.
+
+README changes:
+- Adds the fourth-round table and recognizes 29 refinement packets.
+- Identifies 46.184845... as the smallest generic polynomial-space coefficient and 30.891018.../30.753913... as the smallest cached pair.
+- Replaces the outdated statement that the Anthropic Lean development is unpublished. It links PR31 and commit 1a6eee293b9e00cb432eef6018a21f523623a9af, the source already audited.
+- Notes the public paper.pdf (900337 bytes) differs from the older filed eth.pdf (868673 bytes).
+- Describes the linked Lake project, MainResults/Solution/comparator, intentional Challenge sorrys, and 1062 files / 1052 Lean files.
+- States that the formalization is linked, not vendored, and ProveIt itself does not build or check it.
+
+No new mathematical bound was introduced by these two commits. The new candidate coefficient comparison remains valid against the closing frontier. Reports should say the nine archives were incoming at the original pin and had been placed by the closing head. Present-tense claims that docs/incoming still contains them or that the Anthropic formalization remains unavailable are incorrect.
+
+Verification method: complete recursive Git subtree metadata (non-truncated), independently computed blob hashes of all 528 ZIP members, complete old/new subtree comparison, and exact omission target matches. No supplied script was run and no source redownload was necessary.
+
+Per-file proof and mapping: notes/closing_review.json.

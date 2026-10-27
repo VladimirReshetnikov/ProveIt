@@ -1,0 +1,67 @@
+\section{Further research questions and the next structural targets}
+\label{sec:research}
+
+The current result reduces a coefficient, while the request for a smaller
+order remains unresolved. The analysis gives sharper criteria for deciding
+which next steps could actually change that outcome.
+
+\paragraph{Actual image ranks of the crossing pieces.}
+The four-energy obstruction rejects thinning the graded space while keeping
+the same interfaces. It does not reject smaller factorizations through the
+\emph{actual images} of the operators, provided a different, uniformly
+proved factorization keeps the crossing identity intact. For a candidate
+family $A_i$ on $\lambda$-bit strings, the target is
+\[
+ \max_i\left(\log_2\operatorname{rank}_{\rm row}A_i+
+             \log_2\operatorname{rank}_{\rm col}A_i\right)
+ \le4\rho\lambda+O(\log\lambda),\qquad \rho<1/\sqrt2,
+\]
+with polynomially many pieces, explicit integer factorizations,
+polynomial-bit entries, and $2^{O(\lambda)}$ evaluation. An exact finite
+rank test can reject bad candidates but cannot certify an asymptotic family.
+The difficult new result would be a uniform cancellation or image-space
+theorem, not a new Hilbert series substituted into the old proof.
+
+\paragraph{More than two global regrouping directions.}
+The Anthropic recurrence squares the clique size when it places the nodes
+on a two-dimensional grid. A crossing identity compatible with three or
+more useful global regroupings might change that recurrence. It would need
+an explicit multi-direction identity, a balancing theorem, and counted
+local evaluation. The two-order Heisenberg identity does not automatically
+supply these. This is a structural research target, not a claimed algorithm.
+
+\paragraph{Avoid explicit enumeration of correlated indices.}
+Both the Cauchy mode sum and a hypothetical larger crossing-piece family
+would benefit from structured summation of their indices. Merely encoding
+an index by a short binary string does not give low-degree factors or a
+cheap entry oracle. A proposed replacement must exhibit the factorization,
+pay every coefficient query, retain creation precision, and prove a
+strictly decreasing measure. The nested-clique calculation above explains
+why composing the present two entropy estimates does not suffice.
+
+\paragraph{Exploit correlations beyond the Euclidean envelope.}
+The all-tree obstruction rules out improving the flag coefficient by
+arbitrary tree imbalance alone. Actual generated mode factors could still
+obey algebraic constraints absent from the relaxed entropy ball. A useful
+lemma would show that the extremal star-heavy entropy profile cannot
+arise together with costly child tensors, or would give an evaluator
+sensitive to both remaining precision and mode weight. Simply lowering
+requested precision leaves the inherited Hermite recovery increment and
+does not by itself remove the square-root scale.
+
+\paragraph{Improve certificates without confusing them with order gains.}
+The pair certificate is a low-order relaxation of a finite support-choice
+problem. Distributing the norm over triples or larger subsets, or choosing
+another rational allocation of diagonal terms among pairs, can give tighter
+certificates. The proof generalizes by counting how often each diagonal and
+cross term appears. Such work could further lower explicit constants and
+improve resource tradeoffs. As long as the mode entropy remains
+$M/\sqrt u$ with $u=\Theta(\log s)$, it will not change the logarithmic order.
+
+\paragraph{Formalize the small new lemmas first.}
+The norm-distribution identity, finite support generation, all-tree recurrence
+inequalities, and rank-window theorem are compact formalization targets.
+They can be verified separately from the large analytic contractor. A later
+end-to-end integration should then connect those lemmas to the exact ring,
+packing, and machine-cost interfaces rather than treating a successful
+finite checker as verification of the whole SAT algorithm.

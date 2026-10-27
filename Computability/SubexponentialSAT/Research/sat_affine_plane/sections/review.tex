@@ -1,0 +1,161 @@
+\section{Outcome, comparison, and scope}
+
+There is a concrete new algorithmic ingredient in this iteration: select
+contraction trees from parallel classes of a finite affine plane. This
+gives a uniform bound over every exact mode-budget allocation, including
+allocations concentrated on particular pairs. Its geometric overlap
+properties control the maximum over all table-building operations.
+
+The distinction between an improved exponential coefficient and a smaller
+exponent order is essential. Our normalized guarantee has the form
+\[
+ T(s,\mathcal L)\le (s+\mathcal L)^{O(1)}
+ 2^{(C_T+o(1))s/\sqrt{\log_2s}},\qquad
+ S(s,\mathcal L)\le (s+\mathcal L)^{O(1)}
+ 2^{(C_S+o(1))s/\sqrt{\log_2s}}.
+\]
+Here $s$ is a normalized Boolean-wire budget and $\mathcal L$ is the
+description length. Neither coefficient is a coefficient per SAT variable.
+The best polynomial-space branch remains available separately. This report
+does not assert a new polynomial-space coefficient.
+
+\begin{center}
+\begin{tabular}{p{8.0cm}rr}
+\toprule Generic normalized branch & Time coefficient & Space coefficient\\
+\midrule
+Best filed cached branch, before the nine arrivals &35.354588&34.274803\\
+Best incoming cached branch &30.891019&30.753913\\
+New certified cached branch &\NewTimeDisplay&\NewSpaceDisplay\\
+Best incoming polynomial-space branch &46.184846&polynomial\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first and second rows are the explicit certificates in
+\cite{tree,portfolio}. The last row is \cite{flags}. All use the generic
+maximum-degree promise $\ceil{s^{9/10}}$. Smaller numbers obtained under
+stronger degree promises do not compete on this same input class.
+An unspecified big-$O$ constant in another algorithm cannot be ranked against
+these displayed coefficients. Nor are the conditional $n/\log n$ targets
+proved algorithms that our result dominates.
+
+For the two explicit asymptotic upper-bound expressions being compared,
+reducing $C_T$ by a positive constant reduces their ratio by an exponential
+factor on the $s/\sqrt{\log s}$ scale. It does not prove that an older
+implementation actually requires its stated upper bound, and it is not a
+measured SAT speedup.
+
+\subsection{Frozen repository review}
+The initial review pin is \pin. At that pin, the two requested directories
+contained twenty filed packets and nine additional ZIPs. All nine ZIPs were retrieved at immutable
+Git identities, checked against their Git blob hashes and ZIP integrity, and
+extracted into separate directories. The report sources, status files, and
+relevant algorithms were inspected; imported verification scripts were not
+treated as proofs merely because their outputs were bundled.
+
+\begin{center}\small
+\begin{tabular}{p{3.1cm}p{10.8cm}}
+\toprule Commit & Relevant change\\\midrule
+\texttt{2b925d8800cd} & First seven refinement packets placed in the project.\\
+\texttt{3e096089911f} & OpenAI preprint vendored from the pinned upstream source.\\
+\texttt{45233238aebf} & First-round strongest-claims summary.\\
+\texttt{6d3adc450615} & Eight second-round packets placed.\\
+\texttt{450252e9d86c} & Five third-round packets placed; two omitted replay scripts restored.\\
+\texttt{b9941a7396e4} & Nine newer SAT packets added to \path{docs/incoming}.\\
+\texttt{73dfb5e5ab6e} & Reviewed repository head.\\
+\bottomrule
+\end{tabular}\end{center}
+These dates are October 26 in Pacific time, although their UTC dates include
+October 27. Immutable links and content hashes are supplied in the evidence
+manifest. Repository placement is distinct from mathematical verification:
+the ProveIt README explicitly treats the packets as externally supplied
+research \cite{repo}.
+
+\paragraph{Closing review of subsequent commits.}
+Before delivery, commit \texttt{a7ae5ab55f96}
+placed the same nine archives under \path{Research/}, and commit
+\texttt{7de9d09fecd1} updated the Anthropic
+formalization link. The latter is the closing repository head. All $443$
+files actually placed in the nine new directories were compared with the
+reviewed archive members by Git blob identity: none changed and no unexplained
+new file appeared. The placement omitted $85$ of the $528$ archive members:
+duplicate source/evidence copies and one checksum ledger. All $84$ omitted
+duplicate copies were also matched to their recorded target Git blobs.
+Of the $565$ pre-existing files, only the README and omission ledger changed;
+no existing mathematical source was changed or deleted. At the closing
+head all twenty-nine packets are filed, and \path{docs/incoming} contains
+only its README. The mathematical comparison is unchanged; the archive
+contains the complete old-to-current path map \cite{closing}.
+
+\subsection{Twenty filed packets}
+The following inventory identifies what must already be credited to the
+reviewed corpus. ``PS'' means polynomial space; ``cached'' allows
+subexponential space. Numerical entries are normalized-wire coefficients.
+
+\small
+\begin{longtable}{p{4.25cm}p{9.65cm}}
+\toprule Packet & Contribution or limiting qualification\\\midrule\endfirsthead
+\toprule Packet & Contribution or limiting qualification\\\midrule\endhead
+\bottomrule\endfoot
+\path{cauchy_mode_improvement} & Factorial Cauchy modes; weights $1+3q-2\pc(q)$; no order change.\\
+\path{eth_contraction_improvements} & Sharper Hermite precision, streamed coefficient extraction; PS $648.44$.\\
+\path{3sat_precision_refinement} & Leading precision $24MD/u\to6MD/u$; faster structured summation is conditional.\\
+\path{sat_density_improvement} & Uniform density-aware SAT exponent; a genuine gain at some intermediate densities.\\
+\path{eth_density_refinement} & Independent density refinement; local slope-four Smith valuations.\\
+\path{3sat_refinement} & Scalar parity lift and smaller incidence-degree cap; second contraction lacks a closed representation.\\
+\path{3sat_asymptotic_analysis} & Restricted barriers and explicit missing degree/compression interfaces.\\
+\path{eth_asymmetric_packet_balancing} & Nearly lossless asymmetric packing and thin precision gaps; PS $76.909$.\\
+\path{3sat_round2_refinement} & PS $84.066$; actual-domain gate and independent manuscript audits.\\
+\path{eth_balanced_packing} & Deterministic balanced labels; PS $94.748$.\\
+\path{eth_high_moment} & Independent $94.748$ certificate and low-degree variants.\\
+\path{eth_matching_refinement} & Matching-potential packing; a third $94.748$ derivation.\\
+\path{eth_packet_refinement} & Improved pair-load scale and padding; PS $95.664$.\\
+\path{eth_recursive_refinement} & Residue-class mode refinement; PS $133.207$.\\
+\path{eth_joint_cauchy} & Group-preserving full-block Cauchy modes; slope four; cached matrix option.\\
+\path{sat_adaptive_contraction} & Streamed separators, PS $55.709$; adaptive cached $36.750$; exact kernels.\\
+\path{sat_frontier_improvements} & Variable arity, PS $63.857$; cached $38.485$.\\
+\path{subexponential_sat_frontier} & PS $63.852$; cached $37.930$; exact labeling and precision-peeling kernels.\\
+\path{subexponential_sat_kernel_improvements} & Adaptive Smith, Gray, antipodal, and projective kernels; no smaller global order.\\
+\path{subsat_contraction_tree} & Binary-built cached tables and exact ring bridge to a fast matrix backend; $35.355$.\\
+\end{longtable}
+\normalsize
+
+\subsection{All nine incoming packets}
+The newer arrivals materially change the benchmark. In particular it would
+be incorrect to compare this iteration only against the filed $35.355$ or
+$55.709$ figures.
+\begin{center}\small
+\begin{tabular}{p{7.1cm}rrr}
+\toprule Archive stem & PS time & Cached time & Cached space\\\midrule
+\path{3sat_round3_frontier_20261027} &63.75736&37.93011&33.62304\\
+\path{ETH_Adaptive_Exact_Kernels_2026-10-27} &55.33162&35.07061&33.99950\\
+\path{eth_adaptive_schedules_2026-10-26} &63.78117&37.59170&33.62304\\
+\path{sat_adaptive_bounds_2026-10-26} &46.18485&34.32528&34.02418\\
+\path{sat_adaptive_frontier_2026-10-26} &50.30469&31.25240&31.25240\\
+\path{sat_adaptive_matrix_partition_2026-10-26} &50.21043&34.32528&34.02418\\
+\path{sat_adaptive_tree_certificate_2026-10-26} &---&30.89102&30.75391\\
+\path{subexponential_sat_adaptive_four_2026-10-26} &50.39373&32.91581&31.66171\\
+\path{subsat_rectangular_2026-10-26} &53.97753&33.99389&33.99372\\
+\bottomrule
+\end{tabular}\end{center}
+The adaptive-four packet also gives a slightly faster optional backend
+variant; it remains above the best incoming generic cached bound. Low-degree
+specializations are retained as separate branches. All nine incoming packets
+retain the general SAT logarithmic order. Several already analyze precision
+peeling, asymmetric Hermite multiplicities, conserved incidence degree, and
+full-table barriers. Those observations are not claimed as new here.
+
+\subsection{The SAT order that remains established}
+With the imported reductions, the strongest proved order in the reviewed
+corpus for fixed clause width is
+\begin{equation}\label{eq:density-envelope}
+ (n+m)^{O_k(1)}
+ 2^{O_k\!\left(\frac{n}{\sqrt{\log n}}
+ \min\{\log(2+m/n),\log\log n\}\right)}.
+\end{equation}
+The direct clause-count branch can also be retained when it is smaller.
+At fixed density this gives exponent $O_k(n/\sqrt{\log n})$;
+at $m=\Theta(n\log\log n)$ it gives
+$O_k(n\log\log\log n/\sqrt{\log n})$; in the unrestricted worst case
+it gives $O_k(n\log\log n/\sqrt{\log n})$ \cite{density,upstream}.
+The new contraction coefficient changes constants after applying these
+reductions. It does not replace the square-root logarithm by a logarithm.

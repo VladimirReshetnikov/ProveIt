@@ -1,0 +1,5143 @@
+{
+  "backend": "Literal finite rectangular matrix products; no fast matrix multiplication implementation",
+  "cases": [
+    {
+      "fixture": "all_unit_dimensions",
+      "groups": 4,
+      "literal_assignment_count": 1,
+      "literal_result": [
+        1,
+        46
+      ],
+      "nontrivial_directed_dimensions": [],
+      "plans": [
+        {
+          "binary_merges": 1,
+          "empty_allocation_skipped": false,
+          "expected_calls": 4,
+          "group_entry_calls": 4,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            1,
+            46
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "sparse_directed",
+      "groups": 4,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        32,
+        24
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 1,
+          "empty_allocation_skipped": false,
+          "expected_calls": 24,
+          "group_entry_calls": 24,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            8,
+            4,
+            4
+          ],
+          "plan": 0,
+          "result": [
+            32,
+            24
+          ],
+          "triangle_products": 12
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "orientation_ports",
+      "groups": 4,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        0,
+        60
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 1,
+          "empty_allocation_skipped": false,
+          "expected_calls": 25,
+          "group_entry_calls": 25,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            60
+          ],
+          "triangle_products": 5
+        }
+      ],
+      "variant": "mixed"
+    },
+    {
+      "fixture": "even_zero_divisor",
+      "groups": 4,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        40,
+        52
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 1,
+          "empty_allocation_skipped": false,
+          "expected_calls": 16,
+          "group_entry_calls": 16,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            4,
+            4,
+            4,
+            4
+          ],
+          "plan": 0,
+          "result": [
+            40,
+            52
+          ],
+          "triangle_products": 12
+        }
+      ],
+      "variant": "even"
+    },
+    {
+      "fixture": "one_nilpotent",
+      "groups": 4,
+      "literal_assignment_count": 8,
+      "literal_result": [
+        0,
+        40
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 1,
+          "empty_allocation_skipped": false,
+          "expected_calls": 15,
+          "group_entry_calls": 15,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 3
+        }
+      ],
+      "variant": "nilpotent"
+    },
+    {
+      "fixture": "nilpotent_annihilation",
+      "groups": 4,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 1,
+          "empty_allocation_skipped": false,
+          "expected_calls": 25,
+          "group_entry_calls": 25,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 5
+        }
+      ],
+      "variant": "double_nilpotent"
+    },
+    {
+      "fixture": "disconnected_pairs",
+      "groups": 4,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        8,
+        60
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          2,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 1,
+          "empty_allocation_skipped": false,
+          "expected_calls": 16,
+          "group_entry_calls": 16,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            4,
+            4,
+            4,
+            4
+          ],
+          "plan": 0,
+          "result": [
+            8,
+            60
+          ],
+          "triangle_products": 8
+        }
+      ],
+      "variant": "mixed"
+    },
+    {
+      "fixture": "counting_identity",
+      "groups": 4,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        32,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 1,
+          "empty_allocation_skipped": false,
+          "expected_calls": 24,
+          "group_entry_calls": 24,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            8,
+            4,
+            4
+          ],
+          "plan": 0,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 12
+        }
+      ],
+      "variant": "one"
+    },
+    {
+      "fixture": "empty_index_list",
+      "groups": 4,
+      "literal_assignment_count": 0,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "all_unit_dimensions",
+      "groups": 7,
+      "literal_assignment_count": 1,
+      "literal_result": [
+        25,
+        4
+      ],
+      "nontrivial_directed_dimensions": [],
+      "plans": [
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 7,
+          "group_entry_calls": 7,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            25,
+            4
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 7,
+          "group_entry_calls": 7,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            25,
+            4
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 7,
+          "group_entry_calls": 7,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            25,
+            4
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 7,
+          "group_entry_calls": 7,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            25,
+            4
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "sparse_directed",
+      "groups": 7,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 40
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 48
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 3
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "orientation_ports",
+      "groups": 7,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        40,
+        56
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 28,
+          "group_entry_calls": 28,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            40,
+            56
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 28,
+          "group_entry_calls": 28,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            40,
+            56
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 28,
+          "group_entry_calls": 28,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            40,
+            56
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 28,
+          "group_entry_calls": 28,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            40,
+            56
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "mixed"
+    },
+    {
+      "fixture": "even_zero_divisor",
+      "groups": 7,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        32,
+        32
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            32,
+            32
+          ],
+          "triangle_products": 40
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            32,
+            32
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            32,
+            32
+          ],
+          "triangle_products": 48
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            32,
+            32
+          ],
+          "triangle_products": 3
+        }
+      ],
+      "variant": "even"
+    },
+    {
+      "fixture": "one_nilpotent",
+      "groups": 7,
+      "literal_assignment_count": 8,
+      "literal_result": [
+        0,
+        40
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 18,
+          "group_entry_calls": 18,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 10
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 18,
+          "group_entry_calls": 18,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 10
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 18,
+          "group_entry_calls": 18,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 10
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 18,
+          "group_entry_calls": 18,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "nilpotent"
+    },
+    {
+      "fixture": "nilpotent_annihilation",
+      "groups": 7,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 28,
+          "group_entry_calls": 28,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 28,
+          "group_entry_calls": 28,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 28,
+          "group_entry_calls": 28,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 28,
+          "group_entry_calls": 28,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "double_nilpotent"
+    },
+    {
+      "fixture": "disconnected_pairs",
+      "groups": 7,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        60,
+        12
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          5,
+          6,
+          2
+        ],
+        [
+          6,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 19,
+          "group_entry_calls": 19,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 0,
+          "result": [
+            60,
+            12
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 19,
+          "group_entry_calls": 19,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 1,
+          "result": [
+            60,
+            12
+          ],
+          "triangle_products": 5
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 19,
+          "group_entry_calls": 19,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 2,
+          "result": [
+            60,
+            12
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 19,
+          "group_entry_calls": 19,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 3,
+          "result": [
+            60,
+            12
+          ],
+          "triangle_products": 8
+        }
+      ],
+      "variant": "mixed"
+    },
+    {
+      "fixture": "counting_identity",
+      "groups": 7,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        32,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 40
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 48
+        },
+        {
+          "binary_merges": 4,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 3
+        }
+      ],
+      "variant": "one"
+    },
+    {
+      "fixture": "empty_index_list",
+      "groups": 7,
+      "literal_assignment_count": 0,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "all_unit_dimensions",
+      "groups": 8,
+      "literal_assignment_count": 1,
+      "literal_result": [
+        1,
+        44
+      ],
+      "nontrivial_directed_dimensions": [],
+      "plans": [
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 8,
+          "group_entry_calls": 8,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            1,
+            44
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 8,
+          "group_entry_calls": 8,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            1,
+            44
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 8,
+          "group_entry_calls": 8,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            1,
+            44
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 8,
+          "group_entry_calls": 8,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            1,
+            44
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "sparse_directed",
+      "groups": 8,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 40
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 48
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 3
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "orientation_ports",
+      "groups": 8,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        32,
+        44
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 29,
+          "group_entry_calls": 29,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            32,
+            44
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 29,
+          "group_entry_calls": 29,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            32,
+            44
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 29,
+          "group_entry_calls": 29,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            32,
+            44
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 29,
+          "group_entry_calls": 29,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            32,
+            44
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "mixed"
+    },
+    {
+      "fixture": "even_zero_divisor",
+      "groups": 8,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        32,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 40
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 48
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 3
+        }
+      ],
+      "variant": "even"
+    },
+    {
+      "fixture": "one_nilpotent",
+      "groups": 8,
+      "literal_assignment_count": 8,
+      "literal_result": [
+        0,
+        40
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 19,
+          "group_entry_calls": 19,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 10
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 19,
+          "group_entry_calls": 19,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 10
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 19,
+          "group_entry_calls": 19,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 10
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 19,
+          "group_entry_calls": 19,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "nilpotent"
+    },
+    {
+      "fixture": "nilpotent_annihilation",
+      "groups": 8,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 29,
+          "group_entry_calls": 29,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 29,
+          "group_entry_calls": 29,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 29,
+          "group_entry_calls": 29,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 29,
+          "group_entry_calls": 29,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "double_nilpotent"
+    },
+    {
+      "fixture": "disconnected_pairs",
+      "groups": 8,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        56,
+        12
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          6,
+          7,
+          2
+        ],
+        [
+          7,
+          6,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 20,
+          "group_entry_calls": 20,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 0,
+          "result": [
+            56,
+            12
+          ],
+          "triangle_products": 17
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 20,
+          "group_entry_calls": 20,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 1,
+          "result": [
+            56,
+            12
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 20,
+          "group_entry_calls": 20,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 2,
+          "result": [
+            56,
+            12
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 20,
+          "group_entry_calls": 20,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 3,
+          "result": [
+            56,
+            12
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "mixed"
+    },
+    {
+      "fixture": "counting_identity",
+      "groups": 8,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        32,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 40
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 48
+        },
+        {
+          "binary_merges": 5,
+          "empty_allocation_skipped": false,
+          "expected_calls": 22,
+          "group_entry_calls": 22,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 3
+        }
+      ],
+      "variant": "one"
+    },
+    {
+      "fixture": "empty_index_list",
+      "groups": 8,
+      "literal_assignment_count": 0,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "all_unit_dimensions",
+      "groups": 9,
+      "literal_assignment_count": 1,
+      "literal_result": [
+        43,
+        61
+      ],
+      "nontrivial_directed_dimensions": [],
+      "plans": [
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 9,
+          "group_entry_calls": 9,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            43,
+            61
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 9,
+          "group_entry_calls": 9,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            43,
+            61
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 9,
+          "group_entry_calls": 9,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            43,
+            61
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 9,
+          "group_entry_calls": 9,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            43,
+            61
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "sparse_directed",
+      "groups": 9,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 40
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 48
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 3
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "orientation_ports",
+      "groups": 9,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        40,
+        56
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 30,
+          "group_entry_calls": 30,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            40,
+            56
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 30,
+          "group_entry_calls": 30,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            40,
+            56
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 30,
+          "group_entry_calls": 30,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            40,
+            56
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 30,
+          "group_entry_calls": 30,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            40,
+            56
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "mixed"
+    },
+    {
+      "fixture": "even_zero_divisor",
+      "groups": 9,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        32,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 40
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 48
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 3
+        }
+      ],
+      "variant": "even"
+    },
+    {
+      "fixture": "one_nilpotent",
+      "groups": 9,
+      "literal_assignment_count": 8,
+      "literal_result": [
+        0,
+        24
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 20,
+          "group_entry_calls": 20,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            24
+          ],
+          "triangle_products": 10
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 20,
+          "group_entry_calls": 20,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            24
+          ],
+          "triangle_products": 10
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 20,
+          "group_entry_calls": 20,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            24
+          ],
+          "triangle_products": 10
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 20,
+          "group_entry_calls": 20,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            24
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "nilpotent"
+    },
+    {
+      "fixture": "nilpotent_annihilation",
+      "groups": 9,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 30,
+          "group_entry_calls": 30,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 30,
+          "group_entry_calls": 30,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 30,
+          "group_entry_calls": 30,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 30,
+          "group_entry_calls": 30,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "double_nilpotent"
+    },
+    {
+      "fixture": "disconnected_pairs",
+      "groups": 9,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        12,
+        24
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          7,
+          8,
+          2
+        ],
+        [
+          8,
+          7,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 0,
+          "result": [
+            12,
+            24
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 1,
+          "result": [
+            12,
+            24
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 2,
+          "result": [
+            12,
+            24
+          ],
+          "triangle_products": 17
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 21,
+          "group_entry_calls": 21,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 3,
+          "result": [
+            12,
+            24
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "mixed"
+    },
+    {
+      "fixture": "counting_identity",
+      "groups": 9,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        32,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 40
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 48
+        },
+        {
+          "binary_merges": 6,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 3
+        }
+      ],
+      "variant": "one"
+    },
+    {
+      "fixture": "empty_index_list",
+      "groups": 9,
+      "literal_assignment_count": 0,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "all_unit_dimensions",
+      "groups": 12,
+      "literal_assignment_count": 1,
+      "literal_result": [
+        1,
+        58
+      ],
+      "nontrivial_directed_dimensions": [],
+      "plans": [
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 12,
+          "group_entry_calls": 12,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            1,
+            58
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 12,
+          "group_entry_calls": 12,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            1,
+            58
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 12,
+          "group_entry_calls": 12,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            1,
+            58
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 12,
+          "group_entry_calls": 12,
+          "maximum_table_entries": 1,
+          "per_group_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            1,
+            58
+          ],
+          "triangle_products": 2
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "sparse_directed",
+      "groups": 12,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 3
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 24
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 48
+        }
+      ],
+      "variant": "generic"
+    },
+    {
+      "fixture": "orientation_ports",
+      "groups": 12,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        0,
+        28
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 33,
+          "group_entry_calls": 33,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            28
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 33,
+          "group_entry_calls": 33,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            28
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 33,
+          "group_entry_calls": 33,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            28
+          ],
+          "triangle_products": 32
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 33,
+          "group_entry_calls": 33,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            28
+          ],
+          "triangle_products": 20
+        }
+      ],
+      "variant": "mixed"
+    },
+    {
+      "fixture": "even_zero_divisor",
+      "groups": 12,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        32,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 3
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 24
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 48
+        }
+      ],
+      "variant": "even"
+    },
+    {
+      "fixture": "one_nilpotent",
+      "groups": 12,
+      "literal_assignment_count": 8,
+      "literal_result": [
+        0,
+        40
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 10
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 16
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 23,
+          "group_entry_calls": 23,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            8,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            40
+          ],
+          "triangle_products": 10
+        }
+      ],
+      "variant": "nilpotent"
+    },
+    {
+      "fixture": "nilpotent_annihilation",
+      "groups": 12,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          2,
+          0,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 33,
+          "group_entry_calls": 33,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 33,
+          "group_entry_calls": 33,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 33,
+          "group_entry_calls": 33,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 32
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 33,
+          "group_entry_calls": 33,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            16,
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 20
+        }
+      ],
+      "variant": "double_nilpotent"
+    },
+    {
+      "fixture": "disconnected_pairs",
+      "groups": 12,
+      "literal_assignment_count": 16,
+      "literal_result": [
+        40,
+        28
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          10,
+          11,
+          2
+        ],
+        [
+          11,
+          10,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 24,
+          "group_entry_calls": 24,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 0,
+          "result": [
+            40,
+            28
+          ],
+          "triangle_products": 2
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 24,
+          "group_entry_calls": 24,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 1,
+          "result": [
+            40,
+            28
+          ],
+          "triangle_products": 5
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 24,
+          "group_entry_calls": 24,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 2,
+          "result": [
+            40,
+            28
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 24,
+          "group_entry_calls": 24,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            4,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            4,
+            4
+          ],
+          "plan": 3,
+          "result": [
+            40,
+            28
+          ],
+          "triangle_products": 5
+        }
+      ],
+      "variant": "mixed"
+    },
+    {
+      "fixture": "counting_identity",
+      "groups": 12,
+      "literal_assignment_count": 32,
+      "literal_result": [
+        32,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 4,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 0,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 3
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 8,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 1,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 24
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 2,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 20
+        },
+        {
+          "binary_merges": 9,
+          "empty_allocation_skipped": false,
+          "expected_calls": 26,
+          "group_entry_calls": 26,
+          "maximum_table_entries": 16,
+          "per_group_calls": [
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "plan": 3,
+          "result": [
+            32,
+            0
+          ],
+          "triangle_products": 48
+        }
+      ],
+      "variant": "one"
+    },
+    {
+      "fixture": "empty_index_list",
+      "groups": 12,
+      "literal_assignment_count": 0,
+      "literal_result": [
+        0,
+        0
+      ],
+      "nontrivial_directed_dimensions": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          2
+        ],
+        [
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          5,
+          2
+        ]
+      ],
+      "plans": [
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 0,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 1,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 2,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        },
+        {
+          "binary_merges": 0,
+          "empty_allocation_skipped": true,
+          "expected_calls": 0,
+          "group_entry_calls": 0,
+          "maximum_table_entries": 0,
+          "per_group_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "plan": 3,
+          "result": [
+            0,
+            0
+          ],
+          "triangle_products": 0
+        }
+      ],
+      "variant": "generic"
+    }
+  ],
+  "empty_list_rule": "Any zero dimension skips the entire allocation before all group-entry calls",
+  "fixtures": 45,
+  "group_counts": [
+    4,
+    7,
+    8,
+    9,
+    12
+  ],
+  "literal_assignments_checked": 749,
+  "negative_dimension_control": "REJECTED",
+  "oracle": "Direct coefficient formula for product of degree-one factors; no shared multiplication routine",
+  "paid_group_entry_calls": 3013,
+  "planned_contractions_checked": 153,
+  "ring": "(Z/64Z)[V]/(V^2)",
+  "status": "PASS"
+}

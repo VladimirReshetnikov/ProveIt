@@ -1,0 +1,48 @@
+SUGGESTED INTEGRATION
+
+Destination:
+Computability/SubexponentialSAT/Research/sat_pairwise_certificates/
+
+Suggested project-index entry:
+
+sat_pairwise_certificates -- Weighted norm-coupled pair-support certificates
+for adaptive contraction plans. Nine ten-group plans, a rectangular backend,
+and a fully charged 10 -> 13 -> 7 schedule give cached time/space coefficient
+29.811609/29.811609 (eventual safe pair 29.812/29.812), improving the previous
+30.891019/30.753913 pair. A separate 32 -> 16 -> 8 -> 4 schedule gives
+polynomial-space coefficient 16.812234 at maximum initial degree <= s^(1/12)
+(eventual safe 16.813), from 23.666169. Extends the streamed flag obstruction
+to all binary separator trees and proves a graded-window crossing rank
+obstruction, including the sufficient-precision modular case. Same worst-case
+SAT logarithmic exponent order. Exact standalone checkers pass normally and
+under -O. Complete contraction consequences import the stated upstream
+mathematical interface; not formalized in Lean, and not a full SAT solver.
+
+Keep the generic polynomial-space branch with coefficient 46.184846 and all
+older low-degree cached branches in the algorithmic envelope. The new cached
+result is not polynomial space; the new streamed result has a stronger degree
+premise. None of the numbers is a universal coefficient per SAT variable.
+
+PUBLIC FORMALIZATION STATUS
+
+The closing ProveIt commit 7de9d09fecd17de776d712835ecb2011205c531d already
+links anthropics/formal-math PR #31 and notes the distinct paper revisions.
+No additional correction of its publication status is needed. Preserve the
+new link, and keep the distinction between inspecting those public sources
+and independently executing the complete Lean verification.
+
+This packet was prepared for review. No GitHub content, branch, PR, issue,
+or message was created or modified during this research.
+
+FORMALIZATION ORDER
+
+1. The weighted norm-distribution identity and pair-menu certificate.
+2. The integer support generator and exact fixed-data evaluations.
+3. The arbitrary-tree recurrences and their two induction inequalities.
+4. The finite rank-window theorem and sufficient-precision modular lemma.
+5. The compatible schedule, charged recurrence, and resource accounting.
+
+The first four are small mathematical components that can be formalized
+without treating successful Python execution as a proof of the entire SAT
+algorithm. End-to-end integration must connect to the actual imported
+contraction lemmas and machine-cost model.

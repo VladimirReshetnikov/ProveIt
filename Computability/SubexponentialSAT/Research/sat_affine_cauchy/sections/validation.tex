@@ -1,0 +1,114 @@
+\section{Validation, reproducibility, and exact scope}
+\label{sec:validation}
+
+\subsection{What was checked}
+The finite correlation certificates and the rational schedule are replayable
+with the Python standard library. The main checker exhausts every support
+pair: 7,056 dot products for the four affine plans and 184,041 for the
+thirteen cyclic plans. The six-group tail is checked as well. Integer power
+comparisons certify the logarithm bounds; rational interval arithmetic
+certifies the displayed constants and strict dominance of the depth-one
+time branch. In particular the final intervals are
+\[
+ \begin{aligned}
+ C_T&\in[30.413348726348439,30.413348726348440],\\
+ C_S&\in[29.466030256594790,29.466030256594791].
+ \end{aligned}
+\]
+An independently written checker reconstructs the plans and their supports
+using bit sets, recomputes the integer certificates and rational packing
+gates, and directly unrolls 93 levels of the paid recurrence as a numerical
+cross-check. It does not import the primary checker. The finite unrolling
+is supplemental: the proof handles the infinite geometric tail exactly.
+
+The regrouping test uses 12 deterministic fixtures with at most 12 active
+binary directed indices. It compares literal enumeration of global
+assignments with separately implemented singleton caches, balanced binary
+merges and the final three-block sum over
+$(\mathbb Z/64\mathbb Z)[V]/(V^2)$. All 72 plan contractions agree.
+The fixtures cover both orientations, spanning paths, disconnected
+components, isolated scalar factors and zero factors. The nine fixtures
+without a zero factor all have nonzero outputs. The checker also counts
+every singleton entry call, verifies the count $\sum_v2^{\deg(v)}$,
+and checks that the exact fifth-power selector minimizes the independently
+reconstructed operation costs. This is a finite check of regrouping and
+resource accounting, not an implementation of fast matrix multiplication.
+
+For the local transform, 246 cases compare with independently formed
+exact rational feature matrices, covering 10,160 entries; 27 larger cases
+compare with the quadratic valuation-aware recurrence; and 96 odd-node
+cases check the convolution specialization. Both signs, truncated mode
+lists, missing ports, precision one, and the adjoint identity are covered.
+The denominator guard bounds are checked in these cases. These finite
+tests support the implementation; the product-tree and precision arguments
+in Section~\ref{sec:transforms} establish the general identities.
+
+All deterministic checks pass in normal Python and in \texttt{python -O},
+with identical parsed output. Validation uses explicit exceptions rather
+than depending on assertions that optimization could remove. The archived
+results include both modes and a summary of the comparison.
+
+\subsection{Matched local measurements}
+The following scalar transpose measurements include preparation,
+denominator inversions, increased working precision, and output recovery.
+Every measured output was checked against the quadratic implementation.
+Each number is the median of three runs at $p=4N$ and odd interpolation
+valuation. The code uses CPython integers and Kronecker substitution;
+these are small local measurements, not an end-to-end SAT benchmark.
+\begin{center}\small
+\begin{tabular}{r r r r r}
+\toprule
+$N$ & Quadratic (s) & One convolution (s) & Ratio & General tree (s)\\
+\midrule
+32 & 0.000407 & 0.000174 & $2.34\times$ & 0.002486\\
+64 & 0.001923 & 0.000853 & $2.25\times$ & 0.011521\\
+128 & 0.013941 & 0.007689 & $1.81\times$ & 0.091038\\
+256 & 0.168149 & 0.057822 & $2.91\times$ & 0.656261\\
+512 & 1.706872 & 0.418585 & $4.08\times$ & 6.034264\\
+\bottomrule
+\end{tabular}
+\end{center}
+The general product-tree prototype is slower at all these sizes. Its
+asymptotic coefficient-operation bound remains useful, but these data
+do not establish a practical crossover. The observed speedup belongs to
+the odd-node specialization. The reference environment was Python 3.12.14
+on Linux 6.18.55, x86\_64, glibc 2.39. Raw samples and environment metadata
+are included so the measurements are not mistaken for portable constants.
+
+\subsection{Proof status and limitations}
+The newly proved parts are the correlation-certificate inequality, the
+explicit affine and cyclic menus, their integration into a fully charged
+four-stage recurrence, the precision-safe rational transforms and odd-node
+convolution, and the restricted sparse-current obstruction. The result
+uses the established interfaces of the inspected manuscripts: exact
+Hermite extraction, normalized mode factorization, balanced packing,
+entry semantics, SAT reduction, and the rational matrix multiplication
+backend. Those dependencies are stated in Section~\ref{sec:interface};
+this report is not an independent verification of every upstream claim.
+
+The new contraction algorithm permits subexponential space. It does not
+improve the strongest polynomial-space bound, prove a smaller logarithmic
+order for unrestricted SAT, provide a finite-size crossover threshold,
+or contain an end-to-end SAT implementation. Neither this new proof nor
+its upstream dependencies were formalized or replayed in Lean here. The
+source review of the supplied Anthropic revision does not change that
+statement. The conditional graded-algebra proposition requires a new
+construction meeting all of its hypotheses.
+
+\subsection{Reproducing the archive}
+From the extracted directory, run:
+\begin{lstlisting}
+python3 code/check_manifest.py
+python3 code/run_checks.py
+python3 code/build_report.py
+\end{lstlisting}
+The first command checks the delivered file hashes. The second replays
+the finite certificates, independent audits, regrouping and kernel tests
+in both Python modes. It requires only Python 3.10 or later. PDF rebuilding
+requires pdfLaTeX and the packages named in \path{report.tex}; the supplied
+figure is already present. To regenerate it, install Matplotlib and run
+\path{code/make_figures.py}. Optional fresh timings use
+\texttt{python3 code/fast\_cauchy\_transform.py --benchmark}; they need not
+match the archived timings. The exact proof obligations, imported
+dependencies and unproved targets are also recorded in
+\path{PROOF_STATUS.json}.

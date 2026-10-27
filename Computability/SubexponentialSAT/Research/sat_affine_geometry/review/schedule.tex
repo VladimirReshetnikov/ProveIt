@@ -1,0 +1,255 @@
+% Standalone section fragment. Requires amsmath, amssymb, amsthm, booktabs.
+\section{A fully paid rational recursion with five group counts}
+\label{sec:schedule}
+
+This section assumes the reviewed normalized contraction interface, rather
+than claiming an independent proof of the upstream SAT reduction. Let $s$
+be the root wire count, $\mathcal L$ the input-description length, and
+$\lambda=\lceil\log_2s\rceil$. The root maximum degree is at most
+$\lceil s^{9/10}\rceil$; initial precision and truncation order are at most
+$s$. The imported entry-evaluation, creation-precision, padding, exact
+Cauchy-mode factorization, and Hermite recovery contracts are unchanged.
+
+For the group counts used below, the certified local aggregation coefficients
+are
+\[
+ b_9^2=\frac13,\quad b_{12}^2=\frac{137}{400},\quad
+ b_8^2=\frac{279}{800},\quad b_7^2=\frac{891}{2450},\quad
+ b_4^2=\frac{13}{25}.
+\]
+The first is the four-direction affine-plane certificate. The next is the
+fixed four-plan twelve-group certificate; the eight- and seven-group
+certificates are punctured affine portfolios. The final coefficient uses
+one tree with final blocks $(0,1)\mid(2)\mid(3)$: its largest squared
+undirected support norm is $104$, hence $b_4^2=2(104)/(25\cdot4^2)$.
+Each coefficient simultaneously bounds local aggregation work and local
+storage, including the singleton factor tables. No matrix algorithm beyond
+the already imported $\omega<12/5$ bridge is needed.
+
+\subsection{All recursive factor calls are charged}
+
+Put
+\[
+ \kappa=\frac{\pi\sqrt2}{\ln2},\qquad
+ K_d=\kappa\frac{M_d}{\sqrt{u_d}},\qquad
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+Each singleton factor is incident with $2(r-1)$ directed pair indices.
+Applying the inherited weighted pair-entropy inequality to this indicator
+vector bounds its number of entries by
+$2^{(\alpha_r+o(1))K_d}$. Every entry invokes the actual child contraction.
+Enumerating all exact pair-budget arrays has only polynomial cost because
+$r\le12$ is fixed and all budgets are polynomial in $s$. Consequently the
+fully paid time recurrence is
+\begin{equation}\label{eq:new-paid-recurrence}
+ T_d\le\operatorname{poly}(s)
+ \left(2^{(\alpha_{r_d}+o(1))K_d}T_{d+1}
+       +2^{(b_{r_d}+o(1))K_d}\right).
+\end{equation}
+The local storage bound is a polynomial factor times
+$2^{(b_{r_d}+o(1))K_d}$. Uniform input access contributes one fixed
+polynomial factor in $s+\mathcal L$ to the full algorithm: count arithmetic
+and entry requests first, and then charge their uniform description-access
+cost. It is not necessary to multiply an input-description polynomial anew
+at each recursion level.
+
+\subsection{The strict rational schedule}
+
+Use the group sequence
+\[
+ (r_0,r_1,r_2,r_3,r_4,r_5,\ldots)=(9,12,8,7,4,4,\ldots)
+\]
+and taper fractions
+\begin{align*}
+ \eta_0&=\frac{63}{4000},&
+ \eta_1&=\frac{97}{8000},&
+ \eta_2&=\frac{21}{4000},&
+ \eta_3&=\frac{31}{12500},\\
+ \eta_d&=\frac{106449}{20000000}
+             \left(\frac{63}{100}\right)^{d-4}\quad(d\ge4).
+\end{align*}
+Let
+\[
+ u_d=\lfloor\eta_d\lambda\rfloor,\qquad
+ B=\lceil6\log_2\lambda\rceil,\qquad
+ a_d=\sum_{j=0}^d u_j+(d+1)B,
+ \quad L_d=2^{a_d},\quad Q_d=r_d^{a_d}.
+\]
+The tail fractions sum to $2877/200000$, and
+\begin{equation}\label{eq:new-total-retention}
+ \sum_{d\ge0}\eta_d=\frac{4999}{100000}<\frac1{20}.
+\end{equation}
+Use direct contraction when $M\le H=\lceil s/\lambda^{3/4}\rceil$.
+A finite exceptional range in $s$ can also be handled directly. Choose
+padding slack $\lambda^{-3}$, as allowed by the unchanged packing interface.
+
+\subsection{Packing gates and the depth bootstrap}
+
+At the root, a sufficient gate is $Q_0^2\Delta/M=o(1)$, up to fixed
+polylogarithmic factors. Below the root the sufficient gates are
+\[
+ Q_dR/M=o(1),\qquad
+ Q_d^2C\operatorname{polylog}(s)/M=o(1),\qquad
+ L_dQ_d^2/M=o(1),
+\]
+where $R\le\Delta\le s^{9/10+o(1)}$ and
+$C\le2L_{d-1}$. The latter bound is the imported retained-side/fresh-side
+invariant, not an assumption that all descendants have bounded degree.
+
+The exact integer inequalities
+\[
+ 9^{100}<2^{317},\quad 12^{200}<2^{717},\quad
+ 7^{5000}<2^{14037}
+\]
+give the required rational logarithm upper bounds. Using them, the gaps
+below exponent one in the dominant gates are
+\[
+\begin{array}{c|ccccc}
+ \text{stage}&0&1&2&3&d\ge4\\ \hline
+ \text{gap}&29/200000&109/1600000&1/1600&
+ 42523/1000000000&1/50000.
+\end{array}
+\]
+The root row uses $2\eta_0\log_2 9+9/10$; the other rows use the cumulative
+retained fraction times $\log_2r_d$, plus $9/10$.
+For the fresh-side and packet gates it suffices uniformly to use
+\[
+ \left(1+2\cdot\frac{717}{200}\right)
+       \frac{4999}{100000}
+ =\frac{4084183}{10000000}<1.
+\]
+The old packet side contributes no larger exponent than the total retained
+fraction. Every fresh degree is at most $s^{4999/100000+o(1)}$, so it remains
+below $\Delta$.
+
+Here is a noncircular depth argument. Consider hypothetical active depths
+up to $\lceil(3/4)\log_{20/11}\lambda\rceil+O(1)$ and suppose $M>H$.
+Because the tail ratio $63/100$ exceeds $11/20$, its taper is at least
+a fixed positive constant times $\lambda^{1/4}$ throughout this range.
+The guard contributes $O((\log\lambda)^2)$ to every $a_d$. The strictly
+positive gaps above absorb these guards, all packing polylogarithms, and
+$s/M\le\lambda^{3/4}$ uniformly. Thus padding has relative error
+$O(\lambda^{-3})+s^{-c+o(1)}$ for some fixed $c>0$. Every child has size
+$(2/r_d+o(1))M\le(11/20)M$ eventually. An active path therefore cannot
+reach beyond the hypothetical range. This closes the depth induction and
+establishes that all active tapers diverge. Their floors have relative
+$o(1)$ error.
+
+The product of padding errors over $O(\log\lambda)$ levels is $1+o(1)$.
+Hence the child-size bounds are
+\[
+ M_0\le s,\quad M_1\le(1+o(1))\frac{2s}{9},\quad
+ M_2\le(1+o(1))\frac{s}{27},\quad
+ M_3\le(1+o(1))\frac{s}{108},
+\]
+and
+\[
+ M_{4+j}\le(1+o(1))\frac{s}{378\,2^j}\qquad(j\ge0).
+\]
+
+\subsection{Precision and entry costs}
+
+For retained valuations $i<u_d$ the deformation scale obeys
+$D=2^{a_d-i}\ge2^{a_{d-1}+B+1}$, with the evident root convention.
+The imported creation-time precision bound
+$p=O(s\lambda^2 2^{a_{d-1}})$ therefore satisfies
+\[
+ \frac{p}{MD/u_d}=O(\lambda^{15/4}2^{-B})=o(1).
+\]
+The remaining additive Hermite loss is lower order for the same reason.
+Thus the sharp local evaluation precision
+$p_t\le(6+o(1))MD/u_d$ and the weighted entropy estimates hold uniformly.
+All ring ranks, coordinate bit lengths, and exact budgets are polynomial
+in $s$, since $a_d\le(4999/100000)\lambda+O((\log\lambda)^2)$.
+
+Direct leaf work is $2^{O(s/\lambda^{3/4})}$. Original entry routines cost
+$2^{O(s^{9/10})}$ times a polynomial, and fresh entry routines cost at most
+$\exp(s^{4999/100000+o(1)})$. Each is lower order on the scale
+$s/\sqrt\lambda$. Creation-time tensor descriptions remain immutable;
+no earlier contraction algorithm is recursively expanded inside a fresh
+entry routine. The multiplicities of all entry and child calls are already
+included in \eqref{eq:new-paid-recurrence}.
+
+\subsection{Exact time and space constants}
+
+Write
+\[
+ (m_0,m_1,m_2,m_3,m_4)=\left(1,\frac29,\frac1{27},
+                                     \frac1{108},\frac1{378}\right),
+ \qquad K_i^*=\frac{\kappa m_i}{\sqrt{\eta_i}}\quad(0\le i\le4).
+\]
+Successive tail coefficients have ratio
+\[
+ \gamma=\frac{1/2}{\sqrt{63/100}}=\frac5{\sqrt{63}}<1.
+\]
+Let $P_j=\sum_{i<j}\alpha_{r_i}K_i^*$. Unrolling the paid recurrence gives
+four finite-prefix candidates $P_j+b_{r_j}K_j^*$ for $0\le j\le3$, and the
+whole tail is bounded by
+\[
+ C_\infty=P_4+K_4^*
+       \max\left\{b_4,\frac{\alpha_4}{1-\gamma}\right\}.
+\]
+Indeed a tail aggregation at offset $t$ has exponent coefficient
+\[
+ P_4+K_4^*\left(
+ \frac{\alpha_4}{1-\gamma}(1-\gamma^t)+b_4\gamma^t\right),
+\]
+a convex combination of the two endpoint coefficients. Here
+$\alpha_4/(1-\gamma)>b_4$, so the infinite leaf-route sum bounds every
+finite tail operation.
+
+Exact rational outward intervals give the following certified values:
+\[
+\begin{array}{c|l}
+ \text{branch}&\text{coefficient, shown to 12 decimal places}\\ \hline
+ 0&29.487537286921\\
+ 1&30.269872910441\\
+ 2&29.690498000478\\
+ 3&30.006711339131\\
+ \infty&30.262408169228.
+\end{array}
+\]
+The second row dominates. Thus
+\begin{equation}\label{eq:new-time-constant}
+ C_T=\frac{\pi}{\ln2}\left(
+        \sqrt{\frac{128000}{5103}}+
+        \sqrt{\frac{21920}{7857}}\right)
+ =30.269872910441123\ldots<30.27.
+\end{equation}
+Fixed polynomial overheads across $O(\log\lambda)$ depths add only
+$O(\lambda\log\lambda)=o(s/\sqrt\lambda)$ to the logarithmic running time.
+
+Ancestor tables coexist by addition of storage sizes, rather than by
+multiplication. The local memory coefficients at the five first occurrences
+are respectively
+\[
+ \begin{array}{ccccc}
+29.487537286921\ldots & 7.570356123317\ldots & 1.934875839854\ldots \\
+0.718696654792\ldots & 0.167607514679\ldots
+\end{array};
+\]
+later ones decrease geometrically. Therefore
+\begin{equation}\label{eq:new-space-constant}
+ C_S=\frac{\pi}{\ln2}\sqrt{\frac{8000}{189}}
+ =29.487537286921217\ldots<29.488.
+\end{equation}
+The resulting normalized contraction has bit time
+\[
+ (s+\mathcal L)^{O(1)}2^{(C_T+o(1))s/\sqrt{\log_2s}}
+\]
+and bit space
+\[
+ (s+\mathcal L)^{O(1)}2^{(C_S+o(1))s/\sqrt{\log_2s}}.
+\]
+This improves the explicit normalized upper-bound pair
+$30.891018920366\ldots/30.753912832055\ldots$ from the newest prior
+three-plan certificate. It uses subexponential space. It neither changes
+the logarithmic order of the exponent nor identifies the wire count $s$
+with the number of SAT variables.
+
+The accompanying standard-library checker proves rational logarithm gates
+by integer powers, encloses $\pi$ by Machin's alternating series and
+$\ln2$ by its positive atanh series, encloses all square roots by integer
+square roots, and rejects the unsupported time coefficient $30.26$ and two
+invalid precision schedules. It checks a finite arithmetic certificate;
+it is not a formal proof of the imported interfaces or a full SAT solver.

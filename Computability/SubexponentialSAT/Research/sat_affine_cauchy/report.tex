@@ -1,0 +1,72 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,microtype,graphicx,xcolor}
+\usepackage{fancyhdr,listings}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black,breaklinks=true]{hyperref}
+\hypersetup{pdftitle={Affine Geometry and Fast Cauchy Transforms for Subexponential SAT},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\pc}{\operatorname{popcount}}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\K}{\mathcal K}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\pin}{\texttt{a7ae5ab55f9627f5af7bf77443b3c34ef8ef1be4}}
+\newcommand{\ap}{\texttt{1a6eee293b9e00cb432eef6018a21f523623a9af}}
+\newcommand{\baseurl}{https://github.com/VladimirReshetnikov/ProveIt/blob/a7ae5ab55f9627f5af7bf77443b3c34ef8ef1be4/Computability/SubexponentialSAT/Research/}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist{topsep=5pt,itemsep=3pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Affine geometry and fast Cauchy transforms}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single,framerule=.3pt}
+\input{sections/constants}
+\title{Affine Geometry and Fast Cauchy Transforms\\for Subexponential SAT\\[6pt]
+\large A smaller certified contraction exponent, exact local transforms,\\and a comparison with the newly published Anthropic formalization}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{October 26, 2026 (Pacific date)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review ProveIt's four rounds of subexponential-SAT refinements at
+commit \texttt{a7ae5ab55f}, including all nine newly placed round-4 packets, and the Anthropic
+formal-math revision supplied during this review. A new finite geometric
+construction lowers the strongest explicit generic cached-contraction bound
+from time coefficient $30.891018920366\ldots$ to $\Ctime$, and from space
+coefficient $30.753912832055\ldots$ to $\Cspace$, on the normalized scale
+$s/\sqrt{\lceil\log_2s\rceil}$. Four parallel classes of the affine plane
+$\mathbb F_3^2$ and a thirteen-plan cyclic construction provide exact
+correlation certificates. A fully paid recursion includes every child entry.
+Separately, we give precision-safe fast applications of the normalized
+Cauchy feature matrix. At odd interpolation nodes the application reduces
+to one convolution; exact tests and matched small benchmarks accompany it.
+These are new improvements relative to the inspected corpus. They do not
+establish a smaller logarithmic order for unrestricted SAT. We explain why
+a direct combination with Anthropic's clique algorithm does not by itself
+remove that obstacle, and isolate a conditional graded-algebra route and
+an obstruction to its most immediate construction.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+\input{sections/outcome}
+\input{sections/review}
+\input{sections/interface}
+\input{sections/menus}
+\input{sections/schedule}
+\input{sections/transforms}
+\input{sections/research}
+\input{sections/validation}
+\input{sections/references}
+\end{document}

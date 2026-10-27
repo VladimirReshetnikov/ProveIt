@@ -1,0 +1,99 @@
+\section{A low-degree polynomial-space improvement}\label{sec:lowdegree}
+
+We import the adaptive linear-flag theorem of \cite{flags}: for a power-of-two alphabet $r$, its streamed local coefficient is
+\[
+ b_r=\frac1r\sqrt{\frac{(r-1)(4r+10)}9}.
+\]
+Its paid polynomial-space recurrence adds $(b_r+o(1))\K(M,u)$ at each network-recursion level.
+
+For maximum initial degree $\lceil s^{1/12}\rceil$, the corpus's best
+polynomial-space normalized coefficient is $23.6661688071455\ldots$ in
+\texttt{3sat\_round3\_frontier} \cite{lowbaseline}. Composing adaptive linear flags with a
+different compatible schedule yields
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(16.81223380188329\ldots+o(1))s/\sqrt{\log_2s}}
+\]
+in polynomial space under the same imported contraction interface.
+This is a coefficient improvement for the stronger low-degree premise,
+not an improvement to the unrestricted logarithmic order.
+
+Let $\lambda=\lceil\log_2s\rceil$, $g=\lceil\sqrt\lambda\rceil$,
+$\Lambda=\lambda-g$, $b=\lceil6\log_2\lambda\rceil$, and $q=63/100$.
+Choose alphabets and retained ranges
+\begin{align*}
+ (r_0,r_1,r_2)&=(32,16,8),&r_d&=4\quad(d\ge3),\\
+ u_0&=\lfloor\Lambda/11\rfloor,&
+ u_1&=\lfloor2\Lambda/99\rfloor,&
+ u_2&=\lfloor2\Lambda/63\rfloor,\\
+ u_d&=\left\lfloor(1-q)\frac{2\Lambda}{35}q^{d-3}\right\rfloor
+ &&(d\ge3),\\
+ a_d&=\sum_{j=0}^du_j+(d+1)b,& H&=\lceil s/\lambda\rceil.
+\end{align*}
+The cumulative leading retained fractions are $1/11,1/9,1/7$, and at
+most $1/5$ in the tail. For each stage, $(1+2\log_2r)A=1$ at its indicated
+cap $A$, so the negative $g$ margin controls the rounding gate $LQ^2/M$.
+At the root the degree-packing exponent is
+$10/11+1/12=131/132<1$. At the next two finite stages, using the immediately
+preceding packet degree, it is $8/9+1/11=97/99<1$ and
+$6/7+1/9=61/63<1$. In the tail it is at most $4/5+1/5=1$ and inherits
+the negative $g$ margin. All old retained vertices have degree at most
+the maximum of the original degree and earlier packet degrees; none gains
+ports. Thus the same degree estimates cover both bipartite sides.
+
+For hypothetical active depths at most
+$\lceil\log_{20/11}\lambda\rceil+O(1)$, the minimum taper diverges because
+$q>11/20$. Use relative padding slack $\lambda^{-3}$; the negative
+$\sqrt\lambda$ margin absorbs its polylogarithmic cost.
+All padding ratios are $o(1)$ uniformly. The child ratios are
+$1/16,1/8,1/4$, then $1/2$, up to a multiplicative $1+o(1)$.
+The tail ratio is eventually at most $11/20$, closing the depth bootstrap.
+The total accumulated padding error is $1+o(1)$ on the $O(\log\lambda)$
+levels. The precision buffer makes inherited precision lower order exactly
+as in the common interface: $p/(MD/u)=O(\lambda^4 2^{-b})=o(1)$.
+Uniformly diverging tapers absorb all floor errors.
+
+The paid flag recurrence contributes $(b_r+o(1))K(M,u)$, where
+$K(M,u)=(\pi\sqrt2/\ln2)M/\sqrt u$. Consequently the complete coefficient is
+\[
+ \frac{\pi\sqrt2}{\ln2}\left(
+ \sqrt{11}\,b_{32}
+ +\frac{\sqrt{99/2}}{16}b_{16}
+ +\frac{\sqrt{63/2}}{128}b_8
+ +\frac{\sqrt{35/2}}{512}
+    \frac{b_4}{\sqrt{1-q}(1-1/(2\sqrt q))}
+ \right)
+ =16.81223380188\ldots.
+\]
+The exact rational checker proves this is below $16.813$.
+Original entry costs, newly generated entry costs
+$\exp(s^{1/5+o(1)})$, leaf costs $2^{O(s/\lambda)}$, polynomial arithmetic,
+and the polynomial factors over the recursion are all lower order.
+Creation precision remains immutable. The separator and network recursions
+are streamed, preserving polynomial space.
+
+The general-degree best $46.1848455867\ldots$ is not improved by this theorem.
+The new coefficient is available when the original network satisfies the
+additional degree premise, including bounded-degree direct CNF encodings.
+
+\subsection{A concrete SAT application and its normalization}
+The direct bounded-degree clause/equality encoding is an applicable case.
+If $L$ is the number of literal occurrences and $d_v$ the occurrence count of
+variable $v$, a bipartite construction with trivalent equality trees uses
+\[
+ M=L+2\sum_v(d_v-3)_+\le3L\le3km
+\]
+wires and degree at most $\max\{k,3\}$ \cite{flags}. Take
+$s=\max\{M,n+1,2\}$ to pay for the exact-counting modulus $2^{n+1}$.
+For fixed $k,D$ with $m\le Dn$, the new polynomial-space theorem therefore gives
+\[
+ (n+m)^{O_{k,D}(1)}
+ 2^{(16.81223380188329\ldots\,\max\{3kD,1\}+o(1))
+                  n/\sqrt{\log_2n}}.
+\]
+This conservative explicit translation uses the existing encoding, not a
+new wire reduction. It leaves the fixed-density logarithmic order unchanged.
+For unrestricted density, the existing $s=O_k(n\log\log n)$ reduction
+continues to have the same worst-case order after the new generic cached
+contractor. Its unspecified wire constant prevents replacing $s$ by $n$
+inside our numerical coefficient.

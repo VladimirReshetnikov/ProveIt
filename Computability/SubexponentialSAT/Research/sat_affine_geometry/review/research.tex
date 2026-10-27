@@ -1,0 +1,115 @@
+\section{What would change the logarithmic order?}
+\label{sec:research}
+
+The geometric menu removes a genuine bottleneck in the submitted
+constant calculation. It does not remove the partition-growth mechanism
+that produces the square root of the logarithm. It is useful to identify
+the remaining task precisely, and to separate it from optimizations that
+can only improve constants under the present interface.
+
+\subsection{The alternative crossing interface in the public paper}
+Anthropic's Appendix A gives a general crossing-piece construction with
+a parameter $\rho$. A polynomial-size family of exact crossing pieces
+whose row and column factorization bit counts sum to
+\[
+ 4\rho\lambda+O(\log\lambda)
+\]
+gives logarithmic denominator power $\log_2(1/\rho)$. Appendix B realizes
+$\rho=1/\sqrt2$ using a graded Heisenberg representation and ordinary
+partition growth~\cite{anthropic-paper}. The full interface includes exact
+arithmetic size, piece construction, entry evaluation, and an adaptive
+choice of the cheaper row or column aggregation.
+
+Appendix H already identifies the following research direction: a compatible
+representation with
+\[
+ \log\dim V_E\asymp E^\alpha
+\]
+would suggest $\rho=2^{\alpha-1}$ and hence logarithmic denominator power
+$1-\alpha$. This observation belongs to that source. A representation with
+$\alpha<1/2$ would be a promising route to an order improvement \emph{if}
+it also supplied all exact operator identities, locality, coefficient-size
+bounds, and effective evaluation guarantees. A small graded dimension by
+itself does not supply those properties.
+
+The most useful research target after this review is therefore an exact,
+efficiently evaluable two-sided crossing decomposition with
+$\rho<1/\sqrt2$, or an equally explicit replacement for the Cauchy
+weighted-mode interface. We do not construct either object here.
+
+\subsection{Why merely keeping square-indexed oscillators fails}
+The reviewed earlier second-round note already warned that assigning square
+weights to the oscillator modes breaks the necessary degree closure
+\cite{degree-barrier}. A different tempting change is to delete all
+nonsquare modes. It does improve a bare dimension count, but has a simple
+locality obstruction.
+
+Let $p_\square(E)$ be the number of partitions of $E$ into square parts.
+Then
+\[
+ \log p_\square(E)=\Theta(E^{1/3}).
+\]
+For a lower bound, choose arbitrary subsets of
+$2^2,3^2,\ldots,J^2$ with $J=cE^{1/3}$ for a sufficiently small fixed
+$c>0$, and fill the remaining weight with ones. For an upper bound, use
+the generating function and the Gaussian sum:
+\begin{align*}
+ \log p_\square(E)
+ &\le\theta E+\sum_{k\ge1}\frac1k\sum_{j\ge1}e^{-\theta k j^2}\\
+ &\le\theta E+O(\theta^{-1/2});
+\end{align*}
+take $\theta=E^{-2/3}$. This numerical growth improvement is not enough.
+
+\begin{proposition}[A scoped finite-pole obstruction]
+Let $S$ be an infinite set of positive integers with arbitrarily long gaps,
+and put $a_m=m$ when $|m|\in S$ and $a_m=0$ otherwise. The restricted
+scalar Heisenberg-current commutator
+\[
+ C_S(z,w)=\sum_{m\in\mathbb Z}a_m z^{-m-1}w^{m-1}
+\]
+is not annihilated by $(z-w)^H$ for any finite nonnegative integer $H$.
+\end{proposition}
+\begin{proof}
+If that product vanished, coefficient comparison would give
+\[
+ \sum_{j=0}^H(-1)^j\binom Hj a_{n-j}=0
+ \quad\text{for every integer }n.
+\]
+For $H>0$, $H$ consecutive zero values would force all later values to be
+zero by this recurrence. An arbitrarily long gap followed by another
+element of $S$ is a contradiction. The case $H=0$ is immediate.
+For square indices, there is the explicit witness
+$n=(H+1)^2$: all preceding $H$ indices are nonsquares, and the displayed
+coefficient equals $n\ne0$.
+\end{proof}
+This blocks the naive deletion of oscillator modes in the current used
+by the source construction. It is not a lower bound against all vertex
+algebras, all sparse gradings, all crossing decompositions, or all SAT
+algorithms. The included finite witness program is a check on the formula;
+the proposition itself is an all-size proof.
+
+\subsection{Further constant improvements and their limit}
+The support-averaging problem has an independent finite-geometric form.
+One seeks menus for which the sums of all possible operation supports
+have small Euclidean norm. The affine-plane construction works because
+different parallel classes are transverse, and this controls every
+intermediate support as well as the final triangle. It is reasonable to
+search other designs or weighted mixtures of plans. However, the coefficient
+we prove is a valid certificate for the supplied menu, not a proof that
+the menu or the rational schedule is globally optimal.
+
+A pointwise cheapest-plan bound can also be strictly better than the
+uniform arithmetic average used by Lemma~\ref{lem:average}. Establishing
+that improvement would require a new uniform bound on
+$\min_j\max_{v\in\mathcal V_j}v\cdot g$ over the admissible nonnegative
+entropy vectors. Numerical optimization without a rigorous certificate
+would not justify a stronger constant. Likewise, letting the group count
+grow with input size requires controlling the number of budget allocations,
+all pair directions, packet packing, and table construction uniformly;
+our fixed-$r$ proof does not do so.
+
+The twelve-group menu was found by finite search and then certified
+independently. Its validity depends only on the frozen plans and the
+integer certificate. Replaying the search is not necessary to verify the
+result. No negative search result in this report is promoted to an
+impossibility theorem.

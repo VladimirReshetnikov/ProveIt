@@ -1,0 +1,109 @@
+# Public Anthropic formalization and its structural target
+
+Pinned source: anthropics/formal-math commit
+1a6eee293b9e00cb432eef6018a21f523623a9af, under eth/.
+Public URL:
+https://github.com/anthropics/formal-math/tree/1a6eee293b9e00cb432eef6018a21f523623a9af/eth
+
+## Status correction
+
+The published directory contains 1,062 files: 1,052 Lean sources, including
+1,047 under proof/, totaling 152,420 Lean source lines. The older ProveIt
+description of an unpublished 1,881-file development is superseded by this
+public snapshot. Counts describe this directory, not all files in the PR.
+
+MainResults.lean imports only Mathlib and defines the two claimed
+propositions. Solution.lean gives closed theorem terms for both:
+
+* MainResults.mainTheorem is CountedRoute.mainTheoremHolds.
+* MainResults.ethIsFalse derives the ETH negation through NamesInOrder and
+  Wrap from that Main Theorem.
+
+MainTheorem quantifies a single finite-alphabet Mathlib FinTM2 machine and
+a single natural constant C before k, n and the formula. It assumes k>=1,
+n>=4, at least two clauses, no identical clause-list repeated, and every
+variable occurring. Its exact count is output in n+1 bits within
+
+    floor 2^(C min{k m/sqrt(log2 m),
+                   k^2 n log2(log2 n)/sqrt(log2 n)}).
+
+No polynomial-space guarantee occurs in that proposition. It does not
+provide a matched numerical coefficient in ProveIt's normalized Boolean
+wire model. Therefore a smaller Cauchy-engine constant cannot be asserted
+to dominate this distinct complete algorithm.
+
+ETHIsFalse is the negation of 0<s_3, where s_3 is the infimum of exponents
+delta admitted by finite-alphabet machines deciding canonically encoded
+3-CNF. MainTheorem is stronger in uniformity: one counting machine works
+before k and the input are chosen.
+
+The toolchain pins Lean 4.33.1. comparator.json compares the two final
+theorems, permits only propext, Quot.sound and Classical.choice, and enables
+nanoda. A textual scan finds 'sorry' only in the two intentional Challenge
+stubs, not in Solution or proof/. This does not substitute for a local Lean
+build or transitive kernel audit. No such rebuild was performed here.
+
+## Why a direct hybrid does not immediately change the logarithmic order
+
+Appendix A, Definition 7 and Theorem A, expose a general crossing interface.
+A polynomial-size family of exact crossing pieces whose row and column
+factorization bit counts sum to at most
+
+    4 rho lambda + O(log lambda)
+
+gives logarithmic denominator power alpha'=log2(1/rho). Appendix B proves
+rho=1/sqrt(2) using a graded Heisenberg polynomial representation and
+ordinary partition counts. Its piece parameter counts are polynomial, its
+exact arithmetic sizes and evaluation costs are explicitly included, and
+adaptive selection takes the less expensive of row and column aggregation.
+
+Appendix H explicitly observes that a compatible graded representation
+with log(dim V_E) proportional to E^alpha would give rho=2^(alpha-1).
+This is the author's stated research direction, not a new observation of
+this review. In particular, the prospect alpha<1/2 is already identified.
+Naively applying Cauchy modes to these rank indices supplies neither the
+new two-sided factorization inequality nor the required entry-cost closure.
+
+## A scoped obstruction to deleting oscillator modes
+
+A tempting way to reduce graded dimensions is to keep only oscillators
+whose weights are perfect squares. The resulting monomial count has
+logarithm Theta(E^(1/3)). For the lower bound, independently choose parts
+2^2,3^2,...,J^2 with J=Theta(E^(1/3)) and fill the remaining weight with
+ones; these are distinct partitions of E. For the upper bound, exponential
+tilting of product_{j>=1}(1-exp(-theta*j^2))^(-1), followed by the Gaussian
+sum bound, gives log count <= theta E+O(theta^(-1/2)); set
+theta=Theta(E^(-2/3)).
+
+But merely deleting the other oscillators destroys finite-pole locality,
+the ingredient behind Appendix B's equality of the two operator orders.
+Here is a short all-size proof, independent of any asymptotic estimate.
+
+Let S be an infinite subset of the positive integers with arbitrarily long
+gaps, and put a_m=m when |m| is in S, otherwise a_m=0. The scalar formal
+commutator of the corresponding restricted Heisenberg current is
+
+    C_S(z,w)=sum_{m in Z} a_m z^(-m-1) w^(m-1).
+
+If (z-w)^H C_S(z,w)=0 for some finite H, coefficient comparison gives
+
+    sum_{j=0}^H (-1)^j binom(H,j) a_(n-j)=0
+
+for every integer n. Thus H consecutive zero values force every later
+value to be zero by a forward recurrence. An arbitrarily long gap followed
+by another element of S contradicts this. For square S, choose
+n=(H+1)^2. The preceding H indices are nonsquares, so the displayed
+coefficient equals a_n=n, not zero. The case H=0 is immediate.
+
+This rules out the naive lacunary-current substitution, even on the
+vacuum scalar commutator. It does not rule out all operator families with
+smaller graded growth, all vertex-algebra approaches, or all improvements
+to the Anthropic crossing pieces. The exact missing interface remains
+a polynomial-size, efficiently evaluable, two-sided decomposition with
+rho<1/sqrt(2), or another algorithm whose full resource accounting is
+better. This review constructs no such decomposition.
+
+The source hashes and directory counts are in anthropic_provenance.json.
+
+Closing source note: ProveIt 7de9d09fec now links this public development;
+its earlier unpublished description is no longer the latest README status.

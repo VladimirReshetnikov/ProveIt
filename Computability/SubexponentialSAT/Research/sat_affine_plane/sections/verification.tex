@@ -1,0 +1,91 @@
+\section{Verification, artifacts, and next research steps}
+\label{sec:verification}
+
+\subsection{What was actually verified}
+The archive contains standard-library Python checks for the new support
+certificates and schedule, an independent reconstruction of the affine
+certificate, and exact tests of the finite contraction identity. The
+geometric proof of Theorem~\ref{thm:affine} is supplemented by $2646$
+transverse support-pair checks and all $194{,}481$ four-support tuples.
+The second tree certificate is checked exhaustively with integer arithmetic.
+The rational schedule checks its capacity inequalities and evaluates its
+coefficient expressions at high precision. Exact inequalities are used for
+the logarithmic packing gates, rather than assuming that a floating-point
+optimizer found an interior point.
+
+The local contraction prototype evaluates the same small factor graph using
+every affine plan and using automatic integer-score selection. Across $24$
+seeded fixtures, all $96$ planned contractions and $24$ selected contractions
+agree with direct enumeration over a total of $18{,}029$ edge assignments.
+Fixtures include asymmetric domains, zero factors, empty domains, signed
+representatives, and several moduli $2^p$. Seven invalid-input controls are
+also checked. These are exact equality checks, not timing claims. The
+prototype uses ordinary arithmetic and does not implement the imported fast
+matrix-multiplication backend, the full Cauchy engine, or an end-to-end SAT
+solver.
+
+The odd-prime prefactor identity and unbalanced-tree recurrences have
+independent finite checks. Checks explicitly raise errors instead of relying
+on Python assertions that vanish under optimization. Key outputs are
+reproduced with \texttt{python -O}. The final PDF is compiled from the
+included source and rendered for visual inspection.
+
+\subsection{Reproduction and integration}
+Run \texttt{python3 code/reproduce.py} from the archive root to regenerate
+the arithmetic checks and kernel results. No network access or downloaded
+repository is needed for those checks. Run \texttt{make pdf} to compile the
+report with a standard TeX installation. The vector illustration can be
+regenerated with the optional plotting script; it is already included and
+is not needed by the mathematical checkers.
+
+The archive keeps the new implementation independent of copied prior
+scripts. The provenance directory records the reviewed pins, archive hashes,
+source paths, and the additional public formalization evidence. External
+manuscripts and the large Lean development are referenced by immutable URL
+rather than duplicated. A claim ledger distinguishes imported interfaces,
+new proved lemmas, finite checks, and unresolved targets.
+
+For repository integration, add this packet as one research directory and
+record both the time and space coefficients. Preserve the now-corrected
+public Anthropic link and, where useful, record the matching-tree CI
+evidence. Retain the best polynomial-space and
+low-degree branches. Do not convert the new wire coefficient directly into
+a coefficient in $n$, describe the prototype as a SAT solver, or mark the
+new refinements Lean verified.
+
+\subsection{Further research questions}
+\begin{enumerate}
+\item \textbf{Can a closed representation avoid full boundary tables?}
+  A useful candidate must specify its construction cost, entry and summation
+  algorithms, immutable precision semantics, and behavior under another
+  contraction. A dimension count alone does not provide these interfaces.
+\item \textbf{Can finite geometry improve the entire cost profile?}
+  The four parallel classes give a sharp local constant for their own menu.
+  Other resolvable designs may jointly improve root and recursive caching
+  costs. The objective is the maximum of the fully unrolled paid recurrence,
+  not the best isolated root coefficient.
+\item \textbf{Can the geometric lemma be formalized compactly?}
+  The nine-point incidence argument is a small, well-defined target for Lean:
+  formalize the three operation types, their transverse overlaps, the Gram
+  inequality, and the exact selection argument. The larger inherited
+  contraction interface is a separate formalization task.
+\item \textbf{Can actual mode-list constraints beat the Euclidean envelope?}
+  The sharpness witness in Section~\ref{sec:affine} belongs to a relaxed
+  entropy ball. Proving it unrealizable for recursively produced tensors,
+  with a quantitatively stronger replacement envelope, could improve the
+  analysis in a way ordinary tree optimization cannot.
+\item \textbf{Can a different deformation evade the digit obstruction?}
+  Lemma~\ref{lem:digit} leaves open node-dependent labels, additional packet
+  structure, and nonprime residue-field constructions. A viable design must
+  restore both nontrivial locality and the tapered $1/u$ precision gain.
+\item \textbf{Can the public graded-space interface be strengthened?}
+  The Anthropic development offers precise effective contracts. A new
+  graded construction must improve its entropy while preserving the crossing
+  identities, both factorizations, coefficient bit lengths, and charged
+  evaluation costs. Repeating the already stated entropy hypothesis would
+  not solve this problem.
+\end{enumerate}
+
+The positive result of this iteration is a certified, geometrically motivated
+improvement of the explicit cached upper bound. The stronger requested
+breakthrough in logarithmic order remains an open objective.

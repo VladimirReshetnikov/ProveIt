@@ -1,0 +1,184 @@
+LATEST INCOMING SAT FRONTIER AUDIT
+Snapshot: ProveIt 73dfb5e5ab6e91bd7375e5b97ef85d7e1cc8e81d.
+Incoming archive commit: b9941a7396e465f41df38326284d0500a117d775.
+All nine archives under docs/incoming were read at this snapshot.
+This note is an independent source review, not formal verification.
+
+COMMON NORMALIZATION
+All coefficients below multiply s/sqrt(log2(s)) (or its equivalent ceiling-log
+version) in a base-two exponent, with fixed polynomial input factors and
+uniform lower-order exponent terms. s is a Boolean-wire budget, not a SAT
+variable count. Generic input premise: root degree at most ceil(s^(9/10)),
+initial precision/truncation at most s, inherited admissible entry-access and
+immutable creation-precision conventions. Cached branches use subexponential
+space. All nine retain the source exact deformation, recovery, packet, mode,
+and SAT-reduction dependencies. No nine-packet result changes the unrestricted
+SAT logarithmic order, supplies a full SAT solver, or independently verifies
+the original ETH claim.
+
+NINE-ARCHIVE COMPARISON
+Archive names below omit .zip. Paths are relative to source/incoming; each
+archive normally contains an inner directory of its own name.
+
+1. 3sat_round3_frontier_20261027
+   Generic polynomial-space C=63.7573555464258.
+   Generic cached time/space=37.9301090828846 / 33.6230409216578.
+   Degree<=s^(1/12): polynomial-space23.6661688071455; cached
+   14.2391881944397 / 12.3613014575939.
+   Sources: README.md; report/frontier.tex; report/cache.tex;
+   report/cache_lowdegree.tex; report/cache_comparison.tex.
+   Contribution: depth-varying schedules, generated-degree bookkeeping,
+   exact incremental packing, centered/projective coefficient extraction.
+
+2. ETH_Adaptive_Exact_Kernels_2026-10-27 / eth_iteration2
+   Generic polynomial-space C=55.331622120479864 (certified<55.35).
+   Generic cached time/space=35.0706136705 / 33.9995016442.
+   Retained lower-memory point=37.3246112387 / 33.6230409217.
+   Degree<=s^(.51): polynomial-space25.16376541522859 (certified<25.2).
+   Additional explicit low-degree composition in report.tex, lines665-673:
+   degree<=s^(1/12), polynomial-space22.1981057366; formula
+   (pi*sqrt2/ln2)*(sqrt1536/48)*sqrt14/(1-sqrt8/24).
+   This last composition is stronger than the low-degree23.666 entry above.
+   Sources: README.txt; report.tex, sections labelled sec:lowdegree and
+   the generic streamed/cached schedules; late_cache_checks/;
+   asym_schedule_checks/.
+   Relevant SAT nuance: its s^(.51) promise is eventually met by the prior
+   high-moment alternative SAT encoding with degree n^(1/2)polylog(n) and
+   s=O(n loglog(n)). The wire-expansion constant still prevents a direct
+   numerical comparison per original SAT variable.
+
+3. eth_adaptive_schedules_2026-10-26
+   Generic polynomial-space63.781173756244.
+   Generic cached37.591702555541 / 33.623040921657.
+   Exact cached time=(pi/ln2)*sqrt(300000/4361); space replaces300000 by240000.
+   Sources: README.txt; report.tex; sections/cached_schedule.tex.
+   The cached7->9->6 schedule genuinely pays its entire tail: the three
+   branches are37.5917025555,35.7860204992,37.5321972011; root is largest.
+   Do not confuse this schedule with the different root-only37.5917 figure
+   inside item1's two-stage schedule, whose fully paid bound is37.9301.
+
+4. sat_adaptive_bounds_2026-10-26
+   Generic polynomial-space46.18484558673077 (safe eventual46.19).
+   Generic cached34.32528279728494 / 34.024178007490505.
+   Degree<=s^(1/12), cached13.379649066270039 / 13.253024933008383.
+   Exact generic cached time=(pi/ln2)*sqrt(7328*log2(9)/405).
+   Exact generic cached space=(pi/ln2)*sqrt(160*log2(9)/9).
+   Exact low-degree time=(pi/ln2)*sqrt(203840/23391); space replaces203840
+   by200000.
+   Sources: README.txt; PROOF_STATUS.json; report/flags.tex;
+   report/cached.tex; report/interface.tex; report/consequences.tex.
+   Flag lemma: for r=2^j, b_r=sqrt((r-1)(4r+10)/9)/r. Its proof uses
+   common-origin affine-coset intersection and flag averaging. The lemma
+   is sharp among balanced binary separator trees under the Euclidean
+   entropy relaxation. This does not rule out unbalanced trees or structured
+   summation. It is the strongest explicit generic polynomial-space claim.
+
+5. sat_adaptive_frontier_2026-10-26
+   Generic polynomial-space50.30468921409... (safe eventual50.305).
+   Generic cached time=space31.25239731265091985790016369.
+   Exact cached C=(pi*sqrt2/ln2)*sqrt(20*log2(9))*sqrt(2489356/6638625).
+   Sources: README.txt; sections/quartet.tex; sections/joint_objective.tex;
+   sections/degree_flow.tex; PROOF_STATUS.json.
+   Contribution: simultaneous covariance control of block construction and
+   final triangle costs, adaptive quartet conditioning, conserved-degree
+   lemma with an explicitly unresolved recursive-entry closure gap.
+
+6. sat_adaptive_matrix_partition_2026-10-26
+   Generic polynomial-space50.210434836331.
+   Generic cached34.325282797285 / 34.024178007491.
+   Sources: README.txt; report.tex; adaptive_triangle.tex;
+   adaptive_streaming.tex.
+   Contribution: second-moment adaptive balanced-tree and triangle bounds.
+   Its cached point coincides with item4's generic cached point.
+
+7. sat_adaptive_tree_certificate_2026-10-26
+   Generic cached30.89101892036609223145 / 30.75391283205497535423.
+   Safe eventual30.892 time and30.754 space.
+   Exact time=(pi/ln2)*(sqrt(128000/5103)+sqrt(134144/41067)).
+   Exact space=32*pi*sqrt295/(81*ln2).
+   Sources: README.txt; report.tex, thm:portfolio, eq:Q, eq:schedule,
+   eq:threecosts, thm:main, thm:width; data/portfolios.json;
+   PROOF_STATUS.json.
+   Contribution: three-plan support-averaging certificates and9->13->7
+   rational schedule, with paid child entries and selected-plan storage.
+   This is the strongest explicit generic cached time/space point.
+   Independent reconstruction in this review confirmed all integer tuples:
+     r9:9261 tuples; Q3304; sum squared norms18018504; b^2=6608/18225.
+     r13:35937 tuples; Q7074; sum squared norms107119584; b^2=1572/4225.
+     r7:15 tuples; Q316; sum squared norms3402; b^2=632/1225.
+   Independent display arithmetic confirmed branches30.753912832055,
+   30.891018920366,30.512927432781. The second branch dominates time.
+   Proof inspection found no defect in support averaging, paid recursion,
+   or the table-storage bound. This is a scoped review, not a proof assistant
+   build or an independent re-proof of every imported source result.
+
+8. subexponential_sat_adaptive_four_2026-10-26 /
+   subexponential_sat_adaptive_four
+   Generic polynomial-space50.3937257005048.
+   Generic cached32.9158138649243 / 31.6617067861940 using12/5 backend.
+   Optional19/8 backend32.8563452760064 / 31.4674831880977.
+   Sources: README.txt; report.tex; k4_certificate.tex.
+   Contribution: sharp three-matching four-block inequality and streamed
+   quartet inequality. Sharpness is for its stated local cost model only.
+
+9. subsat_rectangular_2026-10-26
+   Generic polynomial-space53.9775311981.
+   Generic cached33.9938908592 / 33.9937208906.
+   Exact space=(pi/ln2)*sqrt(2812500/49997); time=(1+1/200000)*space.
+   Sources: README.md; PROOF_STATUS.json; sections/polyspace.tex;
+   sections/rectangular.tex; sections/hermite.tex; sections/inventory.tex;
+   sections/table_barrier.tex.
+   Contribution: rectangular multiplication and retuning, independent-jet
+   Hermite minimax, inventory/table barriers. The leading independent-jet
+   precision constant six is optimal in its stated model, even with
+   arbitrary asymmetric node multiplicities.
+
+RESOURCE-AWARE ENVELOPE AT THIS SNAPSHOT
+Generic degree<=s^.9:
+  polynomial-space46.18484558673; cached30.89101892037/30.75391283205.
+Degree<=s^(1/12):
+  explicit polynomial-space22.1981057366 composition;
+  cached13.37964906627/13.25302493301 and lower-memory
+  14.23918819444/12.36130145759 are incomparable useful points.
+Degree<=s^.51:
+  explicit polynomial-space25.16376541523; stronger low-degree assumptions
+  must not silently be substituted.
+Unknown constants in the separate primary manuscript cannot be numerically
+dominated by these normalized coefficients. Keeping specialized older
+branches remains necessary if claiming a full resource-aware portfolio.
+
+ASYMPTOTIC-ORDER LIMIT
+The supported SAT density envelope remains
+poly_k(n,m)*2^{O_k((n/sqrt(log n))*min{log(2+m/n),loglog(n)})}.
+This remains2^{O_k(n loglog(n)/sqrt(log n))} in the worst case and
+2^{O_{k,D}(n/sqrt(log n))} at fixed clause density.
+No incoming packet closes the unproved structured-mode summation interface
+needed for an s/log(s)-type contraction order. Changing the support menu or
+matrix exponent alone still leaves the s/sqrt(log s) scale.
+
+The explicit full-table width theorem in item7 is exactly
+W_r=2*ceil(r/3)*(r-ceil(r/3)) for complete directed pair graphs.
+It yields exp(Omega(M/sqrt u)) output work for a feasible abstract symmetric
+mode inventory. That lower example is expressly not shown to occur for
+every actual SAT instance; sparse/implicit/cancellation representations lie
+outside its scope. It does not prove a SAT lower bound.
+
+POTENTIAL NEXT STEP IDENTIFIED DURING REVIEW
+The three-plan support-averaging bound is conservative. For finite support
+sets V_j of nonnegative vectors, exact pointwise independence of the choices
+and bilinear minimax give
+ max_{h>=0,||h||<=1} min_j max_{v in V_j} v.h
+ = max_{(v_j)} min_{lambda>=0,sum lambda=1} ||sum_j lambda_j v_j||.
+Thus closest-convex-hull certificates can sharpen equal averaging. In the
+original r9 menu the maximum-Q witnesses have unequal per-plan scores
+1062,1121,1121; in the r13 menu its unique maximum witness has equal2358
+scores and is compatible, so that particular menu's equal averaging is
+already sharp. Better r13 menus require genuinely changed plans.
+
+CLOSING UPDATE
+Reviewed through ProveIt 7de9d09fecd17de776d712835ecb2011205c531d.
+Commit a7ae5ab55f files the nine archives; exact Git-blob comparison matched
+all 443 relocated research files to original archive members. No unmatched
+research files were found. docs/incoming now has only README.md. Commit
+7de9d09fec links the public Anthropic formalization. The numerical frontier
+and original immutable archive anchors used above are unchanged.

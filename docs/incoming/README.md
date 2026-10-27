@@ -14,11 +14,12 @@ a report at one of the destinations of section 2.
 
 ## Sub-exponential 3-SAT (ETH) reports
 
-Thirty-one arrivals of 26–27 October 2026 about sub-exponential 3-SAT, that
+Thirty-six arrivals of 26–27 October 2026 about sub-exponential 3-SAT, that
 is, about refuting the Exponential Time Hypothesis. The drop process staged
 the first five without committing them, and they were committed unchanged in
 `a505bd768b`; it committed the next seventeen itself. The nine of the fourth
-round were also only staged, and were committed unchanged in `b9941a7396`. The eight of
+round were also only staged, and were committed unchanged in `b9941a7396`.
+The five of the fifth round arrived committed, in `26bd83d4b3`. The eight of
 `3e57705cf1` and `d098ba436b` are a second round that reviews the first. The
 five of `f42479bca2`, `f898a9fde4` and `fa6e904d10` are a third round that
 reviews both. They are placed in the new
@@ -62,6 +63,11 @@ instead of being filed.
 | `ETH_Adaptive_Exact_Kernels_2026-10-27.zip` | `b9941a7396` | [Research/eth_adaptive_exact_kernels](../../Computability/SubexponentialSAT/Research/eth_adaptive_exact_kernels/README.txt), without 58 `sources/` copies of files already in ProveIt |
 | `3sat_round3_frontier_20261027.zip` | `b9941a7396` | [Research/3sat_round3_frontier](../../Computability/SubexponentialSAT/Research/3sat_round3_frontier/README.md), without 26 `evidence/` copies of files already in ProveIt |
 | `eth_adaptive_schedules_2026-10-26.zip` | `b9941a7396` | [Research/eth_adaptive_schedules](../../Computability/SubexponentialSAT/Research/eth_adaptive_schedules/README.txt) |
+| `sat_pairwise_certificates_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_pairwise_certificates](../../Computability/SubexponentialSAT/Research/sat_pairwise_certificates/README.txt) |
+| `sat_affine_contraction_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_affine_contraction](../../Computability/SubexponentialSAT/Research/sat_affine_contraction/README.md) |
+| `sat_affine_geometry_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_affine_geometry](../../Computability/SubexponentialSAT/Research/sat_affine_geometry/README.txt) |
+| `sat_affine_cauchy_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_affine_cauchy](../../Computability/SubexponentialSAT/Research/sat_affine_cauchy/README.txt) |
+| `sat_affine_plane_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_affine_plane](../../Computability/SubexponentialSAT/Research/sat_affine_plane/README.txt) |
 
 ## DiophantineConsistency proof-simplification packets
 

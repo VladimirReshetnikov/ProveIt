@@ -1,0 +1,133 @@
+\section{Outcome, comparison, and the frozen review}
+\label{sec:review}
+
+Let $s$ be the normalized wire budget, $\mathcal L$ the graph and
+tensor-description length, and $\lambda=\lceil\log_2s\rceil$.
+All numerical coefficients in this report multiply $s/\sqrt\lambda$ in a
+base-two exponent. They are not coefficients per SAT variable.
+
+\begin{center}\small
+\begin{tabular}{p{7.7cm}rr}
+\toprule Comparable setting & Prior coefficient & This report\\\midrule
+General degree $\lceil s^{9/10}\rceil$, cached time &30.891019&29.811609\\
+Same setting, cached space &30.753913&29.811609\\
+Degree $\lceil s^{1/12}\rceil$, polynomial-space time &23.666169&16.812234\\
+General degree, polynomial-space time &46.184846&46.184846 (retained)\\
+\bottomrule
+\end{tabular}\end{center}
+
+The last row is unchanged. The new generic cached algorithm spends
+subexponential space. The low-degree theorem has a stronger input premise
+and must not be used as a generic $s^{9/10}$-degree result. Neither theorem
+claims to dominate the smaller cached low-degree figures, which use more
+space. The meaningful algorithmic envelope keeps every applicable older
+branch and adds the two new ones.
+
+If $U_{\rm old}$ and $U_{\rm new}$ are the displayed generic cached
+upper-bound expressions, their ratio satisfies
+\[
+ \log_2(U_{\rm old}/U_{\rm new})
+ =\left(30.891018920366\ldots-\CachedC\ldots+o(1)\right)
+   \frac{s}{\sqrt\lambda}.
+\]
+This compares bounding functions. It is not a lower bound on the old
+algorithm's running time or a measured SAT speedup.
+
+\subsection{Latest relevant commits}
+
+The GitHub connector supplied immutable source files and commit metadata.
+The main review pin is \pin. The latest relevant history is:
+\begin{center}\small
+\begin{tabular}{p{3.0cm}p{10.7cm}}
+\toprule Commit & Change\\\midrule
+\texttt{2b925d8800cd} & Initial seven refinement packets placed in the new project.\\
+\texttt{3e096089911f} & OpenAI preprint vendored from \texttt{7ef5c0cc5c}.\\
+\texttt{6d3adc450615} & Eight second-round packets placed.\\
+\texttt{450252e9d86c} & Five third-round packets placed; two replay scripts restored.\\
+\texttt{b9941a7396e4} & Nine fourth-round archives committed in incoming.\\
+\texttt{a7ae5ab55f96} & Those nine packets placed in Research; incoming reduced to its README.\\
+\texttt{7de9d09fecd1} & Public Anthropic formalization linked; the research packets are unchanged.\\
+\bottomrule
+\end{tabular}\end{center}
+The packet-placement commit is dated 2026-10-27 03:15:51 UTC, or October 26 at
+8:15:51 PM Pacific daylight time. Its mathematical frontier is the
+appropriate comparator; comparing only against a round-two or round-three
+number would miss the current best claims \cite{index,placement}.
+The closing documentation commit is dated 03:20:40 UTC (8:20:40 PM Pacific
+on October 26). Its two README edits already correct the former statement
+that the Anthropic development was unpublished \cite{closing}.
+
+The review inventories all twenty-nine packet summaries and retrieves their
+LaTeX, README, and proof-status sources. Detailed proof work concentrates on
+the strongest bounds and their shared prerequisites. It is not a line-by-line
+certification of every imported proof. The source ledger records 140 project
+files and the additional primary sources used below; source blobs are
+recorded without bundling redundant copies of the corpus.
+
+\subsection{Complete packet inventory}
+
+Here PS denotes polynomial space. Cached coefficients are time/space.
+Unless qualified as low-degree, numerical coefficients use the generic
+normalized degree premise. Some packets state more than the selected
+contribution listed here.
+
+\begin{longtable}{p{5.2cm}p{8.5cm}}
+\toprule Packet & Relevant contribution or scope\\\midrule\endfirsthead
+\toprule Packet & Relevant contribution or scope\\\midrule\endhead
+\bottomrule\endfoot
+\path{cauchy_mode_improvement} & Factorial Cauchy modes, slope three; same exponent order.\\
+\path{eth_contraction_improvements} & Sharper taper/precision; PS $648.441$; streamed coefficient extraction.\\
+\path{3sat_precision_refinement} & Precision $24MD/u\to6MD/u$; the $1/\log n$ denominator is conditional.\\
+\path{sat_density_improvement} & Uniform density-sensitive exponent envelope.\\
+\path{eth_density_refinement} & Independent intermediate-density improvement; same worst-case order.\\
+\path{3sat_refinement} & Scalar parity lift and smaller degree cap; second contraction lacks a factorization interface.\\
+\path{3sat_asymptotic_analysis} & Restricted barriers and missing degree/compression interfaces.\\
+\path{eth_asymmetric_packet_balancing} & Asymmetric pair packing and creation-side degree tracking; PS $76.909$.\\
+\path{3sat_round2_refinement} & PS $84.066$; actual-domain rank and Heisenberg/thinning barriers.\\
+\path{eth_balanced_packing} & Near-unit padding and thin precision guard; PS $94.748$.\\
+\path{eth_high_moment} & Independent $94.748$ certificate; degree-sensitive variants.\\
+\path{eth_matching_refinement} & Independent $94.748$ certificate through matching-potential packing.\\
+\path{eth_packet_refinement} & Improved pair loads and guards; PS $95.664$.\\
+\path{eth_recursive_refinement} & Missing residue class in Cauchy modes; PS $133.207$.\\
+\path{eth_joint_cauchy} & Full-orientation slope-four modes; weighted pair entropy and cached algebra.\\
+\path{sat_adaptive_contraction} & Streamed separators, PS $55.709$; cached $36.750/34.024$.\\
+\path{sat_frontier_improvements} & Variable arity, PS $63.857$; cached $38.484/34.275$.\\
+\path{subexponential_sat_frontier} & PS $63.852$; cached $37.930/33.623$; exact kernel improvements.\\
+\path{subexponential_sat_kernel_improvements} & Composed PS $66.605$ and cached $44.538/39.496$; extraction kernels.\\
+\path{subsat_contraction_tree} & Paid binary table construction; cached $35.355/34.275$.\\
+\path{sat_adaptive_bounds} & Current generic PS best $46.185$ from linear flags; cached $34.325/34.024$.\\
+\path{sat_adaptive_tree_certificate} & Current generic cached best $30.891/30.754$ using three-plan support certificates.\\
+\path{sat_adaptive_frontier} & Adaptive quartet PS $50.305$; cached $31.252/31.252$.\\
+\path{sat_adaptive_matrix_partition} & PS $50.210$; cached $34.325/34.024$.\\
+\path{subexponential_sat_adaptive_four} & Cached $32.916/31.662$; with a $19/8$ backend, $32.856/31.467$.\\
+\path{subsat_rectangular} & Genuine rectangular backend, cached $33.994/33.994$; PS $53.978$.\\
+\path{eth_adaptive_exact_kernels} & PS $55.332$, cached $35.071/34.000$; kernel-level timings.\\
+\path{3sat_round3_frontier} & Best stated low-degree PS $23.666$; generic PS $63.757$.\\
+\path{eth_adaptive_schedules} & PS $63.781$; cached $37.592/33.623$; incremental matching kernel.\\
+\end{longtable}
+
+The named round-three-frontier packet arrived with round four; it and the
+adaptive-schedules packet had reviewed only through round two. The two primary
+manuscripts are additional to these twenty-nine packets.
+
+\subsection{The asymptotic target that remains open}
+
+For fixed clause width $k$, the best proved order envelope reported in the
+reviewed corpus is
+\begin{equation}\label{eq:density-envelope}
+ (n+m)^{O_k(1)}\,
+ 2^{O_k\left(\frac{n}{\sqrt{\log n}}
+ \min\{\log(2+m/n),\log\log n\}\right)}.
+\end{equation}
+The direct clause-network bound can also be retained when it is smaller.
+The general worst-case exponent is $O_k(n\log\log n/\sqrt{\log n})$,
+and fixed density gives $O_{k,D}(n/\sqrt{\log n})$
+\cite{source,density,density2}.
+
+The conditional targets with a $\log n$ denominator remain conditional:
+their missing structured summation or factorization algorithms are not supplied
+by a smaller plan certificate. The separate Anthropic algorithm has the same
+relevant logarithmic order and no stated comparable normalized-wire constant.
+Consequently this report claims a strict improvement over the explicit
+comparable cached certificates, not over an unknown big-$O$ constant or an
+unproved algorithm.

@@ -1,0 +1,54 @@
+INCOMING SAT FRONTIER AUDIT
+Snapshot: VladimirReshetnikov/ProveIt@73dfb5e5ab6e91bd7375e5b97ef85d7e1cc8e81d
+All nine incoming ZIPs downloaded, safely extracted, checked against pinned Git blob SHA-1 and ZIP CRCs.
+Hashes: sources/incoming/reviewed_archive_hashes.json.
+No imported source scripts have been executed during this audit.
+
+LATEST FRONTIER (generic root maximum degree ceil(s^.9), coefficients per normalized wire):
+Polynomial space: 46.184845586731... (sat_adaptive_bounds).
+Cached best time: 30.891018920366...; its space:30.753912832055... (sat_adaptive_tree_certificate).
+All nine retain general SAT exponent O_k(n log log n / sqrt(log n)) and fixed-density O(n/sqrt(log n)).
+Strong conditional n/log n interfaces remain unproved. None claims an end-to-end solver or formal independent proof of upstream.
+
+Archive -> generic polynomial / cached time / cached space
+3sat_round3_frontier_20261027.zip ->63.7573555464 /37.9301090829 /33.6230409217
+ETH_Adaptive_Exact_Kernels_2026-10-27.zip ->55.331622... /35.0706136705 /33.9995016442 (companion37.3246112387/33.6230409217)
+eth_adaptive_schedules_2026-10-26.zip ->63.7811737562 /37.5917025555 /33.6230409217
+sat_adaptive_bounds_2026-10-26.zip ->46.1848455867 /34.3252827973 /34.0241780075
+sat_adaptive_frontier_2026-10-26.zip ->50.3046892141 /31.2523973127 /31.2523973127
+sat_adaptive_matrix_partition_2026-10-26.zip ->50.2104348363 /34.3252827973 /34.0241780075
+sat_adaptive_tree_certificate_2026-10-26.zip ->none /30.8910189204 /30.7539128321
+subexponential_sat_adaptive_four_2026-10-26.zip ->50.3937257005 /32.9158138649 /31.6617067862 (optional19/8 backend32.8563452760/31.4674831881)
+subsat_rectangular_2026-10-26.zip ->53.9775311981 /33.9938908592 /33.9937208906
+
+Other low-degree bounds must be kept separate. 3sat_round3 gives poly23.6661688071 at degree<=s^(1/12), cache14.2391881944/12.3613014576. sat_adaptive_bounds gives cached13.3796490663/13.2530249330 at same strong degree promise. ETH_Adaptive gives poly25.163765 at degree<=s^.51.
+
+BEST POLYNOMIAL-SPACE ARGUMENT
+Path sources/incoming/sat_adaptive_bounds_2026-10-26/sat_adaptive_bounds_2026-10-26/report/flags.tex.
+For r=2^j, identify groups with F_2^j; complete descending linear flags give balanced separator trees. For any two flags and any leaves x,y, the intersection of their path cut supports is maximized at common origin0. This follows direction-by-direction by comparing affine coset intersections to homogeneous subspace intersections.
+The average path support to0 over all flags equals1 on incident directed edges and2/3 on all other directed edges.
+Thus b_r^2=(r-1)(4r+10)/(9r^2), with local paid recurrence T_d<=poly(s)2^((b_r+o(1))*K(M_d,u_d))T_{d+1}; K=pi sqrt2 M/(ln2 sqrtu).
+This local constant is optimal among all balanced binary trees in the Euclidean pair-entropy envelope: h proportional to that incident/nonincident average makes every path to distinguished0 have same dot product.
+The global schedule uses r0=r1=16,u0=u1=floor(Lambda/80),r2=8,u2=floor(Lambda/120),r_d=4,u_d=floor((37Lambda/6000)(63/100)^(d-3)) for d>=3, Lambda=lambda-ceil(sqrtlambda). Buffers b=ceil(6log2lambda), cumulative a_d=sum(u_j+b), leafH=ceil(s/lambda).
+C=(pi sqrt2/ln2)[9sqrt80*b16/8+sqrt120*b8/64+sqrt60*b4/(256sqrt(1-q)(1-1/(2sqrtq)))],q=63/100.
+Argument examined, no concrete flaw found. Fixed-family weighted entropy makes the data-dependent flag choice legitimate. Exact list-product comparisons avoid floating decisions; recursion costs are paid.
+
+BEST CACHED ARGUMENT
+Path sources/incoming/sat_adaptive_tree_certificate_2026-10-26/sat_adaptive_tree_certificate_2026-10-26/report.tex.
+Each binary merge or final triangle has rectangular matrix cost H1+H2+H3-(3/5)min(H1,H2,H3). Multiplying costs by5 gives supports v in{0,2,5}^(r choose2). For q fixed tree plans, min_j max_v v.dot(g)/(5) <=max_(v1,...,vq)(sum vi).dot(g)/(5q). If Q=max ||sum vi||^2, the resulting entropy constant is b=sqrt(2Q)/(5qr). Every local table's input/output size is bounded by its operation cost, so this also bounds local memory.
+For r9,q3,Q3304,b9^2=6608/18225; r13,q3,Q7074,b13^2=1572/4225. Plans and complete operation supports included. This is exhaustive finite certification (9261,35937 tuples), not sampled optimization.
+Schedule eta0=63/4000,r0=9;eta1=9/800,r1=13;eta_d=(77/16200)(4/9)^(d-2),r_d=7 tail. K0*=kappa/sqrteta0,K1*=2kappa/(9sqrteta1),K2*=4kappa/(117sqrt(77/16200)). alpha_r=sqrt(2(r-1))/r,b7^2=632/1225. Total cost max(C0=b9K0*,C1=alpha9K0*+b13K1*,Cinf=alpha9K0*+alpha13K1*+K2*sqrt3/2). Values30.753912832055,30.891018920366,30.512927432781. Space isC0.
+Exact Ctime=(pi/ln2)(sqrt(128000/5103)+sqrt(134144/41067)); Cspace=32 pi sqrt295/(81ln2).
+Argument examined, no concrete flaw found; imported fast matrix backend and source SAT interface remain assumptions/dependencies. No full imported proof audit claimed.
+
+PRIOR IDEAS NOW BLOCKING NOVELTY CLAIMS
+1. Conserved degree transfer is already in sat_adaptive_frontier/sections/degree_flow.tex. Given incoming mode extraction and outgoing linear forms,Q_g,beta has degree<=K_g-bin_g+bout_g, and these degree caps sum toK. Boolean multilinearization cannot increase degree. Group-polynomial entry extraction can encode permanent; this identity alone does not give compressed low-degree child oracles. Existing discussion explicitly names the gap between incidence positions, rank-bit representations, and aggregated polynomials.
+2. subsat_rectangular/sections/hermite.tex proves arbitrary asymmetric Hermite node multiplicities cannot beat leading independent-jet precision constant6. Redistributing taper multiplicities is therefore prior and blocked inside that model.
+3. subsat_rectangular/sections/inventory.tex combines adaptive Smith separation and exact-weight pigeonholing. Full Cauchy weights e_j=delta+4j-2popcount(j) dominate every integral rank-one profile; A copies have >=2^(M/(16sqrtu)) binary feasible tuples under stated conditions. Some exact weight list is this large divided byP. This does NOT establish SAT lower bounds, arbitrary group-function rank, or all entries nonzero.
+4. subsat_rectangular/sections/table_barrier.tex gives arity-uniform norm-envelope barrier for full boundary-table binary trees: fixed >=(2/3)K, adaptive >=4K/(9sqrt(1-1/r)). Together with root packing u0<=log2s/(20log2r), no change of tree/arity/matrix exponent in that certificate model yields little-o(s/sqrtlog s).
+5. sat_adaptive_tree_certificate establishes exact full-table complete directed graph width W_r=2ceil(r/3)(r-ceil(r/3)) and a symmetric feasible exact-weight inventory example. This adds a representation-specific output lower bound, not a lower bound for all algorithms.
+6. subsat_rectangular/research.tex already points out why precision peeling does not justify free packet reset: high-residual P-W>=P/(log s)^B still has leading sqrtP partition certificate and log(P-W)>=logP-O(loglog s).
+
+PROMISING BUT UNRESOLVED DIRECTIONS (not proved new asymptotic result)
+The true remaining asymptotic route needs a closed implicit representation of mode-group functions, cancellations/correlations beyond full table supports, or a different deformation/recovery method. Raw low degree, faster matrix multiplication, optimal tree selection, arithmetic kernels, and parameter retuning are insufficient alone in the examined models.
+Further coefficient gains could come from fully optimizing unbalanced separator trees or joint recursive/precision-conditioned cost profiles, but neither would establish a smaller order without new structure. Exact flag coefficient is only optimal for balanced trees.

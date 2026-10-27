@@ -1,0 +1,157 @@
+\section{What was tried to obtain a smaller exponent order}
+\label{sec:obstructions}
+
+The objective of the investigation was stronger than another small
+coefficient improvement. Several routes were examined specifically because
+they might remove an entire logarithmic factor. Their status is recorded
+here to distinguish a missing proof from a completed improvement.
+
+\subsection{Lower initial precision and conserved incidence degree}
+The compressed dense reduction has wire budget $M=O(n\log\log n)$ but
+initial counting precision only $n+1$. This suggests exploiting
+$P_0\ll M$. However the generic deformation has degree $M(2L-1)$;
+Hermite recovery introduces precision of leading size $6MD/u$ regardless
+of that smaller initial precision. Merely replacing $P_0$ by $n+1$
+does not change the dominant term.
+
+There is a genuine algebraic alternative: if a degree bound $K=O(n)$
+were retained through the compressed deformation and every recursive
+entry interface, the local mode entropy could scale as
+$\sqrt{MK/u}$ instead of $M/\sqrt u$. With $M=O(n\log\log n)$ this
+would target $n\sqrt{\log\log n/\log n}$. The reviewed corpus already
+states this conditional route. Its recent degree-flow lemma shows that
+incoming mode extraction removes exactly the degree allowance transferred
+to outgoing linear forms. That conservation identity is useful but does
+not close the algorithmic representation.
+
+Binary ranks of low-weight subsets do not automatically give low Boolean
+polynomial degree. Carrying the original incidence polynomial preserves
+degree but loses the compressed wire count; carrying a whole grouped
+coefficient as one implicit tensor can make entry extraction expensive.
+For example, a coefficient of a product of linear forms can be a permanent.
+That example is an interface warning, not a hardness proof for the actual
+Cauchy tensors. We did not construct the missing uniform compiler.
+
+\subsection{Precision peeling and ordinary tree improvements}
+An exact mode contribution with total valuation $V$ needs only residual
+precision $p_t-V$. This is already an effective kernel technique in the
+corpus. It does not alone justify restarting every interpolation scale.
+Budget layers with $p_t-V=p_t/(\log s)^B$, for fixed $B$, can retain
+the leading weighted-partition entropy while losing only
+$O(\log\log s)$ in the binary logarithm of the precision. Resetting the
+cumulative packet exponent by $\Theta(\log s)$ would require a much
+larger reduction. This is a limitation of this budget-envelope argument,
+not a universal lower bound on precision-aware algorithms.
+
+The new affine-plane construction also lives inside a model with a known
+order obstruction. Full boundary tables on a complete mode graph must
+include a substantial cut in the Euclidean entropy relaxation. Root packing
+simultaneously limits $u_0$ to $O(\log s/\log r)$. These statements,
+already proved in the incoming packets, prevent tree selection and a faster
+matrix exponent alone from proving $o(s/\sqrt{\log s})$ in that
+certificate model \cite{rectangular,portfolio}. Our improvement is
+consistent with that obstruction: it decreases the coefficient while
+retaining its order.
+
+\subsection{A new scoped obstruction for direct odd-prime replacement}
+Changing from two-adic to $p$-adic arithmetic initially looks attractive:
+an exact count needs fewer base-$p$ digits, and a growing characteristic
+might appear to save a factor of $\sqrt{\log p}$. The binary locality
+mechanism explains why that inference is not valid for a direct replacement.
+
+\begin{lemma}[Leading-digit locality]\label{lem:digit}
+Let $p$ be prime and let $A,B:\F_p\to\mathcal C$ be row and column
+labels. If
+\[
+ A(x)=B(x+c)\quad\text{for all }x\in\F_p, c\in C_0,
+\]
+and $C_0$ contains two distinct elements, then both labels are constant.
+\end{lemma}
+\begin{proof}
+For $c\ne d$ in $C_0$ one has $B(x+c)=B(x+d)$ for every $x$.
+Thus $c-d$ is a nonzero additive period of $B$. A nonzero element
+generates the additive group of the prime field, so $B$ is constant;
+the displayed identity makes $A$ constant as well.
+\end{proof}
+
+In the binary construction every integer of valuation $i$ flips bit $i$,
+and there is just one nonzero leading residue. For odd $p$, asking one
+fixed nontrivial digit grouping to localize every nonzero leading residue
+falls under Lemma~\ref{lem:digit}. Node-dependent groupings and other
+deformations are outside this statement.
+
+One can try to retain only leading digit $1$. The following exact
+calculation shows the resulting precision penalty for the ordinary linear
+taper. Work on the complete grid $\{0,\ldots,p^{a+1}-1\}$, excluding
+zero from the interpolation nodes. Retain a node $q$ of valuation $j<u$
+only when its first nonzero base-$p$ digit is $1$, and give it multiplicity
+$m_j=h(u-j)$; all other multiplicities are zero. For an active node $t$
+of valuation $i$ set $D=p^{a-i}$ and $H=u-i$.
+
+\begin{proposition}[Loss of tapered cancellation]\label{prop:oddprime}
+For the Hermite prefactor
+\[
+ E_t(0)=\prod_{q\ne0,t}\left(\frac{-q}{t-q}\right)^{m(q)},
+\]
+its exact valuation is
+\begin{align}
+ v_p(E_t(0))
+ &=hD\sum_{j=1}^{a-i}\frac{j}{p^j}
+       \bigl((H-j)_+-(p-1)H\bigr)\notag\\
+ &=-hD\left((p-2)H\sum_{j=1}^{a-i}\frac{j}{p^j}
+       +\sum_{j=1}^{a-i}\frac{j\min(j,H)}{p^j}\right).
+ \label{eq:odd-loss}
+\end{align}
+For fixed odd $p$, at $i=0$ this has a term of order $hDu$;
+the binary case cancels that term exactly.
+\end{proposition}
+\begin{proof}
+Nodes of valuation less than $i$ have equal valuations in numerator and
+denominator and contribute zero. For $j\ge1$, the grid contains
+$D/p^j$ nodes of valuation $i+j$ with selected leading digit; their
+multiplicity is $h(H-j)_+$. It contains $(p-1)D/p^j$ nodes with
+$v_p(t-q)=i+j$; they all have valuation $i$ and the same leading digit
+as $t$, hence multiplicity $hH$. Subtract these contributions and sum
+the valuation level $j$. The second equality uses
+$(H-j)_+=H-\min(j,H)$.
+\end{proof}
+
+Covering a deformation of degree $\Theta(Mp^{a+1})$ requires
+$h=\Theta_p(M/u)$, since
+$\sum_{j<u}p^{a-j}h(u-j)=\Theta_p(hp^au)$.
+Thus for fixed odd $p$ the new term in \eqref{eq:odd-loss} has size
+$\Theta_p(MD)$, losing the helpful $1/u$ factor. This calculation
+does not rule out all nonbinary approaches. It rules out the tempting
+argument that changing the radix, while keeping this locality and
+one-digit taper, automatically improves the asymptotic order.
+
+\subsection{Unbalanced binary trees do not evade the flag witness at the used arities}
+The incoming flag construction proves optimality among balanced binary
+separator trees in its Euclidean relaxation. We checked the more general
+tree shapes at the arities $4,8,16$ used by its best polynomial-space
+schedule.
+Give directed pairs incident with a distinguished vertex weight $1$ and
+all other directed pairs weight $2/3$. Let $P(n)$ be the smallest possible
+maximum root-to-leaf cut cost on $n$ ordinary vertices, and $S(n)$ the
+corresponding value with one distinguished vertex. Exact recurrences are
+\begin{align*}
+ P(1)&=S(1)=0,\\
+ P(n)&=\min_{1\le a<n}\left\{\frac43a(n-a)
+                      +\max(P(a),P(n-a))\right\},\\
+ S(n)&=\min_{1\le a<n}\left\{\frac23(n-a)(2a+1)
+                      +\max(S(a),P(n-a))\right\}.
+\end{align*}
+In the last recurrence the distinguished child has $a$ vertices.
+All labels of the same type are interchangeable, so every binary tree
+shape is covered; the recurrences are proved by its first split.
+Exact rational evaluation gives
+\[
+ S(4)=26/3,\qquad S(8)=98/3,\qquad S(16)=370/3.
+\]
+These equal the squared witness norms in the existing flag certificate.
+After normalization, the optimal local coefficients at these arities
+remain $r^{-1}\sqrt{(r-1)(4r+10)/9}$ even when unbalanced trees are
+allowed. This is a finite model-specific strengthening. It neither proves
+the same formula for every $r$ nor lower-bounds arbitrary contraction
+algorithms; indeed a naive extension of the formula to every integer
+arity is false.
