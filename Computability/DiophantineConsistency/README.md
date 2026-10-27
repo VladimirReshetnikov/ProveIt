@@ -152,6 +152,13 @@ builds pass sixteen standard-only reports with identical objects. Context
 quantifier transport,source derivation induction and source axiom
 interpretation remain open.
 
+The [adaptive source restoration](reviews/native-adaptive-source-restoration-root.md)
+now derives all31 positive source coordinates and all22 original rows
+from the literal positive cuts, preserving visible fields and rank.
+Independent builds pass five standard-only reports and identical objects.
+Whole graph binding,the canonical converse and current endpoint/internal
+arithmetic composition remain separate; no new metric is promoted.
+
 The [bounded even seed-label theorem](reviews/validator-seed-padding222-root.md)
 now supplies a seed and typed-matrix vacuity at an arbitrarily large even
 self-label, with numeric bounds and an odd binder stream. Independent

@@ -11,6 +11,13 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [adaptive source reconstruction](reviews/native-adaptive-source-restoration-root.md)
+now derives all31 positive source coordinates and all22 literal rows from
+the smaller construction's four positive cuts. Independent builds pass
+five standard-only reports with identical objects. This is an external
+integer/natural theorem; whole graph binding,the canonical converse,current
+endpoint composition and the separate PA/HA internalization remain open.
+
 The [bounded even seed-label theorem](reviews/validator-seed-padding222-root.md)
 now provides actual seed and matrix-vacuity witnesses for arbitrary internal
 typed matrices using a bounded even self-label and odd binder stream.

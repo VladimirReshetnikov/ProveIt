@@ -30,6 +30,14 @@ historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
 
+The [adaptive source restoration](reviews/native-adaptive-source-restoration-root.md)
+now constructs all31 positive original-source coordinates and proves all22
+literal rows from the original positive inputs and four cuts. Deleted
+quotients and ordinary gamma have proved positive signs; visible fields
+and rank are preserved. Independent builds pass five standard-only reports
+with identical objects. Whole graph binding,the canonical converse,current
+endpoint composition and internal arithmetic remain open.
+
 The [bounded even seed-label theorem](reviews/validator-seed-padding222-root.md)
 now chooses an arbitrarily large even self-label with actual seed and
 typed-matrix vacuity witnesses. Bounds handle stored labels and parity
