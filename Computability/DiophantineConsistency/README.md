@@ -18,6 +18,23 @@ is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 
+The [internal signed-factor theorem](reviews/arithmetic-signed-pairs-root.md)
+now derives all five positive unit identities from the scaled signed product
+and four negative-unit exclusions, including the transport factor's sign.
+Independent fresh pairs match both objects/full logs and seven standard-only
+reports. Actual polynomial evaluation binding remains open.
+
+The [concrete logical-source theorem](reviews/validator-seed-logical-images222-root.md)
+now discharges the actual equality/irreflexivity/GIC images and internal
+refutation transfer without an image oracle. Independent fresh pairs match
+both objects/full logs and fifteen standard-only reports. Full ZF/ZFC
+calibration remains open.
+
+The [internal norm-sign theorem](reviews/arithmetic-negative-norms-root.md)
+now excludes the required negative units using actual remainders and bounded
+internal descent. Independent fresh pairs match both objects/full logs and
+seven standard-only reports. Literal polynomial soundness remains open.
+
 The [actual215 source-site theorem](reviews/arithmetic-site215-root.md) now
 executes all six instruction cases on arbitrary internal data using the
 complete 4,751-site certificate. Independent fresh pairs match both objects,

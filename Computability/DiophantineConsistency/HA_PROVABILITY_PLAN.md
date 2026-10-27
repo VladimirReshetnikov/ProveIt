@@ -26,6 +26,31 @@ and half-index recovery have since passed independent review
 below. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
 
+The [internal signed-factor extraction](reviews/arithmetic-signed-pairs-root.md)
+now turns an actual scaled five-factor signed product into five positive
+additive identities, using four negative-unit exclusions and deriving the
+transport factor's sign. It handles arbitrary internal representatives and
+cancellation without an integer quotient. Independent fresh pairs match
+both objects/full logs and all seven standard-only reports with zero refresh.
+The literal splitNatural/scaled-product binding and application of the
+proved norm exclusions remain before actual polynomial soundness.
+
+The [concrete logical source images](reviews/validator-seed-logical-images222-root.md)
+now supply all five actual equality axioms, literal irreflexivity and GIC
+in one discharged moving-marker image contract. Its concrete source
+refutation-to-seed theorem has no image oracle; the actual checker witness
+adds IΣ2. Independent fresh pairs match both objects/full logs and all
+fifteen standard-only reports, with zero refresh. Tagged transitive
+containers, profile Eqv/Member, quotient/WF and ZF/ZFC calibration remain.
+
+The [internal negative-norm exclusions](reviews/arithmetic-negative-norms-root.md)
+now prove the required modulo-four and consecutive-factor sign obstructions
+in arbitrary IΣ1 models. Genuine bounded internal descent handles the
+consecutive factor, retaining the n=1 counterexample and both inverse-root
+orientations. Independent fresh pairs match both objects/full logs and
+all seven standard-only reports, with zero refresh. Signed-product and
+literal polynomial evaluation binding remain before actual soundness.
+
 The [actual215 source-site theorem](reviews/arithmetic-site215-root.md)
 now derives all six instruction execution cases from actual LeafAt membership
 and the complete closed 4,751-site certificate. Internal data and zero gaps
