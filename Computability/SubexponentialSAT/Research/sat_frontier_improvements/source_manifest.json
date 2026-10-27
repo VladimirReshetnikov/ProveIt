@@ -1,0 +1,996 @@
+{
+  "review_snapshot": {
+    "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+    "commit": "474ddba696a5d385c091c23fb2995f69edd13e00",
+    "date_utc": "2026-10-27T02:11:13Z"
+  },
+  "upstream_commit": "7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a",
+  "relevant_commits": [
+    {
+      "sha": "45233238aebf0e0a80f5a6cc39dbeaf1b28d9f9d",
+      "date": "2026-10-27T01:13:48Z",
+      "message": "Summarize the strongest claimed improvements in SubexponentialSAT README\n\nAdd a section to Computability/SubexponentialSAT/README.md that ranks what\nthe seven packets claim against the OpenAI preprint's Appendix D bounds\n(n log log n/sqrt(log n) in the worst case, n/sqrt(log n) at fixed density):\n\n- Strongest proved claim: an improvement in one density regime only. It is\n  claimed independently by sat_density_improvement and\n  eth_density_refinement. At m = Theta(n log log n) the exponent goes from\n  n log log n/sqrt(log n) to n log log log n/sqrt(log n). The worst-case and\n  fixed-density exponents are unchanged.\n- Proved improvements of constants only: about 28.6x (648.44 vs 18,535.75),\n  a factor of 16, precision 24MD/u -> 6MD/u, and the 1/sqrt(3) mode ratio.\n  Each is a comparison of upper bounds, not of runtimes.\n- Strongest claim overall, conditional: 3sat_precision_refinement's\n  n log log n/log n (n/log n at fixed density). It rests on an unproved\n  summation algorithm. The weaker conditional proposals of 3sat_refinement\n  and 3sat_asymptotic_analysis are listed with their missing steps.\n- eth.pdf matches Appendix D's order in n and is not a refinement.\n\nThe summary is drawn from the packets' README and status files; nothing\nwas rechecked.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "3e096089911f0e3ff395168976a05297f5683186",
+      "date": "2026-10-27T01:03:12Z",
+      "message": "Vendor openai/math preprint \"The Exponential Time Hypothesis is False\"\n\nAdd an unmodified copy of the upstream manuscript directory\npreprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026 from\nhttps://github.com/openai/math at commit\n7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a, the head of main (committed\n2026-10-26T21:18:03Z), fetched 2026-10-26. It goes under\nlib/openai-math/preprints/, beside the existing Lean port, because lib/ is\nthe repository's only vendored-code root. It is the primary source of\nComputability/SubexponentialSAT.\n\n- Six files (README.md, paper.pdf, build/main_full_version.tex,\n  build/quantitative-{reduction,contraction,circuits}.tex). They were taken\n  from a shallow, blobless, sparse clone with `git cat-file blob`. Each\n  staged blob ID equals the upstream tree entry, so the copy is byte for\n  byte. The four build/*.tex files are force-added because the root\n  .gitignore ignores build/ directories.\n- License: upstream licenses the repository under Apache-2.0 and has no\n  license file under preprints/. preprints/LICENSE is the unchanged upstream\n  root LICENSE (blob 261eeb9e9f), byte-identical to the existing\n  lib/openai-math/LICENSE. No copyright or NOTICE text is invented.\n- preprints/PROVENANCE.md records the upstream URL, pinned commit, fetch\n  method and date, and the per-file sizes and blobs. It notes that the\n  directory is identical at the 42907c9e99 pin used by two packets, and that\n  the upstream Lean development is not vendored.\n- Links: lib/README.md, lib/openai-math/README.md and the\n  Computability/SubexponentialSAT README point to the vendored copy. The\n  project README now gives the 67-page paper.pdf a local link.\n\nNothing is built or compiled; the preprint is not part of the OAI library.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "2b925d8800cda68f5723b65dc1fcdaf3d8170359",
+      "date": "2026-10-27T00:58:36Z",
+      "message": "Place sub-exponential 3-SAT (ETH) reports in new Computability/SubexponentialSAT\n\nCreate the topic project Computability/SubexponentialSAT for claims that\n#k-SAT runs in 2^{o(n)} time, refuting the Exponential Time Hypothesis, and\nfor reports that analyse those algorithms. Place all nine 3-SAT/ETH arrivals\nof 26 October 2026 and retire them from docs/incoming.\n\nNew README.md: what the project is, its trust status (nothing checked in\nProveIt; no Lean/ or Coq/ yet), the two primary manuscripts, the upstream\nopenai/math Lean scope (lean/docs/378.md states a weaker\n(log log n)^2/sqrt(log n) bound than the manuscript), and an index of the\nseven packets with their claims and stated limits. Five packets pin\nopenai/math@7ef5c0cc5c and two pin 42907c9e99; the preprint directory is\nblob-for-blob identical at both.\n\nRetired archives and how each is accounted for:\n- cauchy_mode_improvement_2026-10-26.zip (arrival a505bd768b):\n  Research/cauchy_mode_improvement/, 17 files. Factorial Cauchy modes,\n  1/sqrt(3) mode-count ratio; order unchanged.\n- eth_contraction_improvements.zip (a505bd768b):\n  Research/eth_contraction_improvements/, 15 files. Exact Hermite taper,\n  schedule coefficient 648.44 vs 18,535.75, streamed packet extraction.\n- sat_density_improvement.zip (a505bd768b):\n  Research/sat_density_improvement/, 9 files. Density-aware bound\n  2^{O_k((n/sqrt(log n)) min{log(2+m/n), log log n})}.\n- eth.pdf (a505bd768b): Research/claude-2o-n-3sat/eth.pdf, the 49-page\n  \"A 2^{o(n)} time algorithm for 3-SAT\" credited to Claude, whose Lean\n  development is unpublished.\n- paper.pdf (a505bd768b): not filed. It is byte-identical to the OpenAI\n  preprint's paper.pdf (blob 0503566e95), recorded in Research/OMITTED.tsv.\n- 3sat_precision_refinement_2026-10-26.zip (64b3202ee8):\n  Research/3sat_precision_refinement/, 16 files. Precision 24MD/u -> 6MD/u;\n  the stronger rates are conditional.\n- 3sat_refinement_package.zip (64b3202ee8): Research/3sat_refinement/,\n  12 files. Scalar parity lift k(n+a); the (log log n)^{3/2}/log n rate\n  needs an unsupplied factorization.\n- eth_density_refinement.zip (64b3202ee8):\n  Research/eth_density_refinement/, 15 files. A density bound\n  n log(2+B)/sqrt(log n), overlapping sat_density_improvement.\n- 3sat_asymptotic_analysis_20261027.zip (8afdbbea48):\n  Research/3sat_asymptotic_analysis/, 35 files. Barriers and two missing\n  interfaces; no stronger bound. Its eight source/ copies of upstream files\n  are omitted as byte-identical and listed with their blobs in OMITTED.tsv.\n\nEach archive was extracted with `py -I` into its own empty scratch\ndirectory. Every filed file matched the packet's own checksum manifest. Five\ndelivered SHA256SUMS ledgers are not committed: the root .gitignore excludes\nthem by policy (c00d8c3993). Two delivered CRLF CSV files are marked -text\nin .gitattributes, so their staged blobs equal the delivered bytes. No\nsupplied script, test, Makefile or LaTeX build was run.\n\nThe docs/incoming README gains a table for this batch. The Computability and\nroot READMEs gain one-line entries for the new project.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "3e57705cf14ee9ac99c0ac35cfff751dcf70b396",
+      "date": "2026-10-27T01:54:16Z",
+      "message": "New research report(s)"
+    },
+    {
+      "sha": "8afdbbea48d67b8d252a99e8926f3eca9649eae3",
+      "date": "2026-10-27T00:48:56Z",
+      "message": "New research report(s)"
+    },
+    {
+      "sha": "64b3202ee84fc4d71fe69c34d2110c93b7da95cd",
+      "date": "2026-10-27T00:44:39Z",
+      "message": "New research report(s)"
+    },
+    {
+      "sha": "a505bd768bce347c70e923586c5f72ad3085bf44",
+      "date": "2026-10-27T00:42:51Z",
+      "message": "New incoming external reports: sub-exponential 3SAT / ETH packets\n\nCommit, unchanged and as delivered, the five sub-exponential 3SAT (ETH)\narrivals that the drop process had staged but not committed, so that each\nstays recoverable after the placement commit retires it (docs/incoming\nREADME, section 1):\n\n- cauchy_mode_improvement_2026-10-26.zip (603,205 bytes): factorial\n  Cauchy modes for the contraction of the OpenAI ETH preprint.\n- eth_contraction_improvements.zip (462,089 bytes): tapered Hermite\n  count, revised contraction schedule, streamed packet extraction.\n- sat_density_improvement.zip (476,245 bytes): clause-density-aware\n  exact k-SAT counting.\n- paper.pdf (887,884 bytes): OpenAI, \"The Exponential Time Hypothesis is\n  False\" (25 October 2026), byte-identical to paper.pdf in\n  openai/math@7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a.\n- eth.pdf (868,673 bytes): \"A 2^{o(n)} time algorithm for 3-SAT\"\n  (26 October 2026), a separate 49-page manuscript.\n\nPath-limited: no other staged or modified path is included.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "6d3adc45061535ebe6fa7cd3d9b37dff7dcfc22a",
+      "date": "2026-10-27T02:03:44Z",
+      "message": "Place eight round-2 sub-exponential 3-SAT packets in SubexponentialSAT\n\nFile the second round of ETH refinement packets under\nComputability/SubexponentialSAT/Research and retire their archives from\ndocs/incoming. All eight bound the OpenAI preprint's normalized tensor\ncontraction by 2^{(C+o(1)) s/sqrt(log2 s)}, with C per normalized wire.\nNone changes the SAT order n log log n/sqrt(log n), and none closes a\nmissing interface of the round-1 conditional proposals.\n\nRetired archives, where each went, and the coefficient each claims:\n- eth_asymmetric_packet_balancing_2026-10-26.zip (3e57705cf1):\n  eth_asymmetric_packet_balancing/, 28 files. C = pi sqrt(5/2)(9+sqrt3)/ln2\n  = 76.909, the smallest claimed; 31.064 at degree <= s^(1/12).\n- 3sat_round2_refinement_20261027.zip (3e57705cf1): 3sat_round2_refinement/,\n  46 files. C = 84.066 on s/sqrt(ceil(log2 s)), with an independent review\n  and an audit of eth.pdf. 17 evidence/ copies of files already in ProveIt\n  (OpenAI sources, eth.pdf, six placed report sources, our README,\n  OMITTED.tsv, PROVENANCE.md, two scripts) are omitted.\n- eth_balanced_packing_2026-10-26.zip (3e57705cf1): eth_balanced_packing/,\n  22 files. C = 94.748.\n- eth_high_moment_2026-10-26.zip (3e57705cf1): eth_high_moment/, 21 files.\n  C = (9 pi/(4 ln2)) sqrt(15 log2 54) = 94.748, the same value.\n- ETH_Matching_Packing_Thin_Gaps_2026-10-27.zip (d098ba436b):\n  eth_matching_refinement/, 24 files. C = 94.748 again, a third independent\n  derivation. 11 sources/ snapshots are omitted.\n- eth_packet_refinement_2026-10-26.zip (3e57705cf1): eth_packet_refinement/,\n  20 files. C = 9 pi sqrt22/(2 ln2) = 95.664.\n- eth_recursive_refinement_2026-10-26.zip (3e57705cf1):\n  eth_recursive_refinement/, 24 files. C = 133.207, with a mod-8 Cauchy\n  slope of 64/21.\n- eth_joint_cauchy_2026-10-26.zip (3e57705cf1): eth_joint_cauchy/, 26 files.\n  C = 319.686 in polynomial space; a Strassen variant gets 225.597 time but\n  needs subexponential space.\n\nEach archive was extracted with `py -I` into its own empty scratch directory\nand checked for unsafe member paths. Every member matched its packet's\nchecksum manifest. Every filed file is byte-identical to its member.\n41 members are not filed:\n- three SHA256SUMS ledgers (.gitignore policy);\n- 38 byte-identical copies of files at ProveIt ab2fbc9e03/d098ba436b or\n  openai/math@7ef5c0cc5c, appended to Research/OMITTED.tsv with the commit\n  each matches. Every row was rechecked against the arrival ZIP and the named\n  commit.\n\nThe OMITTED.tsv identity column is now `byte_identical_to`, prefixed with\nits source. Three delivered CRLF CSV files are marked -text, and four\ndelivered qa/*.log audit logs are force-added past the *.log ignore rule.\nNo supplied script, test, Makefile or LaTeX build was run.\n\nThe project README gains a round-2 table and an updated coefficient ladder:\n18,535.75 -> 648.44 -> 374.38 -> ... -> 76.909, about 241x on the upper\nbound. The placement record, docs/incoming table and Computability index\nare updated to match.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    }
+  ],
+  "incoming_files": [
+    {
+      "path": "docs/incoming/3sat_round2_refinement_20261027.zip",
+      "git_blob": "86130018a5187c09ce58c2260cde6e8563a4620d",
+      "size_bytes": 1609041,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06/docs/incoming/3sat_round2_refinement_20261027.zip"
+    },
+    {
+      "path": "docs/incoming/README.md",
+      "git_blob": "d2b7ab9483984518996dcc49c46460ef138a151c",
+      "size_bytes": 280522,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06/docs/incoming/README.md"
+    },
+    {
+      "path": "docs/incoming/eth_asymmetric_packet_balancing_2026-10-26.zip",
+      "git_blob": "4313cf09e210adb48564296893e45c4d3633b903",
+      "size_bytes": 619843,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06/docs/incoming/eth_asymmetric_packet_balancing_2026-10-26.zip"
+    },
+    {
+      "path": "docs/incoming/eth_balanced_packing_2026-10-26.zip",
+      "git_blob": "89ad4fee4f9937052f1c84b6b2d3387844549dc1",
+      "size_bytes": 410700,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06/docs/incoming/eth_balanced_packing_2026-10-26.zip"
+    },
+    {
+      "path": "docs/incoming/eth_high_moment_2026-10-26.zip",
+      "git_blob": "356b86b6adaa0b661083f9da342f59268faff538",
+      "size_bytes": 494520,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06/docs/incoming/eth_high_moment_2026-10-26.zip"
+    },
+    {
+      "path": "docs/incoming/eth_joint_cauchy_2026-10-26.zip",
+      "git_blob": "009f8b85966ef630792223aef685594b24aab520",
+      "size_bytes": 533654,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06/docs/incoming/eth_joint_cauchy_2026-10-26.zip"
+    },
+    {
+      "path": "docs/incoming/eth_packet_refinement_2026-10-26.zip",
+      "git_blob": "fbb1a420c0cb3a142dfbf0e652330686f2f89de1",
+      "size_bytes": 517018,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06/docs/incoming/eth_packet_refinement_2026-10-26.zip"
+    },
+    {
+      "path": "docs/incoming/eth_recursive_refinement_2026-10-26.zip",
+      "git_blob": "4c83161551e88f4f1c57e5093832d30544a8c7a3",
+      "size_bytes": 491248,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06/docs/incoming/eth_recursive_refinement_2026-10-26.zip"
+    }
+  ],
+  "placed_files": [
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/MANIFEST.sha256.json",
+      "git_blob": "e4593a3fc7e5d6178ad30d832e22330c897140c9",
+      "size_bytes": 6735
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/README.md",
+      "git_blob": "fe4050848fecff60061792b4859b02143c3aa01d",
+      "size_bytes": 4963
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/audit/CONDITIONAL_KERNEL_REVIEW.md",
+      "git_blob": "ab14245072788f7b93dc18d1510f8a6111e0ecc6",
+      "size_bytes": 2006
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/audit/INDEPENDENT_PAPER_AUDIT.md",
+      "git_blob": "aee52535ff4815bb317fdd0282b8481945b2025f",
+      "size_bytes": 7581
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/audit/TAPER_AND_NEWTON_LEMMAS.tex",
+      "git_blob": "bc85b97b7e3be22b00e8cf49a262c48b8af8bb93",
+      "size_bytes": 3688
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/audit/check_taper_newton.py",
+      "git_blob": "8564efe0855d9cbd1c0f8966f317bd5587f35b8c",
+      "size_bytes": 6887
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/audit/lean_selected/SqrtLogSpace_Final.lean",
+      "git_blob": "a69635a2492e06a26f2e33d4251edd1e21ba3332",
+      "size_bytes": 11701
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/audit/lean_selected/SqrtLog_ExecutionNativeFinal.lean",
+      "git_blob": "686345030dc1871f758a22d296c869b7f4097303",
+      "size_bytes": 1737
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/audit/lean_selected/SqrtLog_StatementCanonical.lean",
+      "git_blob": "9fe5d4f524a679d7885f5d5dd351063f8302fd83",
+      "size_bytes": 3412
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/audit/lean_selected/manifest.json",
+      "git_blob": "684af9a1650971ed819fd5865ce3be88198b8d30",
+      "size_bytes": 1274
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/audit/taper_newton_test_normal.json",
+      "git_blob": "e5fb609ca85032b86d6da575391feef7e5f2f6d2",
+      "size_bytes": 866
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/audit/taper_newton_test_optimized.json",
+      "git_blob": "29c218c31186d2914a071962067fa5dc65acab14",
+      "size_bytes": 866
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/qa/RELEASE_VALIDATION.json",
+      "git_blob": "b069c93785a6abb80d72a1ef916747dc4fa2fc73",
+      "size_bytes": 6927
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/qa/VISUAL_REVIEW.md",
+      "git_blob": "c4e6bfb751c6b18e464cd2df23cdfebf84ec11c4",
+      "size_bytes": 1201
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/qa/report_lemmas_normal.json",
+      "git_blob": "a77ddade7c4488772226c9b08fa4944843a6b692",
+      "size_bytes": 347
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/qa/report_lemmas_optimized.json",
+      "git_blob": "4a8139e788c44a64657bb9e647fab305e3822ec0",
+      "size_bytes": 347
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/report/degree_route.tex",
+      "git_blob": "b87952b515e5ec5a4f933e38e2f44888d8307c26",
+      "size_bytes": 58
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/report/report.pdf",
+      "git_blob": "fbf441d7a35390eda9e0951cae610bb30f073ad7",
+      "size_bytes": 354173
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/report/report.tex",
+      "git_blob": "68fcb8b0acca3e967d51c02decf483956dd459c6",
+      "size_bytes": 16103
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/report/research_routes.tex",
+      "git_blob": "451fea21bfda4885da445da8b90c8b77057b393b",
+      "size_bytes": 7093
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/research_decision/findings.md",
+      "git_blob": "720fc2fbb32d2e7a37d14ae35b77318353e6f965",
+      "size_bytes": 16044
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/research_runtime/CONDITIONAL_DEGREE_KERNEL.tex",
+      "git_blob": "d27851926dec190aecb3384fef2d6f3ba9898a77",
+      "size_bytes": 8026
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/research_runtime/CONTRACTION_SOURCE_ANCHORS.txt",
+      "git_blob": "8a0470d5e2aa9eccad2d66294a1d2df2453e4c09",
+      "size_bytes": 12162
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/research_runtime/METHOD_BARRIERS.md",
+      "git_blob": "266d3249fa2da76c67eadce6643d84b0174cac07",
+      "size_bytes": 4444
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/research_runtime/REDUCTION_SOURCE_ANCHORS.txt",
+      "git_blob": "b095e89f79f2310c1859476780fc5eff26d5e7ff",
+      "size_bytes": 4595
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/research_runtime/toy_validation_results.json",
+      "git_blob": "65444fe29ac6ce32b388b52b61907c65b9c4fb57",
+      "size_bytes": 2771
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/research_runtime/validate_toy_claims.py",
+      "git_blob": "92d742731437ff18ea8f02e954b034d5f983672c",
+      "size_bytes": 7155
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/scripts/build_bundle.py",
+      "git_blob": "cb60d5a4b40d8c3c417ce4baa3d88703e3832df9",
+      "size_bytes": 3030
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/scripts/build_report.sh",
+      "git_blob": "61fed36f526cdd673e535ea80d8838922aeb2620",
+      "size_bytes": 1738
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/scripts/check_report_lemmas.py",
+      "git_blob": "fa2fed0af58adfda435af96e9ccf9fc2b70beb68",
+      "size_bytes": 1948
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/scripts/negative_integrity_controls.py",
+      "git_blob": "3013d7cf1b085d0029713309e5543c33959004c4",
+      "size_bytes": 1526
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/scripts/replay_archive.py",
+      "git_blob": "f0cebe6b446398c6cc4d1fa1b2ade4f53774d1b2",
+      "size_bytes": 2961
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/scripts/verify_bundle.py",
+      "git_blob": "9d69164333ff715a543b2080e7ec7fa3eddc9187",
+      "size_bytes": 3175
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/source/manifest.json",
+      "git_blob": "a727760207876da9ea803e2343383a11b85a478a",
+      "size_bytes": 3406
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/source/paper.txt",
+      "git_blob": "ba532db69b48b15214b13593f7c1bfae7141d332",
+      "size_bytes": 284223
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/MANIFEST.sha256",
+      "git_blob": "df3c5bfb457b0ae5e9d93ce6866eb8c73798dfa7",
+      "size_bytes": 1377
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/README.md",
+      "git_blob": "023dd67060588d768c635386c1665c53dca01bcc",
+      "size_bytes": 5449
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/code/mode_network.py",
+      "git_blob": "5fbf7ec6b8972113d7c8c124e759db0498a9b4e1",
+      "size_bytes": 21710
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/code/precision_schedule.py",
+      "git_blob": "c1f6fc3e542b674f8d20728abbd28b3c4a1d1360",
+      "size_bytes": 13937
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/code/verify_bounds.py",
+      "git_blob": "206deaf044009751620df60ca4018cfb27a9856a",
+      "size_bytes": 22746
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/code/verify_mode_network.py",
+      "git_blob": "58f9c008e4797595b53fb2400a940132de4fc4e4",
+      "size_bytes": 8001
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/code/verify_precision_schedule.py",
+      "git_blob": "4c786240777c215d1d8a77b29c09da417d410390",
+      "size_bytes": 18717
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/notes/conditional_theorem_review.md",
+      "git_blob": "6040ee26e1d319a921e305af06480dda50a4d39d",
+      "size_bytes": 9726
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/notes/hermite_precision_refinement.md",
+      "git_blob": "1b0c5e97974f5c17386b646d5675d37ac1d7f2e1",
+      "size_bytes": 7777
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/report.pdf",
+      "git_blob": "7cc0d031370ea2a487addaa73cc4d71ff5ff4d69",
+      "size_bytes": 407420
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/report.tex",
+      "git_blob": "ef71910583fe996f22bb070cca8ebe1b58efb368",
+      "size_bytes": 44093
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/results/bounds_verification.json",
+      "git_blob": "b5a1a3d9f493f701e03ec8be72261adc5675483c",
+      "size_bytes": 70715
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/results/exponent_scales.csv",
+      "git_blob": "62e7c78b0843a2c3c5b7792a6b3fee46455e99de",
+      "size_bytes": 1401
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/results/mode_verification.json",
+      "git_blob": "1b011fe910a5212cfcc2d12f1b5c5f8b41962a1d",
+      "size_bytes": 10015
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/results/precision_verification.json",
+      "git_blob": "ba078da83f2fee472e71a2dffa4303b9fe2a5ce6",
+      "size_bytes": 72143
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/source_manifest.json",
+      "git_blob": "8367d175193417f854385ea6de636bb6df6d6f6d",
+      "size_bytes": 3993
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/3sat_refinement_report.pdf",
+      "git_blob": "b38401d15192f9c8da7f5fa31d75d4376e64e60e",
+      "size_bytes": 458608
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/3sat_refinement_report.tex",
+      "git_blob": "6c3110004cd3d4edcee0a4574d124676c25a8a3c",
+      "size_bytes": 47717
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/README.md",
+      "git_blob": "a8aa5c518a95a434975e2e34f7ccb61f206fb671",
+      "size_bytes": 3791
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/build_report.py",
+      "git_blob": "fa9ea2b7e431ddb4311f2a58b11aa358adc57618",
+      "size_bytes": 561
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/code/parity_lift.py",
+      "git_blob": "33f118ab1be0953b7628c1ea430d4b3aa8169e09",
+      "size_bytes": 10676
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/code/weighted_partitions.py",
+      "git_blob": "35efaf15d8ca0e86501056254b804234479c8769",
+      "size_bytes": 12872
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/data/parity_checks.json",
+      "git_blob": "baab48dcf85b52134125e5a4decebc7471e08cd2",
+      "size_bytes": 536
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/data/partition_checks.json",
+      "git_blob": "e3bf89eed37614d1db0f1d1ea5f498bd094368f4",
+      "size_bytes": 4032
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/data/pdf_checks.json",
+      "git_blob": "da8c9e7c4fdd80aec5148120ef207adbb5feca63",
+      "size_bytes": 367
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/data/research_status.json",
+      "git_blob": "2b358447820ef9cbaa4f0ece54a95cfe8b4552c8",
+      "size_bytes": 1255
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/data/source_manifest.json",
+      "git_blob": "b86c5e135e3b1335c3f9dc66c8fc0414a2bd185e",
+      "size_bytes": 3161
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement/verify_package.py",
+      "git_blob": "985637f891964668b8a7bb42eb4a3b18f2c5b5ec",
+      "size_bytes": 937
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/OMITTED.tsv",
+      "git_blob": "b040ed027801249643535373ff9557e5af47a06b",
+      "size_bytes": 1856
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/Makefile",
+      "git_blob": "ef8f1c74fe2688b17db76b25592b2e5c46dc9773",
+      "size_bytes": 288
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/README.txt",
+      "git_blob": "077c8dede289965f9564e30ecced7327524b7950",
+      "size_bytes": 3781
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/code/build_exhibits.py",
+      "git_blob": "1bd3833096831ce6c8e1ff6cda9b8893b182a37c",
+      "size_bytes": 4843
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/code/cauchy_modes.py",
+      "git_blob": "fdae3747182b7fa7799febed96a5483e84131235",
+      "size_bytes": 13612
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/code/count_modes.py",
+      "git_blob": "3fad9d170412c9c7adf786b7079ebef08df6baa7",
+      "size_bytes": 7027
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/code/verify_modes.py",
+      "git_blob": "98b84e7401ca03a2e5eb456cad90ae84c09ad5b7",
+      "size_bytes": 12768
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/figures/mode_entropy.pdf",
+      "git_blob": "0fd7ad3215660b1b86b34b7804fb0b58c53eee65",
+      "size_bytes": 18516
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/figures/mode_entropy.png",
+      "git_blob": "20d309952ebba519a6aca17e1d4df94ddd104803",
+      "size_bytes": 128055
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/report.pdf",
+      "git_blob": "a230263329114e07a6f3ca8c133524bbc6a8ffba",
+      "size_bytes": 441883
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/report.tex",
+      "git_blob": "108e12b461b678313ab70c9e5e58d8dc05763e1a",
+      "size_bytes": 36298
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/results/build_summary.json",
+      "git_blob": "b8ff2b0949d693fe1d98fcceefd93cc0ac06b623",
+      "size_bytes": 538
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/results/mode_counts.csv",
+      "git_blob": "14fb04e28f9479e624f735258de44f4b3e5a8779",
+      "size_bytes": 3984
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/results/mode_counts.json",
+      "git_blob": "d21a3017d88b988d6f0d95f80c4d65978a054b85",
+      "size_bytes": 11476
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/results/mode_table.tex",
+      "git_blob": "84081f7ccfd532eb03b13e71f09efbaae6f580d7",
+      "size_bytes": 750
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/results/validation_summary.tex",
+      "git_blob": "7b1c318db18169b90bd0a629e589a88705ef3fac",
+      "size_bytes": 567
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/results/verification.json",
+      "git_blob": "55f676f086419fa94b75cc5cf91b02f2239b84df",
+      "size_bytes": 6124
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/source_manifest.json",
+      "git_blob": "016e34f0f69523b7b4453e0a51299b55fbd64e12",
+      "size_bytes": 3126
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/claude-2o-n-3sat/eth.pdf",
+      "git_blob": "d2ad67d5b86add67c8256e4633fec11c48d0db44",
+      "size_bytes": 868673
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/INTEGRATION.txt",
+      "git_blob": "386b656b6482b23c54fdcdd5035c8f0e64a8af0c",
+      "size_bytes": 3657
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/README.txt",
+      "git_blob": "4214d15ec286a4d86ebe112c3b3e0e71fdcf2d62",
+      "size_bytes": 4260
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/code/contraction_parameters.py",
+      "git_blob": "3732ee8b036037669a5d42d61063077c06352b4a",
+      "size_bytes": 8096
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/code/fetch_source.py",
+      "git_blob": "9373fa88d4eab10a8fa463030b254e7ab7e6fe8d",
+      "size_bytes": 1782
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/code/packet_extraction.py",
+      "git_blob": "ae338167eace8f10a715688228aa0b9cd9426bf7",
+      "size_bytes": 8274
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/code/test_contraction_parameters.py",
+      "git_blob": "7ff07986fece0405f21abf87dde95413baa69d15",
+      "size_bytes": 6227
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/code/test_packet_extraction.py",
+      "git_blob": "18c0fc54e7924f01b5aae032091e2305176f3201",
+      "size_bytes": 5650
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/report.pdf",
+      "git_blob": "6b5a2256c4c53abec64d3d154e64f5aeb5fa52dd",
+      "size_bytes": 427997
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/report.tex",
+      "git_blob": "2b23485801f2900c60c38392cf5e91e0aa9f3e60",
+      "size_bytes": 38638
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/source_manifest.json",
+      "git_blob": "0166c9ff11fb6aa9987896ad1de1b3f6972e4356",
+      "size_bytes": 2708
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/verification/package_validation.json",
+      "git_blob": "327841831ad157f1dc0b45f452d5e1518ea1fe0c",
+      "size_bytes": 613
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/verification/packet_extraction_proof.txt",
+      "git_blob": "c018e199f86efc118f60ea45a229a00230d4a132",
+      "size_bytes": 6382
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/verification/packet_extraction_validation.json",
+      "git_blob": "fb17cb8d4661c923fb94367a6e2494b867b6b133",
+      "size_bytes": 1146
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/verification/parameter_validation.json",
+      "git_blob": "e0f57df38f65ed009c25ae517c7c59c122f97859",
+      "size_bytes": 3484
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/verification/schedule_audit.txt",
+      "git_blob": "a7a4d1df9b8e01d0e9dd621104ef5b6b5e7e4114",
+      "size_bytes": 15770
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/LICENSE-UPSTREAM.txt",
+      "git_blob": "57bc88a15a0ee8266c259b2667e64608d3f7e292",
+      "size_bytes": 11358
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/README.txt",
+      "git_blob": "da2932574d2c1d951344556384da9fb90568fe40",
+      "size_bytes": 4216
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/build_report.py",
+      "git_blob": "62ad35b22457576a4a147a19101f07b638aff627",
+      "size_bytes": 894
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/checks/check_retuning.py",
+      "git_blob": "2803848cf4107f324ff47954336ba28f4883a0e1",
+      "size_bytes": 4441
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/checks/check_smith.py",
+      "git_blob": "754bffdbd74027835f57ce22d6e21fc525c26cc4",
+      "size_bytes": 3304
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/checks/density_checks.py",
+      "git_blob": "f78ff775a08e2ee8f04584fd79e6efb05ec47493",
+      "size_bytes": 11762
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/fetch_sources.py",
+      "git_blob": "bbb80a3c142803f8e30f943c0c2d5001afce771d",
+      "size_bytes": 1555
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/integration_notes.txt",
+      "git_blob": "6609f439e67e48d4958e158ab4992f76d86fc509",
+      "size_bytes": 2860
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/report.pdf",
+      "git_blob": "6a979e3fbfed12d8469cfdf08ce100c5d0bcc160",
+      "size_bytes": 414965
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/report.tex",
+      "git_blob": "74b6793da35822061e5d0c5b157f41e6602f83a0",
+      "size_bytes": 40950
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/results/density_checks.json",
+      "git_blob": "c63246e43a9e6f4da06623c5b98643412cd9ca19",
+      "size_bytes": 10325
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/results/retuning_checks.json",
+      "git_blob": "456b93ea899665df3163c07e3ebc9f55acdcf6bb",
+      "size_bytes": 1346
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/results/smith_checks.json",
+      "git_blob": "1901883f6fe6d032352ab0845c50f9f07d1e58ba",
+      "size_bytes": 105
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/run_checks.py",
+      "git_blob": "a148b541f2143ee68aa3275d7a3309e1c25de004",
+      "size_bytes": 1085
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement/source_manifest.json",
+      "git_blob": "4a4fbf28f76e1b1b85df431ddb0018277e7bfb87",
+      "size_bytes": 4048
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/sat_density_improvement/CHECKSUMS.sha256",
+      "git_blob": "6f6c4829dadcac3951c9ae5ff47a6c98e772fe54",
+      "size_bytes": 706
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/sat_density_improvement/Makefile",
+      "git_blob": "8a92f216e11e1d811b359122493ac63744407ad2",
+      "size_bytes": 273
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/sat_density_improvement/PROOF_STATUS.txt",
+      "git_blob": "bdba320f763bb80d8833fd3254f313fa96ca3a9c",
+      "size_bytes": 3488
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/sat_density_improvement/README.txt",
+      "git_blob": "9f11cd2d3869535aa9e96492391eb59e7e2ea53d",
+      "size_bytes": 3165
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/sat_density_improvement/code/verify_components.py",
+      "git_blob": "cd17a20b2e4e38a847cf883e012f6ed2687f078f",
+      "size_bytes": 22913
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/sat_density_improvement/density_aware_sat_improvement.pdf",
+      "git_blob": "1d844820c2beff8bb8838d855f06c02ba46fa3f9",
+      "size_bytes": 437504
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/sat_density_improvement/density_aware_sat_improvement.tex",
+      "git_blob": "876335635af2e582bc33a813172515167ac6f5c1",
+      "size_bytes": 40154
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/sat_density_improvement/source_manifest.json",
+      "git_blob": "3279fd76129f5c5ac9fc078f43bcd0f589a63cab",
+      "size_bytes": 3904
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/sat_density_improvement/verification_results.json",
+      "git_blob": "c48b81a5ef87c85da42c30eb9028df6e4e7caf91",
+      "size_bytes": 247871
+    }
+  ],
+  "scope": "Fifteen ETH refinement packets plus both primary manuscripts; final snapshot 474ddba696a5d385c091c23fb2995f69edd13e00. Source-dependent mathematical review, not independent formal verification. No remote changes.",
+  "initial_review_snapshot": {
+    "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+    "commit": "ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06",
+    "date_utc": "2026-10-27T01:55:10Z"
+  },
+  "final_placement_commit": "6d3adc45061535ebe6fa7cd3d9b37dff7dcfc22a",
+  "placement_verification": "180 available text/code files of the original seven incoming packets were independently matched to their new Git blob identities; see results/placement_delta_check.json.",
+  "final_research_directory_entries": [
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis",
+      "git_tree_or_blob": "e17f313844a901196ab8d17acb1cff0e86b46908"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_precision_refinement",
+      "git_tree_or_blob": "9fea64972efe0272cdfe6df5b077afcb567952ad"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_refinement",
+      "git_tree_or_blob": "a6104c79a261d6788fc6a6d858873542a503bca9"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/3sat_round2_refinement",
+      "git_tree_or_blob": "2eb019ceee0f9f35611e98fe259266677c492731"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/OMITTED.tsv",
+      "git_tree_or_blob": "9c22e1c4fe7da5fc0a661fba7c33b7346b442c53"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement",
+      "git_tree_or_blob": "a18fb9a070c79216f968e7aa2684a1aa19682be5"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/claude-2o-n-3sat",
+      "git_tree_or_blob": "7fa348bacec64cb851b19746e138a20ba5edf064"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_asymmetric_packet_balancing",
+      "git_tree_or_blob": "e69a45b50753a0c2d46e6c92f5abc19b5f0dd967"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_balanced_packing",
+      "git_tree_or_blob": "d9efab45525ca3fe1caacf1140357bd2be5758a4"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_contraction_improvements",
+      "git_tree_or_blob": "7f34adf468cf625f4c61946e31536a4e43578b3f"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_density_refinement",
+      "git_tree_or_blob": "064add96187b07868dc8e38127b8d762fcf6d0fe"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_high_moment",
+      "git_tree_or_blob": "d9cb010573c6c202bea6c2b685d019166ecd15ed"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_joint_cauchy",
+      "git_tree_or_blob": "dc88c7e34975e7f261039dd18006a5108dd70afb"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement",
+      "git_tree_or_blob": "285b892a5119a4f4152c2e02457a2181c112c1d0"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_packet_refinement",
+      "git_tree_or_blob": "e262bed47c748325511826046abcf44f1b278ff9"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_recursive_refinement",
+      "git_tree_or_blob": "c449bfa9ce7bfccdb39e3f669c22714d1f005b9f"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/sat_density_improvement",
+      "git_tree_or_blob": "2218f686d3a107fd5661ebe176201783cd0de253"
+    }
+  ],
+  "additional_matching_files": [
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/README.txt",
+      "sha": "a499ce56b9ff41006c05010d7308754d2c55bebd",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/build_report.sh",
+      "sha": "e29d37fbd2572b80a7fa6affbc820f6a955f8d8a",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/code/refinement.py",
+      "sha": "dab67c5dfcf1be5ba77c847fd0c4827fbc07fdd3",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/code/replay_archive.py",
+      "sha": "4681ba4400de99f78f3963d1bb6c56050f9cd1bb",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/code/verify.py",
+      "sha": "b9b7722712f31bdd4cad6e255e8025601b8e3909",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/code/verify_bundle.py",
+      "sha": "98d80be3e5d8b3a32170ba3de7d4c876a5ba4e14",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/qa/audit-normal.json",
+      "sha": "a5104cf6b4d1fa97ab28bb7ecdd0ee2d638b3637",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/qa/audit-normal.log",
+      "sha": "f3b8ae94598d6458ecf20efc74baee764946c453",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/qa/audit-optimized.json",
+      "sha": "54feacb78eae4642abe0d3a60613cf64861b238d",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/qa/audit-optimized.log",
+      "sha": "fd1b2a9418f1e7106e0fba19cc08dc1aa8d404a3",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/qa/code_audit.md",
+      "sha": "7e49cd73df448ca5ef69d8110e6b4284fe412e26",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/qa/independent-normal.json",
+      "sha": "1b8815eee0fa7475d215ec0bb07551bf725cb54a",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/qa/independent-normal.log",
+      "sha": "dc4e60afee72c038bdd9859e905928e09f8698c6",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/qa/independent-optimized.json",
+      "sha": "572608c5ff77adcfdefb5d8ff589110968613ee0",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/qa/independent-optimized.log",
+      "sha": "82e0719c8ec7339c97f4c2623d474b967feaff75",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/qa/independent_code_checks.py",
+      "sha": "4e92dac8f8d7c050c7ec81e46e5dc9a6ccb9890f",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/qa/visual_review.md",
+      "sha": "2384dc3571fd8f16f03ec32a88bbb415dea37723",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/report.pdf",
+      "sha": "ca80cb0d1413ee3b3197561e23c124ae36b517fc",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/report.tex",
+      "sha": "ee8c396087e1127579b84ce9d3757ab7f65228cb",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/results/constants.json",
+      "sha": "f9c6bae259b4dff4932f1a2a2b1b5d1b9be58da9",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/results/normal.json",
+      "sha": "a5104cf6b4d1fa97ab28bb7ecdd0ee2d638b3637",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/results/optimized.json",
+      "sha": "54feacb78eae4642abe0d3a60613cf64861b238d",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/sources/00_SubexponentialSAT_README.md",
+      "sha": "cceb0df00f4787941bc46609e5a740b845dd5d83",
+      "status": "added"
+    },
+    {
+      "path": "Computability/SubexponentialSAT/Research/eth_matching_refinement/sources/manifest.json",
+      "sha": "177711709f49afa8a72cdf610f34cd115faac6df",
+      "status": "added"
+    }
+  ],
+  "historical_kernel": {
+    "file": "vendor/joint_cauchy.py",
+    "sha256": "5de8f6640154ef79b7d3592a85e2d7c963f5cb2ebbf14d9c1419736ab6f8fc2c",
+    "source_archive": "docs/incoming/eth_joint_cauchy_2026-10-26.zip",
+    "archive_sha256": "56335942f380156e655b695cdd43215ae2d8f5e3df350713be10e87be2f4705d",
+    "member": "eth_joint_cauchy_2026-10-26/code/joint_cauchy.py"
+  },
+  "separate_claude_pdf": {
+    "sha256": "f0af035b6c87d04d3fcf07dae040df98029f4990c6493e3e9ab64c4ac714c0eb",
+    "path": "Computability/SubexponentialSAT/Research/claude-2o-n-3sat/eth.pdf",
+    "scope": "Theorem 1, Corollary 11, clique-network theorem, Appendix E inspected; no comparable explicit generic numerical constant or public full proof link."
+  },
+  "matching_packet_source": {
+    "repository": "VladimirReshetnikov/ProveIt",
+    "pin": "474ddba696a5d385c091c23fb2995f69edd13e00",
+    "prefix": "Computability/SubexponentialSAT/Research/eth_matching_refinement",
+    "files": [
+      {
+        "path": "README.txt",
+        "blob": "a499ce56b9ff41006c05010d7308754d2c55bebd",
+        "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/474ddba696a5d385c091c23fb2995f69edd13e00/Computability/SubexponentialSAT/Research/eth_matching_refinement/README.txt",
+        "sha256": "d9ba7cf6824b93a9daaf334f2e3b545a19fd2b14736df26a92bbefa6949d16d1",
+        "size": 3441
+      },
+      {
+        "path": "report.tex",
+        "blob": "ee8c396087e1127579b84ce9d3757ab7f65228cb",
+        "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/474ddba696a5d385c091c23fb2995f69edd13e00/Computability/SubexponentialSAT/Research/eth_matching_refinement/report.tex",
+        "sha256": "3ee901913f8af9aa0f58abf1d57e6ec5a9655a82943372559c39e907709ba724",
+        "size": 35735
+      },
+      {
+        "path": "code/refinement.py",
+        "blob": "dab67c5dfcf1be5ba77c847fd0c4827fbc07fdd3",
+        "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/474ddba696a5d385c091c23fb2995f69edd13e00/Computability/SubexponentialSAT/Research/eth_matching_refinement/code/refinement.py",
+        "sha256": "05278d34e890d06dba42e4283971ccce4f64a093dd4dfe6846506a587c28ad34",
+        "size": 5930
+      },
+      {
+        "path": "results/constants.json",
+        "blob": "f9c6bae259b4dff4932f1a2a2b1b5d1b9be58da9",
+        "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/474ddba696a5d385c091c23fb2995f69edd13e00/Computability/SubexponentialSAT/Research/eth_matching_refinement/results/constants.json",
+        "sha256": "f4bba2b447fe092eadd0284639dd93cd7b95f3edea020bad52909ca8b0268fbb",
+        "size": 245
+      }
+    ]
+  },
+  "reproduction_summary": [
+    {
+      "check": "kernel",
+      "optimized": false,
+      "status": "PASS"
+    },
+    {
+      "check": "variable_arity",
+      "optimized": false,
+      "status": "PASS"
+    },
+    {
+      "check": "cache_composition",
+      "optimized": false,
+      "status": "PASS"
+    },
+    {
+      "check": "degree_corollaries",
+      "optimized": false,
+      "status": "PASS"
+    },
+    {
+      "check": "kernel",
+      "optimized": true,
+      "status": "PASS"
+    },
+    {
+      "check": "variable_arity",
+      "optimized": true,
+      "status": "PASS"
+    },
+    {
+      "check": "cache_composition",
+      "optimized": true,
+      "status": "PASS"
+    },
+    {
+      "check": "degree_corollaries",
+      "optimized": true,
+      "status": "PASS"
+    }
+  ]
+}

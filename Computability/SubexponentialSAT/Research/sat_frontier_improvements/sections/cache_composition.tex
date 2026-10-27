@@ -1,0 +1,271 @@
+% Original proof fragment for the present review. Uses amsmath/amssymb/amsthm.
+% Source dependencies: incoming eth_asymmetric_packet_balancing and eth_joint_cauchy.
+\section{An optional faster contraction with subexponential space}
+\label{sec:cached-composition}
+
+The two strongest compatible ingredients in the new incoming packets address
+separate interfaces.  Asymmetric packet balancing changes the number and sizes
+of child networks.  The full-orientation Cauchy decomposition changes their
+coefficients while preserving the same wires and groups.  The latter packet
+also supplies an explicitly costed caching algorithm.  Composing these three
+ingredients, and choosing a different alphabet and depth schedule, gives the
+following additional time--space tradeoff.  The algorithmic primitives are
+credited to the reviewed packets; the composition and its resource certificate
+are the contribution of this section.
+
+\begin{theorem}[Cached contraction with eight groups]
+\label{thm:cached-eight}
+Use the normalized input interface of the reviewed contraction reports:
+a bipartite Boolean tensor network has at most $s$ wires, maximum degree at
+most $\lceil s^{9/10}\rceil$, and description length $\mathcal L$.
+Its entries lie in $(\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell)$, with
+$P_0,\ell\le Cs$ for a fixed $C$.  Original tensor entries are evaluable
+in $(s+\mathcal L)^{O(1)}2^{O(s^{9/10})}$ time and polynomial space.
+Retain the source's exact deformation, Hermite recovery, child identity,
+and immutable creation-precision convention.
+Then the composed algorithm has bit time
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(C_{\rm time}+o(1))s/\sqrt{\log_2s}}
+\]
+and bit space
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(C_{\rm space}+o(1))s/\sqrt{\log_2s}},
+\]
+where, putting $\omega=\log_2 7$,
+\begin{align*}
+ C_{\rm time}
+ &=\frac{\pi\sqrt{122}}{8\ln 2}
+       \sqrt{30+12(\omega-2)^2}
+   =38.48449590573546\ldots,\\
+ C_{\rm space}
+ &=\frac{\pi\sqrt{3660}}{8\ln 2}
+   =34.27480300502269\ldots.
+\end{align*}
+In particular, $39$ and $35$ are valid eventual coefficients.
+These are coefficients per normalized tensor-wire budget, not per SAT variable,
+and are upper-bound comparisons rather than measured runtime ratios.
+\end{theorem}
+
+\paragraph{Schedule and packing.}
+Let $\lambda=\lceil\log_2s\rceil$, let $H=\lceil s/\lambda\rceil$,
+and set
+\[
+ r=8,\qquad b=\lceil6\log_2\lambda\rceil,\qquad
+ u_d=\left\lfloor\frac{\lambda}{61\,2^d}\right\rfloor,\qquad
+ a_d=\sum_{j=0}^{d}(u_j+b),\quad a_{-1}=0.
+\]
+A call with at most $H$ edges is a direct-summation leaf.  At an active
+call of depth $d$, put $L_d=2^{a_d}$ and $Q_d=8^{a_d}$.  At the root both
+side-degree bounds are $\Delta=\lceil s^{9/10}\rceil$.  Below the root,
+orient the bipartition with all retained tensors on the row side and all
+new packet tensors on the column side.  Then
+\[
+ R_d\le\Delta,\qquad C_d\le2L_{d-1}.
+\]
+The near-unit padding lemma in the asymmetric report applies when
+$Q_dR_d/M=o(1)$, $Q_d^2C_d\lambda^2/M=o(1)$, and
+$L_dQ_d^2/M=o(1)$.  To check these conditions without assuming the
+conclusion about recursion depth, first consider hypothetical depths
+$d\le\lceil\log_3\lambda\rceil+2$ and active $M>s/\lambda$.
+Uniformly there,
+\[
+ a_0\le\lambda/61+O(\log\lambda),\qquad
+ a_d\le2\lambda/61+O((\log\lambda)^2),\qquad
+ u_d=\Omega\bigl(\lambda^{1-\log_3 2}\bigr).
+\]
+At the root the largest degree constraint has exponent
+$6/61+9/10=609/610<1$.  Below the root, the retained-row constraint
+has that same exponent, while both the fresh-column and rounding
+constraints have exponent at most $14/61<1$.  Thus every relative
+excess in the padding lemma tends uniformly to zero.  The padded mass is
+$P=(1+o(1))M$, and every child has at most
+\[
+ 2P/r=(1+o(1))M/4
+\]
+wires.  For all sufficiently large sizes this is at most $M/3$,
+which proves the hypothetical depth bound and closes the bootstrap.
+Also every newly created tensor has degree at most
+$2L_d=s^{2/61+o(1)}<s^{9/10}$, preserving the degree invariant.
+The algorithm can check its finite parameter and padding inequalities
+exactly and use direct summation at exceptional bounded sizes.
+
+\paragraph{Precision.}
+At valuation level $i<u_d$, write $D=L_d/2^i$ and choose the sharp taper
+\[
+ h=\left\lceil\frac{M(2L_d-1)+1}
+                  {L_d(2u_d-2+2^{1-u_d})}\right\rceil.
+\]
+Use the previously justified working precision
+$p_t=p+6hD+hu_d(a_d+1)$.  The additive gap gives
+$D\ge2^{a_{d-1}+b+1}$ and $p=O(s\lambda^2 2^{a_{d-1}})$.
+Since $M>s/\lambda$, it follows that
+\[
+ \frac{p}{MD/u_d}=O(\lambda^4 2^{-b})=o(1),\qquad
+ \frac{hu_d(a_d+1)}{MD/u_d}=o(1).
+\]
+Uniform taper growth also gives $h=(1+o(1))M/u_d$.  Consequently
+$p_t=(6+o(1))MD/u_d$.  All these integers, and all interpolation data,
+have polynomial bit length.  In particular $M(2L_d-1)<s^4$ eventually,
+so the unchanged residue-field choice supplies enough interpolation points.
+
+\paragraph{Modes for each directed pair.}
+The full-orientation Cauchy decomposition provides
+\[
+ w_q=a_d+1-i+4q-2\operatorname{popcount}(q),\qquad 0\le q<D/2.
+\]
+It has $2^i$ modes of each index $q$ per crossing orientation.
+Its source form reads a whole half-packet, but that half-packet belongs to
+one source group; every target coefficient is used by one target group.
+The child wires and fresh-tensor degrees are therefore unchanged.
+Uniform padding gives, for each directed pair $g\ne h$, at most
+\[
+ c_{gh}=\frac{2P}{r^2D}
+       =\left(\frac{2}{r^2}+o(1)\right)\frac{M}{D}
+\]
+modes of each $q$.  The factor $r(r-1)$, rather than $r^2$, counts the
+crossing pairs; there are no modes for equal symbols.
+
+Enumerate exact per-pair weight arrays $(b_{gh})$ with total below $p_t$.
+There are $(p_t+1)^{56}$ possible arrays, a polynomial number because
+$r=8$ is fixed.  Each feasible mode tuple belongs to exactly one array.
+Exact-weight lists can be enumerated with polynomial delay and indexed
+using the standard count recurrence
+$A(j,t)=A(j-1,t)+A(j,t-w_j)$, with $A(0,0)=1$ and the other
+empty-list counts zero.  There are polynomially many modes and budgets;
+count bit lengths are polynomial as well.  No completion-counting oracle
+is assumed.
+
+Discard arrays with an empty pair list; they contribute zero.
+For every remaining exact array let $h_e$ be the base-two logarithm of the pair-list
+size for directed pair $e$.  Define
+\[
+ K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac{M}{\sqrt u}.
+\]
+For any fixed nonnegative weights $v_e$, the same generating-product
+argument as in the joint Cauchy report yields
+\begin{equation}\label{eq:eight-weighted-entropy}
+ \sum_e v_eh_e
+ \le\left(\sqrt{\frac{\sum_ev_e^2}{r^2}}+o(1)\right)K(M,u).
+\end{equation}
+Indeed, for $\widehat w_q=1+4q-2\operatorname{popcount}(q)$,
+\[
+ \sum_{q\ge0}-\ln(1-e^{-\theta\widehat w_q})
+ =\frac{\pi^2}{24\theta}+O(\log^2(2/\theta)).
+\]
+Apply the product bound to pair $e$ with parameter $\theta/v_e$,
+sum after multiplying by $v_e$, and optimize a common $\theta$.
+Using $\sum_e b_e<p_t$ and the displayed color count gives
+\eqref{eq:eight-weighted-entropy}.  This argument also covers tiny or
+zero per-pair budgets, without a separate saddle approximation for each.
+The remainder is uniform: $D\ge\lambda^6$ and
+$(M/D)\log^2(D/\sqrt u)=o(M/\sqrt u)$.
+
+\paragraph{Explicit tables and their costs.}
+Cache the value of each group factor $Z_g$ on all its incident pair-index
+tuples, paying for every value by recursively contracting the actual child.
+A group has $14$ incident directed pairs, so this needs at most
+$2^{(a_0+o(1))K(M,u)}$ child calls per group, where
+$a_0=\sqrt{14}/8$.
+Partition the eight groups into blocks of sizes $3,3,2$.
+A block of size $k$ has $2rk-k^2-k$ incident directed pairs and
+$2k(r-k)$ boundary pairs.  The maximum counts are $36$ and $30$.
+Literal summation of its internal indices, using the cached group values,
+therefore builds all three boundary tables in time
+$2^{(a_B+o(1))K}$ and space $2^{(j_B+o(1))K}$, where
+\[
+ a_B=3/4,\qquad j_B=\sqrt{30}/8.
+\]
+The table-building enumeration does not make new recursive oracle calls.
+
+The three block-pair index classes contain $18,12,12$ directed pairs.
+Writing their log-dimensions as $H_1,H_2,H_3$, division-free rectangular
+Strassen multiplication evaluates the triangle of tables in time with
+exponent
+\[
+ H_1+H_2+H_3-(3-\omega)\min(H_1,H_2,H_3),\qquad\omega=\log_2 7.
+\]
+This is a maximum of three weighted sums.  Inequality
+\eqref{eq:eight-weighted-entropy} bounds its coefficient by
+\[
+ b_S=\frac{\sqrt{30+12(\omega-2)^2}}8
+     =0.768743532920437\ldots.
+\]
+The largest bound discounts one of the size-$12$ classes.
+Since $a_B<b_S$, this matrix step dominates table construction.
+Strassen uses only ring addition, subtraction, and multiplication and
+is valid modulo powers of two, including with nilpotents.
+Square-block processing retains $O(d^2)$ elements for a block of side $d$;
+these fit inside the already bounded boundary-table storage.
+
+These are bit-operation bounds, not unit-cost random-access assumptions.
+Caches can be ordered by their projected lexicographic axis order; suffix
+rewinds are charged to the full assignments just traversed.  Reblocking
+and transposing a boundary table by sorting records costs its size times
+polynomial factors in the record bit length and logarithm of its size.
+Those operations stay below the displayed time exponent.  All pair axes,
+ring elements, and exact-weight indices have polynomial-size records.
+
+\paragraph{The entire recursion.}
+Up to lower-order polynomial costs, the work recurrence is
+\[
+ T_d\le2^{(a_0+o(1))K_d}rT_{d+1}
+          +2^{(a_B+o(1))K_d}+2^{(b_S+o(1))K_d}.
+\]
+The schedule and child bound imply
+\[
+ K_d\le(1+o(1))\frac{\pi\sqrt{122}}{\ln2}
+       \frac{s}{\sqrt\lambda}\gamma_s^d,
+ \qquad \gamma_s\longrightarrow\gamma=\frac{\sqrt2}{4}.
+\]
+The coefficient incurred by preceding child-cache enumerations and the
+matrix work at depth $d$ is at most
+\[
+ a_0\frac{1-\gamma_s^d}{1-\gamma_s}+b_S\gamma_s^d+o(1).
+\]
+Now $a_0/(1-\gamma)=0.7235047203294623\ldots<3/4<b_S$.
+Thus the root matrix coefficient $b_S$ bounds every depth, including
+an eventual leaf.  Geometric sums are stable under the uniform perturbation
+$\gamma_s\to\gamma$, so no unproved exchange of an infinite-depth limit
+is needed.  Polynomially many interpolation and exact-weight choices at
+$O(\log\lambda)$ depths contribute $O(\lambda\log\lambda)$ additional
+log-work.  Leaves cost $2^{O(s/\lambda)}$; original entry routines and
+new packet entries cost $2^{O(s^{9/10})}$ and
+$\exp(s^{2/61+o(1)})$, respectively.  All are lower order.
+A fixed polynomial in $s+\mathcal L$ is charged per visited call, rather
+than raised recursively to a description-dependent exponent.
+
+Depth-first processing retains only ancestor tables, the current tables,
+and polynomially sized descriptions and interpolation data.  Since $K_d$
+decreases geometrically, their total storage has leading coefficient
+$j_B\pi\sqrt{122}/\ln2$.  This proves the two stated constants.
+Exact elementary bounds $\pi<22/7$, $\ln2>6931/10000$, and
+$\log_2 7<281/100$ certify the rounded eventual coefficients $39$ and $35$.
+
+\begin{corollary}[A lower-degree specialization]
+\label{cor:cached-lowdegree}
+If the root degree is at most $\lceil s^{1/12}\rceil$, keep $r=8$ but
+replace $61$ by $15$ in the depth schedule.  Maintain degree bound
+$\Delta'=\lceil s^{1/7}\rceil$.  New packet degrees are
+$s^{2/15+o(1)}<s^{1/7}$, and even the symmetric packing bound has exponent
+$6(2/15)+1/7=33/35<1$.  Hence the same proof applies, with time and
+space coefficients
+\[
+ \frac{\pi\sqrt{30}}{8\ln2}\sqrt{30+12(\omega-2)^2}
+ \quad\hbox{and}\quad
+ \frac{30\pi}{8\ln2},
+\]
+respectively.  Original entry routines may retain their allowed
+$2^{O(s^{9/10})}$ cost.  This corollary has a stronger graph-degree premise
+and must be compared to the earlier low-degree certificates separately.
+\end{corollary}
+
+\paragraph{Interpretation.}
+This composition preserves the source's exact-counting semantics but uses
+subexponential space.  It does not replace the polynomial-space result.
+It does not close the prior structured-summation or compact-factorization
+hypotheses, does not improve the established logarithmic order in $n$, and
+does not provide an end-to-end SAT implementation.  Its scope is a stronger,
+fully accounted normalized contraction certificate, conditional only on the
+same unchanged source framework as the reviewed refinements.

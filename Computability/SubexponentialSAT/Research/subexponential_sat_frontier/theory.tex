@@ -1,0 +1,360 @@
+\section{New explicit contraction schedules}
+\label{sec:theory}
+
+\subsection{Polynomial space: use the side-degree capacity at several depths}
+
+The root pays the symmetric high-degree constraint
+$Q_0^2\Delta\ll s$, while subsequent calls need only
+$Q_d\Delta\ll s$ for their old side. Their fresh side is much smaller
+by \eqref{eq:side-invariant}. The asymmetric packet already exploits this
+distinction, and the round-two packet already changes the root alphabet.
+Here the cumulative capacity is used at several depths, with progressively
+smaller tail alphabets.
+
+Choose the following rational retained-range coefficients:
+\begin{equation}\label{eq:ps-schedule}
+\begin{array}{c|ccccc}
+ d&0&1&2&3&4+k\ (k\ge0)\\\hline
+ r_d&13&14&8&6&4\\
+ \eta_d&27/2000&51/4000&141/20000&107/20000&(27/6400)(5/8)^k.
+\end{array}
+\end{equation}
+Use $u_d=\floor{\eta_d\lambda}$, the buffer \eqref{eq:buffer}, and leaf
+threshold $H=\ceil{s/\lambda}$. All parameters are computable by integer
+arithmetic. The cumulative leading ranges are
+\begin{equation}\label{eq:ps-capacities}
+ A_0=\frac{27}{2000},\quad A_1=\frac{21}{800},\quad
+ A_2=\frac{333}{10000},\quad A_3=\frac{773}{20000},\quad
+ A_\infty=\frac{499}{10000}.
+\end{equation}
+
+\begin{lemma}[Every packing gate has a strict margin]
+\label{lem:ps-gates}
+At the root, $2A_0\log_2r_0<1/10$. At all later depths,
+$A_d\log_2r_d<1/10$. The three conditions in
+\eqref{eq:packing-gates} hold uniformly at active logarithmic depths,
+and all new tensor degrees stay below $\Delta$.
+\end{lemma}
+\begin{proof}
+The required scalar inequalities have exact integer certificates
+\[
+ 13^{27}<2^{100},\quad 14^{21}<2^{80},\quad
+ 999<1000,\quad 6^{773}<2^{2000},\quad 998<1000.
+\]
+They correspond in order to the root and the four tail alphabet regimes.
+At the root they give $Q_0^2\Delta=s^{1-c_0+o(1)}$ for fixed $c_0>0$.
+Below the root they give $Q_dR_d=s^{1-c_d+o(1)}$ with a uniform positive
+minimum margin. The fresh-side exponent satisfies
+\[
+ 2A_d\log_2r_d+A_{d-1}<\frac15+\frac{499}{10000}
+ =\frac{2499}{10000}<1.
+\]
+The same bound controls $L_dQ_d^2$. The added buffers cost only
+$O((\log\lambda)^2)=o(\lambda)$ at logarithmic depth, while active
+calls have $s/M<\lambda$. These logarithmic factors are absorbed by the
+strict power margins. Finally $2L_d=s^{0.0499+o(1)}<\Delta$.
+\end{proof}
+
+\paragraph{Noncircular depth argument.}
+First prove the preceding estimates for every hypothetical active depth
+\[
+ d\le\ceil{\log_{5/3}\lambda}+C_0
+\]
+with a fixed sufficiently large $C_0$. In that range,
+\[
+ u_d\ge\lambda^{\epsilon_0+o(1)},\qquad
+ \epsilon_0=1-\frac{\ln(8/5)}{\ln(5/3)}>0,
+\]
+where positivity follows from $24<25$. Thus floors are uniformly
+negligible, all taper ranges diverge, and the packing and precision
+estimates are valid throughout the hypothetical range. For sufficiently
+large $s$, every child has at most $3M/5$ wires, because $r_d\ge4$ and
+padding tends uniformly to one. No active path can then pass the stated
+depth. This establishes the depth bound without assuming the desired
+shrinkage before verifying packing.
+
+Using the sharper accumulated padding estimate gives
+\begin{equation}\label{eq:ps-size}
+ M_d\le(1+o(1))s f_d,
+ \quad (f_0,f_1,f_2,f_3)=\left(1,\frac2{13},\frac2{91},\frac1{182}\right),
+ \quad f_{4+k}=\frac1{546}\,2^{-k}.
+\end{equation}
+Apply \eqref{eq:local-ps} and sum the logarithms of branching counts along
+a path. The tail work ratio is
+$(1/2)/\sqrt{5/8}=\sqrt{2/5}<1$. Therefore the exact leading coefficient is
+\begin{align}
+ C_{\rm ps}={}&\frac{K(13)}{\sqrt{27/2000}}
+ +\frac{2K(14)}{13\sqrt{51/4000}}
+ +\frac{2K(8)}{91\sqrt{141/20000}}\notag\\
+ &+\frac{K(6)}{182\sqrt{107/20000}}
+ +\frac{K(4)}{546\sqrt{27/6400}\,(1-\sqrt{2/5})}.
+ \label{eq:ps-constant}
+\end{align}
+The exact rational interval checker proves
+\begin{equation}\label{eq:ps-interval}
+ 63.85220339054<C_{\rm ps}<63.85220339056<64.
+\end{equation}
+It uses rational bounds from Machin's arctangent formula for $\pi$, a
+positive series for $\ln2$, and integer-square-root brackets. A
+floating-point parameter search suggested the schedule but is not an
+input to the proof.
+
+Polynomial choices of interpolation node, residue-field evaluation, and
+child group over $O(\log\lambda)$ levels contribute
+$O(\lambda\log\lambda)$ to the logarithm of total work. Leaf summation
+costs $2^{O(s/\lambda)}$. Original entry oracles cost
+$2^{O(s^{9/10})}$; new packet entries cost at most
+$\exp(O(L_d\log s))=\exp(s^{0.0499+o(1)})$. All are lower order than
+$\mathfrak E(s)$. Polynomial-bit descriptions, arithmetic and precision,
+together with depth-first traversal, preserve polynomial space. The
+description-length factor stays a fixed polynomial because branching
+depends on $s$, not on $\mathcal L$. This proves
+Theorem~\ref{thm:ps}.
+
+\subsection{A stronger comparison than the displayed prior coefficients}
+
+The incoming asymmetric schedule uses $r=16$, root range $\lambda/81$,
+and a geometric tail of the same total range. Composing it with full-block
+modes multiplies its slope-three coefficient by $\sqrt3/2$, giving
+$66.6051434076\ldots$. Its fixed-alphabet capacity boundary and optimal
+tail allocation give the stronger derived value
+\begin{equation}\label{eq:prior-fixed}
+ K(r)\sqrt{20\log_2r}
+ \left[1+\frac{2/r}{(1-(2/r)^{2/3})^{3/2}}\right],
+\end{equation}
+which at $r=16$ is $66.1927236936\ldots$.
+
+For a root alphabet $r_0$ and a constant tail alphabet $r_1$, set
+\[
+ x_0=\frac{.05}{\log_2r_0},\qquad
+ U=\frac{.1}{\log_2r_1}-x_0>0.
+\]
+The corresponding optimally allocated geometric tail has coefficient
+\[
+ \frac{K(r_0)}{\sqrt{x_0}}+
+ \frac{(2/r_0)K(r_1)}{\sqrt U\,(1-(2/r_1)^{2/3})^{3/2}}.
+\]
+At $(r_0,r_1)=(17,13)$ it is about $66.12047546$. These formulas give
+feasible limiting comparisons by introducing a vanishing reserve in the
+capacities; they do not assert global minima over all schedules. The new
+strict rational coefficient in \eqref{eq:ps-interval} is below all three
+comparisons. Its gain is about $4.13\%$ against the direct composed
+certificate and $3.43\%$ against the stronger root/tail comparison.
+
+\subsection{Cached contraction: pay for the group functions}
+\label{sec:cache-theory}
+
+The cached method is inherited from the joint-Cauchy packet \cite{joint}.
+Partition a mode tuple by its exact total weight on every directed pair
+of groups. With fixed $r$ and polynomial precision, there are only
+polynomially many weight arrays, although the polynomial degree can be
+large. For one array, let $h_e$ be the base-two logarithm of the number
+of exact-weight tuples on pair $e$. Polynomial-size dynamic programming
+over modes and weights supplies exact counts and rank/unrank operations;
+an efficient hidden oracle is not assumed.
+
+Put
+\begin{equation}\label{eq:cache-K}
+ \kappa=\frac{\pi\sqrt2}{\ln2},\qquad
+ \mathcal K(M,u)=\kappa\frac{M}{\sqrt u}.
+\end{equation}
+From \eqref{eq:pair-families}, the slope-four generating function, and
+the global weight budget, the common-tilt argument gives for fixed
+nonnegative pair weights $z_e$,
+\begin{equation}\label{eq:weighted-entropy}
+ \sum_ez_e h_e\le
+ \left(\sqrt{\frac{\sum_ez_e^2}{r^2}}+o(1)\right)\mathcal K(M,u).
+\end{equation}
+Using one common tilt matters: it includes zero and small individual
+weight budgets without incorrectly applying a separate large-budget
+asymptotic to each pair.
+
+Cache each group's function of its incident pair indices, obtaining
+each value by a genuine recursive child contraction. Partition the
+groups into three blocks. Sum internal indices to form block boundary
+tables, then contract the resulting triangle using division-free
+rectangular Strassen multiplication. For block size $k$, the numbers
+of incident and boundary directed pairs are respectively
+\[
+ I_r(k)=2rk-k^2-k,\qquad J_r(k)=2k(r-k).
+\]
+If the three inter-block classes have sizes $v_1,v_2,v_3$, the rectangular
+matrix exponent follows from
+\[
+ H_1+H_2+H_3-(3-\omega)\min(H_1,H_2,H_3),\qquad \omega=\log_2 7.
+\]
+Writing this as the maximum of three weighted sums and using
+\eqref{eq:weighted-entropy} gives the matrix coefficient
+\begin{equation}\label{eq:matrix-b}
+ b_r=\sqrt{\frac{v_1+v_2+v_3-[1-(\omega-2)^2]\min_jv_j}{r^2}}.
+\end{equation}
+The cache, block-construction, and memory coefficients are
+\begin{equation}\label{eq:cache-factors}
+ a_r=\frac{\sqrt{2(r-1)}}r,\qquad
+ B_r=\max\left\{b_r,\frac{\sqrt{\max_k I_r(k)}}r\right\},\qquad
+ j_r=\frac{\sqrt{\max_k J_r(k)}}r.
+\end{equation}
+Here $B_r$ must include both block-table construction and matrix work.
+Omitting the former would be a mistake for the root schedule below.
+
+Up to the already controlled polynomial and lower-order factors, the
+correct recurrence is
+\begin{equation}\label{eq:cache-recurrence}
+ T_d\le2^{a_{r_d}\mathcal K_d}\,r_dT_{d+1}
+           +2^{B_{r_d}\mathcal K_d}.
+\end{equation}
+Thus caching does not grant free group tensors. The first term pays for
+all recursive evaluations, and the second pays for the tables and their
+contraction. The inherited sequential-record implementation, reblocking
+and sorting show that polynomial overhead suffices in a bit-cost model;
+an exponential random-access table is not treated as a unit-cost oracle.
+Strassen uses only additions, subtractions and multiplications, so it is
+valid in the source's residue ring with nilpotents.
+
+\subsection{Why the stronger fixed-alphabet baseline must be included}
+
+At the asymmetric packet's displayed $r=16$ schedule, the new per-pair
+counts and full-block cached method give time coefficient
+$44.5375718550\ldots$ and space coefficient $39.4959495337\ldots$.
+But one can retune the existing fixed-alphabet family. At $r=8$, root
+capacity $x_0=1/60$, and a tail of the same total capacity, the appropriate
+recurrence is root dominated for a range of geometric tail allocations.
+Its limiting time coefficient is
+\begin{equation}\label{eq:r8-baseline}
+ C_{8,\partial}=\kappa\sqrt{60}
+  \sqrt{\frac{30+12(\omega-2)^2}{64}}
+  =38.1677456970\ldots,
+\end{equation}
+with space coefficient $33.9927010637\ldots$. Vanishing capacity reserve
+handles the equality boundary. This is the more demanding comparator
+used here, rather than only the $44.54$ displayed-schedule composition.
+
+\subsection{The new strict root-7/tail-9 schedule}
+
+Use seven groups at the root, partitioned as $(2,2,3)$, and nine groups
+at every later depth, partitioned as $(3,3,3)$. Set
+\begin{equation}\label{eq:new-cache-schedule}
+ \eta_0=\frac{89}{5000},\qquad
+ \eta_d=\frac{1233}{125000}\left(\frac7{25}\right)^{d-1}\quad(d\ge1),
+ \qquad u_d=\floor{\eta_d\lambda}.
+\end{equation}
+Keep the buffer \eqref{eq:buffer} and $H=\ceil{s/\lambda}$.
+The tail total is $137/10000$, and the total cumulative capacity is
+\[
+ A_\infty=\frac{89}{5000}+\frac{137}{10000}
+ =\frac{63}{2000}=0.0315.
+\]
+The exact inequalities
+\begin{equation}\label{eq:cache-gates}
+ 7^{89}<2^{250},\qquad 9^{63}<2^{200}
+\end{equation}
+give the strict root gate $2\eta_0\log_2 7<1/10$ and tail gate
+$A_\infty\log_2 9<1/10$. The fresh-side and padding exponents are
+less than $1/5+A_\infty=0.2315<1$. New tensor degrees are at most
+$s^{0.0315+o(1)}<\Delta$.
+
+Verify these bounds first through hypothetical depth
+$\ceil{\log_4\lambda}+O(1)$. Tail ranges satisfy
+\[
+ u_d\ge\lambda^{1-\ln(25/7)/\ln4+o(1)}\longrightarrow\infty
+\]
+because $25/7<4$. Eventually the root child shrinkage is at most $1/3$
+and every tail child shrinkage at most $1/4$, while the sharp factors
+are $2/7$ and $2/9$ respectively. This closes the same noncircular
+depth bootstrap as before and validates the uniform precision estimates.
+Accumulated padding errors give
+\[
+ M_0\le s,\qquad
+ M_d\le(1+o(1))s\frac27\left(\frac29\right)^{d-1}\quad(d\ge1).
+\]
+
+Write $\xi=\omega-2=\log_2(7/4)$. At the root,
+\begin{equation}\label{eq:root-cache-factors}
+ a_7=\frac{\sqrt{12}}7,\quad
+ b_7=\frac{\sqrt{24+8\xi^2}}7,\quad
+ B_7=\frac{\sqrt{30}}7,\quad j_7=\frac{\sqrt{24}}7.
+\end{equation}
+Here $b_7<B_7$: root block construction costs more than root matrix
+multiplication. In the tail,
+\begin{equation}\label{eq:tail-cache-factors}
+ a_9=\frac49,\quad
+ B_9=b_9=\frac{\sqrt{4+2\xi^2}}3,\quad j_9=\frac23.
+\end{equation}
+The tail block-construction coefficient $\sqrt{42}/9$ is smaller than
+$B_9$. The tail work ratio is
+\begin{equation}\label{eq:cache-gamma}
+ \gamma=\frac{2/9}{\sqrt{7/25}}=\frac{10}{9\sqrt7}<1.
+\end{equation}
+Moreover $a_9/(1-\gamma)=0.766231\ldots<B_9=0.767655\ldots$.
+This strict inequality ensures that all deeper cache evaluations are
+covered by the first tail node's local table bound.
+
+Let
+\[
+ K_0=\frac{\kappa}{\sqrt{89/5000}},\qquad
+ K_1=\frac{(2/7)\kappa}{\sqrt{1233/125000}}.
+\]
+Unrolling \eqref{eq:cache-recurrence}, the normalized total time
+coefficient is at most
+\begin{equation}\label{eq:cache-final}
+ C_{\rm cache}=\max\{B_7K_0,\ a_7K_0+B_9K_1\}
+ =a_7K_0+B_9K_1.
+\end{equation}
+The root table term is $37.59170256\ldots$; the second term, including
+recursive child work, is $37.9301090829\ldots$ and is the bottleneck.
+The memory coefficient is
+\begin{equation}\label{eq:cache-memory}
+ C_{\rm mem}=\max\{j_7K_0,j_9K_1\}=j_7K_0
+ =33.6230409217\ldots.
+\end{equation}
+Ancestor and descendant table sizes add, so their leading space exponents
+take a maximum, rather than a sum. There are only logarithmically many
+stack levels, and the tail $\mathcal K_d$ decreases geometrically.
+
+The supplied checker proves these comparisons with rational intervals,
+including a positive margin in $a_9/(1-\gamma)<B_9$ and the complete
+root maximum. It encloses
+\begin{align*}
+ 37.93010908288&<C_{\rm cache}<37.93010908289<38,\\
+ 33.62304092165&<C_{\rm mem}<33.62304092167<34.
+\end{align*}
+The same lower-order costs already checked for Theorem~\ref{thm:ps}
+are harmless here, with an even smaller packet exponent. This proves
+Theorem~\ref{thm:cached}. The time coefficient improves by about $0.62\%$
+over \eqref{eq:r8-baseline}; the comparison is a strict improvement of
+certificates, not a prediction of a $0.62\%$ runtime reduction.
+
+\subsection{Consequences for SAT and the unresolved order improvement}
+
+Let $n$ be the declared variable count, $m$ the number of clauses and
+$k$ a fixed width. The unchanged reduction and the density refinements
+give the polynomial-space envelope
+\begin{equation}\label{eq:sat-envelope}
+ (n+m)^{O_k(1)}\,
+ 2^{O_k\left(\frac n{\sqrt{\log n}}
+      \min\{\log(2+m/n),\log\log n\}\right)}.
+\end{equation}
+Small sizes are understood with the usual harmless logarithm offsets.
+At fixed density this is $2^{O_{k,D}(n/\sqrt{\log n})}$ up to polynomial
+factors. At unrestricted density it has the
+$n\log\log n/\sqrt{\log n}$ numerator/denominator profile. The new
+engine preserves these orders and improves its specified wire-level
+certificate. Converting it to a numerical coefficient per variable
+requires the reduction's actual wire and width constants. In particular,
+writing $2^{64n/\sqrt{\log n}}$ as a universal SAT consequence would
+be unsupported.
+
+The cached version can use the same reductions at its different space
+cost. Direct clause-network bounds and prior low-degree specializations
+remain options in a portfolio. The separate manuscript's unspecified
+constants cannot be ranked numerically from the supplied information.
+
+The persistent obstacle to a smaller logarithmic order is unchanged:
+the mode weights still grow linearly, their weighted partitions have
+the $M/\sqrt u$ entropy scale, and packing keeps $u=O(\log s)$.
+The existing scoped barriers do not prove a lower bound for SAT; they
+show why the present retuning and exact arithmetic transformations do
+not establish $n/\log n$ or eliminate the dense reduction's extra
+$\log\log n$. A further order improvement still requires an actual
+summation/factorization interface or a different representation,
+with its oracle and wire costs paid explicitly.

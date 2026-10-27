@@ -1,0 +1,70 @@
+INDEPENDENT AUDIT: BINARY CONSTRUCTION OF CACHED GROUP TABLES
+Date: 2026-10-26 Pacific; source snapshot ProveIt ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06.
+
+Scope. This audits the new local contraction/table construction and the concrete normalized time/space certificate. It imports the existing exact deformation, precision, child-network, entry-evaluation and SAT-reduction framework. It does not independently prove the whole ETH assertion. The implementation is finite algebra verification, not a subexponential SAT solver and not an implementation of the asymptotically fast matrix backend.
+
+1. EXACT TABLE ALGEBRA
+For a set A of group vertices, define f_A on the directed pair-index axes with exactly one endpoint in A by summing the product of all Z_g (g in A) over axes with both endpoints in A. Each pair index is already a fixed exact-weight list index from the joint-Cauchy packet; no extra counting oracle is introduced.
+For disjoint A,B, |A|=a, |B|=b, k=a+b, the common axes of f_A,f_B are precisely the 2ab directed A-B pair indices. The axes exclusive to f_A are the 2a(r-k) directed A-outside indices; exclusive to f_B are 2b(r-k). All three classes are disjoint. Matricizing produces f_(A union B)=f_A*f_B, with matrix dimensions whose logarithms are the sums H1,H2,H3 on those three classes. This is an exact distributive-law identity over any commutative coefficient ring, including the required two-adic quotient with nilpotents.
+
+2. WEIGHTED ENTROPY AND MERGE COST
+The compatible slope-four/near-unit-padded mode decomposition has at most (2+o(1))M/(r^2 D) modes of each q on each directed pair. Imported precision is (6+o(1))MD/u. Thus weighted sums of pair-index bit lengths satisfy sum_j w_j H_j <= (sqrt(sum_j w_j^2 v_j)/r+o(1))*K, where K=pi sqrt2/ln2*M/sqrtu and v_j are the disjoint axis-class cardinalities. This uniform bound also covers zero or small exact-weight allocations.
+A square backend with exponent nu in [2,3] gives rectangular bit work, up to polynomial factors, 2^(H1+H2+H3-(3-nu)min H_j). This expression is the maximum of the three weighted sums obtained by placing weight nu-2 on one class and weight1 on the others. Therefore a valid merge coefficient is sqrt(v_total-[1-(nu-2)^2]min v_j)/r.
+All subtrees are built once after all single-group caches are available. Since r is fixed, finitely many tree nodes multiply time by only a constant. The dominant table time is the maximum merge coefficient, not their sum. This does not reduce the fully charged cost of obtaining each single-group cache from recursive tensor contractions; the existing star-cache recurrence remains.
+
+3. EXACT RING BACKEND AND BIT COSTS
+Fix a rational exact bilinear square-multiplication base of exponent strictly below12/5. The classical Coppersmith-Winograd bound over Q supplies such a base; its dimension, rank and rational coefficients are constants. A finite collection of denominator primes can be excluded once and for all.
+Represent a ring element in the fixed polynomial basis of (Z/2^p)[U,V]/(f(U),V^ell), f monic of degree h and irreducible modulo2. There are h*ell polynomially many coordinates. Choose canonical integer coordinates in[0,2^p). Each coordinate-pair scalar matrix product has nonnegative entries at most d_inner*(2^p-1)^2. Its bit bound is <=log2(d_inner)+2p+O(1), polynomial in the root size. Compute each scalar product modulo sufficiently many small odd primes avoiding the fixed denominators, using the rational base reduced in each prime field; reconstruct each exact nonnegative integer entry by CRT; then combine basis products and reduce modulo f,V^ell,2^p. Thus no nonunit or forbidden rational denominator is inverted in the target ring. There are only polynomially many coordinate pairs and CRT primes; their bit costs alter only polynomial factors.
+A fixed bilinear base admits depth-first evaluation with quadratic matrix storage: form each fixed linear-combination input, recurse on one rank product, accumulate output, and release temporary arrays. Rectangular products are square-blocked with block size the smallest dimension. Matrix sizes and index lengths have polynomially many bits. Reordering tables for block access is achievable by sorting records, with polynomial logarithmic overhead. The rectangular work bound dominates input/output table sizes for nu>=2, so copying/reformatting does not raise the leading exponent.
+For the three top blocks, all binary subblocks have size <=ceil(r/3)<r/2 in the concrete cases. Boundary cardinality2k(r-k) is increasing in that range. Hence simultaneous tables, matrix blocks, and recursion frames use space controlled by the largest top-block boundary. Across recursion depths, spaces add; their exponents do not add.
+
+4. CONCRETE SCHEDULE: EXACT CHECK
+lambda=ceil(log2 s), b=ceil(6log2 lambda).
+r0=8; u0=floor(lambda/61).
+rd=12 for d>=1; ud=floor[(125/13176)lambda 6^(-(d-1))].
+ad=sum_{j<=d}(uj+b).
+Leaves have M<=ceil(s/lambda^(3/4)).
+Leading cumulative budget: 1/61+(125/13176)*(6/5)=1/36 EXACTLY.
+Root Q^2Delta exponent: 6/61+9/10=609/610<1.
+Tail QRDelta exponent: log2(12)/36+9/10<1, with margin0.0004177083133012...
+Tail Q^2C and LQ^2 exponents <=[2log2(12)+1]/36<1, with margin0.7730576388488246...
+Generated degrees remain below s^.9. These positive gaps absorb polynomial logarithmic losses and additive buffers. Since the true graph loses wires by factor1/6+o(1) in the tail, use coarse factor1/5 for a noncircular hypothetical-depth bootstrap. Active depth is <=(3/4)log_5 lambda+O(1), so the smallest ud grows as lambda^[1-(3/4)ln6/ln5+o(1)], exponent0.1650379355804661>0. Floors are uniformly negligible. Leaf cost exp(O(s/lambda^.75)), original entry cost exp(O(s^.9)), and packet entry cost exp(s^(1/36+o(1))) are all lower order than exp(s/sqrtlambda). Additive guard suffices even more strongly than in the source because s/M<=lambda^.75.
+
+5. LOCAL CARDINALITIES WITH nu=12/5
+Root r8, top blocks3,3,2:
+- final triangle classes18,12,12; discounted count798/25=31.92;
+- merge size3 split1+2 classes10,4,20; discounted count766/25=30.64;
+- merge size2 split1+1 discounted count608/25=24.32.
+Thus b0=sqrt(798/25)/8; star coefficient a0=sqrt14/8; space j0=sqrt30/8.
+Tail r12, top blocks4,4,4:
+- final triangle classes32,32,32; discounted count1728/25=69.12;
+- merge size4 split2+2 classes32,8,32; discounted count1632/25=65.28;
+- merge size2 split1+1 discounted count1008/25=40.32.
+Thus b1=sqrt(1728/25)/12; star coefficient a1=sqrt22/12; space j1=sqrt64/12.
+
+6. FULL RECURSIVE COST
+K0=pi sqrt2/ln2*sqrt61=50.061554026391406.
+K1=pi sqrt2/[4ln2 sqrt(125/13176)]=16.45190544241089.
+Tail ratio gamma=1/sqrt6.
+The fully charged time coefficient is max{b0K0, a0K0+max[b1,a1/(1-gamma)]K1}.
+Recomputed independently:
+root matrix=35.354588058401006;
+root cache plus first tail matrix=34.81236237005861;
+all cache accumulation=34.281075632611305.
+Consequently C=35.354588058401006.
+Space is max{j0K0,j1K1}=34.27480300502268 (tail10.96793696160726).
+These constants are per normalized wire parameter s, not directly per SAT variable n. They require subexponential space, not polynomial space.
+
+7. BASELINE FAIRNESS
+A fully compatible explicit prior combination already gives time44.53757185496, space39.49594953370 (asymmetric r16 schedule plus joint slope4/caching/Strassen). This is stronger than every standalone incoming certificate but is not the optimum of all its tunable parameters.
+At the NEW schedule, give the old flat block builder the same nu=12/5, slope4 and asymmetric packing. Its root block incident count36 gives C_old_same_schedule=.75K0=37.54616551979355; the fully charged tail is smaller. Thus binary table construction itself improves this matched certificate to35.3545880584. An arity/schedule search may produce a still stronger old-method certificate; do not call a finite numerical search global optimality. A portfolio taking the minimum with every earlier valid method preserves their envelopes, including density and polynomial-space choices.
+
+8. FINITE VALIDATION
+verify_binary_merges.py independently compares direct tensor sums, recursive binary table sums, three-block contractions, and exact coordinate CRT products over Z/2^p and (Z/2^p)[U,V]/(U^2+U+1,V^2), p in{1,3,7}. Fixtures include zero-size pair lists and one-dimensional indices. Explicit RuntimeError checks remain active under python -O. Initial run passed48 networks,144 binary merges,14,448 table entries,48 triangle contractions,72 rectangular CRT products covering486 entries, and2 negative controls. The standard and optimized result JSON files should be identical.
+
+9. PRIMARY EXTERNAL BACKEND SOURCES
+Don Coppersmith and Shmuel Winograd, Matrix multiplication via arithmetic progressions, Journal of Symbolic Computation9(3),1990,251-280, DOI10.1016/S0747-7171(08)80013-2. Author-institution abstract verifies exponent2.376:
+https://research.ibm.com/publications/matrix-multiplication-via-arithmetic-progressions
+Francois Le Gall and Florent Urrutia, Improved Rectangular Matrix Multiplication using Powers of the Coppersmith-Winograd Tensor, arXiv1708.05622v2 (2017), Section2.2 works over an arbitrary field; introduction records original tensor exponent<2.388 and second-power exponent<2.376:
+https://arxiv.org/html/1708.05622v2
+The use of the conservative exponent12/5 and the exact CRT transfer to the two-adic nilpotent ring is the audited deduction, not an unverified claim that arbitrary fast field identities divide safely inside that ring.

@@ -1,0 +1,70 @@
+{
+  "review_commit": "474ddba696a5d385c091c23fb2995f69edd13e00",
+  "scope": "Review of fifteen SAT refinement packets, with new exact subroutines and relative contraction certificates",
+  "claims": [
+    {
+      "name": "polynomial-space coefficient below 64",
+      "status": "proved relative to imported identities",
+      "evidence": [
+        "theory.tex",
+        "code/verify_heterogeneous_schedule.py"
+      ],
+      "limitation": "Normalized tensor wires; ordinary proof and finite exact certificate, no proof-assistant formalization"
+    },
+    {
+      "name": "cached time coefficient below 38, space below 34",
+      "status": "proved relative to imported identities",
+      "evidence": [
+        "theory.tex",
+        "code/verify_cached_schedule.py"
+      ],
+      "limitation": "Uses subexponential space; complete group-oracle, table-construction, and matrix costs are included"
+    },
+    {
+      "name": "exact cached balancing O(NQ^2) candidate scoring",
+      "status": "proved and implemented",
+      "evidence": [
+        "implementation.tex",
+        "code/cached_balancing.py",
+        "code/verify_cached_balancing.py",
+        "results/cached_balancing_benchmark.json"
+      ],
+      "limitation": "Rational-operation complexity and measured local code performance; shared preprocessing and bit costs still apply"
+    },
+    {
+      "name": "residual precision P minus guaranteed valuation",
+      "status": "proved and prototyped",
+      "evidence": [
+        "implementation.tex",
+        "code/precision_peeling.py",
+        "code/verify_precision_peeling.py"
+      ],
+      "limitation": "Safe division and creation caps required; creator evaluators may retain their prior costs; no change to mode tuple count"
+    },
+    {
+      "name": "unchanged deformation, recovery, child identities, SAT reductions",
+      "status": "imported dependencies",
+      "evidence": [
+        "provenance/source_manifest.json",
+        "references.tex"
+      ],
+      "limitation": "Not an independent verification of the full upstream ETH theorem or all archived claims"
+    },
+    {
+      "name": "smaller unrestricted SAT logarithmic order",
+      "status": "not established",
+      "limitation": "The earlier structured-summation and representation interfaces remain unconstructed"
+    },
+    {
+      "name": "end-to-end SAT performance improvement",
+      "status": "not measured",
+      "limitation": "The delivered implementations are exact components, not a complete SAT solver"
+    },
+    {
+      "name": "global optimum over all prior parameter recombinations",
+      "status": "not claimed",
+      "limitation": "The comparisons include explicit strong compatible compositions, not a lower bound on all possible algorithms"
+    }
+  ],
+  "initial_review_commit": "ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06"
+}

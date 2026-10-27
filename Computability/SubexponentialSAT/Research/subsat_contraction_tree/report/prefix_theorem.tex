@@ -1,0 +1,90 @@
+% A proof fragment for inclusion after amsmath/amsthm are loaded.
+\section{Linear-work evaluation of full-crossing Cauchy features}
+Let $L=2^a$, $R=2^i$, $0\leq i<a$, and $N=L/2$.  Define
+\[
+ s_j=(j\bmod R)+2R\lfloor j/R\rfloor,\qquad 0\leq j<N,
+ \quad T=t+2^{a+1}\zeta,\quad v_2(t)=i,\quad -L\leq t<L,
+\]
+where $\zeta$ is integral in an unramified extension of $\mathbb Q_2$.
+Put $q_b=\lfloor b/R\rfloor$ and
+$E_b=q_b+v_2(q_b!)=2q_b-\operatorname{popcount}(q_b)$.
+For a fixed port $j$, the reviewed normalized factors are
+\[
+ f_b(j)=2^{-E_b}\frac{T}{T+s_j-s_b}
+          \prod_{h<b}\frac{s_j-s_h}{T+s_j-s_h},\qquad
+ g_b(j)=2^{-E_b}\frac{T}{T+s_b-s_j}
+          \prod_{h<b}\frac{s_h-s_j}{T+s_h-s_j}.
+\]
+Both factors vanish when $j<b$.  Writing
+$C(X)=\prod_{q=-L}^{L-1}(X-q)$ and
+$A=C(T)/(C'(0)T)$, the target/source pair used in the kernel is
+\[
+ (A2^{2E_b}f_b(j),\ g_b(j)).
+\]
+This section changes only how these formulas are evaluated. Their algebraic
+identity and the global contraction reductions remain the reviewed baseline.
+
+\paragraph{Streaming recurrence.}
+Set $P_0^+(j)=P_0^-(j)=1$ and update
+\[
+ P_{b+1}^{\pm}(j)=P_b^{\pm}(j)
+ \frac{\pm(s_j-s_b)}{T\pm(s_j-s_b)}.
+\]
+Then
+\[
+ f_b(j)=2^{-E_b}P_b^+(j)\frac{T}{T+s_j-s_b},\qquad
+ g_b(j)=2^{-E_b}P_b^-(j)\frac{T}{T-s_j+s_b}.
+\]
+The update is stopped at $b=j$; all subsequent features are zero.
+This handles zero products explicitly instead of assigning a finite valuation
+to zero.
+
+\paragraph{Integrality.}
+For two slots in the same orientation, a nonzero difference $d=s_j-s_h$
+has either $v_2(d)<i$ or $v_2(d)\geq i+1$. Therefore
+$v_2(T\pm d)=\min\{i,v_2(d)\}$, and both
+$d/(T+d)$ and $T/(T+d)$ are integral.  Among the indices $h<b$ with
+$h\equiv j\pmod R$, there are $c\geq q_b$ indices, and their quotient
+indices are consecutive integers starting at zero. Their contribution to
+$v_2(P_b^\pm(j))$ is
+\[
+ c+v_2\bigl(q_j(q_j-1)\cdots(q_j-c+1)\bigr)
+ \ \geq\ c+v_2(c!)\ \geq\ E_b.
+\]
+The first inequality follows because the falling factorial is divisible by
+$c!$. All other factors have nonnegative valuation, as does
+$T/(T\pm(s_j-s_b))$. Thus the final exponent after removing $E_b$ is
+nonnegative. This argument applies for $b\leq j$; the remaining features
+are identically zero.
+
+\paragraph{Fixed precision.}
+Store each nonzero prefix as a pair $(v,u)$ representing $2^v u$, with the
+unit $u$ reduced modulo $2^p$ and $v$ stored exactly. Factor every numerator
+and denominator before modular reduction. Invert only the unit part of a
+denominator. When emitting a feature, subtract the known $E_b$ from the
+exact valuation and multiply the stored unit by the resulting nonnegative
+power of two. No division of a previously reduced modular residue occurs.
+A unit approximation modulo $2^p$ remains sufficient after multiplication
+by any nonnegative power of two, so the method needs no extra precision.
+The prefactor is treated identically after cancelling $T$:
+\[
+ A=\prod_{\substack{-L\leq q<L\\q\ne0}}\frac{T-q}{-q}.
+\]
+A zero numerator gives $A=0$ exactly. For nonzero $\zeta$, factorial
+cancellation gives
+$v_2(A)=a+1-i+v_2(\zeta)\geq0$.
+
+\paragraph{Cost and compatibility.}
+For $P$ requested ports and $B\leq N$ modes, separate evaluation of every
+product costs $O(L+PB^2)$ ring operations and unit inversions. The recurrence
+costs $O(L+PB)$ of each: the common prefactor costs $O(L)$, and every emitted
+feature and prefix update takes constant work. These are arithmetic counts
+at the same precision and in the same coefficient ring. Per-port streaming
+uses $O(1)$ auxiliary ring elements and integer counters; storing all outputs
+uses $O(PB)$ elements. Features of weight
+$a+1-i+2E_b\geq p$ may be dropped exactly, since their targets vanish modulo
+$2^p$. The weights are nondecreasing, so dropping the tail does not interrupt
+a later retained prefix. The result composes with the full-orientation
+Cauchy modes and any of the reviewed packing or precision schedules.
+It improves a local polynomial factor; it does not establish a change in
+the global subexponential exponent or an end-to-end SAT runtime speedup.
