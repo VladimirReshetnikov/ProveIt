@@ -1273,3 +1273,21 @@ contain duplicates or any order. The source proof interpreter and actual
 set-theory schema images are subsequent substantive obligations.
 The next source-negation plan uses the corrected encoder-only40-boundary
 inventory and explicit Pi2 syntax induction under IΣ2.
+
+## Bounded actual C222 stack certificates accepted
+
+The [actual C222 bounded-stack certificate](reviews/arithmetic-stack-certificate222-root.md)
+now retains one internal bound on actual proof witnesses for all theorem
+stack entries. Its Delta1 stack predicate gives Sigma1 working-state
+certification;push/pop and cached-falsity extraction are checked. Independent
+three-file builds pass ten standard-only reports and identical objects,
+including an explicitly rebuilt numeric tail prerequisite. Command and
+reverse scheduler preservation remain open.
+
+The witness bound is on actual checker proof codes,not formula values.
+It bounds each internal stack offset through the stream's numerical drain;
+all later zeros use the fixed truth witness. This keeps the runtime
+invariant Sigma1 without an unbounded forall-exists witness oracle.
+The reused old-named Tail254 module is numeric only and is rebuilt over the
+current dependencies. Actual command preservation must still use NIP0,
+DROP1,MP2,physical rho6(a,c),growG,old-d GEN and the current bundle gate.

@@ -91,6 +91,14 @@ an explicit vacuity guard for hypotheses and deriving it for a shifted
 negative source hypothesis. Independent builds pass thirteen standard-only
 reports with identical objects. General source-proof interpretation remains open.
 
+The [actual C222 bounded-stack certificate](reviews/arithmetic-stack-certificate222-root.md)
+now retains one internal bound on actual proof witnesses for all theorem
+stack entries. Its Delta1 stack predicate gives Sigma1 working-state
+certification;push/pop and cached-falsity extraction are checked. Independent
+three-file builds pass ten standard-only reports and identical objects,
+including an explicitly rebuilt numeric tail prerequisite. Command and
+reverse scheduler preservation remain open.
+
 The [actual C222 context calculus](reviews/validator-proof-context222-root.md)
 now proves rules for internally sized implication contexts,including actual
 history witnesses,deduction,subsumption,source-list shifting and enumeration
