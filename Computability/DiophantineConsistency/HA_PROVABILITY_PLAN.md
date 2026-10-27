@@ -565,6 +565,13 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [73-module consistency refresh](reviews/fixed-consistency73-root.md)
+has now passed, including current R2Native, LSchema and the actual
+Foundation consistency equivalence. It retains337 cached prerequisites,
+all139 Foundation providers,20 standard-only reports and45 existing linter
+warnings. This closes the local provider gap; the fixed standard-Nat
+sentence binding and current215/222 arithmetic calibration are separate.
+
 The [uniform typed C222 vacuity theorem](reviews/validator-environment-vacuity222-root.md)
 now supplies actual represented proof witnesses for every internal typed
 formula under explicit environment/binder avoidance. Its Π2 induction uses
