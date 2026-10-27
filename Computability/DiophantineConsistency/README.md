@@ -18,6 +18,12 @@ is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 
+The [internal binary population package](reviews/arithmetic-binary-population-root.md)
+now proves total represented population, block concatenation and complement
+weights at arbitrary internal lengths, including zero. Independent fresh
+pairs match both objects, complete logs and fourteen standard-only reports.
+Carry, mask, binomial and tableau connections remain.
+
 The [actual auxiliary seed](reviews/arithmetic-pell-auxiliary-seed-root.md)
 now constructs all five positive auxiliary witnesses from only the base
 and rank modulo four, including offset zero. Both oriented residues,

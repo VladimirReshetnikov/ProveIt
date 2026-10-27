@@ -39,6 +39,17 @@ final file assembly. Machine simulation has now passed complete composition
 and its closed arithmetic proof client. This estimate counts neither proof
 files nor independently replayed checkpoints as equal units of progress.
 
+The [internal binary population package](reviews/arithmetic-binary-population-root.md)
+now supplies total fixed Sigma1/Delta1 population graphs and proves binary
+recurrences, arbitrary internal block concatenation and complement weights
+in every IΣ1 model. Zero widths/values and leading-zero blocks are included.
+Independent fresh pairs match both objects, complete logs and all fourteen
+standard-only reports, with zero refresh. Exact carry/no-overlap tests,
+mask weights, binomial extraction and actual tableau interpretation remain.
+The reviewed [integer half-binomial route](reviews/arithmetic-half-binomial-population-route-root.md)
+replaces real estimates by finite integer comparisons; its new represented
+power, Pascal and factorial proofs remain explicit work.
+
 The [actual auxiliary seed](reviews/arithmetic-pell-auxiliary-seed-root.md)
 now constructs five positive f,i,T,u,y from only internal a,R with
 R%4=3, including a=0. Both oriented residues modulo f*f and c, the
