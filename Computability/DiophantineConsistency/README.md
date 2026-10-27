@@ -184,6 +184,12 @@ external consistency equivalence. Its identity maps retain every positive
 assignment. The [root replay](reviews/fourteen-normalized-product106-root.md)
 uses the refreshed current data owners and passes all six reports.
 The [first-norm auxiliary correction](research/thirteen-first-norm-correction92/README.md)
+has two [further reductions](research/thirteen-second-first-norm-corrections/README.md):
+13 positive variables with92 operations/degree90, or97/88. Independent
+finite audits and two fresh Lean builds pass, retaining every positive
+assignment and both actual external ConZFC endpoints. See the
+[root review](reviews/thirteen-second-first-norm-corrections-root.md).
+The HA equivalence is still open. The earlier correction described below
 now gives13 positive variables,84 operations and exact degree92. Either
 sphere equation first forces P=1, so the correction vanishes; every
 positive assignment is retained in both directions. Independent fresh

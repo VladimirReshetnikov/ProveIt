@@ -24,6 +24,15 @@ Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
 
+Two [further first-norm corrections](research/thirteen-second-first-norm-corrections/README.md)
+now supply13/92/90 and13/97/88 (variables/operations/degree), with the same
+complete current coefficient tuple. Both retain the entire positive zero
+set. Independent normal/optimized finite audits and two fresh Lean builds
+pass, including ten standard-only axiom reports and both actual external
+ConZFC endpoints. See the [root review](reviews/thirteen-second-first-norm-corrections-root.md).
+The different polynomials trade more operations for lower degree; HA
+proof existence and global optimality remain open.
+
 The [first-norm auxiliary correction](research/thirteen-first-norm-correction92/README.md)
 now gives13 positive variables,84 operations and exact degree92. Either
 sphere equation first forces P=1, so the correction vanishes; every
