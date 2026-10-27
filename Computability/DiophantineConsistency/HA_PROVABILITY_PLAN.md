@@ -751,3 +751,17 @@ The nonzero step branch subtracts one only after its success guard.
 The independent preflight corrected one implicit Init omission in a
 metadata import list; the original complete closure already contained
 that boundary. No source correction or compiler failure occurred.
+
+
+## Source construction with actual current endpoint
+
+The [ordinary-source construction](reviews/native-ordinary-source-construction-root.md)
+now accepts every positive old-z source zero and rebuilds a Carrier65 zero
+with the same scalar fields and rank. Two independent builds pass twelve
+standard-only reports and identical objects. Actual current-source
+existence is externally equivalent to inconsistency; shifted-z/historical
+low-degree transfer and the final HA proof remain separate obligations.
+
+These finite algebraic/number-theoretic Lean results are external. They
+are not silently imported as PA/HA proof witnesses. Their later internal
+coding and actual proof-existence construction remain explicitly required.

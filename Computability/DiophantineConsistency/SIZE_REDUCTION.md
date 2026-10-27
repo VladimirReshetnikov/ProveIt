@@ -3638,3 +3638,20 @@ materialized as new candidate packets. Replacing the signed ordinate's
 L*V carrier by V would suggest74/80, but the positive witness maps require
 a sign bound that the accepted proofs do not establish. This remains an
 unproved lead; the verified degree96 point remains13/75/96.
+
+
+## Ordinary-source bridge to current constants accepted
+
+The [ordinary-source construction](reviews/native-ordinary-source-construction-root.md)
+now accepts every positive old-z source zero and rebuilds a Carrier65 zero
+with the same scalar fields and rank. Two independent builds pass twelve
+standard-only reports and identical objects. Actual current-source
+existence is externally equivalent to inconsistency; shifted-z/historical
+low-degree transfer and the final HA proof remain separate obligations.
+
+This checkpoint changes no polynomial or metric. Its all-positive source
+soundness rebuilds private Pell witnesses and retains the original source
+rank; its reverse existence map uses proved canonical restoration. It
+therefore supplies a concrete common endpoint for the proposed transfer
+of older compact44 arithmetic without assuming private multiplier
+normalization.

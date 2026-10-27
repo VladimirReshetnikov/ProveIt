@@ -81,6 +81,12 @@ now identify terminal with any stopped run and prove the exact head/tail
 successor equations. Independent review and two fresh builds pass six
 standard-only reports with identical objects. These supply the local laws
 for the separately developed fair scheduler reach theorem.
+The [ordinary-source construction](reviews/native-ordinary-source-construction-root.md)
+now accepts every positive old-z source zero and rebuilds a Carrier65 zero
+with the same scalar fields and rank. Two independent builds pass twelve
+standard-only reports and identical objects. Actual current-source
+existence is externally equivalent to inconsistency; shifted-z/historical
+low-degree transfer and the final HA proof remain separate obligations.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed
