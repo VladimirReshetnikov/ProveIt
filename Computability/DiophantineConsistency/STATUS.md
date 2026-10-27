@@ -13,8 +13,9 @@ historical equations have additional transfer obligations beyond this estimate.
 
 Checked components include genuine HA derivations, the PA→HA proof map,
 the literal equation/GG comparison, actual bounded decisions and the Σ1
-ordinary/GG comparison. The fixed-consistency normalization is separately
-under author/independent review and must not be inferred from this estimate.
+ordinary/GG comparison. The fixed-consistency normalization has also passed independent review;
+its limited endpoint is recorded below and does not close the arithmetic
+connection to the equation.
 
 The decisive missing step is an actual PA derivation (or direct HA witness
 construction) connecting the displayed equation to the fixed ZFC refutation
@@ -135,11 +136,18 @@ Four independent fresh builds pass eighteen standard-only reports with
 identical objects. The historical lower-degree carrier transfer remains
 separate; no equation metric or HA endpoint is promoted.
 
+The [fixed HA consistency normalization](reviews/foundation-ha-consistency-normalization-peer.md)
+now proves both HA implications between the retained fixed GG consistency
+sentence and HA negation of the ordinary actual positive ZFC-refutation
+predicate. Independent builds pass eight standard-only reports and identical
+objects. This does not supply the equation/source PA theorem or an internal
+comparison with an independently encoded checker.
+
 The [actual Σ1 ordinary/GG theorem](reviews/foundation-ha-sigma-one-gg-root.md)
 now proves HA equivalence of the literal GG image with double negation of
 the ordinary positive formula, for arbitrary environments. Independent
-builds pass eleven standard-only reports and identical objects. Fixed ZFC
-consistency specialization and the full equation equivalence remain open.
+builds pass eleven standard-only reports and identical objects. The fixed consistency specialization is accepted above; the full
+equation equivalence remains open.
 
 The [HA finite bounded double-negation theorem](reviews/ha-bounded-double-negation-root.md)
 now proves both implications for an arbitrary matrix, with no decision
