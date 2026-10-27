@@ -100,6 +100,12 @@ now selects an explicit safe opposite-parity stream and proves relabelling
 between arbitrary free-safe starts, including overlapping s/s+2. Independent
 builds pass fifteen standard-only reports with identical objects. Semantic
 quantifier inference and arbitrary proof interpretation remain open.
+The [actual C222 fair scheduler](reviews/arithmetic-enum-fairperm222-peer.md)
+now reaches every internal candidate at or above its initial counter,
+including a start at4, unless an earlier command halts. Two independent
+builds pass fourteen standard-only reports and identical objects. The
+proof retains a bounded stopped-time witness before enumeration resumes;
+compiler/proof-state invariants and exact215 calibration remain open.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed

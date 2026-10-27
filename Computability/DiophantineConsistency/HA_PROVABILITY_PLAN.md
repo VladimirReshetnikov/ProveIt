@@ -809,3 +809,19 @@ This comparison uses existing Foundation syntax and actual HA derivations.
 The next calibration audit must bind the actual proof checker to applicable
 syntax, distinguishing syntactic hierarchy witnesses from delta-one model
 representations and negative consistency transport from positive Σ1 DNE.
+
+
+## Actual counter4 fair reach accepted
+
+The [actual C222 fair scheduler](reviews/arithmetic-enum-fairperm222-peer.md)
+now reaches every internal candidate at or above its initial counter,
+including a start at4, unless an earlier command halts. Two independent
+builds pass fourteen standard-only reports and identical objects. The
+proof retains a bounded stopped-time witness before enumeration resumes;
+compiler/proof-state invariants and exact215 calibration remain open.
+
+The raw candidate for a nonempty shifted word is word-1. The halting-word
+client retains its lower bound relative to the starting counter and its
+all-working-state halting premise. This does not prove that a checker
+certificate already compiles to such a word. The coupled-time induction
+never assumes completed scheduler states are absorbing.

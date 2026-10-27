@@ -37,6 +37,13 @@ arbitrary term environments. Two independent builds pass nine standard-only
 reports. Existential recovery uses the whole bounded existential's actual
 HA decision; the literal consistency-checker comparison remains open.
 
+The [actual C222 fair scheduler](reviews/arithmetic-enum-fairperm222-peer.md)
+now reaches every internal candidate at or above its initial counter,
+including a start at4, unless an earlier command halts. Two independent
+builds pass fourteen standard-only reports and identical objects. The
+proof retains a bounded stopped-time witness before enumeration resumes;
+compiler/proof-state invariants and exact215 calibration remain open.
+
 The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
 now passes two independent builds and seventeen propext/Quot.sound-only
 reports. Genuine simultaneous formula induction proves finite all/ex
