@@ -208,6 +208,15 @@ arbitrary internal data, with the actual physical file and rotated fetch loop.
 Independent builds match both objects/full logs and22 standard-only reports.
 Complete AX dispatch/root execution and literal215 simulation remain open.
 
+The [actual215 register-box theorem](reviews/arithmetic-register-boxes215-root.md)
+now executes marking, increment and both decrement branches for all nine
+physical registers, with arbitrary internal data and positive clocks.
+It retains INC's appended spare and positive DEC's extra left bit; only
+zero DEC requires a spare. Fixed PR graphs and actual IΣ1 induction cover
+internally sized scans and spare suffixes. Independent fresh triples match
+all three objects/full logs and 14 standard-only reports. Symbolic executor,
+Home, all-site and final control/tape calibration remain open.
+
 The [actual215 tape/boot theorem](reviews/arithmetic-machine-tape215-root.md)
 now binds sparse transitions to the literal decimal evaluator for arbitrary
 internal tape halves. All13 checked chunks give its exact95714 boot prefix;

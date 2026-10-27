@@ -21,10 +21,22 @@ connections are actual ZFC/source-checker proof interpretation, actual
 control-to-tape simulation, and internal polynomial/Pell witness assembly.
 The checked scheduler/control halting theorem, literal tape/boot theorem
 and relaxed auxiliary norm theorem below are completed parts of those
-connections. Tagged Collection and register-box execution are under
-implementation; the [reviewed half-index proposal](research/arithmetic-pell-half-index-plan.md)
+connections. Tagged Collection is under implementation; register-box
+execution has since passed independent review below. The
+[reviewed half-index proposal](research/arithmetic-pell-half-index-plan.md)
 is authorized for implementation, not yet a proved theorem. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
+
+The [actual215 register-box theorem](reviews/arithmetic-register-boxes215-root.md)
+now proves marking, increment, zero decrement and positive decrement for
+all nine physical registers with arbitrary internal data and positive
+execution clocks. INC appends one spare; positive DEC retains its extra
+left bit. The zero branch alone needs an existing spare. Fixed PR graphs
+and genuine Pi1 induction in IΣ1 handle internal scan and spare counts.
+Independent fresh triples match all three objects/full logs and 14 reports.
+One unchanged numeric-prefix helper was explicitly refreshed; no Foundation
+module was rebuilt. The ordinary-Nat encoding comparison, symbolic executor,
+Home, all-site and control/tape composition remain open.
 
 The [actual relaxed auxiliary norm theorem](reviews/arithmetic-pell-index-divisibility-root.md)
 now supplies the original-base Pell coordinates and both p|m and c|m for
