@@ -8,6 +8,12 @@ identical objects. Its actual Π1/IΣ1 induction retains total lookup,
 repeated/zero labels and the exact qVec binder shifts. Stream selection,
 semantic quantifier rules and the complete HA equivalence remain open.
 
+The [actual C222 evaluation laws](reviews/arithmetic-command-evaluationperm222-peer.md)
+now identify terminal with any stopped run and prove the exact head/tail
+successor equations. Independent review and two fresh builds pass six
+standard-only reports with identical objects. These supply the local laws
+for the separately developed fair scheduler reach theorem.
+
 The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
 now passes two independent builds and seventeen propext/Quot.sound-only
 reports. Genuine simultaneous formula induction proves finite all/ex

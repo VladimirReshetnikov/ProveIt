@@ -736,3 +736,18 @@ bound stack before encode_shift removes the free-environment head. Neither
 step assumes a desired CProv transport theorem. The first checkpoint adds
 no fresh-stream choice or arbitrary proof translation. Both remain
 subsequent explicit obligations.
+
+
+## Actual C222 evaluation equations accepted
+
+The [actual C222 evaluation laws](reviews/arithmetic-command-evaluationperm222-peer.md)
+now identify terminal with any stopped run and prove the exact head/tail
+successor equations. Independent review and two fresh builds pass six
+standard-only reports with identical objects. These supply the local laws
+for the separately developed fair scheduler reach theorem.
+
+Stopped-time uniqueness applies to the absorbing word evaluator only.
+The nonzero step branch subtracts one only after its success guard.
+The independent preflight corrected one implicit Init omission in a
+metadata import list; the original complete closure already contained
+that boundary. No source correction or compiler failure occurred.

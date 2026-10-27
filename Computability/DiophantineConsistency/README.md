@@ -76,6 +76,11 @@ now passes two independent builds with thirteen standard-only reports and
 identical objects. Its actual Π1/IΣ1 induction retains total lookup,
 repeated/zero labels and the exact qVec binder shifts. Stream selection,
 semantic quantifier rules and the complete HA equivalence remain open.
+The [actual C222 evaluation laws](reviews/arithmetic-command-evaluationperm222-peer.md)
+now identify terminal with any stopped run and prove the exact head/tail
+successor equations. Independent review and two fresh builds pass six
+standard-only reports with identical objects. These supply the local laws
+for the separately developed fair scheduler reach theorem.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed
