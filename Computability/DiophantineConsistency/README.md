@@ -84,6 +84,11 @@ now also has a total internal graph and exact agreement with actual
 EnumPerm.enumStep on every ordinary state. Its two independent fresh
 builds pass eleven standard-only reports. The program0/program1 cases
 retain the actual scheduler behavior; full-run invariants remain open.
+The [represented full run](reviews/arithmetic-enum-runperm222-peer.md)
+now iterates that step at every internal IΣ1 time and agrees with literal
+EnumPerm.run on every ordinary state/time. Two independent builds pass
+thirteen standard-only reports. Individual-word draining, scheduler
+fairness and proof-state invariants remain open.
 The [C222 equality leaf](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean)
 now translates into the actual C254 proof predicate for every internal input
 in every IΣ1 model. Its [independent replay](reviews/validator-growg222-root.md)

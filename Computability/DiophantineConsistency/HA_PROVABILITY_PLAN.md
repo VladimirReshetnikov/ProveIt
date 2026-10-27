@@ -619,6 +619,13 @@ is now independently checked as a total internal IOpen graph, with actual
 EnumPerm.enumStep semantics on every ordinary state. Its fresh pair passes
 eleven standard-only reports. Full represented recursion, scheduling and
 proof invariants remain separate checkpoints.
+The subsequent [represented full run](reviews/arithmetic-enum-runperm222-peer.md)
+now supplies total/unique recursion at every internal IΣ1 time, the
+semigroup law, halt absorption and exact actual EnumPerm.run agreement
+for all ordinary states/times. Its independent pair passes thirteen
+standard-only reports. The next runtime obligations are a draining bound
+for individual candidate words, fair reach from candidate4, proof-state
+invariants and exact215 simulation.
 
 The [73-module consistency refresh](reviews/fixed-consistency73-root.md)
 has now passed, including current R2Native, LSchema and the actual

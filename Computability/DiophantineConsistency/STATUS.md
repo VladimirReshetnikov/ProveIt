@@ -2,6 +2,13 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+The [actual permuted enumerator run](reviews/arithmetic-enum-runperm222-peer.md)
+now has a total/unique internal IΣ1 graph, absorbing halt0, the semigroup
+law and exact all-time/all-state Nat agreement with actual EnumPerm.run.
+Independent review and two fresh builds pass thirteen standard-only
+reports with byte-identical objects. Word draining, fairness, proof
+invariants and the final HA equation equivalence remain open.
+
 The [HA strict-order decision](reviews/foundation-ha-order-decidable-root.md)
 now passes two independent builds and twelve propext/Quot.sound-only reports.
 It proves the ordinary decision disjunction and order-specific stability
