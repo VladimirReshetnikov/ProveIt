@@ -795,3 +795,17 @@ currently has a delta-one fixed-point representation; identifying it with
 an explicit bounded matrix needs further genuine HA comparison proofs.
 The next separate leaf compares ordinaryAux with the literal existing
 Foundation negative translation, using only these bounded decisions.
+
+
+## Actual bounded negative-translation comparison accepted
+
+The [bounded ordinary/GG comparison](reviews/foundation-ha-deltazero-gg-root.md)
+now proves both HA implications for actual Foundation Δ₀ formulas and
+arbitrary term environments. Two independent builds pass nine standard-only
+reports. Existential recovery uses the whole bounded existential's actual
+HA decision; the literal consistency-checker comparison remains open.
+
+This comparison uses existing Foundation syntax and actual HA derivations.
+The next calibration audit must bind the actual proof checker to applicable
+syntax, distinguishing syntactic hierarchy witnesses from delta-one model
+representations and negative consistency transport from positive Σ1 DNE.

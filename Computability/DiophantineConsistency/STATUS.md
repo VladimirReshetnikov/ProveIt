@@ -29,8 +29,13 @@ quantifier inference and arbitrary proof interpretation remain open.
 The [actual Foundation Δ₀ theorem](reviews/foundation-ha-deltazero-root.md)
 now proves HA decidability of the ordinary interpretation with arbitrary
 term environments. It uses actual bounded syntax and exact binder shifts,
-with twelve independently checked standard-only reports. Literal GG
-comparison and the actual delta-one checker normalization remain open.
+with twelve independently checked standard-only reports. The actual delta-one checker normalization remains open.
+
+The [bounded ordinary/GG comparison](reviews/foundation-ha-deltazero-gg-root.md)
+now proves both HA implications for actual Foundation Δ₀ formulas and
+arbitrary term environments. Two independent builds pass nine standard-only
+reports. Existential recovery uses the whole bounded existential's actual
+HA decision; the literal consistency-checker comparison remains open.
 
 The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
 now passes two independent builds and seventeen propext/Quot.sound-only
