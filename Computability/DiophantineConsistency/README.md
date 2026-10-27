@@ -199,12 +199,20 @@ arbitrary internal data, with the actual physical file and rotated fetch loop.
 Independent builds match both objects/full logs and22 standard-only reports.
 Complete AX dispatch/root execution and literal215 simulation remain open.
 
+The [internal Pell strong-divisibility theorem](reviews/arithmetic-pell-strong-divisibility-root.md)
+now proves the exact sequence gcd, index-divisibility equivalence including
+zero indices, and arbitrary-scale common-divisor consequence. Genuine bounded
+Sigma1 descent and norm-derived cancellation give the result. Independent
+builds match both objects/full logs and seven standard-only reports.
+Large-index forcing and full relaxed integrality remain open.
+
 The [internal common-unit theorem](reviews/arithmetic-pell-common-unit-root.md)
 now derives one base, both positive internal Pell indices and a positive
 scale below the original base from the actual norm. Both composition
 identities hold at every internal query index by Sigma1 induction.
 Independent builds match both objects/full logs and four standard-only
-reports. Strong divisibility and full relaxed integrality remain open.
+reports. The later strong-divisibility packet above supplies sequence gcd;
+full relaxed integrality remains open.
 
 The [internal gcd normalization](reviews/arithmetic-gcd-normalization-root.md)
 now derives a fixed total unique Sigma1 gcd graph and the actual relaxed-norm

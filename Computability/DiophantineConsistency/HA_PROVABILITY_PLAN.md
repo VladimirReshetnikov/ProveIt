@@ -11,12 +11,20 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [internal Pell strong-divisibility theorem](reviews/arithmetic-pell-strong-divisibility-root.md)
+now derives the sequence gcd, index-divisibility reflection including0 and
+the arbitrary-scale common-divisor consequence. Norm certificates and a
+bounded Sigma1 Euclidean descent prove the actual represented identities.
+Independent fresh pairs match both objects/full logs and seven reports.
+The large-c estimate forcing the common-unit index multiple, subsequent
+cubic congruences and full relaxed integrality remain to be proved.
+
 The [internal common-unit theorem](reviews/arithmetic-pell-common-unit-root.md)
 now derives the shared base and two positive internal indices from the
 actual norm and proves both represented composition identities by Sigma1
 induction. Independent fresh pairs match both objects/full logs and four
-reports. Strong divisibility, large-index forcing, cubic congruences and
-full relaxed integrality remain to be proved.
+reports. The later strong-divisibility theorem above supplies sequence gcd;
+large-index forcing, cubic congruences and full relaxed integrality remain.
 
 The [internal gcd normalization theorem](reviews/arithmetic-gcd-normalization-root.md)
 now constructs a fixed total unique Sigma1 gcd graph by least positive
@@ -81,8 +89,8 @@ A known positive unit bounds a finite least-unit search. Elementary gcd
 normalization then puts both relevant norm solutions over one discriminant,
 potentially replacing the external squarefree/fundamental-unit setup.
 The known-unit descent, gcd normalization and common-unit composition are
-now proved above. The strong-divisibility argument still needs formalization
-before full relaxed integrality.
+now proved above, along with strong divisibility. Large-index forcing and
+the final congruence argument still precede full relaxed integrality.
 
 The [uniform internal seed-source basis](reviews/validator-seed-source-basis222-root.md)
 now constructs the exact represented open proof of every internally typed
