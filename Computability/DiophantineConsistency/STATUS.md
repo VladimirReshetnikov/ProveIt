@@ -47,8 +47,8 @@ The [actual raw-command replacement](reviews/arithmetic-command-replaceperm222-p
 now preserves the permuted command's meaningful arguments and its complete
 working-register effect over internal IOpen inputs. Independent builds
 pass thirteen standard-only reports with identical objects, including raw0
-and literal AX y/x order. Represented append and execution composition
-remain subsequent runtime checkpoints.
+and literal AX y/x order. Represented append and execution composition are accepted below;
+compiler/proof-state invariants remain separate.
 
 The [actual C222 existential term rule](reviews/validator-existential-rules222-root.md)
 now constructs the encoded term-instance implication and composes it under
@@ -63,11 +63,18 @@ an explicit vacuity guard for hypotheses and deriving it for a shifted
 negative source hypothesis. Independent builds pass thirteen standard-only
 reports with identical objects. General source-proof interpretation remains open.
 
+The [actual C222 append execution theorem](reviews/arithmetic-command-compositionperm222-peer.md)
+now proves exact evaluation composition over all internal words and states,
+using a bounded stopped-pair invariant. Independent builds pass thirteen
+standard-only reports and identical objects. Halt0 and positive completion
+remain distinct. Proof compiler invariants and exact215 calibration remain
+open.
+
 The [actual C222 append graph](reviews/arithmetic-command-appendperm222-peer.md)
 now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
 plus actual finite command-list concatenation. Independent builds pass
-sixteen standard-only reports with identical objects. The next runtime
-checkpoint proves that evaluation of the concatenated words composes.
+sixteen standard-only reports with identical objects. Evaluation composition is accepted above; fixed command blocks and
+compiler/proof-state invariants remain subsequent checkpoints.
 
 The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
 now proves all22 unconditional row identities and both positive existence

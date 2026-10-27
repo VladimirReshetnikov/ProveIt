@@ -914,3 +914,20 @@ This discharges the concrete typed-term freshness and vacuity side conditions
 using the original stream. The endpoint is actual internal CProv222, not a
 new HA derivation. Full source-proof interpretation still needs its own
 induction/context encoding and hypothesis invariants.
+
+
+## Actual internal C222 append execution accepted
+
+The [actual C222 append execution theorem](reviews/arithmetic-command-compositionperm222-peer.md)
+now proves exact evaluation composition over all internal words and states,
+using a bounded stopped-pair invariant. Independent builds pass thirteen
+standard-only reports and identical objects. Halt0 and positive completion
+remain distinct. Proof compiler invariants and exact215 calibration remain
+open.
+
+A represented pointwise Σ1 time induction keeps left/right/work fixed and
+retains a bounded stopped-pair witness. The proof combines actual raw-tail
+replacement, word draining, run addition and terminal uniqueness. It needs
+no numerical lower bound on append codes and no least stopping time. It is
+an internal IΣ1 runtime theorem, not yet the full represented proof compiler
+or an HA equation equivalence.
