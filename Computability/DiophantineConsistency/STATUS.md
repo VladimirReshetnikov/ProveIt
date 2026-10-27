@@ -29,6 +29,14 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [current literal adaptive equivalence](reviews/native-adaptive-current2011-root.md)
+now closes positive-zero iff actual not-ConZFC and no-positive-zero iff
+actual ConZFC for the complete13-input graph at the exact current ports.
+Independent builds match both objects and all ten reports, including
+axiom-free width. This is an external Lean equivalence. Current specialized
+metrics and the internal PA/HA proof remain separate; no display/frontier
+change is promoted.
+
 The [actual whole DagPerm control table](reviews/arithmetic-dag-controlperm222-root.md)
 now has complete4751-row catalogue equality, a packed high-bit bound and
 unconditional whole-root occurrence. Independent fresh PackedTables/main/

@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [current literal adaptive equivalence](reviews/native-adaptive-current2011-root.md)
+now closes both external consistency equivalences for the13-input graph
+at the exact current ports, including the once-shifted high coefficient.
+Independent fresh replay matches both objects and ten axiom reports.
+This supplies another exact polynomial endpoint for later internalization;
+it does not supply the required PA derivation or HA proof-existence theorem.
+No specialized metric/frontier promotion or displayed-equation edit is made.
+
 The [actual whole DagPerm table](reviews/arithmetic-dag-controlperm222-root.md)
 now has kernel-checked catalogue equality for all4751 rows and unconditional
 root occurrence at entry1,fuel488. Independent fresh PackedTables/main/

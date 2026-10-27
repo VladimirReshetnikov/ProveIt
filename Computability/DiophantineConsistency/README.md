@@ -164,6 +164,14 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [current literal adaptive equivalence](reviews/native-adaptive-current2011-root.md)
+now proves the13-input graph at the complete current coefficient tuple
+has no positive zero iff actual ConZFC. Independent builds match both
+objects and ten reports. This external Lean endpoint retains the exact
+once-shifted fourth coefficient; specialized size metrics and internal
+PA/HA provability remain separate obligations. The displayed equation
+is unchanged.
+
 The [actual whole DagPerm control table](reviews/arithmetic-dag-controlperm222-root.md)
 now has complete4751-row catalogue equality, no extra high packed slots,
 and an unconditional whole-root occurrence. Independent fresh prerequisite/
