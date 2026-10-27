@@ -41,6 +41,11 @@ The [finite Eind-context proofs](reviews/validator-eind-context222-root.md)
 then add represented projections, cons laws, context vacuity and binder
 discharge under IΣ1, with twelve independently checked standard-only reports.
 Uniform formula transport remains a separate checkpoint.
+The [finite atomic transport](reviews/validator-atomic-transport222-root.md)
+now supplies actual C222 equality/membership certificates under the same
+represented context, with zero and auxiliary-label collisions retained.
+Two independent builds pass13 standard-only reports; uniform formula
+transport under its explicit IΣ2 invariant remains the next checkpoint.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed
