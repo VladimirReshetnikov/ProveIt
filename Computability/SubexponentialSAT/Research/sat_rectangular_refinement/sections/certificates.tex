@@ -1,0 +1,177 @@
+\section{Coupled support certificates}
+\label{sec:certificates}
+
+\subsection{Complete operation supports and exact selection}
+
+A plan partitions the $r$ groups into three ordered nonempty blocks.
+To build a block, split its ordered list at its midpoint, recursively
+build both halves, and multiply their boundary tables. Finally contract
+the three block tables. At an internal merge of disjoint sets $A,B$ with
+outside set $O$, the three index classes are $AB,AO,BO$; the final triangle
+has the three pair classes between its blocks. There are $r-3$ internal
+merges and one final triangle, so every plan has $r-2$ operations.
+
+If the three class entropy sums are $H_1,H_2,H_3$, the backend
+\eqref{eq:rectangle} is the maximum of nine linear forms on the
+\emph{unsorted} triple:
+\begin{equation}\label{eq:newsupports}
+ \operatorname{Perm}(1+\eps/2,1+\eps/2,0),\qquad
+ \operatorname{Perm}(1,3/4+\eps,1/2).
+\end{equation}
+This follows from the rearrangement inequality; the first set contains
+three distinct permutations and the second six. They describe one sorted
+cost bound, not nine algorithms executed in succession.
+
+For $\eps=10^{-5}$ a common integer scale is $L_*=200000$, giving
+\[
+ \operatorname{Perm}(200001,200001,0),\qquad
+ \operatorname{Perm}(200000,150002,100000).
+\]
+Give each unordered group edge its class coefficient and zero if it lies
+inside one of the parts. For plan $j$ let $\mathcal V_j$ be the resulting
+$9(r-2)$ integer support vectors, and define
+\[
+ F_j(g)=L_*^{-1}\max_{v\in\mathcal V_j}v\cdot g.
+\]
+Then $2^{F_j(g)}$, up to polynomial factors, pays for every operation of
+this plan after singleton tables have been formed. The input/output
+branch of the backend pays for all local boundary arrays, so the same
+coefficient also bounds local storage.
+
+The algorithm selects the plan of least $F_j(g)$. This comparison can be
+performed exactly. Put $c_{ab}=|\mathcal I_{ab}||\mathcal I_{ba}|$ and
+compare the positive integers
+\begin{equation}\label{eq:exactselect}
+ P_j=\max_{v\in\mathcal V_j}\prod_{a<b}c_{ab}^{v_{ab}}.
+\end{equation}
+Their bit lengths are polynomial in the root parameter, since the menu,
+dimension, support scale and exponents are fixed. No floating-point
+logarithm comparison is necessary. The large fixed scale makes this a
+complexity specification, not an assertion of practical efficiency.
+
+\subsection{An exact hierarchy of quadratic certificates}
+
+\begin{theorem}[Subset-coupled norm certificate]\label{thm:subset}
+Let $q\ge2$ plans have finite nonnegative support families
+$\mathcal V_1,\ldots,\mathcal V_q$. Give them nonnegative integer weights
+$w_i$ with $W=\sum_iw_i>0$. Fix an integer $2\le k\le q$. For each
+$k$-element subset $S\subseteq[q]$, let
+\begin{equation}\label{eq:As}
+ A_S=\max_{v_i\in\mathcal V_i,\ i\in S}
+ \left(\sum_{i\in S}w_i^2\norm{v_i}^2
+       +\frac{2(q-1)}{k-1}
+          \sum_{\substack{i<j\\i,j\in S}}w_iw_j\,v_i\cdot v_j\right).
+\end{equation}
+Define
+\begin{equation}\label{eq:beta}
+ U_k=\frac{\sum_{|S|=k}A_S}{\binom{q-1}{k-1}W^2},
+ \qquad \beta_k^2=\frac{2U_k}{L_*^2r^2}.
+\end{equation}
+Selecting the least-cost plan in the menu has local time and local space
+coefficient at most $\beta_k$ on the scale $\K(M,u)$.
+\end{theorem}
+
+\begin{proof}
+For arbitrary choices $v_i\in\mathcal V_i$, every diagonal term
+$w_i^2\norm{v_i}^2$ occurs in $\binom{q-1}{k-1}$ subsets, and every
+cross term $w_iw_jv_i\cdot v_j$ in $\binom{q-2}{k-2}$ subsets. Since
+\[
+ \frac{q-1}{k-1}\binom{q-2}{k-2}
+ =\binom{q-1}{k-1},
+\]
+we have the exact identity
+\begin{align*}
+ \left\|\sum_i\frac{w_i}{W}v_i\right\|_2^2
+ =\frac{1}{\binom{q-1}{k-1}W^2}
+ \sum_{|S|=k}\left(
+  \sum_{i\in S}w_i^2\norm{v_i}^2
+  +\frac{2(q-1)}{k-1}\sum_{\substack{i<j\\i,j\in S}}
+       w_iw_jv_i\cdot v_j\right).
+\end{align*}
+Replacing each bracket by its independent maximum gives the bound $U_k$.
+For the actual entropy vector $g$, choose a maximizing support $v_i$ for
+each $F_i(g)$. Then
+\[
+ \min_i F_i(g)
+ \le\sum_i\frac{w_i}{W}F_i(g)
+ =\frac1{L_*}\left(\sum_i\frac{w_i}{W}v_i\right)\cdot g
+ \le(\beta_k+o(1))\K
+\]
+by~\eqref{eq:unordered}. The menu is finite, so the inherited error is
+uniform. All local arrays are paid by the input/output support branch,
+which proves the storage statement as well.
+\end{proof}
+
+There is no claim that the separate maximizing tuples for the different
+subsets are simultaneously realizable. Taking their maxima only relaxes
+an upper bound. At $k=q$ the certificate retains the complete support
+tuple; at $k=2$ it is exactly the incoming pair certificate. The gain from
+$k=3$ is proved by the actual integer computations below, not by an
+assumed strict monotonicity for every arbitrary instance.
+
+\subsection{A strict gain with the old backend}
+
+Use the incoming nine ten-group plans, weights
+\[
+ (137,124,135,120,108,119,106,87,64),\qquad W=1000,
+\]
+and its old integer supports
+\[
+ \operatorname{Perm}(1400007,1400007,0),\qquad
+ \operatorname{Perm}(1400000,1175014,750000),
+ \quad L_*=1400000.
+\]
+The complete plans are stored as literal data in the archive, with
+source provenance. There are 72 supports per plan. For $q=9,k=3$ the
+cross coefficient in~\eqref{eq:As} is 8, the normalization is $28W^2$,
+and the full check visits
+\[
+ \binom93\,72^3=31,352,832
+\]
+support triples. It gives exactly
+\begin{equation}\label{eq:oldtriple}
+ \beta_{10,\mathrm{old},3}^2
+ =\frac{13925744235456152241}{42875000000000000000}.
+\end{equation}
+The incoming pair value was
+$15952347164548384057/49000000000000000000$.
+Both use exactly the same operation supports and paid recursion.
+
+Keeping its root taper $\eta_0=301/20000$, the new root coefficient is
+\[
+ C_{\mathrm{same}}
+ =\kappa\sqrt{\frac{\beta_{10,\mathrm{old},3}^2}{301/20000}}
+ =\sameC.
+\]
+The two other recurrence branches remain
+$29.3352039993294\ldots$ and $29.06574852464125\ldots$, so the root
+is still the maximum. This proves the same-backend assertion of
+Theorem~\ref{thm:main}. It isolates a genuine certificate improvement
+from any improvement due to an imported matrix theorem.
+
+\subsection{Updated root certificate and a cyclic thirteen-group menu}
+
+With the new supports~\eqref{eq:newsupports}, the same weighted triple
+computation at the root gives
+\begin{equation}\label{eq:newtriple}
+ \beta_{10}^2
+ =\frac{16437522499887100933}{56000000000000000000}.
+\end{equation}
+For thirteen groups, start from the three ordered blocks
+\[
+ (0,1,2,4,7)\mid(3,6,8,12)\mid(5,9,10,11)
+\]
+and add $j$ modulo 13 to every label for $j=0,\ldots,12$. The resulting
+13 plans have equal weights. Their exact pair certificate gives
+\begin{equation}\label{eq:cyclic13}
+ \beta_{13}^2=\frac{3132736483411}{10985000000000}.
+\end{equation}
+Each plan is fully charged, including the construction of its blocks.
+The later menus are finite affine or punctured-affine menus and a final
+four-group plan, likewise checked with all internal merges included.
+Their exact data and certificates are included in the standalone verifier.
+
+The seed and schedule were found by exploratory searches. The final proof
+uses only the displayed rational data, complete finite enumeration, and
+the analytic bounds above. A search objective or an optimizer's success
+message is not used as a certificate of correctness or global optimality.

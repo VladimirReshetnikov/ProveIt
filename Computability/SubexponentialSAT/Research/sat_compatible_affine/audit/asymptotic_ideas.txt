@@ -1,0 +1,239 @@
+# Attempts to change the asymptotic order for 3-SAT
+
+Snapshot: `VladimirReshetnikov/ProveIt@8e76d515063c4b9fbd8743a846b457e3a01bc039`.
+This is an internal research note for the current iteration. No improved
+unrestricted 3-SAT bound is claimed here. The positive coefficient improvement in the final report is separate
+from the unsuccessful order-changing attempts documented in this note.
+
+## 1. The baseline and attempts already covered in the corpus
+
+The imported Boolean tensor theorem is
+`lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-reduction.tex`,
+Theorem `thm:tensor-contraction`. On a network of size `s` with maximum
+degree at most `ceil(s^(9/10))`, suitable polynomial descriptions, and
+the stated ring and entry-evaluation conditions, it gives
+`poly(s+L) 2^{O(s/sqrt(log s))}` time and polynomial space.
+
+The arbitrary-density 3-SAT reduction in the same file uses
+`s=Theta(n loglog n)`, yielding
+`poly(n,m) 2^{O(n loglog n/sqrt(log n))}`. The strongest existing
+density-dependent exponent is
+`O(n min(log(2+m/n),loglog n)/sqrt(log n))`; see
+`Research/sat_density_improvement/density_aware_sat_improvement.tex`,
+Theorem `thm:main`. Its uniform sparse-query lemma keeps the actual
+monomial sparsity rather than discarding it.
+
+The existing files already address several tempting routes, so the
+following cannot honestly be presented as newly proved order improvements:
+
+* `Research/3sat_asymptotic_analysis/research_runtime/METHOD_BARRIERS.md`,
+  section 3, explains why a direct second contraction of the encoded mode
+  network violates the degree/oracle interface. Letting its group number
+  `r` grow trades first-stage taper depth `O(log M/log r)` for second-stage
+  packing depth `O(log r)`; in that model the two square-root factors cancel.
+* Sections 1 and 2 of that file give restricted mode-enumeration and
+  Hermite-taper barriers. These do not lower-bound all possible algorithms.
+* Section 4 already optimizes an optimistic sparsification/density cost
+  model `n[sigma+c log(1/sigma)/sqrt(log n)]`; its best scale still contains
+  `loglog n`.
+* `Research/3sat_asymptotic_analysis/research_decision/findings.md`,
+  sections 7 and 8, already discuss a decision-only obstruction to
+  selecting a small subformula and randomized extension-field norm
+  compression. The latter supplies a valid one-equation encoding, but
+  not the necessary low-cost coefficient oracle or low-wire recursive
+  decomposition.
+* `Research/3sat_asymptotic_analysis/research_runtime/CONDITIONAL_DEGREE_KERNEL.tex`
+  states the missing degree-preserving compressed-kernel interface
+  explicitly. It also explains why low incidence degree does not transfer
+  to the Boolean degree of a binary subset index.
+
+I explored changing the residue characteristic and a shared original-variable
+deformation. The following two local lemmas make the obstructions to the
+most direct versions precise. Neither is a barrier to all p-adic or
+original-variable algorithms.
+
+## 2. A prime-cycle localization obstruction
+
+### Lemma (two good shifts force constancy)
+
+Let `p` be prime, let `A` be any set of group labels, and let
+`R,C : Z/pZ -> A` label row and column positions in one cyclic digit.
+Call a shift `d` good if
+
+`R(t)=C(t+d)` for every `t in Z/pZ`.
+
+If two distinct shifts `d,e` are good, both `R` and `C` are constant,
+with the same value. Consequently, for a nonconstant pair `(R,C)`,
+at most one nonzero shift is good.
+
+### Complete proof
+
+Suppose `d != e` are good. For every `t`,
+
+`C(t+d)=R(t)=C(t+e)`.
+
+Put `s=t+d` and `delta=e-d`. Then `C(s)=C(s+delta)` for every `s`.
+Because `p` is prime and `delta != 0`, the elements
+`s,s+delta,...,s+(p-1)delta` are all of `Z/pZ`.
+Iterating the equality therefore shows that `C` has the same value
+everywhere. The equality `R(t)=C(t+d)` makes `R` the same constant.
+This proves the lemma.
+
+### Why binary swapping is exceptional for this construction
+
+For `p=2`, there is only one nonzero shift. Thus a nonconstant pair can
+make every nonzero shift good: choose `C(0)=a,C(1)=b`, with `a != b`,
+and `R(t)=C(t+1)`. For an odd prime, retaining every nonzero shift would
+retain at least two, forcing constancy by the lemma. A nonconstant
+cyclic-coordinate construction can retain at most a `1/(p-1)` fraction
+of the nonzero residues as good shifts.
+
+The source's `quantitative-contraction.tex`, subsection
+`subsec:tensor-modes`, uses the fact that adding an integer of valuation
+`i` flips binary bit `i`. All odd unit residues have that same effect on
+the binary digit, so the unordered-pair packet labeling makes `W(t)`
+local for every retained node at that valuation. The lemma shows why
+replacing the binary digit by one cyclic digit modulo an odd prime does
+not preserve that feature with nontrivial row/column groups.
+
+This is relevant to the tempting observation that a larger counting
+prime reduces the number of p-adic precision digits. The observation
+does not by itself provide the required locality or mode valuation
+estimate. The lemma identifies a missing geometry; it does not show
+that all odd-characteristic approaches are impossible.
+
+### Sharpness and limitations
+
+One good shift is always attainable with arbitrary nonconstant `C`:
+fix `d0` and define `R(t)=C(t+d0)`. The prime assumption is necessary.
+For a composite cycle, invariance under `e-d` only makes `C` constant
+on cosets of the subgroup generated by that difference.
+
+More generally, for a finite abelian group `G`, if a nonempty set `D`
+of shifts is good, then `C` is constant on cosets of
+`H=<d-e : d,e in D>`. Conversely, if `C` is constant on those cosets
+and `R(t)=C(t+d0)` for one `d0 in D`, all shifts in `D` are good.
+Proof: the two-shift equality gives invariance under each generator
+and hence under their generated subgroup; conversely every
+`d-d0` lies in `H`. This permits constructions on vector spaces and
+other packet geometries; the cyclic prime lemma does not exclude them.
+
+An independent exhaustive finite check over two group labels found:
+
+| p | Pairs making all nonzero shifts good | Nonconstant pairs |
+|---|---:|---:|
+| 2 | 4 | 2 |
+| 3 | 2 | 0 |
+| 5 | 2 | 0 |
+| 7 | 2 | 0 |
+
+These finite counts illustrate the proof; they are not its justification.
+
+## 3. Original-variable coherence obstruction
+
+### Lemma (locality labels propagate along incidence components)
+
+Let `V` be a finite set of variables, let `F` be a finite collection
+of factors with nonempty scopes `I_f subset V`, and let `G_inc` be
+their bipartite incidence graph. Suppose there are maps
+
+`g : V -> [r]`, `sigma : F -> [r]`
+
+such that `g(v)=sigma(f)` for every incidence `v in I_f`.
+Then all variable and factor vertices in each connected component
+of `G_inc` have the same label.
+
+### Complete proof
+
+For every edge `(v,f)`, the two endpoint labels are equal by
+hypothesis. Along any path, consecutive equalities imply equality
+of the labels at its two endpoints. In a connected component every
+two vertices are joined by a path, hence all their labels agree.
+
+### Linear-form corollary
+
+Let a vector space of target coordinates be decomposed as a direct sum
+`E=E_1 direct-sum ... direct-sum E_r`. Assign each original variable
+`v` a nonzero linear form/vector `ell_v in E`, shared by all its
+occurrences. Suppose each factor is assigned a group `sigma(f)` and
+locality is enforced by the structural condition
+
+`ell_v in E_{sigma(f)} for every v in I_f`.
+
+Then all factors in each connected incidence component are assigned
+to one group. If, additionally, the `ell_v` belonging to that component
+are linearly independent, that target group has dimension at least the
+number of variables in the component.
+
+### Complete proof of the corollary
+
+If `v` occurs in factors assigned to distinct groups `a,b`, then
+`ell_v` belongs to `E_a intersect E_b={0}`, contradicting nonzeroness.
+Thus all factors incident to a variable have the same group, which
+defines `g(v)` for every occurring variable. The lemma propagates
+the label through each incidence component. All its `ell_v` therefore
+belong to a single subspace `E_g`. Linear independence of `k` such
+vectors implies `dim E_g >= k`, proving the dimension assertion.
+Unused variables are isolated and may be handled separately.
+
+### Scope of the obstruction
+
+The corollary obstructs a particularly simple attempt to avoid
+incidence expansion: substitute the same nonzero linear form for
+every occurrence of an original variable and force each whole factor
+to be local without additional measurements. For a connected formula,
+this cannot distribute factors among several independent groups.
+If the substitution also preserves independent variable directions,
+it cannot achieve dimensional shrinkage in that one group.
+
+Its assumptions deliberately exclude possible escapes:
+
+* occurrence-dependent substitutions;
+* rank-deficient substitutions or variables whose images vanish at a node;
+* cancellations internal to a specific factor that make its actual
+  evaluated support smaller than the structural scope bound;
+* fixing shared measurements, boundary variables, or correction modes;
+* a different representation whose factor-incidence graph changes.
+
+The source's original-variable machinery in
+`main_full_version.tex`, Definition/subsection around
+`subsec:measurement-factorization`, explicitly uses measurements to
+avoid this obstruction. Its locality condition says the factor is
+constant on kernels of measurement maps outside its assigned group;
+it does not assert that every substituted variable form is supported
+entirely in that group. Appendix D instead uses occurrence wires and
+crossing modes. The lemma does not refute either construction.
+
+## 4. What remains a plausible order-changing target
+
+A useful new kernel would have to retain a small number of independent
+original-variable directions while exposing shared measurements whose
+description, precision and recursive cost remain below the incidence
+entropy `Theta(n loglog n)`. The existing conditional degree interface
+would be sufficient, but it is not supplied by a binary encoding of
+incidence subsets, nor by the two direct modifications above.
+
+For an odd-prime route, one would need an explicitly different
+localization design, enough interpolation conditions after the good-node
+restriction, a correct p-adic jet-recovery loss, an integral separated
+crossing kernel, and recursive closure. A reduced initial precision
+alone does not establish a faster algorithm.
+
+For a decision-only route, randomized isolation or extension-field
+hashing may change output recovery, but the currently missing
+coefficient oracle and recursive representation remain necessary.
+No such lemma was proved in this workstream, and no smaller
+worst-case asymptotic order is asserted.
+
+## 5. Source links
+
+All ProveIt paths above are relative to
+`Computability/SubexponentialSAT/` except the explicitly prefixed
+`lib/openai-math/` paths.
+
+* Snapshot: <https://github.com/VladimirReshetnikov/ProveIt/tree/8e76d515063c4b9fbd8743a846b457e3a01bc039>.
+* Imported contraction: <https://github.com/VladimirReshetnikov/ProveIt/blob/8e76d515063c4b9fbd8743a846b457e3a01bc039/lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-contraction.tex>.
+* Imported reduction: <https://github.com/VladimirReshetnikov/ProveIt/blob/8e76d515063c4b9fbd8743a846b457e3a01bc039/lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-reduction.tex>.
+* Prior barriers: <https://github.com/VladimirReshetnikov/ProveIt/blob/8e76d515063c4b9fbd8743a846b457e3a01bc039/Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/research_runtime/METHOD_BARRIERS.md>.
+* Prior decision routes: <https://github.com/VladimirReshetnikov/ProveIt/blob/8e76d515063c4b9fbd8743a846b457e3a01bc039/Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/research_decision/findings.md>.
+

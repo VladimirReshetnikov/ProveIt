@@ -1,0 +1,187 @@
+\section{Why the logarithmic-order breakthrough is still missing}
+\label{sec:limits}
+
+The new construction changes the finite contraction menu and its interaction
+with the global recursion. It reduces the coefficient multiplying
+\[
+ K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac{M}{\sqrt u}.
+\]
+It does not change the dependence on $u$. The admissible root taper remains
+$u=\Theta(\log s)$, so the normalized order remains
+$s/\sqrt{\log s}$. The occurrence bridge then retains that denominator.
+The compressed reduction still incurs an $O(n\log\log n)$ incidence
+budget at unrestricted density~\cite{upstream,degree}.
+
+\subsection{The useful new idea and its limitation}
+
+Partial duplication deliberately trades a slightly larger local time
+coefficient for a better global choice of taper and child shrinkage.
+The fifteen-group menu has local $\beta_{15}\approx0.57154$, whereas
+the full eighteen-group menu has $\beta_{18}\approx0.56529$.
+The smaller local number alone does not determine the best root bound.
+For fifteen groups the root taper is $0.1134\lambda$, compared with
+$0.107\lambda$ for eighteen groups; the recursive entries remain cheap
+enough after shrinking by $2/15$. The resulting root coefficient is smaller
+even though its local norm certificate is larger.
+
+Uniformly cloning still more points is not a route to a smaller order
+within this certificate. If every affine point has multiplicity $t$, then
+$r=9t$. Final-block support self norms and cross products both scale as
+$t^2$, while the entropy normalization divides by $r^2=81t^2$.
+Their normalized contribution therefore stays fixed. More explicitly,
+if $y=(1,47/56+\varepsilon,15/28)$, the final-operation coupled bound
+already contributes
+\[
+ \frac1{18}\sum_i y_i^2+\frac1{27}\left(\sum_i y_i\right)^2
+\]
+to $\beta^2$, independently of $t$. Internal operations can only increase
+the maximum used by this certificate. Meanwhile the sufficient packing
+capacity decreases as $1/(1+2\log_2r)$. Increasing a fixed cloning
+multiplicity therefore does not make the coefficient vanish. Letting $r$
+grow with input size would additionally require new uniform allocation,
+padding and enumeration bounds; the fixed-$r$ analysis cannot be reused
+without those charges.
+
+\subsection{Routes checked against the latest sources}
+
+\paragraph{Decision-only precision.}
+Parity, isolation or reducing the requested output precision does not
+remove the current reconstruction engine's internal
+$\Theta(MD/u)$ precision loss. A faster decision procedure would have to
+avoid that recovery step with a new exact summation or reconstruction
+identity. This obstacle already appears in the asymptotic-analysis and
+precision-refinement packets~\cite{barriers,precision}.
+
+\paragraph{A thinner graded space with the same crossing decomposition.}
+The latest weighted-pair packet proves a sharper obstruction than merely
+counting oscillator states~\cite{pairwise}. Under its full-crossing-rank
+and polynomial-piece assumptions, a crossing on an $N$-symbol alphabet
+factors through energy windows $E\le4h$ only if
+\[
+ N^2\le\poly(h)\max_{E\le4h}\dim W_E.
+\]
+If $\log_2N\sim ch^\alpha$ and
+$\log_2\dim W_E\sim cE^\alpha$ with the required monotonicity, then
+\[
+ 2ch^\alpha\le c(4h)^\alpha+o(h^\alpha),
+ \quad\hbox{hence}\quad \alpha\ge\tfrac12.
+\]
+Thus simply proposing $\alpha<1/2$ while retaining all those interfaces
+is inconsistent. The obstruction is scoped: a different energy window,
+a different reconstruction identity, a restricted image, or structured
+summation could fall outside it. It does not prove a lower bound for
+all algorithms deciding 3-SAT.
+
+\paragraph{Faster matrices, more groups, or more trees.}
+These can improve constants, but complete explicit boundary tables still
+pay their array sizes. A larger menu cannot remove the cost of materializing
+the tables it actually uses. Existing source analyses already isolate
+this obstruction for the full-table model~\cite{tree,pairwise}.
+Likewise, increasing the group count in the dense reduction improves its
+degree premise without by itself removing the incidence-indexing budget.
+The density-sensitive and high-moment proposals already exploit that
+possibility~\cite{degree,project}.
+
+\subsection{A concrete next target beyond coefficient optimization}
+
+The most useful next theorem would concern the \emph{actual family} of
+deformed group factors generated from 3-SAT equality and clause tensors.
+The present entropy relaxation treats their boundary data as arbitrary
+arrays of the permitted sizes. A strict improvement in order needs a
+representation or summation rule that uses additional algebraic structure.
+One precise research target is a family of exact boundary representations
+closed under the required pair contractions and recovery operations, with
+construction and evaluation cost
+\[
+ 2^{o(M/\sqrt u)}\,\poly(s)
+\]
+at the critical root scale. A certificate must include the representation
+dimension, coefficient precision, update costs and recursive entry costs.
+A compact description whose evaluation still enumerates all boundary
+indices does not meet this target.
+
+This suggests a falsifiable program: characterize the image spaces of
+small genuine 3-SAT group factors after deformation; test whether a
+proposed exact representation survives one merge and recovery step;
+then prove the uniform closure and cost bounds. Full matrix rank rules out
+some factor-through-small-space proposals immediately, but does not itself
+rule out fast structured summation. No such closed representation theorem
+has been constructed in this report. The existing conditional
+$2^{O(n\log\log n/\log n)}$ target still depends on its unproved
+structured-mode acceleration hypothesis~\cite{precision}.
+
+\section{Verification, reproducibility, and remaining obligations}
+\label{sec:verification}
+
+The archive contains complete LaTeX sources, the compiled report, exact
+standard-library Python checkers, deterministic JSON results, source and
+commit ledgers, independent audit notes, and a checksum manifest.
+There are two independently reconstructed certificates for the main
+fifteen-group geometry, with different point-class implementations.
+
+\begin{enumerate}
+\item \path{audit_round5_new15.py} constructs all four root plans and
+their $117$ supports, checks $82{,}134$ cross-plan time pairs, and proves
+the strict schedule inequalities with rational interval arithmetic.
+It certifies all four fully paid branches and the time and space radical
+identities. The ten-, seven-, and four-group local bounds are explicitly
+imported source inputs.
+\item \path{check_partial_affine_joint.py} independently constructs the
+geometry and verifies $82{,}134$ time pairs, $4{,}374$ boundary pairs and
+$37{,}908$ mixed pairs. It implements the rounded integer joint selector
+and independently verifies the complete time and space schedule.
+\item \path{round5_affine_certificate.py} and
+\path{check_rectangular_joint.py} verify the eighteen-group alternative.
+The latter checks $124{,}416$ time pairs, $6{,}534$ boundary pairs and
+$57{,}024$ mixed pairs. The former also checks the nine-group rectangular
+menu and a matching witness for the eighteen-group \emph{local} Euclidean
+certificate; it gives no 3-SAT lower bound.
+\item \path{audit_round5_baseline.py} independently reconstructs the
+prior cyclic thirteen-plan certificate with the compatible rectangular
+backend and checks the stronger $13\to10\to7\to6\to4$ comparison.
+The exact source coefficients imported at the remaining arities are
+identified in the audit note and dependency ledger.
+\item \path{check_tensor_regrouping.py} compares literal directed-index
+summation with every affine plan in $36$ fixtures, checking $144$ complete
+plan contractions and $24{,}192$ literal index assignments over
+$(\mathbb Z/256\mathbb Z)[V]/(V^2)$. It includes asymmetric directed
+dimensions, zero factors, nonzero cases and two nilpotent factors, and
+checks the actual integer selectors on the fifteen- and eighteen-group
+fixtures. These are algebra tests, not fast-matrix benchmarks.
+\item \path{verify_occurrence_bridge.py} compares Boolean assignment
+counts with incidence-wire sums on $483$ small formula cases and
+$1{,}293$ threshold/branch comparisons. It tests unused variables,
+tautologies, repeated literals, empty clauses and satisfied clauses whose
+remaining incidences must be retained.
+\end{enumerate}
+
+The coefficient enclosures use Machin's formula with alternating-series
+remainders for $\pi$, a positive atanh series and geometric tail for
+$\ln2$, and integer-square-root radical bounds. Floating-point numbers
+are used only for explicitly exploratory displays. All delivered main
+checks use explicit exceptions and remain active under Python's
+optimization flag. Ordinary and optimized replay both pass.
+
+The finite tests establish finite identities and certificates. The proof
+of uniform asymptotic complexity is the schedule argument, together with
+the imported analytic interface. No full fast SAT solver, asymptotic
+matrix implementation, or new Lean/Rocq build is supplied or claimed.
+The finite nearby-menu exploration is recorded separately as exploratory
+evidence; it is not an optimality proof and is not needed by either theorem.
+
+\noindent\begin{minipage}{\linewidth}
+From the extracted packet directory, run:
+\begin{lstlisting}
+python3 verify_manifest.py
+python3 run_checks.py
+python3 run_checks.py --optimized
+python3 build_report.py
+\end{lstlisting}
+\end{minipage}
+
+The checkers use only the Python standard library. Building the report
+requires pdfLaTeX and the standard packages listed in the preamble; shell
+escape is disabled. Replay rewrites the deterministic result files.
+The manifest should be checked before rebuilding the PDF, whose metadata
+may depend on the TeX environment. The report was compiled and visually
+inspected before delivery.

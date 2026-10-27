@@ -1,0 +1,173 @@
+\section{Verification, reproducibility, and proof status}\label{sec:verification}
+
+The archive separates imported analytic theorems, new finite inequalities,
+and finite semantic examples. This separation matters: a correct integer
+certificate for a support norm does not by itself implement the tensor
+contractor or prove its deformation identities.
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.29\linewidth}p{0.62\linewidth}@{}}
+\toprule
+Obligation & Evidence and scope\\
+\midrule
+Root support maximum & Two distinct support generators and two distinct
+branch-bound implementations reproduce the exact norm, elimination
+domains, and \(303513\) search visits.\\[3pt]
+Thirteen-group maximum & Two independent implementations enumerate all
+\(2299968\) triples and find the same unique maximizing vectors.\\[3pt]
+Backend arithmetic & Rational interpolation, positive endpoint slack,
+permutation supports, and the integer scale are checked exactly. The
+existence of fast bilinear algorithms is imported from the cited paper.\\[3pt]
+Recursive coefficient & Exact integer logarithm comparisons, rational
+packing margins, and rational intervals for \(\pi\), \(\ln2\), and square
+roots certify every branch and the bound \(C_*<29.149\).\\[3pt]
+Contraction semantics & Eight scalar factor-graph fixtures over
+\(\mathbb Z/8\mathbb Z\), with up to \(4096\) assignments, compare all
+twelve plans to direct enumeration: \(96\) equalities.\\[3pt]
+Selector semantics & The finite prototype checks exact integer scores
+for dyadic dimensions, bypasses selection on empty mode lists, and
+rejects negative dimensions.\\[3pt]
+Prior-menu limitation & A rational Gram-matrix certificate, positive
+weights, an exhaustive residual support check, and a matching direction
+prove Proposition~\ref{prop:nineopt}.\\[3pt]
+Order obstructions & The proofs in Section~\ref{sec:order} are elementary.
+Small exhaustive checks illustrate them and include composite-group
+examples to test the stated scope.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The final acceptance conditions use explicit exceptions rather than
+Python assertions, and the principal independent checks also pass with
+\texttt{python3 -O}. Numerical displays are not acceptance tests.
+The scripts use only the Python standard library.
+
+\subsection{How to reproduce the supplied computations}
+
+From the extracted archive root run:
+\begin{verbatim}
+python3 verify_all.py
+python3 -O verify_all.py
+\end{verbatim}
+The second command is an optional repeat demonstrating that optimized
+Python does not remove acceptance conditions. A shorter review is
+available as \texttt{python3 verify\_all.py --quick}; it skips the separate
+root replay and is not a replacement for the complete audit.
+The wrapper isolates generated files from the shipped reference results.
+The root certificate can also be checked directly with
+\begin{verbatim}
+python3 code/independent_affine_audit.py \
+  code/anchored_backend_certificate.json
+\end{verbatim}
+The local README documents outputs and the other individual scripts.
+The supplied PDF can be rebuilt, given a LaTeX installation, with
+\texttt{python3 build\_report.py}. The archive includes all referenced
+\texttt{.tex} sections; no remote inputs are needed for compilation.
+
+\subsection{What is not certified by this archive}
+
+There is no new Lean formalization of the plan or norm certificate.
+The programs do not implement the asymptotically fast matrix algorithms,
+the complete exact interpolation contractor, or an end-to-end 3-SAT
+solver. Their finite scalar timings would not predict the practicality
+of those asymptotic algorithms. No threshold for the eventual constant
+is asserted: the packing margins are small, the fixed matrix algorithms
+are theoretical, and the hidden constants remain large.
+
+The mathematical theorem is relative to the explicitly named contraction,
+mode-counting, reduction, and ring-implementation lemmas of the reviewed
+corpus. The full cited formalization was inspected at the statement and
+source level, with its exact-commit CI status, but not rebuilt locally.
+These are material boundaries of the present verification.
+
+\section{Next targets that could change the order}
+
+The most useful next search should change an interface that produces the
+logarithmic loss. More finite menus within the same envelope can improve
+the coefficient, but Section~\ref{sec:envelope} already quantifies the
+limited remaining room for the present root architecture.
+
+\paragraph{Original-variable measurements with paid shared information.}
+A promising target is an exact decomposition which retains original
+variable directions while exposing shared measurements of lower total
+description entropy than the current selected-incidence indices.
+Its theorem would need to specify the reconstruction identity, coefficient
+access algorithm, precision, child degree, child wire count, and the cost
+of enumerating or contracting the shared measurements. The incidence
+coherence lemma explains why a fully shared linear substitution without
+such measurements is insufficient. This is a research interface to
+construct, not an algorithm established here.
+
+\paragraph{A different graded exact crossing representation.}
+The Anthropic paper already identifies the growth of the graded crossing
+space as a possible source of a different denominator power. Ordinary
+partition growth gives the square-root scale. A replacement with smaller
+graded growth would still have to satisfy the complete locality and
+duality identities and efficient coefficient access. Truncating or
+regrading the same oscillator representation does not supply these
+properties; earlier packets audit those restricted attempts
+\cite{anthropic-paper,alternate}. This is an existing open route, not a
+new improvement claimed by this memorandum.
+
+\paragraph{A new packet geometry in another characteristic.}
+The finite-abelian-group version of Lemma~\ref{lem:prime} identifies
+precisely where the prime-cycle obstruction can be escaped. A viable
+construction would still have to preserve enough interpolation nodes,
+pay the jet-recovery loss, obtain an integral separated kernel, and close
+the recursion. A lower initial precision alone does not meet those
+requirements.
+
+The proved advance in this archive is the combination of a new plan
+family, compatible support choices, a sharper rectangular envelope, and
+the paid recursive certificate. The requested smaller logarithmic order
+for unrestricted 3-SAT remains open in this work.
+
+\appendix
+\section{Literal root plans}\label{sec:plantable}
+
+The following lists are ordered. Midpoint splitting and postorder
+operation traversal use exactly these orders. Plan numbers are zero based.
+The first three plans correspond to the form \(x\), the next three to
+\(y\), then \(x+y\), then \(x+2y\). Within each set of three, the chosen
+line value is \(0,1,2\).
+
+\begin{center}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+Plan & Four-vertex block & First triple & Second triple\\
+\midrule
+0  & \((0,1,2,9)\) & \((3,4,5)\) & \((6,7,8)\)\\
+1  & \((3,4,5,9)\) & \((0,1,2)\) & \((6,7,8)\)\\
+2  & \((6,7,8,9)\) & \((0,1,2)\) & \((3,4,5)\)\\
+3  & \((0,3,6,9)\) & \((1,4,7)\) & \((2,5,8)\)\\
+4  & \((1,4,7,9)\) & \((0,3,6)\) & \((2,5,8)\)\\
+5  & \((2,5,8,9)\) & \((0,3,6)\) & \((1,4,7)\)\\
+6  & \((0,5,7,9)\) & \((1,3,8)\) & \((2,4,6)\)\\
+7  & \((1,3,8,9)\) & \((0,5,7)\) & \((2,4,6)\)\\
+8  & \((2,4,6,9)\) & \((0,5,7)\) & \((1,3,8)\)\\
+9  & \((0,4,8,9)\) & \((2,3,7)\) & \((1,5,6)\)\\
+10 & \((2,3,7,9)\) & \((0,4,8)\) & \((1,5,6)\)\\
+11 & \((1,5,6,9)\) & \((0,4,8)\) & \((2,3,7)\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Exact constants for independent transcription}
+
+The two principal finite certificates reduce to
+\[
+ B_* =\frac{47+116c+128c^2}{600},\qquad
+ \beta_{13}^2=\frac{20+24c+44c^2}{169},\qquad
+ c=\frac{1371553}{2000000}.
+\]
+The compact root coefficient is
+\[
+ \boxed{C_* =\frac{\pi}{\ln2}
+            \sqrt{\frac{23343389777236}{564375000000}}}.
+\]
+The coefficient comparison uses the same rational retained fractions
+\(301/20000\), \(119/10000\), and the geometric tail in
+\eqref{eq:schedule}. Changing these fractions without rechecking packing,
+precision, and recursive branch costs is not justified by either finite
+certificate alone.
+

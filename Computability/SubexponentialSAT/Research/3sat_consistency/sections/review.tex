@@ -1,0 +1,146 @@
+\section{Outcome and the comparison actually being made}
+\label{sec:review}
+
+There are two results. The one relevant to the known arbitrary-density
+3-SAT regrouping uses its stronger root-degree promise
+$\Delta\le s^{51/100}$. A new strict degree-aware schedule gives the
+eventual simultaneous bounds
+\[
+ T\le(s+\mathcal L)^{O(1)}2^{13.690s/\sqrt{\lceil\log_2s\rceil}},\qquad
+ S\le(s+\mathcal L)^{O(1)}2^{12.798s/\sqrt{\lceil\log_2s\rceil}}.
+\]
+Section~\ref{sec:low-degree} proves this composition and distinguishes its
+time improvement from the new support-consistency argument. The latter
+also improves the wider generic interface: under the same root-degree
+promise $\Delta\le\lceil s^{9/10}\rceil$ as the strongest incoming cached
+packet, it gives
+\begin{equation}\label{eq:main-bound}
+ \begin{aligned}
+ T(s,\mathcal L)&\le (s+\mathcal L)^{O(1)}
+ 2^{(\NewTime\ldots+o(1))s/\sqrt{\lceil\log_2s\rceil}},\\
+ S(s,\mathcal L)&\le (s+\mathcal L)^{O(1)}
+ 2^{(\NewSpace\ldots+o(1))s/\sqrt{\lceil\log_2s\rceil}}.
+ \end{aligned}
+\end{equation}
+Here $\mathcal L$ is the description length, and the two bounds are a
+simultaneously valid pair. The theorem is relative to explicit imported
+deformation, recovery, packing, and matrix multiplication results. The new
+finite inequality and its exact certificate are proved and checked here.
+
+The request for a breakthrough in the unrestricted logarithmic order is
+\emph{not resolved}. In particular, this work does not replace
+$n\log\log n/\sqrt{\log n}$ by $n/\sqrt{\log n}$ or by
+$n\log\log n/\log n$. The improvement is nevertheless asymptotic at the
+level of the displayed quantitative upper bounds within the specified
+degree and resource classes. The generic coefficient alone would not
+improve the strongest contractor usable after the existing 3-SAT regrouping;
+the lower-degree specialization is essential. Ratios of these upper bounds are not lower bounds on
+the running times of implementations.
+
+\subsection{A frozen review, including the latest arrivals}
+
+The source snapshot is ProveIt commit
+\texttt{8e76d515063c4b9fbd8743a846b457e3a01bc039}. It includes the five
+archives added by \texttt{26bd83d4b37d} at 8:51 PM Pacific on October 26,
+2026. The preceding placement \texttt{a7ae5ab55f96} moved nine fourth-round
+packets into the research directory, and \texttt{7de9d09fecd1} linked the
+public Anthropic development. The repository-wide head also contains
+unrelated work; our mathematical review concerns the two requested
+directories and the referenced source manuscripts only \cite{index,arrival,history}.
+
+We obtained the report sources and headline/status files for all twenty-nine
+filed refinement packets, then extracted and inspected all five new archives.
+The downloaded source inventory contains 148 objects, each verified against
+its advertised Git blob identifier. Detailed proof review concentrates on
+the strongest compatible bounds and the mathematical interfaces used below.
+This is not a claim that every proof in thirty-four packets has been
+independently audited. Appendix~\ref{app:inventory} records the scope.
+
+The five arrivals all retain the same general SAT exponent order. Their
+generic degree-$s^{9/10}$ cached resource bounds are:
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule Incoming packet & Time coefficient & Space coefficient\\
+\midrule
+\texttt{sat\_affine\_cauchy} & 30.413349 & 29.466030\\
+\texttt{sat\_affine\_contraction} & 30.257036 & 25.989068\\
+\texttt{sat\_affine\_geometry} & 30.269873 & 29.487537\\
+\texttt{sat\_affine\_plane} & 30.691338 & 29.466030\\
+\texttt{sat\_pairwise\_certificates} & 29.811609 & 29.811609\\
+\midrule
+This report & \NewTimeShort & \NewSpaceShort\\
+\bottomrule
+\end{tabular}
+\end{center}
+All coefficients multiply $s/\sqrt{\log_2s}$, equivalently
+$s/\sqrt{\lceil\log_2s\rceil}$ to leading order. All rows use
+subexponential space. The smaller-memory affine construction remains a
+separate option. The best reviewed generic polynomial-space time coefficient
+is $46.18484558673\ldots$; the separate degree-$s^{1/12}$ polynomial-space
+coefficient is $16.81223380188\ldots$ \cite{flags,pairwise,affine}.
+These stronger degree assumptions must not be silently substituted into
+the generic comparison.
+
+Conversely, a generic bound must not be advertised as best for 3-SAT when
+its reduction already produces lower degrees. The earlier exact-kernels
+packet states a $25.16377\ldots$ polynomial-space coefficient at degree
+$s^{0.51}$. The earlier eight-group cached construction has a
+$19.08387\ldots$ branch whose proof in fact extends to this same degree
+class, even though its stated corollary assumes $s^{1/12}$.
+The new $13.690$ coefficient is compared with these in
+Section~\ref{sec:low-degree}; it uses subexponential space.
+The already available lower-degree reductions are credited in
+Section~\ref{sec:structure}.
+
+\subsection{The two source manuscripts and their formal scope}
+
+For 3-SAT, the OpenAI October 25 manuscript gives the general order
+\[
+ (n+m)^{O(1)}2^{O(n\log\log n/\sqrt{\log n})}
+\]
+in polynomial space, and the fixed-density order
+$2^{O_D(n/\sqrt{\log n})}$ when $m\le Dn$, with polynomial input factors
+understood. Its pinned Lean scope page explicitly describes the weaker
+formalized exponent $n(\log\log n)^2/\sqrt{\log n}$, still with polynomial
+space. The manuscript's sharper appendix and the formalized scope are
+different guarantees \cite{openai,openai-scope}.
+
+At the exact Anthropic commit supplied by the user, \anthpin,
+\texttt{MainResults.MainTheorem} states the existence of one deterministic
+finite-stack Mathlib machine and a constant $C$ that count all satisfying
+assignments within
+\[
+ 2^{C\min\{3m/\sqrt{\log_2m},\,
+                  9n\log_2\log_2n/\sqrt{\log_2n}\}}
+\]
+on the stated 3-CNF inputs. Those inputs have $n\ge4$, $m\ge2$, no duplicate
+clause lists, and every declared variable occurring. Every stack alphabet
+is explicitly required to be finite. The proof entry point supplies a
+term for this proposition. The headline proposition contains no
+polynomial-space conclusion \cite{anthropic-main,anthropic-solution}.
+
+We inspected these statements and proof entry points; we did not rebuild
+or independently replay either large Lean development. This report neither
+denies the formal statements nor claims a fresh kernel verification.
+Unknown constants in the separate Anthropic construction do not permit a
+numerical speed comparison with the normalized-wire coefficient in
+\eqref{eq:main-bound}. Our claims concern explicit normalized contraction
+bounds in their stated degree classes, not a proof of being faster than
+every possible implementation of both manuscripts.
+
+\subsection{What the new idea changes}
+
+The strongest incoming certificate bounds the norm of an average of nine
+support vectors by summing thirty-six separately maximized pair terms.
+The support chosen for one plan can consequently be different in each
+pairwise maximum. A real simultaneous selection has only one support for
+that plan. We exploit this consistency by redistributing zero-sum functions
+of each selected support among its incident pairs.
+
+This preserves the contraction plans, arithmetic backend, and recursion.
+The simultaneous storage bound adds a boundary-size objective to the exact
+plan selector. The primary improvement is in the proof of the
+worst-case running time. Pairwise consistency and such potential
+reparametrizations are classical finite optimization tools
+\cite{wainwright}; the contribution here is their exact certificate for
+this specific contraction family and the fully charged consequence.

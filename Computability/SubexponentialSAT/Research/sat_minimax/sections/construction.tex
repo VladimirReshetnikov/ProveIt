@@ -1,0 +1,87 @@
+\section{Explicit contraction menus and their certificates}
+\label{sec:construction}
+
+
+A plan is three ordered blocks. Inside each block, split the ordered list at
+$\lfloor k/2\rfloor$, build the two tables recursively and merge them.
+Finally contract the three blocks. There are $r-2$ operations and therefore
+$9(r-2)$ supports per plan.
+
+The nine-group menu is the four parallel classes of the affine plane
+$\mathbb F_3^2$, with labels $0,\ldots,8$ in row-major order:
+\[
+\begin{array}{lll}
+(0,1,2)&(3,4,5)&(6,7,8)\\
+(0,3,6)&(1,4,7)&(2,5,8)\\
+(0,4,8)&(1,5,6)&(2,3,7)\\
+(0,5,7)&(1,3,8)&(2,4,6).
+\end{array}
+\]
+The twelve-group menu is
+\[
+\begin{array}{lll}
+(0,1,2,3)&(4,5,6,7)&(8,9,10,11)\\
+(9,1,7,0)&(6,11,2,4)&(5,3,8,10)\\
+(4,10,0,7)&(11,6,8,1)&(2,3,9,5)\\
+(7,5,3,11)&(9,4,8,0)&(6,1,2,10).
+\end{array}
+\]
+The optional ten-group menu is
+\[
+\begin{array}{lll}
+(0,1,2,3)&(4,5,6)&(7,8,9)\\
+(2,6,3,7)&(0,5,8)&(4,9,1)\\
+(4,8,3,2)&(1,5,7)&(9,0,6)\\
+(3,1,8,6)&(0,4,7)&(9,5,2).
+\end{array}
+\]
+These explicit menus, rather than the heuristic search used to suggest two
+of them, constitute the mathematical construction.
+
+\begin{center}\small
+\begin{tabular}{lrrl}
+\toprule
+Backend and groups & Supports/plan & Tuples covered & Certified $\beta^2$\\
+\midrule
+Classical, $r=9$ &63&15,752,961&$54113/169344$\\
+Classical, $r=12$ &90&65,610,000&
+$4110726305041430303/12559431766773663744$\\
+Newer, $r=10$ &72&26,873,856&$119061/387200$\\
+Newer, $r=12$ &90&65,610,000&$55241/185856$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first three bounds are sharp for their finite menus under the Euclidean
+relaxation. The final entry is a sufficient uniform-average upper bound.
+For the classical twelve-group menu the sharp hull squared norm is
+\[
+ R=\frac{12332178915124290909}{166871701833196}.
+\]
+Only 18 tuples require a nonuniform hull calculation after the uniform
+average pruning. The maximizing Gram matrix is
+\[
+\begin{pmatrix}
+99920&65557&64979&64511\\
+65557&99920&65395&65557\\
+64979&65395&99920&65395\\
+64511&65557&65395&99920
+\end{pmatrix},
+\]
+and its optimal weights have common denominator $166871701833196$ and
+numerators
+\[
+42504471540671,\quad40721557063169,\quad
+41630292075405,\quad42015381153951.
+\]
+The independent unpruned replay agrees with the production certificate,
+which additionally uses exact integer branch bounds to cover the complete
+Cartesian products efficiently. The production checks cover 173,846,817
+support tuples in all four cases, rather than sampling entropy vectors.
+
+Plan selection itself uses no real-number decisions. For each support $v$
+compute the integer product
+$\prod_{g<h}(|\mathcal I_{gh}|\,|\mathcal I_{hg}|)^{v_{gh}}$;
+minimize the largest such product over the four plans. The fixed dimensions
+and polynomial-bit list cardinalities make this preprocessing polynomial
+in the original size parameter.
+

@@ -1,0 +1,126 @@
+\section{Consequences for 3-SAT and what remains unresolved}
+\label{sec:3sat}
+
+\subsection{A strict generic coefficient gain with the same asymptotic scale}
+
+Under the generic $s^{9/10}$ degree promise, the fastest comparable incoming time coefficient was
+$C_{\rm old}=29.81160894538347\ldots$. Theorem~\ref{thm:global} decreases
+it by $0.06555185158\ldots$, approximately $0.21989\%$. Relative to that
+packet's accompanying space upper bound, the new space coefficient drops
+by approximately $4.97\%$. These percentages describe coefficients in
+exponential upper bounds, rather than measured speedups or memory ratios.
+
+If $E(s)=s/\sqrt{\lceil\log_2s\rceil}$, the leading expressions compare as
+\[
+ \frac{2^{C_{\rm old}E(s)}}{2^{C_TE(s)}}
+ =2^{(C_{\rm old}-C_T)E(s)}.
+\]
+Since the coefficient gap is fixed and positive, it is eventually larger
+than the difference of the respective $o(1)$ terms. This is why the change
+is a strict asymptotic improvement in the quantitative certificate despite
+preserving the exponent's logarithmic order. No lower bound on the older
+implementation follows from this ratio.
+
+The useful resource alternatives are retained. The affine packet gives
+$(30.2570356\ldots,25.9890677\ldots)$, with more time and less space.
+The generic polynomial-space construction has time coefficient
+$46.1848456\ldots$. Our cached result is not a replacement for either
+resource requirement \cite{affine,flags}.
+
+\subsection{Transfer to the actual 3-SAT reductions}
+
+Counting assignments also decides satisfiability by testing whether the
+count is nonzero. We restrict all applications here to clauses of width
+at most three. The stronger counting interface is useful because the
+inherited reductions reconstruct the exact count.
+
+For fixed clause density, the native variable--clause network has
+$O_D(n)$ wires. High-degree variables can be conditioned or represented
+by the exact bounded-degree equality constructions already used in the
+corpus. Invoking the improved contractor preserves the established order
+\[
+ (n+m)^{O(1)}2^{O_D(n/\sqrt{\log n})}.
+\]
+At arbitrary density, the source's sparse parity tests and incidence
+encoding produce $O(n\log\log n)$ wires, so the order remains
+\[
+ (n+m)^{O(1)}2^{O(n\log\log n/\sqrt{\log n})}.
+\]
+In both cases the appropriate reduction must supply the degree, precision,
+entry-access, and number-of-branches promises. The normalized coefficient
+$C_T$ cannot be read as a coefficient per SAT variable without explicitly
+multiplying by the reduction's wire constant and charging its other work.
+
+There is a more precise ledger for the arbitrary-density construction.
+Write $\lambda_n=\lceil\log_2n\rceil$ and fix a constant $c\ge1$ for the
+source's sparse-query guarantee: at most $a\le6n$ equations, each of
+degree at most three with at most $\lambda_n^c$ monomials. Then
+\[
+ K=3(a+2n)\le24n,\qquad N\le3a\lambda_n^c\le18n\lambda_n^c.
+\]
+The grouping in Section~\ref{sec:structure} has $B=o(n)$ nonempty group
+pairs and degree $\sqrt n\,\operatorname{polylog}(n)$. Its wire bound gives
+\begin{align*}
+ M&\le B+\log_2\binom{N+K}{K}\\
+  &\le (24c+o(1))\,n\log_2\lambda_n.
+\end{align*}
+The corresponding integer upper budget covering these wires and $n+1$
+recovery precision is computable from the displayed binomial bound and
+satisfies $s\le(24c+o(1))n\log_2\lambda_n$ and the degree-$s^{51/100}$
+promise eventually. It yields the parametric leading contraction
+coefficient $24c\,\widehat C_T$ on
+$n\log_2\lambda_n/\sqrt{\lambda_n}$.
+This is an explicit ledger in the fixed query parameter $c$; we have not
+audited a numerical value of $c$ through the whole parity construction.
+
+The outer work does not introduce another leading coefficient at this
+scale. Sparsification has $2^{O(n/\sqrt{\lambda_n})}$ nodes,
+high-incidence branching has at most $2^{n/\sqrt{\lambda_n}}$ branches,
+the improved array count is
+$2^{O_c(n/(\sqrt{\lambda_n}\log\lambda_n))}$, and parity construction
+and candidate enumeration cost $2^{\lambda_n^{O_c(1)}}$ beyond the
+contractions. Their logarithms are all
+$o(n\log\lambda_n/\sqrt{\lambda_n})$ \cite{openai}.
+Thus the smaller normalized coefficient improves the contraction
+contribution using the same fixed 3-SAT reduction. It does not make
+$13.690$ a numerical coefficient per original SAT variable.
+
+Where the stronger degree-$s^{1/12}$ promise is available, the earlier
+$13.37965\ldots$ cached option remains preferable to this specialization.
+The present result is not a domination statement for every density regime.
+
+The density-aware packets additionally retain the bound
+\[
+ (n+m)^{O(1)}
+ 2^{O\left(\frac n{\sqrt{\log n}}
+       \min\{\log(2+m/n),\log\log n\}\right)}
+\]
+in their stated regime. For example, at $m=\Theta(n\log\log n)$ they
+replace a $\log\log n$ numerator by $\log\log\log n$. This genuine
+regime-dependent order improvement is prior work and is not attributed to
+the present certificate \cite{density,density2}.
+
+\subsection{Why the present mechanism cannot supply the requested order gain}
+
+The finite norm certificate affects only a constant in the inherited local
+scale $M/\sqrt u$. The gate conditions retain $u=\Theta(\log s)$.
+Changing support weights or finite menus therefore preserves
+$M/\sqrt{\log s}$ unless another part of that interface changes.
+The root precision cannot simply be reduced to a small constant: the
+Hermite recovery increment still has size $\Theta(MD/u)$.
+
+Removing the general-case $\log\log n$ penalty requires an encoding with
+$o(n\log\log n)$ wires and paid local entries, or another method for
+summing the incidence information. Replacing $\sqrt{\log n}$ by
+$\log n$ requires a different contraction or mode-summation mechanism.
+The earlier precision packet explicitly labels its structured-mode
+acceleration as unproved \cite{precision}. Its conditional bound must
+not be presented as an available algorithm, or ranked numerically against
+the proved coefficient here.
+
+The next section tests two concrete approaches to that larger goal. The
+result is a representation barrier and a tighter enumeration bound, rather
+than an asserted solution of the missing algorithmic step. The small
+remaining freedom in the fixed nine-plan average, quantified in
+Section~\ref{sec:weight-limit}, also argues against spending the next
+iteration on reweighting those same plans alone.

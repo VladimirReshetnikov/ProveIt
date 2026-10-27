@@ -1,0 +1,96 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,pdftitle={Degree-Aware Schedules and Consistency Certificates for Subexponential 3-SAT Contraction},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{.35em}
+\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\norm}[1]{\lVert#1\rVert_2}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\K}{\mathcal K}
+\newcommand{\F}{\mathbb F}
+\newcommand{\R}{\mathbb R}
+\newcommand{\B}{\mathcal B}
+\newcommand{\SAT}{\operatorname{SAT}}
+\newcommand{\basepin}{\texttt{8e76d515063c}}
+\newcommand{\anthpin}{\texttt{1a6eee293b9e}}
+\input{results/constants.tex}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Consistency certificates for 3-SAT contraction}
+\fancyhead[R]{\small October 26, 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{Degree-Aware Schedules and Consistency Certificates\newline for Subexponential 3-SAT Contraction\\[.65em]\large Recent-commit review, exact quantitative improvements,\newline and constraints on a change of exponent order}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{October 26, 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review the twenty-nine filed refinement packets and five newer incoming
+packets at a fixed ProveIt commit, together with the user-specified Anthropic
+formalization. Two quantitative improvements are distinguished. First, the
+known square-root-degree 3-SAT grouping permits a new strict recursion
+schedule with eventual time coefficient $13.690$ and simultaneous space
+coefficient $12.798$, on the normalized wire scale
+$s/\sqrt{\lceil\log_2s\rceil}$. This is a degree-sensitive composition of
+existing primitives, with the full child-entry cost retained. Its time gain
+does not require the new consistency inequality.
+
+Second, under the generic root-degree promise $s^{9/10}$, the smallest
+comparable incoming cached time coefficient is
+$29.81160894538\ldots$ on the scale $s/\sqrt{\lceil\log_2s\rceil}$, where
+$s$ is the normalized Boolean wire count. We improve the certificate for the
+same finite family of contraction plans by requiring the support chosen for
+one plan to remain consistent across every pair involving that plan.
+Conservative pairwise maxima are replaced by exact zero-sum potentials.
+The resulting time coefficient is $\NewTime\ldots$, with simultaneous
+space coefficient $\NewSpace\ldots$, certified by integer arithmetic
+and an independently reconstructed checker. The complete recursion charges
+every child-table entry and preserves the inherited degree and precision
+contracts. These are improvements of exponential upper-bound coefficients.
+They do not establish a smaller logarithmic order for general 3-SAT, and
+the algorithms use subexponential space.
+
+We also prove a full-rank obstruction to a universal linear summary of
+variable unions, and sharpen the counting of degree arrays in an already
+known grouping reduction. These results identify specific limits of two
+routes to a larger improvement without asserting a lower bound on 3-SAT
+algorithms. The archive contains complete LaTeX sources, exact certificate
+data, independent checks, and a reproducible finite contraction prototype.
+\end{abstract}
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+\input{sections/review.tex}
+\input{sections/interface.tex}
+\input{sections/consistency.tex}
+\input{sections/recursion.tex}
+\input{sections/low-degree.tex}
+\input{sections/3sat.tex}
+\input{sections/structure.tex}
+\input{sections/verification.tex}
+\appendix
+\input{sections/inventory.tex}
+\input{sections/references.tex}
+\end{document}

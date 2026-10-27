@@ -1,0 +1,11 @@
+# Scoped audit: decision-only precision does not remove the sparse-query mark budget
+
+The OpenAI front end replaces a sparse formula by a=O(n) parity equations, each of polylogarithmic scope. The original lifted polynomial has total incidence degree at most k(a+2(p-1)); the improved scalar parity lift in the existing corpus removes the factor 2 but retains an additive term proportional to a. In Claude's Lemma 12 the analogous truncation mark budget is M>=p-1+r, where r is the number of checks.
+
+Therefore even granting a decision procedure that could use tiny output precision p, the existing exact parity-filter interface still has a linear mark budget when a or r is Theta(n). It consequently does not remove the log of the test scope from the generic subset-indexing wire bound.
+
+There is a simple obstruction to assuming every exact parity filter has o(n) rows. For m disjoint nonempty clauses, the violation vector ranges over every element of F_2^m: independently choose each disjoint variable group to satisfy or violate its clause. If A is a parity-check matrix such that Av(x)=0 holds exactly for satisfying assignments, then ker A={0}. Thus rank A=m and the number of rows is at least m. Taking disjoint width-three clauses gives m=n/3, so this exact filter interface can require Omega(n) rows.
+
+This is an interface obstruction only. Disjoint clauses are directly easy, and an improved algorithm can bypass such examples. It does not prove a linear-wire compression impossible, nor exclude decision-specific reductions with new semantics. Random isolation also cannot be inserted for free: its global XOR constraints and any subsequent width reduction have to be charged to the same wire and degree accounting.
+
+No new unconditional decision-only asymptotic improvement follows from the currently available sparse-query front ends.

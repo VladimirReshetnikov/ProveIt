@@ -1,0 +1,211 @@
+\section{The complete recursive time and space bound}\label{sec:schedule}
+
+A local operation bound alone does not prove a faster contractor. Every
+singleton cache entry is itself a recursive contraction. With
+\(\alpha_r=\sqrt{2(r-1)}/r\), the inherited entry-count estimate and a
+local plan coefficient \(\beta_r\) give the paid recurrence
+\begin{equation}\label{eq:paid}
+ T_d\le\poly(s)
+ \left[
+    2^{(\alpha_{r_d}+o(1))K_d}T_{d+1}
+    +2^{(\beta_{r_d}+o(1))K_d}
+ \right],
+ \qquad K_d=\kappa M_d/\sqrt{u_d}.
+\end{equation}
+We retain the already certified rational schedule from the newest
+pairwise packet and improve its root and depth-one local operation bounds.
+
+\subsection{Integer parameters and packing}
+
+Let
+\[
+ \lambda=\lceil\log_2s\rceil,\qquad
+ b=\lceil6\log_2\lambda\rceil,\qquad
+ u_d=\lfloor\eta_d\lambda\rfloor,\qquad
+ a_d=\sum_{j=0}^d(u_j+b).
+\]
+Choose
+\begin{align}
+ r_0&=10,&\eta_0&=\frac{301}{20000},\notag\\
+ r_1&=13,&\eta_1&=\frac{119}{10000},\notag\\
+ r_d&=7\quad(d\ge2),&
+ \eta_d&=\frac{1549}{324000}
+                 \left(\frac49\right)^{d-2}.\label{eq:schedule}
+\end{align}
+The cumulative fractions satisfy
+\[
+ \eta_0+\eta_1=\frac{539}{20000},\qquad
+ \sum_{d\ge0}\eta_d=\frac8{225}.
+\]
+Stop at \(H=\lceil s/\lambda^{3/4}\rceil\) wires and evaluate directly.
+Use relative packing slack \(\lambda^{-3}\).
+Bounded exceptional sizes are handled by exhaustive contraction after
+checking the parameter inequalities.
+
+At depth one use the preceding three thirteen-group plans with our
+anchored backend; in the tail retain the preceding certificate
+\(\beta_7^2=632/1225\) \cite{trees,pairwise}.
+The literal depth-one partitions are
+\[
+\begin{array}{l}
+(0,1,2,3,4)\mid(5,6,7,8)\mid(9,10,11,12),\\
+(12,10,1,6,4)\mid(9,0,3,8)\mid(5,2,7,11),\\
+(0,8,11,12,1)\mid(7,10,4,3)\mid(5,2,6,9),
+\end{array}
+\]
+and the tail partition is
+\((0,1,2)\mid(3,4)\mid(5,6)\).
+Each depth-one plan has ten internal merges and one final triangle,
+giving \(11\cdot12=132\) supports at the same integer scale
+\(\mathsf L\). Exhaustively evaluating all \(132^3=2299968\) triples
+gives the exact maximum squared norm
+\[
+ B_{13}=688874649739825981703779802627980038.
+\]
+The maximizing operation is the final triangle in each plan, with
+coefficient triples \((1,c,c),(c,1,c),(c,1,c)\).
+Its squared norm before integer scaling is
+\(90+108c+198c^2\). Lemma~\ref{lem:norm}, now with \(q=3,r=13\),
+therefore gives
+\begin{equation}\label{eq:beta13}
+ \beta_{13}^2=\frac{2B_{13}}{\mathsf L^2\,9\,169}
+  =\frac{20+24c+44c^2}{169}
+  =\frac{57151369949899}{169000000000000}.
+\end{equation}
+Two independently implemented generators and enumerations reproduce
+this maximum. Their support indices differ because their traversals
+differ; the underlying three vectors agree. The tail's older matrix
+backend remains sufficient. Different fixed matrix algorithms can be
+used at different recursion levels.
+
+For clarity, here are the strict degree gates that make the schedule
+valid. The exact integer inequalities
+\[
+ 10^{1000}<2^{3322},\qquad
+ 13^{1000}<2^{3701},\qquad
+ 7^{100}<2^{281}
+\]
+bound the logarithms rationally. The dominant root and retained-side
+exponents have positive gaps:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Stage & Exponent upper bound & Gap below \(1\)\\
+\midrule
+Root & \(9/10+2\eta_0(3322/1000)\) & \(39/5000000\)\\
+Depth one & \(9/10+(539/20000)(3701/1000)\) & \(5161/20000000\)\\
+Tail & \(9/10+(8/225)(281/100)\) & \(1/11250\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The fresh-side and packet-rounding exponents are also bounded away from
+one, for example by \((8/225)(1+2(3701/1000))<1\).
+These fixed gaps absorb the buffers, polylogarithmic losses, and
+\(s/M\le\lambda^{3/4}\).
+
+To avoid assuming the recursion depth in proving the gates, provisionally
+check them through \(3\log_3\lambda/4+O(1)\) levels.
+In this range the smallest taper is at least
+\[
+ \lambda^{\delta+o(1)},\qquad
+ \delta=1-\frac{3\ln(9/4)}{4\ln3}>0.
+\]
+Nearly lossless packing then makes each tail child smaller than \(M/3\)
+eventually. An active path cannot exceed the provisional bound.
+Thus the argument closes inductively. Floors are negligible uniformly;
+padding errors multiply to \(1+o(1)\) over the logarithmic depth.
+More precisely,
+\begin{equation}\label{eq:masses}
+ M_0\le s,\qquad
+ M_1\le(1+o(1))s/5,\qquad
+ M_d\le(1+o(1))\frac{2s}{65}
+             \left(\frac27\right)^{d-2}\quad(d\ge2).
+\end{equation}
+
+\subsection{Precision, entry evaluation, and auxiliary work}
+
+At a retained valuation, \(D_i\ge2^{a_{d-1}+b+1}\). The inherited
+creation-time precision is \(O(s\lambda^2 2^{a_{d-1}})\).
+Relative to \(MD_i/u_d\), it is
+\[
+ O(\lambda^{15/4}2^{-b})=o(1).
+\]
+Hence inherited precision is absorbed in the sharp local precision
+estimate at every active depth.
+Since \(a_d\le(8/225)\lambda+O((\log\lambda)^2)\), all precisions
+have polynomial bit length.
+
+Original entry routines cost \(2^{O(s^{9/10})}\) times a polynomial.
+New packet routines cost \(\exp(s^{8/225+o(1)})\).
+Direct leaf work costs \(2^{O(s/\lambda^{3/4})}\).
+Each is \(2^{o(s/\sqrt\lambda)}\).
+Immutable descriptions prevent recursive expansion of entry routines.
+Polynomial overhead at \(O(\log\lambda)\) levels contributes only
+\(O(\lambda\log\lambda)\) to the logarithm of the running time.
+The new support menu and its selector are fixed finite data; their
+construction does not add a size-dependent exponential term.
+
+\subsection{Unrolling every branch}
+
+On the scale \(s/\sqrt\lambda\), set
+\[
+ K_0^*=\frac{\kappa}{\sqrt{\eta_0}},\qquad
+ K_1^*=\frac{\kappa}{5\sqrt{\eta_1}},\qquad
+ K_2^*=\frac{2\kappa}{65\sqrt{1549/324000}}.
+\]
+In the tail the ratio is
+\(\gamma=(2/7)/\sqrt{4/9}=3/7\).
+Moreover
+\(\alpha_7/(1-\gamma)=\sqrt3/2>\beta_7\), so the complete tail
+branch dominates any tail local termination.
+Unrolling \eqref{eq:paid} therefore gives the maximum of
+\begin{align}
+ C_0&=\sqrt{B_*}\,K_0^*=C_*=\NewC\ldots,\label{eq:c0}\\
+ C_1&=\alpha_{10}K_0^*+\beta_{13}K_1^*
+   =\frac\pi{\ln2}\left(
+        \sqrt{\frac{7200}{301}}+
+        \sqrt{\frac{800\beta_{13}^2}{119}}\right)
+   =29.0008821742914\ldots,\label{eq:c1}\\
+ C_\infty&=\alpha_{10}K_0^*+\alpha_{13}K_1^*
+       +\frac{\alpha_7K_2^*}{1-\gamma}\notag\\
+   &=\frac\pi{\ln2}\left(
+        \sqrt{\frac{7200}{301}}+
+        \sqrt{\frac{19200}{20111}}+
+        \sqrt{\frac{77760}{261781}}\right)
+   =29.0657485246412\ldots.\label{eq:cinf}
+\end{align}
+The exact rational interval checker proves \(C_0>C_1,C_\infty\) and
+\[
+ 29.1489213688721<C_0<29.1489213688722<29.149.
+\]
+It bounds \(\pi\) by alternating arctangent series, \(\ln2\) by its
+positive series at \(1/3\), and square roots by integer squares.
+No floating-point comparison is used in acceptance.
+
+Local cache sizes are bounded by
+\(\sqrt{B_*}K_0^*,\beta_{13}K_1^*,\beta_7K_2^*\).
+The root is largest. Tables on an active ancestor path coexist, but their
+sizes add; their leading exponent is the maximum, not the sum.
+The fixed matrix recursion uses polynomial overhead relative to its
+largest arrays. This proves the common time and space coefficient in
+Theorem~\ref{thm:main}.
+
+\subsection{Consequences for 3-SAT}
+
+The direct bounded-density clause network and the sparse polynomial-query
+reduction both retain their exact counting semantics.
+For the latter, the original retained incidence degree is \(O(n)\),
+but its compressed Boolean-wire count is \(O(n\log\log n)\).
+Substituting the smaller contractor coefficient therefore improves the
+same normalized contraction guarantee inside that reduction.
+It does not turn \(s\) into \(n\) with constant one.
+An explicit per-variable numerical coefficient would require all encoding
+constants and outer costs to be made explicit under the same normalization.
+
+The new cached branch can coexist with the former polynomial-space and
+lower-space branches. A user who imposes a memory limit should select
+the applicable resource guarantee; the lowest time coefficient alone
+does not determine the best implementation.
+

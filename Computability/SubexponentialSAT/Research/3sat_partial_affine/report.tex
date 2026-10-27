@@ -1,0 +1,248 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,microtype,xcolor,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black,breaklinks=true]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={Partial affine-plane doubling for 3-SAT},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={Exact finite certificates and improved exponential upper-bound coefficients}}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Partial affine-plane doubling for 3-SAT}
+\fancyhead[R]{\small Research report}\fancyfoot[C]{\thepage}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\polylog}{\operatorname{polylog}}
+\newcommand{\pin}{\texttt{324f3d9b009ab0323f33be65cd6577867c9c4338}}
+\title{Partial affine-plane doubling for 3-SAT\\[5pt]
+\large Exact certificates and two improved time--space bounds}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{October 27, 2026 \quad (UTC)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review the thirty-four refinement packets present in ProveIt's
+SubexponentialSAT project through commit \texttt{324f3d9b009a}, together
+with the OpenAI manuscript and the public Anthropic Lean development.
+The latest five packets already contain affine-plane menus, coupled
+support certificates, rectangular backends, and joint time/storage
+selection. The new contribution is a controlled partial duplication of
+the nine-point affine plane and a mixed-arity recursion that pays for
+every child entry.
+
+Relative to the corpus's stated exact contraction interface, the new
+fifteen-group construction gives time and space coefficients
+\[
+ C_T=\frac\pi{\ln2}\sqrt{\frac{32012591492467}{5556600000000}}
+ =10.87878166668\ldots,\qquad
+ C_S=C_T\sqrt{\frac{200}{231}}=10.12253456921\ldots
+\]
+on the scale $L/\sqrt{\log_2 L}$ for 3-SAT, where $L\le3m$ is the
+normalized literal-occurrence count. A fully doubled eighteen-group
+construction gives the alternative pair
+\[
+ (C_T,C_S)_{18}=(11.07682383502\ldots,9.97733739357\ldots).
+\]
+The first time coefficient is about $3.42\%$ below the strongest compatible
+composition of prior ingredients constructed in this review,
+$11.26420175559\ldots$, and about $18.69\%$ below the smallest printed
+comparable low-degree time coefficient.
+
+The finite geometry and joint selectors have independent exact checks;
+the uniform recursion and 3-SAT translation are proved here.
+The new code is not a complete SAT solver or a proof-assistant formalization.
+The unrestricted $n$-only order
+$n\log\log n/\sqrt{\log n}$ remains unchanged. A breakthrough in
+logarithmic order has not been established.
+\end{abstract}
+\newpage
+\setcounter{tocdepth}{1}\tableofcontents\medskip
+
+\section{Results, comparisons, and proof status}
+\label{sec:results}
+
+The problem throughout is ordinary 3-SAT. Exact counting is used as a
+method for deciding satisfiability. Let $n$ be the number of declared
+variables, $m$ the number of clauses, and $L$ the number of literal
+occurrences after removing tautologies and duplicate literals within a
+clause. Numerical exponent coefficients use base-two logarithms;
+$\ln$ denotes the natural logarithm.
+
+\begin{theorem}[Explicit occurrence bounds for 3-SAT]
+\label{thm:sat}
+Under the inherited exact contraction premises in Section~\ref{sec:interface},
+there are deterministic algorithms deciding 3-SAT, and in fact returning
+its exact number of satisfying assignments, with
+\[
+ T\le\poly(n,m)\,2^{(C_T+o(1))L/\sqrt{\log_2 L}},\qquad
+ S\le\poly(n,m)\,2^{(C_S+o(1))L/\sqrt{\log_2 L}},
+\]
+for either of the following simultaneous pairs:
+\begin{align*}
+ (C_T,C_S)_{15}&=\frac\pi{\ln2}
+ \left(\sqrt{\frac{32012591492467}{5556600000000}},
+       \sqrt{\frac{32012591492467}{6417873000000}}\right),\\
+ (C_T,C_S)_{18}&=\frac\pi{\ln2}
+ \left(\sqrt{\frac{563681831683}{94374000000}},
+       \sqrt{\frac{14000}{2889}}\right).
+\end{align*}
+The error terms are uniform over normalized formulas. Empty and
+bounded-size cases are handled directly. The pairs are alternative algorithms.
+\end{theorem}
+
+The normalized contraction theorem starts with at most $s$ wires, maximum
+degree $\lceil s^{1/12}\rceil$, and precision and truncation order at most
+$s$. Section~\ref{sec:occurrence-bridge} proves that fixing variables with
+more than $\lceil\log_2(L+1)\rceil$ occurrences meets this degree condition
+at lower-order cost, with $s=L+1$. This threshold choice composes an
+existing incidence construction; it is not a new SAT encoding.
+
+\begin{center}
+\begin{tabular}{p{8.6cm}rr}
+\toprule Comparable low-degree cached bound & Time & Space\\
+\midrule
+Smallest printed low-degree time certificate~\cite{bounds}&13.379649&13.253025\\
+Strongest prior-ingredient composition constructed in this review&11.264202&11.264202\\
+New partial doubling, $15\to10\to7\to4$&\textbf{10.878782}&10.122535\\
+New full doubling, $18\to9$&11.076824&\textbf{9.977337}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Applying newer ingredients to an old menu can improve a printed number
+without a new construction. We therefore reconstruct the stronger
+$11.264202$ comparison before comparing the new geometry. It is a concrete
+certified bound, not a globally optimized prior frontier. Its equal
+time/space bound is safe; existing ingredients may permit further memory
+tradeoffs. A different printed low-degree pair has space
+$12.36130\ldots$~\cite{project}. Both new algorithms use subexponential
+space; the latest low-degree polynomial-space coefficient
+$16.81223\ldots$ remains a different resource guarantee~\cite{pairwise}.
+
+The main time coefficient is smaller than the constructed comparison by
+$0.38542008891\ldots$, or about $3.42\%$. For the corresponding upper-bound
+expressions $U_{\rm prior}$ and $U_{15}$,
+\[
+ \log_2\frac{U_{\rm prior}}{U_{15}}
+ =\bigl(0.38542008891\ldots+o(1)\bigr)
+       \frac{L}{\sqrt{\log_2L}}.
+\]
+This is a comparison of upper-bound functions, not a lower bound on an
+earlier algorithm or an empirical SAT speedup. Since $L\le3m$, the main
+pair gives coefficients
+$(32.63634500004\ldots,30.36760370765\ldots)$ on
+$m/\sqrt{\log_2m}$. At fixed density $m\le Dn$, multiply the normalized
+constants by $3D$ for an $n/\sqrt{\log_2n}$ bound. At arbitrary density
+retain the existing compressed and density-sensitive branches. The
+worst-case $n$-only order remains
+\[
+ \poly(n,m)\,2^{O(n\log\log n/\sqrt{\log n})}.
+\]
+No comparison is made with an unspecified constant in the independent
+Anthropic theorem.
+
+\paragraph{Dependency boundary.}
+The new finite inequalities, joint integer selectors, strict schedule
+arithmetic, recurrence analysis and occurrence-threshold composition are
+supplied here. The deformation, exact recovery, packing, mode-entropy and
+matrix-ring interfaces are imported mathematical premises. This is a
+research proof relative to those interfaces, not an independent end-to-end
+verification of the source preprint. The source repository itself records
+its packets as unverified claims~\cite{project}.
+
+\section{Review of recent commits and the current comparison}
+\label{sec:review}
+
+The final snapshot is \pin. The review began at \texttt{7de9d09fec}, then
+incorporated the five packets in the next project-affecting commit.
+The relevant recent sequence is:
+\begin{center}\small
+\begin{tabular}{p{2.9cm}p{10.8cm}}
+\toprule Commit prefix & Relevant change\\
+\midrule
+\texttt{2b925d8800} & Seven first-round refinement packets.\\
+\texttt{3e09608991} & OpenAI manuscript and quantitative appendices vendored.\\
+\texttt{6d3adc4506} & Eight second-round packets.\\
+\texttt{450252e9d8} & Five third-round packets.\\
+\texttt{a7ae5ab55f} & Nine fourth-round packets and new printed leaders.\\
+\texttt{7de9d09fec} & Public Anthropic formalization linked.\\
+\texttt{324f3d9b00} & Five fifth-round packets; 2026-10-27 03:55:13 UTC.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The final index has thirty-four refinement packets and two primary
+manuscripts~\cite{project}. We surveyed all available report sources,
+with deeper inspection of the shared interface, comparison leaders,
+compatible compositions and smaller-order claims. This is not a fresh
+verification of every proof in all packets. The source ledger records
+$144$ report-source files and $41$ fifth-round Python files checked
+against their Git blob IDs. Four primary-manuscript source files and two
+Lean entry files are additionally identified by immutable paths and local
+checksums. Retrieval-integrity checks do not certify mathematics.
+
+\subsection{What the fifth round already contains}
+
+\begin{center}\small
+\begin{tabular}{p{5.1cm}rrp{4.0cm}}
+\toprule Packet & Generic time & Generic space & Relevant ingredient\\
+\midrule
+\path{sat_pairwise_certificates}&29.81161&29.81161&Weighted coupled pairs; rectangular backend\\
+\path{sat_affine_contraction}&30.25704&25.98907&Joint time/storage selector\\
+\path{sat_affine_geometry}&30.26987&29.48754&Affine and punctured menus\\
+\path{sat_affine_cauchy}&30.41335&29.46603&Cyclic thirteen-plan menu\\
+\path{sat_affine_plane}&30.69134&29.46603&Affine-nine and a larger extension\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are per-wire coefficients at the generic degree promise, not
+coefficients on arbitrary SAT variables. Generic polynomial space remains
+$46.184845\ldots$; the first packet improves low-degree polynomial space
+to $16.81223\ldots$~\cite{pairwise}. All these branches remain available.
+A preliminary generic $30.669$ construction from the initial review is
+superseded by the fifth round and is not claimed as an advance.
+
+Affine-nine geometry, support averaging, norm-coupled inequalities,
+rectangular multiplication and simultaneous storage selection are all
+prior ingredients. The new objects are the explicitly ordered partial
+fifteen-point and full eighteen-point duplications and their completed
+low-degree schedules. Novelty is relative to the inspected corpus; no
+literature-wide priority assertion is made.
+
+\subsection{The public formalization}
+
+At Anthropic commit
+\texttt{1a6eee293b9e00cb432eef6018a21f523623a9af},
+\path{eth/MainResults.lean} states the theorem using a deterministic
+finite-alphabet Mathlib multi-stack Turing machine, and
+\path{eth/Solution.lean} supplies its proof entry points~\cite{anthropic}.
+For clause width three its quantitative order is
+\[
+ 2^{O\left(\min\{m/\sqrt{\log m},\,
+                    n\log\log n/\sqrt{\log n}\}\right)}.
+\]
+The input conventions include occurrence of every variable and no repeated
+clause lists; normalization supplies input-polynomial overhead. We inspected
+these statements, proof entry points and the paper, without rebuilding the
+full Lean development. Its public availability corrects older descriptions
+as unpublished. It does not formalize the new contractor or automatically
+transfer our explicit constants through a different proof.
+
+\input{sections/inherited_interface.tex}
+\input{sections/partial_affine15.tex}
+\input{sections/doubled_affine18.tex}
+\input{sections/3sat_bridge.tex}
+\input{sections/limits_and_verification.tex}
+\appendix
+\input{sections/inventory.tex}
+\input{sections/references.tex}
+\end{document}

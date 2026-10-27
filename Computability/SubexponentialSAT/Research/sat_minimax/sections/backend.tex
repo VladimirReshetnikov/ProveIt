@@ -1,0 +1,118 @@
+\section{Two exact matrix backends}
+\label{sec:backend}
+
+We give two versions of the result. The first uses the classical field
+bounds already available to the incoming rectangular packet. The second
+also imports the stronger published 2026 matrix-multiplication theorems.
+Keeping both versions makes the additional dependency explicit.
+
+\subsection{A common rectangular formula}
+
+Suppose fixed bilinear matrix algorithms are available with dual aspect
+ratio $a\in(0,1)$ and square exponent $w>2$, allowing arbitrarily small
+positive exponent slack. For sorted base-two logarithmic dimensions
+$x\ge y\ge z\ge0$, define
+\begin{equation}\label{eq:rectcost}
+ B_{a,w}(x,y,z)=\max\left\{x+y,\quad
+      x+\frac{1-a(w-1)}{1-a}y+\frac{w-2}{1-a}z\right\}.
+\end{equation}
+For every fixed $\delta>0$, there is a fixed exact algorithm with time a
+polynomial factor times $2^{(1+\delta)B_{a,w}}$. Its space is a polynomial
+factor times the largest input or output array.
+
+Indeed, block the largest dimension at scale $2^y$. For $z\le ay$ use
+the dual-exponent algorithm. Otherwise tensor the dual and square schemes
+at logarithmic scales
+\[
+ t_0=(y-z)/(1-a),\qquad t_1=(z-ay)/(1-a).
+\]
+They satisfy $t_0+t_1=y$ and $at_0+t_1=z$. Their rank exponent, plus
+the blocking cost, is exactly the second branch of \eqref{eq:rectcost}.
+Fixed-power padding changes sizes by constant factors. Choosing each
+component's exponent slack sufficiently smaller than $2\delta$ gives the
+stated multiplicative allowance, since $B_{a,w}\ge x+y\ge2y$.
+The first branch is the essential input/output cost.
+
+For the classical version use $a=3/10$ and $w=19/8$, justified by the
+strictly stronger results of Vassilevska Williams, Xu, Xu and Zhou
+\cite{mmclassical}. Then
+\begin{equation}\label{eq:classicalbackend}
+ B_{\rm cl}=\max\{x+y,\ x+(47/56)y+(30/56)z\}.
+\end{equation}
+For the additional 2026 version use $a=9/20$ and $w=9/4$.
+The published results give $\omega(\mathbb C)\le9/4$ and a
+characteristic-zero dual exponent greater than $0.465$, hence greater than
+$9/20$ \cite{mmnew,mmrect}. Therefore
+\begin{equation}\label{eq:newbackend}
+ B_{\rm new}=\max\{x+y,\ x+(35/44)y+(20/44)z\}.
+\end{equation}
+We fix $\delta=10^{-5}$ in the final schedules. This charges the
+positive slack of the algorithms explicitly. The endpoint statement
+$\omega\le9/4$ by itself is not being interpreted as one fixed algorithm
+of exact cost $N^{9/4+o(1)}$.
+
+\subsection{Transfer from complex arithmetic to exact bit arithmetic}
+
+The stronger result is stated over $\mathbb C$, whereas the SAT contractor
+uses rings with zero divisors. The transfer requires an argument.
+
+Fix the positive tolerance once. The matrix theorem supplies a finite
+exact rank scheme. Its polynomial equations have rational coefficients;
+if they have a complex solution, they have a solution over
+$\overline{\Q}$. All coefficients of this fixed scheme lie in a single
+number field $K/\Q$ of fixed degree. The square paper explicitly records
+this observation, and the rectangular paper states its
+characteristic-zero transfer \cite{mmnew,mmrect}. Choose the finitely
+many schemes used by the two tensor factors in a common number field.
+
+Represent elements of $K$ in a fixed rational basis. A field operation
+becomes a fixed number of rational-coordinate operations. Recursive
+bilinear schemes form only fixed linear combinations of input blocks
+until their leaf products, then fixed linear combinations of outputs.
+Consequently their intermediate coordinate bit lengths are polynomial in
+the input bit length and the logarithm of the matrix dimensions. Fixed
+denominators and coefficient heights accumulate over only logarithmically
+many recursive levels. This gives a uniform exact rational implementation
+with the same arithmetic exponent and polynomial bit overhead.
+
+Now write an entry of the SAT coefficient ring in its polynomially many
+integer module coordinates. Lift the coordinates from $\mathbb Z/2^p\mathbb Z$
+to $[0,2^p)$. For each pair of module coordinates, compute the corresponding
+integer matrix product using the rational implementation. The resulting
+entries have bit length $O(p+\log d_2)$ for inner dimension $d_2$.
+Combine them using the ring's integer multiplication table and reduce
+modulo $2^p$. All ring dimensions, precisions, and logarithmic matrix
+dimensions are polynomial in $s$. Coordinate pairs can be processed
+sequentially. This proves the required bit-cost and storage bounds.
+
+Alternatively, compute those integer products modulo enough good odd
+primes and reconstruct them by CRT, specializing the fixed number field
+through a fixed-degree quotient algebra. Only finitely many denominator
+primes are excluded. No assertion about a dual exponent directly in
+characteristic two is needed, and no nonunit is inverted in the SAT ring.
+
+The fixed number-field schemes are existence ingredients of the
+asymptotic algorithm. The delivered finite graph evaluator uses ordinary
+exact multiplication; it does not implement these large fast schemes or
+claim a practical crossover improvement.
+
+\subsection{Operation supports}
+
+For a merge of disjoint vertex sets $A,B$, let
+$O=[r]\setminus(A\cup B)$. The three matrix axes are the independent
+pair-index classes $A$--$B$, $A$--$O$, and $B$--$O$. The final triangle
+is treated in the same way. Since the coefficients in either nontrivial
+branch above are nonincreasing, the rearrangement inequality expresses
+the sorted cost as the maximum over permutations of its coefficients.
+Thus the classical integer supports are the permutations of
+\[
+ (56,56,0),\quad(56,47,30),
+\]
+with divisor $56$, and the additional backend uses
+\[
+ (44,44,0),\quad(44,35,20),
+\]
+with divisor $44$. There are nine distinct coefficient triples in each
+case. An edge internal to one part gets coefficient zero; otherwise its
+coefficient is that of its pair class. The support sets include every
+binary merge and the final triangle of each plan.

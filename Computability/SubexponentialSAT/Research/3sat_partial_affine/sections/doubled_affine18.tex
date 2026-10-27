@@ -1,0 +1,235 @@
+% Fragment for the main report. The round-5 source methods are prior work;
+% the doubled geometry and the resulting compatible specialization are new
+% relative to the inspected snapshot, not a literature-wide priority claim.
+\section{Full doubling: a lower-memory alternative}
+\label{sec:double18}
+
+The newly placed round-5 packets change the comparison baseline. The
+weighted coupled-pair certificate of \emph{sat\_pairwise\_certificates} and
+the joint time--space selector of \emph{sat\_affine\_contraction} are used
+here as prior methods. In particular, the nine-point affine construction
+is no longer a new contribution. The new object is its explicitly ordered
+eighteen-point doubling and the compatible low-degree composition below.
+
+Identify point $3x+y$ with $(x,y)\in\mathbb F_3^2$ and add its twin
+$9+3x+y$. Order each line by its three original labels, followed by their
+three twins, and split blocks by the same midpoint rule. The four plans are
+\[
+\begin{array}{lll}
+(0,1,2,9,10,11)&(3,4,5,12,13,14)&(6,7,8,15,16,17),\\
+(0,3,6,9,12,15)&(1,4,7,10,13,16)&(2,5,8,11,14,17),\\
+(0,4,8,9,13,17)&(1,5,6,10,14,15)&(2,3,7,11,12,16),\\
+(0,5,7,9,14,16)&(1,3,8,10,12,17)&(2,4,6,11,13,15).
+\end{array}
+\]
+
+Let $D_*=1{,}400{,}000$. The rectangular backend has nine integer supports
+per operation, the distinct permutations of
+\[
+ (1400007,1400007,0),\qquad (1400000,1175014,750000).
+\]
+For each of the four doubled affine plans, let $\mathcal T_j$ be its
+$144$ time masks and $\mathcal B_j$ its $33$ zero--one boundary masks.
+The boundary family includes every singleton, two-vertex table,
+three-vertex table, and six-vertex block table; the last output boundary
+is already represented by the complementary final block.
+
+Write
+\[
+ A=811701837623520,
+ \qquad \rho^2=\frac{A}{336D_*^2}
+              =\frac{1691045495049}{1372000000000}.
+\]
+The independently reconstructed supports satisfy, for every two distinct
+plans and all corresponding supports,
+\begin{align}
+ \|v\|^2+\|w\|^2+6v\cdot w&\le A,
+       &&v\in\mathcal T_i,\ w\in\mathcal T_j,\label{eq:audit-tt}\\
+ \|b\|^2&\le72,\qquad b\cdot c\le32,
+       &&b\in\mathcal B_i,\ c\in\mathcal B_j.\label{eq:audit-bb}
+\end{align}
+Every one of the six time-pair maxima in \eqref{eq:audit-tt} equals $A$.
+For a direct formula for this value, put
+$y=(1400000,1175014,750000)$. A final mask has squared norm
+$36\sum y_i^2$, and two transverse final masks have dot product
+$8(\sum y_i)^2$. Thus
+\[
+ A=72\sum_i y_i^2+48\left(\sum_i y_i\right)^2.
+\]
+
+Mixed time--boundary supports obey the additional bound
+\begin{equation}\label{eq:audit-tb}
+ \|v/D_*\|^2+\rho^2\|b\|^2+6\rho(v/D_*)\cdot b\le A/D_*^2.
+\end{equation}
+This is certified without approximating $\rho$: set
+\[
+ D=A(336-\|b\|^2)-336\|v\|^2.
+\]
+For each mixed pair the verifier checks the exact integer inequalities
+\[
+ D\ge0,\qquad D^2\ge36\cdot336\cdot A\,(v\cdot b)^2.
+\]
+After taking nonnegative square roots these are precisely
+\eqref{eq:audit-tb}. The finite audit checks $124{,}416$ time pairs,
+$6{,}534$ boundary pairs, and $57{,}024$ mixed pairs, with no violation.
+
+For illustration, the largest structured final-operation mixed case has
+a short algebraic explanation. Put $S=(y_1+y_2+y_3 )/D_*$ and
+$a=36\sum_i(y_i/D_*)^2$. Then
+$A/D_*^2=2a+48S^2=336\rho^2$. Its mixed expression is
+$a+72\rho^2+96S\rho$, and the explicit nonnegative difference is
+\[
+ A/D_*^2-(a+72\rho^2+96S\rho)=24(2\rho-S)^2.
+\] The exhaustive mixed checks also include all intermediate
+operations and smaller boundaries.
+
+For nonnegative entropy vector $g$, define the actual local exponents
+\[
+ F_j(g)=D_*^{-1}\max_{v\in\mathcal T_j}v\cdot g,
+ \qquad G_j(g)=\max_{b\in\mathcal B_j}b\cdot g,
+ \qquad J_j(g)=\max\{F_j(g),\rho G_j(g)\}.
+\]
+The support family for $J_j$ is
+$\mathcal T_j/D_*\ \cup\ \rho\mathcal B_j$.
+For any selection of one vector $z_j$ from each such family,
+\[
+ \left\|\sum_{j=1}^4z_j\right\|^2
+ =\frac13\sum_{i<j}
+       (\|z_i\|^2+\|z_j\|^2+6z_i\cdot z_j)
+ \le\frac{2A}{D_*^2}.
+\]
+Here the time pairs use \eqref{eq:audit-tt}, boundary pairs use
+$\rho^2(2\cdot72+6\cdot32)=A/D_*^2$, and mixed pairs use
+\eqref{eq:audit-tb}. The support-averaging and inherited entropy estimate
+therefore give a simultaneous local time--space pair
+\begin{equation}\label{eq:audit-joint-local}
+ \beta^2=\frac{A}{4D_*^2\cdot18^2}
+        =\frac{563681831683}{1764000000000},
+ \qquad \sigma^2=\frac{\beta^2}{\rho^2}=\frac7{27}.
+\end{equation}
+
+The time certificate is exact for this fixed menu under the Euclidean
+entropy relaxation. Let $g$ be the sum of one final-operation support
+with coefficient order $(1400000,1175014,750000)$ from each plan.
+The independent time checker verifies
+\[
+ \|g\|^2=1623403675247040=2A,\qquad
+ \max_{v\in\mathcal T_j}v\cdot g=405850918811760=A/2
+\]
+for each plan, including all internal operations. Thus the normalized
+local time bound is attained in that relaxation. No realizability by an
+actual SAT input, or lower bound for a different algorithm, is asserted.
+
+\paragraph{An executable integer selector.}
+Exact comparison of expressions involving logarithms or an irrational
+coefficient is unnecessary. For every nonempty exact mode-list product
+$D_e=|\mathcal I_{gh}|\,|\mathcal I_{hg}|$, compute
+\[
+ \widehat g_e=(D_e-1).\texttt{bit\_length}()
+             =\lceil\log_2D_e\rceil.
+\]
+This equals zero for $D_e=1$, and satisfies
+$g_e\le\widehat g_e<g_e+1$. Define the integers
+\[
+ \widehat T_j=\max_{v\in\mathcal T_j}v\cdot\widehat g,
+ \qquad \widehat B_j=\max_{b\in\mathcal B_j}b\cdot\widehat g.
+\]
+Choose the first plan minimizing the integer score
+\begin{equation}\label{eq:audit-selector}
+ \max\{336\widehat T_j^2,\ A\widehat B_j^2\}.
+\end{equation}
+This exactly minimizes $J_j(\widehat g)$, since its square times
+$336D_*^2$ is the score. Because the finite support families and $r=18$ are
+fixed, $0\le J_j(\widehat g)-J_j(g)\le C_0$ for one constant $C_0$.
+Thus the selected plan satisfies
+\[
+ J_{\rm selected}(g)\le\min_jJ_j(g)+C_0.
+\]
+The additive constant is lower order in the exponent and preserves both
+coefficients in \eqref{eq:audit-joint-local}. This selector, implemented
+as \texttt{select\_joint} in the independent checker, is the algorithm
+used for the joint theorem. A selector that minimizes time alone is not
+asserted to have the sharper space bound.
+
+\subsection{The low-degree $18\to9$ composition}
+
+Under the normalized root degree premise
+$\Delta\le\lceil s^{1/12}\rceil$, take
+\[
+ r_0=18,\quad u_0=\left\lfloor\frac{107}{1000}\lambda\right\rfloor,
+ \qquad
+ r_d=9,\quad u_d=\left\lfloor
+       \frac{29}{1600}\left(\frac38\right)^{d-1}\lambda
+                         \right\rfloor\quad(d\ge1).
+\]
+Use the same logarithmic guards, immutable precision conventions, near-unit
+padding, and leaf threshold $s/\lambda$ as in the audited interface.
+The total leading budget is
+$107/1000+(29/1600)/(1-3/8)=17/125$.
+The exact capacity witnesses are
+\[
+ 648^{107}<2^{1000},\qquad162^{17}<2^{125}.
+\]
+The root budget exceeds $1/12$ and all cumulative budgets increase, so
+original vertices and all retained older packets are dominated by the
+latest packet scale after the root. These strict capacity margins cover
+the resulting symmetric packing gates and all additive guards. A tail
+coarse child ratio $1/4$ and geometric taper ratio $3/8$ give a growing
+least taper through the hypothetical active depth
+$\log_4\lambda+O(1)$, closing the usual noncircular depth argument.
+
+Use the new joint selector at the root and the prior round-5 nine-point
+joint selector in the tail. The latter has local time $1/\sqrt3$ and
+local space $\sqrt{7/27}$. This slightly weaker tail time bound is already
+enough, so no new tail rectangular certificate is needed for this theorem.
+For this schedule, redefine its normalized scales by
+\[
+ K_0^*=\frac\kappa{\sqrt{107/1000}},\qquad
+ K_1^*=\frac\kappa{9\sqrt{29/1600}}.
+\]
+With $\alpha_{18}=\sqrt{34}/18$, $\alpha_9=4/9$,
+\[
+ \gamma=\frac{2/9}{\sqrt{3/8}}=\sqrt{\frac{32}{243}},\qquad
+ x=\frac{K_1^*}{K_0^*}=\sqrt{\frac{856}{11745}},
+\]
+the tail's paid contribution is at most
+\[
+ K_0^*\left(\alpha_{18}
+      +x\max\left\{\frac1{\sqrt3},\frac{\alpha_9}{1-\gamma}\right\}\right).
+\]
+Exact rational bounds give
+\[
+ \alpha_{18}<\frac{13}{40},\quad
+ x<\frac{27}{100},\quad
+ \gamma<\frac{23}{63},\quad
+ \frac1{\sqrt3}<\frac7{10},\quad
+ \frac{\alpha_9}{1-\gamma}<\frac7{10}.
+\]
+Consequently this branch is below
+$(257/500)K_0^*<(14/25)K_0^*<\beta K_0^*$.
+Every child entry is therefore paid, and root local work dominates.
+
+Since $x<1$ and $\gamma<1$, the largest local storage exponent is also at
+the root. The boundary exponent of simultaneous ancestor tables adds in
+storage size, not in the exponent; there are only $O(\log\lambda)$ levels.
+This gives
+\begin{align*}
+ C_T&=\frac\pi{\ln2}\sqrt{\frac{563681831683}{94374000000}}
+      =11.0768238350204\ldots,\\
+ C_S&=\frac\pi{\ln2}\sqrt{\frac{14000}{2889}}
+      =9.97733739357645\ldots.
+\end{align*}
+These coefficients multiply $s/\sqrt\lambda$ in the respective base-two
+exponents. They are normalized-wire coefficients under the stated degree
+premise, not coefficients on the number of arbitrary 3-SAT variables.
+
+\paragraph{Closing-source novelty check.}
+The five packets placed at commit
+\texttt{324f3d9b009a} already contain the
+undoubled affine plane, simultaneous boundary selection, and the weighted
+coupled-pair norm identity. Their mathematical sections and code were
+screened for doubled points, blow-ups, larger affine designs, and multiplicity
+constructions; no eighteen-point doubling or the foregoing $18\to9$
+joint specialization was found. This is a bounded corpus comparison,
+not a priority assertion about the literature.
+

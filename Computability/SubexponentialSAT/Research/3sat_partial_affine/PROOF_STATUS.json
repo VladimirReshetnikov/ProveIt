@@ -1,0 +1,148 @@
+{
+  "title": "Partial affine-plane doubling for 3-SAT",
+  "date_utc": "2026-10-27",
+  "source_review_pin": "324f3d9b009ab0323f33be65cd6577867c9c4338",
+  "external_formalization_pin": "1a6eee293b9e00cb432eef6018a21f523623a9af",
+  "status": "New finite certificates and complete mathematical schedule proofs, relative to explicitly imported exact contraction interfaces",
+  "problem_scope": "3-SAT decision; exact counting is the internal method",
+  "complexity_scale": "poly(n,m) times 2^((C+o(1))*L/sqrt(log_2 L)), where L is normalized literal occurrences and L<=3m",
+  "uniform_error_claim": true,
+  "algorithms": [
+    {
+      "name": "Partial affine duplication",
+      "groups": [
+        15,
+        10,
+        7,
+        4
+      ],
+      "time_exact": "(pi/ln(2))*sqrt(32012591492467/5556600000000)",
+      "space_exact": "(pi/ln(2))*sqrt(32012591492467/6417873000000)",
+      "time_interval": [
+        "10.87878166668154",
+        "10.87878166668155"
+      ],
+      "space_interval": [
+        "10.12253456921954",
+        "10.12253456921955"
+      ],
+      "safe_eventual_time": "10.879",
+      "safe_eventual_space": "10.123",
+      "simultaneous_pair": true,
+      "joint_selector": "min_j max(T_hat_j^2,2263800000000*B_hat_j^2), using ceil-log mode-cardinality products",
+      "schedule_result": "results/round5_new15_audit.json",
+      "joint_result": "results/partial_affine_joint_result.json"
+    },
+    {
+      "name": "Full affine duplication",
+      "groups": [
+        18,
+        9
+      ],
+      "time_exact": "(pi/ln(2))*sqrt(563681831683/94374000000)",
+      "space_exact": "(pi/ln(2))*sqrt(14000/2889)",
+      "coefficient_enclosures": {
+        "time_squared_factor": "563681831683/94374000000",
+        "time": [
+          "11.076823835020",
+          "11.076823835021"
+        ],
+        "joint_space_squared_factor": "14000/2889",
+        "joint_space": [
+          "9.977337393576",
+          "9.977337393577"
+        ]
+      },
+      "safe_eventual_time": "11.077",
+      "safe_eventual_space": "9.978",
+      "simultaneous_pair": true,
+      "joint_selector": "min_j max(336*T_hat_j^2,811701837623520*B_hat_j^2), using ceil-log mode-cardinality products",
+      "schedule_result": "results/round5_affine_certificate_results.json",
+      "joint_result": "results/rectangular_joint_result.json"
+    }
+  ],
+  "comparison": {
+    "prior_composition_time_exact": "(pi/ln(2))*sqrt(511416908935241/82798613625000)",
+    "prior_composition_interval": [
+      "11.26420175559485",
+      "11.26420175559486"
+    ],
+    "prior_groups": [
+      13,
+      10,
+      7,
+      6,
+      4
+    ],
+    "relative_improvement_percent_display": 3.4216369457504614,
+    "printed_comparable_time": 13.37964906627,
+    "printed_relative_improvement_percent_display": 18.691576940482836,
+    "scope": "Strongest compatible prior-ingredient composition constructed in this review; global prior optimality is not claimed"
+  },
+  "normalized_premises": [
+    "At most s wires",
+    "Maximum root degree <= ceil(s^(1/12))",
+    "Initial precision and truncation order <= s",
+    "Polynomial description length",
+    "Exact source deformation and reconstruction interfaces",
+    "Immutable canonical creation-precision entry descriptions",
+    "Stated polynomial-space original-entry routines",
+    "Exact coordinate/CRT matrix backend and array-space bound"
+  ],
+  "sat_bridge": {
+    "source": "sections/3sat_bridge.tex",
+    "s": "L+1",
+    "fixed_variables": "Original occurrence degree > ceil(log_2(L+1))",
+    "branch_exponent": "O(L/log L), lower order",
+    "incidences": "All unfixed original incidences retained, including clauses made constant true",
+    "space": "Branches processed sequentially"
+  },
+  "source_integrity": {
+    "reviewed_packets": 34,
+    "report_source_Git_blobs_verified": 144,
+    "round5_Python_Git_blobs_verified": 41,
+    "mathematical_correctness_implied_by_hashes": false
+  },
+  "reproduction": {
+    "ordinary": "python3 run_checks.py",
+    "optimized": "python3 run_checks.py --optimized",
+    "manifest": "python3 verify_manifest.py",
+    "pdf": "python3 build_report.py",
+    "python_dependencies": "standard library only"
+  },
+  "additional_audits": [
+    "audit/independent_schedule_audit.md",
+    "audit/formal_audit.md",
+    "audit/dependencies.json",
+    "audit/source_ledger.json"
+  ],
+  "not_claimed": [
+    "logarithmic_order_improvement",
+    "polynomial_space_improvement",
+    "global_algorithm_optimality",
+    "r15_exact_local_minimax_optimality",
+    "new_Lean_or_Rocq_formalization",
+    "full_fast_SAT_implementation",
+    "asymptotic_matrix_implementation",
+    "practical_SAT_speedup",
+    "numerical_domination_of_unspecified_Anthropic_constant"
+  ],
+  "finite_checks": [
+    "r15 support construction and all 82134 time pairs",
+    "r15 all 4374 boundary and 37908 mixed pairs",
+    "r18 all 124416 time, 6534 boundary and 57024 mixed pairs",
+    "Exact rounded integer selectors",
+    "Strict schedule packing inequalities",
+    "Every recursively paid time branch",
+    "Rigorous coefficient interval arithmetic",
+    "36 finite ring fixtures with 144 plan contractions and 24192 literal assignments",
+    "483 Boolean formula cases and 1293 counting comparisons"
+  ],
+  "analytical_proofs_in_report": [
+    "Uniform degree and padding gates over the depth bootstrap",
+    "Inherited precision overhead is lower order",
+    "All recursive child entries and leaf paths are paid",
+    "Root joint-space domination, with live ancestor storage summed rather than multiplied",
+    "Occurrence-preserving logarithmic-threshold branching bridge for 3-SAT"
+  ]
+}

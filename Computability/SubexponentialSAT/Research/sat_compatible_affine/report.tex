@@ -1,0 +1,83 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.86in]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage{xurl,hyperref}
+\definecolor{navy}{HTML}{18334C}
+\definecolor{teal}{HTML}{087E8B}
+\hypersetup{colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal,
+pdftitle={Compatible affine contraction plans for 3-SAT},
+pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Compatible affine contraction plans for 3-SAT}
+\fancyhead[R]{\small Research memorandum}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=*}
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_2}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\F}{\mathbb F}
+\newcommand{\K}{\mathcal K}
+\newcommand{\V}{\mathcal V}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\pc}{\operatorname{popcount}}
+\newcommand{\NewC}{29.1489213688721}
+\newcommand{\OldC}{29.81160894538347}
+\newcommand{\NewBeta}{\frac{5835847444309}{18750000000000}}
+\title{\color{navy}\bfseries Compatible affine contraction plans for 3-SAT\\[5pt]
+\large A stricter certified exponential bound, exact finite certificates,\\
+and the remaining logarithmic bottleneck}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{October 26, 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review the latest 3-SAT research at ProveIt commit
+\texttt{8e76d515063c}, including the five incoming archives added at
+\texttt{26bd83d4b37d}, and the linked Anthropic formalization.
+The smallest incoming general-degree cached contraction coefficient is
+\(\OldC\), on the scale \(s/\sqrt{\log_2 s}\), where \(s\) is a normalized
+tensor-network wire budget. We reduce this coefficient to
+\(\NewC\), with a safe eventual coefficient \(29.149\).
+
+The new construction uses twelve ten-group contraction plans obtained by
+adding a tenth point to the parallel lines of the affine plane over
+\(\F_3\). Its proof keeps one operation choice consistent across every
+pairwise comparison. An exact integer elimination and branch-and-bound
+certificate checks all \(96^{12}\) support choices without enumerating them.
+A separately written checker reconstructs the supports and recomputes the
+search bounds. A sharper, already published rectangular multiplication
+envelope gives the final coefficient; a separate exhaustive certificate
+improves the next recursion stage. The new plans alone give \(29.640645\)
+with the previous backend.
+
+This is an improvement of an explicit asymptotic upper bound, relative to
+the imported contraction and encoding lemmas. It does not establish a
+smaller unrestricted 3-SAT exponent order: the strongest supported order
+remains \(n\log\log n/\sqrt{\log n}\), with the existing density-sensitive
+refinement. No end-to-end solver speedup or new Lean formalization is
+claimed. We also give a sharp limitation for the preceding nine-plan
+entropy model and two scoped obstructions encountered while pursuing an
+order improvement.
+\end{abstract}
+\tableofcontents
+\clearpage
+\input{sections/result_review}
+\input{sections/construction}
+\input{sections/schedule}
+\input{sections/order_research}
+\input{sections/verification}
+\input{sections/references}
+\end{document}

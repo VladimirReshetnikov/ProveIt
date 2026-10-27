@@ -1,0 +1,112 @@
+\section{What an improvement in exponent order would require}\label{sec:order}
+
+The requested goal calls for more than optimizing constants. The source
+methods have two distinct losses: partition-mode entropy gives a
+square-root logarithm in the denominator, while the dense-formula
+compression contributes the worst-case $\log\log n$ factor. The
+results above improve the fully paid coefficient but leave both
+mechanisms in place. This section records the most relevant structural
+directions and one new obstruction to an attractive shortcut.
+
+\subsection{Why faster multiplication changes the coefficient here}
+
+The common-tilt bound is proportional to $M/\sqrt u$, and packing permits
+$u=O(\log s)$. A better exact matrix exponent changes the support
+coefficients and therefore the multiplier of $M/\sqrt u$. A different
+fixed finite plan changes the same multiplier. Neither change alters
+the singularity of the mode generating function. Even an idealized
+quadratic square-matrix algorithm would therefore leave this particular
+entropy calculation on the $s/\sqrt{\log s}$ scale.
+
+This is an accounting statement about the present proof architecture.
+It is not a lower bound for 3-SAT or for all possible contractors.
+The global schedules also show why optimizing a local matrix cost in
+isolation can fail: the terminal route pays for recursive child entries,
+and it already determines the new low-degree time coefficient.
+
+\subsection{A precise potential route beyond square-root entropy}
+
+The independent Anthropic proof describes a graded-operator route whose
+current partition basis has
+$\log\dim V_E=\Theta(E^{1/2})$ \cite{anthropicpaper}. Its recurrence
+balances that growth against a two-direction decomposition. At the level
+of that accounting, replacing the growth by
+$\Theta(E^\theta)$ with $\theta<1/2$ would replace the contraction
+ratio by $\rho=2^{\theta-1}$ and the logarithmic exponent by
+$-\log_2\rho=1-\theta>1/2$.
+
+That substitution is not a construction. To use it one must supply, at
+the same time, an exact scalar identity, effective factorizations in
+both directions, polynomially bounded decomposition metadata, and
+uniformly efficient entry access at the necessary precision. A small
+graded space by itself does not provide these properties. Any future
+proposal should state these requirements as a single complete interface
+and pay for converting its outputs into the next recursive inputs.
+
+\subsection{Sparse mode deletion does not preserve the required locality}
+
+One tempting attempt is to retain only square-indexed, or otherwise
+sparse, Heisenberg modes. This reduces the count of partitions formed
+from the surviving weights. It also changes the current commutator,
+and the original single-point locality argument then fails.
+
+\begin{lemma}[No proper mode deletion with finite single-point locality]
+\label{lem:locality}
+Let $S\subseteq\mathbb Z_{>0}$, put $a_0=0$ and
+$a_n=n\,\mathbf1_S(|n|)$ for $n\ne0$, and consider the formal
+distribution
+\[
+ C_S(z,w)=\sum_{n\in\mathbb Z}a_nz^{-n-1}w^{n-1}.
+\]
+If $(z-w)^H C_S(z,w)=0$ for some integer $H\ge0$, then $S$ is empty
+or all of $\mathbb Z_{>0}$.
+\end{lemma}
+
+\begin{proof}
+For $H=0$, all coefficients vanish and $S$ is empty. For $H>0$, the
+coefficient of $z^{H-m-1}w^{m-1}$ in the product is
+\[
+ \sum_{j=0}^H(-1)^j\binom Hj a_{m-j}.
+\]
+Its vanishing for every integer $m$ says that the $H$th finite difference
+of the doubly infinite sequence $a_m$ is zero. Newton interpolation, or
+induction on $H$, gives a polynomial $P(m)$ of degree below $H$ agreeing
+with $a_m$ on all integers. If the positive complement of $S$ is infinite,
+then $P$ has infinitely many zeros and is identically zero, so $S$ is
+empty. If that complement is finite, then $P(m)=m$ at infinitely many
+positive integers, hence $P(X)=X$ identically. No positive integer can
+then be omitted, and $S=\mathbb Z_{>0}$.
+\end{proof}
+
+The sparse current commutator is exactly $C_S$. The cited locality
+proof clears the commutator with a finite power of $z-w$; the lemma
+shows that this proof cannot retain any nonempty proper set of modes
+unchanged. Keeping multiples of a fixed integer may instead admit
+locality at several roots, with a factor such as $(z^d-w^d)^H$.
+That only rescales the usual partition weights:
+$\log p(E/d)=\Theta(\sqrt{E/d})$, retaining the square-root growth
+and the same doubling ratio. A different algebra or a different exact
+decomposition may still work. The lemma excludes only the stated
+shortcut; it does not exclude sparse bases by unrelated constructions.
+
+\subsection{Other tempting shortcuts and the remaining problem}
+
+The earlier packets already explain several accounting hazards. Reducing
+the original target to parity does not automatically remove the Hermite
+recovery precision or the full mode-allocation cost. Reapplying the
+contractor to a compact second network also requires a factorization
+with acceptable degrees and entry costs; merely declaring a small
+number of large tensors does not supply it \cite{precision,barriers}.
+The latest pairwise packet contains a scoped generic-oracle obstruction
+to summing arbitrary independently supplied tables more cheaply
+\cite{pairwise}. Such statements must not be promoted to complexity
+lower bounds for 3-SAT's structured tables.
+
+There are therefore two concrete, still unproved ways to surpass the
+present worst-case order: construct a compatible exact decomposition
+with entropy exponent below $1/2$, or compress dense 3-CNF instances to
+an interface of $O(n)$ effective size while preserving the required
+entry access and precision. The equality construction proves this
+small-size statement for direct formulas with $L=O(n)$; it does not
+solve the dense case. No result in this report claims that either
+remaining construction has been achieved.

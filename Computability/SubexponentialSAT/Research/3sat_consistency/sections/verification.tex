@@ -1,0 +1,98 @@
+\section{Verification, reproduction, and proof status}
+\label{sec:verification}
+
+\subsection{Exact certificates and independent reconstruction}
+
+All acceptance decisions use integer or rational arithmetic. The primary
+checker and an independent checker reconstruct the same support families
+from the ordered block partitions using different code. The checks include:
+\begin{itemize}
+\item all $648$ time-family conservation identities, all $186624$ pair
+choices, exact maxima, and the displayed rational $\beta_{10}^2$;
+\item all $801$ augmented conservation identities and $98532$ additional
+mixed time/boundary choices for the joint selector;
+\item strict packing margins, the exact taper sum, all controlling time
+branches, the root storage maximum, and rational enclosures proving the
+safe eventual coefficients;
+\item the degree-$51/100$ specialization, its stage-specific gates, the
+same-schedule comparison with the old certificate, and a uniformly scaled
+inherited comparison schedule;
+\item all $35937$ tuples of the inherited thirteen-group certificate and
+the $15$ supports of the seven-group tail;
+\item the exact Gram matrix, positive LDL pivots, stationary positive
+weights, the attained upper certificate, and its gap from the mixture
+lower bound;
+\item the Kronecker inverse and capacity-array identities in
+Section~\ref{sec:structure}, checked against independent small exhaustive
+computations.
+\end{itemize}
+
+The coefficient enclosures use the alternating series for $\arctan$ in
+Machin's identity $\pi=16\arctan(1/5)-4\arctan(1/239)$, a positive
+geometric-tail bound for the series of $\ln2=2\operatorname{artanh}(1/3)$,
+and integer-square-root enclosures. Decimal output is for readability and
+does not decide an inequality.
+
+Deliberate negative controls corrupt a potential, an ordered plan, a
+claimed bound, a Gram entry, stationary weights, and the structural
+identities. A larger storage multiplier $6/5$ is rejected by the fixed
+certificate. The checks raise explicit exceptions, so running Python
+with optimization cannot silently disable them.
+
+\subsection{A finite exact contraction prototype}
+
+The prototype evaluates the graphical sum over
+$(\mathbb Z/64\mathbb Z)[\epsilon]/(\epsilon^2)$, which includes zero
+divisors and nilpotents. On $32$ seeded fixtures it compares all nine
+regroupings against an independent exhaustive sum, for $288$ comparisons.
+Eighteen reference answers are nonzero. It checks every plan's exact
+number of paid singleton-factor evaluations, then checks the selected
+joint time/storage plan against the same reference. Empty index lists and
+invalid domains are separate controls.
+
+The fixtures use power-of-two domain sizes, so their selector evaluates
+the integer support scores on exact integer logarithms. The mathematical
+selector for arbitrary integer list sizes is the product comparison in
+Section~\ref{sec:interface}. The prototype uses ordinary scalar
+multiplication; it does not implement the asymptotic rectangular backend.
+These are correctness checks of a finite kernel, not SAT runtime
+measurements.
+
+\subsection{Reproduction commands and files}
+
+Python 3.10 or later and its standard library suffice for verification.
+From the extracted archive directory run
+\begin{verbatim}
+python3 code/verify_manifest.py
+python3 code/run_checks.py
+python3 code/build_report.py
+\end{verbatim}
+The first command checks the shipped bytes. Run it before rebuilding:
+PDF metadata can change on a later build. The second runs eight exact
+checkers both normally and with \texttt{-O}, requires identical parsed
+outputs, and writes separate receipts under \texttt{replay\_results/}.
+All sixteen executed checks passed for the delivered package. The third
+requires a normal pdfLaTeX installation and the packages named in the
+preamble. It disables shell escape and rejects overfull boxes or unresolved
+references.
+
+The optional \texttt{discover\_certificate.py} uses NumPy to repeat the
+finite potential search for the frozen rational weights. It is unnecessary
+for verification; the exact certificate is the witness being checked.
+\texttt{CLAIMS.json} distinguishes newly proved results, finite checks,
+imported results, and unresolved questions.
+
+\subsection{Limits of the verification claim}
+
+No full fast SAT solver, fast-matrix implementation, new Lean proof, or
+fresh kernel replay of the two source developments is included. The
+new local inequalities are exact finite theorems with complete witnesses;
+the asymptotic contraction theorem imports the analytic and arithmetic
+interfaces explicitly stated earlier. The source inventory and hashes
+establish which bytes were reviewed, not the truth of every external
+theorem. The quantified representation and graph obstructions follow from
+their mathematical proofs; their small checks are supporting evidence.
+
+The delivered result is therefore a reproducible quantitative refinement
+with precise dependencies. The unrestricted exponent-order improvement
+asked for remains an open task in this research iteration.

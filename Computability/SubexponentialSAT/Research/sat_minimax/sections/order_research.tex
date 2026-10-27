@@ -1,0 +1,189 @@
+\section{Attempts to change the logarithmic order}
+\label{sec:order-research}
+
+The numerical improvement is useful, but the requested larger goal is a
+smaller order than $n\log\log n/\sqrt{\log n}$. We investigated the
+following routes and retain their precise status. None of the arguments
+below proves a lower bound for SAT.
+
+\subsection{What is already ruled out by the reviewed certificates}
+
+Changing the Hermite taper alone is not a new route. The earlier precision
+packet solves the real taper minimax problem, and the newest rectangular
+packet strengthens this to arbitrary asymmetric node multiplicities under
+independent jet-error recovery. Its leading precision coefficient remains
+six. Similarly, full-block and actual-domain Cauchy/Smith separation is
+already in the corpus. Merely rediscovering the slope-four mode list is
+not an improvement.
+
+The conserved degree-flow identity in the newest adaptive-frontier packet
+is useful: incoming mode powers remove the degree allowance that outgoing
+mode powers add elsewhere. But a whole-group coefficient extraction can
+still be expensive. The same packet explicitly distinguishes formal
+degree conservation from an admissible recursive entry algorithm. A short
+binary rank for a mode tuple similarly does not make a high-degree group
+tensor cheap to evaluate.
+
+\subsection{Why straightforward composition of the two engines cancels}
+
+Here is a quantitative obstruction for the displayed certificates, not
+for all possible algorithms. Suppose an OpenAI packing schedule obeys
+\[
+ u\log_2 r\le B\log_2s,
+\]
+and its certified outer mode-bit size is $A M/\sqrt u$. Suppose the
+Anthropic clique certificate applied to $r$ groups has coefficient at
+least $a/\sqrt{\log_2r}$, as does the current square-root family up to
+its fixed constants. Their composed \emph{certificate expression} is
+at least
+\[
+ \frac{aAM}{\sqrt{u\log_2r}}
+ \ge\frac{aA}{\sqrt B}\frac{M}{\sqrt{\log_2s}}.
+\]
+Thus allowing $r$ to grow, while retaining these two separate estimates,
+does not yield a smaller order. It loses $\sqrt{\log r}$ in packing and
+gains the same factor in clique evaluation. This argument is about those
+upper-bound expressions; it does not lower-bound their algorithms' true
+running time or exclude a joint analysis that avoids one of the charges.
+
+There is a related exact calculation for rectangular grids in the
+Anthropic construction. Its two intermediate partition-space envelopes
+are proportional to $\sqrt{2h+t}$ and $\sqrt{2h-t}$. If the two recursive
+directions have rates $e_1,e_2$, then
+\[
+ \max_{-2h\le t\le2h}
+ \min\{e_1\sqrt{2h+t},e_2\sqrt{2h-t}\}
+ =\frac{2\sqrt h}{\sqrt{e_1^{-2}+e_2^{-2}}}.
+\]
+The maximum occurs where the two terms agree. After normalization, the
+combined rate is $(e_1^{-2}+e_2^{-2})^{-1/2}$. If
+$e(K)=C/\sqrt{\log K}$ and the grid combines sizes as
+$K=K_1K_2$, this is exactly the same rate $C/\sqrt{\log K}$. Unequal
+grid sides alone therefore do not change the power within this envelope.
+
+\subsection{A more concrete new route: compile the actual piece ranks}
+
+The Anthropic proof bounds the ranks of a completed crossing piece by the
+dimensions of intermediate Fock spaces. The completed matrix could in
+principle have smaller rank after cancellations. Rather than changing the
+Heisenberg algebra or its grading, one can ask directly for a uniform
+rank theorem for those matrices. The accompanying
+\path{research/MODULAR_RANK_CRITERION.md} supplies the full statement and
+proof obligations; we give the central lemma here.
+
+Let $N=2^\ell$ and suppose polynomially many integral arrays
+$A_i(x,y,u,v)$ satisfy
+\[
+ \sum_i A_i(x,y,u,v)=d_\ell[x=v][y=u],
+\]
+with polynomial coefficient bit lengths and $2^{O(\ell)}$ entry cost.
+For a prime $p\nmid d_\ell$, flatten a piece in the row direction
+$(x,y)\mid(u,v)$ and the column direction $(x,u)\mid(y,v)$ over $\F_p$.
+Denote their ranks by $r_i(p),c_i(p)$.
+
+\begin{lemma}[Modular rank compilation]\label{lem:modrank}
+Both exact factorizations of a piece can be constructed and verified in
+$2^{O(\ell)}\poly(\log p)$ bit operations and space, using respectively
+\[
+ \lceil\log_2\max(1,r_i(p))\rceil,
+ \qquad \lceil\log_2\max(1,c_i(p))\rceil
+\]
+shared Boolean bits. Every factor coefficient has at most
+$\lceil\log_2p\rceil$ bits.
+\end{lemma}
+\begin{proof}
+Each flattening is an $N^2$ by $N^2$ matrix. Gaussian elimination over
+$\F_p$ takes $O(N^6)$ field operations. Its pivot columns and the
+corresponding reduced-row coefficients give an exact rank factorization
+$UV$. Pad the inner dimension to the next power of two and encode it by
+Boolean bits. Zero rank uses one zero term and no index bits. Multiplying
+$U,V$ verifies the factorization within the same time bound. Field
+arithmetic has polynomial bit cost in $\log p$. Reduction preserves the
+crossing identity and $p\nmid d_\ell$ permits its normalization.
+\end{proof}
+
+This modular formulation avoids a real height gap. A generic rational
+Gaussian elimination proof only gives minor determinants with
+$2^{O(\ell)}$ bits; it does not automatically meet the source's
+polynomial coefficient-bit requirement. Modular factor coefficients
+remain small. The lemma is not a polynomial-space claim in $\ell$.
+
+The substantive \emph{open} target is, for some fixed
+$1/2\le\rho<1/\sqrt2$, the uniform inequality
+\begin{equation}\label{eq:rank-target}
+ \lceil\log_2\max(1,r_i(p))\rceil+
+ \lceil\log_2\max(1,c_i(p))\rceil
+ \le4\rho\ell+O(\log(2\ell)).
+\end{equation}
+It must hold for every needed piece and for a polynomially constructible
+family of good primes with the signed-reconstruction size specified below. For the original
+normalizer $d_\ell=h!$, taking primes above every reached $h$ avoids
+division problems. The number of pieces must remain polynomial in
+$\ell$, and the constants must be uniform; a few favorable pieces or a
+single exceptional prime are not sufficient.
+
+A rational-rank upper bound is especially useful: every larger minor is
+an identically zero integer, hence vanishes modulo every prime. Thus one
+may prove the rank bound over $\Q$ and construct the small-coefficient
+factors over finite fields. A concrete intermediate target is
+\[
+ \max(1,\operatorname{rank}_{\Q}R_i)
+ \max(1,\operatorname{rank}_{\Q}C_i)
+ \le 2^{(8/3)\ell}\ell^{O(1)}
+\]
+uniformly for all pieces. This would give $\rho=2/3$ and denominator
+power $\gamma=\log_2(3/2)=0.5849625\ldots>1/2$.
+
+If \eqref{eq:rank-target} and the stated uniform interfaces are
+established, the source recurrence gives
+$\gamma=\log_2(1/\rho)>1/2$ and the corresponding fixed-width SAT
+exponent $O_k(n\log\log n/(\log n)^\gamma)$.
+There is an essential arithmetic detail: Appendix D uses truncation
+congruences modulo powers of two. It cannot simply be rerun in odd
+characteristic and followed by a CRT of the final count.
+
+Instead supply it with an exact integer clique oracle. For a
+$(K,\ell)$-clique with local weights satisfying $|W_v|<2^B$, its value
+$Z$ obeys
+\[
+ |Z|\le 2^E,\qquad E=\binom K2\ell+KB.
+\]
+Compute the requested clique value modulo good primes whose product is
+strictly greater than $2^{E+1}$, then reconstruct its signed integer value.
+The original two-adic truncation and rational comparisons now run
+unchanged. It is enough to reconstruct each clique value requested by the
+outer reduction; internal recursive modular values need no such recovery.
+The source's parameter bounds make $K,\ell,B$, and hence $E$, polynomial
+in the original input size. Polynomially many polynomial-size primes
+suffice and do not change the exponential order. The direct clause-count
+branch, which counts directly modulo each prime, needs only the final
+nonnegative count bound $2^n$.
+
+The rank theorem is still missing. This is a \emph{conditional route}, not
+a newly proved SAT bound. The accompanying note states the piece-count,
+normalization, construction-time and coefficient-height obligations in
+full so that a rank conjecture cannot silently replace an algorithm.
+
+\subsection{Finite probes and their limitations}
+
+Exact modular probes of the actual Boson pieces did not reveal a uniform
+collapse. For example, central-piece row/column ranks over $\F_{1009}$
+were $(25,25)$ for the full weight-$4$ sector, $(49,49)$ for weight $5$,
+and $(225,225)$ for weight $7$. Their dimensions are respectively
+$5^2$, $7^2$, and $15^2$, so these are full-rank finite witnesses.
+Full modular rank also proves full rational rank for those particular
+integer matrices. At these sizes the source's partition-dimension bound
+has not entered its asymptotically useful range, so the observations
+neither prove nor refute \eqref{eq:rank-target}.
+
+The standalone rank compiler was separately checked on exact factorizations,
+crossing identities, exceptional-prime controls, and CRT reconstruction.
+An explicit negative control uses matrix-unit crossing pieces with ideal
+individual ranks but exponentially many pieces; it fails the source
+interface and cannot be promoted to a faster SAT theorem.
+
+Borchardt's Cauchy-permanent identity is another possible algebraic tool,
+but applying it only to one packet would speed a subdominant local routine.
+A useful smaller-order result would still require a closed group-level
+representation with paid entry evaluation. We did not establish that
+representation or use this idea to claim an improved exponent.

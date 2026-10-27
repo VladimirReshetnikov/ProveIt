@@ -14,12 +14,13 @@ a report at one of the destinations of section 2.
 
 ## Sub-exponential 3-SAT (ETH) reports
 
-Thirty-six arrivals of 26–27 October 2026 about sub-exponential 3-SAT, that
+Forty-three arrivals of 26–27 October 2026 about sub-exponential 3-SAT, that
 is, about refuting the Exponential Time Hypothesis. The drop process staged
 the first five without committing them, and they were committed unchanged in
 `a505bd768b`; it committed the next seventeen itself. The nine of the fourth
 round were also only staged, and were committed unchanged in `b9941a7396`.
-The five of the fifth round arrived committed, in `26bd83d4b3`. The eight of
+The five of the fifth round arrived committed, in `26bd83d4b3`, and the
+seven of the sixth in `eb173b3d9f`. The eight of
 `3e57705cf1` and `d098ba436b` are a second round that reviews the first. The
 five of `f42479bca2`, `f898a9fde4` and `fa6e904d10` are a third round that
 reviews both. They are placed in the new
@@ -68,6 +69,13 @@ instead of being filed.
 | `sat_affine_geometry_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_affine_geometry](../../Computability/SubexponentialSAT/Research/sat_affine_geometry/README.txt) |
 | `sat_affine_cauchy_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_affine_cauchy](../../Computability/SubexponentialSAT/Research/sat_affine_cauchy/README.txt) |
 | `sat_affine_plane_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_affine_plane](../../Computability/SubexponentialSAT/Research/sat_affine_plane/README.txt) |
+| `sat_rectangular_refinement_2026-10-26.zip` | `eb173b3d9f` | [Research/sat_rectangular_refinement](../../Computability/SubexponentialSAT/Research/sat_rectangular_refinement/README.md) |
+| `3sat_rectangular_research_2026-10-26.zip` | `eb173b3d9f` | [Research/3sat_rectangular_research](../../Computability/SubexponentialSAT/Research/3sat_rectangular_research/README.txt) |
+| `3sat_partial_affine_2026-10-27.zip` | `eb173b3d9f` | [Research/3sat_partial_affine](../../Computability/SubexponentialSAT/Research/3sat_partial_affine/README.txt) |
+| `sat_minimax_2026-10-27.zip` | `eb173b3d9f` | [Research/sat_minimax](../../Computability/SubexponentialSAT/Research/sat_minimax/README.txt) |
+| `3sat_compatible_affine_2026-10-26.zip` | `eb173b3d9f` | [Research/sat_compatible_affine](../../Computability/SubexponentialSAT/Research/sat_compatible_affine/README.txt) |
+| `3sat_consistency_2026-10-26.zip` | `eb173b3d9f` | [Research/3sat_consistency](../../Computability/SubexponentialSAT/Research/3sat_consistency/README.md) |
+| `ETH_Rectangular_Portfolios_Exact_Kernels_2026-10-27.zip` | `eb173b3d9f` | [Research/eth_rectangular_portfolios](../../Computability/SubexponentialSAT/Research/eth_rectangular_portfolios/README.txt), without its `sources/` copies and the 11-file `anthropic_snapshot/eth/` copy of `anthropics/formal-math` |
 
 ## DiophantineConsistency proof-simplification packets
 

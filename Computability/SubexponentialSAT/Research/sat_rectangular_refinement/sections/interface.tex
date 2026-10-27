@@ -1,0 +1,161 @@
+\section{The exact contraction interface}
+\label{sec:interface}
+
+\subsection{Inputs and coefficient rings}
+
+The input is a bipartite Boolean tensor network with at most $s$ wires,
+polynomially many vertices, maximum degree at most $\ceil{s^{9/10}}$,
+and graph/tensor description length $\mathcal L$. Its value is
+\[
+ Z=\sum_{x\in\{0,1\}^{E}}\prod_v T_v(x|_{\delta(v)}).
+\]
+Initial entries lie in
+$(\Z/2^{P_0}\Z)[V]/(V^\ell)$ with $1\le P_0,\ell\le s$.
+A uniform entry routine costs
+$(s+\mathcal L)^{O(1)}2^{O(s^{9/10})}$ time and polynomial space;
+the constants in the input promise are fixed.
+
+The original graph and tensor descriptions are stored once. Generated
+tensors retain immutable references to those descriptions and to earlier
+generated descriptors, rather than copying or recursively expanding them.
+A reference can be represented by a descriptor index and input offsets.
+Random access is convenient but is not an extra input-model assumption:
+on a sequential-input machine, resolving an offset by scanning the original
+description costs $O(\mathcal L)$ per access. That cost, and the fixed
+polynomial factor in the promised original entry routine, are charged to
+each access event. They do not multiply the number of recursive calls.
+
+All allocation counts, mode-index loops, generated ring arithmetic, and
+descriptor-construction loops are controlled by $s$ and the fixed menus;
+their iteration counts do not depend on $\mathcal L$. Source offsets use
+$O(\log(s+\mathcal L))$ bits; generated indices and memory addresses
+have polynomially many bits in $s$ in addition to this offset cost.
+Consequently one fixed polynomial
+$P(s+\mathcal L)$ bounds the description-access and address-processing
+cost per event throughout the recursion. We count work after factoring
+out this one polynomial: an original entry event still has weight
+$2^{O(s^{9/10})}$, and all subsequent generated-entry work is charged
+explicitly. If $\widehat T_d$ denotes this normalized work, then actual
+time is at most $P(s+\mathcal L)\widehat T_d$. The polynomial is paid
+once in this comparison, not once per recursion depth. This is an
+implementation of the inherited immutable-entry interface, with no
+stronger bound on the input description length.
+
+The inherited algorithm uses
+\[
+ R_p=(\Z/2^p\Z)[U,V]/(f(U),V^\ell),
+\]
+where $f$ is monic of degree $O(\log s)$ with irreducible reduction
+modulo two. Rank over $\Z/2^p\Z$, precision, and the coordinate
+multiplication table have polynomial descriptions. Each tensor is tagged
+with its \emph{creation precision}. A later entry evaluation first recovers
+its value at that precision and uses the same canonical coordinate
+representatives. In particular, no proof here treats canonical lifting as
+a ring homomorphism.
+
+We import the Cauchy deformation and exact Hermite recovery from the
+quantitative appendix, the sharper Hermite precision from the precision
+refinements, and the asymmetric packing and joint Cauchy modes from the
+subsequent packets~\cite{openai,precision,asymmetric,joint,flags,pairwise}.
+The new algorithm changes the contraction of the resulting finite mode
+identity. It does not change its validity or its ring semantics.
+
+\subsection{Modes, entropy, and recursive tables}
+
+At an active call let $M$ be the number of wires, $r$ a fixed group
+alphabet, $a$ the packet exponent, $u$ the retained taper range, and
+$i<u$ a node valuation. Set $D=2^{a-i}$. The compatible inherited bounds
+are
+\begin{equation}\label{eq:modepremises}
+ p_t\le(6+o(1))MD/u,\qquad
+ M_{\rm child}\le(2/r+o(1))M.
+\end{equation}
+On each directed group pair, there are at most
+$(2/r^2+o(1))M/D$ mode families of each index $j$, with weights
+$a+1-i+4j-2\pc(j)$.
+
+Enumerate exact pair-weight allocations $(b_{gh})_{g\ne h}$ whose sum
+is less than $p_t$. For a fixed allocation let $\mathcal I_{gh}$ be the
+finite list of mode tuples of that exact weight, and skip allocations with
+an empty list. Define
+\[
+ h_{gh}=\log_2|\mathcal I_{gh}|,
+ \qquad \K(M,u)=\kappa M/\sqrt u.
+\]
+The contribution of the allocation is exactly
+\begin{equation}\label{eq:modeidentity}
+ \sum_{\xi_{gh}\in\mathcal I_{gh}}
+       \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}).
+\end{equation}
+Each entry of $Z_g$ is a genuine smaller recursive contraction. It is not
+a free oracle or an already available table.
+
+For every fixed nonnegative directed weight vector $z$, the joint-mode
+entropy estimate is
+\begin{equation}\label{eq:entropy}
+ \sum_{g\ne h}z_{gh}h_{gh}
+ \le\left(\frac{\norm z}{r}+o(1)\right)\K(M,u).
+\end{equation}
+For orientation, its leading constant follows from the logarithm of the
+mode generating product,
+\[
+ \sum_{j\ge0}-\ln(1-e^{-\theta(1+4j-2\pc(j))})
+ =\frac{\pi^2}{24\theta}+O(\log^2(2/\theta)).
+\]
+The common budget bounds the weighted natural logarithm by
+\[
+ \theta p_t+\frac{\pi^2}{24\theta}
+              \frac{(2+o(1))M}{r^2D}\norm z^2
+       +o(M/\sqrt u).
+\]
+Optimizing $\theta$ and using~\eqref{eq:modepremises} gives
+\eqref{eq:entropy}. The inherited additive precision buffer makes the
+error uniform over the finite support family used below.
+
+For unordered pairs write $g_{\{a,b\}}=h_{ab}+h_{ba}$. Then
+\begin{equation}\label{eq:unordered}
+ v\cdot g\le
+ \left(\frac{\sqrt2\norm v}{r}+o(1)\right)\K(M,u).
+\end{equation}
+The factor $\sqrt2$ is required because each unordered coefficient
+appears on both directed pairs. The corresponding uniform norm bound is
+$\norm g\le(\sqrt2/r+o(1))\K$, obtained by a finite-net argument
+in this fixed dimension.
+
+The number of exact allocations is polynomial because $r$ is fixed and
+all budgets are polynomial in $s$. A standard unbounded-knapsack
+recurrence for the mode weights computes each exact list cardinality.
+The same table supports rank/unrank and polynomial-delay enumeration.
+Thus the selector later used in the proof needs no counting oracle.
+
+\subsection{Packing and the recurrence that must be paid}
+
+With $L=2^a$, $Q=r^a$, and side-degree bounds $R,C$, sufficient packing
+conditions are
+\begin{equation}\label{eq:packing}
+ QR/M=o(1),\qquad
+ Q^2C(\log s)^2/M=o(1),\qquad
+ LQ^2/M=o(1).
+\end{equation}
+At the root both degrees are at most $s^{9/10+o(1)}$. At later calls the
+retained side stays below that bound and the fresh packet side has degree
+at most $2^{a_{d-1}+1}$.
+
+A group has $2(r-1)$ incident directed pair indices. Forming its full
+table therefore requires at most
+$2^{(\alpha_r+o(1))\K}$ recursive entry evaluations, where
+\begin{equation}\label{eq:alpha}
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\end{equation}
+If a complete local contraction plan has coefficient $\beta_r$, the
+charged recurrence is
+\begin{equation}\label{eq:paid}
+ \widehat T_d\le\poly(s)
+   \left(2^{(\alpha_{r_d}+o(1))\K_d}\widehat T_{d+1}
+        +2^{(\beta_{r_d}+o(1))\K_d}\right).
+\end{equation}
+The first term includes all singleton tables and their recursively
+computed entries. The second term includes all subsequent merges and the
+last triangle. Improving the second term alone need not improve the
+maximum after unrolling. This distinction explains why a new schedule is
+necessary when the matrix backend improves.

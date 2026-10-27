@@ -1,0 +1,106 @@
+\section{The shared contraction interface and what is imported}
+\label{sec:interface}
+
+Write
+\[
+ \lambda=\lceil\log_2 s\rceil,\qquad E(s)=s/\sqrt\lambda,
+ \qquad \kappa=\pi\sqrt2/\ln2.
+\]
+The comparison problem is a Boolean tensor network with at most $s$ wires,
+maximum initial degree at most $\lceil s^{9/10}\rceil$, and initial
+precision and coefficient truncation length at most $s$. Its entries lie
+in the power-of-two coefficient rings of the OpenAI construction. Original
+entry routines have the prescribed polynomial-description and
+$2^{O(s^{9/10})}$-time interface. Retained tensors are evaluated at their
+immutable creation precision and then lifted as specified by the source.
+These premises matter: an arbitrary exponentially expensive node oracle
+would not satisfy the theorem.
+
+We import the source's exact deformation, recovery identity, child-network
+construction, SAT reductions, and their correctness
+\cite{openai,contraction}. We also import nearly lossless asymmetric packet
+packing, the sharp tapered precision, and full-block Cauchy modes from the
+earlier refinements \cite{asymmetric,precision,joint,adaptive,tree}.
+This report proves a new method for evaluating the resulting finite mode
+graph. It does not replace the proofs of the imported identities.
+
+\subsection{The exact mode graph}
+
+At an active call, let $M$ be its number of wires, $u$ its retained
+valuation range, and $r$ its fixed alphabet size. After choosing an exact
+pair-weight allocation, the local answer has the form
+\begin{equation}\label{eq:modegraph}
+ \sum_{\xi_e\in\mathcal I_e}\prod_{g=1}^{r}
+    Z_g\bigl((\xi_e)_{e\ni g}\bigr).
+\end{equation}
+Pairs $e=(g,h)$ are directed and have distinct endpoints. The list
+$\mathcal I_e$ contains the feasible mode-index tuples of the allocated
+exact weight; $Z_g$ is an actual child-network contraction. Each child has
+at most $(2/r+o(1))M$ Boolean wires. Empty lists make the allocation zero.
+
+Because $r$ is fixed and all budgets are polynomial in $s$, the number of
+exact pair-weight allocations is polynomial. The usual integer knapsack
+recurrence computes each list size and supplies ranking and unranking with
+polynomial overhead. This is not a unit-cost counting oracle.
+
+Put $h_e=\log_2|\mathcal I_e|$ and
+$\K(M,u)=\kappa M/\sqrt u$. The imported common-tilt estimate is
+\begin{equation}\label{eq:entropy}
+ \sum_e z_e h_e\le
+  \left(\frac{\|z\|_2}{r}+o(1)\right)\K(M,u)
+ \qquad (z_e\ge0\hbox{ fixed}).
+\end{equation}
+The error is uniform over the allocations and all active calls of the
+admissible schedules below, for each fixed finite family of $z$.
+
+For clarity, its leading constants can be recovered directly. The
+full-Cauchy weights may be bounded below by
+$w_b=1+4b-2\operatorname{popcount}(b)$. Their logarithmic generating
+function is
+\[
+ \sum_{b\ge0}-\ln(1-e^{-\theta w_b})
+ =\frac{\pi^2}{24\theta}+O\bigl(\log^2(2/\theta)\bigr).
+\]
+The color multiplicity on one directed pair is
+$(2+o(1))M/(r^2D)$, and the working precision is
+$(6+o(1))MD/u$. Applying the generating-function bound with tilt
+$\theta/z_e$, summing with weight $z_e$, and optimizing the leading terms
+gives $\pi\sqrt2 M\|z\|_2/(r\sqrt u)$ in natural logarithms.
+Division by $\ln2$ gives \eqref{eq:entropy}.
+
+\subsection{Paid recursive calls}
+
+The first stage caches each $Z_g$ on all incident pair indices. Its
+incident set has $2(r-1)$ directed pairs, so the total number of child
+calls has exponent at most $(\alpha_r+o(1))\K$, where
+\begin{equation}\label{eq:alpha}
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\end{equation}
+A local contraction plan then combines these cached functions. If its
+certified nonrecursive time coefficient is $\beta_r$, with backend slack
+$\delta>0$ charged explicitly, the recurrence is
+\begin{equation}\label{eq:paid-recurrence}
+ T_d\le\poly(s)\left[
+     2^{(\alpha_{r_d}+o(1))\K_d}T_{d+1}
+       +2^{((1+\delta)\beta_{r_d}+o(1))\K_d}\right].
+\end{equation}
+The local space coefficient is at most $\beta_{r_d}$; the input/output
+term of the matrix cost pays for every table. Recursive tables on a stack
+add in space, whereas ancestor child-call exponents add in time. Ignoring
+that distinction would give an incorrect headline bound.
+
+\subsection{What an improved wire coefficient means for SAT}
+
+All numerical coefficients in this report multiply $E(s)$ per
+\emph{normalized Boolean wire}. The known reduction yields, for fixed $k$,
+the inherited density-sensitive order
+\begin{equation}\label{eq:sat-envelope}
+ \poly_k(n,m)\,
+ 2^{O_k\left(\frac{n}{\sqrt{\log n}}
+       \min\{\log(2+m/n),\log\log n\}\right)}.
+\end{equation}
+The direct clause-count branch and all stronger-assumption low-degree
+branches remain available. Smaller explicit wire coefficients give smaller
+certified contraction upper bounds. They do not determine numerical
+coefficients per SAT variable without the reduction's wire constant, and
+they do not change the logarithmic order in \eqref{eq:sat-envelope}.

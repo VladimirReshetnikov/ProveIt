@@ -1,0 +1,294 @@
+% FINAL main theorem, superseding the earlier fixed18 and 18-to9 headlines.
+% Complete proofs relative to the explicitly imported contraction interface.
+\section{Partial affine duplication: the main improvement}
+\label{sec:partial15}
+
+The final comparison is against all five rounds present at ProveIt commit
+\texttt{324f3d9b009a}. The fifth round already
+contains affine-nine plans, coupled support-pair bounds, the rectangular
+backend, and joint time/space selection~\cite{pairwise,affinejoint,affinegeometry,affinecauchy,affineplane}. We import those ingredients.
+The new construction duplicates six points of the affine plane, producing
+a fifteen-group root menu with a more favorable balance between local
+contraction and recursive child costs.
+
+For the low-degree normalized interface, the resulting coefficients are
+\begin{align*}
+ C_T&=\frac\pi{\ln2}
+ \sqrt{\frac{32012591492467}{5556600000000}}
+ =10.87878166668154\ldots,\\
+ C_S&=\frac\pi{\ln2}
+ \sqrt{\frac{32012591492467}{6417873000000}}
+ =10.12253456921954\ldots.
+\end{align*}
+Thus $10.879$ and $10.123$ are safe eventual time and space coefficients
+on $s/\sqrt{\lceil\log_2s\rceil}$. They refer to one actual algorithm,
+whose root plan is selected jointly for time and space. The separate
+eighteen-group construction gives the additional pair
+$(11.0768238350\ldots,9.9773373935\ldots)$ when smaller memory is preferred.
+These pairs must not be combined into a stronger nonexistent guarantee.
+
+\subsection{The explicit root plans}
+
+Start with the nine points $3x+y$ of $\mathbb F_3^2$. Duplicate points
+$0,1,2,3,4,5$, adding twins $9,10,11,12,13,14$, respectively. These are
+the two parallel lines $x=0$ and $x=1$; the line $x=2$ remains undoubled.
+In every affine parallel class, append each selected point's twin to the
+end of its block, in increasing original-point order. The four ordered
+plans are
+\[
+\begin{array}{lll}
+(0,1,2,9,10,11)&(3,4,5,12,13,14)&(6,7,8),\\
+(0,3,6,9,12)&(1,4,7,10,13)&(2,5,8,11,14),\\
+(0,4,8,9,13)&(1,5,6,10,14)&(2,3,7,11,12),\\
+(0,5,7,9,14)&(1,3,8,10,12)&(2,4,6,11,13).
+\end{array}
+\]
+Each block is recursively split after $\lfloor k/2\rfloor$ entries.
+The two resulting boundary tables are multiplied, and the three final
+block tables are contracted. The first plan has block sizes $(6,6,3)$;
+the other three have sizes $(5,5,5)$. Every intermediate merge is included
+in the following certificate.
+
+Let $D_*=1400000$. Use the round-five rectangular cost with the nine
+integer coefficient triples consisting of the distinct permutations of
+\[
+ (1400007,1400007,0),\qquad(1400000,1175014,750000).
+\]
+For each operation, assign the three coefficients to its three edge
+classes, and zero inside each of its three parts. This gives
+$9(15-2)=117$ time supports $v$ per plan, in dimension $\binom{15}{2}=105$.
+The corresponding normalized local cost is
+$F_j(g)=D_*^{-1}\max_{v\in\mathcal V_j}v\cdot g$, where
+$g_{\{i,j\}}=\log_2(|\mathcal I_{ij}|\,|\mathcal I_{ji}|)$.
+
+The exact coupled pair maxima
+\[
+ A_{ij}=\max_{v\in\mathcal V_i,w\in\mathcal V_j}
+       (\|v\|_2^2+\|w\|_2^2+6v\cdot w)
+\]
+are, in pair order $01,02,03,12,13,23$,
+\[
+ (A,A,A,B,B,B),\qquad
+ A=580173494513132,\quad B=572279799215680.
+\]
+The standalone standard-library checker reconstructs every support and
+checks all $6\cdot117^2=82134$ pairs. By the imported coupled-pair identity,
+\[
+ \left\|\frac14\sum_{j=0}^3v_j\right\|_2^2
+ \le\frac1{48}\sum_{i<j}A_{ij}.
+\]
+The pointwise inequality $\min_jF_j(g)\le\tfrac14\sum_jF_j(g)$ and the
+inherited entropy bound therefore give root local time coefficient
+\[
+ \beta_{15}^2=
+ \frac{2\sum_{i<j}A_{ij}}{48D_*^2\,15^2}
+ =\frac{32012591492467}{98000000000000}.
+\]
+This is a rigorous uniform support certificate. Unlike the doubled
+eighteen-point symmetric menu, no matching local minimax assertion is
+needed or claimed for the partially doubled menu.
+
+\subsection{Joint selection and its exact storage certificate}
+
+Each stored table corresponds to a subset appearing in one of the three
+binary block trees. Its boundary support $b$ is one on edges crossing
+that subset and zero elsewhere. There are $2r-3=27$ distinct boundary
+supports per root plan. Write $\mathcal B_j$ for this boundary family and
+$B_j(g)=\max_{b\in\mathcal B_j}b\cdot g$. Set $\rho^2=231/200$ and augment every time-support
+family by its scaled boundary supports: use vectors $v/D_*$ and $\rho b$.
+
+The time/time pair bound is the displayed $A_{ij}/D_*^2$. For two boundary
+supports, the unscaled coupled maxima are
+\[
+ \max(\|b\|^2+\|c\|^2+6b\cdot c)
+ =(248,248,248,238,238,238).
+\]
+For each pair these numbers $B_{ij}$ obey
+$231D_*^2B_{ij}\le200A_{ij}$. For a mixed time/boundary pair, define
+\[
+ \Delta=200A_{ij}-200\|v\|^2-231D_*^2\|b\|^2.
+\]
+The independent checker verifies, for both orientations of every plan pair,
+\[
+ \Delta\ge0,\qquad
+ \Delta^2\ge36\cdot200\cdot231D_*^2(v\cdot b)^2.
+\]
+These are exact integer inequalities, and checking the first inequality
+before squaring is essential. They imply
+\[
+ \|v/D_*\|^2+\|\rho b\|^2
+       +6(v/D_*)\cdot(\rho b)\le A_{ij}/D_*^2.
+\]
+All $4374$ boundary/boundary pairs and $37908$ mixed pairs pass.
+The same coupled-pair proof now applies to the augmented families.
+Selecting the plan with smallest joint objective
+$\max\{F_j(g),\rho B_j(g)\}$ bounds both time and $\rho$ times boundary
+storage by $(\beta_{15}+o(1))K$. Hence the storage coefficient is
+\[
+ \sigma_{15}^2=\beta_{15}^2/\rho^2
+ =\frac{32012591492467}{113190000000000}.
+\]
+
+The implemented specification avoids irrational comparisons. For each
+positive integer pair-list product $d_e$, set
+$\widehat g_e=(d_e-1).\mathrm{bit\_length}=\lceil\log_2d_e\rceil$.
+For plan $j$ compute
+\[
+ \widehat T_j=\max_{v\in\mathcal V_j}v\cdot\widehat g,
+ \qquad \widehat B_j=\max_{b\in\mathcal B_j}b\cdot\widehat g,
+\]
+and minimize the integer
+\[
+ \max\{\widehat T_j^2,\;2263800000000\,\widehat B_j^2\}.
+\]
+Since $\rho^2D_*^2=2263800000000$, this selects the least rounded joint
+objective exactly. Every coordinate is rounded upward by less than one;
+the support family and all coefficients are fixed. Thus the selected true
+objective exceeds its exact minimum by at most $O(1)$, a constant additive
+exponent that is negligible on the scale $K$. Empty exact-weight lists
+are skipped before selection. The integer bit lengths are polynomial.
+
+\subsection{The complete fifteen--ten--seven--four schedule}
+
+Assume the common normalized tensor interface, with at most $s$ wires,
+maximum root degree $\lceil s^{1/12}\rceil$, initial precision and
+truncation order at most $s$, and the inherited immutable creation-time
+entry routines. Put $\lambda=\lceil\log_2s\rceil$,
+$B=\lceil6\log_2\lambda\rceil$, $u_d=\lfloor\eta_d\lambda\rfloor$,
+and $a_d=\sum_{j\le d}(u_j+B)$. Use
+\[
+\begin{array}{c|c|c}
+ d&r_d&\eta_d\\\hline
+0&15&567/5000\\
+1&10&87/5000\\
+2&7&407/20000\\
+d\ge3&4&(1443/80000)(63/100)^{d-3}.
+\end{array}
+\]
+At depth one, import the fifth-round weighted ten-group menu, whose
+exact local coefficient is
+\[
+ \beta_{10}^2=\frac{15952347164548384057}{49000000000000000000}.
+\]
+At depth two use the existing punctured affine-seven menu, with
+$\beta_7^2=891/2450$. In the tail use the existing four-group plan with
+$\beta_4^2=13/25$. These are compatible prior ingredients~\cite{pairwise,affinegeometry}, not new claims.
+
+The cumulative leading packet exponents at successive stages are
+\[
+ \frac{567}{5000},\quad \frac{327}{2500},\quad
+ \frac{3023}{20000},\quad \frac{1999}{10000}.
+\]
+All packing gates are strictly below exponent one, as certified by
+\[
+ 450^{567}<2^{5000},\qquad
+ 200^{327}<2^{2500},\qquad
+ 98^{3023}<2^{20000},\qquad
+ 5\frac{1999}{10000}<1.
+\]
+For a stage with alphabet $r$ and cumulative cap $A$, these inequalities
+state $A(1+2\log_2r)<1$. Every original or previously created degree is
+at most $s^{A+o(1)}$ at that stage, because $1/12<567/5000$ and fresh
+degrees are at most twice their creation packet size. The three inherited
+padding gates $QR/M$, $Q^2C\,\mathrm{polylog}(s)/M$, and $2^{a_d}Q^2/M$
+are therefore all controlled by the displayed strict bound. A fixed
+positive gap absorbs all logarithmic factors and guards.
+
+Use relative padding slack $\lambda^{-3}$ and stop at
+$H=\lceil s/\lambda\rceil$. For a noncircular depth argument, consider
+hypothetical tail depths up to $\log_{20/11}\lambda+O(1)$. The least
+taper diverges since $63/100>11/20$; this is also checked as
+$100/63<20/11$. The cumulative guard is $O((\log\lambda)^2)$.
+The strict gates consequently hold uniformly over this hypothetical range,
+and the true tail child ratio is $(1/2+o(1))<11/20$. An active path cannot
+reach beyond the hypothetical limit. This closes the depth bootstrap and
+shows that floors are negligible and padding errors multiply to $1+o(1)$.
+The first three child ratios are respectively $2/15$, $1/5$, and $2/7$,
+up to a $1+o(1)$ factor.
+
+The inherited creation-time precision overhead satisfies
+$p=O(s\lambda^2 2^{a_{d-1}})$. For $i<u_d$,
+$D=2^{a_d-i}\ge2^{a_{d-1}+B+1}$; also $M\ge s/\lambda$ and
+$u_d=O(\lambda)$ at active calls. Thus this overhead is negligible
+relative to $MD/u_d$, with ratio $O(\lambda^4 2^{-B})=o(1)$. All arithmetic bit lengths remain polynomial.
+Original entry work $2^{O(s^{9/10})}$, fresh-entry work
+$\exp(s^{1999/10000+o(1)})$, and direct leaf work
+$2^{O(s/\lambda)}$ are lower order. Creation-time tensor descriptions
+remain frozen. Products of polynomial overheads along $O(\log\lambda)$
+levels add only $O(\lambda\log\lambda)$ to the time exponent.
+
+\subsection{Charging all recursive entries and storage}
+
+For every arity $r$, each group cache has $2(r-1)$ incident directed
+classes. The entropy inequality therefore charges its recursive entries
+with coefficient $\alpha_r=\sqrt{2(r-1)}/r$. Let
+\[
+ \mu_0=1,\quad\mu_1=2/15,\quad\mu_2=2/75,\quad\mu_3=4/525,
+ \qquad K_d^*=\frac{\pi\sqrt2}{\ln2}\frac{\mu_d}{\sqrt{\eta_d}}
+ \quad(0\le d\le3).
+\]
+The tail ratio of successive $K_d$ is
+$\gamma=(1/2)/\sqrt{63/100}=5/\sqrt{63}$.
+Unrolling the paid recurrence gives the maximum of
+\begin{align*}
+ C_0&=\beta_{15}K_0^*,\\
+ C_1&=\alpha_{15}K_0^*+\beta_{10}K_1^*,\\
+ C_2&=\alpha_{15}K_0^*+\alpha_{10}K_1^*+\beta_7K_2^*,\\
+ C_\infty&=\alpha_{15}K_0^*+\alpha_{10}K_1^*
+            +\alpha_7K_2^*+\frac{\alpha_4K_3^*}{1-\gamma}.
+\end{align*}
+Here $\alpha_4/(1-\gamma)>\beta_4$, so the last expression bounds
+every tail aggregation depth as well as the limiting full child-entry
+path to a leaf. Exact rational interval arithmetic gives
+\[
+\begin{array}{c|rrrr}
+\text{Route}&C_0&C_1&C_2&C_\infty\\\hline
+\text{Coefficient}&10.878781667&10.411338011&10.185959328&10.658059532
+\end{array}
+\]
+The displayed decimals are rounded summaries; the checkers enclose each
+coefficient in an exact rational interval of width $10^{-14}$.
+Thus the root dominates. Substituting its exact local coefficient yields
+the stated $C_T$. The strict inequalities also absorb all uniform $o(1)$
+losses in the imported interface.
+
+For space the root uses $\sigma_{15}K_0^*$ by its joint certificate.
+All later stored tables are bounded by their local time costs
+$\beta_{10}K_1^*$, $\beta_7K_2^*$, and $\beta_4K_3^*$, followed by
+geometrically smaller tail terms. The exact checker verifies these are
+strictly below $\sigma_{15}K_0^*$. Live ancestor and descendant tables
+occupy a sum of sizes, so their exponent coefficients take a maximum,
+not a sum. This proves the stated $C_S=C_T\sqrt{200/231}$.
+
+\subsection{Comparison and the scope of the advance}
+
+For a stronger comparison than the printed tables, the audit recomposes
+only existing fifth-round ingredients: cyclic thirteen-group plans with
+the rectangular backend, followed by the existing ten-, seven-, six-,
+and four-group menus~\cite{pairwise,affinegeometry,affinecauchy}. A strict rational schedule gives
+\[
+ C_{\rm prior}=\frac\pi{\ln2}
+ \sqrt{\frac{511416908935241}{82798613625000}}
+ =11.26420175559485\ldots.
+\]
+Its arities are $(13,10,7,6,4)$, its first four taper fractions are
+$2051/20000$, $113/4000$, $407/20000$, and $217/20000$, and its tail starts
+at $14023/1000000$ with ratio $63/100$. The accompanying independent
+checker reconstructs the recomposed cyclic thirteen-group certificate and
+verifies every packing gate and paid branch. The other displayed prior
+local bounds are explicit imported inputs to that comparison.
+
+The new $10.878781\ldots$ coefficient is about $3.42\%$ smaller than
+this stronger old-ingredient composition. This compares certified upper
+bounds, not observed runtimes or lower bounds on previous algorithms.
+The affine orbit exploration checked thirteen representative nonempty
+duplicated-point subsets under the $432$ affine automorphisms. It found
+no stronger completed schedule among the nearby candidates examined;
+it does not establish global optimality over other menus or schedules.
+
+The exponent order is unchanged. Through the independently proved
+occurrence-threshold branching bridge, the low-degree theorem applies to
+3-SAT using the original literal-incidence budget $s=L+1$, with subleading
+branching cost. The prior density-sensitive, generic, and polynomial-space
+branches remain available. No smaller unrestricted $n$-only logarithmic
+order has been established in this iteration.

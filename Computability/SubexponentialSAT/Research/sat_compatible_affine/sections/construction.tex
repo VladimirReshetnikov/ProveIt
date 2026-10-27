@@ -1,0 +1,357 @@
+\section{The exact interface retained from the corpus}\label{sec:interface}
+
+The normalized input is a bipartite Boolean tensor network
+\[
+ Z=\sum_{x\in\bits^E}\prod_{v}T_v(x|_{\delta(v)})
+\]
+with at most \(s\) edges, polynomially many vertices, maximum degree at
+most \(\lceil s^{9/10}\rceil\), and description length \(\mathcal L\).
+Its entries lie in
+\[
+  (\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),\qquad
+  1\le P_0,\ell\le s.
+\]
+Entry evaluation takes \((s+\mathcal L)^{O(1)}2^{O(s^{9/10})}\) time
+and polynomial space. The extension ring, immutable creation-time
+representatives, and exact interpolation conventions are unchanged.
+In particular, canonical lifting is not assumed to preserve ring
+operations \cite{source,asymmetric,pairwise}.
+
+At an active call let \(M\) be the current wire count, \(r\) the fixed
+group alphabet, \(u\) the retained valuation range, and \(L=2^a\) the
+packet length. At a retained valuation \(i<u\) put \(D_i=2^{a-i}\).
+The imported sharpened estimates give working precision
+\[
+ p_t\le(6+o(1))MD_i/u,
+\]
+and child wire count \((2/r+o(1))M\). The full-block Cauchy modes have
+weights \(a+1-i+4j-2\pc(j)\), with at most
+\((2/r^2+o(1))M/D_i\) families per directed pair at each index.
+These are inherited lemmas, not new assertions proved by the finite
+checker \cite{joint,pairwise}.
+
+Fix an exact allocation of the weight budget among directed pairs.
+Let \(\mathcal I_{gh}\) be the finite index list for a pair, skipping
+allocations with an empty list. Its contribution is exactly
+\begin{equation}\label{eq:exactmode}
+ \sum_{\xi_{gh}\in\mathcal I_{gh}}
+       \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}).
+\end{equation}
+Each \(Z_g\) is a real recursive child contraction, not a unit-cost
+oracle. For fixed \(r\), allocations and their bookkeeping contribute
+polynomial factors. Exact knapsack counting and ranking give the
+cardinalities and indices used below.
+
+Write
+\[
+ h_{gh}=\log_2|\mathcal I_{gh}|,\qquad
+ g_{\{g,h\}}=h_{gh}+h_{hg},\qquad
+ K(M,u)=\kappa M/\sqrt u,\quad
+ \kappa=\frac{\pi\sqrt2}{\ln2}.
+\]
+The common-tilt mode estimate implies, for every fixed nonnegative vector
+\(v\) on unordered pairs,
+\begin{equation}\label{eq:entropy}
+ v\cdot g\le
+ \left(\frac{\sqrt2\,\norm v}{r}+o(1)\right)K(M,u).
+\end{equation}
+The \(\sqrt2\) converts directed to unordered pair coordinates. The
+error is uniform over the finite family of support vectors and sums
+used in this paper.
+
+The available asymmetric packing gates, with current side degrees
+\(R,C\) and \(Q=r^a\), are
+\begin{equation}\label{eq:gates}
+ QR/M=o(1),\qquad
+ Q^2C(\log s)^2/M=o(1),\qquad
+ LQ^2/M=o(1).
+\end{equation}
+The retained side stays under the original degree bound; the fresh side
+below the root has degree at most \(2^{a_{\rm previous}+1}\).
+
+\section{A sharper rectangular operation bound}\label{sec:backend}
+
+The cited matrix multiplication result proves
+\(\alpha\ge0.321334\), \(\omega\le2.371552\), and the interior
+rectangular bounds
+\(\omega(1,0.55,1)\le2.066134\) and
+\(\omega(1,0.60,1)\le2.092631\) \cite[Table 1]{matrix}.
+Choose fixed rational values strictly inside the permitted bounds:
+\[
+ \alpha_0=\frac{321333}{10^6},\qquad
+ \omega_0=\frac{2371553}{10^6},\qquad
+ \eps=\frac1{10^6}.
+\]
+There are fixed algorithms of rectangular exponent \(2+\eps\) at aspect
+\(\alpha_0\), exponents \(2.066134+\eps\) and \(2.092631+\eps\)
+at aspects \(0.55\) and \(0.60\), and square exponent \(\omega_0\).
+Every selected exponent has a fixed positive slack above its cited bound.
+We do not claim these matrix multiplication results as new or as the
+latest available matrix multiplication bounds.
+
+Let \(f(k)\) be the line through
+\((11/20,2066135/10^6)\) and \((3/5,2092632/10^6)\).
+Tensor products of the two rectangular algorithms realize every rational
+point of this segment. Put \(c=(\omega_0-1)/2=1371553/2000000\).
+Intersect \(f(k)\) with \(1+c(1+k)\). Exact arithmetic gives
+\[
+ k_*=\frac{59261}{103891},\qquad
+ b_*=\frac{26972100941}{12986375000}
+     =f(k_*)=1+c(1+k_*).
+\]
+Here \(11/20<k_*<3/5\), and \(b_*\) exceeds the interpolated
+\emph{published} table bound by exactly \(\eps\).
+Thus the anchor has a genuine fixed-algorithm interpretation.
+
+For sorted logarithmic dimensions \(x\ge y\ge z\ge0\), define
+\begin{align}
+ d&=1+\eps/2=\frac{2000001}{2000000},\notag\\
+ w&=\frac{b_*-2-\eps}{k_*-\alpha_0}
+     =\frac{7994703637}{25877393297},\notag\\
+ v&=1+\eps-\alpha_0w
+     =\frac{2913557133825647}{3234674162125000},\notag\\
+ c&=\frac{1371553}{2000000}. \label{eq:backendcoeff}
+\end{align}
+In particular \(1>v>c>w>0\). The operation exponent is bounded by
+\begin{equation}\label{eq:rectcost}
+ F(x,y,z)=\max\{d(x+y),\ x+vy+wz,\ x+c(y+z)\}.
+\end{equation}
+
+\begin{lemma}[Rectangular bound]\label{lem:rect}
+Formula~\eqref{eq:rectcost} pays for the matrix operation and its
+input/output arrays, up to polynomial factors.
+\end{lemma}
+\begin{proof}
+If \(y=0\), then \(z=0\) and the bound is immediate. Otherwise put
+\(k=z/y\).
+For \(\alpha_0\le k\le k_*\), tensoring the algorithms at
+\(\alpha_0\) and \(k_*\) gives exponent
+\(2+\eps+w(k-\alpha_0)\) in the balanced outer dimension \(y\).
+Blocking the dimension \(x\) adds \(x-y\), giving \(x+vy+wz\).
+For \(k_*\le k\le1\), the chord from \((k_*,b_*)\) to
+\((1,\omega_0)\) is \(1+c(1+k)\); blocking gives \(x+c(y+z)\).
+Both branches are bounded by the maximum in \eqref{eq:rectcost}.
+Integer roundings of tensor powers affect only fixed factors.
+If \(k<\alpha_0\), padding gives
+\(x+y+\eps y\le d(x+y)\).
+The largest input or output array has exponent at most \(x+y\), covered
+by the first branch. The bilinear tensor symmetries permit sorting the
+three logarithmic dimensions. Because \(1>v>w\) and \(1>c\), each
+branch is the maximum of its coefficient permutations on an unsorted
+triple. No exchange of minima and maxima is needed.
+\end{proof}
+
+We retain the corpus's coordinate/CRT bridge from fixed bilinear algorithms
+over characteristic zero to the coefficient ring: lift coordinates to
+bounded integers, use nonexceptional odd primes, reconstruct exact
+products, and reduce modulo the required power of two. Polynomial rank,
+precision, and logarithms of the dimensions make this a polynomial
+overhead. Fixed bilinear recursions may process one child product at a time,
+with polynomial space overhead relative to the largest input/output array.
+The bridge is an imported implementation lemma \cite{rectangular};
+the finite checker does not execute fast matrix multiplication.
+
+\section{Twelve plans from an affine plane}\label{sec:plans}
+
+Label nine group vertices by \((x,y)\in\F_3^2\), encoded as \(3x+y\),
+and add vertex \(9\). Use the four linear forms
+\[
+ x,\quad y,\quad x+y,\quad x+2y.
+\]
+For each form \(a x+b y\), its three lines are
+\(L_c=\{(x,y):ax+by=c\}\), \(c\in\F_3\).
+For each of the three choices \(k\), make the ordered partition
+\begin{equation}\label{eq:affineplans}
+ (L_k\cup\{9\})\mid L_{c_1}\mid L_{c_2},
+ \qquad c_1<c_2,\quad \{c_1,c_2\}=\{0,1,2\}\setminus\{k\}.
+\end{equation}
+Within each line the integer labels are increasing, and \(9\) is appended
+to its block. This specifies twelve plans, each with block sizes \(4,3,3\).
+Appendix~\ref{sec:plantable} gives the literal lists.
+
+To build a block with ordered list \(B\), split at
+\(\lfloor|B|/2\rfloor\), recursively build its two halves, and merge their
+tables. For a merge with disjoint parts \(A,B\) and outside set \(O\),
+the three index classes are the pairs \(AB,AO,BO\). The final operation
+contracts the three completed block tables.
+There are seven internal merges and one final triangle per plan.
+The singleton tables are computed recursively and charged separately.
+
+\subsection{Integer support vectors}
+
+The sorted cost \eqref{eq:rectcost} is exactly the maximum of twelve linear
+forms on the unsorted triple of dimension logarithms:
+the three permutations of \((d,d,0)\), six of \((1,v,w)\), and three of \((1,c,c)\).
+This follows from the rearrangement inequality.
+The common integer scale is
+\[
+ \mathsf L=51754786594000000.
+\]
+The generating integer triples are
+\begin{equation}\label{eq:integertriples}
+ \mathsf L(d,d,0),\qquad
+ \mathsf L(1,v,w),\qquad
+ \mathsf L(1,c,c),
+\end{equation}
+with exact rational coefficients \eqref{eq:backendcoeff}. Each is integral;
+the checker constructs the scale by least common multiples.
+Assign the coefficient for a class to every unordered group edge in that
+class, and zero to edges within a part. Each plan \(j\) has an indexed menu
+\(\V_j\) of \(8\cdot12=96\) support vectors in
+\(\mathbb Z_{\ge0}^{45}\); repeated vectors, if any, retain their indices.
+Define its logarithmic local cost
+\[
+ F_j(g)=\mathsf L^{-1}\max_{v\in\V_j}v\cdot g.
+\]
+This is the maximum cost of all its matrix operations after the singleton
+caches are available.
+
+\subsection{One consistent choice per plan}
+
+\begin{lemma}[Compatible-support bound]\label{lem:norm}
+For \(q\) fixed plan menus, suppose
+\[
+ \left\|\sum_{j=1}^q v_j\right\|_2^2\le B
+ \quad\hbox{for every }v_j\in\V_j.
+\]
+Selecting the plan of minimum \(F_j(g)\) has local time and space
+exponents at most \((\beta+o(1))K(M,u)\), where
+\[
+ \beta^2=\frac{2B}{\mathsf L^2q^2r^2}.
+\]
+\end{lemma}
+\begin{proof}
+For the given \(g\), choose a maximizing support \(v_j\) from each menu.
+Then
+\[
+ \min_jF_j(g)\le\frac1q\sum_jF_j(g)
+  =\frac1{\mathsf L q}\left(\sum_jv_j\right)\cdot g
+  \le\left(\frac{\sqrt{2B}}{\mathsf L qr}+o(1)\right)K
+\]
+by \eqref{eq:entropy}. Every choice belongs to one fixed finite set, so
+the error bound is uniform. The input/output term in
+\eqref{eq:rectcost} pays for every local table; summing a fixed number
+of table sizes changes only a polynomial factor.
+\end{proof}
+
+The preceding pair certificate upper-bounded this norm by independent
+maxima for each pair of menus. We instead certify its exact global maximum:
+\begin{theorem}[Exact finite affine certificate]\label{thm:finite}
+For the twelve menus specified above,
+\begin{equation}\label{eq:exactmax}
+ \max_{v_j\in\V_j}
+       \left\|\sum_{j=1}^{12}v_j\right\|_2^2
+ =6002555704965940465476145427912572416.
+\end{equation}
+Consequently the value \(\beta^2=B_*\) in
+\eqref{eq:mainconstant} is valid.
+\end{theorem}
+
+\subsection{Proof certificate and its completeness}
+
+We give the mathematical verification rule explicitly. The supplied
+programs instantiate it using integers; their searches are finite proof
+computations, not floating-point estimates of the maximum.
+
+For choices \(v_i,v_j\) define the pair potential
+\[
+ P_{ij}(v_i,v_j)
+ =\norm{v_i}^2+\norm{v_j}^2+2(q-1)v_i\cdot v_j.
+\]
+Expansion gives the exact identity
+\begin{equation}\label{eq:energyidentity}
+ \sum_{i<j}P_{ij}(v_i,v_j)
+ =(q-1)\left\|\sum_i v_i\right\|_2^2.
+\end{equation}
+Every diagonal term occurs \(q-1\) times. For \(q=12\), the comparison
+threshold is eleven times the proposed maximum in \eqref{eq:exactmax}.
+
+Start with all 96 choices in each domain. Given current domains \(D_j\),
+an upper bound for the pair energy conditional on \(v_i=a\) is
+\begin{equation}\label{eq:delete}
+ U_i(a)=
+ \sum_{\substack{j<k\\i\notin\{j,k\}}}
+       \max_{b\in D_j,c\in D_k}P_{jk}(b,c)
+ +\sum_{j\ne i}\max_{b\in D_j}P_{ij}(a,b),
+\end{equation}
+where the last expression is interpreted symmetrically. If this is below
+the threshold, no exceeding tuple can use \(a\). Delete all such choices
+and repeat. Simultaneous deletions are sound: any exceeding tuple uses
+only choices surviving the previous round, and its conditional upper
+bound exceeds the threshold at every coordinate.
+
+After elimination, fix a prefix \(v_1,\ldots,v_d\). Let \(E_d\) be its
+exact internal pair energy, and for each unfixed \(j\) put
+\(u_j(b)=\sum_{i\le d}P_{ij}(v_i,b)\). Then
+\begin{equation}\label{eq:branchupper}
+ U(\text{prefix})=
+ E_d+\sum_{j>d}\max_{b\in D_j}u_j(b)
+       +\sum_{d<j<k}\max_{b\in D_j,c\in D_k}P_{jk}(b,c)
+\end{equation}
+is an upper bound on every completion. If it is at most the threshold,
+the entire branch is certified. Otherwise branch on every remaining
+choice of the next coordinate. The depth is at most twelve.
+An unpruned complete tuple is checked exactly. Induction on the number
+of remaining coordinates proves that successful completion certifies
+every tuple.
+
+Here the scale and triples are \eqref{eq:integertriples}, pair coordinates
+are in lexicographic order, operation traversal is postorder, and the twelve
+triples are sorted lexicographically. These conventions uniquely determine
+support indices. The witness takes index \(88\) in every plan.
+Its directly computed norm equals \eqref{eq:exactmax}, establishing the
+lower inequality. The upper certificate has:
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Certificate quantity & Exact count or value\\
+\midrule
+Support vectors & \(1152\)\\
+Pair choices computed & \(66\cdot96^2=608256\)\\
+Surviving choices & Two domains of \(25\); ten domains of \(21\)\\
+Remaining Cartesian choices covered & \(25^2\,21^{10}\)\\
+Branch-and-bound nodes visited & \(303513\)\\
+Maximum norm witness & All twelve support indices equal \(88\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All remaining branches are certified before depth twelve; the equality
+witness is evaluated separately. Zero complete leaves visited therefore
+does not mean the Cartesian product was ignored.
+The maximum discarded conditional upper bound is
+\[
+ 66006990952377090594705594189055735809,
+\]
+strictly below the threshold
+\[
+ 66028112754625345120237599707038296576.
+\]
+The first checker constructs incremental conditional sums. The independent
+checker reconstructs supports differently and recomputes each prefix
+bound directly. Both use arbitrary-precision integers and explicit
+exception checks. Substitution into Lemma~\ref{lem:norm} gives \(B_*\).
+The equality witness has a compact normalized expression:
+\[
+ B_*=\frac{47+116c+128c^2}{600}
+     =\frac{5835847444309}{18750000000000}.
+\]
+The expression counts the edges in the sum of the twelve final-operation
+supports \((c,1,c)\). Its equality with the integer witness is checked
+exactly; the global upper bound still requires the compatibility certificate.
+
+\subsection{Exact plan selection}
+
+Let \(N_{\{g,h\}}=|\mathcal I_{gh}||\mathcal I_{hg}|\). For plan \(j\)
+compute the integer
+\[
+ Q_j=\max_{v\in\V_j}\prod_e N_e^{v_e}.
+\]
+Minimizing \(Q_j\) is exactly equivalent to minimizing \(F_j(g)\).
+The number of factors and their exponents are fixed constants, and the
+cardinalities have polynomial bit length. This is an exact polynomial-time
+selector; it requires no oracle for comparing logarithms. The large
+denominator makes this a theoretical implementation specification rather
+than a claim of practical efficiency.
+

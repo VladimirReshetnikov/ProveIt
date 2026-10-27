@@ -1,0 +1,138 @@
+\section{A nearly wire-preserving 3-SAT encoding}\label{sec:normalization}
+
+The normalized contractor parameter is a wire count. An application to
+SAT must pay for its actual Boolean network; replacing that parameter by
+the number of variables without a reduction is invalid. This section
+gives a direct, exact normalization with a precise wire formula.
+
+\subsection{Clause and equality tensors}
+
+First delete tautological clauses, repeated literals within a clause,
+and duplicate clauses. An empty clause decides unsatisfiability. A formula
+with no remaining clauses has $2^n$ satisfying assignments. Rename the
+remaining variables by their active indices and record the number $n_u$
+of unused declared variables. These operations preserve the count on
+active variables, with an eventual factor $2^{n_u}$.
+
+For each remaining clause, use its Boolean truth table on its one, two,
+or three occurrence wires. For a variable with $d$ occurrences, an
+equality tensor on the variable side is one exactly when all its ports
+carry the same bit. The direct incidence network has $L$ wires, where
+$L$ is the normalized literal count. It is already exact, but a variable
+of large occurrence may violate the root degree premise.
+
+\begin{theorem}[Bounded-degree equality normalization]\label{thm:equality}
+For any integer $B\ge3$, a normalized 3-CNF with active occurrence
+counts $d_v\ge1$ has a bipartite Boolean network of maximum degree
+at most $B$ and exactly
+\begin{equation}\label{eq:wires}
+ M_B=L+2\sum_v\floor{\frac{(d_v-3)_+}{B-2}}
+ \le L\left(1+\frac2{B-2}\right)
+\end{equation}
+wires. Its contraction is the exact number of satisfying assignments
+on the active variables. Its description and entry queries are
+polynomial-time computable. Unused variables contribute the separate
+factor $2^{n_u}$.
+\end{theorem}
+
+\begin{proof}
+Replace the equality star of variable $v$ by a path of
+\[
+ k_v=\max\left\{1,\ceil{\frac{d_v-2}{B-2}}\right\}
+\]
+equality nodes, all on the variable side. A path with $k_v$ such nodes
+has total external-port capacity
+\[
+ k_vB-2(k_v-1)=k_v(B-2)+2\ge d_v.
+\]
+Assign its $d_v$ occurrence ports along the path without exceeding these
+capacities. Subdivide every path edge by one binary equality node on the
+clause side. Thus the graph stays bipartite. Each subdivision contributes
+two internal wires, so this variable adds $2(k_v-1)$ wires beyond its
+original $d_v$ clause incidences. The identity
+\[
+ k_v-1=\floor{\frac{(d_v-3)_+}{B-2}}
+\]
+gives the exact formula. Summing the elementary upper bound
+$k_v-1\le d_v/(B-2)$ proves its inequality.
+
+Because the equality nodes form a connected tree, an assignment of
+external occurrence bits extends to its internal wires if and only if
+all external bits agree. If it extends, the extension is unique. There
+is therefore neither an unwanted multiplicity nor an extra restriction.
+Summing over occurrence wires counts exactly the satisfying assignments
+of the active formula. Every node has degree at most $B$, and each
+entry query tests either a clause of size at most three or equality of
+at most $B$ supplied bits. Construction and entry evaluation are
+polynomial in the network description.
+\end{proof}
+
+The tree size is optimal within this particular family of degree-$B$
+equality trees with binary subdivisions: any connected tree of $k$
+variable-side equality nodes has only $k(B-2)+2$ available external
+ports. This is a scoped combinatorial observation, not a lower bound
+against arbitrary SAT encodings or tensor factorizations.
+
+\subsection{Application to the low-degree contractor}
+
+Choose
+\[
+ B=\max\{3,\ceil{(\log_2(L+2))^2}\},\qquad s=M_B+1.
+\]
+Then $s=(1+o(1))L$, and $B\le s^{1/12}$ for all sufficiently large
+$L$. Small cases may be evaluated directly. Set the initial precision
+to $P_0=n_a+1$, where $n_a\le L$ is the number of active variables,
+and set $\ell=1$. The true count is at most $2^{n_a}$, so its residue
+modulo $2^{n_a+1}$ uniquely recovers it. In particular $P_0\le s$,
+as required by the interface. Multiply the recovered count by $2^{n_u}$
+to restore unused variables. Writing this binary output costs at most
+a polynomial in the original $n+m$.
+
+All original tensor entries are computable in polynomial time, which is
+stronger than the premise of Theorem~\ref{thm:contractors}. Since
+\[
+ \frac{s}{\sqrt{\log_2s}}=(1+o(1))\frac L{\sqrt{\log_2L}},
+\]
+the low-degree theorem gives Theorem~\ref{thm:sat}. Its decision answer
+is simply whether the exact count is nonzero. With $L\le3m$, monotonicity
+of $x/\sqrt{\log_2x}$ for sufficiently large $x$ gives the displayed
+clause and bounded-density consequences.
+
+\subsection{Comparison and limits of the normalization}
+
+A trivalent equality tree has up to $3L$ wires under the same bipartite
+subdivision convention. Allowing the degree cap to grow slowly makes
+the added internal wires $o(L)$ instead of a constant multiple of $L$.
+The construction is simple, but it is useful because the low-degree
+contractor permits a much larger eventual degree than a constant.
+
+This factor saving should not be presented as an additional factor-three
+improvement over the strongest composition of all earlier ideas.
+The direct-incidence/high-occurrence conditioning method already appears
+in \cite{balanced}. In that method, condition on every variable whose
+original occurrence exceeds $B$. There are at most $L/B$ such variables,
+so it uses at most $2^{L/B}$ branches. Each residual incidence network
+has at most $L$ wires and degree at most $B$; simplify satisfied clauses
+and restore any now-unused variables when counting. With the same
+$B=\Theta(\log^2L)$, the branching exponent is
+$o(L/\sqrt{\log L})$. Its low-degree schedule can use the original
+budget $s=L+1$; a smaller residual need not be treated as a fresh
+instance with an unjustified relative degree bound.
+
+Thus the earlier low-degree contractor already implies a fair leading
+cached benchmark of $13.3796490663\ldots$ per literal. Our new
+$10.3367239856\ldots$ coefficient beats that benchmark. The equality
+encoding offers a single count-preserving network and an exact wire
+formula, avoiding the outer branching construction.
+
+Only original clause and equality tensors have been split. The proof
+does not factor arbitrary derived tensors created by the compressed
+dense-formula reduction. Such tensors may lack an equality-tree
+representation. Consequently this normalization alone does not remove
+the $\log\log n$ factor in the unrestricted variable-based bound.
+
+The supplied compiler implements this construction, validates its degree,
+port and bipartiteness invariants, and provides brute-force semantics for
+small instances. The companion verifier compares exact tensor sums with
+direct formula counts and checks the unique-extension property separately.
+It is a normalization implementation, not the complete asymptotic solver.

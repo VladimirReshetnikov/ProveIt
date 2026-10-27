@@ -1,0 +1,119 @@
+% This is a composition with an existing incidence construction, not a new SAT order.
+\section{A direct and explicit bridge to 3-SAT}
+\label{sec:occurrence-bridge}
+
+The occurrence construction below is already present in
+\texttt{eth\_balanced\_packing/report.tex}, Section 8 (``Consequences
+for SAT and limits of the improvement''), in the paragraph beginning
+``For a concrete occurrence-based application.'' That source fixes
+variables of degree greater than $\lceil(N+1)^{9/10}\rceil$.
+We give the full composition for an arbitrary root-degree promise,
+including a logarithmic threshold~\cite{balanced}. This avoids comparing a new
+contractor only against the weaker all-right equality-tree encoding.
+
+\begin{proposition}[Occurrence-preserving 3-SAT bridge]
+\label{prop:occurrence-bridge}
+Let $F$ be a 3-CNF, let $L$ be its number of literal occurrences after
+removing tautologies and duplicate literals within clauses, and put
+$S=L+1$. Suppose a uniform contraction algorithm on bipartite Boolean
+networks with at most $S$ wires, root precision at most $S$, and
+maximum degree at most $d(S)$ has time bound
+\[
+ (S+\mathcal L)^{O(1)}
+ 2^{(C+o(1))S/\sqrt{\log_2 S}},
+\]
+where $\mathcal L$ is the description length and the $o(1)$ is uniform
+over admissible networks. Let an integer threshold $D(S)$ satisfy
+\[
+ \max\{3,D(S)\}\le d(S),\qquad
+ D(S)/\sqrt{\log_2 S}\longrightarrow\infty.
+\]
+Then 3-SAT decision, and in fact exact counting, has time bound
+\[
+ \operatorname{poly}(n,m)\,
+ 2^{(C+o(1))L/\sqrt{\log_2 L}}.
+\]
+If the contractor uses polynomial space, so does this algorithm.
+If its space coefficient is $C_S$ on the same normalized scale,
+the composed space coefficient remains $C_S$.
+\end{proposition}
+
+\begin{proof}
+An empty clause and a formula with no remaining clauses are handled
+directly. Let $n_0\le L$ be the number of occurring variables. All other
+declared variables contribute a known factor $2^{n-n_0}$ to the count
+and do not affect the decision answer. For each occurring variable $v$,
+let $d_v$ be its original occurrence degree, and set
+\[
+ H=\{v:d_v>D(S)\},\qquad h=|H|.
+\]
+Because the occurrences partition by variable,
+$h(D(S)+1)\le L$. Enumerate all $2^h$ assignments to $H$.
+
+For a branch, use the original variable--clause incidence graph after
+removing just the ports belonging to variables in $H$. Each unfixed
+variable carries the tensor that is one precisely when all its incident
+bits agree. Each clause carries its satisfaction tensor after the fixed
+values have been substituted. Retain every unfixed original incidence,
+even when a fixed literal has already made a clause identically true;
+the latter clause tensor is simply constant one on those ports. An
+isolated clause is a scalar zero or one. Retaining these incidences
+ensures that unfixed variables in already satisfied clauses are still
+counted correctly.
+
+The network is bipartite, has
+\[
+ M=L-\sum_{v\in H}d_v\le L
+\]
+wires, clause degree at most three, and variable degree at most $D(S)$.
+Its equality and clause entries are computable in polynomial time.
+Every assignment to the $n_0-h$ unfixed occurring variables determines
+exactly one incidence assignment with nonzero equality tensors.
+Hence the contraction is exactly the branch's number of satisfying
+assignments.
+
+Use the scalar ring $\mathbb Z/2^{P_0}\mathbb Z$ with
+$P_0=n_0-h+1\le S$. The branch count lies in $[0,2^{n_0-h}]$,
+so its least nonnegative residue determines it exactly. Sum these
+counts in an $(n_0+1)$-bit accumulator, then multiply by the known
+power of two for unused declared variables. The same procedure
+decides satisfiability by testing whether the final count is positive.
+
+The branching exponent obeys
+\[
+ h\le \frac{L}{D(S)+1}
+ =o\!\left(\frac{S}{\sqrt{\log_2 S}}\right).
+\]
+All graphs and entry descriptions have size polynomial in the input.
+Thus multiplying the contractor's time by $2^h$ leaves its leading
+coefficient $C$ unchanged. Finally,
+$S/\sqrt{\log_2 S}=(1+o(1))L/\sqrt{\log_2 L}$.
+Branches are processed sequentially, so only polynomial additional
+storage is needed. This proves both space assertions.
+\end{proof}
+
+Taking $D(S)=\lceil\log_2 S\rceil$ gives logarithmic root degree and
+branching exponent $O(L/\log L)$, which is lower order than the
+contraction exponent. In particular, the bridge meets every fixed
+positive degree-power promise $d(S)=\lceil S^\alpha\rceil$ eventually.
+Alternatively, any fixed $0<\delta<\alpha$ allows
+$D(S)=\lfloor S^\delta\rfloor$. Any degree promise that eventually dominates
+$\lceil\log_2 S\rceil$ can use the logarithmic-threshold version directly;
+one must still verify the degrees of the fresh tensors it creates.
+
+Because $L\le3m$, the occurrence bound implies
+\[
+ \operatorname{poly}(n,m)
+ 2^{(3C+o(1))m/\sqrt{\log_2 m}}.
+\]
+For fixed $D>0$ and $m\le Dn$, it also implies
+\[
+ \operatorname{poly}_D(n,m)
+ 2^{(3DC+o(1))n/\sqrt{\log_2 n}}.
+\]
+The latter statement follows from eventual monotonicity of
+$x/\sqrt{\log_2 x}$ and $L\le3Dn$; unused declared variables create
+no extra wire or precision term. These are explicit upper-bound
+coefficients, not measured SAT speedups. At unrestricted density,
+the occurrence route must be combined with the existing compressed
+reduction; by itself it does not improve the worst-case $n$-only order.

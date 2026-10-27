@@ -1,0 +1,359 @@
+% Standalone section, ready to include in the parent manuscript.
+% Requires amsmath, amssymb, amsthm, hyperref; theorem/lemma/proposition/remark
+% environments may be supplied by the parent.
+\section{An exact rectangular backend from the new characteristic-zero bounds}
+\label{sec:number-field-backend}
+
+The matrix-multiplication input is updated at this pinned OpenAI Math commit:
+\begin{center}\small
+\texttt{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a}.
+\end{center}
+The October~2 preprint \cite{matrix94} \emph{An Upper Bound of $9/4$ for the Matrix
+Multiplication Exponent} proves
+\[
+ \omega_{\mathbb C}\leq\frac94.
+\]
+Its proof bounds the exact-rank exponent, then selects one fixed finite
+exact rank scheme for every positive accuracy. Its final remark explicitly
+places the coefficients in a number field by the Nullstellensatz.
+The September~24 preprint \cite{matrixdual} \emph{Complex Matrix Multiplication Below
+$2.258$ and Rectangular Bounds} proves
+\[
+ \alpha_{\mathbb C}>0.465=\frac{93}{200},
+\]
+and its characteristic-zero dual-bound corollary transfers this statement
+to every characteristic-zero field. We use these two primary results as
+mathematical dependencies; their entire tensor constructions are not
+reproved here. The additional argument below supplies the exact
+bit-complexity and residue-ring interface that the arithmetic statements
+alone do not provide.
+
+Put $\rho=93/200$. Fix a rational accuracy $\varepsilon>0$, independent
+of the SAT instance. In the numerical certificates we take
+$\varepsilon=10^{-5}$. Every constant in this section may depend on this
+one fixed accuracy and on the resulting finite schemes, but not on matrix
+dimensions, entry bit lengths, the SAT input, or a recursion depth.
+
+\subsection{A finite exact scheme is effective}
+
+\begin{lemma}[Effective algebraic schemes]
+\label{lem:effective-algebraic-schemes}
+For every rational $\delta>0$, one can deterministically find a number
+field $K$ and two fixed exact bilinear schemes over $K$ as follows:
+\begin{enumerate}
+\item a square scheme for $u\times u$ multiplication, with $u\geq2$
+and rank budget $r_{\rm sq}<u^{9/4+\delta}$;
+\item a rectangular scheme for the dimensions $(a,b,a)$, with
+$a\geq2$, $1\leq b\leq a$, $b^{200}\geq a^{93}$, and rank budget
+$r_{\rm fl}<a^{2+\delta}$.
+\end{enumerate}
+The search is a finite preprocessing computation depending only on
+$\delta$. No assertion of a practical search time or small scheme is made.
+\end{lemma}
+
+\begin{proof}
+For the square scheme, the exact-rank exponent in the October~2 theorem
+is at most $9/4$, so some fixed $u$ and exact rank budget satisfy the
+strict displayed inequality.
+
+For the rectangular scheme, choose $k>\rho$ with
+$\omega_{\mathbb C}(1,k,1)=2$. Such a $k$ exists by the strict dual bound.
+The exact-rank limit for rectangular matrix multiplication, proved in
+the September~24 paper, supplies arbitrarily large fixed values $t$ and
+exact schemes of dimensions
+\[
+ a=\lceil e^t\rceil,\qquad b=\lceil e^{kt}\rceil,
+ \qquad \log r_{\rm fl}<(2+\delta/2)t.
+\]
+One may take $k<1$, by padding if necessary. For sufficiently large $t$,
+$b\leq a$ and $b^{200}\geq a^{93}$, since $k>93/200$.
+Also $r_{\rm fl}<a^{2+\delta}$. Thus a finite scheme with the required
+integer inequalities exists.
+
+For either specified dimension triple and rank budget, express each
+rank-one term as a product of three linear forms. Equating the
+coefficients with those of the matrix-multiplication tensor gives
+finitely many polynomial equations over $\mathbb Q$:
+\[
+ \sum_{\nu=1}^{r} A_{\nu,i}B_{\nu,j}C_{\nu,k}
+       =T_{ijk}\in\{0,1\}.
+\]
+A complex solution makes this ideal proper. The Nullstellensatz gives
+a solution over $\overline{\mathbb Q}$, whose finitely many coefficients
+lie in a number field. Taking the compositum puts both schemes in one
+number field $K$.
+
+This existence assertion is effective in the elementary, unbounded-search
+sense needed here. Enumerate finite dimension triples, rank budgets,
+number fields specified by irreducible rational polynomials, and rational
+coordinate descriptions of all scheme coefficients. Test the coefficient
+identities exactly in the proposed field and test the rank/shape
+inequalities by integer powers, since $\delta$ and $\rho$ are rational.
+Enumeration by increasing finite description length visits every finite
+candidate. Exact field arithmetic and irreducibility testing over
+$\mathbb Q$ are effective. An algebraic solution described above will
+eventually be visited, so the search terminates. One can instead use
+effective polynomial-system elimination, but no bound for that elimination
+is needed. After this preprocessing, the two schemes are fixed finite
+data in a single algorithm for all input sizes.
+\end{proof}
+
+\subsection{Coefficient growth in the whole recursive algorithm}
+
+\begin{lemma}[Bit cost of a fixed algebraic bilinear recursion]
+\label{lem:height-bridge}
+Fix finitely many exact bilinear matrix schemes with coefficients in a
+number field $K$, and use them by recursive blocking, tensor composition,
+permutation of the three tensor legs, zero padding, and ordinary blocking.
+Suppose every recursion path has length $h$, and let $N$ be the largest matrix dimension.
+For integer input entries of at most $B$ bits, all intermediate number-field
+coordinates can be represented exactly by rational numbers with
+$O(B+h+\log N+1)$ bits in numerator and denominator.
+Consequently each scalar operation of the whole algebraic computation
+costs $(B+h+\log N+1)^{O(1)}$ bit operations. Simulating in a fixed rational basis
+changes the whole arithmetic operation count by a constant factor; it does
+not multiply the rank budget by the field degree at every recursion level.
+\end{lemma}
+
+\begin{proof}
+Choose a rational basis $e_1=1,e_2,\ldots,e_d$ of $K$. The degree $d$ is
+fixed. Write every scheme coefficient in this basis and write the fixed
+structure constants in
+\[
+ e_i e_j=\sum_{k=1}^{d}\mu_{ijk}e_k.
+\]
+Choose an integer $D\geq2$ clearing their finitely many rational
+denominators. Then
+\[
+ \mathcal A=\bigoplus_{i=1}^{d}\mathbb Z[1/D]e_i
+\]
+is a subalgebra of $K$ containing all coefficients. There is a fixed
+constant $C$ bounding all relevant coordinate magnitudes, the number of
+terms in each fixed linear form, and the number of coordinates used in
+one product.
+
+In a recursive bilinear scheme, the operands passed down any branch are
+linear combinations of the original left inputs and, separately, of the
+original right inputs. At one level each coordinate is a fixed linear
+combination of a bounded number of coordinates. After $j$ levels its
+denominator divides $D^{c j}$, and its absolute value is at most
+$C^{c j}2^B$, for a fixed $c$. Thus it has $O(B+j+1)$ bits in rational
+coordinates. This conclusion follows equally by induction with a common
+denominator; reduced fractions are not required.
+
+At a leaf, one multiplies a left linear form by a right linear form.
+The two denominator exponents add and the coordinate structure constants
+add only a fixed amount. The resulting coordinate numerators have
+$O(2B+h+1)$ bits. On the upward path only fixed linear combinations of
+these bilinear values are taken. Each level increases the logarithmic
+magnitude and common-denominator exponent by at most a fixed constant.
+Hence the final bound is $O(B+h+\log N+1)$ throughout.
+
+This argument uses the bilinear structure of the recursion: no sequence
+of repeated squarings of an arbitrary computed value is present.
+Equivalently, each leaf product has degree one in each original operand,
+and every later operation is linear in such products. The exponentially
+large expanded rank decomposition need not be stored or constructed.
+Ordinary block summation adds at most $O(\log N)$ to the bit length, because there are polynomially many summands in $N$. The ordinary recursive implementation already performs the operations
+whose heights were bounded.
+
+A number-field addition or multiplication uses a fixed number of rational
+coordinate operations, because $d$ and its multiplication table are fixed.
+Elementary integer arithmetic and exact rational normalization on
+$O(B+h+\log N+1)$ bits take polynomial time. This simulates each node of the
+already chosen recursion over $K$. It introduces a constant factor per
+executed operation, rather than replacing a rank-$r$ recurrence by a
+rank-$(d r)$ recurrence.
+\end{proof}
+
+In particular $h=O(1+\log N)$ for the fixed schemes on matrices of maximum
+dimension $N$. A depth-first bilinear implementation forms one child
+product at a time, adds it into its parent output, and releases it.
+At each ancestor it retains only a fixed number of input/output-sized
+arrays. Their dimensions decrease geometrically down a nontrivial
+recursion path. Its bit space is therefore a polynomial factor in
+$B+\log N+1$ times the largest input/output array, with a harmless
+additional logarithmic factor if an implementation retains all active
+descriptors.
+
+\subsection{Integer outputs and residue rings, including characteristic two}
+
+\begin{proposition}[Exact lifting to the rings used by the contractor]
+\label{prop:residue-ring-bridge}
+Let $p,\ell,t$ and the bit lengths of all ring data be polynomially
+bounded in a parameter $s$. Let $f\in\mathbb Z[U]$ be monic of degree
+$t$, with polynomially bounded coefficient bit lengths, and put
+\[
+ R=(\mathbb Z/2^p\mathbb Z)[U,V]/(f(U),V^\ell).
+\]
+For matrices over $R$ whose dimension logarithms are polynomially bounded
+in $s$, any backend furnished by Lemma~\ref{lem:effective-algebraic-schemes}
+can be evaluated exactly with only a factor polynomial in $s$ overhead
+over its matrix arithmetic count. The factor's exponent and all scheme
+data are fixed independently of $s$. No denominator is inverted modulo
+$2^p$.
+\end{proposition}
+
+\begin{proof}
+First consider integer matrices. Run the entire fixed recursive algorithm
+over the number field $K$, represented in the rational basis above.
+The bilinear identities hold exactly, so on rational inputs the output
+lies in the one-dimensional rational subspace $\mathbb Q e_1$ and equals
+the ordinary product. On integer inputs it is an integer. All other
+coordinates are exactly zero. Project to the coordinate of $e_1$ and
+perform its final exact rational division. Its denominator divides
+$D^{O(\log N)}$, whose bit length is $O(\log N)$; its numerator and
+denominator have the bit bounds of Lemma~\ref{lem:height-bridge}.
+An exact integer quotient is obtained, not a numerical approximation.
+The integer $D$ may be even. Nothing has been reduced modulo $2^p$
+during this rational computation, so even denominators cause no problem.
+
+For entries in $R$, take the canonical polynomial representatives
+\[
+ \sum_{0\leq i<t,\,0\leq j<\ell} c_{ij}U^iV^j,
+ \qquad 0\leq c_{ij}<2^p.
+\]
+Each coordinate is an integer matrix. Multiply every required pair of
+coordinate matrices by the exact integer procedure, collect equal
+monomials, discard powers $V^j$ with $j\geq\ell$, and reduce the
+$U$-degree using the monic polynomial $f$. Finally reduce integer
+coefficients modulo $2^p$.
+There are at most $(t\ell)^2$ coordinate matrix products, and all
+remaining operations are polynomially many array additions and scalar
+integer operations per entry. Monicity makes polynomial reduction exact
+over the integers, without division by a nonunit. The coefficient growth
+of this finite reduction is polynomial in $s$, since both its degree and
+the coefficient bit lengths of $f$ are polynomially bounded.
+
+The natural map $\mathbb Z[U,V]\to R$ is a ring homomorphism, so this
+procedure gives the required product in $R$. We do not assert that
+canonical lifting from $R$ to integer polynomials is itself a ring
+homomorphism. We only lift the given inputs, compute their polynomial
+product exactly, and then apply the quotient map. This also leaves the
+contractor's immutable creation-precision convention intact.
+
+Here input bit lengths and $\log N$ are polynomial in $s$, so
+Lemma~\ref{lem:height-bridge} and the polynomial number of coordinate
+products prove the claimed overhead. CRT is optional and unnecessary:
+the exact rational/integer route already handles characteristic two,
+including the case in which two divides every natural denominator of
+the chosen algebraic schemes.
+\end{proof}
+
+\subsection{The resulting nine-support rectangular bound}
+
+\begin{theorem}[Updated exact rectangular backend]
+\label{thm:updated-rectangle}
+Let $x\geq y\geq z\geq0$ be the base-two logarithms of three positive
+integer matrix dimensions, in decreasing order. Under the bit-size
+conditions of Proposition~\ref{prop:residue-ring-bridge}, the product can
+be computed exactly in a polynomial factor times $2^{F_\varepsilon(x,y,z)}$
+bit operations, where
+\[
+ F_\varepsilon(x,y,z)=
+ \max\left\{
+ (1+\varepsilon/2)(x+y),\quad
+ x+\left(\frac{335}{428}+\varepsilon\right)y+
+       \frac{50}{107}z
+ \right\}.
+\]
+Its bit space is bounded by a polynomial factor times $2^{x+y}$,
+and hence also by a polynomial factor times $2^{F_\varepsilon(x,y,z)}$.
+For $\varepsilon=10^{-5}$, this is exactly the maximum of the nine linear
+supports obtained by permuting
+\[
+ (1+\varepsilon/2,1+\varepsilon/2,0),\qquad
+ \left(1,\frac{335}{428}+\varepsilon,\frac{50}{107}\right).
+\]
+\end{theorem}
+
+\begin{proof}
+Choose the two schemes with a smaller fixed accuracy, for instance
+$\delta=\varepsilon/4$, so that logarithmic recursion overhead can be
+absorbed into the stated $\varepsilon$ slack. Their coefficient fields
+are combined once, as above. First block the largest dimension down to
+the scale of the middle dimension, paying $2^{x-y+O(1)}$ blocks.
+
+Suppose $z\geq\rho y$. Define
+\[
+ t_0=\frac{y-z}{1-\rho},\qquad
+ t_1=\frac{z-\rho y}{1-\rho}.
+\]
+These are nonnegative, satisfy $t_0+t_1=y$, and decompose the remaining
+shape into a flat shape $(t_0,\rho t_0,t_0)$ and a square shape of
+side exponent $t_1$. Tensor the corresponding fixed recursive schemes.
+Rounding their recursion depths upward changes their large dimensions
+by fixed factors. The flat scheme may have $b>a^\rho$; this only pads
+the smaller dimension and it stays no larger than the large dimensions,
+because $b\leq a$. Thus the largest padded array still has
+$2^{2y+O(1)}$ entries per large-dimension block.
+
+For clarity, the rounded depths can be chosen without an oracle for
+logarithms. If the middle and small dimensions are $n_y,n_z$, choose the
+least nonnegative $h_0,h_1$ satisfying respectively
+\[
+ a^{107h_0}n_z^{200}\geq n_y^{200},\qquad
+ u^{107h_1}n_y^{93}\geq n_z^{200}.
+\]
+These are exactly the upward roundings of $t_0/\log_2 a$ and
+$t_1/\log_2 u$. Fixed-degree integer powers and comparisons determine
+them in polynomial bit time. They guarantee the required dimensions;
+the two rounding errors are bounded constants.
+
+The fixed-scheme cost, with its logarithmic recursion factors absorbed
+by the reserved accuracy, is at most
+\begin{align*}
+ x-y+(2+\varepsilon)t_0+(9/4+\varepsilon)t_1
+ &=x+\left(1-\rho\frac{1/4}{1-\rho}
+                  +\varepsilon\right)y+
+                  \frac{1/4}{1-\rho}z\\
+ &=x+\left(\frac{335}{428}+\varepsilon\right)y+
+                  \frac{50}{107}z.
+\end{align*}
+Here an additive constant in the exponent is absorbed in a fixed
+multiplicative constant. If $z<\rho y$, pad to the flat shape. Its
+exponent is at most $x+y+\varepsilon y$, which is bounded by
+$(1+\varepsilon/2)(x+y)$ because $x\geq y$. These two cases prove the
+time bound. The largest input/output array has logarithmic size $x+y$;
+the depth-first implementation and the integer-ring lifting above give
+the space bound.
+
+The bilinear tensor decomposition can be executed with any of its three
+legs designated as the output. Permuting or transposing the three legs
+therefore supplies every ordering of the dimension triple, with the
+input/output arrays still charged. Finally,
+\[
+ 1>\frac{335}{428}+10^{-5}>\frac{50}{107}>0.
+\]
+The rearrangement inequality says that the largest permutation of the
+second support assigns these three weights to $x,y,z$ in decreasing
+order; the first support has three distinct permutations. Thus the
+support maximum is exactly $F_\varepsilon$, not an uncharged choice of
+an arithmetic algorithm. In particular the full-array branch is retained.
+\end{proof}
+
+\paragraph{What is uniform and what remains asymptotic.}
+The accuracy, schemes, number field, basis, and rational multiplication
+table are fixed before any SAT input. Their effective search can be
+performed once or included as a finite initialization. Matrix sizes and
+entry bit lengths vary; their handling is uniform and deterministic.
+The proof establishes an eventual complexity bound, not a supplied fast
+finite matrix implementation or a practical crossover estimate. In
+particular the enormous unknown fixed search and scheme constants must
+not be described as negligible in measured implementations. They are
+legitimate fixed constants in the asymptotic theorem.
+
+\paragraph{Pinned primary sources.}
+The source files and their blob hashes are:
+\begin{enumerate}
+\item October~2 square theorem and exact-rank/algebraic-coefficient
+remark: \href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/Matrix-Multiplication-Nine-Fourths-October-2-2026/build/paper.tex}{\emph{An Upper Bound of $9/4$ for the Matrix Multiplication Exponent}};
+blob \texttt{4492e66c707b9329f763c46e7cc113ff21d2edc0}.
+\item September~24 strict dual theorem:
+\href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/Complex-Matrix-Multiplication-Below-2.258-and-Rectangular-Bounds-September-24-2026/build/introduction.tex}{\emph{Complex Matrix Multiplication Below $2.258$ and Rectangular Bounds}, introduction};
+blob \texttt{6b5dd1a6ac7f36b8dc046833960735094ca4e73f}.
+\item Same paper, coefficient-equation descent and characteristic-zero
+dual-bound corollary:
+\href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/Complex-Matrix-Multiplication-Below-2.258-and-Rectangular-Bounds-September-24-2026/build/rectangular/08-comparison.tex}{field-transfer section};
+blob \texttt{b7fa963d5e2659639b047e3a7dc179a090acd40a}.
+\end{enumerate}

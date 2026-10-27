@@ -1,0 +1,154 @@
+\section{Inherited exact interface and local evaluation model}
+\label{sec:interface}
+
+The analysis imports the exact deformation and recovery framework of
+the OpenAI manuscript and the reviewed refinements
+\cite{upstream,asymmetric,joint,tree,pairwise,affinejoint}.
+The following are the precise parts used.
+
+At an active call, let $M$ be the wire count, $r$ the fixed group count,
+$u$ the taper range, and $a$ the cumulative packet exponent. Set
+\[
+ \kappa=\frac{\pi\sqrt2}{\ln2},\qquad K(M,u)=\kappa\frac{M}{\sqrt u}.
+\]
+Nearly lossless padding gives child wire count $(2/r+o(1))M$ when the
+packing gates are small. With $Q=r^a$ and current side degrees $R,C$,
+sufficient gates are
+\[
+ QR/M=o(1),\qquad Q^2 C\,\polylog(s)/M=o(1),\qquad
+ 2^aQ^2/M=o(1).
+\]
+Both retained and freshly created degrees must be tracked.
+For a retained valuation $i<u$, put $D=2^{a-i}$. The guarded working
+precision is $(6+o(1))MD/u$. The sharp entropy estimate comes from the
+joint Cauchy weights $a+1-i+4q-2\operatorname{popcount}(q)$ and at most
+$(2+o(1))M/(r^2D)$ families of each mode index for every directed pair.
+
+For an exact allocation of mode-weight budgets, the remaining finite sum is
+\begin{equation}\label{eq:pair-sum}
+ \sum_{\xi_{gh}\in\mathcal I_{gh}}
+       \prod_{g=1}^r Z_g\bigl((\xi_e)_{e\ni g}\bigr).
+\end{equation}
+Empty-list allocations are skipped; the number of allocations is polynomial
+for fixed $r$. Each entry of $Z_g$ is a genuine recursive contraction,
+never a unit-cost oracle. Write
+\[
+ h_{gh}=\log_2|\mathcal I_{gh}|,
+ \qquad g_{\{i,j\}}=h_{ij}+h_{ji}.
+\]
+For every fixed nonnegative directed vector $z$, the inherited inequality is
+\[
+ \sum_{g\ne h}z_{gh}h_{gh}
+ \le (\|z\|_2/r+o(1))K.
+\]
+In particular, a fixed undirected support $v$ satisfies
+\begin{equation}\label{eq:undirected-entropy}
+ v\cdot g\le(\sqrt2\|v\|_2/r+o(1))K.
+\end{equation}
+We use this only for finitely many fixed supports and sums, so the
+uniform error applies. Exact list cardinalities are computed by the
+usual finite unbounded-knapsack recurrence on positive integer weights.
+The budget sizes and cardinality bit lengths are polynomial in $s$.
+The same finite dynamic program supplies rank/unrank operations and
+polynomial-delay enumeration of each mode list; these are inherited
+interface obligations.
+
+The input coefficient ring is
+$(\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell)$ with
+$1\le P_0,\ell\le s$. Ring rank, precision and coordinate bit lengths
+remain polynomial in $s$.
+Original entry routines may take
+$\poly(s+\mathcal L)2^{O(s^{9/10})}$ time and polynomial space;
+the equality and clause entries used for 3-SAT have polynomial-time access.
+Every tensor keeps its immutable creation-time description and the
+canonical representatives fixed at its creation precision. Fresh tensors
+have degree at most twice their creation packet size, and their entry
+cost is bounded by an exponential in that size with polynomial factors.
+
+Each singleton group cache has $2(r-1)$ directed incidence classes,
+so its entries require at most $2^{(\alpha_r+o(1))K}$ child evaluations,
+where $\alpha_r=\sqrt{2(r-1)}/r$. If $\beta_r$ is the selected plan's
+local time coefficient, the complete recurrence is
+\begin{equation}\label{eq:paid-recurrence}
+ T_d\le\poly(s)\left[
+  2^{(\alpha_{r_d}+o(1))K_d}T_{d+1}
+  +2^{(\beta_{r_d}+o(1))K_d}\right].
+\end{equation}
+Local table storage and recursion stack storage are charged separately.
+
+\subsection{The prior rectangular backend}
+
+For sorted axis entropies $x\ge y\ge z\ge0$, use
+\begin{equation}\label{eq:rectangle}
+ F(x,y,z)=\max\left\{(1+\varepsilon/2)(x+y),\quad
+ x+(47/56+\varepsilon)y+(15/28)z\right\},
+ \qquad\varepsilon=10^{-5}.
+\end{equation}
+The input/output-size term is retained. For unsorted axes the cost is
+the maximum of nine linear forms, whose integer coefficient triples after
+multiplication by $D_*=1{,}400{,}000$ are used below. Rearrangement is valid
+because $1\ge47/56+\varepsilon\ge15/28$.
+
+This backend is imported from the reviewed rectangular and weighted-pair
+interfaces~\cite{pairwise}. The field bounds
+$\alpha>3/10$ and $\omega<19/8$ suffice~\cite{matrix}.
+Tensoring a fixed algorithm near the dual-exponent point with a square
+algorithm, then blocking the largest dimension, gives the two branches
+of \eqref{eq:rectangle}, with the fixed slack $\varepsilon$ covering
+the finite algorithm choice. The coordinate/CRT bridge is essential over
+the original finite coefficient rings: expand entries in polynomially
+many integer coordinates, compute over suitable odd prime fields,
+reconstruct bounded integers and reduce into the original ring.
+It does not invert a nonunit there. The backend uses space bounded by a
+polynomial factor times its largest input/output array. These facts are
+imported theory, not implementations supplied by the small algebra tests.
+
+A plan partitions the groups into three ordered blocks. It recursively
+splits each block at the midpoint, multiplies the resulting boundary
+tables, and contracts the final three block tables. Each operation has
+the three edge classes of a tripartition $(A,B,O)$, where $O$ is the
+remaining vertex set. A time support assigns a rectangular coefficient
+to each crossing class and zero inside each part. A stored table has the
+zero--one boundary support of its vertex subset. This includes singleton
+caches, intermediate arrays and final block arrays.
+
+\subsection{The coupled-pair argument}
+
+For four plans, suppose their time-support families obey
+\[
+ \|v\|^2+\|w\|^2+6v\cdot w\le A_{ij}
+ \quad(v\in\mathcal V_i,\ w\in\mathcal V_j,\ i<j).
+\]
+For any choices $v_j\in\mathcal V_j$, the exact identity is
+\[
+ \left\|\frac14\sum_jv_j\right\|^2
+ =\frac1{48}\sum_{i<j}
+       (\|v_i\|^2+\|v_j\|^2+6v_i\cdot v_j)
+ \le\frac1{48}\sum_{i<j}A_{ij}.
+\]
+If $F_j(g)=D_*^{-1}\max_{v\in\mathcal V_j}v\cdot g$, then
+\[
+ \min_jF_j(g)\le\frac14\sum_jF_j(g)
+ =\frac1{4D_*}\max_{v_j\in\mathcal V_j}
+                         \left(\sum_jv_j\right)\cdot g.
+\]
+Together with \eqref{eq:undirected-entropy}, this proves local coefficient
+\[
+ \beta^2=\frac{2\sum_{i<j}A_{ij}}{48D_*^2r^2}.
+\]
+The argument averages supports at the actual allocation and never
+interchanges a minimum and a maximum. Applying it to time families
+augmented by scaled boundary supports gives simultaneous time and storage
+bounds, provided every mixed pair is also certified. These methods are
+prior work~\cite{pairwise,affinejoint}; the finite supports below are new.
+
+For independent reproduction, the inner product of two supports can also
+be computed from their $3\times3$ contingency table. If
+$n_{ab}=|A_a\cap B_b|$ and coefficients on distinct part pairs are
+$c_{ab}$ and $d_{uv}$, the contribution for $a<b$ and $u<v$ is
+\[
+ c_{ab}d_{uv}\bigl(n_{au}n_{bv}+n_{av}n_{bu}\bigr).
+\]
+Summing these nine terms counts every edge crossing both tripartitions
+once. Direct coordinate enumeration in the standalone checkers gives the
+same finite integer quantities without relying on any numerical optimizer.

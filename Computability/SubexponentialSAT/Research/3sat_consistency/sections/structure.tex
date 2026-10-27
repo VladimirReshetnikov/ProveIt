@@ -1,0 +1,275 @@
+\section{Structural limits of two routes to a larger improvement}
+\label{sec:structure}
+
+The new consistency certificate improves a leading contraction coefficient.
+Two tempting ways to improve the logarithmic order are to compress the
+variable information further and to lower the initial tensor degree.
+This section gives precise limits of particular implementations of those
+ideas. None is a lower bound on the running time of 3-SAT.
+
+\subsection{The variable-union pairing has full rank}
+
+In the incidence encoding of the source reduction~\cite{openai}, the
+variable-side tensor depends only on whether a variable appears in a selected
+incidence monomial. If $S$ is its set of touched variables, summing that
+monomial over Boolean assignments gives $2^{n-|S|}$. It is therefore natural
+to ask whether a small algebra can retain just the information needed to
+combine such sets.
+
+\begin{theorem}[A fixed linear summary requires exponential dimension]
+\label{thm:union-rank}
+Let $\mathbb F$ be any field and put
+\[
+ A_n=\mathbb F[x_1,\ldots,x_n]/(x_i^2-x_i:1\le i\le n).
+\]
+For $S\subseteq[n]$, write $e_S=\prod_{i\in S}x_i$, and define the
+linear functional $L:A_n\to\mathbb F$ by $L(e_S)=2^{n-|S|}$, with
+the integer interpreted in $\mathbb F$.
+Suppose $E:A_n\to V$ is linear, $\dim_{\mathbb F}V=d$, and a bilinear
+form $b:V\times V\to\mathbb F$ satisfies
+\[
+ b(E(f),E(g))=L(fg)\qquad(f,g\in A_n).
+\]
+Then $d\ge2^n$.
+\end{theorem}
+
+\begin{proof}
+The squarefree monomials $e_S$ form a basis and satisfy
+$e_Se_T=e_{S\cup T}$. Consequently the matrix of the pairing
+$(f,g)\mapsto L(fg)$, in this basis, is
+\[
+ H_{S,T}=2^{n-|S\cup T|}
+ =\left(\begin{array}{cc}2&1\\1&1\end{array}\right)^{\otimes n}_{S,T}.
+ \tag{U}
+\]
+Order subsets by their binary indicator strings. Each coordinate contributes
+$2$ when both membership bits are zero, and $1$ otherwise, proving the
+Kronecker identity. The one-coordinate matrix has the integer inverse
+\[
+ \left(\begin{array}{rr}1&-1\\-1&2\end{array}\right).
+\]
+Thus $H$ is invertible over every field, including characteristic two, and
+has rank $2^n$. On the other hand, if $Q$ is the matrix of $E$ and $B$
+the matrix of $b$, then $H=Q^{\mathsf T}BQ$ has rank at most $d$.
+\end{proof}
+
+This statement also applies to a linear encoding into a finite-dimensional
+algebra whose multiplication is followed by a linear readout: their
+composition is such a bilinear form. The basis inputs already arise from
+3-CNFs of width at most three, since the conjunction of the positive unit
+clauses indexed by $S$ has satisfaction polynomial $e_S$.
+
+There is an equally direct decision version. For each
+$\alpha\in\{0,1\}^n$, let $F_\alpha$ be the conjunction of unit clauses
+fixing the assignment to $\alpha$. Then
+\[
+ \bigl(\mathbf1_{\SAT(F_\alpha\wedge F_\beta)}\bigr)_{\alpha,\beta}
+ =I_{2^n}.
+\]
+Any fixed $d$-dimensional summaries whose conjunction decision is obtained
+by a bilinear form over a field therefore require $d\ge2^n$, whether or not
+the summary assignment is linear.
+
+These are constraints on a fixed compositional representation. They do not
+exclude adaptive restrictions, special reachable families, nonlinear
+evaluation, or another summation method. In particular, they do not show
+that the actual sparse parity-query family needs all $2^n$ dimensions.
+They explain why merely identifying incidence subsets with variable unions
+does not by itself supply the missing efficient algorithm.
+
+\subsection{Budget-aware counting in the existing grouping reduction}
+
+The source groups tests and variables separately into
+$J=\lceil n^{1/4}\rceil$ groups~\cite{openai}. Increasing $J$ to nearly
+$\sqrt n$ is already present in the corpus: the recursive refinement uses
+$J=\lceil n^{0.495}\rceil$~\cite{recursive}, and the high-moment packet uses
+$J=\lceil\sqrt n/\lceil\log_2n\rceil^2\rceil$~\cite{highmoment}.
+The latter explicitly obtains initial degree
+$\sqrt n\,\operatorname{polylog}(n)$. We credit that result; the refinement
+below concerns its array-counting overhead.
+
+Consider the source's sparse-query interface with degree at most three,
+$a\le cn$ tests and at most $\lambda^c$ monomials per test, for fixed $c$,
+where $\lambda=\lceil\log_2n\rceil$. After its high-incidence branching,
+each test has at most $3\lambda^c$ incident variables, each free variable
+has $O_c(\lambda^{c+1/2})$ incidences, and the number of branches is at most
+$2^{n/\sqrt\lambda}$. The retained incidence-degree bound is
+$K=3(a+2n)=O_c(n)$.
+
+Partition both sides into $J$ groups balanced in cardinality. Let
+$N_{gh}$ be the incidence count for a group pair, let
+$N=\sum_{g,h}N_{gh}$, and let $B$ count the nonempty pairs.
+Thus $B\le J^2$ and $N=O_c(n\lambda^c)$. The enumerated arrays satisfy
+\[
+ 0\le d_{gh}\le N_{gh},\qquad \sum_{g,h}d_{gh}\le K.
+\]
+
+\begin{lemma}[Array and wire budgets]
+\label{lem:array-budget}
+The number $R$ of such arrays satisfies
+\[
+ R\le\min\left\{(K+1)^B,\ \binom{K+B}{B},\
+                   \prod_{N_{gh}>0}(N_{gh}+1)\right\}.
+ \tag{A}
+\]
+For each array the source's subset-index encoding has wire count $M$ and
+initial maximum degree $\Delta_0$ satisfying
+\begin{align*}
+ M&\le B+\log_2\binom{N+K}{K},\qquad M\le N,\\
+ \Delta_0&=O_c\bigl((n/J+1)\lambda^{c+1/2}\bigr).
+\end{align*}
+Its local-entry evaluation still takes
+$\operatorname{poly}(n)2^{\lambda^{O_c(1)}}$ time and polynomial space.
+\end{lemma}
+
+\begin{proof}
+The three bounds in (A) respectively discard the sum constraint, discard
+the individual capacities and count weak compositions of a sum at most
+$K$, and discard only the sum constraint while retaining the capacities.
+For a fixed array, pair $(g,h)$ uses
+$\lceil\log_2\binom{N_{gh}}{d_{gh}}\rceil$ wires. Their product of subset
+counts is bounded by the number of monomials of total degree at most $K$
+in $N$ indeterminates, namely $\binom{N+K}{K}$. Summing the rounding errors
+gives the first wire bound. The inequality
+$\lceil\log_2\binom{t}{j}\rceil\le t$ gives the second.
+
+A group vertex has degree at most its incidence count; combine the balanced
+group sizes with the test and variable incidence bounds. A test-group entry
+is a product of independent per-test coefficients. Each is evaluated by the
+source's finite-difference formula on one polylogarithmic scope.
+The times for these evaluations add; they do not multiply. The
+variable-group entry is the power of two recording untouched variables.
+Subset decoding, ring arithmetic and all descriptions have polynomial size.
+\end{proof}
+
+The composition count improves the allowable polylogarithmic choice of $J$.
+For $J\asymp\sqrt n/\lambda^A$ with fixed $A>0$, it gives
+\[
+ \log_2R
+ \le B\log_2\!\left(\frac{\mathrm e(K+B)}B\right)
+ =O_c\!\left(\frac{n\log\lambda}{\lambda^{2A}}\right).
+\]
+Hence $A>1/4$ suffices for $o(n/\sqrt\lambda)$ overhead; the crude
+$(K+1)^{J^2}$ estimate would require $A>3/4$.
+
+For an exact integer choice, put $\nu=\lceil\log_2\lambda\rceil$ and take
+\[
+ J=\max\{j\in\mathbb Z_{\ge0}:
+               j^2\lceil\sqrt\lambda\rceil\nu^2\le n\}.
+\]
+Treat the finite range with $J<1$ directly. Then
+\[
+ J=\Theta\!\left(\frac{\sqrt n}{\lambda^{1/4}\nu}\right),\quad
+ \log_2R=O_c\!\left(\frac n{\sqrt\lambda\,\nu}\right),\quad
+ \Delta_0=O_c(\sqrt n\,\lambda^{c+3/4}\nu).
+\]
+The wire bound remains $O_c(n\nu)$, and $B=o(n)$.
+Arrays can be generated by a depth-first search with a remaining-degree
+counter, using polynomial work per array and polynomial space.
+The extra exponent outside contraction is
+$O(n/\sqrt\lambda)+O_c(n/(\sqrt\lambda\,\nu))$, including the original
+high-incidence branching.
+
+Thus the improvement is in polylogarithmic slack, while the initial degree
+exponent remains $1/2$. A schedule accepting
+$s^{1/2}(\log s)^{O(1)}$ degrees may use that bound directly. A theorem
+requiring exactly $\Delta_0\le s^\gamma$ may instead use any fixed
+$\gamma>1/2$, unless its parameter construction explicitly absorbs the
+polylogarithmic factor. The high-moment packet supplies such an integer
+budget~\cite{highmoment}. This reasoning does not establish the stronger
+degree promise $s^{1/12}$ for arbitrary-density queries.
+
+\subsection{Small groups can force exponentially many degree arrays}
+
+The next result strengthens the warning against simply choosing many more
+groups. Its quantifiers allow the partition to be chosen after seeing the
+graph.
+
+\begin{theorem}[A graph-adaptive grouping obstruction]
+\label{thm:group-obstruction}
+Fix $0<\delta<1/2$ and an integer $d$ with
+$d(1-2\delta)>3$. For every sufficiently large $n$ there exists a bipartite
+graph with $n$ vertices on each side and maximum degree at most $d$ such
+that every partition of each side into groups of size at most $n^\delta$
+has more than $n$ nonempty group pairs.
+\end{theorem}
+
+\begin{proof}
+An ordered $d$-tuple of permutations of $[n]$ specifies $d$ perfect
+matchings. Forget the colors and repeated edges; the resulting simple
+graph has maximum degree at most $d$. There are
+\[
+ (n!)^d=\exp(dn\ln n+O_d(n))
+\]
+tuples. We upper-bound the tuples whose graph has a prohibited partition.
+
+Label groups by numbers in $[n]$. There are at most $n^{2n}$ pairs of
+labeled partitions. A support of at most $n$ group pairs can be chosen in
+at most
+\[
+ (n+1)\binom{n^2}{n}=\exp(n\ln n+O(n))
+\]
+ways. If groups have size at most $q=\lfloor n^\delta\rfloor$, this support
+allows at most $Q=nq^2\le n^{1+2\delta}$ individual vertex pairs.
+
+The projected graph has at most $dn$ distinct edges. Its edge set has at
+most
+\[
+ \sum_{t=0}^{dn}\binom Qt
+ \le\binom{Q+dn}{dn}
+ =\exp(2d\delta n\ln n+O_d(n))
+\]
+possibilities. The inequality follows by representing a subset of size at
+most $dn$ as a multiset of size exactly $dn$ after adjoining a dummy
+element. For a fixed graph of maximum degree at most $d$, at most
+$d^{dn}$ permutation tuples project to it: at each left vertex each color
+chooses one of at most $d$ neighbors. The permutation requirement only
+reduces that count.
+
+Multiplying these bounds gives
+$\exp((3+2d\delta)n\ln n+O_d(n))$ bad tuples. This is less than
+$(n!)^d$ for large $n$ by the assumed strict inequality. Some tuple
+therefore gives a graph with the stated property.
+\end{proof}
+
+\begin{corollary}[The total-degree constraint does not remove this cost]
+\label{cor:array-obstruction}
+For the graphs in Theorem~\ref{thm:group-obstruction}, every permitted
+grouping has at least $2^n$ valid degree arrays whenever $K\ge n$.
+\end{corollary}
+\begin{proof}
+Choose any $n$ nonempty group pairs, assign $d_{gh}\in\{0,1\}$
+independently on them, and assign zero elsewhere. All capacities are
+respected and the total is at most $n$.
+\end{proof}
+
+For example, $\delta=1/10$ and $d=4$ satisfy the strict inequality.
+Group sizes $n^{1/12}\operatorname{polylog}(n)$ are eventually at most
+$n^{1/10}$. The result therefore blocks a direct attempt to obtain the
+$s^{1/12}$ promise by uniformly shrinking all groups while continuing to
+enumerate the same arrays.
+
+The graphs fit the generic sparse-query interface: take one polynomial
+per left vertex equal, over $\mathbb F_2$, to the sum of its neighboring
+variables. These have degree one and scopes of size at most $d$, so there
+is no high-incidence branching and $K\ge n$. This example is easy by
+Gaussian elimination. Its role is precisely to show that the literal
+outer enumeration can be expensive even on easy inputs unless further
+algebraic structure is used.
+
+Finally, small group cardinality is a \emph{sufficient} way of guaranteeing
+small encoded degree, not a necessary one. A specific array with
+$d_{gh}=0$ or $N_{gh}$ can have zero wires on that pair even when the group
+is large. The theorem neither rules out exploiting these cases nor
+lower-bounds the number of arrays with nonzero coefficient. It rules out
+only the stated combination of uniformly small groups and exhaustive
+enumeration of combinatorially allowed arrays.
+
+The accompanying \texttt{check\_structures.py} verifies the integer
+Kronecker inverse, its reductions in characteristic two and odd
+characteristics, direct small Boolean counts, and capacity-constrained
+array counts against independent exhaustive enumeration. Deliberately
+corrupted matrices and counts must be rejected. These checks support the
+finite identities; the quantified graph obstruction follows from the
+proof above.
+

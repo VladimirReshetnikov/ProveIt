@@ -1,0 +1,127 @@
+\section{Review cutoff and the actual comparison frontier}
+\label{sec:review}
+
+The mathematical review began at ProveIt commit
+\texttt{73dfb5e5ab6e91bd7375e5b97ef85d7e1cc8e81d}: twenty placed
+refinement packets and nine archives in \path{docs/incoming}. The closing
+review includes commit \pin. In the intervening two commits, the nine
+archives were filed under the project and the supplied Anthropic
+formalization was linked. There are now twenty-nine placed refinement
+packets; \path{docs/incoming} contains only its README.
+
+We compared all 443 newly placed files to their archive members using Git
+blob hashes: all were byte-identical. The placement omits 85 members
+(the commit describes 84 duplicate source/evidence copies and one checksum
+ledger). No changed mathematical source was found among the placed files.
+The closing README now reports the same best bounds independently found
+in our archive review: $46.18485$ in polynomial space and $30.89102$ cached.
+The source and archive hashes, closing commit metadata and per-file
+relocation check are recorded in the provenance ledger. We also inspect the
+user-supplied Anthropic commit
+\texttt{1a6eee293b9e00cb432eef6018a21f523623a9af} in pull request 31.
+No remote repository changes were made.
+
+\subsection{Relevant recent commits}
+
+\begin{center}\small
+\begin{tabular}{p{3.0cm}p{10.8cm}}
+\toprule Commit & Relevant change\\\midrule
+\texttt{2b925d8800} & Creates the consolidated SAT project and places seven first-round packets.\\
+\texttt{3e09608991} & Vendors the OpenAI preprint, pinned at \texttt{7ef5c0cc5c}.\\
+\texttt{45233238ae} & Records the initial distinction between density improvements, exponent constants, and unproved stronger-order proposals.\\
+\texttt{6d3adc4506} & Places eight second-round packets, including asymmetric packing and the full-Cauchy mode construction.\\
+\texttt{450252e9d8} & Places five third-round packets; the displayed generic polynomial-space coefficient reaches $55.70948$, cached time $35.35459$.\\
+\texttt{b9941a7396} & Adds the nine newly reviewed archives. The actual displayed frontier becomes $46.18485$ in polynomial space and $30.89102$ cached.\\
+\texttt{73dfb5e5ab} & Initial review snapshot containing both requested paths and all nine arrivals.\\
+\texttt{a7ae5ab55f} & Places the same nine archives under Research and updates the frontier table.\\
+\texttt{7de9d09fec} & Closing snapshot: links the published Anthropic Lean development.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The closing review date is October 27, 2026 UTC. Repository author dates
+use Pacific time and show October 26 for these same commits. All claims
+are scoped to the pinned revisions, rather than later changes.
+
+\subsection{Inventory of the twenty placed packets}
+
+``PS'' below means polynomial space. Numerical coefficients refer to the
+generic normalized-wire interface unless the row explicitly states a
+stronger degree premise. The table reports the packets' claims, with
+their imported dependencies retained; it is not a certification of every
+proof in every packet.
+
+\begin{longtable}{p{5.0cm}p{8.8cm}}
+\toprule Packet & Relevant strongest contribution\\\midrule
+\endfirsthead
+\toprule Packet & Relevant strongest contribution\\\midrule
+\endhead
+\bottomrule\endfoot
+\path{cauchy_mode_improvement} & Factorial Cauchy weights with slope three; the logarithmic order is unchanged.\\
+\path{eth_contraction_improvements} & Sharper Hermite counts, streamed extraction, and PS coefficient $648.44$.\\
+\path{3sat_precision_refinement} & Leading precision $6MD/u$ and taper minimax; an $s/\log s$ summation interface remains unproved.\\
+\path{sat_density_improvement} & Density-sensitive envelope \eqref{eq:sat-envelope}; an actual order gain at intermediate density.\\
+\path{eth_density_refinement} & Independent density-sensitive improvement and precision savings.\\
+\path{3sat_refinement} & Scalar parity lift; a compact second-contraction factorization is missing.\\
+\path{3sat_asymptotic_analysis} & Restricted precision, degree, and rank-encoding barriers; no smaller unrestricted order.\\
+\path{eth_asymmetric_packet_balancing} & Nearly lossless asymmetric packing; generic PS $76.909$.\\
+\path{3sat_round2_refinement} & Generic PS $84.066$, actual-domain rank audit, and review of the alternate manuscript.\\
+\path{eth_balanced_packing} & Balanced whole-vertex labels, thin precision guard; PS $94.748$.\\
+\path{eth_high_moment} & Independent PS $94.748$; stronger low-degree bounds.\\
+\path{eth_matching_refinement} & Another PS $94.748$ derivation using a matching potential.\\
+\path{eth_packet_refinement} & Pair-load and guard improvements; PS $95.664$.\\
+\path{eth_recursive_refinement} & Refined residue-class modes; PS $133.207$.\\
+\path{eth_joint_cauchy} & Full-block slope-four modes; its ingredients are stronger when composed with later packing.\\
+\path{sat_adaptive_contraction} & PS $55.70948$; cached $36.75031/34.02418$; additional low-degree branches.\\
+\path{sat_frontier_improvements} & Variable arity; PS $63.857$, cached $38.484/34.275$.\\
+\path{subexponential_sat_frontier} & PS $63.852$, cached $37.930/33.623$; exact labeling and precision-peeling kernels.\\
+\path{subsat_contraction_tree} & Paid recursive group tables and an exact ring bridge to fast matrix multiplication; cached $35.35459/34.27480$.\\
+\path{subexponential_sat_kernel_improvements} & Actual-domain Smith separation, coefficient-extraction kernels, and compatible coefficient compositions.\\
+\end{longtable}
+
+\subsection{The nine new archives}
+
+The names below omit only the date suffix and extension. These archives
+were safely extracted and their report sources, relevant proofs, status
+files and supplied computational evidence were inspected as source data.
+Their old benchmark receipts are not measurements made in this session.
+
+\begin{longtable}{p{5.0cm}p{8.8cm}}
+\toprule Incoming packet & Claimed generic coefficients and substantive change\\\midrule
+\endfirsthead
+\toprule Incoming packet & Claimed generic coefficients and substantive change\\\midrule
+\endhead
+\bottomrule\endfoot
+\path{3sat_round3_frontier} & PS $63.75736$; cached $37.93011/33.62304$; useful specialized degree and kernel refinements.\\
+\path{ETH_Adaptive_Exact_Kernels} & PS $55.33162$; cached $35.07061/33.99950$; sparse scoring and fused Cauchy transitions.\\
+\path{eth_adaptive_schedules} & PS $63.78117$; cached $37.59170/33.62304$; exact incremental packing.\\
+\path{sat_adaptive_bounds} & \textbf{PS $46.18485$}, from complete binary linear flags; cached $34.32528/34.02418$.\\
+\path{sat_adaptive_frontier} & PS $50.30469$; joint cached $31.25240$ time and space; conserved degree-flow identity, with the entry-evaluation gap retained.\\
+\path{sat_adaptive_matrix_partition} & PS $50.21043$; cached $34.32528/34.02418$; adaptive partition and separator-tree selection.\\
+\path{sat_adaptive_tree_certificate} & \textbf{Cached $30.89102/30.75391$}, from three-plan support averaging and a paid $9\to13\to7$ schedule.\\
+\path{subexponential_sat_adaptive_four} & PS $50.39373$; cached $32.91581/31.66171$, or $32.85635/31.46748$ with its optional backend; a sharp four-block inequality.\\
+\path{subsat_rectangular} & PS $53.97753$; cached $33.99389/33.99372$; genuine rectangular multiplication and a stronger asymmetric-Hermite barrier.\\
+\end{longtable}
+
+Thus the comparison must use $46.18485$ and $30.89102$, not the earlier
+$55.70948$ and $35.35459$. The new cached methods in this report are
+additional branches of a portfolio. The linear-flag PS algorithm and
+every stronger-assumption low-degree method remain applicable.
+
+\subsection{Orders, constants, and unresolved targets}
+
+No new incoming packet supplies a proved smaller unrestricted logarithmic
+order. At fixed density the common order is $n/\sqrt{\log n}$; in the
+worst case it is $n\log\log n/\sqrt{\log n}$. At
+$m=\Theta(n\log\log n)$, the density-sensitive construction improves the
+numerator to $n\log\log\log n$. This genuine order improvement was
+already present in the first round and is not a new result here.
+
+The strongest smaller-order targets still require an unproved algorithmic
+interface, notably the structured summation in
+\path{3sat_precision_refinement}. A numerical coefficient cannot dominate
+an unproved $n/\log n$ target as though it were an implemented algorithm.
+Likewise, the independent Anthropic theorem has an unspecified big-$O$
+constant in its machine model. It is not numerically comparable with a
+coefficient per normalized Cauchy wire. Section~\ref{sec:formal} gives the
+updated public formalization status.

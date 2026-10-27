@@ -1,0 +1,270 @@
+% An input fragment. The enclosing article supplies amsmath/amssymb/hyperref.
+\section{A modular criterion for improving the crossing method}
+\label{sec:modular-rank-criterion}
+
+The new research direction is to study the ranks of the completed
+Heisenberg crossing pieces, after their locality cancellations, rather
+than the dimensions of the intermediate Fock spaces in the displayed
+factorizations. The following compiler is exact. The asymptotic rank
+estimate that would give a better SAT exponent remains open.
+
+The source is Appendix A, Definition 7 and Theorem A, and Appendix B,
+equations (53)--(56), of
+\href{https://github.com/anthropics/formal-math/blob/1a6eee293b9e00cb432eef6018a21f523623a9af/eth/paper.pdf}
+{Anthropic's manuscript at commit \texttt{1a6eee293b9e00cb432eef6018a21f523623a9af}}.
+Its two factorizations have combined index length at most
+$2\sqrt2\lambda+O(\log\lambda)$, corresponding to
+$\rho=1/\sqrt2$ in its recurrence. These are upper bounds on the
+actual matrix ranks. The earlier ProveIt Heisenberg entropy obstruction
+concerns changing the graded representation while retaining its
+operators. It does not prove that these completed-piece ranks attain
+their displayed factor dimensions.
+
+\subsection{Exact rank compilation over a prime field}
+
+\paragraph{Lemma.}
+Let $N=2^\lambda$, $\lambda\ge1$. Suppose polynomially many integer
+arrays $A_i:\{0,\ldots,N-1\}^4\to\mathbb Z$ satisfy
+\begin{equation}\label{eq:modular-crossing-identity}
+ \sum_i A_i(x,y,u,v)=d_\lambda[x=v][y=u].
+\end{equation}
+Their entries have polynomial bit length in $\lambda$ and can be
+computed in $2^{O(\lambda)}$ bit operations. For a prime
+$p\nmid d_\lambda$, let $r_i(p)$ and $c_i(p)$ be the ranks over
+$\mathbb F_p$ of the flattenings
+\[
+ R_i[(x,y),(u,v)]=A_i(x,y,u,v),\qquad
+ C_i[(x,u),(y,v)]=A_i(x,y,u,v).
+\]
+Then $A_i\bmod p$ has exact factorizations through respectively
+\[
+ b_i^{\rm row}(p)=\left\lceil\log_2\max\{1,r_i(p)\}\right\rceil,
+ \qquad
+ b_i^{\rm col}(p)=\left\lceil\log_2\max\{1,c_i(p)\}\right\rceil
+\]
+Boolean bits. The factors can be constructed and verified in
+$2^{O(\lambda)}\operatorname{poly}(\log p)$ bit operations and space,
+with every scalar represented by an integer in $[0,p-1]$.
+
+\paragraph{Proof.}
+Each flattening has order $D=N^2$. Perform Gaussian elimination over
+$\mathbb F_p$, obtaining a reduced echelon form of rank $r$. Let $J$
+be its pivot columns, let $U$ be the original matrix restricted to
+those columns, and let $V$ be the nonzero rows of the echelon form.
+The pivot columns of $V$ form the identity. Since row operations
+preserve column relations, every original column is the combination
+of the columns of $U$ with coefficients in its column of $V$.
+Thus $M=UV$, and the columns of $U$ are independent. Pad the inner
+index to the next power of two by zero summands. For $r=0$, use one
+identically zero summand and no index bits. Apply this construction
+to both flattenings.
+
+Elimination uses $O(D^3)=O(2^{6\lambda})$ field operations and
+$O(D^2)$ field elements of storage. Field arithmetic has bit cost
+polynomial in $\log p$. Generating all entries and multiplying the
+factors back both fit $2^{O(\lambda)}\operatorname{poly}(\log p)$.
+Reduction modulo $p$ preserves
+\eqref{eq:modular-crossing-identity}, and $d_\lambda$ is invertible.
+This proves the lemma.\hfill$\square$
+
+\paragraph{The coefficient-height issue.}
+Rational elimination does not automatically meet the source's
+polynomial bit-length requirement. For $B$-bit entries, a generic
+minor determinant of order $D$ has the Hadamard bound
+$O(D(B+\log D))=2^{O(\lambda)}$ bits. This is an upper bound,
+not a claim that every factorization requires such large coefficients.
+It shows that a rational factorization needs an additional height
+argument. The modular compiler avoids that obligation: every factor
+entry has at most $\lceil\log_2p\rceil$ bits.
+
+The compiler stores exponentially many elements in $\lambda$.
+It is not a polynomial-space procedure in that parameter, and no
+polynomial-space SAT consequence is claimed here.
+
+\subsection{The stronger uniform rank theorem still needed}
+
+For the source pieces $d_\lambda=h!$, with $h=O(\lambda^2)$. Write
+$q_i(\lambda,p)=b_i^{\rm row}(p)+b_i^{\rm col}(p)$. A sufficient
+new result would be a fixed
+$1/2\le\rho<1/\sqrt2$ and constant $C$ such that
+\begin{equation}\label{eq:modular-stronger-rank-goal}
+ q_i(\lambda,p)\le4\rho\lambda+C\log_2(2\lambda)
+\end{equation}
+uniformly for every piece, every parameter used by the recursion,
+and sufficiently many primes to reconstruct the answer.
+The number of original pieces must remain polynomial in $\lambda$.
+The compiler does not replace them by exponentially many pieces.
+
+A uniform bound on the two ranks over $\mathbb Q$ would automatically
+establish the same modular upper bound at every prime. Indeed, for an
+integer matrix $M$, every minor of order greater than
+$\operatorname{rank}_{\mathbb Q}M$ is the zero integer, so
+\[
+ \operatorname{rank}_{\mathbb F_p}(M\bmod p)
+ \le \operatorname{rank}_{\mathbb Q}M.
+\]
+Thus one may prove a rational-rank theorem but construct its factors
+modulo primes, avoiding rational coefficient-height issues. The
+converse inference from one favorable prime is invalid.
+
+For example, the concrete rational-rank product target
+\[
+ \max\{1,\operatorname{rank}_{\mathbb Q}R_i\}
+ \max\{1,\operatorname{rank}_{\mathbb Q}C_i\}
+ \le 2^{(8/3)\lambda}\lambda^{O(1)}
+\]
+would give $\rho=2/3$, since the two ceilings add at most two bits.
+Its denominator power would be
+$\log_2(3/2)=0.5849625\ldots>1/2$. This is a concrete intermediate
+target below the source rank-product exponent $2\sqrt2$, and is
+also unproved.
+
+\paragraph{The necessary signed-integer bridge.}
+Appendix D's truncated parity expansion, Lemma 12 and equations
+(64)--(65), is valid modulo powers of two. It cannot simply be
+reinterpreted modulo odd primes. Instead, use modular contractions
+to reconstruct every requested \emph{integer} clique or network value
+exactly, then perform Appendix D's original reductions modulo
+$2^\beta$ or $2^{n+1}$ and its exact rational potential comparisons.
+This is the integer-value interface in equation (57) and Step 4.
+
+For a Boolean network with $D$ wire bits and vertex entries bounded
+by $|W_v|<2^{B_v}$, its integer contraction satisfies
+\begin{equation}\label{eq:modular-signed-height}
+ |Z|\le2^E,\qquad E=D+\sum_vB_v.
+\end{equation}
+There are $2^D$ summands, each a product of the indicated entries,
+so the triangle inequality proves this bound. A CRT modulus larger
+than $2^{E+1}$ therefore recovers $Z$ uniquely as the representative
+in $(-P/2,P/2]$. For a $(K,\lambda)$ clique with a uniform table
+bound $B$, one may take
+\[
+ E=\binom K2\lambda+KB.
+\]
+For the cliques requested by Appendix D Step 4, substitute its
+$L\le gP+1$ and $B'=\lceil2gP/K\rceil+g^2B$; these quantities
+are polynomial in $n$, so $E=\binom K2L+KB'$ is polynomial as well.
+Only each integer value requested by the outer reduction needs
+reconstruction. Values internal to its modular contraction need
+not be reconstructed individually.
+
+Here is an explicit formulation of the prime requirement. Let $S$
+be an input-size parameter at least the encoding length and $n+2$,
+and suppose the source cost analysis provides
+polynomial caps $\Lambda(S)$ and $H(S)$ on all $\lambda$ and $h$
+used in a run, and a polynomial cap $E_{\max}(S)$ on
+\eqref{eq:modular-signed-height} for the integer values requested
+by the outer reduction. There must be a polynomial-time constructible list
+$\mathcal P_S$ of distinct primes, of polynomial cardinality and
+polynomial numerical magnitude in $S$, such that
+\begin{equation}\label{eq:modular-crt-primes}
+ p>H(S)\quad(p\in\mathcal P_S),\qquad
+ \prod_{p\in\mathcal P_S}p>2^{E_{\max}(S)+1},
+\end{equation}
+and \eqref{eq:modular-stronger-rank-goal} holds for all those primes
+and all relevant parameters, with the same constants. The first
+condition makes every factorial normalizer invertible. A uniform
+bound for all primes in a suitable polynomial range suffices;
+standard prime-counting estimates supply enough primes there, and
+trial division costs polynomial time. Taking $E_{\max}(S)+2$ primes is a
+conservative sufficient choice for the product condition.
+
+This is a uniform mathematical requirement, not an instruction to
+precompute every possible $\lambda\le\Lambda(S)$ exhaustively.
+The latter could be too expensive. Only the pieces requested during
+the recursion are compiled, with their costs charged as entry-routine
+costs in the source induction.
+
+\paragraph{Conditional consequence.}
+The crossing and network identities are algebraic. They remain valid
+over $\mathbb F_p$ when all explicitly divided normalizers are units.
+Use the compiled factors in the proof of Appendix A's Theorem A.
+Their cost is $2^{O(\lambda)}\operatorname{poly}(\log p)$ and their
+scalar size is $O(\log p)$, so the same induction has an additional
+polynomial dependence on $\log p$ and changed absolute constants.
+Its rank recurrence becomes
+\[
+ e_{\ell+1}=(\rho+O(2^{-\ell}))e_\ell+O(K_\ell^{-1}),
+ \qquad \log_2K_\ell=\Theta(2^\ell).
+\]
+Consequently
+\[
+ e_\ell=O((\log K_\ell)^{-\alpha}),\qquad
+ \alpha=\log_2(1/\rho)>\tfrac12.
+\]
+Subject to the source's uniform parameter and arithmetic checks with
+these modular entry routines and the signed-integer bridge above,
+its reductions would give, for fixed $k$,
+\[
+ \operatorname{poly}(n,m)
+ 2^{O_k(n\log\log n/(\log n)^\alpha)},
+\]
+with the corresponding fixed-density bound omitting $\log\log n$.
+Each prime run computes a requested integer clique value modulo $p$.
+The modulus in \eqref{eq:modular-crt-primes} gives its unique signed
+integer reconstruction. The outer algorithm then performs its
+original sums, two-adic reductions and rational comparisons.
+Polynomially many prime runs per requested value do not change the
+exponent order. The smaller modulus bound $>2^n$ suffices for the
+direct clause-network route, whose value is already a nonnegative
+count, but not for Appendix D's intermediate signed values.
+
+The compiler and this conditional transfer are distinct from the
+missing assertion \eqref{eq:modular-stronger-rank-goal}. That assertion
+is not proved here. Favorable data at one size or at one exceptional
+prime do not imply it, and no existing Lean development is claimed
+to have been generalized by this natural-language analysis.
+
+\subsection{Why the straightforward hybrid cancels uniformly}
+
+This statement concerns the displayed upper-bound certificates;
+it is not a lower bound on actual running times. Suppose a packet
+step has the range budget
+\[
+ u\log_2r\le B\log_2s
+\]
+and the mode-bit certificate $S_{\rm cert}=AM/\sqrt u$, for fixed
+positive $A,B$. The currently available Anthropic clique coefficient
+has $e(r)\ge a/\sqrt{\log_2r}$ on its admissible clique-size sequence,
+for fixed $a>0$. Therefore multiplying these estimates gives
+\[
+ e(r)S_{\rm cert}
+ \ge \frac{aAM}{\sqrt{u\log_2r}}
+ \ge \frac{aA}{\sqrt B}\frac{M}{\sqrt{\log_2s}}.
+\]
+This substitution is uniform even for $r=r(s)$. Independently
+selecting a different admissible arity at later depths does not
+remove the root contribution. Query and padding costs add
+nonnegative terms. Thus optimizing this product of existing
+certificates cannot give a smaller logarithmic order. A successful
+hybrid must change one of its premises, for example by reducing the
+actual mode representation or processing stages jointly.
+
+\subsection{Finite validation and essential negative controls}
+
+The standalone checker verifies 945 matrix factorizations, both
+flattenings and the crossing identity on nine cases, four rejected
+invalid modulus or normalizer inputs, one exceptional-prime profile,
+2,049 nonnegative and 4,097 signed CRT reconstructions, and 50 signed
+integer network reconstructions followed by two-adic reduction.
+It uses the matrix-unit pieces
+\[
+ A_a(x,y,u,v)=[x=a][v=a][y=u].
+\]
+Each has row and column rank $N$, giving the attractive combined
+cost $2\lambda$. There are, however, $N=2^\lambda$ pieces. This
+example deliberately fails the polynomial-piece requirement and
+therefore does not establish an improved SAT bound. It guards
+against dropping that material hypothesis.
+
+The matrix $\operatorname{diag}(1,3)$ has rank one modulo three
+and rank two modulo two, five, and seven. This control shows why
+a single favorable prime does not justify the CRT criterion.
+The finite checks validate the compiler and reconstruction; they
+do not establish asymptotic ranks for the source's Heisenberg pieces.
+
+A separate negative control has one-wire network value
+$(-3)\cdot7+5\cdot(-2)=-31$. Its least nonnegative CRT lift modulo
+$5\cdot7\cdot11=385$ is $354$. Reducing that lift modulo $32$ gives
+$2$, whereas the true signed value gives $1$. Signed reconstruction
+first recovers $-31$, after which the two-adic reduction is correct.

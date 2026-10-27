@@ -1,0 +1,189 @@
+\section{Result and comparison target}
+
+The requested target is exclusively 3-SAT. Exact counting is used as a
+subroutine because the reviewed algorithms decide satisfiability by testing
+whether their count is positive. We keep three quantities separate:
+the number \(n\) of Boolean variables, the number \(m\) of clauses, and
+the wire parameter \(s\) of the tensor contractor. A coefficient in the
+last parameter is not automatically a coefficient per SAT variable.
+
+\begin{theorem}[New certified contraction bound]\label{thm:main}
+Assume the normalized exact contraction interface described in
+Section~\ref{sec:interface}: at most \(s\) Boolean wires, maximum degree
+\(\lceil s^{9/10}\rceil\), the specified coefficient ring and entry access,
+and the inherited exact packing, deformation, interpolation, and mode
+identities. There is a deterministic choice of contraction plans with
+\[
+ T(s,\mathcal L),\ S(s,\mathcal L)
+ \le (s+\mathcal L)^{O(1)}
+       2^{(C_*+o(1))s/\sqrt{\log_2 s}},
+\]
+where
+\begin{equation}\label{eq:mainconstant}
+ C_*=\frac{\pi\sqrt2}{\ln2}
+          \sqrt{\frac{20000}{301}\,B_*},
+ \qquad
+ B_*=\NewBeta,
+ \qquad C_*=\NewC\ldots.
+\end{equation}
+Here \(\mathcal L\) is the description length and all hidden entry-access
+constants are fixed. The constant \(29.149\) is an eventual upper-bound
+coefficient for both resources.
+\end{theorem}
+
+The proof occupies Sections~\ref{sec:interface}--\ref{sec:schedule}.
+The finite inequality behind \(B_*\) is proved by a reproducible exhaustive
+certificate using arbitrary-precision integers. The infinite recursion is
+handled analytically. The theorem imports the same analytic contractor
+lemmas used by the preceding packets; it does not require a new unproved
+mode-summation hypothesis.
+
+\subsection{What improved}
+
+The incoming pairwise certificate uses nine plans and bounds a quadratic
+norm by maximizing each plan pair independently. A plan can consequently
+be charged for different operations in its comparisons with different
+partners. Our certificate enforces one support choice per plan throughout
+the whole quadratic expression. This stronger analysis makes a twelve-plan
+affine construction competitive even though its independent pair bound
+is worse.
+
+There are two separable improvements:
+
+\begin{center}
+\begin{tabular}{@{}p{0.62\linewidth}r@{}}
+\toprule
+General-degree cached time bound & Coefficient\\
+\midrule
+Best latest incoming packet: weighted pair certificate & \(29.8116089454\)\\
+Consistent choices, same nine plans and supplied weights & \(29.7483594538\)\\
+Exact optimum of that nine-plan entropy envelope & \(29.7460570934\)\\
+New twelve-plan affine family, previous rectangular backend & \(29.6406449072\)\\
+New twelve-plan family, two-anchor published backend & \(29.5583351755\)\\
+New family, interior anchor, and improved next stage & \(\mathbf{29.1489213689}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The last row lowers the old coefficient by about \(0.662688\), or
+\(2.223\%\). These are upper-bound coefficients. Their difference describes
+the ratio between two certified exponential envelopes, not an observed
+runtime ratio and not a lower bound on the older implementation.
+The new algorithm can retain all preceding plans as additional choices;
+choosing the least certified local cost then includes the new guarantee.
+
+\subsection{What remains unresolved}
+
+For unrestricted 3-SAT, the supported worst-case rate remains
+\begin{equation}\label{eq:satrate}
+ (n+m)^{O(1)}
+ 2^{O(n\log\log n/\sqrt{\log n})}.
+\end{equation}
+The existing density-sensitive refinement is
+\begin{equation}\label{eq:density}
+ (n+m)^{O(1)}
+ 2^{O\left(\frac{n}{\sqrt{\log n}}
+       \min\{\log(2+m/n),\log\log n\}\right)}.
+\end{equation}
+At fixed clause density this becomes
+\((n+m)^{O(1)}2^{O(n/\sqrt{\log n})}\)
+\cite{source,density,density2}.
+Our change improves an explicit contractor constant inside these
+reductions. It does not remove the \(\log\log n\) factor or improve the
+\(\sqrt{\log n}\) denominator. The cached construction uses subexponential
+space; the previous polynomial-space branch remains available with its
+previous guarantee.
+
+\section{Review of the current repository and formalization}\label{sec:review}
+
+\subsection{Frozen snapshot and recent commits}
+
+The review freezes ProveIt at
+\[
+ \texttt{8e76d515063c4b9fbd8743a846b457e3a01bc039}.
+\]
+The relevant recent changes, with times reported in Pacific time, are:
+
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Commit & October 26 time & Relevant change\\
+\midrule
+\texttt{26bd83d4b37d} & 20:51 & Five new SAT archives in \texttt{docs/incoming}\\
+\texttt{7de9d09fecd1} & 20:20 & Links the public Anthropic Lean development\\
+\texttt{a7ae5ab55f96} & 20:15 & Places nine fourth-round SAT packets\\
+\texttt{b9941a7396e4} & 20:11 & Arrival of those nine packets\\
+\texttt{450252e9d86c} & 19:36 & Places five third-round packets\\
+\texttt{6d3adc450615} & 19:03 & Places eight second-round packets\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The project index accounts for twenty-nine refinement packets. The five
+latest archives are additional and change the current comparison target.
+We reviewed that index and the recent commit history, read the strongest
+competing interfaces and proof mechanisms, and examined the five new
+archives. This is not a claim to have independently rebuilt every earlier
+packet or checked every proof in the corpus.
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.43\linewidth}rrp{0.20\linewidth}@{}}
+\toprule
+Latest incoming archive, abbreviated & Time \(C_T\) & Space \(C_S\) & Scope\\
+\midrule
+\texttt{sat\_affine\_cauchy} & \(30.41335\) & \(29.46603\) & General cached\\
+\texttt{sat\_affine\_contraction} & \(30.25704\) & \(25.98907\) & General cached\\
+\texttt{sat\_affine\_geometry} & \(30.26987\) & \(29.48754\) & General cached\\
+\texttt{sat\_affine\_plane} & \(30.69134\) & \(29.46603\) & General cached\\
+\texttt{sat\_pairwise\_certificates} & \(29.81161\) & \(29.81161\) & General cached\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All rows use the normalized \(s/\sqrt{\log_2 s}\) scale and the general
+degree premise. The last archive additionally gives a low-degree
+polynomial-space coefficient \(16.81223\), under
+\(\Delta\le s^{1/12}\). The previous general polynomial-space coefficient
+is \(46.18485\) \cite{flags,pairwise,incoming}.
+Those smaller low-degree figures have stronger hypotheses and cannot be
+compared with the general-degree theorem without checking the reduction.
+The new common space bound does not beat the incoming \(25.98907\) space
+tradeoff. All five incoming packets retain the same SAT logarithmic order.
+
+\subsection{The linked Lean development is a genuine machine theorem}
+
+The user's linked commit is
+\[
+ \texttt{anthropics/formal-math@1a6eee293b9e00cb432eef6018a21f523623a9af}.
+\]
+Its independently stated \texttt{MainResults.MainTheorem} quantifies one
+deterministic Mathlib multi-stack Turing machine with finite stack
+alphabets, before quantifying \(k,n\), and the formula. It computes the
+complete satisfying-assignment count within the stated bound
+\[
+ 2^{C\min\{km/\sqrt{\log_2m},
+              \ k^2n\log_2\log_2n/\sqrt{\log_2n}\}},
+\]
+subject to the explicit normalization premises: \(k\ge1\), \(n\ge4\),
+at least two clauses, no repeated clause, and every variable occurring.
+Deduplication, unused variables, and small inputs need the usual
+polynomial-time front end. At fixed width three the rate agrees with
+\eqref{eq:satrate} \cite{anthropic-main,anthropic-solution}.
+
+\texttt{Solution.lean} supplies proofs of the public propositions without
+additional theorem hypotheses. A source scan found the two expected
+\texttt{sorry} occurrences in the separate \texttt{Challenge.lean}
+specification, and no source declarations of additional axioms or
+unsafe proof shortcuts in the project. The exact linked commit has a
+successful \texttt{verify (eth)} GitHub check. Its README and Comparator
+configuration describe the standard three Lean axioms and the nanoda check
+\cite{anthropic-solution,anthropic-ci}.
+
+We inspected these sources and exact-commit CI evidence. We did not
+independently rebuild the full Lean project or rerun its alternate kernel.
+Polynomial space is not a conjunct of the exposed Anthropic main theorem,
+so it must not be inferred from that theorem alone. Its unspecified
+machine constant also cannot be compared numerically with a normalized
+wire coefficient. The present contribution is a new finite contraction
+certificate and plan family, not a revision of that formalization.
+

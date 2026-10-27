@@ -1,0 +1,139 @@
+\section{A fully paid multistage schedule}
+\label{sec:paid-new-schedule}
+
+Let $\lambda=\lceil\log_2s\rceil$, use
+$u_d=\lfloor\eta_d\lambda\rfloor$, and put
+\[
+ a_d=\sum_{j\le d}u_j+(d+1)\lceil6\log_2\lambda\rceil,
+ \qquad H=\lceil s/\lambda\rceil.
+\]
+Stop when the child wire count is at most $H$; use direct contraction for
+bounded exceptional sizes or failed finite admissibility tests.
+The classical prefix is
+\[
+(r_0,\ldots,r_7)=(9,12,8,6,5,4,4,4),
+\]
+\[
+(\eta_0,\ldots,\eta_7)=
+(0.01577,0.01212,0.00544,0.00535,0.00438,0.00342,0.00215,0.00136).
+\]
+Every displayed decimal is an exact terminating rational. For $d\ge8$ take
+\[
+ r_d=3,\qquad\eta_d=\frac{30107}{10^7}
+                   \left(\frac{77}{100}\right)^{d-8}.
+\]
+The total retained fraction is $1577/25000=0.06308$.
+For the optional newer backend replace only
+\[
+ r_0=10,\qquad\eta_0=0.01505,\qquad\eta_1=0.01284.
+\]
+Both prefixes have cumulative range $0.02789$ at depth one and $0.04999$
+at depth seven.
+
+Let $A_d=\sum_{j\le d}\eta_j$. At the root the strict leading packing
+gate is $9/10+2A_0\log_2r_0<1$. Later gates are
+\[
+9/10+A_d\log_2r_d<1,\qquad
+2A_d\log_2r_d+A_{d-1}<1,\qquad
+(2\log_2r_d+1)A_d<1.
+\]
+The accompanying interval checker proves all of them, including their tail
+limits, by exact rational enclosures of the logarithms. The strict positive
+margins absorb all polylogarithmic padding and precision factors.
+All fresh tensor degrees are at most $s^{0.06308+o(1)}<s^{9/10}$.
+
+For a noncircular depth argument, first verify these inequalities through
+$\log_{600/431}\lambda+O(1)$ hypothetical active levels. The minimum taper is
+at least $\lambda^{1+\ln(77/100)/\ln(600/431)+o(1)}$, which diverges.
+Nearly lossless padding then gives eventual tail child ratio at most $431/600$,
+since its sharp ratio is $2/3$, closing the depth bootstrap. Padding tolerance
+$O(\lambda^{-3})$ makes the accumulated relative padding error $1+o(1)$.
+The six-logarithm buffer absorbs inherited precision and gives the uniform
+local leading precision $(6+o(1))MD/u$.
+
+Every group cache calls its true child contractor. Thus the paid recurrence is
+\[
+ T_d\le\operatorname{poly}(s)
+ \left[2^{(\alpha_{r_d}+o(1))K_d}T_{d+1}
+       +2^{((1+\varepsilon)\beta_{r_d}+o(1))K_d}\right],
+ \qquad\alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+Use the certified menus at the first two depths and fixed balanced
+three-block trees thereafter. The latter have
+\[
+ \beta_8^2=15/32,\quad\beta_6^2=4/9,\quad\beta_5^2=12/25,
+ \quad\beta_4^2=1/2,\quad\beta_3^2=4/9
+\]
+under either backend. Their input/output support bounds dominate the
+backend-dependent arithmetic supports.
+
+Put $m_0=1$, $m_d=\prod_{j<d}2/r_j$, and
+$K_d^*=(\pi\sqrt2/\ln2)m_d/\sqrt{\eta_d}$.
+The prefix branch at depth $d$ has coefficient
+\[
+ \sum_{j<d}\alpha_{r_j}K_j^*+(1+\varepsilon)\beta_{r_d}K_d^*.
+\]
+For the tail use $\gamma=(2/3)/\sqrt{77/100}$ and append
+\[
+ \sum_{j<8}\alpha_{r_j}K_j^*
+ +K_8^*\max\{(1+\varepsilon)\beta_3,\alpha_3/(1-\gamma)\}.
+\]
+The space coefficient is $\max_d\beta_{r_d}K_d^*$: live ancestor and child
+tables add in storage rather than multiply. Exact rational interval arithmetic
+gives
+\[
+\begin{array}{lrr}
+& C_T&C_S\\
+\text{Classical backend}&30.0872056033774679\ldots&28.8528994149423854\ldots\\
+\text{Optional newer backend}&28.9729416032324588\ldots&28.9726518767136916\ldots.
+\end{array}
+\]
+Therefore eventual coefficients $(30.09,28.86)$ and $(28.98,28.98)$ are valid.
+The classical time maximum occurs at depth one; the optional time maximum
+occurs at the root. Neither time statement uses polynomial space.
+
+Direct leaves cost $2^{O(s/\lambda)}$; permitted original entries cost
+$2^{O(s^{9/10})}$ times a fixed polynomial; fresh entries cost
+$\exp(s^{0.06308+o(1)})$. These are lower order after all ancestor calls
+have been charged. Polynomial work over $O(\log\lambda)$ levels adds
+$O(\lambda\log\lambda)$ to the exponent. Ring dimensions, precisions and
+record lengths stay polynomial in $s$. Sorting and scanning the tables in
+index order retains the reviewed bit-cost model.
+
+\subsection{Fair comparisons and the remaining goal}
+
+All rows below use the same normalized-wire interface. ``Old'' means
+the reviewed three-plan method of \cite{treenew}, not an arbitrary
+optimization over all previous methods. Backend slack is paid in the
+newly composed constructions.
+
+\begin{center}\small
+\begin{tabular}{p{8.3cm}rr}
+\toprule Construction & $C_T$ & $C_S$\\\midrule
+Best displayed reviewed cached proposal &30.891019&30.753913\\
+Old menus, classical rectangular backend &30.629542&29.985632\\
+Old menus, classical backend, retuned tail &30.615144&29.966611\\
+\textbf{New menus, classical backend} &\textbf{30.087206}&\textbf{28.852899}\\
+Old menus, newer backend, retuned tail &30.273960&28.625470\\
+\textbf{New menus, newer backend} &\textbf{28.972942}&\textbf{28.972652}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+On the old published schedule, merely inserting the newer backend gives
+$30.512927432781\ldots$ time; the explicit tail retuning gives the
+$30.273960451080\ldots$ row. Thus the new time improvement survives equal
+backend upgrades. That retuned old-menu row has a smaller space coefficient
+than the new fastest construction; retain it when memory is the priority.
+These are explicit compatible comparisons, not a global optimization of
+every possible composition of previous algorithms.
+
+The new estimates remain
+$\operatorname{poly}(s+\mathcal L)2^{(C+o(1))s/\sqrt{\log_2s}}$.
+They do not improve the worst-case SAT order
+$n\log\log n/\sqrt{\log n}$, prove the conditional $n/\log n$ interfaces,
+or supply a complete SAT solver. The polynomial-space frontier
+$46.184845586731\ldots$ remains a separate resource option. The exact
+minimax identity and its certificate compiler are new mathematical tools
+for obtaining the best constant of a fixed finite strategy menu; they do
+not by themselves remove the square-root logarithm.

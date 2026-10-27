@@ -1,0 +1,225 @@
+\section{Fully charged recursive schedules}\label{sec:schedules}
+
+All size parameters in this section refer to the original instance. In
+particular, we do not restart a low-degree schedule at a child whose
+tensors were created at an earlier depth. Write
+\[
+ \lambda=\ceil{\log_2s},\quad
+ \Lambda=\lambda-\ceil{\sqrt\lambda},\quad
+ b=\ceil{6\log_2\lambda},\quad H=\ceil{s/\lambda}.
+\]
+Directly contract instances with at most $H$ wires. For all larger calls
+at global depth $d$, choose
+\begin{equation}\label{eq:integer-schedule}
+ u_d=\floor{\eta_d\Lambda},\qquad
+ a_d=\sum_{j=0}^d u_j+(d+1)b.
+\end{equation}
+The finitely many sizes with nonpositive tapers are also treated directly.
+All these choices define one uniform algorithm after fixing the backend
+accuracy. Rounding the logarithms can be implemented with integer bit
+lengths and integer power comparisons.
+
+Both schedules have four initial stages followed by a four-group tail.
+Set $q=63/100$. If $A_*$ denotes the total taper budget and
+$A_3=\sum_{j=0}^3\eta_j$, then
+\begin{equation}\label{eq:tail-taper}
+ r_d=4,\qquad \eta_d=(A_*-A_3)(1-q)q^{d-4}\quad(d\ge4).
+\end{equation}
+
+\begin{center}\small
+\begin{tabular}{@{}crrrr@{}}
+\toprule
+ & \multicolumn{2}{c}{Generic root degree $s^{9/10}$}
+ & \multicolumn{2}{c}{Low root degree $s^{1/12}$}\\
+Stage $d$ & $r_d$ & $\eta_d$ & $r_d$ & $\eta_d$\\\midrule
+0 & 10 & $301/20000$ & 15 & $2149/20000$\\
+1 & 13 & $287/25000$ & 10 & $2337/100000$\\
+2 & 10 & $357/100000$ & 7 & $407/20000$\\
+3 & 7 & $193/50000$ & 6 & $109/10000$\\
+4 & 4 & $14837/2500000$ & 4 & $140341/10000000$\\\midrule
+Total $A_*$ & \multicolumn{2}{c}{$1/20$}
+ & \multicolumn{2}{c}{$1/5$}\\
+Tail budget $A_*-A_3$ & \multicolumn{2}{c}{$401/25000$}
+ & \multicolumn{2}{c}{$3793/100000$}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Packing gates and a uniform depth argument}
+
+Put $A_d=\sum_{j\le d}\eta_j$ and $A_{-1}=0$. If the original degree
+exponent is $\delta$, the root has both side degrees at most
+$s^\delta$ up to rounding. Below the root the fresh-side degree is at
+most $2^{a_{d-1}+1}$; a safe retained-side degree bound is the maximum
+of the original degree and all earlier packet degrees. For any fixed
+prefix depth, the leading exponents in the numerators of
+\eqref{eq:gates} are therefore bounded by
+\[
+\begin{array}{c|ccc}
+ & QR & Q^2C & L_pQ^2\\\hline
+ d=0 & \delta+A_0\log_2r_0
+       &\delta+2A_0\log_2r_0&A_0(1+2\log_2r_0)\\
+ d>0 & \max(\delta,A_{d-1})+A_d\log_2r_d
+       &A_{d-1}+2A_d\log_2r_d&A_d(1+2\log_2r_d).
+\end{array}
+\]
+Since an active call has $M>s/\lambda$, each strict bound below one
+establishes its gate, including any fixed polylogarithmic factors.
+
+An independent rational audit certifies the following upper bounds. The
+displayed terminating decimals are exact rational upper bounds; entries
+with ellipses are shown rounded for readability.
+
+\begin{center}\small
+\begin{tabular}{@{}ccrrr@{}}
+\toprule Schedule & $d$ & $QR$ & $Q^2C$ & $L_pQ^2$\\\midrule
+Generic &0& .9499961&.9999922&.1150422\\
+ &1&.998174265&.21139853&.22287853\\
+ &2&.9999922&.2265144&.2300844\\
+ &3&.995339304&.220778608&.224638608\\\midrule
+Low degree &0&.5031404833\ldots&.9229476333\ldots&.9470643\\
+ &1&.54203404&.97661808&.99998808\\
+ &2&.555214658&.979609316&.999959316\\
+ &3&.57012095&.9890719&.9999719\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For example, the audit verifies $r^v<2^u$ exactly to prove the rational
+logarithm bounds $\log_2r<u/v$. The smallest certified prefix gaps are
+$39/5000000$ and $149/12500000$, respectively. They are positive fixed
+margins, though their small sizes permit extremely large asymptotic
+thresholds. No practical crossover claim follows.
+
+There are boundary cases in the tail, and ignoring them would be an
+error. In the generic case the largest leading exponent is
+$9/10+2A_*=1$ in $QR$. The use of $\Lambda$ instead of $\lambda$
+gives the sharper bound
+\[
+ \log_2(QR)\le\lambda-\tfrac1{10}\sqrt\lambda
+                        +O((\log\lambda)^2).
+\]
+The other two numerator exponents are at most $1/4+o(1)$.
+In the low-degree case, $QR$ has exponent at most $3/5+o(1)$, while
+both remaining gates have boundary exponent $5A_*=1$ and satisfy
+\[
+ \max\{\log_2(Q^2C),\log_2(L_pQ^2)\}
+ \le\lambda-\sqrt\lambda+O((\log\lambda)^2).
+\]
+The negative square-root margins dominate division by $M$, the required
+logarithmic factors, and accumulated integer guards.
+
+To justify the depth used in these estimates without circular reasoning,
+first consider hypothetical active depths up to
+\[
+ D_\lambda=\ceil{\log_{20/11}\lambda}+O(1).
+\]
+On that whole range, $d=O(\log\lambda)$, so all guards total
+$O((\log\lambda)^2)$. The smallest tail taper is at least a constant
+times
+\[
+ \lambda^{1+\ln(63/100)/\ln(20/11)},
+ \qquad 1+\frac{\ln(63/100)}{\ln(20/11)}>0.
+\]
+Positivity follows exactly from $63/100>11/20$. Thus every active taper
+tends to infinity uniformly. The already established gates now imply
+tail child ratio $1/2+o(1)\le11/20$ for all sufficiently large $s$.
+Such an active path cannot exceed $D_\lambda$, because its size would
+then fall below $s/\lambda$. This closes the induction. Use relative
+packing slack $\lambda^{-3}$; over $O(\log\lambda)$ levels its
+accumulation is $1+o(1)$. Floors are uniformly negligible.
+
+\subsection{Precision and the costs outside the main exponent}
+
+Set $a_{-1}=0$. The inherited precision satisfies
+$p=O(s\lambda^2 2^{a_{d-1}})$. For a retained valuation $i<u_d$,
+\[
+ D=2^{a_d-i}\ge2^{a_{d-1}+b+1},\qquad
+ \frac{p}{MD/u_d}=O(\lambda^4 2^{-b})=o(1).
+\]
+The exact Hermite slope is $(1+o(1))M/u_d$, and its remaining allowance
+has relative size $O(\lambda^2/D)=o(1)$. This proves the uniform sharp
+working-precision estimate $(6+o(1))MD/u_d$ used in the entropy bound.
+The optimal mode tilt has scale $\sqrt{u_d}/D\to0$ uniformly, making
+the generating-function remainder negligible as well.
+
+Throughout the recursion,
+$a_d\le A_*\lambda+O((\log\lambda)^2)$, so packet lengths are at
+most $s^{A_*+o(1)}$. Mode, precision, interpolation, and packet
+descriptions remain polynomial in $s$. The source extension degree
+$4\ceil{\log_2s}$ supplies enough residue-distinct points, because
+$M(2L_p-1)+1<s^4$ eventually. Entry queries retain their creation
+precision. Fresh packet evaluation costs
+$2^{O(L_p\log s)}=2^{s^{A_*+o(1)}}$, original entry work costs
+$2^{O(s^{9/10})}$, and direct leaves cost $2^{O(s/\lambda)}$.
+Each is $2^{o(s/\sqrt\lambda)}$ under both schedules. Products of
+polynomial factors over the depth add only $O(\lambda\log\lambda)$
+to the exponent. Description-dependent work can be charged once per
+call; the branching bounds do not depend on $\LL$. The dependence on
+the original description therefore remains one fixed polynomial factor.
+
+\subsection{Exact global coefficients and the terminal route}
+
+Let $\mu_0=1$, $\mu_{d+1}=2\mu_d/r_d$, and
+\[
+ k_d=\kappa\mu_d/\sqrt{\eta_d},\qquad
+ P_d=\sum_{j<d}\alpha_{r_j}k_j.
+\]
+Unrolling the paid recurrence \eqref{eq:paid}, the local route at depth
+$d$ has coefficient $P_d+\beta_{r_d}k_d$; its own table space has
+coefficient $\beta_{r_d}k_d$. The wire masses through depth four are
+\[
+ \begin{array}{c|ccccc}
+ &0&1&2&3&4\\\hline
+ \text{generic}&1&1/5&2/65&2/325&4/2275\\
+ \text{low degree}&1&2/15&2/75&4/525&4/1575.
+ \end{array}
+\]
+In the tail, $k_{4+j}=k_4\gamma^j$ with
+$\gamma=1/(2\sqrt q)=5/\sqrt{63}<1$. Since
+$\beta_4<\alpha_4/(1-\gamma)$, the largest possible tail route is
+its limiting terminal coefficient
+\begin{equation}\label{eq:terminal}
+ P_4+\frac{\alpha_4 k_4}{1-\gamma},\qquad
+ \alpha_4=\sqrt{3/8}.
+\end{equation}
+It pays for every recursive table entry down to the direct leaves. For
+finite tail depth this is an upper bound. The unspent tail mass tends to
+zero, so it also specifies the leading limiting coefficient.
+
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}
+\toprule Charged route & Generic & Low degree\\\midrule
+Local stage 0 &28.632766276536&10.336654568635\\
+Local stage 1 &28.585713591899&9.961674795027\\
+Local stage 2 &28.484720584611&10.108413259516\\
+Local stage 3 &28.520568607891&10.174645147995\\
+First tail stage &28.493870083097&10.206500056211\\
+Terminal route &28.632507095859&10.336723985547\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The generic maximum is the root. The low-degree maximum is the terminal
+route, slightly larger than its root. Accordingly the exact constants are
+\begin{align*}
+ C_{\rm gen}&=\kappa\beta_{10}\sqrt{20000/301},\\
+ C_{\rm low}&=\kappa\left(
+  \sum_{d=0}^3\frac{\alpha_{r_d}\mu_d}{\sqrt{\eta_d}}
+  +\frac{\alpha_4\mu_4}{\sqrt{\eta_4}(1-5/\sqrt{63})}\right),\\
+ C_{\rm low,space}&=\kappa\beta_{15}\sqrt{20000/2149}.
+\end{align*}
+The middle expression uses the low-degree row of the parameter table.
+Rational interval arithmetic proves $C_{\rm gen}<28.633$ and
+$C_{\rm low}<10.337$, as well as the indicated branch dominance.
+The intervals use an alternating arctangent series for $\pi$, the
+positive atanh series for $\ln2$, and rational square-root enclosures.
+No floating-point value decides a claimed inequality.
+
+Ancestor tables are kept while a child is evaluated. Their space adds,
+rather than multiplies, so the exponent coefficient is the largest
+local table coefficient over the recursion. In both schedules the root
+is largest; the decreasing geometric tail and the finitely many prefix
+comparisons certify this. Polynomial local workspace and recursion
+descriptions do not alter the coefficient. This completes the proof of
+Theorem~\ref{thm:contractors} relative to the explicitly imported interface.

@@ -1,0 +1,196 @@
+\section{Attempts to improve the logarithmic order}
+\label{sec:barriers}
+
+\subsection{The effective crossing interface}
+
+The Anthropic paper's strongest recurrence is in Appendices A--B, rather
+than its weaker introductory recurrence. For an alphabet of size
+$2^\mu$, it decomposes the crossing tensor
+\[
+ \mathsf C(x,y,u,v)=[x=v][y=u]
+\]
+as $d\mathsf C=\sum_{j\in I}A_j$. Each piece has integer row and column
+factorizations through $c_j^{\rm row}$ and $c_j^{\rm col}$ bits, with
+\begin{equation}\label{eq:crosscontract}
+ c_j^{\rm row}+c_j^{\rm col}
+ \le4\rho\mu+O(\log\mu).
+\end{equation}
+There must be polynomially many pieces, polynomial coefficient bit
+lengths, and a single $2^{O(\mu)}$ evaluation procedure. These effectiveness
+conditions are essential.
+
+Its parameters satisfy
+\[
+ K_{l+1}=g_l^2,\qquad
+ g_l=2^{3l+x_0}K_l,\qquad
+ e_{l+1}=(\rho+3\zeta_l)e_l+3/K_l,
+ \quad\zeta_l=2^{-l-5}.
+\]
+Therefore $e_l=\Theta((\log K_l)^{-\alpha})$ with
+$\alpha=\log_2(1/\rho)$. The partition/vertex-operator pieces give
+$\rho=1/\sqrt2$ and $\alpha=1/2$~\cite{anthropicpaper}.
+
+A successful construction with \eqref{eq:crosscontract} for
+$\rho<1/\sqrt2$, preserving every stated effectiveness condition,
+would yield a genuine improvement in the logarithmic denominator power
+for 3-SAT. The finite probes below do not construct such a family.
+
+\subsection{A new aspect-ratio obstruction for the existing two-way bound}
+
+An apparently simple way to improve the recursion is to replace its square
+grid by a rectangle. The following lemma shows precisely why this does
+not follow from the current total-cost guarantee alone.
+
+\begin{proposition}[Rectangular-grid minimax]\label{prop:rectbarrier}
+Let $a,b>1$, $N=ab$, $0<\alpha<1$, $C>0$, and $0<\rho<1$.
+Suppose the only information about two nonnegative costs is
+\[
+ U_R+U_C\le2\rho N^2\mu.
+\]
+Grant the optimistic recursive rates $e(t)=C/(\log_2t)^\alpha$ and
+ignore all additional overhead. The worst certified cost of choosing
+rows or columns is
+\begin{equation}\label{eq:minimax}
+ \max_{U_R+U_C\le2\rho N^2\mu}
+       \min\{e(a)U_R,e(b)U_C\}
+ =\frac{2\rho C N^2\mu}
+        { (\log_2a)^\alpha+(\log_2b)^\alpha}.
+\end{equation}
+Among aspect ratios with product $N$, its minimum is attained by
+$a=b=\sqrt N$. Relative to the target rate
+$CN^2\mu/(\log_2N)^\alpha$, the best factor remains
+$\rho2^\alpha$.
+\end{proposition}
+
+\begin{proof}
+For fixed positive multipliers $c_R,c_C$ and budget $B$, maximizing
+$\min(c_RU_R,c_CU_C)$ uses all of $B$ and equalizes the two costs.
+The resulting value is $B/(1/c_R+1/c_C)$, proving~\eqref{eq:minimax}.
+Write $x=\log_2a$, $y=\log_2b$, so $x+y=\log_2N$. By concavity,
+\[
+ x^\alpha+y^\alpha
+ \le2\left(\frac{x+y}{2}\right)^\alpha
+ =2^{1-\alpha}(\log_2N)^\alpha,
+\]
+with equality at $x=y$. Substitution gives the stated factor.
+\end{proof}
+
+Thus the existing two-way guarantee cannot by itself certify progress
+with $\alpha>\log_2(1/\rho)$; for the current pieces this threshold is
+$1/2$. This proposition is a minimax statement about an analytic
+relaxation. It does not assert that every extremal cost pair is realizable
+by an actual crossing instance, and is not a lower bound for 3-SAT. Extra
+correlations between row and column costs, or a different crossing
+identity, could escape its hypotheses.
+
+\subsection{Why the straightforward compositions do not close the gap}
+
+The newest incoming packets already prove several useful restricted
+obstructions~\cite{pairwise,affineplane,affinecauchy}. We checked them
+before proposing another version of the same route.
+
+\paragraph{Cauchy modes followed by the clique engine.}
+The explicit labeling layout requires $u\log_2K=O(\log s)$ for a
+growing number of groups $K$. Its information scale is $M/\sqrt u$,
+whereas the current clique coefficient is
+$\Theta((\log K)^{-1/2})$. Even an ideal, cost-free interface between
+them would leave the certificate scale
+\[
+ \Theta\left(\frac{M}{\sqrt{u\log K}}\right)
+ =\Omega\left(\frac{M}{\sqrt{\log s}}\right).
+\]
+In an actual implementation the local entry routines and precision also
+have to be paid. This is a limitation of these two certificate scales,
+not a general runtime lower bound.
+
+\paragraph{Sparse graded spectra in the same energy window.}
+The crossing has row-flattening rank $2^{2\mu}$. If polynomially many
+pieces factor through polynomially many graded spaces of energies at
+most $4h$, and
+$\mu\sim c h^\theta$ while uniformly
+$\log_2\dim W_E\le cE^\theta+o(h^\theta)$, rank subadditivity implies
+\[
+ 2\mu\le O(\log h)+c(4h)^\theta+o(h^\theta),
+ \qquad 2\le4^\theta.
+\]
+Hence $\theta\ge1/2$. Substituting a thinner Hilbert series into the
+same intermediate-space proof cannot produce the hoped-for improvement.
+Allowing exponentially many pieces instead makes the existing Cartesian
+piece enumeration exponential in the original information budget.
+Structured summation would be a new theorem, not an automatic repair.
+
+\paragraph{Lower initial precision and a conserved degree.}
+The dense reduction has $O(n\log\log n)$ wires and counting precision
+$n+1$. Its dominant Hermite-recovery increment is nevertheless
+$6MD/u$, so lowering the initial precision alone does not change the
+leading entropy. A representation preserving incidence degree $K=O(n)$
+through every recursive interface could instead target
+$\sqrt{MK/u}$. The prior degree-flow lemma correctly conserves total
+degree, but does not supply efficient local coefficient queries on the
+compressed binary indices. Those obligations remain open.
+
+\paragraph{Nonbinary leading digits and separator trees.}
+The incoming odd-prime calculation shows that restricting to one leading
+digit loses the binary taper cancellation; one fixed nontrivial grouping
+cannot localize two distinct shifts. Node-dependent groupings are outside
+that proof but need a new counted layout. The incoming star-weight witness
+also proves optimality of the flag coefficient among arbitrary separator
+trees at the used powers of two. Tree imbalance by itself does not improve
+that polynomial-space certificate.
+
+\subsection{Finite rank probes of the actual crossing pieces}
+
+The archive implements the Appendix B operator formulas, not merely a
+dimension surrogate. For $h=1,\ldots,6$, it computes every piece and checks
+\[
+ \sum_{s=-2h}^{2h}A_s=h![x=v][y=u]
+ \pmod{1000003}.
+\]
+For $h=1,\ldots,8$, the central piece $A_0$ has the following row and
+column ranks over that prime field:
+\begin{center}
+\begin{tabular}{@{}rrrrrrrrr@{}}
+\toprule $h$&1&2&3&4&5&6&7&8\\
+\midrule $p(h)$&1&2&3&5&7&11&15&22\\
+Row rank&1&4&9&25&49&121&225&484\\
+Column rank&1&4&9&25&49&121&225&484\\
+\bottomrule
+\end{tabular}
+\end{center}
+These integer matrices therefore have full rank over $\Q$ as well.
+The probes use all $p(h)$ partition labels; the binary theorem selects
+$2^\mu$ labels, so this statement must not be transferred to every binary
+submatrix. Also, at these small values the ambient matrix dimension is
+smaller than the source's intermediate-space upper bound. The experiment
+does not settle the asymptotic image-rank question. It does reject an
+unsupported claim of an already visible small-degree rank collapse.
+
+\subsection{A further proved local inequality}
+
+The supplementary mathematical fragment proves, for sorted
+$0\le a\le b\le c$, the symmetric quadratic bound
+\begin{equation}\label{eq:quadratic}
+ U(a,b,c)^2\le\frac{55}{96}
+ \left(7(a^2+b^2+c^2)-4(ab+ac+bc)\right),
+\end{equation}
+where
+\[
+ U(a,b,c)=
+ \begin{cases}
+ b+c,&2a\le b,\\
+ c+a+b^2/(4a),&2a\ge b,\ a>0.
+ \end{cases}
+\]
+This is the equal-outer rectangular curve followed by blocking, rather
+than the strongest general three-dimensional bound. Equality in
+\eqref{eq:quadratic} occurs at $(1,1,20/17)$ and its scaled permutations.
+An exact affine-plane spectral calculation gives final-triangle envelope
+coefficient squared $55/192$. The proof and rational checker are included
+as a separate appendix source.
+
+This last statement concerns three \emph{already formed} blocks. It does
+not pay for their internal merges or recursive entries, and is not used
+in $C_T$ or $C_S$. A fixed-slack algorithmic interpretation would also
+charge the finite-library approximation slack. The result is a completed
+local inequality and a possible ingredient for future work, not an
+additional global SAT improvement.

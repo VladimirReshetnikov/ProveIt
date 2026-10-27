@@ -1,0 +1,281 @@
+{
+  "repository": "VladimirReshetnikov/ProveIt",
+  "analysis_pin": "8e76d515063c4b9fbd8743a846b457e3a01bc039",
+  "analysis_head_metadata": {
+    "sha": "8e76d515063c4b9fbd8743a846b457e3a01bc039",
+    "committer_date": "2026-10-26T20:52:43-07:00",
+    "subject": "Merge remote-tracking branch 'origin/main' into codex/zfc-equation-reduction-46be",
+    "message": "Merge remote-tracking branch 'origin/main' into codex/zfc-equation-reduction-46be",
+    "parents": [
+      "774df1214f1dd5662d3d6506d4972e100b536571",
+      "d86bd7259ca8a83b4ce31b814b5b929bf2d368f6"
+    ],
+    "requested_paths_touched": [],
+    "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/8e76d515063c4b9fbd8743a846b457e3a01bc039"
+  },
+  "source": "Local Git commit objects and path-filtered git log after deepening the originally shallow clone. The checkout remained at the analysis pin.",
+  "review_interval_start": "2026-10-26T17:00:00-07:00",
+  "requested_paths": [
+    "Computability/SubexponentialSAT",
+    "docs/incoming"
+  ],
+  "reviewed_commits": [
+    {
+      "sha": "26bd83d4b37d3c5a3ccb45bab2e6385fae3977f1",
+      "committer_date": "2026-10-26T20:51:08-07:00",
+      "subject": "New research report(s)",
+      "message": "New research report(s)",
+      "parents": [
+        "7de9d09fecd17de776d712835ecb2011205c531d"
+      ],
+      "requested_paths_touched": [
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/26bd83d4b37d3c5a3ccb45bab2e6385fae3977f1"
+    },
+    {
+      "sha": "7de9d09fecd17de776d712835ecb2011205c531d",
+      "committer_date": "2026-10-26T20:20:40-07:00",
+      "subject": "Link the anthropics/formal-math Lean development of eth.pdf",
+      "message": "Link the anthropics/formal-math Lean development of eth.pdf\n\nThe Claude-credited manuscript \"A 2^{o(n)} time algorithm for 3-SAT\"\n(Research/claude-2o-n-3sat/eth.pdf) said its Lean development would be\nlinked \"when a public location exists\". It is now public in\nhttps://github.com/anthropics/formal-math, added by pull request\nanthropics/formal-math#31 (commit 1a6eee293b9e00cb432eef6018a21f523623a9af,\nmerged as 16a5ce4130 on 2026-10-27).\n\nComputability/SubexponentialSAT/README.md:\n- The eth.pdf row now points to the published development instead of\n  calling it unpublished.\n- A new section, \"Lean development of eth.pdf\", links the repository, the\n  PR's changes at that commit (as Vladimir asked), the commit, and the eth/\n  tree at it. It summarises the contents as the PR describes them:\n  MainResults.lean, Solution.lean, comparator.json, and the two sorry in\n  Challenge.lean only. At the merge commit eth/ holds 1,062 files, 1,052 of\n  them .lean.\n- The section notes that eth/paper.pdf (900,337 bytes) is a different\n  revision from the 868,673-byte eth.pdf filed here.\n\nComputability/README.md links the eth/ tree from the project's entry.\n\nThe development is linked, not vendored, and nothing here builds or checks\nit.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "parents": [
+        "a7ae5ab55f9627f5af7bf77443b3c34ef8ef1be4"
+      ],
+      "requested_paths_touched": [
+        "Computability/SubexponentialSAT"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/7de9d09fecd17de776d712835ecb2011205c531d"
+    },
+    {
+      "sha": "a7ae5ab55f9627f5af7bf77443b3c34ef8ef1be4",
+      "committer_date": "2026-10-26T20:15:51-07:00",
+      "subject": "Place nine round-4 sub-exponential 3-SAT packets in SubexponentialSAT",
+      "message": "Place nine round-4 sub-exponential 3-SAT packets in SubexponentialSAT\n\nFile the fourth round of ETH refinement packets (arrival b9941a7396) under\nComputability/SubexponentialSAT/Research, and retire their archives from\ndocs/incoming, which now holds only its README. Seven packets reviewed the\nround-3 placement; 3sat_round3_frontier and eth_adaptive_schedules reviewed\nonly through round 2. All keep the SAT order n log log n/sqrt(log n), and\ntheir coefficients are per normalized wire.\n\nRetired archives, where each went, and what each claims:\n- sat_adaptive_bounds (30 files): polynomial-space C = 46.185, the new\n  smallest (from 55.709); cached 34.325/34.024; low-degree cached\n  13.380/13.253.\n- sat_adaptive_tree_certificate (43): cached 30.891 time / 30.754 space, the\n  new smallest cached pair, from per-allocation choice among three\n  contraction trees.\n- sat_adaptive_frontier (39): polynomial 50.305; cached 31.252/31.252.\n- sat_adaptive_matrix_partition (35): polynomial 50.210; cached\n  34.325/34.024, the same pair as sat_adaptive_bounds, found independently.\n- subexponential_sat_adaptive_four (35): cached 32.916/31.662 (32.856/31.467\n  with a 19/8 backend); polynomial 50.394.\n- subsat_rectangular (40): polynomial 53.978; cached 33.994/33.994;\n  precision barriers.\n- eth_adaptive_exact_kernels, from ETH_Adaptive_Exact_Kernels_2026-10-27.zip\n  (93): polynomial 55.332 (25.164 at degree <= s^0.51); cached\n  35.071/34.000; measured kernel speedups 1.46-2.73x. 58 sources/ snapshots\n  are omitted.\n- 3sat_round3_frontier (89): polynomial 63.757 and 23.666 at degree\n  <= s^(1/12), the new low-degree polynomial-space best; cached\n  37.930/33.623 and low-degree 14.239/12.361. 26 evidence/ copies omitted.\n- eth_adaptive_schedules (39): polynomial 63.781; cached 37.592/33.623;\n  an incremental matching-potential kernel.\n\nEach archive was extracted with `py -I` into its own empty scratch directory\nand checked for unsafe paths. 85 members are not filed: one SHA256SUMS\nledger (.gitignore policy) and 84 byte-identical copies of files at ProveIt\n73dfb5e5ab or upstream, appended to Research/OMITTED.tsv. Duplicated\n.py/.sh files are kept. Five CRLF tables are marked -text, and seven\ndelivered .log files are force-added past *.log. At Vladimir's request, no\nseparate manifest, omission or link recheck was run for this round. No\nsupplied script, test or build was run.\n\nThe project README gains a round-4 table and updated ladders. Polynomial\nspace now runs 18,535.75 -> ... -> 46.185, about 401x on the upper bound,\nand the cached best is 30.891/30.754. The low-degree and measured-speedup\nlists are extended. The docs/incoming table and the Computability index are\nupdated.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "parents": [
+        "73dfb5e5ab6e91bd7375e5b97ef85d7e1cc8e81d"
+      ],
+      "requested_paths_touched": [
+        "Computability/SubexponentialSAT",
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/a7ae5ab55f9627f5af7bf77443b3c34ef8ef1be4"
+    },
+    {
+      "sha": "b9941a7396e465f41df38326284d0500a117d775",
+      "committer_date": "2026-10-26T20:11:06-07:00",
+      "subject": "New incoming external reports: nine sub-exponential 3-SAT (ETH) packets",
+      "message": "New incoming external reports: nine sub-exponential 3-SAT (ETH) packets\n\nCommit, unchanged and as delivered, nine archives that the drop process had\nstaged in docs/incoming but not committed. Committing them keeps each one\nrecoverable after a later placement retires it (docs/incoming README,\nsection 1). Each staged blob equals the file on disk, and every archive\npasses zipfile.testzip (no truncated or partially written ZIP):\n\n- 3sat_round3_frontier_20261027.zip (2,188,228 bytes, 115 members)\n- ETH_Adaptive_Exact_Kernels_2026-10-27.zip (1,168,549 bytes, 152 members)\n- eth_adaptive_schedules_2026-10-26.zip (518,292 bytes, 39 members)\n- sat_adaptive_bounds_2026-10-26.zip (507,210 bytes, 30 members)\n- sat_adaptive_frontier_2026-10-26.zip (596,025 bytes, 39 members)\n- sat_adaptive_matrix_partition_2026-10-26.zip (500,027 bytes, 35 members)\n- sat_adaptive_tree_certificate_2026-10-26.zip (570,267 bytes, 43 members)\n- subexponential_sat_adaptive_four_2026-10-26.zip (529,257 bytes, 35 members)\n- subsat_rectangular_2026-10-26.zip (610,178 bytes, 40 members)\n\nThe commit is path-limited to these nine files. Placement in\nComputability/SubexponentialSAT follows separately.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "parents": [
+        "dde01c4a63b822c25b8eb345299346c36f837b49"
+      ],
+      "requested_paths_touched": [
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/b9941a7396e465f41df38326284d0500a117d775"
+    },
+    {
+      "sha": "450252e9d86c155f188b485629b9755c5c665371",
+      "committer_date": "2026-10-26T19:36:02-07:00",
+      "subject": "Place five round-3 sub-exponential 3-SAT packets; restore two round-2 scripts",
+      "message": "Place five round-3 sub-exponential 3-SAT packets; restore two round-2 scripts\n\nFile the third round of ETH refinement packets under\nComputability/SubexponentialSAT/Research and retire their archives from\ndocs/incoming. All five reviewed the fifteen earlier packets (ProveIt\n474ddba696/6d3adc4506). They combine compatible ingredients and add the\ncorpus's first measured kernel speedups. All keep the SAT order\nn log log n/sqrt(log n), and their coefficients are per normalized wire.\n\nRetired archives, where each went, and what each claims:\n- sat_adaptive_contraction_2026-10-26.zip (fa6e904d10):\n  sat_adaptive_contraction/, 50 files. Polynomial-space C = 55.709, the new\n  smallest (sqrt(17/24) x the composed 66.193). Cached 36.750/34.024;\n  15.392/14.250 at degree <= s^(1/12). Modular Cauchy kernel 6.22-58.62x.\n- sat_frontier_improvements_2026-10-26.zip (f898a9fde4):\n  sat_frontier_improvements/, 37 files. Polynomial-space 63.857; 26.902 at\n  degree <= s^(1/12) and 31.929 at s^(3/5); cached 38.484/34.275; quadratic\n  Cauchy table construction.\n- subexponential_sat_frontier_2026-10-26.zip (f42479bca2):\n  subexponential_sat_frontier/, 48 files. Polynomial-space 63.852; cached\n  37.930/33.623; exact O(NQ^2) labeling replacement measured 1.50-9.56x;\n  precision peeling measured up to 14.34x.\n- subsat_contraction_tree_2026-10-26.zip (f42479bca2):\n  subsat_contraction_tree/, 37 files. Cached time pi sqrt(24339)/(20 ln2) =\n  35.355, the smallest time coefficient, with space 34.275 and an imported\n  fast-matrix backend; prefix-reuse kernel 101.95x.\n- subexponential_sat_kernel_improvements_2026-10-26.zip (f42479bca2):\n  subexponential_sat_kernel_improvements/, 58 files. Compositions 66.605\n  (polynomial space) and 44.538/39.496. Adaptive Smith separator, Gray and\n  antipodal streamed extraction, projective filter, measured 2.16-7.86x.\n\nNothing is omitted. Bundled baseline modules (reference_balanced_packing.py,\nbaseline_packet_extraction.py, the joint_cauchy.py copies) are byte copies\nof placed files, but sibling modules import or load them, so they are kept.\nEach archive was extracted with `py -I` into its own empty scratch directory\nand checked for unsafe paths. Every member matched its packet's manifest,\nand every filed file is byte-identical to its member. Five CRLF CSV files\nare marked -text, and results/report_build.log is force-added past *.log.\n\nCorrection: the round-2 placement (6d3adc4506) omitted\n3sat_round2_refinement/scripts/build_report.sh and\nnegative_integrity_controls.py as duplicates, although that packet's\nreplay_archive.py and README run them. Both are restored from 3e57705cf1 and\ntheir two OMITTED.tsv rows removed. Duplicated .py/.sh files are now always\nkept, and the round-2 counts in the README are corrected to match.\n\nThe project README gains a round-3 table, separate polynomial-space and\nsubexponential-space coefficient ladders (polynomial space: 18,535.75 ->\n... -> 55.709, about 333x on the upper bound), low-degree figures and a\nmeasured-speedups list. The docs/incoming table and the Computability index\nare updated. Not included: eth_adaptive_schedules_2026-10-26.zip, which the\ndrop process staged but had not committed during this placement.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "parents": [
+        "fa6e904d109b738154db7fe41e7f2777e6d24aee"
+      ],
+      "requested_paths_touched": [
+        "Computability/SubexponentialSAT",
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/450252e9d86c155f188b485629b9755c5c665371"
+    },
+    {
+      "sha": "fa6e904d109b738154db7fe41e7f2777e6d24aee",
+      "committer_date": "2026-10-26T19:31:45-07:00",
+      "subject": "New research report(s)",
+      "message": "New research report(s)",
+      "parents": [
+        "f898a9fde4c3ed3bbcd53ed45cc79970b7b41d66"
+      ],
+      "requested_paths_touched": [
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/fa6e904d109b738154db7fe41e7f2777e6d24aee"
+    },
+    {
+      "sha": "f898a9fde4c3ed3bbcd53ed45cc79970b7b41d66",
+      "committer_date": "2026-10-26T19:29:47-07:00",
+      "subject": "New research report(s)",
+      "message": "New research report(s)",
+      "parents": [
+        "f42479bca245b93d130e46f95348f24daffa049a"
+      ],
+      "requested_paths_touched": [
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/f898a9fde4c3ed3bbcd53ed45cc79970b7b41d66"
+    },
+    {
+      "sha": "f42479bca245b93d130e46f95348f24daffa049a",
+      "committer_date": "2026-10-26T19:28:37-07:00",
+      "subject": "New research report(s)",
+      "message": "New research report(s)",
+      "parents": [
+        "474ddba696a5d385c091c23fb2995f69edd13e00"
+      ],
+      "requested_paths_touched": [
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/f42479bca245b93d130e46f95348f24daffa049a"
+    },
+    {
+      "sha": "6d3adc45061535ebe6fa7cd3d9b37dff7dcfc22a",
+      "committer_date": "2026-10-26T19:03:44-07:00",
+      "subject": "Place eight round-2 sub-exponential 3-SAT packets in SubexponentialSAT",
+      "message": "Place eight round-2 sub-exponential 3-SAT packets in SubexponentialSAT\n\nFile the second round of ETH refinement packets under\nComputability/SubexponentialSAT/Research and retire their archives from\ndocs/incoming. All eight bound the OpenAI preprint's normalized tensor\ncontraction by 2^{(C+o(1)) s/sqrt(log2 s)}, with C per normalized wire.\nNone changes the SAT order n log log n/sqrt(log n), and none closes a\nmissing interface of the round-1 conditional proposals.\n\nRetired archives, where each went, and the coefficient each claims:\n- eth_asymmetric_packet_balancing_2026-10-26.zip (3e57705cf1):\n  eth_asymmetric_packet_balancing/, 28 files. C = pi sqrt(5/2)(9+sqrt3)/ln2\n  = 76.909, the smallest claimed; 31.064 at degree <= s^(1/12).\n- 3sat_round2_refinement_20261027.zip (3e57705cf1): 3sat_round2_refinement/,\n  46 files. C = 84.066 on s/sqrt(ceil(log2 s)), with an independent review\n  and an audit of eth.pdf. 17 evidence/ copies of files already in ProveIt\n  (OpenAI sources, eth.pdf, six placed report sources, our README,\n  OMITTED.tsv, PROVENANCE.md, two scripts) are omitted.\n- eth_balanced_packing_2026-10-26.zip (3e57705cf1): eth_balanced_packing/,\n  22 files. C = 94.748.\n- eth_high_moment_2026-10-26.zip (3e57705cf1): eth_high_moment/, 21 files.\n  C = (9 pi/(4 ln2)) sqrt(15 log2 54) = 94.748, the same value.\n- ETH_Matching_Packing_Thin_Gaps_2026-10-27.zip (d098ba436b):\n  eth_matching_refinement/, 24 files. C = 94.748 again, a third independent\n  derivation. 11 sources/ snapshots are omitted.\n- eth_packet_refinement_2026-10-26.zip (3e57705cf1): eth_packet_refinement/,\n  20 files. C = 9 pi sqrt22/(2 ln2) = 95.664.\n- eth_recursive_refinement_2026-10-26.zip (3e57705cf1):\n  eth_recursive_refinement/, 24 files. C = 133.207, with a mod-8 Cauchy\n  slope of 64/21.\n- eth_joint_cauchy_2026-10-26.zip (3e57705cf1): eth_joint_cauchy/, 26 files.\n  C = 319.686 in polynomial space; a Strassen variant gets 225.597 time but\n  needs subexponential space.\n\nEach archive was extracted with `py -I` into its own empty scratch directory\nand checked for unsafe member paths. Every member matched its packet's\nchecksum manifest. Every filed file is byte-identical to its member.\n41 members are not filed:\n- three SHA256SUMS ledgers (.gitignore policy);\n- 38 byte-identical copies of files at ProveIt ab2fbc9e03/d098ba436b or\n  openai/math@7ef5c0cc5c, appended to Research/OMITTED.tsv with the commit\n  each matches. Every row was rechecked against the arrival ZIP and the named\n  commit.\n\nThe OMITTED.tsv identity column is now `byte_identical_to`, prefixed with\nits source. Three delivered CRLF CSV files are marked -text, and four\ndelivered qa/*.log audit logs are force-added past the *.log ignore rule.\nNo supplied script, test, Makefile or LaTeX build was run.\n\nThe project README gains a round-2 table and an updated coefficient ladder:\n18,535.75 -> 648.44 -> 374.38 -> ... -> 76.909, about 241x on the upper\nbound. The placement record, docs/incoming table and Computability index\nare updated to match.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "parents": [
+        "d098ba436b33df19365a44dd178694ff52845d19"
+      ],
+      "requested_paths_touched": [
+        "Computability/SubexponentialSAT",
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/6d3adc45061535ebe6fa7cd3d9b37dff7dcfc22a"
+    },
+    {
+      "sha": "d098ba436b33df19365a44dd178694ff52845d19",
+      "committer_date": "2026-10-26T19:00:24-07:00",
+      "subject": "New research report(s)",
+      "message": "New research report(s)",
+      "parents": [
+        "ab2fbc9e03d5c3d0ad6dec8686960bfe498b0b06"
+      ],
+      "requested_paths_touched": [
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/d098ba436b33df19365a44dd178694ff52845d19"
+    },
+    {
+      "sha": "3e57705cf14ee9ac99c0ac35cfff751dcf70b396",
+      "committer_date": "2026-10-26T18:54:16-07:00",
+      "subject": "New research report(s)",
+      "message": "New research report(s)",
+      "parents": [
+        "047f4f0426fa38d1fe02f194aa6aac254c42f643"
+      ],
+      "requested_paths_touched": [
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/3e57705cf14ee9ac99c0ac35cfff751dcf70b396"
+    },
+    {
+      "sha": "45233238aebf0e0a80f5a6cc39dbeaf1b28d9f9d",
+      "committer_date": "2026-10-26T18:13:48-07:00",
+      "subject": "Summarize the strongest claimed improvements in SubexponentialSAT README",
+      "message": "Summarize the strongest claimed improvements in SubexponentialSAT README\n\nAdd a section to Computability/SubexponentialSAT/README.md that ranks what\nthe seven packets claim against the OpenAI preprint's Appendix D bounds\n(n log log n/sqrt(log n) in the worst case, n/sqrt(log n) at fixed density):\n\n- Strongest proved claim: an improvement in one density regime only. It is\n  claimed independently by sat_density_improvement and\n  eth_density_refinement. At m = Theta(n log log n) the exponent goes from\n  n log log n/sqrt(log n) to n log log log n/sqrt(log n). The worst-case and\n  fixed-density exponents are unchanged.\n- Proved improvements of constants only: about 28.6x (648.44 vs 18,535.75),\n  a factor of 16, precision 24MD/u -> 6MD/u, and the 1/sqrt(3) mode ratio.\n  Each is a comparison of upper bounds, not of runtimes.\n- Strongest claim overall, conditional: 3sat_precision_refinement's\n  n log log n/log n (n/log n at fixed density). It rests on an unproved\n  summation algorithm. The weaker conditional proposals of 3sat_refinement\n  and 3sat_asymptotic_analysis are listed with their missing steps.\n- eth.pdf matches Appendix D's order in n and is not a refinement.\n\nThe summary is drawn from the packets' README and status files; nothing\nwas rechecked.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "parents": [
+        "770edf7756d197e8b18c26e71ada0c5c11faffd4"
+      ],
+      "requested_paths_touched": [
+        "Computability/SubexponentialSAT"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/45233238aebf0e0a80f5a6cc39dbeaf1b28d9f9d"
+    },
+    {
+      "sha": "3e096089911f0e3ff395168976a05297f5683186",
+      "committer_date": "2026-10-26T18:03:12-07:00",
+      "subject": "Vendor openai/math preprint \"The Exponential Time Hypothesis is False\"",
+      "message": "Vendor openai/math preprint \"The Exponential Time Hypothesis is False\"\n\nAdd an unmodified copy of the upstream manuscript directory\npreprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026 from\nhttps://github.com/openai/math at commit\n7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a, the head of main (committed\n2026-10-26T21:18:03Z), fetched 2026-10-26. It goes under\nlib/openai-math/preprints/, beside the existing Lean port, because lib/ is\nthe repository's only vendored-code root. It is the primary source of\nComputability/SubexponentialSAT.\n\n- Six files (README.md, paper.pdf, build/main_full_version.tex,\n  build/quantitative-{reduction,contraction,circuits}.tex). They were taken\n  from a shallow, blobless, sparse clone with `git cat-file blob`. Each\n  staged blob ID equals the upstream tree entry, so the copy is byte for\n  byte. The four build/*.tex files are force-added because the root\n  .gitignore ignores build/ directories.\n- License: upstream licenses the repository under Apache-2.0 and has no\n  license file under preprints/. preprints/LICENSE is the unchanged upstream\n  root LICENSE (blob 261eeb9e9f), byte-identical to the existing\n  lib/openai-math/LICENSE. No copyright or NOTICE text is invented.\n- preprints/PROVENANCE.md records the upstream URL, pinned commit, fetch\n  method and date, and the per-file sizes and blobs. It notes that the\n  directory is identical at the 42907c9e99 pin used by two packets, and that\n  the upstream Lean development is not vendored.\n- Links: lib/README.md, lib/openai-math/README.md and the\n  Computability/SubexponentialSAT README point to the vendored copy. The\n  project README now gives the 67-page paper.pdf a local link.\n\nNothing is built or compiled; the preprint is not part of the OAI library.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "parents": [
+        "d2025d4e89cb905244b865b0e7a6522979a55ff6"
+      ],
+      "requested_paths_touched": [
+        "Computability/SubexponentialSAT"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/3e096089911f0e3ff395168976a05297f5683186"
+    },
+    {
+      "sha": "2b925d8800cda68f5723b65dc1fcdaf3d8170359",
+      "committer_date": "2026-10-26T17:58:36-07:00",
+      "subject": "Place sub-exponential 3-SAT (ETH) reports in new Computability/SubexponentialSAT",
+      "message": "Place sub-exponential 3-SAT (ETH) reports in new Computability/SubexponentialSAT\n\nCreate the topic project Computability/SubexponentialSAT for claims that\n#k-SAT runs in 2^{o(n)} time, refuting the Exponential Time Hypothesis, and\nfor reports that analyse those algorithms. Place all nine 3-SAT/ETH arrivals\nof 26 October 2026 and retire them from docs/incoming.\n\nNew README.md: what the project is, its trust status (nothing checked in\nProveIt; no Lean/ or Coq/ yet), the two primary manuscripts, the upstream\nopenai/math Lean scope (lean/docs/378.md states a weaker\n(log log n)^2/sqrt(log n) bound than the manuscript), and an index of the\nseven packets with their claims and stated limits. Five packets pin\nopenai/math@7ef5c0cc5c and two pin 42907c9e99; the preprint directory is\nblob-for-blob identical at both.\n\nRetired archives and how each is accounted for:\n- cauchy_mode_improvement_2026-10-26.zip (arrival a505bd768b):\n  Research/cauchy_mode_improvement/, 17 files. Factorial Cauchy modes,\n  1/sqrt(3) mode-count ratio; order unchanged.\n- eth_contraction_improvements.zip (a505bd768b):\n  Research/eth_contraction_improvements/, 15 files. Exact Hermite taper,\n  schedule coefficient 648.44 vs 18,535.75, streamed packet extraction.\n- sat_density_improvement.zip (a505bd768b):\n  Research/sat_density_improvement/, 9 files. Density-aware bound\n  2^{O_k((n/sqrt(log n)) min{log(2+m/n), log log n})}.\n- eth.pdf (a505bd768b): Research/claude-2o-n-3sat/eth.pdf, the 49-page\n  \"A 2^{o(n)} time algorithm for 3-SAT\" credited to Claude, whose Lean\n  development is unpublished.\n- paper.pdf (a505bd768b): not filed. It is byte-identical to the OpenAI\n  preprint's paper.pdf (blob 0503566e95), recorded in Research/OMITTED.tsv.\n- 3sat_precision_refinement_2026-10-26.zip (64b3202ee8):\n  Research/3sat_precision_refinement/, 16 files. Precision 24MD/u -> 6MD/u;\n  the stronger rates are conditional.\n- 3sat_refinement_package.zip (64b3202ee8): Research/3sat_refinement/,\n  12 files. Scalar parity lift k(n+a); the (log log n)^{3/2}/log n rate\n  needs an unsupplied factorization.\n- eth_density_refinement.zip (64b3202ee8):\n  Research/eth_density_refinement/, 15 files. A density bound\n  n log(2+B)/sqrt(log n), overlapping sat_density_improvement.\n- 3sat_asymptotic_analysis_20261027.zip (8afdbbea48):\n  Research/3sat_asymptotic_analysis/, 35 files. Barriers and two missing\n  interfaces; no stronger bound. Its eight source/ copies of upstream files\n  are omitted as byte-identical and listed with their blobs in OMITTED.tsv.\n\nEach archive was extracted with `py -I` into its own empty scratch\ndirectory. Every filed file matched the packet's own checksum manifest. Five\ndelivered SHA256SUMS ledgers are not committed: the root .gitignore excludes\nthem by policy (c00d8c3993). Two delivered CRLF CSV files are marked -text\nin .gitattributes, so their staged blobs equal the delivered bytes. No\nsupplied script, test, Makefile or LaTeX build was run.\n\nThe docs/incoming README gains a table for this batch. The Computability and\nroot READMEs gain one-line entries for the new project.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "parents": [
+        "8afdbbea48d67b8d252a99e8926f3eca9649eae3"
+      ],
+      "requested_paths_touched": [
+        "Computability/SubexponentialSAT",
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/2b925d8800cda68f5723b65dc1fcdaf3d8170359"
+    },
+    {
+      "sha": "8afdbbea48d67b8d252a99e8926f3eca9649eae3",
+      "committer_date": "2026-10-26T17:48:56-07:00",
+      "subject": "New research report(s)",
+      "message": "New research report(s)",
+      "parents": [
+        "64b3202ee84fc4d71fe69c34d2110c93b7da95cd"
+      ],
+      "requested_paths_touched": [
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/8afdbbea48d67b8d252a99e8926f3eca9649eae3"
+    },
+    {
+      "sha": "64b3202ee84fc4d71fe69c34d2110c93b7da95cd",
+      "committer_date": "2026-10-26T17:44:39-07:00",
+      "subject": "New research report(s)",
+      "message": "New research report(s)",
+      "parents": [
+        "a505bd768bce347c70e923586c5f72ad3085bf44"
+      ],
+      "requested_paths_touched": [
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/64b3202ee84fc4d71fe69c34d2110c93b7da95cd"
+    },
+    {
+      "sha": "a505bd768bce347c70e923586c5f72ad3085bf44",
+      "committer_date": "2026-10-26T17:42:51-07:00",
+      "subject": "New incoming external reports: sub-exponential 3SAT / ETH packets",
+      "message": "New incoming external reports: sub-exponential 3SAT / ETH packets\n\nCommit, unchanged and as delivered, the five sub-exponential 3SAT (ETH)\narrivals that the drop process had staged but not committed, so that each\nstays recoverable after the placement commit retires it (docs/incoming\nREADME, section 1):\n\n- cauchy_mode_improvement_2026-10-26.zip (603,205 bytes): factorial\n  Cauchy modes for the contraction of the OpenAI ETH preprint.\n- eth_contraction_improvements.zip (462,089 bytes): tapered Hermite\n  count, revised contraction schedule, streamed packet extraction.\n- sat_density_improvement.zip (476,245 bytes): clause-density-aware\n  exact k-SAT counting.\n- paper.pdf (887,884 bytes): OpenAI, \"The Exponential Time Hypothesis is\n  False\" (25 October 2026), byte-identical to paper.pdf in\n  openai/math@7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a.\n- eth.pdf (868,673 bytes): \"A 2^{o(n)} time algorithm for 3-SAT\"\n  (26 October 2026), a separate 49-page manuscript.\n\nPath-limited: no other staged or modified path is included.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "parents": [
+        "c271cbbd018fbfc1056532eb157a182c30de665a"
+      ],
+      "requested_paths_touched": [
+        "docs/incoming"
+      ],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/a505bd768bce347c70e923586c5f72ad3085bf44"
+    }
+  ],
+  "closure": {
+    "observed_head": "0cf10036e6ad732c27f13e6058f4acd9b3d78415",
+    "head_metadata": {
+      "sha": "0cf10036e6ad732c27f13e6058f4acd9b3d78415",
+      "committer_date": "2026-10-26T21:12:39-07:00",
+      "subject": "Prove one fixed actual C222 circuit implements unrestricted rho8 in every internal model",
+      "message": "Prove one fixed actual C222 circuit implements unrestricted rho8 in every internal model\n\nInterpret the generic finite dominated-implication derivation in an external expression algebra with a uniform circuit existential outside every model and input quantifier. Derive physical row8 dominance only at guarded leaf sites, then compose the exact minor-first MP circuit to remove the outer restriction. Preserve arbitrary initial top and saved stack and identify the final rho8 template definitionally.\n\nThe author and independent fresh pairs pass immediately with five standard-only axiom reports and identical objects, reusing the authenticated 126-module cache with 38 explicit boundaries. Freeze all drivers, input pins, source snapshots, logs, timings, source-only challenge and peer evidence. Record corrected line counts separately while preserving reviewed receipts. Internal proof-history compilation, source interpretation, exact215 calibration and HA equivalence remain open.",
+      "parents": [
+        "2d39aea9ac3eb41f92c199bf39a9159786d96293"
+      ],
+      "requested_paths_touched": [],
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/0cf10036e6ad732c27f13e6058f4acd9b3d78415"
+    },
+    "requested_path_commits_after_pin": [
+      {
+        "sha": "324f3d9b009ab0323f33be65cd6577867c9c4338",
+        "committer_date": "2026-10-26T20:55:13-07:00",
+        "subject": "Place five round-5 sub-exponential 3-SAT packets in SubexponentialSAT",
+        "message": "Place five round-5 sub-exponential 3-SAT packets in SubexponentialSAT\n\nFile the fifth round of ETH refinement packets (arrival 26bd83d4b3) under\nComputability/SubexponentialSAT/Research and retire their archives from\ndocs/incoming, which now holds only its README. All five reviewed the\nround-4 placement, and several cite the anthropics/formal-math Lean\ndevelopment. All improve only the cached (subexponential-space) branch,\nexcept one low-degree schedule. Generic polynomial space stays at 46.185;\nthe SAT order n log log n/sqrt(log n) is unchanged.\n\nRetired archives, where each went, and what each claims (cached\ntime/space, per normalized wire):\n- sat_pairwise_certificates (32 files): 29.812/29.812, the smallest cached\n  time; polynomial space 16.812 at degree <= s^(1/12) (from 23.666); two\n  structural obstructions.\n- sat_affine_contraction (30): 30.257/25.989, the smallest cached space.\n- sat_affine_geometry (57): 30.270/29.488.\n- sat_affine_cauchy (50): 30.413/29.466; guarded fast Cauchy transforms,\n  with negative timings kept.\n- sat_affine_plane (44): 30.691/29.466.\n\nEach archive was extracted with `py -I` into its own empty scratch\ndirectory and checked for unsafe paths. Not filed:\n- one SHA256SUMS ledger;\n- sat_affine_geometry's copy of this project's README at d86bd7259c\n  (appended to OMITTED.tsv);\n- seven generated build byproducts of sat_affine_geometry (report.aux,\n  .fdb_latexmk, .fls, .log, .out, .toc and a __pycache__ .pyc), which the\n  repository keeps out of history and which remain in the arrival archive.\nSix delivered results/*.log build records are force-added, and three CRLF\nCSV files are marked -text. As in round 4, no separate manifest, omission\nor link recheck was run, and no supplied script or build was run.\n\nThe project README gains a round-5 table, and the cached ladder now ends\nat 29.812 time / 25.989 space. The low-degree list leads with 16.812. The\ndocs/incoming table and the Computability index are updated.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+        "parents": [
+          "d86bd7259ca8a83b4ce31b814b5b929bf2d368f6"
+        ],
+        "requested_paths_touched": [
+          "Computability/SubexponentialSAT",
+          "docs/incoming"
+        ],
+        "url": "https://github.com/VladimirReshetnikov/ProveIt/commit/324f3d9b009ab0323f33be65cd6577867c9c4338"
+      }
+    ],
+    "byte_identity_record": "round5_closure.json",
+    "interpretation": "Only the round-5 placement touches the requested paths after the analysis pin. All 213 placed files are byte-identical to reviewed archive members; see closure record."
+  }
+}

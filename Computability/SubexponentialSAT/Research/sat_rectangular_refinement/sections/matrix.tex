@@ -1,0 +1,153 @@
+\section{A uniform exact rectangular backend}
+\label{sec:matrix}
+
+\subsection{Two fixed shapes suffice}
+
+Fix $\eps=10^{-5}$. The imported characteristic-zero results give, with
+any fixed positive slack, square exponent $9/4$ and exponent two for
+the shape $N\times N^{1/2}$ by $N^{1/2}\times N$
+\cite{uznanski}. We do not assume that an exponent infimum is attained
+by one finite algorithm with zero slack.
+
+\begin{lemma}[Uniform endpoint interpolation]\label{lem:rectangle}
+For sorted nonnegative logarithmic dimensions $x\ge y\ge z$, the product
+of matrices with those three index dimensions can be computed, up to
+polynomial bit overhead and fixed rounding factors, with exponent
+\begin{equation}\label{eq:rectangle}
+ F(x,y,z)=\max\left\{
+    (1+\eps/2)(x+y),\quad
+    x+(3/4+\eps)y+\tfrac12z\right\}.
+\end{equation}
+A fixed finite library of algorithms suffices for all shapes occurring in
+the contractor. Working storage is a polynomial factor times the largest
+input/output array, whose logarithmic size is $x+y$.
+\end{lemma}
+
+\begin{proof}
+Choose finite bilinear endpoint algorithms with fixed positive slacks at
+most $\eps$ in their exponents. First block the largest dimension, paying
+$x-y$. If $z\ge y/2$, put
+\[
+ t_0=2(y-z),\qquad t_1=2z-y.
+\]
+Both are nonnegative, $t_0+t_1=y$, and $t_0/2+t_1=z$.
+Tensoring thin and square algorithms gives exponent at most
+\[
+ x-y+(2+\eps)t_0+(9/4+\eps)t_1
+ =x+(3/4+\eps)y+z/2.
+\]
+If $z<y/2$, pad the inner dimension to $y/2$. The exponent is at most
+$x+y+\eps y\le(1+\eps/2)(x+y)$. This proves the cost bound.
+
+Only two endpoint shapes are used. Choose constant base dimensions
+compatible with the rational thin aspect ratio, and round the number of
+tensor iterations upward. Each rounding inflates all dimensions by
+fixed factors. If necessary allocate a smaller fixed slack to the
+endpoint choices to absorb these fixed overheads. No algorithm chosen
+from a continuum of input-dependent shapes is required.
+
+Execute the fixed bilinear recursions depth first, processing one child
+product at a time and accumulating into output arrays. At every recursive
+level, the required linear forms and output arrays are a fixed number
+of arrays at that level's dimensions. Their storage sums geometrically
+along an active path. Blocking is also sequential. Thus storage is a
+constant or logarithmic factor times the largest input/output array.
+Permuting the three tensor legs justifies sorting the dimensions.
+\end{proof}
+
+For comparison, using only the formal-scope bounds $\omega(\C)\le9/4$
+and $\alpha>0.465$ permits the conservative thin ratio $23/50$ and gives
+\[
+ \max\left\{(1+\eps/2)(x+y),\quad
+ x+(85/108+\eps)y+(25/54)z\right\}.
+\]
+The numerical headline uses the stronger half-width endpoint explicitly
+cited above; the weaker expression is recorded to make this dependency
+visible.
+
+\subsection{From complex identities to exact modular computation}
+
+The arithmetic model in the source matrix theorems is not itself a
+bit-complexity theorem for $R_p$. The following transfer closes that gap.
+
+\begin{lemma}[Fixed algebraic coefficients]\label{lem:descent}
+Fix a finite matrix-multiplication bilinear algorithm that exists over
+$\C$. An algorithm with the same permitted bilinear support and operation
+pattern, and no larger rank, exists with coefficients in a fixed number
+field. Outside a fixed finite
+set of primes, its identities hold in a fixed-rank finite algebra over the
+prime field. These constants and this exceptional set are independent of
+the input matrix dimensions obtained by recursively composing the base
+algorithm.
+\end{lemma}
+
+\begin{proof}
+Correctness of the fixed bilinear formula is a finite system of polynomial
+equations with rational coefficients in the algorithm's constants: equate
+the coefficient of every input monomial to the required multiplication
+coefficient. Existence of a complex solution means the ideal is proper.
+By the weak Nullstellensatz over $\overline\Q$, it has an algebraic-number
+solution. The finitely many coordinates lie in one finite number field
+$K$. Fix an integral primitive element $\theta$, a monic integer minimal
+polynomial $g$, and an integer $D>0$ such that all formula constants lie
+in $\Z[\theta,1/D]$.
+
+For a prime $q\nmid D$, reduce the coefficients in
+\[
+ A_q=\F_q[T]/(g(T)).
+\]
+The bilinear identity holds there because it is a polynomial identity.
+The polynomial $g$ need not remain irreducible or separable modulo $q$:
+the computation is division free after the fixed scalar denominators
+have been inverted. The scalar inclusion $\F_q\hookrightarrow A_q$ is
+injective, since $g$ is monic of positive degree. The algebra has fixed
+dimension, so arithmetic has constant overhead in prime-field operations.
+Recursive composition uses this same field and these same constants.
+\end{proof}
+
+The lemma is an existence theorem with a uniform algorithm once its finite
+base data are fixed. It does not give small base cases or usable practical
+crossover sizes. If effectivity of the base choice is desired, algebraic
+number coefficients and finite decompositions can be enumerated and their
+polynomial identities checked exactly; the existence theorem guarantees
+termination before the SAT input is processed. Its cost is a fixed
+constant for a fixed exponent slack. No input-dependent search is hidden
+inside the asserted exponent.
+
+\begin{proposition}[Transfer to the contractor ring]\label{prop:ring}
+The backend of Lemma~\ref{lem:rectangle} applies to the matrices over
+$R_p$ used by the contractor with a polynomial factor in $s+\mathcal L$
+and the stated input/output storage bound.
+\end{proposition}
+
+\begin{proof}
+Use the specified free-module basis of $R_p$ over $\Z/2^p\Z$ and lift
+each coordinate of each matrix entry to its integer representative in
+$[0,2^p)$. For an inner matrix dimension $d$, an ordinary scalar coordinate
+product has nonnegative entries bounded by
+\[
+ d(2^p-1)^2.
+\]
+Its bit length is $O(p+\log d)$, polynomial in the root parameter. Compute
+each such integer matrix product modulo sufficiently many nonexceptional
+odd primes so that their product exceeds this bound. For every prime,
+Lemma~\ref{lem:descent} supplies the same finite-base algorithm in $A_q$;
+read its scalar output coordinates in $\F_q$. Chinese remaindering then
+recovers the \emph{integer} coordinate matrix products exactly.
+
+Finally combine the coordinate-pair products with the ring's integer
+structure constants and reduce modulo $2^p$. There are only polynomially
+many coordinate pairs, and only polynomially many primes of polynomial
+bit length are needed. They can be processed sequentially, retaining
+partial CRT outputs of polynomial bit length. Thus both the time overhead
+and the storage overhead are polynomial.
+
+This argument does not posit a ring homomorphism from $R_p$ to an odd
+prime field; no such map is used. It first computes ordinary integer
+products of canonical coordinates and only then restores the ring
+multiplication. It also never divides by two or by a nonunit of $R_p$.
+\end{proof}
+
+The full continuum of shape bounds in~\cite{uznanski} is unnecessary for
+this theorem. Using a fixed endpoint library is what supplies uniformity
+for the input-dependent logarithmic dimensions of the actual mode lists.

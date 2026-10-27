@@ -1,0 +1,103 @@
+\section{The exact contraction interface used as input}\label{sec:interface}
+
+The graph is bipartite and Boolean: every edge carries one bit. A vertex
+entry is specified by a uniform procedure. With $E$ the edge set, the
+contraction is
+\[
+ Z=\sum_{x\in\{0,1\}^{E}}\prod_v T_v(x|_{\delta(v)}).
+\]
+There are at most $s$ edges and polynomially many vertices. Entries belong
+to $(\Z/2^{P_0}\Z)[V]/(V^\ell)$, with $1\le P_0,\ell\le s$.
+The description length is $\LL$, and an original entry costs
+$(s+\LL)^{O(1)}2^{O(s^{9/10})}$ time and polynomial space. The
+constants in these premises are fixed. Clause and equality tensors are
+much cheaper than this allowance.
+
+The unchanged algebraic ingredients are the Cauchy deformation and
+Hermite recovery of \cite{source}, the sharp precision and near-unit
+packing refinements \cite{precision,asymmetric}, and the full-block
+integral Cauchy modes of \cite{joint}. They operate over
+\[
+ R_p=(\Z/2^p\Z)[U,V]/(f(U),V^\ell),
+\]
+where $f$ is monic and irreducible modulo two, with degree polynomial
+in $s$. Its degree, $\ell$, the precisions, and coefficient descriptions
+remain polynomially bounded. A tensor retains its creation precision:
+later calls use the same canonical representatives of its creation-time
+entries. Canonical lifting is not assumed to preserve ring operations.
+
+\subsection{The imported local identities and entropy estimate}
+
+At a call with $M$ wires, fixed group alphabet $r$, taper $u$, packet
+exponent $a$, and retained valuation $i<u$, put $D=2^{a-i}$. The cited
+lemmas give child size $(2/r+o(1))M$, working precision
+\[
+ p_t\le(6+o(1))MD/u,
+\]
+and at most $(2/r^2+o(1))M/D$ mode families of each index on each
+directed pair. Their usable weights are
+$a+1-i+4j-2\pc(j)$. For an exact weight allocation, let
+$\mathcal I_{gh}$ be the finite mode list on directed pair $(g,h)$;
+empty lists are skipped. Set
+\[
+ h_{gh}=\log_2|\mathcal I_{gh}|,
+ \qquad \K(M,u)=\kappa\frac M{\sqrt u},
+ \qquad\kappa=\frac{\pi\sqrt2}{\ln2}.
+\]
+The contribution is the exact finite sum
+\begin{equation}\label{eq:exact}
+ \sum_{\xi_{gh}\in\mathcal I_{gh}}
+       \prod_{g=1}^{r} Z_g((\xi_e)_{e\ni g})\pmod {2^{p_t}}.
+\end{equation}
+Every $Z_g$ entry is an actual recursive child contraction. It is not a
+free table lookup until its entry has been computed and stored.
+
+For every vector $z\ge0$ in a fixed finite support family, the imported
+common-tilt entropy bound is
+\begin{equation}\label{eq:entropy}
+ \sum_{g\ne h}z_{gh}h_{gh}
+ \le\left(\frac{\norm z}{r}+o(1)\right)\K(M,u).
+\end{equation}
+For unordered edges set $g_{\{a,b\}}=h_{ab}+h_{ba}$. Thus
+\begin{equation}\label{eq:unordered}
+ v\cdot g\le
+ \left(\frac{\sqrt2\norm v}{r}+o(1)\right)\K(M,u).
+\end{equation}
+The factor $\sqrt2$ must be retained. The generating-product logarithm
+behind this estimate has leading term $\pi^2/(24\theta)$; minimizing
+the precision term plus its common-tilt contribution gives
+\eqref{eq:entropy}. The additive precision buffer used below makes the
+error uniform over the finite support family and all active depths.
+
+There are polynomially many weight allocations, since $r$ is fixed.
+The list cardinalities, iteration, and ranking are obtained by the
+existing finite knapsack procedure, not by an additional counting oracle.
+
+\subsection{Packing and the fully charged recurrence}
+
+Write $L_p=2^a$, $Q=r^a$, and let $R,C$ be the two side-degree bounds.
+The sufficient packing conditions from \cite{asymmetric} are
+\begin{equation}\label{eq:gates}
+ QR/M=o(1),\qquad Q^2C(\log s)^2/M=o(1),\qquad L_pQ^2/M=o(1).
+\end{equation}
+The notation $L_p$ distinguishes packet length from the SAT literal count.
+At the root both degree bounds are original. Below it the fresh side has
+degree at most $2^{a_{d-1}+1}$, and the retained side contains original
+tensors and earlier packets; no retained vertex gains ports.
+
+Caching one singleton group table requires at most
+$2^{(\alpha_r+o(1))\K}$ paid recursive evaluations, where
+\[
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+If local table combination has coefficient $\beta_r$, the recurrence is
+\begin{equation}\label{eq:paid}
+ T_d\le\poly(s)\left(
+ 2^{(\alpha_{r_d}+o(1))\K_d}T_{d+1}
+ +2^{(\beta_{r_d}+o(1))\K_d}\right).
+\end{equation}
+The maximum over all routes in this recurrence determines the global
+coefficient. In particular, improving only a local matrix bound need not
+improve the complete algorithm. We explicitly compute both the local
+routes and the terminal route in Section~\ref{sec:schedules}.
+

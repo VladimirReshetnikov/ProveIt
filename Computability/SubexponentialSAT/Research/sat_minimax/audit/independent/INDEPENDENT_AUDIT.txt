@@ -1,0 +1,259 @@
+INDEPENDENT MATHEMATICAL AND COMPUTATIONAL AUDIT
+27 October 2026
+
+Scope and evidence
+------------------
+This audit reviewed source mathematics and independently replayed the finite
+certificates. It did not rebuild the Lean development, rerun its independent
+kernel, prove the external matrix-multiplication theorems, or execute a SAT
+solver. The finite certificates are exact for the stated Euclidean entropy
+relaxation; their sharpness is not a lower bound for SAT or a claim that every
+entropy vector in the relaxation is realized by a Boolean tensor network.
+
+Pinned primary sources:
+
+* VladimirReshetnikov/ProveIt, commit
+  73dfb5e5ab6e91bd7375e5b97ef85d7e1cc8e81d, especially
+  Computability/SubexponentialSAT/Research and docs/incoming.
+  https://github.com/VladimirReshetnikov/ProveIt/tree/73dfb5e5ab6e91bd7375e5b97ef85d7e1cc8e81d/Computability/SubexponentialSAT
+* Vendored openai/math preprint, October 25 2026:
+  lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-contraction.tex
+  and quantitative-reduction.tex.
+* anthropics/formal-math, exact user-supplied commit
+  1a6eee293b9e00cb432eef6018a21f523623a9af, eth/MainResults.lean,
+  eth/Solution.lean, eth/README.md, eth/proof/PaperIndex.lean, eth/paper.pdf.
+  https://github.com/anthropics/formal-math/tree/1a6eee293b9e00cb432eef6018a21f523623a9af/eth
+
+1. The exact finite minimax identity is valid
+-------------------------------------------
+Let E be a finite coordinate set and V_1,...,V_q finite nonempty subsets
+of R_{≥0}^E. Then
+
+  max_{g≥0, ||g||_2≤1} min_j max_{v in V_j} <v,g>
+    = max_{v_j in V_j} min_{p≥0, sum p=1} ||sum_j p_j v_j||_2.
+
+For fixed g, choosing an independent maximizing support vector in each
+V_j proves min_j max_v <v,g> = max_{(v_1,...,v_q)} min_j <v_j,g>.
+The finite maximum commutes with the maximum over the compact ball.
+For each tuple, min_j <v_j,g> is the minimum over the probability simplex.
+The elementary compact convex bilinear minimax theorem exchanges this
+minimum and the ball maximum. Every convex combination of the support
+vectors is nonnegative, so the support function of the nonnegative unit
+ball at that vector is its ordinary Euclidean norm. These steps give the
+identity. Nonnegativity is needed at the final support-function step.
+
+A closest-hull certificate is rational when the supports are rational.
+For weights p, put w=sum p_j v_j. The exact sufficient and necessary
+conditions are p_j≥0, sum p_j=1, <v_j,w>≥||w||^2 for every j, with
+equality whenever p_j>0. They follow from first-order optimality of the
+squared norm on the convex hull. A maximizing tuple also gives a sharp
+lower witness g=w/||w|| if w is nonzero. A closest point has a representation
+on an affinely independent subset of support vectors. Solving the augmented rational system
+G p = t 1, 1^T p=1 on each such subset and checking all inequalities therefore
+produces a finite exact certificate; the squared optimum is rational.
+
+minimax_exact.py implements this argument with Python Fraction arithmetic.
+The six synthetic cases include zero and duplicate vectors and reject
+nonoptimal equal averaging. For vectors (2,0),(0,1), equal averaging has
+squared norm 5/4, while the closest hull point has squared norm 4/5 and
+weights 1/5,4/5. Thus weighting can strictly improve equal averaging.
+
+2. Four independent full tuple enumerations pass
+------------------------------------------------
+The input plan lists were read from the research data. Our code independently
+rebuilds every merge, edge class, permutation support and Gram matrix.
+All tuple sums use bounded int64 integers, and all hull solves use Fraction.
+The largest support-sum norm is below 1.2 million, far below overflow;
+the largest batched sum is below 10^10. Numpy accelerates integer arrays
+and contributes no floating-point assertion.
+
+                    tuples       max ||sum v_j||^2     beta^2
+classical r=9       15,752,961        649,356            54113/169344
+classical r=12      65,610,000      1,182,468            4110726305041430303/
+                                                       12559431766773663744
+new backend r=10    26,873,856        476,244            119061/387200
+new backend r=12    65,610,000        662,892            55241/185856
+
+Total: 173,846,817 tuples. The new-backend r=12 figure is a uniform-average
+upper certificate only; it is deliberately not described as the sharp
+minimax value. The other three coefficients have exact matching hull
+witnesses. Classical r=12 uses the exact sharp squared hull radius
+
+  R = 12332178915124290909 / 166871701833196.
+
+Only 18 tuples exceed the equal-weight pruning threshold floor(16R),
+and their closest points were independently checked exactly. This pruning
+is safe because the equal-weight convex combination is an available hull
+point. No tuple was omitted from the integer enumeration.
+
+Full JSON outputs and checksums are in results/classical_r9.json,
+results/classical_r12.json, results/new_backend_r10.json, and
+results/new_backend_r12.json. The normalization beta^2=2R/(D^2 r^2)
+uses D=56 or 44 and the factor two for combining the two directed entropy
+coordinates of each undirected edge.
+
+Reproduction (Python 3 with numpy):
+  python replay_menu_certificate.py --input inputs/classical_r9.json --output results/classical_r9.json
+  python replay_menu_certificate.py --input inputs/classical_r12.json --output results/classical_r12.json
+  python replay_menu_certificate.py --input inputs/new_backend_r10.json --output results/new_backend_r10.json
+  python replay_menu_certificate.py --input inputs/new_backend_r12.json --output results/new_backend_r12.json
+  python minimax_exact.py --output results/minimax_checks.json
+
+3. Independent schedule replay
+-----------------------------
+schedule_audit.py replays both rational schedules and the exact packing
+inequalities. Decimal evaluations use 80 digits and a 200-term Machin
+series. The numerical evaluations are not themselves interval proofs;
+the main certificate package supplies the separate interval enclosures.
+All strict packing gates in this audit are exact integer-power comparisons.
+
+Classical prefix r=(9,12,8,6,5,4,4,4):
+  C_time  = 30.0872056033774679349471815698, maximizing depth 1.
+  C_space = 28.8528994149423854287379829194, maximizing depth 0.
+
+Additional backend prefix r=(10,12,8,6,5,4,4,4):
+  C_time  = 28.9729416032324587865434353124, maximizing depth 0.
+  C_space = 28.9726518767136916496269390430, maximizing depth 0.
+
+Both have total precision allocation A_infinity=1577/25000=0.06308.
+The charged backend time slack is 1/100000. Space does not receive that
+time-exponent slack. The tail has r=3 and eta ratio 77/100, with recursive
+cost ratio (2/3)/sqrt(77/100)<1. The r=3 tail remains legal: it is a fixed
+alphabet greater than two and has asymptotic wire shrink 2/3. Taking a
+uniform eventual shrink bound 7/10 gives u_d at least a positive power
+of log s throughout active recursion (power greater than 0.267), which
+supports the uniform small-error estimates. These are inherited interface
+checks, not a new proof of the source recovery identity.
+
+Reproduce with: python schedule_audit.py
+
+4. The matrix-arithmetic bridge is adequate with fixed positive slack
+--------------------------------------------------------------------
+Reviewed files in the main report: sections/backend.tex and interface.tex.
+Primary additional sources in the source collection are mm_square.tex,
+Theorem 1 and the finite-algebraic-coefficient remark near source line 690,
+and mm_rectangle_intro.tex, main theorem and characteristic-zero transfer.
+Their claims are imported here, not independently reproved.
+
+For each fixed positive exponent tolerance, use a finite exact bilinear
+rank scheme. Its rational polynomial equations have an algebraic solution
+whenever they have a complex solution, so finitely many fixed coefficients
+lie in a fixed number field. Fixed rational coordinates simulate it exactly.
+The recursion has logarithmic depth, fixed linear combinations before the
+bilinear leaf products, and fixed linear combinations afterward. Coefficient
+heights therefore have polynomial overhead in input bit length and log
+matrix dimension. This is sufficient for the bit model used in the report.
+
+To multiply over a finite free (Z/2^p)-algebra, lift module coordinates to
+integers, perform polynomially many integer matrix products by that exact
+implementation, combine with the algebra's multiplication table, then
+reduce modulo 2^p. No number-field embedding into characteristic two and
+no inversion of a nonunit in the target ring is needed. Products may be
+streamed, retaining polynomially many input/output-sized arrays.
+
+The endpoint omega<=9/4 means arbitrarily small positive fixed slack,
+not automatically a single fixed algorithm of cost N^(9/4+o(1)). The
+report correctly charges relative slack 10^-5. The schemes and their
+constants may be enormous; no practical implementation claim follows.
+
+5. Anthropic source is now public; no independent kernel build here
+-----------------------------------------------------------------
+The previous corpus statement that the Lean development was unavailable
+must be updated. At the exact user-provided commit, MainResults.lean
+defines a uniform-in-k finite-alphabet Mathlib TM2 counting theorem with
+time 2^{C min(km/sqrt(log m), k^2 n loglog n/sqrt(log n))}. Its domain
+conditions include k>=1, n>=4, m>=2, all variables occurring, and no
+duplicate clauses. Solution.lean supplies mainTheorem via
+CountedRoute.mainTheoremHolds and also supplies ETHIsFalse.
+
+A static scan found 1,052 Lean source files. The only sorry statements
+found were the two intentional challenge placeholders in Challenge.lean;
+the supplied solution does not import that file. README.md reports a
+Lean build, the standard axiom set [propext, Classical.choice, Quot.sound],
+and Comparator/nanoda checking. These are author-reported checks: this
+audit read the pinned sources and did not independently run either kernel.
+
+Appendix E explicitly allows a constant multiplier when passing from the
+paper's operation model to Turing steps. Its implicit clique coefficients
+are therefore not numerically commensurate with the report's explicit
+normalized Boolean-wire coefficients.
+
+6. Scope of the actual-piece rank probes
+--------------------------------------
+rank_probes/probe_boson.py implements the (O2) operator recursion and the
+Appendix B Q'_s factorization modulo 1009. Source definitions can also be
+found at eth/proof/rates/ClauseBound/Boson/Defs.lean. It uses all p(h)
+external partitions of h, whereas the algorithm selects 2^lambda of them.
+Replacing b_mu=(h!/z_mu)t_mu by t_mu is an invertible external diagonal
+rescaling for the tested h<1009, so it preserves each flattening rank.
+
+Central-piece (s=0) ranks over F_1009:
+  h=3, p(h)=3:  row 8, column 9.
+  h=4, p(h)=5:  row 25, column 25.
+  h=5, p(h)=7:  row 49, column 49.
+  h=7, p(h)=15: row 225, column 225.
+
+Full crossing reconstruction was checked for h=3,4,5. For h=3 the code
+also checks equality of the two operator orders directly. h=7 was a
+central-piece probe only. Full modular rank implies full rational rank
+for these individual integer matrices, but a modular rank deficit need
+not be a rational deficit. None of these finite observations establishes
+an asymptotic rank-product improvement or an asymptotic obstruction.
+At these small sizes the raw partition-space bound is not yet useful.
+
+Examples:
+  python rank_probes/probe_boson.py 3 --output rank_probes/results/ranks_h3.json
+  python rank_probes/probe_boson.py 7 --central --output rank_probes/results/ranks_h7.json
+
+7. Rectangular-grid certificate identity
+---------------------------------------
+For h>0 and positive e_1,e_2, direct equalization gives
+
+ max_{-2h<=t<=2h} min(e_1 sqrt(2h+t), e_2 sqrt(2h-t))
+   = 2 sqrt(h) / sqrt(e_1^(-2)+e_2^(-2)).
+
+The increasing and decreasing terms meet at
+t=2h(e_2^2-e_1^2)/(e_1^2+e_2^2), which lies in the specified interval.
+After the source normalization, e_out=(e_1^(-2)+e_2^(-2))^(-1/2).
+For e(K)=C/sqrt(log K) and K=K_1 K_2 this is precisely e(K).
+Thus rectangularizing that displayed partition envelope alone does not
+change its logarithmic power. This is an identity for the certificate
+family, not a lower bound for an algorithm or for SAT.
+
+8. Essential modular-CRT correction for the open rank criterion
+--------------------------------------------------------------
+The finite-field rank compiler itself is valid. The improved rank bound
+rho<1/sqrt(2) remains unproved. A rational-rank upper bound transfers to
+every prime because all larger minors are exactly zero as integers.
+
+For the direct clause-count reduction, a run modulo a good prime returns
+the count modulo that prime, and a prime product >2^n suffices. However,
+the sharper variable-count reduction in paper Appendix D uses a truncated
+parity expansion valid only modulo powers of two (Lemma 12, (64)-(65)).
+It is incorrect to run that truncated reduction over odd prime fields
+and identify its result with the count modulo those primes.
+
+The repair is to supply an exact signed integer clique oracle first.
+For a (K,lambda)-clique with |W_v|<2^B, elementary summation gives
+
+  |Z| <= 2^[binom(K,2)*lambda + K*B].
+
+Compute its value modulo sufficiently many good primes with product
+greater than 2^[binom(K,2)*lambda+K*B+1], then use signed CRT to recover
+Z exactly. Appendix D's original 2-adic truncation and exact potential
+comparisons can then be used unchanged. The internal modular recursion
+values need not be reconstructed separately. K,lambda,B and every reached
+h have polynomial bounds in the original input, so polynomially many
+polynomial-size primes suffice. Taking primes above every reached h
+ensures that the factorial normalizers are invertible. This correction
+preserves the conditional logarithmic-power consequence, but it is an
+essential arithmetic interface condition rather than an optional detail.
+
+Overall conclusion
+------------------
+The new finite minimax method, its four replayed certificates, and the
+two charged schedules withstand this independent audit. They give improved
+explicit coefficients within the imported contraction framework. No
+strictly better power of log n was proved. The modular actual-rank route
+is a precise conditional research direction after the signed-CRT repair;
+the required uniform rank theorem is still open.

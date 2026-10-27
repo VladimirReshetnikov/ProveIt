@@ -1,0 +1,37 @@
+\begin{abstract}
+We review the twenty-nine placed refinement packets and five newer incoming
+packets at ProveIt commit \texttt{8e76d515063c}, with the application restricted
+throughout to 3-SAT. We do not obtain a smaller logarithmic-order worst-case
+exponent. We do obtain stronger exact contraction bounds and a more economical
+translation to 3-SAT.
+
+The main additional ingredient is an exact-arithmetic transfer of the published
+complex matrix bounds $\omega\le9/4$ and $\alpha>0.465$ to the integer and
+truncated coefficient rings required by the SAT contractor. A fixed number-field
+realization of each finite bilinear algorithm makes this transfer possible;
+floating-point complex arithmetic is unnecessary. Combining the resulting
+rectangular bound with exact support certificates, including a new fifteen-plan
+cyclic construction, gives cached normalized time coefficients
+$28.6327662765\ldots$ at root degree $s^{9/10}$ and
+$10.3367239855\ldots$ at root degree $s^{1/12}$, on the scale
+$s/\sqrt{\log_2s}$. The best corresponding coefficients in the reviewed
+packets are $29.8116089453\ldots$ and $13.3796490662\ldots$.
+
+For a 3-CNF with $L$ normalized literal occurrences, growing-degree equality
+trees have $(1+o(1))L$ wires and polylogarithmic maximum degree. Consequently
+the new low-degree theorem gives an exact counter, and hence a decider, in
+\[
+ \poly(n+m)\,2^{(10.3367239856\ldots+o(1))L/\sqrt{\log_2L}},
+\]
+where the slightly rounded decimal denotes an upper value; the exact
+coefficient is specified in Section~\ref{sec:schedules}. Its space coefficient
+is $10.3366545686\ldots$ on the same scale. The safe eventual coefficient
+$10.337$ is certified for both resources. This statement pays for the SAT
+encoding; it does not substitute the number of variables for the wire budget.
+The archive supplies full proofs of the new interfaces and schedules,
+integer support certificates, exact rational numerical checks, a tested
+equality-network compiler, and a review of the referenced Lean development.
+The full subexponential counter and the imported matrix algorithms are not
+implemented or newly formalized here.
+\end{abstract}
+

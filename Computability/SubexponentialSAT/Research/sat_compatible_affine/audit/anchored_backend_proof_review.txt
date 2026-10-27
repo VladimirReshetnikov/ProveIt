@@ -1,0 +1,28 @@
+# Independent proof review of the symmetric rectangular anchor
+
+Primary source: Vassilevska Williams, Xu, Xu, Zhou, *New Bounds for Matrix Multiplication: from Alpha to Omega*, arXiv:2307.07970v2, Table 1 and Section 3.4. The source gives alpha>=0.321334, omega<=2.371552, omega(1,0.55,1)<=2.066134, and omega(1,0.60,1)<=2.092631. It defines the exponents via asymptotic tensor rank and explains the arithmetic-circuit interpretation and permutation symmetry of matrix multiplication tensors. These are sufficient bounds, not a claim of the latest square-multiplication record.
+
+Use fixed strict values a=321333/10^6, o=2371553/10^6, and e=1/10^6. Let c=(o-1)/2=1371553/2000000. Interpolate the two effective rectangular points (11/20,2066135/10^6) and (3/5,2092632/10^6). Their chord intersects the line 1+c(1+k) at
+
+    k*=59261/103891,
+    A*=26972100941/12986375000.
+
+The exact equalities are checked independently. In particular 11/20<k*<3/5 and A*=1+c(1+k*). The endpoint costs have positive slack above the published exponent bounds, so fixed finite algorithms can be chosen. Tensor products interpolate the two anchor algorithms. The rounding of tensor powers and block dimensions changes costs by fixed or polynomial factors, not by a new leading exponent.
+
+Write x>=y>=z>=0 for the logarithms of the three matrix-multiplication dimensions. Matrix tensor permutation symmetry allows this sorting. Blocking the largest dimension pays x-y in the exponent, after which the two larger dimensions agree at y.
+
+1. If z<=a y, pad to the dual-exponent shape. The exponent is at most x+y+e y, which is at most d(x+y), where d=1+e/2.
+2. If a y<=z<=k* y, use nonnegative tensor-product amounts t0=(k_star*y-z)/(k_star-a) and t1=(z-a*y)/(k_star-a). They satisfy t0+t1=y and a*t0+k_star*t1=z. Their exponent is x-y+(2+e)t0+A*t1=x+v y+w z, where w=(A*-2-e)/(k*-a) and v=1+e-a w.
+3. If k* y<=z<=y, use tA=(y-z)/(1-k_star) and tS=(z-k_star*y)/(1-k_star). The exponent x-y+A*tA+o*tS simplifies exactly to x+c(y+z), by the anchor identity.
+
+Consequently the maximum of these three linear expressions is a valid uniform operation-cost upper bound. Its supports on an unsorted triple are the distinct permutations of
+
+    (d,d,0), (1,v,w), (1,c,c).
+
+There are 3+6+3=12 of them. Exact arithmetic gives 0<w<v<1<d and 0<c<1, so rearrangement identifies each permutation maximum with its sorted expression. No invalid interchange of a minimum and maximum occurs; this is simply a uniform upper bound for each dimension triple.
+
+The scalar field algorithms can be used in the inherited contractor's ring through the existing coordinate-lifting and CRT interface. Ring elements have polynomially many scalar coordinates with polynomial bit lengths; a fixed bilinear algorithm has only finitely many denominator-prime exceptions. Integer coordinate products reconstructed using sufficiently many nonexceptional odd primes avoid division by nonunits in the original ring. The number of coordinates, residue primes, and scalar bit operations adds only polynomial factors. This is an imported implementation theorem, not something established by the finite support checker.
+
+The same cost envelope pays local storage: every input or output matrix table contains at most 2^(x+y) entries, which is bounded by the first expression. A field arithmetic implementation can use at most its arithmetic-operation count in workspace, up to the polynomial coordinate overhead. Ancestor tables are charged by the inherited cached recurrence.
+
+The new primitive envelope, the finite support certificate, and the end-to-end analytic recurrence are distinct proof obligations. The checker certifies the first envelope's rational arithmetic and the second obligation; the upstream contraction, ring, and schedule theorems remain explicit dependencies.
