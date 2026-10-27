@@ -11,6 +11,15 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [internal Pell classification](reviews/arithmetic-pell-classification-root.md)
+now proves the stated Pell norm iff a represented internal index<=y,
+uniformly over all IΣ1 models. Descent justifies natural subtraction and
+the bounded-universal invariant has an actual Sigma1 certificate.
+Independent builds match both objects and six standard-only reports.
+This closes solution classification for base b+2/discriminant(b+1)(b+3);
+carrier congruences,index restrictions and cofinal witness construction
+still precede the final PA-to-HA equation theorem.
+
 The [adaptive canonical converse](reviews/native-adaptive-canonical-root.md)
 now turns every positive Carrier65 zero into a positive zero of the literal
 adaptive graph, retaining full PortBounds and deriving all private witness

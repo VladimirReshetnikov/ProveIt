@@ -29,6 +29,14 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [internal Pell classification](reviews/arithmetic-pell-classification-root.md)
+now proves both directions between the stated norm and a represented
+internal sequence index<=y in every IΣ1 model. The descent and bounded
+universal have actual Sigma1 induction/definability proofs. Independent
+builds match both objects and six standard-only reports. Carrier congruences,
+index restrictions,cofinal simultaneous witnesses and final PA/HA composition
+remain open; this is not an arbitrary-discriminant theorem.
+
 The [adaptive canonical converse](reviews/native-adaptive-canonical-root.md)
 now constructs the literal positive adaptive zero from every positive
 Carrier65 zero under full PortBounds. Source/index bounds derive every

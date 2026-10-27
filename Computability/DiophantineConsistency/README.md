@@ -164,6 +164,14 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [internal Pell classification](reviews/arithmetic-pell-classification-root.md)
+now proves that every solution of x²=1+(b+1)(b+3)y² in an arbitrary IΣ1
+model has a represented sequence index at most y, and proves the reverse
+direction. Descent and a bounded-universal Sigma1 invariant supply the
+actual internal proof. Independent builds match both objects and six
+standard-only reports. Carrier congruences and simultaneous witness
+construction remain before the full equation/ConZFC PA/HA theorem.
+
 The [adaptive canonical converse](reviews/native-adaptive-canonical-root.md)
 now maps every positive Carrier65 zero under its complete PortBounds to
 a positive literal adaptive zero, preserving J/F/alpha. Its stronger
