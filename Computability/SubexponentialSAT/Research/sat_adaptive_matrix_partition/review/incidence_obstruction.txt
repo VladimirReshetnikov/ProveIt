@@ -1,0 +1,177 @@
+ACTUAL-DOMAIN INCIDENCE-ENCODING OBSTRUCTION
+===========================================
+
+Scope and source
+----------------
+The underlying incidence-entropy obstruction is already in the reviewed
+corpus: 3sat_asymptotic_analysis/report/research_routes.tex and its
+research_decision/findings.md. The latter even supplies a probabilistic
+construction from genuine 3-CNF violation polynomials. The contribution
+here is only a simple deterministic quadratic witness, exact finite
+checks, and the additional no-polynomial-row-redundancy property. It must
+not be presented as a new barrier or a new asymptotic lower-bound order.
+
+This result concerns the monomial-by-monomial Boolean encoding used in
+Lemma `lem:tensor-sparse-query` of quantitative-reduction.tex. It is NOT
+an algorithmic lower bound for SAT or #SAT. It does not claim that every
+system below is produced by the specific expander/greedy reduction from
+k-CNF. The systems are valid inputs of the sparse-query interface itself.
+That distinction is essential.
+
+Sources inspected at ProveIt fd0edd17e6a29117179b40a453c0def59165bd7c:
+- lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-reduction.tex
+  Lemma lem:tensor-sparse-query; paragraphs The polynomial on the incidences,
+  Indexing the monomials, and Tensor entries and contraction.
+- The corresponding main_full_version.tex, Lemma lem:rational-idempotent.
+- Computability/SubexponentialSAT/Research/sat_density_improvement/density_aware_sat_improvement.tex,
+  subsection Why simply retuning sparsification does not go further.
+
+Proposition
+-----------
+Fix integers n,q with 1 <= q and 2q < n. Index n Boolean variables by
+Z/nZ and form the n quadratic equations over F_2
+
+    P_i(x) = x_i (x_{i+1} + ... + x_{i+q}) = 0.
+
+Each equation has q distinct degree-two monomials and scope q+1. Each
+variable occurs in precisely q+1 test scopes. Moreover, every nonzero
+F_2-linear combination of r distinct equations has precisely rq
+monomials. In particular, the equations are linearly independent as
+polynomials, and row operations alone cannot find a nonzero equation
+with fewer than q monomials.
+
+Give each test-variable incidence its own indeterminate z_{iv}. Apply
+exactly the source's lift with p = ell = n+1:
+
+    B_i(z_i,V) = sum_{j<ell} e_j(L_i(z_i)) h(L_i(z_i))^j V^j,
+    F(z,V) = product_i multilinearize(B_i(z_i,V)),
+    h(Y)=Y(Y-1),
+    L_i(z_i)=z_{ii} sum_{a=1}^q z_{i,i+a}.
+
+Then the coefficient [V^0]F contains exactly (q+1)^n distinct incidence
+monomials, each with coefficient +1 or -1. In particular, there are q^n
+such monomials of degree exactly 2n. They all survive modulo 2^{n+1}
+and all have degree within the source's retained bound K=6n.
+
+Proof
+-----
+If the unordered pair {i,i+a} from one row equaled {j,j+b} from another,
+either i=j and a=b, or a+b is 0 modulo n. The latter is impossible
+because 2 <= a+b <= 2q < n. Thus all nq original-variable monomials are
+distinct. Taking an F_2-linear combination of rows cannot cancel any
+monomial, giving the rq assertion.
+
+The source's polynomial p_ell has p_ell(0)=1 and p_ell(1)=0. Since e_0 is
+its degree-at-most-one remainder modulo Y(Y-1), e_0(Y)=1-Y. Therefore
+
+    [V^0]F = product_i (1 - z_{ii} sum_{a=1}^q z_{i,i+a}).
+
+Every factor is already multilinear. Different rows use disjoint
+incidence variables. In each factor, choose either 1 or one of the q
+quadratic monomials. Distinct choice vectors give distinct incidence
+monomials, with coefficient (-1) to the number of nonconstant choices.
+This proves the exact support count and the degree-2n subcount. The
+coefficients are odd, hence nonzero modulo 2^{n+1}. The source bound is
+K=k(a+2(ell-1))=2(n+2n)=6n, so all these monomials are retained. QED.
+
+Corollary: the coding lower bound
+--------------------------------
+Consider a representation of these retained incidence monomials by R
+Boolean tensor networks. Suppose the representation has the following
+specific property: each global assignment of a network's Boolean wires
+indexes at most one incidence monomial, and distinct incidence monomials
+must have distinct (network, wire-assignment) codes. If every network has
+at most s wires, then
+
+    R * 2^s >= (q+1)^n,
+    s >= n log_2(q+1) - log_2 R.
+
+This is a cardinality statement, independent of any contraction routine.
+The original monomial-index construction has precisely this property.
+Its degree-array count satisfies
+
+    R <= (K+1)^(ceil(n^(1/4))^2),
+    log_2 R = O(sqrt(n) log n).
+
+Set q = ceil(log_2 n)^c for a fixed positive integer c. The inequality
+2q<n holds for all sufficiently large n. These systems lie in the
+source's sparse-query domain with k=2, a=n, and q<=lambda^c monomials per
+row, lambda=ceil(log_2 n). There is no high-incidence branching: every
+variable occurs in q+1 scopes while the source's threshold is
+(q+1)ceil(sqrt(lambda)). Thus for the source's number of degree arrays,
+
+    s >= (c+o(1)) n log_2 log_2 n.
+
+Consequently an O(n)-wire compression of *this raw monomial-index
+representation*, with only 2^{o(n log log n)} outer cases, cannot hold
+uniformly over the sparse-query interface.
+
+What this does not rule out
+--------------------------
+1. Collectively adding coefficients after identifying incidence copies
+   of a variable. The resulting multilinear polynomial has at most 2^n
+   supports. Computing its coefficients efficiently is the unresolved
+   algorithmic step, not a violation of the coding argument.
+2. A network assignment whose tensor entry already sums many raw
+   monomials. Such a representation lacks the proposition's one-monomial
+   code property.
+3. Structural preprocessing, specialized handling of this cyclic family,
+   or a solver not using the source's incidence representation.
+4. A better theorem for the narrower set of systems actually emitted by
+   a particular k-CNF reduction. No claim is made here that the displayed
+   family arises from that specific reduction.
+5. A lower bound on the running time of any SAT algorithm.
+
+The result therefore gives a concrete test of a proposed interface:
+if it promises O(n) wires on every sparse-query input, it must explain
+where and how many incidence monomials are aggregated. Merely replacing
+the index format or tightening its entropy estimate cannot suffice.
+
+Finite checks
+-------------
+verify_incidence_obstruction.py checks five (n,q) cases, including all
+row combinations, all degree-2n incidence choices, and the full V^0
+support. Every check passes. It also identifies variable copies and
+collects the resulting integer coefficients, demonstrating directly
+that this operation can reduce the support dramatically and is outside
+the coding restriction. The finite checks support implementation and
+bookkeeping; the proof above establishes the general statements.
+
+DENSITY AND SPARSIFICATION CONSEQUENCES OF A BETTER CONTRACTION CONSTANT
+======================================================================
+
+Write the normalized network bound as
+
+    T_C(s) <= poly(s) * 2^{(C+o(1))s/sqrt(log_2 s)}.
+
+For the same encoder, same input domain, and same network budget s, a
+replacement C_new<C_old is an asymptotically smaller *explicit upper
+bound*: the quotient of the displayed exponential certificates is
+
+    2^{-(C_old-C_new+o(1))s/sqrt(log_2 s)}.
+
+It does not change the exponent's Theta(s/sqrt(log s)) order, and cannot
+be converted numerically into a SAT-variable coefficient without the
+encoding's explicit constants and all outer-loop costs.
+
+The density-aware reduction supplies, with constants depending on fixed
+k but uniform in B,
+
+    s = O_k(n log(2+B))
+
+in its permitted polylogarithmic-density range. Substituting any smaller
+fixed C still yields
+
+    2^{O_k(n log(2+B)/sqrt(log n))}.
+
+Sparsification with parameter sigma produces occurrence bound
+B=O_k((sigma^{-1} log(2/sigma))^(k-1)) and 2^{O(sigma n)} outer work.
+The resulting scalar estimate has form
+
+    n [ b sigma + a log(1/sigma)/sqrt(log n) ]
+
+for positive fixed a,b (plus lower-order terms). Its stationary point
+is sigma=a/(b sqrt(log n)) when in range. The optimized scale is still
+n log log n/sqrt(log n). Decreasing C changes a and therefore fixed
+constants; it does not remove log log n. This observation already
+appears in sat_density_improvement and must not be claimed as new.

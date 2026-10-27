@@ -1,0 +1,258 @@
+The following schedules improve the \emph{combined} frontier, not just any
+single supplied report. We reuse the supplied asymmetric pair-load lemma,
+thin precision gaps, exact Hermite taper, and all-level full-block Cauchy
+factorization. The new ingredients here are a finite succession of grouping
+alphabets, a carefully allocated geometric tail, and, for low-degree inputs,
+allowing generated packet degrees to grow while charging their actual size.
+No optimality claim is made for the schedules.
+
+\subsection{The local bound and what is being compared}
+Put $\lambda=\lceil\log_2s\rceil$. At depth $d$, let $u_d$ be the retained
+valuation range, $a_d$ the packet exponent, $M_d$ the active edge count, and
+$r_d$ the grouping alphabet. The compatible supplied ingredients give
+\begin{align}
+ M_{d+1}&\le (2/r_d)(1+o(1))M_d,\label{eq:ms-child}\\
+ \log_2 N_d&\le (K(r_d)+o(1))M_d/\sqrt{u_d},\qquad
+ K(r)=\frac{\pi}{\ln2}\sqrt{2(1-1/r)}.\label{eq:ms-local}
+\end{align}
+All error terms below are uniform over active calls. To see the coefficient,
+write $D=2^{a_d-i}$. The precision envelope is $(6+o(1))M_dD/u_d$;
+the full-block mode-family envelope is
+$(2(1-1/r_d)+o(1))M_d/D$. The joint weights have slope four:
+$w_j=a_d+1-i+4j-2s_2(j)$. Their partition product is bounded above by
+that for $4j+1-2s_2(j)$, whose logarithm is
+$(\pi^2+o(1))/(24\theta)$ per family. Optimizing the positive real
+parameter $\theta$ yields~\eqref{eq:ms-local}. Dropping the positive
+intercept is an upper bound; no assertion about a sharp joint limit of the
+intercept and saddle is needed.
+
+For comparison, the supplied asymmetric schedule has leading coefficient
+$76.9089949516\ldots$ with slope-three modes. Simply substituting the
+supplied joint modes gives $66.6051434076\ldots$, without any new schedule.
+The asymmetric report also gives an excluded-boundary constant
+$76.4327736858\ldots$; multiplying this stronger comparison by
+$\sqrt{3/4}$ gives $66.1927236936\ldots$. More explicitly, its limiting
+$r=16$ root budget is $1/80$ and the remaining budget is $1/80$; optimally
+allocating the latter geometrically gives
+\[
+ \frac{K(16)}{\sqrt{1/80}}+
+ \frac{(1/8)K(16)}{\sqrt{1/80}(1-(1/8)^{2/3})^{3/2}}
+ =66.1927236936\ldots.
+\]
+This boundary is an infimum of admissible fixed-slack schedules, not an
+attained finite parameter choice. The new bound below is smaller even
+than it. A stronger retuned comparison allows $r_0=17$ at the root and $r=13$
+thereafter. With $V=1/(20\log_2 17)$, $B=1/(10\log_2 13)-V$, its
+excluded-boundary value is
+\[
+ \frac{K(17)}{\sqrt V}+
+ \frac{(2/17)K(13)}{\sqrt B(1-(2/13)^{2/3})^{3/2}}
+ =66.1204754600\ldots.
+\]
+The new theorem also improves on this more generous comparison. We do not
+claim this two-stage value is globally minimal or that all possible
+recombinations of the supplied ideas have been optimized.
+These comparisons concern upper-bound certificates, not lower bounds on
+previous algorithms.
+
+\begin{theorem}[Generic polynomial-space coefficient below 64]
+\label{thm:multistage-generic}
+On the original normalized interface with at most $s$ edges, maximum degree
+at most $\lceil s^{9/10}\rceil$, $P_0,\ell\le s$, polynomial description
+length dependence, and original entry allowance
+$\operatorname{poly}(s+\mathcal L)2^{A s^{9/10}}$ for fixed $A$, the unchanged
+source identities together with the supplied local lemmas admit contraction
+in polynomial space and time
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(63.7573555464258\ldots+o(1))s/\sqrt\lambda}.
+\]
+In particular the coefficient can be replaced by $64$ for sufficiently
+large $s$. This is a relative contraction theorem, not an independent
+verification of the whole source or a coefficient directly on SAT variables.
+\end{theorem}
+
+\subsection{An entirely rational schedule}
+Use $r_0,\ldots,r_5=(13,14,8,6,5,4)$ and $r_d=3$ for $d\ge6$.
+Define the rational cumulative leading budgets
+\[
+ (A_0,\ldots,A_5)
+ =(.01351,.02626,.03333,.03868,.04306,.04999),
+ \qquad A_*=.06308,\qquad q=\frac{763}{1000}.
+\]
+Every displayed terminating decimal here denotes its exact rational value.
+Put $A_{-1}=0$, $v_d=A_d-A_{d-1}$ for $0\le d\le5$, and
+\[
+ v_{6+j}=(A_*-A_5)(1-q)q^j\quad(j\ge0),\qquad
+ u_d=\lfloor\lambda v_d\rfloor.
+\]
+Set
+\[
+ g=\lceil\log_2\lambda\rceil^2,\qquad
+ a_d=\sum_{j=0}^d u_j+(d+1)g,\qquad H=\lceil s/\lambda\rceil.
+\]
+Below a finite threshold, or if the required integer inequalities fail,
+use direct contraction. Thus no small input is forced into a degenerate
+zero-range taper. The fixed rational slack is deliberate: the theorem does
+not rely on implementing an excluded boundary or using floating-point logs.
+
+\begin{proof}[Proof of Theorem~\ref{thm:multistage-generic}]
+We first establish uniform applicability without assuming a recursion depth.
+Consider every hypothetical depth
+$0\le d\le D_*:=\lceil\log_{10/7}\lambda\rceil+10$ and every active
+$M>H$. In this range $(d+1)g=O((\log\lambda)^3)=o(\lambda)$.
+For the six finite stages, $a_d\le A_d\lambda+o(\lambda)$; in the tail,
+$a_d\le A_*\lambda+o(\lambda)$. Every $u_d$ tends to infinity uniformly:
+indeed $q>7/10$ gives
+\[
+ \min_{d\le D_*}u_d\ge\lambda^{\eta+o(1)},\qquad
+ \eta=1+\frac{\ln q}{\ln(10/7)}>0.
+\]
+Floors are consequently a uniform relative $o(1)$ perturbation.
+
+At the root, symmetric packing needs
+$r_0^{2a_0}s^{9/10}\operatorname{poly}(\lambda)=o(M)$.
+The leading inequality is
+$20A_0\log_2(13)<1$. Below the root, the supplied child-side invariant
+is $R_d\le\lceil s^{9/10}\rceil$ and $C_d\le2^{a_{d-1}+1}$.
+The asymmetric packing lemma requires
+\[
+ Q_d R_d/M=o(1),\quad
+ Q_d^2 C_d\lambda^2/M=o(1),\quad
+ 2^{a_d}Q_d^2/M=o(1),\qquad Q_d=r_d^{a_d}.
+\]
+For the row term it suffices that $10A_d\log_2r_d<1$ at finite stages
+$d\ge1$, and $10A_*\log_2 3<1$ in the tail. Every one of these
+inequalities is strict and checked by integer powers: if $A=n/m$,
+check $13^{20n}<2^m$ at the root and $r^{10n}<2^m$ thereafter.
+No approximate logarithm is used in these checks. The other tail exponents
+are smaller than $A_*+1/5=.26308<1$. The root rounding exponent is less
+than $A_0+1/10<1$. All logarithmic factors, $s/M\le\lambda$, ceilings,
+and the additive precision gaps are absorbed by the fixed positive margins.
+Also $2^{a_d+1}<s^{9/10}$ eventually, so no created tensor violates the
+high-degree premise. Uniform near-unit padding follows.
+
+For sufficiently large $s$, each hypothetical child shrinks by at least a
+factor $7/10$, since the largest limiting ratio is $2/3$.
+An active recursion path cannot reach $D_*$. This closes the induction and
+validates the hypothetical-depth argument. More sharply, the padding bound
+is $1+O(1/\lambda)+s^{-\epsilon+o(1)}$ for a fixed $\epsilon>0$;
+its product over $O(\log\lambda)$ depths is $1+o(1)$. Therefore, with
+$m_0=1$ and $m_d=\prod_{j<d}(2/r_j)$,
+\[
+ M_d\le(1+o(1))m_ds.
+\]
+The inherited precision is at most
+$s\lambda^{O(1)}2^{a_{d-1}}$. Since every retained $i<u_d$ has
+$2^{a_d-i}\ge2^{a_{d-1}+g+1}$, its ratio to
+$M_d2^{a_d-i}/u_d$ is at most $\lambda^{O(1)}2^{-g}=o(1)$.
+The evaluation loss is negligible by the same estimate. Thus the supplied
+exact taper yields the uniform six-bit envelope used in~\eqref{eq:ms-local}.
+All old tensor descriptions retain their creation precisions and canonical
+representatives; the schedule changes none of these algebraic conventions.
+
+Summing~\eqref{eq:ms-local} along a worst path gives the coefficient
+\begin{equation}\label{eq:ms-constant}
+ C=\sum_{d=0}^{5}\frac{m_dK(r_d)}{\sqrt{v_d}}
+ +\frac{m_6K(3)}{\sqrt{(A_*-A_5)(1-q)}
+                   (1-(2/3)/\sqrt q)}
+ =63.7573555464258\ldots.
+\end{equation}
+The denominator is positive because $q>(2/3)^2$.
+The six finite contributions are, respectively,
+$52.98228468$, $8.41547470$, $1.56719246$, $0.43954213$,
+$0.15865534$, and $0.04885070$; the infinite tail contributes
+$0.14535554$. These decimals explain the allocation but are not proof inputs.
+The accompanying exact-rational checker bounds square roots by integer
+squares, $\pi$ by alternating Machin-series bounds, and $\ln2$ by its
+positive $2\operatorname{atanh}(1/3)$ series with an explicit tail bound.
+It certifies $C<64$.
+
+There are polynomially many interpolation nodes, values, and child-group
+choices per call. Across $O(\log\lambda)$ depths their logarithmic overhead
+is $O(\lambda\log\lambda)=o(s/\sqrt\lambda)$. Direct leaves cost
+$2^{O(s/\lambda)}$. Entry work is bounded by the original
+$2^{O(s^{9/10})}$ allowance and packet work
+$\exp(O(2^{a_d}\log s))=\exp(s^{A_*+o(1)})$; both are lower order.
+All precision, arithmetic, label-set, and deformation-degree parameters
+remain polynomial in $s$; in particular $M(2L-1)<s^4$ eventually.
+Depth-first accumulation with immutable descriptions gives polynomial space.
+The dependence on description length stays a fixed polynomial because
+branching depends on $s$, not that length. This proves the theorem.
+\end{proof}
+
+\subsection{Tracking generated degrees improves the low-degree coefficient}
+The supplied low-degree theorem holds all generated degrees below
+$s^{1/12}$. This is sufficient but unnecessary: a later call can pay for the
+actual degree of its immediately preceding packet scale instead. The fact
+that all retained vertices move to one side does not create new incident
+ports. Explicitly, the fresh side has $C_d\le 2L_{d-1}$, while the
+retained side has
+$R_d\le\max\{\lceil s^{1/12}\rceil,2L_{d-2},2L_{d-3},\ldots\}$;
+in particular both sides are bounded by
+$s^{\max\{1/12,A_{d-1}\}+o(1)}$.
+Consequently, when packet exponents are nondecreasing and exceed
+the initial degree exponent, \emph{both} child sides have maximum degree
+at most $2^{a_{d-1}+1}$: retained older packets are no larger than the last
+ones, and original vertices are smaller still. Symmetric matching packing
+already suffices for the following theorem; asymmetric packing is not needed
+in this smaller-degree branch.
+
+\begin{theorem}[Low-degree polynomial-space coefficient below 24]
+\label{thm:multistage-lowdegree}
+Under the same normalized interface, but with root maximum degree at most
+$\lceil s^{1/12}\rceil$, there is polynomial-space contraction in time
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(23.6661688071455\ldots+o(1))s/\sqrt\lambda}.
+\]
+Thus the coefficient $24$ is eventually valid. This premise holds for the
+direct bounded-degree sparse-CNF network, not for arbitrary dense incidence
+networks merely because they arise from SAT.
+\end{theorem}
+
+\begin{proof}
+Use $r_0,\ldots,r_5=(35,11,7,6,5,4)$, then $r_d=3$, with
+\[
+ (A_0,\ldots,A_5)
+ =(.08881,.12627,.15116,.16206,.17717,.19999),
+ \qquad A_*=.2398.
+\]
+Use exactly the preceding rational $q$, definitions of $v_d,u_d,a_d$, and
+leaf threshold. Here $A_0>1/12$ and all $A_d$ increase strictly, so after
+the root the maximum degree is at most $2^{a_{d-1}+1}$ as just explained.
+Every finite stage and the tail satisfy
+\[
+ A(1+2\log_2r)<1.
+\]
+For $A=n/m$, the exact integer check is $r^{2n}<2^{m-n}$.
+These inequalities control both rounding $LQ^2$ and the packing term
+$Q^2\Delta$: below the root its leading exponent is
+$2A_d\log_2r_d+A_{d-1}<A_d(1+2\log_2r_d)$, and at the root
+$2A_0\log_2r_0+1/12<A_0(1+2\log_2r_0)$.
+All inequalities have fixed strict margins. The same noncircular depth,
+uniform floor, precision, and path estimates apply. The maximum packet
+exponent is now $.2398\lambda+o(\lambda)$, still smaller than $.9\lambda$
+and well within polynomial arithmetic and lower-order entry work.
+
+Formula~\eqref{eq:ms-constant} with these parameters is
+$23.6661688071455\ldots<24$, certified by the same exact arithmetic.
+The six finite contributions are $21.19892854$, $1.80435144$,
+$0.39079845$, $0.16636684$, $0.04614898$, and $0.01454394$; the
+geometric tail adds $0.04503062$.
+For comparison, combining joint modes with the supplied low-degree
+$31.0641320630\ldots$ bound gives $26.9023275131\ldots$.
+Again the new theorem improves the combined bound, not just its slope-three
+component. The source SAT reduction constants are still needed to convert
+any of these wire-level coefficients to a coefficient on $n$.
+\end{proof}
+
+\subsection{What these schedules do not establish}
+The generic and low-degree certificates preserve the
+$s/\sqrt{\log s}$ scale. General-density reductions still carry their
+$O(n\log\log n)$ wire budget; these proofs neither remove that factor nor
+provide a smaller unrestricted logarithmic order. Neither coefficient is a
+measured running time or a formalized end-to-end SAT theorem. The auxiliary
+search explored a restricted saturated-milestone schedule family; its
+numerical candidates are not optimality certificates. The rational schedules
+and all-size arguments above stand independently of that search.

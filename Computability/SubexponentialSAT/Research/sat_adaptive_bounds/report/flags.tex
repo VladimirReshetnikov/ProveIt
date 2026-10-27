@@ -1,0 +1,296 @@
+\section{Adaptive linear flags in polynomial space}
+\label{flag:section}
+
+The strongest polynomial-space coefficient in the reviewed incoming packets
+is $55.7094783189\ldots$. Its evaluator uses a fixed balanced binary tree
+on sixteen groups. We improve that step by choosing a tree separately for
+each exact pair-budget array. The choice is deterministic, needs only
+polynomial space, and pays for every recursive child contraction.
+
+\subsection{The finite separator problem}
+
+Fix one exact pair-budget array. For every directed pair $e=(g,h)$,
+$g\ne h$, let $\mathcal I_e$ be its finite mode-index list and put
+$h_e=\log_2|\mathcal I_e|$. Arrays with an empty list contribute zero.
+The exact graphical sum has the form
+\[
+ \sum_{(\xi_e)\in\prod_e\mathcal I_e}
+       \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}).
+\]
+Each $Z_g$ is evaluated by the prescribed child-network contraction.
+For a binary separator tree $T$, let $E(T,x)$ be the union of the directed
+cut-pair sets on the path from its root to leaf $x$. Successively conditioning
+on the cut indices, multiplying the two conditional sums, and streaming the
+outer sum is exact by finite distributivity. Its number of child-factor
+evaluations is at most
+\begin{equation}\label{flag:callcount}
+ \sum_x\prod_{e\in E(T,x)}|\mathcal I_e|.
+\end{equation}
+The cut sets on a path are disjoint. Indices internal to a sibling branch
+are summed independently and do not multiply the number of calls in the
+chosen branch. The assignment ranks, ring accumulators, and recursion stack
+have polynomial bit size.
+
+We use the inherited weighted entropy estimate in the following notation:
+for any fixed nonnegative vector $z$ on directed pairs,
+\begin{equation}\label{flag:entropy}
+ \sum_e z_e h_e\le
+ \left(\frac{\|z\|_2}{r}+o(1)\right)K(M,u),\qquad
+ K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac{M}{\sqrt u}.
+\end{equation}
+The error is uniform on a fixed finite family of such vectors. This is the
+slope-four mode entropy bound, with the sharp local precision
+$(6+o(1))MD/u$ and nearly lossless asymmetric padding. It does not assume
+that the child factors can be evaluated at unit cost.
+
+\subsection{Linear flags and an intersection inequality}
+
+Let $r=2^j$ with $j\ge2$ and identify the group labels with $V=\mathbb F_2^j$.
+A complete descending linear flag
+\[
+ \mathcal F:\quad V=V_0>V_1>\cdots>V_j=\{0\},
+ \qquad \dim V_i=j-i,
+\]
+defines a balanced binary tree: depth $i$ partitions $V$ into cosets of
+$V_i$. Write $E(\mathcal F,x)$ for its path cut set. There are
+\begin{equation}\label{flag:number}
+ N_j=\prod_{i=1}^j(2^i-1)
+\end{equation}
+flags, since a $d$-dimensional binary vector space has $2^d-1$ hyperplanes.
+Thus $N_4=315$ and $N_5=9765$. Every flag path has
+\begin{equation}\label{flag:pathsize}
+ v_r=\frac{r^2}{2}+\frac{r^2}{8}+\cdots+2
+     =\frac{2(r^2-1)}3
+\end{equation}
+directed pairs.
+
+\begin{lemma}[Common-origin intersection bound]\label{flag:intersection}
+For any flags $\mathcal F,\mathcal G$ and leaves $x,y\in V$,
+\[
+ |E(\mathcal F,x)\cap E(\mathcal G,y)|
+ \le |E(\mathcal F,0)\cap E(\mathcal G,0)|.
+\]
+\end{lemma}
+\begin{proof}
+Fix a nonzero difference $d\in V$ and consider directed pairs $(a,a+d)$.
+Let $k$ be the unique index with $d\in V_{k-1}\setminus V_k$.
+The pair belongs to $E(\mathcal F,x)$ exactly when
+$a\in x+V_{k-1}$. If $W_{l-1}$ is the analogous subspace for
+$\mathcal G$, simultaneous membership requires
+\[
+ a\in (x+V_{k-1})\cap(y+W_{l-1}).
+\]
+This affine intersection is empty or a coset of
+$V_{k-1}\cap W_{l-1}$. Its cardinality is therefore at most the
+cardinality of that homogeneous intersection, attained when $x=y=0$.
+Sum this inequality over $d\ne0$.
+\end{proof}
+
+\begin{lemma}[Uniform flag average]\label{flag:average}
+The vector
+$a_e=N_j^{-1}\sum_{\mathcal F}\mathbf1_{e\in E(\mathcal F,0)}$
+satisfies
+\[
+ a_e=\begin{cases}
+ 1,&\text{one endpoint of $e$ is zero},\\
+ 2/3,&\text{both endpoints are nonzero and distinct}.
+ \end{cases}
+\]
+Consequently
+\begin{equation}\label{flag:norm}
+ \|a\|_2^2
+ =2(r-1)+\frac49(r-1)(r-2)
+ =\frac{(r-1)(4r+10)}9.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Every path to zero separates every directed pair incident with zero.
+The group $\mathrm{GL}(j,2)$ permutes the flags and acts transitively on
+ordered pairs of distinct nonzero vectors. Hence the second average value
+is constant. Subtracting the $2(r-1)$ incident pairs from
+\eqref{flag:pathsize} and dividing by $(r-1)(r-2)$ gives $2/3$.
+Counting the two types of pairs proves \eqref{flag:norm}.
+\end{proof}
+
+\begin{theorem}[Adaptive flag separator]\label{flag:local}
+For each exact pair-budget array, choose a flag minimizing
+$\max_x\sum_{e\in E(\mathcal F,x)}h_e$. Streamed evaluation with that
+flag uses polynomial space and obeys the paid recurrence
+\begin{equation}\label{flag:recurrence}
+ T_d\le\operatorname{poly}(s)
+ 2^{(b_{r_d}+o(1))K(M_d,u_d)}T_{d+1},\qquad
+ b_r=\frac1r\sqrt{\frac{(r-1)(4r+10)}9}.
+\end{equation}
+A single fixed polynomial in the input-description length and $s$ pays
+for input access and arithmetic, as in the common contraction interface.
+\end{theorem}
+\begin{proof}
+For each flag select a maximizing leaf $x_{\mathcal F}$ and put
+\[
+ z=\frac1{N_j}\sum_{\mathcal F}
+        \mathbf1_{E(\mathcal F,x_{\mathcal F})}.
+\]
+The minimum maximum path cost is at most its average over flags, namely
+$\sum_e z_eh_e$. Expanding the squared norm and applying
+Lemma~\ref{flag:intersection} to every pair of flags yields
+\[
+ \|z\|_2^2
+ =\frac1{N_j^2}\sum_{\mathcal F,\mathcal G}
+ |E(\mathcal F,x_{\mathcal F})\cap E(\mathcal G,x_{\mathcal G})|
+ \le\frac1{N_j^2}\sum_{\mathcal F,\mathcal G}
+ |E(\mathcal F,0)\cap E(\mathcal G,0)|
+ =\|a\|_2^2.
+\]
+Use \eqref{flag:entropy} and Lemma~\ref{flag:average}. The vectors $z$
+belong to a finite family determined only by the fixed group alphabet,
+so their data-dependent choice preserves the uniform error bound.
+Equation~\eqref{flag:callcount} contributes only a constant factor $r$
+beyond the maximum path count and pays for the real child contraction.
+
+The flag selection requires no logarithmic approximation. For each path,
+form the exact integer product of its list sizes; for each flag take the
+largest such product and select a flag with the smallest maximum. There
+are only $N_jr$ products, each of polynomial bit length. Exact list indexing,
+flag selection, and both separator and network recursion use polynomial
+space when streamed depth first.
+\end{proof}
+
+At $r=16$, this replaces $\sqrt{170}/16$ by
+$\sqrt{370/3}/16$. Keeping the incoming packet's schedule already lowers
+its coefficient to $47.4509449603\ldots$. We give a slightly stronger
+complete rational schedule next.
+
+\subsection{The integer schedule and its complete bound}
+
+\begin{theorem}[Polynomial-space certificate]\label{flag:global}
+Under the common normalized contraction interface, adaptive linear flags
+give deterministic polynomial-space bit time
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(C_{\mathrm{flag}}+o(1))s/\sqrt{\log_2s}},
+\]
+where
+\begin{equation}\label{flag:constant}
+ C_{\mathrm{flag}}
+ =\frac{\pi\sqrt2}{\ln2}
+ \left(\frac{9\sqrt{80}}8 b_{16}
+       +\frac{\sqrt{120}}{64}b_8
+       +\frac{\sqrt{60}\,b_4}
+        {256\sqrt{1-q}\,(1-1/(2\sqrt q))}\right)
+ =46.18484558673\ldots,
+\end{equation}
+where $q=63/100$ and $b_r=r^{-1}\sqrt{(r-1)(4r+10)/9}$.
+In particular, $46.19$ is a valid coefficient for all sufficiently large
+$s$. The result retains the common exact contraction and SAT-reduction
+dependencies; it does not assert a smaller logarithmic order.
+\end{theorem}
+\begin{proof}
+Let $\lambda=\lceil\log_2s\rceil$,
+$g=\lceil\sqrt\lambda\rceil$, $\Lambda=\lambda-g$, and
+$b=\lceil6\log_2\lambda\rceil$. Choose
+\begin{align*}
+ r_0=r_1&=16,&u_0=u_1&=\left\lfloor\frac{\Lambda}{80}\right\rfloor,\\
+ r_2&=8,&u_2&=\left\lfloor\frac{\Lambda}{120}\right\rfloor,\\
+ r_d&=4\quad(d\ge3),&u_d&=
+ \left\lfloor\frac{37\Lambda}{6000}
+          \left(\frac{63}{100}\right)^{d-3}\right\rfloor\quad(d\ge3),\\
+ a_d&=\sum_{q=0}^d u_q+(d+1)b,&
+ H&=\left\lceil\frac{s}{\lambda}\right\rceil.
+\end{align*}
+The cumulative retained ranges through depths one and two are at most
+$\Lambda/40$ and $\Lambda/30$, respectively. The final tail has sum at
+most $\Lambda/60$, so the total is at most $\Lambda/20$.
+Use direct contraction
+at $M\le H$ and at bounded sizes for which the parameter or admissibility
+checks fail. The following argument proves that all checks eventually pass.
+
+First consider hypothetical active depths
+$d\le\lceil\log_{20/11}\lambda\rceil+O(1)$ and $M>H$. Their minimum taper is
+$\lambda^{1+\ln(63/100)/\ln(20/11)+o(1)}$, which diverges because
+$63/100>11/20$. Also $a_d\le\Lambda/20+O((\log\lambda)^2)$.
+At the root, $Q=16^{a_0}$ and the packing term $Q^2\Delta$ has logarithm at most
+\[
+ \lambda-\frac{g}{10}+O(\log\lambda),
+ \qquad \Delta=\lceil s^{9/10}\rceil.
+\]
+At depth one $Q=16^{a_1}$, at depth two $Q=8^{a_2}$, and thereafter
+$Q=4^{a_d}$. The retained side has degree at most $\Delta$, and the fresh
+side has degree at most $2^{a_{d-1}+1}$. The cumulative range bounds give,
+respectively, $4/40=3/30=2/20=1/10$ as the leading exponent of $Q$.
+Thus the logarithm of $Q\Delta$ is always at most
+$\lambda-g/10+O((\log\lambda)^2)$.
+The fresh-side packing and packet-rounding exponents are at most
+$(9/40)\lambda+o(\lambda)$ at depth one,
+$(7/30)\lambda+o(\lambda)$ at depth two, and
+$\lambda/4+o(\lambda)$ thereafter. Thus all three asymmetric padding gates hold
+uniformly: the negative $\sqrt\lambda$ margin absorbs the buffers,
+polylogarithmic factors, and $s/M\le\lambda$. Newly created degrees stay
+below $s^{1/20+o(1)}<\Delta$.
+
+Padding is consequently $(1+o(1))M$. The first two child ratios are
+$(1+o(1))/8$, the next is $(1+o(1))/4$, and the subsequent ratio is
+$(1+o(1))/2$, eventually at most $11/20$ in the tail.
+This validates the hypothetical depth bound and closes the
+induction. More sharply,
+\[
+ M_0\le s,\quad M_1\le(1+o(1))\frac{s}{8},\quad
+ M_2\le(1+o(1))^2\frac{s}{64},\quad
+ M_d\le(1+o(1))^d\frac{s}{256\,2^{d-3}}\quad(d\ge3).
+\]
+The padding error is $O(1/\lambda)$ plus terms exponentially small in
+$\sqrt\lambda$ or a positive power of $s$, so its product over these
+$O(\log\lambda)$ levels is $1+o(1)$.
+
+The buffer ensures $D\ge2^{a_{d-1}+b+1}$. The inherited precision bound
+$p=O(s\lambda^2 2^{a_{d-1}})$ then gives
+$p/(MD/u)=O(\lambda^4 2^{-b})=o(1)$; the remaining recovery term is also
+lower order. This validates the uniform local precision and entropy
+estimates used in \eqref{flag:recurrence}. Floors are uniformly relative
+$o(1)$ because the minimum taper diverges.
+
+Summing the paid exponent in \eqref{flag:recurrence} gives, on the scale
+$s/\sqrt\lambda$, the coefficient
+\[
+ \frac{\pi\sqrt2}{\ln2}
+ \left(\frac{9\sqrt{80}}8 b_{16}
+       +\frac{\sqrt{120}}{64}b_8
+       +\frac{\sqrt{60}\,b_4}
+        {256\sqrt{1-q}\,(1-1/(2\sqrt q))}\right)+o(1).
+\]
+Indeed the first two levels contribute
+$\sqrt{80}b_{16}(1+1/8)$, and depth two contributes
+$\sqrt{120}b_8/64$. In the tail, $M_d/\sqrt{u_d}$ has ratio
+$1/(2\sqrt q)<1$ and first coefficient
+$\sqrt{60}/(256\sqrt{1-q})$. Summing its geometric series yields
+\eqref{flag:constant}.
+
+Polynomial work over $O(\log\lambda)$ levels adds
+$O(\lambda\log\lambda)$ to the time exponent. Leaves cost
+$2^{O(s/\lambda)}$; original entries cost $2^{O(s^{9/10})}$; and fresh
+entry routines cost at most
+$\exp(O(2^{a_d}\log s))=\exp(s^{1/20+o(1)})$. These are all lower order,
+including after the ancestor evaluation counts have been paid. Creation-time
+tensor descriptions remain immutable under the imported conventions, so no
+unaccounted recursive entry expansion occurs. All ring dimensions and
+precisions are polynomial, and the exact flag choices and contractions are
+streamed. This proves the bit-time and polynomial-space statements.
+\end{proof}
+
+The new coefficient is approximately $17.10\%$ below the reviewed
+$55.7094783189\ldots$ polynomial-space coefficient. This compares normalized
+upper-bound functions. It is not a runtime measurement and does not identify
+the wire parameter $s$ with the number of SAT variables.
+
+\subsection{A scoped optimality statement}
+
+For a fixed $r=2^j$, the local constant $b_r$ is optimal for a choice among
+balanced binary separator trees when only the Euclidean pair-entropy
+constraint is used. To see this, take $h$ proportional to the average
+vector $a$ in Lemma~\ref{flag:average}, with distinguished vertex zero.
+Every balanced tree's path to zero contains all $2(r-1)$ pairs incident
+with zero and has the same total size $v_r$. Its $a$-weight is therefore
+$2(r-1)+(2/3)(v_r-2(r-1))=\|a\|_2^2$.
+After normalization this matches the proved coefficient. This is a barrier
+only for this restricted separator model and entropy relaxation. It is not
+a lower bound for unbalanced separator trees, arbitrary contraction methods,
+or SAT algorithms.

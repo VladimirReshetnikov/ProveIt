@@ -1,0 +1,161 @@
+\section{Two exact improvements to executable packing kernels}\label{sec:kernels}
+The schedule theorems concern asymptotic contraction certificates. The next
+results operate on explicit finite graphs and do not need those asymptotic
+packing margins to hold. They preserve the corresponding original routines'
+choices exactly, so any valid prior packing certificate continues to apply.
+Incremental conditional expectations and common-denominator arithmetic are
+classical techniques; our novelty claim is the specified implementation and
+proved improvement relative to the reviewed executable corpus.
+
+\subsection{Incremental products for matching potentials}
+Partition the bipartite edge occurrences into matchings $E_1,\ldots,E_K$.
+Parallel edges remain distinct and occur in different matchings. Each vertex
+has one of $Q$ labels. For a partially assigned vertex $v$, let $p_v(a)$ be
+its assigned-label indicator, or $1/Q$ if it remains unassigned. In this
+subsection $\eta\ge1$ denotes the reference's concentration parameter, called
+\texttt{lam} in code; it need not equal a tensor-size logarithm. Put
+$t=1+1/\eta$ and let $h_j$ be the reference thresholds. Define
+\begin{equation}\label{eq:matching-products}
+ P_{j,a,b}=t^{-h_j}\prod_{(u,v)\in E_j}
+ \left(1+\frac{p_u(a)p_v(b)}{\eta}\right),\qquad
+ \Phi=\sum_{j,a,b}P_{j,a,b}.
+\end{equation}
+Because edges within a matching have disjoint endpoints, this is exactly the
+conditional expectation of $\sum_{j,a,b}t^{X_{j,a,b}-h_j}$. Independence
+between different matchings is unnecessary: expectations add. The latest
+matching packet evaluates~\eqref{eq:matching-products} afresh for every
+candidate label at every vertex~\cite{matching}.
+
+\begin{theorem}[Same choices with incremental matching products]\label{thm:matching}
+For an explicit graph with $M$ edge occurrences and $V$ incident vertices,
+the implementation \texttt{label\_graph\_incremental} returns the same
+first-fit matching partition, labels, thresholds, loads, and complete selected
+potential trace as the pinned reference. Its update phase uses
+$O(MQ^2+VQ)$ rational operations, compared with $\Theta(VMQ^3)$ elementary
+product operations in the nonempty reference's repeated evaluations.
+Initialization, coloring, bit costs, and extra storage are charged below.
+\end{theorem}
+\begin{proof}
+Suppose an unassigned left vertex $u$ is processed. Each incident matching
+contains exactly one edge $(u,v)$. For every opposite label $b$ with
+$p_v(b)>0$, set
+\[
+ f_b=1+\frac{p_v(b)}{Q\eta},\qquad R_a=P_{j,a,b}/f_b.
+\]
+The divisor is positive. In this slice the old contribution is
+$\sum_aP_{j,a,b}$. If $u$ receives candidate label $c$, the new contribution is
+\[
+ \sum_aR_a+\frac{p_v(b)}\eta R_c.
+\]
+Thus all candidates share a base, and only the last correction depends on
+$c$. Summing affected slices gives
+\begin{align}
+ B&=\Phi+\sum_{\text{affected slices}}
+          \left(\sum_aR_a-\sum_aP_{j,a,b}\right),\notag\\
+ S_c&=\sum_{\text{affected slices}}\frac{p_v(b)}\eta R_c,
+ &\Phi_c&=B+S_c.\label{eq:matching-update}
+\end{align}
+No slice is changed twice within a matching because $E_j$ is a matching.
+The right-vertex rule interchanges the indices. Dividing the affected table
+entries by their old factors, then multiplying the chosen entries by
+$1+p_v(b)/\eta$, restores~\eqref{eq:matching-products} exactly. The averaging
+identity $\sum_c\Phi_c=Q\Phi$ follows either from the formulas or from
+conditional expectation and is checked exactly by the implementation.
+
+Candidate values and smallest-label tie breaking therefore equal those from
+recomputation. Induction gives every selected trace value and final load.
+The endpoint-occupancy sets used in first-fit coloring make the same first
+available matching choice as the reference's edge scans; input order is
+retained. This proves full-output equality, including tuple-pair and list-pair
+edge representations.
+
+When an edge's first endpoint is processed, its other endpoint is uniform;
+there are $Q$ affected slices of $Q$ cells. When the second endpoint is
+processed, there is one affected slice of $Q$ cells. Summing over edge
+occurrences gives $O(M(Q^2+Q))$ rational operations, plus $O(VQ)$ candidate
+summation and selection operations. In contrast, the reference has $VQ$
+full potential evaluations, each scanning $M$ edge factors in $Q^2$ cells.
+\end{proof}
+
+\paragraph{Costs outside the update phase.}
+The initial value of every cell for matching $j$ is
+\[
+ t^{-h_j}\left(1+\frac1{\eta Q^2}\right)^{|E_j|}.
+\]
+Binary powering costs
+$O(K(\log(M+1)+\log(h_{\max}+1)))$ rational multiplications; the tables
+require $O(KQ^2)$ initial assignments. First-fit coloring uses $O(MK)$
+endpoint-set membership tests, and vertex sorting uses $O(V\log V)$
+comparisons. The final product-invariant check costs $O(KQ^2)$.
+The maintained tables contain $KQ^2$ rational values, in addition to graph
+information, $Q$ scores, and $V$ selected trace values. This deliberately
+spends more product storage than recomputation, while remaining polynomial
+in the application parameters.
+
+A common denominator for the conditional products divides
+$(\eta+1)^{h_{\max}}\eta^{m_{\max}}Q^{2m_{\max}}$, where
+$m_{\max}=\max_j|E_j|$. Product bit lengths are therefore
+$O((h_{\max}+m_{\max})\log(\eta Q+2))$, with logarithmic overhead for sums.
+Multiplication, division, and greatest-common-divisor costs must be paid at
+those lengths. The theorem's operation count does not assume constant-time
+large-integer arithmetic. Bit sizes are polynomial for explicit graphs and
+the concentration parameters used by the reviewed contraction schedules.
+
+\subsection{Common-denominator integer scores for column balancing}
+The two-stage exponential-potential construction first groups rows, producing
+nonnegative integer weights $w_{r,v}$ from row group $r$ to column vertex $v$.
+There are $Q$ row groups, $Q$ possible column labels, and $N$ column vertices.
+Let $z=a/b>1$ be in lowest terms. The earlier packet refinement already caches
+suffix products and row-power sums, achieving $O(NQ^2)$ dense arithmetic
+work~\cite{packet}. We do not claim that order or the idea of caching as new.
+Our change removes repeated rational normalization from candidate scoring.
+
+At time $t$, let $L_{r,c}$ be the assigned weight in cell $(r,c)$,
+$S_r=\sum_cL_{r,c}$, $W_r=\sum_vw_{r,v}$, and $W=\max_rW_r$. Set
+\begin{align}
+ C_w&=(Q-1)b^w+a^w,\notag\\
+ A_r&=b^{W-W_r}\prod_{v\text{ unassigned}}C_{w_{r,v}},
+ &H_{r,c}&=a^{L_{r,c}}b^{S_r-L_{r,c}}.\label{eq:integer-state}
+\end{align}
+All these quantities are nonnegative integers. The unnormalized conditional
+potential has the exact representation
+\begin{equation}\label{eq:integer-invariant}
+ \Phi=\frac{\sum_{r,c}A_rH_{r,c}}{Q^{N-t}b^W}.
+\end{equation}
+Indeed the ordinary row-cell expectation is
+$z^{L_{r,c}}\prod_{v\text{ unassigned}}(Q-1+z^{w_{r,v}})/Q$;
+clearing the common denominator gives~\eqref{eq:integer-invariant}.
+An optional common threshold multiplier $z^{-B_0}$ has no effect on choices.
+
+For the next column, put $w_r=w_{r,v}$ and divide
+$A'_r=A_r/C_{w_r}$ exactly. Candidate $c$ then has numerator
+\begin{equation}\label{eq:integer-candidate}
+ D_c=\sum_r A'_r\left[
+ b^{w_r}\sum_hH_{r,h}+(a^{w_r}-b^{w_r})H_{r,c}\right]
+\end{equation}
+over the common denominator $Q^{N-t-1}b^W$. Moreover
+\[
+ \sum_cD_c=\sum_{r,c}A_rH_{r,c}.
+\]
+Choose the least integer numerator, breaking ties by label index. Multiply
+the chosen $H_{r,c}$ by $a^{w_r}$ and each other $H_{r,h}$ by $b^{w_r}$.
+These updates restore~\eqref{eq:integer-state}. By induction, every chosen
+label and every reconstructed rational candidate potential equals the
+reference. Zero weights, empty columns, and $Q=1$ obey the same identities.
+
+Dense arithmetic remains $O(NQ^2)$. The core score computations use integers
+and divisions known to be exact; rational reduction is deferred to the
+requested diagnostic output. The supplied implementation still constructs
+the full candidate trace, so its measured gains do not arise from omitting
+that work. It removes the suffix-product table and uses $O(Q^2)$ main update
+state, excluding input, power dictionaries, and the explicitly requested
+$O(NQ)$ candidate output objects.
+
+Since $C_w\le Qa^w$, the main numerator bit length is at most
+$O(N\log Q+W\log a+\log Q)$. Threshold normalization adds
+$O(B_0\log a)$ bits. Exact integer divisions and output rational reductions
+are charged normally. These bounds concern explicit edge multiplicities;
+we make no polynomial-in-log-weight claim for compressed enormous weights.
+Unlike the matching theorem, this result does not assert a better dense
+asymptotic operation count than the strongest cached reference. It supplies
+an exact representation change and a measured implementation gain.

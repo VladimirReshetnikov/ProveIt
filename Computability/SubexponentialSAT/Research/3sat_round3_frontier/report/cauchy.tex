@@ -1,0 +1,76 @@
+The incoming joint-Cauchy packet already supplies the full all-level construction \cite{joint}. The older density packet already contains the local odd-Cauchy Smith valuations. Neither result is new here. The purpose of this section is to check that the stronger basis remains integral on the entire interpolation domain and preserves the one-source/one-target recursive interface used by the new schedule.
+
+\subsection{Telescoping on the actual orientation half}
+At a retained interpolation node, let $L=2^a$, $i=v_2(t)$, $R=2^i$, $N=L/2$, $T=t+2^{a+1}\zeta$, and $\Gamma=C(T)/C'(0)$ in the source's unramified extension ring $\mathcal O$ of $\Ztwo$. Here $C$ is the source interpolation polynomial and $\zeta\in\mathcal O$. Put
+\[
+ s_j=(j\bmod R)+2R\lfloor j/R\rfloor,\qquad 0\le j<N.
+\]
+These are exactly the slots with bit $i$ zero; adding $R$ gives the other orientation. This offset cancels in the crossing difference. Every orientation half belongs to one source group and its crossing rows to one target group. Define
+\begin{align*}
+ P_b(x)&=\prod_{h<b}\frac{x-s_h}{T+x-s_h},&
+ Q_b(y)&=\prod_{h<b}\frac{s_h-y}{T+s_h-y},\\
+ f_b(x)&=\frac{TP_b(x)}{T+x-s_b},&
+ g_b(y)&=\frac{TQ_b(y)}{T+s_b-y}.
+\end{align*}
+The cross-multiplied identity
+\[
+ (T+x-s_b)(T+s_b-y)-(x-s_b)(s_b-y)=T(T+x-y)
+\]
+telescopes the remainders $P_b(x)Q_b(y)/(T+x-y)$, giving
+\begin{equation}\label{eq:telescoping}
+ \frac1{T+x-y}=\frac1T\sum_{b=0}^{N-1}f_b(x)g_b(y).
+\end{equation}
+The final remainder vanishes because $x$ is a pivot slot. This is a finite identity, not a convergence argument or an appeal to an unevaluated Smith normal form.
+
+Write $b=qR+r$ with $0\le r<R$, and put $E_b=q+v_2(q!)$. For $x=s_j$, $j\ge b$, a predecessor with different residue modulo $R$ has equal numerator and denominator valuations. The predecessors with the same residue are $\ell R+v$, $0\le\ell<c$, with $c=q$ or $q+1$. Their numerator product has valuation
+\[
+ c(i+1)+v_2(k(k-1)\cdots(k-c+1)),
+\]
+whereas every denominator has valuation $i$. Since $k\ge c$ and $\binom{k}{c}$ is an ordinary integer, the net contribution is at least $c+v_2(c!)\ge E_b$. The final $T$/denominator factor is integral. The same argument applies to $g_b$; both vanish for $j<b$. At $j=b$, the valuation is exactly $E_b$.
+
+Consequently $F_b=2^{-E_b}f_b$ and $G_b=2^{-E_b}g_b$ are integral, triangularly supported features with unit diagonal. Setting
+\[
+ A_b(x)=\frac{\Gamma}{T}\,2^{2E_b}F_b(x)
+\]
+gives the exact crossing decomposition $W_{xy}=\sum_b A_b(x)G_b(y)$ and
+\begin{equation}\label{eq:slopefour}
+ v_2(A_b(x))\ge a+1-i+2q+2v_2(q!)
+ =a+1-i+4q-2s_2(q).
+\end{equation}
+For every $q$, there are exactly $R$ remainders $r$ per orientation. Two orientations yield $2R$ modes per $q$, the same multiplicity as the old tile families. A source form now reads a whole half-packet rather than one tile, but still only one group. Missing real slots are simply omitted; pivots need not contain real ports.
+
+The divisibility argument uses ordinary integer slot differences, not an assertion that binomial polynomials of arbitrary extension elements are integral. It therefore holds for every $\zeta\in\mathcal O$, including zero and nonunits.
+
+\subsection{Residue evaluation without nonunit division}
+For a slot difference $d$, let $\nu=i$ if $R\mid d$, and $\nu=v_2(d)<i$ otherwise. Compute the normalized denominator directly as
+\[
+ (T+d)/2^\nu=(t+d)/2^\nu+2^{a+1-\nu}\zeta,
+\]
+which is a unit. Split every nonzero integer numerator into its exact power of two and signed odd part before reduction. Multiply odd parts and unit inverses and add the exponents; the integrality proof guarantees that subtracting $E_b$ leaves a nonnegative exponent. This computes $F_b$ and $G_b$ modulo $2^p$ without dividing a reduced residue by a power of two. Return zero first for $j<b$.
+
+There is also a same-precision prefactor formula. For $v\in[-L,L-1]$, $v\ne t$, write $n_v=v_2(t-v)$. Grid completeness gives $\sum_{v\ne t}n_v=v_2(C'(0))$. With $c_{\rm odd}=C'(0)/2^{v_2(C'(0))}$,
+\begin{align*}
+ \frac{\Gamma}{T}
+ &=2^{a+1-i}\zeta\,(T/2^i)^{-1}c_{\rm odd}^{-1}\\[-2pt]
+ &\hspace{1em}\cdot\prod_{v\ne t}\left[(t-v)/2^{n_v}+2^{a+1-n_v}\zeta\right].
+\end{align*}
+Every inverse is of a unit. The formula handles nonunit $\zeta$ without extracting its exact valuation. No factorial inverse, ambiguous lift, or hidden temporary precision loss is used.
+
+Each feature takes $O(L)$ ring operations. Since $L$ and all source precision and extension parameters remain polynomial in $s$, the local descriptions and feature evaluation remain polynomial-size. The outer packet-entry cost remains the inherited $\exp(O(L\log s))$ bound, or a correctly guarded extraction alternative. Immutable creation-time representatives are unchanged; descriptions are not recursively composed.
+
+\subsection{Uniform entropy and recursive compatibility}
+Each mode still has one source group and one target group, so the child-network identity and port degrees remain intact. A coefficient indexed by multiplicities $\beta$ has valuation at least $\sum_b w_b\beta_b$; tuples of weight at least $p$ vanish exactly modulo $2^p$.
+
+For padded mass $B=(1+o(1))M$, alphabet $r$, and $D=2^{a-i}$, unequal-symbol packets contribute at most
+\[
+ c\le\bigl(2(1-1/r)+o(1)\bigr)M/D
+\]
+mode families. Lowering the actual weights to $1+4q-2s_2(q)$ only increases the count. Their generating product has logarithm $(\pi^2/(24\theta)+o(1/\theta))$ per family. Combined with the inherited precision envelope $P\le(6+o(1))MD/u$, optimization of the positive parameter $\theta$ yields
+\begin{equation}\label{eq:Kfour}
+ \log_2N\le(K_4(r)+o(1))M/\sqrt u,\qquad
+ K_4(r)=\frac\pi{\ln2}\sqrt{2(1-1/r)}.
+\end{equation}
+These are upper envelopes, not claims that every instance attains the maximal family count or precision. The thin gap ensures $D$ dominates every polylogarithm needed for uniform small-saddle error. Relative to slope three, the leading coefficient is multiplied by $\sqrt3/2$; this does not change the logarithmic order.
+
+An independent standard-library checker evaluates the actual ring
+$(\mathbb Z/2^{37})[U]/(U^2+U+1)$ over all retained levels for $1\le a\le5$, positive and negative nodes, and five values $\zeta=0,1,U,1+U,2+3U$. Normal and optimized runs agree on 200 configurations, 22,190 matrix identities, 110,950 strict-budget truncations, 44,380 integral features, 3,560 unit diagonals and 200 missing-slot bilinear factorizations. Each attempted inverse rejects a nonunit explicitly. The proof above establishes the general result; the tests check its local implementation.

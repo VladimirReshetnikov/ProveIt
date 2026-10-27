@@ -1,0 +1,325 @@
+\section{A joint covariance bound for cached contraction}
+\label{sec:joint-objective}
+
+The strongest cached incoming certificate has time coefficient
+$35.3545880584\ldots$ and space coefficient $34.2748030050\ldots$ on
+$s/\sqrt{\log_2s}$.  Its binary table construction and fast triangle
+contraction are both useful, but their separate worst-case entropy bounds
+need not occur on the same group partition.  The new algorithm chooses
+one partition by the largest of \emph{all} its construction and triangle
+costs.  A covariance calculation controls this joint objective and pays
+for every intermediate table and every recursively evaluated child.
+
+We use the exact pair-index identity~\eqref{eq:mode-graph} and
+Lemma~\ref{lem:norm}; write $K(M,u)=\K(M,u)$ in this section.
+Every group function is evaluated by a paid recursive child contraction.
+The uniform bound needed for partition selection is
+\begin{equation}\label{eq:joint-entropy-norm}
+ \|h\|_2\le(1/r+o(1))K(M,u).
+\end{equation}
+The source of the cached interface and exact quotient-ring matrix
+bridge is the incoming contraction-tree packet~\cite{incomingtree}.
+
+\subsection{Six costs that must be controlled together}
+Let $r=3k$ and equipartition the groups into $A,B,C$, each of size $k$.
+Write $I_A,I_B,I_C$ for the total directed-pair entropy incident to each
+block, counting an internal pair once.  Write $H_{AB},H_{AC},H_{BC}$
+for the three crossing entropies, and put
+$S=H_{AB}+H_{AC}+H_{BC}$.  Define
+\begin{equation}\label{eq:joint-costs}
+ \mathcal C(\mathcal P)=
+ \bigl(I_A,I_B,I_C,
+       S-\tfrac35H_{AB},S-\tfrac35H_{AC},S-\tfrac35H_{BC}\bigr),
+ \quad W(\mathcal P)=\max_{1\le j\le6}\mathcal C_j(\mathcal P).
+\end{equation}
+The first three costs permit direct construction of the three block
+tables from cached group functions.  The largest of the last three is
+$S-(3/5)\min(H_{AB},H_{AC},H_{BC})$, the rectangular matrix multiplication
+cost supplied by an exponent-$12/5$ backend.  The integer-coordinate/CRT bridge in the incoming report~\cite{incomingtree}
+makes that backend valid over the actual power-of-two quotient ring.
+Here are its bit-cost and algebraic requirements. The ring is a free module
+of polynomial rank over $\mathbb Z/2^p\mathbb Z$, with a polynomial-size
+integer multiplication table. Lift coordinates to integers, compute each
+coordinate-pair matrix product modulo sufficiently many nonexceptional odd
+primes, reconstruct by CRT, apply the structure constants, and reduce
+modulo $2^p$. An unreduced entry has bit length $O(p+\log d)$ for inner
+dimension $d$, which is polynomial in $s$. A fixed rational bilinear
+algorithm of exponent below $12/5$ exists by the established field bound
+\cite{mm}; excluding its finitely many denominator primes makes its
+identities valid over these fields. Coordinate arithmetic and CRT add only
+polynomial bit overhead. Sequential recursion uses a polynomial factor
+times the input/output table sizes in storage. The algorithm never inverts
+two, a nilpotent, or an arbitrary nonunit in the source ring.
+
+\begin{lemma}[Joint adaptive partition bound]\label{lem:joint-partition}
+For $r=9$ or $r=12$, an equipartition can be selected so that
+\[
+ W(\mathcal P)\le r\beta_r\|h\|_2,
+ \qquad
+ \beta_9^2=\frac{2489356}{6638625},\qquad
+ \beta_{12}^2=\frac{4786024}{13540725}.
+\]
+In particular $\beta_9=0.6123566464\ldots$ and
+$\beta_{12}=0.5945200108\ldots$.
+\end{lemma}
+\begin{proof}
+Combine opposite directed weights into undirected weights
+$x_{\{g,h\}}=h_{gh}+h_{hg}$.  Put
+$H=\sum_eh_e=\sum_ex_e$, $N=r(r-1)$, and $m=N/2$.
+Choose a uniformly random labelled equipartition.  For one undirected
+edge its vector of coefficients in~\eqref{eq:joint-costs} is, up to
+permuting block labels,
+\[
+ v_{\rm internal,A}=(1,0,0,0,0,0),\qquad
+ v_{AB}=(1,1,0,2/5,1,1).
+\]
+Center each such six-vector by subtracting its coordinate mean; call
+the result $\widetilde v_e$.  If
+$\overline{\mathcal C}=\frac16\sum_j\mathcal C_j$ and
+$V=\sum_j(\mathcal C_j-\overline{\mathcal C})^2$, then
+\[
+ \mathbb E\overline{\mathcal C}=A_rH,
+ \quad A_r=\frac{1+(17/5)p_r}{6},
+ \quad p_r=\frac{2k}{r-1},
+ \qquad
+ \mathbb EV=\sum_{e,f}x_ex_f\,
+              \mathbb E\langle\widetilde v_e,\widetilde v_f\rangle.
+\]
+The covariance entry depends only on whether $e=f$, whether the edges
+share one endpoint, or whether they are disjoint.  Denote the three
+entries by $c_0,c_1,c_2$.  They are the following exact rational numbers:
+\[
+\begin{array}{c|ccc|c}
+ r&c_0&c_1&c_2&A_r\\\hline
+ 9&109/120&869/4200&-379/2100&71/120\\
+ 12&299/330&181/750&-3151/24750&191/330
+\end{array}
+\]
+For completeness, these entries require only a fixed finite color
+calculation.  Take edges $(1,2)$ and respectively $(1,2)$, $(1,3)$,
+$(3,4)$.  For their $v=2,3,4$ distinct endpoints, sum over the $3^v$
+colorings $\chi$ with colors $A,B,C$.  If $n_j$ endpoints receive color
+$j$, the probability is
+\[
+ \frac{(k)_{n_A}(k)_{n_B}(k)_{n_C}}{(3k)_v},
+ \qquad (a)_t=a(a-1)\cdots(a-t+1).
+\]
+Multiply this by the dot product of the two centered coefficient
+vectors and sum.  This evaluates the table using at most $81$ terms per
+entry.  For example $c_0=(1-p_r)(5/6)+p_r(14/15)$.
+The accompanying checker evaluates every term as a rational number.
+
+Let $x'_e=x_e-H/m$ and $d'_v=\sum_{e\ni v}x'_e$.
+The covariance matrix has constant row sum
+\[
+ L_0=c_0+2(r-2)c_1+\tfrac12(r-2)(r-3)c_2.
+\]
+On the centered weights its quadratic form is
+$(c_0-2c_1+c_2)\|x'\|_2^2+(c_1-c_2)\|d'\|_2^2$.
+Cauchy--Schwarz gives
+$\|d'\|_2^2\le(r-2)\|x'\|_2^2$: use
+$\sum_v(d'_v)^2=\sum_{\{v,w\}}x'_{vw}(d'_v+d'_w)$ and
+$\sum_vd'_v=0$.  Since $c_1-c_2\ge0$,
+\[
+ \mathbb EV\le L_1\left(\|x\|_2^2-\frac{H^2}{m}\right)
+                         +L_0\frac{H^2}{m},
+ \quad L_1=c_0+(r-4)c_1-(r-3)c_2.
+\]
+The values are
+\[
+ (L_0,L_1)=
+ \begin{cases}
+ (3/200,1059/350),&r=9,\\
+ (1/275,5476/1375),&r=12.
+ \end{cases}
+\]
+In both cases $0\le L_0<L_1$.
+Because $\|x\|_2^2\le2\|h\|_2^2$, it follows that
+\[
+ \mathbb EV\le2L_1\|h\|_2^2
+                         -\frac{2(L_1-L_0)}{N}H^2.
+\]
+For six numbers, the largest is at most their mean plus
+$\sqrt{5/6}$ times their centered Euclidean norm.  Jensen therefore
+implies, with $q=1-L_0/L_1>0$,
+\[
+ \mathbb EW\le A_rH+
+   \sqrt{5L_1/3}\sqrt{\|h\|_2^2-qH^2/N}
+ \le\sqrt{\frac{A_r^2N}{q}+\frac53L_1}\,\|h\|_2.
+\]
+The last step is Cauchy--Schwarz with coordinates
+$\sqrt q\,H/\sqrt N$ and
+$\sqrt{\|h\|_2^2-qH^2/N}$.
+A minimum-cost partition is no worse than the mean.  Substitution of
+the rational table gives
+$\beta_r^2=r^{-2}(A_r^2N/q+5L_1/3)$, and the displayed fractions.
+\end{proof}
+
+\paragraph{Exact partition selection.}
+All objectives can be compared without logarithms.  For each block let
+$D_I$ be the product of the exact list sizes incident to it, and let
+$D_{AB},D_{AC},D_{BC}$ be the three crossing dimensions.  Minimize the
+maximum of the six rational scores
+\[
+ \begin{gathered}
+ D_{I_A}^5,\quad D_{I_B}^5,\quad D_{I_C}^5,\\[3pt]
+ \frac{(D_{AB}D_{AC}D_{BC})^5}{D_{AB}^3},\quad
+ \frac{(D_{AB}D_{AC}D_{BC})^5}{D_{AC}^3},\quad
+ \frac{(D_{AB}D_{AC}D_{BC})^5}{D_{BC}^3}.
+ \end{gathered}
+\]
+These scores have logarithms $5\mathcal C_j$.  There are only $280$
+unlabelled equipartitions for $r=9$, and $5775$ for $r=12$.  Their counts
+and their exact integer bit lengths are polynomially bounded in $s$.
+
+\subsection{Every cache, table, and recursive call is paid}
+First cache all group functions $Z_g$ on their incident indices.  The
+number of child calls has exponent at most
+$(\alpha_r+o(1))K(M,u)$, where
+$\alpha_r=\sqrt{2(r-1)}/r$, by~\eqref{eq:joint-entropy-norm}.
+Each child has at most $(2/r+o(1))M$ wires.
+
+After choosing the partition, form a block table by summing the product
+of its cached group functions over its internal pair indices.  Literal
+enumeration costs at most a polynomial factor times $2^{I_B}$.
+A sequential implementation expands each factor into records on all
+incident indices of the block, sorts on the common assignment key,
+multiplies the matched records, then sorts and sums on the boundary
+key.  Each expanded list has at most $2^{I_B}$ records.  Thus the
+claimed bit work and space do not rely on free random access to
+exponential tables.  Boundary indices are a subset of incident indices,
+so the output table also has at most $2^{I_B}$ entries.
+
+Contract the three tables by the imported rectangular matrix backend.
+Its time exponent is the largest of the three triangle costs in
+\eqref{eq:joint-costs}; its input/output dimensions and its sequential
+workspace are bounded by the same exponent.  Every group cache is no
+larger than the incident-index set of the block containing that group.
+The selected $W$ consequently bounds \emph{all} local storage as well
+as all nonrecursive work.  Equations~\eqref{eq:joint-entropy-norm} and
+Lemma~\ref{lem:joint-partition} prove the local recurrence
+\begin{equation}\label{eq:joint-recurrence}
+ T_d\le\operatorname{poly}(s)\left(
+  2^{(\alpha_{r_d}+o(1))K_d}T_{d+1}
+       +2^{(\beta_{r_d}+o(1))K_d}\right),
+ \qquad S_{\rm local}\le\operatorname{poly}(s)2^{(\beta_{r_d}+o(1))K_d}.
+\end{equation}
+For the small late alphabets $r=6,4$ below, a simpler cached algorithm
+suffices: cache all group functions and sum over all pair indices.
+It has the same child-call coefficient $\alpha_r$, local time
+coefficient $\beta_r^{\rm full}=\sqrt{r(r-1)}/r$, and local storage
+coefficient at most $\alpha_r$.
+
+\subsection{A multistage schedule with strict packing margins}
+Put $\lambda=\lceil\log_2s\rceil$,
+$g=\lceil\sqrt\lambda\rceil$, and
+$b=\lceil6\log_2\lambda\rceil$.  Let $B$ be the largest nonnegative
+integer with $9^{20B}\le2^{\lambda-g}$, using direct contraction for
+bounded exceptional sizes.  Define
+\[
+\begin{array}{c|c|c|c}
+ d&r_d&u_d&\text{upper cumulative retained range}\\\hline
+ 0&9&B&(\lambda-g)/(20\log_2 9)\\
+ 1&12&\lfloor\lambda/36\rfloor-B&\lambda/36\\
+ 2&9&\lfloor\lambda/288\rfloor&\lambda/32\\
+ 3&6&\lfloor5\lambda/864\rfloor&\lambda/27\\
+ d\ge4&4&\lfloor\lambda/(189\cdot2^{d-4})\rfloor&\lambda/21
+\end{array}
+\]
+Set $a_d=\sum_{j\le d}(u_j+b)$ with $a_{-1}=0$, and leaf threshold
+$H=\lceil s/\lambda^{3/4}\rceil$.
+The cumulative caps use
+$1/36+1/288=1/32$,
+$1/32+5/864=1/27$, and $1/27+2/189=1/21$.
+
+At the root the symmetric term $Q_0^2\Delta$ has binary logarithm at
+most $\lambda-g/10+O(\log\lambda)$.  At later depths the retained-side
+condition has exponent $9/10+(\log_2r_d)a_d/\lambda$.
+Strict rational margins follow from
+\[
+ 12^{100}<2^{359},\quad9^{40}<2^{127},\quad6^5<2^{13},
+\]
+which give respectively margins $1/3600$, $1/1280$, and $1/270$ at
+depths $1,2,3$; the constant-$4$ tail has margin $1/210$.
+The fresh-side and padding exponents are at most
+$(2\log_2r_d+1)a_d/\lambda<1$ throughout.  Fresh packet degrees have
+exponent at most $1/21+o(1)<9/10$.
+
+For a noncircular bootstrap, consider hypothetical active depths through
+$4+\tfrac34\log_{9/5}\lambda+O(1)$.
+The tail ranges satisfy
+\[
+ u_d\ge\lambda^{\eta+o(1)},\qquad
+ \eta=1-\frac{3\ln2}{4\ln(9/5)}>0,
+\]
+since $2^3<(9/5)^4$.  All packing gates hold uniformly on this range.
+Nearly lossless padding then gives eventual tail shrinkage at most
+$5/9$, closing the hypothesized depth bound.  The sharp masses on a
+path are, up to uniformly vanishing multiplicative perturbations,
+\[
+ m_0=1,\quad m_1=2/9,\quad m_2=1/27,\quad
+ m_3=2/243,\quad m_{4+t}=\frac{2}{729\,2^t},
+ \qquad M_d\le(1+o(1))^d s m_d.
+\]
+The additive buffer gives $D\ge2^{a_{d-1}+b+1}$ at retained levels.
+The inherited precision estimate $O(s\lambda^2 2^{a_{d-1}})$ is
+$o(MD/u)$ because $s/M\le\lambda^{3/4}$ and
+$\lambda^{15/4}2^{-b}\to0$.  Thus the entropy bounds used above are
+uniform at every active call.
+
+\subsection{Certified total time and space}
+Let $\kappa=\pi\sqrt2/\ln2$ and $A=1/(20\log_2 9)$.  On the scale
+$s/\sqrt\lambda$, the $K_d$ coefficients are
+\[
+ K_0^*=\kappa/\sqrt A,\quad
+ K_1^*=\frac{2\kappa}{9\sqrt{1/36-A}},\quad
+ K_2^*=\frac{\kappa\sqrt{288}}{27},\quad
+ K_3^*=\frac{2\kappa}{243}\sqrt{864/5},\quad
+ K_{4+t}^*=\frac{2\kappa\sqrt{189}}{729}\,2^{-t/2}.
+\]
+Write $P_d=\sum_{j<d}\alpha_{r_j}K_j^*$ for $0\le d\le4$.
+Expanding~\eqref{eq:joint-recurrence} gives the following complete list
+of competing coefficients:
+\[
+\begin{array}{c|c}
+ \text{source of work}&\text{coefficient}\\\hline
+ \text{root local work}&\beta_9K_0^*=31.25239731265\ldots\\
+ \text{depth 1 local work}&P_1+\beta_{12}K_1^*=30.41173930826\ldots\\
+ \text{depth 2 local work}&P_2+\beta_9K_2^*=30.23123727305\ldots\\
+ \text{depth 3 full pair sum}&P_3+(\sqrt{30}/6)K_3^*=30.18781782003\ldots\\
+ \text{entire constant-4 tail}&
+ P_4+K_4^*\max\{\sqrt{12}/4,(\sqrt6/4)/(1-1/\sqrt2)\}
+ =30.42570652863\ldots
+\end{array}
+\]
+Exact rational interval arithmetic in the checker verifies every strict
+comparison.  Hence
+\begin{equation}\label{eq:joint-headline}
+ C_{\rm joint}=
+ \frac{\pi\sqrt2}{\ln2}\sqrt{20\log_2 9}
+       \sqrt{\frac{2489356}{6638625}}
+ =31.2523973126509\ldots
+\end{equation}
+bounds the total time coefficient.  Local storage is bounded by
+$\beta_9K_0^*$, $\beta_{12}K_1^*$, $\beta_9K_2^*$, and the smaller
+late singleton caches; ancestor tables add rather than multiply.
+The same $C_{\rm joint}$ is therefore a valid space coefficient.
+This space bound is an upper certificate, not an assertion that the
+largest table attains it.
+
+Polynomial factors per level add only $O(\lambda\log\lambda)$ to the
+time exponent.  Direct leaves cost $2^{O(s/\lambda^{3/4})}$, original
+entry routines $2^{O(s^{9/10})}$, and fresh packet routines at most
+$\exp(s^{1/21+o(1)})$, all lower order even after the paid recursive
+call counts.  Immutable creation-time descriptions prevent hidden
+composition of entry routines.  We obtain, under the stated inherited
+network interface,
+\[
+ T(s,\mathcal L),S(s,\mathcal L)
+ \le\operatorname{poly}(s+\mathcal L)
+       2^{(C_{\rm joint}+o(1))s/\sqrt{\log_2s}}.
+\]
+The eventual rounded coefficient $31.253$ is certified.  The method uses
+subexponential space.  It decreases a leading exponential coefficient,
+while leaving the worst-case and fixed-density SAT logarithmic orders
+unchanged.

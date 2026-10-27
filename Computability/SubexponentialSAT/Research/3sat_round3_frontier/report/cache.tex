@@ -1,0 +1,111 @@
+The incoming joint-Cauchy packet already supplies exact-weight mode allocations, cached group functions, three-block boundary tables and division-free Strassen multiplication. This section changes the alphabet, taper and block sizes; it does not claim a new matrix-multiplication identity or treat the cache as polynomial space. The generic normalized input interface is the same as in Section 1.
+
+\begin{theorem}[A cached certificate below 38 time and 34 space]
+Relative to the unchanged source identities and supplied integral crossing factorization, the following schedule yields
+\begin{align*}
+ T(s,\mathcal L)&\le(s+\mathcal L)^{O(1)}
+ 2^{(37.9301090828846\ldots+o(1))s/\sqrt\lambda},\\
+ S(s,\mathcal L)&\le(s+\mathcal L)^{O(1)}
+ 2^{(33.6230409216578\ldots+o(1))s/\sqrt\lambda},
+ \qquad\lambda=\ceil{\log_2s}.
+\end{align*}
+Thus eventual coefficients $38$ and $34$ are valid. This is a separate subexponential-space tradeoff, not the polynomial-space theorem of Section~\ref{sec:frontier}.
+\end{theorem}
+
+\subsection{Exact weight allocation and block costs}
+Equal pair-label padding bounds the number of crossing mode families on each ordered unequal group pair by $(2+o(1))M/(r^2D)$. For each exact per-pair weight allocation below the precision budget, let $h_e$ be the binary length of its pair-mode list. The supplied weighted generating-function argument gives, for fixed nonnegative pair weights $w_e$,
+\begin{equation}\label{eq:cache-entropy}
+ \sum_e w_eh_e\le\left(\sqrt{\sum_e w_e^2/r^2}+o(1)\right)\mathcal K(M,u),
+ \qquad\mathcal K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac M{\sqrt u}.
+\end{equation}
+The number of weight allocations is polynomial for fixed $r$ and polynomial precision; empty lists are discarded. A common global weight budget is essential: independently assigning each pair the full precision would overcount. Group functions are recursively computed and cached, not assumed to have inexpensive entries.
+
+Partition the $r$ groups into three blocks of sizes $k_1,k_2,k_3$. A group is incident with $2(r-1)$ ordered pairs, so the coefficient for computing its cache is
+\[
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+A block of size $k$ touches $2rk-k^2-k$ pair lists, while its boundary has $2k(r-k)$ lists. Hence the maximal table-building and storage factors are
+\[
+ A_r=\max_j\frac{\sqrt{2rk_j-k_j^2-k_j}}r,
+ \qquad J_r=\max_j\frac{\sqrt{2k_j(r-k_j)}}r.
+\]
+Set $v_{ij}=2k_ik_j$ and $\tau=\log_2 7-2$. Rectangular division-free Strassen multiplication has factor
+\[
+ B_r=\frac1r\sqrt{v_{12}+v_{13}+v_{23}
+ -(1-\tau^2)\min(v_{12},v_{13},v_{23})},
+ \qquad\beta_r=\max(A_r,B_r).
+\]
+These follow by applying equation~\eqref{eq:cache-entropy} to the relevant pair-list weights. The seven-product formula uses no division and therefore works over the source quotient ring. Sequential record access, sorting and reblocking follow the supplied implementation accounting. Suppressing polynomial factors, the time recurrence is
+\begin{equation}\label{eq:cache-rec}
+ T_d\le2^{(\alpha_{r_d}+o(1))\mathcal K_d}r_dT_{d+1}
+       +2^{(\beta_{r_d}+o(1))\mathcal K_d}.
+\end{equation}
+The second term reads already computed group caches; it does not pay a new child contraction per table entry.
+
+For $r=7$ use blocks $(3,2,2)$, giving
+\[
+ \alpha_7=\sqrt{12}/7,\quad\beta_7=\sqrt{30}/7,
+ \quad J_7=\sqrt{24}/7.
+\]
+The matrix term $\sqrt{24+8\tau^2}/7$ is smaller than the table-building term. For $r=9$ use $(3,3,3)$:
+\[
+ \alpha_9=4/9,\quad\beta_9=\sqrt{36+18\tau^2}/9,
+ \quad J_9=2/3.
+\]
+Here the matrix term exceeds $\sqrt{42}/9$.
+
+\subsection{A rational root and tail schedule}
+Choose
+\[
+ r_0=7,\quad u_0=\floor{89\lambda/5000};\qquad
+ r_d=9,\quad u_d=\floor{\frac{1233}{125000}
+ (7/25)^{d-1}\lambda}\quad(d\ge1).
+\]
+The cumulative leading budget is
+\[
+ \frac{89}{5000}+\frac{1233/125000}{1-7/25}=\frac{63}{2000}.
+\]
+Use the same thin guard $g=\ceil{\log_2\lambda}^2$ and cumulative $a_d=\sum_{j\le d}u_j+(d+1)g$, with leaf threshold $H=\ceil{s/\lambda}$. The larger polylogarithmic guard is chosen conservatively to make every inherited polynomial factor negligible.
+
+At the root, symmetric packing is valid because
+$.9+2(89/5000)\log_2 7<1$, witnessed exactly by $7^{89}<2^{250}$. Below the root, the asymmetric side invariant is $R_d\le\ceil{s^{.9}}$, $C_d\le2^{a_{d-1}+1}$; the row term is controlled by
+$.9+(63/2000)\log_2 9<1$, witnessed by $9^{63}<2^{200}$. The other packing and rounding terms have leading exponent at most
+\[
+ (63/2000)(1+2\log_2 9)<.232<1.
+\]
+New degrees remain below $s^{.9}$.
+
+For a noncircular bootstrap, consider every candidate depth $d\le\ceil{\log_4\lambda}+3$. The guards sum to $O((\log\lambda)^3)=o(\lambda)$, all strict margins hold uniformly, and tail children eventually have at most $M/4$ edges. Thus no active path exceeds that range. Since $7/25>1/4$, every active $u_d$ grows as a positive power of $\lambda$, so floors are negligible. More sharply,
+\[
+ M_d\le(1+o(1))s(2/7)(2/9)^{d-1}\quad(d\ge1).
+\]
+The thin guard gives the same uniform precision envelope $(6+o(1))MD/u$. Labels, precisions and descriptions remain polynomial-size; original-entry work, packet-entry work, leaves and branching remain lower-order on the target scale. Creation-time representatives are unchanged.
+
+\subsection{Solving the recurrence and checking the constants}
+Let $\kappa=\pi\sqrt2/\ln2$ and define the local coefficients
+\[
+ K_0=\frac\kappa{\sqrt{89/5000}},\qquad
+ K_1=\frac{(2/7)\kappa}{\sqrt{1233/125000}},\qquad
+ \gamma=\frac{2/9}{\sqrt{7/25}}=\frac{10}{9\sqrt7}<1.
+\]
+The tail local coefficient at depth $d\ge1$ is $K_1\gamma^{d-1}$. Work stopping after $j$ tail levels has coefficient
+\[
+ \alpha_9K_1\frac{1-\gamma^j}{1-\gamma}
+       +\beta_9K_1\gamma^j.
+\]
+It interpolates between two endpoints, so the tail coefficient is
+$K_1\max\{\beta_9,\alpha_9/(1-\gamma)\}$. The first is larger:
+$\alpha_9/(1-\gamma)=.7662314\ldots<\beta_9=.7676547\ldots$.
+Including the root gives
+\[
+ C_T=\max\{\beta_7K_0,\alpha_7K_0+\beta_9K_1\}
+ =37.9301090828846\ldots.
+\]
+The root-only term is $37.5917025555\ldots$. Ancestor tables add rather than multiply memory, and the tail storage decreases geometrically. Therefore
+\[
+ C_S=\max\{J_7K_0,J_9K_1\}=33.6230409216578\ldots.
+\]
+One may retain the unreduced maximum for the time formula; the rounded bound does not need the displayed decimal comparison. An authored exact-rational checker uses $\pi<22/7$, a positive-series lower bound for $\ln2$, the integer witness $7^{100}<2^{281}$ for $\log_2 7<2.81$, and square-root enclosures. It certifies $C_T<37.956800<38$ and $C_S<33.636580<34$. Floating point only displays the sharper formulas. Search suggestions near $37.8906$ are not optimality certificates and are not substituted for this feasible rational schedule.
+
+\input{cache_lowdegree.tex}
+\input{cache_comparison.tex}

@@ -1,0 +1,135 @@
+% Independent proof audit: this fragment has no external document preamble.
+\section{An elementary certificate for adaptive four-block contraction}
+\label{sec:k4-elementary-certificate}
+
+Let the six edges of the complete graph on four vertices have nonnegative
+weights $w_e$. These weights are logarithms of index-domain sizes; opposite
+directions have already been aggregated. Suppose a rectangular matrix product
+with index logarithms $x,y,z$ costs, up to polynomial factors,
+\[
+ 2^{x+y+z-(3/5)\min\{x,y,z\}}.
+\]
+For each of the three perfect matchings $M=\{ab,cd\}$, put
+$C_M=w_{ac}+w_{ad}+w_{bc}+w_{bd}$. Contract the pair $ab$ and the pair $cd$
+independently, then take the inner product of their boundary tables.
+The two merge exponents are
+\begin{align*}
+ C_M+w_{ab}-\tfrac35\min\{w_{ab},w_{ac}+w_{ad},w_{bc}+w_{bd}\},\\
+ C_M+w_{cd}-\tfrac35\min\{w_{cd},w_{ac}+w_{bc},w_{ad}+w_{bd}\}.
+\end{align*}
+Their maximum dominates the final inner-product exponent $C_M$.
+Let $F_M(w)$ be this maximum and $F(w)=\min_M F_M(w)$.
+
+\begin{theorem}[Sharp four-block Euclidean certificate]
+\label{thm:k4-euclidean}
+For every nonnegative $w\in\mathbb R^6$,
+\[
+ F(w)\le\sqrt{\frac{244}{75}}\,\|w\|_2.
+\]
+The numerical constant is best possible for these three contraction choices
+and this rectangular matrix-product cost model.
+\end{theorem}
+
+\begin{proof}
+Each $F_M$ is the maximum of six linear forms. For either internal edge
+$e\in M$, one form has coefficient vector
+\[
+ A_e=\mathbf 1_{E\setminus M}+\tfrac25\mathbf 1_e.
+\]
+The other two forms are obtained by replacing it by
+\[
+ B_e=A_e+\tfrac35(\mathbf 1_e-\mathbf 1_f-\mathbf 1_g),
+\]
+where $f,g$ are the two crossing edges incident to one endpoint of $e$.
+All coefficient vectors are nonnegative.
+
+Choose one of the six forms from each matching, arbitrarily. Temporarily
+replace every selected $B$ form by its corresponding $A$ form. Since every
+edge is crossing for exactly two matchings and the three chosen internal
+edges are distinct, the sum of the resulting vectors is
+\[
+ b=2\mathbf 1+\tfrac25 z,
+ \qquad z\in\{0,1\}^6,\quad\sum_ez_e=3.
+\]
+Consequently $\|b\|_2^2=3(12/5)^2+3\cdot2^2=732/25$.
+
+Suppose $k\le3$ selected forms were of type $B$, and let
+$D=\sum(\mathbf 1_e-\mathbf 1_f-\mathbf 1_g)$ be the sum of their
+correction vectors. We have $\sum_eD_e=-k$. Let $N\ge0$ count, with
+multiplicity, occurrences of a negative correction on one of the three
+edges selected by $z$. Every positive correction occurs on such an edge,
+so $z\mathbin\cdot D=k-N$. It follows that
+\[
+ b\mathbin\cdot D=-\tfrac85k-\tfrac25N\le-\tfrac85k.
+\]
+Each individual correction has squared norm three. For corrections from
+different matchings, their positive edges are distinct and their negative
+two-edge sets intersect in at most one edge. Their inner product is
+therefore at most one. Hence
+\[
+ \|D\|_2^2\le3k+2\binom k2=k(k+2)\le5k.
+\]
+Restoring the $B$ forms gives a sum vector $b+(3/5)D$, whose norm obeys
+\begin{align*}
+ \|b+\tfrac35D\|_2^2-\|b\|_2^2
+ &=\tfrac65 b\mathbin\cdot D+\tfrac9{25}\|D\|_2^2\\
+ &\le-\tfrac{48}{25}k+\tfrac{45}{25}k\le0.
+\end{align*}
+Thus the mean of any one-form-per-matching selection has squared norm at
+most $(732/25)/9=244/75$.
+
+For the given $w$, choose a maximizing form from each matching. The minimum
+of the resulting three values is at most their mean. Cauchy--Schwarz and
+the preceding uniform estimate prove
+$F(w)\le\sqrt{244/75}\,\|w\|_2$.
+
+For sharpness, give the three edges incident to one vertex weight $4/5$
+and the other three edges weight $2/3$. Every matching contains one edge
+of each weight. Its crossing sum is $44/15$, and its larger merge cost is
+$44/15+(2/5)(4/5)=244/75$. The weight vector has squared norm $244/75$,
+so equality holds.
+\end{proof}
+
+For an application with $r=4b$ original groups divided into four blocks of
+size $b$, let $h_{gh}\ge0$ denote directed-pair index logarithms. Each
+undirected block-pair weight sums $2b^2$ such logarithms, and the six sets
+are disjoint. Therefore
+\[
+ \|w\|_2^2\le2b^2\sum_{g\ne h}h_{gh}^2.
+\]
+If the established weighted entropy estimate implies
+$\|h\|_2\le(1+o(1))K/r$, the final four-block contraction has coefficient
+\[
+ \sqrt{\frac{244}{75}}\frac{\sqrt2b}{r}
+ =\sqrt{\frac{61}{150}}
+\]
+on the scale $K$. Formation of the four input block tables, paid recursive
+oracle evaluations, storage, packing conditions, and the complete recursion
+remain separate obligations. The theorem by itself makes no SAT complexity
+claim.
+
+\paragraph{Dependence on the matrix-multiplication exponent.}
+The same argument works for every $7/3\le\omega\le3$ when the rectangular
+cost is $x+y+z-(3-\omega)\min\{x,y,z\}$. Put $\nu=\omega-2$.
+Then $A_e=\mathbf 1_{E\setminus M}+\nu\mathbf 1_e$, and a type-$B$
+correction is $(1-\nu)(\mathbf 1_e-\mathbf 1_f-\mathbf 1_g)$.
+The base sum is $b=2\mathbf 1+\nu z$, giving
+\[
+ \|b\|_2^2=3(2+\nu)^2+12=3\omega^2+12,
+ \qquad b\mathbin\cdot D\le-(2-\nu)k.
+\]
+As above $\|D\|_2^2\le5k$, so restoring the corrections changes the
+squared norm by at most
+\[
+ \bigl[-2(1-\nu)(2-\nu)+5(1-\nu)^2\bigr]k
+ =(1-\nu)(1-3\nu)k\le0.
+\]
+Thus the sharp local constant is $\sqrt{(\omega^2+4)/3}$, attained by
+three star edges of weight $\omega/3$ and three other edges of weight
+$2/3$. The equal-four-cluster entropy coefficient becomes
+\[
+ \sqrt{\frac{\omega^2+4}{24}}.
+\]
+This is a parametric contraction theorem; use of a particular $\omega$
+still requires an established exact arithmetic implementation of the
+corresponding matrix multiplication bound.

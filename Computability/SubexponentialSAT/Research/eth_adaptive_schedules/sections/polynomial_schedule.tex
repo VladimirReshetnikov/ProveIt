@@ -1,0 +1,164 @@
+\section{A rational multistage schedule with polynomial space}\label{sec:polyschedule}
+A fixed alphabet is unnecessarily restrictive. The root is constrained by
+large degrees on both sides. Immediately below it, one side consists of
+fresh packet tensors, so a larger cumulative taper is possible. Later, a
+smaller alphabet allows a larger taper budget but gives slower size reduction.
+The schedule below makes that tradeoff explicit. Variable alphabets are
+already present in the round-two packet~\cite{roundtwo}; the result here is
+an auditable extension for the combined asymmetric, slope-four interface.
+
+\subsection{Parameters and exact margins}
+Use $H,g,a_d$ from~\eqref{eq:gap}. Define $A_{-1}=0$ and, for $0\le d\le5$,
+$u_d=\floor{(A_d-A_{d-1})\lambda}$ according to the table.
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Depth $d$ & Alphabet $r_d$ & Cumulative leading budget $A_d$ & Individual $t_d$\\
+\midrule
+0 & 13 & $27/2000$ & $27/2000$\\
+1 & 14 & $21/800$ & $51/4000$\\
+2 & 8 & $333/10000$ & $141/20000$\\
+3 & 6 & $193/5000$ & $53/10000$\\
+4 & 5 & $43/1000$ & $11/2500$\\
+5 & 4 & $499/10000$ & $69/10000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $d=6+j$, put
+\begin{equation}\label{eq:poly-tail}
+ r_d=3,\qquad t_d=\frac{131}{40000}\left(\frac34\right)^j,
+ \qquad u_d=\floor{t_d\lambda}.
+\end{equation}
+The tail budget sums to $131/10000$, so $\sum_{d\ge0}t_d=63/1000$.
+All scheduling operations are exact rational or integer arithmetic. The
+provided generator returns $r_d,u_d,a_d,g$ without constructing $2^\lambda$.
+
+\begin{lemma}[Uniform feasibility]\label{lem:poly-feasible}
+For all sufficiently large $s$, this schedule satisfies
+\eqref{eq:packing-conditions} and the precision assumptions at every active
+call. Active paths have $O(\log\lambda)$ depth; all retained tapers tend to
+infinity uniformly.
+\end{lemma}
+\begin{proof}
+Consider hypothetical active depths through
+$d_{\max}=\ceil{\log_{10/7}\lambda}+7$. The cumulative gap is
+$O((\log\lambda)^3)=o(\lambda)$. Therefore
+$a_d\le(A_d+o(1))\lambda$ in the six fixed stages, and
+$a_d\le(63/1000+o(1))\lambda$ in the tail.
+
+At the root the dominant term is $Q_0^2s^{9/10}$. Its power of $s$ is
+$9/10+(27/1000)\log_2 13<1$, certified by the integer inequality
+$13^{27}<2^{100}$. The row term is smaller. Below the root, the retained-side
+power is $9/10+A_d\log_2r_d$. All required strict inequalities have exact
+certificates:
+\begin{align*}
+ 14^{21}&<2^{80},& 3\cdot\frac{333}{10000}&<\frac1{10},&
+ 6^{193}&<2^{500},\\
+ 5^{43}&<2^{100},&2\cdot\frac{499}{10000}&<\frac1{10},&
+ 3^{63}&<2^{100}.
+\end{align*}
+Each finite stage and the whole tail have a fixed positive power margin.
+For the fresh side and rounding, the looser common estimates suffice:
+\[
+ 2A_d\log_2r_d<\frac15,\qquad A_d,A_{d-1}\le\frac{63}{1000}.
+\]
+Thus both $Q_d^2C_d$ and $L_dQ_d^2$ are at most
+$s^{263/1000+o(1)}$ below the root. Every new packet degree is at most
+$s^{63/1000+o(1)}<s^{9/10}$, closing the degree invariant. Because every
+active $M$ exceeds $s/\lambda$, these fixed power margins absorb all
+logarithmic factors and imply~\eqref{eq:packing-conditions}.
+
+More quantitatively, \eqref{eq:load} gives
+$P/M=1+O(1/\lambda)+s^{-\varepsilon+o(1)}$ uniformly for some fixed
+$\varepsilon>0$. Consequently the exact rational guard
+\[
+ P/M\le1+1/\ceil{\sqrt\lambda}
+\]
+passes eventually. For sufficiently large $\lambda$ it implies a child ratio
+at most $7/10$, including the slowest alphabet-three tail. No active path
+can exceed $d_{\max}$, validating the hypothetical depth range without a
+circular assumption. Products of the sharper padded overhead over that range
+are $1+o(1)$. Write
+\begin{equation}\label{eq:mass-profile}
+ v_0=1,\qquad v_{d+1}=v_d(2/r_d).
+\end{equation}
+Then $M_d\le(1+o(1))sv_d$ uniformly.
+
+In the tail the smallest taper on that range is bounded below by
+\[
+ \lambda^{\,1-\ln(4/3)/\ln(10/7)+o(1)}.
+\]
+The exponent is positive because $4/3<10/7$. Floors therefore have uniform
+relative error $o(1)$. The fixed stages have positive constant $t_d$.
+All retained $u_d$ diverge, so~\eqref{eq:precision} and the local entropy
+estimate apply uniformly.
+\end{proof}
+
+An implementation may use direct contraction for small inputs, zero tapers,
+or failed exact guards. These fallbacks preserve correctness. The lemma shows
+that they disappear from active calls eventually. The smallest margin in the
+power comparisons is tiny; this theorem makes no assertion of a practical
+input threshold for the complete contraction algorithm.
+
+\subsection{Summing the recursion and certifying the coefficient}
+\begin{proposition}\label{prop:poly-cost}
+The polynomial-space part of Theorem~\ref{thm:main} holds with
+\begin{equation}\label{eq:polyconstant}
+ \Cnew=\sum_{d=0}^{5}\frac{k(r_d)v_d}{\sqrt{t_d}}
+ +\frac{k(3)}{2730\sqrt{131/40000}}
+   \frac{1}{1-4/(3\sqrt3)}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Along a recursive path, logarithms of tuple-enumeration costs add.
+By~\eqref{eq:local-entropy} and Lemma~\ref{lem:poly-feasible}, the leading
+coefficient is bounded by $\sum_d k(r_d)v_d/\sqrt{t_d}$.
+At the start of the tail $v_6=1/2730$. Consecutive tail costs have ratio
+$(2/3)/\sqrt{3/4}=4/(3\sqrt3)<1$, which sums to~\eqref{eq:polyconstant}.
+Uniform $o(1)$ perturbations change the strictly convergent tail by $o(1)$.
+
+Per-call interpolation, arithmetic, group selection, and bookkeeping use
+$\poly(s)$ work on immutable handles. Input handling and original entry
+queries retain the fixed polynomial dependence on $s+\mathcal L$ from the
+source oracle interface. That entry-evaluation factor multiplies the total
+query workload, rather than being reintroduced at every recursion level.
+The $O(\log\lambda)$ levels therefore add only
+$O(\lambda\log\lambda)$ to the logarithm of the bookkeeping cost,
+which is negligible on the stated exponential scale.
+Leaves cost $\exp(O(s/\lambda))$, initial tensor entries cost
+$\exp(O(s^{9/10}))$, and newly created entries cost
+$\exp(O(L\log s))$ with $L\le s^{63/1000+o(1)}$. All are
+$\exp(o(s/\sqrt\lambda))$. Depth-first enumeration retains polynomial
+space because each precision, label set, kernel description, and accumulator
+has polynomial size and the depth is logarithmic in $\lambda$.
+\end{proof}
+
+The checker bounds every radical by integer square-root intervals and uses
+rational intervals for $\pi$ and $\ln2$. It proves
+\[
+ 63.781173756244<\Cnew<63.781173756245<64.
+\]
+It also verifies the exact integer power certificates above. An independent
+coarser certificate, using $\pi<22/7$ and $\ln2>693/1000$, is
+\[
+ \Cnew<\frac{2297667966854588349649}{36002094515068500000}<64.
+\]
+Thus the convenient coefficient $64$ is not a conclusion drawn from a
+floating-point search.
+
+\subsection{Comparison with the stronger prior family}
+For a fixed alphabet $r$ with $c=2/r$ and
+$A_0=1/(20\log_2r)$, the reviewed asymmetric analysis already optimizes
+root/tail allocation. After substituting slope-four modes, its boundary
+expression is
+\begin{equation}\label{eq:old-fixed}
+ \frac{\pi\sqrt{2(1-1/r)}}{\ln2\sqrt{A_0}}
+ \left(1+\frac{c}{(1-c^{2/3})^{3/2}}\right),
+\end{equation}
+where the active root-cap and other feasibility premises apply. At $r=16$
+this is $66.192723693577\ldots$. The explicit inward-shifted schedule in the
+asymmetric packet gives about $66.6051$ after the same kernel substitution.
+An integer scan of the admissible fixed-alphabet comparisons finds its minimum
+at $16$ over the recorded range; we do not promote that scan to an optimality
+theorem over arbitrary schedules. Formula~\eqref{eq:polyconstant} is an
+explicit feasible improvement over these stronger combined certificates.

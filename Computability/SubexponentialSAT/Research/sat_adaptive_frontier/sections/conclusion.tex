@@ -1,0 +1,149 @@
+\section{Why the SAT exponent order is still unchanged}
+\label{sec:limits}
+
+The new algorithms accelerate a finite graphical sum that was already
+present in the contraction proof. Their local costs remain
+$2^{\Theta(M/\sqrt u)}$ at the level of the proved upper-bound
+expressions. The admissible taper range remains proportional to
+$\log s$, because packet label counts and the high-degree packing gates
+must remain polynomially bounded. The complete recurrence therefore
+still yields a certificate of the form $2^{(C+o(1))\E(s)}$.
+This observation describes the present analysis, not a lower bound on
+the true running time of these algorithms or on every possible algorithm.
+
+The two distinct routes to a better order should be kept separate.
+One is to evaluate the mode graph faster than its present entropy scale,
+using structure beyond arbitrary pair-index factors. The other is to
+decrease the effective size or deformation degree before the graph is
+formed, while preserving a usable recursive representation. The
+degree-flow identity in Section~\ref{sec:degree-flow-new} contributes
+to the second route. It supplies an exact conserved quantity but not
+the required compiler.
+
+Taking an infimum of constants, changing the base of a logarithm,
+using a stronger matrix multiplication exponent, or omitting a
+lower-order entry routine does not by itself establish
+$o(s/\sqrt{\log s})$ in the exponent. Similarly, an unproved summation
+oracle cannot be inserted into a recurrence and then counted as a
+completed improvement. We retain the explicit resource accounting
+throughout the new proofs.
+
+\section{Reproducibility and verification}
+\label{sec:verification}
+
+The archive contains the complete LaTeX source, compiled PDF, original
+Python prototypes, exact numerical certificates, source fingerprints,
+an independent review, and rebuild instructions. The scripts use
+Python's standard library. The exploratory numerical schedule searches
+are not dependencies of any theorem or certificate.
+
+\subsection{What the executable checks establish}
+
+The quartet checker supplies a generic exact finite pair-graph evaluator,
+an exhaustive reference evaluator, and an instrumented child-call ledger.
+Its checks include $15{,}625$ four-group inequalities, $2{,}000$ weighted
+tree profiles, and $80$ exact contraction comparisons over the nonfield
+ring $(\mathbb Z/64\mathbb Z)[V]/(V^2)$. Every one of the $14{,}056$
+leaf calls in those comparisons agrees with the predicted product of
+index-domain sizes. Three additional fixtures reduce calls
+$64\to16$, $128\to32$, and $256\to64$, with equal nonzero outputs.
+These fixtures validate exact work counts; they are not wall-clock
+measurements or SAT benchmarks.
+
+The joint-objective checker verifies all endpoint-color covariance sums
+for nine and twelve groups, $28$ integer-weight objective examples, and
+$27$ exact finite mode-graph contractions modulo $2048$. Its rational
+interval computation certifies every competing recurrence path and each
+packing gate. Independently written code enumerates all $1{,}680$ labelled
+partitions for nine groups and all $34{,}650$ for twelve groups, confirming
+the same covariance constants and testing additional integer-weight examples.
+A separate cached-block prototype checks $24$ contractions over
+$(\mathbb Z/64\mathbb Z)[V]/(V^2)$, including all $945$ group-oracle
+calls and $1{,}052$ block-construction visits in its fixtures.
+The prototypes use literal final summation to check equality; they do not
+implement or benchmark the theoretical fast-matrix backend.
+
+The degree-flow checker verifies $80$ exact polynomial examples,
+$2{,}598$ mode sectors, $640$ Boolean evaluations, $48$ permanent
+coefficient identities, and $40$ low-degree deformation identities.
+A negative control explicitly detects the incorrect rule that omits
+outgoing-mode degree. This tests the algebraic invariant without
+pretending to supply the missing recursive entry evaluator.
+
+The numerical certificates use rational upper and lower bounds for
+$\pi$ and logarithms and integer-square-root brackets. Ordinary floating
+point is not needed to establish the coefficient inequalities. All
+checks use explicit exceptions rather than removable Python assertions.
+
+\subsection{Proof and implementation status}
+
+The new separator and covariance inequalities are proved for all
+nonnegative weights. The finite tests support the corresponding
+implementations and arithmetic ledgers; they do not prove the
+asymptotic theorems by sampling. The global contraction consequences
+retain the imported identities and hypotheses in Section~\ref{sec:imports}.
+No new Lean or Rocq formalization was built, and no complete
+subexponential SAT solver was implemented or benchmarked.
+
+The source manifest fingerprints $347$ files in the pinned requested
+folders and the vendored preprint, plus all $230$ members of the five
+incoming ZIPs. Fingerprinting establishes source identity; it is not
+proof verification. The comparison ledger identifies all twenty
+packets and their stronger-assumption or conditional statements.
+
+\section{Further research questions}
+\label{sec:further}
+
+\paragraph{1. The optimal adaptive separator constant.}
+For a fixed group count $r$, define
+\[
+ \Gamma_r=\sup_{h\ge0,\,\|h\|_2=1}
+             \min_T\max_{v}\sum_{e\in E_v(T)}h_e,
+\]
+where $T$ ranges over binary separator trees and $E_v(T)$ is the union
+of its cut-pair sets along the path to $v$. The quartet inequality is
+sharp for four singleton groups within its three balanced trees, but
+the repeated-quartet bound need not be sharp for larger $r$. A proof
+of a smaller $\Gamma_r$, with a constructive selector and all expensive
+leaf calls paid, would improve the polynomial-space coefficient again.
+Such a result would still need a separate argument to change the
+logarithmic order.
+
+\paragraph{2. Choose table construction and final contraction together.}
+The six-cost theorem shows why forming block tables and contracting them
+should be optimized together. A larger finite family of full computation
+trees may yield a better covariance or minimax bound. It could include
+binary block construction, direct construction, rectangular-matrix
+choices, and memory constraints under one objective. Exact pair cardinalities
+make the finite search computable; a new analysis must control all
+stages under the same selected partition.
+
+\paragraph{3. Compile the conserved degree budget.}
+The degree-flow identity permits group degree to move along a mode
+without increasing its global sum. Can a representation preserve that
+budget, compressed mode multiplicity, bounded graph degree, and
+subdominant entry evaluation simultaneously? A useful positive result
+must construct the entry evaluator. A useful negative result must be
+restricted to a precisely specified representation or oracle model.
+The permanent identity alone is not such a lower bound.
+
+\paragraph{4. Exploit actual sparse crossing blocks.}
+The incoming adaptive Smith-mode packet reduces the mode inventory for
+some actual real-port matrices. It cannot increase the full padded
+kernel's Smith slope uniformly. It remains possible that the specific
+blocks generated by a SAT reduction have additional sparsity or rank
+structure that combines with the present adaptive graph evaluation.
+The question should be studied on recursively generated blocks, with
+preprocessing and valuation-normalization costs included.
+
+\paragraph{5. Close the verification gap at the right interface.}
+A compact formal development can begin with the mode-graph identity,
+exact list indexing, quartet selection, and finite covariance formulas.
+These are smaller and more isolated obligations than an end-to-end
+rebuild of the upstream SAT claim. A subsequent implementation should
+measure actual mode-graph workloads and keep those results distinct
+from the theoretical fast-matrix backend and from SAT-level timings.
+
+The completed deliverable is a stronger pair of explicit contraction
+certificates and an exact algebraic invariant for the next order-improvement
+attempt. The stronger global asymptotic target remains open in this work.

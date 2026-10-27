@@ -1,0 +1,152 @@
+% Report-ready appendix; no independent document preamble.
+\section{Conserved degree and recursive representation}
+\label{sec:degree-flow-new}
+
+The incidence-degree route has a useful invariant stronger than the
+statement that every recursive object has degree at most a fixed global
+bound. The invariant is algebraic; it does not by itself give the local
+entry algorithms required by the contraction theorem.
+
+\subsection{Degree transfer between groups}
+Let $R$ be a commutative ring and let $G$ be a finite directed multigraph
+on groups $1,\ldots,r$, with no loops. Each group has a disjoint set
+$X_g$ of commuting indeterminates. For an edge $e$, write $s(e)$ and
+$t(e)$ for its source and target, and introduce a mode indeterminate
+$Z_e$. Choose
+\[
+ P_g\in R[X_g,(Z_e)_{t(e)=g}],\qquad \deg P_g\le K_g,
+ \qquad
+ L_e\in R[X_{s(e)}],\quad \deg L_e\le1.
+\]
+Here degree counts both local variables and mode variables, and
+$K=\sum_gK_g$. For a nonnegative integer tuple $\beta=(\beta_e)$ put
+\[
+ b_g^{\rm in}=\sum_{t(e)=g}\beta_e,
+ \qquad b_g^{\rm out}=\sum_{s(e)=g}\beta_e,
+\]
+and define
+\[
+ Q_{g,\beta}(X_g)=
+ \left[\prod_{t(e)=g}Z_e^{\beta_e}\right]P_g
+ \prod_{s(e)=g}L_e(X_g)^{\beta_e}.
+\]
+
+\paragraph{Degree-flow lemma.}
+One has the finite polynomial identity
+\begin{equation}\label{eq:degree-flow-identity}
+ \prod_gP_g\bigl(X_g,(L_e(X_{s(e)}))_{t(e)=g}\bigr)
+   =\sum_\beta\prod_g Q_{g,\beta}(X_g).
+\end{equation}
+For every nonzero sector contribution,
+\begin{equation}\label{eq:degree-flow-caps}
+ \deg Q_{g,\beta}\le d_{g,\beta}
+ :=K_g-b_g^{\rm in}+b_g^{\rm out},
+ \qquad
+ \sum_gd_{g,\beta}=K.
+\end{equation}
+The caps are nonnegative whenever all relevant coefficients are nonzero.
+Replacing every $Q_{g,\beta}$ by its multilinear representative on a
+Boolean cube preserves its Boolean values and does not increase its degree.
+
+\paragraph{Proof.}
+Expand each $P_g$ as a polynomial in its incoming $Z$ variables. Each
+mode occurs as an incoming variable at exactly one target; substituting
+its linear form contributes its power at exactly one source. Regrouping
+these factors gives \eqref{eq:degree-flow-identity}. Extracting an
+incoming coefficient of total mode degree $b_g^{\rm in}$ leaves local
+degree at most $K_g-b_g^{\rm in}$; multiplying the outgoing linear forms
+adds at most $b_g^{\rm out}$. Finally every $\beta_e$ is subtracted once
+and added once, proving the sum identity. Boolean multilinearization
+replaces a positive power by its first power and can only lower degree.
+These arguments remain valid over rings with zero divisors, including
+the truncated coefficient rings in the source; degree bounds can only
+decrease through cancellations. \hfill$\square$
+
+The groupwise Boolean sums therefore obey
+\[
+ \sum_{x\in\{0,1\}^{\bigsqcup_g X_g}}
+ \prod_g P_g\bigl(x_g,(L_e(x_{s(e)}))_{t(e)=g}\bigr)
+ =\sum_\beta\prod_g
+       \left(\sum_{x_g\in\{0,1\}^{X_g}}Q_{g,\beta}(x_g)\right).
+\]
+Thus incoming modes remove exactly the degree allowance that outgoing
+mode powers add elsewhere. It is unnecessary to charge the full original
+degree separately to every child. If a global degree budget is presented
+through a grading rather than groupwise bounds, the statement applies
+after fixing a feasible group-degree allocation; for fixed $r$, there
+are at most $(K+1)^r$ such allocations. This observation does not make
+the resulting local polynomials easy to evaluate.
+
+\subsection{Why the low-degree deformation is valid}
+For a multilinear polynomial $A$ in $M$ variables, the elementary
+multilinear interpolation identity is
+\[
+ \sum_{Y\in\{0,1\}^M}A(Y)
+       \prod_{x=1}^M l_{Y_x}(z_x)=A(z),
+ \qquad l_0(z)=1-z,\quad l_1(z)=z.
+\]
+Consequently, if $\deg A\le K$ and the entries of the source deformation
+matrix $W(T)$ have degree at most $2L-1$, its deformed contraction can
+be written
+\[
+ F(T)=\sum_{X\in\{0,1\}^M} B(X)A(W(T)X),
+ \qquad \deg_T F\le K(2L-1).
+\]
+The tensor $B$ need not have low polynomial degree for this conclusion:
+its Boolean entries do not depend on $T$. In an original-variable
+representation, COPY constraints can be enforced by keeping a single
+Boolean variable wherever it occurs. In such a representation the
+degree-flow lemma describes the formal effect of a mode sector.
+
+\subsection{The precise closure gap}
+There are three distinct representations, with different obligations.
+First, the original incidence polynomial has a controlled degree, but
+may have $N=n(\log n)^{O(1)}$ incidence positions. Its direct Cauchy
+mode multiplicity is controlled by $N/D$, rather than by the compressed
+bit count divided by $D$. Second, the binary subset-index representation
+has $O(n\log\log n)$ wires, but incidence degree does not bound the
+Boolean degree of its index tensors. Third, the formal group polynomial
+$Q_{g,\beta}$ has the degree bound \eqref{eq:degree-flow-caps}, but its
+coefficient extraction can couple all factors within a group.
+
+The source's ordinary child network retains the original row and column
+vertices together on one side and puts new packet tensors on the other.
+This preserves packetwise entry evaluation. It does not preserve the
+assertion that a single designated side has total low polynomial degree.
+Alternatively, carrying $Q_{g,\beta}$ as one implicit local factor
+preserves the degree statement but has not supplied the required entry
+algorithm. Expanding the entire group polynomial can take exponential
+time in its group degree. This is a cost of that direct method, not an
+unconditional lower bound on all possible implementations.
+
+The following elementary identity illustrates the distinction. For any
+$d$ by $d$ matrix $A=(a_{ij})$ over a commutative ring,
+\begin{equation}\label{eq:degree-flow-permanent}
+ [Z_1\cdots Z_d]\prod_{i=1}^d
+       \left(\sum_{j=1}^d a_{ij}Z_j\right)
+    =\sum_{\pi\in S_d}\prod_{i=1}^d a_{i,\pi(i)}
+    =\operatorname{perm}(A).
+\end{equation}
+All input factors are linear and have short descriptions, but grouping
+them creates a global coefficient-extraction task. Equation
+\eqref{eq:degree-flow-permanent} is an algebraic illustration only: it
+is not an assertion that every matrix occurs as an actual Cauchy mode
+block, nor a complexity lower bound for those blocks.
+
+An adequate recursive compiler must simultaneously preserve the degree
+budget, the compressed mode multiplicity, a suitable graph-degree bound,
+polynomial-size immutable descriptions, and subdominant entry evaluation
+at the inherited creation precisions. The degree-flow lemma supplies
+one of these invariants and identifies the exact incoming/outgoing
+transfer. It does not supply the compiler, and no improved worst-case
+SAT exponent is deduced here.
+
+\paragraph{Relation to the inspected corpus.}
+The existing \texttt{3sat\_asymptotic\_analysis} packet~\cite{degreeprior} already states a
+conditional degree-preserving kernel interface and explains why binary
+subset indices do not inherit incidence degree. The present note isolates
+an explicit conserved group-degree identity and its coefficient-extraction
+obligation. A text search of the integrated and five incoming packets
+found no statement of this identity in this form. This is a statement
+about the inspected corpus, not a claim of mathematical priority; the
+identity follows from elementary polynomial expansion.

@@ -1,0 +1,228 @@
+% Independent mathematical audit. Intended as an internal appendix fragment.
+\section{Independent audit of the cached global schedule}
+
+\paragraph{Scope and finding.}
+This audit checks the proposed $8,12,8,4,4,\ldots$ schedule against the
+inherited asymmetric packing, sharp Hermite precision, full-block Cauchy
+modes, and genuine recursive group-entry evaluation interfaces. It finds
+the displayed time and space constants consistent with those interfaces.
+This is a relative algorithmic proof audit, not a verification of the
+complete upstream SAT theorem, a formal proof, or an implemented fast SAT
+solver. The exact finite checker accompanying this note verifies the scalar
+inequalities and recurrence comparisons described below.
+
+\subsection{Parameters and the equality-boundary reserve}
+
+Put $\lambda=\lceil\log_2s\rceil$,
+$\Lambda=\lambda-\lceil\sqrt\lambda\rceil$, and
+$b_0=\lceil6\log_2\lambda\rceil$. A fixed exceptional range is handled
+directly. Let
+\[
+ (f_0,f_1,f_2)=\left(\frac1{60},\frac1{90},\frac1{180}\right),
+ \qquad f_{3+k}=\frac1{160}\left(\frac58\right)^k,
+ \qquad u_d=\lfloor f_d\Lambda\rfloor,
+ \qquad a_d=\sum_{j=0}^d u_j+(d+1)b_0.
+\]
+The alphabets are $r_0=8,r_1=12,r_2=8$, and $r_d=4$ thereafter.
+The cumulative leading ranges are exactly
+\[
+ A_0=\frac1{60},\quad A_1=\frac1{36},\quad
+ A_2=\frac1{30},\quad A_\infty=\frac1{20}.
+\]
+At the root, the limiting symmetric high-degree condition is an equality:
+$2A_0\log_2 8+9/10=1$. The retained-side condition at depth two and in
+the limiting tail is also an equality:
+$A_2\log_2 8+9/10=A_\infty\log_2 4+9/10=1$.
+These equalities alone would not prove nearly lossless packing.
+The reserve in $\Lambda$ supplies, uniformly through logarithmic depth,
+\[
+ \log_2\left(\frac{Q_0^2\Delta\lambda^2}{M}\right)
+ \le-\frac1{10}\sqrt\lambda+O((\log\lambda)^2),
+ \qquad
+ \log_2\left(\frac{Q_d\Delta}{M}\right)
+ \le-\frac1{10}\sqrt\lambda+O((\log\lambda)^2)
+\]
+at the equality-boundary regimes, for active $M>s/\lambda$.
+Here $Q_d=r_d^{a_d}$ and $\Delta=\lceil s^{9/10}\rceil$.
+The depth-one condition has a fixed positive power margin because
+$12^5<2^{18}$ implies $A_1\log_2 12<1/10$.
+
+The fresh-side and slot-rounding leading exponents are at most $1/4$:
+\[
+ 2A_d\log_2r_d+A_{d-1}\le\frac14,
+ \qquad A_d(1+2\log_2r_d)\le\frac14.
+\]
+They therefore have substantial margins below one. Fresh packet degrees
+are at most $2L_d=s^{1/20+o(1)}<\Delta$. The balancing lemma gives a
+uniform padding error bounded by
+\[
+ \delta_s=O(1/\lambda)+2^{-c\sqrt\lambda+O((\log\lambda)^2)}
+\]
+for a fixed $c>0$. In particular $\delta_s\log\lambda=o(1)$,
+which is needed before multiplying the shrinkage errors over all depths.
+
+\subsection{Depth, precision, and entry evaluation}
+
+First verify the gates for hypothetical depths up to
+$\log_{20/11}\lambda+O(1)$. Throughout this range the least retained
+taper length satisfies
+\[
+ u_d\ge\lambda^{\eta+o(1)},\qquad
+ \eta=1-\frac{\log(8/5)}{\log(20/11)}>0,
+\]
+because $8/5<20/11$. Thus all floors are uniformly negligible.
+The uniform padding estimate makes every child shrink by at most $11/20$
+eventually. This closes the depth bootstrap with leaf threshold
+$H=\lceil s/\lambda\rceil$, without assuming shrinkage before establishing
+the packing gates. The sharper bounds are
+\[
+ M_d\le(1+o(1))s m_d,
+ \quad (m_0,m_1,m_2)=\left(1,\frac14,\frac1{24}\right),
+ \quad m_{3+k}=\frac1{96}2^{-k}.
+\]
+
+The precision argument remains valid uniformly. With
+$D=2^{a_d-i}$ and $i<u_d$, we have
+$D\ge2^{a_{d-1}+b_0+1}$. Inherited precision is at most
+$O(s\lambda^2 2^{a_{d-1}})$, so its ratio to $MD/u_d$ is
+$O(\lambda^4 2^{-b_0})=o(1)$. The jet-evaluation loss is lower order too.
+The exact sufficient linear taper therefore gives
+\[
+ P_i\le(6+o(1))MD/u_d.
+\]
+All precisions, ring-coordinate counts, interpolation degrees, and stored
+descriptions remain polynomial in $s$. The original extension of degree
+$4\lambda$ still supplies enough residue-distinct interpolation points.
+
+The original entry cost $2^{O(s^{9/10})}$, new packet-entry cost
+$\exp(O(L_d\log s))=\exp(s^{1/20+o(1)})$, and direct leaf cost
+$2^{O(s/\lambda)}$ are all lower order on the scale $s/\sqrt\lambda$.
+Keep immutable creation-time tensor descriptions. In particular, generating
+a new packet descriptor must not turn evaluation of one packet entry into
+an uncharged recursive evaluation of a previous tensor network.
+Cache entries are paid child contractions, not free oracles.
+
+The number of branching choices depends on $s$, not on the root description
+length $\mathcal L$. Count nodes first, then charge a fixed polynomial in
+$s+\mathcal L$ per node or original entry. Multiplying an arbitrary
+$\mathcal L$-dependent factor afresh into every recursive branching bound
+would not justify a final fixed polynomial in $\mathcal L$.
+
+\subsection{Local table construction and storage}
+
+Let $\kappa=\pi\sqrt2/\ln2$, $K=\kappa M/\sqrt u$, and
+\[
+ b=\sqrt{61/150},\qquad
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+The adaptive four-block lemma bounds the final contraction by
+$2^{(b+o(1))K}$. For eight groups, formation of four pairs costs at most
+$2^{(\sqrt{608/25}/8+o(1))K}$. For twelve groups, formation of four
+triples costs at most $2^{(\sqrt{1366/25}/12+o(1))K}$.
+The respective coefficients are $0.6164414003\ldots$ and
+$0.6159906204\ldots$, strictly below $b=0.6377042157\ldots$.
+Thus input-block formation is included, rather than omitted from the
+local bound. The singleton caches have coefficient $\alpha_r<b$ for
+every alphabet used here.
+
+There is a convenient way to avoid a subtle uniformity issue in invoking
+the inherited weighted-entropy lemma. That lemma is phrased for fixed
+coefficient vectors, whereas choosing its dual vector proportional to the
+observed index-length vector would make the choice data dependent. Instead
+apply the lemma to the finite set of $216$ mean coefficient vectors in the
+four-block proof. Aggregation of the directed pairs repeats each block-edge
+coefficient $2(r/4)^2$ times. Every resulting vector has Euclidean norm at
+most $\sqrt2(r/4)\sqrt{244/75}$. Maximizing the error over this finite set
+is uniform, and dividing by $r$ gives exactly $\sqrt{61/150}$. This proves
+the adaptive bound without requiring a separate dual-norm uniformity claim.
+
+For the chosen perfect matching $M$, its crossing-boundary size has
+logarithm $C_M\le F_M$. Hence the selected intermediate pair tables fit
+in $2^{(b+o(1))K}$ space. The cruder boundary-cardinality bound
+$\sqrt{1/2}K$ is larger and must not be substituted here while retaining
+the claimed space constant. The adaptive cost certificate itself supplies
+the needed sharper storage bound. Standard sequential fixed-base matrix
+multiplication, record reshaping, and coordinate/CRT recovery add only
+polynomial factors in the record and index lengths.
+
+The exponent $12/5$ requires the exact integer-coordinate bridge inherited
+from the contraction-tree packet. An arbitrary field-multiplication theorem
+cannot simply be applied inside a ring with noninvertible two and nilpotents.
+The bridge fixes a rational bilinear backend with exponent below $12/5$,
+uses nonexceptional odd primes on canonical integer coordinate matrices,
+reconstructs their exact products, and then reduces in the target ring.
+Its coordinate rank, input precision, and matrix-index lengths are all
+polynomial in $s$. It therefore preserves the claimed leading exponent.
+
+\subsection{Complete recurrence and exact constants}
+
+After paying for all cached group entries, the recurrence is
+\[
+ T_d\le 2^{(\alpha_{r_d}+o(1))K_d}T_{d+1}
+             +2^{(b+o(1))K_d},
+ \qquad S_d\le2^{(b+o(1))K_d}+S_{d+1},
+\]
+up to already accounted-for polynomial factors. On the scale
+$s/\sqrt\lambda$, the first four $K_d$ coefficients are
+\[
+ K_0^*=\kappa\sqrt{60},\quad
+ K_1^*=\frac\kappa4\sqrt{90},\quad
+ K_2^*=\frac\kappa{24}\sqrt{180},\quad
+ K_3^*=\frac\kappa{96}\sqrt{160}.
+\]
+The subsequent ratio is
+$\gamma=(1/2)/\sqrt{5/8}=\sqrt{2/5}$, not $\sqrt2/5$.
+Unrolling the recurrence gives the local candidates
+\[
+ bK_0^*,\quad \alpha_8K_0^*+bK_1^*,\quad
+ \alpha_8K_0^*+\alpha_{12}K_1^*+bK_2^*,\quad
+ \alpha_8K_0^*+\alpha_{12}K_1^*+\alpha_8K_2^*+bK_3^*.
+\]
+Their values are respectively
+$31.6617067862\ldots$, $32.9158138649\ldots$,
+$31.4483967553\ldots$, and $31.3778492206\ldots$.
+Since $\alpha_4/(1-\gamma)>b$, later tail candidates increase toward
+\[
+ \alpha_8K_0^*+\alpha_{12}K_1^*+\alpha_8K_2^*
+       +\frac{\alpha_4K_3^*}{1-\gamma}
+ =32.2464016431\ldots,
+\]
+still below the depth-one candidate. Leaves only add a lower-order
+exponent. The verified constants are therefore
+\[
+ C_T=\frac\pi{\ln2}
+       \left(\frac{\sqrt{105}}2+\sqrt{\frac{183}{40}}\right),
+ \qquad C_S=\frac\pi{\ln2}\sqrt{\frac{244}{5}}.
+\]
+Ancestor and descendant stored arrays add, rather than multiply; the
+largest local space exponent is at the root. Rational interval arithmetic
+independently establishes
+\[
+ 32.91581386492429831439<C_T<32.91581386492429831440,
+\]
+\[
+ 31.66170678619398804166<C_S<31.66170678619398804167.
+\]
+The checker uses exact fractions, integer-square-root enclosures, Machin's
+formula for $\pi$, and a positive series for $\ln2$; floating-point output
+does not decide any comparison.
+
+\subsection{Limits relevant to the research objective}
+
+This theorem improves a leading coefficient in a normalized wire-level
+exponential upper bound and uses subexponential space. It does not improve
+the logarithmic order of the SAT bound or supply a coefficient per SAT
+variable. The inherited encoding constants and the source theorem remain
+separate dependencies.
+
+Precision peeling leaves the set of enumerated mode tuples unchanged and
+reduces only inherited precision, already lower order compared with the
+next Hermite loss under the above schedule. The incoming frontier packet
+already observes this limitation. Similarly, applying the tensor engine
+to a rank-compressed mode network with only $r$ group vertices faces high
+arity: its usable next range is $O(\log r)$, whereas initial packing costs
+$O(\log M/\log r)$. The apparent two square-root savings cancel.
+The previously proposed degree-preserving exterior-power interface also
+still needs compressed mode multiplicity and recursive closure. Neither
+that interface nor the conditional structured summation algorithm is
+established by this schedule or this audit.

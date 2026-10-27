@@ -10,7 +10,7 @@ reports that analyse or refine one of those algorithms.
 development exists in this repository yet, so there are no `Lean/` or `Coq/`
 directories. The manuscripts and packets are external research material,
 filed as delivered. Their proofs, constants and verification claims are the
-authors' own. The twenty packets below assume the unchanged arguments of the
+authors' own. The twenty-nine packets below assume the unchanged arguments of the
 OpenAI preprint. None of them claims an end-to-end SAT solver or a measured
 speedup, and none was formalized.
 
@@ -51,11 +51,12 @@ pin `openai/math@7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a` or
 commits, so every packet analyses the same text. Proofs are in natural
 language, with exact finite checks in standard-library Python.
 
-There are three rounds. The first seven packets work from the preprint alone.
+There are four rounds. The first seven packets work from the preprint alone.
 The eight of the second round also review the first round and its placement
 here, and they build on it. The five of the third round review all fifteen
 earlier packets. They combine compatible ingredients, and they add the first
-measured (kernel-level) speedups.
+measured (kernel-level) speedups. The nine of the fourth round push the
+coefficients further with adaptive partitions and contraction trees.
 
 ### Round 1: proved refinements of the preprint's upper bounds
 
@@ -115,6 +116,27 @@ that the coefficients are per wire, and that no full solver is included.
 | [`subsat_contraction_tree/`](Research/subsat_contraction_tree/README.txt) | `subsat_contraction_tree_2026-10-26.zip` | Cached time `C_T = π√24339/(20 ln 2) = 35.3546…`, with space `C_S = π√915/(4 ln 2) = 34.2748…`, the smallest time coefficient claimed. It builds cached subset tables by binary construction and adds an exact CRT bridge to a matrix-multiplication backend with exponent below 12/5. A prefix-reuse kernel cuts Cauchy feature work from `O(L+PB²)` to `O(L+PB)`; it measured 101.95× on a 512-mode, 128-bit fixture. [`report/report.pdf`](Research/subsat_contraction_tree/report/report.pdf), 18 pages; [`CLAIMS.json`](Research/subsat_contraction_tree/CLAIMS.json), [`INTEGRATION.txt`](Research/subsat_contraction_tree/INTEGRATION.txt). | It uses subexponential space, so it is not a polynomial-space result. The fast matrix backend is imported theory and is not implemented. Its `LICENSE` is MIT-0. |
 | [`subexponential_sat_kernel_improvements/`](Research/subexponential_sat_kernel_improvements/README.md) | `subexponential_sat_kernel_improvements_2026-10-26.zip` | Exact compositions of existing ingredients: polynomial-space 66.6051 (asymmetric packing with full-block Cauchy modes), and 44.5376 time / 39.4959 space with more memory. New exact kernels are an adaptive Smith-form separator for the actual crossing matrices (one sparse block has 260 feasible tuples against 3,013), Gray-code and antipodal streamed coefficient extraction, and a roots-of-unity projective filter. Kernel speedups of 2.16–7.86× were measured. [`report.pdf`](Research/subexponential_sat_kernel_improvements/report.pdf), 17 pages. | The compositions are comparison examples, not optima. The timings are kernel measurements. It names the density bound as the strongest SAT order in the corpus. `code/baseline_packet_extraction.py` is a byte copy of `eth_contraction_improvements/code/packet_extraction.py`, kept because its code imports it. Its `LICENSE` is MIT-0. |
 
+### Round 4: adaptive partitions and contraction trees
+
+Arrival `b9941a7396` (nine archives committed together). Seven packets
+reviewed the round-3 placement (ProveIt `fd0edd17e6`…`dde01c4a63`). The two
+marked † reviewed only through round 2 (`d098ba436b`/`474ddba696`). The
+interface is the same, with degree at most `⌈s^{9/10}⌉` unless stated. Scale:
+`s/√(log₂ s)`, or `s/√⌈log₂ s⌉` where marked ⌈⌉. All keep the SAT order
+`n log log n/√(log n)`, and the conditional `n/log n` targets stay unproved.
+
+| Directory | Archive | Claim | Scope stated by the packet |
+|---|---|---|---|
+| [`sat_adaptive_bounds/`](Research/sat_adaptive_bounds/README.txt) | `sat_adaptive_bounds_2026-10-26.zip` | **Polynomial-space `C = 46.18485…`** (from 55.709), the smallest polynomial-space claim, using adaptive streamed separators from complete binary linear flags. Cached: 34.32528… time, 34.02418… space. Cached at degree ≤ `⌈s^{1/12}⌉`: 13.37965… time, 13.25302… space. [`report.pdf`](Research/sat_adaptive_bounds/report.pdf), 22 pages. | Relative to the imported contraction identities; no solver or speedup is claimed. |
+| [`sat_adaptive_tree_certificate/`](Research/sat_adaptive_tree_certificate/README.txt) | `sat_adaptive_tree_certificate_2026-10-26.zip` | **Cached `C_T = (π/ln 2)(√(128000/5103) + √(134144/41067)) = 30.89102…`** with `C_S = 32π√295/(81 ln 2) = 30.75391…` ⌈⌉, the smallest cached claim. It picks one of three contraction trees per pair-weight allocation, with a support-averaging certificate and a strict 9 → 13 → 7 schedule. [`report.pdf`](Research/sat_adaptive_tree_certificate/report.pdf), 15 pages. | It uses subexponential space; averaging and tree methods are classical. |
+| [`sat_adaptive_frontier/`](Research/sat_adaptive_frontier/README.txt) | `sat_adaptive_frontier_2026-10-26.zip` | Adaptive quartet conditioning gives polynomial-space 50.30469…. Joint adaptive cached contraction gives time = space = 31.25240…. [`report.pdf`](Research/sat_adaptive_frontier/report.pdf), 22 pages; [`PROOF_STATUS.json`](Research/sat_adaptive_frontier/PROOF_STATUS.json). | Its reference composition is 55.40467 (polynomial) and 35.355/34.275 (cached). |
+| [`sat_adaptive_matrix_partition/`](Research/sat_adaptive_matrix_partition/README.txt) | `sat_adaptive_matrix_partition_2026-10-26.zip` | Polynomial-space 50.21043… from an optimal balanced sixteen-group separator tree (14,827 DP states). Cached 34.32528… / 34.02418…, the same pair as `sat_adaptive_bounds/`, found independently via a three-triple partition. [`report.pdf`](Research/sat_adaptive_matrix_partition/report.pdf), 18 pages. | No SAT speedup was measured; the fast matrix backend is theoretical. |
+| [`subexponential_sat_adaptive_four/`](Research/subexponential_sat_adaptive_four/README.txt) | `subexponential_sat_adaptive_four_2026-10-26.zip` | Cached 32.91581… / 31.66171… (32.85635… / 31.46748… with a 19/8 matrix backend). Polynomial-space 50.39373…. It gives a sharp local three-matching inequality with constant `√(244/75)`. [`report.pdf`](Research/subexponential_sat_adaptive_four/report.pdf), 18 pages. | Upper-bound comparisons, not runtimes. |
+| [`subsat_rectangular/`](Research/subsat_rectangular/README.md) | `subsat_rectangular_2026-10-26.zip` | Polynomial-space 53.97753… ⌈⌉ by multistage streamed conditioning. Rectangular cached contraction gives 33.99389… / 33.99372… ⌈⌉. It also proves precision barriers, for example that asymmetric Hermite multiplicities cannot help. [`report.pdf`](Research/subsat_rectangular/report.pdf), 26 pages. | No practical SAT speedup is claimed. |
+| [`eth_adaptive_exact_kernels/`](Research/eth_adaptive_exact_kernels/README.txt) | `ETH_Adaptive_Exact_Kernels_2026-10-27.zip` (dated 27 October) | Polynomial-space 55.33162…, and 25.16377… at degree ≤ `⌈s^{0.51}⌉`. Cached CRT/contraction tree gives 35.07061… / 33.99950…, with a lower-memory 37.32461… / 33.62304…. Sparse-support scoring measured 1.53–2.73×, and fused Cauchy transitions 1.46–2.29× (`(5N²+N)/2` → `N²+N` products). [`report.pdf`](Research/eth_adaptive_exact_kernels/report.pdf), 26 pages. | Small cases regress, and sparse balancing is pseudo-polynomial for binary edge weights. Its 58 `sources/` snapshots of packets already filed here are omitted. |
+| [`3sat_round3_frontier/`](Research/3sat_round3_frontier/README.md) † | `3sat_round3_frontier_20261027.zip` | Polynomial-space 63.75736… ⌈⌉, and **23.66617… at degree ≤ `⌈s^{1/12}⌉`**, the smallest low-degree polynomial-space claim. Cached 37.93011… / 33.62304…; low-degree cached 14.23919… / 12.36130…. Centered antipodal extraction measured 1.56–2.30× and the cube-root filter 2.71–3.00×. [`report/report.pdf`](Research/3sat_round3_frontier/report/report.pdf), 20 pages. | Its 26 `evidence/` copies of files already here are omitted. Prior code is kept as inert `.py.txt`. |
+| [`eth_adaptive_schedules/`](Research/eth_adaptive_schedules/README.txt) † | `eth_adaptive_schedules_2026-10-26.zip` | Polynomial-space 63.78117…; cached 37.59170… / 33.62304…. An exact incremental matching-potential kernel goes from `O(VMQ³)` to `O(MQ² + VQ)` with an identical deterministic output. [`report.pdf`](Research/eth_adaptive_schedules/report.pdf), 22 pages. | Its benchmarks are synthetic graph-packing inputs. |
+
 ## Strongest claimed improvements over the OpenAI preprint
 
 This summary comes from each packet's README and status files. ProveIt has
@@ -157,7 +179,13 @@ figures are per normalized wire `s`, at the general degree bound
 | 66.193… | composed `r=16` reference computed by `sat_adaptive_contraction/` | a composition at its parameter boundary |
 | 63.857… | [`sat_frontier_improvements/`](Research/sat_frontier_improvements/README.txt) | |
 | 63.852… | [`subexponential_sat_frontier/`](Research/subexponential_sat_frontier/README.md) | |
-| **55.709…** | [`sat_adaptive_contraction/`](Research/sat_adaptive_contraction/README.md) | **the smallest polynomial-space claim**: `√(17/24)` × 66.193, about 333× below the baseline |
+| 63.781… / 63.757… | [`eth_adaptive_schedules/`](Research/eth_adaptive_schedules/README.txt), [`3sat_round3_frontier/`](Research/3sat_round3_frontier/README.md) | round 4, reviewed only through round 2 |
+| 55.709… | [`sat_adaptive_contraction/`](Research/sat_adaptive_contraction/README.md) | round 3's best, `√(17/24)` × 66.193 |
+| 55.405… | compatible composition computed by `sat_adaptive_frontier/`, `subsat_rectangular/` | |
+| 55.332… | [`eth_adaptive_exact_kernels/`](Research/eth_adaptive_exact_kernels/README.txt) | |
+| 53.978… | [`subsat_rectangular/`](Research/subsat_rectangular/README.md) | on `s/√⌈log₂ s⌉` |
+| 50.394… / 50.305… / 50.210… | [`subexponential_sat_adaptive_four/`](Research/subexponential_sat_adaptive_four/README.txt), [`sat_adaptive_frontier/`](Research/sat_adaptive_frontier/README.txt), [`sat_adaptive_matrix_partition/`](Research/sat_adaptive_matrix_partition/README.txt) | |
+| **46.185…** | [`sat_adaptive_bounds/`](Research/sat_adaptive_bounds/README.txt) | **the smallest polynomial-space claim**, about 401× below the baseline |
 
 With subexponential space (`2^{(C_S+o(1)) s/√(log₂ s)}`), the time
 coefficients are smaller:
@@ -168,16 +196,28 @@ coefficients are smaller:
 | 44.538… | 39.496… | [`subexponential_sat_kernel_improvements/`](Research/subexponential_sat_kernel_improvements/README.md) (composition) |
 | 38.484… | 34.275… | [`sat_frontier_improvements/`](Research/sat_frontier_improvements/README.txt) |
 | 37.930… | 33.623… | [`subexponential_sat_frontier/`](Research/subexponential_sat_frontier/README.md) |
+| 37.592… | 33.623… | [`eth_adaptive_schedules/`](Research/eth_adaptive_schedules/README.txt) |
+| 37.325… | 33.623… | [`eth_adaptive_exact_kernels/`](Research/eth_adaptive_exact_kernels/README.txt) (lower-memory variant) |
 | 36.750… | 34.024… | [`sat_adaptive_contraction/`](Research/sat_adaptive_contraction/README.md) |
-| **35.355…** | 34.275… | [`subsat_contraction_tree/`](Research/subsat_contraction_tree/README.txt), on `s/√⌈log₂ s⌉`, with an imported fast-matrix backend |
+| 35.355… | 34.275… | [`subsat_contraction_tree/`](Research/subsat_contraction_tree/README.txt), round 3's best, on `s/√⌈log₂ s⌉`, with an imported fast-matrix backend |
+| 35.071… | 34.000… | [`eth_adaptive_exact_kernels/`](Research/eth_adaptive_exact_kernels/README.txt) |
+| 34.325… | 34.024… | [`sat_adaptive_bounds/`](Research/sat_adaptive_bounds/README.txt), [`sat_adaptive_matrix_partition/`](Research/sat_adaptive_matrix_partition/README.txt), the same pair found independently |
+| 33.994… | 33.994… | [`subsat_rectangular/`](Research/subsat_rectangular/README.md), on `s/√⌈log₂ s⌉` |
+| 32.916… | 31.662… | [`subexponential_sat_adaptive_four/`](Research/subexponential_sat_adaptive_four/README.txt) (32.856 / 31.467 with a 19/8 backend) |
+| 31.252… | 31.252… | [`sat_adaptive_frontier/`](Research/sat_adaptive_frontier/README.txt) |
+| **30.891…** | **30.754…** | [`sat_adaptive_tree_certificate/`](Research/sat_adaptive_tree_certificate/README.txt), **the smallest cached claim**, on `s/√⌈log₂ s⌉` |
 
 Low-degree networks have smaller coefficients under stronger input
-assumptions. In polynomial space, `sat_frontier_improvements/` gives 26.902
-at maximum degree `s^{1/12}` and 31.929 at `s^{3/5}`. Before it,
-`eth_asymmetric_packet_balancing/` gave 31.064 at `⌈s^{1/12}⌉` and
-`eth_high_moment/` gave 31.236 at bounded degree. With subexponential space,
-`sat_adaptive_contraction/` gives 15.392 time and 14.250 space at
-`⌈s^{1/12}⌉`.
+assumptions. In polynomial space, the smallest is `3sat_round3_frontier/`'s
+**23.666** at maximum degree `⌈s^{1/12}⌉`. The others are:
+- `eth_adaptive_exact_kernels/`: 25.164 at `⌈s^{0.51}⌉`;
+- `sat_frontier_improvements/`: 26.902 at `s^{1/12}` and 31.929 at `s^{3/5}`;
+- `eth_asymmetric_packet_balancing/`: 31.064 at `⌈s^{1/12}⌉`;
+- `eth_high_moment/`: 31.236 at bounded degree.
+
+With subexponential space at `⌈s^{1/12}⌉`, `sat_adaptive_bounds/` gives
+**13.380** time / 13.253 space and `3sat_round3_frontier/` gives 14.239 /
+**12.361**. Before them, `sat_adaptive_contraction/` gave 15.392 / 14.250.
 
 Other first-round constant gains: `eth_density_refinement/` divides its
 leading mode-enumeration coefficient by 16;
@@ -198,7 +238,11 @@ solve times:
   (`subexponential_sat_kernel_improvements/`);
 - prefix-reused Cauchy features, 101.95× at 512 modes (`subsat_contraction_tree/`);
 - modular Cauchy feature tables, 6.22–58.62× against a strengthened rational
-  recurrence (`sat_adaptive_contraction/`).
+  recurrence (`sat_adaptive_contraction/`);
+- round 4: centered antipodal extraction 1.56–2.30× and a cube-root filter
+  2.71–3.00× (`3sat_round3_frontier/`); sparse-support scoring 1.53–2.73× and
+  fused Cauchy transitions 1.46–2.29× (`eth_adaptive_exact_kernels/`). Some
+  small cases regress.
 
 **Strongest claim of all, conditional on an unproved step.**
 [`3sat_precision_refinement/`](Research/3sat_precision_refinement/README.md)
@@ -224,7 +268,7 @@ All the conditional routes target the `√(log n)` denominator. The barrier
 results of `3sat_asymptotic_analysis/` say that retuning the existing
 parameters (weighted budgets, taper, Newton modes) cannot remove it. A real
 order improvement therefore needs new structure, not better constants. The
-second and third rounds confirm this: their thirteen packets improve only `C`
+second to fourth rounds confirm this: their twenty-two packets improve only `C`
 and kernel costs, and none closes a missing interface of the conditional
 proposals.
 
@@ -285,4 +329,17 @@ proposals.
   to its archive member. Five CRLF CSV files are marked `-text`.
   `subsat_contraction_tree/results/report_build.log` is force-added past the
   `*.log` rule.
+- Round 4. Nine archives were staged by the drop process and committed
+  unchanged at Vladimir's request in `b9941a7396`. In table order they are
+  filed with 30, 43, 39, 35, 35, 40, 93, 89 and 39 files. 85 members are not
+  filed:
+  - one `SHA256SUMS` ledger;
+  - 84 byte-identical copies of files at ProveIt `73dfb5e5ab` or upstream,
+    listed in `OMITTED.tsv`. They are 58 `sources/` snapshots of
+    `eth_adaptive_exact_kernels/` and 26 `evidence/` copies of
+    `3sat_round3_frontier/`.
+- Duplicated `.py`/`.sh` files of round 4 are kept. Five CRLF tables are
+  marked `-text`, and seven delivered `.log` files are force-added. At
+  Vladimir's request, round 4 had no separate manifest or omission recheck
+  beyond the blob-identity test that decides each omission.
 - No supplied script, test, Makefile or LaTeX build was run.

@@ -1,0 +1,250 @@
+BASELINE AUDIT FOR SUBEXPONENTIAL SAT
+Review pin: ProveIt fa6e904d109b738154db7fe41e7f2777e6d24aee.
+Client date: October 26, 2026 (America/Los_Angeles).
+Auditor: baseline_audit subagent. No repository files changed. No supplied code executed.
+
+1. SCOPE AND TRUST LANGUAGE
+
+The corpus contains two primary manuscripts, fifteen placed research packets,
+and five later ZIP packets still in docs/incoming. The project README covers
+only the fifteen placed packets; treating that README alone as the current
+frontier would miss all five latest contributions. All five ZIPs were checked
+for absolute/traversal paths and symlink entries (none found), then extracted
+under /workspace/scratch/16de4a2ca09a/incoming_review/<zip-stem>/<inner-root>.
+
+"Established" below means a result proved in the paper's mathematical model,
+relative to its explicitly imported contraction/deformation/reduction
+interfaces. It does not mean this session reran the source formalization or
+independently verified every upstream argument. The ProveIt README expressly
+says nothing in this project has been checked in ProveIt, and the packets do
+not contain an end-to-end SAT solver.
+
+The normalized-wire coefficient C multiplies s/sqrt(log2 s) in a base-two
+exponent, where s bounds the root Boolean wires, initial precision/truncation,
+and degrees are at most ceil(s^0.9) unless separately stated. C is not a
+coefficient per SAT variable. Cached branches have subexponential rather than
+polynomial space. Conditional conjectures are not algorithms with established
+upper bounds. The separate Claude manuscript has unspecified big-O constants
+and a different reduction/model, so numerical dominance over that manuscript
+does not follow from any displayed normalized-wire constant.
+
+2. RECENT COMMIT COVERAGE
+
+a505bd768b: original incoming ETH/SAT reports.
+64b3202ee8 and 8afdbbea48: remaining first-round packets.
+2b925d8800: seven first-round packets and primary papers placed under SubexponentialSAT.
+3e09608991: unmodified OpenAI preprint vendored at upstream 7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a.
+45233238ae: strongest-claims README summary.
+3e57705cf1 and d098ba436b: eight second-round incoming packets.
+6d3adc4506: eight second-round packets placed under SubexponentialSAT.
+f42479bca2, f898a9fde4, fa6e904d10: five current incoming packets.
+
+3. GLOBAL ASYMPTOTIC ENVELOPE
+
+For fixed width k and n active variables, the strongest established order
+available from compatible bounds in this corpus is
+
+  poly_k(n,m) * 2^{O_k( n/sqrt(log n) *
+                   min{log(2+m/n), log log n} )},
+
+with polynomial space. Its implied constants are uniform in m/n. This gives
+n/sqrt(log n) at fixed density; n log log log n/sqrt(log n) at
+m=Theta(n log log n); and n log log n/sqrt(log n) in the unrestricted worst case.
+
+If n includes unused variables, remove them and multiply the count by the
+appropriate power of two. Retain the direct clause-network branch
+poly(n,m)*2^{O_k(m/sqrt(log(m+2)))} where useful. Small logarithms are absorbed
+by a constant-size base case. The direct branch appears in the primary
+manuscripts and can matter when m=o(n); no later packet worsens it.
+
+Key exact source: Research/sat_density_improvement/density_aware_sat_improvement.tex
+lines 101-120 (main theorem, uniform constants, imported results), 122-139
+(intermediate density), and 164-181 (normalized contraction premise).
+The separate eth_density_refinement report gives the same regime result.
+
+No incoming ZIP proves a smaller global logarithmic order. Each explicitly
+states the general and fixed-density order are unchanged. Any constant C
+improvement in 2^{(C+o(1))s/sqrt(log2 s)} is still an asymptotic improvement
+between explicit upper bounds, but it must not be described as a stronger
+big-O exponent order or as a resolution of the missing n/log n interface.
+
+4. STRONGEST CONDITIONAL TARGETS
+
+Research/3sat_precision_refinement/report.tex lines 640-735 constructs an exact
+rank-encoded mode graph and explains why reapplying the general contraction
+theorem is invalid: the compressed graph has only r genuine high-degree
+tensors, violating the new instance's degree premise. For r increasing,
+u=O(log M/log r), u'=O(log r), and the two apparent square-root savings cancel.
+
+Its lines 742-757 state the missing Structured-mode acceleration hypothesis:
+exp(O(M/u)) admissible recursive contractions, each <=M/8 wires, preserving
+degree, precision, polynomial descriptions and polynomial space. Lines 764+
+derive normalized 2^{O(s/log s)}, and lines 808-866 derive fixed-density
+2^{O(n/log n)} and general 2^{O(n log log n/log n)}. The algorithm meeting the
+hypothesis is explicitly not supplied. This remains the fastest conditional
+global target in the reviewed corpus.
+
+The 3sat_refinement conditional target n(log log n)^(3/2)/log n is weaker.
+The 3sat_asymptotic_analysis missing-interface targets are
+n sqrt(log log n/log n) (degree-preserving recursion) and n/sqrt(log n)
+(uniform linear-wire compression). None is established.
+
+5. INVENTORY OF ALL TWENTY PACKETS
+
+Placed round 1 (under ProveIt/Computability/SubexponentialSAT/Research/):
+
+cauchy_mode_improvement: factorial Cauchy modes, weights 3b+1-2 popcount(b),
+  leading mode-count ratio 1/sqrt(3); order unchanged.
+eth_contraction_improvements: exact Hermite taper/precision, streamed packet
+  extraction, normalized C=648.44...; order unchanged.
+3sat_precision_refinement: precision 24MD/u -> 6MD/u, exact real taper minimax;
+  faster summation hypothesis above remains unproved.
+sat_density_improvement: uniform density envelope stated in section 3.
+eth_density_refinement: same intermediate-density order; factor-16 comparison
+  in a matched mode-count upper bound.
+3sat_refinement: scalar parity lift; conditional compact second contraction.
+3sat_asymptotic_analysis: restricted taper/mode/degree barriers and missing interfaces.
+
+Placed round 2:
+
+eth_asymmetric_packet_balancing: C=76.90899... polynomial space;
+  low-degree ceil(s^(1/12)) C=31.0641... under stronger premise.
+3sat_round2_refinement: C=84.06627..., no logarithmic order change.
+eth_balanced_packing: C=94.74820225953..., polynomial space.
+eth_high_moment: C=94.74820225953..., plus degree-sensitive specializations.
+eth_matching_refinement: C=94.74820225953..., independent matching-potential proof.
+eth_packet_refinement: C=95.66394..., near-unit padding and thin gap.
+eth_recursive_refinement: C=133.20737..., mod-8 Cauchy slope 64/21.
+eth_joint_cauchy: full-block modes slope four; C=319.68576... polynomial space,
+  cached Strassen time C=225.59706..., space C=196.19945.... Its full-block
+  basis and caching compose with much better schedules from other packets.
+
+Current incoming (all member paths below relative to incoming_review):
+
+sat_adaptive_contraction_2026-10-26/sat_adaptive_contraction_2026-10-26:
+  streamed balanced recursive separators C=55.70947831891 polynomial space;
+  adaptive nine-group cached C_T=36.75031252384, C_S=34.02417800749;
+  low-degree cached 15.3919331988/14.2501611298. Global order unchanged.
+
+sat_frontier_improvements_2026-10-26/sat_frontier_improvements_2026-10-26:
+  variable-arity C_PS=63.8574094711; low-degree coefficients31.9287/26.9023;
+  cached C_T=38.4844959057, C_S=34.2748030050; quadratic Cauchy table kernel.
+
+subexponential_sat_frontier_2026-10-26/subexponential_sat_frontier_2026-10-26:
+  variable-arity C_PS=63.85220339055; cached C_T=37.93010908288,
+  C_S=33.62304092166; exact balancing O(N Q^3)->O(N Q^2), precision peeling.
+
+subexponential_sat_kernel_improvements_2026-10-26/subexponential_sat_kernel_improvements:
+  adaptive chain-ring Smith separation, Gray and projective coefficient kernels;
+  no improved uniform global order. Dense actual blocks retain slope-four
+  Smith profile; gains depend on sparse actual port sets.
+
+subsat_contraction_tree_2026-10-26/subsat_contraction_tree_2026-10-26:
+  C_T=35.354588058401, C_S=34.274803005023; binary cached block construction
+  and coordinate/CRT bridge to fixed field matrix exponent <12/5.
+  Explicitly subexponential-space and theoretical fast backend, not full solver.
+
+6. STRONGER COMPOSITIONS THAT SHOULD BE USED AS COMPARISONS
+
+Printed numbers are not the combined optimum. Two immediately compatible
+compositions are already stronger than the best individual printed entries:
+
+A. Streamed separators + existing variable-arity schedule.
+
+Let v(1)=0 and
+  v(r)=2 floor(r/2)ceil(r/2)+max(v(floor(r/2)),v(ceil(r/2))).
+Use local coefficient beta_str(r)=sqrt(v(r))/r on
+K(M,u)=pi sqrt(2)/ln(2)*M/sqrt(u), from adaptive_sat_review.tex lines716-790.
+Substitute this into the fully proved strict multi-arity schedule in
+subexponential_sat_frontier/theory.tex lines12-112:
+ r=(13,14,8,6,4,...),
+ eta=(27/2000,51/4000,141/20000,107/20000,(27/6400)(5/8)^k),
+ M/s=(1,2/13,2/91,1/182,(1/546)2^(-k)).
+This gives C_PS=55.40466590661056 (floating-point evaluation of explicit radicals).
+The schedule's strict packing gates and fixed finite alphabet set are unchanged.
+It is a compatible composition of known ingredients, not a novel mechanism.
+
+B. Existing cached contraction-tree backend + known inward boundary retreat.
+
+Use r0=8; tail r=12; lambda=ceil(log2 s);
+ u0=floor(lambda/60-sqrt(lambda)),
+ u_d=floor(lambda/(108*6^(d-1))) for d>=1,
+ a_d=sum_{j<=d}(u_j+ceil(6log2 lambda)), H=ceil(s/lambda^(3/4)).
+The cumulative leading capacity is
+  1/60+(1/108)/(1-1/6)=1/36.
+The root negative Theta(sqrt(lambda)) slack pays for its logarithmic guards;
+tail gates and noncircular depth argument are unchanged from cached_tree.tex
+lines135-176. Use its constants
+ a8=sqrt14/8, b8=sqrt(798/25)/8, j8=sqrt30/8,
+ a12=sqrt22/12, b12=sqrt(1728/25)/12, j12=2/3,
+ kappa=pi sqrt2/ln2, K0*=kappa sqrt60, K1*=kappa sqrt108/4,
+ gamma=1/sqrt6.
+The recurrence cached_tree.tex lines178-202 gives
+ max{b8 K0*, a8 K0*+K1* max(b12,a12/(1-gamma))}.
+Its root term is35.063598846170166; tail term34.75894094128674.
+Space coefficient=max{j8 K0*,j12 K1*}=33.992701063703954.
+This is again a compatible parameter refinement, not a new order result.
+
+These are explicit feasible combined upper bounds, not a claim to global
+optimization over every possible composition or schedule. The tree backend
+can also be retuned with newer fixed algebraic matrix exponents, degree
+premises and the adaptive aggregation step. Any new mathematical gain should
+be compared against a clearly declared compatible reference, not just76.909.
+
+7. ADAPTIVE-TREE NOVELTY / OVERLAP CHECK
+
+The adaptive packet's exact new selection is a partition of r=9 vertices into
+three triples, minimizing total crossing entropy for each weight array.
+It proves H_cross <=(3/4)H_total by averaging 280 partitions. The block builder
+is still flat, with its cost bounded separately by an l2-support cardinality.
+It does not combine the averaging with a fast multiplication backend.
+Its polynomial-space streamed separator tree is fixed and balanced.
+
+The contraction-tree packet uses a fixed balanced tree for each near-equal
+block and a fixed triangle; each merge is bounded by weighted l2 support:
+  (sqrt(v1+v2+v3-(21/25)min(v1,v2,v3))/r) K.
+No adaptive tree-permutation minimax theorem or Euclidean support averaging
+for the whole operation set was found. Its report/report.tex lines472-478
+EXPLICITLY lists observed pair entropies and different split trees as future
+research: a finite-group optimizer is feasible, but a uniformly smaller
+coefficient needs an all-budget-distributions analysis. Therefore merely
+proposing an adaptive optimizer repeats an existing idea; proving a uniform
+adaptive-tree/support theorem could close a stated open direction.
+
+The full-mode weighted entropy inequality itself is already prior work:
+  sum_e z_e h_e <= (sqrt(sum_e z_e^2)/r+o(1)) K(M,u).
+Sources: cached_tree.tex lines50-65; adaptive_sat_review.tex lines458-493;
+earlier joint-Cauchy packet. Do not claim this inequality alone as new.
+
+8. RESTRICTED ORDER BARRIERS
+
+Precision report lines589-638 shows a taper lower bound Omega(M/u), plus
+2^{Omega(M/sqrt(u))} abstract feasible binary tuples even with ordinary-degree
+caps. Factorial valuations grow linearly, so retuning that basis changes
+constants rather than partition-exponent order.
+
+The rank-compression degree obstacle is in precision report lines709-735.
+For increasing grouping arity, packing forces u=O(log M/log r). Dense complete
+mode graphs retain a constant fraction of the entropy at balanced separator
+and contraction bottlenecks; raising r alone is therefore not a source of a
+vanishing logarithmic factor. These are barriers to analyzed proof strategies,
+not lower bounds on SAT or all conceivable contraction algorithms.
+
+9. AUDIT LIMITS
+
+All current READMEs/status descriptions and relevant theorem/algorithm sections
+were read. Critical shared entropy, precision-interface, group-aggregation,
+binary-tree and schedule formulas were inspected in detail. Supplied scripts
+were not run, and archived measurements were not independently replicated.
+No global schedule optimum was proved. No unconditional impossibility result
+for a stronger SAT algorithm was established.
+
+CLOSING RELOCATION CHECK
+
+Closing head dde01c4a63b822c25b8eb345299346c36f837b49 includes placement
+commit 450252e9d86c155f188b485629b9755c5c665371. All 230 files of the
+five incoming packets were independently checked against their new Git blob
+IDs and are byte-identical to the reviewed archive members. docs/incoming
+contains only README.md at that closing head. Two earlier replay scripts were
+restored by the placement; no new mathematical bound was introduced.
+The original source pin and immutable archive URLs remain valid provenance.

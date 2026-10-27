@@ -1,0 +1,86 @@
+\section{Validation, dependencies, and reproducibility}
+\label{sec:validation}
+
+The proof has three distinct layers. The source deformation, SAT reductions,
+packing theorem, full Cauchy separation, and existing separator identity are
+imported and cited. The new rectangular aggregation, explicit schedules,
+asymmetric symmetrization and finite minimax formula, and scoped barrier
+extensions are proved in this report. Exact computations check the finite
+arithmetic and identities on which those proofs depend.
+
+\subsection{Exact checks that were executed}
+
+\begin{center}\small
+\begin{tabular}{@{}p{.27\textwidth}p{.64\textwidth}@{}}
+\toprule
+Artifact & Executed checks\\\midrule
+\path{code/check_schedule.py} &
+Rational rectangular-operation ledgers; all strict packing gates;
+four complete time candidates; space maxima; interval certificate
+$C_T<34$.\\[4pt]
+\path{code/check_streamed.py} &
+Balanced separator profiles, wire masses, all capacities and packing
+gates, the convergent tail, comparison compositions, and the rational
+interval certificate $C_{\rm ps}<54$.\\[4pt]
+\path{code/check_hermite.py} &
+2,318 exhaustive multiplicity vectors on grids of sizes 2, 4 and 8;
+subtree-loss identity, inactive-node extension, symmetrization;
+112 finite rational minimax instances.\\[4pt]
+\path{code/check_inventory.py} &
+4,699 exact minor-valuation cases, 94 independent rational determinants,
+768 inventory parameter cases, and 324 explicit binary tuples with
+exact-weight pigeonhole checks.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The schedule certificates use rational enclosures from Machin's formula
+for $\pi$, a positive series for $\ln2$, and integer square roots.
+Floating-point values are presentation fields only; every acceptance
+comparison uses exact arithmetic. Runtime guards remain active under
+optimized Python. Independent review checked the rectangular interpolation,
+the nonfield CRT bridge, transposition, workspace accounting, complete
+recursion, and the Hermite symmetrization. The independent audit is included.
+
+The four initially incoming packets were compared to their final placed
+locations: all $37+48+58+37=180$ files matched byte-for-byte.
+The provenance directory records the initial and closing commits, relevant
+commit messages, Git blob identities, and SHA-256 identities. The file
+inventory is an identity ledger, not a claim that every included source
+file received a line-by-line mathematical audit.
+
+\subsection{What these checks do not establish}
+
+This archive is not a new formalization of the upstream ETH argument.
+No Lean or Rocq build is claimed. No complete subexponential SAT solver,
+fast rectangular field-multiplication implementation, or benchmark of
+full SAT solving is included. The field exponent facts are imported
+mathematical results~\cite{mm}; the code checks the exact interface
+arithmetic and resulting schedules, not those large finite algorithms.
+
+Likewise, a rational certificate for an eventual asymptotic constant
+does not give a practical input-size threshold. The strict packing gaps
+are small and the inherited framework is asymptotic. The report therefore
+claims neither practical speedups nor that the displayed upper bounds
+are attained by prior algorithms.
+
+\subsection{Replay and integration}
+
+Python 3.10 or newer suffices for all included mathematical checks.
+From the archive's top-level directory:
+\begin{verbatim}
+python3 verify_manifest.py
+python3 run_checks.py
+python3 build_report.py
+\end{verbatim}
+The last command requires pdfLaTeX and the packages named in the source.
+It disables shell escape and builds three passes. No command downloads
+sources or executes repository scripts. Regenerating results changes
+those output files, so verify the delivered manifest before replaying.
+
+The complete article is \path{report.tex}, with modular section sources.
+The PDF is compiled from that source. The proposed integration location
+and changes to the repository index are described in
+\path{INTEGRATION.md}. This task produces an archive for review; it does
+not modify the remote repository. The proof-status file distinguishes
+new proofs, imported results, checks, and unresolved stronger targets.

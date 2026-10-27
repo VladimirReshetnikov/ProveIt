@@ -1,0 +1,172 @@
+# Independent audit of the adaptive contraction bounds
+
+Reviewed against ProveIt commit `fd0edd17e6a29117179b40a453c0def59165bd7c`, the five incoming archives at that commit, the proposed adaptive quartet argument, and the proposed six-cost cached partition argument. This is an independent natural-language and exact-arithmetic audit, not a formal proof or an execution of a complete SAT counter.
+
+## Verdict
+
+The adaptive quartet norm argument, the adaptive triangle covariance argument, the stronger six-cost covariance argument, and the final `9,12,9,6,4,4,...` cached schedule are mathematically consistent under the explicitly inherited contraction interface. The final cached leading coefficient is
+
+`31.252397312650919857900163691591...`.
+
+The same number is a valid space coefficient because the chosen six-cost objective pays every directly constructed block table, and their boundary dimensions are no larger than their incident-index enumeration dimensions. This is a subexponential-space result. No smaller logarithmic order in the SAT exponent is established.
+
+## 1. Adaptive quartet, including unequal blocks
+
+For six nonnegative undirected pair weights, partition the edges of K4 into the three complementary matchings. In matching j let `a_j >= b_j` be its two weights. A 2+2 binary split costs total edge weight minus its matching minimum, so the best split has cost
+
+`F = sum(a_j) + sum(b_j) - max(b_j)`.
+
+Consequently `F <= sum(a_j) + (2/3)sum(b_j)`. The squared coefficient norm is `13/3` over the six undirected weights and `26/3` over the twelve directed weights. Each quartet cross-class between equal blocks of size k aggregates `2k^2` directed weights. Combining a quartet split with an internal child bound uses disjoint cross/internal supports, giving
+
+`c_(4k)^2 <= (26/3)k^2 + c_k^2`.
+
+Thus `c_4^2 = 26/3`, `c_16^2 = 442/3`, and `(442/3)/170 = 13/15` exactly.
+
+For unequal blocks, selecting a convex combination `sum p_j b_j <= max b_j` yields coefficients 1 on the larger observed weight and `1-p_j` on its partner. If the two edge-class multiplicities are unequal, the worst squared norm assigns the larger multiplicity to coefficient 1. It is therefore valid to minimize
+
+`sum M_j + sum m_j(1-p_j)^2`,
+
+where `M_j` and `m_j` are respectively the larger and smaller multiplicities. The exact KKT solution is `p_j=max(0,1-t/m_j)`, with `sum p_j=1`. The weight-dependent ordering does not invalidate this bound.
+
+## 2. Adaptive triangle alone
+
+For equal blocks of size k, r=3k, let S be total crossing entropy and let V be the sum of squared deviations of the three class entropies from S/3. Then
+
+`F_delta = S - delta min H_i <= (1-delta/3) S + delta sqrt(2V/3)`.
+
+Independent endpoint counting gives the covariance entries, for equal, adjacent, and disjoint undirected edges:
+
+`4k/[3(r-1)]`,
+`2k(k-2)/[3(r-1)(r-2)]`,
+`-8k(k-1)/[3(r-1)(r-2)(r-3)]`.
+
+Their Johnson-space eigenvalues are
+
+`0`, `2k^3/[(r-1)(r-2)]`, and `8k(k-1)/[3(r-2)(r-3)]`.
+
+The second is the largest for k>=2. It is essential to center the undirected edge vector before converting to the directed norm. With H=sum h and N=r(r-1),
+
+`||x-xbar||^2 <= 2(||h||^2-H^2/N)`.
+
+Jensen and a two-coordinate Cauchy inequality then prove the proposed adaptive triangle coefficient exactly.
+
+## 3. Stronger six-cost objective
+
+For each equal three-block partition consider the six costs consisting of the three literal block construction costs `I_A,I_B,I_C` and the three rectangular multiplication costs `S-(3/5)H_AB`, `S-(3/5)H_AC`, `S-(3/5)H_BC`.
+
+The incident cost I_A counts every directed pair having at least one endpoint in A, including internal pairs. It pays direct construction of the entire A table from previously cached group values: enumerate its boundary and internal indices, multiply the fixed number of cached factors, and accumulate over the internal indices. The boundary storage is at most this cost. Thus the maximum W of the six costs pays both construction and the final multiplication. Group-function entries are still evaluated by recursive child calls and paid separately.
+
+The six-cost average is `(H+(17/5)S)/6`. Its expectation is `A H`, where
+
+`A=(49k-5)/[30(3k-1)]`.
+
+Let V6 be the squared-deviation sum of the six costs. Independent exact enumeration gives the following results.
+
+| r | Covariance equal / adjacent / disjoint | Constant / standard / remaining eigenvalues |
+|---|---|---|
+| 9 | `109/120`, `869/4200`, `-379/2100` | `3/200`, `1059/350`, `1319/4200` |
+| 12 | `299/330`, `181/750`, `-3151/24750` | `1/275`, `5476/1375`, `3664/12375` |
+
+Write these eigenvalues as lambda0, lambda1, lambda2. In both cases lambda1 is largest and exceeds lambda0. Then
+
+`E V6 <= 2 lambda1 (||h||^2 - (1-lambda0/lambda1) H^2/N)`.
+
+For six real numbers, `max <= mean + sqrt(5V6/6)`. Jensen and Cauchy therefore give
+
+`min_partition W <= sqrt(A^2 N/(1-lambda0/lambda1) + (5/3)lambda1) ||h||`.
+
+The resulting coefficients on the normalized call entropy K(M,u) are
+
+`beta9^2 = 2489356/6638625`,
+`beta12^2 = 4786024/13540725`.
+
+Numerically they are `.61235664641715728949...` and `.59452001082030692771...`.
+
+All 1,680 labelled equal partitions for r=9 and all 34,650 for r=12 were independently enumerated to confirm the covariance entries. An additional 12 exact nonnegative integer entropy examples for each r confirmed the final squared norm inequality. The proofs, not these examples, justify arbitrary entropy vectors.
+
+## 4. Uniform entropy and selection
+
+A bound stated separately for every fixed linear weight vector is insufficient by itself to justify an adaptively selected vector. The supplied direct per-pair generating-function argument repairs this: it proves a Euclidean entropy bound uniform over every exact pair-budget allocation, including zero and small budgets.
+
+The remainder `O_r(c lambda^2)` is lower order because `c=O(M/D)` and the buffer gives `D >= lambda^6` up to a fixed factor. Dividing by the main scale `M/sqrt(u)` gives at most `O(lambda^(5/2)/D)=o(1)` uniformly.
+
+The number of partitions is fixed. Exact index dimensions are integers with polynomial bit length. The six-cost maximum and the best partition can be selected with rational comparisons after multiplying logarithms by five; no numerical comparison of approximate logarithms is needed. A rounded-log implementation would also work if its fixed additive overhead were explicitly charged.
+
+## 5. Final cached schedule
+
+Let lambda=ceil(log2 s), g=ceil(sqrt(lambda)), and b=ceil(6 log2 lambda). Put
+
+`B=floor((lambda-g)/(20 log2 9))`,
+
+where B can be found exactly by testing `9^(20B) <= 2^(lambda-g)`.
+
+Use:
+
+| Depth | r | u |
+|---|---:|---|
+| 0 | 9 | B |
+| 1 | 12 | floor(lambda/36)-B |
+| 2 | 9 | floor(lambda/288) |
+| 3 | 6 | floor(5lambda/864) |
+| 4+j | 4 | floor(lambda/(189*2^j)) |
+
+Let `a_d=sum_(i<=d)u_i+(d+1)b`. The leading cumulative capacities are at most `1/36`, `1/32`, `1/27`, and `1/21` at depth 1, 2, 3, and over the whole tail, respectively. These follow from exact rational addition and from floors only lowering the sums. In particular the tail contributes at most `2lambda/189`, and `1/27+2/189=1/21`.
+
+The root symmetric packing term has logarithm at most `lambda-g/10+O(log lambda)`. Later retained-side exponents are respectively
+
+`9/10 + log2(12)/36`,
+`9/10 + log2(9)/32`,
+`9/10 + log2(6)/27`,
+`9/10 + 2/21`.
+
+All are strictly below one. Exact convenient gates are `12^100<2^359`, `9^5<2^16`, and `6^5<2^13`; the last exponent is exactly `209/210`. Fresh-side and padding exponents are bounded by `(2 log2 r+1)` times the corresponding capacity and are much smaller than one. Additive buffers of size O((log lambda)^2) and the active-size factor lambda^(3/4) are absorbed by these margins. Fresh tensor degrees are at most `s^(1/21+o(1))`.
+
+The largest sharp child-size ratio is 1/2, so a uniform eventual coarse ratio 5/9 is valid. With stopping threshold `s/lambda^(3/4)`, hypothetical active depth is at most `(3/4)log_(9/5)lambda+O(1)`. The tail retained ranges are at least `lambda^(eta+o(1))`, where
+
+`eta = 1-3 ln2/(4 ln(9/5)) = .1155628113704679... > 0`.
+
+Positivity has the exact certificate `2^3<(9/5)^4`. This establishes packing before invoking shrinkage and closes the depth bootstrap. Floors have uniformly negligible relative effects.
+
+The additive precision buffer gives `D>=2^(a_(d-1)+b+1)`. The inherited bound `O(s lambda^2 2^a_(d-1))` divided by `MD/u` is `O(lambda^(15/4)2^-b)=o(1)`, because active calls have `s/M<=lambda^(3/4)` and u<=lambda. Thus sharp precision and entropy are uniform along all active paths.
+
+## 6. Paid recurrence and coefficient
+
+Put kappa=pi sqrt2/ln2 and A=1/(20 log2 9). The leading u coefficients are
+
+`eta=(A,1/36-A,1/288,5/864,1/189)`.
+
+The leading wire fractions are
+
+`f=(1,2/9,1/27,2/243,2/729)`.
+
+Define `K_d^*=kappa*f_d/sqrt(eta_d)` for the displayed five entries. In the tail the entropy factors decline by `gamma=1/sqrt2` per depth. The child-cache coefficients are `alpha_r=sqrt(2(r-1))/r`. Use the joint beta9 and beta12 at the first three depths, and the full-pair summation coefficients `beta6=sqrt30/6`, `beta4=sqrt12/4` thereafter.
+
+The paid recurrence is additive:
+
+`T_d <= poly(s) (2^(alpha_r K_d) T_(d+1) + 2^(beta_r K_d))`.
+
+Consequently a path terminating in local work at depth j pays the sum of preceding child-cache exponents plus that local beta exponent. The respective leading coefficients are
+
+| Stopping location | Leading coefficient |
+|---|---:|
+| root | 31.25239731265091985790... |
+| depth 1 | 30.41173930826136834964... |
+| depth 2 | 30.23123727305361617324... |
+| depth 3 | 30.18781782003664938323... |
+| supremum over the tail, including leaf paths | 30.42570652863825250442... |
+
+The tail supremum is the paid prefix through depth 3 plus `K_4^* max(beta4,alpha4/(1-gamma))`. The second alternative is larger. The root is therefore the strict maximum, with a margin exceeding .82 over every descendant path.
+
+The local storage exponents are bounded by beta times the corresponding K factor. The root value is largest; the next largest is only `7.728953969934...`. Ancestor arrays add, rather than multiply. This proves the same leading upper coefficient for space. It is not a polynomial-space claim.
+
+## 7. Ring arithmetic and omitted-cost review
+
+The field matrix multiplication exponent 12/5 is already an inherited ingredient of the incoming cached-tree packet. Its coordinate/CRT bridge is appropriate: choose a fixed rational bilinear algorithm of strict exponent below 12/5, exclude its finite denominator-prime set, lift quotient-ring coordinates to integers, compute ordinary coordinate matrix products modulo sufficiently many small nonexceptional odd primes, reconstruct exactly, and reduce using the integral structure constants. Entry bit lengths and the number of coordinate pairs and CRT primes are polynomial in s. No division by two or another nonunit is performed in the original ring.
+
+Every group cache entry is evaluated by an actual recursive child contraction and is paid through alpha. Direct block table construction and triangle multiplication are both paid through the six-cost objective. Coordinate arithmetic, exact budget indexing, reblocking, and cache access use the inherited polynomial-per-record scheduling. Original tensor entries of cost `exp(O(s^.9))`, fresh packet routines of cost `exp(s^(1/21+o(1)))`, and direct leaves of cost `2^O(s/lambda^.75)` add lower-order exponents after the already paid cache path costs. Polynomial branching overhead over O(log lambda) levels contributes only `O(lambda log lambda)`.
+
+## 8. Scope of the improvement
+
+This audit supports a smaller explicit coefficient per normalized tensor wire. It does not independently certify every theorem in the underlying preprint, establish a practical SAT runtime gain, compare against unspecified constants in the separate Claude manuscript, or supply the missing degree-preserving compiler needed for a smaller asymptotic order in n.
+
+The exact finite audit programs and their outputs are `supplementary/audit_adaptive_coefficients.py`, `supplementary/adaptive_coefficient_audit.json`, `code/audit_joint_objective.py`, and `results/joint_objective_audit.json` in the archive root.

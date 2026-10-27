@@ -1,0 +1,296 @@
+\section{Adaptive quartet conditioning in polynomial space}
+\label{sec:quartet}
+
+The incoming adaptive-contraction packet~\cite{incomingadaptive} already uses balanced binary
+separator conditioning. The new step in this section is to choose the
+binary pairing of four fixed blocks from the actual exact-weight list
+sizes. This choice is repeated inside the blocks. It changes the
+worst-case coefficient of the paid child-call count; it is not merely a
+retuning of the taper schedule.
+
+We use the common normalized contraction interface and its imported
+asymmetric packing, slope-four Cauchy separation, precision, and child
+construction results. For one exact pair-budget array, let
+$\mathcal I_{xy}$ be the list on directed group pair $(x,y)$, discard an
+array with an empty list, and put
+\[
+ h_{xy}=\log_2|\mathcal I_{xy}|,\qquad
+ \mathcal K(M,u)=\kappa\frac{M}{\sqrt u},\qquad
+ \kappa=\frac{\pi\sqrt2}{\ln2}.
+\]
+Lemma~\ref{lem:norm} implies, for every fixed nonnegative
+coefficient vector $z$ on the directed group pairs,
+\begin{equation}\label{eq:quartet-entropy}
+ \sum_{x\ne y}z_{xy}h_{xy}
+ \le\left(\frac{\|z\|_2}{r}+o(1)\right)\mathcal K(M,u).
+\end{equation}
+All coefficient vectors used below belong to a finite family independent
+of $s$, since every alphabet size is fixed. Thus the bound is uniform
+even though our algorithm selects a vector indirectly from the list sizes.
+This avoids an unjustified uniformity inference for an arbitrary
+continuously varying $z$.
+
+\subsection{The four-block identity and its norm bound}
+
+Partition a set of groups into four fixed nonempty blocks
+$B_1,B_2,B_3,B_4$. Let
+\[
+ H_{ab}=\sum_{x\in B_a,\,y\in B_b}(h_{xy}+h_{yx})
+ \quad (a<b)
+\]
+be the logarithm of the product of list sizes crossing a pair of blocks.
+There are three perfect matchings of the four blocks. They partition the
+six unordered block-pair classes into three complementary pairs. In the
+$j$th such pair write its two weights as $a_j\ge b_j$.
+
+For a pairing $(B_a\cup B_b)\mid(B_c\cup B_d)$, condition first on
+all directed indices between the two sides, then condition inside each
+side between its two constituent blocks. The largest external index
+weight on a path ending at one of the four block oracles is the total
+cross-block weight minus $\min(H_{ab},H_{cd})$. Consequently the best
+pairing has exact external path bound
+\begin{equation}\label{eq:quartet-F}
+ F_4(H)=\sum_{j=1}^3(a_j+b_j)-\max_j b_j.
+\end{equation}
+Its choice is computable without real logarithms: for each matching take
+the smaller of its two integer products of list sizes, and maximize that
+integer. There are just three candidates.
+
+\begin{lemma}[Adaptive quartet inequality]\label{lem:quartet}
+For every nonnegative six-edge weighting $H$,
+\[
+ F_4(H)\le\sum_j a_j+\frac23\sum_j b_j
+ \le\sqrt{\frac{13}{3}}\left(\sum_{a<b}H_{ab}^2\right)^{1/2}.
+\]
+Both inequalities can hold with equality. For four singleton groups,
+there is a directed-edge coefficient vector of squared norm $26/3$
+whose scalar product with $h$ bounds the maximum path weight of the
+selected separator tree.
+\end{lemma}
+\begin{proof}
+Since $\max_j b_j\ge\frac13\sum_j b_j$, the first inequality follows
+from~\eqref{eq:quartet-F}. Cauchy--Schwarz gives the second because
+$3\cdot1^2+3\cdot(2/3)^2=13/3$. Equality occurs when the three $a_j$
+are all $3t$ and the three $b_j$ are all $2t$, for any $t\ge0$.
+Each undirected singleton-pair weight is the sum of two directed weights;
+the coefficient pattern therefore has squared norm $2(13/3)=26/3$.
+\end{proof}
+
+The lemma is sharp for this local family of three balanced binary trees.
+It does not claim that every possible contraction algorithm has this
+worst-case coefficient.
+
+For unequal block sizes $k_a=|B_a|$, a weighted version is useful. Choose
+any fixed probabilities $p_1,p_2,p_3\ge0$ with sum one. Equation
+\eqref{eq:quartet-F} implies
+\[
+ F_4(H)\le\sum_j a_j+\sum_j(1-p_j)b_j.
+\]
+The complementary block-pair classes in matching $j$ contain respectively
+$c_j$ and $d_j$ directed pairs, each of the form $2k_ak_b$. Regardless of
+which class has the larger actual weight, the squared coefficient norm
+is at most
+\begin{equation}\label{eq:quartet-unequal}
+ R(k,p)=\sum_{j=1}^3\left[
+ \max(c_j,d_j)+\min(c_j,d_j)(1-p_j)^2\right].
+\end{equation}
+The probabilities are only an analysis device; the algorithm still
+chooses the matching by its exact score in~\eqref{eq:quartet-F}.
+
+\subsection{Recursive quartets and all child calls}
+
+Apply the same rule inside each of the four blocks. Blocks of size two
+use their unique binary split; singletons are leaves. Let $g_r$ bound
+the squared norm of one coefficient vector that upper-bounds the largest
+root-to-leaf index weight of the resulting tree on $r$ groups. If the
+four block sizes are $k_1,\ldots,k_4$, then
+\begin{equation}\label{eq:quartet-g-recurrence}
+ g_r\le R(k,p)+\max_a g_{k_a},\qquad g_1=0,\quad g_2=2.
+\end{equation}
+Indeed, the external maximum is bounded by the quartet vector. The
+largest internal path cost occurs in one block; choose its inductively
+constructed vector. Internal and external supports are disjoint, so
+squared norms add. The total cost is bounded by the sum of the two
+maxima, even if they occur at different leaves. This possible
+looseness is harmless for an upper bound.
+
+For four equal blocks of size $k$, use $p_j=1/3$. Then
+\[
+ g_{4k}\le\frac{26}{3}k^2+g_k.
+\]
+For $r=4^j$ this yields
+\begin{equation}\label{eq:quartet-powers}
+ g_r=\frac{26}{45}(r^2-1),
+\end{equation}
+where equality denotes our certificate, not an optimality assertion.
+The fixed balanced binary-tree certificate is $2(r^2-1)/3$; its ratio
+to~\eqref{eq:quartet-powers} is exactly $15/13$. Thus the new square-root
+coefficient is smaller by $\sqrt{13/15}$ for these alphabets.
+
+The schedule below needs only the following exact ledger:
+\begin{center}
+\begin{tabular}{c|c|c|c|c}
+$r$ & four block sizes & $(p_1,p_2,p_3)$ & $g_r$ & fixed binary $v(r)$\\\hline
+4 & $(1,1,1,1)$ & $(1/3,1/3,1/3)$ & $26/3$ & $10$\\
+6 & $(1,1,2,2)$ & $(0,1/2,1/2)$ & $22$ & $24$\\
+8 & $(2,2,2,2)$ & $(1/3,1/3,1/3)$ & $110/3$ & $42$\\
+16 & $(4,4,4,4)$ & $(1/3,1/3,1/3)$ & $442/3$ & $170$
+\end{tabular}
+\end{center}
+For $r=6$, the complementary directed cardinalities are $(2,8)$,
+$(4,4)$, and $(4,4)$. Their contribution in
+\eqref{eq:quartet-unequal} is $20$, and the largest internal block
+contributes $g_2=2$.
+
+At an internal node of a separator tree, enumerate the directed indices
+between its two children, recursively evaluate each conditional sum,
+multiply the two answers, and accumulate. At a singleton, evaluate the
+group factor by its genuine recursive tensor contraction. Finite
+distributivity proves the value is exactly the original mode sum over
+any commutative coefficient ring. If $E_v$ is the union of cuts on the
+path to group $v$, its factor is called precisely
+$\prod_{e\in E_v}|\mathcal I_e|$ times. Hence every child call is paid,
+and~\eqref{eq:quartet-entropy} gives the local recurrence
+\begin{equation}\label{eq:quartet-local}
+ T_d\le\operatorname{poly}(s)
+ 2^{(\sqrt{g_{r_d}}/r_d+o(1))\mathcal K(M_d,u_d)}T_{d+1}.
+\end{equation}
+All loops, ranks, exact counts, current assignments, and ring accumulators
+have polynomial descriptions. Depth-first traversal uses polynomial
+space. There are no cached exponential tables and no free group-factor
+oracle in this bound.
+
+\subsection{A strict rational schedule}
+
+Let $\lambda=\lceil\log_2s\rceil$. Use
+\begin{equation}\label{eq:quartet-schedule}
+\begin{array}{c|ccccc}
+ d&0&1&2&3&4+k\ (k\ge0)\\\hline
+ r_d&16&16&8&6&4\\
+ \eta_d&1249/100000&1249/100000&26/3125&107/20000&(27/6400)(5/8)^k.
+\end{array}
+\end{equation}
+Put $u_d=\lfloor\eta_d\lambda\rfloor$, use the additive buffer
+$b=\lceil6\log_2\lambda\rceil$, set
+$a_d=\sum_{j\le d}(u_j+b)$ with $a_{-1}=0$, and stop the network recursion at
+$M\le H=\lceil s/\lambda\rceil$. The cumulative leading ranges are
+\[
+ A_0=\frac{1249}{100000},\quad A_1=\frac{1249}{50000},\quad
+ A_2=\frac{333}{10000},\quad A_3=\frac{773}{20000},\quad
+ A_\infty=\frac{499}{10000}.
+\]
+At the root the symmetric packing gate is
+$2A_0\log_2r_0<1/10$; below it the old-side asymmetric gate is
+$A_d\log_2r_d<1/10$. The exact integer inequality
+$6^{200}<2^{517}$ gives $\log_2 6<517/200$. Using this bound for six,
+the margins at the five alphabet regimes are at least
+\[
+ \frac1{12500},\quad\frac1{12500},\quad\frac1{10000},\quad
+ \frac{359}{4000000},\quad\frac1{5000},
+\]
+respectively. The other packing exponents are bounded by
+$2/10+A_\infty=2499/10000<1$. Newly created degrees have exponent
+at most $A_\infty+o(1)<9/10$. These are strict fixed margins.
+
+Here is a noncircular depth justification. Verify the gates first for
+hypothetical active depths through
+$\lceil\log_{5/3}\lambda\rceil+O(1)$. Throughout that range,
+\[
+ u_d\ge\lambda^{\epsilon+o(1)},\qquad
+ \epsilon=1-\frac{\ln(8/5)}{\ln(5/3)}>0,
+\]
+since $8/5<5/3$. Thus floors are negligible, and the total buffers cost
+only $O((\log\lambda)^2)=o(\lambda)$. The strict gates imply nearly
+lossless padding, and eventually every child has at most $3M/5$ wires.
+Consequently no active path extends beyond the proposed range. The
+sharper shrink ratios give, uniformly on active paths,
+\[
+ M_d\le(1+o(1))s f_d,
+ \quad(f_0,f_1,f_2,f_3)=\left(1,\frac18,\frac1{64},\frac1{256}\right),
+ \quad f_{4+k}=\frac1{768}\,2^{-k}.
+\]
+The inherited precision bound is $O(s\lambda^2 2^{a_{d-1}})$.
+The buffer gives $D\ge2^{a_{d-1}+b+1}$, so its ratio to $MD/u$ is
+$O(\lambda^{-2})$ while $M>H$. This establishes the sharp precision
+and entropy premises uniformly, including at the final active depths.
+
+\begin{theorem}[Polynomial-space adaptive-quartet certificate]
+\label{thm:quartet-final}
+Under the normalized source contraction interface, adaptive quartet
+conditioning with~\eqref{eq:quartet-schedule} takes
+\[
+ (s+\mathcal L)^{O(1)}\,
+ 2^{(C_{\rm quartet}+o(1))s/\sqrt{\lceil\log_2s\rceil}}
+\]
+time and polynomial space, where
+\begin{align*}
+ C_{\rm quartet}=\kappa\bigg[&
+ \frac{9\sqrt{442/3}}{128\sqrt{1249/100000}}
+ +\frac{\sqrt{110/3}}{512\sqrt{26/3125}}
+ +\frac{\sqrt{22}}{1536\sqrt{107/20000}}\\
+ &+\frac{\sqrt{26/3}}
+ {3072\sqrt{27/6400}\,(1-\sqrt{2/5})}\bigg],
+\end{align*}
+with the certified interval
+\[
+ 50.30468921409<C_{\rm quartet}<50.30468921410.
+\]
+In particular, $50.305$ is a valid eventual coefficient.
+\end{theorem}
+\begin{proof}
+Sum the logarithms of the branching factors in
+\eqref{eq:quartet-local} along a path. The tail has ratio
+$(1/2)/\sqrt{5/8}=\sqrt{2/5}$; substituting the ledger gives the
+displayed expression. The $O(\log\lambda)$ levels of polynomial
+factors contribute $O(\lambda\log\lambda)$ to the logarithm of time.
+Leaves cost $2^{O(s/\lambda)}$, initial entry routines cost
+$2^{O(s^{9/10})}$, and freshly created packet routines cost
+$\exp(s^{499/10000+o(1)})$. Each is lower order than
+$s/\sqrt\lambda$, including after paying ancestor child-call factors.
+Canonical creation-time descriptions prevent repeated expansion of old
+entry routines. Depth-first traversal proves the space claim. The
+coefficient interval follows by exact rational arithmetic in the
+accompanying checker.
+\end{proof}
+
+For a particularly simple structural comparison, keep the incoming
+adaptive packet's fixed $r=16$ schedule unchanged. Replacing its balanced
+binary trees by adaptive quartets gives
+\[
+ C_{16}=\frac{5\pi}{2\ln2}\sqrt{\frac{221}{15}}
+ \left(1+\frac1{3\sqrt3}\right)
+ =51.862701863893\ldots,
+\]
+exactly $\sqrt{13/15}$ times its previous $55.70947831891\ldots$
+coefficient. The improved strict schedule then lowers this to
+$50.30468921410$.
+
+\subsection{Comparison and verification boundary}
+
+The two compatible incoming methods already compose to a stronger
+polynomial-space comparator than either headline alone: combine the
+heterogeneous $(13,14,8,6,4,\ldots)$ schedule in the frontier packet with
+the adaptive packet's fixed binary separators. This gives
+$55.40466590661\ldots$. A numerical search suggests a fixed-tree
+$(16,16,8,6,4,\ldots)$ boundary of $54.00208\ldots$, but it is not
+needed for any proof or global optimality claim. At the same strict
+rational schedule~\eqref{eq:quartet-schedule}, the old fixed trees have
+coefficient $54.02470271284\ldots$, whereas the new quartet trees have
+$50.30468921410\ldots$. This matched comparison isolates the new
+structural gain from schedule retuning.
+
+The checker performs $15{,}625$ exhaustive four-group inequalities,
+$2{,}000$ exact integer-weight profile checks on $r=4,6,8,16$, and
+$80$ literal-versus-streamed contractions over
+$(\mathbb Z/64\mathbb Z)[V]/(V^2)$. It also verifies every individual
+leaf-call count ($14{,}056$ calls in total), the unequal-block norm
+ledgers, strict capacity inequalities, and rational coefficient bounds.
+Three matched fixtures additionally reduce leaf-factor calls from $64$ to $16$,
+$128$ to $32$, and $256$ to $64$ for four, eight, and sixteen groups,
+respectively, with exactly equal outputs; these are operation counts,
+not timings. All tests remain active under optimized Python. These finite checks
+support the implementation and numerical certificates; the all-size
+statement rests on the proofs above and the explicitly imported source
+interfaces. There is no new proof-assistant build or complete SAT engine.
+The result improves a normalized-wire exponent coefficient and preserves
+the polynomial-space guarantee; the SAT logarithmic order is unchanged.

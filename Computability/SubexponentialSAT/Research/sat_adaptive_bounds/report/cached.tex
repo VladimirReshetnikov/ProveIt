@@ -1,0 +1,277 @@
+% Standalone input section; expects amsmath, amssymb, amsthm, theorem/lemma/corollary.
+% All new labels have prefix cached:. This is a research proof relative to the
+% imported normalized contraction interface, not an end-to-end ETH proof.
+\section{Adaptive matrix contraction with recursively built tables}
+\label{cached:section}
+
+Fix an exact pair-weight allocation. Write $r$ for the fixed number of groups,
+$E=r(r-1)$ for the number of directed group pairs, and
+$h_e=\log_2|\mathcal I_e|\ge0$ for the logarithm of the exact index-list size
+on pair $e$. Allocations with an empty list contribute zero and are omitted.
+Put
+\[
+ K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac M{\sqrt u}.
+\]
+We use the imported weighted-entropy estimate
+\[
+ \sum_e v_eh_e\le \bigl(\|v\|_2/r+o(1)\bigr)K(M,u)
+ \quad(v_e\ge0\text{ fixed}).
+\]
+Its error is uniform over active calls and allocations for each fixed $v$.
+All constants below concern the original Boolean wire budget $s$ and
+$\lambda=\lceil\log_2s\rceil$, not the number of SAT variables.
+
+\begin{lemma}[Adaptive triangle bound]\label{cached:triangle}
+Partition the $r$ groups into three blocks of prescribed positive sizes.
+Let the three numbers of directed pairs between blocks be $v_1,v_2,v_3$,
+and put $C=v_1+v_2+v_3$, $m=\min v_i$, and $v=\max v_i$.
+Choose a partition minimizing the total crossing entropy. If rectangular
+matrix multiplication has exponent
+$H_1+H_2+H_3-c\min(H_1,H_2,H_3)$, then the selected triangle can be
+contracted with exponent at most
+\[
+ \left[\frac1r\sqrt{\frac{(C-cm)^2}{E}+c^2v}+o(1)\right]K(M,u).
+\]
+Here $c=3/5$ is available from the already imported matrix exponent $12/5$
+via the coordinate-and-CRT bridge over the actual coefficient ring.
+\end{lemma}
+\begin{proof}
+Write $h=\mu\mathbf1+z$, where
+$\mu=E^{-1}\sum_eh_e$ and $z\perp\mathbf1$. Uniformly permuting a fixed
+block-size partition separates each directed edge with probability $C/E$.
+The selected partition therefore has $H_1+H_2+H_3\le C\mu$.
+For each of its three classes,
+\[
+ H_i=v_i\mu+\sum_{e\text{ in class }i}z_e
+ \ge m\mu-\sqrt v\,\|z\|_2.
+\]
+Consequently its matrix cost is at most
+$(C-cm)\mu+c\sqrt v\,\|z\|_2$.
+Cauchy--Schwarz and
+$E\mu^2+\|z\|_2^2=\|h\|_2^2$ give the claimed bound by
+Corollary~\ref{cor:l2}. The argument remains valid when the displayed
+lower bound on an individual $H_i$ is negative. It is a lower bound used
+inside an upper-bound calculation, not an assertion of negative index size.
+
+The choice is computable without transcendental comparisons: minimize
+$\prod_{e\text{ crossing}}|\mathcal I_e|$ among the finitely many partitions.
+The list sizes are computed by the existing exact-weight dynamic program;
+their bit lengths are polynomial in $s$. The number of partitions is a
+constant because $r$ is fixed.
+\end{proof}
+
+The cached singleton tensors $Z_g$ are evaluated once on all their incident
+indices. Every such evaluation is a paid recursive child contraction.
+There are $2(r-1)$ incident directed pairs, so the child-call coefficient is
+\[
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+For a block $B$, build its boundary table by splitting $B=A\sqcup A'$ and
+multiplying the two child tables, retaining all intermediate boundary
+indices. If $|A|=a$, $|A'|=b$, and $k=a+b$, the three reshaped matrix axes
+have directed-pair counts
+\[
+ 2a(r-k),\qquad 2ab,\qquad 2b(r-k).
+\]
+The existing rectangular exponent $12/5$ and weighted entropy bound the
+squared merge coefficient by the sum of these counts minus $21/25$ times
+their minimum, divided by $r^2$. Recursively use nearly equal binary
+splits. A size-$k$ table has $2k(r-k)$ boundary pairs. Thus table construction,
+child evaluation, and storage are all charged, with no unit-cost child oracle.
+
+The two schedules used below have the following complete leading ledger.
+The entries in the middle columns are squared coefficients before division
+by $r^2$.
+\[
+\begin{array}{c|c|c|c|c|c}
+ r&\text{blocks}&\text{cache}&\text{largest merge}&\text{adaptive triangle}&
+ \text{largest boundary}\\ \hline
+ 9&(3,3,3)&16&916/25&162/5&36\\
+ 15&(5,5,5)&28&2548/25&606/7&100
+\end{array}
+\]
+For $r=9$, the largest merge is $1+2$ inside a triple, with axis counts
+$(12,4,24)$; its score is $40-(21/25)4=916/25$.
+For $r=15$, the largest merge is $2+3$ inside a size-five block, with
+counts $(40,12,60)$; its score is $112-(21/25)12=2548/25$.
+All smaller merges have smaller scores, as the accompanying exact checker
+verifies by integer arithmetic. The triangle counts are $(18,18,18)$ and
+$(50,50,50)$, respectively. Lemma~\ref{cached:triangle} gives $162/5$
+and $606/7$, both strictly smaller than the largest merge score.
+
+Therefore the local paid recurrence is
+\[
+ T_d\le \operatorname{poly}(s)\,
+ \left(2^{(\alpha_r+o(1))K_d}T_{d+1}
+       +2^{(\beta_r+o(1))K_d}\right),
+\]
+with
+\[
+ \alpha_9=4/9,\quad \beta_9=\sqrt{916}/45,\qquad
+ \alpha_{15}=\sqrt{28}/15,\quad \beta_{15}=\sqrt{2548}/75.
+\]
+The storage coefficient is $j=2/3$ in both cases. The coordinate-and-CRT
+matrix bridge, polynomial-bit records, sequential recursive products, and
+sorting-based reshaping are exactly the imported cached-tree interfaces.
+No inverse of two or of a nonunit is introduced in the coefficient ring.
+
+\subsection{Generic root degree: coefficient below 34.33}
+
+\begin{theorem}[Generic cached refinement]\label{cached:generic}
+Under the reviewed normalized contraction interface, including root degree
+at most $\lceil s^{9/10}\rceil$ and its entry, precision, and creation-cap
+conditions, the construction above has time and space bounds
+\[
+ (s+\mathcal L)^{O(1)}2^{(C_T+o(1))s/\sqrt\lambda},\qquad
+ (s+\mathcal L)^{O(1)}2^{(C_S+o(1))s/\sqrt\lambda},
+\]
+where
+\[
+ C_T=\frac\pi{\ln2}\sqrt{\frac{7328\log_2 9}{405}}
+     =34.32528279728\ldots,
+ \qquad
+ C_S=\frac\pi{\ln2}\sqrt{\frac{160\log_2 9}{9}}
+     =34.02417800749\ldots.
+\]
+Thus $34.33$ and $34.03$ are valid respective coefficients for sufficiently
+large $s$. These are ordinary mathematical bounds relative to the imported
+exact-contraction identities; they are not a new proof-assistant certification
+of the entire SAT or ETH result.
+\end{theorem}
+\begin{proof}
+Use $r=9$ at every active depth. Define the integer parameters
+\[
+ J_\lambda=\max\{j\ge0:9^j\le2^\lambda\},\quad
+ B=J_\lambda-\lceil\sqrt\lambda\rceil,\quad
+ u_0=\lfloor B/20\rfloor,\quad
+ u_d=\lfloor3u_0/4^d\rfloor\quad(d\ge1).
+\]
+All statements are eventual; handle the finite initial range by the original
+exact algorithm. Put $b=\lceil6\log_2\lambda\rceil$ and
+$a_d=\sum_{i\le d}(u_i+b)$, and stop at
+$H=\lceil s/\lambda^{3/4}\rceil$ wires. Since
+$\sum_{d\ge1}3/4^d=1$, the total taper is at most $2u_0$.
+
+First consider hypothetical active depths up to
+$\tfrac34\log_4\lambda+O(1)$. The least taper is
+$\lambda^{1/4+o(1)}$, hence diverges uniformly. The root symmetric packing
+term $Q_0^2s^{9/10}$ and every later retained-side term $Q_ds^{9/10}$ have
+base-two logarithm at most
+\[
+ \lambda-\frac{\log_2 9}{10}\sqrt\lambda
+           +O((\log\lambda)^2).
+\]
+The fresh-side and rounding terms have exponent at most
+\[
+ \left(\frac{2\log_2 9+1}{10\log_2 9}+o(1)\right)\lambda
+  <\frac14\lambda
+\]
+eventually, since $\log_2 9>3$.
+These bounds absorb $s/M\le\lambda^{3/4}$ and all polynomial logarithmic
+losses. Nearly lossless padding holds uniformly, and each child has
+$(2/9+o(1))M<M/4$ wires. This closes the depth bootstrap. Newly created
+degrees have exponent at most $1/(10\log_2 9)+o(1)<9/10$; retained original
+degrees are unchanged.
+
+The buffer gives $D\ge2^{a_{d-1}+b+1}$. The imported inherited precision
+bound $O(s\lambda^2 2^{a_{d-1}})$ is negligible relative to $MD/u$, because
+its ratio is at most $O(\lambda^{15/4}2^{-b})=o(1)$.
+The sharp precision, entropy, and child-construction interfaces are therefore
+valid at every active depth. All arithmetic dimensions remain polynomial.
+
+Write $K_0^*=(\pi\sqrt2/\ln2)\sqrt{20\log_2 9}$ for the root
+coefficient on $s/\sqrt\lambda$. The tail coefficients satisfy
+\[
+ K_1^*=\frac{4}{9\sqrt3}K_0^*,\qquad
+ K_d^*\le(1+o(1))K_1^*(4/9)^{d-1}\quad(d\ge1).
+\]
+Unrolling the fully paid recurrence gives the maximum of the root local
+term $\beta_9K_0^*$ and
+\[
+ K_0^*\left[\frac49+\frac{4}{9\sqrt3}
+ \max\left\{\beta_9,\frac{4/9}{1-4/9}\right\}\right]
+ =K_0^*\left(\frac49+\frac{16}{45\sqrt3}\right).
+\]
+The latter coefficient is strictly below $\beta_9K_0^*$:
+$\sqrt3>17/10$ bounds the parenthesis by $100/153$, and
+$(100/153)^2<916/2025$. Also $\beta_9<4/5$, justifying the displayed
+maximum. This pays for every child call, including the limiting full path
+of child calls before a leaf.
+
+The largest table is at the root, giving $C_S=(2/3)K_0^*$.
+Ancestor tables occupy a sum of sizes, not a product. Products of polynomial
+factors over $O(\log\lambda)$ depths contribute only
+$O(\lambda\log\lambda)=o(s/\sqrt\lambda)$ to the logarithm of time.
+Leaf work $2^{O(H)}$, initial entry work $2^{O(s^{9/10})}$, and newly
+created entry work $\exp(s^{1/(10\log_2 9)+o(1)})$ are lower order,
+including after charging the ancestor child-call enumerations. Frozen
+creation-time descriptions are retained exactly as in the imported interface.
+Substitution of $\beta_9$ and $j$ proves the constants.
+\end{proof}
+
+\subsection{Root degree at most \texorpdfstring{$s^{1/12}$}{s to the 1/12}: coefficient below 13.38}
+
+\begin{theorem}[Low-degree cached refinement]\label{cached:low}
+If the same interface has root maximum degree at most
+$\lceil s^{1/12}\rceil$, the time and space coefficients can be replaced by
+\[
+ C_T^{\mathrm{low}}=\frac\pi{\ln2}\sqrt{\frac{203840}{23391}}
+      =13.37964906627\ldots,
+ \qquad
+ C_S^{\mathrm{low}}=\frac\pi{\ln2}\sqrt{\frac{200000}{23391}}
+      =13.25302493301\ldots.
+\]
+Safe eventual coefficients are $13.38$ and $13.26$.
+\end{theorem}
+\begin{proof}
+Use $r=15$ at every depth, $A=113/1000$, $q=2/25$, and
+\[
+ u_d=\lfloor A(1-q)\lambda q^d\rfloor,\qquad
+ b=\lceil6\log_2\lambda\rceil,\quad
+ a_d=\sum_{i\le d}(u_i+b),\quad
+ H=\lceil s/\lambda^{2/3}\rceil.
+\]
+The total leading taper fraction is at most $A$, with root fraction
+$A(1-q)=2599/25000$.
+The exact integer inequality $450^{113}<2^{1000}$ proves
+$A(1+2\log_2 15)<1$. Since $1/12<A$, every root, retained, fresh-side,
+and rounding packing condition is bounded by this same strict exponent:
+all old and created degrees are at most
+$s^{\max\{1/12,A\}+o(1)}=s^{A+o(1)}$.
+The gap is fixed, so buffers and polynomial logarithmic factors are absorbed.
+
+For hypothetical depths up to $\tfrac23\log_7\lambda+O(1)$, the least
+taper is $\lambda^{\eta+o(1)}$ with
+\[
+ \eta=1-\frac{2\ln(25/2)}{3\ln7}>0.
+\]
+The last strict inequality follows from $(25/2)^2<7^3$.
+Packing gives true child ratio $2/15+o(1)<1/7$, closing the bootstrap.
+The precision-buffer verification is identical, with $s/M\le\lambda^{2/3}$.
+
+The ratio of consecutive $K$ coefficients is
+$\gamma=(2/15)/\sqrt q=\sqrt2/3$.
+Here
+\[
+ \left(\frac{\alpha_{15}}{\beta_{15}}\right)^2=\frac{25}{91},
+ \qquad
+ \gamma+\frac{\alpha_{15}}{\beta_{15}}
+ =\frac{\sqrt2}{3}+\frac5{\sqrt{91}}<1.
+\]
+For an exact rational certificate, the two terms are respectively below
+$472/1000$ and $525/1000$, whose sum is below one. Therefore
+$\alpha_{15}/(1-\gamma)<\beta_{15}$, so every level and every fully
+charged leaf path is dominated by the root local term. The time coefficient
+is $(\pi\sqrt2/\ln2)\beta_{15}/\sqrt{2599/25000}$ and the space
+coefficient replaces $\beta_{15}$ by $2/3$, yielding the displayed fractions.
+Leaves, entry routines, polynomial factors, and canonical creation caps are
+handled as above. In particular the permitted original entry-work bound
+$2^{O(s^{9/10})}$ is unchanged and remains lower order.
+\end{proof}
+
+These refinements improve explicit exponential certificates within the
+reviewed contraction interface. The $s/\sqrt{\log s}$ scale is unchanged.
+The existing SAT reductions, their wire expansion, and their density or
+sparsification factors must still be applied. No smaller unrestricted SAT
+logarithmic order or numerical domination of a separate unspecified-constant
+manuscript is inferred from these wire-level constants.

@@ -1,0 +1,237 @@
+\section{Outcome and comparison standard}
+\label{sec:outcome}
+
+The initial review snapshot is ProveIt commit \pin. At that snapshot,
+the latest commit changing the filed SAT project was
+\texttt{6d3adc450615}; the three newer arrival commits were
+\texttt{f42479bca245}, \texttt{f898a9fde4c3}, and
+\texttt{fa6e904d109b}. A closing check at
+\texttt{dde01c4a63b822c25b8eb345299346c36f837b49} incorporated the
+placement commit \texttt{450252e9d86c}: the same five archives are now
+filed under \path{Research/}. All 230 filed members have exactly the
+Git blob identities computed from the reviewed ZIP members.
+The existing report contents are unchanged; two previously omitted
+replay scripts were restored and the placement ledger was corrected.
+The review therefore covers the twenty committed packets through
+that closing snapshot. These commits are dated October 26, 2026,
+Pacific time.
+The source preprint is vendored from
+\texttt{openai/math@7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a}.
+The archive's provenance ledger records full hashes and exact source paths.
+
+\subsection{Three bounds that improve the reviewed frontier}
+
+Write
+\[
+ E(s)=\frac{s}{\sqrt{\log_2s}}.
+\]
+All numerical coefficients in Table~\ref{tab:outcomes} multiply $E(s)$
+in a base-two exponent, with a multiplicative polynomial in input size and
+an additive $o(E(s))$ exponent. The main general interface has root
+degree at most $\ceil{s^{9/10}}$; the last row has a stronger premise.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}p{.31\textwidth}rrr@{}}
+\toprule
+Resource / root premise & Previous time & New time & New space\\
+\midrule
+General, polynomial space & $55.7094783$ & $46.1848456$ & polynomial\\
+General, cached & $35.3545881$ & $34.3252828$ & $34.0241780$\\
+Cached, degree $\le s^{1/12}$ & $15.3919332$ & $13.3796491$ & $13.2530249$\\
+\bottomrule
+\end{tabular}
+\caption{Like-for-like comparison of explicit normalized certificates.
+The lower-degree row cannot be substituted for the general row.}
+\label{tab:outcomes}
+\end{table}
+
+Set $\beta_r=\sqrt{(r-1)(4r+10)}/(3r)$ for powers of two.
+With $q=63/100$, the exact new constants are
+\begin{align}
+C_{\rm ps}
+ &=\frac{\pi\sqrt2}{\ln2}
+       \left(\frac{9\sqrt{80}}8\beta_{16}
+       +\frac{\sqrt{120}}{64}\beta_8
+       +\frac{\sqrt{60}\beta_4}{256\sqrt{1-q}(1-1/(2\sqrt q))}\right),
+       \label{eq:overview-ps}\\
+C_{\rm cache}
+ &=\frac{\pi}{\ln2}
+       \sqrt{\frac{7328\log_2 9}{405}},
+&
+C_{\rm cache,space}
+ &=\frac{2\pi}{3\ln2}\sqrt{40\log_2 9},
+       \label{eq:overview-cache}\\
+C_{\rm low}
+ &=\frac{\pi}{\ln2}\sqrt{\frac{203840}{23391}},
+&
+C_{\rm low,space}
+ &=\frac{\pi}{\ln2}\sqrt{\frac{200000}{23391}}.
+       \label{eq:overview-low}
+\end{align}
+The decreases in the respective \emph{time coefficients} are approximately
+$17.10\%$, $2.91\%$, and $13.07\%$. They are not empirical speedups.
+For example, the new and old general cached certificate functions have
+ratio
+\[
+ 2^{-(1.02930526+o(1))E(s)}\longrightarrow0.
+\]
+This establishes an asymptotic separation between the displayed upper-bound
+functions. It does not establish a lower bound on any older implementation's
+actual running time.
+
+The new general cached space coefficient is also below the previous
+\emph{fastest} cached branch's $34.2748030$. Other slower branches have
+smaller space coefficients; the full time--space frontier is not reduced
+to a single point.
+
+\subsection{What is proved here and what is inherited}
+
+The new arguments prove adaptive summation bounds and their schedules.
+They inherit the source's exact deformation, local integrality, Hermite
+recovery, creation-precision convention, and SAT reductions. They also
+inherit the reviewed asymmetric packing and full-orientation Cauchy
+factorization. Section~\ref{sec:interface} states the precise interface.
+This report does not independently reprove the entire upstream ETH result,
+run the upstream Lean development, or supply an end-to-end SAT solver.
+
+The phrase \emph{strongest established bound} in this review means a
+displayed bound supported by a mathematical argument in the reviewed
+packets, relative to their declared imports. The repository itself labels
+the packets external and unchecked in ProveIt. We preserve that distinction.
+The unproved algorithmic hypotheses of earlier packets are not promoted
+to established algorithms by including them in a comparison.
+
+\section{Review of the recent commits and all twenty packets}
+\label{sec:review}
+
+\subsection{The filed project}
+
+Commit \texttt{2b925d8800cd} created the project and placed the first seven
+refinement packets. Commit \texttt{3e096089911f} vendored the primary OpenAI
+manuscript; \texttt{45233238aebf} summarized the first-round claims.
+Commit \texttt{6d3adc450615} placed eight second-round packets. We read the
+project index and the report sources and proof-status material needed to
+compare their claims. Table~\ref{tab:filed} records every filed packet,
+including proposals that do not yield a stronger unconditional rate \cite{project}.
+
+\small
+\begin{longtable}{@{}p{.36\textwidth}p{.58\textwidth}@{}}
+\caption{The fifteen filed refinement packets. Coefficients are on $E(s)$
+unless a different scope is stated.}\label{tab:filed}\\
+\toprule Packet & Claim and relevant limit\\\midrule
+\endfirsthead
+\toprule Packet & Claim and relevant limit\\\midrule
+\endhead
+\path{cauchy_mode_improvement} &
+Factorial modes with weight $3b+1-2\pc(b)$; leading enumeration factor
+$1/\sqrt3$. Same logarithmic order.\\
+\path{eth_contraction_improvements} &
+Exact taper and precision accounting, streamed extraction; coefficient
+$648.44$ versus the analyzed source schedule's $18535.75$.\\
+\path{3sat_precision_refinement} &
+Working precision $24MD/u$ reduced to $6MD/u$ at leading order.
+The stronger $n\log\log n/\log n$ rate needs an unproved structured-mode
+summation algorithm.\\
+\path{sat_density_improvement} &
+Density-aware exponent
+$\frac n{\sqrt{\log n}}\min\{\log(2+m/n),\log\log n\}$.
+Improves intermediate densities, not unrestricted worst-case order.\\
+\path{eth_density_refinement} &
+Overlapping density-aware result and sharper precision coefficients.
+Same worst-case and fixed-density orders.\\
+\path{3sat_refinement} &
+Scalar parity lift and smaller retained incidence degree.
+Proposed $n(\log\log n)^{3/2}/\log n$ rate needs a missing factorization.\\
+\path{3sat_asymptotic_analysis} &
+Scoped barriers and missing degree-preserving / linear-wire interfaces;
+no stronger unrestricted bound.\\
+\path{eth_asymmetric_packet_balancing} &
+General coefficient $76.90899$; low-degree $31.0641$.
+Asymmetric retained/fresh sides are a central import here.\\
+\path{3sat_round2_refinement} &
+Coefficient $84.06627$; matching packing, precision gap, and two-stage
+schedule. Includes additional audits.\\
+\path{eth_balanced_packing} &
+Coefficient $94.74820$, polynomial space; nearly lossless padding.\\
+\path{eth_high_moment} &
+Same $94.74820$ generic coefficient by a different packing argument;
+smaller coefficients under stronger degree premises.\\
+\path{eth_matching_refinement} &
+Same $94.74820$ generic coefficient, from matching-potential packing.\\
+\path{eth_packet_refinement} &
+Coefficient $95.66394$; sharper pair loads and additive precision guard.\\
+\path{eth_recursive_refinement} &
+Coefficient $133.20737$; actual-domain Cauchy refinement.
+Does not change logarithmic order.\\
+\path{eth_joint_cauchy} &
+Polynomial-space $319.68576$; cached $225.59706$ with space
+$196.19945$. Its slope-four joint basis combines with better packing.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+The project also contains the separate 49-page manuscript
+\emph{A $2^{o(n)}$ time algorithm for 3-SAT}, credited to Claude.
+Its displayed general exponent has the same
+$n\log\log n/\sqrt{\log n}$ order. Its reported formal development is
+not published with that manuscript, so this review does not treat its
+formal-verification claim as a locally reproduced check.
+
+\subsection{The five newer arrivals}
+
+The pinned project README's $76.90899$ minimum is not the final baseline:
+the five ZIPs arrived after that summary \cite{arrivals}. Their reports combine the filed
+ingredients and then improve their summation or kernels.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}p{.43\textwidth}rr@{}}
+\toprule
+Incoming archive stem & Polynomial-space time & Cached time / space\\
+\midrule
+\path{subexponential_sat_frontier} & $63.85220$ & $37.93011/33.62304$\\
+\path{subexponential_sat_kernel_improvements} & $66.60514$ & $44.5376/39.4959$\\
+\path{subsat_contraction_tree} & --- & $35.35459/34.27480$\\
+\path{sat_frontier_improvements} & $63.85741$ & $38.48450/34.27480$\\
+\path{sat_adaptive_contraction} & $55.70948$ & $36.75031/34.02418$\\
+\bottomrule
+\end{tabular}
+\caption{Incoming comparisons; all five filenames end in
+\texttt{\_2026-10-26.zip}. The machine-readable ledger includes exact
+filenames, source commits, and the qualifications on comparison-only examples. The kernel row records comparison examples, not a claimed new global theorem.}
+\label{tab:incoming}
+\end{table}
+
+The first three archives were added in \texttt{f42479bca245};
+\path{sat_frontier_improvements} in \texttt{f898a9fde4c3}; and
+\path{sat_adaptive_contraction} in \texttt{fa6e904d109b}.
+The contraction-tree report contributes binary table construction and a
+coordinate/CRT bridge to field matrix multiplication. The adaptive report
+contributes exact pair-budget partitioning and streamed separators.
+The kernel-focused packets also contain measured local arithmetic
+improvements. Those measurements concern their particular kernels and
+fixtures, not complete SAT runtimes, and are not used as evidence for our
+new asymptotic theorems.
+
+\subsection{The comparison envelope}
+
+Taking the best compatible \emph{proved claims} across the corpus leaves
+the general SAT order
+\[
+ \poly_k(n,m)\,
+ 2^{O_k(n\log\log n/\sqrt{\log n})}
+\]
+and the fixed-density order
+$\poly_{k,D}(n,m)2^{O_{k,D}(n/\sqrt{\log n})}$.
+The density-sensitive refinement remains available by taking the better
+applicable algorithm. The best displayed general polynomial-space and
+cached contraction coefficients before this report are the first two
+entries in Table~\ref{tab:outcomes}.
+
+The conditional $n\log\log n/\log n$ proposal is asymptotically smaller
+than every constant refinement here, but its needed summation procedure
+is absent. We have not proved that hypothesis or found a valid replacement.
+Consequently our result improves the supported normalized contraction
+envelope; it does not dominate that conditional target.

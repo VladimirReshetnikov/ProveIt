@@ -1,0 +1,331 @@
+\section{A smaller certified coefficient from rectangular multiplication}
+\label{sec:rectangular-new}
+
+The latest incoming contraction-tree packet~\cite{tree} uses a square matrix multiplication
+backend of exponent $12/5$ and proves time coefficient $35.3545880584\ldots$
+on $s/\sqrt{\log_2s}$. Its polynomial-coordinate and Chinese remainder bridge
+already permits field algorithms over the actual coefficient ring. We replace
+its square-block rectangular bound by a genuinely rectangular algorithm,
+including its input/output cost, and change the retained-range schedule.
+No faster summation oracle is assumed. This improves the leading coefficient
+of the displayed exponential upper bound; the logarithmic order is unchanged.
+
+\subsection{The imported field facts and the exact ring interface}
+
+Only two established field inequalities are needed:
+\[
+ \alpha>\frac3{10},\qquad \omega<\frac{19}{8}.
+\]
+Here $\alpha$ is the dual matrix multiplication exponent. For example,
+\emph{New Bounds for Matrix Multiplication: from Alpha to Omega},
+arXiv:2307.07970~\cite{mm}, gives stronger inequalities. No current-record assertion is
+needed. The paper formulates tensor rank over an arbitrary field in
+Sections 3.1--3.4; specialize the field to $\mathbb Q$. Fix $\varepsilon=1/100000$. The definition and constructive proof of
+the dual exponent supply a fixed finite rational bilinear algorithm for
+multiplying dimensions $N\times N^{3/10}\times N$ with exponent at most
+$2+\varepsilon$. Choose a fixed square algorithm with exponent at most
+$19/8$. Their dimensions and rational coefficients are constants independent
+of the SAT input. Padding to fixed powers changes dimensions only by constant
+factors; the bounds below allow those factors.
+
+\begin{lemma}[Rectangular cost with the output term retained]
+\label{lem:rectangular-new}
+Let the logarithms to base two of the three matrix dimensions, in decreasing
+order, be $x\ge y\ge z\ge0$. Matrix multiplication is possible in a polynomial
+factor times $2^{F(x,y,z)}$ bit operations over the coefficient rings of the
+normalized contraction interface, where
+\begin{equation}\label{eq:rectangular-new-cost}
+ F(x,y,z)=\max\left\{
+ (1+\varepsilon/2)(x+y),\quad
+ x+\left(\frac{47}{56}+\varepsilon\right)y+\frac{15}{28}z
+ \right\}.
+\end{equation}
+The workspace is a polynomial factor times the largest input or output
+array. The polynomial depends only on the fixed algorithms and on the
+normalized interface.
+\end{lemma}
+
+\begin{proof}
+Put $\alpha_0=3/10$ and $\omega_0=19/8$. First suppose the two larger
+logarithms are equal to $y$. If $z\le\alpha_0y$, pad the smaller dimension
+and use the rectangular algorithm, with exponent at most $(2+\varepsilon)y$.
+If $z\ge\alpha_0y$, take the tensor product of the rectangular algorithm at
+logarithmic size
+\[
+ t_0=\frac{y-z}{1-\alpha_0}
+\]
+and the square algorithm at logarithmic size
+\[
+ t_1=\frac{z-\alpha_0y}{1-\alpha_0}.
+\]
+Then $t_0+t_1=y$ and $\alpha_0t_0+t_1=z$. Round the two recursion
+depths upward independently in their respective fixed base dimensions.
+Both padding ratios and the rank overhead are then bounded by constants
+uniformly in $x,y,z$, including a depth that is zero. The rank exponent is at most
+$(2+\varepsilon)t_0+\omega_0t_1$. Blocking the largest dimension contributes
+$x-y$, so both cases are bounded by
+\[
+ \max\left\{x+y,\quad
+ x+\frac{47}{56}y+\frac{15}{28}z\right\}+\varepsilon y.
+\]
+Since $y\le(x+y)/2$, this is at most \eqref{eq:rectangular-new-cost}.
+The first branch is essential: a field exponent $2+\varepsilon$ does not
+justify a free quadratic input/output branch. Permuting the three dimensions
+uses the symmetries of the matrix multiplication tensor; transposition or
+cyclic transposition of the fixed bilinear identities implements the
+corresponding product. Concretely, permute the three linear-form factors in
+the finite tensor-rank decomposition, regard the new third factor as output
+coefficients, and execute that bilinear decomposition afresh. We do not
+transpose a cached program and assume its memory schedule survives. This is
+an arithmetic algorithm, not a promise that only a scalar trace is required.
+
+For completeness, the coefficient ring is a free module of polynomial rank
+over $\mathbb Z/2^p\mathbb Z$, with a polynomial-size integer multiplication
+table, and $p$ is polynomial in $s$. In particular this includes
+\[
+ R=(\mathbb Z/2^p\mathbb Z)[U,V]/(f(U),V^\ell)
+\]
+with the monic polynomials and degrees in the source interface. Lift each
+module coordinate to $[0,2^p)$. For each ordered pair of coordinates, compute
+an ordinary integer matrix product. An unreduced scalar entry is less than
+$d_2 2^{2p}$, hence has polynomial bit length. Clear the finitely many
+constant denominators in the fixed field algorithms, omit their finitely many
+exceptional primes, and perform the product over enough remaining odd prime
+fields that their product exceeds this integer reconstruction bound. The
+number and bit lengths of these primes, and CRT reconstruction, are
+polynomial in $s$. Apply the specified integer structure constants and reduce
+modulo $2^p$. Polynomially many coordinate pairs suffice. Thus no even
+integer or nilpotent is inverted in $R$.
+
+A fixed bilinear algorithm can process one recursive product at a time and
+accumulate the output. At each level its input, output and auxiliary arrays
+are bounded by a constant times the largest input/output size, and recursive
+sizes decrease. The largest array size is the maximum of the three pairwise dimension
+products, which is invariant under those permutations. Tensor products
+and blocking preserve this bound. Coordinate
+pairs and CRT primes can also be processed sequentially. Storing residue
+information adds only polynomial bits per cell. Consequently the workspace
+is as stated, including the output array. Sequential record reblocking and
+sorting give the same leading bit-cost exponents without unit-cost
+random-access assumptions on exponentially large indices.
+\end{proof}
+
+\subsection{The local entropy calculation}
+
+Import the exact pair-index factorization, asymmetric packing, thin precision
+gaps, and slope-four Cauchy modes from the reviewed packets. At a call with
+$M$ wires and retained range $u$, write
+\[
+ K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac M{\sqrt u}=\kappa\frac M{\sqrt u}.
+\]
+For an exact pair-budget array, let $h_e$ be the logarithm of the number of
+mode tuples on the directed group pair $e$. The inherited common-tilt bound
+is, for every fixed nonnegative vector $w$,
+\begin{equation}\label{eq:rectangular-new-entropy}
+ \sum_e w_eh_e\le
+ \left(\frac{\sqrt{\sum_e w_e^2}}r+o(1)\right)K(M,u).
+\end{equation}
+There are only polynomially many exact budget arrays because all arities
+below are fixed. Counts and rank/unrank operations use the inherited
+polynomial dynamic program; an entry of a group function remains a real
+recursive contraction.
+
+Put
+\[
+ d=1+\varepsilon/2,\qquad
+ v=\frac{47}{56}+\varepsilon,\qquad w=\frac{15}{28}.
+\]
+If a matrix operation has three disjoint classes of directed pairs with
+cardinalities $q_1\ge q_2\ge q_3$, then Lemma~\ref{lem:rectangular-new} and
+\eqref{eq:rectangular-new-entropy} give squared local coefficient, before
+dividing by $r^2$,
+\begin{equation}\label{eq:rectangular-new-cardinality}
+ \Phi(q_1,q_2,q_3)=
+ \max\{d^2(q_1+q_2),\ q_1+v^2q_2+w^2q_3\}.
+\end{equation}
+Indeed sorting the actual logarithmic dimensions selects one of six
+permutations. For each permutation apply the weighted entropy estimate;
+the rearrangement inequality pairs the largest squared weights with the
+largest cardinalities for a uniform upper bound. This argument includes
+empty and small pair lists and makes no separate asymptotic assumption on
+individual pair budgets.
+
+Build each block table by balanced binary merges and finish by contracting
+three blocks as a triangle. A merge of group sets of sizes $a,b$, with
+$k=a+b$, has class cardinalities
+\[
+ 2a(r-k),\quad 2ab,\quad 2b(r-k).
+\]
+For final block sizes $k_1,k_2,k_3$, the three classes have cardinalities
+$2k_1k_2,2k_1k_3,2k_2k_3$. The following complete maxima include every merge,
+the final multiplication, and all input/output tables:
+\[
+\begin{array}{c|c|c|c|c}
+ r&\text{final block sizes}&\text{cache cardinality}&
+ \text{largest boundary cardinality}&\max\Phi\\\hline
+ 8&(3,3,2)&14&30&30d^2\\
+ 10&(4,3,3)&18&48&48d^2\\
+ 6&(2,2,2)&10&16&16d^2\\
+ 4&(2,1,1)&6&8&8d^2
+\end{array}
+\]
+These are rational inequalities, checked exactly by the accompanying
+script. For instance the root triangle has classes $(18,12,12)$ and
+\[
+ 18+12v^2+12w^2<30<30d^2.
+\]
+A size-three root merge has classes $(20,10,4)$ and also costs at most
+$30d^2$. The input/output branch therefore dominates the root certificate.
+Dropping it would falsely suggest a coefficient below the table-size cost.
+
+Define
+\[
+ a_r=\frac{\sqrt{2(r-1)}}r,\qquad
+ (j_8,j_{10},j_6,j_4)=
+ \left(\frac{\sqrt{30}}8,\frac{\sqrt{48}}{10},
+       \frac23,\frac1{\sqrt2}\right),\qquad b_r=dj_r.
+\]
+The time recurrence is
+\begin{equation}\label{eq:rectangular-new-recurrence}
+ T_i\le 2^{(a_{r_i}+o(1))K_i}T_{i+1}
+       +2^{(b_{r_i}+o(1))K_i}
+\end{equation}
+up to controlled polynomial factors. Thus every cached child entry is paid
+for. The local table-space exponent is $(j_{r_i}+o(1))K_i$.
+
+\subsection{A strict rational schedule}
+
+Let $\lambda=\lceil\log_2s\rceil$, stop recursion at
+$H=\lceil s/\lambda\rceil$, and use the arities and retained-range fractions
+\begin{align*}
+ &(r_0,r_1,r_2)=(8,10,6),\qquad r_{3+j}=4\quad(j\ge0),\\
+ &f_0=\frac{49997}{3000000},\qquad
+ f_1=\frac{67}{5000},\qquad f_2=\frac{17}{2000},\\
+ &f_{3+j}=\frac{34003}{8000000}\left(\frac58\right)^j.
+\end{align*}
+Put $u_i=\lfloor f_i\lambda\rfloor$, $b=\lceil6\log_2\lambda\rceil$, and
+$a_i=\sum_{t=0}^i(u_t+b)$. The leading cumulative fractions are
+\[
+ A_0=\frac{49997}{3000000},\quad
+ A_1=\frac{90197}{3000000},\quad
+ A_2=\frac{115697}{3000000},\quad
+ A_\infty=\frac{499}{10000}.
+\]
+The root condition is $2A_0\log_2r_0+9/10<1$, while subsequent old-side
+conditions are $A_i\log_2r_i+9/10<1$. The exact integer comparisons
+\[
+ 10^{500}<2^{1661},\qquad 6^{200}<2^{517}
+\]
+give the following rational upper exponents, all strictly below one:
+\[
+\begin{array}{c|c}
+\text{regime}&\text{old-side exponent bound}\\\hline
+0&499997/500000\\
+1&1499817217/1500000000\\
+2&599815349/600000000\\
+ i\ge3&4999/5000
+\end{array}
+\]
+At later calls the fresh-side degree is at most $2^{a_{i-1}+1}$, so the
+remaining packing exponents are bounded by
+$2A_i\log_2r_i+A_{i-1}$ and $(2\log_2r_i+1)A_i$; both are below one
+with ample fixed margin. New packet degrees are $s^{0.0499+o(1)}$, below
+the maintained $s^{9/10}$ bound. Choose padding tolerance $O(\lambda^{-2})$;
+the strict power gaps absorb this tolerance, all polylogarithmic factors,
+and the additive buffers.
+
+For a noncircular depth check, provisionally verify these estimates through
+$3+\lceil\log_{20/11}\lambda\rceil+O(1)$ active levels. Throughout this
+range the smallest taper satisfies
+\[
+ u_i\ge\lambda^{\eta+o(1)},\qquad
+ \eta=1-\frac{\ln(8/5)}{\ln(20/11)}>0,
+\]
+because $5/8>11/20$. Floors are uniformly negligible. Nearly lossless
+packing gives children with at most $11M/20$ wires eventually, since every
+arity is at least four; hence no active path exceeds the provisional depth.
+This closes the bootstrap. Accumulated padding errors tend to zero, giving
+\[
+ M_0\le s,\quad M_1\le(1+o(1))s/4,\quad
+ M_2\le(1+o(1))s/20,\quad
+ M_{3+j}\le(1+o(1))\frac{s}{60\,2^j}.
+\]
+The buffer gives $D\ge2^{a_{i-1}+b+1}$. The inherited precision
+$O(s\lambda^2 2^{a_{i-1}})$ is $O(\lambda^4 2^{-b})=o(1)$ times $MD/u_i$,
+so the sharp coefficient-six Hermite precision and entropy calculation
+remain valid at all active calls.
+
+\subsection{The resulting time and space bounds}
+
+For $i=0,1,2,3$, put
+\[
+ (m_0,m_1,m_2,m_3)=(1,1/4,1/20,1/60),\qquad
+ K_i^*=\frac{\kappa m_i}{\sqrt{f_i}}.
+\]
+Subsequent coefficients decline with ratio
+$\gamma=(1/2)/\sqrt{5/8}=\sqrt{2/5}$. Moreover
+$a_4/(1-\gamma)>b_4$. Unrolling the complete cache recurrence, including all
+child calls, gives the maximum of
+\begin{align*}
+ &b_8K_0^*,\\
+ &a_8K_0^*+b_{10}K_1^*,\\
+ &a_8K_0^*+a_{10}K_1^*+b_6K_2^*,\\
+ &a_8K_0^*+a_{10}K_1^*+a_6K_2^*
+       +\frac{a_4K_3^*}{1-\gamma}.
+\end{align*}
+Exact rational interval evaluation encloses these respectively by
+\[
+ 33.993891,\qquad32.812822,\qquad31.412630,\qquad33.657386.
+\]
+The root is strictly largest. Ancestor and descendant tables occupy a sum
+of geometrically decreasing array sizes, so their space exponents take a
+maximum. The corresponding coefficients are
+\[
+ 33.993721,\qquad9.590642,\qquad2.317442,\qquad1.158670,
+\]
+and again the root is largest.
+
+\begin{theorem}[A coefficient below 34]
+\label{thm:rectangular-new}
+Under the normalized tensor interface and imported identities stated above,
+there is a deterministic exact contraction algorithm with
+\[
+ T(s,\mathcal L)\le(s+\mathcal L)^{O(1)}
+       2^{(C_T+o(1))s/\sqrt{\log_2s}},\qquad
+ S(s,\mathcal L)\le(s+\mathcal L)^{O(1)}
+       2^{(C_S+o(1))s/\sqrt{\log_2s}},
+\]
+where
+\begin{align*}
+ C_S&=\frac{\pi\sqrt2}{\ln2}
+       \frac{\sqrt{30}}{8\sqrt{49997/3000000}}
+       =33.9937208906\ldots,\\
+ C_T&=\left(1+\frac1{200000}\right)C_S
+       =33.9938908592\ldots<34.
+\end{align*}
+Consequently 34 is a valid eventual time coefficient and a valid eventual
+space coefficient. The space use is subexponential, not polynomial.
+\end{theorem}
+
+Polynomial interpolation and budget factors across $O(\log\lambda)$ levels
+contribute $O(\lambda\log\lambda)$ exponent bits. The numbers of
+recursive branches and all multiplicity polynomials depend on $s$ alone;
+description-length processing is charged once per visited call. Thus the
+factor in $\mathcal L$ remains a fixed polynomial, rather than being
+raised to the recursion depth. Direct leaves cost
+$2^{O(s/\lambda)}$, the permitted original entry routines cost
+$2^{O(s^{9/10})}$, and new packet entry routines cost
+$\exp(s^{0.0499+o(1)})$. All are lower order after the displayed recurrence
+charges. Immutable creation-time representatives retain the source oracle
+accounting. No input, intermediate or output numerical precision grows beyond
+a polynomial in $s$.
+
+The new time coefficient is about $3.85\%$ below the newest delivered
+$35.3545880584\ldots$. A stronger comparator is the old square-block method
+retuned to its root-eight capacity boundary, namely
+$35.0635988462\ldots$; the improvement over that comparison is about $3.05\%$.
+Neither comparison asserts global optimality over every old schedule. For a
+fixed common normalization, a strict coefficient decrease $\delta>0$ divides
+the displayed upper bound by $2^{(\delta+o(1))s/\sqrt{\log_2s}}$. It does not
+identify the actual runtime ratio. These are coefficients per normalized
+wire, and cannot be substituted for hidden coefficients per SAT variable.
