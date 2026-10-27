@@ -765,3 +765,18 @@ low-degree transfer and the final HA proof remain separate obligations.
 These finite algebraic/number-theoretic Lean results are external. They
 are not silently imported as PA/HA proof witnesses. Their later internal
 coding and actual proof-existence construction remain explicitly required.
+
+
+## Concrete C222 stream selection and overlap accepted
+
+The [actual C222 stream theorem](reviews/validator-environment-streams222-root.md)
+now selects an explicit safe opposite-parity stream and proves relabelling
+between arbitrary free-safe starts, including overlapping s/s+2. Independent
+builds pass fifteen standard-only reports with identical objects. Semantic
+quantifier inference and arbitrary proof interpretation remain open.
+
+The selector resources do not infer safety for an original unsafe stream.
+Its actual formula client invokes accepted IΣ2 alpha transport; it does
+not introduce a new induction or a new object-language choice rule. The
+next checkpoint binds these resources and numeric substitution/opening
+to actual source quantifier inference.

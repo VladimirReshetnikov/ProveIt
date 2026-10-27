@@ -5,8 +5,7 @@ Updated 25 October 2026. This is a work log, not a completion certificate.
 The [numeric C222 substitution/opening theorem](reviews/validator-environment-substitution222-root.md)
 now passes two independent builds with thirteen standard-only reports and
 identical objects. Its actual Π1/IΣ1 induction retains total lookup,
-repeated/zero labels and the exact qVec binder shifts. Stream selection,
-semantic quantifier rules and the complete HA equivalence remain open.
+repeated/zero labels and the exact qVec binder shifts. Semantic quantifier rules and the complete HA equivalence remain open.
 
 The [actual C222 evaluation laws](reviews/arithmetic-command-evaluationperm222-peer.md)
 now identify terminal with any stopped run and prove the exact head/tail
@@ -20,6 +19,12 @@ with the same scalar fields and rank. Two independent builds pass twelve
 standard-only reports and identical objects. Actual current-source
 existence is externally equivalent to inconsistency; shifted-z/historical
 low-degree transfer and the final HA proof remain separate obligations.
+
+The [actual C222 stream theorem](reviews/validator-environment-streams222-root.md)
+now selects an explicit safe opposite-parity stream and proves relabelling
+between arbitrary free-safe starts, including overlapping s/s+2. Independent
+builds pass fifteen standard-only reports with identical objects. Semantic
+quantifier inference and arbitrary proof interpretation remain open.
 
 The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
 now passes two independent builds and seventeen propext/Quot.sound-only
