@@ -39,14 +39,32 @@ final file assembly. Machine simulation has now passed complete composition
 and its closed arithmetic proof client. This estimate counts neither proof
 files nor independently replayed checkpoints as equal units of progress.
 
+The [actual auxiliary seed](reviews/arithmetic-pell-auxiliary-seed-root.md)
+now constructs five positive f,i,T,u,y from only internal a,R with
+R%4=3, including a=0. Both oriented residues modulo f*f and c, the
+literal T identity and the additive auxiliary norm are derived by two
+genuine Sigma1 phase inductions and exact quotient arithmetic. Independent
+fresh pairs match both objects, complete logs and all five standard-only
+reports, with zero refresh. Simultaneous outer/source witnesses and the
+full converse remain; no final HA equivalence is inferred from this seed.
+
+The [concrete current radix client](reviews/arithmetic-carrier-radix2011-root.md)
+now recovers the represented power and actual width94517 radix from the
+same maintained positive or natural split zero. No norm, port, index,
+power or radix premise is supplied. The positive internal block count L
+remains distinct from coordinate v9, and the residual exponent may be
+zero. Independent fresh pairs match both objects, complete logs and all
+eight standard-only reports, with zero refresh. Internal population,
+mask/word/carry/tableau interpretation and converse witnesses remain.
+
 The [literal carrier soundness theorem](reviews/arithmetic-carrier-soundness2011-root.md)
 now derives all five additive equations from the actual positive splitNatural
 zero in every IΣ1 model. It binds the original signed cuts, applies all four
 negative-unit exclusions, derives transport and only then justifies natural
 rank/tau subtraction. Actual port bounds and the one positive-domain shift
 are proved. Independent fresh pairs match both objects, complete logs and
-all five standard-only reports, with zero refresh. Composition with power
-and radix recovery, binary population, actual mask/word/carry/tableau
+all five standard-only reports, with zero refresh. Power/radix composition
+is supplied above; binary population, actual mask/word/carry/tableau
 interpretation and simultaneous converse witnesses remain before full HA.
 
 The [internal radix alignment theorem](reviews/arithmetic-radix-alignment-root.md)
@@ -54,7 +72,7 @@ now derives a positive block count, q=exp(d*N), the exponent bound and the
 exact remaining factor exp(R-d*N) from the actual exponential factorization.
 No binary-radix or exponent-divisibility oracle is supplied. Independent
 fresh pairs match both objects, complete logs and eight standard-only
-reports, with zero refresh. The concrete width94517 client is next; no
+reports, with zero refresh. The concrete width94517 client is supplied above; no
 native word or final polynomial equivalence is inferred from this generic
 arithmetic result.
 
@@ -91,7 +109,8 @@ model it derives a positive strong-norm witness at the explicit index
 `R*ycoord R a`: internal two-step quotient induction proves the original
 ordinate squared divides this new ordinate. This avoids generic internal
 finite pigeonhole for the displayed fourteen-variable strong seed. It
-does not yet construct all simultaneous outer/auxiliary witnesses or
+supplies the strong seed used by the accepted auxiliary construction above;
+it does not yet construct all simultaneous outer/source witnesses or
 establish the complete converse. The independent 105/30-line pair matches
 both objects, complete logs and four standard-only reports with zero
 prerequisite refresh. ROOT authored the pair; the independent controller

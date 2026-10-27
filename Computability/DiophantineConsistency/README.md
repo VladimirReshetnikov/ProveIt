@@ -18,16 +18,29 @@ is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 
+The [actual auxiliary seed](reviews/arithmetic-pell-auxiliary-seed-root.md)
+now constructs all five positive auxiliary witnesses from only the base
+and rank modulo four, including offset zero. Both oriented residues,
+the exact quotient and the auxiliary norm are derived. Independent fresh
+pairs match both objects, complete logs and five standard-only reports.
+Simultaneous outer witnesses and the full converse remain.
+
+The [concrete current radix client](reviews/arithmetic-carrier-radix2011-root.md)
+now derives the represented power and actual width94517 radix from the
+same positive/natural zero, with every norm, port and index premise
+discharged. Independent fresh pairs match both objects, complete logs
+and eight standard-only reports. Population/tableau and converse work remains.
+
 The [literal carrier soundness theorem](reviews/arithmetic-carrier-soundness2011-root.md)
 now extracts transport and all four additive norms from the actual positive
 zero, including actual port bounds and the single natural-domain shift.
 Independent fresh pairs match both objects, complete logs and five standard-only
-reports. Power/radix composition and native encoding/converse witnesses remain.
+reports. Power/radix composition is supplied above; native encoding/converse witnesses remain.
 
 The [internal radix alignment theorem](reviews/arithmetic-radix-alignment-root.md)
 now derives the positive block count and exact residual exponential factor.
 Independent fresh pairs match both objects, complete logs and eight standard-only
-reports. Its concrete current-equation composition remains a separate client.
+reports. Its concrete current-equation composition is supplied above.
 
 The [closed checker/machine theorem](reviews/arithmetic-checker-machine215-root.md)
 now has actual IΣ1 and PA proofs for the fixed seed-checker/decimal215
