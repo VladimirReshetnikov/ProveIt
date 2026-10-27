@@ -565,6 +565,14 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [finite C222 atomic transport](reviews/validator-atomic-transport222-root.md)
+is now independently checked: actual numeric proof witnesses transport
+typed equality/membership atoms under the same represented context. Both
+fresh leaves pass, with13 standard-only reports. The reverse quantifier
+premise explicitly follows weq(t,s)→Eind(t,s)→Eind(s,t); no old-context
+exchange is assumed. The next uniform source-formula theorem retains an
+explicit Π2 invariant under IΣ2 and all cross-body vacuity resources.
+
 There is now a [closed HA consistency comparison](reviews/foundation-ha-zfc-validator-root.md):
 HA proves both implications between fixed GG(Foundation ZFC consistency)
 and GG(actual C254 validator consistency). The actual validated PA theorem
@@ -597,6 +605,11 @@ adapters. The command permutation, AX order, old-counter dominance, actual
 growG/bundle222 and zero-versus-successor result convention are explicit.
 Scheduler fairness, internal proof invariants and exact215 simulation
 remain open.
+The [composed enumerator step](reviews/arithmetic-enum-stepperm222-root.md)
+is now independently checked as a total internal IOpen graph, with actual
+EnumPerm.enumStep semantics on every ordinary state. Its fresh pair passes
+eleven standard-only reports. Full represented recursion, scheduling and
+proof invariants remain separate checkpoints.
 
 The [73-module consistency refresh](reviews/fixed-consistency73-root.md)
 has now passed, including current R2Native, LSchema and the actual
@@ -643,6 +656,7 @@ local refreshes; that proposal is not an executed consistency proof.
    of the actual equivalence. A desired-provability hypothesis is not a
    completed endpoint.
 
-No HA equivalence proof-existence theorem is claimed at this checkpoint.
+No HA proof of the current equation's consistency equivalence is claimed
+at this checkpoint.
 The decimal equation page and all14 distinct unsubscripted unknowns are
 preserved. The goal remains active.

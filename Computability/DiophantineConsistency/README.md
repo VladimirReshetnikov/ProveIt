@@ -41,6 +41,11 @@ The [finite Eind-context proofs](reviews/validator-eind-context222-root.md)
 then add represented projections, cons laws, context vacuity and binder
 discharge under IΣ1, with twelve independently checked standard-only reports.
 Uniform formula transport remains a separate checkpoint.
+The [finite atomic transport](reviews/validator-atomic-transport222-root.md)
+now supplies actual C222 equality/membership certificates under the same
+represented context, with zero and auxiliary-label collisions retained.
+Two independent builds pass13 standard-only reports; uniform formula
+transport under its explicit IΣ2 invariant remains the next checkpoint.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed
@@ -70,6 +75,11 @@ now represent the actual permuted runtime in internal arithmetic and match
 all actual Nat states/raw codes. Their four independent builds pass20
 standard-only reports. Full run soundness, fairness and exact215 simulation
 remain open.
+The [composed full enumerator step](reviews/arithmetic-enum-stepperm222-root.md)
+now also has a total internal graph and exact agreement with actual
+EnumPerm.enumStep on every ordinary state. Its two independent fresh
+builds pass eleven standard-only reports. The program0/program1 cases
+retain the actual scheduler behavior; full-run invariants remain open.
 The [C222 equality leaf](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean)
 now translates into the actual C254 proof predicate for every internal input
 in every IΣ1 model. Its [independent replay](reviews/validator-growg222-root.md)
