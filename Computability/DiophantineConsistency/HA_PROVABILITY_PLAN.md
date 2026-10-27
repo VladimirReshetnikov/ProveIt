@@ -21,10 +21,20 @@ connections are actual ZFC/source-checker proof interpretation, actual
 control-to-tape simulation, and internal polynomial/Pell witness assembly.
 The checked scheduler/control halting theorem, literal tape/boot theorem
 and relaxed auxiliary norm theorem below are completed parts of those
-connections. Tagged Collection, register-box execution and half-index
-recovery have since passed independent review
+connections. Tagged Collection, register-box execution, symbolic execution
+and half-index recovery have since passed independent review
 below. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
+
+The [actual215 symbolic executor theorem](reviews/arithmetic-symbolic-core215-root.md)
+now interprets the real checker oracle, every symbolic step and successful
+executor runs over arbitrary internal arithmetic data. It preserves the
+moved flag and derives positive clocks from an initially false flag.
+Normalization preserves the entire numeric configuration, and all four
+ordinary-Nat sepsR/sepsM/INC/DEC algebraic clients are proved. Independent
+fresh pairs match both objects/full logs and 15 standard-only reports,
+with zero prerequisite refreshes. Actual Home, all sites, canonical paths
+and whole control/tape equivalence remain open.
 
 The [actual tagged Collection theorem](reviews/validator-seed-tagged-collection222-root.md)
 now constructs genuine source Proof certificates for arbitrary internally
@@ -65,8 +75,9 @@ left bit. The zero branch alone needs an existing spare. Fixed PR graphs
 and genuine Pi1 induction in IΣ1 handle internal scan and spare counts.
 Independent fresh triples match all three objects/full logs and 14 reports.
 One unchanged numeric-prefix helper was explicitly refreshed; no Foundation
-module was rebuilt. The ordinary-Nat encoding comparison, symbolic executor,
-Home, all-site and control/tape composition remain open.
+module was rebuilt. The later symbolic packet above supplies the ordinary-Nat
+encoding comparison and executor. Home, all-site and control/tape composition
+remain open.
 
 The [actual relaxed auxiliary norm theorem](reviews/arithmetic-pell-index-divisibility-root.md)
 now supplies the original-base Pell coordinates and both p|m and c|m for
