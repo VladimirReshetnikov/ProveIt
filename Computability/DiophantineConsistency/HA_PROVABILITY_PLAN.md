@@ -1197,3 +1197,40 @@ RankWindow supplies main classification and both strict half bounds;
 Fs/Fa supply the signed strong norms. This advances native soundness of
 the lower-degree carrier. It neither assumes nor supplies the still-missing
 internal PA proof of the displayed equation/consistency equivalence.
+
+## Represented actual C222 proof-word compiler accepted
+
+The [all-internal C222 compiler](reviews/arithmetic-proof-word-perm222-root.md)
+now maps every accepted internal proof code to a represented command word
+with its exact conclusion and arbitrary initial top/saved stack. Genuine
+Pi1 prefix induction proves correctness,with no supplied global invariant.
+Its conditional false1 word halts from state(top,S,0,0). Independent builds
+pass eleven standard-only reports and identical objects. Universal reset,
+scheduler integration,source calibration and the HA equivalence remain open.
+
+The history uses generic SequenceHistory and actual C222 child bounds.
+Good and bounded PrefixGood have explicit Pi1 definitions over Delta1
+checker and raw-word graphs. Genuine IΣ1 induction proves the actual row
+successor and all accepted-code contracts,including nonstandard proof codes.
+The false1 execution endpoint appends the actual conditional terminator.
+It currently starts at state(top,S,0,0),so arbitrary scheduler work states
+still require a reset prefix and a candidate bound. These are not inferred
+from top/stack quantification alone.
+
+## Source-proof interpretation audit and next kernel
+
+The source-only [C222 interpretation audit](research/c222-source-proof-interpretation-plan.md)
+records48 current source pins and3 provider-summary leads. Root rehashed
+all51 records and read the full plan. The leads are not claimed as fresh
+object authentication. The next actual C222 context calculus uses internally
+sized vectors,followed by NNF-negation compatibility,context quantifiers and
+a ten-case derivation induction. Existing EindContext is a bound-equality
+context,not that sequent calculus.
+
+The set-theory axiom images are a further substantial obligation. The actual
+C222 seed image supplies subset-indexed coverage;it does not already give
+raw Container/GIC. The external lower proof uses a tagged-domain/quotient
+route. A represented seed/tagged interpretation or proved alternative raw
+axiom deductions is needed. Old C254 R2Native cannot be renamed into this
+step. The accepted word compiler does not discharge source-calculus
+calibration or the missing actual equation/source PA proof.

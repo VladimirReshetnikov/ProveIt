@@ -123,27 +123,35 @@ now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
 plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. The next runtime
 checkpoint proves that evaluation of the concatenated words composes.
+The [all-internal C222 compiler](reviews/arithmetic-proof-word-perm222-root.md)
+now maps every accepted internal proof code to a represented command word
+with its exact conclusion and arbitrary initial top/saved stack. Genuine
+Pi1 prefix induction proves correctness,with no supplied global invariant.
+Its conditional false1 word halts from state(top,S,0,0). Independent builds
+pass eleven standard-only reports and identical objects. Universal reset,
+scheduler integration,source calibration and the HA equivalence remain open.
+
 The [actual C222 compiler row](reviews/arithmetic-proof-word-rowperm222-root.md)
 now has a total fixed arithmetic graph for all twelve branches and invalid
 tags. Actual row acceptance and local child contracts imply its exact
 all-top/all-stack execution contract. Independent builds pass six
 standard-only reports and identical objects. The unrestricted rho8 choice
-is fixed before Type0 models; internal proof-history induction remains open.
+is fixed before Type0 models; the represented proof-history induction is accepted above.
 
 The [uniform unrestricted rho8 circuit](reviews/arithmetic-command-rho8-circuitperm222-root.md)
 now supplies one finite circuit before every internal model/input quantifier,
 with no residual dominance condition. Actual guarded leaves and minor-first
 MP implement the finite generic implication derivation. Independent builds
 pass five standard-only reports and identical objects. This closes the
-uniform finite rho8 step; internal proof-history compilation and the full
-HA equivalence remain open.
+uniform finite rho8 step; proof-history compilation is accepted above,
+and the full HA equivalence remains open.
 
 The [actual C222 finite circuit graphs](reviews/arithmetic-command-circuitperm222-peer.md)
 now represent every fixed numeric circuit by a parameter-free five-slot Σ1
 graph and bind current word/leaf expressions exactly. Independent builds
 pass nine standard-only reports and identical objects. The unrestricted
-finite rho8 circuit is accepted above; internal proof-history compilation
-remains open.
+finite rho8 circuit and represented proof-history compilation are
+accepted above; scheduler/source calibration remains open.
 
 The [actual C222 GEN/MP rules](reviews/arithmetic-command-ruleperm222-root.md)
 now preserve all-top/all-stack contracts, including GEN at zero/code1 and
