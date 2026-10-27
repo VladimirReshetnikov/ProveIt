@@ -565,6 +565,15 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [HA strict-order decision](reviews/foundation-ha-order-decidable-root.md)
+now proves the actual ordinary decision formula and double-negation
+stability for arbitrary terms, with capture-safe transport and finite
+contexts. Its independent pair passes twelve reports with only propext
+and Quot.sound. Together with the existing equality decision, this supplies
+atomic resources for the pending bounded-matrix comparison. A literal
+HA proof of the actual checker normalization is still required; classical
+Δ1 model equivalences do not provide that proof.
+
 The [finite C222 atomic transport](reviews/validator-atomic-transport222-root.md)
 is now independently checked: actual numeric proof witnesses transport
 typed equality/membership atoms under the same represented context. Both

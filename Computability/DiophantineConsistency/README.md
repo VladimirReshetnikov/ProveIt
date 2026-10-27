@@ -17,6 +17,10 @@ The owner now additionally requires a Lean theorem that this equivalence
 is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
+HA now [decides the interpreted strict-order atom](reviews/foundation-ha-order-decidable-root.md)
+and proves its double-negation stability for arbitrary terms. Two independent
+builds pass twelve reports using only propext and Quot.sound. This supplies
+an atomic prerequisite for the pending bounded-checker comparison.
 An [explicit translated ZFC consistency sentence](reviews/foundation-zfc-consistency-nat-root.md)
 now has a checked standard-Nat meaning equal to the actual syntactic
 ConZFC proposition, including Choice. Its independent two-leaf replay

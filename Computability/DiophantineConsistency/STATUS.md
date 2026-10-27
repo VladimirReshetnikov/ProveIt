@@ -2,6 +2,12 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+The [HA strict-order decision](reviews/foundation-ha-order-decidable-root.md)
+now passes two independent builds and twelve propext/Quot.sound-only reports.
+It proves the ordinary decision disjunction and order-specific stability
+under arbitrary terms and finite contexts. Bounded-matrix and literal
+checker normalization remain open.
+
 The [composed actual enumerator step](reviews/arithmetic-enum-stepperm222-root.md)
 now passes two independent builds and eleven standard-only reports, with
 all-state standard-Nat agreement and arbitrary internal IOpen totality.
