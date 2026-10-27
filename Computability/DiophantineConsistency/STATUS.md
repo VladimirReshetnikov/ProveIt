@@ -89,6 +89,13 @@ an explicit vacuity guard for hypotheses and deriving it for a shifted
 negative source hypothesis. Independent builds pass thirteen standard-only
 reports with identical objects. General source-proof interpretation remains open.
 
+The [actual C222 compiler row](reviews/arithmetic-proof-word-rowperm222-root.md)
+now has a total fixed arithmetic graph for all twelve branches and invalid
+tags. Actual row acceptance and local child contracts imply its exact
+all-top/all-stack execution contract. Independent builds pass six
+standard-only reports and identical objects. The unrestricted rho8 choice
+is fixed before Type0 models; internal proof-history induction remains open.
+
 The [uniform unrestricted rho8 circuit](reviews/arithmetic-command-rho8-circuitperm222-root.md)
 now supplies one finite circuit before every internal model/input quantifier,
 with no residual dominance condition. Actual guarded leaves and minor-first

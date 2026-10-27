@@ -1161,3 +1161,21 @@ guard. This is the finite row needed by the subsequent represented proof
 history, not already the internal history or source interpretation. A
 Type0 fixed choice suffices for the PA completeness route, without claiming
 one circuit across all universe levels from the current theorem.
+
+## Actual C222 twelve-branch compiler row accepted
+
+The [actual C222 compiler row](reviews/arithmetic-proof-word-rowperm222-root.md)
+now has a total fixed arithmetic graph for all twelve branches and invalid
+tags. Actual row acceptance and local child contracts imply its exact
+all-top/all-stack execution contract. Independent builds pass six
+standard-only reports and identical objects. The unrestricted rho8 choice
+is fixed before Type0 models; internal proof-history induction remains open.
+
+The actual new growG and helper-free gated bundle replace the historical
+row9/row11 meanings. GEN's whole-tail child is selected by the subsequent
+history,not silently confused with MP's minor child. The row has no supplied
+global compiler theorem or source axiom validity premise. The next step is
+the represented generic SequenceHistory construction and a genuine Pi1
+prefix induction for all internal proof codes; the read-only
+[history proposal](research/c222-proof-word-history-proposal-20261026.md)
+records the exact recurrence,cache delta and Type0 completeness boundary.
