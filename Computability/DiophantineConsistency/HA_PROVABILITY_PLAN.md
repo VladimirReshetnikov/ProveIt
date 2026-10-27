@@ -780,3 +780,18 @@ Its actual formula client invokes accepted IΣ2 alpha transport; it does
 not introduce a new induction or a new object-language choice rule. The
 next checkpoint binds these resources and numeric substitution/opening
 to actual source quantifier inference.
+
+
+## Source-bound ordinary Δ₀ decisions accepted
+
+The [actual Foundation Δ₀ theorem](reviews/foundation-ha-deltazero-root.md)
+now proves HA decidability of the ordinary interpretation with arbitrary
+term environments. It uses actual bounded syntax and exact binder shifts,
+with twelve independently checked standard-only reports. Literal GG
+comparison and the actual delta-one checker normalization remain open.
+
+The theorem requires actual DeltaZero syntax. The consistency checker
+currently has a delta-one fixed-point representation; identifying it with
+an explicit bounded matrix needs further genuine HA comparison proofs.
+The next separate leaf compares ordinaryAux with the literal existing
+Foundation negative translation, using only these bounded decisions.

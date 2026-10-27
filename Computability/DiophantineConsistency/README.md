@@ -38,6 +38,11 @@ from the explicit uniform matrix-decision formula. Its simultaneous HA
 induction and two independent builds pass seventeen propext/Quot.sound-only
 reports. Structural bounded syntax and the actual checker comparison
 remain separate clients.
+The [actual Foundation Δ₀ theorem](reviews/foundation-ha-deltazero-root.md)
+now proves HA decidability of the ordinary interpretation with arbitrary
+term environments. It uses actual bounded syntax and exact binder shifts,
+with twelve independently checked standard-only reports. Literal GG
+comparison and the actual delta-one checker normalization remain open.
 An [explicit translated ZFC consistency sentence](reviews/foundation-zfc-consistency-nat-root.md)
 now has a checked standard-Nat meaning equal to the actual syntactic
 ConZFC proposition, including Choice. Its independent two-leaf replay

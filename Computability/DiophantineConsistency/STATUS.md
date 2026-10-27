@@ -26,6 +26,12 @@ between arbitrary free-safe starts, including overlapping s/s+2. Independent
 builds pass fifteen standard-only reports with identical objects. Semantic
 quantifier inference and arbitrary proof interpretation remain open.
 
+The [actual Foundation Δ₀ theorem](reviews/foundation-ha-deltazero-root.md)
+now proves HA decidability of the ordinary interpretation with arbitrary
+term environments. It uses actual bounded syntax and exact binder shifts,
+with twelve independently checked standard-only reports. Literal GG
+comparison and the actual delta-one checker normalization remain open.
+
 The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
 now passes two independent builds and seventeen propext/Quot.sound-only
 reports. Genuine simultaneous formula induction proves finite all/ex
