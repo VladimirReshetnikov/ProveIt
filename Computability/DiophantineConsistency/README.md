@@ -18,8 +18,16 @@ is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 
-The [direct squared-ordinate seed](reviews/arithmetic-pell-squared-seed-author.md)
-has passed its author build and awaits independent replay. It supplies the
+The [complete actual215 runtime equivalence](reviews/arithmetic-runtime215-root.md)
+now connects both directions of actual Enum halting and literal decimal215
+blank-machine halting over arbitrary internal clocks. All supported simulation,
+seed and boot premises are discharged. Independent fresh pairs match both
+objects, complete logs and all 15 standard-only reports, with zero refresh.
+The closed arithmetic checker client and the source/polynomial connections
+remain before the full HA theorem.
+
+The [direct squared-ordinate seed](reviews/arithmetic-pell-squared-seed-root.md)
+has passed independent review and fresh replay. It supplies the
 displayed equation's positive strong Pell norm at an explicit internal
 index, avoiding a general finite-pigeonhole step. Other simultaneous
 converse witnesses remain open.

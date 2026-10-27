@@ -1,0 +1,19 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRuntime215.lean:122:38: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  List.ofFn ![0, 0, 0, 0, 0, 0, 4, 0, 0]
+in the target expression
+  frameSparse 84 1
+      (bitPrefix false 64
+        (bitPrefix false 1
+          (2 * bitsCode (KRuntimeCore.sepsR (List.ofFn ![0, 0, 0, 0, 0, 0, 4, 0, 0] ++ List.replicate 40 1)) + 1))) =
+    bootCode
+
+hframe :
+  entryValue 1 seedFile 40 1 =
+    frameSparse 84 1 (bitPrefix false 64 (bitPrefix false 1 (2 * plain (regValue seedFile) 40 + 1)))
+hlist : List.ofFn ![0, 0, 0, 0, 0, 0, 4, 0, 0] = [0, 0, 0, 0, 0, 0, 4, 0, 0]
+hb : bootCode = frameSparse 84 1 (bitPrefix false 65 (2 * bitsCode (KRuntimeCore.sepsR KBoot215.bootVs) + 1))
+⊢ frameSparse 84 1
+      (bitPrefix false 64
+        (bitPrefix false 1
+          (2 * bitsCode (KRuntimeCore.sepsR (List.ofFn ![0, 0, 0, 0, 0, 0, 4, 0, 0] ++ List.replicate 40 1)) + 1))) =
+    bootCode

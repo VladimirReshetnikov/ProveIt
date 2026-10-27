@@ -1,0 +1,29 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRuntime215.lean:99:93: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+e : Fin (1 + 1) → V
+⊢ e 0 = entryValue 1 (fileValue ![0, 0, 0, 0, 0, 0, 4, 0, 0]) (ORingStructure.numeral 40) 1 ↔
+    e 0 = entryValue 1 (fileValue ![0, 0, 0, 0, 0, 0, 4, 0, 0]) 40 1
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRuntime215.lean:115:4: error: Type mismatch: After simplification, term
+  entry_format 0 seedFile 40 1
+ has type
+  @Eq ℕ (entryValue 1 seedFile 40 1)
+    (frameSparse 84 1 (bitPrefix false 64 (2 * (2 * plain (regValue seedFile) 40 + 1))))
+but is expected to have type
+  @Eq ℕ (entryValue 1 seedFile 40 1)
+    (frameSparse 84 1 (bitPrefix false 64 (2 * (2 * plain (regValue seedFile) 40 + 1))))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRuntime215.lean:122:21: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  entryValue 1 seedFile 40 1
+in the target expression
+  entryValue 1 seedFile 40 1 = bootCode
+
+hframe :
+  entryValue 1 seedFile 40 1 =
+    frameSparse 84 1 (bitPrefix false 64 (bitPrefix false 1 (2 * plain (regValue seedFile) 40 + 1)))
+hlist : List.ofFn ![0, 0, 0, 0, 0, 0, 4, 0, 0] = [0, 0, 0, 0, 0, 0, 4, 0, 0]
+hb : bootCode = frameSparse 84 1 (bitPrefix false 65 (2 * bitsCode (KRuntimeCore.sepsR KBoot215.bootVs) + 1))
+⊢ entryValue 1 seedFile 40 1 = bootCode
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRuntime215.lean:133:2: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information

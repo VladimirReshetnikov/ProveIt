@@ -16,9 +16,13 @@ proof-existence target**. This is a judgment about the remaining mathematical
 work, not a measured fraction of completed files or a delivery-time estimate.
 The HA calculus, PA-to-HA proof translation and several relevant formula
 normalization results are established. The full arithmetic equivalence
-needed by the transfer theorem remains open. Its three substantial outstanding
-connections are actual ZFC/source-checker proof interpretation, actual
-control-to-tape simulation, and internal polynomial/Pell witness assembly.
+needed by the transfer theorem remains open. Work was organized around
+three substantial connections: actual ZFC/source-checker proof interpretation,
+actual control-to-tape simulation, and internal polynomial/Pell witness
+assembly. The actual runtime equivalence is now independently accepted
+below; its closed arithmetic proof client is next. The other two connections
+remain substantial, including internal binary population, mask/word/carry
+and tableau construction in the polynomial connection.
 The checked scheduler/control halting theorem, literal tape/boot theorem
 and relaxed auxiliary norm theorem below are completed parts of those
 connections. Tagged Collection, register-box execution, symbolic execution
@@ -31,19 +35,31 @@ completed HA calculus, PA-to-HA translation and consistency normalization
 do not remove the need for a closed arithmetic theorem about this exact
 equation. The source/ZF interpretation and simultaneous polynomial witness
 construction still require mathematical development; they are not merely
-final file assembly. Machine simulation is closest to composition after
-the canonical-frame acceptance below. This estimate counts neither proof
+final file assembly. Machine simulation has now passed complete composition
+at the arbitrary-model level. This estimate counts neither proof
 files nor independently replayed checkpoints as equal units of progress.
 
-The [direct squared-ordinate seed](reviews/arithmetic-pell-squared-seed-author.md)
-has passed its author build and awaits independent replay. In every IΣ1
+The [complete actual215 runtime theorem](reviews/arithmetic-runtime215-root.md)
+now proves both directions between actual Enum live(0,4,0) halting and
+first-projection halting of the literal decimal215 blank machine, with
+arbitrary internal clocks in every IΣ1 model. The supported Sigma1 relation,
+all simulation premises, exact seed graph, full halted payload and accepted
+95,714-step boot are discharged. Independent fresh pairs match both objects,
+complete logs and all 15 standard-only reports, with zero refresh. The
+closed checker/machine IΣ1/PA client is next; actual source ZF/ZFC and
+polynomial/population/tableau/witness connections still precede full HA.
+
+The [direct squared-ordinate seed](reviews/arithmetic-pell-squared-seed-root.md)
+has passed independent source review and fresh replay. In every IΣ1
 model it derives a positive strong-norm witness at the explicit index
 `R*ycoord R a`: internal two-step quotient induction proves the original
 ordinate squared divides this new ordinate. This avoids generic internal
 finite pigeonhole for the displayed fourteen-variable strong seed. It
 does not yet construct all simultaneous outer/auxiliary witnesses or
-establish the complete converse. The 105/30-line pair passes four
-standard-only reports with zero prerequisite refresh.
+establish the complete converse. The independent 105/30-line pair matches
+both objects, complete logs and four standard-only reports with zero
+prerequisite refresh. ROOT authored the pair; the independent controller
+replay and ROOT acceptance reauthentication are recorded separately.
 
 The [canonical215 control-frame theorem](reviews/arithmetic-control-frame215-root.md)
 now fixes the represented entry graph, proves full consumed-path rebasing
