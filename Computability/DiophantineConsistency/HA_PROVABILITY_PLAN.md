@@ -11,12 +11,23 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual relaxed auxiliary norm theorem](reviews/arithmetic-pell-index-divisibility-root.md)
+now supplies the original-base Pell coordinates and both p|m and c|m for
+the same positive internal index. Genuine Sigma1 quotient induction and
+two scaled natural coefficient certificates derive the latter divisibility;
+no cubic-congruence or power theorem is required. The structural helper
+retains zero indices. Independent fresh pairs match both objects/full logs
+and seven reports. The [mathematical note](research/arithmetic-pell-two-certificates.md)
+records the shorter proof. Later target-index/step-down transport, carrier
+alignment, cofinal witnesses and final equation/PA/HA assembly remain open.
+
 The [actual relaxed-norm integral-solution theorem](reviews/arithmetic-pell-integral-solution-root.md)
 now forces the common-unit index multiple from actual positive norm and
 large-c inputs, then restores m>0, p|m, f=X_m(a) and
 i*c*c=delta(a)*Y_m(a). Independent fresh pairs match both objects/full logs
-and five reports. Final c|m, complete relaxed integrality, subsequent index
-recovery and cofinal witness construction remain to be proved.
+and five reports. The later index packet above supplies c|m and the complete
+relaxed auxiliary implication. Subsequent index recovery and cofinal witness
+construction remain to be proved.
 
 The [internal Pell strong-divisibility theorem](reviews/arithmetic-pell-strong-divisibility-root.md)
 now derives the sequence gcd, index-divisibility reflection including0 and
@@ -115,7 +126,8 @@ normalization then puts both relevant norm solutions over one discriminant,
 potentially replacing the external squarefree/fundamental-unit setup.
 The known-unit descent, gcd normalization and common-unit composition are
 now proved above, along with strong divisibility and large-index forcing.
-The final c-divides-index argument still precedes full relaxed integrality.
+The final c-divides-index argument is also proved above by two coefficient
+certificates; later target-index recovery and cofinal witnesses remain.
 
 The [uniform internal seed-source basis](reviews/validator-seed-source-basis222-root.md)
 now constructs the exact represented open proof of every internally typed

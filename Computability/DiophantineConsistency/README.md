@@ -216,11 +216,20 @@ directions. Independent builds match both objects/full logs and13
 standard-only reports. Actual site execution and control/tape calibration
 remain before the equation's PA/HA proof.
 
+The [actual relaxed auxiliary norm theorem](reviews/arithmetic-pell-index-divisibility-root.md)
+now derives both p|m and c|m for the same positive internal index and the
+original-base Pell coordinates. A [two-certificate argument](research/arithmetic-pell-two-certificates.md)
+finishes the divisibility using exact quotient induction, including zero
+indices in its structural helper. Independent builds match both objects/full
+logs and seven standard-only reports. Later target-index recovery, carrier
+alignment, cofinal witnesses and the final PA/HA equivalence remain open.
+
 The [actual relaxed-norm integral-solution theorem](reviews/arithmetic-pell-integral-solution-root.md)
 now derives the common-unit index multiple from the large-c bound and
 restores a positive original-base Pell index m with p|m. Both actual norm
 input forms are retained. Independent builds match both objects/full logs
-and five standard-only reports. Final c|m and full relaxed integrality remain.
+and five standard-only reports. The later index packet above supplies c|m
+and the complete relaxed auxiliary implication.
 
 The [internal Pell strong-divisibility theorem](reviews/arithmetic-pell-strong-divisibility-root.md)
 now proves the exact sequence gcd, index-divisibility equivalence including

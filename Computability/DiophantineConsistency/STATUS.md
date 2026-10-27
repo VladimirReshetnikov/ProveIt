@@ -50,13 +50,23 @@ Independent fresh pairs match both objects/full logs and13 standard-only
 reports. Actual scans/boxes/home/site execution and control/tape calibration
 remain open before final PA/HA assembly.
 
+The [actual relaxed auxiliary norm theorem](reviews/arithmetic-pell-index-divisibility-root.md)
+now derives both p|m and c|m at the same positive internal original-base
+Pell index. Exact quotient induction and two natural coefficient certificates
+finish the latter divisibility without a cubic-congruence or power theorem;
+the structural helper includes both zero indices. Both actual norm input
+forms are retained. Independent fresh pairs match both objects/full logs
+and seven standard-only reports. Later target-index recovery, carrier
+alignment, cofinal witnesses and final equation/PA/HA assembly remain open.
+
 The [actual relaxed-norm integral-solution theorem](reviews/arithmetic-pell-integral-solution-root.md)
 now derives the common-unit index multiple from the actual large-c bound,
 then a positive original-base index m with p|m, f=X_m(a) and
 i*c*c=delta(a)*Y_m(a). Both additive and justified truncated inputs are
 included. Independent fresh pairs match both objects/full logs and five
-standard-only reports. Final c|m, complete relaxed integrality, subsequent
-index recovery and cofinal witnesses remain open.
+standard-only reports. The later index-divisibility packet above supplies
+c|m and the complete relaxed auxiliary implication; subsequent index recovery
+and cofinal witnesses remain open.
 
 The [internal Pell strong-divisibility theorem](reviews/arithmetic-pell-strong-divisibility-root.md)
 now proves gcd(Y(m),Y(n))=Y(gcd(m,n)), index-divisibility reflection and
