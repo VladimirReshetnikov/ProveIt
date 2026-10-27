@@ -10,6 +10,10 @@ for internal arithmetic inputs. The final HA derivation remains open.
 The [consistency cache audit](research/fixed-consistency-nat-cache-gap-audit.md)
 authenticates all139 selected Foundation providers, while a proposed73
 local-module refresh remains unexecuted at this checkpoint.
+The later [uniform typed C222 vacuity checkpoint](reviews/validator-environment-vacuity222-root.md)
+passes two independent builds and11 standard-only reports, with an explicit
+Π2 invariant under IΣ2 and numeric actual-checker witnesses. It advances
+proof interpretation without closing the final HA endpoint.
 
 **Current direction:** On 25 October 2026 the owner resumed Lean
 formalization, requesting proofs for the simplest equations constructed

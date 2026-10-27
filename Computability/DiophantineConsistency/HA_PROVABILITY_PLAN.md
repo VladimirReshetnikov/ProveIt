@@ -565,6 +565,13 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [uniform typed C222 vacuity theorem](reviews/validator-environment-vacuity222-root.md)
+now supplies actual represented proof witnesses for every internal typed
+formula under explicit environment/binder avoidance. Its Π2 induction uses
+IΣ2 and its independent pair passes11 standard-only reports. This closes
+the encoder-vacuity checkpoint while substitution, alpha transport and
+general proof interpretation remain open.
+
 The [actual permuted-command parser](reviews/arithmetic-command-wordperm222-peer.md)
 now has a represented bounded graph in IOpen and agrees with the literal
 Nat decoder on every raw input. Its independent two-leaf replay passes

@@ -23,6 +23,10 @@ now passes an independent five-source build with13 standard-only reports,
 including internal constructor and nested SHIFT equations. The complete
 HA equivalence still requires the documented proof-interpretation and
 runtime bridges.
+The [uniform typed vacuity theorem](reviews/validator-environment-vacuity222-root.md)
+then supplies actual internal C222 proof witnesses under explicit label
+guards. Its IΣ2 induction and two fresh independent builds pass11
+standard-only reports; general proof interpretation remains open.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed

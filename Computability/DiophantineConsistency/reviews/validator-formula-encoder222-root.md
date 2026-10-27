@@ -47,3 +47,12 @@ the corrected closure plan. The added Foundation authentication retains
 its20 trace bundles and two historical primary-object pairs, with later
 companions explicitly distinguished. These checks establish this syntax
 checkpoint, not an HA proof of the desired equation equivalence.
+
+A later [separate boundary supplement](encoder222-boundary-correction.json)
+corrects the initial import scanner's omission of `public meta import Aesop`.
+There are40 direct external names, including Init. Root independently
+checked the actual import site, original receipts, current Aesop source and
+four artifacts; its primary object matches the already accepted SeedImage
+provider on the same explicit package path. These are additional postchecks,
+not a retroactive claim that the original717/815 observations contained
+this boundary. No frozen replay or source was rewritten.
