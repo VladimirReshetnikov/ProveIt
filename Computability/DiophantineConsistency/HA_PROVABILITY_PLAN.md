@@ -11,6 +11,13 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [internal register loops](reviews/arithmetic-dag-loops-root.md)
+now supply actual current DagPerm subroutine proofs at arbitrary internal
+counters, with a nonvacuous represented occurrence check. Independent
+six-prerequisite/two-leaf builds match every object and pass eight
+standard-only reports. The whole actual table/occurrence and exact215
+simulation remain necessary before the closed arithmetic runtime bridge.
+
 The [actual C222 equality-image theorem](reviews/validator-equality-images222-root.md)
 now discharges AxOK for the actual finite equality recognizer, with all
 five closed source images and a literal Eind-only irreflexivity image.

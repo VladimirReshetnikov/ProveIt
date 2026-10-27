@@ -152,6 +152,12 @@ builds pass sixteen standard-only reports with identical objects. Context
 quantifier transport,source derivation induction and source axiom
 interpretation remain open.
 
+The [internal register loops](reviews/arithmetic-dag-loops-root.md)
+now handle arbitrary internal counts with actual DagPerm197/192/214
+instances and a verified concrete clear-table occurrence. Independent
+six-prerequisite/two-leaf builds match all objects and pass eight standard-only
+reports. Whole-program occurrence and the exact215/HA endpoint remain open.
+
 The [actual C222 equality images](reviews/validator-equality-images222-root.md)
 now prove all five actual closed source equality axioms and discharge
 AxOK for their exact finite recognizer. Literal irreflexivity uses Eind

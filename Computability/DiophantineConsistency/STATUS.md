@@ -30,6 +30,13 @@ historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
 
+The [internal register-loop theorem](reviews/arithmetic-dag-loops-root.md)
+now proves transfer,copy and clear at arbitrary internal counters, with
+literal DagPerm197/192/214 instances and a real represented clear-table
+occurrence. Six refreshed prerequisites and two new leaves pass independent
+builds with identical objects and eight standard-only reports. Whole root
+occurrence,actual scheduler/215 calibration and the HA endpoint remain open.
+
 The [actual C222 equality axiom images](reviews/validator-equality-images222-root.md)
 now discharge AxOK for the specified actual finite equality recognizer,
 including all five fully closed source axioms. Literal irreflexivity also
