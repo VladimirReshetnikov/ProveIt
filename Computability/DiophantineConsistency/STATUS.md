@@ -30,6 +30,13 @@ historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
 
+The [actual C222 source quantifier contexts](reviews/validator-source-quantifier-context222-root.md)
+now prove GEN/ALL/EXS through internally sized contexts, deriving the source
+hypotheses' vacuity from typing and fresh-label resources. Independent
+two-leaf builds pass23 standard-only reports and identical objects. The
+next source step is genuine Pi2/IΣ2 induction over all ten proof rules;
+source-axiom images and the final HA equivalence remain open.
+
 The [actual C222 checker/enumerator equivalence](reviews/arithmetic-enum-soundnessperm222-root.md)
 now proves both directions at candidate4/work0, including a closed IΣ1
 and PA proof. Genuine Sigma1 time induction retains an actual falsity

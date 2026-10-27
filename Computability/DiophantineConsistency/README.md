@@ -152,6 +152,14 @@ builds pass sixteen standard-only reports with identical objects. Context
 quantifier transport,source derivation induction and source axiom
 interpretation remain open.
 
+The [actual C222 source quantifier contexts](reviews/validator-source-quantifier-context222-root.md)
+now derive GEN/ALL/EXS through internally sized contexts, including actual
+history witnesses and literal source shifts. Generic GEN uses explicit
+Pi2/IΣ2 induction; the typed fold uses Sigma1 induction while retaining
+IΣ2 for uniform vacuity. Independent builds pass23 standard-only reports
+and identical objects. Full source derivation interpretation and actual
+source-axiom images remain open.
+
 The [actual C222 checker/enumerator equivalence](reviews/arithmetic-enum-soundnessperm222-root.md)
 now has both directions at candidate4 and empty work, with actual closed
 IΣ1 and PA derivations. The reverse uses genuine Sigma1 time induction and

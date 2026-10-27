@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual C222 source quantifier contexts](reviews/validator-source-quantifier-context222-root.md)
+now lift GEN/ALL/EXS through arbitrary internal contexts with actual
+checker witnesses. Typing and fresh_resources discharge every source
+hypothesis's required vacuity. Independent builds pass23 standard-only
+reports with identical objects. This supplies the quantifier steps for
+the next ten-case internal proof induction; its axiom-image premise and
+the substantial source set-theory interpretation remain separate work.
+
 The [actual C222 checker/enumerator equivalence](reviews/arithmetic-enum-soundnessperm222-root.md)
 now has genuine closed IΣ1 and PA proofs, with both directions between
 actual checker falsity and halting from pointer0,candidate4,work0. Its
