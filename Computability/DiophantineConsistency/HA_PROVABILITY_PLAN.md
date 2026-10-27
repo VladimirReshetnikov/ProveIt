@@ -720,3 +720,19 @@ No HA proof of the current equation's consistency equivalence is claimed
 at this checkpoint.
 The decimal equation page and all14 distinct unsubscripted unknowns are
 preserved. The goal remains active.
+
+
+## Actual numeric C222 substitution and opening accepted
+
+The [numeric C222 substitution/opening theorem](reviews/validator-environment-substitution222-root.md)
+now passes two independent builds with thirteen standard-only reports and
+identical objects. Its actual Π1/IΣ1 induction retains total lookup,
+repeated/zero labels and the exact qVec binder shifts. Stream selection,
+semantic quantifier rules and the complete HA equivalence remain open.
+
+The exact source replacement vector and label-matching invariant are
+internal parameters. Opening inserts the interpreted free label into the
+bound stack before encode_shift removes the free-environment head. Neither
+step assumes a desired CProv transport theorem. The first checkpoint adds
+no fresh-stream choice or arbitrary proof translation. Both remain
+subsequent explicit obligations.

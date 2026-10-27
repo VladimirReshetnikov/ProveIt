@@ -2,6 +2,12 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+The [numeric C222 substitution/opening theorem](reviews/validator-environment-substitution222-root.md)
+now passes two independent builds with thirteen standard-only reports and
+identical objects. Its actual Π1/IΣ1 induction retains total lookup,
+repeated/zero labels and the exact qVec binder shifts. Stream selection,
+semantic quantifier rules and the complete HA equivalence remain open.
+
 The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
 now passes two independent builds and seventeen propext/Quot.sound-only
 reports. Genuine simultaneous formula induction proves finite all/ex
@@ -13,7 +19,7 @@ The [uniform C222 alpha theorem](reviews/validator-environment-alpha222-root.md)
 now passes two independent builds and fifteen standard-only reports. Its
 all-internal Π2/IΣ2 induction preserves the same context in both directions
 and derives the four binder-vacuity resources. Numeric checker witnesses
-are explicit. Substitution and general proof interpretation remain open.
+are explicit. General proof interpretation remains open.
 
 The [current13/178/86 scaled syzygy](reviews/thirteen-scaled-norm-syzygy86-root.md)
 now passes two independent Lean builds with twelve standard-only reports

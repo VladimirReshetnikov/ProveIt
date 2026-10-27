@@ -70,8 +70,12 @@ transport under its explicit IΣ2 invariant remains the next checkpoint.
 The subsequent [uniform alpha theorem](reviews/validator-environment-alpha222-root.md)
 now covers arbitrary internal typed formulas in both directions under that
 same represented context. Its explicit Π2/IΣ2 induction and two independent
-builds pass fifteen standard-only reports. Stream selection, substitution
-and arbitrary proof interpretation remain separate work.
+builds pass fifteen standard-only reports. Stream selection and arbitrary proof interpretation remain separate work.
+The [numeric C222 substitution/opening theorem](reviews/validator-environment-substitution222-root.md)
+now passes two independent builds with thirteen standard-only reports and
+identical objects. Its actual Π1/IΣ1 induction retains total lookup,
+repeated/zero labels and the exact qVec binder shifts. Stream selection,
+semantic quantifier rules and the complete HA equivalence remain open.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed
