@@ -189,6 +189,15 @@ premise. Independent builds pass eight propext/Quot.sound-only reports and
 identical objects. Fixed consistency specialization and the full HA equation equivalence
 remain open.
 
+The [adaptive rank-window theorem](reviews/native-adaptive-rank-window-root.md)
+now derives the target window, both Pell classifications, n>=25, n<p,
+p>=6, a positive main ordinate, the large-c bound and both 2p<c/2R<c
+bounds from the literal A0/A1 equations and stated port/positivity data.
+Two independent builds pass five standard-only reports and identical
+objects. Signed divisibility needs no assumed nonnegative quotient.
+Strong-index restoration, power recovery, the converse and internal HA
+formalization remain open.
+
 The [adaptive main-carrier bootstrap](reviews/native-adaptive-main-bootstrap-root.md)
 now derives a positive integral main Pell root and q^4 dividing the signed
 index difference from literal A1 and preceding first-carrier divisibility.

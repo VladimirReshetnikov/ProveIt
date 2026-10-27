@@ -1101,3 +1101,22 @@ The syntax includes truncated subtraction and the zero-safe counter loader.
 Its graph is fixed before a model or its four inputs is supplied. Actual
 MP and AX tags, y/x payload order and the direct-leaf guard remain explicit.
 No internal circuit-code interpreter or proof history is assumed.
+
+## Adaptive target window and early Pell indices accepted
+
+The [adaptive rank-window theorem](reviews/native-adaptive-rank-window-root.md)
+now derives the target window, both Pell classifications, n>=25, n<p,
+p>=6, a positive main ordinate, the large-c bound and both 2p<c/2R<c
+bounds from the literal A0/A1 equations and stated port/positivity data.
+Two independent builds pass five standard-only reports and identical
+objects. Signed divisibility needs no assumed nonnegative quotient.
+Strong-index restoration, power recovery, the converse and internal HA
+formalization remain open.
+
+The theorem obtains q^3|Y from A0, the window from actual transport
+and the port box, then q^4|(k-R-1) and positive classification from A1.
+Its first-index modular argument works over signed integers. Classification
+and index comparison are consequences, not source assumptions. The full
+low-degree graph still needs strong-index identification and a converse;
+these external native arithmetic results also need internal arithmetic
+formalization before contributing an actual HA proof-existence endpoint.
